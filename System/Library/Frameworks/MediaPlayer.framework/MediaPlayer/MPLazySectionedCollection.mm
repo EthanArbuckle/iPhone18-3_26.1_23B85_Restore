@@ -1,30 +1,30 @@
 @interface MPLazySectionedCollection
-- (BOOL)hasSameContentAsSectionedCollection:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPLazySectionedCollection)initWithDataSource:(id)a3;
+- (BOOL)hasSameContentAsSectionedCollection:(id)collection;
+- (BOOL)isEqual:(id)equal;
+- (MPLazySectionedCollection)initWithDataSource:(id)source;
 - (id)_safeStateDumpObject;
 - (id)allElementsEnumerator;
 - (id)allItems;
 - (id)allSections;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)firstItem;
 - (id)firstSection;
-- (id)identifiersForItemAtIndexPath:(id)a3;
-- (id)identifiersForSectionAtIndex:(int64_t)a3;
-- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)itemsInSectionAtIndex:(int64_t)a3;
+- (id)identifiersForItemAtIndexPath:(id)path;
+- (id)identifiersForSectionAtIndex:(int64_t)index;
+- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)set;
+- (id)itemAtIndexPath:(id)path;
+- (id)itemsInSectionAtIndex:(int64_t)index;
 - (id)lastItem;
 - (id)lastSection;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)sectionAtIndex:(int64_t)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)sectionAtIndex:(int64_t)index;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)enumerateItemsInSectionAtIndex:(int64_t)a3 usingBlock:(id)a4;
-- (void)enumerateItemsUsingBlock:(id)a3;
-- (void)enumerateSectionsUsingBlock:(id)a3;
+- (void)enumerateItemsInSectionAtIndex:(int64_t)index usingBlock:(id)block;
+- (void)enumerateItemsUsingBlock:(id)block;
+- (void)enumerateSectionsUsingBlock:(id)block;
 @end
 
 @implementation MPLazySectionedCollection
@@ -51,23 +51,23 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MPLazySectionedCollection *)self dataSource];
-  v3 = [v2 hash];
+  dataSource = [(MPLazySectionedCollection *)self dataSource];
+  v3 = [dataSource hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if ([(MPLazySectionedCollection *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(MPLazySectionedCollection *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(MPLazySectionedCollection *)self hasSameContentAsSectionedCollection:v4];
+    v5 = [(MPLazySectionedCollection *)self hasSameContentAsSectionedCollection:equalCopy];
   }
 
   else
@@ -78,14 +78,14 @@
   return v5;
 }
 
-- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)a3
+- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)set
 {
-  v4 = a3;
-  v5 = [(MPLazySectionedCollection *)self dataSource];
+  setCopy = set;
+  dataSource = [(MPLazySectionedCollection *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
     os_unfair_recursive_lock_lock_with_options();
-    v6 = [v5 indexPathForItemWithIdentifiersIntersectingSet:v4];
+    v6 = [dataSource indexPathForItemWithIdentifiersIntersectingSet:setCopy];
     os_unfair_recursive_lock_unlock();
   }
 
@@ -93,20 +93,20 @@
   {
     v8.receiver = self;
     v8.super_class = MPLazySectionedCollection;
-    v6 = [(MPSectionedCollection *)&v8 indexPathForItemWithIdentifiersIntersectingSet:v4];
+    v6 = [(MPSectionedCollection *)&v8 indexPathForItemWithIdentifiersIntersectingSet:setCopy];
   }
 
   return v6;
 }
 
-- (id)identifiersForSectionAtIndex:(int64_t)a3
+- (id)identifiersForSectionAtIndex:(int64_t)index
 {
   v29 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  if ([(MPLazySectionedCollection *)self numberOfSections]<= a3)
+  indexCopy = index;
+  if ([(MPLazySectionedCollection *)self numberOfSections]<= index)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:374 description:{@"Request for identifiers for section out of bounds: %lld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:374 description:{@"Request for identifiers for section out of bounds: %lld", index}];
   }
 
   os_unfair_recursive_lock_lock_with_options();
@@ -115,16 +115,16 @@
   if (!left)
   {
 LABEL_10:
-    v10 = [(MPLazySectionedCollection *)self dataSource];
+    dataSource = [(MPLazySectionedCollection *)self dataSource];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v10 identifiersForSectionAtIndex:a3];
+      v11 = [dataSource identifiersForSectionAtIndex:index];
       if (v11)
       {
 LABEL_19:
         v15 = self->_storage;
-        *buf = &v21;
-        v16 = std::__tree<std::__value_type<long,MPIdentifierSet * {__strong}>,std::__map_value_compare<long,std::__value_type<long,MPIdentifierSet * {__strong}>,std::less<long>,true>,std::allocator<std::__value_type<long,MPIdentifierSet * {__strong}>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long const&>,std::tuple<>>(&v15->_sectionIdentifierSetMap, a3);
+        *buf = &indexCopy;
+        v16 = std::__tree<std::__value_type<long,MPIdentifierSet * {__strong}>,std::__map_value_compare<long,std::__value_type<long,MPIdentifierSet * {__strong}>,std::less<long>,true>,std::allocator<std::__value_type<long,MPIdentifierSet * {__strong}>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long const&>,std::tuple<>>(&v15->_sectionIdentifierSetMap, index);
         objc_storeStrong(v16 + 5, v11);
 
         goto LABEL_20;
@@ -140,9 +140,9 @@ LABEL_19:
           v23 = 2114;
           v24 = objc_opt_class();
           v25 = 2048;
-          v26 = v10;
+          v26 = dataSource;
           v27 = 2048;
-          v28 = a3;
+          indexCopy2 = index;
           v13 = v24;
           _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_FAULT, "MPLazySectionedCollection %p: identifiersForSectionAtIndex dataSource failed to produce identifiers: dataSource=<%{public}@ %p> sectionIndex=%ld", buf, 0x2Au);
         }
@@ -155,7 +155,7 @@ LABEL_19:
     {
       v20.receiver = self;
       v20.super_class = MPLazySectionedCollection;
-      v14 = [(MPSectionedCollection *)&v20 identifiersForSectionAtIndex:a3];
+      v14 = [(MPSectionedCollection *)&v20 identifiersForSectionAtIndex:index];
     }
 
     v11 = v14;
@@ -166,7 +166,7 @@ LABEL_19:
   while (1)
   {
     v9 = v8[4];
-    if (v9 <= a3)
+    if (v9 <= index)
     {
       break;
     }
@@ -179,13 +179,13 @@ LABEL_9:
     }
   }
 
-  if (v9 < a3)
+  if (v9 < index)
   {
     ++v8;
     goto LABEL_9;
   }
 
-  v18 = *std::map<long long,std::shared_ptr<mlcore::EntityQueryResult>>::at(left, a3);
+  v18 = *std::map<long long,std::shared_ptr<mlcore::EntityQueryResult>>::at(left, index);
   v11 = v18;
   if (!v18)
   {
@@ -198,24 +198,24 @@ LABEL_20:
   return v11;
 }
 
-- (id)identifiersForItemAtIndexPath:(id)a3
+- (id)identifiersForItemAtIndexPath:(id)path
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 length] != 2)
+  pathCopy = path;
+  if ([pathCopy length] != 2)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:343 description:@"Index path must have two components."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:343 description:@"Index path must have two components."];
   }
 
-  v6 = [v5 item];
-  if (v6 >= -[MPLazySectionedCollection numberOfItemsInSection:](self, "numberOfItemsInSection:", [v5 section]))
+  item = [pathCopy item];
+  if (item >= -[MPLazySectionedCollection numberOfItemsInSection:](self, "numberOfItemsInSection:", [pathCopy section]))
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:344 description:{@"Request for item identifiers out of bound in section (%lld): %lld", objc_msgSend(v5, "section"), objc_msgSend(v5, "item")}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:344 description:{@"Request for item identifiers out of bound in section (%lld): %lld", objc_msgSend(pathCopy, "section"), objc_msgSend(pathCopy, "item")}];
   }
 
-  v7 = [(MPSectionedCollection *)self globalIndexForIndexPath:v5];
+  v7 = [(MPSectionedCollection *)self globalIndexForIndexPath:pathCopy];
   v23 = v7;
   os_unfair_recursive_lock_lock_with_options();
   storage = self->_storage;
@@ -223,10 +223,10 @@ LABEL_20:
   if (!left)
   {
 LABEL_11:
-    v12 = [(MPLazySectionedCollection *)self dataSource];
+    dataSource = [(MPLazySectionedCollection *)self dataSource];
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v12 identifiersForItemAtIndexPath:v5];
+      v13 = [dataSource identifiersForItemAtIndexPath:pathCopy];
       if (!v13)
       {
         v14 = os_log_create("com.apple.amp.mediaplayer", "Default");
@@ -237,9 +237,9 @@ LABEL_11:
           v25 = 2114;
           v26 = objc_opt_class();
           v27 = 2048;
-          v28 = v12;
+          v28 = dataSource;
           v29 = 2114;
-          v30 = v5;
+          v30 = pathCopy;
           v15 = v26;
           _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_ERROR, "MPLazySectionedCollection %p: identifiersForItemAtIndexPath dataSource failed to produce identifiers: dataSource=<%{public}@ %p> indexPath=%{public}@", buf, 0x2Au);
         }
@@ -252,7 +252,7 @@ LABEL_11:
     {
       v22.receiver = self;
       v22.super_class = MPLazySectionedCollection;
-      v13 = [(MPSectionedCollection *)&v22 identifiersForItemAtIndexPath:v5];
+      v13 = [(MPSectionedCollection *)&v22 identifiersForItemAtIndexPath:pathCopy];
       if (!v13)
       {
         v16 = os_log_create("com.apple.amp.mediaplayer", "Default");
@@ -261,7 +261,7 @@ LABEL_11:
           *buf = 134218242;
           *&buf[4] = self;
           v25 = 2114;
-          v26 = v5;
+          v26 = pathCopy;
           _os_log_impl(&dword_1A238D000, v16, OS_LOG_TYPE_ERROR, "MPLazySectionedCollection %p: identifiersForItemAtIndexPath super failed to produce identifiers: indexPath=%{public}@", buf, 0x16u);
         }
 
@@ -331,11 +331,11 @@ LABEL_21:
 
 - (id)allSections
 {
-  v3 = [(MPLazySectionedCollection *)self numberOfSections];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:v3];
-  if (v3 >= 1)
+  numberOfSections = [(MPLazySectionedCollection *)self numberOfSections];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:numberOfSections];
+  if (numberOfSections >= 1)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
       v6 = [(MPLazySectionedCollection *)self sectionAtIndex:i];
       if (v6)
@@ -350,30 +350,30 @@ LABEL_21:
 
 - (id)lastSection
 {
-  v3 = [(MPLazySectionedCollection *)self numberOfSections];
-  if (v3 < 1)
+  numberOfSections = [(MPLazySectionedCollection *)self numberOfSections];
+  if (numberOfSections < 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [(MPLazySectionedCollection *)self sectionAtIndex:v3 - 1];
+    v4 = [(MPLazySectionedCollection *)self sectionAtIndex:numberOfSections - 1];
   }
 
   return v4;
 }
 
-- (id)itemsInSectionAtIndex:(int64_t)a3
+- (id)itemsInSectionAtIndex:(int64_t)index
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[MPLazySectionedCollection numberOfItemsInSection:](self, "numberOfItemsInSection:", a3)}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[MPLazySectionedCollection numberOfItemsInSection:](self, "numberOfItemsInSection:", index)}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__MPLazySectionedCollection_itemsInSectionAtIndex___block_invoke;
   v8[3] = &unk_1E767D970;
   v6 = v5;
   v9 = v6;
-  [(MPLazySectionedCollection *)self enumerateItemsInSectionAtIndex:a3 usingBlock:v8];
+  [(MPLazySectionedCollection *)self enumerateItemsInSectionAtIndex:index usingBlock:v8];
 
   return v6;
 }
@@ -402,15 +402,15 @@ void __51__MPLazySectionedCollection_itemsInSectionAtIndex___block_invoke(uint64
   return v3;
 }
 
-- (void)enumerateItemsUsingBlock:(id)a3
+- (void)enumerateItemsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14 = 0;
-  v5 = [(MPLazySectionedCollection *)self numberOfSections];
-  if (v5 >= 1)
+  numberOfSections = [(MPLazySectionedCollection *)self numberOfSections];
+  if (numberOfSections >= 1)
   {
     v6 = 0;
-    v13 = v5;
+    v13 = numberOfSections;
     do
     {
       v7 = [(MPLazySectionedCollection *)self numberOfItemsInSection:v6, v13];
@@ -423,7 +423,7 @@ void __51__MPLazySectionedCollection_itemsInSectionAtIndex___block_invoke(uint64
           v10 = objc_autoreleasePoolPush();
           v11 = [MEMORY[0x1E696AC88] indexPathForItem:v9 - 1 inSection:v6];
           v12 = [(MPLazySectionedCollection *)self itemAtIndexPath:v11];
-          v4[2](v4, v12, v11, &v14);
+          blockCopy[2](blockCopy, v12, v11, &v14);
 
           objc_autoreleasePoolPop(v10);
           v8 = v14;
@@ -445,20 +445,20 @@ void __51__MPLazySectionedCollection_itemsInSectionAtIndex___block_invoke(uint64
   }
 }
 
-- (void)enumerateItemsInSectionAtIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateItemsInSectionAtIndex:(int64_t)index usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12 = 0;
-  v7 = [(MPLazySectionedCollection *)self numberOfItemsInSection:a3];
+  v7 = [(MPLazySectionedCollection *)self numberOfItemsInSection:index];
   if (v7 >= 1)
   {
     v8 = 1;
     do
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = [MEMORY[0x1E696AC88] indexPathForItem:v8 - 1 inSection:a3];
+      v10 = [MEMORY[0x1E696AC88] indexPathForItem:v8 - 1 inSection:index];
       v11 = [(MPLazySectionedCollection *)self itemAtIndexPath:v10];
-      v6[2](v6, v11, v8 - 1, &v12);
+      blockCopy[2](blockCopy, v11, v8 - 1, &v12);
 
       objc_autoreleasePoolPop(v9);
       if (v8 >= v7)
@@ -473,22 +473,22 @@ void __51__MPLazySectionedCollection_itemsInSectionAtIndex___block_invoke(uint64
   }
 }
 
-- (void)enumerateSectionsUsingBlock:(id)a3
+- (void)enumerateSectionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = 0;
-  v5 = [(MPLazySectionedCollection *)self numberOfSections];
-  if (v5 >= 1)
+  numberOfSections = [(MPLazySectionedCollection *)self numberOfSections];
+  if (numberOfSections >= 1)
   {
     v6 = 1;
     do
     {
       v7 = objc_autoreleasePoolPush();
       v8 = [(MPLazySectionedCollection *)self sectionAtIndex:v6 - 1];
-      v4[2](v4, v8, v6 - 1, &v9);
+      blockCopy[2](blockCopy, v8, v6 - 1, &v9);
 
       objc_autoreleasePoolPop(v7);
-      if (v6 >= v5)
+      if (v6 >= numberOfSections)
       {
         break;
       }
@@ -500,42 +500,42 @@ void __51__MPLazySectionedCollection_itemsInSectionAtIndex___block_invoke(uint64
   }
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   os_unfair_recursive_lock_lock_with_options();
-  v6 = [(NSCache *)self->_storage->_itemsCache objectForKey:v5];
+  v6 = [(NSCache *)self->_storage->_itemsCache objectForKey:pathCopy];
   if (!v6)
   {
     v23 = self->_dataSource;
-    if ([v5 length] != 2)
+    if ([pathCopy length] != 2)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:236 description:@"Index path must have two components."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:236 description:@"Index path must have two components."];
     }
 
-    v7 = [v5 item];
-    if (v7 >= -[MPLazySectionedCollection numberOfItemsInSection:](self, "numberOfItemsInSection:", [v5 section]))
+    item = [pathCopy item];
+    if (item >= -[MPLazySectionedCollection numberOfItemsInSection:](self, "numberOfItemsInSection:", [pathCopy section]))
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:237 description:{@"Request for item out of bound in section (%lld): %lld", objc_msgSend(v5, "section"), objc_msgSend(v5, "item")}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:237 description:{@"Request for item out of bound in section (%lld): %lld", objc_msgSend(pathCopy, "section"), objc_msgSend(pathCopy, "item")}];
     }
 
-    v6 = [(MPLazySectionedCollectionDataSource *)v23 itemAtIndexPath:v5];
+    v6 = [(MPLazySectionedCollectionDataSource *)v23 itemAtIndexPath:pathCopy];
     if (v6)
     {
-      v8 = [(MPSectionedCollection *)self globalIndexForIndexPath:v5];
+      v8 = [(MPSectionedCollection *)self globalIndexForIndexPath:pathCopy];
       v24[0] = v8;
-      [(NSCache *)self->_storage->_itemsCache setObject:v6 forKey:v5];
+      [(NSCache *)self->_storage->_itemsCache setObject:v6 forKey:pathCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v9 = v6;
-        if ([v5 length] == 1)
+        if ([pathCopy length] == 1)
         {
-          v22 = [v9 identifiers];
+          identifiers = [v9 identifiers];
           storage = self->_storage;
-          v11 = [v5 section];
+          section = [pathCopy section];
           left = storage->_sectionIdentifierSetMap.__tree_.__end_node_.__left_;
           if (!left)
           {
@@ -549,7 +549,7 @@ LABEL_17:
             {
               v13 = left;
               v14 = left[4];
-              if (v11 >= v14)
+              if (section >= v14)
               {
                 break;
               }
@@ -561,7 +561,7 @@ LABEL_17:
               }
             }
 
-            if (v14 >= v11)
+            if (v14 >= section)
             {
               break;
             }
@@ -574,17 +574,17 @@ LABEL_17:
           }
 
           v18 = v13[5];
-          v13[5] = v22;
+          v13[5] = identifiers;
         }
 
         else
         {
-          v15 = [v9 identifiers];
+          identifiers2 = [v9 identifiers];
           v16 = self->_storage;
           v24[1] = v24;
           v17 = std::__tree<std::__value_type<long,MPIdentifierSet * {__strong}>,std::__map_value_compare<long,std::__value_type<long,MPIdentifierSet * {__strong}>,std::less<long>,true>,std::allocator<std::__value_type<long,MPIdentifierSet * {__strong}>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long const&>,std::tuple<>>(&v16->_itemIdentifierSetMap, v8);
           v18 = v17[5];
-          v17[5] = v15;
+          v17[5] = identifiers2;
         }
       }
     }
@@ -595,29 +595,29 @@ LABEL_17:
   return v6;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  if (a3 < 0)
+  if (section < 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:207 description:{@"Request for number of items in section out of bounds [negative index]: %lld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:207 description:{@"Request for number of items in section out of bounds [negative index]: %lld", section}];
   }
 
-  if ([(MPLazySectionedCollection *)self numberOfSections]<= a3)
+  if ([(MPLazySectionedCollection *)self numberOfSections]<= section)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:208 description:{@"Request for number of items in section out of bounds: %lld", a3}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:208 description:{@"Request for number of items in section out of bounds: %lld", section}];
   }
 
   os_unfair_recursive_lock_lock_with_options();
   begin = self->_storage->_cachedNumberOfItemsInSections.__begin_;
   v7 = self->_storage->_cachedNumberOfItemsInSections.__end_ - begin;
-  if (v7 <= a3 || (v8 = begin[a3], v8 == 0x7FFFFFFFFFFFFFFFLL))
+  if (v7 <= section || (v8 = begin[section], v8 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v29 = self->_dataSource;
-    v28 = [(MPLazySectionedCollectionDataSource *)v29 numberOfItemsInSection:a3];
-    v9 = a3 + 1;
-    if (a3 + 1 > (self->_storage->_cachedNumberOfItemsInSections.__cap_ - self->_storage->_cachedNumberOfItemsInSections.__begin_))
+    v28 = [(MPLazySectionedCollectionDataSource *)v29 numberOfItemsInSection:section];
+    v9 = section + 1;
+    if (section + 1 > (self->_storage->_cachedNumberOfItemsInSections.__cap_ - self->_storage->_cachedNumberOfItemsInSections.__begin_))
     {
       if (!(v9 >> 61))
       {
@@ -627,9 +627,9 @@ LABEL_17:
       std::vector<std::string>::__throw_length_error[abi:ne200100]();
     }
 
-    if (v7 <= a3)
+    if (v7 <= section)
     {
-      v10 = a3 - v7 + 1;
+      v10 = section - v7 + 1;
       do
       {
         storage = self->_storage;
@@ -697,34 +697,34 @@ LABEL_17:
     }
 
     v8 = v28;
-    self->_storage->_cachedNumberOfItemsInSections.__begin_[a3] = v28;
+    self->_storage->_cachedNumberOfItemsInSections.__begin_[section] = v28;
   }
 
   os_unfair_recursive_lock_unlock();
   return v8;
 }
 
-- (id)sectionAtIndex:(int64_t)a3
+- (id)sectionAtIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:190 description:{@"Request for section out of bounds [negative index]: %lld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:190 description:{@"Request for section out of bounds [negative index]: %lld", index}];
   }
 
-  if ([(MPLazySectionedCollection *)self numberOfSections]<= a3)
+  if ([(MPLazySectionedCollection *)self numberOfSections]<= index)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:191 description:{@"Request for section out of bounds: %lld", a3}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPLazySectionedCollection.mm" lineNumber:191 description:{@"Request for section out of bounds: %lld", index}];
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   os_unfair_recursive_lock_lock_with_options();
   v7 = [(NSCache *)self->_storage->_sectionsCache objectForKey:v6];
   if (!v7)
   {
     v8 = self->_dataSource;
-    v7 = [(MPLazySectionedCollectionDataSource *)v8 sectionAtIndex:a3];
+    v7 = [(MPLazySectionedCollectionDataSource *)v8 sectionAtIndex:index];
     if (v7)
     {
       [(NSCache *)self->_storage->_sectionsCache setObject:v7 forKey:v6];
@@ -756,8 +756,8 @@ LABEL_17:
 
 - (id)lastItem
 {
-  v3 = [(MPSectionedCollection *)self totalItemCount];
-  if (v3 >= 1 && ([(MPSectionedCollection *)self indexPathForGlobalIndex:v3 - 1], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  totalItemCount = [(MPSectionedCollection *)self totalItemCount];
+  if (totalItemCount >= 1 && ([(MPSectionedCollection *)self indexPathForGlobalIndex:totalItemCount - 1], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [(MPLazySectionedCollection *)self itemAtIndexPath:v4];
@@ -771,16 +771,16 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)hasSameContentAsSectionedCollection:(id)a3
+- (BOOL)hasSameContentAsSectionedCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  collectionCopy = collection;
+  if ([collectionCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [v4 dataSource];
-    v6 = [(MPLazySectionedCollection *)self dataSource];
+    dataSource = [collectionCopy dataSource];
+    dataSource2 = [(MPLazySectionedCollection *)self dataSource];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 hasSameContentAsDataSource:v5];
+      v7 = [dataSource2 hasSameContentAsDataSource:dataSource];
     }
 
     else
@@ -813,7 +813,7 @@ LABEL_17:
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MPMutableSectionedCollection);
   v8[0] = MEMORY[0x1E69E9820];
@@ -822,7 +822,7 @@ LABEL_17:
   v8[3] = &unk_1E767D808;
   v5 = v4;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [(MPLazySectionedCollection *)self enumerateSectionsUsingBlock:v8];
   v6 = v5;
 
@@ -838,7 +838,7 @@ void __49__MPLazySectionedCollection_mutableCopyWithZone___block_invoke(uint64_t
   [v5 appendItems:v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithDataSource:self->_dataSource];
   *(result + 40) = self->_disableMissingIdentifiersFaults;
@@ -849,10 +849,10 @@ void __49__MPLazySectionedCollection_mutableCopyWithZone___block_invoke(uint64_t
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF28];
-  v4 = [(MPLazySectionedCollection *)self allSections];
-  v9[0] = v4;
-  v5 = [(MPLazySectionedCollection *)self allItems];
-  v9[1] = v5;
+  allSections = [(MPLazySectionedCollection *)self allSections];
+  v9[0] = allSections;
+  allItems = [(MPLazySectionedCollection *)self allItems];
+  v9[1] = allItems;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v7 = [v3 msv_concatArrays:v6];
 
@@ -886,16 +886,16 @@ void __36__MPLazySectionedCollection_dealloc__block_invoke(uint64_t a1)
   v1 = *(a1 + 32);
 }
 
-- (MPLazySectionedCollection)initWithDataSource:(id)a3
+- (MPLazySectionedCollection)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v17.receiver = self;
   v17.super_class = MPLazySectionedCollection;
   v6 = [(MPSectionedCollection *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     v8 = objc_alloc_init(_MPLazySectionedCollectionStorage);
     storage = v7->_storage;
     v7->_storage = v8;

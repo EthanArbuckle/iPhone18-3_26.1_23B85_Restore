@@ -1,30 +1,30 @@
 @interface HMDSiriMultiUserNewLanguageNotificationManager
 + (id)logCategory;
-- (HMDSiriMultiUserNewLanguageNotificationManager)initWithContext:(id)a3;
-- (void)_postNotificationIfNecessaryForMediaAccessory:(id)a3;
+- (HMDSiriMultiUserNewLanguageNotificationManager)initWithContext:(id)context;
+- (void)_postNotificationIfNecessaryForMediaAccessory:(id)accessory;
 - (void)checkAllMediaAccessoriesAndPostNotificationIfNecessary;
-- (void)mediaAccessory:(id)a3 didUpdateSoftwareToVersion:(id)a4;
+- (void)mediaAccessory:(id)accessory didUpdateSoftwareToVersion:(id)version;
 @end
 
 @implementation HMDSiriMultiUserNewLanguageNotificationManager
 
-- (void)_postNotificationIfNecessaryForMediaAccessory:(id)a3
+- (void)_postNotificationIfNecessaryForMediaAccessory:(id)accessory
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  accessoryCopy = accessory;
+  context = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v4 isHomePod])
+  if ([accessoryCopy isHomePod])
   {
-    v7 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
-    v8 = [v7 hasCurrentUserSeenNotification];
+    context2 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
+    hasCurrentUserSeenNotification = [context2 hasCurrentUserSeenNotification];
 
-    if (v8)
+    if (hasCurrentUserSeenNotification)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -41,13 +41,13 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v14 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
-    v15 = [v14 isRMVEnabledForCurrentUser];
+    context3 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
+    isRMVEnabledForCurrentUser = [context3 isRMVEnabledForCurrentUser];
 
-    if (v15)
+    if (isRMVEnabledForCurrentUser)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -64,21 +64,21 @@ LABEL_9:
       goto LABEL_36;
     }
 
-    v16 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
-    v17 = [v16 currentDeviceSiriLanguage];
+    context4 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
+    currentDeviceSiriLanguage = [context4 currentDeviceSiriLanguage];
 
-    v18 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
-    v19 = [v18 siriLanguageForMediaAccessory:v4];
+    context5 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
+    v19 = [context5 siriLanguageForMediaAccessory:accessoryCopy];
 
-    v20 = [v4 softwareVersion];
-    v21 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
-    v22 = [v21 siriLanguagesRequiringNotificationForVersion:v20];
+    softwareVersion = [accessoryCopy softwareVersion];
+    context6 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
+    v22 = [context6 siriLanguagesRequiringNotificationForVersion:softwareVersion];
 
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy3 = self;
     v25 = HMFGetOSLogHandle();
     v26 = v25;
-    if (v17 && v19)
+    if (currentDeviceSiriLanguage && v19)
     {
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
@@ -86,13 +86,13 @@ LABEL_9:
         *buf = 138543618;
         v62 = v27;
         v63 = 2112;
-        v64 = v17;
+        v64 = currentDeviceSiriLanguage;
         _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_INFO, "%{public}@Current device siri language: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v23);
       v28 = objc_autoreleasePoolPush();
-      v29 = v24;
+      v29 = selfCopy3;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
@@ -111,18 +111,18 @@ LABEL_9:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
         v35 = HMFGetLogIdentifier();
-        v36 = [v20 shortVersionString];
+        shortVersionString = [softwareVersion shortVersionString];
         *buf = 138543618;
         v62 = v35;
         v63 = 2112;
-        v64 = v36;
+        v64 = shortVersionString;
         _os_log_impl(&dword_2531F8000, v34, OS_LOG_TYPE_INFO, "%{public}@Media accessory software version: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v32);
-      v37 = [v19 isEqualToString:v17];
+      v37 = [v19 isEqualToString:currentDeviceSiriLanguage];
       v23 = objc_autoreleasePoolPush();
-      v24 = v33;
+      selfCopy3 = v33;
       v26 = HMFGetOSLogHandle();
       v38 = os_log_type_enabled(v26, OS_LOG_TYPE_INFO);
       if (v37)
@@ -140,18 +140,18 @@ LABEL_9:
         objc_autoreleasePoolPop(v23);
         if ([v22 containsObject:v19])
         {
-          v40 = [(HMDSiriMultiUserNewLanguageNotificationManager *)v24 context];
-          v41 = [v40 mediaAccessories];
-          v42 = [v41 na_filter:&__block_literal_global_117];
+          context7 = [(HMDSiriMultiUserNewLanguageNotificationManager *)selfCopy3 context];
+          mediaAccessories = [context7 mediaAccessories];
+          v42 = [mediaAccessories na_filter:&__block_literal_global_117];
           v59[0] = MEMORY[0x277D85DD0];
           v59[1] = 3221225472;
           v59[2] = __96__HMDSiriMultiUserNewLanguageNotificationManager__postNotificationIfNecessaryForMediaAccessory___block_invoke_2;
           v59[3] = &unk_279734F10;
-          v60 = v20;
+          v60 = softwareVersion;
           v43 = [v42 na_all:v59];
 
           v44 = objc_autoreleasePoolPush();
-          v45 = v24;
+          v45 = selfCopy3;
           v46 = HMFGetOSLogHandle();
           v47 = os_log_type_enabled(v46, OS_LOG_TYPE_INFO);
           if (v43)
@@ -167,14 +167,14 @@ LABEL_9:
             }
 
             objc_autoreleasePoolPop(v44);
-            v49 = [(HMDSiriMultiUserNewLanguageNotificationManager *)v45 context];
-            [v49 showNotificationForNewlySupportedLanguage:v19];
+            context8 = [(HMDSiriMultiUserNewLanguageNotificationManager *)v45 context];
+            [context8 showNotificationForNewlySupportedLanguage:v19];
 
-            v50 = [(HMDSiriMultiUserNewLanguageNotificationManager *)v45 context];
-            [v50 setCurrentUserHasSeenNotification];
+            context9 = [(HMDSiriMultiUserNewLanguageNotificationManager *)v45 context];
+            [context9 setCurrentUserHasSeenNotification];
 
-            v51 = [(HMDSiriMultiUserNewLanguageNotificationManager *)v45 context];
-            [v51 submitLogEventForShownNotificationWithLanguage:v19];
+            context10 = [(HMDSiriMultiUserNewLanguageNotificationManager *)v45 context];
+            [context10 submitLogEventForShownNotificationWithLanguage:v19];
           }
 
           else
@@ -194,7 +194,7 @@ LABEL_9:
         }
 
         v23 = objc_autoreleasePoolPush();
-        v24 = v24;
+        selfCopy3 = selfCopy3;
         v26 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
@@ -226,7 +226,7 @@ LABEL_32:
       *buf = 138543874;
       v62 = v52;
       v63 = 2112;
-      v64 = v17;
+      v64 = currentDeviceSiriLanguage;
       v65 = 2112;
       v66 = v19;
       v53 = "%{public}@Encountered unexpected missing value. currentDeviceSiriLanguage: %@, mediaAccessorySiriLanguage: %@";
@@ -254,22 +254,22 @@ uint64_t __96__HMDSiriMultiUserNewLanguageNotificationManager__postNotificationI
   return v4;
 }
 
-- (void)mediaAccessory:(id)a3 didUpdateSoftwareToVersion:(id)a4
+- (void)mediaAccessory:(id)accessory didUpdateSoftwareToVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
-  v9 = [v8 workQueue];
+  accessoryCopy = accessory;
+  versionCopy = version;
+  context = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
+  workQueue = [context workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__HMDSiriMultiUserNewLanguageNotificationManager_mediaAccessory_didUpdateSoftwareToVersion___block_invoke;
   block[3] = &unk_279734960;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = accessoryCopy;
+  v14 = versionCopy;
+  v10 = versionCopy;
+  v11 = accessoryCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __92__HMDSiriMultiUserNewLanguageNotificationManager_mediaAccessory_didUpdateSoftwareToVersion___block_invoke(uint64_t a1)
@@ -301,12 +301,12 @@ uint64_t __92__HMDSiriMultiUserNewLanguageNotificationManager_mediaAccessory_did
 - (void)checkAllMediaAccessoriesAndPostNotificationIfNecessary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  context = [(HMDSiriMultiUserNewLanguageNotificationManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -317,13 +317,13 @@ uint64_t __92__HMDSiriMultiUserNewLanguageNotificationManager_mediaAccessory_did
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDSiriMultiUserNewLanguageNotificationManager *)v6 context];
-  v10 = [v9 mediaAccessories];
+  context2 = [(HMDSiriMultiUserNewLanguageNotificationManager *)selfCopy context];
+  mediaAccessories = [context2 mediaAccessories];
 
-  if ([v10 hmf_isEmpty])
+  if ([mediaAccessories hmf_isEmpty])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -342,23 +342,23 @@ uint64_t __92__HMDSiriMultiUserNewLanguageNotificationManager_mediaAccessory_did
     v16[1] = 3221225472;
     v16[2] = __104__HMDSiriMultiUserNewLanguageNotificationManager_checkAllMediaAccessoriesAndPostNotificationIfNecessary__block_invoke;
     v16[3] = &unk_279731490;
-    v16[4] = v6;
-    [v10 na_each:v16];
+    v16[4] = selfCopy;
+    [mediaAccessories na_each:v16];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDSiriMultiUserNewLanguageNotificationManager)initWithContext:(id)a3
+- (HMDSiriMultiUserNewLanguageNotificationManager)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = HMDSiriMultiUserNewLanguageNotificationManager;
   v6 = [(HMDSiriMultiUserNewLanguageNotificationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     [(HMDSiriMultiUserNewLanguageNotificationManagerContext *)v7->_context setDelegate:v7];
   }
 

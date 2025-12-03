@@ -8,23 +8,23 @@
 - (id)wf_contactFieldEntry
 {
   v34 = *MEMORY[0x277D85DE8];
-  v2 = [a1 contact];
+  contact = [self contact];
 
-  if (v2)
+  if (contact)
   {
-    v3 = [a1 contact];
-    v4 = [a1 kind];
-    v5 = [a1 valueIdentifier];
-    v6 = v3;
-    v7 = v5;
-    if (v4 > 2)
+    contact2 = [self contact];
+    kind = [self kind];
+    valueIdentifier = [self valueIdentifier];
+    v6 = contact2;
+    v7 = valueIdentifier;
+    if (kind > 2)
     {
       v8 = 0xFFFFFFFFLL;
     }
 
     else
     {
-      v8 = dword_2746607B0[v4];
+      v8 = dword_2746607B0[kind];
     }
 
     v16 = CNContactPropertyKeyFromWFContactPropertyID();
@@ -56,8 +56,8 @@
     if (!v12)
     {
       v19 = MEMORY[0x277CFC278];
-      v20 = [a1 contact];
-      v12 = [v19 contactWithCNContact:v20];
+      contact3 = [self contact];
+      v12 = [v19 contactWithCNContact:contact3];
     }
 
     v21 = getWFWFContactFieldEntryLogObject();
@@ -66,7 +66,7 @@
       *v31 = 136315650;
       *&v31[4] = "[CNComposeRecipient(CNContactFieldEntry) wf_contactFieldEntry]";
       *&v31[12] = 2112;
-      *&v31[14] = a1;
+      *&v31[14] = self;
       *&v31[22] = 2112;
       v32 = v12;
       _os_log_impl(&dword_2743F0000, v21, OS_LOG_TYPE_INFO, "%s Converting from CNComposeRecipient to WFContact: %@ -> %@", v31, 0x20u);
@@ -76,23 +76,23 @@
     goto LABEL_34;
   }
 
-  v9 = [a1 kind];
-  v10 = [a1 address];
-  v11 = [MEMORY[0x277CCA900] controlCharacterSet];
-  v12 = [v10 stringByTrimmingCharactersInSet:v11];
+  kind2 = [self kind];
+  address = [self address];
+  controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
+  v12 = [address stringByTrimmingCharactersInSet:controlCharacterSet];
 
   if (![v12 length])
   {
     v23 = getWFWFContactFieldEntryLogObject();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [a1 address];
+      address2 = [self address];
       *v31 = 136315650;
       *&v31[4] = "[CNComposeRecipient(CNContactFieldEntry) wf_contactFieldEntry]";
       *&v31[12] = 2112;
-      *&v31[14] = a1;
+      *&v31[14] = self;
       *&v31[22] = 2112;
-      v32 = v24;
+      v32 = address2;
       v25 = "%s Failed converting to WFContact from: %@ - reason: empty normalized address (source %@)";
       v26 = v23;
       v27 = OS_LOG_TYPE_INFO;
@@ -106,7 +106,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  switch(v9)
+  switch(kind2)
   {
     case 0:
       v28 = objc_alloc(MEMORY[0x277CFC2C0]);
@@ -134,7 +134,7 @@ LABEL_27:
     *v31 = 136315650;
     *&v31[4] = "[CNComposeRecipient(CNContactFieldEntry) wf_contactFieldEntry]";
     *&v31[12] = 2112;
-    *&v31[14] = a1;
+    *&v31[14] = self;
     *&v31[22] = 2112;
     v32 = v22;
     _os_log_impl(&dword_2743F0000, v29, OS_LOG_TYPE_INFO, "%s Converting from CNComposeRecipient to WFContactFieldEntry: %@ -> %@", v31, 0x20u);
@@ -145,13 +145,13 @@ LABEL_27:
     v23 = getWFWFContactFieldEntryLogObject();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [a1 address];
+      address2 = [self address];
       *v31 = 136315650;
       *&v31[4] = "[CNComposeRecipient(CNContactFieldEntry) wf_contactFieldEntry]";
       *&v31[12] = 2112;
-      *&v31[14] = a1;
+      *&v31[14] = self;
       *&v31[22] = 2112;
-      v32 = v24;
+      v32 = address2;
       v25 = "%s Failed converting to WFContact from: %@ - reason: no entry found for address: %@";
       v26 = v23;
       v27 = OS_LOG_TYPE_ERROR;

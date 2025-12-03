@@ -1,12 +1,12 @@
 @interface HAPAudioStreamCodecConfiguration
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPAudioStreamCodecConfiguration)init;
-- (HAPAudioStreamCodecConfiguration)initWithCodecType:(id)a3 codecParameters:(id)a4;
+- (HAPAudioStreamCodecConfiguration)initWithCodecType:(id)type codecParameters:(id)parameters;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPAudioStreamCodecConfiguration
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPAudioStreamCodecConfiguration *)self codecType];
-  v5 = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
-  v6 = [v3 stringWithFormat:@"<HAPAudioStreamCodecConfiguration codecType=%@, codecParameters=%@>", v4, v5];
+  codecType = [(HAPAudioStreamCodecConfiguration *)self codecType];
+  codecParameters = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
+  v6 = [v3 stringWithFormat:@"<HAPAudioStreamCodecConfiguration codecType=%@, codecParameters=%@>", codecType, codecParameters];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPAudioStreamCodecConfiguration *)self codecType];
-      v8 = [(HAPAudioStreamCodecConfiguration *)v6 codecType];
-      if (v7 != v8)
+      v6 = equalCopy;
+      codecType = [(HAPAudioStreamCodecConfiguration *)self codecType];
+      codecType2 = [(HAPAudioStreamCodecConfiguration *)v6 codecType];
+      if (codecType != codecType2)
       {
-        v9 = [(HAPAudioStreamCodecConfiguration *)self codecType];
-        v3 = [(HAPAudioStreamCodecConfiguration *)v6 codecType];
-        if (![v9 isEqual:v3])
+        codecType3 = [(HAPAudioStreamCodecConfiguration *)self codecType];
+        codecType4 = [(HAPAudioStreamCodecConfiguration *)v6 codecType];
+        if (![codecType3 isEqual:codecType4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,25 +50,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = codecType3;
       }
 
-      v11 = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
-      v12 = [(HAPAudioStreamCodecConfiguration *)v6 codecParameters];
-      if (v11 == v12)
+      codecParameters = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
+      codecParameters2 = [(HAPAudioStreamCodecConfiguration *)v6 codecParameters];
+      if (codecParameters == codecParameters2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
-        v14 = [(HAPAudioStreamCodecConfiguration *)v6 codecParameters];
-        v10 = [v13 isEqual:v14];
+        codecParameters3 = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
+        codecParameters4 = [(HAPAudioStreamCodecConfiguration *)v6 codecParameters];
+        v10 = [codecParameters3 isEqual:codecParameters4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      codecType3 = v16;
+      if (codecType == codecType2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPAudioStreamCodecConfiguration allocWithZone:a3];
-  v5 = [(HAPAudioStreamCodecConfiguration *)self codecType];
-  v6 = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
-  v7 = [(HAPAudioStreamCodecConfiguration *)v4 initWithCodecType:v5 codecParameters:v6];
+  v4 = [HAPAudioStreamCodecConfiguration allocWithZone:zone];
+  codecType = [(HAPAudioStreamCodecConfiguration *)self codecType];
+  codecParameters = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
+  v7 = [(HAPAudioStreamCodecConfiguration *)v4 initWithCodecType:codecType codecParameters:codecParameters];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
   v43 = 0u;
@@ -119,13 +119,13 @@ LABEL_15:
   v26 = 0u;
   v24 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPAudioStreamCodecConfiguration *)self codecType];
+  codecType = [(HAPAudioStreamCodecConfiguration *)self codecType];
 
-  if (v5)
+  if (codecType)
   {
-    v6 = [(HAPAudioStreamCodecConfiguration *)self codecType];
+    codecType2 = [(HAPAudioStreamCodecConfiguration *)self codecType];
     v23 = 0;
-    v7 = [v6 serializeWithError:&v23];
+    v7 = [codecType2 serializeWithError:&v23];
     v8 = v23;
 
     if (v8)
@@ -140,11 +140,11 @@ LABEL_15:
     if (v9)
     {
 LABEL_21:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v9);
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_26;
       }
 
@@ -153,9 +153,9 @@ LABEL_21:
     }
   }
 
-  v10 = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
+  codecParameters = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
 
-  if (!v10)
+  if (!codecParameters)
   {
 LABEL_23:
     v13 = [MEMORY[0x277CBEA90] dataWithBytes:v24 length:?];
@@ -163,25 +163,25 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  v11 = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
+  codecParameters2 = [(HAPAudioStreamCodecConfiguration *)self codecParameters];
   v22 = 0;
-  v7 = [v11 serializeWithError:&v22];
+  v7 = [codecParameters2 serializeWithError:&v22];
   v8 = v22;
 
   if (!v8)
   {
-    v14 = [v7 bytes];
-    v15 = v14 + [v7 length];
+    bytes = [v7 bytes];
+    v15 = bytes + [v7 length];
     do
     {
-      if ((v15 - v14) >= 255)
+      if ((v15 - bytes) >= 255)
       {
         v16 = 255;
       }
 
       else
       {
-        v16 = v15 - v14;
+        v16 = v15 - bytes;
       }
 
       v17 = TLV8BufferAppend();
@@ -195,7 +195,7 @@ LABEL_23:
         v18 = v16;
       }
 
-      v14 += v18;
+      bytes += v18;
       if (v17)
       {
         v19 = 1;
@@ -203,7 +203,7 @@ LABEL_23:
 
       else
       {
-        v19 = v14 >= v15;
+        v19 = bytes >= v15;
       }
     }
 
@@ -220,11 +220,11 @@ LABEL_23:
 
 LABEL_6:
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_26;
   }
 
@@ -238,28 +238,28 @@ LABEL_26:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
     v10 = 0;
 LABEL_16:
-    [(HAPAudioStreamCodecConfiguration *)self setCodecType:v10, v23];
+    [(HAPAudioStreamCodecConfiguration *)self setCodecType:v10, errorCopy];
     [(HAPAudioStreamCodecConfiguration *)self setCodecParameters:v9];
     v11 = 0;
     v19 = 1;
     goto LABEL_23;
   }
 
-  v23 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v29 = 0;
@@ -269,10 +269,10 @@ LABEL_16:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v23)
+      if (errorCopy)
       {
         HMErrorFromOSStatus(Next);
-        *v23 = v19 = 0;
+        *errorCopy = v19 = 0;
         goto LABEL_23;
       }
 
@@ -287,7 +287,7 @@ LABEL_16:
     if (v29 == 2)
     {
       v25 = v11;
-      v14 = HAPTLVParseContiguousTlvs(2, v7, v12, v27, &v25);
+      v14 = HAPTLVParseContiguousTlvs(2, bytes, v12, v27, &v25);
       v16 = v25;
 
       if (!v16)
@@ -317,7 +317,7 @@ LABEL_10:
     }
 
 LABEL_12:
-    v7 = v27[0];
+    bytes = v27[0];
     if (v27[0] >= v12)
     {
       if (!v11)
@@ -338,11 +338,11 @@ LABEL_12:
   }
 
 LABEL_20:
-  if (v23)
+  if (errorCopy)
   {
     v21 = v11;
     v19 = 0;
-    *v23 = v11;
+    *errorCopy = v11;
     goto LABEL_23;
   }
 
@@ -353,18 +353,18 @@ LABEL_23:
   return v19;
 }
 
-- (HAPAudioStreamCodecConfiguration)initWithCodecType:(id)a3 codecParameters:(id)a4
+- (HAPAudioStreamCodecConfiguration)initWithCodecType:(id)type codecParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = HAPAudioStreamCodecConfiguration;
   v9 = [(HAPAudioStreamCodecConfiguration *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_codecType, a3);
-    objc_storeStrong(&v10->_codecParameters, a4);
+    objc_storeStrong(&v9->_codecType, type);
+    objc_storeStrong(&v10->_codecParameters, parameters);
   }
 
   return v10;
@@ -377,24 +377,24 @@ LABEL_23:
   return [(HAPAudioStreamCodecConfiguration *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPAudioStreamCodecConfiguration);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPAudioStreamCodecConfiguration *)v6 parseFromData:v5 error:&v11];
+    [(HAPAudioStreamCodecConfiguration *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

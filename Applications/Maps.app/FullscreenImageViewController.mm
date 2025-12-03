@@ -1,29 +1,29 @@
 @interface FullscreenImageViewController
-- (FullscreenImageViewController)initWithImage:(id)a3 scrollable:(BOOL)a4;
-- (FullscreenImageViewController)initWithView:(id)a3 scrollable:(BOOL)a4;
-- (id)viewForZoomingInScrollView:(id)a3;
-- (void)_close:(id)a3;
+- (FullscreenImageViewController)initWithImage:(id)image scrollable:(BOOL)scrollable;
+- (FullscreenImageViewController)initWithView:(id)view scrollable:(BOOL)scrollable;
+- (id)viewForZoomingInScrollView:(id)view;
+- (void)_close:(id)_close;
 - (void)_updateMaxZoomScale;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)zoomToPoint:(id)a3;
+- (void)zoomToPoint:(id)point;
 @end
 
 @implementation FullscreenImageViewController
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  v6 = a3;
-  [v6 zoomScale];
+  zoomingCopy = zooming;
+  [zoomingCopy zoomScale];
   v8 = v7;
-  [v6 minimumZoomScale];
+  [zoomingCopy minimumZoomScale];
   v10 = v9;
 
   self->_isZoomed = v8 != v10;
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
   if (self->_isScrollable)
   {
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)zoomToPoint:(id)a3
+- (void)zoomToPoint:(id)point
 {
-  [a3 locationInView:self->_scrollView];
+  [point locationInView:self->_scrollView];
   if (self->_isZoomed)
   {
     self->_isZoomed = 0;
@@ -80,19 +80,19 @@
   }
 }
 
-- (void)_close:(id)a3
+- (void)_close:(id)_close
 {
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:4 onTarget:613 eventValue:0];
 
-  v5 = [(FullscreenImageViewController *)self presentingViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(FullscreenImageViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(FullscreenImageViewController *)self view];
-  [v3 bounds];
+  view = [(FullscreenImageViewController *)self view];
+  [view bounds];
   [(UIView *)self->_contentView setFrame:?];
 
   [(FullscreenImageViewController *)self _updateMaxZoomScale];
@@ -105,14 +105,14 @@
 {
   [(UIImage *)self->_image size];
   v4 = v3;
-  v5 = [(FullscreenImageViewController *)self view];
-  [v5 bounds];
+  view = [(FullscreenImageViewController *)self view];
+  [view bounds];
   v7 = v4 / v6;
 
   [(UIImage *)self->_image size];
   v9 = v8;
-  v10 = [(FullscreenImageViewController *)self view];
-  [v10 bounds];
+  view2 = [(FullscreenImageViewController *)self view];
+  [view2 bounds];
   v12 = v9 / v11;
 
   v13 = fmax(fmax(v7, v12), 3.0);
@@ -127,8 +127,8 @@
   v72.super_class = FullscreenImageViewController;
   [(FullscreenImageViewController *)&v72 viewDidLoad];
   v3 = +[UIColor blackColor];
-  v4 = [(FullscreenImageViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(FullscreenImageViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = objc_alloc_init(UIScrollView);
   scrollView = self->_scrollView;
@@ -139,31 +139,31 @@
   [(UIScrollView *)self->_scrollView setDecelerationRate:0.850000024];
   [(UIScrollView *)self->_scrollView setMaximumZoomScale:3.0];
   [(UIScrollView *)self->_scrollView setMinimumZoomScale:1.0];
-  v7 = [(FullscreenImageViewController *)self view];
-  [v7 addSubview:self->_scrollView];
+  view2 = [(FullscreenImageViewController *)self view];
+  [view2 addSubview:self->_scrollView];
 
-  v8 = [(UIScrollView *)self->_scrollView topAnchor];
-  v9 = [(FullscreenImageViewController *)self view];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  topAnchor = [(UIScrollView *)self->_scrollView topAnchor];
+  view3 = [(FullscreenImageViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v11 setActive:1];
 
-  v12 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v13 = [(FullscreenImageViewController *)self view];
-  v14 = [v13 leadingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  leadingAnchor = [(UIScrollView *)self->_scrollView leadingAnchor];
+  view4 = [(FullscreenImageViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v15 setActive:1];
 
-  v16 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v17 = [(FullscreenImageViewController *)self view];
-  v18 = [v17 trailingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  trailingAnchor = [(UIScrollView *)self->_scrollView trailingAnchor];
+  view5 = [(FullscreenImageViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v19 setActive:1];
 
-  v20 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v21 = [(FullscreenImageViewController *)self view];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  bottomAnchor = [(UIScrollView *)self->_scrollView bottomAnchor];
+  view6 = [(FullscreenImageViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v23 setActive:1];
 
   contentView = self->_contentView;
@@ -187,8 +187,8 @@
   [v28 setEffect:v29];
 
   [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v30 = [(FullscreenImageViewController *)self view];
-  [v30 addSubview:v28];
+  view7 = [(FullscreenImageViewController *)self view];
+  [view7 addSubview:v28];
 
   v31 = objc_alloc_init(UINavigationBar);
   topBar = self->_topBar;
@@ -203,54 +203,54 @@
   v34 = +[UIColor whiteColor];
   [(UINavigationBar *)self->_topBar setTintColor:v34];
 
-  v35 = [(FullscreenImageViewController *)self view];
-  [v35 addSubview:self->_topBar];
+  view8 = [(FullscreenImageViewController *)self view];
+  [view8 addSubview:self->_topBar];
 
-  v36 = [(UINavigationBar *)self->_topBar leadingAnchor];
-  v37 = [(FullscreenImageViewController *)self view];
-  v38 = [v37 leadingAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  leadingAnchor3 = [(UINavigationBar *)self->_topBar leadingAnchor];
+  view9 = [(FullscreenImageViewController *)self view];
+  leadingAnchor4 = [view9 leadingAnchor];
+  v39 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v39 setActive:1];
 
-  v40 = [(UINavigationBar *)self->_topBar trailingAnchor];
-  v41 = [(FullscreenImageViewController *)self view];
-  v42 = [v41 trailingAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  trailingAnchor3 = [(UINavigationBar *)self->_topBar trailingAnchor];
+  view10 = [(FullscreenImageViewController *)self view];
+  trailingAnchor4 = [view10 trailingAnchor];
+  v43 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v43 setActive:1];
 
-  v44 = [(UINavigationBar *)self->_topBar topAnchor];
-  v45 = [(FullscreenImageViewController *)self view];
-  v46 = [v45 safeAreaLayoutGuide];
-  v47 = [v46 topAnchor];
-  v48 = [v44 constraintEqualToAnchor:v47];
+  topAnchor3 = [(UINavigationBar *)self->_topBar topAnchor];
+  view11 = [(FullscreenImageViewController *)self view];
+  safeAreaLayoutGuide = [view11 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
+  v48 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v48 setActive:1];
 
-  v49 = [v28 topAnchor];
-  v50 = [(FullscreenImageViewController *)self view];
-  v51 = [v50 topAnchor];
-  v52 = [v49 constraintEqualToAnchor:v51];
+  topAnchor5 = [v28 topAnchor];
+  view12 = [(FullscreenImageViewController *)self view];
+  topAnchor6 = [view12 topAnchor];
+  v52 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   [v52 setActive:1];
 
-  v53 = [v28 leadingAnchor];
-  v54 = [(FullscreenImageViewController *)self view];
-  v55 = [v54 leadingAnchor];
-  v56 = [v53 constraintEqualToAnchor:v55];
+  leadingAnchor5 = [v28 leadingAnchor];
+  view13 = [(FullscreenImageViewController *)self view];
+  leadingAnchor6 = [view13 leadingAnchor];
+  v56 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v56 setActive:1];
 
-  v57 = [v28 trailingAnchor];
-  v58 = [(FullscreenImageViewController *)self view];
-  v59 = [v58 trailingAnchor];
-  v60 = [v57 constraintEqualToAnchor:v59];
+  trailingAnchor5 = [v28 trailingAnchor];
+  view14 = [(FullscreenImageViewController *)self view];
+  trailingAnchor6 = [view14 trailingAnchor];
+  v60 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   [v60 setActive:1];
 
-  v61 = [v28 bottomAnchor];
-  v62 = [(UINavigationBar *)self->_topBar bottomAnchor];
-  v63 = [v61 constraintEqualToAnchor:v62];
+  bottomAnchor3 = [v28 bottomAnchor];
+  bottomAnchor4 = [(UINavigationBar *)self->_topBar bottomAnchor];
+  v63 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v63 setActive:1];
 
   v64 = [UINavigationItem alloc];
-  v65 = [(FullscreenImageViewController *)self title];
-  v66 = [v64 initWithTitle:v65];
+  title = [(FullscreenImageViewController *)self title];
+  v66 = [v64 initWithTitle:title];
 
   v67 = [UIBarButtonItem alloc];
   v68 = [UIImage _mapkit_imageNamed:@"UI_close"];
@@ -261,37 +261,37 @@
   v70 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"zoomToPoint:"];
   [v70 setNumberOfTapsRequired:2];
   [v70 setDelaysTouchesBegan:1];
-  v71 = [(FullscreenImageViewController *)self view];
-  [v71 addGestureRecognizer:v70];
+  view15 = [(FullscreenImageViewController *)self view];
+  [view15 addGestureRecognizer:v70];
 }
 
-- (FullscreenImageViewController)initWithView:(id)a3 scrollable:(BOOL)a4
+- (FullscreenImageViewController)initWithView:(id)view scrollable:(BOOL)scrollable
 {
-  v7 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = FullscreenImageViewController;
   v8 = [(FullscreenImageViewController *)&v11 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_contentView, a3);
-    v9->_isScrollable = a4;
+    objc_storeStrong(&v8->_contentView, view);
+    v9->_isScrollable = scrollable;
   }
 
   return v9;
 }
 
-- (FullscreenImageViewController)initWithImage:(id)a3 scrollable:(BOOL)a4
+- (FullscreenImageViewController)initWithImage:(id)image scrollable:(BOOL)scrollable
 {
-  v7 = a3;
+  imageCopy = image;
   v12.receiver = self;
   v12.super_class = FullscreenImageViewController;
   v8 = [(FullscreenImageViewController *)&v12 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_image, a3);
-    v9->_isScrollable = a4;
+    objc_storeStrong(&v8->_image, image);
+    v9->_isScrollable = scrollable;
     v10 = v9;
   }
 

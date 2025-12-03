@@ -1,18 +1,18 @@
 @interface VoiceSelectionWelcomeController
-- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6;
-- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5;
-- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6;
+- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view;
+- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name;
+- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view;
 - (void)chooseForMeTapped;
 - (void)continueTapped;
-- (void)presenter:(id)a3 didChangeVoiceSelection:(id)a4;
+- (void)presenter:(id)presenter didChangeVoiceSelection:(id)selection;
 @end
 
 @implementation VoiceSelectionWelcomeController
 
 - (void)continueTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_269013A5C();
 }
 
@@ -34,40 +34,40 @@
   }
 }
 
-- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5
+- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (_TtC9SiriSetup31VoiceSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)presenter:(id)a3 didChangeVoiceSelection:(id)a4
+- (void)presenter:(id)presenter didChangeVoiceSelection:(id)selection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_269014DB4(v7);
+  presenterCopy = presenter;
+  selectionCopy = selection;
+  selfCopy = self;
+  sub_269014DB4(selectionCopy);
 }
 
 @end

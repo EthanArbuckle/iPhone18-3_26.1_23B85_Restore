@@ -8,20 +8,20 @@
 - (void)migrateIfNeeded
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(BKSKeyboardDefaults *)self oldModifierKeyRemapping];
+  oldModifierKeyRemapping = [(BKSKeyboardDefaults *)self oldModifierKeyRemapping];
   v4 = BKLogKeyboard();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (oldModifierKeyRemapping)
   {
     if (v5)
     {
-      v6 = [MEMORY[0x1E698E688] descriptionForRootObject:v3];
+      v6 = [MEMORY[0x1E698E688] descriptionForRootObject:oldModifierKeyRemapping];
       v9 = 138543362;
       v10 = v6;
       _os_log_impl(&dword_186345000, v4, OS_LOG_TYPE_DEFAULT, "migrating key modifiers %{public}@", &v9, 0xCu);
     }
 
-    v7 = [v3 copy];
+    v7 = [oldModifierKeyRemapping copy];
     [(BKSKeyboardDefaults *)self setModifierKeyRemapping:v7];
 
     [(BKSKeyboardDefaults *)self setOldModifierKeyRemapping:0];

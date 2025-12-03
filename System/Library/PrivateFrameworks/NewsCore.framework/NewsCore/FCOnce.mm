@@ -1,8 +1,8 @@
 @interface FCOnce
 - (BOOL)hasBeenTriggered;
 - (BOOL)trigger;
-- (FCOnce)initWithOptions:(unint64_t)a3;
-- (void)executeOnce:(id)a3;
+- (FCOnce)initWithOptions:(unint64_t)options;
+- (void)executeOnce:(id)once;
 @end
 
 @implementation FCOnce
@@ -16,14 +16,14 @@
   return !finished;
 }
 
-- (FCOnce)initWithOptions:(unint64_t)a3
+- (FCOnce)initWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = FCOnce;
   v4 = [(FCOnce *)&v9 init];
   v5 = v4;
-  if ((v3 & 1) != 0 && v4)
+  if ((optionsCopy & 1) != 0 && v4)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69B6920]);
     lock = v5->_lock;
@@ -33,15 +33,15 @@
   return v5;
 }
 
-- (void)executeOnce:(id)a3
+- (void)executeOnce:(id)once
 {
-  v4 = a3;
+  onceCopy = once;
   [(NFUnfairLock *)self->_lock lock];
   if (!self->_finished)
   {
-    if (v4)
+    if (onceCopy)
     {
-      v4[2]();
+      onceCopy[2]();
     }
 
     self->_finished = 1;

@@ -1,14 +1,14 @@
 @interface ClarityUIWallpaperSelectionController
 - (ClarityUIWallpaperSelectionController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_removeWallpaperButtonTapped:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_removeWallpaperButtonTapped:(id)tapped;
 - (void)_retrieveWallpaperData;
-- (void)_setWallpaper:(id)a3;
-- (void)_showImagePicker:(id)a3;
-- (void)confirmationViewAcceptedForSpecifier:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)saveWallpaperData:(id)a3;
+- (void)_setWallpaper:(id)wallpaper;
+- (void)_showImagePicker:(id)picker;
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)saveWallpaperData:(id)data;
 @end
 
 @implementation ClarityUIWallpaperSelectionController
@@ -64,16 +64,16 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = ClarityUIWallpaperSelectionController;
-  v4 = [(ClarityUIWallpaperSelectionController *)&v6 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(ClarityUIWallpaperSelectionController *)&v6 tableView:view cellForRowAtIndexPath:path];
 
   return v4;
 }
 
-- (void)_showImagePicker:(id)a3
+- (void)_showImagePicker:(id)picker
 {
   v4 = objc_alloc_init(UIImagePickerController);
   [v4 setSourceType:0];
@@ -81,7 +81,7 @@
   [(ClarityUIWallpaperSelectionController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_removeWallpaperButtonTapped:(id)a3
+- (void)_removeWallpaperButtonTapped:(id)tapped
 {
   v8 = objc_alloc_init(PSConfirmationSpecifier);
   v4 = settingsLocString(@"REMOVE_WALLPAPER", @"ClarityUISettings");
@@ -100,15 +100,15 @@
   [(ClarityUIWallpaperSelectionController *)self showConfirmationViewForSpecifier:v8];
 }
 
-- (void)confirmationViewAcceptedForSpecifier:(id)a3
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier
 {
   wallpaperData = self->_wallpaperData;
   self->_wallpaperData = 0;
 
   v5 = CLFWallpaperURL();
-  v6 = [v5 path];
+  path = [v5 path];
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  v8 = [v7 fileExistsAtPath:path];
 
   if (v8)
   {
@@ -169,37 +169,37 @@ id __63__ClarityUIWallpaperSelectionController__retrieveWallpaperData__block_inv
   return [v2 reloadSpecifiers];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v6 = a3;
-  v8 = [a4 objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
+  controllerCopy = controller;
+  v8 = [info objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
   v7 = UIImageJPEGRepresentation(v8, 1.0);
   [(ClarityUIWallpaperSelectionController *)self _setWallpaper:v7];
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_setWallpaper:(id)a3
+- (void)_setWallpaper:(id)wallpaper
 {
-  v4 = a3;
+  wallpaperCopy = wallpaper;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __55__ClarityUIWallpaperSelectionController__setWallpaper___block_invoke;
   v7[3] = &unk_255538;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = wallpaperCopy;
+  v6 = wallpaperCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)saveWallpaperData:(id)a3
+- (void)saveWallpaperData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = CLFWallpaperURL();
-  v6 = [v5 path];
+  path = [v5 path];
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  v8 = [v7 fileExistsAtPath:path];
 
   v9 = +[NSFileManager defaultManager];
   v10 = v9;
@@ -245,7 +245,7 @@ LABEL_9:
   v23 = NSFileProtectionNone;
   v14 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   v15 = +[NSFileManager defaultManager];
-  v16 = [v15 createFileAtPath:v6 contents:v4 attributes:v14];
+  v16 = [v15 createFileAtPath:path contents:dataCopy attributes:v14];
 
   if (v16)
   {
@@ -254,7 +254,7 @@ LABEL_9:
     block[2] = __59__ClarityUIWallpaperSelectionController_saveWallpaperData___block_invoke;
     block[3] = &unk_255538;
     block[4] = self;
-    v19 = v4;
+    v19 = dataCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 

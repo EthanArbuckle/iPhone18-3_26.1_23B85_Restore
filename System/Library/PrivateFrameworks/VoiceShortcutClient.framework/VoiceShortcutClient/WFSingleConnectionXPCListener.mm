@@ -1,21 +1,21 @@
 @interface WFSingleConnectionXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSXPCListenerEndpoint)endpoint;
-- (WFSingleConnectionXPCListener)initWithExportedObject:(id)a3 exportedInterface:(id)a4;
+- (WFSingleConnectionXPCListener)initWithExportedObject:(id)object exportedInterface:(id)interface;
 @end
 
 @implementation WFSingleConnectionXPCListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFSingleConnectionXPCListener *)self activeConnection];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  activeConnection = [(WFSingleConnectionXPCListener *)self activeConnection];
 
   v9 = getWFVoiceShortcutClientLogObject();
   v10 = v9;
-  if (v8)
+  if (activeConnection)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -32,38 +32,38 @@
       *buf = 136315394;
       v23 = "[WFSingleConnectionXPCListener listener:shouldAcceptNewConnection:]";
       v24 = 2112;
-      v25 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEFAULT, "%s Received incoming XPC connection for listener: %@", buf, 0x16u);
     }
 
-    [(WFSingleConnectionXPCListener *)self setActiveConnection:v7];
+    [(WFSingleConnectionXPCListener *)self setActiveConnection:connectionCopy];
     objc_initWeak(buf, self);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __68__WFSingleConnectionXPCListener_listener_shouldAcceptNewConnection___block_invoke;
     v20[3] = &unk_1E7B02828;
     objc_copyWeak(&v21, buf);
-    [v7 setInvalidationHandler:v20];
+    [connectionCopy setInvalidationHandler:v20];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __68__WFSingleConnectionXPCListener_listener_shouldAcceptNewConnection___block_invoke_63;
     v18 = &unk_1E7B02828;
     objc_copyWeak(&v19, buf);
-    [v7 setInterruptionHandler:&v15];
+    [connectionCopy setInterruptionHandler:&v15];
     v11 = [(WFSingleConnectionXPCListener *)self exportedInterface:v15];
-    [v7 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
-    v12 = [(WFSingleConnectionXPCListener *)self exportedObject];
-    [v7 setExportedObject:v12];
+    exportedObject = [(WFSingleConnectionXPCListener *)self exportedObject];
+    [connectionCopy setExportedObject:exportedObject];
 
-    [v7 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v21);
     objc_destroyWeak(buf);
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v8 == 0;
+  return activeConnection == 0;
 }
 
 void __68__WFSingleConnectionXPCListener_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -100,20 +100,20 @@ void __68__WFSingleConnectionXPCListener_listener_shouldAcceptNewConnection___bl
 
 - (NSXPCListenerEndpoint)endpoint
 {
-  v2 = [(WFSingleConnectionXPCListener *)self listener];
-  v3 = [v2 endpoint];
+  listener = [(WFSingleConnectionXPCListener *)self listener];
+  endpoint = [listener endpoint];
 
-  return v3;
+  return endpoint;
 }
 
-- (WFSingleConnectionXPCListener)initWithExportedObject:(id)a3 exportedInterface:(id)a4
+- (WFSingleConnectionXPCListener)initWithExportedObject:(id)object exportedInterface:(id)interface
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  objectCopy = object;
+  interfaceCopy = interface;
+  v10 = interfaceCopy;
+  if (objectCopy)
   {
-    if (v9)
+    if (interfaceCopy)
     {
       goto LABEL_3;
     }
@@ -121,8 +121,8 @@ void __68__WFSingleConnectionXPCListener_listener_shouldAcceptNewConnection___bl
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFSingleConnectionXPCListener.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"exportedObject"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSingleConnectionXPCListener.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"exportedObject"}];
 
     if (v10)
     {
@@ -130,8 +130,8 @@ void __68__WFSingleConnectionXPCListener_listener_shouldAcceptNewConnection___bl
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"WFSingleConnectionXPCListener.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"exportedInterface"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFSingleConnectionXPCListener.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"exportedInterface"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -140,11 +140,11 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_exportedObject, a3);
-    objc_storeStrong(&v12->_exportedInterface, a4);
-    v13 = [MEMORY[0x1E696B0D8] anonymousListener];
+    objc_storeStrong(&v11->_exportedObject, object);
+    objc_storeStrong(&v12->_exportedInterface, interface);
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     listener = v12->_listener;
-    v12->_listener = v13;
+    v12->_listener = anonymousListener;
 
     [(NSXPCListener *)v12->_listener setDelegate:v12];
     [(NSXPCListener *)v12->_listener resume];

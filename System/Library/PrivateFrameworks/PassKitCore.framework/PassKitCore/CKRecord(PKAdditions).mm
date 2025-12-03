@@ -55,14 +55,14 @@
 - (id)pk_encryptedStringForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_encryptedObjectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_encryptedObjectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
 
 - (id)pk_encryptedUUIDForKey:()PKAdditions
 {
-  v1 = [a1 pk_encryptedStringForKey:?];
+  v1 = [self pk_encryptedStringForKey:?];
   if (v1)
   {
     v2 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v1];
@@ -79,7 +79,7 @@
 - (id)pk_encryptedNumberForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_encryptedObjectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_encryptedObjectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -87,7 +87,7 @@
 - (id)pk_encryptedDateForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_encryptedObjectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_encryptedObjectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -95,7 +95,7 @@
 - (id)pk_encryptedDataForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_encryptedObjectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_encryptedObjectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -103,14 +103,14 @@
 - (id)pk_encryptedLocationForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_encryptedObjectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_encryptedObjectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
 
 - (id)pk_encryptedDecimalNumberForKey:()PKAdditions
 {
-  v1 = [a1 pk_encryptedStringForKey:?];
+  v1 = [self pk_encryptedStringForKey:?];
   if (v1)
   {
     v2 = [MEMORY[0x1E696AB90] decimalNumberWithString:v1];
@@ -126,7 +126,7 @@
 
 - (id)pk_encryptedUrlForKey:()PKAdditions
 {
-  v1 = [a1 pk_encryptedStringForKey:?];
+  v1 = [self pk_encryptedStringForKey:?];
   if (v1)
   {
     v2 = [MEMORY[0x1E695DFF8] URLWithString:v1];
@@ -142,7 +142,7 @@
 
 - (id)pk_encryptedDictionaryForKey:()PKAdditions
 {
-  v1 = [a1 pk_encryptedStringForKey:?];
+  v1 = [self pk_encryptedStringForKey:?];
   v2 = PKDictionaryFromJSONString(v1);
 
   return v2;
@@ -152,8 +152,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 pk_encryptedStringForKey:v7];
-  v9 = [a1 _arrayFromStringValue:v8];
+  v8 = [self pk_encryptedStringForKey:v7];
+  v9 = [self _arrayFromStringValue:v8];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __59__CKRecord_PKAdditions__pk_encryptedArrayOfClasses_forKey___block_invoke;
@@ -169,95 +169,95 @@
 
 - (uint64_t)pk_encryptedBoolForKey:()PKAdditions
 {
-  v1 = [a1 pk_encryptedNumberForKey:?];
+  v1 = [self pk_encryptedNumberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)pk_encryptedIntegerForKey:()PKAdditions
 {
-  v1 = [a1 pk_encryptedNumberForKey:?];
+  v1 = [self pk_encryptedNumberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)pk_encryptedIntForKey:()PKAdditions
 {
-  v1 = [a1 pk_encryptedNumberForKey:?];
+  v1 = [self pk_encryptedNumberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 intValue];
+    intValue = [v1 intValue];
   }
 
   else
   {
-    v3 = 0;
+    intValue = 0;
   }
 
-  return v3;
+  return intValue;
 }
 
 - (uint64_t)pk_encryptedUint64ForKey:()PKAdditions
 {
-  v1 = [a1 pk_encryptedNumberForKey:?];
+  v1 = [self pk_encryptedNumberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 unsignedLongLongValue];
+    unsignedLongLongValue = [v1 unsignedLongLongValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (uint64_t)pk_encryptedUnsignedIntegerForKey:()PKAdditions
 {
-  v1 = [a1 pk_encryptedNumberForKey:?];
+  v1 = [self pk_encryptedNumberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 unsignedIntegerValue];
+    unsignedIntegerValue = [v1 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (id)pk_encryptedObjectForKey:()PKAdditions ofClass:
 {
   v19 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 encryptedValues];
-  v8 = [v7 objectForKey:v6];
+  encryptedValues = [self encryptedValues];
+  v8 = [encryptedValues objectForKey:v6];
 
   if (objc_opt_isKindOfClass())
   {
@@ -291,7 +291,7 @@
 - (id)pk_stringForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_objectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -299,7 +299,7 @@
 - (id)pk_numberForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_objectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -307,7 +307,7 @@
 - (id)pk_dateForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_objectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -315,7 +315,7 @@
 - (id)pk_dataForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_objectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -323,14 +323,14 @@
 - (id)pk_locationForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_objectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
 
 - (id)pk_decimalNumberForKey:()PKAdditions
 {
-  v1 = [a1 pk_stringForKey:?];
+  v1 = [self pk_stringForKey:?];
   if (v1)
   {
     v2 = [MEMORY[0x1E696AB90] decimalNumberWithString:v1];
@@ -346,7 +346,7 @@
 
 - (id)pk_urlForKey:()PKAdditions
 {
-  v1 = [a1 pk_stringForKey:?];
+  v1 = [self pk_stringForKey:?];
   if (v1)
   {
     v2 = [MEMORY[0x1E695DFF8] URLWithString:v1];
@@ -362,7 +362,7 @@
 
 - (id)pk_dictionaryForKey:()PKAdditions
 {
-  v1 = [a1 pk_stringForKey:?];
+  v1 = [self pk_stringForKey:?];
   v2 = PKDictionaryFromJSONString(v1);
 
   return v2;
@@ -372,11 +372,11 @@
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a1 _arrayFromStringValue:v5];
+    v6 = [self _arrayFromStringValue:v5];
 LABEL_5:
     v7 = v6;
     goto LABEL_9;
@@ -408,93 +408,93 @@ LABEL_9:
 
 - (uint64_t)pk_BOOLForKey:()PKAdditions
 {
-  v1 = [a1 pk_numberForKey:?];
+  v1 = [self pk_numberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)pk_integerForKey:()PKAdditions
 {
-  v1 = [a1 pk_numberForKey:?];
+  v1 = [self pk_numberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)pk_intForKey:()PKAdditions
 {
-  v1 = [a1 pk_numberForKey:?];
+  v1 = [self pk_numberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 intValue];
+    intValue = [v1 intValue];
   }
 
   else
   {
-    v3 = 0;
+    intValue = 0;
   }
 
-  return v3;
+  return intValue;
 }
 
 - (uint64_t)pk_uint64ForKey:()PKAdditions
 {
-  v1 = [a1 pk_numberForKey:?];
+  v1 = [self pk_numberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 unsignedLongLongValue];
+    unsignedLongLongValue = [v1 unsignedLongLongValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (uint64_t)pk_unsignedIntegerForKey:()PKAdditions
 {
-  v1 = [a1 pk_numberForKey:?];
+  v1 = [self pk_numberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 unsignedIntegerValue];
+    unsignedIntegerValue = [v1 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (id)pk_referenceForKey:()PKAdditions
 {
   v4 = a3;
-  v5 = [a1 pk_objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self pk_objectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }
@@ -503,7 +503,7 @@ LABEL_9:
 {
   v18 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -536,46 +536,46 @@ LABEL_9:
 - (id)pk_description
 {
   v36 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), a1];;
-  v3 = [a1 recordID];
-  v4 = [v3 recordName];
-  [v2 appendFormat:@"recordName: '%@', ", v4];
+  v2 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
+  recordID = [self recordID];
+  recordName = [recordID recordName];
+  [v2 appendFormat:@"recordName: '%@', ", recordName];
 
-  v5 = [a1 recordID];
-  v6 = [v5 zoneID];
-  v7 = [v6 zoneName];
-  [v2 appendFormat:@"zoneName: '%@', ", v7];
+  recordID2 = [self recordID];
+  zoneID = [recordID2 zoneID];
+  zoneName = [zoneID zoneName];
+  [v2 appendFormat:@"zoneName: '%@', ", zoneName];
 
-  v8 = [a1 creationDate];
-  [v2 appendFormat:@"createdDate: '%@', ", v8];
+  creationDate = [self creationDate];
+  [v2 appendFormat:@"createdDate: '%@', ", creationDate];
 
-  v9 = [a1 recordChangeTag];
-  [v2 appendFormat:@"recordChangeTag: '%@', ", v9];
+  recordChangeTag = [self recordChangeTag];
+  [v2 appendFormat:@"recordChangeTag: '%@', ", recordChangeTag];
 
-  v10 = [a1 creatorUserRecordID];
-  [v2 appendFormat:@"creatorUserRecordID: '%@', ", v10];
+  creatorUserRecordID = [self creatorUserRecordID];
+  [v2 appendFormat:@"creatorUserRecordID: '%@', ", creatorUserRecordID];
 
-  v11 = [a1 creationDate];
-  [v2 appendFormat:@"creationDate: '%@', ", v11];
+  creationDate2 = [self creationDate];
+  [v2 appendFormat:@"creationDate: '%@', ", creationDate2];
 
-  v12 = [a1 lastModifiedUserRecordID];
-  [v2 appendFormat:@"lastModifiedUserRecordID: '%@', ", v12];
+  lastModifiedUserRecordID = [self lastModifiedUserRecordID];
+  [v2 appendFormat:@"lastModifiedUserRecordID: '%@', ", lastModifiedUserRecordID];
 
-  v13 = [a1 modificationDate];
-  [v2 appendFormat:@"modificationDate: '%@', ", v13];
+  modificationDate = [self modificationDate];
+  [v2 appendFormat:@"modificationDate: '%@', ", modificationDate];
 
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a1, "pk_hash")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(self, "pk_hash")}];
   [v2 appendFormat:@"pk_hash: '%@', ", v14];
 
   [v2 appendFormat:@"values: { "];
-  v15 = [a1 values];
+  values = [self values];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __39__CKRecord_PKAdditions__pk_description__block_invoke;
   v33[3] = &unk_1E79D2380;
   v16 = v2;
   v34 = v16;
-  [v15 enumerateKeysAndObjectsUsingBlock:v33];
+  [values enumerateKeysAndObjectsUsingBlock:v33];
 
   [v16 appendFormat:@"}, "];
   [v16 appendString:@" encryptedValues: { "];
@@ -583,12 +583,12 @@ LABEL_9:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v17 = a1;
-  v18 = [a1 encryptedValues];
-  v19 = [v18 allKeys];
+  selfCopy = self;
+  encryptedValues = [self encryptedValues];
+  allKeys = [encryptedValues allKeys];
 
-  obj = v19;
-  v20 = [v19 countByEnumeratingWithState:&v29 objects:v35 count:16];
+  obj = allKeys;
+  v20 = [allKeys countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v20)
   {
     v21 = v20;
@@ -603,8 +603,8 @@ LABEL_9:
         }
 
         v24 = *(*(&v29 + 1) + 8 * i);
-        v25 = [v17 encryptedValues];
-        v26 = [v25 objectForKey:v24];
+        encryptedValues2 = [selfCopy encryptedValues];
+        v26 = [encryptedValues2 objectForKey:v24];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -634,34 +634,34 @@ LABEL_9:
 {
   if (PKTransactionDebugDetailsEnabled())
   {
-    v2 = [a1 pk_description];
+    pk_description = [self pk_description];
   }
 
   else
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &off_1F2468FD0;
-    v2 = objc_msgSendSuper2(&v4, sel_description);
+    pk_description = objc_msgSendSuper2(&v4, sel_description);
   }
 
-  return v2;
+  return pk_description;
 }
 
 - (uint64_t)pk_hash
 {
   v38 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 recordID];
-  [v2 safelyAddObject:v3];
+  recordID = [self recordID];
+  [v2 safelyAddObject:recordID];
 
-  v4 = [a1 recordType];
-  [v2 safelyAddObject:v4];
+  recordType = [self recordType];
+  [v2 safelyAddObject:recordType];
 
-  v5 = [a1 creationDate];
-  [v2 safelyAddObject:v5];
+  creationDate = [self creationDate];
+  [v2 safelyAddObject:creationDate];
 
-  v6 = [a1 creatorUserRecordID];
-  [v2 safelyAddObject:v6];
+  creatorUserRecordID = [self creatorUserRecordID];
+  [v2 safelyAddObject:creatorUserRecordID];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -670,13 +670,13 @@ LABEL_9:
   v7 = v2;
   v35 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [a1 encryptedValues];
-  v10 = [v9 allKeys];
+  encryptedValues = [self encryptedValues];
+  allKeys = [encryptedValues allKeys];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v30 objects:v37 count:16];
+  v11 = [allKeys countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v11)
   {
     v12 = v11;
@@ -688,30 +688,30 @@ LABEL_9:
       {
         if (*v31 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
-        v15 = [v9 objectForKey:*(*(&v30 + 1) + 8 * v14)];
+        v15 = [encryptedValues objectForKey:*(*(&v30 + 1) + 8 * v14)];
         v8[2](v8, v15);
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v30 objects:v37 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v30 objects:v37 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [a1 valuesByKey];
-  v17 = [v16 allKeys];
+  valuesByKey = [self valuesByKey];
+  allKeys2 = [valuesByKey allKeys];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = v17;
+  v18 = allKeys2;
   v19 = [v18 countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v19)
   {
@@ -727,7 +727,7 @@ LABEL_9:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [v16 objectForKey:{*(*(&v26 + 1) + 8 * v22), v26}];
+        v23 = [valuesByKey objectForKey:{*(*(&v26 + 1) + 8 * v22), v26}];
         v8[2](v8, v23);
 
         ++v22;
@@ -748,27 +748,27 @@ LABEL_9:
 {
   v51 = *MEMORY[0x1E69E9840];
   v40 = a3;
-  v4 = [v40 zoneID];
-  v5 = [a1 recordID];
-  v6 = [v5 recordName];
+  zoneID = [v40 zoneID];
+  recordID = [self recordID];
+  recordName = [recordID recordName];
 
-  v37 = v6;
-  v38 = v4;
-  v7 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v6 zoneID:v4];
+  v37 = recordName;
+  v38 = zoneID;
+  v7 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:recordName zoneID:zoneID];
   v8 = objc_alloc(MEMORY[0x1E695BA60]);
-  v9 = [a1 recordType];
+  recordType = [self recordType];
   v36 = v7;
-  v10 = [v8 initWithRecordType:v9 recordID:v7];
+  v10 = [v8 initWithRecordType:recordType recordID:v7];
 
-  v39 = a1;
-  v11 = [a1 encryptedValues];
-  v12 = [v10 encryptedValues];
-  v13 = [v11 allKeys];
+  selfCopy = self;
+  encryptedValues = [self encryptedValues];
+  encryptedValues2 = [v10 encryptedValues];
+  allKeys = [encryptedValues allKeys];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v45 objects:v50 count:16];
+  v14 = [allKeys countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v14)
   {
     v15 = v14;
@@ -779,32 +779,32 @@ LABEL_9:
       {
         if (*v46 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         v18 = *(*(&v45 + 1) + 8 * i);
-        v19 = [v11 objectForKey:v18];
-        [v12 setObject:v19 forKey:v18];
+        v19 = [encryptedValues objectForKey:v18];
+        [encryptedValues2 setObject:v19 forKey:v18];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v45 objects:v50 count:16];
+      v15 = [allKeys countByEnumeratingWithState:&v45 objects:v50 count:16];
     }
 
     while (v15);
   }
 
-  v34 = v12;
-  v35 = v11;
-  v20 = [v39 valuesByKey];
+  v34 = encryptedValues2;
+  v35 = encryptedValues;
+  valuesByKey = [selfCopy valuesByKey];
   v33 = v10;
-  v21 = [v10 valuesByKey];
-  v22 = [v20 allKeys];
+  valuesByKey2 = [v10 valuesByKey];
+  allKeys2 = [valuesByKey allKeys];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v23 = v22;
+  v23 = allKeys2;
   v24 = [v23 countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v24)
   {
@@ -820,11 +820,11 @@ LABEL_9:
         }
 
         v28 = *(*(&v41 + 1) + 8 * j);
-        v29 = [v20 objectForKey:v28];
+        v29 = [valuesByKey objectForKey:v28];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v30 = [v39 _copyReference:v29 forNewRecordZone:v40];
+          v30 = [selfCopy _copyReference:v29 forNewRecordZone:v40];
         }
 
         else
@@ -835,14 +835,14 @@ LABEL_9:
             goto LABEL_18;
           }
 
-          v30 = [v39 _copyArray:v29 forNewRecordZone:v40];
+          v30 = [selfCopy _copyArray:v29 forNewRecordZone:v40];
         }
 
         v31 = v30;
 
         v29 = v31;
 LABEL_18:
-        [v21 setObject:v29 forKey:v28];
+        [valuesByKey2 setObject:v29 forKey:v28];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v41 objects:v49 count:16];
@@ -859,12 +859,12 @@ LABEL_18:
   v4 = a3;
   if ([v4 containsString:@"@"])
   {
-    [a1 pk_participantWithEmailAddress:v4];
+    [self pk_participantWithEmailAddress:v4];
   }
 
   else
   {
-    [a1 pk_participantWithPhoneNumber:v4];
+    [self pk_participantWithPhoneNumber:v4];
   }
   v5 = ;
 
@@ -877,7 +877,7 @@ LABEL_18:
   v5 = a3;
   v6 = [[v4 alloc] initWithEmailAddress:v5];
 
-  v7 = [a1 pk_participantWithLookupInfo:v6];
+  v7 = [self pk_participantWithLookupInfo:v6];
 
   return v7;
 }
@@ -888,7 +888,7 @@ LABEL_18:
   v5 = a3;
   v6 = [[v4 alloc] initWithPhoneNumber:v5];
 
-  v7 = [a1 pk_participantWithLookupInfo:v6];
+  v7 = [self pk_participantWithLookupInfo:v6];
 
   return v7;
 }
@@ -897,16 +897,16 @@ LABEL_18:
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 pk_share];
-  v6 = v5;
-  if (v5)
+  pk_share = [self pk_share];
+  v6 = pk_share;
+  if (pk_share)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v5 participants];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    participants = [pk_share participants];
+    v8 = [participants countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = *v18;
@@ -916,16 +916,16 @@ LABEL_18:
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(participants);
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v11 userIdentity];
-          v13 = [v12 lookupInfo];
-          v14 = v13;
-          if (v4 && v13)
+          userIdentity = [v11 userIdentity];
+          lookupInfo = [userIdentity lookupInfo];
+          v14 = lookupInfo;
+          if (v4 && lookupInfo)
           {
-            v15 = [v13 isEqual:v4];
+            v15 = [lookupInfo isEqual:v4];
 
             if (v15)
             {
@@ -945,7 +945,7 @@ LABEL_15:
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [participants countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           continue;
@@ -971,31 +971,31 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)_copyReference:()PKAdditions forNewRecordZone:
 {
   v5 = a4;
   v6 = a3;
-  v7 = [v6 recordID];
+  recordID = [v6 recordID];
   v8 = objc_alloc(MEMORY[0x1E695BA70]);
-  v9 = [v7 recordName];
-  v10 = [v5 zoneID];
+  recordName = [recordID recordName];
+  zoneID = [v5 zoneID];
 
-  v11 = [v8 initWithRecordName:v9 zoneID:v10];
+  v11 = [v8 initWithRecordName:recordName zoneID:zoneID];
   v12 = objc_alloc(MEMORY[0x1E695BAB0]);
-  v13 = [v6 referenceAction];
+  referenceAction = [v6 referenceAction];
 
-  v14 = [v12 initWithRecordID:v11 action:v13];
+  v14 = [v12 initWithRecordID:v11 action:referenceAction];
   return v14;
 }
 
@@ -1029,7 +1029,7 @@ LABEL_16:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [a1 _copyReference:v14 forNewRecordZone:{v7, v18}];
+          v15 = [self _copyReference:v14 forNewRecordZone:{v7, v18}];
 
           v14 = v15;
         }
@@ -1088,10 +1088,10 @@ LABEL_9:
 
 - (uint64_t)pk_isPass
 {
-  v1 = [a1 recordType];
+  recordType = [self recordType];
   v2 = @"Pass";
   v3 = v2;
-  if (v1 == v2)
+  if (recordType == v2)
   {
     v4 = 1;
   }
@@ -1099,9 +1099,9 @@ LABEL_9:
   else
   {
     v4 = 0;
-    if (v1 && v2)
+    if (recordType && v2)
     {
-      v4 = [(__CFString *)v1 isEqualToString:v2];
+      v4 = [(__CFString *)recordType isEqualToString:v2];
     }
   }
 
@@ -1110,10 +1110,10 @@ LABEL_9:
 
 - (uint64_t)pk_isPassCatalog
 {
-  v1 = [a1 recordType];
+  recordType = [self recordType];
   v2 = @"PassCatalog";
   v3 = v2;
-  if (v1 == v2)
+  if (recordType == v2)
   {
     v4 = 1;
   }
@@ -1121,9 +1121,9 @@ LABEL_9:
   else
   {
     v4 = 0;
-    if (v1 && v2)
+    if (recordType && v2)
     {
-      v4 = [(__CFString *)v1 isEqualToString:v2];
+      v4 = [(__CFString *)recordType isEqualToString:v2];
     }
   }
 
@@ -1132,10 +1132,10 @@ LABEL_9:
 
 - (uint64_t)pk_isRemoteAsset
 {
-  v1 = [a1 recordType];
+  recordType = [self recordType];
   v2 = @"RemoteAsset";
   v3 = v2;
-  if (v1 == v2)
+  if (recordType == v2)
   {
     v4 = 1;
   }
@@ -1143,9 +1143,9 @@ LABEL_9:
   else
   {
     v4 = 0;
-    if (v1 && v2)
+    if (recordType && v2)
     {
-      v4 = [(__CFString *)v1 isEqualToString:v2];
+      v4 = [(__CFString *)recordType isEqualToString:v2];
     }
   }
 
@@ -1167,11 +1167,11 @@ LABEL_9:
 - (id)pk_systemFieldsData
 {
   v2 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-  [a1 encodeSystemFieldsWithCoder:v2];
+  [self encodeSystemFieldsWithCoder:v2];
   [v2 finishEncoding];
-  v3 = [v2 encodedData];
+  encodedData = [v2 encodedData];
 
-  return v3;
+  return encodedData;
 }
 
 @end

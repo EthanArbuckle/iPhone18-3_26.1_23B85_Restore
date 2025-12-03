@@ -1,118 +1,118 @@
 @interface VNClustererQueryOptions
-- (VNClustererQueryOptions)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6;
-- (VNClustererQueryOptions)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 requestRevision:(unint64_t)a7;
-- (VNClustererQueryOptions)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 torsoThreshold:(float)a7;
-- (VNClustererQueryOptions)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 torsoThreshold:(float)a7 requestRevision:(unint64_t)a8;
-- (VNClustererQueryOptions)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 torsoThreshold:(float)a7 requestRevision:(unint64_t)a8 torsoprintRequestRevision:(unint64_t)a9;
+- (VNClustererQueryOptions)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold;
+- (VNClustererQueryOptions)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold requestRevision:(unint64_t)revision;
+- (VNClustererQueryOptions)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold torsoThreshold:(float)torsoThreshold;
+- (VNClustererQueryOptions)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold torsoThreshold:(float)torsoThreshold requestRevision:(unint64_t)revision;
+- (VNClustererQueryOptions)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold torsoThreshold:(float)torsoThreshold requestRevision:(unint64_t)revision torsoprintRequestRevision:(unint64_t)requestRevision;
 @end
 
 @implementation VNClustererQueryOptions
 
-- (VNClustererQueryOptions)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 torsoThreshold:(float)a7 requestRevision:(unint64_t)a8 torsoprintRequestRevision:(unint64_t)a9
+- (VNClustererQueryOptions)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold torsoThreshold:(float)torsoThreshold requestRevision:(unint64_t)revision torsoprintRequestRevision:(unint64_t)requestRevision
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  if (v18)
+  typeCopy = type;
+  pathCopy = path;
+  stateCopy = state;
+  if (stateCopy)
   {
     v23.receiver = self;
     v23.super_class = VNClustererQueryOptions;
-    *&v19 = a6;
-    *&v20 = a7;
-    self = [(VNClustererOptions *)&v23 initWithType:v16 cachePath:v17 state:v18 threshold:a8 torsoThreshold:a9 requestRevision:v19 torsoprintRequestRevision:v20];
-    v21 = self;
+    *&v19 = threshold;
+    *&v20 = torsoThreshold;
+    self = [(VNClustererOptions *)&v23 initWithType:typeCopy cachePath:pathCopy state:stateCopy threshold:revision torsoThreshold:requestRevision requestRevision:v19 torsoprintRequestRevision:v20];
+    selfCopy = self;
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (VNClustererQueryOptions)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 requestRevision:(unint64_t)a7
+- (VNClustererQueryOptions)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold requestRevision:(unint64_t)revision
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v14)
+  typeCopy = type;
+  pathCopy = path;
+  stateCopy = state;
+  if (stateCopy)
   {
     v18.receiver = self;
     v18.super_class = VNClustererQueryOptions;
-    *&v15 = a6;
-    self = [(VNClustererOptions *)&v18 initWithType:v12 cachePath:v13 state:v14 threshold:a7 requestRevision:v15];
-    v16 = self;
+    *&v15 = threshold;
+    self = [(VNClustererOptions *)&v18 initWithType:typeCopy cachePath:pathCopy state:stateCopy threshold:revision requestRevision:v15];
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (VNClustererQueryOptions)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 torsoThreshold:(float)a7 requestRevision:(unint64_t)a8
+- (VNClustererQueryOptions)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold torsoThreshold:(float)torsoThreshold requestRevision:(unint64_t)revision
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (v16)
+  typeCopy = type;
+  pathCopy = path;
+  stateCopy = state;
+  if (stateCopy)
   {
-    *&v17 = a6;
-    *&v18 = a7;
-    self = [(VNClustererQueryOptions *)self initWithType:v14 cachePath:v15 state:v16 threshold:a8 torsoThreshold:1 requestRevision:v17 torsoprintRequestRevision:v18];
-    v19 = self;
+    *&v17 = threshold;
+    *&v18 = torsoThreshold;
+    self = [(VNClustererQueryOptions *)self initWithType:typeCopy cachePath:pathCopy state:stateCopy threshold:revision torsoThreshold:1 requestRevision:v17 torsoprintRequestRevision:v18];
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (VNClustererQueryOptions)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 torsoThreshold:(float)a7
+- (VNClustererQueryOptions)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold torsoThreshold:(float)torsoThreshold
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v14)
+  typeCopy = type;
+  pathCopy = path;
+  stateCopy = state;
+  if (stateCopy)
   {
-    *&v15 = a6;
-    *&v16 = a7;
-    self = [(VNClustererQueryOptions *)self initWithType:v12 cachePath:v13 state:v14 threshold:1 torsoThreshold:1 requestRevision:v15 torsoprintRequestRevision:v16];
-    v17 = self;
+    *&v15 = threshold;
+    *&v16 = torsoThreshold;
+    self = [(VNClustererQueryOptions *)self initWithType:typeCopy cachePath:pathCopy state:stateCopy threshold:1 torsoThreshold:1 requestRevision:v15 torsoprintRequestRevision:v16];
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (VNClustererQueryOptions)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6
+- (VNClustererQueryOptions)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v12)
+  typeCopy = type;
+  pathCopy = path;
+  stateCopy = state;
+  if (stateCopy)
   {
-    *&v13 = a6;
-    self = [(VNClustererQueryOptions *)self initWithType:v10 cachePath:v11 state:v12 threshold:1 torsoThreshold:1 requestRevision:v13 torsoprintRequestRevision:0.0];
-    v14 = self;
+    *&v13 = threshold;
+    self = [(VNClustererQueryOptions *)self initWithType:typeCopy cachePath:pathCopy state:stateCopy threshold:1 torsoThreshold:1 requestRevision:v13 torsoprintRequestRevision:0.0];
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 @end

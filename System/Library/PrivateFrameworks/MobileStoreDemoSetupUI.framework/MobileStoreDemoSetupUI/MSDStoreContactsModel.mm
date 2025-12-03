@@ -1,7 +1,7 @@
 @interface MSDStoreContactsModel
 + (MSDStoreContactsModel)sharedInstance;
 - (MSDStoreContactsModel)init;
-- (id)contactNumberForCountryCode:(id)a3;
+- (id)contactNumberForCountryCode:(id)code;
 @end
 
 @implementation MSDStoreContactsModel
@@ -102,22 +102,22 @@ uint64_t __39__MSDStoreContactsModel_sharedInstance__block_invoke()
                 [v10 addObject:v17];
               }
 
-              v20 = [(MSDStoreContactsModel *)v36 countryCodeToNumbers];
-              v21 = [v20 objectForKey:v17];
+              countryCodeToNumbers = [(MSDStoreContactsModel *)v36 countryCodeToNumbers];
+              v21 = [countryCodeToNumbers objectForKey:v17];
               if (!v21)
               {
 
 LABEL_18:
-                v24 = [(MSDStoreContactsModel *)v36 countryCodeToNumbers];
-                [v24 setObject:v18 forKey:v17];
+                countryCodeToNumbers2 = [(MSDStoreContactsModel *)v36 countryCodeToNumbers];
+                [countryCodeToNumbers2 setObject:v18 forKey:v17];
 
                 goto LABEL_19;
               }
 
               v22 = v21;
-              v23 = [v19 BOOLValue];
+              bOOLValue = [v19 BOOLValue];
 
-              if (v23)
+              if (bOOLValue)
               {
                 goto LABEL_18;
               }
@@ -151,11 +151,11 @@ LABEL_23:
   return v36;
 }
 
-- (id)contactNumberForCountryCode:(id)a3
+- (id)contactNumberForCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [(MSDStoreContactsModel *)self countryCodeToNumbers];
-  v6 = [v5 objectForKey:v4];
+  codeCopy = code;
+  countryCodeToNumbers = [(MSDStoreContactsModel *)self countryCodeToNumbers];
+  v6 = [countryCodeToNumbers objectForKey:codeCopy];
 
   return v6;
 }

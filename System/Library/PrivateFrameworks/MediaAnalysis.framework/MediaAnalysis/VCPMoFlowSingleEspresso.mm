@@ -1,32 +1,32 @@
 @interface VCPMoFlowSingleEspresso
-+ (id)sharedModel:(id)a3 inputNames:(id)a4;
-- (float)getFlowWithHeight:(int *)a3 andWidth:(int *)a4;
++ (id)sharedModel:(id)model inputNames:(id)names;
+- (float)getFlowWithHeight:(int *)height andWidth:(int *)width;
 - (id).cxx_construct;
-- (int)analyzeImages:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 cancel:(id)a5;
-- (int)configForAspectRatio:(id)a3;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4 withChannels:(int)a5;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6;
-- (int)flowScalingTo:(__CVBuffer *)a3 flowBufferY:(__CVBuffer *)a4 scalerX:(float)a5 scalerY:(float)a6;
-- (int)flowScalingTo:(__CVBuffer *)a3 scalerX:(float)a4 scalerY:(float)a5;
-- (int)getFlowToBuffer:(__CVBuffer *)a3;
+- (int)analyzeImages:(__CVBuffer *)images secondImage:(__CVBuffer *)image cancel:(id)cancel;
+- (int)configForAspectRatio:(id)ratio;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data withChannels:(int)channels;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width;
+- (int)flowScalingTo:(__CVBuffer *)to flowBufferY:(__CVBuffer *)y scalerX:(float)x scalerY:(float)scalerY;
+- (int)flowScalingTo:(__CVBuffer *)to scalerX:(float)x scalerY:(float)y;
+- (int)getFlowToBuffer:(__CVBuffer *)buffer;
 - (int)prepareModel;
-- (int)prepareWithLightweightOption:(BOOL)a3 aspectRatio:(id)a4 forceCPU:(BOOL)a5 sharedModel:(BOOL)a6 flushModel:(BOOL)a7;
+- (int)prepareWithLightweightOption:(BOOL)option aspectRatio:(id)ratio forceCPU:(BOOL)u sharedModel:(BOOL)model flushModel:(BOOL)flushModel;
 - (int)reInitModel;
-- (int)updateModelForAspectRatio:(id)a3 computationAccuracy:(unsigned int)a4;
+- (int)updateModelForAspectRatio:(id)ratio computationAccuracy:(unsigned int)accuracy;
 - (void)dealloc;
 @end
 
 @implementation VCPMoFlowSingleEspresso
 
-- (int)prepareWithLightweightOption:(BOOL)a3 aspectRatio:(id)a4 forceCPU:(BOOL)a5 sharedModel:(BOOL)a6 flushModel:(BOOL)a7
+- (int)prepareWithLightweightOption:(BOOL)option aspectRatio:(id)ratio forceCPU:(BOOL)u sharedModel:(BOOL)model flushModel:(BOOL)flushModel
 {
-  v10 = a3;
+  optionCopy = option;
   v33[2] = *MEMORY[0x1E69E9840];
-  v31 = a4;
-  v12 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v13 = [v12 resourceURL];
+  ratioCopy = ratio;
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v14 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_moflow.espresso.net" relativeToURL:v13];
+  v14 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_moflow.espresso.net" relativeToURL:resourceURL];
   netFileUrl = self->_netFileUrl;
   self->_netFileUrl = v14;
 
@@ -35,7 +35,7 @@
 
   self->super._cnnInputWidth = 1024;
   self->super._cnnInputHeight = 448;
-  if (v10)
+  if (optionCopy)
   {
     v17 = self->_resConfig;
     self->_resConfig = @"square_320x320";
@@ -44,10 +44,10 @@
     self->super._cnnInputHeight = 320;
   }
 
-  else if (v31)
+  else if (ratioCopy)
   {
-    v18 = [(VCPMoFlowSingleEspresso *)self configForAspectRatio:v31];
-    if (v18)
+    prepareModel = [(VCPMoFlowSingleEspresso *)self configForAspectRatio:ratioCopy];
+    if (prepareModel)
     {
       goto LABEL_13;
     }
@@ -58,9 +58,9 @@
 
   std::vector<void *>::resize(&self->_inputsData.__begin_, [(NSArray *)self->_inputNames count]);
   self->_flow = 0;
-  self->_forceCPU = a5;
-  self->_sharedModel = a6;
-  self->_flushModel = a7;
+  self->_forceCPU = u;
+  self->_sharedModel = model;
+  self->_flushModel = flushModel;
   if (DeviceHasANE() && !self->_forceCPU && self->_sharedModel)
   {
     v20 = [objc_opt_class() sharedModel:self->_netFileUrl inputNames:self->_inputNames];
@@ -87,17 +87,17 @@
 
   if (self->_modelEspresso)
   {
-    v18 = [(VCPMoFlowSingleEspresso *)self prepareModel];
+    prepareModel = [(VCPMoFlowSingleEspresso *)self prepareModel];
   }
 
   else
   {
-    v18 = -108;
+    prepareModel = -108;
   }
 
 LABEL_13:
 
-  return v18;
+  return prepareModel;
 }
 
 - (int)prepareModel
@@ -255,13 +255,13 @@ LABEL_13:
   [(VCPMoFlowSingleEspresso *)&v8 dealloc];
 }
 
-- (int)configForAspectRatio:(id)a3
+- (int)configForAspectRatio:(id)ratio
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  ratioCopy = ratio;
+  v5 = ratioCopy;
+  if (ratioCopy)
   {
-    [v4 floatValue];
+    [ratioCopy floatValue];
     if (v6 <= 1.16)
     {
       [v5 floatValue];
@@ -317,18 +317,18 @@ LABEL_13:
   return v11;
 }
 
-+ (id)sharedModel:(id)a3 inputNames:(id)a4
++ (id)sharedModel:(id)model inputNames:(id)names
 {
-  v5 = a3;
-  v6 = a4;
+  modelCopy = model;
+  namesCopy = names;
   v7 = +[VCPSharedInstanceManager sharedManager];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__VCPMoFlowSingleEspresso_sharedModel_inputNames___block_invoke;
   v12[3] = &unk_1E834CD98;
-  v8 = v5;
+  v8 = modelCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = namesCopy;
   v14 = v9;
   v10 = [v7 sharedInstanceWithIdentifier:@"VCPMoflowEspresso" andCreationBlock:v12];
 
@@ -342,18 +342,18 @@ VCPCNNModelEspresso *__50__VCPMoFlowSingleEspresso_sharedModel_inputNames___bloc
   return v1;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4 withChannels:(int)a5
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data withChannels:(int)channels
 {
-  if (a5 != 3 || CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (channels != 3 || CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -364,7 +364,7 @@ VCPCNNModelEspresso *__50__VCPMoFlowSingleEspresso_sharedModel_inputNames___bloc
   }
 
   v9 = Height;
-  v10 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v10 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v24 = v10;
   if (v10)
   {
@@ -377,14 +377,14 @@ VCPCNNModelEspresso *__50__VCPMoFlowSingleEspresso_sharedModel_inputNames___bloc
 
   else
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    bzero(a4, 3 * 4 * Width * v9);
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+    bzero(data, 3 * 4 * Width * v9);
     if (v9 >= 1)
     {
       v16 = 0;
-      v17 = &a4[2 * v9 * Width];
-      v18 = &a4[v9 * Width];
+      v17 = &data[2 * v9 * Width];
+      v18 = &data[v9 * Width];
       v19 = 4 * Width;
       do
       {
@@ -396,7 +396,7 @@ VCPCNNModelEspresso *__50__VCPMoFlowSingleEspresso_sharedModel_inputNames___bloc
           {
             LOBYTE(v15) = BaseAddress[(v20 * 4) + 2];
             *&v22 = LODWORD(v15) / 255.0;
-            a4[v20] = *&v22;
+            data[v20] = *&v22;
             LOBYTE(v22) = BaseAddress[(v20 * 4) + 1];
             *&v23 = v22 / 255.0;
             v18[v20] = *&v23;
@@ -413,7 +413,7 @@ VCPCNNModelEspresso *__50__VCPMoFlowSingleEspresso_sharedModel_inputNames___bloc
         ++v16;
         v17 = (v17 + v19);
         v18 = (v18 + v19);
-        a4 = (a4 + v19);
+        data = (data + v19);
       }
 
       while (v16 != v9);
@@ -429,25 +429,25 @@ VCPCNNModelEspresso *__50__VCPMoFlowSingleEspresso_sharedModel_inputNames___bloc
   return v11;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width
 {
-  if (a3)
+  if (input)
   {
-    v6 = *&a6;
-    v7 = *&a5;
+    v6 = *&width;
+    v7 = *&height;
     cf = 0;
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
-    if (CVPixelBufferGetPixelFormatType(a4) == 1111970369 && Width == v6 && Height == v7)
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
+    if (CVPixelBufferGetPixelFormatType(buffer) == 1111970369 && Width == v6 && Height == v7)
     {
       v16 = 0;
-      cf = CFRetain(a4);
+      cf = CFRetain(buffer);
       CF<__CVBuffer *>::~CF(&v16);
     }
 
     else
     {
-      Scaler::Scale(&self->_scaler, a4, &cf, v6, v7, 1111970369);
+      Scaler::Scale(&self->_scaler, buffer, &cf, v6, v7, 1111970369);
       v13 = v14;
       if (v14)
       {
@@ -457,19 +457,19 @@ LABEL_9:
       }
     }
 
-    v13 = [(VCPMoFlowSingleEspresso *)self copyImage:cf toData:a3 withChannels:3];
+    v13 = [(VCPMoFlowSingleEspresso *)self copyImage:cf toData:input withChannels:3];
     goto LABEL_9;
   }
 
   return -108;
 }
 
-- (int)analyzeImages:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 cancel:(id)a5
+- (int)analyzeImages:(__CVBuffer *)images secondImage:(__CVBuffer *)image cancel:(id)cancel
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v10 = CVPixelBufferGetWidth(a4);
-  v11 = CVPixelBufferGetHeight(a4);
+  Width = CVPixelBufferGetWidth(images);
+  Height = CVPixelBufferGetHeight(images);
+  v10 = CVPixelBufferGetWidth(image);
+  v11 = CVPixelBufferGetHeight(image);
   v12 = -50;
   if (Width != v10 || Height != v11)
   {
@@ -480,10 +480,10 @@ LABEL_9:
   v39 = 162;
   if (self->_flushModel && !self->_modelEspresso)
   {
-    v19 = [(VCPMoFlowSingleEspresso *)self reInitModel];
-    if (v19)
+    reInitModel = [(VCPMoFlowSingleEspresso *)self reInitModel];
+    if (reInitModel)
     {
-      v12 = v19;
+      v12 = reInitModel;
 LABEL_15:
       v18 = 0;
       goto LABEL_16;
@@ -497,8 +497,8 @@ LABEL_15:
   v15 = __p[104];
   operator delete(__p);
   p_inputsData = &self->_inputsData;
-  v17 = [(VCPMoFlowSingleEspresso *)self createInput:*self->_inputsData.__begin_ withBuffer:a3 cnnInputHeight:self->super._cnnInputHeight cnnInputWidth:self->super._cnnInputWidth];
-  if (v17 || (v17 = [(VCPMoFlowSingleEspresso *)self createInput:*(p_inputsData->__begin_ + 1) withBuffer:a4 cnnInputHeight:self->super._cnnInputHeight cnnInputWidth:self->super._cnnInputWidth]) != 0)
+  v17 = [(VCPMoFlowSingleEspresso *)self createInput:*self->_inputsData.__begin_ withBuffer:images cnnInputHeight:self->super._cnnInputHeight cnnInputWidth:self->super._cnnInputWidth];
+  if (v17 || (v17 = [(VCPMoFlowSingleEspresso *)self createInput:*(p_inputsData->__begin_ + 1) withBuffer:image cnnInputHeight:self->super._cnnInputHeight cnnInputWidth:self->super._cnnInputWidth]) != 0)
   {
     v12 = v17;
     v18 = 0;
@@ -624,27 +624,27 @@ LABEL_25:
   return v12;
 }
 
-- (float)getFlowWithHeight:(int *)a3 andWidth:(int *)a4
+- (float)getFlowWithHeight:(int *)height andWidth:(int *)width
 {
-  *a3 = self->super._cnnOutputHeight;
+  *height = self->super._cnnOutputHeight;
   cnnOutputWidth = self->super._cnnOutputWidth;
-  *a4 = cnnOutputWidth;
+  *width = cnnOutputWidth;
   MEMORY[0x1CCA973D0](self->_flow, 1, &kMotionFlowGlobalMultiplier, self->_flow, 1, 2 * self->super._cnnOutputHeight * cnnOutputWidth);
   return self->_flow;
 }
 
-- (int)getFlowToBuffer:(__CVBuffer *)a3
+- (int)getFlowToBuffer:(__CVBuffer *)buffer
 {
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
   MEMORY[0x1CCA973D0](self->_flow, 1, &kMotionFlowLocalMultiplier, self->_flow, 1, 2 * self->super._cnnOutputHeight * self->super._cnnOutputWidth);
   flow = self->_flow;
   cnnOutputWidth = self->super._cnnOutputWidth;
   cnnOutputHeight = self->super._cnnOutputHeight;
-  pixelBuffer = a3;
+  pixelBuffer = buffer;
   unlockFlags = 0;
-  if (a3)
+  if (buffer)
   {
-    v9 = CVPixelBufferLockBaseAddress(a3, 0);
+    v9 = CVPixelBufferLockBaseAddress(buffer, 0);
     v27 = v9;
     if (v9)
     {
@@ -657,7 +657,7 @@ LABEL_25:
 
     else
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(buffer);
       v13 = self->super._cnnOutputHeight;
       if (v13 >= 1)
       {
@@ -720,19 +720,19 @@ LABEL_25:
   return v10;
 }
 
-- (int)flowScalingTo:(__CVBuffer *)a3 scalerX:(float)a4 scalerY:(float)a5
+- (int)flowScalingTo:(__CVBuffer *)to scalerX:(float)x scalerY:(float)y
 {
   MEMORY[0x1CCA973D0](self->_flow, 1, &kMotionFlowLocalMultiplier, self->_flow, 1, 2 * self->super._cnnOutputHeight * self->super._cnnOutputWidth);
   flow = self->_flow;
   cnnOutputWidth = self->super._cnnOutputWidth;
   cnnOutputHeight = self->super._cnnOutputHeight;
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  pixelBuffer = a3;
+  BytesPerRow = CVPixelBufferGetBytesPerRow(to);
+  pixelBuffer = to;
   unlockFlags = 0;
-  if (a3)
+  if (to)
   {
     v13 = BytesPerRow;
-    v14 = CVPixelBufferLockBaseAddress(a3, 0);
+    v14 = CVPixelBufferLockBaseAddress(to, 0);
     v36 = v14;
     if (v14)
     {
@@ -745,7 +745,7 @@ LABEL_25:
 
     else
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(to);
       v18 = self->super._cnnOutputHeight;
       if (v18 >= 1)
       {
@@ -769,7 +769,7 @@ LABEL_25:
                 FCVT            S0, H0
               }
 
-              _S0 = _S0 * a4;
+              _S0 = _S0 * x;
               __asm { FCVT            H0, S0 }
 
               *&BaseAddress[v24 >> 31] = LOWORD(_S0);
@@ -780,7 +780,7 @@ LABEL_25:
                 FCVT            S0, H0
               }
 
-              _S0 = _S0 * a5;
+              _S0 = _S0 * y;
               __asm { FCVT            H0, S0 }
 
               *&BaseAddress[2 * v25] = LOWORD(_S0);
@@ -822,35 +822,35 @@ LABEL_25:
   return v15;
 }
 
-- (int)flowScalingTo:(__CVBuffer *)a3 flowBufferY:(__CVBuffer *)a4 scalerX:(float)a5 scalerY:(float)a6
+- (int)flowScalingTo:(__CVBuffer *)to flowBufferY:(__CVBuffer *)y scalerX:(float)x scalerY:(float)scalerY
 {
   v48 = *MEMORY[0x1E69E9840];
   MEMORY[0x1CCA973D0](self->_flow, 1, &kMotionFlowLocalMultiplier, self->_flow, 1, 2 * self->super._cnnOutputHeight * self->super._cnnOutputWidth);
   flow = self->_flow;
   cnnOutputWidth = self->super._cnnOutputWidth;
   cnnOutputHeight = self->super._cnnOutputHeight;
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  v15 = CVPixelBufferGetBytesPerRow(a4);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(to);
+  v15 = CVPixelBufferGetBytesPerRow(y);
   v39 = 0;
-  v40 = a3;
+  toCopy = to;
   v41 = 0;
-  if (a3)
+  if (to)
   {
     v16 = v15;
     v38 = cnnOutputWidth;
-    v17 = CVPixelBufferLockBaseAddress(a3, 0);
+    v17 = CVPixelBufferLockBaseAddress(to, 0);
     v39 = v17;
-    if (!v17 || (v18 = v17, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, pixelBuffer[0] = a3, LOWORD(pixelBuffer[1]) = 1024, *(&pixelBuffer[1] + 2) = v18, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v18 = v39) == 0))
+    if (!v17 || (v18 = v17, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, pixelBuffer[0] = to, LOWORD(pixelBuffer[1]) = 1024, *(&pixelBuffer[1] + 2) = v18, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v18 = v39) == 0))
     {
-      *(pixelBuffer + 4) = a4;
-      if (a4)
+      *(pixelBuffer + 4) = y;
+      if (y)
       {
-        v18 = CVPixelBufferLockBaseAddress(a4, 0);
+        v18 = CVPixelBufferLockBaseAddress(y, 0);
         *buf = v18;
         if (!v18 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*v44 = 134218240, v45 = *(pixelBuffer + 4), v46 = 1024, v47 = v18, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v44, 0x12u), (v18 = *buf) == 0))
         {
-          BaseAddress = CVPixelBufferGetBaseAddress(a3);
-          v20 = CVPixelBufferGetBaseAddress(a4);
+          BaseAddress = CVPixelBufferGetBaseAddress(to);
+          v20 = CVPixelBufferGetBaseAddress(y);
           v21 = self->super._cnnOutputHeight;
           if (v21 >= 1)
           {
@@ -871,7 +871,7 @@ LABEL_25:
                     FCVT            S0, H0
                   }
 
-                  _S0 = _S0 * a5;
+                  _S0 = _S0 * x;
                   __asm { FCVT            H0, S0 }
 
                   *&BaseAddress[2 * i] = LOWORD(_S0);
@@ -882,7 +882,7 @@ LABEL_25:
                     FCVT            S0, H0
                   }
 
-                  _S0 = _S0 * a6;
+                  _S0 = _S0 * scalerY;
                   __asm { FCVT            H0, S0 }
 
                   *&v20[2 * i] = LOWORD(_S0);
@@ -923,7 +923,7 @@ LABEL_25:
         [VCPMoFlowSingleEspresso copyImage:toData:withChannels:];
       }
 
-      if (v40 && !v39 && CVPixelBufferUnlockBaseAddress(v40, v41) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if (toCopy && !v39 && CVPixelBufferUnlockBaseAddress(toCopy, v41) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         [VCPMoFlowSingleEspresso copyImage:toData:withChannels:];
       }
@@ -943,12 +943,12 @@ LABEL_25:
   return v18;
 }
 
-- (int)updateModelForAspectRatio:(id)a3 computationAccuracy:(unsigned int)a4
+- (int)updateModelForAspectRatio:(id)ratio computationAccuracy:(unsigned int)accuracy
 {
   v7 = self->_resConfig;
-  self->super._computationAccuracy = a4;
-  v8 = [(VCPMoFlowSingleEspresso *)self configForAspectRatio:a3];
-  if (!v8)
+  self->super._computationAccuracy = accuracy;
+  prepareModel = [(VCPMoFlowSingleEspresso *)self configForAspectRatio:ratio];
+  if (!prepareModel)
   {
     if (v7 == self->_resConfig)
     {
@@ -957,21 +957,21 @@ LABEL_25:
 
     if (!self->_modelEspresso)
     {
-      v8 = -108;
+      prepareModel = -108;
       goto LABEL_7;
     }
 
-    v8 = [(VCPMoFlowSingleEspresso *)self prepareModel];
-    if (!v8)
+    prepareModel = [(VCPMoFlowSingleEspresso *)self prepareModel];
+    if (!prepareModel)
     {
 LABEL_5:
-      v8 = 0;
+      prepareModel = 0;
     }
   }
 
 LABEL_7:
 
-  return v8;
+  return prepareModel;
 }
 
 - (id).cxx_construct

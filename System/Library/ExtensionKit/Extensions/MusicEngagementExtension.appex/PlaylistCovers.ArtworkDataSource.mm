@@ -1,29 +1,29 @@
 @interface PlaylistCovers.ArtworkDataSource
 - (_TtCO9MusicCore14PlaylistCovers17ArtworkDataSource)init;
-- (id)existingRepresentationForArtworkCatalog:(id)a3;
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3;
-- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)a3 completionHandler:(id)a4;
+- (id)existingRepresentationForArtworkCatalog:(id)catalog;
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog;
+- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)catalog completionHandler:(id)handler;
 @end
 
 @implementation PlaylistCovers.ArtworkDataSource
 
-- (id)existingRepresentationForArtworkCatalog:(id)a3
+- (id)existingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = self;
-  v6 = PlaylistCovers.ArtworkDataSource.existingRepresentation(for:)(v4);
+  catalogCopy = catalog;
+  selfCopy = self;
+  v6 = PlaylistCovers.ArtworkDataSource.existingRepresentation(for:)(catalogCopy);
 
   return v6;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)catalog completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd_0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = catalog;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -38,15 +38,15 @@
   v14[3] = 0;
   v14[4] = &_sIeghH_IeAgH_TRTATu;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  catalogCopy = catalog;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTATu, v14);
 }
 
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog
 {
-  v3 = a3;
-  v4 = [v3 token];
+  catalogCopy = catalog;
+  token = [catalogCopy token];
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
 

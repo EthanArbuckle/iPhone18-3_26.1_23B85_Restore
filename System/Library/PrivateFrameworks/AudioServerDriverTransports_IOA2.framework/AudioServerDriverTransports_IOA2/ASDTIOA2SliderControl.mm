@@ -1,9 +1,9 @@
 @interface ASDTIOA2SliderControl
 - (ASDTIOA2Device)ioa2Device;
-- (BOOL)synchronizeWithRegistryDictionary:(id)a3;
+- (BOOL)synchronizeWithRegistryDictionary:(id)dictionary;
 - (NSArray)propertySelectorInfo;
 - (void)dealloc;
-- (void)setValue:(unsigned int)a3;
+- (void)setValue:(unsigned int)value;
 @end
 
 @implementation ASDTIOA2SliderControl
@@ -38,20 +38,20 @@
   return v4;
 }
 
-- (BOOL)synchronizeWithRegistryDictionary:(id)a3
+- (BOOL)synchronizeWithRegistryDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     std::recursive_mutex::lock(&self->_lock);
-    v5 = [(NSDictionary *)v4 objectForKeyedSubscript:@"property selectors"];
+    v5 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"property selectors"];
     v6 = [(ASDControl *)self asdtAddControlProperties:v5];
 
     if (v6)
     {
       v11 = 0;
       v10 = 0;
-      ValueAndRangeFromControlDict = getValueAndRangeFromControlDict(v4, &v11, &v10);
+      ValueAndRangeFromControlDict = getValueAndRangeFromControlDict(dictionaryCopy, &v11, &v10);
       if (ValueAndRangeFromControlDict)
       {
         [(ASDSliderControl *)self setRange:v10];
@@ -82,15 +82,15 @@
   return ValueAndRangeFromControlDict;
 }
 
-- (void)setValue:(unsigned int)a3
+- (void)setValue:(unsigned int)value
 {
-  v6 = a3;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->_ioa2Device);
-  v5 = [WeakRetained _setControlValue:&v6 forControl:self->_userClientID];
+  v5 = [WeakRetained _setControlValue:&valueCopy forControl:self->_userClientID];
 
   if (v5)
   {
-    [(ASDTIOA2SliderControl *)self doSetValue:v6];
+    [(ASDTIOA2SliderControl *)self doSetValue:valueCopy];
   }
 }
 

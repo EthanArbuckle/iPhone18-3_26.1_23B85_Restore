@@ -1,8 +1,8 @@
 @interface HVContentState
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithConsumers:(id)a3 levelOfService:(unsigned __int8)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithConsumers:(id)consumers levelOfService:(unsigned __int8)service;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -57,7 +57,7 @@
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HVMutableContentState alloc];
   consumers = self->_consumers;
@@ -66,10 +66,10 @@
   return [(HVMutableContentState *)v4 initWithConsumers:consumers levelOfService:levelOfService];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -77,9 +77,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_levelOfService == v4->_levelOfService)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_levelOfService == equalCopy->_levelOfService)
     {
-      v5 = [(NSSet *)self->_consumers isEqual:v4->_consumers];
+      v5 = [(NSSet *)self->_consumers isEqual:equalCopy->_consumers];
     }
 
     else
@@ -91,20 +91,20 @@
   return v5;
 }
 
-- (id)_initWithConsumers:(id)a3 levelOfService:(unsigned __int8)a4
+- (id)_initWithConsumers:(id)consumers levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumersCopy = consumers;
   v12.receiver = self;
   v12.super_class = HVContentState;
   v7 = [(HVContentState *)&v12 init];
   if (v7)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [v6 copy];
+    v9 = [consumersCopy copy];
     consumers = v7->_consumers;
     v7->_consumers = v9;
 
-    v7->_levelOfService = a4;
+    v7->_levelOfService = service;
     objc_autoreleasePoolPop(v8);
   }
 

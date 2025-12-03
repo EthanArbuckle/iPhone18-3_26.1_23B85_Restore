@@ -1,8 +1,8 @@
 @interface _WKTargetedElementRequest
 - (_WKTargetedElementRequest)init;
-- (_WKTargetedElementRequest)initWithPoint:(CGPoint)a3;
-- (_WKTargetedElementRequest)initWithSearchText:(id)a3;
-- (_WKTargetedElementRequest)initWithSelectors:(id)a3;
+- (_WKTargetedElementRequest)initWithPoint:(CGPoint)point;
+- (_WKTargetedElementRequest)initWithSearchText:(id)text;
+- (_WKTargetedElementRequest)initWithSelectors:(id)selectors;
 - (void)dealloc;
 @end
 
@@ -50,15 +50,15 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(_WKTargetedElementRequest *)v3 _apiObject];
+    _apiObject = [(_WKTargetedElementRequest *)v3 _apiObject];
     v11 = v3;
-    v12 = v5;
+    v12 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v12, &v11, v10);
-    v6 = [(_WKTargetedElementRequest *)v3 _apiObject];
-    *v6 = 0u;
-    v6[1] = 0u;
-    v6[2] = 0u;
-    v7 = API::Object::Object(v6);
+    _apiObject2 = [(_WKTargetedElementRequest *)v3 _apiObject];
+    *_apiObject2 = 0u;
+    _apiObject2[1] = 0u;
+    _apiObject2[2] = 0u;
+    v7 = API::Object::Object(_apiObject2);
     *v7 = &unk_1F10FBBB0;
     *(v7 + 2) = 0;
     *(v7 + 32) = 0;
@@ -68,12 +68,12 @@
   return v3;
 }
 
-- (_WKTargetedElementRequest)initWithSearchText:(id)a3
+- (_WKTargetedElementRequest)initWithSearchText:(id)text
 {
   v4 = [(_WKTargetedElementRequest *)self init];
   if (v4)
   {
-    MEMORY[0x19EB02040](&v8, a3);
+    MEMORY[0x19EB02040](&v8, text);
     API::TargetedElementRequest::setSearchText(&v4->_request, &v8);
     v6 = v8;
     v8 = 0;
@@ -89,20 +89,20 @@
   return v4;
 }
 
-- (_WKTargetedElementRequest)initWithPoint:(CGPoint)a3
+- (_WKTargetedElementRequest)initWithPoint:(CGPoint)point
 {
-  v7 = a3;
+  pointCopy = point;
   v3 = [(_WKTargetedElementRequest *)self init];
   if (v3)
   {
-    WebCore::FloatPoint::FloatPoint(v6, &v7);
+    WebCore::FloatPoint::FloatPoint(v6, &pointCopy);
     API::TargetedElementRequest::setPoint(&v3->_request, v4, v6[0], v6[1]);
   }
 
   return v3;
 }
 
-- (_WKTargetedElementRequest)initWithSelectors:(id)a3
+- (_WKTargetedElementRequest)initWithSelectors:(id)selectors
 {
   v39 = *MEMORY[0x1E69E9840];
   v4 = [(_WKTargetedElementRequest *)self init];
@@ -113,7 +113,7 @@
 
   v35 = 0;
   v36 = 0;
-  result = [a3 count];
+  result = [selectors count];
   if (!result)
   {
 LABEL_5:
@@ -121,7 +121,7 @@ LABEL_5:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v31 objects:v38 count:16];
+    v6 = [selectors countByEnumeratingWithState:&v31 objects:v38 count:16];
     if (v6)
     {
       v7 = *v32;
@@ -132,7 +132,7 @@ LABEL_5:
         {
           if (*v32 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(selectors);
           }
 
           v9 = *(*(&v31 + 1) + 8 * v8);
@@ -206,7 +206,7 @@ LABEL_5:
         }
 
         while (v8 != v6);
-        v6 = [a3 countByEnumeratingWithState:&v31 objects:v38 count:16];
+        v6 = [selectors countByEnumeratingWithState:&v31 objects:v38 count:16];
       }
 
       while (v6);

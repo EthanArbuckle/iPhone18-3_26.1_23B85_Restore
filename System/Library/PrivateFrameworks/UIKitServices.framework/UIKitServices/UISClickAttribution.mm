@@ -1,63 +1,63 @@
 @interface UISClickAttribution
-- (BOOL)isEqual:(id)a3;
-- (UISClickAttribution)clickAttributionWithReportEndpoint:(id)a3;
-- (UISClickAttribution)initWithCoder:(id)a3;
-- (UISClickAttribution)initWithSourceIdentifier:(unsigned __int8)a3 destinationURL:(id)a4 reportEndpoint:(id)a5 sourceDescription:(id)a6 purchaser:(id)a7 eventMessage:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (UISClickAttribution)clickAttributionWithReportEndpoint:(id)endpoint;
+- (UISClickAttribution)initWithCoder:(id)coder;
+- (UISClickAttribution)initWithSourceIdentifier:(unsigned __int8)identifier destinationURL:(id)l reportEndpoint:(id)endpoint sourceDescription:(id)description purchaser:(id)purchaser eventMessage:(id)message;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISClickAttribution
 
-- (UISClickAttribution)initWithSourceIdentifier:(unsigned __int8)a3 destinationURL:(id)a4 reportEndpoint:(id)a5 sourceDescription:(id)a6 purchaser:(id)a7 eventMessage:(id)a8
+- (UISClickAttribution)initWithSourceIdentifier:(unsigned __int8)identifier destinationURL:(id)l reportEndpoint:(id)endpoint sourceDescription:(id)description purchaser:(id)purchaser eventMessage:(id)message
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  lCopy = l;
+  endpointCopy = endpoint;
+  descriptionCopy = description;
+  purchaserCopy = purchaser;
+  messageCopy = message;
   v32.receiver = self;
   v32.super_class = UISClickAttribution;
   v19 = [(UISClickAttribution *)&v32 init];
   v20 = v19;
   if (v19)
   {
-    v19->_sourceIdentifier = a3;
-    v21 = [v14 copy];
+    v19->_sourceIdentifier = identifier;
+    v21 = [lCopy copy];
     destinationURL = v20->_destinationURL;
     v20->_destinationURL = v21;
 
-    v23 = [v15 copy];
+    v23 = [endpointCopy copy];
     reportEndpoint = v20->_reportEndpoint;
     v20->_reportEndpoint = v23;
 
-    if ([v16 length] > 0x64)
+    if ([descriptionCopy length] > 0x64)
     {
-      v25 = [v16 substringToIndex:100];
+      v25 = [descriptionCopy substringToIndex:100];
     }
 
     else
     {
-      v25 = [v16 copy];
+      v25 = [descriptionCopy copy];
     }
 
     sourceDescription = v20->_sourceDescription;
     v20->_sourceDescription = v25;
 
-    if ([v17 length] > 0x64)
+    if ([purchaserCopy length] > 0x64)
     {
-      v27 = [v17 substringToIndex:100];
+      v27 = [purchaserCopy substringToIndex:100];
     }
 
     else
     {
-      v27 = [v17 copy];
+      v27 = [purchaserCopy copy];
     }
 
     purchaser = v20->_purchaser;
     v20->_purchaser = v27;
 
-    v29 = [v18 copy];
+    v29 = [messageCopy copy];
     eventMessage = v20->_eventMessage;
     v20->_eventMessage = v29;
   }
@@ -65,51 +65,51 @@
   return v20;
 }
 
-- (UISClickAttribution)clickAttributionWithReportEndpoint:(id)a3
+- (UISClickAttribution)clickAttributionWithReportEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = [UISClickAttribution alloc];
-  v6 = [(UISClickAttribution *)self sourceIdentifier];
-  v7 = [(UISClickAttribution *)self destinationURL];
-  v8 = [(UISClickAttribution *)self sourceDescription];
-  v9 = [(UISClickAttribution *)self purchaser];
-  v10 = [(UISClickAttribution *)self eventMessage];
-  v11 = [(UISClickAttribution *)v5 initWithSourceIdentifier:v6 destinationURL:v7 reportEndpoint:v4 sourceDescription:v8 purchaser:v9 eventMessage:v10];
+  sourceIdentifier = [(UISClickAttribution *)self sourceIdentifier];
+  destinationURL = [(UISClickAttribution *)self destinationURL];
+  sourceDescription = [(UISClickAttribution *)self sourceDescription];
+  purchaser = [(UISClickAttribution *)self purchaser];
+  eventMessage = [(UISClickAttribution *)self eventMessage];
+  v11 = [(UISClickAttribution *)v5 initWithSourceIdentifier:sourceIdentifier destinationURL:destinationURL reportEndpoint:endpointCopy sourceDescription:sourceDescription purchaser:purchaser eventMessage:eventMessage];
 
   return v11;
 }
 
-- (UISClickAttribution)initWithCoder:(id)a3
+- (UISClickAttribution)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = UISClickAttribution;
   v5 = [(UISClickAttribution *)&v22 init];
   if (v5)
   {
-    v5->_sourceIdentifier = [v4 decodeIntegerForKey:@"SourceIdentifier"];
+    v5->_sourceIdentifier = [coderCopy decodeIntegerForKey:@"SourceIdentifier"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"DestinationURL"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"DestinationURL"];
     destinationURL = v5->_destinationURL;
     v5->_destinationURL = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"ReportEndpoint"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"ReportEndpoint"];
     reportEndpoint = v5->_reportEndpoint;
     v5->_reportEndpoint = v10;
 
     v12 = objc_opt_self();
-    v13 = [v4 decodeObjectOfClass:v12 forKey:@"SourceDescription"];
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"SourceDescription"];
     sourceDescription = v5->_sourceDescription;
     v5->_sourceDescription = v13;
 
     v15 = objc_opt_self();
-    v16 = [v4 decodeObjectOfClass:v15 forKey:@"Purchaser"];
+    v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"Purchaser"];
     purchaser = v5->_purchaser;
     v5->_purchaser = v16;
 
     v18 = objc_opt_self();
-    v19 = [v4 decodeObjectOfClass:v18 forKey:@"EventMessage"];
+    v19 = [coderCopy decodeObjectOfClass:v18 forKey:@"EventMessage"];
     eventMessage = v5->_eventMessage;
     v5->_eventMessage = v19;
   }
@@ -117,22 +117,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceIdentifier = self->_sourceIdentifier;
-  v5 = a3;
-  [v5 encodeInteger:sourceIdentifier forKey:@"SourceIdentifier"];
-  [v5 encodeObject:self->_destinationURL forKey:@"DestinationURL"];
-  [v5 encodeObject:self->_reportEndpoint forKey:@"ReportEndpoint"];
-  [v5 encodeObject:self->_sourceDescription forKey:@"SourceDescription"];
-  [v5 encodeObject:self->_purchaser forKey:@"Purchaser"];
-  [v5 encodeObject:self->_eventMessage forKey:@"EventMessage"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:sourceIdentifier forKey:@"SourceIdentifier"];
+  [coderCopy encodeObject:self->_destinationURL forKey:@"DestinationURL"];
+  [coderCopy encodeObject:self->_reportEndpoint forKey:@"ReportEndpoint"];
+  [coderCopy encodeObject:self->_sourceDescription forKey:@"SourceDescription"];
+  [coderCopy encodeObject:self->_purchaser forKey:@"Purchaser"];
+  [coderCopy encodeObject:self->_eventMessage forKey:@"EventMessage"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -144,36 +144,36 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       sourceIdentifier = self->_sourceIdentifier;
       if (sourceIdentifier == [(UISClickAttribution *)v7 sourceIdentifier])
       {
         destinationURL = self->_destinationURL;
-        v10 = [(UISClickAttribution *)v7 destinationURL];
-        if (destinationURL == v10 || [(NSURL *)destinationURL isEqual:v10])
+        destinationURL = [(UISClickAttribution *)v7 destinationURL];
+        if (destinationURL == destinationURL || [(NSURL *)destinationURL isEqual:destinationURL])
         {
           reportEndpoint = self->_reportEndpoint;
-          v12 = [(UISClickAttribution *)v7 reportEndpoint];
-          if (reportEndpoint == v12 || [(NSURL *)reportEndpoint isEqual:v12])
+          reportEndpoint = [(UISClickAttribution *)v7 reportEndpoint];
+          if (reportEndpoint == reportEndpoint || [(NSURL *)reportEndpoint isEqual:reportEndpoint])
           {
             sourceDescription = self->_sourceDescription;
-            v14 = [(UISClickAttribution *)v7 sourceDescription];
-            if (sourceDescription == v14 || [(NSString *)sourceDescription isEqual:v14])
+            sourceDescription = [(UISClickAttribution *)v7 sourceDescription];
+            if (sourceDescription == sourceDescription || [(NSString *)sourceDescription isEqual:sourceDescription])
             {
               purchaser = self->_purchaser;
-              v16 = [(UISClickAttribution *)v7 purchaser];
-              if (purchaser == v16 || [(NSString *)purchaser isEqual:v16])
+              purchaser = [(UISClickAttribution *)v7 purchaser];
+              if (purchaser == purchaser || [(NSString *)purchaser isEqual:purchaser])
               {
                 eventMessage = self->_eventMessage;
-                v18 = [(UISClickAttribution *)v7 eventMessage];
-                if (eventMessage == v18)
+                eventMessage = [(UISClickAttribution *)v7 eventMessage];
+                if (eventMessage == eventMessage)
                 {
                   v19 = 1;
                 }
 
                 else
                 {
-                  v19 = [(BKSHIDEventAuthenticationMessage *)eventMessage isEqual:v18];
+                  v19 = [(BKSHIDEventAuthenticationMessage *)eventMessage isEqual:eventMessage];
                 }
               }
 
@@ -211,7 +211,7 @@
     {
       v21.receiver = self;
       v21.super_class = UISClickAttribution;
-      v19 = [(UISClickAttribution *)&v21 isEqual:v4];
+      v19 = [(UISClickAttribution *)&v21 isEqual:equalCopy];
     }
   }
 

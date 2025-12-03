@@ -1,25 +1,25 @@
 @interface STCoreDataPersistenceSource
-- (id)_coreUserForIdentifier:(id)a3 inContext:(id)a4;
-- (id)userDataWithIdentifier:(id)a3;
-- (void)saveCommunicationSafetySettingsForDSID:(id)a3 checkForUnsafePhotos:(BOOL)a4 communicationSafetyNotificationEnabled:(BOOL)a5 communicationSafetyAnalyticsEnabled:(BOOL)a6 completionHandler:(id)a7;
+- (id)_coreUserForIdentifier:(id)identifier inContext:(id)context;
+- (id)userDataWithIdentifier:(id)identifier;
+- (void)saveCommunicationSafetySettingsForDSID:(id)d checkForUnsafePhotos:(BOOL)photos communicationSafetyNotificationEnabled:(BOOL)enabled communicationSafetyAnalyticsEnabled:(BOOL)analyticsEnabled completionHandler:(id)handler;
 @end
 
 @implementation STCoreDataPersistenceSource
 
-- (void)saveCommunicationSafetySettingsForDSID:(id)a3 checkForUnsafePhotos:(BOOL)a4 communicationSafetyNotificationEnabled:(BOOL)a5 communicationSafetyAnalyticsEnabled:(BOOL)a6 completionHandler:(id)a7
+- (void)saveCommunicationSafetySettingsForDSID:(id)d checkForUnsafePhotos:(BOOL)photos communicationSafetyNotificationEnabled:(BOOL)enabled communicationSafetyAnalyticsEnabled:(BOOL)analyticsEnabled completionHandler:(id)handler
 {
-  v11 = a3;
+  dCopy = d;
   v12 = +[STAdminPersistenceController sharedController];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __184__STCoreDataPersistenceSource_saveCommunicationSafetySettingsForDSID_checkForUnsafePhotos_communicationSafetyNotificationEnabled_communicationSafetyAnalyticsEnabled_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE7418;
   v14[4] = self;
-  v15 = v11;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v13 = v11;
+  v15 = dCopy;
+  photosCopy = photos;
+  enabledCopy = enabled;
+  analyticsEnabledCopy = analyticsEnabled;
+  v13 = dCopy;
   [v12 performBackgroundTaskAndWait:v14];
 }
 
@@ -51,9 +51,9 @@ void __184__STCoreDataPersistenceSource_saveCommunicationSafetySettingsForDSID_c
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)userDataWithIdentifier:(id)a3
+- (id)userDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -66,7 +66,7 @@ void __184__STCoreDataPersistenceSource_saveCommunicationSafetySettingsForDSID_c
   v9[2] = __54__STCoreDataPersistenceSource_userDataWithIdentifier___block_invoke;
   v9[3] = &unk_1E7CE7440;
   v9[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
   [v5 performBackgroundTaskAndWait:v9];
@@ -110,27 +110,27 @@ void __54__STCoreDataPersistenceSource_userDataWithIdentifier___block_invoke(uin
   }
 }
 
-- (id)_coreUserForIdentifier:(id)a3 inContext:(id)a4
+- (id)_coreUserForIdentifier:(id)identifier inContext:(id)context
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_new();
   [v5 setNumberStyle:1];
-  v6 = [v5 numberFromString:v4];
+  v6 = [v5 numberFromString:identifierCopy];
 
   v7 = [STCoreUser fetchRequestForUsersWithDSID:v6];
   v8 = [v7 execute:0];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 firstObject];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
-  return v10;
+  return firstObject;
 }
 
 @end

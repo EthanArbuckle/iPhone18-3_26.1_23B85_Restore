@@ -1,13 +1,13 @@
 @interface _PageRenderMetricsVisualizer.PopupHUDViewController
-- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer22PopupHUDViewController)initWithCoder:(id)a3;
-- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer22PopupHUDViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer22PopupHUDViewController)initWithCoder:(id)coder;
+- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer22PopupHUDViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)encodeWithCoder:(id)coder;
 - (void)viewDidLoad;
 @end
 
 @implementation _PageRenderMetricsVisualizer.PopupHUDViewController
 
-- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer22PopupHUDViewController)initWithCoder:(id)a3
+- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer22PopupHUDViewController)initWithCoder:(id)coder
 {
   sub_1B7A9A760();
   sub_1B7A9A750();
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sub_1B7A9A760();
   sub_1B7A9A750();
@@ -46,11 +46,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1B7A5C838();
 }
 
-- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer22PopupHUDViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCC18_JetEngine_SwiftUI28_PageRenderMetricsVisualizer22PopupHUDViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_1B7A9A760();
   sub_1B7A9A750();

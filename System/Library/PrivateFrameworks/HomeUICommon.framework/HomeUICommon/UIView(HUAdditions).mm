@@ -12,7 +12,7 @@
 
 - (uint64_t)hu_setFramePreservingTransform:()HUAdditions
 {
-  [a1 setBounds:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  [self setBounds:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
   v14.origin.x = a2;
   v14.origin.y = a3;
   v14.size.width = a4;
@@ -24,7 +24,7 @@
   v15.size.height = a5;
   MidY = CGRectGetMidY(v15);
 
-  return [a1 setCenter:{MidX, MidY}];
+  return [self setCenter:{MidX, MidY}];
 }
 
 - (void)hu_traverseViewHierarchy:()HUAdditions
@@ -35,8 +35,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a1 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subviews = [self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -47,7 +47,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -55,7 +55,7 @@
         [v10 hu_traverseViewHierarchy:v4];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -68,31 +68,31 @@
 {
   LODWORD(a4) = 1148846080;
   LODWORD(a5) = 1112014848;
-  [a1 systemLayoutSizeFittingSize:a2 withHorizontalFittingPriority:*(MEMORY[0x277D76C70] + 8) verticalFittingPriority:{a4, a5}];
-  [a1 frame];
+  [self systemLayoutSizeFittingSize:a2 withHorizontalFittingPriority:*(MEMORY[0x277D76C70] + 8) verticalFittingPriority:{a4, a5}];
+  [self frame];
   v7 = v6;
-  [a1 frame];
+  [self frame];
 
-  return [a1 setFrame:v7];
+  return [self setFrame:v7];
 }
 
 + (void)hu_enableAnimations:()HUAdditions forBlock:
 {
   v6 = a4;
-  v5 = [MEMORY[0x277D75D18] areAnimationsEnabled];
-  if (v5)
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  if (areAnimationsEnabled)
   {
     [MEMORY[0x277D75D18] setAnimationsEnabled:a3];
   }
 
   v6[2]();
-  [MEMORY[0x277D75D18] setAnimationsEnabled:v5];
+  [MEMORY[0x277D75D18] setAnimationsEnabled:areAnimationsEnabled];
 }
 
 - (BOOL)hu_isHomeAffordancePresent
 {
-  v1 = [a1 window];
-  [v1 safeAreaInsets];
+  window = [self window];
+  [window safeAreaInsets];
   v3 = v2 > 0.0;
 
   return v3;
@@ -100,10 +100,10 @@
 
 - (uint64_t)hu_isDescendantOfPickerView
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v2 = v1;
+    v2 = selfCopy;
     do
     {
       objc_opt_class();
@@ -113,12 +113,12 @@
         break;
       }
 
-      v4 = [v2 superview];
+      superview = [v2 superview];
 
-      v2 = v4;
+      v2 = superview;
     }
 
-    while (v4);
+    while (superview);
   }
 
   else
@@ -131,15 +131,15 @@
 
 - (__CFString)hu_contentModeString
 {
-  v1 = [a1 contentMode];
-  if ((v1 - 1) > 0xB)
+  contentMode = [self contentMode];
+  if ((contentMode - 1) > 0xB)
   {
     return @"ScaleToFill";
   }
 
   else
   {
-    return off_27977D5A0[v1 - 1];
+    return off_27977D5A0[contentMode - 1];
   }
 }
 

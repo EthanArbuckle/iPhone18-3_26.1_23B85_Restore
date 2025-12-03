@@ -1,16 +1,16 @@
 @interface _UIWeakDisplayLinkTarget
-- (_UIWeakDisplayLinkTarget)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_displayLinkTick:(id)a3;
+- (_UIWeakDisplayLinkTarget)initWithTarget:(id)target action:(SEL)action;
+- (void)_displayLinkTick:(id)tick;
 @end
 
 @implementation _UIWeakDisplayLinkTarget
 
-- (_UIWeakDisplayLinkTarget)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIWeakDisplayLinkTarget)initWithTarget:(id)target action:(SEL)action
 {
-  v7 = a3;
-  if (v7)
+  targetCopy = target;
+  if (targetCopy)
   {
-    if (a4)
+    if (action)
     {
       goto LABEL_3;
     }
@@ -18,17 +18,17 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIWeakDisplayLinkTarget.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"target"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWeakDisplayLinkTarget.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"target"}];
 
-    if (a4)
+    if (action)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"_UIWeakDisplayLinkTarget.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIWeakDisplayLinkTarget.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
 LABEL_3:
   v14.receiver = self;
@@ -37,26 +37,26 @@ LABEL_3:
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_target, v7);
-    if (a4)
+    objc_storeWeak(&v8->_target, targetCopy);
+    if (action)
     {
-      v10 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v10 = 0;
+      actionCopy = 0;
     }
 
-    v9->_action = v10;
+    v9->_action = actionCopy;
   }
 
   return v9;
 }
 
-- (void)_displayLinkTick:(id)a3
+- (void)_displayLinkTick:(id)tick
 {
-  v6 = a3;
+  tickCopy = tick;
   WeakRetained = objc_loadWeakRetained(&self->_target);
   if (self->_action)
   {
@@ -75,7 +75,7 @@ LABEL_3:
 
   else
   {
-    [WeakRetained performSelector:action withObject:v6];
+    [WeakRetained performSelector:action withObject:tickCopy];
   }
 }
 

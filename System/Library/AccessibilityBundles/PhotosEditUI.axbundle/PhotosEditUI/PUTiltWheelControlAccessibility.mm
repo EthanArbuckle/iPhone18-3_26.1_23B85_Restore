@@ -1,7 +1,7 @@
 @interface PUTiltWheelControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
-- (CGAffineTransform)_transformForTiltAngle:(SEL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
+- (CGAffineTransform)_transformForTiltAngle:(SEL)angle;
 - (id)accessibilityValue;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
@@ -9,14 +9,14 @@
 
 @implementation PUTiltWheelControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUTiltWheelControl" hasInstanceMethod:@"tiltAngle" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUTiltWheelControl" hasInstanceMethod:@"maxTiltAngle" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUTiltWheelControl" hasInstanceMethod:@"minTiltAngle" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUTiltWheelControl" hasInstanceMethod:@"_setTiltAngleFromUserInteraction:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"PUTiltWheelControl" hasInstanceMethod:@"_transformForTiltAngle:" withFullSignature:{"{CGAffineTransform=dddddd}", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUTiltWheelControl" hasInstanceMethod:@"tiltAngle" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUTiltWheelControl" hasInstanceMethod:@"maxTiltAngle" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUTiltWheelControl" hasInstanceMethod:@"minTiltAngle" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUTiltWheelControl" hasInstanceMethod:@"_setTiltAngleFromUserInteraction:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"PUTiltWheelControl" hasInstanceMethod:@"_transformForTiltAngle:" withFullSignature:{"{CGAffineTransform=dddddd}", "d", 0}];
 }
 
 - (id)accessibilityValue
@@ -77,13 +77,13 @@ uint64_t __57__PUTiltWheelControlAccessibility_accessibilityDecrement__block_inv
   return result;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if ((a3 - 3) > 1)
+  if ((scroll - 3) > 1)
   {
     v19.receiver = self;
     v19.super_class = PUTiltWheelControlAccessibility;
-    return [(PUTiltWheelControlAccessibility *)&v19 accessibilityScroll:a3];
+    return [(PUTiltWheelControlAccessibility *)&v19 accessibilityScroll:scroll];
   }
 
   else
@@ -94,7 +94,7 @@ uint64_t __57__PUTiltWheelControlAccessibility_accessibilityDecrement__block_inv
 
     [(PUTiltWheelControlAccessibility *)self _axRadiansToDegrees:v7];
     v9 = v8;
-    if (a3 == 4)
+    if (scroll == 4)
     {
       v10 = [(PUTiltWheelControlAccessibility *)self safeValueForKey:@"maxTiltAngle"];
       [v10 floatValue];
@@ -108,7 +108,7 @@ uint64_t __57__PUTiltWheelControlAccessibility_accessibilityDecrement__block_inv
       v33 = v9;
       v34 = v13;
       v35 = v7;
-      v32 = self;
+      selfCopy = self;
     }
 
     else
@@ -125,7 +125,7 @@ uint64_t __57__PUTiltWheelControlAccessibility_accessibilityDecrement__block_inv
       v25 = v9;
       v26 = v18;
       v27 = v7;
-      v24 = self;
+      selfCopy2 = self;
     }
 
     AXPerformSafeBlock();
@@ -177,7 +177,7 @@ void __55__PUTiltWheelControlAccessibility_accessibilityScroll___block_invoke_2(
   }
 }
 
-- (CGAffineTransform)_transformForTiltAngle:(SEL)a3
+- (CGAffineTransform)_transformForTiltAngle:(SEL)angle
 {
   [(PUTiltWheelControlAccessibility *)self _axRadiansToDegrees:?];
   v7 = v6;

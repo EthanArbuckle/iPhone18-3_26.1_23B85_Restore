@@ -1,20 +1,20 @@
 @interface SUUIProductPageFeaturesView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIProductPageFeaturesView)initWithFrame:(CGRect)a3;
-- (id)_gameCenterStringWithFeatures:(unint64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIProductPageFeaturesView)initWithFrame:(CGRect)frame;
+- (id)_gameCenterStringWithFeatures:(unint64_t)features;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFeatures:(int64_t)a3 gameCenterFeatures:(unint64_t)a4;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setFeatures:(int64_t)features gameCenterFeatures:(unint64_t)centerFeatures;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SUUIProductPageFeaturesView
 
-- (SUUIProductPageFeaturesView)initWithFrame:(CGRect)a3
+- (SUUIProductPageFeaturesView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SUUIProductPageFeaturesView;
-  v3 = [(SUUIProductPageFeaturesView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIProductPageFeaturesView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -22,10 +22,10 @@
     v3->_bottomBorderView = v4;
 
     v6 = v3->_bottomBorderView;
-    v7 = [(SUUIColorScheme *)v3->_colorScheme primaryTextColor];
-    if (v7)
+    primaryTextColor = [(SUUIColorScheme *)v3->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UIView *)v6 setBackgroundColor:v7];
+      [(UIView *)v6 setBackgroundColor:primaryTextColor];
     }
 
     else
@@ -40,15 +40,15 @@
   return v3;
 }
 
-- (void)setFeatures:(int64_t)a3 gameCenterFeatures:(unint64_t)a4
+- (void)setFeatures:(int64_t)features gameCenterFeatures:(unint64_t)centerFeatures
 {
-  gameCenterFeatures = a4;
+  gameCenterFeatures = centerFeatures;
   v36[16] = *MEMORY[0x277D85DE8];
-  if (self->_features != a3 || self->_gameCenterFeatures != a4)
+  if (self->_features != features || self->_gameCenterFeatures != centerFeatures)
   {
     [(NSMutableArray *)self->_featureViews makeObjectsPerformSelector:sel_removeFromSuperview];
     [(NSMutableArray *)self->_featureViews removeAllObjects];
-    self->_features = a3;
+    self->_features = features;
     self->_gameCenterFeatures = gameCenterFeatures;
     if (!self->_featureViews)
     {
@@ -173,8 +173,8 @@
       {
         v32 = objc_alloc_init(SUUIProductPageFeatureView);
         [(SUUIProductPageFeatureView *)v32 setColorScheme:self->_colorScheme];
-        v33 = [(SUUIProductPageFeaturesView *)self backgroundColor];
-        [(SUUIProductPageFeatureView *)v32 setBackgroundColor:v33];
+        backgroundColor = [(SUUIProductPageFeaturesView *)self backgroundColor];
+        [(SUUIProductPageFeatureView *)v32 setBackgroundColor:backgroundColor];
 
         v34 = [MEMORY[0x277D755B8] imageNamed:v36[i + 1] inBundle:v30];
         [(SUUIProductPageFeatureView *)v32 setIcon:v34];
@@ -190,13 +190,13 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v17 = a3;
-  v4 = [(SUUIProductPageFeaturesView *)self title];
-  if (v4 != v17 && ([v4 isEqualToString:v17] & 1) == 0)
+  titleCopy = title;
+  title = [(SUUIProductPageFeaturesView *)self title];
+  if (title != titleCopy && ([title isEqualToString:titleCopy] & 1) == 0)
   {
-    v5 = [v17 length];
+    v5 = [titleCopy length];
     titleLabel = self->_titleLabel;
     if (v5)
     {
@@ -207,31 +207,31 @@
         self->_titleLabel = v7;
 
         v9 = self->_titleLabel;
-        v10 = [(SUUIProductPageFeaturesView *)self backgroundColor];
-        [(UILabel *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SUUIProductPageFeaturesView *)self backgroundColor];
+        [(UILabel *)v9 setBackgroundColor:backgroundColor];
 
         v11 = self->_titleLabel;
         v12 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
         [(UILabel *)v11 setFont:v12];
 
         v13 = self->_titleLabel;
-        v14 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v14)
+        secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v13 setTextColor:v14];
+          [(UILabel *)v13 setTextColor:secondaryTextColor];
         }
 
         else
         {
-          v16 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v13 setTextColor:v16];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v13 setTextColor:blackColor];
         }
 
         [(SUUIProductPageFeaturesView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
       }
 
-      [(UILabel *)titleLabel setText:v17];
+      [(UILabel *)titleLabel setText:titleCopy];
       [(UILabel *)self->_titleLabel sizeToFit];
     }
 
@@ -310,18 +310,18 @@
   }
 
   bottomBorderView = self->_bottomBorderView;
-  v22 = [MEMORY[0x277D759A0] mainScreen];
-  [v22 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v24 = v27 - 1.0 / v23;
-  v25 = [MEMORY[0x277D759A0] mainScreen];
-  [v25 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   [(UIView *)bottomBorderView setFrame:15.0, v24, v4 + -15.0, 1.0 / v26];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -342,7 +342,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:v4];
+        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:colorCopy];
       }
 
       while (v7 != v9);
@@ -352,17 +352,17 @@
     while (v7);
   }
 
-  [(UILabel *)self->_titleLabel setBackgroundColor:v4];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v10.receiver = self;
   v10.super_class = SUUIProductPageFeaturesView;
-  [(SUUIProductPageFeaturesView *)&v10 setBackgroundColor:v4];
+  [(SUUIProductPageFeaturesView *)&v10 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(NSMutableArray *)self->_featureViews count:a3.width];
+  v5 = [(NSMutableArray *)self->_featureViews count:fits.width];
   titleLabel = self->_titleLabel;
   if (titleLabel)
   {
@@ -416,9 +416,9 @@
   return result;
 }
 
-- (id)_gameCenterStringWithFeatures:(unint64_t)a3
+- (id)_gameCenterStringWithFeatures:(unint64_t)features
 {
-  if (!a3)
+  if (!features)
   {
     clientContext = self->_clientContext;
     if (clientContext)
@@ -439,7 +439,7 @@
   v7 = 5;
   do
   {
-    if ((*(v6 - 1) & a3) != 0)
+    if ((*(v6 - 1) & features) != 0)
     {
       v8 = self->_clientContext;
       v9 = *v6;

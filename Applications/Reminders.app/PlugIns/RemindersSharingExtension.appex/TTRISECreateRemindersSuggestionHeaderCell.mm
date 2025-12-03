@@ -1,10 +1,10 @@
 @interface TTRISECreateRemindersSuggestionHeaderCell
-- (_TtC25RemindersSharingExtension41TTRISECreateRemindersSuggestionHeaderCell)initWithCoder:(id)a3;
+- (_TtC25RemindersSharingExtension41TTRISECreateRemindersSuggestionHeaderCell)initWithCoder:(id)coder;
 @end
 
 @implementation TTRISECreateRemindersSuggestionHeaderCell
 
-- (_TtC25RemindersSharingExtension41TTRISECreateRemindersSuggestionHeaderCell)initWithCoder:(id)a3
+- (_TtC25RemindersSharingExtension41TTRISECreateRemindersSuggestionHeaderCell)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC25RemindersSharingExtension41TTRISECreateRemindersSuggestionHeaderCell_includeAllAction);
   *v3 = 0;

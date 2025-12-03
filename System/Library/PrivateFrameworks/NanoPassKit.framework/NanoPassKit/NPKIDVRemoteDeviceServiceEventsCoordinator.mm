@@ -1,18 +1,18 @@
 @interface NPKIDVRemoteDeviceServiceEventsCoordinator
 - (NPKIDVRemoteDeviceServiceEventsCoordinator)init;
 - (NSString)remoteDeviceID;
-- (id)remoteDeviceParingIDFor:(id)a3;
-- (unint64_t)registerEvents:(unint64_t)a3 forServiceName:(id)a4;
-- (unint64_t)unregisterEvents:(unint64_t)a3 forServiceName:(id)a4;
+- (id)remoteDeviceParingIDFor:(id)for;
+- (unint64_t)registerEvents:(unint64_t)events forServiceName:(id)name;
+- (unint64_t)unregisterEvents:(unint64_t)events forServiceName:(id)name;
 - (void)_insideLockPersistServiceContext;
-- (void)_insideLockSetupBiometricAuthenticationTokenReminderForDeviceID:(id)a3 serviceNames:(id)a4;
-- (void)_insideLockTeardownBiometricAuthenticationTokenReminderForDeviceID:(id)a3;
-- (void)_notifyProcessWithServiceNames:(id)a3 deviceEvent:(unint64_t)a4 forDeviceID:(id)a5 eventContext:(id)a6;
-- (void)handlePassDeletionForPass:(id)a3;
-- (void)initializeWithDevice:(id)a3;
-- (void)insideLockTeardownCurrentRemoteDeviceContextWithReason:(unint64_t)a3;
-- (void)setNeedsPrearmCredential:(BOOL)a3;
-- (void)teardownCurrentRemoteDeviceContextWithReason:(unint64_t)a3;
+- (void)_insideLockSetupBiometricAuthenticationTokenReminderForDeviceID:(id)d serviceNames:(id)names;
+- (void)_insideLockTeardownBiometricAuthenticationTokenReminderForDeviceID:(id)d;
+- (void)_notifyProcessWithServiceNames:(id)names deviceEvent:(unint64_t)event forDeviceID:(id)d eventContext:(id)context;
+- (void)handlePassDeletionForPass:(id)pass;
+- (void)initializeWithDevice:(id)device;
+- (void)insideLockTeardownCurrentRemoteDeviceContextWithReason:(unint64_t)reason;
+- (void)setNeedsPrearmCredential:(BOOL)credential;
+- (void)teardownCurrentRemoteDeviceContextWithReason:(unint64_t)reason;
 @end
 
 @implementation NPKIDVRemoteDeviceServiceEventsCoordinator
@@ -41,9 +41,9 @@
 - (NSString)remoteDeviceID
 {
   os_unfair_lock_lock(&self->_serviceContextLock);
-  v3 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
+  remoteDeviceID = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
   os_unfair_lock_unlock(&self->_serviceContextLock);
-  if (!v3)
+  if (!remoteDeviceID)
   {
     v4 = pk_Payment_log();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -59,22 +59,22 @@
     }
   }
 
-  return v3;
+  return remoteDeviceID;
 }
 
-- (id)remoteDeviceParingIDFor:(id)a3
+- (id)remoteDeviceParingIDFor:(id)for
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  forCopy = for;
+  if (forCopy)
   {
     os_unfair_lock_lock(&self->_serviceContextLock);
-    v5 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
+    remoteDeviceID = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
     v6 = self->_pairingID;
     os_unfair_lock_unlock(&self->_serviceContextLock);
-    if (v5)
+    if (remoteDeviceID)
     {
-      if ([v5 isEqualToString:v4])
+      if ([remoteDeviceID isEqualToString:forCopy])
       {
         v7 = v6;
 LABEL_18:
@@ -92,9 +92,9 @@ LABEL_19:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           v21 = 138412546;
-          v22 = v5;
+          v22 = remoteDeviceID;
           v23 = 2112;
-          v24 = v4;
+          v24 = forCopy;
           v13 = "Error: NPKIDVRemoteDeviceService: Current deviceID: %@ doesn't match expectedID:%@.";
           v14 = v12;
           v15 = OS_LOG_TYPE_ERROR;
@@ -157,7 +157,7 @@ LABEL_20:
   return v7;
 }
 
-- (void)teardownCurrentRemoteDeviceContextWithReason:(unint64_t)a3
+- (void)teardownCurrentRemoteDeviceContextWithReason:(unint64_t)reason
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = pk_Payment_log();
@@ -168,16 +168,16 @@ LABEL_20:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = NSStringFromNPKIDVRemoteDeviceTeardownReason(a3);
+      v8 = NSStringFromNPKIDVRemoteDeviceTeardownReason(reason);
       v13 = 138412290;
       v14 = v8;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested tear down service context with reason:%@", &v13, 0xCu);
     }
   }
 
-  if (a3)
+  if (reason)
   {
-    v9 = 4 * (a3 == 1);
+    v9 = 4 * (reason == 1);
   }
 
   else
@@ -186,22 +186,22 @@ LABEL_20:
   }
 
   os_unfair_lock_lock(&self->_serviceContextLock);
-  v10 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
+  remoteDeviceID = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
   v11 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext serviceNamesForEvent:v9];
-  [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self insideLockTeardownCurrentRemoteDeviceContextWithReason:a3];
+  [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self insideLockTeardownCurrentRemoteDeviceContextWithReason:reason];
   os_unfair_lock_unlock(&self->_serviceContextLock);
-  [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _notifyProcessWithServiceNames:v11 deviceEvent:v9 forDeviceID:v10 eventContext:0];
+  [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _notifyProcessWithServiceNames:v11 deviceEvent:v9 forDeviceID:remoteDeviceID eventContext:0];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insideLockTeardownCurrentRemoteDeviceContextWithReason:(unint64_t)a3
+- (void)insideLockTeardownCurrentRemoteDeviceContextWithReason:(unint64_t)reason
 {
   v31 = *MEMORY[0x277D85DE8];
   serviceContext = self->_serviceContext;
   if (serviceContext)
   {
-    v6 = [(NPKIDVRemoteDeviceServiceContext *)serviceContext remoteDeviceID];
+    remoteDeviceID = [(NPKIDVRemoteDeviceServiceContext *)serviceContext remoteDeviceID];
     v7 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext serviceNamesForEvent:4];
     v8 = pk_Payment_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -213,13 +213,13 @@ LABEL_20:
       {
         v11 = self->_serviceContext;
         serviceContextPath = self->_serviceContextPath;
-        v13 = NSStringFromNPKIDVRemoteDeviceTeardownReason(a3);
+        v13 = NSStringFromNPKIDVRemoteDeviceTeardownReason(reason);
         v23 = 138413058;
         v24 = v11;
         v25 = 2112;
         v26 = serviceContextPath;
         v27 = 2112;
-        v28 = v6;
+        v28 = remoteDeviceID;
         v29 = 2112;
         v30 = v13;
         _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Will tear down service context:%@ at path:%@ for deviceID:%@ reason:%@", &v23, 0x2Au);
@@ -244,18 +244,18 @@ LABEL_20:
       v19 = pk_Payment_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = NSStringFromNPKIDVRemoteDeviceTeardownReason(a3);
+        v20 = NSStringFromNPKIDVRemoteDeviceTeardownReason(reason);
         v23 = 138412546;
-        v24 = v6;
+        v24 = remoteDeviceID;
         v25 = 2112;
         v26 = v20;
         _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Did tear down service context for deviceID:%@ reason:%@", &v23, 0x16u);
       }
     }
 
-    if (a3)
+    if (reason)
     {
-      v21 = 4 * (a3 == 1);
+      v21 = 4 * (reason == 1);
     }
 
     else
@@ -263,18 +263,18 @@ LABEL_20:
       v21 = 2;
     }
 
-    [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _insideLockTeardownBiometricAuthenticationTokenReminderForDeviceID:v6];
-    [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _notifyProcessWithServiceNames:v7 deviceEvent:v21 forDeviceID:v6 eventContext:0];
+    [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _insideLockTeardownBiometricAuthenticationTokenReminderForDeviceID:remoteDeviceID];
+    [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _notifyProcessWithServiceNames:v7 deviceEvent:v21 forDeviceID:remoteDeviceID eventContext:0];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initializeWithDevice:(id)a3
+- (void)initializeWithDevice:(id)device
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 valueForProperty:*MEMORY[0x277D2BBB8]];
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -300,9 +300,9 @@ LABEL_20:
       v11 = pk_Payment_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
+        remoteDeviceID = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
         *buf = 138412290;
-        v45 = v12;
+        v45 = remoteDeviceID;
         _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Warning: NPKIDVRemoteDeviceService: It seem we didn't teardown deviceID:%@. Lets make sure we start from a clean state", buf, 0xCu);
       }
     }
@@ -328,7 +328,7 @@ LABEL_20:
       }
     }
 
-    v17 = NPKHomeDirectoryPathForDevice(v4);
+    v17 = NPKHomeDirectoryPathForDevice(deviceCopy);
     v18 = [v17 stringByAppendingPathComponent:@"remoteDeviceServiceContext.npkctx"];
     serviceContextPath = self->_serviceContextPath;
     self->_serviceContextPath = v18;
@@ -370,7 +370,7 @@ LABEL_26:
         }
 
         objc_storeStrong(&self->_pairingID, v5);
-        v28 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
+        remoteDeviceID2 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
         v37 = pk_Payment_log();
         v38 = os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT);
 
@@ -388,7 +388,7 @@ LABEL_26:
             v48 = 2112;
             v49 = v5;
             v50 = 2112;
-            v51 = v28;
+            v51 = remoteDeviceID2;
             _os_log_impl(&dword_25B300000, v39, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: initialized context:%@ at path:%@ for device with ParingID:%@ and deviceID:%@", buf, 0x2Au);
           }
         }
@@ -424,7 +424,7 @@ LABEL_26:
   if (!v15)
   {
     v27 = 0;
-    v28 = 0;
+    remoteDeviceID2 = 0;
     goto LABEL_38;
   }
 
@@ -436,24 +436,24 @@ LABEL_26:
   }
 
   v27 = 0;
-  v28 = 0;
+  remoteDeviceID2 = 0;
 LABEL_37:
 
 LABEL_38:
   os_unfair_lock_unlock(&self->_serviceContextLock);
-  if ([v27 count] && objc_msgSend(v28, "length"))
+  if ([v27 count] && objc_msgSend(remoteDeviceID2, "length"))
   {
-    [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _notifyProcessWithServiceNames:v27 deviceEvent:1 forDeviceID:v28 eventContext:0];
+    [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _notifyProcessWithServiceNames:v27 deviceEvent:1 forDeviceID:remoteDeviceID2 eventContext:0];
   }
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNeedsPrearmCredential:(BOOL)a3
+- (void)setNeedsPrearmCredential:(BOOL)credential
 {
-  v3 = a3;
+  credentialCopy = credential;
   v15 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (credential)
   {
     v5 = 8;
   }
@@ -479,28 +479,28 @@ LABEL_38:
   }
 
   os_unfair_lock_lock(&self->_serviceContextLock);
-  v10 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
+  remoteDeviceID = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
   v11 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext serviceNamesForEvent:v5];
-  if (v3)
+  if (credentialCopy)
   {
-    [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _insideLockSetupBiometricAuthenticationTokenReminderForDeviceID:v10 serviceNames:v11];
+    [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _insideLockSetupBiometricAuthenticationTokenReminderForDeviceID:remoteDeviceID serviceNames:v11];
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _insideLockTeardownBiometricAuthenticationTokenReminderForDeviceID:v10];
+    [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _insideLockTeardownBiometricAuthenticationTokenReminderForDeviceID:remoteDeviceID];
   }
 
   os_unfair_lock_unlock(&self->_serviceContextLock);
-  [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _notifyProcessWithServiceNames:v11 deviceEvent:v5 forDeviceID:v10 eventContext:0];
+  [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _notifyProcessWithServiceNames:v11 deviceEvent:v5 forDeviceID:remoteDeviceID eventContext:0];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePassDeletionForPass:(id)a3
+- (void)handlePassDeletionForPass:(id)pass
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passCopy = pass;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -517,35 +517,35 @@ LABEL_38:
   }
 
   os_unfair_lock_lock(&self->_serviceContextLock);
-  v9 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
+  remoteDeviceID = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext remoteDeviceID];
   v10 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext serviceNamesForEvent:32];
   os_unfair_lock_unlock(&self->_serviceContextLock);
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v12 = [v4 secureElementPass];
-  v13 = [v12 issuerAdministrativeAreaCode];
+  secureElementPass = [passCopy secureElementPass];
+  issuerAdministrativeAreaCode = [secureElementPass issuerAdministrativeAreaCode];
 
-  if ([v13 length])
+  if ([issuerAdministrativeAreaCode length])
   {
-    [v11 setObject:v13 forKey:@"NPKIDVRemoteDeviceServiceEventContextDeletedPassState"];
+    [v11 setObject:issuerAdministrativeAreaCode forKey:@"NPKIDVRemoteDeviceServiceEventContextDeletedPassState"];
   }
 
-  v14 = [v4 secureElementPass];
-  v15 = [v14 issuerCountryCode];
+  secureElementPass2 = [passCopy secureElementPass];
+  issuerCountryCode = [secureElementPass2 issuerCountryCode];
 
-  if ([v15 length])
+  if ([issuerCountryCode length])
   {
-    [v11 setObject:v15 forKey:@"NPKIDVRemoteDeviceServiceEventContextDeletedPassCountry"];
+    [v11 setObject:issuerCountryCode forKey:@"NPKIDVRemoteDeviceServiceEventContextDeletedPassCountry"];
   }
 
-  [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _notifyProcessWithServiceNames:v10 deviceEvent:32 forDeviceID:v9 eventContext:v11];
+  [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _notifyProcessWithServiceNames:v10 deviceEvent:32 forDeviceID:remoteDeviceID eventContext:v11];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)registerEvents:(unint64_t)a3 forServiceName:(id)a4
+- (unint64_t)registerEvents:(unint64_t)events forServiceName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  nameCopy = name;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -554,11 +554,11 @@ LABEL_38:
     v9 = pk_Payment_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = stringsArrayFromNPKIDVRemoteDeviceServiceEvents(a3);
+      v10 = stringsArrayFromNPKIDVRemoteDeviceServiceEvents(events);
       v20 = 138412546;
       v21 = v10;
       v22 = 2112;
-      v23 = v6;
+      v23 = nameCopy;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested register events:%@ forServiceName:%@", &v20, 0x16u);
     }
   }
@@ -586,7 +586,7 @@ LABEL_38:
   }
 
   os_unfair_lock_lock(&self->_serviceContextLock);
-  v11 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext registerEvents:a3 forServiceName:v6];
+  v11 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext registerEvents:events forServiceName:nameCopy];
   [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _insideLockPersistServiceContext];
   os_unfair_lock_unlock(&self->_serviceContextLock);
   v12 = pk_Payment_log();
@@ -601,7 +601,7 @@ LABEL_38:
       v20 = 138412546;
       v21 = v15;
       v22 = 2112;
-      v23 = v6;
+      v23 = nameCopy;
       _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Finish register events with currentEvents:%@ forServiceName:%@", &v20, 0x16u);
     }
 
@@ -614,10 +614,10 @@ LABEL_15:
   return v11;
 }
 
-- (unint64_t)unregisterEvents:(unint64_t)a3 forServiceName:(id)a4
+- (unint64_t)unregisterEvents:(unint64_t)events forServiceName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  nameCopy = name;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -626,11 +626,11 @@ LABEL_15:
     v9 = pk_Payment_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = stringsArrayFromNPKIDVRemoteDeviceServiceEvents(a3);
+      v10 = stringsArrayFromNPKIDVRemoteDeviceServiceEvents(events);
       v20 = 138412546;
       v21 = v10;
       v22 = 2112;
-      v23 = v6;
+      v23 = nameCopy;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested unregister events:%@ forServiceName:%@", &v20, 0x16u);
     }
   }
@@ -658,7 +658,7 @@ LABEL_15:
   }
 
   os_unfair_lock_lock(&self->_serviceContextLock);
-  v11 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext unregisterEvents:a3 forServiceName:v6];
+  v11 = [(NPKIDVRemoteDeviceServiceContext *)self->_serviceContext unregisterEvents:events forServiceName:nameCopy];
   [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self _insideLockPersistServiceContext];
   os_unfair_lock_unlock(&self->_serviceContextLock);
   v12 = pk_Payment_log();
@@ -673,7 +673,7 @@ LABEL_15:
       v20 = 138412546;
       v21 = v15;
       v22 = 2112;
-      v23 = v6;
+      v23 = nameCopy;
       _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Finish unregister events with currentEvents:%@ forServiceName:%@", &v20, 0x16u);
     }
 
@@ -686,13 +686,13 @@ LABEL_15:
   return v11;
 }
 
-- (void)_notifyProcessWithServiceNames:(id)a3 deviceEvent:(unint64_t)a4 forDeviceID:(id)a5 eventContext:(id)a6
+- (void)_notifyProcessWithServiceNames:(id)names deviceEvent:(unint64_t)event forDeviceID:(id)d eventContext:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 count];
+  namesCopy = names;
+  dCopy = d;
+  contextCopy = context;
+  v13 = [namesCopy count];
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -703,13 +703,13 @@ LABEL_15:
       v16 = pk_Payment_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = stringsArrayFromNPKIDVRemoteDeviceServiceEvents(a4);
+        v17 = stringsArrayFromNPKIDVRemoteDeviceServiceEvents(event);
         *buf = 138412802;
-        v28 = v10;
+        v28 = namesCopy;
         v29 = 2112;
         v30 = v17;
         v31 = 2112;
-        v32 = v11;
+        v32 = dCopy;
         _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Found remote process with service Names:%@ event:%@ for deviceID:%@", buf, 0x20u);
       }
     }
@@ -719,10 +719,10 @@ LABEL_15:
     v22[1] = 3221225472;
     v22[2] = __114__NPKIDVRemoteDeviceServiceEventsCoordinator__notifyProcessWithServiceNames_deviceEvent_forDeviceID_eventContext___block_invoke;
     v22[3] = &unk_279945958;
-    v23 = v10;
-    v26 = a4;
-    v24 = v11;
-    v25 = v12;
+    v23 = namesCopy;
+    eventCopy = event;
+    v24 = dCopy;
+    v25 = contextCopy;
     dispatch_async(remoteProcessNotificationQueue, v22);
 
     v19 = v23;
@@ -738,11 +738,11 @@ LABEL_15:
     v19 = pk_Payment_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = stringsArrayFromNPKIDVRemoteDeviceServiceEvents(a4);
+      v21 = stringsArrayFromNPKIDVRemoteDeviceServiceEvents(event);
       *buf = 138412546;
       v28 = v21;
       v29 = 2112;
-      v30 = v11;
+      v30 = dCopy;
       _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: No service names to notify event:%@ for device with ID:%@", buf, 0x16u);
     }
   }
@@ -779,11 +779,11 @@ void __114__NPKIDVRemoteDeviceServiceEventsCoordinator__notifyProcessWithService
   [v3 writeToFile:self->_serviceContextPath atomically:1];
 }
 
-- (void)_insideLockSetupBiometricAuthenticationTokenReminderForDeviceID:(id)a3 serviceNames:(id)a4
+- (void)_insideLockSetupBiometricAuthenticationTokenReminderForDeviceID:(id)d serviceNames:(id)names
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  namesCopy = names;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -793,7 +793,7 @@ void __114__NPKIDVRemoteDeviceServiceEventsCoordinator__notifyProcessWithService
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v6;
+      v27 = dCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Setup biometric authentication token reminder for deviceID:%@", buf, 0xCu);
     }
   }
@@ -813,10 +813,10 @@ void __114__NPKIDVRemoteDeviceServiceEventsCoordinator__notifyProcessWithService
   v15 = v11;
   v22 = v15;
   objc_copyWeak(&v25, buf);
-  v23 = v7;
-  v24 = v6;
-  v16 = v6;
-  v17 = v7;
+  v23 = namesCopy;
+  v24 = dCopy;
+  v16 = dCopy;
+  v17 = namesCopy;
   dispatch_async(lockStatusChangeCoordinatorQueue, v21);
   lockStatusChangeCoordinator = self->_lockStatusChangeCoordinator;
   self->_lockStatusChangeCoordinator = v15;
@@ -881,10 +881,10 @@ void __123__NPKIDVRemoteDeviceServiceEventsCoordinator__insideLockSetupBiometric
   [WeakRetained _notifyProcessWithServiceNames:*(a1 + 32) deviceEvent:8 forDeviceID:*(a1 + 40) eventContext:0];
 }
 
-- (void)_insideLockTeardownBiometricAuthenticationTokenReminderForDeviceID:(id)a3
+- (void)_insideLockTeardownBiometricAuthenticationTokenReminderForDeviceID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -894,7 +894,7 @@ void __123__NPKIDVRemoteDeviceServiceEventsCoordinator__insideLockSetupBiometric
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = dCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: tear down biometric authentication token reminder for deviceID:%@", &v11, 0xCu);
     }
   }

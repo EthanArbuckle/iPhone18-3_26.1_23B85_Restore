@@ -1,31 +1,31 @@
 @interface GKDelayedSetPlayerStatusCacheReader
-+ (id)readerWithDatabaseConnection:(id)a3;
-- (GKDelayedSetPlayerStatusCacheReader)initWithDatabaseConnection:(id)a3;
-- (id)setStatusDescriptorForExecutedStatement:(sqlite3_stmt *)a3;
++ (id)readerWithDatabaseConnection:(id)connection;
+- (GKDelayedSetPlayerStatusCacheReader)initWithDatabaseConnection:(id)connection;
+- (id)setStatusDescriptorForExecutedStatement:(sqlite3_stmt *)statement;
 - (id)setStatusDescriptorStatement;
-- (void)readResources:(id)a3 handler:(id)a4;
+- (void)readResources:(id)resources handler:(id)handler;
 @end
 
 @implementation GKDelayedSetPlayerStatusCacheReader
 
-+ (id)readerWithDatabaseConnection:(id)a3
++ (id)readerWithDatabaseConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDatabaseConnection:v4];
+  connectionCopy = connection;
+  v5 = [[self alloc] initWithDatabaseConnection:connectionCopy];
 
   return v5;
 }
 
-- (GKDelayedSetPlayerStatusCacheReader)initWithDatabaseConnection:(id)a3
+- (GKDelayedSetPlayerStatusCacheReader)initWithDatabaseConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = GKDelayedSetPlayerStatusCacheReader;
   v5 = [(GKDelayedSetPlayerStatusCacheReader *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(GKDelayedSetPlayerStatusCacheReader *)v5 setConnection:v4];
+    [(GKDelayedSetPlayerStatusCacheReader *)v5 setConnection:connectionCopy];
   }
 
   return v6;
@@ -39,10 +39,10 @@
   return v3;
 }
 
-- (id)setStatusDescriptorForExecutedStatement:(sqlite3_stmt *)a3
+- (id)setStatusDescriptorForExecutedStatement:(sqlite3_stmt *)statement
 {
-  v6 = a3;
-  v3 = sub_100113250(&v6);
+  statementCopy = statement;
+  v3 = sub_100113250(&statementCopy);
   v7 = @"player-status";
   v8 = v3;
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
@@ -50,11 +50,11 @@
   return v4;
 }
 
-- (void)readResources:(id)a3 handler:(id)a4
+- (void)readResources:(id)resources handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] >= 2)
+  resourcesCopy = resources;
+  handlerCopy = handler;
+  if ([resourcesCopy count] >= 2)
   {
     v16 = [NSString stringWithFormat:@"%@ is being asked to read statuses for multiple players. This is not currently supported.", objc_opt_class()];
     v17 = [NSException exceptionWithName:NSInvalidArgumentException reason:v16 userInfo:0];
@@ -74,7 +74,7 @@
   v22[2] = sub_10011356C;
   v22[3] = &unk_100366EE8;
   v22[4] = self;
-  v11 = v6;
+  v11 = resourcesCopy;
   v23 = v11;
   v12 = v9;
   v24 = v12;
@@ -84,7 +84,7 @@
   v19[1] = 3221225472;
   v19[2] = sub_1001138D8;
   v19[3] = &unk_100366F10;
-  v14 = v7;
+  v14 = handlerCopy;
   v21 = v14;
   v15 = v12;
   v20 = v15;

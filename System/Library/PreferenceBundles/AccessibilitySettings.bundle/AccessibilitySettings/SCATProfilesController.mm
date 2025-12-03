@@ -1,32 +1,32 @@
 @interface SCATProfilesController
-- (BOOL)_isSelectedProfile:(id)a3;
+- (BOOL)_isSelectedProfile:(id)profile;
 - (BOOL)_shouldAllowEditing;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (SCATProfilesController)initWithDelegate:(id)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (SCATProfilesController)initWithDelegate:(id)delegate;
 - (SCATProfilesControllerDelegate)delegate;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_addProfileButtonSelected:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_addProfileButtonSelected:(id)selected;
 - (void)_configureEditButton;
-- (void)_deleteProfilesButtonTapped:(id)a3;
-- (void)_enableAddProfileButton:(BOOL)a3;
-- (void)confirmationViewAcceptedForSpecifier:(id)a3;
-- (void)removeDataForSpecifier:(id)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)_deleteProfilesButtonTapped:(id)tapped;
+- (void)_enableAddProfileButton:(BOOL)button;
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier;
+- (void)removeDataForSpecifier:(id)specifier;
+- (void)setEditable:(BOOL)editable;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
 @end
 
 @implementation SCATProfilesController
 
-- (SCATProfilesController)initWithDelegate:(id)a3
+- (SCATProfilesController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SCATProfilesController;
   v5 = [(SCATProfilesController *)&v8 init];
@@ -35,7 +35,7 @@
     v6 = [[SCATAlertCoordinator alloc] initWithViewController:v5];
     [(SCATProfilesController *)v5 setSwitchAlertCoordinator:v6];
 
-    [(SCATProfilesController *)v5 setDelegate:v4];
+    [(SCATProfilesController *)v5 setDelegate:delegateCopy];
   }
 
   return v5;
@@ -48,9 +48,9 @@
   {
     v27 = OBJC_IVAR___PSListController__specifiers;
     v4 = AXParameterizedLocalizedString();
-    v28 = self;
-    v5 = [(SCATProfilesController *)self navigationItem];
-    [v5 setTitle:v4];
+    selfCopy = self;
+    navigationItem = [(SCATProfilesController *)self navigationItem];
+    [navigationItem setTitle:v4];
 
     v6 = objc_opt_new();
     v7 = AXParameterizedLocalizedString();
@@ -64,9 +64,9 @@
     v29 = 0u;
     v30 = 0u;
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 switchControlProfiles];
+    switchControlProfiles = [v10 switchControlProfiles];
 
-    v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v12 = [switchControlProfiles countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v12)
     {
       v13 = v12;
@@ -78,19 +78,19 @@
         {
           if (*v30 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(switchControlProfiles);
           }
 
           v17 = *(*(&v29 + 1) + 8 * i);
-          v18 = [v17 name];
-          v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:0 set:0 get:0 detail:0 cell:3 edit:0];
+          name = [v17 name];
+          v19 = [PSSpecifier preferenceSpecifierNamed:name target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
           [v19 setProperty:v17 forKey:@"ProfileKey"];
           [v19 setProperty:objc_opt_class() forKey:v15];
           [v9 addObject:v19];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v13 = [switchControlProfiles countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v13);
@@ -102,16 +102,16 @@
     v21 = [PSSpecifier groupSpecifierWithID:@"AddProfileGroupIdentifier"];
     [v9 addObject:v21];
     v22 = AXParameterizedLocalizedString();
-    v23 = [PSSpecifier preferenceSpecifierNamed:v22 target:v28 set:0 get:0 detail:0 cell:13 edit:0];
+    v23 = [PSSpecifier preferenceSpecifierNamed:v22 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
     [v23 setIdentifier:@"AddProfileIdentifier"];
     [v23 setButtonAction:"_addProfileButtonSelected:"];
     [v9 addObject:v23];
-    [(SCATProfilesController *)v28 setAddProfileSpecifier:v23];
-    v24 = *&v28->AXUISettingsEditableViewController_opaque[v27];
-    *&v28->AXUISettingsEditableViewController_opaque[v27] = v9;
+    [(SCATProfilesController *)selfCopy setAddProfileSpecifier:v23];
+    v24 = *&selfCopy->AXUISettingsEditableViewController_opaque[v27];
+    *&selfCopy->AXUISettingsEditableViewController_opaque[v27] = v9;
 
-    v3 = *&v28->AXUISettingsEditableViewController_opaque[v27];
+    v3 = *&selfCopy->AXUISettingsEditableViewController_opaque[v27];
   }
 
   return v3;
@@ -122,17 +122,17 @@
   v4.receiver = self;
   v4.super_class = SCATProfilesController;
   [(SCATProfilesController *)&v4 viewDidLoad];
-  v3 = [(SCATProfilesController *)self table];
-  [v3 setAllowsSelectionDuringEditing:1];
+  table = [(SCATProfilesController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  v3 = a3;
+  editableCopy = editable;
   v5.receiver = self;
   v5.super_class = SCATProfilesController;
   [(SCATProfilesController *)&v5 setEditable:?];
-  [(SCATProfilesController *)self _enableAddProfileButton:!v3];
+  [(SCATProfilesController *)self _enableAddProfileButton:!editableCopy];
 }
 
 - (void)_configureEditButton
@@ -154,41 +154,41 @@
 - (BOOL)_shouldAllowEditing
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 switchControlProfiles];
-  v4 = [v3 count] > 1;
+  switchControlProfiles = [v2 switchControlProfiles];
+  v4 = [switchControlProfiles count] > 1;
 
   return v4;
 }
 
-- (BOOL)_isSelectedProfile:(id)a3
+- (BOOL)_isSelectedProfile:(id)profile
 {
-  v3 = [a3 uuid];
+  uuid = [profile uuid];
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 switchControlSelectedProfile];
-  v6 = [v5 uuid];
-  v7 = [v3 isEqual:v6];
+  switchControlSelectedProfile = [v4 switchControlSelectedProfile];
+  uuid2 = [switchControlSelectedProfile uuid];
+  v7 = [uuid isEqual:uuid2];
 
   return v7;
 }
 
-- (void)_enableAddProfileButton:(BOOL)a3
+- (void)_enableAddProfileButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(SCATProfilesController *)self addProfileSpecifier];
-  v6 = [NSNumber numberWithBool:v3];
-  [v5 setProperty:v6 forKey:PSEnabledKey];
+  buttonCopy = button;
+  addProfileSpecifier = [(SCATProfilesController *)self addProfileSpecifier];
+  v6 = [NSNumber numberWithBool:buttonCopy];
+  [addProfileSpecifier setProperty:v6 forKey:PSEnabledKey];
 
-  v7 = [(SCATProfilesController *)self addProfileSpecifier];
-  [(SCATProfilesController *)self reloadSpecifier:v7 animated:1];
+  addProfileSpecifier2 = [(SCATProfilesController *)self addProfileSpecifier];
+  [(SCATProfilesController *)self reloadSpecifier:addProfileSpecifier2 animated:1];
 }
 
-- (void)_addProfileButtonSelected:(id)a3
+- (void)_addProfileButtonSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   [(SCATProfilesController *)self setEditable:0];
   v5 = objc_alloc_init(AXSCATProfile);
   objc_initWeak(&location, self);
-  v6 = [(SCATProfilesController *)self switchAlertCoordinator];
+  switchAlertCoordinator = [(SCATProfilesController *)self switchAlertCoordinator];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __52__SCATProfilesController__addProfileButtonSelected___block_invoke;
@@ -196,7 +196,7 @@
   v7 = v5;
   v9 = v7;
   objc_copyWeak(&v10, &location);
-  [v6 showProfileNamingAlertWithProfile:v7 renaming:0 message:0 successHandler:v8 cancelHandler:0];
+  [switchAlertCoordinator showProfileNamingAlertWithProfile:v7 renaming:0 message:0 successHandler:v8 cancelHandler:0];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -212,13 +212,13 @@ void __52__SCATProfilesController__addProfileButtonSelected___block_invoke(uint6
   [v3 _configureEditButton];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = SCATProfilesController;
-  v6 = a4;
-  v7 = [(SCATProfilesController *)&v11 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(SCATProfilesController *)self specifierAtIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  v7 = [(SCATProfilesController *)&v11 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(SCATProfilesController *)self specifierAtIndexPath:pathCopy, v11.receiver, v11.super_class];
 
   v9 = [v8 propertyForKey:@"ProfileKey"];
   [v7 setChecked:{-[SCATProfilesController _isSelectedProfile:](self, "_isSelectedProfile:", v9)}];
@@ -226,20 +226,20 @@ void __52__SCATProfilesController__addProfileButtonSelected___block_invoke(uint6
   return v7;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(SCATProfilesController *)self specifierForIndexPath:a4];
+  v4 = [(SCATProfilesController *)self specifierForIndexPath:path];
   v5 = [v4 propertyForKey:@"ProfileKey"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCATProfilesController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SCATProfilesController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"ProfileKey"];
   v10 = v9;
   if (v9 && ([v9 isDefault] & 1) == 0)
@@ -247,14 +247,14 @@ void __52__SCATProfilesController__addProfileButtonSelected___block_invoke(uint6
     if ([(SCATProfilesController *)self isEditing])
     {
       objc_initWeak(&location, self);
-      v11 = [(SCATProfilesController *)self switchAlertCoordinator];
+      switchAlertCoordinator = [(SCATProfilesController *)self switchAlertCoordinator];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = __60__SCATProfilesController_tableView_didSelectRowAtIndexPath___block_invoke;
       v14[3] = &unk_257960;
       v15 = v10;
       objc_copyWeak(&v16, &location);
-      [v11 showProfileNamingAlertWithProfile:v15 renaming:1 message:0 successHandler:v14 cancelHandler:0];
+      [switchAlertCoordinator showProfileNamingAlertWithProfile:v15 renaming:1 message:0 successHandler:v14 cancelHandler:0];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
@@ -265,7 +265,7 @@ void __52__SCATProfilesController__addProfileButtonSelected___block_invoke(uint6
       v12 = +[AXSettings sharedInstance];
       [v12 setSwitchControlSelectedProfile:v10];
 
-      [(SCATProfilesController *)self updateTableCheckedSelection:v7];
+      [(SCATProfilesController *)self updateTableCheckedSelection:pathCopy];
     }
   }
 
@@ -273,10 +273,10 @@ void __52__SCATProfilesController__addProfileButtonSelected___block_invoke(uint6
   {
     v13.receiver = self;
     v13.super_class = SCATProfilesController;
-    [(SCATProfilesController *)&v13 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SCATProfilesController *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 void __60__SCATProfilesController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1)
@@ -286,9 +286,9 @@ void __60__SCATProfilesController_tableView_didSelectRowAtIndexPath___block_invo
   [WeakRetained reloadSpecifiers];
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(SCATProfilesController *)self specifierForIndexPath:a4];
+  v4 = [(SCATProfilesController *)self specifierForIndexPath:path];
   v5 = [v4 propertyForKey:@"ProfileKey"];
   v6 = v5;
   v7 = v5 && ![v5 isDefault];
@@ -296,25 +296,25 @@ void __60__SCATProfilesController_tableView_didSelectRowAtIndexPath___block_invo
   return v7;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v4 = [(SCATProfilesController *)self specifierAtIndexPath:a4];
+  v4 = [(SCATProfilesController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"ProfileKey"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SCATProfilesController *)self specifierAtIndexPath:v7];
-  v10 = [(SCATProfilesController *)self specifierAtIndexPath:v8];
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  v9 = [(SCATProfilesController *)self specifierAtIndexPath:pathCopy];
+  v10 = [(SCATProfilesController *)self specifierAtIndexPath:indexPathCopy];
   v11 = [v9 propertyForKey:@"ProfileKey"];
-  if (!v11 || (v12 = v11, [v10 propertyForKey:@"ProfileKey"], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v14 = v8, !v13))
+  if (!v11 || (v12 = v11, [v10 propertyForKey:@"ProfileKey"], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v14 = indexPathCopy, !v13))
   {
-    v14 = v7;
+    v14 = pathCopy;
   }
 
   v15 = v14;
@@ -322,14 +322,14 @@ void __60__SCATProfilesController_tableView_didSelectRowAtIndexPath___block_invo
   return v14;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v26 = a4;
-  v7 = a5;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   v8 = OBJC_IVAR___PSListController__specifiers;
   v9 = [*&self->AXUISettingsEditableViewController_opaque[OBJC_IVAR___PSListController__specifiers] mutableCopy];
-  v10 = [(SCATProfilesController *)self specifierAtIndexPath:v26];
-  v11 = [(SCATProfilesController *)self specifierAtIndexPath:v7];
+  v10 = [(SCATProfilesController *)self specifierAtIndexPath:pathCopy];
+  v11 = [(SCATProfilesController *)self specifierAtIndexPath:indexPathCopy];
   v12 = v11;
   if (v10 && v11 && v10 != v11)
   {
@@ -339,18 +339,18 @@ void __60__SCATProfilesController_tableView_didSelectRowAtIndexPath___block_invo
     if (!v15 && v13 != v14)
     {
       v17 = +[AXSettings sharedInstance];
-      v18 = [v17 switchControlProfiles];
-      v19 = [v18 mutableCopy];
+      switchControlProfiles = [v17 switchControlProfiles];
+      v19 = [switchControlProfiles mutableCopy];
 
-      v20 = [v26 row];
+      v20 = [pathCopy row];
       if (v20 < [v19 count])
       {
-        v21 = [v7 row];
+        v21 = [indexPathCopy row];
         if (v21 < [v19 count])
         {
-          v22 = [v19 objectAtIndexedSubscript:{objc_msgSend(v26, "row")}];
-          [v19 removeObjectAtIndex:{objc_msgSend(v26, "row")}];
-          [v19 insertObject:v22 atIndex:{objc_msgSend(v7, "row")}];
+          v22 = [v19 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+          [v19 removeObjectAtIndex:{objc_msgSend(pathCopy, "row")}];
+          [v19 insertObject:v22 atIndex:{objc_msgSend(indexPathCopy, "row")}];
           v23 = +[AXSettings sharedInstance];
           [v23 setSwitchControlProfiles:v19];
         }
@@ -374,9 +374,9 @@ void __60__SCATProfilesController_tableView_didSelectRowAtIndexPath___block_invo
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(SCATProfilesController *)self isEditing])
   {
     LOBYTE(v6) = 1;
@@ -384,7 +384,7 @@ void __60__SCATProfilesController_tableView_didSelectRowAtIndexPath___block_invo
 
   else
   {
-    v7 = [(SCATProfilesController *)self specifierForIndexPath:v5];
+    v7 = [(SCATProfilesController *)self specifierForIndexPath:pathCopy];
     v8 = [v7 propertyForKey:@"ProfileKey"];
     v6 = ![(SCATProfilesController *)self _isSelectedProfile:v8];
   }
@@ -392,25 +392,25 @@ void __60__SCATProfilesController_tableView_didSelectRowAtIndexPath___block_invo
   return v6;
 }
 
-- (void)removeDataForSpecifier:(id)a3
+- (void)removeDataForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"ProfileKey"];
+  v4 = [specifier propertyForKey:@"ProfileKey"];
   v5 = [(SCATProfilesController *)self _isSelectedProfile:v4];
   SCATRemoveProfileFromSettings();
   if (v5)
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 switchControlProfiles];
-    v8 = [v7 firstObject];
+    switchControlProfiles = [v6 switchControlProfiles];
+    firstObject = [switchControlProfiles firstObject];
 
     v9 = +[AXSettings sharedInstance];
-    [v9 setSwitchControlSelectedProfile:v8];
+    [v9 setSwitchControlSelectedProfile:firstObject];
 
     AXPerformBlockAsynchronouslyOnMainThread();
   }
 }
 
-- (void)_deleteProfilesButtonTapped:(id)a3
+- (void)_deleteProfilesButtonTapped:(id)tapped
 {
   v8 = objc_alloc_init(PSConfirmationSpecifier);
   v4 = AXParameterizedLocalizedString();
@@ -429,7 +429,7 @@ void __60__SCATProfilesController_tableView_didSelectRowAtIndexPath___block_invo
   [(SCATProfilesController *)self showConfirmationViewForSpecifier:v8];
 }
 
-- (void)confirmationViewAcceptedForSpecifier:(id)a3
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier
 {
   v4 = +[AXSettings sharedInstance];
   [v4 removeAllSwitchControlProfiles];

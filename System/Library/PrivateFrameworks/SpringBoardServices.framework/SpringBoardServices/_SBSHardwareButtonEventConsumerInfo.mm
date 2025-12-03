@@ -1,5 +1,5 @@
 @interface _SBSHardwareButtonEventConsumerInfo
-+ (id)infoWithConsumer:(id)a3;
++ (id)infoWithConsumer:(id)consumer;
 - (NSString)description;
 - (SBSHardwareButtonService)service;
 - (void)dealloc;
@@ -10,15 +10,15 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"_SBSHardwareButtonEventConsumerInfo.m" lineNumber:22 description:{@"must invalidate consumer token %p when finished", a2}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"_SBSHardwareButtonEventConsumerInfo.m" lineNumber:22 description:{@"must invalidate consumer token %p when finished", a2}];
 }
 
-+ (id)infoWithConsumer:(id)a3
++ (id)infoWithConsumer:(id)consumer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  consumerCopy = consumer;
+  v5 = objc_alloc_init(self);
   if (objc_opt_respondsToSelector())
   {
     v6 = 64;
@@ -83,7 +83,7 @@
       _os_log_impl(&dword_19169D000, v9, OS_LOG_TYPE_INFO, "%{public}@ buttonEventMask is %lx", &v12, 0x16u);
     }
 
-    [v5 setConsumer:v4];
+    [v5 setConsumer:consumerCopy];
     [v5 setEventMask:v7];
     [v5 setValid:1];
   }
@@ -92,7 +92,7 @@
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(_SBSHardwareButtonEventConsumerInfo *)v4 infoWithConsumer:v9];
+      [(_SBSHardwareButtonEventConsumerInfo *)consumerCopy infoWithConsumer:v9];
     }
   }
 
@@ -107,9 +107,9 @@
   [v3 appendString:v5 withName:@"eventPriority"];
 
   v6 = [v3 appendObject:self->_consumer withName:@"consumer" skipIfNil:0];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (void)invalidate

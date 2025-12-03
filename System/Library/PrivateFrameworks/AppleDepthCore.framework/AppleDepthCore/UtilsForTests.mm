@@ -1,44 +1,44 @@
 @interface UtilsForTests
-+ (BOOL)areIdenticalPointCloud0:(id)a3 pointCloud1:(id)a4 accuracy:(float)a5;
-+ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)a3 offset:(CGSize)a4 toRefBuffer:(__CVBuffer *)a5 ignoreRefZeros:(BOOL)a6;
-+ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)a3 offset:(CGSize)a4 toRefBuffer:(__CVBuffer *)a5 ignoreResultZeros:(BOOL)a6 ignoreRefZeros:(BOOL)a7 outlierPercentile:(float)a8;
-+ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)a3 toRefBuffer:(__CVBuffer *)a4 ignoreRefZeros:(BOOL)a5;
-+ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)a3 toRefBuffer:(__CVBuffer *)a4 ignoreRefZeros:(BOOL)a5 outlierPercentile:(float)a6;
-+ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)a3 toRefBuffer:(__CVBuffer *)a4 ignoreResultZeros:(BOOL)a5 ignoreRefZeros:(BOOL)a6;
-+ (BaselineTestStats_s)compareResults:(__CVBuffer *)a3 toBaseLineInPath:(id)a4 ignoreRefZeros:(BOOL)a5;
-+ (BaselineTestStats_s)compareResults:(__CVBuffer *)a3 toBaseLineInPath:(id)a4 ignoreRefZeros:(BOOL)a5 outlierPercentile:(float)a6;
-+ (BaselineTestStats_s)compareVImageBuffer:(vImage_Buffer *)a3 pixelTypeResult:(unsigned int)a4 offset:(CGSize)a5 toRefBuffer:(vImage_Buffer *)a6 pixelTypeRef:(unsigned int)a7 ignoreResultZeros:(BOOL)a8 ignoreRefZeros:(BOOL)a9 outlierPercentile:(float)a10;
++ (BOOL)areIdenticalPointCloud0:(id)cloud0 pointCloud1:(id)cloud1 accuracy:(float)accuracy;
++ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)buffer offset:(CGSize)offset toRefBuffer:(__CVBuffer *)refBuffer ignoreRefZeros:(BOOL)zeros;
++ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)buffer offset:(CGSize)offset toRefBuffer:(__CVBuffer *)refBuffer ignoreResultZeros:(BOOL)zeros ignoreRefZeros:(BOOL)refZeros outlierPercentile:(float)percentile;
++ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)buffer toRefBuffer:(__CVBuffer *)refBuffer ignoreRefZeros:(BOOL)zeros;
++ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)buffer toRefBuffer:(__CVBuffer *)refBuffer ignoreRefZeros:(BOOL)zeros outlierPercentile:(float)percentile;
++ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)buffer toRefBuffer:(__CVBuffer *)refBuffer ignoreResultZeros:(BOOL)zeros ignoreRefZeros:(BOOL)refZeros;
++ (BaselineTestStats_s)compareResults:(__CVBuffer *)results toBaseLineInPath:(id)path ignoreRefZeros:(BOOL)zeros;
++ (BaselineTestStats_s)compareResults:(__CVBuffer *)results toBaseLineInPath:(id)path ignoreRefZeros:(BOOL)zeros outlierPercentile:(float)percentile;
++ (BaselineTestStats_s)compareVImageBuffer:(vImage_Buffer *)buffer pixelTypeResult:(unsigned int)result offset:(CGSize)offset toRefBuffer:(vImage_Buffer *)refBuffer pixelTypeRef:(unsigned int)ref ignoreResultZeros:(BOOL)zeros ignoreRefZeros:(BOOL)refZeros outlierPercentile:(float)self0;
 + (id)createJasperCameraCalibration;
 + (id)createSuperWideCameraCalibration;
-+ (id)createSyntheticCameraCalibrationWithDistortion:(id)a3;
++ (id)createSyntheticCameraCalibrationWithDistortion:(id)distortion;
 + (id)createSyntheticCameraCalibrationXThetaDistortion;
 + (id)createWideCameraCalibrationWithPolynomials;
-+ (id)getJasperPointCloudFromPath:(id)a3;
-+ (id)getNewTempFilePathWithExtension:(id)a3;
-+ (id)pointsArrayFromFilePath:(id)a3;
++ (id)getJasperPointCloudFromPath:(id)path;
++ (id)getNewTempFilePathWithExtension:(id)extension;
++ (id)pointsArrayFromFilePath:(id)path;
 + (unint64_t)preferredEspressoEngine;
-+ (vector<float,)pointsVectorFromFilePath:(id)a2;
++ (vector<float,)pointsVectorFromFilePath:(id)path;
 @end
 
 @implementation UtilsForTests
 
-+ (id)getNewTempFilePathWithExtension:(id)a3
++ (id)getNewTempFilePathWithExtension:(id)extension
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  extensionCopy = extension;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = 0;
   do
   {
     v6 = NSTemporaryDirectory();
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
-    v9 = [v6 stringByAppendingPathComponent:v8];
-    v10 = [v9 stringByAppendingPathExtension:v3];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v9 = [v6 stringByAppendingPathComponent:uUIDString];
+    v10 = [v9 stringByAppendingPathExtension:extensionCopy];
 
     v5 = v10;
   }
 
-  while (([v4 fileExistsAtPath:v10] & 1) != 0);
+  while (([defaultManager fileExistsAtPath:v10] & 1) != 0);
 
   return v10;
 }
@@ -51,14 +51,14 @@
   return v3;
 }
 
-+ (id)createSyntheticCameraCalibrationWithDistortion:(id)a3
++ (id)createSyntheticCameraCalibrationWithDistortion:(id)distortion
 {
-  v3 = a3;
+  distortionCopy = distortion;
   v4 = [ADMutableCameraCalibration alloc];
   LODWORD(v5) = 1008981770;
-  v6 = [(ADCameraCalibration *)v4 initWithIntrinsics:v3 cameraToPlatformTransform:*&_PromotedConst pixelSize:unk_2404CA490 referenceDimensions:5.76460897e17 distortionModel:*&_PromotedConst_2171, unk_2404CA4C0, 0.0, unk_2404CA4E0, v5, 0x407E000000000000, 0x4084000000000000];
+  0x4084000000000000 = [(ADCameraCalibration *)v4 initWithIntrinsics:distortionCopy cameraToPlatformTransform:*&_PromotedConst pixelSize:unk_2404CA490 referenceDimensions:5.76460897e17 distortionModel:*&_PromotedConst_2171, unk_2404CA4C0, 0.0, unk_2404CA4E0, v5, 0x407E000000000000, 0x4084000000000000];
 
-  return v6;
+  return 0x4084000000000000;
 }
 
 + (id)createWideCameraCalibrationWithPolynomials
@@ -87,9 +87,9 @@
 
   v6 = [ADMutableCameraCalibration alloc];
   LODWORD(v7) = 980151802;
-  v8 = [(ADCameraCalibration *)v6 initWithIntrinsics:v5 cameraToPlatformTransform:*&_PromotedConst_2174 pixelSize:unk_2404CA570 referenceDimensions:7.41717015e22 distortionModel:*&_PromotedConst_2175, unk_2404CA5A0, 4.84969978e-20, unk_2404CA5C0, v7, 0x40B0400000000000, 0x40A5F00000000000];
+  0x40A5F00000000000 = [(ADCameraCalibration *)v6 initWithIntrinsics:v5 cameraToPlatformTransform:*&_PromotedConst_2174 pixelSize:unk_2404CA570 referenceDimensions:7.41717015e22 distortionModel:*&_PromotedConst_2175, unk_2404CA5A0, 4.84969978e-20, unk_2404CA5C0, v7, 0x40B0400000000000, 0x40A5F00000000000];
 
-  return v8;
+  return 0x40A5F00000000000;
 }
 
 + (id)createJasperCameraCalibration
@@ -104,19 +104,19 @@
 
   v6 = [ADMutableCameraCalibration alloc];
   LODWORD(v7) = 1009067670;
-  v8 = [(ADCameraCalibration *)v6 initWithIntrinsics:v5 cameraToPlatformTransform:*&_PromotedConst_2176 pixelSize:unk_2404CA5E0 referenceDimensions:2.20156376e13 distortionModel:*&_PromotedConst_2171, unk_2404CA4C0, 0.0, unk_2404CA4E0, v7, 0x4061800000000000, 0x4066800000000000];
+  0x4066800000000000 = [(ADCameraCalibration *)v6 initWithIntrinsics:v5 cameraToPlatformTransform:*&_PromotedConst_2176 pixelSize:unk_2404CA5E0 referenceDimensions:2.20156376e13 distortionModel:*&_PromotedConst_2171, unk_2404CA4C0, 0.0, unk_2404CA4E0, v7, 0x4061800000000000, 0x4066800000000000];
 
-  return v8;
+  return 0x4066800000000000;
 }
 
-+ (id)pointsArrayFromFilePath:(id)a3
++ (id)pointsArrayFromFilePath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  pathCopy = path;
+  array = [MEMORY[0x277CBEB18] array];
   v5 = objc_opt_class();
   if (v5)
   {
-    [v5 pointsVectorFromFilePath:v3];
+    [v5 pointsVectorFromFilePath:pathCopy];
     v7 = __p;
     if (v14 != __p)
     {
@@ -126,7 +126,7 @@
       {
         LODWORD(v6) = v7[v8];
         v10 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
-        [v4 addObject:v10];
+        [array addObject:v10];
 
         v8 = v9;
         v7 = __p;
@@ -142,7 +142,7 @@
     __p = 0;
   }
 
-  v11 = [v4 copy];
+  v11 = [array copy];
   if (__p)
   {
     operator delete(__p);
@@ -151,7 +151,7 @@
   return v11;
 }
 
-+ (vector<float,)pointsVectorFromFilePath:(id)a2
++ (vector<float,)pointsVectorFromFilePath:(id)path
 {
   v30[19] = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -321,42 +321,42 @@ LABEL_30:
   return result;
 }
 
-+ (id)getJasperPointCloudFromPath:(id)a3
++ (id)getJasperPointCloudFromPath:(id)path
 {
-  v3 = a3;
-  if ([v3 hasSuffix:@".txt"])
+  pathCopy = path;
+  if ([pathCopy hasSuffix:@".txt"])
   {
-    v37 = v3;
-    v4 = [UtilsForTests pointsArrayFromFilePath:v3];
+    v37 = pathCopy;
+    v4 = [UtilsForTests pointsArrayFromFilePath:pathCopy];
     if ([v4 count])
     {
       v5 = [v4 count];
       v43 = v5 / 3;
       v36 = [[ADMutableJasperPointCloud alloc] initWithCapacity:2 * (v5 / 3)];
       [(ADMutableJasperPointCloud *)v36 resize:2 * (v5 / 3)];
-      v42 = [(ADMutableJasperPointCloud *)v36 mutableCameraPixels];
-      v6 = [(ADMutableJasperPointCloud *)v36 mutableEchoIds];
-      v7 = [(ADMutableJasperPointCloud *)v36 mutableBankIds];
-      v8 = [(ADMutableJasperPointCloud *)v36 mutableSpotIds];
-      v41 = [(ADMutableJasperPointCloud *)v36 mutableConfidences];
-      v9 = [(ADMutableJasperPointCloud *)v36 mutablePoints];
-      v10 = [(ADMutableJasperPointCloud *)v36 mutableUndistortedCameraPixels];
-      v40 = [(ADMutableJasperPointCloud *)v36 mutableEuclideanDistances];
-      v39 = [(ADMutableJasperPointCloud *)v36 mutableIntensities];
-      v38 = [(ADMutableJasperPointCloud *)v36 mutableSignalToNoiseRatios];
-      v11 = [(ADMutableJasperPointCloud *)v36 mutableFlags];
+      mutableCameraPixels = [(ADMutableJasperPointCloud *)v36 mutableCameraPixels];
+      mutableEchoIds = [(ADMutableJasperPointCloud *)v36 mutableEchoIds];
+      mutableBankIds = [(ADMutableJasperPointCloud *)v36 mutableBankIds];
+      mutableSpotIds = [(ADMutableJasperPointCloud *)v36 mutableSpotIds];
+      mutableConfidences = [(ADMutableJasperPointCloud *)v36 mutableConfidences];
+      mutablePoints = [(ADMutableJasperPointCloud *)v36 mutablePoints];
+      mutableUndistortedCameraPixels = [(ADMutableJasperPointCloud *)v36 mutableUndistortedCameraPixels];
+      mutableEuclideanDistances = [(ADMutableJasperPointCloud *)v36 mutableEuclideanDistances];
+      mutableIntensities = [(ADMutableJasperPointCloud *)v36 mutableIntensities];
+      mutableSignalToNoiseRatios = [(ADMutableJasperPointCloud *)v36 mutableSignalToNoiseRatios];
+      mutableFlags = [(ADMutableJasperPointCloud *)v36 mutableFlags];
       if (v5 >= 3)
       {
-        v12 = v11;
+        v12 = mutableFlags;
         v13 = 0;
         v14 = 0;
-        v15 = v6 + 1;
-        v16 = (v8 + 1);
-        v17 = v7 + 1;
-        v18 = (v10 + 16);
+        v15 = mutableEchoIds + 1;
+        v16 = (mutableSpotIds + 1);
+        v17 = mutableBankIds + 1;
+        v18 = (mutableUndistortedCameraPixels + 16);
         __asm { FMOV            V9.2S, #1.0 }
 
-        v24 = v9 + 16;
+        v24 = mutablePoints + 16;
         do
         {
           v25 = [v4 objectAtIndexedSubscript:v13];
@@ -372,11 +372,11 @@ LABEL_30:
           v31 = v30;
 
           v32 = vcvtq_f64_f32(__PAIR64__(v44, v45));
-          v33 = (v42 + 32 * v14);
+          v33 = (mutableCameraPixels + 32 * v14);
           *v33 = v32;
           v33[1] = v32;
           *(v15 - 1) = 256;
-          *(v41 + 8 * v14) = _D9;
+          *(mutableConfidences + 8 * v14) = _D9;
           *(v24 - 8) = v31;
           *(v24 - 16) = 0;
           *(v24 + 8) = v31;
@@ -387,9 +387,9 @@ LABEL_30:
           *v18 = 0;
           v18[1] = 0;
           v18 += 4;
-          *(v40 + 8 * v14) = _D9;
-          *(v39 + 8 * v14) = _D9;
-          *(v38 + 8 * v14) = _D9;
+          *(mutableEuclideanDistances + 8 * v14) = _D9;
+          *(mutableIntensities + 8 * v14) = _D9;
+          *(mutableSignalToNoiseRatios + 8 * v14) = _D9;
           *(v12 + 8 * v14) = 0;
           *(v17 - 1) = 0;
           *(v16 - 1) = v14;
@@ -411,61 +411,61 @@ LABEL_30:
     }
 
     v34 = v36;
-    v3 = v37;
+    pathCopy = v37;
   }
 
   else
   {
-    v34 = [ADJasperPointCloud pointCloudFromFile:v3];
+    v34 = [ADJasperPointCloud pointCloudFromFile:pathCopy];
   }
 
   return v34;
 }
 
-+ (BOOL)areIdenticalPointCloud0:(id)a3 pointCloud1:(id)a4 accuracy:(float)a5
++ (BOOL)areIdenticalPointCloud0:(id)cloud0 pointCloud1:(id)cloud1 accuracy:(float)accuracy
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 length];
-  if (v9 == [v8 length])
+  cloud0Copy = cloud0;
+  cloud1Copy = cloud1;
+  v9 = [cloud0Copy length];
+  if (v9 == [cloud1Copy length])
   {
     for (i = 0; ; ++i)
     {
-      if (i >= [v7 length])
+      if (i >= [cloud0Copy length])
       {
         v21 = 1;
         goto LABEL_18;
       }
 
-      v11 = ([v7 cameraPixels] + 16 * i);
+      v11 = ([cloud0Copy cameraPixels] + 16 * i);
       v12 = *v11;
       v13 = *(v11 + 1);
-      v14 = [v8 cameraPixels];
-      if (vabdd_f64(v12, *(v14 + 16 * i)) > a5)
+      cameraPixels = [cloud1Copy cameraPixels];
+      if (vabdd_f64(v12, *(cameraPixels + 16 * i)) > accuracy)
       {
         break;
       }
 
-      v23 = *([v7 points] + 16 * i);
-      v15 = *([v8 points] + 16 * i);
+      v23 = *([cloud0Copy points] + 16 * i);
+      v15 = *([cloud1Copy points] + 16 * i);
       v16 = vsubq_f32(v23, v15);
-      v19 = fabsf(v16.f32[0]) <= a5;
+      v19 = fabsf(v16.f32[0]) <= accuracy;
       v17 = vabds_f32(v23.f32[1], v15.f32[1]);
       v18 = fabsf(v16.f32[2]);
-      v19 = v19 && v17 <= a5;
-      if (!v19 || v18 > a5)
+      v19 = v19 && v17 <= accuracy;
+      if (!v19 || v18 > accuracy)
       {
         NSLog(&cfstr_PointCloudsXyz.isa, i, v23.f32[0], v23.f32[1], v23.f32[2], v15.f32[0], v15.f32[1], v15.f32[2]);
         goto LABEL_17;
       }
     }
 
-    NSLog(&cfstr_PointCloudsCam.isa, i, *&v12, v13, *(v14 + 16 * i), *(v14 + 16 * i + 8));
+    NSLog(&cfstr_PointCloudsCam.isa, i, *&v12, v13, *(cameraPixels + 16 * i), *(cameraPixels + 16 * i + 8));
   }
 
   else
   {
-    NSLog(&cfstr_PointCloudsLen.isa, [v7 length], objc_msgSend(v8, "length"));
+    NSLog(&cfstr_PointCloudsLen.isa, [cloud0Copy length], objc_msgSend(cloud1Copy, "length"));
   }
 
 LABEL_17:
@@ -475,21 +475,21 @@ LABEL_18:
   return v21;
 }
 
-+ (BaselineTestStats_s)compareResults:(__CVBuffer *)a3 toBaseLineInPath:(id)a4 ignoreRefZeros:(BOOL)a5 outlierPercentile:(float)a6
++ (BaselineTestStats_s)compareResults:(__CVBuffer *)results toBaseLineInPath:(id)path ignoreRefZeros:(BOOL)zeros outlierPercentile:(float)percentile
 {
-  v9 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:a4];
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  v9 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:path];
+  CVPixelBufferLockBaseAddress(results, 1uLL);
+  Width = CVPixelBufferGetWidth(results);
+  Height = CVPixelBufferGetHeight(results);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(results);
   v13 = 0.0;
   if (PixelFormatType <= 1717856626)
   {
     if (PixelFormatType == 843264104)
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-      v19 = compareRawBuffers<half,half>(a6, BaseAddress, BytesPerRow, [v9 bytes], 4 * Width, 2 * Width, Height, 0, a5);
+      BaseAddress = CVPixelBufferGetBaseAddress(results);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(results);
+      v19 = compareRawBuffers<half,half>(percentile, BaseAddress, BytesPerRow, [v9 bytes], 4 * Width, 2 * Width, Height, 0, zeros);
       goto LABEL_12;
     }
 
@@ -512,18 +512,18 @@ LABEL_18:
   if (PixelFormatType == 1717856627)
   {
 LABEL_10:
-    v23 = CVPixelBufferGetBaseAddress(a3);
-    v24 = CVPixelBufferGetBytesPerRow(a3);
-    v19 = compareRawBuffers<float,float>(v23, v24, [v9 bytes], 4 * Width, Width, Height, 0, a5, a6);
+    v23 = CVPixelBufferGetBaseAddress(results);
+    v24 = CVPixelBufferGetBytesPerRow(results);
+    v19 = compareRawBuffers<float,float>(v23, v24, [v9 bytes], 4 * Width, Width, Height, 0, zeros, percentile);
     goto LABEL_12;
   }
 
   if (PixelFormatType == 1751410032 || (v14 = 0.0, v15 = 0.0, v16 = 0.0, PixelFormatType == 1751411059))
   {
 LABEL_9:
-    v17 = CVPixelBufferGetBaseAddress(a3);
-    v18 = CVPixelBufferGetBytesPerRow(a3);
-    v19 = compareRawBuffers<half,half>(a6, v17, v18, [v9 bytes], 2 * Width, Width, Height, 0, a5);
+    v17 = CVPixelBufferGetBaseAddress(results);
+    v18 = CVPixelBufferGetBytesPerRow(results);
+    v19 = compareRawBuffers<half,half>(percentile, v17, v18, [v9 bytes], 2 * Width, Width, Height, 0, zeros);
 LABEL_12:
     v13 = v19;
     v14 = v20;
@@ -532,7 +532,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(results, 1uLL);
 
   v27 = v13;
   v28 = v14;
@@ -545,10 +545,10 @@ LABEL_13:
   return result;
 }
 
-+ (BaselineTestStats_s)compareResults:(__CVBuffer *)a3 toBaseLineInPath:(id)a4 ignoreRefZeros:(BOOL)a5
++ (BaselineTestStats_s)compareResults:(__CVBuffer *)results toBaseLineInPath:(id)path ignoreRefZeros:(BOOL)zeros
 {
   LODWORD(v5) = 1064514355;
-  [UtilsForTests compareResults:a3 toBaseLineInPath:a4 ignoreRefZeros:a5 outlierPercentile:v5];
+  [UtilsForTests compareResults:results toBaseLineInPath:path ignoreRefZeros:zeros outlierPercentile:v5];
   result.var3 = v9;
   result.var2 = v8;
   result.var1 = v7;
@@ -556,26 +556,26 @@ LABEL_13:
   return result;
 }
 
-+ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)a3 offset:(CGSize)a4 toRefBuffer:(__CVBuffer *)a5 ignoreResultZeros:(BOOL)a6 ignoreRefZeros:(BOOL)a7 outlierPercentile:(float)a8
++ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)buffer offset:(CGSize)offset toRefBuffer:(__CVBuffer *)refBuffer ignoreResultZeros:(BOOL)zeros ignoreRefZeros:(BOOL)refZeros outlierPercentile:(float)percentile
 {
-  if (!a3 || !a5)
+  if (!buffer || !refBuffer)
   {
-    NSLog(&cfstr_InvalidParamsN.isa, a2, a4.width, a4.height);
+    NSLog(&cfstr_InvalidParamsN.isa, a2, offset.width, offset.height);
     v21 = 0.0;
     v22 = 1.0e17;
     goto LABEL_12;
   }
 
-  v10 = a7;
-  v11 = a6;
-  height = a4.height;
-  width = a4.width;
-  v16 = CVPixelBufferGetWidth(a3);
-  v46 = CVPixelBufferGetHeight(a3);
-  v17 = CVPixelBufferGetWidth(a5);
-  v18 = CVPixelBufferGetHeight(a5);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  v20 = CVPixelBufferGetPixelFormatType(a5);
+  refZerosCopy = refZeros;
+  zerosCopy = zeros;
+  height = offset.height;
+  width = offset.width;
+  v16 = CVPixelBufferGetWidth(buffer);
+  v46 = CVPixelBufferGetHeight(buffer);
+  v17 = CVPixelBufferGetWidth(refBuffer);
+  v18 = CVPixelBufferGetHeight(refBuffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  v20 = CVPixelBufferGetPixelFormatType(refBuffer);
   v21 = 0.0;
   v22 = 1.0e17;
   if (v16 != v17)
@@ -591,8 +591,8 @@ LABEL_12:
   if (v46 == v18)
   {
     v25 = v20;
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a5, 1uLL);
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
+    CVPixelBufferLockBaseAddress(refBuffer, 1uLL);
     v26 = PixelBufferUtils::planeCountForPixelFormat(PixelFormatType);
     if (v26)
     {
@@ -605,12 +605,12 @@ LABEL_12:
       v22 = 0.0;
       do
       {
-        PixelBufferUtils::asVImageBuffer(a3, v28, *v30, &v50);
-        PixelBufferUtils::asVImageBuffer(a5, v28, *v30, &v49);
+        PixelBufferUtils::asVImageBuffer(buffer, v28, *v30, &v50);
+        PixelBufferUtils::asVImageBuffer(refBuffer, v28, *v30, &v49);
         v48 = v50;
         v47 = v49;
-        *&v31 = a8;
-        [a1 compareVImageBuffer:&v48 pixelTypeResult:PixelFormatType offset:&v47 toRefBuffer:v25 pixelTypeRef:v11 ignoreResultZeros:v10 ignoreRefZeros:width outlierPercentile:{height, v31}];
+        *&v31 = percentile;
+        [self compareVImageBuffer:&v48 pixelTypeResult:PixelFormatType offset:&v47 toRefBuffer:v25 pixelTypeRef:zerosCopy ignoreResultZeros:refZerosCopy ignoreRefZeros:width outlierPercentile:{height, v31}];
         v22 = v22 + (v35 / v29);
         if (v23 < v32)
         {
@@ -628,20 +628,20 @@ LABEL_12:
     else
     {
       v36 = MEMORY[0x277CBF3A0];
-      PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &v50);
-      PixelBufferUtils::asVImageBuffer(a5, *v36, &v49);
+      PixelBufferUtils::asVImageBuffer(buffer, *MEMORY[0x277CBF3A0], &v50);
+      PixelBufferUtils::asVImageBuffer(refBuffer, *v36, &v49);
       v48 = v50;
       v47 = v49;
-      *&v37 = a8;
-      [a1 compareVImageBuffer:&v48 pixelTypeResult:PixelFormatType offset:&v47 toRefBuffer:v25 pixelTypeRef:v11 ignoreResultZeros:v10 ignoreRefZeros:width outlierPercentile:{height, v37}];
+      *&v37 = percentile;
+      [self compareVImageBuffer:&v48 pixelTypeResult:PixelFormatType offset:&v47 toRefBuffer:v25 pixelTypeRef:zerosCopy ignoreResultZeros:refZerosCopy ignoreRefZeros:width outlierPercentile:{height, v37}];
       v22 = v38;
       v23 = v39;
       v24 = v40;
       v21 = v41;
     }
 
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-    CVPixelBufferUnlockBaseAddress(a5, 1uLL);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
+    CVPixelBufferUnlockBaseAddress(refBuffer, 1uLL);
   }
 
 LABEL_15:
@@ -656,19 +656,19 @@ LABEL_15:
   return result;
 }
 
-+ (BaselineTestStats_s)compareVImageBuffer:(vImage_Buffer *)a3 pixelTypeResult:(unsigned int)a4 offset:(CGSize)a5 toRefBuffer:(vImage_Buffer *)a6 pixelTypeRef:(unsigned int)a7 ignoreResultZeros:(BOOL)a8 ignoreRefZeros:(BOOL)a9 outlierPercentile:(float)a10
++ (BaselineTestStats_s)compareVImageBuffer:(vImage_Buffer *)buffer pixelTypeResult:(unsigned int)result offset:(CGSize)offset toRefBuffer:(vImage_Buffer *)refBuffer pixelTypeRef:(unsigned int)ref ignoreResultZeros:(BOOL)zeros ignoreRefZeros:(BOOL)refZeros outlierPercentile:(float)self0
 {
-  v13 = *&a7;
-  height = a5.height;
-  width = a5.width;
-  v19 = PixelBufferUtils::componentsPerPixelForPixelFormat(*&a4, 0);
+  v13 = *&ref;
+  height = offset.height;
+  width = offset.width;
+  v19 = PixelBufferUtils::componentsPerPixelForPixelFormat(*&result, 0);
   if (v19 != PixelBufferUtils::componentsPerPixelForPixelFormat(v13, 0))
   {
     NSLog(&cfstr_InvalidParamsC.isa);
     __assert_rtn("+[UtilsForTests compareVImageBuffer:pixelTypeResult:offset:toRefBuffer:pixelTypeRef:ignoreResultZeros:ignoreRefZeros:outlierPercentile:]", "UtilsForTests.mm", 210, "0");
   }
 
-  v20 = (a3->width - fabs(width));
+  v20 = (buffer->width - fabs(width));
   if (width < 0.0)
   {
     v21 = 0;
@@ -689,7 +689,7 @@ LABEL_15:
     v22 = 0;
   }
 
-  v98 = (a3->height - fabs(height));
+  v98 = (buffer->height - fabs(height));
   if (height < 0.0)
   {
     v23 = 0;
@@ -710,17 +710,17 @@ LABEL_15:
     v24 = 0;
   }
 
-  rowBytes = a3->rowBytes;
-  a3->data = a3->data + rowBytes * v24;
-  data = a6->data;
+  rowBytes = buffer->rowBytes;
+  buffer->data = buffer->data + rowBytes * v24;
+  data = refBuffer->data;
   v96 = rowBytes;
-  v97 = a6->rowBytes;
+  v97 = refBuffer->rowBytes;
   v95 = v23;
-  v27 = a6->data + v97 * v23;
-  a6->data = v27;
-  if (a4 <= 1717855599)
+  v27 = refBuffer->data + v97 * v23;
+  refBuffer->data = v27;
+  if (result <= 1717855599)
   {
-    if (a4 == 1278226534)
+    if (result == 1278226534)
     {
       goto LABEL_21;
     }
@@ -730,7 +730,7 @@ LABEL_15:
 
   else
   {
-    if (a4 == 1717855600 || a4 == 1919365990)
+    if (result == 1717855600 || result == 1919365990)
     {
       goto LABEL_21;
     }
@@ -738,7 +738,7 @@ LABEL_15:
     v28 = 1717856627;
   }
 
-  if (a4 != v28)
+  if (result != v28)
   {
     goto LABEL_31;
   }
@@ -761,27 +761,27 @@ LABEL_27:
 LABEL_31:
     v93 = v22;
     v94 = v21;
-    v40 = isF16Type(a4);
+    v40 = isF16Type(result);
     if (v40 && isF16Type(v13))
     {
-      v30 = compareRawBuffers<half,half>(a10, a3->data + 2 * v93, v96, &v27[2 * v94], v97, v19 * v20, v98, a8, a9);
+      v30 = compareRawBuffers<half,half>(percentile, buffer->data + 2 * v93, v96, &v27[2 * v94], v97, v19 * v20, v98, zeros, refZeros);
       goto LABEL_29;
     }
 
-    if (a4 <= 1717855599)
+    if (result <= 1717855599)
     {
-      if (a4 != 1278226534)
+      if (result != 1278226534)
       {
         v41 = 1380410945;
 LABEL_40:
-        if (a4 != v41)
+        if (result != v41)
         {
           goto LABEL_60;
         }
       }
     }
 
-    else if (a4 != 1717855600 && a4 != 1919365990)
+    else if (result != 1717855600 && result != 1919365990)
     {
       v41 = 1717856627;
       goto LABEL_40;
@@ -789,9 +789,9 @@ LABEL_40:
 
     if (v13 == 825306677 || v13 == 1647392359 || v13 == 825437747)
     {
-      if (a10 > 0.0 && a10 <= 1.0)
+      if (percentile > 0.0 && percentile <= 1.0)
       {
-        v42 = a3->data;
+        v42 = buffer->data;
         v100 = 0;
         v101 = 0;
         v102 = 0;
@@ -817,7 +817,7 @@ LABEL_58:
           while (1)
           {
             v48 = *&v44[4 * v46 + v96 * v43];
-            if (v48 == 0.0 && a8)
+            if (v48 == 0.0 && zeros)
             {
               goto LABEL_57;
             }
@@ -827,7 +827,7 @@ LABEL_58:
               break;
             }
 
-            if (!a9)
+            if (!refZeros)
             {
               v49 = v48 / 0.0001;
               goto LABEL_56;
@@ -850,7 +850,7 @@ LABEL_56:
         v51 = 0;
         v50 = 0;
 LABEL_86:
-        v67 = (((v50 - v51) >> 2) * a10);
+        v67 = (((v50 - v51) >> 2) * percentile);
         if (v67 > 0)
         {
           std::__sort<std::__less<float,float> &,float *>();
@@ -888,7 +888,7 @@ LABEL_117:
       }
 
 LABEL_109:
-      NSLog(&cfstr_CannotCompareW.isa, a10);
+      NSLog(&cfstr_CannotCompareW.isa, percentile);
       v33 = 0.0;
       v35 = 1.0e17;
       v36 = 0.0;
@@ -899,7 +899,7 @@ LABEL_109:
 LABEL_60:
     if (v40 && (v13 == 825306677 || v13 == 1647392359 || v13 == 825437747))
     {
-      if (a10 <= 0.0 || a10 > 1.0)
+      if (percentile <= 0.0 || percentile > 1.0)
       {
         goto LABEL_109;
       }
@@ -912,7 +912,7 @@ LABEL_60:
         v51 = 0;
         v65 = 0;
 LABEL_135:
-        v67 = (((v65 - v51) >> 2) * a10);
+        v67 = (((v65 - v51) >> 2) * percentile);
         if (v67 > 0)
         {
           std::__sort<std::__less<float,float> &,float *>();
@@ -974,7 +974,7 @@ LABEL_79:
         v56 = &v54[v97 * (v95 + v52)];
         __asm { FCMP            H0, #0 }
 
-        if (_ZF && a8)
+        if (_ZF && zeros)
         {
           goto LABEL_78;
         }
@@ -984,7 +984,7 @@ LABEL_79:
           break;
         }
 
-        if (!a9)
+        if (!refZeros)
         {
           __asm { FCVT            D0, H0 }
 
@@ -1008,20 +1008,20 @@ LABEL_77:
       goto LABEL_78;
     }
 
-    if (a4 <= 1717855599)
+    if (result <= 1717855599)
     {
-      if (a4 != 1278226534)
+      if (result != 1278226534)
       {
         v66 = 1380410945;
 LABEL_91:
-        if (a4 != v66)
+        if (result != v66)
         {
           goto LABEL_110;
         }
       }
     }
 
-    else if (a4 != 1717855600 && a4 != 1919365990)
+    else if (result != 1717855600 && result != 1919365990)
     {
       v66 = 1717856627;
       goto LABEL_91;
@@ -1029,12 +1029,12 @@ LABEL_91:
 
     if (isF16Type(v13))
     {
-      if (a10 <= 0.0 || a10 > 1.0)
+      if (percentile <= 0.0 || percentile > 1.0)
       {
         goto LABEL_109;
       }
 
-      v71 = a3->data;
+      v71 = buffer->data;
       v100 = 0;
       v101 = 0;
       v102 = 0;
@@ -1043,7 +1043,7 @@ LABEL_91:
         v51 = 0;
         v80 = 0;
 LABEL_141:
-        v67 = (((v80 - v51) >> 2) * a10);
+        v67 = (((v80 - v51) >> 2) * percentile);
         if (v67 > 0)
         {
           std::__sort<std::__less<float,float> &,float *>();
@@ -1089,7 +1089,7 @@ LABEL_107:
       while (1)
       {
         v76 = *&v74[4 * v75 + v96 * v72];
-        if (v76 == 0.0 && a8)
+        if (v76 == 0.0 && zeros)
         {
           goto LABEL_106;
         }
@@ -1101,7 +1101,7 @@ LABEL_107:
           break;
         }
 
-        if (!a9)
+        if (!refZeros)
         {
           v79 = v76 / 0.0001;
           goto LABEL_105;
@@ -1131,7 +1131,7 @@ LABEL_110:
         if (v13 == 1278226534)
         {
 LABEL_122:
-          v30 = compareRawBuffers<half,float>(a10, a3->data + 2 * v93, v96, &v27[4 * v94], v97, v19 * v20, v98, a8, a9);
+          v30 = compareRawBuffers<half,float>(percentile, buffer->data + 2 * v93, v96, &v27[4 * v94], v97, v19 * v20, v98, zeros, refZeros);
           goto LABEL_29;
         }
 
@@ -1154,25 +1154,25 @@ LABEL_122:
       }
     }
 
-    if (a4 > 1111970368)
+    if (result > 1111970368)
     {
-      if (a4 != 1111970369)
+      if (result != 1111970369)
       {
-        if (a4 == 1647392359)
+        if (result == 1647392359)
         {
           goto LABEL_150;
         }
 
-        if (a4 != 1278226488)
+        if (result != 1278226488)
         {
           goto LABEL_155;
         }
       }
     }
 
-    else if (a4 != 32)
+    else if (result != 32)
     {
-      if (a4 != 825306677)
+      if (result != 825306677)
       {
         v86 = 825437747;
         goto LABEL_149;
@@ -1181,7 +1181,7 @@ LABEL_122:
 LABEL_150:
       if (v13 == 825306677 || v13 == 1647392359 || v13 == 825437747)
       {
-        v30 = compareRawBuffers<unsigned short,unsigned short>(a3->data + 2 * v93, v96, &v27[2 * v94], v97, v19 * v20, v98, a8, a9, a10);
+        v30 = compareRawBuffers<unsigned short,unsigned short>(buffer->data + 2 * v93, v96, &v27[2 * v94], v97, v19 * v20, v98, zeros, refZeros, percentile);
         goto LABEL_29;
       }
 
@@ -1192,13 +1192,13 @@ LABEL_155:
 
     if (v13 == 32 || v13 == 1278226488 || v13 == 1111970369)
     {
-      v30 = compareRawBuffers<unsigned char,unsigned char>(a3->data + v93, v96, &v27[v94], v97, v19 * v20, v98, a8, a9, a10);
+      v30 = compareRawBuffers<unsigned char,unsigned char>(buffer->data + v93, v96, &v27[v94], v97, v19 * v20, v98, zeros, refZeros, percentile);
       goto LABEL_29;
     }
 
     v86 = 825306677;
 LABEL_149:
-    if (a4 != v86)
+    if (result != v86)
     {
       goto LABEL_155;
     }
@@ -1213,7 +1213,7 @@ LABEL_149:
   }
 
 LABEL_28:
-  v30 = compareRawBuffers<float,float>(a3->data + 4 * v22, rowBytes, &v27[4 * v21], v97, v19 * v20, v98, a8, a9, a10);
+  v30 = compareRawBuffers<float,float>(buffer->data + 4 * v22, rowBytes, &v27[4 * v21], v97, v19 * v20, v98, zeros, refZeros, percentile);
 LABEL_29:
   v34 = v30;
   v35 = v31;
@@ -1229,10 +1229,10 @@ LABEL_30:
   return result;
 }
 
-+ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)a3 toRefBuffer:(__CVBuffer *)a4 ignoreRefZeros:(BOOL)a5 outlierPercentile:(float)a6
++ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)buffer toRefBuffer:(__CVBuffer *)refBuffer ignoreRefZeros:(BOOL)zeros outlierPercentile:(float)percentile
 {
-  *&v6 = a6;
-  [UtilsForTests compareBuffer:a3 offset:a4 toRefBuffer:0 ignoreResultZeros:a5 ignoreRefZeros:*MEMORY[0x277CBF3A8] outlierPercentile:*(MEMORY[0x277CBF3A8] + 8), v6];
+  *&v6 = percentile;
+  [UtilsForTests compareBuffer:buffer offset:refBuffer toRefBuffer:0 ignoreResultZeros:zeros ignoreRefZeros:*MEMORY[0x277CBF3A8] outlierPercentile:*(MEMORY[0x277CBF3A8] + 8), v6];
   result.var3 = v10;
   result.var2 = v9;
   result.var1 = v8;
@@ -1240,10 +1240,10 @@ LABEL_30:
   return result;
 }
 
-+ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)a3 offset:(CGSize)a4 toRefBuffer:(__CVBuffer *)a5 ignoreRefZeros:(BOOL)a6
++ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)buffer offset:(CGSize)offset toRefBuffer:(__CVBuffer *)refBuffer ignoreRefZeros:(BOOL)zeros
 {
   LODWORD(v6) = 1064514355;
-  [UtilsForTests compareBuffer:a3 offset:a5 toRefBuffer:0 ignoreResultZeros:a6 ignoreRefZeros:a4.width outlierPercentile:a4.height, v6];
+  [UtilsForTests compareBuffer:buffer offset:refBuffer toRefBuffer:0 ignoreResultZeros:zeros ignoreRefZeros:offset.width outlierPercentile:offset.height, v6];
   result.var3 = v10;
   result.var2 = v9;
   result.var1 = v8;
@@ -1251,10 +1251,10 @@ LABEL_30:
   return result;
 }
 
-+ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)a3 toRefBuffer:(__CVBuffer *)a4 ignoreResultZeros:(BOOL)a5 ignoreRefZeros:(BOOL)a6
++ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)buffer toRefBuffer:(__CVBuffer *)refBuffer ignoreResultZeros:(BOOL)zeros ignoreRefZeros:(BOOL)refZeros
 {
   LODWORD(v6) = 1064514355;
-  [UtilsForTests compareBuffer:a3 offset:a4 toRefBuffer:a5 ignoreResultZeros:a6 ignoreRefZeros:*MEMORY[0x277CBF3A8] outlierPercentile:*(MEMORY[0x277CBF3A8] + 8), v6];
+  [UtilsForTests compareBuffer:buffer offset:refBuffer toRefBuffer:zeros ignoreResultZeros:refZeros ignoreRefZeros:*MEMORY[0x277CBF3A8] outlierPercentile:*(MEMORY[0x277CBF3A8] + 8), v6];
   result.var3 = v10;
   result.var2 = v9;
   result.var1 = v8;
@@ -1262,9 +1262,9 @@ LABEL_30:
   return result;
 }
 
-+ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)a3 toRefBuffer:(__CVBuffer *)a4 ignoreRefZeros:(BOOL)a5
++ (BaselineTestStats_s)compareBuffer:(__CVBuffer *)buffer toRefBuffer:(__CVBuffer *)refBuffer ignoreRefZeros:(BOOL)zeros
 {
-  [a1 compareBuffer:a3 offset:a4 toRefBuffer:a5 ignoreRefZeros:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  [self compareBuffer:buffer offset:refBuffer toRefBuffer:zeros ignoreRefZeros:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   result.var3 = v8;
   result.var2 = v7;
   result.var1 = v6;

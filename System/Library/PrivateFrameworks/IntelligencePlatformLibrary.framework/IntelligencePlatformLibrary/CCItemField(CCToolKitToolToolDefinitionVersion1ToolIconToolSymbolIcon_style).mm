@@ -6,7 +6,7 @@
 
 - (uint64_t)toolKitToolToolDefinitionVersion1ToolIconToolSymbolIconStyle
 {
-  LODWORD(result) = [a1 uint32Value];
+  LODWORD(result) = [self uint32Value];
   if (result >= 2)
   {
     return 0;

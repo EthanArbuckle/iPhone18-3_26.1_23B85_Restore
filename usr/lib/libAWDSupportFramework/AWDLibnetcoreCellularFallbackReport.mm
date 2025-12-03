@@ -1,22 +1,22 @@
 @interface AWDLibnetcoreCellularFallbackReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDenyReason:(id)a3;
-- (int)StringAsNetworkEvents:(id)a3;
+- (int)StringAsDenyReason:(id)reason;
+- (int)StringAsNetworkEvents:(id)events;
 - (int)denyReason;
-- (int)networkEventsAtIndex:(unint64_t)a3;
+- (int)networkEventsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)timeToNetworkEventsMsecsAtIndex:(unint64_t)a3;
-- (void)addDataUsageSnapshotsAtNetworkEvents:(id)a3;
-- (void)addPrimaryInterfaceAttemptStatisticsReports:(id)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)timeToNetworkEventsMsecsAtIndex:(unint64_t)index;
+- (void)addDataUsageSnapshotsAtNetworkEvents:(id)events;
+- (void)addPrimaryInterfaceAttemptStatisticsReports:(id)reports;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDenyReason:(BOOL)a3;
-- (void)setHasFellback:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDenyReason:(BOOL)reason;
+- (void)setHasFellback:(BOOL)fellback;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDLibnetcoreCellularFallbackReport
@@ -32,9 +32,9 @@
   [(AWDLibnetcoreCellularFallbackReport *)&v3 dealloc];
 }
 
-- (void)setHasFellback:(BOOL)a3
+- (void)setHasFellback:(BOOL)fellback
 {
-  if (a3)
+  if (fellback)
   {
     v3 = 4;
   }
@@ -60,9 +60,9 @@
   }
 }
 
-- (void)setHasDenyReason:(BOOL)a3
+- (void)setHasDenyReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -75,19 +75,19 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsDenyReason:(id)a3
+- (int)StringAsDenyReason:(id)reason
 {
-  if ([a3 isEqualToString:@"DENY_REASON_BLOCKED_FROM_USING_CELL_DATA"])
+  if ([reason isEqualToString:@"DENY_REASON_BLOCKED_FROM_USING_CELL_DATA"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"DENY_REASON_EXCEEDED_CELL_FALLBACK_DATA_BUDGET"])
+  if ([reason isEqualToString:@"DENY_REASON_EXCEEDED_CELL_FALLBACK_DATA_BUDGET"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"DENY_REASON_METRICS_TESTING_DENIED"])
+  if ([reason isEqualToString:@"DENY_REASON_METRICS_TESTING_DENIED"])
   {
     return 3;
   }
@@ -95,66 +95,66 @@
   return 1;
 }
 
-- (int)networkEventsAtIndex:(unint64_t)a3
+- (int)networkEventsAtIndex:(unint64_t)index
 {
   p_networkEvents = &self->_networkEvents;
   count = self->_networkEvents.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_networkEvents->list[a3];
+  return p_networkEvents->list[index];
 }
 
-- (int)StringAsNetworkEvents:(id)a3
+- (int)StringAsNetworkEvents:(id)events
 {
-  if ([a3 isEqualToString:@"NETWORK_EVENT_USER_TURNING_OFF_WIFI"])
+  if ([events isEqualToString:@"NETWORK_EVENT_USER_TURNING_OFF_WIFI"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NETWORK_EVENT_WIFI_TRIGGER_DISCONNECT"])
+  if ([events isEqualToString:@"NETWORK_EVENT_WIFI_TRIGGER_DISCONNECT"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NETWORK_EVENT_SYMPTOMS_SENDING_WIFI_RECOMMENDED_SIGNAL"])
+  if ([events isEqualToString:@"NETWORK_EVENT_SYMPTOMS_SENDING_WIFI_RECOMMENDED_SIGNAL"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NETWORK_EVENT_SYMPTOMS_SENDING_WEAK_FALLBACK_SIGNAL"])
+  if ([events isEqualToString:@"NETWORK_EVENT_SYMPTOMS_SENDING_WEAK_FALLBACK_SIGNAL"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"NETWORK_EVENT_SYMPTOMS_SENDING_STRONG_FALLBACK_SIGNAL"])
+  if ([events isEqualToString:@"NETWORK_EVENT_SYMPTOMS_SENDING_STRONG_FALLBACK_SIGNAL"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"NETWORK_EVENT_CONNECTION_BEING_REUSED"])
+  if ([events isEqualToString:@"NETWORK_EVENT_CONNECTION_BEING_REUSED"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"NETWORK_EVENT_DATA_STALL_AT_APP_LAYER"])
+  if ([events isEqualToString:@"NETWORK_EVENT_DATA_STALL_AT_APP_LAYER"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"NETWORK_EVENT_BETTER_ROUTE"])
+  if ([events isEqualToString:@"NETWORK_EVENT_BETTER_ROUTE"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"NETWORK_EVENT_CELLULAR_FALLBACK_TIMER_START"])
+  if ([events isEqualToString:@"NETWORK_EVENT_CELLULAR_FALLBACK_TIMER_START"])
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"NETWORK_EVENT_CELLULAR_FALLBACK_ATTEMPT_START"])
+  if ([events isEqualToString:@"NETWORK_EVENT_CELLULAR_FALLBACK_ATTEMPT_START"])
   {
     return 10;
   }
@@ -162,19 +162,19 @@
   return 1;
 }
 
-- (unint64_t)timeToNetworkEventsMsecsAtIndex:(unint64_t)a3
+- (unint64_t)timeToNetworkEventsMsecsAtIndex:(unint64_t)index
 {
   p_timeToNetworkEventsMsecs = &self->_timeToNetworkEventsMsecs;
   count = self->_timeToNetworkEventsMsecs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_timeToNetworkEventsMsecs->list[a3];
+  return p_timeToNetworkEventsMsecs->list[index];
 }
 
-- (void)addPrimaryInterfaceAttemptStatisticsReports:(id)a3
+- (void)addPrimaryInterfaceAttemptStatisticsReports:(id)reports
 {
   primaryInterfaceAttemptStatisticsReports = self->_primaryInterfaceAttemptStatisticsReports;
   if (!primaryInterfaceAttemptStatisticsReports)
@@ -183,10 +183,10 @@
     self->_primaryInterfaceAttemptStatisticsReports = primaryInterfaceAttemptStatisticsReports;
   }
 
-  [(NSMutableArray *)primaryInterfaceAttemptStatisticsReports addObject:a3];
+  [(NSMutableArray *)primaryInterfaceAttemptStatisticsReports addObject:reports];
 }
 
-- (void)addDataUsageSnapshotsAtNetworkEvents:(id)a3
+- (void)addDataUsageSnapshotsAtNetworkEvents:(id)events
 {
   dataUsageSnapshotsAtNetworkEvents = self->_dataUsageSnapshotsAtNetworkEvents;
   if (!dataUsageSnapshotsAtNetworkEvents)
@@ -195,7 +195,7 @@
     self->_dataUsageSnapshotsAtNetworkEvents = dataUsageSnapshotsAtNetworkEvents;
   }
 
-  [(NSMutableArray *)dataUsageSnapshotsAtNetworkEvents addObject:a3];
+  [(NSMutableArray *)dataUsageSnapshotsAtNetworkEvents addObject:events];
 }
 
 - (id)description
@@ -208,11 +208,11 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_fellback), @"fellback"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_fellback), @"fellback"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -242,11 +242,11 @@ LABEL_3:
     v25 = off_29EE326D8[v24];
   }
 
-  [v3 setObject:v25 forKey:@"denyReason"];
+  [dictionary setObject:v25 forKey:@"denyReason"];
   if (*&self->_has)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_fallbackTimerMsecs), @"fallbackTimer_msecs"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_fallbackTimerMsecs), @"fallbackTimer_msecs"}];
   }
 
 LABEL_5:
@@ -277,10 +277,10 @@ LABEL_5:
       while (v7 < self->_networkEvents.count);
     }
 
-    [v3 setObject:v6 forKey:@"networkEvents"];
+    [dictionary setObject:v6 forKey:@"networkEvents"];
   }
 
-  [v3 setObject:PBRepeatedUInt64NSArray() forKey:@"timeToNetworkEvents_msecs"];
+  [dictionary setObject:PBRepeatedUInt64NSArray() forKey:@"timeToNetworkEvents_msecs"];
   if ([(NSMutableArray *)self->_primaryInterfaceAttemptStatisticsReports count])
   {
     v10 = [objc_alloc(MEMORY[0x29EDB8DE8]) initWithCapacity:{-[NSMutableArray count](self->_primaryInterfaceAttemptStatisticsReports, "count")}];
@@ -312,7 +312,7 @@ LABEL_5:
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"primaryInterfaceAttemptStatisticsReports"];
+    [dictionary setObject:v10 forKey:@"primaryInterfaceAttemptStatisticsReports"];
   }
 
   if ([(NSMutableArray *)self->_dataUsageSnapshotsAtNetworkEvents count])
@@ -346,14 +346,14 @@ LABEL_5:
       while (v19);
     }
 
-    [v3 setObject:v16 forKey:@"dataUsageSnapshotsAtNetworkEvents"];
+    [dictionary setObject:v16 forKey:@"dataUsageSnapshotsAtNetworkEvents"];
   }
 
   v22 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -476,7 +476,7 @@ LABEL_5:
   v22 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) == 0)
@@ -487,8 +487,8 @@ LABEL_5:
     }
 
 LABEL_23:
-    *(a3 + 18) = self->_denyReason;
-    *(a3 + 92) |= 2u;
+    *(to + 18) = self->_denyReason;
+    *(to + 92) |= 2u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_5;
@@ -497,8 +497,8 @@ LABEL_23:
     goto LABEL_4;
   }
 
-  *(a3 + 88) = self->_fellback;
-  *(a3 + 92) |= 4u;
+  *(to + 88) = self->_fellback;
+  *(to + 92) |= 4u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -509,72 +509,72 @@ LABEL_3:
   if (has)
   {
 LABEL_4:
-    *(a3 + 7) = self->_fallbackTimerMsecs;
-    *(a3 + 92) |= 1u;
+    *(to + 7) = self->_fallbackTimerMsecs;
+    *(to + 92) |= 1u;
   }
 
 LABEL_5:
   if ([(AWDLibnetcoreCellularFallbackReport *)self networkEventsCount])
   {
-    [a3 clearNetworkEvents];
-    v6 = [(AWDLibnetcoreCellularFallbackReport *)self networkEventsCount];
-    if (v6)
+    [to clearNetworkEvents];
+    networkEventsCount = [(AWDLibnetcoreCellularFallbackReport *)self networkEventsCount];
+    if (networkEventsCount)
     {
-      v7 = v6;
+      v7 = networkEventsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addNetworkEvents:{-[AWDLibnetcoreCellularFallbackReport networkEventsAtIndex:](self, "networkEventsAtIndex:", i)}];
+        [to addNetworkEvents:{-[AWDLibnetcoreCellularFallbackReport networkEventsAtIndex:](self, "networkEventsAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDLibnetcoreCellularFallbackReport *)self timeToNetworkEventsMsecsCount])
   {
-    [a3 clearTimeToNetworkEventsMsecs];
-    v9 = [(AWDLibnetcoreCellularFallbackReport *)self timeToNetworkEventsMsecsCount];
-    if (v9)
+    [to clearTimeToNetworkEventsMsecs];
+    timeToNetworkEventsMsecsCount = [(AWDLibnetcoreCellularFallbackReport *)self timeToNetworkEventsMsecsCount];
+    if (timeToNetworkEventsMsecsCount)
     {
-      v10 = v9;
+      v10 = timeToNetworkEventsMsecsCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addTimeToNetworkEventsMsecs:{-[AWDLibnetcoreCellularFallbackReport timeToNetworkEventsMsecsAtIndex:](self, "timeToNetworkEventsMsecsAtIndex:", j)}];
+        [to addTimeToNetworkEventsMsecs:{-[AWDLibnetcoreCellularFallbackReport timeToNetworkEventsMsecsAtIndex:](self, "timeToNetworkEventsMsecsAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDLibnetcoreCellularFallbackReport *)self primaryInterfaceAttemptStatisticsReportsCount])
   {
-    [a3 clearPrimaryInterfaceAttemptStatisticsReports];
-    v12 = [(AWDLibnetcoreCellularFallbackReport *)self primaryInterfaceAttemptStatisticsReportsCount];
-    if (v12)
+    [to clearPrimaryInterfaceAttemptStatisticsReports];
+    primaryInterfaceAttemptStatisticsReportsCount = [(AWDLibnetcoreCellularFallbackReport *)self primaryInterfaceAttemptStatisticsReportsCount];
+    if (primaryInterfaceAttemptStatisticsReportsCount)
     {
-      v13 = v12;
+      v13 = primaryInterfaceAttemptStatisticsReportsCount;
       for (k = 0; k != v13; ++k)
       {
-        [a3 addPrimaryInterfaceAttemptStatisticsReports:{-[AWDLibnetcoreCellularFallbackReport primaryInterfaceAttemptStatisticsReportsAtIndex:](self, "primaryInterfaceAttemptStatisticsReportsAtIndex:", k)}];
+        [to addPrimaryInterfaceAttemptStatisticsReports:{-[AWDLibnetcoreCellularFallbackReport primaryInterfaceAttemptStatisticsReportsAtIndex:](self, "primaryInterfaceAttemptStatisticsReportsAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDLibnetcoreCellularFallbackReport *)self dataUsageSnapshotsAtNetworkEventsCount])
   {
-    [a3 clearDataUsageSnapshotsAtNetworkEvents];
-    v15 = [(AWDLibnetcoreCellularFallbackReport *)self dataUsageSnapshotsAtNetworkEventsCount];
-    if (v15)
+    [to clearDataUsageSnapshotsAtNetworkEvents];
+    dataUsageSnapshotsAtNetworkEventsCount = [(AWDLibnetcoreCellularFallbackReport *)self dataUsageSnapshotsAtNetworkEventsCount];
+    if (dataUsageSnapshotsAtNetworkEventsCount)
     {
-      v16 = v15;
+      v16 = dataUsageSnapshotsAtNetworkEventsCount;
       for (m = 0; m != v16; ++m)
       {
-        [a3 addDataUsageSnapshotsAtNetworkEvents:{-[AWDLibnetcoreCellularFallbackReport dataUsageSnapshotsAtNetworkEventsAtIndex:](self, "dataUsageSnapshotsAtNetworkEventsAtIndex:", m)}];
+        [to addDataUsageSnapshotsAtNetworkEvents:{-[AWDLibnetcoreCellularFallbackReport dataUsageSnapshotsAtNetworkEventsAtIndex:](self, "dataUsageSnapshotsAtNetworkEventsAtIndex:", m)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -630,7 +630,7 @@ LABEL_5:
           objc_enumerationMutation(primaryInterfaceAttemptStatisticsReports);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * i) copyWithZone:zone];
         [v6 addPrimaryInterfaceAttemptStatisticsReports:v13];
       }
 
@@ -659,7 +659,7 @@ LABEL_5:
           objc_enumerationMutation(dataUsageSnapshotsAtNetworkEvents);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v22 + 1) + 8 * j) copyWithZone:zone];
         [v6 addDataUsageSnapshotsAtNetworkEvents:v19];
       }
 
@@ -673,29 +673,29 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (!IsEqual)
   {
     return IsEqual;
   }
 
-  v6 = *(a3 + 92);
+  v6 = *(equal + 92);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 92) & 4) != 0)
+    if ((*(equal + 92) & 4) != 0)
     {
-      v7 = *(a3 + 88);
+      v7 = *(equal + 88);
       if (self->_fellback)
       {
-        if ((*(a3 + 88) & 1) == 0)
+        if ((*(equal + 88) & 1) == 0)
         {
           goto LABEL_26;
         }
       }
 
-      else if (*(a3 + 88))
+      else if (*(equal + 88))
       {
         goto LABEL_26;
       }
@@ -708,7 +708,7 @@ LABEL_26:
     return IsEqual;
   }
 
-  if ((*(a3 + 92) & 4) != 0)
+  if ((*(equal + 92) & 4) != 0)
   {
     goto LABEL_26;
   }
@@ -716,26 +716,26 @@ LABEL_26:
 LABEL_4:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 92) & 2) == 0 || self->_denyReason != *(a3 + 18))
+    if ((*(equal + 92) & 2) == 0 || self->_denyReason != *(equal + 18))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(a3 + 92) & 2) != 0)
+  else if ((*(equal + 92) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(a3 + 92) & 1) == 0 || self->_fallbackTimerMsecs != *(a3 + 7))
+    if ((*(equal + 92) & 1) == 0 || self->_fallbackTimerMsecs != *(equal + 7))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(a3 + 92))
+  else if (*(equal + 92))
   {
     goto LABEL_26;
   }
@@ -747,10 +747,10 @@ LABEL_4:
     if (IsEqual)
     {
       primaryInterfaceAttemptStatisticsReports = self->_primaryInterfaceAttemptStatisticsReports;
-      if (!(primaryInterfaceAttemptStatisticsReports | *(a3 + 10)) || (IsEqual = [(NSMutableArray *)primaryInterfaceAttemptStatisticsReports isEqual:?]) != 0)
+      if (!(primaryInterfaceAttemptStatisticsReports | *(equal + 10)) || (IsEqual = [(NSMutableArray *)primaryInterfaceAttemptStatisticsReports isEqual:?]) != 0)
       {
         dataUsageSnapshotsAtNetworkEvents = self->_dataUsageSnapshotsAtNetworkEvents;
-        if (dataUsageSnapshotsAtNetworkEvents | *(a3 + 8))
+        if (dataUsageSnapshotsAtNetworkEvents | *(equal + 8))
         {
 
           LOBYTE(IsEqual) = [(NSMutableArray *)dataUsageSnapshotsAtNetworkEvents isEqual:?];
@@ -811,15 +811,15 @@ LABEL_8:
   return v8 ^ [(NSMutableArray *)self->_dataUsageSnapshotsAtNetworkEvents hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v33 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 92);
+  v5 = *(from + 92);
   if ((v5 & 4) != 0)
   {
-    self->_fellback = *(a3 + 88);
+    self->_fellback = *(from + 88);
     *&self->_has |= 4u;
-    v5 = *(a3 + 92);
+    v5 = *(from + 92);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -832,38 +832,38 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 92) & 2) == 0)
+  else if ((*(from + 92) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_denyReason = *(a3 + 18);
+  self->_denyReason = *(from + 18);
   *&self->_has |= 2u;
-  if (*(a3 + 92))
+  if (*(from + 92))
   {
 LABEL_4:
-    self->_fallbackTimerMsecs = *(a3 + 7);
+    self->_fallbackTimerMsecs = *(from + 7);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  v6 = [a3 networkEventsCount];
-  if (v6)
+  networkEventsCount = [from networkEventsCount];
+  if (networkEventsCount)
   {
-    v7 = v6;
+    v7 = networkEventsCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDLibnetcoreCellularFallbackReport addNetworkEvents:](self, "addNetworkEvents:", [a3 networkEventsAtIndex:i]);
+      -[AWDLibnetcoreCellularFallbackReport addNetworkEvents:](self, "addNetworkEvents:", [from networkEventsAtIndex:i]);
     }
   }
 
-  v9 = [a3 timeToNetworkEventsMsecsCount];
-  if (v9)
+  timeToNetworkEventsMsecsCount = [from timeToNetworkEventsMsecsCount];
+  if (timeToNetworkEventsMsecsCount)
   {
-    v10 = v9;
+    v10 = timeToNetworkEventsMsecsCount;
     for (j = 0; j != v10; ++j)
     {
-      -[AWDLibnetcoreCellularFallbackReport addTimeToNetworkEventsMsecs:](self, "addTimeToNetworkEventsMsecs:", [a3 timeToNetworkEventsMsecsAtIndex:j]);
+      -[AWDLibnetcoreCellularFallbackReport addTimeToNetworkEventsMsecs:](self, "addTimeToNetworkEventsMsecs:", [from timeToNetworkEventsMsecsAtIndex:j]);
     }
   }
 
@@ -871,7 +871,7 @@ LABEL_5:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = *(a3 + 10);
+  v12 = *(from + 10);
   v13 = [v12 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v13)
   {
@@ -899,7 +899,7 @@ LABEL_5:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = *(a3 + 8);
+  v17 = *(from + 8);
   v18 = [v17 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v18)
   {

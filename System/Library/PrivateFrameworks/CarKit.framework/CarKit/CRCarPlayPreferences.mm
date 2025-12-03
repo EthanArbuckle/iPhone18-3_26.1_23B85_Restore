@@ -1,10 +1,10 @@
 @interface CRCarPlayPreferences
 + (BOOL)hasShownEditWidgetsNotification;
-+ (id)_BOOLValueInAirPlayDomainForKey:(__CFString *)a3;
-+ (id)_BOOLValueInCarPlayDomainForKey:(__CFString *)a3;
++ (id)_BOOLValueInAirPlayDomainForKey:(__CFString *)key;
++ (id)_BOOLValueInCarPlayDomainForKey:(__CFString *)key;
 + (id)isPreflightThemeAssetEnabled;
-+ (void)setHasShownEditWidgetsNotification:(BOOL)a3;
-+ (void)setPreflightThemeAssetEnabled:(BOOL)a3;
++ (void)setHasShownEditWidgetsNotification:(BOOL)notification;
++ (void)setPreflightThemeAssetEnabled:(BOOL)enabled;
 - (BOOL)_isCarPlayAllowed;
 - (BOOL)isCarPlayCapable;
 - (CRCarPlayPreferences)init;
@@ -28,9 +28,9 @@
   v2 = [(CRCarPlayPreferences *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
     profileConnection = v2->_profileConnection;
-    v2->_profileConnection = v3;
+    v2->_profileConnection = mEMORY[0x1E69ADFB8];
 
     [(MCProfileConnection *)v2->_profileConnection registerObserver:v2];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -46,8 +46,8 @@
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
   [(MCProfileConnection *)self->_profileConnection unregisterObserver:self];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = CRCarPlayPreferences;
@@ -56,21 +56,21 @@
 
 - (void)_updateCarPlayAllowed
 {
-  v3 = [(CRCarPlayPreferences *)self _isCarPlayAllowed];
-  if (v3 != [(CRCarPlayPreferences *)self cachedCarPlayAllowed])
+  _isCarPlayAllowed = [(CRCarPlayPreferences *)self _isCarPlayAllowed];
+  if (_isCarPlayAllowed != [(CRCarPlayPreferences *)self cachedCarPlayAllowed])
   {
-    [(CRCarPlayPreferences *)self setCachedCarPlayAllowed:v3];
-    v4 = [(CRCarPlayPreferences *)self preferencesDelegate];
+    [(CRCarPlayPreferences *)self setCachedCarPlayAllowed:_isCarPlayAllowed];
+    preferencesDelegate = [(CRCarPlayPreferences *)self preferencesDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 handleCarPlayAllowedDidChange];
+      [preferencesDelegate handleCarPlayAllowedDidChange];
     }
   }
 }
 
-+ (id)_BOOLValueInCarPlayDomainForKey:(__CFString *)a3
++ (id)_BOOLValueInCarPlayDomainForKey:(__CFString *)key
 {
-  v3 = CFPreferencesCopyValue(a3, CRPreferencesNotMigratedDomain, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
+  v3 = CFPreferencesCopyValue(key, CRPreferencesNotMigratedDomain, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
   if (v3)
   {
     v4 = v3;
@@ -96,9 +96,9 @@
   return v6;
 }
 
-+ (id)_BOOLValueInAirPlayDomainForKey:(__CFString *)a3
++ (id)_BOOLValueInAirPlayDomainForKey:(__CFString *)key
 {
-  v3 = CFPreferencesCopyValue(a3, CRPreferencesAirPlayDomain, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
+  v3 = CFPreferencesCopyValue(key, CRPreferencesAirPlayDomain, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
   if (v3)
   {
     v4 = v3;
@@ -158,8 +158,8 @@ LABEL_6:
   {
     if (([(MCProfileConnection *)self->_profileConnection isVehicleUIAllowed]& 1) != 0)
     {
-      v3 = [MEMORY[0x1E699C848] sharedInstance];
-      if (([v3 isLostModeActive]& 1) == 0 && ![v3 isManagedLostModeActive])
+      mEMORY[0x1E699C848] = [MEMORY[0x1E699C848] sharedInstance];
+      if (([mEMORY[0x1E699C848] isLostModeActive]& 1) == 0 && ![mEMORY[0x1E699C848] isManagedLostModeActive])
       {
         v5 = 1;
         goto LABEL_12;
@@ -175,11 +175,11 @@ LABEL_6:
 
     else
     {
-      v3 = CarGeneralLogging();
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+      mEMORY[0x1E699C848] = CarGeneralLogging();
+      if (os_log_type_enabled(mEMORY[0x1E699C848], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_1C81FC000, v3, OS_LOG_TYPE_DEFAULT, "CarPlay disabled by restrictions", buf, 2u);
+        _os_log_impl(&dword_1C81FC000, mEMORY[0x1E699C848], OS_LOG_TYPE_DEFAULT, "CarPlay disabled by restrictions", buf, 2u);
       }
     }
 
@@ -291,27 +291,27 @@ LABEL_12:
   return v4;
 }
 
-+ (void)setPreflightThemeAssetEnabled:(BOOL)a3
++ (void)setPreflightThemeAssetEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [v4 _setBoolValue:v5 inCarPlayDomainForKey:@"EnablePreflightThemeAsset"];
 }
 
 + (BOOL)hasShownEditWidgetsNotification
 {
   v2 = [objc_opt_class() _BOOLValueInCarPlayDomainForKey:@"HasShownEditWidgets"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-+ (void)setHasShownEditWidgetsNotification:(BOOL)a3
++ (void)setHasShownEditWidgetsNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:notificationCopy];
   [v4 _setBoolValue:v5 inCarPlayDomainForKey:@"HasShownEditWidgets"];
 }
 

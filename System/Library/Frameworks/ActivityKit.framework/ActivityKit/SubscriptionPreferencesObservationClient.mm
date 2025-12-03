@@ -1,13 +1,13 @@
 @interface SubscriptionPreferencesObservationClient
-- (void)subscriptionPreferencesDidChange:(id)a3;
+- (void)subscriptionPreferencesDidChange:(id)change;
 @end
 
 @implementation SubscriptionPreferencesObservationClient
 
-- (void)subscriptionPreferencesDidChange:(id)a3
+- (void)subscriptionPreferencesDidChange:(id)change
 {
-  v4 = a3;
-  v8 = self;
+  changeCopy = change;
+  selfCopy = self;
   v5 = sub_1A2D07F44();
   v7 = v6;
 

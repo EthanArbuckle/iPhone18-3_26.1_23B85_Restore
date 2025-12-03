@@ -6,13 +6,13 @@
 
 - (BOOL)prs_isPosterSnapshot
 {
-  v1 = [a1 lastPathComponent];
-  if ([v1 hasPrefix:@"SNAPSHOT"])
+  lastPathComponent = [self lastPathComponent];
+  if ([lastPathComponent hasPrefix:@"SNAPSHOT"])
   {
-    v2 = [v1 pathExtension];
-    if ([v2 caseInsensitiveCompare:@"atx"])
+    pathExtension = [lastPathComponent pathExtension];
+    if ([pathExtension caseInsensitiveCompare:@"atx"])
     {
-      v3 = [v2 caseInsensitiveCompare:@"png"] == 0;
+      v3 = [pathExtension caseInsensitiveCompare:@"png"] == 0;
     }
 
     else

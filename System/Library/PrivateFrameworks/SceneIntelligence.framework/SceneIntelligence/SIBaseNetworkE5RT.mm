@@ -1,45 +1,45 @@
 @interface SIBaseNetworkE5RT
 - (BOOL)IsPrewiringEnabled;
-- (BOOL)IsSurfacePrewiredForCurrentFunctionForBlob:(id)a3 surfaceID:(unint64_t)a4;
-- (BOOL)outputExists:(id)a3;
-- (SIBaseNetworkE5RT)initWithNetName:(id)a3;
-- (SIBaseNetworkE5RT)initWithNetPath:(id)a3;
-- (SIBaseNetworkE5RT)initWithNetworkConfiguration:(id)a3;
-- (__n128)getOutputShape:(void *)a3;
+- (BOOL)IsSurfacePrewiredForCurrentFunctionForBlob:(id)blob surfaceID:(unint64_t)d;
+- (BOOL)outputExists:(id)exists;
+- (SIBaseNetworkE5RT)initWithNetName:(id)name;
+- (SIBaseNetworkE5RT)initWithNetPath:(id)path;
+- (SIBaseNetworkE5RT)initWithNetworkConfiguration:(id)configuration;
+- (__n128)getOutputShape:(void *)shape;
 - (id).cxx_construct;
-- (id)getOutputSurface:(id)a3;
-- (int)_loadPrecompiledModel:(id)a3 operation:(e5rt_execution_stream_operation *)a4;
-- (int64_t)_loadModel:(id)a3 operation:(e5rt_execution_stream_operation *)a4;
+- (id)getOutputSurface:(id)surface;
+- (int)_loadPrecompiledModel:(id)model operation:(e5rt_execution_stream_operation *)operation;
+- (int64_t)_loadModel:(id)model operation:(e5rt_execution_stream_operation *)operation;
 - (int64_t)_setupMetaDataFromLibrary;
-- (int64_t)addPrewiringBuffersToStreamForFunctionName:(id)a3 inputPools:(id)a4 outputPools:(id)a5 clearWiredBuffer:(BOOL)a6;
+- (int64_t)addPrewiringBuffersToStreamForFunctionName:(id)name inputPools:(id)pools outputPools:(id)outputPools clearWiredBuffer:(BOOL)buffer;
 - (int64_t)reset;
 - (int64_t)runNetwork;
-- (int64_t)runNetwork:(void *)a3;
-- (int64_t)selectComputeOperationByFunctionName:(id)a3;
-- (int64_t)setInput:(id)a3 fromCVPixelBuffer:(__CVBuffer *)a4;
-- (int64_t)setInput:(id)a3 fromRawPointer:(const void *)a4;
-- (int64_t)setInput:(id)a3 fromSurface:(id)a4;
-- (int64_t)setOutputBlob:(id)a3 forOutputSurface:(id)a4;
+- (int64_t)runNetwork:(void *)network;
+- (int64_t)selectComputeOperationByFunctionName:(id)name;
+- (int64_t)setInput:(id)input fromCVPixelBuffer:(__CVBuffer *)buffer;
+- (int64_t)setInput:(id)input fromRawPointer:(const void *)pointer;
+- (int64_t)setInput:(id)input fromSurface:(id)surface;
+- (int64_t)setOutputBlob:(id)blob forOutputSurface:(id)surface;
 - (int64_t)unwirePrewiringBuffers;
-- (int64_t)unwirePrewiringBuffersForFunctionName:(id)a3;
-- (unint64_t)getInputBatchNum:(id)a3;
-- (unint64_t)getInputChannels:(id)a3;
-- (unint64_t)getInputHeight:(id)a3;
-- (unint64_t)getInputLength:(id)a3;
-- (unint64_t)getInputSizeInBytes:(id)a3;
-- (unint64_t)getInputWidth:(id)a3;
-- (unint64_t)getOutputBatchNum:(id)a3;
-- (unint64_t)getOutputBytePerRow:(id)a3;
-- (unint64_t)getOutputChannels:(id)a3;
-- (unint64_t)getOutputComponentSize:(id)a3;
-- (unint64_t)getOutputHeight:(id)a3;
-- (unint64_t)getOutputLength:(id)a3;
-- (unint64_t)getOutputRowElements:(id)a3;
-- (unint64_t)getOutputSizeInBytes:(id)a3;
-- (unint64_t)getOutputWidth:(id)a3;
+- (int64_t)unwirePrewiringBuffersForFunctionName:(id)name;
+- (unint64_t)getInputBatchNum:(id)num;
+- (unint64_t)getInputChannels:(id)channels;
+- (unint64_t)getInputHeight:(id)height;
+- (unint64_t)getInputLength:(id)length;
+- (unint64_t)getInputSizeInBytes:(id)bytes;
+- (unint64_t)getInputWidth:(id)width;
+- (unint64_t)getOutputBatchNum:(id)num;
+- (unint64_t)getOutputBytePerRow:(id)row;
+- (unint64_t)getOutputChannels:(id)channels;
+- (unint64_t)getOutputComponentSize:(id)size;
+- (unint64_t)getOutputHeight:(id)height;
+- (unint64_t)getOutputLength:(id)length;
+- (unint64_t)getOutputRowElements:(id)elements;
+- (unint64_t)getOutputSizeInBytes:(id)bytes;
+- (unint64_t)getOutputWidth:(id)width;
 - (void)dealloc;
-- (void)getInputPtr:(id)a3;
-- (void)getRawOutput:(id)a3;
+- (void)getInputPtr:(id)ptr;
+- (void)getRawOutput:(id)output;
 @end
 
 @implementation SIBaseNetworkE5RT
@@ -85,9 +85,9 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v8 = [(SINetworkConfiguration *)self->_configuration networkFunction];
-  v9 = v8;
-  [v8 UTF8String];
+  networkFunction = [(SINetworkConfiguration *)self->_configuration networkFunction];
+  v9 = networkFunction;
+  [networkFunction UTF8String];
   v10 = e5rt_program_library_get_function_metadata() == 0;
 
   if (!v10)
@@ -203,70 +203,70 @@ LABEL_26:
   return v21;
 }
 
-- (SIBaseNetworkE5RT)initWithNetName:(id)a3
+- (SIBaseNetworkE5RT)initWithNetName:(id)name
 {
   v4 = objc_alloc_init(SINetworkConfiguration);
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v6 = [(SINetworkConfiguration *)v4 networkName];
-  v7 = SIMLE5RTBundlePath(v5, v6);
+  networkName = [(SINetworkConfiguration *)v4 networkName];
+  v7 = SIMLE5RTBundlePath(v5, networkName);
   [(SINetworkConfiguration *)v4 setNetworkPath:v7];
 
   v8 = [(SIBaseNetworkE5RT *)self initWithNetworkConfiguration:v4];
   return v8;
 }
 
-- (SIBaseNetworkE5RT)initWithNetPath:(id)a3
+- (SIBaseNetworkE5RT)initWithNetPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_alloc_init(SINetworkConfiguration);
-  [(SINetworkConfiguration *)v5 setNetworkPath:v4];
+  [(SINetworkConfiguration *)v5 setNetworkPath:pathCopy];
   v6 = [(SIBaseNetworkE5RT *)self initWithNetworkConfiguration:v5];
 
   return v6;
 }
 
-- (SIBaseNetworkE5RT)initWithNetworkConfiguration:(id)a3
+- (SIBaseNetworkE5RT)initWithNetworkConfiguration:(id)configuration
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   v35.receiver = self;
   v35.super_class = SIBaseNetworkE5RT;
   v6 = [(SIBaseNetworkE5RT *)&v35 init];
   if (v6)
   {
-    v7 = [v5 networkPath];
-    v8 = v7 == 0;
+    networkPath = [configurationCopy networkPath];
+    v8 = networkPath == 0;
 
     if (v8)
     {
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v12 = [v5 networkName];
-      v13 = [v5 networkNameExtraPostfix];
-      v14 = v13 == 0;
+      networkName = [configurationCopy networkName];
+      networkNameExtraPostfix = [configurationCopy networkNameExtraPostfix];
+      v14 = networkNameExtraPostfix == 0;
 
       if (!v14)
       {
         v15 = MEMORY[0x277CCACA8];
-        v16 = [v5 networkNameExtraPostfix];
-        v17 = [v15 stringWithFormat:@"%@_%@", v12, v16];
+        networkNameExtraPostfix2 = [configurationCopy networkNameExtraPostfix];
+        v17 = [v15 stringWithFormat:@"%@_%@", networkName, networkNameExtraPostfix2];
 
-        v12 = v17;
+        networkName = v17;
       }
 
-      v9 = SIMLE5RTBundlePath(v11, v12);
+      networkPath2 = SIMLE5RTBundlePath(v11, networkName);
     }
 
     else
     {
-      v9 = [v5 networkPath];
+      networkPath2 = [configurationCopy networkPath];
     }
 
-    objc_storeStrong(&v6->_configuration, a3);
-    v18 = [(SINetworkConfiguration *)v6->_configuration networkName];
+    objc_storeStrong(&v6->_configuration, configuration);
+    networkName2 = [(SINetworkConfiguration *)v6->_configuration networkName];
     networkName = v6->_networkName;
-    v6->_networkName = v18;
+    v6->_networkName = networkName2;
 
-    objc_storeStrong(&v6->_e5Path, v9);
+    objc_storeStrong(&v6->_e5Path, networkPath2);
     v6->_isModelCompiledInRuntime = 0;
     if (e5rt_execution_stream_create())
     {
@@ -279,7 +279,7 @@ LABEL_26:
         v38 = 1025;
         v39 = 174;
         v40 = 2113;
-        v41 = v21;
+        configurationCopy2 = v21;
         _os_log_impl(&dword_21DE0D000, v20, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** E5RT error message: %{private}@ ***", buf, 0x1Cu);
       }
 
@@ -292,7 +292,7 @@ LABEL_26:
         v38 = 1025;
         v39 = 174;
         v40 = 2113;
-        v41 = configuration;
+        configurationCopy2 = configuration;
         _os_log_impl(&dword_21DE0D000, v22, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failed to init the model with networkConfiguration: %{private}@ ***", buf, 0x1Cu);
       }
     }
@@ -317,13 +317,13 @@ LABEL_26:
             v38 = 1025;
             v39 = 198;
             v40 = 2112;
-            v41 = v30;
+            configurationCopy2 = v30;
             _os_log_impl(&dword_21DE0D000, v29, OS_LOG_TYPE_INFO, " %{private}s:%{private}d *** [Warning] Failed to get metadata for E5 Bundle (%@) ***", buf, 0x1Cu);
           }
         }
 
-        v31 = [v5 networkMode];
-        v32 = [(SIBaseNetworkE5RT *)v6 selectComputeOperationByFunctionName:v31]== 0;
+        networkMode = [configurationCopy networkMode];
+        v32 = [(SIBaseNetworkE5RT *)v6 selectComputeOperationByFunctionName:networkMode]== 0;
 
         if (v32)
         {
@@ -347,7 +347,7 @@ LABEL_26:
         v38 = 1025;
         v39 = 176;
         v40 = 2113;
-        v41 = v25;
+        configurationCopy2 = v25;
         _os_log_impl(&dword_21DE0D000, v24, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** E5RT error message: %{private}@ ***", buf, 0x1Cu);
       }
 
@@ -360,7 +360,7 @@ LABEL_26:
         v38 = 1025;
         v39 = 176;
         v40 = 2113;
-        v41 = v26;
+        configurationCopy2 = v26;
         _os_log_impl(&dword_21DE0D000, v22, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failed to init the model with networkConfiguration: %{private}@ ***", buf, 0x1Cu);
       }
     }
@@ -375,16 +375,16 @@ LABEL_27:
   return v10;
 }
 
-- (int)_loadPrecompiledModel:(id)a3 operation:(e5rt_execution_stream_operation *)a4
+- (int)_loadPrecompiledModel:(id)model operation:(e5rt_execution_stream_operation *)operation
 {
-  v5 = a3;
-  v6 = v5;
+  modelCopy = model;
+  v6 = modelCopy;
   if (self->_aneService)
   {
     __assert_rtn("[SIBaseNetworkE5RT _loadPrecompiledModel:operation:]", "SIBaseNetworkE5RT.mm", 245, "!_aneService");
   }
 
-  [v5 UTF8String];
+  [modelCopy UTF8String];
   [(NSString *)self->_e5Path UTF8String];
   [v6 UTF8String];
   precompiled_compute_operation = e5rt_execution_stream_operation_create_precompiled_compute_operation();
@@ -392,9 +392,9 @@ LABEL_27:
   return precompiled_compute_operation;
 }
 
-- (int64_t)_loadModel:(id)a3 operation:(e5rt_execution_stream_operation *)a4
+- (int64_t)_loadModel:(id)model operation:(e5rt_execution_stream_operation *)operation
 {
-  if ([(SIBaseNetworkE5RT *)self _loadPrecompiledModel:a3 operation:a4])
+  if ([(SIBaseNetworkE5RT *)self _loadPrecompiledModel:model operation:operation])
   {
     return 7;
   }
@@ -405,18 +405,18 @@ LABEL_27:
   }
 }
 
-- (int64_t)selectComputeOperationByFunctionName:(id)a3
+- (int64_t)selectComputeOperationByFunctionName:(id)name
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(__CFString *)v4 isEqualToString:&stru_282F2BE40])
+  nameCopy = name;
+  if ([(__CFString *)nameCopy isEqualToString:&stru_282F2BE40])
   {
     v5 = @"main";
   }
 
   else
   {
-    v5 = v4;
+    v5 = nameCopy;
   }
 
   v6 = v5;
@@ -826,21 +826,21 @@ LABEL_25:
   return result;
 }
 
-- (int64_t)setInput:(id)a3 fromCVPixelBuffer:(__CVBuffer *)a4
+- (int64_t)setInput:(id)input fromCVPixelBuffer:(__CVBuffer *)buffer
 {
-  v6 = a3;
-  v7 = [[SIIOSurface alloc] initFromPixelBuffer:a4];
-  v8 = [(SIBaseNetworkE5RT *)self setInput:v6 fromSurface:v7];
+  inputCopy = input;
+  v7 = [[SIIOSurface alloc] initFromPixelBuffer:buffer];
+  v8 = [(SIBaseNetworkE5RT *)self setInput:inputCopy fromSurface:v7];
 
   return v8;
 }
 
-- (int64_t)setInput:(id)a3 fromSurface:(id)a4
+- (int64_t)setInput:(id)input fromSurface:(id)surface
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (-[SIBaseNetworkE5RT IsPrewiringEnabled](self, "IsPrewiringEnabled") && !-[SIBaseNetworkE5RT IsSurfacePrewiredForCurrentFunctionForBlob:surfaceID:](self, "IsSurfacePrewiredForCurrentFunctionForBlob:surfaceID:", v6, [v7 identifier]))
+  inputCopy = input;
+  surfaceCopy = surface;
+  if (-[SIBaseNetworkE5RT IsPrewiringEnabled](self, "IsPrewiringEnabled") && !-[SIBaseNetworkE5RT IsSurfacePrewiredForCurrentFunctionForBlob:surfaceID:](self, "IsSurfacePrewiredForCurrentFunctionForBlob:surfaceID:", inputCopy, [surfaceCopy identifier]))
   {
     v10 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -850,9 +850,9 @@ LABEL_25:
       v14 = 1025;
       v15 = 385;
       v16 = 2048;
-      v17 = [v7 identifier];
+      identifier = [surfaceCopy identifier];
       v18 = 2113;
-      v19 = v6;
+      v19 = inputCopy;
       _os_log_impl(&dword_21DE0D000, v10, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Trying to bind the buffer (id= %lld) for blob (%{private}@) that was not ANEP ready ***", __p, 0x26u);
     }
 
@@ -861,29 +861,29 @@ LABEL_25:
 
   else
   {
-    std::string::basic_string[abi:nn200100]<0>(__p, [v6 UTF8String]);
+    std::string::basic_string[abi:nn200100]<0>(__p, [inputCopy UTF8String]);
     v8 = std::__hash_table<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>>>::find<std::string>(&self->_inputs.__table_.__bucket_list_.__ptr_, __p);
     if (!v8)
     {
       abort();
     }
 
-    if (SBYTE3(v17) < 0)
+    if (SBYTE3(identifier) < 0)
     {
       operator delete(*__p);
     }
 
-    v9 = [v8[5] bindSurface:v7];
+    v9 = [v8[5] bindSurface:surfaceCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (int64_t)setInput:(id)a3 fromRawPointer:(const void *)a4
+- (int64_t)setInput:(id)input fromRawPointer:(const void *)pointer
 {
-  v6 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v6 UTF8String]);
+  inputCopy = input;
+  std::string::basic_string[abi:nn200100]<0>(__p, [inputCopy UTF8String]);
   v12 = __p;
   v7 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_inputs.__table_.__bucket_list_.__ptr_, __p);
   if (v11 < 0)
@@ -891,15 +891,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v8 = [v7[5] bindRawPointer:a4];
+  v8 = [v7[5] bindRawPointer:pointer];
 
   return v8;
 }
 
-- (void)getInputPtr:(id)a3
+- (void)getInputPtr:(id)ptr
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  ptrCopy = ptr;
+  std::string::basic_string[abi:nn200100]<0>(__p, [ptrCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_inputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -907,15 +907,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getDataPtr];
+  getDataPtr = [v5[5] getDataPtr];
 
-  return v6;
+  return getDataPtr;
 }
 
-- (unint64_t)getInputWidth:(id)a3
+- (unint64_t)getInputWidth:(id)width
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  widthCopy = width;
+  std::string::basic_string[abi:nn200100]<0>(__p, [widthCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_inputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -923,15 +923,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getWidth];
+  getWidth = [v5[5] getWidth];
 
-  return v6;
+  return getWidth;
 }
 
-- (unint64_t)getInputHeight:(id)a3
+- (unint64_t)getInputHeight:(id)height
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  heightCopy = height;
+  std::string::basic_string[abi:nn200100]<0>(__p, [heightCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_inputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -939,15 +939,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getHeight];
+  getHeight = [v5[5] getHeight];
 
-  return v6;
+  return getHeight;
 }
 
-- (unint64_t)getInputChannels:(id)a3
+- (unint64_t)getInputChannels:(id)channels
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  channelsCopy = channels;
+  std::string::basic_string[abi:nn200100]<0>(__p, [channelsCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_inputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -955,15 +955,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getChannels];
+  getChannels = [v5[5] getChannels];
 
-  return v6;
+  return getChannels;
 }
 
-- (unint64_t)getInputBatchNum:(id)a3
+- (unint64_t)getInputBatchNum:(id)num
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  numCopy = num;
+  std::string::basic_string[abi:nn200100]<0>(__p, [numCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_inputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -971,15 +971,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getBatchnum];
+  getBatchnum = [v5[5] getBatchnum];
 
-  return v6;
+  return getBatchnum;
 }
 
-- (unint64_t)getInputLength:(id)a3
+- (unint64_t)getInputLength:(id)length
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  lengthCopy = length;
+  std::string::basic_string[abi:nn200100]<0>(__p, [lengthCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_inputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -987,15 +987,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getNumberOfElements];
+  getNumberOfElements = [v5[5] getNumberOfElements];
 
-  return v6;
+  return getNumberOfElements;
 }
 
-- (unint64_t)getInputSizeInBytes:(id)a3
+- (unint64_t)getInputSizeInBytes:(id)bytes
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  bytesCopy = bytes;
+  std::string::basic_string[abi:nn200100]<0>(__p, [bytesCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_inputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1003,18 +1003,18 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getSizeInBytes];
+  getSizeInBytes = [v5[5] getSizeInBytes];
 
-  return v6;
+  return getSizeInBytes;
 }
 
-- (int64_t)setOutputBlob:(id)a3 forOutputSurface:(id)a4
+- (int64_t)setOutputBlob:(id)blob forOutputSurface:(id)surface
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  if ([(SIBaseNetworkE5RT *)self IsPrewiringEnabled]&& ![(SIBaseNetworkE5RT *)self IsSurfacePrewiredForCurrentFunctionForBlob:v6 surfaceID:v8])
+  blobCopy = blob;
+  surfaceCopy = surface;
+  identifier = [surfaceCopy identifier];
+  if ([(SIBaseNetworkE5RT *)self IsPrewiringEnabled]&& ![(SIBaseNetworkE5RT *)self IsSurfacePrewiredForCurrentFunctionForBlob:blobCopy surfaceID:identifier])
   {
     v11 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1024,9 +1024,9 @@ LABEL_25:
       v15 = 1025;
       v16 = 444;
       v17 = 2048;
-      v18 = v8;
+      v18 = identifier;
       v19 = 2113;
-      v20 = v6;
+      v20 = blobCopy;
       _os_log_impl(&dword_21DE0D000, v11, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Trying to bind the buffer (id= %lld) for blob (%{private}@) that was not ANEP ready ***", __p, 0x26u);
     }
 
@@ -1035,7 +1035,7 @@ LABEL_25:
 
   else
   {
-    std::string::basic_string[abi:nn200100]<0>(__p, [v6 UTF8String]);
+    std::string::basic_string[abi:nn200100]<0>(__p, [blobCopy UTF8String]);
     v9 = std::__hash_table<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>>>::find<std::string>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
     if (!v9)
     {
@@ -1047,17 +1047,17 @@ LABEL_25:
       operator delete(*__p);
     }
 
-    v10 = [v9[5] bindSurface:v7];
+    v10 = [v9[5] bindSurface:surfaceCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (void)getRawOutput:(id)a3
+- (void)getRawOutput:(id)output
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  outputCopy = output;
+  std::string::basic_string[abi:nn200100]<0>(__p, [outputCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1065,15 +1065,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getDataPtr];
+  getDataPtr = [v5[5] getDataPtr];
 
-  return v6;
+  return getDataPtr;
 }
 
-- (id)getOutputSurface:(id)a3
+- (id)getOutputSurface:(id)surface
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  surfaceCopy = surface;
+  std::string::basic_string[abi:nn200100]<0>(__p, [surfaceCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1081,24 +1081,24 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getSurface];
+  getSurface = [v5[5] getSurface];
 
-  return v6;
+  return getSurface;
 }
 
-- (__n128)getOutputShape:(void *)a3
+- (__n128)getOutputShape:(void *)shape
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  shapeCopy = shape;
+  std::string::basic_string[abi:nn200100]<0>(__p, [shapeCopy UTF8String]);
   v13 = __p;
-  v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>((a1 + 256), __p);
+  v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>((self + 256), __p);
   if (v12 < 0)
   {
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getShape];
-  v7 = vuzp1q_s32(*v6, v6[1]);
+  getShape = [v5[5] getShape];
+  v7 = vuzp1q_s32(*getShape, getShape[1]);
   v8 = vrev64q_s32(v7);
   v8.i64[0] = v7.i64[0];
   v10 = v8;
@@ -1106,10 +1106,10 @@ LABEL_25:
   return v10;
 }
 
-- (unint64_t)getOutputWidth:(id)a3
+- (unint64_t)getOutputWidth:(id)width
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  widthCopy = width;
+  std::string::basic_string[abi:nn200100]<0>(__p, [widthCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1117,15 +1117,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getWidth];
+  getWidth = [v5[5] getWidth];
 
-  return v6;
+  return getWidth;
 }
 
-- (unint64_t)getOutputHeight:(id)a3
+- (unint64_t)getOutputHeight:(id)height
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  heightCopy = height;
+  std::string::basic_string[abi:nn200100]<0>(__p, [heightCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1133,15 +1133,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getHeight];
+  getHeight = [v5[5] getHeight];
 
-  return v6;
+  return getHeight;
 }
 
-- (unint64_t)getOutputChannels:(id)a3
+- (unint64_t)getOutputChannels:(id)channels
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  channelsCopy = channels;
+  std::string::basic_string[abi:nn200100]<0>(__p, [channelsCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1149,15 +1149,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getChannels];
+  getChannels = [v5[5] getChannels];
 
-  return v6;
+  return getChannels;
 }
 
-- (unint64_t)getOutputBatchNum:(id)a3
+- (unint64_t)getOutputBatchNum:(id)num
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  numCopy = num;
+  std::string::basic_string[abi:nn200100]<0>(__p, [numCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1165,15 +1165,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getBatchnum];
+  getBatchnum = [v5[5] getBatchnum];
 
-  return v6;
+  return getBatchnum;
 }
 
-- (unint64_t)getOutputLength:(id)a3
+- (unint64_t)getOutputLength:(id)length
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  lengthCopy = length;
+  std::string::basic_string[abi:nn200100]<0>(__p, [lengthCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1181,15 +1181,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getNumberOfElements];
+  getNumberOfElements = [v5[5] getNumberOfElements];
 
-  return v6;
+  return getNumberOfElements;
 }
 
-- (unint64_t)getOutputSizeInBytes:(id)a3
+- (unint64_t)getOutputSizeInBytes:(id)bytes
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  bytesCopy = bytes;
+  std::string::basic_string[abi:nn200100]<0>(__p, [bytesCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1197,15 +1197,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getSizeInBytes];
+  getSizeInBytes = [v5[5] getSizeInBytes];
 
-  return v6;
+  return getSizeInBytes;
 }
 
-- (unint64_t)getOutputRowElements:(id)a3
+- (unint64_t)getOutputRowElements:(id)elements
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  elementsCopy = elements;
+  std::string::basic_string[abi:nn200100]<0>(__p, [elementsCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1213,15 +1213,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getRowElements];
+  getRowElements = [v5[5] getRowElements];
 
-  return v6;
+  return getRowElements;
 }
 
-- (unint64_t)getOutputBytePerRow:(id)a3
+- (unint64_t)getOutputBytePerRow:(id)row
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  rowCopy = row;
+  std::string::basic_string[abi:nn200100]<0>(__p, [rowCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1229,15 +1229,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getBytePerRow];
+  getBytePerRow = [v5[5] getBytePerRow];
 
-  return v6;
+  return getBytePerRow;
 }
 
-- (unint64_t)getOutputComponentSize:(id)a3
+- (unint64_t)getOutputComponentSize:(id)size
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  sizeCopy = size;
+  std::string::basic_string[abi:nn200100]<0>(__p, [sizeCopy UTF8String]);
   v10 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v9 < 0)
@@ -1245,15 +1245,15 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  v6 = [v5[5] getComponentSize];
+  getComponentSize = [v5[5] getComponentSize];
 
-  return v6;
+  return getComponentSize;
 }
 
-- (BOOL)outputExists:(id)a3
+- (BOOL)outputExists:(id)exists
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  existsCopy = exists;
+  std::string::basic_string[abi:nn200100]<0>(__p, [existsCopy UTF8String]);
   v5 = std::__hash_table<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SIE5RTPort * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SIE5RTPort * {__strong}>>>::find<std::string>(&self->_outputs.__table_.__bucket_list_.__ptr_, __p);
   if (v8 < 0)
   {
@@ -1367,7 +1367,7 @@ LABEL_18:
   return result;
 }
 
-- (int64_t)runNetwork:(void *)a3
+- (int64_t)runNetwork:(void *)network
 {
   v28 = *MEMORY[0x277D85DE8];
   stream = self->_stream;
@@ -1402,7 +1402,7 @@ LABEL_18:
   }
 
   v13 = self->_stream;
-  if (a3)
+  if (network)
   {
     if (ps_e5rt_execution_stream_execute_sync())
     {
@@ -1507,23 +1507,23 @@ LABEL_8:
   return result;
 }
 
-- (int64_t)addPrewiringBuffersToStreamForFunctionName:(id)a3 inputPools:(id)a4 outputPools:(id)a5 clearWiredBuffer:(BOOL)a6
+- (int64_t)addPrewiringBuffersToStreamForFunctionName:(id)name inputPools:(id)pools outputPools:(id)outputPools clearWiredBuffer:(BOOL)buffer
 {
-  v6 = a6;
+  bufferCopy = buffer;
   v139 = *MEMORY[0x277D85DE8];
-  v97 = a3;
-  v10 = a4;
-  v94 = a5;
-  if (v6)
+  nameCopy = name;
+  poolsCopy = pools;
+  outputPoolsCopy = outputPools;
+  if (bufferCopy)
   {
-    [(SIBaseNetworkE5RT *)self unwirePrewiringBuffersForFunctionName:v97];
+    [(SIBaseNetworkE5RT *)self unwirePrewiringBuffersForFunctionName:nameCopy];
   }
 
   v118 = 0u;
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  obj = v10;
+  obj = poolsCopy;
   v11 = 0;
   v12 = [obj countByEnumeratingWithState:&v116 objects:v138 count:16];
   if (v12)
@@ -1557,7 +1557,7 @@ LABEL_8:
   v115 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v101 = v94;
+  v101 = outputPoolsCopy;
   v18 = [v101 countByEnumeratingWithState:&v112 objects:v137 count:16];
   if (v18)
   {
@@ -1586,8 +1586,8 @@ LABEL_8:
     while (v18);
   }
 
-  v24 = v97;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v97 UTF8String]);
+  v24 = nameCopy;
+  std::string::basic_string[abi:nn200100]<0>(__p, [nameCopy UTF8String]);
   *buf = __p;
   v25 = std::__hash_table<std::__hash_value_type<std::string,PrewiredFunctionInfo>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PrewiredFunctionInfo>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PrewiredFunctionInfo>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PrewiredFunctionInfo>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_prewiredFunctionTable.__table_.__bucket_list_.__ptr_, __p);
   if (SBYTE3(v131) < 0)
@@ -1612,8 +1612,8 @@ LABEL_25:
       v111 = 0;
       [(NSString *)self->_e5Path UTF8String];
       [(NSString *)self->_e5Path UTF8String];
-      v27 = v97;
-      [v97 UTF8String];
+      v27 = nameCopy;
+      [nameCopy UTF8String];
       if (e5rt_execution_stream_operation_create_precompiled_compute_operation())
       {
         break;
@@ -1870,7 +1870,7 @@ LABEL_74:
     v128 = 1025;
     v129 = 647;
     v130 = 2113;
-    v131 = v97;
+    v131 = nameCopy;
     v132 = 2113;
     v133 = e5Path;
     v32 = v30;
@@ -1931,7 +1931,7 @@ LABEL_78:
       v130 = 2113;
       v131 = networkName;
       v132 = 2113;
-      v133 = v97;
+      v133 = nameCopy;
       _os_log_impl(&dword_21DE0D000, v83, OS_LOG_TYPE_DEBUG, " %{private}s:%{private}d *** ANEP info for %{private}@, function:%{private}@ ***", __p, 0x26u);
     }
 
@@ -1984,11 +1984,11 @@ LABEL_100:
   return v95;
 }
 
-- (int64_t)unwirePrewiringBuffersForFunctionName:(id)a3
+- (int64_t)unwirePrewiringBuffersForFunctionName:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  nameCopy = name;
+  std::string::basic_string[abi:nn200100]<0>(__p, [nameCopy UTF8String]);
   v5 = std::__hash_table<std::__hash_value_type<std::string,PrewiredFunctionInfo>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PrewiredFunctionInfo>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PrewiredFunctionInfo>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PrewiredFunctionInfo>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_prewiredFunctionTable.__table_.__bucket_list_.__ptr_, __p);
   if (SBYTE3(v22) < 0)
   {
@@ -2050,7 +2050,7 @@ LABEL_7:
       v19 = 1025;
       v20 = 707;
       v21 = 2113;
-      v22 = v4;
+      v22 = nameCopy;
       _os_log_impl(&dword_21DE0D000, v14, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failed to release ANEP for function: %{private}@ ***", __p, 0x1Cu);
     }
 
@@ -2074,10 +2074,10 @@ LABEL_7:
   return v3[11] != 0;
 }
 
-- (BOOL)IsSurfacePrewiredForCurrentFunctionForBlob:(id)a3 surfaceID:(unint64_t)a4
+- (BOOL)IsSurfacePrewiredForCurrentFunctionForBlob:(id)blob surfaceID:(unint64_t)d
 {
-  v6 = a3;
-  v18[0] = a4;
+  blobCopy = blob;
+  v18[0] = d;
   std::string::basic_string[abi:nn200100]<0>(__p, -[NSString UTF8String](self->_enabled_e5rt_function_name, "UTF8String"));
   v14[0] = __p;
   v7 = std::__hash_table<std::__hash_value_type<std::string,PrewiredFunctionInfo>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PrewiredFunctionInfo>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PrewiredFunctionInfo>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PrewiredFunctionInfo>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_prewiredFunctionTable.__table_.__bucket_list_.__ptr_, __p);
@@ -2086,14 +2086,14 @@ LABEL_7:
     operator delete(__p[0]);
   }
 
-  std::string::basic_string[abi:nn200100]<0>(__p, [v6 UTF8String]);
+  std::string::basic_string[abi:nn200100]<0>(__p, [blobCopy UTF8String]);
   if (std::__hash_table<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>>>::find<std::string>(v7 + 8, __p))
   {
-    std::string::basic_string[abi:nn200100]<0>(v14, [v6 UTF8String]);
+    std::string::basic_string[abi:nn200100]<0>(v14, [blobCopy UTF8String]);
     v12[0] = v14;
     v8 = std::__hash_table<std::__hash_value_type<std::string,std::unordered_set<unsigned long long>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::unordered_set<unsigned long long>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::unordered_set<unsigned long long>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::unordered_set<unsigned long long>>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(v7 + 8, v14);
     v9 = std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::find<unsigned long long>(v8 + 5, v18);
-    std::string::basic_string[abi:nn200100]<0>(v12, [v6 UTF8String]);
+    std::string::basic_string[abi:nn200100]<0>(v12, [blobCopy UTF8String]);
     v18[2] = v12;
     std::__hash_table<std::__hash_value_type<std::string,std::unordered_set<unsigned long long>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::unordered_set<unsigned long long>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::unordered_set<unsigned long long>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::unordered_set<unsigned long long>>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(v7 + 8, v12);
     v10 = v9 != 0;

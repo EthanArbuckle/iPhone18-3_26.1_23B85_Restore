@@ -21,8 +21,8 @@
 - (id)mutableCopy
 {
   v3 = objc_alloc_init(POMutableKeyExchangeRequestJWTBody);
-  v4 = [(_POJWTBodyBase *)self data];
-  v5 = [v4 mutableCopy];
+  data = [(_POJWTBodyBase *)self data];
+  v5 = [data mutableCopy];
   [(_POJWTBodyBase *)v3 setData:v5];
 
   return v3;
@@ -208,13 +208,13 @@ id __34__POKeyExchangeRequestJWTBody_sub__block_invoke(uint64_t a1)
   v9[4] = self;
   v4 = __34__POKeyExchangeRequestJWTBody_iat__block_invoke_2(v9);
   v5 = MEMORY[0x277CBEAA8];
-  v6 = [v3 intValue];
-  if (!v6)
+  intValue = [v3 intValue];
+  if (!intValue)
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
-  v7 = [v5 dateWithTimeIntervalSince1970:v6];
+  v7 = [v5 dateWithTimeIntervalSince1970:intValue];
 
   return v7;
 }
@@ -276,13 +276,13 @@ id __34__POKeyExchangeRequestJWTBody_iat__block_invoke_2(uint64_t a1)
   v9[4] = self;
   v4 = __34__POKeyExchangeRequestJWTBody_exp__block_invoke_2(v9);
   v5 = MEMORY[0x277CBEAA8];
-  v6 = [v3 intValue];
-  if (!v6)
+  intValue = [v3 intValue];
+  if (!intValue)
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
-  v7 = [v5 dateWithTimeIntervalSince1970:v6];
+  v7 = [v5 dateWithTimeIntervalSince1970:intValue];
 
   return v7;
 }

@@ -9,8 +9,8 @@
   v16 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E696ACD0];
   v3 = objc_opt_class();
-  v4 = [a1 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"LNContextDialogData"];
+  userInfo = [self userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"LNContextDialogData"];
   v11 = 0;
   v6 = [v2 unarchivedObjectOfClass:v3 fromData:v5 error:&v11];
   v7 = v11;

@@ -1,12 +1,12 @@
 @interface RMModelNetworkWiFiDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 autoJoin:(id)a4 SSID:(id)a5 isHiddenNetwork:(id)a6 encryptionType:(id)a7 passwordAssetReference:(id)a8 certificateIdentityAssetReference:(id)a9 hotSpot:(id)a10 captiveBypass:(id)a11 qoSMarkingPolicy:(id)a12 setupModes:(id)a13 tlsCertificateRequired:(id)a14 proxy:(id)a15 disableAssociationMACRandomization:(id)a16 eapClientConfigurationUUID:(id)a17;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier autoJoin:(id)join SSID:(id)d isHiddenNetwork:(id)network encryptionType:(id)type passwordAssetReference:(id)reference certificateIdentityAssetReference:(id)assetReference hotSpot:(id)self0 captiveBypass:(id)self1 qoSMarkingPolicy:(id)self2 setupModes:(id)self3 tlsCertificateRequired:(id)self4 proxy:(id)self5 disableAssociationMACRandomization:(id)self6 eapClientConfigurationUUID:(id)self7;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelNetworkWiFiDeclaration
@@ -64,42 +64,42 @@ void __48__RMModelNetworkWiFiDeclaration_assetReferences__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 autoJoin:(id)a4 SSID:(id)a5 isHiddenNetwork:(id)a6 encryptionType:(id)a7 passwordAssetReference:(id)a8 certificateIdentityAssetReference:(id)a9 hotSpot:(id)a10 captiveBypass:(id)a11 qoSMarkingPolicy:(id)a12 setupModes:(id)a13 tlsCertificateRequired:(id)a14 proxy:(id)a15 disableAssociationMACRandomization:(id)a16 eapClientConfigurationUUID:(id)a17
++ (id)buildWithIdentifier:(id)identifier autoJoin:(id)join SSID:(id)d isHiddenNetwork:(id)network encryptionType:(id)type passwordAssetReference:(id)reference certificateIdentityAssetReference:(id)assetReference hotSpot:(id)self0 captiveBypass:(id)self1 qoSMarkingPolicy:(id)self2 setupModes:(id)self3 tlsCertificateRequired:(id)self4 proxy:(id)self5 disableAssociationMACRandomization:(id)self6 eapClientConfigurationUUID:(id)self7
 {
-  v17 = a3;
-  v47 = a17;
-  v46 = a16;
-  v45 = a15;
-  v44 = a14;
-  v43 = a13;
-  v42 = a12;
-  v18 = a11;
-  v41 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  randomizationCopy = randomization;
+  proxyCopy = proxy;
+  requiredCopy = required;
+  modesCopy = modes;
+  policyCopy = policy;
+  bypassCopy = bypass;
+  spotCopy = spot;
+  assetReferenceCopy = assetReference;
+  referenceCopy = reference;
+  typeCopy = type;
+  networkCopy = network;
+  dCopy = d;
+  joinCopy = join;
   v25 = objc_opt_new();
   [v25 setDeclarationType:@"com.apple.configuration.network.wifi"];
-  if (v17)
+  if (identifierCopy)
   {
-    [v25 setDeclarationIdentifier:v17];
+    [v25 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v26 = [MEMORY[0x277CCAD78] UUID];
-    v27 = [v26 UUIDString];
-    [v25 setDeclarationIdentifier:v27];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v25 setDeclarationIdentifier:uUIDString];
 
-    v17 = 0;
+    identifierCopy = 0;
   }
 
-  if (v24)
+  if (joinCopy)
   {
-    v28 = v24;
+    v28 = joinCopy;
   }
 
   else
@@ -107,13 +107,13 @@ void __48__RMModelNetworkWiFiDeclaration_assetReferences__block_invoke()
     v28 = MEMORY[0x277CBEC38];
   }
 
-  [v25 setPayloadAutoJoin:{v28, a8}];
+  [v25 setPayloadAutoJoin:{v28, reference}];
 
-  [v25 setPayloadSSID:v23];
+  [v25 setPayloadSSID:dCopy];
   v29 = MEMORY[0x277CBEC28];
-  if (v22)
+  if (networkCopy)
   {
-    v30 = v22;
+    v30 = networkCopy;
   }
 
   else
@@ -123,9 +123,9 @@ void __48__RMModelNetworkWiFiDeclaration_assetReferences__block_invoke()
 
   [v25 setPayloadIsHiddenNetwork:v30];
 
-  if (v21)
+  if (typeCopy)
   {
-    v31 = v21;
+    v31 = typeCopy;
   }
 
   else
@@ -135,13 +135,13 @@ void __48__RMModelNetworkWiFiDeclaration_assetReferences__block_invoke()
 
   [v25 setPayloadEncryptionType:v31];
 
-  [v25 setPayloadPasswordAssetReference:v20];
-  [v25 setPayloadCertificateIdentityAssetReference:v19];
+  [v25 setPayloadPasswordAssetReference:referenceCopy];
+  [v25 setPayloadCertificateIdentityAssetReference:assetReferenceCopy];
 
-  [v25 setPayloadHotSpot:v41];
-  if (v18)
+  [v25 setPayloadHotSpot:spotCopy];
+  if (bypassCopy)
   {
-    v32 = v18;
+    v32 = bypassCopy;
   }
 
   else
@@ -151,12 +151,12 @@ void __48__RMModelNetworkWiFiDeclaration_assetReferences__block_invoke()
 
   [v25 setPayloadCaptiveBypass:v32];
 
-  [v25 setPayloadQoSMarkingPolicy:v42];
-  [v25 setPayloadSetupModes:v43];
+  [v25 setPayloadQoSMarkingPolicy:policyCopy];
+  [v25 setPayloadSetupModes:modesCopy];
 
-  if (v44)
+  if (requiredCopy)
   {
-    v33 = v44;
+    v33 = requiredCopy;
   }
 
   else
@@ -166,10 +166,10 @@ void __48__RMModelNetworkWiFiDeclaration_assetReferences__block_invoke()
 
   [v25 setPayloadTLSCertificateRequired:v33];
 
-  [v25 setPayloadProxy:v45];
-  if (v46)
+  [v25 setPayloadProxy:proxyCopy];
+  if (randomizationCopy)
   {
-    v34 = v46;
+    v34 = randomizationCopy;
   }
 
   else
@@ -179,27 +179,27 @@ void __48__RMModelNetworkWiFiDeclaration_assetReferences__block_invoke()
 
   [v25 setPayloadDisableAssociationMACRandomization:v34];
 
-  [v25 setPayloadEAPClientConfigurationUUID:v47];
+  [v25 setPayloadEAPClientConfigurationUUID:iDCopy];
   [v25 updateServerToken];
 
   return v25;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setDeclarationType:@"com.apple.configuration.network.wifi"];
-  if (v3)
+  if (identifierCopy)
   {
-    [v4 setDeclarationIdentifier:v3];
+    [v4 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    [v4 setDeclarationIdentifier:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v4 setDeclarationIdentifier:uUIDString];
   }
 
   [v4 updateServerToken];
@@ -271,12 +271,12 @@ void __48__RMModelNetworkWiFiDeclaration_assetReferences__block_invoke()
   return v14;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelNetworkWiFiDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -284,7 +284,7 @@ void __48__RMModelNetworkWiFiDeclaration_assetReferences__block_invoke()
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  v14 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"AutoJoin" forKeyPath:@"payloadAutoJoin" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"SSID" forKeyPath:@"payloadSSID" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"IsHiddenNetwork" forKeyPath:@"payloadIsHiddenNetwork" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"EncryptionType" forKeyPath:@"payloadEncryptionType" isRequired:0 defaultValue:@"Any" error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"PasswordAssetReference" forKeyPath:@"payloadPasswordAssetReference" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"CertificateIdentityAssetReference" forKeyPath:@"payloadCertificateIdentityAssetReference" isRequired:0 defaultValue:0 error:a5]&& (LOWORD(v16) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"HotSpot" forKeyPath:@"payloadHotSpot" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5]) && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"CaptiveBypass" forKeyPath:@"payloadCaptiveBypass" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& (LOWORD(v17) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"QoSMarkingPolicy" forKeyPath:@"payloadQoSMarkingPolicy" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:a5]) && [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"SetupModes" forKeyPath:@"payloadSetupModes" validator:&__block_literal_global_194 isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"TLSCertificateRequired" forKeyPath:@"payloadTLSCertificateRequired" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& (LOWORD(v18) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"Proxy" forKeyPath:@"payloadProxy" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:a5]) && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"DisableAssociationMACRandomization" forKeyPath:@"payloadDisableAssociationMACRandomization" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"EAPClientConfigurationUUID" forKeyPath:@"payloadEAPClientConfigurationUUID" isRequired:0 defaultValue:0 error:a5];
+  v14 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"AutoJoin" forKeyPath:@"payloadAutoJoin" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"SSID" forKeyPath:@"payloadSSID" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"IsHiddenNetwork" forKeyPath:@"payloadIsHiddenNetwork" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"EncryptionType" forKeyPath:@"payloadEncryptionType" isRequired:0 defaultValue:@"Any" error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"PasswordAssetReference" forKeyPath:@"payloadPasswordAssetReference" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"CertificateIdentityAssetReference" forKeyPath:@"payloadCertificateIdentityAssetReference" isRequired:0 defaultValue:0 error:error]&& (LOWORD(v16) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"HotSpot" forKeyPath:@"payloadHotSpot" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error]) && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"CaptiveBypass" forKeyPath:@"payloadCaptiveBypass" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& (LOWORD(v17) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"QoSMarkingPolicy" forKeyPath:@"payloadQoSMarkingPolicy" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:error]) && [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"SetupModes" forKeyPath:@"payloadSetupModes" validator:&__block_literal_global_194 isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"TLSCertificateRequired" forKeyPath:@"payloadTLSCertificateRequired" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& (LOWORD(v18) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"Proxy" forKeyPath:@"payloadProxy" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:error]) && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"DisableAssociationMACRandomization" forKeyPath:@"payloadDisableAssociationMACRandomization" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"EAPClientConfigurationUUID" forKeyPath:@"payloadEAPClientConfigurationUUID" isRequired:0 defaultValue:0 error:error];
   return v14;
 }
 
@@ -297,77 +297,77 @@ uint64_t __83__RMModelNetworkWiFiDeclaration_loadPayloadFromDictionary_serializa
   return isKindOfClass & 1;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelNetworkWiFiDeclaration *)self payloadAutoJoin];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"AutoJoin" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
+  payloadAutoJoin = [(RMModelNetworkWiFiDeclaration *)self payloadAutoJoin];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"AutoJoin" value:payloadAutoJoin isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
 
-  v7 = [(RMModelNetworkWiFiDeclaration *)self payloadSSID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"SSID" value:v7 isRequired:0 defaultValue:0];
+  payloadSSID = [(RMModelNetworkWiFiDeclaration *)self payloadSSID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"SSID" value:payloadSSID isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelNetworkWiFiDeclaration *)self payloadIsHiddenNetwork];
+  payloadIsHiddenNetwork = [(RMModelNetworkWiFiDeclaration *)self payloadIsHiddenNetwork];
   v9 = MEMORY[0x277CBEC28];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"IsHiddenNetwork" value:v8 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"IsHiddenNetwork" value:payloadIsHiddenNetwork isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v10 = [(RMModelNetworkWiFiDeclaration *)self payloadEncryptionType];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"EncryptionType" value:v10 isRequired:0 defaultValue:@"Any"];
+  payloadEncryptionType = [(RMModelNetworkWiFiDeclaration *)self payloadEncryptionType];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"EncryptionType" value:payloadEncryptionType isRequired:0 defaultValue:@"Any"];
 
-  v11 = [(RMModelNetworkWiFiDeclaration *)self payloadPasswordAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"PasswordAssetReference" value:v11 isRequired:0 defaultValue:0];
+  payloadPasswordAssetReference = [(RMModelNetworkWiFiDeclaration *)self payloadPasswordAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"PasswordAssetReference" value:payloadPasswordAssetReference isRequired:0 defaultValue:0];
 
-  v12 = [(RMModelNetworkWiFiDeclaration *)self payloadCertificateIdentityAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"CertificateIdentityAssetReference" value:v12 isRequired:0 defaultValue:0];
+  payloadCertificateIdentityAssetReference = [(RMModelNetworkWiFiDeclaration *)self payloadCertificateIdentityAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"CertificateIdentityAssetReference" value:payloadCertificateIdentityAssetReference isRequired:0 defaultValue:0];
 
-  v13 = [(RMModelNetworkWiFiDeclaration *)self payloadHotSpot];
+  payloadHotSpot = [(RMModelNetworkWiFiDeclaration *)self payloadHotSpot];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __58__RMModelNetworkWiFiDeclaration_serializePayloadWithType___block_invoke;
   v27[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v28 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"HotSpot" value:v13 dictSerializer:v27 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"HotSpot" value:payloadHotSpot dictSerializer:v27 isRequired:0 defaultValue:0];
 
-  v14 = [(RMModelNetworkWiFiDeclaration *)self payloadCaptiveBypass];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"CaptiveBypass" value:v14 isRequired:0 defaultValue:v9];
+  payloadCaptiveBypass = [(RMModelNetworkWiFiDeclaration *)self payloadCaptiveBypass];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"CaptiveBypass" value:payloadCaptiveBypass isRequired:0 defaultValue:v9];
 
-  v15 = [(RMModelNetworkWiFiDeclaration *)self payloadQoSMarkingPolicy];
+  payloadQoSMarkingPolicy = [(RMModelNetworkWiFiDeclaration *)self payloadQoSMarkingPolicy];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __58__RMModelNetworkWiFiDeclaration_serializePayloadWithType___block_invoke_2;
   v25[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v26 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"QoSMarkingPolicy" value:v15 dictSerializer:v25 isRequired:0 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"QoSMarkingPolicy" value:payloadQoSMarkingPolicy dictSerializer:v25 isRequired:0 defaultValue:0];
 
-  v16 = [(RMModelNetworkWiFiDeclaration *)self payloadSetupModes];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"SetupModes" value:v16 itemSerializer:&__block_literal_global_213_0 isRequired:0 defaultValue:0];
+  payloadSetupModes = [(RMModelNetworkWiFiDeclaration *)self payloadSetupModes];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"SetupModes" value:payloadSetupModes itemSerializer:&__block_literal_global_213_0 isRequired:0 defaultValue:0];
 
-  v17 = [(RMModelNetworkWiFiDeclaration *)self payloadTLSCertificateRequired];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"TLSCertificateRequired" value:v17 isRequired:0 defaultValue:v9];
+  payloadTLSCertificateRequired = [(RMModelNetworkWiFiDeclaration *)self payloadTLSCertificateRequired];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"TLSCertificateRequired" value:payloadTLSCertificateRequired isRequired:0 defaultValue:v9];
 
-  v18 = [(RMModelNetworkWiFiDeclaration *)self payloadProxy];
+  payloadProxy = [(RMModelNetworkWiFiDeclaration *)self payloadProxy];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __58__RMModelNetworkWiFiDeclaration_serializePayloadWithType___block_invoke_4;
   v23[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v24 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Proxy" value:v18 dictSerializer:v23 isRequired:0 defaultValue:0];
+  typeCopy3 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Proxy" value:payloadProxy dictSerializer:v23 isRequired:0 defaultValue:0];
 
-  v19 = [(RMModelNetworkWiFiDeclaration *)self payloadDisableAssociationMACRandomization];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"DisableAssociationMACRandomization" value:v19 isRequired:0 defaultValue:v9];
+  payloadDisableAssociationMACRandomization = [(RMModelNetworkWiFiDeclaration *)self payloadDisableAssociationMACRandomization];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"DisableAssociationMACRandomization" value:payloadDisableAssociationMACRandomization isRequired:0 defaultValue:v9];
 
-  v20 = [(RMModelNetworkWiFiDeclaration *)self payloadEAPClientConfigurationUUID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"EAPClientConfigurationUUID" value:v20 isRequired:0 defaultValue:0];
+  payloadEAPClientConfigurationUUID = [(RMModelNetworkWiFiDeclaration *)self payloadEAPClientConfigurationUUID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"EAPClientConfigurationUUID" value:payloadEAPClientConfigurationUUID isRequired:0 defaultValue:0];
 
   v21 = [v5 copy];
 
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34.receiver = self;
   v34.super_class = RMModelNetworkWiFiDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v34 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v34 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadAutoJoin copy];
   v6 = v4[6];
   v4[6] = v5;

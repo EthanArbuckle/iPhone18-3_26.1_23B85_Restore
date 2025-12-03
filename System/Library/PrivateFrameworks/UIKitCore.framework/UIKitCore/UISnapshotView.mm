@@ -1,38 +1,38 @@
 @interface UISnapshotView
 - (CGPoint)_contentOffset;
-- (CGRect)_contentsCenterForEdgePadding:(UIEdgeInsets)a3 withContentSize:(CGSize)a4;
+- (CGRect)_contentsCenterForEdgePadding:(UIEdgeInsets)padding withContentSize:(CGSize)size;
 - (CGRect)_snapshotRect;
 - (CGSize)_contentSize;
 - (UIEdgeInsets)_edgePadding;
 - (UIEdgeInsets)edgeInsets;
 - (UIEdgeInsets)edgePadding;
-- (UISnapshotView)initWithFrame:(CGRect)a3;
-- (void)_addEdgePaddingViewInRect:(CGRect)a3;
-- (void)_drawEdges:(UIEdgeInsets)a3 withContentSize:(CGSize)a4;
+- (UISnapshotView)initWithFrame:(CGRect)frame;
+- (void)_addEdgePaddingViewInRect:(CGRect)rect;
+- (void)_drawEdges:(UIEdgeInsets)edges withContentSize:(CGSize)size;
 - (void)_positionImageView;
-- (void)_setContentOffset:(CGPoint)a3;
+- (void)_setContentOffset:(CGPoint)offset;
 - (void)_updateContentsRect;
-- (void)captureSnapshotOfView:(id)a3 withSnapshotType:(int)a4;
-- (void)captureSnapshotRect:(CGRect)a3 fromView:(id)a4 withSnapshotType:(int)a5;
+- (void)captureSnapshotOfView:(id)view withSnapshotType:(int)type;
+- (void)captureSnapshotRect:(CGRect)rect fromView:(id)view withSnapshotType:(int)type;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentStretch:(CGRect)a3;
-- (void)setEdgeAntialiasingEnabled:(BOOL)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setEdgePadding:(UIEdgeInsets)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setShadowView:(id)a3;
-- (void)setVerticalStretchEnabled:(BOOL)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentStretch:(CGRect)stretch;
+- (void)setEdgeAntialiasingEnabled:(BOOL)enabled;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setEdgePadding:(UIEdgeInsets)padding;
+- (void)setFrame:(CGRect)frame;
+- (void)setShadowView:(id)view;
+- (void)setVerticalStretchEnabled:(BOOL)enabled;
 @end
 
 @implementation UISnapshotView
 
-- (UISnapshotView)initWithFrame:(CGRect)a3
+- (UISnapshotView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UISnapshotView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -61,54 +61,54 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)setEdgePadding:(UIEdgeInsets)a3
+- (void)setEdgePadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_edgePadding.top), vceqq_f64(v4, *&self->_edgePadding.bottom)))) & 1) == 0)
   {
-    self->_edgePadding = a3;
+    self->_edgePadding = padding;
     [(UISnapshotView *)self _positionImageView];
   }
 }
 
-- (void)setEdgeAntialiasingEnabled:(BOOL)a3
+- (void)setEdgeAntialiasingEnabled:(BOOL)enabled
 {
   v3 = *(self + 600);
-  if ((v3 & 1) == a3)
+  if ((v3 & 1) == enabled)
   {
-    *(self + 600) = v3 & 0xFE | !a3;
+    *(self + 600) = v3 & 0xFE | !enabled;
     [(UISnapshotView *)self _positionImageView];
   }
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_edgeInsets.top), vceqq_f64(v4, *&self->_edgeInsets.bottom)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(UISnapshotView *)self _positionImageView];
   }
 }
 
-- (void)_setContentOffset:(CGPoint)a3
+- (void)_setContentOffset:(CGPoint)offset
 {
-  if (a3.x != self->_contentOffset.x || a3.y != self->_contentOffset.y)
+  if (offset.x != self->_contentOffset.x || offset.y != self->_contentOffset.y)
   {
-    self->_contentOffset = a3;
+    self->_contentOffset = offset;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setVerticalStretchEnabled:(BOOL)a3
+- (void)setVerticalStretchEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = 0;
   }
@@ -137,29 +137,29 @@
   return result;
 }
 
-- (void)setShadowView:(id)a3
+- (void)setShadowView:(id)view
 {
   shadowView = self->_shadowView;
-  if (shadowView != a3)
+  if (shadowView != view)
   {
     [(UIView *)shadowView removeFromSuperview];
 
-    v6 = a3;
-    self->_shadowView = v6;
-    if (v6)
+    viewCopy = view;
+    self->_shadowView = viewCopy;
+    if (viewCopy)
     {
 
-      [(UIView *)self addSubview:v6];
+      [(UIView *)self addSubview:viewCopy];
     }
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -173,12 +173,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -192,12 +192,12 @@
   }
 }
 
-- (void)setContentStretch:(CGRect)a3
+- (void)setContentStretch:(CGRect)stretch
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = stretch.size.height;
+  width = stretch.size.width;
+  y = stretch.origin.y;
+  x = stretch.origin.x;
   v8.receiver = self;
   v8.super_class = UISnapshotView;
   [(UIView *)&v8 setContentStretch:?];
@@ -303,9 +303,9 @@
   }
 
   v30 = v18 + v29;
-  v31 = [(UIView *)self->_imageView layer];
+  layer = [(UIView *)self->_imageView layer];
 
-  [(CALayer *)v31 setContentsRect:v5, v6, v30, v27];
+  [(CALayer *)layer setContentsRect:v5, v6, v30, v27];
 }
 
 - (void)layoutSubviews
@@ -390,14 +390,14 @@
   return result;
 }
 
-- (void)_drawEdges:(UIEdgeInsets)a3 withContentSize:(CGSize)a4
+- (void)_drawEdges:(UIEdgeInsets)edges withContentSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  height = size.height;
+  width = size.width;
+  right = edges.right;
+  bottom = edges.bottom;
+  left = edges.left;
+  top = edges.top;
   if (*(self + 600))
   {
     v11 = 0.0;
@@ -471,12 +471,12 @@
   }
 }
 
-- (CGRect)_contentsCenterForEdgePadding:(UIEdgeInsets)a3 withContentSize:(CGSize)a4
+- (CGRect)_contentsCenterForEdgePadding:(UIEdgeInsets)padding withContentSize:(CGSize)size
 {
-  v4 = a3.left / a4.width;
-  v5 = a3.top / a4.height;
-  v6 = (a4.width - a3.left - a3.right) / a4.width;
-  v7 = (a4.height - a3.top - a3.bottom) / a4.height;
+  v4 = padding.left / size.width;
+  v5 = padding.top / size.height;
+  v6 = (size.width - padding.left - padding.right) / size.width;
+  v7 = (size.height - padding.top - padding.bottom) / size.height;
   v8 = v4;
   v9 = v5;
   v10 = v6;
@@ -487,22 +487,22 @@
   return result;
 }
 
-- (void)_addEdgePaddingViewInRect:(CGRect)a3
+- (void)_addEdgePaddingViewInRect:(CGRect)rect
 {
-  v4 = [[UIView alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [[UIView alloc] initWithFrame:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(UIView *)v4 setBackgroundColor:self->_edgePaddingColor];
   [(NSMutableArray *)self->_edgePaddingViews addObject:v4];
   [(UIView *)self->_imageView addSubview:v4];
 }
 
-- (void)captureSnapshotRect:(CGRect)a3 fromView:(id)a4 withSnapshotType:(int)a5
+- (void)captureSnapshotRect:(CGRect)rect fromView:(id)view withSnapshotType:(int)type
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12 = +[UIView areAnimationsEnabled];
-  [a4 bounds];
+  [view bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -516,19 +516,19 @@
   rect = v21;
   v76 = v23;
   v78 = v24;
-  v25 = [objc_msgSend(a4 "window")];
-  v26 = a4;
+  v25 = [objc_msgSend(view "window")];
+  viewCopy = view;
   if (v25)
   {
-    v26 = [a4 window];
+    viewCopy = [view window];
   }
 
-  [v26 _currentScreenScale];
+  [viewCopy _currentScreenScale];
   v77 = v27;
   [UIView setAnimationsEnabled:0];
   [(NSMutableArray *)self->_edgePaddingViews makeObjectsPerformSelector:sel_removeFromSuperview];
   [(NSMutableArray *)self->_edgePaddingViews removeAllObjects];
-  if (a5 == 2)
+  if (type == 2)
   {
     if (*(self + 600))
     {
@@ -545,8 +545,8 @@
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    [(UIView *)self->_imageView addSubview:a4];
-    [a4 setFrame:{v32, v30, width, height}];
+    [(UIView *)self->_imageView addSubview:view];
+    [view setFrame:{v32, v30, width, height}];
     v37 = width + v32;
     v38 = v28 + v28;
     if (self->_edgePadding.top != 0.0)
@@ -589,7 +589,7 @@
     v82.size.width = 1.0;
     v82.size.height = 1.0;
     CGContextClearRect(v42, v82);
-    v43 = [_UIGraphicsGetImageFromCurrentImageContext(0) CGImage];
+    cGImage = [_UIGraphicsGetImageFromCurrentImageContext(0) CGImage];
     UIGraphicsEndImageContext();
     self->_contentSize = *MEMORY[0x1E695F060];
     v53 = 0.0;
@@ -597,16 +597,16 @@
     v55 = 1.0;
   }
 
-  else if (a5 == 1)
+  else if (type == 1)
   {
-    v43 = [(UIView *)a4 _createRenderingBufferFromRect:x padding:y gamut:width, height, rect, v76, v78, v79];
-    v44 = IOSurfaceGetWidth(v43);
-    v45 = IOSurfaceGetHeight(v43);
+    cGImage = [(UIView *)view _createRenderingBufferFromRect:x padding:y gamut:width, height, rect, v76, v78, v79];
+    v44 = IOSurfaceGetWidth(cGImage);
+    v45 = IOSurfaceGetHeight(cGImage);
     if ((vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(*&self->_edgePadding.top), vceqzq_f64(*&self->_edgePadding.bottom))))) & 1) != 0 || (*(self + 600) & 1) == 0 && (v83.origin.x = v14, v83.origin.y = v16, v83.size.width = v18, v83.size.height = v20, v85.origin.x = x, v85.origin.y = y, v85.size.width = width, v85.size.height = height, !CGRectEqualToRect(v83, v85)))
     {
-      IOSurfaceLock(v43, 0, 0);
-      BaseAddress = IOSurfaceGetBaseAddress(v43);
-      BytesPerRow = IOSurfaceGetBytesPerRow(v43);
+      IOSurfaceLock(cGImage, 0, 0);
+      BaseAddress = IOSurfaceGetBaseAddress(cGImage);
+      BytesPerRow = IOSurfaceGetBytesPerRow(cGImage);
       DeviceRGB = CGColorSpaceCreateDeviceRGB();
       if ([+[UIDevice _supportsDeepColor] currentDevice]
       {
@@ -633,7 +633,7 @@
         CGContextRelease(v69);
       }
 
-      IOSurfaceUnlock(v43, 0, 0);
+      IOSurfaceUnlock(cGImage, 0, 0);
     }
 
     v55 = v77;
@@ -691,7 +691,7 @@
     }
 
     CGContextTranslateCTM(v59, v76, rect);
-    v60 = [a4 layer];
+    layer = [view layer];
     v61 = GetContextStack(0);
     if (*v61 < 1)
     {
@@ -703,10 +703,10 @@
       v62 = v61[3 * (*v61 - 1) + 1];
     }
 
-    [v60 renderInContext:v62];
-    v43 = [_UIGraphicsGetImageFromCurrentImageContext(0) CGImage];
-    v63 = CGImageGetWidth(v43) / v77;
-    v64 = CGImageGetHeight(v43);
+    [layer renderInContext:v62];
+    cGImage = [_UIGraphicsGetImageFromCurrentImageContext(0) CGImage];
+    v63 = CGImageGetWidth(cGImage) / v77;
+    v64 = CGImageGetHeight(cGImage);
     self->_contentSize.width = v63;
     self->_contentSize.height = v64 / v77;
     [(UISnapshotView *)self _contentsCenterForEdgePadding:rect withContentSize:v76, v78, v79, v63];
@@ -717,8 +717,8 @@
     UIGraphicsEndImageContext();
   }
 
-  v75 = a5 == 2;
-  [(CALayer *)[(UIView *)self->_imageView layer] setContents:v43];
+  v75 = type == 2;
+  [(CALayer *)[(UIView *)self->_imageView layer] setContents:cGImage];
   [(CALayer *)[(UIView *)self->_imageView layer] setContentsCenter:v52, v53, v54, v40];
   [(UIView *)self->_imageView setContentScaleFactor:v55];
   [(UIView *)self layoutBelowIfNeeded];
@@ -729,12 +729,12 @@
   [UIView setAnimationsEnabled:v12];
 }
 
-- (void)captureSnapshotOfView:(id)a3 withSnapshotType:(int)a4
+- (void)captureSnapshotOfView:(id)view withSnapshotType:(int)type
 {
-  v4 = *&a4;
-  [a3 bounds];
+  v4 = *&type;
+  [view bounds];
 
-  [(UISnapshotView *)self captureSnapshotRect:a3 fromView:v4 withSnapshotType:?];
+  [(UISnapshotView *)self captureSnapshotRect:view fromView:v4 withSnapshotType:?];
 }
 
 - (UIEdgeInsets)edgePadding

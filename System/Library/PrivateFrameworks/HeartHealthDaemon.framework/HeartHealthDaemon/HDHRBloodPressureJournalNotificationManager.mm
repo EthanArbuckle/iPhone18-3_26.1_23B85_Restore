@@ -1,73 +1,73 @@
 @interface HDHRBloodPressureJournalNotificationManager
-+ (id)_stringFromNotificationReason:(int64_t)a3;
-- (BOOL)_isDueEventExpired:(id)a3 fromDate:(id)a4;
-- (BOOL)_isEventOnHold:(id)a3;
-- (BOOL)_isJournal:(id)a3 inNoticationPeriodFor:(id)a4 calendar:(id)a5;
++ (id)_stringFromNotificationReason:(int64_t)reason;
+- (BOOL)_isDueEventExpired:(id)expired fromDate:(id)date;
+- (BOOL)_isEventOnHold:(id)hold;
+- (BOOL)_isJournal:(id)journal inNoticationPeriodFor:(id)for calendar:(id)calendar;
 - (BOOL)_notificationSchedulingIsEnabled;
 - (BOOL)_notificationsEnabled;
-- (BOOL)_scheduleNotificationsWithStartDate:(id)a3 error:(id *)a4;
-- (BOOL)_scheduleNotificationsWithStartDate:(id)a3 schedulingUUID:(id)a4 error:(id *)a5;
-- (BOOL)_scheduleRestorableAlarmEventsWith:(id)a3 forJournal:(id)a4 calendar:(id)a5 schedulingUUID:(id)a6 error:(id *)a7;
-- (BOOL)scheduleNotificationsWithReason:(int64_t)a3 error:(id *)a4;
-- (BOOL)snoozeBloodPressureJournalNotificationWithIdentifier:(id)a3 journalType:(int64_t)a4 userInfo:(id)a5 onDate:(id)a6 error:(id *)a7;
-- (HDHRBloodPressureJournalNotificationManager)initWithProfile:(id)a3;
-- (HDHRBloodPressureJournalNotificationManager)initWithProfile:(id)a3 operation:(id)a4;
-- (id)_alarm:(id)a3 dueEventsToHandleFrom:(id)a4 date:(id)a5;
-- (id)_alarmTimeForDate:(id)a3 withScheduleTimeInterval:(id)a4 calendar:(id)a5;
-- (id)_bloodPressureSampleFrom:(id)a3 error:(id *)a4;
-- (id)_nextDayFor:(id)a3 calendar:(id)a4;
-- (id)_notificationInfoFor:(id)a3 startDate:(id)a4 calendar:(id)a5 schedulingUUID:(id)a6 error:(id *)a7;
-- (id)_notificationInfoForLearnHypertensionRiskJournal:(id)a3 startDate:(id)a4 calendar:(id)a5 schedulingUUID:(id)a6 error:(id *)a7;
-- (id)_notificationInfoForMonitorHypertensionJournal:(id)a3 startDate:(id)a4 calendar:(id)a5 schedulingUUID:(id)a6 error:(id *)a7;
-- (unint64_t)removeDeliveredNotificationsForSamples:(id)a3 journal:(id)a4;
-- (void)_alarm:(id)a3 confirmDeliveryByRemovingEvent:(id)a4;
-- (void)_alarm:(id)a3 confirmDeliveryByRemovingEvents:(id)a4;
-- (void)_queue_alarm:(id)a3 didReceiveDueEvents:(id)a4;
-- (void)_queue_alarm:(id)a3 didReceiveDueEvents:(id)a4 date:(id)a5 handledEventsHandler:(id)a6;
-- (void)_queue_alarm:(id)a3 didReceiveExpiredEvents:(id)a4;
+- (BOOL)_scheduleNotificationsWithStartDate:(id)date error:(id *)error;
+- (BOOL)_scheduleNotificationsWithStartDate:(id)date schedulingUUID:(id)d error:(id *)error;
+- (BOOL)_scheduleRestorableAlarmEventsWith:(id)with forJournal:(id)journal calendar:(id)calendar schedulingUUID:(id)d error:(id *)error;
+- (BOOL)scheduleNotificationsWithReason:(int64_t)reason error:(id *)error;
+- (BOOL)snoozeBloodPressureJournalNotificationWithIdentifier:(id)identifier journalType:(int64_t)type userInfo:(id)info onDate:(id)date error:(id *)error;
+- (HDHRBloodPressureJournalNotificationManager)initWithProfile:(id)profile;
+- (HDHRBloodPressureJournalNotificationManager)initWithProfile:(id)profile operation:(id)operation;
+- (id)_alarm:(id)_alarm dueEventsToHandleFrom:(id)from date:(id)date;
+- (id)_alarmTimeForDate:(id)date withScheduleTimeInterval:(id)interval calendar:(id)calendar;
+- (id)_bloodPressureSampleFrom:(id)from error:(id *)error;
+- (id)_nextDayFor:(id)for calendar:(id)calendar;
+- (id)_notificationInfoFor:(id)for startDate:(id)date calendar:(id)calendar schedulingUUID:(id)d error:(id *)error;
+- (id)_notificationInfoForLearnHypertensionRiskJournal:(id)journal startDate:(id)date calendar:(id)calendar schedulingUUID:(id)d error:(id *)error;
+- (id)_notificationInfoForMonitorHypertensionJournal:(id)journal startDate:(id)date calendar:(id)calendar schedulingUUID:(id)d error:(id *)error;
+- (unint64_t)removeDeliveredNotificationsForSamples:(id)samples journal:(id)journal;
+- (void)_alarm:(id)_alarm confirmDeliveryByRemovingEvent:(id)event;
+- (void)_alarm:(id)_alarm confirmDeliveryByRemovingEvents:(id)events;
+- (void)_queue_alarm:(id)_queue_alarm didReceiveDueEvents:(id)events;
+- (void)_queue_alarm:(id)_queue_alarm didReceiveDueEvents:(id)events date:(id)date handledEventsHandler:(id)handler;
+- (void)_queue_alarm:(id)_queue_alarm didReceiveExpiredEvents:(id)events;
 - (void)_removeAllExpiredEvents;
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6;
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion;
 @end
 
 @implementation HDHRBloodPressureJournalNotificationManager
 
-- (HDHRBloodPressureJournalNotificationManager)initWithProfile:(id)a3
+- (HDHRBloodPressureJournalNotificationManager)initWithProfile:(id)profile
 {
   v4 = MEMORY[0x277D10800];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithProfile:v5 debugIdentifier:@"HDHRBloodPressureJournalNotificationManager" delegate:self];
-  v7 = [(HDHRBloodPressureJournalNotificationManager *)self initWithProfile:v5 operation:v6];
+  profileCopy = profile;
+  v6 = [[v4 alloc] initWithProfile:profileCopy debugIdentifier:@"HDHRBloodPressureJournalNotificationManager" delegate:self];
+  v7 = [(HDHRBloodPressureJournalNotificationManager *)self initWithProfile:profileCopy operation:v6];
 
   return v7;
 }
 
-- (HDHRBloodPressureJournalNotificationManager)initWithProfile:(id)a3 operation:(id)a4
+- (HDHRBloodPressureJournalNotificationManager)initWithProfile:(id)profile operation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  operationCopy = operation;
   v44.receiver = self;
   v44.super_class = HDHRBloodPressureJournalNotificationManager;
   v8 = [(HDHRBloodPressureJournalNotificationManager *)&v44 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_operation, a4);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_operation, operation);
     v10 = HKCreateSerialDispatchQueue();
     queue = v9->_queue;
     v9->_queue = v10;
 
     v12 = objc_alloc(MEMORY[0x277D10838]);
-    v13 = [v6 healthDaemon];
-    v14 = [v13 primaryProfile];
-    v15 = [v12 initWithProfile:v14 clientIdentifier:@"BloodPressureJournalNotificationAlarmIdentifier" eventHandlerQueue:v9->_queue];
+    healthDaemon = [profileCopy healthDaemon];
+    primaryProfile = [healthDaemon primaryProfile];
+    v15 = [v12 initWithProfile:primaryProfile clientIdentifier:@"BloodPressureJournalNotificationAlarmIdentifier" eventHandlerQueue:v9->_queue];
     restorableAlarm = v9->_restorableAlarm;
     v9->_restorableAlarm = v15;
 
     v17 = objc_alloc(MEMORY[0x277D10838]);
-    v18 = [v6 healthDaemon];
-    v19 = [v18 primaryProfile];
-    v20 = [v17 initWithProfile:v19 clientIdentifier:@"BloodPressureJournalNotificationSnoozeAlarmIdentifier" eventHandlerQueue:v9->_queue];
+    healthDaemon2 = [profileCopy healthDaemon];
+    primaryProfile2 = [healthDaemon2 primaryProfile];
+    v20 = [v17 initWithProfile:primaryProfile2 clientIdentifier:@"BloodPressureJournalNotificationSnoozeAlarmIdentifier" eventHandlerQueue:v9->_queue];
     snoozeRestorableAlarm = v9->_snoozeRestorableAlarm;
     v9->_snoozeRestorableAlarm = v20;
 
@@ -87,9 +87,9 @@
     objc_copyWeak(&v40, &location);
     [(HDRestorableAlarm *)v23 beginReceivingEventsWithHandler:v39];
     v24 = objc_alloc(MEMORY[0x277D10838]);
-    v25 = [v6 healthDaemon];
-    v26 = [v25 primaryProfile];
-    v27 = [v24 initWithProfile:v26 clientIdentifier:@"BloodPressureJournalNotificationExpirationAlarmIdentifier" eventHandlerQueue:v9->_queue];
+    healthDaemon3 = [profileCopy healthDaemon];
+    primaryProfile3 = [healthDaemon3 primaryProfile];
+    v27 = [v24 initWithProfile:primaryProfile3 clientIdentifier:@"BloodPressureJournalNotificationExpirationAlarmIdentifier" eventHandlerQueue:v9->_queue];
     expirationRestorableAlarm = v9->_expirationRestorableAlarm;
     v9->_expirationRestorableAlarm = v27;
 
@@ -142,35 +142,35 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
   [WeakRetained _queue_alarm:v6 didReceiveExpiredEvents:v5];
 }
 
-+ (id)_stringFromNotificationReason:(int64_t)a3
++ (id)_stringFromNotificationReason:(int64_t)reason
 {
-  if (a3 > 4)
+  if (reason > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278661110[a3];
+    return off_278661110[reason];
   }
 }
 
-- (BOOL)scheduleNotificationsWithReason:(int64_t)a3 error:(id *)a4
+- (BOOL)scheduleNotificationsWithReason:(int64_t)reason error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
   v7 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [objc_opt_class() _stringFromNotificationReason:a3];
+    v8 = [objc_opt_class() _stringFromNotificationReason:reason];
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v8;
     _os_log_impl(&dword_229486000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] [scheduleNotificationsWithReason called with reason: %{public}@", &v12, 0x16u);
   }
 
-  if (a3 == 1)
+  if (reason == 1)
   {
     v9 = 1;
   }
@@ -180,19 +180,19 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
     v9 = 2;
   }
 
-  result = [(HDProtectedDataOperation *)self->_operation requestWorkWithPriority:v9 error:a4];
+  result = [(HDProtectedDataOperation *)self->_operation requestWorkWithPriority:v9 error:error];
   v11 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (assertion)
   {
     v7 = MEMORY[0x277CCAD78];
-    v8 = a6;
-    v9 = [v7 UUID];
+    completionCopy = completion;
+    completionCopy2 = [v7 UUID];
     v10 = [MEMORY[0x277CBEAA8] now];
     v11 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v11 setDateFormat:@"yyyy-MM-dd HH:mm"];
@@ -200,68 +200,68 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
     v12 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v9 UUIDString];
+      uUIDString = [completionCopy2 UUIDString];
       v14 = [v11 stringFromDate:v10];
       *buf = 138543874;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
-      v21 = v13;
+      v21 = uUIDString;
       v22 = 2114;
       v23 = v14;
       _os_log_impl(&dword_229486000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] performOperation started - notificationStartDate: %{public}@", buf, 0x20u);
     }
 
     v17 = 0;
-    [(HDHRBloodPressureJournalNotificationManager *)self _scheduleNotificationsWithStartDate:v10 schedulingUUID:v9 error:&v17];
-    v8[2](v8);
+    [(HDHRBloodPressureJournalNotificationManager *)self _scheduleNotificationsWithStartDate:v10 schedulingUUID:completionCopy2 error:&v17];
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v9 = a6;
+    completionCopy2 = completion;
     _HKInitializeLogging();
     v15 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_229486000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@ Unable to aquire database assertion]", buf, 0xCu);
     }
 
-    v9[2](v9);
+    completionCopy2[2](completionCopy2);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_scheduleNotificationsWithStartDate:(id)a3 error:(id *)a4
+- (BOOL)_scheduleNotificationsWithStartDate:(id)date error:(id *)error
 {
   v6 = MEMORY[0x277CCAD78];
-  v7 = a3;
-  v8 = [v6 UUID];
-  LOBYTE(a4) = [(HDHRBloodPressureJournalNotificationManager *)self _scheduleNotificationsWithStartDate:v7 schedulingUUID:v8 error:a4];
+  dateCopy = date;
+  uUID = [v6 UUID];
+  LOBYTE(error) = [(HDHRBloodPressureJournalNotificationManager *)self _scheduleNotificationsWithStartDate:dateCopy schedulingUUID:uUID error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_scheduleNotificationsWithStartDate:(id)a3 schedulingUUID:(id)a4 error:(id *)a5
+- (BOOL)_scheduleNotificationsWithStartDate:(id)date schedulingUUID:(id)d error:(id *)error
 {
   v92 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  dateCopy = date;
+  dCopy = d;
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
   v11 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v11 setDateFormat:@"yyyy-MM-dd HH:mm"];
   _HKInitializeLogging();
   v12 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 UUIDString];
-    v14 = [v11 stringFromDate:v8];
+    uUIDString = [dCopy UUIDString];
+    v14 = [v11 stringFromDate:dateCopy];
     *buf = 138543874;
-    v81 = self;
+    selfCopy11 = self;
     v82 = 2114;
-    v83 = v13;
+    v83 = uUIDString;
     v84 = 2114;
     v85 = v14;
     _os_log_impl(&dword_229486000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: started - date: %{public}@", buf, 0x20u);
@@ -270,11 +270,11 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
   if ([(HDHRBloodPressureJournalNotificationManager *)self _notificationSchedulingIsEnabled])
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v16 = [WeakRetained heartHealthProfileExtension];
-    v17 = [v16 bloodPressureJournalManager];
+    heartHealthProfileExtension = [WeakRetained heartHealthProfileExtension];
+    bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
 
     v79 = 0;
-    v18 = [v17 latestActiveBloodPressureJournalWithError:&v79];
+    v18 = [bloodPressureJournalManager latestActiveBloodPressureJournalWithError:&v79];
     v19 = v79;
     if (v19)
     {
@@ -282,25 +282,25 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
       v20 = HKLogBloodPressureJournal();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        [v9 UUIDString];
-        v52 = v75 = a5;
+        [dCopy UUIDString];
+        v52 = v75 = error;
         *buf = 138543874;
-        v81 = self;
+        selfCopy11 = self;
         v82 = 2114;
         v83 = v52;
         v84 = 2114;
         v85 = v19;
         _os_log_error_impl(&dword_229486000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Failed to fetch latest active journal with error: %{public}@", buf, 0x20u);
 
-        a5 = v75;
+        error = v75;
       }
 
-      if (a5)
+      if (error)
       {
         v21 = v19;
-        v22 = a5;
-        LOBYTE(a5) = 0;
-        *v22 = v19;
+        errorCopy = error;
+        LOBYTE(error) = 0;
+        *errorCopy = v19;
       }
 
       else
@@ -311,45 +311,45 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
 
     else
     {
-      v74 = a5;
+      errorCopy2 = error;
       _HKInitializeLogging();
-      a5 = HKLogBloodPressureJournal();
-      v26 = os_log_type_enabled(a5, OS_LOG_TYPE_DEFAULT);
+      error = HKLogBloodPressureJournal();
+      v26 = os_log_type_enabled(error, OS_LOG_TYPE_DEFAULT);
       if (v18)
       {
         if (v26)
         {
-          v64 = [v9 UUIDString];
-          v68 = [v18 UUID];
-          v27 = [v68 UUIDString];
-          v63 = [v18 journalType];
-          v62 = [v18 journalState];
+          uUIDString2 = [dCopy UUIDString];
+          uUID = [v18 UUID];
+          uUIDString3 = [uUID UUIDString];
+          journalType = [v18 journalType];
+          journalState = [v18 journalState];
           [v18 startDate];
-          v28 = v71 = v10;
+          v28 = v71 = hk_gregorianCalendar;
           v29 = [v11 stringFromDate:v28];
           *buf = 138544642;
-          v81 = self;
+          selfCopy11 = self;
           v82 = 2114;
-          v83 = v64;
+          v83 = uUIDString2;
           v84 = 2114;
-          v85 = v27;
+          v85 = uUIDString3;
           v86 = 2048;
-          v87 = v63;
+          v87 = journalType;
           v88 = 2048;
-          v89 = v62;
+          v89 = journalState;
           v90 = 2114;
           v91 = v29;
           v30 = v29;
-          _os_log_impl(&dword_229486000, a5, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Found active journal: UUID=%{public}@, type=%ld, state=%ld, startDate=%{public}@", buf, 0x3Eu);
+          _os_log_impl(&dword_229486000, error, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Found active journal: UUID=%{public}@, type=%ld, state=%ld, startDate=%{public}@", buf, 0x3Eu);
 
-          v10 = v71;
+          hk_gregorianCalendar = v71;
           v19 = 0;
         }
 
-        if ([(HDHRBloodPressureJournalNotificationManager *)self _isJournal:v18 inNoticationPeriodFor:v8 calendar:v10])
+        if ([(HDHRBloodPressureJournalNotificationManager *)self _isJournal:v18 inNoticationPeriodFor:dateCopy calendar:hk_gregorianCalendar])
         {
           v77 = 0;
-          v31 = [(HDHRBloodPressureJournalNotificationManager *)self _notificationInfoFor:v18 startDate:v8 calendar:v10 schedulingUUID:v9 error:&v77];
+          v31 = [(HDHRBloodPressureJournalNotificationManager *)self _notificationInfoFor:v18 startDate:dateCopy calendar:hk_gregorianCalendar schedulingUUID:dCopy error:&v77];
           v72 = v77;
           if (v72)
           {
@@ -358,10 +358,10 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
             v32 = HKLogBloodPressureJournal();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
             {
-              [v9 UUIDString];
+              [dCopy UUIDString];
               v56 = v55 = v18;
               *buf = 138543874;
-              v81 = self;
+              selfCopy11 = self;
               v82 = 2114;
               v83 = v56;
               v84 = 2114;
@@ -372,17 +372,17 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
             }
 
             v33 = v72;
-            if (v74)
+            if (errorCopy2)
             {
               v34 = v72;
-              LOBYTE(a5) = 0;
-              *v74 = v72;
+              LOBYTE(error) = 0;
+              *errorCopy2 = v72;
             }
 
             else
             {
               _HKLogDroppedError();
-              LOBYTE(a5) = 0;
+              LOBYTE(error) = 0;
             }
 
             v31 = v69;
@@ -391,29 +391,29 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
           else
           {
             _HKInitializeLogging();
-            a5 = HKLogBloodPressureJournal();
-            v45 = os_log_type_enabled(a5, OS_LOG_TYPE_DEFAULT);
+            error = HKLogBloodPressureJournal();
+            v45 = os_log_type_enabled(error, OS_LOG_TYPE_DEFAULT);
             if (v31)
             {
               if (v45)
               {
-                [v9 UUIDString];
+                [dCopy UUIDString];
                 v46 = v65 = v18;
                 *buf = 138543874;
-                v81 = self;
+                selfCopy11 = self;
                 v82 = 2114;
                 v83 = v46;
                 v84 = 2114;
                 v85 = v31;
-                _os_log_impl(&dword_229486000, a5, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Computed notification info successfully: %{public}@", buf, 0x20u);
+                _os_log_impl(&dword_229486000, error, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Computed notification info successfully: %{public}@", buf, 0x20u);
 
                 v18 = v65;
               }
 
               v76 = 0;
-              LOBYTE(a5) = [(HDHRBloodPressureJournalNotificationManager *)self _scheduleRestorableAlarmEventsWith:v31 forJournal:v18 calendar:v10 schedulingUUID:v9 error:&v76];
+              LOBYTE(error) = [(HDHRBloodPressureJournalNotificationManager *)self _scheduleRestorableAlarmEventsWith:v31 forJournal:v18 calendar:hk_gregorianCalendar schedulingUUID:dCopy error:&v76];
               v47 = v76;
-              if ((a5 & 1) == 0)
+              if ((error & 1) == 0)
               {
                 v67 = v47;
                 v70 = v31;
@@ -421,10 +421,10 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
                 v48 = HKLogBloodPressureJournal();
                 if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
                 {
-                  [v9 UUIDString];
+                  [dCopy UUIDString];
                   v61 = v66 = v18;
                   *buf = 138543874;
-                  v81 = self;
+                  selfCopy11 = self;
                   v82 = 2114;
                   v83 = v61;
                   v84 = 2114;
@@ -438,10 +438,10 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
                 v50 = v49;
                 if (v49)
                 {
-                  if (v74)
+                  if (errorCopy2)
                   {
                     v51 = v49;
-                    *v74 = v50;
+                    *errorCopy2 = v50;
                   }
 
                   else
@@ -459,19 +459,19 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
             {
               if (v45)
               {
-                [v9 UUIDString];
+                [dCopy UUIDString];
                 v54 = v53 = v18;
                 *buf = 138543618;
-                v81 = self;
+                selfCopy11 = self;
                 v82 = 2114;
                 v83 = v54;
-                _os_log_impl(&dword_229486000, a5, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Active Journal is complete (notification info is nil) - returning early", buf, 0x16u);
+                _os_log_impl(&dword_229486000, error, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Active Journal is complete (notification info is nil) - returning early", buf, 0x16u);
 
                 v18 = v53;
                 v31 = 0;
               }
 
-              LOBYTE(a5) = 1;
+              LOBYTE(error) = 1;
             }
 
             v33 = 0;
@@ -484,10 +484,10 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
           v42 = HKLogBloodPressureJournal();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
-            [v9 UUIDString];
+            [dCopy UUIDString];
             v44 = v43 = v18;
             *buf = 138543618;
-            v81 = self;
+            selfCopy11 = self;
             v82 = 2114;
             v83 = v44;
             _os_log_impl(&dword_229486000, v42, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Active Journal Notification Period is complete - returning early", buf, 0x16u);
@@ -495,7 +495,7 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
             v18 = v43;
           }
 
-          LOBYTE(a5) = 1;
+          LOBYTE(error) = 1;
         }
       }
 
@@ -503,31 +503,31 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
       {
         if (v26)
         {
-          v35 = [v9 UUIDString];
+          uUIDString4 = [dCopy UUIDString];
           *buf = 138543618;
-          v81 = self;
+          selfCopy11 = self;
           v82 = 2114;
-          v83 = v35;
-          _os_log_impl(&dword_229486000, a5, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: No active journal found to schedule notifications - removing alarms", buf, 0x16u);
+          v83 = uUIDString4;
+          _os_log_impl(&dword_229486000, error, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: No active journal found to schedule notifications - removing alarms", buf, 0x16u);
         }
 
         restorableAlarm = self->_restorableAlarm;
         v78 = 0;
-        LOBYTE(a5) = [(HDRestorableAlarm *)restorableAlarm removeAllEventsWithError:&v78];
+        LOBYTE(error) = [(HDRestorableAlarm *)restorableAlarm removeAllEventsWithError:&v78];
         v37 = v78;
-        if ((a5 & 1) == 0)
+        if ((error & 1) == 0)
         {
           v73 = v37;
           _HKInitializeLogging();
           v38 = HKLogBloodPressureJournal();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
-            v57 = [v9 UUIDString];
+            uUIDString5 = [dCopy UUIDString];
             *buf = 138543874;
-            v81 = self;
+            selfCopy11 = self;
             v82 = 2114;
-            v83 = v57;
-            v58 = v57;
+            v83 = uUIDString5;
+            v58 = uUIDString5;
             v84 = 2114;
             v85 = v73;
             _os_log_error_impl(&dword_229486000, v38, OS_LOG_TYPE_ERROR, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Failed to remove existing alarm events with error: %{public}@", buf, 0x20u);
@@ -537,10 +537,10 @@ void __73__HDHRBloodPressureJournalNotificationManager_initWithProfile_operation
           v40 = v39;
           if (v39)
           {
-            if (v74)
+            if (errorCopy2)
             {
               v41 = v39;
-              *v74 = v40;
+              *errorCopy2 = v40;
             }
 
             else
@@ -560,20 +560,20 @@ LABEL_56:
 
   _HKInitializeLogging();
   v23 = HKLogBloodPressureJournal();
-  LOBYTE(a5) = 1;
+  LOBYTE(error) = 1;
   v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
 
   if (v24)
   {
-    v17 = HKLogBloodPressureJournal();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    bloodPressureJournalManager = HKLogBloodPressureJournal();
+    if (os_log_type_enabled(bloodPressureJournalManager, OS_LOG_TYPE_INFO))
     {
-      v25 = [v9 UUIDString];
+      uUIDString6 = [dCopy UUIDString];
       *buf = 138543618;
-      v81 = self;
+      selfCopy11 = self;
       v82 = 2114;
-      v83 = v25;
-      _os_log_impl(&dword_229486000, v17, OS_LOG_TYPE_INFO, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Notification scheduling is not enabled - returning early", buf, 0x16u);
+      v83 = uUIDString6;
+      _os_log_impl(&dword_229486000, bloodPressureJournalManager, OS_LOG_TYPE_INFO, "[%{public}@] [UUID: %{public}@] _scheduleNotificationsWithStartDate: Notification scheduling is not enabled - returning early", buf, 0x16u);
     }
 
     goto LABEL_56;
@@ -582,65 +582,65 @@ LABEL_56:
 LABEL_57:
 
   v59 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (BOOL)_scheduleRestorableAlarmEventsWith:(id)a3 forJournal:(id)a4 calendar:(id)a5 schedulingUUID:(id)a6 error:(id *)a7
+- (BOOL)_scheduleRestorableAlarmEventsWith:(id)with forJournal:(id)journal calendar:(id)calendar schedulingUUID:(id)d error:(id *)error
 {
   v85 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v61 = a6;
-  v14 = [v12 measurementsRequiredToCompleteJournal];
-  v15 = [v12 journalType];
-  v16 = [MEMORY[0x277CBEB18] array];
-  v17 = [v11 wakeupAlarmStartDate];
-  v18 = [v12 wakeupTimeInterval];
-  v19 = [(HDHRBloodPressureJournalNotificationManager *)self _alarmTimeForDate:v17 withScheduleTimeInterval:v18 calendar:v13];
+  withCopy = with;
+  journalCopy = journal;
+  calendarCopy = calendar;
+  dCopy = d;
+  measurementsRequiredToCompleteJournal = [journalCopy measurementsRequiredToCompleteJournal];
+  journalType = [journalCopy journalType];
+  array = [MEMORY[0x277CBEB18] array];
+  wakeupAlarmStartDate = [withCopy wakeupAlarmStartDate];
+  wakeupTimeInterval = [journalCopy wakeupTimeInterval];
+  v19 = [(HDHRBloodPressureJournalNotificationManager *)self _alarmTimeForDate:wakeupAlarmStartDate withScheduleTimeInterval:wakeupTimeInterval calendar:calendarCopy];
 
-  v63 = v11;
-  v20 = [v11 wakeupAlarmStartDate];
-  LODWORD(v18) = [v19 hk_isBeforeDate:v20];
+  v63 = withCopy;
+  wakeupAlarmStartDate2 = [withCopy wakeupAlarmStartDate];
+  LODWORD(wakeupTimeInterval) = [v19 hk_isBeforeDate:wakeupAlarmStartDate2];
 
-  if (v18)
+  if (wakeupTimeInterval)
   {
-    v21 = [(HDHRBloodPressureJournalNotificationManager *)self _nextDayFor:v19 calendar:v13];
+    v21 = [(HDHRBloodPressureJournalNotificationManager *)self _nextDayFor:v19 calendar:calendarCopy];
 
     v19 = v21;
   }
 
-  v67 = v14;
-  v68 = v16;
-  v69 = self;
-  v70 = v13;
-  v22 = [v11 wakeupAlarmCount];
+  v67 = measurementsRequiredToCompleteJournal;
+  v68 = array;
+  selfCopy = self;
+  v70 = calendarCopy;
+  wakeupAlarmCount = [withCopy wakeupAlarmCount];
   v23 = 0x27865E000uLL;
   v24 = 0x27865E000uLL;
-  v66 = v12;
-  v60 = v22;
-  if (v22)
+  v66 = journalCopy;
+  v60 = wakeupAlarmCount;
+  if (wakeupAlarmCount)
   {
-    v25 = -v22;
+    v25 = -wakeupAlarmCount;
     do
     {
       contexta = objc_autoreleasePoolPush();
       v26 = [objc_alloc(*(v23 + 2864)) initWithMeasurementIndex:v67 + v25 + 1 measurementCount:? measurementWindowType:?];
       v27 = objc_alloc(*(v24 + 2840));
-      [v12 UUID];
+      [journalCopy UUID];
       v29 = v28 = v23;
       v30 = [v27 initWithJournalIdentifier:v29 notificationDayIndex:objc_msgSend(v19 journalWindowType:{"hk_dayIndexWithCalendar:", v70), 0}];
 
-      restorableAlarm = v69->_restorableAlarm;
+      restorableAlarm = selfCopy->_restorableAlarm;
       v32 = [v19 copy];
-      [(HDRestorableAlarm *)restorableAlarm bloodPressureJournalAlarmEventWithNotificationIdentifier:v30 journalType:v15 dueDate:v32 isFollowUp:0 measurementInfo:v26];
-      v34 = v33 = v15;
+      [(HDRestorableAlarm *)restorableAlarm bloodPressureJournalAlarmEventWithNotificationIdentifier:v30 journalType:journalType dueDate:v32 isFollowUp:0 measurementInfo:v26];
+      v34 = v33 = journalType;
 
-      v12 = v66;
+      journalCopy = v66;
       [v68 addObject:v34];
-      v35 = [(HDHRBloodPressureJournalNotificationManager *)v69 _nextDayFor:v19 calendar:v70];
+      v35 = [(HDHRBloodPressureJournalNotificationManager *)selfCopy _nextDayFor:v19 calendar:v70];
 
-      v15 = v33;
+      journalType = v33;
       v23 = v28;
       v24 = 0x27865E000;
 
@@ -657,41 +657,41 @@ LABEL_57:
     v35 = v19;
   }
 
-  v37 = [v63 bedtimeAlarmStartDate];
-  v38 = [v12 bedtimeTimeInterval];
-  v39 = [(HDHRBloodPressureJournalNotificationManager *)v69 _alarmTimeForDate:v37 withScheduleTimeInterval:v38 calendar:v70];
+  bedtimeAlarmStartDate = [v63 bedtimeAlarmStartDate];
+  bedtimeTimeInterval = [journalCopy bedtimeTimeInterval];
+  v39 = [(HDHRBloodPressureJournalNotificationManager *)selfCopy _alarmTimeForDate:bedtimeAlarmStartDate withScheduleTimeInterval:bedtimeTimeInterval calendar:v70];
 
-  v40 = [v63 bedtimeAlarmStartDate];
-  LOBYTE(v38) = [v39 hk_isBeforeDate:v40];
+  bedtimeAlarmStartDate2 = [v63 bedtimeAlarmStartDate];
+  LOBYTE(bedtimeTimeInterval) = [v39 hk_isBeforeDate:bedtimeAlarmStartDate2];
 
-  if (v38)
+  if (bedtimeTimeInterval)
   {
-    v41 = [(HDHRBloodPressureJournalNotificationManager *)v69 _nextDayFor:v39 calendar:v70];
+    v41 = [(HDHRBloodPressureJournalNotificationManager *)selfCopy _nextDayFor:v39 calendar:v70];
 
     v39 = v41;
   }
 
-  v42 = [v63 bedtimeAlarmCount];
-  v59 = v42;
-  if (v42)
+  bedtimeAlarmCount = [v63 bedtimeAlarmCount];
+  v59 = bedtimeAlarmCount;
+  if (bedtimeAlarmCount)
   {
-    v43 = -v42;
-    context = v15;
+    v43 = -bedtimeAlarmCount;
+    context = journalType;
     do
     {
       v44 = objc_autoreleasePoolPush();
       v45 = [HDHRBloodPressureJournalNotificationMeasurementInfo initWithMeasurementIndex:"initWithMeasurementIndex:measurementCount:measurementWindowType:" measurementCount:v67 + v43 + 1 measurementWindowType:?];
       v46 = [HDHRBloodPressureJournalNotificationIdentifier alloc];
-      v47 = [v12 UUID];
-      v48 = -[HDHRBloodPressureJournalNotificationIdentifier initWithJournalIdentifier:notificationDayIndex:journalWindowType:](v46, "initWithJournalIdentifier:notificationDayIndex:journalWindowType:", v47, [v39 hk_dayIndexWithCalendar:v70], 1);
+      uUID = [journalCopy UUID];
+      v48 = -[HDHRBloodPressureJournalNotificationIdentifier initWithJournalIdentifier:notificationDayIndex:journalWindowType:](v46, "initWithJournalIdentifier:notificationDayIndex:journalWindowType:", uUID, [v39 hk_dayIndexWithCalendar:v70], 1);
 
-      v49 = v69->_restorableAlarm;
+      v49 = selfCopy->_restorableAlarm;
       v50 = [v39 copy];
       v51 = [(HDRestorableAlarm *)v49 bloodPressureJournalAlarmEventWithNotificationIdentifier:v48 journalType:context dueDate:v50 isFollowUp:0 measurementInfo:v45];
 
-      v12 = v66;
+      journalCopy = v66;
       [v68 addObject:v51];
-      v52 = [(HDHRBloodPressureJournalNotificationManager *)v69 _nextDayFor:v39 calendar:v70];
+      v52 = [(HDHRBloodPressureJournalNotificationManager *)selfCopy _nextDayFor:v39 calendar:v70];
 
       objc_autoreleasePoolPop(v44);
       v39 = v52;
@@ -710,11 +710,11 @@ LABEL_57:
   v53 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
   {
-    v54 = [v61 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138544898;
-    v72 = v69;
+    v72 = selfCopy;
     v73 = 2114;
-    v74 = v54;
+    v74 = uUIDString;
     v75 = 2048;
     v76 = [v68 count];
     v77 = 2048;
@@ -728,21 +728,21 @@ LABEL_57:
     _os_log_impl(&dword_229486000, v53, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _scheduleRestorableAlarmEventsWith events count:(%lu) [WAKEUP: alarm count:(%lu) starting from index:(%lu)] [BEDTIME: alarm count:(%lu) starting from index:(%lu)]", buf, 0x48u);
   }
 
-  v55 = [(HDRestorableAlarm *)v69->_restorableAlarm replaceAllScheduledEventsWithEvents:v68 error:a7];
+  v55 = [(HDRestorableAlarm *)selfCopy->_restorableAlarm replaceAllScheduledEventsWithEvents:v68 error:error];
   v56 = v55 != 0;
 
   v57 = *MEMORY[0x277D85DE8];
   return v56;
 }
 
-- (id)_notificationInfoForMonitorHypertensionJournal:(id)a3 startDate:(id)a4 calendar:(id)a5 schedulingUUID:(id)a6 error:(id *)a7
+- (id)_notificationInfoForMonitorHypertensionJournal:(id)journal startDate:(id)date calendar:(id)calendar schedulingUUID:(id)d error:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v49 = [v14 startOfDayForDate:v13];
+  journalCopy = journal;
+  dateCopy = date;
+  calendarCopy = calendar;
+  dCopy = d;
+  v49 = [calendarCopy startOfDayForDate:dateCopy];
   v50 = [HDHRBloodPressureJournalNotificationManager _bloodPressureSampleFrom:"_bloodPressureSampleFrom:error:" error:?];
   v16 = 0;
   v17 = objc_alloc_init(MEMORY[0x277CCA968]);
@@ -754,21 +754,21 @@ LABEL_57:
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v43 = [v15 UUIDString];
+      uUIDString = [dCopy UUIDString];
       *buf = 138543874;
-      v52 = self;
+      selfCopy2 = self;
       v53 = 2114;
-      v54 = v43;
+      v54 = uUIDString;
       v55 = 2114;
       v56 = v16;
       _os_log_error_impl(&dword_229486000, v19, OS_LOG_TYPE_ERROR, "[%{public}@] [UUID: %{public}@] _notificationInfoForMonitorHypertensionJournal: Failed to fetch blood pressure samples with error: %{public}@", buf, 0x20u);
     }
 
-    if (a7)
+    if (error)
     {
       v20 = v16;
       v21 = 0;
-      *a7 = v16;
+      *error = v16;
     }
 
     else
@@ -780,54 +780,54 @@ LABEL_57:
 
   else
   {
-    v48 = v15;
+    v48 = dCopy;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v15 UUIDString];
+      uUIDString2 = [dCopy UUIDString];
       v23 = [v50 count];
       v24 = [v17 stringFromDate:v49];
       *buf = 138544130;
-      v52 = self;
+      selfCopy2 = self;
       v53 = 2114;
-      v54 = v22;
+      v54 = uUIDString2;
       v55 = 2048;
       v56 = v23;
-      v15 = v48;
+      dCopy = v48;
       v57 = 2112;
       v58 = v24;
       _os_log_impl(&dword_229486000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _notificationInfoForMonitorHypertensionJournal: Found %ld blood pressure samples from:%@", buf, 0x2Au);
     }
 
-    v25 = [v12 timeIntervals];
-    v26 = [v25 firstObject];
-    v27 = [(HDHRBloodPressureJournalNotificationManager *)self _alarmTimeForDate:v13 withScheduleTimeInterval:v26 calendar:v14];
+    timeIntervals = [journalCopy timeIntervals];
+    firstObject = [timeIntervals firstObject];
+    v27 = [(HDHRBloodPressureJournalNotificationManager *)self _alarmTimeForDate:dateCopy withScheduleTimeInterval:firstObject calendar:calendarCopy];
 
     v47 = v27;
-    if (v50 && [v50 count] || (objc_msgSend(v13, "hk_isAfterDate:", v27) & 1) != 0)
+    if (v50 && [v50 count] || (objc_msgSend(dateCopy, "hk_isAfterDate:", v27) & 1) != 0)
     {
-      v28 = [(HDHRBloodPressureJournalNotificationManager *)self _nextDayFor:v49 calendar:v14];
+      v28 = [(HDHRBloodPressureJournalNotificationManager *)self _nextDayFor:v49 calendar:calendarCopy];
     }
 
     else
     {
-      v28 = v13;
+      v28 = dateCopy;
     }
 
     v29 = v28;
-    v30 = [v12 notificationEndDateForIncompleteJournal:v14];
+    v30 = [journalCopy notificationEndDateForIncompleteJournal:calendarCopy];
     if (!v30)
     {
       _HKInitializeLogging();
       v31 = HKLogBloodPressureJournal();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        [HDHRBloodPressureJournalNotificationManager _notificationInfoForMonitorHypertensionJournal:v15 startDate:v31 calendar:? schedulingUUID:? error:?];
+        [HDHRBloodPressureJournalNotificationManager _notificationInfoForMonitorHypertensionJournal:dCopy startDate:v31 calendar:? schedulingUUID:? error:?];
       }
 
       v30 = v29;
     }
 
-    v32 = [v14 startOfDayForDate:v29];
+    v32 = [calendarCopy startOfDayForDate:v29];
     [v30 timeIntervalSinceDate:v32];
     v34 = (v33 / 86400.0);
 
@@ -836,16 +836,16 @@ LABEL_57:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       [v48 UUIDString];
-      v45 = v14;
-      v36 = self;
+      v45 = calendarCopy;
+      selfCopy3 = self;
       v38 = v37 = v17;
       [v37 stringFromDate:v29];
-      v44 = v46 = v13;
+      v44 = v46 = dateCopy;
       [v37 stringFromDate:v30];
       v40 = v39 = v34;
       *buf = 138544386;
-      v52 = v36;
-      v14 = v45;
+      selfCopy2 = selfCopy3;
+      calendarCopy = v45;
       v53 = 2114;
       v54 = v38;
       v55 = 2114;
@@ -859,11 +859,11 @@ LABEL_57:
       v17 = v37;
       v34 = v39;
 
-      v13 = v46;
+      dateCopy = v46;
     }
 
     v21 = [[HDHRBloodPressureJournalNotificationInfo alloc] initWithWakeupAlarmStartDate:v29 wakeupAlarmCount:v34 bedtimeAlarmStartDate:0 bedtimeAlarmCount:0];
-    v15 = v48;
+    dCopy = v48;
   }
 
   v41 = *MEMORY[0x277D85DE8];
@@ -871,32 +871,32 @@ LABEL_57:
   return v21;
 }
 
-- (id)_notificationInfoForLearnHypertensionRiskJournal:(id)a3 startDate:(id)a4 calendar:(id)a5 schedulingUUID:(id)a6 error:(id *)a7
+- (id)_notificationInfoForLearnHypertensionRiskJournal:(id)journal startDate:(id)date calendar:(id)calendar schedulingUUID:(id)d error:(id *)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  journalCopy = journal;
+  dateCopy = date;
+  calendarCopy = calendar;
+  dCopy = d;
   v16 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v16 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  v17 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [v16 setTimeZone:v17];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [v16 setTimeZone:systemTimeZone];
 
   _HKInitializeLogging();
   v18 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v15 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138543618;
-    v65 = self;
+    selfCopy5 = self;
     v66 = 2114;
-    v67 = v19;
+    v67 = uUIDString;
     _os_log_impl(&dword_229486000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _notificationInfoForLearnHypertensionRiskJournal: Computing notification info for LearnHypertensionRisk journal", buf, 0x16u);
   }
 
-  v20 = [v12 startDate];
-  v21 = [v14 startOfDayForDate:v20];
+  startDate = [journalCopy startDate];
+  v21 = [calendarCopy startOfDayForDate:startDate];
 
   v63 = 0;
   v62 = [(HDHRBloodPressureJournalNotificationManager *)self _bloodPressureSampleFrom:v21 error:&v63];
@@ -908,10 +908,10 @@ LABEL_57:
   {
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [v15 UUIDString];
+      [dCopy UUIDString];
       v56 = v61 = v21;
       *buf = 138543874;
-      v65 = self;
+      selfCopy5 = self;
       v66 = 2114;
       v67 = v56;
       v68 = 2114;
@@ -921,11 +921,11 @@ LABEL_57:
       v21 = v61;
     }
 
-    if (a7)
+    if (error)
     {
       v25 = v22;
       v26 = 0;
-      *a7 = v22;
+      *error = v22;
     }
 
     else
@@ -941,40 +941,40 @@ LABEL_57:
     v59 = v16;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v15 UUIDString];
+      uUIDString2 = [dCopy UUIDString];
       v28 = [v62 count];
       [v16 stringFromDate:v60];
-      v29 = v12;
-      v31 = v30 = v13;
+      v29 = journalCopy;
+      v31 = v30 = dateCopy;
       *buf = 138544130;
-      v65 = self;
+      selfCopy5 = self;
       v66 = 2114;
-      v67 = v27;
+      v67 = uUIDString2;
       v68 = 2048;
       v69 = v28;
       v70 = 2112;
       v71 = v31;
       _os_log_impl(&dword_229486000, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _notificationInfoForLearnHypertensionRiskJournal: Found %ld blood pressure samples since journal start of day:%@", buf, 0x2Au);
 
-      v13 = v30;
-      v12 = v29;
+      dateCopy = v30;
+      journalCopy = v29;
       v16 = v59;
     }
 
-    v32 = [MEMORY[0x277D12FE8] summaryFromSamples:v62 journal:v12];
-    v33 = [v32 isComplete];
+    v32 = [MEMORY[0x277D12FE8] summaryFromSamples:v62 journal:journalCopy];
+    isComplete = [v32 isComplete];
     _HKInitializeLogging();
     v34 = HKLogBloodPressureJournal();
     v35 = os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT);
-    if (v33)
+    if (isComplete)
     {
       if (v35)
       {
-        v36 = [v15 UUIDString];
+        uUIDString3 = [dCopy UUIDString];
         *buf = 138543618;
-        v65 = self;
+        selfCopy5 = self;
         v66 = 2114;
-        v67 = v36;
+        v67 = uUIDString3;
         _os_log_impl(&dword_229486000, v34, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _notificationInfoForLearnHypertensionRiskJournal: Journal is complete - no notifications needed", buf, 0x16u);
       }
 
@@ -983,33 +983,33 @@ LABEL_57:
 
     else
     {
-      v58 = v12;
+      v58 = journalCopy;
       if (v35)
       {
-        v37 = [v15 UUIDString];
-        v38 = v13;
-        v39 = [v32 wakeUpCount];
-        v40 = [v32 bedTimeCount];
-        v41 = [v58 measurementsRequiredToCompleteJournal];
+        uUIDString4 = [dCopy UUIDString];
+        v38 = dateCopy;
+        wakeUpCount = [v32 wakeUpCount];
+        bedTimeCount = [v32 bedTimeCount];
+        measurementsRequiredToCompleteJournal = [v58 measurementsRequiredToCompleteJournal];
         *buf = 138544386;
-        v65 = self;
+        selfCopy5 = self;
         v66 = 2114;
-        v67 = v37;
+        v67 = uUIDString4;
         v68 = 2048;
-        v69 = v39;
-        v13 = v38;
+        v69 = wakeUpCount;
+        dateCopy = v38;
         v70 = 2048;
-        v71 = v40;
+        v71 = bedTimeCount;
         v72 = 2048;
-        v73 = v41;
+        v73 = measurementsRequiredToCompleteJournal;
         _os_log_impl(&dword_229486000, v34, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _notificationInfoForLearnHypertensionRiskJournal: Journal not complete - wakeup count: %ld, bedtime count: %ld, required: %ld", buf, 0x34u);
       }
 
-      v42 = [v13 hk_dayIndexWithCalendar:v14];
+      v42 = [dateCopy hk_dayIndexWithCalendar:calendarCopy];
       v43 = [v32 hasWakeupSamplesForDayIndex:v42];
-      v57 = v15;
-      v44 = v14;
-      v45 = v13;
+      v57 = dCopy;
+      v44 = calendarCopy;
+      v45 = dateCopy;
       v46 = [v32 hasBedtimeSamplesForDayIndex:v42];
       v47 = [v44 startOfDayForDate:v45];
       v34 = [(HDHRBloodPressureJournalNotificationManager *)self _nextDayFor:v47 calendar:v44];
@@ -1025,9 +1025,9 @@ LABEL_57:
       }
 
       v49 = v48;
-      v12 = v58;
-      v50 = [v58 measurementsRequiredToCompleteJournal];
-      v51 = v50 - [v32 wakeUpCount];
+      journalCopy = v58;
+      measurementsRequiredToCompleteJournal2 = [v58 measurementsRequiredToCompleteJournal];
+      v51 = measurementsRequiredToCompleteJournal2 - [v32 wakeUpCount];
       if (v46)
       {
         v52 = v34;
@@ -1041,9 +1041,9 @@ LABEL_57:
       v53 = v52;
       v26 = -[HDHRBloodPressureJournalNotificationInfo initWithWakeupAlarmStartDate:wakeupAlarmCount:bedtimeAlarmStartDate:bedtimeAlarmCount:]([HDHRBloodPressureJournalNotificationInfo alloc], "initWithWakeupAlarmStartDate:wakeupAlarmCount:bedtimeAlarmStartDate:bedtimeAlarmCount:", v49, v51, v53, [v58 measurementsRequiredToCompleteJournal] - objc_msgSend(v32, "bedTimeCount"));
 
-      v13 = v45;
-      v14 = v44;
-      v15 = v57;
+      dateCopy = v45;
+      calendarCopy = v44;
+      dCopy = v57;
 
       v16 = v59;
     }
@@ -1056,47 +1056,47 @@ LABEL_57:
   return v26;
 }
 
-- (id)_notificationInfoFor:(id)a3 startDate:(id)a4 calendar:(id)a5 schedulingUUID:(id)a6 error:(id *)a7
+- (id)_notificationInfoFor:(id)for startDate:(id)date calendar:(id)calendar schedulingUUID:(id)d error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  forCopy = for;
+  dateCopy = date;
+  calendarCopy = calendar;
+  dCopy = d;
   v16 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v16 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  v17 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [v16 setTimeZone:v17];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [v16 setTimeZone:systemTimeZone];
 
   _HKInitializeLogging();
   v18 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v15 UUIDString];
-    v20 = [v12 journalType];
-    [v16 stringFromDate:v13];
-    v21 = v25 = a7;
+    uUIDString = [dCopy UUIDString];
+    journalType = [forCopy journalType];
+    [v16 stringFromDate:dateCopy];
+    v21 = v25 = error;
     *buf = 138544130;
-    v27 = self;
+    selfCopy = self;
     v28 = 2114;
-    v29 = v19;
+    v29 = uUIDString;
     v30 = 2048;
-    v31 = v20;
+    v31 = journalType;
     v32 = 2114;
     v33 = v21;
     _os_log_impl(&dword_229486000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] [UUID: %{public}@] _notificationInfoFor: Computing notification info for journal type: %ld, startDate: %{public}@", buf, 0x2Au);
 
-    a7 = v25;
+    error = v25;
   }
 
-  if ([v12 journalType] == 1)
+  if ([forCopy journalType] == 1)
   {
-    [(HDHRBloodPressureJournalNotificationManager *)self _notificationInfoForMonitorHypertensionJournal:v12 startDate:v13 calendar:v14 schedulingUUID:v15 error:a7];
+    [(HDHRBloodPressureJournalNotificationManager *)self _notificationInfoForMonitorHypertensionJournal:forCopy startDate:dateCopy calendar:calendarCopy schedulingUUID:dCopy error:error];
   }
 
   else
   {
-    [(HDHRBloodPressureJournalNotificationManager *)self _notificationInfoForLearnHypertensionRiskJournal:v12 startDate:v13 calendar:v14 schedulingUUID:v15 error:a7];
+    [(HDHRBloodPressureJournalNotificationManager *)self _notificationInfoForLearnHypertensionRiskJournal:forCopy startDate:dateCopy calendar:calendarCopy schedulingUUID:dCopy error:error];
   }
   v22 = ;
 
@@ -1105,42 +1105,42 @@ LABEL_57:
   return v22;
 }
 
-- (id)_alarmTimeForDate:(id)a3 withScheduleTimeInterval:(id)a4 calendar:(id)a5
+- (id)_alarmTimeForDate:(id)date withScheduleTimeInterval:(id)interval calendar:(id)calendar
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 scheduledTime];
-  v10 = [v7 components:28 fromDate:v8];
+  calendarCopy = calendar;
+  dateCopy = date;
+  scheduledTime = [interval scheduledTime];
+  v10 = [calendarCopy components:28 fromDate:dateCopy];
 
-  [v10 setHour:{objc_msgSend(v9, "hour")}];
-  [v10 setMinute:{objc_msgSend(v9, "minute")}];
-  v11 = [v7 dateFromComponents:v10];
+  [v10 setHour:{objc_msgSend(scheduledTime, "hour")}];
+  [v10 setMinute:{objc_msgSend(scheduledTime, "minute")}];
+  v11 = [calendarCopy dateFromComponents:v10];
 
   return v11;
 }
 
-- (id)_nextDayFor:(id)a3 calendar:(id)a4
+- (id)_nextDayFor:(id)for calendar:(id)calendar
 {
   v5 = MEMORY[0x277CBEAB8];
-  v6 = a4;
-  v7 = a3;
+  calendarCopy = calendar;
+  forCopy = for;
   v8 = objc_alloc_init(v5);
   [v8 setDay:1];
-  v9 = [v6 dateByAddingComponents:v8 toDate:v7 options:2];
+  v9 = [calendarCopy dateByAddingComponents:v8 toDate:forCopy options:2];
 
   return v9;
 }
 
-- (BOOL)_isJournal:(id)a3 inNoticationPeriodFor:(id)a4 calendar:(id)a5
+- (BOOL)_isJournal:(id)journal inNoticationPeriodFor:(id)for calendar:(id)calendar
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  journalCopy = journal;
+  forCopy = for;
+  calendarCopy = calendar;
   v11 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v11 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  v12 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [v11 setTimeZone:v12];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [v11 setTimeZone:systemTimeZone];
 
   _HKInitializeLogging();
   v13 = HKLogBloodPressureJournal();
@@ -1151,24 +1151,24 @@ LABEL_57:
     v15 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [v8 journalState];
-      v27 = [v11 stringFromDate:v9];
+      journalState = [journalCopy journalState];
+      v27 = [v11 stringFromDate:forCopy];
       v28 = 138543874;
-      v29 = self;
+      selfCopy3 = self;
       v30 = 2048;
-      v31 = v26;
+      v31 = journalState;
       v32 = 2114;
       v33 = v27;
       _os_log_debug_impl(&dword_229486000, v15, OS_LOG_TYPE_DEBUG, "[%{public}@] _isJournal:inNoticationPeriodFor: Checking notification period for journal state: %ld, date: %{public}@", &v28, 0x20u);
     }
   }
 
-  if ([v8 journalState] != 1)
+  if ([journalCopy journalState] != 1)
   {
-    v16 = [v8 notificationEndDateForIncompleteJournal:v10];
+    v16 = [journalCopy notificationEndDateForIncompleteJournal:calendarCopy];
     if (v16)
     {
-      v17 = [v9 hk_isBeforeDate:v16];
+      v17 = [forCopy hk_isBeforeDate:v16];
       _HKInitializeLogging();
       v18 = HKLogBloodPressureJournal();
       v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG);
@@ -1185,7 +1185,7 @@ LABEL_57:
         v22 = v21;
         v23 = @"NO";
         v28 = 138543874;
-        v29 = self;
+        selfCopy3 = self;
         v30 = 2114;
         if (v17)
         {
@@ -1219,7 +1219,7 @@ LABEL_57:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 138543362;
-    v29 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_229486000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] _isJournal:inNoticationPeriodFor: Journal is closed - not in notification period", &v28, 0xCu);
   }
 
@@ -1230,7 +1230,7 @@ LABEL_19:
   return v17;
 }
 
-- (id)_bloodPressureSampleFrom:(id)a3 error:(id *)a4
+- (id)_bloodPressureSampleFrom:(id)from error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v6 = HDSampleEntityPredicateForEndDate();
@@ -1240,7 +1240,7 @@ LABEL_19:
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v9 = MEMORY[0x277D10668];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [v9 samplesWithType:v7 profile:WeakRetained encodingOptions:v8 predicate:v6 limit:0 anchor:0 error:a4];
+  v11 = [v9 samplesWithType:v7 profile:WeakRetained encodingOptions:v8 predicate:v6 limit:0 anchor:0 error:error];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -1249,11 +1249,11 @@ LABEL_19:
 
 - (BOOL)_notificationSchedulingIsEnabled
 {
-  v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v3 = [v2 features];
-  v4 = [v3 chutney];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  chutney = [features chutney];
 
-  return v4;
+  return chutney;
 }
 
 - (BOOL)_notificationsEnabled
@@ -1268,18 +1268,18 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 behavior];
-  v7 = [v6 healthAppHiddenOrNotInstalled];
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  healthAppHiddenOrNotInstalled = [behavior healthAppHiddenOrNotInstalled];
 
-  if (v7)
+  if (healthAppHiddenOrNotInstalled)
   {
     _HKInitializeLogging();
     v8 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_229486000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Journal notification scheduling is disabled. Health app is hidden or not installed.", &v14, 0xCu);
     }
 
@@ -1288,44 +1288,44 @@ LABEL_7:
   }
 
   v10 = objc_loadWeakRetained(&self->_profile);
-  v11 = [v10 notificationManager];
-  v12 = [v11 areHealthNotificationsAuthorized];
+  notificationManager = [v10 notificationManager];
+  areHealthNotificationsAuthorized = [notificationManager areHealthNotificationsAuthorized];
 
   v13 = *MEMORY[0x277D85DE8];
-  return v12;
+  return areHealthNotificationsAuthorized;
 }
 
-- (BOOL)snoozeBloodPressureJournalNotificationWithIdentifier:(id)a3 journalType:(int64_t)a4 userInfo:(id)a5 onDate:(id)a6 error:(id *)a7
+- (BOOL)snoozeBloodPressureJournalNotificationWithIdentifier:(id)identifier journalType:(int64_t)type userInfo:(id)info onDate:(id)date error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  infoCopy = info;
+  dateCopy = date;
   if ([(HDHRBloodPressureJournalNotificationManager *)self _notificationSchedulingIsEnabled])
   {
-    v15 = [[HDHRBloodPressureJournalNotificationIdentifier alloc] initWithIdentifierString:v12];
+    v15 = [[HDHRBloodPressureJournalNotificationIdentifier alloc] initWithIdentifierString:identifierCopy];
     if (v15)
     {
-      if (a4)
+      if (type)
       {
         v16 = 0;
 LABEL_5:
-        v17 = [v14 dateByAddingTimeInterval:600.0];
-        v18 = [(HDRestorableAlarm *)self->_snoozeRestorableAlarm bloodPressureJournalAlarmEventWithNotificationIdentifier:v15 journalType:a4 dueDate:v17 isFollowUp:1 measurementInfo:v16];
+        v17 = [dateCopy dateByAddingTimeInterval:600.0];
+        v18 = [(HDRestorableAlarm *)self->_snoozeRestorableAlarm bloodPressureJournalAlarmEventWithNotificationIdentifier:v15 journalType:type dueDate:v17 isFollowUp:1 measurementInfo:v16];
         snoozeRestorableAlarm = self->_snoozeRestorableAlarm;
         v36 = v18;
         v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
-        v21 = [(HDRestorableAlarm *)snoozeRestorableAlarm scheduleEvents:v20 error:a7];
+        v21 = [(HDRestorableAlarm *)snoozeRestorableAlarm scheduleEvents:v20 error:error];
 
 LABEL_21:
         goto LABEL_22;
       }
 
-      if (v13)
+      if (infoCopy)
       {
-        v27 = [v13 objectForKey:*MEMORY[0x277D12ED0]];
-        v28 = [v13 objectForKey:*MEMORY[0x277D12EC8]];
-        v29 = [v13 objectForKey:*MEMORY[0x277D12ED8]];
+        v27 = [infoCopy objectForKey:*MEMORY[0x277D12ED0]];
+        v28 = [infoCopy objectForKey:*MEMORY[0x277D12EC8]];
+        v29 = [infoCopy objectForKey:*MEMORY[0x277D12ED8]];
         v30 = v29;
         if (v27 && v28 && v29)
         {
@@ -1335,13 +1335,13 @@ LABEL_21:
           goto LABEL_5;
         }
 
-        v33 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"UserInfo does not contain measurement related info %@", v13}];
+        v33 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"UserInfo does not contain measurement related info %@", infoCopy}];
         if (v33)
         {
-          if (a7)
+          if (error)
           {
             v34 = v33;
-            *a7 = v33;
+            *error = v33;
           }
 
           else
@@ -1360,16 +1360,16 @@ LABEL_20:
 
     else
     {
-      v24 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"notificationIdentifier provided is invalid %@", v12}];
+      v24 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"notificationIdentifier provided is invalid %@", identifierCopy}];
     }
 
     v25 = v24;
     if (v25)
     {
-      if (a7)
+      if (error)
       {
         v26 = v25;
-        *a7 = v25;
+        *error = v25;
       }
 
       else
@@ -1392,7 +1392,7 @@ LABEL_20:
     if (os_log_type_enabled(&v15->super, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v38 = self;
+      selfCopy = self;
       _os_log_impl(&dword_229486000, &v15->super, OS_LOG_TYPE_INFO, "[%{public}@] Notification scheduling is not enabled.", buf, 0xCu);
     }
 
@@ -1405,17 +1405,17 @@ LABEL_22:
   return v21;
 }
 
-- (unint64_t)removeDeliveredNotificationsForSamples:(id)a3 journal:(id)a4
+- (unint64_t)removeDeliveredNotificationsForSamples:(id)samples journal:(id)journal
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  samplesCopy = samples;
+  journalCopy = journal;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v5;
+  v8 = samplesCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v9)
   {
@@ -1433,27 +1433,27 @@ LABEL_22:
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [HDHRBloodPressureJournalNotificationIdentifier identifierFromBPSample:v14 journal:v6, v24];
+        v15 = [HDHRBloodPressureJournalNotificationIdentifier identifierFromBPSample:v14 journal:journalCopy, v24];
         v16 = v15;
         if (v15)
         {
-          v17 = [v15 identifierString];
-          [v7 addObject:v17];
+          identifierString = [v15 identifierString];
+          [v7 addObject:identifierString];
         }
 
         else
         {
           _HKInitializeLogging();
-          v17 = HKLogBloodPressureJournal();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          identifierString = HKLogBloodPressureJournal();
+          if (os_log_type_enabled(identifierString, OS_LOG_TYPE_ERROR))
           {
             *buf = v24;
-            v31 = self;
+            selfCopy = self;
             v32 = 2114;
             v33 = v14;
             v34 = 2114;
-            v35 = v6;
-            _os_log_error_impl(&dword_229486000, v17, OS_LOG_TYPE_ERROR, "[%{public}@] Could not make identifier for sample [%{public}@] and  journal [%{public}@].", buf, 0x20u);
+            v35 = journalCopy;
+            _os_log_error_impl(&dword_229486000, identifierString, OS_LOG_TYPE_ERROR, "[%{public}@] Could not make identifier for sample [%{public}@] and  journal [%{public}@].", buf, 0x20u);
           }
         }
       }
@@ -1465,34 +1465,34 @@ LABEL_22:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v19 = [WeakRetained notificationManager];
-  v20 = [v7 allObjects];
-  [v19 removeDeliveredNotificationsWithIdentifiers:v20];
+  notificationManager = [WeakRetained notificationManager];
+  allObjects = [v7 allObjects];
+  [notificationManager removeDeliveredNotificationsWithIdentifiers:allObjects];
 
   v21 = [v7 count];
   v22 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (void)_alarm:(id)a3 confirmDeliveryByRemovingEvent:(id)a4
+- (void)_alarm:(id)_alarm confirmDeliveryByRemovingEvent:(id)event
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a4;
+  eventCopy = event;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
+  eventCopy2 = event;
+  _alarmCopy = _alarm;
+  v9 = [v6 arrayWithObjects:&eventCopy count:1];
 
-  [(HDHRBloodPressureJournalNotificationManager *)self _alarm:v8 confirmDeliveryByRemovingEvents:v9, v11, v12];
+  [(HDHRBloodPressureJournalNotificationManager *)self _alarm:_alarmCopy confirmDeliveryByRemovingEvents:v9, eventCopy, v12];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_alarm:(id)a3 confirmDeliveryByRemovingEvents:(id)a4
+- (void)_alarm:(id)_alarm confirmDeliveryByRemovingEvents:(id)events
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  eventsCopy = events;
   v12 = 0;
-  v7 = [a3 removeEvents:v6 error:&v12];
+  v7 = [_alarm removeEvents:eventsCopy error:&v12];
   v8 = v12;
   _HKInitializeLogging();
   v9 = HKLogBloodPressureJournal();
@@ -1502,9 +1502,9 @@ LABEL_22:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
-      v16 = v6;
+      v16 = eventsCopy;
       _os_log_impl(&dword_229486000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removed event: %{public}@", buf, 0x16u);
     }
   }
@@ -1512,9 +1512,9 @@ LABEL_22:
   else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2114;
-    v16 = v6;
+    v16 = eventsCopy;
     v17 = 2114;
     v18 = v8;
     _os_log_error_impl(&dword_229486000, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to confirm delivery by removing event for client identifier: %{public}@, error: %{public}@", buf, 0x20u);
@@ -1523,18 +1523,18 @@ LABEL_22:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isEventOnHold:(id)a3
+- (BOOL)_isEventOnHold:(id)hold
 {
-  v4 = a3;
+  holdCopy = hold;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained heartHealthProfileExtension];
-  v7 = [v6 bloodPressureJournalNotificationSyncManager];
+  heartHealthProfileExtension = [WeakRetained heartHealthProfileExtension];
+  bloodPressureJournalNotificationSyncManager = [heartHealthProfileExtension bloodPressureJournalNotificationSyncManager];
 
-  v8 = [v4 notificationIdentifierString];
-  v9 = [v4 journalIdentifierString];
+  notificationIdentifierString = [holdCopy notificationIdentifierString];
+  journalIdentifierString = [holdCopy journalIdentifierString];
 
   v15 = 0;
-  v10 = [v7 isAlarmEventWithIdentifiersOnHold:v8 journalIdentifier:v9 error:&v15];
+  v10 = [bloodPressureJournalNotificationSyncManager isAlarmEventWithIdentifiersOnHold:notificationIdentifierString journalIdentifier:journalIdentifierString error:&v15];
   v11 = v15;
 
   if (!v10)
@@ -1562,19 +1562,19 @@ LABEL_8:
   return v12;
 }
 
-- (id)_alarm:(id)a3 dueEventsToHandleFrom:(id)a4 date:(id)a5
+- (id)_alarm:(id)_alarm dueEventsToHandleFrom:(id)from date:(id)date
 {
   v32 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
+  _alarmCopy = _alarm;
+  fromCopy = from;
+  dateCopy = date;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = v8;
+  v12 = fromCopy;
   v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v13)
   {
@@ -1590,14 +1590,14 @@ LABEL_8:
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        if ([(HDHRBloodPressureJournalNotificationManager *)self _isDueEventExpired:v17 fromDate:v9])
+        if ([(HDHRBloodPressureJournalNotificationManager *)self _isDueEventExpired:v17 fromDate:dateCopy])
         {
           _HKInitializeLogging();
           v18 = HKLogBloodPressureJournal();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v28 = self;
+            selfCopy = self;
             v29 = 2114;
             v30 = v17;
             _os_log_impl(&dword_229486000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Stale event. Removing alarmEvent: %{public}@", buf, 0x16u);
@@ -1625,38 +1625,38 @@ LABEL_8:
     while (v14);
   }
 
-  [(HDHRBloodPressureJournalNotificationManager *)self _alarm:v22 confirmDeliveryByRemovingEvents:v10];
+  [(HDHRBloodPressureJournalNotificationManager *)self _alarm:_alarmCopy confirmDeliveryByRemovingEvents:v10];
   v20 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (BOOL)_isDueEventExpired:(id)a3 fromDate:(id)a4
+- (BOOL)_isDueEventExpired:(id)expired fromDate:(id)date
 {
-  v5 = a4;
-  v6 = [a3 dueDate];
-  v7 = [v6 dateByAddingTimeInterval:43200.0];
+  dateCopy = date;
+  dueDate = [expired dueDate];
+  v7 = [dueDate dateByAddingTimeInterval:43200.0];
 
-  LOBYTE(v6) = [v7 hk_isBeforeOrEqualToDate:v5];
-  return v6;
+  LOBYTE(dueDate) = [v7 hk_isBeforeOrEqualToDate:dateCopy];
+  return dueDate;
 }
 
-- (void)_queue_alarm:(id)a3 didReceiveDueEvents:(id)a4
+- (void)_queue_alarm:(id)_queue_alarm didReceiveDueEvents:(id)events
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = a3;
+  eventsCopy = events;
+  _queue_alarmCopy = _queue_alarm;
   v9 = [v6 now];
-  [(HDHRBloodPressureJournalNotificationManager *)self _queue_alarm:v8 didReceiveDueEvents:v7 date:v9 handledEventsHandler:0];
+  [(HDHRBloodPressureJournalNotificationManager *)self _queue_alarm:_queue_alarmCopy didReceiveDueEvents:eventsCopy date:v9 handledEventsHandler:0];
 }
 
-- (void)_queue_alarm:(id)a3 didReceiveDueEvents:(id)a4 date:(id)a5 handledEventsHandler:(id)a6
+- (void)_queue_alarm:(id)_queue_alarm didReceiveDueEvents:(id)events date:(id)date handledEventsHandler:(id)handler
 {
   v72 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  _queue_alarmCopy = _queue_alarm;
+  eventsCopy = events;
+  dateCopy = date;
+  handlerCopy = handler;
   if (!self->_unitTesting_shouldIgnoreDeliveredAlarmEvents)
   {
     dispatch_assert_queue_V2(self->_queue);
@@ -1664,32 +1664,32 @@ LABEL_8:
     v13 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventsCopy, "count")}];
       *buf = 138543874;
-      v67 = self;
+      selfCopy4 = self;
       v68 = 2114;
       v69 = v14;
       v70 = 2114;
-      v71 = v10;
+      v71 = eventsCopy;
       _os_log_impl(&dword_229486000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received %{public}@ due events: %{public}@", buf, 0x20u);
     }
 
-    v52 = self;
+    selfCopy2 = self;
     if ([(HDHRBloodPressureJournalNotificationManager *)self _notificationsEnabled]&& [(HDHRBloodPressureJournalNotificationManager *)self _notificationSchedulingIsEnabled])
     {
-      v47 = v11;
-      v48 = v10;
-      v15 = [(HDHRBloodPressureJournalNotificationManager *)self _alarm:v53 dueEventsToHandleFrom:v10 date:v11];
+      v47 = dateCopy;
+      v48 = eventsCopy;
+      v15 = [(HDHRBloodPressureJournalNotificationManager *)self _alarm:_queue_alarmCopy dueEventsToHandleFrom:eventsCopy date:dateCopy];
       if ([v15 count])
       {
         WeakRetained = objc_loadWeakRetained(&self->_profile);
-        v17 = [WeakRetained notificationManager];
+        notificationManager = [WeakRetained notificationManager];
         v64[0] = MEMORY[0x277D85DD0];
         v64[1] = 3221225472;
         v64[2] = __106__HDHRBloodPressureJournalNotificationManager__queue_alarm_didReceiveDueEvents_date_handledEventsHandler___block_invoke;
         v64[3] = &unk_2786610D0;
         v64[4] = self;
-        [v17 getBloodPressureJournalDeliveredNotificationIdentifiersWithCompletionHandler:v64];
+        [notificationManager getBloodPressureJournalDeliveredNotificationIdentifiersWithCompletionHandler:v64];
       }
 
       [(HDHRBloodPressureJournalNotificationManager *)self _removeAllExpiredEvents];
@@ -1699,13 +1699,13 @@ LABEL_8:
       v62 = 0u;
       v63 = 0u;
       obj = v15;
-      v18 = self;
+      selfCopy3 = self;
       v54 = [obj countByEnumeratingWithState:&v60 objects:v65 count:16];
       if (v54)
       {
         v49 = *v61;
         v19 = 0x277D12000uLL;
-        v50 = v12;
+        v50 = handlerCopy;
         do
         {
           for (i = 0; i != v54; ++i)
@@ -1716,56 +1716,56 @@ LABEL_8:
             }
 
             v21 = *(*(&v60 + 1) + 8 * i);
-            v22 = [v21 notificationIdentifierString];
-            v23 = [v21 isFollowUp];
+            notificationIdentifierString = [v21 notificationIdentifierString];
+            isFollowUp = [v21 isFollowUp];
             v24 = *(v19 + 3968);
-            v25 = [v21 dueDate];
-            v26 = [v24 notificationToMonitorHypertensionWithIdentifier:v22 dueDate:v25 isFollowUp:v23];
+            dueDate = [v21 dueDate];
+            v26 = [v24 notificationToMonitorHypertensionWithIdentifier:notificationIdentifierString dueDate:dueDate isFollowUp:isFollowUp];
 
             if (![v21 journalType])
             {
-              v27 = [v21 measurementInfo];
+              measurementInfo = [v21 measurementInfo];
               v28 = *(v19 + 3968);
-              v29 = [v21 dueDate];
-              v30 = [v28 notificationForLearnHypertensionRiskWithIdentifier:v22 dueDate:v29 isFollowUp:v23 measurementIndex:objc_msgSend(v27 measurementCount:"measurementIndex") measurementWindowType:{objc_msgSend(v27, "measurementCount"), objc_msgSend(v27, "measurementWindowType")}];
+              dueDate2 = [v21 dueDate];
+              v30 = [v28 notificationForLearnHypertensionRiskWithIdentifier:notificationIdentifierString dueDate:dueDate2 isFollowUp:isFollowUp measurementIndex:objc_msgSend(measurementInfo measurementCount:"measurementIndex") measurementWindowType:{objc_msgSend(measurementInfo, "measurementCount"), objc_msgSend(measurementInfo, "measurementWindowType")}];
 
               v26 = v30;
             }
 
             v31 = v26;
             v32 = [MEMORY[0x277CE1FC0] hkhrBPJ_requestForNotification:v26];
-            v33 = [v21 dueDate];
-            v34 = [v33 dateByAddingTimeInterval:43200.0];
+            dueDate3 = [v21 dueDate];
+            v34 = [dueDate3 dateByAddingTimeInterval:43200.0];
 
-            v18 = v52;
-            v35 = [(HDRestorableAlarm *)v52->_expirationRestorableAlarm bloodPressureJournalExpirationEventWithIdentifier:v22 dueDate:v34];
+            selfCopy3 = selfCopy2;
+            v35 = [(HDRestorableAlarm *)selfCopy2->_expirationRestorableAlarm bloodPressureJournalExpirationEventWithIdentifier:notificationIdentifierString dueDate:v34];
             [v51 addObject:v35];
             _HKInitializeLogging();
             v36 = HKLogBloodPressureJournal();
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v67 = v52;
+              selfCopy4 = selfCopy2;
               v68 = 2114;
               v69 = v32;
               _os_log_impl(&dword_229486000, v36, OS_LOG_TYPE_DEFAULT, "[%{public}@] Posting notification with request: %{public}@", buf, 0x16u);
             }
 
-            v37 = objc_loadWeakRetained(&v52->_profile);
-            v38 = [v37 notificationManager];
+            v37 = objc_loadWeakRetained(&selfCopy2->_profile);
+            notificationManager2 = [v37 notificationManager];
             v57[0] = MEMORY[0x277D85DD0];
             v57[1] = 3221225472;
             v57[2] = __106__HDHRBloodPressureJournalNotificationManager__queue_alarm_didReceiveDueEvents_date_handledEventsHandler___block_invoke_372;
             v57[3] = &unk_278660128;
-            v57[4] = v52;
-            v39 = v22;
+            v57[4] = selfCopy2;
+            v39 = notificationIdentifierString;
             v58 = v39;
             v40 = v32;
             v59 = v40;
-            [v38 postNotificationWithRequest:v40 completion:v57];
+            [notificationManager2 postNotificationWithRequest:v40 completion:v57];
 
-            [(HDHRBloodPressureJournalNotificationManager *)v52 _alarm:v53 confirmDeliveryByRemovingEvent:v21];
-            v12 = v50;
+            [(HDHRBloodPressureJournalNotificationManager *)selfCopy2 _alarm:_queue_alarmCopy confirmDeliveryByRemovingEvent:v21];
+            handlerCopy = v50;
             if (v50)
             {
               v50[2](v50, obj);
@@ -1780,12 +1780,12 @@ LABEL_8:
         while (v54);
       }
 
-      expirationRestorableAlarm = v18->_expirationRestorableAlarm;
+      expirationRestorableAlarm = selfCopy3->_expirationRestorableAlarm;
       v56 = 0;
       v42 = [(HDRestorableAlarm *)expirationRestorableAlarm scheduleEvents:v51 error:&v56];
       v43 = v56;
-      v11 = v47;
-      v10 = v48;
+      dateCopy = v47;
+      eventsCopy = v48;
       if ((v42 & 1) == 0)
       {
         _HKInitializeLogging();
@@ -1804,11 +1804,11 @@ LABEL_8:
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v67 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_229486000, v45, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifications are disabled. Removing alarmEvents.", buf, 0xCu);
       }
 
-      [(HDHRBloodPressureJournalNotificationManager *)self _alarm:v53 confirmDeliveryByRemovingEvents:v10];
+      [(HDHRBloodPressureJournalNotificationManager *)self _alarm:_queue_alarmCopy confirmDeliveryByRemovingEvents:eventsCopy];
     }
   }
 
@@ -1901,34 +1901,34 @@ void __106__HDHRBloodPressureJournalNotificationManager__queue_alarm_didReceiveD
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_alarm:(id)a3 didReceiveExpiredEvents:(id)a4
+- (void)_queue_alarm:(id)_queue_alarm didReceiveExpiredEvents:(id)events
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  _queue_alarmCopy = _queue_alarm;
+  eventsCopy = events;
   dispatch_assert_queue_V2(self->_queue);
   _HKInitializeLogging();
   v8 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventsCopy, "count")}];
     v14 = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = v9;
     v18 = 2114;
-    v19 = v7;
+    v19 = eventsCopy;
     _os_log_impl(&dword_229486000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received ExpiredEvents %{public}@ events: %{public}@", &v14, 0x20u);
   }
 
-  v10 = [v7 hk_map:&__block_literal_global_18];
+  v10 = [eventsCopy hk_map:&__block_literal_global_18];
   if ([v10 count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v12 = [WeakRetained notificationManager];
-    [v12 removeDeliveredNotificationsWithIdentifiers:v10];
+    notificationManager = [WeakRetained notificationManager];
+    [notificationManager removeDeliveredNotificationsWithIdentifiers:v10];
 
-    [(HDHRBloodPressureJournalNotificationManager *)self _alarm:v6 confirmDeliveryByRemovingEvents:v7];
+    [(HDHRBloodPressureJournalNotificationManager *)self _alarm:_queue_alarmCopy confirmDeliveryByRemovingEvents:eventsCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];

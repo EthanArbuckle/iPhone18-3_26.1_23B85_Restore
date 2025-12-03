@@ -6,26 +6,26 @@
 - (NSMutableArray)podcastRevisions;
 - (NSMutableDictionary)podcastCollectionsByUUID;
 - (NSMutableDictionary)podcastStationsByUUID;
-- (PODataSource)initWithPlistPath:(id)a3;
-- (id)arrayFromPlistURL:(id)a3;
-- (id)constructModelObjectOfClass:(Class)a3 fromDictionary:(id)a4;
-- (id)constructModelObjectsFromDictionaries:(id)a3 withIndexPath:(id)a4 modelObjectClass:(Class)a5;
+- (PODataSource)initWithPlistPath:(id)path;
+- (id)arrayFromPlistURL:(id)l;
+- (id)constructModelObjectOfClass:(Class)class fromDictionary:(id)dictionary;
+- (id)constructModelObjectsFromDictionaries:(id)dictionaries withIndexPath:(id)path modelObjectClass:(Class)class;
 - (id)description;
-- (id)domainObjectWithUUID:(id)a3;
-- (id)podcastCollectionWithUUID:(id)a3;
+- (id)domainObjectWithUUID:(id)d;
+- (id)podcastCollectionWithUUID:(id)d;
 - (id)podcastCollections;
-- (id)podcastCollectionsMatchingString:(id)a3 maxResults:(int64_t)a4;
-- (id)podcastModelObjectsInArray:(id)a3 matchingString:(id)a4 maxResults:(int64_t)a5;
-- (id)podcastRevisionsSinceAnchor:(unint64_t)a3;
-- (id)podcastStationWithUUID:(id)a3;
+- (id)podcastCollectionsMatchingString:(id)string maxResults:(int64_t)results;
+- (id)podcastModelObjectsInArray:(id)array matchingString:(id)string maxResults:(int64_t)results;
+- (id)podcastRevisionsSinceAnchor:(unint64_t)anchor;
+- (id)podcastStationWithUUID:(id)d;
 - (id)podcastStations;
-- (id)podcastStationsMatchingString:(id)a3 maxResults:(int64_t)a4;
+- (id)podcastStationsMatchingString:(id)string maxResults:(int64_t)results;
 - (id)validity;
-- (void)_withExtensionParseDataDictionary:(id)a3 revisionDictionary:(id)a4;
-- (void)getContainerURL:(id)a3;
-- (void)getDatabaseURL:(id)a3;
-- (void)getRevisionURL:(id)a3;
-- (void)getURLs:(id)a3;
+- (void)_withExtensionParseDataDictionary:(id)dictionary revisionDictionary:(id)revisionDictionary;
+- (void)getContainerURL:(id)l;
+- (void)getDatabaseURL:(id)l;
+- (void)getRevisionURL:(id)l;
+- (void)getURLs:(id)ls;
 - (void)initializeDataFromDictionary;
 @end
 
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_233532C18;
   block[3] = &unk_2789DE4B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2814EEA70 != -1)
   {
     dispatch_once(&qword_2814EEA70, block);
@@ -48,10 +48,10 @@
   return v2;
 }
 
-- (PODataSource)initWithPlistPath:(id)a3
+- (PODataSource)initWithPlistPath:(id)path
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v40.receiver = self;
   v40.super_class = PODataSource;
   v9 = [(PODataSource *)&v40 init];
@@ -66,7 +66,7 @@
     v26 = objc_msgSend_array(MEMORY[0x277CBEB18], v22, v23, v24, v25);
     objc_msgSend_setPodcastRevisions_(v9, v27, v26, v28, v29);
 
-    objc_msgSend_setPlistBasePath_(v9, v30, v4, v31, v32);
+    objc_msgSend_setPlistBasePath_(v9, v30, pathCopy, v31, v32);
     objc_msgSend_initializeDataFromDictionary(v9, v33, v34, v35, v36);
   }
 
@@ -92,11 +92,11 @@
   return v9;
 }
 
-- (id)arrayFromPlistURL:(id)a3
+- (id)arrayFromPlistURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v8 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v4, v5, v6, v7);
-  v13 = objc_msgSend_path(v3, v9, v10, v11, v12);
+  v13 = objc_msgSend_path(lCopy, v9, v10, v11, v12);
   v17 = objc_msgSend_contentsAtPath_(v8, v14, v13, v15, v16);
 
   if (v17)
@@ -180,9 +180,9 @@ LABEL_14:
   return v4 != 0;
 }
 
-- (void)getURLs:(id)a3
+- (void)getURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v9 = objc_msgSend_plistBasePath(self, v5, v6, v7, v8);
 
   if (v9)
@@ -193,7 +193,7 @@ LABEL_14:
     v23 = objc_msgSend_plistBasePath(self, v19, v20, v21, v22);
     v27 = objc_msgSend_URLByAppendingPathComponent_(v23, v24, @"PodcastsDiff.plist", v25, v26);
 
-    v4[2](v4, v18, v27, 0);
+    lsCopy[2](lsCopy, v18, v27, 0);
   }
 
   else
@@ -202,40 +202,40 @@ LABEL_14:
     v31[1] = 3221225472;
     v31[2] = sub_233533168;
     v31[3] = &unk_2789DE4D8;
-    v32 = v4;
+    v32 = lsCopy;
     objc_msgSend_getContainerURL_(self, v28, v31, v29, v30);
   }
 }
 
-- (void)getDatabaseURL:(id)a3
+- (void)getDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2335332A8;
   v9[3] = &unk_2789DE500;
-  v10 = v4;
-  v5 = v4;
+  v10 = lCopy;
+  v5 = lCopy;
   objc_msgSend_getURLs_(self, v6, v9, v7, v8);
 }
 
-- (void)getRevisionURL:(id)a3
+- (void)getRevisionURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_233533350;
   v9[3] = &unk_2789DE500;
-  v10 = v4;
-  v5 = v4;
+  v10 = lCopy;
+  v5 = lCopy;
   objc_msgSend_getURLs_(self, v6, v9, v7, v8);
 }
 
-- (void)getContainerURL:(id)a3
+- (void)getContainerURL:(id)l
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v4 = container_query_create();
     container_query_set_class();
@@ -280,7 +280,7 @@ LABEL_14:
       }
 
       v38 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v37, @"PODataSourceErrorDomain", 1, v30);
-      v3[2](v3, 0, v38);
+      lCopy[2](lCopy, 0, v38);
 
       goto LABEL_39;
     }
@@ -315,7 +315,7 @@ LABEL_14:
         }
 
         v35 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v34, @"PODataSourceErrorDomain", 2, 0);
-        v3[2](v3, 0, v35);
+        lCopy[2](lCopy, 0, v35);
 
         if (!v4)
         {
@@ -359,7 +359,7 @@ LABEL_9:
 
       v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v11, v16, v17);
       v21 = objc_msgSend_fileURLWithPath_isDirectory_(MEMORY[0x277CBEBC0], v19, v18, 1, v20);
-      (v3)[2](v3, v21, 0);
+      (lCopy)[2](lCopy, v21, 0);
     }
 
     else
@@ -371,7 +371,7 @@ LABEL_9:
       }
 
       v18 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v31, @"PODataSourceErrorDomain", 1, 0);
-      v3[2](v3, 0, v18);
+      lCopy[2](lCopy, 0, v18);
     }
 
     if ((v8 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
@@ -579,13 +579,13 @@ LABEL_40:
   }
 }
 
-- (void)_withExtensionParseDataDictionary:(id)a3 revisionDictionary:(id)a4
+- (void)_withExtensionParseDataDictionary:(id)dictionary revisionDictionary:(id)revisionDictionary
 {
   v194 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v11 = objc_msgSend_arrayFromPlistURL_(self, v8, v6, v9, v10);
-  v15 = objc_msgSend_arrayFromPlistURL_(self, v12, v7, v13, v14);
+  dictionaryCopy = dictionary;
+  revisionDictionaryCopy = revisionDictionary;
+  v11 = objc_msgSend_arrayFromPlistURL_(self, v8, dictionaryCopy, v9, v10);
+  v15 = objc_msgSend_arrayFromPlistURL_(self, v12, revisionDictionaryCopy, v13, v14);
   POLogInitIfNeeded();
   v16 = MEMORY[0x277D86220];
   if (POLogContextSync)
@@ -601,11 +601,11 @@ LABEL_40:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v193 = v6;
+    v193 = dictionaryCopy;
     _os_log_impl(&dword_23352D000, v17, OS_LOG_TYPE_INFO, "Constructing data source from %@", buf, 0xCu);
   }
 
-  v181 = v7;
+  v181 = revisionDictionaryCopy;
   if (!v11)
   {
     goto LABEL_38;
@@ -660,8 +660,8 @@ LABEL_40:
     objc_msgSend_removeAllObjects(self->_podcastStationsByUUID, v69, v70, v71, v72);
     objc_msgSend_addEntriesFromDictionary_(self->_podcastStationsByUUID, v73, v68, v74, v75);
     v80 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v76, v77, v78, v79);
-    v81 = v6;
-    v86 = objc_msgSend_path(v6, v82, v83, v84, v85);
+    v81 = dictionaryCopy;
+    v86 = objc_msgSend_path(dictionaryCopy, v82, v83, v84, v85);
     v89 = objc_msgSend_attributesOfItemAtPath_error_(v80, v87, v86, 0, v88);
     v94 = objc_msgSend_fileModificationDate(v89, v90, v91, v92, v93);
     objc_msgSend_setPodcastDataPlistLastModified_(self, v95, v94, v96, v97);
@@ -687,7 +687,7 @@ LABEL_40:
       _os_log_impl(&dword_23352D000, v99, OS_LOG_TYPE_INFO, "Podcast data last modified is %@", buf, 0xCu);
     }
 
-    v6 = v81;
+    dictionaryCopy = v81;
     v15 = v177;
     v11 = v179;
 LABEL_20:
@@ -738,12 +738,12 @@ LABEL_20:
       }
     }
 
-    v7 = v181;
+    revisionDictionaryCopy = v181;
 LABEL_38:
     if (v15)
     {
       v180 = v11;
-      v176 = v6;
+      v176 = dictionaryCopy;
       objc_msgSend_removeAllObjects(self->_podcastRevisions, v18, v19, v20, v21);
       v189 = 0u;
       v190 = 0u;
@@ -839,7 +839,7 @@ LABEL_38:
       }
 
       v156 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v152, v153, v154, v155);
-      v7 = v181;
+      revisionDictionaryCopy = v181;
       v161 = objc_msgSend_path(v181, v157, v158, v159, v160);
       v164 = objc_msgSend_attributesOfItemAtPath_error_(v156, v162, v161, 0, v163);
       v169 = objc_msgSend_fileModificationDate(v164, v165, v166, v167, v168);
@@ -856,7 +856,7 @@ LABEL_38:
         v173 = v16;
       }
 
-      v6 = v176;
+      dictionaryCopy = v176;
       v15 = v178;
       v11 = v180;
       if (os_log_type_enabled(v173, OS_LOG_TYPE_INFO))
@@ -887,43 +887,43 @@ LABEL_38:
     sub_2335385B0();
   }
 
-  v7 = v181;
+  revisionDictionaryCopy = v181;
 LABEL_68:
 
   v175 = *MEMORY[0x277D85DE8];
 }
 
-- (id)constructModelObjectOfClass:(Class)a3 fromDictionary:(id)a4
+- (id)constructModelObjectOfClass:(Class)class fromDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = objc_alloc_init(a3);
-  v10 = objc_msgSend_objectForKey_(v5, v7, @"uuid", v8, v9);
+  dictionaryCopy = dictionary;
+  v6 = objc_alloc_init(class);
+  v10 = objc_msgSend_objectForKey_(dictionaryCopy, v7, @"uuid", v8, v9);
   objc_msgSend_setUuid_(v6, v11, v10, v12, v13);
 
-  v17 = objc_msgSend_objectForKey_(v5, v14, @"title", v15, v16);
+  v17 = objc_msgSend_objectForKey_(dictionaryCopy, v14, @"title", v15, v16);
   objc_msgSend_setTitle_(v6, v18, v17, v19, v20);
 
-  v24 = objc_msgSend_objectForKey_(v5, v21, @"feedUrl", v22, v23);
+  v24 = objc_msgSend_objectForKey_(dictionaryCopy, v21, @"feedUrl", v22, v23);
   objc_msgSend_setFeedUrl_(v6, v25, v24, v26, v27);
 
-  v31 = objc_msgSend_objectForKey_(v5, v28, @"storeId", v29, v30);
+  v31 = objc_msgSend_objectForKey_(dictionaryCopy, v28, @"storeId", v29, v30);
 
   objc_msgSend_setStoreId_(v6, v32, v31, v33, v34);
 
   return v6;
 }
 
-- (id)constructModelObjectsFromDictionaries:(id)a3 withIndexPath:(id)a4 modelObjectClass:(Class)a5
+- (id)constructModelObjectsFromDictionaries:(id)dictionaries withIndexPath:(id)path modelObjectClass:(Class)class
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dictionariesCopy = dictionaries;
+  pathCopy = path;
   v14 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v10, v11, v12, v13);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v8;
+  obj = dictionariesCopy;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v15, &v42, v46, 16);
   if (v16)
   {
@@ -941,9 +941,9 @@ LABEL_68:
           objc_enumerationMutation(obj);
         }
 
-        v24 = objc_msgSend_constructModelObjectOfClass_fromDictionary_(self, v17, a5, *(*(&v42 + 1) + 8 * v22), v18);
+        v24 = objc_msgSend_constructModelObjectOfClass_fromDictionary_(self, v17, class, *(*(&v42 + 1) + 8 * v22), v18);
         v20 = v23 + 1;
-        v28 = objc_msgSend_indexPathByAddingIndex_(v9, v25, v23, v26, v27);
+        v28 = objc_msgSend_indexPathByAddingIndex_(pathCopy, v25, v23, v26, v27);
         objc_msgSend_setIndexPath_(v24, v29, v28, v30, v31);
 
         v36 = objc_msgSend_uuid(v24, v32, v33, v34, v35);
@@ -965,17 +965,17 @@ LABEL_68:
   return v14;
 }
 
-- (id)podcastModelObjectsInArray:(id)a3 matchingString:(id)a4 maxResults:(int64_t)a5
+- (id)podcastModelObjectsInArray:(id)array matchingString:(id)string maxResults:(int64_t)results
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  arrayCopy = array;
+  stringCopy = string;
   v13 = objc_msgSend_array(MEMORY[0x277CBEB18], v9, v10, v11, v12);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v14 = v7;
+  v14 = arrayCopy;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v31, v35, 16);
   if (v16)
   {
@@ -992,14 +992,14 @@ LABEL_3:
 
       v24 = *(*(&v31 + 1) + 8 * v23);
       v25 = objc_msgSend_title(v24, v17, v18, v19, v20, v31);
-      v28 = objc_msgSend_rangeOfString_options_(v25, v26, v8, 1, v27);
+      v28 = objc_msgSend_rangeOfString_options_(v25, v26, stringCopy, 1, v27);
 
       if (v28 != 0x7FFFFFFFFFFFFFFFLL)
       {
         objc_msgSend_addObject_(v13, v17, v24, v19, v20);
       }
 
-      if (a5 >= 1 && objc_msgSend_count(v13, v17, v18, v19, v20) == a5)
+      if (results >= 1 && objc_msgSend_count(v13, v17, v18, v19, v20) == results)
       {
         break;
       }
@@ -1022,29 +1022,29 @@ LABEL_3:
   return v13;
 }
 
-- (id)podcastCollectionsMatchingString:(id)a3 maxResults:(int64_t)a4
+- (id)podcastCollectionsMatchingString:(id)string maxResults:(int64_t)results
 {
-  v6 = a3;
+  stringCopy = string;
   v11 = objc_msgSend_podcastCollections(self, v7, v8, v9, v10);
-  v13 = objc_msgSend_podcastModelObjectsInArray_matchingString_maxResults_(self, v12, v11, v6, a4);
+  v13 = objc_msgSend_podcastModelObjectsInArray_matchingString_maxResults_(self, v12, v11, stringCopy, results);
 
   return v13;
 }
 
-- (id)podcastStationsMatchingString:(id)a3 maxResults:(int64_t)a4
+- (id)podcastStationsMatchingString:(id)string maxResults:(int64_t)results
 {
-  v6 = a3;
+  stringCopy = string;
   v11 = objc_msgSend_podcastStations(self, v7, v8, v9, v10);
-  v13 = objc_msgSend_podcastModelObjectsInArray_matchingString_maxResults_(self, v12, v11, v6, a4);
+  v13 = objc_msgSend_podcastModelObjectsInArray_matchingString_maxResults_(self, v12, v11, stringCopy, results);
 
   return v13;
 }
 
-- (id)podcastCollectionWithUUID:(id)a3
+- (id)podcastCollectionWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = objc_msgSend_podcastCollectionsByUUID(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v10, dCopy, v11, v12);
 
   return v13;
 }
@@ -1057,11 +1057,11 @@ LABEL_3:
   return v10;
 }
 
-- (id)podcastStationWithUUID:(id)a3
+- (id)podcastStationWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = objc_msgSend_podcastStationsByUUID(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v10, dCopy, v11, v12);
 
   return v13;
 }
@@ -1074,10 +1074,10 @@ LABEL_3:
   return v10;
 }
 
-- (id)podcastRevisionsSinceAnchor:(unint64_t)a3
+- (id)podcastRevisionsSinceAnchor:(unint64_t)anchor
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3, v3, v4);
+  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, anchor, v3, v4);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -1098,7 +1098,7 @@ LABEL_3:
         }
 
         v22 = *(*(&v25 + 1) + 8 * i);
-        if (objc_msgSend_revisionID(v22, v15, v16, v17, v18) >= a3)
+        if (objc_msgSend_revisionID(v22, v15, v16, v17, v18) >= anchor)
         {
           objc_msgSend_addObject_(v7, v15, v22, v17, v18);
         }
@@ -1115,16 +1115,16 @@ LABEL_3:
   return v7;
 }
 
-- (id)domainObjectWithUUID:(id)a3
+- (id)domainObjectWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = objc_msgSend_podcastCollectionsByUUID(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v10, dCopy, v11, v12);
 
   if (!v13)
   {
     v18 = objc_msgSend_podcastStationsByUUID(self, v14, v15, v16, v17);
-    v13 = objc_msgSend_objectForKeyedSubscript_(v18, v19, v4, v20, v21);
+    v13 = objc_msgSend_objectForKeyedSubscript_(v18, v19, dCopy, v20, v21);
   }
 
   v22 = objc_msgSend_SAMPCollection(v13, v14, v15, v16, v17);

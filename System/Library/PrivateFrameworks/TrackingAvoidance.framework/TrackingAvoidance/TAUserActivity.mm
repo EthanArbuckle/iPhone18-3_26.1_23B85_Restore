@@ -1,34 +1,34 @@
 @interface TAUserActivity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (TAUserActivity)initWithActivityType:(unint64_t)a3 date:(id)a4;
-- (TAUserActivity)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TAUserActivity)initWithActivityType:(unint64_t)type date:(id)date;
+- (TAUserActivity)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length;
 @end
 
 @implementation TAUserActivity
 
-- (TAUserActivity)initWithActivityType:(unint64_t)a3 date:(id)a4
+- (TAUserActivity)initWithActivityType:(unint64_t)type date:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = TAUserActivity;
   v7 = [(TAUserActivity *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    if (!v6)
+    if (!dateCopy)
     {
       v11 = 0;
       goto LABEL_6;
     }
 
-    v7->_activityType = a3;
-    v9 = [v6 copy];
+    v7->_activityType = type;
+    v9 = [dateCopy copy];
     date = v8->_date;
     v8->_date = v9;
   }
@@ -41,17 +41,17 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [(TAUserActivity *)self activityType];
-  v4 = [(TAUserActivity *)self date];
-  v5 = [v4 hash];
+  activityType = [(TAUserActivity *)self activityType];
+  date = [(TAUserActivity *)self date];
+  v5 = [date hash];
 
-  return v5 ^ v3;
+  return v5 ^ activityType;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -61,22 +61,22 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TAUserActivity *)self activityType];
-      if (v6 == [(TAUserActivity *)v5 activityType])
+      v5 = equalCopy;
+      activityType = [(TAUserActivity *)self activityType];
+      if (activityType == [(TAUserActivity *)v5 activityType])
       {
-        v7 = [(TAUserActivity *)self date];
-        v8 = [(TAUserActivity *)v5 date];
-        if (v7 == v8)
+        date = [(TAUserActivity *)self date];
+        date2 = [(TAUserActivity *)v5 date];
+        if (date == date2)
         {
           v11 = 1;
         }
 
         else
         {
-          v9 = [(TAUserActivity *)self date];
-          v10 = [(TAUserActivity *)v5 date];
-          v11 = [v9 isEqual:v10];
+          date3 = [(TAUserActivity *)self date];
+          date4 = [(TAUserActivity *)v5 date];
+          v11 = [date3 isEqual:date4];
         }
       }
 
@@ -116,9 +116,9 @@ LABEL_6:
 
   v13[1] = v6;
   v12[2] = @"Date";
-  v7 = [(TAUserActivity *)self date];
-  v8 = [v7 getDateString];
-  v13[2] = v8;
+  date = [(TAUserActivity *)self date];
+  getDateString = [date getDateString];
+  v13[2] = getDateString;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -128,9 +128,9 @@ LABEL_6:
 
 - (NSString)description
 {
-  v3 = [(TAUserActivity *)self descriptionDictionary];
+  descriptionDictionary = [(TAUserActivity *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -140,20 +140,20 @@ LABEL_6:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TAUserActivity alloc];
   activityType = self->_activityType;
@@ -162,30 +162,30 @@ LABEL_6:
   return [(TAUserActivity *)v4 initWithActivityType:activityType date:date];
 }
 
-- (TAUserActivity)initWithCoder:(id)a3
+- (TAUserActivity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"ActivityType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"ActivityType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
 
   v7 = [(TAUserActivity *)self initWithActivityType:v5 date:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityType = self->_activityType;
-  v5 = a3;
-  [v5 encodeInteger:activityType forKey:@"ActivityType"];
-  [v5 encodeObject:self->_date forKey:@"Date"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:activityType forKey:@"ActivityType"];
+  [coderCopy encodeObject:self->_date forKey:@"Date"];
 }
 
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length
 {
-  v8 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v8 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [coderCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 
   objc_autoreleasePoolPop(v6);
 }

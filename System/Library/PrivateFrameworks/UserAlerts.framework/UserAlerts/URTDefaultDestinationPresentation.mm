@@ -1,26 +1,26 @@
 @interface URTDefaultDestinationPresentation
-- (URTDefaultDestinationPresentation)initWithAlert:(id)a3 forDestination:(int64_t)a4 preferredPresentationStyle:(int64_t)a5;
+- (URTDefaultDestinationPresentation)initWithAlert:(id)alert forDestination:(int64_t)destination preferredPresentationStyle:(int64_t)style;
 - (URTDestinationPresentationDelegate)delegate;
-- (void)_invokeDelegateForResponseFlags:(unint64_t)a3;
+- (void)_invokeDelegateForResponseFlags:(unint64_t)flags;
 - (void)invalidate;
 - (void)present;
 @end
 
 @implementation URTDefaultDestinationPresentation
 
-- (URTDefaultDestinationPresentation)initWithAlert:(id)a3 forDestination:(int64_t)a4 preferredPresentationStyle:(int64_t)a5
+- (URTDefaultDestinationPresentation)initWithAlert:(id)alert forDestination:(int64_t)destination preferredPresentationStyle:(int64_t)style
 {
-  v9 = a3;
-  v10 = [v9 userNotificationRepresentation];
+  alertCopy = alert;
+  userNotificationRepresentation = [alertCopy userNotificationRepresentation];
   v13.receiver = self;
   v13.super_class = URTDefaultDestinationPresentation;
-  v11 = [(URTUserNotificationPresentation *)&v13 initWithContents:v10 flags:3];
+  v11 = [(URTUserNotificationPresentation *)&v13 initWithContents:userNotificationRepresentation flags:3];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_alert, a3);
-    v11->_destination = a4;
-    v11->_preferredPresentationStyle = a5;
+    objc_storeStrong(&v11->_alert, alert);
+    v11->_destination = destination;
+    v11->_preferredPresentationStyle = style;
   }
 
   return v11;
@@ -70,16 +70,16 @@ void __44__URTDefaultDestinationPresentation_present__block_invoke(uint64_t a1, 
   [WeakRetained _invokeDelegateForResponseFlags:a3];
 }
 
-- (void)_invokeDelegateForResponseFlags:(unint64_t)a3
+- (void)_invokeDelegateForResponseFlags:(unint64_t)flags
 {
-  if ((a3 & 3) > 1)
+  if ((flags & 3) > 1)
   {
-    if ((a3 & 3) != 2)
+    if ((flags & 3) != 2)
     {
       return;
     }
 
-    v6 = [(URTDefaultDestinationPresentation *)self delegate];
+    delegate = [(URTDefaultDestinationPresentation *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if ((v7 & 1) == 0)
@@ -87,13 +87,13 @@ void __44__URTDefaultDestinationPresentation_present__block_invoke(uint64_t a1, 
       return;
     }
 
-    v10 = [(URTDefaultDestinationPresentation *)self delegate];
-    [v10 handleOtherActionForAlertPresentation:self];
+    delegate2 = [(URTDefaultDestinationPresentation *)self delegate];
+    [delegate2 handleOtherActionForAlertPresentation:self];
   }
 
-  else if ((a3 & 3) != 0)
+  else if ((flags & 3) != 0)
   {
-    v8 = [(URTDefaultDestinationPresentation *)self delegate];
+    delegate3 = [(URTDefaultDestinationPresentation *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -101,13 +101,13 @@ void __44__URTDefaultDestinationPresentation_present__block_invoke(uint64_t a1, 
       return;
     }
 
-    v10 = [(URTDefaultDestinationPresentation *)self delegate];
-    [v10 handleCancelActionForAlertPresentation:self];
+    delegate2 = [(URTDefaultDestinationPresentation *)self delegate];
+    [delegate2 handleCancelActionForAlertPresentation:self];
   }
 
   else
   {
-    v4 = [(URTDefaultDestinationPresentation *)self delegate];
+    delegate4 = [(URTDefaultDestinationPresentation *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if ((v5 & 1) == 0)
@@ -115,8 +115,8 @@ void __44__URTDefaultDestinationPresentation_present__block_invoke(uint64_t a1, 
       return;
     }
 
-    v10 = [(URTDefaultDestinationPresentation *)self delegate];
-    [v10 handleDefaultActionForAlertPresentation:self];
+    delegate2 = [(URTDefaultDestinationPresentation *)self delegate];
+    [delegate2 handleDefaultActionForAlertPresentation:self];
   }
 }
 

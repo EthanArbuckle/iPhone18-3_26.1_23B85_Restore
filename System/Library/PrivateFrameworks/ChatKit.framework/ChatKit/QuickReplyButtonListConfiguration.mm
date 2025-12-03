@@ -1,7 +1,7 @@
 @interface QuickReplyButtonListConfiguration
 - (NSNumber)rowIndex;
 - (_TtC7ChatKit33QuickReplyButtonListConfiguration)init;
-- (void)setRowIndex:(id)a3;
+- (void)setRowIndex:(id)index;
 @end
 
 @implementation QuickReplyButtonListConfiguration
@@ -13,13 +13,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setRowIndex:(id)a3
+- (void)setRowIndex:(id)index
 {
   v5 = OBJC_IVAR____TtC7ChatKit33QuickReplyButtonListConfiguration_rowIndex;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = index;
+  indexCopy = index;
 }
 
 - (_TtC7ChatKit33QuickReplyButtonListConfiguration)init

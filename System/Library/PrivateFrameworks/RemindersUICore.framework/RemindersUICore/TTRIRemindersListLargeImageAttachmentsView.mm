@@ -1,7 +1,7 @@
 @interface TTRIRemindersListLargeImageAttachmentsView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4 uncroppedSourceFrame:(CGRect *)a5;
-- (void)didTapImage:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item uncroppedSourceFrame:(CGRect *)frame;
+- (void)didTapImage:(id)image;
 - (void)layoutSubviews;
 @end
 
@@ -9,13 +9,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TTRIRemindersListLargeImageAttachmentsView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = (self + OBJC_IVAR____TtC15RemindersUICore42TTRIRemindersListLargeImageAttachmentsView_fixedWidth);
   swift_beginAccess();
   v5 = *v4;
@@ -30,19 +30,19 @@
   return result;
 }
 
-- (void)didTapImage:(id)a3
+- (void)didTapImage:(id)image
 {
-  v4 = a3;
-  v5 = self;
-  sub_21D6A8A5C(v4);
+  imageCopy = image;
+  selfCopy = self;
+  sub_21D6A8A5C(imageCopy);
 }
 
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4 uncroppedSourceFrame:(CGRect *)a5
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item uncroppedSourceFrame:(CGRect *)frame
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v8 = self;
-  v9 = sub_21D6A9D20(a4, &a5->origin.x);
+  selfCopy = self;
+  v9 = sub_21D6A9D20(item, &frame->origin.x);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 

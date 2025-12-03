@@ -14,46 +14,46 @@
 - (id)previousUserSpecifiedSecurityResponseStatus;
 - (id)securityResponseStatus;
 - (id)specifiers;
-- (void)cmdZPressed:(id)a3;
+- (void)cmdZPressed:(id)pressed;
 - (void)dealloc;
 - (void)displayNeRDAlertToUser;
-- (void)motionBegan:(int64_t)a3 withEvent:(id)a4;
-- (void)preferences:(id)a3 didChangePreference:(id)a4 toValue:(id)a5;
-- (void)setArmedAutomaticallyInstallToggledWithValue:(id)a3 forSpecifier:(id)a4;
-- (void)setAutomaticallyDownloadUpdatesToggledWithValue:(id)a3 forSpecifier:(id)a4;
-- (void)setAutomaticallyInstallSecurityResponsesAndSystemDataToggledWithValue:(id)a3 forSpecifier:(id)a4;
-- (void)setAutomaticallyInstallUpdatesToggledWithValue:(id)a3 forSpecifier:(id)a4;
-- (void)setNonArmedAutomaticallyInstallToggledWithValue:(id)a3 forSpecifier:(id)a4;
-- (void)setSecurityResponseToggleState:(id)a3 toggleCellEnabled:(id)a4 userSpecified:(BOOL)a5 specifier:(id)a6;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)motionBegan:(int64_t)began withEvent:(id)event;
+- (void)preferences:(id)preferences didChangePreference:(id)preference toValue:(id)value;
+- (void)setArmedAutomaticallyInstallToggledWithValue:(id)value forSpecifier:(id)specifier;
+- (void)setAutomaticallyDownloadUpdatesToggledWithValue:(id)value forSpecifier:(id)specifier;
+- (void)setAutomaticallyInstallSecurityResponsesAndSystemDataToggledWithValue:(id)value forSpecifier:(id)specifier;
+- (void)setAutomaticallyInstallUpdatesToggledWithValue:(id)value forSpecifier:(id)specifier;
+- (void)setNonArmedAutomaticallyInstallToggledWithValue:(id)value forSpecifier:(id)specifier;
+- (void)setSecurityResponseToggleState:(id)state toggleCellEnabled:(id)enabled userSpecified:(BOOL)specified specifier:(id)specifier;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation SUSUISoftwareUpdateAutomaticUpdateController
 
-- (void)cmdZPressed:(id)a3
+- (void)cmdZPressed:(id)pressed
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(SUSUISoftwareUpdateAutomaticUpdateController *)v4 isAllowedToGetNeRDInfo])
+  objc_storeStrong(location, pressed);
+  if ([(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy isAllowedToGetNeRDInfo])
   {
-    [(SUSUISoftwareUpdateAutomaticUpdateController *)v4 displayNeRDAlertToUser];
+    [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy displayNeRDAlertToUser];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)motionBegan:(int64_t)a3 withEvent:(id)a4
+- (void)motionBegan:(int64_t)began withEvent:(id)event
 {
   v8 = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = began;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  if (-[SUSUISoftwareUpdateAutomaticUpdateController isAllowedToGetNeRDInfo](v6, "isAllowedToGetNeRDInfo") && [location[0] type] == 1)
+  objc_storeStrong(location, event);
+  if (-[SUSUISoftwareUpdateAutomaticUpdateController isAllowedToGetNeRDInfo](selfCopy, "isAllowedToGetNeRDInfo") && [location[0] type] == 1)
   {
     oslog = _SUSUILoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -63,7 +63,7 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(SUSUISoftwareUpdateAutomaticUpdateController *)v6 displayNeRDAlertToUser];
+    [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy displayNeRDAlertToUser];
   }
 
   objc_storeStrong(location, 0);
@@ -73,13 +73,13 @@
 - (BOOL)isAllowedToGetNeRDInfo
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v3 = [MEMORY[0x277D64AE0] sharedDefaults];
-  v4 = [v3 isNeRDProfileStatusInstalled];
-  MEMORY[0x277D82BD8](v3);
-  v6 = v4;
-  if (v4)
+  mEMORY[0x277D64AE0] = [MEMORY[0x277D64AE0] sharedDefaults];
+  isNeRDProfileStatusInstalled = [mEMORY[0x277D64AE0] isNeRDProfileStatusInstalled];
+  MEMORY[0x277D82BD8](mEMORY[0x277D64AE0]);
+  v6 = isNeRDProfileStatusInstalled;
+  if (isNeRDProfileStatusInstalled)
   {
     oslog = _SUSUILoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -98,18 +98,18 @@
 - (id)getNeRDDisplayInfo
 {
   v15 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = MEMORY[0x277D82BE0](@"No info provided");
-  v10 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v12 parentController];
-  if (v10)
+  parentController = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy parentController];
+  if (parentController)
   {
-    v4 = [v10 manager];
-    v9 = [v4 rvGetCurrentNeRDInfo];
-    MEMORY[0x277D82BD8](v4);
-    if (v9 && [v9 count])
+    manager = [parentController manager];
+    rvGetCurrentNeRDInfo = [manager rvGetCurrentNeRDInfo];
+    MEMORY[0x277D82BD8](manager);
+    if (rvGetCurrentNeRDInfo && [rvGetCurrentNeRDInfo count])
     {
-      v8 = [v9 description];
+      v8 = [rvGetCurrentNeRDInfo description];
       if (v8 && ([v8 isEqual:&stru_287B79370] & 1) == 0)
       {
         objc_storeStrong(location, v8);
@@ -131,7 +131,7 @@
       objc_storeStrong(&v7, 0);
     }
 
-    objc_storeStrong(&v9, 0);
+    objc_storeStrong(&rvGetCurrentNeRDInfo, 0);
   }
 
   else
@@ -147,7 +147,7 @@
   }
 
   v3 = MEMORY[0x277D82BE0](location[0]);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&parentController, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 
@@ -156,23 +156,23 @@
 
 - (void)displayNeRDAlertToUser
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = MEMORY[0x277D75110];
-  v3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self getNeRDDisplayInfo];
+  getNeRDDisplayInfo = [(SUSUISoftwareUpdateAutomaticUpdateController *)self getNeRDDisplayInfo];
   v8[0] = [v2 alertControllerWithTitle:@"RecoveryOS profile detected\n Current info:" message:? preferredStyle:?];
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](getNeRDDisplayInfo);
   v4 = MEMORY[0x277D750F8];
   v5[1] = MEMORY[0x277D85DD0];
   v5[2] = 3221225472;
   v5[3] = __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertToUser__block_invoke;
   v5[4] = &unk_279CB9068;
-  v6 = MEMORY[0x277D82BE0](v9);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   v7 = [v4 actionWithTitle:@"Update Now" style:0 handler:?];
   v5[0] = [MEMORY[0x277D750F8] actionWithTitle:@"Close" style:1 handler:&__block_literal_global_1];
   [v8[0] addAction:v5[0]];
   [v8[0] addAction:v7];
-  [(SUSUISoftwareUpdateAutomaticUpdateController *)v9 presentViewController:v8[0] animated:1 completion:?];
+  [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy presentViewController:v8[0] animated:1 completion:?];
   objc_storeStrong(v5, 0);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v6, 0);
@@ -263,52 +263,52 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
 
 - (void)dealloc
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v4 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
-  v3 = [v4 manager];
-  v2 = [v3 preferences];
-  [v2 removeObserver:v7];
-  MEMORY[0x277D82BD8](v2);
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
-  v5.receiver = v7;
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
+  manager = [updateController manager];
+  preferences = [manager preferences];
+  [preferences removeObserver:selfCopy];
+  MEMORY[0x277D82BD8](preferences);
+  MEMORY[0x277D82BD8](manager);
+  MEMORY[0x277D82BD8](updateController);
+  v5.receiver = selfCopy;
   v5.super_class = SUSUISoftwareUpdateAutomaticUpdateController;
   [(SUSUISoftwareUpdateAutomaticUpdateController *)&v5 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8.receiver = self;
   v8.super_class = SUSUISoftwareUpdateAutomaticUpdateController;
   [(SUSUISoftwareUpdateAutomaticUpdateController *)&v8 viewDidLoad];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v3 = [v4 localizedStringForKey:@"AUTOMATIC_UPDATES" value:&stru_287B79370 table:@"Software Update"];
-  v2 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v10 navigationItem];
-  [v2 setTitle:v3];
-  MEMORY[0x277D82BD8](v2);
+  navigationItem = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy navigationItem];
+  [navigationItem setTitle:v3];
+  MEMORY[0x277D82BD8](navigationItem);
   MEMORY[0x277D82BD8](v3);
   MEMORY[0x277D82BD8](v4);
-  v7 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v10 updateController];
-  v6 = [v7 manager];
-  v5 = [v6 preferences];
-  [v5 addObserver:v10];
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy updateController];
+  manager = [updateController manager];
+  preferences = [manager preferences];
+  [preferences addObserver:selfCopy];
+  MEMORY[0x277D82BD8](preferences);
+  MEMORY[0x277D82BD8](manager);
+  MEMORY[0x277D82BD8](updateController);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SUSUISoftwareUpdateAutomaticUpdateController;
-  [(SUSUISoftwareUpdateAutomaticUpdateController *)&v6 viewDidAppear:a3];
-  v3 = v9;
+  [(SUSUISoftwareUpdateAutomaticUpdateController *)&v6 viewDidAppear:appear];
+  v3 = selfCopy;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v5 localizedStringForKey:@"AUTOMATIC_UPDATES" value:&stru_287B79370 table:@"Software Update"];
   [PSListController addNavigationEventForSystemSettings:v3 andRelativeLinkToSoftwareUpdate:"addNavigationEventForSystemSettings:andRelativeLinkToSoftwareUpdate:"];
@@ -326,27 +326,27 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
 
   else
   {
-    v10 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self automaticallyInstallGroup];
-    v14[0] = v10;
-    v9 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self automaticallyInstallSwitch];
-    v14[1] = v9;
-    v8 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self automaticallyDownloadSecurityResponseAndSystemFilesSwitch];
-    v14[2] = v8;
-    v7 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self automaticallyDownloadGroup];
-    v14[3] = v7;
-    v6 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self automaticallyDownloadUpdatesSwitch];
-    v14[4] = v6;
+    automaticallyInstallGroup = [(SUSUISoftwareUpdateAutomaticUpdateController *)self automaticallyInstallGroup];
+    v14[0] = automaticallyInstallGroup;
+    automaticallyInstallSwitch = [(SUSUISoftwareUpdateAutomaticUpdateController *)self automaticallyInstallSwitch];
+    v14[1] = automaticallyInstallSwitch;
+    automaticallyDownloadSecurityResponseAndSystemFilesSwitch = [(SUSUISoftwareUpdateAutomaticUpdateController *)self automaticallyDownloadSecurityResponseAndSystemFilesSwitch];
+    v14[2] = automaticallyDownloadSecurityResponseAndSystemFilesSwitch;
+    automaticallyDownloadGroup = [(SUSUISoftwareUpdateAutomaticUpdateController *)self automaticallyDownloadGroup];
+    v14[3] = automaticallyDownloadGroup;
+    automaticallyDownloadUpdatesSwitch = [(SUSUISoftwareUpdateAutomaticUpdateController *)self automaticallyDownloadUpdatesSwitch];
+    v14[4] = automaticallyDownloadUpdatesSwitch;
     v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:5];
     v11 = MEMORY[0x277D3FC48];
     v3 = (self + *MEMORY[0x277D3FC48]);
     v4 = *v3;
     *v3 = v2;
     MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](automaticallyDownloadUpdatesSwitch);
+    MEMORY[0x277D82BD8](automaticallyDownloadGroup);
+    MEMORY[0x277D82BD8](automaticallyDownloadSecurityResponseAndSystemFilesSwitch);
+    MEMORY[0x277D82BD8](automaticallyInstallSwitch);
+    MEMORY[0x277D82BD8](automaticallyInstallGroup);
     v13 = MEMORY[0x277D82BE0](*(&self->super.super.super.super.super.isa + *v11));
   }
 
@@ -398,11 +398,11 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
 
 - (id)automaticallyInstallSwitch
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(SUSUISoftwareUpdateAutomaticUpdateController *)self parentController];
-  v18 = [location[0] manager];
-  if ([v18 isTargetedUpdateScheduledForAutoInstall])
+  manager = [location[0] manager];
+  if ([manager isTargetedUpdateScheduledForAutoInstall])
   {
     v17 = sel_setArmedAutomaticallyInstallToggledWithValue_forSpecifier_;
   }
@@ -413,7 +413,7 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
   }
 
   v6 = v17;
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](manager);
   v19 = v17;
   v8 = MEMORY[0x277D3FAD8];
   v7 = MEMORY[0x277CCA8D8];
@@ -421,30 +421,30 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
   v11 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"AUTOMATIC_INSTALL_TOGGLE_TEXT"];
   v10 = [v12 localizedStringForKey:? value:? table:?];
   v9 = [v8 preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
-  [(SUSUISoftwareUpdateAutomaticUpdateController *)v21 setAutomaticallyInstallSwitchSpecifier:?];
+  [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy setAutomaticallyInstallSwitchSpecifier:?];
   MEMORY[0x277D82BD8](v9);
   MEMORY[0x277D82BD8](v10);
   MEMORY[0x277D82BD8](v11);
   MEMORY[0x277D82BD8](v12);
-  v13 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v21 automaticallyInstallSwitchSpecifier];
-  [(PSSpecifier *)v13 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
-  MEMORY[0x277D82BD8](v13);
-  v14 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v21 automaticallyInstallSwitchSpecifier];
-  [(PSSpecifier *)v14 setIdentifier:@"AUTOMATIC_INSTALL_SWITCH_SPECIFIER"];
-  MEMORY[0x277D82BD8](v14);
-  v15 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v21 manager];
-  v16 = [(SUManagerClient *)v15 shouldDisableAutoInstallIOSUpdatesToggle];
-  MEMORY[0x277D82BD8](v15);
-  if (v16)
+  automaticallyInstallSwitchSpecifier = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyInstallSwitchSpecifier];
+  [(PSSpecifier *)automaticallyInstallSwitchSpecifier setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
+  MEMORY[0x277D82BD8](automaticallyInstallSwitchSpecifier);
+  automaticallyInstallSwitchSpecifier2 = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyInstallSwitchSpecifier];
+  [(PSSpecifier *)automaticallyInstallSwitchSpecifier2 setIdentifier:@"AUTOMATIC_INSTALL_SWITCH_SPECIFIER"];
+  MEMORY[0x277D82BD8](automaticallyInstallSwitchSpecifier2);
+  manager2 = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy manager];
+  shouldDisableAutoInstallIOSUpdatesToggle = [(SUManagerClient *)manager2 shouldDisableAutoInstallIOSUpdatesToggle];
+  MEMORY[0x277D82BD8](manager2);
+  if (shouldDisableAutoInstallIOSUpdatesToggle)
   {
-    v5 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v21 automaticallyInstallSwitchSpecifier];
-    [(PSSpecifier *)v5 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
-    MEMORY[0x277D82BD8](v5);
+    automaticallyInstallSwitchSpecifier3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyInstallSwitchSpecifier];
+    [(PSSpecifier *)automaticallyInstallSwitchSpecifier3 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+    MEMORY[0x277D82BD8](automaticallyInstallSwitchSpecifier3);
   }
 
-  v4 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v21 automaticallyInstallSwitchSpecifier];
+  automaticallyInstallSwitchSpecifier4 = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyInstallSwitchSpecifier];
   objc_storeStrong(location, 0);
-  v2 = v4;
+  v2 = automaticallyInstallSwitchSpecifier4;
 
   return v2;
 }
@@ -477,7 +477,7 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
 
 - (id)automaticallyDownloadUpdatesSwitch
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v5 = MEMORY[0x277D3FAD8];
   v4 = MEMORY[0x277CCA8D8];
@@ -485,124 +485,124 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
   v8 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"AUTOMATIC_INSTALL_TOGGLE_TEXT"];
   v7 = [v9 localizedStringForKey:? value:? table:?];
   v6 = [v5 preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
-  [(SUSUISoftwareUpdateAutomaticUpdateController *)v15 setAutomaticallyDownloadUpdatesSwitchSpecifier:?];
+  [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy setAutomaticallyDownloadUpdatesSwitchSpecifier:?];
   MEMORY[0x277D82BD8](v6);
   MEMORY[0x277D82BD8](v7);
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
-  v10 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v15 automaticallyDownloadUpdatesSwitchSpecifier];
-  [(PSSpecifier *)v10 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
-  MEMORY[0x277D82BD8](v10);
-  v11 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v15 automaticallyDownloadUpdatesSwitchSpecifier];
-  [(PSSpecifier *)v11 setIdentifier:@"AUTOMATIC_DOWNLOAD_SWITCH_SPECIFIER"];
-  MEMORY[0x277D82BD8](v11);
-  v12 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v15 manager];
-  v13 = [(SUManagerClient *)v12 shouldDisableAutoDownloadIOSUpdatesToggle];
-  MEMORY[0x277D82BD8](v12);
-  if (v13)
+  automaticallyDownloadUpdatesSwitchSpecifier = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyDownloadUpdatesSwitchSpecifier];
+  [(PSSpecifier *)automaticallyDownloadUpdatesSwitchSpecifier setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
+  MEMORY[0x277D82BD8](automaticallyDownloadUpdatesSwitchSpecifier);
+  automaticallyDownloadUpdatesSwitchSpecifier2 = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyDownloadUpdatesSwitchSpecifier];
+  [(PSSpecifier *)automaticallyDownloadUpdatesSwitchSpecifier2 setIdentifier:@"AUTOMATIC_DOWNLOAD_SWITCH_SPECIFIER"];
+  MEMORY[0x277D82BD8](automaticallyDownloadUpdatesSwitchSpecifier2);
+  manager = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy manager];
+  shouldDisableAutoDownloadIOSUpdatesToggle = [(SUManagerClient *)manager shouldDisableAutoDownloadIOSUpdatesToggle];
+  MEMORY[0x277D82BD8](manager);
+  if (shouldDisableAutoDownloadIOSUpdatesToggle)
   {
-    v3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v15 automaticallyDownloadUpdatesSwitchSpecifier];
-    [(PSSpecifier *)v3 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
-    MEMORY[0x277D82BD8](v3);
+    automaticallyDownloadUpdatesSwitchSpecifier3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyDownloadUpdatesSwitchSpecifier];
+    [(PSSpecifier *)automaticallyDownloadUpdatesSwitchSpecifier3 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+    MEMORY[0x277D82BD8](automaticallyDownloadUpdatesSwitchSpecifier3);
   }
 
-  return [(SUSUISoftwareUpdateAutomaticUpdateController *)v15 automaticallyDownloadUpdatesSwitchSpecifier];
+  return [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyDownloadUpdatesSwitchSpecifier];
 }
 
 - (id)automaticallyDownloadSecurityResponseAndSystemFilesSwitch
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v5 = MEMORY[0x277D3FAD8];
   v4 = MEMORY[0x277CCA8D8];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v8 localizedStringForKey:@"AUTOMATIC_UPDATES_DOWNLOAD_TOGGLE_SECURITY_RESPONSE_AND_SYSTEM_FILES" value:&stru_287B79370 table:@"Software Update"];
   v6 = [v5 preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
-  [(SUSUISoftwareUpdateAutomaticUpdateController *)v14 setSecurityResponseSwitchSpecifier:?];
+  [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy setSecurityResponseSwitchSpecifier:?];
   MEMORY[0x277D82BD8](v6);
   MEMORY[0x277D82BD8](v7);
   MEMORY[0x277D82BD8](v8);
-  v9 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v14 securityResponseSwitchSpecifier];
-  [(PSSpecifier *)v9 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
-  MEMORY[0x277D82BD8](v9);
-  v10 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v14 securityResponseSwitchSpecifier];
-  [(PSSpecifier *)v10 setIdentifier:@"AUTOMATIC_INSTALL_SYSTEM_DATA_FILES_SWITCH_SPECIFIER"];
-  MEMORY[0x277D82BD8](v10);
-  v11 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v14 manager];
-  v12 = [(SUManagerClient *)v11 shouldDisableAutoInstallRSRToggle];
-  MEMORY[0x277D82BD8](v11);
-  if (v12)
+  securityResponseSwitchSpecifier = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy securityResponseSwitchSpecifier];
+  [(PSSpecifier *)securityResponseSwitchSpecifier setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
+  MEMORY[0x277D82BD8](securityResponseSwitchSpecifier);
+  securityResponseSwitchSpecifier2 = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy securityResponseSwitchSpecifier];
+  [(PSSpecifier *)securityResponseSwitchSpecifier2 setIdentifier:@"AUTOMATIC_INSTALL_SYSTEM_DATA_FILES_SWITCH_SPECIFIER"];
+  MEMORY[0x277D82BD8](securityResponseSwitchSpecifier2);
+  manager = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy manager];
+  shouldDisableAutoInstallRSRToggle = [(SUManagerClient *)manager shouldDisableAutoInstallRSRToggle];
+  MEMORY[0x277D82BD8](manager);
+  if (shouldDisableAutoInstallRSRToggle)
   {
-    v3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v14 securityResponseSwitchSpecifier];
-    [(PSSpecifier *)v3 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
-    MEMORY[0x277D82BD8](v3);
+    securityResponseSwitchSpecifier3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy securityResponseSwitchSpecifier];
+    [(PSSpecifier *)securityResponseSwitchSpecifier3 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+    MEMORY[0x277D82BD8](securityResponseSwitchSpecifier3);
   }
 
-  return [(SUSUISoftwareUpdateAutomaticUpdateController *)v14 securityResponseSwitchSpecifier];
+  return [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy securityResponseSwitchSpecifier];
 }
 
 - (id)automaticUpdateStatus
 {
-  v3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
-  v4 = [v3 automaticUpdateStatus];
-  MEMORY[0x277D82BD8](v3);
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
+  automaticUpdateStatus = [updateController automaticUpdateStatus];
+  MEMORY[0x277D82BD8](updateController);
 
-  return v4;
+  return automaticUpdateStatus;
 }
 
 - (id)automaticDownloadEnabled
 {
-  v3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
-  v4 = [v3 automaticDownloadStatus];
-  MEMORY[0x277D82BD8](v3);
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
+  automaticDownloadStatus = [updateController automaticDownloadStatus];
+  MEMORY[0x277D82BD8](updateController);
 
-  return v4;
+  return automaticDownloadStatus;
 }
 
 - (id)automaticDownloadStatus
 {
-  v3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
-  v4 = [v3 automaticDownloadStatus];
-  MEMORY[0x277D82BD8](v3);
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
+  automaticDownloadStatus = [updateController automaticDownloadStatus];
+  MEMORY[0x277D82BD8](updateController);
 
-  return v4;
+  return automaticDownloadStatus;
 }
 
 - (id)previousUserSpecifiedAutomaticUpdateStatus
 {
-  v3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
-  v4 = [v3 previousUserSpecifiedAutomaticUpdateStatus];
-  MEMORY[0x277D82BD8](v3);
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
+  previousUserSpecifiedAutomaticUpdateStatus = [updateController previousUserSpecifiedAutomaticUpdateStatus];
+  MEMORY[0x277D82BD8](updateController);
 
-  return v4;
+  return previousUserSpecifiedAutomaticUpdateStatus;
 }
 
 - (id)securityResponseStatus
 {
-  v3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
-  v4 = [v3 securityResponseStatus];
-  MEMORY[0x277D82BD8](v3);
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
+  securityResponseStatus = [updateController securityResponseStatus];
+  MEMORY[0x277D82BD8](updateController);
 
-  return v4;
+  return securityResponseStatus;
 }
 
 - (id)previousUserSpecifiedSecurityResponseStatus
 {
-  v3 = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
-  v4 = [v3 previousUserSpecifiedSecurityResponseStatus];
-  MEMORY[0x277D82BD8](v3);
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)self updateController];
+  previousUserSpecifiedSecurityResponseStatus = [updateController previousUserSpecifiedSecurityResponseStatus];
+  MEMORY[0x277D82BD8](updateController);
 
-  return v4;
+  return previousUserSpecifiedSecurityResponseStatus;
 }
 
-- (void)setNonArmedAutomaticallyInstallToggledWithValue:(id)a3 forSpecifier:(id)a4
+- (void)setNonArmedAutomaticallyInstallToggledWithValue:(id)value forSpecifier:(id)specifier
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, specifier);
   v4 = objc_alloc(MEMORY[0x277D64868]);
   v14 = [v4 initWithEventName:*MEMORY[0x277D64958]];
   v12 = *MEMORY[0x277D64960];
@@ -617,43 +617,43 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
   }
 
   [v14 setEventPayloadEntry:v12 stringValue:v10];
-  [(SUManagerClient *)v17->_manager submitSUAnalyticsEvent:v14];
+  [(SUManagerClient *)selfCopy->_manager submitSUAnalyticsEvent:v14];
   if ([location[0] BOOLValue])
   {
     v5 = objc_alloc(MEMORY[0x277D64868]);
     v13 = [v5 initWithEventName:*MEMORY[0x277D64958]];
     [v13 setEventPayloadEntry:*MEMORY[0x277D64960] stringValue:*MEMORY[0x277D64970]];
-    [(SUManagerClient *)v17->_manager submitSUAnalyticsEvent:v13];
-    v9 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v17 updateController];
+    [(SUManagerClient *)selfCopy->_manager submitSUAnalyticsEvent:v13];
+    updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy updateController];
     v7 = location[0];
-    v8 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v17 automaticallyDownloadUpdatesSwitchSpecifier];
-    [v9 setAutomaticDownloadFromUI:v7 forSpecifier:?];
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    [(SUManagerClient *)v17->_manager autoScanAndDownloadIfAvailable:?];
-    [(SUSUISoftwareUpdateAutomaticUpdateController *)v17 setSecurityResponseToggleState:location[0] toggleCellEnabled:location[0] userSpecified:1 specifier:v15];
+    automaticallyDownloadUpdatesSwitchSpecifier = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyDownloadUpdatesSwitchSpecifier];
+    [updateController setAutomaticDownloadFromUI:v7 forSpecifier:?];
+    MEMORY[0x277D82BD8](automaticallyDownloadUpdatesSwitchSpecifier);
+    MEMORY[0x277D82BD8](updateController);
+    [(SUManagerClient *)selfCopy->_manager autoScanAndDownloadIfAvailable:?];
+    [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy setSecurityResponseToggleState:location[0] toggleCellEnabled:location[0] userSpecified:1 specifier:v15];
     objc_storeStrong(&v13, 0);
   }
 
-  [(SUSUISoftwareUpdateAutomaticUpdateController *)v17 setAutomaticallyInstallUpdatesToggledWithValue:location[0] forSpecifier:v15, &v15];
+  [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy setAutomaticallyInstallUpdatesToggledWithValue:location[0] forSpecifier:v15, &v15];
   objc_storeStrong(&v14, 0);
   objc_storeStrong(v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setArmedAutomaticallyInstallToggledWithValue:(id)a3 forSpecifier:(id)a4
+- (void)setArmedAutomaticallyInstallToggledWithValue:(id)value forSpecifier:(id)specifier
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
+  objc_storeStrong(&v45, specifier);
   if ([location[0] BOOLValue] == 1)
   {
-    v18 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v47 updateController];
-    [v18 setAutomaticUpdatesFromUI:location[0] forSpecifier:v45];
-    MEMORY[0x277D82BD8](v18);
+    updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy updateController];
+    [updateController setAutomaticUpdatesFromUI:location[0] forSpecifier:v45];
+    MEMORY[0x277D82BD8](updateController);
     v44 = 1;
   }
 
@@ -677,7 +677,7 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
     v36 = 0;
     v37 = __106__SUSUISoftwareUpdateAutomaticUpdateController_setArmedAutomaticallyInstallToggledWithValue_forSpecifier___block_invoke;
     v38 = &unk_279CC07F0;
-    v39 = MEMORY[0x277D82BE0](v47);
+    v39 = MEMORY[0x277D82BE0](selfCopy);
     v40 = MEMORY[0x277D82BE0](location[0]);
     v41 = MEMORY[0x277D82BE0](v45);
     v42 = [v9 actionWithTitle:v10 style:2 handler:&v34];
@@ -691,7 +691,7 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
     v29 = 0;
     v30 = __106__SUSUISoftwareUpdateAutomaticUpdateController_setArmedAutomaticallyInstallToggledWithValue_forSpecifier___block_invoke_2;
     v31 = &unk_279CB9068;
-    v32 = MEMORY[0x277D82BE0](v47);
+    v32 = MEMORY[0x277D82BE0](selfCopy);
     v33 = [v12 actionWithTitle:v13 style:0 handler:&v27];
     MEMORY[0x277D82BD8](v13);
     MEMORY[0x277D82BD8](v14);
@@ -703,14 +703,14 @@ void __76__SUSUISoftwareUpdateAutomaticUpdateController_NeRD__displayNeRDAlertTo
     v22 = 0;
     v23 = __106__SUSUISoftwareUpdateAutomaticUpdateController_setArmedAutomaticallyInstallToggledWithValue_forSpecifier___block_invoke_3;
     v24 = &unk_279CB9068;
-    v25 = MEMORY[0x277D82BE0](v47);
+    v25 = MEMORY[0x277D82BE0](selfCopy);
     v26 = [v15 actionWithTitle:v16 style:1 handler:&v20];
     MEMORY[0x277D82BD8](v16);
     MEMORY[0x277D82BD8](v17);
     [v43 addAction:v33];
     [v43 addAction:v42];
     [v43 addAction:v26];
-    [(SUSUISoftwareUpdateAutomaticUpdateController *)v47 presentViewController:v43 animated:1 completion:?];
+    [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy presentViewController:v43 animated:1 completion:?];
     objc_storeStrong(&v26, 0);
     objc_storeStrong(&v25, 0);
     objc_storeStrong(&v33, 0);
@@ -786,14 +786,14 @@ void __106__SUSUISoftwareUpdateAutomaticUpdateController_setArmedAutomaticallyIn
   objc_storeStrong(location, 0);
 }
 
-- (void)setAutomaticallyInstallUpdatesToggledWithValue:(id)a3 forSpecifier:(id)a4
+- (void)setAutomaticallyInstallUpdatesToggledWithValue:(id)value forSpecifier:(id)specifier
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, specifier);
   v4 = objc_alloc(MEMORY[0x277D64868]);
   v9 = [v4 initWithEventName:*MEMORY[0x277D64958]];
   v8 = *MEMORY[0x277D64960];
@@ -808,26 +808,26 @@ void __106__SUSUISoftwareUpdateAutomaticUpdateController_setArmedAutomaticallyIn
   }
 
   [v9 setEventPayloadEntry:v8 stringValue:v6];
-  [(SUManagerClient *)v12->_manager submitSUAnalyticsEvent:v9];
-  v5 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v12 updateController];
-  [v5 setAutomaticUpdatesFromUI:location[0] forSpecifier:v10];
-  MEMORY[0x277D82BD8](v5);
+  [(SUManagerClient *)selfCopy->_manager submitSUAnalyticsEvent:v9];
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy updateController];
+  [updateController setAutomaticUpdatesFromUI:location[0] forSpecifier:v10];
+  MEMORY[0x277D82BD8](updateController);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setAutomaticallyDownloadUpdatesToggledWithValue:(id)a3 forSpecifier:(id)a4
+- (void)setAutomaticallyDownloadUpdatesToggledWithValue:(id)value forSpecifier:(id)specifier
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v11 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v19 updateController];
-  [v11 setAutomaticDownloadFromUI:location[0] forSpecifier:v17];
-  MEMORY[0x277D82BD8](v11);
+  objc_storeStrong(&v17, specifier);
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy updateController];
+  [updateController setAutomaticDownloadFromUI:location[0] forSpecifier:v17];
+  MEMORY[0x277D82BD8](updateController);
   v4 = objc_alloc(MEMORY[0x277D64868]);
   v16 = [v4 initWithEventName:*MEMORY[0x277D64958]];
   v12 = *MEMORY[0x277D64960];
@@ -842,30 +842,30 @@ void __106__SUSUISoftwareUpdateAutomaticUpdateController_setArmedAutomaticallyIn
   }
 
   [v16 setEventPayloadEntry:v12 stringValue:v9];
-  [(SUManagerClient *)v19->_manager submitSUAnalyticsEvent:v16];
+  [(SUManagerClient *)selfCopy->_manager submitSUAnalyticsEvent:v16];
   if ([location[0] BOOLValue])
   {
-    [(SUManagerClient *)v19->_manager autoScanAndDownloadIfAvailable:0];
+    [(SUManagerClient *)selfCopy->_manager autoScanAndDownloadIfAvailable:0];
   }
 
   else
   {
-    v8 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v19 updateController];
-    [v8 unscheduleTargetedUpdateAutomaticInstallation];
-    MEMORY[0x277D82BD8](v8);
+    updateController2 = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy updateController];
+    [updateController2 unscheduleTargetedUpdateAutomaticInstallation];
+    MEMORY[0x277D82BD8](updateController2);
   }
 
-  v6 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v19 manager];
-  v7 = [(SUManagerClient *)v6 shouldDisableAutoInstallIOSUpdatesToggle];
-  MEMORY[0x277D82BD8](v6);
-  if (!v7)
+  manager = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy manager];
+  shouldDisableAutoInstallIOSUpdatesToggle = [(SUManagerClient *)manager shouldDisableAutoInstallIOSUpdatesToggle];
+  MEMORY[0x277D82BD8](manager);
+  if (!shouldDisableAutoInstallIOSUpdatesToggle)
   {
     v13 = 0;
     if ([location[0] BOOLValue])
     {
-      v14 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v19 previousUserSpecifiedAutomaticUpdateStatus];
+      previousUserSpecifiedAutomaticUpdateStatus = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy previousUserSpecifiedAutomaticUpdateStatus];
       v13 = 1;
-      v5 = MEMORY[0x277D82BE0](v14);
+      v5 = MEMORY[0x277D82BE0](previousUserSpecifiedAutomaticUpdateStatus);
     }
 
     else
@@ -876,10 +876,10 @@ void __106__SUSUISoftwareUpdateAutomaticUpdateController_setArmedAutomaticallyIn
     v15 = v5;
     if (v13)
     {
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](previousUserSpecifiedAutomaticUpdateStatus);
     }
 
-    [(SUSUISoftwareUpdateAutomaticUpdateController *)v19 setSecurityResponseToggleState:v15 toggleCellEnabled:location[0] userSpecified:0 specifier:v17];
+    [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy setSecurityResponseToggleState:v15 toggleCellEnabled:location[0] userSpecified:0 specifier:v17];
     objc_storeStrong(&v15, 0);
   }
 
@@ -888,14 +888,14 @@ void __106__SUSUISoftwareUpdateAutomaticUpdateController_setArmedAutomaticallyIn
   objc_storeStrong(location, 0);
 }
 
-- (void)setAutomaticallyInstallSecurityResponsesAndSystemDataToggledWithValue:(id)a3 forSpecifier:(id)a4
+- (void)setAutomaticallyInstallSecurityResponsesAndSystemDataToggledWithValue:(id)value forSpecifier:(id)specifier
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, specifier);
   v4 = objc_alloc(MEMORY[0x277D64868]);
   v10 = [v4 initWithEventName:*MEMORY[0x277D64958]];
   v9 = *MEMORY[0x277D64960];
@@ -910,55 +910,55 @@ void __106__SUSUISoftwareUpdateAutomaticUpdateController_setArmedAutomaticallyIn
   }
 
   [v10 setEventPayloadEntry:v9 stringValue:v7];
-  [(SUManagerClient *)v13->_manager submitSUAnalyticsEvent:v10];
-  v5 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v13 updateController];
-  [v5 setAutomaticInstallSystemDataFilesFromUI:location[0] forSpecifier:v11];
-  MEMORY[0x277D82BD8](v5);
-  v6 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v13 updateController];
-  [v6 setSecurityResponseFromUI:location[0] forSpecifier:v11];
-  MEMORY[0x277D82BD8](v6);
+  [(SUManagerClient *)selfCopy->_manager submitSUAnalyticsEvent:v10];
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy updateController];
+  [updateController setAutomaticInstallSystemDataFilesFromUI:location[0] forSpecifier:v11];
+  MEMORY[0x277D82BD8](updateController);
+  updateController2 = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy updateController];
+  [updateController2 setSecurityResponseFromUI:location[0] forSpecifier:v11];
+  MEMORY[0x277D82BD8](updateController2);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setSecurityResponseToggleState:(id)a3 toggleCellEnabled:(id)a4 userSpecified:(BOOL)a5 specifier:(id)a6
+- (void)setSecurityResponseToggleState:(id)state toggleCellEnabled:(id)enabled userSpecified:(BOOL)specified specifier:(id)specifier
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, state);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v15 = a5;
+  objc_storeStrong(&v16, enabled);
+  specifiedCopy = specified;
   v14 = 0;
-  objc_storeStrong(&v14, a6);
-  v9 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v18 updateController];
-  [v9 setAutomaticUpdatesFromUI:location[0] userSpecified:v15 forSpecifier:v14];
-  MEMORY[0x277D82BD8](v9);
-  v10 = v18;
-  v11 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v18 automaticallyDownloadUpdatesSwitchSpecifier];
+  objc_storeStrong(&v14, specifier);
+  updateController = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy updateController];
+  [updateController setAutomaticUpdatesFromUI:location[0] userSpecified:specifiedCopy forSpecifier:v14];
+  MEMORY[0x277D82BD8](updateController);
+  v10 = selfCopy;
+  automaticallyDownloadUpdatesSwitchSpecifier = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyDownloadUpdatesSwitchSpecifier];
   [SUSUISoftwareUpdateAutomaticUpdateController reloadSpecifier:v10 animated:"reloadSpecifier:animated:"];
-  MEMORY[0x277D82BD8](v11);
-  v12 = v18;
-  v13 = [(SUSUISoftwareUpdateAutomaticUpdateController *)v18 automaticallyInstallSwitchSpecifier];
+  MEMORY[0x277D82BD8](automaticallyDownloadUpdatesSwitchSpecifier);
+  v12 = selfCopy;
+  automaticallyInstallSwitchSpecifier = [(SUSUISoftwareUpdateAutomaticUpdateController *)selfCopy automaticallyInstallSwitchSpecifier];
   [SUSUISoftwareUpdateAutomaticUpdateController reloadSpecifier:v12 animated:"reloadSpecifier:animated:"];
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](automaticallyInstallSwitchSpecifier);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)preferences:(id)a3 didChangePreference:(id)a4 toValue:(id)a5
+- (void)preferences:(id)preferences didChangePreference:(id)preference toValue:(id)value
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, preferences);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, preference);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, value);
   v8 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
   queue = v8;
@@ -967,7 +967,7 @@ void __106__SUSUISoftwareUpdateAutomaticUpdateController_setArmedAutomaticallyIn
   v12 = 0;
   v13 = __88__SUSUISoftwareUpdateAutomaticUpdateController_preferences_didChangePreference_toValue___block_invoke;
   v14 = &unk_279CB93E8;
-  v15 = MEMORY[0x277D82BE0](v19);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v10);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v15, 0);

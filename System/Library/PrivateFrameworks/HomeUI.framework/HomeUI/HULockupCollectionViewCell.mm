@@ -2,74 +2,74 @@
 - (BOOL)bottomSeparatorVisible;
 - (BOOL)topSeparatorVisible;
 - (HFItem)item;
-- (HULockupCollectionViewCell)initWithFrame:(CGRect)a3;
+- (HULockupCollectionViewCell)initWithFrame:(CGRect)frame;
 - (HUResizableCellDelegate)resizingDelegate;
-- (void)didUpdateRequiredHeightForLockupView:(id)a3;
+- (void)didUpdateRequiredHeightForLockupView:(id)view;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBottomSeparatorVisible:(BOOL)a3;
-- (void)setItem:(id)a3;
-- (void)setTopSeparatorVisible:(BOOL)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setBottomSeparatorVisible:(BOOL)visible;
+- (void)setItem:(id)item;
+- (void)setTopSeparatorVisible:(BOOL)visible;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HULockupCollectionViewCell
 
-- (HULockupCollectionViewCell)initWithFrame:(CGRect)a3
+- (HULockupCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v53 = *MEMORY[0x277D85DE8];
   v50.receiver = self;
   v50.super_class = HULockupCollectionViewCell;
-  v3 = [(HULockupCollectionViewCell *)&v50 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HULockupCollectionViewCell *)&v50 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(HULockupCollectionViewCell *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(HULockupCollectionViewCell *)v3 setBackgroundColor:systemBackgroundColor];
 
     v5 = objc_alloc([(HULockupCollectionViewCell *)v3 lockupViewClass]);
-    v6 = [(HULockupCollectionViewCell *)v3 contentView];
-    [v6 bounds];
+    contentView = [(HULockupCollectionViewCell *)v3 contentView];
+    [contentView bounds];
     v7 = [v5 initWithFrame:?];
     lockupView = v3->_lockupView;
     v3->_lockupView = v7;
 
     [(HULockupView *)v3->_lockupView setInternalViewResizingDelegate:v3];
     [(HULockupView *)v3->_lockupView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(HULockupCollectionViewCell *)v3 contentView];
-    [v9 addSubview:v3->_lockupView];
+    contentView2 = [(HULockupCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_lockupView];
 
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [(HULockupView *)v3->_lockupView leadingAnchor];
-    v12 = [(HULockupCollectionViewCell *)v3 contentView];
-    v13 = [v12 layoutMarginsGuide];
-    v14 = [v13 leadingAnchor];
-    v15 = [(HULockupCollectionViewCell *)v3 contentView];
-    [v15 directionalLayoutMargins];
-    v17 = [v11 constraintEqualToAnchor:v14 constant:v16];
-    [v10 addObject:v17];
+    array = [MEMORY[0x277CBEB18] array];
+    leadingAnchor = [(HULockupView *)v3->_lockupView leadingAnchor];
+    contentView3 = [(HULockupCollectionViewCell *)v3 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    contentView4 = [(HULockupCollectionViewCell *)v3 contentView];
+    [contentView4 directionalLayoutMargins];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v16];
+    [array addObject:v17];
 
-    v18 = [(HULockupView *)v3->_lockupView trailingAnchor];
-    v19 = [(HULockupCollectionViewCell *)v3 contentView];
-    v20 = [v19 layoutMarginsGuide];
-    v21 = [v20 trailingAnchor];
-    v22 = [v18 constraintEqualToAnchor:v21];
-    [v10 addObject:v22];
+    trailingAnchor = [(HULockupView *)v3->_lockupView trailingAnchor];
+    contentView5 = [(HULockupCollectionViewCell *)v3 contentView];
+    layoutMarginsGuide2 = [contentView5 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v22];
 
-    v23 = [(HULockupView *)v3->_lockupView topAnchor];
-    v24 = [(HULockupCollectionViewCell *)v3 contentView];
-    v25 = [v24 layoutMarginsGuide];
-    v26 = [v25 topAnchor];
-    v27 = [v23 constraintEqualToAnchor:v26];
-    [v10 addObject:v27];
+    topAnchor = [(HULockupView *)v3->_lockupView topAnchor];
+    contentView6 = [(HULockupCollectionViewCell *)v3 contentView];
+    layoutMarginsGuide3 = [contentView6 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v27];
 
-    v28 = [(HULockupView *)v3->_lockupView bottomAnchor];
-    v29 = [(HULockupCollectionViewCell *)v3 contentView];
-    v30 = [v29 layoutMarginsGuide];
-    v31 = [v30 bottomAnchor];
-    v32 = [v28 constraintEqualToAnchor:v31];
-    [v10 addObject:v32];
+    bottomAnchor = [(HULockupView *)v3->_lockupView bottomAnchor];
+    contentView7 = [(HULockupCollectionViewCell *)v3 contentView];
+    layoutMarginsGuide4 = [contentView7 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v32];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v10];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
     v33 = objc_alloc_init(MEMORY[0x277D75D18]);
     topSeparatorView = v3->_topSeparatorView;
     v3->_topSeparatorView = v33;
@@ -101,11 +101,11 @@
 
           v42 = *(*(&v46 + 1) + 8 * i);
           [v42 setHidden:1];
-          v43 = [MEMORY[0x277D75348] tableSeparatorDarkColor];
-          [v42 setBackgroundColor:v43];
+          tableSeparatorDarkColor = [MEMORY[0x277D75348] tableSeparatorDarkColor];
+          [v42 setBackgroundColor:tableSeparatorDarkColor];
 
-          v44 = [(HULockupCollectionViewCell *)v3 contentView];
-          [v44 addSubview:v42];
+          contentView8 = [(HULockupCollectionViewCell *)v3 contentView];
+          [contentView8 addSubview:v42];
         }
 
         v39 = [v37 countByEnumeratingWithState:&v46 objects:v52 count:16];
@@ -123,24 +123,24 @@
   v14.receiver = self;
   v14.super_class = HULockupCollectionViewCell;
   [(HULockupCollectionViewCell *)&v14 layoutSubviews];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = 1.0 / v4;
 
-  v6 = [(HULockupCollectionViewCell *)self contentView];
-  [v6 bounds];
+  contentView = [(HULockupCollectionViewCell *)self contentView];
+  [contentView bounds];
   Width = CGRectGetWidth(v15);
-  v8 = [(HULockupCollectionViewCell *)self topSeparatorView];
-  [v8 setFrame:{0.0, 0.0, Width, v5}];
+  topSeparatorView = [(HULockupCollectionViewCell *)self topSeparatorView];
+  [topSeparatorView setFrame:{0.0, 0.0, Width, v5}];
 
-  v9 = [(HULockupCollectionViewCell *)self contentView];
-  [v9 bounds];
+  contentView2 = [(HULockupCollectionViewCell *)self contentView];
+  [contentView2 bounds];
   v10 = CGRectGetMaxY(v16) - v5;
-  v11 = [(HULockupCollectionViewCell *)self contentView];
-  [v11 bounds];
+  contentView3 = [(HULockupCollectionViewCell *)self contentView];
+  [contentView3 bounds];
   v12 = CGRectGetWidth(v17);
-  v13 = [(HULockupCollectionViewCell *)self bottomSeparatorView];
-  [v13 setFrame:{0.0, v10, v12, v5}];
+  bottomSeparatorView = [(HULockupCollectionViewCell *)self bottomSeparatorView];
+  [bottomSeparatorView setFrame:{0.0, v10, v12, v5}];
 }
 
 - (void)prepareForReuse
@@ -154,60 +154,60 @@
 
 - (HFItem)item
 {
-  v2 = [(HULockupCollectionViewCell *)self lockupView];
-  v3 = [v2 item];
+  lockupView = [(HULockupCollectionViewCell *)self lockupView];
+  item = [lockupView item];
 
-  return v3;
+  return item;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HULockupCollectionViewCell *)self lockupView];
-  [v5 setItem:v4];
+  itemCopy = item;
+  lockupView = [(HULockupCollectionViewCell *)self lockupView];
+  [lockupView setItem:itemCopy];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v4 = [(HULockupCollectionViewCell *)self lockupView];
-  [v4 updateUIWithAnimation:v3];
+  animationCopy = animation;
+  lockupView = [(HULockupCollectionViewCell *)self lockupView];
+  [lockupView updateUIWithAnimation:animationCopy];
 }
 
 - (BOOL)topSeparatorVisible
 {
-  v2 = [(HULockupCollectionViewCell *)self topSeparatorView];
-  v3 = [v2 isHidden];
+  topSeparatorView = [(HULockupCollectionViewCell *)self topSeparatorView];
+  isHidden = [topSeparatorView isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (void)setTopSeparatorVisible:(BOOL)a3
+- (void)setTopSeparatorVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(HULockupCollectionViewCell *)self topSeparatorView];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  topSeparatorView = [(HULockupCollectionViewCell *)self topSeparatorView];
+  [topSeparatorView setHidden:!visibleCopy];
 }
 
 - (BOOL)bottomSeparatorVisible
 {
-  v2 = [(HULockupCollectionViewCell *)self bottomSeparatorView];
-  v3 = [v2 isHidden];
+  bottomSeparatorView = [(HULockupCollectionViewCell *)self bottomSeparatorView];
+  isHidden = [bottomSeparatorView isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (void)setBottomSeparatorVisible:(BOOL)a3
+- (void)setBottomSeparatorVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(HULockupCollectionViewCell *)self bottomSeparatorView];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  bottomSeparatorView = [(HULockupCollectionViewCell *)self bottomSeparatorView];
+  [bottomSeparatorView setHidden:!visibleCopy];
 }
 
-- (void)didUpdateRequiredHeightForLockupView:(id)a3
+- (void)didUpdateRequiredHeightForLockupView:(id)view
 {
-  v4 = [(HULockupCollectionViewCell *)self resizingDelegate];
-  [v4 didUpdateRequiredHeightForCell:self];
+  resizingDelegate = [(HULockupCollectionViewCell *)self resizingDelegate];
+  [resizingDelegate didUpdateRequiredHeightForCell:self];
 }
 
 - (HUResizableCellDelegate)resizingDelegate

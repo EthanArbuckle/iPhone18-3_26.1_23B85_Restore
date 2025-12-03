@@ -1,6 +1,6 @@
 @interface DomainPredictionModelInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation DomainPredictionModelInput
@@ -14,7 +14,7 @@
   return v3;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_1D9C7DC7C();
   v5 = v4;

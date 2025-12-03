@@ -8,9 +8,9 @@
 {
   v10.receiver = self;
   v10.super_class = UIPrintOrientationOptionAccessibility;
-  v2 = [(UIPrintOrientationOptionAccessibility *)&v10 createPrintOptionTableViewCell];
+  createPrintOptionTableViewCell = [(UIPrintOrientationOptionAccessibility *)&v10 createPrintOptionTableViewCell];
   objc_opt_class();
-  v3 = [v2 safeValueForKey:@"accessoryView"];
+  v3 = [createPrintOptionTableViewCell safeValueForKey:@"accessoryView"];
   v4 = __UIAccessibilityCastAsClass();
 
   if ([v4 numberOfSegments] == 2)
@@ -24,7 +24,7 @@
     [v7 setAccessibilityLabel:v8];
   }
 
-  return v2;
+  return createPrintOptionTableViewCell;
 }
 
 @end

@@ -16,16 +16,16 @@
     _os_log_impl(&dword_2695B9000, v4, OS_LOG_TYPE_INFO, "%s Activating audio services with timeout...", &v9, 0xCu);
   }
 
-  v5 = [(SVXAudioServicesUtils *)self _activate];
+  _activate = [(SVXAudioServicesUtils *)self _activate];
   v6 = *v3;
-  if (v5)
+  if (_activate)
   {
     if (os_log_type_enabled(*v3, OS_LOG_TYPE_ERROR))
     {
       v9 = 136315394;
       v10 = "[SVXAudioServicesUtils audioServicesActivateWithTimeout]";
       v11 = 1024;
-      v12 = v5;
+      v12 = _activate;
       _os_log_error_impl(&dword_2695B9000, v6, OS_LOG_TYPE_ERROR, "%s Failed to activate audio services with timeout. (result = %d)", &v9, 0x12u);
     }
   }
@@ -37,7 +37,7 @@
     _os_log_impl(&dword_2695B9000, v6, OS_LOG_TYPE_INFO, "%s Activated audio services with timeout.", &v9, 0xCu);
   }
 
-  result = v5 == 0;
+  result = _activate == 0;
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }

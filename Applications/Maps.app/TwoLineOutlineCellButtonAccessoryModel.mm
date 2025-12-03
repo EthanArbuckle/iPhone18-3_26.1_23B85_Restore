@@ -1,8 +1,8 @@
 @interface TwoLineOutlineCellButtonAccessoryModel
-- (BOOL)isEqual:(id)a3;
-- (TwoLineOutlineCellButtonAccessoryModel)initWithAccessoryType:(int64_t)a3 visibility:(int64_t)a4 delegate:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (TwoLineOutlineCellButtonAccessoryModel)initWithAccessoryType:(int64_t)type visibility:(int64_t)visibility delegate:(id)delegate;
 - (TwoLinesOutlineCellAccessoryDelegate)delegate;
-- (id)createAccessoryConfigurationWithAction:(id)a3;
+- (id)createAccessoryConfigurationWithAction:(id)action;
 @end
 
 @implementation TwoLineOutlineCellButtonAccessoryModel
@@ -14,9 +14,9 @@
   return WeakRetained;
 }
 
-- (id)createAccessoryConfigurationWithAction:(id)a3
+- (id)createAccessoryConfigurationWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   accessoryType = self->_accessoryType;
   if (accessoryType == 2)
   {
@@ -37,7 +37,7 @@
     v8 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:2 scale:15.0];
     [v6 setPreferredSymbolConfiguration:v8 forImageInState:0];
 
-    [v6 addAction:v4 forControlEvents:0x2000];
+    [v6 addAction:actionCopy forControlEvents:0x2000];
     v9 = +[UIColor tertiaryLabelColor];
     [v6 setTintColor:v9];
 
@@ -54,31 +54,31 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(TwoLineOutlineCellButtonAccessoryModel *)v6 accessoryType];
-    if (v7 == [(TwoLineOutlineCellButtonAccessoryModel *)self accessoryType]&& (v8 = [(TwoLineOutlineCellButtonAccessoryModel *)v6 visibility], v8 == [(TwoLineOutlineCellButtonAccessoryModel *)self visibility]))
+    accessoryType = [(TwoLineOutlineCellButtonAccessoryModel *)v6 accessoryType];
+    if (accessoryType == [(TwoLineOutlineCellButtonAccessoryModel *)self accessoryType]&& (v8 = [(TwoLineOutlineCellButtonAccessoryModel *)v6 visibility], v8 == [(TwoLineOutlineCellButtonAccessoryModel *)self visibility]))
     {
-      v9 = [(TwoLineOutlineCellButtonAccessoryModel *)v6 delegate];
-      v10 = [(TwoLineOutlineCellButtonAccessoryModel *)self delegate];
-      if (v9 == v10)
+      delegate = [(TwoLineOutlineCellButtonAccessoryModel *)v6 delegate];
+      delegate2 = [(TwoLineOutlineCellButtonAccessoryModel *)self delegate];
+      if (delegate == delegate2)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = [v9 isEqual:v10];
+        v11 = [delegate isEqual:delegate2];
       }
     }
 
@@ -96,18 +96,18 @@ LABEL_7:
   return v11;
 }
 
-- (TwoLineOutlineCellButtonAccessoryModel)initWithAccessoryType:(int64_t)a3 visibility:(int64_t)a4 delegate:(id)a5
+- (TwoLineOutlineCellButtonAccessoryModel)initWithAccessoryType:(int64_t)type visibility:(int64_t)visibility delegate:(id)delegate
 {
-  v8 = a5;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = TwoLineOutlineCellButtonAccessoryModel;
   v9 = [(TwoLineOutlineCellButtonAccessoryModel *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    v9->_accessoryType = a3;
-    v9->_visibility = a4;
-    objc_storeWeak(&v9->_delegate, v8);
+    v9->_accessoryType = type;
+    v9->_visibility = visibility;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v10;

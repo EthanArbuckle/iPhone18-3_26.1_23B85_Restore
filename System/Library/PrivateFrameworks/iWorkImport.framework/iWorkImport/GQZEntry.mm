@@ -1,17 +1,17 @@
 @interface GQZEntry
 - (_xmlDoc)recoverXmlDocument;
 - (_xmlDoc)xmlDocument;
-- (_xmlTextReader)xmlReader:(BOOL)a3;
+- (_xmlTextReader)xmlReader:(BOOL)reader;
 - (id)data;
-- (id)initFromCentralFileHeader:(const char *)a3 inputStream:(id)a4;
+- (id)initFromCentralFileHeader:(const char *)header inputStream:(id)stream;
 - (id)inputStream;
 - (void)dealloc;
-- (void)readZip64ExtraField:(const char *)a3 size:(unint64_t)a4;
+- (void)readZip64ExtraField:(const char *)field size:(unint64_t)size;
 @end
 
 @implementation GQZEntry
 
-- (id)initFromCentralFileHeader:(const char *)a3 inputStream:(id)a4
+- (id)initFromCentralFileHeader:(const char *)header inputStream:(id)stream
 {
   v6 = [(GQZEntry *)self init];
   if (!v6)
@@ -19,14 +19,14 @@
     return v6;
   }
 
-  v6->mInput = a4;
-  if (*(a3 + 2))
+  v6->mInput = stream;
+  if (*(header + 2))
   {
     [GQZException raise:@"GQZCentralFileHeaderError" format:@"Encrypted files are not supported"];
   }
 
   v7 = 0;
-  v8 = *(a3 + 3);
+  v8 = *(header + 3);
   if (v8 > 0x636A)
   {
     if (v8 != 25451)
@@ -44,7 +44,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!*(a3 + 3))
+  if (!*(header + 3))
   {
     goto LABEL_11;
   }
@@ -59,17 +59,17 @@ LABEL_10:
 LABEL_7:
   [GQZException raise:@"GQZCentralFileHeaderError" format:@"Unsupported compression method"];
 LABEL_12:
-  v6->mCrc = *(a3 + 3);
-  v9 = *(a3 + 2);
+  v6->mCrc = *(header + 3);
+  v9 = *(header + 2);
   *&v10 = v9;
   *(&v10 + 1) = HIDWORD(v9);
   *&v6->mCompressedSize = v10;
-  if (*(a3 + 15))
+  if (*(header + 15))
   {
     [GQZException raise:@"GQZCentralFileHeaderError" format:@"No multi-disk support"];
   }
 
-  v6->mOffset = *(a3 + 38);
+  v6->mOffset = *(header + 38);
   return v6;
 }
 
@@ -128,10 +128,10 @@ LABEL_12:
 - (_xmlDoc)xmlDocument
 {
   v3 = objc_alloc_init(NSAutoreleasePool);
-  v4 = [(GQZEntry *)self inputStream];
+  inputStream = [(GQZEntry *)self inputStream];
   chunk = 0;
   *size = 0;
-  [v4 readToOwnBuffer:&chunk size:size];
+  [inputStream readToOwnBuffer:&chunk size:size];
   PushParserCtxt = xmlCreatePushParserCtxt(0, 0, chunk, size[0], 0);
   if (!PushParserCtxt)
   {
@@ -140,7 +140,7 @@ LABEL_12:
 
   while (1)
   {
-    [v4 readToOwnBuffer:&chunk size:size];
+    [inputStream readToOwnBuffer:&chunk size:size];
     if (!*size)
     {
       break;
@@ -172,23 +172,23 @@ LABEL_12:
 
 - (_xmlDoc)recoverXmlDocument
 {
-  v2 = [(GQZEntry *)self inputStream];
+  inputStream = [(GQZEntry *)self inputStream];
 
-  return xmlReadIO(sub_44744, sub_447B8, v2, 0, 0, 97);
+  return xmlReadIO(sub_44744, sub_447B8, inputStream, 0, 0, 97);
 }
 
-- (_xmlTextReader)xmlReader:(BOOL)a3
+- (_xmlTextReader)xmlReader:(BOOL)reader
 {
-  v3 = a3;
-  v4 = [(GQZEntry *)self inputStream];
-  v5 = v4;
-  if (!v3)
+  readerCopy = reader;
+  inputStream = [(GQZEntry *)self inputStream];
+  v5 = inputStream;
+  if (!readerCopy)
   {
-    v7 = v4;
+    v7 = inputStream;
     return xmlReaderForIO(sub_44744, sub_447B8, v5, 0, 0, 0);
   }
 
-  if ([(GQZInflateInputStream *)v4 readToBuffer:v11 size:10]== 10)
+  if ([(GQZInflateInputStream *)inputStream readToBuffer:v11 size:10]== 10)
   {
     v6 = v12;
     if ((v12 & 4) != 0)
@@ -255,40 +255,40 @@ LABEL_12:
   return 0;
 }
 
-- (void)readZip64ExtraField:(const char *)a3 size:(unint64_t)a4
+- (void)readZip64ExtraField:(const char *)field size:(unint64_t)size
 {
-  v7 = a3;
+  fieldCopy = field;
   if (self->mUncompressedSize == 0xFFFFFFFF)
   {
-    v7 = a3 + 8;
-    if (a4 <= 7)
+    fieldCopy = field + 8;
+    if (size <= 7)
     {
       [GQZException raise:@"GQZCentralFileHeaderError" format:@"Not enough room for Zip64 uncompressed size"];
     }
 
-    self->mUncompressedSize = *a3;
+    self->mUncompressedSize = *field;
   }
 
-  v8 = &a3[a4];
+  v8 = &field[size];
   if (self->mCompressedSize == 0xFFFFFFFF)
   {
-    if (v7 + 8 > v8)
+    if (fieldCopy + 8 > v8)
     {
       [GQZException raise:@"GQZCentralFileHeaderError" format:@"Not enough room for Zip64 compressed size"];
     }
 
-    self->mCompressedSize = *v7;
-    v7 += 8;
+    self->mCompressedSize = *fieldCopy;
+    fieldCopy += 8;
   }
 
   if (self->mOffset == 0xFFFFFFFF)
   {
-    if (v7 + 8 > v8)
+    if (fieldCopy + 8 > v8)
     {
       [GQZException raise:@"GQZCentralFileHeaderError" format:@"Not enough room for Zip64 offset"];
     }
 
-    self->mOffset = *v7;
+    self->mOffset = *fieldCopy;
   }
 }
 

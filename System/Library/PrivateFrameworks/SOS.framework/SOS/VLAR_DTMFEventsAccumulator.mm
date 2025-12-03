@@ -1,7 +1,7 @@
 @interface VLAR_DTMFEventsAccumulator
 - (VLAR_DTMFEventsAccumulator)init;
 - (id)analyticsDataDict;
-- (void)noteDidReceiveDTMFDigit:(char)a3;
+- (void)noteDidReceiveDTMFDigit:(char)digit;
 @end
 
 @implementation VLAR_DTMFEventsAccumulator
@@ -21,10 +21,10 @@
   return v2;
 }
 
-- (void)noteDidReceiveDTMFDigit:(char)a3
+- (void)noteDidReceiveDTMFDigit:(char)digit
 {
   eventsAccumulator = self->_eventsAccumulator;
-  v4 = _NSStringFromDTMFDigitChar(a3);
+  v4 = _NSStringFromDTMFDigitChar(digit);
   [(SOSAnalyticsEventAccumulator *)eventsAccumulator noteEvent:v4];
 }
 

@@ -1,20 +1,20 @@
 @interface SUUIInAppPurchase
 - (NSMutableDictionary)cacheRepresentation;
-- (SUUIInAppPurchase)initWithCacheRepresentation:(id)a3;
-- (SUUIInAppPurchase)initWithInAppPurchaseDictionary:(id)a3;
+- (SUUIInAppPurchase)initWithCacheRepresentation:(id)representation;
+- (SUUIInAppPurchase)initWithInAppPurchaseDictionary:(id)dictionary;
 @end
 
 @implementation SUUIInAppPurchase
 
-- (SUUIInAppPurchase)initWithInAppPurchaseDictionary:(id)a3
+- (SUUIInAppPurchase)initWithInAppPurchaseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SUUIInAppPurchase;
   v5 = [(SUUIInAppPurchase *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"price"];
+    v6 = [dictionaryCopy objectForKey:@"price"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -23,7 +23,7 @@
       v5->_formattedPrice = v7;
     }
 
-    v9 = [v4 objectForKey:@"name"];
+    v9 = [dictionaryCopy objectForKey:@"name"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -37,15 +37,15 @@
   return v5;
 }
 
-- (SUUIInAppPurchase)initWithCacheRepresentation:(id)a3
+- (SUUIInAppPurchase)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v13.receiver = self;
   v13.super_class = SUUIInAppPurchase;
   v5 = [(SUUIInAppPurchase *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"price"];
+    v6 = [representationCopy objectForKey:@"price"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       v5->_formattedPrice = v7;
     }
 
-    v9 = [v4 objectForKey:@"name"];
+    v9 = [representationCopy objectForKey:@"name"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -70,12 +70,12 @@
 
 - (NSMutableDictionary)cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   formattedPrice = self->_formattedPrice;
   if (formattedPrice)
   {
-    [v3 setObject:formattedPrice forKey:@"price"];
+    [dictionary setObject:formattedPrice forKey:@"price"];
   }
 
   name = self->_name;

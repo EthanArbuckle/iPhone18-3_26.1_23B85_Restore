@@ -1,26 +1,26 @@
 @interface MFConversationItemFooterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityConversationViewControllerForCell:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityConversationViewControllerForCell:(id)cell;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityPerformLeadingAction;
-- (void)_accessibilityUpdateLeadingActionTitle:(id)a3;
+- (void)_accessibilityUpdateLeadingActionTitle:(id)title;
 - (void)layoutSubviews;
 @end
 
 @implementation MFConversationItemFooterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFConversationItemFooterView" hasInstanceMethod:@"seeMoreButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFConversationItemFooterView" hasInstanceMethod:@"revealActionsButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFConversationItemFooterView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MFConversationViewCell"];
-  [v3 validateClass:@"MFExpandedMessageCell" hasInstanceMethod:@"messageViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFMessageViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFConversationItemFooterViewAccessibility" hasInstanceMethod:@"_accessibilityConversationViewControllerForCell:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"MFConversationItemFooterViewAccessibility" hasInstanceMethod:@"_accessibilityUpdateLeadingActionTitle:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ConversationViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFConversationItemFooterView" hasInstanceMethod:@"seeMoreButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFConversationItemFooterView" hasInstanceMethod:@"revealActionsButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFConversationItemFooterView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MFConversationViewCell"];
+  [validationsCopy validateClass:@"MFExpandedMessageCell" hasInstanceMethod:@"messageViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFMessageViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFConversationItemFooterViewAccessibility" hasInstanceMethod:@"_accessibilityConversationViewControllerForCell:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"MFConversationItemFooterViewAccessibility" hasInstanceMethod:@"_accessibilityUpdateLeadingActionTitle:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -44,8 +44,8 @@
 
   if (_AXSAutomationEnabled())
   {
-    v7 = [v6 titleLabel];
-    [v7 bounds];
+    titleLabel = [v6 titleLabel];
+    [titleLabel bounds];
     v9 = v8;
 
     [v6 bounds];
@@ -53,9 +53,9 @@
     [v6 accessibilitySetIdentification:@"AXAccessibilityUseAccessibilityFrameForHittest"];
   }
 
-  v11 = [(MFConversationItemFooterViewAccessibility *)self _accessibilityParentCell];
-  v12 = [(MFConversationItemFooterViewAccessibility *)self _accessibilityConversationViewControllerForCell:v11];
-  v13 = [v12 _accessibilityTitleForLeadingActionWithCell:v11];
+  _accessibilityParentCell = [(MFConversationItemFooterViewAccessibility *)self _accessibilityParentCell];
+  v12 = [(MFConversationItemFooterViewAccessibility *)self _accessibilityConversationViewControllerForCell:_accessibilityParentCell];
+  v13 = [v12 _accessibilityTitleForLeadingActionWithCell:_accessibilityParentCell];
   v14 = accessibilitySubstituteReadPhonemeInString(v13);
 
   [(MFConversationItemFooterViewAccessibility *)self _accessibilityUpdateLeadingActionTitle:v14];
@@ -73,11 +73,11 @@ uint64_t __87__MFConversationItemFooterViewAccessibility__accessibilityLoadAcces
 
 - (void)_accessibilityPerformLeadingAction
 {
-  v3 = [(MFConversationItemFooterViewAccessibility *)self _accessibilityParentCell];
-  v4 = [(MFConversationItemFooterViewAccessibility *)self _accessibilityConversationViewControllerForCell:v3];
-  [v4 _accessibilityPerformLeadingActionWithCell:v3];
-  v7 = v3;
-  v5 = v3;
+  _accessibilityParentCell = [(MFConversationItemFooterViewAccessibility *)self _accessibilityParentCell];
+  v4 = [(MFConversationItemFooterViewAccessibility *)self _accessibilityConversationViewControllerForCell:_accessibilityParentCell];
+  [v4 _accessibilityPerformLeadingActionWithCell:_accessibilityParentCell];
+  v7 = _accessibilityParentCell;
+  v5 = _accessibilityParentCell;
   v6 = v4;
   AXPerformBlockOnMainThreadAfterDelay();
 }
@@ -88,15 +88,15 @@ void __79__MFConversationItemFooterViewAccessibility__accessibilityPerformLeadin
   [*(a1 + 48) _accessibilityUpdateLeadingActionTitle:v2];
 }
 
-- (void)_accessibilityUpdateLeadingActionTitle:(id)a3
+- (void)_accessibilityUpdateLeadingActionTitle:(id)title
 {
   v11[1] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  titleCopy = title;
   v5 = [(MFConversationItemFooterViewAccessibility *)self safeValueForKey:@"revealActionsButton"];
-  if ([v4 length])
+  if ([titleCopy length])
   {
     v6 = objc_alloc(MEMORY[0x29EDC78E0]);
-    v7 = accessibilitySubstituteReadPhonemeInString(v4);
+    v7 = accessibilitySubstituteReadPhonemeInString(titleCopy);
     v8 = [v6 initWithName:v7 target:self selector:sel__accessibilityPerformLeadingAction];
 
     v11[0] = v8;
@@ -107,13 +107,13 @@ void __79__MFConversationItemFooterViewAccessibility__accessibilityPerformLeadin
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (id)_accessibilityConversationViewControllerForCell:(id)a3
+- (id)_accessibilityConversationViewControllerForCell:(id)cell
 {
-  v3 = a3;
+  cellCopy = cell;
   NSClassFromString(&cfstr_Mfexpandedmess_0.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 safeValueForKey:@"messageViewController"];
+    v4 = [cellCopy safeValueForKey:@"messageViewController"];
     v5 = [v4 safeValueForKey:@"delegate"];
   }
 

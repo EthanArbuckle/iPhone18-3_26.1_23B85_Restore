@@ -1,28 +1,28 @@
 @interface IDSClientChannel
 - (BOOL)connectWithTransportThread;
-- (BOOL)writeBuffer:(char *)a3 bufferSize:(unsigned int)a4 metaData:(const void *)a5 metadataSize:(unsigned int)a6 moreComing:(BOOL)a7;
-- (BOOL)writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 metaData:(const void *)a5 metadataSize:(unsigned int)a6;
-- (BOOL)writePacketBuffer:(id *)a3 metaData:(const void *)a4 metadataSize:(unsigned int)a5 moreComing:(BOOL)a6;
-- (IDSClientChannel)initWithDestination:(id)a3;
+- (BOOL)writeBuffer:(char *)buffer bufferSize:(unsigned int)size metaData:(const void *)data metadataSize:(unsigned int)metadataSize moreComing:(BOOL)coming;
+- (BOOL)writeDatagram:(const void *)datagram datagramSize:(unsigned int)size metaData:(const void *)data metadataSize:(unsigned int)metadataSize;
+- (BOOL)writePacketBuffer:(id *)buffer metaData:(const void *)data metadataSize:(unsigned int)size moreComing:(BOOL)coming;
+- (IDSClientChannel)initWithDestination:(id)destination;
 - (id)description;
 - (void)connectWithProtocoHandler;
 - (void)dealloc;
 - (void)invalidate;
 - (void)osChannelInfoLog;
-- (void)setWriteHandler:(id)a3;
+- (void)setWriteHandler:(id)handler;
 @end
 
 @implementation IDSClientChannel
 
-- (IDSClientChannel)initWithDestination:(id)a3
+- (IDSClientChannel)initWithDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v9.receiver = self;
   v9.super_class = IDSClientChannel;
   v5 = [(IDSClientChannel *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [destinationCopy copy];
     destination = v5->_destination;
     v5->_destination = v6;
   }
@@ -71,19 +71,19 @@
   [(IDSClientChannel *)&v4 dealloc];
 }
 
-- (BOOL)writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 metaData:(const void *)a5 metadataSize:(unsigned int)a6
+- (BOOL)writeDatagram:(const void *)datagram datagramSize:(unsigned int)size metaData:(const void *)data metadataSize:(unsigned int)metadataSize
 {
   if (self->_clientReady)
   {
     if (!self->_nwChannel)
     {
-      v11 = [IDSFoundationLog ClientChannel:a3];
+      v11 = [IDSFoundationLog ClientChannel:datagram];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v29 = a4;
+        sizeCopy3 = size;
         v30 = 2048;
-        v31 = a6;
+        metadataSizeCopy3 = metadataSize;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "writeDatagram: attempt to send client data %lu metadata %lu but no channel", buf, 0x16u);
       }
 
@@ -92,7 +92,7 @@
 
     if (self->_closed)
     {
-      v9 = [IDSFoundationLog ClientChannel:a3];
+      v9 = [IDSFoundationLog ClientChannel:datagram];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -113,9 +113,9 @@ LABEL_8:
       {
         v16 = *(protocol_handler + 56);
         *buf = 134218752;
-        v29 = a4;
+        sizeCopy3 = size;
         v30 = 2048;
-        v31 = a6;
+        metadataSizeCopy3 = metadataSize;
         v32 = 2048;
         v33 = protocol_handler;
         v34 = 2048;
@@ -134,22 +134,22 @@ LABEL_8:
     v17 = nw_frame_array_first();
     v18 = nw_frame_unclaimed_bytes();
     hasMetadata = self->_hasMetadata;
-    v20 = a6 + 2;
+    v20 = metadataSize + 2;
     if (!self->_hasMetadata)
     {
       v20 = 0;
     }
 
-    v21 = v20 + a4 == 0;
-    if (v20 + a4)
+    v21 = v20 + size == 0;
+    if (v20 + size)
     {
       v25 = +[IDSFoundationLog ClientChannel];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218496;
-        v29 = a4;
+        sizeCopy3 = size;
         v30 = 2048;
-        v31 = a6;
+        metadataSizeCopy3 = metadataSize;
         v32 = 2048;
         v33 = 0;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "writeDatagram: have data %lu metadata %lu to send to client but not enough bytes (%lu) in frame", buf, 0x20u);
@@ -162,24 +162,24 @@ LABEL_8:
     v22 = v18;
     if (hasMetadata)
     {
-      *v18 = bswap32(a6) >> 16;
-      if (a6)
+      *v18 = bswap32(metadataSize) >> 16;
+      if (metadataSize)
       {
-        memcpy(v18 + 1, a5, a6);
+        memcpy(v18 + 1, data, metadataSize);
       }
 
-      if (!a4)
+      if (!size)
       {
         goto LABEL_35;
       }
 
-      v23 = a4;
-      v18 = (v22 + a6 + 2);
+      sizeCopy5 = size;
+      v18 = (v22 + metadataSize + 2);
     }
 
     else
     {
-      if (!a4)
+      if (!size)
       {
 LABEL_35:
         nw_frame_claim();
@@ -191,14 +191,14 @@ LABEL_36:
         return v21;
       }
 
-      v23 = a4;
+      sizeCopy5 = size;
     }
 
-    memcpy(v18, a3, v23);
+    memcpy(v18, datagram, sizeCopy5);
     goto LABEL_35;
   }
 
-  v9 = [IDSFoundationLog ClientChannel:a3];
+  v9 = [IDSFoundationLog ClientChannel:datagram];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -211,11 +211,11 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)writePacketBuffer:(id *)a3 metaData:(const void *)a4 metadataSize:(unsigned int)a5 moreComing:(BOOL)a6
+- (BOOL)writePacketBuffer:(id *)buffer metaData:(const void *)data metadataSize:(unsigned int)size moreComing:(BOOL)coming
 {
   if (!self->_clientReady)
   {
-    v13 = [IDSFoundationLog ClientChannel:a3];
+    v13 = [IDSFoundationLog ClientChannel:buffer];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -229,10 +229,10 @@ LABEL_11:
     return 0;
   }
 
-  if (a3)
+  if (buffer)
   {
-    var0 = a3->var0;
-    var2 = a3->var2;
+    var0 = buffer->var0;
+    var2 = buffer->var2;
   }
 
   else
@@ -254,7 +254,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (var2 | a5)
+  if (var2 | size)
   {
     if (os_channel_available_slot_count())
     {
@@ -267,7 +267,7 @@ LABEL_11:
       os_channel_get_next_slot();
       if (self->_hasMetadata)
       {
-        v17 = a5 + 2;
+        v17 = size + 2;
       }
 
       else
@@ -295,7 +295,7 @@ LABEL_11:
 
           v51 = v29;
           v52 = 1024;
-          *v53 = a5;
+          *v53 = size;
           *&v53[4] = 1024;
           *&v53[6] = var2;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "writePacketBuffer: Ignoring a zero-byte message. hasMetadata = %@, metadataSize = %u, datagramSize = %u", v50, 0x18u);
@@ -312,7 +312,7 @@ LABEL_11:
           *v50 = 134218496;
           v51 = var2;
           v52 = 2048;
-          *v53 = a5;
+          *v53 = size;
           *&v53[8] = 2048;
           v54 = *&buf[2];
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "writePacketBuffer: have data %lu metadata %lu to send to client but not enough bytes %lu in slot", v50, 0x20u);
@@ -329,10 +329,10 @@ LABEL_57:
         v40 = *&buf[16];
         if (self->_hasMetadata)
         {
-          **&buf[16] = bswap32(a5) >> 16;
-          if (a5)
+          **&buf[16] = bswap32(size) >> 16;
+          if (size)
           {
-            memcpy((v40 + 2), a4, a5);
+            memcpy((v40 + 2), data, size);
           }
 
           if (!var2)
@@ -341,7 +341,7 @@ LABEL_57:
           }
 
           v41 = var2;
-          v42 = (v40 + a5 + 2);
+          v42 = (v40 + size + 2);
         }
 
         else
@@ -368,7 +368,7 @@ LABEL_64:
           }
         }
 
-        if (a6)
+        if (coming)
         {
           self->_osChannelNeedSync = 1;
         }
@@ -401,12 +401,12 @@ LABEL_64:
       {
         if (v30)
         {
-          if (a3)
+          if (buffer)
           {
-            v31 = *a3->var0;
-            v32 = *(a3->var0 + 1);
-            v33 = *(a3->var0 + 2);
-            v34 = *(a3->var0 + 3);
+            v31 = *buffer->var0;
+            v32 = *(buffer->var0 + 1);
+            v33 = *(buffer->var0 + 2);
+            v34 = *(buffer->var0 + 3);
           }
 
           else
@@ -420,7 +420,7 @@ LABEL_64:
           *v50 = 134219520;
           v51 = var2;
           v52 = 2048;
-          *v53 = a5;
+          *v53 = size;
           *&v53[8] = 2048;
           v54 = *&buf[2];
           v55 = 1024;
@@ -438,14 +438,14 @@ LABEL_64:
 
       else if (v30)
       {
-        v35 = *a4;
-        v36 = *(a4 + 1);
-        v37 = *(a4 + 2);
-        v38 = *(a4 + 3);
+        v35 = *data;
+        v36 = *(data + 1);
+        v37 = *(data + 2);
+        v38 = *(data + 3);
         *v50 = 134219520;
         v51 = 0;
         v52 = 2048;
-        *v53 = a5;
+        *v53 = size;
         *&v53[8] = 2048;
         v54 = *&buf[2];
         v55 = 1024;
@@ -471,7 +471,7 @@ LABEL_55:
       *buf = 134218240;
       *&buf[4] = var2;
       *&buf[12] = 2048;
-      *&buf[14] = a5;
+      *&buf[14] = size;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "writePacketBuffer: have data %lu metadata %lu to send to client but no slots", buf, 0x16u);
     }
 
@@ -506,7 +506,7 @@ LABEL_55:
   }
 
   result = 0;
-  if (self->_osChannelNeedSync && !a6)
+  if (self->_osChannelNeedSync && !coming)
   {
     v21 = os_channel_sync();
     if (v21)
@@ -533,11 +533,11 @@ LABEL_39:
   return result;
 }
 
-- (BOOL)writeBuffer:(char *)a3 bufferSize:(unsigned int)a4 metaData:(const void *)a5 metadataSize:(unsigned int)a6 moreComing:(BOOL)a7
+- (BOOL)writeBuffer:(char *)buffer bufferSize:(unsigned int)size metaData:(const void *)data metadataSize:(unsigned int)metadataSize moreComing:(BOOL)coming
 {
   if (!self->_clientReady)
   {
-    v10 = [IDSFoundationLog ClientChannel:a3];
+    v10 = [IDSFoundationLog ClientChannel:buffer];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -550,14 +550,14 @@ LABEL_11:
     return 0;
   }
 
-  if (a3)
+  if (buffer)
   {
-    v9 = a4;
+    sizeCopy = size;
   }
 
   else
   {
-    v9 = 0;
+    sizeCopy = 0;
   }
 
   if (self->_closed)
@@ -575,7 +575,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v9 | a6)
+  if (sizeCopy | metadataSize)
   {
     if (os_channel_available_slot_count())
     {
@@ -588,7 +588,7 @@ LABEL_10:
       os_channel_get_next_slot();
       if (self->_hasMetadata)
       {
-        v17 = a6 + 2;
+        v17 = metadataSize + 2;
       }
 
       else
@@ -596,16 +596,16 @@ LABEL_10:
         v17 = 0;
       }
 
-      v18 = v17 + v9;
-      if (v17 + v9 > *&buf[2])
+      v18 = v17 + sizeCopy;
+      if (v17 + sizeCopy > *&buf[2])
       {
         v19 = +[IDSFoundationLog ClientChannel];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v46 = 134218496;
-          v47 = v9;
+          v47 = sizeCopy;
           v48 = 2048;
-          v49 = a6;
+          metadataSizeCopy3 = metadataSize;
           v50 = 2048;
           v51 = *&buf[2];
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "writeBuffer: have data %lu metadata %lu to send to client but not enough bytes %lu in slot", &v46, 0x20u);
@@ -622,18 +622,18 @@ LABEL_50:
         v38 = *&buf[16];
         if (self->_hasMetadata)
         {
-          **&buf[16] = bswap32(a6) >> 16;
-          if (a6)
+          **&buf[16] = bswap32(metadataSize) >> 16;
+          if (metadataSize)
           {
-            memcpy((v38 + 2), a5, a6);
+            memcpy((v38 + 2), data, metadataSize);
           }
 
-          if (!v9)
+          if (!sizeCopy)
           {
             goto LABEL_57;
           }
 
-          v39 = (v38 + a6 + 2);
+          v39 = (v38 + metadataSize + 2);
         }
 
         else
@@ -641,7 +641,7 @@ LABEL_50:
           v39 = *&buf[16];
         }
 
-        memcpy(v39, a3, v9);
+        memcpy(v39, buffer, sizeCopy);
 LABEL_57:
         uuid_copy(*&buf[24], self->_flowID);
         os_channel_set_slot_properties();
@@ -659,7 +659,7 @@ LABEL_57:
           }
         }
 
-        if (a7)
+        if (coming)
         {
           self->_osChannelNeedSync = 1;
         }
@@ -688,16 +688,16 @@ LABEL_57:
 
       v27 = +[IDSFoundationLog ClientChannel];
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
-      if (v9)
+      if (sizeCopy)
       {
         if (v28)
         {
-          if (a3)
+          if (buffer)
           {
-            v29 = *a3;
-            v30 = a3[1];
-            v31 = a3[2];
-            v32 = a3[3];
+            v29 = *buffer;
+            v30 = buffer[1];
+            v31 = buffer[2];
+            v32 = buffer[3];
           }
 
           else
@@ -709,9 +709,9 @@ LABEL_57:
           }
 
           v46 = 134219520;
-          v47 = v9;
+          v47 = sizeCopy;
           v48 = 2048;
-          v49 = a6;
+          metadataSizeCopy3 = metadataSize;
           v50 = 2048;
           v51 = *&buf[2];
           v52 = 1024;
@@ -729,14 +729,14 @@ LABEL_57:
 
       else if (v28)
       {
-        v33 = *a5;
-        v34 = *(a5 + 1);
-        v35 = *(a5 + 2);
-        v36 = *(a5 + 3);
+        v33 = *data;
+        v34 = *(data + 1);
+        v35 = *(data + 2);
+        v36 = *(data + 3);
         v46 = 134219520;
         v47 = 0;
         v48 = 2048;
-        v49 = a6;
+        metadataSizeCopy3 = metadataSize;
         v50 = 2048;
         v51 = *&buf[2];
         v52 = 1024;
@@ -760,9 +760,9 @@ LABEL_48:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      *&buf[4] = v9;
+      *&buf[4] = sizeCopy;
       *&buf[12] = 2048;
-      *&buf[14] = a6;
+      *&buf[14] = metadataSize;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "writeBuffer: have data %lu metadata %lu to send to client but no slots", buf, 0x16u);
     }
 
@@ -797,7 +797,7 @@ LABEL_48:
   }
 
   result = 0;
-  if (self->_osChannelNeedSync && !a7)
+  if (self->_osChannelNeedSync && !coming)
   {
     v21 = os_channel_sync();
     if (v21)
@@ -824,10 +824,10 @@ LABEL_38:
   return result;
 }
 
-- (void)setWriteHandler:(id)a3
+- (void)setWriteHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (!self->_clientReady)
   {
     v6 = +[IDSFoundationLog ClientChannel];
@@ -862,9 +862,9 @@ LABEL_7:
 
   if (self->_osChannel)
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v9 = [v4 copy];
+      v9 = [handlerCopy copy];
       writeHandler = self->_writeHandler;
       self->_writeHandler = v9;
 
@@ -901,11 +901,11 @@ LABEL_9:
 
   else
   {
-    v4 = self;
+    selfCopy = self;
     v5 = +[IDSClientChannelManager sharedInstance];
-    LOBYTE(v4) = [v5 connectTransportThreadForClient:v4];
+    LOBYTE(selfCopy) = [v5 connectTransportThreadForClient:selfCopy];
 
-    return v4;
+    return selfCopy;
   }
 }
 

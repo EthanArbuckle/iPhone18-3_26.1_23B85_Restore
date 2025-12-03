@@ -1,5 +1,5 @@
 @interface LNEmptySystemProtocolMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LNEmptySystemProtocolMetadata)init;
 - (NSString)description;
 @end
@@ -13,16 +13,16 @@
   return [(LNEmptySystemProtocolMetadata *)&v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     isKindOfClass = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();

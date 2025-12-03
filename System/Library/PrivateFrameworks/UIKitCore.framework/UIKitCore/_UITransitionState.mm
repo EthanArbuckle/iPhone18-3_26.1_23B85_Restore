@@ -1,23 +1,23 @@
 @interface _UITransitionState
-- (_UITransitionState)initWithTransitionDirection:(int64_t)a3 completion:(id)a4;
+- (_UITransitionState)initWithTransitionDirection:(int64_t)direction completion:(id)completion;
 - (id)description;
-- (void)cleanupWithFinishedState:(BOOL)a3 completedState:(BOOL)a4;
+- (void)cleanupWithFinishedState:(BOOL)state completedState:(BOOL)completedState;
 - (void)markBeginDate;
 @end
 
 @implementation _UITransitionState
 
-- (_UITransitionState)initWithTransitionDirection:(int64_t)a3 completion:(id)a4
+- (_UITransitionState)initWithTransitionDirection:(int64_t)direction completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12.receiver = self;
   v12.super_class = _UITransitionState;
   v7 = [(_UITransitionState *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_transitionDirection = a3;
-    v9 = [v6 copy];
+    v7->_transitionDirection = direction;
+    v9 = [completionCopy copy];
     completion = v8->_completion;
     v8->_completion = v9;
   }
@@ -32,12 +32,12 @@
   self->_beginDate = v3;
 }
 
-- (void)cleanupWithFinishedState:(BOOL)a3 completedState:(BOOL)a4
+- (void)cleanupWithFinishedState:(BOOL)state completedState:(BOOL)completedState
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, a3, a4);
+    completion[2](completion, state, completedState);
     v6 = self->_completion;
     self->_completion = 0;
   }

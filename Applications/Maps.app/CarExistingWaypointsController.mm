@@ -1,5 +1,5 @@
 @interface CarExistingWaypointsController
-- (CarExistingWaypointsController)initWithRoutePlanningSession:(id)a3;
+- (CarExistingWaypointsController)initWithRoutePlanningSession:(id)session;
 - (id)destinationSearchResultIfAvailable;
 - (id)originSearchResult;
 - (id)subtitleForCurrentDestination;
@@ -10,47 +10,47 @@
 
 - (id)subtitleForCurrentDestination
 {
-  v2 = [(CarExistingWaypointsController *)self destinationSearchResultIfAvailable];
-  v3 = [v2 mapItem];
-  v4 = [v3 _addressFormattedAsShortenedAddress];
+  destinationSearchResultIfAvailable = [(CarExistingWaypointsController *)self destinationSearchResultIfAvailable];
+  mapItem = [destinationSearchResultIfAvailable mapItem];
+  _addressFormattedAsShortenedAddress = [mapItem _addressFormattedAsShortenedAddress];
 
-  return v4;
+  return _addressFormattedAsShortenedAddress;
 }
 
 - (id)titleForCurrentDestination
 {
-  v2 = [(CarExistingWaypointsController *)self routePlanningSession];
-  v3 = [v2 destinationName];
+  routePlanningSession = [(CarExistingWaypointsController *)self routePlanningSession];
+  destinationName = [routePlanningSession destinationName];
 
-  return v3;
+  return destinationName;
 }
 
 - (id)destinationSearchResultIfAvailable
 {
-  v2 = [(CarExistingWaypointsController *)self routePlanningSession];
-  v3 = [v2 destinationDisplayableMarker];
+  routePlanningSession = [(CarExistingWaypointsController *)self routePlanningSession];
+  destinationDisplayableMarker = [routePlanningSession destinationDisplayableMarker];
 
-  return v3;
+  return destinationDisplayableMarker;
 }
 
 - (id)originSearchResult
 {
-  v2 = [(CarExistingWaypointsController *)self routePlanningSession];
-  v3 = [v2 originDisplayableMarker];
+  routePlanningSession = [(CarExistingWaypointsController *)self routePlanningSession];
+  originDisplayableMarker = [routePlanningSession originDisplayableMarker];
 
-  return v3;
+  return originDisplayableMarker;
 }
 
-- (CarExistingWaypointsController)initWithRoutePlanningSession:(id)a3
+- (CarExistingWaypointsController)initWithRoutePlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = CarExistingWaypointsController;
   v6 = [(CarExistingWaypointsController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_routePlanningSession, a3);
+    objc_storeStrong(&v6->_routePlanningSession, session);
   }
 
   return v7;

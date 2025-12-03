@@ -1,24 +1,24 @@
 @interface VATUtils
-+ (id)formatFromTokens:(id)a3;
++ (id)formatFromTokens:(id)tokens;
 @end
 
 @implementation VATUtils
 
-+ (id)formatFromTokens:(id)a3
++ (id)formatFromTokens:(id)tokens
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  tokensCopy = tokens;
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = tokensCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
-    LOBYTE(v8) = 0;
+    LOBYTE(hasSpaceAfter) = 0;
     v9 = *v19;
     do
     {
@@ -30,21 +30,21 @@
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        if ([v4 length] && ((v8 & 1) != 0 || objc_msgSend(v11, "hasSpaceBefore")))
+        if ([v4 length] && ((hasSpaceAfter & 1) != 0 || objc_msgSend(v11, "hasSpaceBefore")))
         {
           [v4 appendString:@" "];
         }
 
-        v12 = [v11 tokenName];
-        [v4 appendString:v12];
+        tokenName = [v11 tokenName];
+        [v4 appendString:tokenName];
 
-        v8 = [v11 hasSpaceAfter];
+        hasSpaceAfter = [v11 hasSpaceAfter];
         [v4 appendString:@" Confidence: "];
         v13 = MEMORY[0x277CCABB0];
         [v11 confidence];
         v14 = [v13 numberWithDouble:?];
-        v15 = [v14 stringValue];
-        [v4 appendString:v15];
+        stringValue = [v14 stringValue];
+        [v4 appendString:stringValue];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -52,7 +52,7 @@
 
     while (v7);
 
-    if (v8)
+    if (hasSpaceAfter)
     {
       [v4 appendString:@" "];
     }

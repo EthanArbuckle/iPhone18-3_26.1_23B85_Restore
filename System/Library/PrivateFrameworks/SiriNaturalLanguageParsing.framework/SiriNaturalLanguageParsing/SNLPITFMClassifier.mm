@@ -1,10 +1,10 @@
 @interface SNLPITFMClassifier
-+ (id)classifierWithModelBundle:(id)a3 modelInfo:(id)a4 error:(id *)a5;
-+ (id)classifierWithModelBundle:(id)a3 modelInfo:(id)a4 initializationBlock:(id)a5 error:(id *)a6;
-+ (unique_ptr<const)_convertRequest:(id)a3;
-- (SNLPITFMClassifier)initWithModelBundle:(id)a3 modelInfo:(id)a4 initializationBlock:(id)a5 error:(id *)a6;
++ (id)classifierWithModelBundle:(id)bundle modelInfo:(id)info error:(id *)error;
++ (id)classifierWithModelBundle:(id)bundle modelInfo:(id)info initializationBlock:(id)block error:(id *)error;
++ (unique_ptr<const)_convertRequest:(id)request;
+- (SNLPITFMClassifier)initWithModelBundle:(id)bundle modelInfo:(id)info initializationBlock:(id)block error:(id *)error;
 - (id).cxx_construct;
-- (id)responseForRequest:(id)a3 error:(id *)a4;
+- (id)responseForRequest:(id)request error:(id *)error;
 - (unique_ptr<snlp::common::asset_logger::SNLPAssetLogger,)_setupAssetLogger;
 @end
 
@@ -40,10 +40,10 @@ void __42__SNLPITFMClassifier__initializationBlock__block_invoke(void *a1@<X1>, 
   getAssetDirectoryNCV(&__p);
 }
 
-- (id)responseForRequest:(id)a3 error:(id *)a4
+- (id)responseForRequest:(id)request error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestCopy = request;
   v6 = SNLPOSLoggerForCategory(7);
   v7 = os_signpost_id_generate(v6);
 
@@ -65,9 +65,9 @@ void __42__SNLPITFMClassifier__initializationBlock__block_invoke(void *a1@<X1>, 
   v11 = SNLPOSLoggerForCategory(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(SNLPITFMModelInfo *)self->_modelInfo loggingComponent];
-    v13 = v12;
-    if (v12 >= 8)
+    loggingComponent = [(SNLPITFMModelInfo *)self->_modelInfo loggingComponent];
+    v13 = loggingComponent;
+    if (loggingComponent >= 8)
     {
       v15 = SNLPOSLoggerForCategory(4);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -84,10 +84,10 @@ void __42__SNLPITFMClassifier__initializationBlock__block_invoke(void *a1@<X1>, 
 
     else
     {
-      v14 = off_2784B6F30[v12];
+      v14 = off_2784B6F30[loggingComponent];
     }
 
-    v16 = [(SNLPITFMModelInfo *)self->_modelInfo loggingComponentString];
+    loggingComponentString = [(SNLPITFMModelInfo *)self->_modelInfo loggingComponentString];
     snlp::common::asset_logger::SNLPAssetLogger::toString(v34, self->_assetLogger.__ptr_);
     if (v37 >= 0)
     {
@@ -102,7 +102,7 @@ void __42__SNLPITFMClassifier__initializationBlock__block_invoke(void *a1@<X1>, 
     *buf = 136315650;
     v39 = v14;
     v40 = 2112;
-    v41 = v16;
+    v41 = loggingComponentString;
     v42 = 2080;
     v43 = v17;
     _os_log_impl(&dword_22284A000, v11, OS_LOG_TYPE_DEBUG, "[%s] [%@ Assets] %s", buf, 0x20u);
@@ -115,7 +115,7 @@ void __42__SNLPITFMClassifier__initializationBlock__block_invoke(void *a1@<X1>, 
   v18 = objc_opt_class();
   if (v18)
   {
-    [v18 _convertRequest:v5];
+    [v18 _convertRequest:requestCopy];
     v19 = v33;
   }
 
@@ -181,13 +181,13 @@ void __42__SNLPITFMClassifier__initializationBlock__block_invoke(void *a1@<X1>, 
   return v24;
 }
 
-- (SNLPITFMClassifier)initWithModelBundle:(id)a3 modelInfo:(id)a4 initializationBlock:(id)a5 error:(id *)a6
+- (SNLPITFMClassifier)initWithModelBundle:(id)bundle modelInfo:(id)info initializationBlock:(id)block error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  bundleCopy = bundle;
+  infoCopy = info;
+  blockCopy = block;
   v27 = 0;
-  (v13)[2](&v28);
+  (blockCopy)[2](&v28);
   v14 = 0;
   v15 = v14;
   if (v28)
@@ -198,8 +198,8 @@ void __42__SNLPITFMClassifier__initializationBlock__block_invoke(void *a1@<X1>, 
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_modelBundle, a3);
-      objc_storeStrong(&v17->_modelInfo, a4);
+      objc_storeStrong(&v16->_modelBundle, bundle);
+      objc_storeStrong(&v17->_modelInfo, info);
       v18 = v28;
       v28 = 0;
       ptr = v17->_orchestrator.__ptr_;
@@ -217,20 +217,20 @@ void __42__SNLPITFMClassifier__initializationBlock__block_invoke(void *a1@<X1>, 
     }
 
     self = v17;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
   {
-    if (!a6)
+    if (!error)
     {
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_12;
     }
 
     v22 = v14;
-    v21 = 0;
-    *a6 = v15;
+    selfCopy = 0;
+    *error = v15;
   }
 
   v23 = v28;
@@ -242,48 +242,48 @@ void __42__SNLPITFMClassifier__initializationBlock__block_invoke(void *a1@<X1>, 
 
 LABEL_12:
 
-  return v21;
+  return selfCopy;
 }
 
-+ (unique_ptr<const)_convertRequest:(id)a3
++ (unique_ptr<const)_convertRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 data];
-  v5 = [v4 bytes];
+  requestCopy = request;
+  data = [requestCopy data];
+  bytes = [data bytes];
 
-  v6 = [v3 data];
-  [v6 length];
-  PB::Reader::Reader(&v7, v5);
+  data2 = [requestCopy data];
+  [data2 length];
+  PB::Reader::Reader(&v7, bytes);
 
   operator new();
 }
 
-+ (id)classifierWithModelBundle:(id)a3 modelInfo:(id)a4 error:(id *)a5
++ (id)classifierWithModelBundle:(id)bundle modelInfo:(id)info error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_opt_class() _initializationBlock];
-  v11 = [[a1 alloc] initWithModelBundle:v8 modelInfo:v9 initializationBlock:v10 error:a5];
+  bundleCopy = bundle;
+  infoCopy = info;
+  _initializationBlock = [objc_opt_class() _initializationBlock];
+  v11 = [[self alloc] initWithModelBundle:bundleCopy modelInfo:infoCopy initializationBlock:_initializationBlock error:error];
   v12 = v11;
   if (v11)
   {
     v13 = v11;
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return v12;
 }
 
-+ (id)classifierWithModelBundle:(id)a3 modelInfo:(id)a4 initializationBlock:(id)a5 error:(id *)a6
++ (id)classifierWithModelBundle:(id)bundle modelInfo:(id)info initializationBlock:(id)block error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [[a1 alloc] initWithModelBundle:v10 modelInfo:v11 initializationBlock:v12 error:a6];
+  bundleCopy = bundle;
+  infoCopy = info;
+  blockCopy = block;
+  v13 = [[self alloc] initWithModelBundle:bundleCopy modelInfo:infoCopy initializationBlock:blockCopy error:error];
 
   return v13;
 }

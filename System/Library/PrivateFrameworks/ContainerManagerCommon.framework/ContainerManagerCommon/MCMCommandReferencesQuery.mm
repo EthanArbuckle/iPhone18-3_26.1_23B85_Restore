@@ -5,7 +5,7 @@
 - (BOOL)deleteDuringReconciliation;
 - (BOOL)preflightClientAllowed;
 - (BOOL)yesReallyApplyToAll;
-- (MCMCommandReferencesQuery)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandReferencesQuery)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMUserIdentity)userIdentity;
 - (NSSet)groupIdentifiers;
 - (NSSet)ownerIdentifiers;
@@ -103,46 +103,46 @@
   v35 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(MCMResultWithOwnersAndGroupsBase);
-  v5 = [(MCMCommandReferencesQuery *)self ownerIdentifiers];
-  if (v5)
+  ownerIdentifiers = [(MCMCommandReferencesQuery *)self ownerIdentifiers];
+  if (ownerIdentifiers)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(MCMCommandReferencesQuery *)self groupIdentifiers];
-    v6 = v7 == 0;
+    groupIdentifiers = [(MCMCommandReferencesQuery *)self groupIdentifiers];
+    v6 = groupIdentifiers == 0;
   }
 
   v8 = gCodeSigningMapping;
-  v9 = [(MCMCommandReferencesQuery *)self containerClass];
+  containerClass = [(MCMCommandReferencesQuery *)self containerClass];
   v28 = 0;
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __36__MCMCommandReferencesQuery_execute__block_invoke;
   v24 = &unk_1E86B04E8;
   v27 = v6;
-  v25 = self;
+  selfCopy = self;
   v10 = v4;
   v26 = v10;
-  LOBYTE(v9) = [v8 enumerateOwnersAndGroupsWithGroupClass:v9 error:&v28 block:&v21];
+  LOBYTE(containerClass) = [v8 enumerateOwnersAndGroupsWithGroupClass:containerClass error:&v28 block:&v21];
   v11 = v28;
-  if ((v9 & 1) == 0)
+  if ((containerClass & 1) == 0)
   {
     v12 = [MCMResultWithOwnersAndGroupsBase alloc];
-    v13 = [(MCMResultBase *)v12 initWithError:v11, v21, v22, v23, v24, v25];
+    selfCopy = [(MCMResultBase *)v12 initWithError:v11, v21, v22, v23, v24, selfCopy];
 
-    v10 = v13;
+    v10 = selfCopy;
   }
 
   v14 = container_log_handle_for_category();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [(MCMResultWithOwnersAndGroupsBase *)v10 ownerIdentifiers];
-    v18 = [v17 count];
-    v19 = [(MCMResultWithOwnersAndGroupsBase *)v10 groupIdentifiers];
-    v20 = [v19 count];
+    ownerIdentifiers2 = [(MCMResultWithOwnersAndGroupsBase *)v10 ownerIdentifiers];
+    v18 = [ownerIdentifiers2 count];
+    groupIdentifiers2 = [(MCMResultWithOwnersAndGroupsBase *)v10 groupIdentifiers];
+    v20 = [groupIdentifiers2 count];
     *buf = 134218498;
     v30 = v18;
     v31 = 2048;
@@ -152,8 +152,8 @@
     _os_log_debug_impl(&dword_1DF2C3000, v14, OS_LOG_TYPE_DEBUG, "References query; owners count = %lu, groups count = %lu, error = %@", buf, 0x20u);
   }
 
-  v15 = [(MCMCommand *)self resultPromise];
-  [v15 completeWithResult:v10];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v10];
 
   objc_autoreleasePoolPop(v3);
   v16 = *MEMORY[0x1E69E9840];
@@ -218,33 +218,33 @@ LABEL_13:
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToReadReferences];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToReadReferences = [clientIdentity isAllowedToReadReferences];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToReadReferences;
 }
 
-- (MCMCommandReferencesQuery)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandReferencesQuery)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v16.receiver = self;
   v16.super_class = MCMCommandReferencesQuery;
-  v9 = [(MCMCommand *)&v16 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v16 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v9->_containerClass = [v8 containerClass];
-    v10 = [v8 ownerIdentifiers];
+    v9->_containerClass = [messageCopy containerClass];
+    ownerIdentifiers = [messageCopy ownerIdentifiers];
     ownerIdentifiers = v9->_ownerIdentifiers;
-    v9->_ownerIdentifiers = v10;
+    v9->_ownerIdentifiers = ownerIdentifiers;
 
-    v12 = [v8 groupIdentifiers];
+    groupIdentifiers = [messageCopy groupIdentifiers];
     groupIdentifiers = v9->_groupIdentifiers;
-    v9->_groupIdentifiers = v12;
+    v9->_groupIdentifiers = groupIdentifiers;
 
-    v9->_uid = [v8 uid];
+    v9->_uid = [messageCopy uid];
   }
 
   v14 = *MEMORY[0x1E69E9840];

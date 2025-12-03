@@ -1,14 +1,14 @@
 @interface NSMergeConflict
 - (NSMergeConflict)init;
-- (NSMergeConflict)initWithCoder:(id)a3;
+- (NSMergeConflict)initWithCoder:(id)coder;
 - (NSMergeConflict)initWithSource:(NSManagedObject *)srcObject newVersion:(NSUInteger)newvers oldVersion:(NSUInteger)oldvers cachedSnapshot:(NSDictionary *)cachesnap persistedSnapshot:(NSDictionary *)persnap;
-- (NSMergeConflict)initWithSource:(id)a3 newVersion:(unint64_t)a4 oldVersion:(unint64_t)a5 snapshot1:(id)a6 snapshot2:(id)a7 snapshot3:(id)a8;
+- (NSMergeConflict)initWithSource:(id)source newVersion:(unint64_t)version oldVersion:(unint64_t)oldVersion snapshot1:(id)snapshot1 snapshot2:(id)snapshot2 snapshot3:(id)snapshot3;
 - (id)description;
-- (id)objectForKey:(id)a3;
-- (id)valueForKey:(id)a3;
-- (void)_doCleanupForXPCStore:(id)a3 context:(id)a4;
+- (id)objectForKey:(id)key;
+- (id)valueForKey:(id)key;
+- (void)_doCleanupForXPCStore:(id)store context:(id)context;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSMergeConflict
@@ -26,15 +26,15 @@
     {
       if (dword_1ED4BEA64)
       {
-        v13 = [(NSManagedObject *)srcObject committedValuesForKeys:0];
+        _newCommittedSnapshotValues = [(NSManagedObject *)srcObject committedValuesForKeys:0];
       }
 
       else
       {
-        v13 = [(NSManagedObject *)srcObject _newCommittedSnapshotValues];
+        _newCommittedSnapshotValues = [(NSManagedObject *)srcObject _newCommittedSnapshotValues];
       }
 
-      v12->_snapshot1 = v13;
+      v12->_snapshot1 = _newCommittedSnapshotValues;
     }
 
     v12->_snapshot2 = cachesnap;
@@ -53,19 +53,19 @@
   return [(NSMergeConflict *)&v3 init];
 }
 
-- (NSMergeConflict)initWithSource:(id)a3 newVersion:(unint64_t)a4 oldVersion:(unint64_t)a5 snapshot1:(id)a6 snapshot2:(id)a7 snapshot3:(id)a8
+- (NSMergeConflict)initWithSource:(id)source newVersion:(unint64_t)version oldVersion:(unint64_t)oldVersion snapshot1:(id)snapshot1 snapshot2:(id)snapshot2 snapshot3:(id)snapshot3
 {
   v16.receiver = self;
   v16.super_class = NSMergeConflict;
   v14 = [(NSMergeConflict *)&v16 init];
   if (v14)
   {
-    v14->_source = a3;
-    v14->_snapshot1 = a6;
-    v14->_snapshot2 = a7;
-    v14->_snapshot3 = a8;
-    v14->_newVersion = a4;
-    v14->_oldVersion = a5;
+    v14->_source = source;
+    v14->_snapshot1 = snapshot1;
+    v14->_snapshot2 = snapshot2;
+    v14->_snapshot3 = snapshot3;
+    v14->_newVersion = version;
+    v14->_oldVersion = oldVersion;
   }
 
   return v14;
@@ -94,10 +94,10 @@
   source = self->_source;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v11 = self->_source;
+  objectID = self->_source;
   if ((isKindOfClass & 1) == 0)
   {
-    v11 = [self->_source objectID];
+    objectID = [self->_source objectID];
   }
 
   newVersion = self->_newVersion;
@@ -107,12 +107,12 @@
   oldVersion_low = LODWORD(self->_oldVersion);
   if (newVersion)
   {
-    v17 = [v13 stringWithFormat:@"%@ (%p) for NSManagedObject (%p) with objectID '%@' with oldVersion = %d and newVersion = %d and old %@ = %@ and new %@ = %@", v14, self, v15, v11, oldVersion_low, self->_newVersion, v7, snapshot1, v6, v8];
+    v17 = [v13 stringWithFormat:@"%@ (%p) for NSManagedObject (%p) with objectID '%@' with oldVersion = %d and newVersion = %d and old %@ = %@ and new %@ = %@", v14, self, v15, objectID, oldVersion_low, self->_newVersion, v7, snapshot1, v6, v8];
   }
 
   else
   {
-    v17 = [v13 stringWithFormat:@"%@ (%p) for NSManagedObject (%p) with objectID '%@' with oldVersion = %d and newVersion = <deleted> and old %@ = %@", v14, self, v15, v11, oldVersion_low, v7, snapshot1, v21, v22, v23];
+    v17 = [v13 stringWithFormat:@"%@ (%p) for NSManagedObject (%p) with objectID '%@' with oldVersion = %d and newVersion = <deleted> and old %@ = %@", v14, self, v15, objectID, oldVersion_low, v7, snapshot1, v21, v22, v23];
   }
 
   v18 = v17;
@@ -129,55 +129,55 @@
   [(NSMergeConflict *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 delegate] && (objc_msgSend(a3, "delegate"), (objc_opt_respondsToSelector() & 1) != 0))
+  if ([coder delegate] && (objc_msgSend(coder, "delegate"), (objc_opt_respondsToSelector() & 1) != 0))
   {
-    [a3 encodeObject:self->_source forKey:@"_source"];
-    [a3 encodeObject:self->_snapshot1 forKey:@"_snapshot1"];
-    [a3 encodeObject:self->_snapshot2 forKey:@"_snapshot2"];
-    [a3 encodeObject:self->_snapshot3 forKey:@"_snapshot3"];
-    [a3 encodeInteger:self->_oldVersion forKey:@"_oldVersion"];
+    [coder encodeObject:self->_source forKey:@"_source"];
+    [coder encodeObject:self->_snapshot1 forKey:@"_snapshot1"];
+    [coder encodeObject:self->_snapshot2 forKey:@"_snapshot2"];
+    [coder encodeObject:self->_snapshot3 forKey:@"_snapshot3"];
+    [coder encodeInteger:self->_oldVersion forKey:@"_oldVersion"];
     newVersion = self->_newVersion;
 
-    [a3 encodeInteger:newVersion forKey:@"_newVersion"];
+    [coder encodeInteger:newVersion forKey:@"_newVersion"];
   }
 
   else
   {
     v6 = objc_opt_class();
-    NSLog(@"Coder = %@ (%@)", a3, v6);
-    v7 = [a3 delegate];
-    [a3 delegate];
+    NSLog(@"Coder = %@ (%@)", coder, v6);
+    delegate = [coder delegate];
+    [coder delegate];
     v8 = objc_opt_class();
-    NSLog(@"Delegate = %@ (%@)", v7, v8);
+    NSLog(@"Delegate = %@ (%@)", delegate, v8);
     NSLog(@"CoreData does not support encoding of conflict objects. Conflicts need to be resolved within the scope of a valid managed object context and should not be archived or serialized: %@", self);
     __break(1u);
   }
 }
 
-- (NSMergeConflict)initWithCoder:(id)a3
+- (NSMergeConflict)initWithCoder:(id)coder
 {
-  if ([a3 requiresSecureCoding] && (objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(a3, "userInfo") && !objc_msgSend(objc_msgSend(a3, "userInfo"), "valueForKey:", @"PSCKey") || (objc_msgSend(a3, "requiresSecureCoding") & 1) == 0 && !objc_msgSend(a3, "delegate"))
+  if ([coder requiresSecureCoding] && (objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(coder, "userInfo") && !objc_msgSend(objc_msgSend(coder, "userInfo"), "valueForKey:", @"PSCKey") || (objc_msgSend(coder, "requiresSecureCoding") & 1) == 0 && !objc_msgSend(coder, "delegate"))
   {
     NSLog(@"This is probably not where you want to be");
   }
 
-  v5 = [a3 decodeObjectOfClasses:objc_msgSend(a3 forKey:{"allowedClasses"), @"_source"}];
-  v6 = [a3 decodeObjectOfClasses:objc_msgSend(a3 forKey:{"allowedClasses"), @"_snapshot1"}];
-  v7 = [a3 decodeObjectOfClasses:objc_msgSend(a3 forKey:{"allowedClasses"), @"_snapshot2"}];
-  v8 = [a3 decodeObjectOfClasses:objc_msgSend(a3 forKey:{"allowedClasses"), @"_snapshot3"}];
-  v9 = [a3 decodeIntegerForKey:@"_oldVersion"];
-  v10 = [a3 decodeIntegerForKey:@"_newVersion"];
+  v5 = [coder decodeObjectOfClasses:objc_msgSend(coder forKey:{"allowedClasses"), @"_source"}];
+  v6 = [coder decodeObjectOfClasses:objc_msgSend(coder forKey:{"allowedClasses"), @"_snapshot1"}];
+  v7 = [coder decodeObjectOfClasses:objc_msgSend(coder forKey:{"allowedClasses"), @"_snapshot2"}];
+  v8 = [coder decodeObjectOfClasses:objc_msgSend(coder forKey:{"allowedClasses"), @"_snapshot3"}];
+  v9 = [coder decodeIntegerForKey:@"_oldVersion"];
+  v10 = [coder decodeIntegerForKey:@"_newVersion"];
 
   return [(NSMergeConflict *)self initWithSource:v5 newVersion:v10 oldVersion:v9 snapshot1:v6 snapshot2:v7 snapshot3:v8];
 }
 
-- (void)_doCleanupForXPCStore:(id)a3 context:(id)a4
+- (void)_doCleanupForXPCStore:(id)store context:(id)context
 {
-  v7 = -[_NSQueryGenerationToken _generationalComponentForStore:]([a4 _queryGenerationToken], a3);
-  v8 = [(NSXPCStore *)a3 _cachedRowForObjectWithID:v7 generation:?];
-  v9 = [a4 objectWithID:self->_source];
+  v7 = -[_NSQueryGenerationToken _generationalComponentForStore:]([context _queryGenerationToken], store);
+  v8 = [(NSXPCStore *)store _cachedRowForObjectWithID:v7 generation:?];
+  v9 = [context objectWithID:self->_source];
 
   self->_source = v9;
   self->_snapshot3 = self->_snapshot2;
@@ -186,34 +186,34 @@
   self->_snapshot1 = 0;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  if (a3 == @"object")
+  if (key == @"object")
   {
     return self->_source;
   }
 
-  if (a3 == @"snapshot")
+  if (key == @"snapshot")
   {
     return self->_snapshot1;
   }
 
-  if (a3 == @"cachedRow")
+  if (key == @"cachedRow")
   {
     return self->_snapshot2;
   }
 
-  if (a3 == @"databaseRow")
+  if (key == @"databaseRow")
   {
     return self->_snapshot3;
   }
 
-  if (a3 == @"newVersion")
+  if (key == @"newVersion")
   {
     goto LABEL_16;
   }
 
-  if (a3 == @"oldVersion")
+  if (key == @"oldVersion")
   {
 LABEL_18:
     v6 = MEMORY[0x1E696AD98];
@@ -221,29 +221,29 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([a3 isEqual:@"object"])
+  if ([key isEqual:@"object"])
   {
     return self->_source;
   }
 
-  if ([a3 isEqual:@"snapshot"])
+  if ([key isEqual:@"snapshot"])
   {
     return self->_snapshot1;
   }
 
-  if ([a3 isEqual:@"cachedRow"])
+  if ([key isEqual:@"cachedRow"])
   {
     return self->_snapshot2;
   }
 
-  if ([a3 isEqual:@"databaseRow"])
+  if ([key isEqual:@"databaseRow"])
   {
     return self->_snapshot3;
   }
 
-  if (![a3 isEqual:@"newVersion"])
+  if (![key isEqual:@"newVersion"])
   {
-    if (![a3 isEqual:@"oldVersion"])
+    if (![key isEqual:@"oldVersion"])
     {
       return 0;
     }
@@ -259,34 +259,34 @@ LABEL_19:
   return [v6 numberWithUnsignedInteger:oldVersion];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  if (a3 == @"object")
+  if (key == @"object")
   {
     return self->_source;
   }
 
-  if (a3 == @"snapshot")
+  if (key == @"snapshot")
   {
     return self->_snapshot1;
   }
 
-  if (a3 == @"cachedRow")
+  if (key == @"cachedRow")
   {
     return self->_snapshot2;
   }
 
-  if (a3 == @"databaseRow")
+  if (key == @"databaseRow")
   {
     return self->_snapshot3;
   }
 
-  if (a3 == @"newVersion")
+  if (key == @"newVersion")
   {
     goto LABEL_17;
   }
 
-  if (a3 == @"oldVersion")
+  if (key == @"oldVersion")
   {
 LABEL_19:
     v6 = MEMORY[0x1E696AD98];
@@ -294,33 +294,33 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([a3 isEqual:@"object"])
+  if ([key isEqual:@"object"])
   {
     return self->_source;
   }
 
-  if ([a3 isEqual:@"snapshot"])
+  if ([key isEqual:@"snapshot"])
   {
     return self->_snapshot1;
   }
 
-  if ([a3 isEqual:@"cachedRow"])
+  if ([key isEqual:@"cachedRow"])
   {
     return self->_snapshot2;
   }
 
-  if ([a3 isEqual:@"databaseRow"])
+  if ([key isEqual:@"databaseRow"])
   {
     return self->_snapshot3;
   }
 
-  if (![a3 isEqual:@"newVersion"])
+  if (![key isEqual:@"newVersion"])
   {
-    if (![a3 isEqual:@"oldVersion"])
+    if (![key isEqual:@"oldVersion"])
     {
       v8.receiver = self;
       v8.super_class = NSMergeConflict;
-      return [(NSMergeConflict *)&v8 valueForKey:a3];
+      return [(NSMergeConflict *)&v8 valueForKey:key];
     }
 
     goto LABEL_19;

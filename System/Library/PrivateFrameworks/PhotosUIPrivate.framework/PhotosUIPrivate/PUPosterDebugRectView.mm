@@ -1,37 +1,37 @@
 @interface PUPosterDebugRectView
-- (PUPosterDebugRectView)initWithFrame:(CGRect)a3;
-- (void)setBorderColor:(id)a3;
-- (void)setBorderWidth:(double)a3;
+- (PUPosterDebugRectView)initWithFrame:(CGRect)frame;
+- (void)setBorderColor:(id)color;
+- (void)setBorderWidth:(double)width;
 @end
 
 @implementation PUPosterDebugRectView
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  self->_borderWidth = a3;
-  v4 = [(PUPosterDebugRectView *)self layer];
-  [v4 setBorderWidth:a3];
+  self->_borderWidth = width;
+  layer = [(PUPosterDebugRectView *)self layer];
+  [layer setBorderWidth:width];
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  objc_storeStrong(&self->_borderColor, a3);
-  v5 = a3;
-  v6 = [v5 CGColor];
+  objc_storeStrong(&self->_borderColor, color);
+  colorCopy = color;
+  cGColor = [colorCopy CGColor];
 
-  v7 = [(PUPosterDebugRectView *)self layer];
-  [v7 setBorderColor:v6];
+  layer = [(PUPosterDebugRectView *)self layer];
+  [layer setBorderColor:cGColor];
 }
 
-- (PUPosterDebugRectView)initWithFrame:(CGRect)a3
+- (PUPosterDebugRectView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PUPosterDebugRectView;
-  v3 = [(PUPosterDebugRectView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPosterDebugRectView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(PUPosterDebugRectView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PUPosterDebugRectView *)v3 setBackgroundColor:clearColor];
 
     [(PUPosterDebugRectView *)v3 setUserInteractionEnabled:0];
   }

@@ -1,56 +1,56 @@
 @interface HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasMajorVersion:(BOOL)a3;
-- (void)setHasMinorVersion:(BOOL)a3;
-- (void)setHasRampEnabled:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)setHasUpdateVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasMajorVersion:(BOOL)version;
+- (void)setHasMinorVersion:(BOOL)version;
+- (void)setHasRampEnabled:(BOOL)enabled;
+- (void)setHasStatus:(BOOL)status;
+- (void)setHasUpdateVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 100) & 0x10) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 100) & 0x10) != 0)
   {
-    self->_status = *(v4 + 5);
+    self->_status = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
-  v7 = v4;
-  if (*(v4 + 11))
+  v7 = fromCopy;
+  if (*(fromCopy + 11))
   {
     [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)self setServerAssetURL:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)self setServerAssetAlgorithm:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)self setServerAssetMeasurement:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 100);
+  v5 = *(fromCopy + 100);
   if ((v5 & 4) != 0)
   {
-    self->_majorVersion = *(v4 + 3);
+    self->_majorVersion = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 100);
+    v5 = *(fromCopy + 100);
     if ((v5 & 8) == 0)
     {
 LABEL_11:
@@ -63,50 +63,50 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 100) & 8) == 0)
+  else if ((*(fromCopy + 100) & 8) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_minorVersion = *(v4 + 4);
+  self->_minorVersion = *(fromCopy + 4);
   *&self->_has |= 8u;
-  if ((*(v4 + 100) & 0x20) != 0)
+  if ((*(fromCopy + 100) & 0x20) != 0)
   {
 LABEL_12:
-    self->_updateVersion = *(v4 + 6);
+    self->_updateVersion = *(fromCopy + 6);
     *&self->_has |= 0x20u;
   }
 
 LABEL_13:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)self setBuildVersion:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 100))
+  if (*(fromCopy + 100))
   {
-    self->_downloadSize = *(v4 + 1);
+    self->_downloadSize = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)self setHumanReadableUpdateName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 100);
+  v6 = *(fromCopy + 100);
   if ((v6 & 0x40) != 0)
   {
-    self->_rampEnabled = *(v4 + 96);
+    self->_rampEnabled = *(fromCopy + 96);
     *&self->_has |= 0x40u;
-    v6 = *(v4 + 100);
+    v6 = *(fromCopy + 100);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_errorCode = *(v4 + 2);
+    self->_errorCode = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 }
@@ -198,36 +198,36 @@ LABEL_16:
   return v14 ^ v15 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
-  v5 = *(v4 + 100);
+  v5 = *(equalCopy + 100);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 100) & 0x10) == 0 || self->_status != *(v4 + 5))
+    if ((*(equalCopy + 100) & 0x10) == 0 || self->_status != *(equalCopy + 5))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 100) & 0x10) != 0)
+  else if ((*(equalCopy + 100) & 0x10) != 0)
   {
     goto LABEL_46;
   }
 
   serverAssetURL = self->_serverAssetURL;
-  if (serverAssetURL | *(v4 + 11) && ![(NSString *)serverAssetURL isEqual:?])
+  if (serverAssetURL | *(equalCopy + 11) && ![(NSString *)serverAssetURL isEqual:?])
   {
     goto LABEL_46;
   }
 
   serverAssetAlgorithm = self->_serverAssetAlgorithm;
-  if (serverAssetAlgorithm | *(v4 + 9))
+  if (serverAssetAlgorithm | *(equalCopy + 9))
   {
     if (![(NSString *)serverAssetAlgorithm isEqual:?])
     {
@@ -236,7 +236,7 @@ LABEL_16:
   }
 
   serverAssetMeasurement = self->_serverAssetMeasurement;
-  if (serverAssetMeasurement | *(v4 + 10))
+  if (serverAssetMeasurement | *(equalCopy + 10))
   {
     if (![(NSData *)serverAssetMeasurement isEqual:?])
     {
@@ -245,48 +245,48 @@ LABEL_16:
   }
 
   has = self->_has;
-  v10 = *(v4 + 100);
+  v10 = *(equalCopy + 100);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 100) & 4) == 0 || self->_majorVersion != *(v4 + 3))
+    if ((*(equalCopy + 100) & 4) == 0 || self->_majorVersion != *(equalCopy + 3))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 100) & 4) != 0)
+  else if ((*(equalCopy + 100) & 4) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 100) & 8) == 0 || self->_minorVersion != *(v4 + 4))
+    if ((*(equalCopy + 100) & 8) == 0 || self->_minorVersion != *(equalCopy + 4))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 100) & 8) != 0)
+  else if ((*(equalCopy + 100) & 8) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 100) & 0x20) == 0 || self->_updateVersion != *(v4 + 6))
+    if ((*(equalCopy + 100) & 0x20) == 0 || self->_updateVersion != *(equalCopy + 6))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 100) & 0x20) != 0)
+  else if ((*(equalCopy + 100) & 0x20) != 0)
   {
     goto LABEL_46;
   }
 
   buildVersion = self->_buildVersion;
-  if (buildVersion | *(v4 + 7))
+  if (buildVersion | *(equalCopy + 7))
   {
     if (![(NSString *)buildVersion isEqual:?])
     {
@@ -294,12 +294,12 @@ LABEL_16:
     }
 
     has = self->_has;
-    v10 = *(v4 + 100);
+    v10 = *(equalCopy + 100);
   }
 
   if (has)
   {
-    if ((v10 & 1) == 0 || self->_downloadSize != *(v4 + 1))
+    if ((v10 & 1) == 0 || self->_downloadSize != *(equalCopy + 1))
     {
       goto LABEL_46;
     }
@@ -311,7 +311,7 @@ LABEL_16:
   }
 
   humanReadableUpdateName = self->_humanReadableUpdateName;
-  if (humanReadableUpdateName | *(v4 + 8))
+  if (humanReadableUpdateName | *(equalCopy + 8))
   {
     if (![(NSString *)humanReadableUpdateName isEqual:?])
     {
@@ -319,7 +319,7 @@ LABEL_16:
     }
 
     has = self->_has;
-    v10 = *(v4 + 100);
+    v10 = *(equalCopy + 100);
   }
 
   if ((has & 0x40) == 0)
@@ -339,16 +339,16 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  v15 = *(v4 + 96);
+  v15 = *(equalCopy + 96);
   if (self->_rampEnabled)
   {
-    if ((*(v4 + 96) & 1) == 0)
+    if ((*(equalCopy + 96) & 1) == 0)
     {
       goto LABEL_46;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_46;
   }
@@ -357,7 +357,7 @@ LABEL_41:
   v13 = (v10 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_errorCode != *(v4 + 2))
+    if ((v10 & 2) == 0 || self->_errorCode != *(equalCopy + 2))
     {
       goto LABEL_46;
     }
@@ -370,9 +370,9 @@ LABEL_47:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x10) != 0)
   {
@@ -380,15 +380,15 @@ LABEL_47:
     *(v5 + 100) |= 0x10u;
   }
 
-  v7 = [(NSString *)self->_serverAssetURL copyWithZone:a3];
+  v7 = [(NSString *)self->_serverAssetURL copyWithZone:zone];
   v8 = *(v6 + 88);
   *(v6 + 88) = v7;
 
-  v9 = [(NSString *)self->_serverAssetAlgorithm copyWithZone:a3];
+  v9 = [(NSString *)self->_serverAssetAlgorithm copyWithZone:zone];
   v10 = *(v6 + 72);
   *(v6 + 72) = v9;
 
-  v11 = [(NSData *)self->_serverAssetMeasurement copyWithZone:a3];
+  v11 = [(NSData *)self->_serverAssetMeasurement copyWithZone:zone];
   v12 = *(v6 + 80);
   *(v6 + 80) = v11;
 
@@ -425,7 +425,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v14 = [(NSString *)self->_buildVersion copyWithZone:a3];
+  v14 = [(NSString *)self->_buildVersion copyWithZone:zone];
   v15 = *(v6 + 56);
   *(v6 + 56) = v14;
 
@@ -435,7 +435,7 @@ LABEL_7:
     *(v6 + 100) |= 1u;
   }
 
-  v16 = [(NSString *)self->_humanReadableUpdateName copyWithZone:a3];
+  v16 = [(NSString *)self->_humanReadableUpdateName copyWithZone:zone];
   v17 = *(v6 + 64);
   *(v6 + 64) = v16;
 
@@ -456,39 +456,39 @@ LABEL_7:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[5] = self->_status;
-    *(v4 + 100) |= 0x10u;
+    toCopy[5] = self->_status;
+    *(toCopy + 100) |= 0x10u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_serverAssetURL)
   {
-    [v4 setServerAssetURL:?];
-    v4 = v7;
+    [toCopy setServerAssetURL:?];
+    toCopy = v7;
   }
 
   if (self->_serverAssetAlgorithm)
   {
     [v7 setServerAssetAlgorithm:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_serverAssetMeasurement)
   {
     [v7 setServerAssetMeasurement:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = self->_majorVersion;
-    *(v4 + 100) |= 4u;
+    toCopy[3] = self->_majorVersion;
+    *(toCopy + 100) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -507,52 +507,52 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v4[4] = self->_minorVersion;
-  *(v4 + 100) |= 8u;
+  toCopy[4] = self->_minorVersion;
+  *(toCopy + 100) |= 8u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_12:
-    v4[6] = self->_updateVersion;
-    *(v4 + 100) |= 0x20u;
+    toCopy[6] = self->_updateVersion;
+    *(toCopy + 100) |= 0x20u;
   }
 
 LABEL_13:
   if (self->_buildVersion)
   {
     [v7 setBuildVersion:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
-    v4[1] = self->_downloadSize;
-    *(v4 + 100) |= 1u;
+    toCopy[1] = self->_downloadSize;
+    *(toCopy + 100) |= 1u;
   }
 
   if (self->_humanReadableUpdateName)
   {
     [v7 setHumanReadableUpdateName:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x40) != 0)
   {
-    *(v4 + 96) = self->_rampEnabled;
-    *(v4 + 100) |= 0x40u;
+    *(toCopy + 96) = self->_rampEnabled;
+    *(toCopy + 100) |= 0x40u;
     v6 = self->_has;
   }
 
   if ((v6 & 2) != 0)
   {
-    v4[2] = self->_errorCode;
-    *(v4 + 100) |= 2u;
+    toCopy[2] = self->_errorCode;
+    *(toCopy + 100) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
     status = self->_status;
@@ -640,36 +640,36 @@ LABEL_13:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 0x10) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_status];
-    [v3 setObject:v4 forKey:@"status"];
+    [dictionary setObject:v4 forKey:@"status"];
   }
 
   serverAssetURL = self->_serverAssetURL;
   if (serverAssetURL)
   {
-    [v3 setObject:serverAssetURL forKey:@"serverAssetURL"];
+    [dictionary setObject:serverAssetURL forKey:@"serverAssetURL"];
   }
 
   serverAssetAlgorithm = self->_serverAssetAlgorithm;
   if (serverAssetAlgorithm)
   {
-    [v3 setObject:serverAssetAlgorithm forKey:@"serverAssetAlgorithm"];
+    [dictionary setObject:serverAssetAlgorithm forKey:@"serverAssetAlgorithm"];
   }
 
   serverAssetMeasurement = self->_serverAssetMeasurement;
   if (serverAssetMeasurement)
   {
-    [v3 setObject:serverAssetMeasurement forKey:@"serverAssetMeasurement"];
+    [dictionary setObject:serverAssetMeasurement forKey:@"serverAssetMeasurement"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_majorVersion];
-    [v3 setObject:v17 forKey:@"majorVersion"];
+    [dictionary setObject:v17 forKey:@"majorVersion"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -690,39 +690,39 @@ LABEL_11:
   }
 
   v18 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_minorVersion];
-  [v3 setObject:v18 forKey:@"minorVersion"];
+  [dictionary setObject:v18 forKey:@"minorVersion"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_12:
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_updateVersion];
-    [v3 setObject:v9 forKey:@"updateVersion"];
+    [dictionary setObject:v9 forKey:@"updateVersion"];
   }
 
 LABEL_13:
   buildVersion = self->_buildVersion;
   if (buildVersion)
   {
-    [v3 setObject:buildVersion forKey:@"buildVersion"];
+    [dictionary setObject:buildVersion forKey:@"buildVersion"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_downloadSize];
-    [v3 setObject:v11 forKey:@"downloadSize"];
+    [dictionary setObject:v11 forKey:@"downloadSize"];
   }
 
   humanReadableUpdateName = self->_humanReadableUpdateName;
   if (humanReadableUpdateName)
   {
-    [v3 setObject:humanReadableUpdateName forKey:@"humanReadableUpdateName"];
+    [dictionary setObject:humanReadableUpdateName forKey:@"humanReadableUpdateName"];
   }
 
   v13 = self->_has;
   if ((v13 & 0x40) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_rampEnabled];
-    [v3 setObject:v14 forKey:@"rampEnabled"];
+    [dictionary setObject:v14 forKey:@"rampEnabled"];
 
     v13 = self->_has;
   }
@@ -730,10 +730,10 @@ LABEL_13:
   if ((v13 & 2) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_errorCode];
-    [v3 setObject:v15 forKey:@"errorCode"];
+    [dictionary setObject:v15 forKey:@"errorCode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -742,15 +742,15 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor;
   v4 = [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)&v8 description];
-  v5 = [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMSoftwareUpdateEventProtoSoftwareUpdateDescriptor *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -763,9 +763,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRampEnabled:(BOOL)a3
+- (void)setHasRampEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -778,9 +778,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasUpdateVersion:(BOOL)a3
+- (void)setHasUpdateVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 32;
   }
@@ -793,9 +793,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasMinorVersion:(BOOL)a3
+- (void)setHasMinorVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -808,9 +808,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMajorVersion:(BOOL)a3
+- (void)setHasMajorVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -823,9 +823,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }

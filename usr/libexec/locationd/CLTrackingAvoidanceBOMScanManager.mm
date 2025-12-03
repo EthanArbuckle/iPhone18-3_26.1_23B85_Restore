@@ -1,27 +1,27 @@
 @interface CLTrackingAvoidanceBOMScanManager
-- (BOOL)checkDailyResetEligible:(id)a3;
-- (CLTrackingAvoidanceBOMScanManager)initWithQueue:(id)a3 andController:(id)a4;
-- (double)computeBOMScanBackoffOfDate:(id)a3;
-- (id)initAndStartWithQueue:(id)a3 andController:(id)a4;
+- (BOOL)checkDailyResetEligible:(id)eligible;
+- (CLTrackingAvoidanceBOMScanManager)initWithQueue:(id)queue andController:(id)controller;
+- (double)computeBOMScanBackoffOfDate:(id)date;
+- (id)initAndStartWithQueue:(id)queue andController:(id)controller;
 - (id)timestampOfLastBOMDailyLimitResetDate;
 - (id)timestampOfLastBeepOnMoveScanDate;
 - (unsigned)remainingBOMScans;
 - (void)dispatchEnableBomScanAfterBackoff;
 - (void)enableBOMScan;
-- (void)handleRegisterWithController:(id)a3;
+- (void)handleRegisterWithController:(id)controller;
 - (void)handleUnRegisterController;
 - (void)resetBOMScanIfNeeded;
 - (void)scanCompleted;
 - (void)scheduleDailyResetBOMScan;
-- (void)setRemainingBOMScansTo:(unsigned int)a3;
-- (void)setTimeStampLastBeepOnMoveScan:(double)a3;
-- (void)setTimestampLastBOMDailyLimitResetDate:(double)a3;
-- (void)submitBOMMetricsScansCompleted:(unint64_t)a3 andTimeSinceLastDisable:(double)a4;
+- (void)setRemainingBOMScansTo:(unsigned int)to;
+- (void)setTimeStampLastBeepOnMoveScan:(double)scan;
+- (void)setTimestampLastBOMDailyLimitResetDate:(double)date;
+- (void)submitBOMMetricsScansCompleted:(unint64_t)completed andTimeSinceLastDisable:(double)disable;
 @end
 
 @implementation CLTrackingAvoidanceBOMScanManager
 
-- (CLTrackingAvoidanceBOMScanManager)initWithQueue:(id)a3 andController:(id)a4
+- (CLTrackingAvoidanceBOMScanManager)initWithQueue:(id)queue andController:(id)controller
 {
   v15.receiver = self;
   v15.super_class = CLTrackingAvoidanceBOMScanManager;
@@ -29,8 +29,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_queue = a3;
-    v6->_controller = a4;
+    v6->_queue = queue;
+    v6->_controller = controller;
     sub_10001CAF4(buf);
     v16 = 0.0;
     v8 = sub_1000B9370(*buf, "TrackingAvoidanceCooldownTimeForBOMScan", &v16);
@@ -68,7 +68,7 @@
     if (os_log_type_enabled(qword_1025D4708, OS_LOG_TYPE_INFO))
     {
       coolDownScan = v7->_coolDownScan;
-      v13 = [(CLTrackingAvoidanceBOMScanManager *)v7 remainingBOMScans];
+      remainingBOMScans = [(CLTrackingAvoidanceBOMScanManager *)v7 remainingBOMScans];
       *buf = 68289538;
       *&buf[4] = 0;
       *v18 = 2082;
@@ -76,7 +76,7 @@
       v19 = 2050;
       v20 = coolDownScan;
       v21 = 2050;
-      v22 = v13;
+      v22 = remainingBOMScans;
       _os_log_impl(dword_100000000, v11, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#ut BOM scan manager init , coolDownScan:%{public}lu, remainingBOMScans:%{public}lu}", buf, 0x26u);
     }
 
@@ -86,9 +86,9 @@
   return v7;
 }
 
-- (id)initAndStartWithQueue:(id)a3 andController:(id)a4
+- (id)initAndStartWithQueue:(id)queue andController:(id)controller
 {
-  v4 = [(CLTrackingAvoidanceBOMScanManager *)self initWithQueue:a3 andController:a4];
+  v4 = [(CLTrackingAvoidanceBOMScanManager *)self initWithQueue:queue andController:controller];
   v5 = v4;
   if (v4)
   {
@@ -100,11 +100,11 @@
   return v5;
 }
 
-- (void)setTimeStampLastBeepOnMoveScan:(double)a3
+- (void)setTimeStampLastBeepOnMoveScan:(double)scan
 {
-  v6 = a3;
+  scanCopy = scan;
   v3 = sub_1000206B4();
-  sub_100116D68(v3, "TrackingAvoidanceLastBeepOnMoveScanDate", &v6);
+  sub_100116D68(v3, "TrackingAvoidanceLastBeepOnMoveScanDate", &scanCopy);
   v4 = *sub_1000206B4();
   (*(v4 + 944))();
   if (qword_1025D4700 != -1)
@@ -120,7 +120,7 @@
     v9 = 2082;
     v10 = "";
     v11 = 2049;
-    v12 = v6;
+    v12 = scanCopy;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#ut BOM setting last BOM timestamp, time:%{private}lu}", buf, 0x1Cu);
   }
 }
@@ -154,11 +154,11 @@
   return [NSDate dateWithTimeIntervalSince1970:v6];
 }
 
-- (void)setTimestampLastBOMDailyLimitResetDate:(double)a3
+- (void)setTimestampLastBOMDailyLimitResetDate:(double)date
 {
-  v6 = a3;
+  dateCopy = date;
   v3 = sub_1000206B4();
-  sub_100116D68(v3, "TrackingAvoidanceLastBOMDailyLimitReset", &v6);
+  sub_100116D68(v3, "TrackingAvoidanceLastBOMDailyLimitReset", &dateCopy);
   v4 = *sub_1000206B4();
   (*(v4 + 944))();
   if (qword_1025D4700 != -1)
@@ -174,7 +174,7 @@
     v9 = 2082;
     v10 = "";
     v11 = 2049;
-    v12 = v6;
+    v12 = dateCopy;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#ut BOM setting last BOM daily limit reset timestamp, time:%{private}lu}", buf, 0x1Cu);
   }
 }
@@ -208,11 +208,11 @@
   return [NSDate dateWithTimeIntervalSince1970:v6];
 }
 
-- (void)setRemainingBOMScansTo:(unsigned int)a3
+- (void)setRemainingBOMScansTo:(unsigned int)to
 {
-  v6 = a3;
+  toCopy = to;
   v3 = sub_1000206B4();
-  sub_1001E8460(v3, "TrackingAvoidanceRemainingBOMScans", &v6);
+  sub_1001E8460(v3, "TrackingAvoidanceRemainingBOMScans", &toCopy);
   v4 = *sub_1000206B4();
   (*(v4 + 944))();
   if (qword_1025D4700 != -1)
@@ -228,7 +228,7 @@
     v9 = 2082;
     v10 = "";
     v11 = 2049;
-    v12 = v6;
+    v12 = toCopy;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#ut BOM setting scans reaming, remainingBOMScans:%{private}lu}", buf, 0x1Cu);
   }
 }
@@ -262,7 +262,7 @@
   return v6;
 }
 
-- (void)handleRegisterWithController:(id)a3
+- (void)handleRegisterWithController:(id)controller
 {
   if (qword_1025D4700 != -1)
   {
@@ -279,7 +279,7 @@
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#ut BOM register}", v6, 0x12u);
   }
 
-  [(CLTrackingAvoidanceBOMScanManager *)self setController:a3];
+  [(CLTrackingAvoidanceBOMScanManager *)self setController:controller];
   [(CLTrackingAvoidanceBOMScanManager *)self dispatchEnableBomScanAfterBackoff];
 }
 
@@ -318,15 +318,15 @@
     v8 = 2082;
     v9 = "";
     v10 = 2049;
-    v11 = [(CLTrackingAvoidanceBOMScanManager *)self remainingBOMScans];
+    remainingBOMScans = [(CLTrackingAvoidanceBOMScanManager *)self remainingBOMScans];
     v12 = 2113;
-    v13 = [(CLTrackingAvoidanceBOMScanManager *)self timestampOfLastBeepOnMoveScanDate];
+    timestampOfLastBeepOnMoveScanDate = [(CLTrackingAvoidanceBOMScanManager *)self timestampOfLastBeepOnMoveScanDate];
     _os_log_impl(dword_100000000, v3, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#ut BOM scans, count:%{private}lu, LastBOMScan:%{private, location:escape_only}@}", &v6, 0x26u);
   }
 
   if ([(CLTrackingAvoidanceBOMScanManager *)self remainingBOMScans]&& [(CLTrackingAvoidanceBOMScanManager *)self controller])
   {
-    v4 = [(CLAvengerScannerClient *)self->_controller performNotOptedInBOMScan];
+    performNotOptedInBOMScan = [(CLAvengerScannerClient *)self->_controller performNotOptedInBOMScan];
     if (qword_1025D4700 != -1)
     {
       sub_101883F90();
@@ -340,15 +340,15 @@
       v8 = 2082;
       v9 = "";
       v10 = 2049;
-      v11 = v4;
+      remainingBOMScans = performNotOptedInBOMScan;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#ut BOM scan completed, completed:%{private}lu}", &v6, 0x1Cu);
     }
   }
 }
 
-- (double)computeBOMScanBackoffOfDate:(id)a3
+- (double)computeBOMScanBackoffOfDate:(id)date
 {
-  [a3 timeIntervalSinceDate:{-[CLTrackingAvoidanceBOMScanManager timestampOfLastBeepOnMoveScanDate](self, "timestampOfLastBeepOnMoveScanDate")}];
+  [date timeIntervalSinceDate:{-[CLTrackingAvoidanceBOMScanManager timestampOfLastBeepOnMoveScanDate](self, "timestampOfLastBeepOnMoveScanDate")}];
   coolDownScan = self->_coolDownScan;
   v6 = v4 >= coolDownScan || v4 < 0.0;
   result = coolDownScan - v4;
@@ -401,16 +401,16 @@
   [(CLTrackingAvoidanceBOMScanManager *)self dispatchEnableBomScanAfterBackoff];
 }
 
-- (void)submitBOMMetricsScansCompleted:(unint64_t)a3 andTimeSinceLastDisable:(double)a4
+- (void)submitBOMMetricsScansCompleted:(unint64_t)completed andTimeSinceLastDisable:(double)disable
 {
-  if (a4 > 86400.0 || a4 < 0.0)
+  if (disable > 86400.0 || disable < 0.0)
   {
-    v6 = -1.0;
+    disableCopy = -1.0;
   }
 
   else
   {
-    v6 = a4;
+    disableCopy = disable;
   }
 
   if (qword_1025D4700 != -1)
@@ -426,9 +426,9 @@
     v10 = 2082;
     v11 = "";
     v12 = 2050;
-    v13 = v6;
+    v13 = disableCopy;
     v14 = 2050;
-    v15 = a3;
+    completedCopy = completed;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#ut BOM metrics , timeSinceLastDisable:%{public}lu, scanCount:%{public}lu}", buf, 0x26u);
   }
 
@@ -461,9 +461,9 @@
   }
 }
 
-- (BOOL)checkDailyResetEligible:(id)a3
+- (BOOL)checkDailyResetEligible:(id)eligible
 {
-  [a3 timeIntervalSinceDate:{-[CLTrackingAvoidanceBOMScanManager timestampOfLastBOMDailyLimitResetDate](self, "timestampOfLastBOMDailyLimitResetDate")}];
+  [eligible timeIntervalSinceDate:{-[CLTrackingAvoidanceBOMScanManager timestampOfLastBOMDailyLimitResetDate](self, "timestampOfLastBOMDailyLimitResetDate")}];
   v4 = v3;
   if (qword_1025D4700 != -1)
   {

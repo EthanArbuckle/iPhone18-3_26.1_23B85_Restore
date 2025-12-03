@@ -1,7 +1,7 @@
 @interface CloudMediaServicesPlayerInterface
 - (CloudMediaServicesPlayerInterface)init;
 - (void)dealloc;
-- (void)getCloudExtensionConfigurationFor:(id)a3 homeUserID:(id)a4 endpointID:(id)a5 withCompletion:(id)a6;
+- (void)getCloudExtensionConfigurationFor:(id)for homeUserID:(id)d endpointID:(id)iD withCompletion:(id)completion;
 @end
 
 @implementation CloudMediaServicesPlayerInterface
@@ -28,8 +28,8 @@
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v6 setWithObjects:{v7, v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [(NSXPCConnection *)v2->_connection remoteObjectInterface];
-    [v14 setClasses:v13 forSelector:sel_getCloudExtensionConfigurationFor_homeUserID_endpointID_withCompletion_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface = [(NSXPCConnection *)v2->_connection remoteObjectInterface];
+    [remoteObjectInterface setClasses:v13 forSelector:sel_getCloudExtensionConfigurationFor_homeUserID_endpointID_withCompletion_ argumentIndex:0 ofReply:1];
 
     [(NSXPCConnection *)v2->_connection setInterruptionHandler:&__block_literal_global_0];
     [(NSXPCConnection *)v2->_connection setInvalidationHandler:&__block_literal_global_74];
@@ -80,21 +80,21 @@ void __41__CloudMediaServicesPlayerInterface_init__block_invoke_75(uint64_t a1, 
   [(CloudMediaServicesPlayerInterface *)&v3 dealloc];
 }
 
-- (void)getCloudExtensionConfigurationFor:(id)a3 homeUserID:(id)a4 endpointID:(id)a5 withCompletion:(id)a6
+- (void)getCloudExtensionConfigurationFor:(id)for homeUserID:(id)d endpointID:(id)iD withCompletion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   connection = self->_connection;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __108__CloudMediaServicesPlayerInterface_getCloudExtensionConfigurationFor_homeUserID_endpointID_withCompletion___block_invoke;
   v17[3] = &unk_278DDCF50;
-  v18 = v10;
-  v12 = v10;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  iDCopy = iD;
+  dCopy = d;
+  forCopy = for;
   v16 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v17];
-  [v16 getCloudExtensionConfigurationFor:v15 homeUserID:v14 endpointID:v13 withCompletion:v12];
+  [v16 getCloudExtensionConfigurationFor:forCopy homeUserID:dCopy endpointID:iDCopy withCompletion:v12];
 }
 
 uint64_t __108__CloudMediaServicesPlayerInterface_getCloudExtensionConfigurationFor_homeUserID_endpointID_withCompletion___block_invoke(uint64_t a1, uint64_t a2)

@@ -1,10 +1,10 @@
 @interface RawCameraCIImageProxy
-- (RawCameraCIImageProxy)initWithRawImage:(shared_ptr<CRawImage>)a3;
+- (RawCameraCIImageProxy)initWithRawImage:(shared_ptr<CRawImage>)image;
 - (id).cxx_construct;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)proxyedObject;
 - (shared_ptr<CRawImage>)rawImage;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation RawCameraCIImageProxy
@@ -39,19 +39,19 @@
   return v16;
 }
 
-- (RawCameraCIImageProxy)initWithRawImage:(shared_ptr<CRawImage>)a3
+- (RawCameraCIImageProxy)initWithRawImage:(shared_ptr<CRawImage>)image
 {
   if (self)
   {
-    v5 = *(a3.__ptr_ + 1);
-    v7 = *a3.__ptr_;
+    v5 = *(image.__ptr_ + 1);
+    v7 = *image.__ptr_;
     v8 = v5;
     if (v5)
     {
       atomic_fetch_add_explicit(&v5->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    objc_msgSend_setRawImage_(self, a2, &v7, a3.__cntrl_, v3);
+    objc_msgSend_setRawImage_(self, a2, &v7, image.__cntrl_, v3);
     if (v8)
     {
       sub_2337239E8(v8);
@@ -61,28 +61,28 @@
   return self;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v9 = objc_msgSend_proxyedObject(self, v5, v6, v7, v8);
-  objc_msgSend_selector(v4, v10, v11, v12, v13);
+  objc_msgSend_selector(invocationCopy, v10, v11, v12, v13);
   if (objc_opt_respondsToSelector())
   {
-    objc_msgSend_invokeWithTarget_(v4, v14, v9, v15, v16);
+    objc_msgSend_invokeWithTarget_(invocationCopy, v14, v9, v15, v16);
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = RawCameraCIImageProxy;
-    [(RawCameraCIImageProxy *)&v17 forwardInvocation:v4];
+    [(RawCameraCIImageProxy *)&v17 forwardInvocation:invocationCopy];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v6 = objc_msgSend_proxyedObject(self, a2, a3, v3, v4);
-  v10 = objc_msgSend_methodSignatureForSelector_(v6, v7, a3, v8, v9);
+  v6 = objc_msgSend_proxyedObject(self, a2, selector, v3, v4);
+  v10 = objc_msgSend_methodSignatureForSelector_(v6, v7, selector, v8, v9);
 
   return v10;
 }

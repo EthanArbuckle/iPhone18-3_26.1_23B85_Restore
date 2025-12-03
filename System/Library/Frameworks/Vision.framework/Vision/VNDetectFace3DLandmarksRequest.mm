@@ -1,7 +1,7 @@
 @interface VNDetectFace3DLandmarksRequest
 + (const)dependentRequestCompatibility;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 @end
 
 @implementation VNDetectFace3DLandmarksRequest
@@ -24,16 +24,16 @@
   return &+[VNDetectFace3DLandmarksRequest dependentRequestCompatibility]::ourDependentRequestCompatibilityTable;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
+  contextCopy = context;
   VNValidatedLog(1, @"Processing DetectFace3DLandmarks request\n", v9, v10, v11, v12, v13, v14, v34);
   v39 = 0;
-  v15 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v39 clippedToRegionOfInterest:1 error:a5];
+  v15 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v39 clippedToRegionOfInterest:1 error:error];
   v16 = v39;
   if (v15)
   {
-    v35 = a3;
+    revisionCopy = revision;
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v36 = v17;
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -50,7 +50,7 @@
         v19 = 0;
       }
 
-      v20 = [(VNRequest *)self detectFaceLandmarksInContext:v8 faces:v19 error:a5];
+      v20 = [(VNRequest *)self detectFaceLandmarksInContext:contextCopy faces:v19 error:error];
       if (!v20)
       {
         v32 = 0;
@@ -62,12 +62,12 @@ LABEL_22:
       [v37 addObjectsFromArray:v20];
     }
 
-    v21 = [v8 imageBufferAndReturnError:a5];
+    v21 = [contextCopy imageBufferAndReturnError:error];
     v22 = v21;
     if (v21)
     {
-      v23 = [v21 width];
-      v24 = [v22 height];
+      width = [v21 width];
+      height = [v22 height];
       v38 = 0;
       if (([v22 getPixelFocalLengthIfAvailable:&v38] & 1) == 0)
       {
@@ -77,16 +77,16 @@ LABEL_22:
       v25 = objc_alloc(MEMORY[0x1E695DF90]);
       LODWORD(v26) = v38;
       v27 = [MEMORY[0x1E696AD98] numberWithFloat:v26];
-      v40.width = v23;
-      v40.height = v24;
+      v40.width = width;
+      v40.height = height;
       DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(v40);
       v29 = [v25 initWithObjectsAndKeys:{v27, @"VNFaceGeometryEstimatorInitOption_CameraFocalLength", DictionaryRepresentation, @"VNFaceGeometryEstimatorInitOption_ImageSize", 0}];
 
-      v30 = [(VNDetectFace3DLandmarksRequest *)self applicableDetectorTypeForRevision:v35 error:a5];
+      v30 = [(VNDetectFace3DLandmarksRequest *)self applicableDetectorTypeForRevision:revisionCopy error:error];
       if (v30)
       {
         [(VNImageBasedRequest *)self regionOfInterest];
-        v31 = [(VNRequest *)self processFaceObservations:v37 revision:v35 regionOfInterest:v30 detectorType:v29 detectorOptions:&__block_literal_global_35_20373 shouldAlignFaceBBox:&__block_literal_global_20370 shouldRunDetectorBlock:v8 context:a5 error:?];
+        v31 = [(VNRequest *)self processFaceObservations:v37 revision:revisionCopy regionOfInterest:v30 detectorType:v29 detectorOptions:&__block_literal_global_35_20373 shouldAlignFaceBBox:&__block_literal_global_20370 shouldRunDetectorBlock:contextCopy context:error error:?];
         v32 = v31 != 0;
         if (v31)
         {
@@ -123,18 +123,18 @@ BOOL __74__VNDetectFace3DLandmarksRequest_internalPerformRevision_inContext_erro
   return v3;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNFaceGeometryEstimatorType";
     v5 = @"VNFaceGeometryEstimatorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else

@@ -1,33 +1,33 @@
 @interface NETSchemaNETBluetoothDevice
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETBluetoothDevice)initWithDictionary:(id)a3;
-- (NETSchemaNETBluetoothDevice)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETBluetoothDevice)initWithDictionary:(id)dictionary;
+- (NETSchemaNETBluetoothDevice)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasRssi:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasRssi:(BOOL)rssi;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETBluetoothDevice
 
-- (NETSchemaNETBluetoothDevice)initWithDictionary:(id)a3
+- (NETSchemaNETBluetoothDevice)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = NETSchemaNETBluetoothDevice;
   v5 = [(NETSchemaNETBluetoothDevice *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"index"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"index"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETBluetoothDevice setIndex:](v5, "setIndex:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"rssi"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"rssi"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (NETSchemaNETBluetoothDevice)initWithJSON:(id)a3
+- (NETSchemaNETBluetoothDevice)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETBluetoothDevice *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETBluetoothDevice *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETBluetoothDevice *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,12 +77,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETBluetoothDevice index](self, "index")}];
-    [v3 setObject:v5 forKeyedSubscript:@"index"];
+    [dictionary setObject:v5 forKeyedSubscript:@"index"];
 
     has = self->_has;
   }
@@ -92,12 +92,12 @@
     v6 = MEMORY[0x1E696AD98];
     [(NETSchemaNETBluetoothDevice *)self rssi];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"rssi"];
+    [dictionary setObject:v7 forKeyedSubscript:@"rssi"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -150,16 +150,16 @@ LABEL_3:
   return v8 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_9;
@@ -168,19 +168,19 @@ LABEL_3:
   if (*&has)
   {
     index = self->_index;
-    if (index != [v4 index])
+    if (index != [equalCopy index])
     {
       goto LABEL_9;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (rssi = self->_rssi, [v4 rssi], rssi == v10))
+    if (!v8 || (rssi = self->_rssi, [equalCopy rssi], rssi == v10))
     {
       v11 = 1;
       goto LABEL_10;
@@ -194,28 +194,28 @@ LABEL_10:
   return v11;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasRssi:(BOOL)a3
+- (void)setHasRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 2;
   }

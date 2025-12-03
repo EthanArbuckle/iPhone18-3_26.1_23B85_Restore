@@ -30,17 +30,17 @@
       +[(CNContactStore(DSContactHelpers) *)v3];
     }
 
-    v7 = 0;
+    identifier = 0;
   }
 
   else
   {
-    v7 = [v2 identifier];
+    identifier = [v2 identifier];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return identifier;
 }
 
 + (id)contactMatchingIdentity:()DSContactHelpers
@@ -51,59 +51,59 @@
   v5 = DSLog_6;
   DSLog_6 = v4;
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [v3 unifiedContactIdentifier];
-  v8 = [v7 length];
+  array = [MEMORY[0x277CBEB18] array];
+  unifiedContactIdentifier = [v3 unifiedContactIdentifier];
+  v8 = [unifiedContactIdentifier length];
 
   if (v8)
   {
     v9 = MEMORY[0x277CBDA58];
-    v10 = [v3 unifiedContactIdentifier];
-    v138[0] = v10;
+    unifiedContactIdentifier2 = [v3 unifiedContactIdentifier];
+    v138[0] = unifiedContactIdentifier2;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v138 count:1];
     v12 = [v9 predicateForContactsWithIdentifiers:v11];
-    [v6 addObject:v12];
+    [array addObject:v12];
   }
 
-  v13 = [v3 emailAddress];
-  v14 = [v13 length];
+  emailAddress = [v3 emailAddress];
+  v14 = [emailAddress length];
 
   if (v14)
   {
     v15 = MEMORY[0x277CBDA58];
-    v16 = [v3 emailAddress];
-    v17 = [v15 predicateForContactsMatchingEmailAddress:v16];
-    [v6 addObject:v17];
+    emailAddress2 = [v3 emailAddress];
+    v17 = [v15 predicateForContactsMatchingEmailAddress:emailAddress2];
+    [array addObject:v17];
   }
 
-  v18 = [v3 phoneNumber];
-  v19 = [v18 length];
+  phoneNumber = [v3 phoneNumber];
+  v19 = [phoneNumber length];
 
   if (v19)
   {
     v20 = MEMORY[0x277CBDB70];
-    v21 = [v3 phoneNumber];
-    v22 = [v20 phoneNumberWithStringValue:v21];
+    phoneNumber2 = [v3 phoneNumber];
+    v22 = [v20 phoneNumberWithStringValue:phoneNumber2];
 
     if (v22)
     {
       v23 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:v22];
-      [v6 addObject:v23];
+      [array addObject:v23];
     }
   }
 
-  v24 = [v3 nameComponents];
+  nameComponents = [v3 nameComponents];
 
-  if (v24)
+  if (nameComponents)
   {
     v25 = MEMORY[0x277CCAC08];
-    v26 = [v3 nameComponents];
-    v27 = [v25 localizedStringFromPersonNameComponents:v26 style:3 options:0];
+    nameComponents2 = [v3 nameComponents];
+    v27 = [v25 localizedStringFromPersonNameComponents:nameComponents2 style:3 options:0];
 
     if ([v27 length])
     {
       v28 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:v27];
-      [v6 addObject:v28];
+      [array addObject:v28];
     }
   }
 
@@ -140,7 +140,7 @@
   v124 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v38 = v6;
+  v38 = array;
   v94 = [v38 countByEnumeratingWithState:&v123 objects:v136 count:16];
   if (!v94)
   {
@@ -226,7 +226,7 @@ LABEL_73:
               v52 = [v105 length];
               [v49 imageData];
               v54 = v53 = i;
-              v55 = [v49 isSuggested];
+              isSuggested = [v49 isSuggested];
               *buf = 138478595;
               v130 = v105;
               v131 = 2050;
@@ -234,15 +234,15 @@ LABEL_73:
               v133 = 1024;
               LODWORD(v134[0]) = v54 != 0;
               WORD2(v134[0]) = 1026;
-              *(v134 + 6) = v55;
+              *(v134 + 6) = isSuggested;
               _os_log_impl(&dword_248C40000, v51, OS_LOG_TYPE_INFO, "Found potential contact match with name: %{private}@ (%{public}lu) and contains-thumbnail: %{BOOL}d, suggested: %{public}d", buf, 0x22u);
 
               i = v53;
               v38 = v103;
             }
 
-            v56 = [v3 phoneNumber];
-            v57 = [v56 length];
+            phoneNumber3 = [v3 phoneNumber];
+            v57 = [phoneNumber3 length];
 
             if (v57)
             {
@@ -250,8 +250,8 @@ LABEL_73:
               v117 = 0u;
               v114 = 0u;
               v115 = 0u;
-              v106 = [v49 phoneNumbers];
-              v109 = [v106 countByEnumeratingWithState:&v114 objects:v128 count:16];
+              phoneNumbers = [v49 phoneNumbers];
+              v109 = [phoneNumbers countByEnumeratingWithState:&v114 objects:v128 count:16];
               if (v109)
               {
                 v98 = v49;
@@ -263,20 +263,20 @@ LABEL_73:
                   {
                     if (*v115 != v108)
                     {
-                      objc_enumerationMutation(v106);
+                      objc_enumerationMutation(phoneNumbers);
                     }
 
                     v59 = *(*(&v114 + 1) + 8 * j);
-                    v60 = [v59 value];
-                    v61 = [v60 stringValue];
-                    if ([v61 length])
+                    value = [v59 value];
+                    stringValue = [value stringValue];
+                    if ([stringValue length])
                     {
-                      v62 = [v59 value];
-                      v63 = [v62 stringValue];
-                      v64 = [v63 ds_formattedPotentialPhoneNumber];
-                      v65 = [v107 phoneNumber];
-                      v66 = [v65 ds_formattedPotentialPhoneNumber];
-                      v67 = [v64 isEqualToString:v66];
+                      value2 = [v59 value];
+                      stringValue2 = [value2 stringValue];
+                      ds_formattedPotentialPhoneNumber = [stringValue2 ds_formattedPotentialPhoneNumber];
+                      phoneNumber4 = [v107 phoneNumber];
+                      ds_formattedPotentialPhoneNumber2 = [phoneNumber4 ds_formattedPotentialPhoneNumber];
+                      v67 = [ds_formattedPotentialPhoneNumber isEqualToString:ds_formattedPotentialPhoneNumber2];
 
                       if (v67)
                       {
@@ -286,11 +286,11 @@ LABEL_73:
                         if (v69)
                         {
                           v70 = v68;
-                          v71 = [v59 value];
+                          value3 = [v59 value];
                           *buf = 138478083;
                           v130 = v98;
                           v131 = 2113;
-                          v132 = v71;
+                          v132 = value3;
                           _os_log_impl(&dword_248C40000, v70, OS_LOG_TYPE_INFO, "Found matching contact %{private}@ based on phone number %{private}@", buf, 0x16u);
                         }
 
@@ -309,7 +309,7 @@ LABEL_73:
                     }
                   }
 
-                  v109 = [v106 countByEnumeratingWithState:&v114 objects:v128 count:16];
+                  v109 = [phoneNumbers countByEnumeratingWithState:&v114 objects:v128 count:16];
                   if (v109)
                   {
                     continue;
@@ -327,8 +327,8 @@ LABEL_73:
 LABEL_43:
             }
 
-            v73 = [v3 emailAddress];
-            v74 = [v73 length];
+            emailAddress3 = [v3 emailAddress];
+            v74 = [emailAddress3 length];
 
             if (v74)
             {
@@ -337,8 +337,8 @@ LABEL_43:
               v110 = 0u;
               v111 = 0u;
               v75 = v49;
-              v76 = [v49 emailAddresses];
-              v77 = [v76 countByEnumeratingWithState:&v110 objects:v127 count:16];
+              emailAddresses = [v49 emailAddresses];
+              v77 = [emailAddresses countByEnumeratingWithState:&v110 objects:v127 count:16];
               if (v77)
               {
                 v78 = v77;
@@ -349,12 +349,12 @@ LABEL_43:
                   {
                     if (*v111 != v79)
                     {
-                      objc_enumerationMutation(v76);
+                      objc_enumerationMutation(emailAddresses);
                     }
 
-                    v81 = [*(*(&v110 + 1) + 8 * k) value];
-                    v82 = [v3 emailAddress];
-                    v83 = [v81 isEqualToString:v82];
+                    value4 = [*(*(&v110 + 1) + 8 * k) value];
+                    emailAddress4 = [v3 emailAddress];
+                    v83 = [value4 isEqualToString:emailAddress4];
 
                     if (v83)
                     {
@@ -364,7 +364,7 @@ LABEL_43:
                         *buf = 138478083;
                         v130 = v75;
                         v131 = 2113;
-                        v132 = v81;
+                        v132 = value4;
                         _os_log_impl(&dword_248C40000, v84, OS_LOG_TYPE_INFO, "Found matching contact %{private}@ based on email %{private}@", buf, 0x16u);
                       }
 
@@ -375,7 +375,7 @@ LABEL_43:
                     }
                   }
 
-                  v78 = [v76 countByEnumeratingWithState:&v110 objects:v127 count:16];
+                  v78 = [emailAddresses countByEnumeratingWithState:&v110 objects:v127 count:16];
                   if (v78)
                   {
                     continue;
@@ -442,7 +442,7 @@ LABEL_76:
   v4 = a3;
   v5 = [[DSContactIdentity alloc] initWithEmail:v4 withPhone:0];
 
-  v6 = [a1 contactMatchingIdentity:v5];
+  v6 = [self contactMatchingIdentity:v5];
 
   return v6;
 }
@@ -452,7 +452,7 @@ LABEL_76:
   v4 = a3;
   v5 = [[DSContactIdentity alloc] initWithEmail:0 withPhone:v4];
 
-  v6 = [a1 contactMatchingIdentity:v5];
+  v6 = [self contactMatchingIdentity:v5];
 
   return v6;
 }
@@ -461,7 +461,7 @@ LABEL_76:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_248C40000, a2, OS_LOG_TYPE_ERROR, "Error fetching me contact: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

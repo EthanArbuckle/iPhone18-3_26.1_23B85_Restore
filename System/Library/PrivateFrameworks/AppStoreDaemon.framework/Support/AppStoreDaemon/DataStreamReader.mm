@@ -1,5 +1,5 @@
 @interface DataStreamReader
-- (int64_t)readBytes:(char *)a3 length:(unint64_t)a4 error:(id *)a5;
+- (int64_t)readBytes:(char *)bytes length:(unint64_t)length error:(id *)error;
 - (void)close;
 @end
 
@@ -15,20 +15,20 @@
   [(Stream *)&v4 close];
 }
 
-- (int64_t)readBytes:(char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (int64_t)readBytes:(char *)bytes length:(unint64_t)length error:(id *)error
 {
-  v5 = a4;
-  v8 = [(NSData *)self->_data length:a3];
+  lengthCopy = length;
+  v8 = [(NSData *)self->_data length:bytes];
   cursor = self->_cursor;
-  if (v8 - cursor < v5)
+  if (v8 - cursor < lengthCopy)
   {
-    v5 = v8 - cursor;
+    lengthCopy = v8 - cursor;
   }
 
-  if (v5 >= 1)
+  if (lengthCopy >= 1)
   {
-    [(NSData *)self->_data getBytes:a3 range:self->_cursor, v5];
-    cursor = (self->_cursor + v5);
+    [(NSData *)self->_data getBytes:bytes range:self->_cursor, lengthCopy];
+    cursor = (self->_cursor + lengthCopy);
     self->_cursor = cursor;
   }
 
@@ -38,7 +38,7 @@
     dispatch_source_merge_data(self->super._delegateSource, 0x10uLL);
   }
 
-  return v5;
+  return lengthCopy;
 }
 
 @end

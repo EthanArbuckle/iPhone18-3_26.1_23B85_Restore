@@ -1,40 +1,40 @@
 @interface DBGViewDebuggerSupport_iOS
-+ (BOOL)_isEffectView:(id)a3;
-+ (BOOL)_viewHasAmbiguousLayout:(id)a3;
-+ (BOOL)ibShouldIgnoreScrollableContentHeightAmbiguityForRepresentationOfItem:(id)a3;
-+ (BOOL)ibShouldIgnoreScrollableContentWidthAmbiguityForRepresentationOfItem:(id)a3;
-+ (BOOL)isViewSubclass:(id)a3;
-+ (BOOL)isWindowSubclass:(id)a3;
-+ (double)firstBaselineOffsetFromTopForView:(id)a3;
-+ (double)lastBaselineOffsetFromBottomForView:(id)a3;
-+ (double)screenBackingScaleForView:(id)a3;
-+ (double)screenBackingScaleForWindow:(id)a3;
++ (BOOL)_isEffectView:(id)view;
++ (BOOL)_viewHasAmbiguousLayout:(id)layout;
++ (BOOL)ibShouldIgnoreScrollableContentHeightAmbiguityForRepresentationOfItem:(id)item;
++ (BOOL)ibShouldIgnoreScrollableContentWidthAmbiguityForRepresentationOfItem:(id)item;
++ (BOOL)isViewSubclass:(id)subclass;
++ (BOOL)isWindowSubclass:(id)subclass;
++ (double)firstBaselineOffsetFromTopForView:(id)view;
++ (double)lastBaselineOffsetFromBottomForView:(id)view;
++ (double)screenBackingScaleForView:(id)view;
++ (double)screenBackingScaleForWindow:(id)window;
 + (id)_messagesUIExtensionViews;
-+ (id)_renderEffectViewUsingDrawHierarchyInRect:(id)a3;
++ (id)_renderEffectViewUsingDrawHierarchyInRect:(id)rect;
 + (id)appWindows;
-+ (id)displayNameForView:(id)a3;
-+ (id)primaryWindowFromWindows:(id)a3;
-+ (id)snapshotMethodForView:(id)a3;
-+ (id)snapshotView:(id)a3 errorString:(id *)a4;
-+ (id)subviewsForView:(id)a3;
-+ (id)viewForFirstBaselineLayoutPointerForView:(id)a3;
-+ (id)viewForLastBaselineLayoutPointerForView:(id)a3;
-+ (unint64_t)ambiguityStatusMaskForView:(id)a3;
-+ (void)addFrameBasics:(id)a3 toDict:(id)a4;
-+ (void)addLayoutInfoForView:(id)a3 toDict:(id)a4;
-+ (void)addViewBasics:(id)a3 toDict:(id)a4;
++ (id)displayNameForView:(id)view;
++ (id)primaryWindowFromWindows:(id)windows;
++ (id)snapshotMethodForView:(id)view;
++ (id)snapshotView:(id)view errorString:(id *)string;
++ (id)subviewsForView:(id)view;
++ (id)viewForFirstBaselineLayoutPointerForView:(id)view;
++ (id)viewForLastBaselineLayoutPointerForView:(id)view;
++ (unint64_t)ambiguityStatusMaskForView:(id)view;
++ (void)addFrameBasics:(id)basics toDict:(id)dict;
++ (void)addLayoutInfoForView:(id)view toDict:(id)dict;
++ (void)addViewBasics:(id)basics toDict:(id)dict;
 @end
 
 @implementation DBGViewDebuggerSupport_iOS
 
-+ (id)displayNameForView:(id)a3
++ (id)displayNameForView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 accessibilityLabel];
+  viewCopy = view;
+  accessibilityLabel = [viewCopy accessibilityLabel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [v3 accessibilityLabel];
+  accessibilityLabel2 = [viewCopy accessibilityLabel];
   if ((isKindOfClass & 1) == 0)
   {
     objc_opt_class();
@@ -45,11 +45,11 @@
       goto LABEL_5;
     }
 
-    v8 = [v3 accessibilityLabel];
-    v6 = [v8 string];
+    accessibilityLabel3 = [viewCopy accessibilityLabel];
+    accessibilityLabel2 = [accessibilityLabel3 string];
   }
 
-  if (v6)
+  if (accessibilityLabel2)
   {
     goto LABEL_16;
   }
@@ -58,19 +58,19 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 currentTitle];
+    accessibilityLabel2 = [viewCopy currentTitle];
     goto LABEL_16;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v3 text];
+    text = [viewCopy text];
 LABEL_9:
-    v10 = v9;
+    date = text;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = date;
     }
 
     else
@@ -85,35 +85,35 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v3 date];
-    v12 = [v10 description];
+    date = [viewCopy date];
+    v12 = [date description];
 LABEL_15:
-    v6 = v12;
+    accessibilityLabel2 = v12;
 
     goto LABEL_16;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v3 title];
+    text = [viewCopy title];
     goto LABEL_9;
   }
 
-  v6 = 0;
+  accessibilityLabel2 = 0;
 LABEL_16:
 
-  return v6;
+  return accessibilityLabel2;
 }
 
-+ (id)primaryWindowFromWindows:(id)a3
++ (id)primaryWindowFromWindows:(id)windows
 {
-  v3 = a3;
+  windowsCopy = windows;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 keyWindow];
+  keyWindow = [v4 keyWindow];
 
-  if (v5)
+  if (keyWindow)
   {
-    v6 = v5;
+    firstObject = keyWindow;
   }
 
   else
@@ -122,7 +122,7 @@ LABEL_16:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v3;
+    v7 = windowsCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -168,18 +168,18 @@ LABEL_5:
 LABEL_11:
     }
 
-    v6 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
-  v13 = v6;
+  v13 = firstObject;
 LABEL_15:
 
   return v13;
 }
 
-+ (id)snapshotMethodForView:(id)a3
++ (id)snapshotMethodForView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   NSClassFromString(&cfstr_Skview.isa);
   if (objc_opt_isKindOfClass() & 1) != 0 || (NSClassFromString(&cfstr_Scnview.isa), (objc_opt_isKindOfClass()) || (NSClassFromString(&cfstr_Glkview.isa), (objc_opt_isKindOfClass()) || (NSClassFromString(&cfstr_RealitykitArvi.isa), (objc_opt_isKindOfClass()))
   {
@@ -197,28 +197,28 @@ LABEL_15:
 + (id)appWindows
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 windows];
+  windows = [v2 windows];
 
-  return v3;
+  return windows;
 }
 
-+ (double)screenBackingScaleForWindow:(id)a3
++ (double)screenBackingScaleForWindow:(id)window
 {
-  v3 = [a3 screen];
-  [v3 scale];
+  screen = [window screen];
+  [screen scale];
   v5 = v4;
 
   return v5;
 }
 
-+ (double)screenBackingScaleForView:(id)a3
++ (double)screenBackingScaleForView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 window];
-  if (v5)
+  viewCopy = view;
+  window = [viewCopy window];
+  if (window)
   {
-    v6 = [v4 window];
-    [a1 screenBackingScaleForWindow:v6];
+    window2 = [viewCopy window];
+    [self screenBackingScaleForWindow:window2];
     v8 = v7;
   }
 
@@ -235,18 +235,18 @@ LABEL_15:
   v2 = NSClassFromString(&cfstr_Msextensionglo.isa);
   if (v2 && (v3 = v2, (objc_opt_respondsToSelector() & 1) != 0))
   {
-    v4 = [(objc_class *)v3 sharedInstance];
-    if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+    sharedInstance = [(objc_class *)v3 sharedInstance];
+    if (sharedInstance && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v5 = [v4 activeExtensionContext];
-      if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+      activeExtensionContext = [sharedInstance activeExtensionContext];
+      if (activeExtensionContext && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v6 = [v5 viewController];
+        viewController = [activeExtensionContext viewController];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [v6 view];
-          v10 = v7;
+          view = [viewController view];
+          v10 = view;
           v8 = [NSArray arrayWithObjects:&v10 count:1];
         }
 
@@ -276,97 +276,97 @@ LABEL_15:
   return v8;
 }
 
-+ (id)subviewsForView:(id)a3
++ (id)subviewsForView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 contentView];
+    contentView = [viewCopy contentView];
 
-    if (v4)
+    if (contentView)
     {
-      v7 = v4;
-      v5 = [NSArray arrayWithObjects:&v7 count:1];
+      v7 = contentView;
+      subviews = [NSArray arrayWithObjects:&v7 count:1];
     }
 
     else
     {
-      v5 = 0;
+      subviews = 0;
     }
   }
 
   else
   {
-    v5 = [v3 subviews];
+    subviews = [viewCopy subviews];
   }
 
-  return v5;
+  return subviews;
 }
 
-+ (BOOL)isWindowSubclass:(id)a3
++ (BOOL)isWindowSubclass:(id)subclass
 {
-  v3 = a3;
+  subclassCopy = subclass;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (BOOL)isViewSubclass:(id)a3
++ (BOOL)isViewSubclass:(id)subclass
 {
-  v3 = a3;
+  subclassCopy = subclass;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (id)snapshotView:(id)a3 errorString:(id *)a4
++ (id)snapshotView:(id)view errorString:(id *)string
 {
-  v6 = a3;
-  [v6 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v8 = v7;
-  [v6 bounds];
+  [viewCopy bounds];
   v10 = 0;
   if (v8 > 0.0 && v9 > 0.0 && v8 * v9 < 16000000.0)
   {
     NSClassFromString(&cfstr_Glkview.isa);
     if (objc_opt_isKindOfClass() & 1) != 0 || (NSClassFromString(&cfstr_Skview.isa), (objc_opt_isKindOfClass()) || (NSClassFromString(&cfstr_Scnview.isa), (objc_opt_isKindOfClass()) || (NSClassFromString(&cfstr_RealitykitArvi.isa), (objc_opt_isKindOfClass()))
     {
-      v11 = [v6 snapshot];
+      snapshot = [viewCopy snapshot];
     }
 
     else
     {
-      if (![a1 _isEffectView:v6])
+      if (![self _isEffectView:viewCopy])
       {
-        v14 = [v6 subviews];
-        v15 = [v14 count];
+        subviews = [viewCopy subviews];
+        v15 = [subviews count];
         v16 = &v30 - ((4 * v15 + 15) & 0xFFFFFFFFFFFFFFF0);
         if (v15)
         {
           for (i = 0; i != v15; i = i + 1)
           {
-            v18 = [v14 objectAtIndex:i];
-            v19 = [v18 layer];
-            [v19 opacity];
+            v18 = [subviews objectAtIndex:i];
+            layer = [v18 layer];
+            [layer opacity];
             *&v16[4 * i] = v20;
 
-            v21 = [v18 layer];
-            [v21 setOpacity:0.0];
+            layer2 = [v18 layer];
+            [layer2 setOpacity:0.0];
           }
         }
 
-        [v6 bounds];
+        [viewCopy bounds];
         v32.width = v22;
         v32.height = v23;
         UIGraphicsBeginImageContextWithOptions(v32, 0, 0.0);
         CurrentContext = UIGraphicsGetCurrentContext();
         if (CurrentContext)
         {
-          v24 = [v6 layer];
-          [v24 renderInContext:CurrentContext];
+          layer3 = [viewCopy layer];
+          [layer3 renderInContext:CurrentContext];
 
           CurrentContext = UIGraphicsGetImageFromCurrentImageContext();
         }
@@ -376,11 +376,11 @@ LABEL_15:
         {
           for (j = 0; j != v15; j = j + 1)
           {
-            v26 = [v14 objectAtIndex:j];
+            v26 = [subviews objectAtIndex:j];
             v27 = *&v16[4 * j];
-            v28 = [v26 layer];
+            layer4 = [v26 layer];
             LODWORD(v29) = v27;
-            [v28 setOpacity:v29];
+            [layer4 setOpacity:v29];
           }
         }
 
@@ -398,10 +398,10 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        if (!*a4)
+        if (!*string)
         {
-          [NSString stringWithFormat:@"Problem getting view snapshot for %@", v6];
-          *a4 = v10 = 0;
+          [NSString stringWithFormat:@"Problem getting view snapshot for %@", viewCopy];
+          *string = v10 = 0;
           goto LABEL_13;
         }
 
@@ -410,11 +410,11 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v11 = [a1 _renderEffectViewUsingDrawHierarchyInRect:v6];
+      snapshot = [self _renderEffectViewUsingDrawHierarchyInRect:viewCopy];
     }
 
-    CurrentContext = v11;
-    if (!v11)
+    CurrentContext = snapshot;
+    if (!snapshot)
     {
       goto LABEL_12;
     }
@@ -427,15 +427,15 @@ LABEL_14:
   return v10;
 }
 
-+ (BOOL)_isEffectView:(id)a3
++ (BOOL)_isEffectView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a1 viewDebuggerEffectViewsToSnapshotAsImage];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  viewDebuggerEffectViewsToSnapshotAsImage = [self viewDebuggerEffectViewsToSnapshotAsImage];
+  v6 = [viewDebuggerEffectViewsToSnapshotAsImage countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -445,7 +445,7 @@ LABEL_14:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewDebuggerEffectViewsToSnapshotAsImage);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -460,7 +460,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [viewDebuggerEffectViewsToSnapshotAsImage countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -475,47 +475,47 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_renderEffectViewUsingDrawHierarchyInRect:(id)a3
++ (id)_renderEffectViewUsingDrawHierarchyInRect:(id)rect
 {
-  v3 = a3;
-  v4 = [v3 window];
-  if (!v4)
+  rectCopy = rect;
+  window = [rectCopy window];
+  if (!window)
   {
-    v5 = v3;
-    v6 = [v5 superview];
+    v5 = rectCopy;
+    superview = [v5 superview];
 
-    if (v6)
+    if (superview)
     {
       do
       {
-        v4 = [v5 superview];
+        window = [v5 superview];
 
-        v7 = [v4 superview];
+        superview2 = [window superview];
 
-        v5 = v4;
+        v5 = window;
       }
 
-      while (v7);
+      while (superview2);
     }
 
     else
     {
-      v4 = v5;
+      window = v5;
     }
   }
 
-  [v3 bounds];
-  [v4 convertRect:v3 fromView:?];
+  [rectCopy bounds];
+  [window convertRect:rectCopy fromView:?];
   x = v8;
   y = v10;
   width = v12;
   height = v14;
   v16 = [NSMapTable mapTableWithKeyOptions:0 valueOptions:0];
-  v17 = v3;
+  v17 = rectCopy;
   v18 = v17;
-  if (v4 == v17)
+  if (window == v17)
   {
-    v20 = v17;
+    superview3 = v17;
   }
 
   else
@@ -523,28 +523,28 @@ LABEL_11:
     v19 = v17;
     do
     {
-      v20 = [v19 superview];
-      v21 = [v20 subviews];
-      v22 = [v21 indexOfObject:v19];
+      superview3 = [v19 superview];
+      subviews = [superview3 subviews];
+      v22 = [subviews indexOfObject:v19];
 
-      v23 = [v20 subviews];
-      v24 = [v23 count];
+      subviews2 = [superview3 subviews];
+      v24 = [subviews2 count];
       v25 = v22 + 1;
 
       if (v24 > v22 + 1)
       {
         while (1)
         {
-          v26 = [v20 subviews];
-          v27 = [v26 count];
+          subviews3 = [superview3 subviews];
+          v27 = [subviews3 count];
 
           if (v25 >= v27)
           {
             break;
           }
 
-          v28 = [v20 subviews];
-          v29 = [v28 objectAtIndexedSubscript:v25];
+          subviews4 = [superview3 subviews];
+          v29 = [subviews4 objectAtIndexedSubscript:v25];
 
           [v29 alpha];
           v30 = [NSNumber numberWithDouble:?];
@@ -555,10 +555,10 @@ LABEL_11:
         }
       }
 
-      if ([v20 clipsToBounds])
+      if ([superview3 clipsToBounds])
       {
-        [v20 bounds];
-        [v4 convertRect:v20 fromView:?];
+        [superview3 bounds];
+        [window convertRect:superview3 fromView:?];
         v86.origin.x = v31;
         v86.origin.y = v32;
         v86.size.width = v33;
@@ -574,10 +574,10 @@ LABEL_11:
         height = v85.size.height;
       }
 
-      v19 = v20;
+      v19 = superview3;
     }
 
-    while (v20 != v4);
+    while (superview3 != window);
   }
 
   v77 = 0u;
@@ -585,8 +585,8 @@ LABEL_11:
   v75 = 0u;
   v76 = 0u;
   v70 = v18;
-  v35 = [v18 subviews];
-  v36 = [v35 countByEnumeratingWithState:&v75 objects:v80 count:16];
+  subviews5 = [v18 subviews];
+  v36 = [subviews5 countByEnumeratingWithState:&v75 objects:v80 count:16];
   if (v36)
   {
     v37 = v36;
@@ -597,7 +597,7 @@ LABEL_11:
       {
         if (*v76 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(subviews5);
         }
 
         v40 = *(*(&v75 + 1) + 8 * i);
@@ -608,25 +608,25 @@ LABEL_11:
         [v40 setAlpha:0.0];
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v75 objects:v80 count:16];
+      v37 = [subviews5 countByEnumeratingWithState:&v75 objects:v80 count:16];
     }
 
     while (v37);
   }
 
-  [v4 bounds];
+  [window bounds];
   v43 = v42;
   v45 = v44;
   v82.width = width;
   v82.height = height;
   UIGraphicsBeginImageContextWithOptions(v82, 0, 0.0);
-  [v4 drawViewHierarchyInRect:1 afterScreenUpdates:{-x, -y, v43, v45}];
+  [window drawViewHierarchyInRect:1 afterScreenUpdates:{-x, -y, v43, v45}];
   v46 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   [v70 bounds];
   if (v48 != width || v47 != height)
   {
-    [v70 convertRect:v4 fromView:{x, y, width, height}];
+    [v70 convertRect:window fromView:{x, y, width, height}];
     v50 = v49;
     v52 = v51;
     v54 = v53;
@@ -646,8 +646,8 @@ LABEL_11:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v60 = [v16 keyEnumerator];
-  v61 = [v60 countByEnumeratingWithState:&v71 objects:v79 count:16];
+  keyEnumerator = [v16 keyEnumerator];
+  v61 = [keyEnumerator countByEnumeratingWithState:&v71 objects:v79 count:16];
   if (v61)
   {
     v62 = v61;
@@ -658,7 +658,7 @@ LABEL_11:
       {
         if (*v72 != v63)
         {
-          objc_enumerationMutation(v60);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v65 = *(*(&v71 + 1) + 8 * j);
@@ -669,7 +669,7 @@ LABEL_11:
         [v65 setAlpha:v68];
       }
 
-      v62 = [v60 countByEnumeratingWithState:&v71 objects:v79 count:16];
+      v62 = [keyEnumerator countByEnumeratingWithState:&v71 objects:v79 count:16];
     }
 
     while (v62);
@@ -678,101 +678,101 @@ LABEL_11:
   return v46;
 }
 
-+ (void)addFrameBasics:(id)a3 toDict:(id)a4
++ (void)addFrameBasics:(id)basics toDict:(id)dict
 {
-  v5 = a4;
-  [a3 frame];
+  dictCopy = dict;
+  [basics frame];
   v10 = __52__DBGViewDebuggerSupport_iOS_addFrameBasics_toDict___block_invoke(v6, v7, v8, v9);
-  [v5 setObject:v10 forKey:@"frame"];
+  [dictCopy setObject:v10 forKey:@"frame"];
 }
 
-+ (void)addViewBasics:(id)a3 toDict:(id)a4
++ (void)addViewBasics:(id)basics toDict:(id)dict
 {
-  v23 = a3;
-  v6 = a4;
-  if ([a1 isViewSubclass:v23])
+  basicsCopy = basics;
+  dictCopy = dict;
+  if ([self isViewSubclass:basicsCopy])
   {
-    v7 = v23;
+    v7 = basicsCopy;
     [v7 frame];
     v12 = __52__DBGViewDebuggerSupport_iOS_addFrameBasics_toDict___block_invoke(v8, v9, v10, v11);
-    [v6 setObject:v12 forKey:@"frame"];
+    [dictCopy setObject:v12 forKey:@"frame"];
 
     [v7 bounds];
     v17 = __52__DBGViewDebuggerSupport_iOS_addFrameBasics_toDict___block_invoke(v13, v14, v15, v16);
-    [v6 setObject:v17 forKey:@"bounds"];
+    [dictCopy setObject:v17 forKey:@"bounds"];
 
-    v18 = [v7 superview];
-    v19 = [NSString stringWithFormat:@"%p", v18];
+    superview = [v7 superview];
+    v19 = [NSString stringWithFormat:@"%p", superview];
 
-    [v6 setObject:v19 forKey:@"superview"];
+    [dictCopy setObject:v19 forKey:@"superview"];
     v20 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 isHidden]);
-    [v6 setObject:v20 forKey:@"hidden"];
+    [dictCopy setObject:v20 forKey:@"hidden"];
 
-    v21 = [a1 displayNameForView:v7];
+    v21 = [self displayNameForView:v7];
     if (v21)
     {
-      [v6 setObject:v21 forKey:@"displayName"];
+      [dictCopy setObject:v21 forKey:@"displayName"];
     }
 
     [v7 contentScaleFactor];
     v22 = [NSNumber numberWithDouble:?];
-    [v6 setObject:v22 forKey:@"contentsScale"];
+    [dictCopy setObject:v22 forKey:@"contentsScale"];
   }
 }
 
-+ (void)addLayoutInfoForView:(id)a3 toDict:(id)a4
++ (void)addLayoutInfoForView:(id)view toDict:(id)dict
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [v22 constraintsAffectingLayoutForAxis:0];
+  viewCopy = view;
+  dictCopy = dict;
+  v7 = [viewCopy constraintsAffectingLayoutForAxis:0];
   v8 = arrayOfObjectPointers(v7);
-  [v6 setObject:v8 forKey:@"horizontalAffectingConstraints"];
+  [dictCopy setObject:v8 forKey:@"horizontalAffectingConstraints"];
 
-  v9 = [v22 constraintsAffectingLayoutForAxis:1];
+  v9 = [viewCopy constraintsAffectingLayoutForAxis:1];
   v10 = arrayOfObjectPointers(v9);
-  [v6 setObject:v10 forKey:@"verticalAffectingConstraints"];
+  [dictCopy setObject:v10 forKey:@"verticalAffectingConstraints"];
 
-  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a1 _viewHasAmbiguousLayout:v22]);
-  [v6 setObject:v11 forKey:@"hasAmbiguousLayout"];
+  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [self _viewHasAmbiguousLayout:viewCopy]);
+  [dictCopy setObject:v11 forKey:@"hasAmbiguousLayout"];
 
-  if ([a1 _viewHasAmbiguousLayout:v22])
+  if ([self _viewHasAmbiguousLayout:viewCopy])
   {
-    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [a1 ambiguityStatusMaskForView:v22]);
-    [v6 setObject:v12 forKey:@"ambiguityStatusMask"];
+    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [self ambiguityStatusMaskForView:viewCopy]);
+    [dictCopy setObject:v12 forKey:@"ambiguityStatusMask"];
   }
 
-  [a1 firstBaselineOffsetFromTopForView:v22];
+  [self firstBaselineOffsetFromTopForView:viewCopy];
   v13 = [NSNumber numberWithDouble:?];
-  [v6 setObject:v13 forKey:@"firstBaselineOffsetFromTop"];
+  [dictCopy setObject:v13 forKey:@"firstBaselineOffsetFromTop"];
 
-  [a1 lastBaselineOffsetFromBottomForView:v22];
+  [self lastBaselineOffsetFromBottomForView:viewCopy];
   v14 = [NSNumber numberWithDouble:?];
-  [v6 setObject:v14 forKey:@"lastBaselineOffsetFromBottom"];
+  [dictCopy setObject:v14 forKey:@"lastBaselineOffsetFromBottom"];
 
-  v15 = [a1 viewForFirstBaselineLayoutPointerForView:v22];
+  v15 = [self viewForFirstBaselineLayoutPointerForView:viewCopy];
   if (v15)
   {
-    [v6 setObject:v15 forKey:@"viewForFirstBaselineLayout"];
+    [dictCopy setObject:v15 forKey:@"viewForFirstBaselineLayout"];
   }
 
-  v16 = [a1 viewForLastBaselineLayoutPointerForView:v22];
+  v16 = [self viewForLastBaselineLayoutPointerForView:viewCopy];
   if (v16)
   {
-    [v6 setObject:v16 forKey:@"viewForLastBaselineLayout"];
+    [dictCopy setObject:v16 forKey:@"viewForLastBaselineLayout"];
   }
 
-  [v22 layoutMargins];
+  [viewCopy layoutMargins];
   v21 = __52__DBGViewDebuggerSupport_iOS_addFrameBasics_toDict___block_invoke(v17, v18, v19, v20);
-  [v6 setObject:v21 forKey:@"layoutMargins"];
+  [dictCopy setObject:v21 forKey:@"layoutMargins"];
 }
 
-+ (BOOL)_viewHasAmbiguousLayout:(id)a3
++ (BOOL)_viewHasAmbiguousLayout:(id)layout
 {
-  v3 = a3;
-  if (viewWantsAutoLayout(v3))
+  layoutCopy = layout;
+  if (viewWantsAutoLayout(layoutCopy))
   {
-    v4 = [v3 _layoutVariablesWithAmbiguousValue];
-    v5 = [v4 count] != 0;
+    _layoutVariablesWithAmbiguousValue = [layoutCopy _layoutVariablesWithAmbiguousValue];
+    v5 = [_layoutVariablesWithAmbiguousValue count] != 0;
   }
 
   else
@@ -783,44 +783,44 @@ LABEL_11:
   return v5;
 }
 
-+ (unint64_t)ambiguityStatusMaskForView:(id)a3
++ (unint64_t)ambiguityStatusMaskForView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 _layoutVariablesWithAmbiguousValue];
-  v6 = [NSSet setWithArray:v5];
+  viewCopy = view;
+  _layoutVariablesWithAmbiguousValue = [viewCopy _layoutVariablesWithAmbiguousValue];
+  v6 = [NSSet setWithArray:_layoutVariablesWithAmbiguousValue];
 
-  v7 = [v4 superview];
-  if (!v7)
+  superview = [viewCopy superview];
+  if (!superview)
   {
     goto LABEL_7;
   }
 
-  while (([v7 _uiib_hostsLayoutEngine] & 1) == 0)
+  while (([superview _uiib_hostsLayoutEngine] & 1) == 0)
   {
-    v8 = [v7 superview];
+    v7Superview = [superview superview];
 
-    v7 = v8;
-    if (!v8)
+    superview = v7Superview;
+    if (!v7Superview)
     {
       goto LABEL_7;
     }
   }
 
-  if ([v7 _uiib_hostsLayoutEngine])
+  if ([superview _uiib_hostsLayoutEngine])
   {
-    v9 = [v7 _uiib_layoutEngineCreatingIfNecessary];
+    _uiib_layoutEngineCreatingIfNecessary = [superview _uiib_layoutEngineCreatingIfNecessary];
   }
 
   else
   {
 LABEL_7:
-    v9 = 0;
+    _uiib_layoutEngineCreatingIfNecessary = 0;
   }
 
-  v10 = [v4 _minXVariable];
-  if (v10)
+  _minXVariable = [viewCopy _minXVariable];
+  if (_minXVariable)
   {
-    if ([v6 containsObject:v10])
+    if ([v6 containsObject:_minXVariable])
     {
       v11 = 2;
     }
@@ -830,7 +830,7 @@ LABEL_7:
       v11 = 0;
     }
 
-    if (v9 && ![v9 hasValue:0 forVariable:v10])
+    if (_uiib_layoutEngineCreatingIfNecessary && ![_uiib_layoutEngineCreatingIfNecessary hasValue:0 forVariable:_minXVariable])
     {
       v11 |= 0x400uLL;
     }
@@ -841,62 +841,62 @@ LABEL_7:
     v11 = 0;
   }
 
-  v12 = [v4 _minYVariable];
-  if (v12)
+  _minYVariable = [viewCopy _minYVariable];
+  if (_minYVariable)
   {
-    if ([v6 containsObject:v12])
+    if ([v6 containsObject:_minYVariable])
     {
       v11 |= 4uLL;
     }
 
-    if (v9 && ![v9 hasValue:0 forVariable:v12])
+    if (_uiib_layoutEngineCreatingIfNecessary && ![_uiib_layoutEngineCreatingIfNecessary hasValue:0 forVariable:_minYVariable])
     {
       v11 |= 0x800uLL;
     }
   }
 
-  v13 = [v4 _boundsWidthVariable];
-  if (v13)
+  _boundsWidthVariable = [viewCopy _boundsWidthVariable];
+  if (_boundsWidthVariable)
   {
-    if ([v6 containsObject:v13])
+    if ([v6 containsObject:_boundsWidthVariable])
     {
       v11 |= 8uLL;
     }
 
-    if (v9 && ![v9 hasValue:0 forVariable:v13])
+    if (_uiib_layoutEngineCreatingIfNecessary && ![_uiib_layoutEngineCreatingIfNecessary hasValue:0 forVariable:_boundsWidthVariable])
     {
       v11 |= 0x1000uLL;
     }
   }
 
-  v14 = [v4 _boundsHeightVariable];
-  v22 = v10;
-  if (v14)
+  _boundsHeightVariable = [viewCopy _boundsHeightVariable];
+  v22 = _minXVariable;
+  if (_boundsHeightVariable)
   {
-    if ([v6 containsObject:v14])
+    if ([v6 containsObject:_boundsHeightVariable])
     {
       v11 |= 0x10uLL;
     }
 
-    if (v9 && ![v9 hasValue:0 forVariable:v14])
+    if (_uiib_layoutEngineCreatingIfNecessary && ![_uiib_layoutEngineCreatingIfNecessary hasValue:0 forVariable:_boundsHeightVariable])
     {
       v11 |= 0x2000uLL;
     }
   }
 
-  v15 = [v4 _contentWidthVariable];
-  v20 = v12;
-  if (!v15)
+  _contentWidthVariable = [viewCopy _contentWidthVariable];
+  v20 = _minYVariable;
+  if (!_contentWidthVariable)
   {
     goto LABEL_44;
   }
 
-  if (([a1 ibShouldIgnoreScrollableContentWidthAmbiguityForRepresentationOfItem:{v4, v12, v22}] & 1) == 0 && objc_msgSend(v6, "containsObject:", v15))
+  if (([self ibShouldIgnoreScrollableContentWidthAmbiguityForRepresentationOfItem:{viewCopy, _minYVariable, v22}] & 1) == 0 && objc_msgSend(v6, "containsObject:", _contentWidthVariable))
   {
     v11 |= 0x20uLL;
   }
 
-  if (!v9)
+  if (!_uiib_layoutEngineCreatingIfNecessary)
   {
 LABEL_44:
     v16 = v6;
@@ -904,29 +904,29 @@ LABEL_44:
   }
 
   v16 = v6;
-  if ([a1 ibShouldIgnoreScrollableContentWidthAmbiguityForRepresentationOfItem:v4])
+  if ([self ibShouldIgnoreScrollableContentWidthAmbiguityForRepresentationOfItem:viewCopy])
   {
 LABEL_45:
-    v17 = a1;
+    selfCopy2 = self;
     goto LABEL_46;
   }
 
-  v17 = a1;
-  if (![v9 hasValue:0 forVariable:v15])
+  selfCopy2 = self;
+  if (![_uiib_layoutEngineCreatingIfNecessary hasValue:0 forVariable:_contentWidthVariable])
   {
     v11 |= 0x4000uLL;
   }
 
 LABEL_46:
-  v18 = [v4 _contentHeightVariable];
-  if (v18)
+  _contentHeightVariable = [viewCopy _contentHeightVariable];
+  if (_contentHeightVariable)
   {
-    if (([v17 ibShouldIgnoreScrollableContentHeightAmbiguityForRepresentationOfItem:v4] & 1) == 0 && objc_msgSend(v16, "containsObject:", v18))
+    if (([selfCopy2 ibShouldIgnoreScrollableContentHeightAmbiguityForRepresentationOfItem:viewCopy] & 1) == 0 && objc_msgSend(v16, "containsObject:", _contentHeightVariable))
     {
       v11 |= 0x40uLL;
     }
 
-    if (v9 && ([v17 ibShouldIgnoreScrollableContentHeightAmbiguityForRepresentationOfItem:v4] & 1) == 0 && !objc_msgSend(v9, "hasValue:forVariable:", 0, v18))
+    if (_uiib_layoutEngineCreatingIfNecessary && ([selfCopy2 ibShouldIgnoreScrollableContentHeightAmbiguityForRepresentationOfItem:viewCopy] & 1) == 0 && !objc_msgSend(_uiib_layoutEngineCreatingIfNecessary, "hasValue:forVariable:", 0, _contentHeightVariable))
     {
       v11 |= 0x8000uLL;
     }
@@ -935,14 +935,14 @@ LABEL_46:
   return v11;
 }
 
-+ (BOOL)ibShouldIgnoreScrollableContentWidthAmbiguityForRepresentationOfItem:(id)a3
++ (BOOL)ibShouldIgnoreScrollableContentWidthAmbiguityForRepresentationOfItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 subviews];
-    v5 = [v4 count] == 0;
+    subviews = [itemCopy subviews];
+    v5 = [subviews count] == 0;
   }
 
   else
@@ -953,14 +953,14 @@ LABEL_46:
   return v5;
 }
 
-+ (BOOL)ibShouldIgnoreScrollableContentHeightAmbiguityForRepresentationOfItem:(id)a3
++ (BOOL)ibShouldIgnoreScrollableContentHeightAmbiguityForRepresentationOfItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 subviews];
-    v5 = [v4 count] == 0;
+    subviews = [itemCopy subviews];
+    v5 = [subviews count] == 0;
   }
 
   else
@@ -971,85 +971,85 @@ LABEL_46:
   return v5;
 }
 
-+ (double)firstBaselineOffsetFromTopForView:(id)a3
++ (double)firstBaselineOffsetFromTopForView:(id)view
 {
-  v3 = a3;
-  v4 = v3;
-  if (viewWantsAutoLayout(v3))
+  viewCopy = view;
+  viewForFirstBaselineLayout = viewCopy;
+  if (viewWantsAutoLayout(viewCopy))
   {
-    v4 = v3;
+    viewForFirstBaselineLayout = viewCopy;
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 viewForFirstBaselineLayout];
+      viewForFirstBaselineLayout = [viewCopy viewForFirstBaselineLayout];
     }
   }
 
   v5 = 0.0;
-  if (viewWantsAutoLayout(v4) && (objc_opt_respondsToSelector() & 1) != 0)
+  if (viewWantsAutoLayout(viewForFirstBaselineLayout) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 _firstBaselineOffsetFromTop];
+    [viewForFirstBaselineLayout _firstBaselineOffsetFromTop];
     v5 = v6;
   }
 
-  [v4 bounds];
-  [v4 alignmentRectForFrame:?];
-  [v4 convertRect:v3 toView:?];
+  [viewForFirstBaselineLayout bounds];
+  [viewForFirstBaselineLayout alignmentRectForFrame:?];
+  [viewForFirstBaselineLayout convertRect:viewCopy toView:?];
   v8 = v7;
-  [v3 bounds];
-  [v3 alignmentRectForFrame:?];
+  [viewCopy bounds];
+  [viewCopy alignmentRectForFrame:?];
   v10 = v5 + v8 + v9;
 
   return v10;
 }
 
-+ (double)lastBaselineOffsetFromBottomForView:(id)a3
++ (double)lastBaselineOffsetFromBottomForView:(id)view
 {
-  v3 = a3;
-  v4 = v3;
-  if (viewWantsAutoLayout(v3))
+  viewCopy = view;
+  viewForLastBaselineLayout = viewCopy;
+  if (viewWantsAutoLayout(viewCopy))
   {
-    v4 = v3;
+    viewForLastBaselineLayout = viewCopy;
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 viewForLastBaselineLayout];
+      viewForLastBaselineLayout = [viewCopy viewForLastBaselineLayout];
     }
   }
 
   v5 = 0.0;
-  if (viewWantsAutoLayout(v4) && (objc_opt_respondsToSelector() & 1) != 0)
+  if (viewWantsAutoLayout(viewForLastBaselineLayout) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 _baselineOffsetFromBottom];
+    [viewForLastBaselineLayout _baselineOffsetFromBottom];
     v5 = v6;
   }
 
-  [v4 bounds];
-  [v4 alignmentRectForFrame:?];
-  [v4 convertRect:v3 toView:?];
+  [viewForLastBaselineLayout bounds];
+  [viewForLastBaselineLayout alignmentRectForFrame:?];
+  [viewForLastBaselineLayout convertRect:viewCopy toView:?];
   v8 = v7;
   v10 = v9;
-  [v3 bounds];
-  [v3 alignmentRectForFrame:?];
+  [viewCopy bounds];
+  [viewCopy alignmentRectForFrame:?];
   v13 = v5 + v11 + v12 - (v8 + v10);
 
   return v13;
 }
 
-+ (id)viewForFirstBaselineLayoutPointerForView:(id)a3
++ (id)viewForFirstBaselineLayoutPointerForView:(id)view
 {
-  v3 = a3;
-  if (viewWantsAutoLayout(v3) && (objc_opt_respondsToSelector() & 1) != 0)
+  viewCopy = view;
+  if (viewWantsAutoLayout(viewCopy) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 viewForFirstBaselineLayout];
-    if (v4)
+    viewForFirstBaselineLayout = [viewCopy viewForFirstBaselineLayout];
+    if (viewForFirstBaselineLayout)
     {
-      v5 = [NSString stringWithFormat:@"%p", v4];
+      v5 = [NSString stringWithFormat:@"%p", viewForFirstBaselineLayout];
       goto LABEL_7;
     }
   }
 
   else
   {
-    v4 = 0;
+    viewForFirstBaselineLayout = 0;
   }
 
   v5 = 0;
@@ -1058,22 +1058,22 @@ LABEL_7:
   return v5;
 }
 
-+ (id)viewForLastBaselineLayoutPointerForView:(id)a3
++ (id)viewForLastBaselineLayoutPointerForView:(id)view
 {
-  v3 = a3;
-  if (viewWantsAutoLayout(v3) && (objc_opt_respondsToSelector() & 1) != 0)
+  viewCopy = view;
+  if (viewWantsAutoLayout(viewCopy) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 viewForLastBaselineLayout];
-    if (v4)
+    viewForLastBaselineLayout = [viewCopy viewForLastBaselineLayout];
+    if (viewForLastBaselineLayout)
     {
-      v5 = [NSString stringWithFormat:@"%p", v4];
+      v5 = [NSString stringWithFormat:@"%p", viewForLastBaselineLayout];
       goto LABEL_7;
     }
   }
 
   else
   {
-    v4 = 0;
+    viewForLastBaselineLayout = 0;
   }
 
   v5 = 0;

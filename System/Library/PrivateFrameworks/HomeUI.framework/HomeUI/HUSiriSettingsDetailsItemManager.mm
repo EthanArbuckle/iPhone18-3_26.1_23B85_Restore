@@ -1,63 +1,63 @@
 @interface HUSiriSettingsDetailsItemManager
-- (BOOL)_shouldSkipModuleCreationForGroupKeyPath:(id)a3;
-- (HUSiriSettingsDetailsItemManager)initWithDelegate:(id)a3 module:(id)a4;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)updateSettingItem:(id)a3 withValue:(id)a4;
+- (BOOL)_shouldSkipModuleCreationForGroupKeyPath:(id)path;
+- (HUSiriSettingsDetailsItemManager)initWithDelegate:(id)delegate module:(id)module;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)updateSettingItem:(id)item withValue:(id)value;
 @end
 
 @implementation HUSiriSettingsDetailsItemManager
 
-- (HUSiriSettingsDetailsItemManager)initWithDelegate:(id)a3 module:(id)a4
+- (HUSiriSettingsDetailsItemManager)initWithDelegate:(id)delegate module:(id)module
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 accessorySettingsItemProvider];
-  v10 = [v9 items];
-  v11 = [v10 anyObject];
+  moduleCopy = module;
+  delegateCopy = delegate;
+  accessorySettingsItemProvider = [moduleCopy accessorySettingsItemProvider];
+  items = [accessorySettingsItemProvider items];
+  anyObject = [items anyObject];
 
-  v12 = [v11 copy];
+  v12 = [anyObject copy];
   v21.receiver = self;
   v21.super_class = HUSiriSettingsDetailsItemManager;
-  v13 = [(HFItemManager *)&v21 initWithDelegate:v8 sourceItem:v12];
+  v13 = [(HFItemManager *)&v21 initWithDelegate:delegateCopy sourceItem:v12];
 
   if (v13)
   {
-    v14 = [v7 settingsController];
+    settingsController = [moduleCopy settingsController];
     settingsController = v13->_settingsController;
-    v13->_settingsController = v14;
+    v13->_settingsController = settingsController;
 
-    v16 = [v7 settingGroupKeyPath];
+    settingGroupKeyPath = [moduleCopy settingGroupKeyPath];
     settingGroupKeyPath = v13->_settingGroupKeyPath;
-    v13->_settingGroupKeyPath = v16;
+    v13->_settingGroupKeyPath = settingGroupKeyPath;
 
-    v18 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v19 = [v18 accessorySettingsDataSource];
-    [v19 addObserver:v13];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    accessorySettingsDataSource = [mEMORY[0x277D146E8] accessorySettingsDataSource];
+    [accessorySettingsDataSource addObserver:v13];
 
-    objc_storeStrong(&v13->_module, a4);
+    objc_storeStrong(&v13->_module, module);
   }
 
   return v13;
 }
 
-- (id)updateSettingItem:(id)a3 withValue:(id)a4
+- (id)updateSettingItem:(id)item withValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  valueCopy = value;
   v7 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v8 = [v5 updateValue:v6];
+  v8 = [itemCopy updateValue:valueCopy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __64__HUSiriSettingsDetailsItemManager_updateSettingItem_withValue___block_invoke;
   v16[3] = &unk_277DC0040;
   v9 = v7;
   v17 = v9;
-  v18 = v6;
-  v19 = v5;
-  v10 = v5;
-  v11 = v6;
+  v18 = valueCopy;
+  v19 = itemCopy;
+  v10 = itemCopy;
+  v11 = valueCopy;
   v12 = [v8 addCompletionBlock:v16];
   v13 = v19;
   v14 = v9;
@@ -89,12 +89,12 @@ uint64_t __64__HUSiriSettingsDetailsItemManager_updateSettingItem_withValue___bl
   }
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
   v41 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
-  v26 = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
-  v25 = [MEMORY[0x277D14368] hf_groupKeyPaths];
+  hf_accessorySettingsDictionary = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
+  hf_groupKeyPaths = [MEMORY[0x277D14368] hf_groupKeyPaths];
   [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
   v32 = 0u;
   v33 = 0u;
@@ -121,14 +121,14 @@ uint64_t __64__HUSiriSettingsDetailsItemManager_updateSettingItem_withValue___bl
         if (![(HUSiriSettingsDetailsItemManager *)self _shouldSkipModuleCreationForGroupKeyPath:v9])
         {
           v10 = [HUHomeKitAccessorySettingsItemModule alloc];
-          v11 = [(HUSiriSettingsDetailsItemManager *)self settingsController];
-          v12 = [(HUSiriSettingsDetailsItemManager *)self module];
-          v13 = [v12 home];
-          v14 = [(HUSiriSettingsDetailsItemManager *)self module];
-          v15 = [v14 sourceItem];
+          settingsController = [(HUSiriSettingsDetailsItemManager *)self settingsController];
+          module = [(HUSiriSettingsDetailsItemManager *)self module];
+          home = [module home];
+          module2 = [(HUSiriSettingsDetailsItemManager *)self module];
+          sourceItem = [module2 sourceItem];
           v16 = v10;
           v4 = v27;
-          v17 = [(HUHomeKitAccessorySettingsItemModule *)v16 initWithSettingsController:v11 itemUpdater:self home:v13 sourceItem:v15 settingGroupKeyPath:v9 isCollapsed:0];
+          v17 = [(HUHomeKitAccessorySettingsItemModule *)v16 initWithSettingsController:settingsController itemUpdater:self home:home sourceItem:sourceItem settingGroupKeyPath:v9 isCollapsed:0];
 
           v6 = v28;
           [v27 na_safeAddObject:v17];
@@ -145,24 +145,24 @@ uint64_t __64__HUSiriSettingsDetailsItemManager_updateSettingItem_withValue___bl
   }
 
   [(HUSiriSettingsDetailsItemManager *)self setHomeKitAccessorySettingsModules:v4];
-  v18 = [(HUSiriSettingsDetailsItemManager *)self homeKitAccessorySettingsModules];
+  homeKitAccessorySettingsModules = [(HUSiriSettingsDetailsItemManager *)self homeKitAccessorySettingsModules];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __61__HUSiriSettingsDetailsItemManager__buildItemModulesForHome___block_invoke;
   v30[3] = &unk_277DC0C38;
-  v31 = v25;
-  v19 = v25;
-  v20 = [v18 sortedArrayUsingComparator:v30];
+  v31 = hf_groupKeyPaths;
+  v19 = hf_groupKeyPaths;
+  v20 = [homeKitAccessorySettingsModules sortedArrayUsingComparator:v30];
   [(HUSiriSettingsDetailsItemManager *)self setHomeKitAccessorySettingsModules:v20];
 
   v21 = HFLogForCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [(HUSiriSettingsDetailsItemManager *)self homeKitAccessorySettingsModules];
+    homeKitAccessorySettingsModules2 = [(HUSiriSettingsDetailsItemManager *)self homeKitAccessorySettingsModules];
     *buf = 138412546;
-    v37 = v26;
+    v37 = hf_accessorySettingsDictionary;
     v38 = 2112;
-    v39 = v24;
+    v39 = homeKitAccessorySettingsModules2;
     _os_log_debug_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEBUG, ". settingsDict = [%@] Generated homeKitAccessorySettingsModules = [%@]", buf, 0x16u);
   }
 
@@ -193,12 +193,12 @@ uint64_t __61__HUSiriSettingsDetailsItemManager__buildItemModulesForHome___block
   }
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
-  v5 = [(HUSiriSettingsDetailsItemManager *)self settingGroupKeyPath];
-  v6 = [v4 objectForKey:v5];
+  hf_accessorySettingsDictionary = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
+  settingGroupKeyPath = [(HUSiriSettingsDetailsItemManager *)self settingGroupKeyPath];
+  v6 = [hf_accessorySettingsDictionary objectForKey:settingGroupKeyPath];
 
   v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D137B8]];
   v8 = MEMORY[0x277D14168];
@@ -215,60 +215,60 @@ uint64_t __61__HUSiriSettingsDetailsItemManager__buildItemModulesForHome___block
   }
 
   v14 = objc_alloc(MEMORY[0x277D146E0]);
-  v15 = [(HUSiriSettingsDetailsItemManager *)self settingsController];
-  v16 = [(HUSiriSettingsDetailsItemManager *)self module];
-  v17 = [v16 sourceItem];
-  v18 = [(HUSiriSettingsDetailsItemManager *)self settingGroupKeyPath];
-  v19 = [v14 initWithSettingsController:v15 sourceItem:v17 settingGroupKeyPath:v18 moduleSettings:v13 usageOptions:0];
+  settingsController = [(HUSiriSettingsDetailsItemManager *)self settingsController];
+  module = [(HUSiriSettingsDetailsItemManager *)self module];
+  sourceItem = [module sourceItem];
+  settingGroupKeyPath2 = [(HUSiriSettingsDetailsItemManager *)self settingGroupKeyPath];
+  v19 = [v14 initWithSettingsController:settingsController sourceItem:sourceItem settingGroupKeyPath:settingGroupKeyPath2 moduleSettings:v13 usageOptions:0];
   [(HUSiriSettingsDetailsItemManager *)self setSiriSettingsItemProvider:v19];
 
   v20 = HFLogForCategory();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [(HUSiriSettingsDetailsItemManager *)self siriSettingsItemProvider];
-    v25 = [(HUSiriSettingsDetailsItemManager *)self settingGroupKeyPath];
+    siriSettingsItemProvider = [(HUSiriSettingsDetailsItemManager *)self siriSettingsItemProvider];
+    settingGroupKeyPath3 = [(HUSiriSettingsDetailsItemManager *)self settingGroupKeyPath];
     *buf = 138412546;
-    v30 = v24;
+    v30 = siriSettingsItemProvider;
     v31 = 2112;
-    v32 = v25;
+    v32 = settingGroupKeyPath3;
     _os_log_debug_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEBUG, "Built siriSettingsItemProvider [%@] for settingGroupKeyPath = [%@]", buf, 0x16u);
   }
 
-  v21 = [(HUSiriSettingsDetailsItemManager *)self siriSettingsItemProvider];
-  v28 = v21;
+  siriSettingsItemProvider2 = [(HUSiriSettingsDetailsItemManager *)self siriSettingsItemProvider];
+  v28 = siriSettingsItemProvider2;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
 
   return v22;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUSiriSettingsDetailsItemManager *)self siriSettingsItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 na_setByIntersectingWithSet:v4];
+  itemsCopy = items;
+  siriSettingsItemProvider = [(HUSiriSettingsDetailsItemManager *)self siriSettingsItemProvider];
+  items = [siriSettingsItemProvider items];
+  v7 = [items na_setByIntersectingWithSet:itemsCopy];
 
   v8 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"SiriSettingsTopSection"];
   v9 = [v7 na_filter:&__block_literal_global_283];
 
   v31 = v9;
-  v10 = [v9 allObjects];
-  [v8 setItems:v10];
+  allObjects = [v9 allObjects];
+  [v8 setItems:allObjects];
 
-  v11 = [v8 items];
-  v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_14_2];
+  items2 = [v8 items];
+  v12 = [items2 sortedArrayUsingComparator:&__block_literal_global_14_2];
   [v8 setItems:v12];
 
-  v13 = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
-  v14 = [(HUSiriSettingsDetailsItemManager *)self settingGroupKeyPath];
-  v15 = [v13 objectForKey:v14];
+  hf_accessorySettingsDictionary = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
+  settingGroupKeyPath = [(HUSiriSettingsDetailsItemManager *)self settingGroupKeyPath];
+  v15 = [hf_accessorySettingsDictionary objectForKey:settingGroupKeyPath];
 
   v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D138B0]];
   if (v16)
   {
-    v17 = [MEMORY[0x277D14338] defaultFactory];
-    v18 = [v17 formatterForKey:v16];
+    defaultFactory = [MEMORY[0x277D14338] defaultFactory];
+    v18 = [defaultFactory formatterForKey:v16];
   }
 
   else
@@ -288,18 +288,18 @@ uint64_t __61__HUSiriSettingsDetailsItemManager__buildItemModulesForHome___block
     [v8 setFooterTitle:v20];
   }
 
-  v21 = [(HUSiriSettingsDetailsItemManager *)self siriSettingsItemProvider];
-  v22 = [v21 items];
-  v23 = [v22 na_setByIntersectingWithSet:v4];
+  siriSettingsItemProvider2 = [(HUSiriSettingsDetailsItemManager *)self siriSettingsItemProvider];
+  items3 = [siriSettingsItemProvider2 items];
+  v23 = [items3 na_setByIntersectingWithSet:itemsCopy];
 
   v24 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"SiriSettingsBottomSection"];
   v25 = [v23 na_filter:&__block_literal_global_20_6];
 
-  v26 = [v25 allObjects];
-  [v24 setItems:v26];
+  allObjects2 = [v25 allObjects];
+  [v24 setItems:allObjects2];
 
-  v27 = [v24 items];
-  v28 = [v27 sortedArrayUsingComparator:&__block_literal_global_22_3];
+  items4 = [v24 items];
+  v28 = [items4 sortedArrayUsingComparator:&__block_literal_global_22_3];
   [v24 setItems:v28];
 
   v32[0] = v8;
@@ -474,37 +474,37 @@ uint64_t __69__HUSiriSettingsDetailsItemManager__buildSectionsWithDisplayedItems
   return v13;
 }
 
-- (BOOL)_shouldSkipModuleCreationForGroupKeyPath:(id)a3
+- (BOOL)_shouldSkipModuleCreationForGroupKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = MEMORY[0x277D136D0];
-  if ([v4 isEqualToString:*MEMORY[0x277D136D0]] && (!objc_msgSend(v4, "isEqualToString:", *v5) || !objc_msgSend(MEMORY[0x277D14CE8], "isAMac")))
+  if ([pathCopy isEqualToString:*MEMORY[0x277D136D0]] && (!objc_msgSend(pathCopy, "isEqualToString:", *v5) || !objc_msgSend(MEMORY[0x277D14CE8], "isAMac")))
   {
     goto LABEL_10;
   }
 
   v6 = MEMORY[0x277D136E8];
-  if ([v4 isEqualToString:*MEMORY[0x277D136E8]])
+  if ([pathCopy isEqualToString:*MEMORY[0x277D136E8]])
   {
-    if (![v4 isEqualToString:*v6] || !objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
+    if (![pathCopy isEqualToString:*v6] || !objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
     {
       goto LABEL_10;
     }
   }
 
   v7 = MEMORY[0x277D13840];
-  if (![v4 isEqualToString:*MEMORY[0x277D13840]])
+  if (![pathCopy isEqualToString:*MEMORY[0x277D13840]])
   {
     v11 = 1;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*v7])
+  if ([pathCopy isEqualToString:*v7])
   {
-    v8 = [(HUSiriSettingsDetailsItemManager *)self module];
-    v9 = [v8 home];
-    v10 = [v9 hf_allCameraProfilesWithDoorbellService];
-    v11 = [v10 count] == 0;
+    module = [(HUSiriSettingsDetailsItemManager *)self module];
+    home = [module home];
+    hf_allCameraProfilesWithDoorbellService = [home hf_allCameraProfilesWithDoorbellService];
+    v11 = [hf_allCameraProfilesWithDoorbellService count] == 0;
   }
 
   else

@@ -1,46 +1,46 @@
 @interface HKValueRange
-+ (HKValueRange)valueRangeWithMinValue:(id)a3 maxValue:(id)a4;
-- (BOOL)containsValue:(id)a3 exclusiveStart:(BOOL)a4 exclusiveEnd:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
++ (HKValueRange)valueRangeWithMinValue:(id)value maxValue:(id)maxValue;
+- (BOOL)containsValue:(id)value exclusiveStart:(BOOL)start exclusiveEnd:(BOOL)end;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)endDate;
 - (NSDate)startDate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)hk_midPointToValue:(id)a3 percentage:(double)a4;
-- (void)unionMaxValueWithRange:(id)a3;
-- (void)unionMinValueWithRange:(id)a3;
-- (void)unionRange:(id)a3;
+- (id)hk_midPointToValue:(id)value percentage:(double)percentage;
+- (void)unionMaxValueWithRange:(id)range;
+- (void)unionMinValueWithRange:(id)range;
+- (void)unionRange:(id)range;
 @end
 
 @implementation HKValueRange
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [(HKValueRange *)self minValue];
-      v8 = [(HKValueRange *)v4 minValue];
-      v9 = [(HKValueRange *)self maxValue];
-      v10 = [(HKValueRange *)v4 maxValue];
-      if (v7 == v8 || [v7 isEqual:v8])
+      minValue = [(HKValueRange *)self minValue];
+      minValue2 = [(HKValueRange *)equalCopy minValue];
+      maxValue = [(HKValueRange *)self maxValue];
+      maxValue2 = [(HKValueRange *)equalCopy maxValue];
+      if (minValue == minValue2 || [minValue isEqual:minValue2])
       {
-        if (v9 == v10)
+        if (maxValue == maxValue2)
         {
           v6 = 1;
         }
 
         else
         {
-          v6 = [v9 isEqual:v10];
+          v6 = [maxValue isEqual:maxValue2];
         }
       }
 
@@ -59,70 +59,70 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_minValue);
   objc_storeStrong(v4 + 2, self->_maxValue);
   return v4;
 }
 
-+ (HKValueRange)valueRangeWithMinValue:(id)a3 maxValue:(id)a4
++ (HKValueRange)valueRangeWithMinValue:(id)value maxValue:(id)maxValue
 {
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  maxValueCopy = maxValue;
   v7 = objc_opt_new();
   v8 = v7[1];
-  v7[1] = v5;
-  v9 = v5;
+  v7[1] = valueCopy;
+  v9 = valueCopy;
 
   v10 = v7[2];
-  v7[2] = v6;
+  v7[2] = maxValueCopy;
 
   return v7;
 }
 
-- (void)unionRange:(id)a3
+- (void)unionRange:(id)range
 {
-  v4 = a3;
-  [(HKValueRange *)self unionMinValueWithRange:v4];
-  [(HKValueRange *)self unionMaxValueWithRange:v4];
+  rangeCopy = range;
+  [(HKValueRange *)self unionMinValueWithRange:rangeCopy];
+  [(HKValueRange *)self unionMaxValueWithRange:rangeCopy];
 }
 
-- (void)unionMinValueWithRange:(id)a3
+- (void)unionMinValueWithRange:(id)range
 {
-  v9 = a3;
-  v4 = [(HKValueRange *)self minValue];
-  if (!v4 || ([v9 minValue], v5 = objc_claimAutoreleasedReturnValue(), IsSmaller = HKUIObjectIsSmaller(v5, v4), v5, IsSmaller))
+  rangeCopy = range;
+  minValue = [(HKValueRange *)self minValue];
+  if (!minValue || ([rangeCopy minValue], v5 = objc_claimAutoreleasedReturnValue(), IsSmaller = HKUIObjectIsSmaller(v5, minValue), v5, IsSmaller))
   {
-    v7 = [v9 minValue];
+    minValue2 = [rangeCopy minValue];
     minValue = self->_minValue;
-    self->_minValue = v7;
+    self->_minValue = minValue2;
   }
 }
 
-- (void)unionMaxValueWithRange:(id)a3
+- (void)unionMaxValueWithRange:(id)range
 {
-  v9 = a3;
-  v4 = [(HKValueRange *)self maxValue];
-  if (!v4 || ([v9 maxValue], v5 = objc_claimAutoreleasedReturnValue(), IsLarger = HKUIObjectIsLarger(v5, v4), v5, IsLarger))
+  rangeCopy = range;
+  maxValue = [(HKValueRange *)self maxValue];
+  if (!maxValue || ([rangeCopy maxValue], v5 = objc_claimAutoreleasedReturnValue(), IsLarger = HKUIObjectIsLarger(v5, maxValue), v5, IsLarger))
   {
-    v7 = [v9 maxValue];
+    maxValue2 = [rangeCopy maxValue];
     maxValue = self->_maxValue;
-    self->_maxValue = v7;
+    self->_maxValue = maxValue2;
   }
 }
 
-- (BOOL)containsValue:(id)a3 exclusiveStart:(BOOL)a4 exclusiveEnd:(BOOL)a5
+- (BOOL)containsValue:(id)value exclusiveStart:(BOOL)start exclusiveEnd:(BOOL)end
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
+  endCopy = end;
+  startCopy = start;
+  valueCopy = value;
+  v9 = valueCopy;
   minValue = self->_minValue;
   if (minValue)
   {
-    v11 = !v6;
+    v11 = !startCopy;
   }
 
   else
@@ -132,19 +132,19 @@
 
   if (v11)
   {
-    IsLargerOrEqual = HKUIObjectIsLargerOrEqual(v8, minValue);
+    IsLargerOrEqual = HKUIObjectIsLargerOrEqual(valueCopy, minValue);
   }
 
   else
   {
-    IsLargerOrEqual = HKUIObjectIsLarger(v8, minValue);
+    IsLargerOrEqual = HKUIObjectIsLarger(valueCopy, minValue);
   }
 
   v13 = IsLargerOrEqual;
   maxValue = self->_maxValue;
   if (maxValue)
   {
-    v15 = !v5;
+    v15 = !endCopy;
   }
 
   else
@@ -180,52 +180,52 @@
 
 - (NSDate)startDate
 {
-  v3 = [(HKValueRange *)self minValue];
+  minValue = [(HKValueRange *)self minValue];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(HKValueRange *)self minValue];
+    minValue2 = [(HKValueRange *)self minValue];
   }
 
   else
   {
-    v5 = 0;
+    minValue2 = 0;
   }
 
-  return v5;
+  return minValue2;
 }
 
 - (NSDate)endDate
 {
-  v3 = [(HKValueRange *)self maxValue];
+  maxValue = [(HKValueRange *)self maxValue];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(HKValueRange *)self maxValue];
+    maxValue2 = [(HKValueRange *)self maxValue];
   }
 
   else
   {
-    v5 = 0;
+    maxValue2 = 0;
   }
 
-  return v5;
+  return maxValue2;
 }
 
-- (id)hk_midPointToValue:(id)a3 percentage:(double)a4
+- (id)hk_midPointToValue:(id)value percentage:(double)percentage
 {
-  v6 = a3;
-  v7 = [(HKValueRange *)self minValue];
-  v8 = [v6 minValue];
-  v9 = [(HKValueRange *)self maxValue];
-  v10 = [v6 maxValue];
+  valueCopy = value;
+  minValue = [(HKValueRange *)self minValue];
+  minValue2 = [valueCopy minValue];
+  maxValue = [(HKValueRange *)self maxValue];
+  maxValue2 = [valueCopy maxValue];
 
-  v11 = [v7 hk_midPointToValue:v8 percentage:a4];
-  v12 = [v9 hk_midPointToValue:v10 percentage:a4];
+  v11 = [minValue hk_midPointToValue:minValue2 percentage:percentage];
+  v12 = [maxValue hk_midPointToValue:maxValue2 percentage:percentage];
   v13 = [HKValueRange valueRangeWithMinValue:v11 maxValue:v12];
 
   return v13;

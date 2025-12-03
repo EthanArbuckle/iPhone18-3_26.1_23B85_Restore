@@ -1,54 +1,54 @@
 @interface FTTextToSpeechRouterStreamingStreamingResponse
-+ (Class)content_immutableClassForType:(int64_t)a3;
-+ (int64_t)content_typeForImmutableObject:(id)a3;
++ (Class)content_immutableClassForType:(int64_t)type;
++ (int64_t)content_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)content;
 - (FTBeginTextToSpeechStreamingResponse)contentAsFTBeginTextToSpeechStreamingResponse;
 - (FTFinalTextToSpeechStreamingResponse)contentAsFTFinalTextToSpeechStreamingResponse;
 - (FTPartialTextToSpeechStreamingResponse)contentAsFTPartialTextToSpeechStreamingResponse;
-- (FTTextToSpeechRouterStreamingStreamingResponse)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRouterStreamingStreamingResponse *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::qss_fb::TextToSpeechRouterStreamingStreamingResponse>)addObjectToBuffer:(void *)a3;
+- (FTTextToSpeechRouterStreamingStreamingResponse)initWithFlatbuffData:(id)data root:(const TextToSpeechRouterStreamingStreamingResponse *)root verify:(BOOL)verify;
+- (Offset<siri::speech::qss_fb::TextToSpeechRouterStreamingStreamingResponse>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)content_type;
 @end
 
 @implementation FTTextToSpeechRouterStreamingStreamingResponse
 
-- (FTTextToSpeechRouterStreamingStreamingResponse)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRouterStreamingStreamingResponse *)a4 verify:(BOOL)a5
+- (FTTextToSpeechRouterStreamingStreamingResponse)initWithFlatbuffData:(id)data root:(const TextToSpeechRouterStreamingStreamingResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = FTTextToSpeechRouterStreamingStreamingResponse;
   v10 = [(FTTextToSpeechRouterStreamingStreamingResponse *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_15;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_15;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_233005E20;
       v27 = 0;
@@ -65,9 +65,9 @@ LABEL_15:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -192,56 +192,56 @@ LABEL_16:
 
 - (FLTBFBufferAccessor)content
 {
-  v3 = [(FTTextToSpeechRouterStreamingStreamingResponse *)self content_type];
-  switch(v3)
+  content_type = [(FTTextToSpeechRouterStreamingStreamingResponse *)self content_type];
+  switch(content_type)
   {
     case 3:
-      v4 = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTFinalTextToSpeechStreamingResponse];
+      contentAsFTFinalTextToSpeechStreamingResponse = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTFinalTextToSpeechStreamingResponse];
       break;
     case 2:
-      v4 = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTPartialTextToSpeechStreamingResponse];
+      contentAsFTFinalTextToSpeechStreamingResponse = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTPartialTextToSpeechStreamingResponse];
       break;
     case 1:
-      v4 = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTBeginTextToSpeechStreamingResponse];
+      contentAsFTFinalTextToSpeechStreamingResponse = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTBeginTextToSpeechStreamingResponse];
       break;
     default:
-      v4 = 0;
+      contentAsFTFinalTextToSpeechStreamingResponse = 0;
       break;
   }
 
-  return v4;
+  return contentAsFTFinalTextToSpeechStreamingResponse;
 }
 
-+ (Class)content_immutableClassForType:(int64_t)a3
++ (Class)content_immutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2789B8DC0[a3 - 1];
+    v4 = *off_2789B8DC0[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-+ (int64_t)content_typeForImmutableObject:(id)a3
++ (int64_t)content_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
@@ -254,13 +254,13 @@ LABEL_16:
   return v4;
 }
 
-- (Offset<siri::speech::qss_fb::TextToSpeechRouterStreamingStreamingResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::TextToSpeechRouterStreamingStreamingResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTTextToSpeechRouterStreamingStreamingResponse *)self content_type];
+  content_type = [(FTTextToSpeechRouterStreamingStreamingResponse *)self content_type];
   if ([(FTTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 1)
   {
-    v6 = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTBeginTextToSpeechStreamingResponse];
-    v7 = [v6 addObjectToBuffer:a3];
+    contentAsFTBeginTextToSpeechStreamingResponse = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTBeginTextToSpeechStreamingResponse];
+    v7 = [contentAsFTBeginTextToSpeechStreamingResponse addObjectToBuffer:buffer];
   }
 
   else
@@ -270,8 +270,8 @@ LABEL_16:
 
   if ([(FTTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 2)
   {
-    v8 = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTPartialTextToSpeechStreamingResponse];
-    v9 = [v8 addObjectToBuffer:a3];
+    contentAsFTPartialTextToSpeechStreamingResponse = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTPartialTextToSpeechStreamingResponse];
+    v9 = [contentAsFTPartialTextToSpeechStreamingResponse addObjectToBuffer:buffer];
   }
 
   else
@@ -281,8 +281,8 @@ LABEL_16:
 
   if ([(FTTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 3)
   {
-    v10 = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTFinalTextToSpeechStreamingResponse];
-    v11 = [v10 addObjectToBuffer:a3];
+    contentAsFTFinalTextToSpeechStreamingResponse = [(FTTextToSpeechRouterStreamingStreamingResponse *)self contentAsFTFinalTextToSpeechStreamingResponse];
+    v11 = [contentAsFTFinalTextToSpeechStreamingResponse addObjectToBuffer:buffer];
 
     v12 = v11;
   }
@@ -292,27 +292,27 @@ LABEL_16:
     v12 = 0;
   }
 
-  *(a3 + 70) = 1;
-  v13 = *(a3 + 5);
-  v14 = *(a3 + 6);
-  v15 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5, 0);
+  *(buffer + 70) = 1;
+  v13 = *(buffer + 5);
+  v14 = *(buffer + 6);
+  v15 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, content_type, 0);
   if ([(FTTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v7);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v7);
   }
 
   if ([(FTTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 2)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v9);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v9);
   }
 
   if ([(FTTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 3)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v12);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v12);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v15 - v14 + v13);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v15 - v14 + v13);
 }
 
 - (id)flatbuffData

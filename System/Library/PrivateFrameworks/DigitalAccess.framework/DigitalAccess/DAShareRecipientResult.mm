@@ -1,20 +1,20 @@
 @interface DAShareRecipientResult
-- (DAShareRecipientResult)initWithCoder:(id)a3;
+- (DAShareRecipientResult)initWithCoder:(id)coder;
 - (id)description;
-- (id)initCredentialProvisionedResultWithCredentialIdentifier:(id)a3 keyInformation:(id)a4;
-- (id)initDataRequiredResultWithCredentialIdentifier:(id)a3 response:(id)a4 keyInformation:(id)a5;
-- (id)initFailureResultWithCredentialIdentifier:(id)a3 error:(id)a4;
-- (id)initPasscodeFailureResultWithCredentialIdentifier:(id)a3 retryCount:(unint64_t)a4;
-- (id)initSharingCancelledResultWithResponse:(id)a3 error:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)initCredentialProvisionedResultWithCredentialIdentifier:(id)identifier keyInformation:(id)information;
+- (id)initDataRequiredResultWithCredentialIdentifier:(id)identifier response:(id)response keyInformation:(id)information;
+- (id)initFailureResultWithCredentialIdentifier:(id)identifier error:(id)error;
+- (id)initPasscodeFailureResultWithCredentialIdentifier:(id)identifier retryCount:(unint64_t)count;
+- (id)initSharingCancelledResultWithResponse:(id)response error:(id)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAShareRecipientResult
 
-- (id)initCredentialProvisionedResultWithCredentialIdentifier:(id)a3 keyInformation:(id)a4
+- (id)initCredentialProvisionedResultWithCredentialIdentifier:(id)identifier keyInformation:(id)information
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  informationCopy = information;
   v14.receiver = self;
   v14.super_class = DAShareRecipientResult;
   v9 = [(DAShareRecipientResult *)&v14 init];
@@ -22,8 +22,8 @@
   if (v9)
   {
     v9->_type = 2;
-    objc_storeStrong(&v9->_credentialIdentifier, a3);
-    objc_storeStrong(&v10->_keyInformation, a4);
+    objc_storeStrong(&v9->_credentialIdentifier, identifier);
+    objc_storeStrong(&v10->_keyInformation, information);
     response = v10->_response;
     v10->_response = 0;
 
@@ -36,11 +36,11 @@
   return v10;
 }
 
-- (id)initDataRequiredResultWithCredentialIdentifier:(id)a3 response:(id)a4 keyInformation:(id)a5
+- (id)initDataRequiredResultWithCredentialIdentifier:(id)identifier response:(id)response keyInformation:(id)information
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  responseCopy = response;
+  informationCopy = information;
   v16.receiver = self;
   v16.super_class = DAShareRecipientResult;
   v12 = [(DAShareRecipientResult *)&v16 init];
@@ -48,9 +48,9 @@
   if (v12)
   {
     v12->_type = 0;
-    objc_storeStrong(&v12->_credentialIdentifier, a3);
-    objc_storeStrong(&v13->_keyInformation, a5);
-    objc_storeStrong(&v13->_response, a4);
+    objc_storeStrong(&v12->_credentialIdentifier, identifier);
+    objc_storeStrong(&v13->_keyInformation, information);
+    objc_storeStrong(&v13->_response, response);
     error = v13->_error;
     v13->_error = 0;
 
@@ -60,10 +60,10 @@
   return v13;
 }
 
-- (id)initFailureResultWithCredentialIdentifier:(id)a3 error:(id)a4
+- (id)initFailureResultWithCredentialIdentifier:(id)identifier error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16.receiver = self;
   v16.super_class = DAShareRecipientResult;
   v9 = [(DAShareRecipientResult *)&v16 init];
@@ -71,14 +71,14 @@
   if (v9)
   {
     v9->_type = 3;
-    objc_storeStrong(&v9->_credentialIdentifier, a3);
+    objc_storeStrong(&v9->_credentialIdentifier, identifier);
     keyInformation = v10->_keyInformation;
     v10->_keyInformation = 0;
 
     response = v10->_response;
     v10->_response = 0;
 
-    v13 = kmlErrorToDAError(v8);
+    v13 = kmlErrorToDAError(errorCopy);
     error = v10->_error;
     v10->_error = v13;
 
@@ -88,9 +88,9 @@
   return v10;
 }
 
-- (id)initPasscodeFailureResultWithCredentialIdentifier:(id)a3 retryCount:(unint64_t)a4
+- (id)initPasscodeFailureResultWithCredentialIdentifier:(id)identifier retryCount:(unint64_t)count
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = DAShareRecipientResult;
   v8 = [(DAShareRecipientResult *)&v14 init];
@@ -98,7 +98,7 @@
   if (v8)
   {
     v8->_type = 1;
-    objc_storeStrong(&v8->_credentialIdentifier, a3);
+    objc_storeStrong(&v8->_credentialIdentifier, identifier);
     keyInformation = v9->_keyInformation;
     v9->_keyInformation = 0;
 
@@ -108,16 +108,16 @@
     error = v9->_error;
     v9->_error = 0;
 
-    v9->_retryCount = a4;
+    v9->_retryCount = count;
   }
 
   return v9;
 }
 
-- (id)initSharingCancelledResultWithResponse:(id)a3 error:(id)a4
+- (id)initSharingCancelledResultWithResponse:(id)response error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  responseCopy = response;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = DAShareRecipientResult;
   v9 = [(DAShareRecipientResult *)&v14 init];
@@ -131,59 +131,59 @@
     keyInformation = v10->_keyInformation;
     v10->_keyInformation = 0;
 
-    objc_storeStrong(&v10->_response, a3);
-    objc_storeStrong(&v10->_error, a4);
+    objc_storeStrong(&v10->_response, response);
+    objc_storeStrong(&v10->_error, error);
     v10->_retryCount = 0;
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeInteger:-[DAShareRecipientResult type](self forKey:{"type"), @"type"}];
-  v4 = [(DAShareRecipientResult *)self credentialIdentifier];
-  [v8 encodeObject:v4 forKey:@"credentialIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[DAShareRecipientResult type](self forKey:{"type"), @"type"}];
+  credentialIdentifier = [(DAShareRecipientResult *)self credentialIdentifier];
+  [coderCopy encodeObject:credentialIdentifier forKey:@"credentialIdentifier"];
 
-  v5 = [(DAShareRecipientResult *)self keyInformation];
-  [v8 encodeObject:v5 forKey:@"keyInformation"];
+  keyInformation = [(DAShareRecipientResult *)self keyInformation];
+  [coderCopy encodeObject:keyInformation forKey:@"keyInformation"];
 
-  v6 = [(DAShareRecipientResult *)self response];
-  [v8 encodeObject:v6 forKey:@"response"];
+  response = [(DAShareRecipientResult *)self response];
+  [coderCopy encodeObject:response forKey:@"response"];
 
-  v7 = [(DAShareRecipientResult *)self error];
-  [v8 encodeObject:v7 forKey:@"error"];
+  error = [(DAShareRecipientResult *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 
-  [v8 encodeInteger:-[DAShareRecipientResult retryCount](self forKey:{"retryCount"), @"retryCount"}];
+  [coderCopy encodeInteger:-[DAShareRecipientResult retryCount](self forKey:{"retryCount"), @"retryCount"}];
 }
 
-- (DAShareRecipientResult)initWithCoder:(id)a3
+- (DAShareRecipientResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = DAShareRecipientResult;
   v5 = [(DAShareRecipientResult *)&v15 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentifier"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentifier"];
     credentialIdentifier = v5->_credentialIdentifier;
     v5->_credentialIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyInformation"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyInformation"];
     keyInformation = v5->_keyInformation;
     v5->_keyInformation = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"response"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"response"];
     response = v5->_response;
     v5->_response = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v12;
 
-    v5->_retryCount = [v4 decodeIntegerForKey:@"retryCount"];
+    v5->_retryCount = [coderCopy decodeIntegerForKey:@"retryCount"];
   }
 
   return v5;
@@ -191,23 +191,23 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Type               : %ld\n", self->_type];
-  [v3 appendString:v4];
+  [string appendString:v4];
 
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Retry Count        : %ld\n", self->_retryCount];
-  [v3 appendString:v5];
+  [string appendString:v5];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error              : %@\n", self->_error];
-  [v3 appendString:v6];
+  [string appendString:v6];
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Response           : %@\n", self->_response];
-  [v3 appendString:v7];
+  [string appendString:v7];
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Key Information    : %@\n", self->_keyInformation];
-  [v3 appendString:v8];
+  [string appendString:v8];
 
-  return v3;
+  return string;
 }
 
 @end

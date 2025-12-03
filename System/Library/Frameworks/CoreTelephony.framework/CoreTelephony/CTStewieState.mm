@@ -1,16 +1,16 @@
 @interface CTStewieState
 - (BOOL)displayInactiveSOSInStatusBar;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToState:(id)state;
 - (BOOL)isStewieActiveOverBB;
 - (BOOL)isStewieActiveOverInternet;
 - (CTStewieState)init;
-- (CTStewieState)initWithCoder:(id)a3;
-- (CTStewieState)initWithStewieState:(const StewieState *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTStewieState)initWithCoder:(id)coder;
+- (CTStewieState)initWithStewieState:(const StewieState *)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)statusReasonForService:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)statusReasonForService:(int64_t)service;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieState
@@ -39,16 +39,16 @@
 
 - (BOOL)isStewieActiveOverBB
 {
-  v3 = [(CTStewieState *)self isStewieActive];
-  if (v3)
+  isStewieActive = [(CTStewieState *)self isStewieActive];
+  if (isStewieActive)
   {
-    LOBYTE(v3) = [(CTStewieState *)self transportType]== 1;
+    LOBYTE(isStewieActive) = [(CTStewieState *)self transportType]== 1;
   }
 
-  return v3;
+  return isStewieActive;
 }
 
-- (CTStewieState)initWithStewieState:(const StewieState *)a3
+- (CTStewieState)initWithStewieState:(const StewieState *)state
 {
   v13.receiver = self;
   v13.super_class = CTStewieState;
@@ -56,40 +56,40 @@
   v5 = v4;
   if (v4)
   {
-    [(CTStewieState *)v4 setAllowedServices:a3->var0];
-    [(CTStewieState *)v5 setActiveServices:a3->var1];
-    [(CTStewieState *)v5 setSubscriptionDeterminedServices:a3->var2];
-    [(CTStewieState *)v5 setSubscribedServices:a3->var3];
-    [(CTStewieState *)v5 setCongestedServices:a3->var4];
-    [(CTStewieState *)v5 setDataPathAssertedServices:a3->var5];
-    [(CTStewieState *)v5 setDemoAllowedServices:a3->var6];
-    [(CTStewieState *)v5 setOffGridCriteriaSatisfiedServices:a3->var7];
-    [(CTStewieState *)v5 setConfiguredForLocationServices:a3->var8];
-    if ((a3->var9 - 1) > 3u)
+    [(CTStewieState *)v4 setAllowedServices:state->var0];
+    [(CTStewieState *)v5 setActiveServices:state->var1];
+    [(CTStewieState *)v5 setSubscriptionDeterminedServices:state->var2];
+    [(CTStewieState *)v5 setSubscribedServices:state->var3];
+    [(CTStewieState *)v5 setCongestedServices:state->var4];
+    [(CTStewieState *)v5 setDataPathAssertedServices:state->var5];
+    [(CTStewieState *)v5 setDemoAllowedServices:state->var6];
+    [(CTStewieState *)v5 setOffGridCriteriaSatisfiedServices:state->var7];
+    [(CTStewieState *)v5 setConfiguredForLocationServices:state->var8];
+    if ((state->var9 - 1) > 3u)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = qword_18304DE70[(a3->var9 - 1)];
+      v6 = qword_18304DE70[(state->var9 - 1)];
     }
 
     [(CTStewieState *)v5 setStatus:v6];
-    if (a3->var10 - 1 > 5)
+    if (state->var10 - 1 > 5)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = qword_18304DE90[(a3->var10 - 1)];
+      v7 = qword_18304DE90[(state->var10 - 1)];
     }
 
     [(CTStewieState *)v5 setReason:v7];
-    if (a3->var10 - 1 < 7)
+    if (state->var10 - 1 < 7)
     {
-      v8 = (a3->var10 - 1) + 1;
+      v8 = (state->var10 - 1) + 1;
     }
 
     else
@@ -98,7 +98,7 @@
     }
 
     [(CTStewieState *)v5 setBaseReason:v8];
-    var11 = a3->var11;
+    var11 = state->var11;
     if (var11 == 2)
     {
       v10 = 2;
@@ -110,7 +110,7 @@
     }
 
     [(CTStewieState *)v5 setTransportType:v10];
-    [(CTStewieState *)v5 setDisplaySatelliteIcon:a3->var12];
+    [(CTStewieState *)v5 setDisplaySatelliteIcon:state->var12];
     v11 = v5;
   }
 
@@ -132,21 +132,21 @@
   [v3 appendFormat:@", status=%s", CTStewieStatusAsString(-[CTStewieState status](self, "status"))];
   [v3 appendFormat:@", reason=%s", CTStewieStatusReasonAsString(-[CTStewieState reason](self, "reason"))];
   [v3 appendFormat:@", baseReason=%s", CTStewieServiceStatusReasonAsString(-[CTStewieState baseReason](self, "baseReason"))];
-  v4 = [(CTStewieState *)self transportType];
-  if (v4 > 2)
+  transportType = [(CTStewieState *)self transportType];
+  if (transportType > 2)
   {
     v5 = "???";
   }
 
   else
   {
-    v5 = off_1E6A46818[v4];
+    v5 = off_1E6A46818[transportType];
   }
 
   [v3 appendFormat:@", transportType=%s", v5];
-  v6 = [(CTStewieState *)self displaySatelliteIcon];
+  displaySatelliteIcon = [(CTStewieState *)self displaySatelliteIcon];
   v7 = "no";
-  if (v6)
+  if (displaySatelliteIcon)
   {
     v7 = "yes";
   }
@@ -157,50 +157,50 @@
   return v3;
 }
 
-- (BOOL)isEqualToState:(id)a3
+- (BOOL)isEqualToState:(id)state
 {
-  v4 = a3;
-  v5 = [(CTStewieState *)self allowedServices];
-  if (v5 != [v4 allowedServices])
+  stateCopy = state;
+  allowedServices = [(CTStewieState *)self allowedServices];
+  if (allowedServices != [stateCopy allowedServices])
   {
     goto LABEL_15;
   }
 
-  v6 = [(CTStewieState *)self activeServices];
-  if (v6 != [v4 activeServices])
+  activeServices = [(CTStewieState *)self activeServices];
+  if (activeServices != [stateCopy activeServices])
   {
     goto LABEL_15;
   }
 
-  v7 = [(CTStewieState *)self subscriptionDeterminedServices];
-  if (v7 != [v4 subscriptionDeterminedServices])
+  subscriptionDeterminedServices = [(CTStewieState *)self subscriptionDeterminedServices];
+  if (subscriptionDeterminedServices != [stateCopy subscriptionDeterminedServices])
   {
     goto LABEL_15;
   }
 
-  v8 = [(CTStewieState *)self subscribedServices];
-  if (v8 != [v4 subscribedServices])
+  subscribedServices = [(CTStewieState *)self subscribedServices];
+  if (subscribedServices != [stateCopy subscribedServices])
   {
     goto LABEL_15;
   }
 
-  v9 = [(CTStewieState *)self congestedServices];
-  if (v9 != [v4 congestedServices])
+  congestedServices = [(CTStewieState *)self congestedServices];
+  if (congestedServices != [stateCopy congestedServices])
   {
     goto LABEL_15;
   }
 
-  v10 = [(CTStewieState *)self dataPathAssertedServices];
-  if (v10 != [v4 dataPathAssertedServices])
+  dataPathAssertedServices = [(CTStewieState *)self dataPathAssertedServices];
+  if (dataPathAssertedServices != [stateCopy dataPathAssertedServices])
   {
     goto LABEL_15;
   }
 
-  v11 = [(CTStewieState *)self demoAllowedServices];
-  if (v11 == [v4 demoAllowedServices] && (v12 = -[CTStewieState offGridCriteriaSatisfiedServices](self, "offGridCriteriaSatisfiedServices"), v12 == objc_msgSend(v4, "offGridCriteriaSatisfiedServices")) && (v13 = -[CTStewieState configuredForLocationServices](self, "configuredForLocationServices"), v13 == objc_msgSend(v4, "configuredForLocationServices")) && (v14 = -[CTStewieState status](self, "status"), v14 == objc_msgSend(v4, "status")) && (v15 = -[CTStewieState reason](self, "reason"), v15 == objc_msgSend(v4, "reason")) && (v16 = -[CTStewieState baseReason](self, "baseReason"), v16 == objc_msgSend(v4, "baseReason")) && (v17 = -[CTStewieState transportType](self, "transportType"), v17 == objc_msgSend(v4, "transportType")))
+  demoAllowedServices = [(CTStewieState *)self demoAllowedServices];
+  if (demoAllowedServices == [stateCopy demoAllowedServices] && (v12 = -[CTStewieState offGridCriteriaSatisfiedServices](self, "offGridCriteriaSatisfiedServices"), v12 == objc_msgSend(stateCopy, "offGridCriteriaSatisfiedServices")) && (v13 = -[CTStewieState configuredForLocationServices](self, "configuredForLocationServices"), v13 == objc_msgSend(stateCopy, "configuredForLocationServices")) && (v14 = -[CTStewieState status](self, "status"), v14 == objc_msgSend(stateCopy, "status")) && (v15 = -[CTStewieState reason](self, "reason"), v15 == objc_msgSend(stateCopy, "reason")) && (v16 = -[CTStewieState baseReason](self, "baseReason"), v16 == objc_msgSend(stateCopy, "baseReason")) && (v17 = -[CTStewieState transportType](self, "transportType"), v17 == objc_msgSend(stateCopy, "transportType")))
   {
-    v18 = [(CTStewieState *)self displaySatelliteIcon];
-    v19 = v18 ^ [v4 displaySatelliteIcon] ^ 1;
+    displaySatelliteIcon = [(CTStewieState *)self displaySatelliteIcon];
+    v19 = displaySatelliteIcon ^ [stateCopy displaySatelliteIcon] ^ 1;
   }
 
   else
@@ -212,10 +212,10 @@ LABEL_15:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -223,15 +223,15 @@ LABEL_15:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieState *)self isEqualToState:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieState *)self isEqualToState:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAllowedServices:{-[CTStewieState allowedServices](self, "allowedServices")}];
   [v4 setActiveServices:{-[CTStewieState activeServices](self, "activeServices")}];
   [v4 setSubscriptionDeterminedServices:{-[CTStewieState subscriptionDeterminedServices](self, "subscriptionDeterminedServices")}];
@@ -249,47 +249,47 @@ LABEL_15:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[CTStewieState allowedServices](self forKey:{"allowedServices"), @"allowedServices"}];
-  [v4 encodeInteger:-[CTStewieState activeServices](self forKey:{"activeServices"), @"activeServices"}];
-  [v4 encodeInteger:-[CTStewieState subscriptionDeterminedServices](self forKey:{"subscriptionDeterminedServices"), @"subscriptionDeterminedServices"}];
-  [v4 encodeInteger:-[CTStewieState subscribedServices](self forKey:{"subscribedServices"), @"subscribedServices"}];
-  [v4 encodeInteger:-[CTStewieState congestedServices](self forKey:{"congestedServices"), @"congestedServices"}];
-  [v4 encodeInteger:-[CTStewieState dataPathAssertedServices](self forKey:{"dataPathAssertedServices"), @"dataPathAssertedServices"}];
-  [v4 encodeInteger:-[CTStewieState demoAllowedServices](self forKey:{"demoAllowedServices"), @"demoAllowedServices"}];
-  [v4 encodeInteger:-[CTStewieState offGridCriteriaSatisfiedServices](self forKey:{"offGridCriteriaSatisfiedServices"), @"offGridCriteriaSatisfiedServices"}];
-  [v4 encodeInteger:-[CTStewieState configuredForLocationServices](self forKey:{"configuredForLocationServices"), @"configuredForLocationServices"}];
-  [v4 encodeInteger:-[CTStewieState status](self forKey:{"status"), @"status"}];
-  [v4 encodeInteger:-[CTStewieState reason](self forKey:{"reason"), @"reason"}];
-  [v4 encodeInteger:-[CTStewieState baseReason](self forKey:{"baseReason"), @"baseReason"}];
-  [v4 encodeInteger:-[CTStewieState transportType](self forKey:{"transportType"), @"transportType"}];
-  [v4 encodeBool:-[CTStewieState displaySatelliteIcon](self forKey:{"displaySatelliteIcon"), @"displaySatelliteIcon"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CTStewieState allowedServices](self forKey:{"allowedServices"), @"allowedServices"}];
+  [coderCopy encodeInteger:-[CTStewieState activeServices](self forKey:{"activeServices"), @"activeServices"}];
+  [coderCopy encodeInteger:-[CTStewieState subscriptionDeterminedServices](self forKey:{"subscriptionDeterminedServices"), @"subscriptionDeterminedServices"}];
+  [coderCopy encodeInteger:-[CTStewieState subscribedServices](self forKey:{"subscribedServices"), @"subscribedServices"}];
+  [coderCopy encodeInteger:-[CTStewieState congestedServices](self forKey:{"congestedServices"), @"congestedServices"}];
+  [coderCopy encodeInteger:-[CTStewieState dataPathAssertedServices](self forKey:{"dataPathAssertedServices"), @"dataPathAssertedServices"}];
+  [coderCopy encodeInteger:-[CTStewieState demoAllowedServices](self forKey:{"demoAllowedServices"), @"demoAllowedServices"}];
+  [coderCopy encodeInteger:-[CTStewieState offGridCriteriaSatisfiedServices](self forKey:{"offGridCriteriaSatisfiedServices"), @"offGridCriteriaSatisfiedServices"}];
+  [coderCopy encodeInteger:-[CTStewieState configuredForLocationServices](self forKey:{"configuredForLocationServices"), @"configuredForLocationServices"}];
+  [coderCopy encodeInteger:-[CTStewieState status](self forKey:{"status"), @"status"}];
+  [coderCopy encodeInteger:-[CTStewieState reason](self forKey:{"reason"), @"reason"}];
+  [coderCopy encodeInteger:-[CTStewieState baseReason](self forKey:{"baseReason"), @"baseReason"}];
+  [coderCopy encodeInteger:-[CTStewieState transportType](self forKey:{"transportType"), @"transportType"}];
+  [coderCopy encodeBool:-[CTStewieState displaySatelliteIcon](self forKey:{"displaySatelliteIcon"), @"displaySatelliteIcon"}];
 }
 
-- (CTStewieState)initWithCoder:(id)a3
+- (CTStewieState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CTStewieState;
   v5 = [(CTStewieState *)&v8 init];
   if (v5)
   {
-    v5->_allowedServices = [v4 decodeIntegerForKey:@"allowedServices"];
-    v5->_activeServices = [v4 decodeIntegerForKey:@"activeServices"];
-    v5->_subscriptionDeterminedServices = [v4 decodeIntegerForKey:@"subscriptionDeterminedServices"];
-    v5->_subscribedServices = [v4 decodeIntegerForKey:@"subscribedServices"];
-    v5->_congestedServices = [v4 decodeIntegerForKey:@"congestedServices"];
-    v5->_dataPathAssertedServices = [v4 decodeIntegerForKey:@"dataPathAssertedServices"];
-    v5->_demoAllowedServices = [v4 decodeIntegerForKey:@"demoAllowedServices"];
-    v5->_offGridCriteriaSatisfiedServices = [v4 decodeIntegerForKey:@"offGridCriteriaSatisfiedServices"];
-    v5->_configuredForLocationServices = [v4 decodeIntegerForKey:@"configuredForLocationServices"];
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v5->_reason = [v4 decodeIntegerForKey:@"reason"];
-    v5->_baseReason = [v4 decodeIntegerForKey:@"baseReason"];
-    v5->_transportType = [v4 decodeIntegerForKey:@"transportType"];
-    v5->_displaySatelliteIcon = [v4 decodeBoolForKey:@"displaySatelliteIcon"];
+    v5->_allowedServices = [coderCopy decodeIntegerForKey:@"allowedServices"];
+    v5->_activeServices = [coderCopy decodeIntegerForKey:@"activeServices"];
+    v5->_subscriptionDeterminedServices = [coderCopy decodeIntegerForKey:@"subscriptionDeterminedServices"];
+    v5->_subscribedServices = [coderCopy decodeIntegerForKey:@"subscribedServices"];
+    v5->_congestedServices = [coderCopy decodeIntegerForKey:@"congestedServices"];
+    v5->_dataPathAssertedServices = [coderCopy decodeIntegerForKey:@"dataPathAssertedServices"];
+    v5->_demoAllowedServices = [coderCopy decodeIntegerForKey:@"demoAllowedServices"];
+    v5->_offGridCriteriaSatisfiedServices = [coderCopy decodeIntegerForKey:@"offGridCriteriaSatisfiedServices"];
+    v5->_configuredForLocationServices = [coderCopy decodeIntegerForKey:@"configuredForLocationServices"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v5->_reason = [coderCopy decodeIntegerForKey:@"reason"];
+    v5->_baseReason = [coderCopy decodeIntegerForKey:@"baseReason"];
+    v5->_transportType = [coderCopy decodeIntegerForKey:@"transportType"];
+    v5->_displaySatelliteIcon = [coderCopy decodeBoolForKey:@"displaySatelliteIcon"];
     v6 = v5;
   }
 
@@ -309,20 +309,20 @@ LABEL_15:
 
 - (BOOL)isStewieActiveOverInternet
 {
-  v3 = [(CTStewieState *)self isStewieActive];
-  if (v3)
+  isStewieActive = [(CTStewieState *)self isStewieActive];
+  if (isStewieActive)
   {
-    LOBYTE(v3) = [(CTStewieState *)self transportType]== 2;
+    LOBYTE(isStewieActive) = [(CTStewieState *)self transportType]== 2;
   }
 
-  return v3;
+  return isStewieActive;
 }
 
-- (int64_t)statusReasonForService:(int64_t)a3
+- (int64_t)statusReasonForService:(int64_t)service
 {
-  if (a3 < 1)
+  if (service < 1)
   {
-    if ((a3 & 0x3F) == 0)
+    if ((service & 0x3F) == 0)
     {
       return 0;
     }
@@ -331,7 +331,7 @@ LABEL_15:
   else
   {
     result = 0;
-    if ((a3 & 0x3F) == 0 || ((a3 + 0x7FFFFFFFFFFFFFFFLL) & a3) != 0)
+    if ((service & 0x3F) == 0 || ((service + 0x7FFFFFFFFFFFFFFFLL) & service) != 0)
     {
       return result;
     }
@@ -343,7 +343,7 @@ LABEL_15:
     return result;
   }
 
-  if ([(CTStewieState *)self isAllowedService:a3])
+  if ([(CTStewieState *)self isAllowedService:service])
   {
     return 0;
   }
@@ -354,16 +354,16 @@ LABEL_15:
     return [(CTStewieState *)self baseReason];
   }
 
-  else if ([(CTStewieState *)self isPermittedAtCurrentLocation:a3])
+  else if ([(CTStewieState *)self isPermittedAtCurrentLocation:service])
   {
-    if ([(CTStewieState *)self isSubscribedService:a3])
+    if ([(CTStewieState *)self isSubscribedService:service])
     {
-      if ([(CTStewieState *)self isCongestedService:a3])
+      if ([(CTStewieState *)self isCongestedService:service])
       {
         return 10;
       }
 
-      else if ([(CTStewieState *)self isOffGridCriteriaSatisfied:a3])
+      else if ([(CTStewieState *)self isOffGridCriteriaSatisfied:service])
       {
         return 0;
       }
@@ -374,7 +374,7 @@ LABEL_15:
       }
     }
 
-    else if ([(CTStewieState *)self isSubscriptionStatusNetworkDetermined:a3])
+    else if ([(CTStewieState *)self isSubscriptionStatusNetworkDetermined:service])
     {
       return 8;
     }

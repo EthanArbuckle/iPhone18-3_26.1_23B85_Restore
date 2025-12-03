@@ -1,44 +1,44 @@
 @interface NCLocation
 + (NCLocation)idealizedLocation;
-+ (NCLocation)locationWithLocation:(id)a3 error:(id)a4;
++ (NCLocation)locationWithLocation:(id)location error:(id)error;
 + (id)randomizedLocation;
 - (BOOL)hasAcceptableAccuracy;
-- (BOOL)isBetterThan:(id)a3 withStaleTimeThreshold:(double)a4;
+- (BOOL)isBetterThan:(id)than withStaleTimeThreshold:(double)threshold;
 - (CLLocationCoordinate2D)coordinate;
-- (NCLocation)initWithLocation:(id)a3;
-- (NCLocation)initWithLocation:(id)a3 error:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NCLocation)initWithLocation:(id)location;
+- (NCLocation)initWithLocation:(id)location error:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NCLocation
 
-+ (NCLocation)locationWithLocation:(id)a3 error:(id)a4
++ (NCLocation)locationWithLocation:(id)location error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v10 = objc_msgSend_initWithLocation_error_(v8, v9, v7, v6);
+  errorCopy = error;
+  locationCopy = location;
+  v8 = [self alloc];
+  v10 = objc_msgSend_initWithLocation_error_(v8, v9, locationCopy, errorCopy);
 
   return v10;
 }
 
-- (NCLocation)initWithLocation:(id)a3 error:(id)a4
+- (NCLocation)initWithLocation:(id)location error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  errorCopy = error;
   v45.receiver = self;
   v45.super_class = NCLocation;
   v8 = [(NCLocation *)&v45 init];
   v12 = v8;
   if (v8)
   {
-    if (v6)
+    if (locationCopy)
     {
-      objc_msgSend_coordinate(v6, v9, v10, v11);
+      objc_msgSend_coordinate(locationCopy, v9, v10, v11);
       objc_msgSend_setCoordinate_(v12, v13, v14, v15);
-      objc_msgSend_horizontalAccuracy(v6, v16, v17, v18);
+      objc_msgSend_horizontalAccuracy(locationCopy, v16, v17, v18);
       objc_msgSend_setAccuracy_(v12, v19, v20, v21);
-      objc_msgSend_timestamp(v6, v22, v23, v24);
+      objc_msgSend_timestamp(locationCopy, v22, v23, v24);
     }
 
     else
@@ -53,39 +53,39 @@
     v37 = objc_msgSend_date(MEMORY[0x277CBEAA8], v34, v35, v36);
     objc_msgSend_setReportedTimestamp_(v12, v38, v37, v39);
 
-    objc_msgSend_setError_(v12, v40, v7, v41);
-    objc_msgSend_setRawLocation_(v12, v42, v6, v43);
+    objc_msgSend_setError_(v12, v40, errorCopy, v41);
+    objc_msgSend_setRawLocation_(v12, v42, locationCopy, v43);
   }
 
   return v12;
 }
 
-- (NCLocation)initWithLocation:(id)a3
+- (NCLocation)initWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v36.receiver = self;
   v36.super_class = NCLocation;
   v8 = [(NCLocation *)&v36 init];
   if (v8)
   {
-    objc_msgSend_coordinate(v4, v5, v6, v7);
+    objc_msgSend_coordinate(locationCopy, v5, v6, v7);
     v8->_coordinate.latitude = v9;
     v8->_coordinate.longitude = v10;
-    objc_msgSend_accuracy(v4, v11, v12, v13);
+    objc_msgSend_accuracy(locationCopy, v11, v12, v13);
     v8->_accuracy = v14;
-    v18 = objc_msgSend_timestamp(v4, v15, v16, v17);
+    v18 = objc_msgSend_timestamp(locationCopy, v15, v16, v17);
     timestamp = v8->_timestamp;
     v8->_timestamp = v18;
 
-    v23 = objc_msgSend_reportedTimestamp(v4, v20, v21, v22);
+    v23 = objc_msgSend_reportedTimestamp(locationCopy, v20, v21, v22);
     reportedTimestamp = v8->_reportedTimestamp;
     v8->_reportedTimestamp = v23;
 
-    v28 = objc_msgSend_error(v4, v25, v26, v27);
+    v28 = objc_msgSend_error(locationCopy, v25, v26, v27);
     error = v8->_error;
     v8->_error = v28;
 
-    v33 = objc_msgSend_rawLocation(v4, v30, v31, v32);
+    v33 = objc_msgSend_rawLocation(locationCopy, v30, v31, v32);
     rawLocation = v8->_rawLocation;
     v8->_rawLocation = v33;
   }
@@ -93,22 +93,22 @@
   return v8;
 }
 
-- (BOOL)isBetterThan:(id)a3 withStaleTimeThreshold:(double)a4
+- (BOOL)isBetterThan:(id)than withStaleTimeThreshold:(double)threshold
 {
-  v9 = a3;
+  thanCopy = than;
   objc_msgSend_coordinate(self, v10, v11, v12);
   if (!CLLocationCoordinate2DIsValid(v110))
   {
     goto LABEL_4;
   }
 
-  if (!v9)
+  if (!thanCopy)
   {
     goto LABEL_25;
   }
 
   v16 = objc_msgSend_timestamp(self, v13, v14, v15);
-  v20 = objc_msgSend_timestamp(v9, v17, v18, v19);
+  v20 = objc_msgSend_timestamp(thanCopy, v17, v18, v19);
   objc_msgSend_timeIntervalSinceDate_(v16, v21, v20, v22);
   v24 = v23;
 
@@ -126,7 +126,7 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v95 = objc_msgSend_error(v9, v30, v31, v32);
+  v95 = objc_msgSend_error(thanCopy, v30, v31, v32);
 
   if (v95)
   {
@@ -136,7 +136,7 @@ LABEL_25:
   }
 
 LABEL_7:
-  objc_msgSend_coordinate(v9, v33, v34, v35);
+  objc_msgSend_coordinate(thanCopy, v33, v34, v35);
   if (!CLLocationCoordinate2DIsValid(v111))
   {
     goto LABEL_25;
@@ -145,7 +145,7 @@ LABEL_7:
   objc_msgSend_accuracy(self, v36, v37, v38);
   if (v42 >= 0.0)
   {
-    objc_msgSend_accuracy(v9, v39, v40, v41);
+    objc_msgSend_accuracy(thanCopy, v39, v40, v41);
     if (v43 < 0.0)
     {
       goto LABEL_25;
@@ -155,13 +155,13 @@ LABEL_7:
   hasAcceptableAccuracy = objc_msgSend_hasAcceptableAccuracy(self, v39, v40, v41);
   if (hasAcceptableAccuracy)
   {
-    if (!objc_msgSend_hasAcceptableAccuracy(v9, v44, v45, v46))
+    if (!objc_msgSend_hasAcceptableAccuracy(thanCopy, v44, v45, v46))
     {
       goto LABEL_25;
     }
   }
 
-  objc_msgSend_accuracy(v9, v44, v45, v46);
+  objc_msgSend_accuracy(thanCopy, v44, v45, v46);
   v49 = v48;
   objc_msgSend_accuracy(self, v50, v51, v52);
   v54 = v53;
@@ -173,7 +173,7 @@ LABEL_7:
 
   objc_msgSend_coordinate(self, v58, v59, v60);
   v63 = v62;
-  objc_msgSend_coordinate(v9, v64, v65, v66);
+  objc_msgSend_coordinate(thanCopy, v64, v65, v66);
   v71 = v63 - v70;
   if (v71 >= 0.0)
   {
@@ -187,7 +187,7 @@ LABEL_7:
 
   objc_msgSend_coordinate(self, v67, v68, v69);
   v74 = v73;
-  objc_msgSend_coordinate(v9, v75, v76, v77);
+  objc_msgSend_coordinate(thanCopy, v75, v76, v77);
   v82 = v74 - v81;
   v83 = -(v74 - v81);
   if (v82 >= 0.0)
@@ -201,10 +201,10 @@ LABEL_7:
   }
 
   v88 = objc_msgSend_error(self, v78, v79, v80);
-  if (v88 || (objc_msgSend_error(v9, v85, v86, v87), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v88 || (objc_msgSend_error(thanCopy, v85, v86, v87), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = objc_msgSend_error(self, v85, v86, v87);
-    v6 = objc_msgSend_error(v9, v89, v90, v91);
+    v6 = objc_msgSend_error(thanCopy, v89, v90, v91);
     if (!objc_msgSend_isEqual_(v5, v92, v6, v93))
     {
       v97 = 0;
@@ -221,7 +221,7 @@ LABEL_7:
 
   objc_msgSend_accuracy(self, v85, v86, v87);
   v99 = v98;
-  objc_msgSend_accuracy(v9, v100, v101, v102);
+  objc_msgSend_accuracy(thanCopy, v100, v101, v102);
   v104 = v99 - v103;
   if (v104 < 0.0)
   {
@@ -239,7 +239,7 @@ LABEL_7:
     goto LABEL_37;
   }
 
-  v97 = v24 > a4;
+  v97 = v24 > threshold;
   if (v94)
   {
 LABEL_37:
@@ -262,7 +262,7 @@ LABEL_38:
   }
 
   objc_msgSend_accuracy(self, v105, v106, v107);
-  v28 = v24 > a4 && v109 >= 0.0;
+  v28 = v24 > threshold && v109 >= 0.0;
 LABEL_26:
 
   return v28;
@@ -310,7 +310,7 @@ LABEL_26:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NCLocation alloc];
 

@@ -3,7 +3,7 @@
 - (CGSize)_shadowOffset;
 - (UIEdgeInsets)_contentViewInsets;
 - (UIEdgeInsets)_shadowInsets;
-- (id)_shadowPathForRect:(CGRect)a3 arrowDirection:(unint64_t)a4;
+- (id)_shadowPathForRect:(CGRect)rect arrowDirection:(unint64_t)direction;
 - (void)layoutSubviews;
 @end
 
@@ -78,12 +78,12 @@
   return result;
 }
 
-- (id)_shadowPathForRect:(CGRect)a3 arrowDirection:(unint64_t)a4
+- (id)_shadowPathForRect:(CGRect)rect arrowDirection:(unint64_t)direction
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [objc_opt_class() cornerRadius];
 
   return [UIBezierPath bezierPathWithRoundedRect:x cornerRadius:y, width, height, v8];
@@ -94,12 +94,12 @@
   v6.receiver = self;
   v6.super_class = _UIPopoverSlidingChromeView;
   [(UIPopoverBackgroundView *)&v6 layoutSubviews];
-  v3 = [(UIView *)self layer];
+  layer = [(UIView *)self layer];
   v4 = +[UIColor systemGrayColor];
-  [v3 setBorderColor:{objc_msgSend(v4, "CGColor")}];
+  [layer setBorderColor:{objc_msgSend(v4, "CGColor")}];
 
-  v5 = [(UIView *)self layer];
-  [v5 setBorderWidth:10.0];
+  layer2 = [(UIView *)self layer];
+  [layer2 setBorderWidth:10.0];
 }
 
 @end

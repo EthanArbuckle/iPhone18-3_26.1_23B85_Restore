@@ -1,43 +1,43 @@
 @interface GKConnectionInternal
-- (BOOL)convertParticipantID:(id)a3 toPeerID:(id *)a4;
-- (BOOL)convertPeerID:(id)a3 toParticipantID:(id *)a4;
-- (BOOL)localGamingCheckEstablishConnection:(id)a3 connectionData:(id)a4;
-- (BOOL)shouldWeInitiateRelayWithPID:(unsigned int)a3;
+- (BOOL)convertParticipantID:(id)d toPeerID:(id *)iD;
+- (BOOL)convertPeerID:(id)d toParticipantID:(id *)iD;
+- (BOOL)localGamingCheckEstablishConnection:(id)connection connectionData:(id)data;
+- (BOOL)shouldWeInitiateRelayWithPID:(unsigned int)d;
 - (BOOL)startListeningForLocalGamingCDX;
-- (GKConnectionInternal)initWithParticipantID:(id)a3;
-- (id)createInitiateRelayDictionaryForParticipant:(id)a3 remotePeerID:(id)a4;
-- (id)createInsecureTicketUsingSortedConnectionsFromList:(id)a3;
+- (GKConnectionInternal)initWithParticipantID:(id)d;
+- (id)createInitiateRelayDictionaryForParticipant:(id)participant remotePeerID:(id)d;
+- (id)createInsecureTicketUsingSortedConnectionsFromList:(id)list;
 - (id)eventDelegate;
-- (id)extractBlobUsingData:(id)a3 withSourcePID:(unsigned int)a4 destPID:(unsigned int)a5;
+- (id)extractBlobUsingData:(id)data withSourcePID:(unsigned int)d destPID:(unsigned int)iD;
 - (id)getLocalConnectionDataForLocalGaming;
 - (id)networkStatistics;
-- (id)networkStatisticsDictionaryForGCKStats:(void *)a3;
+- (id)networkStatisticsDictionaryForGCKStats:(void *)stats;
 - (unsigned)gckPID;
-- (void)CDXClient:(id)a3 error:(id)a4;
-- (void)CDXClient:(id)a3 preblob:(id)a4;
-- (void)CDXClientSession:(id)a3 receivedData:(id)a4 from:(int64_t)a5;
-- (void)cancelConnectParticipant:(id)a3;
-- (void)connectParticipantsWithConnectionData:(id)a3 withSessionInfo:(id)a4;
-- (void)connectPendingConnectionsFromList:(id)a3 sessionInfo:(id)a4;
+- (void)CDXClient:(id)client error:(id)error;
+- (void)CDXClient:(id)client preblob:(id)preblob;
+- (void)CDXClientSession:(id)session receivedData:(id)data from:(int64_t)from;
+- (void)cancelConnectParticipant:(id)participant;
+- (void)connectParticipantsWithConnectionData:(id)data withSessionInfo:(id)info;
+- (void)connectPendingConnectionsFromList:(id)list sessionInfo:(id)info;
 - (void)dealloc;
-- (void)doRelayCheckForRemotePeerID:(id)a3;
+- (void)doRelayCheckForRemotePeerID:(id)d;
 - (void)eventDelegate;
 - (void)gckPID;
 - (void)getLocalConnectionDataForLocalGaming;
-- (void)getLocalConnectionDataWithCompletionHandler:(id)a3;
-- (void)internalInitiateRelayWithParticipant:(id)a3 withConnectionData:(id)a4 withRelayInfo:(id)a5 didInitiate:(BOOL)a6;
-- (void)internal_setRemoteConnectionData:(id)a3 fromParticipantID:(id)a4 pendingConnectionPIDList:(id)a5;
-- (void)localGamingReceiveDataHandler:(id)a3 data:(id)a4 time:(double)a5 error:(id)a6;
+- (void)getLocalConnectionDataWithCompletionHandler:(id)handler;
+- (void)internalInitiateRelayWithParticipant:(id)participant withConnectionData:(id)data withRelayInfo:(id)info didInitiate:(BOOL)initiate;
+- (void)internal_setRemoteConnectionData:(id)data fromParticipantID:(id)d pendingConnectionPIDList:(id)list;
+- (void)localGamingReceiveDataHandler:(id)handler data:(id)data time:(double)time error:(id)error;
 - (void)preRelease;
-- (void)setCdxClient:(id)a3;
-- (void)setEventDelegate:(id)a3;
-- (void)setParticipantID:(id)a3 forPeerID:(id)a4;
+- (void)setCdxClient:(id)client;
+- (void)setEventDelegate:(id)delegate;
+- (void)setParticipantID:(id)d forPeerID:(id)iD;
 - (void)startListeningForLocalGamingCDX;
 @end
 
 @implementation GKConnectionInternal
 
-- (GKConnectionInternal)initWithParticipantID:(id)a3
+- (GKConnectionInternal)initWithParticipantID:(id)d
 {
   VRTraceReset();
   keyExistsAndHasValidFormat = 0;
@@ -64,7 +64,7 @@
   if (v7)
   {
     v7->_cdxSessions = 0;
-    *&v7->_gckPID = a3;
+    *&v7->_gckPID = d;
     *(&v8->super._pid + 1) = GCKSessionCreateUniqueID();
     if (GCKSessionCreate(0))
     {
@@ -84,7 +84,7 @@
     {
       LODWORD(v8->_updateRelayQueue) = 0;
       v8->_gckSession = objc_alloc_init(MEMORY[0x277CBEB18]);
-      GCKSessionSetLocalName(v8->_pidGUID, [a3 UTF8String], objc_msgSend(a3, "lengthOfBytesUsingEncoding:", 4));
+      GCKSessionSetLocalName(v8->_pidGUID, [d UTF8String], objc_msgSend(d, "lengthOfBytesUsingEncoding:", 4));
       pthread_mutex_init(&v8->_preblobCallbackCancelTime, 0);
       pthread_cond_init(&v8->_xPreblobFetch.__opaque[48], 0);
       pthread_mutex_init(&v8->_cPreblobFetch.__opaque[32], 0);
@@ -109,7 +109,7 @@
       v8->_localGamingCDXListenSource = objc_alloc_init(MEMORY[0x277CBEB38]);
       v8->_localGamingSocketToPIDMap = objc_alloc_init(MEMORY[0x277CBEB38]);
       v8->_localGamingSocketToConnectionDataMap = objc_alloc_init(MEMORY[0x277CBEB58]);
-      -[NSMutableArray setObject:forKeyedSubscript:](v8->_allowRelayPIDList, "setObject:forKeyedSubscript:", a3, [MEMORY[0x277CCACA8] stringWithFormat:@"%d", *(&v8->super._pid + 1)]);
+      -[NSMutableArray setObject:forKeyedSubscript:](v8->_allowRelayPIDList, "setObject:forKeyedSubscript:", d, [MEMORY[0x277CCACA8] stringWithFormat:@"%d", *(&v8->super._pid + 1)]);
       -[GKConnectionInternal setCdxSessions:](v8, "setCdxSessions:", [MEMORY[0x277CBEB38] dictionary]);
       v9 = CFGetAllocator(v8);
       v8->_pidToPlayerIDMap = CFDictionaryCreateMutable(v9, 0, MEMORY[0x277CBF138], &dispatch_value_callbacks);
@@ -202,7 +202,7 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getLocalConnectionDataWithCompletionHandler:(id)a3
+- (void)getLocalConnectionDataWithCompletionHandler:(id)handler
 {
   v33[1] = *MEMORY[0x277D85DE8];
   TimingLog(3, 1, "Getting local connection data");
@@ -218,7 +218,7 @@
     v8 = v6;
     v9 = 510;
 LABEL_3:
-    (*(a3 + 2))(a3, 0, [v8 errorWithDomain:@"GKConnection" code:v9 userInfo:v7]);
+    (*(handler + 2))(handler, 0, [v8 errorWithDomain:@"GKConnection" code:v9 userInfo:v7]);
     goto LABEL_17;
   }
 
@@ -272,7 +272,7 @@ LABEL_3:
       }
     }
 
-    (*(a3 + 2))(a3, v10, 0);
+    (*(handler + 2))(handler, v10, 0);
     TimingLog(3, 0, "Got local connection data - done");
     v18 = self->_reportingAgent;
     perfTimerStop();
@@ -280,16 +280,16 @@ LABEL_3:
 
   else
   {
-    self->_preblob = [a3 copy];
+    self->_preblob = [handler copy];
     *&self->_preblobCallback = micro() + 60.0;
     v15 = dispatch_time(0, 60000000000);
-    v16 = [(GKConnectionInternal *)self asyncWorkQueue];
+    asyncWorkQueue = [(GKConnectionInternal *)self asyncWorkQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler___block_invoke;
     v20[3] = &unk_279682BA8;
     v20[4] = self;
-    dispatch_after(v15, v16, v20);
+    dispatch_after(v15, asyncWorkQueue, v20);
   }
 
 LABEL_17:
@@ -320,13 +320,13 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
   return result;
 }
 
-- (BOOL)shouldWeInitiateRelayWithPID:(unsigned int)a3
+- (BOOL)shouldWeInitiateRelayWithPID:(unsigned int)d
 {
   v32 = *MEMORY[0x277D85DE8];
   memset(md, 170, sizeof(md));
   memset(v27, 170, sizeof(v27));
   data = bswap32(*(&self->super._pid + 1));
-  v31 = bswap32(a3);
+  v31 = bswap32(d);
   v29[0] = v31;
   v29[1] = data;
   CC_MD5(&data, 8u, md);
@@ -372,7 +372,7 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
       v23 = 2112;
       v24 = v11;
       v25 = 1024;
-      v26 = a3;
+      dCopy = d;
       _os_log_impl(&dword_24E50C000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d shouldWeInitiateRelayWithPID: Local participant='%d' %@ initiate relay with remote participant='%d'", &v15, 0x32u);
     }
   }
@@ -381,7 +381,7 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
   return v7 >> 31;
 }
 
-- (void)connectParticipantsWithConnectionData:(id)a3 withSessionInfo:(id)a4
+- (void)connectParticipantsWithConnectionData:(id)data withSessionInfo:(id)info
 {
   v85 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -403,9 +403,9 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
       *&buf[38] = 1024;
       *&buf[40] = v8;
       *&buf[44] = 2112;
-      *&buf[46] = a3;
+      *&buf[46] = data;
       v83 = 2112;
-      v84 = a4;
+      infoCopy = info;
       _os_log_impl(&dword_24E50C000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKConnectionInternal(%@ (%d)) connectParticipantsWithConnectionData is '%@', sessionInfo is '%@'", buf, 0x40u);
     }
   }
@@ -431,13 +431,13 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
   if (object)
   {
     v59 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    obj = [a3 allKeys];
-    if (a4)
+    obj = [data allKeys];
+    if (info)
     {
       objc_sync_enter(self);
       if (LOBYTE(self->_pendingConnectionPIDList) == 1 && [obj count] == 1)
       {
-        v11 = [a3 objectForKeyedSubscript:{objc_msgSend(obj, "objectAtIndexedSubscript:", 0)}];
+        v11 = [data objectForKeyedSubscript:{objc_msgSend(obj, "objectAtIndexedSubscript:", 0)}];
         if ([v11 length] < 4)
         {
           if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -480,7 +480,7 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
             }
 
             v41 = *(*(&v65 + 1) + 8 * i);
-            v42 = [a3 objectForKeyedSubscript:v41];
+            v42 = [data objectForKeyedSubscript:v41];
             v43 = v42;
             if (v42)
             {
@@ -499,7 +499,7 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
 
               v50 = self->_pidsPreparedForConnection;
               reportingGKAppInfo();
-              v51 = [(GKConnectionInternal *)self asyncWorkQueue];
+              asyncWorkQueue = [(GKConnectionInternal *)self asyncWorkQueue];
               block[0] = MEMORY[0x277D85DD0];
               block[1] = 3221225472;
               block[2] = __78__GKConnectionInternal_connectParticipantsWithConnectionData_withSessionInfo___block_invoke_200;
@@ -510,7 +510,7 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
               block[7] = v43;
               block[8] = v59;
               v64 = v44;
-              dispatch_group_async(object, v51, block);
+              dispatch_group_async(object, asyncWorkQueue, block);
             }
           }
 
@@ -520,15 +520,15 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
         while (v38);
       }
 
-      v52 = [(GKConnectionInternal *)self asyncWorkQueue];
+      asyncWorkQueue2 = [(GKConnectionInternal *)self asyncWorkQueue];
       v62[0] = MEMORY[0x277D85DD0];
       v62[1] = 3221225472;
       v62[2] = __78__GKConnectionInternal_connectParticipantsWithConnectionData_withSessionInfo___block_invoke_204;
       v62[3] = &unk_279682C18;
       v62[4] = self;
       v62[5] = v59;
-      v62[6] = a4;
-      dispatch_group_notify(object, v52, v62);
+      v62[6] = info;
+      dispatch_group_notify(object, asyncWorkQueue2, v62);
 
       dispatch_release(object);
     }
@@ -552,7 +552,7 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
           }
 
           v15 = *(*(&v71 + 1) + 8 * v57);
-          v16 = [a3 objectForKeyedSubscript:v15];
+          v16 = [data objectForKeyedSubscript:v15];
           if ([v16 length] > 5)
           {
             v21 = *[v16 bytes];
@@ -560,7 +560,7 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
             if ([(GKConnectionInternal *)self shouldWeInitiateRelayWithPID:bswap32(v21)])
             {
               v23 = [MEMORY[0x277CBEB58] set];
-              v24 = [v16 bytes];
+              bytes = [v16 bytes];
               if (([v16 length] - 11) <= 0xFFFFFFFFFFFFFFFALL)
               {
                 v25 = 6;
@@ -569,12 +569,12 @@ uint64_t __68__GKConnectionInternal_getLocalConnectionDataWithCompletionHandler_
                   v26 = v25 + 1;
                   v80 = 0xAAAAAAAAAAAAAAAALL;
                   v79 = 0xAAAAAAAAAAAAAAAALL;
-                  v27 = *(v24 + v25);
+                  v27 = *(bytes + v25);
                   if (v27 == 4)
                   {
                     v80 = 0;
                     v79 = 528;
-                    HIDWORD(v79) = *(v24 + v26);
+                    HIDWORD(v79) = *(bytes + v26);
                     TimingLog(3, 0, "starting local CDX tcp connection (connect)");
                     v28 = objc_alloc_init(GKAsyncSocket);
                     v25 += 5;
@@ -996,7 +996,7 @@ uint64_t __78__GKConnectionInternal_connectParticipantsWithConnectionData_withSe
   return pthread_mutex_unlock(v2);
 }
 
-- (void)internal_setRemoteConnectionData:(id)a3 fromParticipantID:(id)a4 pendingConnectionPIDList:(id)a5
+- (void)internal_setRemoteConnectionData:(id)data fromParticipantID:(id)d pendingConnectionPIDList:(id)list
 {
   v25 = *MEMORY[0x277D85DE8];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -1007,7 +1007,7 @@ uint64_t __78__GKConnectionInternal_connectParticipantsWithConnectionData_withSe
     v11 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [*&self->_gckPID UTF8String];
+      uTF8String = [*&self->_gckPID UTF8String];
       *buf = 136316162;
       v16 = v10;
       v17 = 2080;
@@ -1015,14 +1015,14 @@ uint64_t __78__GKConnectionInternal_connectParticipantsWithConnectionData_withSe
       v19 = 1024;
       v20 = 1031;
       v21 = 2080;
-      v22 = v12;
+      v22 = uTF8String;
       v23 = 2080;
-      v24 = [a4 UTF8String];
+      uTF8String2 = [d UTF8String];
       _os_log_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKConnectionInternal(%s) -setRemoteConnectionData (%s)", buf, 0x30u);
     }
   }
 
-  bswap32(*[a3 bytes]);
+  bswap32(*[data bytes]);
   reportingAgent = self->_reportingAgent;
   perfTimerStart();
   TimingLog(3, 0, "Set remote preblob: holepunching for peer to peer\n");
@@ -1030,7 +1030,7 @@ uint64_t __78__GKConnectionInternal_connectParticipantsWithConnectionData_withSe
   GCKSessionPrepareConnection();
 }
 
-- (void)setEventDelegate:(id)a3
+- (void)setEventDelegate:(id)delegate
 {
   v36 = *MEMORY[0x277D85DE8];
   if (objc_opt_class() == self)
@@ -1103,7 +1103,7 @@ LABEL_13:
         v32 = 2112;
         v33 = v5;
         v34 = 2048;
-        v35 = self;
+        selfCopy2 = self;
         v9 = " [%s] %s:%d %@(%p) ";
         v10 = v13;
         v11 = 48;
@@ -1121,7 +1121,7 @@ LABEL_13:
         v32 = 2112;
         v33 = v5;
         v34 = 2048;
-        v35 = self;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_24E50C000, v13, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) ", buf, 0x30u);
       }
     }
@@ -1130,8 +1130,8 @@ LABEL_13:
 LABEL_18:
   obj = self->_gckSession;
   objc_sync_enter(obj);
-  self->_gckEventList = a3;
-  if (a3)
+  self->_gckEventList = delegate;
+  if (delegate)
   {
     v23 = 0u;
     v24 = 0u;
@@ -1232,7 +1232,7 @@ LABEL_13:
           v21 = 2112;
           v22 = v3;
           v23 = 2048;
-          v24 = self;
+          selfCopy2 = self;
           v7 = " [%s] %s:%d %@(%p) ";
           v8 = v11;
           v9 = 48;
@@ -1251,7 +1251,7 @@ LABEL_13:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) ", &v15, 0x30u);
       }
     }
@@ -1327,7 +1327,7 @@ LABEL_13:
           v21 = 2112;
           v22 = v3;
           v23 = 2048;
-          v24 = self;
+          selfCopy2 = self;
           v7 = " [%s] %s:%d %@(%p) ";
           v8 = v11;
           v9 = 48;
@@ -1346,7 +1346,7 @@ LABEL_13:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) ", &v15, 0x30u);
       }
     }
@@ -1357,27 +1357,27 @@ LABEL_13:
   return result;
 }
 
-- (void)setCdxClient:(id)a3
+- (void)setCdxClient:(id)client
 {
   eventDelegate = self->_eventDelegate;
-  if (eventDelegate != a3)
+  if (eventDelegate != client)
   {
     [self->_eventDelegate setDelegate:0];
-    v6 = a3;
-    self->_eventDelegate = v6;
-    [v6 setDelegate:self];
+    clientCopy = client;
+    self->_eventDelegate = clientCopy;
+    [clientCopy setDelegate:self];
 
     if ([self->_eventDelegate preblob])
     {
       v7 = self->_eventDelegate;
-      v8 = [v7 preblob];
+      preblob = [v7 preblob];
 
-      [(GKConnectionInternal *)self CDXClient:v7 preblob:v8];
+      [(GKConnectionInternal *)self CDXClient:v7 preblob:preblob];
     }
   }
 }
 
-- (void)CDXClient:(id)a3 error:(id)a4
+- (void)CDXClient:(id)client error:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1395,7 +1395,7 @@ LABEL_13:
       v15 = 2080;
       Name = sel_getName(a2);
       v17 = 2080;
-      v18 = [objc_msgSend(a4 "description")];
+      v18 = [objc_msgSend(error "description")];
       _os_log_error_impl(&dword_24E50C000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d [GKConnection %s]: %s", &v9, 0x30u);
     }
   }
@@ -1403,7 +1403,7 @@ LABEL_13:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CDXClient:(id)a3 preblob:(id)a4
+- (void)CDXClient:(id)client preblob:(id)preblob
 {
   v27 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1428,7 +1428,7 @@ LABEL_13:
   {
   }
 
-  self->_cdxSessions = a4;
+  self->_cdxSessions = preblob;
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(&self->super._pid + 1)];
   [*&self->_wakeTime setObject:v10 forKeyedSubscript:self->_cdxSessions];
   [(NSMutableDictionary *)self->_preblobToPIDMap setObject:self->_cdxSessions forKeyedSubscript:v10];
@@ -1453,7 +1453,7 @@ LABEL_13:
         v21 = 1024;
         v22 = 1303;
         v23 = 2048;
-        v24 = a3;
+        clientCopy = client;
         v25 = 2048;
         v26 = v14;
         _os_log_impl(&dword_24E50C000, v13, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d CDXClient=%p Got local connection data size=%lu", buf, 0x30u);
@@ -1468,28 +1468,28 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)extractBlobUsingData:(id)a3 withSourcePID:(unsigned int)a4 destPID:(unsigned int)a5
+- (id)extractBlobUsingData:(id)data withSourcePID:(unsigned int)d destPID:(unsigned int)iD
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = [a3 bytes];
-  v23 = a3;
-  v8 = v7 + [a3 length];
-  v24 = v7;
-  while (v7 < v8)
+  bytes = [data bytes];
+  dataCopy = data;
+  v8 = bytes + [data length];
+  v24 = bytes;
+  while (bytes < v8)
   {
-    v9 = v7 + 5;
-    if ((v7 + 5) > v8)
+    v9 = bytes + 5;
+    if ((bytes + 5) > v8)
     {
-      [GKConnectionInternal extractBlobUsingData:v23 withSourcePID:? destPID:?];
+      [GKConnectionInternal extractBlobUsingData:dataCopy withSourcePID:? destPID:?];
 LABEL_15:
       pidsPreparedForConnection = self->_pidsPreparedForConnection;
       reportingGKLog();
       break;
     }
 
-    v10 = bswap32(*v7) >> 16;
-    v11 = (v7 + v10);
-    if (v7 + v10 > v8)
+    v10 = bswap32(*bytes) >> 16;
+    v11 = (bytes + v10);
+    if (bytes + v10 > v8)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -1497,7 +1497,7 @@ LABEL_15:
         v18 = *MEMORY[0x277CE5818];
         if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
         {
-          v21 = [v23 length];
+          v21 = [dataCopy length];
           *buf = 136316418;
           v27 = v17;
           v28 = 2080;
@@ -1507,7 +1507,7 @@ LABEL_15:
           v32 = 1024;
           v33 = v21;
           v34 = 1024;
-          v35 = v7 - v24;
+          v35 = bytes - v24;
           v36 = 1024;
           v37 = v10;
           _os_log_error_impl(&dword_24E50C000, v18, OS_LOG_TYPE_ERROR, " [%s] %s:%d GKConnection: bad blobs? (total=%d, offset=%d, blobLength=%d)", buf, 0x2Eu);
@@ -1517,8 +1517,8 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v12 = bswap32(*(v7 + 1));
-    v13 = bswap32(*(v7 + 3));
+    v12 = bswap32(*(bytes + 1));
+    v13 = bswap32(*(bytes + 3));
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v14 = VRTraceErrorLogLevelToCSTR();
@@ -1543,13 +1543,13 @@ LABEL_15:
       }
     }
 
-    v7 = v11;
-    if (v12 == a5)
+    bytes = v11;
+    if (v12 == iD)
     {
-      v7 = v11;
-      if (v13 == a4)
+      bytes = v11;
+      if (v13 == d)
       {
-        result = [v23 subdataWithRange:{v9 - v24, v10 - 10}];
+        result = [dataCopy subdataWithRange:{v9 - v24, v10 - 10}];
         goto LABEL_17;
       }
     }
@@ -1561,11 +1561,11 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)convertParticipantID:(id)a3 toPeerID:(id *)a4
+- (BOOL)convertParticipantID:(id)d toPeerID:(id *)iD
 {
   allowRelayPIDList = self->_allowRelayPIDList;
   objc_sync_enter(allowRelayPIDList);
-  v8 = [(NSMutableArray *)self->_allowRelayPIDList allKeysForObject:a3];
+  v8 = [(NSMutableArray *)self->_allowRelayPIDList allKeysForObject:d];
   v9 = [v8 count];
   if (v9)
   {
@@ -1577,37 +1577,37 @@ LABEL_17:
     v10 = 0;
   }
 
-  *a4 = v10;
+  *iD = v10;
   objc_sync_exit(allowRelayPIDList);
   return v9 != 0;
 }
 
-- (BOOL)convertPeerID:(id)a3 toParticipantID:(id *)a4
+- (BOOL)convertPeerID:(id)d toParticipantID:(id *)iD
 {
   allowRelayPIDList = self->_allowRelayPIDList;
   objc_sync_enter(allowRelayPIDList);
-  v8 = [(NSMutableArray *)self->_allowRelayPIDList objectForKeyedSubscript:a3];
+  v8 = [(NSMutableArray *)self->_allowRelayPIDList objectForKeyedSubscript:d];
   v9 = v8;
   if (v8)
   {
-    *a4 = v8;
+    *iD = v8;
   }
 
   objc_sync_exit(allowRelayPIDList);
   return v9 != 0;
 }
 
-- (void)setParticipantID:(id)a3 forPeerID:(id)a4
+- (void)setParticipantID:(id)d forPeerID:(id)iD
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = [(NSMutableArray *)self->_allowRelayPIDList objectForKeyedSubscript:a4];
-  if (a3)
+  v7 = [(NSMutableArray *)self->_allowRelayPIDList objectForKeyedSubscript:iD];
+  if (d)
   {
     v22 = v7;
     obj = self->_allowRelayPIDList;
     objc_sync_enter(obj);
-    v8 = [(NSMutableArray *)self->_allowRelayPIDList allKeysForObject:a3];
-    v23 = a3;
+    v8 = [(NSMutableArray *)self->_allowRelayPIDList allKeysForObject:d];
+    dCopy = d;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -1626,7 +1626,7 @@ LABEL_17:
           }
 
           v12 = *(*(&v25 + 1) + 8 * i);
-          if (v12 && ([*(*(&v25 + 1) + 8 * i) isEqualToString:a4] & 1) == 0)
+          if (v12 && ([*(*(&v25 + 1) + 8 * i) isEqualToString:iD] & 1) == 0)
           {
             if (VRTraceGetErrorLogLevelForModule() >= 7)
             {
@@ -1634,7 +1634,7 @@ LABEL_17:
               v14 = *MEMORY[0x277CE5818];
               if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
               {
-                v15 = [v12 UTF8String];
+                uTF8String = [v12 UTF8String];
                 *buf = 136315906;
                 v30 = v13;
                 v31 = 2080;
@@ -1642,7 +1642,7 @@ LABEL_17:
                 v33 = 1024;
                 v34 = 1493;
                 v35 = 2080;
-                v36 = v15;
+                v36 = uTF8String;
                 _os_log_impl(&dword_24E50C000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKConnection: removeObjectForKey(forPeerID)[%s]", buf, 0x26u);
               }
             }
@@ -1664,16 +1664,16 @@ LABEL_17:
       v17 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v23 UTF8String];
-        v19 = [a4 UTF8String];
+        uTF8String2 = [dCopy UTF8String];
+        uTF8String3 = [iD UTF8String];
         if (v22)
         {
-          v20 = [v22 UTF8String];
+          uTF8String4 = [v22 UTF8String];
         }
 
         else
         {
-          v20 = "<nil>";
+          uTF8String4 = "<nil>";
         }
 
         *buf = 136316418;
@@ -1683,22 +1683,22 @@ LABEL_17:
         v33 = 1024;
         v34 = 1499;
         v35 = 2080;
-        v36 = v18;
+        v36 = uTF8String2;
         v37 = 2080;
-        v38 = v19;
+        v38 = uTF8String3;
         v39 = 2080;
-        v40 = v20;
+        v40 = uTF8String4;
         _os_log_impl(&dword_24E50C000, v17, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKConnection: setParticipantID:[%s] forPeerID[%s] (old participantID:[%s])", buf, 0x3Au);
       }
     }
 
-    [(NSMutableArray *)self->_allowRelayPIDList setObject:v23 forKeyedSubscript:a4];
+    [(NSMutableArray *)self->_allowRelayPIDList setObject:dCopy forKeyedSubscript:iD];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createInitiateRelayDictionaryForParticipant:(id)a3 remotePeerID:(id)a4
+- (id)createInitiateRelayDictionaryForParticipant:(id)participant remotePeerID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
   if (!+[GKConnection isRelayEnabled])
@@ -1729,7 +1729,7 @@ LABEL_17:
     goto LABEL_10;
   }
 
-  v7 = -[NSMutableDictionary objectForKeyedSubscript:](self->_preblobToPIDMap, "objectForKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a4, "intValue")}]);
+  v7 = -[NSMutableDictionary objectForKeyedSubscript:](self->_preblobToPIDMap, "objectForKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(d, "intValue")}]);
   if (v7)
   {
     result = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{self->_cdxSessions, *off_279682918, +[GKConnection externalAddressForCDXSelfConnectionData:](GKConnectionInternal, "externalAddressForCDXSelfConnectionData:", self->_cdxSessions), *off_279682920, &unk_28619C008, *off_279682928, v7, *off_2796828F0, +[GKConnection externalAddressForCDXSelfConnectionData:](GKConnectionInternal, "externalAddressForCDXSelfConnectionData:", v7), *off_2796828F8, &unk_28619C008, *off_279682900, 0}];
@@ -1752,7 +1752,7 @@ LABEL_17:
       v24 = 2080;
       Name = sel_getName(a2);
       v26 = 1024;
-      v27 = [a4 intValue];
+      intValue = [d intValue];
       v12 = " [%s] %s:%d **************************** %s: no preblob found for %d";
       v13 = v16;
       v14 = 44;
@@ -1766,13 +1766,13 @@ LABEL_11:
   return 0;
 }
 
-- (void)doRelayCheckForRemotePeerID:(id)a3
+- (void)doRelayCheckForRemotePeerID:(id)d
 {
   v32 = *MEMORY[0x277D85DE8];
   pidToRelayConnectionDataMap = self->_pidToRelayConnectionDataMap;
   objc_sync_enter(pidToRelayConnectionDataMap);
-  v7 = -[NSMutableDictionary objectForKeyedSubscript:](self->_pidToRelayConnectionDataMap, "objectForKeyedSubscript:", [@">" stringByAppendingString:a3]);
-  v8 = -[NSMutableDictionary objectForKeyedSubscript:](self->_pidToRelayConnectionDataMap, "objectForKeyedSubscript:", [@"<" stringByAppendingString:a3]);
+  v7 = -[NSMutableDictionary objectForKeyedSubscript:](self->_pidToRelayConnectionDataMap, "objectForKeyedSubscript:", [@">" stringByAppendingString:d]);
+  v8 = -[NSMutableDictionary objectForKeyedSubscript:](self->_pidToRelayConnectionDataMap, "objectForKeyedSubscript:", [@"<" stringByAppendingString:d]);
   objc_sync_exit(pidToRelayConnectionDataMap);
   if (v8)
   {
@@ -1807,7 +1807,7 @@ LABEL_11:
     }
 
     pidGUID = self->_pidGUID;
-    [a3 intValue];
+    [d intValue];
     [v12 bytes];
     [v12 length];
     GCKSessionEstablishConnectionWithRelayInfo();
@@ -1828,7 +1828,7 @@ LABEL_11:
       v24 = 2080;
       Name = sel_getName(a2);
       v26 = 2080;
-      v27 = [a3 UTF8String];
+      uTF8String = [d UTF8String];
       v28 = 2048;
       v29 = v8;
       v30 = 2048;
@@ -1840,10 +1840,10 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)internalInitiateRelayWithParticipant:(id)a3 withConnectionData:(id)a4 withRelayInfo:(id)a5 didInitiate:(BOOL)a6
+- (void)internalInitiateRelayWithParticipant:(id)participant withConnectionData:(id)data withRelayInfo:(id)info didInitiate:(BOOL)initiate
 {
   v52 = *MEMORY[0x277D85DE8];
-  if ([GKConnection isRelayEnabled:a3])
+  if ([GKConnection isRelayEnabled:participant])
   {
     v42 = 0xAAAAAAAAAAAAAAAALL;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1861,16 +1861,16 @@ LABEL_11:
         v46 = 2080;
         Name = sel_getName(a2);
         v48 = 2080;
-        *v49 = [a3 UTF8String];
+        *v49 = [participant UTF8String];
         _os_log_impl(&dword_24E50C000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s - remote participant[%s]", buf, 0x30u);
       }
     }
 
-    if ([(GKConnectionInternal *)self convertParticipantID:a3 toPeerID:&v42])
+    if ([(GKConnectionInternal *)self convertParticipantID:participant toPeerID:&v42])
     {
       reportingAgent = self->_reportingAgent;
       perfTimerStart();
-      v14 = [a5 objectForKeyedSubscript:@"GKSTargetPeerID"] == 0;
+      v14 = [info objectForKeyedSubscript:@"GKSTargetPeerID"] == 0;
       ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
       if (v14)
       {
@@ -1903,8 +1903,8 @@ LABEL_11:
           if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
           {
             v18 = sel_getName(a2);
-            v19 = [objc_msgSend(a5 objectForKey:{@"GKSTargetPeerID", "intValue"}];
-            v20 = [objc_msgSend(a5 objectForKey:{@"GKSOriginPeerID", "intValue"}];
+            v19 = [objc_msgSend(info objectForKey:{@"GKSTargetPeerID", "intValue"}];
+            v20 = [objc_msgSend(info objectForKey:{@"GKSOriginPeerID", "intValue"}];
             v21 = *(&self->super._pid + 1);
             *buf = 136316674;
             *&buf[4] = v16;
@@ -1924,7 +1924,7 @@ LABEL_11:
           }
         }
 
-        if ([objc_msgSend(a5 objectForKeyedSubscript:{@"GKSTargetPeerID", "unsignedIntValue"}] != *(&self->super._pid + 1) && objc_msgSend(objc_msgSend(a5, "objectForKeyedSubscript:", @"GKSOriginPeerID"), "unsignedIntValue") != *(&self->super._pid + 1))
+        if ([objc_msgSend(info objectForKeyedSubscript:{@"GKSTargetPeerID", "unsignedIntValue"}] != *(&self->super._pid + 1) && objc_msgSend(objc_msgSend(info, "objectForKeyedSubscript:", @"GKSOriginPeerID"), "unsignedIntValue") != *(&self->super._pid + 1))
         {
           goto LABEL_33;
         }
@@ -1939,7 +1939,7 @@ LABEL_11:
         goto LABEL_33;
       }
 
-      v27 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a5];
+      v27 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:info];
       v41 = inet_addr("72.247.44.23");
       v28 = [MEMORY[0x277CBEA90] dataWithBytes:&v41 length:4];
       v29 = [objc_msgSend(objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
@@ -2010,10 +2010,10 @@ LABEL_32:
         block[3] = &unk_279682FF0;
         block[4] = self;
         block[5] = v27;
-        block[7] = a3;
+        block[7] = participant;
         block[8] = a2;
         block[6] = v42;
-        v40 = a6;
+        initiateCopy = initiate;
         dispatch_async(global_queue, block);
         goto LABEL_33;
       }
@@ -2062,7 +2062,7 @@ void __106__GKConnectionInternal_internalInitiateRelayWithParticipant_withConnec
   GCKSessionPrepareConnectionWithRelayInfo();
 }
 
-- (void)cancelConnectParticipant:(id)a3
+- (void)cancelConnectParticipant:(id)participant
 {
   v17 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -2071,9 +2071,9 @@ void __106__GKConnectionInternal_internalInitiateRelayWithParticipant_withConnec
     v6 = *MEMORY[0x277CE5818];
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (participant)
       {
-        v7 = [objc_msgSend(a3 "description")];
+        v7 = [objc_msgSend(participant "description")];
       }
 
       else
@@ -2094,7 +2094,7 @@ void __106__GKConnectionInternal_internalInitiateRelayWithParticipant_withConnec
   }
 
   *v10 = 0xAAAAAAAAAAAAAAAALL;
-  if ([(GKConnectionInternal *)self convertParticipantID:a3 toPeerID:v10])
+  if ([(GKConnectionInternal *)self convertParticipantID:participant toPeerID:v10])
   {
     pidGUID = self->_pidGUID;
     [*v10 intValue];
@@ -2104,18 +2104,18 @@ void __106__GKConnectionInternal_internalInitiateRelayWithParticipant_withConnec
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)networkStatisticsDictionaryForGCKStats:(void *)a3
+- (id)networkStatisticsDictionaryForGCKStats:(void *)stats
 {
   v45 = *MEMORY[0x277D85DE8];
   v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [(NSMutableArray *)self->_allowRelayPIDList allKeys];
-  v32 = [(NSMutableArray *)self->_allowRelayPIDList allKeys];
+  allKeys = [(NSMutableArray *)self->_allowRelayPIDList allKeys];
+  allKeys2 = [(NSMutableArray *)self->_allowRelayPIDList allKeys];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v5;
-  v29 = [v5 countByEnumeratingWithState:&v37 objects:v44 count:16];
+  obj = allKeys;
+  v29 = [allKeys countByEnumeratingWithState:&v37 objects:v44 count:16];
   if (v29)
   {
     v27 = *v38;
@@ -2136,19 +2136,19 @@ void __106__GKConnectionInternal_internalInitiateRelayWithParticipant_withConnec
         v31 = v8;
         [v9 setObject:v8 forKeyedSubscript:@"GKSStatsLinks"];
         [v28 setObject:v9 forKeyedSubscript:v7];
-        if (a3)
+        if (stats)
         {
-          v10 = a3;
+          statsCopy = stats;
           do
           {
-            v11 = *v10;
+            v11 = *statsCopy;
             if (v11 == [v7 intValue])
             {
               v35 = 0u;
               v36 = 0u;
               v33 = 0u;
               v34 = 0u;
-              v12 = [v32 countByEnumeratingWithState:&v33 objects:v43 count:16];
+              v12 = [allKeys2 countByEnumeratingWithState:&v33 objects:v43 count:16];
               if (v12)
               {
                 v13 = v12;
@@ -2160,68 +2160,68 @@ void __106__GKConnectionInternal_internalInitiateRelayWithParticipant_withConnec
                   {
                     if (*v34 != v14)
                     {
-                      objc_enumerationMutation(v32);
+                      objc_enumerationMutation(allKeys2);
                     }
 
                     v16 = *(*(&v33 + 1) + 8 * v15);
-                    v17 = a3;
+                    statsCopy2 = stats;
                     while (1)
                     {
-                      v18 = v10[17];
+                      v18 = statsCopy[17];
                       if (v18 == [v16 intValue] && (objc_msgSend(v7, "isEqual:", v16) & 1) == 0)
                       {
                         break;
                       }
 
-                      v17 = v17[18];
-                      if (!v17)
+                      statsCopy2 = statsCopy2[18];
+                      if (!statsCopy2)
                       {
                         goto LABEL_20;
                       }
                     }
 
                     v41[0] = @"GKSStatsUpTime";
-                    LODWORD(v19) = v10[10];
+                    LODWORD(v19) = statsCopy[10];
                     v42[0] = [MEMORY[0x277CCABB0] numberWithFloat:v19];
                     v41[1] = @"GKSStatsRecvRate";
-                    LODWORD(v20) = v10[11];
+                    LODWORD(v20) = statsCopy[11];
                     v42[1] = [MEMORY[0x277CCABB0] numberWithFloat:v20];
                     v41[2] = @"GKSStatsSendRate";
-                    LODWORD(v21) = v10[12];
+                    LODWORD(v21) = statsCopy[12];
                     v42[2] = [MEMORY[0x277CCABB0] numberWithFloat:v21];
                     v41[3] = @"GKSStatsRecvPLR";
-                    LODWORD(v22) = v10[13];
+                    LODWORD(v22) = statsCopy[13];
                     v42[3] = [MEMORY[0x277CCABB0] numberWithFloat:v22];
                     v41[4] = @"GKSStatsSendPLR";
-                    LODWORD(v23) = v10[14];
+                    LODWORD(v23) = statsCopy[14];
                     v42[4] = [MEMORY[0x277CCABB0] numberWithFloat:v23];
                     v41[5] = @"GKSStatsRecvBWE";
-                    v42[5] = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v10[8]];
+                    v42[5] = [MEMORY[0x277CCABB0] numberWithUnsignedInt:statsCopy[8]];
                     v41[6] = @"GKSStatsSendBWE";
-                    v42[6] = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v10[9]];
+                    v42[6] = [MEMORY[0x277CCABB0] numberWithUnsignedInt:statsCopy[9]];
                     v41[7] = @"GKSStatsRTT";
-                    v42[7] = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v10[3]];
+                    v42[7] = [MEMORY[0x277CCABB0] numberWithUnsignedInt:statsCopy[3]];
                     v41[8] = @"GKSStatsBytesReceived";
-                    v42[8] = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(v10 + 2)];
+                    v42[8] = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(statsCopy + 2)];
                     v41[9] = @"GKSStatsBytesSent";
-                    v42[9] = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(v10 + 3)];
+                    v42[9] = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(statsCopy + 3)];
                     [v31 setObject:objc_msgSend(MEMORY[0x277CBEAC0] forKeyedSubscript:{"dictionaryWithObjects:forKeys:count:", v42, v41, 10), v16}];
 LABEL_20:
                     ++v15;
                   }
 
                   while (v15 != v13);
-                  v13 = [v32 countByEnumeratingWithState:&v33 objects:v43 count:16];
+                  v13 = [allKeys2 countByEnumeratingWithState:&v33 objects:v43 count:16];
                 }
 
                 while (v13);
               }
             }
 
-            v10 = *(v10 + 18);
+            statsCopy = *(statsCopy + 18);
           }
 
-          while (v10);
+          while (statsCopy);
         }
 
         v6 = v30 + 1;
@@ -2242,13 +2242,13 @@ LABEL_20:
 {
   v37 = *MEMORY[0x277D85DE8];
   v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v3 = [(NSMutableArray *)self->_allowRelayPIDList allKeys];
-  v4 = [(NSMutableArray *)self->_allowRelayPIDList allKeys];
+  allKeys = [(NSMutableArray *)self->_allowRelayPIDList allKeys];
+  allKeys2 = [(NSMutableArray *)self->_allowRelayPIDList allKeys];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v19 = [v3 countByEnumeratingWithState:&v25 objects:v36 count:16];
+  v19 = [allKeys countByEnumeratingWithState:&v25 objects:v36 count:16];
   if (v19)
   {
     v17 = *v26;
@@ -2259,7 +2259,7 @@ LABEL_20:
       {
         if (*v26 != v17)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v20 = v5;
@@ -2280,7 +2280,7 @@ LABEL_20:
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [v4 countByEnumeratingWithState:&v21 objects:v31 count:16];
+        v10 = [allKeys2 countByEnumeratingWithState:&v21 objects:v31 count:16];
         if (v10)
         {
           v11 = v10;
@@ -2291,7 +2291,7 @@ LABEL_20:
             {
               if (*v22 != v12)
               {
-                objc_enumerationMutation(v4);
+                objc_enumerationMutation(allKeys2);
               }
 
               v14 = *(*(&v21 + 1) + 8 * i);
@@ -2311,7 +2311,7 @@ LABEL_20:
               }
             }
 
-            v11 = [v4 countByEnumeratingWithState:&v21 objects:v31 count:16];
+            v11 = [allKeys2 countByEnumeratingWithState:&v21 objects:v31 count:16];
           }
 
           while (v11);
@@ -2321,7 +2321,7 @@ LABEL_20:
       }
 
       while (v20 + 1 != v19);
-      v19 = [v3 countByEnumeratingWithState:&v25 objects:v36 count:16];
+      v19 = [allKeys countByEnumeratingWithState:&v25 objects:v36 count:16];
     }
 
     while (v19);
@@ -2331,19 +2331,19 @@ LABEL_20:
   return v18;
 }
 
-- (BOOL)localGamingCheckEstablishConnection:(id)a3 connectionData:(id)a4
+- (BOOL)localGamingCheckEstablishConnection:(id)connection connectionData:(id)data
 {
   v29 = *MEMORY[0x277D85DE8];
-  [a3 unsignedLongValue];
+  [connection unsignedLongValue];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v6 = VRTraceErrorLogLevelToCSTR();
     v7 = *MEMORY[0x277CE5818];
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
-      if (a4)
+      if (data)
       {
-        v8 = [objc_msgSend(a4 "description")];
+        v8 = [objc_msgSend(data "description")];
       }
 
       else
@@ -2360,23 +2360,23 @@ LABEL_20:
       v23 = 2080;
       v24 = v8;
       v25 = 1024;
-      v26 = [a4 length];
+      v26 = [data length];
       _os_log_impl(&dword_24E50C000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d remoteConnectionData: [%s], total size=%u", &v17, 0x2Cu);
     }
   }
 
-  if ([a4 length] >= 5)
+  if ([data length] >= 5)
   {
-    v9 = bswap32(*[a4 bytes]);
+    v9 = bswap32(*[data bytes]);
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v10 = VRTraceErrorLogLevelToCSTR();
       v11 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        if (a4)
+        if (data)
         {
-          v12 = [objc_msgSend(a4 "description")];
+          v12 = [objc_msgSend(data "description")];
         }
 
         else
@@ -2384,7 +2384,7 @@ LABEL_20:
           v12 = "<nil>";
         }
 
-        v13 = [a4 length];
+        v13 = [data length];
         v17 = 136316418;
         v18 = v10;
         v19 = 2080;
@@ -2401,12 +2401,12 @@ LABEL_20:
       }
     }
 
-    if ([a4 length] - 4 >= v9)
+    if ([data length] - 4 >= v9)
     {
       TimingLog(3, 0, "local CDX done - starting ICE");
       pidGUID = self->_pidGUID;
-      [a4 bytes];
-      [a4 length];
+      [data bytes];
+      [data length];
       GCKSessionEstablishConnection();
     }
   }
@@ -2416,10 +2416,10 @@ LABEL_20:
   return result;
 }
 
-- (void)localGamingReceiveDataHandler:(id)a3 data:(id)a4 time:(double)a5 error:(id)a6
+- (void)localGamingReceiveDataHandler:(id)handler data:(id)data time:(double)time error:(id)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  if (!a4 || a6)
+  if (!data || error)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -2427,9 +2427,9 @@ LABEL_20:
       v16 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        if (a6)
+        if (error)
         {
-          v17 = [objc_msgSend(a6 "description")];
+          v17 = [objc_msgSend(error "description")];
         }
 
         else
@@ -2449,12 +2449,12 @@ LABEL_20:
       }
     }
 
-    [a3 invalidate];
+    [handler invalidate];
   }
 
   else
   {
-    v11 = -[NSMutableDictionary objectForKeyedSubscript:](self->_localGamingSocketToPIDMap, "objectForKeyedSubscript:", [a3 socketName]);
+    v11 = -[NSMutableDictionary objectForKeyedSubscript:](self->_localGamingSocketToPIDMap, "objectForKeyedSubscript:", [handler socketName]);
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     if (v11)
     {
@@ -2471,18 +2471,18 @@ LABEL_20:
           v41 = 1024;
           v42 = 2042;
           v43 = 2080;
-          *v44 = [objc_msgSend(a4 "description")];
+          *v44 = [objc_msgSend(data "description")];
           *&v44[8] = 2080;
           *&v44[10] = [objc_msgSend(v11 "description")];
           *&v44[18] = 1024;
-          *&v44[20] = [a4 length];
+          *&v44[20] = [data length];
           v45 = 2048;
-          v46 = a5;
+          timeCopy = time;
           _os_log_impl(&dword_24E50C000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d localGamingReceiveDataHandler: got [%s] (append to [%s]), size=%u, t=%.6lf", buf, 0x40u);
         }
       }
 
-      [v11 appendData:a4];
+      [v11 appendData:data];
     }
 
     else
@@ -2500,34 +2500,34 @@ LABEL_20:
           v41 = 1024;
           v42 = 2038;
           v43 = 2080;
-          *v44 = [objc_msgSend(a4 "description")];
+          *v44 = [objc_msgSend(data "description")];
           *&v44[8] = 1024;
-          *&v44[10] = [a4 length];
+          *&v44[10] = [data length];
           *&v44[14] = 2048;
-          *&v44[16] = a5;
+          *&v44[16] = time;
           _os_log_impl(&dword_24E50C000, v19, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d localGamingReceiveDataHandler: got [%s], size=%u, t=%.6lf", buf, 0x36u);
         }
       }
 
-      v11 = [MEMORY[0x277CBEB28] dataWithData:a4];
-      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_localGamingSocketToPIDMap, "setObject:forKeyedSubscript:", v11, [a3 socketName]);
+      v11 = [MEMORY[0x277CBEB28] dataWithData:data];
+      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_localGamingSocketToPIDMap, "setObject:forKeyedSubscript:", v11, [handler socketName]);
     }
 
-    v20 = -[OS_dispatch_source objectForKeyedSubscript:](self->_localGamingCDXListenSource, "objectForKeyedSubscript:", [a3 socketName]);
+    v20 = -[OS_dispatch_source objectForKeyedSubscript:](self->_localGamingCDXListenSource, "objectForKeyedSubscript:", [handler socketName]);
     if (v20)
     {
       v21 = v20;
       [v20 unsignedLongValue];
       if ([(GKConnectionInternal *)self localGamingCheckEstablishConnection:v21 connectionData:v11])
       {
-        -[OS_dispatch_source removeObjectForKey:](self->_localGamingCDXListenSource, "removeObjectForKey:", [a3 socketName]);
-        -[NSMutableDictionary removeObjectForKey:](self->_localGamingSocketToPIDMap, "removeObjectForKey:", [a3 socketName]);
+        -[OS_dispatch_source removeObjectForKey:](self->_localGamingCDXListenSource, "removeObjectForKey:", [handler socketName]);
+        -[NSMutableDictionary removeObjectForKey:](self->_localGamingSocketToPIDMap, "removeObjectForKey:", [handler socketName]);
         v22 = dispatch_time(0, 10000000000);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __70__GKConnectionInternal_localGamingReceiveDataHandler_data_time_error___block_invoke;
         block[3] = &unk_279682BA8;
-        block[4] = a3;
+        block[4] = handler;
         dispatch_after(v22, MEMORY[0x277D85CD0], block);
       }
     }
@@ -2536,7 +2536,7 @@ LABEL_20:
     {
       v24 = bswap32(*[v11 bytes]);
       v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v24];
-      -[OS_dispatch_source setObject:forKeyedSubscript:](self->_localGamingCDXListenSource, "setObject:forKeyedSubscript:", v25, [a3 socketName]);
+      -[OS_dispatch_source setObject:forKeyedSubscript:](self->_localGamingCDXListenSource, "setObject:forKeyedSubscript:", v25, [handler socketName]);
       [v11 replaceBytesInRange:0 withBytes:4 length:{0, 0}];
       if (VRTraceGetErrorLogLevelForModule() > 6)
       {
@@ -2596,9 +2596,9 @@ LABEL_20:
         }
       }
 
-      [a3 invalidate];
-      -[OS_dispatch_source removeObjectForKey:](self->_localGamingCDXListenSource, "removeObjectForKey:", [a3 socketName]);
-      -[NSMutableDictionary removeObjectForKey:](self->_localGamingSocketToPIDMap, "removeObjectForKey:", [a3 socketName]);
+      [handler invalidate];
+      -[OS_dispatch_source removeObjectForKey:](self->_localGamingCDXListenSource, "removeObjectForKey:", [handler socketName]);
+      -[NSMutableDictionary removeObjectForKey:](self->_localGamingSocketToPIDMap, "removeObjectForKey:", [handler socketName]);
     }
 
     else if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -2606,7 +2606,7 @@ LABEL_20:
       v23 = VRTraceErrorLogLevelToCSTR();
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
       {
-        [GKConnectionInternal localGamingReceiveDataHandler:v23 data:a4 time:? error:?];
+        [GKConnectionInternal localGamingReceiveDataHandler:v23 data:data time:? error:?];
       }
     }
   }
@@ -2930,13 +2930,13 @@ GKAsyncSocket *__55__GKConnectionInternal_startListeningForLocalGamingCDX__block
 {
   v30 = *MEMORY[0x277D85DE8];
   v19 = 0;
-  v3 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v16 = -86;
   [(GKConnectionInternal *)self startListeningForLocalGamingCDX];
   v18 = bswap32(*(&self->super._pid + 1));
-  [v3 appendData:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytes:length:", &v18, 4)}];
+  [data appendData:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytes:length:", &v18, 4)}];
   v17 = bswap32(LOWORD(self->_fPreReleased)) >> 16;
-  [v3 appendData:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytes:length:", &v17, 2)}];
+  [data appendData:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytes:length:", &v17, 2)}];
   LocalInterfaceListWithOptions = GetLocalInterfaceListWithOptions();
   if (VRTraceGetErrorLogLevelForModule() >= 8)
   {
@@ -2974,9 +2974,9 @@ GKAsyncSocket *__55__GKConnectionInternal_startListeningForLocalGamingCDX__block
       if (strcmp((v19 + v8 + 4), "lo0") && (*(v9 + v8) & 1) == 0)
       {
         v16 = 4;
-        [v3 appendData:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytes:length:", &v16, 1)}];
+        [data appendData:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytes:length:", &v16, 1)}];
         *buf = bswap32(*(v19 + v8 + 20));
-        [v3 appendData:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytes:length:", buf, 4)}];
+        [data appendData:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytes:length:", buf, 4)}];
       }
 
       v8 += 40;
@@ -2992,10 +2992,10 @@ GKAsyncSocket *__55__GKConnectionInternal_startListeningForLocalGamingCDX__block
     v11 = *MEMORY[0x277CE5818];
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v3 length];
-      if (v3)
+      v12 = [data length];
+      if (data)
       {
-        v13 = [objc_msgSend(v3 "description")];
+        v13 = [objc_msgSend(data "description")];
       }
 
       else
@@ -3018,10 +3018,10 @@ GKAsyncSocket *__55__GKConnectionInternal_startListeningForLocalGamingCDX__block
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v3;
+  return data;
 }
 
-- (void)connectPendingConnectionsFromList:(id)a3 sessionInfo:(id)a4
+- (void)connectPendingConnectionsFromList:(id)list sessionInfo:(id)info
 {
   v81[2] = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -3030,7 +3030,7 @@ GKAsyncSocket *__55__GKConnectionInternal_startListeningForLocalGamingCDX__block
     v7 = *MEMORY[0x277CE5818];
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [a3 count];
+      v8 = [list count];
       v9 = *(&self->super._pid + 1);
       [(NSMutableDictionary *)self->_preblobToPIDMap count];
       OUTLINED_FUNCTION_13_1();
@@ -3054,7 +3054,7 @@ GKAsyncSocket *__55__GKConnectionInternal_startListeningForLocalGamingCDX__block
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        [objc_msgSend(a4 "description")];
+        [objc_msgSend(info "description")];
         OUTLINED_FUNCTION_13_1();
         OUTLINED_FUNCTION_14_1();
         OUTLINED_FUNCTION_11_1();
@@ -3064,7 +3064,7 @@ GKAsyncSocket *__55__GKConnectionInternal_startListeningForLocalGamingCDX__block
 
     else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [objc_msgSend(a4 "description")];
+      [objc_msgSend(info "description")];
       OUTLINED_FUNCTION_13_1();
       OUTLINED_FUNCTION_14_1();
       OUTLINED_FUNCTION_11_1();
@@ -3072,20 +3072,20 @@ GKAsyncSocket *__55__GKConnectionInternal_startListeningForLocalGamingCDX__block
     }
   }
 
-  if (![a3 count])
+  if (![list count])
   {
     goto LABEL_49;
   }
 
-  v14 = [MEMORY[0x277CBEB18] arrayWithArray:a3];
+  v14 = [MEMORY[0x277CBEB18] arrayWithArray:list];
   [v14 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInt:", *(&self->super._pid + 1))}];
   obj = v14;
   [v14 sortUsingSelector:sel_compare_];
-  v15 = [a4 objectForKeyedSubscript:@"GKSSessionTicket"];
-  v16 = [a4 objectForKeyedSubscript:@"GKSSessionToken"];
+  v15 = [info objectForKeyedSubscript:@"GKSSessionTicket"];
+  v16 = [info objectForKeyedSubscript:@"GKSSessionToken"];
   if (*MEMORY[0x277CE5800] > 6 || (*MEMORY[0x277CE5810] & 1) != 0)
   {
-    *buf = [a3 count];
+    *buf = [list count];
     VRTraceVariable_();
   }
 
@@ -3115,8 +3115,8 @@ GKAsyncSocket *__55__GKConnectionInternal_startListeningForLocalGamingCDX__block
     goto LABEL_23;
   }
 
-  v17 = [v15 CDXTicketPCNT];
-  if (v17 != [v14 count])
+  cDXTicketPCNT = [v15 CDXTicketPCNT];
+  if (cDXTicketPCNT != [v14 count])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -3124,14 +3124,14 @@ GKAsyncSocket *__55__GKConnectionInternal_startListeningForLocalGamingCDX__block
       v19 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
       {
-        v20 = [v15 CDXTicketPCNT];
+        cDXTicketPCNT2 = [v15 CDXTicketPCNT];
         [v14 count];
         *buf = 136316162;
         *&buf[4] = v18;
         OUTLINED_FUNCTION_17_1();
         OUTLINED_FUNCTION_12_1();
         OUTLINED_FUNCTION_16_1();
-        v74 = v20;
+        v74 = cDXTicketPCNT2;
         v75 = v21;
         v76 = v22;
         _os_log_error_impl(&dword_24E50C000, v19, OS_LOG_TYPE_ERROR, " [%s] %s:%d CDX PCNT Mismatch! [cdxTicket CDXTicketPCNT] = %d, [connectionPIDList count] = %d", buf, 0x28u);
@@ -3143,7 +3143,7 @@ LABEL_23:
   }
 
 LABEL_24:
-  v30 = [v15 CDXTicketTrimmed];
+  cDXTicketTrimmed = [v15 CDXTicketTrimmed];
   if (v16)
   {
     objc_opt_self();
@@ -3154,7 +3154,7 @@ LABEL_24:
         v31 = VRTraceErrorLogLevelToCSTR();
         if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
         {
-          [objc_msgSend(v30 "description")];
+          [objc_msgSend(cDXTicketTrimmed "description")];
           *buf = 136315906;
           *&buf[4] = v31;
           OUTLINED_FUNCTION_17_1();
@@ -3168,21 +3168,21 @@ LABEL_24:
     }
   }
 
-  if (!v30)
+  if (!cDXTicketTrimmed)
   {
-    v30 = [(GKConnectionInternal *)self createInsecureTicketUsingSortedConnectionsFromList:obj];
-    if (!v30)
+    cDXTicketTrimmed = [(GKConnectionInternal *)self createInsecureTicketUsingSortedConnectionsFromList:obj];
+    if (!cDXTicketTrimmed)
     {
       goto LABEL_50;
     }
   }
 
-  v38 = [(CDXClient *)[(GKConnectionInternal *)self cdxClient] createSessionWithTicket:v30 sessionKey:v16];
+  v38 = [(CDXClient *)[(GKConnectionInternal *)self cdxClient] createSessionWithTicket:cDXTicketTrimmed sessionKey:v16];
   [v38 setDelegate:self];
   if (!v38)
   {
 LABEL_49:
-    v30 = 0;
+    cDXTicketTrimmed = 0;
 LABEL_50:
     v52 = 0;
     goto LABEL_48;
@@ -3193,9 +3193,9 @@ LABEL_50:
   v64 = v38;
   v81[0] = v38;
   v81[1] = obj;
-  v62 = v30;
-  -[NSMutableDictionary setObject:forKey:](-[GKConnectionInternal cdxSessions](self, "cdxSessions"), "setObject:forKey:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v81 forKeys:v80 count:2], objc_msgSend(v30, "valueForKey:", @"CDXTicketSID"));
-  v30 = objc_alloc_init(MEMORY[0x277CBEB28]);
+  v62 = cDXTicketTrimmed;
+  -[NSMutableDictionary setObject:forKey:](-[GKConnectionInternal cdxSessions](self, "cdxSessions"), "setObject:forKey:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v81 forKeys:v80 count:2], objc_msgSend(cDXTicketTrimmed, "valueForKey:", @"CDXTicketSID"));
+  cDXTicketTrimmed = objc_alloc_init(MEMORY[0x277CBEB28]);
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
@@ -3218,7 +3218,7 @@ LABEL_50:
         v44 = [(NSMutableDictionary *)self->_pidToPreblobMap objectForKeyedSubscript:v43];
         if ([v44 length])
         {
-          [v30 appendData:v44];
+          [cDXTicketTrimmed appendData:v44];
           if (VRTraceGetErrorLogLevelForModule() >= 7)
           {
             v45 = VRTraceErrorLogLevelToCSTR();
@@ -3226,7 +3226,7 @@ LABEL_50:
             if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
             {
               v47 = [v44 length];
-              [v30 length];
+              [cDXTicketTrimmed length];
               *buf = 136316418;
               *&buf[4] = v45;
               OUTLINED_FUNCTION_17_1();
@@ -3256,7 +3256,7 @@ LABEL_50:
 
   TimingLog(3, 0, "starting CDX");
   v52 = v64;
-  [v64 sendData:v30];
+  [v64 sendData:cDXTicketTrimmed];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v53 = VRTraceErrorLogLevelToCSTR();
@@ -3264,7 +3264,7 @@ LABEL_50:
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
       v55 = [v62 length];
-      v56 = [v30 length];
+      v56 = [cDXTicketTrimmed length];
       v57 = [obj count];
       [(NSMutableDictionary *)self->_pidToPreblobMap count];
       *buf = 136316674;
@@ -3288,7 +3288,7 @@ LABEL_48:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createInsecureTicketUsingSortedConnectionsFromList:(id)a3
+- (id)createInsecureTicketUsingSortedConnectionsFromList:(id)list
 {
   v95 = *MEMORY[0x277D85DE8];
   v94 = xmmword_24E590830;
@@ -3309,7 +3309,7 @@ LABEL_48:
     }
   }
 
-  if (![a3 count])
+  if (![list count])
   {
     v62 = 0;
     goto LABEL_55;
@@ -3329,13 +3329,13 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  v78 = [MEMORY[0x277CBEB28] data];
-  v8 = [a3 count];
+  data = [MEMORY[0x277CBEB28] data];
+  v8 = [list count];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v79 objects:v92 count:16];
+  v9 = [list countByEnumeratingWithState:&v79 objects:v92 count:16];
   if (v9)
   {
     v11 = v9;
@@ -3357,12 +3357,12 @@ LABEL_51:
       {
         if (*v80 != v14)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(list);
         }
 
         v16 = *(*(&v79 + 1) + 8 * v15);
-        v17 = [v16 unsignedLongValue];
-        LODWORD(v93) = bswap32(v17) ^ v93;
+        unsignedLongValue = [v16 unsignedLongValue];
+        LODWORD(v93) = bswap32(unsignedLongValue) ^ v93;
         if ([v16 unsignedLongValue] == *(&self->super._pid + 1))
         {
           v13 = v12;
@@ -3398,7 +3398,7 @@ LABEL_51:
 LABEL_41:
           _os_log_error_impl(&dword_24E50C000, v53, OS_LOG_TYPE_ERROR, v54, v52, 0x26u);
 LABEL_18:
-          [v78 appendBytes:"" length:1];
+          [data appendBytes:"" length:1];
           goto LABEL_19;
         }
 
@@ -3483,7 +3483,7 @@ LABEL_18:
           goto LABEL_18;
         }
 
-        [v78 appendData:v19];
+        [data appendData:v19];
 LABEL_19:
         ++v15;
         LOBYTE(v12) = v12 + 1;
@@ -3491,7 +3491,7 @@ LABEL_19:
 
       while (v11 != v15);
       v12 = v75 + v11;
-      v57 = [a3 countByEnumeratingWithState:&v79 objects:v92 count:16];
+      v57 = [list countByEnumeratingWithState:&v79 objects:v92 count:16];
       v11 = v57;
       if (!v57)
       {
@@ -3505,7 +3505,7 @@ LABEL_19:
 
   v13 = -1;
 LABEL_47:
-  v58 = CDXVendorCreateTicket(v6, v7, &v83, &v93, [v78 bytes], objc_msgSend(v78, "length"), v8, v13, 300, 0);
+  v58 = CDXVendorCreateTicket(v6, v7, &v83, &v93, [data bytes], objc_msgSend(data, "length"), v8, v13, 300, 0);
   if (v58)
   {
     v59 = v58;
@@ -3548,7 +3548,7 @@ LABEL_55:
   return v62;
 }
 
-- (void)CDXClientSession:(id)a3 receivedData:(id)a4 from:(int64_t)a5
+- (void)CDXClientSession:(id)session receivedData:(id)data from:(int64_t)from
 {
   v34 = *MEMORY[0x277D85DE8];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -3559,7 +3559,7 @@ LABEL_55:
     v12 = *v10;
     if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEFAULT))
     {
-      [a4 length];
+      [data length];
       *buf = 136316162;
       v28 = v11;
       OUTLINED_FUNCTION_8_1();
@@ -3567,16 +3567,16 @@ LABEL_55:
       v30 = v13;
       v31 = v14;
       v32 = v13;
-      v33 = a5;
+      fromCopy = from;
       _os_log_impl(&dword_24E50C000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKConnection:receivedData(%d):from=%d", buf, 0x28u);
     }
   }
 
-  v15 = -[NSMutableDictionary objectForKeyedSubscript:](-[GKConnectionInternal cdxSessions](self, "cdxSessions"), "objectForKeyedSubscript:", [objc_msgSend(a3 "ticket")]);
+  v15 = -[NSMutableDictionary objectForKeyedSubscript:](-[GKConnectionInternal cdxSessions](self, "cdxSessions"), "objectForKeyedSubscript:", [objc_msgSend(session "ticket")]);
   if (v15)
   {
-    v16 = [objc_msgSend(objc_msgSend(v15 objectForKeyedSubscript:{@"connectionPIDList", "objectAtIndex:", a5), "unsignedLongValue"}];
-    v17 = [(GKConnectionInternal *)self extractBlobUsingData:a4 withSourcePID:v16 destPID:*(&self->super._pid + 1)];
+    v16 = [objc_msgSend(objc_msgSend(v15 objectForKeyedSubscript:{@"connectionPIDList", "objectAtIndex:", from), "unsignedLongValue"}];
+    v17 = [(GKConnectionInternal *)self extractBlobUsingData:data withSourcePID:v16 destPID:*(&self->super._pid + 1)];
     if (v17)
     {
       v18 = v17;

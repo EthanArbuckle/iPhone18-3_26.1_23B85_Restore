@@ -1,19 +1,19 @@
 @interface _GCRacingWheelManager
 - (NSSet)racingWheels;
-- (_GCRacingWheelManager)initWithDeviceSessionConfiguration:(id)a3 queue:(id)a4 environment:(id)a5;
-- (id)activateWithSession:(id)a3 environment:(id)a4;
-- (id)invalidateWithSession:(id)a3 environment:(id)a4;
+- (_GCRacingWheelManager)initWithDeviceSessionConfiguration:(id)configuration queue:(id)queue environment:(id)environment;
+- (id)activateWithSession:(id)session environment:(id)environment;
+- (id)invalidateWithSession:(id)session environment:(id)environment;
 @end
 
 @implementation _GCRacingWheelManager
 
-- (_GCRacingWheelManager)initWithDeviceSessionConfiguration:(id)a3 queue:(id)a4 environment:(id)a5
+- (_GCRacingWheelManager)initWithDeviceSessionConfiguration:(id)configuration queue:(id)queue environment:(id)environment
 {
-  v7 = a4;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = _GCRacingWheelManager;
   v8 = [(_GCRacingWheelManager *)&v18 init];
-  objc_storeStrong(&v8->_sessionQueue, a4);
+  objc_storeStrong(&v8->_sessionQueue, queue);
   v9 = objc_alloc_init(MEMORY[0x1E69A06F0]);
   deviceNotificationPort = v8->_deviceNotificationPort;
   v8->_deviceNotificationPort = v9;
@@ -44,7 +44,7 @@
   return v15;
 }
 
-- (id)activateWithSession:(id)a3 environment:(id)a4
+- (id)activateWithSession:(id)session environment:(id)environment
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -56,7 +56,7 @@
   return v4;
 }
 
-- (id)invalidateWithSession:(id)a3 environment:(id)a4
+- (id)invalidateWithSession:(id)session environment:(id)environment
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -70,14 +70,14 @@
 
 - (NSSet)racingWheels
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(NSMutableDictionary *)v2->_connectedWheels allValues];
-  v5 = v4;
-  if (v4)
+  allValues = [(NSMutableDictionary *)selfCopy->_connectedWheels allValues];
+  v5 = allValues;
+  if (allValues)
   {
-    v6 = v4;
+    v6 = allValues;
   }
 
   else
@@ -87,7 +87,7 @@
 
   v7 = [v3 setWithArray:v6];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }

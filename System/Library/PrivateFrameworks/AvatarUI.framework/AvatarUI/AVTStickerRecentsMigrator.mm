@@ -1,24 +1,24 @@
 @interface AVTStickerRecentsMigrator
-- (AVTStickerRecentsMigrator)initWithStore:(id)a3 stickerConfigurationProvider:(id)a4 environment:(id)a5;
+- (AVTStickerRecentsMigrator)initWithStore:(id)store stickerConfigurationProvider:(id)provider environment:(id)environment;
 - (void)performMigrationIfNeeded;
 @end
 
 @implementation AVTStickerRecentsMigrator
 
-- (AVTStickerRecentsMigrator)initWithStore:(id)a3 stickerConfigurationProvider:(id)a4 environment:(id)a5
+- (AVTStickerRecentsMigrator)initWithStore:(id)store stickerConfigurationProvider:(id)provider environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  providerCopy = provider;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = AVTStickerRecentsMigrator;
   v12 = [(AVTStickerRecentsMigrator *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_store, a3);
-    objc_storeStrong(&v13->_stickerConfigurationProvider, a4);
-    v13->_logger = [v11 logger];
+    objc_storeStrong(&v12->_store, store);
+    objc_storeStrong(&v13->_stickerConfigurationProvider, provider);
+    v13->_logger = [environmentCopy logger];
   }
 
   return v13;
@@ -29,28 +29,28 @@
   v69 = *MEMORY[0x1E69E9840];
   if (!self->_migrationHasBeenPerformed && AVTUIStickerRecentsMigrationVersion() <= 1)
   {
-    v3 = [MEMORY[0x1E698E350] requestForAllRecentStickers];
+    requestForAllRecentStickers = [MEMORY[0x1E698E350] requestForAllRecentStickers];
     store = self->_store;
     v65 = 0;
-    v48 = v3;
+    v48 = requestForAllRecentStickers;
     v5 = [AVTAvatarStoreInternal recentStickersForFetchRequest:"recentStickersForFetchRequest:error:" error:?];
     v6 = 0;
     v7 = v6;
     if (v6)
     {
       logger = self->_logger;
-      v9 = [v6 localizedDescription];
-      [(AVTUILogger *)logger logErrorFetchingRecentStickers:v9];
+      localizedDescription = [v6 localizedDescription];
+      [(AVTUILogger *)logger logErrorFetchingRecentStickers:localizedDescription];
     }
 
     v47 = v7;
-    v10 = [MEMORY[0x1E698E310] requestForAllAvatars];
+    requestForAllAvatars = [MEMORY[0x1E698E310] requestForAllAvatars];
     v11 = self->_store;
     v64 = 0;
-    v46 = v10;
+    v46 = requestForAllAvatars;
     v12 = [AVTAvatarStoreInternal avatarsForFetchRequest:v11 error:"avatarsForFetchRequest:error:"];
     v45 = v64;
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
@@ -71,8 +71,8 @@
           }
 
           v19 = *(*(&v60 + 1) + 8 * i);
-          v20 = [v19 identifier];
-          [v13 setObject:v19 forKeyedSubscript:v20];
+          identifier = [v19 identifier];
+          [dictionary setObject:v19 forKeyedSubscript:identifier];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v60 objects:v68 count:16];
@@ -81,11 +81,11 @@
       while (v16);
     }
 
-    v49 = self;
+    selfCopy = self;
     v44 = v14;
 
-    v51 = [MEMORY[0x1E695DF90] dictionary];
-    v21 = [MEMORY[0x1E695DF70] array];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF70] array];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
@@ -106,33 +106,33 @@
           }
 
           v26 = *(*(&v56 + 1) + 8 * j);
-          v27 = [v26 avatarRecordIdentifier];
-          v28 = [v13 objectForKeyedSubscript:v27];
+          avatarRecordIdentifier = [v26 avatarRecordIdentifier];
+          v28 = [dictionary objectForKeyedSubscript:avatarRecordIdentifier];
 
           if (v28)
           {
-            v29 = [v26 avatarRecordIdentifier];
-            v30 = [v51 objectForKeyedSubscript:v29];
+            avatarRecordIdentifier2 = [v26 avatarRecordIdentifier];
+            v30 = [dictionary2 objectForKeyedSubscript:avatarRecordIdentifier2];
 
             if (!v30)
             {
-              v30 = [(AVTStickerConfigurationProvider *)v49->_stickerConfigurationProvider availableStickerNamesForAvatarRecord:v28];
-              v31 = [v26 avatarRecordIdentifier];
-              [v51 setObject:v30 forKeyedSubscript:v31];
+              v30 = [(AVTStickerConfigurationProvider *)selfCopy->_stickerConfigurationProvider availableStickerNamesForAvatarRecord:v28];
+              avatarRecordIdentifier3 = [v26 avatarRecordIdentifier];
+              [dictionary2 setObject:v30 forKeyedSubscript:avatarRecordIdentifier3];
             }
 
-            v32 = [v26 stickerConfigurationIdentifier];
-            v33 = [v30 containsObject:v32];
+            stickerConfigurationIdentifier = [v26 stickerConfigurationIdentifier];
+            v33 = [v30 containsObject:stickerConfigurationIdentifier];
 
             if ((v33 & 1) == 0)
             {
-              [v21 addObject:v26];
+              [array addObject:v26];
             }
           }
 
           else
           {
-            [v21 addObject:v26];
+            [array addObject:v26];
           }
         }
 
@@ -142,12 +142,12 @@
       while (v23);
     }
 
-    -[AVTUILogger logPerformedRecentStickersMigration:](v49->_logger, "logPerformedRecentStickersMigration:", [v21 count] != 0);
+    -[AVTUILogger logPerformedRecentStickersMigration:](selfCopy->_logger, "logPerformedRecentStickersMigration:", [array count] != 0);
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v34 = v21;
+    v34 = array;
     v35 = [v34 countByEnumeratingWithState:&v52 objects:v66 count:16];
     v36 = v44;
     if (v35)
@@ -164,10 +164,10 @@
           }
 
           v40 = *(*(&v52 + 1) + 8 * k);
-          v41 = v49->_store;
-          v42 = [v40 avatarRecordIdentifier];
-          v43 = [v40 stickerConfigurationIdentifier];
-          [(AVTAvatarStoreInternal *)v41 deleteRecentStickersWithAvatarIdentifier:v42 stickerIdentifier:v43 completionHandler:0];
+          v41 = selfCopy->_store;
+          avatarRecordIdentifier4 = [v40 avatarRecordIdentifier];
+          stickerConfigurationIdentifier2 = [v40 stickerConfigurationIdentifier];
+          [(AVTAvatarStoreInternal *)v41 deleteRecentStickersWithAvatarIdentifier:avatarRecordIdentifier4 stickerIdentifier:stickerConfigurationIdentifier2 completionHandler:0];
         }
 
         v37 = [v34 countByEnumeratingWithState:&v52 objects:v66 count:16];
@@ -177,7 +177,7 @@
     }
 
     AVTUISetStickerRecentsMigrationVersion();
-    v49->_migrationHasBeenPerformed = 1;
+    selfCopy->_migrationHasBeenPerformed = 1;
   }
 }
 

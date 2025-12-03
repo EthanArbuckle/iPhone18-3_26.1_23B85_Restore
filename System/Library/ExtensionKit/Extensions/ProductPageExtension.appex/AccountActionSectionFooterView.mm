@@ -1,6 +1,6 @@
 @interface AccountActionSectionFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension30AccountActionSectionFooterView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension30AccountActionSectionFooterView)initWithCoder:(id)coder;
 - (void)buttonTapped;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
@@ -9,7 +9,7 @@
 
 @implementation AccountActionSectionFooterView
 
-- (_TtC20ProductPageExtension30AccountActionSectionFooterView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension30AccountActionSectionFooterView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension30AccountActionSectionFooterView_tapGestureRecognizer) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension30AccountActionSectionFooterView_isCentered) = 0;
@@ -26,7 +26,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100700924();
 }
 
@@ -35,7 +35,7 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension30AccountActionSectionFooterView_buttonAction);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10001CE50(v2);
     v2(v4);
 
@@ -45,23 +45,23 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100700D88();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10070101C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension30AccountActionSectionFooterView_text);
   v5 = *&self->titleLabel[OBJC_IVAR____TtC20ProductPageExtension30AccountActionSectionFooterView_text];
 
-  v6 = self;
-  [(AccountActionSectionFooterView *)v6 layoutMargins];
+  selfCopy = self;
+  [(AccountActionSectionFooterView *)selfCopy layoutMargins];
   sub_100701570(v4, v5);
   v8 = v7;
   v10 = v9;

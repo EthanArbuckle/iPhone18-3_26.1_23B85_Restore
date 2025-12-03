@@ -1,21 +1,21 @@
 @interface NonVisualEffectView
-- (NonVisualEffectView)initWithCoder:(id)a3;
-- (NonVisualEffectView)initWithEffect:(id)a3;
-- (NonVisualEffectView)initWithFrame:(CGRect)a3;
+- (NonVisualEffectView)initWithCoder:(id)coder;
+- (NonVisualEffectView)initWithEffect:(id)effect;
+- (NonVisualEffectView)initWithFrame:(CGRect)frame;
 - (UIView)contentView;
 - (_UIVisualEffectBackdropView)_captureView;
-- (void)_setCornerRadius:(double)a3;
-- (void)setEffect:(id)a3;
+- (void)_setCornerRadius:(double)radius;
+- (void)setEffect:(id)effect;
 @end
 
 @implementation NonVisualEffectView
 
-- (NonVisualEffectView)initWithFrame:(CGRect)a3
+- (NonVisualEffectView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(NonVisualEffectView *)self initWithEffect:0];
   v8 = v7;
   if (v7)
@@ -26,9 +26,9 @@
   return v8;
 }
 
-- (NonVisualEffectView)initWithEffect:(id)a3
+- (NonVisualEffectView)initWithEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v8.receiver = self;
   v8.super_class = NonVisualEffectView;
   v5 = [(NonVisualEffectView *)&v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -36,13 +36,13 @@
   if (v5)
   {
     [(NonVisualEffectView *)v5 setAutoresizesSubviews:1];
-    [(NonVisualEffectView *)v6 setEffect:v4];
+    [(NonVisualEffectView *)v6 setEffect:effectCopy];
   }
 
   return v6;
 }
 
-- (NonVisualEffectView)initWithCoder:(id)a3
+- (NonVisualEffectView)initWithCoder:(id)coder
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
@@ -75,15 +75,15 @@
   return contentView;
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   effect = self->_effect;
-  if (effect != v4)
+  if (effect != effectCopy)
   {
-    v15 = v4;
-    v6 = [(UIVisualEffect *)effect isEqual:v4];
-    v4 = v15;
+    v15 = effectCopy;
+    v6 = [(UIVisualEffect *)effect isEqual:effectCopy];
+    effectCopy = v15;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIVisualEffect *)v15 copy];
@@ -121,23 +121,23 @@
 
       [(UIView *)backgroundView setHidden:v10];
 LABEL_9:
-      v4 = v15;
+      effectCopy = v15;
     }
   }
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(NonVisualEffectView *)self subviews];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    subviews = [(NonVisualEffectView *)self subviews];
+    v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -148,13 +148,13 @@ LABEL_9:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
-          [*(*(&v9 + 1) + 8 * i) _setContinuousCornerRadius:a3];
+          [*(*(&v9 + 1) + 8 * i) _setContinuousCornerRadius:radius];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);

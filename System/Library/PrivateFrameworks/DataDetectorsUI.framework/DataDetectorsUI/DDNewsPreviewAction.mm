@@ -1,6 +1,6 @@
 @interface DDNewsPreviewAction
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4;
-+ (id)urlForURL:(id)a3 result:(__DDResult *)a4;
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result;
++ (id)urlForURL:(id)l result:(__DDResult *)result;
 - (id)commitURL;
 - (id)createViewController;
 - (id)menuActions;
@@ -8,9 +8,9 @@
 
 @implementation DDNewsPreviewAction
 
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result
 {
-  v4 = [a1 urlForURL:a3 result:a4];
+  v4 = [self urlForURL:url result:result];
   if (v4 && (Helper_x8__OBJC_CLASS___NSSNewsViewController = gotLoadHelper_x8__OBJC_CLASS___NSSNewsViewController(v5), [*(v7 + 3096) canOpenURL:{v4, Helper_x8__OBJC_CLASS___NSSNewsViewController}]))
   {
     v8 = applicationWithBundleIdentifierIsRestricted(@"com.apple.news") ^ 1;
@@ -66,11 +66,11 @@
   return v7;
 }
 
-+ (id)urlForURL:(id)a3 result:(__DDResult *)a4
++ (id)urlForURL:(id)l result:(__DDResult *)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  lCopy = l;
+  v6 = lCopy;
+  if (result)
   {
     v7 = DDResultCopyExtractedURL();
     if (v7)

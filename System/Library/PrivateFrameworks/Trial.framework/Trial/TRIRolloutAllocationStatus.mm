@@ -1,28 +1,28 @@
 @interface TRIRolloutAllocationStatus
-- (TRIRolloutAllocationStatus)initWithCoder:(id)a3;
-- (TRIRolloutAllocationStatus)initWithRolloutId:(id)a3 deploymentId:(int)a4 rampId:(id)a5 factorPackIds:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (TRIRolloutAllocationStatus)initWithCoder:(id)coder;
+- (TRIRolloutAllocationStatus)initWithRolloutId:(id)id deploymentId:(int)deploymentId rampId:(id)rampId factorPackIds:(id)ids;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIRolloutAllocationStatus
 
-- (TRIRolloutAllocationStatus)initWithRolloutId:(id)a3 deploymentId:(int)a4 rampId:(id)a5 factorPackIds:(id)a6
+- (TRIRolloutAllocationStatus)initWithRolloutId:(id)id deploymentId:(int)deploymentId rampId:(id)rampId factorPackIds:(id)ids
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (v12)
+  idCopy = id;
+  rampIdCopy = rampId;
+  idsCopy = ids;
+  if (idCopy)
   {
-    if (a4)
+    if (deploymentId)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:943 description:{@"Invalid parameter not satisfying: %@", @"deploymentId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:943 description:{@"Invalid parameter not satisfying: %@", @"deploymentId"}];
 
-    if (v14)
+    if (idsCopy)
     {
       goto LABEL_4;
     }
@@ -30,23 +30,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:942 description:{@"Invalid parameter not satisfying: %@", @"rolloutId"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:942 description:{@"Invalid parameter not satisfying: %@", @"rolloutId"}];
 
-  if (!a4)
+  if (!deploymentId)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (idsCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:944 description:{@"Invalid parameter not satisfying: %@", @"factorPackIds"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:944 description:{@"Invalid parameter not satisfying: %@", @"factorPackIds"}];
 
 LABEL_4:
   v21.receiver = self;
@@ -55,19 +55,19 @@ LABEL_4:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_rolloutId, a3);
-    v16->_deploymentId = a4;
-    objc_storeStrong(&v16->_rampId, a5);
-    objc_storeStrong(&v16->_factorPackIds, a6);
+    objc_storeStrong(&v15->_rolloutId, id);
+    v16->_deploymentId = deploymentId;
+    objc_storeStrong(&v16->_rampId, rampId);
+    objc_storeStrong(&v16->_factorPackIds, ids);
   }
 
   return v16;
 }
 
-- (TRIRolloutAllocationStatus)initWithCoder:(id)a3
+- (TRIRolloutAllocationStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (v5)
   {
     v21 = 0;
@@ -83,27 +83,27 @@ LABEL_4:
         v18 = __Block_byref_object_copy__7;
         v19 = __Block_byref_object_dispose__7;
         v20 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v6, "namespaceFactorPackArray_Count")}];
-        v8 = [v6 namespaceFactorPackArray];
+        namespaceFactorPackArray = [v6 namespaceFactorPackArray];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __44__TRIRolloutAllocationStatus_initWithCoder___block_invoke;
         v14[3] = &unk_27885EFB0;
         v14[4] = &v15;
-        [v8 enumerateObjectsUsingBlock:v14];
+        [namespaceFactorPackArray enumerateObjectsUsingBlock:v14];
 
         if (v16[5])
         {
-          v9 = [v6 rolloutId];
-          v10 = [v6 deploymentId];
-          v11 = [v6 rampId];
-          self = [(TRIRolloutAllocationStatus *)self initWithRolloutId:v9 deploymentId:v10 rampId:v11 factorPackIds:v16[5]];
+          rolloutId = [v6 rolloutId];
+          deploymentId = [v6 deploymentId];
+          rampId = [v6 rampId];
+          self = [(TRIRolloutAllocationStatus *)self initWithRolloutId:rolloutId deploymentId:deploymentId rampId:rampId factorPackIds:v16[5]];
 
-          v12 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v12 = 0;
+          selfCopy = 0;
         }
 
         _Block_object_dispose(&v15, 8);
@@ -114,19 +114,19 @@ LABEL_4:
 
     else
     {
-      [v4 failWithError:v7];
+      [coderCopy failWithError:v7];
     }
 
-    v12 = 0;
+    selfCopy = 0;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_11:
 
-  return v12;
+  return selfCopy;
 }
 
 void __44__TRIRolloutAllocationStatus_initWithCoder___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -150,9 +150,9 @@ void __44__TRIRolloutAllocationStatus_initWithCoder___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_new();
   [v6 setRolloutId:self->_rolloutId];
   [v6 setDeploymentId:self->_deploymentId];
@@ -165,14 +165,14 @@ void __44__TRIRolloutAllocationStatus_initWithCoder___block_invoke(uint64_t a1, 
   v8 = v6;
   v15 = v8;
   [(NSDictionary *)factorPackIds enumerateKeysAndObjectsUsingBlock:&v11];
-  v9 = [v8 data];
-  if (!v9)
+  data = [v8 data];
+  if (!data)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:1012 description:{@"Invalid parameter not satisfying: %@", @"data", v11, v12, v13, v14}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:1012 description:{@"Invalid parameter not satisfying: %@", @"data", v11, v12, v13, v14}];
   }
 
-  [v5 encodeObject:v9 forKey:@"data"];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
 void __46__TRIRolloutAllocationStatus_encodeWithCoder___block_invoke(uint64_t a1, void *a2, void *a3)

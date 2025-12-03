@@ -1,21 +1,21 @@
 @interface DDSAssertionDataHandler
-- (DDSAssertionDataHandler)initWithAssertionStorageFileURL:(id)a3;
+- (DDSAssertionDataHandler)initWithAssertionStorageFileURL:(id)l;
 - (id)loadAssertionData;
 - (void)loadAssertionData;
-- (void)saveAssertionData:(id)a3;
+- (void)saveAssertionData:(id)data;
 @end
 
 @implementation DDSAssertionDataHandler
 
-- (DDSAssertionDataHandler)initWithAssertionStorageFileURL:(id)a3
+- (DDSAssertionDataHandler)initWithAssertionStorageFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = DDSAssertionDataHandler;
   v5 = [(DDSAssertionDataHandler *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     assertionStorageFileURL = v5->_assertionStorageFileURL;
     v5->_assertionStorageFileURL = v6;
   }
@@ -27,9 +27,9 @@
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DEF0];
-  v3 = [(DDSAssertionDataHandler *)self assertionStorageFileURL];
+  assertionStorageFileURL = [(DDSAssertionDataHandler *)self assertionStorageFileURL];
   v16 = 0;
-  v4 = [v2 dataWithContentsOfURL:v3 options:0 error:&v16];
+  v4 = [v2 dataWithContentsOfURL:assertionStorageFileURL options:0 error:&v16];
   v5 = v16;
 
   if (v4)
@@ -76,17 +76,17 @@
   return v11;
 }
 
-- (void)saveAssertionData:(id)a3
+- (void)saveAssertionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v13 = 0;
-  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v13];
+  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dataCopy requiringSecureCoding:1 error:&v13];
   v6 = v13;
   if (v5)
   {
-    v7 = [(DDSAssertionDataHandler *)self assertionStorageFileURL];
+    assertionStorageFileURL = [(DDSAssertionDataHandler *)self assertionStorageFileURL];
     v12 = 0;
-    v8 = [v5 writeToURL:v7 options:1 error:&v12];
+    v8 = [v5 writeToURL:assertionStorageFileURL options:1 error:&v12];
     v9 = v12;
 
     v10 = DefaultLog();

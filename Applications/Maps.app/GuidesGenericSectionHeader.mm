@@ -1,8 +1,8 @@
 @interface GuidesGenericSectionHeader
-- (GuidesGenericSectionHeader)initWithFrame:(CGRect)a3;
+- (GuidesGenericSectionHeader)initWithFrame:(CGRect)frame;
 - (void)_didTapActionButton;
-- (void)configureWithTitle:(id)a3;
-- (void)configureWithTitle:(id)a3 actionButtonTitle:(id)a4 actionHandler:(id)a5;
+- (void)configureWithTitle:(id)title;
+- (void)configureWithTitle:(id)title actionButtonTitle:(id)buttonTitle actionHandler:(id)handler;
 - (void)prepareForReuse;
 - (void)setupConstraints;
 - (void)setupSubviews;
@@ -12,59 +12,59 @@
 
 - (void)_didTapActionButton
 {
-  v3 = [(GuidesGenericSectionHeader *)self actionHandler];
+  actionHandler = [(GuidesGenericSectionHeader *)self actionHandler];
 
-  if (v3)
+  if (actionHandler)
   {
-    v4 = [(GuidesGenericSectionHeader *)self actionHandler];
-    v4[2]();
+    actionHandler2 = [(GuidesGenericSectionHeader *)self actionHandler];
+    actionHandler2[2]();
   }
 }
 
 - (void)setupConstraints
 {
-  v38 = [(GuidesGenericSectionHeader *)self titleLabel];
-  v37 = [v38 leadingAnchor];
-  v36 = [(GuidesGenericSectionHeader *)self leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  titleLabel = [(GuidesGenericSectionHeader *)self titleLabel];
+  leadingAnchor = [titleLabel leadingAnchor];
+  leadingAnchor2 = [(GuidesGenericSectionHeader *)self leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[0] = v35;
-  v34 = [(GuidesGenericSectionHeader *)self titleLabel];
-  v33 = [v34 trailingAnchor];
-  v32 = [(GuidesGenericSectionHeader *)self trailingAnchor];
-  v31 = [v33 constraintLessThanOrEqualToAnchor:v32];
+  titleLabel2 = [(GuidesGenericSectionHeader *)self titleLabel];
+  trailingAnchor = [titleLabel2 trailingAnchor];
+  trailingAnchor2 = [(GuidesGenericSectionHeader *)self trailingAnchor];
+  v31 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v39[1] = v31;
-  v30 = [(GuidesGenericSectionHeader *)self titleLabel];
-  v29 = [v30 topAnchor];
-  v28 = [(GuidesGenericSectionHeader *)self topAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  titleLabel3 = [(GuidesGenericSectionHeader *)self titleLabel];
+  topAnchor = [titleLabel3 topAnchor];
+  topAnchor2 = [(GuidesGenericSectionHeader *)self topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v39[2] = v27;
-  v26 = [(GuidesGenericSectionHeader *)self titleLabel];
-  v25 = [v26 bottomAnchor];
-  v24 = [(GuidesGenericSectionHeader *)self bottomAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  titleLabel4 = [(GuidesGenericSectionHeader *)self titleLabel];
+  bottomAnchor = [titleLabel4 bottomAnchor];
+  bottomAnchor2 = [(GuidesGenericSectionHeader *)self bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v39[3] = v23;
-  v22 = [(GuidesGenericSectionHeader *)self actionButton];
-  v20 = [v22 leadingAnchor];
-  v21 = [(GuidesGenericSectionHeader *)self titleLabel];
-  v19 = [v21 trailingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  actionButton = [(GuidesGenericSectionHeader *)self actionButton];
+  leadingAnchor3 = [actionButton leadingAnchor];
+  titleLabel5 = [(GuidesGenericSectionHeader *)self titleLabel];
+  trailingAnchor3 = [titleLabel5 trailingAnchor];
+  v18 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3];
   v39[4] = v18;
-  v17 = [(GuidesGenericSectionHeader *)self actionButton];
-  v16 = [v17 trailingAnchor];
-  v15 = [(GuidesGenericSectionHeader *)self trailingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  actionButton2 = [(GuidesGenericSectionHeader *)self actionButton];
+  trailingAnchor4 = [actionButton2 trailingAnchor];
+  trailingAnchor5 = [(GuidesGenericSectionHeader *)self trailingAnchor];
+  v14 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v39[5] = v14;
-  v13 = [(GuidesGenericSectionHeader *)self actionButton];
-  v3 = [v13 topAnchor];
-  v4 = [(GuidesGenericSectionHeader *)self titleLabel];
-  v5 = [v4 topAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  actionButton3 = [(GuidesGenericSectionHeader *)self actionButton];
+  topAnchor3 = [actionButton3 topAnchor];
+  titleLabel6 = [(GuidesGenericSectionHeader *)self titleLabel];
+  topAnchor4 = [titleLabel6 topAnchor];
+  v6 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v39[6] = v6;
-  v7 = [(GuidesGenericSectionHeader *)self actionButton];
-  v8 = [v7 bottomAnchor];
-  v9 = [(GuidesGenericSectionHeader *)self titleLabel];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  actionButton4 = [(GuidesGenericSectionHeader *)self actionButton];
+  bottomAnchor3 = [actionButton4 bottomAnchor];
+  titleLabel7 = [(GuidesGenericSectionHeader *)self titleLabel];
+  bottomAnchor4 = [titleLabel7 bottomAnchor];
+  v11 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v39[7] = v11;
   v12 = [NSArray arrayWithObjects:v39 count:8];
   [NSLayoutConstraint activateConstraints:v12];
@@ -75,51 +75,51 @@
   v3 = objc_alloc_init(UILabel);
   [(GuidesGenericSectionHeader *)self setTitleLabel:v3];
 
-  v4 = [(GuidesGenericSectionHeader *)self titleLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(GuidesGenericSectionHeader *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(GuidesGenericSectionHeader *)self titleLabel];
-  [v5 setNumberOfLines:0];
+  titleLabel2 = [(GuidesGenericSectionHeader *)self titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
-  v6 = [(GuidesGenericSectionHeader *)self titleLabel];
-  [v6 setAccessibilityIdentifier:@"TitleLabel"];
+  titleLabel3 = [(GuidesGenericSectionHeader *)self titleLabel];
+  [titleLabel3 setAccessibilityIdentifier:@"TitleLabel"];
 
-  v7 = [(GuidesGenericSectionHeader *)self titleLabel];
-  [(GuidesGenericSectionHeader *)self addSubview:v7];
+  titleLabel4 = [(GuidesGenericSectionHeader *)self titleLabel];
+  [(GuidesGenericSectionHeader *)self addSubview:titleLabel4];
 
   v8 = [MapsThemeButton buttonWithType:0];
   [(GuidesGenericSectionHeader *)self setActionButton:v8];
 
-  v9 = [(GuidesGenericSectionHeader *)self actionButton];
+  actionButton = [(GuidesGenericSectionHeader *)self actionButton];
   LODWORD(v10) = 1144750080;
-  [v9 setContentHuggingPriority:0 forAxis:v10];
+  [actionButton setContentHuggingPriority:0 forAxis:v10];
 
-  v11 = [(GuidesGenericSectionHeader *)self actionButton];
+  actionButton2 = [(GuidesGenericSectionHeader *)self actionButton];
   LODWORD(v12) = 1144750080;
-  [v11 setContentCompressionResistancePriority:0 forAxis:v12];
+  [actionButton2 setContentCompressionResistancePriority:0 forAxis:v12];
 
-  v13 = [(GuidesGenericSectionHeader *)self actionButton];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  actionButton3 = [(GuidesGenericSectionHeader *)self actionButton];
+  [actionButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(GuidesGenericSectionHeader *)self actionButton];
-  [v14 setTitleColorProvider:&stru_10162E300];
+  actionButton4 = [(GuidesGenericSectionHeader *)self actionButton];
+  [actionButton4 setTitleColorProvider:&stru_10162E300];
 
   v15 = +[UIFont system15];
-  v16 = [(GuidesGenericSectionHeader *)self actionButton];
-  v17 = [v16 titleLabel];
-  [v17 setFont:v15];
+  actionButton5 = [(GuidesGenericSectionHeader *)self actionButton];
+  titleLabel5 = [actionButton5 titleLabel];
+  [titleLabel5 setFont:v15];
 
-  v18 = [(GuidesGenericSectionHeader *)self actionButton];
-  [v18 _setTouchInsets:{-7.0, -7.0, -7.0, -7.0}];
+  actionButton6 = [(GuidesGenericSectionHeader *)self actionButton];
+  [actionButton6 _setTouchInsets:{-7.0, -7.0, -7.0, -7.0}];
 
-  v19 = [(GuidesGenericSectionHeader *)self actionButton];
-  [v19 addTarget:self action:"_didTapActionButton" forControlEvents:64];
+  actionButton7 = [(GuidesGenericSectionHeader *)self actionButton];
+  [actionButton7 addTarget:self action:"_didTapActionButton" forControlEvents:64];
 
-  v20 = [(GuidesGenericSectionHeader *)self actionButton];
-  [v20 setAccessibilityIdentifier:@"ActionButton"];
+  actionButton8 = [(GuidesGenericSectionHeader *)self actionButton];
+  [actionButton8 setAccessibilityIdentifier:@"ActionButton"];
 
-  v21 = [(GuidesGenericSectionHeader *)self actionButton];
-  [(GuidesGenericSectionHeader *)self addSubview:v21];
+  actionButton9 = [(GuidesGenericSectionHeader *)self actionButton];
+  [(GuidesGenericSectionHeader *)self addSubview:actionButton9];
 
   actionButton = self->_actionButton;
 
@@ -131,43 +131,43 @@
   v7.receiver = self;
   v7.super_class = GuidesGenericSectionHeader;
   [(GuidesGenericSectionHeader *)&v7 prepareForReuse];
-  v3 = [(GuidesGenericSectionHeader *)self titleLabel];
-  [v3 setAttributedText:0];
+  titleLabel = [(GuidesGenericSectionHeader *)self titleLabel];
+  [titleLabel setAttributedText:0];
 
-  v4 = [(GuidesGenericSectionHeader *)self actionButton];
-  v5 = [v4 titleLabel];
-  [v5 setText:0];
+  actionButton = [(GuidesGenericSectionHeader *)self actionButton];
+  titleLabel2 = [actionButton titleLabel];
+  [titleLabel2 setText:0];
 
-  v6 = [(GuidesGenericSectionHeader *)self actionButton];
-  [v6 setHidden:1];
+  actionButton2 = [(GuidesGenericSectionHeader *)self actionButton];
+  [actionButton2 setHidden:1];
 
   [(GuidesGenericSectionHeader *)self setActionHandler:0];
 }
 
-- (void)configureWithTitle:(id)a3 actionButtonTitle:(id)a4 actionHandler:(id)a5
+- (void)configureWithTitle:(id)title actionButtonTitle:(id)buttonTitle actionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(GuidesGenericSectionHeader *)self titleLabel];
-  [v11 setAttributedText:v10];
+  handlerCopy = handler;
+  buttonTitleCopy = buttonTitle;
+  titleCopy = title;
+  titleLabel = [(GuidesGenericSectionHeader *)self titleLabel];
+  [titleLabel setAttributedText:titleCopy];
 
-  v12 = [(GuidesGenericSectionHeader *)self actionButton];
-  [v12 setTitle:v9 forState:0];
+  actionButton = [(GuidesGenericSectionHeader *)self actionButton];
+  [actionButton setTitle:buttonTitleCopy forState:0];
 
-  [(GuidesGenericSectionHeader *)self setActionHandler:v8];
-  v13 = [(GuidesGenericSectionHeader *)self actionButton];
-  [v13 setHidden:0];
+  [(GuidesGenericSectionHeader *)self setActionHandler:handlerCopy];
+  actionButton2 = [(GuidesGenericSectionHeader *)self actionButton];
+  [actionButton2 setHidden:0];
 }
 
-- (void)configureWithTitle:(id)a3
+- (void)configureWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(GuidesGenericSectionHeader *)self titleLabel];
-  [v5 setAttributedText:v4];
+  titleCopy = title;
+  titleLabel = [(GuidesGenericSectionHeader *)self titleLabel];
+  [titleLabel setAttributedText:titleCopy];
 }
 
-- (GuidesGenericSectionHeader)initWithFrame:(CGRect)a3
+- (GuidesGenericSectionHeader)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GuidesGenericSectionHeader;

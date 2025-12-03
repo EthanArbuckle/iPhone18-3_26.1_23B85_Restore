@@ -1,7 +1,7 @@
 @interface EDMessageCategorizationResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EDMessageCategorizationResult)init;
-- (EDMessageCategorizationResult)initWithCategory:(id)a3 metadata:(id)a4;
+- (EDMessageCategorizationResult)initWithCategory:(id)category metadata:(id)metadata;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -16,37 +16,37 @@
   return v4;
 }
 
-- (EDMessageCategorizationResult)initWithCategory:(id)a3 metadata:(id)a4
+- (EDMessageCategorizationResult)initWithCategory:(id)category metadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  categoryCopy = category;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = EDMessageCategorizationResult;
   v9 = [(EDMessageCategorizationResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_category, a3);
-    objc_storeStrong(&v10->_metadata, a4);
+    objc_storeStrong(&v9->_category, category);
+    objc_storeStrong(&v10->_metadata, metadata);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isEqual:objc_opt_class()])
   {
-    v6 = v4;
-    v7 = [(EDMessageCategorizationResult *)self category];
-    v8 = [v6 category];
-    if (v7 == v8)
+    v6 = equalCopy;
+    category = [(EDMessageCategorizationResult *)self category];
+    category2 = [v6 category];
+    if (category == category2)
     {
-      v10 = [(EDMessageCategorizationResult *)self metadata];
-      v11 = [v6 metadata];
-      v9 = [v10 isEqual:v11];
+      metadata = [(EDMessageCategorizationResult *)self metadata];
+      metadata2 = [v6 metadata];
+      v9 = [metadata isEqual:metadata2];
     }
 
     else
@@ -65,11 +65,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(EDMessageCategorizationResult *)self category];
-  v4 = [v3 hash];
+  category = [(EDMessageCategorizationResult *)self category];
+  v4 = [category hash];
 
-  v5 = [(EDMessageCategorizationResult *)self metadata];
-  v6 = [v5 hash] + 5859909;
+  metadata = [(EDMessageCategorizationResult *)self metadata];
+  v6 = [metadata hash] + 5859909;
 
   return 33 * v4 + v6;
 }

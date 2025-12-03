@@ -1,18 +1,18 @@
 @interface HMDCharacteristicThresholdRangeEvent
 + (id)logCategory;
-- (BOOL)_evaluateNewValue:(id)a3;
-- (BOOL)_isValueInRange:(id)a3;
-- (BOOL)isCompatibleWithEvent:(id)a3;
-- (HMDCharacteristicThresholdRangeEvent)initWithCoder:(id)a3;
-- (HMDCharacteristicThresholdRangeEvent)initWithModel:(id)a3 home:(id)a4;
+- (BOOL)_evaluateNewValue:(id)value;
+- (BOOL)_isValueInRange:(id)range;
+- (BOOL)isCompatibleWithEvent:(id)event;
+- (HMDCharacteristicThresholdRangeEvent)initWithCoder:(id)coder;
+- (HMDCharacteristicThresholdRangeEvent)initWithModel:(id)model home:(id)home;
 - (NSString)description;
 - (id)analyticsTriggerEventData;
 - (id)createPayload;
 - (id)emptyModelObject;
-- (id)modelObjectWithChangeType:(unint64_t)a3;
-- (void)_handleUpdateRequest:(id)a3;
-- (void)_transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)modelObjectWithChangeType:(unint64_t)type;
+- (void)_handleUpdateRequest:(id)request;
+- (void)_transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCharacteristicThresholdRangeEvent
@@ -33,14 +33,14 @@
   return v3;
 }
 
-- (void)_transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)_transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -51,7 +51,7 @@
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = v9;
+  v15 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -69,49 +69,49 @@
   {
     if (([v17 propertyWasSet:@"min"] & 1) != 0 || objc_msgSend(v17, "propertyWasSet:", @"max"))
     {
-      v18 = [(HMDCharacteristicThresholdRangeEvent *)v12 min];
+      v18 = [(HMDCharacteristicThresholdRangeEvent *)selfCopy min];
       v19 = [v17 min];
       v20 = HMFEqualObjects();
 
-      if (!v20 || (-[HMDCharacteristicThresholdRangeEvent max](v12, "max"), v21 = objc_claimAutoreleasedReturnValue(), [v17 max], v22 = objc_claimAutoreleasedReturnValue(), v23 = HMFEqualObjects(), v22, v21, (v23 & 1) == 0))
+      if (!v20 || (-[HMDCharacteristicThresholdRangeEvent max](selfCopy, "max"), v21 = objc_claimAutoreleasedReturnValue(), [v17 max], v22 = objc_claimAutoreleasedReturnValue(), v23 = HMFEqualObjects(), v22, v21, (v23 & 1) == 0))
       {
         v24 = [v17 min];
-        [(HMDCharacteristicThresholdRangeEvent *)v12 setMin:v24];
+        [(HMDCharacteristicThresholdRangeEvent *)selfCopy setMin:v24];
 
         v25 = [v17 max];
-        [(HMDCharacteristicThresholdRangeEvent *)v12 setMax:v25];
+        [(HMDCharacteristicThresholdRangeEvent *)selfCopy setMax:v25];
 
-        v26 = [(HMDEvent *)v12 eventTrigger];
-        [v26 markChangedForMessage:v10];
+        eventTrigger = [(HMDEvent *)selfCopy eventTrigger];
+        [eventTrigger markChangedForMessage:messageCopy];
       }
     }
 
-    [v10 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3
+- (id)modelObjectWithChangeType:(unint64_t)type
 {
   v5 = [HMDCharacteristicThresholdRangeEventModel alloc];
-  v6 = [(HMDEvent *)self uuid];
-  v7 = [(HMDEvent *)self eventTrigger];
-  v8 = [v7 uuid];
-  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:a3 uuid:v6 parentUUID:v8];
+  uuid = [(HMDEvent *)self uuid];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  uuid2 = [eventTrigger uuid];
+  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:type uuid:uuid parentUUID:uuid2];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDEvent isEndEvent](self, "isEndEvent")}];
   [(HMDCharacteristicThresholdRangeEventModel *)v9 setEndEvent:v10];
 
-  v11 = [(HMDCharacteristicEventBase *)self accessoryUUID];
-  v12 = [v11 UUIDString];
-  [(HMDCharacteristicThresholdRangeEventModel *)v9 setAccessory:v12];
+  accessoryUUID = [(HMDCharacteristicEventBase *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
+  [(HMDCharacteristicThresholdRangeEventModel *)v9 setAccessory:uUIDString];
 
-  v13 = [(HMDCharacteristicEventBase *)self serviceID];
-  [(HMDCharacteristicThresholdRangeEventModel *)v9 setServiceID:v13];
+  serviceID = [(HMDCharacteristicEventBase *)self serviceID];
+  [(HMDCharacteristicThresholdRangeEventModel *)v9 setServiceID:serviceID];
 
-  v14 = [(HMDCharacteristicEventBase *)self characteristicInstanceID];
-  [(HMDCharacteristicThresholdRangeEventModel *)v9 setCharacteristicID:v14];
+  characteristicInstanceID = [(HMDCharacteristicEventBase *)self characteristicInstanceID];
+  [(HMDCharacteristicThresholdRangeEventModel *)v9 setCharacteristicID:characteristicInstanceID];
 
   v15 = [(HMDCharacteristicThresholdRangeEvent *)self min];
   [(HMDCharacteristicThresholdRangeEventModel *)v9 setMin:v15];
@@ -122,32 +122,32 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HMDCharacteristicThresholdRangeEvent;
-  v4 = a3;
-  [(HMDCharacteristicEventBase *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMDCharacteristicEventBase *)&v7 encodeWithCoder:coderCopy];
   v5 = [(HMDCharacteristicThresholdRangeEvent *)self min:v7.receiver];
-  [v4 encodeObject:v5 forKey:*MEMORY[0x277CD21A0]];
+  [coderCopy encodeObject:v5 forKey:*MEMORY[0x277CD21A0]];
 
   v6 = [(HMDCharacteristicThresholdRangeEvent *)self max];
-  [v4 encodeObject:v6 forKey:*MEMORY[0x277CD2198]];
+  [coderCopy encodeObject:v6 forKey:*MEMORY[0x277CD2198]];
 }
 
-- (HMDCharacteristicThresholdRangeEvent)initWithCoder:(id)a3
+- (HMDCharacteristicThresholdRangeEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HMDCharacteristicThresholdRangeEvent;
-  v5 = [(HMDCharacteristicEventBase *)&v11 initWithCoder:v4];
+  v5 = [(HMDCharacteristicEventBase *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD21A0]];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD21A0]];
     min = v5->_min;
     v5->_min = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2198]];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2198]];
     max = v5->_max;
     v5->_max = v8;
   }
@@ -155,32 +155,32 @@
   return v5;
 }
 
-- (BOOL)isCompatibleWithEvent:(id)a3
+- (BOOL)isCompatibleWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = HMDCharacteristicThresholdRangeEvent;
-  return [(HMDCharacteristicEventBase *)&v4 isCompatibleWithEvent:a3];
+  return [(HMDCharacteristicEventBase *)&v4 isCompatibleWithEvent:event];
 }
 
-- (BOOL)_evaluateNewValue:(id)a3
+- (BOOL)_evaluateNewValue:(id)value
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCharacteristicEventBase *)self characteristic];
-  v6 = [v5 previousValue];
+  valueCopy = value;
+  characteristic = [(HMDCharacteristicEventBase *)self characteristic];
+  previousValue = [characteristic previousValue];
 
   v7 = 0;
-  if (v4 && v6)
+  if (valueCopy && previousValue)
   {
-    v8 = [(HMDCharacteristicEventBase *)self characteristic];
-    v9 = [HMDCharacteristicEventBase compareValueOfCharacteristic:v8 againstValue:v6 operatorType:&unk_283E736E8];
-    v10 = [v9 BOOLValue];
+    characteristic2 = [(HMDCharacteristicEventBase *)self characteristic];
+    v9 = [HMDCharacteristicEventBase compareValueOfCharacteristic:characteristic2 againstValue:previousValue operatorType:&unk_283E736E8];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
-      if (![(HMDCharacteristicThresholdRangeEvent *)self _isValueInRange:v6])
+      if (![(HMDCharacteristicThresholdRangeEvent *)self _isValueInRange:previousValue])
       {
-        v7 = [(HMDCharacteristicThresholdRangeEvent *)self _isValueInRange:v4];
+        v7 = [(HMDCharacteristicThresholdRangeEvent *)self _isValueInRange:valueCopy];
         goto LABEL_10;
       }
     }
@@ -188,7 +188,7 @@
     else
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -206,33 +206,33 @@
 
 LABEL_10:
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy2 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
     HMFBooleanToString();
     v19 = v27 = v7;
-    v26 = [(HMDCharacteristicEventBase *)v16 characteristic];
-    v20 = [v26 value];
-    [(HMDCharacteristicThresholdRangeEvent *)v16 min];
+    characteristic3 = [(HMDCharacteristicEventBase *)selfCopy2 characteristic];
+    value = [characteristic3 value];
+    [(HMDCharacteristicThresholdRangeEvent *)selfCopy2 min];
     v21 = v28 = v15;
-    v22 = [(HMDCharacteristicThresholdRangeEvent *)v16 max];
-    v23 = [(HMDCharacteristicEventBase *)v16 characteristic];
+    v22 = [(HMDCharacteristicThresholdRangeEvent *)selfCopy2 max];
+    characteristic4 = [(HMDCharacteristicEventBase *)selfCopy2 characteristic];
     *buf = 138544898;
     v30 = v18;
     v31 = 2112;
     v32 = v19;
     v33 = 2112;
-    v34 = v6;
+    v34 = previousValue;
     v35 = 2112;
-    v36 = v20;
+    v36 = value;
     v37 = 2112;
     v38 = v21;
     v39 = 2112;
     v40 = v22;
     v41 = 2112;
-    v42 = v23;
+    v42 = characteristic4;
     _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Evaluated event, should fire (did enter range): %@, previous value: %@, current value: %@, min: %@, max: %@, %@", buf, 0x48u);
 
     v15 = v28;
@@ -244,10 +244,10 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)_isValueInRange:(id)a3
+- (BOOL)_isValueInRange:(id)range
 {
-  v4 = a3;
-  if (!v4)
+  rangeCopy = range;
+  if (!rangeCopy)
   {
     goto LABEL_9;
   }
@@ -269,11 +269,11 @@ LABEL_10:
 
   v7 = [(HMDCharacteristicThresholdRangeEvent *)self min];
 
-  if (!v7 || (-[HMDCharacteristicThresholdRangeEvent min](self, "min"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v4 compare:v8], v8, v9 != -1))
+  if (!v7 || (-[HMDCharacteristicThresholdRangeEvent min](self, "min"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [rangeCopy compare:v8], v8, v9 != -1))
   {
     v10 = [(HMDCharacteristicThresholdRangeEvent *)self max];
 
-    if (!v10 || (-[HMDCharacteristicThresholdRangeEvent max](self, "max"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v4 compare:v11], v11, v12 != 1))
+    if (!v10 || (-[HMDCharacteristicThresholdRangeEvent max](self, "max"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [rangeCopy compare:v11], v11, v12 != 1))
     {
       v13 = 1;
       goto LABEL_11;
@@ -287,38 +287,38 @@ LABEL_11:
   return v13;
 }
 
-- (void)_handleUpdateRequest:(id)a3
+- (void)_handleUpdateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 numberForKey:*MEMORY[0x277CD21A0]];
-  v6 = [v4 numberForKey:*MEMORY[0x277CD2198]];
+  requestCopy = request;
+  v5 = [requestCopy numberForKey:*MEMORY[0x277CD21A0]];
+  v6 = [requestCopy numberForKey:*MEMORY[0x277CD2198]];
   if (v5 | v6)
   {
-    v8 = [(HMDCharacteristicThresholdRangeEvent *)self emptyModelObject];
-    [v8 setMin:v5];
-    [v8 setMax:v6];
-    v9 = [(HMDEvent *)self eventTrigger];
-    v10 = [v9 home];
-    v11 = [v10 backingStore];
-    v12 = [v4 name];
+    emptyModelObject = [(HMDCharacteristicThresholdRangeEvent *)self emptyModelObject];
+    [emptyModelObject setMin:v5];
+    [emptyModelObject setMax:v6];
+    eventTrigger = [(HMDEvent *)self eventTrigger];
+    home = [eventTrigger home];
+    backingStore = [home backingStore];
+    name = [requestCopy name];
     v13 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-    v14 = [v11 transaction:v12 options:v13];
+    v14 = [backingStore transaction:name options:v13];
 
-    [v14 add:v8];
+    [v14 add:emptyModelObject];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __61__HMDCharacteristicThresholdRangeEvent__handleUpdateRequest___block_invoke;
     v16[3] = &unk_27868A1D8;
-    v17 = v4;
-    v18 = v8;
-    v15 = v8;
+    v17 = requestCopy;
+    v18 = emptyModelObject;
+    v15 = emptyModelObject;
     [v14 run:v16];
   }
 
   else
   {
     v7 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
-    [v4 respondWithError:v7];
+    [requestCopy respondWithError:v7];
   }
 }
 
@@ -349,10 +349,10 @@ void __61__HMDCharacteristicThresholdRangeEvent__handleUpdateRequest___block_inv
 - (id)emptyModelObject
 {
   v3 = [HMDCharacteristicThresholdRangeEventModel alloc];
-  v4 = [(HMDEvent *)self uuid];
-  v5 = [(HMDEvent *)self eventTrigger];
-  v6 = [v5 uuid];
-  v7 = [(HMDBackingStoreModelObject *)v3 initWithObjectChangeType:2 uuid:v4 parentUUID:v6];
+  uuid = [(HMDEvent *)self uuid];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  uuid2 = [eventTrigger uuid];
+  v7 = [(HMDBackingStoreModelObject *)v3 initWithObjectChangeType:2 uuid:uuid parentUUID:uuid2];
 
   return v7;
 }
@@ -362,8 +362,8 @@ void __61__HMDCharacteristicThresholdRangeEvent__handleUpdateRequest___block_inv
   v3 = MEMORY[0x277CBEB38];
   v12.receiver = self;
   v12.super_class = HMDCharacteristicThresholdRangeEvent;
-  v4 = [(HMDCharacteristicEventBase *)&v12 createPayload];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  createPayload = [(HMDCharacteristicEventBase *)&v12 createPayload];
+  v5 = [v3 dictionaryWithDictionary:createPayload];
 
   v6 = [(HMDCharacteristicThresholdRangeEvent *)self min];
 
@@ -399,19 +399,19 @@ void __61__HMDCharacteristicThresholdRangeEvent__handleUpdateRequest___block_inv
   return v7;
 }
 
-- (HMDCharacteristicThresholdRangeEvent)initWithModel:(id)a3 home:(id)a4
+- (HMDCharacteristicThresholdRangeEvent)initWithModel:(id)model home:(id)home
 {
-  v6 = a3;
+  modelCopy = model;
   v13.receiver = self;
   v13.super_class = HMDCharacteristicThresholdRangeEvent;
-  v7 = [(HMDCharacteristicEventBase *)&v13 initWithModel:v6 home:a4];
+  v7 = [(HMDCharacteristicEventBase *)&v13 initWithModel:modelCopy home:home];
   if (v7)
   {
-    v8 = [v6 min];
+    v8 = [modelCopy min];
     min = v7->_min;
     v7->_min = v8;
 
-    v10 = [v6 max];
+    v10 = [modelCopy max];
     max = v7->_max;
     v7->_max = v10;
   }

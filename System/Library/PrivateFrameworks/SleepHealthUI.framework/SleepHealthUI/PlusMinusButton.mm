@@ -1,13 +1,13 @@
 @interface PlusMinusButton
 - (BOOL)isEnabled;
-- (_TtC13SleepHealthUI15PlusMinusButton)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI15PlusMinusButton)initWithFrame:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
+- (_TtC13SleepHealthUI15PlusMinusButton)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI15PlusMinusButton)initWithFrame:(CGRect)frame;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation PlusMinusButton
 
-- (_TtC13SleepHealthUI15PlusMinusButton)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI15PlusMinusButton)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -34,14 +34,14 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for PlusMinusButton();
-  v3 = [(PlusMinusButton *)&v5 isEnabled];
+  isEnabled = [(PlusMinusButton *)&v5 isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   sub_269D9A8E0();
   sub_269D9A8D0();
   sub_269D9A880();
@@ -52,19 +52,19 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for PlusMinusButton();
-  v5 = self;
-  [(PlusMinusButton *)&v8 setEnabled:v3];
-  v6 = [(PlusMinusButton *)v5 isEnabled:v8.receiver];
+  selfCopy = self;
+  [(PlusMinusButton *)&v8 setEnabled:enabledCopy];
+  v6 = [(PlusMinusButton *)selfCopy isEnabled:v8.receiver];
   v7 = 0.5;
   if (v6)
   {
     v7 = 1.0;
   }
 
-  [(PlusMinusButton *)v5 setAlpha:v7];
+  [(PlusMinusButton *)selfCopy setAlpha:v7];
 }
 
-- (_TtC13SleepHealthUI15PlusMinusButton)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI15PlusMinusButton)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

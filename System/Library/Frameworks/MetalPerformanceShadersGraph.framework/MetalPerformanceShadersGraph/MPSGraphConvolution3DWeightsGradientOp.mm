@@ -1,18 +1,18 @@
 @interface MPSGraphConvolution3DWeightsGradientOp
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphConvolution3DWeightsGradientOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphConvolution3DWeightsGradientOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphConvolutionOps.mm", __p);
-  v11 = v10;
+  v11 = nameCopy;
   v29 = 260;
   v28[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v28);
+  StringAttr = mlir::Builder::getStringAttr(builder, v28);
   v13 = mlir::FileLineColLoc::get(StringAttr, 0x266u, 0);
   if (!v11)
   {
@@ -20,8 +20,8 @@
   }
 
   v14 = v11;
-  v15 = [v11 UTF8String];
-  v16 = strlen(v15);
+  uTF8String = [v11 UTF8String];
+  v16 = strlen(uTF8String);
   if (v16 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -36,11 +36,11 @@
   HIBYTE(v27) = v16;
   if (v16)
   {
-    memmove(&__dst, v15, v16);
+    memmove(&__dst, uTF8String, v16);
   }
 
   *(&__dst + v18) = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v17, &v25);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v17, &v25);
   v19 = v25.__r_.__value_.__r.__words[0];
   if ((v25.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -56,7 +56,7 @@
   }
 
   LOBYTE(v29) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, v28);
+  v21 = mlir::Builder::getStringAttr(builder, v28);
   mlir::NameLoc::get(v21, v13);
   if (SHIBYTE(v25.__r_.__value_.__r.__words[2]) < 0)
   {

@@ -1,33 +1,33 @@
 @interface PKTransactionStatusCell
 - (BOOL)hasCompleteSecondaryLink;
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKTransactionStatusCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKTransactionStatusCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateTextColors;
-- (void)didPressSecondaryTitleButton:(id)a3;
+- (void)didPressSecondaryTitleButton:(id)button;
 - (void)layoutSubviews;
-- (void)setIsBridge:(BOOL)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setSecondaryTextOverrideColor:(id)a3;
-- (void)setSecondaryTitle:(id)a3;
-- (void)setSecondaryTitleAttributed:(id)a3;
-- (void)setSecondaryTitleLinkText:(id)a3;
-- (void)setSecondaryTitleLinkURL:(id)a3;
-- (void)setSecondaryValue:(id)a3;
-- (void)setTertiaryText:(id)a3;
+- (void)setIsBridge:(BOOL)bridge;
+- (void)setPrimaryText:(id)text;
+- (void)setSecondaryTextOverrideColor:(id)color;
+- (void)setSecondaryTitle:(id)title;
+- (void)setSecondaryTitleAttributed:(id)attributed;
+- (void)setSecondaryTitleLinkText:(id)text;
+- (void)setSecondaryTitleLinkURL:(id)l;
+- (void)setSecondaryValue:(id)value;
+- (void)setTertiaryText:(id)text;
 @end
 
 @implementation PKTransactionStatusCell
 
-- (PKTransactionStatusCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKTransactionStatusCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v31.receiver = self;
   v31.super_class = PKTransactionStatusCell;
-  v4 = [(PKTransactionStatusCell *)&v31 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(PKTransactionStatusCell *)&v31 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PKTransactionStatusCell *)v4 contentView];
+    contentView = [(PKTransactionStatusCell *)v4 contentView];
     v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     primaryLabel = v5->_primaryLabel;
     v5->_primaryLabel = v7;
@@ -40,7 +40,7 @@
 
     [(UILabel *)v5->_primaryLabel setNumberOfLines:0];
     [(UILabel *)v5->_primaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-    [v6 addSubview:v5->_primaryLabel];
+    [contentView addSubview:v5->_primaryLabel];
     v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     secondaryTitleLabel = v5->_secondaryTitleLabel;
     v5->_secondaryTitleLabel = v13;
@@ -51,7 +51,7 @@
 
     [(UILabel *)v5->_secondaryTitleLabel setNumberOfLines:0];
     [(UILabel *)v5->_secondaryTitleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
-    [v6 addSubview:v5->_secondaryTitleLabel];
+    [contentView addSubview:v5->_secondaryTitleLabel];
     v17 = objc_alloc_init(MEMORY[0x1E69DC738]);
     secondaryTitleButton = v5->_secondaryTitleButton;
     v5->_secondaryTitleButton = v17;
@@ -66,7 +66,7 @@
     objc_storeStrong(&v5->_secondaryTitleButtonAction, &__block_literal_global_52);
     [(UIButton *)v5->_secondaryTitleButton addTarget:v5 action:sel_didPressSecondaryTitleButton_ forControlEvents:64];
     [(UIButton *)v5->_secondaryTitleButton setAccessibilityIdentifier:*MEMORY[0x1E69B9BE0]];
-    [v6 addSubview:v5->_secondaryTitleButton];
+    [contentView addSubview:v5->_secondaryTitleButton];
     v22 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     secondaryValueLabel = v5->_secondaryValueLabel;
     v5->_secondaryValueLabel = v22;
@@ -77,7 +77,7 @@
 
     [(UILabel *)v5->_secondaryValueLabel setNumberOfLines:1];
     [(UILabel *)v5->_secondaryValueLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9DC0]];
-    [v6 addSubview:v5->_secondaryValueLabel];
+    [contentView addSubview:v5->_secondaryValueLabel];
     v26 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     tertiaryLabel = v5->_tertiaryLabel;
     v5->_tertiaryLabel = v26;
@@ -88,7 +88,7 @@
 
     [(UILabel *)v5->_tertiaryLabel setNumberOfLines:0];
     [(UILabel *)v5->_tertiaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9BE8]];
-    [v6 addSubview:v5->_tertiaryLabel];
+    [contentView addSubview:v5->_tertiaryLabel];
     [(PKTransactionStatusCell *)v5 _updateTextColors];
     [(PKTransactionStatusCell *)v5 setAccessibilityIdentifier:*MEMORY[0x1E69B9CC0]];
   }
@@ -101,26 +101,26 @@
   v4.receiver = self;
   v4.super_class = PKTransactionStatusCell;
   [(PKTransactionStatusCell *)&v4 layoutSubviews];
-  v3 = [(PKTransactionStatusCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKTransactionStatusCell *)self contentView];
+  [contentView bounds];
   [(PKTransactionStatusCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_templateLayout = 1;
-  [(PKTransactionStatusCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, 1.79769313e308];
+  [(PKTransactionStatusCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, 1.79769313e308];
   self->_templateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   primaryText = self->_primaryText;
-  v10 = v4;
+  v10 = textCopy;
   v6 = primaryText;
   if (v6 == v10)
   {
@@ -150,20 +150,20 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSecondaryTitle:(id)a3
+- (void)setSecondaryTitle:(id)title
 {
-  v4 = [a3 pk_attributedString];
-  [(PKTransactionStatusCell *)self setSecondaryTitleAttributed:v4];
+  pk_attributedString = [title pk_attributedString];
+  [(PKTransactionStatusCell *)self setSecondaryTitleAttributed:pk_attributedString];
 }
 
-- (void)setSecondaryTitleAttributed:(id)a3
+- (void)setSecondaryTitleAttributed:(id)attributed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 | self->_secondaryTitleLabel)
+  attributedCopy = attributed;
+  v5 = attributedCopy;
+  if (attributedCopy | self->_secondaryTitleLabel)
   {
-    v9 = v4;
-    v6 = [v4 isEqualToAttributedString:self->_secondaryTitleAttributed];
+    v9 = attributedCopy;
+    v6 = [attributedCopy isEqualToAttributedString:self->_secondaryTitleAttributed];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -178,11 +178,11 @@ LABEL_9:
   }
 }
 
-- (void)setSecondaryTitleLinkText:(id)a3
+- (void)setSecondaryTitleLinkText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   secondaryTitleLinkText = self->_secondaryTitleLinkText;
-  v10 = v4;
+  v10 = textCopy;
   v6 = secondaryTitleLinkText;
   if (v6 == v10)
   {
@@ -213,12 +213,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSecondaryTitleLinkURL:(id)a3
+- (void)setSecondaryTitleLinkURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [lCopy copy];
     secondaryTitleLinkURL = self->_secondaryTitleLinkURL;
     self->_secondaryTitleLinkURL = v4;
 
@@ -238,11 +238,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)setSecondaryValue:(id)a3
+- (void)setSecondaryValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   secondaryValue = self->_secondaryValue;
-  v10 = v4;
+  v10 = valueCopy;
   v6 = secondaryValue;
   if (v6 == v10)
   {
@@ -272,11 +272,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTertiaryText:(id)a3
+- (void)setTertiaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   tertiaryText = self->_tertiaryText;
-  v10 = v4;
+  v10 = textCopy;
   v6 = tertiaryText;
   if (v6 == v10)
   {
@@ -306,23 +306,23 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSecondaryTextOverrideColor:(id)a3
+- (void)setSecondaryTextOverrideColor:(id)color
 {
-  v5 = a3;
-  if (self->_secondaryTextOverrideColor != v5)
+  colorCopy = color;
+  if (self->_secondaryTextOverrideColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_secondaryTextOverrideColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_secondaryTextOverrideColor, color);
     [(PKTransactionStatusCell *)self _updateTextColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setIsBridge:(BOOL)a3
+- (void)setIsBridge:(BOOL)bridge
 {
-  if (self->_isBridge == !a3)
+  if (self->_isBridge == !bridge)
   {
-    self->_isBridge = a3;
+    self->_isBridge = bridge;
     [(PKTransactionStatusCell *)self _updateTextColors];
   }
 }
@@ -389,12 +389,12 @@ LABEL_9:
   [(UILabel *)self->_secondaryValueLabel setTextColor:v9];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   memset(&v38, 0, sizeof(v38));
   [(UITableViewCell *)self pkui_effectiveLayoutMargins];
   v8 = y + 14.0;
@@ -532,7 +532,7 @@ LABEL_16:
   return result;
 }
 
-- (void)didPressSecondaryTitleButton:(id)a3
+- (void)didPressSecondaryTitleButton:(id)button
 {
   secondaryTitleButtonAction = self->_secondaryTitleButtonAction;
   if (secondaryTitleButtonAction)

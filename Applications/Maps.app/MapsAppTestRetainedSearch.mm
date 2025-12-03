@@ -1,10 +1,10 @@
 @interface MapsAppTestRetainedSearch
 - (BOOL)runTest;
-- (void)didPresentPlaceCard:(id)a3;
+- (void)didPresentPlaceCard:(id)card;
 - (void)returnToRetainedAutoComplete;
 - (void)returnToSearchResults;
-- (void)searchAutoCompleteTestReceiveResponse:(id)a3;
-- (void)searchSessionDidChangeSearchResults:(id)a3;
+- (void)searchAutoCompleteTestReceiveResponse:(id)response;
+- (void)searchSessionDidChangeSearchResults:(id)results;
 - (void)startAutoCompleteOrSearchTest;
 - (void)startAutoCompleteTest;
 - (void)startSearchTest;
@@ -21,8 +21,8 @@
   v4[4] = self;
   [PPTNotificationCenter addOnceObserverForName:@"PPTTestTrayDidDismissNotification" object:0 usingBlock:v4];
   [(MapsAppTest *)self startedSubTest:@"returnToSearchResults"];
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestDismissTrayAnimated:1 assertTrayType:1];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestDismissTrayAnimated:1 assertTrayType:1];
 }
 
 - (void)returnToRetainedAutoComplete
@@ -53,11 +53,11 @@
   dispatch_group_notify(v5, &_dispatch_main_q, v7);
   [(MapsAppTest *)self startedSubTest:@"returnToAutoComplete - suggestions received"];
   [(MapsAppTest *)self startedSubTest:@"returnToAutoComplete"];
-  v6 = [(MapsAppTest *)self testCoordinator];
-  [v6 pptTestDismissTrayAnimated:1 assertTrayType:1];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestDismissTrayAnimated:1 assertTrayType:1];
 }
 
-- (void)didPresentPlaceCard:(id)a3
+- (void)didPresentPlaceCard:(id)card
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:MKPlaceViewControllerDidShowNotification object:0];
@@ -71,38 +71,38 @@
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)searchSessionDidChangeSearchResults:(id)a3
+- (void)searchSessionDidChangeSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"SearchSessionDidChangeSearchResultsNotification" object:0];
 
-  v16 = [v4 object];
+  object = [resultsCopy object];
 
-  v6 = v16;
-  if (v16)
+  v6 = object;
+  if (object)
   {
     searchResultIndex = self->_searchResultIndex;
     if ((searchResultIndex & 0x8000000000000000) == 0)
     {
-      v8 = [v16 searchInfo];
-      v9 = [v8 results];
-      v10 = [v9 count];
+      searchInfo = [object searchInfo];
+      results = [searchInfo results];
+      v10 = [results count];
 
-      v6 = v16;
+      v6 = object;
       if (searchResultIndex < v10)
       {
-        v11 = [v16 searchInfo];
-        v12 = [v11 results];
-        v13 = [v12 objectAtIndexedSubscript:self->_searchResultIndex];
+        searchInfo2 = [object searchInfo];
+        results2 = [searchInfo2 results];
+        v13 = [results2 objectAtIndexedSubscript:self->_searchResultIndex];
 
         v14 = +[NSNotificationCenter defaultCenter];
         [v14 addObserver:self selector:"didPresentPlaceCard:" name:MKPlaceViewControllerDidShowNotification object:0];
 
-        v15 = [(MapsAppTest *)self testCoordinator];
-        [v15 pptTestPresentPlaceCardForSearchResult:v13 animated:1];
+        testCoordinator = [(MapsAppTest *)self testCoordinator];
+        [testCoordinator pptTestPresentPlaceCardForSearchResult:v13 animated:1];
 
-        v6 = v16;
+        v6 = object;
       }
     }
   }
@@ -115,18 +115,18 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 addObserver:self selector:"searchSessionDidChangeSearchResults:" name:@"SearchSessionDidChangeSearchResultsNotification" object:0];
 
-  v4 = [(MapsAppTest *)self testCoordinator];
-  [v4 pptTestSearchForFieldItem:v5];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestSearchForFieldItem:v5];
 }
 
-- (void)searchAutoCompleteTestReceiveResponse:(id)a3
+- (void)searchAutoCompleteTestReceiveResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"SearchDataProviderQueryKey"];
+  responseCopy = response;
+  userInfo = [responseCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"SearchDataProviderQueryKey"];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"SearchDataProviderQueryResultGroupsKey"];
+  userInfo2 = [responseCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"SearchDataProviderQueryResultGroupsKey"];
 
   if ([v6 isEqualToString:self->_query])
   {
@@ -134,14 +134,14 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v9 = v8;
-    v36 = [v9 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    testCoordinator2 = v8;
+    v36 = [testCoordinator2 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v36)
     {
       v31 = v8;
       v32 = v6;
-      v33 = v4;
-      obj = v9;
+      v33 = responseCopy;
+      obj = testCoordinator2;
       v10 = 0;
       v11 = 0;
       v35 = *v38;
@@ -161,41 +161,41 @@
             v15 = *(*(&v37 + 1) + 8 * i);
             while (1)
             {
-              v16 = [v15 items];
-              v17 = [v16 count];
+              items = [v15 items];
+              v17 = [items count];
 
               if (v14 >= v17)
               {
                 break;
               }
 
-              v18 = [v15 items];
-              v19 = [v18 objectAtIndexedSubscript:v14];
-              v20 = [v19 autocompleteObject];
+              items2 = [v15 items];
+              v19 = [items2 objectAtIndexedSubscript:v14];
+              autocompleteObject = [v19 autocompleteObject];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
 
               if (isKindOfClass)
               {
-                v22 = [v15 items];
-                v23 = [v22 objectAtIndexedSubscript:v14];
-                v24 = [v23 autocompleteObject];
+                items3 = [v15 items];
+                v23 = [items3 objectAtIndexedSubscript:v14];
+                autocompleteObject2 = [v23 autocompleteObject];
 
-                v25 = [v24 mapItem];
-                v26 = v25;
+                mapItem = [autocompleteObject2 mapItem];
+                v26 = mapItem;
                 v11 = 0;
-                if (v25)
+                if (mapItem)
                 {
                   autocompleteResultIndex = self->_autocompleteResultIndex;
                   if ((autocompleteResultIndex & 0x8000000000000000) == 0 && v13 == autocompleteResultIndex)
                   {
-                    v11 = v25;
+                    v11 = mapItem;
                   }
 
                   ++v13;
                 }
 
-                v10 = v24;
+                v10 = autocompleteObject2;
               }
 
               else
@@ -225,13 +225,13 @@ LABEL_21:
       if (!v11)
       {
         v6 = v32;
-        v4 = v33;
+        responseCopy = v33;
         v8 = v31;
         goto LABEL_28;
       }
 
-      v28 = [(MapsAppTest *)self testCoordinator];
-      [v28 pptTestSearchRetainQueryForSelectedSearchCompletion:v10];
+      testCoordinator = [(MapsAppTest *)self testCoordinator];
+      [testCoordinator pptTestSearchRetainQueryForSelectedSearchCompletion:v10];
 
       v29 = +[NSNotificationCenter defaultCenter];
       [v29 removeObserver:self name:@"SearchDataProviderDidChangeDataNotification" object:0];
@@ -239,10 +239,10 @@ LABEL_21:
       v30 = +[NSNotificationCenter defaultCenter];
       [v30 addObserver:self selector:"didPresentPlaceCard:" name:MKPlaceViewControllerDidShowNotification object:0];
 
-      v9 = [(MapsAppTest *)self testCoordinator];
-      [v9 pptTestPresentPlacecardWithMapItem:v11];
+      testCoordinator2 = [(MapsAppTest *)self testCoordinator];
+      [testCoordinator2 pptTestPresentPlacecardWithMapItem:v11];
       v6 = v32;
-      v4 = v33;
+      responseCopy = v33;
       v8 = v31;
     }
 
@@ -263,8 +263,8 @@ LABEL_28:
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 addObserver:self selector:"searchAutoCompleteTestReceiveResponse:" name:@"SearchDataProviderDidChangeDataNotification" object:0];
 
-  v4 = [(MapsAppTest *)self testCoordinator];
-  [v4 pptTestAutocompleteSearchForFieldItem:v5];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestAutocompleteSearchForFieldItem:v5];
 }
 
 - (void)startAutoCompleteOrSearchTest
@@ -287,35 +287,35 @@ LABEL_28:
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 objectForKeyedSubscript:@"searchQuery"];
+  options = [(MapsAppTest *)self options];
+  v4 = [options objectForKeyedSubscript:@"searchQuery"];
   query = self->_query;
   self->_query = v4;
 
-  v6 = [v3 objectForKeyedSubscript:@"autocompleteResultIndex"];
+  v6 = [options objectForKeyedSubscript:@"autocompleteResultIndex"];
   if ([v6 length])
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = -1;
+    integerValue = -1;
   }
 
-  self->_autocompleteResultIndex = v7;
-  v8 = [v3 objectForKeyedSubscript:@"searchResultIndex"];
+  self->_autocompleteResultIndex = integerValue;
+  v8 = [options objectForKeyedSubscript:@"searchResultIndex"];
   if ([v8 length])
   {
-    v9 = [v8 integerValue];
+    integerValue2 = [v8 integerValue];
   }
 
   else
   {
-    v9 = -1;
+    integerValue2 = -1;
   }
 
-  self->_searchResultIndex = v9;
+  self->_searchResultIndex = integerValue2;
   if (![(NSString *)self->_query length])
   {
     goto LABEL_10;
@@ -331,14 +331,14 @@ LABEL_28:
 
 LABEL_12:
     v12 = +[NSNotificationCenter defaultCenter];
-    v13 = [(MapsAppTest *)self testCoordinator];
-    [v13 pptTestResetForLaunchURL];
+    testCoordinator = [(MapsAppTest *)self testCoordinator];
+    [testCoordinator pptTestResetForLaunchURL];
 
-    v14 = [v3 _mapstest_mapType];
-    v15 = [v3 _mapstest_mapRegion];
-    [(MapsAppTest *)self switchToMapType:v14];
-    v16 = [(MapsAppTest *)self mainVKMapView];
-    [v16 setMapRegion:v15 pitch:0.0 yaw:0.0];
+    _mapstest_mapType = [options _mapstest_mapType];
+    _mapstest_mapRegion = [options _mapstest_mapRegion];
+    [(MapsAppTest *)self switchToMapType:_mapstest_mapType];
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+    [mainVKMapView setMapRegion:_mapstest_mapRegion pitch:0.0 yaw:0.0];
 
     objc_initWeak(&location, self);
     v19[0] = _NSConcreteStackBlock;

@@ -2,19 +2,19 @@
 - (BOOL)isSelected;
 - (WFExecutableAppShortcut)autoShortcut;
 - (WFWorkflowReference)workflowReference;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAutoShortcut:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setWorkflowReference:(id)a3;
+- (void)setAutoShortcut:(id)shortcut;
+- (void)setSelected:(BOOL)selected;
+- (void)setWorkflowReference:(id)reference;
 @end
 
 @implementation LibraryCell
 
 - (BOOL)isSelected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001D6CC();
 
   return v3 & 1;
@@ -22,7 +22,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001D81C();
 }
 
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (void)setWorkflowReference:(id)a3
+- (void)setWorkflowReference:(id)reference
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000ADDC4(a3);
+  referenceCopy = reference;
+  selfCopy = self;
+  sub_1000ADDC4(reference);
 }
 
 - (WFExecutableAppShortcut)autoShortcut
@@ -47,30 +47,30 @@
   return v2;
 }
 
-- (void)setAutoShortcut:(id)a3
+- (void)setAutoShortcut:(id)shortcut
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000ADE90(a3);
+  shortcutCopy = shortcut;
+  selfCopy = self;
+  sub_1000ADE90(shortcut);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000AE498();
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_1000AEBB4(a3);
+  selfCopy = self;
+  sub_1000AEBB4(selected);
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = sub_1000AEE34();
 
   return v9;

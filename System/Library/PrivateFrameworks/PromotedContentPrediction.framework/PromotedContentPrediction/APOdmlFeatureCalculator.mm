@@ -1,14 +1,14 @@
 @interface APOdmlFeatureCalculator
-- (APOdmlFeatureCalculator)initWithActivity:(id)a3 placementType:(unint64_t)a4 assetManagerType:(unint64_t)a5;
-- (APOdmlFeatureCalculator)initWithPlacementType:(unint64_t)a3 assetManagerType:(unint64_t)a4;
-- (id)_vectorKeyForType:(unint64_t)a3;
-- (id)createAndSaveVector:(unint64_t)a3;
-- (id)createAndSaveVectorWithBuilder:(id)a3 vectorType:(unint64_t)a4;
+- (APOdmlFeatureCalculator)initWithActivity:(id)activity placementType:(unint64_t)type assetManagerType:(unint64_t)managerType;
+- (APOdmlFeatureCalculator)initWithPlacementType:(unint64_t)type assetManagerType:(unint64_t)managerType;
+- (id)_vectorKeyForType:(unint64_t)type;
+- (id)createAndSaveVector:(unint64_t)vector;
+- (id)createAndSaveVectorWithBuilder:(id)builder vectorType:(unint64_t)type;
 @end
 
 @implementation APOdmlFeatureCalculator
 
-- (APOdmlFeatureCalculator)initWithPlacementType:(unint64_t)a3 assetManagerType:(unint64_t)a4
+- (APOdmlFeatureCalculator)initWithPlacementType:(unint64_t)type assetManagerType:(unint64_t)managerType
 {
   v43 = *MEMORY[0x277D85DE8];
   v38.receiver = self;
@@ -20,10 +20,10 @@
     creationTime = v8->_creationTime;
     v8->_creationTime = v9;
 
-    v8->_assetManagerType = a4;
-    v8->_placementType = a3;
+    v8->_assetManagerType = managerType;
+    v8->_placementType = type;
     v13 = objc_msgSend_sharedAssetManagerCoordinator(APOdmlAssetManagerCoordinator, v11, v12);
-    v15 = objc_msgSend_assetManagerForPlacementType_assetManagerType_(v13, v14, a3, a4);
+    v15 = objc_msgSend_assetManagerForPlacementType_assetManagerType_(v13, v14, type, managerType);
     assetManager = v8->_assetManager;
     v8->_assetManager = v15;
 
@@ -33,7 +33,7 @@
 
     v20 = MEMORY[0x277CCACA8];
     v21 = [APOdmlSettings alloc];
-    v23 = objc_msgSend_initWithPlacementType_assetManagerType_(v21, v22, a3, a4);
+    v23 = objc_msgSend_initWithPlacementType_assetManagerType_(v21, v22, type, managerType);
     v26 = objc_msgSend_odmlVersion(v23, v24, v25);
     v28 = objc_msgSend_stringWithFormat_(v20, v27, @"%d", v26);
     version = v8->_version;
@@ -57,15 +57,15 @@
   return v8;
 }
 
-- (APOdmlFeatureCalculator)initWithActivity:(id)a3 placementType:(unint64_t)a4 assetManagerType:(unint64_t)a5
+- (APOdmlFeatureCalculator)initWithActivity:(id)activity placementType:(unint64_t)type assetManagerType:(unint64_t)managerType
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v10 = objc_msgSend_initWithPlacementType_assetManagerType_(self, v9, a4, a5);
+  activityCopy = activity;
+  v10 = objc_msgSend_initWithPlacementType_assetManagerType_(self, v9, type, managerType);
   if (v10)
   {
     v11 = [APOdmlXpcLifecycleHandler alloc];
-    v13 = objc_msgSend_initWithActivity_(v11, v12, v8);
+    v13 = objc_msgSend_initWithActivity_(v11, v12, activityCopy);
     task = v10->_task;
     v10->_task = v13;
   }
@@ -87,9 +87,9 @@
   return v10;
 }
 
-- (id)createAndSaveVector:(unint64_t)a3
+- (id)createAndSaveVector:(unint64_t)vector
 {
-  v5 = objc_msgSend_assetManager(self, a2, a3);
+  v5 = objc_msgSend_assetManager(self, a2, vector);
   v7 = objc_msgSend_doubleValueForFactor_(v5, v6, @"LookbackWindow");
 
   v10 = objc_msgSend_assetManager(self, v8, v9);
@@ -103,12 +103,12 @@
 
   v23 = off_279AC5BA0;
   v24 = off_279AC5B08;
-  if (a3 != 1)
+  if (vector != 1)
   {
     v24 = off_279AC5B18;
   }
 
-  if (a3 != 2)
+  if (vector != 2)
   {
     v23 = v24;
   }
@@ -120,16 +120,16 @@
   v40 = objc_msgSend_assetManagerType(self, v33, v34) == 1;
   isCounterfactual = objc_msgSend_initWithVersion_lookbackPeriod_maxQueryElements_task_exponentialDecayConstant_weightByDuration_isCounterfactual_(v26, v35, v29, v7, v12, v32, v17, v22, v40);
 
-  v38 = objc_msgSend_createAndSaveVectorWithBuilder_vectorType_(self, v37, isCounterfactual, a3);
+  v38 = objc_msgSend_createAndSaveVectorWithBuilder_vectorType_(self, v37, isCounterfactual, vector);
 
   return v38;
 }
 
-- (id)createAndSaveVectorWithBuilder:(id)a3 vectorType:(unint64_t)a4
+- (id)createAndSaveVectorWithBuilder:(id)builder vectorType:(unint64_t)type
 {
   v158 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = objc_msgSend__vectorKeyForType_(self, v7, a4);
+  builderCopy = builder;
+  v8 = objc_msgSend__vectorKeyForType_(self, v7, type);
   v9 = [APOdmlAppVectorsFile alloc];
   v12 = objc_msgSend_assetPath(self, v10, v11);
   v15 = objc_msgSend_version(self, v13, v14);
@@ -189,13 +189,13 @@
       v20 = v51;
     }
 
-    v148 = v6;
+    v148 = builderCopy;
     if (v148)
     {
-      v144 = a4;
+      typeCopy = type;
       v145 = v8;
       v52 = v20;
-      v146 = v6;
+      v146 = builderCopy;
       v53 = 0;
       v54 = -1;
       for (i = 1; ; ++i)
@@ -235,7 +235,7 @@
             v80 = MEMORY[0x277CCACA8];
             v83 = objc_msgSend_placementType(self, v81, v82);
             v85 = objc_msgSend_descriptionForPlacementType_(v80, v84, v83);
-            v87 = objc_msgSend_descriptionForVectorBuilderType_(MEMORY[0x277CCACA8], v86, v144);
+            v87 = objc_msgSend_descriptionForVectorBuilderType_(MEMORY[0x277CCACA8], v86, typeCopy);
             v90 = objc_msgSend_arrayOfNumbers(v53, v88, v89);
             *buf = 138413314;
             *v151 = v73;
@@ -265,7 +265,7 @@
             v71 = objc_msgSend_saveFeatureFromObject_withName_(v112, v113, v53, v145);
           }
 
-          v6 = v146;
+          builderCopy = v146;
           v20 = v52;
           v34 = v71;
 
@@ -312,7 +312,7 @@
       v34 = v135;
 
       objc_autoreleasePoolPop(v56);
-      v6 = v146;
+      builderCopy = v146;
     }
 
     else
@@ -369,16 +369,16 @@ LABEL_38:
   return v34;
 }
 
-- (id)_vectorKeyForType:(unint64_t)a3
+- (id)_vectorKeyForType:(unint64_t)type
 {
   v3 = kAPOdmlFeatureTypeInstalledAppVectorKey;
   v4 = kAPOdmlFeatureTypeAppDownloadVectorKey;
-  if (a3 != 1)
+  if (type != 1)
   {
     v4 = kAPOdmlFeatureTypeAppUsageVectorKey;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v3 = v4;
   }

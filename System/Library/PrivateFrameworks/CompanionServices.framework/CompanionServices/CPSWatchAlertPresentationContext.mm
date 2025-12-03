@@ -1,7 +1,7 @@
 @interface CPSWatchAlertPresentationContext
-- (CPSWatchAlertPresentationContext)initWithXPCDictionary:(id)a3;
+- (CPSWatchAlertPresentationContext)initWithXPCDictionary:(id)dictionary;
 - (NSString)description;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation CPSWatchAlertPresentationContext
@@ -15,20 +15,20 @@
   v6 = [v3 appendObject:self->_storeAuthenticationRequest withName:@"storeAuthenticationRequest"];
   v7 = [v3 appendObject:self->_unrecognizedUserRequest withName:@"unrecognizedUserRequest"];
   v8 = [v3 appendObject:self->_xpcEndpoint withName:@"xpcEndpoint"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (CPSWatchAlertPresentationContext)initWithXPCDictionary:(id)a3
+- (CPSWatchAlertPresentationContext)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = CPSWatchAlertPresentationContext;
   v5 = [(CPSWatchAlertPresentationContext *)&v20 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CF0D20] coderWithMessage:v4];
+    v6 = [MEMORY[0x277CF0D20] coderWithMessage:dictionaryCopy];
     v7 = [v6 decodeStringForKey:@"deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v7;
@@ -57,9 +57,9 @@
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = [MEMORY[0x277CF0D20] coderWithMessage:a3];
+  v4 = [MEMORY[0x277CF0D20] coderWithMessage:dictionary];
   [v4 encodeObject:self->_deviceName forKey:@"deviceName"];
   [v4 encodeObject:self->_systemAuthenticationRequest forKey:@"systemAuthenticationRequest"];
   [v4 encodeObject:self->_restrictedAccessRequest forKey:@"restrictedAccessRequest"];

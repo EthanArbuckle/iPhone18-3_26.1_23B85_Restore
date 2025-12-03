@@ -1,15 +1,15 @@
 @interface MapsSuggestionsZeroWeightFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsZeroWeightFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (entry)
   {
-    [a3 weight];
+    [entry weight];
     return v3 > 0.0;
   }
 

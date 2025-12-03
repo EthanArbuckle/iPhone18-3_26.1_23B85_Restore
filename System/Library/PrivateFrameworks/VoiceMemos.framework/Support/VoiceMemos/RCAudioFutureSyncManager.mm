@@ -1,43 +1,43 @@
 @interface RCAudioFutureSyncManager
-- (BOOL)___pushAudioFutureIntoBatch:(id)a3;
-- (BOOL)_shouldRetryFutureDownloadForError:(id)a3;
-- (BOOL)_transactionHasAudioFutureChange:(id)a3;
-- (RCAudioFutureSyncManager)initWithScheduler:(id)a3;
+- (BOOL)___pushAudioFutureIntoBatch:(id)batch;
+- (BOOL)_shouldRetryFutureDownloadForError:(id)error;
+- (BOOL)_transactionHasAudioFutureChange:(id)change;
+- (RCAudioFutureSyncManager)initWithScheduler:(id)scheduler;
 - (RCAudioFutureSyncManagerDelegate)delegate;
 - (id)___popAudioFutureBatch;
 - (id)_audioFutureEntityToAttributesDict;
-- (id)_mostRecentAudioFutureTransactionForObjectID:(id)a3 model:(id)a4;
+- (id)_mostRecentAudioFutureTransactionForObjectID:(id)d model:(id)model;
 - (id)_newBackgroundMirroringModel;
-- (void)___fetchAudioFuturesWithCompletionBlock:(id)a3;
-- (void)___fetchNextAudioFutureBatch:(id)a3;
-- (void)__fetchAudioFuture:(id)a3 completionBlock:(id)a4;
-- (void)_checkProgressAndUpdateIfNeeded:(id)a3 latestToken:(id)a4 model:(id)a5;
-- (void)_checkProgressOfExportingRecordings:(id)a3;
-- (void)_fetchProgressAndUpdateIfNeeded:(id)a3 mirroringModel:(id)a4;
-- (void)_handleCloudKitContainerEvent:(id)a3;
-- (void)_handleCloudKitContainerEventChangedNotification:(id)a3;
-- (void)_performOnSchedulerQueue:(id)a3;
-- (void)_processExportProgressResult:(id)a3 mirroringModel:(id)a4;
-- (void)_updateRecordingOnAssetExportCompletion:(id)a3 model:(id)a4;
-- (void)_validateCorrectStore:(id)a3;
-- (void)importAudioFuture:(id)a3 mirroringModel:(id)a4;
-- (void)markRecordingAsNeedingExport:(id)a3 model:(id)a4;
-- (void)markRecordingsAsNeedingExportAndCheckProgress:(id)a3 mirroringModel:(id)a4;
-- (void)setPersistentStore:(id)a3;
+- (void)___fetchAudioFuturesWithCompletionBlock:(id)block;
+- (void)___fetchNextAudioFutureBatch:(id)batch;
+- (void)__fetchAudioFuture:(id)future completionBlock:(id)block;
+- (void)_checkProgressAndUpdateIfNeeded:(id)needed latestToken:(id)token model:(id)model;
+- (void)_checkProgressOfExportingRecordings:(id)recordings;
+- (void)_fetchProgressAndUpdateIfNeeded:(id)needed mirroringModel:(id)model;
+- (void)_handleCloudKitContainerEvent:(id)event;
+- (void)_handleCloudKitContainerEventChangedNotification:(id)notification;
+- (void)_performOnSchedulerQueue:(id)queue;
+- (void)_processExportProgressResult:(id)result mirroringModel:(id)model;
+- (void)_updateRecordingOnAssetExportCompletion:(id)completion model:(id)model;
+- (void)_validateCorrectStore:(id)store;
+- (void)importAudioFuture:(id)future mirroringModel:(id)model;
+- (void)markRecordingAsNeedingExport:(id)export model:(id)model;
+- (void)markRecordingsAsNeedingExportAndCheckProgress:(id)progress mirroringModel:(id)model;
+- (void)setPersistentStore:(id)store;
 @end
 
 @implementation RCAudioFutureSyncManager
 
-- (RCAudioFutureSyncManager)initWithScheduler:(id)a3
+- (RCAudioFutureSyncManager)initWithScheduler:(id)scheduler
 {
-  v5 = a3;
+  schedulerCopy = scheduler;
   v11.receiver = self;
   v11.super_class = RCAudioFutureSyncManager;
   v6 = [(RCAudioFutureSyncManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scheduler, a3);
+    objc_storeStrong(&v6->_scheduler, scheduler);
     v8 = dispatch_queue_create("com.apple.voicememod.RCAudioFutureSyncManager", 0);
     serialQueue = v7->_serialQueue;
     v7->_serialQueue = v8;
@@ -46,85 +46,85 @@
   return v7;
 }
 
-- (void)markRecordingsAsNeedingExportAndCheckProgress:(id)a3 mirroringModel:(id)a4
+- (void)markRecordingsAsNeedingExportAndCheckProgress:(id)progress mirroringModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  progressCopy = progress;
+  modelCopy = model;
+  if ([progressCopy count])
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10000EFC0;
     v8[3] = &unk_1000556A0;
-    v9 = v6;
-    v10 = v7;
-    v11 = self;
+    v9 = progressCopy;
+    v10 = modelCopy;
+    selfCopy = self;
     [v10 performBlockAndWait:v8];
   }
 }
 
-- (void)markRecordingAsNeedingExport:(id)a3 model:(id)a4
+- (void)markRecordingAsNeedingExport:(id)export model:(id)model
 {
-  v6 = a3;
+  exportCopy = export;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000F1B0;
   v9[3] = &unk_1000556A0;
-  v10 = a4;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
-  v8 = v10;
+  modelCopy = model;
+  v11 = exportCopy;
+  selfCopy = self;
+  v7 = exportCopy;
+  v8 = modelCopy;
   [v8 performBlockAndWait:v9];
 }
 
-- (void)setPersistentStore:(id)a3
+- (void)setPersistentStore:(id)store
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  storeCopy = store;
+  v5 = storeCopy;
+  if (storeCopy)
   {
-    v6 = [(NSPersistentStore *)v4 rc_mirroringDelegate];
+    rc_mirroringDelegate = [(NSPersistentStore *)storeCopy rc_mirroringDelegate];
     v7 = +[NSNotificationCenter defaultCenter];
-    [v7 addObserver:self selector:"_handleCloudKitContainerEventChangedNotification:" name:NSPersistentCloudKitContainerEventChangedNotification object:v6];
+    [v7 addObserver:self selector:"_handleCloudKitContainerEventChangedNotification:" name:NSPersistentCloudKitContainerEventChangedNotification object:rc_mirroringDelegate];
   }
 
   else
   {
-    v6 = [(NSPersistentStore *)self->_persistentStore rc_mirroringDelegate];
+    rc_mirroringDelegate = [(NSPersistentStore *)self->_persistentStore rc_mirroringDelegate];
     v7 = +[NSNotificationCenter defaultCenter];
-    [v7 removeObserver:self name:NSPersistentCloudKitContainerEventChangedNotification object:v6];
+    [v7 removeObserver:self name:NSPersistentCloudKitContainerEventChangedNotification object:rc_mirroringDelegate];
   }
 
   persistentStore = self->_persistentStore;
   self->_persistentStore = v5;
   v9 = v5;
 
-  v10 = [(NSPersistentStore *)v9 persistentStoreCoordinator];
-  v11 = [v10 managedObjectModel];
-  v12 = [v11 entitiesByName];
-  v22 = [v12 objectForKeyedSubscript:RCCloudRecording_EntityName];
+  persistentStoreCoordinator = [(NSPersistentStore *)v9 persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+  entitiesByName = [managedObjectModel entitiesByName];
+  v22 = [entitiesByName objectForKeyedSubscript:RCCloudRecording_EntityName];
 
-  v13 = [v22 attributesByName];
-  v14 = [v13 objectForKeyedSubscript:RCCloudRecording_AudioFuture];
+  attributesByName = [v22 attributesByName];
+  v14 = [attributesByName objectForKeyedSubscript:RCCloudRecording_AudioFuture];
   audioFutureDescription = self->_audioFutureDescription;
   self->_audioFutureDescription = v14;
 
-  v16 = [v22 attributesByName];
-  v17 = [v16 objectForKeyedSubscript:RCCloudRecording_MtAudioFuture];
+  attributesByName2 = [v22 attributesByName];
+  v17 = [attributesByName2 objectForKeyedSubscript:RCCloudRecording_MtAudioFuture];
   mtAudioFutureDescription = self->_mtAudioFutureDescription;
   self->_mtAudioFutureDescription = v17;
 
-  v19 = [v22 attributesByName];
-  v20 = [v19 objectForKeyedSubscript:RCCloudRecording_VersionedAudioFuture];
+  attributesByName3 = [v22 attributesByName];
+  v20 = [attributesByName3 objectForKeyedSubscript:RCCloudRecording_VersionedAudioFuture];
   versionedAudioFutureDescription = self->_versionedAudioFutureDescription;
   self->_versionedAudioFutureDescription = v20;
 }
 
-- (void)_handleCloudKitContainerEventChangedNotification:(id)a3
+- (void)_handleCloudKitContainerEventChangedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NSPersistentCloudKitContainerEventUserInfoKey];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NSPersistentCloudKitContainerEventUserInfoKey];
 
   if (v5)
   {
@@ -136,93 +136,93 @@
   }
 }
 
-- (void)_handleCloudKitContainerEvent:(id)a3
+- (void)_handleCloudKitContainerEvent:(id)event
 {
-  v6 = a3;
-  if ([v6 type] == 2)
+  eventCopy = event;
+  if ([eventCopy type] == 2)
   {
-    if ([v6 succeeded])
+    if ([eventCopy succeeded])
     {
-      v4 = [v6 endDate];
+      endDate = [eventCopy endDate];
 
-      if (v4)
+      if (endDate)
       {
-        v5 = [(RCAudioFutureSyncManager *)self _newBackgroundMirroringModel];
-        [(RCAudioFutureSyncManager *)self _checkProgressOfExportingRecordings:v5];
+        _newBackgroundMirroringModel = [(RCAudioFutureSyncManager *)self _newBackgroundMirroringModel];
+        [(RCAudioFutureSyncManager *)self _checkProgressOfExportingRecordings:_newBackgroundMirroringModel];
       }
     }
   }
 }
 
-- (void)_checkProgressOfExportingRecordings:(id)a3
+- (void)_checkProgressOfExportingRecordings:(id)recordings
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000F5CC;
   v5[3] = &unk_1000556C8;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  recordingsCopy = recordings;
+  selfCopy = self;
+  v4 = recordingsCopy;
   [v4 performBlockAndWait:v5];
 }
 
-- (void)_fetchProgressAndUpdateIfNeeded:(id)a3 mirroringModel:(id)a4
+- (void)_fetchProgressAndUpdateIfNeeded:(id)needed mirroringModel:(id)model
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000F6C8;
   v6[3] = &unk_1000559A8;
   v6[4] = self;
-  v7 = a4;
-  v5 = v7;
-  [v5 fetchExportProgress:a3 forStore:0 completionHandler:v6];
+  modelCopy = model;
+  v5 = modelCopy;
+  [v5 fetchExportProgress:needed forStore:0 completionHandler:v6];
 }
 
-- (void)_processExportProgressResult:(id)a3 mirroringModel:(id)a4
+- (void)_processExportProgressResult:(id)result mirroringModel:(id)model
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000F834;
   v8[3] = &unk_1000556A0;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  resultCopy = result;
+  selfCopy = self;
+  modelCopy = model;
+  v6 = modelCopy;
+  v7 = resultCopy;
   [v6 performBlockAndWait:v8];
 }
 
-- (void)_checkProgressAndUpdateIfNeeded:(id)a3 latestToken:(id)a4 model:(id)a5
+- (void)_checkProgressAndUpdateIfNeeded:(id)needed latestToken:(id)token model:(id)model
 {
-  v13 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(RCAudioFutureSyncManager *)self _mostRecentAudioFutureTransactionForObjectID:v13 model:v8];
-  v11 = [v8 transactionForToken:v9 forStore:0];
+  neededCopy = needed;
+  modelCopy = model;
+  tokenCopy = token;
+  v10 = [(RCAudioFutureSyncManager *)self _mostRecentAudioFutureTransactionForObjectID:neededCopy model:modelCopy];
+  v11 = [modelCopy transactionForToken:tokenCopy forStore:0];
 
   if (v11)
   {
     if (v10)
     {
-      v12 = [v11 transactionNumber];
-      if (v12 >= [v10 transactionNumber])
+      transactionNumber = [v11 transactionNumber];
+      if (transactionNumber >= [v10 transactionNumber])
       {
-        [(RCAudioFutureSyncManager *)self _updateRecordingOnAssetExportCompletion:v13 model:v8];
+        [(RCAudioFutureSyncManager *)self _updateRecordingOnAssetExportCompletion:neededCopy model:modelCopy];
       }
     }
   }
 }
 
-- (void)_updateRecordingOnAssetExportCompletion:(id)a3 model:(id)a4
+- (void)_updateRecordingOnAssetExportCompletion:(id)completion model:(id)model
 {
-  v5 = a4;
-  v6 = [v5 recordingWithID:a3];
+  modelCopy = model;
+  v6 = [modelCopy recordingWithID:completion];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 syncedAudioFuture];
+    syncedAudioFuture = [v6 syncedAudioFuture];
 
-    if (v8)
+    if (syncedAudioFuture)
     {
       [v7 setAudioFutureNeedsExport:0];
       v9 = [v7 url];
@@ -237,18 +237,18 @@
         {
 LABEL_8:
 
-          [v5 saveIfNecessary];
+          [modelCopy saveIfNecessary];
           goto LABEL_9;
         }
 
-        v14 = [v7 uuid];
-        v15 = [v9 lastPathComponent];
+        uuid = [v7 uuid];
+        lastPathComponent = [v9 lastPathComponent];
         *buf = 136315650;
         v18 = "[RCAudioFutureSyncManager _updateRecordingOnAssetExportCompletion:model:]";
         v19 = 2112;
-        v20 = v14;
+        v20 = uuid;
         v21 = 2112;
-        v22 = v15;
+        v22 = lastPathComponent;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s -- Marked recording as exported, uniqueID = %@, path = %@", buf, 0x20u);
       }
 
@@ -259,14 +259,14 @@ LABEL_8:
           goto LABEL_8;
         }
 
-        v14 = [v7 uuid];
-        v15 = [v9 lastPathComponent];
+        uuid = [v7 uuid];
+        lastPathComponent = [v9 lastPathComponent];
         *buf = 136315906;
         v18 = "[RCAudioFutureSyncManager _updateRecordingOnAssetExportCompletion:model:]";
         v19 = 2112;
-        v20 = v14;
+        v20 = uuid;
         v21 = 2112;
-        v22 = v15;
+        v22 = lastPathComponent;
         v23 = 2112;
         v24 = v11;
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s -- ERROR: uniqueID = %@, path = %@, mark as exported error = %@", buf, 0x2Au);
@@ -279,9 +279,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)_mostRecentAudioFutureTransactionForObjectID:(id)a3 model:(id)a4
+- (id)_mostRecentAudioFutureTransactionForObjectID:(id)d model:(id)model
 {
-  v5 = [a4 transactionsAndChangesForObjectID:a3];
+  v5 = [model transactionsAndChangesForObjectID:d];
   v6 = [v5 count];
   while (--v6 >= 0)
   {
@@ -301,14 +301,14 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)_transactionHasAudioFutureChange:(id)a3
+- (BOOL)_transactionHasAudioFutureChange:(id)change
 {
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = [a3 changes];
-  v4 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  changes = [change changes];
+  v4 = [changes countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v4)
   {
     v5 = v4;
@@ -320,7 +320,7 @@ LABEL_6:
       {
         if (*v26 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(changes);
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
@@ -335,8 +335,8 @@ LABEL_19:
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v9 = [v8 updatedProperties];
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        updatedProperties = [v8 updatedProperties];
+        v10 = [updatedProperties countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v10)
         {
           v11 = v10;
@@ -347,13 +347,13 @@ LABEL_19:
             {
               if (*v22 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(updatedProperties);
               }
 
               v14 = *(*(&v21 + 1) + 8 * j);
               v15 = RCAudioFuturePropertyNames();
-              v16 = [v14 name];
-              v17 = [v15 containsObject:v16];
+              name = [v14 name];
+              v17 = [v15 containsObject:name];
 
               if (v17)
               {
@@ -362,7 +362,7 @@ LABEL_19:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v11 = [updatedProperties countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v11)
             {
               continue;
@@ -375,7 +375,7 @@ LABEL_19:
         v6 = v20;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v5 = [changes countByEnumeratingWithState:&v25 objects:v30 count:16];
       v18 = 0;
       if (v5)
       {
@@ -398,90 +398,90 @@ LABEL_21:
 
 - (id)_newBackgroundMirroringModel
 {
-  v2 = [(RCAudioFutureSyncManager *)self delegate];
-  v3 = [v2 newBackgroundMirroringModel];
+  delegate = [(RCAudioFutureSyncManager *)self delegate];
+  newBackgroundMirroringModel = [delegate newBackgroundMirroringModel];
 
-  return v3;
+  return newBackgroundMirroringModel;
 }
 
-- (void)importAudioFuture:(id)a3 mirroringModel:(id)a4
+- (void)importAudioFuture:(id)future mirroringModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 recordingWithID:v6];
+  futureCopy = future;
+  modelCopy = model;
+  v8 = [modelCopy recordingWithID:futureCopy];
   v9 = v8;
   if (v8)
   {
     if ([v8 isContentBeingModified])
     {
-      v10 = OSLogForCategory();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      syncedAudioFuture = OSLogForCategory();
+      if (os_log_type_enabled(syncedAudioFuture, OS_LOG_TYPE_DEFAULT))
       {
         v11 = [v9 url];
         *buf = 136315394;
         v17 = "[RCAudioFutureSyncManager importAudioFuture:mirroringModel:]";
         v18 = 2112;
         v19 = v11;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s -- Ignoring iCloud change for actively modified recording at URL:  %@", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, syncedAudioFuture, OS_LOG_TYPE_DEFAULT, "%s -- Ignoring iCloud change for actively modified recording at URL:  %@", buf, 0x16u);
       }
     }
 
     else
     {
-      v10 = [v9 syncedAudioFuture];
-      if (v10 && ![v9 localAssetIsCurrent])
+      syncedAudioFuture = [v9 syncedAudioFuture];
+      if (syncedAudioFuture && ![v9 localAssetIsCurrent])
       {
-        v12 = [v10 fileURL];
-        v13 = v12;
-        if (v12 && [v12 checkResourceIsReachableAndReturnError:0] && (v15 = 0, objc_msgSend(v9, "synchronizeWithExistingAudioFuture:", &v15)))
+        fileURL = [syncedAudioFuture fileURL];
+        v13 = fileURL;
+        if (fileURL && [fileURL checkResourceIsReachableAndReturnError:0] && (v15 = 0, objc_msgSend(v9, "synchronizeWithExistingAudioFuture:", &v15)))
         {
-          [v7 saveIfNecessary];
+          [modelCopy saveIfNecessary];
         }
 
         else if ([v9 audioFutureVersionIsCompatible])
         {
           [v9 setAudioFutureNeedsDownload:1];
-          [v7 saveIfNecessary];
+          [modelCopy saveIfNecessary];
           v14[0] = _NSConcreteStackBlock;
           v14[1] = 3221225472;
           v14[2] = sub_100010130;
           v14[3] = &unk_100055A20;
           v14[4] = self;
-          [(RCAudioFutureSyncManager *)self __fetchAudioFuture:v6 completionBlock:v14];
+          [(RCAudioFutureSyncManager *)self __fetchAudioFuture:futureCopy completionBlock:v14];
         }
       }
 
       else if ([v9 audioFutureNeedsDownload])
       {
         [v9 setAudioFutureNeedsDownload:0];
-        [v7 saveIfNecessary];
+        [modelCopy saveIfNecessary];
       }
     }
   }
 
   else
   {
-    v10 = OSLogForCategory();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    syncedAudioFuture = OSLogForCategory();
+    if (os_log_type_enabled(syncedAudioFuture, OS_LOG_TYPE_ERROR))
     {
       sub_1000358E4();
     }
   }
 }
 
-- (BOOL)_shouldRetryFutureDownloadForError:(id)a3
+- (BOOL)_shouldRetryFutureDownloadForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if (![v4 isEqualToString:CKErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:CKErrorDomain])
   {
 
     goto LABEL_5;
   }
 
-  v5 = [v3 code];
+  code = [errorCopy code];
 
-  if (v5 != 11)
+  if (code != 11)
   {
 LABEL_5:
     v6 = 1;
@@ -494,9 +494,9 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)___pushAudioFutureIntoBatch:(id)a3
+- (BOOL)___pushAudioFutureIntoBatch:(id)batch
 {
-  v4 = a3;
+  batchCopy = batch;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -507,9 +507,9 @@ LABEL_6:
   block[2] = sub_1000108F4;
   block[3] = &unk_100055A48;
   block[4] = self;
-  v9 = v4;
+  v9 = batchCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = batchCopy;
   dispatch_sync(serialQueue, block);
   LOBYTE(serialQueue) = *(v12 + 24);
 
@@ -539,9 +539,9 @@ LABEL_6:
   return v3;
 }
 
-- (void)___fetchNextAudioFutureBatch:(id)a3
+- (void)___fetchNextAudioFutureBatch:(id)batch
 {
-  v4 = a3;
+  batchCopy = batch;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -556,7 +556,7 @@ LABEL_6:
   dispatch_sync(serialQueue, v6);
   if (*(v8 + 24) == 1)
   {
-    [(RCAudioFutureSyncManager *)self ___fetchAudioFuturesWithCompletionBlock:v4];
+    [(RCAudioFutureSyncManager *)self ___fetchAudioFuturesWithCompletionBlock:batchCopy];
   }
 
   _Block_object_dispose(&v7, 8);
@@ -598,39 +598,39 @@ LABEL_6:
   return v11;
 }
 
-- (void)___fetchAudioFuturesWithCompletionBlock:(id)a3
+- (void)___fetchAudioFuturesWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   scheduler = self->_scheduler;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100010E7C;
   v7[3] = &unk_100055AE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(RCBlockScheduler *)scheduler scheduleBlock:v7];
 }
 
-- (void)__fetchAudioFuture:(id)a3 completionBlock:(id)a4
+- (void)__fetchAudioFuture:(id)future completionBlock:(id)block
 {
-  v6 = a4;
-  if ([(RCAudioFutureSyncManager *)self ___pushAudioFutureIntoBatch:a3])
+  blockCopy = block;
+  if ([(RCAudioFutureSyncManager *)self ___pushAudioFutureIntoBatch:future])
   {
-    [(RCAudioFutureSyncManager *)self ___fetchAudioFuturesWithCompletionBlock:v6];
+    [(RCAudioFutureSyncManager *)self ___fetchAudioFuturesWithCompletionBlock:blockCopy];
   }
 }
 
-- (void)_validateCorrectStore:(id)a3
+- (void)_validateCorrectStore:(id)store
 {
-  v4 = a3;
-  v5 = v4;
+  storeCopy = store;
+  v5 = storeCopy;
   if (self->_persistentStore)
   {
-    v6 = [v4 persistentStore];
-    v7 = [v6 identifier];
-    v8 = [(NSPersistentStore *)self->_persistentStore identifier];
-    v9 = [v7 isEqual:v8];
+    persistentStore = [storeCopy persistentStore];
+    identifier = [persistentStore identifier];
+    identifier2 = [(NSPersistentStore *)self->_persistentStore identifier];
+    v9 = [identifier isEqual:identifier2];
 
     if ((v9 & 1) == 0)
     {
@@ -643,24 +643,24 @@ LABEL_6:
   }
 }
 
-- (void)_performOnSchedulerQueue:(id)a3
+- (void)_performOnSchedulerQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
   v10[3] = sub_100001DBC;
   v10[4] = sub_100010AFC;
   v11 = os_transaction_create();
-  v5 = [(RCBlockScheduler *)self->_scheduler queue];
+  queue = [(RCBlockScheduler *)self->_scheduler queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011494;
   v7[3] = &unk_100055B38;
-  v8 = v4;
+  v8 = queueCopy;
   v9 = v10;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v6 = queueCopy;
+  dispatch_async(queue, v7);
 
   _Block_object_dispose(v10, 8);
 }

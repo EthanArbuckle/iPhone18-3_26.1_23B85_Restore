@@ -1,12 +1,12 @@
 @interface WADeploymentAnalyzer
-- (BOOL)updateHomeNetworksForDeploymentIssuesWithReason:(id)a3 withError:(id *)a4;
-- (BOOL)updateNetworksForCoverageIssues:(id)a3 withReason:(id)a4 withError:(id *)a5;
+- (BOOL)updateHomeNetworksForDeploymentIssuesWithReason:(id)reason withError:(id *)error;
+- (BOOL)updateNetworksForCoverageIssues:(id)issues withReason:(id)reason withError:(id *)error;
 - (WADeploymentAnalyzer)init;
-- (WADeploymentAnalyzer)initWithDefaults:(id)a3;
-- (WADeploymentAnalyzer)initWithPersistentContainer:(id)a3;
-- (id)_fetchUsageForNetworks:(id)a3 timeSpan:(unint64_t)a4 withError:(id *)a5;
-- (signed)_analyzeResultsForCongestion:(id)a3 withMetric:(id)a4;
-- (signed)_analyzeResultsForCoverage:(id)a3 withMetric:(id)a4;
+- (WADeploymentAnalyzer)initWithDefaults:(id)defaults;
+- (WADeploymentAnalyzer)initWithPersistentContainer:(id)container;
+- (id)_fetchUsageForNetworks:(id)networks timeSpan:(unint64_t)span withError:(id *)error;
+- (signed)_analyzeResultsForCongestion:(id)congestion withMetric:(id)metric;
+- (signed)_analyzeResultsForCoverage:(id)coverage withMetric:(id)metric;
 - (unint64_t)_fetchIneligibleNetworkCount;
 @end
 
@@ -20,47 +20,47 @@
   return v4;
 }
 
-- (WADeploymentAnalyzer)initWithDefaults:(id)a3
+- (WADeploymentAnalyzer)initWithDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = WADeploymentAnalyzer;
   v6 = [(WADeploymentAnalyzer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaults, a3);
+    objc_storeStrong(&v6->_defaults, defaults);
   }
 
   return v7;
 }
 
-- (WADeploymentAnalyzer)initWithPersistentContainer:(id)a3
+- (WADeploymentAnalyzer)initWithPersistentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = [(WADeploymentAnalyzer *)self init];
   persistentContainer = v5->_persistentContainer;
-  v5->_persistentContainer = v4;
+  v5->_persistentContainer = containerCopy;
 
   return v5;
 }
 
-- (BOOL)updateHomeNetworksForDeploymentIssuesWithReason:(id)a3 withError:(id *)a4
+- (BOOL)updateHomeNetworksForDeploymentIssuesWithReason:(id)reason withError:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(WADeploymentAnalyzer *)self persistentContainer];
+  reasonCopy = reason;
+  persistentContainer = [(WADeploymentAnalyzer *)self persistentContainer];
 
-  if (v7)
+  if (persistentContainer)
   {
-    v8 = [(WADeploymentAnalyzer *)self persistentContainer];
+    persistentContainer2 = [(WADeploymentAnalyzer *)self persistentContainer];
     v9 = +[NetworkMO entity];
     v10 = [NetworkMO predicateForNetworkWithTrait:3];
-    v11 = [v8 fetchObjects:v9 withPredicate:v10 withSorting:0 withPrefetchedProperties:&unk_1F483E488 withLimit:0 withError:a4];
+    v11 = [persistentContainer2 fetchObjects:v9 withPredicate:v10 withSorting:0 withPrefetchedProperties:&unk_1F483E488 withLimit:0 withError:error];
 
-    if (a4)
+    if (error)
     {
-      v12 = *a4 == 0;
+      v12 = *error == 0;
     }
 
     else
@@ -70,7 +70,7 @@
 
     if ([v11 count])
     {
-      v12 = [(WADeploymentAnalyzer *)self updateNetworksForCoverageIssues:v11 withReason:v6 withError:a4];
+      v12 = [(WADeploymentAnalyzer *)self updateNetworksForCoverageIssues:v11 withReason:reasonCopy withError:error];
     }
 
     else
@@ -79,9 +79,9 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = &stru_1F481C4A0;
-        if (a4 && *a4)
+        if (error && *error)
         {
-          v16 = *a4;
+          v16 = *error;
         }
 
         v17 = 136446722;
@@ -114,12 +114,12 @@
   return v12;
 }
 
-- (BOOL)updateNetworksForCoverageIssues:(id)a3 withReason:(id)a4 withError:(id *)a5
+- (BOOL)updateNetworksForCoverageIssues:(id)issues withReason:(id)reason withError:(id *)error
 {
   v73 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v50 = a4;
-  v8 = [v7 valueForKey:@"ssid"];
+  issuesCopy = issues;
+  reasonCopy = reason;
+  v8 = [issuesCopy valueForKey:@"ssid"];
   v9 = objc_alloc_init(WADeploymentIssuesMetric);
   v10 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -133,12 +133,12 @@
     _os_log_impl(&dword_1C8460000, v10, OS_LOG_TYPE_DEBUG, "%{public}s::%d:%@", buf, 0x1Cu);
   }
 
-  -[WADeploymentIssuesMetric setEligibleNetworkCount:](v9, "setEligibleNetworkCount:", [v7 count]);
+  -[WADeploymentIssuesMetric setEligibleNetworkCount:](v9, "setEligibleNetworkCount:", [issuesCopy count]);
   [(WADeploymentIssuesMetric *)v9 setIneligibleNetworkCount:[(WADeploymentAnalyzer *)self _fetchIneligibleNetworkCount]];
   v63 = 0;
-  v53 = [(WADeploymentAnalyzer *)self _fetchUsageForNetworks:v7 timeSpan:0 withError:&v63];
+  v53 = [(WADeploymentAnalyzer *)self _fetchUsageForNetworks:issuesCopy timeSpan:0 withError:&v63];
   v11 = v63;
-  v56 = v7;
+  v56 = issuesCopy;
   v49 = v8;
   if (v11)
   {
@@ -149,7 +149,7 @@
   else
   {
     v62 = 0;
-    v55 = [(WADeploymentAnalyzer *)self _fetchUsageForNetworks:v7 timeSpan:1 withError:&v62];
+    v55 = [(WADeploymentAnalyzer *)self _fetchUsageForNetworks:issuesCopy timeSpan:1 withError:&v62];
     v12 = v62;
     if (!v12)
     {
@@ -200,9 +200,9 @@
 
 LABEL_17:
             v20 = [v56 filteredArrayUsingPredicate:v15];
-            v22 = [v20 firstObject];
+            firstObject = [v20 firstObject];
             v23 = [v55 filteredArrayUsingPredicate:v15];
-            [(WADeploymentAnalyzer *)self _updateCoverageIfNeededForNetwork:v22 newCoverage:v19 pastWeekUsage:v23];
+            [(WADeploymentAnalyzer *)self _updateCoverageIfNeededForNetwork:firstObject newCoverage:v19 pastWeekUsage:v23];
 
             goto LABEL_18;
           }
@@ -237,9 +237,9 @@ LABEL_18:
 
 LABEL_23:
             v26 = [v56 filteredArrayUsingPredicate:v15];
-            v28 = [v26 firstObject];
+            firstObject2 = [v26 firstObject];
             v29 = [v55 filteredArrayUsingPredicate:v15];
-            [(WADeploymentAnalyzer *)self _updateCongestionIfNeededForNetwork:v28 newCongestion:v25 pastWeekUsage:v29];
+            [(WADeploymentAnalyzer *)self _updateCongestionIfNeededForNetwork:firstObject2 newCongestion:v25 pastWeekUsage:v29];
 
             goto LABEL_24;
           }
@@ -281,45 +281,45 @@ LABEL_26:
   }
 
 LABEL_27:
-  if (a5)
+  if (error)
   {
     v31 = v30;
-    *a5 = v30;
+    *error = v30;
   }
 
   v32 = objc_autoreleasePoolPush();
-  v33 = [(WADeploymentAnalyzer *)self persistentContainer];
+  persistentContainer = [(WADeploymentAnalyzer *)self persistentContainer];
   v57 = v30;
-  v34 = [v33 mostRecentPolicy:@"WADeploymentAnalyzer updateNetworksForCoverageIssues:" withError:&v57];
+  v34 = [persistentContainer mostRecentPolicy:@"WADeploymentAnalyzer updateNetworksForCoverageIssues:" withError:&v57];
   v35 = v57;
 
-  v36 = [v34 date];
+  date = [v34 date];
   persistentContainer = self->_persistentContainer;
   v38 = +[PoliciesMO entity];
-  v39 = [MEMORY[0x1E695DF00] date];
-  v40 = [(WAPersistentContainer *)persistentContainer newDatedEventObjectFor:v38 withDate:v39];
+  date2 = [MEMORY[0x1E695DF00] date];
+  v40 = [(WAPersistentContainer *)persistentContainer newDatedEventObjectFor:v38 withDate:date2];
 
   [v40 setPolicyType:@"WADeploymentAnalyzer updateNetworksForCoverageIssues:"];
-  [v40 setReasonForRunning:v50];
+  [v40 setReasonForRunning:reasonCopy];
   [v40 setOutcome:v35 == 0];
   v41 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
   {
-    v42 = [v40 policyType];
-    v43 = [v40 date];
+    policyType = [v40 policyType];
+    date3 = [v40 date];
     *buf = 136446978;
     v65 = "[WADeploymentAnalyzer updateNetworksForCoverageIssues:withReason:withError:]";
     v66 = 1024;
     v67 = 141;
     v68 = 2112;
-    v69 = v42;
+    v69 = policyType;
     v70 = 2112;
-    v71 = v43;
+    v71 = date3;
     _os_log_impl(&dword_1C8460000, v41, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Stored Policy (%@) run at (%@)", buf, 0x26u);
   }
 
-  v44 = [v40 date];
-  [v44 timeIntervalSinceDate:v36];
+  date4 = [v40 date];
+  [date4 timeIntervalSinceDate:date];
   [(WADeploymentIssuesMetric *)v9 setSecondsSinceLastRun:v45];
 
   objc_autoreleasePoolPop(v32);
@@ -329,9 +329,9 @@ LABEL_27:
   return v35 == 0;
 }
 
-- (id)_fetchUsageForNetworks:(id)a3 timeSpan:(unint64_t)a4 withError:(id *)a5
+- (id)_fetchUsageForNetworks:(id)networks timeSpan:(unint64_t)span withError:(id *)error
 {
-  v8 = a3;
+  networksCopy = networks;
   v31 = 0;
   v9 = [WADeviceAnalyticsClient availableDimensionsFor:2 withError:&v31];
   v10 = v31;
@@ -339,7 +339,7 @@ LABEL_27:
   {
     v11 = [v9 objectForKeyedSubscript:@"ssid"];
     v12 = MEMORY[0x1E696AE18];
-    v13 = [v8 valueForKey:@"ssid"];
+    v13 = [networksCopy valueForKey:@"ssid"];
     v14 = [v12 predicateWithFormat:@"ssid IN %@", v13];
     v30 = 0;
     [v11 useDimensionAs:6 withPredicate:v14 withError:&v30];
@@ -357,17 +357,17 @@ LABEL_27:
     v19 = [v9 objectForKeyedSubscript:@"ccaTotal_lt"];
     [v19 useDimensionAsGroupBy];
 
-    v20 = [v9 allValues];
+    allValues = [v9 allValues];
     v29 = v15;
-    v21 = [UsageMO referenceDateFor:a4 timeSpan:2 withError:&v29];
+    v21 = [UsageMO referenceDateFor:span timeSpan:2 withError:&v29];
     v22 = v29;
 
-    v23 = [(WADeploymentAnalyzer *)self persistentContainer];
+    persistentContainer = [(WADeploymentAnalyzer *)self persistentContainer];
     v28 = v22;
-    v24 = [UsageMO usageOf:v20 timeSpan:2 around:v21 onContainer:v23 withError:&v28];
+    v24 = [UsageMO usageOf:allValues timeSpan:2 around:v21 onContainer:persistentContainer withError:&v28];
     v25 = v28;
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -377,11 +377,11 @@ LABEL_27:
 
   v25 = v10;
   v24 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_3:
     v26 = v25;
-    *a5 = v25;
+    *error = v25;
   }
 
 LABEL_4:
@@ -391,18 +391,18 @@ LABEL_4:
 
 - (unint64_t)_fetchIneligibleNetworkCount
 {
-  v2 = [(WADeploymentAnalyzer *)self persistentContainer];
+  persistentContainer = [(WADeploymentAnalyzer *)self persistentContainer];
   v3 = +[NetworkMO entity];
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"isHome == NO"];
-  v5 = [v2 countObjects:v3 withPredicate:v4 withError:0];
+  v5 = [persistentContainer countObjects:v3 withPredicate:v4 withError:0];
 
   return v5;
 }
 
-- (signed)_analyzeResultsForCoverage:(id)a3 withMetric:(id)a4
+- (signed)_analyzeResultsForCoverage:(id)coverage withMetric:(id)metric
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coverageCopy = coverage;
   v39 = 0;
   v34 = [WADeviceAnalyticsClient aggregateNameFor:2 withError:&v39];
   v6 = v39;
@@ -423,18 +423,18 @@ LABEL_4:
 
   else
   {
-    v31 = v5;
+    v31 = coverageCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = v5;
+    obj = coverageCopy;
     v7 = [obj countByEnumeratingWithState:&v35 objects:v56 count:16];
     if (v7)
     {
       v8 = v7;
       v9 = 0;
-      v32 = 0;
+      unsignedIntegerValue = 0;
       v10 = *v36;
       do
       {
@@ -447,14 +447,14 @@ LABEL_4:
 
           v12 = *(*(&v35 + 1) + 8 * i);
           v13 = [v12 objectForKeyedSubscript:@"rssi_lt"];
-          v14 = [v13 integerValue];
-          v15 = [(WADeploymentAnalyzer *)self defaults];
-          v16 = [v15 poorCoverageRSSI];
+          integerValue = [v13 integerValue];
+          defaults = [(WADeploymentAnalyzer *)self defaults];
+          poorCoverageRSSI = [defaults poorCoverageRSSI];
 
-          if (v14 <= v16)
+          if (integerValue <= poorCoverageRSSI)
           {
             v17 = [v12 objectForKeyedSubscript:v34];
-            v32 = [v17 unsignedIntegerValue];
+            unsignedIntegerValue = [v17 unsignedIntegerValue];
           }
 
           v18 = [v12 objectForKeyedSubscript:v34];
@@ -470,20 +470,20 @@ LABEL_4:
     else
     {
       v9 = 0;
-      v32 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v19 = [(WADeploymentAnalyzer *)self defaults];
-    v20 = [v19 poorCoverageMinimumStay];
+    defaults2 = [(WADeploymentAnalyzer *)self defaults];
+    poorCoverageMinimumStay = [defaults2 poorCoverageMinimumStay];
 
-    if (v9 < v20)
+    if (v9 < poorCoverageMinimumStay)
     {
       v25 = WALogCategoryDefaultHandle();
       v6 = 0;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [(WADeploymentAnalyzer *)self defaults];
-        v30 = [v29 poorCoverageMinimumStay];
+        defaults3 = [(WADeploymentAnalyzer *)self defaults];
+        poorCoverageMinimumStay2 = [defaults3 poorCoverageMinimumStay];
         *buf = 136447234;
         v41 = "[WADeploymentAnalyzer _analyzeResultsForCoverage:withMetric:]";
         v42 = 1024;
@@ -493,19 +493,19 @@ LABEL_4:
         v46 = 2048;
         v47 = v9;
         v48 = 2048;
-        v49 = v30;
+        v49 = poorCoverageMinimumStay2;
         _os_log_impl(&dword_1C8460000, v25, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%s: totalAssociation (%lu) did not meet min requirements (%lu)", buf, 0x30u);
       }
 
       LOWORD(v24) = 0;
-      v5 = v31;
+      coverageCopy = v31;
     }
 
     else
     {
       if (v9)
       {
-        v21 = v32 / v9;
+        v21 = unsignedIntegerValue / v9;
       }
 
       else
@@ -513,8 +513,8 @@ LABEL_4:
         v21 = 0.0;
       }
 
-      v22 = [(WADeploymentAnalyzer *)self defaults];
-      [v22 poorCoverageThreshold];
+      defaults4 = [(WADeploymentAnalyzer *)self defaults];
+      [defaults4 poorCoverageThreshold];
       if (v21 < v23)
       {
         v24 = 1;
@@ -536,7 +536,7 @@ LABEL_4:
         v44 = 2080;
         v45 = "[WADeploymentAnalyzer _analyzeResultsForCoverage:withMetric:]";
         v46 = 2048;
-        v47 = v32;
+        v47 = unsignedIntegerValue;
         v48 = 2048;
         v49 = v9;
         v50 = 2048;
@@ -549,7 +549,7 @@ LABEL_4:
       }
 
       v6 = 0;
-      v5 = v31;
+      coverageCopy = v31;
     }
   }
 
@@ -557,31 +557,31 @@ LABEL_4:
   return v24;
 }
 
-- (signed)_analyzeResultsForCongestion:(id)a3 withMetric:(id)a4
+- (signed)_analyzeResultsForCongestion:(id)congestion withMetric:(id)metric
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  congestionCopy = congestion;
   v43 = 0;
   v6 = [WADeviceAnalyticsClient aggregateNameFor:2 withError:&v43];
   v7 = v43;
   if (!v7)
   {
-    v33 = v5;
+    v33 = congestionCopy;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v5;
-    v36 = self;
+    obj = congestionCopy;
+    selfCopy = self;
     v37 = [obj countByEnumeratingWithState:&v39 objects:v60 count:16];
     v8 = 0;
     if (!v37)
     {
-      v34 = 0;
+      unsignedIntegerValue2 = 0;
       goto LABEL_16;
     }
 
-    v34 = 0;
+    unsignedIntegerValue2 = 0;
     v9 = *v40;
     while (1)
     {
@@ -595,23 +595,23 @@ LABEL_4:
 
         v11 = *(*(&v39 + 1) + 8 * i);
         v12 = [v11 objectForKeyedSubscript:@"rssi_lt"];
-        v13 = [v12 integerValue];
-        v14 = [(WADeploymentAnalyzer *)self defaults];
-        if (v13 <= [v14 highCongestionRSSIThreshold])
+        integerValue = [v12 integerValue];
+        defaults = [(WADeploymentAnalyzer *)self defaults];
+        if (integerValue <= [defaults highCongestionRSSIThreshold])
         {
           v16 = [v11 objectForKeyedSubscript:@"ccaTotal_gt"];
-          v17 = [v16 unsignedIntegerValue];
-          v18 = [(WADeploymentAnalyzer *)self defaults];
-          v19 = [v18 highCongestionCCAThreshold];
+          unsignedIntegerValue = [v16 unsignedIntegerValue];
+          defaults2 = [(WADeploymentAnalyzer *)self defaults];
+          highCongestionCCAThreshold = [defaults2 highCongestionCCAThreshold];
 
           v15 = v38;
-          if (v17 > v19)
+          if (unsignedIntegerValue > highCongestionCCAThreshold)
           {
             goto LABEL_12;
           }
 
           v12 = [v11 objectForKeyedSubscript:v6];
-          v34 = [v12 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v12 unsignedIntegerValue];
         }
 
         else
@@ -624,7 +624,7 @@ LABEL_12:
         v20 = [v11 objectForKeyedSubscript:v6];
         v8 = [v20 unsignedIntegerValue] + v15;
 
-        self = v36;
+        self = selfCopy;
       }
 
       v37 = [obj countByEnumeratingWithState:&v39 objects:v60 count:16];
@@ -632,16 +632,16 @@ LABEL_12:
       {
 LABEL_16:
 
-        v21 = [(WADeploymentAnalyzer *)self defaults];
-        v22 = [v21 highCongestionMinimumStay];
+        defaults3 = [(WADeploymentAnalyzer *)self defaults];
+        highCongestionMinimumStay = [defaults3 highCongestionMinimumStay];
 
-        if (v8 < v22)
+        if (v8 < highCongestionMinimumStay)
         {
           v27 = WALogCategoryDefaultHandle();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
-            v31 = [(WADeploymentAnalyzer *)v36 defaults];
-            v32 = [v31 highCongestionMinimumStay];
+            defaults4 = [(WADeploymentAnalyzer *)selfCopy defaults];
+            highCongestionMinimumStay2 = [defaults4 highCongestionMinimumStay];
             *buf = 136447234;
             v45 = "[WADeploymentAnalyzer _analyzeResultsForCongestion:withMetric:]";
             v46 = 1024;
@@ -651,7 +651,7 @@ LABEL_16:
             v50 = 2048;
             v51 = v8;
             v52 = 2048;
-            v53 = v32;
+            v53 = highCongestionMinimumStay2;
             _os_log_impl(&dword_1C8460000, v27, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%s: totalAssociation (%lu) did not meet min requirements (%lu) for high congestion", buf, 0x30u);
           }
 
@@ -662,7 +662,7 @@ LABEL_16:
         {
           if (v8)
           {
-            v23 = v34 / v8;
+            v23 = unsignedIntegerValue2 / v8;
           }
 
           else
@@ -670,8 +670,8 @@ LABEL_16:
             v23 = 0.0;
           }
 
-          v24 = [(WADeploymentAnalyzer *)self defaults];
-          [v24 highCongestionThreshold];
+          defaults5 = [(WADeploymentAnalyzer *)self defaults];
+          [defaults5 highCongestionThreshold];
           if (v23 < v25)
           {
             v26 = 1;
@@ -693,7 +693,7 @@ LABEL_16:
             v48 = 2080;
             v49 = "[WADeploymentAnalyzer _analyzeResultsForCongestion:withMetric:]";
             v50 = 2048;
-            v51 = v34;
+            v51 = unsignedIntegerValue2;
             v52 = 2048;
             v53 = v8;
             v54 = 2048;
@@ -707,7 +707,7 @@ LABEL_16:
         }
 
         v7 = 0;
-        v5 = v33;
+        congestionCopy = v33;
         goto LABEL_26;
       }
     }

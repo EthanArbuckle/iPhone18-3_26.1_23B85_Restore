@@ -1,27 +1,27 @@
 @interface AppleSTDP2700Bootstrap
-- (AppleSTDP2700Bootstrap)bootstrapWithOptions:(id)a3;
-- (AppleSTDP2700Bootstrap)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6;
+- (AppleSTDP2700Bootstrap)bootstrapWithOptions:(id)options;
+- (AppleSTDP2700Bootstrap)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options;
 @end
 
 @implementation AppleSTDP2700Bootstrap
 
-- (AppleSTDP2700Bootstrap)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6
+- (AppleSTDP2700Bootstrap)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options
 {
-  if (a4 && (v8.receiver = self, v8.super_class = AppleSTDP2700Bootstrap, (self = [(AppleSTDP2700Bootstrap *)&v8 init:a3]) != 0))
+  if (delegate && (v8.receiver = self, v8.super_class = AppleSTDP2700Bootstrap, (self = [(AppleSTDP2700Bootstrap *)&v8 init:class]) != 0))
   {
-    self->_delegate = a4;
+    self->_delegate = delegate;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
     return 0;
   }
 
   return self;
 }
 
-- (AppleSTDP2700Bootstrap)bootstrapWithOptions:(id)a3
+- (AppleSTDP2700Bootstrap)bootstrapWithOptions:(id)options
 {
   memset(&v23, 0, sizeof(v23));
   p_delegate = &self->_delegate;
@@ -33,7 +33,7 @@
 
   else
   {
-    v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"IOMatchLaunchServiceID", "unsignedLongLongValue"}];
+    v6 = [objc_msgSend(options objectForKeyedSubscript:{@"IOMatchLaunchServiceID", "unsignedLongLongValue"}];
     v7 = IORegistryEntryIDMatching(v6);
     MatchingService = IOServiceGetMatchingService(kIOMasterPortDefault, v7);
     if (MatchingService)

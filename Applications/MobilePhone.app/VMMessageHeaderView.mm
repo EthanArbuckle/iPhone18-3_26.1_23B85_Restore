@@ -2,28 +2,28 @@
 - (NSString)localizedDate;
 - (NSString)localizedHeadline;
 - (NSString)localizedSubheadline;
-- (VMMessageHeaderView)initWithCoder:(id)a3;
-- (VMMessageHeaderView)initWithFrame:(CGRect)a3;
+- (VMMessageHeaderView)initWithCoder:(id)coder;
+- (VMMessageHeaderView)initWithFrame:(CGRect)frame;
 - (double)dateLabelFirstBaselineAnchorLayoutConstraintConstant;
 - (double)headlineLabelFirstBaselineAnchorLayoutConstraintConstant;
 - (double)subheadlineLabelFirstBaselineAnchorLayoutConstraintConstant;
 - (void)commonInit;
 - (void)loadSubviews;
 - (void)loadSubviewsLayoutConstraints;
-- (void)setLocalizedDate:(id)a3;
-- (void)setLocalizedHeadline:(id)a3;
-- (void)setLocalizedSubheadline:(id)a3;
+- (void)setLocalizedDate:(id)date;
+- (void)setLocalizedHeadline:(id)headline;
+- (void)setLocalizedSubheadline:(id)subheadline;
 - (void)updateConstraints;
 - (void)updateConstraintsConstants;
 @end
 
 @implementation VMMessageHeaderView
 
-- (VMMessageHeaderView)initWithFrame:(CGRect)a3
+- (VMMessageHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VMMessageHeaderView;
-  v3 = [(VMMessageHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VMMessageHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,7 +33,7 @@
   return v4;
 }
 
-- (VMMessageHeaderView)initWithCoder:(id)a3
+- (VMMessageHeaderView)initWithCoder:(id)coder
 {
   [(VMMessageHeaderView *)self doesNotRecognizeSelector:a2];
 
@@ -42,64 +42,64 @@
 
 - (NSString)localizedDate
 {
-  v2 = [(VMMessageHeaderView *)self dateLabel];
-  v3 = [v2 text];
+  dateLabel = [(VMMessageHeaderView *)self dateLabel];
+  text = [dateLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setLocalizedDate:(id)a3
+- (void)setLocalizedDate:(id)date
 {
-  v7 = a3;
-  v4 = [(VMMessageHeaderView *)self dateLabel];
-  v5 = [v4 text];
+  dateCopy = date;
+  dateLabel = [(VMMessageHeaderView *)self dateLabel];
+  text = [dateLabel text];
 
-  if (v5 != v7)
+  if (text != dateCopy)
   {
-    v6 = [(VMMessageHeaderView *)self dateLabel];
-    [v6 setText:v7];
+    dateLabel2 = [(VMMessageHeaderView *)self dateLabel];
+    [dateLabel2 setText:dateCopy];
   }
 }
 
 - (NSString)localizedHeadline
 {
-  v2 = [(VMMessageHeaderView *)self headlineLabel];
-  v3 = [v2 text];
+  headlineLabel = [(VMMessageHeaderView *)self headlineLabel];
+  text = [headlineLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setLocalizedHeadline:(id)a3
+- (void)setLocalizedHeadline:(id)headline
 {
-  v7 = a3;
-  v4 = [(VMMessageHeaderView *)self headlineLabel];
-  v5 = [v4 text];
+  headlineCopy = headline;
+  headlineLabel = [(VMMessageHeaderView *)self headlineLabel];
+  text = [headlineLabel text];
 
-  if (v5 != v7)
+  if (text != headlineCopy)
   {
-    v6 = [(VMMessageHeaderView *)self headlineLabel];
-    [v6 setText:v7];
+    headlineLabel2 = [(VMMessageHeaderView *)self headlineLabel];
+    [headlineLabel2 setText:headlineCopy];
   }
 }
 
 - (NSString)localizedSubheadline
 {
-  v2 = [(VMMessageHeaderView *)self subheadlineLabel];
-  v3 = [v2 text];
+  subheadlineLabel = [(VMMessageHeaderView *)self subheadlineLabel];
+  text = [subheadlineLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setLocalizedSubheadline:(id)a3
+- (void)setLocalizedSubheadline:(id)subheadline
 {
-  v7 = a3;
-  v4 = [(VMMessageHeaderView *)self subheadlineLabel];
-  v5 = [v4 text];
+  subheadlineCopy = subheadline;
+  subheadlineLabel = [(VMMessageHeaderView *)self subheadlineLabel];
+  text = [subheadlineLabel text];
 
-  if (v5 != v7)
+  if (text != subheadlineCopy)
   {
-    v6 = [(VMMessageHeaderView *)self subheadlineLabel];
-    [v6 setText:v7];
+    subheadlineLabel2 = [(VMMessageHeaderView *)self subheadlineLabel];
+    [subheadlineLabel2 setText:subheadlineCopy];
   }
 }
 
@@ -123,18 +123,18 @@
 {
   [(VMMessageHeaderView *)self dateLabelFirstBaselineAnchorLayoutConstraintConstant];
   v4 = v3;
-  v5 = [(VMMessageHeaderView *)self dateLabelFirstBaselineAnchorLayoutConstraint];
-  [v5 setConstant:v4];
+  dateLabelFirstBaselineAnchorLayoutConstraint = [(VMMessageHeaderView *)self dateLabelFirstBaselineAnchorLayoutConstraint];
+  [dateLabelFirstBaselineAnchorLayoutConstraint setConstant:v4];
 
   [(VMMessageHeaderView *)self headlineLabelFirstBaselineAnchorLayoutConstraintConstant];
   v7 = v6;
-  v8 = [(VMMessageHeaderView *)self headlineLabelFirstBaselineAnchorLayoutConstraint];
-  [v8 setConstant:v7];
+  headlineLabelFirstBaselineAnchorLayoutConstraint = [(VMMessageHeaderView *)self headlineLabelFirstBaselineAnchorLayoutConstraint];
+  [headlineLabelFirstBaselineAnchorLayoutConstraint setConstant:v7];
 
   [(VMMessageHeaderView *)self subheadlineLabelFirstBaselineAnchorLayoutConstraintConstant];
   v10 = v9;
-  v11 = [(VMMessageHeaderView *)self subheadlineLabelFirstBaselineAnchorLayoutConstraint];
-  [v11 setConstant:v10];
+  subheadlineLabelFirstBaselineAnchorLayoutConstraint = [(VMMessageHeaderView *)self subheadlineLabelFirstBaselineAnchorLayoutConstraint];
+  [subheadlineLabelFirstBaselineAnchorLayoutConstraint setConstant:v10];
 }
 
 - (void)commonInit
@@ -229,63 +229,63 @@
 {
   if (!self->_subviewsLayoutConstraintsLoaded)
   {
-    v3 = [(UILabel *)self->_headlineLabel leadingAnchor];
-    v4 = [(VMMessageHeaderView *)self leadingAnchor];
-    v5 = [v3 constraintEqualToAnchor:v4];
+    leadingAnchor = [(UILabel *)self->_headlineLabel leadingAnchor];
+    leadingAnchor2 = [(VMMessageHeaderView *)self leadingAnchor];
+    v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v5 setActive:1];
 
-    v6 = [(UILabel *)self->_headlineLabel trailingAnchor];
-    v7 = [(VMMessageHeaderView *)self trailingAnchor];
-    v8 = [v6 constraintLessThanOrEqualToAnchor:v7];
+    trailingAnchor = [(UILabel *)self->_headlineLabel trailingAnchor];
+    trailingAnchor2 = [(VMMessageHeaderView *)self trailingAnchor];
+    v8 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     [v8 setActive:1];
 
-    v9 = [(UILabel *)self->_headlineLabel firstBaselineAnchor];
-    v10 = [(VMMessageHeaderView *)self topAnchor];
+    firstBaselineAnchor = [(UILabel *)self->_headlineLabel firstBaselineAnchor];
+    topAnchor = [(VMMessageHeaderView *)self topAnchor];
     [(VMMessageHeaderView *)self headlineLabelFirstBaselineAnchorLayoutConstraintConstant];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:?];
+    v11 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
     headlineLabelFirstBaselineAnchorLayoutConstraint = self->_headlineLabelFirstBaselineAnchorLayoutConstraint;
     self->_headlineLabelFirstBaselineAnchorLayoutConstraint = v11;
 
     [(NSLayoutConstraint *)self->_headlineLabelFirstBaselineAnchorLayoutConstraint setActive:1];
-    v13 = [(UILabel *)self->_subheadlineLabel leadingAnchor];
-    v14 = [(VMMessageHeaderView *)self leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    leadingAnchor3 = [(UILabel *)self->_subheadlineLabel leadingAnchor];
+    leadingAnchor4 = [(VMMessageHeaderView *)self leadingAnchor];
+    v15 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v15 setActive:1];
 
-    v16 = [(UILabel *)self->_subheadlineLabel trailingAnchor];
-    v17 = [(VMMessageHeaderView *)self trailingAnchor];
-    v18 = [v16 constraintLessThanOrEqualToAnchor:v17];
+    trailingAnchor3 = [(UILabel *)self->_subheadlineLabel trailingAnchor];
+    trailingAnchor4 = [(VMMessageHeaderView *)self trailingAnchor];
+    v18 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
     [v18 setActive:1];
 
-    v19 = [(UILabel *)self->_subheadlineLabel firstBaselineAnchor];
-    v20 = [(UILabel *)self->_headlineLabel firstBaselineAnchor];
+    firstBaselineAnchor2 = [(UILabel *)self->_subheadlineLabel firstBaselineAnchor];
+    firstBaselineAnchor3 = [(UILabel *)self->_headlineLabel firstBaselineAnchor];
     [(VMMessageHeaderView *)self subheadlineLabelFirstBaselineAnchorLayoutConstraintConstant];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:?];
+    v21 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3 constant:?];
     subheadlineLabelFirstBaselineAnchorLayoutConstraint = self->_subheadlineLabelFirstBaselineAnchorLayoutConstraint;
     self->_subheadlineLabelFirstBaselineAnchorLayoutConstraint = v21;
 
     [(NSLayoutConstraint *)self->_subheadlineLabelFirstBaselineAnchorLayoutConstraint setActive:1];
-    v23 = [(UILabel *)self->_dateLabel leadingAnchor];
-    v24 = [(VMMessageHeaderView *)self leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    leadingAnchor5 = [(UILabel *)self->_dateLabel leadingAnchor];
+    leadingAnchor6 = [(VMMessageHeaderView *)self leadingAnchor];
+    v25 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [v25 setActive:1];
 
-    v26 = [(UILabel *)self->_dateLabel trailingAnchor];
-    v27 = [(VMMessageHeaderView *)self trailingAnchor];
-    v28 = [v26 constraintLessThanOrEqualToAnchor:v27];
+    trailingAnchor5 = [(UILabel *)self->_dateLabel trailingAnchor];
+    trailingAnchor6 = [(VMMessageHeaderView *)self trailingAnchor];
+    v28 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
     [v28 setActive:1];
 
-    v29 = [(UILabel *)self->_dateLabel firstBaselineAnchor];
-    v30 = [(UILabel *)self->_subheadlineLabel firstBaselineAnchor];
+    firstBaselineAnchor4 = [(UILabel *)self->_dateLabel firstBaselineAnchor];
+    firstBaselineAnchor5 = [(UILabel *)self->_subheadlineLabel firstBaselineAnchor];
     [(VMMessageHeaderView *)self dateLabelFirstBaselineAnchorLayoutConstraintConstant];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:?];
+    v31 = [firstBaselineAnchor4 constraintEqualToAnchor:firstBaselineAnchor5 constant:?];
     dateLabelFirstBaselineAnchorLayoutConstraint = self->_dateLabelFirstBaselineAnchorLayoutConstraint;
     self->_dateLabelFirstBaselineAnchorLayoutConstraint = v31;
 
     [(NSLayoutConstraint *)self->_dateLabelFirstBaselineAnchorLayoutConstraint setActive:1];
-    v33 = [(VMMessageHeaderView *)self bottomAnchor];
-    v34 = [(UILabel *)self->_dateLabel bottomAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    bottomAnchor = [(VMMessageHeaderView *)self bottomAnchor];
+    bottomAnchor2 = [(UILabel *)self->_dateLabel bottomAnchor];
+    v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v35 setActive:1];
 
     self->_subviewsLayoutConstraintsLoaded = 1;

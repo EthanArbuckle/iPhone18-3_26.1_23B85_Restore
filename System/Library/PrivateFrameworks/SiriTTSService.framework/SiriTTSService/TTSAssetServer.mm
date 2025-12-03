@@ -30,7 +30,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTSAssetServer.hash.getter();
 
   return v3;

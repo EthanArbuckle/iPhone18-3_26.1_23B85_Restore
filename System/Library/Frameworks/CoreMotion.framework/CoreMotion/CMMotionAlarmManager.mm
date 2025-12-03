@@ -1,24 +1,24 @@
 @interface CMMotionAlarmManager
 + (id)defaultManager;
-- (BOOL)acknowledgeAlarm:(id)a3 error:(id *)a4;
-- (BOOL)acknowledgeAlarmWithName:(id)a3 error:(id *)a4;
-- (BOOL)launchRemoteAppWithError:(id *)a3;
-- (BOOL)unregisterAlarm:(id)a3 error:(id *)a4;
-- (BOOL)unregisterAlarmWithName:(id)a3 error:(id *)a4;
-- (CMMotionAlarmManager)initWithName:(id)a3;
+- (BOOL)acknowledgeAlarm:(id)alarm error:(id *)error;
+- (BOOL)acknowledgeAlarmWithName:(id)name error:(id *)error;
+- (BOOL)launchRemoteAppWithError:(id *)error;
+- (BOOL)unregisterAlarm:(id)alarm error:(id *)error;
+- (BOOL)unregisterAlarmWithName:(id)name error:(id *)error;
+- (CMMotionAlarmManager)initWithName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation CMMotionAlarmManager
 
-- (CMMotionAlarmManager)initWithName:(id)a3
+- (CMMotionAlarmManager)initWithName:(id)name
 {
   v6.receiver = self;
   v6.super_class = CMMotionAlarmManager;
   v4 = [(CMMotionAlarmManager *)&v6 init];
   if (v4)
   {
-    v4->_name = a3;
+    v4->_name = name;
   }
 
   return v4;
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_19B67D3C0;
   block[3] = &unk_1E7532988;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED71D310 != -1)
   {
     dispatch_once(&qword_1ED71D310, block);
@@ -47,42 +47,42 @@
   return qword_1ED71D318;
 }
 
-- (BOOL)unregisterAlarmWithName:(id)a3 error:(id *)a4
+- (BOOL)unregisterAlarmWithName:(id)name error:(id *)error
 {
   v7 = [CMMotionAlarm alloc];
-  v9 = objc_msgSend_initWithName_type_duration_repeats_(v7, v8, a3, 9, 0xFFFFFFFFLL, 0);
+  v9 = objc_msgSend_initWithName_type_duration_repeats_(v7, v8, name, 9, 0xFFFFFFFFLL, 0);
   objc_msgSend_setManager_(v9, v10, self);
   v13 = objc_msgSend_instance(CMMotionAlarmManagerInternal, v11, v12);
-  LOBYTE(a4) = objc_msgSend__unregisterAlarm_error_(v13, v14, v9, a4);
+  LOBYTE(error) = objc_msgSend__unregisterAlarm_error_(v13, v14, v9, error);
 
-  return a4;
+  return error;
 }
 
-- (BOOL)acknowledgeAlarmWithName:(id)a3 error:(id *)a4
+- (BOOL)acknowledgeAlarmWithName:(id)name error:(id *)error
 {
-  v5 = objc_msgSend_instance(CMMotionAlarmManagerInternal, a2, a3);
+  v5 = objc_msgSend_instance(CMMotionAlarmManagerInternal, a2, name);
 
-  return MEMORY[0x1EEE66B58](v5, sel__acknowledgeAlarm_error_, a3);
+  return MEMORY[0x1EEE66B58](v5, sel__acknowledgeAlarm_error_, name);
 }
 
-- (BOOL)launchRemoteAppWithError:(id *)a3
+- (BOOL)launchRemoteAppWithError:(id *)error
 {
-  v5 = objc_msgSend_instance(CMMotionAlarmManagerInternal, a2, a3);
+  v5 = objc_msgSend_instance(CMMotionAlarmManagerInternal, a2, error);
   objc_msgSend_delegate(self, v6, v7);
 
-  return MEMORY[0x1EEE66B58](v5, sel__launchRemoteAppWithError_delegate_, a3);
+  return MEMORY[0x1EEE66B58](v5, sel__launchRemoteAppWithError_delegate_, error);
 }
 
-- (BOOL)unregisterAlarm:(id)a3 error:(id *)a4
+- (BOOL)unregisterAlarm:(id)alarm error:(id *)error
 {
-  v5 = objc_msgSend_name(a3, a2, a3);
+  v5 = objc_msgSend_name(alarm, a2, alarm);
 
   return MEMORY[0x1EEE66B58](self, sel_unregisterAlarmWithName_error_, v5);
 }
 
-- (BOOL)acknowledgeAlarm:(id)a3 error:(id *)a4
+- (BOOL)acknowledgeAlarm:(id)alarm error:(id *)error
 {
-  v5 = objc_msgSend_name(a3, a2, a3);
+  v5 = objc_msgSend_name(alarm, a2, alarm);
 
   return MEMORY[0x1EEE66B58](self, sel_acknowledgeAlarmWithName_error_, v5);
 }

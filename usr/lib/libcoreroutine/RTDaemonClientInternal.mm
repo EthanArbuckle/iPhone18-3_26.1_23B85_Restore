@@ -1,138 +1,138 @@
 @interface RTDaemonClientInternal
 - (NSString)description;
-- (RTDaemonClientInternal)initWithQueue:(id)a3 accountManager:(id)a4 assetManager:(id)a5 authorizationManager:(id)a6 bluePOITileManager:(id)a7 buildingPolygonManager:(id)a8 deviceLocationPredictor:(id)a9 diagnostics:(id)a10 eventModelProvider:(id)a11 authorizedLocationManager:(id)a12 fingerprintManager:(id)a13 hintManager:(id)a14 intermittentGNSSManager:(id)a15 learnedLocationManager:(id)a16 learnedLocationStore:(id)a17 locationManager:(id)a18 locationStore:(id)a19 mapServiceManager:(id)a20 motionActivityManager:(id)a21 peopleDiscoveryProvider:(id)a22 persistenceManager:(id)a23 placeInferenceQueryStore:(id)a24 pointOfInterestSampler:(id)a25 predictedContextManager:(id)a26 purgeManager:(id)a27 safetyCacheStore:(id)a28 scenarioTriggerManager:(id)a29 userCurationManager:(id)a30 vehicleLocationProvider:(id)a31 visitManager:(id)a32 workoutRouteManager:(id)a33 workoutScheduler:(id)a34;
-- (void)clearAllLocationsOfInterestWithReply:(id)a3;
-- (void)computeContactScores:(id)a3;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)deleteWorkout:(id)a3 reply:(id)a4;
-- (void)displayWorkoutDistanceRecordsWithHandler:(id)a3;
-- (void)eraseVisitLogDatabase:(id)a3;
-- (void)expireLifetimeOfVisitsWithIdentifiers:(id)a3 expirationDate:(id)a4 reply:(id)a5;
-- (void)extendLifetimeOfVisitsWithIdentifiers:(id)a3 toExpireOn:(id)a4 reply:(id)a5;
-- (void)fetchAllLocationsOfInterestWithReply:(id)a3;
-- (void)fetchAuthorizedLocationCachedStatus:(id)a3;
-- (void)fetchAuthorizedLocationDetailedStatus:(id)a3;
-- (void)fetchAuthorizedLocationExtendedStatus:(id)a3;
-- (void)fetchAuthorizedLocations:(id)a3;
-- (void)fetchBluePOIMetadataWithHandler:(id)a3;
-- (void)fetchBluePOITileWithGeoTileKey:(unint64_t)a3 reply:(id)a4;
-- (void)fetchBuildingPolygonsFromLocations:(id)a3 radius:(double)a4 limit:(unint64_t)a5 reply:(id)a6;
-- (void)fetchCurrentLocationWithReply:(id)a3;
-- (void)fetchDataVaultPath:(id)a3;
-- (void)fetchFMCEnabledWithReply:(id)a3;
-- (void)fetchFingerprintsWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchFusionCandidatesForVisitIdentifier:(id)a3 reply:(id)a4;
-- (void)fetchInferredMapItemForVisitIdentifier:(id)a3 reply:(id)a4;
-- (void)fetchIntermittentGNSSRegistrationStateWithReply:(id)a3;
-- (void)fetchLocationsFromCoreLocationWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchLocationsOfInterestWithVisitsWithinDistance:(id)a3 location:(id)a4 reply:(id)a5;
-- (void)fetchMotionActivitiesFromStartDate:(id)a3 endDate:(id)a4 reply:(id)a5;
-- (void)fetchPathToBackupWithReply:(id)a3;
-- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)a3 ascending:(BOOL)a4 reply:(id)a5;
-- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)a3 reply:(id)a4;
-- (void)fetchPointOfInterestsAroundCoordinate:(id)a3 radius:(double)a4 reply:(id)a5;
-- (void)fetchPredictedContextInputSignalsWithReply:(id)a3;
-- (void)fetchStoredLocationsCountFromDate:(id)a3 toDate:(id)a4 uncertainty:(double)a5 limit:(unint64_t)a6 reply:(id)a7;
-- (void)fetchUserCurationsWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchVisitLogsWithDateInterval:(id)a3 reply:(id)a4;
-- (void)fetchVisitsBetweenStartDate:(id)a3 endDate:(id)a4 reply:(id)a5;
-- (void)fetchVisitsWithReply:(id)a3;
-- (void)fetchWiFiAccessPointsForFingerprint:(id)a3 reply:(id)a4;
-- (void)forceAuthorizedLocationEraseInstallInitialization:(id)a3;
-- (void)forceEventModelRefreshWithReply:(id)a3;
-- (void)forcePlaceTypeClassificationWithReply:(id)a3;
-- (void)forcePredictedLocationContextModelTrainingWithReply:(id)a3;
-- (void)forceProcessWorkoutsClearClusters:(BOOL)a3 clearExistingDistanceMatrix:(BOOL)a4 buildDistanceMatrix:(BOOL)a5 syncClustersToHealhtKit:(BOOL)a6 syncClustersToWatch:(BOOL)a7 filteringDistanceThreshold:(double)a8 topNWorkouts:(unint64_t)a9 isSchedulerTriggered:(BOOL)a10 reply:(id)a11;
-- (void)forceRelabeling:(id)a3;
-- (void)forceSequentialClusterIdentification:(id)a3;
-- (void)forceUpdateAssetMetadataWithReply:(id)a3;
-- (void)injectFingerprintWithIdentifier:(id)a3 settledState:(unint64_t)a4 start:(id)a5 reply:(id)a6;
-- (void)injectFingerprintWithSettledState:(BOOL)a3 start:(id)a4 reply:(id)a5;
-- (void)injectLocationOfInterest:(id)a3 reply:(id)a4;
-- (void)injectLocations:(id)a3 reply:(id)a4;
-- (void)injectPeopleDensityBundle:(id)a3 handler:(id)a4;
-- (void)injectPeopleDensityStats:(unint64_t)a3 duration:(double)a4 date:(id)a5 advertisements:(id)a6 handler:(id)a7;
-- (void)injectPeopleDiscoveryAdv:(id)a3 handler:(id)a4;
-- (void)injectProximityEvent:(id)a3 handler:(id)a4;
-- (void)injectRealtimeVisit:(id)a3 reply:(id)a4;
-- (void)injectSignalForSignalGeneratorOptions:(id)a3 reply:(id)a4;
-- (void)injectVisit:(id)a3 finerGranularityInferredMapItem:(id)a4 locationOfInterest:(id)a5 reply:(id)a6;
-- (void)injectWiFiAccessPointWithMac:(id)a3 rssi:(int64_t)a4 channel:(int64_t)a5 age:(double)a6 date:(id)a7 reply:(id)a8;
-- (void)logDatabasesWithReply:(id)a3;
-- (void)logSafetyCacheWithReply:(id)a3;
-- (void)mirroringDelegateSetupState:(id)a3;
-- (void)performExportMirroringRequest:(id)a3;
-- (void)performImportMirroringRequest:(id)a3;
-- (void)performZoneResetMirroringRequest:(id)a3;
-- (void)periodicPurgeWithReply:(id)a3;
-- (void)processNewlyAddedWorkout:(id)a3 reply:(id)a4;
-- (void)purgeUserCurationsPredating:(id)a3 handler:(id)a4;
-- (void)queryProvider:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)reconstructTransitionsWithReply:(id)a3;
-- (void)removeAllPeopleDensityBundles:(id)a3;
-- (void)removeAllProximityEvent:(id)a3;
-- (void)schemaUpdateWithModelFile:(id)a3 reply:(id)a4;
-- (void)setXpcConnection:(id)a3;
-- (void)simulatePredictedContextResult:(id)a3 reply:(id)a4;
-- (void)simulateScenarioTrigger:(id)a3 reply:(id)a4;
-- (void)simulateVisit:(id)a3 reply:(id)a4;
-- (void)startSamplingPointOfInterestWithInterval:(double)a3 handler:(id)a4;
-- (void)stopSamplingPointOfInterest:(id)a3;
-- (void)storeBluePOITiles:(id)a3 handler:(id)a4;
-- (void)storeHints:(id)a3 reply:(id)a4;
-- (void)submitHintAtLocation:(id)a3 hintSource:(int64_t)a4 reply:(id)a5;
-- (void)submitMetrics:(id)a3 metricName:(id)a4 reply:(id)a5;
-- (void)submitTransitMetricsWithReply:(id)a3;
-- (void)tearDownPersistenceStack:(id)a3;
-- (void)updateAssetServerURL:(id)a3 assetType:(id)a4 reply:(id)a5;
-- (void)updateIntermittentGNSSRegistrationOverrideState:(unint64_t)a3 reply:(id)a4;
-- (void)updateRelevanceScoresWithReply:(id)a3;
-- (void)updateTransitionWithIdentifier:(id)a3 modeOfTransportation:(int64_t)a4 reply:(id)a5;
+- (RTDaemonClientInternal)initWithQueue:(id)queue accountManager:(id)manager assetManager:(id)assetManager authorizationManager:(id)authorizationManager bluePOITileManager:(id)tileManager buildingPolygonManager:(id)polygonManager deviceLocationPredictor:(id)predictor diagnostics:(id)self0 eventModelProvider:(id)self1 authorizedLocationManager:(id)self2 fingerprintManager:(id)self3 hintManager:(id)self4 intermittentGNSSManager:(id)self5 learnedLocationManager:(id)self6 learnedLocationStore:(id)self7 locationManager:(id)self8 locationStore:(id)self9 mapServiceManager:(id)serviceManager motionActivityManager:(id)activityManager peopleDiscoveryProvider:(id)discoveryProvider persistenceManager:(id)persistenceManager placeInferenceQueryStore:(id)queryStore pointOfInterestSampler:(id)sampler predictedContextManager:(id)contextManager purgeManager:(id)purgeManager safetyCacheStore:(id)cacheStore scenarioTriggerManager:(id)triggerManager userCurationManager:(id)queue0 vehicleLocationProvider:(id)queue1 visitManager:(id)queue2 workoutRouteManager:(id)queue3 workoutScheduler:(id)queue4;
+- (void)clearAllLocationsOfInterestWithReply:(id)reply;
+- (void)computeContactScores:(id)scores;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)deleteWorkout:(id)workout reply:(id)reply;
+- (void)displayWorkoutDistanceRecordsWithHandler:(id)handler;
+- (void)eraseVisitLogDatabase:(id)database;
+- (void)expireLifetimeOfVisitsWithIdentifiers:(id)identifiers expirationDate:(id)date reply:(id)reply;
+- (void)extendLifetimeOfVisitsWithIdentifiers:(id)identifiers toExpireOn:(id)on reply:(id)reply;
+- (void)fetchAllLocationsOfInterestWithReply:(id)reply;
+- (void)fetchAuthorizedLocationCachedStatus:(id)status;
+- (void)fetchAuthorizedLocationDetailedStatus:(id)status;
+- (void)fetchAuthorizedLocationExtendedStatus:(id)status;
+- (void)fetchAuthorizedLocations:(id)locations;
+- (void)fetchBluePOIMetadataWithHandler:(id)handler;
+- (void)fetchBluePOITileWithGeoTileKey:(unint64_t)key reply:(id)reply;
+- (void)fetchBuildingPolygonsFromLocations:(id)locations radius:(double)radius limit:(unint64_t)limit reply:(id)reply;
+- (void)fetchCurrentLocationWithReply:(id)reply;
+- (void)fetchDataVaultPath:(id)path;
+- (void)fetchFMCEnabledWithReply:(id)reply;
+- (void)fetchFingerprintsWithOptions:(id)options reply:(id)reply;
+- (void)fetchFusionCandidatesForVisitIdentifier:(id)identifier reply:(id)reply;
+- (void)fetchInferredMapItemForVisitIdentifier:(id)identifier reply:(id)reply;
+- (void)fetchIntermittentGNSSRegistrationStateWithReply:(id)reply;
+- (void)fetchLocationsFromCoreLocationWithOptions:(id)options reply:(id)reply;
+- (void)fetchLocationsOfInterestWithVisitsWithinDistance:(id)distance location:(id)location reply:(id)reply;
+- (void)fetchMotionActivitiesFromStartDate:(id)date endDate:(id)endDate reply:(id)reply;
+- (void)fetchPathToBackupWithReply:(id)reply;
+- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)interval ascending:(BOOL)ascending reply:(id)reply;
+- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)identifier reply:(id)reply;
+- (void)fetchPointOfInterestsAroundCoordinate:(id)coordinate radius:(double)radius reply:(id)reply;
+- (void)fetchPredictedContextInputSignalsWithReply:(id)reply;
+- (void)fetchStoredLocationsCountFromDate:(id)date toDate:(id)toDate uncertainty:(double)uncertainty limit:(unint64_t)limit reply:(id)reply;
+- (void)fetchUserCurationsWithOptions:(id)options handler:(id)handler;
+- (void)fetchVisitLogsWithDateInterval:(id)interval reply:(id)reply;
+- (void)fetchVisitsBetweenStartDate:(id)date endDate:(id)endDate reply:(id)reply;
+- (void)fetchVisitsWithReply:(id)reply;
+- (void)fetchWiFiAccessPointsForFingerprint:(id)fingerprint reply:(id)reply;
+- (void)forceAuthorizedLocationEraseInstallInitialization:(id)initialization;
+- (void)forceEventModelRefreshWithReply:(id)reply;
+- (void)forcePlaceTypeClassificationWithReply:(id)reply;
+- (void)forcePredictedLocationContextModelTrainingWithReply:(id)reply;
+- (void)forceProcessWorkoutsClearClusters:(BOOL)clusters clearExistingDistanceMatrix:(BOOL)matrix buildDistanceMatrix:(BOOL)distanceMatrix syncClustersToHealhtKit:(BOOL)kit syncClustersToWatch:(BOOL)watch filteringDistanceThreshold:(double)threshold topNWorkouts:(unint64_t)workouts isSchedulerTriggered:(BOOL)self0 reply:(id)self1;
+- (void)forceRelabeling:(id)relabeling;
+- (void)forceSequentialClusterIdentification:(id)identification;
+- (void)forceUpdateAssetMetadataWithReply:(id)reply;
+- (void)injectFingerprintWithIdentifier:(id)identifier settledState:(unint64_t)state start:(id)start reply:(id)reply;
+- (void)injectFingerprintWithSettledState:(BOOL)state start:(id)start reply:(id)reply;
+- (void)injectLocationOfInterest:(id)interest reply:(id)reply;
+- (void)injectLocations:(id)locations reply:(id)reply;
+- (void)injectPeopleDensityBundle:(id)bundle handler:(id)handler;
+- (void)injectPeopleDensityStats:(unint64_t)stats duration:(double)duration date:(id)date advertisements:(id)advertisements handler:(id)handler;
+- (void)injectPeopleDiscoveryAdv:(id)adv handler:(id)handler;
+- (void)injectProximityEvent:(id)event handler:(id)handler;
+- (void)injectRealtimeVisit:(id)visit reply:(id)reply;
+- (void)injectSignalForSignalGeneratorOptions:(id)options reply:(id)reply;
+- (void)injectVisit:(id)visit finerGranularityInferredMapItem:(id)item locationOfInterest:(id)interest reply:(id)reply;
+- (void)injectWiFiAccessPointWithMac:(id)mac rssi:(int64_t)rssi channel:(int64_t)channel age:(double)age date:(id)date reply:(id)reply;
+- (void)logDatabasesWithReply:(id)reply;
+- (void)logSafetyCacheWithReply:(id)reply;
+- (void)mirroringDelegateSetupState:(id)state;
+- (void)performExportMirroringRequest:(id)request;
+- (void)performImportMirroringRequest:(id)request;
+- (void)performZoneResetMirroringRequest:(id)request;
+- (void)periodicPurgeWithReply:(id)reply;
+- (void)processNewlyAddedWorkout:(id)workout reply:(id)reply;
+- (void)purgeUserCurationsPredating:(id)predating handler:(id)handler;
+- (void)queryProvider:(id)provider options:(id)options reply:(id)reply;
+- (void)reconstructTransitionsWithReply:(id)reply;
+- (void)removeAllPeopleDensityBundles:(id)bundles;
+- (void)removeAllProximityEvent:(id)event;
+- (void)schemaUpdateWithModelFile:(id)file reply:(id)reply;
+- (void)setXpcConnection:(id)connection;
+- (void)simulatePredictedContextResult:(id)result reply:(id)reply;
+- (void)simulateScenarioTrigger:(id)trigger reply:(id)reply;
+- (void)simulateVisit:(id)visit reply:(id)reply;
+- (void)startSamplingPointOfInterestWithInterval:(double)interval handler:(id)handler;
+- (void)stopSamplingPointOfInterest:(id)interest;
+- (void)storeBluePOITiles:(id)tiles handler:(id)handler;
+- (void)storeHints:(id)hints reply:(id)reply;
+- (void)submitHintAtLocation:(id)location hintSource:(int64_t)source reply:(id)reply;
+- (void)submitMetrics:(id)metrics metricName:(id)name reply:(id)reply;
+- (void)submitTransitMetricsWithReply:(id)reply;
+- (void)tearDownPersistenceStack:(id)stack;
+- (void)updateAssetServerURL:(id)l assetType:(id)type reply:(id)reply;
+- (void)updateIntermittentGNSSRegistrationOverrideState:(unint64_t)state reply:(id)reply;
+- (void)updateRelevanceScoresWithReply:(id)reply;
+- (void)updateTransitionWithIdentifier:(id)identifier modeOfTransportation:(int64_t)transportation reply:(id)reply;
 @end
 
 @implementation RTDaemonClientInternal
 
-- (RTDaemonClientInternal)initWithQueue:(id)a3 accountManager:(id)a4 assetManager:(id)a5 authorizationManager:(id)a6 bluePOITileManager:(id)a7 buildingPolygonManager:(id)a8 deviceLocationPredictor:(id)a9 diagnostics:(id)a10 eventModelProvider:(id)a11 authorizedLocationManager:(id)a12 fingerprintManager:(id)a13 hintManager:(id)a14 intermittentGNSSManager:(id)a15 learnedLocationManager:(id)a16 learnedLocationStore:(id)a17 locationManager:(id)a18 locationStore:(id)a19 mapServiceManager:(id)a20 motionActivityManager:(id)a21 peopleDiscoveryProvider:(id)a22 persistenceManager:(id)a23 placeInferenceQueryStore:(id)a24 pointOfInterestSampler:(id)a25 predictedContextManager:(id)a26 purgeManager:(id)a27 safetyCacheStore:(id)a28 scenarioTriggerManager:(id)a29 userCurationManager:(id)a30 vehicleLocationProvider:(id)a31 visitManager:(id)a32 workoutRouteManager:(id)a33 workoutScheduler:(id)a34
+- (RTDaemonClientInternal)initWithQueue:(id)queue accountManager:(id)manager assetManager:(id)assetManager authorizationManager:(id)authorizationManager bluePOITileManager:(id)tileManager buildingPolygonManager:(id)polygonManager deviceLocationPredictor:(id)predictor diagnostics:(id)self0 eventModelProvider:(id)self1 authorizedLocationManager:(id)self2 fingerprintManager:(id)self3 hintManager:(id)self4 intermittentGNSSManager:(id)self5 learnedLocationManager:(id)self6 learnedLocationStore:(id)self7 locationManager:(id)self8 locationStore:(id)self9 mapServiceManager:(id)serviceManager motionActivityManager:(id)activityManager peopleDiscoveryProvider:(id)discoveryProvider persistenceManager:(id)persistenceManager placeInferenceQueryStore:(id)queryStore pointOfInterestSampler:(id)sampler predictedContextManager:(id)contextManager purgeManager:(id)purgeManager safetyCacheStore:(id)cacheStore scenarioTriggerManager:(id)triggerManager userCurationManager:(id)queue0 vehicleLocationProvider:(id)queue1 visitManager:(id)queue2 workoutRouteManager:(id)queue3 workoutScheduler:(id)queue4
 {
-  v90 = a3;
-  v62 = a4;
-  v58 = a5;
-  v89 = a6;
-  v88 = a7;
-  v87 = a8;
-  v86 = a9;
-  v85 = a10;
-  v84 = a11;
-  v83 = a12;
-  v82 = a13;
-  v81 = a14;
-  v80 = a15;
-  v79 = a16;
-  v78 = a17;
+  queueCopy = queue;
+  managerCopy = manager;
+  assetManagerCopy = assetManager;
+  authorizationManagerCopy = authorizationManager;
+  tileManagerCopy = tileManager;
+  polygonManagerCopy = polygonManager;
+  predictorCopy = predictor;
+  diagnosticsCopy = diagnostics;
+  providerCopy = provider;
+  locationManagerCopy = locationManager;
+  fingerprintManagerCopy = fingerprintManager;
+  hintManagerCopy = hintManager;
+  sManagerCopy = sManager;
+  learnedLocationManagerCopy = learnedLocationManager;
+  storeCopy = store;
   v77 = a18;
-  v61 = a19;
-  v76 = a20;
-  v75 = a21;
-  v74 = a22;
-  v73 = a23;
-  v72 = a24;
-  v71 = a25;
-  v70 = a26;
-  v69 = a27;
-  v59 = a28;
-  v68 = a29;
-  v67 = a30;
-  v66 = a31;
-  v65 = a32;
-  v64 = a33;
-  v63 = a34;
-  if (v90)
+  locationStoreCopy = locationStore;
+  serviceManagerCopy = serviceManager;
+  activityManagerCopy = activityManager;
+  discoveryProviderCopy = discoveryProvider;
+  persistenceManagerCopy = persistenceManager;
+  queryStoreCopy = queryStore;
+  samplerCopy = sampler;
+  contextManagerCopy = contextManager;
+  purgeManagerCopy = purgeManager;
+  cacheStoreCopy = cacheStore;
+  triggerManagerCopy = triggerManager;
+  curationManagerCopy = curationManager;
+  locationProviderCopy = locationProvider;
+  visitManagerCopy = visitManager;
+  routeManagerCopy = routeManager;
+  schedulerCopy = scheduler;
+  if (queueCopy)
   {
-    v39 = v58;
-    if (!v58)
+    v39 = assetManagerCopy;
+    if (!assetManagerCopy)
     {
       v51 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v47 = v89;
+      v47 = authorizationManagerCopy;
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
@@ -140,63 +140,63 @@
       }
 
       v45 = 0;
-      v46 = v90;
+      v46 = queueCopy;
       goto LABEL_38;
     }
 
-    if (v89)
+    if (authorizationManagerCopy)
     {
-      if (v88)
+      if (tileManagerCopy)
       {
-        if (v87)
+        if (polygonManagerCopy)
         {
-          if (v86)
+          if (predictorCopy)
           {
-            if (v85)
+            if (diagnosticsCopy)
             {
-              if (v84)
+              if (providerCopy)
               {
-                if (v83)
+                if (locationManagerCopy)
                 {
-                  if (v82)
+                  if (fingerprintManagerCopy)
                   {
-                    if (v81)
+                    if (hintManagerCopy)
                     {
-                      if (v80)
+                      if (sManagerCopy)
                       {
-                        if (v79)
+                        if (learnedLocationManagerCopy)
                         {
-                          if (v78)
+                          if (storeCopy)
                           {
                             if (v77)
                             {
-                              if (v76)
+                              if (serviceManagerCopy)
                               {
-                                if (v75)
+                                if (activityManagerCopy)
                                 {
-                                  if (v74)
+                                  if (discoveryProviderCopy)
                                   {
-                                    if (v73)
+                                    if (persistenceManagerCopy)
                                     {
-                                      if (v72)
+                                      if (queryStoreCopy)
                                       {
-                                        if (v71)
+                                        if (samplerCopy)
                                         {
-                                          if (v70)
+                                          if (contextManagerCopy)
                                           {
-                                            if (v69)
+                                            if (purgeManagerCopy)
                                             {
-                                              if (v68)
+                                              if (triggerManagerCopy)
                                               {
-                                                if (v67)
+                                                if (curationManagerCopy)
                                                 {
-                                                  if (v66)
+                                                  if (locationProviderCopy)
                                                   {
-                                                    if (v65)
+                                                    if (visitManagerCopy)
                                                     {
-                                                      if (v64)
+                                                      if (routeManagerCopy)
                                                       {
-                                                        if (v63)
+                                                        if (schedulerCopy)
                                                         {
                                                           v91.receiver = self;
                                                           v91.super_class = RTDaemonClientInternal;
@@ -204,49 +204,49 @@
                                                           v41 = v40;
                                                           if (v40)
                                                           {
-                                                            objc_storeStrong(&v40->_queue, a3);
-                                                            objc_storeStrong(&v41->_accountManager, a4);
-                                                            objc_storeStrong(&v41->_assetManager, a5);
-                                                            objc_storeStrong(&v41->_authorizationManager, a6);
-                                                            objc_storeStrong(&v41->_bluePOITileManager, a7);
-                                                            objc_storeStrong(&v41->_buildingPolygonManager, a8);
-                                                            objc_storeStrong(&v41->_deviceLocationPredictor, a9);
-                                                            objc_storeStrong(&v41->_diagnostics, a10);
-                                                            objc_storeStrong(&v41->_eventModelProvider, a11);
-                                                            objc_storeStrong(&v41->_authorizedLocationManager, a12);
-                                                            objc_storeStrong(&v41->_fingerprintManager, a13);
-                                                            objc_storeStrong(&v41->_hintManager, a14);
-                                                            objc_storeStrong(&v41->_intermittentGNSSManager, a15);
-                                                            objc_storeStrong(&v41->_learnedLocationManager, a16);
-                                                            objc_storeStrong(&v41->_learnedLocationStore, a17);
+                                                            objc_storeStrong(&v40->_queue, queue);
+                                                            objc_storeStrong(&v41->_accountManager, manager);
+                                                            objc_storeStrong(&v41->_assetManager, assetManager);
+                                                            objc_storeStrong(&v41->_authorizationManager, authorizationManager);
+                                                            objc_storeStrong(&v41->_bluePOITileManager, tileManager);
+                                                            objc_storeStrong(&v41->_buildingPolygonManager, polygonManager);
+                                                            objc_storeStrong(&v41->_deviceLocationPredictor, predictor);
+                                                            objc_storeStrong(&v41->_diagnostics, diagnostics);
+                                                            objc_storeStrong(&v41->_eventModelProvider, provider);
+                                                            objc_storeStrong(&v41->_authorizedLocationManager, locationManager);
+                                                            objc_storeStrong(&v41->_fingerprintManager, fingerprintManager);
+                                                            objc_storeStrong(&v41->_hintManager, hintManager);
+                                                            objc_storeStrong(&v41->_intermittentGNSSManager, sManager);
+                                                            objc_storeStrong(&v41->_learnedLocationManager, learnedLocationManager);
+                                                            objc_storeStrong(&v41->_learnedLocationStore, store);
                                                             objc_storeStrong(&v41->_locationManager, a18);
-                                                            objc_storeStrong(&v41->_locationStore, a19);
-                                                            objc_storeStrong(&v41->_mapServiceManager, a20);
-                                                            objc_storeStrong(&v41->_motionActivityManager, a21);
-                                                            objc_storeStrong(&v41->_peopleDiscoveryProvider, a22);
-                                                            objc_storeStrong(&v41->_persistenceManager, a23);
-                                                            objc_storeStrong(&v41->_placeInferenceQueryStore, a24);
-                                                            objc_storeStrong(&v41->_pointOfInterestSampler, a25);
-                                                            objc_storeStrong(&v41->_predictedContextManager, a26);
-                                                            objc_storeStrong(&v41->_purgeManager, a27);
-                                                            objc_storeStrong(&v41->_scenarioTriggerManager, a29);
-                                                            objc_storeStrong(&v41->_userCurationManager, a30);
-                                                            objc_storeStrong(&v41->_vehicleLocationProvider, a31);
-                                                            objc_storeStrong(&v41->_visitManager, a32);
-                                                            objc_storeStrong(&v41->_workoutRouteManager, a33);
-                                                            objc_storeStrong(&v41->_workoutScheduler, a34);
-                                                            objc_storeStrong(&v41->_safetyCacheStore, a28);
+                                                            objc_storeStrong(&v41->_locationStore, locationStore);
+                                                            objc_storeStrong(&v41->_mapServiceManager, serviceManager);
+                                                            objc_storeStrong(&v41->_motionActivityManager, activityManager);
+                                                            objc_storeStrong(&v41->_peopleDiscoveryProvider, discoveryProvider);
+                                                            objc_storeStrong(&v41->_persistenceManager, persistenceManager);
+                                                            objc_storeStrong(&v41->_placeInferenceQueryStore, queryStore);
+                                                            objc_storeStrong(&v41->_pointOfInterestSampler, sampler);
+                                                            objc_storeStrong(&v41->_predictedContextManager, contextManager);
+                                                            objc_storeStrong(&v41->_purgeManager, purgeManager);
+                                                            objc_storeStrong(&v41->_scenarioTriggerManager, triggerManager);
+                                                            objc_storeStrong(&v41->_userCurationManager, curationManager);
+                                                            objc_storeStrong(&v41->_vehicleLocationProvider, locationProvider);
+                                                            objc_storeStrong(&v41->_visitManager, visitManager);
+                                                            objc_storeStrong(&v41->_workoutRouteManager, routeManager);
+                                                            objc_storeStrong(&v41->_workoutScheduler, scheduler);
+                                                            objc_storeStrong(&v41->_safetyCacheStore, cacheStore);
                                                             v42 = +[RTEntitlementProvider internalDaemonProtocolEntitlementProvider];
                                                             entitlementProvider = v41->_entitlementProvider;
                                                             v41->_entitlementProvider = v42;
                                                           }
 
-                                                          v44 = v41;
-                                                          v45 = v44;
-                                                          v47 = v89;
-                                                          v46 = v90;
-                                                          v49 = v61;
-                                                          v48 = v62;
+                                                          selfCopy2 = v41;
+                                                          v45 = selfCopy2;
+                                                          v47 = authorizationManagerCopy;
+                                                          v46 = queueCopy;
+                                                          v49 = locationStoreCopy;
+                                                          v48 = managerCopy;
                                                           goto LABEL_39;
                                                         }
 
@@ -390,12 +390,12 @@
 LABEL_77:
 
                                     v45 = 0;
-                                    v47 = v89;
-                                    v46 = v90;
-                                    v49 = v61;
-                                    v48 = v62;
-                                    v52 = v59;
-                                    v44 = self;
+                                    v47 = authorizationManagerCopy;
+                                    v46 = queueCopy;
+                                    v49 = locationStoreCopy;
+                                    v48 = managerCopy;
+                                    v52 = cacheStoreCopy;
+                                    selfCopy2 = self;
                                     goto LABEL_78;
                                   }
 
@@ -608,7 +608,7 @@ LABEL_76:
     goto LABEL_77;
   }
 
-  v39 = v58;
+  v39 = assetManagerCopy;
   v50 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
   {
@@ -621,14 +621,14 @@ LABEL_51:
 LABEL_34:
 
   v45 = 0;
-  v47 = v89;
-  v46 = v90;
+  v47 = authorizationManagerCopy;
+  v46 = queueCopy;
 LABEL_38:
-  v48 = v62;
-  v44 = self;
-  v49 = v61;
+  v48 = managerCopy;
+  selfCopy2 = self;
+  v49 = locationStoreCopy;
 LABEL_39:
-  v52 = v59;
+  v52 = cacheStoreCopy;
 LABEL_78:
 
   return v45;
@@ -637,20 +637,20 @@ LABEL_78:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTDaemonClientInternal *)self executablePath];
-  v5 = [(RTDaemonClientInternal *)self processIdentifier];
-  v6 = [(RTDaemonClientInternal *)self signingIdentifier];
-  v7 = [v3 stringWithFormat:@"%@(%d), %@", v4, v5, v6];
+  executablePath = [(RTDaemonClientInternal *)self executablePath];
+  processIdentifier = [(RTDaemonClientInternal *)self processIdentifier];
+  signingIdentifier = [(RTDaemonClientInternal *)self signingIdentifier];
+  v7 = [v3 stringWithFormat:@"%@(%d), %@", executablePath, processIdentifier, signingIdentifier];
 
   return v7;
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  [v10 retainArguments];
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -686,13 +686,13 @@ LABEL_78:
   block[1] = 3221225472;
   block[2] = __62__RTDaemonClientInternal_connection_handleInvocation_isReply___block_invoke;
   block[3] = &unk_2788C5440;
-  v29 = a5;
-  v25 = v10;
-  v26 = self;
-  v27 = v9;
+  replyCopy = reply;
+  v25 = invocationCopy;
+  selfCopy = self;
+  v27 = connectionCopy;
   v28 = v30;
-  v19 = v9;
-  v20 = v10;
+  v19 = connectionCopy;
+  v20 = invocationCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v30, 8);
@@ -824,149 +824,149 @@ void __62__RTDaemonClientInternal_connection_handleInvocation_isReply___block_in
   [v3 invoke];
 }
 
-- (void)setXpcConnection:(id)a3
+- (void)setXpcConnection:(id)connection
 {
-  v5 = a3;
-  objc_storeStrong(&self->_xpcConnection, a3);
+  connectionCopy = connection;
+  objc_storeStrong(&self->_xpcConnection, connection);
   xpcConnection = self->_xpcConnection;
   if (xpcConnection)
   {
-    v7 = [(RTDaemonClientInternal *)self queue];
-    [(NSXPCConnection *)xpcConnection _setQueue:v7];
+    queue = [(RTDaemonClientInternal *)self queue];
+    [(NSXPCConnection *)xpcConnection _setQueue:queue];
 
     v8 = self->_xpcConnection;
     v9 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2845DCEB8];
     [(NSXPCConnection *)v8 setExportedInterface:v9];
 
     [(NSXPCConnection *)self->_xpcConnection setExportedObject:self];
-    v10 = [(RTDaemonClientInternal *)self xpcConnection];
-    v11 = [v10 exportedInterface];
+    xpcConnection = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface = [xpcConnection exportedInterface];
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    [v11 setClasses:v14 forSelector:sel_injectLocations_reply_ argumentIndex:0 ofReply:0];
+    [exportedInterface setClasses:v14 forSelector:sel_injectLocations_reply_ argumentIndex:0 ofReply:0];
 
-    v15 = [(RTDaemonClientInternal *)self xpcConnection];
-    v16 = [v15 exportedInterface];
+    xpcConnection2 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface2 = [xpcConnection2 exportedInterface];
     v17 = MEMORY[0x277CBEB98];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    [v16 setClasses:v19 forSelector:sel_extendLifetimeOfVisitsWithIdentifiers_toExpireOn_reply_ argumentIndex:0 ofReply:0];
+    [exportedInterface2 setClasses:v19 forSelector:sel_extendLifetimeOfVisitsWithIdentifiers_toExpireOn_reply_ argumentIndex:0 ofReply:0];
 
-    v20 = [(RTDaemonClientInternal *)self xpcConnection];
-    v21 = [v20 exportedInterface];
+    xpcConnection3 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface3 = [xpcConnection3 exportedInterface];
     v22 = MEMORY[0x277CBEB98];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    [v21 setClasses:v24 forSelector:sel_expireLifetimeOfVisitsWithIdentifiers_expirationDate_reply_ argumentIndex:0 ofReply:0];
+    [exportedInterface3 setClasses:v24 forSelector:sel_expireLifetimeOfVisitsWithIdentifiers_expirationDate_reply_ argumentIndex:0 ofReply:0];
 
-    v25 = [(RTDaemonClientInternal *)self xpcConnection];
-    v26 = [v25 exportedInterface];
+    xpcConnection4 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface4 = [xpcConnection4 exportedInterface];
     v27 = MEMORY[0x277CBEB98];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    [v26 setClasses:v29 forSelector:sel_storeHints_reply_ argumentIndex:0 ofReply:0];
+    [exportedInterface4 setClasses:v29 forSelector:sel_storeHints_reply_ argumentIndex:0 ofReply:0];
 
-    v30 = [(RTDaemonClientInternal *)self xpcConnection];
-    v31 = [v30 exportedInterface];
+    xpcConnection5 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface5 = [xpcConnection5 exportedInterface];
     v32 = MEMORY[0x277CBEB98];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    [v31 setClasses:v34 forSelector:sel_fetchBuildingPolygonsFromLocations_radius_limit_reply_ argumentIndex:0 ofReply:0];
+    [exportedInterface5 setClasses:v34 forSelector:sel_fetchBuildingPolygonsFromLocations_radius_limit_reply_ argumentIndex:0 ofReply:0];
 
-    v35 = [(RTDaemonClientInternal *)self xpcConnection];
-    v36 = [v35 exportedInterface];
+    xpcConnection6 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface6 = [xpcConnection6 exportedInterface];
     v37 = MEMORY[0x277CBEB98];
     v38 = objc_opt_class();
     v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-    [v36 setClasses:v39 forSelector:sel_fetchBuildingPolygonsFromLocations_radius_limit_reply_ argumentIndex:0 ofReply:1];
+    [exportedInterface6 setClasses:v39 forSelector:sel_fetchBuildingPolygonsFromLocations_radius_limit_reply_ argumentIndex:0 ofReply:1];
 
-    v40 = [(RTDaemonClientInternal *)self xpcConnection];
-    v41 = [v40 exportedInterface];
+    xpcConnection7 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface7 = [xpcConnection7 exportedInterface];
     v42 = MEMORY[0x277CBEB98];
     v43 = objc_opt_class();
     v44 = [v42 setWithObjects:{v43, objc_opt_class(), 0}];
-    [v41 setClasses:v44 forSelector:sel_injectPeopleDensityStats_duration_date_advertisements_handler_ argumentIndex:3 ofReply:0];
+    [exportedInterface7 setClasses:v44 forSelector:sel_injectPeopleDensityStats_duration_date_advertisements_handler_ argumentIndex:3 ofReply:0];
 
-    v45 = [(RTDaemonClientInternal *)self xpcConnection];
-    v46 = [v45 exportedInterface];
+    xpcConnection8 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface8 = [xpcConnection8 exportedInterface];
     v47 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    [v46 setClasses:v47 forSelector:sel_fetchPlaceInferenceQueriesWithDateInterval_ascending_reply_ argumentIndex:0 ofReply:0];
+    [exportedInterface8 setClasses:v47 forSelector:sel_fetchPlaceInferenceQueriesWithDateInterval_ascending_reply_ argumentIndex:0 ofReply:0];
 
-    v48 = [(RTDaemonClientInternal *)self xpcConnection];
-    v49 = [v48 exportedInterface];
+    xpcConnection9 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface9 = [xpcConnection9 exportedInterface];
     v50 = MEMORY[0x277CBEB98];
     v51 = objc_opt_class();
     v52 = [v50 setWithObjects:{v51, objc_opt_class(), 0}];
-    [v49 setClasses:v52 forSelector:sel_fetchPlaceInferenceQueriesWithDateInterval_ascending_reply_ argumentIndex:0 ofReply:1];
+    [exportedInterface9 setClasses:v52 forSelector:sel_fetchPlaceInferenceQueriesWithDateInterval_ascending_reply_ argumentIndex:0 ofReply:1];
 
-    v53 = [(RTDaemonClientInternal *)self xpcConnection];
-    v54 = [v53 exportedInterface];
+    xpcConnection10 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface10 = [xpcConnection10 exportedInterface];
     v55 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    [v54 setClasses:v55 forSelector:sel_fetchPointOfInterestsAroundCoordinate_radius_reply_ argumentIndex:0 ofReply:0];
+    [exportedInterface10 setClasses:v55 forSelector:sel_fetchPointOfInterestsAroundCoordinate_radius_reply_ argumentIndex:0 ofReply:0];
 
-    v56 = [(RTDaemonClientInternal *)self xpcConnection];
-    v57 = [v56 exportedInterface];
+    xpcConnection11 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface11 = [xpcConnection11 exportedInterface];
     v58 = MEMORY[0x277CBEB98];
     v59 = objc_opt_class();
     v60 = [v58 setWithObjects:{v59, objc_opt_class(), 0}];
-    [v57 setClasses:v60 forSelector:sel_fetchPointOfInterestsAroundCoordinate_radius_reply_ argumentIndex:0 ofReply:1];
+    [exportedInterface11 setClasses:v60 forSelector:sel_fetchPointOfInterestsAroundCoordinate_radius_reply_ argumentIndex:0 ofReply:1];
 
-    v61 = [(RTDaemonClientInternal *)self xpcConnection];
-    v62 = [v61 exportedInterface];
+    xpcConnection12 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface12 = [xpcConnection12 exportedInterface];
     v63 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    [v62 setClasses:v63 forSelector:sel_fetchPointOfInterestAttributesWithIdentifier_reply_ argumentIndex:0 ofReply:1];
+    [exportedInterface12 setClasses:v63 forSelector:sel_fetchPointOfInterestAttributesWithIdentifier_reply_ argumentIndex:0 ofReply:1];
 
-    v64 = [(RTDaemonClientInternal *)self xpcConnection];
-    v65 = [v64 exportedInterface];
+    xpcConnection13 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface13 = [xpcConnection13 exportedInterface];
     v66 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    [v65 setClasses:v66 forSelector:sel_fetchBluePOITileWithGeoTileKey_reply_ argumentIndex:0 ofReply:1];
+    [exportedInterface13 setClasses:v66 forSelector:sel_fetchBluePOITileWithGeoTileKey_reply_ argumentIndex:0 ofReply:1];
 
-    v67 = [(RTDaemonClientInternal *)self xpcConnection];
-    v68 = [v67 exportedInterface];
+    xpcConnection14 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface14 = [xpcConnection14 exportedInterface];
     v69 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    [v68 setClasses:v69 forSelector:sel_fetchBluePOIMetadataWithHandler_ argumentIndex:0 ofReply:1];
+    [exportedInterface14 setClasses:v69 forSelector:sel_fetchBluePOIMetadataWithHandler_ argumentIndex:0 ofReply:1];
 
-    v70 = [(RTDaemonClientInternal *)self xpcConnection];
-    v71 = [v70 exportedInterface];
+    xpcConnection15 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface15 = [xpcConnection15 exportedInterface];
     v72 = MEMORY[0x277CBEB98];
     v73 = objc_opt_class();
     v74 = [v72 setWithObjects:{v73, objc_opt_class(), 0}];
-    [v71 setClasses:v74 forSelector:sel_storeBluePOITiles_handler_ argumentIndex:0 ofReply:0];
+    [exportedInterface15 setClasses:v74 forSelector:sel_storeBluePOITiles_handler_ argumentIndex:0 ofReply:0];
 
-    v75 = [(RTDaemonClientInternal *)self xpcConnection];
-    v76 = [v75 exportedInterface];
+    xpcConnection16 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface16 = [xpcConnection16 exportedInterface];
     v77 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    [v76 setClasses:v77 forSelector:sel_fetchCurrentLocationWithReply_ argumentIndex:0 ofReply:1];
+    [exportedInterface16 setClasses:v77 forSelector:sel_fetchCurrentLocationWithReply_ argumentIndex:0 ofReply:1];
 
-    v78 = [(RTDaemonClientInternal *)self xpcConnection];
-    v79 = [v78 exportedInterface];
+    xpcConnection17 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface17 = [xpcConnection17 exportedInterface];
     v80 = MEMORY[0x277CBEB98];
     v81 = objc_opt_class();
     v82 = objc_opt_class();
     v83 = objc_opt_class();
     v84 = [v80 setWithObjects:{v81, v82, v83, objc_opt_class(), 0}];
-    [v79 setClasses:v84 forSelector:sel_fetchLocationsFromCoreLocationWithOptions_reply_ argumentIndex:0 ofReply:0];
+    [exportedInterface17 setClasses:v84 forSelector:sel_fetchLocationsFromCoreLocationWithOptions_reply_ argumentIndex:0 ofReply:0];
 
-    v85 = [(RTDaemonClientInternal *)self xpcConnection];
-    v86 = [v85 exportedInterface];
+    xpcConnection18 = [(RTDaemonClientInternal *)self xpcConnection];
+    exportedInterface18 = [xpcConnection18 exportedInterface];
     v87 = MEMORY[0x277CBEB98];
     v88 = objc_opt_class();
     v89 = objc_opt_class();
     v90 = objc_opt_class();
     v91 = [v87 setWithObjects:{v88, v89, v90, objc_opt_class(), 0}];
-    [v86 setClasses:v91 forSelector:sel_fetchLocationsFromCoreLocationWithOptions_reply_ argumentIndex:0 ofReply:1];
+    [exportedInterface18 setClasses:v91 forSelector:sel_fetchLocationsFromCoreLocationWithOptions_reply_ argumentIndex:0 ofReply:1];
 
-    v92 = [(RTDaemonClientInternal *)self xpcConnection];
-    v93 = [v92 remoteObjectInterface];
-    [v93 setClass:objc_opt_class() forSelector:sel_fetchUserCurationsWithOptions_handler_ argumentIndex:0 ofReply:0];
+    xpcConnection19 = [(RTDaemonClientInternal *)self xpcConnection];
+    remoteObjectInterface = [xpcConnection19 remoteObjectInterface];
+    [remoteObjectInterface setClass:objc_opt_class() forSelector:sel_fetchUserCurationsWithOptions_handler_ argumentIndex:0 ofReply:0];
 
-    v94 = [(RTDaemonClientInternal *)self xpcConnection];
-    v95 = [v94 remoteObjectInterface];
+    xpcConnection20 = [(RTDaemonClientInternal *)self xpcConnection];
+    remoteObjectInterface2 = [xpcConnection20 remoteObjectInterface];
     v96 = MEMORY[0x277CBEB98];
     v97 = objc_opt_class();
     v98 = [v96 setWithObjects:{v97, objc_opt_class(), 0}];
-    [v95 setClasses:v98 forSelector:sel_fetchUserCurationsWithOptions_handler_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface2 setClasses:v98 forSelector:sel_fetchUserCurationsWithOptions_handler_ argumentIndex:0 ofReply:1];
 
     objc_initWeak(&location, self);
     v99 = self->_xpcConnection;
@@ -1024,17 +1024,17 @@ void __43__RTDaemonClientInternal_setXpcConnection___block_invoke_726(uint64_t a
   [WeakRetained setXpcConnection:0];
 }
 
-- (void)fetchDataVaultPath:(id)a3
+- (void)fetchDataVaultPath:(id)path
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
     v7 = *MEMORY[0x277CCA450];
     v8[0] = @"This operation is unsupported on this platform.";
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:1 userInfo:v4];
-    v3[2](v3, 0, v5);
+    pathCopy[2](pathCopy, 0, v5);
   }
 
   else
@@ -1048,20 +1048,20 @@ void __43__RTDaemonClientInternal_setXpcConnection___block_invoke_726(uint64_t a
   }
 }
 
-- (void)fetchPathToBackupWithReply:(id)a3
+- (void)fetchPathToBackupWithReply:(id)reply
 {
-  v5 = a3;
-  if (v5)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self diagnostics];
+    diagnostics = [(RTDaemonClientInternal *)self diagnostics];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __53__RTDaemonClientInternal_fetchPathToBackupWithReply___block_invoke;
     v8[3] = &unk_2788CBAA0;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
-    [v6 fetchPathToBackupWithHandler:v8];
+    v9 = replyCopy;
+    [diagnostics fetchPathToBackupWithHandler:v8];
   }
 
   else
@@ -1102,11 +1102,11 @@ void __53__RTDaemonClientInternal_fetchPathToBackupWithReply___block_invoke(uint
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchAllLocationsOfInterestWithReply:(id)a3
+- (void)fetchAllLocationsOfInterestWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  replyCopy = reply;
+  v6 = replyCopy;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v9[0] = MEMORY[0x277D85DD0];
@@ -1115,7 +1115,7 @@ void __53__RTDaemonClientInternal_fetchPathToBackupWithReply___block_invoke(uint
     v9[3] = &unk_2788C5508;
     v9[4] = self;
     v11 = a2;
-    v10 = v5;
+    v10 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager fetchAllLocationsOfInterestWithHandler:v9];
   }
 
@@ -1180,20 +1180,20 @@ void __63__RTDaemonClientInternal_fetchAllLocationsOfInterestWithReply___block_i
   (*(v7 + 16))(v7, v8, *(a1 + 48));
 }
 
-- (void)forceSequentialClusterIdentification:(id)a3
+- (void)forceSequentialClusterIdentification:(id)identification
 {
-  v5 = a3;
-  if (v5)
+  identificationCopy = identification;
+  if (identificationCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self learnedLocationManager];
+    learnedLocationManager = [(RTDaemonClientInternal *)self learnedLocationManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __63__RTDaemonClientInternal_forceSequentialClusterIdentification___block_invoke;
     v8[3] = &unk_2788C56C0;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 trainForReason:2 mode:1 handler:v8];
+    v9 = identificationCopy;
+    [learnedLocationManager trainForReason:2 mode:1 handler:v8];
   }
 
   else
@@ -1248,14 +1248,14 @@ uint64_t __63__RTDaemonClientInternal_forceSequentialClusterIdentification___blo
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)injectLocationOfInterest:(id)a3 reply:(id)a4
+- (void)injectLocationOfInterest:(id)interest reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  interestCopy = interest;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v10 = [[RTLearnedLocationOfInterest alloc] initWithLocationOfInterest:v7 creationDate:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    v10 = [[RTLearnedLocationOfInterest alloc] initWithLocationOfInterest:interestCopy creationDate:date];
     learnedLocationManager = self->_learnedLocationManager;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -1263,18 +1263,18 @@ uint64_t __63__RTDaemonClientInternal_forceSequentialClusterIdentification___blo
     v13[3] = &unk_2788C56C0;
     v13[4] = self;
     v15 = a2;
-    v14 = v8;
-    v12 = self;
+    v14 = replyCopy;
+    selfCopy = self;
     [(RTLearnedLocationManager *)learnedLocationManager addLocationOfInterest:v10 handler:v13];
   }
 
   else
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    date = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, date, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", buf, 2u);
     }
   }
 }
@@ -1320,20 +1320,20 @@ uint64_t __57__RTDaemonClientInternal_injectLocationOfInterest_reply___block_inv
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)injectVisit:(id)a3 finerGranularityInferredMapItem:(id)a4 locationOfInterest:(id)a5 reply:(id)a6
+- (void)injectVisit:(id)visit finerGranularityInferredMapItem:(id)item locationOfInterest:(id)interest reply:(id)reply
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v14)
+  visitCopy = visit;
+  itemCopy = item;
+  interestCopy = interest;
+  replyCopy = reply;
+  if (replyCopy)
   {
     [MEMORY[0x277CBEAA8] date];
     v15 = v23 = a2;
     v16 = [v15 dateByAddingTimeInterval:2419200.0];
-    v17 = [[RTLearnedVisit alloc] initWithVisit:v11 locationOfInterest:v13 creationDate:v15 expirationDate:v16];
-    v18 = [[RTLearnedLocationOfInterest alloc] initWithLocationOfInterest:v13 creationDate:v15];
-    v19 = v11;
+    v17 = [[RTLearnedVisit alloc] initWithVisit:visitCopy locationOfInterest:interestCopy creationDate:v15 expirationDate:v16];
+    v18 = [[RTLearnedLocationOfInterest alloc] initWithLocationOfInterest:interestCopy creationDate:v15];
+    v19 = visitCopy;
     learnedLocationManager = self->_learnedLocationManager;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -1341,11 +1341,11 @@ uint64_t __57__RTDaemonClientInternal_injectLocationOfInterest_reply___block_inv
     v24[3] = &unk_2788C56C0;
     v24[4] = self;
     v26 = v23;
-    v25 = v14;
-    v21 = self;
+    v25 = replyCopy;
+    selfCopy = self;
     v22 = learnedLocationManager;
-    v11 = v19;
-    [(RTLearnedLocationManager *)v22 addVisit:v17 finerGranularityInferredMapItem:v12 locationOfInterest:v18 handler:v24];
+    visitCopy = v19;
+    [(RTLearnedLocationManager *)v22 addVisit:v17 finerGranularityInferredMapItem:itemCopy locationOfInterest:v18 handler:v24];
   }
 
   else
@@ -1400,12 +1400,12 @@ uint64_t __95__RTDaemonClientInternal_injectVisit_finerGranularityInferredMapIte
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchStoredLocationsCountFromDate:(id)a3 toDate:(id)a4 uncertainty:(double)a5 limit:(unint64_t)a6 reply:(id)a7
+- (void)fetchStoredLocationsCountFromDate:(id)date toDate:(id)toDate uncertainty:(double)uncertainty limit:(unint64_t)limit reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  if (v15)
+  dateCopy = date;
+  toDateCopy = toDate;
+  replyCopy = reply;
+  if (replyCopy)
   {
     locationManager = self->_locationManager;
     v18[0] = MEMORY[0x277D85DD0];
@@ -1414,12 +1414,12 @@ uint64_t __95__RTDaemonClientInternal_injectVisit_finerGranularityInferredMapIte
     v18[3] = &unk_2788CBAF0;
     v18[4] = self;
     v22 = a2;
-    v19 = v13;
-    v20 = v14;
-    v23 = a5;
-    v24 = a6;
-    v21 = v15;
-    [(RTLocationManager *)locationManager fetchStoredLocationsCountFromDate:v19 toDate:v20 uncertainty:a6 limit:v18 handler:a5];
+    v19 = dateCopy;
+    v20 = toDateCopy;
+    uncertaintyCopy = uncertainty;
+    limitCopy = limit;
+    v21 = replyCopy;
+    [(RTLocationManager *)locationManager fetchStoredLocationsCountFromDate:v19 toDate:v20 uncertainty:limit limit:v18 handler:uncertainty];
   }
 
   else
@@ -1496,15 +1496,15 @@ uint64_t __91__RTDaemonClientInternal_fetchStoredLocationsCountFromDate_toDate_u
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)fetchLocationsOfInterestWithVisitsWithinDistance:(id)a3 location:(id)a4 reply:(id)a5
+- (void)fetchLocationsOfInterestWithVisitsWithinDistance:(id)distance location:(id)location reply:(id)reply
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  distanceCopy = distance;
+  locationCopy = location;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v9)
+    if (distanceCopy)
     {
       *buf = 0;
       v36 = buf;
@@ -1537,7 +1537,7 @@ uint64_t __91__RTDaemonClientInternal_fetchStoredLocationsCountFromDate_toDate_u
       }
 
       learnedLocationStore = self->_learnedLocationStore;
-      [v9 doubleValue];
+      [distanceCopy doubleValue];
       v21 = v20;
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
@@ -1545,9 +1545,9 @@ uint64_t __91__RTDaemonClientInternal_fetchStoredLocationsCountFromDate_toDate_u
       v29[3] = &unk_2788CBB40;
       v29[4] = self;
       v34 = a2;
-      v30 = v9;
-      v31 = v10;
-      v32 = v11;
+      v30 = distanceCopy;
+      v31 = locationCopy;
+      v32 = replyCopy;
       v33 = buf;
       [(RTLearnedLocationStore *)learnedLocationStore fetchLocationsOfInterestWithVisitsWithinDistance:v31 location:v29 handler:v21];
 
@@ -1562,7 +1562,7 @@ uint64_t __91__RTDaemonClientInternal_fetchStoredLocationsCountFromDate_toDate_u
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:&v45 count:1];
       v25 = [v23 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v24];
 
-      (*(v11 + 2))(v11, 0, v25);
+      (*(replyCopy + 2))(replyCopy, 0, v25);
     }
   }
 
@@ -1639,18 +1639,18 @@ void __90__RTDaemonClientInternal_fetchLocationsOfInterestWithVisitsWithinDistan
   *(v11 + 40) = 0;
 }
 
-- (void)fetchVisitsWithReply:(id)a3
+- (void)fetchVisitsWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  replyCopy = reply;
+  v5 = replyCopy;
+  if (replyCopy)
   {
     learnedLocationStore = self->_learnedLocationStore;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __47__RTDaemonClientInternal_fetchVisitsWithReply___block_invoke;
     v8[3] = &unk_2788C6D60;
-    v9 = v4;
+    v9 = replyCopy;
     [(RTLearnedLocationStore *)learnedLocationStore fetchVisitsWithHandler:v8];
     v7 = v9;
   }
@@ -1713,9 +1713,9 @@ void __47__RTDaemonClientInternal_fetchVisitsWithReply___block_invoke(uint64_t a
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)forceRelabeling:(id)a3
+- (void)forceRelabeling:(id)relabeling
 {
-  if (a3)
+  if (relabeling)
   {
     learnedLocationManager = self->_learnedLocationManager;
 
@@ -1735,18 +1735,18 @@ void __47__RTDaemonClientInternal_fetchVisitsWithReply___block_invoke(uint64_t a
   }
 }
 
-- (void)forcePlaceTypeClassificationWithReply:(id)a3
+- (void)forcePlaceTypeClassificationWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  replyCopy = reply;
+  v5 = replyCopy;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__RTDaemonClientInternal_forcePlaceTypeClassificationWithReply___block_invoke;
     v8[3] = &unk_2788C48C0;
-    v9 = v4;
+    v9 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager classifyPlaceTypesWithHandler:v8];
     v7 = v9;
   }
@@ -1762,9 +1762,9 @@ void __47__RTDaemonClientInternal_fetchVisitsWithReply___block_invoke(uint64_t a
   }
 }
 
-- (void)forcePredictedLocationContextModelTrainingWithReply:(id)a3
+- (void)forcePredictedLocationContextModelTrainingWithReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
     predictedContextManager = self->_predictedContextManager;
 
@@ -1784,11 +1784,11 @@ void __47__RTDaemonClientInternal_fetchVisitsWithReply___block_invoke(uint64_t a
   }
 }
 
-- (void)simulateScenarioTrigger:(id)a3 reply:(id)a4
+- (void)simulateScenarioTrigger:(id)trigger reply:(id)reply
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  replyCopy = reply;
+  v7 = replyCopy;
+  if (replyCopy)
   {
     scenarioTriggerManager = self->_scenarioTriggerManager;
     v10[0] = MEMORY[0x277D85DD0];
@@ -1796,8 +1796,8 @@ void __47__RTDaemonClientInternal_fetchVisitsWithReply___block_invoke(uint64_t a
     v10[2] = __56__RTDaemonClientInternal_simulateScenarioTrigger_reply___block_invoke;
     v10[3] = &unk_2788CBB68;
     v10[4] = self;
-    v11 = v6;
-    [(RTScenarioTriggerManager *)scenarioTriggerManager simulateScenarioTrigger:a3 handler:v10];
+    v11 = replyCopy;
+    [(RTScenarioTriggerManager *)scenarioTriggerManager simulateScenarioTrigger:trigger handler:v10];
   }
 
   else
@@ -1829,18 +1829,18 @@ void __56__RTDaemonClientInternal_simulateScenarioTrigger_reply___block_invoke(u
   dispatch_async(v7, block);
 }
 
-- (void)forceUpdateAssetMetadataWithReply:(id)a3
+- (void)forceUpdateAssetMetadataWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  replyCopy = reply;
+  v5 = replyCopy;
+  if (replyCopy)
   {
     assetManager = self->_assetManager;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __60__RTDaemonClientInternal_forceUpdateAssetMetadataWithReply___block_invoke;
     v8[3] = &unk_2788C48C0;
-    v9 = v4;
+    v9 = replyCopy;
     [(RTAssetManager *)assetManager forceUpdateAssetMetadataWithHandler:v8];
     v7 = v9;
   }
@@ -1856,11 +1856,11 @@ void __56__RTDaemonClientInternal_simulateScenarioTrigger_reply___block_invoke(u
   }
 }
 
-- (void)updateAssetServerURL:(id)a3 assetType:(id)a4 reply:(id)a5
+- (void)updateAssetServerURL:(id)l assetType:(id)type reply:(id)reply
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (replyCopy)
   {
     assetManager = self->_assetManager;
     v12[0] = MEMORY[0x277D85DD0];
@@ -1868,8 +1868,8 @@ void __56__RTDaemonClientInternal_simulateScenarioTrigger_reply___block_invoke(u
     v12[2] = __63__RTDaemonClientInternal_updateAssetServerURL_assetType_reply___block_invoke;
     v12[3] = &unk_2788C4F60;
     v12[4] = self;
-    v13 = v8;
-    [(RTAssetManager *)assetManager updateAssetServerURL:a3 assetType:a4 handler:v12];
+    v13 = replyCopy;
+    [(RTAssetManager *)assetManager updateAssetServerURL:l assetType:type handler:v12];
   }
 
   else
@@ -1898,11 +1898,11 @@ void __63__RTDaemonClientInternal_updateAssetServerURL_assetType_reply___block_i
   dispatch_async(v4, v7);
 }
 
-- (void)forceEventModelRefreshWithReply:(id)a3
+- (void)forceEventModelRefreshWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  replyCopy = reply;
+  v5 = replyCopy;
+  if (replyCopy)
   {
     eventModelProvider = self->_eventModelProvider;
     v8[0] = MEMORY[0x277D85DD0];
@@ -1910,7 +1910,7 @@ void __63__RTDaemonClientInternal_updateAssetServerURL_assetType_reply___block_i
     v8[2] = __58__RTDaemonClientInternal_forceEventModelRefreshWithReply___block_invoke;
     v8[3] = &unk_2788C4F60;
     v8[4] = self;
-    v9 = v4;
+    v9 = replyCopy;
     [(RTEventModelProvider *)eventModelProvider refreshAllLOIHistogramsWithHandler:v8];
   }
 
@@ -1951,11 +1951,11 @@ uint64_t __58__RTDaemonClientInternal_forceEventModelRefreshWithReply___block_in
   return result;
 }
 
-- (void)injectLocations:(id)a3 reply:(id)a4
+- (void)injectLocations:(id)locations reply:(id)reply
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  replyCopy = reply;
+  v7 = replyCopy;
+  if (replyCopy)
   {
     locationManager = self->_locationManager;
     v10[0] = MEMORY[0x277D85DD0];
@@ -1963,8 +1963,8 @@ uint64_t __58__RTDaemonClientInternal_forceEventModelRefreshWithReply___block_in
     v10[2] = __48__RTDaemonClientInternal_injectLocations_reply___block_invoke;
     v10[3] = &unk_2788C4F60;
     v10[4] = self;
-    v11 = v6;
-    [(RTLocationManager *)locationManager injectLocations:a3 handler:v10];
+    v11 = replyCopy;
+    [(RTLocationManager *)locationManager injectLocations:locations handler:v10];
   }
 
   else
@@ -2004,17 +2004,17 @@ uint64_t __48__RTDaemonClientInternal_injectLocations_reply___block_invoke_2(uin
   return result;
 }
 
-- (void)storeHints:(id)a3 reply:(id)a4
+- (void)storeHints:(id)hints reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   hintManager = self->_hintManager;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__RTDaemonClientInternal_storeHints_reply___block_invoke;
   v9[3] = &unk_2788C48C0;
-  v10 = v6;
-  v8 = v6;
-  [(RTHintManager *)hintManager storeHints:a3 handler:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [(RTHintManager *)hintManager storeHints:hints handler:v9];
 }
 
 uint64_t __43__RTDaemonClientInternal_storeHints_reply___block_invoke(uint64_t a1)
@@ -2028,19 +2028,19 @@ uint64_t __43__RTDaemonClientInternal_storeHints_reply___block_invoke(uint64_t a
   return result;
 }
 
-- (void)injectSignalForSignalGeneratorOptions:(id)a3 reply:(id)a4
+- (void)injectSignalForSignalGeneratorOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  replyCopy = reply;
+  v7 = replyCopy;
+  if (replyCopy)
   {
     locationManager = self->_locationManager;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __70__RTDaemonClientInternal_injectSignalForSignalGeneratorOptions_reply___block_invoke;
     v10[3] = &unk_2788C48C0;
-    v11 = v6;
-    [RTSignalGenerator injectSignalForSignalGeneratorOptions:a3 locationManager:locationManager handler:v10];
+    v11 = replyCopy;
+    [RTSignalGenerator injectSignalForSignalGeneratorOptions:options locationManager:locationManager handler:v10];
     v9 = v11;
   }
 
@@ -2055,11 +2055,11 @@ uint64_t __43__RTDaemonClientInternal_storeHints_reply___block_invoke(uint64_t a
   }
 }
 
-- (void)clearAllLocationsOfInterestWithReply:(id)a3
+- (void)clearAllLocationsOfInterestWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  replyCopy = reply;
+  v5 = replyCopy;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v8[0] = MEMORY[0x277D85DD0];
@@ -2067,7 +2067,7 @@ uint64_t __43__RTDaemonClientInternal_storeHints_reply___block_invoke(uint64_t a
     v8[2] = __63__RTDaemonClientInternal_clearAllLocationsOfInterestWithReply___block_invoke;
     v8[3] = &unk_2788C4F60;
     v8[4] = self;
-    v9 = v4;
+    v9 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager removeAllLocationsOfInterestWithHandler:v8];
   }
 
@@ -2108,13 +2108,13 @@ uint64_t __63__RTDaemonClientInternal_clearAllLocationsOfInterestWithReply___blo
   return result;
 }
 
-- (void)updateTransitionWithIdentifier:(id)a3 modeOfTransportation:(int64_t)a4 reply:(id)a5
+- (void)updateTransitionWithIdentifier:(id)identifier modeOfTransportation:(int64_t)transportation reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    -[RTLearnedLocationManager updateTransitionWithIdentifier:motionActivityType:handler:](self->_learnedLocationManager, "updateTransitionWithIdentifier:motionActivityType:handler:", v8, [MEMORY[0x277D01180] motionActivityTypeFromModeOfTransportation:a4], v9);
+    -[RTLearnedLocationManager updateTransitionWithIdentifier:motionActivityType:handler:](self->_learnedLocationManager, "updateTransitionWithIdentifier:motionActivityType:handler:", identifierCopy, [MEMORY[0x277D01180] motionActivityTypeFromModeOfTransportation:transportation], replyCopy);
   }
 
   else
@@ -2128,9 +2128,9 @@ uint64_t __63__RTDaemonClientInternal_clearAllLocationsOfInterestWithReply___blo
   }
 }
 
-- (void)reconstructTransitionsWithReply:(id)a3
+- (void)reconstructTransitionsWithReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
     learnedLocationManager = self->_learnedLocationManager;
 
@@ -2150,13 +2150,13 @@ uint64_t __63__RTDaemonClientInternal_clearAllLocationsOfInterestWithReply___blo
   }
 }
 
-- (void)simulateVisit:(id)a3 reply:(id)a4
+- (void)simulateVisit:(id)visit reply:(id)reply
 {
-  if (a4)
+  if (reply)
   {
     visitManager = self->_visitManager;
 
-    [(RTVisitManager *)visitManager simulateVisit:a3 handler:?];
+    [(RTVisitManager *)visitManager simulateVisit:visit handler:?];
   }
 
   else
@@ -2172,11 +2172,11 @@ uint64_t __63__RTDaemonClientInternal_clearAllLocationsOfInterestWithReply___blo
   }
 }
 
-- (void)fetchVisitsBetweenStartDate:(id)a3 endDate:(id)a4 reply:(id)a5
+- (void)fetchVisitsBetweenStartDate:(id)date endDate:(id)endDate reply:(id)reply
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (replyCopy)
   {
     visitManager = self->_visitManager;
     v12[0] = MEMORY[0x277D85DD0];
@@ -2184,8 +2184,8 @@ uint64_t __63__RTDaemonClientInternal_clearAllLocationsOfInterestWithReply___blo
     v12[2] = __68__RTDaemonClientInternal_fetchVisitsBetweenStartDate_endDate_reply___block_invoke;
     v12[3] = &unk_2788C5558;
     v12[4] = self;
-    v13 = v8;
-    [(RTVisitManager *)visitManager fetchVisitsFromDate:a3 toDate:a4 handler:v12];
+    v13 = replyCopy;
+    [(RTVisitManager *)visitManager fetchVisitsFromDate:date toDate:endDate handler:v12];
   }
 
   else
@@ -2222,13 +2222,13 @@ void __68__RTDaemonClientInternal_fetchVisitsBetweenStartDate_endDate_reply___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)injectRealtimeVisit:(id)a3 reply:(id)a4
+- (void)injectRealtimeVisit:(id)visit reply:(id)reply
 {
-  if (a4)
+  if (reply)
   {
     visitManager = self->_visitManager;
 
-    [(RTVisitManager *)visitManager injectRealtimeVisit:a3 handler:?];
+    [(RTVisitManager *)visitManager injectRealtimeVisit:visit handler:?];
   }
 
   else
@@ -2244,13 +2244,13 @@ void __68__RTDaemonClientInternal_fetchVisitsBetweenStartDate_endDate_reply___bl
   }
 }
 
-- (void)simulatePredictedContextResult:(id)a3 reply:(id)a4
+- (void)simulatePredictedContextResult:(id)result reply:(id)reply
 {
-  if (a4)
+  if (reply)
   {
     predictedContextManager = self->_predictedContextManager;
 
-    [(RTPredictedContextManager *)predictedContextManager simulatePredictedContextResult:a3 handler:?];
+    [(RTPredictedContextManager *)predictedContextManager simulatePredictedContextResult:result handler:?];
   }
 
   else
@@ -2266,10 +2266,10 @@ void __68__RTDaemonClientInternal_fetchVisitsBetweenStartDate_endDate_reply___bl
   }
 }
 
-- (void)fetchPredictedContextInputSignalsWithReply:(id)a3
+- (void)fetchPredictedContextInputSignalsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -2281,7 +2281,7 @@ void __68__RTDaemonClientInternal_fetchVisitsBetweenStartDate_endDate_reply___bl
       }
     }
 
-    [(RTPredictedContextManager *)self->_predictedContextManager fetchPredictedContextInputSignalsWithHandler:v4];
+    [(RTPredictedContextManager *)self->_predictedContextManager fetchPredictedContextInputSignalsWithHandler:replyCopy];
   }
 
   else
@@ -2295,17 +2295,17 @@ void __68__RTDaemonClientInternal_fetchVisitsBetweenStartDate_endDate_reply___bl
   }
 }
 
-- (void)submitHintAtLocation:(id)a3 hintSource:(int64_t)a4 reply:(id)a5
+- (void)submitHintAtLocation:(id)location hintSource:(int64_t)source reply:(id)reply
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  locationCopy = location;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v8)
+    if (locationCopy)
     {
-      [(RTHintManager *)self->_hintManager submitHintFromSource:a4 location:v8];
-      v9[2](v9, 0);
+      [(RTHintManager *)self->_hintManager submitHintFromSource:source location:locationCopy];
+      replyCopy[2](replyCopy, 0);
     }
 
     else
@@ -2316,7 +2316,7 @@ void __68__RTDaemonClientInternal_fetchVisitsBetweenStartDate_endDate_reply___bl
       v17[0] = @"Valid location required.";
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
       v14 = [v11 errorWithDomain:v12 code:7 userInfo:v13];
-      (v9)[2](v9, v14);
+      (replyCopy)[2](replyCopy, v14);
     }
   }
 
@@ -2331,11 +2331,11 @@ void __68__RTDaemonClientInternal_fetchVisitsBetweenStartDate_endDate_reply___bl
   }
 }
 
-- (void)fetchFusionCandidatesForVisitIdentifier:(id)a3 reply:(id)a4
+- (void)fetchFusionCandidatesForVisitIdentifier:(id)identifier reply:(id)reply
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  replyCopy = reply;
+  v8 = replyCopy;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v11[0] = MEMORY[0x277D85DD0];
@@ -2343,8 +2343,8 @@ void __68__RTDaemonClientInternal_fetchVisitsBetweenStartDate_endDate_reply___bl
     v11[2] = __72__RTDaemonClientInternal_fetchFusionCandidatesForVisitIdentifier_reply___block_invoke;
     v11[3] = &unk_2788C6BF8;
     v13 = a2;
-    v12 = v7;
-    [(RTLearnedLocationManager *)learnedLocationManager fetchFusionCandidatesForVisitIdentifier:a3 handler:v11];
+    v12 = replyCopy;
+    [(RTLearnedLocationManager *)learnedLocationManager fetchFusionCandidatesForVisitIdentifier:identifier handler:v11];
     v10 = v12;
   }
 
@@ -2406,11 +2406,11 @@ id __72__RTDaemonClientInternal_fetchFusionCandidatesForVisitIdentifier_reply___
   return v9;
 }
 
-- (void)fetchInferredMapItemForVisitIdentifier:(id)a3 reply:(id)a4
+- (void)fetchInferredMapItemForVisitIdentifier:(id)identifier reply:(id)reply
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  replyCopy = reply;
+  v8 = replyCopy;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v11[0] = MEMORY[0x277D85DD0];
@@ -2419,8 +2419,8 @@ id __72__RTDaemonClientInternal_fetchFusionCandidatesForVisitIdentifier_reply___
     v11[3] = &unk_2788CBBD8;
     v11[4] = self;
     v13 = a2;
-    v12 = v7;
-    [(RTLearnedLocationManager *)learnedLocationManager fetchInferredMapItemForVisitIdentifier:a3 handler:v11];
+    v12 = replyCopy;
+    [(RTLearnedLocationManager *)learnedLocationManager fetchInferredMapItemForVisitIdentifier:identifier handler:v11];
   }
 
   else
@@ -2471,11 +2471,11 @@ uint64_t __71__RTDaemonClientInternal_fetchInferredMapItemForVisitIdentifier_rep
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)queryProvider:(id)a3 options:(id)a4 reply:(id)a5
+- (void)queryProvider:(id)provider options:(id)options reply:(id)reply
 {
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  replyCopy = reply;
+  v10 = replyCopy;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v13[0] = MEMORY[0x277D85DD0];
@@ -2484,8 +2484,8 @@ uint64_t __71__RTDaemonClientInternal_fetchInferredMapItemForVisitIdentifier_rep
     v13[3] = &unk_2788C5508;
     v13[4] = self;
     v15 = a2;
-    v14 = v9;
-    [(RTLearnedLocationManager *)learnedLocationManager queryProvider:a3 options:a4 handler:v13];
+    v14 = replyCopy;
+    [(RTLearnedLocationManager *)learnedLocationManager queryProvider:provider options:options handler:v13];
   }
 
   else
@@ -2536,12 +2536,12 @@ uint64_t __54__RTDaemonClientInternal_queryProvider_options_reply___block_invoke
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchFingerprintsWithOptions:(id)a3 reply:(id)a4
+- (void)fetchFingerprintsWithOptions:(id)options reply:(id)reply
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2553,7 +2553,7 @@ uint64_t __54__RTDaemonClientInternal_queryProvider_options_reply___block_invoke
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!optionsCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2572,23 +2572,23 @@ uint64_t __54__RTDaemonClientInternal_queryProvider_options_reply___block_invoke
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v12 = [v14 errorWithDomain:v15 code:7 userInfo:v16];
 
-    v8[2](v8, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
 LABEL_9:
 
     goto LABEL_10;
   }
 
   fingerprintManager = self->_fingerprintManager;
-  v10 = [v7 dateInterval];
-  v11 = [v7 settledState];
+  dateInterval = [optionsCopy dateInterval];
+  settledState = [optionsCopy settledState];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __61__RTDaemonClientInternal_fetchFingerprintsWithOptions_reply___block_invoke;
   v17[3] = &unk_2788C5508;
   v17[4] = self;
   v19 = a2;
-  v18 = v8;
-  [(RTFingerprintManager *)fingerprintManager fetchFingerprintsInDateInterval:v10 filteredBySettledState:v11 handler:v17];
+  v18 = replyCopy;
+  [(RTFingerprintManager *)fingerprintManager fetchFingerprintsInDateInterval:dateInterval filteredBySettledState:settledState handler:v17];
 
 LABEL_10:
 }
@@ -2630,13 +2630,13 @@ uint64_t __61__RTDaemonClientInternal_fetchFingerprintsWithOptions_reply___block
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchWiFiAccessPointsForFingerprint:(id)a3 reply:(id)a4
+- (void)fetchWiFiAccessPointsForFingerprint:(id)fingerprint reply:(id)reply
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v8)
+  fingerprintCopy = fingerprint;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (!replyCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -2648,7 +2648,7 @@ uint64_t __61__RTDaemonClientInternal_fetchFingerprintsWithOptions_reply___block
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!fingerprintCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2680,8 +2680,8 @@ LABEL_9:
   v16[3] = &unk_2788C5508;
   v16[4] = self;
   v18 = a2;
-  v17 = v8;
-  [(RTFingerprintManager *)fingerprintManager fetchWifiAccessPointsForFingerprint:v7 handler:v16];
+  v17 = replyCopy;
+  [(RTFingerprintManager *)fingerprintManager fetchWifiAccessPointsForFingerprint:fingerprintCopy handler:v16];
 
 LABEL_10:
 }
@@ -2723,15 +2723,15 @@ uint64_t __68__RTDaemonClientInternal_fetchWiFiAccessPointsForFingerprint_reply_
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)injectFingerprintWithIdentifier:(id)a3 settledState:(unint64_t)a4 start:(id)a5 reply:(id)a6
+- (void)injectFingerprintWithIdentifier:(id)identifier settledState:(unint64_t)state start:(id)start reply:(id)reply
 {
   v40 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  identifierCopy = identifier;
+  startCopy = start;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (!v11)
+    if (!identifierCopy)
     {
       v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -2744,7 +2744,7 @@ uint64_t __68__RTDaemonClientInternal_fetchWiFiAccessPointsForFingerprint_reply_
       }
     }
 
-    if (a4 >= 3)
+    if (state >= 3)
     {
       v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -2756,10 +2756,10 @@ uint64_t __68__RTDaemonClientInternal_fetchWiFiAccessPointsForFingerprint_reply_
         _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: RTScenarioTriggerSettledStateIsValid(settledState) (in %s:%d)", buf, 0x12u);
       }
 
-      if (v12)
+      if (startCopy)
       {
 LABEL_8:
-        if (v11)
+        if (identifierCopy)
         {
           goto LABEL_9;
         }
@@ -2768,7 +2768,7 @@ LABEL_8:
       }
     }
 
-    else if (v12)
+    else if (startCopy)
     {
       goto LABEL_8;
     }
@@ -2783,10 +2783,10 @@ LABEL_8:
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: start (in %s:%d)", buf, 0x12u);
     }
 
-    if (v11)
+    if (identifierCopy)
     {
 LABEL_9:
-      if (a4 >= 3)
+      if (state >= 3)
       {
         v20 = MEMORY[0x277CCA9B8];
         v21 = *MEMORY[0x277D01448];
@@ -2799,9 +2799,9 @@ LABEL_9:
 
       else
       {
-        if (v12)
+        if (startCopy)
         {
-          v15 = [objc_alloc(MEMORY[0x277D01108]) initWithIdentifier:v11 settledState:a4 start:v12 accessPoints:0];
+          v15 = [objc_alloc(MEMORY[0x277D01108]) initWithIdentifier:identifierCopy settledState:state start:startCopy accessPoints:0];
           fingerprintManager = self->_fingerprintManager;
           v29 = v15;
           v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
@@ -2811,7 +2811,7 @@ LABEL_9:
           v26[3] = &unk_2788C56C0;
           v26[4] = self;
           v28 = a2;
-          v27 = v13;
+          v27 = replyCopy;
           [(RTFingerprintManager *)fingerprintManager injectFingerprints:v17 handler:v26];
 
           goto LABEL_24;
@@ -2830,7 +2830,7 @@ LABEL_23:
       v25 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:1];
       v15 = [v20 errorWithDomain:v21 code:7 userInfo:v25];
 
-      (*(v13 + 2))(v13, v15);
+      (*(replyCopy + 2))(replyCopy, v15);
       goto LABEL_24;
     }
 
@@ -2895,15 +2895,15 @@ uint64_t __83__RTDaemonClientInternal_injectFingerprintWithIdentifier_settledSta
   return result;
 }
 
-- (void)injectFingerprintWithSettledState:(BOOL)a3 start:(id)a4 reply:(id)a5
+- (void)injectFingerprintWithSettledState:(BOOL)state start:(id)start reply:(id)reply
 {
-  v6 = a3;
+  stateCopy = state;
   v21[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  startCopy = start;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v6)
+    if (stateCopy)
     {
       v11 = 2;
     }
@@ -2914,8 +2914,8 @@ uint64_t __83__RTDaemonClientInternal_injectFingerprintWithIdentifier_settledSta
     }
 
     v12 = objc_alloc(MEMORY[0x277D01108]);
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v12 initWithIdentifier:v13 settledState:v11 start:v9 accessPoints:0];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v14 = [v12 initWithIdentifier:uUID settledState:v11 start:startCopy accessPoints:0];
 
     fingerprintManager = self->_fingerprintManager;
     v21[0] = v14;
@@ -2926,7 +2926,7 @@ uint64_t __83__RTDaemonClientInternal_injectFingerprintWithIdentifier_settledSta
     v17[3] = &unk_2788C56C0;
     v17[4] = self;
     v19 = a2;
-    v18 = v10;
+    v18 = replyCopy;
     [(RTFingerprintManager *)fingerprintManager injectFingerprints:v16 handler:v17];
   }
 
@@ -2975,15 +2975,15 @@ uint64_t __72__RTDaemonClientInternal_injectFingerprintWithSettledState_start_re
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)injectWiFiAccessPointWithMac:(id)a3 rssi:(int64_t)a4 channel:(int64_t)a5 age:(double)a6 date:(id)a7 reply:(id)a8
+- (void)injectWiFiAccessPointWithMac:(id)mac rssi:(int64_t)rssi channel:(int64_t)channel age:(double)age date:(id)date reply:(id)reply
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
-  if (v17)
+  macCopy = mac;
+  dateCopy = date;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v18 = [objc_alloc(MEMORY[0x277D01430]) initWithMac:v15 rssi:a4 channel:a5 age:v16 date:a6];
+    v18 = [objc_alloc(MEMORY[0x277D01430]) initWithMac:macCopy rssi:rssi channel:channel age:dateCopy date:age];
     fingerprintManager = self->_fingerprintManager;
     v25[0] = v18;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
@@ -2993,7 +2993,7 @@ uint64_t __72__RTDaemonClientInternal_injectFingerprintWithSettledState_start_re
     v21[3] = &unk_2788C56C0;
     v21[4] = self;
     v23 = a2;
-    v22 = v17;
+    v22 = replyCopy;
     [(RTFingerprintManager *)fingerprintManager injectWifiAccessPointsToLastFingerprint:v20 handler:v21];
   }
 
@@ -3042,19 +3042,19 @@ uint64_t __83__RTDaemonClientInternal_injectWiFiAccessPointWithMac_rssi_channel_
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)logDatabasesWithReply:(id)a3
+- (void)logDatabasesWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(RTDaemonClientInternal *)self learnedLocationManager];
+    learnedLocationManager = [(RTDaemonClientInternal *)self learnedLocationManager];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__RTDaemonClientInternal_logDatabasesWithReply___block_invoke;
     v7[3] = &unk_2788C4F60;
     v7[4] = self;
-    v8 = v4;
-    [v5 logDatabasesWithHandler:v7];
+    v8 = replyCopy;
+    [learnedLocationManager logDatabasesWithHandler:v7];
   }
 
   else
@@ -3083,19 +3083,19 @@ void __48__RTDaemonClientInternal_logDatabasesWithReply___block_invoke(uint64_t 
   dispatch_async(v4, v7);
 }
 
-- (void)logSafetyCacheWithReply:(id)a3
+- (void)logSafetyCacheWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(RTDaemonClientInternal *)self safetyCacheStore];
+    safetyCacheStore = [(RTDaemonClientInternal *)self safetyCacheStore];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke;
     v7[3] = &unk_2788C4F60;
     v7[4] = self;
-    v8 = v4;
-    [v5 logStoreWithHandler:v7];
+    v8 = replyCopy;
+    [safetyCacheStore logStoreWithHandler:v7];
   }
 
   else
@@ -3126,9 +3126,9 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
   (*(*(a1 + 40) + 16))(*(a1 + 40), v6, v7, v8);
 }
 
-- (void)performExportMirroringRequest:(id)a3
+- (void)performExportMirroringRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
     persistenceManager = self->_persistenceManager;
 
@@ -3148,9 +3148,9 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
   }
 }
 
-- (void)performImportMirroringRequest:(id)a3
+- (void)performImportMirroringRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
     persistenceManager = self->_persistenceManager;
 
@@ -3170,9 +3170,9 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
   }
 }
 
-- (void)performZoneResetMirroringRequest:(id)a3
+- (void)performZoneResetMirroringRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
     persistenceManager = self->_persistenceManager;
 
@@ -3192,18 +3192,18 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
   }
 }
 
-- (void)mirroringDelegateSetupState:(id)a3
+- (void)mirroringDelegateSetupState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy)
   {
     persistenceManager = self->_persistenceManager;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __54__RTDaemonClientInternal_mirroringDelegateSetupState___block_invoke;
     v8[3] = &unk_2788CBC28;
-    v9 = v4;
+    v9 = stateCopy;
     [(RTPersistenceManager *)persistenceManager mirroringDelegateSetupState:v8];
     v7 = v9;
   }
@@ -3219,14 +3219,14 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
   }
 }
 
-- (void)schemaUpdateWithModelFile:(id)a3 reply:(id)a4
+- (void)schemaUpdateWithModelFile:(id)file reply:(id)reply
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  fileCopy = file;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v7)
+    if (fileCopy)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -3241,7 +3241,7 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
           v20 = 2112;
           v21 = v12;
           v22 = 2112;
-          v23 = v7;
+          v23 = fileCopy;
           _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@:%@, Dispatching CloudKit schema update, modelFile, %@", buf, 0x20u);
         }
       }
@@ -3251,8 +3251,8 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
       v16[1] = 3221225472;
       v16[2] = __58__RTDaemonClientInternal_schemaUpdateWithModelFile_reply___block_invoke;
       v16[3] = &unk_2788C48C0;
-      v17 = v8;
-      [(RTPersistenceManager *)persistenceManager schemaUpdateWithModelFile:v7 handler:v16];
+      v17 = replyCopy;
+      [(RTPersistenceManager *)persistenceManager schemaUpdateWithModelFile:fileCopy handler:v16];
       v14 = v17;
     }
 
@@ -3262,7 +3262,7 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
       v25[0] = @"file path to model is required.";
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
       v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v14];
-      (*(v8 + 2))(v8, v15);
+      (*(replyCopy + 2))(replyCopy, v15);
     }
   }
 
@@ -3277,9 +3277,9 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
   }
 }
 
-- (void)tearDownPersistenceStack:(id)a3
+- (void)tearDownPersistenceStack:(id)stack
 {
-  if (a3)
+  if (stack)
   {
     persistenceManager = self->_persistenceManager;
 
@@ -3299,32 +3299,32 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
   }
 }
 
-- (void)fetchFMCEnabledWithReply:(id)a3
+- (void)fetchFMCEnabledWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(RTDaemonClientInternal *)self vehicleLocationProvider];
-    [v5 fetchFMCEnabledWithHandler:v4];
+    vehicleLocationProvider = [(RTDaemonClientInternal *)self vehicleLocationProvider];
+    [vehicleLocationProvider fetchFMCEnabledWithHandler:replyCopy];
   }
 
   else
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    vehicleLocationProvider = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(vehicleLocationProvider, OS_LOG_TYPE_ERROR))
     {
       *v6 = 0;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v6, 2u);
+      _os_log_error_impl(&dword_2304B3000, vehicleLocationProvider, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v6, 2u);
     }
   }
 }
 
-- (void)fetchMotionActivitiesFromStartDate:(id)a3 endDate:(id)a4 reply:(id)a5
+- (void)fetchMotionActivitiesFromStartDate:(id)date endDate:(id)endDate reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  dateCopy = date;
+  endDateCopy = endDate;
+  replyCopy = reply;
+  if (replyCopy)
   {
     motionActivityManager = self->_motionActivityManager;
     v14[0] = MEMORY[0x277D85DD0];
@@ -3333,9 +3333,9 @@ void __50__RTDaemonClientInternal_logSafetyCacheWithReply___block_invoke(uint64_
     v14[3] = &unk_2788C5D18;
     v18 = a2;
     v14[4] = self;
-    v15 = v9;
-    v16 = v10;
-    v17 = v11;
+    v15 = dateCopy;
+    v16 = endDateCopy;
+    v17 = replyCopy;
     [(RTMotionActivityManager *)motionActivityManager fetchMotionActivitiesFromStartDate:v15 endDate:v16 handler:v14];
   }
 
@@ -3384,15 +3384,15 @@ void __75__RTDaemonClientInternal_fetchMotionActivitiesFromStartDate_endDate_rep
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)submitMetrics:(id)a3 metricName:(id)a4 reply:(id)a5
+- (void)submitMetrics:(id)metrics metricName:(id)name reply:(id)reply
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  metricsCopy = metrics;
+  nameCopy = name;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v10 = NSClassFromString(v8);
+    v10 = NSClassFromString(nameCopy);
     if (v10)
     {
       v11 = v10;
@@ -3403,12 +3403,12 @@ void __75__RTDaemonClientInternal_fetchMotionActivitiesFromStartDate_endDate_rep
         {
           v12 = objc_alloc_init(v11);
           v26 = 0;
-          [v12 setAllMetrics:v7 error:&v26];
+          [v12 setAllMetrics:metricsCopy error:&v26];
           v13 = v26;
           if (v13)
           {
             v14 = v13;
-            v15 = v9[2];
+            v15 = replyCopy[2];
           }
 
           else
@@ -3416,10 +3416,10 @@ void __75__RTDaemonClientInternal_fetchMotionActivitiesFromStartDate_endDate_rep
             v25 = 0;
             v22 = [v12 submitMetricsWithError:&v25];
             v14 = v25;
-            v15 = v9[2];
+            v15 = replyCopy[2];
             if (v22)
             {
-              v23 = v9;
+              v23 = replyCopy;
               v24 = 0;
 LABEL_17:
               v15(v23, v24);
@@ -3428,7 +3428,7 @@ LABEL_17:
             }
           }
 
-          v23 = v9;
+          v23 = replyCopy;
           v24 = v14;
           goto LABEL_17;
         }
@@ -3468,7 +3468,7 @@ LABEL_17:
     v21 = [v18 dictionaryWithObjects:v19 forKeys:v20 count:1];
     v12 = [v16 errorWithDomain:v17 code:7 userInfo:v21];
 
-    (v9[2])(v9, v12);
+    (replyCopy[2])(replyCopy, v12);
   }
 
   else
@@ -3484,33 +3484,33 @@ LABEL_17:
 LABEL_13:
 }
 
-- (void)submitTransitMetricsWithReply:(id)a3
+- (void)submitTransitMetricsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(RTLearnedLocationManager *)self->_learnedLocationManager learnedLocationEngine];
-    [v5 performTransitAnalyticsWithHandler:v4];
+    learnedLocationEngine = [(RTLearnedLocationManager *)self->_learnedLocationManager learnedLocationEngine];
+    [learnedLocationEngine performTransitAnalyticsWithHandler:replyCopy];
   }
 
   else
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    learnedLocationEngine = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(learnedLocationEngine, OS_LOG_TYPE_ERROR))
     {
       *v6 = 0;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v6, 2u);
+      _os_log_error_impl(&dword_2304B3000, learnedLocationEngine, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v6, 2u);
     }
   }
 }
 
-- (void)expireLifetimeOfVisitsWithIdentifiers:(id)a3 expirationDate:(id)a4 reply:(id)a5
+- (void)expireLifetimeOfVisitsWithIdentifiers:(id)identifiers expirationDate:(id)date reply:(id)reply
 {
-  if (a5)
+  if (reply)
   {
     learnedLocationStore = self->_learnedLocationStore;
 
-    [(RTLearnedLocationStore *)learnedLocationStore expireLifetimeOfVisitsWithIdentifiers:a3 expirationDate:a4 handler:?];
+    [(RTLearnedLocationStore *)learnedLocationStore expireLifetimeOfVisitsWithIdentifiers:identifiers expirationDate:date handler:?];
   }
 
   else
@@ -3526,13 +3526,13 @@ LABEL_13:
   }
 }
 
-- (void)extendLifetimeOfVisitsWithIdentifiers:(id)a3 toExpireOn:(id)a4 reply:(id)a5
+- (void)extendLifetimeOfVisitsWithIdentifiers:(id)identifiers toExpireOn:(id)on reply:(id)reply
 {
-  if (a5)
+  if (reply)
   {
     learnedLocationStore = self->_learnedLocationStore;
 
-    [(RTLearnedLocationStore *)learnedLocationStore updateExpirationDateOfVisitsWithIdentifiers:a3 expirationDate:a4 allowThresholdBypass:1 handler:a5];
+    [(RTLearnedLocationStore *)learnedLocationStore updateExpirationDateOfVisitsWithIdentifiers:identifiers expirationDate:on allowThresholdBypass:1 handler:reply];
   }
 
   else
@@ -3548,24 +3548,24 @@ LABEL_13:
   }
 }
 
-- (void)forceProcessWorkoutsClearClusters:(BOOL)a3 clearExistingDistanceMatrix:(BOOL)a4 buildDistanceMatrix:(BOOL)a5 syncClustersToHealhtKit:(BOOL)a6 syncClustersToWatch:(BOOL)a7 filteringDistanceThreshold:(double)a8 topNWorkouts:(unint64_t)a9 isSchedulerTriggered:(BOOL)a10 reply:(id)a11
+- (void)forceProcessWorkoutsClearClusters:(BOOL)clusters clearExistingDistanceMatrix:(BOOL)matrix buildDistanceMatrix:(BOOL)distanceMatrix syncClustersToHealhtKit:(BOOL)kit syncClustersToWatch:(BOOL)watch filteringDistanceThreshold:(double)threshold topNWorkouts:(unint64_t)workouts isSchedulerTriggered:(BOOL)self0 reply:(id)self1
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v20 = a11;
-  if (v20)
+  watchCopy = watch;
+  kitCopy = kit;
+  distanceMatrixCopy = distanceMatrix;
+  matrixCopy = matrix;
+  clustersCopy = clusters;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v30 = a9;
+    workoutsCopy = workouts;
     v31 = a2;
     v21 = dispatch_group_create();
     v22 = objc_opt_new();
-    if (v16)
+    if (matrixCopy)
     {
       dispatch_group_enter(v21);
-      v23 = [(RTDaemonClientInternal *)self workoutScheduler];
+      workoutScheduler = [(RTDaemonClientInternal *)self workoutScheduler];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __219__RTDaemonClientInternal_forceProcessWorkoutsClearClusters_clearExistingDistanceMatrix_buildDistanceMatrix_syncClustersToHealhtKit_syncClustersToWatch_filteringDistanceThreshold_topNWorkouts_isSchedulerTriggered_reply___block_invoke;
@@ -3573,11 +3573,11 @@ LABEL_13:
       v39[4] = self;
       v40 = v22;
       v41 = v21;
-      [v23 clearTaskStatesWithHandler:v39];
+      [workoutScheduler clearTaskStatesWithHandler:v39];
     }
 
     dispatch_group_enter(v21);
-    v24 = [(RTDaemonClientInternal *)self workoutRouteManager];
+    workoutRouteManager = [(RTDaemonClientInternal *)self workoutRouteManager];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __219__RTDaemonClientInternal_forceProcessWorkoutsClearClusters_clearExistingDistanceMatrix_buildDistanceMatrix_syncClustersToHealhtKit_syncClustersToWatch_filteringDistanceThreshold_topNWorkouts_isSchedulerTriggered_reply___block_invoke_3;
@@ -3587,10 +3587,10 @@ LABEL_13:
     v37 = v25;
     v38 = v21;
     v26 = v21;
-    LOBYTE(v29) = a10;
-    [v24 processWorkoutsClearClusters:v17 clearExistingDistanceMatrix:v16 buildDistanceMatrix:v15 syncClustersToHealhtKit:v14 syncClustersToWatch:v13 filteringDistanceThreshold:v30 topNWorkouts:a8 isSchedulerTriggered:v29 handler:v36];
+    LOBYTE(v29) = triggered;
+    [workoutRouteManager processWorkoutsClearClusters:clustersCopy clearExistingDistanceMatrix:matrixCopy buildDistanceMatrix:distanceMatrixCopy syncClustersToHealhtKit:kitCopy syncClustersToWatch:watchCopy filteringDistanceThreshold:workoutsCopy topNWorkouts:threshold isSchedulerTriggered:v29 handler:v36];
 
-    v27 = [(RTDaemonClientInternal *)self queue];
+    queue = [(RTDaemonClientInternal *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __219__RTDaemonClientInternal_forceProcessWorkoutsClearClusters_clearExistingDistanceMatrix_buildDistanceMatrix_syncClustersToHealhtKit_syncClustersToWatch_filteringDistanceThreshold_topNWorkouts_isSchedulerTriggered_reply___block_invoke_5;
@@ -3598,9 +3598,9 @@ LABEL_13:
     v35 = v31;
     block[4] = self;
     v33 = v25;
-    v34 = v20;
+    v34 = replyCopy;
     v28 = v25;
-    dispatch_group_notify(v26, v27, block);
+    dispatch_group_notify(v26, queue, block);
   }
 
   else
@@ -3694,20 +3694,20 @@ void __219__RTDaemonClientInternal_forceProcessWorkoutsClearClusters_clearExisti
   (*(v6 + 16))(v6, v7);
 }
 
-- (void)displayWorkoutDistanceRecordsWithHandler:(id)a3
+- (void)displayWorkoutDistanceRecordsWithHandler:(id)handler
 {
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self workoutRouteManager];
+    workoutRouteManager = [(RTDaemonClientInternal *)self workoutRouteManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __67__RTDaemonClientInternal_displayWorkoutDistanceRecordsWithHandler___block_invoke;
     v8[3] = &unk_2788C56C0;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 displayWorkoutDistanceRecordsWithHandler:v8];
+    v9 = handlerCopy;
+    [workoutRouteManager displayWorkoutDistanceRecordsWithHandler:v8];
   }
 
   else
@@ -3762,20 +3762,20 @@ uint64_t __67__RTDaemonClientInternal_displayWorkoutDistanceRecordsWithHandler__
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)updateRelevanceScoresWithReply:(id)a3
+- (void)updateRelevanceScoresWithReply:(id)reply
 {
-  v5 = a3;
-  if (v5)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self workoutRouteManager];
+    workoutRouteManager = [(RTDaemonClientInternal *)self workoutRouteManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __57__RTDaemonClientInternal_updateRelevanceScoresWithReply___block_invoke;
     v8[3] = &unk_2788C56C0;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 updateRelevanceScoresWithHandler:v8];
+    v9 = replyCopy;
+    [workoutRouteManager updateRelevanceScoresWithHandler:v8];
   }
 
   else
@@ -3830,12 +3830,12 @@ uint64_t __57__RTDaemonClientInternal_updateRelevanceScoresWithReply___block_inv
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)processNewlyAddedWorkout:(id)a3 reply:(id)a4
+- (void)processNewlyAddedWorkout:(id)workout reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  workoutCopy = workout;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (!workoutCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -3852,7 +3852,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!replyCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -3865,7 +3865,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [(RTDaemonClientInternal *)self workoutRouteManager];
+  workoutRouteManager = [(RTDaemonClientInternal *)self workoutRouteManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__RTDaemonClientInternal_processNewlyAddedWorkout_reply___block_invoke;
@@ -3873,7 +3873,7 @@ LABEL_10:
   v13[4] = self;
   v15 = a2;
   v14 = v9;
-  [v10 processNewlyAddedWorkout:v7 handler:v13];
+  [workoutRouteManager processNewlyAddedWorkout:workoutCopy handler:v13];
 
 LABEL_8:
 }
@@ -3919,12 +3919,12 @@ uint64_t __57__RTDaemonClientInternal_processNewlyAddedWorkout_reply___block_inv
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)deleteWorkout:(id)a3 reply:(id)a4
+- (void)deleteWorkout:(id)workout reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  workoutCopy = workout;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (!workoutCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -3941,7 +3941,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!replyCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -3954,7 +3954,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [(RTDaemonClientInternal *)self workoutRouteManager];
+  workoutRouteManager = [(RTDaemonClientInternal *)self workoutRouteManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__RTDaemonClientInternal_deleteWorkout_reply___block_invoke;
@@ -3962,7 +3962,7 @@ LABEL_10:
   v13[4] = self;
   v15 = a2;
   v14 = v9;
-  [v10 deleteWorkout:v7 handler:v13];
+  [workoutRouteManager deleteWorkout:workoutCopy handler:v13];
 
 LABEL_8:
 }
@@ -4008,21 +4008,21 @@ uint64_t __46__RTDaemonClientInternal_deleteWorkout_reply___block_invoke_2(uint6
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchBuildingPolygonsFromLocations:(id)a3 radius:(double)a4 limit:(unint64_t)a5 reply:(id)a6
+- (void)fetchBuildingPolygonsFromLocations:(id)locations radius:(double)radius limit:(unint64_t)limit reply:(id)reply
 {
-  v11 = a3;
-  v12 = a6;
-  if (v12)
+  locationsCopy = locations;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v13 = [(RTDaemonClientInternal *)self buildingPolygonManager];
+    buildingPolygonManager = [(RTDaemonClientInternal *)self buildingPolygonManager];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __80__RTDaemonClientInternal_fetchBuildingPolygonsFromLocations_radius_limit_reply___block_invoke;
     v15[3] = &unk_2788C5508;
     v15[4] = self;
     v17 = a2;
-    v16 = v12;
-    [v13 fetchClosestBuildingPolygonsFromLocations:v11 radius:a5 limit:v15 handler:a4];
+    v16 = replyCopy;
+    [buildingPolygonManager fetchClosestBuildingPolygonsFromLocations:locationsCopy radius:limit limit:v15 handler:radius];
   }
 
   else
@@ -4080,11 +4080,11 @@ uint64_t __80__RTDaemonClientInternal_fetchBuildingPolygonsFromLocations_radius_
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchIntermittentGNSSRegistrationStateWithReply:(id)a3
+- (void)fetchIntermittentGNSSRegistrationStateWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  replyCopy = reply;
+  v6 = replyCopy;
+  if (replyCopy)
   {
     intermittentGNSSManager = self->_intermittentGNSSManager;
     v9[0] = MEMORY[0x277D85DD0];
@@ -4093,7 +4093,7 @@ uint64_t __80__RTDaemonClientInternal_fetchBuildingPolygonsFromLocations_radius_
     v9[3] = &unk_2788C4E00;
     v11 = a2;
     v9[4] = self;
-    v10 = v5;
+    v10 = replyCopy;
     [(RTIntermittentGNSSManager *)intermittentGNSSManager fetchIntermittentGNSSRegistrationStateWithHandler:v9];
   }
 
@@ -4138,11 +4138,11 @@ void __74__RTDaemonClientInternal_fetchIntermittentGNSSRegistrationStateWithRepl
   (*(*(a1 + 40) + 16))(*(a1 + 40), a2);
 }
 
-- (void)updateIntermittentGNSSRegistrationOverrideState:(unint64_t)a3 reply:(id)a4
+- (void)updateIntermittentGNSSRegistrationOverrideState:(unint64_t)state reply:(id)reply
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  replyCopy = reply;
+  v8 = replyCopy;
+  if (replyCopy)
   {
     intermittentGNSSManager = self->_intermittentGNSSManager;
     v11[0] = MEMORY[0x277D85DD0];
@@ -4150,10 +4150,10 @@ void __74__RTDaemonClientInternal_fetchIntermittentGNSSRegistrationStateWithRepl
     v11[2] = __80__RTDaemonClientInternal_updateIntermittentGNSSRegistrationOverrideState_reply___block_invoke;
     v11[3] = &unk_2788CBC50;
     v13 = a2;
-    v14 = a3;
+    stateCopy = state;
     v11[4] = self;
-    v12 = v7;
-    [(RTIntermittentGNSSManager *)intermittentGNSSManager updateIntermittentGNSSRegistrationOverrideState:a3 handler:v11];
+    v12 = replyCopy;
+    [(RTIntermittentGNSSManager *)intermittentGNSSManager updateIntermittentGNSSRegistrationOverrideState:state handler:v11];
   }
 
   else
@@ -4192,31 +4192,31 @@ void __80__RTDaemonClientInternal_updateIntermittentGNSSRegistrationOverrideStat
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)injectProximityEvent:(id)a3 handler:(id)a4
+- (void)injectProximityEvent:(id)event handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  eventCopy = event;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v9 = self;
-    v10 = [(RTDaemonClientInternal *)v9 peopleDiscoveryProvider];
+    selfCopy = self;
+    peopleDiscoveryProvider = [(RTDaemonClientInternal *)selfCopy peopleDiscoveryProvider];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __55__RTDaemonClientInternal_injectProximityEvent_handler___block_invoke;
     v11[3] = &unk_2788C56C0;
-    v11[4] = v9;
+    v11[4] = selfCopy;
     v13 = a2;
-    v12 = v8;
-    [v10 addProximityEvent:v7 handler:v11];
+    v12 = handlerCopy;
+    [peopleDiscoveryProvider addProximityEvent:eventCopy handler:v11];
   }
 
   else
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(&v9->super, OS_LOG_TYPE_ERROR))
+    selfCopy = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, &v9->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
     }
   }
 }
@@ -4262,31 +4262,31 @@ uint64_t __55__RTDaemonClientInternal_injectProximityEvent_handler___block_invok
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)injectPeopleDiscoveryAdv:(id)a3 handler:(id)a4
+- (void)injectPeopleDiscoveryAdv:(id)adv handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  advCopy = adv;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v9 = self;
-    v10 = [(RTDaemonClientInternal *)v9 peopleDiscoveryProvider];
+    selfCopy = self;
+    peopleDiscoveryProvider = [(RTDaemonClientInternal *)selfCopy peopleDiscoveryProvider];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __59__RTDaemonClientInternal_injectPeopleDiscoveryAdv_handler___block_invoke;
     v11[3] = &unk_2788C56C0;
-    v11[4] = v9;
+    v11[4] = selfCopy;
     v13 = a2;
-    v12 = v8;
-    [v10 injectAdv:v7 handler:v11];
+    v12 = handlerCopy;
+    [peopleDiscoveryProvider injectAdv:advCopy handler:v11];
   }
 
   else
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(&v9->super, OS_LOG_TYPE_ERROR))
+    selfCopy = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, &v9->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
     }
   }
 }
@@ -4332,30 +4332,30 @@ uint64_t __59__RTDaemonClientInternal_injectPeopleDiscoveryAdv_handler___block_i
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)removeAllProximityEvent:(id)a3
+- (void)removeAllProximityEvent:(id)event
 {
-  v5 = a3;
-  if (v5)
+  eventCopy = event;
+  if (eventCopy)
   {
-    v6 = self;
-    v7 = [(RTDaemonClientInternal *)v6 peopleDiscoveryProvider];
+    selfCopy = self;
+    peopleDiscoveryProvider = [(RTDaemonClientInternal *)selfCopy peopleDiscoveryProvider];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __50__RTDaemonClientInternal_removeAllProximityEvent___block_invoke;
     v8[3] = &unk_2788C56C0;
-    v8[4] = v6;
+    v8[4] = selfCopy;
     v10 = a2;
-    v9 = v5;
-    [v7 clearProximityEvents:v8];
+    v9 = eventCopy;
+    [peopleDiscoveryProvider clearProximityEvents:v8];
   }
 
   else
   {
-    v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(&v6->super, OS_LOG_TYPE_ERROR))
+    selfCopy = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, &v6->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
     }
   }
 }
@@ -4401,31 +4401,31 @@ uint64_t __50__RTDaemonClientInternal_removeAllProximityEvent___block_invoke_2(u
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)injectPeopleDensityBundle:(id)a3 handler:(id)a4
+- (void)injectPeopleDensityBundle:(id)bundle handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  bundleCopy = bundle;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v9 = self;
-    v10 = [(RTDaemonClientInternal *)v9 peopleDiscoveryProvider];
+    selfCopy = self;
+    peopleDiscoveryProvider = [(RTDaemonClientInternal *)selfCopy peopleDiscoveryProvider];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __60__RTDaemonClientInternal_injectPeopleDensityBundle_handler___block_invoke;
     v11[3] = &unk_2788C56C0;
-    v11[4] = v9;
+    v11[4] = selfCopy;
     v13 = a2;
-    v12 = v8;
-    [v10 addPeopleDensityBundle:v7 handler:v11];
+    v12 = handlerCopy;
+    [peopleDiscoveryProvider addPeopleDensityBundle:bundleCopy handler:v11];
   }
 
   else
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(&v9->super, OS_LOG_TYPE_ERROR))
+    selfCopy = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, &v9->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
     }
   }
 }
@@ -4471,32 +4471,32 @@ uint64_t __60__RTDaemonClientInternal_injectPeopleDensityBundle_handler___block_
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)injectPeopleDensityStats:(unint64_t)a3 duration:(double)a4 date:(id)a5 advertisements:(id)a6 handler:(id)a7
+- (void)injectPeopleDensityStats:(unint64_t)stats duration:(double)duration date:(id)date advertisements:(id)advertisements handler:(id)handler
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  dateCopy = date;
+  advertisementsCopy = advertisements;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v16 = self;
-    v17 = [(RTDaemonClientInternal *)v16 peopleDiscoveryProvider];
+    selfCopy = self;
+    peopleDiscoveryProvider = [(RTDaemonClientInternal *)selfCopy peopleDiscoveryProvider];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __88__RTDaemonClientInternal_injectPeopleDensityStats_duration_date_advertisements_handler___block_invoke;
     v18[3] = &unk_2788C56C0;
-    v18[4] = v16;
+    v18[4] = selfCopy;
     v20 = a2;
-    v19 = v15;
-    [v17 injectPeopleDensityStats:a3 duration:v13 date:v14 advertisements:v18 handler:a4];
+    v19 = handlerCopy;
+    [peopleDiscoveryProvider injectPeopleDensityStats:stats duration:dateCopy date:advertisementsCopy advertisements:v18 handler:duration];
   }
 
   else
   {
-    v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(&v16->super, OS_LOG_TYPE_ERROR))
+    selfCopy = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, &v16->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
     }
   }
 }
@@ -4542,30 +4542,30 @@ uint64_t __88__RTDaemonClientInternal_injectPeopleDensityStats_duration_date_adv
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)removeAllPeopleDensityBundles:(id)a3
+- (void)removeAllPeopleDensityBundles:(id)bundles
 {
-  v5 = a3;
-  if (v5)
+  bundlesCopy = bundles;
+  if (bundlesCopy)
   {
-    v6 = self;
-    v7 = [(RTDaemonClientInternal *)v6 peopleDiscoveryProvider];
+    selfCopy = self;
+    peopleDiscoveryProvider = [(RTDaemonClientInternal *)selfCopy peopleDiscoveryProvider];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __56__RTDaemonClientInternal_removeAllPeopleDensityBundles___block_invoke;
     v8[3] = &unk_2788C56C0;
-    v8[4] = v6;
+    v8[4] = selfCopy;
     v10 = a2;
-    v9 = v5;
-    [v7 clearPeopleDensityBundles:v8];
+    v9 = bundlesCopy;
+    [peopleDiscoveryProvider clearPeopleDensityBundles:v8];
   }
 
   else
   {
-    v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(&v6->super, OS_LOG_TYPE_ERROR))
+    selfCopy = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, &v6->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
     }
   }
 }
@@ -4611,30 +4611,30 @@ uint64_t __56__RTDaemonClientInternal_removeAllPeopleDensityBundles___block_invo
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)computeContactScores:(id)a3
+- (void)computeContactScores:(id)scores
 {
-  v5 = a3;
-  if (v5)
+  scoresCopy = scores;
+  if (scoresCopy)
   {
-    v6 = self;
-    v7 = [(RTDaemonClientInternal *)v6 peopleDiscoveryProvider];
+    selfCopy = self;
+    peopleDiscoveryProvider = [(RTDaemonClientInternal *)selfCopy peopleDiscoveryProvider];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __47__RTDaemonClientInternal_computeContactScores___block_invoke;
     v8[3] = &unk_2788C56C0;
-    v8[4] = v6;
+    v8[4] = selfCopy;
     v10 = a2;
-    v9 = v5;
-    [v7 computeContactScores:v8];
+    v9 = scoresCopy;
+    [peopleDiscoveryProvider computeContactScores:v8];
   }
 
   else
   {
-    v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(&v6->super, OS_LOG_TYPE_ERROR))
+    selfCopy = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, &v6->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
     }
   }
 }
@@ -4680,20 +4680,20 @@ uint64_t __47__RTDaemonClientInternal_computeContactScores___block_invoke_2(uint
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchAuthorizedLocations:(id)a3
+- (void)fetchAuthorizedLocations:(id)locations
 {
-  v5 = a3;
-  if (v5)
+  locationsCopy = locations;
+  if (locationsCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self authorizedLocationManager];
+    authorizedLocationManager = [(RTDaemonClientInternal *)self authorizedLocationManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__RTDaemonClientInternal_fetchAuthorizedLocations___block_invoke;
     v8[3] = &unk_2788CBC78;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 fetchAuthorizedLocations:v8];
+    v9 = locationsCopy;
+    [authorizedLocationManager fetchAuthorizedLocations:v8];
   }
 
   else
@@ -4751,20 +4751,20 @@ uint64_t __51__RTDaemonClientInternal_fetchAuthorizedLocations___block_invoke_2(
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchAuthorizedLocationExtendedStatus:(id)a3
+- (void)fetchAuthorizedLocationExtendedStatus:(id)status
 {
-  v5 = a3;
-  if (v5)
+  statusCopy = status;
+  if (statusCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self authorizedLocationManager];
+    authorizedLocationManager = [(RTDaemonClientInternal *)self authorizedLocationManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__RTDaemonClientInternal_fetchAuthorizedLocationExtendedStatus___block_invoke;
     v8[3] = &unk_2788C9658;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 fetchAuthorizedLocationExtendedStatus:v8];
+    v9 = statusCopy;
+    [authorizedLocationManager fetchAuthorizedLocationExtendedStatus:v8];
   }
 
   else
@@ -4823,20 +4823,20 @@ uint64_t __64__RTDaemonClientInternal_fetchAuthorizedLocationExtendedStatus___bl
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchAuthorizedLocationDetailedStatus:(id)a3
+- (void)fetchAuthorizedLocationDetailedStatus:(id)status
 {
-  v5 = a3;
-  if (v5)
+  statusCopy = status;
+  if (statusCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self authorizedLocationManager];
+    authorizedLocationManager = [(RTDaemonClientInternal *)self authorizedLocationManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__RTDaemonClientInternal_fetchAuthorizedLocationDetailedStatus___block_invoke;
     v8[3] = &unk_2788CBCF0;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 fetchAuthorizedLocationDetailedStatus:v8];
+    v9 = statusCopy;
+    [authorizedLocationManager fetchAuthorizedLocationDetailedStatus:v8];
   }
 
   else
@@ -4897,20 +4897,20 @@ uint64_t __64__RTDaemonClientInternal_fetchAuthorizedLocationDetailedStatus___bl
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchAuthorizedLocationCachedStatus:(id)a3
+- (void)fetchAuthorizedLocationCachedStatus:(id)status
 {
-  v5 = a3;
-  if (v5)
+  statusCopy = status;
+  if (statusCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self authorizedLocationManager];
+    authorizedLocationManager = [(RTDaemonClientInternal *)self authorizedLocationManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __62__RTDaemonClientInternal_fetchAuthorizedLocationCachedStatus___block_invoke;
     v8[3] = &unk_2788C9658;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 fetchAuthorizedLocationCachedStatus:v8];
+    v9 = statusCopy;
+    [authorizedLocationManager fetchAuthorizedLocationCachedStatus:v8];
   }
 
   else
@@ -4969,20 +4969,20 @@ uint64_t __62__RTDaemonClientInternal_fetchAuthorizedLocationCachedStatus___bloc
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)forceAuthorizedLocationEraseInstallInitialization:(id)a3
+- (void)forceAuthorizedLocationEraseInstallInitialization:(id)initialization
 {
-  v5 = a3;
-  if (v5)
+  initializationCopy = initialization;
+  if (initializationCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self authorizedLocationManager];
+    authorizedLocationManager = [(RTDaemonClientInternal *)self authorizedLocationManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __76__RTDaemonClientInternal_forceAuthorizedLocationEraseInstallInitialization___block_invoke;
     v8[3] = &unk_2788C4E00;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 runEraseInstallDatabaseInitialization:v8];
+    v9 = initializationCopy;
+    [authorizedLocationManager runEraseInstallDatabaseInitialization:v8];
   }
 
   else
@@ -5038,20 +5038,20 @@ uint64_t __76__RTDaemonClientInternal_forceAuthorizedLocationEraseInstallInitial
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)eraseVisitLogDatabase:(id)a3
+- (void)eraseVisitLogDatabase:(id)database
 {
-  v5 = a3;
-  if (v5)
+  databaseCopy = database;
+  if (databaseCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self authorizedLocationManager];
+    authorizedLocationManager = [(RTDaemonClientInternal *)self authorizedLocationManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __48__RTDaemonClientInternal_eraseVisitLogDatabase___block_invoke;
     v8[3] = &unk_2788C56C0;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 eraseVisitLogDatabase:v8];
+    v9 = databaseCopy;
+    [authorizedLocationManager eraseVisitLogDatabase:v8];
   }
 
   else
@@ -5106,22 +5106,22 @@ uint64_t __48__RTDaemonClientInternal_eraseVisitLogDatabase___block_invoke_2(uin
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchVisitLogsWithDateInterval:(id)a3 reply:(id)a4
+- (void)fetchVisitLogsWithDateInterval:(id)interval reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  intervalCopy = interval;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v9 = [[RTAuthorizedLocationVisitLogFetchOptions alloc] initWithAscending:0 dateInterval:v7 limit:0];
-    v10 = [(RTDaemonClientInternal *)self authorizedLocationManager];
+    v9 = [[RTAuthorizedLocationVisitLogFetchOptions alloc] initWithAscending:0 dateInterval:intervalCopy limit:0];
+    authorizedLocationManager = [(RTDaemonClientInternal *)self authorizedLocationManager];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __63__RTDaemonClientInternal_fetchVisitLogsWithDateInterval_reply___block_invoke;
     v11[3] = &unk_2788C5508;
     v11[4] = self;
     v13 = a2;
-    v12 = v8;
-    [v10 fetchVisitLogsWithOptions:v9 handler:v11];
+    v12 = replyCopy;
+    [authorizedLocationManager fetchVisitLogsWithOptions:v9 handler:v11];
   }
 
   else
@@ -5214,22 +5214,22 @@ uint64_t __63__RTDaemonClientInternal_fetchVisitLogsWithDateInterval_reply___blo
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)a3 ascending:(BOOL)a4 reply:(id)a5
+- (void)fetchPlaceInferenceQueriesWithDateInterval:(id)interval ascending:(BOOL)ascending reply:(id)reply
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  ascendingCopy = ascending;
+  intervalCopy = interval;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v11 = [(RTDaemonClientInternal *)self placeInferenceQueryStore];
+    placeInferenceQueryStore = [(RTDaemonClientInternal *)self placeInferenceQueryStore];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __85__RTDaemonClientInternal_fetchPlaceInferenceQueriesWithDateInterval_ascending_reply___block_invoke;
     v13[3] = &unk_2788C5508;
     v13[4] = self;
     v15 = a2;
-    v14 = v10;
-    [v11 fetchPlaceInferenceQueriesWithDateInterval:v9 ascending:v6 handler:v13];
+    v14 = replyCopy;
+    [placeInferenceQueryStore fetchPlaceInferenceQueriesWithDateInterval:intervalCopy ascending:ascendingCopy handler:v13];
   }
 
   else
@@ -5286,16 +5286,16 @@ uint64_t __85__RTDaemonClientInternal_fetchPlaceInferenceQueriesWithDateInterval
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)startSamplingPointOfInterestWithInterval:(double)a3 handler:(id)a4
+- (void)startSamplingPointOfInterestWithInterval:(double)interval handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (v7)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(RTDaemonClientInternal *)self pointOfInterestSampler];
-    v9 = [(RTDaemonClientInternal *)self executablePath];
-    v10 = [v9 lastPathComponent];
-    [v8 startSamplingPointOfInterestFromRequester:v10 samplingInterval:a3];
+    pointOfInterestSampler = [(RTDaemonClientInternal *)self pointOfInterestSampler];
+    executablePath = [(RTDaemonClientInternal *)self executablePath];
+    lastPathComponent = [executablePath lastPathComponent];
+    [pointOfInterestSampler startSamplingPointOfInterestFromRequester:lastPathComponent samplingInterval:interval];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -5306,14 +5306,14 @@ uint64_t __85__RTDaemonClientInternal_fetchPlaceInferenceQueriesWithDateInterval
         v14 = 138412802;
         v15 = v12;
         v16 = 2112;
-        v17 = self;
+        selfCopy = self;
         v18 = 2112;
         v19 = 0;
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@, reply to client, %@, error, %@", &v14, 0x20u);
       }
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -5327,16 +5327,16 @@ uint64_t __85__RTDaemonClientInternal_fetchPlaceInferenceQueriesWithDateInterval
   }
 }
 
-- (void)stopSamplingPointOfInterest:(id)a3
+- (void)stopSamplingPointOfInterest:(id)interest
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  interestCopy = interest;
+  if (interestCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self pointOfInterestSampler];
-    v7 = [(RTDaemonClientInternal *)self executablePath];
-    v8 = [v7 lastPathComponent];
-    [v6 stopSamplingPointOfInterestFromRequester:v8];
+    pointOfInterestSampler = [(RTDaemonClientInternal *)self pointOfInterestSampler];
+    executablePath = [(RTDaemonClientInternal *)self executablePath];
+    lastPathComponent = [executablePath lastPathComponent];
+    [pointOfInterestSampler stopSamplingPointOfInterestFromRequester:lastPathComponent];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -5347,14 +5347,14 @@ uint64_t __85__RTDaemonClientInternal_fetchPlaceInferenceQueriesWithDateInterval
         v12 = 138412802;
         v13 = v10;
         v14 = 2112;
-        v15 = self;
+        selfCopy = self;
         v16 = 2112;
         v17 = 0;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, reply to client, %@, error, %@", &v12, 0x20u);
       }
     }
 
-    v5[2](v5, 0);
+    interestCopy[2](interestCopy, 0);
   }
 
   else
@@ -5368,21 +5368,21 @@ uint64_t __85__RTDaemonClientInternal_fetchPlaceInferenceQueriesWithDateInterval
   }
 }
 
-- (void)fetchPointOfInterestsAroundCoordinate:(id)a3 radius:(double)a4 reply:(id)a5
+- (void)fetchPointOfInterestsAroundCoordinate:(id)coordinate radius:(double)radius reply:(id)reply
 {
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  coordinateCopy = coordinate;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v11 = [(RTDaemonClientInternal *)self mapServiceManager];
+    mapServiceManager = [(RTDaemonClientInternal *)self mapServiceManager];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __77__RTDaemonClientInternal_fetchPointOfInterestsAroundCoordinate_radius_reply___block_invoke;
     v13[3] = &unk_2788C5508;
     v13[4] = self;
     v15 = a2;
-    v14 = v10;
-    [v11 fetchPointOfInterestsAroundCoordinate:v9 radius:0 options:v13 handler:a4];
+    v14 = replyCopy;
+    [mapServiceManager fetchPointOfInterestsAroundCoordinate:coordinateCopy radius:0 options:v13 handler:radius];
   }
 
   else
@@ -5439,20 +5439,20 @@ uint64_t __77__RTDaemonClientInternal_fetchPointOfInterestsAroundCoordinate_radi
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)a3 reply:(id)a4
+- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)identifier reply:(id)reply
 {
-  v7 = a4;
-  if (v7)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [(RTDaemonClientInternal *)self mapServiceManager];
+    mapServiceManager = [(RTDaemonClientInternal *)self mapServiceManager];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __77__RTDaemonClientInternal_fetchPointOfInterestAttributesWithIdentifier_reply___block_invoke;
     v10[3] = &unk_2788CBD40;
     v10[4] = self;
     v12 = a2;
-    v11 = v7;
-    [v8 fetchPointOfInterestAttributesWithIdentifier:a3 options:0 handler:v10];
+    v11 = replyCopy;
+    [mapServiceManager fetchPointOfInterestAttributesWithIdentifier:identifier options:0 handler:v10];
   }
 
   else
@@ -5509,20 +5509,20 @@ uint64_t __77__RTDaemonClientInternal_fetchPointOfInterestAttributesWithIdentifi
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchBluePOITileWithGeoTileKey:(unint64_t)a3 reply:(id)a4
+- (void)fetchBluePOITileWithGeoTileKey:(unint64_t)key reply:(id)reply
 {
-  v7 = a4;
-  if (v7)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [(RTDaemonClientInternal *)self bluePOITileManager];
+    bluePOITileManager = [(RTDaemonClientInternal *)self bluePOITileManager];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __63__RTDaemonClientInternal_fetchBluePOITileWithGeoTileKey_reply___block_invoke;
     v10[3] = &unk_2788CBD68;
     v10[4] = self;
     v12 = a2;
-    v11 = v7;
-    [v8 fetchBluePOITileWithGeoTileKey:a3 handler:v10];
+    v11 = replyCopy;
+    [bluePOITileManager fetchBluePOITileWithGeoTileKey:key handler:v10];
   }
 
   else
@@ -5579,20 +5579,20 @@ uint64_t __63__RTDaemonClientInternal_fetchBluePOITileWithGeoTileKey_reply___blo
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchBluePOIMetadataWithHandler:(id)a3
+- (void)fetchBluePOIMetadataWithHandler:(id)handler
 {
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [(RTDaemonClientInternal *)self bluePOITileManager];
+    bluePOITileManager = [(RTDaemonClientInternal *)self bluePOITileManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __58__RTDaemonClientInternal_fetchBluePOIMetadataWithHandler___block_invoke;
     v8[3] = &unk_2788C7098;
     v8[4] = self;
     v10 = a2;
-    v9 = v5;
-    [v6 fetchBluePOIMetadataWithHandler:v8];
+    v9 = handlerCopy;
+    [bluePOITileManager fetchBluePOIMetadataWithHandler:v8];
   }
 
   else
@@ -5649,21 +5649,21 @@ uint64_t __58__RTDaemonClientInternal_fetchBluePOIMetadataWithHandler___block_in
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)storeBluePOITiles:(id)a3 handler:(id)a4
+- (void)storeBluePOITiles:(id)tiles handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  tilesCopy = tiles;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v9 = [(RTDaemonClientInternal *)self bluePOITileManager];
+    bluePOITileManager = [(RTDaemonClientInternal *)self bluePOITileManager];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __52__RTDaemonClientInternal_storeBluePOITiles_handler___block_invoke;
     v11[3] = &unk_2788C56C0;
     v11[4] = self;
     v13 = a2;
-    v12 = v8;
-    [v9 storeBluePOITiles:v7 handler:v11];
+    v12 = handlerCopy;
+    [bluePOITileManager storeBluePOITiles:tilesCopy handler:v11];
   }
 
   else
@@ -5717,41 +5717,41 @@ uint64_t __52__RTDaemonClientInternal_storeBluePOITiles_handler___block_invoke_2
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchCurrentLocationWithReply:(id)a3
+- (void)fetchCurrentLocationWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(RTDaemonClientInternal *)self locationManager];
-    [v5 fetchCurrentLocationWithHandler:v4];
+    locationManager = [(RTDaemonClientInternal *)self locationManager];
+    [locationManager fetchCurrentLocationWithHandler:replyCopy];
   }
 
   else
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    locationManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(locationManager, OS_LOG_TYPE_ERROR))
     {
       *v6 = 0;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v6, 2u);
+      _os_log_error_impl(&dword_2304B3000, locationManager, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v6, 2u);
     }
   }
 }
 
-- (void)fetchLocationsFromCoreLocationWithOptions:(id)a3 reply:(id)a4
+- (void)fetchLocationsFromCoreLocationWithOptions:(id)options reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v9 = [(RTDaemonClientInternal *)self locationManager];
+    locationManager = [(RTDaemonClientInternal *)self locationManager];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __74__RTDaemonClientInternal_fetchLocationsFromCoreLocationWithOptions_reply___block_invoke;
     v11[3] = &unk_2788C5508;
     v11[4] = self;
     v13 = a2;
-    v12 = v8;
-    [v9 fetchLocationsFromCoreLocationWithOptions:v7 handler:v11];
+    v12 = replyCopy;
+    [locationManager fetchLocationsFromCoreLocationWithOptions:optionsCopy handler:v11];
   }
 
   else
@@ -5809,18 +5809,18 @@ uint64_t __74__RTDaemonClientInternal_fetchLocationsFromCoreLocationWithOptions_
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)periodicPurgeWithReply:(id)a3
+- (void)periodicPurgeWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(RTDaemonClientInternal *)self purgeManager];
+    purgeManager = [(RTDaemonClientInternal *)self purgeManager];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __49__RTDaemonClientInternal_periodicPurgeWithReply___block_invoke;
     v7[3] = &unk_2788C48C0;
-    v8 = v4;
-    [v5 purge:v7];
+    v8 = replyCopy;
+    [purgeManager purge:v7];
 
     v6 = v8;
   }
@@ -5836,12 +5836,12 @@ uint64_t __74__RTDaemonClientInternal_fetchLocationsFromCoreLocationWithOptions_
   }
 }
 
-- (void)fetchUserCurationsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchUserCurationsWithOptions:(id)options handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!optionsCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -5858,7 +5858,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -5871,7 +5871,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [(RTDaemonClientInternal *)self userCurationManager];
+  userCurationManager = [(RTDaemonClientInternal *)self userCurationManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __64__RTDaemonClientInternal_fetchUserCurationsWithOptions_handler___block_invoke;
@@ -5879,7 +5879,7 @@ LABEL_10:
   v13[4] = self;
   v15 = a2;
   v14 = v9;
-  [v10 fetchStoredUserCurationsWithOptions:v7 handler:v13];
+  [userCurationManager fetchStoredUserCurationsWithOptions:optionsCopy handler:v13];
 
 LABEL_8:
 }
@@ -5927,15 +5927,15 @@ uint64_t __64__RTDaemonClientInternal_fetchUserCurationsWithOptions_handler___bl
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)purgeUserCurationsPredating:(id)a3 handler:(id)a4
+- (void)purgeUserCurationsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!predatingCopy)
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    userCurationManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(userCurationManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -5944,14 +5944,14 @@ uint64_t __64__RTDaemonClientInternal_fetchUserCurationsWithOptions_handler___bl
     v10 = "Invalid parameter not satisfying: date";
     v11 = &v13;
 LABEL_9:
-    _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, v10, v11, 2u);
+    _os_log_error_impl(&dword_2304B3000, userCurationManager, OS_LOG_TYPE_ERROR, v10, v11, 2u);
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    userCurationManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(userCurationManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -5962,8 +5962,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [(RTDaemonClientInternal *)self userCurationManager];
-  [v9 purgeUserCurationsPredating:v6 handler:v8];
+  userCurationManager = [(RTDaemonClientInternal *)self userCurationManager];
+  [userCurationManager purgeUserCurationsPredating:predatingCopy handler:v8];
 LABEL_7:
 }
 

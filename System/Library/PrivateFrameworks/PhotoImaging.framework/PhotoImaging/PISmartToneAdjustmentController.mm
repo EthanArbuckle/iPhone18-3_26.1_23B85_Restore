@@ -1,6 +1,6 @@
 @interface PISmartToneAdjustmentController
 - (NSDictionary)statistics;
-- (PISmartToneAdjustmentController)initWithAdjustment:(id)a3;
+- (PISmartToneAdjustmentController)initWithAdjustment:(id)adjustment;
 - (double)inputBlack;
 - (double)inputBrightness;
 - (double)inputContrast;
@@ -20,25 +20,25 @@
 - (id)autoKeysForPaste;
 - (id)computedSettings;
 - (id)displayInputKeys;
-- (id)pasteKeysForMediaType:(int64_t)a3;
-- (void)_updateSettingsWithInputLight:(double)a3;
-- (void)setInputBlack:(double)a3;
-- (void)setInputBrightness:(double)a3;
-- (void)setInputContrast:(double)a3;
-- (void)setInputExposure:(double)a3;
-- (void)setInputHighlights:(double)a3;
-- (void)setInputLight:(double)a3;
-- (void)setInputLocalLight:(double)a3;
-- (void)setInputRawHighlights:(double)a3;
-- (void)setInputShadows:(double)a3;
-- (void)setOffsetBlack:(double)a3;
-- (void)setOffsetBrightness:(double)a3;
-- (void)setOffsetContrast:(double)a3;
-- (void)setOffsetExposure:(double)a3;
-- (void)setOffsetHighlights:(double)a3;
-- (void)setOffsetLocalLight:(double)a3;
-- (void)setOffsetShadows:(double)a3;
-- (void)setStatistics:(id)a3;
+- (id)pasteKeysForMediaType:(int64_t)type;
+- (void)_updateSettingsWithInputLight:(double)light;
+- (void)setInputBlack:(double)black;
+- (void)setInputBrightness:(double)brightness;
+- (void)setInputContrast:(double)contrast;
+- (void)setInputExposure:(double)exposure;
+- (void)setInputHighlights:(double)highlights;
+- (void)setInputLight:(double)light;
+- (void)setInputLocalLight:(double)light;
+- (void)setInputRawHighlights:(double)highlights;
+- (void)setInputShadows:(double)shadows;
+- (void)setOffsetBlack:(double)black;
+- (void)setOffsetBrightness:(double)brightness;
+- (void)setOffsetContrast:(double)contrast;
+- (void)setOffsetExposure:(double)exposure;
+- (void)setOffsetHighlights:(double)highlights;
+- (void)setOffsetLocalLight:(double)light;
+- (void)setOffsetShadows:(double)shadows;
+- (void)setStatistics:(id)statistics;
 @end
 
 @implementation PISmartToneAdjustmentController
@@ -64,12 +64,12 @@
   return v9;
 }
 
-- (id)pasteKeysForMediaType:(int64_t)a3
+- (id)pasteKeysForMediaType:(int64_t)type
 {
   v17[8] = *MEMORY[0x1E69E9840];
   v4 = +[PIAdjustmentController enabledKey];
   v5 = v4;
-  if (a3 == 2)
+  if (type == 2)
   {
     v17[0] = v4;
     v6 = +[PISmartToneAdjustmentController inputLightKey];
@@ -123,10 +123,10 @@
   return v3;
 }
 
-- (void)setOffsetShadows:(double)a3
+- (void)setOffsetShadows:(double)shadows
 {
   [(PIAdjustmentController *)self setIsAuto:0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:shadows];
   v5 = +[PISmartToneAdjustmentController offsetShadowsKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v6 forKey:v5];
 }
@@ -141,10 +141,10 @@
   return v6;
 }
 
-- (void)setOffsetLocalLight:(double)a3
+- (void)setOffsetLocalLight:(double)light
 {
   [(PIAdjustmentController *)self setIsAuto:0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:light];
   v5 = +[PISmartToneAdjustmentController offsetLocalLightKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v6 forKey:v5];
 }
@@ -159,10 +159,10 @@
   return v6;
 }
 
-- (void)setOffsetHighlights:(double)a3
+- (void)setOffsetHighlights:(double)highlights
 {
   [(PIAdjustmentController *)self setIsAuto:0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:highlights];
   v5 = +[PISmartToneAdjustmentController offsetHighlightsKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v6 forKey:v5];
 }
@@ -177,10 +177,10 @@
   return v6;
 }
 
-- (void)setOffsetExposure:(double)a3
+- (void)setOffsetExposure:(double)exposure
 {
   [(PIAdjustmentController *)self setIsAuto:0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:exposure];
   v5 = +[PISmartToneAdjustmentController offsetExposureKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v6 forKey:v5];
 }
@@ -195,10 +195,10 @@
   return v6;
 }
 
-- (void)setOffsetContrast:(double)a3
+- (void)setOffsetContrast:(double)contrast
 {
   [(PIAdjustmentController *)self setIsAuto:0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:contrast];
   v5 = +[PISmartToneAdjustmentController offsetContrastKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v6 forKey:v5];
 }
@@ -213,10 +213,10 @@
   return v6;
 }
 
-- (void)setOffsetBrightness:(double)a3
+- (void)setOffsetBrightness:(double)brightness
 {
   [(PIAdjustmentController *)self setIsAuto:0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:brightness];
   v5 = +[PISmartToneAdjustmentController offsetBrightnessKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v6 forKey:v5];
 }
@@ -231,10 +231,10 @@
   return v6;
 }
 
-- (void)setOffsetBlack:(double)a3
+- (void)setOffsetBlack:(double)black
 {
   [(PIAdjustmentController *)self setIsAuto:0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:black];
   v5 = +[PISmartToneAdjustmentController offsetBlackKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v6 forKey:v5];
 }
@@ -257,9 +257,9 @@
   return v4;
 }
 
-- (void)setStatistics:(id)a3
+- (void)setStatistics:(id)statistics
 {
-  v4 = [a3 copy];
+  v4 = [statistics copy];
   v5 = +[PISmartToneAdjustmentController statisticsKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v4 forKey:v5];
 
@@ -268,9 +268,9 @@
   [(PISmartToneAdjustmentController *)self _updateSettingsWithInputLight:?];
 }
 
-- (void)setInputRawHighlights:(double)a3
+- (void)setInputRawHighlights:(double)highlights
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:highlights];
   v4 = +[PISmartToneAdjustmentController inputRawHighlightsKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
@@ -286,9 +286,9 @@
   return v7;
 }
 
-- (void)setInputLocalLight:(double)a3
+- (void)setInputLocalLight:(double)light
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:light];
   v4 = +[PISmartToneAdjustmentController inputLocalLightKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
@@ -304,9 +304,9 @@
   return v7;
 }
 
-- (void)setInputBlack:(double)a3
+- (void)setInputBlack:(double)black
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:black];
   v4 = +[PISmartToneAdjustmentController inputBlackKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
@@ -322,9 +322,9 @@
   return v7;
 }
 
-- (void)setInputHighlights:(double)a3
+- (void)setInputHighlights:(double)highlights
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:highlights];
   v4 = +[PISmartToneAdjustmentController inputHighlightsKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
@@ -340,9 +340,9 @@
   return v7;
 }
 
-- (void)setInputShadows:(double)a3
+- (void)setInputShadows:(double)shadows
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:shadows];
   v4 = +[PISmartToneAdjustmentController inputShadowsKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
@@ -358,9 +358,9 @@
   return v7;
 }
 
-- (void)setInputContrast:(double)a3
+- (void)setInputContrast:(double)contrast
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:contrast];
   v4 = +[PISmartToneAdjustmentController inputContrastKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
@@ -376,9 +376,9 @@
   return v7;
 }
 
-- (void)setInputBrightness:(double)a3
+- (void)setInputBrightness:(double)brightness
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:brightness];
   v4 = +[PISmartToneAdjustmentController inputBrightnessKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
@@ -394,9 +394,9 @@
   return v7;
 }
 
-- (void)setInputExposure:(double)a3
+- (void)setInputExposure:(double)exposure
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:exposure];
   v4 = +[PISmartToneAdjustmentController inputExposureKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
@@ -411,19 +411,19 @@
   return v6;
 }
 
-- (void)setInputLight:(double)a3
+- (void)setInputLight:(double)light
 {
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
   v6 = +[PISmartToneAdjustmentController inputLightKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v6];
 
-  [(PISmartToneAdjustmentController *)self _updateSettingsWithInputLight:a3];
+  [(PISmartToneAdjustmentController *)self _updateSettingsWithInputLight:light];
 }
 
 - (double)inputLightDefault
 {
-  v2 = [(PISmartToneAdjustmentController *)self statistics];
-  v3 = [v2 objectForKeyedSubscript:@"autoValue"];
+  statistics = [(PISmartToneAdjustmentController *)self statistics];
+  v3 = [statistics objectForKeyedSubscript:@"autoValue"];
 
   if (v3)
   {
@@ -480,13 +480,13 @@
   return v12;
 }
 
-- (void)_updateSettingsWithInputLight:(double)a3
+- (void)_updateSettingsWithInputLight:(double)light
 {
-  v57 = [(PISmartToneAdjustmentController *)self statistics];
+  statistics = [(PISmartToneAdjustmentController *)self statistics];
   v5 = MEMORY[0x1E695F658];
-  v6 = [v57 objectForKeyedSubscript:@"localAutoValue"];
+  v6 = [statistics objectForKeyedSubscript:@"localAutoValue"];
   [v6 doubleValue];
-  v8 = [v5 smartToneAdjustmentsForValue:v57 localLightAutoValue:a3 andStatistics:v7];
+  v8 = [v5 smartToneAdjustmentsForValue:statistics localLightAutoValue:light andStatistics:v7];
 
   v9 = +[PISmartToneAdjustmentController inputExposureKey];
   v10 = [v8 objectForKeyedSubscript:v9];
@@ -569,13 +569,13 @@
   [(PIAdjustmentController *)self setObject:v55 forKeyedSubscript:v56];
 }
 
-- (PISmartToneAdjustmentController)initWithAdjustment:(id)a3
+- (PISmartToneAdjustmentController)initWithAdjustment:(id)adjustment
 {
   v7.receiver = self;
   v7.super_class = PISmartToneAdjustmentController;
-  v3 = a3;
-  v4 = [(PIAdjustmentController *)&v7 initWithAdjustment:v3];
-  v5 = [v3 objectForKeyedSubscript:{@"inputLight", v7.receiver, v7.super_class}];
+  adjustmentCopy = adjustment;
+  v4 = [(PIAdjustmentController *)&v7 initWithAdjustment:adjustmentCopy];
+  v5 = [adjustmentCopy objectForKeyedSubscript:{@"inputLight", v7.receiver, v7.super_class}];
 
   [v5 doubleValue];
   [(PISmartToneAdjustmentController *)v4 _updateSettingsWithInputLight:?];

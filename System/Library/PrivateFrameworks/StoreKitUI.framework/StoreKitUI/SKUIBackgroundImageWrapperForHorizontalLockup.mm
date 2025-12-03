@@ -1,16 +1,16 @@
 @interface SKUIBackgroundImageWrapperForHorizontalLockup
-- (SKUIBackgroundImageWrapperForHorizontalLockup)initWithImage:(id)a3;
+- (SKUIBackgroundImageWrapperForHorizontalLockup)initWithImage:(id)image;
 - (SKUIHorizontalLockupView)lockup;
 - (SKUIImageView)imageView;
-- (void)setImage:(id)a3;
-- (void)setLockup:(id)a3;
+- (void)setImage:(id)image;
+- (void)setLockup:(id)lockup;
 @end
 
 @implementation SKUIBackgroundImageWrapperForHorizontalLockup
 
-- (SKUIBackgroundImageWrapperForHorizontalLockup)initWithImage:(id)a3
+- (SKUIBackgroundImageWrapperForHorizontalLockup)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIBackgroundImageWrapperForHorizontalLockup initWithImage:];
@@ -22,35 +22,35 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_imageView, v4);
+    objc_storeWeak(&v5->_imageView, imageCopy);
   }
 
   return v6;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v8 = a3;
-  v4 = [(SKUIBackgroundImageWrapperForHorizontalLockup *)self imageView];
+  imageCopy = image;
+  imageView = [(SKUIBackgroundImageWrapperForHorizontalLockup *)self imageView];
 
-  if (v4)
+  if (imageView)
   {
     WeakRetained = objc_loadWeakRetained(&self->_imageView);
-    [WeakRetained setImage:v8];
+    [WeakRetained setImage:imageCopy];
   }
 
-  v6 = [(SKUIBackgroundImageWrapperForHorizontalLockup *)self lockup];
+  lockup = [(SKUIBackgroundImageWrapperForHorizontalLockup *)self lockup];
 
-  if (v6)
+  if (lockup)
   {
     v7 = objc_loadWeakRetained(&self->_lockup);
-    [v7 setContainerBackgroundImageForPlayButton:v8];
+    [v7 setContainerBackgroundImageForPlayButton:imageCopy];
   }
 }
 
-- (void)setLockup:(id)a3
+- (void)setLockup:(id)lockup
 {
-  obj = a3;
+  obj = lockup;
   WeakRetained = objc_loadWeakRetained(&self->_lockup);
 
   v6 = obj;
@@ -63,15 +63,15 @@
     {
       v7 = v5;
       v8 = objc_loadWeakRetained(&self->_imageView);
-      v9 = [v8 image];
+      image = [v8 image];
 
       v6 = obj;
-      if (v9)
+      if (image)
       {
         v10 = objc_loadWeakRetained(&self->_lockup);
         v11 = objc_loadWeakRetained(&self->_imageView);
-        v12 = [v11 image];
-        [v10 setContainerBackgroundImageForPlayButton:v12];
+        image2 = [v11 image];
+        [v10 setContainerBackgroundImageForPlayButton:image2];
 
         v6 = obj;
       }

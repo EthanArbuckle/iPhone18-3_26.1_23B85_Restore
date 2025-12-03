@@ -1,16 +1,16 @@
 @interface CIPortraitBlurCombiner
-- (id)_blendKernel:(BOOL)a3;
+- (id)_blendKernel:(BOOL)kernel;
 - (id)_ourBlendKernelMetal;
 - (id)outputImage;
 @end
 
 @implementation CIPortraitBlurCombiner
 
-- (id)_blendKernel:(BOOL)a3
+- (id)_blendKernel:(BOOL)kernel
 {
-  v3 = a3;
+  kernelCopy = kernel;
   v4 = SDOFV2MetalLibURL();
-  if (v3)
+  if (kernelCopy)
   {
     v5 = @"_CIPortraitBlurBlendWithMaskFromAlphaWithMatte";
   }
@@ -107,7 +107,7 @@ id __46__CIPortraitBlurCombiner__ourBlendKernelMetal__block_invoke()
 
   if (!v28 || v39)
   {
-    v51 = [(CIPortraitBlurCombiner *)self _ourBlendKernelMetal];
+    _ourBlendKernelMetal = [(CIPortraitBlurCombiner *)self _ourBlendKernelMetal];
     [(CIImage *)self->inputImage extent];
     v53 = v63;
     v55 = v64;
@@ -119,7 +119,7 @@ id __46__CIPortraitBlurCombiner__ourBlendKernelMetal__block_invoke()
     v60 = MEMORY[0x1E695DEC8];
     v61 = v83;
     v62 = 3;
-    return [v51 applyWithExtent:objc_msgSend(v60 arguments:{"arrayWithObjects:count:", v61, v62), v53, v55, v57, v59}];
+    return [_ourBlendKernelMetal applyWithExtent:objc_msgSend(v60 arguments:{"arrayWithObjects:count:", v61, v62), v53, v55, v57, v59}];
   }
 
   SDOFRenderingValue(&cfstr_Blendingquarte.isa, self->inputTuningParameters);
@@ -134,7 +134,7 @@ id __46__CIPortraitBlurCombiner__ourBlendKernelMetal__block_invoke()
   v50 = [CIVector vectorWithX:v46 Y:v48 Z:v49 W:v44];
   if (vabds_f32(v42, v44) < 0.001)
   {
-    v51 = [(CIPortraitBlurCombiner *)self nonMetalKernel];
+    _ourBlendKernelMetal = [(CIPortraitBlurCombiner *)self nonMetalKernel];
     [(CIImage *)self->inputImage extent];
     v53 = v52;
     v55 = v54;
@@ -147,11 +147,11 @@ id __46__CIPortraitBlurCombiner__ourBlendKernelMetal__block_invoke()
     v60 = MEMORY[0x1E695DEC8];
     v61 = v89;
     v62 = 4;
-    return [v51 applyWithExtent:objc_msgSend(v60 arguments:{"arrayWithObjects:count:", v61, v62), v53, v55, v57, v59}];
+    return [_ourBlendKernelMetal applyWithExtent:objc_msgSend(v60 arguments:{"arrayWithObjects:count:", v61, v62), v53, v55, v57, v59}];
   }
 
   v68 = [CIImage imageYCC444:self->inputImage matrix:709 fullRange:1 colorSpace:[(CIImage *)self->inputImage colorSpace]];
-  v69 = [(CIPortraitBlurCombiner *)self nonMetalKernelYCC];
+  nonMetalKernelYCC = [(CIPortraitBlurCombiner *)self nonMetalKernelYCC];
   [(CIImage *)self->inputImage extent];
   v71 = v70;
   v73 = v72;
@@ -163,7 +163,7 @@ id __46__CIPortraitBlurCombiner__ourBlendKernelMetal__block_invoke()
   v88[3] = v50;
   *&v70 = v42;
   v88[4] = [MEMORY[0x1E696AD98] numberWithFloat:v70];
-  v78 = [v69 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v88, 5), v71, v73, v75, v77}];
+  v78 = [nonMetalKernelYCC applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v88, 5), v71, v73, v75, v77}];
   v86 = @"inputBiasVector";
   v87 = [CIVector vectorWithX:0.0 Y:0.501960814 Z:0.501960814];
   v79 = [v78 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v87, &v86, 1)}];

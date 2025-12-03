@@ -1,7 +1,7 @@
 @interface HAPMetricsDispatcher
 + (id)sharedInstance;
-- (void)submitLogEvent:(id)a3;
-- (void)submitLogEvent:(id)a3 error:(id)a4;
+- (void)submitLogEvent:(id)event;
+- (void)submitLogEvent:(id)event error:(id)error;
 @end
 
 @implementation HAPMetricsDispatcher
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __38__HAPMetricsDispatcher_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -30,28 +30,28 @@ uint64_t __38__HAPMetricsDispatcher_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)submitLogEvent:(id)a3 error:(id)a4
+- (void)submitLogEvent:(id)event error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HAPMetricsDispatcher *)self logDispatcher];
+  eventCopy = event;
+  errorCopy = error;
+  logDispatcher = [(HAPMetricsDispatcher *)self logDispatcher];
 
-  if (v7)
+  if (logDispatcher)
   {
-    v8 = [(HAPMetricsDispatcher *)self logDispatcher];
-    [v8 submitLogEvent:v9 error:v6];
+    logDispatcher2 = [(HAPMetricsDispatcher *)self logDispatcher];
+    [logDispatcher2 submitLogEvent:eventCopy error:errorCopy];
   }
 }
 
-- (void)submitLogEvent:(id)a3
+- (void)submitLogEvent:(id)event
 {
-  v6 = a3;
-  v4 = [(HAPMetricsDispatcher *)self logDispatcher];
+  eventCopy = event;
+  logDispatcher = [(HAPMetricsDispatcher *)self logDispatcher];
 
-  if (v4)
+  if (logDispatcher)
   {
-    v5 = [(HAPMetricsDispatcher *)self logDispatcher];
-    [v5 submitLogEvent:v6];
+    logDispatcher2 = [(HAPMetricsDispatcher *)self logDispatcher];
+    [logDispatcher2 submitLogEvent:eventCopy];
   }
 }
 

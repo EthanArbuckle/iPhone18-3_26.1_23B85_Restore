@@ -1,16 +1,16 @@
 @interface HLPHelpTopicHistoryItem
 - (CGPoint)contentOffset;
 - (CGSize)contentSize;
-- (HLPHelpTopicHistoryItem)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HLPHelpTopicHistoryItem)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HLPHelpTopicHistoryItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HLPHelpTopicHistoryItem allocWithZone:a3];
+  v4 = [HLPHelpTopicHistoryItem allocWithZone:zone];
   [(HLPHelpTopicHistoryItem *)v4 setIdentifier:self->_identifier];
   [(HLPHelpTopicHistoryItem *)v4 setName:self->_name];
   [(HLPHelpTopicHistoryItem *)v4 setContentSize:self->_contentSize.width, self->_contentSize.height];
@@ -19,29 +19,29 @@
   return v4;
 }
 
-- (HLPHelpTopicHistoryItem)initWithCoder:(id)a3
+- (HLPHelpTopicHistoryItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = HLPHelpTopicHistoryItem;
   v5 = [(HLPHelpTopicHistoryItem *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"HLPHelpHistoryIdentifier"];
+    v6 = [coderCopy decodeObjectForKey:@"HLPHelpHistoryIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectForKey:@"HLPHelpHistoryName"];
+    v8 = [coderCopy decodeObjectForKey:@"HLPHelpHistoryName"];
     name = v5->_name;
     v5->_name = v8;
 
-    [v4 decodeCGPointForKey:@"HLPHelpHistoryContentOffset"];
+    [coderCopy decodeCGPointForKey:@"HLPHelpHistoryContentOffset"];
     v5->_contentOffset.x = v10;
     v5->_contentOffset.y = v11;
-    [v4 decodeCGSizeForKey:@"HLPHelpHistoryContentSize"];
+    [coderCopy decodeCGSizeForKey:@"HLPHelpHistoryContentSize"];
     v5->_contentSize.width = v12;
     v5->_contentSize.height = v13;
-    v14 = [v4 decodeObjectForKey:@"HLPHelpHistoryAnchor"];
+    v14 = [coderCopy decodeObjectForKey:@"HLPHelpHistoryAnchor"];
     anchor = v5->_anchor;
     v5->_anchor = v14;
   }
@@ -49,15 +49,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"HLPHelpHistoryIdentifier"];
-  [v5 encodeObject:self->_name forKey:@"HLPHelpHistoryName"];
-  [v5 encodeCGPoint:@"HLPHelpHistoryContentOffset" forKey:{self->_contentOffset.x, self->_contentOffset.y}];
-  [v5 encodeCGSize:@"HLPHelpHistoryContentSize" forKey:{self->_contentSize.width, self->_contentSize.height}];
-  [v5 encodeObject:self->_anchor forKey:@"HLPHelpHistoryAnchor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"HLPHelpHistoryIdentifier"];
+  [coderCopy encodeObject:self->_name forKey:@"HLPHelpHistoryName"];
+  [coderCopy encodeCGPoint:@"HLPHelpHistoryContentOffset" forKey:{self->_contentOffset.x, self->_contentOffset.y}];
+  [coderCopy encodeCGSize:@"HLPHelpHistoryContentSize" forKey:{self->_contentSize.width, self->_contentSize.height}];
+  [coderCopy encodeObject:self->_anchor forKey:@"HLPHelpHistoryAnchor"];
 }
 
 - (CGPoint)contentOffset

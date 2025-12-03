@@ -1,67 +1,67 @@
 @interface MRLayerParallelizer
 - (BOOL)_isMadeOpaqueBySublayers;
-- (BOOL)getStartTime:(double *)a3 andDuration:(double *)a4 forMovingToElementID:(id)a5 backwards:(BOOL)a6;
+- (BOOL)getStartTime:(double *)time andDuration:(double *)duration forMovingToElementID:(id)d backwards:(BOOL)backwards;
 - (BOOL)hasAudio;
-- (BOOL)hasMoreSlidesFromTime:(double)a3 backwards:(BOOL)a4 startTime:(double *)a5 duration:(double *)a6;
+- (BOOL)hasMoreSlidesFromTime:(double)time backwards:(BOOL)backwards startTime:(double *)startTime duration:(double *)duration;
 - (BOOL)hasSlides;
 - (BOOL)hasSomethingToRender;
 - (BOOL)isAlphaFriendly;
 - (BOOL)isInInteractiveMode;
 - (BOOL)isInfinite;
-- (BOOL)isLoadedForTime:(double)a3;
+- (BOOL)isLoadedForTime:(double)time;
 - (BOOL)isOpaque;
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (MRLayerParallelizer)initWithParameters:(id)a3;
-- (MRLayerParallelizer)initWithPlug:(id)a3 andParameters:(id)a4 inSuperlayer:(id)a5;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (MRLayerParallelizer)initWithParameters:(id)parameters;
+- (MRLayerParallelizer)initWithPlug:(id)plug andParameters:(id)parameters inSuperlayer:(id)superlayer;
 - (const)backgroundColor;
-- (double)interestingTimeForElement:(id)a3;
-- (double)interestingTimeForTime:(double)a3;
-- (double)phaseInSublayerForKey:(id)a3;
-- (double)phaseOutSublayerForKey:(id)a3;
-- (id)_createSublayerForPlug:(id)a3;
+- (double)interestingTimeForElement:(id)element;
+- (double)interestingTimeForTime:(double)time;
+- (double)phaseInSublayerForKey:(id)key;
+- (double)phaseOutSublayerForKey:(id)key;
+- (id)_createSublayerForPlug:(id)plug;
 - (id)_currentState;
-- (id)_dumpLayerWithOptions:(unint64_t)a3;
-- (id)_retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (id)currentSlideInfoForElement:(id)a3;
+- (id)_dumpLayerWithOptions:(unint64_t)options;
+- (id)_retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (id)currentSlideInfoForElement:(id)element;
 - (id)currentSlideInfos;
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (id)sublayerForKey:(id)a3;
-- (id)sublayerForPlugObjectID:(id)a3 recursive:(BOOL)a4;
-- (id)sublayerHitAtPoint:(CGPoint)a3 onlyIfHitElement:(BOOL)a4 localPoint:(CGPoint *)a5;
-- (void)_deleteSublayer:(id)a3;
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (id)sublayerForKey:(id)key;
+- (id)sublayerForPlugObjectID:(id)d recursive:(BOOL)recursive;
+- (id)sublayerHitAtPoint:(CGPoint)point onlyIfHitElement:(BOOL)element localPoint:(CGPoint *)localPoint;
+- (void)_deleteSublayer:(id)sublayer;
 - (void)_executeLayerCommandQueue;
 - (void)_observePlug;
 - (void)_observePlugOnPreactivate;
-- (void)_observeSublayer:(id)a3;
-- (void)_renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)_setNeedsToRequestRebuildAudio:(BOOL)a3;
+- (void)_observeSublayer:(id)sublayer;
+- (void)_renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)_setNeedsToRequestRebuildAudio:(BOOL)audio;
 - (void)_unobservePlug;
 - (void)_unobservePlugOnDepreactivate;
-- (void)_unobserveSublayer:(id)a3;
-- (void)beginMorphingToAspectRatio:(double)a3 withDuration:(double)a4;
+- (void)_unobserveSublayer:(id)sublayer;
+- (void)beginMorphingToAspectRatio:(double)ratio withDuration:(double)duration;
 - (void)cleanup;
 - (void)deactivate;
-- (void)depreactivate:(BOOL)a3;
-- (void)getLazyDuration:(double *)a3 lazyFactor:(double *)a4 animationDuration:(double *)a5 fromInterestingTime:(double)a6;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)depreactivate:(BOOL)depreactivate;
+- (void)getLazyDuration:(double *)duration lazyFactor:(double *)factor animationDuration:(double *)animationDuration fromInterestingTime:(double)time;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)preactivate;
-- (void)removeSublayer:(id)a3;
-- (void)setBackgroundColorRed:(float)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (void)setDuration:(double)a3;
-- (void)setIsInInteractiveMode:(BOOL)a3;
-- (void)setNeedsUpdateForPluggerOfSublayer:(id)a3;
-- (void)setPixelSize:(CGSize)a3;
-- (void)setSublayer:(id)a3 forKey:(id)a4;
+- (void)removeSublayer:(id)sublayer;
+- (void)setBackgroundColorRed:(float)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (void)setDuration:(double)duration;
+- (void)setIsInInteractiveMode:(BOOL)mode;
+- (void)setNeedsUpdateForPluggerOfSublayer:(id)sublayer;
+- (void)setPixelSize:(CGSize)size;
+- (void)setSublayer:(id)sublayer forKey:(id)key;
 - (void)synchronizeTime;
 @end
 
 @implementation MRLayerParallelizer
 
-- (MRLayerParallelizer)initWithPlug:(id)a3 andParameters:(id)a4 inSuperlayer:(id)a5
+- (MRLayerParallelizer)initWithPlug:(id)plug andParameters:(id)parameters inSuperlayer:(id)superlayer
 {
   v8.receiver = self;
   v8.super_class = MRLayerParallelizer;
-  v5 = [(MRLayer *)&v8 initWithPlug:a3 andParameters:a4 inSuperlayer:a5];
+  v5 = [(MRLayer *)&v8 initWithPlug:plug andParameters:parameters inSuperlayer:superlayer];
   v6 = v5;
   if (v5)
   {
@@ -80,11 +80,11 @@
   return v6;
 }
 
-- (MRLayerParallelizer)initWithParameters:(id)a3
+- (MRLayerParallelizer)initWithParameters:(id)parameters
 {
   v5.receiver = self;
   v5.super_class = MRLayerParallelizer;
-  v3 = [(MRLayer *)&v5 initWithParameters:a3];
+  v3 = [(MRLayer *)&v5 initWithParameters:parameters];
   if (v3)
   {
     v3->mSublayers = objc_alloc_init(NSMutableArray);
@@ -144,25 +144,25 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v6 = a6;
-  v7 = a5;
-  v28 = a5;
-  v29 = a6;
-  if ([a3 isEqualToString:@"plugs"])
+  contextCopy = context;
+  changeCopy = change;
+  changeCopy2 = change;
+  contextCopy2 = context;
+  if ([path isEqualToString:@"plugs"])
   {
-    v11 = [objc_msgSend(v7 objectForKey:{NSKeyValueChangeKindKey), "unsignedIntegerValue"}];
+    v11 = [objc_msgSend(changeCopy objectForKey:{NSKeyValueChangeKindKey), "unsignedIntegerValue"}];
     if (v11 == &dword_0 + 2)
     {
-      v21 = [v7 objectForKey:NSKeyValueChangeNewKey];
+      plugs = [changeCopy objectForKey:NSKeyValueChangeNewKey];
     }
 
     else
     {
       if (v11 == &dword_0 + 3)
       {
-        v12 = [v7 objectForKey:NSKeyValueChangeOldKey];
+        v12 = [changeCopy objectForKey:NSKeyValueChangeOldKey];
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
@@ -200,18 +200,18 @@
         goto LABEL_34;
       }
 
-      v21 = [(MCContainerParallelizer *)self->mContainer plugs];
+      plugs = [(MCContainerParallelizer *)self->mContainer plugs];
     }
 
-    v22 = v21;
+    v22 = plugs;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v23 = [(NSSet *)v21 countByEnumeratingWithState:&v31 objects:v39 count:16, v28, v29];
-    if (v23)
+    contextCopy2 = [(NSSet *)plugs countByEnumeratingWithState:&v31 objects:v39 count:16, changeCopy2, contextCopy2];
+    if (contextCopy2)
     {
-      v24 = v23;
+      v24 = contextCopy2;
       v25 = *v32;
       do
       {
@@ -238,32 +238,32 @@
     goto LABEL_34;
   }
 
-  if ([a3 isEqualToString:@"plugAsParallel.container"])
+  if ([path isEqualToString:@"plugAsParallel.container"])
   {
-    v19 = [a4 plugAsParallel];
-    if (([a4 isScheduledForDestruction] & 1) == 0)
+    plugAsParallel = [object plugAsParallel];
+    if (([object isScheduledForDestruction] & 1) == 0)
     {
-      [(MRLayerParallelizer *)self _unobserveSublayer:a4];
-      [a4 scheduleForDestruction];
-      [(MRLayer *)self _queueLayerCommand:1 object:v19];
+      [(MRLayerParallelizer *)self _unobserveSublayer:object];
+      [object scheduleForDestruction];
+      [(MRLayer *)self _queueLayerCommand:1 object:plugAsParallel];
     }
 
-    if ([v19 container])
+    if ([plugAsParallel container])
     {
-      [(MRLayer *)self _queueLayerCommand:0 object:v19];
+      [(MRLayer *)self _queueLayerCommand:0 object:plugAsParallel];
     }
   }
 
   else
   {
-    if (([a3 isEqualToString:@"zOrderedPlugs"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"plugAsParallel.zIndex"))
+    if (([path isEqualToString:@"zOrderedPlugs"] & 1) != 0 || objc_msgSend(path, "isEqualToString:", @"plugAsParallel.zIndex"))
     {
       v20 = 256;
     }
 
     else
     {
-      if (![a3 isEqualToString:@"backgroundColor"])
+      if (![path isEqualToString:@"backgroundColor"])
       {
         goto LABEL_36;
       }
@@ -275,8 +275,8 @@
   }
 
 LABEL_34:
-  v7 = v28;
-  v6 = v29;
+  changeCopy = changeCopy2;
+  contextCopy = contextCopy2;
   if (!self->super.mIsPrecomputing)
   {
     [(MRLayer *)self->super.mSuperlayer setNeedsUpdateForPluggerOfSublayer:self];
@@ -286,14 +286,14 @@ LABEL_34:
 LABEL_36:
   v30.receiver = self;
   v30.super_class = MRLayerParallelizer;
-  [(MRLayer *)&v30 observeValueForKeyPath:a3 ofObject:a4 change:v7 context:v6, v28, v29];
+  [(MRLayer *)&v30 observeValueForKeyPath:path ofObject:object change:changeCopy context:contextCopy, changeCopy2, contextCopy2];
 }
 
-- (void)setPixelSize:(CGSize)a3
+- (void)setPixelSize:(CGSize)size
 {
   v13.receiver = self;
   v13.super_class = MRLayerParallelizer;
-  [(MRLayer *)&v13 setPixelSize:a3.width, a3.height];
+  [(MRLayer *)&v13 setPixelSize:size.width, size.height];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
@@ -403,19 +403,19 @@ LABEL_6:
   [(NSMutableArray *)self->mSublayers enumerateObjectsUsingBlock:&stru_1AAD50];
 }
 
-- (void)beginMorphingToAspectRatio:(double)a3 withDuration:(double)a4
+- (void)beginMorphingToAspectRatio:(double)ratio withDuration:(double)duration
 {
   mSublayers = self->mSublayers;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_56098;
   v5[3] = &unk_1AAD70;
-  *&v5[4] = a3;
-  *&v5[5] = a4;
+  *&v5[4] = ratio;
+  *&v5[5] = duration;
   [(NSMutableArray *)mSublayers enumerateObjectsUsingBlock:v5];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = MRLayerParallelizer;
@@ -425,19 +425,19 @@ LABEL_6:
   v6[1] = 3221225472;
   v6[2] = sub_5620C;
   v6[3] = &unk_1AADB0;
-  *&v6[4] = a3;
+  *&v6[4] = duration;
   [(NSMutableArray *)mSublayers enumerateObjectsUsingBlock:v6];
 }
 
-- (void)setBackgroundColorRed:(float)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (void)setBackgroundColorRed:(float)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v6 = a4;
-  self->mBackgroundColor[0] = a3;
-  self->mBackgroundColor[1] = v6;
-  v7 = a5;
-  v8 = a6;
-  self->mBackgroundColor[2] = v7;
-  self->mBackgroundColor[3] = v8;
+  greenCopy = green;
+  self->mBackgroundColor[0] = red;
+  self->mBackgroundColor[1] = greenCopy;
+  blueCopy = blue;
+  alphaCopy = alpha;
+  self->mBackgroundColor[2] = blueCopy;
+  self->mBackgroundColor[3] = alphaCopy;
 }
 
 - (void)preactivate
@@ -456,23 +456,23 @@ LABEL_6:
   [(MRLayer *)&v3 deactivate];
 }
 
-- (void)depreactivate:(BOOL)a3
+- (void)depreactivate:(BOOL)depreactivate
 {
-  v3 = a3;
+  depreactivateCopy = depreactivate;
   mSublayers = self->mSublayers;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_56468;
   v7[3] = &unk_1AADF8;
   v7[4] = self;
-  v8 = a3;
+  depreactivateCopy2 = depreactivate;
   [(NSMutableArray *)mSublayers enumerateObjectsUsingBlock:v7];
   v6.receiver = self;
   v6.super_class = MRLayerParallelizer;
-  [(MRLayer *)&v6 depreactivate:v3];
+  [(MRLayer *)&v6 depreactivate:depreactivateCopy];
 }
 
-- (BOOL)isLoadedForTime:(double)a3
+- (BOOL)isLoadedForTime:(double)time
 {
   v20.receiver = self;
   v20.super_class = MRLayerParallelizer;
@@ -503,7 +503,7 @@ LABEL_4:
         v13 = v12;
         if ([v11 isPreactivated])
         {
-          v14 = a3 - v13;
+          v14 = time - v13;
           if ([v11 shouldBeActivatedAtTime:v14])
           {
             v5 = [v11 isLoadedForTime:v14];
@@ -565,26 +565,26 @@ LABEL_12:
         v10 = *(*(&v31 + 1) + 8 * v9);
         if ([v10 isOpaque])
         {
-          v11 = [v10 plugAsParallel];
-          [v11 rotationAngle];
+          plugAsParallel = [v10 plugAsParallel];
+          [plugAsParallel rotationAngle];
           if (v12 == 0.0)
           {
-            [v11 xRotationAngle];
+            [plugAsParallel xRotationAngle];
             if (v13 == 0.0)
             {
-              [v11 yRotationAngle];
+              [plugAsParallel yRotationAngle];
               if (v14 == 0.0)
               {
-                [v11 opacity];
+                [plugAsParallel opacity];
                 if (v15 >= 1.0)
                 {
-                  [v11 zPosition];
-                  if (v16 >= 0.0 && ![v11 countOfAnimationPaths])
+                  [plugAsParallel zPosition];
+                  if (v16 >= 0.0 && ![plugAsParallel countOfAnimationPaths])
                   {
-                    [v11 position];
+                    [plugAsParallel position];
                     v18 = v17;
                     v20 = v19;
-                    [v11 sizeForParentAspectRatio:v8];
+                    [plugAsParallel sizeForParentAspectRatio:v8];
                     v23 = v18 - v22 * 0.5;
                     v24 = v18 + v22 * 0.5;
                     v25 = v23 > -1.0 || v24 < -1.0;
@@ -636,30 +636,30 @@ LABEL_12:
   if (!v3)
   {
 LABEL_5:
-    LOBYTE(v5) = 1;
-    return v5;
+    LOBYTE(isAlphaFriendly) = 1;
+    return isAlphaFriendly;
   }
 
   if (v3 != &dword_0 + 1)
   {
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(isAlphaFriendly) = 0;
+    return isAlphaFriendly;
   }
 
-  v4 = [(NSMutableArray *)self->mSublayers lastObject];
-  v5 = [v4 isAlphaFriendly];
-  if (v5)
+  lastObject = [(NSMutableArray *)self->mSublayers lastObject];
+  isAlphaFriendly = [lastObject isAlphaFriendly];
+  if (isAlphaFriendly)
   {
-    if (([v4 isOpaque] & 1) == 0)
+    if (([lastObject isOpaque] & 1) == 0)
     {
-      LOBYTE(v5) = self->mBackgroundColor[3] <= 0.0;
-      return v5;
+      LOBYTE(isAlphaFriendly) = self->mBackgroundColor[3] <= 0.0;
+      return isAlphaFriendly;
     }
 
     goto LABEL_5;
   }
 
-  return v5;
+  return isAlphaFriendly;
 }
 
 - (BOOL)isInfinite
@@ -675,28 +675,28 @@ LABEL_5:
   }
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
-  v7 = self;
+  selfCopy = self;
   if (self->super.mLayerCommandQueueNeedsAttention)
   {
     [(MRLayerParallelizer *)self _executeLayerCommandQueue];
   }
 
-  v56.receiver = v7;
+  v56.receiver = selfCopy;
   v56.super_class = MRLayerParallelizer;
-  v8 = [(MRLayer *)&v56 prerenderForTime:a4 inContext:a5 withArguments:a3];
-  v51 = v7;
-  if (!v7->mNeedsToUpdateBackgroundColor)
+  v8 = [(MRLayer *)&v56 prerenderForTime:context inContext:arguments withArguments:time];
+  v51 = selfCopy;
+  if (!selfCopy->mNeedsToUpdateBackgroundColor)
   {
     goto LABEL_19;
   }
 
-  v7->mNeedsToUpdateBackgroundColor = 0;
-  v9 = [(MCContainerParallelizer *)v7->mContainer backgroundColor];
-  if (![(MCContainerParallelizer *)v7->mContainer backgroundColor]|| (Components = CGColorGetComponents(v9)) == 0)
+  selfCopy->mNeedsToUpdateBackgroundColor = 0;
+  backgroundColor = [(MCContainerParallelizer *)selfCopy->mContainer backgroundColor];
+  if (![(MCContainerParallelizer *)selfCopy->mContainer backgroundColor]|| (Components = CGColorGetComponents(backgroundColor)) == 0)
   {
-    mBackgroundColor = v7->mBackgroundColor;
+    mBackgroundColor = selfCopy->mBackgroundColor;
     v16 = -1.0;
 LABEL_18:
     mBackgroundColor[3] = v16;
@@ -704,7 +704,7 @@ LABEL_18:
   }
 
   v11 = Components;
-  NumberOfComponents = CGColorGetNumberOfComponents(v9);
+  NumberOfComponents = CGColorGetNumberOfComponents(backgroundColor);
   if (NumberOfComponents <= 2)
   {
     if (NumberOfComponents != 1)
@@ -713,10 +713,10 @@ LABEL_18:
       {
         v13 = v11->f64[1];
         v14 = v11->f64[0];
-        mBackgroundColor = v7->mBackgroundColor;
-        v7->mBackgroundColor[1] = v14;
-        v7->mBackgroundColor[2] = v14;
-        v7->mBackgroundColor[0] = v14;
+        mBackgroundColor = selfCopy->mBackgroundColor;
+        selfCopy->mBackgroundColor[1] = v14;
+        selfCopy->mBackgroundColor[2] = v14;
+        selfCopy->mBackgroundColor[0] = v14;
 LABEL_14:
         v16 = v13;
         goto LABEL_18;
@@ -726,10 +726,10 @@ LABEL_14:
     }
 
     v18 = v11->f64[0];
-    mBackgroundColor = v7->mBackgroundColor;
-    v7->mBackgroundColor[1] = v18;
-    v7->mBackgroundColor[2] = v18;
-    v7->mBackgroundColor[0] = v18;
+    mBackgroundColor = selfCopy->mBackgroundColor;
+    selfCopy->mBackgroundColor[1] = v18;
+    selfCopy->mBackgroundColor[2] = v18;
+    selfCopy->mBackgroundColor[0] = v18;
 LABEL_17:
     v16 = 1.0;
     goto LABEL_18;
@@ -737,29 +737,29 @@ LABEL_17:
 
   if (NumberOfComponents == 3)
   {
-    mBackgroundColor = v7->mBackgroundColor;
-    *v7->mBackgroundColor = vcvt_f32_f64(*v11);
+    mBackgroundColor = selfCopy->mBackgroundColor;
+    *selfCopy->mBackgroundColor = vcvt_f32_f64(*v11);
     v19 = v11[1].f64[0];
-    v7->mBackgroundColor[2] = v19;
+    selfCopy->mBackgroundColor[2] = v19;
     goto LABEL_17;
   }
 
   if (NumberOfComponents == 4)
   {
-    mBackgroundColor = v7->mBackgroundColor;
-    *v7->mBackgroundColor = vcvt_f32_f64(*v11);
+    mBackgroundColor = selfCopy->mBackgroundColor;
+    *selfCopy->mBackgroundColor = vcvt_f32_f64(*v11);
     v13 = v11[1].f64[1];
     v17 = v11[1].f64[0];
-    v7->mBackgroundColor[2] = v17;
+    selfCopy->mBackgroundColor[2] = v17;
     goto LABEL_14;
   }
 
 LABEL_19:
-  v20 = [a5 forcedState];
-  v21 = v20;
-  if (v20)
+  forcedState = [arguments forcedState];
+  v21 = forcedState;
+  if (forcedState)
   {
-    v22 = [v20 objectForKey:@"activatedSublayers"];
+    v22 = [forcedState objectForKey:@"activatedSublayers"];
   }
 
   else
@@ -767,14 +767,14 @@ LABEL_19:
     v22 = 0;
   }
 
-  v50 = [a5 currentLayoutIndex];
-  [(MRLayerClock *)v7->super.mClock containerTime];
+  currentLayoutIndex = [arguments currentLayoutIndex];
+  [(MRLayerClock *)selfCopy->super.mClock containerTime];
   v24 = v23;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v7->mSublayers;
+  obj = selfCopy->mSublayers;
   v49 = [(NSMutableArray *)obj countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (!v49)
   {
@@ -784,7 +784,7 @@ LABEL_19:
   v43 = v21;
   v47 = *v53;
   v48 = v22;
-  v44 = a5;
+  argumentsCopy = arguments;
   do
   {
     for (i = 0; i != v49; i = i + 1)
@@ -795,11 +795,11 @@ LABEL_19:
       }
 
       v26 = *(*(&v52 + 1) + 8 * i);
-      v27 = [v26 plugAsParallel];
-      v28 = v27;
+      plugAsParallel = [v26 plugAsParallel];
+      v28 = plugAsParallel;
       if (v22)
       {
-        v29 = [v22 objectForKey:{objc_msgSend(v27, "idInSupercontainer")}];
+        v29 = [v22 objectForKey:{objc_msgSend(plugAsParallel, "idInSupercontainer")}];
         if (v29)
         {
           if ([v28 isTriggered])
@@ -824,8 +824,8 @@ LABEL_19:
 
       [v26 timeIn];
       v31 = v24 - v30;
-      v32 = [v26 isPreactivated];
-      v33 = [v26 isActivated];
+      isPreactivated = [v26 isPreactivated];
+      isActivated = [v26 isActivated];
       if ([v28 preactivatesWithParent])
       {
         v34 = 1;
@@ -836,7 +836,7 @@ LABEL_19:
         v34 = [v26 shouldBePreactivatedAtTime:v31];
       }
 
-      v35 = !v7->super.mIsActivated || v34 == 0;
+      v35 = !selfCopy->super.mIsActivated || v34 == 0;
       if (v35 || ![v26 shouldBeActivatedAtTime:v31])
       {
         v36 = 0;
@@ -844,22 +844,22 @@ LABEL_19:
 
       else
       {
-        v36 = [v28 isTriggered] ^ 1 | v22 | v33;
+        v36 = [v28 isTriggered] ^ 1 | v22 | isActivated;
       }
 
-      v8 |= v33 ^ v36;
+      v8 |= isActivated ^ v36;
       if (v34)
       {
-        if ((v32 & 1) == 0)
+        if ((isPreactivated & 1) == 0)
         {
           [v26 preactivate];
           [(MRLayerParallelizer *)v51 _observeSublayerOnPreactivate:v26];
           [objc_msgSend(v26 "parentHelper")];
         }
 
-        if (v33 & 1 | ((v36 & 1) == 0))
+        if (isActivated & 1 | ((v36 & 1) == 0))
         {
-          if (!(v36 & 1 | ((v33 & 1) == 0)))
+          if (!(v36 & 1 | ((isActivated & 1) == 0)))
           {
             [v26 deactivate];
           }
@@ -870,9 +870,9 @@ LABEL_19:
           [v26 activate];
         }
 
-        if (v50 != [v28 currentLayoutIndex])
+        if (currentLayoutIndex != [v28 currentLayoutIndex])
         {
-          [v28 setCurrentLayoutIndex:v50];
+          [v28 setCurrentLayoutIndex:currentLayoutIndex];
         }
 
         if (v36)
@@ -886,40 +886,40 @@ LABEL_19:
             }
           }
 
-          v38 = [v26 parentHelper];
-          v7 = v51;
-          if ([v38 needsUpdate])
+          parentHelper = [v26 parentHelper];
+          selfCopy = v51;
+          if ([parentHelper needsUpdate])
           {
-            [v38 setPlug:v28];
+            [parentHelper setPlug:v28];
             v22 = v48;
 LABEL_66:
             v40 = [v28 actionForKey:@"onLayoutChange"];
             if (v40)
             {
-              [v26 _sendAction:v40 withStates:+[NSDictionary dictionaryWithObject:forKey:](NSDictionary async:"dictionaryWithObject:forKey:" yesterday:{+[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v50), @"_currentLayoutIndex", 0, 0}];
+              [v26 _sendAction:v40 withStates:+[NSDictionary dictionaryWithObject:forKey:](NSDictionary async:"dictionaryWithObject:forKey:" yesterday:{+[NSNumber numberWithInt:](NSNumber, "numberWithInt:", currentLayoutIndex), @"_currentLayoutIndex", 0, 0}];
             }
           }
 
           else
           {
             v22 = v48;
-            if (v50 != [v38 currentLayoutIndex])
+            if (currentLayoutIndex != [parentHelper currentLayoutIndex])
             {
-              [v38 setCurrentLayoutIndex:v50];
+              [parentHelper setCurrentLayoutIndex:currentLayoutIndex];
               goto LABEL_66;
             }
           }
 
-          v39 = v44;
-          v8 |= [v38 applyAtTime:v26 toSublayer:v44 withArguments:v31];
+          v39 = argumentsCopy;
+          v8 |= [parentHelper applyAtTime:v26 toSublayer:argumentsCopy withArguments:v31];
           [objc_msgSend(v26 "clock")];
           v31 = v41;
         }
 
         else
         {
-          v7 = v51;
-          v39 = v44;
+          selfCopy = v51;
+          v39 = argumentsCopy;
           v22 = v48;
         }
 
@@ -928,18 +928,18 @@ LABEL_66:
           [v39 setForcedState:v29];
         }
 
-        v8 |= [v26 prerenderForTime:a4 inContext:v39 withArguments:v31];
+        v8 |= [v26 prerenderForTime:context inContext:v39 withArguments:v31];
         continue;
       }
 
-      if (v33)
+      if (isActivated)
       {
         [v26 deactivate];
       }
 
-      v7 = v51;
+      selfCopy = v51;
       v22 = v48;
-      if (v32)
+      if (isPreactivated)
       {
         [(MRLayerParallelizer *)v51 _unobserveSublayerOnDepreactivate:v26];
         [v26 depreactivate:1];
@@ -951,12 +951,12 @@ LABEL_66:
 
   while (v49);
 LABEL_74:
-  if (v7->super.mIsActivated)
+  if (selfCopy->super.mIsActivated)
   {
-    if (v7->mNeedsToUpdateSublayersOrdering)
+    if (selfCopy->mNeedsToUpdateSublayersOrdering)
     {
-      [(MRLayerParallelizer *)v7 _updateSublayersOrdering];
-      LOBYTE(v8) = v7->super.mIsActivated & v8;
+      [(MRLayerParallelizer *)selfCopy _updateSublayersOrdering];
+      LOBYTE(v8) = selfCopy->super.mIsActivated & v8;
     }
   }
 
@@ -968,36 +968,36 @@ LABEL_74:
   return v8 & 1;
 }
 
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (self->super.mPixelSize.width <= 0.0 || self->super.mPixelSize.height <= 0.0)
   {
     return 0;
   }
 
-  if (-[NSMutableArray count](self->mSublayers, "count") != &dword_0 + 1 || (v9 = -[NSMutableArray lastObject](self->mSublayers, "lastObject"), [objc_msgSend(v9 "clock")], (result = objc_msgSend(v9, "patchworkAtTime:inContext:withArguments:", a4, a5)) == 0))
+  if (-[NSMutableArray count](self->mSublayers, "count") != &dword_0 + 1 || (v9 = -[NSMutableArray lastObject](self->mSublayers, "lastObject"), [objc_msgSend(v9 "clock")], (result = objc_msgSend(v9, "patchworkAtTime:inContext:withArguments:", context, arguments)) == 0))
   {
     v11.receiver = self;
     v11.super_class = MRLayerParallelizer;
-    return [(MRLayer *)&v11 patchworkAtTime:a4 inContext:a5 withArguments:a3];
+    return [(MRLayer *)&v11 patchworkAtTime:context inContext:arguments withArguments:time];
   }
 
   return result;
 }
 
-- (void)setNeedsUpdateForPluggerOfSublayer:(id)a3
+- (void)setNeedsUpdateForPluggerOfSublayer:(id)sublayer
 {
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
-  [objc_msgSend(a3 "parentHelper")];
+  [objc_msgSend(sublayer "parentHelper")];
 
   objc_sync_exit(mSublayers);
 }
 
 - (BOOL)hasAudio
 {
-  v3 = [(MCAudioPlaylist *)[(MCContainer *)self->mContainer audioPlaylist] songs];
-  if (!v3 || ![(NSSet *)v3 count])
+  songs = [(MCAudioPlaylist *)[(MCContainer *)self->mContainer audioPlaylist] songs];
+  if (!songs || ![(NSSet *)songs count])
   {
     v12 = 0u;
     v13 = 0u;
@@ -1044,7 +1044,7 @@ LABEL_6:
   return v4;
 }
 
-- (id)sublayerForKey:(id)a3
+- (id)sublayerForKey:(id)key
 {
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
@@ -1090,71 +1090,71 @@ LABEL_11:
   return v11;
 }
 
-- (void)setSublayer:(id)a3 forKey:(id)a4
+- (void)setSublayer:(id)sublayer forKey:(id)key
 {
-  v10 = -[MCObject _initWithObjectID:]([MCPlugParallel alloc], "_initWithObjectID:", [a3 uuid]);
-  [a3 setIdInSupercontainer:a4];
-  [v10 setIDInSupercontainer:a4];
+  v10 = -[MCObject _initWithObjectID:]([MCPlugParallel alloc], "_initWithObjectID:", [sublayer uuid]);
+  [sublayer setIdInSupercontainer:key];
+  [v10 setIDInSupercontainer:key];
   if (self->super.mIsActivated)
   {
-    v7 = &dword_0 + 1;
+    isActivated = &dword_0 + 1;
   }
 
   else
   {
-    v7 = [a3 isActivated];
+    isActivated = [sublayer isActivated];
   }
 
-  [v10 setIsTriggered:v7];
+  [v10 setIsTriggered:isActivated];
   if (!self->super.mIsActivated)
   {
-    [a3 setTimeIn:0.0];
+    [sublayer setTimeIn:0.0];
   }
 
   [v10 setPreactivatesWithParent:1];
   [v10 setLoopDuration:1.0e10];
-  [a3 _setPlug:v10 andSuperlayer:self];
+  [sublayer _setPlug:v10 andSuperlayer:self];
   v8 = objc_alloc_init(MRParallelPlugger);
-  [a3 setParentHelper:v8];
+  [sublayer setParentHelper:v8];
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
-  [(NSMutableArray *)self->mSublayers addObject:a3];
-  -[NSMutableDictionary setObject:forKey:](self->mSublayersForPlugs, "setObject:forKey:", a3, [a3 uuid]);
-  [(MRLayerParallelizer *)self _observeSublayer:a3];
-  if ([a3 isPreactivated])
+  [(NSMutableArray *)self->mSublayers addObject:sublayer];
+  -[NSMutableDictionary setObject:forKey:](self->mSublayersForPlugs, "setObject:forKey:", sublayer, [sublayer uuid]);
+  [(MRLayerParallelizer *)self _observeSublayer:sublayer];
+  if ([sublayer isPreactivated])
   {
-    [(MRLayerParallelizer *)self _observeSublayerOnPreactivate:a3];
+    [(MRLayerParallelizer *)self _observeSublayerOnPreactivate:sublayer];
   }
 
   objc_sync_exit(mSublayers);
 }
 
-- (void)removeSublayer:(id)a3
+- (void)removeSublayer:(id)sublayer
 {
-  v5 = a3;
+  sublayerCopy = sublayer;
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
-  if ([a3 isPreactivated])
+  if ([sublayer isPreactivated])
   {
-    [(MRLayerParallelizer *)self _unobserveSublayerOnDepreactivate:a3];
+    [(MRLayerParallelizer *)self _unobserveSublayerOnDepreactivate:sublayer];
   }
 
-  [(MRLayerParallelizer *)self _unobserveSublayer:a3];
-  [a3 _setPlug:0 andSuperlayer:0];
-  [a3 setParentHelper:0];
-  [(NSMutableArray *)self->mSublayers removeObject:a3];
-  -[NSMutableDictionary removeObjectForKey:](self->mSublayersForPlugs, "removeObjectForKey:", [a3 uuid]);
+  [(MRLayerParallelizer *)self _unobserveSublayer:sublayer];
+  [sublayer _setPlug:0 andSuperlayer:0];
+  [sublayer setParentHelper:0];
+  [(NSMutableArray *)self->mSublayers removeObject:sublayer];
+  -[NSMutableDictionary removeObjectForKey:](self->mSublayersForPlugs, "removeObjectForKey:", [sublayer uuid]);
   objc_sync_exit(mSublayers);
 
-  v7 = a3;
+  sublayerCopy2 = sublayer;
 }
 
-- (id)sublayerForPlugObjectID:(id)a3 recursive:(BOOL)a4
+- (id)sublayerForPlugObjectID:(id)d recursive:(BOOL)recursive
 {
-  v4 = a4;
+  recursiveCopy = recursive;
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
-  v8 = [(NSMutableDictionary *)self->mSublayersForPlugs objectForKey:a3];
+  v8 = [(NSMutableDictionary *)self->mSublayersForPlugs objectForKey:d];
   if (v8)
   {
     v9 = 1;
@@ -1162,7 +1162,7 @@ LABEL_11:
 
   else
   {
-    v9 = !v4;
+    v9 = !recursiveCopy;
   }
 
   if (!v9)
@@ -1188,7 +1188,7 @@ LABEL_7:
         v14 = *(*(&v17 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v14 sublayerForPlugObjectID:a3 recursive:1];
+          v8 = [v14 sublayerForPlugObjectID:d recursive:1];
           if (v8)
           {
             break;
@@ -1314,9 +1314,9 @@ LABEL_7:
   return v3;
 }
 
-- (void)setIsInInteractiveMode:(BOOL)a3
+- (void)setIsInInteractiveMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1339,7 +1339,7 @@ LABEL_7:
         v9 = *(*(&v10 + 1) + 8 * i);
         if ([v9 isActivated])
         {
-          [v9 setIsInInteractiveMode:v3];
+          [v9 setIsInInteractiveMode:modeCopy];
         }
       }
 
@@ -1350,7 +1350,7 @@ LABEL_7:
   }
 }
 
-- (id)currentSlideInfoForElement:(id)a3
+- (id)currentSlideInfoForElement:(id)element
 {
   v10 = 0u;
   v11 = 0u;
@@ -1374,7 +1374,7 @@ LABEL_3:
       v9 = *(*(&v10 + 1) + 8 * v8);
       if ([v9 isActivated])
       {
-        result = [v9 currentSlideInfoForElement:a3];
+        result = [v9 currentSlideInfoForElement:element];
         if (result)
         {
           break;
@@ -1425,11 +1425,11 @@ LABEL_3:
     v7 = *(*(&v11 + 1) + 8 * v6);
     if ([v7 isActivated])
     {
-      v8 = [v7 currentSlideInfos];
-      if (v8)
+      currentSlideInfos = [v7 currentSlideInfos];
+      if (currentSlideInfos)
       {
-        v9 = v8;
-        if ([v8 count])
+        v9 = currentSlideInfos;
+        if ([currentSlideInfos count])
         {
           return v9;
         }
@@ -1449,9 +1449,9 @@ LABEL_3:
   }
 }
 
-- (BOOL)getStartTime:(double *)a3 andDuration:(double *)a4 forMovingToElementID:(id)a5 backwards:(BOOL)a6
+- (BOOL)getStartTime:(double *)time andDuration:(double *)duration forMovingToElementID:(id)d backwards:(BOOL)backwards
 {
-  v6 = a6;
+  backwardsCopy = backwards;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1473,7 +1473,7 @@ LABEL_3:
         }
 
         v15 = *(*(&v17 + 1) + 8 * v14);
-        if ([v15 isActivated] && (objc_msgSend(v15, "getStartTime:andDuration:forMovingToElementID:backwards:", a3, a4, a5, v6) & 1) != 0)
+        if ([v15 isActivated] && (objc_msgSend(v15, "getStartTime:andDuration:forMovingToElementID:backwards:", time, duration, d, backwardsCopy) & 1) != 0)
         {
           LOBYTE(v11) = 1;
           return v11;
@@ -1497,9 +1497,9 @@ LABEL_3:
   return v11;
 }
 
-- (BOOL)hasMoreSlidesFromTime:(double)a3 backwards:(BOOL)a4 startTime:(double *)a5 duration:(double *)a6
+- (BOOL)hasMoreSlidesFromTime:(double)time backwards:(BOOL)backwards startTime:(double *)startTime duration:(double *)duration
 {
-  v8 = a4;
+  backwardsCopy = backwards;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1524,18 +1524,18 @@ LABEL_3:
         if ([v15 isActivated])
         {
           [v15 timeIn];
-          if ([v15 hasMoreSlidesFromTime:v8 backwards:a5 startTime:a6 duration:a3 - v16])
+          if ([v15 hasMoreSlidesFromTime:backwardsCopy backwards:startTime startTime:duration duration:time - v16])
           {
-            if (a5)
+            if (startTime)
             {
               [v15 timeIn];
-              *a5 = v17 + *a5;
+              *startTime = v17 + *startTime;
             }
 
-            if (a6)
+            if (duration)
             {
               [v15 timeIn];
-              *a6 = v18 + *a6;
+              *duration = v18 + *duration;
             }
 
             LOBYTE(v11) = 1;
@@ -1561,7 +1561,7 @@ LABEL_3:
   return v11;
 }
 
-- (double)interestingTimeForTime:(double)a3
+- (double)interestingTimeForTime:(double)time
 {
   v16 = 0u;
   v17 = 0u;
@@ -1587,7 +1587,7 @@ LABEL_3:
         if ([v10 isActivated] && (objc_msgSend(v10, "hasSlides") & 1) != 0)
         {
           [v10 timeIn];
-          [v10 interestingTimeForTime:a3 - v11];
+          [v10 interestingTimeForTime:time - v11];
           v13 = v12;
           [v10 timeIn];
           return v13 + v14;
@@ -1607,7 +1607,7 @@ LABEL_3:
   return v6;
 }
 
-- (double)interestingTimeForElement:(id)a3
+- (double)interestingTimeForElement:(id)element
 {
   v15 = 0u;
   v16 = 0u;
@@ -1632,7 +1632,7 @@ LABEL_3:
         v10 = *(*(&v15 + 1) + 8 * i);
         if ([v10 isActivated] && (objc_msgSend(v10, "hasSlides") & 1) != 0)
         {
-          [v10 interestingTimeForElement:a3];
+          [v10 interestingTimeForElement:element];
           v12 = v11;
           [v10 timeIn];
           return v12 + v13;
@@ -1652,7 +1652,7 @@ LABEL_3:
   return v6;
 }
 
-- (void)getLazyDuration:(double *)a3 lazyFactor:(double *)a4 animationDuration:(double *)a5 fromInterestingTime:(double)a6
+- (void)getLazyDuration:(double *)duration lazyFactor:(double *)factor animationDuration:(double *)animationDuration fromInterestingTime:(double)time
 {
   v17 = 0u;
   v18 = 0u;
@@ -1677,7 +1677,7 @@ LABEL_3:
         if ([v15 isActivated] && objc_msgSend(v15, "hasSlides"))
         {
           [v15 timeIn];
-          [v15 getLazyDuration:a3 lazyFactor:a4 animationDuration:a5 fromInterestingTime:a6 - v16];
+          [v15 getLazyDuration:duration lazyFactor:factor animationDuration:animationDuration fromInterestingTime:time - v16];
           return;
         }
       }
@@ -1693,20 +1693,20 @@ LABEL_3:
   }
 }
 
-- (id)sublayerHitAtPoint:(CGPoint)a3 onlyIfHitElement:(BOOL)a4 localPoint:(CGPoint *)a5
+- (id)sublayerHitAtPoint:(CGPoint)point onlyIfHitElement:(BOOL)element localPoint:(CGPoint *)localPoint
 {
   if (self->super.mIsActivated)
   {
-    v6 = a4;
-    x = a3.x;
+    elementCopy = element;
+    x = point.x;
     if (self->super.mRenderingState->var18)
     {
-      y = -a3.y;
+      y = -point.y;
     }
 
     else
     {
-      y = a3.y;
+      y = point.y;
     }
 
     mSublayers = self->mSublayers;
@@ -1739,16 +1739,16 @@ LABEL_3:
         v16 = *(*(&v33 + 1) + 8 * i);
         if ([v16 isActivated])
         {
-          v17 = [v16 renderingState];
-          v18 = v17;
-          if (v17)
+          renderingState = [v16 renderingState];
+          v18 = renderingState;
+          if (renderingState)
           {
-            if (v17[60])
+            if (renderingState[60])
             {
               v32 = 0;
               memset(v38, 0, sizeof(v38));
               memset(v37, 0, sizeof(v37));
-              MRMatrix_MultiplyWithMatrix(v17 + 28, v17 + 44, v38);
+              MRMatrix_MultiplyWithMatrix(renderingState + 28, renderingState + 44, v38);
               v19 = y;
               v20 = x;
               if (MRMatrix_Invert(v38, v37))
@@ -1767,7 +1767,7 @@ LABEL_3:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  if (v6 && ![v16 elementHitAtPoint:0 localPoint:{v20, v19}])
+                  if (elementCopy && ![v16 elementHitAtPoint:0 localPoint:{v20, v19}])
                   {
                     continue;
                   }
@@ -1803,7 +1803,7 @@ LABEL_3:
                     v29 = y;
                   }
 
-                  v27 = [v16 sublayerHitAtPoint:v6 onlyIfHitElement:&v32 localPoint:{v28, v29}];
+                  v27 = [v16 sublayerHitAtPoint:elementCopy onlyIfHitElement:&v32 localPoint:{v28, v29}];
                   if (!v27)
                   {
                     continue;
@@ -1812,9 +1812,9 @@ LABEL_3:
 
                 if (v14 < [objc_msgSend(v16 "plugAsParallel")])
                 {
-                  if (a5)
+                  if (localPoint)
                   {
-                    *a5 = v32;
+                    *localPoint = v32;
                   }
 
                   v14 = [objc_msgSend(v16 "plugAsParallel")];
@@ -1839,9 +1839,9 @@ LABEL_38:
   return 0;
 }
 
-- (double)phaseInSublayerForKey:(id)a3
+- (double)phaseInSublayerForKey:(id)key
 {
-  v4 = [(MRLayerParallelizer *)self sublayerForKey:a3];
+  v4 = [(MRLayerParallelizer *)self sublayerForKey:key];
   if (!v4)
   {
     return 0.0;
@@ -1874,15 +1874,15 @@ LABEL_38:
   [objc_msgSend(v5 "plug")];
   [v5 setDuration:?];
   [objc_msgSend(v5 "clock")];
-  v7 = [v5 plug];
+  plug = [v5 plug];
 
-  [v7 phaseInDuration];
+  [plug phaseInDuration];
   return result;
 }
 
-- (double)phaseOutSublayerForKey:(id)a3
+- (double)phaseOutSublayerForKey:(id)key
 {
-  v4 = [(MRLayerParallelizer *)self sublayerForKey:a3];
+  v4 = [(MRLayerParallelizer *)self sublayerForKey:key];
   v5 = 0.0;
   if (v4)
   {
@@ -1908,7 +1908,7 @@ LABEL_38:
 {
   v17.receiver = self;
   v17.super_class = MRLayerParallelizer;
-  v12 = [(MRLayer *)&v17 _currentState];
+  _currentState = [(MRLayer *)&v17 _currentState];
   v3 = objc_alloc_init(NSMutableDictionary);
   v13 = 0u;
   v14 = 0u;
@@ -1932,14 +1932,14 @@ LABEL_38:
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 isActivated])
         {
-          v10 = [v9 _currentState];
+          _currentState2 = [v9 _currentState];
           if ([objc_msgSend(v9 "plugAsParallel")])
           {
             [v9 timeIn];
-            [v10 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"timeIn"}];
+            [_currentState2 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"timeIn"}];
           }
 
-          [v3 setObject:v10 forKey:{objc_msgSend(v9, "idInSupercontainer")}];
+          [v3 setObject:_currentState2 forKey:{objc_msgSend(v9, "idInSupercontainer")}];
         }
       }
 
@@ -1951,18 +1951,18 @@ LABEL_38:
 
   if ([v3 count])
   {
-    [v12 setObject:v3 forKey:@"activatedSublayers"];
+    [_currentState setObject:v3 forKey:@"activatedSublayers"];
   }
 
-  return v12;
+  return _currentState;
 }
 
-- (id)_dumpLayerWithOptions:(unint64_t)a3
+- (id)_dumpLayerWithOptions:(unint64_t)options
 {
   v18.receiver = self;
   v18.super_class = MRLayerParallelizer;
   v5 = [(MRLayer *)&v18 _dumpLayerWithOptions:?];
-  if ((a3 & 1) == 0)
+  if ((options & 1) == 0)
   {
     v6 = [[NSMutableArray alloc] initWithObjects:{v5, 0}];
     v14 = 0u;
@@ -1987,7 +1987,7 @@ LABEL_38:
           v12 = *(*(&v14 + 1) + 8 * i);
           if ([v12 isActivated])
           {
-            [v6 addObject:{objc_msgSend(v12, "_dumpLayerWithOptions:", a3 + 256)}];
+            [v6 addObject:{objc_msgSend(v12, "_dumpLayerWithOptions:", options + 256)}];
           }
         }
 
@@ -2121,36 +2121,36 @@ LABEL_38:
   }
 }
 
-- (id)_createSublayerForPlug:(id)a3
+- (id)_createSublayerForPlug:(id)plug
 {
-  v5 = [MRLayer layerWithPlug:a3 andParameters:self->super.mParameters inSuperlayer:self];
+  v5 = [MRLayer layerWithPlug:plug andParameters:self->super.mParameters inSuperlayer:self];
   v6 = objc_alloc_init(MRParallelPlugger);
   [(MRLayer *)v5 setParentHelper:v6];
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
   [(NSMutableArray *)self->mSublayers addObject:v5];
-  -[NSMutableDictionary setObject:forKey:](self->mSublayersForPlugs, "setObject:forKey:", v5, [a3 objectID]);
+  -[NSMutableDictionary setObject:forKey:](self->mSublayersForPlugs, "setObject:forKey:", v5, [plug objectID]);
   objc_sync_exit(mSublayers);
 
   self->mNeedsToUpdateSublayersOrdering = 1;
   return v5;
 }
 
-- (void)_deleteSublayer:(id)a3
+- (void)_deleteSublayer:(id)sublayer
 {
-  v4 = a3;
+  sublayerCopy = sublayer;
   mSublayers = self->mSublayers;
   objc_sync_enter(mSublayers);
-  [a3 setParentHelper:0];
-  -[NSMutableDictionary removeObjectForKey:](self->mSublayersForPlugs, "removeObjectForKey:", [objc_msgSend(a3 "plug")]);
-  [(NSMutableArray *)self->mSublayers removeObject:a3];
+  [sublayer setParentHelper:0];
+  -[NSMutableDictionary removeObjectForKey:](self->mSublayersForPlugs, "removeObjectForKey:", [objc_msgSend(sublayer "plug")]);
+  [(NSMutableArray *)self->mSublayers removeObject:sublayer];
   objc_sync_exit(mSublayers);
-  [a3 cleanup];
+  [sublayer cleanup];
 }
 
-- (void)_observeSublayer:(id)a3
+- (void)_observeSublayer:(id)sublayer
 {
-  if ([a3 isAdhocLayer])
+  if ([sublayer isAdhocLayer])
   {
     v5 = @"plugAsParallel.zIndex";
   }
@@ -2165,14 +2165,14 @@ LABEL_38:
     v5 = @"plugAsParallel.container";
   }
 
-  [a3 addObserver:self forKeyPath:v5 options:0 context:0];
+  [sublayer addObserver:self forKeyPath:v5 options:0 context:0];
 }
 
-- (void)_unobserveSublayer:(id)a3
+- (void)_unobserveSublayer:(id)sublayer
 {
-  if (([a3 isScheduledForDestruction] & 1) == 0)
+  if (([sublayer isScheduledForDestruction] & 1) == 0)
   {
-    if ([a3 isAdhocLayer])
+    if ([sublayer isAdhocLayer])
     {
       v5 = @"plugAsParallel.zIndex";
     }
@@ -2187,7 +2187,7 @@ LABEL_38:
       v5 = @"plugAsParallel.container";
     }
 
-    [a3 removeObserver:self forKeyPath:v5];
+    [sublayer removeObserver:self forKeyPath:v5];
   }
 }
 
@@ -2236,10 +2236,10 @@ LABEL_38:
   [(MRLayer *)&v3 _unobservePlugOnDepreactivate];
 }
 
-- (void)_setNeedsToRequestRebuildAudio:(BOOL)a3
+- (void)_setNeedsToRequestRebuildAudio:(BOOL)audio
 {
   self->super.mNeedsToRequestRebuildAudio = self->super.mDoAudio;
-  if (a3)
+  if (audio)
   {
     v10 = 0u;
     v11 = 0u;
@@ -2271,7 +2271,7 @@ LABEL_38:
   }
 }
 
-- (void)_renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)_renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   HIDWORD(v11) = 0;
   v27 = xmmword_163650;
@@ -2280,7 +2280,7 @@ LABEL_38:
   {
     *&v5 = self->mBackgroundColor[1];
     *&v6 = self->mBackgroundColor[2];
-    [a4 setBackColorRed:&v27 green:COERCE_DOUBLE(*mBackgroundColor) blue:v5 alpha:v6 saveTo:?];
+    [context setBackColorRed:&v27 green:COERCE_DOUBLE(*mBackgroundColor) blue:v5 alpha:v6 saveTo:?];
   }
 
   if (!self->super.mSuperlayer || self->super.mRenderingState->var17 && [(MRLayerParallelizer *)self isOpaque]&& !self->super.mRenderingState->var19)
@@ -2289,7 +2289,7 @@ LABEL_38:
     LODWORD(v5) = 1.0;
     LODWORD(v6) = 1.0;
     LODWORD(v7) = 1.0;
-    [a4 setForeColorRed:0 green:v11 blue:v5 alpha:v6 saveTo:v7];
+    [context setForeColorRed:0 green:v11 blue:v5 alpha:v6 saveTo:v7];
     if (mBackgroundColor[3] < 0.0)
     {
       if (self->super.mRenderingState->var19)
@@ -2302,34 +2302,34 @@ LABEL_38:
         *&v14 = 0.0;
       }
 
-      [a4 setBackColorRed:&v27 green:0.0 blue:0.0 alpha:0.0 saveTo:v14];
+      [context setBackColorRed:&v27 green:0.0 blue:0.0 alpha:0.0 saveTo:v14];
     }
 
-    if (![a4 dimensionalMode] || objc_msgSend(a4, "dimensionalMode") == 1 || objc_msgSend(a4, "dimensionalMode") == 3)
+    if (![context dimensionalMode] || objc_msgSend(context, "dimensionalMode") == 1 || objc_msgSend(context, "dimensionalMode") == 3)
     {
-      [a4 clear:3];
+      [context clear:3];
     }
   }
 
   else if (![(MRLayerParallelizer *)self _isMadeOpaqueBySublayers]&& mBackgroundColor[3] > 0.0)
   {
-    v13 = [objc_msgSend(a4 "imageManager")];
+    v13 = [objc_msgSend(context "imageManager")];
     [v13 setLabel:@"Marimba Parallelizer Background"];
     [v13 setClampMode:2];
     if (mBackgroundColor[3] >= 1.0)
     {
-      [a4 setShader:@"PlainTexture"];
-      [MRCroppingSprite renderImage:v13 inContext:a4 atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:2.0, 2.0, 0.0];
-      [a4 unsetShader];
+      [context setShader:@"PlainTexture"];
+      [MRCroppingSprite renderImage:v13 inContext:context atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:2.0, 2.0, 0.0];
+      [context unsetShader];
     }
 
     else
     {
-      [a4 blend:3];
-      [a4 setShader:@"PlainTexture"];
-      [MRCroppingSprite renderImage:v13 inContext:a4 atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:2.0, 2.0, 0.0];
-      [a4 unsetShader];
-      [a4 blend:0];
+      [context blend:3];
+      [context setShader:@"PlainTexture"];
+      [MRCroppingSprite renderImage:v13 inContext:context atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:2.0, 2.0, 0.0];
+      [context unsetShader];
+      [context blend:0];
     }
 
     [v13 releaseByUser];
@@ -2358,7 +2358,7 @@ LABEL_38:
         if ([v21 hasSomethingToRender])
         {
           [objc_msgSend(v21 "clock")];
-          [v21 renderAtTime:a4 inContext:a5 withArguments:?];
+          [v21 renderAtTime:context inContext:arguments withArguments:?];
         }
       }
 
@@ -2371,11 +2371,11 @@ LABEL_38:
   LODWORD(v17) = HIDWORD(v27);
   if (*(&v27 + 3) >= 0.0)
   {
-    [a4 restoreBackColor:{&v27, v17}];
+    [context restoreBackColor:{&v27, v17}];
   }
 }
 
-- (id)_retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)_retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   mBackgroundColor = self->mBackgroundColor;
   v9 = self->mBackgroundColor[3];
@@ -2388,7 +2388,7 @@ LABEL_38:
   if (v11)
   {
     v12 = v11;
-    v31 = a4;
+    contextCopy = context;
     v13 = 0;
     v14 = *v38;
     while (2)
@@ -2411,7 +2411,7 @@ LABEL_38:
             }
 
 LABEL_23:
-            a4 = v31;
+            context = contextCopy;
             if (!v16)
             {
               goto LABEL_27;
@@ -2422,7 +2422,7 @@ LABEL_24:
             {
               if (self->super.mRenderingState->var19)
               {
-                mBackgroundColor = [a4 backColor];
+                mBackgroundColor = [context backColor];
               }
 
               else
@@ -2434,7 +2434,7 @@ LABEL_24:
             v36[0] = 0;
             v36[1] = 0;
             *&self->super.mRenderingState->var17 = 257;
-            v23 = [a4 beginLocalContextWithSize:mBackgroundColor backgroundColor:v36 state:{self->super.mPixelSize.width, self->super.mPixelSize.height}];
+            v23 = [context beginLocalContextWithSize:mBackgroundColor backgroundColor:v36 state:{self->super.mPixelSize.width, self->super.mPixelSize.height}];
             v32 = 0u;
             v33 = 0u;
             v34 = 0u;
@@ -2458,7 +2458,7 @@ LABEL_24:
                   if ([v29 hasSomethingToRender])
                   {
                     [objc_msgSend(v29 "clock")];
-                    [v29 renderAtTime:v23 inContext:a5 withArguments:?];
+                    [v29 renderAtTime:v23 inContext:arguments withArguments:?];
                   }
                 }
 
@@ -2468,7 +2468,7 @@ LABEL_24:
               while (v26);
             }
 
-            return [a4 retainedByUserImageByEndingLocalContext:v23 andRestoreState:v36];
+            return [context retainedByUserImageByEndingLocalContext:v23 andRestoreState:v36];
           }
 
           [objc_msgSend(v16 "plugAsParallel")];
@@ -2494,14 +2494,14 @@ LABEL_24:
       break;
     }
 
-    a4 = v31;
+    context = contextCopy;
     if (v13)
     {
-      v20 = [v13 renderingState];
-      v20[244] = self->super.mRenderingState->var19;
+      renderingState = [v13 renderingState];
+      renderingState[244] = self->super.mRenderingState->var19;
       [objc_msgSend(v13 "clock")];
-      v21 = [v13 retainedByUserRenderedImageAtTime:v31 inContext:a5 withArguments:?];
-      v20[244] = 0;
+      v21 = [v13 retainedByUserRenderedImageAtTime:contextCopy inContext:arguments withArguments:?];
+      renderingState[244] = 0;
       if (v21)
       {
         v22 = v21;
@@ -2522,7 +2522,7 @@ LABEL_27:
   {
     if (self->super.mRenderingState->var19)
     {
-      mBackgroundColor = [a4 backColor];
+      mBackgroundColor = [context backColor];
     }
 
     else
@@ -2531,7 +2531,7 @@ LABEL_27:
     }
   }
 
-  v22 = [objc_msgSend(a4 "imageManager")];
+  v22 = [objc_msgSend(context "imageManager")];
   [v22 setLabel:@"Marimba Parallelizer Background"];
   [v22 setClampMode:2];
   return v22;

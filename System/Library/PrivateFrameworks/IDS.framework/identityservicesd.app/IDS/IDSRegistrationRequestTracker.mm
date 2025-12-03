@@ -1,17 +1,17 @@
 @interface IDSRegistrationRequestTracker
 + (IDSRegistrationRequestTracker)sharedInstance;
 - (IDSRegistrationRequestTracker)init;
-- (id)eventHistoryStringWithWantsBAADigests:(BOOL)a3;
-- (void)completedRequest:(id)a3 resultCode:(int64_t)a4 interface:(unint64_t)a5;
+- (id)eventHistoryStringWithWantsBAADigests:(BOOL)digests;
+- (void)completedRequest:(id)request resultCode:(int64_t)code interface:(unint64_t)interface;
 @end
 
 @implementation IDSRegistrationRequestTracker
 
-- (void)completedRequest:(id)a3 resultCode:(int64_t)a4 interface:(unint64_t)a5
+- (void)completedRequest:(id)request resultCode:(int64_t)code interface:(unint64_t)interface
 {
-  v9 = a3;
-  v10 = self;
-  sub_100020FA8(a3, a4, a5);
+  requestCopy = request;
+  selfCopy = self;
+  sub_100020FA8(request, code, interface);
 }
 
 + (IDSRegistrationRequestTracker)sharedInstance
@@ -36,9 +36,9 @@
   return v2;
 }
 
-- (id)eventHistoryStringWithWantsBAADigests:(BOOL)a3
+- (id)eventHistoryStringWithWantsBAADigests:(BOOL)digests
 {
-  sub_1008A51F4(a3);
+  sub_1008A51F4(digests);
   v3 = sub_100936B28();
 
   return v3;

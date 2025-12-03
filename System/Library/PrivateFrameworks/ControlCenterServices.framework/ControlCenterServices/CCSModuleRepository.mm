@@ -4,40 +4,40 @@
 + (id)_defaultModuleIdentifierAllowedList;
 + (id)_deviceFamily;
 + (void)initialize;
-- (BOOL)_queue_arrayContainsInterestingApplicationProxy:(id)a3;
-- (BOOL)visibilityForModuleIdentifier:(id)a3;
+- (BOOL)_queue_arrayContainsInterestingApplicationProxy:(id)proxy;
+- (BOOL)visibilityForModuleIdentifier:(id)identifier;
 - (NSSet)loadableModuleIdentifiers;
-- (id)_initWithDirectoryURLs:(id)a3 allowedModuleIdentifiers:(id)a4;
-- (id)_queue_associatedBundleIdentifiersForModuleMetadata:(id)a3;
-- (id)_queue_filterModuleMetadataByAssociatedBundleAvailability:(id)a3;
-- (id)_queue_filterModuleMetadataByGestalt:(id)a3;
-- (id)_queue_filterModuleMetadataByVisibilityPreference:(id)a3;
-- (id)_queue_gestaltQuestionsForModuleMetadata:(id)a3;
+- (id)_initWithDirectoryURLs:(id)ls allowedModuleIdentifiers:(id)identifiers;
+- (id)_queue_associatedBundleIdentifiersForModuleMetadata:(id)metadata;
+- (id)_queue_filterModuleMetadataByAssociatedBundleAvailability:(id)availability;
+- (id)_queue_filterModuleMetadataByGestalt:(id)gestalt;
+- (id)_queue_filterModuleMetadataByVisibilityPreference:(id)preference;
+- (id)_queue_gestaltQuestionsForModuleMetadata:(id)metadata;
 - (id)_queue_loadAllModuleMetadata;
-- (id)_queue_moduleIdentifiersForMetadata:(id)a3;
-- (id)moduleMetadataForModuleIdentifier:(id)a3;
-- (void)_applicationsDidChange:(id)a3;
+- (id)_queue_moduleIdentifiersForMetadata:(id)metadata;
+- (id)moduleMetadataForModuleIdentifier:(id)identifier;
+- (void)_applicationsDidChange:(id)change;
 - (void)_queue_registerForInternalPreferenceChanges;
 - (void)_queue_registerForVisiblityPreferenceChanges;
-- (void)_queue_runBlockOnObservers:(id)a3;
-- (void)_queue_setIgnoreAllowedList:(BOOL)a3;
-- (void)_queue_startObservingMobileGestaltQuestions:(id)a3 withChangeHandler:(id)a4;
+- (void)_queue_runBlockOnObservers:(id)observers;
+- (void)_queue_setIgnoreAllowedList:(BOOL)list;
+- (void)_queue_startObservingMobileGestaltQuestions:(id)questions withChangeHandler:(id)handler;
 - (void)_queue_stopObservingGestaltQuestions;
 - (void)_queue_unregisterForInternalPreferenceChanges;
 - (void)_queue_unregisterForVisiblityPreferenceChanges;
 - (void)_queue_updateAllModuleMetadata;
-- (void)_queue_updateAllModuleMetadataForAllModuleMetadata:(id)a3;
+- (void)_queue_updateAllModuleMetadataForAllModuleMetadata:(id)metadata;
 - (void)_queue_updateAvailableModuleMetadata;
-- (void)_queue_updateAvailableModuleMetadataForAllModuleMetadata:(id)a3;
-- (void)_queue_updateGestaltQuestionsForModuleMetadata:(id)a3;
-- (void)_queue_updateInterestingBundleIdentifiersForModuleMetadata:(id)a3;
+- (void)_queue_updateAvailableModuleMetadataForAllModuleMetadata:(id)metadata;
+- (void)_queue_updateGestaltQuestionsForModuleMetadata:(id)metadata;
+- (void)_queue_updateInterestingBundleIdentifiersForModuleMetadata:(id)metadata;
 - (void)_queue_updateLoadableModuleMetadata;
-- (void)_queue_updateLoadableModuleMetadataForAvailableModuleMetadata:(id)a3;
+- (void)_queue_updateLoadableModuleMetadataForAvailableModuleMetadata:(id)metadata;
 - (void)_updateAvailableModuleMetadata;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
-- (void)setVisibility:(BOOL)a3 forModuleIdentifier:(id)a4;
+- (void)removeObserver:(id)observer;
+- (void)setVisibility:(BOOL)visibility forModuleIdentifier:(id)identifier;
 @end
 
 @implementation CCSModuleRepository
@@ -70,8 +70,8 @@ void __53__CCSModuleRepository__updateAvailableModuleMetadata__block_invoke(uint
 - (void)_queue_updateAvailableModuleMetadata
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NSDictionary *)self->_allModuleMetadataByIdentifier allValues];
-  [(CCSModuleRepository *)self _queue_updateAvailableModuleMetadataForAllModuleMetadata:v3];
+  allValues = [(NSDictionary *)self->_allModuleMetadataByIdentifier allValues];
+  [(CCSModuleRepository *)self _queue_updateAvailableModuleMetadataForAllModuleMetadata:allValues];
 }
 
 - (void)_queue_stopObservingGestaltQuestions
@@ -146,7 +146,7 @@ void __36__CCSModuleRepository__deviceFamily__block_invoke()
   block[1] = 3221225472;
   block[2] = __37__CCSModuleRepository_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -169,27 +169,27 @@ void __37__CCSModuleRepository_sharedInstance__block_invoke(uint64_t a1)
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     CCSRegisterControlCenterLogging();
   }
 }
 
-- (id)_initWithDirectoryURLs:(id)a3 allowedModuleIdentifiers:(id)a4
+- (id)_initWithDirectoryURLs:(id)ls allowedModuleIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  lsCopy = ls;
+  identifiersCopy = identifiers;
   v25.receiver = self;
   v25.super_class = CCSModuleRepository;
   v8 = [(CCSModuleRepository *)&v25 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lsCopy copy];
     directoryURLs = v8->_directoryURLs;
     v8->_directoryURLs = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifiersCopy copy];
     allowedModuleIdentifiers = v8->_allowedModuleIdentifiers;
     v8->_allowedModuleIdentifiers = v11;
 
@@ -259,43 +259,43 @@ uint64_t __33__CCSModuleRepository_invalidate__block_invoke(uint64_t a1)
   return [v3 _queue_stopObservingGestaltQuestions];
 }
 
-- (BOOL)visibilityForModuleIdentifier:(id)a3
+- (BOOL)visibilityForModuleIdentifier:(id)identifier
 {
-  v3 = CFPreferencesCopyAppValue(@"SBIconVisibility", a3);
-  v4 = [v3 BOOLValue];
+  v3 = CFPreferencesCopyAppValue(@"SBIconVisibility", identifier);
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setVisibility:(BOOL)a3 forModuleIdentifier:(id)a4
+- (void)setVisibility:(BOOL)visibility forModuleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!visibility)
   {
     v4 = MEMORY[0x277CBED10];
   }
 
-  CFPreferencesSetAppValue(@"SBIconVisibility", *v4, a4);
+  CFPreferencesSetAppValue(@"SBIconVisibility", *v4, identifier);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.springboard.appIconVisibilityPreferencesChanged", 0, 0, 1u);
 }
 
-- (void)_queue_setIgnoreAllowedList:(BOOL)a3
+- (void)_queue_setIgnoreAllowedList:(BOOL)list
 {
-  v3 = a3;
+  listCopy = list;
   dispatch_assert_queue_V2(self->_queue);
-  if (CCSIsInternalInstall() && self->_ignoreAllowedList != v3)
+  if (CCSIsInternalInstall() && self->_ignoreAllowedList != listCopy)
   {
-    self->_ignoreAllowedList = v3;
+    self->_ignoreAllowedList = listCopy;
 
     [(CCSModuleRepository *)self _queue_updateAllModuleMetadata];
   }
 }
 
-- (id)moduleMetadataForModuleIdentifier:(id)a3
+- (id)moduleMetadataForModuleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -307,10 +307,10 @@ uint64_t __33__CCSModuleRepository_invalidate__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __57__CCSModuleRepository_moduleMetadataForModuleIdentifier___block_invoke;
   block[3] = &unk_278E0F768;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -328,54 +328,54 @@ void __57__CCSModuleRepository_moduleMetadataForModuleIdentifier___block_invoke(
   *(v3 + 40) = v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__CCSModuleRepository_addObserver___block_invoke;
   v7[3] = &unk_278E0F680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__CCSModuleRepository_removeObserver___block_invoke;
   v7[3] = &unk_278E0F680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_queue_runBlockOnObservers:(id)a3
+- (void)_queue_runBlockOnObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   callOutQueue = self->_callOutQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__CCSModuleRepository__queue_runBlockOnObservers___block_invoke;
   v9[3] = &unk_278E0F3B8;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = allObjects;
+  v11 = observersCopy;
+  v7 = observersCopy;
+  v8 = allObjects;
   dispatch_async(callOutQueue, v9);
 }
 
-- (void)_applicationsDidChange:(id)a3
+- (void)_applicationsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -383,8 +383,8 @@ void __57__CCSModuleRepository_moduleMetadataForModuleIdentifier___block_invoke(
   block[2] = __46__CCSModuleRepository__applicationsDidChange___block_invoke;
   block[3] = &unk_278E0F790;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -412,9 +412,9 @@ uint64_t __46__CCSModuleRepository__applicationsDidChange___block_invoke(uint64_
   if (CCSIsInternalInstall())
   {
     v3 = +[CCSControlCenterDefaults standardDefaults];
-    v4 = [v3 shouldEnableInternalModules];
+    shouldEnableInternalModules = [v3 shouldEnableInternalModules];
 
-    if (v4)
+    if (shouldEnableInternalModules)
     {
       v5 = [MEMORY[0x277CCACA8] pathWithComponents:&unk_2857A46D8];
       v6 = [v2 arrayByAddingObject:v5];
@@ -460,35 +460,35 @@ id __48__CCSModuleRepository__defaultModuleDirectories__block_invoke(uint64_t a1
 - (void)_queue_updateAllModuleMetadata
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(CCSModuleRepository *)self _queue_loadAllModuleMetadata];
-  [(CCSModuleRepository *)self _queue_updateAllModuleMetadataForAllModuleMetadata:v3];
+  _queue_loadAllModuleMetadata = [(CCSModuleRepository *)self _queue_loadAllModuleMetadata];
+  [(CCSModuleRepository *)self _queue_updateAllModuleMetadataForAllModuleMetadata:_queue_loadAllModuleMetadata];
 }
 
 - (void)_queue_updateLoadableModuleMetadata
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NSSet *)self->_availableModuleIdentifiers allObjects];
+  allObjects = [(NSSet *)self->_availableModuleIdentifiers allObjects];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__CCSModuleRepository__queue_updateLoadableModuleMetadata__block_invoke;
   v5[3] = &unk_278E0F7D8;
   v5[4] = self;
-  v4 = [v3 bs_mapNoNulls:v5];
+  v4 = [allObjects bs_mapNoNulls:v5];
 
   [(CCSModuleRepository *)self _queue_updateLoadableModuleMetadataForAvailableModuleMetadata:v4];
 }
 
-- (void)_queue_updateAllModuleMetadataForAllModuleMetadata:(id)a3
+- (void)_queue_updateAllModuleMetadataForAllModuleMetadata:(id)metadata
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(metadataCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = metadataCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -504,8 +504,8 @@ id __48__CCSModuleRepository__defaultModuleDirectories__block_invoke(uint64_t a1
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 moduleIdentifier];
-        [v5 setObject:v11 forKey:v12];
+        moduleIdentifier = [v11 moduleIdentifier];
+        [v5 setObject:v11 forKey:moduleIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -528,11 +528,11 @@ id __48__CCSModuleRepository__defaultModuleDirectories__block_invoke(uint64_t a1
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_updateAvailableModuleMetadataForAllModuleMetadata:(id)a3
+- (void)_queue_updateAvailableModuleMetadataForAllModuleMetadata:(id)metadata
 {
-  v8 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(CCSModuleRepository *)self _queue_filterModuleMetadataByAssociatedBundleAvailability:v8];
+  v4 = [(CCSModuleRepository *)self _queue_filterModuleMetadataByAssociatedBundleAvailability:metadataCopy];
   v5 = [(CCSModuleRepository *)self _queue_filterModuleMetadataByVisibilityPreference:v4];
 
   v6 = [(CCSModuleRepository *)self _queue_moduleIdentifiersForMetadata:v5];
@@ -545,12 +545,12 @@ id __48__CCSModuleRepository__defaultModuleDirectories__block_invoke(uint64_t a1
   }
 }
 
-- (void)_queue_updateLoadableModuleMetadataForAvailableModuleMetadata:(id)a3
+- (void)_queue_updateLoadableModuleMetadataForAvailableModuleMetadata:(id)metadata
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(CCSModuleRepository *)self _queue_filterModuleMetadataByGestalt:v4];
+  v5 = [(CCSModuleRepository *)self _queue_filterModuleMetadataByGestalt:metadataCopy];
   v6 = [(CCSModuleRepository *)self _queue_moduleIdentifiersForMetadata:v5];
   loadableModuleIdentifiers = self->_loadableModuleIdentifiers;
   if ((BSEqualObjects() & 1) == 0)
@@ -613,17 +613,17 @@ id __48__CCSModuleRepository__defaultModuleDirectories__block_invoke(uint64_t a1
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_moduleIdentifiersForMetadata:(id)a3
+- (id)_queue_moduleIdentifiersForMetadata:(id)metadata
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(metadataCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = metadataCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -638,8 +638,8 @@ id __48__CCSModuleRepository__defaultModuleDirectories__block_invoke(uint64_t a1
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) moduleIdentifier];
-        [v5 addObject:v11];
+        moduleIdentifier = [*(*(&v15 + 1) + 8 * i) moduleIdentifier];
+        [v5 addObject:moduleIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -658,8 +658,8 @@ id __48__CCSModuleRepository__defaultModuleDirectories__block_invoke(uint64_t a1
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = [(NSArray *)self->_directoryURLs bs_mapNoNulls:&__block_literal_global_45];
-  v4 = [v3 bs_flatten];
-  v5 = [v4 bs_filter:&__block_literal_global_49];
+  bs_flatten = [v3 bs_flatten];
+  v5 = [bs_flatten bs_filter:&__block_literal_global_49];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__CCSModuleRepository__queue_loadAllModuleMetadata__block_invoke_3;
@@ -748,12 +748,12 @@ LABEL_13:
   return v13;
 }
 
-- (id)_queue_filterModuleMetadataByAssociatedBundleAvailability:(id)a3
+- (id)_queue_filterModuleMetadataByAssociatedBundleAvailability:(id)availability
 {
   queue = self->_queue;
-  v4 = a3;
+  availabilityCopy = availability;
   dispatch_assert_queue_V2(queue);
-  v5 = [v4 bs_filter:&__block_literal_global_56];
+  v5 = [availabilityCopy bs_filter:&__block_literal_global_56];
 
   return v5;
 }
@@ -825,28 +825,28 @@ LABEL_15:
   return v11;
 }
 
-- (void)_queue_updateInterestingBundleIdentifiersForModuleMetadata:(id)a3
+- (void)_queue_updateInterestingBundleIdentifiersForModuleMetadata:(id)metadata
 {
   queue = self->_queue;
-  v5 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(queue);
-  v6 = [(CCSModuleRepository *)self _queue_associatedBundleIdentifiersForModuleMetadata:v5];
+  v6 = [(CCSModuleRepository *)self _queue_associatedBundleIdentifiersForModuleMetadata:metadataCopy];
 
   interestingBundleIdentifiers = self->_interestingBundleIdentifiers;
   self->_interestingBundleIdentifiers = v6;
 }
 
-- (id)_queue_associatedBundleIdentifiersForModuleMetadata:(id)a3
+- (id)_queue_associatedBundleIdentifiersForModuleMetadata:(id)metadata
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(metadataCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = metadataCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -861,8 +861,8 @@ LABEL_15:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) associatedBundleIdentifier];
-        [v5 bs_safeAddObject:v11];
+        associatedBundleIdentifier = [*(*(&v15 + 1) + 8 * i) associatedBundleIdentifier];
+        [v5 bs_safeAddObject:associatedBundleIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -877,20 +877,20 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)_queue_arrayContainsInterestingApplicationProxy:(id)a3
+- (BOOL)_queue_arrayContainsInterestingApplicationProxy:(id)proxy
 {
-  v3 = self;
+  selfCopy = self;
   queue = self->_queue;
-  v5 = a3;
+  proxyCopy = proxy;
   dispatch_assert_queue_V2(queue);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__CCSModuleRepository__queue_arrayContainsInterestingApplicationProxy___block_invoke;
   v7[3] = &unk_278E0F8B0;
-  v7[4] = v3;
-  LOBYTE(v3) = [v5 bs_containsObjectPassingTest:v7];
+  v7[4] = selfCopy;
+  LOBYTE(selfCopy) = [proxyCopy bs_containsObjectPassingTest:v7];
 
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __71__CCSModuleRepository__queue_arrayContainsInterestingApplicationProxy___block_invoke(uint64_t a1, void *a2)
@@ -902,12 +902,12 @@ uint64_t __71__CCSModuleRepository__queue_arrayContainsInterestingApplicationPro
   return v4;
 }
 
-- (id)_queue_filterModuleMetadataByVisibilityPreference:(id)a3
+- (id)_queue_filterModuleMetadataByVisibilityPreference:(id)preference
 {
   queue = self->_queue;
-  v4 = a3;
+  preferenceCopy = preference;
   dispatch_assert_queue_V2(queue);
-  v5 = [v4 bs_filter:&__block_literal_global_60_0];
+  v5 = [preferenceCopy bs_filter:&__block_literal_global_60_0];
 
   return v5;
 }
@@ -938,21 +938,21 @@ uint64_t __73__CCSModuleRepository__queue_filterModuleMetadataByVisibilityPrefer
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.springboard.appIconVisibilityPreferencesChanged", 0);
 }
 
-- (id)_queue_filterModuleMetadataByGestalt:(id)a3
+- (id)_queue_filterModuleMetadataByGestalt:(id)gestalt
 {
   queue = self->_queue;
-  v5 = a3;
+  gestaltCopy = gestalt;
   dispatch_assert_queue_V2(queue);
-  v6 = [(CCSModuleRepository *)self _queue_gestaltQuestionsForModuleMetadata:v5];
+  v6 = [(CCSModuleRepository *)self _queue_gestaltQuestionsForModuleMetadata:gestaltCopy];
   v7 = MGCopyMultipleAnswers();
   v8 = [v7 bs_filter:&__block_literal_global_63];
   v9 = MEMORY[0x277CBEB98];
-  v10 = [v7 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [v7 allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = MEMORY[0x277CBEB98];
-  v13 = [v8 allKeys];
-  v14 = [v12 setWithArray:v13];
+  allKeys2 = [v8 allKeys];
+  v14 = [v12 setWithArray:allKeys2];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -962,7 +962,7 @@ uint64_t __73__CCSModuleRepository__queue_filterModuleMetadataByVisibilityPrefer
   v21 = v14;
   v15 = v14;
   v16 = v11;
-  v17 = [v5 bs_filter:v19];
+  v17 = [gestaltCopy bs_filter:v19];
 
   return v17;
 }
@@ -1001,11 +1001,11 @@ uint64_t __60__CCSModuleRepository__queue_filterModuleMetadataByGestalt___block_
   return v5;
 }
 
-- (void)_queue_updateGestaltQuestionsForModuleMetadata:(id)a3
+- (void)_queue_updateGestaltQuestionsForModuleMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(CCSModuleRepository *)self _queue_gestaltQuestionsForModuleMetadata:v4];
+  v5 = [(CCSModuleRepository *)self _queue_gestaltQuestionsForModuleMetadata:metadataCopy];
   [(CCSModuleRepository *)self _queue_stopObservingGestaltQuestions];
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
@@ -1024,17 +1024,17 @@ void __70__CCSModuleRepository__queue_updateGestaltQuestionsForModuleMetadata___
   [WeakRetained _queue_updateLoadableModuleMetadata];
 }
 
-- (id)_queue_gestaltQuestionsForModuleMetadata:(id)a3
+- (id)_queue_gestaltQuestionsForModuleMetadata:(id)metadata
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = metadataCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -1050,11 +1050,11 @@ void __70__CCSModuleRepository__queue_updateGestaltQuestionsForModuleMetadata___
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 requiredDeviceCapabilities];
-        [v5 unionSet:v12];
+        requiredDeviceCapabilities = [v11 requiredDeviceCapabilities];
+        [v5 unionSet:requiredDeviceCapabilities];
 
-        v13 = [v11 requiredDeviceIncapabilities];
-        [v5 unionSet:v13];
+        requiredDeviceIncapabilities = [v11 requiredDeviceIncapabilities];
+        [v5 unionSet:requiredDeviceIncapabilities];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -1063,22 +1063,22 @@ void __70__CCSModuleRepository__queue_updateGestaltQuestionsForModuleMetadata___
     while (v8);
   }
 
-  v14 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return allObjects;
 }
 
-- (void)_queue_startObservingMobileGestaltQuestions:(id)a3 withChangeHandler:(id)a4
+- (void)_queue_startObservingMobileGestaltQuestions:(id)questions withChangeHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  questionsCopy = questions;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v6 count])
+  if ([questionsCopy count])
   {
     queue = self->_queue;
-    v9 = v7;
+    v9 = handlerCopy;
     self->_mobileGestaltNotificationToken = MGRegisterForBulkUpdates();
   }
 }

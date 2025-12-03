@@ -1,20 +1,20 @@
 @interface _UIAnimatedTextView
-- (_TtC16TextFormattingUIP33_765D2D84B42F2E34C8687CE391E4C01F19_UIAnimatedTextView)initWithCoder:(id)a3;
-- (_TtC16TextFormattingUIP33_765D2D84B42F2E34C8687CE391E4C01F19_UIAnimatedTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC16TextFormattingUIP33_765D2D84B42F2E34C8687CE391E4C01F19_UIAnimatedTextView)initWithCoder:(id)coder;
+- (_TtC16TextFormattingUIP33_765D2D84B42F2E34C8687CE391E4C01F19_UIAnimatedTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _UIAnimatedTextView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for _UIAnimatedTextView();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(_UIAnimatedTextView *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(_UIAnimatedTextView *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -37,25 +37,25 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC16TextFormattingUIP33_765D2D84B42F2E34C8687CE391E4C01F19_UIAnimatedTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC16TextFormattingUIP33_765D2D84B42F2E34C8687CE391E4C01F19_UIAnimatedTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16TextFormattingUIP33_765D2D84B42F2E34C8687CE391E4C01F19_UIAnimatedTextView_shouldAnimate) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for _UIAnimatedTextView();
-  return [(_UIAnimatedTextView *)&v10 initWithFrame:a4 textContainer:x, y, width, height];
+  return [(_UIAnimatedTextView *)&v10 initWithFrame:container textContainer:x, y, width, height];
 }
 
-- (_TtC16TextFormattingUIP33_765D2D84B42F2E34C8687CE391E4C01F19_UIAnimatedTextView)initWithCoder:(id)a3
+- (_TtC16TextFormattingUIP33_765D2D84B42F2E34C8687CE391E4C01F19_UIAnimatedTextView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16TextFormattingUIP33_765D2D84B42F2E34C8687CE391E4C01F19_UIAnimatedTextView_shouldAnimate) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for _UIAnimatedTextView();
-  v4 = a3;
-  v5 = [(_UIAnimatedTextView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(_UIAnimatedTextView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

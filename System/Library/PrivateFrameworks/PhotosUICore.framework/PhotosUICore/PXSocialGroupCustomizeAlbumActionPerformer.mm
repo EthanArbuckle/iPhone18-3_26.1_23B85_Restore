@@ -1,28 +1,28 @@
 @interface PXSocialGroupCustomizeAlbumActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)createActivityWithTitle:(id)a3 actionType:(id)a4 actionSystemImageName:(id)a5;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
-+ (id)makeCustomMenuElementForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInput:(id)a5 handler:(id)a6;
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4;
-- (PXSocialGroupCustomizeAlbumActionPerformer)initWithActionType:(id)a3 assetCollectionReference:(id)a4 parameters:(id)a5;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)createActivityWithTitle:(id)title actionType:(id)type actionSystemImageName:(id)name;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)makeCustomMenuElementForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInput:(id)input handler:(id)handler;
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs;
+- (PXSocialGroupCustomizeAlbumActionPerformer)initWithActionType:(id)type assetCollectionReference:(id)reference parameters:(id)parameters;
 @end
 
 @implementation PXSocialGroupCustomizeAlbumActionPerformer
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  if (!a4)
+  if (!inputs)
   {
     return 0;
   }
 
-  if ([a4 respondsToSelector_])
+  if ([inputs respondsToSelector_])
   {
-    v4 = [swift_unknownObjectRetain() socialGroups];
-    if (v4)
+    socialGroups = [swift_unknownObjectRetain() socialGroups];
+    if (socialGroups)
     {
-      v5 = v4;
-      v6 = [v4 count];
+      v5 = socialGroups;
+      v6 = [socialGroups count];
 
       swift_unknownObjectRelease();
       return v6 == 1;
@@ -34,7 +34,7 @@
   return 0;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
   sub_1A3C38BD4();
   v5 = sub_1A524C634();
@@ -42,27 +42,27 @@
   return v5;
 }
 
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
   v4 = sub_1A524C634();
 
   return v4;
 }
 
-+ (id)makeCustomMenuElementForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInput:(id)a5 handler:(id)a6
++ (id)makeCustomMenuElementForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInput:(id)input handler:(id)handler
 {
-  v7 = _Block_copy(a6);
+  v7 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v7;
-  v8 = a4;
+  referenceCopy = reference;
   swift_unknownObjectRetain();
   sub_1A3E78E48();
 }
 
-+ (id)createActivityWithTitle:(id)a3 actionType:(id)a4 actionSystemImageName:(id)a5
++ (id)createActivityWithTitle:(id)title actionType:(id)type actionSystemImageName:(id)name
 {
   sub_1A524C674();
   sub_1A524C674();
-  if (a5)
+  if (name)
   {
     sub_1A524C674();
     v6 = objc_allocWithZone(PXActivity);
@@ -82,14 +82,14 @@
   return v11;
 }
 
-- (PXSocialGroupCustomizeAlbumActionPerformer)initWithActionType:(id)a3 assetCollectionReference:(id)a4 parameters:(id)a5
+- (PXSocialGroupCustomizeAlbumActionPerformer)initWithActionType:(id)type assetCollectionReference:(id)reference parameters:(id)parameters
 {
   v6 = sub_1A524C674();
   v8 = v7;
   type metadata accessor for PXActionParameterKey();
   sub_1A3C382BC(&unk_1EB1356B0, type metadata accessor for PXActionParameterKey);
   sub_1A524C3E4();
-  return sub_1A3E78ABC(v6, v8, a4);
+  return sub_1A3E78ABC(v6, v8, reference);
 }
 
 @end

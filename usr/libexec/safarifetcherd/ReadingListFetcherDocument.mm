@@ -8,31 +8,31 @@
 - (void)_cleanUpAfterIconDownloadRequestCompletion;
 - (void)_dataCheckTimeoutExpired;
 - (void)_didCancelLoad;
-- (void)_didCollectReadingListInfo:(id)a3 withAvailability:(BOOL)a4;
+- (void)_didCollectReadingListInfo:(id)info withAvailability:(BOOL)availability;
 - (void)_didFinishLoadingSubpage;
 - (void)_killWebProcessIfNeededAndFail;
 - (void)_loadDidFail;
-- (void)_navigationFailedWithError:(id)a3;
+- (void)_navigationFailedWithError:(id)error;
 - (void)_readerPageTimeoutExpired;
 - (void)_saveAndSelfExpire;
 - (void)_slowLoadTimeoutExpired;
-- (void)_writeOfflineWebViewWithOptions:(unint64_t)a3 completion:(id)a4;
+- (void)_writeOfflineWebViewWithOptions:(unint64_t)options completion:(id)completion;
 - (void)cancelLoad;
 - (void)clearWebView;
-- (void)createReaderWebViewForReaderController:(id)a3;
+- (void)createReaderWebViewForReaderController:(id)controller;
 - (void)dealloc;
 - (void)didFinishLoadingAllReaderPages;
 - (void)finishFetchingDocument;
-- (void)loadBookmark:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)readerController:(id)a3 didDetermineReaderAvailability:(id)a4 dueTo:(int64_t)a5;
+- (void)loadBookmark:(id)bookmark;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)readerController:(id)controller didDetermineReaderAvailability:(id)availability dueTo:(int64_t)to;
 - (void)release;
-- (void)siteIconDownloadRequest:(id)a3 didComputeIconKeyColor:(id)a4;
-- (void)siteIconDownloadRequest:(id)a3 didLoadIconData:(id)a4 withIconURL:(id)a5;
-- (void)siteIconDownloadRequestDidFail:(id)a3;
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4;
+- (void)siteIconDownloadRequest:(id)request didComputeIconKeyColor:(id)color;
+- (void)siteIconDownloadRequest:(id)request didLoadIconData:(id)data withIconURL:(id)l;
+- (void)siteIconDownloadRequestDidFail:(id)fail;
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation;
 @end
 
 @implementation ReadingListFetcherDocument
@@ -55,22 +55,6 @@
     if (add < 0 || (v3 = self, self = pthread_main_np(), v4 = -2, atomic_compare_exchange_strong(&v3->_retainCount, &v4, 1uLL), v4 != -2))
     {
       __break(1u);
-_objc_msgSend$dealloc:
-      [(ReadingListFetcherDocument *)self dealloc];
-      return;
-    }
-
-    if (self)
-    {
-      self = v3;
-
-      goto _objc_msgSend$dealloc;
-    }
-
-    dispatch_barrier_async_f(&_dispatch_main_q, v3, &_objc_deallocOnMainThreadHelper);
-  }
-}
-
 - (BOOL)_tryRetain
 {
   while (1)
@@ -225,11 +209,11 @@ LABEL_10:
   [(ReadingListFetcherDocument *)&v6 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_100022A90 == a6)
+  if (off_100022A90 == context)
   {
-    if ([a3 isEqualToString:{@"estimatedProgress", a4, a5}])
+    if ([path isEqualToString:{@"estimatedProgress", object, change}])
     {
 
       [(ReadingListFetcherDocument *)self _dataReceived];
@@ -240,7 +224,7 @@ LABEL_10:
   {
     v7.receiver = self;
     v7.super_class = ReadingListFetcherDocument;
-    [(ReadingListFetcherDocument *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(ReadingListFetcherDocument *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -406,15 +390,15 @@ LABEL_9:
   }
 }
 
-- (void)_writeOfflineWebViewWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)_writeOfflineWebViewWithOptions:(unint64_t)options completion:(id)completion
 {
   v4 = 96;
-  if ((a3 & 2) == 0)
+  if ((options & 2) == 0)
   {
     v4 = 88;
   }
 
-  [(WebBookmark *)self->_bookmark writeOfflineWebView:*(&self->super.isa + v4) withOptions:a3 quickLookFilePath:self->_quickLookFilePath suggestedFileName:self->_suggestedFileName completion:a4];
+  [(WebBookmark *)self->_bookmark writeOfflineWebView:*(&self->super.isa + v4) withOptions:options quickLookFilePath:self->_quickLookFilePath suggestedFileName:self->_suggestedFileName completion:completion];
 }
 
 - (void)_killWebProcessIfNeededAndFail
@@ -433,15 +417,15 @@ LABEL_9:
   [(ReadingListFetcherDocument *)self _loadDidFail];
 }
 
-- (void)loadBookmark:(id)a3
+- (void)loadBookmark:(id)bookmark
 {
-  self->_bookmark = a3;
-  if ([a3 archiveStatus] && objc_msgSend(a3, "archiveStatus") != 6)
+  self->_bookmark = bookmark;
+  if ([bookmark archiveStatus] && objc_msgSend(bookmark, "archiveStatus") != 6)
   {
     v6 = sub_100009E64();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000AE04(a3);
+      sub_10000AE04(bookmark);
     }
   }
 
@@ -450,12 +434,12 @@ LABEL_9:
     v5 = sub_100009E64();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000AE7C(a3);
+      sub_10000AE7C(bookmark);
     }
   }
 
   [+[SafariFetcherServer sharedServer](SafariFetcherServer "sharedServer")];
-  -[WKWebView loadRequest:](self->_webView, "loadRequest:", +[NSURLRequest safari_nonAppInitiatedRequestWithURL:](NSURLRequest, "safari_nonAppInitiatedRequestWithURL:", +[NSURL URLWithString:](NSURL, "URLWithString:", [a3 address])));
+  -[WKWebView loadRequest:](self->_webView, "loadRequest:", +[NSURLRequest safari_nonAppInitiatedRequestWithURL:](NSURLRequest, "safari_nonAppInitiatedRequestWithURL:", +[NSURL URLWithString:](NSURL, "URLWithString:", [bookmark address])));
   self->_isLoading = 1;
   self->_loadStartTimestamp = CFAbsoluteTimeGetCurrent();
   self->_dataCheckTimer = [NSTimer scheduledTimerWithTimeInterval:self target:"_dataCheckTimeoutExpired" selector:0 userInfo:0 repeats:20.0];
@@ -519,9 +503,9 @@ LABEL_9:
   }
 }
 
-- (void)_didCollectReadingListInfo:(id)a3 withAvailability:(BOOL)a4
+- (void)_didCollectReadingListInfo:(id)info withAvailability:(BOOL)availability
 {
-  v7 = [a3 objectForKey:@"mainImageURL"];
+  v7 = [info objectForKey:@"mainImageURL"];
   if (![(WebBookmark *)self->_bookmark iconData])
   {
     if ([v7 length])
@@ -544,7 +528,7 @@ LABEL_9:
     }
   }
 
-  v8 = [a3 objectForKey:@"previewText"];
+  v8 = [info objectForKey:@"previewText"];
   if ([(WebBookmark *)self->_bookmark isAddedLocally])
   {
     v9 = v8 == 0;
@@ -562,7 +546,7 @@ LABEL_9:
 
   if ([(WebBookmark *)self->_bookmark previewText])
   {
-    if (a4)
+    if (availability)
     {
 LABEL_10:
       [(_SFReaderController *)self->_readerContext setUpReaderWebViewIfNeededAndPerformBlock:0];
@@ -575,7 +559,7 @@ LABEL_10:
   else
   {
     [(WebBookmark *)self->_bookmark setLocalPreviewText:v8];
-    if (a4)
+    if (availability)
     {
       goto LABEL_10;
     }
@@ -595,28 +579,28 @@ LABEL_10:
   [(ReadingListFetcherDocument *)self _saveAndSelfExpire];
 }
 
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation
 {
   self->_suggestedFileName = 0;
 
   self->_quickLookFilePath = 0;
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler
 {
-  if ([a4 isForMainFrame])
+  if ([response isForMainFrame])
   {
-    self->_suggestedFileName = [objc_msgSend(objc_msgSend(a4 "response")];
+    self->_suggestedFileName = [objc_msgSend(objc_msgSend(response "response")];
   }
 
-  v8 = *(a5 + 2);
+  v8 = *(handler + 2);
 
-  v8(a5, 1);
+  v8(handler, 1);
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = self;
+  selfCopy = self;
   self->_finishedLoadingMainFrame = 1;
   [(ReadingListFetcherDocument *)self _didFinishLoadingSubpage];
   slowLoadTimer = self->_slowLoadTimer;
@@ -635,18 +619,18 @@ LABEL_10:
     self->_dataCheckTimer = 0;
   }
 
-  v9 = [a3 _MIMEType];
-  v10 = [v9 hasPrefix:@"text/"];
-  if (v10 & 1) != 0 || ([v9 isEqualToString:@"application/pdf"] & 1) != 0 || (+[WebMIMETypeRegistry isSupportedImageMIMEType:](WebMIMETypeRegistry, "isSupportedImageMIMEType:", v9) & 1) != 0 || (+[WebMIMETypeRegistry isSupportedMediaMIMEType:](WebMIMETypeRegistry, "isSupportedMediaMIMEType:", v9))
+  _MIMEType = [view _MIMEType];
+  v10 = [_MIMEType hasPrefix:@"text/"];
+  if (v10 & 1) != 0 || ([_MIMEType isEqualToString:@"application/pdf"] & 1) != 0 || (+[WebMIMETypeRegistry isSupportedImageMIMEType:](WebMIMETypeRegistry, "isSupportedImageMIMEType:", _MIMEType) & 1) != 0 || (+[WebMIMETypeRegistry isSupportedMediaMIMEType:](WebMIMETypeRegistry, "isSupportedMediaMIMEType:", _MIMEType))
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v13 = sub_1000088DC;
     v14 = &unk_10001C928;
     v18 = v10;
-    v15 = self;
-    v16 = v9;
-    v17 = a3;
+    selfCopy2 = self;
+    v16 = _MIMEType;
+    viewCopy = view;
     if ([(ReadingListFetcherDocument *)self _shouldArchiveBookmarkWithID:[(WebBookmark *)self->_bookmark identifier]])
     {
       v11[0] = _NSConcreteStackBlock;
@@ -672,11 +656,11 @@ LABEL_10:
   }
 }
 
-- (void)_navigationFailedWithError:(id)a3
+- (void)_navigationFailedWithError:(id)error
 {
-  v5 = self;
-  v6 = [a3 code];
-  if (v6 == -999)
+  selfCopy = self;
+  code = [error code];
+  if (code == -999)
   {
     if (!self->_fetcherInitiatedLoadCancel)
     {
@@ -707,7 +691,7 @@ LABEL_10:
 
   else
   {
-    v9 = v6;
+    v9 = code;
     v10 = self->_slowLoadTimer;
     if (v10)
     {
@@ -730,7 +714,7 @@ LABEL_18:
       v12 = sub_100009E64();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_10000AF5C(a3, v12);
+        sub_10000AF5C(error, v12);
       }
 
       [(ReadingListFetcherDocument *)self _loadDidFail];
@@ -741,31 +725,31 @@ LABEL_18:
   [(ReadingListFetcherDocument *)self _didCancelLoad];
 }
 
-- (void)readerController:(id)a3 didDetermineReaderAvailability:(id)a4 dueTo:(int64_t)a5
+- (void)readerController:(id)controller didDetermineReaderAvailability:(id)availability dueTo:(int64_t)to
 {
   readerContext = self->_readerContext;
-  v8 = [(WebBookmark *)self->_bookmark identifier:a3];
+  v8 = [(WebBookmark *)self->_bookmark identifier:controller];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100008BA8;
   v9[3] = &unk_10001C978;
   v9[4] = self;
-  v9[5] = a4;
+  v9[5] = availability;
   [(_SFReaderController *)readerContext collectReadingListInfoWithBookmarkID:v8 completionHandler:v9];
 }
 
-- (void)createReaderWebViewForReaderController:(id)a3
+- (void)createReaderWebViewForReaderController:(id)controller
 {
-  v4 = [(WKWebView *)self->_webView configuration];
+  configuration = [(WKWebView *)self->_webView configuration];
   v5 = objc_alloc_init(WKWebViewConfiguration);
   [v5 _setAlternateWebViewForNavigationGestures:self->_webView];
-  [v5 _setAttributedBundleIdentifier:{-[WKWebViewConfiguration _attributedBundleIdentifier](v4, "_attributedBundleIdentifier")}];
+  [v5 _setAttributedBundleIdentifier:{-[WKWebViewConfiguration _attributedBundleIdentifier](configuration, "_attributedBundleIdentifier")}];
   [v5 _setClientNavigationsRunAtForegroundPriority:1];
   [v5 _setGroupIdentifier:_SFReaderPageGroupIdentifier];
   [v5 _setNeedsStorageAccessFromFileURLsQuirk:0];
   [v5 setApplicationNameForUserAgent:_SFApplicationNameForUserAgent()];
-  [v5 setProcessPool:{-[WKWebViewConfiguration processPool](v4, "processPool")}];
-  [v5 setWebsiteDataStore:{-[WKWebViewConfiguration websiteDataStore](v4, "websiteDataStore")}];
+  [v5 setProcessPool:{-[WKWebViewConfiguration processPool](configuration, "processPool")}];
+  [v5 setWebsiteDataStore:{-[WKWebViewConfiguration websiteDataStore](configuration, "websiteDataStore")}];
   [v5 _setRelatedWebView:self->_webView];
   v6 = [WKWebView alloc];
   GSMainScreenPointSize();
@@ -785,14 +769,14 @@ LABEL_18:
   [(WKWebView *)self->_readerWebView setNavigationDelegate:self->_readerContext];
   [(WKWebView *)self->_readerWebView setUIDelegate:self->_readerContext];
   [(_SFReaderController *)self->_readerContext didCreateReaderWebView:self->_readerWebView];
-  v11 = [(_SFReaderController *)self->_readerContext readerURL];
+  readerURL = [(_SFReaderController *)self->_readerContext readerURL];
   v12 = sub_100009E64();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     sub_10000AFE4();
   }
 
-  [(WKWebView *)self->_readerWebView loadRequest:[NSURLRequest safari_nonAppInitiatedRequestWithURL:v11]];
+  [(WKWebView *)self->_readerWebView loadRequest:[NSURLRequest safari_nonAppInitiatedRequestWithURL:readerURL]];
 }
 
 - (void)_cleanUpAfterIconDownloadRequestCompletion
@@ -807,9 +791,9 @@ LABEL_18:
   }
 }
 
-- (void)siteIconDownloadRequestDidFail:(id)a3
+- (void)siteIconDownloadRequestDidFail:(id)fail
 {
-  if (self->_thumbnailDownloadRequest == a3)
+  if (self->_thumbnailDownloadRequest == fail)
   {
     [(WebBookmark *)self->_bookmark setFetchedIconData:1];
 
@@ -817,11 +801,11 @@ LABEL_18:
   }
 }
 
-- (void)siteIconDownloadRequest:(id)a3 didLoadIconData:(id)a4 withIconURL:(id)a5
+- (void)siteIconDownloadRequest:(id)request didLoadIconData:(id)data withIconURL:(id)l
 {
-  if (self->_thumbnailDownloadRequest == a3)
+  if (self->_thumbnailDownloadRequest == request)
   {
-    v8 = [WBSImageUtilities readingListThumbnailDataFromImage:[UIImage imageWithData:a4]];
+    v8 = [WBSImageUtilities readingListThumbnailDataFromImage:[UIImage imageWithData:data]];
     if (v8)
     {
       [+[WebBookmarkCollection safariBookmarkCollection](WebBookmarkCollection "safariBookmarkCollection")];
@@ -831,9 +815,9 @@ LABEL_18:
   }
 }
 
-- (void)siteIconDownloadRequest:(id)a3 didComputeIconKeyColor:(id)a4
+- (void)siteIconDownloadRequest:(id)request didComputeIconKeyColor:(id)color
 {
-  if (self->_thumbnailDownloadRequest == a3)
+  if (self->_thumbnailDownloadRequest == request)
   {
     [(ReadingListFetcherDocument *)self _cleanUpAfterIconDownloadRequestCompletion];
   }

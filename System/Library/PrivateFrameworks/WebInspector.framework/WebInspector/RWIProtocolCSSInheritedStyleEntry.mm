@@ -1,23 +1,23 @@
 @interface RWIProtocolCSSInheritedStyleEntry
 - (NSArray)matchedCSSRules;
-- (RWIProtocolCSSInheritedStyleEntry)initWithMatchedCSSRules:(id)a3;
+- (RWIProtocolCSSInheritedStyleEntry)initWithMatchedCSSRules:(id)rules;
 - (RWIProtocolCSSStyle)inlineStyle;
-- (void)setInlineStyle:(id)a3;
-- (void)setMatchedCSSRules:(id)a3;
+- (void)setInlineStyle:(id)style;
+- (void)setMatchedCSSRules:(id)rules;
 @end
 
 @implementation RWIProtocolCSSInheritedStyleEntry
 
-- (RWIProtocolCSSInheritedStyleEntry)initWithMatchedCSSRules:(id)a3
+- (RWIProtocolCSSInheritedStyleEntry)initWithMatchedCSSRules:(id)rules
 {
   v25 = *MEMORY[0x277D85DE8];
-  v18 = a3;
+  rulesCopy = rules;
   v23.receiver = self;
   v23.super_class = RWIProtocolCSSInheritedStyleEntry;
   v4 = [(RWIProtocolJSONObject *)&v23 init];
   if (v4)
   {
-    if (!v18)
+    if (!rulesCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"matchedCSSRules"}];
     }
@@ -27,7 +27,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v18;
+    v5 = rulesCopy;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v6)
     {
@@ -72,11 +72,11 @@
   return v4;
 }
 
-- (void)setInlineStyle:(id)a3
+- (void)setInlineStyle:(id)style
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSInheritedStyleEntry;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"inlineStyle"];
+  [(RWIProtocolJSONObject *)&v3 setObject:style forKey:@"inlineStyle"];
 }
 
 - (RWIProtocolCSSStyle)inlineStyle
@@ -134,14 +134,14 @@
   return v7;
 }
 
-- (void)setMatchedCSSRules:(id)a3
+- (void)setMatchedCSSRules:(id)rules
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = rules;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {

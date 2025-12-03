@@ -1,47 +1,47 @@
 @interface SXTextSourceFontFace
-+ (id)basicFontAttributesForFontName:(id)a3;
-+ (id)fontFaceWithFontName:(id)a3;
-+ (id)fontFaceWithFontName:(id)a3 andAttributes:(id)a4;
++ (id)basicFontAttributesForFontName:(id)name;
++ (id)fontFaceWithFontName:(id)name;
++ (id)fontFaceWithFontName:(id)name andAttributes:(id)attributes;
 - (NSDictionary)fontDescriptorAttributes;
 @end
 
 @implementation SXTextSourceFontFace
 
-+ (id)fontFaceWithFontName:(id)a3 andAttributes:(id)a4
++ (id)fontFaceWithFontName:(id)name andAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  attributesCopy = attributes;
   v7 = objc_alloc_init(SXTextSourceFontFace);
   fontName = v7->_fontName;
-  v7->_fontName = v5;
-  v9 = v5;
+  v7->_fontName = nameCopy;
+  v9 = nameCopy;
 
   fontAttributes = v7->_fontAttributes;
-  v7->_fontAttributes = v6;
+  v7->_fontAttributes = attributesCopy;
 
   return v7;
 }
 
-+ (id)fontFaceWithFontName:(id)a3
++ (id)fontFaceWithFontName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 basicFontAttributesForFontName:v4];
-  v6 = [SXTextSourceFontFace fontFaceWithFontName:v4 andAttributes:v5];
+  nameCopy = name;
+  v5 = [self basicFontAttributesForFontName:nameCopy];
+  v6 = [SXTextSourceFontFace fontFaceWithFontName:nameCopy andAttributes:v5];
 
   return v6;
 }
 
-+ (id)basicFontAttributesForFontName:(id)a3
++ (id)basicFontAttributesForFontName:(id)name
 {
-  v3 = [MEMORY[0x1E69DB878] fontWithName:a3 size:12.0];
+  v3 = [MEMORY[0x1E69DB878] fontWithName:name size:12.0];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 fontDescriptor];
-    v6 = [v5 symbolicTraits] & 1;
+    fontDescriptor = [v3 fontDescriptor];
+    v6 = [fontDescriptor symbolicTraits] & 1;
 
-    v7 = [v4 fontDescriptor];
-    if (([v7 symbolicTraits] & 2) != 0)
+    fontDescriptor2 = [v4 fontDescriptor];
+    if (([fontDescriptor2 symbolicTraits] & 2) != 0)
     {
       v8 = 700;
     }
@@ -51,8 +51,8 @@
       v8 = 400;
     }
 
-    v9 = [v4 familyName];
-    v10 = [SXTextSourceFontAttributes attributesWithFamilyName:v9 style:v6 weight:v8];
+    familyName = [v4 familyName];
+    v10 = [SXTextSourceFontAttributes attributesWithFamilyName:familyName style:v6 weight:v8];
   }
 
   else
@@ -67,20 +67,20 @@
 {
   v25[2] = *MEMORY[0x1E69E9840];
   v24[0] = *MEMORY[0x1E69DB8B8];
-  v3 = [(SXTextSourceFontFace *)self fontName];
-  v25[0] = v3;
+  fontName = [(SXTextSourceFontFace *)self fontName];
+  v25[0] = fontName;
   v24[1] = *MEMORY[0x1E69DB8F0];
   v22[0] = *MEMORY[0x1E69DB990];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(SXTextSourceFontFace *)self fontAttributes];
-  v6 = [v5 weight];
-  if (v6 <= 499)
+  fontAttributes = [(SXTextSourceFontFace *)self fontAttributes];
+  weight = [fontAttributes weight];
+  if (weight <= 499)
   {
-    if (v6 <= 299)
+    if (weight <= 299)
     {
-      if (v6 != 100)
+      if (weight != 100)
       {
-        if (v6 == 200)
+        if (weight == 200)
         {
           v7 = MEMORY[0x1E69DB998];
           goto LABEL_21;
@@ -93,7 +93,7 @@
       goto LABEL_21;
     }
 
-    if (v6 == 300)
+    if (weight == 300)
     {
       v7 = MEMORY[0x1E69DB968];
       goto LABEL_21;
@@ -104,15 +104,15 @@ LABEL_12:
     goto LABEL_21;
   }
 
-  if (v6 <= 699)
+  if (weight <= 699)
   {
-    if (v6 == 500)
+    if (weight == 500)
     {
       v7 = MEMORY[0x1E69DB970];
       goto LABEL_21;
     }
 
-    if (v6 == 600)
+    if (weight == 600)
     {
       v7 = MEMORY[0x1E69DB980];
       goto LABEL_21;
@@ -121,7 +121,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  switch(v6)
+  switch(weight)
   {
     case 700:
       v7 = MEMORY[0x1E69DB958];
@@ -141,15 +141,15 @@ LABEL_21:
   v23[0] = v8;
   v22[1] = *MEMORY[0x1E69DB9C0];
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(SXTextSourceFontFace *)self fontAttributes];
-  v11 = [v10 width];
-  if (v11 <= 499)
+  fontAttributes2 = [(SXTextSourceFontFace *)self fontAttributes];
+  width = [fontAttributes2 width];
+  if (width <= 499)
   {
-    if (v11 <= 299)
+    if (width <= 299)
     {
-      if (v11 != 100)
+      if (width != 100)
       {
-        if (v11 == 200)
+        if (width == 200)
         {
           v12 = MEMORY[0x1E69DB998];
           goto LABEL_41;
@@ -162,7 +162,7 @@ LABEL_21:
       goto LABEL_41;
     }
 
-    if (v11 == 300)
+    if (width == 300)
     {
       v12 = MEMORY[0x1E69DB968];
       goto LABEL_41;
@@ -173,15 +173,15 @@ LABEL_32:
     goto LABEL_41;
   }
 
-  if (v11 <= 699)
+  if (width <= 699)
   {
-    if (v11 == 500)
+    if (width == 500)
     {
       v12 = MEMORY[0x1E69DB970];
       goto LABEL_41;
     }
 
-    if (v11 == 600)
+    if (width == 600)
     {
       v12 = MEMORY[0x1E69DB980];
       goto LABEL_41;
@@ -190,7 +190,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  switch(v11)
+  switch(width)
   {
     case 700:
       v12 = MEMORY[0x1E69DB958];
@@ -210,10 +210,10 @@ LABEL_41:
   v23[1] = v13;
   v22[2] = *MEMORY[0x1E69DB910];
   v14 = MEMORY[0x1E696AD98];
-  v15 = [(SXTextSourceFontFace *)self fontAttributes];
-  v16 = [v15 style];
+  fontAttributes3 = [(SXTextSourceFontFace *)self fontAttributes];
+  style = [fontAttributes3 style];
   v17 = 0.06944444;
-  if ((v16 - 1) >= 2)
+  if ((style - 1) >= 2)
   {
     v17 = 0.0;
   }

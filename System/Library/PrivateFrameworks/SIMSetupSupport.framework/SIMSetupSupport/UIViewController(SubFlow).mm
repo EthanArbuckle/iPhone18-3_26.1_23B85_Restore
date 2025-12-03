@@ -12,7 +12,7 @@
     return 0;
   }
 
-  return [a1 subFlowType];
+  return [self subFlowType];
 }
 
 @end

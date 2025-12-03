@@ -3,12 +3,12 @@
 - (BOOL)setupCompleted;
 - (BOOL)shouldShowWelcomeNotification;
 - (BOOL)stopWelcomeNotification;
-- (TPSWelcome)initWithDelegate:(id)a3 tipsManager:(id)a4 notificationController:(id)a5;
+- (TPSWelcome)initWithDelegate:(id)delegate tipsManager:(id)manager notificationController:(id)controller;
 - (TPSWelcomeDelegate)delegate;
 - (id)getCurrentWelcomeActivityCriteria;
 - (unint64_t)reminderState;
 - (void)createWelcomeXPCActivity;
-- (void)reconnectWelcomeIfNeeded:(BOOL)a3;
+- (void)reconnectWelcomeIfNeeded:(BOOL)needed;
 - (void)registerToNotifyWelcome;
 - (void)scheduleWelcomeNotificationActivity;
 - (void)welcomeNotificationDisplayed;
@@ -22,35 +22,35 @@
   [v4 setObject:&off_100025E70 forKey:@"TPSWelcomeNotificationViewedVersion"];
   [v4 synchronize];
   v2 = +[TPSCommonDefines sharedInstance];
-  v3 = [v2 appGroupDefaults];
+  appGroupDefaults = [v2 appGroupDefaults];
 
-  [v3 removeObjectForKey:@"collectionStatusMap"];
-  [v3 synchronize];
+  [appGroupDefaults removeObjectForKey:@"collectionStatusMap"];
+  [appGroupDefaults synchronize];
 }
 
-- (TPSWelcome)initWithDelegate:(id)a3 tipsManager:(id)a4 notificationController:(id)a5
+- (TPSWelcome)initWithDelegate:(id)delegate tipsManager:(id)manager notificationController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  managerCopy = manager;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = TPSWelcome;
   v11 = [(TPSWelcome *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    [(TPSWelcome *)v11 setDelegate:v8];
-    objc_storeStrong(&v12->_tipsManager, a4);
-    objc_storeStrong(&v12->_notificationController, a5);
+    [(TPSWelcome *)v11 setDelegate:delegateCopy];
+    objc_storeStrong(&v12->_tipsManager, manager);
+    objc_storeStrong(&v12->_notificationController, controller);
     v13 = +[NSUserDefaults standardUserDefaults];
     if (+[TPSDefaultsManager resetDaemonData])
     {
       [v13 setObject:&off_100025E70 forKey:@"TPSWelcomeNotificationViewedVersion"];
       [v13 removeObjectForKey:@"TPSWelcomeNotificationReminderState"];
       v14 = +[TPSCommonDefines sharedInstance];
-      v15 = [v14 appGroupDefaults];
+      appGroupDefaults = [v14 appGroupDefaults];
 
-      [v15 removeObjectForKey:@"collectionStatusMap"];
+      [appGroupDefaults removeObjectForKey:@"collectionStatusMap"];
     }
   }
 
@@ -66,14 +66,14 @@
 
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"TPSWelcomeNotificationReminderState"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)reconnectWelcomeIfNeeded:(BOOL)a3
+- (void)reconnectWelcomeIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   if ([(TPSWelcome *)self shouldShowWelcomeNotification]&& [(TPSWelcome *)self setupCompleted])
   {
     v5 = +[NSUserDefaults standardUserDefaults];
@@ -95,17 +95,17 @@
         }
 
         [(TPSWelcome *)self setWelcomeXPCActivityScheduleInProgress:1];
-        v8 = [v6 UTF8String];
+        uTF8String = [v6 UTF8String];
         v9[0] = _NSConcreteStackBlock;
         v9[1] = 3221225472;
         v9[2] = sub_100001F9C;
         v9[3] = &unk_100024AF0;
         v9[4] = self;
         v10 = v6;
-        xpc_activity_register(v8, XPC_ACTIVITY_CHECK_IN, v9);
+        xpc_activity_register(uTF8String, XPC_ACTIVITY_CHECK_IN, v9);
       }
 
-      else if (v3)
+      else if (neededCopy)
       {
         [(TPSWelcome *)self scheduleWelcomeNotificationActivity];
       }
@@ -118,9 +118,9 @@
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 objectForKey:@"TPSWelcomeNotificationViewedVersion"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  if ((v5 & 0x80000000) != 0)
+  if ((intValue & 0x80000000) != 0)
   {
 LABEL_7:
     v9 = 1;
@@ -128,10 +128,10 @@ LABEL_7:
   }
 
   v6 = +[TPSCommonDefines sharedInstance];
-  v7 = [v6 majorVersion];
-  v8 = [v7 intValue];
+  majorVersion = [v6 majorVersion];
+  intValue2 = [majorVersion intValue];
 
-  if (v5 != v8)
+  if (intValue != intValue2)
   {
     v10 = +[TPSLogger welcome];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -241,10 +241,10 @@ LABEL_8:
 
     else
     {
-      v5 = [(TPSWelcome *)self setupCompleted];
+      setupCompleted = [(TPSWelcome *)self setupCompleted];
       v6 = +[TPSLogger welcome];
       v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-      if (v5)
+      if (setupCompleted)
       {
         if (v7)
         {
@@ -274,9 +274,9 @@ LABEL_8:
     v3 = +[NSUserDefaults standardUserDefaults];
     v4 = [v3 objectForKey:@"TPSCurrentWelcomeXPCActivityIdentifier"];
     v5 = [v3 objectForKey:@"TPSWelcomeNotificationReminderState"];
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
 
-    v7 = [NSString stringWithFormat:@"com.apple.tipsd.showWelcomeNotification.reminderCount-%zd", v6];
+    v7 = [NSString stringWithFormat:@"com.apple.tipsd.showWelcomeNotification.reminderCount-%zd", intValue];
     if ([v7 isEqualToString:v4])
     {
       [(TPSWelcome *)self reconnectWelcomeIfNeeded:0];
@@ -285,15 +285,15 @@ LABEL_8:
     else
     {
       [(TPSWelcome *)self setWelcomeXPCActivityScheduleInProgress:1];
-      v8 = [(TPSWelcome *)self delegate];
+      delegate = [(TPSWelcome *)self delegate];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_10000282C;
       v9[3] = &unk_100024B40;
       v10 = v3;
       v11 = v7;
-      v12 = self;
-      [v8 welcome:self contentAvailableRemotelyWithCompletionHandler:v9];
+      selfCopy = self;
+      [delegate welcome:self contentAvailableRemotelyWithCompletionHandler:v9];
     }
   }
 }
@@ -316,8 +316,8 @@ LABEL_8:
     v3 = +[NSUserDefaults standardUserDefaults];
     if ([(TPSWelcome *)self shouldShowWelcomeNotification])
     {
-      v4 = [(TPSWelcome *)self tipsManager];
-      v5 = [v4 welcomeDocumentFromContentPackage:0];
+      tipsManager = [(TPSWelcome *)self tipsManager];
+      v5 = [tipsManager welcomeDocumentFromContentPackage:0];
 
       if (v5)
       {
@@ -334,8 +334,8 @@ LABEL_8:
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Register for empty lock screen for welcome notification", v8, 2u);
         }
 
-        v7 = [(TPSWelcome *)self delegate];
-        [v7 welcome:self notifyWelcomeDocument:v5];
+        delegate = [(TPSWelcome *)self delegate];
+        [delegate welcome:self notifyWelcomeDocument:v5];
       }
     }
 
@@ -349,17 +349,17 @@ LABEL_8:
 
 - (void)welcomeNotificationDisplayed
 {
-  v3 = [(TPSWelcome *)self reminderState];
+  reminderState = [(TPSWelcome *)self reminderState];
   v4 = +[NSUserDefaults standardUserDefaults];
   [v4 setBool:0 forKey:@"TPSWaitingToShowWelcomeNotification"];
 
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [NSNumber numberWithUnsignedInteger:v3 + 1];
+  v6 = [NSNumber numberWithUnsignedInteger:reminderState + 1];
   [v5 setObject:v6 forKey:@"TPSWelcomeNotificationReminderState"];
 
   v7 = +[TPSLogger welcome];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v3 == -1)
+  if (reminderState == -1)
   {
     if (v8)
     {
@@ -383,8 +383,8 @@ LABEL_8:
 
     v10 = +[NSUserDefaults standardUserDefaults];
     v11 = +[TPSCommonDefines sharedInstance];
-    v12 = [v11 majorVersion];
-    [v10 setObject:v12 forKey:@"TPSWelcomeNotificationViewedVersion"];
+    majorVersion = [v11 majorVersion];
+    [v10 setObject:majorVersion forKey:@"TPSWelcomeNotificationViewedVersion"];
 
     v13 = +[NSUserDefaults standardUserDefaults];
     [v13 synchronize];
@@ -404,8 +404,8 @@ LABEL_8:
     xpc_activity_unregister([v4 UTF8String]);
   }
 
-  v6 = [(TPSWelcome *)self shouldShowWelcomeNotification];
-  if (v6)
+  shouldShowWelcomeNotification = [(TPSWelcome *)self shouldShowWelcomeNotification];
+  if (shouldShowWelcomeNotification)
   {
     v7 = +[TPSLogger welcome];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -417,14 +417,14 @@ LABEL_8:
 
   [v3 setObject:&off_100025EB8 forKey:@"TPSWelcomeNotificationReminderState"];
   v8 = +[TPSCommonDefines sharedInstance];
-  v9 = [v8 majorVersion];
-  [v3 setObject:v9 forKey:@"TPSWelcomeNotificationViewedVersion"];
+  majorVersion = [v8 majorVersion];
+  [v3 setObject:majorVersion forKey:@"TPSWelcomeNotificationViewedVersion"];
 
   [v3 removeObjectForKey:@"TPSWaitingToShowWelcomeNotification"];
   [v3 removeObjectForKey:@"TPSCurrentWelcomeXPCActivityIdentifier"];
   [v3 synchronize];
 
-  return v6;
+  return shouldShowWelcomeNotification;
 }
 
 - (TPSWelcomeDelegate)delegate

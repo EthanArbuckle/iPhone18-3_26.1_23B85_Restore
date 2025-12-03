@@ -1,11 +1,11 @@
 @interface CVAUserEvent
 + (id)classes;
-+ (id)withData:(id)a3;
-- (CVAUserEvent)initWithCoder:(id)a3;
-- (CVAUserEvent)initWithEventType:(unint64_t)a3 timestamp:(double)a4;
++ (id)withData:(id)data;
+- (CVAUserEvent)initWithCoder:(id)coder;
+- (CVAUserEvent)initWithEventType:(unint64_t)type timestamp:(double)timestamp;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVAUserEvent
@@ -26,11 +26,11 @@
   return v3;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVAUserEvent classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -48,7 +48,7 @@
   return v6;
 }
 
-- (CVAUserEvent)initWithEventType:(unint64_t)a3 timestamp:(double)a4
+- (CVAUserEvent)initWithEventType:(unint64_t)type timestamp:(double)timestamp
 {
   v18.receiver = self;
   v18.super_class = CVAUserEvent;
@@ -56,14 +56,14 @@
   v7 = v6;
   if (v6)
   {
-    v6->_eventType = a3;
-    v6->_timestamp = a4;
+    v6->_eventType = type;
+    v6->_timestamp = timestamp;
     peerDisplayName = v6->_peerDisplayName;
     v6->_peerDisplayName = &stru_28521B010;
 
-    v9 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v7->_uuid;
-    v7->_uuid = v9;
+    v7->_uuid = uUID;
 
     v11 = objc_opt_new();
     anchorData = v7->_anchorData;
@@ -83,39 +83,39 @@
   return v7;
 }
 
-- (CVAUserEvent)initWithCoder:(id)a3
+- (CVAUserEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CVAUserEvent;
   v5 = [(CVAUserEvent *)&v21 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_eventType = [v4 decodeIntegerForKey:@"ev"];
-    [v4 decodeDoubleForKey:@"t"];
+    v5->_eventType = [coderCopy decodeIntegerForKey:@"ev"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v7;
-    v8 = [v4 decodeObjectForKey:@"pd"];
+    v8 = [coderCopy decodeObjectForKey:@"pd"];
     peerDisplayName = v5->_peerDisplayName;
     v5->_peerDisplayName = v8;
 
-    v10 = [v4 decodeObjectForKey:@"uuid"];
+    v10 = [coderCopy decodeObjectForKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"andt"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"andt"];
     anchorData = v5->_anchorData;
     v5->_anchorData = v12;
 
-    v14 = [v4 decodeObjectForKey:@"tcta"];
+    v14 = [coderCopy decodeObjectForKey:@"tcta"];
     transformCameraToAnchor = v5->_transformCameraToAnchor;
     v5->_transformCameraToAnchor = v14;
 
-    v16 = [v4 decodeObjectForKey:@"sid"];
+    v16 = [coderCopy decodeObjectForKey:@"sid"];
     sessionID = v5->_sessionID;
     v5->_sessionID = v16;
 
-    v18 = [v4 decodeObjectForKey:@"mlt"];
+    v18 = [coderCopy decodeObjectForKey:@"mlt"];
     movLowestTimestamp = v5->_movLowestTimestamp;
     v5->_movLowestTimestamp = v18;
 
@@ -125,18 +125,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeInteger:self->_eventType forKey:@"ev"];
-  [v5 encodeDouble:@"t" forKey:self->_timestamp];
-  [v5 encodeObject:self->_peerDisplayName forKey:@"pd"];
-  [v5 encodeObject:self->_uuid forKey:@"uuid"];
-  [v5 encodeObject:self->_anchorData forKey:@"andt"];
-  [v5 encodeObject:self->_transformCameraToAnchor forKey:@"tcta"];
-  [v5 encodeObject:self->_sessionID forKey:@"sid"];
-  [v5 encodeObject:self->_movLowestTimestamp forKey:@"mlt"];
+  [coderCopy encodeInteger:self->_eventType forKey:@"ev"];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeObject:self->_peerDisplayName forKey:@"pd"];
+  [coderCopy encodeObject:self->_uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_anchorData forKey:@"andt"];
+  [coderCopy encodeObject:self->_transformCameraToAnchor forKey:@"tcta"];
+  [coderCopy encodeObject:self->_sessionID forKey:@"sid"];
+  [coderCopy encodeObject:self->_movLowestTimestamp forKey:@"mlt"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -162,15 +162,15 @@
   uuid = self->_uuid;
   if (uuid)
   {
-    v8 = [(NSUUID *)self->_uuid UUIDString];
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
   }
 
   else
   {
-    v8 = @"000000-0000-0000-0000-000000000000";
+    uUIDString = @"000000-0000-0000-0000-000000000000";
   }
 
-  v16[3] = v8;
+  v16[3] = uUIDString;
   v15[4] = @"andt";
   anchorData = self->_anchorData;
   v10 = anchorData;
@@ -209,8 +209,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVAUserEvent *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVAUserEvent *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

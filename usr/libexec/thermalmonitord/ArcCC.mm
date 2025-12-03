@@ -1,5 +1,5 @@
 @interface ArcCC
-- (ArcCC)initWithParams:(__CFDictionary *)a3 product:(id)a4;
+- (ArcCC)initWithParams:(__CFDictionary *)params product:(id)product;
 - (int)numberOfFields;
 - (void)defaultAction;
 - (void)refreshTGraphTelemetry;
@@ -7,7 +7,7 @@
 
 @implementation ArcCC
 
-- (ArcCC)initWithParams:(__CFDictionary *)a3 product:(id)a4
+- (ArcCC)initWithParams:(__CFDictionary *)params product:(id)product
 {
   v11.receiver = self;
   v11.super_class = ArcCC;
@@ -15,13 +15,13 @@
   v7 = v6;
   if (v6)
   {
-    *(v6 + 140) = a4;
+    *(v6 + 140) = product;
     *(v6 + 18) = 100;
     *(v6 + 39) = 1065353216;
     *(v6 + 40) = -1082130432;
     *(v6 + 6) = CFStringCreateWithFormat(0, 0, @"%d Arc ", 11);
     v7->super.previousValue = v7->super.currentLoadingIndex;
-    sub_100002A20(a3, @"thresholdModule", kCFNumberIntType, &v7->_product + 4);
+    sub_100002A20(params, @"thresholdModule", kCFNumberIntType, &v7->_product + 4);
     if (byte_1000AB2F8 == 1)
     {
       v8 = qword_1000AB718;
@@ -40,11 +40,11 @@
 
 - (void)defaultAction
 {
-  v3 = [*(&self->super.currentPower + 1) arcModuleTemperature];
-  self->_thresholdModuleTemperature = v3;
+  arcModuleTemperature = [*(&self->super.currentPower + 1) arcModuleTemperature];
+  self->_thresholdModuleTemperature = arcModuleTemperature;
   if (*(&self->super.currentPower + 1))
   {
-    if (v3 <= SHIDWORD(self->_product))
+    if (arcModuleTemperature <= SHIDWORD(self->_product))
     {
       v6 = *&self->_latestModuleTemperature;
       v7 = 1.0;

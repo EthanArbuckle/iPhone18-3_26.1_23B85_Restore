@@ -1,11 +1,11 @@
 @interface SURollbackOptions
 - (SURollbackOptions)init;
-- (SURollbackOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SURollbackOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPromptForConsent:(BOOL)a3;
-- (void)setPromptForPasscode:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPromptForConsent:(BOOL)consent;
+- (void)setPromptForPasscode:(BOOL)passcode;
 @end
 
 @implementation SURollbackOptions
@@ -25,47 +25,47 @@
   return result;
 }
 
-- (void)setPromptForConsent:(BOOL)a3
+- (void)setPromptForConsent:(BOOL)consent
 {
-  if (self->_promptForConsent != a3)
+  if (self->_promptForConsent != consent)
   {
-    self->_promptForConsent = a3;
+    self->_promptForConsent = consent;
   }
 }
 
-- (void)setPromptForPasscode:(BOOL)a3
+- (void)setPromptForPasscode:(BOOL)passcode
 {
-  if (self->_promptForPasscode != a3)
+  if (self->_promptForPasscode != passcode)
   {
-    self->_promptForPasscode = a3;
+    self->_promptForPasscode = passcode;
   }
 }
 
-- (SURollbackOptions)initWithCoder:(id)a3
+- (SURollbackOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SURollbackOptions;
   v5 = [(SUOptionsBase *)&v7 init];
   if (v5)
   {
-    -[SURollbackOptions setCancelActiveUpdate:](v5, "setCancelActiveUpdate:", [v4 decodeBoolForKey:@"cancelActiveUpdate"]);
-    -[SURollbackOptions setPromptForConsent:](v5, "setPromptForConsent:", [v4 decodeBoolForKey:@"promptForConsent"]);
-    -[SURollbackOptions setPromptForPasscode:](v5, "setPromptForPasscode:", [v4 decodeBoolForKey:@"promptForPasscode"]);
+    -[SURollbackOptions setCancelActiveUpdate:](v5, "setCancelActiveUpdate:", [coderCopy decodeBoolForKey:@"cancelActiveUpdate"]);
+    -[SURollbackOptions setPromptForConsent:](v5, "setPromptForConsent:", [coderCopy decodeBoolForKey:@"promptForConsent"]);
+    -[SURollbackOptions setPromptForPasscode:](v5, "setPromptForPasscode:", [coderCopy decodeBoolForKey:@"promptForPasscode"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[SURollbackOptions cancelActiveUpdate](self forKey:{"cancelActiveUpdate"), @"cancelActiveUpdate"}];
-  [v4 encodeBool:-[SURollbackOptions promptForConsent](self forKey:{"promptForConsent"), @"promptForConsent"}];
-  [v4 encodeBool:-[SURollbackOptions promptForPasscode](self forKey:{"promptForPasscode"), @"promptForPasscode"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SURollbackOptions cancelActiveUpdate](self forKey:{"cancelActiveUpdate"), @"cancelActiveUpdate"}];
+  [coderCopy encodeBool:-[SURollbackOptions promptForConsent](self forKey:{"promptForConsent"), @"promptForConsent"}];
+  [coderCopy encodeBool:-[SURollbackOptions promptForPasscode](self forKey:{"promptForPasscode"), @"promptForPasscode"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setCancelActiveUpdate:{-[SURollbackOptions cancelActiveUpdate](self, "cancelActiveUpdate")}];

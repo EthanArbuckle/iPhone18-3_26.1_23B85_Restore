@@ -1,6 +1,6 @@
 @interface FPDTapToRadarManager
 - (FPDTapToRadarManager)init;
-- (void)requestTapToRadarWithTitle:(id)a3 description:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(int64_t)a7 keywords:(id)a8 attachments:(id)a9 displayReason:(id)a10 providerID:(id)a11 skipSysdiagnose:(BOOL)a12;
+- (void)requestTapToRadarWithTitle:(id)title description:(id)description componentName:(id)name componentVersion:(id)version componentID:(int64_t)d keywords:(id)keywords attachments:(id)attachments displayReason:(id)self0 providerID:(id)self1 skipSysdiagnose:(BOOL)self2;
 @end
 
 @implementation FPDTapToRadarManager
@@ -21,16 +21,16 @@
   return v2;
 }
 
-- (void)requestTapToRadarWithTitle:(id)a3 description:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(int64_t)a7 keywords:(id)a8 attachments:(id)a9 displayReason:(id)a10 providerID:(id)a11 skipSysdiagnose:(BOOL)a12
+- (void)requestTapToRadarWithTitle:(id)title description:(id)description componentName:(id)name componentVersion:(id)version componentID:(int64_t)d keywords:(id)keywords attachments:(id)attachments displayReason:(id)self0 providerID:(id)self1 skipSysdiagnose:(BOOL)self2
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
+  titleCopy = title;
+  descriptionCopy = description;
+  nameCopy = name;
+  versionCopy = version;
+  keywordsCopy = keywords;
+  attachmentsCopy = attachments;
+  reasonCopy = reason;
+  iDCopy = iD;
   if (os_variant_has_internal_content())
   {
     executionQueue = self->_executionQueue;
@@ -38,16 +38,16 @@
     block[1] = 3221225472;
     block[2] = __168__FPDTapToRadarManager_requestTapToRadarWithTitle_description_componentName_componentVersion_componentID_keywords_attachments_displayReason_providerID_skipSysdiagnose___block_invoke;
     block[3] = &unk_1E83C0D00;
-    v36 = v25;
-    v45 = a12;
-    v37 = v18;
-    v38 = v19;
-    v39 = v20;
-    v40 = v21;
-    v44 = a7;
-    v41 = v22;
-    v42 = v23;
-    v43 = v24;
+    v36 = iDCopy;
+    sysdiagnoseCopy = sysdiagnose;
+    v37 = titleCopy;
+    v38 = descriptionCopy;
+    v39 = nameCopy;
+    v40 = versionCopy;
+    dCopy = d;
+    v41 = keywordsCopy;
+    v42 = attachmentsCopy;
+    v43 = reasonCopy;
     dispatch_async(executionQueue, block);
 
     v27 = v36;

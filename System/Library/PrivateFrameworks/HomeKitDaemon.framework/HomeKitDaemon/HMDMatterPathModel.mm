@@ -1,6 +1,6 @@
 @interface HMDMatterPathModel
 + (id)properties;
-- (void)cd_populateParentRelationshipInContext:(id)a3 error:(id *)a4;
+- (void)cd_populateParentRelationshipInContext:(id)context error:(id *)error;
 @end
 
 @implementation HMDMatterPathModel
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __32__HMDMatterPathModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_160326 != -1)
   {
     dispatch_once(&properties_onceToken_160326, block);
@@ -55,22 +55,22 @@ void __32__HMDMatterPathModel_properties__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cd_populateParentRelationshipInContext:(id)a3 error:(id *)a4
+- (void)cd_populateParentRelationshipInContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = +[HMDCoreData featuresDataSource];
-  v8 = [v7 isRVCEnabled];
+  isRVCEnabled = [v7 isRVCEnabled];
 
-  if (v8)
+  if (isRVCEnabled)
   {
     v13.receiver = self;
     v13.super_class = HMDMatterPathModel;
-    v9 = [(HMDBackingStoreModelObject *)&v13 cd_fetchParentForManagedObjectUsingParentReferenceName:@"accessory" error:a4];
-    if (v9 || (v12.receiver = self, v12.super_class = HMDMatterPathModel, [(HMDBackingStoreModelObject *)&v12 cd_fetchParentForManagedObjectUsingParentReferenceName:@"accessory" error:a4], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    v9 = [(HMDBackingStoreModelObject *)&v13 cd_fetchParentForManagedObjectUsingParentReferenceName:@"accessory" error:error];
+    if (v9 || (v12.receiver = self, v12.super_class = HMDMatterPathModel, [(HMDBackingStoreModelObject *)&v12 cd_fetchParentForManagedObjectUsingParentReferenceName:@"accessory" error:error], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v10 = v9;
-      v11 = [(HMDBackingStoreModelObject *)self managedObject];
-      [v11 setValue:v10 forKey:@"accessory"];
+      managedObject = [(HMDBackingStoreModelObject *)self managedObject];
+      [managedObject setValue:v10 forKey:@"accessory"];
     }
   }
 
@@ -78,7 +78,7 @@ void __32__HMDMatterPathModel_properties__block_invoke(uint64_t a1)
   {
     v14.receiver = self;
     v14.super_class = HMDMatterPathModel;
-    [(HMDBackingStoreModelObject *)&v14 cd_populateParentRelationshipInContext:v6 error:a4];
+    [(HMDBackingStoreModelObject *)&v14 cd_populateParentRelationshipInContext:contextCopy error:error];
   }
 }
 

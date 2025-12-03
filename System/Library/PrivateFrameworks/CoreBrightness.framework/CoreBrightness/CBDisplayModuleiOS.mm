@@ -1,38 +1,38 @@
 @interface CBDisplayModuleiOS
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3;
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client;
 - (BOOL)edrIsEngaged;
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4;
-- (BOOL)luxHasCrossedBDMThreshold:(float)a3;
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from;
+- (BOOL)luxHasCrossedBDMThreshold:(float)threshold;
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client;
+- (BOOL)setProperty:(id)property forKey:(id)key;
 - (BOOL)shouldForceCapRamp;
-- (CBDisplayModuleiOS)initWithBacklight:(unsigned int)a3 andContext:(id)a4;
-- (CBDisplayModuleiOS)initWithBacklight:(unsigned int)a3 queue:(id)a4 display:(id)a5;
-- (const)edrStateToString:(unint64_t)a3;
-- (const)rtplcStateToString:(unint64_t)a3;
+- (CBDisplayModuleiOS)initWithBacklight:(unsigned int)backlight andContext:(id)context;
+- (CBDisplayModuleiOS)initWithBacklight:(unsigned int)backlight queue:(id)queue display:(id)display;
+- (const)edrStateToString:(unint64_t)string;
+- (const)rtplcStateToString:(unint64_t)string;
 - (float)appliedCompensation;
 - (float)compensatedSDRNits;
-- (float)computeTargetHDRBrightnessForAPCE:(float)a3 andScale:(float)a4;
+- (float)computeTargetHDRBrightnessForAPCE:(float)e andScale:(float)scale;
 - (id)copyIdentifiers;
-- (id)copyPropertyInternalForKey:(id)a3;
+- (id)copyPropertyInternalForKey:(id)key;
 - (void)apceTimerCallback;
-- (void)createAPCEMonitorWithFrequency:(float)a3;
+- (void)createAPCEMonitorWithFrequency:(float)frequency;
 - (void)dealloc;
 - (void)deleteAPCEMonitor;
 - (void)handleAttachedNotification;
-- (void)handleDisplayBrightnessUpdate:(id)a3;
-- (void)handleEDRHeadroomRequest:(id)a3;
-- (void)handleFrameInfo:(id *)a3;
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4;
+- (void)handleDisplayBrightnessUpdate:(id)update;
+- (void)handleEDRHeadroomRequest:(id)request;
+- (void)handleFrameInfo:(id *)info;
+- (void)handleNotificationForKey:(id)key withProperty:(id)property;
 - (void)initialiseAurora;
 - (void)initialiseEDR;
 - (void)initialiseSDR;
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4;
+- (void)sendNotificationForKey:(id)key withValue:(id)value;
 - (void)stop;
-- (void)updateEDRStateForEvent:(unint64_t)a3 andHeadroom:(float)a4;
-- (void)updatePanelLimit:(id)a3;
-- (void)updatePresetState:(BOOL)a3;
-- (void)updateSDRLimits:(id)a3;
+- (void)updateEDRStateForEvent:(unint64_t)event andHeadroom:(float)headroom;
+- (void)updatePanelLimit:(id)limit;
+- (void)updatePresetState:(BOOL)state;
+- (void)updateSDRLimits:(id)limits;
 @end
 
 @implementation CBDisplayModuleiOS
@@ -118,15 +118,15 @@
   return v3;
 }
 
-- (CBDisplayModuleiOS)initWithBacklight:(unsigned int)a3 queue:(id)a4 display:(id)a5
+- (CBDisplayModuleiOS)initWithBacklight:(unsigned int)backlight queue:(id)queue display:(id)display
 {
   v61 = *MEMORY[0x1E69E9840];
-  v58 = self;
+  selfCopy = self;
   v57 = a2;
-  v56 = a3;
-  v55 = a4;
-  v54 = a5;
-  if (!a4 || !v56)
+  backlightCopy = backlight;
+  queueCopy = queue;
+  displayCopy = display;
+  if (!queue || !backlightCopy)
   {
     if (_COREBRIGHTNESS_LOG_DEFAULT)
     {
@@ -149,38 +149,38 @@
     }
 
 LABEL_60:
-    MEMORY[0x1E69E5920](v58);
-    v58 = 0;
+    MEMORY[0x1E69E5920](selfCopy);
+    selfCopy = 0;
     v59 = 0;
     goto LABEL_61;
   }
 
-  v50.receiver = v58;
+  v50.receiver = selfCopy;
   v50.super_class = CBDisplayModuleiOS;
-  v58 = [(CBModule *)&v50 initWithQueue:v55];
-  if (v58)
+  selfCopy = [(CBModule *)&v50 initWithQueue:queueCopy];
+  if (selfCopy)
   {
-    *(v58 + 305) = 0;
-    *(v58 + 304) = 0;
-    *(v58 + 184) = 1;
-    *(v58 + 202) = 0;
-    *(v58 + 201) = 0;
-    *(v58 + 38) = 1067114824;
-    if (v54)
+    *(selfCopy + 305) = 0;
+    *(selfCopy + 304) = 0;
+    *(selfCopy + 184) = 1;
+    *(selfCopy + 202) = 0;
+    *(selfCopy + 201) = 0;
+    *(selfCopy + 38) = 1067114824;
+    if (displayCopy)
     {
       v31 = objc_autoreleasePoolPush();
-      v5 = os_log_create("com.apple.CoreBrightness.ARMDisplay", [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v54, "displayId")), "UTF8String"]);
-      *(v58 + 2) = v5;
+      v5 = os_log_create("com.apple.CoreBrightness.ARMDisplay", [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(displayCopy, "displayId")), "UTF8String"]);
+      *(selfCopy + 2) = v5;
       objc_autoreleasePoolPop(v31);
     }
 
     else
     {
       v6 = os_log_create("com.apple.CoreBrightness.ARMDisplay", "default");
-      *(v58 + 2) = v6;
+      *(selfCopy + 2) = v6;
     }
 
-    if (!*(v58 + 2))
+    if (!*(selfCopy + 2))
     {
       v30 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
       v49 = v30;
@@ -194,11 +194,11 @@ LABEL_60:
       }
     }
 
-    if (v54)
+    if (displayCopy)
     {
-      if (*(v58 + 2))
+      if (*(selfCopy + 2))
       {
-        v27 = *(v58 + 2);
+        v27 = *(selfCopy + 2);
       }
 
       else
@@ -220,19 +220,19 @@ LABEL_60:
       v45 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_0_1_4_0(v60, [v54 displayId]);
+        __os_log_helper_16_0_1_4_0(v60, [displayCopy displayId]);
         _os_log_impl(&dword_1DE8E5000, v46, v45, "create display with display ID (%u)", v60, 8u);
       }
 
-      v7 = DisplayCreateWithID(*MEMORY[0x1E695E480], v56, 0, [v54 displayId]);
-      *(v58 + 41) = v7;
+      v7 = DisplayCreateWithID(*MEMORY[0x1E695E480], backlightCopy, 0, [displayCopy displayId]);
+      *(selfCopy + 41) = v7;
     }
 
     else
     {
-      if (*(v58 + 2))
+      if (*(selfCopy + 2))
       {
-        v25 = *(v58 + 2);
+        v25 = *(selfCopy + 2);
       }
 
       else
@@ -260,15 +260,15 @@ LABEL_60:
         _os_log_impl(&dword_1DE8E5000, v22, v23, "create display without display ID", v42, 2u);
       }
 
-      v8 = DisplayCreate(*MEMORY[0x1E695E480], v56, 0);
-      *(v58 + 41) = v8;
+      v8 = DisplayCreate(*MEMORY[0x1E695E480], backlightCopy, 0);
+      *(selfCopy + 41) = v8;
     }
 
-    if (!*(v58 + 41))
+    if (!*(selfCopy + 41))
     {
-      if (*(v58 + 2))
+      if (*(selfCopy + 2))
       {
-        v21 = *(v58 + 2);
+        v21 = *(selfCopy + 2);
       }
 
       else
@@ -299,11 +299,11 @@ LABEL_60:
       goto LABEL_60;
     }
 
-    if (!DisplayOpen(*(v58 + 41), DisplayRefPropertyChangedCallback, v58))
+    if (!DisplayOpen(*(selfCopy + 41), DisplayRefPropertyChangedCallback, selfCopy))
     {
-      if (*(v58 + 2))
+      if (*(selfCopy + 2))
       {
-        v17 = *(v58 + 2);
+        v17 = *(selfCopy + 2);
       }
 
       else
@@ -334,32 +334,32 @@ LABEL_60:
       goto LABEL_60;
     }
 
-    DisplaySetProperty(*(v58 + 41), @"DisplayBrightnessAuto", *MEMORY[0x1E695E4C0]);
-    *(v58 + 5) = 0;
+    DisplaySetProperty(*(selfCopy + 41), @"DisplayBrightnessAuto", *MEMORY[0x1E695E4C0]);
+    *(selfCopy + 5) = 0;
     v9 = [CBDisplayClockSourceAdapter alloc];
-    v35 = [(CBDisplayClockSourceAdapter *)v9 initWithDisplayRef:*(v58 + 41)];
+    v35 = [(CBDisplayClockSourceAdapter *)v9 initWithDisplayRef:*(selfCopy + 41)];
     v10 = [[CBRampManager alloc] initWithClockSource:v35];
-    *(v58 + 35) = v10;
+    *(selfCopy + 35) = v10;
     v11 = [CBAppliedCompensations alloc];
-    v12 = [(CBAppliedCompensations *)v11 initWithRampManager:*(v58 + 35) maxHarmony:1.29999995 maxBLR:1.79999995];
-    *(v58 + 24) = v12;
+    v12 = [(CBAppliedCompensations *)v11 initWithRampManager:*(selfCopy + 35) maxHarmony:1.29999995 maxBLR:1.79999995];
+    *(selfCopy + 24) = v12;
     MEMORY[0x1E69E5920](v35);
   }
 
-  v59 = v58;
+  v59 = selfCopy;
 LABEL_61:
   *MEMORY[0x1E69E9840];
   return v59;
 }
 
-- (CBDisplayModuleiOS)initWithBacklight:(unsigned int)a3 andContext:(id)a4
+- (CBDisplayModuleiOS)initWithBacklight:(unsigned int)backlight andContext:(id)context
 {
   v115 = *MEMORY[0x1E69E9840];
-  v112 = self;
+  selfCopy = self;
   v111 = a2;
-  v110 = a3;
-  v109 = a4;
-  if (![a4 displayQueue] || !v110)
+  backlightCopy = backlight;
+  contextCopy = context;
+  if (![context displayQueue] || !backlightCopy)
   {
     if (_COREBRIGHTNESS_LOG_DEFAULT)
     {
@@ -382,43 +382,43 @@ LABEL_61:
     }
 
 LABEL_67:
-    MEMORY[0x1E69E5920](*(v112 + 17));
-    MEMORY[0x1E69E5920](*(v112 + 5));
-    MEMORY[0x1E69E5920](*(v112 + 6));
-    MEMORY[0x1E69E5920](*(v112 + 7));
-    MEMORY[0x1E69E5920](*(v112 + 8));
-    MEMORY[0x1E69E5920](*(v112 + 9));
-    MEMORY[0x1E69E5920](*(v112 + 10));
-    MEMORY[0x1E69E5920](*(v112 + 11));
-    MEMORY[0x1E69E5920](v112);
-    v112 = 0;
+    MEMORY[0x1E69E5920](*(selfCopy + 17));
+    MEMORY[0x1E69E5920](*(selfCopy + 5));
+    MEMORY[0x1E69E5920](*(selfCopy + 6));
+    MEMORY[0x1E69E5920](*(selfCopy + 7));
+    MEMORY[0x1E69E5920](*(selfCopy + 8));
+    MEMORY[0x1E69E5920](*(selfCopy + 9));
+    MEMORY[0x1E69E5920](*(selfCopy + 10));
+    MEMORY[0x1E69E5920](*(selfCopy + 11));
+    MEMORY[0x1E69E5920](selfCopy);
+    selfCopy = 0;
     v113 = 0;
     goto LABEL_68;
   }
 
-  v105.receiver = v112;
+  v105.receiver = selfCopy;
   v105.super_class = CBDisplayModuleiOS;
-  v112 = -[CBModule initWithQueue:](&v105, sel_initWithQueue_, [v109 displayQueue]);
-  if (v112)
+  selfCopy = -[CBModule initWithQueue:](&v105, sel_initWithQueue_, [contextCopy displayQueue]);
+  if (selfCopy)
   {
-    *(v112 + 305) = 0;
-    *(v112 + 304) = 0;
-    *(v112 + 184) = 1;
-    *(v112 + 38) = 1067114824;
-    *(v112 + 202) = 0;
-    *(v112 + 201) = 0;
-    v4 = [v109 brtCtl];
-    v5 = MEMORY[0x1E69E5928](v4);
-    *(v112 + 5) = v5;
-    *(v112 + 31) = 0;
+    *(selfCopy + 305) = 0;
+    *(selfCopy + 304) = 0;
+    *(selfCopy + 184) = 1;
+    *(selfCopy + 38) = 1067114824;
+    *(selfCopy + 202) = 0;
+    *(selfCopy + 201) = 0;
+    brtCtl = [contextCopy brtCtl];
+    v5 = MEMORY[0x1E69E5928](brtCtl);
+    *(selfCopy + 5) = v5;
+    *(selfCopy + 31) = 0;
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    *(v112 + 32) = v6;
+    *(selfCopy + 32) = v6;
     v56 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v55 = [objc_msgSend(v112 "className")];
-    v104 = [v56 initWithFormat:@"%s.%s.%u", "com.apple.CoreBrightness", v55, objc_msgSend(*(v112 + 5), "getDisplayId")];
+    v55 = [objc_msgSend(selfCopy "className")];
+    v104 = [v56 initWithFormat:@"%s.%s.%u", "com.apple.CoreBrightness", v55, objc_msgSend(*(selfCopy + 5), "getDisplayId")];
     v7 = os_log_create([v104 cStringUsingEncoding:1], "default");
-    *(v112 + 2) = v7;
-    if (!*(v112 + 2))
+    *(selfCopy + 2) = v7;
+    if (!*(selfCopy + 2))
     {
       v54 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
       v103 = v54;
@@ -433,13 +433,13 @@ LABEL_67:
     }
 
     MEMORY[0x1E69E5920](v104);
-    v8 = DisplayCreate(*MEMORY[0x1E695E480], v110, 0);
-    *(v112 + 41) = v8;
-    if (!*(v112 + 41))
+    v8 = DisplayCreate(*MEMORY[0x1E695E480], backlightCopy, 0);
+    *(selfCopy + 41) = v8;
+    if (!*(selfCopy + 41))
     {
-      if (*(v112 + 2))
+      if (*(selfCopy + 2))
       {
-        v51 = *(v112 + 2);
+        v51 = *(selfCopy + 2);
       }
 
       else
@@ -470,22 +470,22 @@ LABEL_67:
       goto LABEL_67;
     }
 
-    v9 = [v109 configuration];
-    *(v112 + 42) = v9;
-    *(v112 + 33) = 0;
-    v47 = [MEMORY[0x1E6979550] serverIfRunning];
-    v97 = [v47 displayWithDisplayId:{objc_msgSend(*(v112 + 5), "getDisplayId")}];
+    configuration = [contextCopy configuration];
+    *(selfCopy + 42) = configuration;
+    *(selfCopy + 33) = 0;
+    serverIfRunning = [MEMORY[0x1E6979550] serverIfRunning];
+    v97 = [serverIfRunning displayWithDisplayId:{objc_msgSend(*(selfCopy + 5), "getDisplayId")}];
     if (v97)
     {
       v10 = [[CBFrameInfoProvider alloc] initWithDisplayServer:v97];
-      *(v112 + 33) = v10;
+      *(selfCopy + 33) = v10;
     }
 
     else
     {
-      if (*(v112 + 2))
+      if (*(selfCopy + 2))
       {
-        v46 = *(v112 + 2);
+        v46 = *(selfCopy + 2);
       }
 
       else
@@ -507,76 +507,76 @@ LABEL_67:
       v95 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_0_1_4_0(v114, [*(v112 + 5) getDisplayId]);
+        __os_log_helper_16_0_1_4_0(v114, [*(selfCopy + 5) getDisplayId]);
         _os_log_error_impl(&dword_1DE8E5000, v96, v95, "Failed to find WindowServer display #%d, frame information will not work", v114, 8u);
       }
     }
 
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    *(v112 + 11) = v11;
+    *(selfCopy + 11) = v11;
     v12 = [CBDisplayClockSourceAdapter alloc];
-    v94 = [(CBDisplayClockSourceAdapter *)v12 initWithDisplayRef:*(v112 + 41)];
+    v94 = [(CBDisplayClockSourceAdapter *)v12 initWithDisplayRef:*(selfCopy + 41)];
     v13 = [[CBRampManager alloc] initWithClockSource:v94];
-    *(v112 + 35) = v13;
-    [*(v112 + 35) activate];
+    *(selfCopy + 35) = v13;
+    [*(selfCopy + 35) activate];
     MEMORY[0x1E69E5920](v94);
     v14 = [CBAppliedCompensations alloc];
-    v15 = [(CBAppliedCompensations *)v14 initWithRampManager:*(v112 + 35) maxHarmony:1.29999995 maxBLR:1.79999995];
-    *(v112 + 24) = v15;
-    v16 = [v109 twilight];
-    v17 = MEMORY[0x1E69E5928](v16);
-    *(v112 + 7) = v17;
-    if (*(v112 + 7))
+    v15 = [(CBAppliedCompensations *)v14 initWithRampManager:*(selfCopy + 35) maxHarmony:1.29999995 maxBLR:1.79999995];
+    *(selfCopy + 24) = v15;
+    twilight = [contextCopy twilight];
+    v17 = MEMORY[0x1E69E5928](twilight);
+    *(selfCopy + 7) = v17;
+    if (*(selfCopy + 7))
     {
-      v18 = *(v112 + 7);
+      v18 = *(selfCopy + 7);
       v88 = MEMORY[0x1E69E9820];
       v89 = -1073741824;
       v90 = 0;
       v91 = __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke;
       v92 = &unk_1E867B558;
-      v93 = v112;
+      v93 = selfCopy;
       [v18 registerNotificationBlock:?];
-      [*(v112 + 11) addObject:*(v112 + 7)];
+      [*(selfCopy + 11) addObject:*(selfCopy + 7)];
     }
 
-    v19 = [v109 ammolite];
-    v20 = MEMORY[0x1E69E5928](v19);
-    *(v112 + 8) = v20;
-    if (*(v112 + 8))
+    ammolite = [contextCopy ammolite];
+    v20 = MEMORY[0x1E69E5928](ammolite);
+    *(selfCopy + 8) = v20;
+    if (*(selfCopy + 8))
     {
-      v21 = *(v112 + 8);
+      v21 = *(selfCopy + 8);
       v82 = MEMORY[0x1E69E9820];
       v83 = -1073741824;
       v84 = 0;
       v85 = __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_2;
       v86 = &unk_1E867B558;
-      v87 = v112;
+      v87 = selfCopy;
       [v21 registerNotificationBlock:?];
-      [*(v112 + 11) addObject:*(v112 + 8)];
+      [*(selfCopy + 11) addObject:*(selfCopy + 8)];
     }
 
-    v22 = [v109 gcp];
+    v22 = [contextCopy gcp];
     v23 = MEMORY[0x1E69E5928](v22);
-    *(v112 + 9) = v23;
-    if (*(v112 + 9))
+    *(selfCopy + 9) = v23;
+    if (*(selfCopy + 9))
     {
-      v24 = *(v112 + 9);
+      v24 = *(selfCopy + 9);
       v76 = MEMORY[0x1E69E9820];
       v77 = -1073741824;
       v78 = 0;
       v79 = __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_3;
       v80 = &unk_1E867B558;
-      v81 = v112;
+      v81 = selfCopy;
       [v24 registerNotificationBlock:?];
-      [*(v112 + 11) addObject:*(v112 + 9)];
-      [*(v112 + 9) setRampManager:*(v112 + 35)];
+      [*(selfCopy + 11) addObject:*(selfCopy + 9)];
+      [*(selfCopy + 9) setRampManager:*(selfCopy + 35)];
     }
 
-    [v112 initialiseSDR];
-    [v112 initialiseEDR];
-    [v112 initialiseAurora];
-    v75 = *(v112 + 24);
-    v74 = DisplayCopyProperty(*(v112 + 41), @"DisplayPanelLuminanceMin");
+    [selfCopy initialiseSDR];
+    [selfCopy initialiseEDR];
+    [selfCopy initialiseAurora];
+    v75 = *(selfCopy + 24);
+    v74 = DisplayCopyProperty(*(selfCopy + 41), @"DisplayPanelLuminanceMin");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -586,9 +586,9 @@ LABEL_67:
 
     else
     {
-      if (*(v112 + 2))
+      if (*(selfCopy + 2))
       {
-        v44 = *(v112 + 2);
+        v44 = *(selfCopy + 2);
       }
 
       else
@@ -618,31 +618,31 @@ LABEL_67:
     }
 
     v70 = v75;
-    v69 = *(v112 + 28);
+    v69 = *(selfCopy + 28);
     v26 = [CBIndicatorBrightnessModule alloc];
     LODWORD(v27) = v70;
     LODWORD(v28) = v69;
-    LODWORD(v29) = *(v112 + 27);
-    v30 = [(CBIndicatorBrightnessModule *)v26 initWithQueue:*(v112 + 3) min:*(v112 + 33) max:v27 contrastBoostMax:v28 andFrameInfoProvider:v29];
-    *(v112 + 10) = v30;
-    if (*(v112 + 10))
+    LODWORD(v29) = *(selfCopy + 27);
+    v30 = [(CBIndicatorBrightnessModule *)v26 initWithQueue:*(selfCopy + 3) min:*(selfCopy + 33) max:v27 contrastBoostMax:v28 andFrameInfoProvider:v29];
+    *(selfCopy + 10) = v30;
+    if (*(selfCopy + 10))
     {
-      v31 = *(v112 + 10);
+      v31 = *(selfCopy + 10);
       v63 = MEMORY[0x1E69E9820];
       v64 = -1073741824;
       v65 = 0;
       v66 = __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_26;
       v67 = &unk_1E867B558;
-      v68 = v112;
+      v68 = selfCopy;
       [v31 registerNotificationBlock:?];
-      [*(v112 + 11) addObject:*(v112 + 10)];
+      [*(selfCopy + 11) addObject:*(selfCopy + 10)];
     }
 
-    if (!DisplayOpen(*(v112 + 41), DisplayRefPropertyChangedCallback, v112))
+    if (!DisplayOpen(*(selfCopy + 41), DisplayRefPropertyChangedCallback, selfCopy))
     {
-      if (*(v112 + 2))
+      if (*(selfCopy + 2))
       {
-        v40 = *(v112 + 2);
+        v40 = *(selfCopy + 2);
       }
 
       else
@@ -673,20 +673,20 @@ LABEL_67:
       goto LABEL_67;
     }
 
-    DisplaySetProperty(*(v112 + 41), @"DisplayBrightnessAuto", *MEMORY[0x1E695E4C0]);
-    DisplaySetProperty(*(v112 + 41), @"DisplaySyncBrightnessTransactions", *MEMORY[0x1E695E4D0]);
+    DisplaySetProperty(*(selfCopy + 41), @"DisplayBrightnessAuto", *MEMORY[0x1E695E4C0]);
+    DisplaySetProperty(*(selfCopy + 41), @"DisplaySyncBrightnessTransactions", *MEMORY[0x1E695E4D0]);
     v32 = objc_alloc_init(AABCHistograms);
-    *(v112 + 39) = v32;
-    [*(v112 + 39) setFirstBrightnessUpdate:1];
-    [*(v112 + 39) setAutoBrightnessOn:0];
-    v36 = [*(v112 + 5) getDisplayType];
-    v33 = v36 == [*(v112 + 5) CBDispTypeIntegrated];
-    [*(v112 + 39) setBuiltInDisplay:v33];
+    *(selfCopy + 39) = v32;
+    [*(selfCopy + 39) setFirstBrightnessUpdate:1];
+    [*(selfCopy + 39) setAutoBrightnessOn:0];
+    getDisplayType = [*(selfCopy + 5) getDisplayType];
+    v33 = getDisplayType == [*(selfCopy + 5) CBDispTypeIntegrated];
+    [*(selfCopy + 39) setBuiltInDisplay:v33];
     v34 = [+[CBAnalyticsScheduler sharedInstance](CBAnalyticsScheduler registerHandler:"registerHandler:"];
-    *(v112 + 40) = v34;
+    *(selfCopy + 40) = v34;
   }
 
-  v113 = v112;
+  v113 = selfCopy;
 LABEL_68:
   *MEMORY[0x1E69E9840];
   return v113;
@@ -706,13 +706,13 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
   dispatch_async(v2, &block);
 }
 
-- (void)updateSDRLimits:(id)a3
+- (void)updateSDRLimits:(id)limits
 {
-  if (a3)
+  if (limits)
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"MinNits", "floatValue"}];
+    [objc_msgSend(limits objectForKeyedSubscript:{@"MinNits", "floatValue"}];
     self->_minNits = v3;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxNits", "floatValue"}];
+    [objc_msgSend(limits objectForKeyedSubscript:{@"MaxNits", "floatValue"}];
     self->_maxNits = v4;
   }
 
@@ -724,11 +724,11 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
   }
 }
 
-- (void)updatePanelLimit:(id)a3
+- (void)updatePanelLimit:(id)limit
 {
-  if (a3)
+  if (limit)
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxNitsPanel", "floatValue"}];
+    [objc_msgSend(limit objectForKeyedSubscript:{@"MaxNitsPanel", "floatValue"}];
     self->_maxNitsPanel = v3;
   }
 
@@ -741,9 +741,9 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 - (void)initialiseSDR
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = [(CBBrightnessProxy *)self->_brtCtl getBrightnessCapabilities];
-  [(CBDisplayModuleiOS *)self updateSDRLimits:v4];
-  [(CBDisplayModuleiOS *)self updatePanelLimit:v4];
+  getBrightnessCapabilities = [(CBBrightnessProxy *)self->_brtCtl getBrightnessCapabilities];
+  [(CBDisplayModuleiOS *)self updateSDRLimits:getBrightnessCapabilities];
+  [(CBDisplayModuleiOS *)self updatePanelLimit:getBrightnessCapabilities];
   self->_nitsSDR = self->_minNits;
   if (self->super.super._logHandle)
   {
@@ -777,70 +777,70 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 - (void)initialiseEDR
 {
   v45 = *MEMORY[0x1E69E9840];
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
-  v41 = [(CBBrightnessProxy *)self->_brtCtl getBrightnessCapabilities];
+  getBrightnessCapabilities = [(CBBrightnessProxy *)self->_brtCtl getBrightnessCapabilities];
   v40 = 0.0;
   v39 = 0.0;
   v38 = 0.5;
   v37 = 0.75;
-  if (v41)
+  if (getBrightnessCapabilities)
   {
-    [-[NSDictionary objectForKeyedSubscript:](v41 objectForKeyedSubscript:{@"EDRPotentialHeadroom", "floatValue"}];
+    [-[NSDictionary objectForKeyedSubscript:](getBrightnessCapabilities objectForKeyedSubscript:{@"EDRPotentialHeadroom", "floatValue"}];
     v40 = v2;
     v39 = v2;
-    if ([(NSDictionary *)v41 objectForKeyedSubscript:@"EDRReferenceHeadroom"])
+    if ([(NSDictionary *)getBrightnessCapabilities objectForKeyedSubscript:@"EDRReferenceHeadroom"])
     {
-      [-[NSDictionary objectForKeyedSubscript:](v41 objectForKeyedSubscript:{@"EDRReferenceHeadroom", "floatValue"}];
+      [-[NSDictionary objectForKeyedSubscript:](getBrightnessCapabilities objectForKeyedSubscript:{@"EDRReferenceHeadroom", "floatValue"}];
       v39 = v3;
     }
 
-    if ([(NSDictionary *)v41 objectForKeyedSubscript:@"EDRSecondsPerStopDefault"])
+    if ([(NSDictionary *)getBrightnessCapabilities objectForKeyedSubscript:@"EDRSecondsPerStopDefault"])
     {
-      [-[NSDictionary objectForKeyedSubscript:](v41 objectForKeyedSubscript:{@"EDRSecondsPerStopDefault", "floatValue"}];
+      [-[NSDictionary objectForKeyedSubscript:](getBrightnessCapabilities objectForKeyedSubscript:{@"EDRSecondsPerStopDefault", "floatValue"}];
       v38 = v4;
     }
 
-    if ([(NSDictionary *)v41 objectForKeyedSubscript:@"EDRExitSecondsPerStop"])
+    if ([(NSDictionary *)getBrightnessCapabilities objectForKeyedSubscript:@"EDRExitSecondsPerStop"])
     {
-      [-[NSDictionary objectForKeyedSubscript:](v41 objectForKeyedSubscript:{@"EDRExitSecondsPerStop", "floatValue"}];
+      [-[NSDictionary objectForKeyedSubscript:](getBrightnessCapabilities objectForKeyedSubscript:{@"EDRExitSecondsPerStop", "floatValue"}];
       v37 = v5;
     }
 
-    [-[NSDictionary objectForKeyedSubscript:](v41 objectForKeyedSubscript:{@"MaxNitsEDR", "floatValue"}];
-    v43->_maxNitsEDR = v6;
+    [-[NSDictionary objectForKeyedSubscript:](getBrightnessCapabilities objectForKeyedSubscript:{@"MaxNitsEDR", "floatValue"}];
+    selfCopy->_maxNitsEDR = v6;
   }
 
   else
   {
     v40 = 16.0;
     v39 = 10.0;
-    v43->_maxNitsEDR = 1600.0;
+    selfCopy->_maxNitsEDR = 1600.0;
   }
 
-  v43->_capToCAIsRamping = 0;
-  v43->_currentCapToCA = v43->_maxNitsEDR;
-  v43->_edrState = 0;
-  v43->_appliedHeadroom = 1.0;
-  v43->_requestedHeadroom = 1.0;
-  v43->_trustedLux = 300.0;
-  v43->_lastEDRHeadroomRequestFromCA = 0;
-  v43->_lastBDMLux = 300.0;
-  v43->_bdmLux2 = 0.0;
-  v43->_bdmLux1 = 0.0;
-  v43->_displayRequiresBDM = DisplayRequiresBDM(v43->_displayInternal);
-  if (v43->_displayRequiresBDM)
+  selfCopy->_capToCAIsRamping = 0;
+  selfCopy->_currentCapToCA = selfCopy->_maxNitsEDR;
+  selfCopy->_edrState = 0;
+  selfCopy->_appliedHeadroom = 1.0;
+  selfCopy->_requestedHeadroom = 1.0;
+  selfCopy->_trustedLux = 300.0;
+  selfCopy->_lastEDRHeadroomRequestFromCA = 0;
+  selfCopy->_lastBDMLux = 300.0;
+  selfCopy->_bdmLux2 = 0.0;
+  selfCopy->_bdmLux1 = 0.0;
+  selfCopy->_displayRequiresBDM = DisplayRequiresBDM(selfCopy->_displayInternal);
+  if (selfCopy->_displayRequiresBDM)
   {
-    v36 = DisplayCopyProperty(v43->_displayInternal, @"BrightDotsMitigationParameters");
+    v36 = DisplayCopyProperty(selfCopy->_displayInternal, @"BrightDotsMitigationParameters");
     if (v36)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         [objc_msgSend(v36 objectForKey:{@"brightDotsMitigationLux1", "floatValue"}];
-        v43->_bdmLux1 = v7;
+        selfCopy->_bdmLux1 = v7;
         [objc_msgSend(v36 objectForKey:{@"brightDotsMitigationLux2", "floatValue"}];
-        v43->_bdmLux2 = v8;
+        selfCopy->_bdmLux2 = v8;
       }
 
       MEMORY[0x1E69E5920](v36);
@@ -850,23 +850,23 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
   v9 = [CBEDR alloc];
   *&v10 = v40;
   *&v11 = v39;
-  v43->_edr = [(CBEDR *)v9 initWithRampPolicy:0 potentialHeadroom:v10 andReferenceHeadroom:v11];
-  v43->_sbim = [[CBSBIM alloc] initWithQueue:v43->super.super._queue andDisplayModule:v43 andEDRModule:v43->_edr];
+  selfCopy->_edr = [(CBEDR *)v9 initWithRampPolicy:0 potentialHeadroom:v10 andReferenceHeadroom:v11];
+  selfCopy->_sbim = [[CBSBIM alloc] initWithQueue:selfCopy->super.super._queue andDisplayModule:selfCopy andEDRModule:selfCopy->_edr];
   v35 = 1.21;
-  [(CBBacklightNode *)v43->_backlightParams loadFloat:@"edr-sbim-threshold" toDestination:&v35];
-  v43->_sbimEDRThreshold = clamp(v35, 0.0, 2.0);
-  if (v43->_edr)
+  [(CBBacklightNode *)selfCopy->_backlightParams loadFloat:@"edr-sbim-threshold" toDestination:&v35];
+  selfCopy->_sbimEDRThreshold = clamp(v35, 0.0, 2.0);
+  if (selfCopy->_edr)
   {
-    *&v12 = v43->_maxNitsEDR;
-    [(CBEDR *)v43->_edr setPanelMax:v12];
-    *&v13 = v43->_maxNitsEDR;
-    [(CBEDR *)v43->_edr setBrightnessCap:v13];
-    [(CBDisplayModuleiOS *)v43 compensatedSDRNits];
-    [(CBEDR *)v43->_edr setSdrBrightness:?];
+    *&v12 = selfCopy->_maxNitsEDR;
+    [(CBEDR *)selfCopy->_edr setPanelMax:v12];
+    *&v13 = selfCopy->_maxNitsEDR;
+    [(CBEDR *)selfCopy->_edr setBrightnessCap:v13];
+    [(CBDisplayModuleiOS *)selfCopy compensatedSDRNits];
+    [(CBEDR *)selfCopy->_edr setSdrBrightness:?];
     *&v14 = v38;
-    [(CBEDR *)v43->_edr setSecondsPerStop:v14];
+    [(CBEDR *)selfCopy->_edr setSecondsPerStop:v14];
     *&v15 = v37;
-    [(CBEDR *)v43->_edr setSecondsPerStopExit:v15];
+    [(CBEDR *)selfCopy->_edr setSecondsPerStopExit:v15];
     context = objc_autoreleasePoolPush();
     v34 = [CBPreferencesHandler copyPreferenceForAllUsersMultiple:&unk_1F59C9468];
     if (v34)
@@ -882,11 +882,11 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
           v33 = objc_alloc_init(CBEDRModulator);
           -[CBEDRModulator setNitsDataPointsConfig:](v33, "setNitsDataPointsConfig:", [v34 objectForKeyedSubscript:@"EDRModulatorNitsConfig"]);
           -[CBEDRModulator setHeadroomDataPointsConfig:](v33, "setHeadroomDataPointsConfig:", [v34 objectForKeyedSubscript:@"EDRModulatorHeadroomConfig"]);
-          [(CBEDRModulator *)v33 setEnabled:v43->_brightnessControlEnabled];
-          [(CBEDR *)v43->_edr setHeadroomModulator:v33];
-          if (v43->super.super._logHandle)
+          [(CBEDRModulator *)v33 setEnabled:selfCopy->_brightnessControlEnabled];
+          [(CBEDR *)selfCopy->_edr setHeadroomModulator:v33];
+          if (selfCopy->super.super._logHandle)
           {
-            logHandle = v43->super.super._logHandle;
+            logHandle = selfCopy->super.super._logHandle;
           }
 
           else
@@ -909,11 +909,11 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
     objc_autoreleasePoolPop(context);
   }
 
-  if (!isBrightnessAdjustmentPossible(v41))
+  if (!isBrightnessAdjustmentPossible(getBrightnessCapabilities))
   {
-    if (v43->super.super._logHandle)
+    if (selfCopy->super.super._logHandle)
     {
-      v24 = v43->super.super._logHandle;
+      v24 = selfCopy->super.super._logHandle;
     }
 
     else
@@ -941,64 +941,64 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
       _os_log_impl(&dword_1DE8E5000, v21, v22, "Presets: staring up already enabled", v28, 2u);
     }
 
-    [(CBDisplayModuleiOS *)v43 updatePresetState:1];
+    [(CBDisplayModuleiOS *)selfCopy updatePresetState:1];
   }
 
-  v43->_apceTimer = 0;
-  v43->_rtplcState = 0;
-  v43->_rtplcCapApplied = 0;
-  v43->_currentRTPLCTarget = v43->_maxNitsEDR;
-  v43->_rtplcCap = v43->_maxNitsEDR;
-  v43->_frameStats = 0;
-  if ([(CBBacklightNode *)v43->_backlightParams rtplc])
+  selfCopy->_apceTimer = 0;
+  selfCopy->_rtplcState = 0;
+  selfCopy->_rtplcCapApplied = 0;
+  selfCopy->_currentRTPLCTarget = selfCopy->_maxNitsEDR;
+  selfCopy->_rtplcCap = selfCopy->_maxNitsEDR;
+  selfCopy->_frameStats = 0;
+  if ([(CBBacklightNode *)selfCopy->_backlightParams rtplc])
   {
     v20 = [CBFrameStats alloc];
-    queue = v43->super.super._queue;
-    frameInfoProvider = v43->_frameInfoProvider;
-    v17 = [MEMORY[0x1E6979550] serverIfRunning];
-    v16 = -[CBFrameStats initWithQueue:frameInfoProvider:andWindowServerDisplay:](v20, "initWithQueue:frameInfoProvider:andWindowServerDisplay:", queue, frameInfoProvider, [v17 displayWithDisplayId:{-[CBBrightnessProxy getDisplayId](v43->_brtCtl, "getDisplayId")}]);
-    v43->_frameStats = v16;
-    [(CBFrameStats *)v43->_frameStats setMovingAverageDuration:1.0];
-    DisplayInitializeRTPLCEDRRamp(v43->_displayInternal);
+    queue = selfCopy->super.super._queue;
+    frameInfoProvider = selfCopy->_frameInfoProvider;
+    serverIfRunning = [MEMORY[0x1E6979550] serverIfRunning];
+    v16 = -[CBFrameStats initWithQueue:frameInfoProvider:andWindowServerDisplay:](v20, "initWithQueue:frameInfoProvider:andWindowServerDisplay:", queue, frameInfoProvider, [serverIfRunning displayWithDisplayId:{-[CBBrightnessProxy getDisplayId](selfCopy->_brtCtl, "getDisplayId")}]);
+    selfCopy->_frameStats = v16;
+    [(CBFrameStats *)selfCopy->_frameStats setMovingAverageDuration:1.0];
+    DisplayInitializeRTPLCEDRRamp(selfCopy->_displayInternal);
   }
 
-  DisplayInitializeFastEDR(v43->_displayInternal);
+  DisplayInitializeFastEDR(selfCopy->_displayInternal);
   *MEMORY[0x1E69E9840];
 }
 
 - (void)initialiseAurora
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = 0;
+  bOOLValue = 0;
   v13 = DisplayCopyProperty(self->_displayInternal, @"AuroraSupported");
   if (v13)
   {
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
     MEMORY[0x1E69E5920](v13);
   }
 
-  if (v14)
+  if (bOOLValue)
   {
-    v9 = [(CBBrightnessProxy *)v16->_brtCtl getBrightnessCapabilities];
-    [(CBDisplayModuleiOS *)v16 updatePanelLimit:v9];
-    if (v16->_edr)
+    getBrightnessCapabilities = [(CBBrightnessProxy *)selfCopy->_brtCtl getBrightnessCapabilities];
+    [(CBDisplayModuleiOS *)selfCopy updatePanelLimit:getBrightnessCapabilities];
+    if (selfCopy->_edr)
     {
-      *&v2 = v16->_maxNitsPanel;
-      [(CBEDR *)v16->_edr setPanelMax:v2];
+      *&v2 = selfCopy->_maxNitsPanel;
+      [(CBEDR *)selfCopy->_edr setPanelMax:v2];
     }
 
     v3 = [CBFrameStats alloc];
-    v8 = -[CBFrameStats initWithQueue:frameInfoProvider:andWindowServerDisplay:](v3, "initWithQueue:frameInfoProvider:andWindowServerDisplay:", v16->super.super._queue, v16->_frameInfoProvider, [objc_msgSend(MEMORY[0x1E6979550] "serverIfRunning")]);
-    v16->_aurora = [[CBAurora alloc] initWithQueue:v16->super.super._queue andDisplayModule:v16 andBrtCapabilities:v9 andFrameStats:v8];
+    v8 = -[CBFrameStats initWithQueue:frameInfoProvider:andWindowServerDisplay:](v3, "initWithQueue:frameInfoProvider:andWindowServerDisplay:", selfCopy->super.super._queue, selfCopy->_frameInfoProvider, [objc_msgSend(MEMORY[0x1E6979550] "serverIfRunning")]);
+    selfCopy->_aurora = [[CBAurora alloc] initWithQueue:selfCopy->super.super._queue andDisplayModule:selfCopy andBrtCapabilities:getBrightnessCapabilities andFrameStats:v8];
     MEMORY[0x1E69E5920](v8);
   }
 
   else
   {
-    if (v16->super.super._logHandle)
+    if (selfCopy->super.super._logHandle)
     {
-      logHandle = v16->super.super._logHandle;
+      logHandle = selfCopy->super.super._logHandle;
     }
 
     else
@@ -1030,55 +1030,55 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_displayInternal)
   {
-    DisplayClose(v5->_displayInternal);
-    CFRelease(v5->_displayInternal);
-    v5->_displayInternal = 0;
+    DisplayClose(selfCopy->_displayInternal);
+    CFRelease(selfCopy->_displayInternal);
+    selfCopy->_displayInternal = 0;
   }
 
-  MEMORY[0x1E69E5920](v5->_edr);
-  MEMORY[0x1E69E5920](v5->_sbim);
-  MEMORY[0x1E69E5920](v5->_brtCtl);
-  MEMORY[0x1E69E5920](v5->_pendingCommitedTransactions);
-  MEMORY[0x1E69E5920](v5->_lastEDRHeadroomRequestFromCA);
-  if (v5->super.super._logHandle)
+  MEMORY[0x1E69E5920](selfCopy->_edr);
+  MEMORY[0x1E69E5920](selfCopy->_sbim);
+  MEMORY[0x1E69E5920](selfCopy->_brtCtl);
+  MEMORY[0x1E69E5920](selfCopy->_pendingCommitedTransactions);
+  MEMORY[0x1E69E5920](selfCopy->_lastEDRHeadroomRequestFromCA);
+  if (selfCopy->super.super._logHandle)
   {
-    MEMORY[0x1E69E5920](v5->super.super._logHandle);
-    v5->super.super._logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->super.super._logHandle);
+    selfCopy->super.super._logHandle = 0;
   }
 
-  if (v5->_apceTimer)
+  if (selfCopy->_apceTimer)
   {
-    dispatch_source_cancel(v5->_apceTimer);
-    dispatch_release(v5->_apceTimer);
-    v5->_apceTimer = 0;
+    dispatch_source_cancel(selfCopy->_apceTimer);
+    dispatch_release(selfCopy->_apceTimer);
+    selfCopy->_apceTimer = 0;
   }
 
-  if (v5->_appliedCompensations)
+  if (selfCopy->_appliedCompensations)
   {
-    MEMORY[0x1E69E5920](v5->_appliedCompensations);
-    v5->_appliedCompensations = 0;
+    MEMORY[0x1E69E5920](selfCopy->_appliedCompensations);
+    selfCopy->_appliedCompensations = 0;
   }
 
-  if (v5->_rampManager)
+  if (selfCopy->_rampManager)
   {
-    MEMORY[0x1E69E5920](v5->_rampManager);
+    MEMORY[0x1E69E5920](selfCopy->_rampManager);
   }
 
-  MEMORY[0x1E69E5920](v5->_frameStats);
-  MEMORY[0x1E69E5920](v5->_aurora);
-  MEMORY[0x1E69E5920](v5->_twilight);
-  MEMORY[0x1E69E5920](v5->_ammolite);
-  MEMORY[0x1E69E5920](v5->_indicatorBrightnessModule);
-  MEMORY[0x1E69E5920](v5->_subModules);
-  MEMORY[0x1E69E5920](v5->_backlightParams);
-  MEMORY[0x1E69E5920](v5->_cachedKeys);
-  [+[CBAnalyticsScheduler removeHandler:MEMORY[0x1E69E5920](v5->_cachedProperties).n128_f64[0]], "removeHandler:", v5->_analyticsPeriodicSender];
-  *&v2 = MEMORY[0x1E69E5920](v5->_analyticsHist).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_frameStats);
+  MEMORY[0x1E69E5920](selfCopy->_aurora);
+  MEMORY[0x1E69E5920](selfCopy->_twilight);
+  MEMORY[0x1E69E5920](selfCopy->_ammolite);
+  MEMORY[0x1E69E5920](selfCopy->_indicatorBrightnessModule);
+  MEMORY[0x1E69E5920](selfCopy->_subModules);
+  MEMORY[0x1E69E5920](selfCopy->_backlightParams);
+  MEMORY[0x1E69E5920](selfCopy->_cachedKeys);
+  [+[CBAnalyticsScheduler removeHandler:MEMORY[0x1E69E5920](selfCopy->_cachedProperties).n128_f64[0]], "removeHandler:", selfCopy->_analyticsPeriodicSender];
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_analyticsHist).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBDisplayModuleiOS;
   [(CBModule *)&v3 dealloc];
 }
@@ -1094,7 +1094,7 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
   DisplayStop(self->_displayInternal);
 }
 
-- (void)updatePresetState:(BOOL)a3
+- (void)updatePresetState:(BOOL)state
 {
   v19 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
@@ -1120,12 +1120,12 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_4_0(v18, a3);
+    __os_log_helper_16_0_1_4_0(v18, state);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Presets: setting status of pro mode to: %d", v18, 8u);
   }
 
-  self->_brightnessControlEnabled = !a3;
-  self->_referenceModeIsActive = a3;
+  self->_brightnessControlEnabled = !state;
+  self->_referenceModeIsActive = state;
   if (self->_brightnessControlEnabled)
   {
     v11 = 0;
@@ -1145,7 +1145,7 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
   }
 
   -[CBDisplayModuleiOS sendNotificationForKey:withValue:](self, "sendNotificationForKey:withValue:", @"CBBrightnessControlAvailable", [MEMORY[0x1E696AD98] numberWithBool:v10]);
-  if (a3)
+  if (state)
   {
     [(CBSBIM *)self->_sbim disable];
   }
@@ -1199,15 +1199,15 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
   }
 
   v7 = 0.0;
-  if (!a3)
+  if (!state)
   {
     v7 = -1.0;
   }
 
   DisplaySetCabalFactorOverride(self->_displayInternal, v7);
-  [(CBChromaticCorrection *)self->_twilight setReferenceModeActive:a3];
-  [(CBChromaticCorrection *)self->_ammolite setReferenceModeActive:a3];
-  [(CBChromaticCorrection *)self->_gcp setReferenceModeActive:a3];
+  [(CBChromaticCorrection *)self->_twilight setReferenceModeActive:state];
+  [(CBChromaticCorrection *)self->_ammolite setReferenceModeActive:state];
+  [(CBChromaticCorrection *)self->_gcp setReferenceModeActive:state];
   objc_autoreleasePoolPop(context);
   *MEMORY[0x1E69E9840];
 }
@@ -1215,16 +1215,16 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 - (void)handleAttachedNotification
 {
   context = objc_autoreleasePoolPush();
-  v7 = [(CBBrightnessProxy *)self->_brtCtl getBrightnessCapabilities];
-  if (v7)
+  getBrightnessCapabilities = [(CBBrightnessProxy *)self->_brtCtl getBrightnessCapabilities];
+  if (getBrightnessCapabilities)
   {
-    v6 = isBrightnessAdjustmentPossible(v7);
-    [(CBDisplayModuleiOS *)self updateSDRLimits:v7];
-    [-[NSDictionary objectForKeyedSubscript:](v7 objectForKeyedSubscript:{@"MaxNitsEDR", "floatValue"}];
+    v6 = isBrightnessAdjustmentPossible(getBrightnessCapabilities);
+    [(CBDisplayModuleiOS *)self updateSDRLimits:getBrightnessCapabilities];
+    [-[NSDictionary objectForKeyedSubscript:](getBrightnessCapabilities objectForKeyedSubscript:{@"MaxNitsEDR", "floatValue"}];
     self->_maxNitsEDR = v2;
     *&v3 = self->_maxNitsEDR;
     [(CBEDR *)self->_edr setBrightnessCap:v3];
-    [-[NSDictionary objectForKeyedSubscript:](v7 objectForKeyedSubscript:{@"EDRPotentialHeadroom", "floatValue"}];
+    [-[NSDictionary objectForKeyedSubscript:](getBrightnessCapabilities objectForKeyedSubscript:{@"EDRPotentialHeadroom", "floatValue"}];
     [(CBEDR *)self->_edr setMaxHeadroom:?];
     if (self->_brightnessControlEnabled != v6)
     {
@@ -1238,17 +1238,17 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
   objc_autoreleasePoolPop(context);
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v91 = *MEMORY[0x1E69E9840];
-  v75 = self;
+  selfCopy = self;
   v74 = a2;
-  v73 = a3;
-  v72 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v71 = 0;
   if (self->super.super._logHandle)
   {
-    logHandle = v75->super.super._logHandle;
+    logHandle = selfCopy->super.super._logHandle;
   }
 
   else
@@ -1270,27 +1270,27 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v90, v72, v73);
+    __os_log_helper_16_2_2_8_64_8_64(v90, keyCopy, propertyCopy);
     _os_log_debug_impl(&dword_1DE8E5000, v70, type, "Set property for key = %@ property = %@", v90, 0x16u);
   }
 
-  [(CBAurora *)v75->_aurora setPropertyForKey:v72 withValue:v73];
-  [(CBChromaticCorrection *)v75->_twilight setProperty:v73 forKey:v72];
-  [(CBChromaticCorrection *)v75->_ammolite setProperty:v73 forKey:v72];
-  [(CBChromaticCorrection *)v75->_gcp setProperty:v73 forKey:v72];
-  [(CBIndicatorBrightnessModule *)v75->_indicatorBrightnessModule setProperty:v73 forKey:v72];
-  if ([v72 isEqualToString:@"EDRHeadroomRequest"])
+  [(CBAurora *)selfCopy->_aurora setPropertyForKey:keyCopy withValue:propertyCopy];
+  [(CBChromaticCorrection *)selfCopy->_twilight setProperty:propertyCopy forKey:keyCopy];
+  [(CBChromaticCorrection *)selfCopy->_ammolite setProperty:propertyCopy forKey:keyCopy];
+  [(CBChromaticCorrection *)selfCopy->_gcp setProperty:propertyCopy forKey:keyCopy];
+  [(CBIndicatorBrightnessModule *)selfCopy->_indicatorBrightnessModule setProperty:propertyCopy forKey:keyCopy];
+  if ([keyCopy isEqualToString:@"EDRHeadroomRequest"])
   {
-    if (v75->_nitsSDR > 0.0 || [v73 objectForKeyedSubscript:{-[CBBrightnessProxy brightnessNotificationPowerOff](v75->_brtCtl, "brightnessNotificationPowerOff")}])
+    if (selfCopy->_nitsSDR > 0.0 || [propertyCopy objectForKeyedSubscript:{-[CBBrightnessProxy brightnessNotificationPowerOff](selfCopy->_brtCtl, "brightnessNotificationPowerOff")}])
     {
-      [(CBDisplayModuleiOS *)v75 handleEDRHeadroomRequest:v73];
+      [(CBDisplayModuleiOS *)selfCopy handleEDRHeadroomRequest:propertyCopy];
     }
 
     else
     {
-      if (v75->super.super._logHandle)
+      if (selfCopy->super.super._logHandle)
       {
-        v46 = v75->super.super._logHandle;
+        v46 = selfCopy->super.super._logHandle;
       }
 
       else
@@ -1312,70 +1312,70 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
       v67 = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
       {
-        [objc_msgSend(v73 objectForKey:{-[CBBrightnessProxy brightnessRequestEDRHeadroom](v75->_brtCtl, "brightnessRequestEDRHeadroom")), "floatValue"}];
+        [objc_msgSend(propertyCopy objectForKey:{-[CBBrightnessProxy brightnessRequestEDRHeadroom](selfCopy->_brtCtl, "brightnessRequestEDRHeadroom")), "floatValue"}];
         __os_log_helper_16_0_1_8_0(v89, COERCE__INT64(v4));
         _os_log_impl(&dword_1DE8E5000, v68, v67, "EDR Headroom request received while SDR is 0: EDR: %f, caching request", v89, 0xCu);
       }
 
-      if (!v75->_cachedProperties)
+      if (!selfCopy->_cachedProperties)
       {
-        v75->_cachedProperties = objc_alloc_init(MEMORY[0x1E695DF70]);
+        selfCopy->_cachedProperties = objc_alloc_init(MEMORY[0x1E695DF70]);
       }
 
-      if (!v75->_cachedKeys)
+      if (!selfCopy->_cachedKeys)
       {
-        v75->_cachedKeys = objc_alloc_init(MEMORY[0x1E695DF70]);
+        selfCopy->_cachedKeys = objc_alloc_init(MEMORY[0x1E695DF70]);
       }
 
-      [(NSMutableArray *)v75->_cachedProperties addObject:v73];
-      [(NSMutableArray *)v75->_cachedKeys addObject:v72];
+      [(NSMutableArray *)selfCopy->_cachedProperties addObject:propertyCopy];
+      [(NSMutableArray *)selfCopy->_cachedKeys addObject:keyCopy];
     }
 
     goto LABEL_173;
   }
 
-  if (v75->_brtCtl && ([v72 isEqualToString:{-[CBBrightnessProxy brightnessNotificationRequestEDR](v75->_brtCtl, "brightnessNotificationRequestEDR")}] & 1) != 0)
+  if (selfCopy->_brtCtl && ([keyCopy isEqualToString:{-[CBBrightnessProxy brightnessNotificationRequestEDR](selfCopy->_brtCtl, "brightnessNotificationRequestEDR")}] & 1) != 0)
   {
-    MEMORY[0x1E69E5920](v75->_lastEDRHeadroomRequestFromCA);
-    v75->_lastEDRHeadroomRequestFromCA = MEMORY[0x1E69E5928](v73);
+    MEMORY[0x1E69E5920](selfCopy->_lastEDRHeadroomRequestFromCA);
+    selfCopy->_lastEDRHeadroomRequestFromCA = MEMORY[0x1E69E5928](propertyCopy);
     goto LABEL_173;
   }
 
-  if ([v72 isEqualToString:@"EDRSecondsPerStop"])
+  if ([keyCopy isEqualToString:@"EDRSecondsPerStop"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v73 floatValue];
+      [propertyCopy floatValue];
       v66 = LODWORD(v5);
-      [(CBEDR *)v75->_edr setSecondsPerStop:v5];
+      [(CBEDR *)selfCopy->_edr setSecondsPerStop:v5];
     }
 
     goto LABEL_173;
   }
 
-  if ([v72 isEqualToString:@"EDRExitSecondsPerStop"])
+  if ([keyCopy isEqualToString:@"EDRExitSecondsPerStop"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v73 floatValue];
+      [propertyCopy floatValue];
       v65 = LODWORD(v6);
-      [(CBEDR *)v75->_edr setSecondsPerStopExit:v6];
+      [(CBEDR *)selfCopy->_edr setSecondsPerStopExit:v6];
     }
 
     goto LABEL_173;
   }
 
-  if (v75->_brtCtl && ([v72 isEqualToString:{-[CBBrightnessProxy brightnessNotificationAttached](v75->_brtCtl, "brightnessNotificationAttached")}] & 1) != 0)
+  if (selfCopy->_brtCtl && ([keyCopy isEqualToString:{-[CBBrightnessProxy brightnessNotificationAttached](selfCopy->_brtCtl, "brightnessNotificationAttached")}] & 1) != 0)
   {
-    [(CBDisplayModuleiOS *)v75 handleAttachedNotification];
+    [(CBDisplayModuleiOS *)selfCopy handleAttachedNotification];
     v76 = 1;
   }
 
-  else if (v75->_brtCtl && ([v72 isEqualToString:{-[CBBrightnessProxy brightnessNotificationPowerOff](v75->_brtCtl, "brightnessNotificationPowerOff")}] & 1) != 0)
+  else if (selfCopy->_brtCtl && ([keyCopy isEqualToString:{-[CBBrightnessProxy brightnessNotificationPowerOff](selfCopy->_brtCtl, "brightnessNotificationPowerOff")}] & 1) != 0)
   {
-    if (!v75->_referenceModeIsActive)
+    if (!selfCopy->_referenceModeIsActive)
     {
       v7 = objc_alloc(MEMORY[0x1E696AD98]);
       LODWORD(v8) = 1.0;
@@ -1383,28 +1383,28 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
       if (v64)
       {
         v44 = objc_alloc(MEMORY[0x1E695DF20]);
-        v43 = [(CBBrightnessProxy *)v75->_brtCtl brightnessRequestEDRHeadroom];
-        v63 = [v44 initWithObjectsAndKeys:{v64, v43, *MEMORY[0x1E695E4D0], -[CBBrightnessProxy brightnessNotificationPowerOff](v75->_brtCtl, "brightnessNotificationPowerOff"), 0}];
+        brightnessRequestEDRHeadroom = [(CBBrightnessProxy *)selfCopy->_brtCtl brightnessRequestEDRHeadroom];
+        v63 = [v44 initWithObjectsAndKeys:{v64, brightnessRequestEDRHeadroom, *MEMORY[0x1E695E4D0], -[CBBrightnessProxy brightnessNotificationPowerOff](selfCopy->_brtCtl, "brightnessNotificationPowerOff"), 0}];
         *&v9 = MEMORY[0x1E69E5920](v64).n128_u64[0];
         if (v63)
         {
-          [(CBDisplayModuleiOS *)v75 setProperty:v63 forKey:@"EDRHeadroomRequest", v9];
+          [(CBDisplayModuleiOS *)selfCopy setProperty:v63 forKey:@"EDRHeadroomRequest", v9];
           MEMORY[0x1E69E5920](v63);
         }
       }
     }
 
-    v75->_autoDimActive = 0;
-    if (v75->_indicatorBrightnessModule)
+    selfCopy->_autoDimActive = 0;
+    if (selfCopy->_indicatorBrightnessModule)
     {
-      [(CBIndicatorBrightnessModule *)v75->_indicatorBrightnessModule setProperty:0 forKey:@"DisplayPowerOff"];
+      [(CBIndicatorBrightnessModule *)selfCopy->_indicatorBrightnessModule setProperty:0 forKey:@"DisplayPowerOff"];
     }
 
-    DisplaySetProperty(v75->_displayInternal, @"DisplayPowerOff", *MEMORY[0x1E695E4D0]);
+    DisplaySetProperty(selfCopy->_displayInternal, @"DisplayPowerOff", *MEMORY[0x1E695E4D0]);
     v76 = 1;
   }
 
-  else if (v75->_brtCtl && (([v72 isEqualToString:{-[CBBrightnessProxy brightnessNotificationSecureIndicatorOn](v75->_brtCtl, "brightnessNotificationSecureIndicatorOn")}] & 1) != 0 || (objc_msgSend(v72, "isEqualToString:", -[CBBrightnessProxy brightnessNotificationSecureIndicatorOff](v75->_brtCtl, "brightnessNotificationSecureIndicatorOff")) & 1) != 0))
+  else if (selfCopy->_brtCtl && (([keyCopy isEqualToString:{-[CBBrightnessProxy brightnessNotificationSecureIndicatorOn](selfCopy->_brtCtl, "brightnessNotificationSecureIndicatorOn")}] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", -[CBBrightnessProxy brightnessNotificationSecureIndicatorOff](selfCopy->_brtCtl, "brightnessNotificationSecureIndicatorOff")) & 1) != 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1412,21 +1412,21 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
       goto LABEL_173;
     }
 
-    v62 = [v73 objectForKeyedSubscript:{-[CBBrightnessProxy brightnessSecureIndicatorActiveCount](v75->_brtCtl, "brightnessSecureIndicatorActiveCount")}];
+    v62 = [propertyCopy objectForKeyedSubscript:{-[CBBrightnessProxy brightnessSecureIndicatorActiveCount](selfCopy->_brtCtl, "brightnessSecureIndicatorActiveCount")}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if ([v62 unsignedIntValue])
       {
-        [(CBSBIM *)v75->_sbim disable];
+        [(CBSBIM *)selfCopy->_sbim disable];
       }
 
       else
       {
-        [(CBSBIM *)v75->_sbim enable];
+        [(CBSBIM *)selfCopy->_sbim enable];
       }
 
-      [(CBDisplayModuleiOS *)v75 setProperty:v62 forKey:@"SecureIndicatorActiveCount"];
+      [(CBDisplayModuleiOS *)selfCopy setProperty:v62 forKey:@"SecureIndicatorActiveCount"];
     }
 
     v76 = 1;
@@ -1434,67 +1434,67 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 
   else
   {
-    if ([v72 isEqualToString:@"SecureIndicatorState"] & 1) != 0 || (objc_msgSend(v72, "isEqualToString:", @"IndicatorUpdateRampAOD") & 1) != 0 || (objc_msgSend(v72, "isEqualToString:", @"IndicatorRampFinishedAOD"))
+    if ([keyCopy isEqualToString:@"SecureIndicatorState"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"IndicatorUpdateRampAOD") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"IndicatorRampFinishedAOD"))
     {
-      [(CBDisplayModuleiOS *)v75 sendNotificationForKey:v72 withValue:v73];
+      [(CBDisplayModuleiOS *)selfCopy sendNotificationForKey:keyCopy withValue:propertyCopy];
       goto LABEL_173;
     }
 
-    if (([v72 isEqualToString:@"DisplayBrightness"] & 1) == 0 || v75->_brightnessControlEnabled)
+    if (([keyCopy isEqualToString:@"DisplayBrightness"] & 1) == 0 || selfCopy->_brightnessControlEnabled)
     {
-      if ([v72 isEqualToString:@"SBIMEnabled"])
+      if ([keyCopy isEqualToString:@"SBIMEnabled"])
       {
-        if (CFBooleanGetValue(v73))
+        if (CFBooleanGetValue(propertyCopy))
         {
-          [(CBSBIM *)v75->_sbim enable];
+          [(CBSBIM *)selfCopy->_sbim enable];
         }
 
         else
         {
-          [(CBSBIM *)v75->_sbim disable];
+          [(CBSBIM *)selfCopy->_sbim disable];
         }
 
         v76 = 1;
       }
 
-      else if ([v72 isEqualToString:@"FrameInfoLoggingEnabled"])
+      else if ([keyCopy isEqualToString:@"FrameInfoLoggingEnabled"])
       {
-        [(CBFrameStats *)v75->_frameStats enableFrameInfoLogging:CFBooleanGetValue(v73) != 0];
+        [(CBFrameStats *)selfCopy->_frameStats enableFrameInfoLogging:CFBooleanGetValue(propertyCopy) != 0];
         v76 = 1;
       }
 
       else
       {
-        if (([v72 isEqualToString:@"AuroraFactorWithFade"] & 1) == 0)
+        if (([keyCopy isEqualToString:@"AuroraFactorWithFade"] & 1) == 0)
         {
-          if ([v72 isEqualToString:@"TwilightStrength"])
+          if ([keyCopy isEqualToString:@"TwilightStrength"])
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(CBDisplayModuleiOS *)v75 sendNotificationForKey:@"TwilightStrength" withValue:v73];
+              [(CBDisplayModuleiOS *)selfCopy sendNotificationForKey:@"TwilightStrength" withValue:propertyCopy];
             }
           }
 
           else
           {
-            if (CFEqual(v72, @"DominoStateUpdate"))
+            if (CFEqual(keyCopy, @"DominoStateUpdate"))
             {
               TypeID = CFBooleanGetTypeID();
-              if (TypeID == CFGetTypeID(v73))
+              if (TypeID == CFGetTypeID(propertyCopy))
               {
-                Value = CFBooleanGetValue(v73);
-                if (v75->_dominoMode != Value)
+                Value = CFBooleanGetValue(propertyCopy);
+                if (selfCopy->_dominoMode != Value)
                 {
-                  v75->_dominoMode = Value != 0;
-                  if (v75->_dominoMode)
+                  selfCopy->_dominoMode = Value != 0;
+                  if (selfCopy->_dominoMode)
                   {
-                    if ([(CBDisplayModuleiOS *)v75 edrIsEngaged])
+                    if ([(CBDisplayModuleiOS *)selfCopy edrIsEngaged])
                     {
                       context = objc_autoreleasePoolPush();
-                      if (v75->super.super._logHandle)
+                      if (selfCopy->super.super._logHandle)
                       {
-                        v38 = v75->super.super._logHandle;
+                        v38 = selfCopy->super.super._logHandle;
                       }
 
                       else
@@ -1522,21 +1522,21 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 
                       v86[0] = @"DominoHeadroomRequest";
                       v87[0] = MEMORY[0x1E695E118];
-                      v86[1] = [(CBBrightnessProxy *)v75->_brtCtl brightnessRequestEDRHeadroom];
+                      v86[1] = [(CBBrightnessProxy *)selfCopy->_brtCtl brightnessRequestEDRHeadroom];
                       v87[1] = &unk_1F59C9678;
-                      -[CBDisplayModuleiOS setProperty:forKey:](v75, "setProperty:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v87 forKeys:v86 count:2], @"EDRHeadroomRequest");
+                      -[CBDisplayModuleiOS setProperty:forKey:](selfCopy, "setProperty:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v87 forKeys:v86 count:2], @"EDRHeadroomRequest");
                       objc_autoreleasePoolPop(context);
                     }
                   }
 
-                  else if (v75->_lastEDRHeadroomRequestFromCA)
+                  else if (selfCopy->_lastEDRHeadroomRequestFromCA)
                   {
                     v36 = objc_autoreleasePoolPush();
-                    v58 = [v75->_lastEDRHeadroomRequestFromCA mutableCopy];
+                    v58 = [selfCopy->_lastEDRHeadroomRequestFromCA mutableCopy];
                     [v58 setValue:MEMORY[0x1E695E118] forKey:@"DominoHeadroomRequest"];
-                    if (v75->super.super._logHandle)
+                    if (selfCopy->super.super._logHandle)
                     {
-                      v35 = v75->super.super._logHandle;
+                      v35 = selfCopy->super.super._logHandle;
                     }
 
                     else
@@ -1558,37 +1558,37 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
                     v56 = OS_LOG_TYPE_DEFAULT;
                     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
                     {
-                      [objc_msgSend(v58 objectForKeyedSubscript:{-[CBBrightnessProxy brightnessRequestEDRHeadroom](v75->_brtCtl, "brightnessRequestEDRHeadroom")), "floatValue"}];
+                      [objc_msgSend(v58 objectForKeyedSubscript:{-[CBBrightnessProxy brightnessRequestEDRHeadroom](selfCopy->_brtCtl, "brightnessRequestEDRHeadroom")), "floatValue"}];
                       __os_log_helper_16_0_1_8_0(v85, COERCE__INT64(v12));
                       _os_log_impl(&dword_1DE8E5000, oslog, v56, "Domino EDR | Domino is exiting Restoring EDR headroom after exiting to %f", v85, 0xCu);
                     }
 
-                    [(CBDisplayModuleiOS *)v75 setProperty:v58 forKey:@"EDRHeadroomRequest"];
+                    [(CBDisplayModuleiOS *)selfCopy setProperty:v58 forKey:@"EDRHeadroomRequest"];
                     objc_autoreleasePoolPop(v36);
                   }
 
                   v33 = 0;
-                  if (v75->_brightnessControlEnabled)
+                  if (selfCopy->_brightnessControlEnabled)
                   {
-                    v33 = !v75->_dominoMode;
+                    v33 = !selfCopy->_dominoMode;
                   }
 
-                  -[CBDisplayModuleiOS sendNotificationForKey:withValue:](v75, "sendNotificationForKey:withValue:", @"CBBrightnessControlAvailable", [MEMORY[0x1E696AD98] numberWithBool:v33]);
+                  -[CBDisplayModuleiOS sendNotificationForKey:withValue:](selfCopy, "sendNotificationForKey:withValue:", @"CBBrightnessControlAvailable", [MEMORY[0x1E696AD98] numberWithBool:v33]);
                 }
               }
             }
 
             else
             {
-              if (CFEqual(v72, @"AmbientAdaptiveDimming"))
+              if (CFEqual(keyCopy, @"AmbientAdaptiveDimming"))
               {
-                if (v73)
+                if (propertyCopy)
                 {
                   v32 = CFDictionaryGetTypeID();
-                  if (v32 == CFGetTypeID(v73))
+                  if (v32 == CFGetTypeID(propertyCopy))
                   {
                     valuePtr = 0;
-                    cf = CFDictionaryGetValue(v73, @"AmbientAdaptiveDimmingEnable");
+                    cf = CFDictionaryGetValue(propertyCopy, @"AmbientAdaptiveDimmingEnable");
                     if (cf)
                     {
                       v31 = CFNumberGetTypeID();
@@ -1599,7 +1599,7 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
                     }
 
                     v53 = 0;
-                    v52 = CFDictionaryGetValue(v73, @"AmbientAdaptiveDimmingPeriod");
+                    v52 = CFDictionaryGetValue(propertyCopy, @"AmbientAdaptiveDimmingPeriod");
                     if (v52)
                     {
                       v30 = CFNumberGetTypeID();
@@ -1609,17 +1609,17 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
                       }
                     }
 
-                    if (v75->_autoDimActive != valuePtr)
+                    if (selfCopy->_autoDimActive != valuePtr)
                     {
-                      v75->_autoDimActive = valuePtr != 0;
-                      if (v75->_autoDimActive)
+                      selfCopy->_autoDimActive = valuePtr != 0;
+                      if (selfCopy->_autoDimActive)
                       {
-                        if ([(CBDisplayModuleiOS *)v75 edrIsEngaged])
+                        if ([(CBDisplayModuleiOS *)selfCopy edrIsEngaged])
                         {
                           v29 = objc_autoreleasePoolPush();
-                          if (v75->super.super._logHandle)
+                          if (selfCopy->super.super._logHandle)
                           {
-                            v28 = v75->super.super._logHandle;
+                            v28 = selfCopy->super.super._logHandle;
                           }
 
                           else
@@ -1639,29 +1639,29 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 
                           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
                           {
-                            __os_log_helper_16_0_1_8_0(v84, COERCE__INT64(v75->_appliedHeadroom));
+                            __os_log_helper_16_0_1_8_0(v84, COERCE__INT64(selfCopy->_appliedHeadroom));
                             _os_log_impl(&dword_1DE8E5000, v28, OS_LOG_TYPE_DEFAULT, "AutoDim EDR | Entering AutoDim, freezing EDR headroom to %f", v84, 0xCu);
                           }
 
-                          v26 = v75;
+                          v26 = selfCopy;
                           v82[0] = @"AutoDimHeadroomRequest";
                           v83[0] = MEMORY[0x1E695E118];
-                          v82[1] = [(CBBrightnessProxy *)v75->_brtCtl brightnessRequestEDRHeadroom];
-                          *&v13 = v75->_appliedHeadroom;
+                          v82[1] = [(CBBrightnessProxy *)selfCopy->_brtCtl brightnessRequestEDRHeadroom];
+                          *&v13 = selfCopy->_appliedHeadroom;
                           v83[1] = [MEMORY[0x1E696AD98] numberWithFloat:v13];
                           -[CBDisplayModuleiOS setProperty:forKey:](v26, "setProperty:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:2], @"EDRHeadroomRequest");
                           objc_autoreleasePoolPop(v29);
                         }
                       }
 
-                      else if (v75->_lastEDRHeadroomRequestFromCA)
+                      else if (selfCopy->_lastEDRHeadroomRequestFromCA)
                       {
                         v25 = objc_autoreleasePoolPush();
-                        v51 = [v75->_lastEDRHeadroomRequestFromCA mutableCopy];
+                        v51 = [selfCopy->_lastEDRHeadroomRequestFromCA mutableCopy];
                         [v51 setValue:MEMORY[0x1E695E118] forKey:@"AutoDimHeadroomRequest"];
-                        if (v75->super.super._logHandle)
+                        if (selfCopy->super.super._logHandle)
                         {
-                          v24 = v75->super.super._logHandle;
+                          v24 = selfCopy->super.super._logHandle;
                         }
 
                         else
@@ -1681,40 +1681,40 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 
                         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
                         {
-                          [objc_msgSend(v51 objectForKeyedSubscript:{-[CBBrightnessProxy brightnessRequestEDRHeadroom](v75->_brtCtl, "brightnessRequestEDRHeadroom")), "floatValue"}];
+                          [objc_msgSend(v51 objectForKeyedSubscript:{-[CBBrightnessProxy brightnessRequestEDRHeadroom](selfCopy->_brtCtl, "brightnessRequestEDRHeadroom")), "floatValue"}];
                           __os_log_helper_16_0_1_8_0(v81, COERCE__INT64(v14));
                           _os_log_impl(&dword_1DE8E5000, v24, OS_LOG_TYPE_DEFAULT, "AutoDim EDR | AutoDim is exiting, restoring EDR headroom to %f", v81, 0xCu);
                         }
 
-                        [(CBDisplayModuleiOS *)v75 setProperty:v51 forKey:@"EDRHeadroomRequest"];
+                        [(CBDisplayModuleiOS *)selfCopy setProperty:v51 forKey:@"EDRHeadroomRequest"];
                         objc_autoreleasePoolPop(v25);
                       }
                     }
 
-                    v71 = DisplaySetProperty(v75->_displayInternal, v72, v73) != 0;
+                    v71 = DisplaySetProperty(selfCopy->_displayInternal, keyCopy, propertyCopy) != 0;
                   }
                 }
 
                 goto LABEL_173;
               }
 
-              if (v75->_brtCtl)
+              if (selfCopy->_brtCtl)
               {
-                if ([v72 isEqualToString:@"EcoMode"])
+                if ([keyCopy isEqualToString:@"EcoMode"])
                 {
-                  v50 = [v73 BOOLValue];
-                  if (v75->_ecoMode != v50)
+                  bOOLValue = [propertyCopy BOOLValue];
+                  if (selfCopy->_ecoMode != bOOLValue)
                   {
-                    v75->_ecoMode = v50 != 0;
-                    [(AABCHistograms *)v75->_analyticsHist setEcoModeOn:v50 != 0];
-                    if (v75->_ecoMode)
+                    selfCopy->_ecoMode = bOOLValue != 0;
+                    [(AABCHistograms *)selfCopy->_analyticsHist setEcoModeOn:bOOLValue != 0];
+                    if (selfCopy->_ecoMode)
                     {
-                      if ([(CBDisplayModuleiOS *)v75 edrIsEngaged])
+                      if ([(CBDisplayModuleiOS *)selfCopy edrIsEngaged])
                       {
                         v22 = objc_autoreleasePoolPush();
-                        if (v75->super.super._logHandle)
+                        if (selfCopy->super.super._logHandle)
                         {
-                          v21 = v75->super.super._logHandle;
+                          v21 = selfCopy->super.super._logHandle;
                         }
 
                         else
@@ -1740,21 +1740,21 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 
                         v78[0] = @"EcoModeHeadroomRequest";
                         v79[0] = MEMORY[0x1E695E118];
-                        v78[1] = [(CBBrightnessProxy *)v75->_brtCtl brightnessRequestEDRHeadroom];
+                        v78[1] = [(CBBrightnessProxy *)selfCopy->_brtCtl brightnessRequestEDRHeadroom];
                         v79[1] = &unk_1F59C9678;
-                        -[CBDisplayModuleiOS setProperty:forKey:](v75, "setProperty:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:v78 count:2], @"EDRHeadroomRequest");
+                        -[CBDisplayModuleiOS setProperty:forKey:](selfCopy, "setProperty:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:v78 count:2], @"EDRHeadroomRequest");
                         objc_autoreleasePoolPop(v22);
                       }
                     }
 
-                    else if (v75->_lastEDRHeadroomRequestFromCA)
+                    else if (selfCopy->_lastEDRHeadroomRequestFromCA)
                     {
                       v19 = objc_autoreleasePoolPush();
-                      v49 = [v75->_lastEDRHeadroomRequestFromCA mutableCopy];
+                      v49 = [selfCopy->_lastEDRHeadroomRequestFromCA mutableCopy];
                       [v49 setValue:MEMORY[0x1E695E118] forKey:@"EcoModeHeadroomRequest"];
-                      if (v75->super.super._logHandle)
+                      if (selfCopy->super.super._logHandle)
                       {
-                        v18 = v75->super.super._logHandle;
+                        v18 = selfCopy->super.super._logHandle;
                       }
 
                       else
@@ -1774,12 +1774,12 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
 
                       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
                       {
-                        [objc_msgSend(v75->_lastEDRHeadroomRequestFromCA objectForKeyedSubscript:{-[CBBrightnessProxy brightnessRequestEDRHeadroom](v75->_brtCtl, "brightnessRequestEDRHeadroom")), "floatValue"}];
+                        [objc_msgSend(selfCopy->_lastEDRHeadroomRequestFromCA objectForKeyedSubscript:{-[CBBrightnessProxy brightnessRequestEDRHeadroom](selfCopy->_brtCtl, "brightnessRequestEDRHeadroom")), "floatValue"}];
                         __os_log_helper_16_0_1_8_0(v77, COERCE__INT64(v15));
                         _os_log_impl(&dword_1DE8E5000, v18, OS_LOG_TYPE_DEFAULT, "EcoMode EDR | EcoMode is exiting Restoring EDR headroom after exiting to %f", v77, 0xCu);
                       }
 
-                      [(CBDisplayModuleiOS *)v75 setProperty:v49 forKey:@"EDRHeadroomRequest"];
+                      [(CBDisplayModuleiOS *)selfCopy setProperty:v49 forKey:@"EDRHeadroomRequest"];
                       objc_autoreleasePoolPop(v19);
                     }
                   }
@@ -1787,7 +1787,7 @@ void __51__CBDisplayModuleiOS_initWithBacklight_andContext___block_invoke_32(uin
               }
             }
 
-            v71 = DisplaySetProperty(v75->_displayInternal, v72, v73) != 0;
+            v71 = DisplaySetProperty(selfCopy->_displayInternal, keyCopy, propertyCopy) != 0;
           }
 
 LABEL_173:
@@ -1801,24 +1801,24 @@ LABEL_173:
           goto LABEL_173;
         }
 
-        [v73 objectForKeyedSubscript:@"AuroraFactor"];
+        [propertyCopy objectForKeyedSubscript:@"AuroraFactor"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           goto LABEL_173;
         }
 
-        [v73 objectForKeyedSubscript:@"AuroraFadePeriod"];
+        [propertyCopy objectForKeyedSubscript:@"AuroraFadePeriod"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           goto LABEL_173;
         }
 
-        displayInternal = v75->_displayInternal;
-        [objc_msgSend(v73 objectForKeyedSubscript:{@"AuroraFactor", "floatValue"}];
+        displayInternal = selfCopy->_displayInternal;
+        [objc_msgSend(propertyCopy objectForKeyedSubscript:{@"AuroraFactor", "floatValue"}];
         v42 = v10;
-        [objc_msgSend(v73 objectForKeyedSubscript:{@"AuroraFadePeriod", "floatValue"}];
+        [objc_msgSend(propertyCopy objectForKeyedSubscript:{@"AuroraFadePeriod", "floatValue"}];
         DisplaySetAuroraFactorWithFade(displayInternal, v42, v11);
         v76 = 1;
       }
@@ -1835,16 +1835,16 @@ LABEL_174:
   return v76 & 1;
 }
 
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4
+- (void)handleNotificationForKey:(id)key withProperty:(id)property
 {
   v40 = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
-  v31 = a4;
+  keyCopy = key;
+  propertyCopy = property;
   if (self->super.super._logHandle)
   {
-    logHandle = v34->super.super._logHandle;
+    logHandle = selfCopy->super.super._logHandle;
   }
 
   else
@@ -1866,41 +1866,41 @@ LABEL_174:
   v29 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v39, v32, v31);
+    __os_log_helper_16_2_2_8_64_8_64(v39, keyCopy, propertyCopy);
     _os_log_debug_impl(&dword_1DE8E5000, v30, v29, "Handle notification for key = %@ and property = %@", v39, 0x16u);
   }
 
-  v28 = [(CBAurora *)v34->_aurora isBoostingBrightness];
-  [(CBAurora *)v34->_aurora setPropertyForKey:v32 withValue:v31];
-  [(CBChromaticCorrection *)v34->_twilight handleNotificationForKey:v32 withProperty:v31];
-  [(CBChromaticCorrection *)v34->_ammolite handleNotificationForKey:v32 withProperty:v31];
-  [(CBChromaticCorrection *)v34->_gcp handleNotificationForKey:v32 withProperty:v31];
-  [(CBIndicatorBrightnessModule *)v34->_indicatorBrightnessModule handleNotificationForKey:v32 withProperty:v31];
-  if ([v32 isEqualToString:@"CBTargetWhitePoint"])
+  isBoostingBrightness = [(CBAurora *)selfCopy->_aurora isBoostingBrightness];
+  [(CBAurora *)selfCopy->_aurora setPropertyForKey:keyCopy withValue:propertyCopy];
+  [(CBChromaticCorrection *)selfCopy->_twilight handleNotificationForKey:keyCopy withProperty:propertyCopy];
+  [(CBChromaticCorrection *)selfCopy->_ammolite handleNotificationForKey:keyCopy withProperty:propertyCopy];
+  [(CBChromaticCorrection *)selfCopy->_gcp handleNotificationForKey:keyCopy withProperty:propertyCopy];
+  [(CBIndicatorBrightnessModule *)selfCopy->_indicatorBrightnessModule handleNotificationForKey:keyCopy withProperty:propertyCopy];
+  if ([keyCopy isEqualToString:@"CBTargetWhitePoint"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v27 = [v31 objectForKey:@"YWP"];
+      v27 = [propertyCopy objectForKey:@"YWP"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         [v27 floatValue];
         v26 = 1.0 / v4;
-        DisplaySetEDRForTargetYcompensation(v34->_displayInternal, 1.0 / v4);
+        DisplaySetEDRForTargetYcompensation(selfCopy->_displayInternal, 1.0 / v4);
       }
     }
   }
 
-  else if ([v32 isEqualToString:@"BlueReductionEnabled"])
+  else if ([keyCopy isEqualToString:@"BlueReductionEnabled"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v34->_blrEnabled = [v31 BOOLValue];
-      if (v34->super.super._logHandle)
+      selfCopy->_blrEnabled = [propertyCopy BOOLValue];
+      if (selfCopy->super.super._logHandle)
       {
-        v16 = v34->super.super._logHandle;
+        v16 = selfCopy->super.super._logHandle;
       }
 
       else
@@ -1922,27 +1922,27 @@ LABEL_174:
       v24 = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        __os_log_helper_16_2_1_8_66(v38, v31);
+        __os_log_helper_16_2_1_8_66(v38, propertyCopy);
         _os_log_impl(&dword_1DE8E5000, v25, v24, "Set BLR enabled = %{public}@", v38, 0xCu);
       }
 
-      DisplaySetBLREnabled(v34->_displayInternal, v34->_blrEnabled);
+      DisplaySetBLREnabled(selfCopy->_displayInternal, selfCopy->_blrEnabled);
       if (CBU_IsSyncBrightnessTransactionsSupported())
       {
-        [(CBAppliedCompensations *)v34->_appliedCompensations setBlrEnabled:v34->_blrEnabled];
+        [(CBAppliedCompensations *)selfCopy->_appliedCompensations setBlrEnabled:selfCopy->_blrEnabled];
       }
     }
   }
 
-  else if ([v32 isEqualToString:@"ColorAdaptationActive"])
+  else if ([keyCopy isEqualToString:@"ColorAdaptationActive"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v34->_harmonyEnabled = [v31 BOOLValue];
-      if (v34->super.super._logHandle)
+      selfCopy->_harmonyEnabled = [propertyCopy BOOLValue];
+      if (selfCopy->super.super._logHandle)
       {
-        v14 = v34->super.super._logHandle;
+        v14 = selfCopy->super.super._logHandle;
       }
 
       else
@@ -1964,39 +1964,39 @@ LABEL_174:
       v22 = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        __os_log_helper_16_2_1_8_66(v37, v31);
+        __os_log_helper_16_2_1_8_66(v37, propertyCopy);
         _os_log_impl(&dword_1DE8E5000, v23, v22, "Set Harmony enabled = %{public}@", v37, 0xCu);
       }
 
-      DisplaySetHarmonyEnabled(v34->_displayInternal, v34->_harmonyEnabled);
+      DisplaySetHarmonyEnabled(selfCopy->_displayInternal, selfCopy->_harmonyEnabled);
       if (CBU_IsSyncBrightnessTransactionsSupported())
       {
-        [(CBAppliedCompensations *)v34->_appliedCompensations setHarmonyEnabled:v34->_harmonyEnabled];
+        [(CBAppliedCompensations *)selfCopy->_appliedCompensations setHarmonyEnabled:selfCopy->_harmonyEnabled];
       }
     }
   }
 
-  else if ([v32 isEqualToString:@"TrustedLux"])
+  else if ([keyCopy isEqualToString:@"TrustedLux"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v31 floatValue];
+      [propertyCopy floatValue];
       v21 = *&v5;
-      [(CBDisplayModuleiOS *)v34 updateBDMWithLux:v5];
-      v34->_trustedLux = v21;
-      if (v34->_brtCtl)
+      [(CBDisplayModuleiOS *)selfCopy updateBDMWithLux:v5];
+      selfCopy->_trustedLux = v21;
+      if (selfCopy->_brtCtl)
       {
         if (![+[CBAODState isAODActive] sharedInstance]
         {
-          *&v6 = v34->_trustedLux;
-          [(CBBrightnessProxy *)v34->_brtCtl setAmbient:v6];
+          *&v6 = selfCopy->_trustedLux;
+          [(CBBrightnessProxy *)selfCopy->_brtCtl setAmbient:v6];
           v20 = 0;
-          if (([(CBBrightnessProxy *)v34->_brtCtl commitBrightness:&v20]& 1) == 0)
+          if (([(CBBrightnessProxy *)selfCopy->_brtCtl commitBrightness:&v20]& 1) == 0)
           {
-            if (v34->super.super._logHandle)
+            if (selfCopy->super.super._logHandle)
             {
-              v12 = v34->super.super._logHandle;
+              v12 = selfCopy->super.super._logHandle;
             }
 
             else
@@ -2012,9 +2012,9 @@ LABEL_174:
             }
           }
 
-          if (v34->super.super._logHandle)
+          if (selfCopy->super.super._logHandle)
           {
-            v10 = v34->super.super._logHandle;
+            v10 = selfCopy->super.super._logHandle;
           }
 
           else
@@ -2034,7 +2034,7 @@ LABEL_174:
 
           if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
           {
-            __os_log_helper_16_0_1_8_0(v35, COERCE__INT64(v34->_trustedLux));
+            __os_log_helper_16_0_1_8_0(v35, COERCE__INT64(selfCopy->_trustedLux));
             _os_log_impl(&dword_1DE8E5000, v10, OS_LOG_TYPE_INFO, "Set trusted lux = %f", v35, 0xCu);
           }
         }
@@ -2042,39 +2042,39 @@ LABEL_174:
     }
   }
 
-  else if ([v32 isEqualToString:@"FrameSynchronizedBrightnessTransaction"])
+  else if ([keyCopy isEqualToString:@"FrameSynchronizedBrightnessTransaction"])
   {
-    [(CBDisplayModuleiOS *)v34 handleDisplayBrightnessUpdate:v31];
+    [(CBDisplayModuleiOS *)selfCopy handleDisplayBrightnessUpdate:propertyCopy];
   }
 
-  else if ([v32 isEqualToString:@"CPMS.CLTM.Cap"] & 1) != 0 && !v28 && (objc_opt_class(), (objc_opt_isKindOfClass()))
+  else if ([keyCopy isEqualToString:@"CPMS.CLTM.Cap"] & 1) != 0 && !isBoostingBrightness && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v31 floatValue];
-    if (*&v7 < v34->_nitsSDR)
+    [propertyCopy floatValue];
+    if (*&v7 < selfCopy->_nitsSDR)
     {
-      *&v8 = v34->_nitsSDR;
+      *&v8 = selfCopy->_nitsSDR;
       [CBAnalytics cltmBudgetUpdated:v7 currentSDRBrightness:v8];
     }
   }
 
-  else if ([v32 isEqualToString:@"AliasingMitigationActive"])
+  else if ([keyCopy isEqualToString:@"AliasingMitigationActive"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v34->_aliasingMitigationActive = [v31 BOOLValue];
+      selfCopy->_aliasingMitigationActive = [propertyCopy BOOLValue];
     }
   }
 
-  else if ([v32 isEqualToString:@"DisplayBrightnessAuto"])
+  else if ([keyCopy isEqualToString:@"DisplayBrightnessAuto"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v31 BOOLValue];
-      if ([(AABCHistograms *)v34->_analyticsHist autoBrightnessOn]!= (v19 & 1))
+      bOOLValue = [propertyCopy BOOLValue];
+      if ([(AABCHistograms *)selfCopy->_analyticsHist autoBrightnessOn]!= (bOOLValue & 1))
       {
-        [(AABCHistograms *)v34->_analyticsHist setAutoBrightnessOn:v19 & 1];
+        [(AABCHistograms *)selfCopy->_analyticsHist setAutoBrightnessOn:bOOLValue & 1];
       }
     }
   }
@@ -2082,7 +2082,7 @@ LABEL_174:
   *MEMORY[0x1E69E9840];
 }
 
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4
+- (void)sendNotificationForKey:(id)key withValue:(id)value
 {
   if (self->super.super._notificationBlock)
   {
@@ -2090,15 +2090,15 @@ LABEL_174:
   }
 }
 
-- (id)copyPropertyInternalForKey:(id)a3
+- (id)copyPropertyInternalForKey:(id)key
 {
   v38 = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
+  keyCopy = key;
   if (self->super.super._logHandle)
   {
-    logHandle = v34->super.super._logHandle;
+    logHandle = selfCopy->super.super._logHandle;
   }
 
   else
@@ -2123,14 +2123,14 @@ LABEL_174:
     log = v31;
     *type = v30;
     buf = v37;
-    __os_log_helper_16_2_1_8_64(v37, v32);
+    __os_log_helper_16_2_1_8_64(v37, keyCopy);
     _os_log_impl(&dword_1DE8E5000, v31, v30, "Copy property for key = %@", v37, 0xCu);
   }
 
   v29 = 0;
-  if ([v32 isEqualToString:@"StatusInfo"])
+  if ([keyCopy isEqualToString:@"StatusInfo"])
   {
-    v28 = [CBStatusInfoHelper copyStatusInfoFor:v34];
+    v28 = [CBStatusInfoHelper copyStatusInfoFor:selfCopy];
     if (v28)
     {
       v29 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v28, @"CBDisplayModuleiOS", 0}];
@@ -2140,39 +2140,39 @@ LABEL_174:
     goto LABEL_43;
   }
 
-  if (([v32 isEqualToString:@"CBBrightnessControlAvailable"] & 1) == 0)
+  if (([keyCopy isEqualToString:@"CBBrightnessControlAvailable"] & 1) == 0)
   {
-    if ([v32 isEqualToString:@"CBBrightnessIsUnderAutoDimThreshold"])
+    if ([keyCopy isEqualToString:@"CBBrightnessIsUnderAutoDimThreshold"])
     {
-      v35 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v34->_brightnessIsUnderAutoDimThresholdCurrentValue];
+      copyStatusInfo = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:selfCopy->_brightnessIsUnderAutoDimThresholdCurrentValue];
       goto LABEL_52;
     }
 
-    if ([v32 isEqualToString:@"EDRState"])
+    if ([keyCopy isEqualToString:@"EDRState"])
     {
-      v35 = [(CBEDR *)v34->_edr copyStatusInfo];
+      copyStatusInfo = [(CBEDR *)selfCopy->_edr copyStatusInfo];
       goto LABEL_52;
     }
 
-    if ([v32 isEqualToString:kCBBrightnessCapToCA])
+    if ([keyCopy isEqualToString:kCBBrightnessCapToCA])
     {
       v4 = objc_alloc(MEMORY[0x1E696AD98]);
-      *&v5 = v34->_currentCapToCA;
-      v35 = [v4 initWithFloat:v5];
+      *&v5 = selfCopy->_currentCapToCA;
+      copyStatusInfo = [v4 initWithFloat:v5];
       goto LABEL_52;
     }
 
-    if ([v32 isEqualToString:@"DisplayNitsMaxSDR"])
+    if ([keyCopy isEqualToString:@"DisplayNitsMaxSDR"])
     {
-      if (v34->_brtCtl)
+      if (selfCopy->_brtCtl)
       {
         v6 = objc_alloc(MEMORY[0x1E696AD98]);
-        *&v7 = v34->_maxNits;
+        *&v7 = selfCopy->_maxNits;
         v29 = [v6 initWithFloat:v7];
 LABEL_43:
-        if (v34->super.super._logHandle)
+        if (selfCopy->super.super._logHandle)
         {
-          v18 = v34->super.super._logHandle;
+          v18 = selfCopy->super.super._logHandle;
         }
 
         else
@@ -2197,21 +2197,21 @@ LABEL_43:
           v14 = oslog;
           *v15 = v26;
           v16 = v36;
-          __os_log_helper_16_2_2_8_64_8_64(v36, v32, v29);
+          __os_log_helper_16_2_2_8_64_8_64(v36, keyCopy, v29);
           _os_log_debug_impl(&dword_1DE8E5000, v14, v15[0], "key=%@ result=%@", v16, 0x16u);
         }
 
-        v35 = v29;
+        copyStatusInfo = v29;
         goto LABEL_52;
       }
     }
 
-    else if ([v32 isEqualToString:@"DisplayNitsMaxEDR"])
+    else if ([keyCopy isEqualToString:@"DisplayNitsMaxEDR"])
     {
-      if (v34->_brtCtl)
+      if (selfCopy->_brtCtl)
       {
         v8 = objc_alloc(MEMORY[0x1E696AD98]);
-        *&v9 = v34->_maxNitsEDR;
+        *&v9 = selfCopy->_maxNitsEDR;
         v29 = [v8 initWithFloat:v9];
         goto LABEL_43;
       }
@@ -2219,83 +2219,83 @@ LABEL_43:
 
     else
     {
-      if (([v32 isEqualToString:@"DisplayNitsMaxPanel"] & 1) == 0)
+      if (([keyCopy isEqualToString:@"DisplayNitsMaxPanel"] & 1) == 0)
       {
-        if ([v32 isEqualToString:@"DisplayNitsMaxAurora"])
+        if ([keyCopy isEqualToString:@"DisplayNitsMaxAurora"])
         {
-          if (v34->_aurora)
+          if (selfCopy->_aurora)
           {
-            v29 = [(CBAurora *)v34->_aurora copyPropertyForKey:v32];
+            v29 = [(CBAurora *)selfCopy->_aurora copyPropertyForKey:keyCopy];
           }
         }
 
-        else if ([v32 isEqualToString:@"IndicatorModule"])
+        else if ([keyCopy isEqualToString:@"IndicatorModule"])
         {
-          v29 = MEMORY[0x1E69E5928](v34->_indicatorBrightnessModule);
+          v29 = MEMORY[0x1E69E5928](selfCopy->_indicatorBrightnessModule);
         }
 
         else
         {
-          v29 = [(CBIndicatorBrightnessModule *)v34->_indicatorBrightnessModule copyPropertyForKey:v32];
+          v29 = [(CBIndicatorBrightnessModule *)selfCopy->_indicatorBrightnessModule copyPropertyForKey:keyCopy];
           if (!v29)
           {
-            v29 = DisplayCopyProperty(v34->_displayInternal, v32);
+            v29 = DisplayCopyProperty(selfCopy->_displayInternal, keyCopy);
           }
         }
 
         goto LABEL_43;
       }
 
-      if (v34->_brtCtl)
+      if (selfCopy->_brtCtl)
       {
         v10 = objc_alloc(MEMORY[0x1E696AD98]);
-        *&v11 = v34->_maxNitsPanel;
+        *&v11 = selfCopy->_maxNitsPanel;
         v29 = [v10 initWithFloat:v11];
         goto LABEL_43;
       }
     }
 
-    v29 = DisplayCopyProperty(v34->_displayInternal, @"DisplayPanelLuminanceMax");
+    v29 = DisplayCopyProperty(selfCopy->_displayInternal, @"DisplayPanelLuminanceMax");
     goto LABEL_43;
   }
 
   v19 = objc_alloc(MEMORY[0x1E696AD98]);
-  brightnessControlEnabled = v34->_brightnessControlEnabled;
+  brightnessControlEnabled = selfCopy->_brightnessControlEnabled;
   v20 = 0;
   if (brightnessControlEnabled)
   {
-    v20 = !v34->_dominoMode;
+    v20 = !selfCopy->_dominoMode;
   }
 
-  v35 = [v19 initWithBool:v20 & 1];
+  copyStatusInfo = [v19 initWithBool:v20 & 1];
 LABEL_52:
-  v13 = v35;
+  v13 = copyStatusInfo;
   *MEMORY[0x1E69E9840];
-  return v35;
+  return copyStatusInfo;
 }
 
-- (void)handleEDRHeadroomRequest:(id)a3
+- (void)handleEDRHeadroomRequest:(id)request
 {
   v122 = *MEMORY[0x1E69E9840];
-  v115 = self;
+  selfCopy = self;
   v114 = a2;
-  v113 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [objc_msgSend(v113 objectForKey:{-[CBBrightnessProxy brightnessRequestEDRHeadroom](v115->_brtCtl, "brightnessRequestEDRHeadroom")), "floatValue"}];
+    [objc_msgSend(requestCopy objectForKey:{-[CBBrightnessProxy brightnessRequestEDRHeadroom](selfCopy->_brtCtl, "brightnessRequestEDRHeadroom")), "floatValue"}];
     v112 = *&v3;
-    [(CBEDR *)v115->_edr clampHeadroom:v3];
+    [(CBEDR *)selfCopy->_edr clampHeadroom:v3];
     v112 = *&v4;
-    [(CBSBIM *)v115->_sbim setCurrentHeadroomRequest:v4];
-    if (v115->_sbim)
+    [(CBSBIM *)selfCopy->_sbim setCurrentHeadroomRequest:v4];
+    if (selfCopy->_sbim)
     {
-      [(CBSBIM *)v115->_sbim cap];
+      [(CBSBIM *)selfCopy->_sbim cap];
       if (v112 > v5)
       {
-        if (v115->super.super._logHandle)
+        if (selfCopy->super.super._logHandle)
         {
-          logHandle = v115->super.super._logHandle;
+          logHandle = selfCopy->super.super._logHandle;
         }
 
         else
@@ -2317,22 +2317,22 @@ LABEL_52:
         v110 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
         {
-          [(CBSBIM *)v115->_sbim cap];
+          [(CBSBIM *)selfCopy->_sbim cap];
           __os_log_helper_16_0_2_8_0_8_0(v121, COERCE__INT64(v112), COERCE__INT64(v6));
           _os_log_impl(&dword_1DE8E5000, v111, v110, "EDR headroom is being capped by SBIM: request=%f cap=%f", v121, 0x16u);
         }
 
-        [(CBSBIM *)v115->_sbim cap];
+        [(CBSBIM *)selfCopy->_sbim cap];
         v112 = v7;
       }
     }
 
-    v63 = [v113 objectForKeyedSubscript:@"AuroraEDRHeadroomRequest"];
-    if (v63 != *MEMORY[0x1E695E4D0] && ((*&v8 = v112, [(CBAurora *)v115->_aurora setCurrentEDRHeadroomRequest:v8], [(CBAurora *)v115->_aurora isActive]) || [(CBAurora *)v115->_aurora isBoostingBrightness]))
+    v63 = [requestCopy objectForKeyedSubscript:@"AuroraEDRHeadroomRequest"];
+    if (v63 != *MEMORY[0x1E695E4D0] && ((*&v8 = v112, [(CBAurora *)selfCopy->_aurora setCurrentEDRHeadroomRequest:v8], [(CBAurora *)selfCopy->_aurora isActive]) || [(CBAurora *)selfCopy->_aurora isBoostingBrightness]))
     {
-      if (v115->super.super._logHandle)
+      if (selfCopy->super.super._logHandle)
       {
-        v62 = v115->super.super._logHandle;
+        v62 = selfCopy->super.super._logHandle;
       }
 
       else
@@ -2363,12 +2363,12 @@ LABEL_52:
 
     else
     {
-      [v113 objectForKeyedSubscript:@"AODEDRHeadroomRequest"];
+      [requestCopy objectForKeyedSubscript:@"AODEDRHeadroomRequest"];
       objc_opt_class();
       v58 = 0;
       if (objc_opt_isKindOfClass())
       {
-        v58 = [objc_msgSend(v113 objectForKeyedSubscript:{@"AODEDRHeadroomRequest", "BOOLValue"}];
+        v58 = [objc_msgSend(requestCopy objectForKeyedSubscript:{@"AODEDRHeadroomRequest", "BOOLValue"}];
       }
 
       v106 = v58 & 1;
@@ -2378,54 +2378,54 @@ LABEL_52:
         v53 = 0;
         if (v112 > 1.0)
         {
-          v53 = float_equal(v115->_requestedHeadroom, 1.0);
+          v53 = float_equal(selfCopy->_requestedHeadroom, 1.0);
         }
 
         v101 = v53;
-        v100 = !float_equal(v115->_requestedHeadroom, v112);
+        v100 = !float_equal(selfCopy->_requestedHeadroom, v112);
         v52 = 0;
         if (v100)
         {
-          v52 = v112 < v115->_appliedHeadroom;
+          v52 = v112 < selfCopy->_appliedHeadroom;
         }
 
         v99 = v52;
-        [v113 objectForKeyedSubscript:@"EcoModeHeadroomRequest"];
+        [requestCopy objectForKeyedSubscript:@"EcoModeHeadroomRequest"];
         objc_opt_class();
         v51 = 0;
         if (objc_opt_isKindOfClass())
         {
-          v51 = [objc_msgSend(v113 objectForKeyedSubscript:{@"EcoModeHeadroomRequest", "BOOLValue"}];
+          v51 = [objc_msgSend(requestCopy objectForKeyedSubscript:{@"EcoModeHeadroomRequest", "BOOLValue"}];
         }
 
         v98 = v51 & 1;
-        if (!v115->_ecoMode || v115->_referenceModeIsActive || (v98 & 1) != 0 || v102)
+        if (!selfCopy->_ecoMode || selfCopy->_referenceModeIsActive || (v98 & 1) != 0 || v102)
         {
-          [v113 objectForKeyedSubscript:@"DominoHeadroomRequest"];
+          [requestCopy objectForKeyedSubscript:@"DominoHeadroomRequest"];
           objc_opt_class();
           v46 = 0;
           if (objc_opt_isKindOfClass())
           {
-            v46 = [objc_msgSend(v113 objectForKeyedSubscript:{@"DominoHeadroomRequest", "BOOLValue"}];
+            v46 = [objc_msgSend(requestCopy objectForKeyedSubscript:{@"DominoHeadroomRequest", "BOOLValue"}];
           }
 
           v94 = v46 & 1;
-          if (!v115->_dominoMode || (v94 & 1) != 0)
+          if (!selfCopy->_dominoMode || (v94 & 1) != 0)
           {
-            [v113 objectForKeyedSubscript:@"AutoDimHeadroomRequest"];
+            [requestCopy objectForKeyedSubscript:@"AutoDimHeadroomRequest"];
             objc_opt_class();
             v41 = 0;
             if (objc_opt_isKindOfClass())
             {
-              v41 = [objc_msgSend(v113 objectForKeyedSubscript:{@"AutoDimHeadroomRequest", "BOOLValue"}];
+              v41 = [objc_msgSend(requestCopy objectForKeyedSubscript:{@"AutoDimHeadroomRequest", "BOOLValue"}];
             }
 
             v90 = v41 & 1;
-            if (!v115->_autoDimActive || (v90 & 1) != 0 || v102)
+            if (!selfCopy->_autoDimActive || (v90 & 1) != 0 || v102)
             {
               if (v101)
               {
-                if ([(CBBacklightNode *)v115->_backlightParams rtplc])
+                if ([(CBBacklightNode *)selfCopy->_backlightParams rtplc])
                 {
                   v81[0] = 0;
                   v81[1] = v81;
@@ -2433,57 +2433,57 @@ LABEL_52:
                   v83 = 48;
                   v84 = __Block_byref_object_copy_;
                   v85 = __Block_byref_object_dispose_;
-                  v86 = v115;
+                  v86 = selfCopy;
                   v73 = MEMORY[0x1E69E9820];
                   v74 = -1073741824;
                   v75 = 0;
                   v76 = __47__CBDisplayModuleiOS_handleEDRHeadroomRequest___block_invoke;
                   v77 = &unk_1E867B5F0;
                   v79 = v81;
-                  v78 = v115;
+                  v78 = selfCopy;
                   v80 = &v73;
-                  [(CBFrameStats *)v115->_frameStats startMonitoring:&v73];
-                  if (v115->_rtplcState == 2 || v115->_rtplcState == 1)
+                  [(CBFrameStats *)selfCopy->_frameStats startMonitoring:&v73];
+                  if (selfCopy->_rtplcState == 2 || selfCopy->_rtplcState == 1)
                   {
                     LODWORD(v10) = 0.5;
-                    [(CBDisplayModuleiOS *)v115 createAPCEMonitorWithFrequency:v10];
+                    [(CBDisplayModuleiOS *)selfCopy createAPCEMonitorWithFrequency:v10];
                   }
 
                   _Block_object_dispose(v81, 8);
                 }
 
                 *&v9 = v112;
-                [(CBDisplayModuleiOS *)v115 updateEDRStateForEvent:2 andHeadroom:v9];
+                [(CBDisplayModuleiOS *)selfCopy updateEDRStateForEvent:2 andHeadroom:v9];
               }
 
               if (v100)
               {
-                if (v112 <= v115->_sbimEDRThreshold)
+                if (v112 <= selfCopy->_sbimEDRThreshold)
                 {
-                  [(CBSBIM *)v115->_sbim exitEDR];
+                  [(CBSBIM *)selfCopy->_sbim exitEDR];
                 }
 
                 else
                 {
-                  [(CBSBIM *)v115->_sbim enterEDR];
+                  [(CBSBIM *)selfCopy->_sbim enterEDR];
                 }
               }
 
               if (v102)
               {
-                if ([(CBBacklightNode *)v115->_backlightParams rtplc])
+                if ([(CBBacklightNode *)selfCopy->_backlightParams rtplc])
                 {
-                  [(CBFrameStats *)v115->_frameStats stopMonitoring];
-                  [(CBDisplayModuleiOS *)v115 deleteAPCEMonitor];
+                  [(CBFrameStats *)selfCopy->_frameStats stopMonitoring];
+                  [(CBDisplayModuleiOS *)selfCopy deleteAPCEMonitor];
                 }
 
                 *&v11 = v112;
-                [(CBDisplayModuleiOS *)v115 updateEDRStateForEvent:3 andHeadroom:v11];
+                [(CBDisplayModuleiOS *)selfCopy updateEDRStateForEvent:3 andHeadroom:v11];
               }
 
-              v72 = [(CBDisplayModuleiOS *)v115 edrIsEngaged];
-              displayInternal = v115->_displayInternal;
-              if (v72)
+              edrIsEngaged = [(CBDisplayModuleiOS *)selfCopy edrIsEngaged];
+              displayInternal = selfCopy->_displayInternal;
+              if (edrIsEngaged)
               {
                 DisplaySetProperty(displayInternal, @"DisplayFasterEDREngaged", *MEMORY[0x1E695E4D0]);
               }
@@ -2493,18 +2493,18 @@ LABEL_52:
                 DisplaySetProperty(displayInternal, @"DisplayFasterEDREngaged", *MEMORY[0x1E695E4C0]);
               }
 
-              v115->_requestedHeadroom = v112;
+              selfCopy->_requestedHeadroom = v112;
               v71 = 1.0;
               v70 = 0.0;
-              [v113 objectForKeyedSubscript:@"EDRSecondsPerStop"];
+              [requestCopy objectForKeyedSubscript:@"EDRSecondsPerStop"];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [objc_msgSend(v113 objectForKeyedSubscript:{@"EDRSecondsPerStop", "floatValue"}];
+                [objc_msgSend(requestCopy objectForKeyedSubscript:{@"EDRSecondsPerStop", "floatValue"}];
                 v68 = v12;
-                if (v115->super.super._logHandle)
+                if (selfCopy->super.super._logHandle)
                 {
-                  v35 = v115->super.super._logHandle;
+                  v35 = selfCopy->super.super._logHandle;
                 }
 
                 else
@@ -2528,16 +2528,16 @@ LABEL_52:
                   _os_log_impl(&dword_1DE8E5000, v35, OS_LOG_TYPE_DEFAULT, "HDR | Transition is using the seconds per stop specified in request = %f", v120, 0xCu);
                 }
 
-                *&v13 = v115->_requestedHeadroom;
+                *&v13 = selfCopy->_requestedHeadroom;
                 *&v14 = v68;
-                v69 = [(CBEDR *)v115->_edr shouldUpdateEDRForRequestedHeadroom:&v71 targetHeadroom:&v70 rampTime:v13 durationPerStop:v14];
+                v69 = [(CBEDR *)selfCopy->_edr shouldUpdateEDRForRequestedHeadroom:&v71 targetHeadroom:&v70 rampTime:v13 durationPerStop:v14];
               }
 
               else if (v102 || v99)
               {
-                if (v115->super.super._logHandle)
+                if (selfCopy->super.super._logHandle)
                 {
-                  v33 = v115->super.super._logHandle;
+                  v33 = selfCopy->super.super._logHandle;
                 }
 
                 else
@@ -2564,13 +2564,13 @@ LABEL_52:
                   }
 
                   v31 = v15;
-                  [(CBEDR *)v115->_edr secondsPerStopExit];
+                  [(CBEDR *)selfCopy->_edr secondsPerStopExit];
                   __os_log_helper_16_2_2_8_64_8_0(v119, v31, COERCE__INT64(v16));
                   _os_log_impl(&dword_1DE8E5000, v33, OS_LOG_TYPE_DEFAULT, "HDR | %@ is using the exit duration per stop = %f", v119, 0x16u);
                 }
 
-                edr = v115->_edr;
-                requestedHeadroom = v115->_requestedHeadroom;
+                edr = selfCopy->_edr;
+                requestedHeadroom = selfCopy->_requestedHeadroom;
                 [(CBEDR *)edr secondsPerStopExit];
                 LODWORD(v18) = v17;
                 *&v19 = requestedHeadroom;
@@ -2579,9 +2579,9 @@ LABEL_52:
 
               else
               {
-                if (v115->super.super._logHandle)
+                if (selfCopy->super.super._logHandle)
                 {
-                  v28 = v115->super.super._logHandle;
+                  v28 = selfCopy->super.super._logHandle;
                 }
 
                 else
@@ -2601,30 +2601,30 @@ LABEL_52:
 
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
                 {
-                  [(CBEDR *)v115->_edr secondsPerStop];
+                  [(CBEDR *)selfCopy->_edr secondsPerStop];
                   __os_log_helper_16_0_1_8_0(v118, COERCE__INT64(v21));
                   _os_log_impl(&dword_1DE8E5000, v28, OS_LOG_TYPE_DEFAULT, "HDR | Transition is using the default duration per stop = %f", v118, 0xCu);
                 }
 
-                *&v20 = v115->_requestedHeadroom;
-                v69 = [(CBEDR *)v115->_edr shouldUpdateEDRForRequestedHeadroom:&v71 targetHeadroom:&v70 rampTime:v20];
+                *&v20 = selfCopy->_requestedHeadroom;
+                v69 = [(CBEDR *)selfCopy->_edr shouldUpdateEDRForRequestedHeadroom:&v71 targetHeadroom:&v70 rampTime:v20];
               }
 
-              if ([v113 objectForKeyedSubscript:{-[CBBrightnessProxy brightnessNotificationPowerOff](v115->_brtCtl, "brightnessNotificationPowerOff")}])
+              if ([requestCopy objectForKeyedSubscript:{-[CBBrightnessProxy brightnessNotificationPowerOff](selfCopy->_brtCtl, "brightnessNotificationPowerOff")}])
               {
                 v69 = 1;
-                [(CBEDR *)v115->_edr resetRequestedHeadroom];
+                [(CBEDR *)selfCopy->_edr resetRequestedHeadroom];
               }
 
-              v67 = [v113 objectForKey:{-[CBBrightnessProxy brightnessRequestRampDuration](v115->_brtCtl, "brightnessRequestRampDuration")}];
+              v67 = [requestCopy objectForKey:{-[CBBrightnessProxy brightnessRequestRampDuration](selfCopy->_brtCtl, "brightnessRequestRampDuration")}];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
                 [v67 floatValue];
                 v66 = v22;
-                if (v115->super.super._logHandle)
+                if (selfCopy->super.super._logHandle)
                 {
-                  v26 = v115->super.super._logHandle;
+                  v26 = selfCopy->super.super._logHandle;
                 }
 
                 else
@@ -2644,18 +2644,18 @@ LABEL_52:
 
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
                 {
-                  __os_log_helper_16_0_3_8_0_8_0_8_0(v117, COERCE__INT64(v115->_requestedHeadroom), COERCE__INT64(v115->_appliedHeadroom), COERCE__INT64(v66));
+                  __os_log_helper_16_0_3_8_0_8_0_8_0(v117, COERCE__INT64(selfCopy->_requestedHeadroom), COERCE__INT64(selfCopy->_appliedHeadroom), COERCE__INT64(v66));
                   _os_log_impl(&dword_1DE8E5000, v26, OS_LOG_TYPE_DEFAULT, "HDR | CA request for headroom: %f, currrent headroom: %f, transitionTime: %f", v117, 0x20u);
                 }
 
-                DisplayStartFastEDRRamp(v115->_displayInternal, v115->_requestedHeadroom, v66);
+                DisplayStartFastEDRRamp(selfCopy->_displayInternal, selfCopy->_requestedHeadroom, v66);
               }
 
               else if (v69)
               {
-                if (v115->super.super._logHandle)
+                if (selfCopy->super.super._logHandle)
                 {
-                  v24 = v115->super.super._logHandle;
+                  v24 = selfCopy->super.super._logHandle;
                 }
 
                 else
@@ -2675,19 +2675,19 @@ LABEL_52:
 
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
                 {
-                  __os_log_helper_16_0_3_8_0_8_0_8_0(v116, COERCE__INT64(v115->_requestedHeadroom), *&v70, COERCE__INT64(v71));
+                  __os_log_helper_16_0_3_8_0_8_0_8_0(v116, COERCE__INT64(selfCopy->_requestedHeadroom), *&v70, COERCE__INT64(v71));
                   _os_log_impl(&dword_1DE8E5000, v24, OS_LOG_TYPE_DEFAULT, "HDR | Received EDRHeadroomRequest: %f, evaluated ramp time: %f, targetHeadroom: %f", v116, 0x20u);
                 }
 
-                DisplayStartFastEDRRamp(v115->_displayInternal, v71, v70);
+                DisplayStartFastEDRRamp(selfCopy->_displayInternal, v71, v70);
               }
             }
 
             else
             {
-              if (v115->super.super._logHandle)
+              if (selfCopy->super.super._logHandle)
               {
-                v40 = v115->super.super._logHandle;
+                v40 = selfCopy->super.super._logHandle;
               }
 
               else
@@ -2719,9 +2719,9 @@ LABEL_52:
 
           else
           {
-            if (v115->super.super._logHandle)
+            if (selfCopy->super.super._logHandle)
             {
-              v45 = v115->super.super._logHandle;
+              v45 = selfCopy->super.super._logHandle;
             }
 
             else
@@ -2753,9 +2753,9 @@ LABEL_52:
 
         else
         {
-          if (v115->super.super._logHandle)
+          if (selfCopy->super.super._logHandle)
           {
-            v50 = v115->super.super._logHandle;
+            v50 = selfCopy->super.super._logHandle;
           }
 
           else
@@ -2787,9 +2787,9 @@ LABEL_52:
 
       else
       {
-        if (v115->super.super._logHandle)
+        if (selfCopy->super.super._logHandle)
         {
-          v57 = v115->super.super._logHandle;
+          v57 = selfCopy->super.super._logHandle;
         }
 
         else
@@ -2855,15 +2855,15 @@ uint64_t __47__CBDisplayModuleiOS_handleEDRHeadroomRequest___block_invoke_2(uint
   return [v3 processFrameInfo:v6];
 }
 
-- (void)handleDisplayBrightnessUpdate:(id)a3
+- (void)handleDisplayBrightnessUpdate:(id)update
 {
   v344 = v367;
   v345 = "Brightness Cap";
   v397 = *MEMORY[0x1E69E9840];
-  v383 = self;
+  selfCopy = self;
   v382 = a2;
-  v381 = a3;
-  v346 = a3;
+  updateCopy = update;
+  updateCopy2 = update;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2978,9 +2978,9 @@ uint64_t __47__CBDisplayModuleiOS_handleEDRHeadroomRequest___block_invoke_2(uint
         }
       }
 
-      v23 = [*(*(v344 + 34) + 136) copyStatusInfo];
+      copyStatusInfo = [*(*(v344 + 34) + 136) copyStatusInfo];
       v24 = v344;
-      *(v344 + 27) = v23;
+      *(v344 + 27) = copyStatusInfo;
       if (*(v24 + 27))
       {
         v336 = *(v344 + 27);
@@ -3572,11 +3572,11 @@ uint64_t __47__CBDisplayModuleiOS_handleEDRHeadroomRequest___block_invoke_2(uint
           v245 = 0x1ECDAF000uLL;
           [*(v112 + 48) currentScaler];
           *&v251 = v113;
-          v114 = [*(*(v344 + 34) + 48) rampInProgress];
+          rampInProgress = [*(*(v344 + 34) + 48) rampInProgress];
           v246 = "NO";
           v115 = "YES";
           v247 = "YES";
-          if ((v114 & 1) == 0)
+          if ((rampInProgress & 1) == 0)
           {
             v115 = "NO";
           }
@@ -3968,58 +3968,58 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
   *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFrameInfo:(id *)a3
+- (void)handleFrameInfo:(id *)info
 {
   v40 = *MEMORY[0x1E69E9840];
-  v37 = self;
+  selfCopy = self;
   v36 = a2;
-  v35 = a3;
+  infoCopy = info;
   v34 = 1.0;
-  *&v3 = a3->var5 - 1.0;
+  *&v3 = info->var5 - 1.0;
   v33 = *&v3;
   var3 = 0;
   if (!self->_rtplcCapApplied)
   {
-    var3 = a3->var3;
+    var3 = info->var3;
   }
 
   v32 = var3;
   v17 = 0;
-  if (v37->_rtplcCapApplied)
+  if (selfCopy->_rtplcCapApplied)
   {
     v17 = 0;
-    if (a3->var3)
+    if (info->var3)
     {
       *&v3 = v33;
-      v17 = v33 != v37->_currentRTPLCTarget;
+      v17 = v33 != selfCopy->_currentRTPLCTarget;
     }
   }
 
   v31 = v17;
   v16 = 0;
-  if (v37->_rtplcCapApplied)
+  if (selfCopy->_rtplcCapApplied)
   {
-    v16 = !a3->var3;
+    v16 = !info->var3;
   }
 
   v30 = v16;
   v15 = 1;
-  if (!a3->var2)
+  if (!info->var2)
   {
-    v15 = a3->var3;
+    v15 = info->var3;
   }
 
   v29 = v15;
-  v37->_rtplcCapApplied = a3->var3;
+  selfCopy->_rtplcCapApplied = info->var3;
   if (v32 || v31)
   {
-    [(CBDisplayModuleiOS *)v37 deleteAPCEMonitor];
-    v37->_rtplcState = 1;
-    v37->_currentRTPLCTarget = v33;
-    v28 = v37->_currentRTPLCTarget / v37->_nitsSDR;
-    if (v37->super.super._logHandle)
+    [(CBDisplayModuleiOS *)selfCopy deleteAPCEMonitor];
+    selfCopy->_rtplcState = 1;
+    selfCopy->_currentRTPLCTarget = v33;
+    v28 = selfCopy->_currentRTPLCTarget / selfCopy->_nitsSDR;
+    if (selfCopy->super.super._logHandle)
     {
-      logHandle = v37->super.super._logHandle;
+      logHandle = selfCopy->super.super._logHandle;
     }
 
     else
@@ -4041,19 +4041,19 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
     v26 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_5_8_0_8_0_8_0_8_0_8_0(v39, COERCE__INT64(v37->_currentRTPLCTarget), COERCE__INT64(v28), COERCE__INT64(v37->_appliedHeadroom), COERCE__INT64(v37->_nitsSDR), COERCE__INT64(v37->_currentCapToCA));
+      __os_log_helper_16_0_5_8_0_8_0_8_0_8_0_8_0(v39, COERCE__INT64(selfCopy->_currentRTPLCTarget), COERCE__INT64(v28), COERCE__INT64(selfCopy->_appliedHeadroom), COERCE__INT64(selfCopy->_nitsSDR), COERCE__INT64(selfCopy->_currentCapToCA));
       _os_log_impl(&dword_1DE8E5000, v27, v26, "RTPLC TRIGGER!! RTPLCBrightness: %f, reducedHeadroom: %f, current(_applied): %f, _nitsSDR: %f, _currentCapToCA = %f", v39, 0x34u);
     }
 
-    [(CBDisplayModuleiOS *)v37 compensatedSDRNits];
-    v25 = *&v3 * v37->_appliedHeadroom;
-    currentRTPLCTarget = v37->_currentRTPLCTarget;
+    [(CBDisplayModuleiOS *)selfCopy compensatedSDRNits];
+    v25 = *&v3 * selfCopy->_appliedHeadroom;
+    currentRTPLCTarget = selfCopy->_currentRTPLCTarget;
     *&v3 = currentRTPLCTarget;
     if (currentRTPLCTarget < v25)
     {
-      if (v37->super.super._logHandle)
+      if (selfCopy->super.super._logHandle)
       {
-        v12 = v37->super.super._logHandle;
+        v12 = selfCopy->super.super._logHandle;
       }
 
       else
@@ -4079,15 +4079,15 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
         _os_log_impl(&dword_1DE8E5000, v23, v22, "RTPLC ACTION: StartRTPLCRamp, ramp Cap: %f--->%f", v38, 0x16u);
       }
 
-      DisplayStartRTPLCEDRCapRamp(v37->_displayInternal, 0, v25, currentRTPLCTarget, 4.0);
+      DisplayStartRTPLCEDRCapRamp(selfCopy->_displayInternal, 0, v25, currentRTPLCTarget, 4.0);
     }
   }
 
   else if (v30)
   {
-    if (v37->super.super._logHandle)
+    if (selfCopy->super.super._logHandle)
     {
-      v10 = v37->super.super._logHandle;
+      v10 = selfCopy->super.super._logHandle;
     }
 
     else
@@ -4116,36 +4116,36 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
     }
 
     LODWORD(v4) = 0.5;
-    [(CBDisplayModuleiOS *)v37 createAPCEMonitorWithFrequency:v4];
+    [(CBDisplayModuleiOS *)selfCopy createAPCEMonitorWithFrequency:v4];
   }
 
-  if ([(CBFrameStats *)v37->_frameStats tripLength]&& !v29)
+  if ([(CBFrameStats *)selfCopy->_frameStats tripLength]&& !v29)
   {
     mach_time_now_in_seconds();
-    [(CBFrameStats *)v37->_frameStats currentTripStartTime];
-    v6 = [(CBFrameStats *)v37->_frameStats tripLength];
-    [(CBFrameStats *)v37->_frameStats tripMaxAPCE];
-    rtplcTripMaxBrightness = v37->_rtplcTripMaxBrightness;
-    [CBAnalytics rtplcTriggeredWithLength:"rtplcTriggeredWithLength:maxAPCE:durationInSeconds:sdrBrightness:referenceModeEnabled:" maxAPCE:v6 durationInSeconds:v37->_referenceModeIsActive sdrBrightness:? referenceModeEnabled:?];
-    v37->_rtplcTripMaxBrightness = 0.0;
+    [(CBFrameStats *)selfCopy->_frameStats currentTripStartTime];
+    tripLength = [(CBFrameStats *)selfCopy->_frameStats tripLength];
+    [(CBFrameStats *)selfCopy->_frameStats tripMaxAPCE];
+    rtplcTripMaxBrightness = selfCopy->_rtplcTripMaxBrightness;
+    [CBAnalytics rtplcTriggeredWithLength:"rtplcTriggeredWithLength:maxAPCE:durationInSeconds:sdrBrightness:referenceModeEnabled:" maxAPCE:tripLength durationInSeconds:selfCopy->_referenceModeIsActive sdrBrightness:? referenceModeEnabled:?];
+    selfCopy->_rtplcTripMaxBrightness = 0.0;
   }
 
-  if (![(CBFrameStats *)v37->_frameStats tripLength]&& v29)
+  if (![(CBFrameStats *)selfCopy->_frameStats tripLength]&& v29)
   {
-    v37->_rtplcTripMaxBrightness = v37->_nitsSDR;
+    selfCopy->_rtplcTripMaxBrightness = selfCopy->_nitsSDR;
   }
 
   if (v29)
   {
-    v37->_rtplcTripMaxBrightness = fmaxf(v37->_nitsSDR, v37->_rtplcTripMaxBrightness);
+    selfCopy->_rtplcTripMaxBrightness = fmaxf(selfCopy->_nitsSDR, selfCopy->_rtplcTripMaxBrightness);
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (const)rtplcStateToString:(unint64_t)a3
+- (const)rtplcStateToString:(unint64_t)string
 {
-  switch(a3)
+  switch(string)
   {
     case 0uLL:
       return "None";
@@ -4160,20 +4160,20 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
   return "Unknown";
 }
 
-- (void)createAPCEMonitorWithFrequency:(float)a3
+- (void)createAPCEMonitorWithFrequency:(float)frequency
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = ((1.0 / a3) * 1000000000.0);
+  frequencyCopy = frequency;
+  v11 = ((1.0 / frequency) * 1000000000.0);
   if (self->_apceTimer)
   {
-    dispatch_source_set_timer(v14->_apceTimer, 0, v11, 0);
+    dispatch_source_set_timer(selfCopy->_apceTimer, 0, v11, 0);
   }
 
   else
   {
-    v10 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v14->super.super._queue);
+    v10 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->super.super._queue);
     if (v10)
     {
       dispatch_source_set_timer(v10, 0, v11, 0);
@@ -4182,7 +4182,7 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
       v5 = 0;
       v6 = __53__CBDisplayModuleiOS_createAPCEMonitorWithFrequency___block_invoke;
       v7 = &unk_1E867B480;
-      v8 = v14;
+      v8 = selfCopy;
       handler = dispatch_block_create_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0, &block);
       if (handler)
       {
@@ -4190,7 +4190,7 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
         _Block_release(handler);
       }
 
-      v14->_apceTimer = v10;
+      selfCopy->_apceTimer = v10;
       dispatch_activate(v10);
     }
   }
@@ -4283,64 +4283,64 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
   *MEMORY[0x1E69E9840];
 }
 
-- (float)computeTargetHDRBrightnessForAPCE:(float)a3 andScale:(float)a4
+- (float)computeTargetHDRBrightnessForAPCE:(float)e andScale:(float)scale
 {
-  v32 = self;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
-  v29 = a4;
+  eCopy = e;
+  scaleCopy = scale;
   if ([(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)self->_backlightParams rtplc] recoveryCurve] nits] count])
   {
-    [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] nits] get:0];
+    [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] nits] get:0];
     v25 = v4;
-    for (i = 0; i < [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] apce] count]; ++i)
+    for (i = 0; i < [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] apce] count]; ++i)
     {
-      if (i + 1 >= [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] apce] count])
+      if (i + 1 >= [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] apce] count])
       {
-        [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] nits] get:i];
+        [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] nits] get:i];
         v25 = v15;
-        return v25 / v29;
+        return v25 / scaleCopy;
       }
 
-      [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] apce] get:i];
-      if (v30 > v5)
+      [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] apce] get:i];
+      if (eCopy > v5)
       {
-        [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] apce] get:i + 1];
+        [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] apce] get:i + 1];
         v6 = *&v7;
-        *&v7 = v30;
-        if (v30 < v6)
+        *&v7 = eCopy;
+        if (eCopy < v6)
         {
-          [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] apce] get:i];
+          [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] apce] get:i];
           v23 = v8;
-          [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] apce] get:i + 1];
+          [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] apce] get:i + 1];
           v22 = v9;
-          [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] nits] get:i];
+          [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] nits] get:i];
           v21 = v10;
-          [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] nits] get:i + 1];
-          v25 = linear_interpolation(v30, v23, v21, v22, v11);
-          return v25 / v29;
+          [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] nits] get:i + 1];
+          v25 = linear_interpolation(eCopy, v23, v21, v22, v11);
+          return v25 / scaleCopy;
         }
       }
 
-      [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] apce] get:i];
+      [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] apce] get:i];
       v12 = *&v13;
-      *&v13 = v30;
-      if (v30 <= v12)
+      *&v13 = eCopy;
+      if (eCopy <= v12)
       {
-        [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)v32->_backlightParams rtplc] recoveryCurve] nits] get:i];
+        [(CBFloatArray *)[(CBRTPLCRecoveryCurveParams *)[(CBRTPLCParams *)[(CBBacklightNode *)selfCopy->_backlightParams rtplc] recoveryCurve] nits] get:i];
         v25 = v14;
-        return v25 / v29;
+        return v25 / scaleCopy;
       }
     }
 
-    return v25 / v29;
+    return v25 / scaleCopy;
   }
 
   else
   {
-    if (v32->super.super._logHandle)
+    if (selfCopy->super.super._logHandle)
     {
-      logHandle = v32->super.super._logHandle;
+      logHandle = selfCopy->super.super._logHandle;
     }
 
     else
@@ -4368,32 +4368,32 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
       _os_log_error_impl(&dword_1DE8E5000, log, type, "RTPLC | Empty Table", v26, 2u);
     }
 
-    return v32->_maxNitsEDR;
+    return selfCopy->_maxNitsEDR;
   }
 }
 
-- (BOOL)luxHasCrossedBDMThreshold:(float)a3
+- (BOOL)luxHasCrossedBDMThreshold:(float)threshold
 {
   v8 = 0;
-  if (self->_bdmLux1 <= a3)
+  if (self->_bdmLux1 <= threshold)
   {
-    v8 = a3 <= self->_bdmLux2;
+    v8 = threshold <= self->_bdmLux2;
   }
 
   v7 = 0;
   if (self->_lastBDMLux > self->_bdmLux1)
   {
-    v7 = a3 < self->_bdmLux1;
+    v7 = threshold < self->_bdmLux1;
   }
 
   v6 = 0;
   if (self->_lastBDMLux < self->_bdmLux2)
   {
-    v6 = a3 > self->_bdmLux2;
+    v6 = threshold > self->_bdmLux2;
   }
 
   v5 = 0;
-  if (a3 != self->_lastBDMLux)
+  if (threshold != self->_lastBDMLux)
   {
     v4 = 1;
     if (!v8)
@@ -4408,15 +4408,15 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
     v5 = v4;
   }
 
-  self->_lastBDMLux = a3;
+  self->_lastBDMLux = threshold;
   return v5 & 1;
 }
 
-- (void)updateEDRStateForEvent:(unint64_t)a3 andHeadroom:(float)a4
+- (void)updateEDRStateForEvent:(unint64_t)event andHeadroom:(float)headroom
 {
-  if (a3)
+  if (event)
   {
-    switch(a3)
+    switch(event)
     {
       case 2uLL:
         self->_edrState = 1;
@@ -4429,12 +4429,12 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
 
         break;
       case 4uLL:
-        if (self->_edrState == 1 && float_equal(a4, self->_requestedHeadroom))
+        if (self->_edrState == 1 && float_equal(headroom, self->_requestedHeadroom))
         {
           self->_edrState = 2;
         }
 
-        else if (self->_edrState == 3 && float_equal(a4, self->_requestedHeadroom))
+        else if (self->_edrState == 3 && float_equal(headroom, self->_requestedHeadroom))
         {
           self->_edrState = 0;
         }
@@ -4444,9 +4444,9 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
   }
 }
 
-- (const)edrStateToString:(unint64_t)a3
+- (const)edrStateToString:(unint64_t)string
 {
-  switch(a3)
+  switch(string)
   {
     case 0uLL:
       return "Off";
@@ -4463,7 +4463,7 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
 
 - (id)copyIdentifiers
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{@"DisplayBrightnessAuto", @"DisplayBrightnessFactor", @"DisplayBrightnessFactorWithFade", @"PreStrobeBrightnessRatio", @"EventTimestampDisplayOn", @"EventTimestampDisplayOff", @"DisplayBrightness", @"BrightnessGlobalScalar", @"DisplayPanelLuminanceMin", @"DisplayPanelLuminanceMid", @"DisplayPanelLuminanceMax", @"DisplayProductLuminanceMin", @"DisplayProductLuminanceMid", @"DisplayProductLuminanceMax", @"BrightnessRestrictions", @"DisplayBackLightArchitecture", @"FreezeBrightness", @"UserInteractedWithUI", @"EcoModeFactorUpdate", @"DominoStateUpdate", @"AmbientAdaptiveDimming", @"DisplayBrightnessFadePeriod", @"DisplayBrightnessFadePeriodOverride", @"MaxBrightness", @"BrightnessWeakCap", @"BrightnessMinPhysicalWithFade", @"DisplayBrightnessFactorRamp", @"PreStrobeConfig", @"PreStrobe", @"CoreBrightnessFeaturesDisabled", @"DisableWPShift", @"ReenablementRampPeriod", @"DisablementRampPeriod", @"AABConstraints", @"AABCurveCap", @"PreStrobeDimPeriod", @"BrightDotsMitigationParameters", @"VirtualBrightnessLimits", @"CPMSCurrentPower", @"CPMSPowerAccumulatorValue", 0}];
 }
@@ -4494,11 +4494,11 @@ void __52__CBDisplayModuleiOS_handleDisplayBrightnessUpdate___block_invoke_371(u
   return *&v3;
 }
 
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  clientCopy = client;
   v5 = 0;
   v6 = &v5;
   v7 = 0x20000000;
@@ -4522,12 +4522,12 @@ uint64_t __42__CBDisplayModuleiOS_addHIDServiceClient___block_invoke(uint64_t a1
   return result;
 }
 
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  eventCopy = event;
+  fromCopy = from;
   v6 = 0;
   v7 = &v6;
   v8 = 0x20000000;
@@ -4551,11 +4551,11 @@ uint64_t __42__CBDisplayModuleiOS_handleHIDEvent_from___block_invoke(void *a1, v
   return result;
 }
 
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  clientCopy = client;
   v5 = 0;
   v6 = &v5;
   v7 = 0x20000000;

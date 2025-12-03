@@ -1,28 +1,28 @@
 @interface _ANECVAIRCompiler
-+ (id)compileModelAt:(id)a3 csIdentity:(id)a4 plistFilename:(id)a5 optionsFilename:(id)a6 outputURL:(id)a7 saveSourceURL:(id)a8 aotModelBinaryPath:(id)a9 isEncryptedModel:(BOOL)a10 options:(id)a11 ok:(BOOL *)a12 error:(id *)a13;
++ (id)compileModelAt:(id)at csIdentity:(id)identity plistFilename:(id)filename optionsFilename:(id)optionsFilename outputURL:(id)l saveSourceURL:(id)rL aotModelBinaryPath:(id)path isEncryptedModel:(BOOL)self0 options:(id)self1 ok:(BOOL *)self2 error:(id *)self3;
 @end
 
 @implementation _ANECVAIRCompiler
 
-+ (id)compileModelAt:(id)a3 csIdentity:(id)a4 plistFilename:(id)a5 optionsFilename:(id)a6 outputURL:(id)a7 saveSourceURL:(id)a8 aotModelBinaryPath:(id)a9 isEncryptedModel:(BOOL)a10 options:(id)a11 ok:(BOOL *)a12 error:(id *)a13
++ (id)compileModelAt:(id)at csIdentity:(id)identity plistFilename:(id)filename optionsFilename:(id)optionsFilename outputURL:(id)l saveSourceURL:(id)rL aotModelBinaryPath:(id)path isEncryptedModel:(BOOL)self0 options:(id)self1 ok:(BOOL *)self2 error:(id *)self3
 {
-  v18 = a3;
-  v61 = a4;
-  v19 = a5;
-  v20 = a6;
-  v59 = a7;
-  v62 = a8;
-  v52 = a9;
-  v63 = a11;
+  atCopy = at;
+  identityCopy = identity;
+  filenameCopy = filename;
+  optionsFilenameCopy = optionsFilename;
+  lCopy = l;
+  rLCopy = rL;
+  pathCopy = path;
+  optionsCopy = options;
   context = objc_autoreleasePoolPush();
-  v21 = [v18 path];
-  v22 = [NSString stringWithFormat:@"%@/", v21];
+  path = [atCopy path];
+  v22 = [NSString stringWithFormat:@"%@/", path];
 
-  v23 = [v59 path];
-  obj = [NSString stringWithFormat:@"%@/", v23];
+  path2 = [lCopy path];
+  obj = [NSString stringWithFormat:@"%@/", path2];
 
-  v24 = [v62 path];
-  v60 = [NSString stringWithFormat:@"%@", v24];
+  path3 = [rLCopy path];
+  v60 = [NSString stringWithFormat:@"%@", path3];
 
   v25 = +[_ANELog compiler];
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -37,7 +37,7 @@
     _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "%@ inputModelPath=%@ sourceModelPath=%@", buf, 0x20u);
   }
 
-  v26 = v20;
+  v26 = optionsFilenameCopy;
   v55 = v26;
   if (v26)
   {
@@ -49,16 +49,16 @@
     v27 = 0;
   }
 
-  if (!v19)
+  if (!filenameCopy)
   {
-    v19 = +[_ANEStrings defaultANECIRFileName];
+    filenameCopy = +[_ANEStrings defaultANECIRFileName];
   }
 
-  v28 = [v63 objectForKeyedSubscript:kANEFAOTCacheUrlIdentifierKey];
+  v28 = [optionsCopy objectForKeyedSubscript:kANEFAOTCacheUrlIdentifierKey];
 
   if (v28)
   {
-    v57 = [v63 objectForKeyedSubscript:kANEFAOTCacheUrlIdentifierKey];
+    v57 = [optionsCopy objectForKeyedSubscript:kANEFAOTCacheUrlIdentifierKey];
   }
 
   else
@@ -69,7 +69,7 @@
   v72 = 0u;
   v71 = 0u;
   v70 = 0u;
-  v29 = v19;
+  v29 = filenameCopy;
   *buf = v29;
   v50 = v22;
   *&buf[8] = v50;
@@ -78,8 +78,8 @@
   *&v70 = +[_ANEStrings modelBinaryName];
   objc_storeStrong(&v70 + 1, obj);
   objc_storeStrong(&v71 + 1, v60);
-  objc_storeStrong(&v71, a9);
-  *(&v72 + 1) = a10;
+  objc_storeStrong(&v71, path);
+  *(&v72 + 1) = model;
   LOBYTE(v72) = v57 != 0;
   if (v57)
   {
@@ -93,14 +93,14 @@
 
   v31 = +[NSDate date];
   v65 = 0;
-  v54 = [_ANECompiler compileModel:buf options:v63 ok:a12 error:&v65];
+  v54 = [_ANECompiler compileModel:buf options:optionsCopy ok:ok error:&v65];
   v56 = v65;
   v32 = +[NSDate date];
   [v32 timeIntervalSinceDate:v31];
   v34 = v33;
-  if (!*a12)
+  if (!*ok)
   {
-    v35 = [NSString stringWithFormat:@"_ANECVAIRCompiler: for %@ FAILED: lAttr=%@ : lErr=%@", v61, v54, v56];
+    v35 = [NSString stringWithFormat:@"_ANECVAIRCompiler: for %@ FAILED: lAttr=%@ : lErr=%@", identityCopy, v54, v56];
     v36 = +[_ANELog compiler];
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
@@ -110,11 +110,11 @@
   }
 
   v64 = &stru_10001CBD8;
-  v38 = [_ANEStrings trimmedModelPath:v62 trimmedPath:&v64];
+  v38 = [_ANEStrings trimmedModelPath:rLCopy trimmedPath:&v64];
   v39 = v64;
   v66[0] = @"csIdentity";
   v66[1] = @"modelURL";
-  v67[0] = v61;
+  v67[0] = identityCopy;
   v67[1] = v39;
   v66[2] = @"privacy_score";
   v40 = [NSNumber numberWithBool:v38];
@@ -141,16 +141,16 @@
   v44 = [NSNumber numberWithDouble:v34 * 1000.0];
   v67[6] = v44;
   v66[7] = @"modelCompiled";
-  v45 = [NSNumber numberWithBool:*a12];
+  v45 = [NSNumber numberWithBool:*ok];
   v67[7] = v45;
   v46 = [NSDictionary dictionaryWithObjects:v67 forKeys:v66 count:8];
   [_ANEDataReporter reportTelemetryToPPS:@"modelCompilation" playload:v46];
 
   sub_100004038(buf);
   objc_autoreleasePoolPop(context);
-  if (a13 && !*a12)
+  if (error && !*ok)
   {
-    *a13 = [_ANECompiler createErrorWithUnderlyingError:v56];
+    *error = [_ANECompiler createErrorWithUnderlyingError:v56];
   }
 
   return v54;

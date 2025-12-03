@@ -1,7 +1,7 @@
 @interface NLExternalSeymourSessionStatusProvider
 - (BOOL)externalSessionActive;
 - (NLExternalSeymourSessionStatusProvider)init;
-- (void)setExternalSessionActive:(BOOL)a3;
+- (void)setExternalSessionActive:(BOOL)active;
 - (void)updateStatus;
 @end
 
@@ -14,11 +14,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setExternalSessionActive:(BOOL)a3
+- (void)setExternalSessionActive:(BOOL)active
 {
   v5 = OBJC_IVAR___NLExternalSeymourSessionStatusProvider_isExternalSessionActive;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = active;
 }
 
 - (NLExternalSeymourSessionStatusProvider)init
@@ -30,7 +30,7 @@
 
 - (void)updateStatus
 {
-  v2 = self;
+  selfCopy = self;
   ExternalSeymourSessionStatusProvider.updateStatus()();
 }
 

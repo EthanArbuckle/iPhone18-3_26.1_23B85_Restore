@@ -1,6 +1,6 @@
 @interface SGSiderealColorManager
 + (id)sharedInstance;
-- (id)_createElementsFromDict:(id)a3;
+- (id)_createElementsFromDict:(id)dict;
 - (id)_init;
 - (id)astronomicalTwilightColorCurve;
 - (id)astronomicalTwilightCurveP3;
@@ -16,7 +16,7 @@
 - (id)nauticalTwilightCurveP3;
 - (id)outerComplicationColorCurve;
 - (void)_notifyHandlers;
-- (void)addColorUpdateHandler:(id)a3;
+- (void)addColorUpdateHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -48,9 +48,9 @@ uint64_t __40__SGSiderealColorManager_sharedInstance__block_invoke()
   v2 = [(SGSiderealColorManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     updateHandlers = v2->_updateHandlers;
-    v2->_updateHandlers = v3;
+    v2->_updateHandlers = array;
   }
 
   return v2;
@@ -66,10 +66,10 @@ uint64_t __40__SGSiderealColorManager_sharedInstance__block_invoke()
   [(SGSiderealColorManager *)&v4 dealloc];
 }
 
-- (void)addColorUpdateHandler:(id)a3
+- (void)addColorUpdateHandler:(id)handler
 {
   updateHandlers = self->_updateHandlers;
-  v4 = MEMORY[0x25F865F50](a3, a2);
+  v4 = MEMORY[0x25F865F50](handler, a2);
   [(NSMutableArray *)updateHandlers addObject:v4];
 }
 
@@ -110,12 +110,12 @@ uint64_t __40__SGSiderealColorManager_sharedInstance__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createElementsFromDict:(id)a3
+- (id)_createElementsFromDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_new();
-  v5 = [v3 allKeys];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_6];
+  allKeys = [dictCopy allKeys];
+  v6 = [allKeys sortedArrayUsingComparator:&__block_literal_global_6];
 
   if ([v6 count])
   {
@@ -123,7 +123,7 @@ uint64_t __40__SGSiderealColorManager_sharedInstance__block_invoke()
     do
     {
       v8 = [v6 objectAtIndexedSubscript:v7];
-      v9 = [v3 objectForKeyedSubscript:v8];
+      v9 = [dictCopy objectForKeyedSubscript:v8];
       [v8 floatValue];
       SGSunriseAltitudeToSolarDayPercentage();
       v11 = v10;
@@ -148,7 +148,7 @@ uint64_t __40__SGSiderealColorManager_sharedInstance__block_invoke()
     do
     {
       v17 = [v6 objectAtIndexedSubscript:v16];
-      v18 = [v3 objectForKeyedSubscript:v17];
+      v18 = [dictCopy objectForKeyedSubscript:v17];
       [v17 floatValue];
       SGSunsetAltitudeToSolarDayPercentage();
       v20 = v19;

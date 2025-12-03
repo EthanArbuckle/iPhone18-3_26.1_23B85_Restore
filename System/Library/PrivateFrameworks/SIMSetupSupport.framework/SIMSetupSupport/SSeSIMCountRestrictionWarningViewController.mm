@@ -32,8 +32,8 @@
     v4 = [v3 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
     [WeakRetained setTitle:v4 forState:0];
 
-    v5 = [(SSeSIMCountRestrictionWarningViewController *)self buttonTray];
-    [v5 addButton:WeakRetained];
+    buttonTray = [(SSeSIMCountRestrictionWarningViewController *)self buttonTray];
+    [buttonTray addButton:WeakRetained];
   }
 
   else

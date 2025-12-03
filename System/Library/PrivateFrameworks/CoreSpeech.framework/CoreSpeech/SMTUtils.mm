@@ -1,19 +1,19 @@
 @interface SMTUtils
-+ (id)decompressArchiveWithURL:(id)a3 outError:(id *)a4;
++ (id)decompressArchiveWithURL:(id)l outError:(id *)error;
 + (void)cleanupTemporaryDirectory;
 + (void)initialize;
 @end
 
 @implementation SMTUtils
 
-+ (id)decompressArchiveWithURL:(id)a3 outError:(id *)a4
++ (id)decompressArchiveWithURL:(id)l outError:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = NSTemporaryDirectory();
   v7 = [NSURL fileURLWithPath:v6 isDirectory:1];
   v8 = +[NSUUID UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v7 URLByAppendingPathComponent:v9];
+  uUIDString = [v8 UUIDString];
+  v10 = [v7 URLByAppendingPathComponent:uUIDString];
 
   v11 = +[NSFileManager defaultManager];
   v39 = 0;
@@ -30,13 +30,13 @@
       v50 = 2112;
       v51 = v12;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Could not make temporary attachment directory at %@: %@", buf, 0x16u);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_23;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
 LABEL_23:
       v18 = 0;
@@ -45,7 +45,7 @@ LABEL_23:
 
     v17 = v12;
     v18 = 0;
-    *a4 = v12;
+    *error = v12;
     goto LABEL_24;
   }
 
@@ -63,7 +63,7 @@ LABEL_23:
     }
 
     archive_read_free();
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -88,7 +88,7 @@ LABEL_23:
     }
 
     archive_read_free();
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -100,12 +100,12 @@ LABEL_23:
     goto LABEL_22;
   }
 
-  v20 = [v5 fileSystemRepresentation];
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
   v21 = qword_10003FF88;
   if (os_log_type_enabled(qword_10003FF88, OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
-    v49 = v20;
+    v49 = fileSystemRepresentation;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Start extracting archive at path: %s", buf, 0xCu);
   }
 
@@ -122,7 +122,7 @@ LABEL_23:
     }
 
     archive_read_free();
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -133,7 +133,7 @@ LABEL_23:
     v15 = &v42;
 LABEL_22:
     v23 = [NSDictionary dictionaryWithObjects:v14 forKeys:v15 count:1];
-    *a4 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:5 userInfo:v23];
+    *error = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:5 userInfo:v23];
 
     goto LABEL_23;
   }
@@ -165,13 +165,13 @@ LABEL_22:
       }
 
       archive_read_free();
-      if (a4)
+      if (error)
       {
         v40 = NSLocalizedDescriptionKey;
         v33 = [NSString stringWithFormat:@"Unable to extract file to: %@", v27];
         v41 = v33;
         v34 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-        *a4 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:5 userInfo:v34];
+        *error = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:5 userInfo:v34];
       }
 
       v18 = 0;
@@ -264,7 +264,7 @@ LABEL_24:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10003FF88 = os_log_create("com.apple.speech.speechmodeltraining", "SMTUtils");
 

@@ -9,7 +9,7 @@
 
 - (BOOL)pkAttachmentBoundsMightBeInvalid
 {
-  v1 = objc_getAssociatedObject(a1, &attachmentBoundsKey);
+  v1 = objc_getAssociatedObject(self, &attachmentBoundsKey);
   v2 = v1 != 0;
 
   return v2;
@@ -27,7 +27,7 @@
     v3 = 0;
   }
 
-  objc_setAssociatedObject(a1, &attachmentBoundsKey, v3, 0x301);
+  objc_setAssociatedObject(self, &attachmentBoundsKey, v3, 0x301);
 }
 
 - (void)setPkInserting:()AttachmentBoundsSupport
@@ -42,12 +42,12 @@
     v3 = 0;
   }
 
-  objc_setAssociatedObject(a1, &insertingKey, v3, 0x301);
+  objc_setAssociatedObject(self, &insertingKey, v3, 0x301);
 }
 
 - (BOOL)pkInserting
 {
-  v1 = objc_getAssociatedObject(a1, &insertingKey);
+  v1 = objc_getAssociatedObject(self, &insertingKey);
   v2 = v1 != 0;
 
   return v2;

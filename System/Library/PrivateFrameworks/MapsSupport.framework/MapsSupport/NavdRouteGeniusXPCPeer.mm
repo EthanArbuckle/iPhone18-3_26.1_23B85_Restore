@@ -1,38 +1,38 @@
 @interface NavdRouteGeniusXPCPeer
 - (NSString)description;
-- (NavdRouteGeniusXPCPeer)initWithXPCConnection:(id)a3 delegate:(id)a4;
+- (NavdRouteGeniusXPCPeer)initWithXPCConnection:(id)connection delegate:(id)delegate;
 - (void)_stopMonitoring;
 - (void)dealloc;
 - (void)forceReroute;
-- (void)startWithHandler:(id)a3;
-- (void)stopWithHandler:(id)a3;
+- (void)startWithHandler:(id)handler;
+- (void)stopWithHandler:(id)handler;
 @end
 
 @implementation NavdRouteGeniusXPCPeer
 
-- (NavdRouteGeniusXPCPeer)initWithXPCConnection:(id)a3 delegate:(id)a4
+- (NavdRouteGeniusXPCPeer)initWithXPCConnection:(id)connection delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = NavdRouteGeniusXPCPeer;
   v9 = [(NavdRouteGeniusXPCPeer *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
+    objc_storeStrong(&v9->_connection, connection);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("NavdXPCPeerQueue", v11);
     queue = v10->_queue;
     v10->_queue = v12;
 
-    objc_storeStrong(&v10->_delegate, a4);
+    objc_storeStrong(&v10->_delegate, delegate);
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       connection = v10->_connection;
       *buf = 138412290;
-      v20 = connection;
+      connectionCopy2 = connection;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "RouteGeniusXPCPeer{%@} created.", buf, 0xCu);
     }
 
@@ -42,13 +42,13 @@
   return v10;
 }
 
-- (void)startWithHandler:(id)a3
+- (void)startWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[NavdRouteGeniusXPCPeer startWithHandler:]"];
   v5 = GEOFindOrCreateLog();
   v6 = v5;
-  if (v4)
+  if (handlerCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -58,7 +58,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "RouteGeniusXPCPeer{%@} Received start...", buf, 0xCu);
     }
 
-    v8 = [v4 copy];
+    v8 = [handlerCopy copy];
     objc_initWeak(buf, self);
     queue = self->_queue;
     v11[0] = _NSConcreteStackBlock;
@@ -91,13 +91,13 @@
   }
 }
 
-- (void)stopWithHandler:(id)a3
+- (void)stopWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GEOPerformanceEventLogger *)self->_performanceEventLogger logPerformanceEvent:"[NavdRouteGeniusXPCPeer stopWithHandler:]"];
   v5 = GEOFindOrCreateLog();
   v6 = v5;
-  if (v4)
+  if (handlerCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -113,7 +113,7 @@
     v9[2] = sub_10002BC0C;
     v9[3] = &unk_100065FD8;
     v9[4] = self;
-    v10 = v4;
+    v10 = handlerCopy;
     dispatch_async(queue, v9);
     v6 = v10;
   }
@@ -217,8 +217,8 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(NavdRouteGeniusXPCPeer *)self connection];
-  v6 = [v5 debugDescription];
+  connection = [(NavdRouteGeniusXPCPeer *)self connection];
+  v6 = [connection debugDescription];
   v7 = [v3 initWithFormat:@"%@<%p> from %@", v4, self, v6];
 
   return v7;

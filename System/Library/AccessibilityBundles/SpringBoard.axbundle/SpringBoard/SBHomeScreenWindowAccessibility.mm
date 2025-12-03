@@ -1,5 +1,5 @@
 @interface SBHomeScreenWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityAppleIntelligenceSiriRequestsPresenting;
 - (BOOL)_accessibilityCanAccessHomeScreenDuringOneness;
 - (BOOL)_accessibilityIgnoresStatusBarFrame;
@@ -14,21 +14,21 @@
 
 @implementation SBHomeScreenWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityScrollLeftPage:" withFullSignature:{"B", "B", 0}];
-  [v3 validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityScrollRightPage:" withFullSignature:{"B", "B", 0}];
-  [v3 validateClass:@"SBIconController" hasInstanceMethod:@"_currentFolderController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHomeScreenWindow" hasInstanceMethod:@"homeScreenViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"rootFolderController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderController" isKindOfClass:@"SBFolderController"];
-  [v3 validateClass:@"SBFolderController" hasInstanceMethod:@"firstIconPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"isDisplayingWidgetIntroductionOnPage:" withFullSignature:{"B", "q", 0}];
-  [v3 validateClass:@"SpringBoardAccessibility" hasInstanceMethod:@"_accessibilityIsShowingLongLookNotification" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"stackConfigurationViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAssistantController" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityScrollLeftPage:" withFullSignature:{"B", "B", 0}];
+  [validationsCopy validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityScrollRightPage:" withFullSignature:{"B", "B", 0}];
+  [validationsCopy validateClass:@"SBIconController" hasInstanceMethod:@"_currentFolderController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenWindow" hasInstanceMethod:@"homeScreenViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"rootFolderController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" isKindOfClass:@"SBFolderController"];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceMethod:@"firstIconPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"isDisplayingWidgetIntroductionOnPage:" withFullSignature:{"B", "q", 0}];
+  [validationsCopy validateClass:@"SpringBoardAccessibility" hasInstanceMethod:@"_accessibilityIsShowingLongLookNotification" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"stackConfigurationViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAssistantController" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)_accessibilityIsIsolatedWindow
@@ -61,11 +61,11 @@ uint64_t __65__SBHomeScreenWindowAccessibility__accessibilityIsIsolatedWindow__b
     return 1;
   }
 
-  v4 = [MEMORY[0x29EDBDFA8] server];
-  if ([v4 isShowingHomescreen])
+  server = [MEMORY[0x29EDBDFA8] server];
+  if ([server isShowingHomescreen])
   {
-    v5 = [MEMORY[0x29EDBDFA8] server];
-    if ([v5 isControlCenterVisible])
+    server2 = [MEMORY[0x29EDBDFA8] server];
+    if ([server2 isControlCenterVisible])
     {
       v3 = 1;
     }
@@ -91,10 +91,10 @@ uint64_t __65__SBHomeScreenWindowAccessibility__accessibilityIsIsolatedWindow__b
     return 0;
   }
 
-  v4 = [MEMORY[0x29EDBDFA8] server];
-  v5 = [v4 isShowingHomescreen];
+  server = [MEMORY[0x29EDBDFA8] server];
+  isShowingHomescreen = [server isShowingHomescreen];
 
-  return v5;
+  return isShowingHomescreen;
 }
 
 - (BOOL)_accessibilityCanAccessHomeScreenDuringOneness
@@ -107,8 +107,8 @@ uint64_t __65__SBHomeScreenWindowAccessibility__accessibilityIsIsolatedWindow__b
   else
   {
     v3 = AXRequestingClient() != 16 && AXRequestingClient() != 2;
-    v4 = [MEMORY[0x29EDBDFA8] server];
-    v2 = [v4 isContinuitySessionActive] & v3;
+    server = [MEMORY[0x29EDBDFA8] server];
+    v2 = [server isContinuitySessionActive] & v3;
   }
 
   return v2;
@@ -143,8 +143,8 @@ uint64_t __65__SBHomeScreenWindowAccessibility__accessibilityIsIsolatedWindow__b
   v9[2] = *MEMORY[0x29EDCA608];
   v8.receiver = self;
   v8.super_class = SBHomeScreenWindowAccessibility;
-  v2 = [(SBHomeScreenWindowAccessibility *)&v8 _accessibilityKeyCommands];
-  v3 = [v2 mutableCopy];
+  _accessibilityKeyCommands = [(SBHomeScreenWindowAccessibility *)&v8 _accessibilityKeyCommands];
+  v3 = [_accessibilityKeyCommands mutableCopy];
 
   v4 = [MEMORY[0x29EDC7AF0] keyCommandWithInput:*MEMORY[0x29EDC8168] modifierFlags:0x100000 action:sel__axLeftArrowPressed];
   v9[0] = v4;
@@ -161,8 +161,8 @@ uint64_t __65__SBHomeScreenWindowAccessibility__accessibilityIsIsolatedWindow__b
   v5 = AXSBCurrentFolderController();
   v2 = [v5 safeValueForKey:@"_contentView"];
   v3 = [v2 safeArrayForKey:@"_iconListViews"];
-  v4 = [v3 firstObject];
-  [v4 _accessibilityScrollLeftPage:0];
+  firstObject = [v3 firstObject];
+  [firstObject _accessibilityScrollLeftPage:0];
 }
 
 - (void)_axLeftArrowPressed
@@ -170,8 +170,8 @@ uint64_t __65__SBHomeScreenWindowAccessibility__accessibilityIsIsolatedWindow__b
   v5 = AXSBCurrentFolderController();
   v2 = [v5 safeValueForKey:@"_contentView"];
   v3 = [v2 safeArrayForKey:@"_iconListViews"];
-  v4 = [v3 firstObject];
-  [v4 _accessibilityScrollRightPage:0];
+  firstObject = [v3 firstObject];
+  [firstObject _accessibilityScrollRightPage:0];
 }
 
 - (BOOL)_accessibilityIsInWidgetStack

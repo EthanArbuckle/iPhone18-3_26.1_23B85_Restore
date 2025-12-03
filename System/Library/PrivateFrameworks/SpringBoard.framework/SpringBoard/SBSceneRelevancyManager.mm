@@ -1,21 +1,21 @@
 @interface SBSceneRelevancyManager
-- (BOOL)shouldFreezeSceneEntity:(id)a3;
-- (SBSceneRelevancyManager)initWithSceneRelevancySettings:(id)a3;
+- (BOOL)shouldFreezeSceneEntity:(id)entity;
+- (SBSceneRelevancyManager)initWithSceneRelevancySettings:(id)settings;
 - (id)_addStateCaptureHandler;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (unint64_t)_computeScoreForSceneIdentifier:(id)a3;
-- (unint64_t)scoreForSceneIdentifier:(id)a3;
-- (void)configureWithZOrderedDeviceApplicationSceneEntities:(id)a3 deviceApplicationSceneEntitiesToOcclusionStates:(id)a4 firstMaximizedDeviceApplicationSceneEntity:(id)a5 isStageInPeek:(BOOL)a6;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (unint64_t)_computeScoreForSceneIdentifier:(id)identifier;
+- (unint64_t)scoreForSceneIdentifier:(id)identifier;
+- (void)configureWithZOrderedDeviceApplicationSceneEntities:(id)entities deviceApplicationSceneEntitiesToOcclusionStates:(id)states firstMaximizedDeviceApplicationSceneEntity:(id)entity isStageInPeek:(BOOL)peek;
 - (void)dealloc;
 @end
 
 @implementation SBSceneRelevancyManager
 
-- (SBSceneRelevancyManager)initWithSceneRelevancySettings:(id)a3
+- (SBSceneRelevancyManager)initWithSceneRelevancySettings:(id)settings
 {
-  v6 = a3;
-  if (!v6)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
     [(SBSceneRelevancyManager *)a2 initWithSceneRelevancySettings:?];
   }
@@ -26,10 +26,10 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_settings, a3);
-    v9 = [(SBSceneRelevancyManager *)v8 _addStateCaptureHandler];
+    objc_storeStrong(&v7->_settings, settings);
+    _addStateCaptureHandler = [(SBSceneRelevancyManager *)v8 _addStateCaptureHandler];
     stateCaptureInvalidatable = v8->_stateCaptureInvalidatable;
-    v8->_stateCaptureInvalidatable = v9;
+    v8->_stateCaptureInvalidatable = _addStateCaptureHandler;
 
     v8->_firstMaximizedSceneZOrder = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -45,25 +45,25 @@
   [(SBSceneRelevancyManager *)&v3 dealloc];
 }
 
-- (void)configureWithZOrderedDeviceApplicationSceneEntities:(id)a3 deviceApplicationSceneEntitiesToOcclusionStates:(id)a4 firstMaximizedDeviceApplicationSceneEntity:(id)a5 isStageInPeek:(BOOL)a6
+- (void)configureWithZOrderedDeviceApplicationSceneEntities:(id)entities deviceApplicationSceneEntitiesToOcclusionStates:(id)states firstMaximizedDeviceApplicationSceneEntity:(id)entity isStageInPeek:(BOOL)peek
 {
   v65 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v47 = a4;
-  v48 = a5;
-  v11 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:0 valueOptions:1282 capacity:{objc_msgSend(v10, "count")}];
+  entitiesCopy = entities;
+  statesCopy = states;
+  entityCopy = entity;
+  v11 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:0 valueOptions:1282 capacity:{objc_msgSend(entitiesCopy, "count")}];
   sceneIdentifierToScore = self->_sceneIdentifierToScore;
   self->_sceneIdentifierToScore = v11;
 
-  objc_storeStrong(&self->_zOrderedDeviceApplicationSceneEntities, a3);
+  objc_storeStrong(&self->_zOrderedDeviceApplicationSceneEntities, entities);
   [(NSArray *)self->_zOrderedDeviceApplicationSceneEntities enumerateObjectsUsingBlock:&__block_literal_global_342];
-  objc_storeStrong(&self->_deviceApplicationSceneEntitiesToOcclusionStates, a4);
+  objc_storeStrong(&self->_deviceApplicationSceneEntitiesToOcclusionStates, states);
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v13 = [(NSMapTable *)self->_deviceApplicationSceneEntitiesToOcclusionStates keyEnumerator];
-  v14 = [v13 countByEnumeratingWithState:&v58 objects:v64 count:16];
+  keyEnumerator = [(NSMapTable *)self->_deviceApplicationSceneEntitiesToOcclusionStates keyEnumerator];
+  v14 = [keyEnumerator countByEnumeratingWithState:&v58 objects:v64 count:16];
   if (v14)
   {
     v15 = v14;
@@ -74,54 +74,54 @@
       {
         if (*v59 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         [*(*(&v58 + 1) + 8 * i) setObject:0 forActivationSetting:69];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v58 objects:v64 count:16];
+      v15 = [keyEnumerator countByEnumeratingWithState:&v58 objects:v64 count:16];
     }
 
     while (v15);
   }
 
   self->_firstMaximizedSceneZOrder = 0x7FFFFFFFFFFFFFFFLL;
-  v18 = [(SBSceneRelevancySettings *)self->_settings freezeAllWindowsBelowMaximizedWindow];
-  v19 = [(SBSceneRelevancyManager *)self maximumNumberOfVisibleScenesOnStage];
-  v45 = [MEMORY[0x277CBEB18] array];
-  v46 = [MEMORY[0x277CBEB18] array];
-  if ([v10 count])
+  freezeAllWindowsBelowMaximizedWindow = [(SBSceneRelevancySettings *)self->_settings freezeAllWindowsBelowMaximizedWindow];
+  maximumNumberOfVisibleScenesOnStage = [(SBSceneRelevancyManager *)self maximumNumberOfVisibleScenesOnStage];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  if ([entitiesCopy count])
   {
-    for (j = 0; j < [v10 count]; ++j)
+    for (j = 0; j < [entitiesCopy count]; ++j)
     {
-      v21 = [v10 objectAtIndex:j];
-      v22 = [v47 objectForKey:v21];
-      v23 = [v22 integerValue];
-      v24 = [v21 uniqueIdentifier];
-      if (v24)
+      v21 = [entitiesCopy objectAtIndex:j];
+      v22 = [statesCopy objectForKey:v21];
+      integerValue = [v22 integerValue];
+      uniqueIdentifier = [v21 uniqueIdentifier];
+      if (uniqueIdentifier)
       {
-        if (self->_firstMaximizedSceneZOrder == 0x7FFFFFFFFFFFFFFFLL && [v21 isEqual:v48])
+        if (self->_firstMaximizedSceneZOrder == 0x7FFFFFFFFFFFFFFFLL && [v21 isEqual:entityCopy])
         {
           self->_firstMaximizedSceneZOrder = j;
         }
 
-        if (v18 && j > self->_firstMaximizedSceneZOrder)
+        if (freezeAllWindowsBelowMaximizedWindow && j > self->_firstMaximizedSceneZOrder)
         {
           v25 = 7;
 LABEL_25:
-          NSMapInsert(self->_sceneIdentifierToScore, v24, v25);
+          NSMapInsert(self->_sceneIdentifierToScore, uniqueIdentifier, v25);
           goto LABEL_26;
         }
 
-        v26 = [SBSceneRelevancyResolver windowRelevancyScoreForZOrder:j occlusionState:v23 maximumNumberOfVisibleScenesOnStage:v19 settings:self->_settings];
+        v26 = [SBSceneRelevancyResolver windowRelevancyScoreForZOrder:j occlusionState:integerValue maximumNumberOfVisibleScenesOnStage:maximumNumberOfVisibleScenesOnStage settings:self->_settings];
         v27 = 3;
         if (v26 > 3)
         {
           v27 = v26;
         }
 
-        if (a6)
+        if (peek)
         {
           v25 = v27;
           goto LABEL_25;
@@ -133,15 +133,15 @@ LABEL_25:
           goto LABEL_25;
         }
 
-        if (v23 == 1)
+        if (integerValue == 1)
         {
-          v28 = v46;
+          v28 = array2;
           goto LABEL_29;
         }
 
-        if (!v23)
+        if (!integerValue)
         {
-          v28 = v45;
+          v28 = array;
 LABEL_29:
           [v28 addObject:v21];
         }
@@ -151,12 +151,12 @@ LABEL_26:
     }
   }
 
-  v29 = [(SBSceneRelevancySettings *)self->_settings maximumWindowsInForegroundJetsamBand];
+  maximumWindowsInForegroundJetsamBand = [(SBSceneRelevancySettings *)self->_settings maximumWindowsInForegroundJetsamBand];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v30 = v45;
+  v30 = array;
   v31 = [v30 countByEnumeratingWithState:&v54 objects:v63 count:16];
   if (v31)
   {
@@ -172,16 +172,16 @@ LABEL_26:
           objc_enumerationMutation(v30);
         }
 
-        v36 = [*(*(&v54 + 1) + 8 * k) uniqueIdentifier];
+        uniqueIdentifier2 = [*(*(&v54 + 1) + 8 * k) uniqueIdentifier];
         v37 = self->_sceneIdentifierToScore;
-        if (v34 >= v29)
+        if (v34 >= maximumWindowsInForegroundJetsamBand)
         {
-          NSMapInsert(v37, v36, 4);
+          NSMapInsert(v37, uniqueIdentifier2, 4);
         }
 
         else
         {
-          NSMapInsert(v37, v36, 2);
+          NSMapInsert(v37, uniqueIdentifier2, 2);
           ++v34;
         }
       }
@@ -201,7 +201,7 @@ LABEL_26:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v38 = v46;
+  v38 = array2;
   v39 = [v38 countByEnumeratingWithState:&v50 objects:v62 count:16];
   if (v39)
   {
@@ -216,16 +216,16 @@ LABEL_26:
           objc_enumerationMutation(v38);
         }
 
-        v43 = [*(*(&v50 + 1) + 8 * m) uniqueIdentifier];
+        uniqueIdentifier3 = [*(*(&v50 + 1) + 8 * m) uniqueIdentifier];
         v44 = self->_sceneIdentifierToScore;
-        if (v34 >= v29)
+        if (v34 >= maximumWindowsInForegroundJetsamBand)
         {
-          NSMapInsert(v44, v43, 4);
+          NSMapInsert(v44, uniqueIdentifier3, 4);
         }
 
         else
         {
-          NSMapInsert(v44, v43, 2);
+          NSMapInsert(v44, uniqueIdentifier3, 2);
           ++v34;
         }
       }
@@ -237,10 +237,10 @@ LABEL_26:
   }
 }
 
-- (unint64_t)scoreForSceneIdentifier:(id)a3
+- (unint64_t)scoreForSceneIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(SBSceneRelevancyManager *)a2 scoreForSceneIdentifier:?];
   }
@@ -249,41 +249,41 @@ LABEL_26:
   v7 = v6;
   if (v6)
   {
-    v8 = NSMapGet(v6, v5);
+    v8 = NSMapGet(v6, identifierCopy);
     if (!v8)
     {
-      v8 = [(SBSceneRelevancyManager *)self _computeScoreForSceneIdentifier:v5];
-      NSMapInsert(v7, v5, v8);
+      v8 = [(SBSceneRelevancyManager *)self _computeScoreForSceneIdentifier:identifierCopy];
+      NSMapInsert(v7, identifierCopy, v8);
     }
   }
 
   else
   {
-    v8 = [(SBSceneRelevancyManager *)self _computeScoreForSceneIdentifier:v5];
+    v8 = [(SBSceneRelevancyManager *)self _computeScoreForSceneIdentifier:identifierCopy];
   }
 
   return v8;
 }
 
-- (BOOL)shouldFreezeSceneEntity:(id)a3
+- (BOOL)shouldFreezeSceneEntity:(id)entity
 {
-  v5 = a3;
-  if (!v5)
+  entityCopy = entity;
+  if (!entityCopy)
   {
     [(SBSceneRelevancyManager *)a2 shouldFreezeSceneEntity:?];
   }
 
-  v6 = [v5 uniqueIdentifier];
-  v7 = [(SBSceneRelevancyManager *)self scoreForSceneIdentifier:v6];
+  uniqueIdentifier = [entityCopy uniqueIdentifier];
+  v7 = [(SBSceneRelevancyManager *)self scoreForSceneIdentifier:uniqueIdentifier];
 
   LOBYTE(v7) = [SBSceneRelevancyResolver shouldFreezeWindowWithRelevancyScore:v7];
   return v7;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -291,8 +291,8 @@ LABEL_26:
   v10[3] = &unk_2783A92D8;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -345,26 +345,26 @@ void __65__SBSceneRelevancyManager_descriptionBuilderWithMultilinePrefix___block
   [v8 appendString:v9 withName:v12];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSceneRelevancyManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSceneRelevancyManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (unint64_t)_computeScoreForSceneIdentifier:(id)a3
+- (unint64_t)_computeScoreForSceneIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBSceneRelevancyManager *)self zOrderedDeviceApplicationSceneEntities];
-  if (v5)
+  identifierCopy = identifier;
+  zOrderedDeviceApplicationSceneEntities = [(SBSceneRelevancyManager *)self zOrderedDeviceApplicationSceneEntities];
+  if (zOrderedDeviceApplicationSceneEntities)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __59__SBSceneRelevancyManager__computeScoreForSceneIdentifier___block_invoke;
     v13[3] = &unk_2783BF840;
-    v14 = v4;
-    v6 = [v5 indexOfObjectPassingTest:v13];
+    v14 = identifierCopy;
+    v6 = [zOrderedDeviceApplicationSceneEntities indexOfObjectPassingTest:v13];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 0;
@@ -380,9 +380,9 @@ void __65__SBSceneRelevancyManager_descriptionBuilderWithMultilinePrefix___block
 
       else
       {
-        v9 = [v5 objectAtIndex:v8];
-        v10 = [(SBSceneRelevancyManager *)self deviceApplicationSceneEntitiesToOcclusionStates];
-        v11 = [v10 objectForKey:v9];
+        v9 = [zOrderedDeviceApplicationSceneEntities objectAtIndex:v8];
+        deviceApplicationSceneEntitiesToOcclusionStates = [(SBSceneRelevancyManager *)self deviceApplicationSceneEntitiesToOcclusionStates];
+        v11 = [deviceApplicationSceneEntitiesToOcclusionStates objectForKey:v9];
         v7 = +[SBSceneRelevancyResolver windowRelevancyScoreForZOrder:occlusionState:maximumNumberOfVisibleScenesOnStage:settings:](SBSceneRelevancyResolver, "windowRelevancyScoreForZOrder:occlusionState:maximumNumberOfVisibleScenesOnStage:settings:", v8, [v11 integerValue], -[SBSceneRelevancyManager maximumNumberOfVisibleScenesOnStage](self, "maximumNumberOfVisibleScenesOnStage"), self->_settings);
       }
     }

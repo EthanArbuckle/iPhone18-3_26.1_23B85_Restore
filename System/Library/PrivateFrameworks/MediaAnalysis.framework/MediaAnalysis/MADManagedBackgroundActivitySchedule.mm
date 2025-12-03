@@ -1,36 +1,36 @@
 @interface MADManagedBackgroundActivitySchedule
-+ (BOOL)migrateDataWithManagedObjectContext:(id)a3;
-+ (int)_querySchedulingHistoryRecords:(id *)a3 predicate:(id)a4 sortDescriptors:(id)a5 managedObjectContext:(id)a6;
-+ (int)fetchMostRecentSessionLogs:(id *)a3 forActivityID:(unint64_t)a4 managedObjectContext:(id)a5;
-+ (int)querySchedulingHistoryRecords:(id *)a3 forActivityID:(unint64_t)a4 sinceDate:(id)a5;
-+ (int)querySchedulingHistoryRecords:(id *)a3 forActivityID:(unint64_t)a4 startDate:(id)a5 endDate:(id)a6 managedObjectContext:(id)a7;
-+ (int)querySchedulingHistoryRecords:(id *)a3 startDate:(id)a4 endDate:(id)a5 managedObjectContext:(id)a6;
-+ (void)updateSessionLogWithTaskID:(unint64_t)a3 startTime:(id)a4 duration:(double)a5 exitStatus:(int)a6;
++ (BOOL)migrateDataWithManagedObjectContext:(id)context;
++ (int)_querySchedulingHistoryRecords:(id *)records predicate:(id)predicate sortDescriptors:(id)descriptors managedObjectContext:(id)context;
++ (int)fetchMostRecentSessionLogs:(id *)logs forActivityID:(unint64_t)d managedObjectContext:(id)context;
++ (int)querySchedulingHistoryRecords:(id *)records forActivityID:(unint64_t)d sinceDate:(id)date;
++ (int)querySchedulingHistoryRecords:(id *)records forActivityID:(unint64_t)d startDate:(id)date endDate:(id)endDate managedObjectContext:(id)context;
++ (int)querySchedulingHistoryRecords:(id *)records startDate:(id)date endDate:(id)endDate managedObjectContext:(id)context;
++ (void)updateSessionLogWithTaskID:(unint64_t)d startTime:(id)time duration:(double)duration exitStatus:(int)status;
 - (id)description;
 @end
 
 @implementation MADManagedBackgroundActivitySchedule
 
-+ (void)updateSessionLogWithTaskID:(unint64_t)a3 startTime:(id)a4 duration:(double)a5 exitStatus:(int)a6
++ (void)updateSessionLogWithTaskID:(unint64_t)d startTime:(id)time duration:(double)duration exitStatus:(int)status
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  timeCopy = time;
   v11 = +[MADSystemDataStore systemDataStore];
-  v12 = [v11 newManagedObjectContext];
+  newManagedObjectContext = [v11 newManagedObjectContext];
 
-  if (v12)
+  if (newManagedObjectContext)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __97__MADManagedBackgroundActivitySchedule_updateSessionLogWithTaskID_startTime_duration_exitStatus___block_invoke;
     v13[3] = &unk_1E8350570;
-    v17 = a1;
-    v18 = a3;
-    v14 = v10;
-    v15 = v12;
+    selfCopy = self;
+    dCopy = d;
+    v14 = timeCopy;
+    v15 = newManagedObjectContext;
     v16 = @"[MADManagedBackgroundActivitySchedule][Initialize]";
-    v20 = a6;
-    v19 = a5;
+    statusCopy = status;
+    durationCopy = duration;
     [v15 performBlockAndWait:v13];
   }
 
@@ -415,22 +415,22 @@ void __97__MADManagedBackgroundActivitySchedule_updateSessionLogWithTaskID_start
   }
 }
 
-+ (int)_querySchedulingHistoryRecords:(id *)a3 predicate:(id)a4 sortDescriptors:(id)a5 managedObjectContext:(id)a6
++ (int)_querySchedulingHistoryRecords:(id *)records predicate:(id)predicate sortDescriptors:(id)descriptors managedObjectContext:(id)context
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v11)
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v12 = v11;
+    newManagedObjectContext = contextCopy;
 LABEL_4:
     *&buf = 0;
     *(&buf + 1) = &buf;
     v29 = 0x3032000000;
     v30 = __Block_byref_object_copy__50;
     v31 = __Block_byref_object_dispose__50;
-    v32 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2020000000;
@@ -439,15 +439,15 @@ LABEL_4:
     v17[1] = 3221225472;
     v17[2] = __118__MADManagedBackgroundActivitySchedule__querySchedulingHistoryRecords_predicate_sortDescriptors_managedObjectContext___block_invoke;
     v17[3] = &unk_1E8350598;
-    v18 = v9;
-    v19 = v10;
-    v14 = v12;
+    v18 = predicateCopy;
+    v19 = descriptorsCopy;
+    v14 = newManagedObjectContext;
     v20 = v14;
     v21 = @"[MADManagedBackgroundActivitySchedule][Query]";
     v22 = &v24;
     p_buf = &buf;
     [v14 performBlockAndWait:v17];
-    *a3 = *(*(&buf + 1) + 40);
+    *records = *(*(&buf + 1) + 40);
     v15 = *(v25 + 6);
 
     _Block_object_dispose(&v24, 8);
@@ -457,9 +457,9 @@ LABEL_4:
   }
 
   v13 = +[MADSystemDataStore systemDataStore];
-  v12 = [v13 newManagedObjectContext];
+  newManagedObjectContext = [v13 newManagedObjectContext];
 
-  if (v12)
+  if (newManagedObjectContext)
   {
     goto LABEL_4;
   }
@@ -624,70 +624,70 @@ LABEL_28:
   }
 }
 
-+ (int)querySchedulingHistoryRecords:(id *)a3 forActivityID:(unint64_t)a4 sinceDate:(id)a5
++ (int)querySchedulingHistoryRecords:(id *)records forActivityID:(unint64_t)d sinceDate:(id)date
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E696AE18];
-  v9 = a5;
-  v10 = [objc_opt_class() activityIDColumnName];
-  v11 = [objc_opt_class() startTimestampColumnName];
-  v12 = [v8 predicateWithFormat:@"%K == %d && %K >= %@", v10, a4, v11, v9];
+  dateCopy = date;
+  activityIDColumnName = [objc_opt_class() activityIDColumnName];
+  startTimestampColumnName = [objc_opt_class() startTimestampColumnName];
+  dateCopy = [v8 predicateWithFormat:@"%K == %d && %K >= %@", activityIDColumnName, d, startTimestampColumnName, dateCopy];
 
   v13 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startTimestamp" ascending:0];
   v16[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
 
-  LODWORD(a3) = [a1 _querySchedulingHistoryRecords:a3 predicate:v12 sortDescriptors:v14 managedObjectContext:0];
-  return a3;
+  LODWORD(records) = [self _querySchedulingHistoryRecords:records predicate:dateCopy sortDescriptors:v14 managedObjectContext:0];
+  return records;
 }
 
-+ (int)querySchedulingHistoryRecords:(id *)a3 forActivityID:(unint64_t)a4 startDate:(id)a5 endDate:(id)a6 managedObjectContext:(id)a7
++ (int)querySchedulingHistoryRecords:(id *)records forActivityID:(unint64_t)d startDate:(id)date endDate:(id)endDate managedObjectContext:(id)context
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v11 = MEMORY[0x1E696AE18];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = [objc_opt_class() activityIDColumnName];
-  v16 = [objc_opt_class() startTimestampColumnName];
-  v17 = [objc_opt_class() startTimestampColumnName];
-  v18 = [v11 predicateWithFormat:@"%K == %d && %K >= %@ && %K <= %@", v15, a4, v16, v14, v17, v13];
+  contextCopy = context;
+  endDateCopy = endDate;
+  dateCopy = date;
+  activityIDColumnName = [objc_opt_class() activityIDColumnName];
+  startTimestampColumnName = [objc_opt_class() startTimestampColumnName];
+  startTimestampColumnName2 = [objc_opt_class() startTimestampColumnName];
+  endDateCopy = [v11 predicateWithFormat:@"%K == %d && %K >= %@ && %K <= %@", activityIDColumnName, d, startTimestampColumnName, dateCopy, startTimestampColumnName2, endDateCopy];
 
   v19 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startTimestamp" ascending:0];
   v23[0] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
 
-  LODWORD(v19) = [a1 _querySchedulingHistoryRecords:a3 predicate:v18 sortDescriptors:v20 managedObjectContext:v12];
+  LODWORD(v19) = [self _querySchedulingHistoryRecords:records predicate:endDateCopy sortDescriptors:v20 managedObjectContext:contextCopy];
   return v19;
 }
 
-+ (int)querySchedulingHistoryRecords:(id *)a3 startDate:(id)a4 endDate:(id)a5 managedObjectContext:(id)a6
++ (int)querySchedulingHistoryRecords:(id *)records startDate:(id)date endDate:(id)endDate managedObjectContext:(id)context
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v10 = MEMORY[0x1E696AE18];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [objc_opt_class() startTimestampColumnName];
-  v15 = [objc_opt_class() startTimestampColumnName];
-  v16 = [v10 predicateWithFormat:@"%K >= %@ && %K <= %@", v14, v13, v15, v12];
+  contextCopy = context;
+  endDateCopy = endDate;
+  dateCopy = date;
+  startTimestampColumnName = [objc_opt_class() startTimestampColumnName];
+  startTimestampColumnName2 = [objc_opt_class() startTimestampColumnName];
+  endDateCopy = [v10 predicateWithFormat:@"%K >= %@ && %K <= %@", startTimestampColumnName, dateCopy, startTimestampColumnName2, endDateCopy];
 
   v17 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startTimestamp" ascending:0];
   v20[0] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
 
-  LODWORD(a3) = [a1 _querySchedulingHistoryRecords:a3 predicate:v16 sortDescriptors:v18 managedObjectContext:v11];
-  return a3;
+  LODWORD(records) = [self _querySchedulingHistoryRecords:records predicate:endDateCopy sortDescriptors:v18 managedObjectContext:contextCopy];
+  return records;
 }
 
-+ (int)fetchMostRecentSessionLogs:(id *)a3 forActivityID:(unint64_t)a4 managedObjectContext:(id)a5
++ (int)fetchMostRecentSessionLogs:(id *)logs forActivityID:(unint64_t)d managedObjectContext:(id)context
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  contextCopy = context;
   v8 = +[MADManagedBackgroundActivitySchedule fetchRequest];
   v9 = MEMORY[0x1E696AE18];
-  v10 = [objc_opt_class() activityIDColumnName];
-  v11 = [v9 predicateWithFormat:@"%K == %d", v10, a4];
+  activityIDColumnName = [objc_opt_class() activityIDColumnName];
+  v11 = [v9 predicateWithFormat:@"%K == %d", activityIDColumnName, d];
   [v8 setPredicate:v11];
 
   v12 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startTimestamp" ascending:0];
@@ -697,7 +697,7 @@ LABEL_28:
 
   [v8 setFetchLimit:1];
   v20 = 0;
-  v14 = [v7 executeFetchRequest:v8 error:&v20];
+  v14 = [contextCopy executeFetchRequest:v8 error:&v20];
 
   v15 = v20;
   if (v15)
@@ -705,7 +705,7 @@ LABEL_28:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 67109378;
-      v22 = a4;
+      dCopy2 = d;
       v23 = 2112;
       v24 = v15;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[Schedule] Error fetching most recent scheduling history for task %d - %@", buf, 0x12u);
@@ -716,16 +716,16 @@ LABEL_28:
 
   else
   {
-    if (a3 && ([v14 lastObject], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
+    if (logs && ([v14 lastObject], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
     {
-      v18 = [v14 lastObject];
-      *a3 = [v18 sessionLog];
+      lastObject = [v14 lastObject];
+      *logs = [lastObject sessionLog];
     }
 
     else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v22 = a4;
+      dCopy2 = d;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[Schedule] No scheduling history for task %d", buf, 8u);
     }
 
@@ -735,9 +735,9 @@ LABEL_28:
   return v16;
 }
 
-+ (BOOL)migrateDataWithManagedObjectContext:(id)a3
++ (BOOL)migrateDataWithManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -747,8 +747,8 @@ LABEL_28:
   v8[2] = __87__MADManagedBackgroundActivitySchedule_Migration__migrateDataWithManagedObjectContext___block_invoke;
   v8[3] = &unk_1E83505C0;
   v10 = &v12;
-  v11 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = contextCopy;
   v9 = v5;
   [v5 performBlockAndWait:v8];
   v6 = *(v13 + 24);
@@ -1235,51 +1235,51 @@ LABEL_104:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  v6 = [objc_opt_class() activityIDColumnName];
+  activityIDColumnName = [objc_opt_class() activityIDColumnName];
   v7 = VCPTaskIDDescription([(MADManagedBackgroundActivitySchedule *)self activityID]);
-  [v3 appendFormat:@"%@: %@, ", v6, v7];
+  [string appendFormat:@"%@: %@, ", activityIDColumnName, v7];
 
-  v8 = [objc_opt_class() durationColumnName];
+  durationColumnName = [objc_opt_class() durationColumnName];
   [(MADManagedBackgroundActivitySchedule *)self duration];
-  [v3 appendFormat:@"%@: %lf, ", v8, v9];
+  [string appendFormat:@"%@: %lf, ", durationColumnName, v9];
 
-  v10 = [objc_opt_class() startTimestampColumnName];
-  v11 = [(MADManagedBackgroundActivitySchedule *)self startTimestamp];
-  [v3 appendFormat:@"%@: %@, ", v10, v11];
+  startTimestampColumnName = [objc_opt_class() startTimestampColumnName];
+  startTimestamp = [(MADManagedBackgroundActivitySchedule *)self startTimestamp];
+  [string appendFormat:@"%@: %@, ", startTimestampColumnName, startTimestamp];
 
-  v12 = [objc_opt_class() exitStatusColumnName];
+  exitStatusColumnName = [objc_opt_class() exitStatusColumnName];
   [(MADManagedBackgroundActivitySchedule *)self duration];
   if (v13 == -1.0)
   {
-    [v3 appendFormat:@"%@: %@, ", v12, @"Crashed"];
+    [string appendFormat:@"%@: %@, ", exitStatusColumnName, @"Crashed"];
   }
 
   else
   {
     v14 = MADStatusDescription([(MADManagedBackgroundActivitySchedule *)self exitStatus]);
-    [v3 appendFormat:@"%@: %@, ", v12, v14];
+    [string appendFormat:@"%@: %@, ", exitStatusColumnName, v14];
   }
 
-  v15 = [objc_opt_class() initialQoSColumnName];
-  [v3 appendFormat:@"%@: %d, ", v15, -[MADManagedBackgroundActivitySchedule initialQoS](self, "initialQoS")];
+  initialQoSColumnName = [objc_opt_class() initialQoSColumnName];
+  [string appendFormat:@"%@: %d, ", initialQoSColumnName, -[MADManagedBackgroundActivitySchedule initialQoS](self, "initialQoS")];
 
-  v16 = [objc_opt_class() pidColumnName];
-  [v3 appendFormat:@"%@: %d, ", v16, -[MADManagedBackgroundActivitySchedule pid](self, "pid")];
+  pidColumnName = [objc_opt_class() pidColumnName];
+  [string appendFormat:@"%@: %d, ", pidColumnName, -[MADManagedBackgroundActivitySchedule pid](self, "pid")];
 
-  v17 = [objc_opt_class() lastUpdateTimestampColumnName];
-  v18 = [(MADManagedBackgroundActivitySchedule *)self lastUpdateTimestamp];
-  [v3 appendFormat:@"%@: %@, ", v17, v18];
+  lastUpdateTimestampColumnName = [objc_opt_class() lastUpdateTimestampColumnName];
+  lastUpdateTimestamp = [(MADManagedBackgroundActivitySchedule *)self lastUpdateTimestamp];
+  [string appendFormat:@"%@: %@, ", lastUpdateTimestampColumnName, lastUpdateTimestamp];
 
-  v19 = [objc_opt_class() sessionLogColumnName];
-  v20 = [(MADManagedBackgroundActivitySchedule *)self sessionLog];
-  [v3 appendFormat:@"%@: %d> ", v19, objc_msgSend(v20, "count")];
+  sessionLogColumnName = [objc_opt_class() sessionLogColumnName];
+  sessionLog = [(MADManagedBackgroundActivitySchedule *)self sessionLog];
+  [string appendFormat:@"%@: %d> ", sessionLogColumnName, objc_msgSend(sessionLog, "count")];
 
-  return v3;
+  return string;
 }
 
 @end

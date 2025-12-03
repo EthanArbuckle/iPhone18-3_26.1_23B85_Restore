@@ -1,11 +1,11 @@
 @interface AKSizing
-+ (CGSize)size:(CGSize)a3 scaledForHeight:(double)a4;
-+ (CGSize)size:(CGSize)a3 scaledForWidth:(double)a4;
++ (CGSize)size:(CGSize)size scaledForHeight:(double)height;
++ (CGSize)size:(CGSize)size scaledForWidth:(double)width;
 @end
 
 @implementation AKSizing
 
-+ (CGSize)size:(CGSize)a3 scaledForWidth:(double)a4
++ (CGSize)size:(CGSize)size scaledForWidth:(double)width
 {
   CGSizeMake_2();
   result.height = v5;
@@ -13,7 +13,7 @@
   return result;
 }
 
-+ (CGSize)size:(CGSize)a3 scaledForHeight:(double)a4
++ (CGSize)size:(CGSize)size scaledForHeight:(double)height
 {
   CGSizeMake_2();
   result.height = v5;

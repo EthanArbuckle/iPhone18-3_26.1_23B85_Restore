@@ -1,5 +1,5 @@
 @interface _UISlidingPopoverLayoutInfo
-- (CGSize)_popoverViewSizeForContentSize:(CGSize)a3 arrowDirection:(unint64_t)a4;
+- (CGSize)_popoverViewSizeForContentSize:(CGSize)size arrowDirection:(unint64_t)direction;
 - (_UISlidingPopoverLayoutInfo)init;
 - (void)_updateOutputs;
 @end
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (CGSize)_popoverViewSizeForContentSize:(CGSize)a3 arrowDirection:(unint64_t)a4
+- (CGSize)_popoverViewSizeForContentSize:(CGSize)size arrowDirection:(unint64_t)direction
 {
   v6.receiver = self;
   v6.super_class = _UISlidingPopoverLayoutInfo;
-  [(_UIPopoverLayoutInfo *)&v6 _popoverViewSizeForContentSize:0 arrowDirection:a3.width, a3.height];
+  [(_UIPopoverLayoutInfo *)&v6 _popoverViewSizeForContentSize:0 arrowDirection:size.width, size.height];
   result.height = v5;
   result.width = v4;
   return result;

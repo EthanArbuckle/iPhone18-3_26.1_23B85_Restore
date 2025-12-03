@@ -1,46 +1,46 @@
 @interface VSSpeechConnection
 - (BOOL)isSystemSpeaking;
 - (BOOL)isSystemSpeakingOnBehalfOfCurrentConnection;
-- (BOOL)queryPhaticCapabilityWithRequest:(id)a3;
+- (BOOL)queryPhaticCapabilityWithRequest:(id)request;
 - (NSXPCConnection)xpcConnection;
 - (VSSpeechConnection)init;
 - (VSSpeechConnectionDelegate)delegate;
 - (id)_remoteObject;
 - (id)_remoteObjectSync;
-- (id)_remoteObjectWithErrorHandler:(id)a3;
-- (id)availableFootprintsForVoice:(id)a3 languageCode:(id)a4;
-- (id)availableVoicesForLanguageCode:(id)a3;
+- (id)_remoteObjectWithErrorHandler:(id)handler;
+- (id)availableFootprintsForVoice:(id)voice languageCode:(id)code;
+- (id)availableVoicesForLanguageCode:(id)code;
 - (id)currentAudioRequest;
 - (id)currentRequest;
 - (void)_connectionInvalidated;
-- (void)beginAudioPowerUpdateWithReply:(id)a3;
-- (void)cachePresynthesizedAudioRequest:(id)a3;
-- (void)cleanUnusedAssets:(id)a3;
-- (void)continueSpeechRequest:(id)a3;
+- (void)beginAudioPowerUpdateWithReply:(id)reply;
+- (void)cachePresynthesizedAudioRequest:(id)request;
+- (void)cleanUnusedAssets:(id)assets;
+- (void)continueSpeechRequest:(id)request;
 - (void)dealloc;
 - (void)endAudioPowerUpdate;
-- (void)estimateDurationWithRequest:(id)a3 reply:(id)a4;
-- (void)forwardStreamObject:(id)a3;
-- (void)getAllVoiceSubscriptionsWithReply:(id)a3;
-- (void)getLocalVoiceAssetsForLanguage:(id)a3 reply:(id)a4;
-- (void)getLocalVoiceResources:(id)a3;
-- (void)getSubscribedVoiceAssetsWithClientID:(id)a3 forAccessoryID:(id)a4 reply:(id)a5;
-- (void)getVoiceInfoForLanguageCode:(id)a3 name:(id)a4 footprint:(int64_t)a5 gender:(int64_t)a6 type:(int64_t)a7 reply:(id)a8;
-- (void)getVoiceResourceForLanguage:(id)a3 reply:(id)a4;
-- (void)invokeDaemon:(id)a3;
+- (void)estimateDurationWithRequest:(id)request reply:(id)reply;
+- (void)forwardStreamObject:(id)object;
+- (void)getAllVoiceSubscriptionsWithReply:(id)reply;
+- (void)getLocalVoiceAssetsForLanguage:(id)language reply:(id)reply;
+- (void)getLocalVoiceResources:(id)resources;
+- (void)getSubscribedVoiceAssetsWithClientID:(id)d forAccessoryID:(id)iD reply:(id)reply;
+- (void)getVoiceInfoForLanguageCode:(id)code name:(id)name footprint:(int64_t)footprint gender:(int64_t)gender type:(int64_t)type reply:(id)reply;
+- (void)getVoiceResourceForLanguage:(id)language reply:(id)reply;
+- (void)invokeDaemon:(id)daemon;
 - (void)killDaemon;
-- (void)pauseSpeechRequest:(id)a3 atMark:(int64_t)a4;
-- (void)prewarmIfNeededWithRequest:(id)a3 reply:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setSubscribedVoiceAssets:(id)a3 withClientID:(id)a4 forAccessoryID:(id)a5;
-- (void)setXpcConnection:(id)a3;
-- (void)startPhonemesRequest:(id)a3 phonemeSystem:(int64_t)a4 reply:(id)a5;
-- (void)startPresynthesizedAudioRequest:(id)a3;
-- (void)startSpeechRequest:(id)a3;
-- (void)startSynthesisRequest:(id)a3;
-- (void)stopPresynthesizedAudioRequest:(id)a3;
-- (void)stopSpeechRequest:(id)a3 atMark:(int64_t)a4;
-- (void)triggerCellularDownloadedVoiceAssets:(id)a3 withClientID:(id)a4;
+- (void)pauseSpeechRequest:(id)request atMark:(int64_t)mark;
+- (void)prewarmIfNeededWithRequest:(id)request reply:(id)reply;
+- (void)setDelegate:(id)delegate;
+- (void)setSubscribedVoiceAssets:(id)assets withClientID:(id)d forAccessoryID:(id)iD;
+- (void)setXpcConnection:(id)connection;
+- (void)startPhonemesRequest:(id)request phonemeSystem:(int64_t)system reply:(id)reply;
+- (void)startPresynthesizedAudioRequest:(id)request;
+- (void)startSpeechRequest:(id)request;
+- (void)startSynthesisRequest:(id)request;
+- (void)stopPresynthesizedAudioRequest:(id)request;
+- (void)stopSpeechRequest:(id)request atMark:(int64_t)mark;
+- (void)triggerCellularDownloadedVoiceAssets:(id)assets withClientID:(id)d;
 @end
 
 @implementation VSSpeechConnection
@@ -54,25 +54,25 @@
 
 - (void)killDaemon
 {
-  v3 = [(VSSpeechConnection *)self xpcConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 killDaemon];
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy killDaemon];
 }
 
-- (void)invokeDaemon:(id)a3
+- (void)invokeDaemon:(id)daemon
 {
-  v4 = a3;
-  v6 = [(VSSpeechConnection *)self xpcConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 invokeDaemon:v4];
+  daemonCopy = daemon;
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy invokeDaemon:daemonCopy];
 }
 
-- (void)forwardStreamObject:(id)a3
+- (void)forwardStreamObject:(id)object
 {
-  v4 = a3;
-  v6 = [(VSSpeechConnection *)self xpcConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_204];
-  [v5 forwardStreamObject:v4];
+  objectCopy = object;
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  v5 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_204];
+  [v5 forwardStreamObject:objectCopy];
 }
 
 void __42__VSSpeechConnection_forwardStreamObject___block_invoke(uint64_t a1, void *a2)
@@ -93,19 +93,19 @@ void __42__VSSpeechConnection_forwardStreamObject___block_invoke(uint64_t a1, vo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getVoiceInfoForLanguageCode:(id)a3 name:(id)a4 footprint:(int64_t)a5 gender:(int64_t)a6 type:(int64_t)a7 reply:(id)a8
+- (void)getVoiceInfoForLanguageCode:(id)code name:(id)name footprint:(int64_t)footprint gender:(int64_t)gender type:(int64_t)type reply:(id)reply
 {
-  v14 = a8;
+  replyCopy = reply;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __83__VSSpeechConnection_getVoiceInfoForLanguageCode_name_footprint_gender_type_reply___block_invoke;
   v19[3] = &unk_279E4F8C8;
-  v20 = v14;
-  v15 = v14;
-  v16 = a4;
-  v17 = a3;
+  v20 = replyCopy;
+  v15 = replyCopy;
+  nameCopy = name;
+  codeCopy = code;
   v18 = [(VSSpeechConnection *)self _remoteObjectWithErrorHandler:v19];
-  [v18 getVoiceInfoForLanguageCode:v17 name:v16 footprint:a5 gender:a6 type:a7 reply:v15];
+  [v18 getVoiceInfoForLanguageCode:codeCopy name:nameCopy footprint:footprint gender:gender type:type reply:v15];
 }
 
 void __83__VSSpeechConnection_getVoiceInfoForLanguageCode_name_footprint_gender_type_reply___block_invoke(uint64_t a1, void *a2)
@@ -129,18 +129,18 @@ void __83__VSSpeechConnection_getVoiceInfoForLanguageCode_name_footprint_gender_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getVoiceResourceForLanguage:(id)a3 reply:(id)a4
+- (void)getVoiceResourceForLanguage:(id)language reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__VSSpeechConnection_getVoiceResourceForLanguage_reply___block_invoke;
   v10[3] = &unk_279E4F8C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = replyCopy;
+  v7 = replyCopy;
+  languageCopy = language;
   v9 = [(VSSpeechConnection *)self _remoteObjectWithErrorHandler:v10];
-  [v9 getVoiceResourceForLanguage:v8 reply:v7];
+  [v9 getVoiceResourceForLanguage:languageCopy reply:v7];
 }
 
 void __56__VSSpeechConnection_getVoiceResourceForLanguage_reply___block_invoke(uint64_t a1, void *a2)
@@ -164,15 +164,15 @@ void __56__VSSpeechConnection_getVoiceResourceForLanguage_reply___block_invoke(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAllVoiceSubscriptionsWithReply:(id)a3
+- (void)getAllVoiceSubscriptionsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__VSSpeechConnection_getAllVoiceSubscriptionsWithReply___block_invoke;
   v7[3] = &unk_279E4F8C8;
-  v8 = v4;
-  v5 = v4;
+  v8 = replyCopy;
+  v5 = replyCopy;
   v6 = [(VSSpeechConnection *)self _remoteObjectWithErrorHandler:v7];
   [v6 getAllVoiceSubscriptionsWithReply:v5];
 }
@@ -198,19 +198,19 @@ void __56__VSSpeechConnection_getAllVoiceSubscriptionsWithReply___block_invoke(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSubscribedVoiceAssetsWithClientID:(id)a3 forAccessoryID:(id)a4 reply:(id)a5
+- (void)getSubscribedVoiceAssetsWithClientID:(id)d forAccessoryID:(id)iD reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__VSSpeechConnection_getSubscribedVoiceAssetsWithClientID_forAccessoryID_reply___block_invoke;
   v13[3] = &unk_279E4F8C8;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  iDCopy = iD;
+  dCopy = d;
   v12 = [(VSSpeechConnection *)self _remoteObjectWithErrorHandler:v13];
-  [v12 getSubscribedVoiceAssetsWithClientID:v11 forAccessoryID:v10 reply:v9];
+  [v12 getSubscribedVoiceAssetsWithClientID:dCopy forAccessoryID:iDCopy reply:v9];
 }
 
 void __80__VSSpeechConnection_getSubscribedVoiceAssetsWithClientID_forAccessoryID_reply___block_invoke(uint64_t a1, void *a2)
@@ -234,32 +234,32 @@ void __80__VSSpeechConnection_getSubscribedVoiceAssetsWithClientID_forAccessoryI
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)triggerCellularDownloadedVoiceAssets:(id)a3 withClientID:(id)a4
+- (void)triggerCellularDownloadedVoiceAssets:(id)assets withClientID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VSSpeechConnection *)self _remoteObject];
-  [v8 triggerCellularDownloadedVoiceAssets:v7 withClientID:v6];
+  dCopy = d;
+  assetsCopy = assets;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject triggerCellularDownloadedVoiceAssets:assetsCopy withClientID:dCopy];
 }
 
-- (void)setSubscribedVoiceAssets:(id)a3 withClientID:(id)a4 forAccessoryID:(id)a5
+- (void)setSubscribedVoiceAssets:(id)assets withClientID:(id)d forAccessoryID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(VSSpeechConnection *)self _remoteObject];
-  [v11 setSubscribedVoiceAssets:v10 withClientID:v9 forAccessoryID:v8];
+  iDCopy = iD;
+  dCopy = d;
+  assetsCopy = assets;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject setSubscribedVoiceAssets:assetsCopy withClientID:dCopy forAccessoryID:iDCopy];
 }
 
-- (void)getLocalVoiceResources:(id)a3
+- (void)getLocalVoiceResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__VSSpeechConnection_getLocalVoiceResources___block_invoke;
   v7[3] = &unk_279E4F8C8;
-  v8 = v4;
-  v5 = v4;
+  v8 = resourcesCopy;
+  v5 = resourcesCopy;
   v6 = [(VSSpeechConnection *)self _remoteObjectWithErrorHandler:v7];
   [v6 getLocalVoiceResourcesReply:v5];
 }
@@ -275,18 +275,18 @@ uint64_t __45__VSSpeechConnection_getLocalVoiceResources___block_invoke(uint64_t
   return result;
 }
 
-- (void)getLocalVoiceAssetsForLanguage:(id)a3 reply:(id)a4
+- (void)getLocalVoiceAssetsForLanguage:(id)language reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__VSSpeechConnection_getLocalVoiceAssetsForLanguage_reply___block_invoke;
   v10[3] = &unk_279E4F8C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = replyCopy;
+  v7 = replyCopy;
+  languageCopy = language;
   v9 = [(VSSpeechConnection *)self _remoteObjectWithErrorHandler:v10];
-  [v9 getLocalVoicesForLanguage:v8 reply:v7];
+  [v9 getLocalVoicesForLanguage:languageCopy reply:v7];
 }
 
 uint64_t __59__VSSpeechConnection_getLocalVoiceAssetsForLanguage_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -300,71 +300,71 @@ uint64_t __59__VSSpeechConnection_getLocalVoiceAssetsForLanguage_reply___block_i
   return result;
 }
 
-- (void)cleanUnusedAssets:(id)a3
+- (void)cleanUnusedAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(VSSpeechConnection *)self _remoteObject];
-  [v5 cleanUnusedAssets:v4];
+  assetsCopy = assets;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject cleanUnusedAssets:assetsCopy];
 }
 
-- (void)continueSpeechRequest:(id)a3
+- (void)continueSpeechRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VSSpeechConnection *)self _remoteObject];
-  [v5 continueSpeechRequest:v4];
+  requestCopy = request;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject continueSpeechRequest:requestCopy];
 }
 
-- (void)pauseSpeechRequest:(id)a3 atMark:(int64_t)a4
+- (void)pauseSpeechRequest:(id)request atMark:(int64_t)mark
 {
-  v6 = a3;
-  v7 = [(VSSpeechConnection *)self _remoteObject];
-  [v7 pauseSpeechRequest:v6 atMark:a4];
+  requestCopy = request;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject pauseSpeechRequest:requestCopy atMark:mark];
 }
 
-- (void)stopSpeechRequest:(id)a3 atMark:(int64_t)a4
+- (void)stopSpeechRequest:(id)request atMark:(int64_t)mark
 {
-  v6 = a3;
-  v7 = [(VSSpeechConnection *)self _remoteObject];
-  [v7 stopSpeechRequest:v6 atMark:a4];
+  requestCopy = request;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject stopSpeechRequest:requestCopy atMark:mark];
 }
 
-- (void)startSynthesisRequest:(id)a3
+- (void)startSynthesisRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VSSpeechConnection *)self _remoteObject];
-  [v5 startSynthesisRequest:v4];
+  requestCopy = request;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject startSynthesisRequest:requestCopy];
 
-  v8 = [(VSSpeechConnection *)self delegateWrapper];
-  v6 = [v8 concurrentSynthesisRequests];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "pointer")}];
-  [v6 setObject:v4 forKey:v7];
+  delegateWrapper = [(VSSpeechConnection *)self delegateWrapper];
+  concurrentSynthesisRequests = [delegateWrapper concurrentSynthesisRequests];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(requestCopy, "pointer")}];
+  [concurrentSynthesisRequests setObject:requestCopy forKey:v7];
 }
 
-- (void)stopPresynthesizedAudioRequest:(id)a3
+- (void)stopPresynthesizedAudioRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VSSpeechConnection *)self _remoteObject];
-  [v5 stopPresynthesizedAudioRequest:v4];
+  requestCopy = request;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject stopPresynthesizedAudioRequest:requestCopy];
 }
 
-- (void)cachePresynthesizedAudioRequest:(id)a3
+- (void)cachePresynthesizedAudioRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VSSpeechConnection *)self _remoteObjectSync];
-  [v5 cachePresynthesizedAudioRequest:v4];
+  requestCopy = request;
+  _remoteObjectSync = [(VSSpeechConnection *)self _remoteObjectSync];
+  [_remoteObjectSync cachePresynthesizedAudioRequest:requestCopy];
 }
 
-- (void)startPresynthesizedAudioRequest:(id)a3
+- (void)startPresynthesizedAudioRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VSSpeechConnection *)self _remoteObject];
-  [v5 startPresynthesizedAudioRequest:v4];
+  requestCopy = request;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject startPresynthesizedAudioRequest:requestCopy];
 
-  if ([v4 enqueue])
+  if ([requestCopy enqueue])
   {
-    v6 = [(VSSpeechConnection *)self delegateWrapper];
-    v7 = [v6 audioRequests];
-    [v7 addObject:v4];
+    delegateWrapper = [(VSSpeechConnection *)self delegateWrapper];
+    audioRequests = [delegateWrapper audioRequests];
+    [audioRequests addObject:requestCopy];
   }
 
   else
@@ -373,18 +373,18 @@ uint64_t __59__VSSpeechConnection_getLocalVoiceAssetsForLanguage_reply___block_i
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v8 = [(VSSpeechConnection *)self delegateWrapper];
-    v9 = [v8 audioRequests];
+    delegateWrapper2 = [(VSSpeechConnection *)self delegateWrapper];
+    audioRequests2 = [delegateWrapper2 audioRequests];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __54__VSSpeechConnection_startPresynthesizedAudioRequest___block_invoke;
     v12[3] = &unk_279E4F968;
     v12[4] = &v13;
-    [v9 enumerateObjectsUsingBlock:v12];
+    [audioRequests2 enumerateObjectsUsingBlock:v12];
 
-    v10 = [(VSSpeechConnection *)self delegateWrapper];
-    v11 = [v10 audioRequests];
-    [v11 insertObject:v4 atIndex:v14[3]];
+    delegateWrapper3 = [(VSSpeechConnection *)self delegateWrapper];
+    audioRequests3 = [delegateWrapper3 audioRequests];
+    [audioRequests3 insertObject:requestCopy atIndex:v14[3]];
 
     _Block_object_dispose(&v13, 8);
   }
@@ -398,17 +398,17 @@ uint64_t __54__VSSpeechConnection_startPresynthesizedAudioRequest___block_invoke
   return result;
 }
 
-- (void)startSpeechRequest:(id)a3
+- (void)startSpeechRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VSSpeechConnection *)self _remoteObject];
-  [v5 startSpeechRequest:v4 reply:&__block_literal_global_202];
+  requestCopy = request;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject startSpeechRequest:requestCopy reply:&__block_literal_global_202];
 
-  if ([v4 shouldWaitCurrentSpeaking])
+  if ([requestCopy shouldWaitCurrentSpeaking])
   {
-    v6 = [(VSSpeechConnection *)self delegateWrapper];
-    v7 = [v6 requests];
-    [v7 addObject:v4];
+    delegateWrapper = [(VSSpeechConnection *)self delegateWrapper];
+    requests = [delegateWrapper requests];
+    [requests addObject:requestCopy];
   }
 
   else
@@ -417,18 +417,18 @@ uint64_t __54__VSSpeechConnection_startPresynthesizedAudioRequest___block_invoke
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v8 = [(VSSpeechConnection *)self delegateWrapper];
-    v9 = [v8 requests];
+    delegateWrapper2 = [(VSSpeechConnection *)self delegateWrapper];
+    requests2 = [delegateWrapper2 requests];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __41__VSSpeechConnection_startSpeechRequest___block_invoke_2;
     v12[3] = &unk_279E4F940;
     v12[4] = &v13;
-    [v9 enumerateObjectsUsingBlock:v12];
+    [requests2 enumerateObjectsUsingBlock:v12];
 
-    v10 = [(VSSpeechConnection *)self delegateWrapper];
-    v11 = [v10 requests];
-    [v11 insertObject:v4 atIndex:v14[3]];
+    delegateWrapper3 = [(VSSpeechConnection *)self delegateWrapper];
+    requests3 = [delegateWrapper3 requests];
+    [requests3 insertObject:requestCopy atIndex:v14[3]];
 
     _Block_object_dispose(&v13, 8);
   }
@@ -444,29 +444,29 @@ uint64_t __41__VSSpeechConnection_startSpeechRequest___block_invoke_2(uint64_t a
 
 - (void)endAudioPowerUpdate
 {
-  v2 = [(VSSpeechConnection *)self _remoteObject];
-  [v2 endAudioPowerUpdate];
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject endAudioPowerUpdate];
 }
 
-- (void)beginAudioPowerUpdateWithReply:(id)a3
+- (void)beginAudioPowerUpdateWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(VSSpeechConnection *)self _remoteObject];
-  [v5 beginAudioPowerUpdateWithReply:v4];
+  replyCopy = reply;
+  _remoteObject = [(VSSpeechConnection *)self _remoteObject];
+  [_remoteObject beginAudioPowerUpdateWithReply:replyCopy];
 }
 
-- (void)startPhonemesRequest:(id)a3 phonemeSystem:(int64_t)a4 reply:(id)a5
+- (void)startPhonemesRequest:(id)request phonemeSystem:(int64_t)system reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__VSSpeechConnection_startPhonemesRequest_phonemeSystem_reply___block_invoke;
   v12[3] = &unk_279E4F8C8;
-  v13 = v8;
-  v9 = v8;
-  v10 = a3;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  requestCopy = request;
   v11 = [(VSSpeechConnection *)self _remoteObjectWithErrorHandler:v12];
-  [v11 startPhonemesRequest:v10 phonemeSystem:a4 reply:v9];
+  [v11 startPhonemesRequest:requestCopy phonemeSystem:system reply:v9];
 }
 
 void __63__VSSpeechConnection_startPhonemesRequest_phonemeSystem_reply___block_invoke(uint64_t a1, void *a2)
@@ -491,24 +491,24 @@ void __63__VSSpeechConnection_startPhonemesRequest_phonemeSystem_reply___block_i
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(VSSpeechConnection *)self currentRequest];
-  if (v3)
+  currentRequest = [(VSSpeechConnection *)self currentRequest];
+  if (currentRequest)
   {
   }
 
   else
   {
-    v4 = [(VSSpeechConnection *)self currentAudioRequest];
+    currentAudioRequest = [(VSSpeechConnection *)self currentAudioRequest];
 
-    if (!v4)
+    if (!currentAudioRequest)
     {
       v7 = 0;
       goto LABEL_5;
     }
   }
 
-  v5 = [(VSSpeechConnection *)self xpcConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_196];
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_196];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__VSSpeechConnection_isSystemSpeakingOnBehalfOfCurrentConnection__block_invoke_197;
@@ -545,8 +545,8 @@ void __65__VSSpeechConnection_isSystemSpeakingOnBehalfOfCurrentConnection__block
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(VSSpeechConnection *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_193_3139];
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_193_3139];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__VSSpeechConnection_isSystemSpeaking__block_invoke_194;
@@ -554,9 +554,9 @@ void __65__VSSpeechConnection_isSystemSpeakingOnBehalfOfCurrentConnection__block
   v5[4] = &v6;
   [v3 getSpeechIsActiveReply:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 void __38__VSSpeechConnection_isSystemSpeaking__block_invoke(uint64_t a1, void *a2)
@@ -576,24 +576,24 @@ void __38__VSSpeechConnection_isSystemSpeaking__block_invoke(uint64_t a1, void *
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)availableFootprintsForVoice:(id)a3 languageCode:(id)a4
+- (id)availableFootprintsForVoice:(id)voice languageCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  voiceCopy = voice;
+  codeCopy = code;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3142;
   v17 = __Block_byref_object_dispose__3143;
   v18 = 0;
-  v8 = [(VSSpeechConnection *)self xpcConnection];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_190];
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  v9 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_190];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__VSSpeechConnection_availableFootprintsForVoice_languageCode___block_invoke_191;
   v12[3] = &unk_279E4F918;
   v12[4] = &v13;
-  [v9 getFootprintsForVoiceName:v6 languageCode:v7 reply:v12];
+  [v9 getFootprintsForVoiceName:voiceCopy languageCode:codeCopy reply:v12];
 
   v10 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -616,23 +616,23 @@ void __63__VSSpeechConnection_availableFootprintsForVoice_languageCode___block_i
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)availableVoicesForLanguageCode:(id)a3
+- (id)availableVoicesForLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__3142;
   v14 = __Block_byref_object_dispose__3143;
   v15 = 0;
-  v5 = [(VSSpeechConnection *)self xpcConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_186];
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_186];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__VSSpeechConnection_availableVoicesForLanguageCode___block_invoke_187;
   v9[3] = &unk_279E4F918;
   v9[4] = &v10;
-  [v6 getVoiceNamesForLanguage:v4 reply:v9];
+  [v6 getVoiceNamesForLanguage:codeCopy reply:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -655,13 +655,13 @@ void __53__VSSpeechConnection_availableVoicesForLanguageCode___block_invoke(uint
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)estimateDurationWithRequest:(id)a3 reply:(id)a4
+- (void)estimateDurationWithRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(VSSpeechConnection *)self xpcConnection];
-  v8 = [v9 remoteObjectProxyWithErrorHandler:&__block_literal_global_184];
-  [v8 estimateDurationWithRequest:v7 reply:v6];
+  replyCopy = reply;
+  requestCopy = request;
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_184];
+  [v8 estimateDurationWithRequest:requestCopy reply:replyCopy];
 }
 
 void __56__VSSpeechConnection_estimateDurationWithRequest_reply___block_invoke(uint64_t a1, void *a2)
@@ -680,26 +680,26 @@ void __56__VSSpeechConnection_estimateDurationWithRequest_reply___block_invoke(u
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)queryPhaticCapabilityWithRequest:(id)a3
+- (BOOL)queryPhaticCapabilityWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(VSSpeechConnection *)self xpcConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_180];
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_180];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__VSSpeechConnection_queryPhaticCapabilityWithRequest___block_invoke_181;
   v8[3] = &unk_279E4F8F0;
   v8[4] = &v9;
-  [v6 queryPhaticCapabilityWithRequest:v4 reply:v8];
+  [v6 queryPhaticCapabilityWithRequest:requestCopy reply:v8];
 
-  LOBYTE(v5) = *(v10 + 24);
+  LOBYTE(xpcConnection) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return v5;
+  return xpcConnection;
 }
 
 void __55__VSSpeechConnection_queryPhaticCapabilityWithRequest___block_invoke(uint64_t a1, void *a2)
@@ -719,18 +719,18 @@ void __55__VSSpeechConnection_queryPhaticCapabilityWithRequest___block_invoke(ui
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prewarmIfNeededWithRequest:(id)a3 reply:(id)a4
+- (void)prewarmIfNeededWithRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__VSSpeechConnection_prewarmIfNeededWithRequest_reply___block_invoke;
   v10[3] = &unk_279E4F8C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = replyCopy;
+  v7 = replyCopy;
+  requestCopy = request;
   v9 = [(VSSpeechConnection *)self _remoteObjectWithErrorHandler:v10];
-  [v9 prewarmIfNeededWithRequest:v8 reply:v7];
+  [v9 prewarmIfNeededWithRequest:requestCopy reply:v7];
 }
 
 void __55__VSSpeechConnection_prewarmIfNeededWithRequest_reply___block_invoke(uint64_t a1, void *a2)
@@ -769,9 +769,9 @@ void __64__VSSpeechConnection_updateWithConnectionIdentifier_keepActive___block_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -785,20 +785,20 @@ void __64__VSSpeechConnection_updateWithConnectionIdentifier_keepActive___block_
 
 - (id)currentAudioRequest
 {
-  v2 = [(VSSpeechConnection *)self delegateWrapper];
-  v3 = [v2 audioRequests];
-  v4 = [v3 firstObject];
+  delegateWrapper = [(VSSpeechConnection *)self delegateWrapper];
+  audioRequests = [delegateWrapper audioRequests];
+  firstObject = [audioRequests firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)currentRequest
 {
-  v2 = [(VSSpeechConnection *)self delegateWrapper];
-  v3 = [v2 requests];
-  v4 = [v3 firstObject];
+  delegateWrapper = [(VSSpeechConnection *)self delegateWrapper];
+  requests = [delegateWrapper requests];
+  firstObject = [requests firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (void)_connectionInvalidated
@@ -809,27 +809,27 @@ void __64__VSSpeechConnection_updateWithConnectionIdentifier_keepActive___block_
   if (WeakRetained)
   {
     v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"VoiceServicesErrorDomain" code:-9 userInfo:0];
-    v5 = [(VSSpeechConnection *)self delegateWrapper];
-    v6 = [v5 requests];
-    v7 = [v6 count];
+    delegateWrapper = [(VSSpeechConnection *)self delegateWrapper];
+    requests = [delegateWrapper requests];
+    v7 = [requests count];
 
-    v8 = [(VSSpeechConnection *)self delegateWrapper];
-    v9 = v8;
+    delegateWrapper2 = [(VSSpeechConnection *)self delegateWrapper];
+    delegateWrapper6 = delegateWrapper2;
     if (v7)
     {
-      v10 = [v8 requests];
+      requests2 = [delegateWrapper2 requests];
     }
 
     else
     {
-      v11 = [v8 audioRequests];
-      v12 = [v11 count];
+      audioRequests = [delegateWrapper2 audioRequests];
+      v12 = [audioRequests count];
 
       if (!v12)
       {
 LABEL_8:
-        v30 = [(VSSpeechConnection *)self delegateWrapper];
-        v31 = [v30 requests];
+        delegateWrapper3 = [(VSSpeechConnection *)self delegateWrapper];
+        requests3 = [delegateWrapper3 requests];
         v51[0] = MEMORY[0x277D85DD0];
         v51[1] = 3221225472;
         v51[2] = __44__VSSpeechConnection__connectionInvalidated__block_invoke;
@@ -837,10 +837,10 @@ LABEL_8:
         v51[4] = self;
         v32 = v4;
         v52 = v32;
-        [v31 enumerateObjectsUsingBlock:v51];
+        [requests3 enumerateObjectsUsingBlock:v51];
 
-        v33 = [(VSSpeechConnection *)self delegateWrapper];
-        v34 = [v33 audioRequests];
+        delegateWrapper4 = [(VSSpeechConnection *)self delegateWrapper];
+        audioRequests2 = [delegateWrapper4 audioRequests];
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __44__VSSpeechConnection__connectionInvalidated__block_invoke_2;
@@ -848,10 +848,10 @@ LABEL_8:
         v49[4] = self;
         v35 = v32;
         v50 = v35;
-        [v34 enumerateObjectsUsingBlock:v49];
+        [audioRequests2 enumerateObjectsUsingBlock:v49];
 
-        v36 = [(VSSpeechConnection *)self delegateWrapper];
-        v37 = [v36 concurrentSynthesisRequests];
+        delegateWrapper5 = [(VSSpeechConnection *)self delegateWrapper];
+        concurrentSynthesisRequests = [delegateWrapper5 concurrentSynthesisRequests];
         v47[0] = MEMORY[0x277D85DD0];
         v47[1] = 3221225472;
         v47[2] = __44__VSSpeechConnection__connectionInvalidated__block_invoke_3;
@@ -859,7 +859,7 @@ LABEL_8:
         v47[4] = self;
         v48 = v35;
         v38 = v35;
-        [v37 enumerateKeysAndObjectsUsingBlock:v47];
+        [concurrentSynthesisRequests enumerateKeysAndObjectsUsingBlock:v47];
 
         v39 = objc_loadWeakRetained(&self->_delegate);
         [v39 connection:self invalidatedWithError:v38];
@@ -867,15 +867,15 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v9 = [(VSSpeechConnection *)self delegateWrapper];
-      v10 = [v9 audioRequests];
+      delegateWrapper6 = [(VSSpeechConnection *)self delegateWrapper];
+      requests2 = [delegateWrapper6 audioRequests];
     }
 
-    v13 = v10;
-    v14 = [v10 firstObject];
-    v15 = [v14 siriRequestId];
+    v13 = requests2;
+    firstObject = [requests2 firstObject];
+    siriRequestId = [firstObject siriRequestId];
 
-    if (v15)
+    if (siriRequestId)
     {
       v16 = objc_alloc_init(MEMORY[0x277D5B180]);
       v17 = [MEMORY[0x277CCABB0] numberWithInt:4294967287];
@@ -886,8 +886,8 @@ LABEL_8:
       v19 = objc_alloc_init(MEMORY[0x277D5B150]);
       [v19 setFailed:v16];
       v20 = objc_alloc(MEMORY[0x277D5AC78]);
-      v21 = [MEMORY[0x277CCAD78] UUID];
-      v22 = [v20 initWithNSUUID:v21];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      v22 = [v20 initWithNSUUID:uUID];
       [v19 setContextId:v22];
 
       v23 = objc_alloc_init(MEMORY[0x277D5B140]);
@@ -896,13 +896,13 @@ LABEL_8:
       [v23 setEventMetadata:v24];
 
       v25 = objc_alloc(MEMORY[0x277D5AC78]);
-      v26 = [MEMORY[0x277D552C0] derivedIdentifierForComponentName:13 fromSourceIdentifier:v15];
+      v26 = [MEMORY[0x277D552C0] derivedIdentifierForComponentName:13 fromSourceIdentifier:siriRequestId];
       v27 = [v25 initWithNSUUID:v26];
-      v28 = [v23 eventMetadata];
-      [v28 setTtsId:v27];
+      eventMetadata = [v23 eventMetadata];
+      [eventMetadata setTtsId:v27];
 
-      v29 = [MEMORY[0x277D552C0] sharedStream];
-      [v29 emitMessage:v23];
+      mEMORY[0x277D552C0] = [MEMORY[0x277D552C0] sharedStream];
+      [mEMORY[0x277D552C0] emitMessage:v23];
     }
 
     goto LABEL_8;
@@ -910,17 +910,17 @@ LABEL_8:
 
 LABEL_9:
   [(VSSpeechConnection *)self setXpcConnection:0];
-  v40 = [(VSSpeechConnection *)self delegateWrapper];
-  v41 = [v40 requests];
-  [v41 removeAllObjects];
+  delegateWrapper7 = [(VSSpeechConnection *)self delegateWrapper];
+  requests4 = [delegateWrapper7 requests];
+  [requests4 removeAllObjects];
 
-  v42 = [(VSSpeechConnection *)self delegateWrapper];
-  v43 = [v42 audioRequests];
-  [v43 removeAllObjects];
+  delegateWrapper8 = [(VSSpeechConnection *)self delegateWrapper];
+  audioRequests3 = [delegateWrapper8 audioRequests];
+  [audioRequests3 removeAllObjects];
 
-  v44 = [(VSSpeechConnection *)self delegateWrapper];
-  v45 = [v44 concurrentSynthesisRequests];
-  [v45 removeAllObjects];
+  delegateWrapper9 = [(VSSpeechConnection *)self delegateWrapper];
+  concurrentSynthesisRequests2 = [delegateWrapper9 concurrentSynthesisRequests];
+  [concurrentSynthesisRequests2 removeAllObjects];
 
   v46 = *MEMORY[0x277D85DE8];
 }
@@ -949,19 +949,19 @@ void __44__VSSpeechConnection__connectionInvalidated__block_invoke_3(uint64_t a1
   [WeakRetained connection:*(a1 + 32) synthesisRequest:v5 didFinishWithInstrumentMetrics:0 error:*(a1 + 40)];
 }
 
-- (id)_remoteObjectWithErrorHandler:(id)a3
+- (id)_remoteObjectWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(VSSpeechConnection *)self xpcConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  v6 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (id)_remoteObjectSync
 {
-  v2 = [(VSSpeechConnection *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_3155];
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_3155];
 
   return v3;
 }
@@ -988,23 +988,23 @@ void __39__VSSpeechConnection__remoteObjectSync__block_invoke(uint64_t a1, void 
 
 - (id)_remoteObject
 {
-  v2 = [(VSSpeechConnection *)self xpcConnection];
-  v3 = [v2 remoteObjectProxy];
+  xpcConnection = [(VSSpeechConnection *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)setXpcConnection:(id)a3
+- (void)setXpcConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   threadSafeQueue = self->_threadSafeQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__VSSpeechConnection_setXpcConnection___block_invoke;
   v7[3] = &unk_279E4F808;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_sync(threadSafeQueue, v7);
 }
 
@@ -1126,7 +1126,7 @@ void __35__VSSpeechConnection_xpcConnection__block_invoke_3(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_272850000, v3, OS_LOG_TYPE_DEFAULT, "Closing xpc connection %p", buf, 0xCu);
   }
 

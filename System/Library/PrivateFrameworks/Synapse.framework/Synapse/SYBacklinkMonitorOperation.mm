@@ -1,36 +1,36 @@
 @interface SYBacklinkMonitorOperation
-- (SYBacklinkMonitorOperation)initWithDelegate:(id)a3 processingQueue:(id)a4 inputUserActivityInfo:(id)a5 processIdentifier:(int)a6;
+- (SYBacklinkMonitorOperation)initWithDelegate:(id)delegate processingQueue:(id)queue inputUserActivityInfo:(id)info processIdentifier:(int)identifier;
 - (SYBacklinkMonitorOperationDelegate)delegate;
 - (SYBacklinkMonitorOperationDelegate_Testing)_testingDelegate;
 - (id)description;
 - (int64_t)type;
 - (void)_finishProcessingAndNotify;
 - (void)_searchBacklinksForInputUserActivity;
-- (void)_setOperationState:(int64_t)a3;
-- (void)_showOrHideBacklinkIndicatorForDomainIdentifiers:(id)a3 linkedIdentifiers:(id)a4;
+- (void)_setOperationState:(int64_t)state;
+- (void)_showOrHideBacklinkIndicatorForDomainIdentifiers:(id)identifiers linkedIdentifiers:(id)linkedIdentifiers;
 - (void)beginProcessing;
 @end
 
 @implementation SYBacklinkMonitorOperation
 
-- (SYBacklinkMonitorOperation)initWithDelegate:(id)a3 processingQueue:(id)a4 inputUserActivityInfo:(id)a5 processIdentifier:(int)a6
+- (SYBacklinkMonitorOperation)initWithDelegate:(id)delegate processingQueue:(id)queue inputUserActivityInfo:(id)info processIdentifier:(int)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  infoCopy = info;
   v16.receiver = self;
   v16.super_class = SYBacklinkMonitorOperation;
   v13 = [(SYBacklinkMonitorOperation *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeStrong(&v14->_processingQueue, a4);
-    objc_storeStrong(&v14->_inputUserActivityInfo, a5);
-    v14->_processIdentifier = a6;
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v14->_processingQueue, queue);
+    objc_storeStrong(&v14->_inputUserActivityInfo, info);
+    v14->_processIdentifier = identifier;
     if (objc_opt_respondsToSelector())
     {
-      objc_storeWeak(&v14->__testingDelegate, v10);
+      objc_storeWeak(&v14->__testingDelegate, delegateCopy);
     }
   }
 
@@ -42,15 +42,15 @@
   v8.receiver = self;
   v8.super_class = SYBacklinkMonitorOperation;
   v3 = [(SYBacklinkMonitorOperation *)&v8 description];
-  v4 = [(SYBacklinkMonitorOperation *)self _operationState];
-  if (v4 > 3)
+  _operationState = [(SYBacklinkMonitorOperation *)self _operationState];
+  if (_operationState > 3)
   {
     v5 = &stru_2838DFF18;
   }
 
   else
   {
-    v5 = off_27856BD88[v4];
+    v5 = off_27856BD88[_operationState];
   }
 
   v6 = [v3 stringByAppendingFormat:@" state: %@", v5];
@@ -60,15 +60,15 @@
 
 - (int64_t)type
 {
-  v3 = [(SYBacklinkMonitorOperation *)self _indicatorCommand];
+  _indicatorCommand = [(SYBacklinkMonitorOperation *)self _indicatorCommand];
 
-  if (!v3)
+  if (!_indicatorCommand)
   {
     return 0;
   }
 
-  v4 = [(SYBacklinkMonitorOperation *)self _indicatorCommand];
-  if ([v4 isActive])
+  _indicatorCommand2 = [(SYBacklinkMonitorOperation *)self _indicatorCommand];
+  if ([_indicatorCommand2 isActive])
   {
     v5 = 1;
   }
@@ -84,14 +84,14 @@
 - (void)beginProcessing
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [(SYBacklinkMonitorOperation *)self processingQueue];
-  dispatch_assert_queue_V2(v3);
+  processingQueue = [(SYBacklinkMonitorOperation *)self processingQueue];
+  dispatch_assert_queue_V2(processingQueue);
 
   v4 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_225901000, v4, OS_LOG_TYPE_DEFAULT, "BacklinkOperation %p: Begin processing.", &v6, 0xCu);
   }
 
@@ -102,13 +102,13 @@
 - (void)_searchBacklinksForInputUserActivity
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SYBacklinkMonitorOperation *)self processingQueue];
-  dispatch_assert_queue_V2(v3);
+  processingQueue = [(SYBacklinkMonitorOperation *)self processingQueue];
+  dispatch_assert_queue_V2(processingQueue);
 
   [(SYBacklinkMonitorOperation *)self _setOperationState:1];
-  v4 = [(SYBacklinkMonitorOperation *)self inputUserActivityInfo];
-  v5 = v4;
-  if (v4 && SYIsLinkableUserActivity(v4))
+  inputUserActivityInfo = [(SYBacklinkMonitorOperation *)self inputUserActivityInfo];
+  v5 = inputUserActivityInfo;
+  if (inputUserActivityInfo && SYIsLinkableUserActivity(inputUserActivityInfo))
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v10[0] = MEMORY[0x277D85DD0];
@@ -132,7 +132,7 @@
       }
 
       *buf = 134218242;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v8;
       _os_log_impl(&dword_225901000, v7, OS_LOG_TYPE_DEFAULT, "BacklinkOperation %p: Skipping query, input activity is %@.", buf, 0x16u);
@@ -193,32 +193,32 @@ void __66__SYBacklinkMonitorOperation__searchBacklinksForInputUserActivity__bloc
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_showOrHideBacklinkIndicatorForDomainIdentifiers:(id)a3 linkedIdentifiers:(id)a4
+- (void)_showOrHideBacklinkIndicatorForDomainIdentifiers:(id)identifiers linkedIdentifiers:(id)linkedIdentifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SYBacklinkMonitorOperation *)self processingQueue];
-  dispatch_assert_queue_V2(v8);
+  identifiersCopy = identifiers;
+  linkedIdentifiersCopy = linkedIdentifiers;
+  processingQueue = [(SYBacklinkMonitorOperation *)self processingQueue];
+  dispatch_assert_queue_V2(processingQueue);
 
   [(SYBacklinkMonitorOperation *)self _setOperationState:2];
-  v9 = [(SYBacklinkMonitorOperation *)self _testingForcedFoundLinkedIdentifiers];
+  _testingForcedFoundLinkedIdentifiers = [(SYBacklinkMonitorOperation *)self _testingForcedFoundLinkedIdentifiers];
 
-  if (v9)
+  if (_testingForcedFoundLinkedIdentifiers)
   {
     v10 = dispatch_time(0, 100000000);
-    v11 = [(SYBacklinkMonitorOperation *)self processingQueue];
+    processingQueue2 = [(SYBacklinkMonitorOperation *)self processingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __97__SYBacklinkMonitorOperation__showOrHideBacklinkIndicatorForDomainIdentifiers_linkedIdentifiers___block_invoke;
     block[3] = &unk_27856B880;
     block[4] = self;
-    dispatch_after(v10, v11, block);
+    dispatch_after(v10, processingQueue2, block);
   }
 
   else
   {
-    v12 = v7;
-    v13 = v6;
+    v12 = linkedIdentifiersCopy;
+    v13 = identifiersCopy;
     v14 = v13;
     if (!v12)
     {
@@ -230,13 +230,13 @@ void __66__SYBacklinkMonitorOperation__searchBacklinksForInputUserActivity__bloc
     v15 = [[SYShowBacklinkIndicatorCommand alloc] initWithDomainIdentifiers:v14 linkIdentifiers:v12];
     [(SYBacklinkMonitorOperation *)self set_indicatorCommand:v15];
 
-    v16 = [(SYBacklinkMonitorOperation *)self _indicatorCommand];
+    _indicatorCommand = [(SYBacklinkMonitorOperation *)self _indicatorCommand];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __97__SYBacklinkMonitorOperation__showOrHideBacklinkIndicatorForDomainIdentifiers_linkedIdentifiers___block_invoke_2;
     v17[3] = &unk_27856B880;
     v17[4] = self;
-    [v16 runWithCompletion:v17];
+    [_indicatorCommand runWithCompletion:v17];
   }
 }
 
@@ -254,32 +254,32 @@ void __97__SYBacklinkMonitorOperation__showOrHideBacklinkIndicatorForDomainIdent
 - (void)_finishProcessingAndNotify
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(SYBacklinkMonitorOperation *)self processingQueue];
-  dispatch_assert_queue_V2(v3);
+  processingQueue = [(SYBacklinkMonitorOperation *)self processingQueue];
+  dispatch_assert_queue_V2(processingQueue);
 
   [(SYBacklinkMonitorOperation *)self _setOperationState:3];
   v4 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_225901000, v4, OS_LOG_TYPE_DEFAULT, "BacklinkOperation %p: Finished, notifying delegate.", &v7, 0xCu);
   }
 
-  v5 = [(SYBacklinkMonitorOperation *)self delegate];
-  [v5 backlinkMonitorOperationDidFinish:self];
+  delegate = [(SYBacklinkMonitorOperation *)self delegate];
+  [delegate backlinkMonitorOperationDidFinish:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setOperationState:(int64_t)a3
+- (void)_setOperationState:(int64_t)state
 {
   operationState = self->__operationState;
   if (operationState > 1)
   {
     if (operationState == 2)
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         v8 = @"PreparingResults";
         goto LABEL_15;
@@ -290,19 +290,19 @@ void __97__SYBacklinkMonitorOperation__showOrHideBacklinkIndicatorForDomainIdent
     {
       v8 = @"Finished";
 LABEL_15:
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      v10 = v9;
-      if (a3 > 3)
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      v10 = currentHandler;
+      if (state > 3)
       {
         v11 = &stru_2838DFF18;
       }
 
       else
       {
-        v11 = off_27856BD88[a3];
+        v11 = off_27856BD88[state];
       }
 
-      [v9 handleFailureInMethod:a2 object:self file:@"SYBacklinkMonitorOperation.m" lineNumber:205 description:{@"Invalid state transition %@ -> %@ for backlink monitor operation %@", v8, v11, self}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SYBacklinkMonitorOperation.m" lineNumber:205 description:{@"Invalid state transition %@ -> %@ for backlink monitor operation %@", v8, v11, self}];
     }
   }
 
@@ -310,7 +310,7 @@ LABEL_15:
   {
     if (operationState)
     {
-      if (operationState != 1 || (a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+      if (operationState != 1 || (state & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
         goto LABEL_19;
       }
@@ -319,7 +319,7 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+    if ((state & 0xFFFFFFFFFFFFFFFDLL) != 1)
     {
       v8 = @"Initial";
       goto LABEL_15;
@@ -327,9 +327,9 @@ LABEL_15:
   }
 
 LABEL_19:
-  self->__operationState = a3;
-  v12 = [(SYBacklinkMonitorOperation *)self _testingDelegate];
-  [v12 backlinkMonitorOperationDidChangeState:self];
+  self->__operationState = state;
+  _testingDelegate = [(SYBacklinkMonitorOperation *)self _testingDelegate];
+  [_testingDelegate backlinkMonitorOperationDidChangeState:self];
 }
 
 - (SYBacklinkMonitorOperationDelegate)delegate

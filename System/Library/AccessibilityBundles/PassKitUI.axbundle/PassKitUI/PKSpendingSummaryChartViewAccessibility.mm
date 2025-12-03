@@ -1,5 +1,5 @@
 @interface PKSpendingSummaryChartViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityChartSummary;
 - (id)_accessibilityDataSeries;
 - (id)_accessibilitySeriesTitle;
@@ -14,19 +14,19 @@
 
 @implementation PKSpendingSummaryChartViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKSpendingSummaryChartView" hasInstanceVariable:@"_summary" withType:"PKSpendingSummary"];
-  [v3 validateClass:@"PKSpendingSummary" hasInstanceMethod:@"spendingsPerCalendarUnit" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSpendingSummaryChartView" hasInstanceVariable:@"_bars" withType:"NSMutableArray"];
-  [v3 validateClass:@"PKSpendingSummaryChartView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKSpendingSummary" hasInstanceMethod:@"summaryType" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PKSpendingSummary" hasInstanceMethod:@"startDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSpendingSummary" hasInstanceMethod:@"endDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSpendingSummary" hasInstanceMethod:@"totalSpending" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKCurrencyAmount" hasInstanceMethod:@"currency" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKCurrencyAmount" hasInstanceMethod:@"amount" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKSpendingSummaryChartView" hasInstanceVariable:@"_summary" withType:"PKSpendingSummary"];
+  [validationsCopy validateClass:@"PKSpendingSummary" hasInstanceMethod:@"spendingsPerCalendarUnit" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSpendingSummaryChartView" hasInstanceVariable:@"_bars" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"PKSpendingSummaryChartView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKSpendingSummary" hasInstanceMethod:@"summaryType" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PKSpendingSummary" hasInstanceMethod:@"startDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSpendingSummary" hasInstanceMethod:@"endDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSpendingSummary" hasInstanceMethod:@"totalSpending" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKCurrencyAmount" hasInstanceMethod:@"currency" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKCurrencyAmount" hasInstanceMethod:@"amount" withFullSignature:{"@", 0}];
 }
 
 - (void)layoutSubviews
@@ -56,7 +56,7 @@
     v7 = [(PKSpendingSummaryChartViewAccessibility *)self safeValueForKey:@"_summary"];
     v8 = [v7 safeArrayForKey:@"spendingsPerCalendarUnit"];
 
-    v49 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
@@ -161,14 +161,14 @@ LABEL_40:
               abort();
             }
 
-            v28 = [v27 amount];
-            [v28 doubleValue];
+            amount = [v27 amount];
+            [amount doubleValue];
             [(UIAXPKSpendingElement *)v15 setChartValue:?];
 
             v51 = v27;
-            v29 = [v27 currency];
+            currency = [v27 currency];
             v53 = v15;
-            [(UIAXPKSpendingElement *)v15 setCurrency:v29];
+            [(UIAXPKSpendingElement *)v15 setCurrency:currency];
 
             v30 = [v14 safeArrayForKey:@"orderedSpendingCategories"];
             v60 = 0u;
@@ -203,8 +203,8 @@ LABEL_40:
 
                     else
                     {
-                      v37 = [v36 totalAmount];
-                      v38 = [(PKSpendingSummaryChartViewAccessibility *)self _axStringFromCurrency:v37];
+                      totalAmount = [v36 totalAmount];
+                      v38 = [(PKSpendingSummaryChartViewAccessibility *)self _axStringFromCurrency:totalAmount];
                     }
 
                     [v36 merchantCategory];
@@ -234,7 +234,7 @@ LABEL_40:
             v41 = __UIAXStringForVariables();
             [(UIAXPKSpendingElement *)v53 setAccessibilityValue:v41];
 
-            [v49 addObject:v53];
+            [array addObject:v53];
             ++v9;
 
             v6 = v47;
@@ -249,8 +249,8 @@ LABEL_40:
       while (v57);
     }
 
-    [(PKSpendingSummaryChartViewAccessibility *)self _accessibilitySetRetainedValue:v49 forKey:@"accessibilityElements"];
-    v3 = v49;
+    [(PKSpendingSummaryChartViewAccessibility *)self _accessibilitySetRetainedValue:array forKey:@"accessibilityElements"];
+    v3 = array;
   }
 
   v42 = *MEMORY[0x29EDCA608];
@@ -260,16 +260,16 @@ LABEL_40:
 
 - (id)_axStartDates
 {
-  v2 = [(PKSpendingSummaryChartViewAccessibility *)self accessibilityElements];
-  v3 = [v2 axMapObjectsUsingBlock:&__block_literal_global_6];
+  accessibilityElements = [(PKSpendingSummaryChartViewAccessibility *)self accessibilityElements];
+  v3 = [accessibilityElements axMapObjectsUsingBlock:&__block_literal_global_6];
 
   return v3;
 }
 
 - (id)_axSpendingValues
 {
-  v2 = [(PKSpendingSummaryChartViewAccessibility *)self accessibilityElements];
-  v3 = [v2 axMapObjectsUsingBlock:&__block_literal_global_410];
+  accessibilityElements = [(PKSpendingSummaryChartViewAccessibility *)self accessibilityElements];
+  v3 = [accessibilityElements axMapObjectsUsingBlock:&__block_literal_global_410];
 
   return v3;
 }
@@ -286,14 +286,14 @@ uint64_t __60__PKSpendingSummaryChartViewAccessibility__axSpendingValues__block_
 {
   v13[1] = *MEMORY[0x29EDCA608];
   v3 = objc_alloc(MEMORY[0x29EDB8050]);
-  v4 = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilitySeriesTitle];
-  v5 = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilityChartSummary];
-  v6 = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilityXAxis];
-  v7 = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilityYAxis];
-  v8 = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilityDataSeries];
-  v13[0] = v8;
+  _accessibilitySeriesTitle = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilitySeriesTitle];
+  _accessibilityChartSummary = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilityChartSummary];
+  _accessibilityXAxis = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilityXAxis];
+  _accessibilityYAxis = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilityYAxis];
+  _accessibilityDataSeries = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilityDataSeries];
+  v13[0] = _accessibilityDataSeries;
   v9 = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:1];
-  v10 = [v3 initWithTitle:v4 summary:v5 xAxisDescriptor:v6 yAxisDescriptor:v7 series:v9];
+  v10 = [v3 initWithTitle:_accessibilitySeriesTitle summary:_accessibilityChartSummary xAxisDescriptor:_accessibilityXAxis yAxisDescriptor:_accessibilityYAxis series:v9];
 
   v11 = *MEMORY[0x29EDCA608];
 
@@ -302,11 +302,11 @@ uint64_t __60__PKSpendingSummaryChartViewAccessibility__axSpendingValues__block_
 
 - (id)_accessibilityDataSeries
 {
-  v3 = [(PKSpendingSummaryChartViewAccessibility *)self _axStartDates];
-  v22 = self;
-  v4 = [(PKSpendingSummaryChartViewAccessibility *)self _axSpendingValues];
-  v5 = [v4 count];
-  v6 = [v3 count];
+  _axStartDates = [(PKSpendingSummaryChartViewAccessibility *)self _axStartDates];
+  selfCopy = self;
+  _axSpendingValues = [(PKSpendingSummaryChartViewAccessibility *)self _axSpendingValues];
+  v5 = [_axSpendingValues count];
+  v6 = [_axStartDates count];
   if (v5 >= v6)
   {
     v7 = v6;
@@ -323,8 +323,8 @@ uint64_t __60__PKSpendingSummaryChartViewAccessibility__axSpendingValues__block_
     v9 = 0;
     do
     {
-      v10 = [v3 axSafeObjectAtIndex:v9];
-      v11 = [v4 axSafeObjectAtIndex:v9];
+      v10 = [_axStartDates axSafeObjectAtIndex:v9];
+      v11 = [_axSpendingValues axSafeObjectAtIndex:v9];
       [v11 doubleValue];
       v13 = v12;
 
@@ -341,8 +341,8 @@ uint64_t __60__PKSpendingSummaryChartViewAccessibility__axSpendingValues__block_
   }
 
   v18 = objc_alloc(MEMORY[0x29EDB8070]);
-  v19 = [(PKSpendingSummaryChartViewAccessibility *)v22 _accessibilitySeriesTitle];
-  v20 = [v18 initWithName:v19 isContinuous:-[PKSpendingSummaryChartViewAccessibility _accessibilityIsContinuous](v22 dataPoints:{"_accessibilityIsContinuous"), v8}];
+  _accessibilitySeriesTitle = [(PKSpendingSummaryChartViewAccessibility *)selfCopy _accessibilitySeriesTitle];
+  v20 = [v18 initWithName:_accessibilitySeriesTitle isContinuous:-[PKSpendingSummaryChartViewAccessibility _accessibilityIsContinuous](selfCopy dataPoints:{"_accessibilityIsContinuous"), v8}];
 
   return v20;
 }
@@ -364,22 +364,22 @@ uint64_t __60__PKSpendingSummaryChartViewAccessibility__axSpendingValues__block_
     case 0:
       v6 = @"weekly.spending.summary";
 LABEL_7:
-      v7 = accessibilityLocalizedString(v6);
+      accessibilityLabel = accessibilityLocalizedString(v6);
       goto LABEL_9;
   }
 
-  v7 = [(PKSpendingSummaryChartViewAccessibility *)self accessibilityLabel];
+  accessibilityLabel = [(PKSpendingSummaryChartViewAccessibility *)self accessibilityLabel];
 LABEL_9:
 
-  return v7;
+  return accessibilityLabel;
 }
 
 - (id)_accessibilityXAxis
 {
-  v2 = [(PKSpendingSummaryChartViewAccessibility *)self _axStartDates];
+  _axStartDates = [(PKSpendingSummaryChartViewAccessibility *)self _axStartDates];
   v3 = objc_alloc(MEMORY[0x29EDB8048]);
   v4 = accessibilityLocalizedString(@"graph.x.axis.description.time");
-  v5 = [v3 initWithTitle:v4 categoryOrder:v2];
+  v5 = [v3 initWithTitle:v4 categoryOrder:_axStartDates];
 
   return v5;
 }
@@ -387,16 +387,16 @@ LABEL_9:
 - (id)_accessibilityYAxis
 {
   v29 = *MEMORY[0x29EDCA608];
-  v3 = [(PKSpendingSummaryChartViewAccessibility *)self accessibilityElements];
-  v4 = [v3 firstObject];
-  v5 = [v4 currency];
+  accessibilityElements = [(PKSpendingSummaryChartViewAccessibility *)self accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
+  currency = [firstObject currency];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [(PKSpendingSummaryChartViewAccessibility *)self accessibilityElements];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  accessibilityElements2 = [(PKSpendingSummaryChartViewAccessibility *)self accessibilityElements];
+  v7 = [accessibilityElements2 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -409,7 +409,7 @@ LABEL_9:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accessibilityElements2);
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
@@ -426,7 +426,7 @@ LABEL_9:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v8 = [accessibilityElements2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v8);
@@ -439,14 +439,14 @@ LABEL_9:
   }
 
   v16 = objc_alloc(MEMORY[0x29EDB8078]);
-  v17 = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilitySeriesTitle];
+  _accessibilitySeriesTitle = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilitySeriesTitle];
   v22[0] = MEMORY[0x29EDCA5F8];
   v22[1] = 3221225472;
   v22[2] = __62__PKSpendingSummaryChartViewAccessibility__accessibilityYAxis__block_invoke;
   v22[3] = &unk_29F2E1F88;
-  v23 = v5;
-  v18 = v5;
-  v19 = [v16 initWithTitle:v17 lowerBound:0 upperBound:v22 gridlinePositions:v11 valueDescriptionProvider:v10];
+  v23 = currency;
+  v18 = currency;
+  v19 = [v16 initWithTitle:_accessibilitySeriesTitle lowerBound:0 upperBound:v22 gridlinePositions:v11 valueDescriptionProvider:v10];
 
   v20 = *MEMORY[0x29EDCA608];
 
@@ -465,15 +465,15 @@ id __62__PKSpendingSummaryChartViewAccessibility__accessibilityYAxis__block_invo
 
 - (id)_accessibilityChartSummary
 {
-  v3 = [(PKSpendingSummaryChartViewAccessibility *)self _axStartDates];
-  v4 = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilitySeriesTitle];
-  if ([v4 length] && objc_msgSend(v3, "count"))
+  _axStartDates = [(PKSpendingSummaryChartViewAccessibility *)self _axStartDates];
+  _accessibilitySeriesTitle = [(PKSpendingSummaryChartViewAccessibility *)self _accessibilitySeriesTitle];
+  if ([_accessibilitySeriesTitle length] && objc_msgSend(_axStartDates, "count"))
   {
     v5 = accessibilityLocalizedString(@"chart.summary.format");
     v6 = MEMORY[0x29EDBA0F8];
-    v7 = [v3 firstObject];
-    v8 = [v3 lastObject];
-    v9 = [v6 stringWithFormat:v5, v4, v7, v8];
+    firstObject = [_axStartDates firstObject];
+    lastObject = [_axStartDates lastObject];
+    v9 = [v6 stringWithFormat:v5, _accessibilitySeriesTitle, firstObject, lastObject];
   }
 
   else

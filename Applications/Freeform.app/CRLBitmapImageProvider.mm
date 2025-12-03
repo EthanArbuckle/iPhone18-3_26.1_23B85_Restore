@@ -1,36 +1,36 @@
 @interface CRLBitmapImageProvider
-+ (CGImage)CGImageForImageData:(id)a3;
-+ (CGSize)naturalSizeForImageData:(id)a3;
-+ (id)CRLImageForImageData:(id)a3;
-+ (void)drawImage:(CGImage *)a3 inContext:(CGContext *)a4 rect:(CGRect)a5 orientation:(int64_t)a6;
++ (CGImage)CGImageForImageData:(id)data;
++ (CGSize)naturalSizeForImageData:(id)data;
++ (id)CRLImageForImageData:(id)data;
++ (void)drawImage:(CGImage *)image inContext:(CGContext *)context rect:(CGRect)rect orientation:(int64_t)orientation;
 - (BOOL)i_hasFlushableContent;
 - (BOOL)isOpaque;
 - (BOOL)isValid;
 - (CGImage)CGImageForNaturalSize;
-- (CGImage)CGImageForSize:(CGSize)a3 inContext:(CGContext *)a4 orContentsScaleProvider:(id)a5;
+- (CGImage)CGImageForSize:(CGSize)size inContext:(CGContext *)context orContentsScaleProvider:(id)provider;
 - (CGImage)CGImageOfAnySize;
 - (CGImage)CGImageOfLargestSafeSize;
-- (CGImage)CGImageResampledToSize:(CGSize)a3 lowQuality:(BOOL)a4 assetOwner:(id)a5;
-- (CGImage)cachedCGImageOfNearestSizeOrNULLPreferringSize:(CGSize)a3 withContentsScaleProvider:(id)a4;
-- (CGImage)p_createResampledImageWithReciprocalScale:(unint64_t)a3;
-- (CGImage)p_newImageFromSource:(CGImageSource *)a3;
-- (CGImage)p_newImageOfSize:(CGSize)a3 fromSource:(CGImageSource *)a4;
-- (CGImage)p_resampledImageOfReciprocalScale:(unint64_t)a3;
+- (CGImage)CGImageResampledToSize:(CGSize)size lowQuality:(BOOL)quality assetOwner:(id)owner;
+- (CGImage)cachedCGImageOfNearestSizeOrNULLPreferringSize:(CGSize)size withContentsScaleProvider:(id)provider;
+- (CGImage)p_createResampledImageWithReciprocalScale:(unint64_t)scale;
+- (CGImage)p_newImageFromSource:(CGImageSource *)source;
+- (CGImage)p_newImageOfSize:(CGSize)size fromSource:(CGImageSource *)source;
+- (CGImage)p_resampledImageOfReciprocalScale:(unint64_t)scale;
 - (CGImageSource)CGImageSource;
 - (CGImageSource)p_newCGImageSource;
 - (CGImageSource)p_newCGImageSourceForTemporaryUse;
-- (CGImageSource)p_newImageOfSize:(CGSize)a3;
+- (CGImageSource)p_newImageOfSize:(CGSize)size;
 - (CGSize)dpiAdjustedNaturalSize;
 - (CGSize)naturalSize;
 - (int64_t)orientation;
-- (int64_t)p_reciprocalScaleForImageSize:(CGSize)a3;
+- (int64_t)p_reciprocalScaleForImageSize:(CGSize)size;
 - (unint64_t)imageDPI;
 - (unint64_t)imageGamut;
 - (void)dealloc;
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4;
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect;
 - (void)flush;
 - (void)i_commonInit;
-- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)a3 andImage:(CGImage *)a4;
+- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)source andImage:(CGImage *)image;
 - (void)p_loadFullSizedImageIfNecessary;
 - (void)p_loadLargestSafeImageIfNecessary;
 - (void)p_loadSourceRefIfNecessary;
@@ -39,22 +39,22 @@
 
 @implementation CRLBitmapImageProvider
 
-+ (CGImage)CGImageForImageData:(id)a3
++ (CGImage)CGImageForImageData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_class();
   v5 = +[CRLImageProviderPool sharedPool];
-  v6 = [v5 temporaryProviderForAsset:v3 shouldValidate:1];
+  v6 = [v5 temporaryProviderForAsset:dataCopy shouldValidate:1];
 
   v7 = sub_100014370(v4, v6);
 
-  v8 = [v7 CGImageForNaturalSize];
-  return v8;
+  cGImageForNaturalSize = [v7 CGImageForNaturalSize];
+  return cGImageForNaturalSize;
 }
 
-+ (id)CRLImageForImageData:(id)a3
++ (id)CRLImageForImageData:(id)data
 {
-  v3 = [a1 CGImageForImageData:a3];
+  v3 = [self CGImageForImageData:data];
   if (v3)
   {
     v3 = [CRLImage imageWithCGImage:v3];
@@ -63,12 +63,12 @@
   return v3;
 }
 
-+ (CGSize)naturalSizeForImageData:(id)a3
++ (CGSize)naturalSizeForImageData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_class();
   v5 = +[CRLImageProviderPool sharedPool];
-  v6 = [v5 temporaryProviderForAsset:v3 shouldValidate:1];
+  v6 = [v5 temporaryProviderForAsset:dataCopy shouldValidate:1];
 
   v7 = sub_100014370(v4, v6);
 
@@ -194,12 +194,12 @@
   return self->mIsValid;
 }
 
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(CRLBitmapImageProvider *)self isValid])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -231,19 +231,19 @@
 
   if ([(CRLBitmapImageProvider *)self isValid])
   {
-    [objc_opt_class() drawImage:-[CRLBitmapImageProvider CGImageForSize:inContext:orContentsScaleProvider:](self inContext:"CGImageForSize:inContext:orContentsScaleProvider:" rect:a3 orientation:{0, width, height), a3, -[CRLBitmapImageProvider orientation](self, "orientation"), x, y, width, height}];
+    [objc_opt_class() drawImage:-[CRLBitmapImageProvider CGImageForSize:inContext:orContentsScaleProvider:](self inContext:"CGImageForSize:inContext:orContentsScaleProvider:" rect:context orientation:{0, width, height), context, -[CRLBitmapImageProvider orientation](self, "orientation"), x, y, width, height}];
   }
 }
 
-+ (void)drawImage:(CGImage *)a3 inContext:(CGContext *)a4 rect:(CGRect)a5 orientation:(int64_t)a6
++ (void)drawImage:(CGImage *)image inContext:(CGContext *)context rect:(CGRect)rect orientation:(int64_t)orientation
 {
-  if (a3)
+  if (image)
   {
-    height = a5.size.height;
-    width = a5.size.width;
-    y = a5.origin.y;
-    x = a5.origin.x;
-    CGContextSaveGState(a4);
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    CGContextSaveGState(context);
     v16.origin.x = x;
     v16.origin.y = y;
     v16.size.width = width;
@@ -254,29 +254,29 @@
     v17.size.width = width;
     v17.size.height = height;
     MaxY = CGRectGetMaxY(v17);
-    CGContextTranslateCTM(a4, 0.0, MinY + MaxY);
-    CGContextScaleCTM(a4, 1.0, -1.0);
-    sub_1004F3D84(a6, 1, &v15, x, y, width, height);
-    CGContextConcatCTM(a4, &v15);
+    CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    sub_1004F3D84(orientation, 1, &v15, x, y, width, height);
+    CGContextConcatCTM(context, &v15);
     v18.origin.x = x;
     v18.origin.y = y;
     v18.size.width = width;
     v18.size.height = height;
-    CGContextDrawImage(a4, v18, a3);
-    CGContextRestoreGState(a4);
+    CGContextDrawImage(context, v18, image);
+    CGContextRestoreGState(context);
   }
 }
 
-- (CGImage)cachedCGImageOfNearestSizeOrNULLPreferringSize:(CGSize)a3 withContentsScaleProvider:(id)a4
+- (CGImage)cachedCGImageOfNearestSizeOrNULLPreferringSize:(CGSize)size withContentsScaleProvider:(id)provider
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
   if ([(CRLBitmapImageProvider *)self isValid])
   {
-    if (v7)
+    if (providerCopy)
     {
-      [v7 contentsScale];
+      [providerCopy contentsScale];
       width = sub_10011F340(width, height, v8);
       height = v9;
       if (qword_101AD59E8 != -1)
@@ -288,7 +288,7 @@
       if (os_log_type_enabled(off_1019EC778, OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
-        [v7 contentsScale];
+        [providerCopy contentsScale];
         *buf = 134218240;
         *&buf[4] = self;
         *&buf[12] = 2048;
@@ -332,12 +332,12 @@
     v26 = 0;
     if (width == 0.0)
     {
-      v20 = 0;
+      height = 0;
     }
 
     else
     {
-      v20 = [(CRLBitmapImageProvider *)self p_reciprocalScaleForImageSize:width, height];
+      height = [(CRLBitmapImageProvider *)self p_reciprocalScaleForImageSize:width, height];
     }
 
     mImageQueue = self->mImageQueue;
@@ -346,7 +346,7 @@
     block[2] = sub_1000FCF80;
     block[3] = &unk_10183B670;
     block[5] = buf;
-    block[6] = v20;
+    block[6] = height;
     block[4] = self;
     dispatch_sync(mImageQueue, block);
     v22 = *(*&buf[8] + 24);
@@ -596,17 +596,17 @@
   return v5;
 }
 
-- (CGImage)CGImageForSize:(CGSize)a3 inContext:(CGContext *)a4 orContentsScaleProvider:(id)a5
+- (CGImage)CGImageForSize:(CGSize)size inContext:(CGContext *)context orContentsScaleProvider:(id)provider
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
   if ([(CRLBitmapImageProvider *)self isValid])
   {
     [(CRLBitmapImageProvider *)self p_loadImageMetadata];
-    if (a4)
+    if (context)
     {
-      if (v9)
+      if (providerCopy)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -635,16 +635,16 @@
         [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:391 isFatal:0 description:"using context to determine requested image size. contents scale provider should be nil"];
       }
 
-      if ((sub_10051058C(a4) & 1) != 0 || sub_100510804(a4))
+      if ((sub_10051058C(context) & 1) != 0 || sub_100510804(context))
       {
-        v13 = [(CRLBitmapImageProvider *)self CGImageOfLargestSafeSize];
+        cGImageOfLargestSafeSize = [(CRLBitmapImageProvider *)self CGImageOfLargestSafeSize];
         goto LABEL_50;
       }
 
-      v22 = sub_100510A7C(a4);
+      v22 = sub_100510A7C(context);
       v23 = sub_10011F340(width, height, v22);
       v25 = v24;
-      CGContextGetCTM(buf, a4);
+      CGContextGetCTM(buf, context);
       v26 = sub_100139A00(buf);
       width = sub_10011F340(v23, v25, v26);
       height = v27;
@@ -657,14 +657,14 @@
       if (os_log_type_enabled(off_1019EC778, OS_LOG_TYPE_DEFAULT))
       {
         v29 = v28;
-        v30 = sub_100510A7C(a4);
-        CGContextGetCTM(buf, a4);
+        v30 = sub_100510A7C(context);
+        CGContextGetCTM(buf, context);
         v31 = sub_100139A00(buf);
-        v32 = sub_100510A7C(a4);
-        CGContextGetCTM(buf, a4);
+        v32 = sub_100510A7C(context);
+        CGContextGetCTM(buf, context);
         v33 = sub_100139A00(buf);
         *buf = 134218752;
-        v54 = self;
+        selfCopy4 = self;
         v55 = 2048;
         v56 = v30 * v31;
         v57 = 2048;
@@ -675,9 +675,9 @@
       }
     }
 
-    else if (v9)
+    else if (providerCopy)
     {
-      [v9 contentsScale];
+      [providerCopy contentsScale];
       width = sub_10011F340(width, height, v17);
       height = v18;
       if (qword_101AD59E8 != -1)
@@ -689,9 +689,9 @@
       if (os_log_type_enabled(off_1019EC778, OS_LOG_TYPE_DEFAULT))
       {
         v20 = v19;
-        [v9 contentsScale];
+        [providerCopy contentsScale];
         *buf = 134218240;
-        v54 = self;
+        selfCopy4 = self;
         v55 = 2048;
         v56 = v21;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%p scaling image for contentsScaleProvider by %f", buf, 0x16u);
@@ -715,7 +715,7 @@
       [(CRLBitmapImageProvider *)self naturalSize];
       v38 = NSStringFromCGSize(v64);
       *buf = 134218754;
-      v54 = self;
+      selfCopy4 = self;
       v55 = 2112;
       v56 = v37;
       v57 = 2112;
@@ -779,7 +779,7 @@
 
       v46 = v45;
       *buf = 134219010;
-      v54 = self;
+      selfCopy4 = self;
       v55 = 2048;
       v56 = *&v34;
       v57 = 2112;
@@ -791,7 +791,7 @@
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "provider:%p renderScale:%zu requestedSize:%@ naturalSize:%@ mImageExists:%@", buf, 0x34u);
     }
 
-    v13 = v50[3];
+    cGImageOfLargestSafeSize = v50[3];
     _Block_object_dispose(&v49, 8);
   }
 
@@ -823,18 +823,18 @@
     v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLBitmapImageProvider.m"];
     [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:382 isFatal:0 description:"Invalid image provider trying to render an image at natural size"];
 
-    v13 = 0;
+    cGImageOfLargestSafeSize = 0;
   }
 
 LABEL_50:
 
-  return v13;
+  return cGImageOfLargestSafeSize;
 }
 
-- (int64_t)p_reciprocalScaleForImageSize:(CGSize)a3
+- (int64_t)p_reciprocalScaleForImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CRLBitmapImageProvider *)self naturalSize];
   v6 = v5;
   v8 = v7;
@@ -909,12 +909,12 @@ LABEL_50:
   return v16;
 }
 
-- (CGImage)CGImageResampledToSize:(CGSize)a3 lowQuality:(BOOL)a4 assetOwner:(id)a5
+- (CGImage)CGImageResampledToSize:(CGSize)size lowQuality:(BOOL)quality assetOwner:(id)owner
 {
-  v5 = a4;
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  qualityCopy = quality;
+  height = size.height;
+  width = size.width;
+  ownerCopy = owner;
   [(CRLBitmapImageProvider *)self naturalSize];
   v12 = v11;
   if (width >= v10)
@@ -924,7 +924,7 @@ LABEL_50:
       width = v10;
       if (![(CRLBitmapImageProvider *)self isOpaque])
       {
-        v24 = [(CRLBitmapImageProvider *)self CGImageForNaturalSize];
+        cGImageForNaturalSize = [(CRLBitmapImageProvider *)self CGImageForNaturalSize];
         goto LABEL_11;
       }
     }
@@ -949,28 +949,28 @@ LABEL_50:
 
   v16 = v15;
   v17 = ceilf(v16);
-  v18 = [(CRLImageProvider *)self imageData];
-  v19 = [v18 filename];
-  v20 = [v19 lastPathComponent];
-  v21 = sub_10050D02C(self, v20, v5 | 0x14, v9, v14, v17);
+  imageData = [(CRLImageProvider *)self imageData];
+  filename = [imageData filename];
+  lastPathComponent = [filename lastPathComponent];
+  v21 = sub_10050D02C(self, lastPathComponent, qualityCopy | 0x14, ownerCopy, v14, v17);
 
-  v22 = v18;
-  v23 = v22;
+  v22 = imageData;
+  synchronouslyCreateReadonlyAsset = v22;
   if (v21)
   {
-    v23 = [v21 synchronouslyCreateReadonlyAsset];
+    synchronouslyCreateReadonlyAsset = [v21 synchronouslyCreateReadonlyAsset];
   }
 
-  v24 = [CRLBitmapImageProvider CGImageForImageData:v23];
+  cGImageForNaturalSize = [CRLBitmapImageProvider CGImageForImageData:synchronouslyCreateReadonlyAsset];
 
 LABEL_11:
-  return v24;
+  return cGImageForNaturalSize;
 }
 
-- (CGImage)p_createResampledImageWithReciprocalScale:(unint64_t)a3
+- (CGImage)p_createResampledImageWithReciprocalScale:(unint64_t)scale
 {
   [(CRLBitmapImageProvider *)self naturalSize];
-  v7 = sub_10011F340(v5, v6, 1.0 / a3);
+  v7 = sub_10011F340(v5, v6, 1.0 / scale);
   v9 = v8;
   if (qword_101AD59E8 != -1)
   {
@@ -985,11 +985,11 @@ LABEL_11:
     v23.height = v9;
     v12 = NSStringFromCGSize(v23);
     v17 = 134218498;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v12;
     v21 = 2048;
-    v22 = a3;
+    scaleCopy = scale;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%p making image of size %@ for scale %zi", &v17, 0x20u);
   }
 
@@ -1010,7 +1010,7 @@ LABEL_11:
   return v15;
 }
 
-- (CGImage)p_resampledImageOfReciprocalScale:(unint64_t)a3
+- (CGImage)p_resampledImageOfReciprocalScale:(unint64_t)scale
 {
   v22 = 0;
   v23 = &v22;
@@ -1026,14 +1026,14 @@ LABEL_11:
   block[3] = &unk_10183B748;
   block[4] = self;
   block[5] = &v22;
-  block[6] = a3;
+  block[6] = scale;
   dispatch_sync(mImageQueue, block);
   v7 = v23[3];
   if (!v7 || (CFAutorelease(v7), (v8 = v23[3]) == 0))
   {
-    v9 = [(CRLBitmapImageProvider *)self p_createResampledImageWithReciprocalScale:a3];
+    v9 = [(CRLBitmapImageProvider *)self p_createResampledImageWithReciprocalScale:scale];
     v23[3] = v9;
-    if (!v9 || ([CRLImage imageWithCGImage:v9], v10 = objc_claimAutoreleasedReturnValue(), v11 = self->mImageQueue, v14 = _NSConcreteStackBlock, v15 = 3221225472, v16 = sub_1000FED30, v17 = &unk_10183C780, v19 = v10, v20 = a3, v18 = self, v12 = v10, dispatch_async(v11, &v14), v19, v12, (v8 = v23[3]) == 0))
+    if (!v9 || ([CRLImage imageWithCGImage:v9], v10 = objc_claimAutoreleasedReturnValue(), v11 = self->mImageQueue, v14 = _NSConcreteStackBlock, v15 = 3221225472, v16 = sub_1000FED30, v17 = &unk_10183C780, v19 = v10, v20 = scale, v18 = self, v12 = v10, dispatch_async(v11, &v14), v19, v12, (v8 = v23[3]) == 0))
     {
       v8 = [(CRLBitmapImageProvider *)self CGImageOfLargestSafeSize:v9];
       v23[3] = v8;
@@ -1066,23 +1066,23 @@ LABEL_11:
 
 - (BOOL)isOpaque
 {
-  v2 = self;
+  selfCopy = self;
   [(CRLBitmapImageProvider *)self p_loadImageMetadata];
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  mImageQueue = v2->mImageQueue;
+  mImageQueue = selfCopy->mImageQueue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000FEFEC;
   v5[3] = &unk_101839FF8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(mImageQueue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (unint64_t)imageGamut
@@ -1127,13 +1127,13 @@ LABEL_11:
     return self->mDPI;
   }
 
-  v3 = [(CRLBitmapImageProvider *)self p_newCGImageSourceForTemporaryUse];
-  if (!v3)
+  p_newCGImageSourceForTemporaryUse = [(CRLBitmapImageProvider *)self p_newCGImageSourceForTemporaryUse];
+  if (!p_newCGImageSourceForTemporaryUse)
   {
     return self->mDPI;
   }
 
-  v4 = v3;
+  v4 = p_newCGImageSourceForTemporaryUse;
   v13 = kCGImageSourceSkipMetadata;
   v14 = &__kCFBooleanTrue;
   v5 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
@@ -1176,15 +1176,15 @@ LABEL_6:
 {
   if ([(CRLBitmapImageProvider *)self p_shouldScaleRetinaImages])
   {
-    v3 = [(CRLImageProvider *)self imageData];
-    v4 = [v3 filename];
+    imageData = [(CRLImageProvider *)self imageData];
+    filename = [imageData filename];
 
-    v5 = [(CRLBitmapImageProvider *)self imageDPI];
+    imageDPI = [(CRLBitmapImageProvider *)self imageDPI];
     v6 = 0.5;
-    if (v5 != 144.0 && vabdd_f64(v5, 144.0) >= fabs(144.0 * 0.000000999999997) && ([v4 crl_containsSubstring:@"@2x"] & 1) == 0)
+    if (imageDPI != 144.0 && vabdd_f64(imageDPI, 144.0) >= fabs(144.0 * 0.000000999999997) && ([filename crl_containsSubstring:@"@2x"] & 1) == 0)
     {
-      v7 = [(CRLBitmapImageProvider *)self imageDPI];
-      if (v7 == 216.0 || vabdd_f64(v7, 216.0) < fabs(216.0 * 0.000000999999997) || (v6 = 1.0, [v4 crl_containsSubstring:@"@3x"]))
+      imageDPI2 = [(CRLBitmapImageProvider *)self imageDPI];
+      if (imageDPI2 == 216.0 || vabdd_f64(imageDPI2, 216.0) < fabs(216.0 * 0.000000999999997) || (v6 = 1.0, [filename crl_containsSubstring:@"@3x"]))
       {
         v6 = 0.333333333;
       }
@@ -1254,8 +1254,8 @@ LABEL_6:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(NSMutableDictionary *)self->mResampledImages allValues];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allValues = [(NSMutableDictionary *)self->mResampledImages allValues];
+  v9 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1267,17 +1267,17 @@ LABEL_6:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) CGImage];
-        v14 = CGImageGetBytesPerRow(v13);
-        v5 += CGImageGetHeight(v13) * v14;
+        cGImage = [*(*(&v15 + 1) + 8 * v12) CGImage];
+        v14 = CGImageGetBytesPerRow(cGImage);
+        v5 += CGImageGetHeight(cGImage) * v14;
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -1300,7 +1300,7 @@ LABEL_6:
     [(CRLBitmapImageProvider *)self naturalSize];
     v5 = NSStringFromCGSize(v13);
     *buf = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "provider:%p loading full-sized image if necessary naturalSize:%@ ", buf, 0x16u);
@@ -1336,7 +1336,7 @@ LABEL_6:
     v21.height = v6;
     v9 = NSStringFromCGSize(v21);
     *buf = 134218242;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "provider:%p loading largest safe image if necessary naturalSize:%@ ", buf, 0x16u);
@@ -1372,16 +1372,16 @@ LABEL_6:
 
 - (CGImageSource)p_newCGImageSource
 {
-  v2 = [(CRLImageProvider *)self imageData];
-  v3 = [v2 newCGImageSource];
+  imageData = [(CRLImageProvider *)self imageData];
+  newCGImageSource = [imageData newCGImageSource];
 
-  return v3;
+  return newCGImageSource;
 }
 
-- (CGImage)p_newImageFromSource:(CGImageSource *)a3
+- (CGImage)p_newImageFromSource:(CGImageSource *)source
 {
-  ImageAtIndex = a3;
-  if (a3)
+  ImageAtIndex = source;
+  if (source)
   {
     v6[0] = kCGImageSourceSkipMetadata;
     v6[1] = kCGImageSourceShouldCache;
@@ -1394,12 +1394,12 @@ LABEL_6:
   return ImageAtIndex;
 }
 
-- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)a3 andImage:(CGImage *)a4
+- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)source andImage:(CGImage *)image
 {
   if (CRLWPShapeLayout.columnsAreLeftToRight.getter())
   {
-    v7 = [(CRLImageProvider *)self imageData];
-    v8 = sub_10050EB64(v7, a3);
+    imageData = [(CRLImageProvider *)self imageData];
+    v8 = sub_10050EB64(imageData, source);
 
     if (!v8)
     {
@@ -1410,12 +1410,12 @@ LABEL_6:
   v30 = kCGImageSourceSkipMetadata;
   v31 = &__kCFBooleanTrue;
   v9 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-  v10 = CGImageSourceCopyPropertiesAtIndex(a3, 0, v9);
+  v10 = CGImageSourceCopyPropertiesAtIndex(source, 0, v9);
   if (v10)
   {
     v11 = v10;
     v12 = [(__CFDictionary *)v10 objectForKey:kCGImagePropertyOrientation];
-    v13 = [v12 intValue];
+    intValue = [v12 intValue];
 
     Value = CFDictionaryGetValue(v11, kCGImagePropertyPixelWidth);
     Height = 0.0;
@@ -1454,17 +1454,17 @@ LABEL_6:
 
   else
   {
-    v13 = 0;
+    intValue = 0;
   }
 
-  if (!a4)
+  if (!image)
   {
-    a4 = [(CRLBitmapImageProvider *)self p_newImageFromSource:a3];
-    if (CRLWPShapeLayout.columnsAreLeftToRight.getter() && (Width = CGImageGetWidth(a4), v23 = CGImageGetHeight(a4) * Width, v23 > sub_10050CF30()))
+    image = [(CRLBitmapImageProvider *)self p_newImageFromSource:source];
+    if (CRLWPShapeLayout.columnsAreLeftToRight.getter() && (Width = CGImageGetWidth(image), v23 = CGImageGetHeight(image) * Width, v23 > sub_10050CF30()))
     {
-      if (a4)
+      if (image)
       {
-        CFAutorelease(a4);
+        CFAutorelease(image);
       }
     }
 
@@ -1476,22 +1476,22 @@ LABEL_6:
       block[2] = sub_100100870;
       block[3] = &unk_10183B720;
       block[4] = self;
-      block[5] = a4;
+      block[5] = image;
       dispatch_async(mImageQueue, block);
     }
   }
 
-  v16 = CGImageGetWidth(a4);
-  Height = CGImageGetHeight(a4);
+  v16 = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
 LABEL_21:
-  if (v13 - 1 > 7)
+  if (intValue - 1 > 7)
   {
     v25 = 0;
   }
 
   else
   {
-    v25 = qword_101462800[v13 - 1];
+    v25 = qword_101462800[intValue - 1];
   }
 
   self->mOrientation = v25;
@@ -1534,43 +1534,43 @@ LABEL_21:
   v6[4] = self;
   v6[5] = &v7;
   dispatch_sync(mImageQueue, v6);
-  v4 = v8[3];
-  if (!v4)
+  p_newCGImageSource = v8[3];
+  if (!p_newCGImageSource)
   {
-    v4 = [(CRLBitmapImageProvider *)self p_newCGImageSource];
-    v8[3] = v4;
+    p_newCGImageSource = [(CRLBitmapImageProvider *)self p_newCGImageSource];
+    v8[3] = p_newCGImageSource;
   }
 
   _Block_object_dispose(&v7, 8);
-  return v4;
+  return p_newCGImageSource;
 }
 
-- (CGImage)p_newImageOfSize:(CGSize)a3 fromSource:(CGImageSource *)a4
+- (CGImage)p_newImageOfSize:(CGSize)size fromSource:(CGImageSource *)source
 {
-  if (a4)
+  if (source)
   {
     v11[0] = kCGImageSourceCreateThumbnailFromImageAlways;
     v11[1] = kCGImageSourceCreateThumbnailWithTransform;
     v12[0] = &__kCFBooleanTrue;
     v12[1] = &__kCFBooleanFalse;
     v11[2] = kCGImageSourceThumbnailMaxPixelSize;
-    if (a3.width < a3.height)
+    if (size.width < size.height)
     {
-      a3.width = a3.height;
+      size.width = size.height;
     }
 
-    v5 = [NSNumber numberWithDouble:a3.width];
+    v5 = [NSNumber numberWithDouble:size.width];
     v11[3] = kCGImageSourceSkipMetadata;
     v12[2] = v5;
     v12[3] = &__kCFBooleanTrue;
     v6 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:4];
 
-    ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(a4, 0, v6);
+    ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(source, 0, v6);
   }
 
   else
   {
-    [CRLAssertionHandler _atomicIncrementAssertCount:a3.width];
+    [CRLAssertionHandler _atomicIncrementAssertCount:size.width];
     if (qword_101AD5A10 != -1)
     {
       sub_101313F44();
@@ -1602,32 +1602,32 @@ LABEL_21:
   return ThumbnailAtIndex;
 }
 
-- (CGImageSource)p_newImageOfSize:(CGSize)a3
+- (CGImageSource)p_newImageOfSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CRLBitmapImageProvider *)self p_newCGImageSourceForTemporaryUse];
-  if (!v6)
+  height = size.height;
+  width = size.width;
+  p_newCGImageSourceForTemporaryUse = [(CRLBitmapImageProvider *)self p_newCGImageSourceForTemporaryUse];
+  if (!p_newCGImageSourceForTemporaryUse)
   {
     return 0;
   }
 
-  v7 = v6;
-  v8 = [(CRLBitmapImageProvider *)self p_newImageOfSize:v6 fromSource:width, height];
+  v7 = p_newCGImageSourceForTemporaryUse;
+  height = [(CRLBitmapImageProvider *)self p_newImageOfSize:p_newCGImageSourceForTemporaryUse fromSource:width, height];
   CFRelease(v7);
-  if (!v8)
+  if (!height)
   {
     return 0;
   }
 
   v9 = objc_alloc_init(NSMutableData);
-  v10 = [UTTypePNG identifier];
+  identifier = [UTTypePNG identifier];
 
-  v11 = CGImageDestinationCreateWithData(v9, v10, 1uLL, 0);
+  v11 = CGImageDestinationCreateWithData(v9, identifier, 1uLL, 0);
   v12 = v11;
   if (v11)
   {
-    CGImageDestinationAddImage(v11, v8, 0);
+    CGImageDestinationAddImage(v11, height, 0);
     v13 = CGImageDestinationFinalize(v12);
     CFRelease(v12);
     if (v13)
@@ -1641,7 +1641,7 @@ LABEL_21:
     }
   }
 
-  CGImageRelease(v8);
+  CGImageRelease(height);
   return v12;
 }
 

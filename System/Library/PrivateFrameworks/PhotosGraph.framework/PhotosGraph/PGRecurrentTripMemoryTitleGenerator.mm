@@ -1,8 +1,8 @@
 @interface PGRecurrentTripMemoryTitleGenerator
-- (PGRecurrentTripMemoryTitleGenerator)initWithLocationNodes:(id)a3 titleGenerationContext:(id)a4;
+- (PGRecurrentTripMemoryTitleGenerator)initWithLocationNodes:(id)nodes titleGenerationContext:(id)context;
 - (id)_locationTitle;
 - (id)_timeTitle;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGRecurrentTripMemoryTitleGenerator
@@ -22,22 +22,22 @@
   v52 = *MEMORY[0x277D85DE8];
   v3 = [(NSSet *)self->_locationNodes count];
   v4 = [MEMORY[0x277CBEB58] setWithCapacity:v3];
-  v5 = [(NSSet *)self->_locationNodes anyObject];
-  v6 = [v5 label];
+  anyObject = [(NSSet *)self->_locationNodes anyObject];
+  label = [anyObject label];
 
-  v43 = v6;
-  if ([v6 isEqualToString:@"State"])
+  v43 = label;
+  if ([label isEqualToString:@"State"])
   {
     v42 = 1;
   }
 
   else
   {
-    v42 = [v6 isEqualToString:@"Country"];
+    v42 = [label isEqualToString:@"Country"];
   }
 
-  v7 = [(PGTitleGenerator *)self titleGenerationContext];
-  v8 = [v7 locationHelper];
+  titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+  locationHelper = [titleGenerationContext locationHelper];
 
   v47 = 0u;
   v48 = 0u;
@@ -60,8 +60,8 @@
         }
 
         v15 = *(*(&v45 + 1) + 8 * i);
-        v16 = [v8 locationIsInSupersetCategoryForLocationNode:v15];
-        v17 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:v15 locationHelper:v8];
+        v16 = [locationHelper locationIsInSupersetCategoryForLocationNode:v15];
+        v17 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:v15 locationHelper:locationHelper];
         if ([v17 length])
         {
           [v4 addObject:v17];
@@ -91,12 +91,12 @@
   v23 = v22;
   if (v21 == 2)
   {
-    v29 = [v22 firstObject];
-    v32 = [v23 lastObject];
+    firstObject = [v22 firstObject];
+    lastObject = [v23 lastObject];
     v34 = MEMORY[0x277CCACA8];
     v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v36 = [v35 localizedStringForKey:@"PGRecurrentTripMemoryTitleFormatWithLocation %@ otherLocation %@" value:@"PGRecurrentTripMemoryTitleFormatWithLocation %@ otherLocation %@" table:@"Localizable"];
-    v37 = [v34 localizedStringWithFormat:v36, v29, v32];
+    v37 = [v34 localizedStringWithFormat:v36, firstObject, lastObject];
 
 LABEL_27:
     v28 = v23;
@@ -120,10 +120,10 @@ LABEL_28:
 
   if (v21 == 1)
   {
-    v29 = [v22 firstObject];
+    firstObject = [v22 firstObject];
     v30 = MEMORY[0x277CCACA8];
     v31 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v32 = v31;
+    lastObject = v31;
     if ((v13 & v42) == 1)
     {
       v33 = @"PGRecurrentTripMemoryTitleFormatInSupersetWithLocation %@";
@@ -135,33 +135,33 @@ LABEL_28:
     }
 
     v35 = [v31 localizedStringForKey:v33 value:v33 table:@"Localizable"];
-    v37 = [v30 localizedStringWithFormat:v35, v29];
+    v37 = [v30 localizedStringWithFormat:v35, firstObject];
     goto LABEL_27;
   }
 
   if (v21)
   {
-    v29 = [v22 firstObject];
-    v32 = [v23 lastObject];
-    v49[0] = v29;
-    v49[1] = v32;
+    firstObject = [v22 firstObject];
+    lastObject = [v23 lastObject];
+    v49[0] = firstObject;
+    v49[1] = lastObject;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
 
     v38 = MEMORY[0x277CCACA8];
     v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v39 = [v35 localizedStringForKey:@"PGRecurrentTripMemoryTitleFormatWithFromLocation %@ toLocation %@" value:@"PGRecurrentTripMemoryTitleFormatWithFromLocation %@ toLocation %@" table:@"Localizable"];
-    v37 = [v38 localizedStringWithFormat:v39, v29, v32];
+    v37 = [v38 localizedStringWithFormat:v39, firstObject, lastObject];
 
     goto LABEL_28;
   }
 
   v24 = +[PGLogging sharedLogging];
-  v25 = [v24 loggingConnection];
+  loggingConnection = [v24 loggingConnection];
 
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_22F0FC000, v25, OS_LOG_TYPE_ERROR, "RecurrentTripTitle requires at least one location node", buf, 2u);
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "RecurrentTripTitle requires at least one location node", buf, 2u);
   }
 
   v26 = 0;
@@ -174,30 +174,30 @@ LABEL_31:
   return v27;
 }
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v6 = a3;
-  v4 = [(PGRecurrentTripMemoryTitleGenerator *)self _locationTitle];
-  v5 = [(PGRecurrentTripMemoryTitleGenerator *)self _timeTitle];
-  if (v6)
+  resultCopy = result;
+  _locationTitle = [(PGRecurrentTripMemoryTitleGenerator *)self _locationTitle];
+  _timeTitle = [(PGRecurrentTripMemoryTitleGenerator *)self _timeTitle];
+  if (resultCopy)
   {
-    v6[2](v6, v4, v5);
+    resultCopy[2](resultCopy, _locationTitle, _timeTitle);
   }
 }
 
-- (PGRecurrentTripMemoryTitleGenerator)initWithLocationNodes:(id)a3 titleGenerationContext:(id)a4
+- (PGRecurrentTripMemoryTitleGenerator)initWithLocationNodes:(id)nodes titleGenerationContext:(id)context
 {
-  v7 = a3;
+  nodesCopy = nodes;
   v8 = MEMORY[0x277CBEB98];
-  v9 = a4;
+  contextCopy = context;
   v10 = [v8 set];
   v13.receiver = self;
   v13.super_class = PGRecurrentTripMemoryTitleGenerator;
-  v11 = [(PGTitleGenerator *)&v13 initWithMomentNodes:v10 type:0 titleGenerationContext:v9];
+  v11 = [(PGTitleGenerator *)&v13 initWithMomentNodes:v10 type:0 titleGenerationContext:contextCopy];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_locationNodes, a3);
+    objc_storeStrong(&v11->_locationNodes, nodes);
   }
 
   return v11;

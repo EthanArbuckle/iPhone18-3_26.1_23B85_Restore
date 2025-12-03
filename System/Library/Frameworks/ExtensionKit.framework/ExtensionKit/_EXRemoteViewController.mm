@@ -1,16 +1,16 @@
 @interface _EXRemoteViewController
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation _EXRemoteViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = _EXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(_EXRemoteViewController *)v3 viewServiceDidTerminateWithError:v4];
+    [(_EXRemoteViewController *)errorCopy viewServiceDidTerminateWithError:v4];
   }
 }
 

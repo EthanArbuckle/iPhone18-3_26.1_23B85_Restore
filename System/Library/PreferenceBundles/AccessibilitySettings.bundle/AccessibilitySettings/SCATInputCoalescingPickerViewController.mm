@@ -2,8 +2,8 @@
 - (BOOL)numericalPreferenceEnabled;
 - (double)maximumValue;
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation SCATInputCoalescingPickerViewController
@@ -35,25 +35,25 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchInputCoalescingDuration:a3];
+  [v4 setAssistiveTouchInputCoalescingDuration:user];
 }
 
 - (BOOL)numericalPreferenceEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchInputCoalescingEnabled];
+  assistiveTouchInputCoalescingEnabled = [v2 assistiveTouchInputCoalescingEnabled];
 
-  return v3;
+  return assistiveTouchInputCoalescingEnabled;
 }
 
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchInputCoalescingEnabled:v3];
+  [v4 setAssistiveTouchInputCoalescingEnabled:userCopy];
 }
 
 @end

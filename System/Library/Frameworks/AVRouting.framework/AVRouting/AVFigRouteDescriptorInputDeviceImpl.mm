@@ -1,8 +1,8 @@
 @interface AVFigRouteDescriptorInputDeviceImpl
-- (AVFigRouteDescriptorInputDeviceImpl)initWithRouteDescriptor:(__CFDictionary *)a3 routeDiscoverer:(OpaqueFigRouteDiscoverer *)a4 routingContextFactory:(id)a5 useRouteConfigUpdatedNotification:(BOOL)a6 routingContext:(OpaqueFigRoutingContext *)a7;
+- (AVFigRouteDescriptorInputDeviceImpl)initWithRouteDescriptor:(__CFDictionary *)descriptor routeDiscoverer:(OpaqueFigRouteDiscoverer *)discoverer routingContextFactory:(id)factory useRouteConfigUpdatedNotification:(BOOL)notification routingContext:(OpaqueFigRoutingContext *)context;
 - (BOOL)isAppleAccessory;
 - (BOOL)isConversationDetectionEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFarFieldCaptureEnabled;
 - (BOOL)isHighQualityContentCaptureEnabled;
 - (BOOL)supportsConversationDetection;
@@ -14,14 +14,14 @@
 - (NSString)name;
 - (__CFDictionary)routeDescriptor;
 - (id)inputDeviceInfo;
-- (int)_withEndpoint:(id)a3;
+- (int)_withEndpoint:(id)endpoint;
 - (int64_t)deviceSubType;
 - (int64_t)deviceType;
 - (unint64_t)hash;
-- (void)_handleRouteDescriptionEvent:(__CFString *)a3 payload:(id)a4;
-- (void)_routeDescriptionDidChange:(__CFDictionary *)a3;
+- (void)_handleRouteDescriptionEvent:(__CFString *)event payload:(id)payload;
+- (void)_routeDescriptionDidChange:(__CFDictionary *)change;
 - (void)dealloc;
-- (void)setRouteDescriptor:(__CFDictionary *)a3;
+- (void)setRouteDescriptor:(__CFDictionary *)descriptor;
 @end
 
 @implementation AVFigRouteDescriptorInputDeviceImpl
@@ -73,7 +73,7 @@
   [(AVFigRouteDescriptorInputDeviceImpl *)&v8 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -82,7 +82,7 @@
   }
 
   v5 = [(AVFigRouteDescriptorInputDeviceImpl *)self ID];
-  v6 = [a3 ID];
+  v6 = [equal ID];
 
   return [(NSString *)v5 isEqualToString:v6];
 }
@@ -104,15 +104,15 @@
   return v4;
 }
 
-- (void)setRouteDescriptor:(__CFDictionary *)a3
+- (void)setRouteDescriptor:(__CFDictionary *)descriptor
 {
   routeDescriptionRWLock = self->_routeDescriptionRWLock;
   FigReadWriteLockLockForWrite();
   routeDescriptor = self->_routeDescriptor;
-  self->_routeDescriptor = a3;
-  if (a3)
+  self->_routeDescriptor = descriptor;
+  if (descriptor)
   {
-    CFRetain(a3);
+    CFRetain(descriptor);
   }
 
   if (routeDescriptor)
@@ -127,25 +127,25 @@
 
 - (NSString)name
 {
-  v2 = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF198];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSString)ID
 {
-  v2 = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF1C0];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
-- (void)_handleRouteDescriptionEvent:(__CFString *)a3 payload:(id)a4
+- (void)_handleRouteDescriptionEvent:(__CFString *)event payload:(id)payload
 {
-  v6 = [(AVFigRouteDescriptorInputDeviceImpl *)self implEventListener:a3];
+  v6 = [(AVFigRouteDescriptorInputDeviceImpl *)self implEventListener:event];
 
-  [(AVInputDeviceImplSupport *)v6 postNotification:a3 fromImpl:self];
+  [(AVInputDeviceImplSupport *)v6 postNotification:event fromImpl:self];
 }
 
 - (int64_t)deviceType
@@ -164,18 +164,18 @@
 
 - (NSString)manufacturer
 {
-  v2 = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF1C0];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSString)modelID
 {
-  v2 = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF140];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (BOOL)isAppleAccessory
@@ -218,16 +218,16 @@
 
 - (BOOL)supportsHighQualityContentCapture
 {
-  v2 = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF058]);
+  routeDescriptor = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF058]);
 
   return [Value BOOLValue];
 }
 
 - (BOOL)isHighQualityContentCaptureEnabled
 {
-  v2 = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF030]);
+  routeDescriptor = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF030]);
 
   return [Value BOOLValue];
 }
@@ -237,8 +237,8 @@
   v3 = _os_feature_enabled_impl();
   if (v3)
   {
-    v4 = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
-    Value = CFDictionaryGetValue(v4, *MEMORY[0x1E69AF1D0]);
+    routeDescriptor = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
+    Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF1D0]);
 
     LOBYTE(v3) = [Value BOOLValue];
   }
@@ -251,8 +251,8 @@
   v3 = _os_feature_enabled_impl();
   if (v3)
   {
-    v4 = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
-    Value = CFDictionaryGetValue(v4, *MEMORY[0x1E69AF080]);
+    routeDescriptor = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
+    Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF080]);
 
     LOBYTE(v3) = [Value BOOLValue];
   }
@@ -260,20 +260,20 @@
   return v3;
 }
 
-- (void)_routeDescriptionDidChange:(__CFDictionary *)a3
+- (void)_routeDescriptionDidChange:(__CFDictionary *)change
 {
   v5 = *MEMORY[0x1E69AF1C0];
   if ([FigCFDictionaryGetValue() isEqual:{-[AVFigRouteDescriptorInputDeviceImpl ID](self, "ID")}])
   {
 
-    [(AVFigRouteDescriptorInputDeviceImpl *)self setRouteDescriptor:a3];
+    [(AVFigRouteDescriptorInputDeviceImpl *)self setRouteDescriptor:change];
   }
 }
 
 - (id)inputDeviceInfo
 {
-  v2 = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF088]);
+  routeDescriptor = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF088]);
   if (Value)
   {
     v4 = Value;
@@ -289,7 +289,7 @@
   }
 }
 
-- (AVFigRouteDescriptorInputDeviceImpl)initWithRouteDescriptor:(__CFDictionary *)a3 routeDiscoverer:(OpaqueFigRouteDiscoverer *)a4 routingContextFactory:(id)a5 useRouteConfigUpdatedNotification:(BOOL)a6 routingContext:(OpaqueFigRoutingContext *)a7
+- (AVFigRouteDescriptorInputDeviceImpl)initWithRouteDescriptor:(__CFDictionary *)descriptor routeDiscoverer:(OpaqueFigRouteDiscoverer *)discoverer routingContextFactory:(id)factory useRouteConfigUpdatedNotification:(BOOL)notification routingContext:(OpaqueFigRoutingContext *)context
 {
   v13 = [AVRoutingCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   v24.receiver = self;
@@ -301,40 +301,40 @@
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!descriptor)
   {
     v20 = 0;
     v14->_routeDescriptor = 0;
     goto LABEL_15;
   }
 
-  v16 = CFRetain(a3);
+  v16 = CFRetain(descriptor);
   v15->_routeDescriptor = v16;
   if (!v16)
   {
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!discoverer)
   {
     v20 = 0;
     v15->_routeDiscoverer = 0;
     goto LABEL_15;
   }
 
-  v17 = CFRetain(a4);
+  v17 = CFRetain(discoverer);
   v15->_routeDiscoverer = v17;
-  if (!v17 || (v18 = a5, (v15->_routingContextFactory = v18) == 0))
+  if (!v17 || (v18 = factory, (v15->_routingContextFactory = v18) == 0))
   {
 LABEL_16:
     v20 = 0;
     goto LABEL_15;
   }
 
-  v15->_useRouteConfigUpdatedNotification = a6;
-  if (a7)
+  v15->_useRouteConfigUpdatedNotification = notification;
+  if (context)
   {
-    v19 = CFRetain(a7);
+    v19 = CFRetain(context);
   }
 
   else
@@ -358,7 +358,7 @@ LABEL_15:
   return v20;
 }
 
-- (int)_withEndpoint:(id)a3
+- (int)_withEndpoint:(id)endpoint
 {
   cf[16] = *MEMORY[0x1E69E9840];
   theArray = 0;
@@ -450,14 +450,14 @@ LABEL_20:
   }
 
   routeDiscoverer = self->_routeDiscoverer;
-  v19 = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorInputDeviceImpl *)self routeDescriptor];
   v20 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (!v20)
   {
     goto LABEL_20;
   }
 
-  v9 = v20(routeDiscoverer, v19, &v28);
+  v9 = v20(routeDiscoverer, routeDescriptor, &v28);
   if (!v9)
   {
     v21 = v28;
@@ -469,7 +469,7 @@ LABEL_28:
     }
 
 LABEL_27:
-    v9 = (*(a3 + 2))(a3, v21);
+    v9 = (*(endpoint + 2))(endpoint, v21);
   }
 
 LABEL_29:

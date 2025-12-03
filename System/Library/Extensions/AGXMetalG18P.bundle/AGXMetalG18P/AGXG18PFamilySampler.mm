@@ -1,5 +1,5 @@
 @interface AGXG18PFamilySampler
-- (AGXG18PFamilySampler)initWithDevice:(id)a3 samplerDescriptor:(id)a4 driverDescriptor:(const void *)a5 initialQOSOverride:(unsigned int)a6;
+- (AGXG18PFamilySampler)initWithDevice:(id)device samplerDescriptor:(id)descriptor driverDescriptor:(const void *)driverDescriptor initialQOSOverride:(unsigned int)override;
 - (id).cxx_construct;
 - (unint64_t)uniqueIdentifier;
 @end
@@ -30,14 +30,14 @@
   }
 }
 
-- (AGXG18PFamilySampler)initWithDevice:(id)a3 samplerDescriptor:(id)a4 driverDescriptor:(const void *)a5 initialQOSOverride:(unsigned int)a6
+- (AGXG18PFamilySampler)initWithDevice:(id)device samplerDescriptor:(id)descriptor driverDescriptor:(const void *)driverDescriptor initialQOSOverride:(unsigned int)override
 {
   v26.receiver = self;
   v26.super_class = AGXG18PFamilySampler;
   v11 = [_MTLSamplerState initWithDevice:sel_initWithDevice_samplerDescriptor_ samplerDescriptor:?];
   if (v11)
   {
-    AGX::SamplerGen3<AGX::HAL300::Classes,AGX::HAL300::Encoders>::SamplerGen3(v18, *(a3 + 106), a4, a5, a6);
+    AGX::SamplerGen3<AGX::HAL300::Classes,AGX::HAL300::Encoders>::SamplerGen3(v18, *(device + 106), descriptor, driverDescriptor, override);
     p_impl = &self->_impl;
     v13 = v18[1];
     *&self->_impl.desc.ss.var0 = v18[0];
@@ -55,8 +55,8 @@
     *&self->_impl.desc.var1 = v21;
     self[1].super.super.isa = v22;
     device = self[1].super._device;
-    self[1].super._device = v23;
-    v23 = device;
+    self[1].super._device = deviceCopy;
+    deviceCopy = device;
     label = self[1].super._label;
     *&p_impl[1].desc.lod_bias = v24;
     v24 = label;
@@ -68,7 +68,7 @@
       if ((v16 & 1) == 0)
       {
         os_unfair_lock_lock(label + 194);
-        AGX::Mempool<16u,0u,true,0u,0u,unsigned long long>::FreeIntervalList::push((v24 + 90), v23, v23 + HIDWORD(v23) - 1);
+        AGX::Mempool<16u,0u,true,0u,0u,unsigned long long>::FreeIntervalList::push((v24 + 90), deviceCopy, deviceCopy + HIDWORD(deviceCopy) - 1);
         os_unfair_lock_unlock(label + 194);
         if (SHIBYTE(v20) < 0)
         {

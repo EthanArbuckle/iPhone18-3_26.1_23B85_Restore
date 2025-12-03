@@ -1,7 +1,7 @@
 @interface USDomainNormalization
-- (id)normalizeDomainName:(id)a3;
-- (id)normalizeDomainNames:(id)a3;
-- (id)normalizeURL:(id)a3;
+- (id)normalizeDomainName:(id)name;
+- (id)normalizeDomainNames:(id)names;
+- (id)normalizeURL:(id)l;
 - (void)dealloc;
 @end
 
@@ -20,29 +20,29 @@
   [(USDomainNormalization *)&v4 dealloc];
 }
 
-- (id)normalizeDomainName:(id)a3
+- (id)normalizeDomainName:(id)name
 {
-  v5 = a3;
-  v6 = v5;
-  if ([v5 canBeConvertedToEncoding:1])
+  nameCopy = name;
+  v6 = nameCopy;
+  if ([nameCopy canBeConvertedToEncoding:1])
   {
 LABEL_16:
-    v14 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-    v15 = [v6 rangeOfCharacterFromSet:v14];
+    uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+    v15 = [v6 rangeOfCharacterFromSet:uppercaseLetterCharacterSet];
 
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = [v6 lowercaseString];
+      lowercaseString = [v6 lowercaseString];
 
-      v6 = v16;
+      v6 = lowercaseString;
     }
 
     v17 = v6;
     goto LABEL_22;
   }
 
-  v7 = [v5 precomposedStringWithCanonicalMapping];
-  v8 = [v7 UTF8String];
+  precomposedStringWithCanonicalMapping = [nameCopy precomposedStringWithCanonicalMapping];
+  uTF8String = [precomposedStringWithCanonicalMapping UTF8String];
 
   idna = self->_idna;
   if (!idna)
@@ -52,8 +52,8 @@ LABEL_16:
     self->_idna = idna;
     if (*&pInfo.size >= 1)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"USDomainNormalization.m" lineNumber:45 description:{@"Failed to create UIDNA service object %d", *&pInfo.size}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"USDomainNormalization.m" lineNumber:45 description:{@"Failed to create UIDNA service object %d", *&pInfo.size}];
 
       idna = self->_idna;
     }
@@ -61,7 +61,7 @@ LABEL_16:
 
   pInfo = xmmword_270824DC0;
   pErrorCode = U_ZERO_ERROR;
-  v10 = uidna_nameToASCII_UTF8(idna, v8, -1, 0, 0, &pInfo, &pErrorCode);
+  v10 = uidna_nameToASCII_UTF8(idna, uTF8String, -1, 0, 0, &pInfo, &pErrorCode);
   v11 = v10;
   v12 = pErrorCode;
   if (pErrorCode == U_BUFFER_OVERFLOW_ERROR)
@@ -74,11 +74,11 @@ LABEL_16:
   {
     if (v10 < 0)
     {
-      [(USDomainNormalization *)a2 normalizeDomainName:v5];
+      [(USDomainNormalization *)a2 normalizeDomainName:nameCopy];
     }
 
     v13 = malloc_type_malloc(v11, 0xFA39D828uLL);
-    if (uidna_nameToASCII_UTF8(self->_idna, v8, -1, v13, v11, &pInfo, &pErrorCode) != v11)
+    if (uidna_nameToASCII_UTF8(self->_idna, uTF8String, -1, v13, v11, &pInfo, &pErrorCode) != v11)
     {
       [(USDomainNormalization *)a2 normalizeDomainName:?];
     }
@@ -96,26 +96,26 @@ LABEL_16:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [(USDomainNormalization *)v5 normalizeDomainName:&pInfo.errors];
+    [(USDomainNormalization *)nameCopy normalizeDomainName:&pInfo.errors];
   }
 
-  v17 = v5;
+  v17 = nameCopy;
 LABEL_22:
   v18 = v17;
 
   return v18;
 }
 
-- (id)normalizeDomainNames:(id)a3
+- (id)normalizeDomainNames:(id)names
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+  namesCopy = names;
+  uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
@@ -131,7 +131,7 @@ LABEL_22:
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        if (![v11 canBeConvertedToEncoding:1] || objc_msgSend(v11, "rangeOfCharacterFromSet:", v5) != 0x7FFFFFFFFFFFFFFFLL)
+        if (![v11 canBeConvertedToEncoding:1] || objc_msgSend(v11, "rangeOfCharacterFromSet:", uppercaseLetterCharacterSet) != 0x7FFFFFFFFFFFFFFFLL)
         {
 
           v12 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v6, "count")}];
@@ -202,14 +202,14 @@ LABEL_20:
   return v19;
 }
 
-- (id)normalizeURL:(id)a3
+- (id)normalizeURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 host];
-  v6 = [(USDomainNormalization *)self normalizeDomainName:v5];
-  v7 = v4;
+  lCopy = l;
+  host = [lCopy host];
+  v6 = [(USDomainNormalization *)self normalizeDomainName:host];
+  v7 = lCopy;
   v8 = v7;
-  if (v5 != v6)
+  if (host != v6)
   {
     v9 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v7 resolvingAgainstBaseURL:1];
     [v9 setHost:v6];

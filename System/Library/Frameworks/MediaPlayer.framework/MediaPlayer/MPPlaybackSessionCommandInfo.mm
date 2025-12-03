@@ -1,18 +1,18 @@
 @interface MPPlaybackSessionCommandInfo
-+ (id)commandInfoWithIdentifier:(id)a3 revision:(id)a4 priority:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)commandInfoWithIdentifier:(id)identifier revision:(id)revision priority:(int64_t)priority;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation MPPlaybackSessionCommandInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[1];
     v7 = self->_identifier;
     v8 = v7;
@@ -135,21 +135,21 @@
   return (v55 + v56) ^ __ROR8__(v55, 47) ^ v58 ^ __ROR8__(v55 + v56, 32) ^ v58 ^ __ROR8__(v56 ^ v57, 43);
 }
 
-+ (id)commandInfoWithIdentifier:(id)a3 revision:(id)a4 priority:(int64_t)a5
++ (id)commandInfoWithIdentifier:(id)identifier revision:(id)revision priority:(int64_t)priority
 {
-  v7 = a4;
-  v8 = a3;
+  revisionCopy = revision;
+  identifierCopy = identifier;
   v9 = objc_alloc_init(MPPlaybackSessionCommandInfo);
-  v10 = [v8 copy];
+  v10 = [identifierCopy copy];
 
   identifier = v9->_identifier;
   v9->_identifier = v10;
 
-  v12 = [v7 copy];
+  v12 = [revisionCopy copy];
   revision = v9->_revision;
   v9->_revision = v12;
 
-  v9->_priority = a5;
+  v9->_priority = priority;
 
   return v9;
 }

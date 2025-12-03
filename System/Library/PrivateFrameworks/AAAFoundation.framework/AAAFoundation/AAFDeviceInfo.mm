@@ -67,13 +67,13 @@ uint64_t __33__AAFDeviceInfo_isVirtualMachine__block_invoke()
 
 + (id)localSecretType
 {
-  if (![a1 _hasLocalSecret])
+  if (![self _hasLocalSecret])
   {
     return @"None";
   }
 
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  if ([v2 unlockScreenType])
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  if ([mEMORY[0x1E69ADFB8] unlockScreenType])
   {
     v3 = @"Password";
   }
@@ -88,10 +88,10 @@ uint64_t __33__AAFDeviceInfo_isVirtualMachine__block_invoke()
 
 + (BOOL)_hasLocalSecret
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isPasscodeSet = [mEMORY[0x1E69ADFB8] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 @end

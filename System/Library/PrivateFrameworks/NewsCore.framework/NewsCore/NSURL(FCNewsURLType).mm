@@ -6,32 +6,32 @@
 
 - (uint64_t)fc_newsURLType
 {
-  if ([a1 fc_isNewsTagURL])
+  if ([self fc_isNewsTagURL])
   {
     return 3;
   }
 
-  if ([a1 fc_isNewsArticleURL])
+  if ([self fc_isNewsArticleURL])
   {
     return 1;
   }
 
-  if ([a1 fc_isNewsIssueURL])
+  if ([self fc_isNewsIssueURL])
   {
     return 2;
   }
 
-  if ([a1 fc_isNewsPuzzleURL])
+  if ([self fc_isNewsPuzzleURL])
   {
     return 5;
   }
 
-  if ([a1 fc_isNewsPuzzleTypeURL])
+  if ([self fc_isNewsPuzzleTypeURL])
   {
     return 6;
   }
 
-  if ([a1 fc_isNewsSportsEventURL])
+  if ([self fc_isNewsSportsEventURL])
   {
     return 4;
   }

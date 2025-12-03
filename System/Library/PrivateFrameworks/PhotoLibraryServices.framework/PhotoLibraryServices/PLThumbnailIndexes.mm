@@ -1,15 +1,15 @@
 @interface PLThumbnailIndexes
-+ (id)occupiedThumbnailIndexesWithLibrary:(id)a3 fetchTimestampToUpdate:(unint64_t *)a4 outFetchCount:(unint64_t *)a5;
-+ (unint64_t)nextAvailableThumbnailIndexInLibrary:(id)a3;
-+ (void)getAvailableThumbnailIndexInLibrary:(id)a3 withHandler:(id)a4;
-+ (void)getAvailableThumbnailIndexesInLibrary:(id)a3 withCount:(unint64_t)a4 handler:(id)a5;
-+ (void)recycleThumbnailIndexes:(id)a3 inLibrary:(id)a4;
-+ (void)recycleThumbnailIndexes:(id)a3 inLibrary:(id)a4 timestamp:(unint64_t)a5;
++ (id)occupiedThumbnailIndexesWithLibrary:(id)library fetchTimestampToUpdate:(unint64_t *)update outFetchCount:(unint64_t *)count;
++ (unint64_t)nextAvailableThumbnailIndexInLibrary:(id)library;
++ (void)getAvailableThumbnailIndexInLibrary:(id)library withHandler:(id)handler;
++ (void)getAvailableThumbnailIndexesInLibrary:(id)library withCount:(unint64_t)count handler:(id)handler;
++ (void)recycleThumbnailIndexes:(id)indexes inLibrary:(id)library;
++ (void)recycleThumbnailIndexes:(id)indexes inLibrary:(id)library timestamp:(unint64_t)timestamp;
 - (PLThumbnailIndexes)init;
-- (id)getAvailableThumbnailIndexesWithCount:(unint64_t)a3 inLibrary:(id)a4;
-- (void)getAvailableThumbnailIndexesFromLibrary:(id)a3;
-- (void)getAvailableThumbnailIndexesWithCount:(unint64_t)a3 inLibrary:(id)a4 handler:(id)a5;
-- (void)recycleThumbnailIndexes:(id)a3 timestamp:(unint64_t)a4;
+- (id)getAvailableThumbnailIndexesWithCount:(unint64_t)count inLibrary:(id)library;
+- (void)getAvailableThumbnailIndexesFromLibrary:(id)library;
+- (void)getAvailableThumbnailIndexesWithCount:(unint64_t)count inLibrary:(id)library handler:(id)handler;
+- (void)recycleThumbnailIndexes:(id)indexes timestamp:(unint64_t)timestamp;
 @end
 
 @implementation PLThumbnailIndexes
@@ -29,11 +29,11 @@
   return v2;
 }
 
-+ (id)occupiedThumbnailIndexesWithLibrary:(id)a3 fetchTimestampToUpdate:(unint64_t *)a4 outFetchCount:(unint64_t *)a5
++ (id)occupiedThumbnailIndexesWithLibrary:(id)library fetchTimestampToUpdate:(unint64_t *)update outFetchCount:(unint64_t *)count
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [MEMORY[0x1E696AD50] indexSet];
+  libraryCopy = library;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v9 = objc_autoreleasePoolPush();
   v10 = +[PLManagedAsset entityName];
   v11 = [PLFetchRequest fetchRequestWithEntityName:v10];
@@ -44,22 +44,22 @@
   [v11 setPropertiesToFetch:v12];
 
   [v11 setPl_importantFetchName:@"fetchOccupiedThumbnailIndexes"];
-  v13 = [v7 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __95__PLThumbnailIndexes_occupiedThumbnailIndexesWithLibrary_fetchTimestampToUpdate_outFetchCount___block_invoke;
   v19[3] = &unk_1E7569DC0;
-  v20 = v13;
+  v20 = managedObjectContext;
   v21 = v11;
-  v25 = a4;
+  updateCopy = update;
   v22 = @"thumbnailIndex";
-  v14 = v8;
+  v14 = indexSet;
   v23 = v14;
-  v15 = v7;
+  v15 = libraryCopy;
   v24 = v15;
-  v26 = a5;
+  countCopy = count;
   v16 = v11;
-  v17 = v13;
+  v17 = managedObjectContext;
   [v15 performBlockAndWait:v19];
 
   objc_autoreleasePoolPop(v9);
@@ -178,42 +178,42 @@ void __95__PLThumbnailIndexes_occupiedThumbnailIndexesWithLibrary_fetchTimestamp
   }
 }
 
-+ (void)recycleThumbnailIndexes:(id)a3 inLibrary:(id)a4 timestamp:(unint64_t)a5
++ (void)recycleThumbnailIndexes:(id)indexes inLibrary:(id)library timestamp:(unint64_t)timestamp
 {
-  v7 = a3;
-  v8 = [a4 thumbnailIndexes];
-  [v8 recycleThumbnailIndexes:v7 timestamp:a5];
+  indexesCopy = indexes;
+  thumbnailIndexes = [library thumbnailIndexes];
+  [thumbnailIndexes recycleThumbnailIndexes:indexesCopy timestamp:timestamp];
 }
 
-+ (void)recycleThumbnailIndexes:(id)a3 inLibrary:(id)a4
++ (void)recycleThumbnailIndexes:(id)indexes inLibrary:(id)library
 {
-  v6 = a4;
-  v7 = a3;
-  [a1 recycleThumbnailIndexes:v7 inLibrary:v6 timestamp:mach_absolute_time()];
+  libraryCopy = library;
+  indexesCopy = indexes;
+  [self recycleThumbnailIndexes:indexesCopy inLibrary:libraryCopy timestamp:mach_absolute_time()];
 }
 
-+ (unint64_t)nextAvailableThumbnailIndexInLibrary:(id)a3
++ (unint64_t)nextAvailableThumbnailIndexInLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [v3 thumbnailIndexes];
-  v5 = [v4 getAvailableThumbnailIndexesWithCount:1 inLibrary:v3];
+  libraryCopy = library;
+  thumbnailIndexes = [libraryCopy thumbnailIndexes];
+  v5 = [thumbnailIndexes getAvailableThumbnailIndexesWithCount:1 inLibrary:libraryCopy];
 
-  v6 = [v5 firstIndex];
-  return v6;
+  firstIndex = [v5 firstIndex];
+  return firstIndex;
 }
 
-+ (void)getAvailableThumbnailIndexInLibrary:(id)a3 withHandler:(id)a4
++ (void)getAvailableThumbnailIndexInLibrary:(id)library withHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 thumbnailIndexes];
+  handlerCopy = handler;
+  libraryCopy = library;
+  thumbnailIndexes = [libraryCopy thumbnailIndexes];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__PLThumbnailIndexes_getAvailableThumbnailIndexInLibrary_withHandler___block_invoke;
   v9[3] = &unk_1E7569D98;
-  v10 = v5;
-  v8 = v5;
-  [v7 getAvailableThumbnailIndexesWithCount:1 inLibrary:v6 handler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [thumbnailIndexes getAvailableThumbnailIndexesWithCount:1 inLibrary:libraryCopy handler:v9];
 }
 
 uint64_t __70__PLThumbnailIndexes_getAvailableThumbnailIndexInLibrary_withHandler___block_invoke(uint64_t a1, void *a2)
@@ -228,20 +228,20 @@ uint64_t __70__PLThumbnailIndexes_getAvailableThumbnailIndexInLibrary_withHandle
   return v3();
 }
 
-+ (void)getAvailableThumbnailIndexesInLibrary:(id)a3 withCount:(unint64_t)a4 handler:(id)a5
++ (void)getAvailableThumbnailIndexesInLibrary:(id)library withCount:(unint64_t)count handler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 thumbnailIndexes];
-  [v9 getAvailableThumbnailIndexesWithCount:a4 inLibrary:v8 handler:v7];
+  handlerCopy = handler;
+  libraryCopy = library;
+  thumbnailIndexes = [libraryCopy thumbnailIndexes];
+  [thumbnailIndexes getAvailableThumbnailIndexesWithCount:count inLibrary:libraryCopy handler:handlerCopy];
 }
 
-- (void)recycleThumbnailIndexes:(id)a3 timestamp:(unint64_t)a4
+- (void)recycleThumbnailIndexes:(id)indexes timestamp:(unint64_t)timestamp
 {
-  v4 = a3;
-  if ([v4 count])
+  indexesCopy = indexes;
+  if ([indexesCopy count])
   {
-    v5 = v4;
+    v5 = indexesCopy;
     pl_dispatch_async();
   }
 }
@@ -268,15 +268,15 @@ void __65__PLThumbnailIndexes_Private__recycleThumbnailIndexes_timestamp___block
   }
 }
 
-- (void)getAvailableThumbnailIndexesFromLibrary:(id)a3
+- (void)getAvailableThumbnailIndexesFromLibrary:(id)library
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = objc_autoreleasePoolPush();
-  v6 = [objc_opt_class() occupiedThumbnailIndexesWithLibrary:v4 fetchTimestampToUpdate:&self->_fetchTimestamp];
-  v7 = [(NSMutableIndexSet *)v6 lastIndex];
-  self->_usedMax = v7;
-  if ((v7 | 0x8000000000000000) == 0xFFFFFFFFFFFFFFFFLL)
+  v6 = [objc_opt_class() occupiedThumbnailIndexesWithLibrary:libraryCopy fetchTimestampToUpdate:&self->_fetchTimestamp];
+  lastIndex = [(NSMutableIndexSet *)v6 lastIndex];
+  self->_usedMax = lastIndex;
+  if ((lastIndex | 0x8000000000000000) == 0xFFFFFFFFFFFFFFFFLL)
   {
     v8 = objc_alloc_init(MEMORY[0x1E696AD50]);
     unusedIndexes = self->_unusedIndexes;
@@ -319,12 +319,12 @@ void __65__PLThumbnailIndexes_Private__recycleThumbnailIndexes_timestamp___block
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)getAvailableThumbnailIndexesWithCount:(unint64_t)a3 inLibrary:(id)a4 handler:(id)a5
+- (void)getAvailableThumbnailIndexesWithCount:(unint64_t)count inLibrary:(id)library handler:(id)handler
 {
-  v6 = a4;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  libraryCopy = library;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = libraryCopy;
   pl_dispatch_async();
 }
 
@@ -398,15 +398,15 @@ LABEL_10:
   pl_dispatch_async();
 }
 
-- (id)getAvailableThumbnailIndexesWithCount:(unint64_t)a3 inLibrary:(id)a4
+- (id)getAvailableThumbnailIndexesWithCount:(unint64_t)count inLibrary:(id)library
 {
-  v4 = a4;
-  v8 = [MEMORY[0x1E696AD50] indexSet];
-  v5 = v4;
+  libraryCopy = library;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  v5 = libraryCopy;
   pl_dispatch_sync();
-  v6 = v8;
+  v6 = indexSet;
 
-  return v8;
+  return indexSet;
 }
 
 void __79__PLThumbnailIndexes_Private__getAvailableThumbnailIndexesWithCount_inLibrary___block_invoke(uint64_t a1)

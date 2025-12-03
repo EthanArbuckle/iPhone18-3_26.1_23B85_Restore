@@ -1,37 +1,37 @@
 @interface WFNSExtensionItemContentItem
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
-+ (id)itemWithObject:(id)a3 sourceAppBundleIdentifier:(id)a4;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
++ (id)itemWithObject:(id)object sourceAppBundleIdentifier:(id)identifier;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
-- (BOOL)itemProvidersSupportType:(id)a3;
+- (BOOL)canGenerateRepresentationForType:(id)type;
+- (BOOL)itemProvidersSupportType:(id)type;
 - (NSExtensionItem)extensionItem;
 - (id)extensionItemName;
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error;
 - (id)itemProviderItems;
 - (id)itemProviders;
 - (id)name;
-- (void)coerceToItemClasses:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)preloadImportantItemsWithCompletionHandler:(id)a3;
+- (void)coerceToItemClasses:(id)classes options:(id)options completionHandler:(id)handler;
+- (void)preloadImportantItemsWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFNSExtensionItemContentItem
 
-- (void)preloadImportantItemsWithCompletionHandler:(id)a3
+- (void)preloadImportantItemsWithCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFNSExtensionItemContentItem *)self itemProviderItems];
-  if (v5)
+  handlerCopy = handler;
+  itemProviderItems = [(WFNSExtensionItemContentItem *)self itemProviderItems];
+  if (itemProviderItems)
   {
-    v6 = [(WFNSExtensionItemContentItem *)self extensionItem];
-    v7 = [v6 userInfo];
-    v8 = [v7 objectForKey:@"WFPhotosAssetIdentifiers"];
+    extensionItem = [(WFNSExtensionItemContentItem *)self extensionItem];
+    userInfo = [extensionItem userInfo];
+    v8 = [userInfo objectForKey:@"WFPhotosAssetIdentifiers"];
 
     v9 = [v8 count];
-    LOBYTE(v9) = v9 == [v5 count];
+    LOBYTE(v9) = v9 == [itemProviderItems count];
     v10 = objc_opt_new();
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -40,17 +40,17 @@
     v22 = v9;
     v19 = v8;
     v20 = v10;
-    v21 = self;
+    selfCopy = self;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __75__WFNSExtensionItemContentItem_preloadImportantItemsWithCompletionHandler___block_invoke_5;
     v15[3] = &unk_27834A098;
     v15[4] = self;
     v16 = v20;
-    v17 = v4;
+    v17 = handlerCopy;
     v11 = v20;
     v12 = v8;
-    [v5 if_mapAsynchronously:v18 completionHandler:v15];
+    [itemProviderItems if_mapAsynchronously:v18 completionHandler:v15];
   }
 
   else
@@ -66,7 +66,7 @@
       _os_log_impl(&dword_21E1BD000, v13, OS_LOG_TYPE_ERROR, "%s Failed to get item provider items from %@", buf, 0x16u);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -289,57 +289,57 @@ void __75__WFNSExtensionItemContentItem_preloadImportantItemsWithCompletionHandl
   }
 }
 
-- (void)coerceToItemClasses:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)coerceToItemClasses:(id)classes options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFNSExtensionItemContentItem *)self extensionItem];
-  v12 = [v11 attributedContentText];
-  v13 = [v12 length];
+  classesCopy = classes;
+  optionsCopy = options;
+  handlerCopy = handler;
+  extensionItem = [(WFNSExtensionItemContentItem *)self extensionItem];
+  attributedContentText = [extensionItem attributedContentText];
+  v13 = [attributedContentText length];
 
   if (v13)
   {
-    v14 = [(WFNSExtensionItemContentItem *)self extensionItem];
-    v15 = [v14 attributedContentText];
-    v16 = [(WFNSExtensionItemContentItem *)self extensionItemName];
-    v17 = [WFContentItem itemWithObject:v15 named:v16];
+    extensionItem2 = [(WFNSExtensionItemContentItem *)self extensionItem];
+    attributedContentText2 = [extensionItem2 attributedContentText];
+    extensionItemName = [(WFNSExtensionItemContentItem *)self extensionItemName];
+    v17 = [WFContentItem itemWithObject:attributedContentText2 named:extensionItemName];
 
-    v18 = [v17 supportedTypes];
-    v19 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v8];
-    LODWORD(v16) = [v18 intersectsSet:v19];
+    supportedTypes = [v17 supportedTypes];
+    v19 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:classesCopy];
+    LODWORD(extensionItemName) = [supportedTypes intersectsSet:v19];
 
-    if (v16)
+    if (extensionItemName)
     {
-      [v17 coerceToItemClasses:v8 options:v9 completionHandler:v10];
+      [v17 coerceToItemClasses:classesCopy options:optionsCopy completionHandler:handlerCopy];
 
       goto LABEL_8;
     }
   }
 
-  v20 = [(WFNSExtensionItemContentItem *)self extensionSubItems];
-  v21 = [v20 count];
+  extensionSubItems = [(WFNSExtensionItemContentItem *)self extensionSubItems];
+  v21 = [extensionSubItems count];
 
   if (v21)
   {
-    v22 = [(WFNSExtensionItemContentItem *)self extensionSubItems];
+    extensionSubItems2 = [(WFNSExtensionItemContentItem *)self extensionSubItems];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __78__WFNSExtensionItemContentItem_coerceToItemClasses_options_completionHandler___block_invoke;
     v25[3] = &unk_27834A458;
-    v26 = v8;
-    v27 = v9;
+    v26 = classesCopy;
+    v27 = optionsCopy;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __78__WFNSExtensionItemContentItem_coerceToItemClasses_options_completionHandler___block_invoke_3;
     v23[3] = &unk_27834A430;
-    v24 = v10;
-    [v22 if_flatMapAsynchronously:v25 completionHandler:v23];
+    v24 = handlerCopy;
+    [extensionSubItems2 if_flatMapAsynchronously:v25 completionHandler:v23];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
 LABEL_8:
@@ -359,19 +359,19 @@ void __78__WFNSExtensionItemContentItem_coerceToItemClasses_options_completionHa
   [a2 coerceToItemClasses:v8 options:v7 completionHandler:v10];
 }
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
-  if ([v4 conformsToClass:objc_opt_class()])
+  typeCopy = type;
+  if ([typeCopy conformsToClass:objc_opt_class()])
   {
-    v5 = [(WFNSExtensionItemContentItem *)self extensionItem];
-    v6 = [v5 attachments];
-    v7 = [v6 count] != 0;
+    extensionItem = [(WFNSExtensionItemContentItem *)self extensionItem];
+    attachments = [extensionItem attachments];
+    v7 = [attachments count] != 0;
   }
 
   else
   {
-    if ([v4 conformsToClass:objc_opt_class()])
+    if ([typeCopy conformsToClass:objc_opt_class()])
     {
       v8 = [(WFContentItem *)self objectForClass:objc_opt_class()];
       v7 = v8 != 0;
@@ -379,24 +379,24 @@ void __78__WFNSExtensionItemContentItem_coerceToItemClasses_options_completionHa
       goto LABEL_10;
     }
 
-    if (![v4 conformsToClass:objc_opt_class()])
+    if (![typeCopy conformsToClass:objc_opt_class()])
     {
       v10.receiver = self;
       v10.super_class = WFNSExtensionItemContentItem;
-      v7 = [(WFContentItem *)&v10 canGenerateRepresentationForType:v4];
+      v7 = [(WFContentItem *)&v10 canGenerateRepresentationForType:typeCopy];
       goto LABEL_10;
     }
 
-    v5 = [(WFNSExtensionItemContentItem *)self extensionItem];
-    v6 = [v5 attributedContentText];
-    if (v6)
+    extensionItem = [(WFNSExtensionItemContentItem *)self extensionItem];
+    attachments = [extensionItem attributedContentText];
+    if (attachments)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [(WFNSExtensionItemContentItem *)self itemProvidersSupportType:v4];
+      v7 = [(WFNSExtensionItemContentItem *)self itemProvidersSupportType:typeCopy];
     }
   }
 
@@ -404,20 +404,20 @@ LABEL_10:
   return v7;
 }
 
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFNSExtensionItemContentItem *)self itemProviders];
-    v9 = [(WFNSExtensionItemContentItem *)self extensionItemName];
-    v7 = [WFObjectRepresentation objects:v8 named:v9];
+    itemProviders = [(WFNSExtensionItemContentItem *)self itemProviders];
+    extensionItemName = [(WFNSExtensionItemContentItem *)self extensionItemName];
+    v7 = [WFObjectRepresentation objects:itemProviders named:extensionItemName];
   }
 
-  else if (objc_opt_class() == a3 && (-[WFNSExtensionItemContentItem extensionItem](self, "extensionItem"), v10 = objc_claimAutoreleasedReturnValue(), [v10 attributedContentText], v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
+  else if (objc_opt_class() == class && (-[WFNSExtensionItemContentItem extensionItem](self, "extensionItem"), v10 = objc_claimAutoreleasedReturnValue(), [v10 attributedContentText], v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
   {
-    v12 = [(WFNSExtensionItemContentItem *)self extensionItemName];
-    v13 = [WFObjectRepresentation object:v11 named:v12];
+    extensionItemName2 = [(WFNSExtensionItemContentItem *)self extensionItemName];
+    v13 = [WFObjectRepresentation object:v11 named:extensionItemName2];
     v15[0] = v13;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   }
@@ -430,18 +430,18 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)itemProvidersSupportType:(id)a3
+- (BOOL)itemProvidersSupportType:(id)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(WFNSExtensionItemContentItem *)self extensionItem];
-  v6 = [v5 attachments];
+  extensionItem = [(WFNSExtensionItemContentItem *)self extensionItem];
+  attachments = [extensionItem attachments];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [attachments countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -451,12 +451,12 @@ LABEL_10:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attachments);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v4 string];
-        LOBYTE(v10) = [v10 hasItemConformingToTypeIdentifier:v11];
+        string = [typeCopy string];
+        LOBYTE(v10) = [v10 hasItemConformingToTypeIdentifier:string];
 
         if (v10)
         {
@@ -465,7 +465,7 @@ LABEL_10:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [attachments countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -482,40 +482,40 @@ LABEL_11:
 
 - (id)name
 {
-  v3 = [(WFNSExtensionItemContentItem *)self extensionItemName];
-  v4 = v3;
-  if (v3)
+  extensionItemName = [(WFNSExtensionItemContentItem *)self extensionItemName];
+  v4 = extensionItemName;
+  if (extensionItemName)
   {
-    v5 = v3;
+    name = extensionItemName;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = WFNSExtensionItemContentItem;
-    v5 = [(WFContentItem *)&v8 name];
+    name = [(WFContentItem *)&v8 name];
   }
 
-  v6 = v5;
+  v6 = name;
 
   return v6;
 }
 
 - (id)extensionItemName
 {
-  v2 = [(WFNSExtensionItemContentItem *)self extensionItem];
-  v3 = [v2 attributedTitle];
-  v4 = [v3 string];
+  extensionItem = [(WFNSExtensionItemContentItem *)self extensionItem];
+  attributedTitle = [extensionItem attributedTitle];
+  string = [attributedTitle string];
 
-  return v4;
+  return string;
 }
 
 - (id)itemProviders
 {
-  v2 = [(WFNSExtensionItemContentItem *)self extensionItem];
-  v3 = [v2 attachments];
+  extensionItem = [(WFNSExtensionItemContentItem *)self extensionItem];
+  attachments = [extensionItem attachments];
 
-  return v3;
+  return attachments;
 }
 
 - (id)itemProviderItems
@@ -534,20 +534,20 @@ LABEL_11:
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Extension items", @"Extension items");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Extension item", @"Extension item");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -572,30 +572,30 @@ LABEL_11:
   return v4;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
-  if ([v4 conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()))
+  instanceCopy = instance;
+  if ([instanceCopy conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()))
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___WFNSExtensionItemContentItem;
-    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, instanceCopy);
   }
 
   return v5;
 }
 
-+ (id)itemWithObject:(id)a3 sourceAppBundleIdentifier:(id)a4
++ (id)itemWithObject:(id)object sourceAppBundleIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  objectCopy = object;
+  identifierCopy = identifier;
+  v8 = objectCopy;
   if (v8)
   {
     objc_opt_class();
@@ -617,19 +617,19 @@ LABEL_11:
 
   v10 = v9;
 
-  v11 = [objc_alloc(MEMORY[0x277CD3A58]) initWithBundleIdentifier:v7];
-  v12 = [MEMORY[0x277CD3A88] sharedResolver];
-  v13 = [v12 resolvedAppMatchingDescriptor:v11];
+  v11 = [objc_alloc(MEMORY[0x277CD3A58]) initWithBundleIdentifier:identifierCopy];
+  mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+  v13 = [mEMORY[0x277CD3A88] resolvedAppMatchingDescriptor:v11];
 
   if (v13)
   {
     v14 = [WFAppContentLocation locationWithAppDescriptor:v13];
     v15 = +[WFManagedConfigurationProfile defaultProfile];
-    v16 = [v15 isAccountBasedSourceApp:v7];
+    v16 = [v15 isAccountBasedSourceApp:identifierCopy];
 
     if (v16)
     {
-      v17 = [v10 userInfo];
+      userInfo = [v10 userInfo];
       v26 = 0;
       v27 = &v26;
       v28 = 0x2020000000;
@@ -649,14 +649,14 @@ LABEL_11:
       _Block_object_dispose(&v26, 8);
       if (!v18)
       {
-        v24 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *get_UINSExtensionItemUserInfoIsContentManagedKey(void)"];
-        [v24 handleFailureInFunction:v25 file:@"WFNSExtensionItemContentItem.m" lineNumber:27 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v25 file:@"WFNSExtensionItemContentItem.m" lineNumber:27 description:{@"%s", dlerror()}];
 
         __break(1u);
       }
 
-      v19 = [v17 objectForKeyedSubscript:*v18];
+      v19 = [userInfo objectForKeyedSubscript:*v18];
 
       if (v19)
       {
@@ -683,12 +683,12 @@ LABEL_11:
 
     if (v10)
     {
-      [a1 itemWithObject:v10 origin:v14 disclosureLevel:1];
+      [self itemWithObject:v10 origin:v14 disclosureLevel:1];
     }
 
     else
     {
-      [a1 itemWithObject:v8 origin:v14 disclosureLevel:1];
+      [self itemWithObject:v8 origin:v14 disclosureLevel:1];
     }
     v21 = ;
   }
@@ -701,7 +701,7 @@ LABEL_11:
       *buf = 136315394;
       *&buf[4] = "+[WFNSExtensionItemContentItem itemWithObject:sourceAppBundleIdentifier:]";
       *&buf[12] = 2112;
-      *&buf[14] = v7;
+      *&buf[14] = identifierCopy;
       _os_log_impl(&dword_21E1BD000, v14, OS_LOG_TYPE_ERROR, "%s Failed to resolve app descriptor with bundle identifier: %@", buf, 0x16u);
     }
 

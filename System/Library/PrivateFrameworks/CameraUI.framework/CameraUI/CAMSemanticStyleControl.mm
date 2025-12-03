@@ -1,25 +1,25 @@
 @interface CAMSemanticStyleControl
 - ($F24F406B2B787EFB06265DBA3D28CBD5)gradientInsets;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)canBecomeFirstResponder;
-- (CAMSemanticStyleControl)initWithFrame:(CGRect)a3;
-- (id)_createSliderForIndex:(unint64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CAMSemanticStyleControl)initWithFrame:(CGRect)frame;
+- (id)_createSliderForIndex:(unint64_t)index;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_handleReset;
-- (void)_handleResetButtonReleased:(id)a3;
-- (void)_handleSliderDidChangeValue:(id)a3;
+- (void)_handleResetButtonReleased:(id)released;
+- (void)_handleSliderDidChangeValue:(id)value;
 - (void)_showResetConfirmation;
-- (void)_updateSlidersAnimated:(BOOL)a3;
-- (void)_updateSubviewsVisibilityWithDuration:(double)a3 delay:(double)a4;
+- (void)_updateSlidersAnimated:(BOOL)animated;
+- (void)_updateSubviewsVisibilityWithDuration:(double)duration delay:(double)delay;
 - (void)layoutSubviews;
-- (void)setGradientInsets:(id)a3;
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4;
-- (void)sliderWillExpand:(id)a3;
+- (void)setGradientInsets:(id)insets;
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated;
+- (void)sliderWillExpand:(id)expand;
 @end
 
 @implementation CAMSemanticStyleControl
 
-- (CAMSemanticStyleControl)initWithFrame:(CGRect)a3
+- (CAMSemanticStyleControl)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = CAMSemanticStyleControl;
@@ -62,8 +62,8 @@
     v16 = [v14 systemImageNamed:@"arrow.trianglehead.counterclockwise" withConfiguration:v15];
     [(UIButton *)v13 setImage:v16 forState:0];
 
-    v17 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIButton *)v3->__resetButton setTintColor:v17];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIButton *)v3->__resetButton setTintColor:whiteColor];
 
     [(CAMSemanticStyleControl *)v3 addSubview:v3->__resetButton];
     v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -79,16 +79,16 @@
     v21 = CEKFontOfSizeAndStyle();
     [(UILabel *)v3->__descriptionLabel setFont:v21];
 
-    v22 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v3->__descriptionLabel setTextColor:v22];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v3->__descriptionLabel setTextColor:whiteColor2];
 
     [(CAMSemanticStyleControl *)v3 addSubview:v3->__descriptionLabel];
     v23 = objc_alloc_init(MEMORY[0x1E69DD250]);
     gradientContainer = v3->__gradientContainer;
     v3->__gradientContainer = v23;
 
-    v25 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v3->__gradientContainer setBackgroundColor:v25];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v3->__gradientContainer setBackgroundColor:blackColor];
 
     [(UIView *)v3->__gradientContainer setUserInteractionEnabled:0];
     v26 = objc_alloc_init(MEMORY[0x1E6993848]);
@@ -106,13 +106,13 @@
   return v3;
 }
 
-- (id)_createSliderForIndex:(unint64_t)a3
+- (id)_createSliderForIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    if (a3 != 1)
+    if (index != 1)
     {
-      v7 = 0;
+      cam_uppercaseStringWithPreferredLocale = 0;
       v6 = 0;
       goto LABEL_9;
     }
@@ -129,9 +129,9 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 cam_uppercaseStringWithPreferredLocale];
+    cam_uppercaseStringWithPreferredLocale = [v5 cam_uppercaseStringWithPreferredLocale];
 
-    v6 = [objc_alloc(MEMORY[0x1E6993850]) initWithTitle:v7];
+    v6 = [objc_alloc(MEMORY[0x1E6993850]) initWithTitle:cam_uppercaseStringWithPreferredLocale];
     [v6 setTitleAlpha:0.7];
     [v6 setDelegate:self];
     [v6 addTarget:self action:sel__handleSliderDidChangeValue_ forControlEvents:4096];
@@ -139,7 +139,7 @@
 
   else
   {
-    v7 = 0;
+    cam_uppercaseStringWithPreferredLocale = 0;
   }
 
 LABEL_9:
@@ -161,20 +161,20 @@ LABEL_9:
   +[CAMControlDrawerButton buttonSize];
   v12 = v11;
   v45 = v13;
-  v14 = [(CAMSemanticStyleControl *)self _allSliders];
-  v15 = [v14 firstObject];
-  [v15 intrinsicContentSize];
+  _allSliders = [(CAMSemanticStyleControl *)self _allSliders];
+  firstObject = [_allSliders firstObject];
+  [firstObject intrinsicContentSize];
   v17 = v16;
 
   v44 = v12;
   v18 = v12 + 20.0;
-  v19 = [(CAMSemanticStyleControl *)self _allSliders];
-  v20 = [v19 count];
+  _allSliders2 = [(CAMSemanticStyleControl *)self _allSliders];
+  v20 = [_allSliders2 count];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v21 = v19;
+  v21 = _allSliders2;
   v22 = [v21 countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v22)
   {
@@ -212,8 +212,8 @@ LABEL_9:
   CGRectGetMidY(v53);
   UIRoundToViewScale();
   v31 = v30;
-  v32 = [(CAMSemanticStyleControl *)self _descriptionLabel];
-  [v32 setFrame:{v18, v31, v8 + v18 * -2.0, 17.0}];
+  _descriptionLabel = [(CAMSemanticStyleControl *)self _descriptionLabel];
+  [_descriptionLabel setFrame:{v18, v31, v8 + v18 * -2.0, 17.0}];
 
   v54.origin.x = v4;
   v54.origin.y = v6;
@@ -222,31 +222,31 @@ LABEL_9:
   CGRectGetMidY(v54);
   UIRoundToViewScale();
   v34 = v33;
-  v35 = [(CAMSemanticStyleControl *)self _resetButton];
-  [v35 setFrame:{v8 - v18, v34, v44, v45}];
+  _resetButton = [(CAMSemanticStyleControl *)self _resetButton];
+  [_resetButton setFrame:{v8 - v18, v34, v44, v45}];
 
-  v36 = [(CAMSemanticStyleControl *)self _gradientContainer];
-  [v36 setFrame:{v4, v6, v8, v10}];
+  _gradientContainer = [(CAMSemanticStyleControl *)self _gradientContainer];
+  [_gradientContainer setFrame:{v4, v6, v8, v10}];
 
-  v37 = [(CAMSemanticStyleControl *)self _edgeGradients];
-  [v37 setFrame:{v4, v6, v8, v10}];
+  _edgeGradients = [(CAMSemanticStyleControl *)self _edgeGradients];
+  [_edgeGradients setFrame:{v4, v6, v8, v10}];
 
-  v38 = [(CAMSemanticStyleControl *)self _edgeGradients];
-  [v38 setContentInsets:{28.0, 0.0, 0.0, 0.0}];
+  _edgeGradients2 = [(CAMSemanticStyleControl *)self _edgeGradients];
+  [_edgeGradients2 setContentInsets:{28.0, 0.0, 0.0, 0.0}];
 
   [(CAMSemanticStyleControl *)self gradientInsets];
   v40 = v39;
   [(CAMSemanticStyleControl *)self gradientInsets];
   v42 = v41;
-  v43 = [(CAMSemanticStyleControl *)self _edgeGradients];
-  [v43 setGradientDimensions:{v40, v8 * 0.1, v8 * 0.1, v42}];
+  _edgeGradients3 = [(CAMSemanticStyleControl *)self _edgeGradients];
+  [_edgeGradients3 setGradientDimensions:{v40, v8 * 0.1, v8 * 0.1, v42}];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CAMSemanticStyleControl;
-  v5 = [(CAMSemanticStyleControl *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CAMSemanticStyleControl *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 
@@ -256,16 +256,16 @@ LABEL_9:
   return v5;
 }
 
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  styleCopy = style;
   if (![(CAMSemanticStyle *)self->_semanticStyle isEqualToSemanticStyle:?])
   {
-    objc_storeStrong(&self->_semanticStyle, a3);
-    [(CAMSemanticStyleControl *)self _updateSlidersAnimated:v4];
+    objc_storeStrong(&self->_semanticStyle, style);
+    [(CAMSemanticStyleControl *)self _updateSlidersAnimated:animatedCopy];
     v7 = 0.3;
-    if (!v4)
+    if (!animatedCopy)
     {
       v7 = 0.0;
     }
@@ -274,18 +274,18 @@ LABEL_9:
   }
 }
 
-- (void)_updateSlidersAnimated:(BOOL)a3
+- (void)_updateSlidersAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(CAMSemanticStyleControl *)self semanticStyle];
-  v6 = [(CAMSemanticStyleControl *)self _allSliders];
-  v7 = [v5 isCustomizable];
+  semanticStyle = [(CAMSemanticStyleControl *)self semanticStyle];
+  _allSliders = [(CAMSemanticStyleControl *)self _allSliders];
+  isCustomizable = [semanticStyle isCustomizable];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v6;
+  v8 = _allSliders;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -301,7 +301,7 @@ LABEL_9:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v23 + 1) + 8 * v12++) setUserInteractionEnabled:{v7, v23}];
+        [*(*(&v23 + 1) + 8 * v12++) setUserInteractionEnabled:{isCustomizable, v23}];
       }
 
       while (v10 != v12);
@@ -311,19 +311,19 @@ LABEL_9:
     while (v10);
   }
 
-  v13 = [(CAMSemanticStyleControl *)self _resetButton];
-  [v13 setUserInteractionEnabled:v7];
+  _resetButton = [(CAMSemanticStyleControl *)self _resetButton];
+  [_resetButton setUserInteractionEnabled:isCustomizable];
 
-  if (v7)
+  if (isCustomizable)
   {
-    v14 = -[CAMSemanticStyle initWithPresetType:]([CAMSemanticStyle alloc], "initWithPresetType:", [v5 presetType]);
+    v14 = -[CAMSemanticStyle initWithPresetType:]([CAMSemanticStyle alloc], "initWithPresetType:", [semanticStyle presetType]);
     v15 = [v8 objectAtIndexedSubscript:0];
-    [v5 sceneBias];
-    [v15 setValue:v3 animated:?];
+    [semanticStyle sceneBias];
+    [v15 setValue:animatedCopy animated:?];
 
     v16 = [v8 objectAtIndexedSubscript:1];
-    [v5 warmthBias];
-    [v16 setValue:v3 animated:?];
+    [semanticStyle warmthBias];
+    [v16 setValue:animatedCopy animated:?];
 
     [(CAMSemanticStyle *)v14 sceneBias];
     v18 = v17;
@@ -337,10 +337,10 @@ LABEL_9:
   }
 }
 
-- (void)setGradientInsets:(id)a3
+- (void)setGradientInsets:(id)insets
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = insets.var1;
+  var0 = insets.var0;
   p_gradientInsets = &self->_gradientInsets;
   if ((CEKEdgeInsetsEqualToInsets() & 1) == 0)
   {
@@ -351,12 +351,12 @@ LABEL_9:
   }
 }
 
-- (void)_updateSubviewsVisibilityWithDuration:(double)a3 delay:(double)a4
+- (void)_updateSubviewsVisibilityWithDuration:(double)duration delay:(double)delay
 {
-  v7 = [(CAMSemanticStyleControl *)self semanticStyle];
-  v8 = [v7 isCustomizable];
+  semanticStyle = [(CAMSemanticStyleControl *)self semanticStyle];
+  isCustomizable = [semanticStyle isCustomizable];
 
-  v9 = [(CAMSemanticStyleControl *)self _allSliders];
+  _allSliders = [(CAMSemanticStyleControl *)self _allSliders];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -366,10 +366,10 @@ LABEL_9:
   v22[2] = __71__CAMSemanticStyleControl__updateSubviewsVisibilityWithDuration_delay___block_invoke;
   v22[3] = &unk_1E76F8828;
   v22[4] = &v23;
-  [v9 enumerateObjectsUsingBlock:v22];
-  v10 = [(CAMSemanticStyleControl *)self semanticStyle];
-  v11 = v8 ^ 1;
-  if ([v10 isCustomized])
+  [_allSliders enumerateObjectsUsingBlock:v22];
+  semanticStyle2 = [(CAMSemanticStyleControl *)self semanticStyle];
+  v11 = isCustomizable ^ 1;
+  if ([semanticStyle2 isCustomized])
   {
     v12 = *(v24 + 24) ^ 1;
   }
@@ -383,22 +383,22 @@ LABEL_9:
   aBlock[1] = 3221225472;
   aBlock[2] = __71__CAMSemanticStyleControl__updateSubviewsVisibilityWithDuration_delay___block_invoke_2;
   aBlock[3] = &unk_1E76F8850;
-  v13 = v9;
-  v18 = self;
+  v13 = _allSliders;
+  selfCopy = self;
   v19 = &v23;
   v20 = v11;
   v17 = v13;
   v21 = v12 & 1;
   v14 = _Block_copy(aBlock);
   v15 = v14;
-  if (a3 == 0.0 && a4 == 0.0)
+  if (duration == 0.0 && delay == 0.0)
   {
     (*(v14 + 2))(v14);
   }
 
   else
   {
-    [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v14 options:0 animations:a3 completion:a4];
+    [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v14 options:0 animations:duration completion:delay];
   }
 
   _Block_object_dispose(&v23, 8);
@@ -497,24 +497,24 @@ void __71__CAMSemanticStyleControl__updateSubviewsVisibilityWithDuration_delay__
   [v15 setBackgroundColor:v14];
 }
 
-- (void)_handleSliderDidChangeValue:(id)a3
+- (void)_handleSliderDidChangeValue:(id)value
 {
-  v13 = [(CAMSemanticStyleControl *)self _allSliders];
+  _allSliders = [(CAMSemanticStyleControl *)self _allSliders];
   v4 = [CAMSemanticStyle alloc];
-  v5 = [(CAMSemanticStyleControl *)self semanticStyle];
-  v6 = [v5 presetType];
-  v7 = [v13 objectAtIndexedSubscript:0];
+  semanticStyle = [(CAMSemanticStyleControl *)self semanticStyle];
+  presetType = [semanticStyle presetType];
+  v7 = [_allSliders objectAtIndexedSubscript:0];
   [v7 value];
   v9 = v8;
-  v10 = [v13 objectAtIndexedSubscript:1];
+  v10 = [_allSliders objectAtIndexedSubscript:1];
   [v10 value];
-  v12 = [(CAMSemanticStyle *)v4 initWithPresetType:v6 sceneBias:v9 warmthBias:v11];
+  v12 = [(CAMSemanticStyle *)v4 initWithPresetType:presetType sceneBias:v9 warmthBias:v11];
   [(CAMSemanticStyleControl *)self setSemanticStyle:v12];
 
   [(CAMSemanticStyleControl *)self sendActionsForControlEvents:4096];
 }
 
-- (void)_handleResetButtonReleased:(id)a3
+- (void)_handleResetButtonReleased:(id)released
 {
   if ([(CAMSemanticStyleControl *)self shouldConfirmBeforeResetting])
   {
@@ -532,30 +532,30 @@ void __71__CAMSemanticStyleControl__updateSubviewsVisibilityWithDuration_delay__
 - (void)_showResetConfirmation
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CAMSemanticStyleControl *)self _resetButton];
+  _resetButton = [(CAMSemanticStyleControl *)self _resetButton];
   v4 = CAMLocalizedFrameworkString(@"SEMANTIC_STYLES_CONTROL_RESET_CONFIRM_FORMAT", 0);
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(CAMSemanticStyleControl *)self semanticStyle];
-  v7 = [v6 presetDisplayName];
-  v8 = [v5 stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:0, v7];
+  semanticStyle = [(CAMSemanticStyleControl *)self semanticStyle];
+  presetDisplayName = [semanticStyle presetDisplayName];
+  v8 = [v5 stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:0, presetDisplayName];
 
   [(CAMSemanticStyleControl *)self becomeFirstResponder];
-  v9 = [MEMORY[0x1E69DCC68] sharedMenuController];
+  mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
   v10 = [objc_alloc(MEMORY[0x1E69DCC80]) initWithTitle:v8 action:sel__handleReset];
   v13[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  [v9 setMenuItems:v11];
+  [mEMORY[0x1E69DCC68] setMenuItems:v11];
 
-  v12 = [v3 imageView];
-  [v12 frame];
-  [v9 showMenuFromView:v3 rect:?];
+  imageView = [_resetButton imageView];
+  [imageView frame];
+  [mEMORY[0x1E69DCC68] showMenuFromView:_resetButton rect:?];
 }
 
 - (void)_handleReset
 {
   v3 = [CAMSemanticStyle alloc];
-  v4 = [(CAMSemanticStyleControl *)self semanticStyle];
-  v5 = -[CAMSemanticStyle initWithPresetType:](v3, "initWithPresetType:", [v4 presetType]);
+  semanticStyle = [(CAMSemanticStyleControl *)self semanticStyle];
+  v5 = -[CAMSemanticStyle initWithPresetType:](v3, "initWithPresetType:", [semanticStyle presetType]);
 
   [(CAMSemanticStyleControl *)self setSemanticStyle:v5 animated:1];
   [(CAMSemanticStyleControl *)self sendActionsForControlEvents:4096];
@@ -563,32 +563,32 @@ void __71__CAMSemanticStyleControl__updateSubviewsVisibilityWithDuration_delay__
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(CAMSemanticStyleControl *)self semanticStyle];
-  v3 = [v2 isCustomized];
+  semanticStyle = [(CAMSemanticStyleControl *)self semanticStyle];
+  isCustomized = [semanticStyle isCustomized];
 
-  return v3;
+  return isCustomized;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v6 = MEMORY[0x1E69DCC68];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedMenuController];
-  [v9 hideMenu];
+  eventCopy = event;
+  touchCopy = touch;
+  sharedMenuController = [v6 sharedMenuController];
+  [sharedMenuController hideMenu];
 
   v11.receiver = self;
   v11.super_class = CAMSemanticStyleControl;
-  LOBYTE(self) = [(CAMSemanticStyleControl *)&v11 beginTrackingWithTouch:v8 withEvent:v7];
+  LOBYTE(self) = [(CAMSemanticStyleControl *)&v11 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return self;
 }
 
-- (void)sliderWillExpand:(id)a3
+- (void)sliderWillExpand:(id)expand
 {
-  [(CAMSemanticStyleControl *)self _updateSubviewsVisibilityWithDuration:a3 delay:0.2, 0.0];
-  v3 = [MEMORY[0x1E69DCC68] sharedMenuController];
-  [v3 hideMenu];
+  [(CAMSemanticStyleControl *)self _updateSubviewsVisibilityWithDuration:expand delay:0.2, 0.0];
+  mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+  [mEMORY[0x1E69DCC68] hideMenu];
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)gradientInsets

@@ -1,38 +1,38 @@
 @interface NSConcreteFileHandle
-- (BOOL)closeAndReturnError:(id *)a3;
-- (BOOL)getOffset:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)seekToEndReturningOffset:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)seekToOffset:(unint64_t)a3 error:(id *)a4;
-- (BOOL)synchronizeAndReturnError:(id *)a3;
-- (BOOL)truncateAtOffset:(unint64_t)a3 error:(id *)a4;
-- (BOOL)writeData:(id)a3 error:(id *)a4;
+- (BOOL)closeAndReturnError:(id *)error;
+- (BOOL)getOffset:(unint64_t *)offset error:(id *)error;
+- (BOOL)seekToEndReturningOffset:(unint64_t *)offset error:(id *)error;
+- (BOOL)seekToOffset:(unint64_t)offset error:(id *)error;
+- (BOOL)synchronizeAndReturnError:(id *)error;
+- (BOOL)truncateAtOffset:(unint64_t)offset error:(id *)error;
+- (BOOL)writeData:(id)data error:(id *)error;
 - (NSConcreteFileHandle)init;
-- (NSConcreteFileHandle)initWithFileDescriptor:(int)a3 closeOnDealloc:(BOOL)a4;
-- (NSConcreteFileHandle)initWithPath:(id)a3 flags:(int64_t)a4 createMode:(int64_t)a5 error:(id *)a6;
-- (NSConcreteFileHandle)initWithURL:(id)a3 flags:(int64_t)a4 createMode:(int64_t)a5 error:(id *)a6;
-- (id)_monitor:(int)a3;
+- (NSConcreteFileHandle)initWithFileDescriptor:(int)descriptor closeOnDealloc:(BOOL)dealloc;
+- (NSConcreteFileHandle)initWithPath:(id)path flags:(int64_t)flags createMode:(int64_t)mode error:(id *)error;
+- (NSConcreteFileHandle)initWithURL:(id)l flags:(int64_t)flags createMode:(int64_t)mode error:(id *)error;
+- (id)_monitor:(int)_monitor;
 - (id)availableData;
-- (id)readDataOfLength:(unint64_t)a3;
-- (id)readDataToEndOfFileAndReturnError:(id *)a3;
-- (id)readDataUpToLength:(unint64_t)a3 error:(id *)a4;
+- (id)readDataOfLength:(unint64_t)length;
+- (id)readDataToEndOfFileAndReturnError:(id *)error;
+- (id)readDataUpToLength:(unint64_t)length error:(id *)error;
 - (id)readabilityHandler;
 - (id)writeabilityHandler;
 - (int)fileDescriptor;
 - (unint64_t)offsetInFile;
-- (unint64_t)readDataOfLength:(unint64_t)a3 buffer:(char *)a4;
+- (unint64_t)readDataOfLength:(unint64_t)length buffer:(char *)buffer;
 - (unint64_t)seekToEndOfFile;
 - (void)_cancelDispatchSources;
-- (void)_locked_clearHandler:(id *)a3 forSource:(id *)a4;
+- (void)_locked_clearHandler:(id *)handler forSource:(id *)source;
 - (void)closeFile;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)performActivity:(int64_t)a3 modes:(id)a4;
-- (void)seekToFileOffset:(unint64_t)a3;
-- (void)setReadabilityHandler:(id)a3;
-- (void)setWriteabilityHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)performActivity:(int64_t)activity modes:(id)modes;
+- (void)seekToFileOffset:(unint64_t)offset;
+- (void)setReadabilityHandler:(id)handler;
+- (void)setWriteabilityHandler:(id)handler;
 - (void)synchronizeFile;
-- (void)truncateFileAtOffset:(unint64_t)a3;
-- (void)writeData:(id)a3;
+- (void)truncateFileAtOffset:(unint64_t)offset;
+- (void)writeData:(id)data;
 @end
 
 @implementation NSConcreteFileHandle
@@ -107,7 +107,7 @@
     v5[1] = 3221225472;
     v5[2] = __33__NSConcreteFileHandle_closeFile__block_invoke;
     v5[3] = &unk_1E69F2C00;
-    v6 = self;
+    selfCopy = self;
     monitoringQueue = self->_monitoringQueue;
     if (monitoringQueue)
     {
@@ -117,7 +117,7 @@
     else
     {
       atomic_fetch_or(&self->_flags, 4u);
-      close(v6->_fd);
+      close(selfCopy->_fd);
     }
   }
 }
@@ -212,7 +212,7 @@ LABEL_11:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -229,17 +229,17 @@ LABEL_11:
   if (v7)
   {
     v8 = v7;
-    [a3 encodeXPCObject:v7 forKey:@"NS.fd"];
+    [coder encodeXPCObject:v7 forKey:@"NS.fd"];
 
     xpc_release(v8);
   }
 }
 
-- (NSConcreteFileHandle)initWithFileDescriptor:(int)a3 closeOnDealloc:(BOOL)a4
+- (NSConcreteFileHandle)initWithFileDescriptor:(int)descriptor closeOnDealloc:(BOOL)dealloc
 {
-  self->_fd = a3;
+  self->_fd = descriptor;
   self->_fhQueue = dispatch_queue_create("com.apple.NSFileHandle.1", 0);
-  if (!a4)
+  if (!dealloc)
   {
     atomic_fetch_or(&self->_flags, 2u);
   }
@@ -249,46 +249,46 @@ LABEL_11:
   return self;
 }
 
-- (NSConcreteFileHandle)initWithURL:(id)a3 flags:(int64_t)a4 createMode:(int64_t)a5 error:(id *)a6
+- (NSConcreteFileHandle)initWithURL:(id)l flags:(int64_t)flags createMode:(int64_t)mode error:(id *)error
 {
-  v8 = a4;
-  v10 = self;
+  flagsCopy = flags;
+  selfCopy = self;
   v17 = *MEMORY[0x1E69E9840];
   self->_fd = -1;
-  if (([a3 getFileSystemRepresentation:v16 maxLength:1026] & 1) == 0)
+  if (([l getFileSystemRepresentation:v16 maxLength:1026] & 1) == 0)
   {
     [(NSConcreteFileHandle *)&v15 dealloc:v14.receiver];
     return 0;
   }
 
-  v11 = _NSOpenFileDescriptor(v16, v8, a5);
-  v10->_fd = v11;
+  v11 = _NSOpenFileDescriptor(v16, flagsCopy, mode);
+  selfCopy->_fd = v11;
   if (v11 < 0)
   {
-    if (a6)
+    if (error)
     {
       v12 = *__error();
-      *a6 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v12, [a3 path], 0, 0, 0);
+      *error = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v12, [l path], 0, 0, 0);
     }
 
-    [(NSConcreteFileHandle *)&v14 dealloc:v10];
+    [(NSConcreteFileHandle *)&v14 dealloc:selfCopy];
     return 0;
   }
 
-  atomic_fetch_or(&v10->_flags, 1u);
-  v10->_fhQueue = dispatch_queue_create("com.apple.NSFileHandle.2", 0);
-  v10->_lock._os_unfair_lock_opaque = 0;
-  return v10;
+  atomic_fetch_or(&selfCopy->_flags, 1u);
+  selfCopy->_fhQueue = dispatch_queue_create("com.apple.NSFileHandle.2", 0);
+  selfCopy->_lock._os_unfair_lock_opaque = 0;
+  return selfCopy;
 }
 
-- (NSConcreteFileHandle)initWithPath:(id)a3 flags:(int64_t)a4 createMode:(int64_t)a5 error:(id *)a6
+- (NSConcreteFileHandle)initWithPath:(id)path flags:(int64_t)flags createMode:(int64_t)mode error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([path length])
   {
-    v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3];
+    v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
 
-    return [(NSConcreteFileHandle *)self initWithURL:v11 flags:a4 createMode:a5 error:a6];
+    return [(NSConcreteFileHandle *)self initWithURL:v11 flags:flags createMode:mode error:error];
   }
 
   else
@@ -300,7 +300,7 @@ LABEL_11:
   }
 }
 
-- (unint64_t)readDataOfLength:(unint64_t)a3 buffer:(char *)a4
+- (unint64_t)readDataOfLength:(unint64_t)length buffer:(char *)buffer
 {
   v17 = *MEMORY[0x1E69E9840];
   memset(&v16, 0, sizeof(v16));
@@ -312,22 +312,22 @@ LABEL_11:
 
   if ((v16.st_mode & 0xF000) != 0x8000)
   {
-    if (a3)
+    if (length)
     {
       v12 = 0;
-      if (a3 >= 0x1000)
+      if (length >= 0x1000)
       {
-        v13 = 4096;
+        lengthCopy = 4096;
       }
 
       else
       {
-        v13 = a3;
+        lengthCopy = length;
       }
 
       while (1)
       {
-        v14 = _NSReadFromFileDescriptorWithProgress(self->_fd, &a4[v12], v13, 0, 0);
+        v14 = _NSReadFromFileDescriptorWithProgress(self->_fd, &buffer[v12], lengthCopy, 0, 0);
         if (v14 < 0)
         {
           break;
@@ -336,9 +336,9 @@ LABEL_11:
         if (v14)
         {
           v12 += v14;
-          a3 -= v14;
-          v13 = a3 >= 0x1000 ? 4096 : a3;
-          if (a3)
+          length -= v14;
+          lengthCopy = length >= 0x1000 ? 4096 : length;
+          if (length)
           {
             continue;
           }
@@ -360,33 +360,33 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v10 = v16.st_size - v9;
+  lengthCopy2 = v16.st_size - v9;
   if (v16.st_size <= v9)
   {
     return 0;
   }
 
-  if (v10 >= a3)
+  if (lengthCopy2 >= length)
   {
-    v10 = a3;
+    lengthCopy2 = length;
   }
 
-  if (v10 < 1)
+  if (lengthCopy2 < 1)
   {
     return 0;
   }
 
-  if (v10 >= 0x80000000)
+  if (lengthCopy2 >= 0x80000000)
   {
     v11 = 0x80000000;
   }
 
   else
   {
-    v11 = v10;
+    v11 = lengthCopy2;
   }
 
-  v12 = _NSReadFromFileDescriptorWithProgress(self->_fd, a4, v11, 0, 0);
+  v12 = _NSReadFromFileDescriptorWithProgress(self->_fd, buffer, v11, 0, 0);
   if ((v12 & 0x8000000000000000) != 0)
   {
     goto LABEL_13;
@@ -395,7 +395,7 @@ LABEL_13:
   return v12;
 }
 
-- (id)readDataOfLength:(unint64_t)a3
+- (id)readDataOfLength:(unint64_t)length
 {
   v22 = *MEMORY[0x1E69E9840];
   memset(&v21, 0, sizeof(v21));
@@ -410,17 +410,17 @@ LABEL_13:
     v10 = malloc_type_malloc(0x2000uLL, 0x100004077774924uLL);
     v11 = 0;
     v14 = 0x2000;
-    v15 = a3;
-    while (v15)
+    lengthCopy = length;
+    while (lengthCopy)
     {
-      if (v15 >= 0x2000)
+      if (lengthCopy >= 0x2000)
       {
         v16 = 0x2000;
       }
 
       else
       {
-        v16 = v15;
+        v16 = lengthCopy;
       }
 
       if (v14 - v11 < v16)
@@ -442,10 +442,10 @@ LABEL_13:
       }
 
       v11 += v18;
-      v15 -= v18;
+      lengthCopy -= v18;
       if (v18)
       {
-        v19 = v11 == a3;
+        v19 = v11 == length;
       }
 
       else
@@ -460,7 +460,7 @@ LABEL_13:
     }
 
 LABEL_31:
-    if (a3 == -1 && v11)
+    if (length == -1 && v11)
     {
       v10 = reallocf(v10, v11);
     }
@@ -484,29 +484,29 @@ LABEL_31:
     return [MEMORY[0x1E695DEF0] data];
   }
 
-  if (v21.st_size - v7 >= a3)
+  if (v21.st_size - v7 >= length)
   {
-    v8 = a3;
+    lengthCopy2 = length;
   }
 
   else
   {
-    v8 = v21.st_size - v7;
+    lengthCopy2 = v21.st_size - v7;
   }
 
-  v9 = malloc_type_malloc(v8, 0x100004077774924uLL);
+  v9 = malloc_type_malloc(lengthCopy2, 0x100004077774924uLL);
   if (!v9)
   {
     goto LABEL_40;
   }
 
   v10 = v9;
-  if (v8 >= 1)
+  if (lengthCopy2 >= 1)
   {
     v11 = 0;
     while (1)
     {
-      v12 = _NSReadFromFileDescriptorWithProgress(self->_fd, v10 + v11, v8, 0, 0);
+      v12 = _NSReadFromFileDescriptorWithProgress(self->_fd, v10 + v11, lengthCopy2, 0, 0);
       if (v12 < 0)
       {
         break;
@@ -515,8 +515,8 @@ LABEL_31:
       if (v12)
       {
         v11 += v12;
-        v13 = v8 <= v12;
-        v8 -= v12;
+        v13 = lengthCopy2 <= v12;
+        lengthCopy2 -= v12;
         if (!v13)
         {
           continue;
@@ -537,30 +537,30 @@ LABEL_36:
   return [MEMORY[0x1E695DEF0] data];
 }
 
-- (id)readDataUpToLength:(unint64_t)a3 error:(id *)a4
+- (id)readDataUpToLength:(unint64_t)length error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  return [(NSConcreteFileHandle *)self readDataOfLength:a3];
+  return [(NSConcreteFileHandle *)self readDataOfLength:length];
 }
 
-- (id)readDataToEndOfFileAndReturnError:(id *)a3
+- (id)readDataToEndOfFileAndReturnError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return [(NSConcreteFileHandle *)self readDataToEndOfFile];
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([data length])
   {
     v6 = atomic_load(&self->_flags);
     if ((v6 & 4) != 0)
@@ -578,7 +578,7 @@ LABEL_36:
     v7[3] = &unk_1E69F2A98;
     v7[4] = self;
     v7[5] = &v8;
-    [a3 enumerateByteRangesUsingBlock:v7];
+    [data enumerateByteRangesUsingBlock:v7];
     if ((v9[3] & 1) == 0)
     {
       _NSFileHandleRaiseOperationExceptionWhileReading(self, a2, 0);
@@ -616,134 +616,134 @@ uint64_t __34__NSConcreteFileHandle_writeData___block_invoke(uint64_t result, ui
   return result;
 }
 
-- (BOOL)writeData:(id)a3 error:(id *)a4
+- (BOOL)writeData:(id)data error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  [(NSConcreteFileHandle *)self writeData:a3];
+  [(NSConcreteFileHandle *)self writeData:data];
   return 1;
 }
 
-- (BOOL)getOffset:(unint64_t *)a3 error:(id *)a4
+- (BOOL)getOffset:(unint64_t *)offset error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v5 = [(NSConcreteFileHandle *)self offsetInFile];
-  if (a3)
+  offsetInFile = [(NSConcreteFileHandle *)self offsetInFile];
+  if (offset)
   {
-    *a3 = v5;
-  }
-
-  return 1;
-}
-
-- (BOOL)seekToEndReturningOffset:(unint64_t *)a3 error:(id *)a4
-{
-  if (a4)
-  {
-    *a4 = 0;
-  }
-
-  v5 = [(NSConcreteFileHandle *)self seekToEndOfFile];
-  if (a3)
-  {
-    *a3 = v5;
+    *offset = offsetInFile;
   }
 
   return 1;
 }
 
-- (void)seekToFileOffset:(unint64_t)a3
+- (BOOL)seekToEndReturningOffset:(unint64_t *)offset error:(id *)error
+{
+  if (error)
+  {
+    *error = 0;
+  }
+
+  seekToEndOfFile = [(NSConcreteFileHandle *)self seekToEndOfFile];
+  if (offset)
+  {
+    *offset = seekToEndOfFile;
+  }
+
+  return 1;
+}
+
+- (void)seekToFileOffset:(unint64_t)offset
 {
   v5 = atomic_load(&self->_flags);
-  if ((v5 & 4) != 0 || lseek(self->_fd, a3, 0) < 0)
+  if ((v5 & 4) != 0 || lseek(self->_fd, offset, 0) < 0)
   {
     _NSFileHandleRaiseOperationExceptionWhileReading(self, a2, 1);
   }
 }
 
-- (BOOL)seekToOffset:(unint64_t)a3 error:(id *)a4
+- (BOOL)seekToOffset:(unint64_t)offset error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  [(NSConcreteFileHandle *)self seekToFileOffset:a3];
+  [(NSConcreteFileHandle *)self seekToFileOffset:offset];
   return 1;
 }
 
-- (void)truncateFileAtOffset:(unint64_t)a3
+- (void)truncateFileAtOffset:(unint64_t)offset
 {
   v5 = atomic_load(&self->_flags);
-  if ((v5 & 4) != 0 || lseek(self->_fd, a3, 0) < 0 || ftruncate(self->_fd, a3) < 0)
+  if ((v5 & 4) != 0 || lseek(self->_fd, offset, 0) < 0 || ftruncate(self->_fd, offset) < 0)
   {
     _NSFileHandleRaiseOperationExceptionWhileReading(self, a2, 0);
   }
 }
 
-- (BOOL)truncateAtOffset:(unint64_t)a3 error:(id *)a4
+- (BOOL)truncateAtOffset:(unint64_t)offset error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  [(NSConcreteFileHandle *)self truncateFileAtOffset:a3];
+  [(NSConcreteFileHandle *)self truncateFileAtOffset:offset];
   return 1;
 }
 
-- (BOOL)synchronizeAndReturnError:(id *)a3
+- (BOOL)synchronizeAndReturnError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   [(NSConcreteFileHandle *)self synchronizeFile];
   return 1;
 }
 
-- (BOOL)closeAndReturnError:(id *)a3
+- (BOOL)closeAndReturnError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   [(NSConcreteFileHandle *)self closeFile];
   return 1;
 }
 
-- (void)performActivity:(int64_t)a3 modes:(id)a4
+- (void)performActivity:(int64_t)activity modes:(id)modes
 {
-  v5 = a3;
+  activityCopy = activity;
   v36 = *MEMORY[0x1E69E9840];
   v7 = malloc_type_malloc(0x20uLL, 0x10A0040D4BD8B5AuLL);
   atomic_store(0, v7);
   *(v7 + 1) = self;
-  *(v7 + 8) = v5;
+  *(v7 + 8) = activityCopy;
   context.version = 0;
   context.info = v7;
   context.retain = _NSFileHandlePerformSourceContextRetain;
   context.release = _NSFileHandlePerformSourceContextRelease;
   memset(&context.copyDescription, 0, 40);
   context.perform = _performFileHandleSource;
-  if (a4)
+  if (modes)
   {
-    v8 = a4;
+    modesCopy = modes;
   }
 
   else
   {
     v9 = objc_allocWithZone(MEMORY[0x1E695DEC8]);
-    a4 = [v9 initWithObjects:{*MEMORY[0x1E695E8E0], 0}];
+    modes = [v9 initWithObjects:{*MEMORY[0x1E695E8E0], 0}];
   }
 
   CFRetain(self);
@@ -757,13 +757,13 @@ uint64_t __34__NSConcreteFileHandle_writeData___block_invoke(uint64_t result, ui
   v34[3] = __Block_byref_object_copy__3;
   v34[4] = __Block_byref_object_dispose__3;
   v34[5] = self;
-  v12 = [(NSConcreteFileHandle *)self fileDescriptor];
-  v13 = dup(v12);
+  fileDescriptor = [(NSConcreteFileHandle *)self fileDescriptor];
+  v13 = dup(fileDescriptor);
   atomic_store(0, &self->_error);
   CFRetain(v10);
-  if (v5 > 0xFu)
+  if (activityCopy > 0xFu)
   {
-    if (v5 == 16)
+    if (activityCopy == 16)
     {
       fhQueue = self->_fhQueue;
       cleanup_handler[0] = MEMORY[0x1E69E9820];
@@ -789,7 +789,7 @@ uint64_t __34__NSConcreteFileHandle_writeData___block_invoke(uint64_t result, ui
       goto LABEL_12;
     }
 
-    if (v5 != 20)
+    if (activityCopy != 20)
     {
       goto LABEL_12;
     }
@@ -809,8 +809,8 @@ LABEL_10:
     v24[1] = 3221225472;
     v24[2] = __46__NSConcreteFileHandle_performActivity_modes___block_invoke_5;
     v24[3] = &unk_1E69F34E8;
-    v26 = v5;
-    v25 = v12;
+    v26 = activityCopy;
+    v25 = fileDescriptor;
     v24[4] = v34;
     v24[5] = v10;
     v24[6] = Current;
@@ -822,12 +822,12 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (v5 == 12)
+  if (activityCopy == 12)
   {
     goto LABEL_10;
   }
 
-  if (v5 == 14)
+  if (activityCopy == 14)
   {
     v14 = 16 * *MEMORY[0x1E69E9AC8];
     v15 = self->_fhQueue;
@@ -844,12 +844,12 @@ LABEL_10:
   }
 
 LABEL_12:
-  v20 = [a4 count];
+  v20 = [modes count];
   if (v20 >= 1)
   {
     for (i = 0; i != v20; ++i)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(a4, i);
+      ValueAtIndex = CFArrayGetValueAtIndex(modes, i);
       v23 = CFRunLoopGetCurrent();
       CFRunLoopAddSource(v23, v10, ValueAtIndex);
     }
@@ -965,11 +965,11 @@ void __46__NSConcreteFileHandle_performActivity_modes___block_invoke_5(uint64_t 
   CFRunLoopWakeUp(v5);
 }
 
-- (id)_monitor:(int)a3
+- (id)_monitor:(int)_monitor
 {
   location[1] = *MEMORY[0x1E69E9840];
   v5 = 7;
-  if (!a3)
+  if (!_monitor)
   {
     v5 = 5;
   }
@@ -983,7 +983,7 @@ void __46__NSConcreteFileHandle_performActivity_modes___block_invoke_5(uint64_t 
     self->_monitoringQueue = monitoringQueue;
   }
 
-  if (a3)
+  if (_monitor)
   {
     v9 = MEMORY[0x1E69E9730];
   }
@@ -1036,16 +1036,16 @@ void __33__NSConcreteFileHandle__monitor___block_invoke_2(uint64_t a1)
   dispatch_release(v2);
 }
 
-- (void)_locked_clearHandler:(id *)a3 forSource:(id *)a4
+- (void)_locked_clearHandler:(id *)handler forSource:(id *)source
 {
-  v5 = *a4;
-  *a4 = 0;
+  v5 = *source;
+  *source = 0;
   if (v5)
   {
     dispatch_source_cancel(v5);
   }
 
-  *a3 = 0;
+  *handler = 0;
 }
 
 - (id)readabilityHandler
@@ -1057,9 +1057,9 @@ void __33__NSConcreteFileHandle__monitor___block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (void)setReadabilityHandler:(id)a3
+- (void)setReadabilityHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   os_unfair_lock_lock(&self->_lock);
   [(NSConcreteFileHandle *)self _locked_clearHandler:&self->_readabilityHandler forSource:&self->_readMonitoringSource];
   self->_readabilityHandler = v4;
@@ -1080,9 +1080,9 @@ void __33__NSConcreteFileHandle__monitor___block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (void)setWriteabilityHandler:(id)a3
+- (void)setWriteabilityHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   os_unfair_lock_lock(&self->_lock);
   [(NSConcreteFileHandle *)self _locked_clearHandler:&self->_writeabilityHandler forSource:&self->_writeMonitoringSource];
   self->_writeabilityHandler = v4;

@@ -1,82 +1,82 @@
 @interface AVControlCenterModuleState
-+ (id)moduleStateForBundleID:(id)a3;
-- (AudioValueRange)effectIntensityRangeForVideoEffect:(id)a3;
++ (id)moduleStateForBundleID:(id)d;
+- (AudioValueRange)effectIntensityRangeForVideoEffect:(id)effect;
 - (BOOL)backgroundBlurSupported;
 - (BOOL)backgroundReplacementSupported;
 - (BOOL)centerStageFieldOfViewRestrictedToWide;
 - (BOOL)centerStageSupported;
 - (BOOL)isActive;
 - (BOOL)isAutoMicrophoneModeEnabled;
-- (BOOL)isEnabledForVideoEffect:(id)a3;
-- (BOOL)manualFramingEnabledForDevice:(id)a3;
+- (BOOL)isEnabledForVideoEffect:(id)effect;
+- (BOOL)manualFramingEnabledForDevice:(id)device;
 - (BOOL)manualFramingIsAtDefault;
 - (BOOL)reactionEffectsSupported;
-- (BOOL)setAutoMicrophoneModeEnabled:(BOOL)a3;
-- (BOOL)setEffectIntensityForVideoEffect:(float)a3 forVideoEffect:(id)a4;
-- (BOOL)setEnabled:(BOOL)a3 forVideoEffect:(id)a4;
-- (BOOL)setMicrophoneMode:(int64_t)a3;
+- (BOOL)setAutoMicrophoneModeEnabled:(BOOL)enabled;
+- (BOOL)setEffectIntensityForVideoEffect:(float)effect forVideoEffect:(id)videoEffect;
+- (BOOL)setEnabled:(BOOL)enabled forVideoEffect:(id)effect;
+- (BOOL)setMicrophoneMode:(int64_t)mode;
 - (BOOL)studioLightingSupported;
-- (BOOL)supportsVideoEffect:(id)a3;
+- (BOOL)supportsVideoEffect:(id)effect;
 - (BOOL)voiceProcessingBypassed;
 - (NSURL)backgroundReplacementURL;
-- (__CVBuffer)backgroundReplacementPixelBufferFillingWidth:(int)a3 height:(int)a4;
+- (__CVBuffer)backgroundReplacementPixelBufferFillingWidth:(int)width height:(int)height;
 - (double)_defaultOriginalVideoZoomFactor;
 - (double)manualFramingOriginalVideoZoomFactor;
-- (float)effectIntensityDefaultForVideoEffect:(id)a3;
-- (float)effectIntensityForVideoEffect:(id)a3;
+- (float)effectIntensityDefaultForVideoEffect:(id)effect;
+- (float)effectIntensityForVideoEffect:(id)effect;
 - (id)hiddenMicrophoneModes;
-- (id)initForBundleID:(id)a3;
+- (id)initForBundleID:(id)d;
 - (id)supportedMicrophoneModes;
 - (int64_t)activeMicrophoneMode;
-- (int64_t)controlModeForVideoEffect:(id)a3;
+- (int64_t)controlModeForVideoEffect:(id)effect;
 - (int64_t)microphoneMode;
-- (unint64_t)unavailableReasonsForVideoEffect:(id)a3;
-- (void)_checkManualFramingDefaultStateWithNewOriginalZoomFactor:(double)a3;
-- (void)_handleBackPropagatedVideoZoomFactorUpdate:(id)a3;
-- (void)_handlePanningAnglesUpdate:(id)a3;
-- (void)_proprietaryDefaultChanged:(id)a3 keyPath:(id)a4 context:(void *)a5;
-- (void)_updateEligibleEffects:(id)a3;
+- (unint64_t)unavailableReasonsForVideoEffect:(id)effect;
+- (void)_checkManualFramingDefaultStateWithNewOriginalZoomFactor:(double)factor;
+- (void)_handleBackPropagatedVideoZoomFactorUpdate:(id)update;
+- (void)_handlePanningAnglesUpdate:(id)update;
+- (void)_proprietaryDefaultChanged:(id)changed keyPath:(id)path context:(void *)context;
+- (void)_updateEligibleEffects:(id)effects;
 - (void)cleanUpOrphanedSupportedMicModes;
 - (void)dealloc;
-- (void)enableBlackenFrames:(BOOL)a3 forDeviceUID:(id)a4;
+- (void)enableBlackenFrames:(BOOL)frames forDeviceUID:(id)d;
 - (void)installProprietaryDefaultsHandlers;
 - (void)invalidateDeviceBasedModuleStatesIfNeeded;
-- (void)panWithTranslation:(CGPoint)a3;
-- (void)performReactionEffect:(id)a3 forCaptureDeviceWithID:(id)a4;
-- (void)setBackgroundBlurSupported:(BOOL)a3;
-- (void)setBackgroundReplacementSupported:(BOOL)a3;
-- (void)setBackgroundReplacementURL:(id)a3;
-- (void)setCenterStageFieldOfViewRestrictedToWide:(BOOL)a3;
-- (void)setCenterStageSupported:(BOOL)a3;
-- (void)setManualFramingDeviceType:(int64_t)a3;
-- (void)setManualFramingOriginalZoomFactor:(double)a3 convertedZoomFactor:(double)a4;
-- (void)setReactionEffectsSupported:(BOOL)a3;
-- (void)setStudioLightingSupported:(BOOL)a3;
-- (void)startPanningAtPoint:(CGPoint)a3;
-- (void)updateActiveReactions:(id)a3 currentRenderPTS:(id *)a4 requestedTriggers:(int)a5 forCaptureDeviceWithID:(id)a6;
-- (void)updateCenterStageSupported:(BOOL)a3 backgroundBlurSupported:(BOOL)a4 studioLightingSupported:(BOOL)a5 reactionEffectsSupported:(BOOL)a6 backgroundReplacementSupported:(BOOL)a7;
+- (void)panWithTranslation:(CGPoint)translation;
+- (void)performReactionEffect:(id)effect forCaptureDeviceWithID:(id)d;
+- (void)setBackgroundBlurSupported:(BOOL)supported;
+- (void)setBackgroundReplacementSupported:(BOOL)supported;
+- (void)setBackgroundReplacementURL:(id)l;
+- (void)setCenterStageFieldOfViewRestrictedToWide:(BOOL)wide;
+- (void)setCenterStageSupported:(BOOL)supported;
+- (void)setManualFramingDeviceType:(int64_t)type;
+- (void)setManualFramingOriginalZoomFactor:(double)factor convertedZoomFactor:(double)zoomFactor;
+- (void)setReactionEffectsSupported:(BOOL)supported;
+- (void)setStudioLightingSupported:(BOOL)supported;
+- (void)startPanningAtPoint:(CGPoint)point;
+- (void)updateActiveReactions:(id)reactions currentRenderPTS:(id *)s requestedTriggers:(int)triggers forCaptureDeviceWithID:(id)d;
+- (void)updateCenterStageSupported:(BOOL)supported backgroundBlurSupported:(BOOL)blurSupported studioLightingSupported:(BOOL)lightingSupported reactionEffectsSupported:(BOOL)effectsSupported backgroundReplacementSupported:(BOOL)replacementSupported;
 @end
 
 @implementation AVControlCenterModuleState
 
-+ (id)moduleStateForBundleID:(id)a3
++ (id)moduleStateForBundleID:(id)d
 {
-  v3 = [objc_alloc(objc_opt_class()) initForBundleID:a3];
+  v3 = [objc_alloc(objc_opt_class()) initForBundleID:d];
 
   return v3;
 }
 
-- (id)initForBundleID:(id)a3
+- (id)initForBundleID:(id)d
 {
   v15.receiver = self;
   v15.super_class = AVControlCenterModuleState;
   v4 = [(AVControlCenterModuleState *)&v15 init];
   if (v4)
   {
-    v4->_bundleID = a3;
+    v4->_bundleID = d;
     v4->_stateLock._os_unfair_lock_opaque = 0;
-    [a3 isEqualToString:0x1F1CBF688];
-    v5 = AVControlCenterPreferencesDomainForPreferencesDomain(a3);
+    [d isEqualToString:0x1F1CBF688];
+    v5 = AVControlCenterPreferencesDomainForPreferencesDomain(d);
     v4->_eligibleEffectsKey = AVControlCenterVideoEffectsEligibleEffectListPreferenceKey(v5);
     v4->_centerStageControlModeKey = AVControlCenterVideoEffectsCenterStageControlModePreferenceKey(v5);
     v4->_centerStageEnabledKey = AVControlCenterVideoEffectsCenterStageEnabledPreferenceKey(v5);
@@ -146,18 +146,18 @@
   }
 }
 
-- (void)updateCenterStageSupported:(BOOL)a3 backgroundBlurSupported:(BOOL)a4 studioLightingSupported:(BOOL)a5 reactionEffectsSupported:(BOOL)a6 backgroundReplacementSupported:(BOOL)a7
+- (void)updateCenterStageSupported:(BOOL)supported backgroundBlurSupported:(BOOL)blurSupported studioLightingSupported:(BOOL)lightingSupported reactionEffectsSupported:(BOOL)effectsSupported backgroundReplacementSupported:(BOOL)replacementSupported
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  [(AVControlCenterModuleState *)self setCenterStageSupported:a3];
-  [(AVControlCenterModuleState *)self setBackgroundBlurSupported:v10];
-  [(AVControlCenterModuleState *)self setStudioLightingSupported:v9];
-  [(AVControlCenterModuleState *)self setReactionEffectsSupported:v8];
+  replacementSupportedCopy = replacementSupported;
+  effectsSupportedCopy = effectsSupported;
+  lightingSupportedCopy = lightingSupported;
+  blurSupportedCopy = blurSupported;
+  [(AVControlCenterModuleState *)self setCenterStageSupported:supported];
+  [(AVControlCenterModuleState *)self setBackgroundBlurSupported:blurSupportedCopy];
+  [(AVControlCenterModuleState *)self setStudioLightingSupported:lightingSupportedCopy];
+  [(AVControlCenterModuleState *)self setReactionEffectsSupported:effectsSupportedCopy];
 
-  [(AVControlCenterModuleState *)self setBackgroundReplacementSupported:v7];
+  [(AVControlCenterModuleState *)self setBackgroundReplacementSupported:replacementSupportedCopy];
 }
 
 - (void)installProprietaryDefaultsHandlers
@@ -411,7 +411,7 @@ id __64__AVControlCenterModuleState_installProprietaryDefaultsHandlers__block_in
   [(AVControlCenterModuleState *)&v4 dealloc];
 }
 
-- (void)_updateEligibleEffects:(id)a3
+- (void)_updateEligibleEffects:(id)effects
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -422,7 +422,7 @@ id __64__AVControlCenterModuleState_installProprietaryDefaultsHandlers__block_in
       os_unfair_lock_lock(&self->_stateLock);
     }
 
-    v6 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+    v6 = [MEMORY[0x1E695DFD8] setWithArray:effects];
     self->_isOptedInForBackgroundBlur = [v6 containsObject:AVCaptureBundleCameraPortraitEffectEnabledKey];
     self->_isOptedInForStudioLight = [v6 containsObject:AVCaptureBundleCameraStudioLightEnabledKey];
     self->_isOptedInForReactionEffects = [v6 containsObject:AVCaptureBundleCameraReactionEffectsEnabledKey];
@@ -432,13 +432,13 @@ id __64__AVControlCenterModuleState_installProprietaryDefaultsHandlers__block_in
       os_unfair_lock_unlock(&self->_stateLock);
     }
 
-    v7 = [sCaptureDeviceWatcher centerStageSupported];
-    v8 = [sCaptureDeviceWatcher backgroundBlurSupported];
-    v9 = [sCaptureDeviceWatcher studioLightingSupported];
-    v10 = [sCaptureDeviceWatcher reactionEffectsSupported];
-    v11 = [sCaptureDeviceWatcher backgroundReplacementSupported];
+    centerStageSupported = [sCaptureDeviceWatcher centerStageSupported];
+    backgroundBlurSupported = [sCaptureDeviceWatcher backgroundBlurSupported];
+    studioLightingSupported = [sCaptureDeviceWatcher studioLightingSupported];
+    reactionEffectsSupported = [sCaptureDeviceWatcher reactionEffectsSupported];
+    backgroundReplacementSupported = [sCaptureDeviceWatcher backgroundReplacementSupported];
 
-    [(AVControlCenterModuleState *)self updateCenterStageSupported:v7 backgroundBlurSupported:v8 studioLightingSupported:v9 reactionEffectsSupported:v10 backgroundReplacementSupported:v11];
+    [(AVControlCenterModuleState *)self updateCenterStageSupported:centerStageSupported backgroundBlurSupported:backgroundBlurSupported studioLightingSupported:studioLightingSupported reactionEffectsSupported:reactionEffectsSupported backgroundReplacementSupported:backgroundReplacementSupported];
   }
 }
 
@@ -486,16 +486,16 @@ id __64__AVControlCenterModuleState_installProprietaryDefaultsHandlers__block_in
   return centerStageSupported;
 }
 
-- (void)setCenterStageSupported:(BOOL)a3
+- (void)setCenterStageSupported:(BOOL)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   if (!self->_holdingStateLock)
   {
     os_unfair_lock_lock(&self->_stateLock);
     centerStageSupported = self->_centerStageSupported;
-    self->_centerStageSupported = v3;
+    self->_centerStageSupported = supportedCopy;
     os_unfair_lock_unlock(&self->_stateLock);
-    if (centerStageSupported == v3)
+    if (centerStageSupported == supportedCopy)
     {
       return;
     }
@@ -504,8 +504,8 @@ id __64__AVControlCenterModuleState_installProprietaryDefaultsHandlers__block_in
   }
 
   v5 = self->_centerStageSupported;
-  self->_centerStageSupported = a3;
-  if (v5 != a3)
+  self->_centerStageSupported = supported;
+  if (v5 != supported)
   {
 LABEL_5:
     v9[0] = @"AVControlCenterModulesNotificationVideoEffectKey";
@@ -531,16 +531,16 @@ LABEL_5:
   return backgroundBlurSupported;
 }
 
-- (void)setBackgroundBlurSupported:(BOOL)a3
+- (void)setBackgroundBlurSupported:(BOOL)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
   {
     os_unfair_lock_lock(&self->_stateLock);
   }
 
-  v6 = v3 && self->_isOptedInForBackgroundBlur;
+  v6 = supportedCopy && self->_isOptedInForBackgroundBlur;
   v7 = v6;
   backgroundBlurSupported = self->_backgroundBlurSupported;
   self->_backgroundBlurSupported = v6;
@@ -574,16 +574,16 @@ LABEL_5:
   return studioLightingSupported;
 }
 
-- (void)setStudioLightingSupported:(BOOL)a3
+- (void)setStudioLightingSupported:(BOOL)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
   {
     os_unfair_lock_lock(&self->_stateLock);
   }
 
-  v6 = v3 && self->_isOptedInForStudioLight;
+  v6 = supportedCopy && self->_isOptedInForStudioLight;
   v7 = v6;
   studioLightingSupported = self->_studioLightingSupported;
   self->_studioLightingSupported = v6;
@@ -617,16 +617,16 @@ LABEL_5:
   return reactionEffectsSupported;
 }
 
-- (void)setReactionEffectsSupported:(BOOL)a3
+- (void)setReactionEffectsSupported:(BOOL)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
   {
     os_unfair_lock_lock(&self->_stateLock);
   }
 
-  v6 = v3 && self->_isOptedInForReactionEffects;
+  v6 = supportedCopy && self->_isOptedInForReactionEffects;
   v7 = v6;
   reactionEffectsSupported = self->_reactionEffectsSupported;
   self->_reactionEffectsSupported = v6;
@@ -660,16 +660,16 @@ LABEL_5:
   return backgroundReplacementSupported;
 }
 
-- (void)setBackgroundReplacementSupported:(BOOL)a3
+- (void)setBackgroundReplacementSupported:(BOOL)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
   {
     os_unfair_lock_lock(&self->_stateLock);
   }
 
-  v6 = v3 && self->_isOptedInForBackgroundReplacement;
+  v6 = supportedCopy && self->_isOptedInForBackgroundReplacement;
   v7 = v6;
   backgroundReplacementSupported = self->_backgroundReplacementSupported;
   self->_backgroundReplacementSupported = v6;
@@ -690,7 +690,7 @@ LABEL_5:
   }
 }
 
-- (BOOL)supportsVideoEffect:(id)a3
+- (BOOL)supportsVideoEffect:(id)effect
 {
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
@@ -698,7 +698,7 @@ LABEL_5:
     os_unfair_lock_lock(&self->_stateLock);
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectCenterStage"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectCenterStage"])
   {
     centerStageSupported = self->_centerStageSupported;
   }
@@ -708,27 +708,27 @@ LABEL_5:
     centerStageSupported = 0;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
   {
     centerStageSupported = self->_backgroundBlurSupported;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
   {
     centerStageSupported = self->_studioLightingSupported;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectReactions"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectReactions"])
   {
     centerStageSupported = self->_reactionEffectsSupported;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundReplacement"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundReplacement"])
   {
     centerStageSupported = self->_backgroundReplacementSupported;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectGestures"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectGestures"])
   {
     centerStageSupported = self->_reactionEffectsSupported;
   }
@@ -741,7 +741,7 @@ LABEL_5:
   return centerStageSupported;
 }
 
-- (int64_t)controlModeForVideoEffect:(id)a3
+- (int64_t)controlModeForVideoEffect:(id)effect
 {
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
@@ -749,7 +749,7 @@ LABEL_5:
     os_unfair_lock_lock(&self->_stateLock);
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectCenterStage"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectCenterStage"])
   {
     centerStageControlMode = self->_centerStageControlMode;
   }
@@ -759,19 +759,19 @@ LABEL_5:
     centerStageControlMode = 0;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
   {
     centerStageControlMode = self->_backgroundBlurControlMode;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
   {
     centerStageControlMode = self->_studioLightingControlMode;
   }
 
-  v7 = [a3 isEqualToString:@"AVControlCenterVideoEffectReactions"];
-  v8 = [a3 isEqualToString:@"AVControlCenterVideoEffectGestures"];
-  v9 = [a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundReplacement"];
+  v7 = [effect isEqualToString:@"AVControlCenterVideoEffectReactions"];
+  v8 = [effect isEqualToString:@"AVControlCenterVideoEffectGestures"];
+  v9 = [effect isEqualToString:@"AVControlCenterVideoEffectBackgroundReplacement"];
   if (!holdingStateLock)
   {
     os_unfair_lock_unlock(&self->_stateLock);
@@ -788,7 +788,7 @@ LABEL_5:
   }
 }
 
-- (BOOL)isEnabledForVideoEffect:(id)a3
+- (BOOL)isEnabledForVideoEffect:(id)effect
 {
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
@@ -796,7 +796,7 @@ LABEL_5:
     os_unfair_lock_lock(&self->_stateLock);
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectCenterStage"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectCenterStage"])
   {
     centerStageEnabled = self->_centerStageEnabled;
   }
@@ -806,27 +806,27 @@ LABEL_5:
     centerStageEnabled = 0;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
   {
     centerStageEnabled = self->_backgroundBlurEnabled;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
   {
     centerStageEnabled = self->_studioLightingEnabled;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectReactions"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectReactions"])
   {
     centerStageEnabled = self->_reactionsEnabled;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectGestures"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectGestures"])
   {
     centerStageEnabled = self->_gesturesEnabled;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundReplacement"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundReplacement"])
   {
     centerStageEnabled = self->_backgroundReplacementEnabled;
   }
@@ -839,9 +839,9 @@ LABEL_5:
   return centerStageEnabled;
 }
 
-- (BOOL)setEnabled:(BOOL)a3 forVideoEffect:(id)a4
+- (BOOL)setEnabled:(BOOL)enabled forVideoEffect:(id)effect
 {
-  v5 = a3;
+  enabledCopy = enabled;
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
   {
@@ -849,39 +849,39 @@ LABEL_5:
     self->_holdingStateLock = 1;
   }
 
-  v8 = [a4 isEqualToString:@"AVControlCenterVideoEffectCenterStage"];
+  v8 = [effect isEqualToString:@"AVControlCenterVideoEffectCenterStage"];
   if (v8)
   {
-    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v5], self->_centerStageEnabledKey);
+    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], self->_centerStageEnabledKey);
   }
 
-  if ([a4 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
   {
-    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v5], self->_backgroundBlurEnabledKey);
+    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], self->_backgroundBlurEnabledKey);
     LOBYTE(v8) = 1;
   }
 
-  if ([a4 isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
   {
-    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v5], self->_studioLightingEnabledKey);
+    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], self->_studioLightingEnabledKey);
     LOBYTE(v8) = 1;
   }
 
-  if ([a4 isEqualToString:@"AVControlCenterVideoEffectReactions"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectReactions"])
   {
-    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v5], self->_reactionsEnabledKey);
+    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], self->_reactionsEnabledKey);
     LOBYTE(v8) = 1;
   }
 
-  if ([a4 isEqualToString:@"AVControlCenterVideoEffectGestures"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectGestures"])
   {
-    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v5], self->_gesturesEnabledKey);
+    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], self->_gesturesEnabledKey);
     LOBYTE(v8) = 1;
   }
 
-  if ([a4 isEqualToString:@"AVControlCenterVideoEffectBackgroundReplacement"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundReplacement"])
   {
-    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v5], self->_backgroundReplacementEnabledKey);
+    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], self->_backgroundReplacementEnabledKey);
     LOBYTE(v8) = 1;
   }
 
@@ -894,9 +894,9 @@ LABEL_5:
   return v8;
 }
 
-- (unint64_t)unavailableReasonsForVideoEffect:(id)a3
+- (unint64_t)unavailableReasonsForVideoEffect:(id)effect
 {
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectCenterStage"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectCenterStage"])
   {
     v5 = [+[AVCaptureProprietaryDefaultsSingleton objectForKey:](AVCaptureProprietaryDefaultsSingleton objectForKey:{self->_centerStageUnavailableReasonsKey), "unsignedIntegerValue"}];
   }
@@ -906,27 +906,27 @@ LABEL_5:
     v5 = 0;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
   {
     v5 = [+[AVCaptureProprietaryDefaultsSingleton objectForKey:](AVCaptureProprietaryDefaultsSingleton objectForKey:{self->_backgroundBlurUnavailableReasonsKey), "unsignedIntegerValue"}];
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
   {
     v5 = [+[AVCaptureProprietaryDefaultsSingleton objectForKey:](AVCaptureProprietaryDefaultsSingleton objectForKey:{self->_studioLightingUnavailableReasonsKey), "unsignedIntegerValue"}];
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectReactions"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectReactions"])
   {
     v5 = [+[AVCaptureProprietaryDefaultsSingleton objectForKey:](AVCaptureProprietaryDefaultsSingleton objectForKey:{self->_reactionsUnavailableReasonsKey), "unsignedIntegerValue"}];
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectGestures"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectGestures"])
   {
     v5 = [+[AVCaptureProprietaryDefaultsSingleton objectForKey:](AVCaptureProprietaryDefaultsSingleton objectForKey:{self->_reactionsUnavailableReasonsKey), "unsignedIntegerValue"}];
   }
 
-  if (![a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundReplacement"])
+  if (![effect isEqualToString:@"AVControlCenterVideoEffectBackgroundReplacement"])
   {
     return v5;
   }
@@ -936,7 +936,7 @@ LABEL_5:
   return [v6 unsignedIntegerValue];
 }
 
-- (void)performReactionEffect:(id)a3 forCaptureDeviceWithID:(id)a4
+- (void)performReactionEffect:(id)effect forCaptureDeviceWithID:(id)d
 {
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
@@ -949,9 +949,9 @@ LABEL_5:
   v11[0] = @"AVControlCenterModulesNotificationBundleIdentifierKey";
   v11[1] = @"AVControlCenterModulesNotificationDeviceIdentifierKey";
   v12[0] = bundleID;
-  v12[1] = a4;
+  v12[1] = d;
   v11[2] = @"AVControlCenterModulesNotificationReactionTypeKey";
-  v12[2] = a3;
+  v12[2] = effect;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
   if (!holdingStateLock)
   {
@@ -961,7 +961,7 @@ LABEL_5:
   [AVCaptureProprietaryDefaultsSingleton setObject:v10 forKey:v8];
 }
 
-- (void)updateActiveReactions:(id)a3 currentRenderPTS:(id *)a4 requestedTriggers:(int)a5 forCaptureDeviceWithID:(id)a6
+- (void)updateActiveReactions:(id)reactions currentRenderPTS:(id *)s requestedTriggers:(int)triggers forCaptureDeviceWithID:(id)d
 {
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
@@ -971,36 +971,36 @@ LABEL_5:
 
   v12 = self->_bundleID;
   v13 = self->_reactionsInProgressKey;
-  v14 = [(NSMutableDictionary *)self->_previousReactionStateByDeviceIdentifier objectForKeyedSubscript:a6];
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_previousReactionStateByDeviceIdentifier, "setObject:forKeyedSubscript:", [a3 mutableCopy], a6);
+  v14 = [(NSMutableDictionary *)self->_previousReactionStateByDeviceIdentifier objectForKeyedSubscript:d];
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_previousReactionStateByDeviceIdentifier, "setObject:forKeyedSubscript:", [reactions mutableCopy], d);
   if (!holdingStateLock)
   {
     os_unfair_lock_unlock(&self->_stateLock);
   }
 
-  if (a5 > 0 || (v15 = [a3 count], v15 != objc_msgSend(v14, "count")))
+  if (triggers > 0 || (v15 = [reactions count], v15 != objc_msgSend(v14, "count")))
   {
-    v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a3, "count") + objc_msgSend(v14, "count")}];
+    v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(reactions, "count") + objc_msgSend(v14, "count")}];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __110__AVControlCenterModuleState_updateActiveReactions_currentRenderPTS_requestedTriggers_forCaptureDeviceWithID___block_invoke;
     v22[3] = &unk_1E7876570;
     v22[4] = v14;
     v22[5] = v16;
-    [a3 enumerateKeysAndObjectsUsingBlock:v22];
+    [reactions enumerateKeysAndObjectsUsingBlock:v22];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __110__AVControlCenterModuleState_updateActiveReactions_currentRenderPTS_requestedTriggers_forCaptureDeviceWithID___block_invoke_2;
     v19[3] = &unk_1E7876598;
-    v20 = *&a4->var0;
-    var3 = a4->var3;
+    v20 = *&s->var0;
+    var3 = s->var3;
     v19[4] = v16;
     [v14 enumerateKeysAndObjectsUsingBlock:v19];
     [v16 sortUsingComparator:&__block_literal_global_29];
     v17[0] = @"AVControlCenterModulesNotificationBundleIdentifierKey";
     v17[1] = @"AVControlCenterModulesNotificationDeviceIdentifierKey";
     v18[0] = v12;
-    v18[1] = a6;
+    v18[1] = d;
     v17[2] = @"AVControlCenterModulesNotificationReactionEffectsInProgressKey";
     v18[2] = v16;
     +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:3], v13);
@@ -1067,27 +1067,27 @@ uint64_t __110__AVControlCenterModuleState_updateActiveReactions_currentRenderPT
   return v4;
 }
 
-- (void)setBackgroundReplacementURL:(id)a3
+- (void)setBackgroundReplacementURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v5 = 0;
-    v4 = [a3 bookmarkDataWithOptions:0 includingResourceValuesForKeys:0 relativeToURL:0 error:&v5];
+    v4 = [l bookmarkDataWithOptions:0 includingResourceValuesForKeys:0 relativeToURL:0 error:&v5];
     if (v5)
     {
       return;
     }
 
-    a3 = v4;
+    l = v4;
   }
 
-  [AVCaptureProprietaryDefaultsSingleton setObject:a3 forKey:self->_backgroundReplacementURLBookmarkKey];
+  [AVCaptureProprietaryDefaultsSingleton setObject:l forKey:self->_backgroundReplacementURLBookmarkKey];
 }
 
-- (__CVBuffer)backgroundReplacementPixelBufferFillingWidth:(int)a3 height:(int)a4
+- (__CVBuffer)backgroundReplacementPixelBufferFillingWidth:(int)width height:(int)height
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&height;
+  v5 = *&width;
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
   {
@@ -1183,9 +1183,9 @@ LABEL_17:
   return v10;
 }
 
-- (float)effectIntensityForVideoEffect:(id)a3
+- (float)effectIntensityForVideoEffect:(id)effect
 {
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"AVControlCenterVideoEffectStudioLighting"))
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"] & 1) != 0 || (objc_msgSend(effect, "isEqualToString:", @"AVControlCenterVideoEffectStudioLighting"))
   {
     holdingStateLock = self->_holdingStateLock;
     if (!holdingStateLock)
@@ -1193,7 +1193,7 @@ LABEL_17:
       os_unfair_lock_lock(&self->_stateLock);
     }
 
-    if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
+    if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
     {
       v6 = 128;
     }
@@ -1201,7 +1201,7 @@ LABEL_17:
     else
     {
       v7 = 0.0;
-      if (![a3 isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
+      if (![effect isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
       {
         goto LABEL_10;
       }
@@ -1229,9 +1229,9 @@ LABEL_10:
   return 0.0;
 }
 
-- (BOOL)setEffectIntensityForVideoEffect:(float)a3 forVideoEffect:(id)a4
+- (BOOL)setEffectIntensityForVideoEffect:(float)effect forVideoEffect:(id)videoEffect
 {
-  if (([a4 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"] & 1) == 0 && (objc_msgSend(a4, "isEqualToString:", @"AVControlCenterVideoEffectStudioLighting") & 1) == 0)
+  if (([videoEffect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"] & 1) == 0 && (objc_msgSend(videoEffect, "isEqualToString:", @"AVControlCenterVideoEffectStudioLighting") & 1) == 0)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1250,9 +1250,9 @@ LABEL_10:
     self->_holdingStateLock = 1;
   }
 
-  if (![a4 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
+  if (![videoEffect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
   {
-    if (![a4 isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
+    if (![videoEffect isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
     {
       v15 = 0;
       if (holdingStateLock)
@@ -1263,7 +1263,7 @@ LABEL_10:
       goto LABEL_25;
     }
 
-    if (a3 < 0.0 || a3 > 1.0)
+    if (effect < 0.0 || effect > 1.0)
     {
       v11 = MEMORY[0x1E695DF30];
       v12 = *MEMORY[0x1E695D940];
@@ -1272,7 +1272,7 @@ LABEL_10:
 
     v13 = 200;
 LABEL_24:
-    *&v9 = a3;
+    *&v9 = effect;
     +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v9], *(&self->super.isa + v13));
     v15 = 1;
     if (holdingStateLock)
@@ -1287,10 +1287,10 @@ LABEL_25:
   }
 
   +[AVCaptureDevice backgroundBlurApertureRange];
-  if (v8 <= a3)
+  if (v8 <= effect)
   {
     +[AVCaptureDevice backgroundBlurApertureRange];
-    if (v10 >= a3)
+    if (v10 >= effect)
     {
       v13 = 136;
       goto LABEL_24;
@@ -1316,18 +1316,18 @@ LABEL_18:
   return 0;
 }
 
-- (AudioValueRange)effectIntensityRangeForVideoEffect:(id)a3
+- (AudioValueRange)effectIntensityRangeForVideoEffect:(id)effect
 {
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"AVControlCenterVideoEffectStudioLighting"))
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"] & 1) != 0 || (objc_msgSend(effect, "isEqualToString:", @"AVControlCenterVideoEffectStudioLighting"))
   {
-    if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
+    if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
     {
       +[AVCaptureDevice backgroundBlurApertureRange];
     }
 
     else
     {
-      v6 = [a3 isEqualToString:@"AVControlCenterVideoEffectStudioLighting"];
+      v6 = [effect isEqualToString:@"AVControlCenterVideoEffectStudioLighting"];
       v4 = 0.0;
       v5 = 1.0;
       if (!v6)
@@ -1355,9 +1355,9 @@ LABEL_18:
   return result;
 }
 
-- (float)effectIntensityDefaultForVideoEffect:(id)a3
+- (float)effectIntensityDefaultForVideoEffect:(id)effect
 {
-  if (([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"AVControlCenterVideoEffectStudioLighting") & 1) == 0)
+  if (([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"] & 1) == 0 && (objc_msgSend(effect, "isEqualToString:", @"AVControlCenterVideoEffectStudioLighting") & 1) == 0)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1369,14 +1369,14 @@ LABEL_18:
     return 0.0;
   }
 
-  if ([a3 isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
+  if ([effect isEqualToString:@"AVControlCenterVideoEffectBackgroundBlur"])
   {
 
     +[AVCaptureDevice backgroundBlurApertureDefault];
     return result;
   }
 
-  if (![a3 isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
+  if (![effect isEqualToString:@"AVControlCenterVideoEffectStudioLighting"])
   {
     return 0.0;
   }
@@ -1385,11 +1385,11 @@ LABEL_18:
   return result;
 }
 
-- (void)enableBlackenFrames:(BOOL)a3 forDeviceUID:(id)a4
+- (void)enableBlackenFrames:(BOOL)frames forDeviceUID:(id)d
 {
-  v4 = a3;
-  v5 = AVControlCenterBlackenFramesPreferenceKey(self->_bundleID, a4);
-  if (v4)
+  framesCopy = frames;
+  v5 = AVControlCenterBlackenFramesPreferenceKey(self->_bundleID, d);
+  if (framesCopy)
   {
     v6 = MEMORY[0x1E695E118];
   }
@@ -1489,7 +1489,7 @@ LABEL_7:
   return microphoneMode;
 }
 
-- (BOOL)setMicrophoneMode:(int64_t)a3
+- (BOOL)setMicrophoneMode:(int64_t)mode
 {
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
@@ -1501,8 +1501,8 @@ LABEL_7:
   LODWORD(v6) = [(AVControlCenterModuleState *)self micModesSupported];
   if (v6)
   {
-    v7 = -[NSArray containsObject:](self->_supportedMicrophoneModes, "containsObject:", [MEMORY[0x1E696AD98] numberWithInteger:a3]);
-    if (a3 && !v7)
+    v7 = -[NSArray containsObject:](self->_supportedMicrophoneModes, "containsObject:", [MEMORY[0x1E696AD98] numberWithInteger:mode]);
+    if (mode && !v7)
     {
       v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
       if (!holdingStateLock)
@@ -1521,7 +1521,7 @@ LABEL_7:
       return v6;
     }
 
-    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:a3], self->_microphoneModeKey);
+    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:mode], self->_microphoneModeKey);
   }
 
   if (!holdingStateLock)
@@ -1625,9 +1625,9 @@ LABEL_7:
   return autoMicModeEnabled;
 }
 
-- (BOOL)setAutoMicrophoneModeEnabled:(BOOL)a3
+- (BOOL)setAutoMicrophoneModeEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
   {
@@ -1635,10 +1635,10 @@ LABEL_7:
     self->_holdingStateLock = 1;
   }
 
-  v6 = [(AVControlCenterModuleState *)self isAutoMicrophoneModeSupported];
-  if (v6)
+  isAutoMicrophoneModeSupported = [(AVControlCenterModuleState *)self isAutoMicrophoneModeSupported];
+  if (isAutoMicrophoneModeSupported)
   {
-    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v3], self->_autoMicModeEnabledKey);
+    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], self->_autoMicModeEnabledKey);
   }
 
   if (!holdingStateLock)
@@ -1647,31 +1647,31 @@ LABEL_7:
     self->_holdingStateLock = 0;
   }
 
-  return v6;
+  return isAutoMicrophoneModeSupported;
 }
 
-- (void)startPanningAtPoint:(CGPoint)a3
+- (void)startPanningAtPoint:(CGPoint)point
 {
-  DictionaryRepresentation = CGPointCreateDictionaryRepresentation(a3);
+  DictionaryRepresentation = CGPointCreateDictionaryRepresentation(point);
   [AVCaptureProprietaryDefaultsSingleton setObject:DictionaryRepresentation forKey:self->_startPanningAtPointKey];
 
   CFRelease(DictionaryRepresentation);
 }
 
-- (void)panWithTranslation:(CGPoint)a3
+- (void)panWithTranslation:(CGPoint)translation
 {
-  DictionaryRepresentation = CGPointCreateDictionaryRepresentation(a3);
+  DictionaryRepresentation = CGPointCreateDictionaryRepresentation(translation);
   [AVCaptureProprietaryDefaultsSingleton setObject:DictionaryRepresentation forKey:self->_panWithTranslationKey];
 
   CFRelease(DictionaryRepresentation);
 }
 
-- (void)setManualFramingOriginalZoomFactor:(double)a3 convertedZoomFactor:(double)a4
+- (void)setManualFramingOriginalZoomFactor:(double)factor convertedZoomFactor:(double)zoomFactor
 {
   v14[0] = AVControlCenterManualFramingOriginalVideoZoomFactor;
   v15[0] = [MEMORY[0x1E696AD98] numberWithDouble:?];
   v14[1] = AVControlCenterManualFramingConvertedVideoZoomFactor;
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:zoomFactor];
   v14[2] = AVControlCenterManualFramingUpdateSettingEntity;
   v15[1] = v7;
   v15[2] = @"ControlCenterModules";
@@ -1685,7 +1685,7 @@ LABEL_7:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  [(AVControlCenterModuleState *)self _checkManualFramingDefaultStateWithNewOriginalZoomFactor:a3, v10, v11];
+  [(AVControlCenterModuleState *)self _checkManualFramingDefaultStateWithNewOriginalZoomFactor:factor, v10, v11];
   [AVCaptureProprietaryDefaultsSingleton setObject:v8 forKey:self->_manualFramingVideoZoomFactorKey];
 }
 
@@ -1705,10 +1705,10 @@ LABEL_7:
     else
     {
       v13 = v6;
-      v14 = [(AVControlCenterModuleState *)self manualFramingDeviceType];
+      manualFramingDeviceType = [(AVControlCenterModuleState *)self manualFramingDeviceType];
       [v13 floatValue];
       v16 = v15;
-      if (v14 == 2)
+      if (manualFramingDeviceType == 2)
       {
         v8 = v16 * 0.5;
       }
@@ -1755,7 +1755,7 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)manualFramingEnabledForDevice:(id)a3
+- (BOOL)manualFramingEnabledForDevice:(id)device
 {
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
@@ -1763,7 +1763,7 @@ LABEL_7:
     os_unfair_lock_lock(&self->_stateLock);
   }
 
-  if ([a3 isCenterStageActive])
+  if ([device isCenterStageActive])
   {
     centerStageSupported = 0;
     if (holdingStateLock)
@@ -1819,9 +1819,9 @@ LABEL_7:
   return v9;
 }
 
-- (void)setCenterStageFieldOfViewRestrictedToWide:(BOOL)a3
+- (void)setCenterStageFieldOfViewRestrictedToWide:(BOOL)wide
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:{a3, AVControlCenterCenterStageFieldOfViewRestrictedToWide}];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:{wide, AVControlCenterCenterStageFieldOfViewRestrictedToWide}];
   v5[1] = AVControlCenterManualFramingUpdateSettingEntity;
   v6[0] = v4;
   v6[1] = @"ControlCenterModules";
@@ -1848,20 +1848,20 @@ LABEL_7:
   return [v4 BOOLValue];
 }
 
-- (void)setManualFramingDeviceType:(int64_t)a3
+- (void)setManualFramingDeviceType:(int64_t)type
 {
   if (self->_holdingStateLock)
   {
-    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:a3], self->_manualFramingDeviceTypeKey);
-    self->_manualFramingDeviceType = a3;
+    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:type], self->_manualFramingDeviceTypeKey);
+    self->_manualFramingDeviceType = type;
   }
 
   else
   {
     os_unfair_lock_lock(&self->_stateLock);
     self->_holdingStateLock = 1;
-    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:a3], self->_manualFramingDeviceTypeKey);
-    self->_manualFramingDeviceType = a3;
+    +[AVCaptureProprietaryDefaultsSingleton setObject:forKey:](AVCaptureProprietaryDefaultsSingleton, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:type], self->_manualFramingDeviceTypeKey);
+    self->_manualFramingDeviceType = type;
     os_unfair_lock_unlock(&self->_stateLock);
     self->_holdingStateLock = 0;
   }
@@ -1869,12 +1869,12 @@ LABEL_7:
 
 - (double)_defaultOriginalVideoZoomFactor
 {
-  v3 = [(AVControlCenterModuleState *)self manualFramingDeviceType];
-  v4 = [(AVControlCenterModuleState *)self zoomFactorConstantsByManualFramingDeviceType];
-  v5 = -[NSDictionary objectForKeyedSubscript:](v4, "objectForKeyedSubscript:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v3]);
+  manualFramingDeviceType = [(AVControlCenterModuleState *)self manualFramingDeviceType];
+  zoomFactorConstantsByManualFramingDeviceType = [(AVControlCenterModuleState *)self zoomFactorConstantsByManualFramingDeviceType];
+  v5 = -[NSDictionary objectForKeyedSubscript:](zoomFactorConstantsByManualFramingDeviceType, "objectForKeyedSubscript:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", manualFramingDeviceType]);
   [objc_msgSend(v5 objectForKeyedSubscript:{*MEMORY[0x1E698F868]), "floatValue"}];
   result = v6;
-  if (v3 == 2)
+  if (manualFramingDeviceType == 2)
   {
     return result * 0.5;
   }
@@ -1882,9 +1882,9 @@ LABEL_7:
   return result;
 }
 
-- (void)_proprietaryDefaultChanged:(id)a3 keyPath:(id)a4 context:(void *)a5
+- (void)_proprietaryDefaultChanged:(id)changed keyPath:(id)path context:(void *)context
 {
-  v6 = a3;
+  changedCopy = changed;
   if (dword_1ED8068A0)
   {
     v145 = 0;
@@ -1900,12 +1900,12 @@ LABEL_7:
     os_unfair_lock_lock(&self->_stateLock);
   }
 
-  if (AVCCM_AUVoiceIOBypassVoiceProcessingChangedContext == a5)
+  if (AVCCM_AUVoiceIOBypassVoiceProcessingChangedContext == context)
   {
-    v13 = [(AVControlCenterModuleState *)self micModesSupported:a3];
-    if (v6)
+    v13 = [(AVControlCenterModuleState *)self micModesSupported:changed];
+    if (changedCopy)
     {
-      LODWORD(v6) = [(NSURL *)v6 BOOLValue];
+      LODWORD(changedCopy) = [(NSURL *)changedCopy BOOLValue];
     }
 
     v11 = 0;
@@ -1920,7 +1920,7 @@ LABEL_7:
       v12 = 0;
       if (!v14)
       {
-        if (self->_auVoiceIOBypassVoiceProcessing == v6)
+        if (self->_auVoiceIOBypassVoiceProcessing == changedCopy)
         {
           v11 = 0;
           v12 = 0;
@@ -1936,16 +1936,16 @@ LABEL_7:
       }
     }
 
-    self->_auVoiceIOBypassVoiceProcessing = v6;
+    self->_auVoiceIOBypassVoiceProcessing = changedCopy;
     goto LABEL_132;
   }
 
-  if (AVCCM_AUVoiceIOChatFlavorChangedContext == a5)
+  if (AVCCM_AUVoiceIOChatFlavorChangedContext == context)
   {
-    v15 = [(AVControlCenterModuleState *)self micModesSupported:a3];
-    if (v6)
+    v15 = [(AVControlCenterModuleState *)self micModesSupported:changed];
+    if (changedCopy)
     {
-      v6 = [(NSURL *)v6 integerValue];
+      changedCopy = [(NSURL *)changedCopy integerValue];
     }
 
     v11 = 0;
@@ -1960,7 +1960,7 @@ LABEL_7:
       v12 = 0;
       if (!v16)
       {
-        if (v6 == self->_microphoneMode)
+        if (changedCopy == self->_microphoneMode)
         {
           v11 = 0;
           v12 = 0;
@@ -1976,21 +1976,21 @@ LABEL_7:
       }
     }
 
-    self->_microphoneMode = v6;
+    self->_microphoneMode = changedCopy;
     goto LABEL_132;
   }
 
-  if (AVCCM_AUVoiceIOActiveChatFlavorChangedContext == a5)
+  if (AVCCM_AUVoiceIOActiveChatFlavorChangedContext == context)
   {
-    v17 = [(AVControlCenterModuleState *)self micModesSupported:a3];
-    if (v6)
+    v17 = [(AVControlCenterModuleState *)self micModesSupported:changed];
+    if (changedCopy)
     {
-      v18 = [(NSURL *)v6 integerValue];
+      integerValue = [(NSURL *)changedCopy integerValue];
     }
 
     else
     {
-      v18 = -1;
+      integerValue = -1;
     }
 
     v11 = 0;
@@ -2005,7 +2005,7 @@ LABEL_7:
       v12 = 0;
       if (!v24)
       {
-        if (v18 == self->_activeMicrophoneMode)
+        if (integerValue == self->_activeMicrophoneMode)
         {
           v11 = 0;
           v12 = 0;
@@ -2021,15 +2021,15 @@ LABEL_7:
       }
     }
 
-    self->_activeMicrophoneMode = v18;
+    self->_activeMicrophoneMode = integerValue;
     goto LABEL_132;
   }
 
-  if (AVCCM_AUVoiceIOSupportedChatFlavorsChangedContext == a5)
+  if (AVCCM_AUVoiceIOSupportedChatFlavorsChangedContext == context)
   {
-    if (!v6)
+    if (!changedCopy)
     {
-      v6 = AVControlCenterAudioDefaultSupportedMicrophoneModesForBundleID(self->_bundleID);
+      changedCopy = AVControlCenterAudioDefaultSupportedMicrophoneModesForBundleID(self->_bundleID);
       if (dword_1ED8068A0)
       {
         v145 = 0;
@@ -2054,7 +2054,7 @@ LABEL_7:
           v139 = 2112;
           v140 = v22;
           v141 = 2112;
-          *v142 = v6;
+          *v142 = changedCopy;
           LODWORD(v88) = 32;
           v87 = &v137;
           _os_log_send_and_compose_impl();
@@ -2064,12 +2064,12 @@ LABEL_7:
       }
     }
 
-    v34 = [(AVControlCenterModuleState *)self micModesSupported:a3];
+    v34 = [(AVControlCenterModuleState *)self micModesSupported:changed];
     v11 = 0;
     v12 = 0;
     if (!holdingStateLock && v34)
     {
-      if (([(NSURL *)v6 isEqual:self->_supportedMicrophoneModes]& 1) != 0)
+      if (([(NSURL *)changedCopy isEqual:self->_supportedMicrophoneModes]& 1) != 0)
       {
         v11 = 0;
         v12 = 0;
@@ -2084,18 +2084,18 @@ LABEL_7:
       }
     }
 
-    self->_supportedMicrophoneModes = v6;
+    self->_supportedMicrophoneModes = changedCopy;
     goto LABEL_132;
   }
 
-  if (AVCCM_AUVoiceIOHiddenChatFlavorsChangedContext == a5)
+  if (AVCCM_AUVoiceIOHiddenChatFlavorsChangedContext == context)
   {
-    if (!v6)
+    if (!changedCopy)
     {
-      v6 = MEMORY[0x1E695E0F0];
+      changedCopy = MEMORY[0x1E695E0F0];
     }
 
-    if (holdingStateLock || (hiddenMicrophoneModes = self->_hiddenMicrophoneModes) == 0 || ([(NSURL *)v6 isEqual:hiddenMicrophoneModes, a4]& 1) != 0)
+    if (holdingStateLock || (hiddenMicrophoneModes = self->_hiddenMicrophoneModes) == 0 || ([(NSURL *)changedCopy isEqual:hiddenMicrophoneModes, path]& 1) != 0)
     {
       v11 = 0;
       v12 = 0;
@@ -2109,15 +2109,15 @@ LABEL_7:
       v12 = @"AVControlCenterMicrophoneModesModuleHiddenMicrophoneModesDidChangeNotification";
     }
 
-    self->_hiddenMicrophoneModes = v6;
+    self->_hiddenMicrophoneModes = changedCopy;
     goto LABEL_132;
   }
 
-  if (AVCCM_AUVoiceIOAutoEnabledChangedContext == a5)
+  if (AVCCM_AUVoiceIOAutoEnabledChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      IsAutoMicrophoneEnabledForBundleIDAndMicMode = [(NSURL *)v6 BOOLValue:a3];
+      IsAutoMicrophoneEnabledForBundleIDAndMicMode = [(NSURL *)changedCopy BOOLValue:changed];
     }
 
     else
@@ -2185,14 +2185,14 @@ LABEL_7:
     goto LABEL_132;
   }
 
-  if (AVCCM_CenterStageControlModeChangedContext == a5)
+  if (AVCCM_CenterStageControlModeChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      v6 = [(NSURL *)v6 integerValue:a3];
+      changedCopy = [(NSURL *)changedCopy integerValue:changed];
     }
 
-    if (holdingStateLock || v6 == self->_centerStageControlMode)
+    if (holdingStateLock || changedCopy == self->_centerStageControlMode)
     {
       v11 = 0;
       v12 = 0;
@@ -2209,24 +2209,24 @@ LABEL_7:
       v12 = @"AVControlCenterVideoEffectsModuleEffectControlModeDidChangeNotification";
     }
 
-    self->_centerStageControlMode = v6;
+    self->_centerStageControlMode = changedCopy;
     goto LABEL_132;
   }
 
-  if (AVCCM_CenterStageEnabledChangedContext == a5)
+  if (AVCCM_CenterStageEnabledChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      v26 = [(NSURL *)v6 BOOLValue:a3];
+      path = [(NSURL *)changedCopy BOOLValue:changed];
     }
 
     else
     {
-      v26 = [AVCaptureDevice defaultCenterStageEnabledForBundleID:self->_bundleID, a4];
+      path = [AVCaptureDevice defaultCenterStageEnabledForBundleID:self->_bundleID, path];
     }
 
-    v36 = v26;
-    if (holdingStateLock || self->_centerStageEnabled == v26)
+    v36 = path;
+    if (holdingStateLock || self->_centerStageEnabled == path)
     {
       v11 = 0;
       v12 = 0;
@@ -2247,11 +2247,11 @@ LABEL_7:
     goto LABEL_132;
   }
 
-  if (AVCCM_CenterStageUnavailableReasonsChangedContext == a5)
+  if (AVCCM_CenterStageUnavailableReasonsChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      v33 = [(NSURL *)v6 unsignedIntegerValue:a3];
+      v33 = [(NSURL *)changedCopy unsignedIntegerValue:changed];
     }
 
     else
@@ -2269,14 +2269,14 @@ LABEL_7:
     goto LABEL_124;
   }
 
-  if (AVCCM_BackgroundBlurControlModeChangedContext == a5)
+  if (AVCCM_BackgroundBlurControlModeChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      v6 = [(NSURL *)v6 integerValue:a3];
+      changedCopy = [(NSURL *)changedCopy integerValue:changed];
     }
 
-    if (holdingStateLock || v6 == self->_backgroundBlurControlMode)
+    if (holdingStateLock || changedCopy == self->_backgroundBlurControlMode)
     {
       v11 = 0;
       v12 = 0;
@@ -2293,18 +2293,18 @@ LABEL_7:
       v12 = @"AVControlCenterVideoEffectsModuleEffectControlModeDidChangeNotification";
     }
 
-    self->_backgroundBlurControlMode = v6;
+    self->_backgroundBlurControlMode = changedCopy;
     goto LABEL_132;
   }
 
-  if (AVCCM_BackgroundBlurEnabledChangedContext == a5)
+  if (AVCCM_BackgroundBlurEnabledChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      LODWORD(v6) = [(NSURL *)v6 BOOLValue:a3];
+      LODWORD(changedCopy) = [(NSURL *)changedCopy BOOLValue:changed];
     }
 
-    if (holdingStateLock || self->_backgroundBlurEnabled == v6)
+    if (holdingStateLock || self->_backgroundBlurEnabled == changedCopy)
     {
       v11 = 0;
       v12 = 0;
@@ -2321,15 +2321,15 @@ LABEL_7:
       v12 = @"AVControlCenterVideoEffectsModuleEffectEnabledDidChangeNotification";
     }
 
-    self->_backgroundBlurEnabled = v6;
+    self->_backgroundBlurEnabled = changedCopy;
     goto LABEL_132;
   }
 
-  if (AVCCM_BackgroundBlurUnavailableReasonsChangedContext == a5)
+  if (AVCCM_BackgroundBlurUnavailableReasonsChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      v46 = [(NSURL *)v6 unsignedIntegerValue:a3];
+      v46 = [(NSURL *)changedCopy unsignedIntegerValue:changed];
     }
 
     else
@@ -2347,16 +2347,16 @@ LABEL_7:
     goto LABEL_124;
   }
 
-  if (AVCCM_BackgroundBlurApertureChangedContext == a5)
+  if (AVCCM_BackgroundBlurApertureChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      [(NSURL *)v6 floatValue:a3];
+      [(NSURL *)changedCopy floatValue:changed];
     }
 
     else
     {
-      [AVCaptureDevice backgroundBlurApertureDefault:a3];
+      [AVCaptureDevice backgroundBlurApertureDefault:changed];
     }
 
     v50 = v48;
@@ -2381,14 +2381,14 @@ LABEL_7:
     goto LABEL_132;
   }
 
-  if (AVCCM_StudioLightingControlModeChangedContext == a5)
+  if (AVCCM_StudioLightingControlModeChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      v6 = [(NSURL *)v6 integerValue:a3];
+      changedCopy = [(NSURL *)changedCopy integerValue:changed];
     }
 
-    if (holdingStateLock || v6 == self->_studioLightingControlMode)
+    if (holdingStateLock || changedCopy == self->_studioLightingControlMode)
     {
       v11 = 0;
       v12 = 0;
@@ -2405,18 +2405,18 @@ LABEL_7:
       v12 = @"AVControlCenterVideoEffectsModuleEffectControlModeDidChangeNotification";
     }
 
-    self->_studioLightingControlMode = v6;
+    self->_studioLightingControlMode = changedCopy;
     goto LABEL_132;
   }
 
-  if (AVCCM_StudioLightingEnabledChangedContext == a5)
+  if (AVCCM_StudioLightingEnabledChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      LODWORD(v6) = [(NSURL *)v6 BOOLValue:a3];
+      LODWORD(changedCopy) = [(NSURL *)changedCopy BOOLValue:changed];
     }
 
-    if (holdingStateLock || self->_studioLightingEnabled == v6)
+    if (holdingStateLock || self->_studioLightingEnabled == changedCopy)
     {
       v11 = 0;
       v12 = 0;
@@ -2433,15 +2433,15 @@ LABEL_7:
       v12 = @"AVControlCenterVideoEffectsModuleEffectEnabledDidChangeNotification";
     }
 
-    self->_studioLightingEnabled = v6;
+    self->_studioLightingEnabled = changedCopy;
     goto LABEL_132;
   }
 
-  if (AVCCM_StudioLightingUnavailableReasonsChangedContext == a5)
+  if (AVCCM_StudioLightingUnavailableReasonsChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      v52 = [(NSURL *)v6 unsignedIntegerValue:a3];
+      v52 = [(NSURL *)changedCopy unsignedIntegerValue:changed];
     }
 
     else
@@ -2459,16 +2459,16 @@ LABEL_7:
     goto LABEL_124;
   }
 
-  if (AVCCM_StudioLightingIntensityChangedContext == a5)
+  if (AVCCM_StudioLightingIntensityChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      [(NSURL *)v6 floatValue:a3];
+      [(NSURL *)changedCopy floatValue:changed];
     }
 
     else
     {
-      [AVCaptureDevice studioLightingIntensityDefault:a3];
+      [AVCaptureDevice studioLightingIntensityDefault:changed];
     }
 
     v56 = v54;
@@ -2493,7 +2493,7 @@ LABEL_7:
     goto LABEL_132;
   }
 
-  if (AVCCM_ManualFramingOneShotFramingCompletedContext == a5)
+  if (AVCCM_ManualFramingOneShotFramingCompletedContext == context)
   {
     v12 = @"AVControlCenterManualFramingOneShotFramingDidCompleteNotification";
 LABEL_183:
@@ -2501,17 +2501,17 @@ LABEL_183:
     goto LABEL_132;
   }
 
-  if (AVCCM_ManualFramingResetFramingCompletedContext == a5)
+  if (AVCCM_ManualFramingResetFramingCompletedContext == context)
   {
     v12 = @"AVControlCenterManualFramingResetFramingDidCompleteNotification";
     goto LABEL_183;
   }
 
-  if (AVCCM_ReactionsEnabledChangedContext == a5)
+  if (AVCCM_ReactionsEnabledChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      isOptedInForReactionEffects = [(NSURL *)v6 BOOLValue:a3];
+      isOptedInForReactionEffects = [(NSURL *)changedCopy BOOLValue:changed];
     }
 
     else
@@ -2569,9 +2569,9 @@ LABEL_183:
     goto LABEL_132;
   }
 
-  if (AVCCM_GesturesEnabledChangedContext == a5)
+  if (AVCCM_GesturesEnabledChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
       if (dword_1ED8068A0)
       {
@@ -2594,7 +2594,7 @@ LABEL_183:
           v137 = 136315394;
           v138 = "[AVControlCenterModuleState _proprietaryDefaultChanged:keyPath:context:]";
           v139 = 2112;
-          v140 = v6;
+          v140 = changedCopy;
           LODWORD(v88) = 22;
           v87 = &v137;
           _os_log_send_and_compose_impl();
@@ -2603,9 +2603,9 @@ LABEL_183:
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      v67 = v6;
+      path2 = changedCopy;
 LABEL_232:
-      v71 = [(NSURL *)v67 BOOLValue:v87];
+      bOOLValue = [(NSURL *)path2 BOOLValue:v87];
       if (holdingStateLock)
       {
         goto LABEL_261;
@@ -2614,18 +2614,18 @@ LABEL_232:
       goto LABEL_233;
     }
 
-    v67 = [AVCaptureProprietaryDefaultsSingleton objectForKey:self->_gesturesEnabledDefaultKey, a4];
-    if (v67)
+    path2 = [AVCaptureProprietaryDefaultsSingleton objectForKey:self->_gesturesEnabledDefaultKey, path];
+    if (path2)
     {
       goto LABEL_232;
     }
 
     v68 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:self->_bundleID allowPlaceholder:1 error:0];
-    v69 = [v68 infoDictionary];
-    v70 = [v69 objectForKey:AVCaptureBundleCameraReactionEffectGesturesEnabledDefaultKey ofClass:objc_opt_class()];
+    infoDictionary = [v68 infoDictionary];
+    v70 = [infoDictionary objectForKey:AVCaptureBundleCameraReactionEffectGesturesEnabledDefaultKey ofClass:objc_opt_class()];
     if (v70)
     {
-      v71 = [v70 BOOLValue];
+      bOOLValue = [v70 BOOLValue];
       if (!dword_1ED8068A0)
       {
         goto LABEL_260;
@@ -2650,7 +2650,7 @@ LABEL_232:
         v137 = 136315394;
         v138 = "[AVControlCenterModuleState _proprietaryDefaultChanged:keyPath:context:]";
         v139 = 1024;
-        LODWORD(v140) = v71;
+        LODWORD(v140) = bOOLValue;
         LODWORD(v88) = 18;
         v87 = &v137;
         _os_log_send_and_compose_impl();
@@ -2660,7 +2660,7 @@ LABEL_232:
     else
     {
       CFPreferenceBooleanWithDefault = FigGetCFPreferenceBooleanWithDefault();
-      v71 = CFPreferenceBooleanWithDefault != 0;
+      bOOLValue = CFPreferenceBooleanWithDefault != 0;
       if (!dword_1ED8068A0)
       {
         goto LABEL_260;
@@ -2702,7 +2702,7 @@ LABEL_260:
     }
 
 LABEL_233:
-    if (self->_gesturesEnabled != v71)
+    if (self->_gesturesEnabled != bOOLValue)
     {
       v99[0] = @"AVControlCenterModulesNotificationVideoEffectKey";
       v99[1] = @"AVControlCenterModulesNotificationBundleIdentifierKey";
@@ -2712,7 +2712,7 @@ LABEL_233:
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v100 forKeys:v99 count:2];
       v12 = @"AVControlCenterVideoEffectsModuleEffectEnabledDidChangeNotification";
 LABEL_262:
-      self->_gesturesEnabled = v71;
+      self->_gesturesEnabled = bOOLValue;
       goto LABEL_132;
     }
 
@@ -2722,11 +2722,11 @@ LABEL_261:
     goto LABEL_262;
   }
 
-  if (AVCCM_ReactionsUnavailableReasonsChangedContext == a5)
+  if (AVCCM_ReactionsUnavailableReasonsChangedContext == context)
   {
-    if (v6)
+    if (changedCopy)
     {
-      v62 = [(NSURL *)v6 unsignedIntegerValue:a3];
+      v62 = [(NSURL *)changedCopy unsignedIntegerValue:changed];
     }
 
     else
@@ -2744,41 +2744,41 @@ LABEL_261:
     goto LABEL_124;
   }
 
-  v10 = a5;
-  if (AVCCM_ReactionEffectTriggeredContext == a5)
+  contextCopy = context;
+  if (AVCCM_ReactionEffectTriggeredContext == context)
   {
     v12 = @"AVControlCenterVideoEffectsReactionWasRequestedNotification";
 LABEL_216:
-    v11 = v6;
+    v11 = changedCopy;
     goto LABEL_132;
   }
 
-  if (AVCCM_ReactionEffectsInProgressChangedContext == a5)
+  if (AVCCM_ReactionEffectsInProgressChangedContext == context)
   {
     v12 = @"AVControlCenterVideoEffectsReactionsInProgressDidChangeNotification";
     goto LABEL_216;
   }
 
-  if (AVCCM_BackgroundReplacementEnabledChangedContext != a5)
+  if (AVCCM_BackgroundReplacementEnabledChangedContext != context)
   {
-    if (AVCCM_BackgroundReplacementUnavailableReasonsChangedContext != a5)
+    if (AVCCM_BackgroundReplacementUnavailableReasonsChangedContext != context)
     {
-      if (AVCCM_BackgroundReplacementURLChangedContext == a5)
+      if (AVCCM_BackgroundReplacementURLChangedContext == context)
       {
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        if (v6 && (isKindOfClass & 1) == 0)
+        if (changedCopy && (isKindOfClass & 1) == 0)
         {
           [AVControlCenterModuleState _proprietaryDefaultChanged:keyPath:context:];
         }
 
-        if (v6)
+        if (changedCopy)
         {
           v143[0] = 0;
-          v6 = [MEMORY[0x1E695DFF8] URLByResolvingBookmarkData:v6 options:256 relativeToURL:0 bookmarkDataIsStale:0 error:v143];
+          changedCopy = [MEMORY[0x1E695DFF8] URLByResolvingBookmarkData:changedCopy options:256 relativeToURL:0 bookmarkDataIsStale:0 error:v143];
         }
 
-        if (holdingStateLock || v6 == self->_backgroundReplacementURL || ([(NSURL *)v6 isEqual:?]& 1) != 0)
+        if (holdingStateLock || changedCopy == self->_backgroundReplacementURL || ([(NSURL *)changedCopy isEqual:?]& 1) != 0)
         {
           v11 = 0;
           v12 = 0;
@@ -2795,7 +2795,7 @@ LABEL_216:
           v12 = @"AVControlCenterVideoEffectsBackgroundReplacementURLDidChangeNotification";
         }
 
-        self->_backgroundReplacementURL = v6;
+        self->_backgroundReplacementURL = changedCopy;
         backgroundReplacementPixelBuffer = self->_backgroundReplacementPixelBuffer;
         if (backgroundReplacementPixelBuffer)
         {
@@ -2809,13 +2809,13 @@ LABEL_216:
       else
       {
         v11 = 0;
-        if (v6)
+        if (changedCopy)
         {
           v12 = 0;
-          if (AVCCM_DockedTrackingActiveChangedContext == v10)
+          if (AVCCM_DockedTrackingActiveChangedContext == contextCopy)
           {
             v89 = @"dockedTrackingActive";
-            v90 = v6;
+            v90 = changedCopy;
             v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
             v12 = @"AVControlCenterDockedTrackingActiveDidChangeNotification";
           }
@@ -2830,9 +2830,9 @@ LABEL_216:
       goto LABEL_132;
     }
 
-    if (v6)
+    if (changedCopy)
     {
-      v77 = [(NSURL *)v6 unsignedIntegerValue:a3];
+      v77 = [(NSURL *)changedCopy unsignedIntegerValue:changed];
     }
 
     else
@@ -2853,12 +2853,12 @@ LABEL_124:
     goto LABEL_132;
   }
 
-  if (v6)
+  if (changedCopy)
   {
-    LODWORD(v6) = [(NSURL *)v6 BOOLValue:a3];
+    LODWORD(changedCopy) = [(NSURL *)changedCopy BOOLValue:changed];
   }
 
-  if (holdingStateLock || self->_backgroundReplacementEnabled == v6)
+  if (holdingStateLock || self->_backgroundReplacementEnabled == changedCopy)
   {
     v11 = 0;
     v12 = 0;
@@ -2875,7 +2875,7 @@ LABEL_124:
     v12 = @"AVControlCenterVideoEffectsModuleEffectEnabledDidChangeNotification";
   }
 
-  self->_backgroundReplacementEnabled = v6;
+  self->_backgroundReplacementEnabled = changedCopy;
 LABEL_132:
   if (!holdingStateLock)
   {
@@ -2923,11 +2923,11 @@ LABEL_132:
   }
 }
 
-- (void)_handlePanningAnglesUpdate:(id)a3
+- (void)_handlePanningAnglesUpdate:(id)update
 {
   point.x = 0.0;
   point.y = 0.0;
-  CGPointMakeWithDictionaryRepresentation(a3, &point);
+  CGPointMakeWithDictionaryRepresentation(update, &point);
   if (dword_1ED8068A0)
   {
     v43 = 0;
@@ -3069,13 +3069,13 @@ LABEL_33:
   }
 }
 
-- (void)_handleBackPropagatedVideoZoomFactorUpdate:(id)a3
+- (void)_handleBackPropagatedVideoZoomFactorUpdate:(id)update
 {
-  v4 = [a3 objectForKeyedSubscript:AVControlCenterManualFramingConvertedVideoZoomFactor];
-  v5 = [(AVControlCenterModuleState *)self manualFramingDeviceType];
+  v4 = [update objectForKeyedSubscript:AVControlCenterManualFramingConvertedVideoZoomFactor];
+  manualFramingDeviceType = [(AVControlCenterModuleState *)self manualFramingDeviceType];
   [v4 floatValue];
   v7 = v6;
-  if (v5 == 2)
+  if (manualFramingDeviceType == 2)
   {
     v8 = v7 * 0.5;
   }
@@ -3132,7 +3132,7 @@ LABEL_33:
       v26 = 2112;
       v24 = 2048;
       v25 = v16;
-      if (v5 == 2)
+      if (manualFramingDeviceType == 2)
       {
         v15 = @"YES";
       }
@@ -3149,14 +3149,14 @@ LABEL_33:
   }
 
 LABEL_17:
-  v17 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v20 = @"videoZoomFactor";
   v21 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
-  [v17 postNotificationName:@"AVControlCenterManualFramingVideoZoomFactorDidChangeNotification" object:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v21, &v20, 1)}];
+  [defaultCenter postNotificationName:@"AVControlCenterManualFramingVideoZoomFactorDidChangeNotification" object:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v21, &v20, 1)}];
   [(AVControlCenterModuleState *)self _checkManualFramingDefaultStateWithNewOriginalZoomFactor:v10];
 }
 
-- (void)_checkManualFramingDefaultStateWithNewOriginalZoomFactor:(double)a3
+- (void)_checkManualFramingDefaultStateWithNewOriginalZoomFactor:(double)factor
 {
   holdingStateLock = self->_holdingStateLock;
   if (!holdingStateLock)
@@ -3169,7 +3169,7 @@ LABEL_17:
   currentPanningAngleX = self->_currentPanningAngleX;
   currentPanningAngleY = self->_currentPanningAngleY;
   currentOriginalZoomFactor = self->_currentOriginalZoomFactor;
-  self->_currentOriginalZoomFactor = a3;
+  self->_currentOriginalZoomFactor = factor;
   if (!holdingStateLock)
   {
     os_unfair_lock_unlock(&self->_stateLock);
@@ -3178,7 +3178,7 @@ LABEL_17:
   if (fabs(currentPanningAngleX) < 0.00999999978 && fabs(currentPanningAngleY) < 0.00999999978)
   {
     v11 = vabdd_f64(currentOriginalZoomFactor, v7);
-    v12 = vabdd_f64(a3, v7);
+    v12 = vabdd_f64(factor, v7);
     if (v11 < 0.00999999978 && v12 >= 0.00999999978)
     {
       if (dword_1ED8068A0)

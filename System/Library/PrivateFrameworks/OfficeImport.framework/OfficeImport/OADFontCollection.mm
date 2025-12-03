@@ -1,9 +1,9 @@
 @interface OADFontCollection
 - (BOOL)isEmpty;
-- (BOOL)isEqualToFontCollection:(id)a3;
+- (BOOL)isEqualToFontCollection:(id)collection;
 - (OADFontCollection)init;
 - (id)description;
-- (id)fontForScript:(id)a3;
+- (id)fontForScript:(id)script;
 @end
 
 @implementation OADFontCollection
@@ -23,23 +23,23 @@
   return v2;
 }
 
-- (id)fontForScript:(id)a3
+- (id)fontForScript:(id)script
 {
-  v3 = [(NSMutableDictionary *)self->_scriptToFontMap objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_scriptToFontMap objectForKeyedSubscript:script];
 
   return v3;
 }
 
-- (BOOL)isEqualToFontCollection:(id)a3
+- (BOOL)isEqualToFontCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v7.receiver = self;
   v7.super_class = OADFontCollection;
-  if ([(OADBaseFontCollection *)&v7 isEqualToBaseFontCollection:v4])
+  if ([(OADBaseFontCollection *)&v7 isEqualToBaseFontCollection:collectionCopy])
   {
-    if ([(NSMutableDictionary *)self->_scriptToFontMap count]|| [(objc_object *)v4[4] count])
+    if ([(NSMutableDictionary *)self->_scriptToFontMap count]|| [(objc_object *)collectionCopy[4] count])
     {
-      v5 = TCObjectEqual(self->_scriptToFontMap, v4[4]);
+      v5 = TCObjectEqual(self->_scriptToFontMap, collectionCopy[4]);
     }
 
     else
@@ -60,13 +60,13 @@
 {
   v5.receiver = self;
   v5.super_class = OADFontCollection;
-  v3 = [(OADBaseFontCollection *)&v5 isEmpty];
-  if (v3)
+  isEmpty = [(OADBaseFontCollection *)&v5 isEmpty];
+  if (isEmpty)
   {
-    LOBYTE(v3) = [(NSMutableDictionary *)self->_scriptToFontMap count]== 0;
+    LOBYTE(isEmpty) = [(NSMutableDictionary *)self->_scriptToFontMap count]== 0;
   }
 
-  return v3;
+  return isEmpty;
 }
 
 - (id)description

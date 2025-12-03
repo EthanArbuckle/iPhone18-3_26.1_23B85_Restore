@@ -1,7 +1,7 @@
 @interface _MSStickerDragPreviewContainerView
-+ (id)meshTransformWithContentScale:(double)a3;
++ (id)meshTransformWithContentScale:(double)scale;
 + (id)shadowPropertiesForDrag;
-+ (id)springAnimationWithKeyPath:(id)a3 speed:(float)a4;
++ (id)springAnimationWithKeyPath:(id)path speed:(float)speed;
 - (CGPoint)dropShadowLayerStartPosition;
 - (CGPoint)meshLayerStartPosition;
 - (CGPoint)originalCenter;
@@ -10,23 +10,23 @@
 - (CGPoint)shineLayerStartPosition;
 - (CGSize)initialSize;
 - (CGSize)rasterizedImageSize;
-- (_MSStickerDragPreviewContainerView)initWithIsDropAnimation:(BOOL)a3;
+- (_MSStickerDragPreviewContainerView)initWithIsDropAnimation:(BOOL)animation;
 - (double)dragViewScaleUp;
-- (id)peelMaskImageFromImage:(id)a3;
-- (void)_animateDropAlongsideAnimator:(id)a3 completion:(id)a4;
-- (void)_animateLiftAlongsideAnimator:(id)a3 completion:(id)a4;
-- (void)_animateLiftCancellationAlongsideAnimator:(id)a3 completion:(id)a4;
-- (void)_preparePreviewContainerWithPreview:(id)a3 source:(id)a4 initialTransform:(CGAffineTransform *)a5;
+- (id)peelMaskImageFromImage:(id)image;
+- (void)_animateDropAlongsideAnimator:(id)animator completion:(id)completion;
+- (void)_animateLiftAlongsideAnimator:(id)animator completion:(id)completion;
+- (void)_animateLiftCancellationAlongsideAnimator:(id)animator completion:(id)completion;
+- (void)_preparePreviewContainerWithPreview:(id)preview source:(id)source initialTransform:(CGAffineTransform *)transform;
 - (void)finalizeDropIfNecessary;
-- (void)performAfterDropAnimation:(id)a3;
-- (void)reversePeelAnimationToPoint:(CGPoint)a3 forPlacement:(BOOL)a4 shouldShrink:(BOOL)a5 completionBlock:(id)a6;
-- (void)setDefersFinalDropAnimationCompletion:(BOOL)a3;
-- (void)setDropAnimationIsComplete:(BOOL)a3;
+- (void)performAfterDropAnimation:(id)animation;
+- (void)reversePeelAnimationToPoint:(CGPoint)point forPlacement:(BOOL)placement shouldShrink:(BOOL)shrink completionBlock:(id)block;
+- (void)setDefersFinalDropAnimationCompletion:(BOOL)completion;
+- (void)setDropAnimationIsComplete:(BOOL)complete;
 @end
 
 @implementation _MSStickerDragPreviewContainerView
 
-- (_MSStickerDragPreviewContainerView)initWithIsDropAnimation:(BOOL)a3
+- (_MSStickerDragPreviewContainerView)initWithIsDropAnimation:(BOOL)animation
 {
   v7.receiver = self;
   v7.super_class = _MSStickerDragPreviewContainerView;
@@ -34,20 +34,20 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isDropAnimation = a3;
+    v4->_isDropAnimation = animation;
     [(_MSStickerDragPreviewContainerView *)v4 setClipsToBounds:0];
   }
 
   return v5;
 }
 
-+ (id)meshTransformWithContentScale:(double)a3
++ (id)meshTransformWithContentScale:(double)scale
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68___MSStickerDragPreviewContainerView_meshTransformWithContentScale___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  *&block[4] = a3;
+  *&block[4] = scale;
   if (meshTransformWithContentScale__onceToken != -1)
   {
     dispatch_once(&meshTransformWithContentScale__onceToken, block);
@@ -58,13 +58,13 @@
   return v3;
 }
 
-+ (id)springAnimationWithKeyPath:(id)a3 speed:(float)a4
++ (id)springAnimationWithKeyPath:(id)path speed:(float)speed
 {
-  v5 = [MEMORY[0x1E69794A8] animationWithKeyPath:a3];
+  v5 = [MEMORY[0x1E69794A8] animationWithKeyPath:path];
   [v5 setMass:2.0];
   [v5 setStiffness:300.0];
   [v5 setDamping:400.0];
-  *&v6 = a4;
+  *&v6 = speed;
   [v5 setSpeed:v6];
   [v5 setDuration:0.91];
   v7 = objc_alloc(MEMORY[0x1E69793D0]);
@@ -136,30 +136,30 @@
   return result;
 }
 
-- (id)peelMaskImageFromImage:(id)a3
+- (id)peelMaskImageFromImage:(id)image
 {
   v3 = *MEMORY[0x1E695EFF8];
   v4 = *(MEMORY[0x1E695EFF8] + 8);
-  v5 = a3;
-  [v5 size];
+  imageCopy = image;
+  [imageCopy size];
   v7 = v6;
   v9 = v8;
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v12 = v11;
   v17.width = v7;
   v17.height = v9;
   UIGraphicsBeginImageContextWithOptions(v17, 0, v12);
 
-  v13 = [MEMORY[0x1E69DC888] blackColor];
-  [v13 setFill];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [blackColor setFill];
 
   v18.origin.x = v3;
   v18.origin.y = v4;
   v18.size.width = v7;
   v18.size.height = v9;
   UIRectFillUsingBlendMode(v18, kCGBlendModeCopy);
-  [v5 drawInRect:22 blendMode:v3 alpha:{v4, v7, v9, 1.0}];
+  [imageCopy drawInRect:22 blendMode:v3 alpha:{v4, v7, v9, 1.0}];
 
   v14 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -201,8 +201,8 @@
   v32 = *MEMORY[0x1E69E9840];
   if ([(_MSStickerDragPreviewContainerView *)self dropAnimationIsComplete])
   {
-    v3 = [(_MSStickerDragPreviewContainerView *)self clientDropCompletion];
-    if (v3)
+    clientDropCompletion = [(_MSStickerDragPreviewContainerView *)self clientDropCompletion];
+    if (clientDropCompletion)
     {
 
 LABEL_14:
@@ -219,8 +219,8 @@ LABEL_14:
           v12 = @"NO";
         }
 
-        v13 = [(_MSStickerDragPreviewContainerView *)self clientDropCompletion];
-        v14 = _Block_copy(v13);
+        clientDropCompletion2 = [(_MSStickerDragPreviewContainerView *)self clientDropCompletion];
+        v14 = _Block_copy(clientDropCompletion2);
         if ([(_MSStickerDragPreviewContainerView *)self defersFinalDropAnimationCompletion])
         {
           v15 = @"YES";
@@ -231,10 +231,10 @@ LABEL_14:
           v15 = @"NO";
         }
 
-        v16 = [(_MSStickerDragPreviewContainerView *)self finalUIKitDropCompletion];
-        v17 = _Block_copy(v16);
+        finalUIKitDropCompletion = [(_MSStickerDragPreviewContainerView *)self finalUIKitDropCompletion];
+        v17 = _Block_copy(finalUIKitDropCompletion);
         v22 = 134219010;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2112;
         v25 = v12;
         v26 = 2112;
@@ -246,22 +246,22 @@ LABEL_14:
         _os_log_impl(&dword_1CADE6000, v11, OS_LOG_TYPE_DEFAULT, "<_MSStickerDragPreviewContainerView: %p> finalizeDropIfNecessary finalizing drop. dropAnimationIsComplete: %@, clientDropCompletion: %@, defersFinalDropAnimationCompletion: %@, finalUIKitDropCompletion: %@", &v22, 0x34u);
       }
 
-      v18 = [(_MSStickerDragPreviewContainerView *)self clientDropCompletion];
+      clientDropCompletion3 = [(_MSStickerDragPreviewContainerView *)self clientDropCompletion];
 
-      if (v18)
+      if (clientDropCompletion3)
       {
-        v19 = [(_MSStickerDragPreviewContainerView *)self clientDropCompletion];
-        v19[2]();
+        clientDropCompletion4 = [(_MSStickerDragPreviewContainerView *)self clientDropCompletion];
+        clientDropCompletion4[2]();
 
         [(_MSStickerDragPreviewContainerView *)self setClientDropCompletion:0];
       }
 
-      v20 = [(_MSStickerDragPreviewContainerView *)self finalUIKitDropCompletion];
+      finalUIKitDropCompletion2 = [(_MSStickerDragPreviewContainerView *)self finalUIKitDropCompletion];
 
-      if (v20)
+      if (finalUIKitDropCompletion2)
       {
-        v21 = [(_MSStickerDragPreviewContainerView *)self finalUIKitDropCompletion];
-        v21[2]();
+        finalUIKitDropCompletion3 = [(_MSStickerDragPreviewContainerView *)self finalUIKitDropCompletion];
+        finalUIKitDropCompletion3[2]();
 
         [(_MSStickerDragPreviewContainerView *)self setFinalUIKitDropCompletion:0];
       }
@@ -288,8 +288,8 @@ LABEL_14:
       v5 = @"NO";
     }
 
-    v6 = [(_MSStickerDragPreviewContainerView *)self clientDropCompletion];
-    v7 = _Block_copy(v6);
+    clientDropCompletion5 = [(_MSStickerDragPreviewContainerView *)self clientDropCompletion];
+    v7 = _Block_copy(clientDropCompletion5);
     if ([(_MSStickerDragPreviewContainerView *)self defersFinalDropAnimationCompletion])
     {
       v8 = @"YES";
@@ -300,10 +300,10 @@ LABEL_14:
       v8 = @"NO";
     }
 
-    v9 = [(_MSStickerDragPreviewContainerView *)self finalUIKitDropCompletion];
-    v10 = _Block_copy(v9);
+    finalUIKitDropCompletion4 = [(_MSStickerDragPreviewContainerView *)self finalUIKitDropCompletion];
+    v10 = _Block_copy(finalUIKitDropCompletion4);
     v22 = 134219010;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
     v25 = v5;
     v26 = 2112;
@@ -316,63 +316,63 @@ LABEL_14:
   }
 }
 
-- (void)performAfterDropAnimation:(id)a3
+- (void)performAfterDropAnimation:(id)animation
 {
-  [(_MSStickerDragPreviewContainerView *)self setClientDropCompletion:a3];
+  [(_MSStickerDragPreviewContainerView *)self setClientDropCompletion:animation];
 
   [(_MSStickerDragPreviewContainerView *)self finalizeDropIfNecessary];
 }
 
-- (void)setDefersFinalDropAnimationCompletion:(BOOL)a3
+- (void)setDefersFinalDropAnimationCompletion:(BOOL)completion
 {
-  if (self->_defersFinalDropAnimationCompletion != a3)
+  if (self->_defersFinalDropAnimationCompletion != completion)
   {
-    self->_defersFinalDropAnimationCompletion = a3;
+    self->_defersFinalDropAnimationCompletion = completion;
     [(_MSStickerDragPreviewContainerView *)self finalizeDropIfNecessary];
   }
 }
 
-- (void)setDropAnimationIsComplete:(BOOL)a3
+- (void)setDropAnimationIsComplete:(BOOL)complete
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_dropAnimationIsComplete != a3)
+  if (self->_dropAnimationIsComplete != complete)
   {
-    v3 = a3;
+    completeCopy = complete;
     v5 = ms_defaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (completeCopy)
       {
         v6 = @"YES";
       }
 
       v7 = 134218242;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
       v10 = v6;
       _os_log_impl(&dword_1CADE6000, v5, OS_LOG_TYPE_DEFAULT, "<_MSStickerDragPreviewContainerView: %p> setDropAnimationIsComplete: %@", &v7, 0x16u);
     }
 
-    self->_dropAnimationIsComplete = v3;
+    self->_dropAnimationIsComplete = completeCopy;
     [(_MSStickerDragPreviewContainerView *)self finalizeDropIfNecessary];
   }
 }
 
-- (void)reversePeelAnimationToPoint:(CGPoint)a3 forPlacement:(BOOL)a4 shouldShrink:(BOOL)a5 completionBlock:(id)a6
+- (void)reversePeelAnimationToPoint:(CGPoint)point forPlacement:(BOOL)placement shouldShrink:(BOOL)shrink completionBlock:(id)block
 {
-  v6 = a5;
-  v7 = a4;
-  y = a3.y;
-  x = a3.x;
-  v11 = a6;
+  shrinkCopy = shrink;
+  placementCopy = placement;
+  y = point.y;
+  x = point.x;
+  blockCopy = block;
   v12 = objc_opt_class();
   LODWORD(v13) = 1061997773;
   v14 = [v12 springAnimationWithKeyPath:@"transform.scale.xy" speed:v13];
   v15 = v14;
   v100 = v14;
-  v99 = v7;
-  if (v6)
+  v99 = placementCopy;
+  if (shrinkCopy)
   {
     [v14 setToValue:&unk_1F4AC7118];
   }
@@ -380,7 +380,7 @@ LABEL_14:
   else
   {
     v16 = MEMORY[0x1E696AD98];
-    if (v7)
+    if (placementCopy)
     {
       [(_MSStickerDragPreviewContainerView *)self dragViewScale];
     }
@@ -394,9 +394,9 @@ LABEL_14:
     [v15 setToValue:v17];
   }
 
-  v18 = [(_MSStickerDragPreviewContainerView *)self meshLayer];
-  v19 = [v18 presentationLayer];
-  [v19 position];
+  meshLayer = [(_MSStickerDragPreviewContainerView *)self meshLayer];
+  presentationLayer = [meshLayer presentationLayer];
+  [presentationLayer position];
   v21 = v20;
   v23 = v22;
 
@@ -411,9 +411,9 @@ LABEL_14:
   v29 = [v28 valueWithCGPoint:?];
   [v26 setToValue:v29];
 
-  v30 = [(_MSStickerDragPreviewContainerView *)self peelLayer];
-  v31 = [v30 presentationLayer];
-  [v31 position];
+  peelLayer = [(_MSStickerDragPreviewContainerView *)self peelLayer];
+  presentationLayer2 = [peelLayer presentationLayer];
+  [presentationLayer2 position];
   v33 = v32;
   v35 = v34;
 
@@ -428,9 +428,9 @@ LABEL_14:
   v41 = [v40 valueWithCGPoint:?];
   [v38 setToValue:v41];
 
-  v42 = [(_MSStickerDragPreviewContainerView *)self shineLayer];
-  v43 = [v42 presentationLayer];
-  [v43 position];
+  shineLayer = [(_MSStickerDragPreviewContainerView *)self shineLayer];
+  presentationLayer3 = [shineLayer presentationLayer];
+  [presentationLayer3 position];
   v45 = v44;
   v47 = v46;
 
@@ -445,9 +445,9 @@ LABEL_14:
   v53 = [v52 valueWithCGPoint:?];
   [v50 setToValue:v53];
 
-  v54 = [(_MSStickerDragPreviewContainerView *)self shadowLayer];
-  v55 = [v54 presentationLayer];
-  [v55 position];
+  shadowLayer = [(_MSStickerDragPreviewContainerView *)self shadowLayer];
+  presentationLayer4 = [shadowLayer presentationLayer];
+  [presentationLayer4 position];
   v57 = v56;
   v59 = v58;
 
@@ -463,10 +463,10 @@ LABEL_14:
   [v62 setToValue:v65];
 
   [v62 setBeginTime:CACurrentMediaTime() + 0.18];
-  if (v6)
+  if (shrinkCopy)
   {
-    v66 = [(_MSStickerDragPreviewContainerView *)self layer];
-    [v66 position];
+    layer = [(_MSStickerDragPreviewContainerView *)self layer];
+    [layer position];
     v68 = v67;
     v70 = v69;
 
@@ -494,31 +494,31 @@ LABEL_14:
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:0.310000002];
-  v79 = [(_MSStickerDragPreviewContainerView *)self layer];
-  [v79 addAnimation:v100 forKey:@"scaleUpAnimation"];
+  layer2 = [(_MSStickerDragPreviewContainerView *)self layer];
+  [layer2 addAnimation:v100 forKey:@"scaleUpAnimation"];
 
-  v80 = [(_MSStickerDragPreviewContainerView *)self meshLayer];
-  [v80 addAnimation:v26 forKey:@"meshAnimation"];
+  meshLayer2 = [(_MSStickerDragPreviewContainerView *)self meshLayer];
+  [meshLayer2 addAnimation:v26 forKey:@"meshAnimation"];
 
-  v81 = [(_MSStickerDragPreviewContainerView *)self peelLayer];
-  [v81 addAnimation:v38 forKey:@"peelAnimation"];
+  peelLayer2 = [(_MSStickerDragPreviewContainerView *)self peelLayer];
+  [peelLayer2 addAnimation:v38 forKey:@"peelAnimation"];
 
-  v82 = [(_MSStickerDragPreviewContainerView *)self shineLayer];
-  [v82 addAnimation:v50 forKey:@"shineAnimation"];
+  shineLayer2 = [(_MSStickerDragPreviewContainerView *)self shineLayer];
+  [shineLayer2 addAnimation:v50 forKey:@"shineAnimation"];
 
-  v83 = [(_MSStickerDragPreviewContainerView *)self shadowLayer];
-  [v83 addAnimation:v62 forKey:@"shadowAnimation"];
+  shadowLayer2 = [(_MSStickerDragPreviewContainerView *)self shadowLayer];
+  [shadowLayer2 addAnimation:v62 forKey:@"shadowAnimation"];
 
   if (v73)
   {
-    v84 = [(_MSStickerDragPreviewContainerView *)self layer];
-    [v84 addAnimation:v73 forKey:@"moveAnimation"];
+    layer3 = [(_MSStickerDragPreviewContainerView *)self layer];
+    [layer3 addAnimation:v73 forKey:@"moveAnimation"];
   }
 
   if (v78)
   {
-    v85 = [(_MSStickerDragPreviewContainerView *)self layer];
-    [v85 addAnimation:v78 forKey:@"opacityAnimation"];
+    layer4 = [(_MSStickerDragPreviewContainerView *)self layer];
+    [layer4 addAnimation:v78 forKey:@"opacityAnimation"];
   }
 
   [MEMORY[0x1E6979518] commit];
@@ -529,8 +529,8 @@ LABEL_14:
     block[1] = 3221225472;
     block[2] = __108___MSStickerDragPreviewContainerView_reversePeelAnimationToPoint_forPlacement_shouldShrink_completionBlock___block_invoke;
     block[3] = &unk_1E83A2CC0;
-    v105 = v11;
-    v87 = v11;
+    v105 = blockCopy;
+    v87 = blockCopy;
     dispatch_after(v86, MEMORY[0x1E69E96A0], block);
     v88 = v105;
   }
@@ -566,23 +566,23 @@ LABEL_14:
     v101[1] = 3221225472;
     v101[2] = __108___MSStickerDragPreviewContainerView_reversePeelAnimationToPoint_forPlacement_shouldShrink_completionBlock___block_invoke_3;
     v101[3] = &unk_1E83A2DD8;
-    v102 = v11;
-    v98 = v11;
+    v102 = blockCopy;
+    v98 = blockCopy;
     [v97 animateWithDuration:0 delay:v103 usingSpringWithDamping:v101 initialSpringVelocity:0.75 options:0.0 animations:0.6 completion:0.0];
     v88 = v102;
   }
 }
 
-- (void)_preparePreviewContainerWithPreview:(id)a3 source:(id)a4 initialTransform:(CGAffineTransform *)a5
+- (void)_preparePreviewContainerWithPreview:(id)preview source:(id)source initialTransform:(CGAffineTransform *)transform
 {
   v144[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v127 = a4;
+  previewCopy = preview;
+  sourceCopy = source;
   [(_MSStickerDragPreviewContainerView *)self bounds];
   width = v8;
   height = v10;
-  v12 = [(_MSStickerDragPreviewContainerView *)self layer];
-  [v12 anchorPoint];
+  layer = [(_MSStickerDragPreviewContainerView *)self layer];
+  [layer anchorPoint];
   v14 = v13;
   v16 = v15;
 
@@ -597,10 +597,10 @@ LABEL_14:
   CGAffineTransformInvert(&v141, &m);
   if ([(_MSStickerDragPreviewContainerView *)self isDropAnimation])
   {
-    [v7 convertSize:self fromView:{width, height}];
+    [previewCopy convertSize:self fromView:{width, height}];
     v19 = v18;
     v21 = v20;
-    [v7 convertPoint:self fromView:{v14, v16}];
+    [previewCopy convertPoint:self fromView:{v14, v16}];
     v14 = v22;
     m = v141;
     v145.origin.x = 0.0;
@@ -612,13 +612,13 @@ LABEL_14:
     height = v146.size.height;
   }
 
-  v23 = [(_MSStickerDragPreviewContainerView *)self isDropAnimation];
+  isDropAnimation = [(_MSStickerDragPreviewContainerView *)self isDropAnimation];
   [(_MSStickerDragPreviewContainerView *)self bounds];
   x = v24;
   y = v25;
   v30 = v26;
   v31 = v27;
-  if (v23)
+  if (isDropAnimation)
   {
     v147 = CGRectInset(*&v24, width * 0.125, height * 0.125);
     x = v147.origin.x;
@@ -627,7 +627,7 @@ LABEL_14:
     v31 = v147.size.height;
   }
 
-  v32 = [MEMORY[0x1E6979530] layer];
+  layer2 = [MEMORY[0x1E6979530] layer];
   v33 = *(MEMORY[0x1E69792E8] + 48);
   *&m.tx = *(MEMORY[0x1E69792E8] + 32);
   v136 = v33;
@@ -641,17 +641,17 @@ LABEL_14:
   v140 = v36;
   *&v138 = v34;
   *(&v138 + 1) = 0xBF6B4E81C0000000;
-  [v32 setSublayerTransform:&m];
-  [v32 setFrame:{x, y, v30, v31}];
-  v37 = [(_MSStickerDragPreviewContainerView *)self layer];
-  [v37 addSublayer:v32];
+  [layer2 setSublayerTransform:&m];
+  [layer2 setFrame:{x, y, v30, v31}];
+  layer3 = [(_MSStickerDragPreviewContainerView *)self layer];
+  [layer3 addSublayer:layer2];
 
-  [(_MSStickerDragPreviewContainerView *)self setPerspectiveLayer:v32];
+  [(_MSStickerDragPreviewContainerView *)self setPerspectiveLayer:layer2];
   v126 = width;
   v38 = height * 1.1;
   v39 = width * 1.25;
   v40 = v14 * width;
-  v41 = [MEMORY[0x1E6979398] layer];
+  layer4 = [MEMORY[0x1E6979398] layer];
   if ([(_MSStickerDragPreviewContainerView *)self isDropAnimation])
   {
     v42 = 1.2;
@@ -663,106 +663,106 @@ LABEL_14:
   }
 
   v43 = [objc_opt_class() meshTransformWithContentScale:v42];
-  [v41 setMeshTransform:v43];
+  [layer4 setMeshTransform:v43];
 
-  [v41 setPosition:{v40, -(height * 1.1 - height * v14)}];
-  [v41 setBounds:{0.0, 0.0, v39, v38 + v38 + height * 1.25}];
-  [v41 setRasterizationScale:2.8];
-  [v32 addSublayer:v41];
-  [(_MSStickerDragPreviewContainerView *)self setMeshLayer:v41];
-  [v41 position];
+  [layer4 setPosition:{v40, -(height * 1.1 - height * v14)}];
+  [layer4 setBounds:{0.0, 0.0, v39, v38 + v38 + height * 1.25}];
+  [layer4 setRasterizationScale:2.8];
+  [layer2 addSublayer:layer4];
+  [(_MSStickerDragPreviewContainerView *)self setMeshLayer:layer4];
+  [layer4 position];
   [(_MSStickerDragPreviewContainerView *)self setMeshLayerStartPosition:?];
-  v44 = [MEMORY[0x1E6979398] layer];
-  [v44 setPosition:{v14 * v39, v38 + (v38 + v38 + height * 1.25) * 0.5}];
-  [v44 setBounds:{0.0, 0.0, v126, height}];
-  [v41 addSublayer:v44];
-  [(_MSStickerDragPreviewContainerView *)self setPeelLayer:v44];
-  [v44 position];
+  layer5 = [MEMORY[0x1E6979398] layer];
+  [layer5 setPosition:{v14 * v39, v38 + (v38 + v38 + height * 1.25) * 0.5}];
+  [layer5 setBounds:{0.0, 0.0, v126, height}];
+  [layer4 addSublayer:layer5];
+  [(_MSStickerDragPreviewContainerView *)self setPeelLayer:layer5];
+  [layer5 position];
   [(_MSStickerDragPreviewContainerView *)self setPeelLayerStartPosition:?];
-  [(_MSStickerDragPreviewContainerView *)self addSubview:v7];
-  [(_MSStickerDragPreviewContainerView *)self setPreviewView:v7];
-  v45 = [v7 layer];
+  [(_MSStickerDragPreviewContainerView *)self addSubview:previewCopy];
+  [(_MSStickerDragPreviewContainerView *)self setPreviewView:previewCopy];
+  layer6 = [previewCopy layer];
   v46 = *MEMORY[0x1E6979DE8];
-  [v45 setContentsGravity:*MEMORY[0x1E6979DE8]];
-  [v44 bounds];
+  [layer6 setContentsGravity:*MEMORY[0x1E6979DE8]];
+  [layer5 bounds];
   MidX = CGRectGetMidX(v148);
-  [v44 bounds];
-  [v45 setPosition:{MidX, CGRectGetMidY(v149)}];
+  [layer5 bounds];
+  [layer6 setPosition:{MidX, CGRectGetMidY(v149)}];
   v143 = @"contents";
-  v48 = [MEMORY[0x1E695DFB0] null];
-  v144[0] = v48;
+  null = [MEMORY[0x1E695DFB0] null];
+  v144[0] = null;
   v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v144 forKeys:&v143 count:1];
-  [v45 setActions:v49];
+  [layer6 setActions:v49];
 
-  [(_MSStickerDragPreviewContainerView *)self setPeelImageLayer:v45];
-  [v44 addSublayer:v45];
-  v50 = [(_MSStickerDragPreviewContainerView *)self image];
+  [(_MSStickerDragPreviewContainerView *)self setPeelImageLayer:layer6];
+  [layer5 addSublayer:layer6];
+  image = [(_MSStickerDragPreviewContainerView *)self image];
 
-  if (v50)
+  if (image)
   {
-    v51 = [(_MSStickerDragPreviewContainerView *)self image];
-    v52 = [(_MSStickerDragPreviewContainerView *)self peelMaskImageFromImage:v51];
+    image2 = [(_MSStickerDragPreviewContainerView *)self image];
+    currentDropPreviewSnapshot2 = [(_MSStickerDragPreviewContainerView *)self peelMaskImageFromImage:image2];
 
-    v53 = [v52 CGImage];
+    cGImage = [currentDropPreviewSnapshot2 CGImage];
   }
 
   else
   {
-    v54 = [v127 layer];
-    v55 = [v54 contents];
+    layer7 = [sourceCopy layer];
+    contents = [layer7 contents];
 
-    if (v55)
+    if (contents)
     {
-      v56 = [v127 layer];
-      v57 = [v56 contents];
+      layer8 = [sourceCopy layer];
+      contents2 = [layer8 contents];
 
       v58 = objc_alloc_init(MEMORY[0x1E69DD250]);
       [(_MSStickerDragPreviewContainerView *)self setCurrentDropPreviewSnapshot:v58];
 
-      [v127 frame];
+      [sourceCopy frame];
       v60 = v59;
       v62 = v61;
       v64 = v63;
       v66 = v65;
-      v67 = [(_MSStickerDragPreviewContainerView *)self currentDropPreviewSnapshot];
-      [v67 setFrame:{v60, v62, v64, v66}];
+      currentDropPreviewSnapshot = [(_MSStickerDragPreviewContainerView *)self currentDropPreviewSnapshot];
+      [currentDropPreviewSnapshot setFrame:{v60, v62, v64, v66}];
 
-      v52 = [(_MSStickerDragPreviewContainerView *)self currentDropPreviewSnapshot];
-      v68 = [v52 layer];
-      [v68 setContents:v57];
+      currentDropPreviewSnapshot2 = [(_MSStickerDragPreviewContainerView *)self currentDropPreviewSnapshot];
+      layer9 = [currentDropPreviewSnapshot2 layer];
+      [layer9 setContents:contents2];
 
-      v53 = v57;
+      cGImage = contents2;
     }
 
     else
     {
-      v52 = [v127 snapshotViewAfterScreenUpdates:1];
-      v69 = [v52 layer];
-      v70 = [v69 contents];
+      currentDropPreviewSnapshot2 = [sourceCopy snapshotViewAfterScreenUpdates:1];
+      layer10 = [currentDropPreviewSnapshot2 layer];
+      contents3 = [layer10 contents];
 
-      v53 = v70;
-      [(_MSStickerDragPreviewContainerView *)self setCurrentDropPreviewSnapshot:v52];
+      cGImage = contents3;
+      [(_MSStickerDragPreviewContainerView *)self setCurrentDropPreviewSnapshot:currentDropPreviewSnapshot2];
     }
   }
 
-  if (v53)
+  if (cGImage)
   {
-    v71 = [MEMORY[0x1E6979398] layer];
-    [v71 setContents:v53];
-    [v7 bounds];
-    [v71 setFrame:?];
-    [v71 setContentsGravity:v46];
-    [(_MSStickerDragPreviewContainerView *)self setPeelMaskLayer:v71];
+    layer11 = [MEMORY[0x1E6979398] layer];
+    [layer11 setContents:cGImage];
+    [previewCopy bounds];
+    [layer11 setFrame:?];
+    [layer11 setContentsGravity:v46];
+    [(_MSStickerDragPreviewContainerView *)self setPeelMaskLayer:layer11];
     v72 = objc_alloc_init(MEMORY[0x1E6979398]);
-    [v45 bounds];
+    [layer6 bounds];
     [v72 setBounds:?];
-    [v45 position];
+    [layer6 position];
     [v72 setPosition:?];
-    v124 = v53;
-    v125 = v7;
-    if (v45)
+    v124 = cGImage;
+    v125 = previewCopy;
+    if (layer6)
     {
-      [v45 transform];
+      [layer6 transform];
     }
 
     else
@@ -782,9 +782,9 @@ LABEL_14:
     m = v129;
     v136 = v130;
     [v72 setTransform:&m];
-    [v72 setMask:v71];
-    [v44 addSublayer:v72];
-    v123 = v71;
+    [v72 setMask:layer11];
+    [layer5 addSublayer:v72];
+    v123 = layer11;
     v73 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v122 = v73;
     v74 = [MEMORY[0x1E69DCAB8] imageNamed:@"StickerShine" inBundle:v73 compatibleWithTraitCollection:0];
@@ -798,22 +798,22 @@ LABEL_14:
       v76 = v78;
     }
 
-    v79 = [MEMORY[0x1E6979398] layer];
-    [v79 setContents:{objc_msgSend(v74, "CGImage")}];
+    layer12 = [MEMORY[0x1E6979398] layer];
+    [layer12 setContents:{objc_msgSend(v74, "CGImage")}];
     [v72 bounds];
     v80 = round(CGRectGetWidth(v151) - v76) * 0.5;
     [v74 size];
     v82 = -v81;
     [v74 size];
-    [v79 setFrame:{v80, v82, v76, v83}];
+    [layer12 setFrame:{v80, v82, v76, v83}];
     LODWORD(v84) = 1035489772;
-    [v79 setOpacity:v84];
+    [layer12 setOpacity:v84];
     v85 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-    [v79 setCompositingFilter:v85];
+    [layer12 setCompositingFilter:v85];
 
-    [v72 addSublayer:v79];
-    [(_MSStickerDragPreviewContainerView *)self setShineLayer:v79];
-    [v79 position];
+    [v72 addSublayer:layer12];
+    [(_MSStickerDragPreviewContainerView *)self setShineLayer:layer12];
+    [layer12 position];
     [(_MSStickerDragPreviewContainerView *)self setShineLayerStartPosition:?];
     v86 = [MEMORY[0x1E69DCAB8] imageNamed:@"StickerShadow" inBundle:v73 compatibleWithTraitCollection:0];
     [v86 size];
@@ -826,59 +826,59 @@ LABEL_14:
       v88 = v90;
     }
 
-    v91 = [MEMORY[0x1E6979398] layer];
-    [v91 setContents:{objc_msgSend(v86, "CGImage")}];
+    layer13 = [MEMORY[0x1E6979398] layer];
+    [layer13 setContents:{objc_msgSend(v86, "CGImage")}];
     [v72 bounds];
     v92 = round(CGRectGetWidth(v153) - v88) * 0.5;
     [v86 size];
     v94 = -10.0 - v93;
     [v86 size];
-    [v91 setFrame:{v92, v94, v88, v95}];
+    [layer13 setFrame:{v92, v94, v88, v95}];
     LODWORD(v96) = 1043542835;
-    [v91 setOpacity:v96];
-    [v72 addSublayer:v91];
-    [(_MSStickerDragPreviewContainerView *)self setShadowLayer:v91];
-    [v91 position];
+    [layer13 setOpacity:v96];
+    [v72 addSublayer:layer13];
+    [(_MSStickerDragPreviewContainerView *)self setShadowLayer:layer13];
+    [layer13 position];
     [(_MSStickerDragPreviewContainerView *)self setShadowLayerStartPosition:?];
 
-    v53 = v124;
-    v7 = v125;
+    cGImage = v124;
+    previewCopy = v125;
   }
 
   if ([(_MSStickerDragPreviewContainerView *)self showDebugBorders])
   {
-    v97 = [MEMORY[0x1E69DC888] blueColor];
-    [v41 setBorderColor:{objc_msgSend(v97, "CGColor")}];
+    blueColor = [MEMORY[0x1E69DC888] blueColor];
+    [layer4 setBorderColor:{objc_msgSend(blueColor, "CGColor")}];
 
-    [v41 setBorderWidth:1.0];
-    v98 = [MEMORY[0x1E69DC888] redColor];
-    v99 = v53;
-    v100 = [v98 CGColor];
+    [layer4 setBorderWidth:1.0];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    v99 = cGImage;
+    cGColor = [redColor CGColor];
     [(_MSStickerDragPreviewContainerView *)self layer];
-    v101 = v32;
-    v103 = v102 = v7;
-    v104 = v100;
-    v53 = v99;
+    v101 = layer2;
+    v103 = v102 = previewCopy;
+    v104 = cGColor;
+    cGImage = v99;
     [v103 setBorderColor:v104];
 
-    v7 = v102;
-    v32 = v101;
+    previewCopy = v102;
+    layer2 = v101;
 
-    v105 = [(_MSStickerDragPreviewContainerView *)self layer];
-    [v105 setBorderWidth:1.0];
+    layer14 = [(_MSStickerDragPreviewContainerView *)self layer];
+    [layer14 setBorderWidth:1.0];
 
-    v106 = [MEMORY[0x1E69DC888] greenColor];
-    [v44 setBorderColor:{objc_msgSend(v106, "CGColor")}];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    [layer5 setBorderColor:{objc_msgSend(greenColor, "CGColor")}];
 
-    [v44 setBorderWidth:1.0];
-    v107 = [MEMORY[0x1E69DC888] yellowColor];
-    [v101 setBorderColor:{objc_msgSend(v107, "CGColor")}];
+    [layer5 setBorderWidth:1.0];
+    yellowColor = [MEMORY[0x1E69DC888] yellowColor];
+    [v101 setBorderColor:{objc_msgSend(yellowColor, "CGColor")}];
 
     [v101 setBorderWidth:1.0];
-    v108 = [MEMORY[0x1E69DC888] systemPurpleColor];
-    [v45 setBorderColor:{objc_msgSend(v108, "CGColor")}];
+    systemPurpleColor = [MEMORY[0x1E69DC888] systemPurpleColor];
+    [layer6 setBorderColor:{objc_msgSend(systemPurpleColor, "CGColor")}];
 
-    [v45 setBorderWidth:1.0];
+    [layer6 setBorderWidth:1.0];
   }
 
   if ([(_MSStickerDragPreviewContainerView *)self isDropAnimation])
@@ -894,15 +894,15 @@ LABEL_14:
     *&m.c = *&v128.m13;
     *&m.tx = *&v128.m21;
     v136 = *&v128.m23;
-    [v32 setTransform:&m];
-    [v41 position];
+    [layer2 setTransform:&m];
+    [layer4 position];
     v111 = v110;
-    [v41 position];
-    [v41 setPosition:{v111, v112 + v38 * 2.0}];
-    [v44 position];
+    [layer4 position];
+    [layer4 setPosition:{v111, v112 + v38 * 2.0}];
+    [layer5 position];
     v114 = v113;
-    [v44 position];
-    [v44 setPosition:{v114, v115 + v109 * 2.0}];
+    [layer5 position];
+    [layer5 setPosition:{v114, v115 + v109 * 2.0}];
     [(CALayer *)self->_shineLayer position];
     v117 = v116;
     [(CALayer *)self->_shineLayer position];
@@ -914,38 +914,38 @@ LABEL_14:
   }
 }
 
-- (void)_animateLiftAlongsideAnimator:(id)a3 completion:(id)a4
+- (void)_animateLiftAlongsideAnimator:(id)animator completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79___MSStickerDragPreviewContainerView__animateLiftAlongsideAnimator_completion___block_invoke;
   v8[3] = &unk_1E83A2C48;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 addAnimations:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [animator addAnimations:v8];
 }
 
-- (void)_animateLiftCancellationAlongsideAnimator:(id)a3 completion:(id)a4
+- (void)_animateLiftCancellationAlongsideAnimator:(id)animator completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  animatorCopy = animator;
+  completionCopy = completion;
+  if (animatorCopy)
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __91___MSStickerDragPreviewContainerView__animateLiftCancellationAlongsideAnimator_completion___block_invoke;
     v19[3] = &unk_1E83A2C20;
     v19[4] = self;
-    [v6 addAnimations:v19];
+    [animatorCopy addAnimations:v19];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __91___MSStickerDragPreviewContainerView__animateLiftCancellationAlongsideAnimator_completion___block_invoke_3;
     v17[3] = &unk_1E83A3178;
-    v18 = v7;
-    v8 = v7;
-    [v6 addCompletion:v17];
+    v18 = completionCopy;
+    v8 = completionCopy;
+    [animatorCopy addCompletion:v17];
     v9 = v18;
   }
 
@@ -958,35 +958,35 @@ LABEL_14:
     v15[1] = 3221225472;
     v15[2] = __91___MSStickerDragPreviewContainerView__animateLiftCancellationAlongsideAnimator_completion___block_invoke_4;
     v15[3] = &unk_1E83A2CC0;
-    v16 = v7;
-    v14 = v7;
+    v16 = completionCopy;
+    v14 = completionCopy;
     [(_MSStickerDragPreviewContainerView *)self reversePeelAnimationToPoint:0 forPlacement:0 shouldShrink:v15 completionBlock:v11, v13];
     v9 = v16;
   }
 }
 
-- (void)_animateDropAlongsideAnimator:(id)a3 completion:(id)a4
+- (void)_animateDropAlongsideAnimator:(id)animator completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  animatorCopy = animator;
+  completionCopy = completion;
   v8 = ms_defaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = animatorCopy;
     _os_log_impl(&dword_1CADE6000, v8, OS_LOG_TYPE_DEFAULT, "<_MSStickerDragPreviewContainerView: %p> _animateDropAlongsideAnimator animator: %@", buf, 0x16u);
   }
 
-  [(_MSStickerDragPreviewContainerView *)self setFinalUIKitDropCompletion:v7];
+  [(_MSStickerDragPreviewContainerView *)self setFinalUIKitDropCompletion:completionCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79___MSStickerDragPreviewContainerView__animateDropAlongsideAnimator_completion___block_invoke;
   v9[3] = &unk_1E83A2C20;
   v9[4] = self;
-  [v6 addAnimations:v9];
+  [animatorCopy addAnimations:v9];
 }
 
 - (CGPoint)originalCenter

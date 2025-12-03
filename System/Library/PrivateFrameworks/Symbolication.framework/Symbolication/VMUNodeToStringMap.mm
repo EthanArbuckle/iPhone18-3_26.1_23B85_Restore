@@ -1,14 +1,14 @@
 @interface VMUNodeToStringMap
 - (VMUNodeToStringMap)init;
-- (VMUNodeToStringMap)initWithCoder:(id)a3;
+- (VMUNodeToStringMap)initWithCoder:(id)coder;
 - (id).cxx_construct;
 - (id)description;
-- (id)stringForNode:(unsigned int)a3;
-- (unsigned)_indexForString:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateHexAddressesInStrings:(id)a3;
-- (void)resymbolicateObjectDescriptionStringsWithGraph:(id)a3;
-- (void)setString:(id)a3 forNode:(unsigned int)a4;
+- (id)stringForNode:(unsigned int)node;
+- (unsigned)_indexForString:(id)string;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateHexAddressesInStrings:(id)strings;
+- (void)resymbolicateObjectDescriptionStringsWithGraph:(id)graph;
+- (void)setString:(id)string forNode:(unsigned int)node;
 @end
 
 @implementation VMUNodeToStringMap
@@ -28,12 +28,12 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:1];
-  [v4 encodeObject:v5 forKey:@"classVersion"];
+  [coderCopy encodeObject:v5 forKey:@"classVersion"];
 
   v6 = objc_opt_new();
   [v6 serialize32:{-[VMUNodeToStringMap count](self, "count")}];
@@ -81,27 +81,27 @@
     while (v10);
   }
 
-  v13 = [v6 copyContiguousData];
-  [v4 encodeObject:v13 forKey:@"simpleSerializerData"];
+  copyContiguousData = [v6 copyContiguousData];
+  [coderCopy encodeObject:copyContiguousData forKey:@"simpleSerializerData"];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (VMUNodeToStringMap)initWithCoder:(id)a3
+- (VMUNodeToStringMap)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VMUNodeToStringMap *)self init];
   if (!v5)
   {
     goto LABEL_17;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"classVersion"];
-  v7 = [v6 unsignedIntValue];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"classVersion"];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  if (v7 == 1)
+  if (unsignedIntValue == 1)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"simpleSerializerData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"simpleSerializerData"];
     v9 = [[VMUSimpleDeserializer alloc] initWithData:v8];
     v30 = 0;
     v10 = [(VMUSimpleDeserializer *)v9 deserialize32WithError:&v30];
@@ -208,22 +208,22 @@ LABEL_18:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   for (i = self->_nodeToStringIndexMap.__table_.__first_node_.__next_; i; i = *i)
   {
     v6 = *(i + 4);
     v5 = *(i + 5);
     v7 = [(NSMutableArray *)self->_strings objectAtIndexedSubscript:v5];
-    [v3 appendFormat:@"%u  stringID %u %@\n", v6, v5, v7];
+    [string appendFormat:@"%u  stringID %u %@\n", v6, v5, v7];
   }
 
-  return v3;
+  return string;
 }
 
-- (unsigned)_indexForString:(id)a3
+- (unsigned)_indexForString:(id)string
 {
-  v9 = a3;
-  v4 = std::__hash_table<std::__hash_value_type<NSString * {__strong},unsigned int>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringHashFunctor,NSStringEqualsFunctor,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringEqualsFunctor,NSStringHashFunctor,true>,std::allocator<std::__hash_value_type<NSString * {__strong},unsigned int>>>::find<NSString * {__strong}>(&self->_stringToIndexMap.__table_.__bucket_list_.__ptr_, &v9);
+  stringCopy = string;
+  v4 = std::__hash_table<std::__hash_value_type<NSString * {__strong},unsigned int>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringHashFunctor,NSStringEqualsFunctor,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringEqualsFunctor,NSStringHashFunctor,true>,std::allocator<std::__hash_value_type<NSString * {__strong},unsigned int>>>::find<NSString * {__strong}>(&self->_stringToIndexMap.__table_.__bucket_list_.__ptr_, &stringCopy);
   if (v4)
   {
     v5 = (v4 + 3);
@@ -231,10 +231,10 @@ LABEL_18:
 
   else
   {
-    [(NSMutableArray *)self->_strings addObject:v9];
+    [(NSMutableArray *)self->_strings addObject:stringCopy];
     v8 = [(NSMutableArray *)self->_strings count]- 1;
     v5 = &v8;
-    std::__hash_table<std::__hash_value_type<NSString * {__strong},unsigned int>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringHashFunctor,NSStringEqualsFunctor,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringEqualsFunctor,NSStringHashFunctor,true>,std::allocator<std::__hash_value_type<NSString * {__strong},unsigned int>>>::__emplace_unique_key_args<NSString * {__strong},NSString * {__strong}&,unsigned int &>(&self->_stringToIndexMap.__table_.__bucket_list_.__ptr_, &v9);
+    std::__hash_table<std::__hash_value_type<NSString * {__strong},unsigned int>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringHashFunctor,NSStringEqualsFunctor,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},unsigned int>,NSStringEqualsFunctor,NSStringHashFunctor,true>,std::allocator<std::__hash_value_type<NSString * {__strong},unsigned int>>>::__emplace_unique_key_args<NSString * {__strong},NSString * {__strong}&,unsigned int &>(&self->_stringToIndexMap.__table_.__bucket_list_.__ptr_, &stringCopy);
   }
 
   v6 = *v5;
@@ -242,24 +242,24 @@ LABEL_18:
   return v6;
 }
 
-- (void)setString:(id)a3 forNode:(unsigned int)a4
+- (void)setString:(id)string forNode:(unsigned int)node
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  stringCopy = string;
+  nodeCopy = node;
+  if (stringCopy)
   {
-    [(VMUNodeToStringMap *)self _indexForString:v6];
-    std::__hash_table<std::__hash_value_type<unsigned int,unsigned int>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,unsigned int>>>::__emplace_unique_key_args<unsigned int,unsigned int &,unsigned int &>(&self->_nodeToStringIndexMap.__table_.__bucket_list_.__ptr_, &v7);
+    [(VMUNodeToStringMap *)self _indexForString:stringCopy];
+    std::__hash_table<std::__hash_value_type<unsigned int,unsigned int>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,unsigned int>>>::__emplace_unique_key_args<unsigned int,unsigned int &,unsigned int &>(&self->_nodeToStringIndexMap.__table_.__bucket_list_.__ptr_, &nodeCopy);
   }
 }
 
-- (id)stringForNode:(unsigned int)a3
+- (id)stringForNode:(unsigned int)node
 {
-  v7 = a3;
-  v4 = std::__hash_table<std::__hash_value_type<unsigned int,unsigned int>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,unsigned int>>>::find<unsigned int>(&self->_nodeToStringIndexMap.__table_.__bucket_list_.__ptr_, &v7);
+  nodeCopy = node;
+  v4 = std::__hash_table<std::__hash_value_type<unsigned int,unsigned int>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,unsigned int>>>::find<unsigned int>(&self->_nodeToStringIndexMap.__table_.__bucket_list_.__ptr_, &nodeCopy);
   if (v4)
   {
-    v5 = std::__hash_table<std::__hash_value_type<unsigned int,unsigned int>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,unsigned int>>>::find<unsigned int>(&self->_nodeToStringIndexMap.__table_.__bucket_list_.__ptr_, &v7);
+    v5 = std::__hash_table<std::__hash_value_type<unsigned int,unsigned int>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,unsigned int>>>::find<unsigned int>(&self->_nodeToStringIndexMap.__table_.__bucket_list_.__ptr_, &nodeCopy);
     if (!v5)
     {
       std::__throw_out_of_range[abi:ne200100]("unordered_map::at: key not found");
@@ -271,17 +271,17 @@ LABEL_18:
   return v4;
 }
 
-- (void)resymbolicateObjectDescriptionStringsWithGraph:(id)a3
+- (void)resymbolicateObjectDescriptionStringsWithGraph:(id)graph
 {
-  v4 = a3;
-  v13 = self;
+  graphCopy = graph;
+  selfCopy = self;
   LODWORD(self) = [(NSMutableArray *)self->_strings count];
   v5 = malloc_type_calloc(1uLL, ((self + 7) >> 3) + 4, 0xB2EC2458uLL);
   *v5 = self;
-  v6 = [v4 symbolStore];
-  [v6 symbolicator];
+  symbolStore = [graphCopy symbolStore];
+  [symbolStore symbolicator];
 
-  next = v13->_nodeToStringIndexMap.__table_.__first_node_.__next_;
+  next = selfCopy->_nodeToStringIndexMap.__table_.__first_node_.__next_;
   if (next)
   {
     v8 = v5 + 1;
@@ -311,9 +311,9 @@ LABEL_8:
 
     *(v8 + (v10 >> 3)) = v11 | v12;
 LABEL_6:
-    if (v4)
+    if (graphCopy)
     {
-      [v4 nodeDetails:v9];
+      [graphCopy nodeDetails:v9];
     }
 
     goto LABEL_8;
@@ -323,10 +323,10 @@ LABEL_9:
   free(v5);
 }
 
-- (void)enumerateHexAddressesInStrings:(id)a3
+- (void)enumerateHexAddressesInStrings:(id)strings
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringsCopy = strings;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -355,7 +355,7 @@ LABEL_9:
           {
             v13 = v12;
             v14 = strtoll([v12 UTF8String], 0, 16);
-            v4[2](v4, v14);
+            stringsCopy[2](stringsCopy, v14);
           }
 
           objc_autoreleasePoolPop(v11);

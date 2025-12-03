@@ -1,7 +1,7 @@
 @interface EKUIAvailabilityTimelineView
 - (EKUIAvailabilityTimelineView)init;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentWidth:(double)a3;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentWidth:(double)width;
 - (void)setLabels;
 @end
 
@@ -50,8 +50,8 @@
     v2->_bottomPixelBorder = v12;
 
     v14 = v2->_bottomPixelBorder;
-    v15 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v14 setBackgroundColor:v15];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v14 setBackgroundColor:separatorColor];
 
     [(EKUIAvailabilityTimelineView *)v2 addSubview:v2->_bottomPixelBorder];
   }
@@ -61,9 +61,9 @@
 
 - (void)setLabels
 {
-  v3 = [(EKUIAvailabilityTimelineView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x1E69DDC40]) != NSOrderedAscending;
+  traitCollection = [(EKUIAvailabilityTimelineView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC40]) != NSOrderedAscending;
 
   labels = self->_labels;
   v7[0] = MEMORY[0x1E69E9820];
@@ -110,22 +110,22 @@ void __41__EKUIAvailabilityTimelineView_setLabels__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)setContentWidth:(double)a3
+- (void)setContentWidth:(double)width
 {
   [(EKUIAvailabilityTimelineView *)self frame];
   v6 = v5;
-  [(EKUIAvailabilityTimelineView *)self setContentSize:a3, v5];
+  [(EKUIAvailabilityTimelineView *)self setContentSize:width, v5];
   self->_largestLabelWidth = 0.0;
   labels = self->_labels;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__EKUIAvailabilityTimelineView_setContentWidth___block_invoke;
   v8[3] = &unk_1E8440160;
-  *&v8[5] = a3;
+  *&v8[5] = width;
   *&v8[6] = v6;
   v8[4] = self;
   [(NSMutableArray *)labels enumerateObjectsUsingBlock:v8];
-  [(UIView *)self->_bottomPixelBorder setFrame:0.0, v6 + -1.0, a3, 0.5];
+  [(UIView *)self->_bottomPixelBorder setFrame:0.0, v6 + -1.0, width, 0.5];
   [(EKUIAvailabilityTimelineView *)self setNeedsLayout];
 }
 
@@ -151,11 +151,11 @@ void __48__EKUIAvailabilityTimelineView_setContentWidth___block_invoke(uint64_t 
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
   v3.receiver = self;
   v3.super_class = EKUIAvailabilityTimelineView;
-  [(EKUIAvailabilityTimelineView *)&v3 setContentOffset:a3.x, a3.y];
+  [(EKUIAvailabilityTimelineView *)&v3 setContentOffset:offset.x, offset.y];
 }
 
 @end

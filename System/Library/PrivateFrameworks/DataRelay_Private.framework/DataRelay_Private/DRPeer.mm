@@ -1,25 +1,25 @@
 @interface DRPeer
-- (DRPeer)initWithIdentifier:(id)a3;
-- (void)_activate:(id)a3;
-- (void)activate:(id)a3;
+- (DRPeer)initWithIdentifier:(id)identifier;
+- (void)_activate:(id)_activate;
+- (void)activate:(id)activate;
 - (void)dealloc;
-- (void)deviceFound:(id)a3 completion:(id)a4;
+- (void)deviceFound:(id)found completion:(id)completion;
 - (void)deviceLost;
 - (void)reset;
 @end
 
 @implementation DRPeer
 
-- (DRPeer)initWithIdentifier:(id)a3
+- (DRPeer)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = DRPeer;
   v6 = [(DRPeer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_idsIdentifier, a3);
+    objc_storeStrong(&v6->_idsIdentifier, identifier);
     v7->_requestedDataTypes = 0;
   }
 
@@ -32,75 +32,75 @@
   [(DRPeer *)self reset];
 
   v4 = objc_loadWeakRetained(&location);
-  v5 = [v4 internalDisconnectHandler];
+  internalDisconnectHandler = [v4 internalDisconnectHandler];
 
-  if (v5)
+  if (internalDisconnectHandler)
   {
     v6 = objc_loadWeakRetained(&location);
-    v7 = [v6 internalDisconnectHandler];
-    v7[2]();
+    internalDisconnectHandler2 = [v6 internalDisconnectHandler];
+    internalDisconnectHandler2[2]();
   }
 
   v8 = objc_loadWeakRetained(&location);
-  v9 = [v8 disconnectHandler];
+  disconnectHandler = [v8 disconnectHandler];
 
-  if (v9)
+  if (disconnectHandler)
   {
     v10 = objc_loadWeakRetained(&location);
-    v11 = [v10 disconnectHandler];
-    v11[2]();
+    disconnectHandler2 = [v10 disconnectHandler];
+    disconnectHandler2[2]();
   }
 
   objc_destroyWeak(&location);
 }
 
-- (void)deviceFound:(id)a3 completion:(id)a4
+- (void)deviceFound:(id)found completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  foundCopy = found;
+  completionCopy = completion;
   v8 = objc_initWeak(location, self);
-  v9 = [(DRPeer *)self idsIdentifier];
-  if ([v6 compareWithDeviceIdentifier:v9])
+  idsIdentifier = [(DRPeer *)self idsIdentifier];
+  if ([foundCopy compareWithDeviceIdentifier:idsIdentifier])
   {
 
     goto LABEL_4;
   }
 
   WeakRetained = objc_loadWeakRetained(location);
-  v11 = [WeakRetained idsIdentifier];
-  v12 = [v11 isEqualToString:@"RPDestinationIdentifierPairedCompanion"];
+  idsIdentifier2 = [WeakRetained idsIdentifier];
+  v12 = [idsIdentifier2 isEqualToString:@"RPDestinationIdentifierPairedCompanion"];
 
   if (v12)
   {
 LABEL_4:
     v13 = objc_loadWeakRetained(location);
-    v14 = [v13 deviceFoundClient];
-    [v14 invalidate];
+    deviceFoundClient = [v13 deviceFoundClient];
+    [deviceFoundClient invalidate];
 
     v15 = objc_loadWeakRetained(location);
-    v16 = [v15 rapportClient];
-    [v16 setDestinationDevice:v6];
+    rapportClient = [v15 rapportClient];
+    [rapportClient setDestinationDevice:foundCopy];
 
     if (gLogCategory_DRPeer <= 50 && (gLogCategory_DRPeer != -1 || _LogCategory_Initialize()))
     {
-      v34 = [v6 idsDeviceIdentifier];
+      idsDeviceIdentifier = [foundCopy idsDeviceIdentifier];
       LogPrintF();
     }
 
-    v19 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v20 = objc_loadWeakRetained(location);
-    v21 = [v20 discoveryStartTimestamp];
-    [v19 timeIntervalSinceDate:v21];
+    discoveryStartTimestamp = [v20 discoveryStartTimestamp];
+    [date timeIntervalSinceDate:discoveryStartTimestamp];
     v23 = v22;
 
     v24 = +[DataRelayAnalytics getInstance];
     [v24 updateRapportDiscoveryTime:v23];
 
     v25 = objc_loadWeakRetained(location);
-    v26 = [v25 discoveryTimer];
-    dispatch_source_cancel(v26);
+    discoveryTimer = [v25 discoveryTimer];
+    dispatch_source_cancel(discoveryTimer);
 
-    v27 = ([v6 statusFlags] & 0xF);
+    v27 = ([foundCopy statusFlags] & 0xF);
     if (v27 == 8)
     {
       v41[0] = MEMORY[0x277D85DD0];
@@ -109,8 +109,8 @@ LABEL_4:
       v41[3] = &unk_278F4E780;
       objc_copyWeak(&v42, location);
       v28 = objc_loadWeakRetained(location);
-      v29 = [v28 rapportClient];
-      [v29 setDisconnectHandler:v41];
+      rapportClient2 = [v28 rapportClient];
+      [rapportClient2 setDisconnectHandler:v41];
 
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
@@ -118,15 +118,15 @@ LABEL_4:
       v39[3] = &unk_278F4E780;
       objc_copyWeak(&v40, location);
       v30 = objc_loadWeakRetained(location);
-      v31 = [v30 rapportClient];
-      [v31 setErrorFlagsChangedHandler:v39];
+      rapportClient3 = [v30 rapportClient];
+      [rapportClient3 setErrorFlagsChangedHandler:v39];
 
       objc_destroyWeak(&v40);
       objc_destroyWeak(&v42);
     }
 
     v32 = objc_loadWeakRetained(location);
-    v33 = [v32 rapportClient];
+    rapportClient4 = [v32 rapportClient];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __33__DRPeer_deviceFound_completion___block_invoke_3;
@@ -134,8 +134,8 @@ LABEL_4:
     objc_copyWeak(v38, location);
     v38[1] = v27;
     v36[4] = self;
-    v37 = v7;
-    [v33 activateWithCompletion:v36];
+    v37 = completionCopy;
+    [rapportClient4 activateWithCompletion:v36];
 
     objc_destroyWeak(v38);
     goto LABEL_14;
@@ -143,9 +143,9 @@ LABEL_4:
 
   if (gLogCategory_DRPeer <= 50 && (gLogCategory_DRPeer != -1 || _LogCategory_Initialize()))
   {
-    v17 = [v6 idsDeviceIdentifier];
+    idsDeviceIdentifier2 = [foundCopy idsDeviceIdentifier];
     v18 = objc_loadWeakRetained(location);
-    v35 = [v18 idsIdentifier];
+    idsIdentifier3 = [v18 idsIdentifier];
     LogPrintF();
   }
 
@@ -311,9 +311,9 @@ uint64_t __33__DRPeer_deviceFound_completion___block_invoke_5(uint64_t a1, void 
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_activate:(id)a3
+- (void)_activate:(id)_activate
 {
-  v4 = a3;
+  _activateCopy = _activate;
   if (gLogCategory_DRPeer <= 50 && (gLogCategory_DRPeer != -1 || _LogCategory_Initialize()))
   {
     [DRPeer _activate:?];
@@ -335,7 +335,7 @@ uint64_t __33__DRPeer_deviceFound_completion___block_invoke_5(uint64_t a1, void 
   handler[1] = 3221225472;
   handler[2] = __20__DRPeer__activate___block_invoke;
   handler[3] = &unk_278F4EE60;
-  v12 = v4;
+  v12 = _activateCopy;
   handler[4] = self;
   v24 = v12;
   dispatch_source_set_event_handler(v11, handler);
@@ -418,17 +418,17 @@ void __20__DRPeer__activate___block_invoke_3(uint64_t a1, void *a2)
   }
 }
 
-- (void)activate:(id)a3
+- (void)activate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __19__DRPeer_activate___block_invoke;
   v7[3] = &unk_278F4EEB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activateCopy;
+  v6 = activateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

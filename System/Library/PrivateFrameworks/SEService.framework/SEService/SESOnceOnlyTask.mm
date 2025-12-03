@@ -1,14 +1,14 @@
 @interface SESOnceOnlyTask
 - (_TtC9SEService15SESOnceOnlyTask)init;
-- (_TtC9SEService15SESOnceOnlyTask)initWithIdentifier:(id)a3 task:(id)a4;
+- (_TtC9SEService15SESOnceOnlyTask)initWithIdentifier:(id)identifier task:(id)task;
 @end
 
 @implementation SESOnceOnlyTask
 
-- (_TtC9SEService15SESOnceOnlyTask)initWithIdentifier:(id)a3 task:(id)a4
+- (_TtC9SEService15SESOnceOnlyTask)initWithIdentifier:(id)identifier task:(id)task
 {
   ObjectType = swift_getObjectType();
-  v7 = _Block_copy(a4);
+  v7 = _Block_copy(task);
   v8 = sub_1C7C7D304();
   v10 = v9;
   v11 = swift_allocObject();

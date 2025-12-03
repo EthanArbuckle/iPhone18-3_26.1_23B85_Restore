@@ -1,17 +1,17 @@
 @interface WDDataProviderTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (void)_setupUI;
 @end
 
 @implementation WDDataProviderTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WDDataProviderTableViewCell" hasInstanceVariable:@"_checkmarkButton" withType:"UIButton"];
-  [v3 validateClass:@"WDDataProviderTableViewCell" hasInstanceVariable:@"_sourceStatusLabel" withType:"UILabel"];
-  [v3 validateClass:@"WDDataProviderTableViewCell" isKindOfClass:@"UITableViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WDDataProviderTableViewCell" hasInstanceVariable:@"_checkmarkButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"WDDataProviderTableViewCell" hasInstanceVariable:@"_sourceStatusLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"WDDataProviderTableViewCell" isKindOfClass:@"UITableViewCell"];
 }
 
 - (id)accessibilityLabel
@@ -42,13 +42,13 @@
 
   if (v7)
   {
-    v8 = 0;
+    accessibilityLabel = 0;
   }
 
   else
   {
     v9 = [(WDDataProviderTableViewCellAccessibility *)self safeValueForKey:@"_sourceStatusLabel"];
-    v8 = [v9 accessibilityLabel];
+    accessibilityLabel = [v9 accessibilityLabel];
   }
 
   LOBYTE(v16) = 0;
@@ -60,8 +60,8 @@
   }
 
   v11 = v10;
-  v12 = [v10 textLabel];
-  v13 = [v12 text];
+  textLabel = [v10 textLabel];
+  text = [textLabel text];
   v14 = __UIAXStringForVariables();
 
   return v14;

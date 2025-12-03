@@ -2,14 +2,14 @@
 + (id)logCategory;
 - (BOOL)isSyncNeeded;
 - (HMDHome)home;
-- (HMDLastSeenStatusManager)initWithHome:(id)a3 queue:(id)a4;
+- (HMDLastSeenStatusManager)initWithHome:(id)home queue:(id)queue;
 - (id)logIdentifier;
 - (void)_syncAllLastSeenData;
 - (void)_updatePenaltyBox;
-- (void)runTransactionsForHome:(id)a3;
+- (void)runTransactionsForHome:(id)home;
 - (void)start;
 - (void)stop;
-- (void)syncLastSeenStateForAccessory:(id)a3;
+- (void)syncLastSeenStateForAccessory:(id)accessory;
 @end
 
 @implementation HMDLastSeenStatusManager
@@ -23,10 +23,10 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDLastSeenStatusManager *)self home];
+  home = [(HMDLastSeenStatusManager *)self home];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 logIdentifier];
-  v5 = [v3 stringWithFormat:@"%@", v4];
+  logIdentifier = [home logIdentifier];
+  v5 = [v3 stringWithFormat:@"%@", logIdentifier];
 
   return v5;
 }
@@ -36,7 +36,7 @@
   v43 = *MEMORY[0x277D85DE8];
   [(HMDLastSeenStatusManager *)self setIsSyncScheduled:0];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -47,12 +47,12 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDLastSeenStatusManager *)v4 home];
-  v8 = v7;
-  if (!v7 || ([v7 isCurrentDeviceConfirmedPrimaryResident] & 1) == 0)
+  home = [(HMDLastSeenStatusManager *)selfCopy home];
+  v8 = home;
+  if (!home || ([home isCurrentDeviceConfirmedPrimaryResident] & 1) == 0)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v4;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -65,10 +65,10 @@
     goto LABEL_12;
   }
 
-  if (![(HMDLastSeenStatusManager *)v4 isStarted])
+  if (![(HMDLastSeenStatusManager *)selfCopy isStarted])
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v4;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -85,18 +85,18 @@ LABEL_12:
   }
 
   os_unfair_recursive_lock_lock_with_options();
-  [(HMDLastSeenStatusManager *)v4 _updatePenaltyBox];
+  [(HMDLastSeenStatusManager *)selfCopy _updatePenaltyBox];
   v9 = objc_autoreleasePoolPush();
-  v10 = v4;
+  v10 = selfCopy;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [(HMDLastSeenStatusManager *)v10 penaltyBoxAccessoryUUIDs];
+    penaltyBoxAccessoryUUIDs = [(HMDLastSeenStatusManager *)v10 penaltyBoxAccessoryUUIDs];
     *buf = 138543618;
     v36 = v12;
     v37 = 2112;
-    v38 = v13;
+    v38 = penaltyBoxAccessoryUUIDs;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Accessories in penalty box: %@", buf, 0x16u);
   }
 
@@ -121,12 +121,12 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v20);
-    v24 = [(HMDLastSeenStatusManager *)v21 penaltyBoxAccessoryUUIDs];
-    if ([v24 count])
+    penaltyBoxAccessoryUUIDs2 = [(HMDLastSeenStatusManager *)v21 penaltyBoxAccessoryUUIDs];
+    if ([penaltyBoxAccessoryUUIDs2 count])
     {
-      v25 = [(HMDLastSeenStatusManager *)v21 enableDelayedSync];
+      enableDelayedSync = [(HMDLastSeenStatusManager *)v21 enableDelayedSync];
 
-      if (v25)
+      if (enableDelayedSync)
       {
         [(HMDLastSeenStatusManager *)v21 setIsSyncScheduled:1];
         v26 = objc_autoreleasePoolPush();
@@ -135,28 +135,28 @@ LABEL_12:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
           v29 = HMFGetLogIdentifier();
-          v30 = [(HMDLastSeenStatusManager *)v27 penaltyBoxAccessoryUUIDs];
-          v31 = [(HMDLastSeenStatusManager *)v27 pendingSyncAccessoryUUIDs];
+          penaltyBoxAccessoryUUIDs3 = [(HMDLastSeenStatusManager *)v27 penaltyBoxAccessoryUUIDs];
+          pendingSyncAccessoryUUIDs = [(HMDLastSeenStatusManager *)v27 pendingSyncAccessoryUUIDs];
           *buf = 138544130;
           v36 = v29;
           v37 = 2048;
           v38 = 0x408C200000000000;
           v39 = 2112;
-          v40 = v30;
+          v40 = penaltyBoxAccessoryUUIDs3;
           v41 = 2112;
-          v42 = v31;
+          v42 = pendingSyncAccessoryUUIDs;
           _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_INFO, "%{public}@Scheduling next sync check after %0.2f secs, penalty box: %@, pending sync: %@", buf, 0x2Au);
         }
 
         objc_autoreleasePoolPop(v26);
         v32 = dispatch_time(0, 900000000000);
-        v33 = [(HMDLastSeenStatusManager *)v27 workQueue];
+        workQueue = [(HMDLastSeenStatusManager *)v27 workQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __48__HMDLastSeenStatusManager__syncAllLastSeenData__block_invoke;
         block[3] = &unk_27868A728;
         block[4] = v27;
-        dispatch_after(v32, v33, block);
+        dispatch_after(v32, workQueue, block);
       }
     }
 
@@ -182,15 +182,15 @@ LABEL_13:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [(HMDLastSeenStatusManager *)self penaltyBoxAccessoryUUIDs];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v39 count:16];
+  penaltyBoxAccessoryUUIDs = [(HMDLastSeenStatusManager *)self penaltyBoxAccessoryUUIDs];
+  v7 = [penaltyBoxAccessoryUUIDs countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v7)
   {
     v9 = v7;
     v10 = *v30;
     *&v8 = 138543874;
     v27 = v8;
-    v28 = self;
+    selfCopy = self;
     do
     {
       v11 = 0;
@@ -198,26 +198,26 @@ LABEL_13:
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(penaltyBoxAccessoryUUIDs);
         }
 
         v12 = *(*(&v29 + 1) + 8 * v11);
-        v13 = [(HMDLastSeenStatusManager *)self lastSeenRequestTime];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        lastSeenRequestTime = [(HMDLastSeenStatusManager *)self lastSeenRequestTime];
+        v14 = [lastSeenRequestTime objectForKeyedSubscript:v12];
         [v14 doubleValue];
         v16 = v4 - v15;
 
         if (v16 >= 900.0)
         {
           v17 = objc_autoreleasePoolPush();
-          v18 = self;
+          selfCopy2 = self;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
             HMFGetLogIdentifier();
             v20 = v9;
             v21 = v10;
-            v22 = v6;
+            v22 = penaltyBoxAccessoryUUIDs;
             v24 = v23 = v5;
             *buf = v27;
             v34 = v24;
@@ -228,10 +228,10 @@ LABEL_13:
             _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Removing accessory with UUID: %@ from penalty box, %0.2f secs since last sync request", buf, 0x20u);
 
             v5 = v23;
-            v6 = v22;
+            penaltyBoxAccessoryUUIDs = v22;
             v10 = v21;
             v9 = v20;
-            self = v28;
+            self = selfCopy;
           }
 
           objc_autoreleasePoolPop(v17);
@@ -242,40 +242,40 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v29 objects:v39 count:16];
+      v9 = [penaltyBoxAccessoryUUIDs countByEnumeratingWithState:&v29 objects:v39 count:16];
     }
 
     while (v9);
   }
 
-  v25 = [(HMDLastSeenStatusManager *)self penaltyBoxAccessoryUUIDs];
-  [v25 minusSet:v5];
+  penaltyBoxAccessoryUUIDs2 = [(HMDLastSeenStatusManager *)self penaltyBoxAccessoryUUIDs];
+  [penaltyBoxAccessoryUUIDs2 minusSet:v5];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runTransactionsForHome:(id)a3
+- (void)runTransactionsForHome:(id)home
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v43 = self;
+  homeCopy = home;
+  selfCopy = self;
   os_unfair_recursive_lock_lock_with_options();
-  v39 = v4;
-  v5 = [v4 backingStore];
+  v39 = homeCopy;
+  backingStore = [homeCopy backingStore];
   v6 = +[HMDBackingStoreTransactionOptions defaultLocalOptions];
-  v40 = [v5 transaction:@"LastSeenDataSync" options:v6];
+  v40 = [backingStore transaction:@"LastSeenDataSync" options:v6];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = [v39 accessories];
+  accessories = [v39 accessories];
   v8 = 0;
-  v9 = [v7 countByEnumeratingWithState:&v45 objects:v57 count:16];
+  v9 = [accessories countByEnumeratingWithState:&v45 objects:v57 count:16];
   if (v9)
   {
     v42 = *v46;
-    obj = v7;
+    obj = accessories;
     do
     {
       for (i = 0; i != v9; ++i)
@@ -286,27 +286,27 @@ LABEL_13:
         }
 
         v11 = *(*(&v45 + 1) + 8 * i);
-        v12 = [(HMDLastSeenStatusManager *)v43 pendingSyncAccessoryUUIDs];
-        v13 = [v11 uuid];
-        v14 = [v12 containsObject:v13];
+        pendingSyncAccessoryUUIDs = [(HMDLastSeenStatusManager *)selfCopy pendingSyncAccessoryUUIDs];
+        uuid = [v11 uuid];
+        v14 = [pendingSyncAccessoryUUIDs containsObject:uuid];
 
         if (v14)
         {
           v15 = objc_autoreleasePoolPush();
-          v16 = v43;
+          v16 = selfCopy;
           v17 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
             v18 = HMFGetLogIdentifier();
-            v19 = [v11 shortDescription];
-            v20 = [v11 lastSeenDate];
+            shortDescription = [v11 shortDescription];
+            lastSeenDate = [v11 lastSeenDate];
             v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v11, "isLowBattery")}];
             *buf = 138544130;
             v50 = v18;
             v51 = 2112;
-            v52 = v19;
+            v52 = shortDescription;
             v53 = 2112;
-            v54 = v20;
+            v54 = lastSeenDate;
             v55 = 2112;
             v56 = v21;
             _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Syncing last seen data for accessory: %@, last seen date: %@, low battery: %@", buf, 0x2Au);
@@ -314,30 +314,30 @@ LABEL_13:
 
           objc_autoreleasePoolPop(v15);
           v22 = [v11 transactionWithObjectChangeType:2];
-          v23 = [v11 lastSeenDate];
-          [v22 setLastSeenDate:v23];
+          lastSeenDate2 = [v11 lastSeenDate];
+          [v22 setLastSeenDate:lastSeenDate2];
 
           v24 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v11, "isLowBattery")}];
           [v22 setLowBattery:v24];
 
           [v40 add:v22];
-          v25 = [(HMDLastSeenStatusManager *)v16 pendingSyncAccessoryUUIDs];
-          v26 = [v11 uuid];
-          [v25 removeObject:v26];
+          pendingSyncAccessoryUUIDs2 = [(HMDLastSeenStatusManager *)v16 pendingSyncAccessoryUUIDs];
+          uuid2 = [v11 uuid];
+          [pendingSyncAccessoryUUIDs2 removeObject:uuid2];
 
           v8 = 1;
         }
       }
 
-      v7 = obj;
+      accessories = obj;
       v9 = [obj countByEnumeratingWithState:&v45 objects:v57 count:16];
     }
 
     while (v9);
   }
 
-  v27 = [(HMDLastSeenStatusManager *)v43 pendingSyncAccessoryUUIDs];
-  [v27 removeAllObjects];
+  pendingSyncAccessoryUUIDs3 = [(HMDLastSeenStatusManager *)selfCopy pendingSyncAccessoryUUIDs];
+  [pendingSyncAccessoryUUIDs3 removeAllObjects];
 
   if (v8)
   {
@@ -346,42 +346,42 @@ LABEL_13:
   }
 
   os_unfair_recursive_lock_unlock();
-  v28 = [(HMDLastSeenStatusManager *)v43 penaltyBoxAccessoryUUIDs];
-  if ([v28 count])
+  penaltyBoxAccessoryUUIDs = [(HMDLastSeenStatusManager *)selfCopy penaltyBoxAccessoryUUIDs];
+  if ([penaltyBoxAccessoryUUIDs count])
   {
-    v29 = [(HMDLastSeenStatusManager *)v43 enableDelayedSync];
+    enableDelayedSync = [(HMDLastSeenStatusManager *)selfCopy enableDelayedSync];
 
-    if (v29)
+    if (enableDelayedSync)
     {
-      [(HMDLastSeenStatusManager *)v43 setIsSyncScheduled:1];
+      [(HMDLastSeenStatusManager *)selfCopy setIsSyncScheduled:1];
       v30 = objc_autoreleasePoolPush();
-      v31 = v43;
+      v31 = selfCopy;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         v33 = HMFGetLogIdentifier();
-        v34 = [(HMDLastSeenStatusManager *)v31 penaltyBoxAccessoryUUIDs];
-        v35 = [(HMDLastSeenStatusManager *)v31 pendingSyncAccessoryUUIDs];
+        penaltyBoxAccessoryUUIDs2 = [(HMDLastSeenStatusManager *)v31 penaltyBoxAccessoryUUIDs];
+        pendingSyncAccessoryUUIDs4 = [(HMDLastSeenStatusManager *)v31 pendingSyncAccessoryUUIDs];
         *buf = 138544130;
         v50 = v33;
         v51 = 2048;
         v52 = 0x408C200000000000;
         v53 = 2112;
-        v54 = v34;
+        v54 = penaltyBoxAccessoryUUIDs2;
         v55 = 2112;
-        v56 = v35;
+        v56 = pendingSyncAccessoryUUIDs4;
         _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_INFO, "%{public}@Scheduling next sync check after %0.2f secs, penalty box: %@, pending sync: %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v30);
       v36 = dispatch_time(0, 900000000000);
-      v37 = [(HMDLastSeenStatusManager *)v31 workQueue];
+      workQueue = [(HMDLastSeenStatusManager *)v31 workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __51__HMDLastSeenStatusManager_runTransactionsForHome___block_invoke;
       block[3] = &unk_27868A728;
       block[4] = v31;
-      dispatch_after(v36, v37, block);
+      dispatch_after(v36, workQueue, block);
     }
   }
 
@@ -399,8 +399,8 @@ LABEL_13:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HMDLastSeenStatusManager *)self pendingSyncAccessoryUUIDs];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  pendingSyncAccessoryUUIDs = [(HMDLastSeenStatusManager *)self pendingSyncAccessoryUUIDs];
+  v4 = [pendingSyncAccessoryUUIDs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -411,12 +411,12 @@ LABEL_13:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pendingSyncAccessoryUUIDs);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [(HMDLastSeenStatusManager *)self penaltyBoxAccessoryUUIDs];
-        LODWORD(v8) = [v9 containsObject:v8];
+        penaltyBoxAccessoryUUIDs = [(HMDLastSeenStatusManager *)self penaltyBoxAccessoryUUIDs];
+        LODWORD(v8) = [penaltyBoxAccessoryUUIDs containsObject:v8];
 
         if (!v8)
         {
@@ -425,7 +425,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [pendingSyncAccessoryUUIDs countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -442,46 +442,46 @@ LABEL_11:
   return v10;
 }
 
-- (void)syncLastSeenStateForAccessory:(id)a3
+- (void)syncLastSeenStateForAccessory:(id)accessory
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDLastSeenStatusManager *)self home];
-  v6 = v5;
-  if (v5 && [v5 isCurrentDeviceConfirmedPrimaryResident])
+  accessoryCopy = accessory;
+  home = [(HMDLastSeenStatusManager *)self home];
+  v6 = home;
+  if (home && [home isCurrentDeviceConfirmedPrimaryResident])
   {
-    v7 = [(HMDLastSeenStatusManager *)self isStarted];
+    isStarted = [(HMDLastSeenStatusManager *)self isStarted];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     v11 = v10;
-    if (v7)
+    if (isStarted)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v44 = HMFGetLogIdentifier();
-        v45 = [v4 shortDescription];
-        v12 = [v4 lastSeenDate];
-        v13 = [MEMORY[0x277CBEAA8] distantPast];
-        v14 = [v12 isEqual:v13];
+        shortDescription = [accessoryCopy shortDescription];
+        lastSeenDate = [accessoryCopy lastSeenDate];
+        distantPast = [MEMORY[0x277CBEAA8] distantPast];
+        v14 = [lastSeenDate isEqual:distantPast];
         if (v14)
         {
-          v15 = @"distant past";
+          lastSeenDate2 = @"distant past";
         }
 
         else
         {
-          v15 = [v4 lastSeenDate];
+          lastSeenDate2 = [accessoryCopy lastSeenDate];
         }
 
-        [v4 isLowBattery];
+        [accessoryCopy isLowBattery];
         v17 = HMFBooleanToString();
         *buf = 138544130;
         v47 = v44;
         v48 = 2112;
-        v49 = v45;
+        v49 = shortDescription;
         v50 = 2112;
-        v51 = *&v15;
+        v51 = *&lastSeenDate2;
         v52 = 2112;
         v53 = v17;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Received request to sync last seen state for accessory: %@ with last seen date: %@, low battery: %@", buf, 0x2Au);
@@ -492,21 +492,21 @@ LABEL_11:
 
       objc_autoreleasePoolPop(v8);
       os_unfair_recursive_lock_lock_with_options();
-      v18 = [(HMDLastSeenStatusManager *)v9 pendingSyncAccessoryUUIDs];
-      v19 = [v4 uuid];
-      [v18 addObject:v19];
+      pendingSyncAccessoryUUIDs = [(HMDLastSeenStatusManager *)selfCopy pendingSyncAccessoryUUIDs];
+      uuid = [accessoryCopy uuid];
+      [pendingSyncAccessoryUUIDs addObject:uuid];
 
-      v20 = [(HMDLastSeenStatusManager *)v9 lastSeenRequestTime];
-      v21 = [v4 uuid];
-      v22 = [v20 objectForKeyedSubscript:v21];
+      lastSeenRequestTime = [(HMDLastSeenStatusManager *)selfCopy lastSeenRequestTime];
+      uuid2 = [accessoryCopy uuid];
+      v22 = [lastSeenRequestTime objectForKeyedSubscript:uuid2];
 
       if (v22)
       {
         HMFUptime();
         v24 = v23;
-        v25 = [(HMDLastSeenStatusManager *)v9 lastSeenRequestTime];
-        v26 = [v4 uuid];
-        v27 = [v25 objectForKeyedSubscript:v26];
+        lastSeenRequestTime2 = [(HMDLastSeenStatusManager *)selfCopy lastSeenRequestTime];
+        uuid3 = [accessoryCopy uuid];
+        v27 = [lastSeenRequestTime2 objectForKeyedSubscript:uuid3];
         [v27 doubleValue];
         v29 = v28;
 
@@ -514,44 +514,44 @@ LABEL_11:
         if (v30 < 900.0)
         {
           v31 = objc_autoreleasePoolPush();
-          v32 = v9;
+          v32 = selfCopy;
           v33 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
             v34 = HMFGetLogIdentifier();
-            v35 = [v4 uuid];
+            uuid4 = [accessoryCopy uuid];
             *buf = 138543874;
             v47 = v34;
             v48 = 2112;
-            v49 = v35;
+            v49 = uuid4;
             v50 = 2048;
             v51 = v30;
             _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_INFO, "%{public}@Adding accessory with UUID: %@ to penalty box, last sync request %0.2f secs ago", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v31);
-          v36 = [(HMDLastSeenStatusManager *)v32 penaltyBoxAccessoryUUIDs];
-          v37 = [v4 uuid];
-          [v36 addObject:v37];
+          penaltyBoxAccessoryUUIDs = [(HMDLastSeenStatusManager *)v32 penaltyBoxAccessoryUUIDs];
+          uuid5 = [accessoryCopy uuid];
+          [penaltyBoxAccessoryUUIDs addObject:uuid5];
         }
       }
 
       v38 = objc_alloc(MEMORY[0x277CCABB0]);
       HMFUptime();
       v39 = [v38 initWithDouble:?];
-      v40 = [(HMDLastSeenStatusManager *)v9 lastSeenRequestTime];
-      v41 = [v4 uuid];
-      [v40 setObject:v39 forKeyedSubscript:v41];
+      lastSeenRequestTime3 = [(HMDLastSeenStatusManager *)selfCopy lastSeenRequestTime];
+      uuid6 = [accessoryCopy uuid];
+      [lastSeenRequestTime3 setObject:v39 forKeyedSubscript:uuid6];
 
       os_unfair_recursive_lock_unlock();
-      if (![(HMDLastSeenStatusManager *)v9 isSyncScheduled])
+      if (![(HMDLastSeenStatusManager *)selfCopy isSyncScheduled])
       {
-        [(HMDLastSeenStatusManager *)v9 _syncAllLastSeenData];
+        [(HMDLastSeenStatusManager *)selfCopy _syncAllLastSeenData];
         goto LABEL_24;
       }
 
       v8 = objc_autoreleasePoolPush();
-      v9 = v9;
+      selfCopy = selfCopy;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -582,7 +582,7 @@ LABEL_24:
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -594,17 +594,17 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_recursive_lock_lock_with_options();
-  v7 = [(HMDLastSeenStatusManager *)v4 pendingSyncAccessoryUUIDs];
-  [v7 removeAllObjects];
+  pendingSyncAccessoryUUIDs = [(HMDLastSeenStatusManager *)selfCopy pendingSyncAccessoryUUIDs];
+  [pendingSyncAccessoryUUIDs removeAllObjects];
 
-  v8 = [(HMDLastSeenStatusManager *)v4 penaltyBoxAccessoryUUIDs];
-  [v8 removeAllObjects];
+  penaltyBoxAccessoryUUIDs = [(HMDLastSeenStatusManager *)selfCopy penaltyBoxAccessoryUUIDs];
+  [penaltyBoxAccessoryUUIDs removeAllObjects];
 
-  v9 = [(HMDLastSeenStatusManager *)v4 lastSeenRequestTime];
-  [v9 removeAllObjects];
+  lastSeenRequestTime = [(HMDLastSeenStatusManager *)selfCopy lastSeenRequestTime];
+  [lastSeenRequestTime removeAllObjects];
 
   os_unfair_recursive_lock_unlock();
-  [(HMDLastSeenStatusManager *)v4 setIsStarted:0];
+  [(HMDLastSeenStatusManager *)selfCopy setIsStarted:0];
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -612,7 +612,7 @@ LABEL_24:
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -623,17 +623,17 @@ LABEL_24:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDLastSeenStatusManager *)v4 home];
-  v8 = v7;
-  if (v7 && ([v7 isCurrentDeviceConfirmedPrimaryResident] & 1) != 0)
+  home = [(HMDLastSeenStatusManager *)selfCopy home];
+  v8 = home;
+  if (home && ([home isCurrentDeviceConfirmedPrimaryResident] & 1) != 0)
   {
-    [(HMDLastSeenStatusManager *)v4 setIsStarted:1];
+    [(HMDLastSeenStatusManager *)selfCopy setIsStarted:1];
     os_unfair_recursive_lock_lock_with_options();
-    if ([(HMDLastSeenStatusManager *)v4 enableDelayedSync])
+    if ([(HMDLastSeenStatusManager *)selfCopy enableDelayedSync])
     {
-      [(HMDLastSeenStatusManager *)v4 setIsSyncScheduled:1];
+      [(HMDLastSeenStatusManager *)selfCopy setIsSyncScheduled:1];
       v9 = objc_autoreleasePoolPush();
-      v10 = v4;
+      v10 = selfCopy;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -647,13 +647,13 @@ LABEL_24:
 
       objc_autoreleasePoolPop(v9);
       v13 = dispatch_time(0, 600000000000);
-      v14 = [(HMDLastSeenStatusManager *)v10 workQueue];
+      workQueue = [(HMDLastSeenStatusManager *)v10 workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __33__HMDLastSeenStatusManager_start__block_invoke;
       block[3] = &unk_27868A728;
       block[4] = v10;
-      dispatch_after(v13, v14, block);
+      dispatch_after(v13, workQueue, block);
     }
 
     os_unfair_recursive_lock_unlock();
@@ -662,7 +662,7 @@ LABEL_24:
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v4;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -678,18 +678,18 @@ LABEL_24:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDLastSeenStatusManager)initWithHome:(id)a3 queue:(id)a4
+- (HMDLastSeenStatusManager)initWithHome:(id)home queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = HMDLastSeenStatusManager;
   v8 = [(HMDLastSeenStatusManager *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_home, v6);
-    objc_storeStrong(&v9->_workQueue, a4);
+    objc_storeWeak(&v8->_home, homeCopy);
+    objc_storeStrong(&v9->_workQueue, queue);
     v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
     pendingSyncAccessoryUUIDs = v9->_pendingSyncAccessoryUUIDs;
     v9->_pendingSyncAccessoryUUIDs = v10;

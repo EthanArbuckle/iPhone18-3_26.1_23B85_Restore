@@ -1,14 +1,14 @@
 @interface _SBContinuityTouchEventSniffer
 - (SBWindowScene)windowScene;
 - (_SBContinuityTouchEventSnifferDelegate)delegate;
-- (void)handleEvent:(id)a3;
+- (void)handleEvent:(id)event;
 @end
 
 @implementation _SBContinuityTouchEventSniffer
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  if (![a3 type])
+  if (![event type])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained eventSnifferHandledQualifyingContinuityTouch:self];

@@ -1,5 +1,5 @@
 @interface CRCarPlayAppDenylist
-- (BOOL)containsBundleIdentifier:(id)a3;
+- (BOOL)containsBundleIdentifier:(id)identifier;
 - (CRCarPlayAppDenylist)init;
 - (id)_denylistPreference;
 - (void)_requestDenylistUpdate;
@@ -19,8 +19,8 @@
   {
     [(CRCarPlayAppDenylist *)v2 _setupConnection];
     v4 = MEMORY[0x1E695DFD8];
-    v5 = [(CRCarPlayAppDenylist *)v3 _denylistPreference];
-    v6 = [v4 setWithArray:v5];
+    _denylistPreference = [(CRCarPlayAppDenylist *)v3 _denylistPreference];
+    v6 = [v4 setWithArray:_denylistPreference];
     denylistedBundleIDs = v3->_denylistedBundleIDs;
     v3->_denylistedBundleIDs = v6;
 
@@ -48,8 +48,8 @@
 
 - (void)dealloc
 {
-  v3 = [(CRCarPlayAppDenylist *)self connection];
-  [v3 invalidate];
+  connection = [(CRCarPlayAppDenylist *)self connection];
+  [connection invalidate];
 
   v4.receiver = self;
   v4.super_class = CRCarPlayAppDenylist;
@@ -63,12 +63,12 @@
   return v2;
 }
 
-- (BOOL)containsBundleIdentifier:(id)a3
+- (BOOL)containsBundleIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CRCarPlayAppDenylist *)self denylistedBundleIDs];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  denylistedBundleIDs = [(CRCarPlayAppDenylist *)self denylistedBundleIDs];
+  v6 = [denylistedBundleIDs containsObject:identifierCopy];
 
   if (v6)
   {
@@ -76,7 +76,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = identifierCopy;
       _os_log_impl(&dword_1C81FC000, v7, OS_LOG_TYPE_DEFAULT, "app %@ is CarPlay denylisted", &v9, 0xCu);
     }
   }
@@ -86,8 +86,8 @@
 
 - (void)_requestDenylistUpdate
 {
-  v2 = [(CRCarPlayAppDenylist *)self connection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
+  connection = [(CRCarPlayAppDenylist *)self connection];
+  v3 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
 
   [v3 requestDenylistUpdate];
 }

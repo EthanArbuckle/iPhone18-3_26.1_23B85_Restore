@@ -1,14 +1,14 @@
 @interface PGPublicEventCriteriaFactory
-+ (id)publicEventCriteriaByCategoryForGraph:(id)a3 sceneTaxonomy:(id)a4 loggingConnection:(id)a5;
++ (id)publicEventCriteriaByCategoryForGraph:(id)graph sceneTaxonomy:(id)taxonomy loggingConnection:(id)connection;
 - (NSDictionary)disambiguationCriteriaByEventCategory;
 - (NSDictionary)highConfidenceCriteriaByEventCategory;
 - (NSDictionary)prohibitedCriteriaByEventCategory;
-- (PGPublicEventCriteriaFactory)initWithGraph:(id)a3 sceneTaxonomy:(id)a4 loggingConnection:(id)a5;
+- (PGPublicEventCriteriaFactory)initWithGraph:(id)graph sceneTaxonomy:(id)taxonomy loggingConnection:(id)connection;
 - (id)_appleEventsCriteriaArray;
 - (id)_artsAndMuseumsCriteriaArray;
 - (id)_danceCriteriaArray;
 - (id)_festivalsAndFairsCriteriaArray;
-- (id)_meaningCriteriaByEventCategoryForEventCategoriesByMeaningIdentifier:(id)a3 inferenceType:(unint64_t)a4;
+- (id)_meaningCriteriaByEventCategoryForEventCategoriesByMeaningIdentifier:(id)identifier inferenceType:(unint64_t)type;
 - (id)_musicConcertsCriteriaArray;
 - (id)_nightLifeCriteriaArray;
 - (id)_publicEventCriteriaByCategory;
@@ -21,9 +21,9 @@
 - (id)_appleEventsCriteriaArray
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D27780] appleEvents];
+  appleEvents = [MEMORY[0x277D27780] appleEvents];
   v4 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-  [(PGPublicEventCriteria *)v4 setEventCategory:v3];
+  [(PGPublicEventCriteria *)v4 setEventCategory:appleEvents];
   [(PGPublicEventCriteria *)v4 setMinimumTimeAttendance:300.0];
   [(PGPublicEventCriteria *)v4 setMaximumDistance:2000.0];
   [(PGPublicEventCriteria *)v4 setAllowsExpandingTimeAttendance:1];
@@ -39,18 +39,18 @@
 - (id)_festivalsAndFairsCriteriaArray
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D27780] festivalsAndFairs];
+  festivalsAndFairs = [MEMORY[0x277D27780] festivalsAndFairs];
   v4 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-  [(PGPublicEventCriteria *)v4 setEventCategory:v3];
+  [(PGPublicEventCriteria *)v4 setEventCategory:festivalsAndFairs];
   [(PGPublicEventCriteria *)v4 setMinimumTimeAttendance:12600.0];
   [(PGPublicEventCriteria *)v4 setMaximumDistance:1000.0];
   [(PGPublicEventCriteria *)v4 setMinimumAttendance:15000];
-  v5 = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
-  v6 = [v5 objectForKeyedSubscript:v3];
+  highConfidenceCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
+  v6 = [highConfidenceCriteriaByEventCategory objectForKeyedSubscript:festivalsAndFairs];
   [(PGPublicEventCriteria *)v4 setHighConfidenceCriteria:v6];
 
-  v7 = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
-  v8 = [v7 objectForKeyedSubscript:v3];
+  prohibitedCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
+  v8 = [prohibitedCriteriaByEventCategory objectForKeyedSubscript:festivalsAndFairs];
   [(PGPublicEventCriteria *)v4 setProhibitedCriteria:v8];
 
   [(PGPublicEventCriteria *)v4 setPromoteToHighConfidenceBasedOnCategory:1];
@@ -65,21 +65,21 @@
 - (id)_artsAndMuseumsCriteriaArray
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D27780] artsAndMuseums];
+  artsAndMuseums = [MEMORY[0x277D27780] artsAndMuseums];
   v4 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-  [(PGPublicEventCriteria *)v4 setEventCategory:v3];
+  [(PGPublicEventCriteria *)v4 setEventCategory:artsAndMuseums];
   [(PGPublicEventCriteria *)v4 setMinimumTimeAttendance:3600.0];
   [(PGPublicEventCriteria *)v4 setMaximumDistance:100.0];
-  v5 = [(PGPublicEventCriteriaFactory *)self disambiguationCriteriaByEventCategory];
-  v6 = [v5 objectForKeyedSubscript:v3];
+  disambiguationCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self disambiguationCriteriaByEventCategory];
+  v6 = [disambiguationCriteriaByEventCategory objectForKeyedSubscript:artsAndMuseums];
   [(PGPublicEventCriteria *)v4 setDisambiguationCriteria:v6];
 
-  v7 = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
-  v8 = [v7 objectForKeyedSubscript:v3];
+  highConfidenceCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
+  v8 = [highConfidenceCriteriaByEventCategory objectForKeyedSubscript:artsAndMuseums];
   [(PGPublicEventCriteria *)v4 setHighConfidenceCriteria:v8];
 
-  v9 = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
-  v10 = [v9 objectForKeyedSubscript:v3];
+  prohibitedCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
+  v10 = [prohibitedCriteriaByEventCategory objectForKeyedSubscript:artsAndMuseums];
   [(PGPublicEventCriteria *)v4 setProhibitedCriteria:v10];
 
   [(PGPublicEventCriteria *)v4 setPromoteToHighConfidenceBasedOnCategory:1];
@@ -94,15 +94,15 @@
 - (id)_nightLifeCriteriaArray
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D27780] nightLife];
-  v4 = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  nightLife = [MEMORY[0x277D27780] nightLife];
+  highConfidenceCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
+  v5 = [highConfidenceCriteriaByEventCategory objectForKeyedSubscript:nightLife];
 
-  v6 = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
-  v7 = [v6 objectForKeyedSubscript:v3];
+  prohibitedCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
+  v7 = [prohibitedCriteriaByEventCategory objectForKeyedSubscript:nightLife];
 
   v8 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-  [(PGPublicEventCriteria *)v8 setEventCategory:v3];
+  [(PGPublicEventCriteria *)v8 setEventCategory:nightLife];
   [(PGPublicEventCriteria *)v8 setMinimumTimeAttendance:2700.0];
   [(PGPublicEventCriteria *)v8 setMaximumDistance:100.0];
   [(PGPublicEventCriteria *)v8 setHighConfidenceCriteria:v5];
@@ -119,18 +119,18 @@
 - (id)_danceCriteriaArray
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D27780] dance];
+  dance = [MEMORY[0x277D27780] dance];
   v4 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-  [(PGPublicEventCriteria *)v4 setEventCategory:v3];
+  [(PGPublicEventCriteria *)v4 setEventCategory:dance];
   [(PGPublicEventCriteria *)v4 setMinimumTimeAttendance:2700.0];
   [(PGPublicEventCriteria *)v4 setMaximumDistance:100.0];
   [(PGPublicEventCriteria *)v4 setAllowsExpandingTimeAttendance:1];
-  v5 = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
-  v6 = [v5 objectForKeyedSubscript:v3];
+  highConfidenceCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
+  v6 = [highConfidenceCriteriaByEventCategory objectForKeyedSubscript:dance];
   [(PGPublicEventCriteria *)v4 setHighConfidenceCriteria:v6];
 
-  v7 = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
-  v8 = [v7 objectForKeyedSubscript:v3];
+  prohibitedCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
+  v8 = [prohibitedCriteriaByEventCategory objectForKeyedSubscript:dance];
   [(PGPublicEventCriteria *)v4 setProhibitedCriteria:v8];
 
   [(PGPublicEventCriteria *)v4 setPromoteToHighConfidenceBasedOnCategory:0];
@@ -145,18 +145,18 @@
 - (id)_theaterCriteriaArray
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D27780] theater];
+  theater = [MEMORY[0x277D27780] theater];
   v4 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-  [(PGPublicEventCriteria *)v4 setEventCategory:v3];
+  [(PGPublicEventCriteria *)v4 setEventCategory:theater];
   [(PGPublicEventCriteria *)v4 setMinimumTimeAttendance:2700.0];
   [(PGPublicEventCriteria *)v4 setMaximumDistance:100.0];
   [(PGPublicEventCriteria *)v4 setAllowsExpandingTimeAttendance:1];
-  v5 = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
-  v6 = [v5 objectForKeyedSubscript:v3];
+  highConfidenceCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
+  v6 = [highConfidenceCriteriaByEventCategory objectForKeyedSubscript:theater];
   [(PGPublicEventCriteria *)v4 setHighConfidenceCriteria:v6];
 
-  v7 = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
-  v8 = [v7 objectForKeyedSubscript:v3];
+  prohibitedCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
+  v8 = [prohibitedCriteriaByEventCategory objectForKeyedSubscript:theater];
   [(PGPublicEventCriteria *)v4 setProhibitedCriteria:v8];
 
   [(PGPublicEventCriteria *)v4 setPromoteToHighConfidenceBasedOnCategory:0];
@@ -171,28 +171,28 @@
 - (id)_musicConcertsCriteriaArray
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D27780] musicConcerts];
-  v4 = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  musicConcerts = [MEMORY[0x277D27780] musicConcerts];
+  highConfidenceCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
+  v5 = [highConfidenceCriteriaByEventCategory objectForKeyedSubscript:musicConcerts];
 
-  v6 = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
-  v7 = [v6 objectForKeyedSubscript:v3];
+  prohibitedCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
+  v7 = [prohibitedCriteriaByEventCategory objectForKeyedSubscript:musicConcerts];
 
   v8 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-  [(PGPublicEventCriteria *)v8 setEventCategory:v3];
+  [(PGPublicEventCriteria *)v8 setEventCategory:musicConcerts];
   [(PGPublicEventCriteria *)v8 setMinimumTimeAttendance:2700.0];
   [(PGPublicEventCriteria *)v8 setMaximumDistance:100.0];
   [(PGPublicEventCriteria *)v8 setAllowsExpandingTimeAttendance:1];
   [(PGPublicEventCriteria *)v8 setHighConfidenceCriteria:v5];
   [(PGPublicEventCriteria *)v8 setProhibitedCriteria:v7];
   [(PGPublicEventCriteria *)v8 setPromoteToHighConfidenceBasedOnCategory:0];
-  v9 = [(PGPublicEventCriteriaFactory *)self disambiguationCriteriaByEventCategory];
-  v10 = [v9 objectForKeyedSubscript:v3];
+  disambiguationCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self disambiguationCriteriaByEventCategory];
+  v10 = [disambiguationCriteriaByEventCategory objectForKeyedSubscript:musicConcerts];
 
   if ([v10 count])
   {
     v11 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-    [(PGPublicEventCriteria *)v11 setEventCategory:v3];
+    [(PGPublicEventCriteria *)v11 setEventCategory:musicConcerts];
     [(PGPublicEventCriteria *)v11 setMinimumTimeAttendance:1200.0];
     [(PGPublicEventCriteria *)v11 setMaximumDistance:250.0];
     [(PGPublicEventCriteria *)v11 setAllowsExpandingTimeAttendance:1];
@@ -201,7 +201,7 @@
     [(PGPublicEventCriteria *)v11 setProhibitedCriteria:v7];
     [(PGPublicEventCriteria *)v11 setPromoteToHighConfidenceBasedOnCategory:0];
     v12 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-    [(PGPublicEventCriteria *)v12 setEventCategory:v3];
+    [(PGPublicEventCriteria *)v12 setEventCategory:musicConcerts];
     [(PGPublicEventCriteria *)v12 setMinimumTimeAttendance:1200.0];
     [(PGPublicEventCriteria *)v12 setMaximumDistance:750.0];
     [(PGPublicEventCriteria *)v12 setAllowsExpandingTimeAttendance:1];
@@ -230,15 +230,15 @@
 - (id)_sportsCriteriaArray
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D27780] sports];
-  v4 = [(PGPublicEventCriteriaFactory *)self disambiguationCriteriaByEventCategory];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  sports = [MEMORY[0x277D27780] sports];
+  disambiguationCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self disambiguationCriteriaByEventCategory];
+  v5 = [disambiguationCriteriaByEventCategory objectForKeyedSubscript:sports];
 
-  v6 = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
-  v7 = [v6 objectForKeyedSubscript:v3];
+  highConfidenceCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self highConfidenceCriteriaByEventCategory];
+  v7 = [highConfidenceCriteriaByEventCategory objectForKeyedSubscript:sports];
 
-  v8 = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
-  v9 = [v8 objectForKeyedSubscript:v3];
+  prohibitedCriteriaByEventCategory = [(PGPublicEventCriteriaFactory *)self prohibitedCriteriaByEventCategory];
+  v9 = [prohibitedCriteriaByEventCategory objectForKeyedSubscript:sports];
 
   v10 = [v5 count];
   if (v10)
@@ -247,19 +247,19 @@
     if (v10 != 2)
     {
       v12 = +[PGLogging sharedLogging];
-      v13 = [v12 loggingConnection];
+      loggingConnection = [v12 loggingConnection];
 
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
         v26 = 2;
-        _os_log_error_impl(&dword_22F0FC000, v13, OS_LOG_TYPE_ERROR, "Number of sports disambiguation criteria must be %lu", buf, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Number of sports disambiguation criteria must be %lu", buf, 0xCu);
       }
     }
 
     v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v11];
     v15 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-    [(PGPublicEventCriteria *)v15 setEventCategory:v3];
+    [(PGPublicEventCriteria *)v15 setEventCategory:sports];
     [(PGPublicEventCriteria *)v15 setMinimumTimeAttendance:1200.0];
     [(PGPublicEventCriteria *)v15 setMaximumDistance:500.0];
     [(PGPublicEventCriteria *)v15 setAllowsExpandingTimeAttendance:1];
@@ -275,7 +275,7 @@
     if (v11 != 1)
     {
       v18 = [[PGPublicEventCriteria alloc] initWithLoggingConnection:self->_loggingConnection];
-      [(PGPublicEventCriteria *)v18 setEventCategory:v3];
+      [(PGPublicEventCriteria *)v18 setEventCategory:sports];
       [(PGPublicEventCriteria *)v18 setMinimumTimeAttendance:300.0];
       [(PGPublicEventCriteria *)v18 setMaximumDistance:750.0];
       [(PGPublicEventCriteria *)v18 setAllowsExpandingTimeAttendance:1];
@@ -301,21 +301,21 @@
   return v14;
 }
 
-- (id)_meaningCriteriaByEventCategoryForEventCategoriesByMeaningIdentifier:(id)a3 inferenceType:(unint64_t)a4
+- (id)_meaningCriteriaByEventCategoryForEventCategoriesByMeaningIdentifier:(id)identifier inferenceType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 allKeys];
-  v8 = [PGMeaningfulEventRequiredCriteriaFactory requiredCriteriaForIdentifiers:v7 inferenceType:a4 graph:self->_graph sceneTaxonomy:self->_sceneTaxonomy];
+  identifierCopy = identifier;
+  allKeys = [identifierCopy allKeys];
+  v8 = [PGMeaningfulEventRequiredCriteriaFactory requiredCriteriaForIdentifiers:allKeys inferenceType:type graph:self->_graph sceneTaxonomy:self->_sceneTaxonomy];
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __115__PGPublicEventCriteriaFactory__meaningCriteriaByEventCategoryForEventCategoriesByMeaningIdentifier_inferenceType___block_invoke;
   v15[3] = &unk_2788855A0;
-  v16 = v6;
-  v10 = v9;
+  v16 = identifierCopy;
+  v10 = dictionary;
   v17 = v10;
-  v11 = v6;
+  v11 = identifierCopy;
   [v8 enumerateKeysAndObjectsUsingBlock:v15];
   v12 = v17;
   v13 = v10;
@@ -367,90 +367,90 @@ void __115__PGPublicEventCriteriaFactory__meaningCriteriaByEventCategoryForEvent
   if (!prohibitedCriteriaByEventCategory)
   {
     v51[0] = @"Dinner";
-    v45 = self;
-    v44 = [MEMORY[0x277D27780] theater];
-    v50[0] = v44;
-    v43 = [MEMORY[0x277D27780] musicConcerts];
-    v50[1] = v43;
-    v42 = [MEMORY[0x277D27780] dance];
-    v50[2] = v42;
-    v41 = [MEMORY[0x277D27780] sports];
-    v50[3] = v41;
-    v40 = [MEMORY[0x277D27780] nightLife];
-    v50[4] = v40;
-    v39 = [MEMORY[0x277D27780] festivalsAndFairs];
-    v50[5] = v39;
-    v38 = [MEMORY[0x277D27780] artsAndMuseums];
-    v50[6] = v38;
+    selfCopy = self;
+    theater = [MEMORY[0x277D27780] theater];
+    v50[0] = theater;
+    musicConcerts = [MEMORY[0x277D27780] musicConcerts];
+    v50[1] = musicConcerts;
+    dance = [MEMORY[0x277D27780] dance];
+    v50[2] = dance;
+    sports = [MEMORY[0x277D27780] sports];
+    v50[3] = sports;
+    nightLife = [MEMORY[0x277D27780] nightLife];
+    v50[4] = nightLife;
+    festivalsAndFairs = [MEMORY[0x277D27780] festivalsAndFairs];
+    v50[5] = festivalsAndFairs;
+    artsAndMuseums = [MEMORY[0x277D27780] artsAndMuseums];
+    v50[6] = artsAndMuseums;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:7];
     v52[0] = v37;
     v51[1] = @"Lunch";
-    v36 = [MEMORY[0x277D27780] theater];
-    v49[0] = v36;
-    v35 = [MEMORY[0x277D27780] musicConcerts];
-    v49[1] = v35;
-    v34 = [MEMORY[0x277D27780] dance];
-    v49[2] = v34;
-    v33 = [MEMORY[0x277D27780] sports];
-    v49[3] = v33;
-    v32 = [MEMORY[0x277D27780] nightLife];
-    v49[4] = v32;
-    v31 = [MEMORY[0x277D27780] festivalsAndFairs];
-    v49[5] = v31;
-    v30 = [MEMORY[0x277D27780] artsAndMuseums];
-    v49[6] = v30;
+    theater2 = [MEMORY[0x277D27780] theater];
+    v49[0] = theater2;
+    musicConcerts2 = [MEMORY[0x277D27780] musicConcerts];
+    v49[1] = musicConcerts2;
+    dance2 = [MEMORY[0x277D27780] dance];
+    v49[2] = dance2;
+    sports2 = [MEMORY[0x277D27780] sports];
+    v49[3] = sports2;
+    nightLife2 = [MEMORY[0x277D27780] nightLife];
+    v49[4] = nightLife2;
+    festivalsAndFairs2 = [MEMORY[0x277D27780] festivalsAndFairs];
+    v49[5] = festivalsAndFairs2;
+    artsAndMuseums2 = [MEMORY[0x277D27780] artsAndMuseums];
+    v49[6] = artsAndMuseums2;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:7];
     v52[1] = v29;
     v51[2] = @"Breakfast";
-    v28 = [MEMORY[0x277D27780] theater];
-    v48[0] = v28;
-    v27 = [MEMORY[0x277D27780] musicConcerts];
-    v48[1] = v27;
-    v26 = [MEMORY[0x277D27780] dance];
-    v48[2] = v26;
-    v25 = [MEMORY[0x277D27780] sports];
-    v48[3] = v25;
-    v24 = [MEMORY[0x277D27780] nightLife];
-    v48[4] = v24;
-    v23 = [MEMORY[0x277D27780] festivalsAndFairs];
-    v48[5] = v23;
-    v22 = [MEMORY[0x277D27780] artsAndMuseums];
-    v48[6] = v22;
+    theater3 = [MEMORY[0x277D27780] theater];
+    v48[0] = theater3;
+    musicConcerts3 = [MEMORY[0x277D27780] musicConcerts];
+    v48[1] = musicConcerts3;
+    dance3 = [MEMORY[0x277D27780] dance];
+    v48[2] = dance3;
+    sports3 = [MEMORY[0x277D27780] sports];
+    v48[3] = sports3;
+    nightLife3 = [MEMORY[0x277D27780] nightLife];
+    v48[4] = nightLife3;
+    festivalsAndFairs3 = [MEMORY[0x277D27780] festivalsAndFairs];
+    v48[5] = festivalsAndFairs3;
+    artsAndMuseums3 = [MEMORY[0x277D27780] artsAndMuseums];
+    v48[6] = artsAndMuseums3;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:7];
     v52[2] = v21;
     v51[3] = @"Wedding";
-    v20 = [MEMORY[0x277D27780] theater];
-    v47[0] = v20;
-    v18 = [MEMORY[0x277D27780] musicConcerts];
-    v47[1] = v18;
-    v4 = [MEMORY[0x277D27780] dance];
-    v47[2] = v4;
-    v5 = [MEMORY[0x277D27780] sports];
-    v47[3] = v5;
-    v6 = [MEMORY[0x277D27780] nightLife];
-    v47[4] = v6;
-    v7 = [MEMORY[0x277D27780] festivalsAndFairs];
-    v47[5] = v7;
-    v8 = [MEMORY[0x277D27780] artsAndMuseums];
-    v47[6] = v8;
+    theater4 = [MEMORY[0x277D27780] theater];
+    v47[0] = theater4;
+    musicConcerts4 = [MEMORY[0x277D27780] musicConcerts];
+    v47[1] = musicConcerts4;
+    dance4 = [MEMORY[0x277D27780] dance];
+    v47[2] = dance4;
+    sports4 = [MEMORY[0x277D27780] sports];
+    v47[3] = sports4;
+    nightLife4 = [MEMORY[0x277D27780] nightLife];
+    v47[4] = nightLife4;
+    festivalsAndFairs4 = [MEMORY[0x277D27780] festivalsAndFairs];
+    v47[5] = festivalsAndFairs4;
+    artsAndMuseums4 = [MEMORY[0x277D27780] artsAndMuseums];
+    v47[6] = artsAndMuseums4;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:7];
     v52[3] = v9;
     v51[4] = @"Celebration";
-    v10 = [MEMORY[0x277D27780] theater];
-    v46[0] = v10;
-    v11 = [MEMORY[0x277D27780] sports];
-    v46[1] = v11;
-    v12 = [MEMORY[0x277D27780] artsAndMuseums];
-    v46[2] = v12;
+    theater5 = [MEMORY[0x277D27780] theater];
+    v46[0] = theater5;
+    sports5 = [MEMORY[0x277D27780] sports];
+    v46[1] = sports5;
+    artsAndMuseums5 = [MEMORY[0x277D27780] artsAndMuseums];
+    v46[2] = artsAndMuseums5;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:3];
     v52[4] = v13;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:5];
 
-    v14 = [(PGPublicEventCriteriaFactory *)v45 _meaningCriteriaByEventCategoryForEventCategoriesByMeaningIdentifier:v19 inferenceType:0];
-    v15 = v45->_prohibitedCriteriaByEventCategory;
-    v45->_prohibitedCriteriaByEventCategory = v14;
+    v14 = [(PGPublicEventCriteriaFactory *)selfCopy _meaningCriteriaByEventCategoryForEventCategoriesByMeaningIdentifier:v19 inferenceType:0];
+    v15 = selfCopy->_prohibitedCriteriaByEventCategory;
+    selfCopy->_prohibitedCriteriaByEventCategory = v14;
 
-    prohibitedCriteriaByEventCategory = v45->_prohibitedCriteriaByEventCategory;
+    prohibitedCriteriaByEventCategory = selfCopy->_prohibitedCriteriaByEventCategory;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -465,18 +465,18 @@ void __115__PGPublicEventCriteriaFactory__meaningCriteriaByEventCategoryForEvent
   if (!disambiguationCriteriaByEventCategory)
   {
     v18[0] = @"SportEvent";
-    v4 = [MEMORY[0x277D27780] sports];
-    v17 = v4;
+    sports = [MEMORY[0x277D27780] sports];
+    v17 = sports;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
     v19[0] = v5;
     v18[1] = @"Concert";
-    v6 = [MEMORY[0x277D27780] musicConcerts];
-    v16 = v6;
+    musicConcerts = [MEMORY[0x277D27780] musicConcerts];
+    v16 = musicConcerts;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
     v19[1] = v7;
     v18[2] = @"Museum";
-    v8 = [MEMORY[0x277D27780] artsAndMuseums];
-    v15 = v8;
+    artsAndMuseums = [MEMORY[0x277D27780] artsAndMuseums];
+    v15 = artsAndMuseums;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
     v19[2] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
@@ -500,35 +500,35 @@ void __115__PGPublicEventCriteriaFactory__meaningCriteriaByEventCategoryForEvent
   if (!highConfidenceCriteriaByEventCategory)
   {
     v28[0] = @"Performance";
-    v21 = [MEMORY[0x277D27780] theater];
-    v27[0] = v21;
-    v20 = [MEMORY[0x277D27780] dance];
-    v27[1] = v20;
+    theater = [MEMORY[0x277D27780] theater];
+    v27[0] = theater;
+    dance = [MEMORY[0x277D27780] dance];
+    v27[1] = dance;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
     v29[0] = v19;
     v28[1] = @"Concert";
-    v18 = [MEMORY[0x277D27780] musicConcerts];
-    v26 = v18;
+    musicConcerts = [MEMORY[0x277D27780] musicConcerts];
+    v26 = musicConcerts;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
     v29[1] = v17;
     v28[2] = @"Festival";
-    v4 = [MEMORY[0x277D27780] festivalsAndFairs];
-    v25 = v4;
+    festivalsAndFairs = [MEMORY[0x277D27780] festivalsAndFairs];
+    v25 = festivalsAndFairs;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
     v29[2] = v5;
     v28[3] = @"SportEvent";
-    v6 = [MEMORY[0x277D27780] sports];
-    v24 = v6;
+    sports = [MEMORY[0x277D27780] sports];
+    v24 = sports;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
     v29[3] = v7;
     v28[4] = @"NightOut";
-    v8 = [MEMORY[0x277D27780] nightLife];
-    v23 = v8;
+    nightLife = [MEMORY[0x277D27780] nightLife];
+    v23 = nightLife;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
     v29[4] = v9;
     v28[5] = @"Museum";
-    v10 = [MEMORY[0x277D27780] artsAndMuseums];
-    v22 = v10;
+    artsAndMuseums = [MEMORY[0x277D27780] artsAndMuseums];
+    v22 = artsAndMuseums;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
     v29[5] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:6];
@@ -547,71 +547,71 @@ void __115__PGPublicEventCriteriaFactory__meaningCriteriaByEventCategoryForEvent
 
 - (id)_publicEventCriteriaByCategory
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(PGPublicEventCriteriaFactory *)self _sportsCriteriaArray];
-  v5 = [MEMORY[0x277D27780] sports];
-  [v3 setObject:v4 forKeyedSubscript:v5];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  _sportsCriteriaArray = [(PGPublicEventCriteriaFactory *)self _sportsCriteriaArray];
+  sports = [MEMORY[0x277D27780] sports];
+  [dictionary setObject:_sportsCriteriaArray forKeyedSubscript:sports];
 
-  v6 = [(PGPublicEventCriteriaFactory *)self _musicConcertsCriteriaArray];
-  v7 = [MEMORY[0x277D27780] musicConcerts];
-  [v3 setObject:v6 forKeyedSubscript:v7];
+  _musicConcertsCriteriaArray = [(PGPublicEventCriteriaFactory *)self _musicConcertsCriteriaArray];
+  musicConcerts = [MEMORY[0x277D27780] musicConcerts];
+  [dictionary setObject:_musicConcertsCriteriaArray forKeyedSubscript:musicConcerts];
 
-  v8 = [(PGPublicEventCriteriaFactory *)self _nightLifeCriteriaArray];
-  v9 = [MEMORY[0x277D27780] nightLife];
-  [v3 setObject:v8 forKeyedSubscript:v9];
+  _nightLifeCriteriaArray = [(PGPublicEventCriteriaFactory *)self _nightLifeCriteriaArray];
+  nightLife = [MEMORY[0x277D27780] nightLife];
+  [dictionary setObject:_nightLifeCriteriaArray forKeyedSubscript:nightLife];
 
-  v10 = [(PGPublicEventCriteriaFactory *)self _festivalsAndFairsCriteriaArray];
-  v11 = [MEMORY[0x277D27780] festivalsAndFairs];
-  [v3 setObject:v10 forKeyedSubscript:v11];
+  _festivalsAndFairsCriteriaArray = [(PGPublicEventCriteriaFactory *)self _festivalsAndFairsCriteriaArray];
+  festivalsAndFairs = [MEMORY[0x277D27780] festivalsAndFairs];
+  [dictionary setObject:_festivalsAndFairsCriteriaArray forKeyedSubscript:festivalsAndFairs];
 
-  v12 = [(PGPublicEventCriteriaFactory *)self _theaterCriteriaArray];
-  v13 = [MEMORY[0x277D27780] theater];
-  [v3 setObject:v12 forKeyedSubscript:v13];
+  _theaterCriteriaArray = [(PGPublicEventCriteriaFactory *)self _theaterCriteriaArray];
+  theater = [MEMORY[0x277D27780] theater];
+  [dictionary setObject:_theaterCriteriaArray forKeyedSubscript:theater];
 
-  v14 = [(PGPublicEventCriteriaFactory *)self _danceCriteriaArray];
-  v15 = [MEMORY[0x277D27780] dance];
-  [v3 setObject:v14 forKeyedSubscript:v15];
+  _danceCriteriaArray = [(PGPublicEventCriteriaFactory *)self _danceCriteriaArray];
+  dance = [MEMORY[0x277D27780] dance];
+  [dictionary setObject:_danceCriteriaArray forKeyedSubscript:dance];
 
-  v16 = [(PGPublicEventCriteriaFactory *)self _artsAndMuseumsCriteriaArray];
-  v17 = [MEMORY[0x277D27780] artsAndMuseums];
-  [v3 setObject:v16 forKeyedSubscript:v17];
+  _artsAndMuseumsCriteriaArray = [(PGPublicEventCriteriaFactory *)self _artsAndMuseumsCriteriaArray];
+  artsAndMuseums = [MEMORY[0x277D27780] artsAndMuseums];
+  [dictionary setObject:_artsAndMuseumsCriteriaArray forKeyedSubscript:artsAndMuseums];
 
-  v18 = [(PGPublicEventCriteriaFactory *)self _appleEventsCriteriaArray];
-  v19 = [MEMORY[0x277D27780] appleEvents];
-  [v3 setObject:v18 forKeyedSubscript:v19];
+  _appleEventsCriteriaArray = [(PGPublicEventCriteriaFactory *)self _appleEventsCriteriaArray];
+  appleEvents = [MEMORY[0x277D27780] appleEvents];
+  [dictionary setObject:_appleEventsCriteriaArray forKeyedSubscript:appleEvents];
 
-  return v3;
+  return dictionary;
 }
 
-- (PGPublicEventCriteriaFactory)initWithGraph:(id)a3 sceneTaxonomy:(id)a4 loggingConnection:(id)a5
+- (PGPublicEventCriteriaFactory)initWithGraph:(id)graph sceneTaxonomy:(id)taxonomy loggingConnection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  graphCopy = graph;
+  taxonomyCopy = taxonomy;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = PGPublicEventCriteriaFactory;
   v12 = [(PGPublicEventCriteriaFactory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_graph, a3);
-    objc_storeStrong(&v13->_sceneTaxonomy, a4);
-    objc_storeStrong(&v13->_loggingConnection, a5);
+    objc_storeStrong(&v12->_graph, graph);
+    objc_storeStrong(&v13->_sceneTaxonomy, taxonomy);
+    objc_storeStrong(&v13->_loggingConnection, connection);
   }
 
   return v13;
 }
 
-+ (id)publicEventCriteriaByCategoryForGraph:(id)a3 sceneTaxonomy:(id)a4 loggingConnection:(id)a5
++ (id)publicEventCriteriaByCategoryForGraph:(id)graph sceneTaxonomy:(id)taxonomy loggingConnection:(id)connection
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PGPublicEventCriteriaFactory alloc] initWithGraph:v9 sceneTaxonomy:v8 loggingConnection:v7];
+  connectionCopy = connection;
+  taxonomyCopy = taxonomy;
+  graphCopy = graph;
+  v10 = [[PGPublicEventCriteriaFactory alloc] initWithGraph:graphCopy sceneTaxonomy:taxonomyCopy loggingConnection:connectionCopy];
 
-  v11 = [(PGPublicEventCriteriaFactory *)v10 _publicEventCriteriaByCategory];
+  _publicEventCriteriaByCategory = [(PGPublicEventCriteriaFactory *)v10 _publicEventCriteriaByCategory];
 
-  return v11;
+  return _publicEventCriteriaByCategory;
 }
 
 @end

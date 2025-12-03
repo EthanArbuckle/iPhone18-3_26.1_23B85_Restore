@@ -1,7 +1,7 @@
 @interface CNVCardSelectorMap
 - (CNVCardSelectorMap)init;
-- (SEL)selectorForString:(id)a3;
-- (void)setSelector:(SEL)a3 forString:(id)a4;
+- (SEL)selectorForString:(id)string;
+- (void)setSelector:(SEL)selector forString:(id)string;
 @end
 
 @implementation CNVCardSelectorMap
@@ -27,23 +27,23 @@
   return v2;
 }
 
-- (void)setSelector:(SEL)a3 forString:(id)a4
+- (void)setSelector:(SEL)selector forString:(id)string
 {
   strings = self->_strings;
-  v7 = a4;
-  v8 = [(NSMutableArray *)strings indexOfObject:v7 inSortedRange:0 options:[(NSMutableArray *)strings count] usingComparator:1024, &__block_literal_global_0];
-  [(NSMutableArray *)self->_strings insertObject:v7 atIndex:v8];
+  stringCopy = string;
+  v8 = [(NSMutableArray *)strings indexOfObject:stringCopy inSortedRange:0 options:[(NSMutableArray *)strings count] usingComparator:1024, &__block_literal_global_0];
+  [(NSMutableArray *)self->_strings insertObject:stringCopy atIndex:v8];
 
   selectors = self->_selectors;
-  v10 = [MEMORY[0x277CCAE60] valueWithPointer:a3];
+  v10 = [MEMORY[0x277CCAE60] valueWithPointer:selector];
   [(NSMutableArray *)selectors insertObject:v10 atIndex:v8];
 }
 
-- (SEL)selectorForString:(id)a3
+- (SEL)selectorForString:(id)string
 {
   strings = self->_strings;
-  v5 = a3;
-  v6 = [(NSMutableArray *)strings indexOfObject:v5 inSortedRange:0 options:[(NSMutableArray *)strings count] usingComparator:256, &__block_literal_global_0];
+  stringCopy = string;
+  v6 = [(NSMutableArray *)strings indexOfObject:stringCopy inSortedRange:0 options:[(NSMutableArray *)strings count] usingComparator:256, &__block_literal_global_0];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -51,9 +51,9 @@
   }
 
   v8 = [(NSMutableArray *)self->_selectors objectAtIndex:v6];
-  v9 = [v8 pointerValue];
+  pointerValue = [v8 pointerValue];
 
-  return v9;
+  return pointerValue;
 }
 
 @end

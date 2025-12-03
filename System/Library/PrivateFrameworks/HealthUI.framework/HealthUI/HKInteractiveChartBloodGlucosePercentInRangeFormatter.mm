@@ -1,11 +1,11 @@
 @interface HKInteractiveChartBloodGlucosePercentInRangeFormatter
 - (HKInteractiveChartBloodGlucosePercentInRangeFormatter)init;
-- (double)_fractionForHighlightedClassificationFromDataPoint:(id)a3;
-- (id)_overallFractionInEuglycemiaForChartData:(id)a3;
-- (id)_rangeOfFractionInHighlightedClassificationForChartData:(id)a3;
-- (id)_stringFromFraction:(id)a3;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
-- (int64_t)_selectedRangeDataTypeForContext:(int64_t)a3;
+- (double)_fractionForHighlightedClassificationFromDataPoint:(id)point;
+- (id)_overallFractionInEuglycemiaForChartData:(id)data;
+- (id)_rangeOfFractionInHighlightedClassificationForChartData:(id)data;
+- (id)_stringFromFraction:(id)fraction;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
+- (int64_t)_selectedRangeDataTypeForContext:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartBloodGlucosePercentInRangeFormatter
@@ -17,8 +17,8 @@
   v2 = [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696ADA0] hk_percentDecimalNumberFormatter];
-    v4 = [v3 copy];
+    hk_percentDecimalNumberFormatter = [MEMORY[0x1E696ADA0] hk_percentDecimalNumberFormatter];
+    v4 = [hk_percentDecimalNumberFormatter copy];
     percentageFormatter = v2->_percentageFormatter;
     v2->_percentageFormatter = v4;
   }
@@ -26,29 +26,29 @@
   return v2;
 }
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   v48[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!dataCopy || ![dataCopy count])
   {
     v10 = MEMORY[0x1E695E0F0];
     goto LABEL_14;
   }
 
-  if (a4 != 1)
+  if (context != 1)
   {
     v11 = [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _rangeOfFractionInHighlightedClassificationForChartData:v7];
-    v12 = [v11 minValue];
-    v13 = [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _stringFromFraction:v12];
+    minValue = [v11 minValue];
+    v13 = [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _stringFromFraction:minValue];
 
-    v14 = [v11 maxValue];
-    v15 = [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _stringFromFraction:v14];
+    maxValue = [v11 maxValue];
+    v15 = [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _stringFromFraction:maxValue];
 
     if ([v13 isEqualToString:v15])
     {
-      v8 = [v11 minValue];
+      minValue2 = [v11 minValue];
       v9 = v13;
     }
 
@@ -59,7 +59,7 @@
       v18 = [v17 localizedStringForKey:@"OVERLAY_RANGE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
       v9 = [v16 stringWithFormat:v18, v13, v15];
 
-      v8 = 0;
+      minValue2 = 0;
     }
 
     if (!v9)
@@ -68,37 +68,37 @@
     }
 
 LABEL_12:
-    v19 = [(HKInteractiveChartDataFormatter *)self unitController];
-    v20 = [MEMORY[0x1E696C510] percentUnit];
-    v40 = [v19 localizedDisplayNameForUnit:v20 value:0];
+    unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+    percentUnit = [MEMORY[0x1E696C510] percentUnit];
+    v40 = [unitController localizedDisplayNameForUnit:percentUnit value:0];
 
     v21 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v41 = a4;
-    v22 = v8;
+    contextCopy = context;
+    v22 = minValue2;
     v46 = *MEMORY[0x1E69DB648];
     v23 = v46;
-    v24 = [(HKInteractiveChartDataFormatter *)self majorFont];
-    v48[0] = v24;
+    majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+    v48[0] = majorFont;
     v47 = *MEMORY[0x1E69DB650];
     v25 = v47;
-    v26 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
-    v48[1] = v26;
+    hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+    v48[1] = hk_chartLollipopValueColor;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v46 count:2];
     v28 = [v21 initWithString:v9 attributes:v27];
 
     v29 = objc_alloc(MEMORY[0x1E696AAB0]);
     v44[0] = v23;
-    v8 = v22;
-    v30 = [(HKInteractiveChartDataFormatter *)self minorFont];
+    minValue2 = v22;
+    minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
     v44[1] = v25;
-    v45[0] = v30;
-    v31 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
-    v45[1] = v31;
+    v45[0] = minorFont;
+    hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+    v45[1] = hk_chartLollipopLabelColor;
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
     v33 = [v29 initWithString:v40 attributes:v32];
 
     v34 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
-    [(HKSelectedRangeData *)v34 setDataType:[(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _selectedRangeDataTypeForContext:v41]];
+    [(HKSelectedRangeData *)v34 setDataType:[(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _selectedRangeDataTypeForContext:contextCopy]];
     v43[0] = v28;
     v43[1] = v33;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
@@ -107,17 +107,17 @@ LABEL_12:
     v38 = HKUIJoinAttributedStringsWithFormat(v35, v37);
     [(HKSelectedRangeData *)v34 setAttributedString:v38];
 
-    [(HKSelectedRangeData *)v34 setValueAsNumber:v8];
+    [(HKSelectedRangeData *)v34 setValueAsNumber:minValue2];
     v42 = v34;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
 
     goto LABEL_13;
   }
 
-  v8 = [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _overallFractionInEuglycemiaForChartData:v7];
-  if (v8)
+  minValue2 = [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _overallFractionInEuglycemiaForChartData:v7];
+  if (minValue2)
   {
-    v9 = [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _stringFromFraction:v8];
+    v9 = [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _stringFromFraction:minValue2];
     if (v9)
     {
       goto LABEL_12;
@@ -133,15 +133,15 @@ LABEL_14:
   return v10;
 }
 
-- (id)_overallFractionInEuglycemiaForChartData:(id)a3
+- (id)_overallFractionInEuglycemiaForChartData:(id)data
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [dataCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = 0;
@@ -153,7 +153,7 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -161,7 +161,7 @@ LABEL_14:
         v5 += [v9 totalCount];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [dataCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -179,15 +179,15 @@ LABEL_14:
   return v4;
 }
 
-- (id)_rangeOfFractionInHighlightedClassificationForChartData:(id)a3
+- (id)_rangeOfFractionInHighlightedClassificationForChartData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [dataCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -200,7 +200,7 @@ LABEL_14:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataCopy);
         }
 
         [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)self _fractionForHighlightedClassificationFromDataPoint:*(*(&v16 + 1) + 8 * i)];
@@ -215,7 +215,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [dataCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -234,20 +234,20 @@ LABEL_14:
   return v14;
 }
 
-- (double)_fractionForHighlightedClassificationFromDataPoint:(id)a3
+- (double)_fractionForHighlightedClassificationFromDataPoint:(id)point
 {
-  v5 = a3;
-  v6 = v5;
+  pointCopy = point;
+  v6 = pointCopy;
   highlightedClassification = self->_highlightedClassification;
   if ((highlightedClassification - 2) < 2 || highlightedClassification == 0)
   {
-    [v5 fractionForClassification:?];
+    [pointCopy fractionForClassification:?];
     v3 = v9;
   }
 
   else if (highlightedClassification == 1)
   {
-    [v5 fractionForClassification:?];
+    [pointCopy fractionForClassification:?];
     v11 = v10;
     [v6 fractionForClassification:0];
     v3 = v11 + v12;
@@ -256,14 +256,14 @@ LABEL_14:
   return v3;
 }
 
-- (id)_stringFromFraction:(id)a3
+- (id)_stringFromFraction:(id)fraction
 {
-  v4 = a3;
-  [v4 doubleValue];
+  fractionCopy = fraction;
+  [fractionCopy doubleValue];
   v7 = 0;
   if (v5 > 0.0)
   {
-    [v4 doubleValue];
+    [fractionCopy doubleValue];
     if (v6 < 0.01)
     {
       v7 = 1;
@@ -271,14 +271,14 @@ LABEL_14:
   }
 
   [(NSNumberFormatter *)self->_percentageFormatter setMaximumFractionDigits:v7];
-  v8 = [(NSNumberFormatter *)self->_percentageFormatter stringFromNumber:v4];
+  v8 = [(NSNumberFormatter *)self->_percentageFormatter stringFromNumber:fractionCopy];
 
   return v8;
 }
 
-- (int64_t)_selectedRangeDataTypeForContext:(int64_t)a3
+- (int64_t)_selectedRangeDataTypeForContext:(int64_t)context
 {
-  if (a3 == 1)
+  if (context == 1)
   {
     return 22;
   }

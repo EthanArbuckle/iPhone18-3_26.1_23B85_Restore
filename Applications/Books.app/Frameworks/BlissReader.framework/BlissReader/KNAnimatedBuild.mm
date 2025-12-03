@@ -1,7 +1,7 @@
 @interface KNAnimatedBuild
-+ (id)createWithBuildType:(int)a3 attributes:(id)a4 direction:(unint64_t)a5 effect:(id)a6 deliveryStyle:(unint64_t)a7 stageCount:(unint64_t)a8 eventIndex:(int64_t)a9 stageIndex:(int64_t)a10 startTime:(double)a11 eventStartTime:(double)a12 duration:(double)a13 automatic:(BOOL)a14 renderer:(id)a15 animateAtEndOfPreviousBuild:(BOOL)a16 isEmphasisBuild:(BOOL)a17;
++ (id)createWithBuildType:(int)type attributes:(id)attributes direction:(unint64_t)direction effect:(id)effect deliveryStyle:(unint64_t)style stageCount:(unint64_t)count eventIndex:(int64_t)index stageIndex:(int64_t)self0 startTime:(double)self1 eventStartTime:(double)self2 duration:(double)self3 automatic:(BOOL)self4 renderer:(id)self5 animateAtEndOfPreviousBuild:(BOOL)self6 isEmphasisBuild:(BOOL)self7;
 - (BOOL)hasBounce;
-- (KNAnimatedBuild)initWithBuildType:(int)a3 attributes:(id)a4 direction:(unint64_t)a5 effect:(id)a6 deliveryStyle:(unint64_t)a7 stageCount:(unint64_t)a8 eventIndex:(int64_t)a9 stageIndex:(int64_t)a10 startTime:(double)a11 eventStartTime:(double)a12 duration:(double)a13 automatic:(BOOL)a14 renderer:(id)a15 animateAtEndOfPreviousBuild:(BOOL)a16 isEmphasisBuild:(BOOL)a17;
+- (KNAnimatedBuild)initWithBuildType:(int)type attributes:(id)attributes direction:(unint64_t)direction effect:(id)effect deliveryStyle:(unint64_t)style stageCount:(unint64_t)count eventIndex:(int64_t)index stageIndex:(int64_t)self0 startTime:(double)self1 eventStartTime:(double)self2 duration:(double)self3 automatic:(BOOL)self4 renderer:(id)self5 animateAtEndOfPreviousBuild:(BOOL)self6 isEmphasisBuild:(BOOL)self7;
 - (id)description;
 - (unint64_t)deliveryOption;
 - (void)dealloc;
@@ -9,7 +9,7 @@
 
 @implementation KNAnimatedBuild
 
-- (KNAnimatedBuild)initWithBuildType:(int)a3 attributes:(id)a4 direction:(unint64_t)a5 effect:(id)a6 deliveryStyle:(unint64_t)a7 stageCount:(unint64_t)a8 eventIndex:(int64_t)a9 stageIndex:(int64_t)a10 startTime:(double)a11 eventStartTime:(double)a12 duration:(double)a13 automatic:(BOOL)a14 renderer:(id)a15 animateAtEndOfPreviousBuild:(BOOL)a16 isEmphasisBuild:(BOOL)a17
+- (KNAnimatedBuild)initWithBuildType:(int)type attributes:(id)attributes direction:(unint64_t)direction effect:(id)effect deliveryStyle:(unint64_t)style stageCount:(unint64_t)count eventIndex:(int64_t)index stageIndex:(int64_t)self0 startTime:(double)self1 eventStartTime:(double)self2 duration:(double)self3 automatic:(BOOL)self4 renderer:(id)self5 animateAtEndOfPreviousBuild:(BOOL)self6 isEmphasisBuild:(BOOL)self7
 {
   v29.receiver = self;
   v29.super_class = KNAnimatedBuild;
@@ -17,23 +17,23 @@
   v27 = v26;
   if (v26)
   {
-    v26->mEventIndex = a9;
-    v26->mStageIndex = a10;
-    v26->mStartTime = a11;
-    v26->mEventStartTime = a12;
-    v26->mDuration = a13;
-    v26->mEndTime = a11 + a13;
-    v26->mEventEndTime = a12 + a13;
-    v26->mAutomatic = a14;
-    v26->mRenderer = a15;
-    v27->mAnimateAtEndOfPreviousBuild = a16;
-    v27->mBuildType = a3;
-    v27->mEffect = a6;
-    v27->mAttributes = a4;
-    v27->mStageCount = a8;
-    v27->mDeliveryStyle = a7;
-    v27->mDirection = a5;
-    v27->mIsEmphasisBuild = a17;
+    v26->mEventIndex = index;
+    v26->mStageIndex = stageIndex;
+    v26->mStartTime = time;
+    v26->mEventStartTime = startTime;
+    v26->mDuration = duration;
+    v26->mEndTime = time + duration;
+    v26->mEventEndTime = startTime + duration;
+    v26->mAutomatic = automatic;
+    v26->mRenderer = renderer;
+    v27->mAnimateAtEndOfPreviousBuild = build;
+    v27->mBuildType = type;
+    v27->mEffect = effect;
+    v27->mAttributes = attributes;
+    v27->mStageCount = count;
+    v27->mDeliveryStyle = style;
+    v27->mDirection = direction;
+    v27->mIsEmphasisBuild = emphasisBuild;
   }
 
   return v27;
@@ -46,11 +46,11 @@
   [(KNAnimatedBuild *)&v3 dealloc];
 }
 
-+ (id)createWithBuildType:(int)a3 attributes:(id)a4 direction:(unint64_t)a5 effect:(id)a6 deliveryStyle:(unint64_t)a7 stageCount:(unint64_t)a8 eventIndex:(int64_t)a9 stageIndex:(int64_t)a10 startTime:(double)a11 eventStartTime:(double)a12 duration:(double)a13 automatic:(BOOL)a14 renderer:(id)a15 animateAtEndOfPreviousBuild:(BOOL)a16 isEmphasisBuild:(BOOL)a17
++ (id)createWithBuildType:(int)type attributes:(id)attributes direction:(unint64_t)direction effect:(id)effect deliveryStyle:(unint64_t)style stageCount:(unint64_t)count eventIndex:(int64_t)index stageIndex:(int64_t)self0 startTime:(double)self1 eventStartTime:(double)self2 duration:(double)self3 automatic:(BOOL)self4 renderer:(id)self5 animateAtEndOfPreviousBuild:(BOOL)self6 isEmphasisBuild:(BOOL)self7
 {
-  LOWORD(v20) = __PAIR16__(a17, a16);
-  LOBYTE(v19) = a14;
-  v17 = [[KNAnimatedBuild alloc] initWithBuildType:*&a3 attributes:a4 direction:a5 effect:a6 deliveryStyle:a7 stageCount:a8 eventIndex:a11 stageIndex:a12 startTime:a13 eventStartTime:a9 duration:a10 automatic:v19 renderer:a15 animateAtEndOfPreviousBuild:v20 isEmphasisBuild:?];
+  LOWORD(v20) = __PAIR16__(emphasisBuild, build);
+  LOBYTE(v19) = automatic;
+  v17 = [[KNAnimatedBuild alloc] initWithBuildType:*&type attributes:attributes direction:direction effect:effect deliveryStyle:style stageCount:count eventIndex:time stageIndex:startTime startTime:duration eventStartTime:index duration:stageIndex automatic:v19 renderer:renderer animateAtEndOfPreviousBuild:v20 isEmphasisBuild:?];
 
   return v17;
 }

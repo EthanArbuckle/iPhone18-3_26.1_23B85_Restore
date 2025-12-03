@@ -1,118 +1,118 @@
 @interface PXAnimatedLabel
 - (CGSize)intrinsicContentSize;
-- (PXAnimatedLabel)initWithCoder:(id)a3;
-- (PXAnimatedLabel)initWithFrame:(CGRect)a3;
+- (PXAnimatedLabel)initWithCoder:(id)coder;
+- (PXAnimatedLabel)initWithFrame:(CGRect)frame;
 - (void)_updateConstraintsForText;
 - (void)commonInit;
 - (void)layoutSubviews;
-- (void)setFont:(id)a3;
-- (void)setText:(id)a3;
-- (void)setText:(id)a3 withAnimationStyle:(int64_t)a4 completionBlock:(id)a5;
+- (void)setFont:(id)font;
+- (void)setText:(id)text;
+- (void)setText:(id)text withAnimationStyle:(int64_t)style completionBlock:(id)block;
 @end
 
 @implementation PXAnimatedLabel
 
 - (void)_updateConstraintsForText
 {
-  v7 = [(PXAnimatedLabel *)self counter];
-  v3 = [(PXAnimatedLabel *)self text];
-  if ([v3 rangeOfDigits] || !objc_msgSend(v3, "containsDigits"))
+  counter = [(PXAnimatedLabel *)self counter];
+  text = [(PXAnimatedLabel *)self text];
+  if ([text rangeOfDigits] || !objc_msgSend(text, "containsDigits"))
   {
-    [v7 setHidden:1];
+    [counter setHidden:1];
     v5 = 0.0;
   }
 
   else
   {
-    [v7 setHidden:0];
-    [v7 requiredSizeForNumber:{objc_msgSend(v3, "digits")}];
+    [counter setHidden:0];
+    [counter requiredSizeForNumber:{objc_msgSend(text, "digits")}];
     *&v4 = v4;
     v5 = ceilf(*&v4);
   }
 
-  v6 = [(PXAnimatedLabel *)self counterWidthConstraint];
-  [v6 setConstant:v5];
+  counterWidthConstraint = [(PXAnimatedLabel *)self counterWidthConstraint];
+  [counterWidthConstraint setConstant:v5];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  objc_storeStrong(&self->_font, a3);
-  v5 = a3;
-  v6 = [(PXAnimatedLabel *)self label];
-  [v6 setFont:v5];
+  objc_storeStrong(&self->_font, font);
+  fontCopy = font;
+  label = [(PXAnimatedLabel *)self label];
+  [label setFont:fontCopy];
 
-  v7 = [(PXAnimatedLabel *)self counter];
-  [v7 setFont:v5];
+  counter = [(PXAnimatedLabel *)self counter];
+  [counter setFont:fontCopy];
 }
 
-- (void)setText:(id)a3 withAnimationStyle:(int64_t)a4 completionBlock:(id)a5
+- (void)setText:(id)text withAnimationStyle:(int64_t)style completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  textCopy = text;
+  blockCopy = block;
   [(PXAnimatedLabel *)self layoutIfNeeded];
-  v10 = [(PXAnimatedLabel *)self text];
-  objc_storeStrong(&self->_text, a3);
-  v45 = [(PXAnimatedLabel *)self label];
-  v11 = [(PXAnimatedLabel *)self counter];
+  text = [(PXAnimatedLabel *)self text];
+  objc_storeStrong(&self->_text, text);
+  label = [(PXAnimatedLabel *)self label];
+  counter = [(PXAnimatedLabel *)self counter];
   v12 = *MEMORY[0x1E695F060];
   v13 = *(MEMORY[0x1E695F060] + 8);
-  v14 = [v8 containsDigits];
-  v15 = [v8 digits];
+  containsDigits = [textCopy containsDigits];
+  digits = [textCopy digits];
   v16 = v13;
   v17 = v12;
-  if ([v10 containsDigits])
+  if ([text containsDigits])
   {
-    [v11 requiredSizeForNumber:{objc_msgSend(v11, "number")}];
+    [counter requiredSizeForNumber:{objc_msgSend(counter, "number")}];
     v17 = v18;
     v16 = v19;
   }
 
-  v40 = v14;
-  if (v14)
+  v40 = containsDigits;
+  if (containsDigits)
   {
-    [v11 requiredSizeForNumber:v15];
+    [counter requiredSizeForNumber:digits];
     v12 = v20;
     v13 = v21;
   }
 
-  v43 = v15;
-  v22 = [v10 stringByRemovingDigits];
-  v23 = [v8 stringByRemovingDigits];
-  v44 = v10;
-  if ([v8 rangeOfDigits])
+  v43 = digits;
+  stringByRemovingDigits = [text stringByRemovingDigits];
+  stringByRemovingDigits2 = [textCopy stringByRemovingDigits];
+  v44 = text;
+  if ([textCopy rangeOfDigits])
   {
     v24 = 0;
-    v25 = v10;
-    v26 = v8;
+    v25 = text;
+    v26 = textCopy;
   }
 
   else
   {
-    v27 = [v8 containsDigits];
-    v24 = v27;
-    if (v27)
+    containsDigits2 = [textCopy containsDigits];
+    v24 = containsDigits2;
+    if (containsDigits2)
     {
-      v25 = v22;
+      v25 = stringByRemovingDigits;
     }
 
     else
     {
-      v25 = v10;
+      v25 = text;
     }
 
-    if (v27)
+    if (containsDigits2)
     {
-      v26 = v23;
+      v26 = stringByRemovingDigits2;
     }
 
     else
     {
-      v26 = v8;
+      v26 = textCopy;
     }
   }
 
-  v41 = v23;
-  v42 = v22;
+  v41 = stringByRemovingDigits2;
+  v42 = stringByRemovingDigits;
   v28 = v25;
   v29 = v26;
   v30 = [v29 isEqualToString:v28];
@@ -126,8 +126,8 @@
     }
 
 LABEL_20:
-    v34 = [v45 text];
-    v35 = [v34 isEqualToString:v29];
+    text2 = [label text];
+    v35 = [text2 isEqualToString:v29];
 
     if (v35)
     {
@@ -144,12 +144,12 @@ LABEL_20:
   }
 
 LABEL_21:
-  [v45 setText:v29];
+  [label setText:v29];
 LABEL_22:
   if (v33)
   {
-    v36 = v11;
-    if ([v11 preferredAnimationStyleForNumber:v43] == 1)
+    v36 = counter;
+    if ([counter preferredAnimationStyleForNumber:v43] == 1)
     {
       [(PXAnimatedLabel *)self _updateConstraintsForText];
       [(PXAnimatedLabel *)self layoutIfNeeded];
@@ -160,8 +160,8 @@ LABEL_22:
         v48[2] = __62__PXAnimatedLabel_setText_withAnimationStyle_completionBlock___block_invoke;
         v48[3] = &unk_1E7740890;
         v48[4] = self;
-        v49 = v9;
-        [v11 setNumber:v43 animated:v39 != 0 completionBlock:v48];
+        v49 = blockCopy;
+        [counter setNumber:v43 animated:v39 != 0 completionBlock:v48];
         v37 = v49;
 LABEL_31:
       }
@@ -174,8 +174,8 @@ LABEL_31:
       v46[2] = __62__PXAnimatedLabel_setText_withAnimationStyle_completionBlock___block_invoke_2;
       v46[3] = &unk_1E7740890;
       v46[4] = self;
-      v47 = v9;
-      [v11 setNumber:v43 animated:v39 != 0 completionBlock:v46];
+      v47 = blockCopy;
+      [counter setNumber:v43 animated:v39 != 0 completionBlock:v46];
       v37 = v47;
       goto LABEL_31;
     }
@@ -183,14 +183,14 @@ LABEL_31:
 
   else
   {
-    v36 = v11;
+    v36 = counter;
     if ((v40 & v24) == 1)
     {
-      [v11 setNumber:v43 animated:v39 != 0];
+      [counter setNumber:v43 animated:v39 != 0];
       [(PXAnimatedLabel *)self invalidateIntrinsicContentSize];
-      if (v9)
+      if (blockCopy)
       {
-        (*(v9 + 2))(v9, 1);
+        (*(blockCopy + 2))(blockCopy, 1);
       }
     }
   }
@@ -226,9 +226,9 @@ uint64_t __62__PXAnimatedLabel_setText_withAnimationStyle_completionBlock___bloc
   return result;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  [(PXAnimatedLabel *)self setText:a3 withAnimationStyle:0 completionBlock:0];
+  [(PXAnimatedLabel *)self setText:text withAnimationStyle:0 completionBlock:0];
   [(PXAnimatedLabel *)self _updateConstraintsForText];
 
   [(PXAnimatedLabel *)self invalidateIntrinsicContentSize];
@@ -236,13 +236,13 @@ uint64_t __62__PXAnimatedLabel_setText_withAnimationStyle_completionBlock___bloc
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PXAnimatedLabel *)self label];
-  [v3 intrinsicContentSize];
+  label = [(PXAnimatedLabel *)self label];
+  [label intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(PXAnimatedLabel *)self counterWidthConstraint];
-  [v8 constant];
+  counterWidthConstraint = [(PXAnimatedLabel *)self counterWidthConstraint];
+  [counterWidthConstraint constant];
   v10 = v5 + v9;
 
   v11 = v10;
@@ -260,11 +260,11 @@ uint64_t __62__PXAnimatedLabel_setText_withAnimationStyle_completionBlock___bloc
   [(PXAnimatedLabel *)self _updateConstraintsForText];
 }
 
-- (PXAnimatedLabel)initWithCoder:(id)a3
+- (PXAnimatedLabel)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXAnimatedLabel;
-  v3 = [(PXAnimatedLabel *)&v6 initWithCoder:a3];
+  v3 = [(PXAnimatedLabel *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -274,11 +274,11 @@ uint64_t __62__PXAnimatedLabel_setText_withAnimationStyle_completionBlock___bloc
   return v4;
 }
 
-- (PXAnimatedLabel)initWithFrame:(CGRect)a3
+- (PXAnimatedLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXAnimatedLabel;
-  v3 = [(PXAnimatedLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXAnimatedLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -296,8 +296,8 @@ uint64_t __62__PXAnimatedLabel_setText_withAnimationStyle_completionBlock___bloc
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", 0];
   [(UILabel *)v3 setText:v4];
 
-  v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v3 setTextColor:v5];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v3 setTextColor:secondaryLabelColor];
 
   label = self->_label;
   self->_label = v3;
@@ -315,51 +315,51 @@ uint64_t __62__PXAnimatedLabel_setText_withAnimationStyle_completionBlock___bloc
   [v11 addSubview:v10];
   [v11 addSubview:v7];
   [(PXAnimatedLabel *)self addSubview:v11];
-  v12 = [(PXAnimatedCounter *)v10 widthAnchor];
-  v13 = [v12 constraintEqualToConstant:0.0];
+  widthAnchor = [(PXAnimatedCounter *)v10 widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:0.0];
   counterWidthConstraint = self->_counterWidthConstraint;
   self->_counterWidthConstraint = v13;
 
   v33 = MEMORY[0x1E696ACD8];
-  v47 = [(PXAnimatedCounter *)v10 topAnchor];
-  v46 = [v11 topAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  topAnchor = [(PXAnimatedCounter *)v10 topAnchor];
+  topAnchor2 = [v11 topAnchor];
+  v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v48[0] = v45;
-  v44 = [(PXAnimatedCounter *)v10 bottomAnchor];
-  v43 = [v11 bottomAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  bottomAnchor = [(PXAnimatedCounter *)v10 bottomAnchor];
+  bottomAnchor2 = [v11 bottomAnchor];
+  v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v48[1] = v42;
-  v41 = [(PXAnimatedCounter *)v10 leadingAnchor];
-  v40 = [v11 leadingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  leadingAnchor = [(PXAnimatedCounter *)v10 leadingAnchor];
+  leadingAnchor2 = [v11 leadingAnchor];
+  v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v48[2] = v39;
-  v38 = [(PXAnimatedCounter *)v10 trailingAnchor];
-  v37 = [(UILabel *)v7 leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  trailingAnchor = [(PXAnimatedCounter *)v10 trailingAnchor];
+  leadingAnchor3 = [(UILabel *)v7 leadingAnchor];
+  v36 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
   v48[3] = v36;
-  v35 = [(UILabel *)v7 trailingAnchor];
-  v34 = [v11 trailingAnchor];
-  v32 = [v35 constraintEqualToAnchor:v34];
+  trailingAnchor2 = [(UILabel *)v7 trailingAnchor];
+  trailingAnchor3 = [v11 trailingAnchor];
+  v32 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v48[4] = v32;
-  v31 = [(UILabel *)v7 bottomAnchor];
-  v30 = [v11 bottomAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  bottomAnchor3 = [(UILabel *)v7 bottomAnchor];
+  bottomAnchor4 = [v11 bottomAnchor];
+  v29 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v48[5] = v29;
-  v28 = [(UILabel *)v7 topAnchor];
-  v27 = [v11 topAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  topAnchor3 = [(UILabel *)v7 topAnchor];
+  topAnchor4 = [v11 topAnchor];
+  v26 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v48[6] = v26;
-  v25 = [v11 topAnchor];
-  v24 = [(PXAnimatedLabel *)self topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  topAnchor5 = [v11 topAnchor];
+  topAnchor6 = [(PXAnimatedLabel *)self topAnchor];
+  v23 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v48[7] = v23;
-  v15 = [v11 bottomAnchor];
-  v16 = [(PXAnimatedLabel *)self bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  bottomAnchor5 = [v11 bottomAnchor];
+  bottomAnchor6 = [(PXAnimatedLabel *)self bottomAnchor];
+  v17 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v48[8] = v17;
-  v18 = [v11 centerXAnchor];
-  v19 = [(PXAnimatedLabel *)self centerXAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  centerXAnchor = [v11 centerXAnchor];
+  centerXAnchor2 = [(PXAnimatedLabel *)self centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v21 = self->_counterWidthConstraint;
   v48[9] = v20;
   v48[10] = v21;

@@ -1,7 +1,7 @@
 @interface QSSSetEndpointerState
 - (BOOL)enable_server_side_endpoint;
-- (Offset<siri::speech::schema_fb::SetEndpointerState>)addObjectToBuffer:(void *)a3;
-- (QSSSetEndpointerState)initWithFlatbuffData:(id)a3 root:(const SetEndpointerState *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::SetEndpointerState>)addObjectToBuffer:(void *)buffer;
+- (QSSSetEndpointerState)initWithFlatbuffData:(id)data root:(const SetEndpointerState *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -36,16 +36,16 @@ flatbuffers::DetachedBuffer *__37__QSSSetEndpointerState_flatbuffData__block_inv
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::SetEndpointerState>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::SetEndpointerState>)addObjectToBuffer:(void *)buffer
 {
-  v4 = [(QSSSetEndpointerState *)self enable_server_side_endpoint];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v5 = *(a3 + 10);
-  v6 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v4);
+  enable_server_side_endpoint = [(QSSSetEndpointerState *)self enable_server_side_endpoint];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v5 = *(buffer + 10);
+  v6 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, enable_server_side_endpoint);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v6 + v5);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v6 + v5);
 }
 
 - (BOOL)enable_server_side_endpoint
@@ -55,42 +55,42 @@ flatbuffers::DetachedBuffer *__37__QSSSetEndpointerState_flatbuffData__block_inv
   return *v3->var0 >= 5u && (v4 = *v3[4].var0) != 0 && root[v4].var0[0] != 0;
 }
 
-- (QSSSetEndpointerState)initWithFlatbuffData:(id)a3 root:(const SetEndpointerState *)a4 verify:(BOOL)a5
+- (QSSSetEndpointerState)initWithFlatbuffData:(id)data root:(const SetEndpointerState *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSSetEndpointerState;
   v10 = [(QSSSetEndpointerState *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -112,9 +112,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

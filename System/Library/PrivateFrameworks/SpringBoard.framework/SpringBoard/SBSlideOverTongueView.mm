@@ -1,22 +1,22 @@
 @interface SBSlideOverTongueView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (SBSlideOverTongueView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (SBSlideOverTongueView)initWithFrame:(CGRect)frame;
 - (SBSlideOverTongueViewDelegate)delegate;
-- (void)_handleTap:(id)a3;
+- (void)_handleTap:(id)tap;
 - (void)_updateContainerTransform;
 - (void)_updateSubviewCollapsedExpandedState;
 - (void)layoutSubviews;
-- (void)setDirection:(unint64_t)a3 state:(unint64_t)a4 animated:(BOOL)a5;
+- (void)setDirection:(unint64_t)direction state:(unint64_t)state animated:(BOOL)animated;
 @end
 
 @implementation SBSlideOverTongueView
 
-- (SBSlideOverTongueView)initWithFrame:(CGRect)a3
+- (SBSlideOverTongueView)initWithFrame:(CGRect)frame
 {
   v36[1] = *MEMORY[0x277D85DE8];
   v35.receiver = self;
   v35.super_class = SBSlideOverTongueView;
-  v3 = [(SBSlideOverTongueView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBSlideOverTongueView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,10 +46,10 @@
     [v16 setName:@"gaussianBlur"];
     [v16 setValue:@"low" forKey:@"inputIntermediateBitDepth"];
     [v16 setValue:@"low" forKey:@"inputQuality"];
-    v17 = [(UIView *)v4->_sdfElementContainerView layer];
+    layer = [(UIView *)v4->_sdfElementContainerView layer];
     v36[0] = v16;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-    [v17 setFilters:v18];
+    [layer setFilters:v18];
 
     [(UIView *)v4->_contentView addSubview:v4->_sdfElementContainerView];
     [(UIView *)v4->_contentView sendSubviewToBack:v4->_sdfElementContainerView];
@@ -57,8 +57,8 @@
     sourceSDFElementView = v4->_sourceSDFElementView;
     v4->_sourceSDFElementView = v19;
 
-    v21 = [(SBSDFElementView *)v4->_sourceSDFElementView layer];
-    [v21 setGradientOvalization:1.0];
+    layer2 = [(SBSDFElementView *)v4->_sourceSDFElementView layer];
+    [layer2 setGradientOvalization:1.0];
 
     [(UIView *)v4->_sdfElementContainerView addSubview:v4->_sourceSDFElementView];
     v22 = [[SBSDFElementView alloc] initWithFrame:v6, v7, v8, v9];
@@ -77,11 +77,11 @@
 
     [(UIImageView *)v4->_chevronImageView setSemanticContentAttribute:3];
     v29 = v4->_chevronImageView;
-    v30 = [MEMORY[0x277D75348] blackColor];
-    [(UIImageView *)v29 setTintColor:v30];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIImageView *)v29 setTintColor:blackColor];
 
-    v31 = [(UIImageView *)v4->_chevronImageView layer];
-    [v31 setCompositingFilter:*MEMORY[0x277CDA5D8]];
+    layer3 = [(UIImageView *)v4->_chevronImageView layer];
+    [layer3 setCompositingFilter:*MEMORY[0x277CDA5D8]];
 
     [(UIImageView *)v4->_chevronImageView setAnchorPoint:1.0, 0.5];
     [(UIView *)v4->_contentView addSubview:v4->_chevronImageView];
@@ -97,29 +97,29 @@
   return v4;
 }
 
-- (void)setDirection:(unint64_t)a3 state:(unint64_t)a4 animated:(BOOL)a5
+- (void)setDirection:(unint64_t)direction state:(unint64_t)state animated:(BOOL)animated
 {
   direction = self->_direction;
-  if (a3)
+  if (direction)
   {
-    v6 = a3;
+    directionCopy = direction;
   }
 
   else
   {
-    v6 = self->_direction;
+    directionCopy = self->_direction;
   }
 
   state = self->_state;
-  if (direction != v6 || state != a4)
+  if (direction != directionCopy || state != state)
   {
-    v9 = a5;
-    self->_direction = v6;
-    self->_state = a4;
+    animatedCopy = animated;
+    self->_direction = directionCopy;
+    self->_state = state;
     v12 = +[SBAppSwitcherDomain rootSettings];
-    v13 = [v12 floatingSwitcherSettings];
+    floatingSwitcherSettings = [v12 floatingSwitcherSettings];
 
-    if (direction != v6)
+    if (direction != directionCopy)
     {
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
@@ -129,18 +129,18 @@
       [MEMORY[0x277D75D18] _performWithoutRetargetingAnimations:v18];
     }
 
-    if (state != a4)
+    if (state != state)
     {
-      if (v9)
+      if (animatedCopy)
       {
         if (self->_state)
         {
-          [v13 tongueCollapsedToExpandedAnimationSettings];
+          [floatingSwitcherSettings tongueCollapsedToExpandedAnimationSettings];
         }
 
         else
         {
-          [v13 tongueExpandedToCollapsedAnimationSettings];
+          [floatingSwitcherSettings tongueExpandedToCollapsedAnimationSettings];
         }
         v14 = ;
         v15 = 3;
@@ -163,9 +163,9 @@
     [(SBSlideOverTongueView *)self setAccessibilityValue:0];
     if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
     {
-      if (v6 != 2)
+      if (directionCopy != 2)
       {
-        if (v6 != 1)
+        if (directionCopy != 1)
         {
           goto LABEL_27;
         }
@@ -176,14 +176,14 @@
 
     else
     {
-      if (v6 == 2)
+      if (directionCopy == 2)
       {
 LABEL_25:
         v16 = @"Right side view";
         goto LABEL_26;
       }
 
-      if (v6 != 1)
+      if (directionCopy != 1)
       {
 LABEL_27:
 
@@ -306,19 +306,19 @@ LABEL_26:
   destinationSDFElementView = self->_destinationSDFElementView;
   v13 = v14;
   [(SBSDFElementView *)destinationSDFElementView setTransform:&v13];
-  v11 = [(UIView *)self->_sdfElementContainerView layer];
+  layer = [(UIView *)self->_sdfElementContainerView layer];
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:v5];
-  [v11 setValue:v12 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+  [layer setValue:v12 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SBSlideOverTongueView;
-  if ([(SBSlideOverTongueView *)&v11 pointInside:v7 withEvent:x, y])
+  if ([(SBSlideOverTongueView *)&v11 pointInside:eventCopy withEvent:x, y])
   {
     v8 = 1;
   }
@@ -328,13 +328,13 @@ LABEL_26:
     sourceSDFElementView = self->_sourceSDFElementView;
     [(SBSlideOverTongueView *)self convertPoint:self->_contentView toView:x, y];
     [(SBSDFElementView *)sourceSDFElementView convertPoint:self->_contentView fromView:?];
-    v8 = [(SBSDFElementView *)self->_sourceSDFElementView pointInside:v7 withEvent:?];
+    v8 = [(SBSDFElementView *)self->_sourceSDFElementView pointInside:eventCopy withEvent:?];
   }
 
   return v8;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained slideOverTongueViewTapped:self];

@@ -1,27 +1,27 @@
 @interface HKFillStyle
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)renderPath:(CGPath *)a3 context:(CGContext *)a4 axisRect:(CGRect)a5 alpha:(double)a6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)renderPath:(CGPath *)path context:(CGContext *)context axisRect:(CGRect)rect alpha:(double)alpha;
 @end
 
 @implementation HKFillStyle
 
-- (void)renderPath:(CGPath *)a3 context:(CGContext *)a4 axisRect:(CGRect)a5 alpha:(double)a6
+- (void)renderPath:(CGPath *)path context:(CGContext *)context axisRect:(CGRect)rect alpha:(double)alpha
 {
-  CGContextSaveGState(a4);
-  CGContextAddPath(a4, a3);
-  CGContextSetAlpha(a4, a6);
-  CGContextSetBlendMode(a4, kCGBlendModeNormal);
-  v9 = [MEMORY[0x1E69DC888] blackColor];
-  CGContextSetFillColorWithColor(a4, [v9 CGColor]);
+  CGContextSaveGState(context);
+  CGContextAddPath(context, path);
+  CGContextSetAlpha(context, alpha);
+  CGContextSetBlendMode(context, kCGBlendModeNormal);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  CGContextSetFillColorWithColor(context, [blackColor CGColor]);
 
-  CGContextFillPath(a4);
+  CGContextFillPath(context);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }

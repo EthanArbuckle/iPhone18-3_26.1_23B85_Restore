@@ -1,26 +1,26 @@
 @interface ILClassificationUIExtensionHostContext
 - (ILClassificationUIExtensionHostContextDelegate)delegate;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)classificationResponseForRequest:(id)a3 completion:(id)a4;
-- (void)prepareForClassificationRequest:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setReadyForClassificationResponse:(BOOL)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)classificationResponseForRequest:(id)request completion:(id)completion;
+- (void)prepareForClassificationRequest:(id)request;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setReadyForClassificationResponse:(BOOL)response;
 @end
 
 @implementation ILClassificationUIExtensionHostContext
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  [(ILClassificationUIExtensionHostContext *)self setDelegate:a3];
-  [(ILClassificationUIExtensionHostContext *)self setDelegateQueue:v6];
+  queueCopy = queue;
+  [(ILClassificationUIExtensionHostContext *)self setDelegate:delegate];
+  [(ILClassificationUIExtensionHostContext *)self setDelegateQueue:queueCopy];
 }
 
-- (void)prepareForClassificationRequest:(id)a3
+- (void)prepareForClassificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [(ILClassificationUIExtensionHostContext *)self remoteObjectProxyWithErrorHandler:&__block_literal_global_0];
-  [v5 prepareForClassificationRequest:v4];
+  [v5 prepareForClassificationRequest:requestCopy];
 }
 
 void __74__ILClassificationUIExtensionHostContext_prepareForClassificationRequest___block_invoke(uint64_t a1, void *a2)
@@ -33,17 +33,17 @@ void __74__ILClassificationUIExtensionHostContext_prepareForClassificationReques
   }
 }
 
-- (void)classificationResponseForRequest:(id)a3 completion:(id)a4
+- (void)classificationResponseForRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __86__ILClassificationUIExtensionHostContext_classificationResponseForRequest_completion___block_invoke;
   v14[3] = &unk_278A5F5B8;
   v14[4] = self;
-  v15 = v6;
-  v7 = v6;
-  v8 = a3;
+  v15 = completionCopy;
+  v7 = completionCopy;
+  requestCopy = request;
   v9 = MEMORY[0x23EE6F850](v14);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -52,7 +52,7 @@ void __74__ILClassificationUIExtensionHostContext_prepareForClassificationReques
   v13 = v9;
   v10 = v9;
   v11 = [(ILClassificationUIExtensionHostContext *)self remoteObjectProxyWithErrorHandler:v12];
-  [v11 classificationResponseForRequest:v8 completion:v10];
+  [v11 classificationResponseForRequest:requestCopy completion:v10];
 }
 
 void __86__ILClassificationUIExtensionHostContext_classificationResponseForRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -85,34 +85,34 @@ void __86__ILClassificationUIExtensionHostContext_classificationResponseForReque
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setReadyForClassificationResponse:(BOOL)a3
+- (void)setReadyForClassificationResponse:(BOOL)response
 {
-  v3 = a3;
+  responseCopy = response;
   v15 = *MEMORY[0x277D85DE8];
   v5 = ILDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v14 = v3;
+    v14 = responseCopy;
     _os_log_impl(&dword_238A6C000, v5, OS_LOG_TYPE_DEFAULT, "setReadyForClassificationResponse: %d", buf, 8u);
   }
 
-  v6 = [(ILClassificationUIExtensionHostContext *)self delegate];
-  if (v6)
+  delegate = [(ILClassificationUIExtensionHostContext *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
-    v8 = [(ILClassificationUIExtensionHostContext *)self delegateQueue];
+    v7 = delegate;
+    delegateQueue = [(ILClassificationUIExtensionHostContext *)self delegateQueue];
 
-    if (v8)
+    if (delegateQueue)
     {
-      v9 = [(ILClassificationUIExtensionHostContext *)self delegateQueue];
+      delegateQueue2 = [(ILClassificationUIExtensionHostContext *)self delegateQueue];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __76__ILClassificationUIExtensionHostContext_setReadyForClassificationResponse___block_invoke;
       v11[3] = &unk_278A5F608;
       v11[4] = self;
-      v12 = v3;
-      dispatch_async(v9, v11);
+      v12 = responseCopy;
+      dispatch_async(delegateQueue2, v11);
     }
   }
 
@@ -125,11 +125,11 @@ void __76__ILClassificationUIExtensionHostContext_setReadyForClassificationRespo
   [v2 context:*(a1 + 32) didBecomeReadyForClassificationResponse:*(a1 + 40)];
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ILClassificationUIExtensionHostContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(ILClassificationUIExtensionHostContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

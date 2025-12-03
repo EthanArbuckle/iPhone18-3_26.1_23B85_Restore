@@ -10,8 +10,8 @@
 + (id)hkmc_quantityWithDegreesCelsius:()HKMenstrualCycles
 {
   v2 = MEMORY[0x277CCD7E8];
-  v3 = [MEMORY[0x277CCDAB0] degreeCelsiusUnit];
-  v4 = [v2 quantityWithUnit:v3 doubleValue:a1];
+  degreeCelsiusUnit = [MEMORY[0x277CCDAB0] degreeCelsiusUnit];
+  v4 = [v2 quantityWithUnit:degreeCelsiusUnit doubleValue:self];
 
   return v4;
 }
@@ -19,16 +19,16 @@
 + (id)hkmc_quantityWithDegreesFahrenheit:()HKMenstrualCycles
 {
   v2 = MEMORY[0x277CCD7E8];
-  v3 = [MEMORY[0x277CCDAB0] degreeFahrenheitUnit];
-  v4 = [v2 quantityWithUnit:v3 doubleValue:a1];
+  degreeFahrenheitUnit = [MEMORY[0x277CCDAB0] degreeFahrenheitUnit];
+  v4 = [v2 quantityWithUnit:degreeFahrenheitUnit doubleValue:self];
 
   return v4;
 }
 
 - (double)hkmc_degreesCelsius
 {
-  v2 = [MEMORY[0x277CCDAB0] degreeCelsiusUnit];
-  [a1 doubleValueForUnit:v2];
+  degreeCelsiusUnit = [MEMORY[0x277CCDAB0] degreeCelsiusUnit];
+  [self doubleValueForUnit:degreeCelsiusUnit];
   v4 = v3;
 
   return v4;
@@ -36,8 +36,8 @@
 
 - (double)hkmc_degreesFahrenheit
 {
-  v2 = [MEMORY[0x277CCDAB0] degreeFahrenheitUnit];
-  [a1 doubleValueForUnit:v2];
+  degreeFahrenheitUnit = [MEMORY[0x277CCDAB0] degreeFahrenheitUnit];
+  [self doubleValueForUnit:degreeFahrenheitUnit];
   v4 = v3;
 
   return v4;

@@ -1,14 +1,14 @@
 @interface NSVariableExpression
-- (BOOL)isEqual:(id)a3;
-- (NSVariableExpression)initWithCoder:(id)a3;
-- (NSVariableExpression)initWithObject:(id)a3;
-- (id)_expressionWithSubstitutionVariables:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (NSVariableExpression)initWithCoder:(id)coder;
+- (NSVariableExpression)initWithObject:(id)object;
+- (id)_expressionWithSubstitutionVariables:(id)variables;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)expressionValueWithObject:(id)object context:(id)context;
 - (id)predicateFormat;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSVariableExpression
@@ -24,45 +24,45 @@
 
 - (id)predicateFormat
 {
-  v2 = [(NSVariableExpression *)self variable];
-  v3 = [_NSPredicateUtilities _isReservedWordInParser:v2];
+  variable = [(NSVariableExpression *)self variable];
+  v3 = [_NSPredicateUtilities _isReservedWordInParser:variable];
   v4 = &stru_1EEEFDF90;
   if (v3)
   {
     v4 = @"#";
   }
 
-  return [NSString stringWithFormat:@"$%@%@", v4, v2];
+  return [NSString stringWithFormat:@"$%@%@", v4, variable];
 }
 
-- (NSVariableExpression)initWithObject:(id)a3
+- (NSVariableExpression)initWithObject:(id)object
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSVariableExpression;
   v4 = [(NSExpression *)&v6 initWithExpressionType:2];
-  v4->_variable = a3;
+  v4->_variable = object;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSVariableExpression;
-  [(NSExpression *)&v5 encodeWithCoder:a3];
-  [a3 encodeObject:self->_variable forKey:@"NSVariable"];
+  [(NSExpression *)&v5 encodeWithCoder:coder];
+  [coder encodeObject:self->_variable forKey:@"NSVariable"];
 }
 
-- (NSVariableExpression)initWithCoder:(id)a3
+- (NSVariableExpression)initWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -70,16 +70,16 @@
 
   v7.receiver = self;
   v7.super_class = NSVariableExpression;
-  v5 = [(NSExpression *)&v7 initWithCoder:a3];
+  v5 = [(NSExpression *)&v7 initWithCoder:coder];
   if (v5)
   {
-    v5->_variable = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSVariable"];
+    v5->_variable = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSVariable"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   variable = self->_variable;
@@ -87,27 +87,27 @@
   return [v4 initWithObject:variable];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [a3 variable];
-  v6 = [(NSVariableExpression *)self variable];
+  variable = [equal variable];
+  variable2 = [(NSVariableExpression *)self variable];
 
-  return [v5 isEqual:v6];
+  return [variable isEqual:variable2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NSVariableExpression *)self variable];
+  variable = [(NSVariableExpression *)self variable];
 
-  return [v2 hash];
+  return [variable hash];
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
   if (![(NSExpression *)self _allowsEvaluation])
   {
@@ -115,12 +115,12 @@
   }
 
   v7 = [[_NSPerformanceMeter alloc] initWithTarget:self, 0];
-  v8 = [a4 objectForKey:self->_variable];
+  v8 = [context objectForKey:self->_variable];
   if (!v8)
   {
     v10 = MEMORY[0x1E695DF30];
-    v11 = [NSString stringWithFormat:@"Can't get value for '%@' in bindings %@.", self->_variable, a4];
-    objc_exception_throw([v10 exceptionWithName:*MEMORY[0x1E695D940] reason:v11 userInfo:0]);
+    context = [NSString stringWithFormat:@"Can't get value for '%@' in bindings %@.", self->_variable, context];
+    objc_exception_throw([v10 exceptionWithName:*MEMORY[0x1E695D940] reason:context userInfo:0]);
   }
 
   if ([MEMORY[0x1E695DFB0] null] == v8)
@@ -136,7 +136,7 @@
 
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v8 expressionValueWithObject:a3 context:a4];
+    v8 = [v8 expressionValueWithObject:object context:context];
   }
 
   if (v7)
@@ -148,18 +148,18 @@ LABEL_7:
   return v8;
 }
 
-- (id)_expressionWithSubstitutionVariables:(id)a3
+- (id)_expressionWithSubstitutionVariables:(id)variables
 {
-  if (!a3)
+  if (!variables)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot substitute a nil substitution dictionary." userInfo:0]);
   }
 
-  v3 = self;
-  v4 = [a3 objectForKey:self->_variable];
+  selfCopy = self;
+  v4 = [variables objectForKey:self->_variable];
   if (!v4)
   {
-    return v3;
+    return selfCopy;
   }
 
   v5 = v4;

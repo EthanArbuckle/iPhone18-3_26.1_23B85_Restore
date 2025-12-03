@@ -1,35 +1,35 @@
 @interface SUUISearchBarViewElement
-- (SUUISearchBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUISearchBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUISearchBarViewElement
 
-- (SUUISearchBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUISearchBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v21.receiver = self;
   v21.super_class = SUUISearchBarViewElement;
-  v9 = [(SUUIInputViewElement *)&v21 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIInputViewElement *)&v21 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"accessoryText"];
+    v10 = [elementCopy getAttribute:@"accessoryText"];
     accessoryText = v9->_accessoryText;
     v9->_accessoryText = v10;
 
-    v12 = [(IKTextParser *)SUUIViewElementText textWithDOMElement:v8 usingParseBlock:0];
+    v12 = [(IKTextParser *)SUUIViewElementText textWithDOMElement:elementCopy usingParseBlock:0];
     defaultText = v9->_defaultText;
     v9->_defaultText = v12;
 
-    v14 = [v8 getAttribute:@"placeholder"];
+    v14 = [elementCopy getAttribute:@"placeholder"];
     placeholderString = v9->_placeholderString;
     v9->_placeholderString = v14;
 
-    v16 = [v8 getAttribute:@"searchHints"];
+    v16 = [elementCopy getAttribute:@"searchHints"];
     searchHintsURLString = v9->_searchHintsURLString;
     v9->_searchHintsURLString = v16;
 
-    v18 = [v8 getAttribute:@"trendingSearch"];
+    v18 = [elementCopy getAttribute:@"trendingSearch"];
     trendingSearchURLString = v9->_trendingSearchURLString;
     v9->_trendingSearchURLString = v18;
   }
@@ -37,34 +37,34 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SUUISearchBarViewElement;
-  v5 = [(SUUIViewElement *)&v18 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v18 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SUUISearchBarViewElement *)v4 accessoryText];
+    accessoryText = [(SUUISearchBarViewElement *)elementCopy accessoryText];
     accessoryText = self->_accessoryText;
-    self->_accessoryText = v7;
+    self->_accessoryText = accessoryText;
 
-    v9 = [(SUUISearchBarViewElement *)v4 defaultText];
+    defaultText = [(SUUISearchBarViewElement *)elementCopy defaultText];
     defaultText = self->_defaultText;
-    self->_defaultText = v9;
+    self->_defaultText = defaultText;
 
-    v11 = [(SUUISearchBarViewElement *)v4 placeholderString];
+    placeholderString = [(SUUISearchBarViewElement *)elementCopy placeholderString];
     placeholderString = self->_placeholderString;
-    self->_placeholderString = v11;
+    self->_placeholderString = placeholderString;
 
-    v13 = [(SUUISearchBarViewElement *)v4 searchHintsURLString];
+    searchHintsURLString = [(SUUISearchBarViewElement *)elementCopy searchHintsURLString];
     searchHintsURLString = self->_searchHintsURLString;
-    self->_searchHintsURLString = v13;
+    self->_searchHintsURLString = searchHintsURLString;
 
-    v15 = [(SUUISearchBarViewElement *)v4 trendingSearchURLString];
+    trendingSearchURLString = [(SUUISearchBarViewElement *)elementCopy trendingSearchURLString];
     trendingSearchURLString = self->_trendingSearchURLString;
-    self->_trendingSearchURLString = v15;
+    self->_trendingSearchURLString = trendingSearchURLString;
   }
 
   return v6;

@@ -1,20 +1,20 @@
 @interface TIKeyboardBehaviors_Handwriting
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Handwriting
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 hasInput];
-  v5 = [v3 hasCandidates];
-  v6 = v5;
-  if (!v4)
+  stateCopy = state;
+  hasInput = [stateCopy hasInput];
+  hasCandidates = [stateCopy hasCandidates];
+  v6 = hasCandidates;
+  if (!hasInput)
   {
-    if (v5)
+    if (hasCandidates)
     {
-      if ([v3 hasCandidateSelected])
+      if ([stateCopy hasCandidateSelected])
       {
         v8 = 2;
       }
@@ -30,10 +30,10 @@
     goto LABEL_10;
   }
 
-  v7 = [v3 hasCandidateSelected];
+  hasCandidateSelected = [stateCopy hasCandidateSelected];
   if (v6)
   {
-    if (v7)
+    if (hasCandidateSelected)
     {
       v8 = 2;
     }
@@ -46,7 +46,7 @@
     goto LABEL_13;
   }
 
-  if (v7)
+  if (hasCandidateSelected)
   {
 LABEL_10:
     v9 = 0;

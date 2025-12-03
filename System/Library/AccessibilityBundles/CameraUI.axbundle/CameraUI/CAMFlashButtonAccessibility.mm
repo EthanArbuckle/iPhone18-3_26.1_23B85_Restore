@@ -1,24 +1,24 @@
 @interface CAMFlashButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)startExpansionWithProposedFrame:(CGRect)a3;
+- (void)startExpansionWithProposedFrame:(CGRect)frame;
 @end
 
 @implementation CAMFlashButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMFlashButton" hasInstanceMethod:@"setFlashMode:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"CAMFlashButton" hasInstanceMethod:@"flashMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMExpandableMenuButton" hasInstanceMethod:@"startExpansionWithProposedFrame:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"CAMFlashButton" isKindOfClass:@"CAMExpandableMenuButton"];
-  [v3 validateClass:@"CAMFlashButton" hasInstanceMethod:@"modeForIndex:" withFullSignature:{"q", "q", 0}];
-  [v3 validateClass:@"CAMFlashButton" hasInstanceMethod:@"isUnavailable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMFlashButton" hasInstanceMethod:@"titleForMenuItemAtIndex:" withFullSignature:{"@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMFlashButton" hasInstanceMethod:@"setFlashMode:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"CAMFlashButton" hasInstanceMethod:@"flashMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMExpandableMenuButton" hasInstanceMethod:@"startExpansionWithProposedFrame:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"CAMFlashButton" isKindOfClass:@"CAMExpandableMenuButton"];
+  [validationsCopy validateClass:@"CAMFlashButton" hasInstanceMethod:@"modeForIndex:" withFullSignature:{"q", "q", 0}];
+  [validationsCopy validateClass:@"CAMFlashButton" hasInstanceMethod:@"isUnavailable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMFlashButton" hasInstanceMethod:@"titleForMenuItemAtIndex:" withFullSignature:{"@", "q", 0}];
 }
 
 - (BOOL)accessibilityActivate
@@ -26,19 +26,19 @@
   if (AXRequestingClient() == 3)
   {
     v3 = [(CAMFlashButtonAccessibility *)self safeValueForKey:@"flashMode"];
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
 
-    v5 = v4 != 1;
+    v5 = integerValue != 1;
     v8 = MEMORY[0x29EDCA5F8];
     v9 = 3221225472;
     v10 = __52__CAMFlashButtonAccessibility_accessibilityActivate__block_invoke;
     v11 = &unk_29F2ACC58;
-    if (!v4)
+    if (!integerValue)
     {
       v5 = 2;
     }
 
-    v12 = self;
+    selfCopy = self;
     v13 = v5;
     AXPerformSafeBlock();
     return 1;
@@ -84,15 +84,15 @@ void __52__CAMFlashButtonAccessibility_accessibilityActivate__block_invoke(uint6
   else
   {
     v4 = [(CAMFlashButtonAccessibility *)self safeValueForKey:@"flashMode"];
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
 
     v6 = @"FLASH_MODE_BUTTON_VALUE_AUTO";
-    if (v5 == 1)
+    if (integerValue == 1)
     {
       v6 = @"FLASH_MODE_BUTTON_VALUE_ON";
     }
 
-    if (v5)
+    if (integerValue)
     {
       v3 = v6;
     }
@@ -108,11 +108,11 @@ void __52__CAMFlashButtonAccessibility_accessibilityActivate__block_invoke(uint6
   return v7;
 }
 
-- (void)startExpansionWithProposedFrame:(CGRect)a3
+- (void)startExpansionWithProposedFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAMFlashButtonAccessibility;
-  [(CAMFlashButtonAccessibility *)&v6 startExpansionWithProposedFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CAMFlashButtonAccessibility *)&v6 startExpansionWithProposedFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
   v4 = [(CAMFlashButtonAccessibility *)self safeArrayForKey:@"_menuItems"];
   v5[0] = MEMORY[0x29EDCA5F8];

@@ -9,11 +9,11 @@
 {
   sub_2246287D8();
   v3 = *(&self->super.isa + OBJC_IVAR____TtC11DockKitCore4Pose_position);
-  v4 = self;
+  selfCopy = self;
   v5 = v3;
   sub_2246281F8();
 
-  v6 = *(&v4->super.isa + OBJC_IVAR____TtC11DockKitCore4Pose_rotation);
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR____TtC11DockKitCore4Pose_rotation);
   sub_2246281F8();
 
   v7 = sub_2246287B8();

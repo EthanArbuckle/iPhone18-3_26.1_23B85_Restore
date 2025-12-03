@@ -1,39 +1,39 @@
 @interface SBLegacyTodayViewSpotlightPresentableViewController
-- (SBLegacyTodayViewSpotlightPresentableViewController)initWithSpotlightMultiplexingViewController:(id)a3 searchBarViewController:(id)a4 scrollView:(id)a5;
+- (SBLegacyTodayViewSpotlightPresentableViewController)initWithSpotlightMultiplexingViewController:(id)controller searchBarViewController:(id)viewController scrollView:(id)view;
 - (SBLegacyTodayViewSpotlightPresentableViewControllerDelegate)delegate;
 - (id)_sharedRemoteSearchViewController;
-- (id)willBeginModifyingPresentationProgressForState:(int64_t)a3 animated:(BOOL)a4 needsInitialLayout:(BOOL *)a5;
-- (void)_beginRequiringSearchBarPortalViewForReason:(id)a3;
-- (void)_endRequiringSearchBarPortalViewForReason:(id)a3;
+- (id)willBeginModifyingPresentationProgressForState:(int64_t)state animated:(BOOL)animated needsInitialLayout:(BOOL *)layout;
+- (void)_beginRequiringSearchBarPortalViewForReason:(id)reason;
+- (void)_endRequiringSearchBarPortalViewForReason:(id)reason;
 - (void)_setUpFeatherBackgroundMatchMoveAnimations;
 - (void)_setUpSearchBackdrop;
 - (void)_setUpSearchBackdropMatchMoveAnimation;
 - (void)_setUpSearchBar;
 - (void)_updateMaskLayers;
 - (void)dismissSearchView;
-- (void)updatePresentationProgress:(double)a3 withOffset:(double)a4 velocity:(double)a5 presentationState:(int64_t)a6;
+- (void)updatePresentationProgress:(double)progress withOffset:(double)offset velocity:(double)velocity presentationState:(int64_t)state;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBLegacyTodayViewSpotlightPresentableViewController
 
-- (SBLegacyTodayViewSpotlightPresentableViewController)initWithSpotlightMultiplexingViewController:(id)a3 searchBarViewController:(id)a4 scrollView:(id)a5
+- (SBLegacyTodayViewSpotlightPresentableViewController)initWithSpotlightMultiplexingViewController:(id)controller searchBarViewController:(id)viewController scrollView:(id)view
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = SBLegacyTodayViewSpotlightPresentableViewController;
   v12 = [(SBLegacyTodayViewSpotlightPresentableViewController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_spotlightMultiplexingViewController, a3);
-    objc_storeStrong(&v13->_searchBarViewController, a4);
-    objc_storeStrong(&v13->_scrollView, a5);
+    objc_storeStrong(&v12->_spotlightMultiplexingViewController, controller);
+    objc_storeStrong(&v13->_searchBarViewController, viewController);
+    objc_storeStrong(&v13->_scrollView, view);
   }
 
   return v13;
@@ -50,11 +50,11 @@
   [(SBLegacyTodayViewSpotlightPresentableViewController *)self bs_addChildViewController:self->_spotlightMultiplexingViewController];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  if (a3)
+  if (window)
   {
-    [(SBLegacyTodayViewSpotlightPresentableViewController *)self _setUpSearchBackdropMatchMoveAnimation:a3];
+    [(SBLegacyTodayViewSpotlightPresentableViewController *)self _setUpSearchBackdropMatchMoveAnimation:window];
 
     [(SBLegacyTodayViewSpotlightPresentableViewController *)self _setUpFeatherBackgroundMatchMoveAnimations];
   }
@@ -66,25 +66,25 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
-  v7 = [(MTMaterialView *)self->_searchBackdropView layer];
-  v8 = [v7 animationForKey:@"SBTodayViewSearchBackdropMatchMoveAnimation"];
-  [v7 removeAnimationForKey:@"SBTodayViewSearchBackdropMatchMoveAnimation"];
-  [v6 setHidden:1];
+  coordinatorCopy = coordinator;
+  view = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
+  layer = [(MTMaterialView *)self->_searchBackdropView layer];
+  v8 = [layer animationForKey:@"SBTodayViewSearchBackdropMatchMoveAnimation"];
+  [layer removeAnimationForKey:@"SBTodayViewSearchBackdropMatchMoveAnimation"];
+  [view setHidden:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __106__SBLegacyTodayViewSpotlightPresentableViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v12[3] = &unk_2783B7B68;
-  v13 = v7;
+  v13 = layer;
   v14 = v8;
-  v15 = v6;
-  v9 = v6;
+  v15 = view;
+  v9 = view;
   v10 = v8;
-  v11 = v7;
-  [v5 animateAlongsideTransition:0 completion:v12];
+  v11 = layer;
+  [coordinatorCopy animateAlongsideTransition:0 completion:v12];
 }
 
 uint64_t __106__SBLegacyTodayViewSpotlightPresentableViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -103,11 +103,11 @@ uint64_t __106__SBLegacyTodayViewSpotlightPresentableViewController_viewWillTran
   [(SBLegacyTodayViewSpotlightPresentableViewController *)self _updateMaskLayers];
 }
 
-- (void)updatePresentationProgress:(double)a3 withOffset:(double)a4 velocity:(double)a5 presentationState:(int64_t)a6
+- (void)updatePresentationProgress:(double)progress withOffset:(double)offset velocity:(double)velocity presentationState:(int64_t)state
 {
-  v39 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view:a3];
-  v10 = [(SBSpotlightMultiplexingViewController *)self->_spotlightMultiplexingViewController view];
-  v11 = [(SPUISearchBarController *)self->_searchBarViewController view];
+  v39 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view:progress];
+  view = [(SBSpotlightMultiplexingViewController *)self->_spotlightMultiplexingViewController view];
+  view2 = [(SPUISearchBarController *)self->_searchBarViewController view];
   [v39 safeAreaInsets];
   v38 = v12;
   [(SBLegacyTodayViewSpotlightPresentableViewController *)self topOffset];
@@ -115,9 +115,9 @@ uint64_t __106__SBLegacyTodayViewSpotlightPresentableViewController_viewWillTran
   spotlightMultiplexingViewController = self->_spotlightMultiplexingViewController;
   if (spotlightMultiplexingViewController)
   {
-    v16 = [(SBSpotlightMultiplexingViewController *)spotlightMultiplexingViewController interfaceOrientation];
+    interfaceOrientation = [(SBSpotlightMultiplexingViewController *)spotlightMultiplexingViewController interfaceOrientation];
     v17 = 38.0;
-    if ((v16 - 1) < 2)
+    if ((interfaceOrientation - 1) < 2)
     {
       v17 = 36.0;
     }
@@ -134,15 +134,15 @@ uint64_t __106__SBLegacyTodayViewSpotlightPresentableViewController_viewWillTran
   UIRectGetCenter();
   v19 = v18;
   v21 = v20;
-  [v11 center];
+  [view2 center];
   v23 = v22;
   v25 = v24;
-  v26 = a4 / 3.0 + v14;
-  [v11 size];
+  v26 = offset / 3.0 + v14;
+  [view2 size];
   v28 = v27 * 0.5;
-  if (a6)
+  if (state)
   {
-    if (a6 == 2)
+    if (state == 2)
     {
       v30 = [MEMORY[0x277D74300] preferredFontForTextStyle:{*MEMORY[0x277D76918], v28}];
       [v30 _scaledValueForValue:v37];
@@ -155,10 +155,10 @@ uint64_t __106__SBLegacyTodayViewSpotlightPresentableViewController_viewWillTran
     else
     {
       v29 = v38 + v26 + v28;
-      if (a6 == 1)
+      if (state == 1)
       {
         v25 = v29;
-        v21 = v14 + a4 + v21;
+        v21 = v14 + offset + v21;
       }
     }
   }
@@ -169,48 +169,48 @@ uint64_t __106__SBLegacyTodayViewSpotlightPresentableViewController_viewWillTran
     v25 = v38 + v26 + v28;
   }
 
-  [v10 setCenter:{v19, v21}];
+  [view setCenter:{v19, v21}];
   [(NSLayoutConstraint *)self->_searchBarViewTopConstraint setConstant:v26];
   [(_UIPortalView *)self->_searchBarPortalView setCenter:v23, v25];
-  v32 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self _sharedRemoteSearchViewController];
-  [v32 setRevealProgress:a3];
+  _sharedRemoteSearchViewController = [(SBLegacyTodayViewSpotlightPresentableViewController *)self _sharedRemoteSearchViewController];
+  [_sharedRemoteSearchViewController setRevealProgress:progress];
 
   searchBackdropView = self->_searchBackdropView;
   [v39 bounds];
   [(MTMaterialView *)searchBackdropView setFrame:?];
-  [(MTMaterialView *)self->_searchBackdropView setWeighting:a3];
-  [v10 setAlpha:(a3 + -0.3) / 0.7 + 0.0];
+  [(MTMaterialView *)self->_searchBackdropView setWeighting:progress];
+  [view setAlpha:(progress + -0.3) / 0.7 + 0.0];
   v34 = 1.0;
-  if (a6 == 2)
+  if (state == 2)
   {
     v34 = 0.0;
   }
 
-  [v11 setAlpha:v34];
+  [view2 setAlpha:v34];
   featherBlurHeightConstraint = self->_featherBlurHeightConstraint;
-  [v11 bounds];
+  [view2 bounds];
   [(NSLayoutConstraint *)featherBlurHeightConstraint setConstant:v14 + v36 + 12.0];
   [(SBLegacyTodayViewSpotlightPresentableViewController *)self _updateMaskLayers];
 }
 
-- (id)willBeginModifyingPresentationProgressForState:(int64_t)a3 animated:(BOOL)a4 needsInitialLayout:(BOOL *)a5
+- (id)willBeginModifyingPresentationProgressForState:(int64_t)state animated:(BOOL)animated needsInitialLayout:(BOOL *)layout
 {
   v7 = 0;
-  if (a3 == 2)
+  if (state == 2)
   {
     v8 = @"AnimatedPresentation-%@";
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!state)
   {
     v7 = self->_searchBarPortalView == 0;
     v8 = @"AnimatedDismissal-%@";
 LABEL_5:
     v9 = MEMORY[0x277CCACA8];
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v10 UUIDString];
-    v12 = [v9 stringWithFormat:v8, v11];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v12 = [v9 stringWithFormat:v8, uUIDString];
 
     goto LABEL_7;
   }
@@ -218,7 +218,7 @@ LABEL_5:
   v12 = @"SBTodayViewSearchPortalRequiredForInteractivePresentationReason";
 LABEL_7:
   [(SBLegacyTodayViewSpotlightPresentableViewController *)self _beginRequiringSearchBarPortalViewForReason:v12];
-  *a5 = v7;
+  *layout = v7;
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -252,7 +252,7 @@ void __130__SBLegacyTodayViewSpotlightPresentableViewController_willBeginModifyi
   v43[7] = *MEMORY[0x277D85DE8];
   if (self->_searchBarViewController)
   {
-    v3 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
+    view = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
     [(SBLegacyTodayViewSpotlightPresentableViewController *)self topOffset];
     v5 = v4;
     v6 = [objc_alloc(MEMORY[0x277D65E58]) initWithRecipe:0];
@@ -260,49 +260,49 @@ void __130__SBLegacyTodayViewSpotlightPresentableViewController_willBeginModifyi
     self->_featherBlurView = v6;
 
     [(SBFFeatherBlurView *)self->_featherBlurView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v3 addSubview:self->_featherBlurView];
-    [(SBLegacyTodayViewSpotlightPresentableViewController *)self bs_addChildViewController:self->_searchBarViewController withSuperview:v3];
-    v8 = [(SPUISearchBarController *)self->_searchBarViewController view];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [v8 topAnchor];
-    v10 = [v3 safeAreaLayoutGuide];
-    v11 = [v10 topAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11 constant:v5];
+    [view addSubview:self->_featherBlurView];
+    [(SBLegacyTodayViewSpotlightPresentableViewController *)self bs_addChildViewController:self->_searchBarViewController withSuperview:view];
+    view2 = [(SPUISearchBarController *)self->_searchBarViewController view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+    topAnchor = [view2 topAnchor];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v5];
     searchBarViewTopConstraint = self->_searchBarViewTopConstraint;
     self->_searchBarViewTopConstraint = v12;
 
-    v14 = [(SBFFeatherBlurView *)self->_featherBlurView bottomAnchor];
-    v15 = [v3 safeAreaLayoutGuide];
-    v16 = [v15 topAnchor];
-    [v8 bounds];
-    v18 = [v14 constraintEqualToAnchor:v16 constant:v5 + v17];
+    bottomAnchor = [(SBFFeatherBlurView *)self->_featherBlurView bottomAnchor];
+    safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+    topAnchor3 = [safeAreaLayoutGuide2 topAnchor];
+    [view2 bounds];
+    v18 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:v5 + v17];
     featherBlurHeightConstraint = self->_featherBlurHeightConstraint;
     self->_featherBlurHeightConstraint = v18;
 
     v34 = MEMORY[0x277CCAAD0];
     v43[0] = self->_searchBarViewTopConstraint;
-    v41 = [v3 leadingAnchor];
-    v42 = v8;
-    v40 = [v8 leadingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    leadingAnchor = [view leadingAnchor];
+    v42 = view2;
+    leadingAnchor2 = [view2 leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v43[1] = v39;
-    v38 = [v3 trailingAnchor];
-    v37 = [v8 trailingAnchor];
-    v35 = [v38 constraintEqualToAnchor:v37];
+    trailingAnchor = [view trailingAnchor];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v43[2] = v35;
-    v33 = [(SBFFeatherBlurView *)self->_featherBlurView topAnchor];
-    v32 = [v3 topAnchor];
-    v20 = [v33 constraintEqualToAnchor:v32];
+    topAnchor4 = [(SBFFeatherBlurView *)self->_featherBlurView topAnchor];
+    topAnchor5 = [view topAnchor];
+    v20 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v43[3] = v20;
-    v21 = [(SBFFeatherBlurView *)self->_featherBlurView leadingAnchor];
-    v22 = v3;
-    v36 = v3;
-    v23 = [v3 leadingAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    leadingAnchor3 = [(SBFFeatherBlurView *)self->_featherBlurView leadingAnchor];
+    v22 = view;
+    v36 = view;
+    leadingAnchor4 = [view leadingAnchor];
+    v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v43[4] = v24;
-    v25 = [(SBFFeatherBlurView *)self->_featherBlurView trailingAnchor];
-    v26 = [v22 trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    trailingAnchor3 = [(SBFFeatherBlurView *)self->_featherBlurView trailingAnchor];
+    trailingAnchor4 = [v22 trailingAnchor];
+    v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v28 = self->_featherBlurHeightConstraint;
     v43[5] = v27;
     v43[6] = v28;
@@ -323,9 +323,9 @@ void __130__SBLegacyTodayViewSpotlightPresentableViewController_willBeginModifyi
   self->_searchBackdropView = v4;
 
   [(MTMaterialView *)self->_searchBackdropView bs_setHitTestingDisabled:1];
-  v6 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
-  [v6 addSubview:self->_searchBackdropView];
-  [v6 sendSubviewToBack:self->_searchBackdropView];
+  view = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
+  [view addSubview:self->_searchBackdropView];
+  [view sendSubviewToBack:self->_searchBackdropView];
 }
 
 - (void)_setUpFeatherBackgroundMatchMoveAnimations
@@ -340,12 +340,12 @@ void __130__SBLegacyTodayViewSpotlightPresentableViewController_willBeginModifyi
   featherBlurView = self->_featherBlurView;
   if (featherBlurView)
   {
-    v5 = [(SBFFeatherBlurView *)featherBlurView layer];
-    [v3 addObject:v5];
+    layer = [(SBFFeatherBlurView *)featherBlurView layer];
+    [v3 addObject:layer];
   }
 
-  v6 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
-  v7 = [v6 window];
+  view = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
+  window = [view window];
 
   v18 = 0u;
   v19 = 0u;
@@ -369,7 +369,7 @@ void __130__SBLegacyTodayViewSpotlightPresentableViewController_willBeginModifyi
         v13 = *(*(&v16 + 1) + 8 * i);
         v14 = MEMORY[0x277D65E58];
         [v13 frame];
-        v15 = [v14 matchMoveAnimationForFrame:v7 relativeToView:?];
+        v15 = [v14 matchMoveAnimationForFrame:window relativeToView:?];
         [v13 addAnimation:v15 forKey:@"SBTodayViewSearchBackdropMatchMoveAnimation"];
       }
 
@@ -383,26 +383,26 @@ void __130__SBLegacyTodayViewSpotlightPresentableViewController_willBeginModifyi
 - (void)_setUpSearchBackdropMatchMoveAnimation
 {
   v3 = MEMORY[0x277D65DE0];
-  v4 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v3 matchMoveAnimationForPinningToView:v5];
+  view = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
+  window = [view window];
+  v6 = [v3 matchMoveAnimationForPinningToView:window];
 
   [(MTMaterialView *)self->_searchBackdropView addAnimation:v6 forKey:@"SBTodayViewSearchBackdropMatchMoveAnimation"];
 }
 
-- (void)_beginRequiringSearchBarPortalViewForReason:(id)a3
+- (void)_beginRequiringSearchBarPortalViewForReason:(id)reason
 {
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [(SBLegacyTodayViewSpotlightPresentableViewController *)a2 _beginRequiringSearchBarPortalViewForReason:?];
-    v5 = 0;
+    reasonCopy = 0;
   }
 
   if (self->_searchBarViewController)
   {
     searchBarPortalRequirementReasons = self->_searchBarPortalRequirementReasons;
-    v18 = v5;
+    v18 = reasonCopy;
     if (!searchBarPortalRequirementReasons)
     {
       v7 = [MEMORY[0x277CBEB58] set];
@@ -415,13 +415,13 @@ void __130__SBLegacyTodayViewSpotlightPresentableViewController_willBeginModifyi
     [(NSMutableSet *)searchBarPortalRequirementReasons addObject:v18];
     if (!self->_searchBarPortalView)
     {
-      v9 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self _sharedRemoteSearchViewController];
-      v10 = [v9 searchHeaderLayerRenderID];
-      v11 = [v9 searchHeaderContextID];
-      if (v10 && v11)
+      _sharedRemoteSearchViewController = [(SBLegacyTodayViewSpotlightPresentableViewController *)self _sharedRemoteSearchViewController];
+      searchHeaderLayerRenderID = [_sharedRemoteSearchViewController searchHeaderLayerRenderID];
+      searchHeaderContextID = [_sharedRemoteSearchViewController searchHeaderContextID];
+      if (searchHeaderLayerRenderID && searchHeaderContextID)
       {
-        v12 = [(SPUISearchBarController *)self->_searchBarViewController view];
-        [v12 setHidden:1];
+        view = [(SPUISearchBarController *)self->_searchBarViewController view];
+        [view setHidden:1];
 
         v13 = objc_alloc_init(MEMORY[0x277D76180]);
         searchBarPortalView = self->_searchBarPortalView;
@@ -429,14 +429,14 @@ void __130__SBLegacyTodayViewSpotlightPresentableViewController_willBeginModifyi
 
         [(_UIPortalView *)self->_searchBarPortalView bs_setHitTestingDisabled:1];
         [(_UIPortalView *)self->_searchBarPortalView setHidesSourceView:1];
-        v15 = [(_UIPortalView *)self->_searchBarPortalView portalLayer];
-        [v15 setSourceLayerRenderId:{objc_msgSend(v9, "searchHeaderLayerRenderID")}];
+        portalLayer = [(_UIPortalView *)self->_searchBarPortalView portalLayer];
+        [portalLayer setSourceLayerRenderId:{objc_msgSend(_sharedRemoteSearchViewController, "searchHeaderLayerRenderID")}];
 
-        v16 = [(_UIPortalView *)self->_searchBarPortalView portalLayer];
-        [v16 setSourceContextId:{objc_msgSend(v9, "searchHeaderContextID")}];
+        portalLayer2 = [(_UIPortalView *)self->_searchBarPortalView portalLayer];
+        [portalLayer2 setSourceContextId:{objc_msgSend(_sharedRemoteSearchViewController, "searchHeaderContextID")}];
 
-        v17 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
-        [v17 addSubview:self->_searchBarPortalView];
+        view2 = [(SBLegacyTodayViewSpotlightPresentableViewController *)self view];
+        [view2 addSubview:self->_searchBarPortalView];
       }
     }
   }
@@ -444,13 +444,13 @@ void __130__SBLegacyTodayViewSpotlightPresentableViewController_willBeginModifyi
   MEMORY[0x2821F9730]();
 }
 
-- (void)_endRequiringSearchBarPortalViewForReason:(id)a3
+- (void)_endRequiringSearchBarPortalViewForReason:(id)reason
 {
-  [(NSMutableSet *)self->_searchBarPortalRequirementReasons removeObject:a3];
+  [(NSMutableSet *)self->_searchBarPortalRequirementReasons removeObject:reason];
   if (![(NSMutableSet *)self->_searchBarPortalRequirementReasons count]&& self->_searchBarPortalView)
   {
-    v4 = [(SPUISearchBarController *)self->_searchBarViewController view];
-    [v4 setHidden:0];
+    view = [(SPUISearchBarController *)self->_searchBarViewController view];
+    [view setHidden:0];
 
     [(_UIPortalView *)self->_searchBarPortalView removeFromSuperview];
     searchBarPortalView = self->_searchBarPortalView;

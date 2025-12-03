@@ -1,22 +1,22 @@
 @interface GKFixedSizeImageView
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation GKFixedSizeImageView
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_actualImage != v5)
+  imageCopy = image;
+  if (self->_actualImage != imageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_actualImage, a3);
-    v6 = [(UIImage *)self->_actualImage CGImage];
-    v7 = [(GKFixedSizeImageView *)self layer];
-    [v7 setContents:v6];
+    v8 = imageCopy;
+    objc_storeStrong(&self->_actualImage, image);
+    cGImage = [(UIImage *)self->_actualImage CGImage];
+    layer = [(GKFixedSizeImageView *)self layer];
+    [layer setContents:cGImage];
 
     [(UIView *)self _gkSetNeedsRender];
-    v5 = v8;
+    imageCopy = v8;
   }
 }
 

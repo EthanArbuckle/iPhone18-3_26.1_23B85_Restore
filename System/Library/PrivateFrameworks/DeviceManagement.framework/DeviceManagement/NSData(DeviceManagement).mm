@@ -8,9 +8,9 @@
 {
   v6 = a3;
   v37 = 0;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:&v37];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v6 path];
+  v9 = [defaultManager fileExistsAtPath:path isDirectory:&v37];
   v10 = v37;
 
   if (v9 && (v10 & 1) != 0)
@@ -27,23 +27,23 @@
 
   else
   {
-    v13 = [v6 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v15 UUIDString];
-    v17 = [v16 substringToIndex:8];
-    v18 = [v6 lastPathComponent];
-    v19 = [v14 stringWithFormat:@".temp-%@-%@", v17, v18];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v17 = [uUIDString substringToIndex:8];
+    lastPathComponent = [v6 lastPathComponent];
+    v19 = [v14 stringWithFormat:@".temp-%@-%@", v17, lastPathComponent];
 
-    v20 = [v13 URLByAppendingPathComponent:v19];
+    v20 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v19];
     v36 = 0;
-    LOBYTE(v16) = [a1 writeToURL:v20 options:0 error:&v36];
+    LOBYTE(uUIDString) = [self writeToURL:v20 options:0 error:&v36];
     v21 = v36;
-    if (v16)
+    if (uUIDString)
     {
-      v22 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v35 = v21;
-      v23 = [v22 replaceItemAtURL:v6 withItemAtURL:v20 backupItemName:0 options:1 resultingItemURL:0 error:&v35];
+      v23 = [defaultManager2 replaceItemAtURL:v6 withItemAtURL:v20 backupItemName:0 options:1 resultingItemURL:0 error:&v35];
       v24 = v35;
 
       v25 = DMFAtomicFileWritingLog();
@@ -68,9 +68,9 @@
 
         v29 = v24;
         *a4 = v24;
-        v30 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
         v34 = v24;
-        v31 = [v30 removeItemAtURL:v20 error:&v34];
+        v31 = [defaultManager3 removeItemAtURL:v20 error:&v34];
         v21 = v34;
 
         if ((v31 & 1) == 0)

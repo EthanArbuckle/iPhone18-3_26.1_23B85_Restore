@@ -1,14 +1,14 @@
 @interface VCVideoTierDurationData
 - (VCVideoTierDurationData)init;
-- (int)resolutionForVideoWidth:(unsigned int)a3 height:(unsigned int)a4;
-- (void)accumulate:(id)a3;
+- (int)resolutionForVideoWidth:(unsigned int)width height:(unsigned int)height;
+- (void)accumulate:(id)accumulate;
 - (void)dealloc;
 - (void)finalize;
 - (void)init;
-- (void)updateCurrentReceivedVideoResolution:(int)a3 time:(double)a4;
-- (void)updateReport:(id)a3 withStreamGroup:(id)a4;
-- (void)updateWithPayload:(id)a3;
-- (void)updateWithPayload:(id)a3 time:(double)a4;
+- (void)updateCurrentReceivedVideoResolution:(int)resolution time:(double)time;
+- (void)updateReport:(id)report withStreamGroup:(id)group;
+- (void)updateWithPayload:(id)payload;
+- (void)updateWithPayload:(id)payload time:(double)time;
 @end
 
 @implementation VCVideoTierDurationData
@@ -45,20 +45,20 @@ LABEL_7:
   [(VCVideoTierDurationData *)&v3 dealloc];
 }
 
-- (int)resolutionForVideoWidth:(unsigned int)a3 height:(unsigned int)a4
+- (int)resolutionForVideoWidth:(unsigned int)width height:(unsigned int)height
 {
-  if (!a3 || !a4)
+  if (!width || !height)
   {
     return 0x7FFFFFFF;
   }
 
   v4 = 0;
-  v5 = a3;
-  v6 = a4;
+  widthCopy = width;
+  heightCopy = height;
   do
   {
     [VCAggregatorUtils sizeForVideoResolution:v4];
-    if (v8 == v5 && v7 == v6)
+    if (v8 == widthCopy && v7 == heightCopy)
     {
       break;
     }
@@ -78,18 +78,18 @@ LABEL_7:
   }
 }
 
-- (void)updateWithPayload:(id)a3
+- (void)updateWithPayload:(id)payload
 {
   v5 = micro();
 
-  [(VCVideoTierDurationData *)self updateWithPayload:a3 time:v5];
+  [(VCVideoTierDurationData *)self updateWithPayload:payload time:v5];
 }
 
-- (void)updateWithPayload:(id)a3 time:(double)a4
+- (void)updateWithPayload:(id)payload time:(double)time
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"Width", "intValue"}];
-  v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"Height", "intValue"}];
+  v7 = [objc_msgSend(payload objectForKeyedSubscript:{@"Width", "intValue"}];
+  v8 = [objc_msgSend(payload objectForKeyedSubscript:{@"Height", "intValue"}];
   v9 = [(VCVideoTierDurationData *)self resolutionForVideoWidth:v7 height:v8];
   if (v9 == 0x7FFFFFFF)
   {
@@ -125,18 +125,18 @@ LABEL_6:
 
   v13 = *MEMORY[0x277D85DE8];
 
-  [(VCVideoTierDurationData *)self updateCurrentReceivedVideoResolution:v9 time:a4];
+  [(VCVideoTierDurationData *)self updateCurrentReceivedVideoResolution:v9 time:time];
 }
 
-- (void)accumulate:(id)a3
+- (void)accumulate:(id)accumulate
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a3)
+    if (accumulate)
     {
       receivedVideoTierDuration = self->_receivedVideoTierDuration;
-      v6 = *(a3 + 2);
+      v6 = *(accumulate + 2);
 
       [(VCHistogram *)receivedVideoTierDuration merge:v6];
     }
@@ -153,28 +153,28 @@ LABEL_6:
   }
 }
 
-- (void)updateReport:(id)a3 withStreamGroup:(id)a4
+- (void)updateReport:(id)report withStreamGroup:(id)group
 {
   [(VCVideoTierDurationData *)self finalize];
   v7 = @"RXVTDH";
-  if (!a4 || (v7 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"RXVTDH", a4]) != 0)
+  if (!group || (v7 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"RXVTDH", group]) != 0)
   {
     v8 = [(VCHistogram *)self->_receivedVideoTierDuration description];
 
-    [a3 setObject:v8 forKeyedSubscript:v7];
+    [report setObject:v8 forKeyedSubscript:v7];
   }
 }
 
-- (void)updateCurrentReceivedVideoResolution:(int)a3 time:(double)a4
+- (void)updateCurrentReceivedVideoResolution:(int)resolution time:(double)time
 {
   currentReceivedVideoResolution = self->_currentReceivedVideoResolution;
   if (currentReceivedVideoResolution != 0x7FFFFFFF)
   {
-    [(VCHistogram *)self->_receivedVideoTierDuration addOnlyExactMatchingValue:currentReceivedVideoResolution increment:((a4 - self->_lastReceivedTierSwitchTime) * 1000.0)];
+    [(VCHistogram *)self->_receivedVideoTierDuration addOnlyExactMatchingValue:currentReceivedVideoResolution increment:((time - self->_lastReceivedTierSwitchTime) * 1000.0)];
   }
 
-  self->_lastReceivedTierSwitchTime = a4;
-  self->_currentReceivedVideoResolution = a3;
+  self->_lastReceivedTierSwitchTime = time;
+  self->_currentReceivedVideoResolution = resolution;
 }
 
 - (void)finalize

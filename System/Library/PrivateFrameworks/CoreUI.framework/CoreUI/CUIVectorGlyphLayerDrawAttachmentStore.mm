@@ -1,8 +1,8 @@
 @interface CUIVectorGlyphLayerDrawAttachmentStore
 - (CUIVectorGlyphLayerDrawAttachmentStore)init;
-- (id)initFromSVGString:(id)a3 attachmentData:(id)a4;
+- (id)initFromSVGString:(id)string attachmentData:(id)data;
 - (void)_setupEmpty;
-- (void)computeCapacity:(unint64_t *)a3 numAttachments:(unint64_t *)a4 withScanner:(id)a5 usingAttachmentDelimiter:(id)a6 fieldDelimiter:(id)a7 digits:(id)a8;
+- (void)computeCapacity:(unint64_t *)capacity numAttachments:(unint64_t *)attachments withScanner:(id)scanner usingAttachmentDelimiter:(id)delimiter fieldDelimiter:(id)fieldDelimiter digits:(id)digits;
 - (void)dealloc;
 @end
 
@@ -29,26 +29,26 @@
   self->_attachments = 0;
 }
 
-- (void)computeCapacity:(unint64_t *)a3 numAttachments:(unint64_t *)a4 withScanner:(id)a5 usingAttachmentDelimiter:(id)a6 fieldDelimiter:(id)a7 digits:(id)a8
+- (void)computeCapacity:(unint64_t *)capacity numAttachments:(unint64_t *)attachments withScanner:(id)scanner usingAttachmentDelimiter:(id)delimiter fieldDelimiter:(id)fieldDelimiter digits:(id)digits
 {
-  if ([a5 scanUpToCharactersFromSet:a6 intoString:0])
+  if ([scanner scanUpToCharactersFromSet:delimiter intoString:0])
   {
     v13 = 0;
     do
     {
-      v14 = [a5 scanLocation];
-      [a5 setScanLocation:v13];
+      scanLocation = [scanner scanLocation];
+      [scanner setScanLocation:v13];
       v18 = 0;
-      if ([a5 scanUnsignedLongLong:&v18] && v18 <= 1)
+      if ([scanner scanUnsignedLongLong:&v18] && v18 <= 1)
       {
-        [a5 scanCharactersFromSet:a7 intoString:0];
-        v15 = [a5 scanLocation];
+        [scanner scanCharactersFromSet:fieldDelimiter intoString:0];
+        scanLocation2 = [scanner scanLocation];
         v16 = 1;
-        while (v15 < v14 && [a5 scanUpToCharactersFromSet:a7 intoString:0])
+        while (scanLocation2 < scanLocation && [scanner scanUpToCharactersFromSet:fieldDelimiter intoString:0])
         {
           ++v16;
-          [a5 scanCharactersFromSet:a7 intoString:0];
-          v15 = [a5 scanLocation];
+          [scanner scanCharactersFromSet:fieldDelimiter intoString:0];
+          scanLocation2 = [scanner scanLocation];
         }
 
         if (v18)
@@ -61,22 +61,22 @@
           v17 = 0x3FFFFFFFFFFFFFF8;
         }
 
-        *a3 += 4 * ((v16 & 1) + v16 + v17) + 40;
-        ++*a4;
-        v13 = v14 + 1;
-        [a5 setScanLocation:v14];
-        if (([a5 isAtEnd] & 1) == 0)
+        *capacity += 4 * ((v16 & 1) + v16 + v17) + 40;
+        ++*attachments;
+        v13 = scanLocation + 1;
+        [scanner setScanLocation:scanLocation];
+        if (([scanner isAtEnd] & 1) == 0)
         {
-          [a5 setScanLocation:{objc_msgSend(a5, "scanLocation") + 1}];
+          [scanner setScanLocation:{objc_msgSend(scanner, "scanLocation") + 1}];
         }
       }
     }
 
-    while (([a5 scanUpToCharactersFromSet:a6 intoString:0] & 1) != 0);
+    while (([scanner scanUpToCharactersFromSet:delimiter intoString:0] & 1) != 0);
   }
 }
 
-- (id)initFromSVGString:(id)a3 attachmentData:(id)a4
+- (id)initFromSVGString:(id)string attachmentData:(id)data
 {
   v37.receiver = self;
   v37.super_class = CUIVectorGlyphLayerDrawAttachmentStore;
@@ -86,12 +86,12 @@
     [CUIVectorGlyphLayerDrawAttachmentStore initFromSVGString:attachmentData:];
   }
 
-  if (![a3 length])
+  if (![string length])
   {
     goto LABEL_40;
   }
 
-  v6 = [[NSScanner alloc] initWithString:a3];
+  v6 = [[NSScanner alloc] initWithString:string];
   [v6 setCharactersToBeSkipped:0];
   count = 0;
   v36 = 0;
@@ -113,15 +113,15 @@ LABEL_40:
   if ([v6 scanUpToCharactersFromSet:initFromSVGString_attachmentData__attachmentDelimiter intoString:0])
   {
     v26 = v5;
-    v11 = 0;
+    scanLocation2 = 0;
     v12 = 0;
     v13 = 1;
     do
     {
       v14 = v13;
       v8[v12] = [(NSData *)v10 length];
-      v15 = [v6 scanLocation];
-      [v6 setScanLocation:v11];
+      scanLocation = [v6 scanLocation];
+      [v6 setScanLocation:scanLocation2];
       v33 = 0;
       v34 = 0;
       if (![v6 scanUnsignedLongLong:&v34] || (v16 = v34, v34 > 1) || (objc_msgSend(v6, "scanUpToCharactersFromSet:intoString:", initFromSVGString_attachmentData__digits, 0), !objc_msgSend(v6, "scanUnsignedLongLong:", &v34)))
@@ -189,7 +189,7 @@ LABEL_38:
 
       v19 = v8;
       v20 = v34;
-      v21 = v20 >= [a4 count];
+      v21 = v20 >= [data count];
       v8 = v19;
       if (v21)
       {
@@ -199,9 +199,9 @@ LABEL_38:
       v29 = 0;
       v30 = 0;
       v31 = 0;
-      if (a4)
+      if (data)
       {
-        [a4 dataAtIndex:v34];
+        [data dataAtIndex:v34];
       }
 
       [(NSData *)v10 appendBytes:&v30 length:8];
@@ -213,7 +213,7 @@ LABEL_38:
       }
 
       [v6 scanUpToCharactersFromSet:initFromSVGString_attachmentData__digits intoString:0];
-      while ([v6 scanLocation] < v15)
+      while ([v6 scanLocation] < scanLocation)
       {
         if (![v6 scanUnsignedLongLong:&v34])
         {
@@ -233,14 +233,14 @@ LABEL_38:
         [(NSData *)v10 appendBytes:&v33 length:4];
       }
 
-      [v6 setScanLocation:v15];
+      [v6 setScanLocation:scanLocation];
       if (([v6 isAtEnd] & 1) == 0)
       {
         [v6 setScanLocation:{objc_msgSend(v6, "scanLocation") + 1}];
       }
 
       v12 = v27 + 1;
-      v11 = [v6 scanLocation];
+      scanLocation2 = [v6 scanLocation];
       v22 = [v6 scanUpToCharactersFromSet:initFromSVGString_attachmentData__attachmentDelimiter intoString:0];
       v13 = v14 + 1;
     }

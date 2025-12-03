@@ -24,9 +24,9 @@
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 sharedActivityManager];
+  sharedActivityManager = [v2 sharedActivityManager];
 
-  return v4;
+  return sharedActivityManager;
 }
 
 @end

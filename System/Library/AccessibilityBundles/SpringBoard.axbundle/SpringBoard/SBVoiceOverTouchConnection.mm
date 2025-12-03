@@ -1,15 +1,15 @@
 @interface SBVoiceOverTouchConnection
 + (id)defaultConnection;
-- (BOOL)voiceOverTouchLabelElementAlertItem:(id)a3 textFieldShouldReturn:(id)a4;
+- (BOOL)voiceOverTouchLabelElementAlertItem:(id)item textFieldShouldReturn:(id)return;
 - (void)_dismissLabelAlert;
-- (void)_programmaticAppSwitch:(BOOL)a3;
+- (void)_programmaticAppSwitch:(BOOL)switch;
 - (void)_registerForMachConnection;
-- (void)_registerVOTConnectionWithPort:(unsigned int)a3;
+- (void)_registerVOTConnectionWithPort:(unsigned int)port;
 - (void)dealloc;
-- (void)setLabelElementPanelVisible:(BOOL)a3 initialValue:(id)a4;
-- (void)setScreenCurtainEnabled:(BOOL)a3 animated:(BOOL)a4;
+- (void)setLabelElementPanelVisible:(BOOL)visible initialValue:(id)value;
+- (void)setScreenCurtainEnabled:(BOOL)enabled animated:(BOOL)animated;
 - (void)tearDownVoiceOverTouchConnection;
-- (void)voiceOverTouchLabelElementAlertItemDidAccept:(id)a3 withTextField:(id)a4;
+- (void)voiceOverTouchLabelElementAlertItemDidAccept:(id)accept withTextField:(id)field;
 @end
 
 @implementation SBVoiceOverTouchConnection
@@ -30,9 +30,9 @@
   return v2;
 }
 
-- (void)_registerVOTConnectionWithPort:(unsigned int)a3
+- (void)_registerVOTConnectionWithPort:(unsigned int)port
 {
-  if (a3 && ([*MEMORY[0x29EDC8008] _accessibilityIsAppReadyToBeProbed] & 1) != 0)
+  if (port && ([*MEMORY[0x29EDC8008] _accessibilityIsAppReadyToBeProbed] & 1) != 0)
   {
     votMachPort = self->_votMachPort;
     if (votMachPort)
@@ -46,11 +46,11 @@
       }
     }
 
-    _SBVOTPort = a3;
+    _SBVOTPort = port;
     context.version = 0;
     memset(&context.retain, 0, 24);
     context.info = self;
-    v7 = CFMachPortCreateWithPort(0, a3, 0, &context, 0);
+    v7 = CFMachPortCreateWithPort(0, port, 0, &context, 0);
     self->_votMachPort = v7;
     if (v7)
     {
@@ -107,8 +107,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC7ED0] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC7ED0] object:0];
 
   [(SBVoiceOverTouchConnection *)self tearDownVoiceOverTouchConnection];
   if (server_source)
@@ -125,21 +125,21 @@
   [(SBVoiceOverTouchConnection *)&v5 dealloc];
 }
 
-- (void)setLabelElementPanelVisible:(BOOL)a3 initialValue:(id)a4
+- (void)setLabelElementPanelVisible:(BOOL)visible initialValue:(id)value
 {
-  v11 = a4;
+  valueCopy = value;
   v6 = [*MEMORY[0x29EDC8008] _iosAccessibilityAttributeValue:1500];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    if (a3)
+    if (visible)
     {
       v8 = objc_alloc_init(SBVoiceOverTouchLabelElementAlertItem);
       labelAlert = self->_labelAlert;
       self->_labelAlert = v8;
 
-      [(SBVoiceOverTouchLabelElementAlertItem *)self->_labelAlert setInitialValue:v11];
+      [(SBVoiceOverTouchLabelElementAlertItem *)self->_labelAlert setInitialValue:valueCopy];
       [(SBVoiceOverTouchLabelElementAlertItem *)self->_labelAlert setVoiceOverAlertItemDelegate:self];
       [MEMORY[0x29EDC6D00] activateAlertItem:self->_labelAlert];
     }
@@ -153,11 +153,11 @@
   }
 }
 
-- (void)_programmaticAppSwitch:(BOOL)a3
+- (void)_programmaticAppSwitch:(BOOL)switch
 {
-  v3 = a3;
+  switchCopy = switch;
   SBSSpringBoardServerPort();
-  if (v3)
+  if (switchCopy)
   {
 
     JUMPOUT(0x29ED37940);
@@ -166,14 +166,14 @@
   JUMPOUT(0x29ED37930);
 }
 
-- (void)setScreenCurtainEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setScreenCurtainEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a3;
-  self->_screenCurtainEnabled = a3;
-  if (!a3 || (+[AXSpringBoardGlue sharedInstance](AXSpringBoardGlue, "sharedInstance", a3, a4), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isDimmed], v5, (v6 & 1) == 0))
+  enabledCopy = enabled;
+  self->_screenCurtainEnabled = enabled;
+  if (!enabled || (+[AXSpringBoardGlue sharedInstance](AXSpringBoardGlue, "sharedInstance", enabled, animated), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isDimmed], v5, (v6 & 1) == 0))
   {
 
-    AXSpringBoardSetScreenCurtainEnabled(v4);
+    AXSpringBoardSetScreenCurtainEnabled(enabledCopy);
   }
 }
 
@@ -184,25 +184,25 @@
   self->_labelAlert = 0;
 }
 
-- (void)voiceOverTouchLabelElementAlertItemDidAccept:(id)a3 withTextField:(id)a4
+- (void)voiceOverTouchLabelElementAlertItemDidAccept:(id)accept withTextField:(id)field
 {
-  v5 = [a4 text];
-  UIAccessibilityPostNotification(0x7E9u, v5);
+  text = [field text];
+  UIAccessibilityPostNotification(0x7E9u, text);
 
   [(SBVoiceOverTouchConnection *)self _dismissLabelAlert];
 }
 
-- (BOOL)voiceOverTouchLabelElementAlertItem:(id)a3 textFieldShouldReturn:(id)a4
+- (BOOL)voiceOverTouchLabelElementAlertItem:(id)item textFieldShouldReturn:(id)return
 {
-  if (a4)
+  if (return)
   {
-    v6 = [a4 text];
-    UIAccessibilityPostNotification(0x7E9u, v6);
+    text = [return text];
+    UIAccessibilityPostNotification(0x7E9u, text);
 
     [(SBVoiceOverTouchConnection *)self setLabelElementPanelVisible:0 initialValue:0];
   }
 
-  return a4 == 0;
+  return return == 0;
 }
 
 @end

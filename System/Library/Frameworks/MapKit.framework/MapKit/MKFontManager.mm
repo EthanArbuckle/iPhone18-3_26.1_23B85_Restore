@@ -1,6 +1,6 @@
 @interface MKFontManager
 + (id)sharedManager;
-+ (void)setUseSmallFont:(BOOL)a3;
++ (void)setUseSmallFont:(BOOL)font;
 - (UIFont)boldBodyFont;
 - (UIFont)largeTitleFont;
 - (UIFont)largeTitleFontStatic;
@@ -20,7 +20,7 @@
 - (UIFont)recommendSubtitleFont;
 - (UIFont)semiboldButtonCellFont;
 - (UIFont)textBlurbFont;
-- (id)iconFontToMatch:(id)a3;
+- (id)iconFontToMatch:(id)match;
 @end
 
 @implementation MKFontManager
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __30__MKFontManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -49,16 +49,16 @@ void __30__MKFontManager_sharedManager__block_invoke(uint64_t a1)
   sharedManager_manager = v1;
 }
 
-+ (void)setUseSmallFont:(BOOL)a3
++ (void)setUseSmallFont:(BOOL)font
 {
-  v3 = a3;
-  v4 = [a1 sharedManager];
-  [v4 setUseSmallFont:v3];
+  fontCopy = font;
+  sharedManager = [self sharedManager];
+  [sharedManager setUseSmallFont:fontCopy];
 }
 
-- (id)iconFontToMatch:(id)a3
+- (id)iconFontToMatch:(id)match
 {
-  v3 = a3;
+  matchCopy = match;
   if (iconFontToMatch__onceToken != -1)
   {
     dispatch_once(&iconFontToMatch__onceToken, &__block_literal_global_13_12690);
@@ -66,25 +66,25 @@ void __30__MKFontManager_sharedManager__block_invoke(uint64_t a1)
 
   v4 = iconFontToMatch__fontCache;
   v5 = MEMORY[0x1E696AD98];
-  [v3 pointSize];
+  [matchCopy pointSize];
   v6 = [v5 numberWithDouble:?];
   v7 = [v4 objectForKeyedSubscript:v6];
 
   if (!v7)
   {
     v8 = MEMORY[0x1E69DB878];
-    [v3 pointSize];
+    [matchCopy pointSize];
     v7 = [v8 fontWithName:@"pcf" size:?];
     if (!v7)
     {
       v9 = MEMORY[0x1E69DB878];
-      [v3 pointSize];
+      [matchCopy pointSize];
       v7 = [v9 systemFontOfSize:?];
     }
 
     v10 = iconFontToMatch__fontCache;
     v11 = MEMORY[0x1E696AD98];
-    [v3 pointSize];
+    [matchCopy pointSize];
     v12 = [v11 numberWithDouble:?];
     [v10 setObject:v7 forKeyedSubscript:v12];
   }

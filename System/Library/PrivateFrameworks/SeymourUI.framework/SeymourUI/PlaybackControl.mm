@@ -1,22 +1,22 @@
 @interface PlaybackControl
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI15PlaybackControl)initWithFrame:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC9SeymourUI15PlaybackControl)initWithFrame:(CGRect)frame;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation PlaybackControl
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PlaybackControl();
   v4 = v7.receiver;
-  [(PlaybackControl *)&v7 setEnabled:v3];
-  v5 = [v4 isEnabled];
+  [(PlaybackControl *)&v7 setEnabled:enabledCopy];
+  isEnabled = [v4 isEnabled];
   v6 = 0.5;
-  if (v5)
+  if (isEnabled)
   {
     v6 = 1.0;
   }
@@ -24,10 +24,10 @@
   [v4 setAlpha_];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_20B83A544(a3);
+  selfCopy = self;
+  sub_20B83A544(highlighted);
 }
 
 - (CGSize)intrinsicContentSize
@@ -45,7 +45,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI15PlaybackControl)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI15PlaybackControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

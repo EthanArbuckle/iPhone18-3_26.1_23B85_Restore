@@ -2,20 +2,20 @@
 - (BOOL)serviceNeedsFriendCode;
 - (GKHostedViewController)managingViewController;
 - (void)_performBlockAfterViewDidAppearIfNeeded;
-- (void)_performSelectorAfterAppearingOrTimeOut:(SEL)a3;
+- (void)_performSelectorAfterAppearingOrTimeOut:(SEL)out;
 - (void)dealloc;
 - (void)nudge;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)populateInitialStateForRemoteView:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)populateInitialStateForRemoteView:(id)view;
 - (void)remoteViewControllerIsCanceling;
 - (void)remoteViewControllerIsFinishing;
-- (void)setValue:(id)a3 forKeyPath:(id)a4;
+- (void)setValue:(id)value forKeyPath:(id)path;
 - (void)setupRemoteView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewServiceDidTerminateWithError:(id)error;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation GKRemoteViewServiceController
@@ -29,8 +29,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(GKRemoteViewServiceController *)self observedKeyPaths];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    observedKeyPaths = [(GKRemoteViewServiceController *)self observedKeyPaths];
+    v4 = [observedKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -42,14 +42,14 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(observedKeyPaths);
           }
 
           [(GKRemoteViewServiceController *)self removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v7++) context:0];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [observedKeyPaths countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -63,88 +63,88 @@
 
 - (BOOL)serviceNeedsFriendCode
 {
-  v2 = [(GKRemoteViewServiceController *)self managingViewController];
+  managingViewController = [(GKRemoteViewServiceController *)self managingViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)populateInitialStateForRemoteView:(id)a3
+- (void)populateInitialStateForRemoteView:(id)view
 {
-  v23 = a3;
+  viewCopy = view;
   v4 = [MEMORY[0x277CCABB0] numberWithInt:getpid()];
-  [v23 setObject:v4 forKey:@"HostPID"];
+  [viewCopy setObject:v4 forKey:@"HostPID"];
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v7 = 0.0;
-  if (v6 != 1)
+  if (userInterfaceIdiom != 1)
   {
-    v8 = [MEMORY[0x277D75128] sharedApplication];
-    [v8 statusBarHeight];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] statusBarHeight];
     v7 = v9;
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
-  [v23 setObject:v10 forKey:@"StatusBarHeight"];
+  [viewCopy setObject:v10 forKey:@"StatusBarHeight"];
 
   if ([(GKRemoteViewServiceController *)self serviceNeedsLocalPlayer])
   {
-    v11 = [MEMORY[0x277D0C138] localPlayer];
-    [v23 setObject:v11 forKey:@"LocalPlayer"];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    [viewCopy setObject:localPlayer forKey:@"LocalPlayer"];
   }
 
   if ([(GKRemoteViewServiceController *)self serviceNeedsFriendCode])
   {
-    v12 = [(GKRemoteViewServiceController *)self managingViewController];
-    v13 = [v12 friendCode];
+    managingViewController = [(GKRemoteViewServiceController *)self managingViewController];
+    friendCode = [managingViewController friendCode];
 
-    if (v13)
+    if (friendCode)
     {
-      v14 = [v12 friendCode];
-      [v23 setObject:v14 forKey:@"GKFriendCodeKey"];
+      friendCode2 = [managingViewController friendCode];
+      [viewCopy setObject:friendCode2 forKey:@"GKFriendCodeKey"];
     }
 
-    v15 = [v12 friendSupportPageURL];
+    friendSupportPageURL = [managingViewController friendSupportPageURL];
 
-    if (v15)
+    if (friendSupportPageURL)
     {
-      v16 = [v12 friendSupportPageURL];
-      [v23 setObject:v16 forKey:@"GKFriendSupportPageURLKey"];
+      friendSupportPageURL2 = [managingViewController friendSupportPageURL];
+      [viewCopy setObject:friendSupportPageURL2 forKey:@"GKFriendSupportPageURLKey"];
     }
 
-    v17 = [v12 recipients];
+    recipients = [managingViewController recipients];
 
-    if (v17)
+    if (recipients)
     {
-      v18 = [v12 recipients];
-      [v23 setObject:v18 forKey:@"GKFriendRecipientsKey"];
+      recipients2 = [managingViewController recipients];
+      [viewCopy setObject:recipients2 forKey:@"GKFriendRecipientsKey"];
     }
 
-    v19 = [v12 chatGUID];
+    chatGUID = [managingViewController chatGUID];
 
-    if (v19)
+    if (chatGUID)
     {
-      v20 = [v12 chatGUID];
-      [v23 setObject:v20 forKey:@"GKChatGUIDKey"];
+      chatGUID2 = [managingViewController chatGUID];
+      [viewCopy setObject:chatGUID2 forKey:@"GKChatGUIDKey"];
     }
 
-    v21 = [v12 hostApp];
+    hostApp = [managingViewController hostApp];
 
-    if (v21)
+    if (hostApp)
     {
-      v22 = [v12 hostApp];
-      [v23 setObject:v22 forKey:@"GKHostAppKey"];
+      hostApp2 = [managingViewController hostApp];
+      [viewCopy setObject:hostApp2 forKey:@"GKHostAppKey"];
     }
   }
 }
 
 - (void)nudge
 {
-  v2 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v2 nudge];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy nudge];
 }
 
 - (void)setupRemoteView
@@ -159,8 +159,8 @@
 
     else
     {
-      v3 = [(GKRemoteViewServiceController *)self managingViewController];
-      [v3 _beginDelayingPresentation];
+      managingViewController = [(GKRemoteViewServiceController *)self managingViewController];
+      [managingViewController _beginDelayingPresentation];
       if (!*MEMORY[0x277D0C2A0])
       {
         v4 = GKOSLoggers();
@@ -174,15 +174,15 @@
       v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
       [(GKRemoteViewServiceController *)self populateInitialStateForRemoteView:v5];
       objc_initWeak(location, self);
-      v6 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+      serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __48__GKRemoteViewServiceController_setupRemoteView__block_invoke;
       v24[3] = &unk_27966A8E0;
       objc_copyWeak(&v26, location);
-      v7 = v3;
+      v7 = managingViewController;
       v25 = v7;
-      [v6 setInitialState:v5 withReply:v24];
+      [serviceViewControllerProxy setInitialState:v5 withReply:v24];
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(location);
@@ -195,15 +195,15 @@
     self->_didSetRemoteGame = 1;
   }
 
-  v8 = self;
+  selfCopy = self;
   if (![(GKRemoteViewServiceController *)self observationInfo])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [(GKRemoteViewServiceController *)self observedKeyPaths];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    observedKeyPaths = [(GKRemoteViewServiceController *)self observedKeyPaths];
+    v10 = [observedKeyPaths countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v10)
     {
       v12 = *v21;
@@ -217,7 +217,7 @@
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(observedKeyPaths);
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
@@ -236,7 +236,7 @@
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v10 = [observedKeyPaths countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v10);
@@ -261,31 +261,31 @@ void __48__GKRemoteViewServiceController_setupRemoteView__block_invoke(uint64_t 
   [WeakRetained setDidSetRemoteGame:a2];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v7 = [(GKRemoteViewServiceController *)self observedKeyPaths];
-  v8 = [v7 containsObject:v10];
+  pathCopy = path;
+  observedKeyPaths = [(GKRemoteViewServiceController *)self observedKeyPaths];
+  v8 = [observedKeyPaths containsObject:pathCopy];
 
   if (v8)
   {
-    v9 = [(GKRemoteViewServiceController *)self valueForKeyPath:v10];
-    [(GKRemoteViewServiceController *)self setValue:v9 forKeyPath:v10];
+    v9 = [(GKRemoteViewServiceController *)self valueForKeyPath:pathCopy];
+    [(GKRemoteViewServiceController *)self setValue:v9 forKeyPath:pathCopy];
   }
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4
+- (void)setValue:(id)value forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  pathCopy = path;
   if (!self->_dirtyProperties)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    [(GKRemoteViewServiceController *)self setDirtyProperties:v8];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(GKRemoteViewServiceController *)self setDirtyProperties:dictionary];
   }
 
-  v9 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  v10 = [(GKRemoteViewServiceController *)self managingViewController];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  managingViewController = [(GKRemoteViewServiceController *)self managingViewController];
   v11 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -296,34 +296,34 @@ void __48__GKRemoteViewServiceController_setupRemoteView__block_invoke(uint64_t 
   v14 = *MEMORY[0x277D0C2A8];
   if (os_log_type_enabled(*MEMORY[0x277D0C2A8], OS_LOG_TYPE_DEBUG))
   {
-    [GKRemoteViewServiceController setValue:v7 forKeyPath:v14];
+    [GKRemoteViewServiceController setValue:pathCopy forKeyPath:v14];
   }
 
-  v15 = [(GKRemoteViewServiceController *)self dirtyProperties];
-  v16 = v15;
-  if (v6)
+  dirtyProperties = [(GKRemoteViewServiceController *)self dirtyProperties];
+  v16 = dirtyProperties;
+  if (valueCopy)
   {
-    [v15 setObject:v6 forKey:v7];
+    [dirtyProperties setObject:valueCopy forKey:pathCopy];
   }
 
   else
   {
-    [v15 removeObjectForKey:v7];
+    [dirtyProperties removeObjectForKey:pathCopy];
   }
 
-  [v10 _beginDelayingPresentation];
+  [managingViewController _beginDelayingPresentation];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __53__GKRemoteViewServiceController_setValue_forKeyPath___block_invoke;
   v22[3] = &unk_27966A908;
-  v17 = v7;
+  v17 = pathCopy;
   v23 = v17;
-  v18 = v6;
+  v18 = valueCopy;
   v24 = v18;
-  v25 = self;
-  v19 = v10;
+  selfCopy = self;
+  v19 = managingViewController;
   v26 = v19;
-  [v9 setValue:v18 forKeyPath:v17 withReply:v22];
+  [serviceViewControllerProxy setValue:v18 forKeyPath:v17 withReply:v22];
   if (!*v11)
   {
     v20 = GKOSLoggers();
@@ -384,16 +384,16 @@ uint64_t __53__GKRemoteViewServiceController_setValue_forKeyPath___block_invoke(
   return [*(a1 + 56) _endDelayingPresentation];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D0C138] local];
-  [v5 hideAccessPoint];
+  appearCopy = appear;
+  local = [MEMORY[0x277D0C138] local];
+  [local hideAccessPoint];
 
   [(GKRemoteViewServiceController *)self setupRemoteView];
   v9.receiver = self;
   v9.super_class = GKRemoteViewServiceController;
-  [(_UIRemoteViewController *)&v9 viewWillAppear:v3];
+  [(_UIRemoteViewController *)&v9 viewWillAppear:appearCopy];
   if (!*MEMORY[0x277D0C2A0])
   {
     v6 = GKOSLoggers();
@@ -404,20 +404,20 @@ uint64_t __53__GKRemoteViewServiceController_setValue_forKeyPath___block_invoke(
     [GKRemoteViewServiceController viewWillAppear:];
   }
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v8 != 1 || *MEMORY[0x277D0C258] == 1 && (*MEMORY[0x277D0C8F0] & 1) == 0)
+  if (userInterfaceIdiom != 1 || *MEMORY[0x277D0C258] == 1 && (*MEMORY[0x277D0C8F0] & 1) == 0)
   {
-    [(UIViewController *)self _gkSaveStatusBarStyleAnimated:v3 setToStyle:[(GKRemoteViewServiceController *)self _desiredStatusBarStyle]];
+    [(UIViewController *)self _gkSaveStatusBarStyleAnimated:appearCopy setToStyle:[(GKRemoteViewServiceController *)self _desiredStatusBarStyle]];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = GKRemoteViewServiceController;
-  [(_UIRemoteViewController *)&v6 viewDidAppear:a3];
+  [(_UIRemoteViewController *)&v6 viewDidAppear:appear];
   if (!*MEMORY[0x277D0C2A0])
   {
     v4 = GKOSLoggers();
@@ -445,16 +445,16 @@ uint64_t __53__GKRemoteViewServiceController_setValue_forKeyPath___block_invoke(
     [GKRemoteViewServiceController _performBlockAfterViewDidAppearIfNeeded];
   }
 
-  v4 = [(GKRemoteViewServiceController *)self blockToPerformAfterViewDidAppear];
-  v5 = v4;
-  if (v4)
+  blockToPerformAfterViewDidAppear = [(GKRemoteViewServiceController *)self blockToPerformAfterViewDidAppear];
+  v5 = blockToPerformAfterViewDidAppear;
+  if (blockToPerformAfterViewDidAppear)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __72__GKRemoteViewServiceController__performBlockAfterViewDidAppearIfNeeded__block_invoke;
     v6[3] = &unk_27966A480;
     v6[4] = self;
-    v7 = v4;
+    v7 = blockToPerformAfterViewDidAppear;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 }
@@ -475,7 +475,7 @@ uint64_t __72__GKRemoteViewServiceController__performBlockAfterViewDidAppearIfNe
   return [*(a1 + 32) setBlockToPerformAfterViewDidAppear:0];
 }
 
-- (void)_performSelectorAfterAppearingOrTimeOut:(SEL)a3
+- (void)_performSelectorAfterAppearingOrTimeOut:(SEL)out
 {
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
@@ -483,7 +483,7 @@ uint64_t __72__GKRemoteViewServiceController__performBlockAfterViewDidAppearIfNe
   v7[2] = __73__GKRemoteViewServiceController__performSelectorAfterAppearingOrTimeOut___block_invoke;
   v7[3] = &unk_27966A930;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = out;
   [(GKRemoteViewServiceController *)self setBlockToPerformAfterViewDidAppear:v7];
   v5 = dispatch_time(0, 3000000000);
   v6[0] = MEMORY[0x277D85DD0];
@@ -510,11 +510,11 @@ uint64_t __73__GKRemoteViewServiceController__performSelectorAfterAppearingOrTim
   return [v2 _performBlockAfterViewDidAppearIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = GKRemoteViewServiceController;
-  [(_UIRemoteViewController *)&v4 viewWillDisappear:a3];
+  [(_UIRemoteViewController *)&v4 viewWillDisappear:disappear];
   if (!*MEMORY[0x277D0C2A0])
   {
     v3 = GKOSLoggers();
@@ -526,9 +526,9 @@ uint64_t __73__GKRemoteViewServiceController__performSelectorAfterAppearingOrTim
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = GKRemoteViewServiceController;
   [(_UIRemoteViewController *)&v7 viewDidDisappear:?];
@@ -542,16 +542,16 @@ uint64_t __73__GKRemoteViewServiceController__performSelectorAfterAppearingOrTim
     [GKRemoteViewServiceController viewDidDisappear:];
   }
 
-  [(UIViewController *)self _gkRestoreStatusBarStyle:v3];
-  v6 = [MEMORY[0x277D0C138] local];
-  [v6 showAccessPoint];
+  [(UIViewController *)self _gkRestoreStatusBarStyle:disappearCopy];
+  local = [MEMORY[0x277D0C138] local];
+  [local showAccessPoint];
 }
 
 - (void)remoteViewControllerIsFinishing
 {
-  v3 = [(GKRemoteViewServiceController *)self viewDidAppear];
+  viewDidAppear = [(GKRemoteViewServiceController *)self viewDidAppear];
   v4 = *MEMORY[0x277D0C2A0];
-  if (v3)
+  if (viewDidAppear)
   {
     if (!v4)
     {
@@ -563,13 +563,13 @@ uint64_t __73__GKRemoteViewServiceController__performSelectorAfterAppearingOrTim
       [GKRemoteViewServiceController remoteViewControllerIsFinishing];
     }
 
-    v6 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-    [v6 remoteViewControllerDidFinish];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+    [serviceViewControllerProxy remoteViewControllerDidFinish];
 
     if ([(GKRemoteViewServiceController *)self _dismissSelfAfterGettingShouldFinish])
     {
-      v7 = [(GKRemoteViewServiceController *)self managingViewController];
-      [v7 dismissViewControllerAnimated:1 completion:0];
+      managingViewController = [(GKRemoteViewServiceController *)self managingViewController];
+      [managingViewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 
@@ -591,9 +591,9 @@ uint64_t __73__GKRemoteViewServiceController__performSelectorAfterAppearingOrTim
 
 - (void)remoteViewControllerIsCanceling
 {
-  v3 = [(GKRemoteViewServiceController *)self viewDidAppear];
+  viewDidAppear = [(GKRemoteViewServiceController *)self viewDidAppear];
   v4 = *MEMORY[0x277D0C2A0];
-  if (v3)
+  if (viewDidAppear)
   {
     if (!v4)
     {
@@ -605,13 +605,13 @@ uint64_t __73__GKRemoteViewServiceController__performSelectorAfterAppearingOrTim
       [GKRemoteViewServiceController remoteViewControllerIsCanceling];
     }
 
-    v6 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-    [v6 remoteViewControllerDidCancel];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+    [serviceViewControllerProxy remoteViewControllerDidCancel];
 
     if ([(GKRemoteViewServiceController *)self _dismissSelfAfterGettingShouldCancel])
     {
-      v7 = [(GKRemoteViewServiceController *)self managingViewController];
-      [v7 dismissViewControllerAnimated:1 completion:0];
+      managingViewController = [(GKRemoteViewServiceController *)self managingViewController];
+      [managingViewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 
@@ -631,9 +631,9 @@ uint64_t __73__GKRemoteViewServiceController__performSelectorAfterAppearingOrTim
   }
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -642,19 +642,19 @@ uint64_t __73__GKRemoteViewServiceController__performSelectorAfterAppearingOrTim
   v6 = *MEMORY[0x277D0C290];
   if (os_log_type_enabled(*MEMORY[0x277D0C290], OS_LOG_TYPE_ERROR))
   {
-    [(GKRemoteViewServiceController *)v4 viewServiceDidTerminateWithError:v6];
+    [(GKRemoteViewServiceController *)errorCopy viewServiceDidTerminateWithError:v6];
   }
 
-  v7 = [(GKRemoteViewServiceController *)self managingViewController];
+  managingViewController = [(GKRemoteViewServiceController *)self managingViewController];
 
-  if (v7)
+  if (managingViewController)
   {
-    v8 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-    [v8 remoteViewControllerDidCancel];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+    [serviceViewControllerProxy remoteViewControllerDidCancel];
 
     [(GKRemoteViewServiceController *)self remoteViewControllerIsCanceling];
-    v9 = [(GKRemoteViewServiceController *)self managingViewController];
-    [v9 resetRemoteViewController];
+    managingViewController2 = [(GKRemoteViewServiceController *)self managingViewController];
+    [managingViewController2 resetRemoteViewController];
   }
 }
 

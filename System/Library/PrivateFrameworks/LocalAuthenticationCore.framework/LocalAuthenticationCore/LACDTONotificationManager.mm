@@ -1,64 +1,64 @@
 @interface LACDTONotificationManager
-- (LACDTONotificationManager)initWithReplyQueue:(id)a3;
-- (LACDTONotificationManager)initWithReplyQueue:(id)a3 notificationFactory:(id)a4;
+- (LACDTONotificationManager)initWithReplyQueue:(id)queue;
+- (LACDTONotificationManager)initWithReplyQueue:(id)queue notificationFactory:(id)factory;
 - (LACDTONotificationManagerDelegate)delegate;
 - (id)_securityDelayManager;
-- (void)cancelPreviousNewSecurityDelayRequiredNotificationWithCompletion:(id)a3;
-- (void)notificationManager:(id)a3 didRespondToNotification:(id)a4 fromCategory:(id)a5 withAction:(id)a6 completionHandler:(id)a7;
-- (void)postNewSecurityDelayRequiredNotificationWithCompletion:(id)a3;
-- (void)scheduleSecurityDelayFinishedNotificationForPendingEvaluation:(id)a3 after:(double)a4 validity:(double)a5 completion:(id)a6;
-- (void)setDelegate:(id)a3;
+- (void)cancelPreviousNewSecurityDelayRequiredNotificationWithCompletion:(id)completion;
+- (void)notificationManager:(id)manager didRespondToNotification:(id)notification fromCategory:(id)category withAction:(id)action completionHandler:(id)handler;
+- (void)postNewSecurityDelayRequiredNotificationWithCompletion:(id)completion;
+- (void)scheduleSecurityDelayFinishedNotificationForPendingEvaluation:(id)evaluation after:(double)after validity:(double)validity completion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation LACDTONotificationManager
 
-- (LACDTONotificationManager)initWithReplyQueue:(id)a3
+- (LACDTONotificationManager)initWithReplyQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_alloc_init(LACDTONotificationFactory);
-  v6 = [(LACDTONotificationManager *)self initWithReplyQueue:v4 notificationFactory:v5];
+  v6 = [(LACDTONotificationManager *)self initWithReplyQueue:queueCopy notificationFactory:v5];
 
   return v6;
 }
 
-- (LACDTONotificationManager)initWithReplyQueue:(id)a3 notificationFactory:(id)a4
+- (LACDTONotificationManager)initWithReplyQueue:(id)queue notificationFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  factoryCopy = factory;
   v12.receiver = self;
   v12.super_class = LACDTONotificationManager;
   v9 = [(LACDTONotificationManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_replyQueue, a3);
-    objc_storeStrong(&v10->_notificationFactory, a4);
+    objc_storeStrong(&v9->_replyQueue, queue);
+    objc_storeStrong(&v10->_notificationFactory, factory);
   }
 
   return v10;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  v4 = [(LACDTONotificationManager *)self _securityDelayManager];
-  [v4 setDelegate:self];
+  objc_storeWeak(&self->_delegate, delegate);
+  _securityDelayManager = [(LACDTONotificationManager *)self _securityDelayManager];
+  [_securityDelayManager setDelegate:self];
 }
 
-- (void)scheduleSecurityDelayFinishedNotificationForPendingEvaluation:(id)a3 after:(double)a4 validity:(double)a5 completion:(id)a6
+- (void)scheduleSecurityDelayFinishedNotificationForPendingEvaluation:(id)evaluation after:(double)after validity:(double)validity completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = [(LACDTONotificationManager *)self _securityDelayManager];
-  v13 = [(LACDTONotificationFactory *)self->_notificationFactory securityDelayEndedNotificationForPendingEvaluation:v10 after:a4 validity:a5];
+  evaluationCopy = evaluation;
+  completionCopy = completion;
+  _securityDelayManager = [(LACDTONotificationManager *)self _securityDelayManager];
+  v13 = [(LACDTONotificationFactory *)self->_notificationFactory securityDelayEndedNotificationForPendingEvaluation:evaluationCopy after:after validity:validity];
   v14 = LACLogDTONotifications();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v26 = v13;
     v27 = 2114;
-    v28 = v10;
+    v28 = evaluationCopy;
     _os_log_impl(&dword_1B0233000, v14, OS_LOG_TYPE_DEFAULT, "Will schedule notification %{public}@ for %{public}@", buf, 0x16u);
   }
 
@@ -67,12 +67,12 @@
   v20[2] = __117__LACDTONotificationManager_scheduleSecurityDelayFinishedNotificationForPendingEvaluation_after_validity_completion___block_invoke;
   v20[3] = &unk_1E7A972E8;
   v21 = v13;
-  v22 = v10;
-  v23 = v12;
-  v24 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v22 = evaluationCopy;
+  v23 = _securityDelayManager;
+  v24 = completionCopy;
+  v15 = _securityDelayManager;
+  v16 = completionCopy;
+  v17 = evaluationCopy;
   v18 = v13;
   [v15 postNotification:v18 completion:v20];
 
@@ -108,17 +108,17 @@ void __117__LACDTONotificationManager_scheduleSecurityDelayFinishedNotificationF
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postNewSecurityDelayRequiredNotificationWithCompletion:(id)a3
+- (void)postNewSecurityDelayRequiredNotificationWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LACDTONotificationManager *)self _securityDelayManager];
-  v6 = [(LACDTONotificationFactory *)self->_notificationFactory newSecurityDelayRequiredNotification];
+  completionCopy = completion;
+  _securityDelayManager = [(LACDTONotificationManager *)self _securityDelayManager];
+  newSecurityDelayRequiredNotification = [(LACDTONotificationFactory *)self->_notificationFactory newSecurityDelayRequiredNotification];
   v7 = LACLogDTONotifications();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = newSecurityDelayRequiredNotification;
     _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "Will post notification %{public}@", buf, 0xCu);
   }
 
@@ -126,12 +126,12 @@ void __117__LACDTONotificationManager_scheduleSecurityDelayFinishedNotificationF
   v12[1] = 3221225472;
   v12[2] = __84__LACDTONotificationManager_postNewSecurityDelayRequiredNotificationWithCompletion___block_invoke;
   v12[3] = &unk_1E7A967E0;
-  v14 = v5;
-  v15 = v4;
-  v13 = v6;
-  v8 = v5;
-  v9 = v4;
-  v10 = v6;
+  v14 = _securityDelayManager;
+  v15 = completionCopy;
+  v13 = newSecurityDelayRequiredNotification;
+  v8 = _securityDelayManager;
+  v9 = completionCopy;
+  v10 = newSecurityDelayRequiredNotification;
   [v8 postNotification:v10 completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -163,36 +163,36 @@ void __84__LACDTONotificationManager_postNewSecurityDelayRequiredNotificationWit
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelPreviousNewSecurityDelayRequiredNotificationWithCompletion:(id)a3
+- (void)cancelPreviousNewSecurityDelayRequiredNotificationWithCompletion:(id)completion
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LACDTONotificationManager *)self _securityDelayManager];
+  completionCopy = completion;
+  _securityDelayManager = [(LACDTONotificationManager *)self _securityDelayManager];
   v13[0] = @"com.apple.coreauthd.notifications.newSecurityDelayRequired";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __94__LACDTONotificationManager_cancelPreviousNewSecurityDelayRequiredNotificationWithCompletion___block_invoke;
   v10[3] = &unk_1E7A95998;
-  v11 = v5;
-  v12 = v4;
-  v7 = v5;
-  v8 = v4;
+  v11 = _securityDelayManager;
+  v12 = completionCopy;
+  v7 = _securityDelayManager;
+  v8 = completionCopy;
   [v7 cancelNotificationsWithIdentifiers:v6 scheduledOnly:0 completion:v10];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notificationManager:(id)a3 didRespondToNotification:(id)a4 fromCategory:(id)a5 withAction:(id)a6 completionHandler:(id)a7
+- (void)notificationManager:(id)manager didRespondToNotification:(id)notification fromCategory:(id)category withAction:(id)action completionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  if ([a5 isEqualToString:@"com.apple.coreauthd.notifications.category.securityDelay.required"])
+  notificationCopy = notification;
+  actionCopy = action;
+  handlerCopy = handler;
+  if ([category isEqualToString:@"com.apple.coreauthd.notifications.category.securityDelay.required"])
   {
-    v14 = [(LACDTONotificationManager *)self delegate];
-    [v14 notificationManager:self didReceiveUserAction:v12 completionHandler:v13];
+    delegate = [(LACDTONotificationManager *)self delegate];
+    [delegate notificationManager:self didReceiveUserAction:actionCopy completionHandler:handlerCopy];
   }
 
   else
@@ -201,13 +201,13 @@ void __84__LACDTONotificationManager_postNewSecurityDelayRequiredNotificationWit
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v11;
+      v20 = notificationCopy;
       _os_log_impl(&dword_1B0233000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - not handling notification %{public}@", &v17, 0x16u);
     }
 
-    v13[2](v13);
+    handlerCopy[2](handlerCopy);
   }
 
   v16 = *MEMORY[0x1E69E9840];

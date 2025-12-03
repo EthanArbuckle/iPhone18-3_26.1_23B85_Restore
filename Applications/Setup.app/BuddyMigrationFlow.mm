@@ -1,32 +1,32 @@
 @interface BuddyMigrationFlow
 + (id)allowedFlowItems;
-- (BuddyMigrationFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6;
-- (id)controllerFollowingControllerClass:(Class)a3 requestedNext:(Class)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)startFlowAnimated:(BOOL)a3;
+- (BuddyMigrationFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
+- (id)controllerFollowingControllerClass:(Class)class requestedNext:(Class)next;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)startFlowAnimated:(BOOL)animated;
 @end
 
 @implementation BuddyMigrationFlow
 
-- (BuddyMigrationFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6
+- (BuddyMigrationFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, delegate);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, starter);
   v15 = 0;
-  objc_storeStrong(&v15, a6);
-  v9 = v19;
-  v19 = 0;
+  objc_storeStrong(&v15, injector);
+  v9 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v9;
   v14.super_class = BuddyMigrationFlow;
   v10 = [(BuddyMigrationFlow *)&v14 initWithNavigationController:location[0] flowDelegate:v17 flowStarter:v16 dependencyInjector:v15];
-  v19 = v10;
-  objc_storeStrong(&v19, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
     v20[0] = objc_opt_class();
@@ -34,55 +34,55 @@
     v20[2] = objc_opt_class();
     v20[3] = objc_opt_class();
     v11 = [NSArray arrayWithObjects:v20 count:4];
-    [v19 setClassList:v11];
+    [selfCopy setClassList:v11];
   }
 
-  v12 = v19;
+  v12 = selfCopy;
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
-- (void)startFlowAnimated:(BOOL)a3
+- (void)startFlowAnimated:(BOOL)animated
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  animatedCopy = animated;
   v3.receiver = self;
   v3.super_class = BuddyMigrationFlow;
-  [(BuddyMigrationFlow *)&v3 startFlowAnimated:a3];
+  [(BuddyMigrationFlow *)&v3 startFlowAnimated:animated];
 }
 
-- (id)controllerFollowingControllerClass:(Class)a3 requestedNext:(Class)a4
+- (id)controllerFollowingControllerClass:(Class)class requestedNext:(Class)next
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v15 = a4;
-  v4 = [(BuddyMigrationFlow *)self miscState];
-  v5 = [(BuddyMiscState *)v4 migrationManager];
-  v6 = [(BuddyTargetDeviceMigrationManager *)v5 willMigrate];
+  classCopy = class;
+  nextCopy = next;
+  miscState = [(BuddyMigrationFlow *)self miscState];
+  migrationManager = [(BuddyMiscState *)miscState migrationManager];
+  willMigrate = [(BuddyTargetDeviceMigrationManager *)migrationManager willMigrate];
 
-  v14 = v6 & 1;
-  if ((v6 & 1) != 0 || v16 != objc_opt_class())
+  v14 = willMigrate & 1;
+  if ((willMigrate & 1) != 0 || classCopy != objc_opt_class())
   {
-    v11.receiver = v18;
+    v11.receiver = selfCopy;
     v11.super_class = BuddyMigrationFlow;
-    v19 = [(BuddyMigrationFlow *)&v11 controllerFollowingControllerClass:v16 requestedNext:v15];
+    v19 = [(BuddyMigrationFlow *)&v11 controllerFollowingControllerClass:classCopy requestedNext:nextCopy];
   }
 
   else
   {
     v13 = [NSError errorWithDomain:@"MBErrorDomain" code:202 userInfo:0];
     location = [[BuddyMigrationTargetErrorController alloc] initWithError:v13];
-    v7 = [(BuddyMigrationFlow *)v18 miscState];
-    v8 = [(BuddyMiscState *)v7 migrationManager];
-    [location setForceErase:{-[BuddyTargetDeviceMigrationManager hasTransferredData](v8, "hasTransferredData")}];
+    miscState2 = [(BuddyMigrationFlow *)selfCopy miscState];
+    migrationManager2 = [(BuddyMiscState *)miscState2 migrationManager];
+    [location setForceErase:{-[BuddyTargetDeviceMigrationManager hasTransferredData](migrationManager2, "hasTransferredData")}];
 
-    [(BuddyMigrationFlow *)v18 configureFlowItem:location];
+    [(BuddyMigrationFlow *)selfCopy configureFlowItem:location];
     v19 = location;
     objc_storeStrong(&location, 0);
     objc_storeStrong(&v13, 0);
@@ -100,19 +100,19 @@
   v5[2] = objc_opt_class();
   v5[3] = objc_opt_class();
   v5[4] = objc_opt_class();
-  return [NSArray arrayWithObjects:v5 count:5, a2, a1];
+  return [NSArray arrayWithObjects:v5 count:5, a2, self];
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = location[0];
-  v4 = [(BuddyMigrationFlow *)v7 miscState];
-  v5 = [(BuddyMiscState *)v4 migrationManager];
-  v3[2](v3, [(BuddyTargetDeviceMigrationManager *)v5 migrationInProgressOrCompleted]);
+  miscState = [(BuddyMigrationFlow *)selfCopy miscState];
+  migrationManager = [(BuddyMiscState *)miscState migrationManager];
+  v3[2](v3, [(BuddyTargetDeviceMigrationManager *)migrationManager migrationInProgressOrCompleted]);
 
   objc_storeStrong(location, 0);
 }

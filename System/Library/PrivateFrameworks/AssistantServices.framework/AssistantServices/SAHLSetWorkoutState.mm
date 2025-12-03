@@ -14,22 +14,22 @@
 
 - (id)_ad_transformedWorkoutRequest
 {
-  v2 = [(SAHLSetWorkoutState *)self targetWorkoutState];
-  v3 = [v2 workoutStateValue];
+  targetWorkoutState = [(SAHLSetWorkoutState *)self targetWorkoutState];
+  workoutStateValue = [targetWorkoutState workoutStateValue];
 
-  if ([v3 isEqualToString:SAHLWorkoutStateWorkoutStateValueActiveValue])
+  if ([workoutStateValue isEqualToString:SAHLWorkoutStateWorkoutStateValueActiveValue])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:SAHLWorkoutStateWorkoutStateValuePausedValue])
+  else if ([workoutStateValue isEqualToString:SAHLWorkoutStateWorkoutStateValuePausedValue])
   {
     v4 = 1;
   }
 
   else
   {
-    [v3 isEqualToString:SAHLWorkoutStateWorkoutStateValueStoppedValue];
+    [workoutStateValue isEqualToString:SAHLWorkoutStateWorkoutStateValueStoppedValue];
     v4 = 2;
   }
 

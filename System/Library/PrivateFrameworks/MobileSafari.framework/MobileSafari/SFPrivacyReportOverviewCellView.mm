@@ -1,27 +1,27 @@
 @interface SFPrivacyReportOverviewCellView
 - (SFPrivacyReportGridItemDelegate)delegate;
-- (SFPrivacyReportOverviewCellView)initWithFrame:(CGRect)a3;
+- (SFPrivacyReportOverviewCellView)initWithFrame:(CGRect)frame;
 - (void)_updateHairlinesIfNeeded;
 - (void)_updateLayoutMargins;
-- (void)setGridPosition:(unint64_t)a3;
-- (void)setUsesInsetStyle:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setGridPosition:(unint64_t)position;
+- (void)setUsesInsetStyle:(BOOL)style;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SFPrivacyReportOverviewCellView
 
-- (SFPrivacyReportOverviewCellView)initWithFrame:(CGRect)a3
+- (SFPrivacyReportOverviewCellView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SFPrivacyReportOverviewCellView;
-  v3 = [(SFPrivacyReportOverviewCellView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPrivacyReportOverviewCellView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SFPrivacyReportOverviewCellView *)v3 setEdgesPreservingSuperviewLayoutMargins:10];
     [(SFPrivacyReportOverviewCellView *)v4 _updateLayoutMargins];
-    v5 = [(SFPrivacyReportOverviewCellView *)v4 layer];
-    [v5 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer = [(SFPrivacyReportOverviewCellView *)v4 layer];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
     [(SFPrivacyReportOverviewCellView *)v4 setClipsToBounds:1];
     v6 = v4;
   }
@@ -29,22 +29,22 @@
   return v4;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = SFPrivacyReportOverviewCellView;
-  [(SFPrivacyReportOverviewCellView *)&v4 willMoveToWindow:a3];
+  [(SFPrivacyReportOverviewCellView *)&v4 willMoveToWindow:window];
   [(SFPrivacyReportOverviewCellView *)self _updateHairlinesIfNeeded];
 }
 
-- (void)setUsesInsetStyle:(BOOL)a3
+- (void)setUsesInsetStyle:(BOOL)style
 {
-  if (self->_usesInsetStyle != a3)
+  if (self->_usesInsetStyle != style)
   {
     v12 = v7;
     v13 = v3;
-    self->_usesInsetStyle = a3;
-    if (a3)
+    self->_usesInsetStyle = style;
+    if (style)
     {
       v10 = 8.0;
     }
@@ -70,11 +70,11 @@
   [(SFPrivacyReportOverviewCellView *)self setLayoutMargins:?];
 }
 
-- (void)setGridPosition:(unint64_t)a3
+- (void)setGridPosition:(unint64_t)position
 {
-  if (self->_gridPosition != a3)
+  if (self->_gridPosition != position)
   {
-    self->_gridPosition = a3;
+    self->_gridPosition = position;
     [(SFPrivacyReportOverviewCellView *)self _updateHairlinesIfNeeded];
   }
 }
@@ -114,21 +114,21 @@
     self->_topHairline = v8;
 
     v49 = MEMORY[0x1E696ACD8];
-    v10 = [(UIView *)self->_topHairline topAnchor];
-    v59 = [(SFPrivacyReportOverviewCellView *)self topAnchor];
-    v56 = [v10 constraintEqualToAnchor:v59];
+    topAnchor = [(UIView *)self->_topHairline topAnchor];
+    topAnchor2 = [(SFPrivacyReportOverviewCellView *)self topAnchor];
+    v56 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v70[0] = v56;
-    v53 = [(UIView *)self->_topHairline leadingAnchor];
-    v51 = [(SFPrivacyReportOverviewCellView *)self leadingAnchor];
-    v47 = [v53 constraintEqualToAnchor:v51];
+    leadingAnchor = [(UIView *)self->_topHairline leadingAnchor];
+    leadingAnchor2 = [(SFPrivacyReportOverviewCellView *)self leadingAnchor];
+    v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v70[1] = v47;
-    v11 = [(UIView *)self->_topHairline trailingAnchor];
-    v12 = [(SFPrivacyReportOverviewCellView *)self trailingAnchor];
-    [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [(UIView *)self->_topHairline trailingAnchor];
+    trailingAnchor2 = [(SFPrivacyReportOverviewCellView *)self trailingAnchor];
+    [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v13 = v64 = v6;
     v70[2] = v13;
-    v14 = [(UIView *)self->_topHairline heightAnchor];
-    [v14 constraintEqualToConstant:_SFOnePixel()];
+    heightAnchor = [(UIView *)self->_topHairline heightAnchor];
+    [heightAnchor constraintEqualToConstant:_SFOnePixel()];
     v16 = v15 = v5;
     v70[3] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:4];
@@ -141,7 +141,7 @@
   else
   {
     [(UIView *)topHairline removeFromSuperview];
-    v10 = self->_topHairline;
+    topAnchor = self->_topHairline;
     self->_topHairline = 0;
   }
 
@@ -150,7 +150,7 @@ LABEL_9:
   if (usesInsetStyle)
   {
     [(UIView *)bottomHairline removeFromSuperview];
-    v19 = self->_bottomHairline;
+    bottomAnchor = self->_bottomHairline;
     self->_bottomHairline = 0;
   }
 
@@ -166,36 +166,36 @@ LABEL_9:
     self->_bottomHairline = v20;
 
     v48 = MEMORY[0x1E696ACD8];
-    v19 = [(UIView *)self->_bottomHairline bottomAnchor];
-    v60 = [(SFPrivacyReportOverviewCellView *)self bottomAnchor];
-    v57 = [v19 constraintEqualToAnchor:?];
+    bottomAnchor = [(UIView *)self->_bottomHairline bottomAnchor];
+    bottomAnchor2 = [(SFPrivacyReportOverviewCellView *)self bottomAnchor];
+    v57 = [bottomAnchor constraintEqualToAnchor:?];
     v69[0] = v57;
-    v22 = [(UIView *)self->_bottomHairline leadingAnchor];
+    leadingAnchor3 = [(UIView *)self->_bottomHairline leadingAnchor];
     v52 = self->_gridPosition & 6;
     if (v52 == 4)
     {
-      v50 = [(SFPrivacyReportOverviewCellView *)self layoutMarginsGuide];
-      v23 = [v50 leadingAnchor];
+      layoutMarginsGuide = [(SFPrivacyReportOverviewCellView *)self layoutMarginsGuide];
+      leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
     }
 
     else
     {
-      v23 = [(SFPrivacyReportOverviewCellView *)self leadingAnchor];
-      v50 = v23;
+      leadingAnchor4 = [(SFPrivacyReportOverviewCellView *)self leadingAnchor];
+      layoutMarginsGuide = leadingAnchor4;
     }
 
     v65 = v6;
-    v46 = v23;
-    v24 = [v22 constraintEqualToAnchor:v23];
+    v46 = leadingAnchor4;
+    v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v69[1] = v24;
-    v25 = [(UIView *)self->_bottomHairline trailingAnchor];
+    trailingAnchor3 = [(UIView *)self->_bottomHairline trailingAnchor];
     v26 = self->_gridPosition & 0xA;
     v62 = v5;
-    v54 = v22;
+    v54 = leadingAnchor3;
     if (v26 == 8)
     {
-      v45 = [(SFPrivacyReportOverviewCellView *)self layoutMarginsGuide];
-      [v45 trailingAnchor];
+      layoutMarginsGuide2 = [(SFPrivacyReportOverviewCellView *)self layoutMarginsGuide];
+      [layoutMarginsGuide2 trailingAnchor];
     }
 
     else
@@ -203,10 +203,10 @@ LABEL_9:
       [(SFPrivacyReportOverviewCellView *)self trailingAnchor];
     }
     v27 = ;
-    v28 = [v25 constraintEqualToAnchor:v27];
+    v28 = [trailingAnchor3 constraintEqualToAnchor:v27];
     v69[2] = v28;
-    v29 = [(UIView *)self->_bottomHairline heightAnchor];
-    v30 = [v29 constraintEqualToConstant:_SFOnePixel()];
+    heightAnchor2 = [(UIView *)self->_bottomHairline heightAnchor];
+    v30 = [heightAnchor2 constraintEqualToConstant:_SFOnePixel()];
     v69[3] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:4];
     [v48 activateConstraints:v31];
@@ -214,7 +214,7 @@ LABEL_9:
     if (v26 == 8)
     {
 
-      v27 = v45;
+      v27 = layoutMarginsGuide2;
     }
 
     v5 = v62;
@@ -230,7 +230,7 @@ LABEL_24:
   if (!v5)
   {
     [(UIView *)trailingHairline removeFromSuperview];
-    v35 = self->_trailingHairline;
+    topAnchor3 = self->_trailingHairline;
     self->_trailingHairline = 0;
     goto LABEL_28;
   }
@@ -242,22 +242,22 @@ LABEL_24:
     self->_trailingHairline = v33;
 
     v55 = MEMORY[0x1E696ACD8];
-    v35 = [(UIView *)self->_trailingHairline topAnchor];
-    v63 = [(SFPrivacyReportOverviewCellView *)self layoutMarginsGuide];
-    v61 = [v63 topAnchor];
-    v58 = [v35 constraintEqualToAnchor:v61];
+    topAnchor3 = [(UIView *)self->_trailingHairline topAnchor];
+    layoutMarginsGuide3 = [(SFPrivacyReportOverviewCellView *)self layoutMarginsGuide];
+    topAnchor4 = [layoutMarginsGuide3 topAnchor];
+    v58 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v68[0] = v58;
-    v36 = [(UIView *)self->_trailingHairline bottomAnchor];
-    v37 = [(SFPrivacyReportOverviewCellView *)self bottomAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    bottomAnchor3 = [(UIView *)self->_trailingHairline bottomAnchor];
+    bottomAnchor4 = [(SFPrivacyReportOverviewCellView *)self bottomAnchor];
+    v38 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v68[1] = v38;
-    v39 = [(UIView *)self->_trailingHairline trailingAnchor];
+    trailingAnchor4 = [(UIView *)self->_trailingHairline trailingAnchor];
     [(SFPrivacyReportOverviewCellView *)self trailingAnchor];
     v40 = v66 = v6;
-    v41 = [v39 constraintEqualToAnchor:v40];
+    v41 = [trailingAnchor4 constraintEqualToAnchor:v40];
     v68[2] = v41;
-    v42 = [(UIView *)self->_trailingHairline widthAnchor];
-    v43 = [v42 constraintEqualToConstant:_SFOnePixel()];
+    widthAnchor = [(UIView *)self->_trailingHairline widthAnchor];
+    v43 = [widthAnchor constraintEqualToConstant:_SFOnePixel()];
     v68[3] = v43;
     v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:4];
     [v55 activateConstraints:v44];

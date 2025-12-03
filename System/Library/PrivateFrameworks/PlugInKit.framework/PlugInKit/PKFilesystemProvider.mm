@@ -1,8 +1,8 @@
 @interface PKFilesystemProvider
 - (PKNSBundleProxy)mainBundle;
-- (id)bundleWithURL:(id)a3;
-- (id)contentsOfDirectoryAtURL:(id)a3 includingPropertiesForKeys:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (id)dataWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (id)bundleWithURL:(id)l;
+- (id)contentsOfDirectoryAtURL:(id)l includingPropertiesForKeys:(id)keys options:(unint64_t)options error:(id *)error;
+- (id)dataWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error;
 @end
 
 @implementation PKFilesystemProvider
@@ -10,39 +10,39 @@
 - (PKNSBundleProxy)mainBundle
 {
   v2 = [PKNSBundleProxy alloc];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [(PKNSBundleProxy *)v2 initWithNSBundle:v3];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v4 = [(PKNSBundleProxy *)v2 initWithNSBundle:mainBundle];
 
   return v4;
 }
 
-- (id)bundleWithURL:(id)a3
+- (id)bundleWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = [PKNSBundleProxy alloc];
-  v5 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithURL:v3];
+  v5 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithURL:lCopy];
 
   v6 = [(PKNSBundleProxy *)v4 initWithNSBundle:v5];
 
   return v6;
 }
 
-- (id)dataWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)dataWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error
 {
   v7 = MEMORY[0x1E695DEF0];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithContentsOfURL:v8 options:a4 error:a5];
+  lCopy = l;
+  v9 = [[v7 alloc] initWithContentsOfURL:lCopy options:options error:error];
 
   return v9;
 }
 
-- (id)contentsOfDirectoryAtURL:(id)a3 includingPropertiesForKeys:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (id)contentsOfDirectoryAtURL:(id)l includingPropertiesForKeys:(id)keys options:(unint64_t)options error:(id *)error
 {
   v9 = MEMORY[0x1E696AC08];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 defaultManager];
-  v13 = [v12 contentsOfDirectoryAtURL:v11 includingPropertiesForKeys:v10 options:a5 error:a6];
+  keysCopy = keys;
+  lCopy = l;
+  defaultManager = [v9 defaultManager];
+  v13 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:keysCopy options:options error:error];
 
   return v13;
 }

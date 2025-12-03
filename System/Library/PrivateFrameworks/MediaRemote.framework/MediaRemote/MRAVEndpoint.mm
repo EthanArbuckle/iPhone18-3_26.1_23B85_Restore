@@ -1,41 +1,41 @@
 @interface MRAVEndpoint
 + (id)_notificationSerialQueue;
-+ (id)_userInfoFromEndpoint:(id)a3 outputDevice:(id)a4;
-+ (void)_notifyDeviceInfoDidChange:(id)a3 previousDeviceInfo:(id)a4 endpoint:(id)a5;
-+ (void)_notifyDidAddOutputDevice:(id)a3 endpoint:(id)a4;
-+ (void)_notifyDidChangeOutputDevice:(id)a3 endpoint:(id)a4;
-+ (void)_notifyDidChangePredictedOutputDevice:(id)a3 endpoint:(id)a4;
-+ (void)_notifyDidRemoveOutputDevice:(id)a3 endpoint:(id)a4;
-+ (void)_notifyEndpointDidConnect:(id)a3;
-+ (void)_notifyEndpointDidDisconnect:(id)a3 withError:(id)a4;
-+ (void)_notifyGroupSessionHostingEligibilityDidChangeForEndpoint:(id)a3;
-+ (void)_notifyGroupSessionInfoDidChange:(id)a3 endpoint:(id)a4;
-+ (void)_notifyVolumeDidChange:(float)a3 outputDevice:(id)a4 endpoint:(id)a5;
-+ (void)addOutputDevicesWithUIDs:(id)a3 toGroupContainingOutputDeviceWithUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-+ (void)connectToEndpointContainingOutputDeviceUID:(id)a3 options:(unsigned int)a4 details:(id)a5 completion:(id)a6;
-+ (void)createEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)createEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 groupUIDCompletion:(id)a6;
-+ (void)createEndpointWithOutputDeviceUIDs:(id)a3 queue:(id)a4 completion:(id)a5;
-+ (void)directEndpointForOutputDeviceUIDs:(id)a3 queue:(id)a4 completion:(id)a5;
-+ (void)findMyGroupLeaderWithTimeout:(double)a3 details:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)hostedEndpointForOutputDeviceUIDs:(id)a3 queue:(id)a4 completion:(id)a5;
-+ (void)moveOutputDevicesWithUIDs:(id)a3 toGroupContainingOutputDeviceWithUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-+ (void)pauseOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)a3 forBundleID:(id)a4 timeout:(double)a5 details:(id)a6 queue:(id)a7 completion:(id)a8;
-+ (void)sendCommand:(unsigned int)a3 withOptions:(id)a4 toEachEndpointContainingOutputDeviceUIDs:(id)a5 timeout:(double)a6 queue:(id)a7 completion:(id)a8;
-+ (void)sendCommand:(unsigned int)a3 withOptions:(id)a4 toNewEndpointContainingOutputDeviceUIDs:(id)a5 nowPlayingClient:(id)a6 timeout:(double)a7 queue:(id)a8 completion:(id)a9;
++ (id)_userInfoFromEndpoint:(id)endpoint outputDevice:(id)device;
++ (void)_notifyDeviceInfoDidChange:(id)change previousDeviceInfo:(id)info endpoint:(id)endpoint;
++ (void)_notifyDidAddOutputDevice:(id)device endpoint:(id)endpoint;
++ (void)_notifyDidChangeOutputDevice:(id)device endpoint:(id)endpoint;
++ (void)_notifyDidChangePredictedOutputDevice:(id)device endpoint:(id)endpoint;
++ (void)_notifyDidRemoveOutputDevice:(id)device endpoint:(id)endpoint;
++ (void)_notifyEndpointDidConnect:(id)connect;
++ (void)_notifyEndpointDidDisconnect:(id)disconnect withError:(id)error;
++ (void)_notifyGroupSessionHostingEligibilityDidChangeForEndpoint:(id)endpoint;
++ (void)_notifyGroupSessionInfoDidChange:(id)change endpoint:(id)endpoint;
++ (void)_notifyVolumeDidChange:(float)change outputDevice:(id)device endpoint:(id)endpoint;
++ (void)addOutputDevicesWithUIDs:(id)ds toGroupContainingOutputDeviceWithUID:(id)d details:(id)details queue:(id)queue completion:(id)completion;
++ (void)connectToEndpointContainingOutputDeviceUID:(id)d options:(unsigned int)options details:(id)details completion:(id)completion;
++ (void)createEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion;
++ (void)createEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue groupUIDCompletion:(id)completion;
++ (void)createEndpointWithOutputDeviceUIDs:(id)ds queue:(id)queue completion:(id)completion;
++ (void)directEndpointForOutputDeviceUIDs:(id)ds queue:(id)queue completion:(id)completion;
++ (void)findMyGroupLeaderWithTimeout:(double)timeout details:(id)details queue:(id)queue completion:(id)completion;
++ (void)hostedEndpointForOutputDeviceUIDs:(id)ds queue:(id)queue completion:(id)completion;
++ (void)moveOutputDevicesWithUIDs:(id)ds toGroupContainingOutputDeviceWithUID:(id)d details:(id)details queue:(id)queue completion:(id)completion;
++ (void)pauseOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion;
++ (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)ds forBundleID:(id)d timeout:(double)timeout details:(id)details queue:(id)queue completion:(id)completion;
++ (void)sendCommand:(unsigned int)command withOptions:(id)options toEachEndpointContainingOutputDeviceUIDs:(id)ds timeout:(double)timeout queue:(id)queue completion:(id)completion;
++ (void)sendCommand:(unsigned int)command withOptions:(id)options toNewEndpointContainingOutputDeviceUIDs:(id)ds nowPlayingClient:(id)client timeout:(double)timeout queue:(id)queue completion:(id)completion;
 - (BOOL)canStartNativePlayback;
-- (BOOL)containsOutputDeviceWithUID:(id)a3;
+- (BOOL)containsOutputDeviceWithUID:(id)d;
 - (BOOL)discoveredIsPlaying;
-- (BOOL)effectivelyEqual:(id)a3;
+- (BOOL)effectivelyEqual:(id)equal;
 - (BOOL)groupContainsDiscoverableGroupLeader;
 - (BOOL)groupLeaderIsPlaceholder;
 - (BOOL)hasPotentialGroupLeader;
 - (BOOL)isCarPlayVideoActive;
 - (BOOL)isCarPlayVideoAllowed;
 - (BOOL)isConnected;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEndpoint:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEndpoint:(id)endpoint;
 - (BOOL)isGroupLeaderGroupable;
 - (BOOL)isGroupable;
 - (BOOL)isMyDiscoverableUndiscoverableGroupLeader;
@@ -44,7 +44,7 @@
 - (BOOL)isVisualProxyGroupPlayer;
 - (BOOL)isVolumeMuted;
 - (BOOL)supportsVisualProxyGroupPlayer;
-- (BOOL)volumeMutedForOutputDeviceUID:(id)a3;
+- (BOOL)volumeMutedForOutputDeviceUID:(id)d;
 - (MRAVOutputDevice)designatedProxyGroupLeader;
 - (MRDeviceInfo)deviceInfo;
 - (MRGroupSessionInfo)groupSessionInfo;
@@ -60,88 +60,88 @@
 - (NSString)shortDescription;
 - (NSString)uniqueIdentifier;
 - (_MRAVEndpointDescriptorProtobuf)descriptor;
-- (__CFString)_createLocalizedNameWithBuiltInDeviceNameBlock:(void *)a1;
+- (__CFString)_createLocalizedNameWithBuiltInDeviceNameBlock:(void *)block;
 - (float)volume;
-- (float)volumeForOutputDeviceUID:(id)a3;
+- (float)volumeForOutputDeviceUID:(id)d;
 - (id)_externalDiscoverySessionDestinationUID;
 - (id)_externalOutputContext;
 - (id)_init;
-- (id)_initiatorStringWithInitiator:(void *)a3 uid:;
+- (id)_initiatorStringWithInitiator:(void *)initiator uid:;
 - (id)debugDescription;
 - (id)description;
-- (id)discoverySessionWithConfiguration:(id)a3;
-- (id)outputDeviceForUID:(id)a3;
-- (id)outputDeviceUIDsMatchingPredicate:(id)a3;
-- (id)outputDeviceWithUID:(id)a3;
-- (id)outputDevicesMatchingPredicate:(id)a3;
-- (id)translateClusterUIDIfNeeded:(void *)a1;
+- (id)discoverySessionWithConfiguration:(id)configuration;
+- (id)outputDeviceForUID:(id)d;
+- (id)outputDeviceUIDsMatchingPredicate:(id)predicate;
+- (id)outputDeviceWithUID:(id)d;
+- (id)outputDevicesMatchingPredicate:(id)predicate;
+- (id)translateClusterUIDIfNeeded:(void *)needed;
 - (uint64_t)supportsExternalDiscovery;
 - (unint64_t)hash;
 - (unint64_t)logicalOutputDeviceCount;
 - (unsigned)volumeCapabilities;
-- (unsigned)volumeControlCapabilitiesForOutputDeviceUID:(id)a3;
-- (void)_adjustOutputDeviceVolume:(int64_t)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)_modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5;
-- (void)_muteOutputDeviceVolume:(BOOL)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)_prepareToMigrateToEndpoint:(void *)a3 queue:(void *)a4 completion:;
-- (void)_setOutputDeviceVolume:(float)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)_willStartingPlaybackToOutputDeviceInterruptPlayback:(void *)a3 duration:(void *)a4 requestID:(void *)a5 queue:(double)a6 completion:;
-- (void)addOutputDevices:(id)a3 initiator:(id)a4 fadeAudio:(BOOL)a5 withReplyQueue:(id)a6 completion:(id)a7;
-- (void)addOutputDevices:(id)a3 initiator:(id)a4 withReplyQueue:(id)a5 completion:(id)a6;
-- (void)adjustOutputDeviceVolume:(int64_t)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)canMigrateToEndpoint:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)connectToExternalDeviceWithOptions:(unsigned int)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 groupUIDCompletion:(id)a6;
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)migrateToEndpoint:(id)a3 request:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)migrateToEndpointOrModifyTopology:(id)a3 migrationRequest:(id)a4 topologyModificationRequest:(id)a5 withReplyQueue:(id)a6 completion:(id)a7;
-- (void)migrateToOrAddOutputDevices:(id)a3 initiator:(id)a4 withReplyQueue:(id)a5 completion:(id)a6;
-- (void)migrateToOrSetOutputDevices:(id)a3 initiator:(id)a4 withReplyQueue:(id)a5 completion:(id)a6;
-- (void)migrateToOutputDevice:(id)a3 request:(id)a4 initiator:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)migrateToOutputDevices:(id)a3 request:(id)a4 initiator:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5;
-- (void)muteOutputDeviceVolume:(BOOL)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
+- (unsigned)volumeControlCapabilitiesForOutputDeviceUID:(id)d;
+- (void)_adjustOutputDeviceVolume:(int64_t)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion;
+- (void)_modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion;
+- (void)_muteOutputDeviceVolume:(BOOL)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion;
+- (void)_prepareToMigrateToEndpoint:(void *)endpoint queue:(void *)queue completion:;
+- (void)_setOutputDeviceVolume:(float)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion;
+- (void)_willStartingPlaybackToOutputDeviceInterruptPlayback:(void *)playback duration:(void *)duration requestID:(void *)d queue:(double)queue completion:;
+- (void)addOutputDevices:(id)devices initiator:(id)initiator fadeAudio:(BOOL)audio withReplyQueue:(id)queue completion:(id)completion;
+- (void)addOutputDevices:(id)devices initiator:(id)initiator withReplyQueue:(id)queue completion:(id)completion;
+- (void)adjustOutputDeviceVolume:(int64_t)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion;
+- (void)canMigrateToEndpoint:(id)endpoint queue:(id)queue completion:(id)completion;
+- (void)connectToExternalDeviceWithOptions:(unsigned int)options userInfo:(id)info completion:(id)completion;
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion;
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue groupUIDCompletion:(id)completion;
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds queue:(id)queue completion:(id)completion;
+- (void)migrateToEndpoint:(id)endpoint request:(id)request queue:(id)queue completion:(id)completion;
+- (void)migrateToEndpointOrModifyTopology:(id)topology migrationRequest:(id)request topologyModificationRequest:(id)modificationRequest withReplyQueue:(id)queue completion:(id)completion;
+- (void)migrateToOrAddOutputDevices:(id)devices initiator:(id)initiator withReplyQueue:(id)queue completion:(id)completion;
+- (void)migrateToOrSetOutputDevices:(id)devices initiator:(id)initiator withReplyQueue:(id)queue completion:(id)completion;
+- (void)migrateToOutputDevice:(id)device request:(id)request initiator:(id)initiator queue:(id)queue completion:(id)completion;
+- (void)migrateToOutputDevices:(id)devices request:(id)request initiator:(id)initiator queue:(id)queue completion:(id)completion;
+- (void)modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion;
+- (void)muteOutputDeviceVolume:(BOOL)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion;
 - (void)outputContextDataSource;
-- (void)outputContextDataSourceDidAddOutputDevice:(id)a3;
-- (void)outputContextDataSourceDidChangeOutputDevice:(id)a3;
-- (void)outputContextDataSourceDidRemoveOutputDevice:(id)a3;
-- (void)outputContextDataSourceOutputDeviceDidChangeVolume:(id)a3;
-- (void)outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities:(id)a3;
-- (void)outputContextDataSourceOutputDeviceDidChangeVolumeMuted:(id)a3;
-- (void)outputContextDidChangePredictedOutputDevice:(id)a3;
-- (void)outputDeviceVolume:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)outputDeviceVolumeControlCapabilities:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)outputDeviceVolumeMuted:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)performMigrationToEndpoint:(id)a3 request:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)performMigrationToOutputDevices:(id)a3 request:(id)a4 initiator:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)removeOutputDeviceFromParentGroup:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)removeOutputDevices:(id)a3 initiator:(id)a4 fadeAudio:(BOOL)a5 withReplyQueue:(id)a6 completion:(id)a7;
-- (void)removeOutputDevices:(id)a3 initiator:(id)a4 withReplyQueue:(id)a5 completion:(id)a6;
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)requestGroupSessionWithQueue:(id)a3 completion:(id)a4;
-- (void)requestMicrophoneConnection:(id)a3 completion:(id)a4;
-- (void)requestMicrophoneConnectionWithDetails:(void *)a3 queue:(void *)a4 completion:;
+- (void)outputContextDataSourceDidAddOutputDevice:(id)device;
+- (void)outputContextDataSourceDidChangeOutputDevice:(id)device;
+- (void)outputContextDataSourceDidRemoveOutputDevice:(id)device;
+- (void)outputContextDataSourceOutputDeviceDidChangeVolume:(id)volume;
+- (void)outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities:(id)capabilities;
+- (void)outputContextDataSourceOutputDeviceDidChangeVolumeMuted:(id)muted;
+- (void)outputContextDidChangePredictedOutputDevice:(id)device;
+- (void)outputDeviceVolume:(id)volume queue:(id)queue completion:(id)completion;
+- (void)outputDeviceVolumeControlCapabilities:(id)capabilities queue:(id)queue completion:(id)completion;
+- (void)outputDeviceVolumeMuted:(id)muted queue:(id)queue completion:(id)completion;
+- (void)performMigrationToEndpoint:(id)endpoint request:(id)request queue:(id)queue completion:(id)completion;
+- (void)performMigrationToOutputDevices:(id)devices request:(id)request initiator:(id)initiator queue:(id)queue completion:(id)completion;
+- (void)removeOutputDeviceFromParentGroup:(id)group queue:(id)queue completion:(id)completion;
+- (void)removeOutputDevices:(id)devices initiator:(id)initiator fadeAudio:(BOOL)audio withReplyQueue:(id)queue completion:(id)completion;
+- (void)removeOutputDevices:(id)devices initiator:(id)initiator withReplyQueue:(id)queue completion:(id)completion;
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion;
+- (void)requestGroupSessionWithQueue:(id)queue completion:(id)completion;
+- (void)requestMicrophoneConnection:(id)connection completion:(id)completion;
+- (void)requestMicrophoneConnectionWithDetails:(void *)details queue:(void *)queue completion:;
 - (void)scheduleEndpointOutputDevicesDidChangeNotification;
-- (void)setAllowsHeadTrackedSpatialAudio:(BOOL)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setCarPlayVideoActive:(BOOL)a3 completion:(id)a4;
-- (void)setConversationDetectionEnabled:(BOOL)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setHeadTrackedSpatialAudioMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setOutputContextDataSource:(id)a3;
-- (void)setOutputDeviceVolume:(float)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)setOutputDevices:(id)a3 initiator:(id)a4 fadeAudio:(BOOL)a5 withReplyQueue:(id)a6 completion:(id)a7;
-- (void)setOutputDevices:(id)a3 initiator:(id)a4 withReplyQueue:(id)a5 completion:(id)a6;
-- (void)waitForPlaybackWithTimeout:(double)a3 queue:(id)a4 completion:(id)a5;
-- (void)willStartingPlaybackToOutputDeviceInterruptPlayback:(id)a3 duration:(double)a4 queue:(id)a5 completion:(id)a6;
-- (void)willStartingPlaybackToOutputDevicesInterruptPlayback:(id)a3 originatingOutputDeviceUID:(id)a4 duration:(double)a5 queue:(id)a6 completion:(id)a7;
+- (void)setAllowsHeadTrackedSpatialAudio:(BOOL)audio outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setCarPlayVideoActive:(BOOL)active completion:(id)completion;
+- (void)setConversationDetectionEnabled:(BOOL)enabled outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setHeadTrackedSpatialAudioMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setOutputContextDataSource:(id)source;
+- (void)setOutputDeviceVolume:(float)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion;
+- (void)setOutputDevices:(id)devices initiator:(id)initiator fadeAudio:(BOOL)audio withReplyQueue:(id)queue completion:(id)completion;
+- (void)setOutputDevices:(id)devices initiator:(id)initiator withReplyQueue:(id)queue completion:(id)completion;
+- (void)waitForPlaybackWithTimeout:(double)timeout queue:(id)queue completion:(id)completion;
+- (void)willStartingPlaybackToOutputDeviceInterruptPlayback:(id)playback duration:(double)duration queue:(id)queue completion:(id)completion;
+- (void)willStartingPlaybackToOutputDevicesInterruptPlayback:(id)playback originatingOutputDeviceUID:(id)d duration:(double)duration queue:(id)queue completion:(id)completion;
 @end
 
 @implementation MRAVEndpoint
 
 - (NSArray)resolvedOutputDevices
 {
-  v3 = [(MRAVEndpoint *)self syncedOutputDevices];
+  syncedOutputDevices = [(MRAVEndpoint *)self syncedOutputDevices];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -152,22 +152,22 @@
   v9[1] = 3221225472;
   v9[2] = __37__MRAVEndpoint_resolvedOutputDevices__block_invoke;
   v9[3] = &unk_1E76A26A0;
-  v4 = v3;
-  v11 = self;
+  v4 = syncedOutputDevices;
+  selfCopy = self;
   v12 = v13;
   v10 = v4;
   v5 = MEMORY[0x1A58E3570](v9);
   if (v5[2]())
   {
-    v6 = v4;
+    outputDevices = v4;
   }
 
   else
   {
-    v6 = [(MRAVEndpoint *)self outputDevices];
+    outputDevices = [(MRAVEndpoint *)self outputDevices];
   }
 
-  v7 = v6;
+  v7 = outputDevices;
 
   _Block_object_dispose(v13, 8);
 
@@ -191,14 +191,14 @@
   v3 = MEMORY[0x1A58E3570](v9, a2);
   if (v3[2]())
   {
-    v4 = [(MRAVEndpoint *)self outputContextDataSource];
-    v5 = [v4 outputDevices];
+    outputContextDataSource = [(MRAVEndpoint *)self outputContextDataSource];
+    outputDevices = [outputContextDataSource outputDevices];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __35__MRAVEndpoint_syncedOutputDevices__block_invoke_2;
     v8[3] = &unk_1E769B6F8;
     v8[4] = self;
-    v6 = [v5 msv_map:v8];
+    v6 = [outputDevices msv_map:v8];
   }
 
   else
@@ -275,26 +275,26 @@ LABEL_6:
 - (MROutputContextDataSource)outputContextDataSource
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  outputContextDataSource = v2->_outputContextDataSource;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  outputContextDataSource = selfCopy->_outputContextDataSource;
   if (!outputContextDataSource)
   {
     v4 = _MRLogForCategory(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [(MRAVEndpoint *)v2 debugName];
-      [(MRAVEndpoint *)v5 outputContextDataSource];
+      debugName = [(MRAVEndpoint *)selfCopy debugName];
+      [(MRAVEndpoint *)debugName outputContextDataSource];
     }
 
-    v6 = [(MRAVEndpoint *)v2 _externalOutputContext];
-    [(MRAVEndpoint *)v2 setOutputContextDataSource:v6];
+    _externalOutputContext = [(MRAVEndpoint *)selfCopy _externalOutputContext];
+    [(MRAVEndpoint *)selfCopy setOutputContextDataSource:_externalOutputContext];
 
-    outputContextDataSource = v2->_outputContextDataSource;
+    outputContextDataSource = selfCopy->_outputContextDataSource;
   }
 
   v7 = outputContextDataSource;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -374,8 +374,8 @@ void __66__MRAVEndpoint_scheduleEndpointOutputDevicesDidChangeNotification__bloc
 {
   v3 = [(MRAVEndpoint *)self _createLocalizedNameWithBuiltInDeviceNameBlock:?];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v5 = [OUTLINED_FUNCTION_22_0() uniqueIdentifier];
-  v6 = [v2 initWithFormat:@"%@-%@", v5, v3];
+  uniqueIdentifier = [OUTLINED_FUNCTION_22_0() uniqueIdentifier];
+  v6 = [v2 initWithFormat:@"%@-%@", uniqueIdentifier, v3];
 
   return v6;
 }
@@ -384,15 +384,15 @@ void __66__MRAVEndpoint_scheduleEndpointOutputDevicesDidChangeNotification__bloc
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(_MRAVEndpointDescriptorProtobuf);
-  v4 = [(MRAVEndpoint *)self localizedName];
-  [(_MRAVEndpointDescriptorProtobuf *)v3 setName:v4];
+  localizedName = [(MRAVEndpoint *)self localizedName];
+  [(_MRAVEndpointDescriptorProtobuf *)v3 setName:localizedName];
 
-  v5 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v6 = [v5 descriptor];
-  [(_MRAVEndpointDescriptorProtobuf *)v3 setDesignatedGroupLeader:v6];
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  descriptor = [designatedGroupLeader descriptor];
+  [(_MRAVEndpointDescriptorProtobuf *)v3 setDesignatedGroupLeader:descriptor];
 
-  v7 = [(MRAVEndpoint *)self uniqueIdentifier];
-  [(_MRAVEndpointDescriptorProtobuf *)v3 setUniqueIdentifier:v7];
+  uniqueIdentifier = [(MRAVEndpoint *)self uniqueIdentifier];
+  [(_MRAVEndpointDescriptorProtobuf *)v3 setUniqueIdentifier:uniqueIdentifier];
 
   [(_MRAVEndpointDescriptorProtobuf *)v3 setConnectionType:[(MRAVEndpoint *)self connectionType]];
   [(_MRAVEndpointDescriptorProtobuf *)v3 setCanModifyGroupMembership:[(MRAVEndpoint *)self canModifyGroupMembership]];
@@ -400,8 +400,8 @@ void __66__MRAVEndpoint_scheduleEndpointOutputDevicesDidChangeNotification__bloc
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(MRAVEndpoint *)self outputDevices];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  outputDevices = [(MRAVEndpoint *)self outputDevices];
+  v9 = [outputDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -412,14 +412,14 @@ void __66__MRAVEndpoint_scheduleEndpointOutputDevicesDidChangeNotification__bloc
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(outputDevices);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) descriptor];
-        [(_MRAVEndpointDescriptorProtobuf *)v3 addOutputDevices:v13];
+        descriptor2 = [*(*(&v16 + 1) + 8 * i) descriptor];
+        [(_MRAVEndpointDescriptorProtobuf *)v3 addOutputDevices:descriptor2];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [outputDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -435,17 +435,17 @@ void __66__MRAVEndpoint_scheduleEndpointOutputDevicesDidChangeNotification__bloc
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromMRAVEndpointConnectionType([(MRAVEndpoint *)self connectionType]);
-  v6 = [(MRAVEndpoint *)self uniqueIdentifier];
-  v7 = [(MRAVEndpoint *)self outputDevices];
-  v8 = [v3 stringWithFormat:@"<%@:%p (%@) uid=%@ outputDevices = %@>", v4, self, v5, v6, v7];
+  uniqueIdentifier = [(MRAVEndpoint *)self uniqueIdentifier];
+  outputDevices = [(MRAVEndpoint *)self outputDevices];
+  v8 = [v3 stringWithFormat:@"<%@:%p (%@) uid=%@ outputDevices = %@>", v4, self, v5, uniqueIdentifier, outputDevices];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MRAVEndpoint *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(MRAVEndpoint *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
@@ -453,13 +453,13 @@ void __66__MRAVEndpoint_scheduleEndpointOutputDevicesDidChangeNotification__bloc
 - (NSArray)outputDeviceUIDs
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(MRAVEndpoint *)self outputDevices];
-  v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v2, "count")}];
+  outputDevices = [(MRAVEndpoint *)self outputDevices];
+  v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(outputDevices, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = outputDevices;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -498,17 +498,17 @@ void __66__MRAVEndpoint_scheduleEndpointOutputDevicesDidChangeNotification__bloc
 - (float)volume
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v4 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"Endpoint.volume", v5];
-  v7 = [(MRAVEndpoint *)self debugName];
+  v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"Endpoint.volume", uUIDString];
+  debugName = [(MRAVEndpoint *)self debugName];
 
-  if (v7)
+  if (debugName)
   {
-    v8 = [(MRAVEndpoint *)self debugName];
-    [(__CFString *)v6 appendFormat:@" for %@", v8];
+    debugName2 = [(MRAVEndpoint *)self debugName];
+    [(__CFString *)v6 appendFormat:@" for %@", debugName2];
   }
 
   v9 = _MRLogForCategory(0xAuLL);
@@ -519,8 +519,8 @@ void __66__MRAVEndpoint_scheduleEndpointOutputDevicesDidChangeNotification__bloc
     _os_log_impl(&dword_1A2860000, v9, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v10 = [(MRAVEndpoint *)self outputContextDataSource];
-  [v10 volume];
+  outputContextDataSource = [(MRAVEndpoint *)self outputContextDataSource];
+  [outputContextDataSource volume];
   v12 = v11;
 
   *&v13 = v12;
@@ -533,15 +533,15 @@ void __66__MRAVEndpoint_scheduleEndpointOutputDevicesDidChangeNotification__bloc
     if (v16)
     {
       *&v17 = v12;
-      v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
-      v19 = [MEMORY[0x1E695DF00] date];
-      [v19 timeIntervalSinceDate:v3];
+      date3 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [date2 timeIntervalSinceDate:date];
       *buf = 138544130;
       v25 = @"Endpoint.volume";
       v26 = 2114;
-      v27 = v5;
+      v27 = uUIDString;
       v28 = 2112;
-      v29 = v18;
+      v29 = date3;
       v30 = 2048;
       v31 = v20;
       _os_log_impl(&dword_1A2860000, v15, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds", buf, 0x2Au);
@@ -552,12 +552,12 @@ LABEL_10:
 
   else if (v16)
   {
-    v18 = [MEMORY[0x1E695DF00] date];
-    [v18 timeIntervalSinceDate:v3];
+    date3 = [MEMORY[0x1E695DF00] date];
+    [date3 timeIntervalSinceDate:date];
     *buf = 138543874;
     v25 = @"Endpoint.volume";
     v26 = 2114;
-    v27 = v5;
+    v27 = uUIDString;
     v28 = 2048;
     v29 = v21;
     _os_log_impl(&dword_1A2860000, v15, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned in %.4lf seconds", buf, 0x20u);
@@ -570,100 +570,100 @@ LABEL_10:
 
 - (BOOL)groupContainsDiscoverableGroupLeader
 {
-  v3 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v4 = [v3 isAirPlayReceiverSessionActive];
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  isAirPlayReceiverSessionActive = [designatedGroupLeader isAirPlayReceiverSessionActive];
 
-  v5 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v6 = v5;
-  if (v4)
+  designatedGroupLeader2 = [(MRAVEndpoint *)self designatedGroupLeader];
+  v6 = designatedGroupLeader2;
+  if (isAirPlayReceiverSessionActive)
   {
-    v7 = [v5 parentGroupContainsDiscoverableLeader];
+    parentGroupContainsDiscoverableLeader = [designatedGroupLeader2 parentGroupContainsDiscoverableLeader];
   }
 
   else
   {
-    v7 = [v5 groupContainsGroupLeader];
+    parentGroupContainsDiscoverableLeader = [designatedGroupLeader2 groupContainsGroupLeader];
   }
 
-  v8 = v7;
+  v8 = parentGroupContainsDiscoverableLeader;
 
   return v8;
 }
 
 - (unsigned)volumeCapabilities
 {
-  v2 = [(MRAVEndpoint *)self outputContextDataSource];
+  outputContextDataSource = [(MRAVEndpoint *)self outputContextDataSource];
   v5 = 0;
-  v3 = [v2 volumeControlCapabilitiesForOutputDeviceUID:0 error:&v5];
+  v3 = [outputContextDataSource volumeControlCapabilitiesForOutputDeviceUID:0 error:&v5];
 
   return v3;
 }
 
 - (BOOL)isConnected
 {
-  v2 = [(MRAVEndpoint *)self externalDevice];
-  v3 = [v2 isConnected];
+  externalDevice = [(MRAVEndpoint *)self externalDevice];
+  isConnected = [externalDevice isConnected];
 
-  return v3;
+  return isConnected;
 }
 
 - (MROrigin)origin
 {
-  v2 = [(MRAVEndpoint *)self externalDevice];
-  v3 = [v2 customOrigin];
+  externalDevice = [(MRAVEndpoint *)self externalDevice];
+  customOrigin = [externalDevice customOrigin];
 
-  return v3;
+  return customOrigin;
 }
 
 - (id)debugDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = NSStringFromMRAVEndpointConnectionType([(MRAVEndpoint *)v2 connectionType]);
-  v6 = [(MRAVEndpoint *)v2 uniqueIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@:%p (%@) uid=%@", v4, v2, v5, v6];
+  v5 = NSStringFromMRAVEndpointConnectionType([(MRAVEndpoint *)selfCopy connectionType]);
+  uniqueIdentifier = [(MRAVEndpoint *)selfCopy uniqueIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@:%p (%@) uid=%@", v4, selfCopy, v5, uniqueIdentifier];
 
-  v8 = [(MRAVEndpoint *)v2 outputDevices];
-  v9 = [v8 count];
+  outputDevices = [(MRAVEndpoint *)selfCopy outputDevices];
+  v9 = [outputDevices count];
 
   if (v9)
   {
-    v10 = [(MRAVEndpoint *)v2 outputDevices];
-    v11 = [v10 mr_formattedDebugDescription];
-    [v7 appendFormat:@"  outputDevices = %@\n", v11];
+    outputDevices2 = [(MRAVEndpoint *)selfCopy outputDevices];
+    mr_formattedDebugDescription = [outputDevices2 mr_formattedDebugDescription];
+    [v7 appendFormat:@"  outputDevices = %@\n", mr_formattedDebugDescription];
   }
 
-  v12 = [(MRAVEndpoint *)v2 personalOutputDevices];
-  v13 = [v12 count];
+  personalOutputDevices = [(MRAVEndpoint *)selfCopy personalOutputDevices];
+  v13 = [personalOutputDevices count];
 
   if (v13)
   {
-    v14 = [(MRAVEndpoint *)v2 personalOutputDevices];
-    v15 = [v14 mr_formattedDebugDescription];
-    [v7 appendFormat:@"  personalDevices = %@\n", v15];
+    personalOutputDevices2 = [(MRAVEndpoint *)selfCopy personalOutputDevices];
+    mr_formattedDebugDescription2 = [personalOutputDevices2 mr_formattedDebugDescription];
+    [v7 appendFormat:@"  personalDevices = %@\n", mr_formattedDebugDescription2];
   }
 
-  outputContextDataSource = v2->_outputContextDataSource;
+  outputContextDataSource = selfCopy->_outputContextDataSource;
   if (outputContextDataSource)
   {
-    v17 = [outputContextDataSource mr_formattedDebugDescription];
-    [v7 appendFormat:@"  outputContextDataSource debug= %@\n", v17];
+    mr_formattedDebugDescription3 = [outputContextDataSource mr_formattedDebugDescription];
+    [v7 appendFormat:@"  outputContextDataSource debug= %@\n", mr_formattedDebugDescription3];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self == v5)
     {
       v10 = 1;
@@ -671,15 +671,15 @@ LABEL_10:
 
     else
     {
-      v6 = [(MRAVEndpoint *)self uniqueIdentifier];
-      if (v6)
+      uniqueIdentifier = [(MRAVEndpoint *)self uniqueIdentifier];
+      if (uniqueIdentifier)
       {
-        v7 = [(MRAVEndpoint *)v5 uniqueIdentifier];
-        if (v7)
+        uniqueIdentifier2 = [(MRAVEndpoint *)v5 uniqueIdentifier];
+        if (uniqueIdentifier2)
         {
-          v8 = [(MRAVEndpoint *)self uniqueIdentifier];
-          v9 = [(MRAVEndpoint *)v5 uniqueIdentifier];
-          v10 = [v8 isEqualToString:v9];
+          uniqueIdentifier3 = [(MRAVEndpoint *)self uniqueIdentifier];
+          uniqueIdentifier4 = [(MRAVEndpoint *)v5 uniqueIdentifier];
+          v10 = [uniqueIdentifier3 isEqualToString:uniqueIdentifier4];
         }
 
         else
@@ -703,14 +703,14 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)isEqualToEndpoint:(id)a3
+- (BOOL)isEqualToEndpoint:(id)endpoint
 {
-  v4 = a3;
-  if ([(MRAVEndpoint *)self isEqual:v4])
+  endpointCopy = endpoint;
+  if ([(MRAVEndpoint *)self isEqual:endpointCopy])
   {
-    v5 = [(MRAVEndpoint *)self descriptor];
-    v6 = [v4 descriptor];
-    v7 = [v5 isEqual:v6];
+    descriptor = [(MRAVEndpoint *)self descriptor];
+    descriptor2 = [endpointCopy descriptor];
+    v7 = [descriptor isEqual:descriptor2];
   }
 
   else
@@ -791,29 +791,29 @@ uint64_t __35__MRAVEndpoint_syncedOutputDevices__block_invoke_3(uint64_t a1, voi
 
 - (NSArray)personalOutputDevices
 {
-  v2 = [(MRAVEndpoint *)self externalDevice];
-  v3 = [v2 personalOutputDevices];
+  externalDevice = [(MRAVEndpoint *)self externalDevice];
+  personalOutputDevices = [externalDevice personalOutputDevices];
 
-  return v3;
+  return personalOutputDevices;
 }
 
 - (NSArray)effectiveOutputDevices
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MRAVEndpoint *)self predictedOutputDevice];
-  v4 = v3;
-  if (v3)
+  predictedOutputDevice = [(MRAVEndpoint *)self predictedOutputDevice];
+  v4 = predictedOutputDevice;
+  if (predictedOutputDevice)
   {
-    v9[0] = v3;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
+    v9[0] = predictedOutputDevice;
+    outputDevices = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
   else
   {
-    v5 = [(MRAVEndpoint *)self outputDevices];
+    outputDevices = [(MRAVEndpoint *)self outputDevices];
   }
 
-  v6 = v5;
+  v6 = outputDevices;
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -823,13 +823,13 @@ uint64_t __35__MRAVEndpoint_syncedOutputDevices__block_invoke_3(uint64_t a1, voi
 - (unint64_t)logicalOutputDeviceCount
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = [(MRAVEndpoint *)self outputDevices];
-  v3 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v2, "count")}];
+  outputDevices = [(MRAVEndpoint *)self outputDevices];
+  v3 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(outputDevices, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v2;
+  v4 = outputDevices;
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -845,12 +845,12 @@ uint64_t __35__MRAVEndpoint_syncedOutputDevices__block_invoke_3(uint64_t a1, voi
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 logicalDeviceID];
-        v11 = [v10 length];
+        logicalDeviceID = [v9 logicalDeviceID];
+        v11 = [logicalDeviceID length];
 
         if (v11)
         {
-          v12 = [v9 logicalDeviceID];
+          logicalDeviceID2 = [v9 logicalDeviceID];
         }
 
         else
@@ -862,11 +862,11 @@ uint64_t __35__MRAVEndpoint_syncedOutputDevices__block_invoke_3(uint64_t a1, voi
             continue;
           }
 
-          v12 = [v9 uid];
+          logicalDeviceID2 = [v9 uid];
         }
 
-        v14 = v12;
-        [v3 addObject:v12];
+        v14 = logicalDeviceID2;
+        [v3 addObject:logicalDeviceID2];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -887,19 +887,19 @@ uint64_t __35__MRAVEndpoint_syncedOutputDevices__block_invoke_3(uint64_t a1, voi
     return 1;
   }
 
-  v3 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v4 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v5 = [v4 isGroupLeader];
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  designatedGroupLeader2 = [(MRAVEndpoint *)self designatedGroupLeader];
+  isGroupLeader = [designatedGroupLeader2 isGroupLeader];
 
-  if (v5)
+  if (isGroupLeader)
   {
-    v6 = [(MRAVEndpoint *)self outputDevices];
-    v7 = [v6 firstObject];
-    v8 = [v7 groupID];
-    v9 = MRComputeBaseGroupID(v8);
+    outputDevices = [(MRAVEndpoint *)self outputDevices];
+    firstObject = [outputDevices firstObject];
+    groupID = [firstObject groupID];
+    v9 = MRComputeBaseGroupID(groupID);
 
-    v10 = [v3 airPlayGroupID];
-    v11 = MRComputeBaseGroupID(v10);
+    airPlayGroupID = [designatedGroupLeader airPlayGroupID];
+    v11 = MRComputeBaseGroupID(airPlayGroupID);
 
     v12 = v11 && v9 && ![v9 isEqualToString:v11];
   }
@@ -914,19 +914,19 @@ uint64_t __35__MRAVEndpoint_syncedOutputDevices__block_invoke_3(uint64_t a1, voi
 
 - (MRAVOutputDevice)designatedProxyGroupLeader
 {
-  v3 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v4 = [v3 uid];
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  v4 = [designatedGroupLeader uid];
   v5 = [(MRAVEndpoint *)self containsOutputDeviceWithUID:v4];
 
-  v6 = v3;
+  firstObject = designatedGroupLeader;
   if (!v5)
   {
-    v7 = [(MRAVEndpoint *)self outputDevices];
-    v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_127];
-    v6 = [v8 firstObject];
+    outputDevices = [(MRAVEndpoint *)self outputDevices];
+    v8 = [outputDevices sortedArrayUsingComparator:&__block_literal_global_127];
+    firstObject = [v8 firstObject];
   }
 
-  return v6;
+  return firstObject;
 }
 
 uint64_t __42__MRAVEndpoint_designatedProxyGroupLeader__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -957,20 +957,20 @@ uint64_t __42__MRAVEndpoint_designatedProxyGroupLeader__block_invoke(uint64_t a1
     return 1;
   }
 
-  v4 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v5 = [v4 groupSessionInfo];
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  groupSessionInfo = [designatedGroupLeader groupSessionInfo];
 
-  if (v5 || [(MRAVEndpoint *)self isCompanionEndpoint])
+  if (groupSessionInfo || [(MRAVEndpoint *)self isCompanionEndpoint])
   {
     v3 = 1;
   }
 
   else
   {
-    v7 = [(MRAVEndpoint *)self deviceInfo];
-    v8 = [v7 deviceUID];
+    deviceInfo = [(MRAVEndpoint *)self deviceInfo];
+    deviceUID = [deviceInfo deviceUID];
 
-    v3 = v8 != 0;
+    v3 = deviceUID != 0;
   }
 
   return v3;
@@ -978,19 +978,19 @@ uint64_t __42__MRAVEndpoint_designatedProxyGroupLeader__block_invoke(uint64_t a1
 
 - (BOOL)isProxyGroupPlayer
 {
-  v3 = [(MRAVEndpoint *)self designatedGroupLeader];
-  if (!v3)
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  if (!designatedGroupLeader)
   {
-    v7 = [(MRAVEndpoint *)self deviceInfo];
-    v4 = v7;
-    if (v7)
+    deviceInfo = [(MRAVEndpoint *)self deviceInfo];
+    resolvedOutputDevices = deviceInfo;
+    if (deviceInfo)
     {
-      v6 = [v7 isProxyGroupPlayer];
+      isProxyGroupPlayer = [deviceInfo isProxyGroupPlayer];
     }
 
     else
     {
-      v6 = 0;
+      isProxyGroupPlayer = 0;
     }
 
     goto LABEL_10;
@@ -998,32 +998,32 @@ uint64_t __42__MRAVEndpoint_designatedProxyGroupLeader__block_invoke(uint64_t a1
 
   if ([(MRAVEndpoint *)self groupContainsDiscoverableGroupLeader])
   {
-    if ([v3 supportsMultiplayer])
+    if ([designatedGroupLeader supportsMultiplayer])
     {
-      v4 = [(MRAVEndpoint *)self resolvedOutputDevices];
+      resolvedOutputDevices = [(MRAVEndpoint *)self resolvedOutputDevices];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __34__MRAVEndpoint_isProxyGroupPlayer__block_invoke;
       v9[3] = &unk_1E769CDC0;
-      v10 = v3;
-      v5 = [v4 msv_firstWhere:v9];
-      v6 = v5 == 0;
+      v10 = designatedGroupLeader;
+      v5 = [resolvedOutputDevices msv_firstWhere:v9];
+      isProxyGroupPlayer = v5 == 0;
 
 LABEL_10:
       goto LABEL_11;
     }
 
-    v6 = [v3 isProxyGroupPlayer];
+    isProxyGroupPlayer = [designatedGroupLeader isProxyGroupPlayer];
   }
 
   else
   {
-    v6 = 0;
+    isProxyGroupPlayer = 0;
   }
 
 LABEL_11:
 
-  return v6;
+  return isProxyGroupPlayer;
 }
 
 uint64_t __34__MRAVEndpoint_isProxyGroupPlayer__block_invoke(uint64_t a1, void *a2)
@@ -1038,14 +1038,14 @@ uint64_t __34__MRAVEndpoint_isProxyGroupPlayer__block_invoke(uint64_t a1, void *
 
 - (BOOL)isVisualProxyGroupPlayer
 {
-  v3 = [(MRAVEndpoint *)self supportsVisualProxyGroupPlayer];
-  if (v3)
+  supportsVisualProxyGroupPlayer = [(MRAVEndpoint *)self supportsVisualProxyGroupPlayer];
+  if (supportsVisualProxyGroupPlayer)
   {
 
-    LOBYTE(v3) = [(MRAVEndpoint *)self isProxyGroupPlayer];
+    LOBYTE(supportsVisualProxyGroupPlayer) = [(MRAVEndpoint *)self isProxyGroupPlayer];
   }
 
-  return v3;
+  return supportsVisualProxyGroupPlayer;
 }
 
 - (BOOL)supportsVisualProxyGroupPlayer
@@ -1057,17 +1057,17 @@ uint64_t __34__MRAVEndpoint_isProxyGroupPlayer__block_invoke(uint64_t a1, void *
 
   else
   {
-    v4 = [(MRAVEndpoint *)self deviceInfo];
-    if (!v4)
+    deviceInfo = [(MRAVEndpoint *)self deviceInfo];
+    if (!deviceInfo)
     {
       goto LABEL_5;
     }
 
-    v5 = v4;
-    v6 = [(MRAVEndpoint *)self deviceInfo];
-    v7 = [v6 deviceUID];
+    v5 = deviceInfo;
+    deviceInfo2 = [(MRAVEndpoint *)self deviceInfo];
+    deviceUID = [deviceInfo2 deviceUID];
 
-    if (!v7)
+    if (!deviceUID)
     {
       LOBYTE(v3) = 0;
     }
@@ -1075,11 +1075,11 @@ uint64_t __34__MRAVEndpoint_isProxyGroupPlayer__block_invoke(uint64_t a1, void *
     else
     {
 LABEL_5:
-      v8 = [(MRAVEndpoint *)self designatedGroupLeader];
-      v9 = v8;
-      if (v8)
+      designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+      v9 = designatedGroupLeader;
+      if (designatedGroupLeader)
       {
-        v3 = [v8 supportsMultiplayer] ^ 1;
+        v3 = [designatedGroupLeader supportsMultiplayer] ^ 1;
       }
 
       else
@@ -1097,10 +1097,10 @@ LABEL_5:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromMRAVEndpointConnectionType([(MRAVEndpoint *)self connectionType]);
-  v6 = [(MRAVEndpoint *)self uniqueIdentifier];
-  v7 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v8 = [v7 name];
-  v9 = [v3 stringWithFormat:@"<%@: %p (%@) uid=%@ leader=%@>", v4, self, v5, v6, v8];
+  uniqueIdentifier = [(MRAVEndpoint *)self uniqueIdentifier];
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  name = [designatedGroupLeader name];
+  v9 = [v3 stringWithFormat:@"<%@: %p (%@) uid=%@ leader=%@>", v4, self, v5, uniqueIdentifier, name];
 
   return v9;
 }
@@ -1109,11 +1109,11 @@ LABEL_5:
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v13[0] = @"uid";
-  v3 = [(MRAVEndpoint *)self uniqueIdentifier];
-  v4 = v3;
-  if (v3)
+  uniqueIdentifier = [(MRAVEndpoint *)self uniqueIdentifier];
+  v4 = uniqueIdentifier;
+  if (uniqueIdentifier)
   {
-    v5 = v3;
+    v5 = uniqueIdentifier;
   }
 
   else
@@ -1123,8 +1123,8 @@ LABEL_5:
 
   v13[1] = @"output-devices";
   v14[0] = v5;
-  v6 = [(MRAVEndpoint *)self outputDevices];
-  v7 = [v6 valueForKey:@"jsonEncodableDictionaryRepresentation"];
+  outputDevices = [(MRAVEndpoint *)self outputDevices];
+  v7 = [outputDevices valueForKey:@"jsonEncodableDictionaryRepresentation"];
   v8 = v7;
   v9 = MEMORY[0x1E695E0F0];
   if (v7)
@@ -1142,8 +1142,8 @@ LABEL_5:
 
 - (BOOL)isGroupable
 {
-  v2 = [(MRAVEndpoint *)self outputDevices];
-  v3 = [v2 msv_firstWhere:&__block_literal_global_166];
+  outputDevices = [(MRAVEndpoint *)self outputDevices];
+  v3 = [outputDevices msv_firstWhere:&__block_literal_global_166];
   v4 = v3 == 0;
 
   return v4;
@@ -1151,45 +1151,45 @@ LABEL_5:
 
 - (id)_externalOutputContext
 {
-  v2 = [(MRAVEndpoint *)self externalDevice];
-  v3 = [v2 externalOutputContext];
+  externalDevice = [(MRAVEndpoint *)self externalDevice];
+  externalOutputContext = [externalDevice externalOutputContext];
 
-  return v3;
+  return externalOutputContext;
 }
 
 - (MRGroupSessionInfo)groupSessionInfo
 {
-  v2 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v3 = [v2 groupSessionInfo];
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  groupSessionInfo = [designatedGroupLeader groupSessionInfo];
 
-  return v3;
+  return groupSessionInfo;
 }
 
 - (MRDeviceInfo)deviceInfo
 {
-  v2 = [(MRAVEndpoint *)self externalDevice];
-  v3 = [v2 deviceInfo];
+  externalDevice = [(MRAVEndpoint *)self externalDevice];
+  deviceInfo = [externalDevice deviceInfo];
 
-  return v3;
+  return deviceInfo;
 }
 
 - (BOOL)discoveredIsPlaying
 {
-  v2 = [(MRAVEndpoint *)self discoveredOutputDevices];
-  v3 = [v2 firstObject];
-  v4 = [v3 discoveredDeviceIsPlaying];
+  discoveredOutputDevices = [(MRAVEndpoint *)self discoveredOutputDevices];
+  firstObject = [discoveredOutputDevices firstObject];
+  discoveredDeviceIsPlaying = [firstObject discoveredDeviceIsPlaying];
 
-  return v4;
+  return discoveredDeviceIsPlaying;
 }
 
 - (BOOL)isMyGroupLeader
 {
-  v3 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v4 = v3;
-  if (v3 && ([v3 isPrimaryLocalDevice] & 1) == 0)
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  v4 = designatedGroupLeader;
+  if (designatedGroupLeader && ([designatedGroupLeader isPrimaryLocalDevice] & 1) == 0)
   {
-    v6 = [(MRAVEndpoint *)self outputDevices];
-    v7 = [v6 msv_firstWhere:&__block_literal_global_168_0];
+    outputDevices = [(MRAVEndpoint *)self outputDevices];
+    v7 = [outputDevices msv_firstWhere:&__block_literal_global_168_0];
     v5 = v7 != 0;
   }
 
@@ -1208,31 +1208,31 @@ LABEL_5:
     return 0;
   }
 
-  v3 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v4 = [v3 deviceSubtype] == 19;
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  v4 = [designatedGroupLeader deviceSubtype] == 19;
 
   return v4;
 }
 
 - (BOOL)isGroupLeaderGroupable
 {
-  v3 = [(MRAVEndpoint *)self groupContainsDiscoverableGroupLeader];
-  if (v3)
+  groupContainsDiscoverableGroupLeader = [(MRAVEndpoint *)self groupContainsDiscoverableGroupLeader];
+  if (groupContainsDiscoverableGroupLeader)
   {
-    v4 = [(MRAVEndpoint *)self designatedGroupLeader];
-    v5 = [v4 isGroupable];
+    designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+    isGroupable = [designatedGroupLeader isGroupable];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(groupContainsDiscoverableGroupLeader) = isGroupable;
   }
 
-  return v3;
+  return groupContainsDiscoverableGroupLeader;
 }
 
-- (void)connectToExternalDeviceWithOptions:(unsigned int)a3 userInfo:(id)a4 completion:(id)a5
+- (void)connectToExternalDeviceWithOptions:(unsigned int)options userInfo:(id)info completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 objectForKeyedSubscript:@"MREndpointConnectionReasonUserInfoKey"];
+  infoCopy = info;
+  completionCopy = completion;
+  v10 = [infoCopy objectForKeyedSubscript:@"MREndpointConnectionReasonUserInfoKey"];
   v11 = v10;
   if (v10)
   {
@@ -1241,34 +1241,34 @@ LABEL_5:
 
   else
   {
-    v12 = [v8 objectForKeyedSubscript:@"MRExternalDeviceConnectionReasonUserInfoKey"];
+    v12 = [infoCopy objectForKeyedSubscript:@"MRExternalDeviceConnectionReasonUserInfoKey"];
   }
 
   v13 = v12;
 
-  v14 = [v8 objectForKeyedSubscript:@"MREndpointConnectionCorrelationIDUserInfoKey"];
+  v14 = [infoCopy objectForKeyedSubscript:@"MREndpointConnectionCorrelationIDUserInfoKey"];
   v15 = v14;
   if (v14)
   {
-    v16 = v14;
+    uUIDString = v14;
   }
 
   else
   {
-    v17 = [v8 objectForKeyedSubscript:@"MRExternalDeviceConnectionCorrelationIDUserInfoKey"];
+    v17 = [infoCopy objectForKeyedSubscript:@"MRExternalDeviceConnectionCorrelationIDUserInfoKey"];
     v18 = v17;
     if (v17)
     {
-      v16 = v17;
+      uUIDString = v17;
     }
 
     else
     {
       [MEMORY[0x1E696AFB0] UUID];
-      v20 = v19 = a3;
-      v16 = [v20 UUIDString];
+      v20 = v19 = options;
+      uUIDString = [v20 UUIDString];
 
-      a3 = v19;
+      options = v19;
     }
   }
 
@@ -1276,13 +1276,13 @@ LABEL_5:
   v37[1] = 3221225472;
   v37[2] = __71__MRAVEndpoint_connectToExternalDeviceWithOptions_userInfo_completion___block_invoke;
   v37[3] = &unk_1E769AD80;
-  v21 = v9;
+  v21 = completionCopy;
   v38 = v21;
   v22 = MEMORY[0x1A58E3570](v37);
-  v23 = [(MRAVEndpoint *)self externalDevice];
-  if (v23)
+  externalDevice = [(MRAVEndpoint *)self externalDevice];
+  if (externalDevice)
   {
-    v33 = a3;
+    optionsCopy = options;
     if (!v13)
     {
       v13 = @"MRAVEndpoint";
@@ -1290,8 +1290,8 @@ LABEL_5:
 
     v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v24 setObject:v13 forKeyedSubscript:@"MRExternalDeviceConnectionReasonUserInfoKey"];
-    [v24 setObject:v16 forKeyedSubscript:@"MRExternalDeviceConnectionCorrelationIDUserInfoKey"];
-    v25 = [v8 objectForKeyedSubscript:@"MRExternalDeviceConnectionClientBundleIDUserInfoKey"];
+    [v24 setObject:uUIDString forKeyedSubscript:@"MRExternalDeviceConnectionCorrelationIDUserInfoKey"];
+    v25 = [infoCopy objectForKeyedSubscript:@"MRExternalDeviceConnectionClientBundleIDUserInfoKey"];
     if (v25)
     {
       [v24 setObject:v25 forKeyedSubscript:@"MRExternalDeviceConnectionClientBundleIDUserInfoKey"];
@@ -1301,13 +1301,13 @@ LABEL_5:
     {
       [MEMORY[0x1E696AAE8] mainBundle];
       v30 = v32 = v21;
-      v31 = [v30 bundleIdentifier];
-      [v24 setObject:v31 forKeyedSubscript:@"MRExternalDeviceConnectionClientBundleIDUserInfoKey"];
+      bundleIdentifier = [v30 bundleIdentifier];
+      [v24 setObject:bundleIdentifier forKeyedSubscript:@"MRExternalDeviceConnectionClientBundleIDUserInfoKey"];
 
       v21 = v32;
     }
 
-    [v23 connectWithOptions:v33 userInfo:v24 completion:v22];
+    [externalDevice connectWithOptions:optionsCopy userInfo:v24 completion:v22];
   }
 
   else
@@ -1340,33 +1340,33 @@ uint64_t __71__MRAVEndpoint_connectToExternalDeviceWithOptions_userInfo_completi
   return result;
 }
 
-+ (void)connectToEndpointContainingOutputDeviceUID:(id)a3 options:(unsigned int)a4 details:(id)a5 completion:(id)a6
++ (void)connectToEndpointContainingOutputDeviceUID:(id)d options:(unsigned int)options details:(id)details completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  if (!v9)
+  dCopy = d;
+  detailsCopy = details;
+  completionCopy = completion;
+  if (!detailsCopy)
   {
     +[MRAVEndpoint connectToEndpointContainingOutputDeviceUID:options:details:completion:];
   }
 
   v11 = [MEMORY[0x1E695DF00] now];
   v12 = objc_alloc(MEMORY[0x1E696AD60]);
-  v13 = [v9 requestID];
-  v14 = [v12 initWithFormat:@"%@<%@>", @"connectToEndpointWithOutputDeviceUID", v13];
+  requestID = [detailsCopy requestID];
+  v14 = [v12 initWithFormat:@"%@<%@>", @"connectToEndpointWithOutputDeviceUID", requestID];
 
-  if (v8)
+  if (dCopy)
   {
-    [v14 appendFormat:@" for %@", v8];
+    [v14 appendFormat:@" for %@", dCopy];
   }
 
-  v15 = [v9 reason];
+  reason = [detailsCopy reason];
 
-  if (v15)
+  if (reason)
   {
-    v16 = [v9 reason];
-    [v14 appendFormat:@" because %@", v16];
+    reason2 = [detailsCopy reason];
+    [v14 appendFormat:@" because %@", reason2];
   }
 
   v17 = _MRLogForCategory(0xAuLL);
@@ -1381,20 +1381,20 @@ uint64_t __71__MRAVEndpoint_connectToExternalDeviceWithOptions_userInfo_completi
   v36[1] = 3221225472;
   v36[2] = __86__MRAVEndpoint_connectToEndpointContainingOutputDeviceUID_options_details_completion___block_invoke;
   v36[3] = &unk_1E76A2708;
-  v37 = v8;
-  v18 = v9;
+  v37 = dCopy;
+  v18 = detailsCopy;
   v38 = v18;
   v39 = v11;
-  v40 = v10;
-  v19 = v10;
+  v40 = completionCopy;
+  v19 = completionCopy;
   v20 = v11;
-  v21 = v8;
+  v21 = dCopy;
   v22 = MEMORY[0x1A58E3570](v36);
   v23 = objc_alloc_init(MRAVLightweightReconnaissanceSession);
   v24 = +[MRUserSettings currentSettings];
   [v24 discoverEndpointTimeoutInterval];
   v26 = v25;
-  v27 = [v18 requestReasonID];
+  requestReasonID = [v18 requestReasonID];
   v28 = qos_class_self();
   v29 = dispatch_get_global_queue(v28, 0);
   v33[0] = MEMORY[0x1E69E9820];
@@ -1405,7 +1405,7 @@ uint64_t __71__MRAVEndpoint_connectToExternalDeviceWithOptions_userInfo_completi
   v35 = v22;
   v30 = v22;
   v31 = v18;
-  [(MRAVLightweightReconnaissanceSession *)v23 searchEndpointsForOutputDeviceUID:v21 timeout:v27 reason:v29 queue:v33 completion:v26];
+  [(MRAVLightweightReconnaissanceSession *)v23 searchEndpointsForOutputDeviceUID:v21 timeout:requestReasonID reason:v29 queue:v33 completion:v26];
 
   v32 = *MEMORY[0x1E69E9840];
 }
@@ -1598,33 +1598,33 @@ void __86__MRAVEndpoint_connectToEndpointContainingOutputDeviceUID_options_detai
   }
 }
 
-- (void)migrateToOrAddOutputDevices:(id)a3 initiator:(id)a4 withReplyQueue:(id)a5 completion:(id)a6
+- (void)migrateToOrAddOutputDevices:(id)devices initiator:(id)initiator withReplyQueue:(id)queue completion:(id)completion
 {
   v73 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  devicesCopy = devices;
+  initiatorCopy = initiator;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v12 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v14 = MEMORY[0x1E69E96A0];
   }
 
   v15 = objc_alloc_init(MRPlaybackSessionMigrateRequest);
   [(MRPlaybackSessionMigrateRequest *)v15 setInitiator:@"routePicker"];
-  v16 = [MEMORY[0x1E695DF00] date];
-  v17 = [(MRPlaybackSessionMigrateRequest *)v15 requestID];
-  v50 = v11;
-  v45 = [(MRAVEndpoint *)self _initiatorStringWithInitiator:v11 uid:v17];
+  date = [MEMORY[0x1E695DF00] date];
+  requestID = [(MRPlaybackSessionMigrateRequest *)v15 requestID];
+  v50 = initiatorCopy;
+  v45 = [(MRAVEndpoint *)self _initiatorStringWithInitiator:initiatorCopy uid:requestID];
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v51 = self;
-  v19 = [(MRAVEndpoint *)self debugName];
-  v46 = v10;
-  v20 = MRAVOutputDeviceArrayDescription(v10);
-  v21 = [v18 initWithFormat:@"source=%@ destination=%@", v19, v20];
+  selfCopy = self;
+  debugName = [(MRAVEndpoint *)self debugName];
+  v46 = devicesCopy;
+  v20 = MRAVOutputDeviceArrayDescription(devicesCopy);
+  v21 = [v18 initWithFormat:@"source=%@ destination=%@", debugName, v20];
 
-  v22 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"migrateToOrAddOutputDevices", v17];
+  v22 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"migrateToOrAddOutputDevices", requestID];
   v23 = v22;
   if (v21)
   {
@@ -1645,16 +1645,16 @@ void __86__MRAVEndpoint_connectToEndpointContainingOutputDeviceUID_options_detai
   v59[3] = &unk_1E76A2730;
   v60 = v21;
   v61 = @"migrateToOrAddOutputDevices";
-  v25 = v17;
+  v25 = requestID;
   v62 = v25;
-  v63 = v16;
+  v63 = date;
   v26 = v15;
   v64 = v26;
-  v66 = v13;
-  v27 = v12;
+  v66 = completionCopy;
+  v27 = queueCopy;
   v65 = v27;
-  v49 = v13;
-  v48 = v16;
+  v49 = completionCopy;
+  v48 = date;
   v47 = v21;
   v28 = MEMORY[0x1A58E3570](v59);
   v52[0] = MEMORY[0x1E69E9820];
@@ -1663,7 +1663,7 @@ void __86__MRAVEndpoint_connectToEndpointContainingOutputDeviceUID_options_detai
   v52[3] = &unk_1E76A2758;
   v29 = v26;
   v53 = v29;
-  v54 = v51;
+  v54 = selfCopy;
   v30 = v46;
   v55 = v30;
   v56 = v45;
@@ -1698,7 +1698,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!MRGroupSessionAllowsMigrationForEndpoint(v51))
+  if (!MRGroupSessionAllowsMigrationForEndpoint(selfCopy))
   {
     v43 = _MRLogForCategory(0xAuLL);
     v37 = v50;
@@ -1749,7 +1749,7 @@ LABEL_19:
     [(MRPlaybackSessionMigrateRequest *)v29 setEndpointOptions:[(MRPlaybackSessionMigrateRequest *)v29 endpointOptions]& 0xFFFFFFFFFFFFFFDFLL];
     [(MRPlaybackSessionMigrateRequest *)v29 setEndpointOptions:[(MRPlaybackSessionMigrateRequest *)v29 endpointOptions]& 0xFFFFFFFFFFFFFFBFLL];
     v37 = v50;
-    [(MRAVEndpoint *)v51 migrateToOutputDevices:v30 request:v29 initiator:v50 queue:v31 completion:v32];
+    [(MRAVEndpoint *)selfCopy migrateToOutputDevices:v30 request:v29 initiator:v50 queue:v31 completion:v32];
   }
 
 LABEL_20:
@@ -2029,86 +2029,86 @@ void __80__MRAVEndpoint_migrateToOrSetOutputDevices_initiator_withReplyQueue_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)migrateToOutputDevice:(id)a3 request:(id)a4 initiator:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)migrateToOutputDevice:(id)device request:(id)request initiator:(id)initiator queue:(id)queue completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v20 = a3;
+  deviceCopy = device;
   v12 = MEMORY[0x1E695DEC8];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v12 arrayWithObjects:&v20 count:1];
+  completionCopy = completion;
+  queueCopy = queue;
+  initiatorCopy = initiator;
+  requestCopy = request;
+  deviceCopy2 = device;
+  v18 = [v12 arrayWithObjects:&deviceCopy count:1];
 
-  [(MRAVEndpoint *)self migrateToOutputDevices:v18 request:v16 initiator:v15 queue:v14 completion:v13, v20, v21];
+  [(MRAVEndpoint *)self migrateToOutputDevices:v18 request:requestCopy initiator:initiatorCopy queue:queueCopy completion:completionCopy, deviceCopy, v21];
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)migrateToOutputDevices:(id)a3 request:(id)a4 initiator:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)migrateToOutputDevices:(id)devices request:(id)request initiator:(id)initiator queue:(id)queue completion:(id)completion
 {
-  v20 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  devicesCopy = devices;
+  requestCopy = request;
+  initiatorCopy = initiator;
+  queueCopy = queue;
+  completionCopy = completion;
   v16 = +[MRUserSettings currentSettings];
-  v17 = [v16 supportOutOfProcessMigration];
+  supportOutOfProcessMigration = [v16 supportOutOfProcessMigration];
 
-  if (v17)
+  if (supportOutOfProcessMigration)
   {
     v18 = MRGetSharedService();
     if ([(MRAVEndpoint *)self isLocalEndpoint])
     {
-      MRMediaRemoteServiceMigrateFromEndpointToOutputDevices(v18, 0, v20, v12, v14, v15);
+      MRMediaRemoteServiceMigrateFromEndpointToOutputDevices(v18, 0, devicesCopy, requestCopy, queueCopy, completionCopy);
     }
 
     else
     {
-      v19 = [(MRAVEndpoint *)self uniqueIdentifier];
-      MRMediaRemoteServiceMigrateFromEndpointToOutputDevices(v18, v19, v20, v12, v14, v15);
+      uniqueIdentifier = [(MRAVEndpoint *)self uniqueIdentifier];
+      MRMediaRemoteServiceMigrateFromEndpointToOutputDevices(v18, uniqueIdentifier, devicesCopy, requestCopy, queueCopy, completionCopy);
     }
   }
 
   else
   {
-    [(MRAVEndpoint *)self performMigrationToOutputDevices:v20 request:v12 initiator:v13 queue:v14 completion:v15];
+    [(MRAVEndpoint *)self performMigrationToOutputDevices:devicesCopy request:requestCopy initiator:initiatorCopy queue:queueCopy completion:completionCopy];
   }
 }
 
-- (void)migrateToEndpoint:(id)a3 request:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)migrateToEndpoint:(id)endpoint request:(id)request queue:(id)queue completion:(id)completion
 {
-  v19 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  endpointCopy = endpoint;
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
   v13 = +[MRUserSettings currentSettings];
-  v14 = [v13 supportOutOfProcessMigration];
+  supportOutOfProcessMigration = [v13 supportOutOfProcessMigration];
 
-  if (!v14)
+  if (!supportOutOfProcessMigration)
   {
-    [(MRAVEndpoint *)self performMigrationToEndpoint:v19 request:v10 queue:v11 completion:v12];
+    [(MRAVEndpoint *)self performMigrationToEndpoint:endpointCopy request:requestCopy queue:queueCopy completion:completionCopy];
     goto LABEL_11;
   }
 
   v15 = MRGetSharedService();
-  v16 = [(MRAVEndpoint *)self isLocalEndpoint];
-  if (v16)
+  isLocalEndpoint = [(MRAVEndpoint *)self isLocalEndpoint];
+  if (isLocalEndpoint)
   {
-    v17 = 0;
+    uniqueIdentifier = 0;
   }
 
   else
   {
-    v17 = [(MRAVEndpoint *)self uniqueIdentifier];
+    uniqueIdentifier = [(MRAVEndpoint *)self uniqueIdentifier];
   }
 
-  if (![v19 isLocalEndpoint])
+  if (![endpointCopy isLocalEndpoint])
   {
-    v18 = [v19 uniqueIdentifier];
-    MRMediaRemoteServiceMigrateFromEndpointToEndpoint(v15, v17, v18, v10, v11, v12);
+    uniqueIdentifier2 = [endpointCopy uniqueIdentifier];
+    MRMediaRemoteServiceMigrateFromEndpointToEndpoint(v15, uniqueIdentifier, uniqueIdentifier2, requestCopy, queueCopy, completionCopy);
 
-    if (v16)
+    if (isLocalEndpoint)
     {
       goto LABEL_11;
     }
@@ -2116,8 +2116,8 @@ void __80__MRAVEndpoint_migrateToOrSetOutputDevices_initiator_withReplyQueue_com
     goto LABEL_10;
   }
 
-  MRMediaRemoteServiceMigrateFromEndpointToEndpoint(v15, v17, 0, v10, v11, v12);
-  if (!v16)
+  MRMediaRemoteServiceMigrateFromEndpointToEndpoint(v15, uniqueIdentifier, 0, requestCopy, queueCopy, completionCopy);
+  if (!isLocalEndpoint)
   {
 LABEL_10:
   }
@@ -2125,23 +2125,23 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)migrateToEndpointOrModifyTopology:(id)a3 migrationRequest:(id)a4 topologyModificationRequest:(id)a5 withReplyQueue:(id)a6 completion:(id)a7
+- (void)migrateToEndpointOrModifyTopology:(id)topology migrationRequest:(id)request topologyModificationRequest:(id)modificationRequest withReplyQueue:(id)queue completion:(id)completion
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  modificationRequestCopy = modificationRequest;
+  queueCopy = queue;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __121__MRAVEndpoint_migrateToEndpointOrModifyTopology_migrationRequest_topologyModificationRequest_withReplyQueue_completion___block_invoke;
   v18[3] = &unk_1E76A27A8;
   v18[4] = self;
-  v19 = v12;
-  v20 = v13;
-  v21 = v14;
-  v15 = v13;
-  v16 = v12;
-  v17 = v14;
-  [(MRAVEndpoint *)self migrateToEndpoint:a3 request:a4 queue:v15 completion:v18];
+  v19 = modificationRequestCopy;
+  v20 = queueCopy;
+  v21 = completionCopy;
+  v15 = queueCopy;
+  v16 = modificationRequestCopy;
+  v17 = completionCopy;
+  [(MRAVEndpoint *)self migrateToEndpoint:topology request:request queue:v15 completion:v18];
 }
 
 uint64_t __121__MRAVEndpoint_migrateToEndpointOrModifyTopology_migrationRequest_topologyModificationRequest_withReplyQueue_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3102,24 +3102,24 @@ void __83__MRAVEndpoint_performMigrationToOutputDevices_request_initiator_queue_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)performMigrationToEndpoint:(id)a3 request:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)performMigrationToEndpoint:(id)endpoint request:(id)request queue:(id)queue completion:(id)completion
 {
   v98 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v60 = a6;
-  if (v10)
+  endpointCopy = endpoint;
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (endpointCopy)
   {
-    if (v12)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v12 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v14 = MEMORY[0x1E69E96A0];
-    if (v11)
+    if (requestCopy)
     {
       goto LABEL_4;
     }
@@ -3128,16 +3128,16 @@ LABEL_6:
   }
 
   [MRAVEndpoint performMigrationToEndpoint:request:queue:completion:];
-  if (!v12)
+  if (!queueCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (v11)
+  if (requestCopy)
   {
 LABEL_4:
-    v13 = v11;
+    v13 = requestCopy;
     goto LABEL_8;
   }
 
@@ -3146,16 +3146,16 @@ LABEL_7:
 LABEL_8:
   v15 = v13;
   [(MRPlaybackSessionMigrateRequest *)v13 setOriginatorType:MRAnalyticsCompositionForEndpoint(self)];
-  [(MRPlaybackSessionMigrateRequest *)v15 addDestinationType:MRAnalyticsCompositionForEndpoint(v10)];
-  v16 = [MEMORY[0x1E695DF00] date];
-  v17 = [(MRPlaybackSessionMigrateRequest *)v15 requestID];
+  [(MRPlaybackSessionMigrateRequest *)v15 addDestinationType:MRAnalyticsCompositionForEndpoint(endpointCopy)];
+  date = [MEMORY[0x1E695DF00] date];
+  requestID = [(MRPlaybackSessionMigrateRequest *)v15 requestID];
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v19 = [(MRAVEndpoint *)self debugName];
-  v65 = v10;
-  v20 = [v10 debugName];
-  v21 = [v18 initWithFormat:@"source=%@ destination=%@", v19, v20];
+  debugName = [(MRAVEndpoint *)self debugName];
+  v65 = endpointCopy;
+  debugName2 = [endpointCopy debugName];
+  v21 = [v18 initWithFormat:@"source=%@ destination=%@", debugName, debugName2];
 
-  v22 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"migrateToEndpoint", v17];
+  v22 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"migrateToEndpoint", requestID];
   v23 = v22;
   if (v21)
   {
@@ -3177,17 +3177,17 @@ LABEL_8:
   v63 = v21;
   v84 = v63;
   v85 = @"migrateToEndpoint";
-  v25 = v17;
+  v25 = requestID;
   v86 = v25;
-  v62 = v16;
+  v62 = date;
   v87 = v62;
-  v64 = v11;
+  v64 = requestCopy;
   v88 = v64;
   v26 = v15;
   v89 = v26;
-  v61 = v60;
+  v61 = completionCopy;
   v91 = v61;
-  v27 = v12;
+  v27 = queueCopy;
   v90 = v27;
   v28 = MEMORY[0x1A58E3570](v83);
   if (-[MRAVEndpoint isLocalEndpoint](self, "isLocalEndpoint") && [v65 isLocalEndpoint])
@@ -3195,11 +3195,11 @@ LABEL_8:
     v29 = _MRLogForCategory(0xAuLL);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(MRPlaybackSessionMigrateRequest *)v26 requestID];
+      requestID2 = [(MRPlaybackSessionMigrateRequest *)v26 requestID];
       *buf = 138543874;
       v93 = @"migrateToEndpoint";
       v94 = 2114;
-      v95 = v30;
+      v95 = requestID2;
       v96 = 2112;
       v97 = @"Already airplaying to device. Removing All outputDevices instead...";
       _os_log_impl(&dword_1A2860000, v29, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
@@ -3210,9 +3210,9 @@ LABEL_8:
     ErrorWithDescription = [MRAVLocalEndpoint sharedLocalEndpointForRoutingContextWithUID:0];
     v33 = ([(MRPlaybackSessionMigrateRequest *)v26 playerOptions]>> 6) & 1;
     v34 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v35 = [(MRPlaybackSessionMigrateRequest *)v26 initiator];
-    v36 = [(MRPlaybackSessionMigrateRequest *)v26 requestID];
-    v37 = [v34 initWithFormat:@"%@-%@", v35, v36];
+    initiator = [(MRPlaybackSessionMigrateRequest *)v26 initiator];
+    requestID3 = [(MRPlaybackSessionMigrateRequest *)v26 requestID];
+    v37 = [v34 initWithFormat:@"%@-%@", initiator, requestID3];
     v78[0] = MEMORY[0x1E69E9820];
     v78[1] = 3221225472;
     v78[2] = __68__MRAVEndpoint_performMigrationToEndpoint_request_queue_completion___block_invoke_395;
@@ -3235,8 +3235,8 @@ LABEL_8:
     {
       v40 = objc_alloc(MEMORY[0x1E696AEC0]);
       v41 = MRMediaRemotePlaybackSessionMigrateEndpointOptionsCopyDescription(32);
-      v42 = [(MRAVEndpoint *)self outputDevices];
-      v43 = MRAVOutputDeviceArrayDescription(v42);
+      outputDevices = [(MRAVEndpoint *)self outputDevices];
+      v43 = MRAVOutputDeviceArrayDescription(outputDevices);
       v44 = [v40 initWithFormat:@"%@ option is not present and source contains %@", v41, v43];
       ErrorWithDescription = MRMediaRemoteCreateErrorWithDescription(150, v44);
 
@@ -3284,8 +3284,8 @@ LABEL_20:
   {
     v48 = objc_alloc(MEMORY[0x1E696AEC0]);
     v49 = MRMediaRemotePlaybackSessionMigrateEndpointOptionsCopyDescription(16);
-    v50 = [v65 outputDevices];
-    v51 = MRAVOutputDeviceArrayDescription(v50);
+    outputDevices2 = [v65 outputDevices];
+    v51 = MRAVOutputDeviceArrayDescription(outputDevices2);
     v52 = [v48 initWithFormat:@"%@ option is not present and destination contains %@", v49, v51];
     ErrorWithDescription = MRMediaRemoteCreateErrorWithDescription(151, v52);
 
@@ -3577,22 +3577,22 @@ void __68__MRAVEndpoint_performMigrationToEndpoint_request_queue_completion___bl
   (*(v9 + 16))(v9, v11);
 }
 
-- (void)_prepareToMigrateToEndpoint:(void *)a3 queue:(void *)a4 completion:
+- (void)_prepareToMigrateToEndpoint:(void *)endpoint queue:(void *)queue completion:
 {
   v47[1] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  if (self)
   {
     if (!v7)
     {
       [MRAVEndpoint _prepareToMigrateToEndpoint:queue:completion:];
     }
 
-    if (!v8)
+    if (!endpointCopy)
     {
-      v8 = MEMORY[0x1E69E96A0];
+      endpointCopy = MEMORY[0x1E69E96A0];
       v10 = MEMORY[0x1E69E96A0];
     }
 
@@ -3625,10 +3625,10 @@ void __68__MRAVEndpoint_performMigrationToEndpoint_request_queue_completion___bl
     v36[3] = &unk_1E769D630;
     v38 = v40;
     v39 = v44;
-    v36[4] = a1;
+    v36[4] = self;
     v13 = v11;
     v37 = v13;
-    [a1 connectToExternalDeviceWithUserInfo:v12 completion:v36];
+    [self connectToExternalDeviceWithUserInfo:v12 completion:v36];
     dispatch_group_enter(v13);
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
@@ -3646,9 +3646,9 @@ void __68__MRAVEndpoint_performMigrationToEndpoint_request_queue_completion___bl
     v29[1] = 3221225472;
     v29[2] = __61__MRAVEndpoint__prepareToMigrateToEndpoint_queue_completion___block_invoke_3;
     v29[3] = &unk_1E769AD80;
-    v17 = v9;
+    v17 = queueCopy;
     v30 = v17;
-    v18 = [(MRBlockGuard *)v16 initWithTimeout:@"prepareToMigrateToEndpoint" reason:v8 queue:v29 handler:7.0];
+    v18 = [(MRBlockGuard *)v16 initWithTimeout:@"prepareToMigrateToEndpoint" reason:endpointCopy queue:v29 handler:7.0];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __61__MRAVEndpoint__prepareToMigrateToEndpoint_queue_completion___block_invoke_4;
@@ -3659,9 +3659,9 @@ void __68__MRAVEndpoint_performMigrationToEndpoint_request_queue_completion___bl
     v27 = v44;
     v28 = v42;
     v23 = v14;
-    v24 = a1;
+    selfCopy = self;
     v19 = v18;
-    dispatch_group_notify(v15, v8, v21);
+    dispatch_group_notify(v15, endpointCopy, v21);
 
     _Block_object_dispose(v40, 8);
     _Block_object_dispose(v42, 8);
@@ -3672,15 +3672,15 @@ void __68__MRAVEndpoint_performMigrationToEndpoint_request_queue_completion___bl
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)canMigrateToEndpoint:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)canMigrateToEndpoint:(id)endpoint queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!endpointCopy)
   {
     [MRAVEndpoint canMigrateToEndpoint:queue:completion:];
-    if (v9)
+    if (queueCopy)
     {
       goto LABEL_4;
     }
@@ -3688,10 +3688,10 @@ void __68__MRAVEndpoint_performMigrationToEndpoint_request_queue_completion___bl
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!queueCopy)
   {
 LABEL_3:
-    v9 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v11 = MEMORY[0x1E69E96A0];
   }
 
@@ -3700,10 +3700,10 @@ LABEL_4:
   v20[1] = 3221225472;
   v20[2] = __54__MRAVEndpoint_canMigrateToEndpoint_queue_completion___block_invoke;
   v20[3] = &unk_1E769AB50;
-  v22 = v10;
-  v12 = v9;
+  v22 = completionCopy;
+  v12 = queueCopy;
   v21 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v14 = MEMORY[0x1A58E3570](v20);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -3713,7 +3713,7 @@ LABEL_4:
   v19 = v14;
   v15 = v14;
   v16 = v12;
-  [(MRAVEndpoint *)self _prepareToMigrateToEndpoint:v8 queue:v16 completion:v17];
+  [(MRAVEndpoint *)self _prepareToMigrateToEndpoint:endpointCopy queue:v16 completion:v17];
 }
 
 void __54__MRAVEndpoint_canMigrateToEndpoint_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -3830,15 +3830,15 @@ uint64_t __61__MRAVEndpoint__prepareToMigrateToEndpoint_queue_completion___block
   return result;
 }
 
-- (void)removeOutputDeviceFromParentGroup:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)removeOutputDeviceFromParentGroup:(id)group queue:(id)queue completion:(id)completion
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  groupCopy = group;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v9 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v11 = MEMORY[0x1E69E96A0];
   }
 
@@ -3850,12 +3850,12 @@ uint64_t __61__MRAVEndpoint__prepareToMigrateToEndpoint_queue_completion___block
   v17[2] = __67__MRAVEndpoint_removeOutputDeviceFromParentGroup_queue_completion___block_invoke;
   v17[3] = &unk_1E76A2B88;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v18 = groupCopy;
+  v19 = queueCopy;
+  v20 = completionCopy;
+  v13 = completionCopy;
+  v14 = queueCopy;
+  v15 = groupCopy;
   [(MRAVEndpoint *)self connectToExternalDeviceWithUserInfo:v12 completion:v17];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -3892,34 +3892,34 @@ void __67__MRAVEndpoint_removeOutputDeviceFromParentGroup_queue_completion___blo
   }
 }
 
-- (void)requestGroupSessionWithQueue:(id)a3 completion:(id)a4
+- (void)requestGroupSessionWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v8 = [MRRequestDetails alloc];
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
-  v11 = [(MRRequestDetails *)v8 initWithName:@"requestGroupSession" requestID:v10 reason:0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = [(MRRequestDetails *)v8 initWithName:@"requestGroupSession" requestID:uUIDString reason:0];
 
-  [(MRAVEndpoint *)self requestGroupSessionWithDetails:v11 queue:v7 completion:v6];
+  [(MRAVEndpoint *)self requestGroupSessionWithDetails:v11 queue:queueCopy completion:completionCopy];
 }
 
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = [MEMORY[0x1E695DF00] now];
-  v12 = [(MRAVEndpoint *)self debugName];
+  debugName = [(MRAVEndpoint *)self debugName];
   v13 = objc_alloc(MEMORY[0x1E696AD60]);
-  v14 = [v8 name];
-  v15 = [v8 requestID];
-  v16 = [v13 initWithFormat:@"%@<%@>", v14, v15];
+  name = [detailsCopy name];
+  requestID = [detailsCopy requestID];
+  v16 = [v13 initWithFormat:@"%@<%@>", name, requestID];
 
-  if (v12)
+  if (debugName)
   {
-    [v16 appendFormat:@" for %@", v12];
+    [v16 appendFormat:@" for %@", debugName];
   }
 
   v17 = _MRLogForCategory(0xAuLL);
@@ -3934,14 +3934,14 @@ void __67__MRAVEndpoint_removeOutputDeviceFromParentGroup_queue_completion___blo
   v31[1] = 3221225472;
   v31[2] = __64__MRAVEndpoint_requestGroupSessionWithDetails_queue_completion___block_invoke;
   v31[3] = &unk_1E76A2BB0;
-  v32 = v12;
-  v18 = v8;
+  v32 = debugName;
+  v18 = detailsCopy;
   v33 = v18;
   v34 = v11;
-  v35 = v10;
-  v19 = v10;
+  v35 = completionCopy;
+  v19 = completionCopy;
   v20 = v11;
-  v21 = v12;
+  v21 = debugName;
   v22 = MEMORY[0x1A58E3570](v31);
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -3949,10 +3949,10 @@ void __67__MRAVEndpoint_removeOutputDeviceFromParentGroup_queue_completion___blo
   v27[3] = &unk_1E76A2B88;
   v27[4] = self;
   v28 = v18;
-  v29 = v9;
+  v29 = queueCopy;
   v30 = v22;
   v23 = v22;
-  v24 = v9;
+  v24 = queueCopy;
   v25 = v18;
   [(MRAVEndpoint *)self connectToExternalDeviceWithOptions:0 details:v25 completion:v27];
 
@@ -4132,16 +4132,16 @@ void __64__MRAVEndpoint_requestGroupSessionWithDetails_queue_completion___block_
   }
 }
 
-- (void)requestMicrophoneConnection:(id)a3 completion:(id)a4
+- (void)requestMicrophoneConnection:(id)connection completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  connectionCopy = connection;
   v8 = [MRRequestDetails alloc];
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
-  v11 = [(MRRequestDetails *)v8 initWithName:@"requestMicrophoneConnection" requestID:v10 reason:0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = [(MRRequestDetails *)v8 initWithName:@"requestMicrophoneConnection" requestID:uUIDString reason:0];
 
-  [(MRAVEndpoint *)self requestMicrophoneConnectionWithDetails:v11 queue:v7 completion:v6];
+  [(MRAVEndpoint *)self requestMicrophoneConnectionWithDetails:v11 queue:connectionCopy completion:completionCopy];
 }
 
 void __72__MRAVEndpoint_requestMicrophoneConnectionWithDetails_queue_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -4329,10 +4329,10 @@ void __72__MRAVEndpoint_requestMicrophoneConnectionWithDetails_queue_completion_
 - (BOOL)hasPotentialGroupLeader
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(MRAVEndpoint *)self designatedGroupLeader];
-  v4 = [v3 isGroupLeader];
+  designatedGroupLeader = [(MRAVEndpoint *)self designatedGroupLeader];
+  isGroupLeader = [designatedGroupLeader isGroupLeader];
 
-  if (v4)
+  if (isGroupLeader)
   {
     v5 = 1;
   }
@@ -4343,8 +4343,8 @@ void __72__MRAVEndpoint_requestMicrophoneConnectionWithDetails_queue_completion_
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(MRAVEndpoint *)self outputDevices];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    outputDevices = [(MRAVEndpoint *)self outputDevices];
+    v7 = [outputDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -4355,7 +4355,7 @@ void __72__MRAVEndpoint_requestMicrophoneConnectionWithDetails_queue_completion_
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(outputDevices);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
@@ -4366,7 +4366,7 @@ void __72__MRAVEndpoint_requestMicrophoneConnectionWithDetails_queue_completion_
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [outputDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
         v5 = 0;
         if (v8)
         {
@@ -4389,25 +4389,25 @@ LABEL_19:
   return v5;
 }
 
-- (void)outputDeviceVolumeControlCapabilities:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)outputDeviceVolumeControlCapabilities:(id)capabilities queue:(id)queue completion:(id)completion
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  capabilitiesCopy = capabilities;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = [MEMORY[0x1E695DF00] now];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v15 = [(MRAVEndpoint *)self debugName];
-  v16 = [v14 initWithFormat:@"endpoint=%@, outputDevice=%@", v15, v8];
+  debugName = [(MRAVEndpoint *)self debugName];
+  capabilitiesCopy = [v14 initWithFormat:@"endpoint=%@, outputDevice=%@", debugName, capabilitiesCopy];
 
-  v17 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"outputDeviceVolumeControlCapabilities", v13];
+  v17 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"outputDeviceVolumeControlCapabilities", uUIDString];
   v18 = v17;
-  if (v16)
+  if (capabilitiesCopy)
   {
-    [v17 appendFormat:@" for %@", v16];
+    [v17 appendFormat:@" for %@", capabilitiesCopy];
   }
 
   v19 = _MRLogForCategory(0xAuLL);
@@ -4422,17 +4422,17 @@ LABEL_19:
   v44[1] = 3221225472;
   v44[2] = __71__MRAVEndpoint_outputDeviceVolumeControlCapabilities_queue_completion___block_invoke;
   v44[3] = &unk_1E76A2C00;
-  v45 = v16;
+  v45 = capabilitiesCopy;
   v46 = @"outputDeviceVolumeControlCapabilities";
-  v47 = v13;
+  v47 = uUIDString;
   v48 = v11;
-  v49 = v9;
-  v50 = v10;
-  v35 = v9;
-  v20 = v10;
+  v49 = queueCopy;
+  v50 = completionCopy;
+  v35 = queueCopy;
+  v20 = completionCopy;
   v21 = v11;
-  v22 = v13;
-  v23 = v16;
+  v22 = uUIDString;
+  v23 = capabilitiesCopy;
   v24 = MEMORY[0x1A58E3570](v44);
   v25 = [MRBlockGuard alloc];
   v42[0] = MEMORY[0x1E69E9820];
@@ -4461,10 +4461,10 @@ LABEL_19:
   v36[2] = __71__MRAVEndpoint_outputDeviceVolumeControlCapabilities_queue_completion___block_invoke_4;
   v36[3] = &unk_1E769AE80;
   v36[4] = self;
-  v37 = v8;
+  v37 = capabilitiesCopy;
   v38 = v30;
   v32 = v30;
-  v33 = v8;
+  v33 = capabilitiesCopy;
   [(MRAVEndpoint *)self connectToExternalDeviceWithUserInfo:v31 completion:v36];
 
   v34 = *MEMORY[0x1E69E9840];
@@ -4690,55 +4690,55 @@ void __71__MRAVEndpoint_outputDeviceVolumeControlCapabilities_queue_completion__
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)setOutputDeviceVolume:(float)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)setOutputDeviceVolume:(float)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion
 {
   v66 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  deviceCopy = device;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v16 = [MEMORY[0x1E695DF00] now];
   v17 = @"Endpoint.setOutputDeviceVolume";
-  if (!v12)
+  if (!deviceCopy)
   {
     v17 = @"Endpoint.setVolume";
   }
 
   v18 = v17;
   v19 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v49 = self;
-  v20 = [(MRAVEndpoint *)self debugName];
-  v21 = v20;
-  v22 = a3;
-  if (v12)
+  selfCopy = self;
+  debugName = [(MRAVEndpoint *)self debugName];
+  v21 = debugName;
+  volumeCopy = volume;
+  if (deviceCopy)
   {
-    v23 = [v19 initWithFormat:@"endpoint=%@, outputDevice=%@, volume=%lf", v22, v20, v12, a3];
+    volume = [v19 initWithFormat:@"endpoint=%@, outputDevice=%@, volume=%lf", volumeCopy, debugName, deviceCopy, volume];
   }
 
   else
   {
-    v23 = [v19 initWithFormat:@"endpoint=%@, volume=%lf", v22, v20, a3, v48];
+    volume = [v19 initWithFormat:@"endpoint=%@, volume=%lf", volumeCopy, debugName, volume, v48];
   }
 
-  v24 = v23;
+  v24 = volume;
 
-  v50 = v13;
-  if (v13)
+  v50 = detailsCopy;
+  if (detailsCopy)
   {
-    v25 = v13;
+    v25 = detailsCopy;
   }
 
   else
   {
     v26 = [MRRequestDetails alloc];
-    v27 = [MEMORY[0x1E696AFB0] UUID];
-    v28 = [v27 UUIDString];
-    v25 = [(MRRequestDetails *)v26 initWithName:v18 requestID:v28 reason:0];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v25 = [(MRRequestDetails *)v26 initWithName:v18 requestID:uUIDString reason:0];
   }
 
   v29 = objc_alloc(MEMORY[0x1E696AD60]);
-  v30 = [(MRRequestDetails *)v25 requestID];
-  v31 = [v29 initWithFormat:@"%@<%@>", v18, v30];
+  requestID = [(MRRequestDetails *)v25 requestID];
+  v31 = [v29 initWithFormat:@"%@<%@>", v18, requestID];
 
   if (v24)
   {
@@ -4757,15 +4757,15 @@ void __71__MRAVEndpoint_outputDeviceVolumeControlCapabilities_queue_completion__
   v56[1] = 3221225472;
   v56[2] = __76__MRAVEndpoint_setOutputDeviceVolume_outputDevice_details_queue_completion___block_invoke;
   v56[3] = &unk_1E76A2C28;
-  v63 = a3;
+  volumeCopy2 = volume;
   v57 = v24;
   v58 = v18;
   v59 = v25;
   v60 = v16;
-  v61 = v14;
-  v62 = v15;
-  v33 = v14;
-  v34 = v15;
+  v61 = queueCopy;
+  v62 = completionCopy;
+  v33 = queueCopy;
+  v34 = completionCopy;
   v35 = v16;
   v36 = v25;
   v37 = v18;
@@ -4788,8 +4788,8 @@ void __71__MRAVEndpoint_outputDeviceVolumeControlCapabilities_queue_completion__
   v43 = v41;
   v44 = v42;
   v45 = MEMORY[0x1A58E3570](v51);
-  *&v46 = a3;
-  [(MRAVEndpoint *)v49 _setOutputDeviceVolume:v12 outputDevice:v36 details:v33 queue:v45 completion:v46];
+  *&v46 = volume;
+  [(MRAVEndpoint *)selfCopy _setOutputDeviceVolume:deviceCopy outputDevice:v36 details:v33 queue:v45 completion:v46];
 
   v47 = *MEMORY[0x1E69E9840];
 }
@@ -4995,26 +4995,26 @@ void __76__MRAVEndpoint_setOutputDeviceVolume_outputDevice_details_queue_complet
   }
 }
 
-- (void)_setOutputDeviceVolume:(float)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)_setOutputDeviceVolume:(float)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  deviceCopy = device;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __77__MRAVEndpoint__setOutputDeviceVolume_outputDevice_details_queue_completion___block_invoke;
   v20[3] = &unk_1E76A2C50;
   v20[4] = self;
-  v21 = v12;
-  v25 = a3;
-  v22 = v13;
-  v23 = v14;
-  v24 = v15;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
+  v21 = deviceCopy;
+  volumeCopy = volume;
+  v22 = detailsCopy;
+  v23 = queueCopy;
+  v24 = completionCopy;
+  v16 = completionCopy;
+  v17 = queueCopy;
+  v18 = detailsCopy;
+  v19 = deviceCopy;
   [(MRAVEndpoint *)self connectToExternalDeviceWithOptions:0 details:v18 completion:v20];
 }
 
@@ -5033,39 +5033,39 @@ void __77__MRAVEndpoint__setOutputDeviceVolume_outputDevice_details_queue_comple
   }
 }
 
-- (void)outputDeviceVolume:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)outputDeviceVolume:(id)volume queue:(id)queue completion:(id)completion
 {
   v61 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  volumeCopy = volume;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = [MEMORY[0x1E695DF00] now];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v14 = @"Endpoint.outputDeviceVolume";
-  if (!v8)
+  if (!volumeCopy)
   {
     v14 = @"Endpoint.volume";
   }
 
   v15 = v14;
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v17 = [(MRAVEndpoint *)self debugName];
-  v18 = v17;
-  if (v8)
+  debugName = [(MRAVEndpoint *)self debugName];
+  v18 = debugName;
+  if (volumeCopy)
   {
-    v19 = [v16 initWithFormat:@"endpoint=%@, outputDevice=%@", v17, v8];
+    volumeCopy = [v16 initWithFormat:@"endpoint=%@, outputDevice=%@", debugName, volumeCopy];
   }
 
   else
   {
-    v19 = [v16 initWithFormat:@"endpoint=%@", v17, v39];
+    volumeCopy = [v16 initWithFormat:@"endpoint=%@", debugName, v39];
   }
 
-  v20 = v19;
+  v20 = volumeCopy;
 
-  v21 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v15, v13];
+  v21 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v15, uUIDString];
   v22 = v21;
   if (v20)
   {
@@ -5086,14 +5086,14 @@ void __77__MRAVEndpoint__setOutputDeviceVolume_outputDevice_details_queue_comple
   v50[3] = &unk_1E76A2C78;
   v51 = v20;
   v52 = v15;
-  v53 = v13;
+  v53 = uUIDString;
   v54 = v11;
-  v55 = v9;
-  v56 = v10;
-  v41 = v9;
-  v40 = v10;
+  v55 = queueCopy;
+  v56 = completionCopy;
+  v41 = queueCopy;
+  v40 = completionCopy;
   v24 = v11;
-  v25 = v13;
+  v25 = uUIDString;
   v26 = v15;
   v27 = v20;
   v28 = MEMORY[0x1A58E3570](v50);
@@ -5124,10 +5124,10 @@ void __77__MRAVEndpoint__setOutputDeviceVolume_outputDevice_details_queue_comple
   v42[2] = __52__MRAVEndpoint_outputDeviceVolume_queue_completion___block_invoke_4;
   v42[3] = &unk_1E769AE80;
   v42[4] = self;
-  v43 = v8;
+  v43 = volumeCopy;
   v44 = v34;
   v36 = v34;
-  v37 = v8;
+  v37 = volumeCopy;
   [(MRAVEndpoint *)self connectToExternalDeviceWithUserInfo:v35 completion:v42];
 
   v38 = *MEMORY[0x1E69E9840];
@@ -5350,52 +5350,52 @@ void __52__MRAVEndpoint_outputDeviceVolume_queue_completion___block_invoke_4(uin
   (*(*(a1 + 48) + 16))(v4);
 }
 
-- (void)adjustOutputDeviceVolume:(int64_t)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)adjustOutputDeviceVolume:(int64_t)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  deviceCopy = device;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v15 = @"Endpoint.adjustOutputDeviceVolume";
-  if (!v11)
+  if (!deviceCopy)
   {
     v15 = @"Endpoint.adjustVolume";
   }
 
   v16 = v15;
   v17 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v38 = self;
-  v18 = [(MRAVEndpoint *)self debugName];
-  v19 = v18;
-  if (v11)
+  selfCopy = self;
+  debugName = [(MRAVEndpoint *)self debugName];
+  v19 = debugName;
+  if (deviceCopy)
   {
-    v20 = [v17 initWithFormat:@"endpoint=%@, outputDevice=%@", v18, v11];
+    deviceCopy = [v17 initWithFormat:@"endpoint=%@, outputDevice=%@", debugName, deviceCopy];
   }
 
   else
   {
-    v20 = [v17 initWithFormat:@"endpoint=%@", v18, v37];
+    deviceCopy = [v17 initWithFormat:@"endpoint=%@", debugName, v37];
   }
 
-  v21 = v20;
+  v21 = deviceCopy;
 
-  if (v12)
+  if (detailsCopy)
   {
-    v22 = v12;
+    v22 = detailsCopy;
   }
 
   else
   {
     v23 = [MRRequestDetails alloc];
-    v24 = [MEMORY[0x1E696AFB0] UUID];
-    v25 = [v24 UUIDString];
-    v22 = [(MRRequestDetails *)v23 initWithName:v16 requestID:v25 reason:0];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v22 = [(MRRequestDetails *)v23 initWithName:v16 requestID:uUIDString reason:0];
   }
 
   v26 = objc_alloc(MEMORY[0x1E696AD60]);
-  v27 = [(MRRequestDetails *)v22 requestID];
-  v28 = [v26 initWithFormat:@"%@<%@>", v16, v27];
+  requestID = [(MRRequestDetails *)v22 requestID];
+  v28 = [v26 initWithFormat:@"%@<%@>", v16, requestID];
 
   if (v21)
   {
@@ -5416,16 +5416,16 @@ void __52__MRAVEndpoint_outputDeviceVolume_queue_completion___block_invoke_4(uin
   v40[3] = &unk_1E76A2CA0;
   v41 = v21;
   v42 = v16;
-  v44 = v13;
-  v45 = v14;
+  v44 = queueCopy;
+  v45 = completionCopy;
   v43 = v22;
-  v30 = v13;
-  v31 = v14;
+  v30 = queueCopy;
+  v31 = completionCopy;
   v32 = v22;
   v33 = v16;
   v34 = v21;
   v35 = MEMORY[0x1A58E3570](v40);
-  [(MRAVEndpoint *)v38 _adjustOutputDeviceVolume:a3 outputDevice:v11 details:v32 queue:v30 completion:v35];
+  [(MRAVEndpoint *)selfCopy _adjustOutputDeviceVolume:volume outputDevice:deviceCopy details:v32 queue:v30 completion:v35];
 
   v36 = *MEMORY[0x1E69E9840];
 }
@@ -5542,26 +5542,26 @@ LABEL_14:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_adjustOutputDeviceVolume:(int64_t)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)_adjustOutputDeviceVolume:(int64_t)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  deviceCopy = device;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __80__MRAVEndpoint__adjustOutputDeviceVolume_outputDevice_details_queue_completion___block_invoke;
   v20[3] = &unk_1E76A2CC8;
   v20[4] = self;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  v24 = v15;
-  v25 = a3;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
+  v21 = deviceCopy;
+  v22 = detailsCopy;
+  v23 = queueCopy;
+  v24 = completionCopy;
+  volumeCopy = volume;
+  v16 = completionCopy;
+  v17 = queueCopy;
+  v18 = detailsCopy;
+  v19 = deviceCopy;
   [(MRAVEndpoint *)self connectToExternalDeviceWithOptions:0 details:v18 completion:v20];
 }
 
@@ -5580,55 +5580,55 @@ void __80__MRAVEndpoint__adjustOutputDeviceVolume_outputDevice_details_queue_com
   }
 }
 
-- (void)muteOutputDeviceVolume:(BOOL)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)muteOutputDeviceVolume:(BOOL)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion
 {
-  v48 = a3;
+  volumeCopy = volume;
   v64 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  deviceCopy = device;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v15 = [MEMORY[0x1E695DF00] now];
   v16 = @"Endpoint.muteOutputDeviceVolume";
-  if (!v11)
+  if (!deviceCopy)
   {
     v16 = @"Endpoint.muteVolume";
   }
 
   v17 = v16;
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v47 = self;
-  v19 = [(MRAVEndpoint *)self debugName];
-  v20 = v19;
-  if (v11)
+  selfCopy = self;
+  debugName = [(MRAVEndpoint *)self debugName];
+  v20 = debugName;
+  if (deviceCopy)
   {
-    v21 = [v18 initWithFormat:@"endpoint=%@, outputDevice=%@", v19, v11];
+    deviceCopy = [v18 initWithFormat:@"endpoint=%@, outputDevice=%@", debugName, deviceCopy];
   }
 
   else
   {
-    v21 = [v18 initWithFormat:@"endpoint=%@", v19, v46];
+    deviceCopy = [v18 initWithFormat:@"endpoint=%@", debugName, v46];
   }
 
-  v22 = v21;
+  v22 = deviceCopy;
 
-  v49 = v12;
-  if (v12)
+  v49 = detailsCopy;
+  if (detailsCopy)
   {
-    v23 = v12;
+    v23 = detailsCopy;
   }
 
   else
   {
     v24 = [MRRequestDetails alloc];
-    v25 = [MEMORY[0x1E696AFB0] UUID];
-    v26 = [v25 UUIDString];
-    v23 = [(MRRequestDetails *)v24 initWithName:v17 requestID:v26 reason:@"API"];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v23 = [(MRRequestDetails *)v24 initWithName:v17 requestID:uUIDString reason:@"API"];
   }
 
   v27 = objc_alloc(MEMORY[0x1E696AD60]);
-  v28 = [(MRRequestDetails *)v23 requestID];
-  v29 = [v27 initWithFormat:@"%@<%@>", v17, v28];
+  requestID = [(MRRequestDetails *)v23 requestID];
+  v29 = [v27 initWithFormat:@"%@<%@>", v17, requestID];
 
   if (v22)
   {
@@ -5651,24 +5651,24 @@ void __80__MRAVEndpoint__adjustOutputDeviceVolume_outputDevice_details_queue_com
   v57 = v17;
   v58 = v23;
   v59 = v15;
-  v60 = v13;
-  v61 = v14;
-  v31 = v13;
-  v32 = v14;
+  v60 = queueCopy;
+  v61 = completionCopy;
+  v31 = queueCopy;
+  v32 = completionCopy;
   v33 = v15;
   v34 = v23;
   v35 = v17;
   v36 = v22;
   v37 = MEMORY[0x1A58E3570](v55);
   v38 = [MRBlockGuard alloc];
-  v39 = [(MRRequestDetails *)v34 name];
+  name = [(MRRequestDetails *)v34 name];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __77__MRAVEndpoint_muteOutputDeviceVolume_outputDevice_details_queue_completion___block_invoke_2;
   v53[3] = &unk_1E769AD80;
   v40 = v37;
   v54 = v40;
-  v41 = [(MRBlockGuard *)v38 initWithTimeout:v39 reason:v53 handler:7.0];
+  v41 = [(MRBlockGuard *)v38 initWithTimeout:name reason:v53 handler:7.0];
 
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
@@ -5679,7 +5679,7 @@ void __80__MRAVEndpoint__adjustOutputDeviceVolume_outputDevice_details_queue_com
   v42 = v40;
   v43 = v41;
   v44 = MEMORY[0x1A58E3570](v50);
-  [(MRAVEndpoint *)v47 _muteOutputDeviceVolume:v48 outputDevice:v11 details:v34 queue:v31 completion:v44];
+  [(MRAVEndpoint *)selfCopy _muteOutputDeviceVolume:volumeCopy outputDevice:deviceCopy details:v34 queue:v31 completion:v44];
 
   v45 = *MEMORY[0x1E69E9840];
 }
@@ -5802,26 +5802,26 @@ void __77__MRAVEndpoint_muteOutputDeviceVolume_outputDevice_details_queue_comple
   }
 }
 
-- (void)_muteOutputDeviceVolume:(BOOL)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)_muteOutputDeviceVolume:(BOOL)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  deviceCopy = device;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __78__MRAVEndpoint__muteOutputDeviceVolume_outputDevice_details_queue_completion___block_invoke;
   v20[3] = &unk_1E76A2CF0;
   v20[4] = self;
-  v21 = v12;
-  v25 = a3;
-  v22 = v13;
-  v23 = v14;
-  v24 = v15;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
+  v21 = deviceCopy;
+  volumeCopy = volume;
+  v22 = detailsCopy;
+  v23 = queueCopy;
+  v24 = completionCopy;
+  v16 = completionCopy;
+  v17 = queueCopy;
+  v18 = detailsCopy;
+  v19 = deviceCopy;
   [(MRAVEndpoint *)self connectToExternalDeviceWithOptions:0 details:v18 completion:v20];
 }
 
@@ -5842,77 +5842,77 @@ void __78__MRAVEndpoint__muteOutputDeviceVolume_outputDevice_details_queue_compl
 
 - (BOOL)isVolumeMuted
 {
-  v2 = [(MRAVEndpoint *)self outputContextDataSource];
-  v3 = [v2 isVolumeMuted];
+  outputContextDataSource = [(MRAVEndpoint *)self outputContextDataSource];
+  isVolumeMuted = [outputContextDataSource isVolumeMuted];
 
-  return v3;
+  return isVolumeMuted;
 }
 
 - (BOOL)isCarPlayVideoAllowed
 {
-  v2 = [(MRAVEndpoint *)self outputDevices];
-  v3 = [v2 mr_any:&__block_literal_global_493];
+  outputDevices = [(MRAVEndpoint *)self outputDevices];
+  v3 = [outputDevices mr_any:&__block_literal_global_493];
 
   return v3;
 }
 
 - (BOOL)isCarPlayVideoActive
 {
-  v2 = [(MRAVEndpoint *)self outputDevices];
-  v3 = [v2 mr_any:&__block_literal_global_495];
+  outputDevices = [(MRAVEndpoint *)self outputDevices];
+  v3 = [outputDevices mr_any:&__block_literal_global_495];
 
   return v3;
 }
 
-- (void)setCarPlayVideoActive:(BOOL)a3 completion:(id)a4
+- (void)setCarPlayVideoActive:(BOOL)active completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
     v5 = MEMORY[0x1E696ABC0];
-    v6 = a4;
+    completionCopy = completion;
     v7 = [v5 alloc];
     v8 = MEMORY[0x1E696AEC0];
     v9 = objc_opt_class();
     v12 = NSStringFromClass(v9);
     v10 = [v8 stringWithFormat:@"Operation not implemented in %@", v12];
     v11 = [v7 initWithMRError:6 description:v10];
-    (*(a4 + 2))(v6, v11);
+    (*(completion + 2))(completionCopy, v11);
   }
 }
 
-- (void)outputDeviceVolumeMuted:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)outputDeviceVolumeMuted:(id)muted queue:(id)queue completion:(id)completion
 {
   v61 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mutedCopy = muted;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = [MEMORY[0x1E695DF00] now];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v14 = @"Endpoint.outputDeviceVolumeMuted";
-  if (!v8)
+  if (!mutedCopy)
   {
     v14 = @"Endpoint.volumeMuted";
   }
 
   v15 = v14;
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v17 = [(MRAVEndpoint *)self debugName];
-  v18 = v17;
-  if (v8)
+  debugName = [(MRAVEndpoint *)self debugName];
+  v18 = debugName;
+  if (mutedCopy)
   {
-    v19 = [v16 initWithFormat:@"endpoint=%@, outputDevice=%@", v17, v8];
+    mutedCopy = [v16 initWithFormat:@"endpoint=%@, outputDevice=%@", debugName, mutedCopy];
   }
 
   else
   {
-    v19 = [v16 initWithFormat:@"endpoint=%@", v17, v39];
+    mutedCopy = [v16 initWithFormat:@"endpoint=%@", debugName, v39];
   }
 
-  v20 = v19;
+  v20 = mutedCopy;
 
-  v21 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v15, v13];
+  v21 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v15, uUIDString];
   v22 = v21;
   if (v20)
   {
@@ -5933,14 +5933,14 @@ void __78__MRAVEndpoint__muteOutputDeviceVolume_outputDevice_details_queue_compl
   v50[3] = &unk_1E76A2D40;
   v51 = v20;
   v52 = v15;
-  v53 = v13;
+  v53 = uUIDString;
   v54 = v11;
-  v55 = v9;
-  v56 = v10;
-  v41 = v9;
-  v40 = v10;
+  v55 = queueCopy;
+  v56 = completionCopy;
+  v41 = queueCopy;
+  v40 = completionCopy;
   v24 = v11;
-  v25 = v13;
+  v25 = uUIDString;
   v26 = v15;
   v27 = v20;
   v28 = MEMORY[0x1A58E3570](v50);
@@ -5971,10 +5971,10 @@ void __78__MRAVEndpoint__muteOutputDeviceVolume_outputDevice_details_queue_compl
   v42[2] = __57__MRAVEndpoint_outputDeviceVolumeMuted_queue_completion___block_invoke_4;
   v42[3] = &unk_1E769AE80;
   v42[4] = self;
-  v43 = v8;
+  v43 = mutedCopy;
   v44 = v34;
   v36 = v34;
-  v37 = v8;
+  v37 = mutedCopy;
   [(MRAVEndpoint *)self connectToExternalDeviceWithUserInfo:v35 completion:v42];
 
   v38 = *MEMORY[0x1E69E9840];
@@ -6197,20 +6197,20 @@ void __57__MRAVEndpoint_outputDeviceVolumeMuted_queue_completion___block_invoke_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)waitForPlaybackWithTimeout:(double)a3 queue:(id)a4 completion:(id)a5
+- (void)waitForPlaybackWithTimeout:(double)timeout queue:(id)queue completion:(id)completion
 {
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = [MEMORY[0x1E695DF00] now];
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [v11 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [(MRAVEndpoint *)self debugName];
-  v15 = [v13 initWithFormat:@"%@-%lf", v14, *&a3];
+  debugName = [(MRAVEndpoint *)self debugName];
+  v15 = [v13 initWithFormat:@"%@-%lf", debugName, *&timeout];
 
-  v16 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"Endpoint.waitForPlaybackWithTimeout", v12];
+  v16 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"Endpoint.waitForPlaybackWithTimeout", uUIDString];
   v17 = v16;
   if (v15)
   {
@@ -6242,13 +6242,13 @@ void __57__MRAVEndpoint_outputDeviceVolumeMuted_queue_completion___block_invoke_
   v21 = v15;
   v54 = v21;
   v55 = @"Endpoint.waitForPlaybackWithTimeout";
-  v22 = v12;
+  v22 = uUIDString;
   v56 = v22;
   v23 = v10;
   v57 = v23;
-  v40 = v9;
+  v40 = completionCopy;
   v59 = v40;
-  v39 = v8;
+  v39 = queueCopy;
   v58 = v39;
   v24 = MEMORY[0x1A58E3570](v52);
   v25 = [MRBlockGuard alloc];
@@ -6258,7 +6258,7 @@ void __57__MRAVEndpoint_outputDeviceVolumeMuted_queue_completion___block_invoke_
   v50[3] = &unk_1E769AD80;
   v26 = v24;
   v51 = v26;
-  v27 = [(MRBlockGuard *)v25 initWithTimeout:@"Endpoint.waitForPlaybackWithTimeout" reason:v50 handler:a3];
+  v27 = [(MRBlockGuard *)v25 initWithTimeout:@"Endpoint.waitForPlaybackWithTimeout" reason:v50 handler:timeout];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __60__MRAVEndpoint_waitForPlaybackWithTimeout_queue_completion___block_invoke_3;
@@ -6464,16 +6464,16 @@ uint64_t __60__MRAVEndpoint_waitForPlaybackWithTimeout_queue_completion___block_
   return result;
 }
 
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  modeCopy = mode;
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v12 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v14 = MEMORY[0x1E69E96A0];
   }
 
@@ -6485,14 +6485,14 @@ uint64_t __60__MRAVEndpoint_waitForPlaybackWithTimeout_queue_completion___block_
   v21[2] = __66__MRAVEndpoint_setListeningMode_outputDeviceUID_queue_completion___block_invoke;
   v21[3] = &unk_1E76A1BC0;
   v21[4] = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v25 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  v22 = modeCopy;
+  v23 = dCopy;
+  v24 = queueCopy;
+  v25 = completionCopy;
+  v16 = completionCopy;
+  v17 = queueCopy;
+  v18 = dCopy;
+  v19 = modeCopy;
   [(MRAVEndpoint *)self connectToExternalDeviceWithUserInfo:v15 completion:v21];
 
   v20 = *MEMORY[0x1E69E9840];
@@ -6524,13 +6524,13 @@ void __66__MRAVEndpoint_setListeningMode_outputDeviceUID_queue_completion___bloc
   }
 }
 
-- (void)setAllowsHeadTrackedSpatialAudio:(BOOL)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setAllowsHeadTrackedSpatialAudio:(BOOL)audio outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v7 = a5;
-  v8 = a6;
-  if (!v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v7 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v9 = MEMORY[0x1E69E96A0];
   }
 
@@ -6538,18 +6538,18 @@ void __66__MRAVEndpoint_setListeningMode_outputDeviceUID_queue_completion___bloc
   block[1] = 3221225472;
   block[2] = __82__MRAVEndpoint_setAllowsHeadTrackedSpatialAudio_outputDeviceUID_queue_completion___block_invoke;
   block[3] = &unk_1E769AD58;
-  v12 = v8;
-  v10 = v8;
-  dispatch_async(v7, block);
+  v12 = completionCopy;
+  v10 = completionCopy;
+  dispatch_async(queueCopy, block);
 }
 
-- (void)setHeadTrackedSpatialAudioMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setHeadTrackedSpatialAudioMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v7 = a5;
-  v8 = a6;
-  if (!v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v7 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v9 = MEMORY[0x1E69E96A0];
   }
 
@@ -6557,20 +6557,20 @@ void __66__MRAVEndpoint_setListeningMode_outputDeviceUID_queue_completion___bloc
   block[1] = 3221225472;
   block[2] = __80__MRAVEndpoint_setHeadTrackedSpatialAudioMode_outputDeviceUID_queue_completion___block_invoke;
   block[3] = &unk_1E769AD58;
-  v12 = v8;
-  v10 = v8;
-  dispatch_async(v7, block);
+  v12 = completionCopy;
+  v10 = completionCopy;
+  dispatch_async(queueCopy, block);
 }
 
-- (void)setConversationDetectionEnabled:(BOOL)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setConversationDetectionEnabled:(BOOL)enabled outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v11)
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v11 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v13 = MEMORY[0x1E69E96A0];
   }
 
@@ -6581,14 +6581,14 @@ void __66__MRAVEndpoint_setListeningMode_outputDeviceUID_queue_completion___bloc
   v19[1] = 3221225472;
   v19[2] = __81__MRAVEndpoint_setConversationDetectionEnabled_outputDeviceUID_queue_completion___block_invoke;
   v19[3] = &unk_1E76A2DE0;
-  v23 = a3;
+  enabledCopy = enabled;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v20 = dCopy;
+  v21 = queueCopy;
+  v22 = completionCopy;
+  v15 = completionCopy;
+  v16 = queueCopy;
+  v17 = dCopy;
   [(MRAVEndpoint *)self connectToExternalDeviceWithUserInfo:v14 completion:v19];
 
   v18 = *MEMORY[0x1E69E9840];
@@ -6620,19 +6620,19 @@ void __81__MRAVEndpoint_setConversationDetectionEnabled_outputDeviceUID_queue_co
   }
 }
 
-- (id)outputDevicesMatchingPredicate:(id)a3
+- (id)outputDevicesMatchingPredicate:(id)predicate
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (predicateCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(MRAVEndpoint *)self outputDevices];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    outputDevices = [(MRAVEndpoint *)self outputDevices];
+    v7 = [outputDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -6643,17 +6643,17 @@ void __81__MRAVEndpoint_setConversationDetectionEnabled_outputDeviceUID_queue_co
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(outputDevices);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          if (v4[2](v4, v11))
+          if (predicateCopy[2](predicateCopy, v11))
           {
             [v5 addObject:v11];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [outputDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -6665,10 +6665,10 @@ void __81__MRAVEndpoint_setConversationDetectionEnabled_outputDeviceUID_queue_co
   return v5;
 }
 
-- (id)outputDeviceUIDsMatchingPredicate:(id)a3
+- (id)outputDeviceUIDsMatchingPredicate:(id)predicate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(MRAVEndpoint *)self outputDevicesMatchingPredicate:a3];
+  v3 = [(MRAVEndpoint *)self outputDevicesMatchingPredicate:predicate];
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
   v13 = 0u;
   v14 = 0u;
@@ -6707,24 +6707,24 @@ void __81__MRAVEndpoint_setConversationDetectionEnabled_outputDeviceUID_queue_co
   return v4;
 }
 
-- (BOOL)effectivelyEqual:(id)a3
+- (BOOL)effectivelyEqual:(id)equal
 {
-  v4 = a3;
-  if (![(MRAVEndpoint *)self isEqual:v4])
+  equalCopy = equal;
+  if (![(MRAVEndpoint *)self isEqual:equalCopy])
   {
     goto LABEL_4;
   }
 
   v5 = objc_alloc(MEMORY[0x1E695DFB8]);
-  v6 = [(MRAVEndpoint *)self outputDeviceUIDs];
-  v7 = [v5 initWithArray:v6];
+  outputDeviceUIDs = [(MRAVEndpoint *)self outputDeviceUIDs];
+  v7 = [v5 initWithArray:outputDeviceUIDs];
 
   v8 = objc_alloc(MEMORY[0x1E695DFB8]);
-  v9 = [v4 outputDeviceUIDs];
-  v10 = [v8 initWithArray:v9];
+  outputDeviceUIDs2 = [equalCopy outputDeviceUIDs];
+  v10 = [v8 initWithArray:outputDeviceUIDs2];
 
-  LOBYTE(v9) = [v7 isEqualToOrderedSet:v10];
-  if (v9)
+  LOBYTE(outputDeviceUIDs2) = [v7 isEqualToOrderedSet:v10];
+  if (outputDeviceUIDs2)
   {
     v11 = 1;
   }
@@ -6738,10 +6738,10 @@ LABEL_4:
   return v11;
 }
 
-- (BOOL)containsOutputDeviceWithUID:(id)a3
+- (BOOL)containsOutputDeviceWithUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MRAVEndpoint *)self outputDeviceForUID:v4];
+  dCopy = d;
+  v5 = [(MRAVEndpoint *)self outputDeviceForUID:dCopy];
 
   if (v5)
   {
@@ -6750,308 +6750,308 @@ LABEL_4:
 
   else
   {
-    v7 = [(MRAVEndpoint *)self groupLeader];
-    v6 = ([v7 supportsMultiplayer] & 1) == 0 && (objc_msgSend(v7, "containsUID:", v4) & 1) != 0;
+    groupLeader = [(MRAVEndpoint *)self groupLeader];
+    v6 = ([groupLeader supportsMultiplayer] & 1) == 0 && (objc_msgSend(groupLeader, "containsUID:", dCopy) & 1) != 0;
   }
 
   return v6;
 }
 
-- (id)outputDeviceForUID:(id)a3
+- (id)outputDeviceForUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MRAVEndpoint *)self outputDevices];
+  dCopy = d;
+  outputDevices = [(MRAVEndpoint *)self outputDevices];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __35__MRAVEndpoint_outputDeviceForUID___block_invoke;
   v9[3] = &unk_1E769CDC0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 msv_firstWhere:v9];
+  v10 = dCopy;
+  v6 = dCopy;
+  v7 = [outputDevices msv_firstWhere:v9];
 
   return v7;
 }
 
-- (void)setOutputContextDataSource:(id)a3
+- (void)setOutputContextDataSource:(id)source
 {
-  v8 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  v6 = self;
-  objc_sync_enter(v6);
-  outputContextDataSource = v6->_outputContextDataSource;
-  if (outputContextDataSource != v8)
+  sourceCopy = source;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  outputContextDataSource = selfCopy->_outputContextDataSource;
+  if (outputContextDataSource != sourceCopy)
   {
     if (outputContextDataSource)
     {
-      [v5 removeObserver:v6 name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilitiesNotification" object:?];
-      [v5 removeObserver:v6 name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeNotification" object:v6->_outputContextDataSource];
-      [v5 removeObserver:v6 name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeMutedNotification" object:v6->_outputContextDataSource];
-      [v5 removeObserver:v6 name:@"MROutputContextDataSourceDidAddOutputDeviceNotification" object:v6->_outputContextDataSource];
-      [v5 removeObserver:v6 name:@"MROutputContextDataSourceDidChangeOutputDeviceNotification" object:v6->_outputContextDataSource];
-      [v5 removeObserver:v6 name:@"MROutputContextDataSourceDidRemoveOutputDeviceNotification" object:v6->_outputContextDataSource];
-      [v5 removeObserver:v6 name:@"MROutputContextDataSourceDidChangePredictedOutputDeviceNotification" object:v6->_outputContextDataSource];
+      [defaultCenter removeObserver:selfCopy name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilitiesNotification" object:?];
+      [defaultCenter removeObserver:selfCopy name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeNotification" object:selfCopy->_outputContextDataSource];
+      [defaultCenter removeObserver:selfCopy name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeMutedNotification" object:selfCopy->_outputContextDataSource];
+      [defaultCenter removeObserver:selfCopy name:@"MROutputContextDataSourceDidAddOutputDeviceNotification" object:selfCopy->_outputContextDataSource];
+      [defaultCenter removeObserver:selfCopy name:@"MROutputContextDataSourceDidChangeOutputDeviceNotification" object:selfCopy->_outputContextDataSource];
+      [defaultCenter removeObserver:selfCopy name:@"MROutputContextDataSourceDidRemoveOutputDeviceNotification" object:selfCopy->_outputContextDataSource];
+      [defaultCenter removeObserver:selfCopy name:@"MROutputContextDataSourceDidChangePredictedOutputDeviceNotification" object:selfCopy->_outputContextDataSource];
     }
 
-    objc_storeStrong(&v6->_outputContextDataSource, a3);
-    if (v6->_outputContextDataSource)
+    objc_storeStrong(&selfCopy->_outputContextDataSource, source);
+    if (selfCopy->_outputContextDataSource)
     {
-      [v5 addObserver:v6 selector:sel_outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities_ name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilitiesNotification" object:?];
-      [v5 addObserver:v6 selector:sel_outputContextDataSourceOutputDeviceDidChangeVolume_ name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeNotification" object:v6->_outputContextDataSource];
-      [v5 addObserver:v6 selector:sel_outputContextDataSourceOutputDeviceDidChangeVolumeMuted_ name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeMutedNotification" object:v6->_outputContextDataSource];
-      [v5 addObserver:v6 selector:sel_outputContextDataSourceDidAddOutputDevice_ name:@"MROutputContextDataSourceDidAddOutputDeviceNotification" object:v6->_outputContextDataSource];
-      [v5 addObserver:v6 selector:sel_outputContextDataSourceDidChangeOutputDevice_ name:@"MROutputContextDataSourceDidChangeOutputDeviceNotification" object:v6->_outputContextDataSource];
-      [v5 addObserver:v6 selector:sel_outputContextDataSourceDidRemoveOutputDevice_ name:@"MROutputContextDataSourceDidRemoveOutputDeviceNotification" object:v6->_outputContextDataSource];
-      [v5 addObserver:v6 selector:sel_outputContextDidChangePredictedOutputDevice_ name:@"MROutputContextDataSourceDidChangePredictedOutputDeviceNotification" object:v6->_outputContextDataSource];
+      [defaultCenter addObserver:selfCopy selector:sel_outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities_ name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilitiesNotification" object:?];
+      [defaultCenter addObserver:selfCopy selector:sel_outputContextDataSourceOutputDeviceDidChangeVolume_ name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeNotification" object:selfCopy->_outputContextDataSource];
+      [defaultCenter addObserver:selfCopy selector:sel_outputContextDataSourceOutputDeviceDidChangeVolumeMuted_ name:@"MROutputContextDataSourceOutputDeviceDidChangeVolumeMutedNotification" object:selfCopy->_outputContextDataSource];
+      [defaultCenter addObserver:selfCopy selector:sel_outputContextDataSourceDidAddOutputDevice_ name:@"MROutputContextDataSourceDidAddOutputDeviceNotification" object:selfCopy->_outputContextDataSource];
+      [defaultCenter addObserver:selfCopy selector:sel_outputContextDataSourceDidChangeOutputDevice_ name:@"MROutputContextDataSourceDidChangeOutputDeviceNotification" object:selfCopy->_outputContextDataSource];
+      [defaultCenter addObserver:selfCopy selector:sel_outputContextDataSourceDidRemoveOutputDevice_ name:@"MROutputContextDataSourceDidRemoveOutputDeviceNotification" object:selfCopy->_outputContextDataSource];
+      [defaultCenter addObserver:selfCopy selector:sel_outputContextDidChangePredictedOutputDevice_ name:@"MROutputContextDataSourceDidChangePredictedOutputDeviceNotification" object:selfCopy->_outputContextDataSource];
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities:(id)a3
+- (void)outputContextDataSourceOutputDeviceDidChangeVolumeControlCapabilities:(id)capabilities
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v8 = [v5 objectForKeyedSubscript:@"MROutputContextDataSourceVolumeCapabilitiesUserInfoKey"];
+  capabilitiesCopy = capabilities;
+  userInfo = [capabilitiesCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"MROutputContextDataSourceVolumeCapabilitiesUserInfoKey"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [capabilitiesCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
+  v7 = [userInfo2 objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
 
   [objc_opt_class() _notifyVolumeCapabilitiesDidChange:objc_msgSend(v8 outputDevice:"intValue") endpoint:{v7, self}];
 }
 
-- (void)outputContextDataSourceOutputDeviceDidChangeVolume:(id)a3
+- (void)outputContextDataSourceOutputDeviceDidChangeVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v9 = [v5 objectForKeyedSubscript:@"MROutputContextDataSourceVolumeUserInfoKey"];
+  volumeCopy = volume;
+  userInfo = [volumeCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"MROutputContextDataSourceVolumeUserInfoKey"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [volumeCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
+  v7 = [userInfo2 objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
 
   v8 = objc_opt_class();
   [v9 floatValue];
   [v8 _notifyVolumeDidChange:v7 outputDevice:self endpoint:?];
 }
 
-- (void)outputContextDataSourceOutputDeviceDidChangeVolumeMuted:(id)a3
+- (void)outputContextDataSourceOutputDeviceDidChangeVolumeMuted:(id)muted
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v8 = [v5 objectForKeyedSubscript:@"MROutputContextDataSourceVolumeMutedUserInfoKey"];
+  mutedCopy = muted;
+  userInfo = [mutedCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"MROutputContextDataSourceVolumeMutedUserInfoKey"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [mutedCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
+  v7 = [userInfo2 objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
 
   [objc_opt_class() _notifyVolumeMutedDidChange:objc_msgSend(v8 outputDevice:"BOOLValue") endpoint:{v7, self}];
 }
 
-- (void)outputContextDataSourceDidAddOutputDevice:(id)a3
+- (void)outputContextDataSourceDidAddOutputDevice:(id)device
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
+  userInfo = [device userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
 
   [objc_opt_class() _notifyDidAddOutputDevice:v5 endpoint:self];
 }
 
-- (void)outputContextDataSourceDidChangeOutputDevice:(id)a3
+- (void)outputContextDataSourceDidChangeOutputDevice:(id)device
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
+  userInfo = [device userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
 
   [objc_opt_class() _notifyDidChangeOutputDevice:v5 endpoint:self];
 }
 
-- (void)outputContextDataSourceDidRemoveOutputDevice:(id)a3
+- (void)outputContextDataSourceDidRemoveOutputDevice:(id)device
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
+  userInfo = [device userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
 
   [objc_opt_class() _notifyDidRemoveOutputDevice:v5 endpoint:self];
 }
 
-- (void)outputContextDidChangePredictedOutputDevice:(id)a3
+- (void)outputContextDidChangePredictedOutputDevice:(id)device
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
+  userInfo = [device userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
 
   [objc_opt_class() _notifyDidChangePredictedOutputDevice:v5 endpoint:self];
 }
 
-+ (void)_notifyEndpointDidConnect:(id)a3
++ (void)_notifyEndpointDidConnect:(id)connect
 {
-  v4 = a3;
-  v6 = [a1 _userInfoFromEndpoint:v4 outputDevice:0];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"MRAVEndpointDidConnectNotification" object:v4 userInfo:v6];
+  connectCopy = connect;
+  v6 = [self _userInfoFromEndpoint:connectCopy outputDevice:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MRAVEndpointDidConnectNotification" object:connectCopy userInfo:v6];
 }
 
-+ (void)_notifyEndpointDidDisconnect:(id)a3 withError:(id)a4
++ (void)_notifyEndpointDidDisconnect:(id)disconnect withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [a1 _userInfoFromEndpoint:v7 outputDevice:0];
-  [v9 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+  errorCopy = error;
+  disconnectCopy = disconnect;
+  v9 = [self _userInfoFromEndpoint:disconnectCopy outputDevice:0];
+  [v9 setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"MRAVEndpointDidDisconnectNotification" object:v7 userInfo:v9];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MRAVEndpointDidDisconnectNotification" object:disconnectCopy userInfo:v9];
 }
 
-+ (void)_notifyVolumeDidChange:(float)a3 outputDevice:(id)a4 endpoint:(id)a5
++ (void)_notifyVolumeDidChange:(float)change outputDevice:(id)device endpoint:(id)endpoint
 {
-  v8 = a5;
-  v12 = [a1 _userInfoFromEndpoint:v8 outputDevice:a4];
-  *&v9 = a3;
+  endpointCopy = endpoint;
+  v12 = [self _userInfoFromEndpoint:endpointCopy outputDevice:device];
+  *&v9 = change;
   v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
   [v12 setObject:v10 forKeyedSubscript:@"kMRAVEndpointVolumeUserInfoKey"];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"kMRAVEndpointVolumeDidChangeNotification" object:v8 userInfo:v12];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"kMRAVEndpointVolumeDidChangeNotification" object:endpointCopy userInfo:v12];
 }
 
-+ (void)_notifyDidAddOutputDevice:(id)a3 endpoint:(id)a4
++ (void)_notifyDidAddOutputDevice:(id)device endpoint:(id)endpoint
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  v8 = v6;
-  if (!v12)
+  deviceCopy = device;
+  endpointCopy = endpoint;
+  v7 = deviceCopy;
+  v8 = endpointCopy;
+  if (!deviceCopy)
   {
     +[MRAVEndpoint _notifyDidAddOutputDevice:endpoint:];
     v7 = 0;
   }
 
-  v9 = [a1 _userInfoFromEndpoint:v8 outputDevice:v7];
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"MRAVEndpointDidAddOutputDeviceNotification" object:v8 userInfo:v9];
+  v9 = [self _userInfoFromEndpoint:v8 outputDevice:v7];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MRAVEndpointDidAddOutputDeviceNotification" object:v8 userInfo:v9];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"kMRAVEndpointOutputDevicesDidChangeNotification" object:v8 userInfo:v9];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"kMRAVEndpointOutputDevicesDidChangeNotification" object:v8 userInfo:v9];
 }
 
-+ (void)_notifyDidChangeOutputDevice:(id)a3 endpoint:(id)a4
++ (void)_notifyDidChangeOutputDevice:(id)device endpoint:(id)endpoint
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  v8 = v6;
-  if (!v12)
+  deviceCopy = device;
+  endpointCopy = endpoint;
+  v7 = deviceCopy;
+  v8 = endpointCopy;
+  if (!deviceCopy)
   {
     +[MRAVEndpoint _notifyDidChangeOutputDevice:endpoint:];
     v7 = 0;
   }
 
-  v9 = [a1 _userInfoFromEndpoint:v8 outputDevice:v7];
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"MRAVEndpointDidChangeOutputDeviceNotification" object:v8 userInfo:v9];
+  v9 = [self _userInfoFromEndpoint:v8 outputDevice:v7];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MRAVEndpointDidChangeOutputDeviceNotification" object:v8 userInfo:v9];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"kMRAVEndpointOutputDevicesDidChangeNotification" object:v8 userInfo:v9];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"kMRAVEndpointOutputDevicesDidChangeNotification" object:v8 userInfo:v9];
 }
 
-+ (void)_notifyDidRemoveOutputDevice:(id)a3 endpoint:(id)a4
++ (void)_notifyDidRemoveOutputDevice:(id)device endpoint:(id)endpoint
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  v8 = v6;
-  if (!v12)
+  deviceCopy = device;
+  endpointCopy = endpoint;
+  v7 = deviceCopy;
+  v8 = endpointCopy;
+  if (!deviceCopy)
   {
     +[MRAVEndpoint _notifyDidRemoveOutputDevice:endpoint:];
     v7 = 0;
   }
 
-  v9 = [a1 _userInfoFromEndpoint:v8 outputDevice:v7];
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:v8 userInfo:v9];
+  v9 = [self _userInfoFromEndpoint:v8 outputDevice:v7];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:v8 userInfo:v9];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"kMRAVEndpointOutputDevicesDidChangeNotification" object:v8 userInfo:v9];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"kMRAVEndpointOutputDevicesDidChangeNotification" object:v8 userInfo:v9];
 }
 
-+ (void)_notifyDidChangePredictedOutputDevice:(id)a3 endpoint:(id)a4
++ (void)_notifyDidChangePredictedOutputDevice:(id)device endpoint:(id)endpoint
 {
-  v6 = a4;
-  v8 = [a1 _userInfoFromEndpoint:v6 outputDevice:a3];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"kMRAVEndpointPredictedOutputDeviceDidChangeNotification" object:v6 userInfo:v8];
+  endpointCopy = endpoint;
+  v8 = [self _userInfoFromEndpoint:endpointCopy outputDevice:device];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"kMRAVEndpointPredictedOutputDeviceDidChangeNotification" object:endpointCopy userInfo:v8];
 }
 
-+ (void)_notifyGroupSessionInfoDidChange:(id)a3 endpoint:(id)a4
++ (void)_notifyGroupSessionInfoDidChange:(id)change endpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [a1 _userInfoFromEndpoint:v6 outputDevice:0];
-  [v9 setObject:v7 forKeyedSubscript:@"MRAVEndpointGroupSessionInfoUserInfoKey"];
+  endpointCopy = endpoint;
+  changeCopy = change;
+  v9 = [self _userInfoFromEndpoint:endpointCopy outputDevice:0];
+  [v9 setObject:changeCopy forKeyedSubscript:@"MRAVEndpointGroupSessionInfoUserInfoKey"];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"MRAVEndpointGroupSessionInfoDidChangeNotification" object:v6 userInfo:v9];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MRAVEndpointGroupSessionInfoDidChangeNotification" object:endpointCopy userInfo:v9];
 }
 
-+ (void)_notifyGroupSessionHostingEligibilityDidChangeForEndpoint:(id)a3
++ (void)_notifyGroupSessionHostingEligibilityDidChangeForEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v6 = [a1 _userInfoFromEndpoint:v4 outputDevice:0];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"MRAVEndpointGroupSessionHostingEligibilityDidChangeNotification" object:v4 userInfo:v6];
+  endpointCopy = endpoint;
+  v6 = [self _userInfoFromEndpoint:endpointCopy outputDevice:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MRAVEndpointGroupSessionHostingEligibilityDidChangeNotification" object:endpointCopy userInfo:v6];
 }
 
-+ (void)_notifyDeviceInfoDidChange:(id)a3 previousDeviceInfo:(id)a4 endpoint:(id)a5
++ (void)_notifyDeviceInfoDidChange:(id)change previousDeviceInfo:(id)info endpoint:(id)endpoint
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [a1 _userInfoFromEndpoint:v8 outputDevice:0];
-  [v12 setObject:v10 forKeyedSubscript:@"MRAVEndpointDeviceInfoUserInfoKey"];
+  endpointCopy = endpoint;
+  infoCopy = info;
+  changeCopy = change;
+  v12 = [self _userInfoFromEndpoint:endpointCopy outputDevice:0];
+  [v12 setObject:changeCopy forKeyedSubscript:@"MRAVEndpointDeviceInfoUserInfoKey"];
 
-  [v12 setObject:v9 forKeyedSubscript:@"MRAVEndpointPreviousDeviceInfoUserInfoKey"];
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"MRAVEndpointDeviceInfoDidChangeNotification" object:v8 userInfo:v12];
+  [v12 setObject:infoCopy forKeyedSubscript:@"MRAVEndpointPreviousDeviceInfoUserInfoKey"];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MRAVEndpointDeviceInfoDidChangeNotification" object:endpointCopy userInfo:v12];
 }
 
-+ (id)_userInfoFromEndpoint:(id)a3 outputDevice:(id)a4
++ (id)_userInfoFromEndpoint:(id)endpoint outputDevice:(id)device
 {
-  v5 = a4;
-  v6 = [a3 uniqueIdentifier];
-  v7 = [v5 uid];
+  deviceCopy = device;
+  uniqueIdentifier = [endpoint uniqueIdentifier];
+  v7 = [deviceCopy uid];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v8 setObject:v6 forKeyedSubscript:@"kMRAVEndpointIdentifierUserInfoKey"];
-  if (v5)
+  [v8 setObject:uniqueIdentifier forKeyedSubscript:@"kMRAVEndpointIdentifierUserInfoKey"];
+  if (deviceCopy)
   {
-    [v8 setObject:v5 forKeyedSubscript:@"MRAVEndpointOutputDeviceUserInfoKey"];
+    [v8 setObject:deviceCopy forKeyedSubscript:@"MRAVEndpointOutputDeviceUserInfoKey"];
     [v8 setObject:v7 forKeyedSubscript:@"kMRAVEndpointOutputDeviceIdentifierUserInfoKey"];
   }
 
   return v8;
 }
 
-+ (void)hostedEndpointForOutputDeviceUIDs:(id)a3 queue:(id)a4 completion:(id)a5
++ (void)hostedEndpointForOutputDeviceUIDs:(id)ds queue:(id)queue completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  dsCopy = ds;
+  completionCopy = completion;
   v9 = MEMORY[0x1E695DF00];
-  v10 = a4;
-  v11 = [v9 date];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
+  queueCopy = queue;
+  date = [v9 date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@)", v7];
+  dsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@)", dsCopy];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __67__MRAVEndpoint_hostedEndpointForOutputDeviceUIDs_queue_completion___block_invoke;
   v31[3] = &unk_1E76A2378;
-  v15 = v14;
+  v15 = dsCopy;
   v32 = v15;
   v33 = @"hostedEndpointForOutputDeviceUIDs";
-  v16 = v13;
+  v16 = uUIDString;
   v34 = v16;
-  v17 = v11;
+  v17 = date;
   v35 = v17;
-  v18 = v8;
+  v18 = completionCopy;
   v36 = v18;
   v19 = MEMORY[0x1A58E3570](v31);
   v20 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"hostedEndpointForOutputDeviceUIDs", v16];
@@ -7079,7 +7079,7 @@ LABEL_4:
   v30 = v19;
   v24 = v19;
   v25 = v16;
-  MRMediaRemoteServiceCreateHostedEndpointForDevices(v23, v7, v10, v27);
+  MRMediaRemoteServiceCreateHostedEndpointForDevices(v23, dsCopy, queueCopy, v27);
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -7270,30 +7270,30 @@ void __67__MRAVEndpoint_hostedEndpointForOutputDeviceUIDs_queue_completion___blo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)directEndpointForOutputDeviceUIDs:(id)a3 queue:(id)a4 completion:(id)a5
++ (void)directEndpointForOutputDeviceUIDs:(id)ds queue:(id)queue completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  dsCopy = ds;
+  completionCopy = completion;
   v9 = MEMORY[0x1E695DF00];
-  v10 = a4;
-  v11 = [v9 date];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
+  queueCopy = queue;
+  date = [v9 date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@)", v7];
+  dsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@)", dsCopy];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __67__MRAVEndpoint_directEndpointForOutputDeviceUIDs_queue_completion___block_invoke;
   v31[3] = &unk_1E76A2378;
-  v15 = v14;
+  v15 = dsCopy;
   v32 = v15;
   v33 = @"directEndpointForOutputDeviceUIDs";
-  v16 = v13;
+  v16 = uUIDString;
   v34 = v16;
-  v17 = v11;
+  v17 = date;
   v35 = v17;
-  v18 = v8;
+  v18 = completionCopy;
   v36 = v18;
   v19 = MEMORY[0x1A58E3570](v31);
   v20 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"directEndpointForOutputDeviceUIDs", v16];
@@ -7321,7 +7321,7 @@ void __67__MRAVEndpoint_hostedEndpointForOutputDeviceUIDs_queue_completion___blo
   v30 = v19;
   v24 = v19;
   v25 = v16;
-  MRMediaRemoteServiceCreateDirectEndpointForDevices(v23, v7, v10, v27);
+  MRMediaRemoteServiceCreateDirectEndpointForDevices(v23, dsCopy, queueCopy, v27);
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -7512,31 +7512,31 @@ void __67__MRAVEndpoint_directEndpointForOutputDeviceUIDs_queue_completion___blo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)createEndpointWithOutputDeviceUIDs:(id)a3 queue:(id)a4 completion:(id)a5
++ (void)createEndpointWithOutputDeviceUIDs:(id)ds queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  dsCopy = ds;
   v11 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"MRAVEndpoint.createEndpointWithOutputDeviceUIDs"];
-  [a1 createEndpointWithOutputDeviceUIDs:v10 details:v11 queue:v9 completion:v8];
+  [self createEndpointWithOutputDeviceUIDs:dsCopy details:v11 queue:queueCopy completion:completionCopy];
 }
 
-+ (void)createEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)createEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v10)
+  dsCopy = ds;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!detailsCopy)
   {
-    v10 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"createEndpointWithOutputDeviceUIDs.endpoint"];
+    detailsCopy = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"createEndpointWithOutputDeviceUIDs.endpoint"];
   }
 
-  v13 = [(MRRequestDetails *)v10 startDate];
-  v14 = [(MRRequestDetails *)v10 requestID];
+  startDate = [(MRRequestDetails *)detailsCopy startDate];
+  requestID = [(MRRequestDetails *)detailsCopy requestID];
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [v9 componentsJoinedByString:{@", "}];
+  v16 = [dsCopy componentsJoinedByString:{@", "}];
   v17 = [v15 stringWithFormat:@"UIDs=(%@)", v16];
 
   v39[0] = MEMORY[0x1E69E9820];
@@ -7546,13 +7546,13 @@ void __67__MRAVEndpoint_directEndpointForOutputDeviceUIDs_queue_completion___blo
   v18 = v17;
   v40 = v18;
   v41 = @"createEndpointWithOutputDeviceUIDs.endpoint";
-  v19 = v14;
+  v19 = requestID;
   v42 = v19;
-  v20 = v13;
+  v20 = startDate;
   v43 = v20;
-  v21 = v11;
+  v21 = queueCopy;
   v44 = v21;
-  v22 = v12;
+  v22 = completionCopy;
   v45 = v22;
   v23 = MEMORY[0x1A58E3570](v39);
   v24 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"createEndpointWithOutputDeviceUIDs.endpoint", v19];
@@ -7577,13 +7577,13 @@ void __67__MRAVEndpoint_directEndpointForOutputDeviceUIDs_queue_completion___blo
   v34[2] = __76__MRAVEndpoint_createEndpointWithOutputDeviceUIDs_details_queue_completion___block_invoke_572;
   v34[3] = &unk_1E76A2E58;
   v35 = v19;
-  v36 = v9;
+  v36 = dsCopy;
   v37 = @"createEndpointWithOutputDeviceUIDs.endpoint";
   v38 = v23;
-  v29 = v9;
+  v29 = dsCopy;
   v30 = v19;
   v31 = v23;
-  [a1 createEndpointWithOutputDeviceUIDs:v29 details:v10 queue:v28 groupUIDCompletion:v34];
+  [self createEndpointWithOutputDeviceUIDs:v29 details:detailsCopy queue:v28 groupUIDCompletion:v34];
 
   v32 = *MEMORY[0x1E69E9840];
 }
@@ -7843,27 +7843,27 @@ void __76__MRAVEndpoint_createEndpointWithOutputDeviceUIDs_details_queue_complet
   v31 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)createEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 groupUIDCompletion:(id)a6
++ (void)createEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue groupUIDCompletion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v10)
+  dsCopy = ds;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!detailsCopy)
   {
     v13 = [MRRequestDetails alloc];
-    v14 = [MEMORY[0x1E696AAE8] mainBundle];
-    v15 = [v14 bundleIdentifier];
-    v10 = [(MRRequestDetails *)v13 initWithInitiator:@"Infer" requestID:0 reason:@"createEndpointWithOutputDeviceUIDs.groupID" userInitiated:0 originatingBundleID:v15];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    detailsCopy = [(MRRequestDetails *)v13 initWithInitiator:@"Infer" requestID:0 reason:@"createEndpointWithOutputDeviceUIDs.groupID" userInitiated:0 originatingBundleID:bundleIdentifier];
   }
 
-  v16 = [MEMORY[0x1E695DF00] date];
-  v17 = [MEMORY[0x1E696AFB0] UUID];
-  v18 = [v17 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [v9 componentsJoinedByString:{@", "}];
+  v20 = [dsCopy componentsJoinedByString:{@", "}];
   v21 = [v19 stringWithFormat:@"UIDs=(%@)", v20];
 
   v36 = MEMORY[0x1E69E9820];
@@ -7873,13 +7873,13 @@ void __76__MRAVEndpoint_createEndpointWithOutputDeviceUIDs_details_queue_complet
   v22 = v21;
   v40 = v22;
   v41 = @"createEndpointWithOutputDeviceUIDs.groupID";
-  v23 = v18;
+  v23 = uUIDString;
   v42 = v23;
-  v24 = v16;
+  v24 = date;
   v43 = v24;
-  v25 = v11;
+  v25 = queueCopy;
   v44 = v25;
-  v26 = v12;
+  v26 = completionCopy;
   v45 = v26;
   v27 = MEMORY[0x1A58E3570](&v36);
   v28 = objc_alloc(MEMORY[0x1E696AD60]);
@@ -7901,7 +7901,7 @@ void __76__MRAVEndpoint_createEndpointWithOutputDeviceUIDs_details_queue_complet
   v32 = MRGetSharedService();
   v33 = qos_class_self();
   v34 = dispatch_get_global_queue(v33, 0);
-  MRMediaRemoteServiceCreateGroupWithDevices(v32, v9, v10, v34, v27);
+  MRMediaRemoteServiceCreateGroupWithDevices(v32, dsCopy, detailsCopy, v34, v27);
 
   v35 = *MEMORY[0x1E69E9840];
 }
@@ -8069,23 +8069,23 @@ LABEL_22:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)pauseOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)pauseOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v33 = a5;
-  v11 = a6;
-  if (!v10)
+  dsCopy = ds;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!detailsCopy)
   {
-    v10 = [[MRRequestDetails alloc] initWithName:@"pauseOutputDeviceUIDs" requestID:0 reason:@"API"];
+    detailsCopy = [[MRRequestDetails alloc] initWithName:@"pauseOutputDeviceUIDs" requestID:0 reason:@"API"];
   }
 
-  v12 = [MEMORY[0x1E695DF00] date];
-  v13 = [(MRRequestDetails *)v10 requestID];
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@)", v9];
+  date = [MEMORY[0x1E695DF00] date];
+  requestID = [(MRRequestDetails *)detailsCopy requestID];
+  dsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@)", dsCopy];
   v15 = _MRLogForCategory(2uLL);
-  v16 = [v13 hash];
+  v16 = [requestID hash];
   if ((v16 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v17 = v16;
@@ -8096,11 +8096,11 @@ LABEL_22:
     }
   }
 
-  v18 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"pauseOutputDeviceUIDs", v13];
+  v18 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"pauseOutputDeviceUIDs", requestID];
   v19 = v18;
-  if (v14)
+  if (dsCopy)
   {
-    [v18 appendFormat:@" for %@", v14];
+    [v18 appendFormat:@" for %@", dsCopy];
   }
 
   v20 = _MRLogForCategory(0xAuLL);
@@ -8115,30 +8115,30 @@ LABEL_22:
   v36[1] = 3221225472;
   v36[2] = __63__MRAVEndpoint_pauseOutputDeviceUIDs_details_queue_completion___block_invoke;
   v36[3] = &unk_1E76A1BC0;
-  v37 = v13;
-  v38 = v14;
+  v37 = requestID;
+  v38 = dsCopy;
   v39 = @"pauseOutputDeviceUIDs";
-  v40 = v12;
-  v41 = v11;
-  v32 = v11;
-  v31 = v12;
-  v21 = v14;
-  v22 = v13;
+  v40 = date;
+  v41 = completionCopy;
+  v32 = completionCopy;
+  v31 = date;
+  v21 = dsCopy;
+  v22 = requestID;
   v23 = MEMORY[0x1A58E3570](v36);
   v24 = MRCreateXPCMessage(0x30000000000002FuLL);
-  MRAddPropertyListToXPCMessage(v24, v9, "MRXPC_OUTPUT_DEVICE_UID_ARRAY_DATA_KEY");
-  MRAddRequestDetailsToXPCMessage(v24, v10);
+  MRAddPropertyListToXPCMessage(v24, dsCopy, "MRXPC_OUTPUT_DEVICE_UID_ARRAY_DATA_KEY");
+  MRAddRequestDetailsToXPCMessage(v24, detailsCopy);
   +[MRMediaRemoteServiceClient sharedServiceClient];
-  v26 = v25 = v9;
-  v27 = [v26 service];
-  v28 = [v27 mrXPCConnection];
+  v26 = v25 = dsCopy;
+  service = [v26 service];
+  mrXPCConnection = [service mrXPCConnection];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __63__MRAVEndpoint_pauseOutputDeviceUIDs_details_queue_completion___block_invoke_588;
   v34[3] = &unk_1E769B338;
   v35 = v23;
   v29 = v23;
-  [v28 sendMessage:v24 queue:v33 reply:v34];
+  [mrXPCConnection sendMessage:v24 queue:queueCopy reply:v34];
 
   v30 = *MEMORY[0x1E69E9840];
 }
@@ -8271,52 +8271,52 @@ LABEL_18:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addOutputDevicesWithUIDs:(id)a3 toGroupContainingOutputDeviceWithUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
++ (void)addOutputDevicesWithUIDs:(id)ds toGroupContainingOutputDeviceWithUID:(id)d details:(id)details queue:(id)queue completion:(id)completion
 {
-  v10 = a7;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __103__MRAVEndpoint_addOutputDevicesWithUIDs_toGroupContainingOutputDeviceWithUID_details_queue_completion___block_invoke;
   v12[3] = &unk_1E769AD30;
-  v13 = v10;
-  v11 = v10;
-  MRAVEndpointAddOutputDevicesToGroup(a4, a3, a6, v12);
+  v13 = completionCopy;
+  v11 = completionCopy;
+  MRAVEndpointAddOutputDevicesToGroup(d, ds, queue, v12);
 }
 
-+ (void)moveOutputDevicesWithUIDs:(id)a3 toGroupContainingOutputDeviceWithUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
++ (void)moveOutputDevicesWithUIDs:(id)ds toGroupContainingOutputDeviceWithUID:(id)d details:(id)details queue:(id)queue completion:(id)completion
 {
-  v10 = a7;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __104__MRAVEndpoint_moveOutputDevicesWithUIDs_toGroupContainingOutputDeviceWithUID_details_queue_completion___block_invoke;
   v12[3] = &unk_1E769AD30;
-  v13 = v10;
-  v11 = v10;
-  MRAVEndpointMoveOutputGroupToDevices(a4, a3, a6, v12);
+  v13 = completionCopy;
+  v11 = completionCopy;
+  MRAVEndpointMoveOutputGroupToDevices(d, ds, queue, v12);
 }
 
-+ (void)sendCommand:(unsigned int)a3 withOptions:(id)a4 toEachEndpointContainingOutputDeviceUIDs:(id)a5 timeout:(double)a6 queue:(id)a7 completion:(id)a8
++ (void)sendCommand:(unsigned int)command withOptions:(id)options toEachEndpointContainingOutputDeviceUIDs:(id)ds timeout:(double)timeout queue:(id)queue completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a8;
+  dsCopy = ds;
+  completionCopy = completion;
   v15 = MEMORY[0x1E695DF90];
-  v38 = a7;
-  v16 = a4;
-  v17 = [[v15 alloc] initWithDictionary:v16];
+  queueCopy = queue;
+  optionsCopy = options;
+  v17 = [[v15 alloc] initWithDictionary:optionsCopy];
 
   v18 = [v17 objectForKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
 
   if (!v18)
   {
-    v19 = [MEMORY[0x1E696AFB0] UUID];
-    v20 = [v19 UUIDString];
-    [v17 setObject:v20 forKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [v17 setObject:uUIDString forKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
   }
 
-  v21 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v22 = [v17 objectForKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
-  v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@)", v13];
+  dsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@)", dsCopy];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __106__MRAVEndpoint_sendCommand_withOptions_toEachEndpointContainingOutputDeviceUIDs_timeout_queue_completion___block_invoke;
@@ -8324,16 +8324,16 @@ LABEL_18:
   v42 = @"sendCommandToOutputDeviceUIDs";
   v24 = v22;
   v43 = v24;
-  v36 = v21;
+  v36 = date;
   v44 = v36;
-  v37 = v14;
+  v37 = completionCopy;
   v45 = v37;
   v25 = MEMORY[0x1A58E3570](v41);
   v26 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"sendCommandToOutputDeviceUIDs", v24];
   v27 = v26;
-  if (v23)
+  if (dsCopy)
   {
-    [v26 appendFormat:@" for %@", v23];
+    [v26 appendFormat:@" for %@", dsCopy];
   }
 
   v28 = _MRLogForCategory(0xAuLL);
@@ -8345,21 +8345,21 @@ LABEL_18:
   }
 
   v29 = MRCreateXPCMessage(0x300000000000031uLL);
-  xpc_dictionary_set_uint64(v29, "command", a3);
+  xpc_dictionary_set_uint64(v29, "command", command);
   MRAddPropertyListToXPCMessage(v29, v17, "commandOptions");
-  v30 = v13;
-  MRAddPropertyListToXPCMessage(v29, v13, "MRXPC_OUTPUT_DEVICE_UID_ARRAY_DATA_KEY");
-  xpc_dictionary_set_double(v29, "timeout", a6);
+  v30 = dsCopy;
+  MRAddPropertyListToXPCMessage(v29, dsCopy, "MRXPC_OUTPUT_DEVICE_UID_ARRAY_DATA_KEY");
+  xpc_dictionary_set_double(v29, "timeout", timeout);
   v31 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v32 = [v31 service];
-  v33 = [v32 mrXPCConnection];
+  service = [v31 service];
+  mrXPCConnection = [service mrXPCConnection];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __106__MRAVEndpoint_sendCommand_withOptions_toEachEndpointContainingOutputDeviceUIDs_timeout_queue_completion___block_invoke_597;
   v39[3] = &unk_1E769B338;
   v40 = v25;
   v34 = v25;
-  [v33 sendMessage:v29 queue:v38 reply:v39];
+  [mrXPCConnection sendMessage:v29 queue:queueCopy reply:v39];
 
   v35 = *MEMORY[0x1E69E9840];
 }
@@ -8455,29 +8455,29 @@ MRCommandResult *__106__MRAVEndpoint_sendCommand_withOptions_toEachEndpointConta
   return v3;
 }
 
-+ (void)sendCommand:(unsigned int)a3 withOptions:(id)a4 toNewEndpointContainingOutputDeviceUIDs:(id)a5 nowPlayingClient:(id)a6 timeout:(double)a7 queue:(id)a8 completion:(id)a9
++ (void)sendCommand:(unsigned int)command withOptions:(id)options toNewEndpointContainingOutputDeviceUIDs:(id)ds nowPlayingClient:(id)client timeout:(double)timeout queue:(id)queue completion:(id)completion
 {
   v52 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a9;
+  dsCopy = ds;
+  completionCopy = completion;
   v16 = MEMORY[0x1E695DF90];
-  v42 = a8;
-  value_4 = a6;
-  v17 = a4;
-  v18 = [[v16 alloc] initWithDictionary:v17];
+  queueCopy = queue;
+  value_4 = client;
+  optionsCopy = options;
+  v18 = [[v16 alloc] initWithDictionary:optionsCopy];
 
   v19 = [v18 objectForKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
 
   if (!v19)
   {
-    v20 = [MEMORY[0x1E696AFB0] UUID];
-    v21 = [v20 UUIDString];
-    [v18 setObject:v21 forKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [v18 setObject:uUIDString forKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
   }
 
-  v22 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v23 = [v18 objectForKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
-  v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@)", v14];
+  dsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@)", dsCopy];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __122__MRAVEndpoint_sendCommand_withOptions_toNewEndpointContainingOutputDeviceUIDs_nowPlayingClient_timeout_queue_completion___block_invoke;
@@ -8485,16 +8485,16 @@ MRCommandResult *__106__MRAVEndpoint_sendCommand_withOptions_toEachEndpointConta
   v46 = @"sendCommandToNewGroupContainingOutputDeviceUIDs";
   v25 = v23;
   v47 = v25;
-  v40 = v22;
+  v40 = date;
   v48 = v40;
-  v41 = v15;
+  v41 = completionCopy;
   v49 = v41;
   v26 = MEMORY[0x1A58E3570](v45);
   v27 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"sendCommandToNewGroupContainingOutputDeviceUIDs", v25];
   v28 = v27;
-  if (v24)
+  if (dsCopy)
   {
-    [v27 appendFormat:@" for %@", v24];
+    [v27 appendFormat:@" for %@", dsCopy];
   }
 
   v29 = _MRLogForCategory(0xAuLL);
@@ -8506,24 +8506,24 @@ MRCommandResult *__106__MRAVEndpoint_sendCommand_withOptions_toEachEndpointConta
   }
 
   v30 = MRCreateXPCMessage(0x300000000000032uLL);
-  xpc_dictionary_set_uint64(v30, "command", a3);
+  xpc_dictionary_set_uint64(v30, "command", command);
   MRAddPropertyListToXPCMessage(v30, v18, "commandOptions");
-  v31 = v14;
-  MRAddPropertyListToXPCMessage(v30, v14, "MRXPC_OUTPUT_DEVICE_UID_ARRAY_DATA_KEY");
+  v31 = dsCopy;
+  MRAddPropertyListToXPCMessage(v30, dsCopy, "MRXPC_OUTPUT_DEVICE_UID_ARRAY_DATA_KEY");
   v32 = [[MRPlayerPath alloc] initWithOrigin:0 client:value_4 player:0];
 
   MRAddPlayerPathToXPCMessage(v30, v32);
-  xpc_dictionary_set_double(v30, "timeout", a7);
+  xpc_dictionary_set_double(v30, "timeout", timeout);
   v33 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v34 = [v33 service];
-  v35 = [v34 mrXPCConnection];
+  service = [v33 service];
+  mrXPCConnection = [service mrXPCConnection];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __122__MRAVEndpoint_sendCommand_withOptions_toNewEndpointContainingOutputDeviceUIDs_nowPlayingClient_timeout_queue_completion___block_invoke_608;
   v43[3] = &unk_1E769B338;
   v44 = v26;
   v36 = v26;
-  [v35 sendMessage:v30 queue:v42 reply:v43];
+  [mrXPCConnection sendMessage:v30 queue:queueCopy reply:v43];
 
   v37 = *MEMORY[0x1E69E9840];
 }
@@ -8707,16 +8707,16 @@ void __122__MRAVEndpoint_sendCommand_withOptions_toNewEndpointContainingOutputDe
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)findMyGroupLeaderWithTimeout:(double)a3 details:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)findMyGroupLeaderWithTimeout:(double)timeout details:(id)details queue:(id)queue completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x1E695DF00] date];
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
+  date = [MEMORY[0x1E695DF00] date];
   v13 = objc_alloc(MEMORY[0x1E696AD60]);
-  v14 = [v9 requestID];
-  v15 = [v13 initWithFormat:@"%@<%@>", @"findMyGroupLeader", v14];
+  requestID = [detailsCopy requestID];
+  v15 = [v13 initWithFormat:@"%@<%@>", @"findMyGroupLeader", requestID];
 
   v16 = _MRLogForCategory(0xAuLL);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -8731,25 +8731,25 @@ void __122__MRAVEndpoint_sendCommand_withOptions_toNewEndpointContainingOutputDe
   v35[2] = __70__MRAVEndpoint_findMyGroupLeaderWithTimeout_details_queue_completion___block_invoke;
   v35[3] = &unk_1E76A23A0;
   v36 = @"findMyGroupLeader";
-  v17 = v9;
+  v17 = detailsCopy;
   v37 = v17;
-  v18 = v12;
+  v18 = date;
   v38 = v18;
-  v19 = v11;
+  v19 = completionCopy;
   v40 = v19;
-  v20 = v10;
+  v20 = queueCopy;
   v39 = v20;
   v21 = MEMORY[0x1A58E3570](v35);
   v22 = +[MRDeviceInfoRequest localDeviceInfo];
-  v23 = [v22 groupContainsDiscoverableGroupLeader];
-  v24 = [v22 isAirPlayActive];
+  groupContainsDiscoverableGroupLeader = [v22 groupContainsDiscoverableGroupLeader];
+  isAirPlayActive = [v22 isAirPlayActive];
   v25 = 1;
-  if (v23)
+  if (groupContainsDiscoverableGroupLeader)
   {
     v25 = 2;
   }
 
-  if (!v24)
+  if (!isAirPlayActive)
   {
     v25 = 0;
   }
@@ -8779,7 +8779,7 @@ void __122__MRAVEndpoint_sendCommand_withOptions_toNewEndpointContainingOutputDe
         v33 = v29;
         v34 = v21;
         v30 = v29;
-        [(MRAVReconnaissanceSession *)v30 beginSearchWithTimeout:v32 completion:a3];
+        [(MRAVReconnaissanceSession *)v30 beginSearchWithTimeout:v32 completion:timeout];
       }
 
       else
@@ -8889,17 +8889,17 @@ void __70__MRAVEndpoint_findMyGroupLeaderWithTimeout_details_queue_completion___
   v7(v6, a3, a4);
 }
 
-+ (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)a3 forBundleID:(id)a4 timeout:(double)a5 details:(id)a6 queue:(id)a7 completion:(id)a8
++ (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)ds forBundleID:(id)d timeout:(double)timeout details:(id)details queue:(id)queue completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if ([v13 count])
+  dsCopy = ds;
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
+  if ([dsCopy count])
   {
-    if (v14)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -8908,10 +8908,10 @@ void __70__MRAVEndpoint_findMyGroupLeaderWithTimeout_details_queue_completion___
   else
   {
     +[MRAVEndpoint prepareGroupForPlaybackWithOutputDeviceUIDs:forBundleID:timeout:details:queue:completion:];
-    if (v14)
+    if (dCopy)
     {
 LABEL_3:
-      if (v16)
+      if (queueCopy)
       {
         goto LABEL_5;
       }
@@ -8921,18 +8921,18 @@ LABEL_3:
   }
 
   +[MRAVEndpoint prepareGroupForPlaybackWithOutputDeviceUIDs:forBundleID:timeout:details:queue:completion:];
-  if (!v16)
+  if (!queueCopy)
   {
 LABEL_4:
-    v16 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v18 = MEMORY[0x1E69E96A0];
   }
 
 LABEL_5:
   v19 = [MEMORY[0x1E695DF00] now];
-  if (!v15)
+  if (!detailsCopy)
   {
-    v15 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"API"];
+    detailsCopy = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"API"];
   }
 
   v43[0] = MEMORY[0x1E69E9820];
@@ -8940,34 +8940,34 @@ LABEL_5:
   v43[2] = __105__MRAVEndpoint_prepareGroupForPlaybackWithOutputDeviceUIDs_forBundleID_timeout_details_queue_completion___block_invoke;
   v43[3] = &unk_1E76A2708;
   v44 = @"prepareGroupForPlaybackWithOutputDeviceUIDs";
-  v20 = v15;
+  v20 = detailsCopy;
   v45 = v20;
   v40 = v19;
   v46 = v40;
-  v39 = v17;
+  v39 = completionCopy;
   v47 = v39;
   v21 = MEMORY[0x1A58E3570](v43);
-  v22 = v14;
-  v23 = v13;
-  v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@), bundleID=%@", v13, v14];
+  v22 = dCopy;
+  v23 = dsCopy;
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIDs=(%@), bundleID=%@", dsCopy, dCopy];
   v25 = objc_alloc(MEMORY[0x1E696AD60]);
-  v26 = [(MRRequestDetails *)v20 requestID];
-  v27 = [v25 initWithFormat:@"%@<%@>", @"prepareGroupForPlaybackWithOutputDeviceUIDs", v26];
+  requestID = [(MRRequestDetails *)v20 requestID];
+  v27 = [v25 initWithFormat:@"%@<%@>", @"prepareGroupForPlaybackWithOutputDeviceUIDs", requestID];
 
-  if (v24)
+  if (dCopy)
   {
-    [v27 appendFormat:@" for %@", v24];
+    [v27 appendFormat:@" for %@", dCopy];
   }
 
-  v28 = [(MRRequestDetails *)v20 reason];
+  reason = [(MRRequestDetails *)v20 reason];
 
-  if (v28)
+  if (reason)
   {
-    v29 = [(MRRequestDetails *)v20 reason];
-    [v27 appendFormat:@" because %@", v29];
+    reason2 = [(MRRequestDetails *)v20 reason];
+    [v27 appendFormat:@" because %@", reason2];
   }
 
-  v38 = v24;
+  v38 = dCopy;
   v30 = _MRLogForCategory(0xAuLL);
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
@@ -8980,18 +8980,18 @@ LABEL_5:
   MRAddPropertyListToXPCMessage(v31, v23, "MRXPC_OUTPUT_DEVICE_UID_ARRAY_DATA_KEY");
   v32 = [[MRPlayerPath alloc] initWithOrigin:0 bundleIdentifier:v22 player:0];
   MRAddPlayerPathToXPCMessage(v31, v32);
-  xpc_dictionary_set_double(v31, "timeout", a5);
+  xpc_dictionary_set_double(v31, "timeout", timeout);
   MRAddRequestDetailsToXPCMessage(v31, v20);
   v33 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v34 = [v33 service];
-  v35 = [v34 mrXPCConnection];
+  service = [v33 service];
+  mrXPCConnection = [service mrXPCConnection];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __105__MRAVEndpoint_prepareGroupForPlaybackWithOutputDeviceUIDs_forBundleID_timeout_details_queue_completion___block_invoke_626;
   v41[3] = &unk_1E769B338;
   v42 = v21;
   v36 = v21;
-  [v35 sendMessage:v31 queue:v16 reply:v41];
+  [mrXPCConnection sendMessage:v31 queue:queueCopy reply:v41];
 
   v37 = *MEMORY[0x1E69E9840];
 }
@@ -9078,27 +9078,27 @@ void __105__MRAVEndpoint_prepareGroupForPlaybackWithOutputDeviceUIDs_forBundleID
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)willStartingPlaybackToOutputDeviceInterruptPlayback:(id)a3 duration:(double)a4 queue:(id)a5 completion:(id)a6
+- (void)willStartingPlaybackToOutputDeviceInterruptPlayback:(id)playback duration:(double)duration queue:(id)queue completion:(id)completion
 {
   v10 = MEMORY[0x1E696AFB0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v15 = [v10 UUID];
-  v14 = [v15 UUIDString];
-  [(MRAVEndpoint *)self _willStartingPlaybackToOutputDeviceInterruptPlayback:v13 duration:v14 requestID:v12 queue:v11 completion:a4];
+  completionCopy = completion;
+  queueCopy = queue;
+  playbackCopy = playback;
+  uUID = [v10 UUID];
+  uUIDString = [uUID UUIDString];
+  [(MRAVEndpoint *)self _willStartingPlaybackToOutputDeviceInterruptPlayback:playbackCopy duration:uUIDString requestID:queueCopy queue:completionCopy completion:duration];
 }
 
-- (void)willStartingPlaybackToOutputDevicesInterruptPlayback:(id)a3 originatingOutputDeviceUID:(id)a4 duration:(double)a5 queue:(id)a6 completion:(id)a7
+- (void)willStartingPlaybackToOutputDevicesInterruptPlayback:(id)playback originatingOutputDeviceUID:(id)d duration:(double)duration queue:(id)queue completion:(id)completion
 {
   v70 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  if (v14)
+  playbackCopy = playback;
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v13)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -9107,7 +9107,7 @@ void __105__MRAVEndpoint_prepareGroupForPlaybackWithOutputDeviceUIDs_forBundleID
   else
   {
     [MRAVEndpoint willStartingPlaybackToOutputDevicesInterruptPlayback:originatingOutputDeviceUID:duration:queue:completion:];
-    if (v13)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -9116,20 +9116,20 @@ void __105__MRAVEndpoint_prepareGroupForPlaybackWithOutputDeviceUIDs_forBundleID
   [MRAVEndpoint willStartingPlaybackToOutputDevicesInterruptPlayback:originatingOutputDeviceUID:duration:queue:completion:];
 LABEL_3:
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v16 = [(MRAVEndpoint *)self uniqueIdentifier];
-  v17 = [(MRAVEndpoint *)self localizedName];
-  v51 = v12;
-  v18 = [v15 initWithFormat:@"endpoint=%@(%@), outputDevices=%@ originatingOutputDeviceUID=%@", v16, v17, v11, v12];
+  uniqueIdentifier = [(MRAVEndpoint *)self uniqueIdentifier];
+  localizedName = [(MRAVEndpoint *)self localizedName];
+  v51 = dCopy;
+  dCopy = [v15 initWithFormat:@"endpoint=%@(%@), outputDevices=%@ originatingOutputDeviceUID=%@", uniqueIdentifier, localizedName, playbackCopy, dCopy];
 
-  v19 = [MEMORY[0x1E695DF00] date];
-  v20 = [MEMORY[0x1E696AFB0] UUID];
-  v21 = [v20 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v22 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"willStartingPlaybackToOutputDeviceInterruptPlayback", v21];
+  v22 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"willStartingPlaybackToOutputDeviceInterruptPlayback", uUIDString];
   v23 = v22;
-  if (v18)
+  if (dCopy)
   {
-    [(__CFString *)v22 appendFormat:@" for %@", v18];
+    [(__CFString *)v22 appendFormat:@" for %@", dCopy];
   }
 
   v24 = _MRLogForCategory(0xAuLL);
@@ -9144,44 +9144,44 @@ LABEL_3:
   v57[1] = 3221225472;
   v57[2] = __122__MRAVEndpoint_willStartingPlaybackToOutputDevicesInterruptPlayback_originatingOutputDeviceUID_duration_queue_completion___block_invoke;
   v57[3] = &unk_1E76A2EF8;
-  v25 = v18;
+  v25 = dCopy;
   v58 = v25;
   v59 = @"willStartingPlaybackToOutputDeviceInterruptPlayback";
-  v26 = v21;
+  v26 = uUIDString;
   v60 = v26;
-  v27 = v19;
+  v27 = date;
   v61 = v27;
-  v28 = v13;
+  v28 = queueCopy;
   v62 = v28;
-  v29 = v14;
+  v29 = completionCopy;
   v63 = v29;
   v30 = MEMORY[0x1A58E3570](v57);
   v31 = +[MRDeviceInfoRequest localDeviceInfo];
   v32 = +[MRUserSettings currentSettings];
-  v33 = [v32 canHostMultiplayerStream];
+  canHostMultiplayerStream = [v32 canHostMultiplayerStream];
 
-  if (v33)
+  if (canHostMultiplayerStream)
   {
-    if ([v11 count])
+    if ([playbackCopy count])
     {
-      v34 = v11;
+      v34 = playbackCopy;
     }
 
     else
     {
-      v34 = [v11 mutableCopy];
-      v36 = v51;
+      v34 = [playbackCopy mutableCopy];
+      wHAIdentifier = v51;
       if (!v51)
       {
-        v36 = [v31 WHAIdentifier];
+        wHAIdentifier = [v31 WHAIdentifier];
       }
 
-      v51 = v36;
+      v51 = wHAIdentifier;
       [v34 addObject:?];
     }
 
-    v37 = [v31 WHAIdentifier];
-    v38 = [v34 containsObject:v37];
+    wHAIdentifier2 = [v31 WHAIdentifier];
+    v38 = [v34 containsObject:wHAIdentifier2];
 
     if (v38 && (+[MRAVClusterController sharedController](MRAVClusterController, "sharedController"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v39 clusterStatus], v39, v40 == 2))
     {
@@ -9239,7 +9239,7 @@ LABEL_3:
     v55 = v31;
     [(MRNowPlayingRequest *)v35 requestIsPlayingOnQueue:v28 completion:v54];
 
-    v34 = v11;
+    v34 = playbackCopy;
   }
 
   v48 = *MEMORY[0x1E69E9840];
@@ -9631,14 +9631,14 @@ LABEL_7:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)discoverySessionWithConfiguration:(id)a3
+- (id)discoverySessionWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if ([(MRAVEndpoint *)self isLocalEndpoint]|| ([(MRAVEndpoint *)self supportsExternalDiscovery]& 1) != 0)
   {
-    v5 = [v4 copy];
-    v6 = [(MRAVEndpoint *)self _externalDiscoverySessionDestinationUID];
-    [v5 setOutputDeviceUID:v6];
+    v5 = [configurationCopy copy];
+    _externalDiscoverySessionDestinationUID = [(MRAVEndpoint *)self _externalDiscoverySessionDestinationUID];
+    [v5 setOutputDeviceUID:_externalDiscoverySessionDestinationUID];
 
     v7 = [MRAVRoutingDiscoverySession discoverySessionWithConfiguration:v5];
   }
@@ -9657,34 +9657,34 @@ LABEL_7:
   return v7;
 }
 
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  dsCopy = ds;
   v11 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"Endpoint.createHostedEndpointWithOutputDeviceUIDs.endpoint"];
-  [(MRAVEndpoint *)self createHostedEndpointWithOutputDeviceUIDs:v10 details:v11 queue:v9 completion:v8];
+  [(MRAVEndpoint *)self createHostedEndpointWithOutputDeviceUIDs:dsCopy details:v11 queue:queueCopy completion:completionCopy];
 }
 
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  if (!v10)
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
+  dsCopy = ds;
+  if (!detailsCopy)
   {
-    v10 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"Endpoint.createHostedEndpointWithOutputDeviceUIDs.endpoint"];
+    detailsCopy = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"Endpoint.createHostedEndpointWithOutputDeviceUIDs.endpoint"];
   }
 
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __82__MRAVEndpoint_createHostedEndpointWithOutputDeviceUIDs_details_queue_completion___block_invoke;
   v26[3] = &unk_1E76A2FE8;
-  v28 = v12;
-  v14 = v11;
+  v28 = completionCopy;
+  v14 = queueCopy;
   v27 = v14;
-  v15 = v12;
+  v15 = completionCopy;
   v16 = MEMORY[0x1A58E3570](v26);
   v17 = qos_class_self();
   v18 = dispatch_get_global_queue(v17, 0);
@@ -9692,13 +9692,13 @@ LABEL_7:
   v22[1] = 3221225472;
   v22[2] = __82__MRAVEndpoint_createHostedEndpointWithOutputDeviceUIDs_details_queue_completion___block_invoke_3;
   v22[3] = &unk_1E76A3010;
-  v23 = v10;
+  v23 = detailsCopy;
   v24 = v14;
   v25 = v16;
   v19 = v16;
   v20 = v14;
-  v21 = v10;
-  [(MRAVEndpoint *)self createHostedEndpointWithOutputDeviceUIDs:a3 details:v21 queue:v18 groupUIDCompletion:v22];
+  v21 = detailsCopy;
+  [(MRAVEndpoint *)self createHostedEndpointWithOutputDeviceUIDs:ds details:v21 queue:v18 groupUIDCompletion:v22];
 }
 
 void __82__MRAVEndpoint_createHostedEndpointWithOutputDeviceUIDs_details_queue_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -9747,15 +9747,15 @@ void __82__MRAVEndpoint_createHostedEndpointWithOutputDeviceUIDs_details_queue_c
   }
 }
 
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 groupUIDCompletion:(id)a6
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue groupUIDCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  dsCopy = ds;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!detailsCopy)
   {
-    v11 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"Endpoint.createHostedEndpointWithOutputDeviceUIDs.groupUID"];
+    detailsCopy = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"Endpoint.createHostedEndpointWithOutputDeviceUIDs.groupUID"];
   }
 
   v18[0] = MEMORY[0x1E69E9820];
@@ -9763,14 +9763,14 @@ void __82__MRAVEndpoint_createHostedEndpointWithOutputDeviceUIDs_details_queue_c
   v18[2] = __90__MRAVEndpoint_createHostedEndpointWithOutputDeviceUIDs_details_queue_groupUIDCompletion___block_invoke;
   v18[3] = &unk_1E76A1BC0;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = dsCopy;
+  v20 = detailsCopy;
+  v21 = queueCopy;
+  v22 = completionCopy;
+  v14 = completionCopy;
+  v15 = queueCopy;
+  v16 = detailsCopy;
+  v17 = dsCopy;
   [(MRAVEndpoint *)self connectToExternalDeviceWithOptions:0 details:v16 completion:v18];
 }
 
@@ -9796,15 +9796,15 @@ void __90__MRAVEndpoint_createHostedEndpointWithOutputDeviceUIDs_details_queue_g
   }
 }
 
-- (void)modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5
+- (void)modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (requestCopy)
   {
-    if (v9)
+    if (queueCopy)
     {
       goto LABEL_4;
     }
@@ -9813,10 +9813,10 @@ void __90__MRAVEndpoint_createHostedEndpointWithOutputDeviceUIDs_details_queue_g
   }
 
   [MRAVEndpoint modifyTopologyWithRequest:withReplyQueue:completion:];
-  if (!v9)
+  if (!queueCopy)
   {
 LABEL_3:
-    v9 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v11 = MEMORY[0x1E69E96A0];
   }
 
@@ -9824,26 +9824,26 @@ LABEL_4:
   v12 = [MEMORY[0x1E695DF00] now];
   [v12 timeIntervalSinceNow];
   v14 = v13;
-  v15 = [(MRAVEndpoint *)self outputDevices];
-  v16 = [v15 count];
+  outputDevices = [(MRAVEndpoint *)self outputDevices];
+  v16 = [outputDevices count];
 
   v17 = MRAnalyticsCompositionForEndpoint(self);
   v18 = objc_alloc(MEMORY[0x1E696AD60]);
-  v19 = [v8 requestDetails];
-  v20 = [v19 requestID];
-  v21 = [v18 initWithFormat:@"%@<%@>", @"Endpoint.modifyTopologyWithRequest", v20];
+  requestDetails = [requestCopy requestDetails];
+  requestID = [requestDetails requestID];
+  v21 = [v18 initWithFormat:@"%@<%@>", @"Endpoint.modifyTopologyWithRequest", requestID];
 
-  v22 = [(MRAVEndpoint *)self debugName];
+  debugName = [(MRAVEndpoint *)self debugName];
 
-  if (v22)
+  if (debugName)
   {
-    v23 = [(MRAVEndpoint *)self debugName];
-    [v21 appendFormat:@" for %@", v23];
+    debugName2 = [(MRAVEndpoint *)self debugName];
+    [v21 appendFormat:@" for %@", debugName2];
   }
 
-  if (v8)
+  if (requestCopy)
   {
-    [v21 appendFormat:@" because %@", v8];
+    [v21 appendFormat:@" because %@", requestCopy];
   }
 
   v24 = _MRLogForCategory(0xAuLL);
@@ -9859,13 +9859,13 @@ LABEL_4:
     v25 = MRLogCategoryDiscoveryOversize();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v8 requestDetails];
-      v27 = [v26 requestID];
+      requestDetails2 = [requestCopy requestDetails];
+      requestID2 = [requestDetails2 requestID];
       [MEMORY[0x1E696AF00] callStackSymbols];
       v35 = v17;
       v29 = v28 = v16;
       *buf = 138412546;
-      v44 = v27;
+      v44 = requestID2;
       v45 = 2112;
       v46 = v29;
       _os_log_impl(&dword_1A2860000, v25, OS_LOG_TYPE_DEFAULT, "Endpoint.modifyTopologyWithRequest<%@> %@", buf, 0x16u);
@@ -9880,17 +9880,17 @@ LABEL_4:
   v36[2] = __68__MRAVEndpoint_modifyTopologyWithRequest_withReplyQueue_completion___block_invoke;
   v36[3] = &unk_1E76A3038;
   v36[4] = self;
-  v37 = v8;
+  v37 = requestCopy;
   v38 = v12;
-  v39 = v10;
+  v39 = completionCopy;
   v40 = fabs(v14);
   v42 = v17;
   v41 = v16;
-  v30 = v10;
+  v30 = completionCopy;
   v31 = v12;
-  v32 = v8;
+  v32 = requestCopy;
   v33 = MEMORY[0x1A58E3570](v36);
-  [(MRAVEndpoint *)self _modifyTopologyWithRequest:v32 withReplyQueue:v9 completion:v33];
+  [(MRAVEndpoint *)self _modifyTopologyWithRequest:v32 withReplyQueue:queueCopy completion:v33];
 
   v34 = *MEMORY[0x1E69E9840];
 }
@@ -10039,26 +10039,26 @@ LABEL_26:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5
+- (void)_modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
   v26[3] = __Block_byref_object_copy__37;
   v26[4] = __Block_byref_object_dispose__37;
-  v11 = v8;
+  v11 = requestCopy;
   v27 = v11;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __69__MRAVEndpoint__modifyTopologyWithRequest_withReplyQueue_completion___block_invoke;
   v23[3] = &unk_1E769AB50;
-  v12 = v10;
+  v12 = completionCopy;
   v25 = v12;
-  v13 = v9;
+  v13 = queueCopy;
   v24 = v13;
   v14 = MEMORY[0x1A58E3570](v23);
   v28 = @"MREndpointConnectionReasonUserInfoKey";
@@ -10149,123 +10149,123 @@ id __69__MRAVEndpoint__modifyTopologyWithRequest_withReplyQueue_completion___blo
   return v6;
 }
 
-- (id)outputDeviceWithUID:(id)a3
+- (id)outputDeviceWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __36__MRAVEndpoint_outputDeviceWithUID___block_invoke;
   v9[3] = &unk_1E769CDC0;
-  v10 = v4;
-  v5 = v4;
+  v10 = dCopy;
+  v5 = dCopy;
   v6 = [(MRAVEndpoint *)self outputDevicesMatchingPredicate:v9];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (void)addOutputDevices:(id)a3 initiator:(id)a4 withReplyQueue:(id)a5 completion:(id)a6
+- (void)addOutputDevices:(id)devices initiator:(id)initiator withReplyQueue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v15 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:v12];
+  completionCopy = completion;
+  queueCopy = queue;
+  initiatorCopy = initiator;
+  devicesCopy = devices;
+  v15 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:initiatorCopy];
 
-  v14 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v15 type:1 outputDevices:v13];
-  [(MRAVEndpoint *)self modifyTopologyWithRequest:v14 withReplyQueue:v11 completion:v10];
+  v14 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v15 type:1 outputDevices:devicesCopy];
+  [(MRAVEndpoint *)self modifyTopologyWithRequest:v14 withReplyQueue:queueCopy completion:completionCopy];
 }
 
-- (void)addOutputDevices:(id)a3 initiator:(id)a4 fadeAudio:(BOOL)a5 withReplyQueue:(id)a6 completion:(id)a7
+- (void)addOutputDevices:(id)devices initiator:(id)initiator fadeAudio:(BOOL)audio withReplyQueue:(id)queue completion:(id)completion
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  initiatorCopy = initiator;
+  devicesCopy = devices;
   v15 = _MRLogForCategory(0);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     [MRAVEndpoint(Deprecated) addOutputDevices:initiator:fadeAudio:withReplyQueue:completion:];
   }
 
-  [(MRAVEndpoint *)self addOutputDevices:v14 initiator:v13 withReplyQueue:v12 completion:v11];
+  [(MRAVEndpoint *)self addOutputDevices:devicesCopy initiator:initiatorCopy withReplyQueue:queueCopy completion:completionCopy];
 }
 
-- (void)removeOutputDevices:(id)a3 initiator:(id)a4 withReplyQueue:(id)a5 completion:(id)a6
+- (void)removeOutputDevices:(id)devices initiator:(id)initiator withReplyQueue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v15 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:v12];
+  completionCopy = completion;
+  queueCopy = queue;
+  initiatorCopy = initiator;
+  devicesCopy = devices;
+  v15 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:initiatorCopy];
 
-  v14 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v15 type:2 outputDevices:v13];
-  [(MRAVEndpoint *)self modifyTopologyWithRequest:v14 withReplyQueue:v11 completion:v10];
+  v14 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v15 type:2 outputDevices:devicesCopy];
+  [(MRAVEndpoint *)self modifyTopologyWithRequest:v14 withReplyQueue:queueCopy completion:completionCopy];
 }
 
-- (void)removeOutputDevices:(id)a3 initiator:(id)a4 fadeAudio:(BOOL)a5 withReplyQueue:(id)a6 completion:(id)a7
+- (void)removeOutputDevices:(id)devices initiator:(id)initiator fadeAudio:(BOOL)audio withReplyQueue:(id)queue completion:(id)completion
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  initiatorCopy = initiator;
+  devicesCopy = devices;
   v15 = _MRLogForCategory(0);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     [MRAVEndpoint(Deprecated) addOutputDevices:initiator:fadeAudio:withReplyQueue:completion:];
   }
 
-  [(MRAVEndpoint *)self removeOutputDevices:v14 initiator:v13 withReplyQueue:v12 completion:v11];
+  [(MRAVEndpoint *)self removeOutputDevices:devicesCopy initiator:initiatorCopy withReplyQueue:queueCopy completion:completionCopy];
 }
 
-- (void)setOutputDevices:(id)a3 initiator:(id)a4 withReplyQueue:(id)a5 completion:(id)a6
+- (void)setOutputDevices:(id)devices initiator:(id)initiator withReplyQueue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v15 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:v12];
+  completionCopy = completion;
+  queueCopy = queue;
+  initiatorCopy = initiator;
+  devicesCopy = devices;
+  v15 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:initiatorCopy];
 
-  v14 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v15 type:3 outputDevices:v13];
-  [(MRAVEndpoint *)self modifyTopologyWithRequest:v14 withReplyQueue:v11 completion:v10];
+  v14 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v15 type:3 outputDevices:devicesCopy];
+  [(MRAVEndpoint *)self modifyTopologyWithRequest:v14 withReplyQueue:queueCopy completion:completionCopy];
 }
 
-- (void)setOutputDevices:(id)a3 initiator:(id)a4 fadeAudio:(BOOL)a5 withReplyQueue:(id)a6 completion:(id)a7
+- (void)setOutputDevices:(id)devices initiator:(id)initiator fadeAudio:(BOOL)audio withReplyQueue:(id)queue completion:(id)completion
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  initiatorCopy = initiator;
+  devicesCopy = devices;
   v15 = _MRLogForCategory(0);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     [MRAVEndpoint(Deprecated) addOutputDevices:initiator:fadeAudio:withReplyQueue:completion:];
   }
 
-  [(MRAVEndpoint *)self setOutputDevices:v14 initiator:v13 withReplyQueue:v12 completion:v11];
+  [(MRAVEndpoint *)self setOutputDevices:devicesCopy initiator:initiatorCopy withReplyQueue:queueCopy completion:completionCopy];
 }
 
-- (__CFString)_createLocalizedNameWithBuiltInDeviceNameBlock:(void *)a1
+- (__CFString)_createLocalizedNameWithBuiltInDeviceNameBlock:(void *)block
 {
   v50 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!block)
   {
     v36 = 0;
     goto LABEL_47;
   }
 
-  v4 = [a1 outputDevices];
-  if ([v4 count] > 1)
+  outputDevices = [block outputDevices];
+  if ([outputDevices count] > 1)
   {
     v44 = v3;
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-    v13 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    firstObject = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(outputDevices, "count")}];
+    groupLeader4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(outputDevices, "count")}];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v14 = v4;
+    v14 = outputDevices;
     v15 = [v14 countByEnumeratingWithState:&v45 objects:v49 count:16];
     if (!v15)
     {
@@ -10284,20 +10284,20 @@ id __69__MRAVEndpoint__modifyTopologyWithRequest_withReplyQueue_completion___blo
         }
 
         v19 = *(*(&v45 + 1) + 8 * i);
-        v20 = [v19 name];
-        if ([v20 length])
+        name = [v19 name];
+        if ([name length])
         {
-          v21 = [v19 logicalDeviceID];
-          if (![v21 length])
+          logicalDeviceID = [v19 logicalDeviceID];
+          if (![logicalDeviceID length])
           {
             goto LABEL_22;
           }
 
-          if (([v13 containsObject:v21] & 1) == 0)
+          if (([groupLeader4 containsObject:logicalDeviceID] & 1) == 0)
           {
-            [v13 addObject:v21];
+            [groupLeader4 addObject:logicalDeviceID];
 LABEL_22:
-            [v5 addObject:v20];
+            [firstObject addObject:name];
           }
         }
       }
@@ -10307,49 +10307,49 @@ LABEL_22:
       {
 LABEL_26:
 
-        v22 = [a1 groupLeader];
-        v23 = [v22 isProxyGroupPlayer];
+        groupLeader = [block groupLeader];
+        isProxyGroupPlayer = [groupLeader isProxyGroupPlayer];
 
-        if (v23)
+        if (isProxyGroupPlayer)
         {
           v3 = v44;
-          if ([a1 isLocalEndpoint])
+          if ([block isLocalEndpoint])
           {
-            v24 = v44[2](v44);
+            name2 = v44[2](v44);
           }
 
           else
           {
-            v29 = [a1 designatedGroupLeader];
-            v24 = [v29 name];
+            designatedGroupLeader = [block designatedGroupLeader];
+            name2 = [designatedGroupLeader name];
 
-            [v5 removeObject:v24];
+            [firstObject removeObject:name2];
           }
 
           v30 = MRLocalizedString(@"ROUTE_NAMES_CONCAT_DELIMITER");
-          v31 = [v5 componentsJoinedByString:v30];
+          v31 = [firstObject componentsJoinedByString:v30];
 
-          v32 = [a1 groupLeader];
-          LODWORD(v30) = [v32 hasPlaceholderName];
+          groupLeader2 = [block groupLeader];
+          LODWORD(v30) = [groupLeader2 hasPlaceholderName];
 
           if (v30)
           {
-            v12 = v31;
+            name3 = v31;
           }
 
           else
           {
             v33 = MEMORY[0x1E696AEC0];
             v34 = MRLocalizedStringWithFormat(@"ROUTE_NAME_ARROW_FORMAT");
-            v12 = [v33 stringWithFormat:v34, v24, v31];
+            name3 = [v33 stringWithFormat:v34, name2, v31];
           }
         }
 
         else
         {
-          [v5 sortUsingSelector:sel_localizedCaseInsensitiveCompare_];
-          v24 = MRLocalizedString(@"ROUTE_NAMES_CONCAT_DELIMITER");
-          v12 = [v5 componentsJoinedByString:v24];
+          [firstObject sortUsingSelector:sel_localizedCaseInsensitiveCompare_];
+          name2 = MRLocalizedString(@"ROUTE_NAMES_CONCAT_DELIMITER");
+          name3 = [firstObject componentsJoinedByString:name2];
           v3 = v44;
         }
 
@@ -10358,31 +10358,31 @@ LABEL_26:
     }
   }
 
-  v5 = [v4 firstObject];
-  v6 = [v5 deviceType];
-  v7 = [v5 deviceType];
-  v8 = [a1 isLocalEndpoint];
-  v10 = v6 == 4 || v7 == 5;
-  if (v8 && v10)
+  firstObject = [outputDevices firstObject];
+  deviceType = [firstObject deviceType];
+  deviceType2 = [firstObject deviceType];
+  isLocalEndpoint = [block isLocalEndpoint];
+  v10 = deviceType == 4 || deviceType2 == 5;
+  if (isLocalEndpoint && v10)
   {
-    v11 = v3[2](v3);
+    name6 = v3[2](v3);
   }
 
   else
   {
-    v25 = [a1 groupLeader];
-    v26 = [v25 isProxyGroupPlayer];
+    groupLeader3 = [block groupLeader];
+    isProxyGroupPlayer2 = [groupLeader3 isProxyGroupPlayer];
 
-    if (!v26)
+    if (!isProxyGroupPlayer2)
     {
-      v13 = v5;
-      if (!v5)
+      groupLeader4 = firstObject;
+      if (!firstObject)
       {
-        v13 = [a1 groupLeader];
+        groupLeader4 = [block groupLeader];
       }
 
-      v12 = [v13 name];
-      if (!v5)
+      name3 = [groupLeader4 name];
+      if (!firstObject)
       {
 LABEL_43:
       }
@@ -10390,31 +10390,31 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v27 = [a1 groupLeader];
-    v28 = [v27 hasPlaceholderName];
+    groupLeader5 = [block groupLeader];
+    hasPlaceholderName = [groupLeader5 hasPlaceholderName];
 
-    if (!v28)
+    if (!hasPlaceholderName)
     {
       v39 = MEMORY[0x1E696AEC0];
       v40 = MRLocalizedStringWithFormat(@"ROUTE_NAME_ARROW_FORMAT");
-      v41 = [a1 groupLeader];
-      v42 = [v41 name];
-      v43 = [v5 name];
-      v12 = [v39 stringWithFormat:v40, v42, v43];
+      groupLeader6 = [block groupLeader];
+      name4 = [groupLeader6 name];
+      name5 = [firstObject name];
+      name3 = [v39 stringWithFormat:v40, name4, name5];
 
       goto LABEL_44;
     }
 
-    v11 = [v5 name];
+    name6 = [firstObject name];
   }
 
-  v12 = v11;
+  name3 = name6;
 LABEL_44:
 
   v35 = &stru_1F1513E38;
-  if (v12)
+  if (name3)
   {
-    v35 = v12;
+    v35 = name3;
   }
 
   v36 = v35;
@@ -10425,55 +10425,55 @@ LABEL_47:
   return v36;
 }
 
-- (id)_initiatorStringWithInitiator:(void *)a3 uid:
+- (id)_initiatorStringWithInitiator:(void *)initiator uid:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  initiatorCopy = initiator;
+  if (self)
   {
     [MEMORY[0x1E696AD60] string];
     objc_claimAutoreleasedReturnValue();
     if ([OUTLINED_FUNCTION_22_0() length])
     {
-      [a1 appendString:v5];
-      if ([v6 length])
+      [self appendString:v5];
+      if ([initiatorCopy length])
       {
-        [a1 appendString:@"/"];
+        [self appendString:@"/"];
       }
     }
 
-    [a1 appendString:v6];
+    [self appendString:initiatorCopy];
   }
 
-  return a1;
+  return self;
 }
 
-- (void)migrateToOrSetOutputDevices:(id)a3 initiator:(id)a4 withReplyQueue:(id)a5 completion:(id)a6
+- (void)migrateToOrSetOutputDevices:(id)devices initiator:(id)initiator withReplyQueue:(id)queue completion:(id)completion
 {
   v76 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  devicesCopy = devices;
+  initiatorCopy = initiator;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v12 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v14 = MEMORY[0x1E69E96A0];
   }
 
   v15 = objc_alloc_init(MRPlaybackSessionMigrateRequest);
   [(MRPlaybackSessionMigrateRequest *)v15 setInitiator:@"routePicker"];
-  v16 = [MEMORY[0x1E695DF00] date];
-  v17 = [(MRPlaybackSessionMigrateRequest *)v15 requestID];
-  v57 = v11;
-  v53 = [(MRAVEndpoint *)self _initiatorStringWithInitiator:v11 uid:v17];
+  date = [MEMORY[0x1E695DF00] date];
+  requestID = [(MRPlaybackSessionMigrateRequest *)v15 requestID];
+  v57 = initiatorCopy;
+  v53 = [(MRAVEndpoint *)self _initiatorStringWithInitiator:initiatorCopy uid:requestID];
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v19 = [(MRAVEndpoint *)self debugName];
-  v54 = v10;
-  v20 = MRAVOutputDeviceArrayDescription(v10);
-  v21 = [v18 initWithFormat:@"source=%@ destination=%@", v19, v20];
+  debugName = [(MRAVEndpoint *)self debugName];
+  v54 = devicesCopy;
+  v20 = MRAVOutputDeviceArrayDescription(devicesCopy);
+  v21 = [v18 initWithFormat:@"source=%@ destination=%@", debugName, v20];
 
-  v22 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"migrateToOrSetOutputDevices", v17];
+  v22 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"migrateToOrSetOutputDevices", requestID];
   v23 = v22;
   if (v21)
   {
@@ -10494,16 +10494,16 @@ LABEL_47:
   v65[3] = &unk_1E76A2730;
   v66 = v21;
   v67 = @"migrateToOrSetOutputDevices";
-  v26 = v17;
+  v26 = requestID;
   v68 = v26;
-  v69 = v16;
+  v69 = date;
   v27 = v15;
   v70 = v27;
-  v72 = v13;
-  v28 = v12;
+  v72 = completionCopy;
+  v28 = queueCopy;
   v71 = v28;
-  v56 = v13;
-  v55 = v16;
+  v56 = completionCopy;
+  v55 = date;
   v29 = v21;
   v30 = MEMORY[0x1A58E3570](v65);
   v58[0] = MEMORY[0x1E69E9820];
@@ -10512,7 +10512,7 @@ LABEL_47:
   v58[3] = &unk_1E76A2758;
   v31 = v27;
   v59 = v31;
-  v60 = self;
+  selfCopy = self;
   v32 = v54;
   v61 = v32;
   v62 = v53;
@@ -10603,25 +10603,25 @@ LABEL_25:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performMigrationToOutputDevices:(id)a3 request:(id)a4 initiator:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)performMigrationToOutputDevices:(id)devices request:(id)request initiator:(id)initiator queue:(id)queue completion:(id)completion
 {
   v192 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v110 = a7;
-  if (v13)
+  devicesCopy = devices;
+  requestCopy = request;
+  initiatorCopy = initiator;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (devicesCopy)
   {
-    if (v16)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v16 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v19 = MEMORY[0x1E69E96A0];
-    if (!v14)
+    if (!requestCopy)
     {
       goto LABEL_4;
     }
@@ -10629,16 +10629,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"MRAVEndpoint.m" lineNumber:969 description:{@"Invalid parameter not satisfying: %@", @"destination"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MRAVEndpoint.m" lineNumber:969 description:{@"Invalid parameter not satisfying: %@", @"destination"}];
 
-  if (!v16)
+  if (!queueCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v14)
+  if (!requestCopy)
   {
 LABEL_4:
     v17 = objc_alloc_init(MRPlaybackSessionMigrateRequest);
@@ -10646,19 +10646,19 @@ LABEL_4:
   }
 
 LABEL_7:
-  v17 = v14;
+  v17 = requestCopy;
 LABEL_8:
   v20 = v17;
-  v108 = [MEMORY[0x1E695DF00] date];
-  v21 = [(MRPlaybackSessionMigrateRequest *)v20 requestID];
-  v101 = v15;
-  v103 = [(MRAVEndpoint *)self _initiatorStringWithInitiator:v15 uid:v21];
+  date = [MEMORY[0x1E695DF00] date];
+  requestID = [(MRPlaybackSessionMigrateRequest *)v20 requestID];
+  v101 = initiatorCopy;
+  v103 = [(MRAVEndpoint *)self _initiatorStringWithInitiator:initiatorCopy uid:requestID];
   v22 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v23 = [(MRAVEndpoint *)self debugName];
-  v24 = MRAVOutputDeviceArrayDescription(v13);
-  v25 = [v22 initWithFormat:@"source=%@ destination=%@", v23, v24];
+  debugName = [(MRAVEndpoint *)self debugName];
+  v24 = MRAVOutputDeviceArrayDescription(devicesCopy);
+  v25 = [v22 initWithFormat:@"source=%@ destination=%@", debugName, v24];
 
-  v26 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"migrateToOutputDevice", v21];
+  v26 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"migrateToOutputDevice", requestID];
   v27 = v26;
   if (v25)
   {
@@ -10680,17 +10680,17 @@ LABEL_8:
   v107 = v25;
   v180 = v107;
   v181 = @"migrateToOutputDevice";
-  v30 = v21;
+  v30 = requestID;
   v182 = v30;
-  v106 = v108;
+  v106 = date;
   v183 = v106;
-  v109 = v14;
+  v109 = requestCopy;
   v184 = v109;
   v31 = v20;
   v185 = v31;
-  v105 = v110;
+  v105 = completionCopy;
   v187 = v105;
-  v32 = v16;
+  v32 = queueCopy;
   v186 = v32;
   v33 = MEMORY[0x1A58E3570](v179);
   v170[0] = MEMORY[0x1E69E9820];
@@ -10702,8 +10702,8 @@ LABEL_8:
   v172 = @"migrateToOutputDevice";
   v35 = v30;
   v173 = v35;
-  v174 = self;
-  v36 = v13;
+  selfCopy = self;
+  v36 = devicesCopy;
   v175 = v36;
   v104 = v103;
   v176 = v104;
@@ -10717,7 +10717,7 @@ LABEL_8:
   v165[2] = __83__MRAVEndpoint_performMigrationToOutputDevices_request_initiator_queue_completion___block_invoke_3;
   v165[3] = &unk_1E76A2870;
   v165[4] = self;
-  v111 = self;
+  selfCopy2 = self;
   v40 = v34;
   v166 = v40;
   v41 = v37;
@@ -10773,7 +10773,7 @@ LABEL_8:
   v149 = v58;
   v100 = v55;
   v150 = v100;
-  v147 = v111;
+  v147 = selfCopy2;
   v59 = MEMORY[0x1A58E3570](v144);
   v60 = [v47 mr_filter:&__block_literal_global_310];
   v61 = [v60 count];
@@ -10822,7 +10822,7 @@ LABEL_8:
   v129 = @"migrateToOutputDevice";
   v70 = v66;
   v130 = v70;
-  v131 = v111;
+  v131 = selfCopy2;
   v112 = v59;
   v133 = v112;
   v71 = v65;
@@ -10889,24 +10889,24 @@ LABEL_8:
   v93 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestMicrophoneConnectionWithDetails:(void *)a3 queue:(void *)a4 completion:
+- (void)requestMicrophoneConnectionWithDetails:(void *)details queue:(void *)queue completion:
 {
   v38 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  detailsCopy = details;
+  queueCopy = queue;
+  if (self)
   {
     v10 = [MEMORY[0x1E695DF00] now];
-    v11 = [a1 debugName];
+    debugName = [self debugName];
     v12 = objc_alloc(MEMORY[0x1E696AD60]);
-    v13 = [v7 name];
-    v14 = [v7 requestID];
-    v15 = [v12 initWithFormat:@"%@<%@>", v13, v14];
+    name = [v7 name];
+    requestID = [v7 requestID];
+    v15 = [v12 initWithFormat:@"%@<%@>", name, requestID];
 
-    if (v11)
+    if (debugName)
     {
-      [v15 appendFormat:@" for %@", v11];
+      [v15 appendFormat:@" for %@", debugName];
     }
 
     v16 = _MRLogForCategory(0xAuLL);
@@ -10921,13 +10921,13 @@ LABEL_8:
     v29[1] = 3221225472;
     v29[2] = __72__MRAVEndpoint_requestMicrophoneConnectionWithDetails_queue_completion___block_invoke;
     v29[3] = &unk_1E76A2BD8;
-    v30 = v11;
+    v30 = debugName;
     v18 = v7;
     v31 = v18;
     v32 = v10;
-    v33 = v9;
+    v33 = queueCopy;
     v19 = v10;
-    v20 = v11;
+    v20 = debugName;
     v21 = MEMORY[0x1A58E3570](v29);
     v34 = @"MREndpointConnectionReasonUserInfoKey";
     v35 = @"requestMicrophoneConnection";
@@ -10936,46 +10936,46 @@ LABEL_8:
     v25[1] = 3221225472;
     v25[2] = __72__MRAVEndpoint_requestMicrophoneConnectionWithDetails_queue_completion___block_invoke_439;
     v25[3] = &unk_1E76A2B88;
-    v25[4] = a1;
+    v25[4] = self;
     v26 = v18;
-    v27 = v8;
+    v27 = detailsCopy;
     v28 = v21;
     v23 = v21;
-    [a1 connectToExternalDeviceWithUserInfo:v22 completion:v25];
+    [self connectToExternalDeviceWithUserInfo:v22 completion:v25];
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)translateClusterUIDIfNeeded:(void *)a1
+- (id)translateClusterUIDIfNeeded:(void *)needed
 {
   v3 = a2;
-  if (a1)
+  if (needed)
   {
-    v4 = [a1 outputDevices];
+    outputDevices = [needed outputDevices];
     OUTLINED_FUNCTION_0_3();
     v15 = 3221225472;
     v16 = __44__MRAVEndpoint_translateClusterUIDIfNeeded___block_invoke;
     v17 = &unk_1E769CDC0;
     v5 = v3;
     v18 = v5;
-    v6 = [v4 mr_first:v14];
+    v6 = [outputDevices mr_first:v14];
 
-    v7 = [a1 externalDevice];
-    v8 = [v7 deviceInfo];
-    v9 = [v8 isClusterAware];
+    externalDevice = [needed externalDevice];
+    deviceInfo = [externalDevice deviceInfo];
+    isClusterAware = [deviceInfo isClusterAware];
 
-    if ((v9 & 1) == 0 && [v6 deviceSubtype] == 15)
+    if ((isClusterAware & 1) == 0 && [v6 deviceSubtype] == 15)
     {
       [v6 uid];
       objc_claimAutoreleasedReturnValue();
-      v10 = [OUTLINED_FUNCTION_22_0() isEqualToString:v7];
+      v10 = [OUTLINED_FUNCTION_22_0() isEqualToString:externalDevice];
 
       if (v10)
       {
-        v11 = [v6 primaryID];
+        primaryID = [v6 primaryID];
 
-        v5 = v11;
+        v5 = primaryID;
       }
     }
 
@@ -10992,30 +10992,30 @@ LABEL_8:
   return v12;
 }
 
-- (unsigned)volumeControlCapabilitiesForOutputDeviceUID:(id)a3
+- (unsigned)volumeControlCapabilitiesForOutputDeviceUID:(id)d
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v6 = [(MRAVEndpoint *)self debugName];
-  v7 = v6;
-  if (v4)
+  debugName = [(MRAVEndpoint *)self debugName];
+  v7 = debugName;
+  if (dCopy)
   {
-    v8 = [v5 initWithFormat:@"endpoint=%@, outputDevice=%@", v6, v4];
+    dCopy = [v5 initWithFormat:@"endpoint=%@, outputDevice=%@", debugName, dCopy];
   }
 
   else
   {
-    v8 = [v5 initWithFormat:@"endpoint=%@", v6, v46];
+    dCopy = [v5 initWithFormat:@"endpoint=%@", debugName, v46];
   }
 
-  v9 = v8;
+  v9 = dCopy;
 
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [v11 UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v13 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"Endpoint.volumeControlCapabilitiesForOutputDeviceUID", v12];
+  v13 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"Endpoint.volumeControlCapabilitiesForOutputDeviceUID", uUIDString];
   v14 = v13;
   if (v9)
   {
@@ -11031,10 +11031,10 @@ LABEL_8:
     _os_log_impl(v16, v17, v18, v19, v20, 0xCu);
   }
 
-  v21 = [(MRAVEndpoint *)self outputContextDataSource];
-  v22 = [(MRAVEndpoint *)self translateClusterUIDIfNeeded:v4];
+  outputContextDataSource = [(MRAVEndpoint *)self outputContextDataSource];
+  v22 = [(MRAVEndpoint *)self translateClusterUIDIfNeeded:dCopy];
   v47 = 0;
-  v23 = [v21 volumeControlCapabilitiesForOutputDeviceUID:v22 error:&v47];
+  v23 = [outputContextDataSource volumeControlCapabilitiesForOutputDeviceUID:v22 error:&v47];
   v24 = v47;
 
   if (v24)
@@ -11042,8 +11042,8 @@ LABEL_8:
     v25 = _MRLogForCategory(0xAuLL);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [MEMORY[0x1E695DF00] date];
-      [v26 timeIntervalSinceDate:v10];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [date2 timeIntervalSinceDate:date];
       OUTLINED_FUNCTION_10_5();
       v50 = v27;
       v51 = v24;
@@ -11064,12 +11064,12 @@ LABEL_16:
     {
       if (v30)
       {
-        v26 = MRMediaRemoteVolumeControlCapabilitiesDescription(v23);
-        v31 = [MEMORY[0x1E695DF00] date];
-        [v31 timeIntervalSinceDate:v10];
+        date2 = MRMediaRemoteVolumeControlCapabilitiesDescription(v23);
+        date3 = [MEMORY[0x1E695DF00] date];
+        [date3 timeIntervalSinceDate:date];
         OUTLINED_FUNCTION_10_5();
         v50 = 2112;
-        v51 = v26;
+        v51 = date2;
         v52 = 2048;
         v53 = v32;
         OUTLINED_FUNCTION_20_0();
@@ -11081,8 +11081,8 @@ LABEL_16:
 
     else if (v30)
     {
-      v26 = [MEMORY[0x1E695DF00] date];
-      [v26 timeIntervalSinceDate:v10];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [date2 timeIntervalSinceDate:date];
       OUTLINED_FUNCTION_10_5();
       v50 = 2048;
       v51 = v38;
@@ -11096,13 +11096,13 @@ LABEL_16:
   return v23;
 }
 
-- (float)volumeForOutputDeviceUID:(id)a3
+- (float)volumeForOutputDeviceUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   [(MRAVEndpoint *)self outputContextDataSource];
   objc_claimAutoreleasedReturnValue();
   v6 = OUTLINED_FUNCTION_22_0();
-  v7 = [(MRAVEndpoint *)v6 translateClusterUIDIfNeeded:v5];
+  v7 = [(MRAVEndpoint *)v6 translateClusterUIDIfNeeded:dCopy];
 
   v11 = 0;
   [v3 volumeForOutputDeviceUID:v7 error:&v11];
@@ -11111,49 +11111,49 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)volumeMutedForOutputDeviceUID:(id)a3
+- (BOOL)volumeMutedForOutputDeviceUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   [(MRAVEndpoint *)self outputContextDataSource];
   objc_claimAutoreleasedReturnValue();
   v6 = OUTLINED_FUNCTION_22_0();
-  v7 = [(MRAVEndpoint *)v6 translateClusterUIDIfNeeded:v5];
+  v7 = [(MRAVEndpoint *)v6 translateClusterUIDIfNeeded:dCopy];
 
-  LOBYTE(v5) = [v3 volumeMutedForOutputDeviceID:v7 error:0];
-  return v5;
+  LOBYTE(dCopy) = [v3 volumeMutedForOutputDeviceID:v7 error:0];
+  return dCopy;
 }
 
-- (void)_willStartingPlaybackToOutputDeviceInterruptPlayback:(void *)a3 duration:(void *)a4 requestID:(void *)a5 queue:(double)a6 completion:
+- (void)_willStartingPlaybackToOutputDeviceInterruptPlayback:(void *)playback duration:(void *)duration requestID:(void *)d queue:(double)queue completion:
 {
   v89 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!a1)
+  playbackCopy = playback;
+  durationCopy = duration;
+  dCopy = d;
+  if (!self)
   {
     goto LABEL_20;
   }
 
-  v52 = v14;
-  if (!v14)
+  v52 = dCopy;
+  if (!dCopy)
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:sel__willStartingPlaybackToOutputDeviceInterruptPlayback_duration_requestID_queue_completion_ object:a1 file:@"MRAVEndpoint.m" lineNumber:2778 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__willStartingPlaybackToOutputDeviceInterruptPlayback_duration_requestID_queue_completion_ object:self file:@"MRAVEndpoint.m" lineNumber:2778 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
-    if (v13)
+    if (durationCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_22:
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:sel__willStartingPlaybackToOutputDeviceInterruptPlayback_duration_requestID_queue_completion_ object:a1 file:@"MRAVEndpoint.m" lineNumber:2779 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__willStartingPlaybackToOutputDeviceInterruptPlayback_duration_requestID_queue_completion_ object:self file:@"MRAVEndpoint.m" lineNumber:2779 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
     goto LABEL_4;
   }
 
-  if (!v13)
+  if (!durationCopy)
   {
     goto LABEL_22;
   }
@@ -11161,15 +11161,15 @@ LABEL_22:
 LABEL_4:
   v15 = [MEMORY[0x1E695DF00] now];
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v17 = [a1 uniqueIdentifier];
-  v18 = [a1 localizedName];
-  v19 = [v16 initWithFormat:@"endpoint=%@(%@), outputDevice=%@", v17, v18, v11];
+  uniqueIdentifier = [self uniqueIdentifier];
+  localizedName = [self localizedName];
+  v19 = [v16 initWithFormat:@"endpoint=%@(%@), outputDevice=%@", uniqueIdentifier, localizedName, v11];
 
-  v20 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"willStartingPlaybackToOutputDeviceInterruptPlayback", v12];
-  v21 = v20;
+  playbackCopy = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"willStartingPlaybackToOutputDeviceInterruptPlayback", playbackCopy];
+  v21 = playbackCopy;
   if (v19)
   {
-    [v20 appendFormat:@" for %@", v19];
+    [playbackCopy appendFormat:@" for %@", v19];
   }
 
   v22 = _MRLogForCategory(0xAuLL);
@@ -11184,23 +11184,23 @@ LABEL_4:
   v78[1] = 3221225472;
   v78[2] = __105__MRAVEndpoint__willStartingPlaybackToOutputDeviceInterruptPlayback_duration_requestID_queue_completion___block_invoke;
   v78[3] = &unk_1E76A2F48;
-  v78[4] = a1;
+  v78[4] = self;
   v50 = v19;
   v79 = v50;
   v80 = @"willStartingPlaybackToOutputDeviceInterruptPlayback";
-  v24 = v12;
+  v24 = playbackCopy;
   v81 = v24;
   v25 = v15;
   v82 = v25;
-  v51 = v13;
-  v26 = v13;
+  v51 = durationCopy;
+  v26 = durationCopy;
   v83 = v26;
   v84 = v52;
   v27 = MEMORY[0x1A58E3570](v78);
   v28 = +[MRUserSettings currentSettings];
-  v29 = [v28 supportMultiplayerHost];
+  supportMultiplayerHost = [v28 supportMultiplayerHost];
 
-  if (v29)
+  if (supportMultiplayerHost)
   {
     v27[2](v27, 0, 0);
   }
@@ -11226,7 +11226,7 @@ LABEL_4:
     v72 = v49;
     v73 = v32;
     v34 = MEMORY[0x1A58E3570](v71);
-    if ([a1 isLocalEndpoint] && (+[MRAVClusterController sharedController](MRAVClusterController, "sharedController"), v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v35, "clusterStatus"), v35, v36 == 2))
+    if ([self isLocalEndpoint] && (+[MRAVClusterController sharedController](MRAVClusterController, "sharedController"), v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v35, "clusterStatus"), v35, v36 == 2))
     {
       v37 = +[MRAVClusterController sharedController];
       v64[0] = MEMORY[0x1E69E9820];
@@ -11237,7 +11237,7 @@ LABEL_4:
       v65 = @"willStartingPlaybackToOutputDeviceInterruptPlayback";
       v66 = v31;
       v67 = v11;
-      v70 = a6;
+      queueCopy = queue;
       v68 = v26;
       v69 = v34;
       [v37 getClusterLeaderEndpoint:v64];
@@ -11247,18 +11247,18 @@ LABEL_4:
 
     else
     {
-      v40 = [a1 outputDevices];
+      outputDevices = [self outputDevices];
       OUTLINED_FUNCTION_13_2();
       v60 = 3221225472;
       v61 = __105__MRAVEndpoint__willStartingPlaybackToOutputDeviceInterruptPlayback_duration_requestID_queue_completion___block_invoke_663;
       v62 = &unk_1E769CDC0;
       v38 = (v41 + 32);
       v63 = v11;
-      v39 = [v40 mr_filter:v59];
+      v39 = [outputDevices mr_filter:v59];
 
       if ([v39 count])
       {
-        v42 = [[MRNowPlayingControllerConfiguration alloc] initWithEndpoint:a1];
+        v42 = [[MRNowPlayingControllerConfiguration alloc] initWithEndpoint:self];
         [(MRNowPlayingControllerConfiguration *)v42 setRequestPlaybackQueue:1];
         [(MRNowPlayingControllerConfiguration *)v42 setRequestPlaybackState:1];
         [(MRNowPlayingControllerConfiguration *)v42 setLabel:@"CheckForInterrupt"];
@@ -11270,7 +11270,7 @@ LABEL_4:
         v54 = @"willStartingPlaybackToOutputDeviceInterruptPlayback";
         v55 = v31;
         v57 = v34;
-        v58 = a6;
+        queueCopy2 = queue;
         v39 = v39;
         v56 = v39;
         [(MRNowPlayingController *)v43 performRequestWithCompletion:v53];
@@ -11294,8 +11294,8 @@ LABEL_4:
     }
   }
 
-  v13 = v51;
-  v14 = v52;
+  durationCopy = v51;
+  dCopy = v52;
 LABEL_20:
 
   v46 = *MEMORY[0x1E69E9840];
@@ -11335,10 +11335,10 @@ void __105__MRAVEndpoint__willStartingPlaybackToOutputDeviceInterruptPlayback_du
 
     else
     {
-      v2 = [v1 externalDevice];
-      v3 = [v2 supportsExternalDiscovery];
+      externalDevice = [v1 externalDevice];
+      supportsExternalDiscovery = [externalDevice supportsExternalDiscovery];
 
-      return v3;
+      return supportsExternalDiscovery;
     }
   }
 
@@ -11347,50 +11347,50 @@ void __105__MRAVEndpoint__willStartingPlaybackToOutputDeviceInterruptPlayback_du
 
 - (id)_externalDiscoverySessionDestinationUID
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 isLocalEndpoint])
+    if ([self isLocalEndpoint])
     {
-      v1 = +[MRAVOutputDevice localDeviceUID];
+      selfCopy = +[MRAVOutputDevice localDeviceUID];
       goto LABEL_10;
     }
 
-    v2 = [v1 externalDevice];
-    v3 = [v2 deviceInfo];
-    v4 = [v3 buildVersion];
-    v5 = [v4 hasPrefix:@"19K"];
+    externalDevice = [selfCopy externalDevice];
+    deviceInfo = [externalDevice deviceInfo];
+    buildVersion = [deviceInfo buildVersion];
+    v5 = [buildVersion hasPrefix:@"19K"];
 
     if (v5)
     {
-      v6 = [v1 externalDevice];
-      v7 = [v6 deviceInfo];
-      v8 = [v7 deviceUID];
+      externalDevice2 = [selfCopy externalDevice];
+      deviceInfo2 = [externalDevice2 deviceInfo];
+      deviceUID = [deviceInfo2 deviceUID];
     }
 
     else
     {
-      v6 = [v1 designatedGroupLeader];
-      v9 = [v6 clusterID];
-      v7 = v9;
-      if (!v9)
+      externalDevice2 = [selfCopy designatedGroupLeader];
+      clusterID = [externalDevice2 clusterID];
+      deviceInfo2 = clusterID;
+      if (!clusterID)
       {
-        v11 = [v1 designatedGroupLeader];
-        v1 = [v11 uid];
+        designatedGroupLeader = [selfCopy designatedGroupLeader];
+        selfCopy = [designatedGroupLeader uid];
 
         goto LABEL_9;
       }
 
-      v8 = v9;
+      deviceUID = clusterID;
     }
 
-    v1 = v8;
+    selfCopy = deviceUID;
 LABEL_9:
   }
 
 LABEL_10:
 
-  return v1;
+  return selfCopy;
 }
 
 + (void)connectToEndpointContainingOutputDeviceUID:options:details:completion:.cold.1()
@@ -11486,7 +11486,7 @@ void __57__MRAVEndpoint_outputDeviceVolumeMuted_queue_completion___block_invoke_
 - (void)outputContextDataSource
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1A2860000, log, OS_LOG_TYPE_ERROR, "[AVEndpoint] %@ OutputContextDataSource not set, fetching manually...", buf, 0xCu);
 }
 

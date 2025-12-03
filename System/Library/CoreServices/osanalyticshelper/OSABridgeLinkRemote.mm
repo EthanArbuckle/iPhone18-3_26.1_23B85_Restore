@@ -2,7 +2,7 @@
 + (void)instantiate;
 - (OSABridgeLinkRemote)init;
 - (void)enforceQuota;
-- (void)transferInternal:(id)a3 key:(id)a4;
+- (void)transferInternal:(id)internal key:(id)key;
 @end
 
 @implementation OSABridgeLinkRemote
@@ -70,20 +70,20 @@
   return v3;
 }
 
-- (void)transferInternal:(id)a3 key:(id)a4
+- (void)transferInternal:(id)internal key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  internalCopy = internal;
+  keyCopy = key;
   serial_xfer_queue = self->_serial_xfer_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000D004;
   block[3] = &unk_100025098;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = internalCopy;
+  v9 = internalCopy;
+  v10 = keyCopy;
   dispatch_async(serial_xfer_queue, block);
 }
 

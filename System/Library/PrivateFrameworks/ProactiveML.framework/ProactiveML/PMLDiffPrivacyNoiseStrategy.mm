@@ -1,14 +1,14 @@
 @interface PMLDiffPrivacyNoiseStrategy
 - ($94F468A8D4C62B317260615823C2B210)noiseScaleFactors;
 - (NSString)description;
-- (PMLDiffPrivacyNoiseStrategy)initWithMaxIterationCount:(int)a3 noiseScaleFactors:(id)a4 minimumMagnitude:(float)a5 seed:(int)a6 noiseMechanism:(int64_t)a7 inplaceNorm:(BOOL)a8;
-- (PMLDiffPrivacyNoiseStrategy)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (_PMLPreNoiseScaleFactorAndNoiseSampler)samplerWithScaleFactorFor:(id)a3 usingNorm:(BOOL)a4;
+- (PMLDiffPrivacyNoiseStrategy)initWithMaxIterationCount:(int)count noiseScaleFactors:(id)factors minimumMagnitude:(float)magnitude seed:(int)seed noiseMechanism:(int64_t)mechanism inplaceNorm:(BOOL)norm;
+- (PMLDiffPrivacyNoiseStrategy)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (_PMLPreNoiseScaleFactorAndNoiseSampler)samplerWithScaleFactorFor:(id)for usingNorm:(BOOL)norm;
 - (id)createDefaultSampler;
-- (id)createSamplerByName:(id)a3;
-- (id)toPlistWithChunks:(id)a3;
-- (void)addNoiseToSparseMatrix:(id)a3;
-- (void)addNoiseToSparseVector:(id)a3;
+- (id)createSamplerByName:(id)name;
+- (id)toPlistWithChunks:(id)chunks;
+- (void)addNoiseToSparseMatrix:(id)matrix;
+- (void)addNoiseToSparseVector:(id)vector;
 @end
 
 @implementation PMLDiffPrivacyNoiseStrategy
@@ -32,22 +32,22 @@
   return v6;
 }
 
-- (PMLDiffPrivacyNoiseStrategy)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (PMLDiffPrivacyNoiseStrategy)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"NOISE_STRATEGY_MAX_ITERATIONS"];
-  v8 = [v6 objectForKeyedSubscript:@"GAUSSIAN_NOISE_SCALE"];
+  plistCopy = plist;
+  v7 = [plistCopy objectForKeyedSubscript:@"NOISE_STRATEGY_MAX_ITERATIONS"];
+  v8 = [plistCopy objectForKeyedSubscript:@"GAUSSIAN_NOISE_SCALE"];
   [v8 floatValue];
   v10 = v9;
-  v11 = [v6 objectForKeyedSubscript:@"LAPLACE_NOISE_SCALE"];
+  v11 = [plistCopy objectForKeyedSubscript:@"LAPLACE_NOISE_SCALE"];
   [v11 floatValue];
   v13 = v12;
 
-  v14 = [v6 objectForKeyedSubscript:@"NOISE_STRATEGY_MINIMUM_MAGNITUDE"];
-  v15 = [v6 objectForKeyedSubscript:@"NOISE_MECHANISM_ENUM_VALUE"];
-  v16 = [v15 integerValue];
+  v14 = [plistCopy objectForKeyedSubscript:@"NOISE_STRATEGY_MINIMUM_MAGNITUDE"];
+  v15 = [plistCopy objectForKeyedSubscript:@"NOISE_MECHANISM_ENUM_VALUE"];
+  integerValue = [v15 integerValue];
 
-  v17 = [v6 objectForKeyedSubscript:@"INPLACE_NORM"];
+  v17 = [plistCopy objectForKeyedSubscript:@"INPLACE_NORM"];
 
   if (v17)
   {
@@ -59,22 +59,22 @@
     v18 = MEMORY[0x277CBEC28];
   }
 
-  v19 = [v7 intValue];
+  intValue = [v7 intValue];
   [v14 floatValue];
   v21 = v20;
-  v22 = [v18 BOOLValue];
+  bOOLValue = [v18 BOOLValue];
   LODWORD(v23) = v10;
   LODWORD(v24) = v13;
   LODWORD(v25) = v21;
-  v26 = [(PMLDiffPrivacyNoiseStrategy *)self initWithMaxIterationCount:v19 noiseScaleFactors:v16 minimumMagnitude:v22 noiseMechanism:v23 inplaceNorm:v24, v25];
+  v26 = [(PMLDiffPrivacyNoiseStrategy *)self initWithMaxIterationCount:intValue noiseScaleFactors:integerValue minimumMagnitude:bOOLValue noiseMechanism:v23 inplaceNorm:v24, v25];
 
   return v26;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v31[8] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chunksCopy = chunks;
   noiseMechanism = self->_noiseMechanism;
   v6 = off_279ABF6E8;
   if (noiseMechanism > 1)
@@ -163,12 +163,12 @@ LABEL_14:
   return v26;
 }
 
-- (void)addNoiseToSparseMatrix:(id)a3
+- (void)addNoiseToSparseMatrix:(id)matrix
 {
-  v4 = a3;
-  v5 = [(PMLDiffPrivacyNoiseStrategy *)self createDefaultSampler];
-  v6 = [v4 numberOfRows];
-  v7 = [v4 numberOfColumns];
+  matrixCopy = matrix;
+  createDefaultSampler = [(PMLDiffPrivacyNoiseStrategy *)self createDefaultSampler];
+  numberOfRows = [matrixCopy numberOfRows];
+  numberOfColumns = [matrixCopy numberOfColumns];
   v46 = 0;
   v47 = &v46;
   v48 = 0x3810000000;
@@ -176,7 +176,7 @@ LABEL_14:
   v50 = 0;
   v51 = 0;
   v52 = 0;
-  matrix_nonzero_count = sparse_get_matrix_nonzero_count([v4 matrix]);
+  matrix_nonzero_count = sparse_get_matrix_nonzero_count([matrixCopy matrix]);
   v9 = 8;
   if (matrix_nonzero_count > 8)
   {
@@ -186,19 +186,19 @@ LABEL_14:
   v50 = 0;
   v51 = v9;
   v52 = malloc_type_malloc(16 * v9, 0x1000040D9A13B51uLL);
-  v35 = v4;
-  if ([v4 isSymmetric])
+  v35 = matrixCopy;
+  if ([matrixCopy isSymmetric])
   {
     v10 = objc_opt_new();
-    if (v6)
+    if (numberOfRows)
     {
       v11 = 0;
-      v12 = v7;
-      v13 = v6;
+      v12 = numberOfColumns;
+      v13 = numberOfRows;
       do
       {
         [v10 addIndexesInRange:{v11, v12--}];
-        v11 += v6 + 1;
+        v11 += numberOfRows + 1;
         --v13;
       }
 
@@ -208,35 +208,35 @@ LABEL_14:
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{0, v7 * v6}];
+    v10 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{0, numberOfColumns * numberOfRows}];
   }
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __54__PMLDiffPrivacyNoiseStrategy_addNoiseToSparseMatrix___block_invoke;
   v40[3] = &unk_279AC01B0;
-  v14 = v5;
+  v14 = createDefaultSampler;
   v41 = v14;
-  v42 = self;
+  selfCopy = self;
   v44 = &v46;
-  v45 = v6;
+  v45 = numberOfRows;
   v15 = v10;
   v43 = v15;
-  [v4 enumerateNonZeroValuesWithBlock:v40];
+  [matrixCopy enumerateNonZeroValuesWithBlock:v40];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __54__PMLDiffPrivacyNoiseStrategy_addNoiseToSparseMatrix___block_invoke_2;
   v36[3] = &unk_279AC0188;
   v16 = v14;
   v37 = v16;
-  v38 = self;
+  selfCopy2 = self;
   v39 = &v46;
   [v15 enumerateIndexesUsingBlock:v36];
   qsort(v47[6], v47[4], 0x10uLL, ixvalCompareIndex);
   v33 = v16;
   v34 = v15;
-  v17 = sparse_matrix_create_float(v6, v7);
-  if (v6)
+  v17 = sparse_matrix_create_float(numberOfRows, numberOfColumns);
+  if (numberOfRows)
   {
     v18 = 0;
     v19 = 0;
@@ -258,7 +258,7 @@ LABEL_14:
         {
           v25 = *v24;
           v24 += 2;
-          if (v25 >= (v18 + 1) * v6)
+          if (v25 >= (v18 + 1) * numberOfRows)
           {
             break;
           }
@@ -288,7 +288,7 @@ LABEL_18:
           do
           {
             *v30++ = *(v47[6] + v23 + 8);
-            *v31++ = *(v47[6] + v23) % v6;
+            *v31++ = *(v47[6] + v23) % numberOfRows;
             v23 += 16;
             --v29;
           }
@@ -306,7 +306,7 @@ LABEL_22:
       v18 = v22;
     }
 
-    while (v22 != v6);
+    while (v22 != numberOfRows);
   }
 
   v32 = v47;
@@ -358,10 +358,10 @@ char *__54__PMLDiffPrivacyNoiseStrategy_addNoiseToSparseMatrix___block_invoke_2(
   return result;
 }
 
-- (void)addNoiseToSparseVector:(id)a3
+- (void)addNoiseToSparseVector:(id)vector
 {
-  v4 = a3;
-  v5 = [(PMLDiffPrivacyNoiseStrategy *)self createDefaultSampler];
+  vectorCopy = vector;
+  createDefaultSampler = [(PMLDiffPrivacyNoiseStrategy *)self createDefaultSampler];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3810000000;
@@ -369,35 +369,35 @@ char *__54__PMLDiffPrivacyNoiseStrategy_addNoiseToSparseMatrix___block_invoke_2(
   v34 = 0;
   v35 = 0;
   v36 = 0;
-  v6 = [v4 numberOfNonZeroValues];
+  numberOfNonZeroValues = [vectorCopy numberOfNonZeroValues];
   v7 = 8;
-  if (v6 > 8)
+  if (numberOfNonZeroValues > 8)
   {
-    v7 = v6;
+    v7 = numberOfNonZeroValues;
   }
 
   v34 = 0;
   v35 = v7;
   v36 = malloc_type_malloc(16 * v7, 0x1000040D9A13B51uLL);
-  v8 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{0, objc_msgSend(v4, "length")}];
+  v8 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{0, objc_msgSend(vectorCopy, "length")}];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __54__PMLDiffPrivacyNoiseStrategy_addNoiseToSparseVector___block_invoke;
   v25[3] = &unk_279AC0160;
-  v9 = v5;
+  v9 = createDefaultSampler;
   v26 = v9;
-  v27 = self;
+  selfCopy = self;
   v29 = &v30;
   v10 = v8;
   v28 = v10;
-  [v4 enumerateNonZeroValuesWithBlock:v25];
+  [vectorCopy enumerateNonZeroValuesWithBlock:v25];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __54__PMLDiffPrivacyNoiseStrategy_addNoiseToSparseVector___block_invoke_2;
   v21 = &unk_279AC0188;
   v11 = v9;
   v22 = v11;
-  v23 = self;
+  selfCopy2 = self;
   v24 = &v30;
   [v10 enumerateIndexesUsingBlock:&v18];
   qsort(v31[6], v31[4], 0x10uLL, ixvalCompareIndex);
@@ -422,9 +422,9 @@ char *__54__PMLDiffPrivacyNoiseStrategy_addNoiseToSparseMatrix___block_invoke_2(
 
   free(v15[6]);
   v15[6] = 0;
-  [v4 setNumberOfNonZeroValues:{v31[4], v18, v19, v20, v21}];
-  [v4 setSparseIndices:v12];
-  [v4 setSparseValues:v14];
+  [vectorCopy setNumberOfNonZeroValues:{v31[4], v18, v19, v20, v21}];
+  [vectorCopy setSparseIndices:v12];
+  [vectorCopy setSparseValues:v14];
 
   _Block_object_dispose(&v30, 8);
 }
@@ -468,12 +468,12 @@ char *__54__PMLDiffPrivacyNoiseStrategy_addNoiseToSparseVector___block_invoke_2(
   return result;
 }
 
-- (id)createSamplerByName:(id)a3
+- (id)createSamplerByName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 isEqualToString:v6];
+  v7 = [nameCopy isEqualToString:v6];
 
   if (v7)
   {
@@ -484,7 +484,7 @@ char *__54__PMLDiffPrivacyNoiseStrategy_addNoiseToSparseVector___block_invoke_2(
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v4 isEqualToString:v10];
+    v11 = [nameCopy isEqualToString:v10];
 
     v12 = 1.0;
     if (!v11)
@@ -498,7 +498,7 @@ char *__54__PMLDiffPrivacyNoiseStrategy_addNoiseToSparseVector___block_invoke_2(
   v12 = *(&self->super.isa + v8);
 LABEL_6:
   seed = self->_seed;
-  v14 = objc_alloc(NSClassFromString(v4));
+  v14 = objc_alloc(NSClassFromString(nameCopy));
   *&v15 = v12;
   if (seed)
   {
@@ -547,12 +547,12 @@ LABEL_6:
   return v8;
 }
 
-- (_PMLPreNoiseScaleFactorAndNoiseSampler)samplerWithScaleFactorFor:(id)a3 usingNorm:(BOOL)a4
+- (_PMLPreNoiseScaleFactorAndNoiseSampler)samplerWithScaleFactorFor:(id)for usingNorm:(BOOL)norm
 {
-  v5 = a4;
+  normCopy = norm;
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
+  forCopy = for;
+  v8 = forCopy;
   v9 = 0;
   noiseMechanism = self->_noiseMechanism;
   if (noiseMechanism <= 1)
@@ -599,12 +599,12 @@ LABEL_19:
 
   if (noiseMechanism == 3)
   {
-    [v7 l2norm];
+    [forCopy l2norm];
     v12 = v11;
     [v8 l1norm];
     v14 = v13;
     gaussianScaleFactor = self->_noiseScaleFactors.gaussianScaleFactor;
-    if (v5)
+    if (normCopy)
     {
       v16 = (v12 * gaussianScaleFactor) * (v12 * gaussianScaleFactor);
       laplaceScaleFactor = v14 * self->_noiseScaleFactors.laplaceScaleFactor;
@@ -645,24 +645,24 @@ LABEL_20:
   return result;
 }
 
-- (PMLDiffPrivacyNoiseStrategy)initWithMaxIterationCount:(int)a3 noiseScaleFactors:(id)a4 minimumMagnitude:(float)a5 seed:(int)a6 noiseMechanism:(int64_t)a7 inplaceNorm:(BOOL)a8
+- (PMLDiffPrivacyNoiseStrategy)initWithMaxIterationCount:(int)count noiseScaleFactors:(id)factors minimumMagnitude:(float)magnitude seed:(int)seed noiseMechanism:(int64_t)mechanism inplaceNorm:(BOOL)norm
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = factors.var1;
+  var0 = factors.var0;
   v19.receiver = self;
   v19.super_class = PMLDiffPrivacyNoiseStrategy;
   v15 = [(PMLDiffPrivacyNoiseStrategy *)&v19 init];
   v17 = v15;
   if (v15)
   {
-    v15->_maxIterations = a3;
-    *&v16 = a5;
+    v15->_maxIterations = count;
+    *&v16 = magnitude;
     [(PMLDiffPrivacyNoiseStrategy *)v15 setMinimumMagnitude:v16];
     v17->_noiseScaleFactors.gaussianScaleFactor = var0;
     v17->_noiseScaleFactors.laplaceScaleFactor = var1;
     if (([MEMORY[0x277D42590] isInternalBuild] & 1) != 0 || objc_msgSend(MEMORY[0x277D42590], "isBetaBuild"))
     {
-      v17->_seed = a6;
+      v17->_seed = seed;
       v17->_noiseScaleFactors = vbic_s8(v17->_noiseScaleFactors, vcltz_f32(v17->_noiseScaleFactors));
     }
 
@@ -672,8 +672,8 @@ LABEL_20:
       v17->_seed = 0;
     }
 
-    v17->_noiseMechanism = a7;
-    v17->_inplaceNorm = a8;
+    v17->_noiseMechanism = mechanism;
+    v17->_inplaceNorm = norm;
   }
 
   return v17;

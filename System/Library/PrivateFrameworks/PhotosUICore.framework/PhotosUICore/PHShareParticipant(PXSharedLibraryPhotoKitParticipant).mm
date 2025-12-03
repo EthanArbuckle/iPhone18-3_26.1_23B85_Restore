@@ -8,19 +8,19 @@
 
 - (PXSharedLibraryPhotoKitImageProvider)imageProvider
 {
-  v1 = [[PXSharedLibraryPhotoKitImageProvider alloc] initWithParticipant:a1];
+  v1 = [[PXSharedLibraryPhotoKitImageProvider alloc] initWithParticipant:self];
 
   return v1;
 }
 
 - (uint64_t)status
 {
-  if ([a1 exitState])
+  if ([self exitState])
   {
     return 3;
   }
 
-  v3 = [a1 acceptanceStatus] - 1;
+  v3 = [self acceptanceStatus] - 1;
   if (v3 > 2)
   {
     return 0;
@@ -34,13 +34,13 @@
 
 - (id)person
 {
-  v2 = [a1 photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v4 = [MEMORY[0x1E6978980] fetchPersonForShareParticipant:a1 options:v3];
-  v5 = [v4 firstObject];
+  v4 = [MEMORY[0x1E6978980] fetchPersonForShareParticipant:self options:librarySpecificFetchOptions];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 @end

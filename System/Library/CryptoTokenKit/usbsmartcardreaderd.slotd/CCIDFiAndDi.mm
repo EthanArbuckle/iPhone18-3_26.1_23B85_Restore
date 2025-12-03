@@ -1,10 +1,10 @@
 @interface CCIDFiAndDi
 + (NSArray)DIndexes;
 + (NSArray)FIndexes;
-+ (id)createWithFIndexDIndex:(unsigned __int8)a3;
++ (id)createWithFIndexDIndex:(unsigned __int8)index;
 + (id)getDTable;
 + (id)getFTable;
-+ (unsigned)fMaxForFDIndex:(unsigned int)a3 Fi:(unsigned int *)a4 Di:(unsigned int *)a5;
++ (unsigned)fMaxForFDIndex:(unsigned int)index Fi:(unsigned int *)fi Di:(unsigned int *)di;
 - (id)description;
 - (unsigned)bpsMax;
 @end
@@ -38,33 +38,33 @@
 + (NSArray)FIndexes
 {
   v2 = +[CCIDFiAndDi getFTable];
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 + (NSArray)DIndexes
 {
   v2 = +[CCIDFiAndDi getDTable];
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-+ (unsigned)fMaxForFDIndex:(unsigned int)a3 Fi:(unsigned int *)a4 Di:(unsigned int *)a5
++ (unsigned)fMaxForFDIndex:(unsigned int)index Fi:(unsigned int *)fi Di:(unsigned int *)di
 {
-  v7 = a3;
-  v8 = [CCIDFiAndDi Fi:a3 >> 4];
-  v9 = [CCIDFiAndDi Di:v7 & 0xF];
-  *a4 = [CCIDFiAndDi Fi:v8];
-  *a5 = [CCIDFiAndDi Di:v9];
+  indexCopy = index;
+  v8 = [CCIDFiAndDi Fi:index >> 4];
+  v9 = [CCIDFiAndDi Di:indexCopy & 0xF];
+  *fi = [CCIDFiAndDi Fi:v8];
+  *di = [CCIDFiAndDi Di:v9];
 
   return [CCIDFiAndDi fMax:v8];
 }
 
-+ (id)createWithFIndexDIndex:(unsigned __int8)a3
++ (id)createWithFIndexDIndex:(unsigned __int8)index
 {
-  v3 = [[CCIDFiAndDi alloc] initWithFIndex:a3 >> 4 DIndex:a3 & 0xF];
+  v3 = [[CCIDFiAndDi alloc] initWithFIndex:index >> 4 DIndex:index & 0xF];
 
   return v3;
 }

@@ -1,16 +1,16 @@
 @interface SBUIRingViewLabelButton
-- (SBUIRingViewLabelButton)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
+- (SBUIRingViewLabelButton)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SBUIRingViewLabelButton
 
-- (SBUIRingViewLabelButton)initWithFrame:(CGRect)a3
+- (SBUIRingViewLabelButton)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = SBUIRingViewLabelButton;
-  v3 = [(SBUIRingViewLabelButton *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUIRingViewLabelButton *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -41,36 +41,36 @@
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(SBUIRingViewLabelButton *)self bounds];
   v10.x = x;
   v10.y = y;
   if (CGRectContainsPoint(v11, v10))
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(SBUIRingViewLabelButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(SBUIRingViewLabelButton *)self isHighlighted];
   v6.receiver = self;
   v6.super_class = SBUIRingViewLabelButton;
-  [(SBUIRingViewLabelButton *)&v6 setHighlighted:v3];
-  if (v5 != v3)
+  [(SBUIRingViewLabelButton *)&v6 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
-    [(TPRevealingRingView *)self->_ringView setRevealed:v3 animated:1];
+    [(TPRevealingRingView *)self->_ringView setRevealed:highlightedCopy animated:1];
   }
 }
 

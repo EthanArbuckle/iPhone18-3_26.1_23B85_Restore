@@ -1,19 +1,19 @@
 @interface CKContainerSetupInfo
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (CKAccountOverrideInfo)accountOverrideInfo;
-- (CKContainerSetupInfo)initWithCoder:(id)a3;
-- (CKContainerSetupInfo)initWithContainerID:(id)a3 options:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKContainerSetupInfo)initWithCoder:(id)coder;
+- (CKContainerSetupInfo)initWithContainerID:(id)d options:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyWithoutAccountInfo;
 - (id)hashString;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 - (unint64_t)hash;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
 - (void)_stripAccountInfo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKContainerSetupInfo
@@ -42,20 +42,20 @@
   return v6;
 }
 
-- (CKContainerSetupInfo)initWithContainerID:(id)a3 options:(id)a4
+- (CKContainerSetupInfo)initWithContainerID:(id)d options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = CKContainerSetupInfo;
   v10 = [(CKContainerSetupInfo *)&v18 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(dCopy, v8, v9);
     containerID = v10->_containerID;
     v10->_containerID = v11;
 
-    v15 = objc_msgSend_copy(v7, v13, v14);
+    v15 = objc_msgSend_copy(optionsCopy, v13, v14);
     containerOptions = v10->_containerOptions;
     v10->_containerOptions = v15;
   }
@@ -73,10 +73,10 @@
   return v13 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -86,7 +86,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_containerID(self, v6, v7);
       v11 = objc_msgSend_containerID(v5, v9, v10);
       if (objc_msgSend_isEqual_(v8, v12, v11))
@@ -111,17 +111,17 @@
   return isEqual;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v7 = objc_msgSend_containerID(self, v5, v6);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"containerID", v7, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"containerID", v7, 0);
 
   v11 = objc_msgSend_containerOptions(self, v9, v10);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v12, @"containerOptions", v11, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v12, @"containerOptions", v11, 0);
 
   v16 = objc_msgSend_accountOverrideInfo(self, v13, v14);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v15, @"accountOverrideInfo", v16, 1);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v15, @"accountOverrideInfo", v16, 1);
 }
 
 - (id)copyWithoutAccountInfo
@@ -140,7 +140,7 @@
   objc_msgSend_setPersona_(v9, v8, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKContainerSetupInfo alloc];
   v7 = objc_msgSend_containerID(self, v5, v6);
@@ -160,12 +160,12 @@
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
+  dataCopy = data;
   v8 = objc_opt_class();
-  v10 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v6, v9, v8, v7, a5);
+  v10 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v6, v9, v8, dataCopy, error);
 
   return v10;
 }
@@ -180,45 +180,45 @@
   return v2;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v10 = 0;
   v7 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v6, self, 1, &v10);
   v8 = v10;
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, v7, v8);
+    handlerCopy[2](handlerCopy, v7, v8);
   }
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_containerID(self, v5, v6);
   v8 = NSStringFromSelector(sel_containerID);
-  objc_msgSend_encodeObject_forKey_(v15, v9, v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v7, v8);
 
   v12 = objc_msgSend_containerOptions(self, v10, v11);
   v13 = NSStringFromSelector(sel_containerOptions);
-  objc_msgSend_encodeObject_forKey_(v15, v14, v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, v12, v13);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKContainerSetupInfo)initWithCoder:(id)a3
+- (CKContainerSetupInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_containerID);
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v5, v6);
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v5, v6);
 
   v9 = objc_opt_class();
   v10 = NSStringFromSelector(sel_containerOptions);
-  v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v9, v10);
+  v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v9, v10);
 
   v14 = objc_msgSend_initWithContainerID_options_(self, v13, v8, v12);
   return v14;

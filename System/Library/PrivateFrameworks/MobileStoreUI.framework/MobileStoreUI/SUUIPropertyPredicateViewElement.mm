@@ -1,20 +1,20 @@
 @interface SUUIPropertyPredicateViewElement
-- (SUUIPropertyPredicateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIPropertyPredicateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 - (id)entityValuePredicate;
 @end
 
 @implementation SUUIPropertyPredicateViewElement
 
-- (SUUIPropertyPredicateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIPropertyPredicateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v20.receiver = self;
   v20.super_class = SUUIPropertyPredicateViewElement;
-  v9 = [(SUUIViewElement *)&v20 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v20 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"property"];
+    v10 = [elementCopy getAttribute:@"property"];
     if ([v10 length])
     {
       v11 = [v10 copy];
@@ -22,7 +22,7 @@
       v9->_property = v11;
     }
 
-    v13 = [v8 getAttribute:@"value"];
+    v13 = [elementCopy getAttribute:@"value"];
     if ([v13 length])
     {
       v14 = [v13 copy];
@@ -30,7 +30,7 @@
       v9->_value = v14;
     }
 
-    v16 = [v8 getAttribute:@"comparisonType"];
+    v16 = [elementCopy getAttribute:@"comparisonType"];
     if ([v16 length])
     {
       v17 = v16;
@@ -71,23 +71,23 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SUUIPropertyPredicateViewElement;
-  v5 = [(SUUIViewElement *)&v14 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v14 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_comparisonType = [(SUUIPropertyPredicateViewElement *)v4 comparisonType];
-    v7 = [(SUUIPropertyPredicateViewElement *)v4 property];
-    v8 = [v7 copy];
+    self->_comparisonType = [(SUUIPropertyPredicateViewElement *)elementCopy comparisonType];
+    property = [(SUUIPropertyPredicateViewElement *)elementCopy property];
+    v8 = [property copy];
     property = self->_property;
     self->_property = v8;
 
-    v10 = [(SUUIPropertyPredicateViewElement *)v4 value];
-    v11 = [v10 copy];
+    value = [(SUUIPropertyPredicateViewElement *)elementCopy value];
+    v11 = [value copy];
     value = self->_value;
     self->_value = v11;
   }

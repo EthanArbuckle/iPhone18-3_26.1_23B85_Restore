@@ -1,9 +1,9 @@
 @interface HMFDispatchContext
-+ (void)blessWithImplicitContext:(id)a3;
-- (HMFDispatchContext)initWithQueue:(id)a3 alwaysDispatch:(BOOL)a4;
++ (void)blessWithImplicitContext:(id)context;
+- (HMFDispatchContext)initWithQueue:(id)queue alwaysDispatch:(BOOL)dispatch;
 - (void)assertIsExecuting;
 - (void)dealloc;
-- (void)performBlock:(id)a3;
+- (void)performBlock:(id)block;
 @end
 
 @implementation HMFDispatchContext
@@ -16,17 +16,17 @@
   [(HMFDispatchContext *)&v3 dealloc];
 }
 
-- (HMFDispatchContext)initWithQueue:(id)a3 alwaysDispatch:(BOOL)a4
+- (HMFDispatchContext)initWithQueue:(id)queue alwaysDispatch:(BOOL)dispatch
 {
-  v7 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = HMFDispatchContext;
   v8 = [(HMFDispatchContext *)&v10 init];
   if (v8)
   {
-    dispatch_queue_set_specific(v7, v8, v8, 0);
-    objc_storeStrong(&v8->_queue, a3);
-    v8->_alwaysDispatch = a4;
+    dispatch_queue_set_specific(queueCopy, v8, v8, 0);
+    objc_storeStrong(&v8->_queue, queue);
+    v8->_alwaysDispatch = dispatch;
   }
 
   return v8;
@@ -40,16 +40,16 @@
   }
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (!self->_alwaysDispatch && dispatch_get_specific(self) == self)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = _HMFThreadLocalAsyncContext();
     v8 = *v7;
     *v7 = v9;
-    v4[2](v4);
+    blockCopy[2](blockCopy);
     CFRelease(*v7);
     *v7 = v8;
   }
@@ -62,7 +62,7 @@
     v10[2] = __35__HMFDispatchContext_performBlock___block_invoke;
     v10[3] = &unk_2786E6D68;
     v10[4] = self;
-    v11 = v4;
+    v11 = blockCopy;
     dispatch_async(queue, v10);
   }
 }
@@ -78,16 +78,16 @@ void __35__HMFDispatchContext_performBlock___block_invoke(uint64_t a1)
   *v3 = v4;
 }
 
-+ (void)blessWithImplicitContext:(id)a3
++ (void)blessWithImplicitContext:(id)context
 {
-  v3 = a3;
-  if (!v3)
+  contextCopy = context;
+  if (!contextCopy)
   {
     _HMFPreconditionFailure(@"queue");
   }
 
-  queue = v3;
-  if (!dispatch_queue_get_specific(v3, &implicitContextKey))
+  queue = contextCopy;
+  if (!dispatch_queue_get_specific(contextCopy, &implicitContextKey))
   {
     v4 = malloc_type_calloc(1uLL, 0x10uLL, 0x80040803F642BuLL);
     *v4 = queue;

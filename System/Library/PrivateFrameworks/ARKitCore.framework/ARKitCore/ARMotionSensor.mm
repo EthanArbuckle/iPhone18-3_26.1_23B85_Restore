@@ -1,24 +1,24 @@
 @interface ARMotionSensor
-- (ARMotionSensor)initWithMotionManager:(id)a3;
+- (ARMotionSensor)initWithMotionManager:(id)manager;
 - (ARSensorDelegate)delegate;
 - (NSString)description;
 - (unint64_t)providedDataTypes;
-- (void)accelerometerOutput:(id *)a3;
+- (void)accelerometerOutput:(id *)output;
 - (void)dealloc;
-- (void)gyroscopeOutput:(id *)a3;
-- (void)magnetometerOutput:(id *)a3;
-- (void)setInterval:(double)a3;
+- (void)gyroscopeOutput:(id *)output;
+- (void)magnetometerOutput:(id *)output;
+- (void)setInterval:(double)interval;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation ARMotionSensor
 
-- (ARMotionSensor)initWithMotionManager:(id)a3
+- (ARMotionSensor)initWithMotionManager:(id)manager
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![v5 isGyroAvailable] || (objc_msgSend(v5, "isAccelerometerAvailable") & 1) == 0)
+  managerCopy = manager;
+  if (![managerCopy isGyroAvailable] || (objc_msgSend(managerCopy, "isAccelerometerAvailable") & 1) == 0)
   {
     if (ARShouldUseLogTypeError_onceToken_2 != -1)
     {
@@ -37,7 +37,7 @@
         *buf = 138543618;
         v27 = v19;
         v28 = 2048;
-        v29 = self;
+        selfCopy2 = self;
         v20 = "%{public}@ <%p>: Unable to initialize ARMotionSensor: accelerometer and/or gyroscope from CMMotionManager not available.";
         v21 = v17;
         v22 = OS_LOG_TYPE_ERROR;
@@ -53,14 +53,14 @@ LABEL_14:
       *buf = 138543618;
       v27 = v19;
       v28 = 2048;
-      v29 = self;
+      selfCopy2 = self;
       v20 = "Error: %{public}@ <%p>: Unable to initialize ARMotionSensor: accelerometer and/or gyroscope from CMMotionManager not available.";
       v21 = v17;
       v22 = OS_LOG_TYPE_INFO;
       goto LABEL_14;
     }
 
-    v14 = 0;
+    selfCopy3 = 0;
     goto LABEL_16;
   }
 
@@ -70,7 +70,7 @@ LABEL_14:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_motionManager, a3);
+    objc_storeStrong(&v6->_motionManager, manager);
     v7->_requestMagnetometerData = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.motionSensor.magnetometerEnabled"];
     v8 = objc_opt_new();
     currentGyroData = v7->_currentGyroData;
@@ -89,10 +89,10 @@ LABEL_14:
   }
 
   self = v7;
-  v14 = self;
+  selfCopy3 = self;
 LABEL_16:
 
-  return v14;
+  return selfCopy3;
 }
 
 - (void)dealloc
@@ -108,7 +108,7 @@ LABEL_16:
     *buf = 138543874;
     v9 = v5;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = motionManager;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: ARMotionSensor dealloc (%p).", buf, 0x20u);
@@ -144,7 +144,7 @@ LABEL_16:
     v23 = 138543874;
     v24 = v5;
     v25 = 2048;
-    v26 = self;
+    selfCopy3 = self;
     v27 = 2048;
     v28 = motionManager;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: ARMotionSensor start (%p).", &v23, 0x20u);
@@ -155,7 +155,7 @@ LABEL_16:
   [(ARMotionSensor *)self interval];
   if (v7 > 0.0)
   {
-    v8 = [(ARMotionSensor *)self delegate];
+    delegate = [(ARMotionSensor *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -163,8 +163,8 @@ LABEL_16:
       return;
     }
 
-    v10 = [(ARMotionSensor *)self delegate];
-    [v10 sensorDidStart:self];
+    delegate2 = [(ARMotionSensor *)self delegate];
+    [delegate2 sensorDidStart:self];
     goto LABEL_16;
   }
 
@@ -185,7 +185,7 @@ LABEL_16:
       v23 = 138543618;
       v24 = v15;
       v25 = 2048;
-      v26 = self;
+      selfCopy3 = self;
       v16 = "%{public}@ <%p>: Accelerometer and/or Gyroscope sensor(s) not available";
       v17 = v13;
       v18 = OS_LOG_TYPE_ERROR;
@@ -201,14 +201,14 @@ LABEL_13:
     v23 = 138543618;
     v24 = v15;
     v25 = 2048;
-    v26 = self;
+    selfCopy3 = self;
     v16 = "Error: %{public}@ <%p>: Accelerometer and/or Gyroscope sensor(s) not available";
     v17 = v13;
     v18 = OS_LOG_TYPE_INFO;
     goto LABEL_13;
   }
 
-  v20 = [(ARMotionSensor *)self delegate];
+  delegate3 = [(ARMotionSensor *)self delegate];
   v21 = objc_opt_respondsToSelector();
 
   if ((v21 & 1) == 0)
@@ -216,9 +216,9 @@ LABEL_13:
     return;
   }
 
-  v10 = [(ARMotionSensor *)self delegate];
+  delegate2 = [(ARMotionSensor *)self delegate];
   v22 = ARErrorWithCodeAndUserInfo(101, 0);
-  [v10 sensor:self didFailWithError:v22];
+  [delegate2 sensor:self didFailWithError:v22];
 
 LABEL_16:
 }
@@ -235,7 +235,7 @@ LABEL_16:
     v7 = 138543874;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = motionManager;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: ARMotionSensor stop (%p).", &v7, 0x20u);
@@ -244,41 +244,41 @@ LABEL_16:
   [(ARMotionSensor *)self setInterval:0.0];
 }
 
-- (void)setInterval:(double)a3
+- (void)setInterval:(double)interval
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (self->_interval == a3)
+  if (self->_interval == interval)
   {
     return;
   }
 
   motionManager = self->_motionManager;
-  if (a3 <= 0.0)
+  if (interval <= 0.0)
   {
     [(CMMotionManager *)motionManager setGyroDataCallback:0 info:0 interval:0.0];
     [(CMMotionManager *)self->_motionManager setAccelerometerDataCallback:0 info:0 interval:0.0];
     if ([(CMMotionManager *)self->_motionManager isMagnetometerAvailable]&& self->_requestMagnetometerData)
     {
       v6 = self->_motionManager;
-      v9 = 0.0;
+      intervalCopy = 0.0;
       v7 = 0;
-      v8 = 0;
+      selfCopy = 0;
       goto LABEL_9;
     }
   }
 
   else
   {
-    [(CMMotionManager *)motionManager setGyroDataCallback:rawGyroscopeCallback info:self interval:a3];
-    [(CMMotionManager *)self->_motionManager setAccelerometerDataCallback:rawAccelerometerCallback info:self interval:a3];
+    [(CMMotionManager *)motionManager setGyroDataCallback:rawGyroscopeCallback info:self interval:interval];
+    [(CMMotionManager *)self->_motionManager setAccelerometerDataCallback:rawAccelerometerCallback info:self interval:interval];
     if ([(CMMotionManager *)self->_motionManager isMagnetometerAvailable]&& self->_requestMagnetometerData)
     {
       v6 = self->_motionManager;
       v7 = rawMagnetometerCallback;
-      v8 = self;
-      v9 = a3;
+      selfCopy = self;
+      intervalCopy = interval;
 LABEL_9:
-      [(CMMotionManager *)v6 setMagnetometerDataCallback:v7 info:v8 interval:v9];
+      [(CMMotionManager *)v6 setMagnetometerDataCallback:v7 info:selfCopy interval:intervalCopy];
     }
   }
 
@@ -290,44 +290,44 @@ LABEL_9:
     v13 = 138543874;
     v14 = v12;
     v15 = 2048;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2048;
-    v18 = a3;
+    intervalCopy2 = interval;
     _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Accelerometer and Gyroscope update interval set at %f", &v13, 0x20u);
   }
 
-  self->_interval = a3;
+  self->_interval = interval;
 }
 
-- (void)gyroscopeOutput:(id *)a3
+- (void)gyroscopeOutput:(id *)output
 {
   kdebug_trace();
-  [(ARGyroscopeData *)self->_currentGyroData setTimestamp:a3->var1];
-  [(ARGyroscopeData *)self->_currentGyroData setRotationRate:a3->var0.var0, a3->var0.var1, a3->var0.var2];
-  v5 = [(ARMotionSensor *)self delegate];
-  [v5 sensor:self didOutputSensorData:self->_currentGyroData];
-
-  kdebug_trace();
-}
-
-- (void)accelerometerOutput:(id *)a3
-{
-  kdebug_trace();
-  [(ARAccelerometerData *)self->_currentAccelerometerData setTimestamp:a3->var1];
-  [(ARAccelerometerData *)self->_currentAccelerometerData setAcceleration:a3->var0.var0, a3->var0.var1, a3->var0.var2];
-  v5 = [(ARMotionSensor *)self delegate];
-  [v5 sensor:self didOutputSensorData:self->_currentAccelerometerData];
+  [(ARGyroscopeData *)self->_currentGyroData setTimestamp:output->var1];
+  [(ARGyroscopeData *)self->_currentGyroData setRotationRate:output->var0.var0, output->var0.var1, output->var0.var2];
+  delegate = [(ARMotionSensor *)self delegate];
+  [delegate sensor:self didOutputSensorData:self->_currentGyroData];
 
   kdebug_trace();
 }
 
-- (void)magnetometerOutput:(id *)a3
+- (void)accelerometerOutput:(id *)output
 {
   kdebug_trace();
-  [(ARMagnetometerData *)self->_currentMagnetometerData setTimestamp:a3->var1];
-  [(ARMagnetometerData *)self->_currentMagnetometerData setMagneticField:a3->var0.var0, a3->var0.var1, a3->var0.var2];
-  v5 = [(ARMotionSensor *)self delegate];
-  [v5 sensor:self didOutputSensorData:self->_currentMagnetometerData];
+  [(ARAccelerometerData *)self->_currentAccelerometerData setTimestamp:output->var1];
+  [(ARAccelerometerData *)self->_currentAccelerometerData setAcceleration:output->var0.var0, output->var0.var1, output->var0.var2];
+  delegate = [(ARMotionSensor *)self delegate];
+  [delegate sensor:self didOutputSensorData:self->_currentAccelerometerData];
+
+  kdebug_trace();
+}
+
+- (void)magnetometerOutput:(id *)output
+{
+  kdebug_trace();
+  [(ARMagnetometerData *)self->_currentMagnetometerData setTimestamp:output->var1];
+  [(ARMagnetometerData *)self->_currentMagnetometerData setMagneticField:output->var0.var0, output->var0.var1, output->var0.var2];
+  delegate = [(ARMotionSensor *)self delegate];
+  [delegate sensor:self didOutputSensorData:self->_currentMagnetometerData];
 
   kdebug_trace();
 }

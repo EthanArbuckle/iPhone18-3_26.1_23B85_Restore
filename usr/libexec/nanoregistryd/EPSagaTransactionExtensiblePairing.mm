@@ -4,41 +4,41 @@
 - (EPTransactionDelegate)delegate;
 - (NRPairingReport)pairingReport;
 - (NSUUID)pairingID;
-- (id)_diffsForSettingDeviceIsActive:(BOOL)a3 withPairingID:(id)a4 collection:(id)a5;
-- (id)getLocalPairingStorePairingID:(id)a3;
-- (id)makeLocalPairingStorePairingID:(id)a3;
+- (id)_diffsForSettingDeviceIsActive:(BOOL)active withPairingID:(id)d collection:(id)collection;
+- (id)getLocalPairingStorePairingID:(id)d;
+- (id)makeLocalPairingStorePairingID:(id)d;
 - (id)registry;
 - (id)routingSlipEntry;
 - (id)unpairHelper;
 - (void)_beginDirectBluetoothPairingTransaction;
 - (void)_beginNetworkRelayBluetoothPairingTransaction;
-- (void)_cleanUpDiscoveredDevicesWithCollection:(id)a3;
-- (void)activateDevice:(id)a3 withCompletion:(id)a4;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)cancelWithError:(id)a3;
-- (void)copyPropertiesToRTCReporter:(id)a3;
-- (void)createDeviceFromPairingRequest:(id)a3 discoveredBy:(unint64_t)a4 withBlock:(id)a5;
-- (void)createLocalPairingStore:(id)a3 andNotifyPairingBeginning:(BOOL)a4 bluetoothIdentifier:(id)a5 withBlock:(id)a6;
+- (void)_cleanUpDiscoveredDevicesWithCollection:(id)collection;
+- (void)activateDevice:(id)device withCompletion:(id)completion;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)cancelWithError:(id)error;
+- (void)copyPropertiesToRTCReporter:(id)reporter;
+- (void)createDeviceFromPairingRequest:(id)request discoveredBy:(unint64_t)by withBlock:(id)block;
+- (void)createLocalPairingStore:(id)store andNotifyPairingBeginning:(BOOL)beginning bluetoothIdentifier:(id)identifier withBlock:(id)block;
 - (void)deleteUnexpectedIDSPairedDevices;
 - (void)filePairingReport;
-- (void)getPairedPairingIDForBluetoothID:(id)a3 completion:(id)a4;
-- (void)initializeAllIDSChannelsBlock:(id)a3;
+- (void)getPairedPairingIDForBluetoothID:(id)d completion:(id)completion;
+- (void)initializeAllIDSChannelsBlock:(id)block;
 - (void)invalidate;
 - (void)invalidateIDSChannels;
-- (void)notifyPasscode:(id)a3;
+- (void)notifyPasscode:(id)passcode;
 - (void)pairingCompleted;
 - (void)pushVersion4CompatibilityMessageIfNeeded;
 - (void)savePairingReport;
-- (void)sendXPCBTPairRequestMessage:(id)a3 withCompletion:(id)a4;
-- (void)sendXPCDeviceNeedsPasscodeMessage:(id)a3 passcode:(id)a4;
-- (void)sendXPCOOBKeyChanged:(id)a3;
-- (void)setPairingID:(id)a3;
+- (void)sendXPCBTPairRequestMessage:(id)message withCompletion:(id)completion;
+- (void)sendXPCDeviceNeedsPasscodeMessage:(id)message passcode:(id)passcode;
+- (void)sendXPCOOBKeyChanged:(id)changed;
+- (void)setPairingID:(id)d;
 - (void)transactionDidComplete;
-- (void)unpairDeviceWithPairingID:(id)a3 obliterationString:(id)a4 shouldBrick:(id)a5 storeUnpair:(id)a6 migrationUnpair:(id)a7 shouldPreserveESim:(id)a8 pairingReport:(id)a9 remoteUnpairRequestUUID:(id)a10 shouldConnectionWithDevice:(BOOL)a11;
-- (void)updateNRMutableDeviceFromEPDevice:(id)a3 withNRUUID:(id)a4 withBlock:(id)a5;
-- (void)updateRegistryForUnpairing:(id)a3 withBlock:(id)a4;
-- (void)voidIDSService:(Class)a3;
+- (void)unpairDeviceWithPairingID:(id)d obliterationString:(id)string shouldBrick:(id)brick storeUnpair:(id)unpair migrationUnpair:(id)migrationUnpair shouldPreserveESim:(id)sim pairingReport:(id)report remoteUnpairRequestUUID:(id)self0 shouldConnectionWithDevice:(BOOL)self1;
+- (void)updateNRMutableDeviceFromEPDevice:(id)device withNRUUID:(id)d withBlock:(id)block;
+- (void)updateRegistryForUnpairing:(id)unpairing withBlock:(id)block;
+- (void)voidIDSService:(Class)service;
 - (void)voidIDSServices;
 @end
 
@@ -52,9 +52,9 @@
   return v3;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -64,29 +64,29 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = errorCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "EPSagaTransactionExtensiblePairing: cancelWithError: %@", &v12, 0xCu);
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
-    v8 = [(EPSagaTransactionExtensiblePairing *)self routingSlipEntry];
-    v9 = [v8 transactionBeganWithThisNR];
+    routingSlipEntry = [(EPSagaTransactionExtensiblePairing *)self routingSlipEntry];
+    transactionBeganWithThisNR = [routingSlipEntry transactionBeganWithThisNR];
 
-    if (v9)
+    if (transactionBeganWithThisNR)
     {
-      v4 = 0;
+      errorCopy = 0;
     }
 
     else
     {
-      v4 = nrGetPairingError();
+      errorCopy = nrGetPairingError();
     }
   }
 
-  v10 = [(EPSagaTransactionExtensiblePairing *)self unpairHelper];
-  v11 = [v10 startUnpairDueToError:v4];
+  unpairHelper = [(EPSagaTransactionExtensiblePairing *)self unpairHelper];
+  v11 = [unpairHelper startUnpairDueToError:errorCopy];
 
   if (v11)
   {
@@ -104,7 +104,7 @@
   }
 }
 
-- (void)notifyPasscode:(id)a3
+- (void)notifyPasscode:(id)passcode
 {
   v3 = 8;
   if (self->_useNetworkRelayBluetoothPairing)
@@ -112,20 +112,20 @@
     v3 = 16;
   }
 
-  [*(&self->super.isa + v3) respondWithPasscode:a3];
+  [*(&self->super.isa + v3) respondWithPasscode:passcode];
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = a3;
+  registryCopy = registry;
+  entryCopy = entry;
   v8 = +[NRFeatureFlags sharedInstance];
   nrFeatureFlags = self->_nrFeatureFlags;
   self->_nrFeatureFlags = v8;
 
-  objc_storeWeak(&self->_routingSlipEntry, v7);
-  objc_storeWeak(&self->_serviceRegistry, v6);
-  [v6 addService:self];
+  objc_storeWeak(&self->_routingSlipEntry, entryCopy);
+  objc_storeWeak(&self->_serviceRegistry, registryCopy);
+  [registryCopy addService:self];
 
   [(EPSagaTransactionExtensiblePairing *)self pairingReport];
   WeakRetained = objc_loadWeakRetained(&self->_routingSlipEntry);
@@ -139,9 +139,9 @@
   v14 = self->_advertisedName;
   v15 = NRAdvertisingInfoFromPayload();
   v16 = [v15 objectForKeyedSubscript:NRBridgeAdvertisingVersionKey];
-  v17 = [v16 integerValue];
+  integerValue = [v16 integerValue];
 
-  v18 = sub_100052C60(v17);
+  v18 = sub_100052C60(integerValue);
   v19 = nr_daemon_log();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
 
@@ -234,13 +234,13 @@ LABEL_20:
   v9 = [v8 serviceFromClass:objc_opt_class()];
 
   v10 = +[NRQueue registryDaemonQueue];
-  v11 = [v10 queue];
+  queue = [v10 queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000F54F4;
   v12[3] = &unk_100175B90;
   v12[4] = self;
-  [v9 checkIfFlaggedForRecoveryWithQueue:v11 completion:v12];
+  [v9 checkIfFlaggedForRecoveryWithQueue:queue completion:v12];
 }
 
 - (void)_beginNetworkRelayBluetoothPairingTransaction
@@ -254,13 +254,13 @@ LABEL_20:
   v6 = [WeakRetained serviceFromClass:objc_opt_class()];
 
   v7 = +[NRQueue registryDaemonQueue];
-  v8 = [v7 queue];
+  queue = [v7 queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000F58A8;
   v9[3] = &unk_100175B90;
   v9[4] = self;
-  [v6 checkIfFlaggedForRecoveryWithQueue:v8 completion:v9];
+  [v6 checkIfFlaggedForRecoveryWithQueue:queue completion:v9];
 }
 
 - (void)transactionDidComplete
@@ -275,17 +275,17 @@ LABEL_20:
     v6 = [v5 optionalServiceFromClass:objc_opt_class()];
     [v5 removeService:v6];
 
-    v7 = [(EPSagaTransactionExtensiblePairing *)self delegate];
-    [v7 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionExtensiblePairing *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  obj = a3;
-  v6 = a4;
+  obj = entry;
+  registryCopy = registry;
   objc_storeWeak(&self->_routingSlipEntry, obj);
-  objc_storeWeak(&self->_serviceRegistry, v6);
+  objc_storeWeak(&self->_serviceRegistry, registryCopy);
 
   self->_transactionComplete = 0;
   v7 = [obj objectForKeyedSubscript:@"extensiblePairingDeviceID"];
@@ -293,31 +293,31 @@ LABEL_20:
   v9 = v8;
   if (v7 && [v8 BOOLValue])
   {
-    v10 = [obj routingSlipError];
-    [(EPSagaTransactionExtensiblePairing *)self cancelWithError:v10];
+    routingSlipError = [obj routingSlipError];
+    [(EPSagaTransactionExtensiblePairing *)self cancelWithError:routingSlipError];
   }
 
   [(EPSagaTransactionExtensiblePairing *)self transactionDidComplete];
 }
 
-- (id)_diffsForSettingDeviceIsActive:(BOOL)a3 withPairingID:(id)a4 collection:(id)a5
+- (id)_diffsForSettingDeviceIsActive:(BOOL)active withPairingID:(id)d collection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
+  activeCopy = active;
+  dCopy = d;
+  collectionCopy = collection;
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [v8 activeDeviceID];
+  activeDeviceID = [collectionCopy activeDeviceID];
 
   v11 = +[NSDate date];
-  if (!v7)
+  if (!dCopy)
   {
     goto LABEL_6;
   }
 
-  if (v6)
+  if (activeCopy)
   {
     v12 = +[NSMutableDictionary dictionary];
-    if (([v7 isEqual:v10] & 1) == 0)
+    if (([dCopy isEqual:activeDeviceID] & 1) == 0)
     {
       v13 = [NRMutableDevice diffsToActivate:1 withDate:v11];
       [v12 addEntriesFromDictionary:v13];
@@ -328,10 +328,10 @@ LABEL_20:
 
     v15 = [[NRDeviceDiff alloc] initWithDiffPropertyDiffs:v12];
     v16 = [[NRDeviceDiffType alloc] initWithDiff:v15 andChangeType:1];
-    [v9 setObject:v16 forKeyedSubscript:v7];
+    [v9 setObject:v16 forKeyedSubscript:dCopy];
 
 LABEL_6:
-    if (!v10 || [v10 isEqual:v7] && v6)
+    if (!activeDeviceID || [activeDeviceID isEqual:dCopy] && activeCopy)
     {
       goto LABEL_12;
     }
@@ -339,10 +339,10 @@ LABEL_6:
     goto LABEL_11;
   }
 
-  v17 = v7;
+  v17 = dCopy;
 
   [v17 isEqual:v17];
-  v10 = v17;
+  activeDeviceID = v17;
 LABEL_11:
   v18 = +[NSMutableDictionary dictionary];
   v19 = [NRMutableDevice diffsToActivate:0 withDate:v11];
@@ -353,7 +353,7 @@ LABEL_11:
 
   v21 = [[NRDeviceDiff alloc] initWithDiffPropertyDiffs:v18];
   v22 = [[NRDeviceDiffType alloc] initWithDiff:v21 andChangeType:1];
-  [v9 setObject:v22 forKeyedSubscript:v10];
+  [v9 setObject:v22 forKeyedSubscript:activeDeviceID];
 
 LABEL_12:
   if ([v9 count])
@@ -371,23 +371,23 @@ LABEL_12:
   return v23;
 }
 
-- (id)getLocalPairingStorePairingID:(id)a3
+- (id)getLocalPairingStorePairingID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   v5 = [v4 objectAtIndex:0];
   v6 = [v5 stringByAppendingPathComponent:@"DeviceRegistry"];
 
-  v7 = [v3 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v8 = [v6 stringByAppendingPathComponent:v7];
+  v8 = [v6 stringByAppendingPathComponent:uUIDString];
 
   return v8;
 }
 
-- (id)makeLocalPairingStorePairingID:(id)a3
+- (id)makeLocalPairingStorePairingID:(id)d
 {
-  v3 = [(EPSagaTransactionExtensiblePairing *)self getLocalPairingStorePairingID:a3];
+  v3 = [(EPSagaTransactionExtensiblePairing *)self getLocalPairingStorePairingID:d];
   v4 = +[NSFileManager defaultManager];
   v12 = 0;
   v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v12];
@@ -418,40 +418,40 @@ LABEL_12:
   return v7;
 }
 
-- (void)activateDevice:(id)a3 withCompletion:(id)a4
+- (void)activateDevice:(id)device withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EPSagaTransactionExtensiblePairing *)self registry];
+  deviceCopy = device;
+  completionCopy = completion;
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000F62B4;
   v11[3] = &unk_1001762B0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 grabRegistryWithWriteBlockAsync:v11];
+  v12 = deviceCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = deviceCopy;
+  [registry grabRegistryWithWriteBlockAsync:v11];
 }
 
-- (void)sendXPCOOBKeyChanged:(id)a3
+- (void)sendXPCOOBKeyChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(EPSagaTransactionExtensiblePairing *)self registry];
-  [v5 sendXPCOOBKeyChanged:v4];
+  changedCopy = changed;
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
+  [registry sendXPCOOBKeyChanged:changedCopy];
 }
 
 - (void)deleteUnexpectedIDSPairedDevices
 {
-  v2 = [(EPSagaTransactionExtensiblePairing *)self registry];
-  [v2 deleteUnexpectedIDSPairedDevices];
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
+  [registry deleteUnexpectedIDSPairedDevices];
 }
 
-- (void)createDeviceFromPairingRequest:(id)a3 discoveredBy:(unint64_t)a4 withBlock:(id)a5
+- (void)createDeviceFromPairingRequest:(id)request discoveredBy:(unint64_t)by withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_routingSlipEntry);
   v11 = [WeakRetained objectForKeyedSubscript:@"extensiblePairingDeviceID"];
 
@@ -464,35 +464,35 @@ LABEL_12:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v25 = v8;
+      v25 = requestCopy;
       v26 = 2114;
       v27 = v11;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "createDeviceFromPairingRequest: advertisedName: %{public}@, pairingID: %{public}@", buf, 0x16u);
     }
   }
 
-  v15 = [(EPSagaTransactionExtensiblePairing *)self registry];
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000F65D4;
   v19[3] = &unk_100179E18;
   v19[4] = self;
-  v20 = v8;
-  v22 = v9;
-  v23 = a4;
+  v20 = requestCopy;
+  v22 = blockCopy;
+  byCopy = by;
   v21 = v11;
-  v16 = v9;
+  v16 = blockCopy;
   v17 = v11;
-  v18 = v8;
-  [v15 xpcWaitForWatchPairingExtendedMetadataForAdvertisedName:v18 completion:v19];
+  v18 = requestCopy;
+  [registry xpcWaitForWatchPairingExtendedMetadataForAdvertisedName:v18 completion:v19];
 }
 
-- (void)updateNRMutableDeviceFromEPDevice:(id)a3 withNRUUID:(id)a4 withBlock:(id)a5
+- (void)updateNRMutableDeviceFromEPDevice:(id)device withNRUUID:(id)d withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  deviceCopy = device;
+  dCopy = d;
+  blockCopy = block;
+  v11 = dCopy;
   v12 = v11;
   if (!v11)
   {
@@ -506,7 +506,7 @@ LABEL_12:
     v12 = objc_opt_new();
   }
 
-  v14 = [v8 name];
+  name = [deviceCopy name];
   v15 = nr_daemon_log();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
 
@@ -515,10 +515,10 @@ LABEL_12:
     v17 = nr_daemon_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v8 name];
+      name2 = [deviceCopy name];
       advertisedName = self->_advertisedName;
       *buf = 138544130;
-      v36 = v18;
+      v36 = name2;
       v37 = 2114;
       v38 = advertisedName;
       v39 = 2114;
@@ -529,91 +529,91 @@ LABEL_12:
     }
   }
 
-  if (!v14)
+  if (!name)
   {
-    v14 = self->_advertisedName;
+    name = self->_advertisedName;
   }
 
-  v20 = [v8 uuid];
-  v21 = [v8 btAddress];
-  v22 = [(EPSagaTransactionExtensiblePairing *)self registry];
+  uuid = [deviceCopy uuid];
+  btAddress = [deviceCopy btAddress];
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1000F712C;
   v28[3] = &unk_100179DF0;
-  v29 = v14;
+  v29 = name;
   v30 = v12;
-  v31 = v20;
-  v32 = v21;
-  v33 = v10;
+  v31 = uuid;
+  v32 = btAddress;
+  v33 = blockCopy;
   v34 = -30;
-  v23 = v10;
-  v24 = v21;
-  v25 = v20;
+  v23 = blockCopy;
+  v24 = btAddress;
+  v25 = uuid;
   v26 = v12;
-  v27 = v14;
-  [v22 grabRegistryWithWriteBlockAsync:v28];
+  v27 = name;
+  [registry grabRegistryWithWriteBlockAsync:v28];
 }
 
-- (void)sendXPCDeviceNeedsPasscodeMessage:(id)a3 passcode:(id)a4
+- (void)sendXPCDeviceNeedsPasscodeMessage:(id)message passcode:(id)passcode
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(EPSagaTransactionExtensiblePairing *)self registry];
-  [v8 sendXPCDeviceNeedsPasscodeMessage:v7 passcode:v6];
+  passcodeCopy = passcode;
+  messageCopy = message;
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
+  [registry sendXPCDeviceNeedsPasscodeMessage:messageCopy passcode:passcodeCopy];
 }
 
-- (void)getPairedPairingIDForBluetoothID:(id)a3 completion:(id)a4
+- (void)getPairedPairingIDForBluetoothID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(EPSagaTransactionExtensiblePairing *)self registry];
-  [v8 getPairedPairingIDForBluetoothID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
+  [registry getPairedPairingIDForBluetoothID:dCopy completion:completionCopy];
 }
 
-- (void)createLocalPairingStore:(id)a3 andNotifyPairingBeginning:(BOOL)a4 bluetoothIdentifier:(id)a5 withBlock:(id)a6
+- (void)createLocalPairingStore:(id)store andNotifyPairingBeginning:(BOOL)beginning bluetoothIdentifier:(id)identifier withBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(EPSagaTransactionExtensiblePairing *)self registry];
+  storeCopy = store;
+  identifierCopy = identifier;
+  blockCopy = block;
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000F7A20;
   v17[3] = &unk_100179E40;
-  v18 = v10;
-  v19 = self;
-  v22 = a4;
-  v20 = v11;
-  v21 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  [v13 grabRegistryWithWriteBlockAsync:v17];
+  v18 = storeCopy;
+  selfCopy = self;
+  beginningCopy = beginning;
+  v20 = identifierCopy;
+  v21 = blockCopy;
+  v14 = blockCopy;
+  v15 = identifierCopy;
+  v16 = storeCopy;
+  [registry grabRegistryWithWriteBlockAsync:v17];
 }
 
 - (NRPairingReport)pairingReport
 {
-  v2 = [(EPSagaTransactionExtensiblePairing *)self unpairHelper];
-  v3 = [v2 pairingReport];
+  unpairHelper = [(EPSagaTransactionExtensiblePairing *)self unpairHelper];
+  pairingReport = [unpairHelper pairingReport];
 
-  return v3;
+  return pairingReport;
 }
 
 - (void)savePairingReport
 {
-  v2 = [(EPSagaTransactionExtensiblePairing *)self unpairHelper];
-  [v2 savePairingReport];
+  unpairHelper = [(EPSagaTransactionExtensiblePairing *)self unpairHelper];
+  [unpairHelper savePairingReport];
 }
 
-- (void)setPairingID:(id)a3
+- (void)setPairingID:(id)d
 {
-  v4 = a3;
-  v5 = [[EPSagaOperandUUID alloc] initWithUUID:v4];
+  dCopy = d;
+  v5 = [[EPSagaOperandUUID alloc] initWithUUID:dCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_routingSlipEntry);
-  v7 = [WeakRetained operands];
-  [v7 setObject:v5 forKeyedSubscript:@"extensiblePairingDeviceID"];
+  operands = [WeakRetained operands];
+  [operands setObject:v5 forKeyedSubscript:@"extensiblePairingDeviceID"];
 
   v8 = objc_loadWeakRetained(&self->_routingSlipEntry);
   [v8 persist];
@@ -624,43 +624,43 @@ LABEL_12:
   WeakRetained = objc_loadWeakRetained(&self->_routingSlipEntry);
   v5 = [WeakRetained objectForKeyedSubscript:@"extensiblePairingDeviceID"];
 
-  v4 = [(EPSagaTransactionExtensiblePairing *)self unpairHelper];
-  [v4 filePairingReportWithPairingID:v5];
+  unpairHelper = [(EPSagaTransactionExtensiblePairing *)self unpairHelper];
+  [unpairHelper filePairingReportWithPairingID:v5];
 }
 
-- (void)unpairDeviceWithPairingID:(id)a3 obliterationString:(id)a4 shouldBrick:(id)a5 storeUnpair:(id)a6 migrationUnpair:(id)a7 shouldPreserveESim:(id)a8 pairingReport:(id)a9 remoteUnpairRequestUUID:(id)a10 shouldConnectionWithDevice:(BOOL)a11
+- (void)unpairDeviceWithPairingID:(id)d obliterationString:(id)string shouldBrick:(id)brick storeUnpair:(id)unpair migrationUnpair:(id)migrationUnpair shouldPreserveESim:(id)sim pairingReport:(id)report remoteUnpairRequestUUID:(id)self0 shouldConnectionWithDevice:(BOOL)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
+  dCopy = d;
+  stringCopy = string;
+  brickCopy = brick;
+  unpairCopy = unpair;
+  migrationUnpairCopy = migrationUnpair;
+  simCopy = sim;
+  reportCopy = report;
+  iDCopy = iD;
   v25 = +[NRQueue registryDaemonQueue];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_1000F821C;
   v34[3] = &unk_100179E68;
   v34[4] = self;
-  v35 = v17;
-  v36 = v18;
-  v37 = v19;
-  v38 = v20;
-  v39 = v21;
-  v40 = v22;
-  v41 = v23;
-  v42 = v24;
-  v43 = a11;
-  v26 = v24;
-  v27 = v23;
-  v28 = v22;
-  v29 = v21;
-  v30 = v20;
-  v31 = v19;
-  v32 = v18;
-  v33 = v17;
+  v35 = dCopy;
+  v36 = stringCopy;
+  v37 = brickCopy;
+  v38 = unpairCopy;
+  v39 = migrationUnpairCopy;
+  v40 = simCopy;
+  v41 = reportCopy;
+  v42 = iDCopy;
+  deviceCopy = device;
+  v26 = iDCopy;
+  v27 = reportCopy;
+  v28 = simCopy;
+  v29 = migrationUnpairCopy;
+  v30 = unpairCopy;
+  v31 = brickCopy;
+  v32 = stringCopy;
+  v33 = dCopy;
   [v25 dispatchAsync:v34];
 }
 
@@ -677,9 +677,9 @@ LABEL_12:
     v7 = nr_daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 UUIDString];
+      uUIDString = [v4 UUIDString];
       v17 = 138543362;
-      v18 = v8;
+      v18 = uUIDString;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "EPSagaTransactionExtensiblePairing: Pairing is done for %{public}@.", &v17, 0xCu);
     }
   }
@@ -687,26 +687,26 @@ LABEL_12:
   v9 = objc_loadWeakRetained(&self->_serviceRegistry);
   [v9 removeService:self->_extensiblePair];
 
-  v10 = [(EPSagaTransactionExtensiblePairing *)self pairingReport];
-  if ([v10 isErrorSet])
+  pairingReport = [(EPSagaTransactionExtensiblePairing *)self pairingReport];
+  if ([pairingReport isErrorSet])
   {
   }
 
   else
   {
     v11 = objc_loadWeakRetained(&self->_routingSlipEntry);
-    v12 = [v11 errors];
-    v13 = [v12 count];
+    errors = [v11 errors];
+    v13 = [errors count];
 
     if (!v13)
     {
       [(EPSagaTransactionExtensiblePairing *)self transactionDidComplete];
-      v14 = [(EPSagaTransactionExtensiblePairing *)self registry];
-      v15 = [v14 mirrorOfActiveDevice];
-      [(EPSagaTransactionExtensiblePairing *)self copyPropertiesToRTCReporter:v15];
+      registry = [(EPSagaTransactionExtensiblePairing *)self registry];
+      mirrorOfActiveDevice = [registry mirrorOfActiveDevice];
+      [(EPSagaTransactionExtensiblePairing *)self copyPropertiesToRTCReporter:mirrorOfActiveDevice];
 
-      v16 = [(EPSagaTransactionExtensiblePairing *)self unpairHelper];
-      [v16 addToOrCapOffRTCPairingMetric:0];
+      unpairHelper = [(EPSagaTransactionExtensiblePairing *)self unpairHelper];
+      [unpairHelper addToOrCapOffRTCPairingMetric:0];
 
       goto LABEL_9;
     }
@@ -716,35 +716,35 @@ LABEL_12:
 LABEL_9:
 }
 
-- (void)updateRegistryForUnpairing:(id)a3 withBlock:(id)a4
+- (void)updateRegistryForUnpairing:(id)unpairing withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  unpairingCopy = unpairing;
+  blockCopy = block;
+  v8 = blockCopy;
+  if (unpairingCopy)
   {
-    v9 = [(EPSagaTransactionExtensiblePairing *)self pairingReport];
-    v10 = [(EPSagaTransactionExtensiblePairing *)self registry];
+    pairingReport = [(EPSagaTransactionExtensiblePairing *)self pairingReport];
+    registry = [(EPSagaTransactionExtensiblePairing *)self registry];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000F8598;
     v13[3] = &unk_100179E90;
-    v14 = v9;
-    v15 = v6;
-    v16 = self;
+    v14 = pairingReport;
+    v15 = unpairingCopy;
+    selfCopy = self;
     v17 = v8;
-    WeakRetained = v9;
-    [v10 grabRegistryWithWriteBlockAsync:v13];
+    WeakRetained = pairingReport;
+    [registry grabRegistryWithWriteBlockAsync:v13];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (blockCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
-    v12 = [WeakRetained queue];
-    dispatch_async(v12, v8);
+    queue = [WeakRetained queue];
+    dispatch_async(queue, v8);
 
     goto LABEL_5;
   }
@@ -752,15 +752,15 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_cleanUpDiscoveredDevicesWithCollection:(id)a3
+- (void)_cleanUpDiscoveredDevicesWithCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = +[NSMutableDictionary dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = collectionCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -796,22 +796,22 @@ LABEL_6:
 
 - (BOOL)isInternalInstall
 {
-  v2 = [(EPSagaTransactionExtensiblePairing *)self registry];
-  v3 = [v2 isInternalInstall];
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
+  isInternalInstall = [registry isInternalInstall];
 
-  return v3;
+  return isInternalInstall;
 }
 
 - (void)pushVersion4CompatibilityMessageIfNeeded
 {
-  v2 = [(EPSagaTransactionExtensiblePairing *)self registry];
-  [v2 pushVersion4CompatibilityMessageIfNeeded];
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
+  [registry pushVersion4CompatibilityMessageIfNeeded];
 }
 
-- (void)sendXPCBTPairRequestMessage:(id)a3 withCompletion:(id)a4
+- (void)sendXPCBTPairRequestMessage:(id)message withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = nr_daemon_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -820,31 +820,31 @@ LABEL_6:
     v10 = nr_daemon_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 UUIDString];
+      uUIDString = [messageCopy UUIDString];
       *buf = 138543362;
-      v23 = v11;
+      v23 = uUIDString;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "sendXPCBTPairRequestMessage: pairingID=%{public}@, adding EPSagaOperandExtensiblePairingStartedKey to operands", buf, 0xCu);
     }
   }
 
   v12 = [[EPSagaOperandNumber alloc] initWithNumber:&__kCFBooleanTrue];
   WeakRetained = objc_loadWeakRetained(&self->_routingSlipEntry);
-  v14 = [WeakRetained operands];
-  [v14 setObject:v12 forKeyedSubscript:@"pairingStarted"];
+  operands = [WeakRetained operands];
+  [operands setObject:v12 forKeyedSubscript:@"pairingStarted"];
 
   v15 = objc_loadWeakRetained(&self->_routingSlipEntry);
   [v15 persist];
 
-  v16 = [(EPSagaTransactionExtensiblePairing *)self registry];
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000F8C60;
   v19[3] = &unk_100176AE0;
-  v20 = v6;
-  v21 = v7;
-  v17 = v7;
-  v18 = v6;
-  [v16 grabRegistryWithWriteBlockAsync:v19];
+  v20 = messageCopy;
+  v21 = completionCopy;
+  v17 = completionCopy;
+  v18 = messageCopy;
+  [registry grabRegistryWithWriteBlockAsync:v19];
 }
 
 - (void)voidIDSServices
@@ -866,10 +866,10 @@ LABEL_6:
   [(EPSagaTransactionExtensiblePairing *)self voidIDSService:objc_opt_class()];
 }
 
-- (void)voidIDSService:(Class)a3
+- (void)voidIDSService:(Class)service
 {
   WeakRetained = objc_loadWeakRetained(&self->_serviceRegistry);
-  v7 = [WeakRetained optionalServiceFromClass:a3];
+  v7 = [WeakRetained optionalServiceFromClass:service];
 
   v6 = objc_loadWeakRetained(&self->_serviceRegistry);
   [v6 removeService:v7];
@@ -890,11 +890,11 @@ LABEL_6:
   [v5 removeService:self];
 }
 
-- (void)copyPropertiesToRTCReporter:(id)a3
+- (void)copyPropertiesToRTCReporter:(id)reporter
 {
-  v3 = a3;
-  v7 = [v3 objectForKeyedSubscript:@"systemBuildVersion"];
-  v4 = [v3 objectForKeyedSubscript:@"hwModelStr"];
+  reporterCopy = reporter;
+  v7 = [reporterCopy objectForKeyedSubscript:@"systemBuildVersion"];
+  v4 = [reporterCopy objectForKeyedSubscript:@"hwModelStr"];
 
   v5 = +[NRRTCPairingReporter sharedInstance];
   [v5 setGizmoHW:v4];
@@ -903,11 +903,11 @@ LABEL_6:
   [v6 setGizmoBuild:v7];
 }
 
-- (void)initializeAllIDSChannelsBlock:(id)a3
+- (void)initializeAllIDSChannelsBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(EPSagaTransactionExtensiblePairing *)self registry];
-  [v5 initializeAllIDSChannelsBlock:v4];
+  blockCopy = block;
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
+  [registry initializeAllIDSChannelsBlock:blockCopy];
 }
 
 - (void)invalidateIDSChannels
@@ -928,8 +928,8 @@ LABEL_6:
     }
   }
 
-  v8 = [(EPSagaTransactionExtensiblePairing *)self registry];
-  [v8 invalidateIDSChannels];
+  registry = [(EPSagaTransactionExtensiblePairing *)self registry];
+  [registry invalidateIDSChannels];
 }
 
 - (NSUUID)pairingID

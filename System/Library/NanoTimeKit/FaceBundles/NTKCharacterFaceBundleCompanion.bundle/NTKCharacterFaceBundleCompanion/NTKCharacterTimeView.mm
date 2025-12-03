@@ -1,7 +1,7 @@
 @interface NTKCharacterTimeView
-- (NTKCharacterTimeView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (NTKCharacterTimeView)initWithFrame:(CGRect)frame forDevice:(id)device;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_didEnterBackground;
 - (void)_endScrubbing;
 - (void)_layoutRenderer;
@@ -9,34 +9,34 @@
 - (void)_startAnimation;
 - (void)_stopAnimation;
 - (void)_willEnterForeground;
-- (void)applyCharacterTransition:(double)a3 fromCharacter:(unint64_t)a4 toCharacter:(unint64_t)a5;
+- (void)applyCharacterTransition:(double)transition fromCharacter:(unint64_t)character toCharacter:(unint64_t)toCharacter;
 - (void)dealloc;
-- (void)endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)enumarateRenderers:(id)a3;
+- (void)endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)enumarateRenderers:(id)renderers;
 - (void)layoutSubviews;
 - (void)renderOneFrame;
-- (void)setAnimationFrameInterval:(int64_t)a3;
-- (void)setCharacter:(unint64_t)a3;
-- (void)setClothingColor:(id)a3 andDesaturation:(double)a4 forCharacter:(unint64_t)a5;
-- (void)setFrozen:(BOOL)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)setOverrideDate:(id)a3 animated:(BOOL)a4 enteringOrb:(BOOL)a5 completion:(id)a6;
-- (void)startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)setAnimationFrameInterval:(int64_t)interval;
+- (void)setCharacter:(unint64_t)character;
+- (void)setClothingColor:(id)color andDesaturation:(double)desaturation forCharacter:(unint64_t)character;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setOverrideDate:(id)date;
+- (void)setOverrideDate:(id)date animated:(BOOL)animated enteringOrb:(BOOL)orb completion:(id)completion;
+- (void)startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
 @end
 
 @implementation NTKCharacterTimeView
 
-- (NTKCharacterTimeView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKCharacterTimeView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v36.receiver = self;
   v36.super_class = NTKCharacterTimeView;
-  v11 = [(NTKCharacterTimeView *)&v36 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(NTKCharacterTimeView *)&v36 initWithFrame:x, y, width, height];
+  if (height)
   {
     kdebug_trace();
     v12 = _NTKLoggingObjectForDomain();
@@ -46,56 +46,56 @@
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "NTKCharacterTimeView", v35, 2u);
     }
 
-    objc_storeStrong(&v11->_device, a4);
+    objc_storeStrong(&height->_device, device);
     v13 = [CLKUIQuadView quadViewWithFrame:@"Char" identifier:0 options:1 colorSpace:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    characterQuadView = v11->_characterQuadView;
-    v11->_characterQuadView = v13;
+    characterQuadView = height->_characterQuadView;
+    height->_characterQuadView = v13;
 
-    v15 = [[NTKCharacterQuad alloc] initWithCLKDevice:v10];
-    characterQuad = v11->_characterQuad;
-    v11->_characterQuad = v15;
+    v15 = [[NTKCharacterQuad alloc] initWithCLKDevice:deviceCopy];
+    characterQuad = height->_characterQuad;
+    height->_characterQuad = v15;
 
-    [(CLKUIQuadView *)v11->_characterQuadView addQuad:v11->_characterQuad];
-    [(CLKUIQuadView *)v11->_characterQuadView setPreferredFramesPerSecond:30];
-    v17 = [(CLKUIQuadView *)v11->_characterQuadView layer];
-    [v17 setOpaque:1];
+    [(CLKUIQuadView *)height->_characterQuadView addQuad:height->_characterQuad];
+    [(CLKUIQuadView *)height->_characterQuadView setPreferredFramesPerSecond:30];
+    layer = [(CLKUIQuadView *)height->_characterQuadView layer];
+    [layer setOpaque:1];
 
-    v18 = [(NTKCharacterTimeView *)v11 addSubview:v11->_characterQuadView];
-    v19 = v11->_characterQuadView;
+    v18 = [(NTKCharacterTimeView *)height addSubview:height->_characterQuadView];
+    v19 = height->_characterQuadView;
     v20 = CGPointZero.y;
-    v21 = sub_53A0(v18, v10);
+    v21 = sub_53A0(v18, deviceCopy);
     [(CLKUIQuadView *)v19 setBounds:CGPointZero.x, v20, v21, v22];
-    v23 = v11->_characterQuadView;
-    [(NTKCharacterTimeView *)v11 center];
+    v23 = height->_characterQuadView;
+    [(NTKCharacterTimeView *)height center];
     [(CLKUIQuadView *)v23 setCenter:?];
-    [(CLKDevice *)v11->_device screenScale];
-    [(NTKCharacterTimeView *)v11 setContentScaleFactor:?];
-    device = v11->_device;
-    v25 = v11->_characterQuadView;
+    [(CLKDevice *)height->_device screenScale];
+    [(NTKCharacterTimeView *)height setContentScaleFactor:?];
+    device = height->_device;
+    v25 = height->_characterQuadView;
     v26 = [NTKCharacterResourceLoader sharedInstanceForDevice:device withPixelFormat:[(CLKUIQuadView *)v25 colorPixelFormat]];
-    loader = v11->_loader;
-    v11->_loader = v26;
+    loader = height->_loader;
+    height->_loader = v26;
 
-    [(NTKCharacterResourceLoader *)v11->_loader addClient];
+    [(NTKCharacterResourceLoader *)height->_loader addClient];
     v28 = +[NSNotificationCenter defaultCenter];
-    [v28 addObserver:v11 selector:"_didEnterBackground" name:UIApplicationDidEnterBackgroundNotification object:0];
+    [v28 addObserver:height selector:"_didEnterBackground" name:UIApplicationDidEnterBackgroundNotification object:0];
 
     v29 = +[NSNotificationCenter defaultCenter];
-    [v29 addObserver:v11 selector:"_willEnterForeground" name:UIApplicationWillEnterForegroundNotification object:0];
+    [v29 addObserver:height selector:"_willEnterForeground" name:UIApplicationWillEnterForegroundNotification object:0];
 
-    v30 = [NTKCharacterRenderer rendererWithCharacter:0 loader:v11->_loader];
-    v31 = v11->_renderers[0];
-    v11->_renderers[0] = v30;
+    v30 = [NTKCharacterRenderer rendererWithCharacter:0 loader:height->_loader];
+    v31 = height->_renderers[0];
+    height->_renderers[0] = v30;
 
-    v32 = [NTKCharacterRenderer rendererWithCharacter:1 loader:v11->_loader];
-    v33 = v11->_renderers[1];
-    v11->_renderers[1] = v32;
+    v32 = [NTKCharacterRenderer rendererWithCharacter:1 loader:height->_loader];
+    v33 = height->_renderers[1];
+    height->_renderers[1] = v32;
 
-    [(NTKCharacterTimeView *)v11 _layoutRenderer];
+    [(NTKCharacterTimeView *)height _layoutRenderer];
     kdebug_trace();
   }
 
-  return v11;
+  return height;
 }
 
 - (void)dealloc
@@ -123,21 +123,21 @@
   [(NTKCharacterTimeView *)&v8 dealloc];
 }
 
-- (void)setAnimationFrameInterval:(int64_t)a3
+- (void)setAnimationFrameInterval:(int64_t)interval
 {
-  [(CLKUIQuadView *)self->_characterQuadView setPreferredFramesPerSecond:(60.0 / a3)];
+  [(CLKUIQuadView *)self->_characterQuadView setPreferredFramesPerSecond:(60.0 / interval)];
   renderer = self->_renderer;
 
-  *&v5 = a3;
+  *&v5 = interval;
   [(NTKCharacterRenderer *)renderer setAnimationFrameInterval:v5];
 }
 
-- (void)setOverrideDate:(id)a3 animated:(BOOL)a4 enteringOrb:(BOOL)a5 completion:(id)a6
+- (void)setOverrideDate:(id)date animated:(BOOL)animated enteringOrb:(BOOL)orb completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  if (v8)
+  animatedCopy = animated;
+  dateCopy = date;
+  completionCopy = completion;
+  if (animatedCopy)
   {
     [(NTKCharacterTimeView *)self _startAnimation];
     [(NTKCharacterTimeView *)self setAnimationFrameInterval:1];
@@ -146,10 +146,10 @@
     v19[2] = sub_44B8;
     v19[3] = &unk_1C808;
     v12 = &v20;
-    v20 = v10;
-    v21 = a5;
+    v20 = dateCopy;
+    orbCopy = orb;
     [(NTKCharacterTimeView *)self enumarateRenderers:v19];
-    if (!v11)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
@@ -163,44 +163,44 @@
   v15 = sub_4554;
   v16 = &unk_1C808;
   v12 = &v17;
-  v17 = v10;
-  v18 = a5;
+  v17 = dateCopy;
+  orbCopy2 = orb;
   [(NTKCharacterTimeView *)self enumarateRenderers:&v13];
   [(NTKCharacterTimeView *)self renderOneFrame:v13];
-  if (v11)
+  if (completionCopy)
   {
 LABEL_5:
-    v11[2](v11, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
 LABEL_6:
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_468C;
   v5[3] = &unk_1C830;
-  v6 = a3;
-  v4 = v6;
+  dateCopy = date;
+  v4 = dateCopy;
   [(NTKCharacterTimeView *)self enumarateRenderers:v5];
 }
 
-- (void)enumarateRenderers:(id)a3
+- (void)enumarateRenderers:(id)renderers
 {
   renderers = self->_renderers;
-  v7 = a3 + 16;
-  (*(a3 + 2))(a3, self->_renderers[0]);
+  v7 = renderers + 16;
+  (*(renderers + 2))(renderers, self->_renderers[0]);
   v5 = renderers[1];
   v6 = *v7;
 
-  v6(a3, v5);
+  v6(renderers, v5);
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  if (a3)
+  if (frozen)
   {
     [(NTKCharacterTimeView *)self _stopAnimation];
   }
@@ -235,12 +235,12 @@ LABEL_6:
   }
 }
 
-- (void)setCharacter:(unint64_t)a3
+- (void)setCharacter:(unint64_t)character
 {
-  if (self->_character != a3 || !self->_renderer)
+  if (self->_character != character || !self->_renderer)
   {
-    self->_character = a3;
-    v4 = self->_renderers[a3];
+    self->_character = character;
+    v4 = self->_renderers[character];
     LODWORD(v5) = 1.0;
     [(NTKCharacterRenderer *)v4 setCharacterBrightness:v5];
     if (self->_renderer)
@@ -259,28 +259,28 @@ LABEL_6:
   }
 }
 
-- (void)setClothingColor:(id)a3 andDesaturation:(double)a4 forCharacter:(unint64_t)a5
+- (void)setClothingColor:(id)color andDesaturation:(double)desaturation forCharacter:(unint64_t)character
 {
-  [(NTKCharacterRenderer *)self->_renderers[a5] setClothingColor:a3 andDesaturation:a4];
+  [(NTKCharacterRenderer *)self->_renderers[character] setClothingColor:color andDesaturation:desaturation];
 
   [(NTKCharacterTimeView *)self renderOneFrame];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_49FC;
   v4[3] = &unk_1C850;
-  v4[4] = a3;
+  v4[4] = mode;
   [(NTKCharacterTimeView *)self enumarateRenderers:v4];
   [(NTKCharacterTimeView *)self renderOneFrame];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v6 = NTKEditModeDimmedAlpha;
-  if (a4)
+  if (mode)
   {
     v7 = NTKEditModeDimmedAlpha;
   }
@@ -290,7 +290,7 @@ LABEL_6:
     v7 = 1.0;
   }
 
-  if (a5)
+  if (editMode)
   {
     v8 = NTKEditModeDimmedAlpha;
   }
@@ -301,7 +301,7 @@ LABEL_6:
   }
 
   v10[1] = 3221225472;
-  if (a4 == 1)
+  if (mode == 1)
   {
     v9 = NTKEditModeDimmedAlpha;
   }
@@ -316,30 +316,30 @@ LABEL_6:
   v10[3] = &unk_1C870;
   *&v10[4] = v7;
   *&v10[5] = v8;
-  if (a5 != 1)
+  if (editMode != 1)
   {
     v6 = 1.0;
   }
 
-  *&v10[6] = a3;
+  *&v10[6] = fraction;
   *&v10[7] = v9;
   *&v10[8] = v6;
   [(NTKCharacterTimeView *)self enumarateRenderers:v10];
   [(NTKCharacterTimeView *)self renderOneFrame];
 }
 
-- (void)applyCharacterTransition:(double)a3 fromCharacter:(unint64_t)a4 toCharacter:(unint64_t)a5
+- (void)applyCharacterTransition:(double)transition fromCharacter:(unint64_t)character toCharacter:(unint64_t)toCharacter
 {
-  if (a3 >= 0.5)
+  if (transition >= 0.5)
   {
-    [(NTKCharacterTimeView *)self setCharacter:a5];
-    v7 = a3 + -0.5 + a3 + -0.5;
+    [(NTKCharacterTimeView *)self setCharacter:toCharacter];
+    v7 = transition + -0.5 + transition + -0.5;
   }
 
   else
   {
-    [(NTKCharacterTimeView *)self setCharacter:a4, a5];
-    v7 = a3 * -2.0 + 1.0;
+    [(NTKCharacterTimeView *)self setCharacter:character, toCharacter];
+    v7 = transition * -2.0 + 1.0;
   }
 
   v8 = v7;
@@ -391,23 +391,23 @@ LABEL_6:
 
 - (void)_willEnterForeground
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = *(v2 + 72);
-  *(v2 + 72) = v3 & 0xFB;
-  *(v2 + 72) &= ~8u;
-  *(v2 + 72) &= ~0x10u;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = *(selfCopy + 72);
+  *(selfCopy + 72) = v3 & 0xFB;
+  *(selfCopy + 72) &= ~8u;
+  *(selfCopy + 72) &= ~0x10u;
+  objc_sync_exit(selfCopy);
 
   if ((v3 & 0x10) != 0)
   {
-    [(NTKCharacterTimeView *)v2 setNeedsLayout];
+    [(NTKCharacterTimeView *)selfCopy setNeedsLayout];
   }
 
   if ((v3 & 8) != 0)
   {
 
-    [(NTKCharacterTimeView *)v2 renderOneFrame];
+    [(NTKCharacterTimeView *)selfCopy renderOneFrame];
   }
 }
 
@@ -416,8 +416,8 @@ LABEL_6:
   v11.receiver = self;
   v11.super_class = NTKCharacterTimeView;
   [(NTKCharacterTimeView *)&v11 layoutSubviews];
-  v3 = [(NTKCharacterTimeView *)self layer];
-  [v3 bounds];
+  layer = [(NTKCharacterTimeView *)self layer];
+  [layer bounds];
   [(NTKCharacterTimeView *)self setBounds:?];
 
   characterQuadView = self->_characterQuadView;
@@ -427,19 +427,19 @@ LABEL_6:
   v9 = self->_characterQuadView;
   [(NTKCharacterTimeView *)self center];
   [(CLKUIQuadView *)v9 setCenter:?];
-  v10 = self;
-  objc_sync_enter(v10);
-  if ((*(v10 + 72) & 4) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((*(selfCopy + 72) & 4) != 0)
   {
-    *(v10 + 72) |= 0x10u;
+    *(selfCopy + 72) |= 0x10u;
   }
 
   else
   {
-    [(NTKCharacterTimeView *)v10 _layoutRenderer];
+    [(NTKCharacterTimeView *)selfCopy _layoutRenderer];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_layoutRenderer
@@ -464,11 +464,11 @@ LABEL_6:
   }
 }
 
-- (void)startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(NTKCharacterTimeView *)self setAnimationFrameInterval:1];
-  v5[2]();
+  completionCopy[2]();
 }
 
 - (void)_endScrubbing
@@ -478,11 +478,11 @@ LABEL_6:
   [(NTKCharacterTimeView *)self setAnimationFrameInterval:2];
 }
 
-- (void)endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (animatedCopy)
   {
     objc_initWeak(&location, self);
     v7[0] = _NSConcreteStackBlock;
@@ -490,7 +490,7 @@ LABEL_6:
     v7[2] = sub_5268;
     v7[3] = &unk_1C8B8;
     objc_copyWeak(&v9, &location);
-    v8 = v6;
+    v8 = completionCopy;
     [(NTKCharacterTimeView *)self setOverrideDate:0 animated:1 enteringOrb:0 completion:v7];
 
     objc_destroyWeak(&v9);
@@ -500,7 +500,7 @@ LABEL_6:
   else
   {
     [(NTKCharacterTimeView *)self _endScrubbing];
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 

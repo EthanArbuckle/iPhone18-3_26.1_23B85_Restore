@@ -1,39 +1,39 @@
 @interface DTTapRemote
-- (DTTapRemote)initWithConfig:(id)a3 memoHandler:(id)a4 messageHandler:(id)a5 connection:(id)a6;
-- (id)_fetchDataForReason:(unint64_t)a3;
+- (DTTapRemote)initWithConfig:(id)config memoHandler:(id)handler messageHandler:(id)messageHandler connection:(id)connection;
+- (id)_fetchDataForReason:(unint64_t)reason;
 - (void)_pause;
-- (void)_processAllPendingMessagesIncludingMemoHandler:(BOOL)a3;
+- (void)_processAllPendingMessagesIncludingMemoHandler:(BOOL)handler;
 - (void)_start;
 - (void)_stop;
 - (void)_unpause;
-- (void)messageReceived:(id)a3;
+- (void)messageReceived:(id)received;
 @end
 
 @implementation DTTapRemote
 
-- (DTTapRemote)initWithConfig:(id)a3 memoHandler:(id)a4 messageHandler:(id)a5 connection:(id)a6
+- (DTTapRemote)initWithConfig:(id)config memoHandler:(id)handler messageHandler:(id)messageHandler connection:(id)connection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configCopy = config;
+  handlerCopy = handler;
+  messageHandlerCopy = messageHandler;
+  connectionCopy = connection;
   v34.receiver = self;
   v34.super_class = DTTapRemote;
-  v14 = [(DTTap *)&v34 initWithConfig:v10 memoHandler:v11];
+  v14 = [(DTTap *)&v34 initWithConfig:configCopy memoHandler:handlerCopy];
   v15 = v14;
   if (v14)
   {
-    if (!v12)
+    if (!messageHandlerCopy)
     {
       sub_24802EF90();
     }
 
-    objc_storeStrong(&v14->_messageHandler, a5);
-    objc_storeStrong(&v15->_connection, a6);
+    objc_storeStrong(&v14->_messageHandler, messageHandler);
+    objc_storeStrong(&v15->_connection, connection);
     v15->_connectionEnabled = 1;
     objc_initWeak(&location, v15);
-    v16 = [v10 serviceName];
-    v17 = [v13 makeChannelWithIdentifier:v16];
+    serviceName = [configCopy serviceName];
+    v17 = [connectionCopy makeChannelWithIdentifier:serviceName];
     channel = v15->_channel;
     v15->_channel = v17;
 
@@ -48,10 +48,10 @@
     v29[1] = v29;
     v29[2] = 0x2020000000;
     v30 = 1;
-    v20 = [(DTTap *)v15 config];
-    v21 = [v20 plist];
+    config = [(DTTap *)v15 config];
+    plist = [config plist];
 
-    v22 = [MEMORY[0x277D03668] messageWithSelector:sel_setConfig_ objectArguments:{v21, 0}];
+    v22 = [MEMORY[0x277D03668] messageWithSelector:sel_setConfig_ objectArguments:{plist, 0}];
     v23 = v15->_channel;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
@@ -73,11 +73,11 @@
   return v15;
 }
 
-- (void)messageReceived:(id)a3
+- (void)messageReceived:(id)received
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  receivedCopy = received;
+  v5 = receivedCopy;
+  if (receivedCopy)
   {
     unprocessedMessageQueue = self->_unprocessedMessageQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -85,19 +85,19 @@
     v7[2] = sub_247FC4254;
     v7[3] = &unk_278EF1550;
     v7[4] = self;
-    v8 = v4;
+    v8 = receivedCopy;
     dispatch_async(unprocessedMessageQueue, v7);
   }
 }
 
-- (void)_processAllPendingMessagesIncludingMemoHandler:(BOOL)a3
+- (void)_processAllPendingMessagesIncludingMemoHandler:(BOOL)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   dispatch_sync(self->_unprocessedMessageQueue, &unk_285A18970);
-  if (v3)
+  if (handlerCopy)
   {
-    v5 = [(DTTap *)self memoHandler];
-    [v5 processPendingMemos];
+    memoHandler = [(DTTap *)self memoHandler];
+    [memoHandler processPendingMemos];
   }
 }
 
@@ -196,21 +196,21 @@
   }
 }
 
-- (id)_fetchDataForReason:(unint64_t)a3
+- (id)_fetchDataForReason:(unint64_t)reason
 {
-  v5 = [(DTTap *)self config];
-  v6 = [v5 serviceVersion];
+  config = [(DTTap *)self config];
+  serviceVersion = [config serviceVersion];
 
-  if (a3 == 1 && v6 >= 2)
+  if (reason == 1 && serviceVersion >= 2)
   {
     channel = self->_channel;
     v8 = [MEMORY[0x277D03668] messageWithSelector:sel_fetchDataNow objectArguments:0];
     [(DTXChannel *)channel sendMessageSync:v8 replyHandler:&unk_285A18990];
   }
 
-  [(DTTapRemote *)self _processAllPendingMessagesIncludingMemoHandler:a3 != 0];
-  v9 = [(DTTap *)self memoHandler];
-  v10 = [v9 handleMemo:0];
+  [(DTTapRemote *)self _processAllPendingMessagesIncludingMemoHandler:reason != 0];
+  memoHandler = [(DTTap *)self memoHandler];
+  v10 = [memoHandler handleMemo:0];
 
   return v10;
 }

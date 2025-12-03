@@ -1,10 +1,10 @@
 @interface InboxModel
-- (void)inboxModelDidUpdateIsCollapsed:(BOOL)a3;
+- (void)inboxModelDidUpdateIsCollapsed:(BOOL)collapsed;
 @end
 
 @implementation InboxModel
 
-- (void)inboxModelDidUpdateIsCollapsed:(BOOL)a3
+- (void)inboxModelDidUpdateIsCollapsed:(BOOL)collapsed
 {
   swift_getKeyPath();
   swift_getKeyPath();

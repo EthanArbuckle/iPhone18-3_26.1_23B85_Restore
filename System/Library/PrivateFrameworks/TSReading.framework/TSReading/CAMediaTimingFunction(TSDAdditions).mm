@@ -10,16 +10,16 @@
   v12[1] = *MEMORY[0x277D85DE8];
   v2 = +[TSDBezierPath bezierPath];
   v12[0] = 0;
-  [a1 getControlPointAtIndex:0 values:v12];
+  [self getControlPointAtIndex:0 values:v12];
   v3 = *v12;
   v4 = *(v12 + 1);
-  [a1 getControlPointAtIndex:1 values:v12];
+  [self getControlPointAtIndex:1 values:v12];
   v5 = *v12;
   v6 = *(v12 + 1);
-  [a1 getControlPointAtIndex:2 values:v12];
+  [self getControlPointAtIndex:2 values:v12];
   v7 = *v12;
   v8 = *(v12 + 1);
-  [a1 getControlPointAtIndex:3 values:v12];
+  [self getControlPointAtIndex:3 values:v12];
   v9 = *v12;
   v10 = *(v12 + 1);
   [v2 moveToPoint:{v3, v4}];
@@ -29,10 +29,10 @@
 
 - (uint64_t)solveForTime:()TSDAdditions
 {
-  v1 = [a1 bezierPath];
+  bezierPath = [self bezierPath];
   TSUClamp();
 
-  return [v1 yValueFromXValue:?];
+  return [bezierPath yValueFromXValue:?];
 }
 
 @end

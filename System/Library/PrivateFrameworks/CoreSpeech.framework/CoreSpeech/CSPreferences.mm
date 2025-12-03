@@ -22,48 +22,48 @@
 - (id)trialBaseAssetDirectory;
 - (id)voiceTriggerAudioLogDirectory;
 - (int)adaptiveSiriVolumeRecentIntent;
-- (void)disableAdaptiveSiriVolume:(id)a3;
-- (void)setAudioInjectionFilePath:(id)a3;
+- (void)disableAdaptiveSiriVolume:(id)volume;
+- (void)setAudioInjectionFilePath:(id)path;
 @end
 
 @implementation CSPreferences
 
 - (id)dateWhenVoiceTriggerRePrompted
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 dateWhenVoiceTriggerRePrompted];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  dateWhenVoiceTriggerRePrompted = [mEMORY[0x277D01788] dateWhenVoiceTriggerRePrompted];
 
-  return v3;
+  return dateWhenVoiceTriggerRePrompted;
 }
 
 - (BOOL)isFlexibleFollowupsSupported
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 isFlexibleFollowupsSupported];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isFlexibleFollowupsSupported = [mEMORY[0x277D01788] isFlexibleFollowupsSupported];
 
-  return v3;
+  return isFlexibleFollowupsSupported;
 }
 
 - (BOOL)isFlexibleFollowupsUserDisabled
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 isFlexibleFollowupsUserDisabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isFlexibleFollowupsUserDisabled = [mEMORY[0x277D01788] isFlexibleFollowupsUserDisabled];
 
-  return v3;
+  return isFlexibleFollowupsUserDisabled;
 }
 
 - (int)adaptiveSiriVolumeRecentIntent
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 adaptiveSiriVolumeRecentIntent];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  adaptiveSiriVolumeRecentIntent = [mEMORY[0x277D01788] adaptiveSiriVolumeRecentIntent];
 
-  return v3;
+  return adaptiveSiriVolumeRecentIntent;
 }
 
 - (float)adaptiveSiriVolumePermanentOffset
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  [v2 adaptiveSiriVolumePermanentOffset];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  [mEMORY[0x277D01788] adaptiveSiriVolumePermanentOffset];
   v4 = v3;
 
   return v4;
@@ -71,80 +71,80 @@
 
 - (BOOL)isAdaptiveSiriVolumePermanentOffsetEnabled
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 isAdaptiveSiriVolumePermanentOffsetEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isAdaptiveSiriVolumePermanentOffsetEnabled = [mEMORY[0x277D01788] isAdaptiveSiriVolumePermanentOffsetEnabled];
 
-  return v3;
+  return isAdaptiveSiriVolumePermanentOffsetEnabled;
 }
 
 - (BOOL)isAdaptiveSiriVolumeTemporaryIntentValid
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 isAdaptiveSiriVolumeTemporaryIntentValid];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isAdaptiveSiriVolumeTemporaryIntentValid = [mEMORY[0x277D01788] isAdaptiveSiriVolumeTemporaryIntentValid];
 
-  return v3;
+  return isAdaptiveSiriVolumeTemporaryIntentValid;
 }
 
-- (void)disableAdaptiveSiriVolume:(id)a3
+- (void)disableAdaptiveSiriVolume:(id)volume
 {
   v3 = MEMORY[0x277D01788];
-  v4 = a3;
-  v5 = [v3 sharedPreferences];
-  [v5 disableAdaptiveSiriVolume:v4];
+  volumeCopy = volume;
+  sharedPreferences = [v3 sharedPreferences];
+  [sharedPreferences disableAdaptiveSiriVolume:volumeCopy];
 }
 
 - (BOOL)smartSiriVolumeContextAwareEnabled
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 smartSiriVolumeContextAwareEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  smartSiriVolumeContextAwareEnabled = [mEMORY[0x277D01788] smartSiriVolumeContextAwareEnabled];
 
-  return v3;
+  return smartSiriVolumeContextAwareEnabled;
 }
 
 - (id)trialBaseAssetDirectory
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 trialBaseAssetDirectory];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  trialBaseAssetDirectory = [mEMORY[0x277D01788] trialBaseAssetDirectory];
 
-  return v3;
+  return trialBaseAssetDirectory;
 }
 
 - (BOOL)useSiriActivationSPIForHomePod
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 useSiriActivationSPIForHomePod];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  useSiriActivationSPIForHomePod = [mEMORY[0x277D01788] useSiriActivationSPIForHomePod];
 
-  return v3;
+  return useSiriActivationSPIForHomePod;
 }
 
-- (void)setAudioInjectionFilePath:(id)a3
+- (void)setAudioInjectionFilePath:(id)path
 {
   v3 = MEMORY[0x277D01788];
-  v4 = a3;
-  v5 = [v3 sharedPreferences];
-  [v5 setAudioInjectionFilePath:v4];
+  pathCopy = path;
+  sharedPreferences = [v3 sharedPreferences];
+  [sharedPreferences setAudioInjectionFilePath:pathCopy];
 }
 
 - (id)getStartOfSpeechAudioLogFilePath
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 getStartOfSpeechAudioLogFilePath];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  getStartOfSpeechAudioLogFilePath = [mEMORY[0x277D01788] getStartOfSpeechAudioLogFilePath];
 
-  return v3;
+  return getStartOfSpeechAudioLogFilePath;
 }
 
 - (BOOL)twoShotNotificationEnabled
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 twoShotNotificationEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  twoShotNotificationEnabled = [mEMORY[0x277D01788] twoShotNotificationEnabled];
 
-  return v3;
+  return twoShotNotificationEnabled;
 }
 
 - (float)getAttendingTimeoutConfig
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  [v2 getAttendingTimeoutConfig];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  [mEMORY[0x277D01788] getAttendingTimeoutConfig];
   v4 = v3;
 
   return v4;
@@ -152,74 +152,74 @@
 
 - (BOOL)isGazeSignalEnabled
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 isGazeSignalEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isGazeSignalEnabled = [mEMORY[0x277D01788] isGazeSignalEnabled];
 
-  return v3;
+  return isGazeSignalEnabled;
 }
 
 - (BOOL)isGazeMandatory
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 isGazeMandatory];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isGazeMandatory = [mEMORY[0x277D01788] isGazeMandatory];
 
-  return v3;
+  return isGazeMandatory;
 }
 
 - (BOOL)isGazeSimlModelEnabled
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 isGazeSimlModelEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isGazeSimlModelEnabled = [mEMORY[0x277D01788] isGazeSimlModelEnabled];
 
-  return v3;
+  return isGazeSimlModelEnabled;
 }
 
 - (BOOL)isAttentiveSiriAudioLoggingEnabled
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 isAttentiveSiriAudioLoggingEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isAttentiveSiriAudioLoggingEnabled = [mEMORY[0x277D01788] isAttentiveSiriAudioLoggingEnabled];
 
-  return v3;
+  return isAttentiveSiriAudioLoggingEnabled;
 }
 
 - (BOOL)isAttentiveSiriEnabled
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 isAttentiveSiriEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isAttentiveSiriEnabled = [mEMORY[0x277D01788] isAttentiveSiriEnabled];
 
-  return v3;
+  return isAttentiveSiriEnabled;
 }
 
 - (BOOL)isPHSSupported
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 isPHSSupported];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isPHSSupported = [mEMORY[0x277D01788] isPHSSupported];
 
-  return v3;
+  return isPHSSupported;
 }
 
 - (BOOL)voiceTriggerEnabled
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 voiceTriggerEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  voiceTriggerEnabled = [mEMORY[0x277D01788] voiceTriggerEnabled];
 
-  return v3;
+  return voiceTriggerEnabled;
 }
 
 - (id)voiceTriggerAudioLogDirectory
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 voiceTriggerAudioLogDirectory];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  voiceTriggerAudioLogDirectory = [mEMORY[0x277D01788] voiceTriggerAudioLogDirectory];
 
-  return v3;
+  return voiceTriggerAudioLogDirectory;
 }
 
 - (BOOL)fileLoggingIsEnabled
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 fileLoggingIsEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  fileLoggingIsEnabled = [mEMORY[0x277D01788] fileLoggingIsEnabled];
 
-  return v3;
+  return fileLoggingIsEnabled;
 }
 
 + (id)sharedPreferences

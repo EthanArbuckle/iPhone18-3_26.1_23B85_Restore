@@ -7,7 +7,7 @@
 
 - (id)getZeroKeywordDict
 {
-  v2 = self;
+  selfCopy = self;
   sub_22F1696C8();
 
   v3 = sub_22F740C80();

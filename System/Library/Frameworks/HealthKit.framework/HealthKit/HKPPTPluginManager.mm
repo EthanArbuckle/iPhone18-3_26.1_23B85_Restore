@@ -3,7 +3,7 @@
 - (HKPPTPluginManager)init;
 - (id)builtinTests;
 - (void)_loadPPTBundles;
-- (void)registerDriverClass:(Class)a3;
+- (void)registerDriverClass:(Class)class;
 @end
 
 @implementation HKPPTPluginManager
@@ -57,32 +57,32 @@ uint64_t __41__HKPPTPluginManager_sharedPluginManager__block_invoke()
   return v2;
 }
 
-- (void)registerDriverClass:(Class)a3
+- (void)registerDriverClass:(Class)class
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 supportedTestType];
-    if (v6)
+    supportedTestType = [v4 supportedTestType];
+    if (supportedTestType)
     {
-      v7 = [(NSMutableDictionary *)self->_testClasses objectForKeyedSubscript:v6];
+      v7 = [(NSMutableDictionary *)self->_testClasses objectForKeyedSubscript:supportedTestType];
       _HKInitializeLogging();
       v8 = HKLogTesting();
-      v9 = v8;
+      builtinTestDefinitions = v8;
       if (v7)
       {
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          v10 = [(NSMutableDictionary *)self->_testClasses objectForKeyedSubscript:v6];
+          v10 = [(NSMutableDictionary *)self->_testClasses objectForKeyedSubscript:supportedTestType];
           *buf = 138543874;
-          v31 = a3;
+          classCopy2 = class;
           v32 = 2114;
-          v33 = v6;
+          v33 = supportedTestType;
           v34 = 2114;
           v35 = v10;
-          _os_log_error_impl(&dword_19197B000, v9, OS_LOG_TYPE_ERROR, "Loaded PPT driver %{public}@ supports %{public}@, but we already have a driver (%{public}@) supporting that type.", buf, 0x20u);
+          _os_log_error_impl(&dword_19197B000, builtinTestDefinitions, OS_LOG_TYPE_ERROR, "Loaded PPT driver %{public}@ supports %{public}@, but we already have a driver (%{public}@) supporting that type.", buf, 0x20u);
         }
       }
 
@@ -96,24 +96,24 @@ uint64_t __41__HKPPTPluginManager_sharedPluginManager__block_invoke()
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
           {
             *buf = 138543618;
-            v31 = a3;
+            classCopy2 = class;
             v32 = 2114;
-            v33 = v6;
+            v33 = supportedTestType;
             _os_log_impl(&dword_19197B000, v12, OS_LOG_TYPE_INFO, "Loaded PPT driver %{public}@ for %{public}@", buf, 0x16u);
           }
         }
 
-        [(NSMutableDictionary *)self->_testClasses setObject:a3 forKeyedSubscript:v6];
-        v9 = [v5 builtinTestDefinitions];
+        [(NSMutableDictionary *)self->_testClasses setObject:class forKeyedSubscript:supportedTestType];
+        builtinTestDefinitions = [v5 builtinTestDefinitions];
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v13 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v13 = [builtinTestDefinitions countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v13)
         {
           v14 = v13;
-          v15 = v6;
+          v15 = supportedTestType;
           v23 = v5;
           v16 = *v26;
           v17 = MEMORY[0x1E695E118];
@@ -123,11 +123,11 @@ uint64_t __41__HKPPTPluginManager_sharedPluginManager__block_invoke()
             {
               if (*v26 != v16)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(builtinTestDefinitions);
               }
 
               v19 = *(*(&v25 + 1) + 8 * i);
-              v20 = [v9 objectForKeyedSubscript:v19, v23];
+              v20 = [builtinTestDefinitions objectForKeyedSubscript:v19, v23];
               v21 = [v20 mutableCopy];
 
               [v21 setObject:v19 forKeyedSubscript:@"testName"];
@@ -136,12 +136,12 @@ uint64_t __41__HKPPTPluginManager_sharedPluginManager__block_invoke()
               [(NSMutableDictionary *)self->_builtinTests setObject:v21 forKeyedSubscript:v19];
             }
 
-            v14 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+            v14 = [builtinTestDefinitions countByEnumeratingWithState:&v25 objects:v29 count:16];
           }
 
           while (v14);
           v5 = v23;
-          v6 = v15;
+          supportedTestType = v15;
         }
       }
     }
@@ -149,10 +149,10 @@ uint64_t __41__HKPPTPluginManager_sharedPluginManager__block_invoke()
     else
     {
       _HKInitializeLogging();
-      v9 = HKLogTesting();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      builtinTestDefinitions = HKLogTesting();
+      if (os_log_type_enabled(builtinTestDefinitions, OS_LOG_TYPE_ERROR))
       {
-        [(HKPPTPluginManager *)a3 registerDriverClass:v9];
+        [(HKPPTPluginManager *)class registerDriverClass:builtinTestDefinitions];
       }
     }
   }
@@ -235,8 +235,8 @@ uint64_t __41__HKPPTPluginManager_sharedPluginManager__block_invoke()
               v38 = 0u;
               v35 = 0u;
               v36 = 0u;
-              v23 = [v21 PPTDriverClasses];
-              v24 = [v23 countByEnumeratingWithState:&v35 objects:v48 count:16];
+              pPTDriverClasses = [v21 PPTDriverClasses];
+              v24 = [pPTDriverClasses countByEnumeratingWithState:&v35 objects:v48 count:16];
               if (v24)
               {
                 v25 = v24;
@@ -247,13 +247,13 @@ uint64_t __41__HKPPTPluginManager_sharedPluginManager__block_invoke()
                   {
                     if (*v36 != v26)
                     {
-                      objc_enumerationMutation(v23);
+                      objc_enumerationMutation(pPTDriverClasses);
                     }
 
                     [(HKPPTPluginManager *)self registerDriverClass:*(*(&v35 + 1) + 8 * j), v29];
                   }
 
-                  v25 = [v23 countByEnumeratingWithState:&v35 objects:v48 count:16];
+                  v25 = [pPTDriverClasses countByEnumeratingWithState:&v35 objects:v48 count:16];
                 }
 
                 while (v25);

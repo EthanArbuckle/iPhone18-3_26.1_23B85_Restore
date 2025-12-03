@@ -1,27 +1,27 @@
 @interface SKRemoteComposeReviewViewController
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (SKComposeReviewViewController)composeReviewViewController;
-- (SKRemoteComposeReviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_keyboardVisibilityDidChangeNotification:(id)a3;
+- (SKRemoteComposeReviewViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_keyboardVisibilityDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)didFinishWithResult:(id)a3 error:(id)a4;
-- (void)didPrepareWithResult:(id)a3 error:(id)a4;
+- (void)didFinishWithResult:(id)result error:(id)error;
+- (void)didPrepareWithResult:(id)result error:(id)error;
 - (void)promptForStarRating;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SKRemoteComposeReviewViewController
 
-- (SKRemoteComposeReviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKRemoteComposeReviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = SKRemoteComposeReviewViewController;
-  v4 = [(SKRemoteComposeReviewViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(SKRemoteComposeReviewViewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__keyboardVisibilityDidChangeNotification_ name:*MEMORY[0x1E69DDF70] object:0];
-    [v5 addObserver:v4 selector:sel__keyboardVisibilityDidChangeNotification_ name:*MEMORY[0x1E69DDF78] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__keyboardVisibilityDidChangeNotification_ name:*MEMORY[0x1E69DDF70] object:0];
+    [defaultCenter addObserver:v4 selector:sel__keyboardVisibilityDidChangeNotification_ name:*MEMORY[0x1E69DDF78] object:0];
   }
 
   return v4;
@@ -29,46 +29,46 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDF70] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF70] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
 
   v4.receiver = self;
   v4.super_class = SKRemoteComposeReviewViewController;
   [(SKRemoteComposeReviewViewController *)&v4 dealloc];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_composeReviewViewController);
-  LOBYTE(a3) = [WeakRetained shouldAutorotateToInterfaceOrientation:a3];
+  LOBYTE(orientation) = [WeakRetained shouldAutorotateToInterfaceOrientation:orientation];
 
-  return a3;
+  return orientation;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_composeReviewViewController);
-  [WeakRetained _tearDownAfterError:v4];
+  [WeakRetained _tearDownAfterError:errorCopy];
 }
 
-- (void)_keyboardVisibilityDidChangeNotification:(id)a3
+- (void)_keyboardVisibilityDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v25 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [notification userInfo];
+  v25 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
   if (v25)
   {
-    v5 = [(SKRemoteComposeReviewViewController *)self view];
+    view = [(SKRemoteComposeReviewViewController *)self view];
     [v25 CGRectValue];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [MEMORY[0x1E69DC668] sharedApplication];
-    v15 = [v14 keyWindow];
-    [v5 convertRect:v15 fromView:{v7, v9, v11, v13}];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+    [view convertRect:keyWindow fromView:{v7, v9, v11, v13}];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -83,28 +83,28 @@
     v23 = *(MEMORY[0x1E695F058] + 24);
   }
 
-  v24 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v24 clientKeyboardFrameChanged:{v17, v19, v21, v23}];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy clientKeyboardFrameChanged:{v17, v19, v21, v23}];
 }
 
-- (void)didFinishWithResult:(id)a3 error:(id)a4
+- (void)didFinishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_composeReviewViewController);
-  v8 = [v7 BOOLValue];
+  bOOLValue = [resultCopy BOOLValue];
 
-  [WeakRetained _didFinishWithResult:v8 error:v6];
+  [WeakRetained _didFinishWithResult:bOOLValue error:errorCopy];
 }
 
-- (void)didPrepareWithResult:(id)a3 error:(id)a4
+- (void)didPrepareWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_composeReviewViewController);
-  v8 = [v7 BOOLValue];
+  bOOLValue = [resultCopy BOOLValue];
 
-  [WeakRetained _didPrepareWithResult:v8 error:v6];
+  [WeakRetained _didPrepareWithResult:bOOLValue error:errorCopy];
 }
 
 - (void)promptForStarRating

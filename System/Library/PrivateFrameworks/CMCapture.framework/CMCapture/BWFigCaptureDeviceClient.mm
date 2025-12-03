@@ -1,6 +1,6 @@
 @interface BWFigCaptureDeviceClient
-- (BOOL)canShareRegistrationWithClientPID:(int)a3 deviceAvailabilityChangedHandler:(id)a4;
-- (BWFigCaptureDeviceClient)initWithPID:(int)a3 clientApplicationID:(id)a4 clientDescription:(id)a5 clientPriority:(int)a6 canStealFromClientsWithSamePriority:(BOOL)a7 deviceSharingWithOtherClientsAllowed:(BOOL)a8 clientType:(int)a9 deviceAvailabilityChangedHandler:(id)a10;
+- (BOOL)canShareRegistrationWithClientPID:(int)d deviceAvailabilityChangedHandler:(id)handler;
+- (BWFigCaptureDeviceClient)initWithPID:(int)d clientApplicationID:(id)iD clientDescription:(id)description clientPriority:(int)priority canStealFromClientsWithSamePriority:(BOOL)samePriority deviceSharingWithOtherClientsAllowed:(BOOL)allowed clientType:(int)type deviceAvailabilityChangedHandler:(id)self0;
 - (__CFString)_stringForBWFigCaptureDeviceVendorClientPriority;
 - (id)debugDescription;
 - (id)description;
@@ -9,7 +9,7 @@
 
 @implementation BWFigCaptureDeviceClient
 
-- (BWFigCaptureDeviceClient)initWithPID:(int)a3 clientApplicationID:(id)a4 clientDescription:(id)a5 clientPriority:(int)a6 canStealFromClientsWithSamePriority:(BOOL)a7 deviceSharingWithOtherClientsAllowed:(BOOL)a8 clientType:(int)a9 deviceAvailabilityChangedHandler:(id)a10
+- (BWFigCaptureDeviceClient)initWithPID:(int)d clientApplicationID:(id)iD clientDescription:(id)description clientPriority:(int)priority canStealFromClientsWithSamePriority:(BOOL)samePriority deviceSharingWithOtherClientsAllowed:(BOOL)allowed clientType:(int)type deviceAvailabilityChangedHandler:(id)self0
 {
   v20.receiver = self;
   v20.super_class = BWFigCaptureDeviceClient;
@@ -19,14 +19,14 @@
   {
     v18 = sNextClientID++;
     v16->_clientID = v18;
-    v16->_pid = a3;
-    v16->_applicationID = [a4 copy];
-    v17->_clientDescription = [a5 copy];
-    v17->_clientPriority = a6;
-    v17->_canStealFromClientsWithSamePriority = a7;
-    v17->_deviceSharingWithOtherClientsAllowed = a8;
-    v17->_clientType = a9;
-    v17->_deviceAvailabilityChangedHandler = [a10 copy];
+    v16->_pid = d;
+    v16->_applicationID = [iD copy];
+    v17->_clientDescription = [description copy];
+    v17->_clientPriority = priority;
+    v17->_canStealFromClientsWithSamePriority = samePriority;
+    v17->_deviceSharingWithOtherClientsAllowed = allowed;
+    v17->_clientType = type;
+    v17->_deviceAvailabilityChangedHandler = [handler copy];
   }
 
   return v17;
@@ -46,9 +46,9 @@
   return [v3 stringWithFormat:@"<%@: %p %@>", NSStringFromClass(v4), self, -[BWFigCaptureDeviceClient debugDescription](self, "debugDescription")];
 }
 
-- (BOOL)canShareRegistrationWithClientPID:(int)a3 deviceAvailabilityChangedHandler:(id)a4
+- (BOOL)canShareRegistrationWithClientPID:(int)d deviceAvailabilityChangedHandler:(id)handler
 {
-  if (self->_pid != a3 || !(deviceSharingWithOtherClientsAllowed = self->_deviceSharingWithOtherClientsAllowed) || a4 && self->_deviceAvailabilityChangedHandler)
+  if (self->_pid != d || !(deviceSharingWithOtherClientsAllowed = self->_deviceSharingWithOtherClientsAllowed) || handler && self->_deviceAvailabilityChangedHandler)
   {
     LOBYTE(deviceSharingWithOtherClientsAllowed) = 0;
   }
@@ -77,7 +77,7 @@
 
 - (id)debugDescription
 {
-  v3 = [(BWFigCaptureDeviceClient *)self _stringForBWFigCaptureDeviceVendorClientPriority];
+  _stringForBWFigCaptureDeviceVendorClientPriority = [(BWFigCaptureDeviceClient *)self _stringForBWFigCaptureDeviceVendorClientPriority];
   clientType = self->_clientType;
   if (clientType > 3)
   {
@@ -89,7 +89,7 @@
     v5 = off_1E79996B8[clientType];
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"clientID: %d, pid: %d, clientApplicationID: %@, clientDescription: %@, clientPriority: %@, canStealFromClientsWithSamePriority: %d, deviceSharingWithOtherClientsAllowed: %d, clientType: %@, handler: %p", self->_clientID, self->_pid, self->_applicationID, self->_clientDescription, v3, self->_canStealFromClientsWithSamePriority, self->_deviceSharingWithOtherClientsAllowed, v5, self->_deviceAvailabilityChangedHandler];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"clientID: %d, pid: %d, clientApplicationID: %@, clientDescription: %@, clientPriority: %@, canStealFromClientsWithSamePriority: %d, deviceSharingWithOtherClientsAllowed: %d, clientType: %@, handler: %p", self->_clientID, self->_pid, self->_applicationID, self->_clientDescription, _stringForBWFigCaptureDeviceVendorClientPriority, self->_canStealFromClientsWithSamePriority, self->_deviceSharingWithOtherClientsAllowed, v5, self->_deviceAvailabilityChangedHandler];
 }
 
 @end

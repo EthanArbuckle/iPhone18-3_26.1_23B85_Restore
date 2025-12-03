@@ -1,35 +1,35 @@
 @interface MapsThemeMultiPartLabel
 - (void)_updateTextColor;
 - (void)didMoveToWindow;
-- (void)setTextColorProvider:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTextColorProvider:(id)provider;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MapsThemeMultiPartLabel
 
 - (void)_updateTextColor
 {
-  v3 = [(MapsThemeMultiPartLabel *)self textColorProvider];
-  if (v3)
+  textColorProvider = [(MapsThemeMultiPartLabel *)self textColorProvider];
+  if (textColorProvider)
   {
-    v4 = v3;
-    v5 = [(MapsThemeMultiPartLabel *)self window];
+    v4 = textColorProvider;
+    window = [(MapsThemeMultiPartLabel *)self window];
 
-    if (v5)
+    if (window)
     {
-      v8 = [(MapsThemeMultiPartLabel *)self textColorProvider];
-      v6 = [(MapsThemeMultiPartLabel *)self theme];
-      v7 = v8[2](v8, v6);
+      textColorProvider2 = [(MapsThemeMultiPartLabel *)self textColorProvider];
+      theme = [(MapsThemeMultiPartLabel *)self theme];
+      v7 = textColorProvider2[2](textColorProvider2, theme);
       [(MapsThemeMultiPartLabel *)self setTextColor:v7];
     }
   }
 }
 
-- (void)setTextColorProvider:(id)a3
+- (void)setTextColorProvider:(id)provider
 {
-  if (self->_textColorProvider != a3)
+  if (self->_textColorProvider != provider)
   {
-    v4 = [a3 copy];
+    v4 = [provider copy];
     textColorProvider = self->_textColorProvider;
     self->_textColorProvider = v4;
 
@@ -42,34 +42,34 @@
   v4.receiver = self;
   v4.super_class = MapsThemeMultiPartLabel;
   [(MapsThemeMultiPartLabel *)&v4 didMoveToWindow];
-  v3 = [(MapsThemeMultiPartLabel *)self window];
+  window = [(MapsThemeMultiPartLabel *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MapsThemeMultiPartLabel *)self updateTheme];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MapsThemeMultiPartLabel;
-  [(MapsThemeMultiPartLabel *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[MapsThemeMultiPartLabel traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(MapsThemeMultiPartLabel *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[MapsThemeMultiPartLabel traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(MapsThemeMultiPartLabel *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(MapsThemeMultiPartLabel *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(MapsThemeMultiPartLabel *)self updateTheme];
     }

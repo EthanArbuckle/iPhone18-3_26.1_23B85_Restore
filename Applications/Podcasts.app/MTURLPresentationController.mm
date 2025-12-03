@@ -1,32 +1,32 @@
 @interface MTURLPresentationController
 - (BOOL)_canShowInApp;
-- (BOOL)canShowWithPresentingViewController:(id)a3;
-- (MTURLPresentationController)initWithURL:(id)a3;
-- (void)_showURL:(id)a3 presentingViewController:(id)a4;
-- (void)showWithPresentingViewController:(id)a3;
+- (BOOL)canShowWithPresentingViewController:(id)controller;
+- (MTURLPresentationController)initWithURL:(id)l;
+- (void)_showURL:(id)l presentingViewController:(id)controller;
+- (void)showWithPresentingViewController:(id)controller;
 @end
 
 @implementation MTURLPresentationController
 
-- (MTURLPresentationController)initWithURL:(id)a3
+- (MTURLPresentationController)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = MTURLPresentationController;
   v6 = [(MTURLPresentationController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;
 }
 
-- (BOOL)canShowWithPresentingViewController:(id)a3
+- (BOOL)canShowWithPresentingViewController:(id)controller
 {
   result = [(MTURLPresentationController *)self _canShowInApp];
-  if (!a3)
+  if (!controller)
   {
     return 0;
   }
@@ -34,11 +34,11 @@
   return result;
 }
 
-- (void)showWithPresentingViewController:(id)a3
+- (void)showWithPresentingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(MTURLPresentationController *)self url];
-  [(MTURLPresentationController *)self _showURL:v5 presentingViewController:v4];
+  [(MTURLPresentationController *)self _showURL:v5 presentingViewController:controllerCopy];
 }
 
 - (BOOL)_canShowInApp
@@ -47,17 +47,17 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 scheme];
-    v5 = [v4 lowercaseString];
+    scheme = [v2 scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    if ([v5 isEqualToString:@"http"])
+    if ([lowercaseString isEqualToString:@"http"])
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [v5 isEqualToString:@"https"];
+      v6 = [lowercaseString isEqualToString:@"https"];
     }
   }
 
@@ -69,14 +69,14 @@
   return v6;
 }
 
-- (void)_showURL:(id)a3 presentingViewController:(id)a4
+- (void)_showURL:(id)l presentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTURLPresentationController *)self _canShowInApp];
-  if (v6)
+  lCopy = l;
+  controllerCopy = controller;
+  _canShowInApp = [(MTURLPresentationController *)self _canShowInApp];
+  if (lCopy)
   {
-    if (v7)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -91,10 +91,10 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Invalid parameter.  url can not be nil", buf, 2u);
     }
 
-    if (v7)
+    if (controllerCopy)
     {
 LABEL_3:
-      if (v8)
+      if (_canShowInApp)
       {
         goto LABEL_4;
       }
@@ -118,15 +118,15 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Invalid parameter.  presentingViewController can not be nil", v16, 2u);
   }
 
-  if ((v8 & 1) == 0)
+  if ((_canShowInApp & 1) == 0)
   {
     goto LABEL_14;
   }
 
 LABEL_4:
-  if (v6)
+  if (lCopy)
   {
-    if (v7)
+    if (controllerCopy)
     {
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
@@ -134,9 +134,9 @@ LABEL_4:
 
       if ((v11 & 1) == 0)
       {
-        v12 = [[SFSafariViewController alloc] initWithURL:v6];
+        v12 = [[SFSafariViewController alloc] initWithURL:lCopy];
         [v12 setModalPresentationStyle:1];
-        [v7 presentViewController:v12 animated:1 completion:0];
+        [controllerCopy presentViewController:v12 animated:1 completion:0];
 LABEL_16:
       }
     }

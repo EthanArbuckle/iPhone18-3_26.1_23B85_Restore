@@ -1,40 +1,40 @@
 @interface PDDPReportRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRequestItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMaxReportItemsCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRequestItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMaxReportItemsCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPReportRequest
 
-- (void)addRequestItems:(id)a3
+- (void)addRequestItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   requestItems = self->_requestItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!requestItems)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_requestItems;
     self->_requestItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     requestItems = self->_requestItems;
   }
 
-  [(NSMutableArray *)requestItems addObject:v4];
+  [(NSMutableArray *)requestItems addObject:itemsCopy];
 }
 
-- (void)setHasMaxReportItemsCount:(BOOL)a3
+- (void)setHasMaxReportItemsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -52,8 +52,8 @@
   v7.receiver = self;
   v7.super_class = PDDPReportRequest;
   v3 = [(PDDPReportRequest *)&v7 description];
-  v4 = [(PDDPReportRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPReportRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -83,8 +83,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -120,16 +120,16 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -138,18 +138,18 @@
       while (1)
       {
         LOBYTE(v34[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v34 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v34 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v34[0] & 0x7F) << v6;
@@ -167,11 +167,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -191,18 +191,18 @@ LABEL_15:
           while (1)
           {
             LOBYTE(v34[0]) = 0;
-            v18 = [a3 position] + 1;
-            if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+            v18 = [from position] + 1;
+            if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
             {
-              v20 = [a3 data];
-              [v20 getBytes:v34 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:v34 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v17 |= (v34[0] & 0x7F) << v15;
@@ -220,7 +220,7 @@ LABEL_15:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v21 = 0;
           }
@@ -250,7 +250,7 @@ LABEL_32:
       [(PDDPReportRequest *)self addRequestItems:v24];
       v34[0] = 0;
       v34[1] = 0;
-      if (!PBReaderPlaceMark() || !sub_1000E6EA0(v24, a3))
+      if (!PBReaderPlaceMark() || !sub_1000E6EA0(v24, from))
       {
 
         return 0;
@@ -259,10 +259,10 @@ LABEL_32:
       PBReaderRecallMark();
 
 LABEL_55:
-      v32 = [a3 position];
-      if (v32 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -275,18 +275,18 @@ LABEL_55:
       while (1)
       {
         LOBYTE(v34[0]) = 0;
-        v28 = [a3 position] + 1;
-        if (v28 >= [a3 position] && (v29 = objc_msgSend(a3, "position") + 1, v29 <= objc_msgSend(a3, "length")))
+        v28 = [from position] + 1;
+        if (v28 >= [from position] && (v29 = objc_msgSend(from, "position") + 1, v29 <= objc_msgSend(from, "length")))
         {
-          v30 = [a3 data];
-          [v30 getBytes:v34 range:{objc_msgSend(a3, "position"), 1}];
+          data3 = [from data];
+          [data3 getBytes:v34 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v27 |= (v34[0] & 0x7F) << v25;
@@ -304,7 +304,7 @@ LABEL_55:
         }
       }
 
-      if ([a3 hasError])
+      if ([from hasError])
       {
         v21 = 0;
       }
@@ -331,12 +331,12 @@ LABEL_53:
     goto LABEL_32;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -386,49 +386,49 @@ LABEL_53:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(PDDPReportRequest *)self requestItemsCount])
   {
-    [v10 clearRequestItems];
-    v4 = [(PDDPReportRequest *)self requestItemsCount];
-    if (v4)
+    [toCopy clearRequestItems];
+    requestItemsCount = [(PDDPReportRequest *)self requestItemsCount];
+    if (requestItemsCount)
     {
-      v5 = v4;
+      v5 = requestItemsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPReportRequest *)self requestItemsAtIndex:i];
-        [v10 addRequestItems:v7];
+        [toCopy addRequestItems:v7];
       }
     }
   }
 
   has = self->_has;
-  v9 = v10;
+  v9 = toCopy;
   if ((has & 2) != 0)
   {
-    *(v10 + 5) = self->_maxReportItemsCount;
-    *(v10 + 32) |= 2u;
+    *(toCopy + 5) = self->_maxReportItemsCount;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v10 + 4) = self->_maxPayloadSize;
-    *(v10 + 32) |= 1u;
+    *(toCopy + 4) = self->_maxPayloadSize;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_batchPointer)
   {
-    [v10 setBatchPointer:?];
-    v9 = v10;
+    [toCopy setBatchPointer:?];
+    v9 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -448,7 +448,7 @@ LABEL_53:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v11 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v5 addRequestItems:v11];
       }
 
@@ -472,23 +472,23 @@ LABEL_53:
     *(v5 + 32) |= 1u;
   }
 
-  v13 = [(NSData *)self->_batchPointer copyWithZone:a3, v16];
+  v13 = [(NSData *)self->_batchPointer copyWithZone:zone, v16];
   v14 = *(v5 + 1);
   *(v5 + 1) = v13;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   requestItems = self->_requestItems;
-  if (requestItems | *(v4 + 3))
+  if (requestItems | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)requestItems isEqual:?])
     {
@@ -496,16 +496,16 @@ LABEL_53:
     }
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_maxReportItemsCount != *(v4 + 5))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_maxReportItemsCount != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_16:
     v8 = 0;
@@ -514,19 +514,19 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_maxPayloadSize != *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_maxPayloadSize != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_16;
   }
 
   batchPointer = self->_batchPointer;
-  if (batchPointer | *(v4 + 1))
+  if (batchPointer | *(equalCopy + 1))
   {
     v8 = [(NSData *)batchPointer isEqual:?];
   }
@@ -568,14 +568,14 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSData *)self->_batchPointer hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -599,21 +599,21 @@ LABEL_3:
     while (v7);
   }
 
-  v10 = *(v4 + 32);
+  v10 = *(fromCopy + 32);
   if ((v10 & 2) != 0)
   {
-    self->_maxReportItemsCount = *(v4 + 5);
+    self->_maxReportItemsCount = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v10 = *(v4 + 32);
+    v10 = *(fromCopy + 32);
   }
 
   if (v10)
   {
-    self->_maxPayloadSize = *(v4 + 4);
+    self->_maxPayloadSize = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PDDPReportRequest *)self setBatchPointer:?];
   }

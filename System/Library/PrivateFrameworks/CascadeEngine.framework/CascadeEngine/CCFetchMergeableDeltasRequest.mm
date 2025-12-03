@@ -1,29 +1,29 @@
 @interface CCFetchMergeableDeltasRequest
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (void)dictionaryRepresentation;
 @end
 
 @implementation CCFetchMergeableDeltasRequest
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = CCFetchMergeableDeltasRequest;
-  v5 = [(CCPeerToPeerMessage *)&v29 initFromDictionary:v4];
+  v5 = [(CCPeerToPeerMessage *)&v29 initFromDictionary:dictionaryCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E6993A50]);
-    v7 = [v4 objectForKeyedSubscript:@"set"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"set"];
     v8 = [v6 initFromDictionary:v7];
     v9 = v5[6];
     v5[6] = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"atomBatchVersion"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"atomBatchVersion"];
     v5[8] = [v10 unsignedIntegerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"stateVector"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"stateVector"];
     v12 = MEMORY[0x1E696ACD0];
     v13 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
     v28 = 0;
@@ -41,24 +41,24 @@
       }
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"fetchDeltasRequestOptions"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"fetchDeltasRequestOptions"];
     *(v5 + 20) = [v18 unsignedIntValue];
 
-    v19 = [v4 objectForKeyedSubscript:@"peerPublicKey"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"peerPublicKey"];
     v20 = v5[9];
     v5[9] = v19;
 
-    v21 = [v5 senderDeviceUUID];
+    senderDeviceUUID = [v5 senderDeviceUUID];
 
-    if (!v21)
+    if (!senderDeviceUUID)
     {
       v22 = objc_alloc(MEMORY[0x1E69939E0]);
-      v23 = [v4 objectForKeyedSubscript:@"deviceSite"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"deviceSite"];
       v24 = [v22 initFromDictionary:v23];
 
-      v25 = [v24 device];
-      v26 = [v25 deviceUUID];
-      [v5 setSenderDeviceUUID:v26];
+      device = [v24 device];
+      deviceUUID = [device deviceUUID];
+      [v5 setSenderDeviceUUID:deviceUUID];
     }
   }
 
@@ -83,13 +83,13 @@
 
   v18 = v5;
   v21[0] = @"stateVector";
-  v7 = v4;
+  data = v4;
   if (!v4)
   {
-    v7 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  v22[0] = v7;
+  v22[0] = data;
   v21[1] = @"atomBatchVersion";
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_atomBatchVersion];
   v22[1] = v8;
@@ -98,16 +98,16 @@
   v22[2] = v9;
   v21[3] = @"peerPublicKey";
   peerPublicKey = self->_peerPublicKey;
-  v11 = peerPublicKey;
+  data2 = peerPublicKey;
   if (!peerPublicKey)
   {
-    v11 = [MEMORY[0x1E695DEF0] data];
+    data2 = [MEMORY[0x1E695DEF0] data];
   }
 
-  v22[3] = v11;
+  v22[3] = data2;
   v21[4] = @"set";
-  v12 = [(CCSet *)self->_set dictionaryRepresentation];
-  v22[4] = v12;
+  dictionaryRepresentation = [(CCSet *)self->_set dictionaryRepresentation];
+  v22[4] = dictionaryRepresentation;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:5];
   v14 = [v13 mutableCopy];
 
@@ -121,8 +121,8 @@
 
   v19.receiver = self;
   v19.super_class = CCFetchMergeableDeltasRequest;
-  v15 = [(CCPeerToPeerMessage *)&v19 dictionaryRepresentation];
-  [v14 addEntriesFromDictionary:v15];
+  dictionaryRepresentation2 = [(CCPeerToPeerMessage *)&v19 dictionaryRepresentation];
+  [v14 addEntriesFromDictionary:dictionaryRepresentation2];
 
   v16 = *MEMORY[0x1E69E9840];
 
@@ -142,7 +142,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1DA444000, a2, OS_LOG_TYPE_FAULT, "failed to archive CKDistributedTimestampStateVector with error %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

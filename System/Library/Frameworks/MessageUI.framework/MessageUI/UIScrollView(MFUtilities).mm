@@ -10,47 +10,47 @@
 
 - (double)mf_visibleFrame
 {
-  [a1 frame];
+  [self frame];
   v3 = v2;
-  [a1 contentInset];
+  [self contentInset];
   return v3 + v4;
 }
 
 - (double)mf_visibleBounds
 {
-  [a1 bounds];
+  [self bounds];
   v3 = v2;
-  [a1 contentInset];
+  [self contentInset];
   return v3 + v4;
 }
 
 - (double)mf_visibleHeight
 {
-  [a1 mf_visibleFrame];
+  [self mf_visibleFrame];
 
   return CGRectGetHeight(*&v1);
 }
 
 - (double)mf_minContentOffset
 {
-  [a1 contentInset];
+  [self contentInset];
   v3 = -v2;
-  [a1 contentInset];
+  [self contentInset];
   return v3;
 }
 
 - (double)mf_maxContentOffset
 {
-  [a1 contentSize];
+  [self contentSize];
   v3 = v2;
-  [a1 bounds];
+  [self bounds];
   v4 = v3 - CGRectGetWidth(v8);
-  [a1 contentInset];
+  [self contentInset];
   v6 = v4 + v5;
-  [a1 contentSize];
-  [a1 bounds];
+  [self contentSize];
+  [self bounds];
   CGRectGetHeight(v9);
-  [a1 contentInset];
+  [self contentInset];
   return v6;
 }
 

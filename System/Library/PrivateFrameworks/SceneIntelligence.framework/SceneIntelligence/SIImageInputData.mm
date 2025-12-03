@@ -1,11 +1,11 @@
 @interface SIImageInputData
-- (BOOL)copyDataTo:(id)a3;
+- (BOOL)copyDataTo:(id)to;
 - (SIImageInputData)init;
 - (__n128)deviceFromCamera;
 - (__n128)deviceTransform;
-- (__n128)setDeviceFromCamera:(__n128)a3;
-- (__n128)setDeviceTransform:(__n128)a3;
-- (__n128)setWorldFromDevice:(__n128)a3;
+- (__n128)setDeviceFromCamera:(__n128)camera;
+- (__n128)setDeviceTransform:(__n128)transform;
+- (__n128)setWorldFromDevice:(__n128)device;
 - (__n128)worldFromDevice;
 @end
 
@@ -37,59 +37,59 @@
   return v2;
 }
 
-- (BOOL)copyDataTo:(id)a3
+- (BOOL)copyDataTo:(id)to
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self)
   {
     [(SIImageInputData *)self worldFromDevice];
-    [v4 setWorldFromDevice:?];
+    [toCopy setWorldFromDevice:?];
     [(SIImageInputData *)self deviceTransform];
-    [v4 setDeviceTransform:?];
-    if (![v4 inputImageBuffer] || (SIPixelBufferHasSameAttr(-[SIImageInputData inputImageBuffer](self, "inputImageBuffer"), objc_msgSend(v4, "inputImageBuffer")) & 1) == 0)
+    [toCopy setDeviceTransform:?];
+    if (![toCopy inputImageBuffer] || (SIPixelBufferHasSameAttr(-[SIImageInputData inputImageBuffer](self, "inputImageBuffer"), objc_msgSend(toCopy, "inputImageBuffer")) & 1) == 0)
     {
       Width = CVPixelBufferGetWidth([(SIImageInputData *)self inputImageBuffer]);
       Height = CVPixelBufferGetHeight([(SIImageInputData *)self inputImageBuffer]);
       PixelFormatType = CVPixelBufferGetPixelFormatType([(SIImageInputData *)self inputImageBuffer]);
-      v8 = [(SIImageInputData *)self isIOSurfaceBacked];
+      isIOSurfaceBacked = [(SIImageInputData *)self isIOSurfaceBacked];
       v9 = SIPixelFormatToStr(PixelFormatType);
       v10 = [v9 isEqualToString:@"444f"];
-      v11 = [(SIImageInputData *)self inputImageBuffer];
+      inputImageBuffer = [(SIImageInputData *)self inputImageBuffer];
       if (v10)
       {
-        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(v11, 0);
+        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(inputImageBuffer, 0);
       }
 
       else
       {
-        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRow(v11);
+        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRow(inputImageBuffer);
       }
 
       v15 = BytesPerRowOfPlane;
 
-      v16 = SICreateCVPixelBufferWithCustomStride(Width, Height, PixelFormatType, v15, v8);
-      [v4 setInputImageBuffer:v16];
+      v16 = SICreateCVPixelBufferWithCustomStride(Width, Height, PixelFormatType, v15, isIOSurfaceBacked);
+      [toCopy setInputImageBuffer:v16];
       CVPixelBufferRelease(v16);
     }
 
-    if (!SIPixelBufferCopy(-[SIImageInputData inputImageBuffer](self, "inputImageBuffer"), [v4 inputImageBuffer]))
+    if (!SIPixelBufferCopy(-[SIImageInputData inputImageBuffer](self, "inputImageBuffer"), [toCopy inputImageBuffer]))
     {
       if ([(SIImageInputData *)self inputDepthBuffer])
       {
-        if (![v4 inputDepthBuffer] || (SIPixelBufferHasSameAttr(-[SIImageInputData inputDepthBuffer](self, "inputDepthBuffer"), objc_msgSend(v4, "inputDepthBuffer")) & 1) == 0)
+        if (![toCopy inputDepthBuffer] || (SIPixelBufferHasSameAttr(-[SIImageInputData inputDepthBuffer](self, "inputDepthBuffer"), objc_msgSend(toCopy, "inputDepthBuffer")) & 1) == 0)
         {
           v20 = CVPixelBufferGetWidth([(SIImageInputData *)self inputDepthBuffer]);
           v21 = CVPixelBufferGetHeight([(SIImageInputData *)self inputDepthBuffer]);
           v22 = CVPixelBufferGetPixelFormatType([(SIImageInputData *)self inputDepthBuffer]);
-          v23 = [(SIImageInputData *)self isIOSurfaceBacked];
+          isIOSurfaceBacked2 = [(SIImageInputData *)self isIOSurfaceBacked];
           BytesPerRow = CVPixelBufferGetBytesPerRow([(SIImageInputData *)self inputDepthBuffer]);
-          v25 = SICreateCVPixelBufferWithCustomStride(v20, v21, v22, BytesPerRow, v23);
-          [v4 setInputDepthBuffer:v25];
+          v25 = SICreateCVPixelBufferWithCustomStride(v20, v21, v22, BytesPerRow, isIOSurfaceBacked2);
+          [toCopy setInputDepthBuffer:v25];
           CVPixelBufferRelease(v25);
         }
 
-        if (SIPixelBufferCopy(-[SIImageInputData inputDepthBuffer](self, "inputDepthBuffer"), [v4 inputDepthBuffer]))
+        if (SIPixelBufferCopy(-[SIImageInputData inputDepthBuffer](self, "inputDepthBuffer"), [toCopy inputDepthBuffer]))
         {
           v13 = __SceneIntelligenceLogSharedInstance();
           if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -108,24 +108,24 @@
 
       else
       {
-        [v4 setInputDepthBuffer:0];
+        [toCopy setInputDepthBuffer:0];
       }
 
       if ([(SIImageInputData *)self inputNormalBuffer])
       {
-        if (![v4 inputNormalBuffer] || (SIPixelBufferHasSameAttr(-[SIImageInputData inputNormalBuffer](self, "inputNormalBuffer"), objc_msgSend(v4, "inputNormalBuffer")) & 1) == 0)
+        if (![toCopy inputNormalBuffer] || (SIPixelBufferHasSameAttr(-[SIImageInputData inputNormalBuffer](self, "inputNormalBuffer"), objc_msgSend(toCopy, "inputNormalBuffer")) & 1) == 0)
         {
           v26 = CVPixelBufferGetWidth([(SIImageInputData *)self inputNormalBuffer]);
           v27 = CVPixelBufferGetHeight([(SIImageInputData *)self inputNormalBuffer]);
           v28 = CVPixelBufferGetPixelFormatType([(SIImageInputData *)self inputNormalBuffer]);
-          v29 = [(SIImageInputData *)self isIOSurfaceBacked];
+          isIOSurfaceBacked3 = [(SIImageInputData *)self isIOSurfaceBacked];
           v30 = CVPixelBufferGetBytesPerRow([(SIImageInputData *)self inputNormalBuffer]);
-          v31 = SICreateCVPixelBufferWithCustomStride(v26, v27, v28, v30, v29);
-          [v4 setInputNormalBuffer:v31];
+          v31 = SICreateCVPixelBufferWithCustomStride(v26, v27, v28, v30, isIOSurfaceBacked3);
+          [toCopy setInputNormalBuffer:v31];
           CVPixelBufferRelease(v31);
         }
 
-        if (SIPixelBufferCopy(-[SIImageInputData inputNormalBuffer](self, "inputNormalBuffer"), [v4 inputNormalBuffer]))
+        if (SIPixelBufferCopy(-[SIImageInputData inputNormalBuffer](self, "inputNormalBuffer"), [toCopy inputNormalBuffer]))
         {
           v13 = __SceneIntelligenceLogSharedInstance();
           if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -144,7 +144,7 @@
 
       else
       {
-        [v4 setInputNormalBuffer:0];
+        [toCopy setInputNormalBuffer:0];
       }
 
       v17 = 1;
@@ -189,17 +189,17 @@ LABEL_15:
 
 - (__n128)deviceTransform
 {
-  result = *(a1 + 64);
-  v2 = *(a1 + 80);
-  v3 = *(a1 + 96);
-  v4 = *(a1 + 112);
+  result = *(self + 64);
+  v2 = *(self + 80);
+  v3 = *(self + 96);
+  v4 = *(self + 112);
   return result;
 }
 
-- (__n128)setDeviceTransform:(__n128)a3
+- (__n128)setDeviceTransform:(__n128)transform
 {
   result[4] = a2;
-  result[5] = a3;
+  result[5] = transform;
   result[6] = a4;
   result[7] = a5;
   return result;
@@ -207,17 +207,17 @@ LABEL_15:
 
 - (__n128)worldFromDevice
 {
-  result = *(a1 + 128);
-  v2 = *(a1 + 144);
-  v3 = *(a1 + 160);
-  v4 = *(a1 + 176);
+  result = *(self + 128);
+  v2 = *(self + 144);
+  v3 = *(self + 160);
+  v4 = *(self + 176);
   return result;
 }
 
-- (__n128)setWorldFromDevice:(__n128)a3
+- (__n128)setWorldFromDevice:(__n128)device
 {
   result[8] = a2;
-  result[9] = a3;
+  result[9] = device;
   result[10] = a4;
   result[11] = a5;
   return result;
@@ -225,17 +225,17 @@ LABEL_15:
 
 - (__n128)deviceFromCamera
 {
-  result = *(a1 + 192);
-  v2 = *(a1 + 208);
-  v3 = *(a1 + 224);
-  v4 = *(a1 + 240);
+  result = *(self + 192);
+  v2 = *(self + 208);
+  v3 = *(self + 224);
+  v4 = *(self + 240);
   return result;
 }
 
-- (__n128)setDeviceFromCamera:(__n128)a3
+- (__n128)setDeviceFromCamera:(__n128)camera
 {
   result[12] = a2;
-  result[13] = a3;
+  result[13] = camera;
   result[14] = a4;
   result[15] = a5;
   return result;

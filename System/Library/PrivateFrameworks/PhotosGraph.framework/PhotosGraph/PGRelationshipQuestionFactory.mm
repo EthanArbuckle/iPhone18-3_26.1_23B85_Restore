@@ -1,27 +1,27 @@
 @interface PGRelationshipQuestionFactory
-+ (id)displayStringForRelationshipLabel:(id)a3;
++ (id)displayStringForRelationshipLabel:(id)label;
 + (id)initialQuestionRelationshipLabelByRelationship;
 + (id)localFactoryScoreByRelationshipLabels;
 + (id)relationshipLabelsRequiringInitialQuestion;
 + (id)relationshipTypesByRelationshipLabel;
-+ (unint64_t)relationshipTagForRelatationshipType:(unint64_t)a3;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
-- (id)initialQuestionForRelationshipLabel:(id)a3;
-- (void)updateInitialQuestion:(id)a3;
++ (unint64_t)relationshipTagForRelatationshipType:(unint64_t)type;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
+- (id)initialQuestionForRelationshipLabel:(id)label;
+- (void)updateInitialQuestion:(id)question;
 - (void)updateOutdatedAnsweredYesChildRelationshipQuestionsIfNeeded;
 @end
 
 @implementation PGRelationshipQuestionFactory
 
-+ (id)displayStringForRelationshipLabel:(id)a3
++ (id)displayStringForRelationshipLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CHILD"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"CHILD"])
   {
     v4 = @"👶";
   }
 
-  else if ([v3 isEqualToString:@"SIBLING"])
+  else if ([labelCopy isEqualToString:@"SIBLING"])
   {
     v4 = @"👧 👦";
   }
@@ -52,16 +52,16 @@
   return v4;
 }
 
-+ (unint64_t)relationshipTagForRelatationshipType:(unint64_t)a3
++ (unint64_t)relationshipTagForRelatationshipType:(unint64_t)type
 {
-  if (a3 > 0x11)
+  if (type > 0x11)
   {
     return 10;
   }
 
   else
   {
-    return qword_22F78CD80[a3];
+    return qword_22F78CD80[type];
   }
 }
 
@@ -225,9 +225,9 @@
 - (void)updateOutdatedAnsweredYesChildRelationshipQuestionsIfNeeded
 {
   v47[3] = *MEMORY[0x277D85DE8];
-  v2 = [(PGSurveyQuestionFactory *)self workingContext];
-  v3 = [v2 photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d", @"type", 5];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d", @"entityType", 1];
@@ -241,10 +241,10 @@
   v47[2] = v5;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:3];
   v10 = [v8 andPredicateWithSubpredicates:v9];
-  [v4 setPredicate:v10];
+  [librarySpecificFetchOptions setPredicate:v10];
 
-  v33 = v4;
-  v11 = [MEMORY[0x277CD9970] fetchQuestionsWithOptions:v4 validQuestionsOnly:0];
+  v33 = librarySpecificFetchOptions;
+  v11 = [MEMORY[0x277CD9970] fetchQuestionsWithOptions:librarySpecificFetchOptions validQuestionsOnly:0];
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v40 = 0u;
   v41 = 0u;
@@ -269,11 +269,11 @@
 
         v17 = *(*(&v40 + 1) + 8 * i);
         v18 = objc_autoreleasePoolPush();
-        v19 = [v17 additionalInfo];
-        v20 = [v19 objectForKeyedSubscript:v15];
+        additionalInfo = [v17 additionalInfo];
+        v20 = [additionalInfo objectForKeyedSubscript:v15];
         if ([v20 isEqualToString:@"CHILD"])
         {
-          v21 = [v19 objectForKeyedSubscript:v35];
+          v21 = [additionalInfo objectForKeyedSubscript:v35];
 
           if (!v21)
           {
@@ -292,27 +292,27 @@
 
   if ([v34 count])
   {
-    v22 = [(PGSurveyQuestionFactory *)self workingContext];
-    v23 = [v22 photoLibrary];
+    workingContext2 = [(PGSurveyQuestionFactory *)self workingContext];
+    photoLibrary2 = [workingContext2 photoLibrary];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __92__PGRelationshipQuestionFactory_updateOutdatedAnsweredYesChildRelationshipQuestionsIfNeeded__block_invoke;
     v38[3] = &unk_27888A660;
     v39 = v34;
     v37 = 0;
-    v24 = [v23 performChangesAndWait:v38 error:&v37];
+    v24 = [photoLibrary2 performChangesAndWait:v38 error:&v37];
     v25 = v37;
 
     if ((v24 & 1) == 0)
     {
       v26 = +[PGLogging sharedLogging];
-      v27 = [v26 loggingConnection];
+      loggingConnection = [v26 loggingConnection];
 
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v45 = v25;
-        _os_log_error_impl(&dword_22F0FC000, v27, OS_LOG_TYPE_ERROR, "[Questions] Failed to perform library changes for relationship inital question with error: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[Questions] Failed to perform library changes for relationship inital question with error: %@", buf, 0xCu);
       }
     }
   }
@@ -361,32 +361,32 @@ void __92__PGRelationshipQuestionFactory_updateOutdatedAnsweredYesChildRelations
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateInitialQuestion:(id)a3
+- (void)updateInitialQuestion:(id)question
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGSurveyQuestionFactory *)self workingContext];
-  v6 = [v5 photoLibrary];
+  questionCopy = question;
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__PGRelationshipQuestionFactory_updateInitialQuestion___block_invoke;
   v14[3] = &unk_27888A660;
-  v7 = v4;
+  v7 = questionCopy;
   v15 = v7;
   v13 = 0;
-  v8 = [v6 performChangesAndWait:v14 error:&v13];
+  v8 = [photoLibrary performChangesAndWait:v14 error:&v13];
   v9 = v13;
 
   if ((v8 & 1) == 0)
   {
     v10 = +[PGLogging sharedLogging];
-    v11 = [v10 loggingConnection];
+    loggingConnection = [v10 loggingConnection];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v17 = v9;
-      _os_log_error_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_ERROR, "[Questions] Failed to perform library changes for relationship inital question with error: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[Questions] Failed to perform library changes for relationship inital question with error: %@", buf, 0xCu);
     }
   }
 
@@ -401,44 +401,44 @@ void __55__PGRelationshipQuestionFactory_updateInitialQuestion___block_invoke(ui
   [v2 setCreationDate:v1];
 }
 
-- (id)initialQuestionForRelationshipLabel:(id)a3
+- (id)initialQuestionForRelationshipLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(PGSurveyQuestionFactory *)self workingContext];
-  v6 = [v5 photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  labelCopy = label;
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v7 setFetchLimit:1];
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d AND entityType = %d AND entityIdentifier = %@", 5, 4, v4];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  labelCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"type = %d AND entityType = %d AND entityIdentifier = %@", 5, 4, labelCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [MEMORY[0x277CD9970] fetchQuestionsWithOptions:v7 validQuestionsOnly:0];
-  v10 = [v9 firstObject];
+  [librarySpecificFetchOptions setPredicate:labelCopy];
+  v9 = [MEMORY[0x277CD9970] fetchQuestionsWithOptions:librarySpecificFetchOptions validQuestionsOnly:0];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   [(PGRelationshipQuestionFactory *)self updateOutdatedAnsweredYesChildRelationshipQuestionsIfNeeded];
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [(PGSurveyQuestionFactory *)self workingContext];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __74__PGRelationshipQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v16 = &unk_27888A2F8;
-  v19 = v6;
-  v20 = a3;
-  v17 = self;
+  v19 = blockCopy;
+  limitCopy = limit;
+  selfCopy = self;
   v18 = v7;
   v9 = v7;
-  v10 = v6;
-  [v8 performSynchronousConcurrentGraphReadUsingBlock:&v13];
+  v10 = blockCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:&v13];
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __74__PGRelationshipQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2)

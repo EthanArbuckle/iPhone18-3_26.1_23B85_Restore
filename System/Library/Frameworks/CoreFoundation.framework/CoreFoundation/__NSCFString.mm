@@ -1,30 +1,30 @@
 @interface __NSCFString
-- (BOOL)getCString:(char *)a3 maxLength:(unint64_t)a4 encoding:(unint64_t)a5;
-- (BOOL)hasPrefix:(id)a3;
-- (BOOL)hasSuffix:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToString:(id)a3;
+- (BOOL)getCString:(char *)string maxLength:(unint64_t)length encoding:(unint64_t)encoding;
+- (BOOL)hasPrefix:(id)prefix;
+- (BOOL)hasSuffix:(id)suffix;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToString:(id)string;
 - (Class)classForCoder;
 - (const)UTF8String;
-- (const)_fastCStringContents:(BOOL)a3;
+- (const)_fastCStringContents:(BOOL)contents;
 - (const)cString;
-- (const)cStringUsingEncoding:(unint64_t)a3;
-- (id)_newSubstringWithRange:(_NSRange)a3 zone:(_NSZone *)a4;
-- (id)substringWithRange:(_NSRange)a3;
+- (const)cStringUsingEncoding:(unint64_t)encoding;
+- (id)_newSubstringWithRange:(_NSRange)range zone:(_NSZone *)zone;
+- (id)substringWithRange:(_NSRange)range;
 - (unint64_t)cStringLength;
 - (unint64_t)fastestEncoding;
-- (unint64_t)replaceOccurrencesOfString:(id)a3 withString:(id)a4 options:(unint64_t)a5 range:(_NSRange)a6;
+- (unint64_t)replaceOccurrencesOfString:(id)string withString:(id)withString options:(unint64_t)options range:(_NSRange)range;
 - (unint64_t)smallestEncoding;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)appendCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4;
-- (void)appendFormat:(id)a3;
-- (void)appendString:(id)a3;
-- (void)deleteCharactersInRange:(_NSRange)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
-- (void)getLineStart:(unint64_t *)a3 end:(unint64_t *)a4 contentsEnd:(unint64_t *)a5 forRange:(_NSRange)a6;
-- (void)insertString:(id)a3 atIndex:(unint64_t)a4;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4;
-- (void)setString:(id)a3;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)appendCharacters:(const unsigned __int16 *)characters length:(unint64_t)length;
+- (void)appendFormat:(id)format;
+- (void)appendString:(id)string;
+- (void)deleteCharactersInRange:(_NSRange)range;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
+- (void)getLineStart:(unint64_t *)start end:(unint64_t *)end contentsEnd:(unint64_t *)contentsEnd forRange:(_NSRange)range;
+- (void)insertString:(id)string atIndex:(unint64_t)index;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string;
+- (void)setString:(id)string;
 @end
 
 @implementation __NSCFString
@@ -65,11 +65,11 @@
   return objc_lookUpClass(v2);
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   v8 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  if (_CFStringCheckAndGetCharacterAtIndex(self, a3, &v7))
+  if (_CFStringCheckAndGetCharacterAtIndex(self, index, &v7))
   {
     [(__NSCFString *)self characterAtIndex:a2];
   }
@@ -79,17 +79,17 @@
   return result;
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  if (_CFStringCheckAndGetCharacters(self, a4.location, a4.length, a3))
+  if (_CFStringCheckAndGetCharacters(self, range.location, range.length, characters))
   {
     [__NSCFString getCharacters:a2 range:?];
   }
 }
 
-- (const)_fastCStringContents:(BOOL)a3
+- (const)_fastCStringContents:(BOOL)contents
 {
-  v3 = a3;
+  contentsCopy = contents;
   SystemEncoding = enc;
   if (enc == -1)
   {
@@ -97,7 +97,7 @@
     enc = SystemEncoding;
   }
 
-  return _CFNonObjCStringGetCStringPtr(self, SystemEncoding, v3);
+  return _CFNonObjCStringGetCStringPtr(self, SystemEncoding, contentsCopy);
 }
 
 - (const)cString
@@ -156,7 +156,7 @@ LABEL_2:
   return result;
 }
 
-- (const)cStringUsingEncoding:(unint64_t)a3
+- (const)cStringUsingEncoding:(unint64_t)encoding
 {
   v15 = *MEMORY[0x1E69E9840];
   if (__CFStringMtbl(self))
@@ -164,10 +164,10 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  v6 = CFStringConvertNSStringEncodingToEncoding(a3);
+  v6 = CFStringConvertNSStringEncodingToEncoding(encoding);
   if (v6 == -1)
   {
-    if (a3 != 134217984 && a3)
+    if (encoding != 134217984 && encoding)
     {
       result = 0;
       goto LABEL_10;
@@ -175,7 +175,7 @@ LABEL_2:
 
     if (_CFExecutableLinkedOnOrAfter(6uLL))
     {
-      CFLog(4, @"Incorrect NSStringEncoding value 0x%04lX detected. Assuming NSStringEncodingASCII. Will stop this compatibility mapping behavior in the near future.", v7, v8, v9, v10, v11, v12, a3);
+      CFLog(4, @"Incorrect NSStringEncoding value 0x%04lX detected. Assuming NSStringEncodingASCII. Will stop this compatibility mapping behavior in the near future.", v7, v8, v9, v10, v11, v12, encoding);
     }
 
     v6 = 1536;
@@ -187,7 +187,7 @@ LABEL_2:
 LABEL_2:
     v14.receiver = self;
     v14.super_class = __NSCFString;
-    result = [(__NSCFString *)&v14 cStringUsingEncoding:a3];
+    result = [(__NSCFString *)&v14 cStringUsingEncoding:encoding];
   }
 
 LABEL_10:
@@ -195,32 +195,32 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)getCString:(char *)a3 maxLength:(unint64_t)a4 encoding:(unint64_t)a5
+- (BOOL)getCString:(char *)string maxLength:(unint64_t)length encoding:(unint64_t)encoding
 {
-  v9 = CFStringConvertNSStringEncodingToEncoding(a5);
+  v9 = CFStringConvertNSStringEncodingToEncoding(encoding);
   if (v9 != -1)
   {
-    return CFStringGetCString(self, a3, a4, v9) != 0;
+    return CFStringGetCString(self, string, length, v9) != 0;
   }
 
-  if (a5 == 134217984 || !a5)
+  if (encoding == 134217984 || !encoding)
   {
     if (_CFExecutableLinkedOnOrAfter(6uLL))
     {
-      CFLog(4, @"Incorrect NSStringEncoding value 0x%04lX detected. Assuming NSStringEncodingASCII. Will stop this compatibility mapping behavior in the near future.", v10, v11, v12, v13, v14, v15, a5);
+      CFLog(4, @"Incorrect NSStringEncoding value 0x%04lX detected. Assuming NSStringEncodingASCII. Will stop this compatibility mapping behavior in the near future.", v10, v11, v12, v13, v14, v15, encoding);
     }
 
     v9 = 1536;
-    return CFStringGetCString(self, a3, a4, v9) != 0;
+    return CFStringGetCString(self, string, length, v9) != 0;
   }
 
   return 0;
 }
 
-- (id)_newSubstringWithRange:(_NSRange)a3 zone:(_NSZone *)a4
+- (id)_newSubstringWithRange:(_NSRange)range zone:(_NSZone *)zone
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   Length2 = _CFStringGetLength2(self);
   v9 = Length2;
   if (location + length > Length2)
@@ -248,10 +248,10 @@ LABEL_10:
   return CFStringCreateWithSubstring(0, self, v17);
 }
 
-- (id)substringWithRange:(_NSRange)a3
+- (id)substringWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   Length2 = _CFStringGetLength2(self);
   v8 = Length2;
   if (location + length > Length2)
@@ -280,30 +280,30 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(IsEqualToCFString) = 1;
     return IsEqualToCFString;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_41;
   }
 
-  if ((a3 & 0x8000000000000000) != 0)
+  if ((equal & 0x8000000000000000) != 0)
   {
     v5 = 0;
     v6 = *MEMORY[0x1E69E5910];
-    if ((~a3 & 0xC000000000000007) == 0)
+    if ((~equal & 0xC000000000000007) == 0)
     {
       v6 = 0;
     }
 
-    v7 = v6 ^ a3;
-    v8 = (v6 ^ a3) & 7;
+    v7 = v6 ^ equal;
+    v8 = (v6 ^ equal) & 7;
     while (v8 != *(MEMORY[0x1E69E5900] + v5))
     {
       if (++v5 == 7)
@@ -315,7 +315,7 @@ LABEL_10:
     if (v5 == 2)
     {
 
-      LOBYTE(IsEqualToCFString) = _NSTaggedPointerStringEqualCFString(a3, self);
+      LOBYTE(IsEqualToCFString) = _NSTaggedPointerStringEqualCFString(equal, self);
       return IsEqualToCFString;
     }
 
@@ -344,17 +344,17 @@ LABEL_23:
 
     if (!v13)
     {
-      IsEqualToCFString = _NSIndirectTaggedPointerStringIsEqualToCFString(a3, self);
+      IsEqualToCFString = _NSIndirectTaggedPointerStringIsEqualToCFString(equal, self);
       goto LABEL_18;
     }
 
     goto LABEL_41;
   }
 
-  v10 = *a3 & ~MEMORY[0x1E69E58F0];
-  if ((*a3 & MEMORY[0x1E69E58F0]) != 0)
+  v10 = *equal & ~MEMORY[0x1E69E58F0];
+  if ((*equal & MEMORY[0x1E69E58F0]) != 0)
   {
-    v10 |= *a3 & MEMORY[0x1E69E58F0];
+    v10 |= *equal & MEMORY[0x1E69E58F0];
   }
 
   if (v10 == __CFConstantStringClassReferencePtr)
@@ -373,14 +373,14 @@ LABEL_23:
     goto LABEL_17;
   }
 
-  IsEqualToCFString = [a3 isNSString];
+  IsEqualToCFString = [equal isNSString];
   if (!IsEqualToCFString)
   {
     return IsEqualToCFString;
   }
 
   Length2 = _CFStringGetLength2(self);
-  if (Length2 != [a3 length])
+  if (Length2 != [equal length])
   {
 LABEL_41:
     LOBYTE(IsEqualToCFString) = 0;
@@ -392,41 +392,41 @@ LABEL_41:
   {
 LABEL_28:
 
-    LOBYTE(IsEqualToCFString) = [a3 isEqualToString:self];
+    LOBYTE(IsEqualToCFString) = [equal isEqualToString:self];
     return IsEqualToCFString;
   }
 
 LABEL_17:
-  IsEqualToCFString = _CFStringEqual(self, a3);
+  IsEqualToCFString = _CFStringEqual(self, equal);
 LABEL_18:
   LOBYTE(IsEqualToCFString) = IsEqualToCFString != 0;
   return IsEqualToCFString;
 }
 
-- (BOOL)isEqualToString:(id)a3
+- (BOOL)isEqualToString:(id)string
 {
-  if (self == a3)
+  if (self == string)
   {
     LOBYTE(IsEqualToCFString) = 1;
     return IsEqualToCFString;
   }
 
-  if (!a3)
+  if (!string)
   {
     goto LABEL_41;
   }
 
-  if ((a3 & 0x8000000000000000) != 0)
+  if ((string & 0x8000000000000000) != 0)
   {
     v5 = 0;
     v6 = *MEMORY[0x1E69E5910];
-    if ((~a3 & 0xC000000000000007) == 0)
+    if ((~string & 0xC000000000000007) == 0)
     {
       v6 = 0;
     }
 
-    v7 = v6 ^ a3;
-    v8 = (v6 ^ a3) & 7;
+    v7 = v6 ^ string;
+    v8 = (v6 ^ string) & 7;
     while (v8 != *(MEMORY[0x1E69E5900] + v5))
     {
       if (++v5 == 7)
@@ -438,7 +438,7 @@ LABEL_18:
     if (v5 == 2)
     {
 
-      LOBYTE(IsEqualToCFString) = _NSTaggedPointerStringEqualCFString(a3, self);
+      LOBYTE(IsEqualToCFString) = _NSTaggedPointerStringEqualCFString(string, self);
       return IsEqualToCFString;
     }
 
@@ -467,17 +467,17 @@ LABEL_23:
 
     if (!v13)
     {
-      IsEqualToCFString = _NSIndirectTaggedPointerStringIsEqualToCFString(a3, self);
+      IsEqualToCFString = _NSIndirectTaggedPointerStringIsEqualToCFString(string, self);
       goto LABEL_18;
     }
 
     goto LABEL_41;
   }
 
-  v10 = *a3 & ~MEMORY[0x1E69E58F0];
-  if ((*a3 & MEMORY[0x1E69E58F0]) != 0)
+  v10 = *string & ~MEMORY[0x1E69E58F0];
+  if ((*string & MEMORY[0x1E69E58F0]) != 0)
   {
-    v10 |= *a3 & MEMORY[0x1E69E58F0];
+    v10 |= *string & MEMORY[0x1E69E58F0];
   }
 
   if (v10 == __CFConstantStringClassReferencePtr)
@@ -496,14 +496,14 @@ LABEL_23:
     goto LABEL_17;
   }
 
-  IsEqualToCFString = [a3 isNSString];
+  IsEqualToCFString = [string isNSString];
   if (!IsEqualToCFString)
   {
     return IsEqualToCFString;
   }
 
   Length2 = _CFStringGetLength2(self);
-  if (Length2 != [a3 length])
+  if (Length2 != [string length])
   {
 LABEL_41:
     LOBYTE(IsEqualToCFString) = 0;
@@ -515,41 +515,41 @@ LABEL_41:
   {
 LABEL_28:
 
-    LOBYTE(IsEqualToCFString) = [a3 isEqualToString:self];
+    LOBYTE(IsEqualToCFString) = [string isEqualToString:self];
     return IsEqualToCFString;
   }
 
 LABEL_17:
-  IsEqualToCFString = _CFStringEqual(self, a3);
+  IsEqualToCFString = _CFStringEqual(self, string);
 LABEL_18:
   LOBYTE(IsEqualToCFString) = IsEqualToCFString != 0;
   return IsEqualToCFString;
 }
 
-- (BOOL)hasPrefix:(id)a3
+- (BOOL)hasPrefix:(id)prefix
 {
-  if (!a3)
+  if (!prefix)
   {
     [(__NSCFString *)self hasPrefix:a2];
   }
 
-  return CFStringHasPrefix(self, a3) != 0;
+  return CFStringHasPrefix(self, prefix) != 0;
 }
 
-- (BOOL)hasSuffix:(id)a3
+- (BOOL)hasSuffix:(id)suffix
 {
-  if (!a3)
+  if (!suffix)
   {
     [(__NSCFString *)self hasSuffix:a2];
   }
 
-  return CFStringHasSuffix(self, a3) != 0;
+  return CFStringHasSuffix(self, suffix) != 0;
 }
 
-- (void)getLineStart:(unint64_t *)a3 end:(unint64_t *)a4 contentsEnd:(unint64_t *)a5 forRange:(_NSRange)a6
+- (void)getLineStart:(unint64_t *)start end:(unint64_t *)end contentsEnd:(unint64_t *)contentsEnd forRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   Length2 = _CFStringGetLength2(self);
   v14 = Length2;
   if (location + length > Length2)
@@ -574,7 +574,7 @@ LABEL_18:
   v22.location = location;
   v22.length = length;
 
-  CFStringGetLineBounds(self, v22, a3, a4, a5);
+  CFStringGetLineBounds(self, v22, start, end, contentsEnd);
 }
 
 - (unint64_t)smallestEncoding
@@ -584,44 +584,44 @@ LABEL_18:
   return CFStringConvertEncodingToNSStringEncoding(SmallestEncoding);
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string
 {
-  v6 = __CFStringCheckAndReplace(self, a3.location, a3.length, a4);
+  v6 = __CFStringCheckAndReplace(self, range.location, range.length, string);
   if (v6)
   {
     mutateError(a2, v6, self);
   }
 }
 
-- (void)insertString:(id)a3 atIndex:(unint64_t)a4
+- (void)insertString:(id)string atIndex:(unint64_t)index
 {
-  v6 = __CFStringCheckAndReplace(self, a4, 0, a3);
+  v6 = __CFStringCheckAndReplace(self, index, 0, string);
   if (v6)
   {
     mutateError(a2, v6, self);
   }
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
   Length2 = _CFStringGetLength2(self);
-  v7 = __CFStringCheckAndReplace(self, Length2, 0, a3);
+  v7 = __CFStringCheckAndReplace(self, Length2, 0, string);
   if (v7)
   {
     mutateError(a2, v7, self);
   }
 }
 
-- (void)deleteCharactersInRange:(_NSRange)a3
+- (void)deleteCharactersInRange:(_NSRange)range
 {
-  v5 = __CFStringCheckAndReplace(self, a3.location, a3.length, &stru_1EF068AA8);
+  v5 = __CFStringCheckAndReplace(self, range.location, range.length, &stru_1EF068AA8);
   if (v5)
   {
     mutateError(a2, v5, self);
   }
 }
 
-- (void)appendFormat:(id)a3
+- (void)appendFormat:(id)format
 {
   v7 = *MEMORY[0x1E69E9840];
   if (!__CFStringMtbl(self))
@@ -629,34 +629,34 @@ LABEL_18:
     [__NSCFString appendFormat:a2];
   }
 
-  _CFStringAppendFormatAndArgumentsAux2(self, _DescriptionWithLocaleFunc, _DescriptionWithStringProxyFunc, 0, 0, a3, &v8);
+  _CFStringAppendFormatAndArgumentsAux2(self, _DescriptionWithLocaleFunc, _DescriptionWithStringProxyFunc, 0, 0, format, &v8);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
   Length2 = _CFStringGetLength2(self);
-  v7 = __CFStringCheckAndReplace(self, 0, Length2, a3);
+  v7 = __CFStringCheckAndReplace(self, 0, Length2, string);
   if (v7)
   {
     mutateError(a2, v7, self);
   }
 }
 
-- (void)appendCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4
+- (void)appendCharacters:(const unsigned __int16 *)characters length:(unint64_t)length
 {
   if (!__CFStringMtbl(self))
   {
     [__NSCFString appendCharacters:a2 length:?];
   }
 
-  CFStringAppendCharacters(self, a3, a4);
+  CFStringAppendCharacters(self, characters, length);
 }
 
-- (unint64_t)replaceOccurrencesOfString:(id)a3 withString:(id)a4 options:(unint64_t)a5 range:(_NSRange)a6
+- (unint64_t)replaceOccurrencesOfString:(id)string withString:(id)withString options:(unint64_t)options range:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   v29 = *MEMORY[0x1E69E9840];
   if (!__CFStringMtbl(self))
   {
@@ -664,7 +664,7 @@ LABEL_18:
   }
 
   Length2 = _CFStringGetLength2(self);
-  if (!a3 || !a4)
+  if (!string || !withString)
   {
     [__NSCFString replaceOccurrencesOfString:a2 withString:? options:? range:?];
   }
@@ -689,11 +689,11 @@ LABEL_18:
     CFLog(4, @"*** %@: Range {%lu, %lu} out of bounds; string length %lu. This will become an exception for apps linked after 10.10 and iOS 8. Warning shown once per app execution.", v16, v17, v18, v19, v20, v21, v15);
   }
 
-  if ((a5 & 0x400) != 0)
+  if ((options & 0x400) != 0)
   {
     v28.receiver = self;
     v28.super_class = __NSCFString;
-    result = [(__NSCFString *)&v28 replaceOccurrencesOfString:a3 withString:a4 options:a5 range:location, length];
+    result = [(__NSCFString *)&v28 replaceOccurrencesOfString:string withString:withString options:options range:location, length];
     v25 = *MEMORY[0x1E69E9840];
   }
 
@@ -703,7 +703,7 @@ LABEL_18:
     v23.location = location;
     v23.length = length;
 
-    return CFStringFindAndReplace(self, a3, a4, v23, ~(8 * a5) & 0x10 | a5);
+    return CFStringFindAndReplace(self, string, withString, v23, ~(8 * options) & 0x10 | options);
   }
 
   return result;

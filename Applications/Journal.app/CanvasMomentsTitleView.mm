@@ -1,16 +1,16 @@
 @interface CanvasMomentsTitleView
 - (UIResponder)nextResponder;
-- (_TtC7Journal22CanvasMomentsTitleView)initWithCoder:(id)a3;
-- (_TtC7Journal22CanvasMomentsTitleView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC7Journal22CanvasMomentsTitleView)initWithCoder:(id)coder;
+- (_TtC7Journal22CanvasMomentsTitleView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (id)_accessibilityResponderElement;
-- (void)insertText:(id)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)textPasteConfigurationSupporting:(id)a3 transformPasteItem:(id)a4;
+- (void)insertText:(id)text;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)textPasteConfigurationSupporting:(id)supporting transformPasteItem:(id)item;
 @end
 
 @implementation CanvasMomentsTitleView
 
-- (_TtC7Journal22CanvasMomentsTitleView)initWithCoder:(id)a3
+- (_TtC7Journal22CanvasMomentsTitleView)initWithCoder:(id)coder
 {
   *&self->journalEntry[OBJC_IVAR____TtC7Journal22CanvasMomentsTitleView_textViewFocusDelegate] = 0;
   swift_unknownObjectWeakInit();
@@ -21,40 +21,40 @@
 
 - (UIResponder)nextResponder
 {
-  v2 = self;
-  v3 = [(CanvasMomentsTitleView *)v2 superview];
-  if (v3)
+  selfCopy = self;
+  superview = [(CanvasMomentsTitleView *)selfCopy superview];
+  if (superview)
   {
-    v4 = v3;
-    v5 = [v3 superview];
+    v4 = superview;
+    v3Superview = [superview superview];
 
-    if (v5)
+    if (v3Superview)
     {
       type metadata accessor for JournalTextView();
       v6 = swift_dynamicCastClass();
       if (v6)
       {
-        v7 = [v6 nextResponder];
+        nextResponder = [v6 nextResponder];
 
         goto LABEL_7;
       }
     }
   }
 
-  v9.receiver = v2;
+  v9.receiver = selfCopy;
   v9.super_class = type metadata accessor for CanvasMomentsTitleView();
-  v7 = [(CanvasMomentsTitleView *)&v9 nextResponder];
+  nextResponder = [(CanvasMomentsTitleView *)&v9 nextResponder];
 
 LABEL_7:
 
-  return v7;
+  return nextResponder;
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a3)
+  length = range.length;
+  location = range.location;
+  if (text)
   {
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
@@ -66,21 +66,21 @@ LABEL_7:
     v9 = 0;
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_100190518(v7, v9, location, length);
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100190680(v4, v6);
 }
 
 - (id)_accessibilityResponderElement
 {
-  v2 = self;
+  selfCopy = self;
   sub_100190830(v10);
 
   v3 = v11;
@@ -104,19 +104,19 @@ LABEL_7:
   return v8;
 }
 
-- (_TtC7Journal22CanvasMomentsTitleView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC7Journal22CanvasMomentsTitleView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)textPasteConfigurationSupporting:(id)a3 transformPasteItem:(id)a4
+- (void)textPasteConfigurationSupporting:(id)supporting transformPasteItem:(id)item
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1001912C4(a4);
+  selfCopy = self;
+  sub_1001912C4(item);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

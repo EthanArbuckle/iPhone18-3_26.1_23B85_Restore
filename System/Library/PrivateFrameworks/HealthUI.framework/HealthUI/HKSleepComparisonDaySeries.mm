@@ -1,19 +1,19 @@
 @interface HKSleepComparisonDaySeries
-- (CGPoint)renderPositionForLabelLocation:(id)a3 rect:(CGRect)a4 zoomScale:(double)a5 contentOffset:(CGPoint)a6 constantOffset:(double)a7 isHorizontal:(BOOL)a8 optionalOffset:(CGPoint)a9;
+- (CGPoint)renderPositionForLabelLocation:(id)location rect:(CGRect)rect zoomScale:(double)scale contentOffset:(CGPoint)offset constantOffset:(double)constantOffset isHorizontal:(BOOL)horizontal optionalOffset:(CGPoint)optionalOffset;
 - (CGSize)cornerRadii;
 - (CGSize)cornerRadiiStorage;
 - (HKSleepComparisonDaySeries)init;
 - (NSArray)defaultFillStyles;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisSelectedCoordinate:(double)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (id)cacheKeysForModelRange:(id)a3 zoomScale:(double)a4;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4;
-- (void)_drawPaths:(id)a3 withFillStyles:(id)a4 axisRect:(CGRect)a5 context:(CGContext *)a6;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
-- (void)setCornerRadii:(CGSize)a3;
-- (void)setDefaultFillStyles:(id)a3;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisSelectedCoordinate:(double)coordinate blockCoordinate:(id)blockCoordinate chartRect:(CGRect)rect;
+- (id)cacheKeysForModelRange:(id)range zoomScale:(double)scale;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale;
+- (void)_drawPaths:(id)paths withFillStyles:(id)styles axisRect:(CGRect)rect context:(CGContext *)context;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
+- (void)setCornerRadii:(CGSize)radii;
+- (void)setDefaultFillStyles:(id)styles;
 @end
 
 @implementation HKSleepComparisonDaySeries
@@ -43,13 +43,13 @@
 
 - (CGSize)cornerRadii
 {
-  v3 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   width = self->_cornerRadiiStorage.width;
   height = self->_cornerRadiiStorage.height;
-  v6 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  seriesMutableStateLock2 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   v7 = width;
   v8 = height;
@@ -58,67 +58,67 @@
   return result;
 }
 
-- (void)setCornerRadii:(CGSize)a3
+- (void)setCornerRadii:(CGSize)radii
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
-  [v6 lock];
+  height = radii.height;
+  width = radii.width;
+  seriesMutableStateLock = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   self->_cornerRadiiStorage.width = width;
   self->_cornerRadiiStorage.height = height;
-  v7 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (NSArray)defaultFillStyles
 {
-  v3 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_defaultFillStylesStorage;
-  v5 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setDefaultFillStyles:(id)a3
+- (void)setDefaultFillStyles:(id)styles
 {
-  v4 = a3;
-  v5 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stylesCopy = styles;
+  seriesMutableStateLock = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [stylesCopy copy];
   defaultFillStylesStorage = self->_defaultFillStylesStorage;
   self->_defaultFillStylesStorage = v6;
 
-  v8 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKSleepComparisonDaySeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  v10 = a5;
-  v11 = [a3 chartPoints];
-  if (!v11)
+  axisCopy = axis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKSleepComparisonDaySeries coordinatesForBlock:a2 blockPath:self xAxis:? yAxis:?];
   }
 
-  v12 = [v10 transform];
+  transform = [axisCopy transform];
   v13 = objc_opt_new();
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __72__HKSleepComparisonDaySeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke;
   v20[3] = &unk_1E81B92B8;
-  v21 = v12;
+  v21 = transform;
   v22 = v13;
   v14 = v13;
-  v15 = v12;
-  [v11 enumerateObjectsUsingBlock:v20];
-  v18 = *&a4->index;
-  resolution = a4->resolution;
+  v15 = transform;
+  [chartPoints enumerateObjectsUsingBlock:v20];
+  v18 = *&path->index;
+  resolution = path->resolution;
   v16 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v14 blockPath:&v18];
 
   return v16;
@@ -151,19 +151,19 @@ void __72__HKSleepComparisonDaySeries_coordinatesForBlock_blockPath_xAxis_yAxis_
   }
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v35[2] = *MEMORY[0x1E69E9840];
   v16 = MEMORY[0x1E69DC728];
-  v17 = a3;
-  v18 = [v16 bezierPath];
-  v35[0] = v18;
-  v19 = [MEMORY[0x1E69DC728] bezierPath];
-  v35[1] = v19;
+  coordinatesCopy = coordinates;
+  bezierPath = [v16 bezierPath];
+  v35[0] = bezierPath;
+  bezierPath2 = [MEMORY[0x1E69DC728] bezierPath];
+  v35[1] = bezierPath2;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
   v21 = [v20 mutableCopy];
 
@@ -176,16 +176,16 @@ void __72__HKSleepComparisonDaySeries_coordinatesForBlock_blockPath_xAxis_yAxis_
   v33 = width;
   v34 = height;
   v29 = v21;
-  v30 = self;
-  v22 = *&a6->c;
-  v25 = *&a6->a;
+  selfCopy = self;
+  v22 = *&transform->c;
+  v25 = *&transform->a;
   v26 = v22;
-  v27 = *&a6->tx;
+  v27 = *&transform->tx;
   v23 = v21;
-  [v17 enumerateCoordinatesWithTransform:&v25 roundToViewScale:1 block:v28];
+  [coordinatesCopy enumerateCoordinatesWithTransform:&v25 roundToViewScale:1 block:v28];
 
   v24 = [(HKSleepComparisonDaySeries *)self defaultFillStyles:v25];
-  [(HKSleepComparisonDaySeries *)self _drawPaths:v23 withFillStyles:v24 axisRect:a7 context:x, y, width, height];
+  [(HKSleepComparisonDaySeries *)self _drawPaths:v23 withFillStyles:v24 axisRect:context context:x, y, width, height];
 }
 
 void __169__HKSleepComparisonDaySeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate___block_invoke(uint64_t a1, void *a2)
@@ -216,98 +216,98 @@ void __169__HKSleepComparisonDaySeries_drawSeriesWithBlockCoordinates_axisRect_z
   [v20 appendPath:v19];
 }
 
-- (void)_drawPaths:(id)a3 withFillStyles:(id)a4 axisRect:(CGRect)a5 context:(CGContext *)a6
+- (void)_drawPaths:(id)paths withFillStyles:(id)styles axisRect:(CGRect)rect context:(CGContext *)context
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v19 = a3;
-  v13 = a4;
-  if ([v19 count])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pathsCopy = paths;
+  stylesCopy = styles;
+  if ([pathsCopy count])
   {
     v14 = 0;
     do
     {
-      v15 = [v19 objectAtIndexedSubscript:v14];
+      v15 = [pathsCopy objectAtIndexedSubscript:v14];
       if (([v15 isEmpty] & 1) == 0)
       {
-        v16 = [v13 objectAtIndexedSubscript:v14];
+        v16 = [stylesCopy objectAtIndexedSubscript:v14];
         if (v16)
         {
-          v17 = [v15 CGPath];
+          cGPath = [v15 CGPath];
           [(HKGraphSeries *)self alpha];
-          [v16 renderPath:v17 context:a6 axisRect:x alpha:{y, width, height, v18}];
+          [v16 renderPath:cGPath context:context axisRect:x alpha:{y, width, height, v18}];
         }
       }
 
       ++v14;
     }
 
-    while (v14 < [v19 count]);
+    while (v14 < [pathsCopy count]);
   }
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v12 = a4;
-  [(HKSleepComparisonDaySeries *)self xAxisDistanceFromPoint:v12 blockCoordinate:v10 chartRect:v9, x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  v10 = point.x;
+  coordinateCopy = coordinate;
+  [(HKSleepComparisonDaySeries *)self xAxisDistanceFromPoint:coordinateCopy blockCoordinate:v10 chartRect:v9, x, y, width, height];
   v14 = v13;
-  [(HKSleepComparisonDaySeries *)self yAxisDifferenceToPoint:v12 blockCoordinate:v10 chartRect:v9, x, y, width, height];
+  [(HKSleepComparisonDaySeries *)self yAxisDifferenceToPoint:coordinateCopy blockCoordinate:v10 chartRect:v9, x, y, width, height];
   v16 = v15;
 
   return sqrt(v16 * v16 + v14 * v14);
 }
 
-- (double)xAxisSelectedCoordinate:(double)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisSelectedCoordinate:(double)coordinate blockCoordinate:(id)blockCoordinate chartRect:(CGRect)rect
 {
-  v8 = a4;
+  blockCoordinateCopy = blockCoordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKSleepComparisonDaySeries xAxisSelectedCoordinate:a2 blockCoordinate:self chartRect:?];
   }
 
-  v9 = v8;
+  v9 = blockCoordinateCopy;
   [v9 startXValue];
-  if (v10 <= a3)
+  if (v10 <= coordinate)
   {
-    v11 = a3;
+    coordinateCopy = coordinate;
   }
 
   else
   {
-    v11 = v10;
+    coordinateCopy = v10;
   }
 
   [v9 endXValue];
   v13 = v12;
 
-  if (v11 < v13)
+  if (coordinateCopy < v13)
   {
-    v13 = v11;
+    v13 = coordinateCopy;
   }
 
   return v13;
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  x = a3.x;
-  v8 = a4;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKSleepComparisonDaySeries xAxisDistanceFromPoint:a2 blockCoordinate:self chartRect:?];
   }
 
-  v9 = v8;
+  v9 = coordinateCopy;
   [v9 startXValue];
   v11 = v10 - x;
   [v9 endXValue];
@@ -327,17 +327,17 @@ void __169__HKSleepComparisonDaySeries_drawSeriesWithBlockCoordinates_axisRect_z
   return v15;
 }
 
-- (id)cacheKeysForModelRange:(id)a3 zoomScale:(double)a4
+- (id)cacheKeysForModelRange:(id)range zoomScale:(double)scale
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = [(HKSleepComparisonDaySeries *)self visibleValueRange:a3];
+  v4 = [(HKSleepComparisonDaySeries *)self visibleValueRange:range];
   v7[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
   return v5;
 }
 
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(HKAxisLabel);
@@ -355,7 +355,7 @@ void __169__HKSleepComparisonDaySeries_drawSeriesWithBlockCoordinates_axisRect_z
   return v6;
 }
 
-- (CGPoint)renderPositionForLabelLocation:(id)a3 rect:(CGRect)a4 zoomScale:(double)a5 contentOffset:(CGPoint)a6 constantOffset:(double)a7 isHorizontal:(BOOL)a8 optionalOffset:(CGPoint)a9
+- (CGPoint)renderPositionForLabelLocation:(id)location rect:(CGRect)rect zoomScale:(double)scale contentOffset:(CGPoint)offset constantOffset:(double)constantOffset isHorizontal:(BOOL)horizontal optionalOffset:(CGPoint)optionalOffset
 {
   v9 = *MEMORY[0x1E695EFF8];
   v10 = *(MEMORY[0x1E695EFF8] + 8);

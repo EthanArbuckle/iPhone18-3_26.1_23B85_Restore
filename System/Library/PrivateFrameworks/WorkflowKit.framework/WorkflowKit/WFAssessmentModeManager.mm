@@ -2,11 +2,11 @@
 + (BOOL)isAssessmentModeSupportedOnCurrentDevice;
 - (BOOL)isInAssessmentMode;
 - (BOOL)isObserving;
-- (WFAssessmentModeManager)initWithQueue:(id)a3 delegate:(id)a4;
+- (WFAssessmentModeManager)initWithQueue:(id)queue delegate:(id)delegate;
 - (WFAssessmentModeManagerDelegate)delegate;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setIsObserving:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setIsObserving:(BOOL)observing;
 - (void)startObservingForAssesmentModeChangesIfNeeded;
 @end
 
@@ -14,8 +14,8 @@
 
 + (BOOL)isAssessmentModeSupportedOnCurrentDevice
 {
-  v2 = [MEMORY[0x1E69E0A90] currentDevice];
-  v3 = ![v2 idiom] || objc_msgSend(v2, "idiom") == 1 || objc_msgSend(v2, "idiom") == 2;
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  v3 = ![currentDevice idiom] || objc_msgSend(currentDevice, "idiom") == 1 || objc_msgSend(currentDevice, "idiom") == 2;
 
   return v3;
 }
@@ -27,10 +27,10 @@
   return WeakRetained;
 }
 
-- (void)setIsObserving:(BOOL)a3
+- (void)setIsObserving:(BOOL)observing
 {
   os_unfair_lock_lock(&self->_isObservingLock);
-  self->_isObserving = a3;
+  self->_isObserving = observing;
 
   os_unfair_lock_unlock(&self->_isObservingLock);
 }
@@ -47,8 +47,8 @@
 {
   if ([(WFAssessmentModeManager *)self isObserving])
   {
-    v3 = [(WFAssessmentModeManager *)self assessmentGestalt];
-    [v3 removeObserver:self forKeyPath:@"active" context:WFAssessmentModeActiveContext];
+    assessmentGestalt = [(WFAssessmentModeManager *)self assessmentGestalt];
+    [assessmentGestalt removeObserver:self forKeyPath:@"active" context:WFAssessmentModeActiveContext];
   }
 
   v4.receiver = self;
@@ -56,25 +56,25 @@
   [(WFAssessmentModeManager *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(WFAssessmentModeManager *)self queue];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  queue = [(WFAssessmentModeManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__WFAssessmentModeManager_observeValueForKeyPath_ofObject_change_context___block_invoke;
   block[3] = &unk_1E837E2C0;
-  v20 = v12;
-  v21 = a6;
+  v20 = changeCopy;
+  contextCopy = context;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = pathCopy;
+  v19 = objectCopy;
+  v14 = changeCopy;
+  v15 = objectCopy;
+  v16 = pathCopy;
+  dispatch_async(queue, block);
 }
 
 void __74__WFAssessmentModeManager_observeValueForKeyPath_ofObject_change_context___block_invoke(uint64_t a1)
@@ -105,8 +105,8 @@ void __74__WFAssessmentModeManager_observeValueForKeyPath_ofObject_change_contex
 {
   if (![(WFAssessmentModeManager *)self isObserving])
   {
-    v3 = [(WFAssessmentModeManager *)self assessmentGestalt];
-    [v3 addObserver:self forKeyPath:@"active" options:0 context:WFAssessmentModeActiveContext];
+    assessmentGestalt = [(WFAssessmentModeManager *)self assessmentGestalt];
+    [assessmentGestalt addObserver:self forKeyPath:@"active" options:0 context:WFAssessmentModeActiveContext];
 
     [(WFAssessmentModeManager *)self setIsObserving:1];
   }
@@ -114,28 +114,28 @@ void __74__WFAssessmentModeManager_observeValueForKeyPath_ofObject_change_contex
 
 - (BOOL)isInAssessmentMode
 {
-  v2 = [(WFAssessmentModeManager *)self assessmentGestalt];
-  v3 = [v2 isActive];
+  assessmentGestalt = [(WFAssessmentModeManager *)self assessmentGestalt];
+  isActive = [assessmentGestalt isActive];
 
-  return v3;
+  return isActive;
 }
 
-- (WFAssessmentModeManager)initWithQueue:(id)a3 delegate:(id)a4
+- (WFAssessmentModeManager)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = WFAssessmentModeManager;
   v9 = [(WFAssessmentModeManager *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [objc_alloc(MEMORY[0x1E6985E90]) initWithQueue:v7];
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = [objc_alloc(MEMORY[0x1E6985E90]) initWithQueue:queueCopy];
     assessmentGestalt = v10->_assessmentGestalt;
     v10->_assessmentGestalt = v11;
 
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v10->_isObservingLock._os_unfair_lock_opaque = 0;
     v13 = v10;
   }

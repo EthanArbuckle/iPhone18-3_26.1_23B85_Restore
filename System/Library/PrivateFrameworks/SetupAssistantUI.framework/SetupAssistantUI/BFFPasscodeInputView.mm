@@ -1,28 +1,28 @@
 @interface BFFPasscodeInputView
-- (BFFPasscodeInputView)initWithFrame:(CGRect)a3;
+- (BFFPasscodeInputView)initWithFrame:(CGRect)frame;
 - (BFFPasscodeInputViewDelegate)delegate;
 - (BOOL)becomeFirstResponder;
 - (BOOL)isFirstResponder;
 - (BOOL)resignFirstResponder;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)_instructionsLinkButtonPressed;
-- (void)_layoutForBounds:(CGRect)a3;
+- (void)_layoutForBounds:(CGRect)bounds;
 - (void)footerButtonPressed;
 - (void)layoutSubviews;
-- (void)setFooterButtonText:(id)a3;
-- (void)setFooterView:(id)a3;
-- (void)setInstructionsLinkText:(id)a3;
+- (void)setFooterButtonText:(id)text;
+- (void)setFooterView:(id)view;
+- (void)setInstructionsLinkText:(id)text;
 - (void)shakePasscode;
 @end
 
 @implementation BFFPasscodeInputView
 
-- (BFFPasscodeInputView)initWithFrame:(CGRect)a3
+- (BFFPasscodeInputView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = BFFPasscodeInputView;
-  v3 = [(BFFPasscodeInputView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BFFPasscodeInputView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -41,15 +41,15 @@
   return v3;
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v7 = a3;
-  v5 = [(BFFPasscodeInputView *)self footerView];
-  [v5 removeFromSuperview];
+  viewCopy = view;
+  footerView = [(BFFPasscodeInputView *)self footerView];
+  [footerView removeFromSuperview];
 
-  if (v7)
+  if (viewCopy)
   {
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     footerView = [(BFFPasscodeInputView *)self footerView];
     [(BFFPasscodeInputView *)self addSubview:footerView];
   }
@@ -63,45 +63,45 @@
   [(BFFPasscodeInputView *)self setNeedsLayout];
 }
 
-- (void)setFooterButtonText:(id)a3
+- (void)setFooterButtonText:(id)text
 {
-  v16 = a3;
-  v4 = [(BFFPasscodeInputView *)self footerButton];
-  if (v16)
+  textCopy = text;
+  footerButton = [(BFFPasscodeInputView *)self footerButton];
+  if (textCopy)
   {
 
-    if (!v4)
+    if (!footerButton)
     {
       v5 = [MEMORY[0x277D75220] buttonWithType:1];
       [(BFFPasscodeInputView *)self setFooterButton:v5];
 
-      v6 = [(BFFPasscodeInputView *)self footerButton];
-      v7 = [v6 titleLabel];
+      footerButton2 = [(BFFPasscodeInputView *)self footerButton];
+      titleLabel = [footerButton2 titleLabel];
       v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-      [v7 setFont:v8];
+      [titleLabel setFont:v8];
 
-      v9 = [(BFFPasscodeInputView *)self footerButton];
-      v10 = [v9 titleLabel];
-      [v10 setNumberOfLines:0];
+      footerButton3 = [(BFFPasscodeInputView *)self footerButton];
+      titleLabel2 = [footerButton3 titleLabel];
+      [titleLabel2 setNumberOfLines:0];
 
-      v11 = [(BFFPasscodeInputView *)self footerButton];
-      v12 = [v11 titleLabel];
-      [v12 setTextAlignment:1];
+      footerButton4 = [(BFFPasscodeInputView *)self footerButton];
+      titleLabel3 = [footerButton4 titleLabel];
+      [titleLabel3 setTextAlignment:1];
 
-      v13 = [(BFFPasscodeInputView *)self footerButton];
-      [v13 addTarget:self action:sel_footerButtonPressed forControlEvents:64];
+      footerButton5 = [(BFFPasscodeInputView *)self footerButton];
+      [footerButton5 addTarget:self action:sel_footerButtonPressed forControlEvents:64];
 
-      v14 = [(BFFPasscodeInputView *)self footerButton];
-      [(BFFPasscodeInputView *)self addSubview:v14];
+      footerButton6 = [(BFFPasscodeInputView *)self footerButton];
+      [(BFFPasscodeInputView *)self addSubview:footerButton6];
     }
 
-    v15 = [(BFFPasscodeInputView *)self footerButton];
-    [v15 setTitle:v16 forState:0];
+    footerButton7 = [(BFFPasscodeInputView *)self footerButton];
+    [footerButton7 setTitle:textCopy forState:0];
   }
 
   else
   {
-    [v4 removeFromSuperview];
+    [footerButton removeFromSuperview];
 
     [(BFFPasscodeInputView *)self setFooterButton:0];
   }
@@ -109,56 +109,56 @@
 
 - (void)footerButtonPressed
 {
-  v3 = [(BFFPasscodeInputView *)self delegate];
-  if (v3)
+  delegate = [(BFFPasscodeInputView *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(BFFPasscodeInputView *)self delegate];
+    v4 = delegate;
+    delegate2 = [(BFFPasscodeInputView *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v8 = [(BFFPasscodeInputView *)self delegate];
-      v7 = [(BFFPasscodeInputView *)self footerButton];
-      [v8 passcodeInput:self tappedFooterButton:v7];
+      delegate3 = [(BFFPasscodeInputView *)self delegate];
+      footerButton = [(BFFPasscodeInputView *)self footerButton];
+      [delegate3 passcodeInput:self tappedFooterButton:footerButton];
     }
   }
 }
 
-- (void)setInstructionsLinkText:(id)a3
+- (void)setInstructionsLinkText:(id)text
 {
-  v18 = a3;
-  if (v18)
+  textCopy = text;
+  if (textCopy)
   {
-    v4 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    instructionsLinkButton = [(BFFPasscodeInputView *)self instructionsLinkButton];
 
-    if (!v4)
+    if (!instructionsLinkButton)
     {
       v5 = [MEMORY[0x277D75220] buttonWithType:1];
       [(BFFPasscodeInputView *)self setInstructionsLinkButton:v5];
 
       v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-      v7 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-      v8 = [v7 titleLabel];
-      [v8 setFont:v6];
+      instructionsLinkButton2 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+      titleLabel = [instructionsLinkButton2 titleLabel];
+      [titleLabel setFont:v6];
 
-      v9 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-      v10 = [v9 titleLabel];
-      [v10 setNumberOfLines:0];
+      instructionsLinkButton3 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+      titleLabel2 = [instructionsLinkButton3 titleLabel];
+      [titleLabel2 setNumberOfLines:0];
 
-      v11 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-      v12 = [v11 titleLabel];
-      [v12 setTextAlignment:1];
+      instructionsLinkButton4 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+      titleLabel3 = [instructionsLinkButton4 titleLabel];
+      [titleLabel3 setTextAlignment:1];
 
-      v13 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-      [v13 addTarget:self action:sel__instructionsLinkButtonPressed forControlEvents:64];
+      instructionsLinkButton5 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+      [instructionsLinkButton5 addTarget:self action:sel__instructionsLinkButtonPressed forControlEvents:64];
 
-      v14 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-      [(BFFPasscodeInputView *)self addSubview:v14];
+      instructionsLinkButton6 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+      [(BFFPasscodeInputView *)self addSubview:instructionsLinkButton6];
     }
 
-    v15 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-    [v15 setTitle:v18 forState:0];
+    instructionsLinkButton7 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    [instructionsLinkButton7 setTitle:textCopy forState:0];
   }
 
   else
@@ -180,33 +180,33 @@ LABEL_8:
 
 - (void)_instructionsLinkButtonPressed
 {
-  v3 = [(BFFPasscodeInputView *)self delegate];
-  if (v3)
+  delegate = [(BFFPasscodeInputView *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(BFFPasscodeInputView *)self delegate];
+    v4 = delegate;
+    delegate2 = [(BFFPasscodeInputView *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(BFFPasscodeInputView *)self delegate];
-      [v7 passcodeInputTappedInstructionsLink:self];
+      delegate3 = [(BFFPasscodeInputView *)self delegate];
+      [delegate3 passcodeInputTappedInstructionsLink:self];
     }
   }
 }
 
-- (void)_layoutForBounds:(CGRect)a3
+- (void)_layoutForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(BFFPasscodeInputView *)self instructions];
-  [v8 sizeThatFits:{width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  instructions = [(BFFPasscodeInputView *)self instructions];
+  [instructions sizeThatFits:{width, height}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(BFFPasscodeInputView *)self instructions];
+  instructions2 = [(BFFPasscodeInputView *)self instructions];
   v14 = BFFRoundToPixel_0((width - v10) * 0.5);
   v15 = BFFIsiPad();
   v16 = 13.5;
@@ -215,46 +215,46 @@ LABEL_8:
     v16 = 15.0;
   }
 
-  [v13 setFrame:{v14, v16, v10, v12}];
+  [instructions2 setFrame:{v14, v16, v10, v12}];
 
-  v17 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+  instructionsLinkButton = [(BFFPasscodeInputView *)self instructionsLinkButton];
 
-  if (v17)
+  if (instructionsLinkButton)
   {
-    v18 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-    v19 = [v18 titleLabel];
-    v20 = [(BFFPasscodeInputView *)self footerButton];
-    v21 = [v20 titleLabel];
-    [v19 textRectForBounds:objc_msgSend(v21 limitedToNumberOfLines:{"numberOfLines"), 0.0, 0.0, width, 1.79769313e308}];
+    instructionsLinkButton2 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    titleLabel = [instructionsLinkButton2 titleLabel];
+    footerButton = [(BFFPasscodeInputView *)self footerButton];
+    titleLabel2 = [footerButton titleLabel];
+    [titleLabel textRectForBounds:objc_msgSend(titleLabel2 limitedToNumberOfLines:{"numberOfLines"), 0.0, 0.0, width, 1.79769313e308}];
     v23 = v22;
     v25 = *&v24;
     v131 = v24;
 
     v26 = BFFRoundToPixel_0((width - v23) * 0.5);
-    v27 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-    [v27 setFrame:{v26, 0.0, v23, v25}];
+    instructionsLinkButton3 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    [instructionsLinkButton3 setFrame:{v26, 0.0, v23, v25}];
 
-    v28 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-    [v28 layoutIfNeeded];
+    instructionsLinkButton4 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    [instructionsLinkButton4 layoutIfNeeded];
 
     v29 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76918]];
-    v30 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-    v31 = [v30 titleLabel];
-    [v31 _firstBaselineOffsetFromTop];
+    instructionsLinkButton5 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    titleLabel3 = [instructionsLinkButton5 titleLabel];
+    [titleLabel3 _firstBaselineOffsetFromTop];
     v33 = v32;
-    v34 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-    v35 = [v34 titleLabel];
-    [v35 frame];
+    instructionsLinkButton6 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    titleLabel4 = [instructionsLinkButton6 titleLabel];
+    [titleLabel4 frame];
     v36 = height;
     v37 = x;
     v38 = y;
     v39 = v33 + CGRectGetMinY(v134);
 
-    v40 = [(BFFPasscodeInputView *)self instructions];
-    [v40 frame];
+    instructions3 = [(BFFPasscodeInputView *)self instructions];
+    [instructions3 frame];
     MaxY = CGRectGetMaxY(v135);
-    v42 = [(BFFPasscodeInputView *)self instructions];
-    [v42 _baselineOffsetFromBottom];
+    instructions4 = [(BFFPasscodeInputView *)self instructions];
+    [instructions4 _baselineOffsetFromBottom];
     v44 = MaxY - v43;
     [v29 scaledValueForValue:30.0];
     v46 = v44 + v45 - v39;
@@ -262,24 +262,24 @@ LABEL_8:
     x = v37;
     height = v36;
 
-    v47 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-    [v47 setFrame:{v26, v46, v23, *&v131}];
+    instructionsLinkButton7 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    [instructionsLinkButton7 setFrame:{v26, v46, v23, *&v131}];
   }
 
-  v48 = [(BFFPasscodeInputView *)self footerButton];
+  footerButton2 = [(BFFPasscodeInputView *)self footerButton];
 
-  if (v48)
+  if (footerButton2)
   {
-    v49 = [(BFFPasscodeInputView *)self footerButton];
-    [v49 frame];
+    footerButton3 = [(BFFPasscodeInputView *)self footerButton];
+    [footerButton3 frame];
     v51 = v50;
     v53 = v52;
 
-    v54 = [(BFFPasscodeInputView *)self footerButton];
-    v55 = [v54 titleLabel];
-    v56 = [(BFFPasscodeInputView *)self footerButton];
-    v57 = [v56 titleLabel];
-    [v55 textRectForBounds:objc_msgSend(v57 limitedToNumberOfLines:{"numberOfLines"), 0.0, 0.0, width, 1.79769313e308}];
+    footerButton4 = [(BFFPasscodeInputView *)self footerButton];
+    titleLabel5 = [footerButton4 titleLabel];
+    footerButton5 = [(BFFPasscodeInputView *)self footerButton];
+    titleLabel6 = [footerButton5 titleLabel];
+    [titleLabel5 textRectForBounds:objc_msgSend(titleLabel6 limitedToNumberOfLines:{"numberOfLines"), 0.0, 0.0, width, 1.79769313e308}];
     v59 = v58;
     v61 = v60;
 
@@ -295,28 +295,28 @@ LABEL_8:
     v137.size.height = height;
     v64 = CGRectGetMaxY(v137);
     v65 = BFFRoundToPixel_0(v64 - v61 + -15.0);
-    v66 = [(BFFPasscodeInputView *)self footerButton];
-    [v66 setFrame:{v63, v65, v59, v61}];
+    footerButton6 = [(BFFPasscodeInputView *)self footerButton];
+    [footerButton6 setFrame:{v63, v65, v59, v61}];
   }
 
-  v67 = [(BFFPasscodeInputView *)self footerView];
+  footerView = [(BFFPasscodeInputView *)self footerView];
 
-  if (v67)
+  if (footerView)
   {
-    v68 = [(BFFPasscodeInputView *)self footerView];
+    footerView2 = [(BFFPasscodeInputView *)self footerView];
     LODWORD(v69) = 1112014848;
     LODWORD(v70) = 1132068864;
-    [v68 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v69, v70}];
+    [footerView2 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v69, v70}];
     v72 = v71;
     v74 = v73;
 
     v75 = BFFRoundToPixel_0((width - v72) * 0.5);
-    v76 = [(BFFPasscodeInputView *)self footerButton];
+    footerButton7 = [(BFFPasscodeInputView *)self footerButton];
 
-    if (v76)
+    if (footerButton7)
     {
-      v77 = [(BFFPasscodeInputView *)self footerButton];
-      [v77 frame];
+      footerButton8 = [(BFFPasscodeInputView *)self footerButton];
+      [footerButton8 frame];
       v79 = BFFRoundToPixel_0(v78 - v74 + -10.0);
     }
 
@@ -330,30 +330,30 @@ LABEL_8:
       v79 = BFFRoundToPixel_0(v80 - v74 + -10.0);
     }
 
-    v81 = [(BFFPasscodeInputView *)self footerView];
-    [v81 setFrame:{v75, v79, v72, v74}];
+    footerView3 = [(BFFPasscodeInputView *)self footerView];
+    [footerView3 setFrame:{v75, v79, v72, v74}];
 
-    v82 = [(BFFPasscodeInputView *)self footerView];
-    [v82 setNeedsLayout];
+    footerView4 = [(BFFPasscodeInputView *)self footerView];
+    [footerView4 setNeedsLayout];
   }
 
-  v83 = [(BFFPasscodeInputView *)self footerButton];
-  if (v83)
+  footerButton9 = [(BFFPasscodeInputView *)self footerButton];
+  if (footerButton9)
   {
-    v84 = v83;
-    v85 = [(BFFPasscodeInputView *)self footerView];
+    v84 = footerButton9;
+    footerView5 = [(BFFPasscodeInputView *)self footerView];
 
-    if (v85)
+    if (footerView5)
     {
-      v86 = [(BFFPasscodeInputView *)self footerView];
-      [v86 frame];
+      footerView6 = [(BFFPasscodeInputView *)self footerView];
+      [footerView6 frame];
       v88 = v87;
       v90 = v89;
       v92 = v91;
       v94 = v93;
 
-      v95 = [(BFFPasscodeInputView *)self passcodeDisplayView];
-      [v95 frame];
+      passcodeDisplayView = [(BFFPasscodeInputView *)self passcodeDisplayView];
+      [passcodeDisplayView frame];
       v96 = CGRectGetMaxY(v139) + 15.0;
 
       if (v96 >= v90)
@@ -367,11 +367,11 @@ LABEL_8:
       }
 
       v98 = BFFRoundToPixel_0(v97);
-      v99 = [(BFFPasscodeInputView *)self footerView];
-      [v99 setFrame:{v88, v98, v92, v94}];
+      footerView7 = [(BFFPasscodeInputView *)self footerView];
+      [footerView7 setFrame:{v88, v98, v92, v94}];
 
-      v100 = [(BFFPasscodeInputView *)self footerButton];
-      [v100 frame];
+      footerButton10 = [(BFFPasscodeInputView *)self footerButton];
+      [footerButton10 frame];
       v102 = v101;
       v104 = v103;
       v106 = v105;
@@ -391,19 +391,19 @@ LABEL_8:
     }
   }
 
-  v110 = [(BFFPasscodeInputView *)self footerButton];
+  footerButton11 = [(BFFPasscodeInputView *)self footerButton];
 
-  if (v110)
+  if (footerButton11)
   {
-    v111 = [(BFFPasscodeInputView *)self footerButton];
-    [v111 frame];
+    footerButton12 = [(BFFPasscodeInputView *)self footerButton];
+    [footerButton12 frame];
     v102 = v112;
     v114 = v113;
     v106 = v115;
     v108 = v116;
 
-    v117 = [(BFFPasscodeInputView *)self passcodeDisplayView];
-    [v117 frame];
+    passcodeDisplayView2 = [(BFFPasscodeInputView *)self passcodeDisplayView];
+    [passcodeDisplayView2 frame];
     v118 = CGRectGetMaxY(v141);
 
     if (v118 >= v114)
@@ -418,26 +418,26 @@ LABEL_8:
 
 LABEL_24:
     v119 = BFFRoundToPixel_0(v109);
-    v120 = [(BFFPasscodeInputView *)self footerButton];
+    footerButton13 = [(BFFPasscodeInputView *)self footerButton];
     goto LABEL_25;
   }
 
-  v121 = [(BFFPasscodeInputView *)self footerView];
+  footerView8 = [(BFFPasscodeInputView *)self footerView];
 
-  if (!v121)
+  if (!footerView8)
   {
     return;
   }
 
-  v122 = [(BFFPasscodeInputView *)self footerView];
-  [v122 frame];
+  footerView9 = [(BFFPasscodeInputView *)self footerView];
+  [footerView9 frame];
   v102 = v123;
   v125 = v124;
   v106 = v126;
   v108 = v127;
 
-  v128 = [(BFFPasscodeInputView *)self passcodeDisplayView];
-  [v128 frame];
+  passcodeDisplayView3 = [(BFFPasscodeInputView *)self passcodeDisplayView];
+  [passcodeDisplayView3 frame];
   v129 = CGRectGetMaxY(v142);
 
   if (v129 >= v125)
@@ -451,10 +451,10 @@ LABEL_24:
   }
 
   v119 = BFFRoundToPixel_0(v130);
-  v120 = [(BFFPasscodeInputView *)self footerView];
+  footerButton13 = [(BFFPasscodeInputView *)self footerView];
 LABEL_25:
-  v132 = v120;
-  [v120 setFrame:{v102, v119, v106, v108}];
+  v132 = footerButton13;
+  [footerButton13 setFrame:{v102, v119, v106, v108}];
 }
 
 - (void)layoutSubviews
@@ -466,16 +466,16 @@ LABEL_25:
   [(BFFPasscodeInputView *)self _layoutForBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  [(BFFPasscodeInputView *)self _layoutForBounds:0.0, 0.0, a3.width, a3.height];
-  v6 = [(BFFPasscodeInputView *)self footerButton];
-  if (v6 || ([(BFFPasscodeInputView *)self footerView], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  height = fits.height;
+  width = fits.width;
+  [(BFFPasscodeInputView *)self _layoutForBounds:0.0, 0.0, fits.width, fits.height];
+  footerButton = [(BFFPasscodeInputView *)self footerButton];
+  if (footerButton || ([(BFFPasscodeInputView *)self footerView], (footerButton = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = v6;
-    [v6 frame];
+    v7 = footerButton;
+    [footerButton frame];
     height = CGRectGetMaxY(v11) + 15.0;
   }
 
@@ -488,18 +488,18 @@ LABEL_25:
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(BFFPasscodeInputView *)self passcodeField];
-  v3 = [v2 becomeFirstResponder];
+  passcodeField = [(BFFPasscodeInputView *)self passcodeField];
+  becomeFirstResponder = [passcodeField becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)isFirstResponder
 {
-  v2 = [(BFFPasscodeInputView *)self passcodeField];
-  v3 = [v2 isFirstResponder];
+  passcodeField = [(BFFPasscodeInputView *)self passcodeField];
+  isFirstResponder = [passcodeField isFirstResponder];
 
-  return v3;
+  return isFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
@@ -507,15 +507,15 @@ LABEL_25:
   v6.receiver = self;
   v6.super_class = BFFPasscodeInputView;
   [(BFFPasscodeInputView *)&v6 resignFirstResponder];
-  v3 = [(BFFPasscodeInputView *)self passcodeField];
-  v4 = [v3 resignFirstResponder];
+  passcodeField = [(BFFPasscodeInputView *)self passcodeField];
+  resignFirstResponder = [passcodeField resignFirstResponder];
 
-  return v4;
+  return resignFirstResponder;
 }
 
 - (void)shakePasscode
 {
-  v2 = [(BFFPasscodeInputView *)self passcodeField];
+  passcodeField = [(BFFPasscodeInputView *)self passcodeField];
   v39 = 0;
   v40 = &v39;
   v41 = 0x2050000000;
@@ -552,15 +552,15 @@ LABEL_25:
   [v5 setFillMode:v12];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v2 layer];
-  [v14 position];
+  layer = [passcodeField layer];
+  [layer position];
   v16 = v15 + 75.0;
   *&v16 = v16;
   v17 = [v13 numberWithFloat:v16];
   [v5 setFromValue:v17];
 
-  v18 = [v2 layer];
-  [v18 addAnimation:v5 forKey:@"spring"];
+  layer2 = [passcodeField layer];
+  [layer2 addAnimation:v5 forKey:@"spring"];
 
   v39 = 0;
   v40 = &v39;
@@ -593,41 +593,41 @@ LABEL_25:
   [v21 setFillMode:v27];
 
   v28 = MEMORY[0x277CCABB0];
-  v29 = [v2 layer];
-  [v29 position];
+  layer3 = [passcodeField layer];
+  [layer3 position];
   v31 = v30 + -75.0;
   *&v31 = v31;
   v32 = [v28 numberWithFloat:v31];
   [v21 setFromValue:v32];
 
-  v33 = [v2 layer];
-  [v33 addAnimation:v21 forKey:@"force"];
+  layer4 = [passcodeField layer];
+  [layer4 addAnimation:v21 forKey:@"force"];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(BFFPasscodeInputView *)self instructions];
-  [v3 frame];
+  instructions = [(BFFPasscodeInputView *)self instructions];
+  [instructions frame];
   MaxY = CGRectGetMaxY(v22);
   v5 = fmaxf(MaxY, 0.0);
 
-  v6 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-  [v6 frame];
+  instructionsLinkButton = [(BFFPasscodeInputView *)self instructionsLinkButton];
+  [instructionsLinkButton frame];
   v7 = CGRectGetMaxY(v23);
   v8 = fmaxf(v7, v5);
 
-  v9 = [(BFFPasscodeInputView *)self footerButton];
-  [v9 frame];
+  footerButton = [(BFFPasscodeInputView *)self footerButton];
+  [footerButton frame];
   v10 = CGRectGetMaxY(v24);
   v11 = fmaxf(v10, v8);
 
-  v12 = [(BFFPasscodeInputView *)self footerView];
-  [v12 frame];
+  footerView = [(BFFPasscodeInputView *)self footerView];
+  [footerView frame];
   v13 = CGRectGetMaxY(v25);
   v14 = fmaxf(v13, v11);
 
-  v15 = [(BFFPasscodeInputView *)self passcodeField];
-  [v15 frame];
+  passcodeField = [(BFFPasscodeInputView *)self passcodeField];
+  [passcodeField frame];
   v16 = CGRectGetMaxY(v26);
   v17 = fmaxf(v16, v14);
 

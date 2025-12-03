@@ -1,39 +1,39 @@
 @interface RTSourceCoreRoutineVehicleEvent
-- (BOOL)isEqual:(id)a3;
-- (RTSourceCoreRoutineVehicleEvent)initWithCoder:(id)a3;
-- (RTSourceCoreRoutineVehicleEvent)initWithVehicleEvent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTSourceCoreRoutineVehicleEvent)initWithCoder:(id)coder;
+- (RTSourceCoreRoutineVehicleEvent)initWithVehicleEvent:(id)event;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTSourceCoreRoutineVehicleEvent
 
-- (RTSourceCoreRoutineVehicleEvent)initWithVehicleEvent:(id)a3
+- (RTSourceCoreRoutineVehicleEvent)initWithVehicleEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = RTSourceCoreRoutineVehicleEvent;
   v6 = [(RTSourceCoreRoutineVehicleEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_vehicleEvent, a3);
+    objc_storeStrong(&v6->_vehicleEvent, event);
   }
 
   return v7;
 }
 
-- (RTSourceCoreRoutineVehicleEvent)initWithCoder:(id)a3
+- (RTSourceCoreRoutineVehicleEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RTSourceCoreRoutineVehicleEvent;
-  v5 = [(RTSourceCoreRoutine *)&v9 initWithCoder:v4];
+  v5 = [(RTSourceCoreRoutine *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleEvent"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleEvent"];
     vehicleEvent = v5->_vehicleEvent;
     v5->_vehicleEvent = v6;
   }
@@ -41,39 +41,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RTSourceCoreRoutineVehicleEvent;
-  v4 = a3;
-  [(RTSourceCoreRoutine *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_vehicleEvent forKey:{@"vehicleEvent", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RTSourceCoreRoutine *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_vehicleEvent forKey:{@"vehicleEvent", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   vehicleEvent = self->_vehicleEvent;
 
   return [v4 initWithVehicleEvent:vehicleEvent];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = RTSourceCoreRoutineVehicleEvent;
-  if ([(RTSource *)&v12 isEqual:v5])
+  if ([(RTSource *)&v12 isEqual:equalCopy])
   {
-    v6 = v5;
-    v7 = [(RTSourceCoreRoutineVehicleEvent *)self vehicleEvent];
-    if (v7 || ([v6 vehicleEvent], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    vehicleEvent = [(RTSourceCoreRoutineVehicleEvent *)self vehicleEvent];
+    if (vehicleEvent || ([v6 vehicleEvent], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(RTSourceCoreRoutineVehicleEvent *)self vehicleEvent];
-      v9 = [v6 vehicleEvent];
-      v10 = [v8 isEqual:v9];
+      vehicleEvent2 = [(RTSourceCoreRoutineVehicleEvent *)self vehicleEvent];
+      vehicleEvent3 = [v6 vehicleEvent];
+      v10 = [vehicleEvent2 isEqual:vehicleEvent3];
 
-      if (v7)
+      if (vehicleEvent)
       {
 LABEL_9:
 
@@ -100,8 +100,8 @@ LABEL_10:
   v7.receiver = self;
   v7.super_class = RTSourceCoreRoutineVehicleEvent;
   v3 = [(RTSource *)&v7 hash];
-  v4 = [(RTSourceCoreRoutineVehicleEvent *)self vehicleEvent];
-  v5 = [v4 hash];
+  vehicleEvent = [(RTSourceCoreRoutineVehicleEvent *)self vehicleEvent];
+  v5 = [vehicleEvent hash];
 
   return v5 ^ v3;
 }
@@ -111,8 +111,8 @@ LABEL_10:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(RTSourceCoreRoutineVehicleEvent *)self vehicleEvent];
-  v7 = [v3 stringWithFormat:@"%@, vehicleEvent, %@", v5, v6];
+  vehicleEvent = [(RTSourceCoreRoutineVehicleEvent *)self vehicleEvent];
+  v7 = [v3 stringWithFormat:@"%@, vehicleEvent, %@", v5, vehicleEvent];
 
   return v7;
 }

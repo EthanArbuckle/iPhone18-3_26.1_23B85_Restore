@@ -1,41 +1,41 @@
 @interface AFSpeechRecordingAlertPolicy
-+ (id)newWithBuilder:(id)a3;
-- (AFSpeechRecordingAlertPolicy)initWithBuilder:(id)a3;
-- (AFSpeechRecordingAlertPolicy)initWithCoder:(id)a3;
-- (AFSpeechRecordingAlertPolicy)initWithStartingAlertBehavior:(id)a3 stoppedAlertBehavior:(id)a4 stoppedWithErrorAlertBehavior:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSpeechRecordingAlertPolicy)initWithBuilder:(id)builder;
+- (AFSpeechRecordingAlertPolicy)initWithCoder:(id)coder;
+- (AFSpeechRecordingAlertPolicy)initWithStartingAlertBehavior:(id)behavior stoppedAlertBehavior:(id)alertBehavior stoppedWithErrorAlertBehavior:(id)errorAlertBehavior;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSpeechRecordingAlertPolicy
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startingAlertBehavior = self->_startingAlertBehavior;
-  v5 = a3;
-  [v5 encodeObject:startingAlertBehavior forKey:@"AFSpeechRecordingAlertPolicy::startingAlertBehavior"];
-  [v5 encodeObject:self->_stoppedAlertBehavior forKey:@"AFSpeechRecordingAlertPolicy::stoppedAlertBehavior"];
-  [v5 encodeObject:self->_stoppedWithErrorAlertBehavior forKey:@"AFSpeechRecordingAlertPolicy::stoppedWithErrorAlertBehavior"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startingAlertBehavior forKey:@"AFSpeechRecordingAlertPolicy::startingAlertBehavior"];
+  [coderCopy encodeObject:self->_stoppedAlertBehavior forKey:@"AFSpeechRecordingAlertPolicy::stoppedAlertBehavior"];
+  [coderCopy encodeObject:self->_stoppedWithErrorAlertBehavior forKey:@"AFSpeechRecordingAlertPolicy::stoppedWithErrorAlertBehavior"];
 }
 
-- (AFSpeechRecordingAlertPolicy)initWithCoder:(id)a3
+- (AFSpeechRecordingAlertPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechRecordingAlertPolicy::startingAlertBehavior"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechRecordingAlertPolicy::stoppedAlertBehavior"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechRecordingAlertPolicy::stoppedWithErrorAlertBehavior"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechRecordingAlertPolicy::startingAlertBehavior"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechRecordingAlertPolicy::stoppedAlertBehavior"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechRecordingAlertPolicy::stoppedWithErrorAlertBehavior"];
 
   v8 = [(AFSpeechRecordingAlertPolicy *)self initWithStartingAlertBehavior:v5 stoppedAlertBehavior:v6 stoppedWithErrorAlertBehavior:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -45,18 +45,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFSpeechRecordingAlertPolicy *)v5 startingAlertBehavior];
+      v5 = equalCopy;
+      startingAlertBehavior = [(AFSpeechRecordingAlertPolicy *)v5 startingAlertBehavior];
       startingAlertBehavior = self->_startingAlertBehavior;
-      if (startingAlertBehavior == v6 || [(AFSpeechRecordingAlertBehavior *)startingAlertBehavior isEqual:v6])
+      if (startingAlertBehavior == startingAlertBehavior || [(AFSpeechRecordingAlertBehavior *)startingAlertBehavior isEqual:startingAlertBehavior])
       {
-        v8 = [(AFSpeechRecordingAlertPolicy *)v5 stoppedAlertBehavior];
+        stoppedAlertBehavior = [(AFSpeechRecordingAlertPolicy *)v5 stoppedAlertBehavior];
         stoppedAlertBehavior = self->_stoppedAlertBehavior;
-        if (stoppedAlertBehavior == v8 || [(AFSpeechRecordingAlertBehavior *)stoppedAlertBehavior isEqual:v8])
+        if (stoppedAlertBehavior == stoppedAlertBehavior || [(AFSpeechRecordingAlertBehavior *)stoppedAlertBehavior isEqual:stoppedAlertBehavior])
         {
-          v10 = [(AFSpeechRecordingAlertPolicy *)v5 stoppedWithErrorAlertBehavior];
+          stoppedWithErrorAlertBehavior = [(AFSpeechRecordingAlertPolicy *)v5 stoppedWithErrorAlertBehavior];
           stoppedWithErrorAlertBehavior = self->_stoppedWithErrorAlertBehavior;
-          v12 = stoppedWithErrorAlertBehavior == v10 || [(AFSpeechRecordingAlertBehavior *)stoppedWithErrorAlertBehavior isEqual:v10];
+          v12 = stoppedWithErrorAlertBehavior == stoppedWithErrorAlertBehavior || [(AFSpeechRecordingAlertBehavior *)stoppedWithErrorAlertBehavior isEqual:stoppedWithErrorAlertBehavior];
         }
 
         else
@@ -87,7 +87,7 @@
   return v4 ^ [(AFSpeechRecordingAlertBehavior *)self->_stoppedWithErrorAlertBehavior hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -98,21 +98,21 @@
   return v6;
 }
 
-- (AFSpeechRecordingAlertPolicy)initWithStartingAlertBehavior:(id)a3 stoppedAlertBehavior:(id)a4 stoppedWithErrorAlertBehavior:(id)a5
+- (AFSpeechRecordingAlertPolicy)initWithStartingAlertBehavior:(id)behavior stoppedAlertBehavior:(id)alertBehavior stoppedWithErrorAlertBehavior:(id)errorAlertBehavior
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  behaviorCopy = behavior;
+  alertBehaviorCopy = alertBehavior;
+  errorAlertBehaviorCopy = errorAlertBehavior;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __113__AFSpeechRecordingAlertPolicy_initWithStartingAlertBehavior_stoppedAlertBehavior_stoppedWithErrorAlertBehavior___block_invoke;
   v16[3] = &unk_1E7344740;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v17 = behaviorCopy;
+  v18 = alertBehaviorCopy;
+  v19 = errorAlertBehaviorCopy;
+  v11 = errorAlertBehaviorCopy;
+  v12 = alertBehaviorCopy;
+  v13 = behaviorCopy;
   v14 = [(AFSpeechRecordingAlertPolicy *)self initWithBuilder:v16];
 
   return v14;
@@ -127,31 +127,31 @@ void __113__AFSpeechRecordingAlertPolicy_initWithStartingAlertBehavior_stoppedAl
   [v4 setStoppedWithErrorAlertBehavior:a1[6]];
 }
 
-- (AFSpeechRecordingAlertPolicy)initWithBuilder:(id)a3
+- (AFSpeechRecordingAlertPolicy)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = AFSpeechRecordingAlertPolicy;
   v5 = [(AFSpeechRecordingAlertPolicy *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSpeechRecordingAlertPolicyMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSpeechRecordingAlertPolicyMutation *)v7 isDirty])
     {
-      v8 = [(_AFSpeechRecordingAlertPolicyMutation *)v7 getStartingAlertBehavior];
-      v9 = [v8 copy];
+      getStartingAlertBehavior = [(_AFSpeechRecordingAlertPolicyMutation *)v7 getStartingAlertBehavior];
+      v9 = [getStartingAlertBehavior copy];
       startingAlertBehavior = v6->_startingAlertBehavior;
       v6->_startingAlertBehavior = v9;
 
-      v11 = [(_AFSpeechRecordingAlertPolicyMutation *)v7 getStoppedAlertBehavior];
-      v12 = [v11 copy];
+      getStoppedAlertBehavior = [(_AFSpeechRecordingAlertPolicyMutation *)v7 getStoppedAlertBehavior];
+      v12 = [getStoppedAlertBehavior copy];
       stoppedAlertBehavior = v6->_stoppedAlertBehavior;
       v6->_stoppedAlertBehavior = v12;
 
-      v14 = [(_AFSpeechRecordingAlertPolicyMutation *)v7 getStoppedWithErrorAlertBehavior];
-      v15 = [v14 copy];
+      getStoppedWithErrorAlertBehavior = [(_AFSpeechRecordingAlertPolicyMutation *)v7 getStoppedWithErrorAlertBehavior];
+      v15 = [getStoppedWithErrorAlertBehavior copy];
       stoppedWithErrorAlertBehavior = v6->_stoppedWithErrorAlertBehavior;
       v6->_stoppedWithErrorAlertBehavior = v15;
     }
@@ -160,36 +160,36 @@ void __113__AFSpeechRecordingAlertPolicy_initWithStartingAlertBehavior_stoppedAl
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSpeechRecordingAlertPolicyMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSpeechRecordingAlertPolicyMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSpeechRecordingAlertPolicy);
-      v7 = [(_AFSpeechRecordingAlertPolicyMutation *)v5 getStartingAlertBehavior];
-      v8 = [v7 copy];
+      getStartingAlertBehavior = [(_AFSpeechRecordingAlertPolicyMutation *)v5 getStartingAlertBehavior];
+      v8 = [getStartingAlertBehavior copy];
       startingAlertBehavior = v6->_startingAlertBehavior;
       v6->_startingAlertBehavior = v8;
 
-      v10 = [(_AFSpeechRecordingAlertPolicyMutation *)v5 getStoppedAlertBehavior];
-      v11 = [v10 copy];
+      getStoppedAlertBehavior = [(_AFSpeechRecordingAlertPolicyMutation *)v5 getStoppedAlertBehavior];
+      v11 = [getStoppedAlertBehavior copy];
       stoppedAlertBehavior = v6->_stoppedAlertBehavior;
       v6->_stoppedAlertBehavior = v11;
 
-      v13 = [(_AFSpeechRecordingAlertPolicyMutation *)v5 getStoppedWithErrorAlertBehavior];
-      v14 = [v13 copy];
+      getStoppedWithErrorAlertBehavior = [(_AFSpeechRecordingAlertPolicyMutation *)v5 getStoppedWithErrorAlertBehavior];
+      v14 = [getStoppedWithErrorAlertBehavior copy];
       stoppedWithErrorAlertBehavior = v6->_stoppedWithErrorAlertBehavior;
       v6->_stoppedWithErrorAlertBehavior = v14;
     }

@@ -17,82 +17,82 @@
 
 - (id)notificationIdentifierString
 {
-  v2 = [a1 eventIdentifier];
-  v3 = [v2 componentsSeparatedByString:{@", "}];
+  eventIdentifier = [self eventIdentifier];
+  v3 = [eventIdentifier componentsSeparatedByString:{@", "}];
 
   if ([v3 count] <= 2)
   {
-    [(HDAlarmEvent(BloodPressureJournal) *)a1 notificationIdentifierString];
+    [(HDAlarmEvent(BloodPressureJournal) *)self notificationIdentifierString];
   }
 
   v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [a1 valueFromKeyValuePair:v4];
+  v5 = [self valueFromKeyValuePair:v4];
 
   return v5;
 }
 
 - (id)journalIdentifierString
 {
-  v4 = [a1 notificationIdentifierString];
-  v5 = [[HDHRBloodPressureJournalNotificationIdentifier alloc] initWithIdentifierString:v4];
+  notificationIdentifierString = [self notificationIdentifierString];
+  v5 = [[HDHRBloodPressureJournalNotificationIdentifier alloc] initWithIdentifierString:notificationIdentifierString];
   if (!v5)
   {
     [(HDAlarmEvent(BloodPressureJournal) *)a2 journalIdentifierString];
   }
 
-  v6 = [(HDHRBloodPressureJournalNotificationIdentifier *)v5 journalIdentifier];
-  v7 = [v6 UUIDString];
+  journalIdentifier = [(HDHRBloodPressureJournalNotificationIdentifier *)v5 journalIdentifier];
+  uUIDString = [journalIdentifier UUIDString];
 
-  return v7;
+  return uUIDString;
 }
 
 - (uint64_t)journalType
 {
-  v2 = [a1 eventIdentifier];
-  v3 = [v2 componentsSeparatedByString:{@", "}];
+  eventIdentifier = [self eventIdentifier];
+  v3 = [eventIdentifier componentsSeparatedByString:{@", "}];
 
   if ([v3 count] <= 2)
   {
-    [(HDAlarmEvent(BloodPressureJournal) *)a1 journalType];
+    [(HDAlarmEvent(BloodPressureJournal) *)self journalType];
   }
 
   v4 = [v3 objectAtIndexedSubscript:1];
-  v5 = [a1 integerValueFromKeyValuePair:v4];
+  v5 = [self integerValueFromKeyValuePair:v4];
 
   return v5;
 }
 
 - (uint64_t)isFollowUp
 {
-  v2 = [a1 eventIdentifier];
-  v3 = [v2 componentsSeparatedByString:{@", "}];
+  eventIdentifier = [self eventIdentifier];
+  v3 = [eventIdentifier componentsSeparatedByString:{@", "}];
 
   if ([v3 count] <= 2)
   {
-    [(HDAlarmEvent(BloodPressureJournal) *)a1 isFollowUp];
+    [(HDAlarmEvent(BloodPressureJournal) *)self isFollowUp];
   }
 
   v4 = [v3 objectAtIndexedSubscript:2];
-  v5 = [a1 BOOLValueFromKeyValuePair:v4];
+  v5 = [self BOOLValueFromKeyValuePair:v4];
 
   return v5;
 }
 
 - (HDHRBloodPressureJournalNotificationMeasurementInfo)measurementInfo
 {
-  v2 = [a1 eventIdentifier];
-  v3 = [v2 componentsSeparatedByString:{@", "}];
+  eventIdentifier = [self eventIdentifier];
+  v3 = [eventIdentifier componentsSeparatedByString:{@", "}];
 
   if ([v3 count] >= 6)
   {
     v5 = [v3 objectAtIndexedSubscript:3];
-    v6 = [a1 integerValueFromKeyValuePair:v5];
+    v6 = [self integerValueFromKeyValuePair:v5];
 
     v7 = [v3 objectAtIndexedSubscript:4];
-    v8 = [a1 integerValueFromKeyValuePair:v7];
+    v8 = [self integerValueFromKeyValuePair:v7];
 
     v9 = [v3 objectAtIndexedSubscript:5];
-    v10 = [a1 integerValueFromKeyValuePair:v9];
+    v10 = [self integerValueFromKeyValuePair:v9];
 
     v4 = [[HDHRBloodPressureJournalNotificationMeasurementInfo alloc] initWithMeasurementIndex:v6 measurementCount:v8 measurementWindowType:v10];
   }
@@ -111,7 +111,7 @@
   v6 = [v5 componentsSeparatedByString:@":"];
   if ([v6 count] != 2)
   {
-    [(HDAlarmEvent(BloodPressureJournal) *)a2 valueFromKeyValuePair:a1, v5];
+    [(HDAlarmEvent(BloodPressureJournal) *)a2 valueFromKeyValuePair:self, v5];
   }
 
   v7 = [v6 objectAtIndexedSubscript:1];
@@ -121,45 +121,45 @@
 
 - (uint64_t)BOOLValueFromKeyValuePair:()BloodPressureJournal
 {
-  v1 = [a1 valueFromKeyValuePair:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self valueFromKeyValuePair:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)integerValueFromKeyValuePair:()BloodPressureJournal
 {
-  v1 = [a1 valueFromKeyValuePair:?];
-  v2 = [v1 integerValue];
+  v1 = [self valueFromKeyValuePair:?];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (void)notificationIdentifierString
 {
-  v9 = [MEMORY[0x277CCA890] currentHandler];
-  v2 = [a1 eventIdentifier];
-  [OUTLINED_FUNCTION_0_13(v2 v3];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  eventIdentifier = [self eventIdentifier];
+  [OUTLINED_FUNCTION_0_13(eventIdentifier v3];
 }
 
 - (void)journalIdentifierString
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"HDRestorableAlarm+BloodPressureJournal.m" lineNumber:97 description:{@"Invalid notificationIdentifier '%@' called with '%s'", a3, "-[HDAlarmEvent(BloodPressureJournal) journalIdentifierString]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HDRestorableAlarm+BloodPressureJournal.m" lineNumber:97 description:{@"Invalid notificationIdentifier '%@' called with '%s'", a3, "-[HDAlarmEvent(BloodPressureJournal) journalIdentifierString]"}];
 }
 
 - (void)journalType
 {
-  v9 = [MEMORY[0x277CCA890] currentHandler];
-  v2 = [a1 eventIdentifier];
-  [OUTLINED_FUNCTION_0_13(v2 v3];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  eventIdentifier = [self eventIdentifier];
+  [OUTLINED_FUNCTION_0_13(eventIdentifier v3];
 }
 
 - (void)isFollowUp
 {
-  v9 = [MEMORY[0x277CCA890] currentHandler];
-  v2 = [a1 eventIdentifier];
-  [OUTLINED_FUNCTION_0_13(v2 v3];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  eventIdentifier = [self eventIdentifier];
+  [OUTLINED_FUNCTION_0_13(eventIdentifier v3];
 }
 
 - (void)valueFromKeyValuePair:()BloodPressureJournal .cold.1(uint64_t a1, uint64_t a2, uint64_t a3)

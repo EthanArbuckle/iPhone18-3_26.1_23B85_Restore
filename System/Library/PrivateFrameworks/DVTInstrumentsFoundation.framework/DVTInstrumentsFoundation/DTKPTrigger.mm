@@ -1,21 +1,21 @@
 @interface DTKPTrigger
-+ (int)reinitializeKperf:(id *)a3;
-- (DTKPTrigger)initWithCounterAllocatorProvider:(id)a3 recountConfiguration:(id)a4;
-- (int)_setFilterByPid:(int)a3 forAction:(unsigned int)a4;
-- (int)_setSamplers:(unsigned int)a3 forAction:(unsigned int)a4;
-- (int)addPMCEventNamed:(id)a3 error:(id *)a4;
++ (int)reinitializeKperf:(id *)kperf;
+- (DTKPTrigger)initWithCounterAllocatorProvider:(id)provider recountConfiguration:(id)configuration;
+- (int)_setFilterByPid:(int)pid forAction:(unsigned int)action;
+- (int)_setSamplers:(unsigned int)samplers forAction:(unsigned int)action;
+- (int)addPMCEventNamed:(id)named error:(id *)error;
 - (unint64_t)pmcEventCount;
 - (unsigned)_actionAlloc;
-- (void)_actionDealloc:(unsigned int)a3;
+- (void)_actionDealloc:(unsigned int)dealloc;
 - (void)dealloc;
 @end
 
 @implementation DTKPTrigger
 
-- (DTKPTrigger)initWithCounterAllocatorProvider:(id)a3 recountConfiguration:(id)a4
+- (DTKPTrigger)initWithCounterAllocatorProvider:(id)provider recountConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = DTKPTrigger;
   v8 = [(DTKPTrigger *)&v13 init];
@@ -29,9 +29,9 @@
 
     *&v9->_collectUserStacks = 0;
     v9->_targetPid = -3;
-    v9->_counterAllocatorProvider = v6;
+    v9->_counterAllocatorProvider = providerCopy;
     v9->_requestsPMCSampling = 0;
-    objc_storeStrong(&v9->_recountConfiguration, a4);
+    objc_storeStrong(&v9->_recountConfiguration, configuration);
     [(DTKPTrigger *)v9 setSamplers:0];
   }
 
@@ -51,7 +51,7 @@
   [(DTKPTrigger *)&v4 dealloc];
 }
 
-+ (int)reinitializeKperf:(id *)a3
++ (int)reinitializeKperf:(id *)kperf
 {
   if (qword_27EE84510)
   {
@@ -62,7 +62,7 @@
   if (kperf_action_count_set())
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to set the number of kperf actions: %d", *__error()];
-    v5 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTrigger", a3, 4294966894, v4);
+    v5 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTrigger", kperf, 4294966894, v4);
 
     return v5;
   }
@@ -79,7 +79,7 @@
     else
     {
 
-      return DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTrigger", a3, 4294967096, @"Failed to allocate memory for kperf actions.");
+      return DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTrigger", kperf, 4294967096, @"Failed to allocate memory for kperf actions.");
     }
   }
 }
@@ -109,34 +109,34 @@ LABEL_6:
   return v2;
 }
 
-- (void)_actionDealloc:(unsigned int)a3
+- (void)_actionDealloc:(unsigned int)dealloc
 {
-  v3 = a3 - 1 > 0x1E || byte_27EE84518 == 0;
-  if (v3 || (*(qword_27EE84510 + a3) & 1) == 0)
+  v3 = dealloc - 1 > 0x1E || byte_27EE84518 == 0;
+  if (v3 || (*(qword_27EE84510 + dealloc) & 1) == 0)
   {
     sub_2480305FC();
   }
 
-  *(qword_27EE84510 + a3) = 0;
+  *(qword_27EE84510 + dealloc) = 0;
 }
 
-- (int)_setSamplers:(unsigned int)a3 forAction:(unsigned int)a4
+- (int)_setSamplers:(unsigned int)samplers forAction:(unsigned int)action
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a4 && (!byte_27EE84518 ? (v4 = 0) : (v4 = 32), v4 >= a4))
+  if (action && (!byte_27EE84518 ? (v4 = 0) : (v4 = 32), v4 >= action))
   {
     v7 = kperf_action_samplers_set();
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v9 = [v8 objectForKey:@"XRKPerfMaxFrames"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v9 = [standardUserDefaults objectForKey:@"XRKPerfMaxFrames"];
 
     if (v9)
     {
-      v10 = [v9 intValue];
+      intValue = [v9 intValue];
     }
 
     else
     {
-      v10 = 128;
+      intValue = 128;
     }
 
     v11 = kperf_action_ucallstack_depth_set();
@@ -146,9 +146,9 @@ LABEL_6:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v15[0] = 67109634;
-        v15[1] = v10;
+        v15[1] = intValue;
         v16 = 2112;
-        v17 = self;
+        selfCopy = self;
         v18 = 1024;
         v19 = v12;
         _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to set the maximum user callstack depth to %u on trigger: %@ - error %d", v15, 0x18u);
@@ -175,15 +175,15 @@ LABEL_6:
   return v5;
 }
 
-- (int)_setFilterByPid:(int)a3 forAction:(unsigned int)a4
+- (int)_setFilterByPid:(int)pid forAction:(unsigned int)action
 {
-  if (!a4)
+  if (!action)
   {
     return -4;
   }
 
   v4 = byte_27EE84518 ? 32 : 0;
-  if (v4 < a4)
+  if (v4 < action)
   {
     return -4;
   }
@@ -196,22 +196,22 @@ LABEL_6:
   return 0;
 }
 
-- (int)addPMCEventNamed:(id)a3 error:(id *)a4
+- (int)addPMCEventNamed:(id)named error:(id *)error
 {
   self->_requestsPMCSampling = 1;
-  v6 = a3;
-  v7 = [(DTKPTrigger *)self counterAllocator];
-  LODWORD(a4) = [v7 addPMCEventName:v6 error:a4];
+  namedCopy = named;
+  counterAllocator = [(DTKPTrigger *)self counterAllocator];
+  LODWORD(error) = [counterAllocator addPMCEventName:namedCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (unint64_t)pmcEventCount
 {
-  v2 = [(DTKPTrigger *)self queryCounterAllocator];
-  v3 = [v2 pmcEventCount];
+  queryCounterAllocator = [(DTKPTrigger *)self queryCounterAllocator];
+  pmcEventCount = [queryCounterAllocator pmcEventCount];
 
-  return v3;
+  return pmcEventCount;
 }
 
 @end

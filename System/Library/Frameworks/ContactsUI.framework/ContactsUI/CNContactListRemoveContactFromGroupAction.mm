@@ -1,7 +1,7 @@
 @interface CNContactListRemoveContactFromGroupAction
 + (id)log;
 - (BOOL)executeRemoveFromGroupAction;
-- (CNContactListRemoveContactFromGroupAction)initWithContact:(id)a3 contactStore:(id)a4 containerIdentifier:(id)a5;
+- (CNContactListRemoveContactFromGroupAction)initWithContact:(id)contact contactStore:(id)store containerIdentifier:(id)identifier;
 - (void)undoRemoveFromGroupAction;
 @end
 
@@ -12,14 +12,14 @@
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695CF88]);
   [v3 setIgnoresGuardianRestrictions:1];
-  v4 = [(CNContactListRemoveContactFromGroupAction *)self contact];
-  v5 = [v4 mutableCopy];
+  contact = [(CNContactListRemoveContactFromGroupAction *)self contact];
+  v5 = [contact mutableCopy];
 
-  v6 = [(CNContactListRemoveContactFromGroupAction *)self group];
-  v12[0] = v6;
+  group = [(CNContactListRemoveContactFromGroupAction *)self group];
+  v12[0] = group;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v8 = [(CNContactListRemoveContactFromGroupAction *)self contactStore];
-  v9 = [v5 addContactToGroups:v7 inStore:v8 request:v3];
+  contactStore = [(CNContactListRemoveContactFromGroupAction *)self contactStore];
+  v9 = [v5 addContactToGroups:v7 inStore:contactStore request:v3];
 
   if ((v9 & 1) == 0)
   {
@@ -37,14 +37,14 @@
   v13[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695CF88]);
   [v3 setIgnoresGuardianRestrictions:1];
-  v4 = [(CNContactListRemoveContactFromGroupAction *)self contact];
-  v5 = [v4 mutableCopy];
+  contact = [(CNContactListRemoveContactFromGroupAction *)self contact];
+  v5 = [contact mutableCopy];
 
-  v6 = [(CNContactListRemoveContactFromGroupAction *)self group];
-  v13[0] = v6;
+  group = [(CNContactListRemoveContactFromGroupAction *)self group];
+  v13[0] = group;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v8 = [(CNContactListRemoveContactFromGroupAction *)self contactStore];
-  v9 = [v5 removeContactFromGroups:v7 inStore:v8 request:v3];
+  contactStore = [(CNContactListRemoveContactFromGroupAction *)self contactStore];
+  v9 = [v5 removeContactFromGroups:v7 inStore:contactStore request:v3];
 
   if ((v9 & 1) == 0)
   {
@@ -59,20 +59,20 @@
   return v9;
 }
 
-- (CNContactListRemoveContactFromGroupAction)initWithContact:(id)a3 contactStore:(id)a4 containerIdentifier:(id)a5
+- (CNContactListRemoveContactFromGroupAction)initWithContact:(id)contact contactStore:(id)store containerIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contactCopy = contact;
+  storeCopy = store;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = CNContactListRemoveContactFromGroupAction;
   v12 = [(CNContactListRemoveContactFromGroupAction *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contact, a3);
-    objc_storeStrong(&v13->_contactStore, a4);
-    objc_storeStrong(&v13->_containerIdentifier, a5);
+    objc_storeStrong(&v12->_contact, contact);
+    objc_storeStrong(&v13->_contactStore, store);
+    objc_storeStrong(&v13->_containerIdentifier, identifier);
     v14 = v13;
   }
 

@@ -1,11 +1,11 @@
 @interface IMDGroupNameAndPhotoHelper
-+ (BOOL)shouldDisplayGroupNameAndPhotoWith:(int64_t)a3 handles:(id)a4;
++ (BOOL)shouldDisplayGroupNameAndPhotoWith:(int64_t)with handles:(id)handles;
 - (IMDGroupNameAndPhotoHelper)init;
 @end
 
 @implementation IMDGroupNameAndPhotoHelper
 
-+ (BOOL)shouldDisplayGroupNameAndPhotoWith:(int64_t)a3 handles:(id)a4
++ (BOOL)shouldDisplayGroupNameAndPhotoWith:(int64_t)with handles:(id)handles
 {
   sub_1B7CFECE0();
   sub_1B7CFE300();

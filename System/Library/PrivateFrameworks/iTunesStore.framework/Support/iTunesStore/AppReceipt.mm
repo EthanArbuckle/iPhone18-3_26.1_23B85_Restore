@@ -1,14 +1,14 @@
 @interface AppReceipt
-+ (BOOL)_writeReceipt:(id)a3 withContainerDirectory:(id)a4 style:(int64_t)a5;
-+ (BOOL)writeReceipt:(id)a3 forBundleIdentifier:(id)a4 style:(int64_t)a5;
-+ (BOOL)writeReceipt:(id)a3 forStoreKitClient:(id)a4;
++ (BOOL)_writeReceipt:(id)receipt withContainerDirectory:(id)directory style:(int64_t)style;
++ (BOOL)writeReceipt:(id)receipt forBundleIdentifier:(id)identifier style:(int64_t)style;
++ (BOOL)writeReceipt:(id)receipt forStoreKitClient:(id)client;
 @end
 
 @implementation AppReceipt
 
-+ (BOOL)writeReceipt:(id)a3 forBundleIdentifier:(id)a4 style:(int64_t)a5
++ (BOOL)writeReceipt:(id)receipt forBundleIdentifier:(id)identifier style:(int64_t)style
 {
-  if (![a3 length] || !objc_msgSend(a4, "length"))
+  if (![receipt length] || !objc_msgSend(identifier, "length"))
   {
     v14 = +[SSLogConfig sharedDaemonConfig];
     if (!v14)
@@ -16,15 +16,15 @@
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
     if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -41,7 +41,7 @@ LABEL_16:
     v44 = 138412546;
     v45 = objc_opt_class();
     v46 = 2112;
-    v47 = a4;
+    identifierCopy2 = identifier;
     LODWORD(v38) = 22;
     v17 = _os_log_send_and_compose_impl();
     if (v17)
@@ -55,7 +55,7 @@ LABEL_16:
     return 0;
   }
 
-  v9 = [LSApplicationProxy applicationProxyForIdentifier:a4];
+  v9 = [LSApplicationProxy applicationProxyForIdentifier:identifier];
   if (!v9)
   {
     v21 = +[SSLogConfig sharedDaemonConfig];
@@ -64,15 +64,15 @@ LABEL_16:
       v21 = +[SSLogConfig sharedConfig];
     }
 
-    v22 = [v21 shouldLog];
+    shouldLog2 = [v21 shouldLog];
     if ([v21 shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog2 | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -88,13 +88,13 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v10 = v9;
+  containingBundle = v9;
   if (([objc_msgSend(v9 "appState")] & 1) == 0)
   {
-    v11 = [LSPlugInKitProxy pluginKitProxyForIdentifier:a4];
+    v11 = [LSPlugInKitProxy pluginKitProxyForIdentifier:identifier];
     if (v11 && (v12 = v11, v13 = [objc_msgSend(v11 "containingBundle")], objc_msgSend(v13, "isEqualToString:", LSUserApplicationType)))
     {
-      v10 = [v12 containingBundle];
+      containingBundle = [v12 containingBundle];
     }
 
     else
@@ -105,15 +105,15 @@ LABEL_16:
         v24 = +[SSLogConfig sharedConfig];
       }
 
-      v25 = [v24 shouldLog];
+      shouldLog3 = [v24 shouldLog];
       if ([v24 shouldLogToDisk])
       {
-        v26 = v25 | 2;
+        v26 = shouldLog3 | 2;
       }
 
       else
       {
-        v26 = v25;
+        v26 = shouldLog3;
       }
 
       if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -126,7 +126,7 @@ LABEL_16:
         v44 = 138412546;
         v45 = objc_opt_class();
         v46 = 2112;
-        v47 = a4;
+        identifierCopy2 = identifier;
         LODWORD(v38) = 22;
         v37 = &v44;
         v27 = _os_log_send_and_compose_impl();
@@ -142,10 +142,10 @@ LABEL_16:
     }
   }
 
-  v30 = [v10 dataContainerURL];
-  if (v30)
+  dataContainerURL = [containingBundle dataContainerURL];
+  if (dataContainerURL)
   {
-    v19 = [a1 _writeReceipt:a3 withContainerDirectory:v30 style:a5];
+    v19 = [self _writeReceipt:receipt withContainerDirectory:dataContainerURL style:style];
   }
 
   else
@@ -153,12 +153,12 @@ LABEL_16:
     v19 = 0;
   }
 
-  v31 = [v10 plugInKitPlugins];
+  plugInKitPlugins = [containingBundle plugInKitPlugins];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v32 = [v31 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  v32 = [plugInKitPlugins countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v32)
   {
     v33 = v32;
@@ -169,17 +169,17 @@ LABEL_16:
       {
         if (*v40 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(plugInKitPlugins);
         }
 
-        v36 = [*(*(&v39 + 1) + 8 * i) dataContainerURL];
-        if (v36)
+        dataContainerURL2 = [*(*(&v39 + 1) + 8 * i) dataContainerURL];
+        if (dataContainerURL2)
         {
-          [a1 _writeReceipt:a3 withContainerDirectory:v36 style:a5];
+          [self _writeReceipt:receipt withContainerDirectory:dataContainerURL2 style:style];
         }
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v33 = [plugInKitPlugins countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v33);
@@ -188,28 +188,28 @@ LABEL_16:
   return v19;
 }
 
-+ (BOOL)writeReceipt:(id)a3 forStoreKitClient:(id)a4
++ (BOOL)writeReceipt:(id)receipt forStoreKitClient:(id)client
 {
-  v7 = [a4 receiptDirectoryPath];
-  v8 = [a4 isSandboxed];
-  if ([v7 length])
+  receiptDirectoryPath = [client receiptDirectoryPath];
+  isSandboxed = [client isSandboxed];
+  if ([receiptDirectoryPath length])
   {
-    v9 = [NSURL fileURLWithPath:v7 isDirectory:1];
+    v9 = [NSURL fileURLWithPath:receiptDirectoryPath isDirectory:1];
 
-    return [a1 _writeReceipt:a3 withContainerDirectory:v9 style:v8];
+    return [self _writeReceipt:receipt withContainerDirectory:v9 style:isSandboxed];
   }
 
   else
   {
-    v11 = [a4 bundleIdentifier];
+    bundleIdentifier = [client bundleIdentifier];
 
-    return [a1 writeReceipt:a3 forBundleIdentifier:v11 style:v8];
+    return [self writeReceipt:receipt forBundleIdentifier:bundleIdentifier style:isSandboxed];
   }
 }
 
-+ (BOOL)_writeReceipt:(id)a3 withContainerDirectory:(id)a4 style:(int64_t)a5
++ (BOOL)_writeReceipt:(id)receipt withContainerDirectory:(id)directory style:(int64_t)style
 {
-  if ([a3 length])
+  if ([receipt length])
   {
     v26 = 0;
     v31[0] = NSFileOwnerAccountName;
@@ -217,12 +217,12 @@ LABEL_16:
     v32[0] = @"mobile";
     v32[1] = @"mobile";
     v8 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
-    v9 = [a4 URLByAppendingPathComponent:@"StoreKit" isDirectory:1];
+    v9 = [directory URLByAppendingPathComponent:@"StoreKit" isDirectory:1];
     v10 = objc_alloc_init(NSFileManager);
     v11 = [v10 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:v8 error:&v26];
     if (v11)
     {
-      if (a5 == 1)
+      if (style == 1)
       {
         v12 = @"sandboxReceipt";
       }
@@ -233,7 +233,7 @@ LABEL_16:
       }
 
       v13 = [v9 URLByAppendingPathComponent:v12 isDirectory:0];
-      if ([a3 writeToURL:v13 atomically:1])
+      if ([receipt writeToURL:v13 atomically:1])
       {
         v14 = +[SSLogConfig sharedDaemonConfig];
         if (!v14)
@@ -241,15 +241,15 @@ LABEL_16:
           v14 = +[SSLogConfig sharedConfig];
         }
 
-        v15 = [v14 shouldLog];
+        shouldLog = [v14 shouldLog];
         if ([v14 shouldLogToDisk])
         {
-          v16 = v15 | 2;
+          v16 = shouldLog | 2;
         }
 
         else
         {
-          v16 = v15;
+          v16 = shouldLog;
         }
 
         if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -282,15 +282,15 @@ LABEL_27:
         v19 = +[SSLogConfig sharedConfig];
       }
 
-      v20 = [v19 shouldLog];
+      shouldLog2 = [v19 shouldLog];
       if ([v19 shouldLogToDisk])
       {
-        v21 = v20 | 2;
+        v21 = shouldLog2 | 2;
       }
 
       else
       {
-        v21 = v20;
+        v21 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v19 OSLogObject], OS_LOG_TYPE_DEFAULT))

@@ -3,7 +3,7 @@
 - (id)viewForTouchHistory;
 - (int64_t)_touchInterfaceOrientation;
 - (void)reset;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation SBFluidSwitcherScreenEdgePanGestureRecognizer
@@ -11,9 +11,9 @@
 - (id)viewForTouchHistory
 {
   WeakRetained = objc_loadWeakRetained(&self->_switcherViewController);
-  v3 = [WeakRetained view];
+  view = [WeakRetained view];
 
-  return v3;
+  return view;
 }
 
 - (int64_t)_touchInterfaceOrientation
@@ -21,37 +21,37 @@
   touchInterfaceOrientationWhenGestureBegan = self->_touchInterfaceOrientationWhenGestureBegan;
   if (!touchInterfaceOrientationWhenGestureBegan)
   {
-    v4 = [(SBFluidSwitcherScreenEdgePanGestureRecognizer *)self switcherViewController];
-    v5 = v4;
-    if (v4)
+    switcherViewController = [(SBFluidSwitcherScreenEdgePanGestureRecognizer *)self switcherViewController];
+    v5 = switcherViewController;
+    if (switcherViewController)
     {
-      v6 = [v4 dataSource];
-      v7 = [v5 _sbWindowScene];
-      v8 = [v7 transientOverlayPresenter];
+      dataSource = [switcherViewController dataSource];
+      _sbWindowScene = [v5 _sbWindowScene];
+      transientOverlayPresenter = [_sbWindowScene transientOverlayPresenter];
 
-      if ([v8 hasActivePresentation])
+      if ([transientOverlayPresenter hasActivePresentation])
       {
-        v9 = [v8 topmostViewControllerInterfaceOrientation];
+        topmostViewControllerInterfaceOrientation = [transientOverlayPresenter topmostViewControllerInterfaceOrientation];
       }
 
       else
       {
-        v10 = [v5 layoutContext];
-        v11 = [v10 layoutState];
-        v12 = [v11 unlockedEnvironmentMode];
+        layoutContext = [v5 layoutContext];
+        layoutState = [layoutContext layoutState];
+        unlockedEnvironmentMode = [layoutState unlockedEnvironmentMode];
 
-        if (v12 == 1)
+        if (unlockedEnvironmentMode == 1)
         {
-          v9 = [v6 homeScreenInterfaceOrientationForContentController:v5];
+          topmostViewControllerInterfaceOrientation = [dataSource homeScreenInterfaceOrientationForContentController:v5];
         }
 
         else
         {
-          v9 = [v6 switcherInterfaceOrientationForSwitcherContentController:v5];
+          topmostViewControllerInterfaceOrientation = [dataSource switcherInterfaceOrientationForSwitcherContentController:v5];
         }
       }
 
-      touchInterfaceOrientationWhenGestureBegan = v9;
+      touchInterfaceOrientationWhenGestureBegan = topmostViewControllerInterfaceOrientation;
     }
 
     else
@@ -80,16 +80,16 @@
   self->_touchInterfaceOrientationWhenGestureBegan = 0;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     self->_touchInterfaceOrientationWhenGestureBegan = [(SBFluidSwitcherScreenEdgePanGestureRecognizer *)self _touchInterfaceOrientation];
   }
 
   v5.receiver = self;
   v5.super_class = SBFluidSwitcherScreenEdgePanGestureRecognizer;
-  [(SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v5 setState:a3];
+  [(SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v5 setState:state];
 }
 
 @end

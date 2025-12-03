@@ -1,53 +1,53 @@
 @interface SUOverlayBackgroundViewController
 - (BOOL)shouldExcludeFromNavigationHistory;
-- (CGRect)_centeredFrameForViewController:(id)a3;
-- (CGRect)_frameForSlideFromBottomForViewController:(id)a3;
+- (CGRect)_centeredFrameForViewController:(id)controller;
+- (CGRect)_frameForSlideFromBottomForViewController:(id)controller;
 - (SUOverlayBackgroundViewController)init;
 - (SUOverlayViewController)selectedViewController;
 - (double)_viewControllerHorizontalPadding;
 - (double)_viewControllerKeyboardOffset;
-- (id)_copyTransitionForTransition:(id)a3 action:(id)a4;
+- (id)_copyTransitionForTransition:(id)transition action:(id)action;
 - (id)_selectedViewController;
 - (id)copyArchivableContext;
-- (id)copyChildViewControllersForReason:(int64_t)a3;
-- (id)viewControllerForScriptWindowContext:(id)a3;
-- (void)_addViewController:(id)a3;
-- (void)_backgroundAnimationDidStop:(id)a3 finished:(id)a4 context:(void *)a5;
-- (void)_captureViewAction:(id)a3;
-- (void)_enqueueAction:(id)a3;
-- (void)_finishDismissAction:(id)a3;
-- (void)_finishDismissEverythingAction:(id)a3;
-- (void)_finishDismissOfViewController:(id)a3 animated:(BOOL)a4;
-- (void)_finishPresentAction:(id)a3;
-- (void)_layoutForKeyboardChangeWithInfo:(id)a3;
+- (id)copyChildViewControllersForReason:(int64_t)reason;
+- (id)viewControllerForScriptWindowContext:(id)context;
+- (void)_addViewController:(id)controller;
+- (void)_backgroundAnimationDidStop:(id)stop finished:(id)finished context:(void *)context;
+- (void)_captureViewAction:(id)action;
+- (void)_enqueueAction:(id)action;
+- (void)_finishDismissAction:(id)action;
+- (void)_finishDismissEverythingAction:(id)action;
+- (void)_finishDismissOfViewController:(id)controller animated:(BOOL)animated;
+- (void)_finishPresentAction:(id)action;
+- (void)_layoutForKeyboardChangeWithInfo:(id)info;
 - (void)_overlayActionDidFinish;
 - (void)_overlayAnimationDidFinish;
-- (void)_performDismissAction:(id)a3;
-- (void)_performDismissEverythingAction:(id)a3;
-- (void)_performFlipForAction:(id)a3;
+- (void)_performDismissAction:(id)action;
+- (void)_performDismissEverythingAction:(id)action;
+- (void)_performFlipForAction:(id)action;
 - (void)_performNextAction;
-- (void)_performPresentAction:(id)a3;
+- (void)_performPresentAction:(id)action;
 - (void)_reloadGestureRecognizers;
-- (void)_removeViewController:(id)a3;
+- (void)_removeViewController:(id)controller;
 - (void)_sendDidDismiss;
-- (void)_shouldDismissFinishedWithValue:(id)a3;
-- (void)_swipe:(id)a3;
+- (void)_shouldDismissFinishedWithValue:(id)value;
+- (void)_swipe:(id)_swipe;
 - (void)_tearDownFlipView;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)dismissOverlay:(id)a3 animated:(BOOL)a4;
-- (void)keyboardWillHideWithInfo:(id)a3;
-- (void)keyboardWillShowWithInfo:(id)a3;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)dismissOverlay:(id)overlay animated:(BOOL)animated;
+- (void)keyboardWillHideWithInfo:(id)info;
+- (void)keyboardWillShowWithInfo:(id)info;
 - (void)layoutViewControllers;
 - (void)loadView;
-- (void)overlayPageViewTapped:(id)a3;
-- (void)populateNavigationHistoryWithItems:(id)a3;
-- (void)presentOverlay:(id)a3 withTransition:(id)a4;
-- (void)restoreArchivableContext:(id)a3;
-- (void)scalingFlipViewDidFinish:(id)a3;
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)overlayPageViewTapped:(id)tapped;
+- (void)populateNavigationHistoryWithItems:(id)items;
+- (void)presentOverlay:(id)overlay withTransition:(id)transition;
+- (void)restoreArchivableContext:(id)context;
+- (void)scalingFlipViewDidFinish:(id)finish;
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation SUOverlayBackgroundViewController
@@ -116,21 +116,21 @@
   [(SUViewController *)&v8 dealloc];
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(NSMutableArray *)self->_viewControllers count])
   {
     v8 = objc_alloc_init(SUOverlayAction);
     [(SUOverlayAction *)v8 setActionType:2];
-    v5 = [(SUOverlayBackgroundViewController *)self _selectedViewController];
-    [(SUOverlayAction *)v8 setViewController:v5];
-    if (v3)
+    _selectedViewController = [(SUOverlayBackgroundViewController *)self _selectedViewController];
+    [(SUOverlayAction *)v8 setViewController:_selectedViewController];
+    if (animatedCopy)
     {
-      v6 = [v5 presentationTransition];
-      if (v6)
+      presentationTransition = [_selectedViewController presentationTransition];
+      if (presentationTransition)
       {
-        v7 = [(SUOverlayBackgroundViewController *)self _copyTransitionForTransition:v6 action:v8];
+        v7 = [(SUOverlayBackgroundViewController *)self _copyTransitionForTransition:presentationTransition action:v8];
       }
 
       else
@@ -152,18 +152,18 @@
   }
 }
 
-- (void)dismissOverlay:(id)a3 animated:(BOOL)a4
+- (void)dismissOverlay:(id)overlay animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v9 = objc_alloc_init(SUOverlayAction);
   [(SUOverlayAction *)v9 setActionType:1];
-  [(SUOverlayAction *)v9 setViewController:a3];
-  if (v4)
+  [(SUOverlayAction *)v9 setViewController:overlay];
+  if (animatedCopy)
   {
-    v7 = [a3 presentationTransition];
-    if (v7)
+    presentationTransition = [overlay presentationTransition];
+    if (presentationTransition)
     {
-      v8 = [(SUOverlayBackgroundViewController *)self _copyTransitionForTransition:v7 action:v9];
+      v8 = [(SUOverlayBackgroundViewController *)self _copyTransitionForTransition:presentationTransition action:v9];
     }
 
     else
@@ -180,10 +180,10 @@
 
 - (void)layoutViewControllers
 {
-  v3 = [(SUOverlayBackgroundViewController *)self _selectedViewController];
-  if (v3)
+  _selectedViewController = [(SUOverlayBackgroundViewController *)self _selectedViewController];
+  if (_selectedViewController)
   {
-    v4 = v3;
+    v4 = _selectedViewController;
     [(SUOverlayBackgroundViewController *)self _viewControllerKeyboardOffset];
     v6 = v5;
     [(SUOverlayBackgroundViewController *)self _centeredFrameForViewController:v4];
@@ -237,11 +237,11 @@
         v38 = v29;
         v39 = v30;
         v40 = v18 + v31 + CGRectGetMaxX(v48) + v36;
-        v41 = [v32 view];
+        view = [v32 view];
         v42 = v40;
         v30 = v39;
         v29 = v38;
-        [v41 setFrame:{v42, v34 - v45, v36, v47}];
+        [view setFrame:{v42, v34 - v45, v36, v47}];
         v31 = v31 + v18 + v36;
         ++v28;
       }
@@ -251,7 +251,7 @@
   }
 }
 
-- (void)populateNavigationHistoryWithItems:(id)a3
+- (void)populateNavigationHistoryWithItems:(id)items
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableArray *)self->_viewControllers count];
@@ -262,14 +262,14 @@
   }
 
   self->_selectedViewControllerIndex = selectedViewControllerIndex;
-  v7 = [(SUViewController *)self clientInterface];
-  v8 = [(SUViewController *)self viewControllerFactory];
+  clientInterface = [(SUViewController *)self clientInterface];
+  viewControllerFactory = [(SUViewController *)self viewControllerFactory];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a3;
-  v9 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  obj = items;
+  v9 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -284,15 +284,15 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v8 newStorePageViewControllerWithSection:0];
-        [v14 setClientInterface:v7];
+        v14 = [viewControllerFactory newStorePageViewControllerWithSection:0];
+        [v14 setClientInterface:clientInterface];
         [v14 setTitle:{objc_msgSend(v13, "title")}];
         [v14 setURLRequestProperties:{objc_msgSend(v13, "URLRequestProperties")}];
         if (v14)
         {
           v15 = objc_alloc_init(SUOverlayViewController);
           [(SUOverlayViewController *)v15 setBackViewController:v14];
-          [(SUViewController *)v15 setClientInterface:v7];
+          [(SUViewController *)v15 setClientInterface:clientInterface];
           v16 = objc_alloc_init(SUOverlayTransition);
           [(SUOverlayTransition *)v16 setType:2];
           [(SUOverlayViewController *)v15 setPresentationTransition:v16];
@@ -312,12 +312,12 @@
   [(SUOverlayBackgroundViewController *)self layoutViewControllers];
 }
 
-- (void)presentOverlay:(id)a3 withTransition:(id)a4
+- (void)presentOverlay:(id)overlay withTransition:(id)transition
 {
   v8 = objc_alloc_init(SUOverlayAction);
   [(SUOverlayAction *)v8 setActionType:0];
-  [(SUOverlayAction *)v8 setViewController:a3];
-  v7 = [(SUOverlayBackgroundViewController *)self _copyTransitionForTransition:a4 action:v8];
+  [(SUOverlayAction *)v8 setViewController:overlay];
+  v7 = [(SUOverlayBackgroundViewController *)self _copyTransitionForTransition:transition action:v8];
   [(SUOverlayAction *)v8 setTransition:v7];
 
   [(SUOverlayBackgroundViewController *)self _enqueueAction:v8];
@@ -337,10 +337,10 @@
   return [(NSMutableArray *)viewControllers objectAtIndex:v5];
 }
 
-- (id)viewControllerForScriptWindowContext:(id)a3
+- (id)viewControllerForScriptWindowContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [a3 tag];
+  v4 = [context tag];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -382,15 +382,15 @@ LABEL_3:
   }
 }
 
-- (id)copyChildViewControllersForReason:(int64_t)a3
+- (id)copyChildViewControllersForReason:(int64_t)reason
 {
   selectedViewControllerIndex = self->_selectedViewControllerIndex;
   v6 = [(NSMutableArray *)self->_viewControllers count];
-  if (a3 || selectedViewControllerIndex >= v6)
+  if (reason || selectedViewControllerIndex >= v6)
   {
     v9.receiver = self;
     v9.super_class = SUOverlayBackgroundViewController;
-    return [(SUViewController *)&v9 copyChildViewControllersForReason:a3];
+    return [(SUViewController *)&v9 copyChildViewControllersForReason:reason];
   }
 
   else
@@ -433,11 +433,11 @@ LABEL_3:
           objc_enumerationMutation(viewControllers);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) copyArchivableContext];
-        if (v10)
+        copyArchivableContext = [*(*(&v13 + 1) + 8 * v9) copyArchivableContext];
+        if (copyArchivableContext)
         {
-          v11 = v10;
-          [v4 addObject:v10];
+          v11 = copyArchivableContext;
+          [v4 addObject:copyArchivableContext];
         }
 
         ++v9;
@@ -455,7 +455,7 @@ LABEL_3:
   return v3;
 }
 
-- (void)keyboardWillHideWithInfo:(id)a3
+- (void)keyboardWillHideWithInfo:(id)info
 {
   v5 = *(MEMORY[0x1E695F058] + 16);
   self->_keyboardFrame.origin = *MEMORY[0x1E695F058];
@@ -463,13 +463,13 @@ LABEL_3:
   [(SUOverlayBackgroundViewController *)self _layoutForKeyboardChangeWithInfo:?];
   v6.receiver = self;
   v6.super_class = SUOverlayBackgroundViewController;
-  [(UIViewController *)&v6 keyboardWillHideWithInfo:a3];
+  [(UIViewController *)&v6 keyboardWillHideWithInfo:info];
 }
 
-- (void)keyboardWillShowWithInfo:(id)a3
+- (void)keyboardWillShowWithInfo:(id)info
 {
   p_keyboardFrame = &self->_keyboardFrame;
-  [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E69DDFA0]), "CGRectValue"}];
+  [objc_msgSend(info objectForKey:{*MEMORY[0x1E69DDFA0]), "CGRectValue"}];
   p_keyboardFrame->origin.x = v6;
   p_keyboardFrame->origin.y = v7;
   p_keyboardFrame->size.width = v8;
@@ -481,12 +481,12 @@ LABEL_3:
   p_keyboardFrame->size.height = v13;
   if (![(SUOverlayBackgroundViewController *)self presentedViewController])
   {
-    [(SUOverlayBackgroundViewController *)self _layoutForKeyboardChangeWithInfo:a3];
+    [(SUOverlayBackgroundViewController *)self _layoutForKeyboardChangeWithInfo:info];
   }
 
   v14.receiver = self;
   v14.super_class = SUOverlayBackgroundViewController;
-  [(UIViewController *)&v14 keyboardWillShowWithInfo:a3];
+  [(UIViewController *)&v14 keyboardWillShowWithInfo:info];
 }
 
 - (void)loadView
@@ -534,10 +534,10 @@ LABEL_3:
   [(SUOverlayBackgroundViewController *)self _reloadGestureRecognizers];
 }
 
-- (void)restoreArchivableContext:(id)a3
+- (void)restoreArchivableContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [a3 valueForMetadataKey:@"sub-contexts"];
+  v5 = [context valueForMetadataKey:@"sub-contexts"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -557,11 +557,11 @@ LABEL_3:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * v9) copyViewController];
+        copyViewController = [*(*(&v14 + 1) + 8 * v9) copyViewController];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(SUOverlayBackgroundViewController *)self _addViewController:v10];
+          [(SUOverlayBackgroundViewController *)self _addViewController:copyViewController];
         }
 
         ++v9;
@@ -574,14 +574,14 @@ LABEL_3:
     while (v7);
   }
 
-  v11 = [a3 valueForMetadataKey:@"selected-index"];
+  v11 = [context valueForMetadataKey:@"selected-index"];
   if (v11)
   {
-    v12 = [v11 integerValue];
+    integerValue = [v11 integerValue];
     v13 = [(NSMutableArray *)self->_viewControllers count]- 1;
-    if (v12 < v13)
+    if (integerValue < v13)
     {
-      v13 = v12;
+      v13 = integerValue;
     }
 
     self->_selectedViewControllerIndex = v13;
@@ -595,42 +595,42 @@ LABEL_3:
   return [(SUViewController *)&v4 shouldExcludeFromNavigationHistory]|| [(NSMutableArray *)self->_viewControllers count]== 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUOverlayBackgroundViewController *)self layoutViewControllers];
   v5.receiver = self;
   v5.super_class = SUOverlayBackgroundViewController;
-  [(SUViewController *)&v5 viewDidAppear:v3];
+  [(SUViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   [(SUOverlayBackgroundViewController *)self layoutViewControllers];
   v7.receiver = self;
   v7.super_class = SUOverlayBackgroundViewController;
-  [(SUViewController *)&v7 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+  [(SUViewController *)&v7 willAnimateRotationToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)overlayPageViewTapped:(id)a3
+- (void)overlayPageViewTapped:(id)tapped
 {
-  v5 = [(SUOverlayBackgroundViewController *)self selectedViewController];
-  if (v5)
+  selectedViewController = [(SUOverlayBackgroundViewController *)self selectedViewController];
+  if (selectedViewController)
   {
     if (!self->_askingToDismissSelection)
     {
-      v6 = v5;
-      if ([(NSMutableArray *)self->_viewControllers containsObject:a3])
+      v6 = selectedViewController;
+      if ([(NSMutableArray *)self->_viewControllers containsObject:tapped])
       {
         self->_askingToDismissSelection = 1;
-        v7 = [(SUOverlayViewController *)v6 shouldDismissFunction];
+        shouldDismissFunction = [(SUOverlayViewController *)v6 shouldDismissFunction];
         v8 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __59__SUOverlayBackgroundViewController_overlayPageViewTapped___block_invoke;
         v9[3] = &unk_1E8165A10;
         v9[4] = v8;
-        if (![(SUScriptFunction *)v7 callWithArguments:0 completionBlock:v9])
+        if (![(SUScriptFunction *)shouldDismissFunction callWithArguments:0 completionBlock:v9])
         {
           self->_askingToDismissSelection = 0;
           [(SUOverlayBackgroundViewController *)self dismissOverlay:v6 animated:1];
@@ -647,10 +647,10 @@ uint64_t __59__SUOverlayBackgroundViewController_overlayPageViewTapped___block_i
   return [v3 _shouldDismissFinishedWithValue:a2];
 }
 
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!success)
   {
     v14 = 0u;
     v15 = 0u;
@@ -672,7 +672,7 @@ uint64_t __59__SUOverlayBackgroundViewController_overlayPageViewTapped___block_i
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
-          if ([a3 isDescendantOfViewController:v11])
+          if ([page isDescendantOfViewController:v11])
           {
             if (v11)
             {
@@ -695,19 +695,19 @@ uint64_t __59__SUOverlayBackgroundViewController_overlayPageViewTapped___block_i
   }
 }
 
-- (void)_captureViewAction:(id)a3
+- (void)_captureViewAction:(id)action
 {
   if (!self->_askingToDismissEverything)
   {
     self->_askingToDismissEverything = 1;
-    v4 = [-[SUOverlayBackgroundViewController _selectedViewController](self _selectedViewController];
+    _selectedViewController = [-[SUOverlayBackgroundViewController _selectedViewController](self _selectedViewController];
     v5 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __56__SUOverlayBackgroundViewController__captureViewAction___block_invoke;
     v6[3] = &unk_1E8165A10;
     v6[4] = v5;
-    if (([v4 callWithArguments:0 completionBlock:v6] & 1) == 0)
+    if (([_selectedViewController callWithArguments:0 completionBlock:v6] & 1) == 0)
     {
       self->_askingToDismissEverything = 0;
       [(SUOverlayBackgroundViewController *)self dismissAnimated:1];
@@ -722,9 +722,9 @@ uint64_t __56__SUOverlayBackgroundViewController__captureViewAction___block_invo
   return [v3 _shouldDismissFinishedWithValue:a2];
 }
 
-- (void)_swipe:(id)a3
+- (void)_swipe:(id)_swipe
 {
-  if ([a3 state] == 3 && -[NSMutableArray count](self->_viewControllers, "count") >= 2)
+  if ([_swipe state] == 3 && -[NSMutableArray count](self->_viewControllers, "count") >= 2)
   {
     v4 = [(NSMutableArray *)self->_viewControllers objectAtIndex:self->_selectedViewControllerIndex];
     if ([v4 canSwipeToDismiss])
@@ -735,22 +735,22 @@ uint64_t __56__SUOverlayBackgroundViewController__captureViewAction___block_invo
   }
 }
 
-- (void)_backgroundAnimationDidStop:(id)a3 finished:(id)a4 context:(void *)a5
+- (void)_backgroundAnimationDidStop:(id)stop finished:(id)finished context:(void *)context
 {
   [objc_msgSend(MEMORY[0x1E69DC668] sharedApplication];
 
   [(SUOverlayBackgroundViewController *)self _overlayAnimationDidFinish];
 }
 
-- (void)scalingFlipViewDidFinish:(id)a3
+- (void)scalingFlipViewDidFinish:(id)finish
 {
-  if (self->_activeFlipView == a3)
+  if (self->_activeFlipView == finish)
   {
     [(SUOverlayBackgroundViewController *)self _overlayAnimationDidFinish];
   }
 }
 
-- (void)_enqueueAction:(id)a3
+- (void)_enqueueAction:(id)action
 {
   actionQueue = self->_actionQueue;
   if (!actionQueue)
@@ -759,7 +759,7 @@ uint64_t __56__SUOverlayBackgroundViewController__captureViewAction___block_invo
     self->_actionQueue = actionQueue;
   }
 
-  [(NSMutableArray *)actionQueue addObject:a3];
+  [(NSMutableArray *)actionQueue addObject:action];
   if ([(NSMutableArray *)self->_actionQueue count]== 1)
   {
 
@@ -767,14 +767,14 @@ uint64_t __56__SUOverlayBackgroundViewController__captureViewAction___block_invo
   }
 }
 
-- (void)_finishDismissAction:(id)a3
+- (void)_finishDismissAction:(id)action
 {
-  v5 = [a3 transition];
-  [objc_msgSend(v5 "sourceElement")];
-  v6 = [a3 viewController];
-  v7 = [v5 type] != 0;
-  [(SUOverlayBackgroundViewController *)self _finishDismissOfViewController:v6 animated:v7];
-  [objc_msgSend(a3 "otherViewController")];
+  transition = [action transition];
+  [objc_msgSend(transition "sourceElement")];
+  viewController = [action viewController];
+  v7 = [transition type] != 0;
+  [(SUOverlayBackgroundViewController *)self _finishDismissOfViewController:viewController animated:v7];
+  [objc_msgSend(action "otherViewController")];
   if ([(NSMutableArray *)self->_viewControllers count])
   {
     selectedViewControllerIndex = self->_selectedViewControllerIndex;
@@ -798,10 +798,10 @@ uint64_t __56__SUOverlayBackgroundViewController__captureViewAction___block_invo
   }
 }
 
-- (void)_finishDismissEverythingAction:(id)a3
+- (void)_finishDismissEverythingAction:(id)action
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(a3 "transition")];
+  v4 = [objc_msgSend(action "transition")];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -837,72 +837,72 @@ uint64_t __56__SUOverlayBackgroundViewController__captureViewAction___block_invo
   [(SUOverlayBackgroundViewController *)self _sendDidDismiss];
 }
 
-- (void)_finishDismissOfViewController:(id)a3 animated:(BOOL)a4
+- (void)_finishDismissOfViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([a3 isViewLoaded])
+  animatedCopy = animated;
+  if ([controller isViewLoaded])
   {
-    [objc_msgSend(a3 "view")];
+    [objc_msgSend(controller "view")];
   }
 
-  [a3 viewDidDisappear:v4];
-  [(SUOverlayBackgroundViewController *)self removeChildViewController:a3];
-  [a3 invalidate];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  [controller viewDidDisappear:animatedCopy];
+  [(SUOverlayBackgroundViewController *)self removeChildViewController:controller];
+  [controller invalidate];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v7 postNotificationName:@"SUOverlayDidDismissNotification" object:a3];
+  [defaultCenter postNotificationName:@"SUOverlayDidDismissNotification" object:controller];
 }
 
-- (void)_finishPresentAction:(id)a3
+- (void)_finishPresentAction:(id)action
 {
-  v5 = [a3 viewController];
-  v6 = [(SUOverlayBackgroundViewController *)self view];
-  v7 = [v5 view];
-  v8 = [v7 superview];
-  if (v8)
+  viewController = [action viewController];
+  view = [(SUOverlayBackgroundViewController *)self view];
+  view2 = [viewController view];
+  superview = [view2 superview];
+  if (superview)
   {
-    v9 = v8;
-    [v7 frame];
-    [v6 convertRect:v9 fromView:?];
+    v9 = superview;
+    [view2 frame];
+    [view convertRect:v9 fromView:?];
   }
 
   else
   {
-    [(SUOverlayBackgroundViewController *)self _centeredFrameForViewController:v5];
+    [(SUOverlayBackgroundViewController *)self _centeredFrameForViewController:viewController];
   }
 
-  [v7 setFrame:?];
-  [v6 addSubview:v7];
-  v10 = [objc_msgSend(a3 "transition")] != 0;
-  [objc_msgSend(a3 "otherViewController")];
-  [v5 viewDidAppear:v10];
-  if ([v5 isOnFront])
+  [view2 setFrame:?];
+  [view addSubview:view2];
+  v10 = [objc_msgSend(action "transition")] != 0;
+  [objc_msgSend(action "otherViewController")];
+  [viewController viewDidAppear:v10];
+  if ([viewController isOnFront])
   {
-    v11 = [objc_msgSend(a3 "transition")];
+    v11 = [objc_msgSend(action "transition")];
     [v11 setType:1];
-    [v5 flipWithTransition:v11];
+    [viewController flipWithTransition:v11];
   }
 
-  self->_selectedViewControllerIndex = [(NSMutableArray *)self->_viewControllers indexOfObjectIdenticalTo:v5];
+  self->_selectedViewControllerIndex = [(NSMutableArray *)self->_viewControllers indexOfObjectIdenticalTo:viewController];
   [(SUOverlayBackgroundViewController *)self layoutViewControllers];
   [(SUOverlayBackgroundViewController *)self _reloadGestureRecognizers];
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v12 postNotificationName:@"SUOverlayDidShowNotification" object:v5];
+  [defaultCenter postNotificationName:@"SUOverlayDidShowNotification" object:viewController];
 }
 
 - (void)_overlayActionDidFinish
 {
   v3 = [(NSMutableArray *)self->_actionQueue objectAtIndex:0];
-  v4 = [v3 actionType];
-  if (v4)
+  actionType = [v3 actionType];
+  if (actionType)
   {
-    if (v4 == 2)
+    if (actionType == 2)
     {
       [(SUOverlayBackgroundViewController *)self _finishDismissEverythingAction:v3];
     }
 
-    else if (v4 == 1)
+    else if (actionType == 1)
     {
       [(SUOverlayBackgroundViewController *)self _finishDismissAction:v3];
     }
@@ -923,58 +923,58 @@ uint64_t __56__SUOverlayBackgroundViewController__captureViewAction___block_invo
 - (void)_overlayAnimationDidFinish
 {
   v3 = [(NSMutableArray *)self->_actionQueue objectAtIndex:0];
-  v4 = [v3 animationCount];
-  v5 = v4 - 1;
-  if (v4 >= 1)
+  animationCount = [v3 animationCount];
+  v5 = animationCount - 1;
+  if (animationCount >= 1)
   {
     [v3 setAnimationCount:v5];
-    v4 = v5;
+    animationCount = v5;
   }
 
-  if (!v4)
+  if (!animationCount)
   {
 
     [(SUOverlayBackgroundViewController *)self _overlayActionDidFinish];
   }
 }
 
-- (void)_performDismissAction:(id)a3
+- (void)_performDismissAction:(id)action
 {
-  v5 = [a3 viewController];
-  v6 = [a3 transition];
-  v7 = [v6 type];
-  [v5 viewWillDismissWithTransition:v6];
-  [v5 viewWillDisappear:v7 != 0];
+  viewController = [action viewController];
+  transition = [action transition];
+  type = [transition type];
+  [viewController viewWillDismissWithTransition:transition];
+  [viewController viewWillDisappear:type != 0];
   v8 = [(NSMutableArray *)self->_viewControllers count];
   if (v8 != 1)
   {
     selectedViewControllerIndex = self->_selectedViewControllerIndex;
-    if (selectedViewControllerIndex == [(NSMutableArray *)self->_viewControllers indexOfObjectIdenticalTo:v5])
+    if (selectedViewControllerIndex == [(NSMutableArray *)self->_viewControllers indexOfObjectIdenticalTo:viewController])
     {
       --self->_selectedViewControllerIndex;
     }
   }
 
-  v10 = [(SUOverlayBackgroundViewController *)self _selectedViewController];
-  if (v10 == v5)
+  _selectedViewController = [(SUOverlayBackgroundViewController *)self _selectedViewController];
+  if (_selectedViewController == viewController)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = v10;
+    v11 = _selectedViewController;
   }
 
-  [a3 setOtherViewController:v11];
-  [v11 viewWillAppear:v7 != 0];
-  v12 = [(SUOverlayBackgroundViewController *)self view];
-  if (v7)
+  [action setOtherViewController:v11];
+  [v11 viewWillAppear:type != 0];
+  view = [(SUOverlayBackgroundViewController *)self view];
+  if (type)
   {
-    [v6 duration];
-    if (v8 != 1 && (v7 & 0xFFFFFFFFFFFFFFFELL) != 2)
+    [transition duration];
+    if (v8 != 1 && (type & 0xFFFFFFFFFFFFFFFELL) != 2)
     {
-      [(SUOverlayBackgroundViewController *)self _removeViewController:v5];
+      [(SUOverlayBackgroundViewController *)self _removeViewController:viewController];
       goto LABEL_27;
     }
 
@@ -986,16 +986,16 @@ uint64_t __56__SUOverlayBackgroundViewController__captureViewAction___block_invo
     [MEMORY[0x1E69DD250] setAnimationDuration:v15];
     if (v8 == 1)
     {
-      [v12 setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
-      if (v7 != 3)
+      [view setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
+      if (type != 3)
       {
         goto LABEL_26;
       }
     }
 
-    else if (v7 != 3)
+    else if (type != 3)
     {
-      if (v7 == 2)
+      if (type == 2)
       {
         [(SUOverlayBackgroundViewController *)self layoutViewControllers];
       }
@@ -1003,29 +1003,29 @@ uint64_t __56__SUOverlayBackgroundViewController__captureViewAction___block_invo
       goto LABEL_26;
     }
 
-    [(SUOverlayBackgroundViewController *)self _removeViewController:v5];
+    [(SUOverlayBackgroundViewController *)self _removeViewController:viewController];
     [(SUOverlayBackgroundViewController *)self layoutViewControllers];
-    v16 = [v5 view];
-    [(SUOverlayBackgroundViewController *)self _frameForSlideFromBottomForViewController:v5];
-    [v16 setFrame:?];
+    view2 = [viewController view];
+    [(SUOverlayBackgroundViewController *)self _frameForSlideFromBottomForViewController:viewController];
+    [view2 setFrame:?];
 LABEL_26:
-    [(SUOverlayBackgroundViewController *)self _removeViewController:v5];
-    [a3 setAnimationCount:{objc_msgSend(a3, "animationCount") + 1}];
+    [(SUOverlayBackgroundViewController *)self _removeViewController:viewController];
+    [action setAnimationCount:{objc_msgSend(action, "animationCount") + 1}];
     [MEMORY[0x1E69DD250] commitAnimations];
 LABEL_27:
-    if (v7 == 1)
+    if (type == 1)
     {
 
-      [(SUOverlayBackgroundViewController *)self _performFlipForAction:a3];
+      [(SUOverlayBackgroundViewController *)self _performFlipForAction:action];
     }
 
     return;
   }
 
-  [(SUOverlayBackgroundViewController *)self _removeViewController:v5];
+  [(SUOverlayBackgroundViewController *)self _removeViewController:viewController];
   if (v8 == 1)
   {
-    [v12 setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
+    [view setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
   }
 
   else
@@ -1036,13 +1036,13 @@ LABEL_27:
   [(SUOverlayBackgroundViewController *)self _overlayActionDidFinish];
 }
 
-- (void)_performDismissEverythingAction:(id)a3
+- (void)_performDismissEverythingAction:(id)action
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = [a3 viewController];
-  v24 = a3;
-  v6 = [a3 transition];
-  v7 = [v6 type];
+  viewController = [action viewController];
+  actionCopy = action;
+  transition = [action transition];
+  type = [transition type];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -1063,8 +1063,8 @@ LABEL_27:
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
-        [v13 viewWillDismissWithTransition:v6];
-        [v13 viewWillDisappear:v7 != 0];
+        [v13 viewWillDismissWithTransition:transition];
+        [v13 viewWillDisappear:type != 0];
       }
 
       v10 = [(NSMutableArray *)viewControllers countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -1073,13 +1073,13 @@ LABEL_27:
     while (v10);
   }
 
-  v14 = [(SUOverlayBackgroundViewController *)self view];
-  if (v7)
+  view = [(SUOverlayBackgroundViewController *)self view];
+  if (type)
   {
-    v23 = v14;
-    if (v7 == 1)
+    v23 = view;
+    if (type == 1)
     {
-      [(SUOverlayBackgroundViewController *)self _performFlipForAction:v24];
+      [(SUOverlayBackgroundViewController *)self _performFlipForAction:actionCopy];
     }
 
     [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
@@ -1087,7 +1087,7 @@ LABEL_27:
     [MEMORY[0x1E69DD250] setAnimationDelegate:self];
     [MEMORY[0x1E69DD250] setAnimationDidStopSelector:sel__backgroundAnimationDidStop_finished_context_];
     v15 = MEMORY[0x1E69DD250];
-    [v6 duration];
+    [transition duration];
     [v15 setAnimationDuration:?];
     v27 = 0u;
     v28 = 0u;
@@ -1111,23 +1111,23 @@ LABEL_27:
           v21 = *(*(&v25 + 1) + 8 * j);
           if ([v21 isViewLoaded])
           {
-            if (v21 != v5)
+            if (v21 != viewController)
             {
               goto LABEL_18;
             }
 
-            if (v7 != 1)
+            if (type != 1)
             {
-              if (v7 != 3)
+              if (type != 3)
               {
 LABEL_18:
                 [objc_msgSend(v21 "view")];
                 continue;
               }
 
-              v22 = [v21 view];
+              view2 = [v21 view];
               [(SUOverlayBackgroundViewController *)self _frameForSlideFromBottomForViewController:v21];
-              [v22 setFrame:?];
+              [view2 setFrame:?];
             }
           }
         }
@@ -1139,13 +1139,13 @@ LABEL_18:
     }
 
     [v23 setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
-    [v24 setAnimationCount:{objc_msgSend(v24, "animationCount") + 1}];
+    [actionCopy setAnimationCount:{objc_msgSend(actionCopy, "animationCount") + 1}];
     [MEMORY[0x1E69DD250] commitAnimations];
   }
 
   else
   {
-    [v14 setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
+    [view setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
     [(SUOverlayBackgroundViewController *)self _overlayActionDidFinish];
   }
 }
@@ -1155,25 +1155,25 @@ LABEL_18:
   if ([(NSMutableArray *)self->_actionQueue count])
   {
     v3 = [(NSMutableArray *)self->_actionQueue objectAtIndex:0];
-    v4 = [v3 actionType];
-    if (v4 > 1)
+    actionType = [v3 actionType];
+    if (actionType > 1)
     {
-      if (v4 == 2)
+      if (actionType == 2)
       {
 
         [(SUOverlayBackgroundViewController *)self _performDismissEverythingAction:v3];
       }
 
-      else if (v4 == 3)
+      else if (actionType == 3)
       {
 
         [(SUOverlayBackgroundViewController *)self _overlayActionDidFinish];
       }
     }
 
-    else if (v4)
+    else if (actionType)
     {
-      if (v4 == 1)
+      if (actionType == 1)
       {
 
         [(SUOverlayBackgroundViewController *)self _performDismissAction:v3];
@@ -1188,48 +1188,48 @@ LABEL_18:
   }
 }
 
-- (void)_performPresentAction:(id)a3
+- (void)_performPresentAction:(id)action
 {
-  v5 = [a3 viewController];
-  v6 = [a3 transition];
-  v7 = [v6 type];
+  viewController = [action viewController];
+  transition = [action transition];
+  type = [transition type];
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
-  [v5 setPresentationTransition:v6];
-  if (v7 == 2 && ([v5 isOnFront] & 1) == 0)
+  [viewController setPresentationTransition:transition];
+  if (type == 2 && ([viewController isOnFront] & 1) == 0)
   {
-    [v5 flipWithTransition:0];
+    [viewController flipWithTransition:0];
   }
 
-  [v5 viewWillAppear:v7 != 0];
-  [(SUOverlayBackgroundViewController *)self _addViewController:v5];
-  v8 = [(SUOverlayBackgroundViewController *)self _selectedViewController];
-  [a3 setOtherViewController:v8];
-  [v8 viewWillDisappear:v7 != 0];
-  v9 = [(SUOverlayBackgroundViewController *)self view];
-  if (v7)
+  [viewController viewWillAppear:type != 0];
+  [(SUOverlayBackgroundViewController *)self _addViewController:viewController];
+  _selectedViewController = [(SUOverlayBackgroundViewController *)self _selectedViewController];
+  [action setOtherViewController:_selectedViewController];
+  [_selectedViewController viewWillDisappear:type != 0];
+  view = [(SUOverlayBackgroundViewController *)self view];
+  if (type)
   {
     [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
-    v10 = [v5 view];
-    if (!v8)
+    view2 = [viewController view];
+    if (!_selectedViewController)
     {
       self->_selectedViewControllerIndex = [(NSMutableArray *)self->_viewControllers count]- 1;
-      [v10 setAlpha:0.0];
+      [view2 setAlpha:0.0];
     }
 
-    switch(v7)
+    switch(type)
     {
       case 1:
-        [(SUOverlayBackgroundViewController *)self _performFlipForAction:a3];
+        [(SUOverlayBackgroundViewController *)self _performFlipForAction:action];
         break;
       case 2:
-        [v9 addSubview:{objc_msgSend(v5, "view")}];
+        [view addSubview:{objc_msgSend(viewController, "view")}];
         [(SUOverlayBackgroundViewController *)self layoutViewControllers];
         break;
       case 3:
-        [v9 addSubview:v10];
+        [view addSubview:view2];
         [(SUOverlayBackgroundViewController *)self layoutViewControllers];
-        [(SUOverlayBackgroundViewController *)self _frameForSlideFromBottomForViewController:v5];
-        [v10 setFrame:?];
+        [(SUOverlayBackgroundViewController *)self _frameForSlideFromBottomForViewController:viewController];
+        [view2 setFrame:?];
         break;
     }
 
@@ -1238,16 +1238,16 @@ LABEL_18:
     [MEMORY[0x1E69DD250] setAnimationDelegate:self];
     [MEMORY[0x1E69DD250] setAnimationDidStopSelector:sel__backgroundAnimationDidStop_finished_context_];
     v11 = MEMORY[0x1E69DD250];
-    [v6 duration];
+    [transition duration];
     [v11 setAnimationDuration:?];
-    if ((v7 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((type & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       [(SUOverlayBackgroundViewController *)self layoutViewControllers];
     }
 
-    [v9 setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 0.0, 0.5)}];
-    [v10 setAlpha:1.0];
-    [a3 setAnimationCount:{objc_msgSend(a3, "animationCount") + 1}];
+    [view setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 0.0, 0.5)}];
+    [view2 setAlpha:1.0];
+    [action setAnimationCount:{objc_msgSend(action, "animationCount") + 1}];
     v12 = MEMORY[0x1E69DD250];
 
     [v12 commitAnimations];
@@ -1255,20 +1255,20 @@ LABEL_18:
 
   else
   {
-    [v9 setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 0.0, 0.5)}];
+    [view setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "colorWithWhite:alpha:", 0.0, 0.5)}];
 
     [(SUOverlayBackgroundViewController *)self _overlayActionDidFinish];
   }
 }
 
-- (void)_addViewController:(id)a3
+- (void)_addViewController:(id)controller
 {
   [(NSMutableArray *)self->_viewControllers addObject:?];
 
-  [(SUOverlayBackgroundViewController *)self addChildViewController:a3];
+  [(SUOverlayBackgroundViewController *)self addChildViewController:controller];
 }
 
-- (CGRect)_centeredFrameForViewController:(id)a3
+- (CGRect)_centeredFrameForViewController:(id)controller
 {
   [-[SUOverlayBackgroundViewController view](self "view")];
   v5 = v4;
@@ -1276,9 +1276,9 @@ LABEL_18:
   [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
   v9 = v8;
   v11 = v10;
-  if (a3)
+  if (controller)
   {
-    [a3 overlaySize];
+    [controller overlaySize];
   }
 
   else
@@ -1307,22 +1307,22 @@ LABEL_18:
   return result;
 }
 
-- (id)_copyTransitionForTransition:(id)a3 action:(id)a4
+- (id)_copyTransitionForTransition:(id)transition action:(id)action
 {
-  v6 = [a3 copy];
+  v6 = [transition copy];
   if ([v6 type] == 1)
   {
-    v7 = [a4 actionType];
+    actionType = [action actionType];
     [objc_msgSend(v6 "sourceElement")];
     v9 = v8;
     v11 = v10;
-    v12 = [a4 viewController];
+    viewController = [action viewController];
     if (![objc_msgSend(v6 "sourceElement")] || v11 < 0.00000011920929 || v9 < 0.00000011920929)
     {
       goto LABEL_7;
     }
 
-    if (!v7)
+    if (!actionType)
     {
       if (![(NSMutableArray *)self->_viewControllers count])
       {
@@ -1332,7 +1332,7 @@ LABEL_18:
       goto LABEL_7;
     }
 
-    if ([v12 isOnFront])
+    if ([viewController isOnFront])
     {
 LABEL_7:
       [v6 setType:2];
@@ -1342,11 +1342,11 @@ LABEL_7:
   return v6;
 }
 
-- (CGRect)_frameForSlideFromBottomForViewController:(id)a3
+- (CGRect)_frameForSlideFromBottomForViewController:(id)controller
 {
   [-[SUOverlayBackgroundViewController view](self "view")];
   v6 = v5;
-  [(SUOverlayBackgroundViewController *)self _centeredFrameForViewController:a3];
+  [(SUOverlayBackgroundViewController *)self _centeredFrameForViewController:controller];
   v10 = v6 + floor((v6 - v9) * 0.5);
   result.size.height = v9;
   result.size.width = v8;
@@ -1355,10 +1355,10 @@ LABEL_7:
   return result;
 }
 
-- (void)_layoutForKeyboardChangeWithInfo:(id)a3
+- (void)_layoutForKeyboardChangeWithInfo:(id)info
 {
-  v5 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E69DDF38]), "unsignedIntegerValue"}];
-  [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E69DDF40]), "floatValue"}];
+  v5 = [objc_msgSend(info objectForKey:{*MEMORY[0x1E69DDF38]), "unsignedIntegerValue"}];
+  [objc_msgSend(info objectForKey:{*MEMORY[0x1E69DDF40]), "floatValue"}];
   if (v6 <= 2.2204e-16)
   {
 
@@ -1378,20 +1378,20 @@ LABEL_7:
   }
 }
 
-- (void)_performFlipForAction:(id)a3
+- (void)_performFlipForAction:(id)action
 {
-  v5 = [a3 transition];
-  v6 = [a3 viewController];
-  v7 = [v5 sourceElement];
-  v8 = [v7 imageRepresentation];
-  if (v8)
+  transition = [action transition];
+  viewController = [action viewController];
+  sourceElement = [transition sourceElement];
+  imageRepresentation = [sourceElement imageRepresentation];
+  if (imageRepresentation)
   {
-    v9 = v8;
-    v10 = [(SUOverlayBackgroundViewController *)self view];
-    v11 = [v6 view];
-    if ([v11 superview] == v10)
+    v9 = imageRepresentation;
+    view = [(SUOverlayBackgroundViewController *)self view];
+    view2 = [viewController view];
+    if ([view2 superview] == view)
     {
-      v12 = [objc_msgSend(v10 "subviews")];
+      v12 = [objc_msgSend(view "subviews")];
     }
 
     else
@@ -1401,7 +1401,7 @@ LABEL_7:
 
     v22 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
     [v22 setContentMode:1];
-    [v7 frame];
+    [sourceElement frame];
     if (v16 >= v15)
     {
       v17 = v16;
@@ -1412,11 +1412,11 @@ LABEL_7:
       v17 = v15;
     }
 
-    [v10 convertRect:0 fromView:{v13 + floor((v15 - v17) * 0.5), v14 + floor((v16 - v17) * 0.5), v17, v17}];
+    [view convertRect:0 fromView:{v13 + floor((v15 - v17) * 0.5), v14 + floor((v16 - v17) * 0.5), v17, v17}];
     [v22 setFrame:?];
-    if ([a3 actionType])
+    if ([action actionType])
     {
-      v18 = [[SUScalingFlipView alloc] initWithFrontView:v11 backView:v22];
+      v18 = [[SUScalingFlipView alloc] initWithFrontView:view2 backView:v22];
       self->_activeFlipView = v18;
       [(SUScalingFlipView *)v18 setDirection:1];
       activeFlipView = self->_activeFlipView;
@@ -1424,29 +1424,29 @@ LABEL_7:
 
     else
     {
-      [(SUOverlayBackgroundViewController *)self _centeredFrameForViewController:v6];
-      [v11 setFrame:?];
-      activeFlipView = [[SUScalingFlipView alloc] initWithFrontView:v22 backView:v11];
+      [(SUOverlayBackgroundViewController *)self _centeredFrameForViewController:viewController];
+      [view2 setFrame:?];
+      activeFlipView = [[SUScalingFlipView alloc] initWithFrontView:v22 backView:view2];
       self->_activeFlipView = activeFlipView;
     }
 
     [(SUScalingFlipView *)activeFlipView setDelegate:self];
     v20 = self->_activeFlipView;
-    [v5 duration];
+    [transition duration];
     [(SUScalingFlipView *)v20 setDuration:?];
     v21 = self->_activeFlipView;
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v10 addSubview:v21];
+      [view addSubview:v21];
     }
 
     else
     {
-      [v10 insertSubview:v21 atIndex:v12];
+      [view insertSubview:v21 atIndex:v12];
     }
 
-    [v7 setProperty:@"opacity" value:@"0"];
-    [a3 setAnimationCount:{objc_msgSend(a3, "animationCount") + 1}];
+    [sourceElement setProperty:@"opacity" value:@"0"];
+    [action setAnimationCount:{objc_msgSend(action, "animationCount") + 1}];
     [(SUScalingFlipView *)self->_activeFlipView performFlip];
   }
 }
@@ -1490,12 +1490,12 @@ LABEL_7:
   }
 }
 
-- (void)_removeViewController:(id)a3
+- (void)_removeViewController:(id)controller
 {
   [(SUOverlayBackgroundViewController *)self removeChildViewController:?];
   viewControllers = self->_viewControllers;
 
-  [(NSMutableArray *)viewControllers removeObject:a3];
+  [(NSMutableArray *)viewControllers removeObject:controller];
 }
 
 - (id)_selectedViewController
@@ -1514,7 +1514,7 @@ LABEL_7:
 
 - (void)_sendDidDismiss
 {
-  v3 = self;
+  selfCopy = self;
   delegate = self->_delegate;
   if (delegate)
   {
@@ -1529,15 +1529,15 @@ LABEL_7:
   }
 }
 
-- (void)_shouldDismissFinishedWithValue:(id)a3
+- (void)_shouldDismissFinishedWithValue:(id)value
 {
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a3 BOOLValue];
+    bOOLValue = [value BOOLValue];
     if (self->_askingToDismissEverything)
     {
       self->_askingToDismissEverything = 0;
-      if (!v5)
+      if (!bOOLValue)
       {
         return;
       }
@@ -1551,7 +1551,7 @@ LABEL_7:
     }
 
     self->_askingToDismissSelection = 0;
-    if (!v5)
+    if (!bOOLValue)
     {
       return;
     }
@@ -1576,9 +1576,9 @@ LABEL_7:
     self->_askingToDismissSelection = 0;
   }
 
-  v6 = [(SUOverlayBackgroundViewController *)self _selectedViewController];
+  _selectedViewController = [(SUOverlayBackgroundViewController *)self _selectedViewController];
 
-  [(SUOverlayBackgroundViewController *)self dismissOverlay:v6 animated:1];
+  [(SUOverlayBackgroundViewController *)self dismissOverlay:_selectedViewController animated:1];
 }
 
 - (void)_tearDownFlipView
@@ -1594,9 +1594,9 @@ LABEL_7:
   result = 20.0;
   if (v3 == 1)
   {
-    v5 = [(SUViewController *)self interfaceOrientation];
+    interfaceOrientation = [(SUViewController *)self interfaceOrientation];
     result = 96.0;
-    if ((v5 - 1) < 2)
+    if ((interfaceOrientation - 1) < 2)
     {
       return 34.0;
     }

@@ -1,6 +1,6 @@
 @interface AddPassesViewControllerWrapper.AddPassCoordinator
 - (_TtCV16_PassKit_SwiftUIP33_CEF41C66ABDFF5E01A9463BEC59EB36F30AddPassesViewControllerWrapper18AddPassCoordinator)init;
-- (void)addPassesViewControllerDidFinish:(id)a3;
+- (void)addPassesViewControllerDidFinish:(id)finish;
 - (void)dealloc;
 @end
 
@@ -15,15 +15,15 @@
   *(v3 + 56) = v4;
   *(v3 + 32) = 0x74696E696564;
   *(v3 + 40) = 0xE600000000000000;
-  v5 = self;
+  selfCopy = self;
   sub_23B8027B0();
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for AddPassesViewControllerWrapper.AddPassCoordinator();
   [(AddPassesViewControllerWrapper.AddPassCoordinator *)&v6 dealloc];
 }
 
-- (void)addPassesViewControllerDidFinish:(id)a3
+- (void)addPassesViewControllerDidFinish:(id)finish
 {
   v3 = (self + OBJC_IVAR____TtCV16_PassKit_SwiftUIP33_CEF41C66ABDFF5E01A9463BEC59EB36F30AddPassesViewControllerWrapper18AddPassCoordinator_completion);
   v4 = *(&self->super.isa + OBJC_IVAR____TtCV16_PassKit_SwiftUIP33_CEF41C66ABDFF5E01A9463BEC59EB36F30AddPassesViewControllerWrapper18AddPassCoordinator_completion);
@@ -31,8 +31,8 @@
   {
     v6 = v3[1];
     v7 = objc_opt_self();
-    v8 = a3;
-    v9 = self;
+    finishCopy = finish;
+    selfCopy = self;
     sub_23B7ED858(v4);
     v4([v7 didAddPasses_]);
 
@@ -42,7 +42,7 @@
 
   else
   {
-    v11 = self;
+    selfCopy2 = self;
     v10 = 0;
   }
 

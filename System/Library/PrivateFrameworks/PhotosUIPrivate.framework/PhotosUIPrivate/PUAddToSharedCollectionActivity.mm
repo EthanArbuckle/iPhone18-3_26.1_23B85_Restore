@@ -1,18 +1,18 @@
 @interface PUAddToSharedCollectionActivity
-+ (BOOL)canPerformWithItemSourceController:(id)a3;
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (id)_albumPickerViewControllerWithAssets:(id)a3;
++ (BOOL)canPerformWithItemSourceController:(id)controller;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (id)_albumPickerViewControllerWithAssets:(id)assets;
 - (void)performActivity;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
 @end
 
 @implementation PUAddToSharedCollectionActivity
 
 - (void)performActivity
 {
-  v3 = [(PXActivity *)self itemSourceController];
-  v4 = [v3 assets];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
   v5 = PXEnsureAllSavedSyndicatedAssetsAreFromUserLibrary();
 
   v6 = [(PUAddToSharedCollectionActivity *)self _albumPickerViewControllerWithAssets:v5];
@@ -35,43 +35,43 @@
   }
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v4 = objc_opt_class();
-  v5 = [(PXActivity *)self itemSourceController];
-  LOBYTE(v4) = [v4 canPerformWithItemSourceController:v5];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  LOBYTE(v4) = [v4 canPerformWithItemSourceController:itemSourceController];
 
   return v4;
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if ([v5 count])
+  pickingCopy = picking;
+  if ([pickingCopy count])
   {
-    v6 = [(PUAddToSharedCollectionActivity *)self selectedAssets];
-    v7 = [v6 firstObject];
-    v8 = [v7 photoLibrary];
+    selectedAssets = [(PUAddToSharedCollectionActivity *)self selectedAssets];
+    firstObject = [selectedAssets firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
-    v9 = [v8 librarySpecificFetchOptions];
-    v10 = [v5 firstObject];
-    v11 = [v10 itemIdentifier];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    firstObject2 = [pickingCopy firstObject];
+    itemIdentifier = [firstObject2 itemIdentifier];
 
     v12 = MEMORY[0x1E6978650];
-    v28[0] = v11;
+    v28[0] = itemIdentifier;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-    v14 = [v12 fetchAssetCollectionsWithLocalIdentifiers:v13 options:v9];
-    v15 = [v14 firstObject];
+    v14 = [v12 fetchAssetCollectionsWithLocalIdentifiers:v13 options:librarySpecificFetchOptions];
+    firstObject3 = [v14 firstObject];
 
     WeakRetained = objc_loadWeakRetained(&self->_presenterViewController);
-    v17 = [WeakRetained undoManager];
+    undoManager = [WeakRetained undoManager];
 
-    if (v15)
+    if (firstObject3)
     {
       v18 = objc_alloc(MEMORY[0x1E69C3328]);
-      v19 = [(PUAddToSharedCollectionActivity *)self selectedAssets];
-      v20 = [v18 initWithAssets:v19 assetCollection:v15];
+      selectedAssets2 = [(PUAddToSharedCollectionActivity *)self selectedAssets];
+      v20 = [v18 initWithAssets:selectedAssets2 assetCollection:firstObject3];
 
       [v20 setShouldSortAssetsByCreationDate:1];
       v24[0] = MEMORY[0x1E69E9820];
@@ -79,8 +79,8 @@
       v24[2] = __59__PUAddToSharedCollectionActivity_picker_didFinishPicking___block_invoke;
       v24[3] = &unk_1E7B7FB70;
       v24[4] = self;
-      v25 = v15;
-      [v20 executeWithUndoManager:v17 completionHandler:v24];
+      v25 = firstObject3;
+      [v20 executeWithUndoManager:undoManager completionHandler:v24];
     }
 
     else
@@ -89,7 +89,7 @@
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v27 = v11;
+        v27 = itemIdentifier;
         _os_log_impl(&dword_1B36F3000, v20, OS_LOG_TYPE_ERROR, "Failed to fetch shared collection with UUID: %@ ", buf, 0xCu);
       }
     }
@@ -97,7 +97,7 @@
 
   else
   {
-    v15 = 0;
+    firstObject3 = 0;
   }
 
   v21 = objc_loadWeakRetained(&self->_presenterViewController);
@@ -106,7 +106,7 @@
   v22[2] = __59__PUAddToSharedCollectionActivity_picker_didFinishPicking___block_invoke_216;
   v22[3] = &unk_1E7B7FF98;
   v22[4] = self;
-  v23 = v15 != 0;
+  v23 = firstObject3 != 0;
   [v21 dismissViewControllerAnimated:1 completion:v22];
 }
 
@@ -132,11 +132,11 @@ void __59__PUAddToSharedCollectionActivity_picker_didFinishPicking___block_invok
   }
 }
 
-- (id)_albumPickerViewControllerWithAssets:(id)a3
+- (id)_albumPickerViewControllerWithAssets:(id)assets
 {
-  v4 = a3;
-  [(PUAddToSharedCollectionActivity *)self setSelectedAssets:v4];
-  v5 = [PUPickerUtilities pickerConfigurationForAddToSharedAlbumWithAssetsToAdd:v4];
+  assetsCopy = assets;
+  [(PUAddToSharedCollectionActivity *)self setSelectedAssets:assetsCopy];
+  v5 = [PUPickerUtilities pickerConfigurationForAddToSharedAlbumWithAssetsToAdd:assetsCopy];
 
   v6 = [objc_alloc(MEMORY[0x1E69790F8]) initWithConfiguration:v5];
   [v6 setDelegate:self];
@@ -146,27 +146,27 @@ void __59__PUAddToSharedCollectionActivity_picker_didFinishPicking___block_invok
   return v7;
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  objc_storeWeak(&self->_presenterViewController, v9);
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  objc_storeWeak(&self->_presenterViewController, controllerCopy);
   v11.receiver = self;
   v11.super_class = PUAddToSharedCollectionActivity;
-  LOBYTE(v5) = [(PUAddToAlbumActivity *)&v11 _presentActivityOnViewController:v9 animated:v5 completion:v8];
+  LOBYTE(animatedCopy) = [(PUAddToAlbumActivity *)&v11 _presentActivityOnViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 
-  return v5;
+  return animatedCopy;
 }
 
-+ (BOOL)canPerformWithItemSourceController:(id)a3
++ (BOOL)canPerformWithItemSourceController:(id)controller
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isPreparingIndividualItems])
+  controllerCopy = controller;
+  if ([controllerCopy isPreparingIndividualItems])
   {
-    v4 = [v3 assets];
-    v5 = [v4 indexOfObjectPassingTest:&__block_literal_global_92588];
+    assets = [controllerCopy assets];
+    v5 = [assets indexOfObjectPassingTest:&__block_literal_global_92588];
     v6 = v5 == 0x7FFFFFFFFFFFFFFFLL;
     if ((PFIsPhotosAppAnyPlatform() & 1) == 0)
     {
@@ -177,7 +177,7 @@ void __59__PUAddToSharedCollectionActivity_picker_didFinishPicking___block_invok
         v17 = 0u;
         v14 = 0u;
         v15 = 0u;
-        v8 = v4;
+        v8 = assets;
         v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {

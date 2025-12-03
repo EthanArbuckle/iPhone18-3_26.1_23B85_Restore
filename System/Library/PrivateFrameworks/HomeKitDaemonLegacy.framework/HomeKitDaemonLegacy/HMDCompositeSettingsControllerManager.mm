@@ -1,29 +1,29 @@
 @interface HMDCompositeSettingsControllerManager
-+ (id)immutableSettingFromFetchReturn:(id)a3;
++ (id)immutableSettingFromFetchReturn:(id)return;
 + (id)logCategory;
-- (HMDCompositeSettingsControllerManager)initWithDataSource:(id)a3;
-- (HMDCompositeSettingsControllerManager)initWithDataSource:(id)a3 registry:(id)a4 controllerFactory:(id)a5 stateManagerFactory:(id)a6 logEventSubmitter:(id)a7;
+- (HMDCompositeSettingsControllerManager)initWithDataSource:(id)source;
+- (HMDCompositeSettingsControllerManager)initWithDataSource:(id)source registry:(id)registry controllerFactory:(id)factory stateManagerFactory:(id)managerFactory logEventSubmitter:(id)submitter;
 - (HMDCompositeSettingsControllerManagerDataSource)dataSource;
 - (NSArray)homes;
-- (id)dataSourceIsCurrentDevicePrimaryResidentForHomeUUID:(void *)a1;
-- (void)_createSettingControllerForAccessory:(id)a3 homeUUID:(id)a4;
-- (void)_manageCharacteristicsBackedSettingsChangeForHomeUUID:(void *)a3 accessoryUUID:;
-- (void)_postSettingUpdatesIfDifferentWithHome:(void *)a3 uuid:(void *)a4 settings:(void *)a5 metadata:;
-- (void)_publishCharacteristicBackedSettingsChangeForHomeUUID:(void *)a3 accessoryUUID:(void *)a4 allowHeySiri:(void *)a5 tapToAccess:;
-- (void)_updateLanguageEventIfNeededWithHome:(void *)a3 uuid:;
-- (void)accessorySettingsLocalMessageHandler:(id)a3 didReceiveFetchRequestMessage:(id)a4 withHomeUUID:(id)a5 accessoryUUID:(id)a6 keyPaths:(id)a7 callerVersion:(id)a8 callerPrivilege:(unint64_t)a9 siriAvailableLanguagesSetting:(id)a10;
-- (void)accessorySettingsLocalMessageHandler:(id)a3 didReceiveUpdateRequestMessage:(id)a4 withHomeUUID:(id)a5 accessoryUUID:(id)a6 keyPath:(id)a7 value:(id)a8 callerVersion:(id)a9;
-- (void)applyOnboardingSelections:(id)a3 accessoryUUID:(id)a4 homeUUID:(id)a5 completion:(id)a6;
-- (void)didConfigureCompositeSettingsControllerForHomeUUID:(id)a3 accessoryUUID:(id)a4;
-- (void)didUpdateCurrentRunState:(int64_t)a3 updatedState:(int64_t)a4 forHome:(id)a5;
-- (void)didUpdateSiriEndpointSettingForHomeUUID:(id)a3 accessoryUUID:(id)a4;
-- (void)languagesDidChangeForHome:(id)a3;
-- (void)localFetchSettingsForUUID:(id)a3 homeUUID:(id)a4 withKeyPaths:(id)a5 callerVersion:(id)a6 callerPrivilege:(unint64_t)a7 completion:(id)a8;
-- (void)localFetchSettingsForUUID:(id)a3 homeUUID:(id)a4 withKeyPaths:(id)a5 completion:(id)a6;
-- (void)localUpdateSettingForUUID:(id)a3 homeUUID:(id)a4 keyPath:(id)a5 value:(id)a6 callerVersion:(id)a7 completion:(id)a8;
-- (void)localUpdateSettingForUUID:(id)a3 homeUUID:(id)a4 keyPath:(id)a5 value:(id)a6 completion:(id)a7;
-- (void)removeHomeZone:(id)a3;
-- (void)settingsController:(id)a3 didUpdateSettings:(id)a4 metadata:(id)a5;
+- (id)dataSourceIsCurrentDevicePrimaryResidentForHomeUUID:(void *)d;
+- (void)_createSettingControllerForAccessory:(id)accessory homeUUID:(id)d;
+- (void)_manageCharacteristicsBackedSettingsChangeForHomeUUID:(void *)d accessoryUUID:;
+- (void)_postSettingUpdatesIfDifferentWithHome:(void *)home uuid:(void *)uuid settings:(void *)settings metadata:;
+- (void)_publishCharacteristicBackedSettingsChangeForHomeUUID:(void *)d accessoryUUID:(void *)iD allowHeySiri:(void *)siri tapToAccess:;
+- (void)_updateLanguageEventIfNeededWithHome:(void *)home uuid:;
+- (void)accessorySettingsLocalMessageHandler:(id)handler didReceiveFetchRequestMessage:(id)message withHomeUUID:(id)d accessoryUUID:(id)iD keyPaths:(id)paths callerVersion:(id)version callerPrivilege:(unint64_t)privilege siriAvailableLanguagesSetting:(id)self0;
+- (void)accessorySettingsLocalMessageHandler:(id)handler didReceiveUpdateRequestMessage:(id)message withHomeUUID:(id)d accessoryUUID:(id)iD keyPath:(id)path value:(id)value callerVersion:(id)version;
+- (void)applyOnboardingSelections:(id)selections accessoryUUID:(id)d homeUUID:(id)iD completion:(id)completion;
+- (void)didConfigureCompositeSettingsControllerForHomeUUID:(id)d accessoryUUID:(id)iD;
+- (void)didUpdateCurrentRunState:(int64_t)state updatedState:(int64_t)updatedState forHome:(id)home;
+- (void)didUpdateSiriEndpointSettingForHomeUUID:(id)d accessoryUUID:(id)iD;
+- (void)languagesDidChangeForHome:(id)home;
+- (void)localFetchSettingsForUUID:(id)d homeUUID:(id)iD withKeyPaths:(id)paths callerVersion:(id)version callerPrivilege:(unint64_t)privilege completion:(id)completion;
+- (void)localFetchSettingsForUUID:(id)d homeUUID:(id)iD withKeyPaths:(id)paths completion:(id)completion;
+- (void)localUpdateSettingForUUID:(id)d homeUUID:(id)iD keyPath:(id)path value:(id)value callerVersion:(id)version completion:(id)completion;
+- (void)localUpdateSettingForUUID:(id)d homeUUID:(id)iD keyPath:(id)path value:(id)value completion:(id)completion;
+- (void)removeHomeZone:(id)zone;
+- (void)settingsController:(id)controller didUpdateSettings:(id)settings metadata:(id)metadata;
 @end
 
 @implementation HMDCompositeSettingsControllerManager
@@ -37,18 +37,18 @@
 
 - (NSArray)homes
 {
-  v2 = [(HMDCompositeSettingsControllerManager *)self dataSource];
-  v3 = [v2 homes];
+  dataSource = [(HMDCompositeSettingsControllerManager *)self dataSource];
+  homes = [dataSource homes];
 
-  return v3;
+  return homes;
 }
 
-- (void)languagesDidChangeForHome:(id)a3
+- (void)languagesDidChangeForHome:(id)home
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -56,14 +56,14 @@
     *buf = 138543618;
     v16 = v8;
     v17 = 2112;
-    v18 = v4;
+    v18 = homeCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Handling languages changed for homeUUID: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v6)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v6, v9, 24, 1);
+    Property = objc_getProperty(selfCopy, v9, 24, 1);
   }
 
   else
@@ -75,9 +75,9 @@
   v13[1] = 3221225472;
   v13[2] = __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___block_invoke;
   v13[3] = &unk_2797359B0;
-  v13[4] = v6;
-  v14 = v4;
-  v11 = v4;
+  v13[4] = selfCopy;
+  v14 = homeCopy;
+  v11 = homeCopy;
   dispatch_async(Property, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -130,42 +130,42 @@ void __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___blo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateLanguageEventIfNeededWithHome:(void *)a3 uuid:
+- (void)_updateLanguageEventIfNeededWithHome:(void *)home uuid:
 {
   v55 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v7 = a3;
-  if (a1)
+  homeCopy = home;
+  if (self)
   {
-    Property = objc_getProperty(a1, v6, 24, 1);
+    Property = objc_getProperty(self, v6, 24, 1);
     dispatch_assert_queue_V2(Property);
-    v9 = [a1 dataSource];
-    v10 = [v9 eventStoreReadHandle];
-    v11 = [a1 stateManager];
-    v12 = [v11 stateForHomeUUID:v5];
+    dataSource = [self dataSource];
+    eventStoreReadHandle = [dataSource eventStoreReadHandle];
+    stateManager = [self stateManager];
+    v12 = [stateManager stateForHomeUUID:v5];
 
-    if (v12 == 3 && v10)
+    if (v12 == 3 && eventStoreReadHandle)
     {
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
       v14 = v13;
-      v15 = [v9 eventSourceForCompositeSettingsController];
-      v16 = [v9 languageListProviderForHomeUUID:v5];
-      v17 = [v16 languageValueList];
-      v18 = v17;
+      eventSourceForCompositeSettingsController = [dataSource eventSourceForCompositeSettingsController];
+      v16 = [dataSource languageListProviderForHomeUUID:v5];
+      languageValueList = [v16 languageValueList];
+      v18 = languageValueList;
       v19 = MEMORY[0x277CBEBF8];
-      if (v17)
+      if (languageValueList)
       {
-        v19 = v17;
+        v19 = languageValueList;
       }
 
       v20 = v19;
 
       if ([v20 count])
       {
-        v47 = MEMORY[0x259C01CC0](v5, v7, @"root.siri.availableLanguages");
-        v21 = [v10 lastEventForTopic:?];
+        v47 = MEMORY[0x259C01CC0](v5, homeCopy, @"root.siri.availableLanguages");
+        v21 = [eventStoreReadHandle lastEventForTopic:?];
         v43 = v21;
-        v44 = v15;
+        v44 = eventSourceForCompositeSettingsController;
         if (v21)
         {
           v48 = 0;
@@ -175,7 +175,7 @@ void __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___blo
           {
             v45 = v22;
             context = objc_autoreleasePoolPush();
-            v24 = a1;
+            selfCopy = self;
             v25 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
             {
@@ -190,7 +190,7 @@ void __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___blo
             }
 
             objc_autoreleasePoolPop(context);
-            v15 = v44;
+            eventSourceForCompositeSettingsController = v44;
             v22 = v45;
           }
         }
@@ -206,7 +206,7 @@ void __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___blo
         {
           v46 = v22;
           v33 = objc_autoreleasePoolPush();
-          v34 = a1;
+          selfCopy2 = self;
           v35 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
           {
@@ -221,14 +221,14 @@ void __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___blo
           }
 
           objc_autoreleasePoolPop(v33);
-          v15 = v44;
+          eventSourceForCompositeSettingsController = v44;
           v37 = [objc_alloc(MEMORY[0x277CD1AD8]) initWithSetting:v32 eventSource:v44 eventTimestamp:v14];
-          v38 = [v9 eventForwarder];
-          [v38 forwardEvent:v37 topic:v47 completion:&__block_literal_global_123_153492];
+          eventForwarder = [dataSource eventForwarder];
+          [eventForwarder forwardEvent:v37 topic:v47 completion:&__block_literal_global_123_153492];
 
           v39 = HMImmutableSettingChangeEventTopicFromComponentsLegacy();
-          v40 = [v9 eventForwarder];
-          [v40 forwardEvent:v37 topic:v39 completion:&__block_literal_global_125_153493];
+          eventForwarder2 = [dataSource eventForwarder];
+          [eventForwarder2 forwardEvent:v37 topic:v39 completion:&__block_literal_global_125_153493];
 
           v22 = v46;
         }
@@ -238,7 +238,7 @@ void __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___blo
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = a1;
+      selfCopy3 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
@@ -255,12 +255,12 @@ void __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___blo
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didUpdateCurrentRunState:(int64_t)a3 updatedState:(int64_t)a4 forHome:(id)a5
+- (void)didUpdateCurrentRunState:(int64_t)state updatedState:(int64_t)updatedState forHome:(id)home
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  homeCopy = home;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -268,29 +268,29 @@ void __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___blo
     *buf = 138544130;
     v30 = v12;
     v31 = 2048;
-    v32 = a3;
+    stateCopy = state;
     v33 = 2048;
-    v34 = a4;
+    updatedStateCopy = updatedState;
     v35 = 2112;
-    v36 = v8;
+    v36 = homeCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@CurrentState: %ld, UpdatedState: %ld, Home:%@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMDCompositeSettingsControllerManager *)v10 dataSource];
-  v14 = [v13 homes];
+  dataSource = [(HMDCompositeSettingsControllerManager *)selfCopy dataSource];
+  homes = [dataSource homes];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __87__HMDCompositeSettingsControllerManager_didUpdateCurrentRunState_updatedState_forHome___block_invoke;
   v27[3] = &unk_2797323C0;
-  v15 = v8;
+  v15 = homeCopy;
   v28 = v15;
-  v16 = [v14 na_firstObjectPassingTest:v27];
+  v16 = [homes na_firstObjectPassingTest:v27];
 
   if (!v16)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v10;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -298,16 +298,16 @@ void __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___blo
       *buf = 138543618;
       v30 = v21;
       v31 = 2112;
-      v32 = v15;
+      stateCopy = v15;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_ERROR, "%{public}@Home not found %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v18);
   }
 
-  if (v10)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v10, v17, 24, 1);
+    Property = objc_getProperty(selfCopy, v17, 24, 1);
   }
 
   else
@@ -319,7 +319,7 @@ void __67__HMDCompositeSettingsControllerManager_languagesDidChangeForHome___blo
   block[1] = 3221225472;
   block[2] = __87__HMDCompositeSettingsControllerManager_didUpdateCurrentRunState_updatedState_forHome___block_invoke_148;
   block[3] = &unk_2797359B0;
-  block[4] = v10;
+  block[4] = selfCopy;
   v26 = v16;
   v23 = v16;
   dispatch_async(Property, block);
@@ -552,28 +552,28 @@ LABEL_42:
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postSettingUpdatesIfDifferentWithHome:(void *)a3 uuid:(void *)a4 settings:(void *)a5 metadata:
+- (void)_postSettingUpdatesIfDifferentWithHome:(void *)home uuid:(void *)uuid settings:(void *)settings metadata:
 {
   v76 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v60 = a3;
-  v10 = a4;
-  v56 = a5;
-  if (a1)
+  homeCopy = home;
+  uuidCopy = uuid;
+  settingsCopy = settings;
+  if (self)
   {
-    Property = objc_getProperty(a1, v11, 24, 1);
+    Property = objc_getProperty(self, v11, 24, 1);
     dispatch_assert_queue_V2(Property);
-    v13 = [a1 dataSource];
+    dataSource = [self dataSource];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v15 = v14;
-    v51 = [v13 eventSourceForCompositeSettingsController];
-    v52 = v13;
-    v57 = [v13 eventStoreReadHandle];
-    v16 = [a1 stateManager];
-    v17 = [v16 stateForHomeUUID:v9];
+    eventSourceForCompositeSettingsController = [dataSource eventSourceForCompositeSettingsController];
+    v52 = dataSource;
+    eventStoreReadHandle = [dataSource eventStoreReadHandle];
+    stateManager = [self stateManager];
+    v17 = [stateManager stateForHomeUUID:v9];
 
     v18 = objc_autoreleasePoolPush();
-    v19 = a1;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -581,24 +581,24 @@ LABEL_42:
       *buf = 138544130;
       v69 = v21;
       v70 = 2112;
-      v71 = v57;
+      v71 = eventStoreReadHandle;
       v72 = 2048;
-      v73 = [v10 count];
+      v73 = [uuidCopy count];
       v74 = 2048;
       v75 = v17;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@Posting updates with eventStoreHandle:%@, for settings count:%lu, with run state:%ld", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v18);
-    if (v17 == 3 && v57)
+    if (v17 == 3 && eventStoreReadHandle)
     {
-      v54 = v19;
+      v54 = selfCopy;
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v50 = v10;
-      obj = v10;
+      v50 = uuidCopy;
+      obj = uuidCopy;
       v58 = [obj countByEnumeratingWithState:&v63 objects:v67 count:16];
       if (v58)
       {
@@ -615,8 +615,8 @@ LABEL_42:
 
             v23 = *(*(&v63 + 1) + 8 * i);
             v61 = [obj objectForKeyedSubscript:v23];
-            v24 = MEMORY[0x259C01CC0](v9, v60, v23);
-            v25 = [v57 lastEventForTopic:v24];
+            v24 = MEMORY[0x259C01CC0](v9, homeCopy, v23);
+            v25 = [eventStoreReadHandle lastEventForTopic:v24];
             if (v25)
             {
               v62 = 0;
@@ -650,7 +650,7 @@ LABEL_42:
             }
 
             v32 = [HMDCompositeSettingOperationResult alloc];
-            v33 = [v56 objectForKeyedSubscript:v23];
+            v33 = [settingsCopy objectForKeyedSubscript:v23];
             v34 = [(HMDCompositeSettingOperationResult *)v32 initWithKeyPath:v23 setting:v61 metadata:v33 error:0];
             v35 = [HMDCompositeSettingsControllerManager immutableSettingFromFetchReturn:v34];
 
@@ -665,7 +665,7 @@ LABEL_42:
                 *buf = 138543874;
                 v69 = v39;
                 v70 = 2112;
-                v71 = v60;
+                v71 = homeCopy;
                 v72 = 2112;
                 v73 = v23;
                 _os_log_impl(&dword_2531F8000, v38, OS_LOG_TYPE_INFO, "%{public}@Skip sending event for accessory %@ setting %@ as it matches stored", buf, 0x20u);
@@ -677,13 +677,13 @@ LABEL_42:
 
             else
             {
-              v40 = [objc_alloc(MEMORY[0x277CD1AD8]) initWithSetting:v35 eventSource:v51 eventTimestamp:v15];
-              v41 = [v52 eventForwarder];
-              [v41 forwardEvent:v40 topic:v24 completion:&__block_literal_global_118_153519];
+              v40 = [objc_alloc(MEMORY[0x277CD1AD8]) initWithSetting:v35 eventSource:eventSourceForCompositeSettingsController eventTimestamp:v15];
+              eventForwarder = [v52 eventForwarder];
+              [eventForwarder forwardEvent:v40 topic:v24 completion:&__block_literal_global_118_153519];
 
               v42 = HMImmutableSettingChangeEventTopicFromComponentsLegacy();
-              v43 = [v52 eventForwarder];
-              [v43 forwardEvent:v40 topic:v42 completion:&__block_literal_global_120_153520];
+              eventForwarder2 = [v52 eventForwarder];
+              [eventForwarder2 forwardEvent:v40 topic:v42 completion:&__block_literal_global_120_153520];
             }
           }
 
@@ -708,8 +708,8 @@ LABEL_42:
       }
 
       objc_autoreleasePoolPop(v44);
-      [(HMDCompositeSettingsControllerManager *)v45 _updateLanguageEventIfNeededWithHome:v9 uuid:v60];
-      v10 = v50;
+      [(HMDCompositeSettingsControllerManager *)v45 _updateLanguageEventIfNeededWithHome:v9 uuid:homeCopy];
+      uuidCopy = v50;
     }
   }
 
@@ -833,13 +833,13 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
   return v7;
 }
 
-- (void)didUpdateSiriEndpointSettingForHomeUUID:(id)a3 accessoryUUID:(id)a4
+- (void)didUpdateSiriEndpointSettingForHomeUUID:(id)d accessoryUUID:(id)iD
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCompositeSettingsControllerManager *)self stateManager];
-  v9 = [v8 stateForHomeUUID:v6];
+  dCopy = d;
+  iDCopy = iD;
+  stateManager = [(HMDCompositeSettingsControllerManager *)self stateManager];
+  v9 = [stateManager stateForHomeUUID:dCopy];
 
   if (v9 == 3)
   {
@@ -858,15 +858,15 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
     block[2] = __95__HMDCompositeSettingsControllerManager_didUpdateSiriEndpointSettingForHomeUUID_accessoryUUID___block_invoke;
     block[3] = &unk_279734960;
     block[4] = self;
-    v18 = v6;
-    v19 = v7;
+    v18 = dCopy;
+    v19 = iDCopy;
     dispatch_async(Property, block);
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -874,9 +874,9 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
       *buf = 138543874;
       v21 = v15;
       v22 = 2112;
-      v23 = v6;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v7;
+      v25 = iDCopy;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Ignoring siri endpoint setting update as we are not the primary resident for home:%@ accessory:%@", buf, 0x20u);
     }
 
@@ -886,17 +886,17 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_manageCharacteristicsBackedSettingsChangeForHomeUUID:(void *)a3 accessoryUUID:
+- (void)_manageCharacteristicsBackedSettingsChangeForHomeUUID:(void *)d accessoryUUID:
 {
   v60 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v7 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    Property = objc_getProperty(a1, v6, 24, 1);
+    Property = objc_getProperty(self, v6, 24, 1);
     dispatch_assert_queue_V2(Property);
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -906,17 +906,17 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
       *&buf[12] = 2112;
       *&buf[14] = v5;
       *&buf[22] = 2112;
-      v54 = v7;
+      v54 = dCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@managing characteristic backed settings for home:%@, accessory:%@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [v10 dataSource];
-    v14 = [v13 siriEndpointBridge];
+    dataSource = [selfCopy dataSource];
+    siriEndpointBridge = [dataSource siriEndpointBridge];
 
-    if (v14)
+    if (siriEndpointBridge)
     {
-      v15 = [v14 readValueValueForAccessoryUUID:v7 homeUUID:v5 forKeyPath:@"root.siri.allowHeySiri"];
+      v15 = [siriEndpointBridge readValueValueForAccessoryUUID:dCopy homeUUID:v5 forKeyPath:@"root.siri.allowHeySiri"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -930,8 +930,8 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
 
       v17 = v16;
 
-      v52 = v14;
-      v18 = [v14 readValueValueForAccessoryUUID:v7 homeUUID:v5 forKeyPath:@"root.siri.tapToAccess"];
+      v52 = siriEndpointBridge;
+      v18 = [siriEndpointBridge readValueValueForAccessoryUUID:dCopy homeUUID:v5 forKeyPath:@"root.siri.tapToAccess"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -945,15 +945,15 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
 
       v20 = v19;
 
-      v21 = [(HMDCompositeBoolSetting *)v17 BOOLValue];
-      v22 = [v20 BOOLValue];
+      bOOLValue = [(HMDCompositeBoolSetting *)v17 BOOLValue];
+      bOOLValue2 = [v20 BOOLValue];
 
       if (v17)
       {
         v23 = [HMDCompositeBoolSetting alloc];
         v24 = +[HMDHomeKitVersion version7];
         v25 = +[HMDHomeKitVersion version7];
-        v17 = [(HMDCompositeBoolSetting *)v23 initWithValue:v21 readVersion:v24 writeVersion:v25];
+        v17 = [(HMDCompositeBoolSetting *)v23 initWithValue:bOOLValue readVersion:v24 writeVersion:v25];
       }
 
       if (v20)
@@ -961,7 +961,7 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
         v26 = [HMDCompositeBoolSetting alloc];
         v27 = +[HMDHomeKitVersion version7];
         v28 = +[HMDHomeKitVersion version7];
-        v29 = [(HMDCompositeBoolSetting *)v26 initWithValue:v22 readVersion:v27 writeVersion:v28];
+        v29 = [(HMDCompositeBoolSetting *)v26 initWithValue:bOOLValue2 readVersion:v27 writeVersion:v28];
       }
 
       else
@@ -970,15 +970,15 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
       }
 
       v34 = v5;
-      v35 = v7;
+      v35 = dCopy;
       v36 = v17;
       v37 = v29;
-      v39 = objc_getProperty(v10, v38, 24, 1);
+      v39 = objc_getProperty(selfCopy, v38, 24, 1);
       dispatch_assert_queue_V2(v39);
       if (v36 && v37 && ![(HMDCompositeBoolSetting *)v36 BOOLValue]&& ![(HMDCompositeBoolSetting *)v37 BOOLValue])
       {
         v45 = objc_autoreleasePoolPush();
-        v46 = v10;
+        v46 = selfCopy;
         v47 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
         {
@@ -1007,7 +1007,7 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
       else
       {
         v40 = objc_autoreleasePoolPush();
-        v41 = v10;
+        v41 = selfCopy;
         v42 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
@@ -1021,13 +1021,13 @@ BOOL __87__HMDCompositeSettingsControllerManager__actualScanHomeAndCreateControl
         [(HMDCompositeSettingsControllerManager *)v41 _publishCharacteristicBackedSettingsChangeForHomeUUID:v34 accessoryUUID:v35 allowHeySiri:v36 tapToAccess:v37];
       }
 
-      v14 = v52;
+      siriEndpointBridge = v52;
     }
 
     else
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = v10;
+      v31 = selfCopy;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
@@ -1073,18 +1073,18 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_publishCharacteristicBackedSettingsChangeForHomeUUID:(void *)a3 accessoryUUID:(void *)a4 allowHeySiri:(void *)a5 tapToAccess:
+- (void)_publishCharacteristicBackedSettingsChangeForHomeUUID:(void *)d accessoryUUID:(void *)iD allowHeySiri:(void *)siri tapToAccess:
 {
   v62 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  dCopy = d;
+  iDCopy = iD;
+  siriCopy = siri;
+  if (self)
   {
-    v13 = [a1 stringToCompositeSettingsController];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v9, v10];
-    v15 = [v13 objectForKey:v14];
+    stringToCompositeSettingsController = [self stringToCompositeSettingsController];
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v9, dCopy];
+    v15 = [stringToCompositeSettingsController objectForKey:dCopy];
 
     if (v15)
     {
@@ -1095,13 +1095,13 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
 
       if ([v18 count] && (objc_msgSend(v18, "firstObject"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "setting"), v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
       {
-        v21 = [v18 firstObject];
-        v22 = [v21 setting];
+        firstObject = [v18 firstObject];
+        setting = [firstObject setting];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = v22;
+          v23 = setting;
         }
 
         else
@@ -1111,32 +1111,32 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
 
         v53 = v23;
 
-        v51 = [MEMORY[0x277CBEB38] dictionary];
-        v50 = [MEMORY[0x277CBEB38] dictionary];
-        v52 = v11;
-        v54 = v12;
-        if (v11)
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+        v52 = iDCopy;
+        v54 = siriCopy;
+        if (iDCopy)
         {
           v24 = [HMDCompositeBoolSetting alloc];
-          if ([v11 BOOLValue])
+          if ([iDCopy BOOLValue])
           {
-            v25 = [v53 BOOLValue];
+            bOOLValue = [v53 BOOLValue];
           }
 
           else
           {
-            v25 = 0;
+            bOOLValue = 0;
           }
 
           v35 = +[HMDHomeKitVersion version7];
           v36 = +[HMDHomeKitVersion version7];
-          v49 = [(HMDCompositeBoolSetting *)v24 initWithValue:v25 readVersion:v35 writeVersion:v36];
+          v49 = [(HMDCompositeBoolSetting *)v24 initWithValue:bOOLValue readVersion:v35 writeVersion:v36];
 
           v37 = [HMDCompositeSettingMetadata alloc];
           v38 = [[HMDCompositeSettingPrivileges alloc] initWithMinReadUserPrivilege:4];
           v48 = [(HMDCompositeSettingMetadata *)v37 initWithKeyPath:@"root.siri.allowHeySiri" constraint:0 privileges:v38];
 
-          v12 = v54;
+          siriCopy = v54;
         }
 
         else
@@ -1145,22 +1145,22 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
           v48 = 0;
         }
 
-        if (v12)
+        if (siriCopy)
         {
           v39 = [HMDCompositeBoolSetting alloc];
-          if ([v12 BOOLValue])
+          if ([siriCopy BOOLValue])
           {
-            v40 = [v53 BOOLValue];
+            bOOLValue2 = [v53 BOOLValue];
           }
 
           else
           {
-            v40 = 0;
+            bOOLValue2 = 0;
           }
 
           v43 = +[HMDHomeKitVersion version7];
           v44 = +[HMDHomeKitVersion version7];
-          v41 = [(HMDCompositeBoolSetting *)v39 initWithValue:v40 readVersion:v43 writeVersion:v44];
+          v41 = [(HMDCompositeBoolSetting *)v39 initWithValue:bOOLValue2 readVersion:v43 writeVersion:v44];
 
           v45 = [HMDCompositeSettingMetadata alloc];
           v46 = [[HMDCompositeSettingPrivileges alloc] initWithMinReadUserPrivilege:4];
@@ -1173,32 +1173,32 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
           v42 = 0;
         }
 
-        [v51 setObject:v49 forKeyedSubscript:@"root.siri.allowHeySiri"];
-        [v51 setObject:v41 forKeyedSubscript:@"root.siri.tapToAccess"];
-        [v50 setObject:v48 forKeyedSubscript:@"root.siri.allowHeySiri"];
-        [v50 setObject:v42 forKeyedSubscript:@"root.siri.tapToAccess"];
-        [(HMDCompositeSettingsControllerManager *)a1 _postSettingUpdatesIfDifferentWithHome:v9 uuid:v10 settings:v51 metadata:v50];
+        [dictionary setObject:v49 forKeyedSubscript:@"root.siri.allowHeySiri"];
+        [dictionary setObject:v41 forKeyedSubscript:@"root.siri.tapToAccess"];
+        [dictionary2 setObject:v48 forKeyedSubscript:@"root.siri.allowHeySiri"];
+        [dictionary2 setObject:v42 forKeyedSubscript:@"root.siri.tapToAccess"];
+        [(HMDCompositeSettingsControllerManager *)self _postSettingUpdatesIfDifferentWithHome:v9 uuid:dCopy settings:dictionary metadata:dictionary2];
 
-        v11 = v52;
-        v12 = v54;
+        iDCopy = v52;
+        siriCopy = v54;
       }
 
       else
       {
         v26 = objc_autoreleasePoolPush();
-        v27 = a1;
+        selfCopy = self;
         v28 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
-          v30 = v29 = v12;
+          v30 = v29 = siriCopy;
           *buf = 138543618;
           v57 = v30;
           v58 = 2112;
           v59 = v18;
           _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_ERROR, "%{public}@Unable to fetch SiriEnabled setting operation result:%@", buf, 0x16u);
 
-          v12 = v29;
+          siriCopy = v29;
         }
 
         objc_autoreleasePoolPop(v26);
@@ -1208,7 +1208,7 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = a1;
+      selfCopy2 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -1218,7 +1218,7 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
         v58 = 2112;
         v59 = v9;
         v60 = 2112;
-        v61 = v10;
+        v61 = dCopy;
         _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_ERROR, "%{public}@No controller for home:%@ accessory:%@", buf, 0x20u);
       }
 
@@ -1229,13 +1229,13 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didConfigureCompositeSettingsControllerForHomeUUID:(id)a3 accessoryUUID:(id)a4
+- (void)didConfigureCompositeSettingsControllerForHomeUUID:(id)d accessoryUUID:(id)iD
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCompositeSettingsControllerManager *)self stateManager];
-  v9 = [v8 stateForHomeUUID:v6];
+  dCopy = d;
+  iDCopy = iD;
+  stateManager = [(HMDCompositeSettingsControllerManager *)self stateManager];
+  v9 = [stateManager stateForHomeUUID:dCopy];
 
   if (v9 == 3)
   {
@@ -1254,15 +1254,15 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
     block[2] = __106__HMDCompositeSettingsControllerManager_didConfigureCompositeSettingsControllerForHomeUUID_accessoryUUID___block_invoke;
     block[3] = &unk_279734960;
     block[4] = self;
-    v18 = v6;
-    v19 = v7;
+    v18 = dCopy;
+    v19 = iDCopy;
     dispatch_async(Property, block);
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1270,9 +1270,9 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
       *buf = 138543874;
       v21 = v15;
       v22 = 2112;
-      v23 = v6;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v7;
+      v25 = iDCopy;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Ignoring composite setting controller configuration update as we are not the primary resident for home:%@ accessory:%@", buf, 0x20u);
     }
 
@@ -1282,9 +1282,9 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeHomeZone:(id)a3
+- (void)removeHomeZone:(id)zone
 {
-  v5 = a3;
+  zoneCopy = zone;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -1300,8 +1300,8 @@ void __134__HMDCompositeSettingsControllerManager__processCharacteristicBackedSe
   v8[2] = __56__HMDCompositeSettingsControllerManager_removeHomeZone___block_invoke;
   v8[3] = &unk_2797359B0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = zoneCopy;
+  v7 = zoneCopy;
   dispatch_async(Property, v8);
 }
 
@@ -1317,12 +1317,12 @@ void __56__HMDCompositeSettingsControllerManager_removeHomeZone___block_invoke(u
   }
 }
 
-- (void)applyOnboardingSelections:(id)a3 accessoryUUID:(id)a4 homeUUID:(id)a5 completion:(id)a6
+- (void)applyOnboardingSelections:(id)selections accessoryUUID:(id)d homeUUID:(id)iD completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v14 = a6;
+  selectionsCopy = selections;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   if (self)
   {
     Property = objc_getProperty(self, v13, 24, 1);
@@ -1338,14 +1338,14 @@ void __56__HMDCompositeSettingsControllerManager_removeHomeZone___block_invoke(u
   block[2] = __101__HMDCompositeSettingsControllerManager_applyOnboardingSelections_accessoryUUID_homeUUID_completion___block_invoke;
   block[3] = &unk_279734668;
   block[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v14;
-  v16 = v14;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  v21 = selectionsCopy;
+  v22 = dCopy;
+  v23 = iDCopy;
+  v24 = completionCopy;
+  v16 = completionCopy;
+  v17 = iDCopy;
+  v18 = dCopy;
+  v19 = selectionsCopy;
   dispatch_async(Property, block);
 }
 
@@ -1774,36 +1774,36 @@ void __102__HMDCompositeSettingsControllerManager__applyOnboardingSelections_acc
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsController:(id)a3 didUpdateSettings:(id)a4 metadata:(id)a5
+- (void)settingsController:(id)controller didUpdateSettings:(id)settings metadata:(id)metadata
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [v10 homeUUID];
-  v11 = [v10 uuid];
+  metadataCopy = metadata;
+  settingsCopy = settings;
+  controllerCopy = controller;
+  homeUUID = [controllerCopy homeUUID];
+  uuid = [controllerCopy uuid];
 
-  [(HMDCompositeSettingsControllerManager *)self _postSettingUpdatesIfDifferentWithHome:v12 uuid:v11 settings:v9 metadata:v8];
+  [(HMDCompositeSettingsControllerManager *)self _postSettingUpdatesIfDifferentWithHome:homeUUID uuid:uuid settings:settingsCopy metadata:metadataCopy];
 }
 
-- (void)localUpdateSettingForUUID:(id)a3 homeUUID:(id)a4 keyPath:(id)a5 value:(id)a6 completion:(id)a7
+- (void)localUpdateSettingForUUID:(id)d homeUUID:(id)iD keyPath:(id)path value:(id)value completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  valueCopy = value;
+  pathCopy = path;
+  iDCopy = iD;
+  dCopy = d;
   v17 = +[HMDHomeKitVersion currentVersion];
-  [(HMDCompositeSettingsControllerManager *)self localUpdateSettingForUUID:v16 homeUUID:v15 keyPath:v14 value:v13 callerVersion:v17 completion:v12];
+  [(HMDCompositeSettingsControllerManager *)self localUpdateSettingForUUID:dCopy homeUUID:iDCopy keyPath:pathCopy value:valueCopy callerVersion:v17 completion:completionCopy];
 }
 
-- (void)localUpdateSettingForUUID:(id)a3 homeUUID:(id)a4 keyPath:(id)a5 value:(id)a6 callerVersion:(id)a7 completion:(id)a8
+- (void)localUpdateSettingForUUID:(id)d homeUUID:(id)iD keyPath:(id)path value:(id)value callerVersion:(id)version completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v20 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  pathCopy = path;
+  valueCopy = value;
+  versionCopy = version;
+  completionCopy = completion;
   if (self)
   {
     Property = objc_getProperty(self, v19, 24, 1);
@@ -1819,18 +1819,18 @@ void __102__HMDCompositeSettingsControllerManager__applyOnboardingSelections_acc
   block[2] = __115__HMDCompositeSettingsControllerManager_localUpdateSettingForUUID_homeUUID_keyPath_value_callerVersion_completion___block_invoke;
   block[3] = &unk_279733820;
   block[4] = self;
-  v29 = v14;
-  v30 = v15;
-  v31 = v16;
-  v32 = v17;
-  v33 = v18;
-  v34 = v20;
-  v22 = v20;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
-  v27 = v14;
+  v29 = dCopy;
+  v30 = iDCopy;
+  v31 = pathCopy;
+  v32 = valueCopy;
+  v33 = versionCopy;
+  v34 = completionCopy;
+  v22 = completionCopy;
+  v23 = versionCopy;
+  v24 = valueCopy;
+  v25 = pathCopy;
+  v26 = iDCopy;
+  v27 = dCopy;
   dispatch_async(Property, block);
 }
 
@@ -2142,15 +2142,15 @@ LABEL_26:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataSourceIsCurrentDevicePrimaryResidentForHomeUUID:(void *)a1
+- (id)dataSourceIsCurrentDevicePrimaryResidentForHomeUUID:(void *)d
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  v4 = [a1 dataSource];
-  if (v4)
+  dataSource = [d dataSource];
+  if (dataSource)
   {
-    v5 = [a1 stateManager];
-    v6 = [v5 stateForHomeUUID:v3] == 3;
+    stateManager = [d stateManager];
+    v6 = [stateManager stateForHomeUUID:v3] == 3;
 
     v7 = [MEMORY[0x277D0F788] BOOLeanWithBool:v6];
   }
@@ -2158,7 +2158,7 @@ LABEL_26:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    dCopy = d;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -2266,23 +2266,23 @@ void __116__HMDCompositeSettingsControllerManager__localUpdateSettingForUUID_hom
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)localFetchSettingsForUUID:(id)a3 homeUUID:(id)a4 withKeyPaths:(id)a5 completion:(id)a6
+- (void)localFetchSettingsForUUID:(id)d homeUUID:(id)iD withKeyPaths:(id)paths completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  pathsCopy = paths;
+  iDCopy = iD;
+  dCopy = d;
   v14 = +[HMDHomeKitVersion currentVersion];
-  [(HMDCompositeSettingsControllerManager *)self localFetchSettingsForUUID:v13 homeUUID:v12 withKeyPaths:v11 callerVersion:v14 callerPrivilege:3 completion:v10];
+  [(HMDCompositeSettingsControllerManager *)self localFetchSettingsForUUID:dCopy homeUUID:iDCopy withKeyPaths:pathsCopy callerVersion:v14 callerPrivilege:3 completion:completionCopy];
 }
 
-- (void)localFetchSettingsForUUID:(id)a3 homeUUID:(id)a4 withKeyPaths:(id)a5 callerVersion:(id)a6 callerPrivilege:(unint64_t)a7 completion:(id)a8
+- (void)localFetchSettingsForUUID:(id)d homeUUID:(id)iD withKeyPaths:(id)paths callerVersion:(id)version callerPrivilege:(unint64_t)privilege completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v19 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  pathsCopy = paths;
+  versionCopy = version;
+  completionCopy = completion;
   if (self)
   {
     Property = objc_getProperty(self, v18, 24, 1);
@@ -2298,17 +2298,17 @@ void __116__HMDCompositeSettingsControllerManager__localUpdateSettingForUUID_hom
   block[2] = __130__HMDCompositeSettingsControllerManager_localFetchSettingsForUUID_homeUUID_withKeyPaths_callerVersion_callerPrivilege_completion___block_invoke;
   block[3] = &unk_279731CD8;
   block[4] = self;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v31 = v19;
-  v32 = a7;
-  v30 = v17;
-  v21 = v19;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
+  v27 = dCopy;
+  v28 = iDCopy;
+  v29 = pathsCopy;
+  v31 = completionCopy;
+  privilegeCopy = privilege;
+  v30 = versionCopy;
+  v21 = completionCopy;
+  v22 = versionCopy;
+  v23 = pathsCopy;
+  v24 = iDCopy;
+  v25 = dCopy;
   dispatch_async(Property, block);
 }
 
@@ -2602,11 +2602,11 @@ uint64_t __120__HMDCompositeSettingsControllerManager__localFetchSettingsForUUID
   return v3;
 }
 
-- (void)_createSettingControllerForAccessory:(id)a3 homeUUID:(id)a4
+- (void)_createSettingControllerForAccessory:(id)accessory homeUUID:(id)d
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = a4;
+  accessoryCopy = accessory;
+  dCopy = d;
   if (!self)
   {
     goto LABEL_26;
@@ -2615,24 +2615,24 @@ uint64_t __120__HMDCompositeSettingsControllerManager__localFetchSettingsForUUID
   for (i = objc_getProperty(self, v7, 24, 1); ; i = 0)
   {
     dispatch_assert_queue_V2(i);
-    v10 = [(HMDCompositeSettingsControllerManager *)self stateManager];
-    v11 = [v10 stateForHomeUUID:v8];
+    stateManager = [(HMDCompositeSettingsControllerManager *)self stateManager];
+    v11 = [stateManager stateForHomeUUID:dCopy];
 
     if ((v11 - 4) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         v15 = HMFGetLogIdentifier();
-        v16 = [v6 uuid];
+        uuid = [accessoryCopy uuid];
         *buf = 138543874;
         v53 = v15;
         v54 = 2112;
-        v55 = v16;
+        v55 = uuid;
         v56 = 2112;
-        v57 = v8;
+        v57 = dCopy;
         _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_ERROR, "%{public}@Current state is not resident or primary resident for owner:%@, home:%@", buf, 0x20u);
       }
 
@@ -2640,15 +2640,15 @@ uint64_t __120__HMDCompositeSettingsControllerManager__localFetchSettingsForUUID
       goto LABEL_23;
     }
 
-    if (!v8)
+    if (!dCopy)
     {
       _HMFPreconditionFailure();
       goto LABEL_25;
     }
 
-    v17 = [v6 uuid];
+    uuid2 = [accessoryCopy uuid];
 
-    if (v17)
+    if (uuid2)
     {
       break;
     }
@@ -2670,27 +2670,27 @@ LABEL_26:
   }
 
   v20 = Property;
-  v22 = [v6 uuid];
+  uuid3 = [accessoryCopy uuid];
   if (self)
   {
     v23 = objc_getProperty(self, v21, 24, 1);
-    v24 = [objc_opt_class() zoneNameForHomeUUID:v8];
-    [v20 createDatabaseAdapterIfNotExistForUUID:v22 homeUUID:v8 accessory:v6 workQueue:v23 zoneName:v24];
+    v24 = [objc_opt_class() zoneNameForHomeUUID:dCopy];
+    [v20 createDatabaseAdapterIfNotExistForUUID:uuid3 homeUUID:dCopy accessory:accessoryCopy workQueue:v23 zoneName:v24];
 
     v26 = objc_getProperty(self, v25, 16, 1);
   }
 
   else
   {
-    v51 = [objc_opt_class() zoneNameForHomeUUID:v8];
-    [v20 createDatabaseAdapterIfNotExistForUUID:v22 homeUUID:v8 accessory:v6 workQueue:0 zoneName:v51];
+    v51 = [objc_opt_class() zoneNameForHomeUUID:dCopy];
+    [v20 createDatabaseAdapterIfNotExistForUUID:uuid3 homeUUID:dCopy accessory:accessoryCopy workQueue:0 zoneName:v51];
 
     v26 = 0;
   }
 
   v27 = v26;
-  v28 = [v6 uuid];
-  v29 = [v27 databaseAdapterForUUID:v28];
+  uuid4 = [accessoryCopy uuid];
+  v29 = [v27 databaseAdapterForUUID:uuid4];
 
   if (v11 == 3)
   {
@@ -2708,51 +2708,51 @@ LABEL_26:
 
     v33 = v32;
     v34 = objc_opt_class();
-    v35 = [v6 uuid];
-    v36 = (*(v32 + 2))(v33, v29, v34, v8, v35, v30);
+    uuid5 = [accessoryCopy uuid];
+    v36 = (*(v32 + 2))(v33, v29, v34, dCopy, uuid5, v30);
 
     v37 = objc_autoreleasePoolPush();
-    v38 = self;
+    selfCopy2 = self;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
       v40 = HMFGetLogIdentifier();
-      v41 = [v6 uuid];
+      uuid6 = [accessoryCopy uuid];
       *buf = 138544386;
       v53 = v40;
       v54 = 2112;
       v55 = v36;
       v56 = 2112;
-      v57 = v41;
+      v57 = uuid6;
       v58 = 2112;
-      v59 = v8;
+      v59 = dCopy;
       v60 = 2112;
       v61 = v30;
       _os_log_impl(&dword_2531F8000, v39, OS_LOG_TYPE_INFO, "%{public}@Created setting controller %@ for owner:%@ home:%@ blocklist: %@", buf, 0x34u);
     }
 
     objc_autoreleasePoolPop(v37);
-    v42 = [(HMDCompositeSettingsControllerManager *)v38 stringToCompositeSettingsController];
-    v43 = [v6 uuid];
-    v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v8, v43];
-    [v42 setObject:v36 forKey:v44];
+    stringToCompositeSettingsController = [(HMDCompositeSettingsControllerManager *)selfCopy2 stringToCompositeSettingsController];
+    uuid7 = [accessoryCopy uuid];
+    v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", dCopy, uuid7];
+    [stringToCompositeSettingsController setObject:v36 forKey:v44];
   }
 
   else
   {
     v45 = objc_autoreleasePoolPush();
-    v46 = self;
+    selfCopy3 = self;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
       v48 = HMFGetLogIdentifier();
-      v49 = [v6 uuid];
+      uuid8 = [accessoryCopy uuid];
       *buf = 138543874;
       v53 = v48;
       v54 = 2112;
-      v55 = v49;
+      v55 = uuid8;
       v56 = 2112;
-      v57 = v8;
+      v57 = dCopy;
       _os_log_impl(&dword_2531F8000, v47, OS_LOG_TYPE_ERROR, "%{public}@Current state is not primary resident for owner:%@, home:%@ so skipping controller creation", buf, 0x20u);
     }
 
@@ -2763,26 +2763,26 @@ LABEL_23:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCompositeSettingsControllerManager)initWithDataSource:(id)a3
+- (HMDCompositeSettingsControllerManager)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc_init(HMDCompositeSettingsOwnerToDatabaseAdapterRegistry);
   v6 = +[HMDMetricsManager sharedLogEventSubmitter];
-  v7 = [(HMDCompositeSettingsControllerManager *)self initWithDataSource:v4 registry:v5 controllerFactory:0 stateManagerFactory:0 logEventSubmitter:v6];
+  v7 = [(HMDCompositeSettingsControllerManager *)self initWithDataSource:sourceCopy registry:v5 controllerFactory:0 stateManagerFactory:0 logEventSubmitter:v6];
 
   return v7;
 }
 
-- (HMDCompositeSettingsControllerManager)initWithDataSource:(id)a3 registry:(id)a4 controllerFactory:(id)a5 stateManagerFactory:(id)a6 logEventSubmitter:(id)a7
+- (HMDCompositeSettingsControllerManager)initWithDataSource:(id)source registry:(id)registry controllerFactory:(id)factory stateManagerFactory:(id)managerFactory logEventSubmitter:(id)submitter
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  sourceCopy = source;
+  registryCopy = registry;
+  factoryCopy = factory;
+  managerFactoryCopy = managerFactory;
+  submitterCopy = submitter;
+  if (sourceCopy)
   {
-    v17 = v16;
+    v17 = submitterCopy;
     v46.receiver = self;
     v46.super_class = HMDCompositeSettingsControllerManager;
     v18 = [(HMDCompositeSettingsControllerManager *)&v46 init];
@@ -2793,28 +2793,28 @@ LABEL_9:
       return v18;
     }
 
-    v19 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     stringToCompositeSettingsController = v18->_stringToCompositeSettingsController;
-    v18->_stringToCompositeSettingsController = v19;
+    v18->_stringToCompositeSettingsController = strongToStrongObjectsMapTable;
 
-    objc_storeWeak(&v18->_dataSource, v12);
-    v21 = [v12 workQueue];
+    objc_storeWeak(&v18->_dataSource, sourceCopy);
+    workQueue = [sourceCopy workQueue];
     workQueue = v18->_workQueue;
-    v18->_workQueue = v21;
+    v18->_workQueue = workQueue;
 
-    objc_storeStrong(&v18->_registry, a4);
-    v23 = _Block_copy(v14);
+    objc_storeStrong(&v18->_registry, registry);
+    v23 = _Block_copy(factoryCopy);
     compositeSettingsControllerFactory = v18->_compositeSettingsControllerFactory;
     v18->_compositeSettingsControllerFactory = v23;
 
-    objc_storeStrong(&v18->_logEventSubmitter, a7);
-    if (v14)
+    objc_storeStrong(&v18->_logEventSubmitter, submitter);
+    if (factoryCopy)
     {
-      if (v15)
+      if (managerFactoryCopy)
       {
 LABEL_5:
-        v25 = [v12 uuid];
-        v26 = (*(v15 + 2))(v15, v25);
+        uuid = [sourceCopy uuid];
+        v26 = (*(managerFactoryCopy + 2))(managerFactoryCopy, uuid);
         stateManager = v18->_stateManager;
         v18->_stateManager = v26;
 LABEL_8:
@@ -2837,16 +2837,16 @@ LABEL_8:
 
       objc_destroyWeak(&v44);
       objc_destroyWeak(&location);
-      if (v15)
+      if (managerFactoryCopy)
       {
         goto LABEL_5;
       }
     }
 
     v30 = [HMDCompositeSettingControllerManagerStateManager alloc];
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    stateManager = [v12 uuid];
-    v31 = [(HMDCompositeSettingControllerManagerStateManager *)v30 initWithDataSource:v18 notificationRegistrationProvider:v25 subscribeWithOptions:15 delegate:v18 uuid:stateManager];
+    uuid = [MEMORY[0x277CCAB98] defaultCenter];
+    stateManager = [sourceCopy uuid];
+    v31 = [(HMDCompositeSettingControllerManagerStateManager *)v30 initWithDataSource:v18 notificationRegistrationProvider:uuid subscribeWithOptions:15 delegate:v18 uuid:stateManager];
     v32 = v18->_stateManager;
     v18->_stateManager = v31;
 
@@ -2894,18 +2894,18 @@ uint64_t __52__HMDCompositeSettingsControllerManager_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)immutableSettingFromFetchReturn:(id)a3
++ (id)immutableSettingFromFetchReturn:(id)return
 {
-  v3 = a3;
-  v4 = [v3 setting];
-  v5 = [v3 metadata];
-  if (!v4)
+  returnCopy = return;
+  setting = [returnCopy setting];
+  metadata = [returnCopy metadata];
+  if (!setting)
   {
     v12 = 0;
     goto LABEL_30;
   }
 
-  v6 = v4;
+  v6 = setting;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -2935,14 +2935,14 @@ uint64_t __52__HMDCompositeSettingsControllerManager_logCategory__block_invoke()
       v15 = 0;
     }
 
-    v11 = v15;
+    keyPath3 = v15;
 
     if (v14)
     {
       v16 = objc_alloc(MEMORY[0x277CD1AE0]);
-      v17 = [v3 keyPath];
-      v18 = [v13 stringValue];
-      v12 = [v16 initWithKeyPath:v17 readOnly:0 stringValue:v18];
+      keyPath = [returnCopy keyPath];
+      stringValue = [v13 stringValue];
+      v12 = [v16 initWithKeyPath:keyPath readOnly:0 stringValue:stringValue];
     }
 
     else
@@ -2961,16 +2961,16 @@ uint64_t __52__HMDCompositeSettingsControllerManager_logCategory__block_invoke()
         v21 = 0;
       }
 
-      v17 = v21;
+      keyPath = v21;
 
       if (v20)
       {
-        v44 = v17;
-        v22 = [v5 constraint];
+        v44 = keyPath;
+        constraint = [metadata constraint];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = v22;
+          v23 = constraint;
         }
 
         else
@@ -2981,14 +2981,14 @@ uint64_t __52__HMDCompositeSettingsControllerManager_logCategory__block_invoke()
         v24 = v23;
 
         v40 = objc_alloc(MEMORY[0x277CD1870]);
-        v18 = [v3 keyPath];
-        v42 = [v19 numberValue];
-        v25 = [v42 integerValue];
+        stringValue = [returnCopy keyPath];
+        numberValue = [v19 numberValue];
+        integerValue = [numberValue integerValue];
         v26 = [v24 max];
         v27 = [v24 min];
-        v28 = [v24 step];
+        step = [v24 step];
 
-        v12 = [v40 initWithKeyPath:v18 readOnly:0 integerValue:v25 maxValue:v26 minValue:v27 valueStepSize:v28];
+        v12 = [v40 initWithKeyPath:stringValue readOnly:0 integerValue:integerValue maxValue:v26 minValue:v27 valueStepSize:step];
       }
 
       else
@@ -3006,7 +3006,7 @@ uint64_t __52__HMDCompositeSettingsControllerManager_logCategory__block_invoke()
           v31 = 0;
         }
 
-        v18 = v31;
+        stringValue = v31;
 
         if ((v30 & 1) == 0)
         {
@@ -3015,21 +3015,21 @@ uint64_t __52__HMDCompositeSettingsControllerManager_logCategory__block_invoke()
           goto LABEL_28;
         }
 
-        v44 = v17;
+        v44 = keyPath;
         v43 = objc_alloc(MEMORY[0x277CD1AF8]);
-        v32 = [v3 keyPath];
+        keyPath2 = [returnCopy keyPath];
         v39 = objc_alloc(MEMORY[0x277CD1DC0]);
-        v41 = [v29 inputLanguageCode];
-        v33 = [v29 outputVoiceLanguageCode];
-        v34 = [v29 outputVoiceGenderCode];
-        v35 = [v29 voiceName];
-        v36 = [v39 initWithInputLanguageCode:v41 outputVoiceLanguageCode:v33 outputVoiceGenderCode:v34 voiceName:v35];
+        inputLanguageCode = [v29 inputLanguageCode];
+        outputVoiceLanguageCode = [v29 outputVoiceLanguageCode];
+        outputVoiceGenderCode = [v29 outputVoiceGenderCode];
+        voiceName = [v29 voiceName];
+        v36 = [v39 initWithInputLanguageCode:inputLanguageCode outputVoiceLanguageCode:outputVoiceLanguageCode outputVoiceGenderCode:outputVoiceGenderCode voiceName:voiceName];
         v37 = v43;
-        v42 = v32;
-        v12 = [v37 initWithKeyPath:v32 readOnly:0 languageValue:v36];
+        numberValue = keyPath2;
+        v12 = [v37 initWithKeyPath:keyPath2 readOnly:0 languageValue:v36];
       }
 
-      v17 = v44;
+      keyPath = v44;
       v9 = v45;
     }
 
@@ -3039,8 +3039,8 @@ LABEL_28:
   }
 
   v10 = objc_alloc(MEMORY[0x277CD1868]);
-  v11 = [v3 keyPath];
-  v12 = [v10 initWithKeyPath:v11 readOnly:0 BOOLValue:{objc_msgSend(v6, "BOOLValue")}];
+  keyPath3 = [returnCopy keyPath];
+  v12 = [v10 initWithKeyPath:keyPath3 readOnly:0 BOOLValue:{objc_msgSend(v6, "BOOLValue")}];
 LABEL_29:
 
 LABEL_30:
@@ -3048,43 +3048,43 @@ LABEL_30:
   return v12;
 }
 
-- (void)accessorySettingsLocalMessageHandler:(id)a3 didReceiveUpdateRequestMessage:(id)a4 withHomeUUID:(id)a5 accessoryUUID:(id)a6 keyPath:(id)a7 value:(id)a8 callerVersion:(id)a9
+- (void)accessorySettingsLocalMessageHandler:(id)handler didReceiveUpdateRequestMessage:(id)message withHomeUUID:(id)d accessoryUUID:(id)iD keyPath:(id)path value:(id)value callerVersion:(id)version
 {
   v55 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = [(HMDCompositeSettingsControllerManager *)self dataSource];
-  v22 = [v21 settingsControllerForAccessoryUUID:v17 homeUUID:v16];
+  handlerCopy = handler;
+  messageCopy = message;
+  dCopy = d;
+  iDCopy = iD;
+  pathCopy = path;
+  valueCopy = value;
+  versionCopy = version;
+  dataSource = [(HMDCompositeSettingsControllerManager *)self dataSource];
+  v22 = [dataSource settingsControllerForAccessoryUUID:iDCopy homeUUID:dCopy];
 
   if (v22)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       HMFGetLogIdentifier();
-      contexta = v17;
-      v26 = v16;
-      v27 = v15;
-      v29 = v28 = v20;
+      contexta = iDCopy;
+      v26 = dCopy;
+      v27 = messageCopy;
+      v29 = v28 = versionCopy;
       *buf = 138543874;
       v50 = v29;
       v51 = 2114;
-      v52 = v18;
+      v52 = pathCopy;
       v53 = 2112;
-      v54 = v19;
+      v54 = valueCopy;
       _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Update using current accessory keyPath: %{public}@, value: %@", buf, 0x20u);
 
-      v20 = v28;
-      v15 = v27;
-      v16 = v26;
-      v17 = contexta;
+      versionCopy = v28;
+      messageCopy = v27;
+      dCopy = v26;
+      iDCopy = contexta;
     }
 
     objc_autoreleasePoolPop(v23);
@@ -3092,15 +3092,15 @@ LABEL_30:
     v46[1] = 3221225472;
     v46[2] = __210__HMDCompositeSettingsControllerManager_AccessorySettingsLocalMessageHandlerDelegate__accessorySettingsLocalMessageHandler_didReceiveUpdateRequestMessage_withHomeUUID_accessoryUUID_keyPath_value_callerVersion___block_invoke;
     v46[3] = &unk_279734D88;
-    v46[4] = v24;
-    v47 = v18;
-    v48 = v15;
-    [v22 updateSettingWithKeyPath:v47 settingValue:v19 completion:v46];
+    v46[4] = selfCopy;
+    v47 = pathCopy;
+    v48 = messageCopy;
+    [v22 updateSettingWithKeyPath:v47 settingValue:valueCopy completion:v46];
   }
 
   else
   {
-    v30 = [HMDCompositeSettingValue compositeSettingValueFromImmutableSettingsValue:v19];
+    v30 = [HMDCompositeSettingValue compositeSettingValueFromImmutableSettingsValue:valueCopy];
     if (v30)
     {
       v44[0] = MEMORY[0x277D85DD0];
@@ -3108,39 +3108,39 @@ LABEL_30:
       v44[2] = __210__HMDCompositeSettingsControllerManager_AccessorySettingsLocalMessageHandlerDelegate__accessorySettingsLocalMessageHandler_didReceiveUpdateRequestMessage_withHomeUUID_accessoryUUID_keyPath_value_callerVersion___block_invoke_11;
       v44[3] = &unk_279734DB0;
       v44[4] = self;
-      v45 = v15;
-      [(HMDCompositeSettingsControllerManager *)self localUpdateSettingForUUID:v17 homeUUID:v16 keyPath:v18 value:v30 callerVersion:v20 completion:v44];
+      v45 = messageCopy;
+      [(HMDCompositeSettingsControllerManager *)self localUpdateSettingForUUID:iDCopy homeUUID:dCopy keyPath:pathCopy value:v30 callerVersion:versionCopy completion:v44];
     }
 
     else
     {
       context = objc_autoreleasePoolPush();
-      v31 = self;
+      selfCopy2 = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v40 = v18;
-        v33 = v17;
-        v34 = v16;
-        v35 = v15;
-        v37 = v36 = v20;
+        v40 = pathCopy;
+        v33 = iDCopy;
+        v34 = dCopy;
+        v35 = messageCopy;
+        v37 = v36 = versionCopy;
         *buf = 138543618;
         v50 = v37;
         v51 = 2112;
-        v52 = v19;
+        v52 = valueCopy;
         _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_ERROR, "%{public}@Failed to update setting due to no composite setting value conversion for setting value: %@", buf, 0x16u);
 
-        v20 = v36;
-        v15 = v35;
-        v16 = v34;
-        v17 = v33;
-        v18 = v40;
+        versionCopy = v36;
+        messageCopy = v35;
+        dCopy = v34;
+        iDCopy = v33;
+        pathCopy = v40;
       }
 
       objc_autoreleasePoolPop(context);
       v38 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-      [v15 respondWithError:v38];
+      [messageCopy respondWithError:v38];
     }
   }
 
@@ -3226,37 +3226,37 @@ void __210__HMDCompositeSettingsControllerManager_AccessorySettingsLocalMessageH
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessorySettingsLocalMessageHandler:(id)a3 didReceiveFetchRequestMessage:(id)a4 withHomeUUID:(id)a5 accessoryUUID:(id)a6 keyPaths:(id)a7 callerVersion:(id)a8 callerPrivilege:(unint64_t)a9 siriAvailableLanguagesSetting:(id)a10
+- (void)accessorySettingsLocalMessageHandler:(id)handler didReceiveFetchRequestMessage:(id)message withHomeUUID:(id)d accessoryUUID:(id)iD keyPaths:(id)paths callerVersion:(id)version callerPrivilege:(unint64_t)privilege siriAvailableLanguagesSetting:(id)self0
 {
   v46 = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
-  v22 = [(HMDCompositeSettingsControllerManager *)self dataSource];
-  v23 = [v22 settingsControllerForAccessoryUUID:v18 homeUUID:v17];
+  handlerCopy = handler;
+  messageCopy = message;
+  dCopy = d;
+  iDCopy = iD;
+  pathsCopy = paths;
+  versionCopy = version;
+  settingCopy = setting;
+  dataSource = [(HMDCompositeSettingsControllerManager *)self dataSource];
+  v23 = [dataSource settingsControllerForAccessoryUUID:iDCopy homeUUID:dCopy];
 
   if (v23)
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       HMFGetLogIdentifier();
-      v33 = v21;
-      v28 = v27 = v20;
+      v33 = settingCopy;
+      v28 = v27 = versionCopy;
       *buf = 138543618;
       v43 = v28;
       v44 = 2114;
-      v45 = v19;
+      v45 = pathsCopy;
       _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@Fetch using current accessory %{public}@", buf, 0x16u);
 
-      v20 = v27;
-      v21 = v33;
+      versionCopy = v27;
+      settingCopy = v33;
     }
 
     objc_autoreleasePoolPop(v24);
@@ -3264,28 +3264,28 @@ void __210__HMDCompositeSettingsControllerManager_AccessorySettingsLocalMessageH
     v40[1] = 3221225472;
     v40[2] = __250__HMDCompositeSettingsControllerManager_AccessorySettingsLocalMessageHandlerDelegate__accessorySettingsLocalMessageHandler_didReceiveFetchRequestMessage_withHomeUUID_accessoryUUID_keyPaths_callerVersion_callerPrivilege_siriAvailableLanguagesSetting___block_invoke;
     v40[3] = &unk_279734D18;
-    v40[4] = v25;
-    v41 = v16;
-    v29 = v16;
-    [v23 fetchSettingsForKeyPaths:v19 completion:v40];
+    v40[4] = selfCopy;
+    v41 = messageCopy;
+    v29 = messageCopy;
+    [v23 fetchSettingsForKeyPaths:pathsCopy completion:v40];
   }
 
   else
   {
-    v30 = [v19 na_filter:&__block_literal_global_187349];
+    v30 = [pathsCopy na_filter:&__block_literal_global_187349];
 
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __250__HMDCompositeSettingsControllerManager_AccessorySettingsLocalMessageHandlerDelegate__accessorySettingsLocalMessageHandler_didReceiveFetchRequestMessage_withHomeUUID_accessoryUUID_keyPaths_callerVersion_callerPrivilege_siriAvailableLanguagesSetting___block_invoke_2;
     v35[3] = &unk_279734D60;
-    v36 = v21;
-    v37 = self;
-    v38 = v18;
-    v39 = v16;
-    v31 = v16;
-    [(HMDCompositeSettingsControllerManager *)self localFetchSettingsForUUID:v38 homeUUID:v17 withKeyPaths:v30 callerVersion:v20 callerPrivilege:a9 completion:v35];
+    v36 = settingCopy;
+    selfCopy2 = self;
+    v38 = iDCopy;
+    v39 = messageCopy;
+    v31 = messageCopy;
+    [(HMDCompositeSettingsControllerManager *)self localFetchSettingsForUUID:v38 homeUUID:dCopy withKeyPaths:v30 callerVersion:versionCopy callerPrivilege:privilege completion:v35];
 
-    v19 = v30;
+    pathsCopy = v30;
   }
 
   v32 = *MEMORY[0x277D85DE8];

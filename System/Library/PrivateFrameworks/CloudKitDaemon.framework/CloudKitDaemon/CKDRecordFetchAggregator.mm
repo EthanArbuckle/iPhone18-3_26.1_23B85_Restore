@@ -1,21 +1,21 @@
 @interface CKDRecordFetchAggregator
 - (CKDFetchRecordsOperation)currentFetchOp;
-- (CKDRecordFetchAggregator)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDRecordFetchAggregator)initWithOperationInfo:(id)info container:(id)container;
 - (OS_dispatch_queue)fetchQueue;
 - (id)CKPropertiesDescription;
-- (id)_fetchRecord:(id)a3 recordReadyHandle:(BOOL *)a4 withRecordCompletion:(id)a5;
+- (id)_fetchRecord:(id)record recordReadyHandle:(BOOL *)handle withRecordCompletion:(id)completion;
 - (id)activityCreate;
-- (void)_addRecordFetchInfos:(id)a3;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_addRecordFetchInfos:(id)infos;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)_finishRecordFetchAggregator;
 - (void)_flushFetchedRecordsToConsumerLocked;
 - (void)_flushFetchedRecordsToConsumerNoOrderingLocked;
 - (void)_flushFetchedRecordsToConsumerOrderedLocked;
 - (void)_lockedSendFetchRequest;
-- (void)_performCallbackForFetchInfoLocked:(id)a3;
+- (void)_performCallbackForFetchInfoLocked:(id)locked;
 - (void)_recordFetchesAvailable;
 - (void)dealloc;
-- (void)fetchRecords:(id)a3 withPerRecordCompletion:(id)a4;
+- (void)fetchRecords:(id)records withPerRecordCompletion:(id)completion;
 - (void)finishIfAppropriate;
 - (void)main;
 @end
@@ -24,23 +24,23 @@
 
 - (OS_dispatch_queue)fetchQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_fetchQueue)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_fetchQueue)
   {
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = objc_msgSend_QOSClass(v2, v4, v5);
+    v6 = objc_msgSend_QOSClass(selfCopy, v4, v5);
     v7 = dispatch_queue_attr_make_with_qos_class(v3, v6, 0);
     v8 = dispatch_queue_create("com.apple.cloudkit.fetchAggregator.fetchQueue", v7);
-    fetchQueue = v2->_fetchQueue;
-    v2->_fetchQueue = v8;
+    fetchQueue = selfCopy->_fetchQueue;
+    selfCopy->_fetchQueue = v8;
 
-    dispatch_queue_set_specific(v2->_fetchQueue, "com.apple.cloudkit.recordfetchaggregator", 1, 0);
+    dispatch_queue_set_specific(selfCopy->_fetchQueue, "com.apple.cloudkit.recordfetchaggregator", 1, 0);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v10 = v2->_fetchQueue;
+  v10 = selfCopy->_fetchQueue;
 
   return v10;
 }
@@ -64,23 +64,23 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v11 = 134217984;
-    v12 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_22506F000, v3, OS_LOG_TYPE_DEBUG, "Finishing fetch aggregator: %p", &v11, 0xCu);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  if (objc_msgSend_started(v4, v5, v6))
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (objc_msgSend_started(selfCopy2, v5, v6))
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy2);
 
-    objc_msgSend__finishRecordFetchAggregator(v4, v8, v9);
+    objc_msgSend__finishRecordFetchAggregator(selfCopy2, v8, v9);
   }
 
   else
   {
-    objc_msgSend_setMarkedToFinishByParent_(v4, v7, 1);
-    objc_sync_exit(v4);
+    objc_msgSend_setMarkedToFinishByParent_(selfCopy2, v7, 1);
+    objc_sync_exit(selfCopy2);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -89,11 +89,11 @@
 - (void)main
 {
   v29 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (objc_msgSend_isMarkedToFinishByParent(v2, v3, v4))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (objc_msgSend_isMarkedToFinishByParent(selfCopy, v3, v4))
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -106,23 +106,23 @@
       v11 = v6;
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v16 = objc_msgSend_ckShortDescription(v2, v14, v15);
+      v16 = objc_msgSend_ckShortDescription(selfCopy, v14, v15);
       v23 = 138543874;
       v24 = v13;
       v25 = 2048;
-      v26 = v2;
+      v26 = selfCopy;
       v27 = 2114;
       v28 = v16;
       _os_log_debug_impl(&dword_22506F000, v11, OS_LOG_TYPE_DEBUG, "Parent asked record fetch aggregator operation <%{public}@: %p; %{public}@> to finish before it started", &v23, 0x20u);
     }
 
-    objc_msgSend__finishRecordFetchAggregator(v2, v7, v8);
+    objc_msgSend__finishRecordFetchAggregator(selfCopy, v7, v8);
   }
 
   else
   {
-    objc_msgSend_setStarted_(v2, v5, 1);
-    objc_sync_exit(v2);
+    objc_msgSend_setStarted_(selfCopy, v5, 1);
+    objc_sync_exit(selfCopy);
 
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -135,11 +135,11 @@
       v17 = v9;
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      v22 = objc_msgSend_ckShortDescription(v2, v20, v21);
+      v22 = objc_msgSend_ckShortDescription(selfCopy, v20, v21);
       v23 = 138543874;
       v24 = v19;
       v25 = 2048;
-      v26 = v2;
+      v26 = selfCopy;
       v27 = 2114;
       v28 = v22;
       _os_log_debug_impl(&dword_22506F000, v17, OS_LOG_TYPE_DEBUG, "Starting record fetch aggregator operation <%{public}@: %p; %{public}@>", &v23, 0x20u);
@@ -226,7 +226,7 @@
     v28 = 138544130;
     v29 = v22;
     v30 = 2048;
-    v31 = self;
+    selfCopy = self;
     v32 = 2114;
     v33 = v25;
     v34 = 2048;
@@ -280,7 +280,7 @@
     *buf = 138543874;
     v31 = v23;
     v32 = 2048;
-    v33 = self;
+    selfCopy = self;
     v34 = 2114;
     v35 = v26;
     _os_log_debug_impl(&dword_22506F000, v21, OS_LOG_TYPE_DEBUG, "Finishing fetch aggregator <%{public}@: %p; %{public}@>", buf, 0x20u);
@@ -341,7 +341,7 @@
     *buf = 138543874;
     v122 = v103;
     v123 = 2048;
-    v124 = self;
+    selfCopy = self;
     v125 = 2114;
     v126 = v106;
     _os_log_debug_impl(&dword_22506F000, v101, OS_LOG_TYPE_DEBUG, "Sending fetch requests for <%{public}@: %p; %{public}@>", buf, 0x20u);
@@ -354,7 +354,7 @@
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v110 = self;
+  selfCopy2 = self;
   v17 = objc_msgSend_fetchInfosByOrder(self, v15, v16);
   v20 = objc_msgSend_allValues(v17, v18, v19);
 
@@ -430,11 +430,11 @@
         v54 = v53;
         v55 = objc_opt_class();
         v56 = NSStringFromClass(v55);
-        v59 = objc_msgSend_ckShortDescription(v110, v57, v58);
+        v59 = objc_msgSend_ckShortDescription(selfCopy2, v57, v58);
         *buf = 138544130;
         v122 = v56;
         v123 = 2048;
-        v124 = v110;
+        selfCopy = selfCopy2;
         v125 = 2114;
         v126 = v59;
         v127 = 2112;
@@ -456,12 +456,12 @@
         v61 = v60;
         v62 = objc_opt_class();
         v63 = NSStringFromClass(v62);
-        v66 = objc_msgSend_ckShortDescription(v110, v64, v65);
+        v66 = objc_msgSend_ckShortDescription(selfCopy2, v64, v65);
         v68 = objc_msgSend_valueForKeyPath_(v13, v67, @"recordID");
         *buf = 138544130;
         v122 = v63;
         v123 = 2048;
-        v124 = v110;
+        selfCopy = selfCopy2;
         v125 = 2114;
         v126 = v66;
         v127 = 2112;
@@ -474,18 +474,18 @@
     v72 = objc_msgSend_allObjects(v12, v70, v71);
     objc_msgSend_setRecordIDs_(v69, v73, v72);
 
-    v76 = objc_msgSend_desiredKeys(v110, v74, v75);
+    v76 = objc_msgSend_desiredKeys(selfCopy2, v74, v75);
     v79 = objc_msgSend_allObjects(v76, v77, v78);
     objc_msgSend_setDesiredKeys_(v69, v80, v79);
 
-    v83 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(v110, v81, v82);
+    v83 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(selfCopy2, v81, v82);
     objc_msgSend_setAssetTransferOptionsByRecordTypeAndKey_(v69, v84, v83);
 
-    AssetContents = objc_msgSend_fetchAssetContents(v110, v85, v86);
+    AssetContents = objc_msgSend_fetchAssetContents(selfCopy2, v85, v86);
     objc_msgSend_setShouldFetchAssetContent_(v69, v88, AssetContents);
-    MergeableValues = objc_msgSend_fetchMergeableValues(v110, v89, v90);
+    MergeableValues = objc_msgSend_fetchMergeableValues(selfCopy2, v89, v90);
     objc_msgSend_setShouldFetchMergeableValues_(v69, v92, MergeableValues);
-    v95 = objc_msgSend_databaseScope(v110, v93, v94);
+    v95 = objc_msgSend_databaseScope(selfCopy2, v93, v94);
     objc_msgSend_setDatabaseScope_(v69, v96, v95);
     v97 = objc_opt_class();
     v111[0] = MEMORY[0x277D85DD0];
@@ -493,39 +493,39 @@
     v111[2] = sub_22509FA5C;
     v111[3] = &unk_27854B280;
     v112 = v13;
-    v113 = v110;
+    v113 = selfCopy2;
     v116 = v109;
     v114 = v69;
     v115 = v14;
     v98 = v69;
-    objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(v110, v99, v97, v98, v111);
+    objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(selfCopy2, v99, v97, v98, v111);
   }
 
   v100 = *MEMORY[0x277D85DE8];
 }
 
-- (CKDRecordFetchAggregator)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDRecordFetchAggregator)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  containerCopy = container;
   v52.receiver = self;
   v52.super_class = CKDRecordFetchAggregator;
-  v10 = [(CKDDatabaseOperation *)&v52 initWithOperationInfo:v6 container:v7];
+  v10 = [(CKDDatabaseOperation *)&v52 initWithOperationInfo:infoCopy container:containerCopy];
   if (v10)
   {
-    *(v10 + 489) = objc_msgSend_fetchAssetContents(v6, v8, v9);
-    *(v10 + 490) = objc_msgSend_fetchMergeableValues(v6, v11, v12);
-    *(v10 + 491) = objc_msgSend_preserveOrdering(v6, v13, v14);
-    v17 = objc_msgSend_desiredKeys(v6, v15, v16);
+    *(v10 + 489) = objc_msgSend_fetchAssetContents(infoCopy, v8, v9);
+    *(v10 + 490) = objc_msgSend_fetchMergeableValues(infoCopy, v11, v12);
+    *(v10 + 491) = objc_msgSend_preserveOrdering(infoCopy, v13, v14);
+    v17 = objc_msgSend_desiredKeys(infoCopy, v15, v16);
     v20 = objc_msgSend_copy(v17, v18, v19);
     v21 = *(v10 + 64);
     *(v10 + 64) = v20;
 
-    v24 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(v6, v22, v23);
+    v24 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(infoCopy, v22, v23);
     v25 = *(v10 + 63);
     *(v10 + 63) = v24;
 
-    *(v10 + 494) = objc_msgSend_forceDecryptionAttempt(v6, v26, v27);
+    *(v10 + 494) = objc_msgSend_forceDecryptionAttempt(infoCopy, v26, v27);
     *(v10 + 488) = 1;
     objc_initWeak(&location, v10);
     v28 = dispatch_group_create();
@@ -620,10 +620,10 @@
   return v9;
 }
 
-- (void)_performCallbackForFetchInfoLocked:(id)a3
+- (void)_performCallbackForFetchInfoLocked:(id)locked
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lockedCopy = locked;
   v7 = objc_msgSend_fetchQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
@@ -636,12 +636,12 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v38 = v4;
+    v38 = lockedCopy;
     _os_log_debug_impl(&dword_22506F000, v8, OS_LOG_TYPE_DEBUG, "Performing callback for fetch info %@", buf, 0xCu);
   }
 
   v11 = objc_msgSend_highestReturnedOrder(self, v9, v10);
-  Order = objc_msgSend_fetchOrder(v4, v12, v13);
+  Order = objc_msgSend_fetchOrder(lockedCopy, v12, v13);
   if (v11 <= Order)
   {
     objc_msgSend_setHighestReturnedOrder_(self, v15, Order);
@@ -657,9 +657,9 @@
   v32 = 3221225472;
   v33 = sub_22525CA10;
   v34 = &unk_278545898;
-  v35 = v4;
-  v36 = self;
-  v19 = v4;
+  v35 = lockedCopy;
+  selfCopy = self;
+  v19 = lockedCopy;
   dispatch_async(v18, &v31);
 
   v22 = objc_msgSend_fetchInfosByOrder(self, v20, v21, v31, v32, v33, v34);
@@ -714,39 +714,39 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addRecordFetchInfos:(id)a3
+- (void)_addRecordFetchInfos:(id)infos
 {
-  v5 = a3;
+  infosCopy = infos;
   v8 = objc_msgSend_fetchQueue(self, v6, v7);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22525CC60;
   block[3] = &unk_278545E20;
-  v11 = v5;
-  v12 = self;
+  v11 = infosCopy;
+  selfCopy = self;
   v13 = a2;
-  v9 = v5;
+  v9 = infosCopy;
   dispatch_sync(v8, block);
 }
 
-- (id)_fetchRecord:(id)a3 recordReadyHandle:(BOOL *)a4 withRecordCompletion:(id)a5
+- (id)_fetchRecord:(id)record recordReadyHandle:(BOOL *)handle withRecordCompletion:(id)completion
 {
   v194 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  recordCopy = record;
+  completionCopy = completion;
   if (objc_msgSend_isFinished(self, v11, v12))
   {
     v186 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v13, v14);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v186, v187, a2, self, @"CKDRecordFetchAggregator.m", 462, @"Can't enqueue a new fetch after we've already finished");
   }
 
-  v17 = objc_msgSend_recordID(v9, v13, v14);
+  v17 = objc_msgSend_recordID(recordCopy, v13, v14);
   if (v17)
   {
     goto LABEL_4;
   }
 
-  v20 = objc_msgSend_record(v9, v15, v16);
+  v20 = objc_msgSend_record(recordCopy, v15, v16);
   v23 = objc_msgSend_recordID(v20, v21, v22);
 
   if (!v23)
@@ -756,7 +756,7 @@
 LABEL_4:
   }
 
-  v24 = objc_msgSend_recordID(v9, v18, v19);
+  v24 = objc_msgSend_recordID(recordCopy, v18, v19);
   v27 = v24;
   if (v24)
   {
@@ -765,7 +765,7 @@ LABEL_4:
 
   else
   {
-    v29 = objc_msgSend_record(v9, v25, v26);
+    v29 = objc_msgSend_record(recordCopy, v25, v26);
     v28 = objc_msgSend_recordID(v29, v30, v31);
   }
 
@@ -791,10 +791,10 @@ LABEL_4:
   objc_msgSend_setFetchOrder_(v35, v40, Order + 1);
   v191 = v28;
   objc_msgSend_setRecordID_(v35, v41, v28);
-  v44 = objc_msgSend_record(v9, v42, v43);
+  v44 = objc_msgSend_record(recordCopy, v42, v43);
   objc_msgSend_setRecord_(v35, v45, v44);
 
-  v48 = objc_msgSend_etag(v9, v46, v47);
+  v48 = objc_msgSend_etag(recordCopy, v46, v47);
   objc_msgSend_setEtag_(v35, v49, v48);
 
   v52 = objc_msgSend_forceDecryptionAttempt(self, v50, v51);
@@ -811,8 +811,8 @@ LABEL_4:
 
   if (v59)
   {
-    v188 = a4;
-    v189 = v10;
+    handleCopy = handle;
+    v189 = completionCopy;
     v72 = objc_msgSend_container(self, v70, v71);
     v75 = objc_msgSend_entitlements(v72, v73, v74);
     hasOutOfProcessUIEntitlement = objc_msgSend_hasOutOfProcessUIEntitlement(v75, v76, v77);
@@ -823,8 +823,8 @@ LABEL_4:
 
     else
     {
-      a4 = objc_msgSend_container(self, v78, v79);
-      v69 = objc_msgSend_entitlements(a4, v82, v83);
+      handle = objc_msgSend_container(self, v78, v79);
+      v69 = objc_msgSend_entitlements(handle, v82, v83);
       hasParticipantPIIEntitlement = objc_msgSend_hasParticipantPIIEntitlement(v69, v84, v85);
     }
 
@@ -840,23 +840,23 @@ LABEL_4:
     v96 = objc_msgSend_record(v35, v94, v95);
     objc_msgSend_setSerializeOwnerInfo_(v96, v97, shouldSerializeOwnerInfo);
 
-    a4 = v188;
-    v10 = v189;
+    handle = handleCopy;
+    completionCopy = v189;
   }
 
-  objc_msgSend_setCompletionBlock_(v35, v70, v10);
+  objc_msgSend_setCompletionBlock_(v35, v70, completionCopy);
   v100 = objc_msgSend_fetchGroup(self, v98, v99);
   dispatch_group_enter(v100);
 
   objc_msgSend_setState_(v35, v101, 1);
-  v104 = objc_msgSend_record(v9, v102, v103);
+  v104 = objc_msgSend_record(recordCopy, v102, v103);
   if (!v104)
   {
     goto LABEL_26;
   }
 
   v107 = v104;
-  v108 = objc_msgSend_record(v9, v105, v106);
+  v108 = objc_msgSend_record(recordCopy, v105, v106);
   if (objc_msgSend_containsAssetValues(v108, v109, v110))
   {
 LABEL_25:
@@ -864,28 +864,28 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v113 = v10;
-  v114 = objc_msgSend_record(v9, v111, v112);
+  v113 = completionCopy;
+  v114 = objc_msgSend_record(recordCopy, v111, v112);
   if (objc_msgSend_hasEncryptedData(v114, v115, v116) & 1) != 0 || (objc_msgSend_forceDecryptionAttempt(self, v117, v118))
   {
 
-    v10 = v113;
+    completionCopy = v113;
     goto LABEL_25;
   }
 
-  v165 = objc_msgSend_record(v9, v119, v120);
+  v165 = objc_msgSend_record(recordCopy, v119, v120);
   if (objc_msgSend_containsMergeableValues(v165, v166, v167))
   {
     MergeableValues = objc_msgSend_fetchMergeableValues(self, v168, v169);
 
-    v10 = v113;
+    completionCopy = v113;
     if ((MergeableValues & 1) == 0)
     {
       goto LABEL_52;
     }
 
 LABEL_26:
-    v123 = objc_msgSend_etag(v9, v105, v106);
+    v123 = objc_msgSend_etag(recordCopy, v105, v106);
     if (!v123)
     {
       goto LABEL_42;
@@ -899,8 +899,8 @@ LABEL_26:
       goto LABEL_42;
     }
 
-    v190 = v10;
-    v127 = a4;
+    v190 = completionCopy;
+    handleCopy2 = handle;
     v128 = objc_msgSend_container(self, v125, v126);
     v131 = objc_msgSend_recordCache(v128, v129, v130);
     v134 = objc_msgSend_databaseScope(self, v132, v133);
@@ -908,7 +908,7 @@ LABEL_26:
     v140 = objc_msgSend_desiredKeys(self, v138, v139);
     v142 = objc_msgSend_etagForRecordID_container_requiredKeys_scope_(v131, v141, v137, v128, v140, v134);
 
-    v145 = objc_msgSend_etag(v9, v143, v144);
+    v145 = objc_msgSend_etag(recordCopy, v143, v144);
     LODWORD(v140) = objc_msgSend_isEqualToString_(v142, v146, v145);
 
     if (!v140)
@@ -966,20 +966,20 @@ LABEL_26:
 LABEL_38:
 
 LABEL_41:
-    a4 = v127;
+    handle = handleCopy2;
 
-    v10 = v190;
+    completionCopy = v190;
     goto LABEL_42;
   }
 
-  v10 = v113;
+  completionCopy = v113;
 LABEL_52:
   objc_msgSend_setState_(v35, v105, 3);
   LOBYTE(v123) = 1;
 LABEL_42:
-  if (a4)
+  if (handle)
   {
-    *a4 = v123;
+    *handle = v123;
   }
 
   v162 = *MEMORY[0x277D85DE8];
@@ -987,17 +987,17 @@ LABEL_42:
   return v35;
 }
 
-- (void)fetchRecords:(id)a3 withPerRecordCompletion:(id)a4
+- (void)fetchRecords:(id)records withPerRecordCompletion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  recordsCopy = records;
+  completionCopy = completion;
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v9, v10);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = v7;
+  v12 = recordsCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v35, v39, 16);
   if (v14)
   {
@@ -1017,7 +1017,7 @@ LABEL_42:
 
         v21 = *(*(&v35 + 1) + 8 * i);
         v34 = 0;
-        v24 = objc_msgSend__fetchRecord_recordReadyHandle_withRecordCompletion_(self, v15, v21, &v34, v8, v33);
+        v24 = objc_msgSend__fetchRecord_recordReadyHandle_withRecordCompletion_(self, v15, v21, &v34, completionCopy, v33);
         if (!v24)
         {
           v25 = objc_msgSend_currentHandler(*(v19 + 2192), v22, v23);
@@ -1052,22 +1052,22 @@ LABEL_42:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7 = objc_msgSend_fetchAggregatorCompletionBlock(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_fetchAggregatorCompletionBlock(self, v8, v9);
-    (v10)[2](v10, v4);
+    (v10)[2](v10, errorCopy);
 
     objc_msgSend_setFetchAggregatorCompletionBlock_(self, v11, 0);
   }
 
   v12.receiver = self;
   v12.super_class = CKDRecordFetchAggregator;
-  [(CKDOperation *)&v12 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v12 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

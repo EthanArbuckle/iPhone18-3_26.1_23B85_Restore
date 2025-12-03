@@ -1,13 +1,13 @@
 @interface EKParticipantForSorting
 + (id)_cache;
-+ (id)participantForSortingWithEKParticipant:(id)a3;
-+ (id)participantsForSortingWithEKParticipants:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)participantForSortingWithEKParticipant:(id)participant;
++ (id)participantsForSortingWithEKParticipants:(id)participants;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)participant;
-- (int64_t)compare:(id)a3;
-- (int64_t)compareByContactNames:(id)a3;
-- (int64_t)compareByEmailThenByContactName:(id)a3;
+- (int64_t)compare:(id)compare;
+- (int64_t)compareByContactNames:(id)names;
+- (int64_t)compareByEmailThenByContactName:(id)name;
 @end
 
 @implementation EKParticipantForSorting
@@ -35,52 +35,52 @@ void __33__EKParticipantForSorting__cache__block_invoke()
   v2 = [v3 addObserverForName:*MEMORY[0x1E695C3D8] object:0 queue:0 usingBlock:&__block_literal_global_5];
 }
 
-+ (id)participantForSortingWithEKParticipant:(id)a3
++ (id)participantForSortingWithEKParticipant:(id)participant
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (participant)
   {
-    v11 = a3;
+    participantCopy = participant;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v11 count:1];
+    participantCopy2 = participant;
+    v6 = [v4 arrayWithObjects:&participantCopy count:1];
 
-    v7 = [a1 participantsForSortingWithEKParticipants:{v6, v11, v12}];
-    v8 = [v7 firstObject];
+    v7 = [self participantsForSortingWithEKParticipants:{v6, participantCopy, v12}];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return firstObject;
 }
 
-+ (id)participantsForSortingWithEKParticipants:(id)a3
++ (id)participantsForSortingWithEKParticipants:(id)participants
 {
   v71[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  participantsCopy = participants;
+  v6 = [v4 dictionaryWithCapacity:{objc_msgSend(participantsCopy, "count")}];
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(participantsCopy, "count")}];
   v8 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v65[0] = MEMORY[0x1E69E9820];
   v65[1] = 3221225472;
   v65[2] = __68__EKParticipantForSorting_participantsForSortingWithEKParticipants___block_invoke;
   v65[3] = &unk_1E77FDA30;
-  v57 = a1;
-  v69 = a1;
+  selfCopy = self;
+  selfCopy2 = self;
   v9 = v7;
   v66 = v9;
   v10 = v8;
   v67 = v10;
   v11 = v6;
   v68 = v11;
-  [v5 enumerateObjectsUsingBlock:v65];
-  v12 = [v5 mutableCopy];
+  [participantsCopy enumerateObjectsUsingBlock:v65];
+  v12 = [participantsCopy mutableCopy];
 
   v55 = v10;
   [v12 removeObjectsAtIndexes:v10];
@@ -90,11 +90,11 @@ void __33__EKParticipantForSorting__cache__block_invoke()
   v71[0] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:1];
 
-  v16 = [MEMORY[0x1E6992F50] defaultProvider];
+  defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
   v60 = v11;
-  v17 = [v11 allValues];
+  allValues = [v11 allValues];
   v53 = v15;
-  v58 = [v16 unifiedContactsDictionaryForHandleStrings:v17 keysToFetch:v15];
+  v58 = [defaultProvider unifiedContactsDictionaryForHandleStrings:allValues keysToFetch:v15];
 
   v63 = 0u;
   v64 = 0u;
@@ -121,71 +121,71 @@ void __33__EKParticipantForSorting__cache__block_invoke()
         if (v23)
         {
           v24 = [v58 objectForKeyedSubscript:v23];
-          v25 = [v24 firstObject];
+          firstObject = [v24 firstObject];
         }
 
         else
         {
-          v25 = 0;
+          firstObject = 0;
         }
 
-        v26 = [v22 name];
-        v27 = [v26 cal_isPhoneNumber];
+        name = [v22 name];
+        cal_isPhoneNumber = [name cal_isPhoneNumber];
 
-        if (!v25 && (v27 & 1) == 0)
+        if (!firstObject && (cal_isPhoneNumber & 1) == 0)
         {
-          v25 = objc_opt_new();
+          firstObject = objc_opt_new();
           v28 = MEMORY[0x1E6993018];
-          v29 = [v22 name];
-          v30 = [v28 personNameComponentsFromString:v29];
+          name2 = [v22 name];
+          v30 = [v28 personNameComponentsFromString:name2];
 
-          v31 = [v30 nickname];
-          if (v31)
+          nickname = [v30 nickname];
+          if (nickname)
           {
-            [v25 setNickname:v31];
+            [firstObject setNickname:nickname];
           }
 
-          v32 = [v30 familyName];
+          familyName = [v30 familyName];
 
-          if (v32)
+          if (familyName)
           {
-            [v25 setFamilyName:v32];
+            [firstObject setFamilyName:familyName];
           }
 
-          v33 = [v30 givenName];
+          givenName = [v30 givenName];
 
-          if (v33)
+          if (givenName)
           {
-            [v25 setGivenName:v33];
+            [firstObject setGivenName:givenName];
           }
 
-          v34 = [v30 namePrefix];
+          namePrefix = [v30 namePrefix];
 
-          if (v34)
+          if (namePrefix)
           {
-            [v25 setNamePrefix:v34];
+            [firstObject setNamePrefix:namePrefix];
           }
 
-          v35 = [v30 nameSuffix];
+          nameSuffix = [v30 nameSuffix];
 
-          if (v35)
+          if (nameSuffix)
           {
-            [v25 setNameSuffix:v35];
+            [firstObject setNameSuffix:nameSuffix];
           }
 
-          v36 = [v30 middleName];
+          middleName = [v30 middleName];
 
-          if (v36)
+          if (middleName)
           {
-            [v25 setMiddleName:v36];
+            [firstObject setMiddleName:middleName];
           }
 
           v9 = v59;
         }
 
-        if (v25)
+        if (firstObject)
         {
-          [MEMORY[0x1E695CD80] stringFromContact:v25 style:0];
+          [MEMORY[0x1E695CD80] stringFromContact:firstObject style:0];
         }
 
         else
@@ -198,7 +198,7 @@ void __33__EKParticipantForSorting__cache__block_invoke()
         if (v37)
         {
           [(EKParticipantForSorting *)v38 setCachedDisplayName:v37];
-          if (v27)
+          if (cal_isPhoneNumber)
           {
             goto LABEL_40;
           }
@@ -206,56 +206,56 @@ void __33__EKParticipantForSorting__cache__block_invoke()
 
         else
         {
-          v40 = [v22 name];
+          name3 = [v22 name];
 
-          if (v40)
+          if (name3)
           {
-            v41 = [v22 name];
-            [p_isa setCachedDisplayName:v41];
+            name4 = [v22 name];
+            [p_isa setCachedDisplayName:name4];
           }
 
           else
           {
-            v42 = [v22 emailAddress];
+            emailAddress = [v22 emailAddress];
 
-            if (v42)
+            if (emailAddress)
             {
-              v43 = [v22 emailAddress];
-              [p_isa setCachedDisplayName:v43];
+              emailAddress2 = [v22 emailAddress];
+              [p_isa setCachedDisplayName:emailAddress2];
 
               [p_isa setIsEmail:1];
             }
 
             else
             {
-              v44 = [v22 phoneNumber];
-              [p_isa setCachedDisplayName:v44];
+              phoneNumber = [v22 phoneNumber];
+              [p_isa setCachedDisplayName:phoneNumber];
 
               [p_isa setIsPhone:1];
             }
           }
 
           v9 = v59;
-          if (v27)
+          if (cal_isPhoneNumber)
           {
             goto LABEL_40;
           }
         }
 
-        v45 = [v25 givenName];
+        givenName2 = [firstObject givenName];
 
-        if (v45)
+        if (givenName2)
         {
-          v46 = [v25 givenName];
-          [p_isa setFirstName:v46];
+          givenName3 = [firstObject givenName];
+          [p_isa setFirstName:givenName3];
         }
 
-        v47 = [v25 familyName];
+        familyName2 = [firstObject familyName];
 
-        if (v47)
+        if (familyName2)
         {
-          v48 = [v25 familyName];
-          [p_isa setLastName:v48];
+          familyName3 = [firstObject familyName];
+          [p_isa setLastName:familyName3];
         }
 
 LABEL_40:
@@ -263,8 +263,8 @@ LABEL_40:
         [v9 addObject:p_isa];
         if (v23)
         {
-          v49 = [v57 _cache];
-          [v49 setObject:p_isa forKey:v23];
+          _cache = [selfCopy _cache];
+          [_cache setObject:p_isa forKey:v23];
         }
       }
 
@@ -345,28 +345,28 @@ LABEL_10:
 
 - (id)participant
 {
-  v3 = [objc_opt_class() _cache];
-  objc_sync_enter(v3);
+  _cache = [objc_opt_class() _cache];
+  objc_sync_enter(_cache);
   WeakRetained = objc_loadWeakRetained(&self->_participant);
-  objc_sync_exit(v3);
+  objc_sync_exit(_cache);
 
   return WeakRetained;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   WeakRetained = objc_loadWeakRetained(&self->_participant);
   v6 = [(EKParticipantForSorting *)self participantIsOptional:WeakRetained];
 
-  v7 = [v4 participant];
-  v8 = [(EKParticipantForSorting *)self participantIsOptional:v7];
+  participant = [compareCopy participant];
+  v8 = [(EKParticipantForSorting *)self participantIsOptional:participant];
 
   if (!v6 || v8)
   {
     if (v6 || !v8)
     {
-      v9 = [(EKParticipantForSorting *)self compareByEmailThenByContactName:v4];
+      v9 = [(EKParticipantForSorting *)self compareByEmailThenByContactName:compareCopy];
     }
 
     else
@@ -383,13 +383,13 @@ LABEL_10:
   return v9;
 }
 
-- (int64_t)compareByEmailThenByContactName:(id)a3
+- (int64_t)compareByEmailThenByContactName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
+  nameCopy = name;
+  v5 = nameCopy;
   if (self->_isEmail)
   {
-    if (![v4 isEmail])
+    if (![nameCopy isEmail])
     {
       v6 = 1;
       goto LABEL_11;
@@ -400,9 +400,9 @@ LABEL_10:
 LABEL_7:
       if ([v5 isEmail])
       {
-        v7 = [(EKParticipantForSorting *)self displayName];
-        v8 = [v5 displayName];
-        v6 = [v7 compare:v8 options:1];
+        displayName = [(EKParticipantForSorting *)self displayName];
+        displayName2 = [v5 displayName];
+        v6 = [displayName compare:displayName2 options:1];
 
         goto LABEL_11;
       }
@@ -429,41 +429,41 @@ LABEL_11:
   return v6;
 }
 
-- (int64_t)compareByContactNames:(id)a3
+- (int64_t)compareByContactNames:(id)names
 {
   v4 = MEMORY[0x1E695CE40];
-  v5 = a3;
-  v6 = [v4 sharedDefaults];
-  v7 = [v6 sortOrder];
+  namesCopy = names;
+  sharedDefaults = [v4 sharedDefaults];
+  sortOrder = [sharedDefaults sortOrder];
 
-  if (v7 == 2)
+  if (sortOrder == 2)
   {
     v8 = self->_firstName;
     v9 = self->_lastName;
-    v10 = [v5 firstName];
-    [v5 lastName];
+    firstName = [namesCopy firstName];
+    [namesCopy lastName];
   }
 
   else
   {
     v8 = self->_lastName;
     v9 = self->_firstName;
-    v10 = [v5 lastName];
-    [v5 firstName];
+    firstName = [namesCopy lastName];
+    [namesCopy firstName];
   }
   v11 = ;
 
-  if (!v8 && v10)
+  if (!v8 && firstName)
   {
     goto LABEL_6;
   }
 
-  if (v8 && !v10)
+  if (v8 && !firstName)
   {
     goto LABEL_9;
   }
 
-  if (!v8 || !v10 || (v12 = [(NSString *)v8 compare:v10 options:1]) == NSOrderedSame)
+  if (!v8 || !firstName || (v12 = [(NSString *)v8 compare:firstName options:1]) == NSOrderedSame)
   {
     if (!v9 && v11)
     {
@@ -491,7 +491,7 @@ LABEL_20:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[EKParticipantForSorting allocWithZone:?]];
   [(EKParticipantForSorting *)v4 setFirstName:self->_firstName];

@@ -1,28 +1,28 @@
 @interface MRAVRoutingClientController
-- (MRAVRoutingClientController)initWithMediaRemoteService:(id)a3;
-- (void)_cacheFetchedPickableRoutes:(void *)a3 forCategory:;
-- (void)_flushPendingCompletionHandlersWithPickableRoutes:(void *)a3 forCategory:;
-- (void)_pickableRoutesDidChangeNotification:(id)a3;
+- (MRAVRoutingClientController)initWithMediaRemoteService:(id)service;
+- (void)_cacheFetchedPickableRoutes:(void *)routes forCategory:;
+- (void)_flushPendingCompletionHandlersWithPickableRoutes:(void *)routes forCategory:;
+- (void)_pickableRoutesDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)fetchPickableRoutesForCategory:(id)a3 completion:(id)a4;
+- (void)fetchPickableRoutesForCategory:(id)category completion:(id)completion;
 @end
 
 @implementation MRAVRoutingClientController
 
-- (MRAVRoutingClientController)initWithMediaRemoteService:(id)a3
+- (MRAVRoutingClientController)initWithMediaRemoteService:(id)service
 {
-  v6 = a3;
+  serviceCopy = service;
   v22.receiver = self;
   v22.super_class = MRAVRoutingClientController;
   v7 = [(MRAVRoutingClientController *)&v22 init];
   if (v7)
   {
-    if (!v6)
+    if (!serviceCopy)
     {
       [(MRAVRoutingClientController *)a2 initWithMediaRemoteService:v7];
     }
 
-    objc_storeStrong(&v7->_mediaRemoteService, a3);
+    objc_storeStrong(&v7->_mediaRemoteService, service);
     v8 = objc_opt_class();
     Name = class_getName(v8);
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -43,8 +43,8 @@
     cachedRoutesForCategories = v7->_cachedRoutesForCategories;
     v7->_cachedRoutesForCategories = v18;
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v7 selector:sel__pickableRoutesDidChangeNotification_ name:@"kMRMediaRemotePickableRoutesDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__pickableRoutesDidChangeNotification_ name:@"kMRMediaRemotePickableRoutesDidChangeNotification" object:0];
   }
 
   return v7;
@@ -52,33 +52,33 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MRAVRoutingClientController;
   [(MRAVRoutingClientController *)&v4 dealloc];
 }
 
-- (void)fetchPickableRoutesForCategory:(id)a3 completion:(id)a4
+- (void)fetchPickableRoutesForCategory:(id)category completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__MRAVRoutingClientController_fetchPickableRoutesForCategory_completion___block_invoke;
   block[3] = &unk_1E769E410;
-  if (!v6)
+  if (!categoryCopy)
   {
-    v6 = @"MRAVRoutingActiveCategoryName";
+    categoryCopy = @"MRAVRoutingActiveCategoryName";
   }
 
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = categoryCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = categoryCopy;
   dispatch_sync(serialQueue, block);
 }
 
@@ -147,13 +147,13 @@ void __73__MRAVRoutingClientController_fetchPickableRoutesForCategory_completion
   [(MRAVRoutingClientController *)*(a1 + 32) _flushPendingCompletionHandlersWithPickableRoutes:a2 forCategory:*(a1 + 40)];
 }
 
-- (void)_flushPendingCompletionHandlersWithPickableRoutes:(void *)a3 forCategory:
+- (void)_flushPendingCompletionHandlersWithPickableRoutes:(void *)routes forCategory:
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  routesCopy = routes;
+  v7 = routesCopy;
+  if (self)
   {
     v21 = 0;
     v22 = &v21;
@@ -161,13 +161,13 @@ void __73__MRAVRoutingClientController_fetchPickableRoutesForCategory_completion
     v24 = __Block_byref_object_copy__29;
     v25 = __Block_byref_object_dispose__29;
     v26 = 0;
-    v8 = *(a1 + 16);
+    v8 = *(self + 16);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __93__MRAVRoutingClientController__flushPendingCompletionHandlersWithPickableRoutes_forCategory___block_invoke;
     block[3] = &unk_1E769D1B8;
-    block[4] = a1;
-    v19 = v6;
+    block[4] = self;
+    v19 = routesCopy;
     v20 = &v21;
     dispatch_sync(v8, block);
     if (!v5)
@@ -211,7 +211,7 @@ void __73__MRAVRoutingClientController_fetchPickableRoutesForCategory_completion
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_pickableRoutesDidChangeNotification:(id)a3
+- (void)_pickableRoutesDidChangeNotification:(id)notification
 {
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -248,20 +248,20 @@ void __93__MRAVRoutingClientController__flushPendingCompletionHandlersWithPickab
   [v5 removeAllObjects];
 }
 
-- (void)_cacheFetchedPickableRoutes:(void *)a3 forCategory:
+- (void)_cacheFetchedPickableRoutes:(void *)routes forCategory:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  routesCopy = routes;
+  if (self)
   {
-    v7 = *(a1 + 16);
+    v7 = *(self + 16);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __71__MRAVRoutingClientController__cacheFetchedPickableRoutes_forCategory___block_invoke;
     block[3] = &unk_1E769BA00;
     v9 = v5;
-    v10 = a1;
-    v11 = v6;
+    selfCopy = self;
+    v11 = routesCopy;
     dispatch_sync(v7, block);
   }
 }

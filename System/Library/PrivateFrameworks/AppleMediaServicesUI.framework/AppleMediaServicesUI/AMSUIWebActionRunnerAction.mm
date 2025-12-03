@@ -1,20 +1,20 @@
 @interface AMSUIWebActionRunnerAction
-- (AMSUIWebActionRunnerAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebActionRunnerAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebActionRunnerAction
 
-- (AMSUIWebActionRunnerAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebActionRunnerAction)initWithJSObject:(id)object context:(id)context
 {
-  v7 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = AMSUIWebActionRunnerAction;
-  v8 = [(AMSUIWebAction *)&v11 initWithJSObject:v7 context:a4];
+  v8 = [(AMSUIWebAction *)&v11 initWithJSObject:objectCopy context:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_actionPayload, a3);
+    objc_storeStrong(&v8->_actionPayload, object);
   }
 
   return v9;
@@ -25,15 +25,15 @@
   v28 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = AMSUIWebActionRunnerAction;
-  v3 = [(AMSUIWebAction *)&v23 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v23 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -41,24 +41,24 @@
     v25 = v6;
     v26 = 2114;
     v27 = v7;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Deferring action to UIActionRunner", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Deferring action to UIActionRunner", buf, 0x16u);
   }
 
-  v8 = [(AMSUIWebAction *)self context];
-  v9 = [v8 flowController];
-  v10 = [v9 currentContainer];
+  context = [(AMSUIWebAction *)self context];
+  flowController = [context flowController];
+  currentContainer = [flowController currentContainer];
 
   v11 = [AMSUIActionContext alloc];
-  v12 = [(AMSUIWebAction *)self context];
-  v13 = [v12 account];
-  v14 = [(AMSUIWebAction *)self context];
-  v15 = [v14 bag];
-  v16 = [(AMSUIWebAction *)self context];
-  v17 = [v16 clientInfo];
-  v18 = [(AMSUIActionContext *)v11 initWithAccount:v13 bag:v15 presentingViewController:v10 processInfo:v17];
+  context2 = [(AMSUIWebAction *)self context];
+  account = [context2 account];
+  context3 = [(AMSUIWebAction *)self context];
+  v15 = [context3 bag];
+  context4 = [(AMSUIWebAction *)self context];
+  clientInfo = [context4 clientInfo];
+  v18 = [(AMSUIActionContext *)v11 initWithAccount:account bag:v15 presentingViewController:currentContainer processInfo:clientInfo];
 
-  v19 = [(AMSUIWebActionRunnerAction *)self actionPayload];
-  v20 = [AMSUIActionRunner handle:v19 context:v18];
+  actionPayload = [(AMSUIWebActionRunnerAction *)self actionPayload];
+  v20 = [AMSUIActionRunner handle:actionPayload context:v18];
 
   v21 = *MEMORY[0x1E69E9840];
 

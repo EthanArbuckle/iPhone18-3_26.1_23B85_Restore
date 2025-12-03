@@ -1,35 +1,35 @@
 @interface PXActivityUtilities
-+ (id)_initialsFromGivenName:(id)a3 familyName:(id)a4;
++ (id)_initialsFromGivenName:(id)name familyName:(id)familyName;
 + (id)sharedWorkQueue;
-+ (id)textForDate:(id)a3;
-+ (void)_requestContactMatchingEmail:(id)a3 orPhone:(id)a4 withFirstName:(id)a5 lastName:(id)a6 keysToFetch:(id)a7 withCompletion:(id)a8;
-+ (void)_requestImageForContact:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 isRTL:(BOOL)a6 deliverOnce:(BOOL)a7 completion:(id)a8;
-+ (void)_requestPlaceholderMonogramWithTargetSize:(CGSize)a3 displayScale:(double)a4 completion:(id)a5;
-+ (void)requestImageForContact:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 isRTL:(BOOL)a6 deliverOnce:(BOOL)a7 completion:(id)a8;
-+ (void)requestImageFromPeopleAlbumForPerson:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 highQualityFormat:(BOOL)a6 completion:(id)a7;
-+ (void)requestMeContactForKeys:(id)a3 completionHandler:(id)a4;
-+ (void)requestMeContactWithCompletion:(id)a3;
-+ (void)requestMonogramForEmailAddress:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 isRTL:(BOOL)a6 completion:(id)a7;
-+ (void)requestMonogramForGivenName:(id)a3 familyName:(id)a4 targetSize:(CGSize)a5 displayScale:(double)a6 isRTL:(BOOL)a7 completion:(id)a8;
-+ (void)requestPersonImageWithTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 matchingEmail:(id)a6 orPhone:(id)a7 withFirstName:(id)a8 lastName:(id)a9 prefersPhotosImage:(BOOL)a10 withCompletion:(id)a11;
++ (id)textForDate:(id)date;
++ (void)_requestContactMatchingEmail:(id)email orPhone:(id)phone withFirstName:(id)name lastName:(id)lastName keysToFetch:(id)fetch withCompletion:(id)completion;
++ (void)_requestImageForContact:(id)contact targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l deliverOnce:(BOOL)once completion:(id)completion;
++ (void)_requestPlaceholderMonogramWithTargetSize:(CGSize)size displayScale:(double)scale completion:(id)completion;
++ (void)requestImageForContact:(id)contact targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l deliverOnce:(BOOL)once completion:(id)completion;
++ (void)requestImageFromPeopleAlbumForPerson:(id)person targetSize:(CGSize)size displayScale:(double)scale highQualityFormat:(BOOL)format completion:(id)completion;
++ (void)requestMeContactForKeys:(id)keys completionHandler:(id)handler;
++ (void)requestMeContactWithCompletion:(id)completion;
++ (void)requestMonogramForEmailAddress:(id)address targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l completion:(id)completion;
++ (void)requestMonogramForGivenName:(id)name familyName:(id)familyName targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l completion:(id)completion;
++ (void)requestPersonImageWithTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l matchingEmail:(id)email orPhone:(id)phone withFirstName:(id)name lastName:(id)lastName prefersPhotosImage:(BOOL)self0 withCompletion:(id)self1;
 @end
 
 @implementation PXActivityUtilities
 
-+ (id)_initialsFromGivenName:(id)a3 familyName:(id)a4
++ (id)_initialsFromGivenName:(id)name familyName:(id)familyName
 {
   v5 = _initialsFromGivenName_familyName__onceToken;
-  v6 = a4;
-  v7 = a3;
+  familyNameCopy = familyName;
+  nameCopy = name;
   if (v5 != -1)
   {
     dispatch_once(&_initialsFromGivenName_familyName__onceToken, &__block_literal_global_238);
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  [v8 setGivenName:v7];
+  [v8 setGivenName:nameCopy];
 
-  [v8 setFamilyName:v6];
+  [v8 setFamilyName:familyNameCopy];
   v9 = [_initialsFromGivenName_familyName__formatter stringFromPersonNameComponents:v8];
   if ([(__CFString *)v9 length])
   {
@@ -57,52 +57,52 @@ uint64_t __57__PXActivityUtilities__initialsFromGivenName_familyName___block_inv
   return [v2 setStyle:4];
 }
 
-+ (id)textForDate:(id)a3
++ (id)textForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[PXFeedDateFormatter defaultFeedSectionDateFormatter];
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:dateCopy];
 
   return v5;
 }
 
-+ (void)requestPersonImageWithTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 matchingEmail:(id)a6 orPhone:(id)a7 withFirstName:(id)a8 lastName:(id)a9 prefersPhotosImage:(BOOL)a10 withCompletion:(id)a11
++ (void)requestPersonImageWithTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l matchingEmail:(id)email orPhone:(id)phone withFirstName:(id)name lastName:(id)lastName prefersPhotosImage:(BOOL)self0 withCompletion:(id)self1
 {
-  height = a3.height;
-  width = a3.width;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a11;
-  if (!v25)
+  height = size.height;
+  width = size.width;
+  emailCopy = email;
+  phoneCopy = phone;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:314 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:314 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v26 = [a1 sharedWorkQueue];
+  sharedWorkQueue = [self sharedWorkQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __154__PXActivityUtilities_requestPersonImageWithTargetSize_displayScale_isRTL_matchingEmail_orPhone_withFirstName_lastName_prefersPhotosImage_withCompletion___block_invoke;
   block[3] = &unk_1E7730B20;
-  v34 = v21;
-  v35 = v22;
-  v36 = v23;
-  v37 = v24;
-  v43 = a10;
+  v34 = emailCopy;
+  v35 = phoneCopy;
+  v36 = nameCopy;
+  v37 = lastNameCopy;
+  imageCopy = image;
   v40 = width;
   v41 = height;
-  v42 = a4;
-  v38 = v25;
-  v39 = a1;
-  v44 = a5;
-  v27 = v25;
-  v28 = v24;
-  v29 = v23;
-  v30 = v22;
-  v31 = v21;
-  dispatch_async(v26, block);
+  scaleCopy = scale;
+  v38 = completionCopy;
+  selfCopy = self;
+  lCopy = l;
+  v27 = completionCopy;
+  v28 = lastNameCopy;
+  v29 = nameCopy;
+  v30 = phoneCopy;
+  v31 = emailCopy;
+  dispatch_async(sharedWorkQueue, block);
 }
 
 void __154__PXActivityUtilities_requestPersonImageWithTargetSize_displayScale_isRTL_matchingEmail_orPhone_withFirstName_lastName_prefersPhotosImage_withCompletion___block_invoke(uint64_t a1)
@@ -345,48 +345,48 @@ uint64_t __154__PXActivityUtilities_requestPersonImageWithTargetSize_displayScal
   return (*(*(a1 + 56) + 16))(*off_1E77221F8, *(off_1E77221F8 + 1), *(off_1E77221F8 + 2), *(off_1E77221F8 + 3));
 }
 
-+ (void)_requestPlaceholderMonogramWithTargetSize:(CGSize)a3 displayScale:(double)a4 completion:(id)a5
++ (void)_requestPlaceholderMonogramWithTargetSize:(CGSize)size displayScale:(double)scale completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x1E695D098];
-  v9 = a5;
+  completionCopy = completion;
   v10 = [v8 alloc];
-  v11 = [MEMORY[0x1E695D0A8] defaultSettings];
-  v14 = [v10 initWithSettings:v11];
+  defaultSettings = [MEMORY[0x1E695D0A8] defaultSettings];
+  v14 = [v10 initWithSettings:defaultSettings];
 
-  v12 = [v14 placeholderImageProvider];
-  v13 = [v12 imageForSize:0 scale:width style:{height, a4}];
+  placeholderImageProvider = [v14 placeholderImageProvider];
+  v13 = [placeholderImageProvider imageForSize:0 scale:width style:{height, scale}];
 
-  v9[2](v9, v13);
+  completionCopy[2](completionCopy, v13);
 }
 
-+ (void)requestMonogramForGivenName:(id)a3 familyName:(id)a4 targetSize:(CGSize)a5 displayScale:(double)a6 isRTL:(BOOL)a7 completion:(id)a8
++ (void)requestMonogramForGivenName:(id)name familyName:(id)familyName targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l completion:(id)completion
 {
-  v9 = a7;
-  height = a5.height;
-  width = a5.width;
-  v16 = a4;
-  v17 = a8;
-  v18 = a3;
-  if (![v18 length] && !objc_msgSend(v16, "length"))
+  lCopy = l;
+  height = size.height;
+  width = size.width;
+  familyNameCopy = familyName;
+  completionCopy = completion;
+  nameCopy = name;
+  if (![nameCopy length] && !objc_msgSend(familyNameCopy, "length"))
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"givenName.length || familyName.length"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"givenName.length || familyName.length"}];
 
-    if (v17)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_6:
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
     goto LABEL_4;
   }
 
-  if (!v17)
+  if (!completionCopy)
   {
     goto LABEL_6;
   }
@@ -396,15 +396,15 @@ LABEL_4:
   aBlock[1] = 3221225472;
   aBlock[2] = __103__PXActivityUtilities_requestMonogramForGivenName_familyName_targetSize_displayScale_isRTL_completion___block_invoke;
   aBlock[3] = &unk_1E7730A58;
-  v30 = v17;
-  v19 = v17;
+  v30 = completionCopy;
+  v19 = completionCopy;
   v20 = _Block_copy(aBlock);
-  v21 = [MEMORY[0x1E695D0B0] scopeWithPointSize:v9 scale:0 rightToLeft:width style:{height, a6}];
+  v21 = [MEMORY[0x1E695D0B0] scopeWithPointSize:lCopy scale:0 rightToLeft:width style:{height, scale}];
   v22 = objc_alloc(MEMORY[0x1E695D098]);
-  v23 = [MEMORY[0x1E695D0A8] defaultSettings];
-  v24 = [v22 initWithSettings:v23];
+  defaultSettings = [MEMORY[0x1E695D0A8] defaultSettings];
+  v24 = [v22 initWithSettings:defaultSettings];
 
-  v25 = [a1 _initialsFromGivenName:v18 familyName:v16];
+  v25 = [self _initialsFromGivenName:nameCopy familyName:familyNameCopy];
 
   v26 = [v24 renderMonogramForString:v25 scope:v21 imageHandler:v20];
 }
@@ -417,16 +417,16 @@ void __103__PXActivityUtilities_requestMonogramForGivenName_familyName_targetSiz
   px_dispatch_on_main_queue();
 }
 
-+ (void)requestMonogramForEmailAddress:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 isRTL:(BOOL)a6 completion:(id)a7
++ (void)requestMonogramForEmailAddress:(id)address targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l completion:(id)completion
 {
-  v8 = a6;
-  height = a4.height;
-  width = a4.width;
-  v17 = a3;
-  v14 = a7;
-  if ([v17 length])
+  lCopy = l;
+  height = size.height;
+  width = size.width;
+  addressCopy = address;
+  completionCopy = completion;
+  if ([addressCopy length])
   {
-    if (v14)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -434,33 +434,33 @@ void __103__PXActivityUtilities_requestMonogramForGivenName_familyName_targetSiz
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"emailAddress.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"emailAddress.length > 0"}];
 
-    if (v14)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
-  [PXActivityUtilities requestMonogramForGivenName:v17 familyName:0 targetSize:v8 displayScale:v14 isRTL:width completion:height, a5];
+  [PXActivityUtilities requestMonogramForGivenName:addressCopy familyName:0 targetSize:lCopy displayScale:completionCopy isRTL:width completion:height, scale];
 }
 
-+ (void)requestImageForContact:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 isRTL:(BOOL)a6 deliverOnce:(BOOL)a7 completion:(id)a8
++ (void)requestImageForContact:(id)contact targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l deliverOnce:(BOOL)once completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v16 = a3;
-  v17 = a8;
-  v18 = v17;
-  if (!v16)
+  height = size.height;
+  width = size.width;
+  contactCopy = contact;
+  completionCopy = completion;
+  v18 = completionCopy;
+  if (!contactCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
 
     if (v18)
     {
@@ -468,34 +468,34 @@ LABEL_3:
     }
 
 LABEL_5:
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
     goto LABEL_3;
   }
 
-  if (!v17)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v19 = [a1 sharedWorkQueue];
+  sharedWorkQueue = [self sharedWorkQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __99__PXActivityUtilities_requestImageForContact_targetSize_displayScale_isRTL_deliverOnce_completion___block_invoke;
   block[3] = &unk_1E7730A80;
   v26 = v18;
-  v27 = a1;
+  selfCopy = self;
   v28 = width;
   v29 = height;
-  v30 = a5;
-  v31 = a6;
-  v32 = a7;
-  v25 = v16;
+  scaleCopy = scale;
+  lCopy = l;
+  onceCopy = once;
+  v25 = contactCopy;
   v20 = v18;
-  v21 = v16;
-  dispatch_async(v19, block);
+  v21 = contactCopy;
+  dispatch_async(sharedWorkQueue, block);
 }
 
 void __99__PXActivityUtilities_requestImageForContact_targetSize_displayScale_isRTL_deliverOnce_completion___block_invoke(uint64_t a1)
@@ -530,19 +530,19 @@ void __99__PXActivityUtilities_requestImageForContact_targetSize_displayScale_is
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-+ (void)_requestImageForContact:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 isRTL:(BOOL)a6 deliverOnce:(BOOL)a7 completion:(id)a8
++ (void)_requestImageForContact:(id)contact targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l deliverOnce:(BOOL)once completion:(id)completion
 {
-  v9 = a7;
-  v10 = a6;
-  height = a4.height;
-  width = a4.width;
+  onceCopy = once;
+  lCopy = l;
+  height = size.height;
+  width = size.width;
   v56[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a8;
-  v18 = v17;
-  if (v16)
+  contactCopy = contact;
+  completionCopy = completion;
+  v18 = completionCopy;
+  if (contactCopy)
   {
-    if (v17)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -550,8 +550,8 @@ void __99__PXActivityUtilities_requestImageForContact_targetSize_displayScale_is
 
   else
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
 
     if (v18)
     {
@@ -559,21 +559,21 @@ void __99__PXActivityUtilities_requestImageForContact_targetSize_displayScale_is
     }
   }
 
-  v39 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v39 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
   v19 = *MEMORY[0x1E695C400];
-  if (([v16 isKeyAvailable:*MEMORY[0x1E695C400]]& 1) == 0)
+  if (([contactCopy isKeyAvailable:*MEMORY[0x1E695C400]]& 1) == 0)
   {
-    v20 = [v16 identifier];
+    identifier = [contactCopy identifier];
     v21 = objc_alloc(MEMORY[0x1E695CD78]);
     v56[0] = v19;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
     v23 = [v21 initWithKeysToFetch:v22];
 
     v24 = MEMORY[0x1E695CD58];
-    v55 = v20;
+    v55 = identifier;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
     v26 = [v24 predicateForContactsWithIdentifiers:v25];
     [v23 setPredicate:v26];
@@ -594,8 +594,8 @@ LABEL_3:
     v28 = v44[5];
     if (v28)
     {
-      v29 = v16;
-      v16 = v28;
+      v29 = contactCopy;
+      contactCopy = v28;
     }
 
     else
@@ -604,9 +604,9 @@ LABEL_3:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v52 = v20;
+        v52 = identifier;
         v53 = 2112;
-        v54 = v16;
+        v54 = contactCopy;
         _os_log_impl(&dword_1A3C1C000, v29, OS_LOG_TYPE_ERROR, "Contact %{public}@ was missing thumbnail image data key, and refetching contact by identifier for that key returned nil. Attempting with original contact: %@", buf, 0x16u);
       }
     }
@@ -615,13 +615,13 @@ LABEL_3:
   }
 
   v30 = objc_alloc(MEMORY[0x1E695D098]);
-  v31 = [MEMORY[0x1E695D0A8] defaultSettings];
-  v32 = [v30 initWithSettings:v31];
+  defaultSettings = [MEMORY[0x1E695D0A8] defaultSettings];
+  v32 = [v30 initWithSettings:defaultSettings];
 
-  v33 = [MEMORY[0x1E695D0B0] scopeWithPointSize:v10 scale:0 rightToLeft:width style:{height, a5}];
-  if (v9)
+  v33 = [MEMORY[0x1E695D0B0] scopeWithPointSize:lCopy scale:0 rightToLeft:width style:{height, scale}];
+  if (onceCopy)
   {
-    v50 = v16;
+    v50 = contactCopy;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
     v35 = [v32 avatarImageForContacts:v34 scope:v33];
 
@@ -630,7 +630,7 @@ LABEL_3:
 
   else
   {
-    v49 = v16;
+    v49 = contactCopy;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
@@ -643,17 +643,17 @@ LABEL_3:
   }
 }
 
-+ (void)requestImageFromPeopleAlbumForPerson:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 highQualityFormat:(BOOL)a6 completion:(id)a7
++ (void)requestImageFromPeopleAlbumForPerson:(id)person targetSize:(CGSize)size displayScale:(double)scale highQualityFormat:(BOOL)format completion:(id)completion
 {
-  v8 = a6;
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a7;
-  v16 = v15;
-  if (v14)
+  formatCopy = format;
+  height = size.height;
+  width = size.width;
+  personCopy = person;
+  completionCopy = completion;
+  v16 = completionCopy;
+  if (personCopy)
   {
-    if (v15)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -661,8 +661,8 @@ LABEL_3:
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"person"}];
 
     if (v16)
     {
@@ -670,15 +670,15 @@ LABEL_3:
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
-  v17 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:v14 targetSize:width displayScale:height, a5];
-  v18 = v17;
-  if (v8)
+  scale = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:personCopy targetSize:width displayScale:height, scale];
+  v18 = scale;
+  if (formatCopy)
   {
-    [(PXPeopleFaceCropFetchOptions *)v17 setDeliveryMode:1];
+    [(PXPeopleFaceCropFetchOptions *)scale setDeliveryMode:1];
   }
 
   v19 = +[PXPeopleFaceCropManager sharedManager];
@@ -716,17 +716,17 @@ void __113__PXActivityUtilities_requestImageFromPeopleAlbumForPerson_targetSize_
   (*(v2 + 16))(v2, v3, v12, v13, v5, v7, v9, v11);
 }
 
-+ (void)_requestContactMatchingEmail:(id)a3 orPhone:(id)a4 withFirstName:(id)a5 lastName:(id)a6 keysToFetch:(id)a7 withCompletion:(id)a8
++ (void)_requestContactMatchingEmail:(id)email orPhone:(id)phone withFirstName:(id)name lastName:(id)lastName keysToFetch:(id)fetch withCompletion:(id)completion
 {
   v88[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  emailCopy = email;
+  phoneCopy = phone;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  fetchCopy = fetch;
+  completionCopy = completion;
   v19 = +[PXPeopleUtilities sharedContactStore];
-  v20 = [MEMORY[0x1E695DF70] arrayWithArray:v17];
+  v20 = [MEMORY[0x1E695DF70] arrayWithArray:fetchCopy];
   v21 = *MEMORY[0x1E695C208];
   v22 = *MEMORY[0x1E695C330];
   v88[0] = *MEMORY[0x1E695C208];
@@ -735,7 +735,7 @@ void __113__PXActivityUtilities_requestImageFromPeopleAlbumForPerson_targetSize_
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:2];
   [v20 addObjectsFromArray:v23];
 
-  if (v15 | v16 && (v24 = objc_alloc_init(MEMORY[0x1E695CD80])) != 0)
+  if (nameCopy | lastNameCopy && (v24 = objc_alloc_init(MEMORY[0x1E695CD80])) != 0)
   {
     v70 = v24;
     [v24 setStyle:0];
@@ -752,14 +752,14 @@ void __113__PXActivityUtilities_requestImageFromPeopleAlbumForPerson_targetSize_
   }
 
   v71 = v20;
-  if (![v13 length])
+  if (![emailCopy length])
   {
     v29 = 0;
-    v31 = 0;
+    identifier = 0;
     goto LABEL_29;
   }
 
-  [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:v13];
+  [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:emailCopy];
   v81 = 0;
   v61 = v65 = v19;
   v26 = [v19 unifiedContactsMatchingPredicate:? keysToFetch:? error:?];
@@ -770,7 +770,7 @@ void __113__PXActivityUtilities_requestImageFromPeopleAlbumForPerson_targetSize_
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v85 = v13;
+      v85 = emailCopy;
       v86 = 2112;
       v87 = v67;
       _os_log_impl(&dword_1A3C1C000, v27, OS_LOG_TYPE_ERROR, "Error attempting to fetch all unified contacts matching predicate [email=%@] : %@", buf, 0x16u);
@@ -779,47 +779,47 @@ void __113__PXActivityUtilities_requestImageFromPeopleAlbumForPerson_targetSize_
 
   if ([v26 count])
   {
-    v28 = [MEMORY[0x1E695CD58] pl_findBestMatchingContactFromMatchingContacts:v26 firstName:v15 lastName:v16 contactFormatter:v70];
+    v28 = [MEMORY[0x1E695CD58] pl_findBestMatchingContactFromMatchingContacts:v26 firstName:nameCopy lastName:lastNameCopy contactFormatter:v70];
     if (v28)
     {
-      v53 = v17;
-      v55 = v15;
+      v53 = fetchCopy;
+      v55 = nameCopy;
       v29 = v21;
       v77 = 0u;
       v78 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v30 = [v28 emailAddresses];
-      v31 = [v30 countByEnumeratingWithState:&v77 objects:v83 count:16];
-      if (v31)
+      emailAddresses = [v28 emailAddresses];
+      identifier = [emailAddresses countByEnumeratingWithState:&v77 objects:v83 count:16];
+      if (identifier)
       {
-        v49 = v16;
+        v49 = lastNameCopy;
         v51 = v29;
-        v57 = v18;
-        v63 = v14;
+        v57 = completionCopy;
+        v63 = phoneCopy;
         v32 = *v78;
         while (2)
         {
-          for (i = 0; i != v31; i = i + 1)
+          for (i = 0; i != identifier; i = i + 1)
           {
             if (*v78 != v32)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(emailAddresses);
             }
 
             v34 = *(*(&v77 + 1) + 8 * i);
-            v35 = [v34 value];
-            v36 = [v35 isEqualToString:v13];
+            value = [v34 value];
+            v36 = [value isEqualToString:emailCopy];
 
             if (v36)
             {
-              v31 = [v34 identifier];
+              identifier = [v34 identifier];
               goto LABEL_25;
             }
           }
 
-          v31 = [v30 countByEnumeratingWithState:&v77 objects:v83 count:16];
-          if (v31)
+          identifier = [emailAddresses countByEnumeratingWithState:&v77 objects:v83 count:16];
+          if (identifier)
           {
             continue;
           }
@@ -828,26 +828,26 @@ void __113__PXActivityUtilities_requestImageFromPeopleAlbumForPerson_targetSize_
         }
 
 LABEL_25:
-        v14 = v63;
-        v16 = v49;
+        phoneCopy = v63;
+        lastNameCopy = v49;
         v29 = v51;
-        v18 = v57;
+        completionCopy = v57;
       }
 
-      v17 = v53;
-      v15 = v55;
+      fetchCopy = v53;
+      nameCopy = v55;
     }
 
     else
     {
-      v31 = 0;
+      identifier = 0;
       v29 = 0;
     }
   }
 
   else
   {
-    v31 = 0;
+    identifier = 0;
     v29 = 0;
     v28 = 0;
   }
@@ -856,15 +856,15 @@ LABEL_25:
   if (!v28)
   {
 LABEL_29:
-    if (![v14 length])
+    if (![phoneCopy length])
     {
       v28 = 0;
       goto LABEL_53;
     }
 
-    v58 = v18;
-    v64 = v14;
-    v37 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v14];
+    v58 = completionCopy;
+    v64 = phoneCopy;
+    v37 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:phoneCopy];
     [MEMORY[0x1E695CD58] predicateForContactsMatchingPhoneNumber:v37];
     v62 = v76 = 0;
     v38 = [v19 unifiedContactsMatchingPredicate:? keysToFetch:? error:?];
@@ -885,26 +885,26 @@ LABEL_29:
     v52 = v38;
     if ([v38 count])
     {
-      v28 = [MEMORY[0x1E695CD58] pl_findBestMatchingContactFromMatchingContacts:v38 firstName:v15 lastName:v16 contactFormatter:v70];
+      v28 = [MEMORY[0x1E695CD58] pl_findBestMatchingContactFromMatchingContacts:v38 firstName:nameCopy lastName:lastNameCopy contactFormatter:v70];
       if (v28)
       {
-        v54 = v17;
-        v56 = v15;
+        v54 = fetchCopy;
+        v56 = nameCopy;
         v40 = v59;
 
         v74 = 0u;
         v75 = 0u;
         v72 = 0u;
         v73 = 0u;
-        v41 = [v28 phoneNumbers];
-        v42 = [v41 countByEnumeratingWithState:&v72 objects:v82 count:16];
-        v14 = v64;
+        phoneNumbers = [v28 phoneNumbers];
+        v42 = [phoneNumbers countByEnumeratingWithState:&v72 objects:v82 count:16];
+        phoneCopy = v64;
         if (v42)
         {
           v43 = v42;
           v60 = v40;
           v66 = v19;
-          v50 = v16;
+          v50 = lastNameCopy;
           v44 = *v73;
           while (2)
           {
@@ -912,21 +912,21 @@ LABEL_29:
             {
               if (*v73 != v44)
               {
-                objc_enumerationMutation(v41);
+                objc_enumerationMutation(phoneNumbers);
               }
 
               v46 = *(*(&v72 + 1) + 8 * j);
-              v47 = [v46 value];
-              if ([v47 isLikePhoneNumber:v37])
+              value2 = [v46 value];
+              if ([value2 isLikePhoneNumber:v37])
               {
-                v48 = [v46 identifier];
+                identifier2 = [v46 identifier];
 
-                v31 = v48;
+                identifier = identifier2;
                 goto LABEL_50;
               }
             }
 
-            v43 = [v41 countByEnumeratingWithState:&v72 objects:v82 count:16];
+            v43 = [phoneNumbers countByEnumeratingWithState:&v72 objects:v82 count:16];
             if (v43)
             {
               continue;
@@ -936,15 +936,15 @@ LABEL_29:
           }
 
 LABEL_50:
-          v14 = v64;
+          phoneCopy = v64;
           v19 = v66;
-          v16 = v50;
+          lastNameCopy = v50;
           v40 = v60;
         }
 
         v29 = v40;
-        v17 = v54;
-        v15 = v56;
+        fetchCopy = v54;
+        nameCopy = v56;
         goto LABEL_52;
       }
     }
@@ -954,10 +954,10 @@ LABEL_50:
       v28 = 0;
     }
 
-    v14 = v64;
+    phoneCopy = v64;
 LABEL_52:
 
-    v18 = v58;
+    completionCopy = v58;
   }
 
 LABEL_53:
@@ -965,32 +965,32 @@ LABEL_53:
   {
   }
 
-  if (v18)
+  if (completionCopy)
   {
-    v18[2](v18, v28, v29, v31);
+    completionCopy[2](completionCopy, v28, v29, identifier);
   }
 }
 
-+ (void)requestMeContactForKeys:(id)a3 completionHandler:(id)a4
++ (void)requestMeContactForKeys:(id)keys completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  keysCopy = keys;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v9 = [a1 sharedWorkQueue];
+  sharedWorkQueue = [self sharedWorkQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PXActivityUtilities_requestMeContactForKeys_completionHandler___block_invoke;
   block[3] = &unk_1E774C2F0;
-  v14 = v7;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v14 = keysCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = keysCopy;
+  dispatch_async(sharedWorkQueue, block);
 }
 
 void __65__PXActivityUtilities_requestMeContactForKeys_completionHandler___block_invoke(uint64_t a1)
@@ -1013,14 +1013,14 @@ void __65__PXActivityUtilities_requestMeContactForKeys_completionHandler___block
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 }
 
-+ (void)requestMeContactWithCompletion:(id)a3
++ (void)requestMeContactWithCompletion:(id)completion
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXActivityUtilities.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActivityUtilities.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   v6 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
@@ -1029,7 +1029,7 @@ void __65__PXActivityUtilities_requestMeContactForKeys_completionHandler___block
   v10[1] = v7;
   v10[2] = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
-  [a1 requestMeContactForKeys:v8 completionHandler:v5];
+  [self requestMeContactForKeys:v8 completionHandler:completionCopy];
 }
 
 + (id)sharedWorkQueue

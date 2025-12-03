@@ -4,7 +4,7 @@
 - (PersonalizedItemPrioritizedStringAdornment)title;
 - (PersonalizedItemSource)source;
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes;
-- (SearchDotPlacePersonalizedItem)initWithSearchDotPlace:(id)a3;
+- (SearchDotPlacePersonalizedItem)initWithSearchDotPlace:(id)place;
 @end
 
 @implementation SearchDotPlacePersonalizedItem
@@ -41,17 +41,17 @@
   v4 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:5];
   [v3 addEntriesFromDictionary:v4];
 
-  v5 = [(SearchDotPlacePersonalizedItem *)self style];
+  style = [(SearchDotPlacePersonalizedItem *)self style];
   v6 = [v3 copy];
-  v7 = [PersonalizedItemStyleAttributesAdornment adornmentWithStyleAttributes:v5 additionalAttributes:v6];
+  v7 = [PersonalizedItemStyleAttributesAdornment adornmentWithStyleAttributes:style additionalAttributes:v6];
 
   return v7;
 }
 
 - (PersonalizedItemPrioritizedStringAdornment)title
 {
-  v2 = [(SearchDotPlacePersonalizedItem *)self name];
-  v3 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v2 priority:0];
+  name = [(SearchDotPlacePersonalizedItem *)self name];
+  v3 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:name priority:0];
 
   return v3;
 }
@@ -65,36 +65,36 @@
   return v5;
 }
 
-- (SearchDotPlacePersonalizedItem)initWithSearchDotPlace:(id)a3
+- (SearchDotPlacePersonalizedItem)initWithSearchDotPlace:(id)place
 {
-  v5 = a3;
+  placeCopy = place;
   v20.receiver = self;
   v20.super_class = SearchDotPlacePersonalizedItem;
   v6 = [(SearchDotPlacePersonalizedItem *)&v20 init];
   if (v6)
   {
-    v7 = [[SearchDotPlaceItemKey alloc] initWithSearchDotPlace:v5];
+    v7 = [[SearchDotPlaceItemKey alloc] initWithSearchDotPlace:placeCopy];
     key = v6->_key;
     v6->_key = v7;
 
-    [v5 coordinate];
+    [placeCopy coordinate];
     v6->_coordinate.latitude = v9;
     v6->_coordinate.longitude = v10;
-    v11 = [v5 name];
+    name = [placeCopy name];
     name = v6->_name;
-    v6->_name = v11;
+    v6->_name = name;
 
     v13 = [GEOFeatureStyleAttributes alloc];
-    v14 = [v5 styleAttributes];
-    v15 = [v13 initWithGEOStyleAttributes:v14];
+    styleAttributes = [placeCopy styleAttributes];
+    v15 = [v13 initWithGEOStyleAttributes:styleAttributes];
     style = v6->_style;
     v6->_style = v15;
 
-    v17 = [v5 mapItem];
+    mapItem = [placeCopy mapItem];
     mapItem = v6->_mapItem;
-    v6->_mapItem = v17;
+    v6->_mapItem = mapItem;
 
-    objc_storeStrong(&v6->_searchDotPlace, a3);
+    objc_storeStrong(&v6->_searchDotPlace, place);
   }
 
   return v6;

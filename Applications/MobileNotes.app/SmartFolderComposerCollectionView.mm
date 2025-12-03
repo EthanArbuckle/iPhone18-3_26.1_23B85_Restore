@@ -1,11 +1,11 @@
 @interface SmartFolderComposerCollectionView
-- (_TtC11MobileNotes33SmartFolderComposerCollectionView)initWithCoder:(id)a3;
-- (_TtC11MobileNotes33SmartFolderComposerCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC11MobileNotes33SmartFolderComposerCollectionView)initWithCoder:(id)coder;
+- (_TtC11MobileNotes33SmartFolderComposerCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 @end
 
 @implementation SmartFolderComposerCollectionView
 
-- (_TtC11MobileNotes33SmartFolderComposerCollectionView)initWithCoder:(id)a3
+- (_TtC11MobileNotes33SmartFolderComposerCollectionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes33SmartFolderComposerCollectionView_smartFolderComposerDataSource) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (_TtC11MobileNotes33SmartFolderComposerCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC11MobileNotes33SmartFolderComposerCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

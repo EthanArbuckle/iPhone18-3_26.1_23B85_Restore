@@ -1,45 +1,45 @@
 @interface ICIAMSynchronizeMessagesRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActiveCommandsOnly:(BOOL)a3;
-- (void)setHasDSID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActiveCommandsOnly:(BOOL)only;
+- (void)setHasDSID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMSynchronizeMessagesRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_commandSerialNumber = *(v4 + 1);
+    self->_commandSerialNumber = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_dSID = *(v4 + 2);
+    self->_dSID = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ICIAMSynchronizeMessagesRequest *)self setDeviceID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 36) & 4) != 0)
+  if ((*(fromCopy + 36) & 4) != 0)
   {
-    self->_activeCommandsOnly = *(v4 + 32);
+    self->_activeCommandsOnly = *(fromCopy + 32);
     *&self->_has |= 4u;
   }
 }
@@ -82,44 +82,44 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_commandSerialNumber != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_commandSerialNumber != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_17;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_dSID != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_dSID != *(equalCopy + 2))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_17;
   }
 
   deviceID = self->_deviceID;
-  if (deviceID | *(v4 + 3))
+  if (deviceID | *(equalCopy + 3))
   {
     if (![(NSString *)deviceID isEqual:?])
     {
@@ -127,7 +127,7 @@ LABEL_6:
     }
 
     has = self->_has;
-    v6 = *(v4 + 36);
+    v6 = *(equalCopy + 36);
   }
 
   v8 = (v6 & 4) == 0;
@@ -137,13 +137,13 @@ LABEL_6:
     {
       if (self->_activeCommandsOnly)
       {
-        if ((*(v4 + 32) & 1) == 0)
+        if ((*(equalCopy + 32) & 1) == 0)
         {
           goto LABEL_17;
         }
       }
 
-      else if (*(v4 + 32))
+      else if (*(equalCopy + 32))
       {
         goto LABEL_17;
       }
@@ -161,9 +161,9 @@ LABEL_18:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -179,7 +179,7 @@ LABEL_18:
     *(v5 + 36) |= 2u;
   }
 
-  v8 = [(NSString *)self->_deviceID copyWithZone:a3];
+  v8 = [(NSString *)self->_deviceID copyWithZone:zone];
   v9 = *(v6 + 24);
   *(v6 + 24) = v8;
 
@@ -192,40 +192,40 @@ LABEL_18:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_commandSerialNumber;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_commandSerialNumber;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[2] = self->_dSID;
-    *(v4 + 36) |= 2u;
+    toCopy[2] = self->_dSID;
+    *(toCopy + 36) |= 2u;
   }
 
   if (self->_deviceID)
   {
-    v6 = v4;
-    [v4 setDeviceID:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setDeviceID:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 32) = self->_activeCommandsOnly;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 32) = self->_activeCommandsOnly;
+    *(toCopy + 36) |= 4u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -251,12 +251,12 @@ LABEL_18:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_commandSerialNumber];
-    [v3 setObject:v5 forKey:@"commandSerialNumber"];
+    [dictionary setObject:v5 forKey:@"commandSerialNumber"];
 
     has = self->_has;
   }
@@ -264,22 +264,22 @@ LABEL_18:
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_dSID];
-    [v3 setObject:v6 forKey:@"DSID"];
+    [dictionary setObject:v6 forKey:@"DSID"];
   }
 
   deviceID = self->_deviceID;
   if (deviceID)
   {
-    [v3 setObject:deviceID forKey:@"deviceID"];
+    [dictionary setObject:deviceID forKey:@"deviceID"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_activeCommandsOnly];
-    [v3 setObject:v8 forKey:@"activeCommandsOnly"];
+    [dictionary setObject:v8 forKey:@"activeCommandsOnly"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -288,15 +288,15 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = ICIAMSynchronizeMessagesRequest;
   v4 = [(ICIAMSynchronizeMessagesRequest *)&v8 description];
-  v5 = [(ICIAMSynchronizeMessagesRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMSynchronizeMessagesRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasActiveCommandsOnly:(BOOL)a3
+- (void)setHasActiveCommandsOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     v3 = 4;
   }
@@ -309,9 +309,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDSID:(BOOL)a3
+- (void)setHasDSID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }

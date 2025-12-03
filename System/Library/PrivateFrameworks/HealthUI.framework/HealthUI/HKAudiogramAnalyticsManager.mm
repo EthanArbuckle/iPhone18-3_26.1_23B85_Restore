@@ -1,29 +1,29 @@
 @interface HKAudiogramAnalyticsManager
 - (HKAudiogramAnalyticsManager)init;
-- (HKAudiogramAnalyticsManager)initWithHealthStore:(id)a3;
-- (void)submitPerformanceAnalyticsWithMetric:(id)a3;
+- (HKAudiogramAnalyticsManager)initWithHealthStore:(id)store;
+- (void)submitPerformanceAnalyticsWithMetric:(id)metric;
 @end
 
 @implementation HKAudiogramAnalyticsManager
 
-- (HKAudiogramAnalyticsManager)initWithHealthStore:(id)a3
+- (HKAudiogramAnalyticsManager)initWithHealthStore:(id)store
 {
-  v3 = a3;
-  v4 = sub_1C3CE5060(v3);
+  storeCopy = store;
+  v4 = sub_1C3CE5060(storeCopy);
 
   return v4;
 }
 
-- (void)submitPerformanceAnalyticsWithMetric:(id)a3
+- (void)submitPerformanceAnalyticsWithMetric:(id)metric
 {
   type metadata accessor for AudiogramPerformanceAnalytics.Event();
   v5 = swift_allocObject();
-  *(v5 + 16) = a3;
+  *(v5 + 16) = metric;
   *(v5 + 24) = &protocol witness table for AudiogramPerformanceAnalytics.Metric;
-  v6 = a3;
-  v8 = self;
+  metricCopy = metric;
+  selfCopy = self;
 
-  sub_1C3CE4D50(v7, v8);
+  sub_1C3CE4D50(v7, selfCopy);
 }
 
 - (HKAudiogramAnalyticsManager)init

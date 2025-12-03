@@ -1,6 +1,6 @@
 @interface CRKASMConcreteRoster
-- (BOOL)isEqual:(id)a3;
-- (CRKASMConcreteRoster)initWithOrganization:(id)a3 user:(id)a4 courses:(id)a5 certificateVendor:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (CRKASMConcreteRoster)initWithOrganization:(id)organization user:(id)user courses:(id)courses certificateVendor:(id)vendor;
 - (NSSet)allTrustedUserCertificates;
 - (NSString)description;
 - (id)allTrustedUserIdentifiers;
@@ -9,25 +9,25 @@
 
 @implementation CRKASMConcreteRoster
 
-- (CRKASMConcreteRoster)initWithOrganization:(id)a3 user:(id)a4 courses:(id)a5 certificateVendor:(id)a6
+- (CRKASMConcreteRoster)initWithOrganization:(id)organization user:(id)user courses:(id)courses certificateVendor:(id)vendor
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  organizationCopy = organization;
+  userCopy = user;
+  coursesCopy = courses;
+  vendorCopy = vendor;
   v20.receiver = self;
   v20.super_class = CRKASMConcreteRoster;
   v15 = [(CRKASMConcreteRoster *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_organization, a3);
-    objc_storeStrong(&v16->_user, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_organization, organization);
+    objc_storeStrong(&v16->_user, user);
+    v17 = [coursesCopy copy];
     courses = v16->_courses;
     v16->_courses = v17;
 
-    objc_storeStrong(&v16->_certificateVendor, a6);
+    objc_storeStrong(&v16->_certificateVendor, vendor);
   }
 
   return v16;
@@ -35,9 +35,9 @@
 
 - (NSSet)allTrustedUserCertificates
 {
-  v3 = [(CRKASMConcreteRoster *)self certificateVendor];
-  v4 = [(CRKASMConcreteRoster *)self allTrustedUserIdentifiers];
-  v5 = [v3 certificatesForUserIdentifiers:v4];
+  certificateVendor = [(CRKASMConcreteRoster *)self certificateVendor];
+  allTrustedUserIdentifiers = [(CRKASMConcreteRoster *)self allTrustedUserIdentifiers];
+  v5 = [certificateVendor certificatesForUserIdentifiers:allTrustedUserIdentifiers];
 
   return v5;
 }
@@ -50,8 +50,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(CRKASMConcreteRoster *)self courses];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  courses = [(CRKASMConcreteRoster *)self courses];
+  v5 = [courses countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -62,7 +62,7 @@
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(courses);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
@@ -70,8 +70,8 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 trustedUsers];
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        trustedUsers = [v9 trustedUsers];
+        v11 = [trustedUsers countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
@@ -82,21 +82,21 @@
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(trustedUsers);
               }
 
-              v15 = [*(*(&v18 + 1) + 8 * j) identifier];
-              [v3 addObject:v15];
+              identifier = [*(*(&v18 + 1) + 8 * j) identifier];
+              [v3 addObject:identifier];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v12 = [trustedUsers countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [courses countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
@@ -109,24 +109,24 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CRKASMConcreteRoster *)self organization];
-  v4 = [v3 hash];
-  v5 = [(CRKASMConcreteRoster *)self user];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CRKASMConcreteRoster *)self courses];
-  v8 = [v7 hash];
-  v9 = [(CRKASMConcreteRoster *)self certificateVendor];
-  v10 = v8 ^ [v9 hash];
+  organization = [(CRKASMConcreteRoster *)self organization];
+  v4 = [organization hash];
+  user = [(CRKASMConcreteRoster *)self user];
+  v6 = [user hash] ^ v4;
+  courses = [(CRKASMConcreteRoster *)self courses];
+  v8 = [courses hash];
+  certificateVendor = [(CRKASMConcreteRoster *)self certificateVendor];
+  v10 = v8 ^ [certificateVendor hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [CFSTR(""organization user];
-  v6 = [v5 mutableCopy];
+  equalCopy = equal;
+  user = [CFSTR(""organization user];
+  v6 = [user mutableCopy];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -136,10 +136,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -168,7 +168,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKASMConcreteRoster *)v8 valueForKey:v16];
+          v18 = [(CRKASMConcreteRoster *)selfCopy valueForKey:v16];
           v19 = [(CRKASMConcreteRoster *)v17 valueForKey:v16];
 
           if (v18 | v19)
@@ -215,10 +215,10 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKASMConcreteRoster *)self courses];
-  v6 = [(CRKASMConcreteRoster *)self user];
-  v7 = [(CRKASMConcreteRoster *)self organization];
-  v8 = [v3 stringWithFormat:@"<%@: %p { courses = %@, user = %@, organization = %@ }>", v4, self, v5, v6, v7];
+  courses = [(CRKASMConcreteRoster *)self courses];
+  user = [(CRKASMConcreteRoster *)self user];
+  organization = [(CRKASMConcreteRoster *)self organization];
+  v8 = [v3 stringWithFormat:@"<%@: %p { courses = %@, user = %@, organization = %@ }>", v4, self, courses, user, organization];
 
   return v8;
 }

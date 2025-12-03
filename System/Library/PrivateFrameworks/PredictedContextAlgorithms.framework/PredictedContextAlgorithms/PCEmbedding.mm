@@ -1,18 +1,18 @@
 @interface PCEmbedding
-+ (double)secondsFromTimeOfDay:(id)a3 toTimeOfDay:(id)a4;
-+ (id)embeddingObjectsFromProtobuf:(id)a3;
++ (double)secondsFromTimeOfDay:(id)day toTimeOfDay:(id)ofDay;
++ (id)embeddingObjectsFromProtobuf:(id)protobuf;
 + (id)indoorOutdoorCategoryActivityTypes;
-- (PCEmbedding)initWithEventBundle:(id)a3 forEmbeddingType:(unint64_t)a4;
-- (PCEmbedding)initWithProtobufEquivalent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dayOfWeekString:(unint64_t)a3;
+- (PCEmbedding)initWithEventBundle:(id)bundle forEmbeddingType:(unint64_t)type;
+- (PCEmbedding)initWithProtobufEquivalent:(id)equivalent;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dayOfWeekString:(unint64_t)string;
 - (id)description;
-- (id)extractActivityContextEmbedding:(id)a3;
-- (id)extractActivityContextEmbeddingFromProtobufEquivalent:(id)a3;
-- (id)extractLocationContextEmbedding:(id)a3;
-- (id)extractLocationContextEmbeddingFromProtobufEquivalent:(id)a3;
-- (id)extractTimeContextEmbedding:(id)a3;
-- (id)extractTimeContextEmbeddingFromProtobufEquivalent:(id)a3;
+- (id)extractActivityContextEmbedding:(id)embedding;
+- (id)extractActivityContextEmbeddingFromProtobufEquivalent:(id)equivalent;
+- (id)extractLocationContextEmbedding:(id)embedding;
+- (id)extractLocationContextEmbeddingFromProtobufEquivalent:(id)equivalent;
+- (id)extractTimeContextEmbedding:(id)embedding;
+- (id)extractTimeContextEmbeddingFromProtobufEquivalent:(id)equivalent;
 - (id)sensitiveDescription;
 - (id)summaryDictionary;
 - (id)timeOfDay;
@@ -39,32 +39,32 @@ uint64_t __49__PCEmbedding_indoorOutdoorCategoryActivityTypes__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (PCEmbedding)initWithEventBundle:(id)a3 forEmbeddingType:(unint64_t)a4
+- (PCEmbedding)initWithEventBundle:(id)bundle forEmbeddingType:(unint64_t)type
 {
-  v6 = a3;
+  bundleCopy = bundle;
   v19.receiver = self;
   v19.super_class = PCEmbedding;
   v7 = [(PCEmbedding *)&v19 init];
   if (v7)
   {
-    v8 = [v6 bundleIdentifier];
+    bundleIdentifier = [bundleCopy bundleIdentifier];
     bundleIdentifier = v7->_bundleIdentifier;
-    v7->_bundleIdentifier = v8;
+    v7->_bundleIdentifier = bundleIdentifier;
 
-    v10 = [v6 suggestionID];
+    suggestionID = [bundleCopy suggestionID];
     suggestionID = v7->_suggestionID;
-    v7->_suggestionID = v10;
+    v7->_suggestionID = suggestionID;
 
-    v7->_embeddingType = a4;
-    v12 = [(PCEmbedding *)v7 extractActivityContextEmbedding:v6];
+    v7->_embeddingType = type;
+    v12 = [(PCEmbedding *)v7 extractActivityContextEmbedding:bundleCopy];
     activityContextEmbedding = v7->_activityContextEmbedding;
     v7->_activityContextEmbedding = v12;
 
-    v14 = [(PCEmbedding *)v7 extractTimeContextEmbedding:v6];
+    v14 = [(PCEmbedding *)v7 extractTimeContextEmbedding:bundleCopy];
     timeContextEmbedding = v7->_timeContextEmbedding;
     v7->_timeContextEmbedding = v14;
 
-    v16 = [(PCEmbedding *)v7 extractLocationContextEmbedding:v6];
+    v16 = [(PCEmbedding *)v7 extractLocationContextEmbedding:bundleCopy];
     locationContextEmbedding = v7->_locationContextEmbedding;
     v7->_locationContextEmbedding = v16;
   }
@@ -72,36 +72,36 @@ uint64_t __49__PCEmbedding_indoorOutdoorCategoryActivityTypes__block_invoke()
   return v7;
 }
 
-- (PCEmbedding)initWithProtobufEquivalent:(id)a3
+- (PCEmbedding)initWithProtobufEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   v21.receiver = self;
   v21.super_class = PCEmbedding;
   v5 = [(PCEmbedding *)&v21 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v7 = [v4 identifier];
-    v8 = [v6 initWithUUIDString:v7];
+    identifier = [equivalentCopy identifier];
+    v8 = [v6 initWithUUIDString:identifier];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
     v10 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v11 = [v4 identifier];
-    v12 = [v10 initWithUUIDString:v11];
+    identifier2 = [equivalentCopy identifier];
+    v12 = [v10 initWithUUIDString:identifier2];
     suggestionID = v5->_suggestionID;
     v5->_suggestionID = v12;
 
     v5->_embeddingType = 2;
-    v14 = [(PCEmbedding *)v5 extractActivityContextEmbeddingFromProtobufEquivalent:v4];
+    v14 = [(PCEmbedding *)v5 extractActivityContextEmbeddingFromProtobufEquivalent:equivalentCopy];
     activityContextEmbedding = v5->_activityContextEmbedding;
     v5->_activityContextEmbedding = v14;
 
-    v16 = [(PCEmbedding *)v5 extractTimeContextEmbeddingFromProtobufEquivalent:v4];
+    v16 = [(PCEmbedding *)v5 extractTimeContextEmbeddingFromProtobufEquivalent:equivalentCopy];
     timeContextEmbedding = v5->_timeContextEmbedding;
     v5->_timeContextEmbedding = v16;
 
-    v18 = [(PCEmbedding *)v5 extractLocationContextEmbeddingFromProtobufEquivalent:v4];
+    v18 = [(PCEmbedding *)v5 extractLocationContextEmbeddingFromProtobufEquivalent:equivalentCopy];
     locationContextEmbedding = v5->_locationContextEmbedding;
     v5->_locationContextEmbedding = v18;
   }
@@ -109,26 +109,26 @@ uint64_t __49__PCEmbedding_indoorOutdoorCategoryActivityTypes__block_invoke()
   return v5;
 }
 
-- (id)extractActivityContextEmbedding:(id)a3
+- (id)extractActivityContextEmbedding:(id)embedding
 {
-  v3 = a3;
+  embeddingCopy = embedding;
   v4 = objc_opt_new();
-  v5 = [v3 activityType];
+  activityType = [embeddingCopy activityType];
   v6 = +[PCEmbedding indoorOutdoorCategoryActivityTypes];
-  v7 = [v3 activityType];
-  v8 = [v6 containsObject:v7];
+  activityType2 = [embeddingCopy activityType];
+  v8 = [v6 containsObject:activityType2];
 
   if (v8)
   {
-    v9 = [v3 workoutSessionLocationType];
-    if (v9 == 2)
+    workoutSessionLocationType = [embeddingCopy workoutSessionLocationType];
+    if (workoutSessionLocationType == 2)
     {
       v10 = @"Indoor %@";
     }
 
     else
     {
-      if (v9 != 3)
+      if (workoutSessionLocationType != 3)
       {
         goto LABEL_7;
       }
@@ -137,30 +137,30 @@ uint64_t __49__PCEmbedding_indoorOutdoorCategoryActivityTypes__block_invoke()
     }
 
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v3 activityType];
-    v13 = [v11 stringWithFormat:v10, v12];
+    activityType3 = [embeddingCopy activityType];
+    v13 = [v11 stringWithFormat:v10, activityType3];
 
-    v5 = v13;
+    activityType = v13;
   }
 
 LABEL_7:
-  v14 = [v3 activityType];
-  v15 = [v14 isEqualToString:@"Swimming"];
+  activityType4 = [embeddingCopy activityType];
+  v15 = [activityType4 isEqualToString:@"Swimming"];
 
   if (!v15)
   {
     goto LABEL_13;
   }
 
-  v16 = [v3 workoutSwimmingLocationType];
-  if (v16 == 1)
+  workoutSwimmingLocationType = [embeddingCopy workoutSwimmingLocationType];
+  if (workoutSwimmingLocationType == 1)
   {
     v17 = @"Pool %@";
   }
 
   else
   {
-    if (v16 != 2)
+    if (workoutSwimmingLocationType != 2)
     {
       goto LABEL_13;
     }
@@ -169,42 +169,42 @@ LABEL_7:
   }
 
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [v3 activityType];
-  v20 = [v18 stringWithFormat:v17, v19];
+  activityType5 = [embeddingCopy activityType];
+  v20 = [v18 stringWithFormat:v17, activityType5];
 
-  v5 = v20;
+  activityType = v20;
 LABEL_13:
-  [v4 setObject:v5 forKeyedSubscript:@"activityType"];
-  v21 = [v3 sourceBundleIdentifier];
-  [v4 setObject:v21 forKeyedSubscript:@"sourceBundleIdentifier"];
+  [v4 setObject:activityType forKeyedSubscript:@"activityType"];
+  sourceBundleIdentifier = [embeddingCopy sourceBundleIdentifier];
+  [v4 setObject:sourceBundleIdentifier forKeyedSubscript:@"sourceBundleIdentifier"];
 
-  v22 = [v3 hkObjectIdentifier];
-  v23 = [v22 UUIDString];
-  [v4 setObject:v23 forKeyedSubscript:@"hkObjectUUID"];
+  hkObjectIdentifier = [embeddingCopy hkObjectIdentifier];
+  uUIDString = [hkObjectIdentifier UUIDString];
+  [v4 setObject:uUIDString forKeyedSubscript:@"hkObjectUUID"];
 
   v24 = MEMORY[0x1E696AD98];
-  v25 = [v3 startDate];
-  [v25 timeIntervalSinceReferenceDate];
+  startDate = [embeddingCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v26 = [v24 numberWithDouble:?];
   [v4 setObject:v26 forKeyedSubscript:@"startTimeCFAbsolute"];
 
   return v4;
 }
 
-- (id)extractTimeContextEmbedding:(id)a3
+- (id)extractTimeContextEmbedding:(id)embedding
 {
-  v4 = a3;
+  embeddingCopy = embedding;
   v5 = objc_opt_new();
-  v6 = [v4 localStartDate];
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [v7 setTimeZone:v8];
+  localStartDate = [embeddingCopy localStartDate];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [currentCalendar setTimeZone:systemTimeZone];
 
   embeddingType = self->_embeddingType;
   if (embeddingType == 3)
   {
-    v33 = __sincos_stret([v7 component:4096 fromDate:v6] * 6.28318531 / 5.0);
-    v34 = __sincos_stret([v7 component:8 fromDate:v6] * 6.28318531 / 12.0);
+    v33 = __sincos_stret([currentCalendar component:4096 fromDate:localStartDate] * 6.28318531 / 5.0);
+    v34 = __sincos_stret([currentCalendar component:8 fromDate:localStartDate] * 6.28318531 / 12.0);
     v35 = [MEMORY[0x1E696AD98] numberWithDouble:v33.__cosval];
     [v5 setObject:v35 forKeyedSubscript:@"weekOfMonthCos"];
 
@@ -222,15 +222,15 @@ LABEL_13:
 
   else if (embeddingType == 2)
   {
-    [v4 duration];
+    [embeddingCopy duration];
     v11 = v10 / 86400.0;
-    v12 = [v7 components:96 fromDate:v6];
+    v12 = [currentCalendar components:96 fromDate:localStartDate];
     v13 = __sincos_stret(([v12 minute] / 60.0 + objc_msgSend(v12, "hour")) * 6.28318531 / 24.0);
-    v14 = [v7 component:512 fromDate:v6];
+    v14 = [currentCalendar component:512 fromDate:localStartDate];
     v15 = v14;
     v16 = __sincos_stret(v14 * 6.28318531 / 7.0);
     v18 = v14 == 1 || v14 == 7;
-    v19 = [v7 component:0x2000 fromDate:v6];
+    v19 = [currentCalendar component:0x2000 fromDate:localStartDate];
     v20 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
     [v5 setObject:v20 forKeyedSubscript:@"normalizedDuration"];
 
@@ -250,9 +250,9 @@ LABEL_13:
     [v5 setObject:v25 forKeyedSubscript:@"isWeekend"];
 
     v26 = MEMORY[0x1E696AD98];
-    v27 = [v4 localStartDate];
-    v28 = [v4 localEndDate];
-    v29 = [v26 numberWithUnsignedInteger:{+[PCTime simpleTimetagFromStartDate:endDate:](PCTime, "simpleTimetagFromStartDate:endDate:", v27, v28)}];
+    localStartDate2 = [embeddingCopy localStartDate];
+    localEndDate = [embeddingCopy localEndDate];
+    v29 = [v26 numberWithUnsignedInteger:{+[PCTime simpleTimetagFromStartDate:endDate:](PCTime, "simpleTimetagFromStartDate:endDate:", localStartDate2, localEndDate)}];
     [v5 setObject:v29 forKeyedSubscript:@"timeTag"];
 
     v30 = [MEMORY[0x1E696AD98] numberWithDouble:v15];
@@ -279,68 +279,68 @@ LABEL_13:
   return v32;
 }
 
-- (id)extractLocationContextEmbedding:(id)a3
+- (id)extractLocationContextEmbedding:(id)embedding
 {
-  v3 = a3;
+  embeddingCopy = embedding;
   v4 = objc_opt_new();
-  v5 = [v3 placeName];
-  v6 = [v5 length];
+  placeName = [embeddingCopy placeName];
+  v6 = [placeName length];
 
   if (v6)
   {
-    v7 = [v3 placeName];
-    [v4 setObject:v7 forKeyedSubscript:@"placeName"];
+    placeName2 = [embeddingCopy placeName];
+    [v4 setObject:placeName2 forKeyedSubscript:@"placeName"];
   }
 
-  v8 = [v3 enclosingArea];
-  v9 = [v8 length];
+  enclosingArea = [embeddingCopy enclosingArea];
+  v9 = [enclosingArea length];
 
   if (v9)
   {
-    v10 = [v3 enclosingArea];
-    [v4 setObject:v10 forKeyedSubscript:@"enclosingAreaName"];
+    enclosingArea2 = [embeddingCopy enclosingArea];
+    [v4 setObject:enclosingArea2 forKeyedSubscript:@"enclosingAreaName"];
   }
 
-  if ([v3 placeType] == 1 || objc_msgSend(v3, "placeType") == 2)
+  if ([embeddingCopy placeType] == 1 || objc_msgSend(embeddingCopy, "placeType") == 2)
   {
-    v11 = [v3 poiCategory];
-    v12 = [v11 length];
+    poiCategory = [embeddingCopy poiCategory];
+    v12 = [poiCategory length];
 
     if (v12)
     {
-      v13 = [v3 poiCategory];
-      [v4 setObject:v13 forKeyedSubscript:@"combinedPlaceType"];
+      poiCategory2 = [embeddingCopy poiCategory];
+      [v4 setObject:poiCategory2 forKeyedSubscript:@"combinedPlaceType"];
     }
   }
 
-  if ([v3 placeUserType])
+  if ([embeddingCopy placeUserType])
   {
-    v14 = [v3 placeUserType];
-    if (v14 >= 5)
+    placeUserType = [embeddingCopy placeUserType];
+    if (placeUserType >= 5)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", placeUserType];
     }
 
     else
     {
-      v15 = off_1E83B8320[v14];
+      v15 = off_1E83B8320[placeUserType];
     }
 
     [v4 setObject:v15 forKeyedSubscript:@"combinedPlaceType"];
   }
 
-  v16 = [v3 location];
+  location = [embeddingCopy location];
 
-  if (v16)
+  if (location)
   {
-    v17 = [v3 location];
+    location2 = [embeddingCopy location];
     v18 = MEMORY[0x1E696AD98];
-    [v17 locationLatitudeDeg];
+    [location2 locationLatitudeDeg];
     v19 = [v18 numberWithDouble:?];
     [v4 setObject:v19 forKeyedSubscript:@"placeLatitude"];
 
     v20 = MEMORY[0x1E696AD98];
-    [v17 locationLongitudeDeg];
+    [location2 locationLongitudeDeg];
     v21 = [v20 numberWithDouble:?];
     [v4 setObject:v21 forKeyedSubscript:@"placeLongitude"];
   }
@@ -348,41 +348,41 @@ LABEL_13:
   return v4;
 }
 
-- (id)extractActivityContextEmbeddingFromProtobufEquivalent:(id)a3
+- (id)extractActivityContextEmbeddingFromProtobufEquivalent:(id)equivalent
 {
-  v3 = [a3 activityContext];
-  if (v3)
+  activityContext = [equivalent activityContext];
+  if (activityContext)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    if ([v3 hasActivityType])
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if ([activityContext hasActivityType])
     {
-      v5 = [v3 activityType];
-      [v4 setObject:v5 forKeyedSubscript:@"activityType"];
+      activityType = [activityContext activityType];
+      [dictionary setObject:activityType forKeyedSubscript:@"activityType"];
     }
 
-    if ([v3 hasHkObjectUUID])
+    if ([activityContext hasHkObjectUUID])
     {
-      v6 = [v3 hkObjectUUID];
-      [v4 setObject:v6 forKeyedSubscript:@"hkObjectUUID"];
+      hkObjectUUID = [activityContext hkObjectUUID];
+      [dictionary setObject:hkObjectUUID forKeyedSubscript:@"hkObjectUUID"];
     }
 
-    if ([v3 hasStartTimeCFAbsolute])
+    if ([activityContext hasStartTimeCFAbsolute])
     {
       v7 = MEMORY[0x1E696AD98];
-      [v3 startTimeCFAbsolute];
+      [activityContext startTimeCFAbsolute];
       v8 = [v7 numberWithDouble:?];
-      [v4 setObject:v8 forKeyedSubscript:@"startTimeCFAbsolute"];
+      [dictionary setObject:v8 forKeyedSubscript:@"startTimeCFAbsolute"];
     }
 
-    if ([v3 hasSourceBundleIdentifier])
+    if ([activityContext hasSourceBundleIdentifier])
     {
-      v9 = [v3 sourceBundleIdentifier];
-      [v4 setObject:v9 forKeyedSubscript:@"sourceBundleIdentifier"];
+      sourceBundleIdentifier = [activityContext sourceBundleIdentifier];
+      [dictionary setObject:sourceBundleIdentifier forKeyedSubscript:@"sourceBundleIdentifier"];
     }
 
-    if ([v4 count])
+    if ([dictionary count])
     {
-      v10 = [v4 copy];
+      v10 = [dictionary copy];
     }
 
     else
@@ -399,44 +399,44 @@ LABEL_13:
   return v10;
 }
 
-- (id)extractLocationContextEmbeddingFromProtobufEquivalent:(id)a3
+- (id)extractLocationContextEmbeddingFromProtobufEquivalent:(id)equivalent
 {
-  v3 = [a3 locationContext];
-  if (v3)
+  locationContext = [equivalent locationContext];
+  if (locationContext)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    if ([v3 hasPlaceName])
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if ([locationContext hasPlaceName])
     {
-      v5 = [v3 placeName];
-      [v4 setObject:v5 forKeyedSubscript:@"placeName"];
+      placeName = [locationContext placeName];
+      [dictionary setObject:placeName forKeyedSubscript:@"placeName"];
     }
 
-    if ([v3 hasPlaceType])
+    if ([locationContext hasPlaceType])
     {
-      v6 = [v3 placeType];
-      [v4 setObject:v6 forKeyedSubscript:@"combinedPlaceType"];
+      placeType = [locationContext placeType];
+      [dictionary setObject:placeType forKeyedSubscript:@"combinedPlaceType"];
     }
 
-    if ([v3 hasPlaceLocation])
+    if ([locationContext hasPlaceLocation])
     {
-      v7 = [v3 placeLocation];
+      placeLocation = [locationContext placeLocation];
       v8 = MEMORY[0x1E696AD98];
-      [v7 locationLatitudeDeg];
+      [placeLocation locationLatitudeDeg];
       v9 = [v8 numberWithDouble:?];
       v10 = MEMORY[0x1E696AD98];
-      [v7 locationLatitudeDeg];
+      [placeLocation locationLatitudeDeg];
       v11 = [v10 numberWithDouble:?];
-      [v4 setObject:v11 forKeyedSubscript:@"placeLatitude"];
+      [dictionary setObject:v11 forKeyedSubscript:@"placeLatitude"];
 
       v12 = MEMORY[0x1E696AD98];
-      [v7 locationLongitudeDeg];
+      [placeLocation locationLongitudeDeg];
       v13 = [v12 numberWithDouble:?];
-      [v4 setObject:v13 forKeyedSubscript:@"placeLongitude"];
+      [dictionary setObject:v13 forKeyedSubscript:@"placeLongitude"];
     }
 
-    if ([v4 count])
+    if ([dictionary count])
     {
-      v14 = [v4 copy];
+      v14 = [dictionary copy];
     }
 
     else
@@ -453,77 +453,77 @@ LABEL_13:
   return v14;
 }
 
-- (id)extractTimeContextEmbeddingFromProtobufEquivalent:(id)a3
+- (id)extractTimeContextEmbeddingFromProtobufEquivalent:(id)equivalent
 {
-  v3 = [a3 timeContext];
-  if (v3)
+  timeContext = [equivalent timeContext];
+  if (timeContext)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    if ([v3 hasNormalizedDuration])
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if ([timeContext hasNormalizedDuration])
     {
       v5 = MEMORY[0x1E696AD98];
-      [v3 normalizedDuration];
+      [timeContext normalizedDuration];
       v6 = [v5 numberWithDouble:?];
-      [v4 setObject:v6 forKeyedSubscript:@"normalizedDuration"];
+      [dictionary setObject:v6 forKeyedSubscript:@"normalizedDuration"];
     }
 
-    if ([v3 hasTimeOfDayCos])
+    if ([timeContext hasTimeOfDayCos])
     {
       v7 = MEMORY[0x1E696AD98];
-      [v3 timeOfDayCos];
+      [timeContext timeOfDayCos];
       v8 = [v7 numberWithDouble:?];
-      [v4 setObject:v8 forKeyedSubscript:@"timeOfDayCos"];
+      [dictionary setObject:v8 forKeyedSubscript:@"timeOfDayCos"];
     }
 
-    if ([v3 hasTimeOfDaySin])
+    if ([timeContext hasTimeOfDaySin])
     {
       v9 = MEMORY[0x1E696AD98];
-      [v3 timeOfDaySin];
+      [timeContext timeOfDaySin];
       v10 = [v9 numberWithDouble:?];
-      [v4 setObject:v10 forKeyedSubscript:@"timeOfDaySin"];
+      [dictionary setObject:v10 forKeyedSubscript:@"timeOfDaySin"];
     }
 
-    if ([v3 hasTimeOfDayCos] && objc_msgSend(v3, "hasTimeOfDaySin"))
+    if ([timeContext hasTimeOfDayCos] && objc_msgSend(timeContext, "hasTimeOfDaySin"))
     {
       v11 = MEMORY[0x1E696AD98];
-      [v3 timeOfDayCos];
+      [timeContext timeOfDayCos];
       v13 = v12;
-      [v3 timeOfDaySin];
+      [timeContext timeOfDaySin];
       v15 = [v11 numberWithUnsignedInteger:{+[PCTime timeTagFromTimeOfDayCos:timeOfDaySin:](PCTime, "timeTagFromTimeOfDayCos:timeOfDaySin:", v13, v14)}];
-      [v4 setObject:v15 forKeyedSubscript:@"timeTag"];
+      [dictionary setObject:v15 forKeyedSubscript:@"timeTag"];
     }
 
-    if ([v3 hasDayOfWeekCos])
+    if ([timeContext hasDayOfWeekCos])
     {
       v16 = MEMORY[0x1E696AD98];
-      [v3 dayOfWeekCos];
+      [timeContext dayOfWeekCos];
       v17 = [v16 numberWithDouble:?];
-      [v4 setObject:v17 forKeyedSubscript:@"dayOfWeekCos"];
+      [dictionary setObject:v17 forKeyedSubscript:@"dayOfWeekCos"];
     }
 
-    if ([v3 hasDayOfWeekSin])
+    if ([timeContext hasDayOfWeekSin])
     {
       v18 = MEMORY[0x1E696AD98];
-      [v3 dayOfWeekSin];
+      [timeContext dayOfWeekSin];
       v19 = [v18 numberWithDouble:?];
-      [v4 setObject:v19 forKeyedSubscript:@"dayOfWeekSin"];
+      [dictionary setObject:v19 forKeyedSubscript:@"dayOfWeekSin"];
     }
 
-    if ([v3 hasIsWeekend])
+    if ([timeContext hasIsWeekend])
     {
-      v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isWeekend")}];
-      [v4 setObject:v20 forKeyedSubscript:@"isWeekend"];
+      v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(timeContext, "isWeekend")}];
+      [dictionary setObject:v20 forKeyedSubscript:@"isWeekend"];
     }
 
-    if ([v3 hasWeekOfYear])
+    if ([timeContext hasWeekOfYear])
     {
-      v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v3, "weekOfYear")}];
-      [v4 setObject:v21 forKeyedSubscript:@"weekOfYear"];
+      v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(timeContext, "weekOfYear")}];
+      [dictionary setObject:v21 forKeyedSubscript:@"weekOfYear"];
     }
 
-    if ([v4 count])
+    if ([dictionary count])
     {
-      v22 = [v4 copy];
+      v22 = [dictionary copy];
     }
 
     else
@@ -543,109 +543,109 @@ LABEL_13:
 - (id)summaryDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(PCEmbedding *)self bundleIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"bundleID"];
+  bundleIdentifier = [(PCEmbedding *)self bundleIdentifier];
+  [v3 setObject:bundleIdentifier forKeyedSubscript:@"bundleID"];
 
-  v5 = [(PCEmbedding *)self suggestionID];
-  [v3 setObject:v5 forKeyedSubscript:@"suggestionID"];
+  suggestionID = [(PCEmbedding *)self suggestionID];
+  [v3 setObject:suggestionID forKeyedSubscript:@"suggestionID"];
 
-  v6 = [(PCEmbedding *)self activityContextEmbedding];
-  [v3 addEntriesFromDictionary:v6];
+  activityContextEmbedding = [(PCEmbedding *)self activityContextEmbedding];
+  [v3 addEntriesFromDictionary:activityContextEmbedding];
 
-  v7 = [(PCEmbedding *)self timeContextEmbedding];
-  v8 = [v7 objectForKeyedSubscript:@"normalizedDuration"];
+  timeContextEmbedding = [(PCEmbedding *)self timeContextEmbedding];
+  v8 = [timeContextEmbedding objectForKeyedSubscript:@"normalizedDuration"];
 
   if (v8)
   {
-    v9 = [(PCEmbedding *)self timeContextEmbedding];
-    v10 = [v9 objectForKeyedSubscript:@"normalizedDuration"];
+    timeContextEmbedding2 = [(PCEmbedding *)self timeContextEmbedding];
+    v10 = [timeContextEmbedding2 objectForKeyedSubscript:@"normalizedDuration"];
     [v3 setObject:v10 forKeyedSubscript:@"normalizedDuration"];
   }
 
-  v11 = [(PCEmbedding *)self timeContextEmbedding];
-  v12 = [v11 objectForKeyedSubscript:@"timeTag"];
+  timeContextEmbedding3 = [(PCEmbedding *)self timeContextEmbedding];
+  v12 = [timeContextEmbedding3 objectForKeyedSubscript:@"timeTag"];
 
   if (v12)
   {
-    v13 = [(PCEmbedding *)self timeContextEmbedding];
-    v14 = [v13 objectForKeyedSubscript:@"timeTag"];
+    timeContextEmbedding4 = [(PCEmbedding *)self timeContextEmbedding];
+    v14 = [timeContextEmbedding4 objectForKeyedSubscript:@"timeTag"];
     [v3 setObject:v14 forKeyedSubscript:@"timeTag"];
   }
 
-  v15 = [(PCEmbedding *)self timeContextEmbedding];
-  v16 = [v15 objectForKeyedSubscript:@"dayOfWeek"];
+  timeContextEmbedding5 = [(PCEmbedding *)self timeContextEmbedding];
+  v16 = [timeContextEmbedding5 objectForKeyedSubscript:@"dayOfWeek"];
 
   if (v16)
   {
-    v17 = [(PCEmbedding *)self timeContextEmbedding];
-    v18 = [v17 objectForKeyedSubscript:@"dayOfWeek"];
+    timeContextEmbedding6 = [(PCEmbedding *)self timeContextEmbedding];
+    v18 = [timeContextEmbedding6 objectForKeyedSubscript:@"dayOfWeek"];
     v19 = -[PCEmbedding dayOfWeekString:](self, "dayOfWeekString:", [v18 unsignedLongValue]);
     [v3 setObject:v19 forKeyedSubscript:@"dayOfWeek"];
   }
 
-  v20 = [(PCEmbedding *)self timeContextEmbedding];
-  v21 = [v20 objectForKeyedSubscript:@"weekOfYear"];
+  timeContextEmbedding7 = [(PCEmbedding *)self timeContextEmbedding];
+  v21 = [timeContextEmbedding7 objectForKeyedSubscript:@"weekOfYear"];
 
   if (v21)
   {
-    v22 = [(PCEmbedding *)self timeContextEmbedding];
-    v23 = [v22 objectForKeyedSubscript:@"weekOfYear"];
+    timeContextEmbedding8 = [(PCEmbedding *)self timeContextEmbedding];
+    v23 = [timeContextEmbedding8 objectForKeyedSubscript:@"weekOfYear"];
     [v3 setObject:v23 forKeyedSubscript:@"weekOfYear"];
   }
 
-  v24 = [(PCEmbedding *)self timeContextEmbedding];
-  v25 = [v24 objectForKeyedSubscript:@"isWeekend"];
+  timeContextEmbedding9 = [(PCEmbedding *)self timeContextEmbedding];
+  v25 = [timeContextEmbedding9 objectForKeyedSubscript:@"isWeekend"];
 
   if (v25)
   {
-    v26 = [(PCEmbedding *)self timeContextEmbedding];
-    v27 = [v26 objectForKeyedSubscript:@"isWeekend"];
+    timeContextEmbedding10 = [(PCEmbedding *)self timeContextEmbedding];
+    v27 = [timeContextEmbedding10 objectForKeyedSubscript:@"isWeekend"];
     [v3 setObject:v27 forKeyedSubscript:@"isWeekend"];
   }
 
-  v28 = [(PCEmbedding *)self locationContextEmbedding];
-  v29 = [v28 objectForKeyedSubscript:@"placeName"];
+  locationContextEmbedding = [(PCEmbedding *)self locationContextEmbedding];
+  v29 = [locationContextEmbedding objectForKeyedSubscript:@"placeName"];
 
   if (v29)
   {
-    v30 = [(PCEmbedding *)self locationContextEmbedding];
-    v31 = [v30 objectForKeyedSubscript:@"placeName"];
+    locationContextEmbedding2 = [(PCEmbedding *)self locationContextEmbedding];
+    v31 = [locationContextEmbedding2 objectForKeyedSubscript:@"placeName"];
     [v3 setObject:v31 forKeyedSubscript:@"placeName"];
   }
 
-  v32 = [(PCEmbedding *)self locationContextEmbedding];
-  v33 = [v32 objectForKeyedSubscript:@"combinedPlaceType"];
+  locationContextEmbedding3 = [(PCEmbedding *)self locationContextEmbedding];
+  v33 = [locationContextEmbedding3 objectForKeyedSubscript:@"combinedPlaceType"];
 
   if (v33)
   {
-    v34 = [(PCEmbedding *)self locationContextEmbedding];
-    v35 = [v34 objectForKeyedSubscript:@"combinedPlaceType"];
+    locationContextEmbedding4 = [(PCEmbedding *)self locationContextEmbedding];
+    v35 = [locationContextEmbedding4 objectForKeyedSubscript:@"combinedPlaceType"];
     [v3 setObject:v35 forKeyedSubscript:@"combinedPlaceType"];
   }
 
-  v36 = [(PCEmbedding *)self locationContextEmbedding];
-  v37 = [v36 objectForKeyedSubscript:@"enclosingAreaName"];
+  locationContextEmbedding5 = [(PCEmbedding *)self locationContextEmbedding];
+  v37 = [locationContextEmbedding5 objectForKeyedSubscript:@"enclosingAreaName"];
 
   if (v37)
   {
-    v38 = [(PCEmbedding *)self locationContextEmbedding];
-    v39 = [v38 objectForKeyedSubscript:@"enclosingAreaName"];
+    locationContextEmbedding6 = [(PCEmbedding *)self locationContextEmbedding];
+    v39 = [locationContextEmbedding6 objectForKeyedSubscript:@"enclosingAreaName"];
     [v3 setObject:v39 forKeyedSubscript:@"enclosingAreaName"];
   }
 
   return v3;
 }
 
-- (id)dayOfWeekString:(unint64_t)a3
+- (id)dayOfWeekString:(unint64_t)string
 {
-  if (a3 - 1 > 6)
+  if (string - 1 > 6)
   {
     return @"undefined";
   }
 
   else
   {
-    return off_1E83B8348[a3 - 1];
+    return off_1E83B8348[string - 1];
   }
 }
 
@@ -654,12 +654,12 @@ LABEL_13:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PCEmbedding *)self bundleIdentifier];
-  v7 = [(PCEmbedding *)self suggestionID];
-  v8 = [(PCEmbedding *)self embeddingType];
-  v9 = [(PCEmbedding *)self activityContextEmbedding];
-  v10 = [(PCEmbedding *)self timeContextEmbedding];
-  v11 = [v3 stringWithFormat:@"<%@ bundleID:%@, suggestionID:%@, embeddingType:%lu, activityContextEmbedding:%@, timeContextEmbedding:%@>", v5, v6, v7, v8, v9, v10];
+  bundleIdentifier = [(PCEmbedding *)self bundleIdentifier];
+  suggestionID = [(PCEmbedding *)self suggestionID];
+  embeddingType = [(PCEmbedding *)self embeddingType];
+  activityContextEmbedding = [(PCEmbedding *)self activityContextEmbedding];
+  timeContextEmbedding = [(PCEmbedding *)self timeContextEmbedding];
+  v11 = [v3 stringWithFormat:@"<%@ bundleID:%@, suggestionID:%@, embeddingType:%lu, activityContextEmbedding:%@, timeContextEmbedding:%@>", v5, bundleIdentifier, suggestionID, embeddingType, activityContextEmbedding, timeContextEmbedding];
 
   return v11;
 }
@@ -668,39 +668,39 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(PCEmbedding *)self description];
-  v5 = [(PCEmbedding *)self locationContextEmbedding];
-  v6 = [v3 stringWithFormat:@"%@ <locationContextEmbedding:%@>", v4, v5];
+  locationContextEmbedding = [(PCEmbedding *)self locationContextEmbedding];
+  v6 = [v3 stringWithFormat:@"%@ <locationContextEmbedding:%@>", v4, locationContextEmbedding];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v67 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(PCEmbedding);
-  v5 = [(PCEmbedding *)self bundleIdentifier];
-  [(PCEmbedding *)v4 setBundleIdentifier:v5];
+  bundleIdentifier = [(PCEmbedding *)self bundleIdentifier];
+  [(PCEmbedding *)v4 setBundleIdentifier:bundleIdentifier];
 
-  v6 = [(PCEmbedding *)self suggestionID];
-  [(PCEmbedding *)v4 setSuggestionID:v6];
+  suggestionID = [(PCEmbedding *)self suggestionID];
+  [(PCEmbedding *)v4 setSuggestionID:suggestionID];
 
   [(PCEmbedding *)v4 setEmbeddingType:[(PCEmbedding *)self embeddingType]];
-  v7 = [(PCEmbedding *)self activityContextEmbedding];
+  activityContextEmbedding = [(PCEmbedding *)self activityContextEmbedding];
 
   v51 = v4;
-  if (v7)
+  if (activityContextEmbedding)
   {
-    v8 = [(PCEmbedding *)self activityContextEmbedding];
-    v9 = [v8 mutableCopy];
+    activityContextEmbedding2 = [(PCEmbedding *)self activityContextEmbedding];
+    v9 = [activityContextEmbedding2 mutableCopy];
 
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v10 = [(PCEmbedding *)self activityContextEmbedding];
-    v11 = [v10 allKeys];
+    activityContextEmbedding3 = [(PCEmbedding *)self activityContextEmbedding];
+    allKeys = [activityContextEmbedding3 allKeys];
 
-    v12 = [v11 countByEnumeratingWithState:&v60 objects:v66 count:16];
+    v12 = [allKeys countByEnumeratingWithState:&v60 objects:v66 count:16];
     if (v12)
     {
       v13 = v12;
@@ -712,12 +712,12 @@ LABEL_13:
         {
           if (*v61 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v16 = *(*(&v60 + 1) + 8 * v15);
-          v17 = [(PCEmbedding *)self activityContextEmbedding];
-          v18 = [v17 objectForKeyedSubscript:v16];
+          activityContextEmbedding4 = [(PCEmbedding *)self activityContextEmbedding];
+          v18 = [activityContextEmbedding4 objectForKeyedSubscript:v16];
 
           if ([v18 conformsToProtocol:&unk_1F4BE09A8])
           {
@@ -729,7 +729,7 @@ LABEL_13:
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v60 objects:v66 count:16];
+        v13 = [allKeys countByEnumeratingWithState:&v60 objects:v66 count:16];
       }
 
       while (v13);
@@ -740,21 +740,21 @@ LABEL_13:
     [(PCEmbedding *)v51 setActivityContextEmbedding:v20];
   }
 
-  v21 = [(PCEmbedding *)self timeContextEmbedding];
+  timeContextEmbedding = [(PCEmbedding *)self timeContextEmbedding];
 
-  if (v21)
+  if (timeContextEmbedding)
   {
-    v22 = [(PCEmbedding *)self timeContextEmbedding];
-    v23 = [v22 mutableCopy];
+    timeContextEmbedding2 = [(PCEmbedding *)self timeContextEmbedding];
+    v23 = [timeContextEmbedding2 mutableCopy];
 
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v24 = [(PCEmbedding *)self timeContextEmbedding];
-    v25 = [v24 allKeys];
+    timeContextEmbedding3 = [(PCEmbedding *)self timeContextEmbedding];
+    allKeys2 = [timeContextEmbedding3 allKeys];
 
-    v26 = [v25 countByEnumeratingWithState:&v56 objects:v65 count:16];
+    v26 = [allKeys2 countByEnumeratingWithState:&v56 objects:v65 count:16];
     if (v26)
     {
       v27 = v26;
@@ -766,12 +766,12 @@ LABEL_13:
         {
           if (*v57 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(allKeys2);
           }
 
           v30 = *(*(&v56 + 1) + 8 * v29);
-          v31 = [(PCEmbedding *)self timeContextEmbedding];
-          v32 = [v31 objectForKeyedSubscript:v30];
+          timeContextEmbedding4 = [(PCEmbedding *)self timeContextEmbedding];
+          v32 = [timeContextEmbedding4 objectForKeyedSubscript:v30];
 
           if ([v32 conformsToProtocol:&unk_1F4BE09A8])
           {
@@ -783,7 +783,7 @@ LABEL_13:
         }
 
         while (v27 != v29);
-        v27 = [v25 countByEnumeratingWithState:&v56 objects:v65 count:16];
+        v27 = [allKeys2 countByEnumeratingWithState:&v56 objects:v65 count:16];
       }
 
       while (v27);
@@ -794,21 +794,21 @@ LABEL_13:
     [(PCEmbedding *)v51 setTimeContextEmbedding:v34];
   }
 
-  v35 = [(PCEmbedding *)self locationContextEmbedding];
+  locationContextEmbedding = [(PCEmbedding *)self locationContextEmbedding];
 
-  if (v35)
+  if (locationContextEmbedding)
   {
-    v36 = [(PCEmbedding *)self locationContextEmbedding];
-    v37 = [v36 mutableCopy];
+    locationContextEmbedding2 = [(PCEmbedding *)self locationContextEmbedding];
+    v37 = [locationContextEmbedding2 mutableCopy];
 
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v38 = [(PCEmbedding *)self locationContextEmbedding];
-    v39 = [v38 allKeys];
+    locationContextEmbedding3 = [(PCEmbedding *)self locationContextEmbedding];
+    allKeys3 = [locationContextEmbedding3 allKeys];
 
-    v40 = [v39 countByEnumeratingWithState:&v52 objects:v64 count:16];
+    v40 = [allKeys3 countByEnumeratingWithState:&v52 objects:v64 count:16];
     if (v40)
     {
       v41 = v40;
@@ -820,12 +820,12 @@ LABEL_13:
         {
           if (*v53 != v42)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(allKeys3);
           }
 
           v44 = *(*(&v52 + 1) + 8 * v43);
-          v45 = [(PCEmbedding *)self locationContextEmbedding];
-          v46 = [v45 objectForKeyedSubscript:v44];
+          locationContextEmbedding4 = [(PCEmbedding *)self locationContextEmbedding];
+          v46 = [locationContextEmbedding4 objectForKeyedSubscript:v44];
 
           if ([v46 conformsToProtocol:&unk_1F4BE09A8])
           {
@@ -837,7 +837,7 @@ LABEL_13:
         }
 
         while (v41 != v43);
-        v41 = [v39 countByEnumeratingWithState:&v52 objects:v64 count:16];
+        v41 = [allKeys3 countByEnumeratingWithState:&v52 objects:v64 count:16];
       }
 
       while (v41);
@@ -852,16 +852,16 @@ LABEL_13:
   return v4;
 }
 
-+ (id)embeddingObjectsFromProtobuf:(id)a3
++ (id)embeddingObjectsFromProtobuf:(id)protobuf
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = protobufCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -942,22 +942,22 @@ LABEL_13:
   return v7;
 }
 
-+ (double)secondsFromTimeOfDay:(id)a3 toTimeOfDay:(id)a4
++ (double)secondsFromTimeOfDay:(id)day toTimeOfDay:(id)ofDay
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  dayCopy = day;
+  ofDayCopy = ofDay;
+  v7 = ofDayCopy;
   v8 = -1.0;
-  if (v5 && v6)
+  if (dayCopy && ofDayCopy)
   {
-    v9 = [v5 hour];
-    v10 = ([v5 minute] * 60.0) + (v9 * 3600.0);
-    v11 = (v10 + [v5 second]);
-    v12 = [v7 hour];
-    v13 = ([v7 minute] * 60.0) + (v12 * 3600.0);
-    v14 = [v7 second];
-    v15 = (v13 + v14) - v11;
+    hour = [dayCopy hour];
+    v10 = ([dayCopy minute] * 60.0) + (hour * 3600.0);
+    v11 = (v10 + [dayCopy second]);
+    hour2 = [v7 hour];
+    v13 = ([v7 minute] * 60.0) + (hour2 * 3600.0);
+    second = [v7 second];
+    v15 = (v13 + second) - v11;
     if (v15 < 0.0 || v15 > 86400.0)
     {
       if (v15 >= 0.0 || v15 < -86400.0)
@@ -966,7 +966,7 @@ LABEL_13:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           v19 = 138412546;
-          v20 = v5;
+          v20 = dayCopy;
           v21 = 2112;
           v22 = v7;
           _os_log_impl(&dword_1CEE74000, v16, OS_LOG_TYPE_ERROR, "[secondsFromTimeOfDay] Invalid Parameters: %@, %@", &v19, 0x16u);
@@ -981,7 +981,7 @@ LABEL_13:
 
     else
     {
-      v8 = (v13 + v14) - v11;
+      v8 = (v13 + second) - v11;
     }
   }
 

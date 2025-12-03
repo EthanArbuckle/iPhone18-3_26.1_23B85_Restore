@@ -1,7 +1,7 @@
 @interface NPSDeviceRegistry
-+ (id)createDirectoryIfNeeded:(id)a3;
-+ (id)idsDestinationIDForDevice:(id)a3 withIdsService:(id)a4;
-+ (id)pdrDeviceForIDSDevice:(id)a3;
++ (id)createDirectoryIfNeeded:(id)needed;
++ (id)idsDestinationIDForDevice:(id)device withIdsService:(id)service;
++ (id)pdrDeviceForIDSDevice:(id)device;
 - (NPSDomainAccessor)domainAccessor;
 - (NSString)databasePath;
 - (NSString)filesBackupDirectoryPath;
@@ -10,8 +10,8 @@
 - (NSString)perGizmoCacheDirectoryPath;
 - (NSString)userDefaultsBackupDirectoryPath;
 - (void)checkForActiveDeviceChange;
-- (void)registryChanged:(id)a3;
-- (void)startMonitoringPairingEventsWithQueue:(id)a3;
+- (void)registryChanged:(id)changed;
+- (void)startMonitoringPairingEventsWithQueue:(id)queue;
 @end
 
 @implementation NPSDeviceRegistry
@@ -40,17 +40,17 @@
   return domainAccessor;
 }
 
-- (void)startMonitoringPairingEventsWithQueue:(id)a3
+- (void)startMonitoringPairingEventsWithQueue:(id)queue
 {
-  v4 = a3;
-  if (!v4)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     sub_100026EB0();
   }
 
   queue = self->_queue;
-  self->_queue = v4;
-  v6 = v4;
+  self->_queue = queueCopy;
+  v6 = queueCopy;
 
   v7 = +[NPSPairedDeviceRegistry registry];
 
@@ -69,8 +69,8 @@
       v4 = [(NSString *)self->_pairingDataStore stringByAppendingPathComponent:@"NanoPreferencesSync"];
       v5 = [v4 stringByAppendingPathComponent:@"Cache/"];
 
-      v6 = [v5 stringByStandardizingPath];
-      v7 = [v6 stringByAppendingString:@"/"];
+      stringByStandardizingPath = [v5 stringByStandardizingPath];
+      v7 = [stringByStandardizingPath stringByAppendingString:@"/"];
 
       v8 = [objc_opt_class() createDirectoryIfNeeded:v7];
       v9 = self->_perGizmoCacheDirectoryPath;
@@ -101,8 +101,8 @@
 
       v7 = [v6 stringByAppendingPathComponent:@"Cache/"];
 
-      v8 = [v7 stringByStandardizingPath];
-      v9 = [v8 stringByAppendingString:@"/"];
+      stringByStandardizingPath = [v7 stringByStandardizingPath];
+      v9 = [stringByStandardizingPath stringByAppendingString:@"/"];
 
       v10 = [objc_opt_class() createDirectoryIfNeeded:v9];
       v11 = self->_globalCacheDirectoryPath;
@@ -130,8 +130,8 @@
       v4 = [(NSString *)self->_pairingDataStore stringByAppendingPathComponent:@"NanoPreferencesSync"];
       v5 = [v4 stringByAppendingPathComponent:@"Backup/UserDefaults/"];
 
-      v6 = [v5 stringByStandardizingPath];
-      v7 = [v6 stringByAppendingString:@"/"];
+      stringByStandardizingPath = [v5 stringByStandardizingPath];
+      v7 = [stringByStandardizingPath stringByAppendingString:@"/"];
 
       v8 = [objc_opt_class() createDirectoryIfNeeded:v7];
       v9 = self->_userDefaultsBackupDirectoryPath;
@@ -159,8 +159,8 @@
       v4 = [(NSString *)self->_pairingDataStore stringByAppendingPathComponent:@"NanoPreferencesSync"];
       v5 = [v4 stringByAppendingPathComponent:@"Backup/Files/"];
 
-      v6 = [v5 stringByStandardizingPath];
-      v7 = [v6 stringByAppendingString:@"/"];
+      stringByStandardizingPath = [v5 stringByStandardizingPath];
+      v7 = [stringByStandardizingPath stringByAppendingString:@"/"];
 
       v8 = [objc_opt_class() createDirectoryIfNeeded:v7];
       v9 = self->_filesBackupDirectoryPath;
@@ -185,13 +185,13 @@
   {
     if (self->_activeDeviceID)
     {
-      v4 = [(NPSDeviceRegistry *)self filesBackupDirectoryPath];
-      v5 = [v4 stringByAppendingPathComponent:@"index"];
+      filesBackupDirectoryPath = [(NPSDeviceRegistry *)self filesBackupDirectoryPath];
+      v5 = [filesBackupDirectoryPath stringByAppendingPathComponent:@"index"];
 
-      v6 = [v5 stringByStandardizingPath];
+      stringByStandardizingPath = [v5 stringByStandardizingPath];
 
       v7 = self->_filesBackupMetadataIndexPath;
-      self->_filesBackupMetadataIndexPath = v6;
+      self->_filesBackupMetadataIndexPath = stringByStandardizingPath;
 
       filesBackupMetadataIndexPath = self->_filesBackupMetadataIndexPath;
     }
@@ -205,7 +205,7 @@
   return filesBackupMetadataIndexPath;
 }
 
-- (void)registryChanged:(id)a3
+- (void)registryChanged:(id)changed
 {
   v4 = nps_daemon_log;
   if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
@@ -244,23 +244,23 @@
 - (void)checkForActiveDeviceChange
 {
   v3 = +[NPSPairedDeviceRegistry registry];
-  v4 = [v3 getActiveDevice];
-  if ([v4 isArchived])
+  getActiveDevice = [v3 getActiveDevice];
+  if ([getActiveDevice isArchived])
   {
 
-    v4 = 0;
+    getActiveDevice = 0;
   }
 
   if ([v3 compatibilityState] - 6 <= 0xFFFFFFFFFFFFFFFCLL)
   {
 
-    v4 = 0;
+    getActiveDevice = 0;
   }
 
-  v5 = [v4 pairingID];
-  v6 = [v4 pairingStorePath];
-  [(NPSDeviceRegistry *)self setActiveDevice:v4];
-  if (![v5 isEqual:self->_activeDeviceID] || (objc_msgSend(v6, "isEqual:", self->_pairingDataStore) & 1) == 0)
+  pairingID = [getActiveDevice pairingID];
+  pairingStorePath = [getActiveDevice pairingStorePath];
+  [(NPSDeviceRegistry *)self setActiveDevice:getActiveDevice];
+  if (![pairingID isEqual:self->_activeDeviceID] || (objc_msgSend(pairingStorePath, "isEqual:", self->_pairingDataStore) & 1) == 0)
   {
     v7 = nps_daemon_log;
     if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
@@ -269,12 +269,12 @@
       v16 = 138543618;
       v17 = activeDeviceID;
       v18 = 2114;
-      v19 = v5;
+      v19 = pairingID;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Paired device changed from %{public}@ to %{public}@", &v16, 0x16u);
     }
 
-    objc_storeStrong(&self->_activeDeviceID, v5);
-    objc_storeStrong(&self->_pairingDataStore, v6);
+    objc_storeStrong(&self->_activeDeviceID, pairingID);
+    objc_storeStrong(&self->_pairingDataStore, pairingStorePath);
     databasePath = self->_databasePath;
     self->_databasePath = 0;
 
@@ -301,20 +301,20 @@
   }
 }
 
-+ (id)pdrDeviceForIDSDevice:(id)a3
++ (id)pdrDeviceForIDSDevice:(id)device
 {
-  v3 = [a3 nsuuid];
+  nsuuid = [device nsuuid];
   v4 = +[NPSPairedDeviceRegistry registry];
-  v5 = [v4 deviceForBluetoothID:v3];
+  v5 = [v4 deviceForBluetoothID:nsuuid];
 
   return v5;
 }
 
-+ (id)createDirectoryIfNeeded:(id)a3
++ (id)createDirectoryIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = +[NSFileManager defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  if ([v4 fileExistsAtPath:neededCopy])
   {
     v5 = 0;
   }
@@ -325,7 +325,7 @@
     v15 = NSFileProtectionNone;
     v6 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v9 = 0;
-    [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:v6 error:&v9];
+    [v4 createDirectoryAtPath:neededCopy withIntermediateDirectories:1 attributes:v6 error:&v9];
     v5 = v9;
 
     if (v5)
@@ -334,7 +334,7 @@
       if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v11 = v3;
+        v11 = neededCopy;
         v12 = 2112;
         v13 = v5;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Failed to create directory (%@) with error: (%@)", buf, 0x16u);
@@ -345,22 +345,22 @@
   return v5;
 }
 
-+ (id)idsDestinationIDForDevice:(id)a3 withIdsService:(id)a4
++ (id)idsDestinationIDForDevice:(id)device withIdsService:(id)service
 {
-  if (a3)
+  if (device)
   {
-    v5 = a3;
-    v6 = [a4 linkedDevicesWithRelationship:3];
-    v7 = [v5 bluetoothIdentifier];
+    deviceCopy = device;
+    v6 = [service linkedDevicesWithRelationship:3];
+    bluetoothIdentifier = [deviceCopy bluetoothIdentifier];
 
     v8 = 0;
-    if (v6 && v7)
+    if (v6 && bluetoothIdentifier)
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100023218;
       v12[3] = &unk_10003D400;
-      v13 = v7;
+      v13 = bluetoothIdentifier;
       v9 = [v6 indexOfObjectPassingTest:v12];
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {

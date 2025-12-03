@@ -1,11 +1,11 @@
 @interface LinkableTextCollectionViewCell
-- (_TtC8AppStore30LinkableTextCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore30LinkableTextCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation LinkableTextCollectionViewCell
 
-- (_TtC8AppStore30LinkableTextCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore30LinkableTextCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore30LinkableTextCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -20,7 +20,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10069293C();
 }
 

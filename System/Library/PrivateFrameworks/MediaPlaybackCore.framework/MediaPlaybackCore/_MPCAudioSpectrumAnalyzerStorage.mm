@@ -1,10 +1,10 @@
 @interface _MPCAudioSpectrumAnalyzerStorage
-- (_MPCAudioSpectrumAnalyzerStorage)initWithMaximumNumberOfFrames:(int64_t)a3 sampleRate:(float)a4;
+- (_MPCAudioSpectrumAnalyzerStorage)initWithMaximumNumberOfFrames:(int64_t)frames sampleRate:(float)rate;
 - (void)_destroyFFTSetup;
 - (void)_freeBuffers;
 - (void)_prepareBuffers;
-- (void)analyzeAudioData:(void *)a3 numberFrames:(unsigned int)a4 observers:(id)a5;
-- (void)analyzeFrequencies:(AudioBufferList *)a3 numberFrames:(unint64_t)a4 observers:(id)a5;
+- (void)analyzeAudioData:(void *)data numberFrames:(unsigned int)frames observers:(id)observers;
+- (void)analyzeFrequencies:(AudioBufferList *)frequencies numberFrames:(unint64_t)frames observers:(id)observers;
 - (void)dealloc;
 @end
 
@@ -18,21 +18,21 @@
   self->_intermediateBuffer = malloc_type_calloc(self->_maxNumberOfFrames, 4uLL, 0x100004052888210uLL);
 }
 
-- (void)analyzeAudioData:(void *)a3 numberFrames:(unsigned int)a4 observers:(id)a5
+- (void)analyzeAudioData:(void *)data numberFrames:(unsigned int)frames observers:(id)observers
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  observersCopy = observers;
   intermediateBuffer = self->_intermediateBuffer;
-  if (intermediateBuffer != a3)
+  if (intermediateBuffer != data)
   {
-    memcpy(intermediateBuffer, a3, 4 * a4);
+    memcpy(intermediateBuffer, data, 4 * frames);
   }
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v46 objects:v52 count:16];
+  v10 = [observersCopy countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v10)
   {
     v11 = v10;
@@ -43,13 +43,13 @@
       {
         if (*v47 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(observersCopy);
         }
 
         [*(*(&v46 + 1) + 8 * i) beginReport];
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v46 objects:v52 count:16];
+      v11 = [observersCopy countByEnumeratingWithState:&v46 objects:v52 count:16];
     }
 
     while (v11);
@@ -57,14 +57,14 @@
 
   vDSP_ctoz(self->_intermediateBuffer, 2, &self->_fftBuffer, 1, self->_halfN);
   vDSP_fft_zrip(self->_fftSetup, &self->_fftBuffer, 1, self->_log2N, 1);
-  vDSP_vclr(self->_intermediateBuffer, 1, a4);
+  vDSP_vclr(self->_intermediateBuffer, 1, frames);
   vDSP_zaspec(&self->_fftBuffer, self->_intermediateBuffer, self->_halfN);
   __C = 0.0;
   vDSP_sve(self->_intermediateBuffer, 1, &__C, self->_halfN);
   if (__C > 0.0 && self->_halfN >= 1)
   {
     v14 = 0;
-    v15 = a4;
+    framesCopy = frames;
     do
     {
       v16 = self->_intermediateBuffer[v14];
@@ -74,14 +74,14 @@
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v19 = v8;
+      v19 = observersCopy;
       v20 = [v19 countByEnumeratingWithState:&v41 objects:v51 count:16];
       if (v20)
       {
         v21 = v20;
         v22 = v16 / v17;
         v23 = *v42;
-        v24 = (sampleRate * v14) / v15;
+        v24 = (sampleRate * v14) / framesCopy;
         do
         {
           for (j = 0; j != v21; ++j)
@@ -130,7 +130,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v30 = v8;
+  v30 = observersCopy;
   v31 = [v30 countByEnumeratingWithState:&v37 objects:v50 count:16];
   if (v31)
   {
@@ -158,13 +158,13 @@
   }
 }
 
-- (void)analyzeFrequencies:(AudioBufferList *)a3 numberFrames:(unint64_t)a4 observers:(id)a5
+- (void)analyzeFrequencies:(AudioBufferList *)frequencies numberFrames:(unint64_t)frames observers:(id)observers
 {
-  v8 = a5;
-  if (a3->mNumberBuffers)
+  observersCopy = observers;
+  if (frequencies->mNumberBuffers)
   {
-    mData = a3->mBuffers[0].mData;
-    if (a3->mNumberBuffers == 1)
+    mData = frequencies->mBuffers[0].mData;
+    if (frequencies->mNumberBuffers == 1)
     {
       if (!mData)
       {
@@ -174,13 +174,13 @@
 
     else
     {
-      v10 = *&a3[1].mBuffers[0].mNumberChannels;
+      v10 = *&frequencies[1].mBuffers[0].mNumberChannels;
       if (mData && v10)
       {
         __C = 0.5;
-        vDSP_vasm(mData, 1, v10, 1, &__C, self->_intermediateBuffer, 1, a4);
+        vDSP_vasm(mData, 1, v10, 1, &__C, self->_intermediateBuffer, 1, frames);
 LABEL_11:
-        [(_MPCAudioSpectrumAnalyzerStorage *)self analyzeAudioData:self->_intermediateBuffer numberFrames:a4 observers:v8];
+        [(_MPCAudioSpectrumAnalyzerStorage *)self analyzeAudioData:self->_intermediateBuffer numberFrames:frames observers:observersCopy];
         goto LABEL_12;
       }
 
@@ -192,14 +192,14 @@ LABEL_11:
         }
 
         intermediateBuffer = self->_intermediateBuffer;
-        mData = *&a3[1].mBuffers[0].mNumberChannels;
-        v12 = 4 * a4;
+        mData = *&frequencies[1].mBuffers[0].mNumberChannels;
+        v12 = 4 * frames;
         goto LABEL_10;
       }
     }
 
     intermediateBuffer = self->_intermediateBuffer;
-    v12 = 4 * a4;
+    v12 = 4 * frames;
 LABEL_10:
     memcpy(intermediateBuffer, mData, v12);
     goto LABEL_11;
@@ -249,7 +249,7 @@ LABEL_12:
   [(_MPCAudioSpectrumAnalyzerStorage *)&v3 dealloc];
 }
 
-- (_MPCAudioSpectrumAnalyzerStorage)initWithMaximumNumberOfFrames:(int64_t)a3 sampleRate:(float)a4
+- (_MPCAudioSpectrumAnalyzerStorage)initWithMaximumNumberOfFrames:(int64_t)frames sampleRate:(float)rate
 {
   v9.receiver = self;
   v9.super_class = _MPCAudioSpectrumAnalyzerStorage;
@@ -257,10 +257,10 @@ LABEL_12:
   v7 = v6;
   if (v6)
   {
-    v6->_sampleRate = a4;
-    v6->_maxNumberOfFrames = a3;
-    v6->_halfN = (a3 / 2);
-    v6->_log2N = vcvtpd_s64_f64(log2(a3));
+    v6->_sampleRate = rate;
+    v6->_maxNumberOfFrames = frames;
+    v6->_halfN = (frames / 2);
+    v6->_log2N = vcvtpd_s64_f64(log2(frames));
     [(_MPCAudioSpectrumAnalyzerStorage *)v7 _prepareBuffers];
   }
 

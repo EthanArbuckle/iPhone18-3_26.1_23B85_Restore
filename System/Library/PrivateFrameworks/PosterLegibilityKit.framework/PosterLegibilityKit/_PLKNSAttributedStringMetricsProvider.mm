@@ -1,12 +1,12 @@
 @interface _PLKNSAttributedStringMetricsProvider
-- (CGRect)plk_boundingRectForObject:(id)a3 maxSize:(CGSize)a4;
+- (CGRect)plk_boundingRectForObject:(id)object maxSize:(CGSize)size;
 @end
 
 @implementation _PLKNSAttributedStringMetricsProvider
 
-- (CGRect)plk_boundingRectForObject:(id)a3 maxSize:(CGSize)a4
+- (CGRect)plk_boundingRectForObject:(id)object maxSize:(CGSize)size
 {
-  [a3 boundingRectWithSize:0 options:0 context:{a4.width, a4.height}];
+  [object boundingRectWithSize:0 options:0 context:{size.width, size.height}];
   v8 = fabs(v5);
   v9 = v5 + v8;
   v10 = v7 + v8;

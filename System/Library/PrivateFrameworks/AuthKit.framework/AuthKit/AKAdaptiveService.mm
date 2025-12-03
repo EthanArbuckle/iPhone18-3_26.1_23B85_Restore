@@ -1,54 +1,54 @@
 @interface AKAdaptiveService
-- (AKAdaptiveService)initWithInterface:(id)a3 strongObject:(id)a4;
-- (AKAdaptiveService)initWithInterface:(id)a3 weakObject:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_initWithInterface:(id)a3 object:(id)a4;
+- (AKAdaptiveService)initWithInterface:(id)interface strongObject:(id)object;
+- (AKAdaptiveService)initWithInterface:(id)interface weakObject:(id)object;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_initWithInterface:(id)interface object:(id)object;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation AKAdaptiveService
 
-- (id)_initWithInterface:(id)a3 object:(id)a4
+- (id)_initWithInterface:(id)interface object:(id)object
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interface);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(&v11, object);
+  v4 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v4;
   v10.super_class = AKAdaptiveService;
-  v13 = [(AKAdaptiveService *)&v10 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(AKAdaptiveService *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v13->_exportedInterface, location[0]);
-    objc_storeStrong(&v13->_exportedObject, v11);
-    v5 = [MEMORY[0x1E696B0D8] anonymousListener];
-    listener = v13->_listener;
-    v13->_listener = v5;
+    objc_storeStrong(&selfCopy->_exportedInterface, location[0]);
+    objc_storeStrong(&selfCopy->_exportedObject, v11);
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
+    listener = selfCopy->_listener;
+    selfCopy->_listener = anonymousListener;
     MEMORY[0x1E69E5920](listener);
-    [(NSXPCListener *)v13->_listener setDelegate:v13];
+    [(NSXPCListener *)selfCopy->_listener setDelegate:selfCopy];
   }
 
-  v8 = MEMORY[0x1E69E5928](v13);
+  v8 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (AKAdaptiveService)initWithInterface:(id)a3 strongObject:(id)a4
+- (AKAdaptiveService)initWithInterface:(id)interface strongObject:(id)object
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interface);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, object);
   v4 = [_AKMessageForwarder alloc];
   v9 = [(_AKMessageForwarder *)v4 initWithStrongReceiver:v10];
   v5 = objc_alloc(objc_opt_class());
@@ -56,18 +56,18 @@
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (AKAdaptiveService)initWithInterface:(id)a3 weakObject:(id)a4
+- (AKAdaptiveService)initWithInterface:(id)interface weakObject:(id)object
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interface);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, object);
   v4 = [_AKMessageForwarder alloc];
   v9 = [(_AKMessageForwarder *)v4 initWithWeakReceiver:v10];
   v5 = objc_alloc(objc_opt_class());
@@ -75,16 +75,16 @@
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AKAdaptiveService *)self invalidate];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKAdaptiveService;
   [(AKAdaptiveService *)&v2 dealloc];
 }
@@ -100,19 +100,19 @@
   [(NSXPCListener *)self->_listener invalidate];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  [v22 setExportedInterface:v24->_exportedInterface];
-  [v22 setExportedObject:v24->_exportedObject];
-  [v22 setRemoteObjectInterface:v24->_remoteObjectInterface];
+  objc_storeStrong(&v22, connection);
+  [v22 setExportedInterface:selfCopy->_exportedInterface];
+  [v22 setExportedObject:selfCopy->_exportedObject];
+  [v22 setRemoteObjectInterface:selfCopy->_remoteObjectInterface];
   v21 = v22;
-  objc_initWeak(&v20, v24);
+  objc_initWeak(&v20, selfCopy);
   v7 = v22;
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;

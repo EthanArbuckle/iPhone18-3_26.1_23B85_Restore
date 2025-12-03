@@ -1,23 +1,23 @@
 @interface FPDSpotlightDaemonClient
-- (FPDSpotlightDaemonClient)initWithExtensionManager:(id)a3;
-- (void)provideDataForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)provideFileURLForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)reindexAllItemsForBundleID:(id)a3 protectionClass:(id)a4 acknowledgementHandler:(id)a5;
-- (void)reindexItemsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 acknowledgementHandler:(id)a6;
+- (FPDSpotlightDaemonClient)initWithExtensionManager:(id)manager;
+- (void)provideDataForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler;
+- (void)provideFileURLForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler;
+- (void)reindexAllItemsForBundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler;
+- (void)reindexItemsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler;
 @end
 
 @implementation FPDSpotlightDaemonClient
 
-- (FPDSpotlightDaemonClient)initWithExtensionManager:(id)a3
+- (FPDSpotlightDaemonClient)initWithExtensionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = FPDSpotlightDaemonClient;
   v6 = [(FPDSpotlightDaemonClient *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extensionManager, a3);
+    objc_storeStrong(&v6->_extensionManager, manager);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("reindex-queue", v8);
     reindexQueue = v7->_reindexQueue;
@@ -27,12 +27,12 @@
   return v7;
 }
 
-- (void)reindexAllItemsForBundleID:(id)a3 protectionClass:(id)a4 acknowledgementHandler:(id)a5
+- (void)reindexAllItemsForBundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 isEqualToString:*MEMORY[0x1E696A388]];
+  dCopy = d;
+  handlerCopy = handler;
+  v10 = [class isEqualToString:*MEMORY[0x1E696A388]];
   v11 = fp_current_or_default_log();
   v12 = v11;
   if (v10)
@@ -40,7 +40,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v20 = v8;
+      v20 = dCopy;
       _os_log_impl(&dword_1CEFC7000, v12, OS_LOG_TYPE_INFO, "[INFO] Received call to reindex all items for bundle ID %@", buf, 0xCu);
     }
 
@@ -49,9 +49,9 @@
     block[1] = 3221225472;
     block[2] = __94__FPDSpotlightDaemonClient_reindexAllItemsForBundleID_protectionClass_acknowledgementHandler___block_invoke;
     block[3] = &unk_1E83BE828;
-    v16 = v8;
-    v17 = self;
-    v18 = v9;
+    v16 = dCopy;
+    selfCopy = self;
+    v18 = handlerCopy;
     dispatch_async(reindexQueue, block);
   }
 
@@ -62,7 +62,7 @@
       [FPDSpotlightDaemonClient reindexAllItemsForBundleID:v12 protectionClass:? acknowledgementHandler:?];
     }
 
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -184,13 +184,13 @@ void __94__FPDSpotlightDaemonClient_reindexAllItemsForBundleID_protectionClass_a
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reindexItemsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 acknowledgementHandler:(id)a6
+- (void)reindexItemsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [a5 isEqualToString:*MEMORY[0x1E696A388]];
+  identifiersCopy = identifiers;
+  dCopy = d;
+  handlerCopy = handler;
+  v13 = [class isEqualToString:*MEMORY[0x1E696A388]];
   v14 = fp_current_or_default_log();
   v15 = v14;
   if (v13)
@@ -198,9 +198,9 @@ void __94__FPDSpotlightDaemonClient_reindexAllItemsForBundleID_protectionClass_a
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      v24 = [v10 count];
+      v24 = [identifiersCopy count];
       v25 = 2112;
-      v26 = v11;
+      v26 = dCopy;
       _os_log_impl(&dword_1CEFC7000, v15, OS_LOG_TYPE_INFO, "[INFO] Received call to reindex %lu items for bundle ID %@", buf, 0x16u);
     }
 
@@ -209,10 +209,10 @@ void __94__FPDSpotlightDaemonClient_reindexAllItemsForBundleID_protectionClass_a
     v18[1] = 3221225472;
     v18[2] = __104__FPDSpotlightDaemonClient_reindexItemsWithIdentifiers_bundleID_protectionClass_acknowledgementHandler___block_invoke;
     v18[3] = &unk_1E83BE3B0;
-    v19 = v11;
-    v20 = v10;
-    v21 = self;
-    v22 = v12;
+    v19 = dCopy;
+    v20 = identifiersCopy;
+    selfCopy = self;
+    v22 = handlerCopy;
     dispatch_async(reindexQueue, v18);
   }
 
@@ -223,7 +223,7 @@ void __94__FPDSpotlightDaemonClient_reindexAllItemsForBundleID_protectionClass_a
       [FPDSpotlightDaemonClient reindexItemsWithIdentifiers:v15 bundleID:? protectionClass:? acknowledgementHandler:?];
     }
 
-    v12[2](v12);
+    handlerCopy[2](handlerCopy);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -490,31 +490,31 @@ void __104__FPDSpotlightDaemonClient_reindexItemsWithIdentifiers_bundleID_protec
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)provideDataForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)provideDataForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler
 {
-  v9 = a8;
+  handlerCopy = handler;
   v10 = FPNotSupportedError();
-  (*(a8 + 2))(v9, 0, v10);
+  (*(handler + 2))(handlerCopy, 0, v10);
 }
 
-- (void)provideFileURLForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)provideFileURLForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a8;
+  dCopy = d;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   reindexQueue = self->_reindexQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __126__FPDSpotlightDaemonClient_provideFileURLForBundleID_protectionClass_itemIdentifier_typeIdentifier_options_completionHandler___block_invoke;
   block[3] = &unk_1E83C1040;
-  v23 = v14;
-  v24 = a7;
-  v20 = v13;
-  v21 = v12;
-  v22 = self;
-  v16 = v14;
-  v17 = v12;
-  v18 = v13;
+  v23 = handlerCopy;
+  optionsCopy = options;
+  v20 = identifierCopy;
+  v21 = dCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v17 = dCopy;
+  v18 = identifierCopy;
   dispatch_async(reindexQueue, block);
 }
 

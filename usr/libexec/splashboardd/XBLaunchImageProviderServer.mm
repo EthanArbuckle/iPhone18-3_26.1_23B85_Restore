@@ -1,14 +1,14 @@
 @interface XBLaunchImageProviderServer
 + (id)sharedInstance;
 - (XBLaunchImageProviderServer)init;
-- (id)_transactionWorkForClient:(id)a3;
-- (unsigned)_onMain_createLaunchWindowForClient:(id)a3 withLaunchRequest:(id)a4 appInfo:(id)a5 captureInfo:(id *)a6 captureOptions:(int64_t)a7 error:(id *)a8;
-- (void)_queue_handleGetLaunchImage:(id)a3 forClient:(id)a4;
-- (void)_removeTransactionWorkForClient:(id)a3;
-- (void)_setTransactionWork:(id)a3 forClient:(id)a4;
-- (void)queue_clientAdded:(id)a3;
-- (void)queue_clientRemoved:(id)a3;
-- (void)queue_handleMessage:(id)a3 client:(id)a4;
+- (id)_transactionWorkForClient:(id)client;
+- (unsigned)_onMain_createLaunchWindowForClient:(id)client withLaunchRequest:(id)request appInfo:(id)info captureInfo:(id *)captureInfo captureOptions:(int64_t)options error:(id *)error;
+- (void)_queue_handleGetLaunchImage:(id)image forClient:(id)client;
+- (void)_removeTransactionWorkForClient:(id)client;
+- (void)_setTransactionWork:(id)work forClient:(id)client;
+- (void)queue_clientAdded:(id)added;
+- (void)queue_clientRemoved:(id)removed;
+- (void)queue_handleMessage:(id)message client:(id)client;
 - (void)run;
 @end
 
@@ -60,74 +60,74 @@
     sub_100005F98();
   }
 
-  v4 = [(XBLaunchImageProviderServer *)self queue];
-  dispatch_async(v4, &stru_10000C708);
+  queue = [(XBLaunchImageProviderServer *)self queue];
+  dispatch_async(queue, &stru_10000C708);
 
   v5.receiver = self;
   v5.super_class = XBLaunchImageProviderServer;
   [(XBLaunchImageProviderServer *)&v5 run];
 }
 
-- (void)queue_handleMessage:(id)a3 client:(id)a4
+- (void)queue_handleMessage:(id)message client:(id)client
 {
-  xdict = a3;
-  v6 = a4;
+  xdict = message;
+  clientCopy = client;
   int64 = xpc_dictionary_get_int64(xdict, XBLaunchImageProviderMessageKeyMessageType);
   if (int64 == 1)
   {
-    [(XBLaunchImageProviderServer *)self _handlePreheat:xdict forClient:v6];
+    [(XBLaunchImageProviderServer *)self _handlePreheat:xdict forClient:clientCopy];
   }
 
   else if (!int64)
   {
-    [(XBLaunchImageProviderServer *)self _queue_handleGetLaunchImage:xdict forClient:v6];
+    [(XBLaunchImageProviderServer *)self _queue_handleGetLaunchImage:xdict forClient:clientCopy];
   }
 }
 
-- (void)queue_clientAdded:(id)a3
+- (void)queue_clientAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v5 = objc_alloc_init(XBLaunchImageClientTransactionWork);
-  [(XBLaunchImageProviderServer *)self _setTransactionWork:v5 forClient:v4];
+  [(XBLaunchImageProviderServer *)self _setTransactionWork:v5 forClient:addedCopy];
 }
 
-- (void)queue_clientRemoved:(id)a3
+- (void)queue_clientRemoved:(id)removed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000045AC;
   block[3] = &unk_10000C758;
   block[4] = self;
-  v7 = a3;
+  removedCopy = removed;
   v8 = dispatch_semaphore_create(0);
   v4 = v8;
-  v5 = v7;
+  v5 = removedCopy;
   dispatch_async(&_dispatch_main_q, block);
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
   [(XBLaunchImageProviderServer *)self _removeTransactionWorkForClient:v5];
 }
 
-- (void)_queue_handleGetLaunchImage:(id)a3 forClient:(id)a4
+- (void)_queue_handleGetLaunchImage:(id)image forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  clientCopy = client;
   dispatch_assert_queue_V2(*&self->BSBaseXPCServer_opaque[OBJC_IVAR___BSBaseXPCServer__queue]);
-  xdict = v6;
+  xdict = imageCopy;
   v8 = BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
   v34 = BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
-  LODWORD(v9) = xpc_dictionary_get_BOOL(v6, XBLaunchImageProviderMessageKeyCreateCaptureInfo);
-  v10 = [v7 connection];
+  LODWORD(v9) = xpc_dictionary_get_BOOL(imageCopy, XBLaunchImageProviderMessageKeyCreateCaptureInfo);
+  connection = [clientCopy connection];
   BSPIDForXPCConnection();
   v11 = BSProcessDescriptionForPID();
 
   v12 = sub_1000012D0();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v8 bundleIdentifier];
+    bundleIdentifier = [v8 bundleIdentifier];
     *buf = 138543618;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Running image request from %{public}@ for %@", buf, 0x16u);
   }
 
@@ -147,8 +147,8 @@
   v48[3] = sub_100004D5C;
   v48[4] = sub_100004D6C;
   v49 = 0;
-  v14 = [v7 connection];
-  v15 = [BSAuditToken tokenFromXPCConnection:v14];
+  connection2 = [clientCopy connection];
+  v15 = [BSAuditToken tokenFromXPCConnection:connection2];
 
   if ([v15 hasEntitlement:XBApplicationLaunchImageCaptureEntitlement])
   {
@@ -186,7 +186,7 @@ LABEL_8:
     v47 = v9;
     v42 = v50;
     block[4] = self;
-    v39 = v7;
+    v39 = clientCopy;
     v40 = v34;
     v9 = v8;
     v41 = v9;
@@ -198,8 +198,8 @@ LABEL_8:
     CFRunLoopWakeUp(v18);
     pthread_dependency_wait_np();
     memoryMonitor = self->_memoryMonitor;
-    v20 = [v9 bundleIdentifier];
-    [(_XBMemoryMonitor *)memoryMonitor recordMemoryForBundleID:v20];
+    bundleIdentifier2 = [v9 bundleIdentifier];
+    [(_XBMemoryMonitor *)memoryMonitor recordMemoryForBundleID:bundleIdentifier2];
 
     LOBYTE(v9) = v16;
   }
@@ -213,8 +213,8 @@ LABEL_8:
     }
 
     v22 = [XBLaunchImageError alloc];
-    v23 = [v8 bundleIdentifier];
-    v24 = [v22 initWithCode:10 bundleID:v23 reason:@"The client is unentitled" fatal:0];
+    bundleIdentifier3 = [v8 bundleIdentifier];
+    v24 = [v22 initWithCode:10 bundleID:bundleIdentifier3 reason:@"The client is unentitled" fatal:0];
     v25 = *(*&buf[8] + 40);
     *(*&buf[8] + 40) = v24;
   }
@@ -237,12 +237,12 @@ LABEL_8:
       v31 = sub_1000012D0();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [*(*&buf[8] + 40) code];
-        v33 = [v8 bundleIdentifier];
+        code = [*(*&buf[8] + 40) code];
+        bundleIdentifier4 = [v8 bundleIdentifier];
         *v52 = 134218242;
-        *&v52[4] = v32;
+        *&v52[4] = code;
         *&v52[12] = 2114;
-        *&v52[14] = v33;
+        *&v52[14] = bundleIdentifier4;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "XBLaunchImageProviderServer encountered a fatal error with code: %ld during launch image generation for bundleID: %{public}@", v52, 0x16u);
       }
 
@@ -252,12 +252,12 @@ LABEL_8:
     v28 = sub_1000012D0();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [*(*&buf[8] + 40) code];
-      v30 = [v8 bundleIdentifier];
+      code2 = [*(*&buf[8] + 40) code];
+      bundleIdentifier5 = [v8 bundleIdentifier];
       *v52 = 134218242;
-      *&v52[4] = v29;
+      *&v52[4] = code2;
       *&v52[12] = 2114;
-      *&v52[14] = v30;
+      *&v52[14] = bundleIdentifier5;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "XBLaunchImageProviderServer encountered an error with code: %ld during launch image generation for bundleID: %{public}@", v52, 0x16u);
     }
   }
@@ -268,11 +268,11 @@ LABEL_8:
   _Block_object_dispose(v50, 8);
 }
 
-- (unsigned)_onMain_createLaunchWindowForClient:(id)a3 withLaunchRequest:(id)a4 appInfo:(id)a5 captureInfo:(id *)a6 captureOptions:(int64_t)a7 error:(id *)a8
+- (unsigned)_onMain_createLaunchWindowForClient:(id)client withLaunchRequest:(id)request appInfo:(id)info captureInfo:(id *)captureInfo captureOptions:(int64_t)options error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a3;
+  requestCopy = request;
+  infoCopy = info;
+  clientCopy = client;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v17 = sub_1000012D0();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -285,14 +285,14 @@ LABEL_8:
   }
 
   v18 = +[NSDate date];
-  v19 = [(XBLaunchImageProviderServer *)self _transactionWorkForClient:v16];
+  v19 = [(XBLaunchImageProviderServer *)self _transactionWorkForClient:clientCopy];
 
-  v20 = [v19 contextWrapper];
-  if (!v20)
+  contextWrapper = [v19 contextWrapper];
+  if (!contextWrapper)
   {
-    v21 = [XBLaunchImageContextWrapper contextWrapperForApplicationWithCompatibilityInfo:v15 launchRequest:v14 captureOptions:a7];
+    v21 = [XBLaunchImageContextWrapper contextWrapperForApplicationWithCompatibilityInfo:infoCopy launchRequest:requestCopy captureOptions:options];
     [v19 setContextWrapper:v21];
-    if (!a6)
+    if (!captureInfo)
     {
       goto LABEL_6;
     }
@@ -300,87 +300,87 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v21 = v20;
-  [v20 updateLaunchRequest:v14];
-  if (a6)
+  v21 = contextWrapper;
+  [contextWrapper updateLaunchRequest:requestCopy];
+  if (captureInfo)
   {
 LABEL_5:
-    *a6 = [v21 captureInformation];
+    *captureInfo = [v21 captureInformation];
   }
 
 LABEL_6:
-  v22 = XBInvalidContextId;
-  v23 = [v21 error];
-  if (v23 || (v27 = [v21 contextID]) == 0 || v22 == v27)
+  contextID = XBInvalidContextId;
+  error = [v21 error];
+  if (error || (v27 = [v21 contextID]) == 0 || contextID == v27)
   {
     [v21 invalidate];
     [v19 setContextWrapper:0];
     v24 = sub_1000012D0();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v15 bundleIdentifier];
+      bundleIdentifier = [infoCopy bundleIdentifier];
       v32 = 138412546;
-      *v33 = v25;
+      *v33 = bundleIdentifier;
       *&v33[8] = 2112;
-      v34 = *&v23;
+      v34 = *&error;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "[%@] launch image generation failed with error: %@", &v32, 0x16u);
     }
 
-    if (a8 && v23)
+    if (error && error)
     {
-      v26 = v23;
-      *a8 = v23;
+      v26 = error;
+      *error = error;
     }
   }
 
   else
   {
-    v22 = [v21 contextID];
+    contextID = [v21 contextID];
     v28 = sub_1000012D0();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [v15 bundleIdentifier];
+      bundleIdentifier2 = [infoCopy bundleIdentifier];
       [v18 timeIntervalSinceNow];
       v32 = 138412546;
-      *v33 = v29;
+      *v33 = bundleIdentifier2;
       *&v33[8] = 2048;
       v34 = -v30;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[%@] launch image generation completed after %.3fs", &v32, 0x16u);
     }
   }
 
-  return v22;
+  return contextID;
 }
 
-- (id)_transactionWorkForClient:(id)a3
+- (id)_transactionWorkForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(NSMapTable *)self->_accessLock_clientTransactionWorkMap objectForKey:v4];
+  v5 = [(NSMapTable *)self->_accessLock_clientTransactionWorkMap objectForKey:clientCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 
   return v5;
 }
 
-- (void)_setTransactionWork:(id)a3 forClient:(id)a4
+- (void)_setTransactionWork:(id)work forClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
+  clientCopy = client;
+  workCopy = work;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMapTable *)self->_accessLock_clientTransactionWorkMap setObject:v7 forKey:v6];
+  [(NSMapTable *)self->_accessLock_clientTransactionWorkMap setObject:workCopy forKey:clientCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)_removeTransactionWorkForClient:(id)a3
+- (void)_removeTransactionWorkForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMapTable *)self->_accessLock_clientTransactionWorkMap removeObjectForKey:v4];
+  [(NSMapTable *)self->_accessLock_clientTransactionWorkMap removeObjectForKey:clientCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }

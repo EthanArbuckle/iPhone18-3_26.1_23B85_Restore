@@ -1,20 +1,20 @@
 @interface NPKProtoMarkAllAppletsForDeletionResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSuccess:(BOOL)success;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoMarkAllAppletsForDeletionResponse
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoMarkAllAppletsForDeletionResponse;
   v4 = [(NPKProtoMarkAllAppletsForDeletionResponse *)&v8 description];
-  v5 = [(NPKProtoMarkAllAppletsForDeletionResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoMarkAllAppletsForDeletionResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v5 forKey:@"pending"];
+    [dictionary setObject:v5 forKey:@"pending"];
 
     has = self->_has;
   }
@@ -54,28 +54,28 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_success];
-    [v3 setObject:v6 forKey:@"success"];
+    [dictionary setObject:v6 forKey:@"success"];
   }
 
   errorData = self->_errorData;
   if (errorData)
   {
-    [v3 setObject:errorData forKey:@"errorData"];
+    [dictionary setObject:errorData forKey:@"errorData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     pending = self->_pending;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -83,44 +83,44 @@
   {
     success = self->_success;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[16] = self->_pending;
-    v4[20] |= 1u;
+    toCopy[16] = self->_pending;
+    toCopy[20] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[17] = self->_success;
-    v4[20] |= 2u;
+    toCopy[17] = self->_success;
+    toCopy[20] |= 2u;
   }
 
   if (self->_errorData)
   {
-    v6 = v4;
-    [v4 setErrorData:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setErrorData:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -136,52 +136,52 @@
     v5[20] |= 2u;
   }
 
-  v8 = [(NSData *)self->_errorData copyWithZone:a3];
+  v8 = [(NSData *)self->_errorData copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
       goto LABEL_20;
     }
 
-    v8 = *(v4 + 16);
+    v8 = *(equalCopy + 16);
     if (self->_pending)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_20;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
     goto LABEL_20;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 20) & 2) == 0)
+    if ((*(equalCopy + 20) & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -191,28 +191,28 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ((*(v4 + 20) & 2) == 0)
+  if ((*(equalCopy + 20) & 2) == 0)
   {
     goto LABEL_20;
   }
 
-  v9 = *(v4 + 17);
+  v9 = *(equalCopy + 17);
   if (self->_success)
   {
-    if ((*(v4 + 17) & 1) == 0)
+    if ((*(equalCopy + 17) & 1) == 0)
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 17))
+  else if (*(equalCopy + 17))
   {
     goto LABEL_20;
   }
 
 LABEL_6:
   errorData = self->_errorData;
-  if (errorData | *(v4 + 1))
+  if (errorData | *(equalCopy + 1))
   {
     v7 = [(NSData *)errorData isEqual:?];
   }
@@ -253,28 +253,28 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSData *)self->_errorData hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[20];
+  fromCopy = from;
+  v5 = fromCopy[20];
   if (v5)
   {
-    self->_pending = v4[16];
+    self->_pending = fromCopy[16];
     *&self->_has |= 1u;
-    v5 = v4[20];
+    v5 = fromCopy[20];
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_success = v4[17];
+    self->_success = fromCopy[17];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(NPKProtoMarkAllAppletsForDeletionResponse *)self setErrorData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

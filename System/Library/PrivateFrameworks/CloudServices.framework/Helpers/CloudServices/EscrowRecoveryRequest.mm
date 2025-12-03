@@ -9,8 +9,8 @@
 {
   v6.receiver = self;
   v6.super_class = EscrowRecoveryRequest;
-  v3 = [(EscrowGenericRequest *)&v6 additionalHeaders];
-  v4 = [v3 mutableCopy];
+  additionalHeaders = [(EscrowGenericRequest *)&v6 additionalHeaders];
+  v4 = [additionalHeaders mutableCopy];
 
   if ([(EscrowGenericRequest *)self duplicate]|| [(EscrowGenericRequest *)self silentDoubleRecovery])
   {
@@ -24,29 +24,29 @@
 {
   v9.receiver = self;
   v9.super_class = EscrowRecoveryRequest;
-  v3 = [(EscrowGenericRequest *)&v9 bodyDictionary];
-  v4 = [(EscrowGenericRequest *)self blob];
-  v5 = [v4 base64EncodedStringWithOptions:0];
+  bodyDictionary = [(EscrowGenericRequest *)&v9 bodyDictionary];
+  blob = [(EscrowGenericRequest *)self blob];
+  v5 = [blob base64EncodedStringWithOptions:0];
 
   if (v5)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"blob"];
+    [bodyDictionary setObject:v5 forKeyedSubscript:@"blob"];
   }
 
-  v6 = [(EscrowGenericRequest *)self challengeCode];
+  challengeCode = [(EscrowGenericRequest *)self challengeCode];
 
-  if (v6)
+  if (challengeCode)
   {
-    v7 = [(EscrowGenericRequest *)self challengeCode];
-    [v3 setObject:v7 forKeyedSubscript:@"smsChallengeCode"];
+    challengeCode2 = [(EscrowGenericRequest *)self challengeCode];
+    [bodyDictionary setObject:challengeCode2 forKeyedSubscript:@"smsChallengeCode"];
   }
 
   if ([(EscrowGenericRequest *)self silentAttempt])
   {
-    [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:@"silentAttempt"];
+    [bodyDictionary setObject:&__kCFBooleanTrue forKeyedSubscript:@"silentAttempt"];
   }
 
-  return v3;
+  return bodyDictionary;
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface MRAVOutputDeviceSymbolProvider
-+ (id)_fallbackCompositionForOutputDevice:(id)a3;
-+ (id)compositionForClusterOutputDevice:(id)a3;
-+ (id)compositionForOutputDevice:(id)a3;
-+ (id)compositionForOutputDevices:(id)a3;
-+ (id)symbolNameForOutputDevice:(id)a3;
-+ (id)symbolNameForOutputDevices:(id)a3;
++ (id)_fallbackCompositionForOutputDevice:(id)device;
++ (id)compositionForClusterOutputDevice:(id)device;
++ (id)compositionForOutputDevice:(id)device;
++ (id)compositionForOutputDevices:(id)devices;
++ (id)symbolNameForOutputDevice:(id)device;
++ (id)symbolNameForOutputDevices:(id)devices;
 @end
 
 @implementation MRAVOutputDeviceSymbolProvider
 
-+ (id)symbolNameForOutputDevice:(id)a3
++ (id)symbolNameForOutputDevice:(id)device
 {
-  v3 = [a1 compositionForOutputDevice:a3];
+  v3 = [self compositionForOutputDevice:device];
   v4 = [MRGroupSymbolProvider symbolNameForComposition:v3];
 
   return v4;
 }
 
-+ (id)compositionForOutputDevice:(id)a3
++ (id)compositionForOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_alloc_init(MRGroupComposition);
-  v6 = [v4 deviceType];
-  v7 = [v4 isAirpodsDevice];
-  if (v6 == 2)
+  deviceType = [deviceCopy deviceType];
+  isAirpodsDevice = [deviceCopy isAirpodsDevice];
+  if (deviceType == 2)
   {
-    v8 = v7;
-    if ([v4 isHearingDevice])
+    v8 = isAirpodsDevice;
+    if ([deviceCopy isHearingDevice])
     {
       [(MRGroupComposition *)v5 setHearingDeviceCount:1];
       if (!v8)
@@ -35,7 +35,7 @@
       }
 
 LABEL_16:
-      if ([v4 isAppleAccessory])
+      if ([deviceCopy isAppleAccessory])
       {
         goto LABEL_17;
       }
@@ -45,7 +45,7 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if ([v4 deviceSubtype] == 9)
+    if ([deviceCopy deviceSubtype] == 9)
     {
       [(MRGroupComposition *)v5 setHeadphoneCount:1];
       if (!v8)
@@ -63,22 +63,22 @@ LABEL_19:
     }
 
 LABEL_17:
-    v11 = [v4 modelID];
-    [(MRGroupComposition *)v5 setSoloProductIdentifier:v11];
+    modelID = [deviceCopy modelID];
+    [(MRGroupComposition *)v5 setSoloProductIdentifier:modelID];
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  if ([v4 isAirpodsMaxDevice] && objc_msgSend(v4, "deviceType") == 5)
+  if ([deviceCopy isAirpodsMaxDevice] && objc_msgSend(deviceCopy, "deviceType") == 5)
   {
     [(MRGroupComposition *)v5 setHeadphoneCount:1];
     goto LABEL_17;
   }
 
-  if ([v4 clusterType])
+  if ([deviceCopy clusterType])
   {
-    v9 = [a1 compositionForClusterOutputDevice:v4];
+    v9 = [self compositionForClusterOutputDevice:deviceCopy];
 
     v10 = v9;
 LABEL_20:
@@ -88,125 +88,125 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ([v4 deviceSubtype] == 11)
+  if ([deviceCopy deviceSubtype] == 11)
   {
     [(MRGroupComposition *)v5 setTvCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 deviceSubtype] == 16)
+  if ([deviceCopy deviceSubtype] == 16)
   {
     [(MRGroupComposition *)v5 setSetTopCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 deviceSubtype] == 17)
+  if ([deviceCopy deviceSubtype] == 17)
   {
     [(MRGroupComposition *)v5 setTvStickCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 deviceSubtype] == 13)
+  if ([deviceCopy deviceSubtype] == 13)
   {
     [(MRGroupComposition *)v5 setAtvCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 isBeatsLegacyDevice])
+  if ([deviceCopy isBeatsLegacyDevice])
   {
     [(MRGroupComposition *)v5 setLegacyBeatsCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 deviceSubtype] == 19)
+  if ([deviceCopy deviceSubtype] == 19)
   {
     goto LABEL_34;
   }
 
-  if ([v4 deviceSubtype] == 18)
+  if ([deviceCopy deviceSubtype] == 18)
   {
-    v15 = [v4 modelID];
-    [(MRGroupComposition *)v5 setSoloModelIdentifier:v15];
+    modelID2 = [deviceCopy modelID];
+    [(MRGroupComposition *)v5 setSoloModelIdentifier:modelID2];
 
     [(MRGroupComposition *)v5 setMacCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 deviceSubtype] == 21)
+  if ([deviceCopy deviceSubtype] == 21)
   {
-    v16 = [v4 modelID];
-    [(MRGroupComposition *)v5 setSoloModelIdentifier:v16];
+    modelID3 = [deviceCopy modelID];
+    [(MRGroupComposition *)v5 setSoloModelIdentifier:modelID3];
 
     [(MRGroupComposition *)v5 setVisionCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 isStudioDisplay])
+  if ([deviceCopy isStudioDisplay])
   {
     [(MRGroupComposition *)v5 setDisplayCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 isB825Device])
+  if ([deviceCopy isB825Device])
   {
     [(MRGroupComposition *)v5 setEarPodCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 deviceType] == 3)
+  if ([deviceCopy deviceType] == 3)
   {
     [(MRGroupComposition *)v5 setCarplayCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 deviceSubtype] == 12)
+  if ([deviceCopy deviceSubtype] == 12)
   {
-    v17 = [v4 modelID];
-    [(MRGroupComposition *)v5 addHomePodWithModelIdentifier:v17];
+    modelID4 = [deviceCopy modelID];
+    [(MRGroupComposition *)v5 addHomePodWithModelIdentifier:modelID4];
 
-    v11 = [v4 modelID];
-    [(MRGroupComposition *)v5 setSoloModelIdentifier:v11];
+    modelID = [deviceCopy modelID];
+    [(MRGroupComposition *)v5 setSoloModelIdentifier:modelID];
     goto LABEL_18;
   }
 
-  if ([v4 isHearingDevice])
+  if ([deviceCopy isHearingDevice])
   {
     [(MRGroupComposition *)v5 setHearingDeviceCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 deviceType] == 4 && objc_msgSend(v4, "deviceSubtype") == 1 && objc_msgSend(v4, "hostDeviceClass") == 1)
+  if ([deviceCopy deviceType] == 4 && objc_msgSend(deviceCopy, "deviceSubtype") == 1 && objc_msgSend(deviceCopy, "hostDeviceClass") == 1)
   {
 LABEL_34:
-    v14 = [v4 modelID];
-    [(MRGroupComposition *)v5 setSoloModelIdentifier:v14];
+    modelID5 = [deviceCopy modelID];
+    [(MRGroupComposition *)v5 setSoloModelIdentifier:modelID5];
 
     [(MRGroupComposition *)v5 setIPhoneCount:1];
     goto LABEL_19;
   }
 
-  if ([v4 deviceType] == 4 && objc_msgSend(v4, "deviceSubtype") == 1)
+  if ([deviceCopy deviceType] == 4 && objc_msgSend(deviceCopy, "deviceSubtype") == 1)
   {
-    v18 = [v4 sourceInfo];
-    v19 = [v18 multipleBuiltInDevices];
+    sourceInfo = [deviceCopy sourceInfo];
+    multipleBuiltInDevices = [sourceInfo multipleBuiltInDevices];
 
-    if (v19)
+    if (multipleBuiltInDevices)
     {
       v10 = +[MRGroupComposition multiBuiltInComposition];
       goto LABEL_21;
     }
   }
 
-  if ([v4 deviceType] == 4)
+  if ([deviceCopy deviceType] == 4)
   {
     [(MRGroupComposition *)v5 setBuiltInCount:1];
     goto LABEL_19;
   }
 
-  v20 = [(MRGroupComposition *)v5 soloProductIdentifier];
-  v21 = [a1 _fallbackCompositionForOutputDevice:v4];
+  soloProductIdentifier = [(MRGroupComposition *)v5 soloProductIdentifier];
+  v21 = [self _fallbackCompositionForOutputDevice:deviceCopy];
 
-  [v21 setSoloProductIdentifier:v20];
+  [v21 setSoloProductIdentifier:soloProductIdentifier];
   v5 = v21;
 
   v12 = v5;
@@ -215,20 +215,20 @@ LABEL_22:
   return v12;
 }
 
-+ (id)_fallbackCompositionForOutputDevice:(id)a3
++ (id)_fallbackCompositionForOutputDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 deviceType];
-  v5 = [v3 deviceSubtype];
-  v6 = [v3 producesLowFidelityAudio];
+  deviceCopy = device;
+  deviceType = [deviceCopy deviceType];
+  deviceSubtype = [deviceCopy deviceSubtype];
+  producesLowFidelityAudio = [deviceCopy producesLowFidelityAudio];
 
   v7 = objc_alloc_init(MRGroupComposition);
   v8 = v7;
-  if (v4 > 1)
+  if (deviceType > 1)
   {
-    if (v4 == 2)
+    if (deviceType == 2)
     {
-      if (v5 != 9)
+      if (deviceSubtype != 9)
       {
         [(MRGroupComposition *)v7 setBluetoothSpeakerCount:1];
         goto LABEL_21;
@@ -237,7 +237,7 @@ LABEL_22:
       goto LABEL_15;
     }
 
-    if (v4 == 3)
+    if (deviceType == 3)
     {
 LABEL_8:
       [(MRGroupComposition *)v7 setVehicleCount:1];
@@ -245,20 +245,20 @@ LABEL_8:
     }
 
 LABEL_9:
-    if (v5 > 0xE)
+    if (deviceSubtype > 0xE)
     {
       goto LABEL_19;
     }
 
-    if (((1 << v5) & 0x980) != 0)
+    if (((1 << deviceSubtype) & 0x980) != 0)
     {
       [(MRGroupComposition *)v7 setTvCount:1];
       goto LABEL_21;
     }
 
-    if (((1 << v5) & 0x30) != 0)
+    if (((1 << deviceSubtype) & 0x30) != 0)
     {
-      if (v6)
+      if (producesLowFidelityAudio)
       {
         goto LABEL_5;
       }
@@ -268,10 +268,10 @@ LABEL_13:
       goto LABEL_21;
     }
 
-    if (v5 != 14)
+    if (deviceSubtype != 14)
     {
 LABEL_19:
-      if (v5 != 2)
+      if (deviceSubtype != 2)
       {
         goto LABEL_20;
       }
@@ -284,11 +284,11 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (v4)
+  if (deviceType)
   {
-    if (v4 == 1)
+    if (deviceType == 1)
     {
-      if (v6)
+      if (producesLowFidelityAudio)
       {
 LABEL_5:
         [(MRGroupComposition *)v7 setLofiCount:1];
@@ -308,23 +308,23 @@ LABEL_21:
   return v8;
 }
 
-+ (id)symbolNameForOutputDevices:(id)a3
++ (id)symbolNameForOutputDevices:(id)devices
 {
-  v3 = [a1 compositionForOutputDevices:a3];
+  v3 = [self compositionForOutputDevices:devices];
   v4 = [MRGroupSymbolProvider symbolNameForComposition:v3];
 
   return v4;
 }
 
-+ (id)compositionForOutputDevices:(id)a3
++ (id)compositionForOutputDevices:(id)devices
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v27 = v4;
-  if ([v4 count] == 1)
+  devicesCopy = devices;
+  v27 = devicesCopy;
+  if ([devicesCopy count] == 1)
   {
-    v5 = [v4 firstObject];
-    v6 = [a1 compositionForOutputDevice:v5];
+    firstObject = [devicesCopy firstObject];
+    v6 = [self compositionForOutputDevice:firstObject];
   }
 
   else
@@ -380,7 +380,7 @@ LABEL_21:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v4;
+    obj = devicesCopy;
     v8 = [obj countByEnumeratingWithState:&v39 objects:v80 count:16];
     if (v8)
     {
@@ -402,8 +402,8 @@ LABEL_21:
             v38 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v11 = [v10 clusterComposition];
-            v12 = [v11 countByEnumeratingWithState:&v35 objects:v79 count:16];
+            clusterComposition = [v10 clusterComposition];
+            v12 = [clusterComposition countByEnumeratingWithState:&v35 objects:v79 count:16];
             if (v12)
             {
               v13 = *v36;
@@ -413,17 +413,17 @@ LABEL_21:
                 {
                   if (*v36 != v13)
                   {
-                    objc_enumerationMutation(v11);
+                    objc_enumerationMutation(clusterComposition);
                   }
 
                   v15 = *(*(&v35 + 1) + 8 * j);
-                  v16 = [v15 deviceType];
-                  v17 = [v15 deviceSubtype];
-                  v18 = [v15 modelID];
-                  (v7)[2](v7, 0, v16, v17, v18);
+                  deviceType = [v15 deviceType];
+                  deviceSubtype = [v15 deviceSubtype];
+                  modelID = [v15 modelID];
+                  (v7)[2](v7, 0, deviceType, deviceSubtype, modelID);
                 }
 
-                v12 = [v11 countByEnumeratingWithState:&v35 objects:v79 count:16];
+                v12 = [clusterComposition countByEnumeratingWithState:&v35 objects:v79 count:16];
               }
 
               while (v12);
@@ -432,10 +432,10 @@ LABEL_21:
 
           else
           {
-            v19 = [v10 deviceType];
-            v20 = [v10 deviceSubtype];
-            v11 = [v10 modelID];
-            (v7)[2](v7, v10, v19, v20, v11);
+            deviceType2 = [v10 deviceType];
+            deviceSubtype2 = [v10 deviceSubtype];
+            clusterComposition = [v10 modelID];
+            (v7)[2](v7, v10, deviceType2, deviceSubtype2, clusterComposition);
           }
         }
 
@@ -567,40 +567,40 @@ LABEL_23:
 LABEL_24:
 }
 
-+ (id)compositionForClusterOutputDevice:(id)a3
++ (id)compositionForClusterOutputDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 clusterType] == 2)
+  deviceCopy = device;
+  if ([deviceCopy clusterType] == 2)
   {
-    v5 = [v4 clusterCompositionOutputDevices];
-    v6 = [v5 msv_firstWhere:&__block_literal_global_104];
+    clusterCompositionOutputDevices = [deviceCopy clusterCompositionOutputDevices];
+    clusterCompositionOutputDevices3 = [clusterCompositionOutputDevices msv_firstWhere:&__block_literal_global_104];
 
-    v7 = [v6 modelID];
-    v8 = [MRGroupComposition homePodHomeTheaterCompositionWithHomePodModelIdentifier:v7];
+    modelID = [clusterCompositionOutputDevices3 modelID];
+    v8 = [MRGroupComposition homePodHomeTheaterCompositionWithHomePodModelIdentifier:modelID];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [v4 clusterType];
-  v10 = [v4 clusterCompositionOutputDevices];
-  v11 = v10;
-  if (v9 == 1)
+  clusterType = [deviceCopy clusterType];
+  clusterCompositionOutputDevices2 = [deviceCopy clusterCompositionOutputDevices];
+  v11 = clusterCompositionOutputDevices2;
+  if (clusterType == 1)
   {
-    v12 = [v10 msv_firstWhere:&__block_literal_global_6_2];
+    v12 = [clusterCompositionOutputDevices2 msv_firstWhere:&__block_literal_global_6_2];
 
-    v13 = [v12 modelID];
-    v8 = [MRGroupComposition homePodStereoPairCompositionWithModelIdentifier:v13];
+    modelID2 = [v12 modelID];
+    v8 = [MRGroupComposition homePodStereoPairCompositionWithModelIdentifier:modelID2];
 
     goto LABEL_8;
   }
 
-  v14 = [v10 count];
+  v14 = [clusterCompositionOutputDevices2 count];
 
   if (v14)
   {
-    v6 = [v4 clusterCompositionOutputDevices];
-    v8 = [a1 compositionForOutputDevices:v6];
+    clusterCompositionOutputDevices3 = [deviceCopy clusterCompositionOutputDevices];
+    v8 = [self compositionForOutputDevices:clusterCompositionOutputDevices3];
     goto LABEL_7;
   }
 

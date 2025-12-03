@@ -1,12 +1,12 @@
 @interface HMHomeWalletKey
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMHomeWalletKey)initWithCoder:(id)a3;
-- (HMHomeWalletKey)initWithUUID:(id)a3 customURL:(id)a4 expressEnabled:(BOOL)a5 uwbUnlockEnabled:(BOOL)a6 color:(int64_t)a7;
+- (BOOL)isEqual:(id)equal;
+- (HMHomeWalletKey)initWithCoder:(id)coder;
+- (HMHomeWalletKey)initWithUUID:(id)d customURL:(id)l expressEnabled:(BOOL)enabled uwbUnlockEnabled:(BOOL)unlockEnabled color:(int64_t)color;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMHomeWalletKey
@@ -15,12 +15,12 @@
 {
   v21[5] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v20 = [(HMHomeWalletKey *)self UUID];
-  v4 = [v3 initWithName:@"UUID" value:v20];
+  uUID = [(HMHomeWalletKey *)self UUID];
+  v4 = [v3 initWithName:@"UUID" value:uUID];
   v21[0] = v4;
   v5 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v6 = [(HMHomeWalletKey *)self customURL];
-  v7 = [v5 initWithName:@"Custom URL" value:v6];
+  customURL = [(HMHomeWalletKey *)self customURL];
+  v7 = [v5 initWithName:@"Custom URL" value:customURL];
   v21[1] = v7;
   v8 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMHomeWalletKey *)self isExpressEnabled];
@@ -50,12 +50,12 @@
   return NSStringFromClass(v2);
 }
 
-- (HMHomeWalletKey)initWithCoder:(id)a3
+- (HMHomeWalletKey)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMHomeWalletKeyUUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMHomeWalletKeyCustomURL"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMHomeWalletKeyUUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMHomeWalletKeyCustomURL"];
   v7 = v6;
   if (v5)
   {
@@ -70,7 +70,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -90,43 +90,43 @@
 
   else
   {
-    v12 = -[HMHomeWalletKey initWithUUID:customURL:expressEnabled:uwbUnlockEnabled:color:](self, "initWithUUID:customURL:expressEnabled:uwbUnlockEnabled:color:", v5, v6, [v4 decodeBoolForKey:@"HMHomeWalletKeyExpressEnabled"], objc_msgSend(v4, "decodeBoolForKey:", @"HMHomeWalletKeyUWBUnlockEnabled"), objc_msgSend(v4, "decodeIntegerForKey:", @"HMHomeWalletKeyEncodedColor"));
-    v13 = v12;
+    selfCopy = -[HMHomeWalletKey initWithUUID:customURL:expressEnabled:uwbUnlockEnabled:color:](self, "initWithUUID:customURL:expressEnabled:uwbUnlockEnabled:color:", v5, v6, [coderCopy decodeBoolForKey:@"HMHomeWalletKeyExpressEnabled"], objc_msgSend(coderCopy, "decodeBoolForKey:", @"HMHomeWalletKeyUWBUnlockEnabled"), objc_msgSend(coderCopy, "decodeIntegerForKey:", @"HMHomeWalletKeyEncodedColor"));
+    v13 = selfCopy;
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(HMHomeWalletKey *)self UUID];
-  [v6 encodeObject:v4 forKey:@"HMHomeWalletKeyUUID"];
+  coderCopy = coder;
+  uUID = [(HMHomeWalletKey *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"HMHomeWalletKeyUUID"];
 
-  v5 = [(HMHomeWalletKey *)self customURL];
-  [v6 encodeObject:v5 forKey:@"HMHomeWalletKeyCustomURL"];
+  customURL = [(HMHomeWalletKey *)self customURL];
+  [coderCopy encodeObject:customURL forKey:@"HMHomeWalletKeyCustomURL"];
 
-  [v6 encodeBool:-[HMHomeWalletKey isExpressEnabled](self forKey:{"isExpressEnabled"), @"HMHomeWalletKeyExpressEnabled"}];
-  [v6 encodeBool:-[HMHomeWalletKey isUWBUnlockEnabled](self forKey:{"isUWBUnlockEnabled"), @"HMHomeWalletKeyUWBUnlockEnabled"}];
-  [v6 encodeInteger:-[HMHomeWalletKey color](self forKey:{"color"), @"HMHomeWalletKeyEncodedColor"}];
+  [coderCopy encodeBool:-[HMHomeWalletKey isExpressEnabled](self forKey:{"isExpressEnabled"), @"HMHomeWalletKeyExpressEnabled"}];
+  [coderCopy encodeBool:-[HMHomeWalletKey isUWBUnlockEnabled](self forKey:{"isUWBUnlockEnabled"), @"HMHomeWalletKeyUWBUnlockEnabled"}];
+  [coderCopy encodeInteger:-[HMHomeWalletKey color](self forKey:{"color"), @"HMHomeWalletKeyEncodedColor"}];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMHomeWalletKey *)self UUID];
-  v3 = [v2 hash];
+  uUID = [(HMHomeWalletKey *)self UUID];
+  v3 = [uUID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -137,16 +137,16 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMHomeWalletKey *)self UUID];
-    v8 = [v6 UUID];
-    if ([v7 isEqual:v8])
+    uUID = [(HMHomeWalletKey *)self UUID];
+    uUID2 = [v6 UUID];
+    if ([uUID isEqual:uUID2])
     {
-      v9 = [(HMHomeWalletKey *)self customURL];
-      v10 = [v6 customURL];
-      if ([v9 isEqual:v10] && (v11 = -[HMHomeWalletKey isExpressEnabled](self, "isExpressEnabled"), v11 == objc_msgSend(v6, "isExpressEnabled")) && (v12 = -[HMHomeWalletKey color](self, "color"), v12 == objc_msgSend(v6, "color")))
+      customURL = [(HMHomeWalletKey *)self customURL];
+      customURL2 = [v6 customURL];
+      if ([customURL isEqual:customURL2] && (v11 = -[HMHomeWalletKey isExpressEnabled](self, "isExpressEnabled"), v11 == objc_msgSend(v6, "isExpressEnabled")) && (v12 = -[HMHomeWalletKey color](self, "color"), v12 == objc_msgSend(v6, "color")))
       {
-        v13 = [(HMHomeWalletKey *)self isUWBUnlockEnabled];
-        v14 = v13 ^ [v6 isUWBUnlockEnabled] ^ 1;
+        isUWBUnlockEnabled = [(HMHomeWalletKey *)self isUWBUnlockEnabled];
+        v14 = isUWBUnlockEnabled ^ [v6 isUWBUnlockEnabled] ^ 1;
       }
 
       else
@@ -169,21 +169,21 @@
   return v14;
 }
 
-- (HMHomeWalletKey)initWithUUID:(id)a3 customURL:(id)a4 expressEnabled:(BOOL)a5 uwbUnlockEnabled:(BOOL)a6 color:(int64_t)a7
+- (HMHomeWalletKey)initWithUUID:(id)d customURL:(id)l expressEnabled:(BOOL)enabled uwbUnlockEnabled:(BOOL)unlockEnabled color:(int64_t)color
 {
-  v13 = a3;
-  v14 = a4;
+  dCopy = d;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = HMHomeWalletKey;
   v15 = [(HMHomeWalletKey *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_UUID, a3);
-    objc_storeStrong(&v16->_customURL, a4);
-    v16->_expressEnabled = a5;
-    v16->_uwbUnlockEnabled = a6;
-    v16->_color = a7;
+    objc_storeStrong(&v15->_UUID, d);
+    objc_storeStrong(&v16->_customURL, l);
+    v16->_expressEnabled = enabled;
+    v16->_uwbUnlockEnabled = unlockEnabled;
+    v16->_color = color;
   }
 
   return v16;

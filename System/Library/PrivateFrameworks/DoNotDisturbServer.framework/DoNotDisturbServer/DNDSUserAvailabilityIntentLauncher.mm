@@ -1,38 +1,38 @@
 @interface DNDSUserAvailabilityIntentLauncher
-- (DNDSUserAvailabilityIntentLauncher)initWithApplicationRecord:(id)a3 available:(BOOL)a4;
-- (void)_cleanupWithError:(id)a3 completion:(id)a4;
-- (void)launchIntentExtensionWithCompletion:(id)a3;
+- (DNDSUserAvailabilityIntentLauncher)initWithApplicationRecord:(id)record available:(BOOL)available;
+- (void)_cleanupWithError:(id)error completion:(id)completion;
+- (void)launchIntentExtensionWithCompletion:(id)completion;
 @end
 
 @implementation DNDSUserAvailabilityIntentLauncher
 
-- (DNDSUserAvailabilityIntentLauncher)initWithApplicationRecord:(id)a3 available:(BOOL)a4
+- (DNDSUserAvailabilityIntentLauncher)initWithApplicationRecord:(id)record available:(BOOL)available
 {
-  v7 = a3;
+  recordCopy = record;
   v11.receiver = self;
   v11.super_class = DNDSUserAvailabilityIntentLauncher;
   v8 = [(DNDSUserAvailabilityIntentLauncher *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_applicationRecord, a3);
-    v9->_available = a4;
+    objc_storeStrong(&v8->_applicationRecord, record);
+    v9->_available = available;
   }
 
   return v9;
 }
 
-- (void)launchIntentExtensionWithCompletion:(id)a3
+- (void)launchIntentExtensionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc(MEMORY[0x277CD4150]);
   v6 = objc_alloc(MEMORY[0x277CD3C30]);
   v7 = [MEMORY[0x277CCABB0] numberWithInt:!self->_available];
   v8 = [v6 initWithIsFocused:v7];
   v9 = [v5 initWithFocusStatus:v8];
 
-  v10 = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
-  [v9 _setLaunchId:v10];
+  bundleIdentifier = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
+  [v9 _setLaunchId:bundleIdentifier];
 
   v11 = [objc_alloc(MEMORY[0x277D21520]) initWithIntent:v9];
   connection = self->_connection;
@@ -46,7 +46,7 @@
   v24[2] = __74__DNDSUserAvailabilityIntentLauncher_launchIntentExtensionWithCompletion___block_invoke;
   v24[3] = &unk_278F8AE78;
   objc_copyWeak(&v26, &location);
-  v14 = v4;
+  v14 = completionCopy;
   v25 = v14;
   [(INCExtensionConnection *)v13 setTimeoutHandler:v24];
   v15 = self->_connection;
@@ -165,19 +165,19 @@ void __74__DNDSUserAvailabilityIntentLauncher_launchIntentExtensionWithCompletio
   }
 }
 
-- (void)_cleanupWithError:(id)a3 completion:(id)a4
+- (void)_cleanupWithError:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   if ((atomic_exchange(&self->_completionFiredFlag._Value, 1u) & 1) == 0)
   {
     [(INCExtensionConnection *)self->_connection reset];
     connection = self->_connection;
     self->_connection = 0;
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 0, v8);
+      completionCopy[2](completionCopy, 0, errorCopy);
     }
   }
 }

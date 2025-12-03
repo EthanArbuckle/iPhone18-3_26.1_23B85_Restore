@@ -1,21 +1,21 @@
 @interface JavaUtilCollections_SynchronizedSortedSet
-- (JavaUtilCollections_SynchronizedSortedSet)initWithJavaUtilSortedSet:(id)a3;
+- (JavaUtilCollections_SynchronizedSortedSet)initWithJavaUtilSortedSet:(id)set;
 - (id)comparator;
 - (id)first;
-- (id)headSetWithId:(id)a3;
+- (id)headSetWithId:(id)id;
 - (id)last;
-- (id)subSetWithId:(id)a3 withId:(id)a4;
-- (id)tailSetWithId:(id)a3;
+- (id)subSetWithId:(id)id withId:(id)withId;
+- (id)tailSetWithId:(id)id;
 - (void)dealloc;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilCollections_SynchronizedSortedSet
 
-- (JavaUtilCollections_SynchronizedSortedSet)initWithJavaUtilSortedSet:(id)a3
+- (JavaUtilCollections_SynchronizedSortedSet)initWithJavaUtilSortedSet:(id)set
 {
-  JavaUtilCollections_SynchronizedCollection_initWithJavaUtilCollection_(self, a3);
-  JreStrongAssign(&self->ss_, a3);
+  JavaUtilCollections_SynchronizedCollection_initWithJavaUtilCollection_(self, set);
+  JreStrongAssign(&self->ss_, set);
   return self;
 }
 
@@ -29,9 +29,9 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilSortedSet *)ss comparator];
+  comparator = [(JavaUtilSortedSet *)ss comparator];
   objc_sync_exit(mutex);
-  return v5;
+  return comparator;
 }
 
 - (id)first
@@ -44,12 +44,12 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilSortedSet *)ss first];
+  first = [(JavaUtilSortedSet *)ss first];
   objc_sync_exit(mutex);
-  return v5;
+  return first;
 }
 
-- (id)headSetWithId:(id)a3
+- (id)headSetWithId:(id)id
 {
   mutex = self->super.super.mutex_;
   objc_sync_enter(mutex);
@@ -59,7 +59,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilSortedSet *)ss headSetWithId:a3];
+  v7 = [(JavaUtilSortedSet *)ss headSetWithId:id];
   v8 = self->super.super.mutex_;
   v9 = [JavaUtilCollections_SynchronizedSortedSet alloc];
   JavaUtilCollections_SynchronizedSortedSet_initWithJavaUtilSortedSet_withId_(&v9->super.super.super.isa, v7, v8);
@@ -78,12 +78,12 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilSortedSet *)ss last];
+  last = [(JavaUtilSortedSet *)ss last];
   objc_sync_exit(mutex);
-  return v5;
+  return last;
 }
 
-- (id)subSetWithId:(id)a3 withId:(id)a4
+- (id)subSetWithId:(id)id withId:(id)withId
 {
   mutex = self->super.super.mutex_;
   objc_sync_enter(mutex);
@@ -93,7 +93,7 @@
     JreThrowNullPointerException();
   }
 
-  v9 = [(JavaUtilSortedSet *)ss subSetWithId:a3 withId:a4];
+  v9 = [(JavaUtilSortedSet *)ss subSetWithId:id withId:withId];
   v10 = self->super.super.mutex_;
   v11 = [JavaUtilCollections_SynchronizedSortedSet alloc];
   JavaUtilCollections_SynchronizedSortedSet_initWithJavaUtilSortedSet_withId_(&v11->super.super.super.isa, v9, v10);
@@ -102,7 +102,7 @@
   return v12;
 }
 
-- (id)tailSetWithId:(id)a3
+- (id)tailSetWithId:(id)id
 {
   mutex = self->super.super.mutex_;
   objc_sync_enter(mutex);
@@ -112,7 +112,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilSortedSet *)ss tailSetWithId:a3];
+  v7 = [(JavaUtilSortedSet *)ss tailSetWithId:id];
   v8 = self->super.super.mutex_;
   v9 = [JavaUtilCollections_SynchronizedSortedSet alloc];
   JavaUtilCollections_SynchronizedSortedSet_initWithJavaUtilSortedSet_withId_(&v9->super.super.super.isa, v7, v8);
@@ -121,16 +121,16 @@
   return v10;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   mutex = self->super.super.mutex_;
   objc_sync_enter(mutex);
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 
   objc_sync_exit(mutex);
 }

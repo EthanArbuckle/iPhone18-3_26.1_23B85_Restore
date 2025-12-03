@@ -1,68 +1,68 @@
 @interface PLAssetsdPhotoKitService
-- (BOOL)_workItems:(id)a3 satisfyRequestedSyncDate:(id)a4;
-- (BOOL)syncManager:(id)a3 shouldContinueWithLibrary:(id)a4;
-- (PLAssetsdPhotoKitService)initWithLibraryServicesManager:(id)a3 connectionAuthorization:(id)a4;
-- (id)analyzeAssets:(id)a3 forFeature:(unint64_t)a4 reply:(id)a5;
-- (id)analyzeLibraryForFeature:(unint64_t)a3 reply:(id)a4;
-- (id)forceSyndicationIngestAsyncToDate:(id)a3 reply:(id)a4;
-- (id)resetStateForMediaProcessingTaskID:(unint64_t)a3 assetUUIDs:(id)a4 resetOptions:(unint64_t)a5 reply:(id)a6;
-- (void)_processUniversalSearchJITForAsset:(id)a3 cssiUniqueIdentifier:(id)a4 bundleID:(id)a5 processingTypes:(unint64_t)a6 completion:(id)a7;
-- (void)_syncWorkItems:(id)a3 upToDate:(id)a4 syncServiceWrapper:(id)a5 progress:(id)a6 completion:(id)a7;
-- (void)applyChangesRequest:(id)a3 reply:(id)a4;
-- (void)cancelReservedCloudIdentifiers:(id)a3 reply:(id)a4;
-- (void)cancelReservedCloudIdentifiersWithEntityName:(id)a3 reply:(id)a4;
+- (BOOL)_workItems:(id)items satisfyRequestedSyncDate:(id)date;
+- (BOOL)syncManager:(id)manager shouldContinueWithLibrary:(id)library;
+- (PLAssetsdPhotoKitService)initWithLibraryServicesManager:(id)manager connectionAuthorization:(id)authorization;
+- (id)analyzeAssets:(id)assets forFeature:(unint64_t)feature reply:(id)reply;
+- (id)analyzeLibraryForFeature:(unint64_t)feature reply:(id)reply;
+- (id)forceSyndicationIngestAsyncToDate:(id)date reply:(id)reply;
+- (id)resetStateForMediaProcessingTaskID:(unint64_t)d assetUUIDs:(id)ds resetOptions:(unint64_t)options reply:(id)reply;
+- (void)_processUniversalSearchJITForAsset:(id)asset cssiUniqueIdentifier:(id)identifier bundleID:(id)d processingTypes:(unint64_t)types completion:(id)completion;
+- (void)_syncWorkItems:(id)items upToDate:(id)date syncServiceWrapper:(id)wrapper progress:(id)progress completion:(id)completion;
+- (void)applyChangesRequest:(id)request reply:(id)reply;
+- (void)cancelReservedCloudIdentifiers:(id)identifiers reply:(id)reply;
+- (void)cancelReservedCloudIdentifiersWithEntityName:(id)name reply:(id)reply;
 - (void)dealloc;
-- (void)executeQueryForSyncManager:(id)a3 type:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 batchHandler:(id)a7 completionHandler:(id)a8;
-- (void)executeQueryForSyncManager:(id)a3 type:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 itemHandler:(id)a7 completionHandler:(id)a8;
-- (void)getPhotoLibraryIdentifierWithReply:(id)a3;
-- (void)getUUIDsForAssetObjectURIs:(id)a3 filterPredicate:(id)a4 reply:(id)a5;
-- (void)ingestItemWithCoreSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 purgeUrgency:(int64_t)a5 reply:(id)a6;
-- (void)processUniversalSearchJITForAssetUUID:(id)a3 processingTypes:(unint64_t)a4 reply:(id)a5;
-- (void)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 processingTypes:(unint64_t)a5 reply:(id)a6;
-- (void)reserveCloudIdentifiersWithEntityName:(id)a3 count:(unint64_t)a4 reply:(id)a5;
-- (void)reservedCloudIdentifiersWithEntityName:(id)a3 reply:(id)a4;
-- (void)resolveLocalIdentifiersForCloudIdentifiers:(id)a3 reply:(id)a4;
+- (void)executeQueryForSyncManager:(id)manager type:(int64_t)type startDate:(id)date endDate:(id)endDate batchHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)executeQueryForSyncManager:(id)manager type:(int64_t)type startDate:(id)date endDate:(id)endDate itemHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)getPhotoLibraryIdentifierWithReply:(id)reply;
+- (void)getUUIDsForAssetObjectURIs:(id)is filterPredicate:(id)predicate reply:(id)reply;
+- (void)ingestItemWithCoreSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d purgeUrgency:(int64_t)urgency reply:(id)reply;
+- (void)processUniversalSearchJITForAssetUUID:(id)d processingTypes:(unint64_t)types reply:(id)reply;
+- (void)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d processingTypes:(unint64_t)types reply:(id)reply;
+- (void)reserveCloudIdentifiersWithEntityName:(id)name count:(unint64_t)count reply:(id)reply;
+- (void)reservedCloudIdentifiersWithEntityName:(id)name reply:(id)reply;
+- (void)resolveLocalIdentifiersForCloudIdentifiers:(id)identifiers reply:(id)reply;
 @end
 
 @implementation PLAssetsdPhotoKitService
 
-- (BOOL)syncManager:(id)a3 shouldContinueWithLibrary:(id)a4
+- (BOOL)syncManager:(id)manager shouldContinueWithLibrary:(id)library
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PLAssetsdPhotoKitService.m" lineNumber:659 description:{@"Invalid parameter not satisfying: %@", @"this code path is not expected && NO"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdPhotoKitService.m" lineNumber:659 description:{@"Invalid parameter not satisfying: %@", @"this code path is not expected && NO"}];
 
   return 1;
 }
 
-- (void)executeQueryForSyncManager:(id)a3 type:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 itemHandler:(id)a7 completionHandler:(id)a8
+- (void)executeQueryForSyncManager:(id)manager type:(int64_t)type startDate:(id)date endDate:(id)endDate itemHandler:(id)handler completionHandler:(id)completionHandler
 {
   v10 = MEMORY[0x1E696AAA8];
-  v11 = a8;
-  v12 = [v10 currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"PLAssetsdPhotoKitService.m" lineNumber:653 description:{@"Invalid parameter not satisfying: %@", @"this code path is not expected && NO"}];
+  completionHandlerCopy = completionHandler;
+  currentHandler = [v10 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdPhotoKitService.m" lineNumber:653 description:{@"Invalid parameter not satisfying: %@", @"this code path is not expected && NO"}];
 
   v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46309 userInfo:0];
-  v11[2](v11, v13);
+  completionHandlerCopy[2](completionHandlerCopy, v13);
 }
 
-- (void)executeQueryForSyncManager:(id)a3 type:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 batchHandler:(id)a7 completionHandler:(id)a8
+- (void)executeQueryForSyncManager:(id)manager type:(int64_t)type startDate:(id)date endDate:(id)endDate batchHandler:(id)handler completionHandler:(id)completionHandler
 {
   v10 = MEMORY[0x1E696AAA8];
-  v11 = a8;
-  v12 = [v10 currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"PLAssetsdPhotoKitService.m" lineNumber:647 description:{@"Invalid parameter not satisfying: %@", @"this code path is not expected && NO"}];
+  completionHandlerCopy = completionHandler;
+  currentHandler = [v10 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdPhotoKitService.m" lineNumber:647 description:{@"Invalid parameter not satisfying: %@", @"this code path is not expected && NO"}];
 
   v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46309 userInfo:0];
-  v11[2](v11, v13);
+  completionHandlerCopy[2](completionHandlerCopy, v13);
 }
 
-- (void)_processUniversalSearchJITForAsset:(id)a3 cssiUniqueIdentifier:(id)a4 bundleID:(id)a5 processingTypes:(unint64_t)a6 completion:(id)a7
+- (void)_processUniversalSearchJITForAsset:(id)asset cssiUniqueIdentifier:(id)identifier bundleID:(id)d processingTypes:(unint64_t)types completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  assetCopy = asset;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   v17 = qos_class_self();
   v18 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -73,12 +73,12 @@
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_INFO, "US JIT Processing: request QoS is %@", buf, 0xCu);
   }
 
-  v20 = [v13 uuid];
-  if (a6)
+  uuid = [assetCopy uuid];
+  if (types)
   {
-    v29 = v15;
-    v21 = [v13 firstPersistedResourceMatching:&__block_literal_global_68417];
-    if (v21 || ([v13 firstPersistedResourceMatching:&__block_literal_global_107_68418], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+    v29 = dCopy;
+    v21 = [assetCopy firstPersistedResourceMatching:&__block_literal_global_68417];
+    if (v21 || ([assetCopy firstPersistedResourceMatching:&__block_literal_global_107_68418], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v22 = v21;
       v23 = objc_alloc_init(PLResourceLocalAvailabilityRequestOptions);
@@ -88,11 +88,11 @@
       v30[2] = __120__PLAssetsdPhotoKitService__processUniversalSearchJITForAsset_cssiUniqueIdentifier_bundleID_processingTypes_completion___block_invoke_3;
       v30[3] = &unk_1E75705B0;
       v35 = a2;
-      v31 = v20;
-      v32 = self;
-      v34 = v16;
-      v36 = a6;
-      v33 = v14;
+      v31 = uuid;
+      selfCopy = self;
+      v34 = completionCopy;
+      typesCopy = types;
+      v33 = identifierCopy;
       v37 = v17;
       v24 = [v22 makeResourceLocallyAvailableWithOptions:v23 completion:v30];
 
@@ -101,17 +101,17 @@
 
     else
     {
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"US JIT Processing: Unable to find target resource for asset %@", v20];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"US JIT Processing: Unable to find target resource for asset %@", uuid];
       v27 = MEMORY[0x1E696ABC0];
       v28 = *MEMORY[0x1E69BFF48];
       v38 = *MEMORY[0x1E696A278];
       v39 = v22;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
       v25 = [v27 errorWithDomain:v28 code:47017 userInfo:v23];
-      (*(v16 + 2))(v16, v25);
+      (*(completionCopy + 2))(completionCopy, v25);
     }
 
-    v15 = v29;
+    dCopy = v29;
   }
 
   else
@@ -120,15 +120,15 @@
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138543874;
-      v41 = v14;
+      v41 = identifierCopy;
       v42 = 2114;
-      v43 = v15;
+      v43 = dCopy;
       v44 = 2114;
-      v45 = v20;
+      v45 = uuid;
       _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_INFO, "US JIT Processing: (ingest only) item %{public}@ from %{public}@ succeeded for asset %{public}@", buf, 0x20u);
     }
 
-    (*(v16 + 2))(v16, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -438,14 +438,14 @@ void __120__PLAssetsdPhotoKitService__processUniversalSearchJITForAsset_cssiUniq
   (*(v12 + 16))(v12, v13);
 }
 
-- (id)resetStateForMediaProcessingTaskID:(unint64_t)a3 assetUUIDs:(id)a4 resetOptions:(unint64_t)a5 reply:(id)a6
+- (id)resetStateForMediaProcessingTaskID:(unint64_t)d assetUUIDs:(id)ds resetOptions:(unint64_t)options reply:(id)reply
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  v12 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v13 = [v12 databaseContext];
-  v14 = [v13 newShortLivedLibraryWithName:"-[PLAssetsdPhotoKitService resetStateForMediaProcessingTaskID:assetUUIDs:resetOptions:reply:]"];
+  dsCopy = ds;
+  replyCopy = reply;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v14 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdPhotoKitService resetStateForMediaProcessingTaskID:assetUUIDs:resetOptions:reply:]"];
 
   if (v14)
   {
@@ -456,11 +456,11 @@ void __120__PLAssetsdPhotoKitService__processUniversalSearchJITForAsset_cssiUniq
     v24[3] = &unk_1E7570538;
     v16 = v15;
     v25 = v16;
-    v29 = a3;
-    v26 = v10;
-    v30 = a5;
+    dCopy = d;
+    v26 = dsCopy;
+    optionsCopy = options;
     v27 = v14;
-    v28 = v11;
+    v28 = replyCopy;
     [v27 performTransaction:v24];
     v17 = v28;
     v18 = v16;
@@ -477,7 +477,7 @@ void __120__PLAssetsdPhotoKitService__processUniversalSearchJITForAsset_cssiUniq
     v32[0] = @"No photo library available for resetting media processing state";
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v19 = [v21 errorWithDomain:v22 code:46502 userInfo:v18];
-    (*(v11 + 2))(v11, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
     v20 = 0;
   }
 
@@ -498,25 +498,25 @@ void __93__PLAssetsdPhotoKitService_resetStateForMediaProcessingTaskID_assetUUID
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)analyzeLibraryForFeature:(unint64_t)a3 reply:(id)a4
+- (id)analyzeLibraryForFeature:(unint64_t)feature reply:(id)reply
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v8 = [v7 databaseContext];
-  v9 = [v8 newShortLivedLibraryWithName:"-[PLAssetsdPhotoKitService analyzeLibraryForFeature:reply:]"];
+  replyCopy = reply;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v9 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdPhotoKitService analyzeLibraryForFeature:reply:]"];
 
   if (v9)
   {
-    v10 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v11 = [v10 analysisCoordinator];
+    libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    analysisCoordinator = [libraryServicesManager2 analysisCoordinator];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __59__PLAssetsdPhotoKitService_analyzeLibraryForFeature_reply___block_invoke;
     v17[3] = &unk_1E7571990;
-    v18 = v6;
-    v12 = [v11 analyzeLibraryForFeature:a3 withCompletionHandler:v17];
+    v18 = replyCopy;
+    v12 = [analysisCoordinator analyzeLibraryForFeature:feature withCompletionHandler:v17];
     v13 = v18;
   }
 
@@ -526,9 +526,9 @@ void __93__PLAssetsdPhotoKitService_resetStateForMediaProcessingTaskID_assetUUID
     v15 = *MEMORY[0x1E69BFF48];
     v19 = *MEMORY[0x1E696A278];
     v20[0] = @"FAILURE";
-    v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    v13 = [v14 errorWithDomain:v15 code:46502 userInfo:v11];
-    (*(v6 + 2))(v6, v13);
+    analysisCoordinator = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
+    v13 = [v14 errorWithDomain:v15 code:46502 userInfo:analysisCoordinator];
+    (*(replyCopy + 2))(replyCopy, v13);
     v12 = 0;
   }
 
@@ -542,19 +542,19 @@ void __59__PLAssetsdPhotoKitService_analyzeLibraryForFeature_reply___block_invok
   (*(v2 + 16))(v2, v3);
 }
 
-- (id)analyzeAssets:(id)a3 forFeature:(unint64_t)a4 reply:(id)a5
+- (id)analyzeAssets:(id)assets forFeature:(unint64_t)feature reply:(id)reply
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v11 = [v10 databaseContext];
-  v12 = [v11 newShortLivedLibraryWithName:"-[PLAssetsdPhotoKitService analyzeAssets:forFeature:reply:]"];
+  assetsCopy = assets;
+  replyCopy = reply;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v12 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdPhotoKitService analyzeAssets:forFeature:reply:]"];
 
   if (v12)
   {
-    v13 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v14 = [v13 analysisCoordinator];
+    libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    analysisCoordinator = [libraryServicesManager2 analysisCoordinator];
 
     v27 = 0;
     v28 = &v27;
@@ -566,13 +566,13 @@ void __59__PLAssetsdPhotoKitService_analyzeLibraryForFeature_reply___block_invok
     v20[1] = 3221225472;
     v20[2] = __59__PLAssetsdPhotoKitService_analyzeAssets_forFeature_reply___block_invoke;
     v20[3] = &unk_1E7576658;
-    v21 = v8;
+    v21 = assetsCopy;
     v22 = v12;
     v25 = &v27;
-    v15 = v14;
+    v15 = analysisCoordinator;
     v23 = v15;
-    v26 = a4;
-    v24 = v9;
+    featureCopy = feature;
+    v24 = replyCopy;
     [v22 performBlockAndWait:v20];
     v16 = v28[5];
 
@@ -586,7 +586,7 @@ void __59__PLAssetsdPhotoKitService_analyzeLibraryForFeature_reply___block_invok
     v34[0] = @"FAILURE";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v18 = [v17 errorWithDomain:*MEMORY[0x1E69BFF48] code:46502 userInfo:v15];
-    (*(v9 + 2))(v9, v18);
+    (*(replyCopy + 2))(replyCopy, v18);
 
     v16 = 0;
   }
@@ -652,41 +652,41 @@ void __59__PLAssetsdPhotoKitService_analyzeAssets_forFeature_reply___block_invok
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)_syncWorkItems:(id)a3 upToDate:(id)a4 syncServiceWrapper:(id)a5 progress:(id)a6 completion:(id)a7
+- (void)_syncWorkItems:(id)items upToDate:(id)date syncServiceWrapper:(id)wrapper progress:(id)progress completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v12 count])
+  itemsCopy = items;
+  dateCopy = date;
+  wrapperCopy = wrapper;
+  progressCopy = progress;
+  completionCopy = completion;
+  if ([itemsCopy count])
   {
-    v17 = [v12 firstObject];
+    firstObject = [itemsCopy firstObject];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __91__PLAssetsdPhotoKitService__syncWorkItems_upToDate_syncServiceWrapper_progress_completion___block_invoke;
     v18[3] = &unk_1E7578088;
-    v24 = v16;
-    v19 = v15;
-    v20 = v12;
-    v21 = self;
-    v22 = v13;
-    v23 = v14;
-    [v23 performWorkOnItem:v17 completion:v18];
+    v24 = completionCopy;
+    v19 = progressCopy;
+    v20 = itemsCopy;
+    selfCopy = self;
+    v22 = dateCopy;
+    v23 = wrapperCopy;
+    [v23 performWorkOnItem:firstObject completion:v18];
   }
 
   else
   {
-    v17 = [v14 workItemsNeedingProcessing];
-    if ([(PLAssetsdPhotoKitService *)self _workItems:v17 satisfyRequestedSyncDate:v13])
+    firstObject = [wrapperCopy workItemsNeedingProcessing];
+    if ([(PLAssetsdPhotoKitService *)self _workItems:firstObject satisfyRequestedSyncDate:dateCopy])
     {
-      (*(v16 + 2))(v16, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     else
     {
-      [v15 setTotalUnitCount:{objc_msgSend(v15, "totalUnitCount") + objc_msgSend(v17, "count")}];
-      [(PLAssetsdPhotoKitService *)self _syncWorkItems:v17 upToDate:v13 syncServiceWrapper:v14 progress:v15 completion:v16];
+      [progressCopy setTotalUnitCount:{objc_msgSend(progressCopy, "totalUnitCount") + objc_msgSend(firstObject, "count")}];
+      [(PLAssetsdPhotoKitService *)self _syncWorkItems:firstObject upToDate:dateCopy syncServiceWrapper:wrapperCopy progress:progressCopy completion:completionCopy];
     }
   }
 }
@@ -725,16 +725,16 @@ void __91__PLAssetsdPhotoKitService__syncWorkItems_upToDate_syncServiceWrapper_p
   }
 }
 
-- (BOOL)_workItems:(id)a3 satisfyRequestedSyncDate:(id)a4
+- (BOOL)_workItems:(id)items satisfyRequestedSyncDate:(id)date
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  dateCopy = date;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -749,10 +749,10 @@ void __91__PLAssetsdPhotoKitService__syncWorkItems_upToDate_syncServiceWrapper_p
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v19 + 1) + 8 * i) startDate];
-        [v12 timeIntervalSinceReferenceDate];
+        startDate = [*(*(&v19 + 1) + 8 * i) startDate];
+        [startDate timeIntervalSinceReferenceDate];
         v14 = v13;
-        [v6 timeIntervalSinceReferenceDate];
+        [dateCopy timeIntervalSinceReferenceDate];
         v16 = v15;
 
         if (v14 <= v16)
@@ -778,15 +778,15 @@ LABEL_11:
   return v17;
 }
 
-- (id)forceSyndicationIngestAsyncToDate:(id)a3 reply:(id)a4
+- (id)forceSyndicationIngestAsyncToDate:(id)date reply:(id)reply
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 wellKnownPhotoLibraryIdentifier];
+  dateCopy = date;
+  replyCopy = reply;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-  if (v9 == 3)
+  if (wellKnownPhotoLibraryIdentifier == 3)
   {
     v10 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:-1];
     syndicationSerialQueue = self->_syndicationSerialQueue;
@@ -797,8 +797,8 @@ LABEL_11:
     block[4] = self;
     v12 = v10;
     v21 = v12;
-    v23 = v7;
-    v22 = v6;
+    v23 = replyCopy;
+    v22 = dateCopy;
     dispatch_async(syndicationSerialQueue, block);
     v13 = v22;
     v14 = v12;
@@ -814,7 +814,7 @@ LABEL_11:
     v25[0] = @"Forcing syndication ingest is only supported on the Syndication library";
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v18 = [v16 errorWithDomain:v17 code:41008 userInfo:v14];
-    (*(v7 + 2))(v7, v18);
+    (*(replyCopy + 2))(replyCopy, v18);
 
     v15 = 0;
   }
@@ -927,16 +927,16 @@ LABEL_6:
   (*(*(a1 + 56) + 16))(*(a1 + 56), v3, v14, v15, v16, v17);
 }
 
-- (void)getPhotoLibraryIdentifierWithReply:(id)a3
+- (void)getPhotoLibraryIdentifierWithReply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v17) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v17) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: getPhotoLibraryIdentifierWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v17 + 1);
@@ -945,13 +945,13 @@ LABEL_6:
     os_activity_scope_enter(v6, (&v18 + 8));
   }
 
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 libraryURL];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  libraryURL = [libraryServicesManager libraryURL];
   v16 = 0;
-  v10 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:v9 createIfMissing:1 error:&v16];
+  v10 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:libraryURL createIfMissing:1 error:&v16];
   v11 = v16;
 
-  v4[2](v4, v10, v11);
+  replyCopy[2](replyCopy, v10, v11);
   if (v17 == 1)
   {
     os_activity_scope_leave((&v18 + 8));
@@ -972,18 +972,18 @@ LABEL_6:
   }
 }
 
-- (void)ingestItemWithCoreSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 purgeUrgency:(int64_t)a5 reply:(id)a6
+- (void)ingestItemWithCoreSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d purgeUrgency:(int64_t)urgency reply:(id)reply
 {
   v69 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  dCopy = d;
+  replyCopy = reply;
   v52 = 0u;
   v53 = 0u;
   v51 = 0u;
-  v13 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v51) = v13;
-  if (v13)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v51) = enabled;
+  if (enabled)
   {
     v14 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: ingestItemWithCoreSpotlightUniqueIdentifier:bundleID:purgeUrgency:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v15 = *(&v51 + 1);
@@ -1004,11 +1004,11 @@ LABEL_6:
   v48 = __Block_byref_object_copy__68460;
   v49 = __Block_byref_object_dispose__68461;
   v50 = 0;
-  v16 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v17 = [v16 databaseContext];
-  v18 = [v17 syndicationIngestMutex];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  syndicationIngestMutex = [databaseContext syndicationIngestMutex];
 
-  v19 = [v18 tryUsingSyndicationIngestLibraryWithIdentifier:4 forceRetry:1];
+  v19 = [syndicationIngestMutex tryUsingSyndicationIngestLibraryWithIdentifier:4 forceRetry:1];
   if (v19)
   {
     v20 = [[PLSyndicationSyncServiceWrapper alloc] initWithPhotoLibrary:v19 ingestClient:4];
@@ -1016,14 +1016,14 @@ LABEL_6:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      *&buf[4] = v10;
+      *&buf[4] = identifierCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v11;
+      *&buf[14] = dCopy;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_INFO, "Ingest item: sync searchable item %{public}@ from %{public}@", buf, 0x16u);
     }
 
     v44 = 0;
-    v22 = [(PLSyndicationSyncServiceWrapper *)v20 syncSyndicationItemWithUniqueIdentifier:v10 bundleID:v11 queryType:1 error:&v44];
+    v22 = [(PLSyndicationSyncServiceWrapper *)v20 syncSyndicationItemWithUniqueIdentifier:identifierCopy bundleID:dCopy queryType:1 error:&v44];
     v23 = v44;
     v24 = v44;
     if (!v22)
@@ -1041,18 +1041,18 @@ LABEL_6:
       v35[1] = 3221225472;
       v35[2] = __100__PLAssetsdPhotoKitService_ingestItemWithCoreSpotlightUniqueIdentifier_bundleID_purgeUrgency_reply___block_invoke;
       v35[3] = &unk_1E7570510;
-      v36 = v10;
+      v36 = identifierCopy;
       v37 = v19;
       v40 = &v45;
-      v38 = v11;
+      v38 = dCopy;
       v41 = buf;
-      v43 = a5;
-      v39 = v12;
+      urgencyCopy = urgency;
+      v39 = replyCopy;
       v42 = &v64;
       [v37 performBlockAndWait:v35];
 
 LABEL_14:
-      [v18 stopUsingSyndicationIngestLibraryWithIdentifier:4];
+      [syndicationIngestMutex stopUsingSyndicationIngestLibraryWithIdentifier:4];
       goto LABEL_15;
     }
   }
@@ -1078,9 +1078,9 @@ LABEL_14:
   {
     v30 = *(*(&v64 + 1) + 40);
     *v54 = 138543874;
-    v55 = v10;
+    v55 = identifierCopy;
     v56 = 2114;
-    v57 = v11;
+    v57 = dCopy;
     v58 = 2112;
     v59 = v30;
     _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "Ingest item: failed for item %{public}@ from %{public}@: %@", v54, 0x20u);
@@ -1094,7 +1094,7 @@ LABEL_14:
 LABEL_15:
   if (*(*&buf[8] + 24) == 1)
   {
-    (*(v12 + 2))(v12, v46[5], *(*(&v64 + 1) + 40));
+    (*(replyCopy + 2))(replyCopy, v46[5], *(*(&v64 + 1) + 40));
   }
 
   _Block_object_dispose(buf, 8);
@@ -1202,11 +1202,11 @@ void __100__PLAssetsdPhotoKitService_ingestItemWithCoreSpotlightUniqueIdentifier
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)processUniversalSearchJITForAssetUUID:(id)a3 processingTypes:(unint64_t)a4 reply:(id)a5
+- (void)processUniversalSearchJITForAssetUUID:(id)d processingTypes:(unint64_t)types reply:(id)reply
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  replyCopy = reply;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -1217,9 +1217,9 @@ void __100__PLAssetsdPhotoKitService_ingestItemWithCoreSpotlightUniqueIdentifier
   v31 = __Block_byref_object_copy__68460;
   v32 = __Block_byref_object_dispose__68461;
   v33 = 0;
-  v10 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v11 = [v10 databaseContext];
-  v12 = [v11 newShortLivedLibraryWithName:"Universal Search JIT Processing"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v12 = [databaseContext newShortLivedLibraryWithName:"Universal Search JIT Processing"];
 
   if (v12)
   {
@@ -1247,13 +1247,13 @@ void __100__PLAssetsdPhotoKitService_ingestItemWithCoreSpotlightUniqueIdentifier
   v20[1] = 3221225472;
   v20[2] = __88__PLAssetsdPhotoKitService_processUniversalSearchJITForAssetUUID_processingTypes_reply___block_invoke;
   v20[3] = &unk_1E75704C0;
-  v21 = v8;
+  v21 = dCopy;
   v25 = &v34;
   v26 = &v28;
   v22 = v12;
-  v23 = self;
-  v27 = a4;
-  v24 = v9;
+  selfCopy = self;
+  typesCopy = types;
+  v24 = replyCopy;
   [v22 performBlockAndWait:v20];
 
   v17 = *(v35 + 24);
@@ -1265,13 +1265,13 @@ LABEL_5:
     {
       v19 = v29[5];
       *buf = 138543618;
-      v39 = v8;
+      v39 = dCopy;
       v40 = 2112;
       v41 = v19;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "US JIT Processing: failed for asset %{public}@: %@", buf, 0x16u);
     }
 
-    (*(v9 + 2))(v9, v29[5]);
+    (*(replyCopy + 2))(replyCopy, v29[5]);
   }
 
   _Block_object_dispose(&v28, 8);
@@ -1320,18 +1320,18 @@ void __88__PLAssetsdPhotoKitService_processUniversalSearchJITForAssetUUID_proces
   }
 }
 
-- (void)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)a3 bundleID:(id)a4 processingTypes:(unint64_t)a5 reply:(id)a6
+- (void)processUniversalSearchJITForCoreSpotlightUniqueIdentifier:(id)identifier bundleID:(id)d processingTypes:(unint64_t)types reply:(id)reply
 {
   v68 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  dCopy = d;
+  replyCopy = reply;
   v53 = 0u;
   *sel = 0u;
   v52 = 0u;
-  v12 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v52) = v12;
-  if (v12)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v52) = enabled;
+  if (enabled)
   {
     v13 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: processUniversalSearchJITForCoreSpotlightUniqueIdentifier:bundleID:processingTypes:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v14 = *(&v52 + 1);
@@ -1356,11 +1356,11 @@ void __88__PLAssetsdPhotoKitService_processUniversalSearchJITForAssetUUID_proces
   v46[3] = __Block_byref_object_copy__68460;
   v46[4] = __Block_byref_object_dispose__68461;
   v47 = 0;
-  v15 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v16 = [v15 databaseContext];
-  v17 = [v16 syndicationIngestMutex];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  syndicationIngestMutex = [databaseContext syndicationIngestMutex];
 
-  v18 = [v17 tryUsingSyndicationIngestLibraryWithIdentifier:5 forceRetry:1];
+  v18 = [syndicationIngestMutex tryUsingSyndicationIngestLibraryWithIdentifier:5 forceRetry:1];
   if (v18)
   {
     *(v49 + 24) = 1;
@@ -1387,14 +1387,14 @@ void __88__PLAssetsdPhotoKitService_processUniversalSearchJITForAssetUUID_proces
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v56 = v9;
+    v56 = identifierCopy;
     v57 = 2114;
-    v58 = v10;
+    v58 = dCopy;
     _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_INFO, "US JIT Processing: sync searchable item %{public}@ from %{public}@", buf, 0x16u);
   }
 
   v45 = 0;
-  v25 = [(PLSyndicationSyncServiceWrapper *)v23 syncSyndicationItemWithUniqueIdentifier:v9 bundleID:v10 queryType:1 error:&v45];
+  v25 = [(PLSyndicationSyncServiceWrapper *)v23 syncSyndicationItemWithUniqueIdentifier:identifierCopy bundleID:dCopy queryType:1 error:&v45];
   v26 = v45;
   v27 = v45;
   *(v49 + 24) = v25;
@@ -1409,21 +1409,21 @@ void __88__PLAssetsdPhotoKitService_processUniversalSearchJITForAssetUUID_proces
     v35[1] = 3221225472;
     v35[2] = __117__PLAssetsdPhotoKitService_processUniversalSearchJITForCoreSpotlightUniqueIdentifier_bundleID_processingTypes_reply___block_invoke;
     v35[3] = &unk_1E7570498;
-    v36 = v9;
+    v36 = identifierCopy;
     v37 = v18;
     v41 = &v48;
     v42 = &v63;
     v43 = v46;
-    v38 = v10;
-    v39 = self;
-    v44 = a5;
-    v40 = v11;
+    v38 = dCopy;
+    selfCopy = self;
+    typesCopy = types;
+    v40 = replyCopy;
     [v37 performBlockAndWait:v35];
   }
 
   if (v18)
   {
-    [v17 stopUsingSyndicationIngestLibraryWithIdentifier:5];
+    [syndicationIngestMutex stopUsingSyndicationIngestLibraryWithIdentifier:5];
   }
 
 LABEL_14:
@@ -1434,15 +1434,15 @@ LABEL_14:
     {
       v29 = *(*(&v63 + 1) + 40);
       *buf = 138543874;
-      v56 = v9;
+      v56 = identifierCopy;
       v57 = 2114;
-      v58 = v10;
+      v58 = dCopy;
       v59 = 2112;
       v60 = v29;
       _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "US JIT Processing: failed for item %{public}@ from %{public}@: %@", buf, 0x20u);
     }
 
-    (*(v11 + 2))(v11, 0, *(*(&v63 + 1) + 40));
+    (*(replyCopy + 2))(replyCopy, 0, *(*(&v63 + 1) + 40));
   }
 
   _Block_object_dispose(v46, 8);
@@ -1539,18 +1539,18 @@ void __117__PLAssetsdPhotoKitService_processUniversalSearchJITForCoreSpotlightUn
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getUUIDsForAssetObjectURIs:(id)a3 filterPredicate:(id)a4 reply:(id)a5
+- (void)getUUIDsForAssetObjectURIs:(id)is filterPredicate:(id)predicate reply:(id)reply
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  isCopy = is;
+  predicateCopy = predicate;
+  replyCopy = reply;
   v34 = 0u;
   *sel = 0u;
   v33 = 0u;
-  v11 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v33) = v11;
-  if (v11)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v33) = enabled;
+  if (enabled)
   {
     v12 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: getUUIDsForAssetObjectURIs:filterPredicate:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v13 = *(&v33 + 1);
@@ -1565,27 +1565,27 @@ void __117__PLAssetsdPhotoKitService_processUniversalSearchJITForCoreSpotlightUn
   v38 = __Block_byref_object_copy__68460;
   v39 = __Block_byref_object_dispose__68461;
   v40 = 0;
-  v14 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v15 = [v14 databaseContext];
-  v16 = [v15 newShortLivedLibraryWithName:"-[PLAssetsdPhotoKitService getUUIDsForAssetObjectURIs:filterPredicate:reply:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v16 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdPhotoKitService getUUIDsForAssetObjectURIs:filterPredicate:reply:]"];
 
-  v17 = [v16 managedObjectContext];
-  v18 = [v17 persistentStoreCoordinator];
+  managedObjectContext = [v16 managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_reply___block_invoke;
   v31[3] = &unk_1E75784F0;
-  v19 = v18;
+  v19 = persistentStoreCoordinator;
   v32 = v19;
-  v20 = [v8 _pl_map:v31];
+  v20 = [isCopy _pl_map:v31];
   v30 = 0;
-  v21 = [PLManagedAsset assetUUIDsByObjectIDs:v20 withFilterPredicate:v9 context:v17 error:&v30];
+  v21 = [PLManagedAsset assetUUIDsByObjectIDs:v20 withFilterPredicate:predicateCopy context:managedObjectContext error:&v30];
   v22 = v30;
   if (v21)
   {
-    v23 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v24 = *(*(&buf + 1) + 40);
-    *(*(&buf + 1) + 40) = v23;
+    *(*(&buf + 1) + 40) = dictionary;
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -1595,7 +1595,7 @@ void __117__PLAssetsdPhotoKitService_processUniversalSearchJITForCoreSpotlightUn
     [v21 enumerateKeysAndObjectsUsingBlock:v29];
   }
 
-  v10[2](v10, *(*(&buf + 1) + 40), v22);
+  replyCopy[2](replyCopy, *(*(&buf + 1) + 40), v22);
 
   _Block_object_dispose(&buf, 8);
   if (v33 == 1)
@@ -1625,17 +1625,17 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
   [*(*(*(a1 + 32) + 8) + 40) setObject:v5 forKey:v6];
 }
 
-- (void)cancelReservedCloudIdentifiers:(id)a3 reply:(id)a4
+- (void)cancelReservedCloudIdentifiers:(id)identifiers reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: cancelReservedCloudIdentifiers:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v21 + 1);
@@ -1644,15 +1644,15 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
     os_activity_scope_enter(v9, (&v22 + 8));
   }
 
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 cloudIdentifierReservationSupport];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  cloudIdentifierReservationSupport = [libraryServicesManager cloudIdentifierReservationSupport];
 
-  v13 = [(PLAssetsdPhotoKitService *)self clientBundleID];
+  clientBundleID = [(PLAssetsdPhotoKitService *)self clientBundleID];
   v20 = 0;
-  v14 = [v12 cancelReservedCloudIdentifiers:v6 clientBundleIdentifier:v13 error:&v20];
+  v14 = [cloudIdentifierReservationSupport cancelReservedCloudIdentifiers:identifiersCopy clientBundleIdentifier:clientBundleID error:&v20];
   v15 = v20;
 
-  v7[2](v7, v14, v15);
+  replyCopy[2](replyCopy, v14, v15);
   if (v21 == 1)
   {
     os_activity_scope_leave((&v22 + 8));
@@ -1673,17 +1673,17 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
   }
 }
 
-- (void)cancelReservedCloudIdentifiersWithEntityName:(id)a3 reply:(id)a4
+- (void)cancelReservedCloudIdentifiersWithEntityName:(id)name reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: cancelReservedCloudIdentifiersWithEntityName:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v21 + 1);
@@ -1692,15 +1692,15 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
     os_activity_scope_enter(v9, (&v22 + 8));
   }
 
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 cloudIdentifierReservationSupport];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  cloudIdentifierReservationSupport = [libraryServicesManager cloudIdentifierReservationSupport];
 
-  v13 = [(PLAssetsdPhotoKitService *)self clientBundleID];
+  clientBundleID = [(PLAssetsdPhotoKitService *)self clientBundleID];
   v20 = 0;
-  v14 = [v12 cancelReservedCloudIdentifiersWithEntityName:v6 clientBundleIdentifier:v13 error:&v20];
+  v14 = [cloudIdentifierReservationSupport cancelReservedCloudIdentifiersWithEntityName:nameCopy clientBundleIdentifier:clientBundleID error:&v20];
   v15 = v20;
 
-  v7[2](v7, v14, v15);
+  replyCopy[2](replyCopy, v14, v15);
   if (v21 == 1)
   {
     os_activity_scope_leave((&v22 + 8));
@@ -1721,17 +1721,17 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
   }
 }
 
-- (void)reservedCloudIdentifiersWithEntityName:(id)a3 reply:(id)a4
+- (void)reservedCloudIdentifiersWithEntityName:(id)name reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: reservedCloudIdentifiersWithEntityName:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v21 + 1);
@@ -1740,15 +1740,15 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
     os_activity_scope_enter(v9, (&v22 + 8));
   }
 
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 cloudIdentifierReservationSupport];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  cloudIdentifierReservationSupport = [libraryServicesManager cloudIdentifierReservationSupport];
 
-  v13 = [(PLAssetsdPhotoKitService *)self clientBundleID];
+  clientBundleID = [(PLAssetsdPhotoKitService *)self clientBundleID];
   v20 = 0;
-  v14 = [v12 reservedCloudIdentifierUUIDsWithEntityName:v6 clientBundleIdentifier:v13 error:&v20];
+  v14 = [cloudIdentifierReservationSupport reservedCloudIdentifierUUIDsWithEntityName:nameCopy clientBundleIdentifier:clientBundleID error:&v20];
   v15 = v20;
 
-  v7[2](v7, v14, v15);
+  replyCopy[2](replyCopy, v14, v15);
   if (v21 == 1)
   {
     os_activity_scope_leave((&v22 + 8));
@@ -1769,17 +1769,17 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
   }
 }
 
-- (void)reserveCloudIdentifiersWithEntityName:(id)a3 count:(unint64_t)a4 reply:(id)a5
+- (void)reserveCloudIdentifiersWithEntityName:(id)name count:(unint64_t)count reply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  replyCopy = reply;
   v24 = 0u;
   *sel = 0u;
   v23 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v23) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v23) = enabled;
+  if (enabled)
   {
     v11 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: reserveCloudIdentifiersWithEntityName:count:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v12 = *(&v23 + 1);
@@ -1788,15 +1788,15 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
     os_activity_scope_enter(v11, (&v24 + 8));
   }
 
-  v13 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v14 = [v13 cloudIdentifierReservationSupport];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  cloudIdentifierReservationSupport = [libraryServicesManager cloudIdentifierReservationSupport];
 
-  v15 = [(PLAssetsdPhotoKitService *)self clientBundleID];
+  clientBundleID = [(PLAssetsdPhotoKitService *)self clientBundleID];
   v22 = 0;
-  v16 = [v14 reserveCloudIdentifierUUIDsWithEntityName:v8 count:a4 clientBundleIdentifier:v15 error:&v22];
+  v16 = [cloudIdentifierReservationSupport reserveCloudIdentifierUUIDsWithEntityName:nameCopy count:count clientBundleIdentifier:clientBundleID error:&v22];
   v17 = v22;
 
-  v9[2](v9, v16, v17);
+  replyCopy[2](replyCopy, v16, v17);
   if (v23 == 1)
   {
     os_activity_scope_leave((&v24 + 8));
@@ -1817,17 +1817,17 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
   }
 }
 
-- (void)resolveLocalIdentifiersForCloudIdentifiers:(id)a3 reply:(id)a4
+- (void)resolveLocalIdentifiersForCloudIdentifiers:(id)identifiers reply:(id)reply
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v22) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v22) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: resolveLocalIdentifiersForCloudIdentifiers:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v22 + 1);
@@ -1837,33 +1837,33 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
   }
 
   v11 = [PLCloudPhotoLibraryError createErrorWithType:15 withDebugMessage:@"iCloud Photo Library not enabled"];
-  v12 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v13 = [v12 isCloudPhotoLibraryEnabled];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  isCloudPhotoLibraryEnabled = [libraryServicesManager isCloudPhotoLibraryEnabled];
 
-  if (v13)
+  if (isCloudPhotoLibraryEnabled)
   {
-    v14 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v15 = [v14 cloudPhotoLibraryManager];
+    libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    cloudPhotoLibraryManager = [libraryServicesManager2 cloudPhotoLibraryManager];
 
-    if (v15)
+    if (cloudPhotoLibraryManager)
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __77__PLAssetsdPhotoKitService_resolveLocalIdentifiersForCloudIdentifiers_reply___block_invoke;
       v20[3] = &unk_1E7577458;
-      v21 = v7;
-      [v15 resolveLocalIdentifiersForCloudIdentifiers:v6 completionHandler:v20];
+      v21 = replyCopy;
+      [cloudPhotoLibraryManager resolveLocalIdentifiersForCloudIdentifiers:identifiersCopy completionHandler:v20];
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0, v11);
+      (*(replyCopy + 2))(replyCopy, 0, v11);
     }
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, v11);
+    (*(replyCopy + 2))(replyCopy, 0, v11);
   }
 
   if (v22 == 1)
@@ -1886,18 +1886,18 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
   }
 }
 
-- (void)applyChangesRequest:(id)a3 reply:(id)a4
+- (void)applyChangesRequest:(id)request reply:(id)reply
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   +[PLFileDescriptorFuse checkFileDescriptorFuse];
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: applyChangesRequest:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v21 + 1);
@@ -1908,34 +1908,34 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
 
   connectionAuthorization = self->_connectionAuthorization;
   v20 = 0;
-  v12 = [v6 decodeWithService:self clientAuthorization:connectionAuthorization error:&v20];
+  v12 = [requestCopy decodeWithService:self clientAuthorization:connectionAuthorization error:&v20];
   v13 = v20;
   if (v12)
   {
     if ([(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization isClientInLimitedLibraryMode])
     {
-      [v6 discardUnsupportedLimitedLibraryChangeRequests];
+      [requestCopy discardUnsupportedLimitedLibraryChangeRequests];
     }
 
     v14 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization photoKitEntitled];
+      photoKitEntitled = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization photoKitEntitled];
       *buf = 136315650;
       v25 = "[PLAssetsdPhotoKitService applyChangesRequest:reply:]";
       v26 = 2112;
-      v27 = v6;
+      v27 = requestCopy;
       v28 = 1024;
-      v29 = v15;
+      v29 = photoKitEntitled;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "##### %s %@ entitled:%d", buf, 0x1Cu);
     }
 
-    [(PLAssetsdPhotoKitService *)self commitRequest:v6 reply:v7];
+    [(PLAssetsdPhotoKitService *)self commitRequest:requestCopy reply:replyCopy];
   }
 
   else
   {
-    v7[2](v7, 0, v13);
+    replyCopy[2](replyCopy, 0, v13);
   }
 
   if (v21 == 1)
@@ -1966,25 +1966,25 @@ void __77__PLAssetsdPhotoKitService_getUUIDsForAssetObjectURIs_filterPredicate_r
   [(PLAssetsdPhotoKitService *)&v3 dealloc];
 }
 
-- (PLAssetsdPhotoKitService)initWithLibraryServicesManager:(id)a3 connectionAuthorization:(id)a4
+- (PLAssetsdPhotoKitService)initWithLibraryServicesManager:(id)manager connectionAuthorization:(id)authorization
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  authorizationCopy = authorization;
   v19.receiver = self;
   v19.super_class = PLAssetsdPhotoKitService;
-  v8 = [(PLAbstractLibraryServicesManagerService *)&v19 initWithLibraryServicesManager:v6];
+  v8 = [(PLAbstractLibraryServicesManagerService *)&v19 initWithLibraryServicesManager:managerCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connectionAuthorization, a4);
-    v10 = [v6 persistentStoreCoordinator];
+    objc_storeStrong(&v8->_connectionAuthorization, authorization);
+    persistentStoreCoordinator = [managerCopy persistentStoreCoordinator];
     persistentStoreCoordinator = v9->_persistentStoreCoordinator;
-    v9->_persistentStoreCoordinator = v10;
+    v9->_persistentStoreCoordinator = persistentStoreCoordinator;
 
     if (PLPlatformCameraCaptureSupported())
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PhotoKitService: %@", v7];
-      v13 = [[PLCameraCaptureTaskConstraintCoordinator alloc] initWithTaskContstraintRole:2 name:v12];
+      authorizationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"PhotoKitService: %@", authorizationCopy];
+      v13 = [[PLCameraCaptureTaskConstraintCoordinator alloc] initWithTaskContstraintRole:2 name:authorizationCopy];
       cameraTaskConstraintCoordinator = v9->_cameraTaskConstraintCoordinator;
       v9->_cameraTaskConstraintCoordinator = v13;
     }

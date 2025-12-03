@@ -1,5 +1,5 @@
 @interface PKDashboardTitleHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -9,21 +9,21 @@
 
 @implementation PKDashboardTitleHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKDashboardTitleHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKDashboardTitleHeaderView" hasInstanceMethod:@"createSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKDashboardTitleHeaderView" hasInstanceMethod:@"action" withFullSignature:{"@?", 0}];
-  [v3 validateClass:@"PKDashboardTitleHeaderView" hasInstanceVariable:@"_actionButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKDashboardTitleHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKDashboardTitleHeaderView" hasInstanceMethod:@"createSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKDashboardTitleHeaderView" hasInstanceMethod:@"action" withFullSignature:{"@?", 0}];
+  [validationsCopy validateClass:@"PKDashboardTitleHeaderView" hasInstanceVariable:@"_actionButton" withType:"UIButton"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(PKDashboardTitleHeaderViewAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (void)didMoveToWindow
@@ -100,9 +100,9 @@ BOOL __85__PKDashboardTitleHeaderViewAccessibility__accessibilityLoadAccessibili
 - (id)_accessibilitySupplementaryFooterViews
 {
   v3 = [(PKDashboardTitleHeaderViewAccessibility *)self safeUIViewForKey:@"_actionButton"];
-  v4 = [v3 isAccessibilityElement];
+  isAccessibilityElement = [v3 isAccessibilityElement];
 
-  if (v4)
+  if (isAccessibilityElement)
   {
     v5 = MEMORY[0x29EDB8D80];
     v6 = [(PKDashboardTitleHeaderViewAccessibility *)self safeValueForKey:@"_actionButton"];

@@ -1,16 +1,16 @@
 @interface PHAudioControlsButton
 - (BOOL)isIPad;
 - (BOOL)isiPadPostersEnabled;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (CGSize)_buttonSize;
 - (CGSize)sizeOverride;
 - (NSArray)ambientButtonParts;
-- (PHAudioControlsButton)initWithFrame:(CGRect)a3;
+- (PHAudioControlsButton)initWithFrame:(CGRect)frame;
 - (PHAudioControlsButtonMenuDataSource)menuDataSource;
 - (UIEdgeInsets)contentInsets;
 - (double)_titleOffset;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)defaultIconTintColor;
 - (void)adjustImageColors;
 - (void)applyDisabledState;
@@ -18,25 +18,25 @@
 - (void)applyNormalState;
 - (void)applySelectedState;
 - (void)layoutSubviews;
-- (void)setCaptureView:(id)a3;
-- (void)setContentRect:(CGRect)a3;
-- (void)setControlImage:(id)a3;
-- (void)setControlType:(unint64_t)a3;
-- (void)setControlView:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMenuDataSource:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setCaptureView:(id)view;
+- (void)setContentRect:(CGRect)rect;
+- (void)setControlImage:(id)image;
+- (void)setControlType:(unint64_t)type;
+- (void)setControlView:(id)view;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMenuDataSource:(id)source;
+- (void)setSelected:(BOOL)selected;
 - (void)setupBackdropView;
 - (void)setupConstraints;
 - (void)setupLabel;
 - (void)setupRoundview;
 - (void)setupTitleColors;
-- (void)updateBackgroundMaterial:(unint64_t)a3;
+- (void)updateBackgroundMaterial:(unint64_t)material;
 - (void)updateImageColor;
 - (void)updateMaterialAndAlpha;
-- (void)updateRoundViewColorAnimated:(BOOL)a3;
-- (void)updateViewsAnimated:(BOOL)a3;
+- (void)updateRoundViewColorAnimated:(BOOL)animated;
+- (void)updateViewsAnimated:(BOOL)animated;
 @end
 
 @implementation PHAudioControlsButton
@@ -44,9 +44,9 @@
 - (BOOL)isIPad
 {
   v2 = +[PHInCallUtilities sharedInstance];
-  v3 = [v2 isIPadIdiom];
+  isIPadIdiom = [v2 isIPadIdiom];
 
-  return v3;
+  return isIPadIdiom;
 }
 
 - (void)updateImageColor
@@ -75,28 +75,28 @@
 
 - (void)updateMaterialAndAlpha
 {
-  v3 = [(PHAudioControlsButton *)self backdropEffectView];
+  backdropEffectView = [(PHAudioControlsButton *)self backdropEffectView];
 
-  if (v3 && ![(PHAudioControlsButton *)self isIPad])
+  if (backdropEffectView && ![(PHAudioControlsButton *)self isIPad])
   {
-    v4 = [(PHAudioControlsButton *)self isSelected];
-    v5 = [(PHAudioControlsButton *)self backdropEffectView];
-    v7 = v5;
+    isSelected = [(PHAudioControlsButton *)self isSelected];
+    backdropEffectView2 = [(PHAudioControlsButton *)self backdropEffectView];
+    v7 = backdropEffectView2;
     v6 = 1.0;
-    if (v4)
+    if (isSelected)
     {
       v6 = 0.0;
     }
 
-    [v5 setAlpha:v6];
+    [backdropEffectView2 setAlpha:v6];
   }
 }
 
 - (double)_titleOffset
 {
-  v2 = [(PHAudioControlsButton *)self isIPad];
+  isIPad = [(PHAudioControlsButton *)self isIPad];
   result = 6.0;
-  if (v2)
+  if (isIPad)
   {
     v4 = +[PHUIConfiguration inCallControlSize];
     result = 0.0;
@@ -109,11 +109,11 @@
   return result;
 }
 
-- (PHAudioControlsButton)initWithFrame:(CGRect)a3
+- (PHAudioControlsButton)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PHAudioControlsButton;
-  v3 = [(PHAudioControlsButton *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHAudioControlsButton *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -138,16 +138,16 @@
       [(PHAudioControlsButton *)v3 sendSubviewToBack:v3->_backdropEffectView];
     }
 
-    v7 = [(PHAudioControlsButton *)v3 imageView];
-    [(PHAudioControlsButton *)v3 bringSubviewToFront:v7];
+    imageView = [(PHAudioControlsButton *)v3 imageView];
+    [(PHAudioControlsButton *)v3 bringSubviewToFront:imageView];
 
     [(PHAudioControlsButton *)v3 setupTitleColors];
     [(PHAudioControlsButton *)v3 adjustImageColors];
-    v8 = [(PHAudioControlsButton *)v3 layer];
-    [v8 setAllowsGroupBlending:0];
+    layer = [(PHAudioControlsButton *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v9 = [(PHAudioControlsButton *)v3 layer];
-    [v9 setAllowsGroupOpacity:0];
+    layer2 = [(PHAudioControlsButton *)v3 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     [(PHAudioControlsButton *)v3 _titleOffset];
     [(PHAudioControlsButton *)v3 setTitleEdgeInsets:?];
@@ -159,16 +159,16 @@
 
 - (BOOL)isiPadPostersEnabled
 {
-  v3 = [(PHAudioControlsButton *)self _currentUserInterfaceIdiom];
+  _currentUserInterfaceIdiom = [(PHAudioControlsButton *)self _currentUserInterfaceIdiom];
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  return v3 == ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1) && self->_usesLargeFormatUI;
+  return _currentUserInterfaceIdiom == ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1) && self->_usesLargeFormatUI;
 }
 
 - (void)setupLabel
 {
-  v7 = [(PHAudioControlsButton *)self titleLabel];
+  titleLabel = [(PHAudioControlsButton *)self titleLabel];
   if ([(PHAudioControlsButton *)self isiPadPostersEnabled])
   {
     v3 = [UIFont ib_preferredFontForTextStyle:UIFontTextStyleBody];
@@ -187,15 +187,15 @@
   }
 
   v6 = v3;
-  [v7 setFont:v3];
+  [titleLabel setFont:v3];
 
-  [v7 setLineBreakMode:0];
-  [v7 setTextAlignment:1];
+  [titleLabel setLineBreakMode:0];
+  [titleLabel setTextAlignment:1];
   if ([(PHAudioControlsButton *)self isiPadPostersEnabled])
   {
-    [v7 setAdjustsFontForContentSizeCategory:1];
-    [v7 setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
-    [v7 setNumberOfLines:2];
+    [titleLabel setAdjustsFontForContentSizeCategory:1];
+    [titleLabel setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
+    [titleLabel setNumberOfLines:2];
   }
 }
 
@@ -209,8 +209,8 @@
     if ([(PHAudioControlsButton *)self usesGlass])
     {
       [(PHAudioControlsButton *)self setOverrideUserInterfaceStyle:1];
-      v7 = [(PHAudioControlsButton *)self layer];
-      [v7 setCornerRadius:v6 * 0.5];
+      layer = [(PHAudioControlsButton *)self layer];
+      [layer setCornerRadius:v6 * 0.5];
 
       [(PHAudioControlsButton *)self applySmallClearGlassBackground];
     }
@@ -224,12 +224,12 @@
       self->_roundView = v10;
 
       [(PHRoundView *)self->_roundView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v12 = [(PHRoundView *)self->_roundView widthAnchor];
-      v13 = [v12 constraintEqualToConstant:v4];
+      widthAnchor = [(PHRoundView *)self->_roundView widthAnchor];
+      v13 = [widthAnchor constraintEqualToConstant:v4];
       [v13 setActive:1];
 
-      v14 = [(PHRoundView *)self->_roundView heightAnchor];
-      v15 = [v14 constraintEqualToConstant:v6];
+      heightAnchor = [(PHRoundView *)self->_roundView heightAnchor];
+      v15 = [heightAnchor constraintEqualToConstant:v6];
       [v15 setActive:1];
 
       [(PHRoundView *)self->_roundView setUserInteractionEnabled:0];
@@ -263,9 +263,9 @@
     v11[6] = v6;
     v11[4] = self;
     v8 = objc_retainBlock(v11);
-    v9 = [(PHAudioControlsButton *)self isiPadPostersEnabled];
+    isiPadPostersEnabled = [(PHAudioControlsButton *)self isiPadPostersEnabled];
     v10 = v8;
-    if ((v9 & 1) == 0)
+    if ((isiPadPostersEnabled & 1) == 0)
     {
       if ([(PHAudioControlsButton *)self isIPad])
       {
@@ -282,20 +282,20 @@
   }
 }
 
-- (void)updateBackgroundMaterial:(unint64_t)a3
+- (void)updateBackgroundMaterial:(unint64_t)material
 {
   if ([(PHAudioControlsButton *)self usesGlass])
   {
     return;
   }
 
-  if (a3 > 1)
+  if (material > 1)
   {
-    if (a3 == 2)
+    if (material == 2)
     {
-      v12 = [(PHAudioControlsButton *)self backdropEffectView];
+      backdropEffectView = [(PHAudioControlsButton *)self backdropEffectView];
 
-      if (!v12)
+      if (!backdropEffectView)
       {
         return;
       }
@@ -309,14 +309,14 @@
 
     else
     {
-      if (a3 != 3)
+      if (material != 3)
       {
         return;
       }
 
-      v9 = [(PHAudioControlsButton *)self backdropEffectView];
+      backdropEffectView2 = [(PHAudioControlsButton *)self backdropEffectView];
 
-      if (!v9)
+      if (!backdropEffectView2)
       {
         return;
       }
@@ -329,18 +329,18 @@
     }
 
 LABEL_15:
-    v8 = [NSArray arrayWithObjects:v10 count:2, v14, v15, v16, v17, v18, v19];
-    v13 = [(PHAudioControlsButton *)self backdropEffectView];
-    [v13 setBackgroundEffects:v8];
+    backdropEffectView6 = [NSArray arrayWithObjects:v10 count:2, v14, v15, v16, v17, v18, v19];
+    backdropEffectView3 = [(PHAudioControlsButton *)self backdropEffectView];
+    [backdropEffectView3 setBackgroundEffects:backdropEffectView6];
 
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!material)
   {
-    v11 = [(PHAudioControlsButton *)self backdropEffectView];
+    backdropEffectView4 = [(PHAudioControlsButton *)self backdropEffectView];
 
-    if (!v11)
+    if (!backdropEffectView4)
     {
       return;
     }
@@ -353,17 +353,17 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (material == 1)
   {
-    v5 = [(PHAudioControlsButton *)self backdropEffectView];
+    backdropEffectView5 = [(PHAudioControlsButton *)self backdropEffectView];
 
-    if (v5)
+    if (backdropEffectView5)
     {
       v6 = +[UIColorEffect inCallControlsButtonAvatarOnly];
       v20 = v6;
       v7 = [NSArray arrayWithObjects:&v20 count:1];
-      v8 = [(PHAudioControlsButton *)self backdropEffectView];
-      [v8 setBackgroundEffects:v7];
+      backdropEffectView6 = [(PHAudioControlsButton *)self backdropEffectView];
+      [backdropEffectView6 setBackgroundEffects:v7];
 LABEL_16:
     }
   }
@@ -399,34 +399,34 @@ LABEL_16:
   if (![(PHAudioControlsButton *)self usesGlass]&& [(PHAudioControlsButton *)self isiPadPostersEnabled])
   {
     [(UIVisualEffectView *)self->_backdropEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(UIVisualEffectView *)self->_backdropEffectView widthAnchor];
+    widthAnchor = [(UIVisualEffectView *)self->_backdropEffectView widthAnchor];
     [(PHAudioControlsButton *)self _buttonSize];
-    v7 = [v6 constraintEqualToConstant:?];
+    v7 = [widthAnchor constraintEqualToConstant:?];
     [v7 setActive:1];
 
-    v8 = [(UIVisualEffectView *)self->_backdropEffectView heightAnchor];
+    heightAnchor = [(UIVisualEffectView *)self->_backdropEffectView heightAnchor];
     [(PHAudioControlsButton *)self _buttonSize];
-    v10 = [v8 constraintEqualToConstant:v9];
+    v10 = [heightAnchor constraintEqualToConstant:v9];
     [v10 setActive:1];
 
-    v11 = [(UIVisualEffectView *)self->_backdropEffectView centerXAnchor];
-    v12 = [(UIVisualEffectView *)self->_backdropEffectView superview];
-    v13 = [v12 centerXAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    centerXAnchor = [(UIVisualEffectView *)self->_backdropEffectView centerXAnchor];
+    superview = [(UIVisualEffectView *)self->_backdropEffectView superview];
+    centerXAnchor2 = [superview centerXAnchor];
+    v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v14 setActive:1];
 
-    v18 = [(UIVisualEffectView *)self->_backdropEffectView centerYAnchor];
-    v15 = [(UIVisualEffectView *)self->_backdropEffectView superview];
-    v16 = [v15 centerYAnchor];
-    v17 = [v18 constraintEqualToAnchor:v16];
+    centerYAnchor = [(UIVisualEffectView *)self->_backdropEffectView centerYAnchor];
+    superview2 = [(UIVisualEffectView *)self->_backdropEffectView superview];
+    centerYAnchor2 = [superview2 centerYAnchor];
+    v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v17 setActive:1];
   }
 }
 
-- (void)setControlType:(unint64_t)a3
+- (void)setControlType:(unint64_t)type
 {
-  self->_controlType = a3;
-  if (a3 == 16)
+  self->_controlType = type;
+  if (type == 16)
   {
     [(PHAudioControlsButton *)self removeBackground];
   }
@@ -442,20 +442,20 @@ LABEL_16:
   [(PHAudioControlsButton *)self setAdjustsImageWhenHighlighted:0];
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  width = a3.size.width;
-  x = a3.origin.x;
+  width = rect.size.width;
+  x = rect.origin.x;
   top = self->_contentInsets.top;
   left = self->_contentInsets.left;
   right = self->_contentInsets.right;
-  v9 = a3.origin.y + top;
-  v10 = a3.size.height - (top + self->_contentInsets.bottom);
-  v11 = [(PHAudioControlsButton *)self controlType];
-  v12 = [(PHAudioControlsButton *)self currentTitle];
+  v9 = rect.origin.y + top;
+  v10 = rect.size.height - (top + self->_contentInsets.bottom);
+  controlType = [(PHAudioControlsButton *)self controlType];
+  currentTitle = [(PHAudioControlsButton *)self currentTitle];
   [(PHAudioControlsButton *)self bounds];
   v17 = -12.0;
-  if (v11 == 17)
+  if (controlType == 17)
   {
     v17 = -15.0;
   }
@@ -467,15 +467,15 @@ LABEL_16:
   v20 = [(PHAudioControlsButton *)self _font:v35.origin.x];
   v34 = v20;
   v21 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-  [v12 boundingRectWithSize:1 options:v21 attributes:0 context:{v18, height}];
+  [currentTitle boundingRectWithSize:1 options:v21 attributes:0 context:{v18, height}];
   v23 = v22;
   v25 = v24;
 
   v26 = ceil(v25);
-  v27 = [(PHAudioControlsButton *)self isIPad];
+  isIPad = [(PHAudioControlsButton *)self isIPad];
   [(PHAudioControlsButton *)self _titleOffset];
   v29 = v9 + v10 + v28;
-  if (v27)
+  if (isIPad)
   {
     v29 = v29 - floor(v26 / 2.4000001);
   }
@@ -490,17 +490,17 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
   left = self->_contentInsets.left;
-  v5 = a3.origin.x + left;
-  v6 = a3.size.width - (left + self->_contentInsets.right);
-  v7 = a3.size.height - (self->_contentInsets.top + self->_contentInsets.bottom);
-  v8 = [(PHAudioControlsButton *)self currentImage];
-  if (v8)
+  v5 = rect.origin.x + left;
+  v6 = rect.size.width - (left + self->_contentInsets.right);
+  v7 = rect.size.height - (self->_contentInsets.top + self->_contentInsets.bottom);
+  currentImage = [(PHAudioControlsButton *)self currentImage];
+  if (currentImage)
   {
-    v9 = [(PHAudioControlsButton *)self currentImage];
-    [v9 size];
+    currentImage2 = [(PHAudioControlsButton *)self currentImage];
+    [currentImage2 size];
     width = v10;
     height = v12;
   }
@@ -557,12 +557,12 @@ LABEL_10:
   return result;
 }
 
-- (void)setContentRect:(CGRect)a3
+- (void)setContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_contentInsets = &self->_contentInsets;
   [(PHAudioControlsButton *)self bounds];
   v10 = v9 - height - y;
@@ -573,11 +573,11 @@ LABEL_10:
   p_contentInsets->right = v11 - x - width;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = PHAudioControlsButton;
-  [(PHAudioControlsButton *)&v4 setHighlighted:a3];
+  [(PHAudioControlsButton *)&v4 setHighlighted:highlighted];
   [(PHAudioControlsButton *)self updateViewsAnimated:1];
   if (self->_roundView)
   {
@@ -590,14 +590,14 @@ LABEL_10:
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(PHAudioControlsButton *)self isSelected];
+  selectedCopy = selected;
+  isSelected = [(PHAudioControlsButton *)self isSelected];
   v6.receiver = self;
   v6.super_class = PHAudioControlsButton;
-  [(PHAudioControlsButton *)&v6 setSelected:v3];
-  if (v5 != v3)
+  [(PHAudioControlsButton *)&v6 setSelected:selectedCopy];
+  if (isSelected != selectedCopy)
   {
     [(PHAudioControlsButton *)self updateViewsAnimated:1];
   }
@@ -613,14 +613,14 @@ LABEL_10:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PHAudioControlsButton *)self isEnabled];
+  enabledCopy = enabled;
+  isEnabled = [(PHAudioControlsButton *)self isEnabled];
   v6.receiver = self;
   v6.super_class = PHAudioControlsButton;
-  [(PHAudioControlsButton *)&v6 setEnabled:v3];
-  if (v5 != v3)
+  [(PHAudioControlsButton *)&v6 setEnabled:enabledCopy];
+  if (isEnabled != enabledCopy)
   {
     [(PHAudioControlsButton *)self updateViewsAnimated:1];
   }
@@ -636,68 +636,68 @@ LABEL_10:
   }
 }
 
-- (void)setControlImage:(id)a3
+- (void)setControlImage:(id)image
 {
-  v5 = a3;
-  if (self->_controlImage != v5)
+  imageCopy = image;
+  if (self->_controlImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_controlImage, a3);
-    v6 = [(PHAudioControlsButton *)self controlImage];
-    [(PHAudioControlsButton *)self setImage:v6 forStates:0];
+    v7 = imageCopy;
+    objc_storeStrong(&self->_controlImage, image);
+    controlImage = [(PHAudioControlsButton *)self controlImage];
+    [(PHAudioControlsButton *)self setImage:controlImage forStates:0];
 
     [(PHAudioControlsButton *)self updateViewsAnimated:0];
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (void)setControlView:(id)a3
+- (void)setControlView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (!self->_controlView)
   {
-    v15 = v5;
-    objc_storeStrong(&self->_controlView, a3);
+    v15 = viewCopy;
+    objc_storeStrong(&self->_controlView, view);
     [(PHAudioControlsButton *)self insertSubview:self->_controlView atIndex:0];
     [(UIView *)self->_controlView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(UIView *)self->_controlView heightAnchor];
+    heightAnchor = [(UIView *)self->_controlView heightAnchor];
     [(PHAudioControlsButton *)self _buttonSize];
-    v8 = [v6 constraintEqualToConstant:v7];
+    v8 = [heightAnchor constraintEqualToConstant:v7];
     [v8 setActive:1];
 
-    v9 = [(UIView *)self->_controlView topAnchor];
-    v10 = [(PHAudioControlsButton *)self topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(UIView *)self->_controlView topAnchor];
+    topAnchor2 = [(PHAudioControlsButton *)self topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v11 setActive:1];
 
-    v12 = [(UIView *)self->_controlView centerXAnchor];
-    v13 = [(PHAudioControlsButton *)self centerXAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    centerXAnchor = [(UIView *)self->_controlView centerXAnchor];
+    centerXAnchor2 = [(PHAudioControlsButton *)self centerXAnchor];
+    v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v14 setActive:1];
 
     [(UIView *)self->_controlView setAutoresizingMask:18];
     [(UIView *)self->_controlView setUserInteractionEnabled:0];
-    v5 = v15;
+    viewCopy = v15;
   }
 }
 
-- (void)updateViewsAnimated:(BOOL)a3
+- (void)updateViewsAnimated:(BOOL)animated
 {
-  [(PHAudioControlsButton *)self updateRoundViewColorAnimated:a3];
+  [(PHAudioControlsButton *)self updateRoundViewColorAnimated:animated];
   [(PHAudioControlsButton *)self updateImageColor];
   [(PHAudioControlsButton *)self updateMaterialAndAlpha];
   [(PHAudioControlsButton *)self setNeedsDisplay];
   [(PHAudioControlsButton *)self forceDisplayIfNeeded];
-  v4 = [(PHAudioControlsButton *)self roundView];
-  if (v4 || ([(PHAudioControlsButton *)self backdropView], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  roundView = [(PHAudioControlsButton *)self roundView];
+  if (roundView || ([(PHAudioControlsButton *)self backdropView], (roundView = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v9 = [(PHAudioControlsButton *)self backdropEffectView];
+    backdropEffectView = [(PHAudioControlsButton *)self backdropEffectView];
 
-    if (!v9)
+    if (!backdropEffectView)
     {
       return;
     }
@@ -705,25 +705,25 @@ LABEL_10:
 
   if (![(PHAudioControlsButton *)self isIPad]&& [(PHAudioControlsButton *)self controlType]== 16)
   {
-    v5 = [(PHAudioControlsButton *)self roundView];
+    roundView2 = [(PHAudioControlsButton *)self roundView];
 
-    if (v5)
+    if (roundView2)
     {
-      v6 = [(PHAudioControlsButton *)self roundView];
-      [v6 setAlpha:0.0];
+      roundView3 = [(PHAudioControlsButton *)self roundView];
+      [roundView3 setAlpha:0.0];
     }
 
-    v7 = [(PHAudioControlsButton *)self backdropEffectView];
-    [v7 setAlpha:0.0];
+    backdropEffectView2 = [(PHAudioControlsButton *)self backdropEffectView];
+    [backdropEffectView2 setAlpha:0.0];
   }
 
   if ([(PHAudioControlsButton *)self controlType]== 15)
   {
-    v8 = [(PHAudioControlsButton *)self backdropView];
-    [v8 setAlpha:0.0];
+    backdropView = [(PHAudioControlsButton *)self backdropView];
+    [backdropView setAlpha:0.0];
 
-    v10 = [(PHAudioControlsButton *)self backdropEffectView];
-    [v10 setAlpha:0.0];
+    backdropEffectView3 = [(PHAudioControlsButton *)self backdropEffectView];
+    [backdropEffectView3 setAlpha:0.0];
   }
 }
 
@@ -734,37 +734,37 @@ LABEL_10:
     return;
   }
 
-  v3 = [(PHAudioControlsButton *)self controlType];
-  v4 = [(PHAudioControlsButton *)self usesGlass];
-  if (v3 != 15)
+  controlType = [(PHAudioControlsButton *)self controlType];
+  usesGlass = [(PHAudioControlsButton *)self usesGlass];
+  if (controlType != 15)
   {
-    if (v4)
+    if (usesGlass)
     {
-      v8 = [UIColor colorWithWhite:1.0 alpha:0.0500000007];
+      roundView = [UIColor colorWithWhite:1.0 alpha:0.0500000007];
       [(PHAudioControlsButton *)self applySmallClearGlassBackgroundWithTintColor:?];
       goto LABEL_13;
     }
 
-    v8 = [(PHAudioControlsButton *)self roundView];
+    roundView = [(PHAudioControlsButton *)self roundView];
     v6 = [UIColor colorWithWhite:1.0 alpha:0.0500000007];
-    [v8 setBackgroundColor:v6];
+    [roundView setBackgroundColor:v6];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  if (!v4)
+  if (!usesGlass)
   {
-    v8 = [(PHAudioControlsButton *)self roundView];
+    roundView = [(PHAudioControlsButton *)self roundView];
     v6 = +[UIColor systemRedColor];
     v7 = [v6 colorWithAlphaComponent:0.0500000007];
-    [v8 setBackgroundColor:v7];
+    [roundView setBackgroundColor:v7];
 
     goto LABEL_12;
   }
 
-  v8 = +[UIColor systemRedColor];
-  v5 = [v8 colorWithAlphaComponent:0.0500000007];
+  roundView = +[UIColor systemRedColor];
+  v5 = [roundView colorWithAlphaComponent:0.0500000007];
   [(PHAudioControlsButton *)self applySmallClearGlassBackgroundWithTintColor:v5];
 
 LABEL_13:
@@ -776,8 +776,8 @@ LABEL_13:
   {
     if ([(PHAudioControlsButton *)self controlType]!= 15)
     {
-      v5 = [(PHAudioControlsButton *)self traitCollection];
-      if ([v5 userInterfaceStyle] == 1)
+      traitCollection = [(PHAudioControlsButton *)self traitCollection];
+      if ([traitCollection userInterfaceStyle] == 1)
       {
         +[UIColor systemBlackColor];
       }
@@ -809,15 +809,15 @@ LABEL_10:
 {
   if ([(PHAudioControlsButton *)self usesGlass])
   {
-    v4 = [UIColor colorWithWhite:1.0 alpha:1.0];
+    roundView = [UIColor colorWithWhite:1.0 alpha:1.0];
     [(PHAudioControlsButton *)self applySmallClearGlassBackgroundWithTintColor:?];
   }
 
   else
   {
-    v4 = [(PHAudioControlsButton *)self roundView];
+    roundView = [(PHAudioControlsButton *)self roundView];
     v3 = [UIColor colorWithWhite:1.0 alpha:1.0];
-    [v4 setBackgroundColor:v3];
+    [roundView setBackgroundColor:v3];
   }
 }
 
@@ -829,23 +829,23 @@ LABEL_10:
     {
       if ([(PHAudioControlsButton *)self controlType]== 15)
       {
-        v5 = +[UIColor systemRedColor];
-        v3 = [v5 colorWithAlphaComponent:0.649999976];
+        roundView = +[UIColor systemRedColor];
+        v3 = [roundView colorWithAlphaComponent:0.649999976];
         [(PHAudioControlsButton *)self applySmallClearGlassBackgroundWithTintColor:v3];
       }
 
       else
       {
-        v5 = [UIColor colorWithWhite:1.0 alpha:0.649999976];
+        roundView = [UIColor colorWithWhite:1.0 alpha:0.649999976];
         [(PHAudioControlsButton *)self applySmallClearGlassBackgroundWithTintColor:?];
       }
     }
 
     else
     {
-      v5 = [(PHAudioControlsButton *)self roundView];
+      roundView = [(PHAudioControlsButton *)self roundView];
       v4 = [UIColor colorWithWhite:1.0 alpha:0.649999976];
-      [v5 setBackgroundColor:v4];
+      [roundView setBackgroundColor:v4];
     }
   }
 }
@@ -857,31 +857,31 @@ LABEL_10:
     return;
   }
 
-  v3 = [(PHAudioControlsButton *)self controlType];
-  v4 = [(PHAudioControlsButton *)self usesGlass];
-  if (v3 == 15)
+  controlType = [(PHAudioControlsButton *)self controlType];
+  usesGlass = [(PHAudioControlsButton *)self usesGlass];
+  if (controlType == 15)
   {
-    if (v4)
+    if (usesGlass)
     {
-      v7 = +[UIColor systemRedColor];
-      [(PHAudioControlsButton *)self applySmallClearGlassBackgroundWithTintColor:v7];
+      roundView = +[UIColor systemRedColor];
+      [(PHAudioControlsButton *)self applySmallClearGlassBackgroundWithTintColor:roundView];
 LABEL_12:
 
       return;
     }
 
-    v7 = [(PHAudioControlsButton *)self roundView];
+    roundView = [(PHAudioControlsButton *)self roundView];
     v5 = +[UIColor systemRedColor];
 LABEL_11:
     v6 = v5;
-    [v7 setBackgroundColor:v5];
+    [roundView setBackgroundColor:v5];
 
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!usesGlass)
   {
-    v7 = [(PHAudioControlsButton *)self roundView];
+    roundView = [(PHAudioControlsButton *)self roundView];
     v5 = +[UIColor clearColor];
     goto LABEL_11;
   }
@@ -889,9 +889,9 @@ LABEL_11:
   [(PHAudioControlsButton *)self applySmallClearGlassBackground];
 }
 
-- (void)updateRoundViewColorAnimated:(BOOL)a3
+- (void)updateRoundViewColorAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006B858;
@@ -899,7 +899,7 @@ LABEL_11:
   v6[4] = self;
   v4 = objc_retainBlock(v6);
   v5 = v4;
-  if (v3)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v4 animations:0.170000002];
   }
@@ -987,22 +987,22 @@ LABEL_26:
   return result;
 }
 
-- (void)setCaptureView:(id)a3
+- (void)setCaptureView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   if (![(PHAudioControlsButton *)self isIPad]&& ![(PHAudioControlsButton *)self usesGlass])
   {
-    v4 = [(PHAudioControlsButton *)self backdropEffectView];
-    [v4 _setGroupName:@"InCallButtonsCaptureGroup"];
+    backdropEffectView = [(PHAudioControlsButton *)self backdropEffectView];
+    [backdropEffectView _setGroupName:@"InCallButtonsCaptureGroup"];
 
-    v5 = [(PHAudioControlsButton *)self backdropEffectView];
-    [v5 _setCaptureView:v6];
+    backdropEffectView2 = [(PHAudioControlsButton *)self backdropEffectView];
+    [backdropEffectView2 _setCaptureView:viewCopy];
   }
 }
 
-- (void)setMenuDataSource:(id)a3
+- (void)setMenuDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_menuDataSource);
 
   if (WeakRetained != obj)
@@ -1013,13 +1013,13 @@ LABEL_26:
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006BC48;
   v6[3] = &unk_1003574D8;
-  v7 = a4;
+  locationCopy = location;
   v6[4] = self;
   v4 = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:0 actionProvider:v6];
 
@@ -1049,21 +1049,21 @@ LABEL_26:
     [v3 addObject:v8];
   }
 
-  v9 = [(PHAudioControlsButton *)self imageView];
+  imageView = [(PHAudioControlsButton *)self imageView];
 
-  if (v9)
+  if (imageView)
   {
-    v10 = [(PHAudioControlsButton *)self imageView];
-    v11 = [PHAmbientButtonPart partWithView:v10 type:1];
+    imageView2 = [(PHAudioControlsButton *)self imageView];
+    v11 = [PHAmbientButtonPart partWithView:imageView2 type:1];
     [v3 addObject:v11];
   }
 
-  v12 = [(PHAudioControlsButton *)self titleLabel];
+  titleLabel = [(PHAudioControlsButton *)self titleLabel];
 
-  if (v12)
+  if (titleLabel)
   {
-    v13 = [(PHAudioControlsButton *)self titleLabel];
-    v14 = [PHAmbientButtonPart partWithView:v13 type:2];
+    titleLabel2 = [(PHAudioControlsButton *)self titleLabel];
+    v14 = [PHAmbientButtonPart partWithView:titleLabel2 type:2];
     [v3 addObject:v14];
   }
 

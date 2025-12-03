@@ -1,53 +1,53 @@
 @interface SXClippingView
 - (CGRect)contentFrame;
 - (CGSize)contentSize;
-- (SXClippingView)initWithContentView:(id)a3;
-- (void)setClippingMode:(id)a3;
-- (void)setContentFrame:(CGRect)a3;
+- (SXClippingView)initWithContentView:(id)view;
+- (void)setClippingMode:(id)mode;
+- (void)setContentFrame:(CGRect)frame;
 @end
 
 @implementation SXClippingView
 
-- (SXClippingView)initWithContentView:(id)a3
+- (SXClippingView)initWithContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = SXClippingView;
   v6 = [(SXClippingView *)&v12 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentView, a3);
-    v8 = [(SXClippingView *)v7 layer];
-    v9 = [v5 layer];
-    [v8 setContentLayer:v9];
+    objc_storeStrong(&v6->_contentView, view);
+    layer = [(SXClippingView *)v7 layer];
+    layer2 = [viewCopy layer];
+    [layer setContentLayer:layer2];
 
-    v10 = [(SXClippingView *)v7 layer];
+    layer3 = [(SXClippingView *)v7 layer];
     objc_opt_class();
-    [v10 setClippingMode:objc_opt_isKindOfClass() & 1];
+    [layer3 setClippingMode:objc_opt_isKindOfClass() & 1];
 
-    [(SXClippingView *)v7 addSubview:v5];
+    [(SXClippingView *)v7 addSubview:viewCopy];
   }
 
   return v7;
 }
 
-- (void)setContentFrame:(CGRect)a3
+- (void)setContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_contentFrame = a3;
-  v7 = [(SXClippingView *)self layer];
-  [v7 setContentFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  self->_contentFrame = frame;
+  layer = [(SXClippingView *)self layer];
+  [layer setContentFrame:{x, y, width, height}];
 }
 
-- (void)setClippingMode:(id)a3
+- (void)setClippingMode:(id)mode
 {
-  self->_clippingMode = a3;
-  v4 = [(SXClippingView *)self layer];
-  [v4 setClippingMode:a3];
+  self->_clippingMode = mode;
+  layer = [(SXClippingView *)self layer];
+  [layer setClippingMode:mode];
 }
 
 - (CGSize)contentSize

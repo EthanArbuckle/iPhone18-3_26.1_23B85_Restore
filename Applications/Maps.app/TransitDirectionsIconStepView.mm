@@ -1,13 +1,13 @@
 @interface TransitDirectionsIconStepView
 - (double)_bottomLinkExtensionHeight;
-- (double)_distanceToImageCenterForImageSource:(id)a3;
+- (double)_distanceToImageCenterForImageSource:(id)source;
 - (double)_maximumIconWidth;
 - (double)_topLinkExtensionHeight;
 - (id)_UIView;
 - (id)_createImageView;
 - (id)_imageViewPositionConstraints;
 - (id)_initialConstraints;
-- (id)_lineColorViewWithStyle:(unint64_t)a3;
+- (id)_lineColorViewWithStyle:(unint64_t)style;
 - (void)_configureArtworkForFirstUse;
 - (void)_createSubviews;
 - (void)_updateArtwork;
@@ -15,59 +15,59 @@
 - (void)_updateForParentExpansionOrCollapse;
 - (void)_updateLinkColors;
 - (void)_updateLinkStyles;
-- (void)_updateNavigationStateAlpha:(double)a3;
-- (void)configureWithItem:(id)a3;
+- (void)_updateNavigationStateAlpha:(double)alpha;
+- (void)configureWithItem:(id)item;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDisplayOptions:(unint64_t)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDisplayOptions:(unint64_t)options;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TransitDirectionsIconStepView
 
-- (void)_updateNavigationStateAlpha:(double)a3
+- (void)_updateNavigationStateAlpha:(double)alpha
 {
   v10.receiver = self;
   v10.super_class = TransitDirectionsIconStepView;
   [(TransitDirectionsStepView *)&v10 _updateNavigationStateAlpha:?];
-  v5 = [(TransitDirectionsStepView *)self navigationState];
-  if (v5 <= 5)
+  navigationState = [(TransitDirectionsStepView *)self navigationState];
+  if (navigationState <= 5)
   {
-    if (v5 == 2)
+    if (navigationState == 2)
     {
-      v6 = a3;
+      alphaCopy = alpha;
     }
 
     else
     {
-      v6 = 1.0;
+      alphaCopy = 1.0;
     }
 
-    if (v5 == 2)
+    if (navigationState == 2)
     {
-      v7 = 1.0;
+      alphaCopy2 = 1.0;
     }
 
     else
     {
-      v7 = a3;
+      alphaCopy2 = alpha;
     }
 
-    if (((1 << v5) & 0x33) != 0)
+    if (((1 << navigationState) & 0x33) != 0)
     {
-      v6 = 1.0;
+      alphaCopy = 1.0;
       v8 = 1.0;
     }
 
     else
     {
-      v8 = v7;
+      v8 = alphaCopy2;
     }
 
-    [(TransitDirectionsColoredLine *)self->_topLink setAlpha:v6];
-    v9 = [(TransitDirectionsIconStepView *)self iconImageView];
-    [v9 setAlpha:1.0];
+    [(TransitDirectionsColoredLine *)self->_topLink setAlpha:alphaCopy];
+    iconImageView = [(TransitDirectionsIconStepView *)self iconImageView];
+    [iconImageView setAlpha:1.0];
 
     [(TransitDirectionsColoredLine *)self->_bottomLink setAlpha:1.0];
     [(UIView *)self->_iconLinksGroupingView setAlpha:v8];
@@ -87,8 +87,8 @@
 {
   if (!-[NSNumber BOOLValue](self->_hasAlternateImageSource, "BOOLValue") || (-[TransitDirectionsStepView displayOptions](self, "displayOptions") & 1) == 0 || (-[TransitDirectionsStepView transitListItem](self, "transitListItem"), v3 = objc_claimAutoreleasedReturnValue(), [v3 alternateImageSourceForStyle:{-[TransitDirectionsIconStepView _preferredStyle](self, "_preferredStyle")}], v6 = objc_claimAutoreleasedReturnValue(), v3, !v6))
   {
-    v4 = [(TransitDirectionsStepView *)self transitListItem];
-    v6 = [v4 imageSourceForStyle:{-[TransitDirectionsIconStepView _preferredStyle](self, "_preferredStyle")}];
+    transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+    v6 = [transitListItem imageSourceForStyle:{-[TransitDirectionsIconStepView _preferredStyle](self, "_preferredStyle")}];
   }
 
   [(MKArtworkImageView *)self->_iconImageView setImageSource:v6];
@@ -117,8 +117,8 @@
 
 - (void)_configureArtworkForFirstUse
 {
-  v3 = [(TransitDirectionsStepView *)self transitListItem];
-  v4 = [v3 alternateImageSourceForStyle:{-[TransitDirectionsIconStepView _preferredStyle](self, "_preferredStyle")}];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  v4 = [transitListItem alternateImageSourceForStyle:{-[TransitDirectionsIconStepView _preferredStyle](self, "_preferredStyle")}];
   v5 = [NSNumber numberWithInt:v4 != 0];
   hasAlternateImageSource = self->_hasAlternateImageSource;
   self->_hasAlternateImageSource = v5;
@@ -128,11 +128,11 @@
   [(TransitDirectionsIconStepView *)self _updateArtwork];
 }
 
-- (void)configureWithItem:(id)a3
+- (void)configureWithItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = TransitDirectionsIconStepView;
-  [(TransitDirectionsStepView *)&v4 configureWithItem:a3];
+  [(TransitDirectionsStepView *)&v4 configureWithItem:item];
   [(TransitDirectionsIconStepView *)self _configureArtworkForFirstUse];
   [(TransitDirectionsIconStepView *)self _bottomLinkExtensionHeight];
   [(NSLayoutConstraint *)self->_bottomLinkToContentViewBottomConstraint setConstant:?];
@@ -143,32 +143,32 @@
   [(TransitDirectionsStepView *)self _updateConstraints];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = TransitDirectionsIconStepView;
-  [(TransitDirectionsIconStepView *)&v4 traitCollectionDidChange:a3];
+  [(TransitDirectionsIconStepView *)&v4 traitCollectionDidChange:change];
   [(TransitDirectionsListItem *)self->super._transitListItem lineWidthForView:self];
   [(NSLayoutConstraint *)self->_linkWidthConstraint setConstant:?];
 }
 
-- (void)setDisplayOptions:(unint64_t)a3
+- (void)setDisplayOptions:(unint64_t)options
 {
-  v5 = [(TransitDirectionsStepView *)self displayOptions];
+  displayOptions = [(TransitDirectionsStepView *)self displayOptions];
   v6.receiver = self;
   v6.super_class = TransitDirectionsIconStepView;
-  [(TransitDirectionsStepView *)&v6 setDisplayOptions:a3];
-  if ((v5 ^ a3))
+  [(TransitDirectionsStepView *)&v6 setDisplayOptions:options];
+  if ((displayOptions ^ options))
   {
     [(TransitDirectionsIconStepView *)self _updateArtwork];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v5.receiver = self;
   v5.super_class = TransitDirectionsIconStepView;
-  [(TransitDirectionsStepView *)&v5 setHighlighted:a3];
+  [(TransitDirectionsStepView *)&v5 setHighlighted:highlighted];
   [(TransitDirectionsIconStepView *)self _updateArtworkTintColor];
   [(TransitDirectionsIconStepView *)self _topLinkExtensionHeight];
   [(NSLayoutConstraint *)self->_topLinkToContentViewTopConstraint setConstant:-v4];
@@ -187,12 +187,12 @@
 
 - (void)_updateLinkStyles
 {
-  v3 = [(TransitDirectionsStepView *)self transitListItem];
-  v4 = [v3 parentItem];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  parentItem = [transitListItem parentItem];
 
-  if ([v4 conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
+  if ([parentItem conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
   {
-    v5 = v4;
+    v5 = parentItem;
   }
 
   else
@@ -210,21 +210,21 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [(TransitDirectionsStepView *)self transitListItem];
-  v7 = [v6 previousItem];
-  v8 = [v7 type];
+  transitListItem2 = [(TransitDirectionsStepView *)self transitListItem];
+  previousItem = [transitListItem2 previousItem];
+  type = [previousItem type];
 
   v9 = 2;
-  if (v8 <= 0xE)
+  if (type <= 0xE)
   {
-    if (((1 << v8) & 0x4460) != 0)
+    if (((1 << type) & 0x4460) != 0)
     {
 LABEL_7:
       v9 = 0;
       goto LABEL_8;
     }
 
-    if (v8 == 7)
+    if (type == 7)
     {
       if (![v14 shouldEnableExpandedButton] || objc_msgSend(v14, "expanded"))
       {
@@ -236,22 +236,22 @@ LABEL_7:
   }
 
 LABEL_8:
-  v10 = [(TransitDirectionsStepView *)self transitListItem];
-  v11 = [v10 nextItem];
-  v12 = [v11 type];
+  transitListItem3 = [(TransitDirectionsStepView *)self transitListItem];
+  nextItem = [transitListItem3 nextItem];
+  type2 = [nextItem type];
 
   v13 = 3;
-  if (v12 > 0xE)
+  if (type2 > 0xE)
   {
     goto LABEL_13;
   }
 
-  if (((1 << v12) & 0x4860) != 0)
+  if (((1 << type2) & 0x4860) != 0)
   {
     goto LABEL_10;
   }
 
-  if (v12 == 7)
+  if (type2 == 7)
   {
     if (![v14 shouldEnableExpandedButton] || objc_msgSend(v14, "expanded"))
     {
@@ -270,18 +270,18 @@ LABEL_13:
 
 - (void)_updateLinkColors
 {
-  v3 = [(TransitDirectionsStepView *)self transitListItem];
-  v16 = [v3 fromLineColor];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  fromLineColor = [transitListItem fromLineColor];
 
-  v4 = [(TransitDirectionsStepView *)self transitListItem];
-  v5 = [v4 toLineColor];
+  transitListItem2 = [(TransitDirectionsStepView *)self transitListItem];
+  toLineColor = [transitListItem2 toLineColor];
 
-  v6 = [(TransitDirectionsStepView *)self transitListItem];
-  v7 = [v6 parentItem];
+  transitListItem3 = [(TransitDirectionsStepView *)self transitListItem];
+  parentItem = [transitListItem3 parentItem];
 
-  if ([v7 conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
+  if ([parentItem conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
   {
-    v8 = v7;
+    v8 = parentItem;
   }
 
   else
@@ -291,32 +291,32 @@ LABEL_13:
 
   v9 = v8;
 
-  v10 = [v9 expanded];
-  if (v10)
+  expanded = [v9 expanded];
+  if (expanded)
   {
-    v11 = [(TransitDirectionsStepView *)self transitListItem];
-    v12 = [v11 alternateFromLineColor];
+    transitListItem4 = [(TransitDirectionsStepView *)self transitListItem];
+    alternateFromLineColor = [transitListItem4 alternateFromLineColor];
 
-    v13 = [(TransitDirectionsStepView *)self transitListItem];
-    v14 = [v13 alternateToLineColor];
+    transitListItem5 = [(TransitDirectionsStepView *)self transitListItem];
+    alternateToLineColor = [transitListItem5 alternateToLineColor];
 
-    v5 = v14;
-    v15 = v12;
+    toLineColor = alternateToLineColor;
+    v15 = alternateFromLineColor;
   }
 
   else
   {
-    v15 = v16;
+    v15 = fromLineColor;
   }
 
   v17 = v15;
   [(TransitDirectionsIconStepView *)self setTopLinkColor:v15];
-  [(TransitDirectionsIconStepView *)self setBottomLinkColor:v5];
+  [(TransitDirectionsIconStepView *)self setBottomLinkColor:toLineColor];
 }
 
-- (id)_lineColorViewWithStyle:(unint64_t)a3
+- (id)_lineColorViewWithStyle:(unint64_t)style
 {
-  v3 = [[TransitDirectionsColoredLine alloc] initWithStyle:a3];
+  v3 = [[TransitDirectionsColoredLine alloc] initWithStyle:style];
   [(TransitDirectionsColoredLine *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   return v3;
@@ -344,16 +344,16 @@ LABEL_13:
   return result;
 }
 
-- (double)_distanceToImageCenterForImageSource:(id)a3
+- (double)_distanceToImageCenterForImageSource:(id)source
 {
-  v4 = a3;
-  if (!v4)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
     v6 = 0.0;
     goto LABEL_7;
   }
 
-  v5 = [(TransitDirectionsStepView *)self transitListItem];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
   objc_opt_class();
   v6 = 0.0;
   if (objc_opt_isKindOfClass())
@@ -361,14 +361,14 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  v7 = [(TransitDirectionsStepView *)self transitListItem];
-  v8 = [v7 type];
+  transitListItem2 = [(TransitDirectionsStepView *)self transitListItem];
+  type = [transitListItem2 type];
 
-  if (v8 != 12)
+  if (type != 12)
   {
-    v5 = [(TransitDirectionsIconStepView *)self iconImageView];
-    v9 = [v5 image];
-    [v9 size];
+    transitListItem = [(TransitDirectionsIconStepView *)self iconImageView];
+    image = [transitListItem image];
+    [image size];
     v6 = v10 * 0.5 + -1.0;
 
 LABEL_5:
@@ -394,10 +394,10 @@ LABEL_7:
 - (id)_imageViewPositionConstraints
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(MKArtworkImageView *)self->_iconImageView centerXAnchor];
-  v5 = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
-  v6 = [v5 centerXAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  centerXAnchor = [(MKArtworkImageView *)self->_iconImageView centerXAnchor];
+  leadingAccessoryLayoutGuide = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
+  centerXAnchor2 = [leadingAccessoryLayoutGuide centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v8 = [v7 _maps_withIdentifier:@"iconCenterXToLeadingGuideCenterX"];
   [v3 addObject:v8];
 
@@ -410,143 +410,143 @@ LABEL_7:
 {
   v88.receiver = self;
   v88.super_class = TransitDirectionsIconStepView;
-  v3 = [(TransitDirectionsStepView *)&v88 _initialConstraints];
-  v4 = [(TransitDirectionsColoredLine *)self->_topLink topAnchor];
-  v5 = [(UIView *)self->_iconLinksGroupingView topAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  _initialConstraints = [(TransitDirectionsStepView *)&v88 _initialConstraints];
+  topAnchor = [(TransitDirectionsColoredLine *)self->_topLink topAnchor];
+  topAnchor2 = [(UIView *)self->_iconLinksGroupingView topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v7 = [v6 _maps_withIdentifier:@"topLinkTopToGroupingTop"];
-  [v3 addObject:v7];
+  [_initialConstraints addObject:v7];
 
-  v8 = [(UIView *)self->_iconLinksGroupingView bottomAnchor];
-  v9 = [(TransitDirectionsColoredLine *)self->_bottomLink bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  bottomAnchor = [(UIView *)self->_iconLinksGroupingView bottomAnchor];
+  bottomAnchor2 = [(TransitDirectionsColoredLine *)self->_bottomLink bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v11 = [v10 _maps_withIdentifier:@"groupingBottomToBottomLinkBottom"];
-  [v3 addObject:v11];
+  [_initialConstraints addObject:v11];
 
-  v12 = [(TransitDirectionsColoredLine *)self->_topLink leadingAnchor];
-  v13 = [(UIView *)self->_iconLinksGroupingView leadingAnchor];
-  v14 = [v12 constraintGreaterThanOrEqualToAnchor:v13];
+  leadingAnchor = [(TransitDirectionsColoredLine *)self->_topLink leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_iconLinksGroupingView leadingAnchor];
+  v14 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v15 = [v14 _maps_withIdentifier:@"topLinkLeadingToGroupingLeading"];
-  [v3 addObject:v15];
+  [_initialConstraints addObject:v15];
 
-  v16 = [(UIView *)self->_iconLinksGroupingView trailingAnchor];
-  v17 = [(TransitDirectionsColoredLine *)self->_topLink trailingAnchor];
-  v18 = [v16 constraintGreaterThanOrEqualToAnchor:v17];
+  trailingAnchor = [(UIView *)self->_iconLinksGroupingView trailingAnchor];
+  trailingAnchor2 = [(TransitDirectionsColoredLine *)self->_topLink trailingAnchor];
+  v18 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
   v19 = [v18 _maps_withIdentifier:@"groupingTrailingToTopLinkTrailing"];
-  [v3 addObject:v19];
+  [_initialConstraints addObject:v19];
 
-  v20 = [(MKArtworkImageView *)self->_iconImageView leadingAnchor];
-  v21 = [(UIView *)self->_iconLinksGroupingView leadingAnchor];
-  v22 = [v20 constraintGreaterThanOrEqualToAnchor:v21];
+  leadingAnchor3 = [(MKArtworkImageView *)self->_iconImageView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_iconLinksGroupingView leadingAnchor];
+  v22 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
   v23 = [v22 _maps_withIdentifier:@"iconLeadingToGroupingLeading"];
-  [v3 addObject:v23];
+  [_initialConstraints addObject:v23];
 
-  v24 = [(UIView *)self->_iconLinksGroupingView trailingAnchor];
-  v25 = [(MKArtworkImageView *)self->_iconImageView trailingAnchor];
-  v26 = [v24 constraintGreaterThanOrEqualToAnchor:v25];
+  trailingAnchor3 = [(UIView *)self->_iconLinksGroupingView trailingAnchor];
+  trailingAnchor4 = [(MKArtworkImageView *)self->_iconImageView trailingAnchor];
+  v26 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
   v27 = [v26 _maps_withIdentifier:@"groupingTrailingToIconTrailing"];
-  [v3 addObject:v27];
+  [_initialConstraints addObject:v27];
 
-  v28 = [(MKArtworkImageView *)self->_iconImageView topAnchor];
-  v29 = [(UIView *)self->_iconLinksGroupingView topAnchor];
-  v30 = [v28 constraintGreaterThanOrEqualToAnchor:v29];
+  topAnchor3 = [(MKArtworkImageView *)self->_iconImageView topAnchor];
+  topAnchor4 = [(UIView *)self->_iconLinksGroupingView topAnchor];
+  v30 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v31 = [v30 _maps_withIdentifier:@"iconTopToGroupingTop"];
-  [v3 addObject:v31];
+  [_initialConstraints addObject:v31];
 
-  v32 = [(UIView *)self->_iconLinksGroupingView bottomAnchor];
-  v33 = [(MKArtworkImageView *)self->_iconImageView bottomAnchor];
-  v34 = [v32 constraintGreaterThanOrEqualToAnchor:v33];
+  bottomAnchor3 = [(UIView *)self->_iconLinksGroupingView bottomAnchor];
+  bottomAnchor4 = [(MKArtworkImageView *)self->_iconImageView bottomAnchor];
+  v34 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4];
   v35 = [v34 _maps_withIdentifier:@"groupingBotomToIconBottom"];
-  [v3 addObject:v35];
+  [_initialConstraints addObject:v35];
 
-  v36 = [(TransitDirectionsIconStepView *)self _imageViewPositionConstraints];
-  [v3 addObjectsFromArray:v36];
+  _imageViewPositionConstraints = [(TransitDirectionsIconStepView *)self _imageViewPositionConstraints];
+  [_initialConstraints addObjectsFromArray:_imageViewPositionConstraints];
 
-  v37 = [(MKArtworkImageView *)self->_iconImageView heightAnchor];
-  v38 = [v37 constraintEqualToConstant:1.0];
+  heightAnchor = [(MKArtworkImageView *)self->_iconImageView heightAnchor];
+  v38 = [heightAnchor constraintEqualToConstant:1.0];
   v39 = [v38 _maps_withIdentifier:@"iconHeight"];
 
   LODWORD(v40) = 1132068864;
   [v39 setPriority:v40];
-  [v3 addObject:v39];
-  v41 = [(MKArtworkImageView *)self->_iconImageView widthAnchor];
-  v42 = [v41 constraintEqualToConstant:1.0];
+  [_initialConstraints addObject:v39];
+  widthAnchor = [(MKArtworkImageView *)self->_iconImageView widthAnchor];
+  v42 = [widthAnchor constraintEqualToConstant:1.0];
   v43 = [v42 _maps_withIdentifier:@"iconWidth"];
 
   LODWORD(v44) = 1132068864;
   [v43 setPriority:v44];
-  [v3 addObject:v43];
-  v45 = [(MKArtworkImageView *)self->_iconImageView widthAnchor];
+  [_initialConstraints addObject:v43];
+  widthAnchor2 = [(MKArtworkImageView *)self->_iconImageView widthAnchor];
   [(TransitDirectionsIconStepView *)self _maximumIconWidth];
-  v46 = [v45 constraintLessThanOrEqualToConstant:?];
+  v46 = [widthAnchor2 constraintLessThanOrEqualToConstant:?];
   v47 = [v46 _maps_withIdentifier:@"iconMaxWidth"];
-  [v3 addObject:v47];
+  [_initialConstraints addObject:v47];
 
-  v48 = [(MKArtworkImageView *)self->_iconImageView heightAnchor];
+  heightAnchor2 = [(MKArtworkImageView *)self->_iconImageView heightAnchor];
   [(TransitDirectionsIconStepView *)self _maximumIconHeight];
-  v49 = [v48 constraintLessThanOrEqualToConstant:?];
+  v49 = [heightAnchor2 constraintLessThanOrEqualToConstant:?];
   v50 = [v49 _maps_withIdentifier:@"iconMaxHeight"];
-  [v3 addObject:v50];
+  [_initialConstraints addObject:v50];
 
-  v51 = [(TransitDirectionsColoredLine *)self->_topLink widthAnchor];
-  v52 = [v51 constraintEqualToConstant:0.0];
+  widthAnchor3 = [(TransitDirectionsColoredLine *)self->_topLink widthAnchor];
+  v52 = [widthAnchor3 constraintEqualToConstant:0.0];
   v53 = [v52 _maps_withIdentifier:@"topLinkWidth"];
   linkWidthConstraint = self->_linkWidthConstraint;
   self->_linkWidthConstraint = v53;
 
-  [v3 addObject:self->_linkWidthConstraint];
-  v55 = [(TransitDirectionsColoredLine *)self->_bottomLink widthAnchor];
-  v56 = [(TransitDirectionsColoredLine *)self->_topLink widthAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56];
+  [_initialConstraints addObject:self->_linkWidthConstraint];
+  widthAnchor4 = [(TransitDirectionsColoredLine *)self->_bottomLink widthAnchor];
+  widthAnchor5 = [(TransitDirectionsColoredLine *)self->_topLink widthAnchor];
+  v57 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
   v58 = [v57 _maps_withIdentifier:@"bottomLinkWidth"];
-  [v3 addObject:v58];
+  [_initialConstraints addObject:v58];
 
-  v59 = [(TransitDirectionsColoredLine *)self->_topLink centerXAnchor];
-  v60 = [(MKArtworkImageView *)self->_iconImageView centerXAnchor];
-  v61 = [v59 constraintEqualToAnchor:v60];
+  centerXAnchor = [(TransitDirectionsColoredLine *)self->_topLink centerXAnchor];
+  centerXAnchor2 = [(MKArtworkImageView *)self->_iconImageView centerXAnchor];
+  v61 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v62 = [v61 _maps_withIdentifier:@"topLinkCenterXToIconCenterX"];
-  [v3 addObject:v62];
+  [_initialConstraints addObject:v62];
 
-  v63 = [(TransitDirectionsColoredLine *)self->_bottomLink centerXAnchor];
-  v64 = [(TransitDirectionsColoredLine *)self->_topLink centerXAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
+  centerXAnchor3 = [(TransitDirectionsColoredLine *)self->_bottomLink centerXAnchor];
+  centerXAnchor4 = [(TransitDirectionsColoredLine *)self->_topLink centerXAnchor];
+  v65 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v66 = [v65 _maps_withIdentifier:@"bottomLinkCenterXToIconCenterX"];
-  [v3 addObject:v66];
+  [_initialConstraints addObject:v66];
 
-  v67 = [(TransitDirectionsColoredLine *)self->_topLink topAnchor];
-  v68 = [(TransitDirectionsIconStepView *)self topAnchor];
-  v69 = [v67 constraintEqualToAnchor:v68];
+  topAnchor5 = [(TransitDirectionsColoredLine *)self->_topLink topAnchor];
+  topAnchor6 = [(TransitDirectionsIconStepView *)self topAnchor];
+  v69 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v70 = [v69 _maps_withIdentifier:@"topLinkTopToContentViewTopConstraint"];
   topLinkToContentViewTopConstraint = self->_topLinkToContentViewTopConstraint;
   self->_topLinkToContentViewTopConstraint = v70;
 
-  [v3 addObject:self->_topLinkToContentViewTopConstraint];
-  v72 = [(TransitDirectionsColoredLine *)self->_topLink bottomAnchor];
-  v73 = [(MKArtworkImageView *)self->_iconImageView centerYAnchor];
-  v74 = [v72 constraintEqualToAnchor:v73];
+  [_initialConstraints addObject:self->_topLinkToContentViewTopConstraint];
+  bottomAnchor5 = [(TransitDirectionsColoredLine *)self->_topLink bottomAnchor];
+  centerYAnchor = [(MKArtworkImageView *)self->_iconImageView centerYAnchor];
+  v74 = [bottomAnchor5 constraintEqualToAnchor:centerYAnchor];
   v75 = [v74 _maps_withIdentifier:@"topLinkBottomToImageViewCenterYConstraint"];
   topLinkToImageViewCenterConstraint = self->_topLinkToImageViewCenterConstraint;
   self->_topLinkToImageViewCenterConstraint = v75;
 
-  [v3 addObject:self->_topLinkToImageViewCenterConstraint];
-  v77 = [(TransitDirectionsColoredLine *)self->_bottomLink topAnchor];
-  v78 = [(MKArtworkImageView *)self->_iconImageView centerYAnchor];
-  v79 = [v77 constraintEqualToAnchor:v78];
+  [_initialConstraints addObject:self->_topLinkToImageViewCenterConstraint];
+  topAnchor7 = [(TransitDirectionsColoredLine *)self->_bottomLink topAnchor];
+  centerYAnchor2 = [(MKArtworkImageView *)self->_iconImageView centerYAnchor];
+  v79 = [topAnchor7 constraintEqualToAnchor:centerYAnchor2];
   v80 = [v79 _maps_withIdentifier:@"bottomLinkTopToImageViewCenterYConstraint"];
   bottomLinkToImageViewCenterConstraint = self->_bottomLinkToImageViewCenterConstraint;
   self->_bottomLinkToImageViewCenterConstraint = v80;
 
-  [v3 addObject:self->_bottomLinkToImageViewCenterConstraint];
-  v82 = [(TransitDirectionsColoredLine *)self->_bottomLink bottomAnchor];
-  v83 = [(TransitDirectionsIconStepView *)self bottomAnchor];
-  v84 = [v82 constraintEqualToAnchor:v83];
+  [_initialConstraints addObject:self->_bottomLinkToImageViewCenterConstraint];
+  bottomAnchor6 = [(TransitDirectionsColoredLine *)self->_bottomLink bottomAnchor];
+  bottomAnchor7 = [(TransitDirectionsIconStepView *)self bottomAnchor];
+  v84 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v85 = [v84 _maps_withIdentifier:@"bottomLinkBottomToContentViewBottomConstraint"];
   bottomLinkToContentViewBottomConstraint = self->_bottomLinkToContentViewBottomConstraint;
   self->_bottomLinkToContentViewBottomConstraint = v85;
 
-  [v3 addObject:self->_bottomLinkToContentViewBottomConstraint];
+  [_initialConstraints addObject:self->_bottomLinkToContentViewBottomConstraint];
 
-  return v3;
+  return _initialConstraints;
 }
 
 - (id)_UIView
@@ -561,10 +561,10 @@ LABEL_7:
 {
   v3 = [[MKArtworkImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(TransitDirectionsIconStepView *)self layer];
-  v5 = [v4 backgroundColor];
-  v6 = [v3 layer];
-  [v6 setBackgroundColor:v5];
+  layer = [(TransitDirectionsIconStepView *)self layer];
+  backgroundColor = [layer backgroundColor];
+  layer2 = [v3 layer];
+  [layer2 setBackgroundColor:backgroundColor];
 
   LODWORD(v7) = 1148829696;
   [v3 _mapkit_setContentHuggingPriority:0 forAxis:v7];
@@ -601,9 +601,9 @@ LABEL_7:
   self->_bottomLink = v9;
 
   [(UIView *)self->_iconLinksGroupingView addSubview:self->_bottomLink];
-  v11 = [(TransitDirectionsIconStepView *)self _createImageView];
+  _createImageView = [(TransitDirectionsIconStepView *)self _createImageView];
   iconImageView = self->_iconImageView;
-  self->_iconImageView = v11;
+  self->_iconImageView = _createImageView;
 
   [(UIView *)self->_iconLinksGroupingView addSubview:self->_iconImageView];
 }

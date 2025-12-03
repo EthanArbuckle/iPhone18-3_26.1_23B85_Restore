@@ -1,37 +1,37 @@
 @interface REScriptASTDeclarationNode
-+ (id)parseBuffer:(id)a3 error:(id *)a4;
-- (REScriptASTDeclarationNode)initWithName:(id)a3 type:(id)a4 expression:(id)a5;
++ (id)parseBuffer:(id)buffer error:(id *)error;
+- (REScriptASTDeclarationNode)initWithName:(id)name type:(id)type expression:(id)expression;
 - (id)dependencies;
 @end
 
 @implementation REScriptASTDeclarationNode
 
-+ (id)parseBuffer:(id)a3 error:(id *)a4
++ (id)parseBuffer:(id)buffer error:(id *)error
 {
-  v5 = a3;
-  if (!REExpectTokenTypeInBuffer(v5, 6uLL, a4))
+  bufferCopy = buffer;
+  if (!REExpectTokenTypeInBuffer(bufferCopy, 6uLL, error))
   {
     v11 = 0;
     goto LABEL_17;
   }
 
-  v6 = [v5 currentToken];
-  [v5 push];
-  [v5 next];
-  if (REExpectTokenTypeInBuffer(v5, 6uLL, a4))
+  currentToken = [bufferCopy currentToken];
+  [bufferCopy push];
+  [bufferCopy next];
+  if (REExpectTokenTypeInBuffer(bufferCopy, 6uLL, error))
   {
-    v7 = [v5 currentToken];
-    [v5 next];
-    [v5 consume];
-    [v5 push];
-    v8 = [REScriptASTBinaryExpressionListNode parseBuffer:v5 error:a4];
+    currentToken2 = [bufferCopy currentToken];
+    [bufferCopy next];
+    [bufferCopy consume];
+    [bufferCopy push];
+    v8 = [REScriptASTBinaryExpressionListNode parseBuffer:bufferCopy error:error];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 expressions];
-      v10 = [v9 firstObject];
+      expressions = [v8 expressions];
+      firstObject = [expressions firstObject];
 
-      if (!v10)
+      if (!firstObject)
       {
         goto LABEL_14;
       }
@@ -39,8 +39,8 @@
 
     else
     {
-      v10 = v8;
-      if (!v10)
+      firstObject = v8;
+      if (!firstObject)
       {
         goto LABEL_14;
       }
@@ -49,17 +49,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v10 binaryOperator];
-      if ([v12 type] == 30)
+      binaryOperator = [firstObject binaryOperator];
+      if ([binaryOperator type] == 30)
       {
-        v13 = [v10 binaryOperator];
-        v14 = [v13 type];
+        binaryOperator2 = [firstObject binaryOperator];
+        type = [binaryOperator2 type];
 
-        if (v14 == 29)
+        if (type == 29)
         {
-          [v5 consume];
+          [bufferCopy consume];
 LABEL_15:
-          v11 = [[REScriptASTDeclarationNode alloc] initWithName:v7 type:v6 expression:v8];
+          v11 = [[REScriptASTDeclarationNode alloc] initWithName:currentToken2 type:currentToken expression:v8];
 
           goto LABEL_16;
         }
@@ -71,13 +71,13 @@ LABEL_15:
     }
 
 LABEL_14:
-    [v5 pop];
+    [bufferCopy pop];
 
     v8 = 0;
     goto LABEL_15;
   }
 
-  [v5 pop];
+  [bufferCopy pop];
   v11 = 0;
 LABEL_16:
 
@@ -86,20 +86,20 @@ LABEL_17:
   return v11;
 }
 
-- (REScriptASTDeclarationNode)initWithName:(id)a3 type:(id)a4 expression:(id)a5
+- (REScriptASTDeclarationNode)initWithName:(id)name type:(id)type expression:(id)expression
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  typeCopy = type;
+  expressionCopy = expression;
   v15.receiver = self;
   v15.super_class = REScriptASTDeclarationNode;
-  v12 = [(REScriptASTNode *)&v15 initWithToken:v9];
+  v12 = [(REScriptASTNode *)&v15 initWithToken:nameCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_type, a4);
-    objc_storeStrong(&v13->_value, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_type, type);
+    objc_storeStrong(&v13->_value, expression);
   }
 
   return v13;
@@ -107,11 +107,11 @@ LABEL_17:
 
 - (id)dependencies
 {
-  v2 = [(REScriptASTNode *)self->_value dependencies];
-  v3 = v2;
-  if (v2)
+  dependencies = [(REScriptASTNode *)self->_value dependencies];
+  v3 = dependencies;
+  if (dependencies)
   {
-    v4 = v2;
+    v4 = dependencies;
   }
 
   else

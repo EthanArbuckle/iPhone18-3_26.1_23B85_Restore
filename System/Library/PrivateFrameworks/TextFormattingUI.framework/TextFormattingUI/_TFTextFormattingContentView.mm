@@ -1,13 +1,13 @@
 @interface _TFTextFormattingContentView
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)safeAreaInsets;
-- (_TtC16TextFormattingUIP33_BDE70E073124A1E87C81AA7137722CAE28_TFTextFormattingContentView)initWithCoder:(id)a3;
-- (_TtC16TextFormattingUIP33_BDE70E073124A1E87C81AA7137722CAE28_TFTextFormattingContentView)initWithFrame:(CGRect)a3;
+- (_TtC16TextFormattingUIP33_BDE70E073124A1E87C81AA7137722CAE28_TFTextFormattingContentView)initWithCoder:(id)coder;
+- (_TtC16TextFormattingUIP33_BDE70E073124A1E87C81AA7137722CAE28_TFTextFormattingContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _TFTextFormattingContentView
 
-- (_TtC16TextFormattingUIP33_BDE70E073124A1E87C81AA7137722CAE28_TFTextFormattingContentView)initWithCoder:(id)a3
+- (_TtC16TextFormattingUIP33_BDE70E073124A1E87C81AA7137722CAE28_TFTextFormattingContentView)initWithCoder:(id)coder
 {
   swift_weakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16TextFormattingUIP33_BDE70E073124A1E87C81AA7137722CAE28_TFTextFormattingContentView____lazy_storage___childView) = 0;
@@ -35,7 +35,7 @@
   {
     swift_getKeyPath();
     swift_getKeyPath();
-    v5 = self;
+    selfCopy = self;
     sub_26D39FF68();
 
     v11[2] = v8;
@@ -58,7 +58,7 @@
   return result;
 }
 
-- (_TtC16TextFormattingUIP33_BDE70E073124A1E87C81AA7137722CAE28_TFTextFormattingContentView)initWithFrame:(CGRect)a3
+- (_TtC16TextFormattingUIP33_BDE70E073124A1E87C81AA7137722CAE28_TFTextFormattingContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

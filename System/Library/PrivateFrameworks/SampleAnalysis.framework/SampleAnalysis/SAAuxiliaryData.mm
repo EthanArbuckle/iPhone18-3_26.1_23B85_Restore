@@ -1,22 +1,22 @@
 @interface SAAuxiliaryData
-+ (id)auxiliaryDataForTimestamp:(id)a3;
++ (id)auxiliaryDataForTimestamp:(id)timestamp;
 @end
 
 @implementation SAAuxiliaryData
 
-+ (id)auxiliaryDataForTimestamp:(id)a3
++ (id)auxiliaryDataForTimestamp:(id)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
-    v3 = a3;
+    timestampCopy = timestamp;
   }
 
   else
   {
-    v3 = +[SATimestamp timestamp];
+    timestampCopy = +[SATimestamp timestamp];
   }
 
-  v4 = v3;
+  v4 = timestampCopy;
   v5 = objc_alloc_init(SAAuxiliaryData);
   v7 = [[SAFanSpeed alloc] initWithTimestamp:v4];
   if (v5)

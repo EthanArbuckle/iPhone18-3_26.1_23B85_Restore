@@ -1,13 +1,13 @@
 @interface AVFoundationEngine
 + (id)sharedEngine;
-- (AVFoundationEngine)initWithQueue:(id)a3;
-- (BOOL)isOperationActive:(id)a3;
-- (BOOL)unregisterForOperation:(id)a3;
-- (id)startOperationForReceiver:(id)a3 reply:(id)a4;
+- (AVFoundationEngine)initWithQueue:(id)queue;
+- (BOOL)isOperationActive:(id)active;
+- (BOOL)unregisterForOperation:(id)operation;
+- (id)startOperationForReceiver:(id)receiver reply:(id)reply;
 - (void)_startSession;
 - (void)_stopSession;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 forMetadataObjectTypes:(id)a5 fromConnection:(id)a6;
-- (void)handleNotification:(id)a3 notification:(id)a4;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects forMetadataObjectTypes:(id)types fromConnection:(id)connection;
+- (void)handleNotification:(id)notification notification:(id)a4;
 - (void)setupNotificationsForCenter;
 @end
 
@@ -27,11 +27,11 @@
   self->_sessionRunning = 1;
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 forMetadataObjectTypes:(id)a5 fromConnection:(id)a6
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects forMetadataObjectTypes:(id)types fromConnection:(id)connection
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  objectsCopy = objects;
+  typesCopy = types;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_spoofedNotification)
   {
@@ -39,14 +39,14 @@
     self->_spoofedNotification = 1;
   }
 
-  v10 = [v8 count];
-  if (!v9 || v10)
+  v10 = [objectsCopy count];
+  if (!typesCopy || v10)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = v8;
+    v11 = objectsCopy;
     v18 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
     if (v18)
     {
@@ -85,7 +85,7 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = v9;
+    v11 = typesCopy;
     v12 = [v11 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v12)
     {
@@ -255,9 +255,9 @@ void __99__AVFoundationEngine_captureOutput_didOutputMetadataObjects_forMetadata
   }
 }
 
-- (void)handleNotification:(id)a3 notification:(id)a4
+- (void)handleNotification:(id)notification notification:(id)a4
 {
-  v6 = a3;
+  notificationCopy = notification;
   v7 = a4;
   dispatch_assert_queue_V2(self->_queue);
   receivers = self->_receivers;
@@ -265,11 +265,11 @@ void __99__AVFoundationEngine_captureOutput_didOutputMetadataObjects_forMetadata
   v11[1] = 3221225472;
   v11[2] = __54__AVFoundationEngine_handleNotification_notification___block_invoke;
   v11[3] = &unk_1E7F37878;
-  v12 = v6;
-  v13 = self;
+  v12 = notificationCopy;
+  selfCopy = self;
   v14 = v7;
   v9 = v7;
-  v10 = v6;
+  v10 = notificationCopy;
   [(NSMutableDictionary *)receivers enumerateKeysAndObjectsUsingBlock:v11];
 }
 
@@ -702,11 +702,11 @@ void __49__AVFoundationEngine_setupNotificationsForCenter__block_invoke_2(uint64
   [WeakRetained handleNotification:*MEMORY[0x1E6986B20] notification:*(a1 + 32)];
 }
 
-- (id)startOperationForReceiver:(id)a3 reply:(id)a4
+- (id)startOperationForReceiver:(id)receiver reply:(id)reply
 {
   v78[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  receiverCopy = receiver;
+  replyCopy = reply;
   v67 = 0;
   v68 = &v67;
   v69 = 0x2020000000;
@@ -730,7 +730,7 @@ void __49__AVFoundationEngine_setupNotificationsForCenter__block_invoke_2(uint64
   v55[2] = 0x3032000000;
   v55[3] = __Block_byref_object_copy__1031;
   v55[4] = __Block_byref_object_dispose__1032;
-  v56 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   receivers = self->_receivers;
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
@@ -740,17 +740,17 @@ void __49__AVFoundationEngine_setupNotificationsForCenter__block_invoke_2(uint64
   v54[5] = &v67;
   v54[6] = &v63;
   [(NSMutableDictionary *)receivers enumerateKeysAndObjectsUsingBlock:v54];
-  v9 = [(NSMutableDictionary *)self->_receivers objectForKey:v6];
-  v10 = [v9 running];
+  v9 = [(NSMutableDictionary *)self->_receivers objectForKey:receiverCopy];
+  running = [v9 running];
 
-  if (v10)
+  if (running)
   {
     v11 = v68;
     v12 = *(v68 + 24);
     v13 = v64;
     if (self->_shouldRunEyeRelief == v12 && self->_shouldRunAttentionDetect == *(v64 + 24))
     {
-      [(NSMutableDictionary *)self->_receivers removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_receivers removeObjectForKey:receiverCopy];
       v14 = MEMORY[0x1E696ABC0];
       v77 = *MEMORY[0x1E696A578];
       v78[0] = @" Client already started an operation with the same options";
@@ -800,7 +800,7 @@ void __49__AVFoundationEngine_setupNotificationsForCenter__block_invoke_2(uint64
           *buf = 134218242;
           v72 = v20;
           v73 = 2112;
-          *v74 = v6;
+          *v74 = receiverCopy;
           v29 = "%13.5f: Session that is already running has the same options that was requested by %@, not restarting session";
           v30 = v18;
           v31 = 22;
@@ -814,7 +814,7 @@ LABEL_34:
         if (currentLogLevel < 6)
         {
 LABEL_36:
-          v32 = [(NSMutableDictionary *)self->_receivers objectForKey:v6];
+          v32 = [(NSMutableDictionary *)self->_receivers objectForKey:receiverCopy];
           [v32 setRunning:1];
           sessionQueue = self->_sessionQueue;
           block[0] = MEMORY[0x1E69E9820];
@@ -823,10 +823,10 @@ LABEL_36:
           block[3] = &unk_1E7F37A20;
           block[4] = self;
           v48 = v57;
-          v47 = v7;
+          v47 = replyCopy;
           dispatch_async(sessionQueue, block);
-          v34 = [v32 receiver];
-          [v34 receiveNotificationOfName:*MEMORY[0x1E6986A90] notification:0];
+          receiver = [v32 receiver];
+          [receiver receiveNotificationOfName:*MEMORY[0x1E6986A90] notification:0];
 
           _Block_object_dispose(&v50, 8);
           goto LABEL_16;
@@ -863,7 +863,7 @@ LABEL_36:
               *&v74[4] = 2048;
               *&v74[6] = v28;
               v75 = 2112;
-              v76 = v6;
+              v76 = receiverCopy;
               v29 = "%30s:%-4d: %13.5f: Session that is already running has the same options that was requested by %@, not restarting session";
               v30 = v18;
               v31 = 38;
@@ -891,15 +891,15 @@ LABEL_15:
   v37 = __54__AVFoundationEngine_startOperationForReceiver_reply___block_invoke_2_58;
   v38 = &unk_1E7F37828;
   v41 = &v59;
-  v39 = self;
+  selfCopy = self;
   v42 = &v67;
   v43 = v55;
   v44 = &v63;
   v45 = v57;
-  v40 = v7;
+  v40 = replyCopy;
   dispatch_async(v21, &v35);
-  v22 = [(NSMutableDictionary *)self->_receivers objectForKey:v6, v35, v36, v37, v38, v39];
-  [v22 setRunning:1];
+  selfCopy = [(NSMutableDictionary *)self->_receivers objectForKey:receiverCopy, v35, v36, v37, v38, selfCopy];
+  [selfCopy setRunning:1];
 
 LABEL_16:
   v16 = 0;
@@ -1229,31 +1229,31 @@ LABEL_52:
   return result;
 }
 
-- (BOOL)isOperationActive:(id)a3
+- (BOOL)isOperationActive:(id)active
 {
   if (!self->_session)
   {
     return 0;
   }
 
-  v3 = [(NSMutableDictionary *)self->_receivers objectForKey:a3];
-  v4 = [v3 running];
+  v3 = [(NSMutableDictionary *)self->_receivers objectForKey:active];
+  running = [v3 running];
 
-  return v4;
+  return running;
 }
 
-- (BOOL)unregisterForOperation:(id)a3
+- (BOOL)unregisterForOperation:(id)operation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_receivers objectForKey:v4];
+  operationCopy = operation;
+  v5 = [(NSMutableDictionary *)self->_receivers objectForKey:operationCopy];
 
   if (!v5)
   {
     goto LABEL_24;
   }
 
-  [(NSMutableDictionary *)self->_receivers removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_receivers removeObjectForKey:operationCopy];
   if (currentLogLevel == 5)
   {
     v6 = _AALog();
@@ -1270,13 +1270,13 @@ LABEL_52:
         v8 = v7 / 1000000000.0;
       }
 
-      v13 = [(NSMutableDictionary *)self->_receivers allKeys];
+      allKeys = [(NSMutableDictionary *)self->_receivers allKeys];
       *buf = 134218498;
       v22 = v8;
       v23 = 2112;
-      *v24 = v4;
+      *v24 = operationCopy;
       *&v24[8] = 2112;
-      *&v24[10] = v13;
+      *&v24[10] = allKeys;
       v14 = "%13.5f: Unregistering receiver %@, remaining receivers: %@";
       v15 = v6;
       v16 = 32;
@@ -1316,7 +1316,7 @@ LABEL_20:
             v12 = v11 / 1000000000.0;
           }
 
-          v13 = [(NSMutableDictionary *)self->_receivers allKeys];
+          allKeys = [(NSMutableDictionary *)self->_receivers allKeys];
           *buf = 136316162;
           v22 = *&v9;
           v23 = 1024;
@@ -1324,9 +1324,9 @@ LABEL_20:
           *&v24[4] = 2048;
           *&v24[6] = v12;
           *&v24[14] = 2112;
-          *&v24[16] = v4;
+          *&v24[16] = operationCopy;
           v25 = 2112;
-          v26 = v13;
+          v26 = allKeys;
           v14 = "%30s:%-4d: %13.5f: Unregistering receiver %@, remaining receivers: %@";
           v15 = v6;
           v16 = 48;
@@ -1356,10 +1356,10 @@ LABEL_24:
   return v5 != 0;
 }
 
-- (AVFoundationEngine)initWithQueue:(id)a3
+- (AVFoundationEngine)initWithQueue:(id)queue
 {
   v63[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  queueCopy = queue;
   v56.receiver = self;
   v56.super_class = AVFoundationEngine;
   v6 = [(AVFoundationEngine *)&v56 init];
@@ -1369,7 +1369,7 @@ LABEL_24:
     goto LABEL_29;
   }
 
-  objc_storeStrong(&v6->_queue, a3);
+  objc_storeStrong(&v6->_queue, queue);
   v8 = dispatch_queue_create("com.apple.AttentionAwareness.AVCaptureSession", 0);
   sessionQueue = v7->_sessionQueue;
   v7->_sessionQueue = v8;
@@ -1465,11 +1465,11 @@ LABEL_20:
 
 LABEL_22:
   v23 = [MEMORY[0x1E69870A8] discoverySessionWithDeviceTypes:v12 mediaType:v11 position:0];
-  v24 = [v23 devices];
-  v25 = [v24 firstObject];
+  devices = [v23 devices];
+  firstObject = [devices firstObject];
 
   device = v7->_device;
-  v7->_device = v25;
+  v7->_device = firstObject;
 
   if (!v7->_device)
   {
@@ -1578,12 +1578,12 @@ LABEL_57:
   [(AVCaptureSession *)v7->_session addInput:v7->_input];
   queue = v7->_queue;
   v34 = v7;
-  v35 = queue;
+  queueCopy2 = queue;
   v36 = objc_alloc_init(MEMORY[0x1E69870D0]);
   v37 = v36;
-  if (v35)
+  if (queueCopy2)
   {
-    [(AVCaptureMetadataOutput *)v36 setMetadataObjectsDelegate:v34 queue:v35];
+    [(AVCaptureMetadataOutput *)v36 setMetadataObjectsDelegate:v34 queue:queueCopy2];
   }
 
   metadataOutput = v34->_metadataOutput;
@@ -1622,9 +1622,9 @@ LABEL_55:
   }
 
   [(AVCaptureSession *)v7->_session addOutput:v34->_metadataOutput];
-  v39 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   notificationCenter = v34->_notificationCenter;
-  v34->_notificationCenter = v39;
+  v34->_notificationCenter = defaultCenter;
 
   [(AVFoundationEngine *)v34 setupNotificationsForCenter];
   v41 = objc_alloc_init(MEMORY[0x1E695DF90]);

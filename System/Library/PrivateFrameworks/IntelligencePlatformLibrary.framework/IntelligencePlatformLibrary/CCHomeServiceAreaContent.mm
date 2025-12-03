@@ -1,27 +1,27 @@
 @interface CCHomeServiceAreaContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCHomeServiceArea)area;
-- (CCHomeServiceAreaContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCHomeServiceAreaContent)initWithMatterDeviceIdentifier:(id)a3 serviceArea:(id)a4 serviceAreaType:(unsigned int)a5 error:(id *)a6;
+- (CCHomeServiceAreaContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCHomeServiceAreaContent)initWithMatterDeviceIdentifier:(id)identifier serviceArea:(id)area serviceAreaType:(unsigned int)type error:(id *)error;
 - (CCHomeServiceAreaMap)map;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCHomeServiceAreaContent
 
-- (CCHomeServiceAreaContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCHomeServiceAreaContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v21[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"matterDeviceIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"area"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"matterDeviceIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"area"];
     if (v10)
     {
       v21[0] = 0;
@@ -37,7 +37,7 @@
       v10 = v11;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"map"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"map"];
     if (!v13)
     {
 LABEL_10:
@@ -60,7 +60,7 @@ LABEL_10:
         v17 = 2;
       }
 
-      v18 = [[CCHomeServiceAreaContent alloc] initWithMatterDeviceIdentifier:v9 serviceArea:v11 serviceAreaType:v17 error:a4];
+      v18 = [[CCHomeServiceAreaContent alloc] initWithMatterDeviceIdentifier:v9 serviceArea:v11 serviceAreaType:v17 error:error];
       goto LABEL_20;
     }
 
@@ -108,9 +108,9 @@ LABEL_21:
       goto LABEL_9;
     }
 
-    v6 = [(CCHomeServiceAreaContent *)self area];
-    v7 = [v6 jsonDictionary];
-    [v3 setObject:v7 forKeyedSubscript:@"area"];
+    area = [(CCHomeServiceAreaContent *)self area];
+    jsonDictionary = [area jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"area"];
 
     serviceAreaType = self->_serviceAreaType;
   }
@@ -118,8 +118,8 @@ LABEL_21:
   if (serviceAreaType == 2 && self->_map)
   {
     v8 = [(CCHomeServiceAreaContent *)self map];
-    v9 = [v8 jsonDictionary];
-    [v3 setObject:v9 forKeyedSubscript:@"map"];
+    jsonDictionary2 = [v8 jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"map"];
   }
 
 LABEL_9:
@@ -128,28 +128,28 @@ LABEL_9:
   return v10;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   if (self->_hasMatterDeviceIdentifier)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:17035 uint64Value:self->_matterDeviceIdentifier];
-    v9[2](v9, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_area)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:17036 subMessageValue:self->_area];
-    v9[2](v9, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
-  v7 = v9;
+  v7 = blockCopy;
   if (self->_map)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:17040 subMessageValue:self->_map];
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
 
-    v7 = v9;
+    v7 = blockCopy;
   }
 }
 
@@ -167,10 +167,10 @@ LABEL_9:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v47 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v47];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   v8 = MEMORY[0x1E6993AA8];
@@ -379,12 +379,12 @@ LABEL_49:
   return v45;
 }
 
-- (CCHomeServiceAreaContent)initWithMatterDeviceIdentifier:(id)a3 serviceArea:(id)a4 serviceAreaType:(unsigned int)a5 error:(id *)a6
+- (CCHomeServiceAreaContent)initWithMatterDeviceIdentifier:(id)identifier serviceArea:(id)area serviceAreaType:(unsigned int)type error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  areaCopy = area;
   v12 = objc_opt_new();
-  if (v10)
+  if (identifierCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -392,13 +392,13 @@ LABEL_49:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v20 = 0;
+      selfCopy = 0;
       goto LABEL_16;
     }
 
-    [v10 unsignedLongLongValue];
+    [identifierCopy unsignedLongLongValue];
     CCPBDataWriterWriteUint64Field();
-    if (!v11)
+    if (!areaCopy)
     {
       goto LABEL_9;
     }
@@ -407,13 +407,13 @@ LABEL_49:
   else
   {
     v14 = 0;
-    if (!v11)
+    if (!areaCopy)
     {
       goto LABEL_9;
     }
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     objc_opt_class();
     v15 = CCValidateIsInstanceOfExpectedClass();
@@ -426,13 +426,13 @@ LABEL_49:
 
 LABEL_15:
     CCSetError();
-    v20 = 0;
+    selfCopy = 0;
     v14 = v16;
     goto LABEL_16;
   }
 
 LABEL_9:
-  if (!v11 || a5 != 2)
+  if (!areaCopy || type != 2)
   {
     goto LABEL_13;
   }
@@ -447,30 +447,30 @@ LABEL_9:
   }
 
 LABEL_12:
-  v18 = [v11 data];
+  data = [areaCopy data];
   CCPBDataWriterWriteDataField();
 
   v14 = v16;
 LABEL_13:
-  v19 = [v12 immutableData];
-  self = [(CCItemMessage *)self initWithData:v19 error:a6];
+  immutableData = [v12 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v20 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v20;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 - 17034) > 8)
+  if ((identifier - 17034) > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73E7D40[(a3 - 17034)];
+    return off_1E73E7D40[(identifier - 17034)];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface _NSPersistentHistoryTransactionPredicateParser
-- (BOOL)parse:(id *)a3;
-- (_NSPersistentHistoryTransactionPredicateParser)initWithPredicate:(id)a3;
+- (BOOL)parse:(id *)parse;
+- (_NSPersistentHistoryTransactionPredicateParser)initWithPredicate:(id)predicate;
 - (void)dealloc;
-- (void)visitPredicateExpression:(id)a3;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation _NSPersistentHistoryTransactionPredicateParser
@@ -18,12 +18,12 @@
   [(_NSPersistentHistoryTransactionPredicateParser *)&v3 dealloc];
 }
 
-- (_NSPersistentHistoryTransactionPredicateParser)initWithPredicate:(id)a3
+- (_NSPersistentHistoryTransactionPredicateParser)initWithPredicate:(id)predicate
 {
   v4 = [(_NSPersistentHistoryTransactionPredicateParser *)self init];
   if (v4)
   {
-    v4->_predicate = [a3 copy];
+    v4->_predicate = [predicate copy];
     v4->_storeTokens = objc_alloc_init(MEMORY[0x1E695DF90]);
     *&v4->_hasDate = 0;
     v4->_localError = 0;
@@ -32,7 +32,7 @@
   return v4;
 }
 
-- (BOOL)parse:(id *)a3
+- (BOOL)parse:(id *)parse
 {
   predicate = self->_predicate;
   if (!predicate)
@@ -46,16 +46,16 @@
   if (localError)
   {
     v6 = 0;
-    if (a3)
+    if (parse)
     {
-      *a3 = localError;
+      *parse = localError;
     }
   }
 
   return v6;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   v19[1] = *MEMORY[0x1E69E9840];
   if (self->_localError)
@@ -63,9 +63,9 @@
     goto LABEL_2;
   }
 
-  if ([a3 expressionType])
+  if ([expression expressionType])
   {
-    if ([a3 expressionType] != 10 || !objc_msgSend(objc_msgSend(a3, "keyPath"), "isEqualToString:", @"TIMESTAMP"))
+    if ([expression expressionType] != 10 || !objc_msgSend(objc_msgSend(expression, "keyPath"), "isEqualToString:", @"TIMESTAMP"))
     {
       goto LABEL_2;
     }
@@ -89,20 +89,20 @@ LABEL_2:
     goto LABEL_20;
   }
 
-  [a3 constantValue];
+  [expression constantValue];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v12 = [a3 constantValue];
+  constantValue = [expression constantValue];
   if ((isKindOfClass & 1) == 0)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(a3 "constantValue")])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(expression "constantValue")])
     {
       self->_hasTimestamp = 1;
       goto LABEL_2;
     }
 
-    [a3 constantValue];
+    [expression constantValue];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || !self->_hasTimestamp)
     {
@@ -125,10 +125,10 @@ LABEL_20:
   }
 
   storeTokens = self->_storeTokens;
-  v14 = [v12 storeTokens];
+  storeTokens = [constantValue storeTokens];
   v15 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableDictionary *)storeTokens addEntriesFromDictionary:v14];
+  [(NSMutableDictionary *)storeTokens addEntriesFromDictionary:storeTokens];
 }
 
 @end

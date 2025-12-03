@@ -1,15 +1,15 @@
 @interface SUUIProductPageHeaderLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SUUIProductPageHeaderLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIProductPageHeaderLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIProductPageHeaderLabel" hasInstanceMethod:@"contentRating" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIProductPageHeaderLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIProductPageHeaderLabel" hasInstanceMethod:@"contentRating" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

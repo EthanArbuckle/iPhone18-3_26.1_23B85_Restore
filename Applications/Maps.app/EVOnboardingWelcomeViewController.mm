@@ -1,5 +1,5 @@
 @interface EVOnboardingWelcomeViewController
-- (EVOnboardingWelcomeViewController)initWithVehicles:(id)a3 delegate:(id)a4;
+- (EVOnboardingWelcomeViewController)initWithVehicles:(id)vehicles delegate:(id)delegate;
 - (id)obViewController;
 - (void)_connectPressed;
 - (void)_setUpLaterPressed;
@@ -42,7 +42,7 @@
 - (id)obViewController
 {
   v3 = sub_100F354F8(self->_vehicles);
-  v84 = self;
+  selfCopy = self;
   v4 = self->_vehicles;
   v5 = +[NSMutableSet set];
   v88 = [(NSArray *)v4 mutableCopy];
@@ -72,17 +72,17 @@
       }
 
       v12 = *(*(&v89 + 1) + 8 * v11);
-      v13 = [v12 pairedAppIdentifier];
-      if (v13)
+      pairedAppIdentifier = [v12 pairedAppIdentifier];
+      if (pairedAppIdentifier)
       {
 
 LABEL_9:
-        v15 = [v12 pairedAppIdentifier];
+        pairedAppIdentifier2 = [v12 pairedAppIdentifier];
 
-        if (v15)
+        if (pairedAppIdentifier2)
         {
-          v16 = [v12 pairedAppIdentifier];
-          [v5 addObject:v16];
+          pairedAppIdentifier3 = [v12 pairedAppIdentifier];
+          [v5 addObject:pairedAppIdentifier3];
         }
 
         else
@@ -90,27 +90,27 @@ LABEL_9:
           v17 = v12;
 
           [v88 removeObject:v17];
-          v16 = [v17 iapIdentifier];
-          [v5 addObject:v16];
+          pairedAppIdentifier3 = [v17 iapIdentifier];
+          [v5 addObject:pairedAppIdentifier3];
           v9 = v17;
         }
 
         goto LABEL_12;
       }
 
-      v14 = [v12 iapIdentifier];
+      iapIdentifier = [v12 iapIdentifier];
 
-      if (v14)
+      if (iapIdentifier)
       {
         goto LABEL_9;
       }
 
-      v16 = sub_100798370();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      pairedAppIdentifier3 = sub_100798370();
+      if (os_log_type_enabled(pairedAppIdentifier3, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v103 = v12;
-        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to get paired app id or iap2 identifier for vehicle: %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, pairedAppIdentifier3, OS_LOG_TYPE_ERROR, "Failed to get paired app id or iap2 identifier for vehicle: %@", buf, 0xCu);
       }
 
 LABEL_12:
@@ -135,40 +135,40 @@ LABEL_19:
   {
     v23 = [v21 localizedStringForKey:@"[EV Onboarding] Enable iAP2 subtitle single" value:@"localized string not found" table:0];
 
-    v24 = [v9 manufacturer];
-    v25 = v84;
-    if (v24)
+    manufacturer = [v9 manufacturer];
+    v25 = selfCopy;
+    if (manufacturer)
     {
-      v26 = v24;
+      v26 = manufacturer;
       goto LABEL_61;
     }
 
-    v45 = [v9 displayName];
-    v46 = [NSString stringWithFormat:v23, v45];
+    displayName = [v9 displayName];
+    v46 = [NSString stringWithFormat:v23, displayName];
 
     v26 = 0;
   }
 
   else
   {
-    v25 = v84;
+    v25 = selfCopy;
     if (v9)
     {
       v23 = [v21 localizedStringForKey:@"[EV Onboarding] Enable iAp2 and apps subtitle plural" value:@"localized string not found" table:0];
 
-      v27 = [v9 displayName];
-      v28 = v27;
-      if (v27)
+      displayName2 = [v9 displayName];
+      v28 = displayName2;
+      if (displayName2)
       {
-        v29 = v27;
+        manufacturer2 = displayName2;
       }
 
       else
       {
-        v29 = [v9 manufacturer];
+        manufacturer2 = [v9 manufacturer];
       }
 
-      v26 = v29;
+      v26 = manufacturer2;
 
       v47 = v88;
       if ([v47 count])
@@ -198,25 +198,25 @@ LABEL_19:
               }
 
               v54 = *(*(&v93 + 1) + 8 * i);
-              v55 = [v54 pairedAppIdentifier];
+              pairedAppIdentifier4 = [v54 pairedAppIdentifier];
 
-              if (v55)
+              if (pairedAppIdentifier4)
               {
-                v56 = [v54 pairedAppIdentifier];
-                [v87 addObject:v56];
+                pairedAppIdentifier5 = [v54 pairedAppIdentifier];
+                [v87 addObject:pairedAppIdentifier5];
 
-                v57 = [v54 pairedAppIdentifier];
-                [v48 setObject:v54 forKeyedSubscript:v57];
+                pairedAppIdentifier6 = [v54 pairedAppIdentifier];
+                [v48 setObject:v54 forKeyedSubscript:pairedAppIdentifier6];
               }
 
               else
               {
-                v57 = sub_100798370();
-                if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
+                pairedAppIdentifier6 = sub_100798370();
+                if (os_log_type_enabled(pairedAppIdentifier6, OS_LOG_TYPE_ERROR))
                 {
                   LODWORD(v98) = 138412290;
                   *(&v98 + 4) = v54;
-                  _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_ERROR, "Failed to get paired app id for vehicle: %@", &v98, 0xCu);
+                  _os_log_impl(&_mh_execute_header, pairedAppIdentifier6, OS_LOG_TYPE_ERROR, "Failed to get paired app id for vehicle: %@", &v98, 0xCu);
                 }
               }
             }
@@ -236,7 +236,7 @@ LABEL_19:
         v59 = sub_100021DB0(v87, &v98);
         v60 = [v59 componentsJoinedByString:{@", "}];
 
-        v25 = v84;
+        v25 = selfCopy;
         v20 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
         v26 = v81;
         v23 = v83;
@@ -294,25 +294,25 @@ LABEL_19:
               }
 
               v38 = *(*(&v93 + 1) + 8 * j);
-              v39 = [v38 pairedAppIdentifier];
+              pairedAppIdentifier7 = [v38 pairedAppIdentifier];
 
-              if (v39)
+              if (pairedAppIdentifier7)
               {
-                v40 = [v38 pairedAppIdentifier];
-                [v86 addObject:v40];
+                pairedAppIdentifier8 = [v38 pairedAppIdentifier];
+                [v86 addObject:pairedAppIdentifier8];
 
-                v41 = [v38 pairedAppIdentifier];
-                [v32 setObject:v38 forKeyedSubscript:v41];
+                pairedAppIdentifier9 = [v38 pairedAppIdentifier];
+                [v32 setObject:v38 forKeyedSubscript:pairedAppIdentifier9];
               }
 
               else
               {
-                v41 = sub_100798370();
-                if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+                pairedAppIdentifier9 = sub_100798370();
+                if (os_log_type_enabled(pairedAppIdentifier9, OS_LOG_TYPE_ERROR))
                 {
                   LODWORD(v98) = 138412290;
                   *(&v98 + 4) = v38;
-                  _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "Failed to get paired app id for vehicle: %@", &v98, 0xCu);
+                  _os_log_impl(&_mh_execute_header, pairedAppIdentifier9, OS_LOG_TYPE_ERROR, "Failed to get paired app id for vehicle: %@", &v98, 0xCu);
                 }
               }
             }
@@ -333,7 +333,7 @@ LABEL_19:
         v44 = [v43 componentsJoinedByString:{@", "}];
 
         v26 = v44;
-        v25 = v84;
+        v25 = selfCopy;
         v3 = v85;
         v20 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
         v23 = v82;
@@ -361,59 +361,59 @@ LABEL_61:
   }
   v61 = ;
   v62 = [[OBWelcomeController alloc] initWithTitle:v3 detailText:v46 icon:v61];
-  v63 = [v62 view];
-  [v63 setAccessibilityIdentifier:@"EVOnboardingWelcomeView"];
+  view = [v62 view];
+  [view setAccessibilityIdentifier:@"EVOnboardingWelcomeView"];
 
   [v62 setModalPresentationStyle:2];
-  v64 = [v62 headerView];
-  [v64 setAllowFullWidthIcon:1];
+  headerView = [v62 headerView];
+  [headerView setAllowFullWidthIcon:1];
 
   v65 = +[OBBoldTrayButton boldButton];
-  v66 = [v20[410] mainBundle];
-  v67 = [v66 localizedStringForKey:@"[EV Onboarding] Connect" value:@"localized string not found" table:0];
+  mainBundle = [v20[410] mainBundle];
+  v67 = [mainBundle localizedStringForKey:@"[EV Onboarding] Connect" value:@"localized string not found" table:0];
   [v65 setTitle:v67 forState:0];
 
   [v65 addTarget:v25 action:"_connectPressed" forControlEvents:64];
   [v65 setAccessibilityIdentifier:@"ConnectButton"];
-  v68 = [v62 buttonTray];
-  [v68 addButton:v65];
+  buttonTray = [v62 buttonTray];
+  [buttonTray addButton:v65];
 
   v69 = +[OBLinkTrayButton linkButton];
-  v70 = [v20[410] mainBundle];
-  [v70 localizedStringForKey:@"[EV Onboarding] Set Up Later" value:@"localized string not found" table:0];
+  mainBundle2 = [v20[410] mainBundle];
+  [mainBundle2 localizedStringForKey:@"[EV Onboarding] Set Up Later" value:@"localized string not found" table:0];
   v72 = v71 = v20;
   [v69 setTitle:v72 forState:0];
 
   [v69 addTarget:v25 action:"_setUpLaterPressed" forControlEvents:64];
   [v69 setAccessibilityIdentifier:@"SetUpLaterButton"];
-  v73 = [v62 buttonTray];
-  [v73 addButton:v69];
+  buttonTray2 = [v62 buttonTray];
+  [buttonTray2 addButton:v69];
 
-  v74 = [v62 buttonTray];
-  [v74 setAccessibilityIdentifier:@"EVOnboardingButtonTray"];
+  buttonTray3 = [v62 buttonTray];
+  [buttonTray3 setAccessibilityIdentifier:@"EVOnboardingButtonTray"];
 
-  v75 = [v62 buttonTray];
-  v76 = [v71[410] mainBundle];
-  v77 = [v76 localizedStringForKey:@"[EV Onboarding] Welcome screen privacy text" value:@"localized string not found" table:0];
-  [v75 setCaptionText:v77];
+  buttonTray4 = [v62 buttonTray];
+  mainBundle3 = [v71[410] mainBundle];
+  v77 = [mainBundle3 localizedStringForKey:@"[EV Onboarding] Welcome screen privacy text" value:@"localized string not found" table:0];
+  [buttonTray4 setCaptionText:v77];
 
   return v62;
 }
 
-- (EVOnboardingWelcomeViewController)initWithVehicles:(id)a3 delegate:(id)a4
+- (EVOnboardingWelcomeViewController)initWithVehicles:(id)vehicles delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  vehiclesCopy = vehicles;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = EVOnboardingWelcomeViewController;
-  v8 = [(EVOnboardingBaseViewController *)&v12 initWithDelegate:v7];
+  v8 = [(EVOnboardingBaseViewController *)&v12 initWithDelegate:delegateCopy];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [vehiclesCopy copy];
     vehicles = v8->_vehicles;
     v8->_vehicles = v9;
 
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
   }
 
   return v8;

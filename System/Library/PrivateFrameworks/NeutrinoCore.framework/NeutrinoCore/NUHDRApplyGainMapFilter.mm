@@ -67,22 +67,22 @@ uint64_t __55__NUHDRApplyGainMapFilter_meteorPlusGainMapApplyKernel__block_invok
 - (id)outputImage
 {
   v125[8] = *MEMORY[0x1E69E9840];
-  v3 = [(NUHDRApplyGainMapFilter *)self inputImage];
-  v4 = [(NUHDRApplyGainMapFilter *)self inputGainMap];
-  v5 = v4;
+  inputImage = [(NUHDRApplyGainMapFilter *)self inputImage];
+  inputGainMap = [(NUHDRApplyGainMapFilter *)self inputGainMap];
+  v5 = inputGainMap;
   v6 = 0;
-  if (v3 && v4)
+  if (inputImage && inputGainMap)
   {
-    v7 = [(NUHDRApplyGainMapFilter *)self inputHeadroom];
-    [v7 floatValue];
+    inputHeadroom = [(NUHDRApplyGainMapFilter *)self inputHeadroom];
+    [inputHeadroom floatValue];
     v9 = fmaxf(v8, 1.0);
 
-    v10 = [(NUHDRApplyGainMapFilter *)self inputColorSpace];
-    v11 = [v10 linearized];
-    v12 = v11;
-    if (v11)
+    inputColorSpace = [(NUHDRApplyGainMapFilter *)self inputColorSpace];
+    linearized = [inputColorSpace linearized];
+    v12 = linearized;
+    if (linearized)
     {
-      v13 = v11;
+      v13 = linearized;
     }
 
     else
@@ -93,24 +93,24 @@ uint64_t __55__NUHDRApplyGainMapFilter_meteorPlusGainMapApplyKernel__block_invok
     v14 = v13;
     v15 = fminf(v9, 16.0);
 
-    v16 = [v3 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v14, "CGColorSpace")}];
+    v16 = [inputImage imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v14, "CGColorSpace")}];
 
-    v17 = [v16 _imageByClampingAlpha];
+    _imageByClampingAlpha = [v16 _imageByClampingAlpha];
 
-    [v17 extent];
+    [_imageByClampingAlpha extent];
     v19 = v18;
     v21 = v20;
     [v5 extent];
     CGAffineTransformMakeScale(&v122, v19 / v22, v21 / v23);
     v121 = [v5 imageByApplyingTransform:&v122];
-    v24 = [(NUHDRApplyGainMapFilter *)self flexRangeProperties];
-    if (v24)
+    flexRangeProperties = [(NUHDRApplyGainMapFilter *)self flexRangeProperties];
+    if (flexRangeProperties)
     {
       v120 = v5;
       v25 = log2f(v15);
-      [v24 baseHeadroom];
+      [flexRangeProperties baseHeadroom];
       v27 = v26;
-      [v24 alternateHeadroom];
+      [flexRangeProperties alternateHeadroom];
       v29 = fminf(fmaxf((v25 - v27) / (v28 - v27), 0.0), 1.0);
       if (v25 <= v27)
       {
@@ -122,48 +122,48 @@ uint64_t __55__NUHDRApplyGainMapFilter_meteorPlusGainMapApplyKernel__block_invok
         v30 = v29;
       }
 
-      v31 = [(NUHDRApplyGainMapFilter *)self flexRangeProperties];
-      v32 = [v31 channelInfo];
+      flexRangeProperties2 = [(NUHDRApplyGainMapFilter *)self flexRangeProperties];
+      channelInfo = [flexRangeProperties2 channelInfo];
 
-      v33 = v32;
-      if ([v32 count] == 3)
+      v33 = channelInfo;
+      if ([channelInfo count] == 3)
       {
-        v114 = v32;
-        v34 = [v32 objectAtIndexedSubscript:0];
-        v35 = [v32 objectAtIndexedSubscript:1];
-        v36 = [v32 objectAtIndexedSubscript:2];
-        [v34 gamma];
+        v114 = channelInfo;
+        firstObject = [channelInfo objectAtIndexedSubscript:0];
+        v35 = [channelInfo objectAtIndexedSubscript:1];
+        v36 = [channelInfo objectAtIndexedSubscript:2];
+        [firstObject gamma];
         v118 = v37;
         [v35 gamma];
         v116 = v38;
         [v36 gamma];
         v112 = v39;
-        [v34 min];
+        [firstObject min];
         v41 = v40;
         [v35 min];
         v43 = v42;
         [v36 min];
         v45 = v44;
-        [v34 max];
+        [firstObject max];
         v47 = v46;
         [v35 max];
         v110 = v30;
         v49 = v48;
         [v36 max];
         v51 = v50;
-        [v34 baseOffset];
+        [firstObject baseOffset];
         v109 = v52;
         [v35 baseOffset];
         v107 = v53;
         [v36 baseOffset];
         v105 = v54;
-        [v34 alternateOffset];
+        [firstObject alternateOffset];
         v108 = v55;
         [v35 alternateOffset];
         v106 = v56;
         [v36 alternateOffset];
         v58 = v57;
-        v115 = v24;
+        v115 = flexRangeProperties;
         v59 = [MEMORY[0x1E695F688] vectorWithX:(v47 - v41) Y:(v49 - v43) Z:(v51 - v45)];
         v104 = [MEMORY[0x1E695F688] vectorWithX:v41 Y:v43 Z:v45];
         v113 = [MEMORY[0x1E695F688] vectorWithX:(1.0 / v118) Y:(1.0 / v116) Z:(1.0 / v112)];
@@ -172,12 +172,12 @@ uint64_t __55__NUHDRApplyGainMapFilter_meteorPlusGainMapApplyKernel__block_invok
         v61 = [MEMORY[0x1E695F688] vectorWithX:v108 Y:v106 Z:v58];
         [objc_opt_class() flexRangeGainMapApplyRGBKernel];
         v62 = v117 = v14;
-        [v17 extent];
+        [_imageByClampingAlpha extent];
         v64 = v63;
         v66 = v65;
         v68 = v67;
         v70 = v69;
-        v125[0] = v17;
+        v125[0] = _imageByClampingAlpha;
         v125[1] = v121;
         v119 = v59;
         v125[2] = v59;
@@ -193,66 +193,66 @@ uint64_t __55__NUHDRApplyGainMapFilter_meteorPlusGainMapApplyKernel__block_invok
         v33 = v114;
         v14 = v117;
 
-        v24 = v115;
-        v17 = v113;
+        flexRangeProperties = v115;
+        _imageByClampingAlpha = v113;
       }
 
       else
       {
-        v34 = [v32 firstObject];
-        [v34 gamma];
+        firstObject = [channelInfo firstObject];
+        [firstObject gamma];
         v84 = v83;
-        [v34 min];
+        [firstObject min];
         v86 = v85;
-        [v34 max];
+        [firstObject max];
         v88 = v87;
-        [v34 baseOffset];
+        [firstObject baseOffset];
         v90 = v89;
-        [v34 alternateOffset];
+        [firstObject alternateOffset];
         v92 = v91;
         v35 = [MEMORY[0x1E695F688] vectorWithX:(v88 - v86) Y:(1.0 / v84) Z:v86 W:v30];
         v36 = [MEMORY[0x1E695F688] vectorWithX:v90 Y:v92];
-        v93 = [objc_opt_class() flexRangeGainMapApplyKernel];
-        [v17 extent];
+        flexRangeGainMapApplyKernel = [objc_opt_class() flexRangeGainMapApplyKernel];
+        [_imageByClampingAlpha extent];
         v95 = v94;
         v97 = v96;
         v99 = v98;
         v101 = v100;
-        v124[0] = v17;
+        v124[0] = _imageByClampingAlpha;
         v124[1] = v121;
         v124[2] = v35;
         v124[3] = v36;
         [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:4];
-        v71 = v119 = v93;
-        v73 = [v93 applyWithExtent:v95 arguments:{v97, v99, v101}];
+        v71 = v119 = flexRangeGainMapApplyKernel;
+        v73 = [flexRangeGainMapApplyKernel applyWithExtent:v95 arguments:{v97, v99, v101}];
       }
 
-      v17 = v36;
+      _imageByClampingAlpha = v36;
       v5 = v120;
     }
 
     else
     {
-      v74 = [objc_opt_class() meteorPlusGainMapApplyKernel];
-      [v17 extent];
+      meteorPlusGainMapApplyKernel = [objc_opt_class() meteorPlusGainMapApplyKernel];
+      [_imageByClampingAlpha extent];
       v76 = v75;
       v78 = v77;
       v80 = v79;
       v82 = v81;
-      v123[0] = v17;
+      v123[0] = _imageByClampingAlpha;
       v123[1] = v121;
       *&v75 = v15;
-      v34 = [MEMORY[0x1E696AD98] numberWithFloat:v75];
-      v123[2] = v34;
+      firstObject = [MEMORY[0x1E696AD98] numberWithFloat:v75];
+      v123[2] = firstObject;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v123 count:3];
-      v33 = v74;
-      v73 = [v74 applyWithExtent:v35 arguments:{v76, v78, v80, v82}];
+      v33 = meteorPlusGainMapApplyKernel;
+      v73 = [meteorPlusGainMapApplyKernel applyWithExtent:v35 arguments:{v76, v78, v80, v82}];
     }
 
     v102 = [v73 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(v14, "CGColorSpace")}];
 
-    v3 = v102;
-    v6 = v3;
+    inputImage = v102;
+    v6 = inputImage;
   }
 
   return v6;

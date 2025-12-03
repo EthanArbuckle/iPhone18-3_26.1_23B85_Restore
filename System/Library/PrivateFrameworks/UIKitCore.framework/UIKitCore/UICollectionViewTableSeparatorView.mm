@@ -1,30 +1,30 @@
 @interface UICollectionViewTableSeparatorView
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation UICollectionViewTableSeparatorView
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v8 = [(UICollectionViewTableSeparatorView *)self separatorView];
-  if (!v8)
+  attributesCopy = attributes;
+  separatorView = [(UICollectionViewTableSeparatorView *)self separatorView];
+  if (!separatorView)
   {
     v5 = [_UITableViewCellSeparatorView alloc];
     [(UIView *)self bounds];
-    v8 = [(_UITableViewCellSeparatorView *)v5 initWithFrame:?];
-    [(UICollectionViewTableSeparatorView *)self setSeparatorView:v8];
-    [(UIView *)self addSubview:v8];
+    separatorView = [(_UITableViewCellSeparatorView *)v5 initWithFrame:?];
+    [(UICollectionViewTableSeparatorView *)self setSeparatorView:separatorView];
+    [(UIView *)self addSubview:separatorView];
     [(UIView *)self setNeedsLayout];
   }
 
-  v6 = [v4 separatorColor];
-  [(UIView *)v8 setBackgroundColor:v6];
+  separatorColor = [attributesCopy separatorColor];
+  [(UIView *)separatorView setBackgroundColor:separatorColor];
 
-  v7 = [v4 separatorEffect];
+  separatorEffect = [attributesCopy separatorEffect];
 
-  [(_UITableViewCellSeparatorView *)v8 setSeparatorEffect:v7];
+  [(_UITableViewCellSeparatorView *)separatorView setSeparatorEffect:separatorEffect];
 }
 
 - (void)layoutSubviews
@@ -34,8 +34,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UICollectionViewTableSeparatorView *)self separatorView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  separatorView = [(UICollectionViewTableSeparatorView *)self separatorView];
+  [separatorView setFrame:{v4, v6, v8, v10}];
 }
 
 @end

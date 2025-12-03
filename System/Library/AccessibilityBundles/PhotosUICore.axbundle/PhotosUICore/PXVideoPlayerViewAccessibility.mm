@@ -13,8 +13,8 @@
   if (!v3)
   {
     v4 = [(PXVideoPlayerViewAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_6 startWithSelf:1];
-    v5 = [v4 _accessibilityViewController];
-    v6 = [v5 safeValueForKey:@"_accessoryVisibilityInteractionController"];
+    _accessibilityViewController = [v4 _accessibilityViewController];
+    v6 = [_accessibilityViewController safeValueForKey:@"_accessoryVisibilityInteractionController"];
     v7 = [v6 safeValueForKey:@"_currentAssetViewModel"];
     v3 = [v7 safeValueForKey:@"asset"];
   }
@@ -33,26 +33,26 @@ uint64_t __44__PXVideoPlayerViewAccessibility__axPHAsset__block_invoke(uint64_t 
 
 - (id)accessibilityCustomContent
 {
-  v2 = [(PXVideoPlayerViewAccessibility *)self _axPHAsset];
-  v3 = [v2 accessibilityCustomContent];
+  _axPHAsset = [(PXVideoPlayerViewAccessibility *)self _axPHAsset];
+  accessibilityCustomContent = [_axPHAsset accessibilityCustomContent];
 
-  return v3;
+  return accessibilityCustomContent;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(PXVideoPlayerViewAccessibility *)self _axPHAsset];
-  v3 = [v2 accessibilityLabel];
+  _axPHAsset = [(PXVideoPlayerViewAccessibility *)self _axPHAsset];
+  accessibilityLabel = [_axPHAsset accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(PXVideoPlayerViewAccessibility *)self _axPHAsset];
-  v3 = [v2 accessibilityValue];
+  _axPHAsset = [(PXVideoPlayerViewAccessibility *)self _axPHAsset];
+  accessibilityValue = [_axPHAsset accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

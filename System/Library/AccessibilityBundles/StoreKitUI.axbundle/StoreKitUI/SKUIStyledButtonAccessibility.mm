@@ -1,7 +1,7 @@
 @interface SKUIStyledButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsACategoryButton;
-- (BOOL)_axButtonType:(BOOL)a3;
+- (BOOL)_axButtonType:(BOOL)type;
 - (BOOL)_axIsCloseButton;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -11,28 +11,28 @@
 
 @implementation SKUIStyledButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUISectionHeaderView"];
-  [v3 validateClass:@"SKUIStyledButton" hasInstanceVariable:@"_attributedStringView" withType:"SKUIAttributedStringView"];
-  [v3 validateClass:@"SKUIStyledButton" hasInstanceVariable:@"_itemOfferButton" withType:"SKUIItemOfferButton"];
-  [v3 validateClass:@"SKUIStyledButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUISectionHeaderView"];
+  [validationsCopy validateClass:@"SKUIStyledButton" hasInstanceVariable:@"_attributedStringView" withType:"SKUIAttributedStringView"];
+  [validationsCopy validateClass:@"SKUIStyledButton" hasInstanceVariable:@"_itemOfferButton" withType:"SKUIItemOfferButton"];
+  [validationsCopy validateClass:@"SKUIStyledButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)_accessibilityIsACategoryButton
 {
   v2 = [(SKUIStyledButtonAccessibility *)self safeValueForKey:@"imageView"];
-  v3 = [v2 accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AppStoreBrowseCategoryDownChevron"];
+  accessibilityIdentifier = [v2 accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AppStoreBrowseCategoryDownChevron"];
 
   return v4;
 }
 
-- (BOOL)_axButtonType:(BOOL)a3
+- (BOOL)_axButtonType:(BOOL)type
 {
-  v3 = a3;
-  v5 = [(SKUIStyledButtonAccessibility *)self superview];
+  typeCopy = type;
+  superview = [(SKUIStyledButtonAccessibility *)self superview];
   NSClassFromString(&cfstr_Skuihorizontal_3.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -40,27 +40,27 @@
 
     if (v6)
     {
-      v7 = [v5 subviews];
-      if ([v7 count] != 3)
+      subviews = [superview subviews];
+      if ([subviews count] != 3)
       {
         goto LABEL_19;
       }
 
-      v8 = [v7 objectAtIndexedSubscript:0];
+      v8 = [subviews objectAtIndexedSubscript:0];
       NSClassFromString(&cfstr_Skuitogglebutt_0.isa);
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v7 objectAtIndexedSubscript:1];
+        v9 = [subviews objectAtIndexedSubscript:1];
         NSClassFromString(&cfstr_Skuistyledbutt_0.isa);
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v7 objectAtIndexedSubscript:2];
+          v10 = [subviews objectAtIndexedSubscript:2];
           NSClassFromString(&cfstr_Skuistyledbutt_0.isa);
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v12 = [v7 objectAtIndexedSubscript:0];
+            v12 = [subviews objectAtIndexedSubscript:0];
             if ([v12 _accessibilityViewIsVisible])
             {
 LABEL_10:
@@ -68,22 +68,22 @@ LABEL_10:
               goto LABEL_11;
             }
 
-            v13 = [v7 objectAtIndexedSubscript:1];
+            v13 = [subviews objectAtIndexedSubscript:1];
             if ([v13 _accessibilityViewIsVisible])
             {
 
               goto LABEL_10;
             }
 
-            v18 = [v7 objectAtIndexedSubscript:2];
-            v19 = [v18 _accessibilityViewIsVisible];
+            v18 = [subviews objectAtIndexedSubscript:2];
+            _accessibilityViewIsVisible = [v18 _accessibilityViewIsVisible];
 
-            if (!v19)
+            if (!_accessibilityViewIsVisible)
             {
 LABEL_11:
-              v14 = [v7 objectAtIndexedSubscript:1];
+              v14 = [subviews objectAtIndexedSubscript:1];
 
-              if (v14 == self && !v3 || ([v7 objectAtIndexedSubscript:2], v15 = objc_claimAutoreleasedReturnValue(), v15, v16 = 0, v15 == self) && v3)
+              if (v14 == self && !typeCopy || ([subviews objectAtIndexedSubscript:2], v15 = objc_claimAutoreleasedReturnValue(), v15, v16 = 0, v15 == self) && typeCopy)
               {
                 v16 = 1;
               }
@@ -91,7 +91,7 @@ LABEL_11:
               goto LABEL_20;
             }
 
-            v8 = [v7 objectAtIndexedSubscript:2];
+            v8 = [subviews objectAtIndexedSubscript:2];
             [v8 setAccessibilityIdentifier:@"AXCloseButton"];
             goto LABEL_18;
           }
@@ -119,21 +119,21 @@ LABEL_21:
 - (BOOL)_axIsCloseButton
 {
   v26 = *MEMORY[0x29EDCA608];
-  v3 = [(SKUIStyledButtonAccessibility *)self superview];
+  superview = [(SKUIStyledButtonAccessibility *)self superview];
   NSClassFromString(&cfstr_Skuihorizontal_3.isa);
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([(SKUIStyledButtonAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Skuicardviewel_0.isa)], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [v3 subviews];
-    if ([v5 count] == 1 && (objc_msgSend(v5, "objectAtIndexedSubscript:", 0), v6 = objc_claimAutoreleasedReturnValue(), NSClassFromString(&cfstr_Skuistyledbutt_0.isa), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
+    subviews = [superview subviews];
+    if ([subviews count] == 1 && (objc_msgSend(subviews, "objectAtIndexedSubscript:", 0), v6 = objc_claimAutoreleasedReturnValue(), NSClassFromString(&cfstr_Skuistyledbutt_0.isa), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
     {
-      v8 = [v5 objectAtIndexedSubscript:0];
-      v9 = [v8 subviews];
+      v8 = [subviews objectAtIndexedSubscript:0];
+      subviews2 = [v8 subviews];
 
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = v9;
+      v10 = subviews2;
       v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v11)
       {
@@ -152,8 +152,8 @@ LABEL_21:
             NSClassFromString(&cfstr_Skuiattributed_0.isa);
             if (objc_opt_isKindOfClass())
             {
-              v16 = [v15 accessibilityLabel];
-              v17 = [v16 length];
+              accessibilityLabel = [v15 accessibilityLabel];
+              v17 = [accessibilityLabel length];
 
               if (!v17)
               {
@@ -204,16 +204,16 @@ LABEL_18:
 
     else
     {
-      v6 = [(SKUIStyledButtonAccessibility *)self accessibilityIdentifier];
-      if ([v6 isEqualToString:@"AXCloseButton"])
+      accessibilityIdentifier = [(SKUIStyledButtonAccessibility *)self accessibilityIdentifier];
+      if ([accessibilityIdentifier isEqualToString:@"AXCloseButton"])
       {
       }
 
       else
       {
-        v7 = [(SKUIStyledButtonAccessibility *)self _axIsCloseButton];
+        _axIsCloseButton = [(SKUIStyledButtonAccessibility *)self _axIsCloseButton];
 
-        if (!v7)
+        if (!_axIsCloseButton)
         {
           if ([(SKUIStyledButtonAccessibility *)self _axIsShareButtonInConnect])
           {
@@ -225,21 +225,21 @@ LABEL_18:
             if (![(SKUIStyledButtonAccessibility *)self _axIsPostButtonInConnect])
             {
               v10 = [(SKUIStyledButtonAccessibility *)self safeValueForKey:@"_attributedStringView"];
-              v11 = [v10 accessibilityLabel];
+              accessibilityLabel = [v10 accessibilityLabel];
 
-              if ([v11 length])
+              if ([accessibilityLabel length])
               {
-                v12 = v11;
+                accessibilityLabel2 = accessibilityLabel;
               }
 
               else
               {
                 v13.receiver = self;
                 v13.super_class = SKUIStyledButtonAccessibility;
-                v12 = [(SKUIStyledButtonAccessibility *)&v13 accessibilityLabel];
+                accessibilityLabel2 = [(SKUIStyledButtonAccessibility *)&v13 accessibilityLabel];
               }
 
-              v8 = v12;
+              v8 = accessibilityLabel2;
 
               goto LABEL_11;
             }
@@ -255,13 +255,13 @@ LABEL_18:
     }
 
 LABEL_9:
-    v4 = accessibilitySKUILocalizedString(v5);
+    accessibilityLabel3 = accessibilitySKUILocalizedString(v5);
     goto LABEL_10;
   }
 
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel3 = [v3 accessibilityLabel];
 LABEL_10:
-  v8 = v4;
+  v8 = accessibilityLabel3;
 LABEL_11:
 
   return v8;
@@ -272,15 +272,15 @@ LABEL_11:
   if ([(SKUIStyledButtonAccessibility *)self _accessibilityIsACategoryButton]|| [(SKUIStyledButtonAccessibility *)self _axIsShareButtonInConnect]|| [(SKUIStyledButtonAccessibility *)self _axIsPostButtonInConnect])
   {
     v3 = [(SKUIStyledButtonAccessibility *)self safeValueForKey:@"_attributedStringView"];
-    v4 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
@@ -303,7 +303,7 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = SKUIStyledButtonAccessibility;
   v3 = *MEMORY[0x29EDC7F70] | [(SKUIStyledButtonAccessibility *)&v8 accessibilityTraits];
-  v4 = [(SKUIStyledButtonAccessibility *)self superview];
+  superview = [(SKUIStyledButtonAccessibility *)self superview];
   NSClassFromString(&cfstr_Skuisectionhea_0.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 

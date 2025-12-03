@@ -1,23 +1,23 @@
 @interface ATXNotificationsEventProvider
-- (ATXNotificationsEventProvider)initWithLastNDays:(unint64_t)a3;
-- (unint64_t)modeCountOfNotificationsClearedWithinLast1DayForMode:(unint64_t)a3;
-- (unint64_t)modeCountOfNotificationsClearedWithinLastNDaysForMode:(unint64_t)a3;
-- (unint64_t)modeCountOfNotificationsReceivedWithinLast1DayForMode:(unint64_t)a3;
-- (unint64_t)modeCountOfNotificationsReceivedWithinLastNDaysForMode:(unint64_t)a3;
+- (ATXNotificationsEventProvider)initWithLastNDays:(unint64_t)days;
+- (unint64_t)modeCountOfNotificationsClearedWithinLast1DayForMode:(unint64_t)mode;
+- (unint64_t)modeCountOfNotificationsClearedWithinLastNDaysForMode:(unint64_t)mode;
+- (unint64_t)modeCountOfNotificationsReceivedWithinLast1DayForMode:(unint64_t)mode;
+- (unint64_t)modeCountOfNotificationsReceivedWithinLastNDaysForMode:(unint64_t)mode;
 - (void)cacheGlobalNotificationStreamIfNecessary;
 - (void)cacheModeNotificationStreamIfNecessary;
 @end
 
 @implementation ATXNotificationsEventProvider
 
-- (ATXNotificationsEventProvider)initWithLastNDays:(unint64_t)a3
+- (ATXNotificationsEventProvider)initWithLastNDays:(unint64_t)days
 {
   v8.receiver = self;
   v8.super_class = ATXNotificationsEventProvider;
   v4 = [(ATXNotificationsEventProvider *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(-86400 * a3)];
+    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(-86400 * days)];
     thresholdDateLastNDays = v4->_thresholdDateLastNDays;
     v4->_thresholdDateLastNDays = v5;
   }
@@ -28,7 +28,7 @@
 - (void)cacheGlobalNotificationStreamIfNecessary
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_2263AA000, a2, OS_LOG_TYPE_ERROR, "ATXNotificationsEventProvider: Could not fetch notification stream with error: %@", &v4, 0xCu);
@@ -80,7 +80,7 @@ LABEL_9:
 - (void)cacheModeNotificationStreamIfNecessary
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_2263AA000, a2, OS_LOG_TYPE_ERROR, "ATXNotificationsEventProvider: Could not fetch inferred mode stream and notification stream with error: %@", &v4, 0xCu);
@@ -226,44 +226,44 @@ LABEL_23:
 LABEL_24:
 }
 
-- (unint64_t)modeCountOfNotificationsReceivedWithinLastNDaysForMode:(unint64_t)a3
+- (unint64_t)modeCountOfNotificationsReceivedWithinLastNDaysForMode:(unint64_t)mode
 {
   [(ATXNotificationsEventProvider *)self cacheModeNotificationStreamIfNecessary];
   v4 = ATXModeToString();
   v5 = [(NSDictionary *)self->_notificationsReceivedInModeInLastNDays objectForKeyedSubscript:v4];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
-- (unint64_t)modeCountOfNotificationsReceivedWithinLast1DayForMode:(unint64_t)a3
+- (unint64_t)modeCountOfNotificationsReceivedWithinLast1DayForMode:(unint64_t)mode
 {
   [(ATXNotificationsEventProvider *)self cacheModeNotificationStreamIfNecessary];
   v4 = ATXModeToString();
   v5 = [(NSDictionary *)self->_notificationsReceivedInModeInLast1Day objectForKeyedSubscript:v4];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
-- (unint64_t)modeCountOfNotificationsClearedWithinLastNDaysForMode:(unint64_t)a3
+- (unint64_t)modeCountOfNotificationsClearedWithinLastNDaysForMode:(unint64_t)mode
 {
   [(ATXNotificationsEventProvider *)self cacheModeNotificationStreamIfNecessary];
   v4 = ATXModeToString();
   v5 = [(NSDictionary *)self->_notificationsClearedInModeInLastNDays objectForKeyedSubscript:v4];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
-- (unint64_t)modeCountOfNotificationsClearedWithinLast1DayForMode:(unint64_t)a3
+- (unint64_t)modeCountOfNotificationsClearedWithinLast1DayForMode:(unint64_t)mode
 {
   [(ATXNotificationsEventProvider *)self cacheModeNotificationStreamIfNecessary];
   v4 = ATXModeToString();
   v5 = [(NSDictionary *)self->_notificationsClearedInModeInLast1Day objectForKeyedSubscript:v4];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
 @end

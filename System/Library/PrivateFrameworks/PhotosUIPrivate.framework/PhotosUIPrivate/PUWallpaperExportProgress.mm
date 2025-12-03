@@ -1,21 +1,21 @@
 @interface PUWallpaperExportProgress
 - (PUWallpaperExportProgress)init;
-- (PUWallpaperExportProgress)initWithAssetUUIDs:(id)a3 progressHandler:(id)a4;
-- (void)_updateProgressValue:(double)a3 forAssetUUID:(id)a4 inDictionary:(id)a5;
+- (PUWallpaperExportProgress)initWithAssetUUIDs:(id)ds progressHandler:(id)handler;
+- (void)_updateProgressValue:(double)value forAssetUUID:(id)d inDictionary:(id)dictionary;
 - (void)begin;
 - (void)finish;
 @end
 
 @implementation PUWallpaperExportProgress
 
-- (void)_updateProgressValue:(double)a3 forAssetUUID:(id)a4 inDictionary:(id)a5
+- (void)_updateProgressValue:(double)value forAssetUUID:(id)d inDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   os_unfair_lock_lock(&self->_lock);
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v9 setObject:v10 forKey:v8];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  [dictionaryCopy setObject:v10 forKey:dCopy];
 
   v26 = 0u;
   v27 = 0u;
@@ -84,10 +84,10 @@
   }
 }
 
-- (PUWallpaperExportProgress)initWithAssetUUIDs:(id)a3 progressHandler:(id)a4
+- (PUWallpaperExportProgress)initWithAssetUUIDs:(id)ds progressHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = PUWallpaperExportProgress;
   v8 = [(PUWallpaperExportProgress *)&v20 init];
@@ -95,11 +95,11 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [v6 copy];
+    v10 = [dsCopy copy];
     assetUUIDs = v9->_assetUUIDs;
     v9->_assetUUIDs = v10;
 
-    v12 = [v7 copy];
+    v12 = [handlerCopy copy];
     progressHandler = v9->_progressHandler;
     v9->_progressHandler = v12;
 
@@ -119,8 +119,8 @@
 
 - (PUWallpaperExportProgress)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleResourceManager.m" lineNumber:1138 description:{@"%s is not available as initializer", "-[PUWallpaperExportProgress init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleResourceManager.m" lineNumber:1138 description:{@"%s is not available as initializer", "-[PUWallpaperExportProgress init]"}];
 
   abort();
 }

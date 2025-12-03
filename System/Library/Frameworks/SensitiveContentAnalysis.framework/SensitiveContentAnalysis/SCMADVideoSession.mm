@@ -1,22 +1,22 @@
 @interface SCMADVideoSession
 + (BOOL)ttrFrameCollectionEnabled;
-- (BOOL)processPixelBuffer:(__CVBuffer *)a3 timestamp:(id *)a4 orientation:(unsigned int)a5 regionOfInterest:(CGRect)a6 resultHandler:(id)a7;
-- (SCMADVideoSession)initWithError:(id *)a3;
-- (void)requestTTRNotificationWithVideoFrames:(id)a3 streamID:(id)a4 startDate:(id)a5 completionHandler:(id)a6;
+- (BOOL)processPixelBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest resultHandler:(id)handler;
+- (SCMADVideoSession)initWithError:(id *)error;
+- (void)requestTTRNotificationWithVideoFrames:(id)frames streamID:(id)d startDate:(id)date completionHandler:(id)handler;
 @end
 
 @implementation SCMADVideoSession
 
-- (SCMADVideoSession)initWithError:(id *)a3
+- (SCMADVideoSession)initWithError:(id *)error
 {
   v11.receiver = self;
   v11.super_class = SCMADVideoSession;
   v4 = [(SCMADVideoSession *)&v11 init];
   if (v4)
   {
-    v5 = [getMADVideoSessionClass() session];
+    session = [getMADVideoSessionClass() session];
     session = v4->_session;
-    v4->_session = v5;
+    v4->_session = session;
 
     v13 = 0;
     v14 = &v13;
@@ -37,7 +37,7 @@
     v8 = v7;
     _Block_object_dispose(&v13, 8);
     v9 = objc_alloc_init(v7);
-    if (([(MADVideoSession *)v4->_session addRequest:v9 error:a3]& 1) == 0)
+    if (([(MADVideoSession *)v4->_session addRequest:v9 error:error]& 1) == 0)
     {
 
       v4 = 0;
@@ -47,22 +47,22 @@
   return v4;
 }
 
-- (BOOL)processPixelBuffer:(__CVBuffer *)a3 timestamp:(id *)a4 orientation:(unsigned int)a5 regionOfInterest:(CGRect)a6 resultHandler:(id)a7
+- (BOOL)processPixelBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest resultHandler:(id)handler
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = *&a5;
-  v15 = a7;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v11 = *&orientation;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__SCMADVideoSession_processPixelBuffer_timestamp_orientation_regionOfInterest_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7A43BB8;
-  v16 = v15;
+  v16 = handlerCopy;
   v27 = v16;
   v17 = _Block_copy(aBlock);
-  v18 = [(SCMADVideoSession *)self session];
+  session = [(SCMADVideoSession *)self session];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
@@ -74,21 +74,21 @@
   if (!MADVideoSessionFramePropertiesClass)
   {
 LABEL_5:
-    v20 = [(SCMADVideoSession *)self session];
-    v24 = *&a4->var0;
-    var3 = a4->var3;
-    v22 = [v20 processPixelBuffer:a3 timestamp:&v24 orientation:v11 resultHandler:v17];
+    session2 = [(SCMADVideoSession *)self session];
+    v24 = *&timestamp->var0;
+    var3 = timestamp->var3;
+    v22 = [session2 processPixelBuffer:buffer timestamp:&v24 orientation:v11 resultHandler:v17];
     goto LABEL_6;
   }
 
-  v20 = objc_alloc_init(getMADVideoSessionFramePropertiesClass());
-  [v20 setOrientation:v11];
-  v24 = *&a4->var0;
-  var3 = a4->var3;
-  [v20 setTimestamp:&v24];
-  [v20 setRegionOfInterest:{x, y, width, height}];
-  v21 = [(SCMADVideoSession *)self session];
-  v22 = [v21 processPixelBuffer:a3 frameProperties:v20 resultHandler:v17];
+  session2 = objc_alloc_init(getMADVideoSessionFramePropertiesClass());
+  [session2 setOrientation:v11];
+  v24 = *&timestamp->var0;
+  var3 = timestamp->var3;
+  [session2 setTimestamp:&v24];
+  [session2 setRegionOfInterest:{x, y, width, height}];
+  session3 = [(SCMADVideoSession *)self session];
+  v22 = [session3 processPixelBuffer:buffer frameProperties:session2 resultHandler:v17];
 
 LABEL_6:
   return v22;
@@ -199,19 +199,19 @@ void __93__SCMADVideoSession_processPixelBuffer_timestamp_orientation_regionOfIn
   return v3 & 1;
 }
 
-- (void)requestTTRNotificationWithVideoFrames:(id)a3 streamID:(id)a4 startDate:(id)a5 completionHandler:(id)a6
+- (void)requestTTRNotificationWithVideoFrames:(id)frames streamID:(id)d startDate:(id)date completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  framesCopy = frames;
+  dCopy = d;
+  dateCopy = date;
+  handlerCopy = handler;
   v14 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = v10;
+  v15 = framesCopy;
   v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v16)
   {
@@ -227,8 +227,8 @@ void __93__SCMADVideoSession_processPixelBuffer_timestamp_orientation_regionOfIn
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v27 + 1) + 8 * v19) frame];
-        [v14 addObject:v20];
+        frame = [*(*(&v27 + 1) + 8 * v19) frame];
+        [v14 addObject:frame];
 
         ++v19;
       }
@@ -241,19 +241,19 @@ void __93__SCMADVideoSession_processPixelBuffer_timestamp_orientation_regionOfIn
   }
 
   v21 = objc_alloc_init(getMADVideoSessionTTROptionsClass());
-  [v21 setStreamID:v11];
-  [v21 setStartDate:v12];
-  v22 = [MEMORY[0x1E695DF00] date];
-  [v21 setEventDate:v22];
+  [v21 setStreamID:dCopy];
+  [v21 setStartDate:dateCopy];
+  date = [MEMORY[0x1E695DF00] date];
+  [v21 setEventDate:date];
 
-  v23 = [(SCMADVideoSession *)self session];
+  session = [(SCMADVideoSession *)self session];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __101__SCMADVideoSession_TTR__requestTTRNotificationWithVideoFrames_streamID_startDate_completionHandler___block_invoke;
   v25[3] = &unk_1E7A43BE0;
-  v26 = v13;
-  v24 = v13;
-  [v23 requestTTRNotificationWithVideoFrames:v14 options:v21 completionHandler:v25];
+  v26 = handlerCopy;
+  v24 = handlerCopy;
+  [session requestTTRNotificationWithVideoFrames:v14 options:v21 completionHandler:v25];
 }
 
 @end

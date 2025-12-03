@@ -2,64 +2,64 @@
 - (BSIntegerSet)publishedDomains;
 - (STLocalStatusServer)init;
 - (STLocalStatusServerDelegate)delegate;
-- (id)_internalQueue_dataForClient:(uint64_t)a3 domain:(void *)a4 presentationData:;
-- (id)_internalQueue_dataForDomain:(uint64_t)a1;
-- (id)_internalQueue_fallbackDataForPublisherClient:(uint64_t)a3 domain:;
-- (id)_internalQueue_presentationDataForDomain:(uint64_t)a1;
+- (id)_internalQueue_dataForClient:(uint64_t)client domain:(void *)domain presentationData:;
+- (id)_internalQueue_dataForDomain:(uint64_t)domain;
+- (id)_internalQueue_fallbackDataForPublisherClient:(uint64_t)client domain:;
+- (id)_internalQueue_presentationDataForDomain:(uint64_t)domain;
 - (id)_internalQueue_publishedDomains;
-- (id)_internalQueue_volatileDataForDomain:(uint64_t)a1;
-- (id)dataForDomain:(unint64_t)a3 client:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_internalQueue_volatileDataForDomain:(uint64_t)domain;
+- (id)dataForDomain:(unint64_t)domain client:(id)client;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)internalQueuePublisherServerHandle;
-- (id)publishedDataForDomain:(unint64_t)a3;
-- (id)publishedVolatileDataForDomain:(unint64_t)a3;
+- (id)publishedDataForDomain:(unint64_t)domain;
+- (id)publishedVolatileDataForDomain:(unint64_t)domain;
 - (id)succinctDescription;
-- (void)_internalQueue_mutateDataForDomain:(void *)a3 withChangeContext:(void *)a4 block:;
-- (void)_internalQueue_publishData:(void *)a3 forPublisherClient:(uint64_t)a4 domain:(void *)a5 inDataChangeRecord:(void *)a6 withChangeContext:(void *)a7 completion:;
-- (void)_internalQueue_publishData:(void *)a3 forPublisherClient:(uint64_t)a4 domain:(void *)a5 withChangeContext:(void *)a6 completion:;
-- (void)_internalQueue_publishVolatileData:(void *)a3 forPublisherClient:(uint64_t)a4 domain:(void *)a5 withChangeContext:(void *)a6 completion:;
-- (void)_internalQueue_registerPublisherClient:(uint64_t)a3 forDomain:(void *)a4 fallbackData:;
-- (void)_internalQueue_removePublisherClient:(uint64_t)a3 forDomain:;
-- (void)_internalQueue_replaceDataChangeRecord:(void *)a3 forPublisherClient:(void *)a4 completion:;
-- (void)_internalQueue_replaceDataChangeRecord:(void *)a3 forPublisherClient:(void *)a4 inDataChangeRecord:(void *)a5 applyBlock:(void *)a6 completion:;
-- (void)_internalQueue_replaceVolatileDataChangeRecord:(void *)a3 forPublisherClient:(void *)a4 completion:;
-- (void)_internalQueue_updateDataForPublisherClient:(uint64_t)a3 domain:(void *)a4 usingDiffProvider:(void *)a5 completion:;
-- (void)_internalQueue_updateVolatileDataForPublisherClient:(uint64_t)a3 domain:(void *)a4 usingDiffProvider:(void *)a5 completion:;
-- (void)addClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4;
-- (void)addDataTransformer:(id)a3 forDomain:(unint64_t)a4;
-- (void)modifyClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4 usingBlock:(id)a5;
-- (void)modifyDataTransformer:(id)a3 forDomain:(unint64_t)a4 usingBlock:(id)a5;
-- (void)publishData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7;
-- (void)publishVolatileData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7;
-- (void)registerClient:(id)a3 forDomain:(unint64_t)a4;
-- (void)registerPublisherClient:(id)a3 forDomain:(unint64_t)a4 fallbackData:(id)a5;
-- (void)removeClient:(id)a3 forDomain:(unint64_t)a4;
-- (void)removeClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4;
-- (void)removeDataTransformer:(id)a3 forDomain:(unint64_t)a4;
-- (void)removePublisherClient:(id)a3 forDomain:(unint64_t)a4;
-- (void)replaceDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5;
-- (void)replaceVolatileDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5;
-- (void)reportUserInteraction:(id)a3 forClient:(id)a4 domain:(unint64_t)a5;
-- (void)setDelegate:(id)a3;
-- (void)updateDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6;
-- (void)updateVolatileDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6;
+- (void)_internalQueue_mutateDataForDomain:(void *)domain withChangeContext:(void *)context block:;
+- (void)_internalQueue_publishData:(void *)data forPublisherClient:(uint64_t)client domain:(void *)domain inDataChangeRecord:(void *)record withChangeContext:(void *)context completion:;
+- (void)_internalQueue_publishData:(void *)data forPublisherClient:(uint64_t)client domain:(void *)domain withChangeContext:(void *)context completion:;
+- (void)_internalQueue_publishVolatileData:(void *)data forPublisherClient:(uint64_t)client domain:(void *)domain withChangeContext:(void *)context completion:;
+- (void)_internalQueue_registerPublisherClient:(uint64_t)client forDomain:(void *)domain fallbackData:;
+- (void)_internalQueue_removePublisherClient:(uint64_t)client forDomain:;
+- (void)_internalQueue_replaceDataChangeRecord:(void *)record forPublisherClient:(void *)client completion:;
+- (void)_internalQueue_replaceDataChangeRecord:(void *)record forPublisherClient:(void *)client inDataChangeRecord:(void *)changeRecord applyBlock:(void *)block completion:;
+- (void)_internalQueue_replaceVolatileDataChangeRecord:(void *)record forPublisherClient:(void *)client completion:;
+- (void)_internalQueue_updateDataForPublisherClient:(uint64_t)client domain:(void *)domain usingDiffProvider:(void *)provider completion:;
+- (void)_internalQueue_updateVolatileDataForPublisherClient:(uint64_t)client domain:(void *)domain usingDiffProvider:(void *)provider completion:;
+- (void)addClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain;
+- (void)addDataTransformer:(id)transformer forDomain:(unint64_t)domain;
+- (void)modifyClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain usingBlock:(id)block;
+- (void)modifyDataTransformer:(id)transformer forDomain:(unint64_t)domain usingBlock:(id)block;
+- (void)publishData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion;
+- (void)publishVolatileData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion;
+- (void)registerClient:(id)client forDomain:(unint64_t)domain;
+- (void)registerPublisherClient:(id)client forDomain:(unint64_t)domain fallbackData:(id)data;
+- (void)removeClient:(id)client forDomain:(unint64_t)domain;
+- (void)removeClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain;
+- (void)removeDataTransformer:(id)transformer forDomain:(unint64_t)domain;
+- (void)removePublisherClient:(id)client forDomain:(unint64_t)domain;
+- (void)replaceDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion;
+- (void)replaceVolatileDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion;
+- (void)reportUserInteraction:(id)interaction forClient:(id)client domain:(unint64_t)domain;
+- (void)setDelegate:(id)delegate;
+- (void)updateDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion;
+- (void)updateVolatileDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion;
 @end
 
 @implementation STLocalStatusServer
 
 - (id)_internalQueue_publishedDomains
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[11]);
-    v2 = [v1[5] recordForKey:@"volatileData"];
-    v3 = [v2 domainsWithSignificantData];
-    v1 = [v3 copy];
+    dispatch_assert_queue_V2(self[11]);
+    v2 = [selfCopy[5] recordForKey:@"volatileData"];
+    domainsWithSignificantData = [v2 domainsWithSignificantData];
+    selfCopy = [domainsWithSignificantData copy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (STLocalStatusServerDelegate)delegate
@@ -95,21 +95,21 @@
     dataChangeLog = v2->_dataChangeLog;
     v2->_dataChangeLog = v10;
 
-    v12 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     changeLogKeysByPublisherClient = v2->_changeLogKeysByPublisherClient;
-    v2->_changeLogKeysByPublisherClient = v12;
+    v2->_changeLogKeysByPublisherClient = weakToStrongObjectsMapTable;
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dataTransformersByDomain = v2->_dataTransformersByDomain;
-    v2->_dataTransformersByDomain = v14;
+    v2->_dataTransformersByDomain = dictionary;
 
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     clientDataTransformerProvidersByDomain = v2->_clientDataTransformerProvidersByDomain;
-    v2->_clientDataTransformerProvidersByDomain = v16;
+    v2->_clientDataTransformerProvidersByDomain = dictionary2;
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     domainsByChangeLogKey = v2->_domainsByChangeLogKey;
-    v2->_domainsByChangeLogKey = v18;
+    v2->_domainsByChangeLogKey = dictionary3;
 
     Serial = BSDispatchQueueCreateSerial();
     internalQueue = v2->_internalQueue;
@@ -135,9 +135,9 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -153,8 +153,8 @@
   v7[2] = __35__STLocalStatusServer_setDelegate___block_invoke;
   v7[3] = &unk_279D34B18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -206,7 +206,7 @@ uint64_t __39__STLocalStatusServer_publishedDomains__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)publishedDataForDomain:(unint64_t)a3
+- (id)publishedDataForDomain:(unint64_t)domain
 {
   v7 = 0;
   v8 = &v7;
@@ -230,7 +230,7 @@ uint64_t __39__STLocalStatusServer_publishedDomains__block_invoke(uint64_t a1)
   block[3] = &unk_279D34CF8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = domain;
   dispatch_sync(internalQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -247,12 +247,12 @@ void __46__STLocalStatusServer_publishedDataForDomain___block_invoke(uint64_t *a
   *(v3 + 40) = v2;
 }
 
-- (id)_internalQueue_dataForDomain:(uint64_t)a1
+- (id)_internalQueue_dataForDomain:(uint64_t)domain
 {
-  if (a1)
+  if (domain)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v4 = [*(a1 + 40) recordForKey:@"data"];
+    dispatch_assert_queue_V2(*(domain + 88));
+    v4 = [*(domain + 40) recordForKey:@"data"];
     v5 = [v4 currentDataForDomain:a2];
   }
 
@@ -264,7 +264,7 @@ void __46__STLocalStatusServer_publishedDataForDomain___block_invoke(uint64_t *a
   return v5;
 }
 
-- (id)publishedVolatileDataForDomain:(unint64_t)a3
+- (id)publishedVolatileDataForDomain:(unint64_t)domain
 {
   v7 = 0;
   v8 = &v7;
@@ -288,7 +288,7 @@ void __46__STLocalStatusServer_publishedDataForDomain___block_invoke(uint64_t *a
   block[3] = &unk_279D34CF8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = domain;
   dispatch_sync(internalQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -305,12 +305,12 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (id)_internalQueue_volatileDataForDomain:(uint64_t)a1
+- (id)_internalQueue_volatileDataForDomain:(uint64_t)domain
 {
-  if (a1)
+  if (domain)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v4 = [*(a1 + 40) recordForKey:@"volatileData"];
+    dispatch_assert_queue_V2(*(domain + 88));
+    v4 = [*(domain + 40) recordForKey:@"volatileData"];
     v5 = [v4 currentDataForDomain:a2];
   }
 
@@ -322,10 +322,10 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   return v5;
 }
 
-- (void)registerPublisherClient:(id)a3 forDomain:(unint64_t)a4 fallbackData:(id)a5
+- (void)registerPublisherClient:(id)client forDomain:(unint64_t)domain fallbackData:(id)data
 {
-  v8 = a3;
-  v9 = a5;
+  clientCopy = client;
+  dataCopy = data;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -341,60 +341,60 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   v13[2] = __70__STLocalStatusServer_registerPublisherClient_forDomain_fallbackData___block_invoke;
   v13[3] = &unk_279D34D20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = clientCopy;
+  v15 = dataCopy;
+  domainCopy = domain;
+  v11 = dataCopy;
+  v12 = clientCopy;
   dispatch_sync(internalQueue, v13);
 }
 
-- (void)_internalQueue_registerPublisherClient:(uint64_t)a3 forDomain:(void *)a4 fallbackData:
+- (void)_internalQueue_registerPublisherClient:(uint64_t)client forDomain:(void *)domain fallbackData:
 {
   v18 = a2;
-  if (a1)
+  if (self)
   {
-    v7 = *(a1 + 88);
-    v8 = a4;
+    v7 = *(self + 88);
+    domainCopy = domain;
     dispatch_assert_queue_V2(v7);
-    v9 = *(a1 + 24);
-    v10 = [v9 objectForKey:a3];
+    v9 = *(self + 24);
+    v10 = [v9 objectForKey:client];
     if (!v10)
     {
       v10 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:517 capacity:1];
-      [v9 setObject:v10 forKey:a3];
+      [v9 setObject:v10 forKey:client];
     }
 
     [v10 addObject:v18];
-    v11 = *(a1 + 32);
-    v12 = [v11 objectForKey:v18];
-    if (!v12)
+    v11 = *(self + 32);
+    uUIDString = [v11 objectForKey:v18];
+    if (!uUIDString)
     {
-      v13 = [MEMORY[0x277CCAD78] UUID];
-      v12 = [v13 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
-      [v11 setObject:v12 forKey:v18];
+      [v11 setObject:uUIDString forKey:v18];
     }
 
-    v14 = *(a1 + 80);
-    v15 = [v14 objectForKey:v12];
-    if (!v15)
+    v14 = *(self + 80);
+    array = [v14 objectForKey:uUIDString];
+    if (!array)
     {
-      v15 = [MEMORY[0x277CBEB18] array];
-      [v14 setObject:v15 forKey:v12];
+      array = [MEMORY[0x277CBEB18] array];
+      [v14 setObject:array forKey:uUIDString];
     }
 
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    [v15 addObject:v16];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:client];
+    [array addObject:v16];
 
-    v17 = [*(a1 + 40) recordForKey:@"volatileData"];
-    [v17 setFallbackData:v8 forClientKey:v12 domain:a3];
+    v17 = [*(self + 40) recordForKey:@"volatileData"];
+    [v17 setFallbackData:domainCopy forClientKey:uUIDString domain:client];
   }
 }
 
-- (void)removePublisherClient:(id)a3 forDomain:(unint64_t)a4
+- (void)removePublisherClient:(id)client forDomain:(unint64_t)domain
 {
-  v6 = a3;
+  clientCopy = client;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -410,24 +410,24 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   block[2] = __55__STLocalStatusServer_removePublisherClient_forDomain___block_invoke;
   block[3] = &unk_279D34D48;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = clientCopy;
+  domainCopy = domain;
+  v8 = clientCopy;
   dispatch_sync(internalQueue, block);
 }
 
-- (void)_internalQueue_removePublisherClient:(uint64_t)a3 forDomain:
+- (void)_internalQueue_removePublisherClient:(uint64_t)client forDomain:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v6 = *(a1 + 24);
-    v7 = [v6 objectForKey:a3];
+    dispatch_assert_queue_V2(*(self + 88));
+    v6 = *(self + 24);
+    v7 = [v6 objectForKey:client];
     [v7 removeObject:v5];
-    v8 = *(a1 + 32);
+    v8 = *(self + 32);
     v9 = [v8 objectForKey:v5];
-    v10 = *(a1 + 40);
+    v10 = *(self + 40);
     v11 = [v10 recordForKey:@"volatileData"];
 
     v17[0] = MEMORY[0x277D85DD0];
@@ -438,16 +438,16 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
     v18 = v12;
     v13 = v9;
     v19 = v13;
-    v20 = a3;
-    [(STLocalStatusServer *)a1 _internalQueue_mutateDataForDomain:a3 withChangeContext:0 block:v17];
+    clientCopy = client;
+    [(STLocalStatusServer *)self _internalQueue_mutateDataForDomain:client withChangeContext:0 block:v17];
     if (![v7 count])
     {
-      [v6 removeObjectForKey:a3];
+      [v6 removeObjectForKey:client];
     }
 
-    v14 = *(a1 + 80);
+    v14 = *(self + 80);
     v15 = [v14 objectForKey:v13];
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:client];
     [v15 removeObject:v16];
 
     if (![v15 count])
@@ -458,11 +458,11 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   }
 }
 
-- (void)replaceDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5
+- (void)replaceDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  clientCopy = client;
+  completionCopy = completion;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -478,63 +478,63 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   v15[2] = __77__STLocalStatusServer_replaceDataChangeRecord_forPublisherClient_completion___block_invoke;
   v15[3] = &unk_279D34D70;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = recordCopy;
+  v17 = clientCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = clientCopy;
+  v14 = recordCopy;
   dispatch_sync(internalQueue, v15);
 }
 
-- (void)_internalQueue_replaceDataChangeRecord:(void *)a3 forPublisherClient:(void *)a4 completion:
+- (void)_internalQueue_replaceDataChangeRecord:(void *)record forPublisherClient:(void *)client completion:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  recordCopy = record;
+  clientCopy = client;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v10 = [v7 domainsWithData];
+    dispatch_assert_queue_V2(*(self + 88));
+    domainsWithData = [v7 domainsWithData];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    v11 = *(a1 + 24);
+    v11 = *(self + 24);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __92__STLocalStatusServer__internalQueue_replaceDataChangeRecord_forPublisherClient_completion___block_invoke;
     v16[3] = &unk_279D34EB0;
     v12 = v11;
     v17 = v12;
-    v13 = v8;
+    v13 = recordCopy;
     v18 = v13;
     v19 = &v20;
-    [v10 enumerateWithBlock:v16];
+    [domainsWithData enumerateWithBlock:v16];
     if (v21[3])
     {
-      if (v9)
+      if (clientCopy)
       {
-        v9[2](v9);
+        clientCopy[2](clientCopy);
       }
     }
 
     else
     {
-      v14 = *(a1 + 40);
+      v14 = *(self + 40);
       v15 = [v14 recordForKey:@"data"];
-      [(STLocalStatusServer *)a1 _internalQueue_replaceDataChangeRecord:v7 forPublisherClient:v13 inDataChangeRecord:v15 applyBlock:&__block_literal_global_145 completion:v9];
+      [(STLocalStatusServer *)self _internalQueue_replaceDataChangeRecord:v7 forPublisherClient:v13 inDataChangeRecord:v15 applyBlock:&__block_literal_global_145 completion:clientCopy];
     }
 
     _Block_object_dispose(&v20, 8);
   }
 }
 
-- (void)replaceVolatileDataChangeRecord:(id)a3 forPublisherClient:(id)a4 completion:(id)a5
+- (void)replaceVolatileDataChangeRecord:(id)record forPublisherClient:(id)client completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  clientCopy = client;
+  completionCopy = completion;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -550,64 +550,64 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   v15[2] = __85__STLocalStatusServer_replaceVolatileDataChangeRecord_forPublisherClient_completion___block_invoke;
   v15[3] = &unk_279D34D70;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = recordCopy;
+  v17 = clientCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = clientCopy;
+  v14 = recordCopy;
   dispatch_sync(internalQueue, v15);
 }
 
-- (void)_internalQueue_replaceVolatileDataChangeRecord:(void *)a3 forPublisherClient:(void *)a4 completion:
+- (void)_internalQueue_replaceVolatileDataChangeRecord:(void *)record forPublisherClient:(void *)client completion:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  recordCopy = record;
+  clientCopy = client;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v10 = [v7 domainsWithData];
+    dispatch_assert_queue_V2(*(self + 88));
+    domainsWithData = [v7 domainsWithData];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    v11 = *(a1 + 24);
+    v11 = *(self + 24);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __100__STLocalStatusServer__internalQueue_replaceVolatileDataChangeRecord_forPublisherClient_completion___block_invoke;
     v16[3] = &unk_279D34EB0;
     v12 = v11;
     v17 = v12;
-    v13 = v8;
+    v13 = recordCopy;
     v18 = v13;
     v19 = &v20;
-    [v10 enumerateWithBlock:v16];
+    [domainsWithData enumerateWithBlock:v16];
     if (v21[3])
     {
-      if (v9)
+      if (clientCopy)
       {
-        v9[2](v9);
+        clientCopy[2](clientCopy);
       }
     }
 
     else
     {
-      v14 = *(a1 + 40);
+      v14 = *(self + 40);
       v15 = [v14 recordForKey:@"volatileData"];
-      [(STLocalStatusServer *)a1 _internalQueue_replaceDataChangeRecord:v7 forPublisherClient:v13 inDataChangeRecord:v15 applyBlock:&__block_literal_global_148 completion:v9];
+      [(STLocalStatusServer *)self _internalQueue_replaceDataChangeRecord:v7 forPublisherClient:v13 inDataChangeRecord:v15 applyBlock:&__block_literal_global_148 completion:clientCopy];
     }
 
     _Block_object_dispose(&v20, 8);
   }
 }
 
-- (void)publishData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7
+- (void)publishData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dataCopy = data;
+  clientCopy = client;
+  contextCopy = context;
+  completionCopy = completion;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -623,35 +623,35 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   v21[2] = __90__STLocalStatusServer_publishData_forPublisherClient_domain_withChangeContext_completion___block_invoke;
   v21[3] = &unk_279D34D98;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = a5;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = dataCopy;
+  v23 = clientCopy;
+  v24 = contextCopy;
+  v25 = completionCopy;
+  domainCopy = domain;
+  v17 = completionCopy;
+  v18 = contextCopy;
+  v19 = clientCopy;
+  v20 = dataCopy;
   dispatch_sync(internalQueue, v21);
 }
 
-- (void)_internalQueue_publishData:(void *)a3 forPublisherClient:(uint64_t)a4 domain:(void *)a5 withChangeContext:(void *)a6 completion:
+- (void)_internalQueue_publishData:(void *)data forPublisherClient:(uint64_t)client domain:(void *)domain withChangeContext:(void *)context completion:
 {
   v23 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (a1)
+  dataCopy = data;
+  domainCopy = domain;
+  contextCopy = context;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v15 = [*(a1 + 24) objectForKey:a4];
-    v16 = [v15 containsObject:v12];
+    dispatch_assert_queue_V2(*(self + 88));
+    v15 = [*(self + 24) objectForKey:client];
+    v16 = [v15 containsObject:dataCopy];
 
     if (v16)
     {
-      v17 = [*(a1 + 40) recordForKey:@"data"];
-      [(STLocalStatusServer *)a1 _internalQueue_publishData:v11 forPublisherClient:v12 domain:a4 inDataChangeRecord:v17 withChangeContext:v13 completion:v14];
+      v17 = [*(self + 40) recordForKey:@"data"];
+      [(STLocalStatusServer *)self _internalQueue_publishData:v11 forPublisherClient:dataCopy domain:client inDataChangeRecord:v17 withChangeContext:domainCopy completion:contextCopy];
     }
 
     else
@@ -665,9 +665,9 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
         _os_log_impl(&dword_26C4AD000, v18, OS_LOG_TYPE_DEFAULT, "Ignoring data from unknown publisher for %{public}@ domain", &v21, 0xCu);
       }
 
-      if (v14)
+      if (contextCopy)
       {
-        v14[2](v14);
+        contextCopy[2](contextCopy);
       }
     }
   }
@@ -675,12 +675,12 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishVolatileData:(id)a3 forPublisherClient:(id)a4 domain:(unint64_t)a5 withChangeContext:(id)a6 completion:(id)a7
+- (void)publishVolatileData:(id)data forPublisherClient:(id)client domain:(unint64_t)domain withChangeContext:(id)context completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dataCopy = data;
+  clientCopy = client;
+  contextCopy = context;
+  completionCopy = completion;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -696,35 +696,35 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   v21[2] = __98__STLocalStatusServer_publishVolatileData_forPublisherClient_domain_withChangeContext_completion___block_invoke;
   v21[3] = &unk_279D34D98;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = a5;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = dataCopy;
+  v23 = clientCopy;
+  v24 = contextCopy;
+  v25 = completionCopy;
+  domainCopy = domain;
+  v17 = completionCopy;
+  v18 = contextCopy;
+  v19 = clientCopy;
+  v20 = dataCopy;
   dispatch_sync(internalQueue, v21);
 }
 
-- (void)_internalQueue_publishVolatileData:(void *)a3 forPublisherClient:(uint64_t)a4 domain:(void *)a5 withChangeContext:(void *)a6 completion:
+- (void)_internalQueue_publishVolatileData:(void *)data forPublisherClient:(uint64_t)client domain:(void *)domain withChangeContext:(void *)context completion:
 {
   v23 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (a1)
+  dataCopy = data;
+  domainCopy = domain;
+  contextCopy = context;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v15 = [*(a1 + 24) objectForKey:a4];
-    v16 = [v15 containsObject:v12];
+    dispatch_assert_queue_V2(*(self + 88));
+    v15 = [*(self + 24) objectForKey:client];
+    v16 = [v15 containsObject:dataCopy];
 
     if (v16)
     {
-      v17 = [*(a1 + 40) recordForKey:@"volatileData"];
-      [(STLocalStatusServer *)a1 _internalQueue_publishData:v11 forPublisherClient:v12 domain:a4 inDataChangeRecord:v17 withChangeContext:v13 completion:v14];
+      v17 = [*(self + 40) recordForKey:@"volatileData"];
+      [(STLocalStatusServer *)self _internalQueue_publishData:v11 forPublisherClient:dataCopy domain:client inDataChangeRecord:v17 withChangeContext:domainCopy completion:contextCopy];
     }
 
     else
@@ -738,9 +738,9 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
         _os_log_impl(&dword_26C4AD000, v18, OS_LOG_TYPE_DEFAULT, "Ignoring volatile data from unknown publisher for %{public}@ domain", &v21, 0xCu);
       }
 
-      if (v14)
+      if (contextCopy)
       {
-        v14[2](v14);
+        contextCopy[2](contextCopy);
       }
     }
   }
@@ -748,11 +748,11 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6
+- (void)updateDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  clientCopy = client;
+  providerCopy = provider;
+  completionCopy = completion;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -768,34 +768,34 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   block[2] = __88__STLocalStatusServer_updateDataForPublisherClient_domain_usingDiffProvider_completion___block_invoke;
   block[3] = &unk_279D34DC0;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a4;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = clientCopy;
+  v20 = completionCopy;
+  domainCopy = domain;
+  v19 = providerCopy;
+  v14 = completionCopy;
+  v15 = providerCopy;
+  v16 = clientCopy;
   dispatch_sync(internalQueue, block);
 }
 
-- (void)_internalQueue_updateDataForPublisherClient:(uint64_t)a3 domain:(void *)a4 usingDiffProvider:(void *)a5 completion:
+- (void)_internalQueue_updateDataForPublisherClient:(uint64_t)client domain:(void *)domain usingDiffProvider:(void *)provider completion:
 {
   v33 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  domainCopy = domain;
+  providerCopy = provider;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v12 = [*(a1 + 24) objectForKey:a3];
+    dispatch_assert_queue_V2(*(self + 88));
+    v12 = [*(self + 24) objectForKey:client];
     v13 = [v12 containsObject:v9];
 
     if (v13)
     {
-      v14 = [(STLocalStatusServer *)a1 _internalQueue_dataForDomain:a3];
+      v14 = [(STLocalStatusServer *)self _internalQueue_dataForDomain:client];
       v15 = v14;
       v28 = v9;
-      v29 = v11;
+      v29 = providerCopy;
       if (v14)
       {
         v16 = v14;
@@ -803,24 +803,24 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
 
       else
       {
-        v16 = [(STLocalStatusServer *)a1 _internalQueue_fallbackDataForPublisherClient:v9 domain:a3];
+        v16 = [(STLocalStatusServer *)self _internalQueue_fallbackDataForPublisherClient:v9 domain:client];
       }
 
       v19 = v16;
 
       v30 = 0;
-      v20 = v10[2](v10, v19, &v30);
+      v20 = domainCopy[2](domainCopy, v19, &v30);
       v21 = v30;
       v22 = [v19 mutableCopyWithZone:0];
       [v22 applyDiff:v20];
       v23 = [v22 copyWithZone:0];
-      v24 = v10;
-      v25 = *(a1 + 40);
+      v24 = domainCopy;
+      v25 = *(self + 40);
       v26 = [v25 recordForKey:@"data"];
-      [(STLocalStatusServer *)a1 _internalQueue_publishData:v23 forPublisherClient:v28 domain:a3 inDataChangeRecord:v26 withChangeContext:v21 completion:v29];
+      [(STLocalStatusServer *)self _internalQueue_publishData:v23 forPublisherClient:v28 domain:client inDataChangeRecord:v26 withChangeContext:v21 completion:v29];
 
-      v10 = v24;
-      v11 = v29;
+      domainCopy = v24;
+      providerCopy = v29;
 
       v9 = v28;
     }
@@ -836,9 +836,9 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
         _os_log_impl(&dword_26C4AD000, v17, OS_LOG_TYPE_DEFAULT, "Ignoring diff from unknown publisher for %{public}@ domain", buf, 0xCu);
       }
 
-      if (v11)
+      if (providerCopy)
       {
-        v11[2](v11);
+        providerCopy[2](providerCopy);
       }
     }
   }
@@ -846,11 +846,11 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVolatileDataForPublisherClient:(id)a3 domain:(unint64_t)a4 usingDiffProvider:(id)a5 completion:(id)a6
+- (void)updateVolatileDataForPublisherClient:(id)client domain:(unint64_t)domain usingDiffProvider:(id)provider completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  clientCopy = client;
+  providerCopy = provider;
+  completionCopy = completion;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -866,31 +866,31 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   block[2] = __96__STLocalStatusServer_updateVolatileDataForPublisherClient_domain_usingDiffProvider_completion___block_invoke;
   block[3] = &unk_279D34DC0;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a4;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = clientCopy;
+  v20 = completionCopy;
+  domainCopy = domain;
+  v19 = providerCopy;
+  v14 = completionCopy;
+  v15 = providerCopy;
+  v16 = clientCopy;
   dispatch_sync(internalQueue, block);
 }
 
-- (void)_internalQueue_updateVolatileDataForPublisherClient:(uint64_t)a3 domain:(void *)a4 usingDiffProvider:(void *)a5 completion:
+- (void)_internalQueue_updateVolatileDataForPublisherClient:(uint64_t)client domain:(void *)domain usingDiffProvider:(void *)provider completion:
 {
   v46 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  domainCopy = domain;
+  providerCopy = provider;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v12 = [*(a1 + 24) objectForKey:a3];
+    dispatch_assert_queue_V2(*(self + 88));
+    v12 = [*(self + 24) objectForKey:client];
     v13 = [v12 containsObject:v9];
 
     if (v13)
     {
-      v14 = [(STLocalStatusServer *)a1 _internalQueue_volatileDataForDomain:a3];
+      v14 = [(STLocalStatusServer *)self _internalQueue_volatileDataForDomain:client];
       v15 = v14;
       if (v14)
       {
@@ -899,23 +899,23 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
 
       else
       {
-        v16 = [(STLocalStatusServer *)a1 _internalQueue_fallbackDataForPublisherClient:v9 domain:a3];
+        v16 = [(STLocalStatusServer *)self _internalQueue_fallbackDataForPublisherClient:v9 domain:client];
       }
 
       v20 = v16;
 
       v37 = v20;
       v38 = 0;
-      v21 = (v10)[2](v10, v20, &v38);
+      v21 = (domainCopy)[2](domainCopy, v20, &v38);
       v22 = v38;
-      v36 = *(a1 + 40);
+      v36 = *(self + 40);
       v23 = [v36 recordForKey:@"volatileData"];
       v24 = v21;
       v34 = v9;
       v25 = v9;
       v26 = v23;
       v27 = v22;
-      v28 = v11;
+      v28 = providerCopy;
       v35 = v25;
       if ([v24 isEmpty])
       {
@@ -928,8 +928,8 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
 
       else
       {
-        v33 = v10;
-        v29 = *(a1 + 32);
+        v33 = domainCopy;
+        v29 = *(self + 32);
         v30 = [v29 objectForKey:v25];
 
         *&buf = MEMORY[0x277D85DD0];
@@ -939,15 +939,15 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
         v42 = v26;
         v43 = v24;
         v44 = v30;
-        v45 = a3;
+        clientCopy = client;
         v31 = v30;
-        [(STLocalStatusServer *)a1 _internalQueue_mutateDataForDomain:a3 withChangeContext:v27 block:&buf];
+        [(STLocalStatusServer *)self _internalQueue_mutateDataForDomain:client withChangeContext:v27 block:&buf];
         if (v28)
         {
           v28[2](v28);
         }
 
-        v10 = v33;
+        domainCopy = v33;
         v9 = v34;
       }
     }
@@ -958,17 +958,17 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         STSystemStatusDescriptionForDomain();
-        v19 = v18 = v10;
+        v19 = v18 = domainCopy;
         LODWORD(buf) = 138543362;
         *(&buf + 4) = v19;
         _os_log_impl(&dword_26C4AD000, v17, OS_LOG_TYPE_DEFAULT, "Ignoring volatile diff from unknown publisher for %{public}@ domain", &buf, 0xCu);
 
-        v10 = v18;
+        domainCopy = v18;
       }
 
-      if (v11)
+      if (providerCopy)
       {
-        v11[2](v11);
+        providerCopy[2](providerCopy);
       }
     }
   }
@@ -976,9 +976,9 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataForDomain:(unint64_t)a3 client:(id)a4
+- (id)dataForDomain:(unint64_t)domain client:(id)client
 {
-  v6 = a4;
+  clientCopy = client;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1000,10 +1000,10 @@ void __54__STLocalStatusServer_publishedVolatileDataForDomain___block_invoke(uin
   v11[2] = __44__STLocalStatusServer_dataForDomain_client___block_invoke;
   v11[3] = &unk_279D34DE8;
   v13 = &v15;
-  v14 = a3;
+  domainCopy = domain;
   v11[4] = self;
-  v12 = v6;
-  v8 = v6;
+  v12 = clientCopy;
+  v8 = clientCopy;
   dispatch_sync(internalQueue, v11);
   v9 = v16[5];
 
@@ -1036,18 +1036,18 @@ void __44__STLocalStatusServer_dataForDomain_client___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_internalQueue_presentationDataForDomain:(uint64_t)a1
+- (id)_internalQueue_presentationDataForDomain:(uint64_t)domain
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (domain)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v4 = [*(a1 + 40) currentDataForDomain:a2];
+    dispatch_assert_queue_V2(*(domain + 88));
+    v4 = [*(domain + 40) currentDataForDomain:a2];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = *(a1 + 64);
+    v5 = *(domain + 64);
     v6 = MEMORY[0x277CCABB0];
     v7 = v5;
     v8 = [v6 numberWithUnsignedInteger:{a2, 0}];
@@ -1093,26 +1093,26 @@ void __44__STLocalStatusServer_dataForDomain_client___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)_internalQueue_dataForClient:(uint64_t)a3 domain:(void *)a4 presentationData:
+- (id)_internalQueue_dataForClient:(uint64_t)client domain:(void *)domain presentationData:
 {
   v30 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  domainCopy = domain;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 88));
-    v9 = v8;
+    dispatch_assert_queue_V2(*(self + 88));
+    v9 = domainCopy;
     if (([v7 wantsUntransformedData] & 1) == 0)
     {
-      v24 = v8;
+      v24 = domainCopy;
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v10 = *(a1 + 72);
+      v10 = *(self + 72);
       v11 = MEMORY[0x277CCABB0];
       v12 = v10;
-      v13 = [v11 numberWithUnsignedInteger:a3];
+      v13 = [v11 numberWithUnsignedInteger:client];
       v14 = [v12 objectForKey:v13];
 
       v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -1132,7 +1132,7 @@ void __44__STLocalStatusServer_dataForDomain_client___block_invoke(uint64_t a1)
             }
 
             v20 = [*(*(&v25 + 1) + 8 * v18) dataTransformerForClient:v7];
-            v21 = [v20 transformedDataForData:v19 domain:a3];
+            v21 = [v20 transformedDataForData:v19 domain:client];
             v9 = [v21 copyWithZone:0];
 
             ++v18;
@@ -1146,7 +1146,7 @@ void __44__STLocalStatusServer_dataForDomain_client___block_invoke(uint64_t a1)
         while (v16);
       }
 
-      v8 = v24;
+      domainCopy = v24;
     }
   }
 
@@ -1160,9 +1160,9 @@ void __44__STLocalStatusServer_dataForDomain_client___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)registerClient:(id)a3 forDomain:(unint64_t)a4
+- (void)registerClient:(id)client forDomain:(unint64_t)domain
 {
-  v6 = a3;
+  clientCopy = client;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -1177,10 +1177,10 @@ void __44__STLocalStatusServer_dataForDomain_client___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __48__STLocalStatusServer_registerClient_forDomain___block_invoke;
   block[3] = &unk_279D34D48;
-  v10 = v6;
-  v11 = a4;
+  v10 = clientCopy;
+  domainCopy = domain;
   block[4] = self;
-  v8 = v6;
+  v8 = clientCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1233,9 +1233,9 @@ void __48__STLocalStatusServer_registerClient_forDomain___block_invoke(uint64_t 
   }
 }
 
-- (void)removeClient:(id)a3 forDomain:(unint64_t)a4
+- (void)removeClient:(id)client forDomain:(unint64_t)domain
 {
-  v6 = a3;
+  clientCopy = client;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -1250,10 +1250,10 @@ void __48__STLocalStatusServer_registerClient_forDomain___block_invoke(uint64_t 
   block[1] = 3221225472;
   block[2] = __46__STLocalStatusServer_removeClient_forDomain___block_invoke;
   block[3] = &unk_279D34D48;
-  v10 = v6;
-  v11 = a4;
+  v10 = clientCopy;
+  domainCopy = domain;
   block[4] = self;
-  v8 = v6;
+  v8 = clientCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1274,11 +1274,11 @@ void __46__STLocalStatusServer_removeClient_forDomain___block_invoke(void *a1)
   }
 }
 
-- (void)reportUserInteraction:(id)a3 forClient:(id)a4 domain:(unint64_t)a5
+- (void)reportUserInteraction:(id)interaction forClient:(id)client domain:(unint64_t)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  interactionCopy = interaction;
+  clientCopy = client;
+  v10 = clientCopy;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -1294,10 +1294,10 @@ void __46__STLocalStatusServer_removeClient_forDomain___block_invoke(void *a1)
   v14[2] = __62__STLocalStatusServer_reportUserInteraction_forClient_domain___block_invoke;
   v14[3] = &unk_279D34D20;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = a5;
-  v12 = v8;
+  v15 = clientCopy;
+  v16 = interactionCopy;
+  domainCopy = domain;
+  v12 = interactionCopy;
   v13 = v10;
   dispatch_async(internalQueue, v14);
 }
@@ -1351,24 +1351,24 @@ void __62__STLocalStatusServer_reportUserInteraction_forClient_domain___block_in
 
 - (id)succinctDescription
 {
-  v2 = [(STLocalStatusServer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STLocalStatusServer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STLocalStatusServer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STLocalStatusServer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(STLocalStatusServer *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STLocalStatusServer *)self succinctDescriptionBuilder];
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -1383,11 +1383,11 @@ void __62__STLocalStatusServer_reportUserInteraction_forClient_domain___block_in
   block[1] = 3221225472;
   block[2] = __61__STLocalStatusServer_descriptionBuilderWithMultilinePrefix___block_invoke;
   block[3] = &unk_279D34E60;
-  v7 = v5;
+  v7 = succinctDescriptionBuilder;
   v12 = v7;
-  v13 = v4;
-  v14 = self;
-  v8 = v4;
+  v13 = prefixCopy;
+  selfCopy = self;
+  v8 = prefixCopy;
   dispatch_sync(internalQueue, block);
   v9 = v7;
 
@@ -1456,9 +1456,9 @@ void __61__STLocalStatusServer_descriptionBuilderWithMultilinePrefix___block_inv
   v6 = [*(a1 + 40) appendObject:v7 withName:v5];
 }
 
-- (void)addDataTransformer:(id)a3 forDomain:(unint64_t)a4
+- (void)addDataTransformer:(id)transformer forDomain:(unint64_t)domain
 {
-  v6 = a3;
+  transformerCopy = transformer;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -1473,10 +1473,10 @@ void __61__STLocalStatusServer_descriptionBuilderWithMultilinePrefix___block_inv
   block[1] = 3221225472;
   block[2] = __52__STLocalStatusServer_addDataTransformer_forDomain___block_invoke;
   block[3] = &unk_279D34D48;
-  v10 = v6;
-  v11 = a4;
+  v10 = transformerCopy;
+  domainCopy = domain;
   block[4] = self;
-  v8 = v6;
+  v8 = transformerCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1516,9 +1516,9 @@ void __52__STLocalStatusServer_addDataTransformer_forDomain___block_invoke(uint6
   }
 }
 
-- (void)removeDataTransformer:(id)a3 forDomain:(unint64_t)a4
+- (void)removeDataTransformer:(id)transformer forDomain:(unint64_t)domain
 {
-  v6 = a3;
+  transformerCopy = transformer;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -1533,10 +1533,10 @@ void __52__STLocalStatusServer_addDataTransformer_forDomain___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __55__STLocalStatusServer_removeDataTransformer_forDomain___block_invoke;
   block[3] = &unk_279D34D48;
-  v10 = v6;
-  v11 = a4;
+  v10 = transformerCopy;
+  domainCopy = domain;
   block[4] = self;
-  v8 = v6;
+  v8 = transformerCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1575,10 +1575,10 @@ void __55__STLocalStatusServer_removeDataTransformer_forDomain___block_invoke_2(
   [v6 removeObject:a1[5]];
 }
 
-- (void)modifyDataTransformer:(id)a3 forDomain:(unint64_t)a4 usingBlock:(id)a5
+- (void)modifyDataTransformer:(id)transformer forDomain:(unint64_t)domain usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  transformerCopy = transformer;
+  blockCopy = block;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -1594,11 +1594,11 @@ void __55__STLocalStatusServer_removeDataTransformer_forDomain___block_invoke_2(
   v13[2] = __66__STLocalStatusServer_modifyDataTransformer_forDomain_usingBlock___block_invoke;
   v13[3] = &unk_279D34E88;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = transformerCopy;
+  v15 = blockCopy;
+  domainCopy = domain;
+  v11 = blockCopy;
+  v12 = transformerCopy;
   dispatch_sync(internalQueue, v13);
 }
 
@@ -1636,9 +1636,9 @@ void __66__STLocalStatusServer_modifyDataTransformer_forDomain_usingBlock___bloc
   }
 }
 
-- (void)addClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4
+- (void)addClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain
 {
-  v6 = a3;
+  providerCopy = provider;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -1653,10 +1653,10 @@ void __66__STLocalStatusServer_modifyDataTransformer_forDomain_usingBlock___bloc
   block[1] = 3221225472;
   block[2] = __66__STLocalStatusServer_addClientDataTransformerProvider_forDomain___block_invoke;
   block[3] = &unk_279D34D48;
-  v10 = v6;
-  v11 = a4;
+  v10 = providerCopy;
+  domainCopy = domain;
   block[4] = self;
-  v8 = v6;
+  v8 = providerCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1696,9 +1696,9 @@ void __66__STLocalStatusServer_addClientDataTransformerProvider_forDomain___bloc
   }
 }
 
-- (void)removeClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4
+- (void)removeClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain
 {
-  v6 = a3;
+  providerCopy = provider;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -1713,10 +1713,10 @@ void __66__STLocalStatusServer_addClientDataTransformerProvider_forDomain___bloc
   block[1] = 3221225472;
   block[2] = __69__STLocalStatusServer_removeClientDataTransformerProvider_forDomain___block_invoke;
   block[3] = &unk_279D34D48;
-  v10 = v6;
-  v11 = a4;
+  v10 = providerCopy;
+  domainCopy = domain;
   block[4] = self;
-  v8 = v6;
+  v8 = providerCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1755,10 +1755,10 @@ void __69__STLocalStatusServer_removeClientDataTransformerProvider_forDomain___b
   [v6 removeObject:a1[5]];
 }
 
-- (void)modifyClientDataTransformerProvider:(id)a3 forDomain:(unint64_t)a4 usingBlock:(id)a5
+- (void)modifyClientDataTransformerProvider:(id)provider forDomain:(unint64_t)domain usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  providerCopy = provider;
+  blockCopy = block;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -1774,11 +1774,11 @@ void __69__STLocalStatusServer_removeClientDataTransformerProvider_forDomain___b
   v13[2] = __80__STLocalStatusServer_modifyClientDataTransformerProvider_forDomain_usingBlock___block_invoke;
   v13[3] = &unk_279D34E88;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = providerCopy;
+  v15 = blockCopy;
+  domainCopy = domain;
+  v11 = blockCopy;
+  v12 = providerCopy;
   dispatch_sync(internalQueue, v13);
 }
 
@@ -1816,49 +1816,49 @@ void __80__STLocalStatusServer_modifyClientDataTransformerProvider_forDomain_usi
   }
 }
 
-- (void)_internalQueue_mutateDataForDomain:(void *)a3 withChangeContext:(void *)a4 block:
+- (void)_internalQueue_mutateDataForDomain:(void *)domain withChangeContext:(void *)context block:
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a1 && v8)
+  domainCopy = domain;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (self && contextCopy)
   {
-    v10 = [(STLocalStatusServer *)a1 _internalQueue_presentationDataForDomain:a2];
-    v11 = [(STLocalStatusServer *)a1 _internalQueue_publishedDomains];
-    v40 = [*(a1 + 16) objectForKey:a2];
-    v12 = [v40 allObjects];
+    v10 = [(STLocalStatusServer *)self _internalQueue_presentationDataForDomain:a2];
+    _internalQueue_publishedDomains = [(STLocalStatusServer *)self _internalQueue_publishedDomains];
+    v40 = [*(self + 16) objectForKey:a2];
+    allObjects = [v40 allObjects];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __82__STLocalStatusServer__internalQueue_mutateDataForDomain_withChangeContext_block___block_invoke;
     v58[3] = &unk_279D34F48;
-    v58[4] = a1;
+    v58[4] = self;
     v60 = a2;
     v39 = v10;
     v59 = v39;
-    v13 = [v12 bs_map:v58];
+    v13 = [allObjects bs_map:v58];
     v9[2](v9);
-    v14 = [(STLocalStatusServer *)a1 _internalQueue_presentationDataForDomain:a2];
+    v14 = [(STLocalStatusServer *)self _internalQueue_presentationDataForDomain:a2];
     v15 = [v14 copyWithZone:0];
 
-    v16 = [v12 count];
+    v16 = [allObjects count];
     if (v16)
     {
       v17 = v16;
-      v34 = v11;
+      v34 = _internalQueue_publishedDomains;
       v35 = v9;
-      v36 = v7;
+      v36 = domainCopy;
       v37 = a2;
       v55[0] = MEMORY[0x277D85DD0];
       v55[1] = 3221225472;
       v55[2] = __82__STLocalStatusServer__internalQueue_mutateDataForDomain_withChangeContext_block___block_invoke_2;
       v55[3] = &unk_279D34F48;
-      v38 = a1;
-      v55[4] = a1;
+      selfCopy = self;
+      v55[4] = self;
       v57 = a2;
       v56 = v15;
-      v18 = [v12 bs_map:v55];
-      v19 = [MEMORY[0x277CBEB18] array];
-      v20 = [MEMORY[0x277CBEB18] array];
+      v18 = [allObjects bs_map:v55];
+      array = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v21 = 0;
       v33 = v15;
       do
@@ -1867,41 +1867,41 @@ void __80__STLocalStatusServer_modifyClientDataTransformerProvider_forDomain_usi
         v23 = [v18 objectAtIndex:v21];
         if (([v22 isEqual:v23] & 1) == 0)
         {
-          v24 = [v12 objectAtIndex:v21];
-          [v19 addObject:v24];
+          v24 = [allObjects objectAtIndex:v21];
+          [array addObject:v24];
 
-          [v20 addObject:v23];
+          [array2 addObject:v23];
         }
 
         ++v21;
       }
 
       while (v17 != v21);
-      v25 = [v19 count];
-      v7 = v36;
+      v25 = [array count];
+      domainCopy = v36;
       if (v25)
       {
-        v26 = *(v38 + 96);
+        v26 = *(selfCopy + 96);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __82__STLocalStatusServer__internalQueue_mutateDataForDomain_withChangeContext_block___block_invoke_3;
         block[3] = &unk_279D34F70;
         v53 = v25;
-        v50 = v20;
-        v51 = v19;
+        v50 = array2;
+        v51 = array;
         v54 = v37;
         v52 = v36;
         dispatch_async(v26, block);
       }
 
-      v11 = v34;
+      _internalQueue_publishedDomains = v34;
       v9 = v35;
       a2 = v37;
-      a1 = v38;
+      self = selfCopy;
       v15 = v33;
     }
 
-    v27 = *(a1 + 96);
+    v27 = *(self + 96);
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __82__STLocalStatusServer__internalQueue_mutateDataForDomain_withChangeContext_block___block_invoke_4;
@@ -1909,23 +1909,23 @@ void __80__STLocalStatusServer_modifyClientDataTransformerProvider_forDomain_usi
     v48 = a2;
     v28 = v15;
     v46 = v28;
-    v47 = v7;
+    v47 = domainCopy;
     dispatch_async(v27, v45);
-    v29 = [(STLocalStatusServer *)a1 _internalQueue_publishedDomains];
-    if (([v11 isEqual:v29] & 1) == 0)
+    _internalQueue_publishedDomains2 = [(STLocalStatusServer *)self _internalQueue_publishedDomains];
+    if (([_internalQueue_publishedDomains isEqual:_internalQueue_publishedDomains2] & 1) == 0)
     {
-      v30 = [a1 delegate];
-      v31 = v30;
-      if (v30)
+      delegate = [self delegate];
+      v31 = delegate;
+      if (delegate)
       {
-        v32 = *(a1 + 96);
+        v32 = *(self + 96);
         v41[0] = MEMORY[0x277D85DD0];
         v41[1] = 3221225472;
         v41[2] = __82__STLocalStatusServer__internalQueue_mutateDataForDomain_withChangeContext_block___block_invoke_152;
         v41[3] = &unk_279D34E60;
-        v42 = v30;
-        v43 = a1;
-        v44 = v29;
+        v42 = delegate;
+        selfCopy2 = self;
+        v44 = _internalQueue_publishedDomains2;
         dispatch_async(v32, v41);
       }
     }
@@ -1964,43 +1964,43 @@ void __92__STLocalStatusServer__internalQueue_replaceDataChangeRecord_forPublish
   [v9 setData:v10 forClientKey:v8 domain:a5];
 }
 
-- (void)_internalQueue_replaceDataChangeRecord:(void *)a3 forPublisherClient:(void *)a4 inDataChangeRecord:(void *)a5 applyBlock:(void *)a6 completion:
+- (void)_internalQueue_replaceDataChangeRecord:(void *)record forPublisherClient:(void *)client inDataChangeRecord:(void *)changeRecord applyBlock:(void *)block completion:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = *(a1 + 32);
-  v17 = [v16 objectForKey:v12];
+  recordCopy = record;
+  clientCopy = client;
+  changeRecordCopy = changeRecord;
+  blockCopy = block;
+  v16 = *(self + 32);
+  v17 = [v16 objectForKey:recordCopy];
 
-  v18 = [v11 domainsWithData];
+  domainsWithData = [v11 domainsWithData];
   v19 = objc_alloc_init(MEMORY[0x277CF0C70]);
-  [v19 unionSet:v18];
-  v20 = [v13 domainsWithData];
-  [v19 unionSet:v20];
+  [v19 unionSet:domainsWithData];
+  domainsWithData2 = [clientCopy domainsWithData];
+  [v19 unionSet:domainsWithData2];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __122__STLocalStatusServer__internalQueue_replaceDataChangeRecord_forPublisherClient_inDataChangeRecord_applyBlock_completion___block_invoke;
   v27[3] = &unk_279D34F20;
-  v27[4] = a1;
-  v21 = v12;
+  v27[4] = self;
+  v21 = recordCopy;
   v28 = v21;
-  v22 = v13;
+  v22 = clientCopy;
   v29 = v22;
   v30 = v17;
-  v31 = v18;
-  v23 = v14;
+  v31 = domainsWithData;
+  v23 = changeRecordCopy;
   v33 = v23;
   v24 = v11;
   v32 = v24;
-  v25 = v18;
+  v25 = domainsWithData;
   v26 = v17;
   [v19 enumerateWithBlock:v27];
-  if (v15)
+  if (blockCopy)
   {
-    v15[2](v15);
+    blockCopy[2](blockCopy);
   }
 }
 
@@ -2028,53 +2028,53 @@ void __100__STLocalStatusServer__internalQueue_replaceVolatileDataChangeRecord_f
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_internalQueue_publishData:(void *)a3 forPublisherClient:(uint64_t)a4 domain:(void *)a5 inDataChangeRecord:(void *)a6 withChangeContext:(void *)a7 completion:
+- (void)_internalQueue_publishData:(void *)data forPublisherClient:(uint64_t)client domain:(void *)domain inDataChangeRecord:(void *)record withChangeContext:(void *)context completion:
 {
   v13 = a2;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [v15 currentDataForDomain:a4];
+  dataCopy = data;
+  domainCopy = domain;
+  recordCopy = record;
+  contextCopy = context;
+  v18 = [domainCopy currentDataForDomain:client];
   v19 = v18;
   if (v13 | v18 && ([v18 isEqual:v13] & 1) == 0)
   {
-    v20 = *(a1 + 32);
-    v21 = [v20 objectForKey:v14];
+    v20 = *(self + 32);
+    v21 = [v20 objectForKey:dataCopy];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __124__STLocalStatusServer__internalQueue_publishData_forPublisherClient_domain_inDataChangeRecord_withChangeContext_completion___block_invoke;
     v23[3] = &unk_279D34D20;
-    v24 = v15;
+    v24 = domainCopy;
     v25 = v13;
     v26 = v21;
-    v27 = a4;
+    clientCopy = client;
     v22 = v21;
-    [(STLocalStatusServer *)a1 _internalQueue_mutateDataForDomain:a4 withChangeContext:v16 block:v23];
-    if (v17)
+    [(STLocalStatusServer *)self _internalQueue_mutateDataForDomain:client withChangeContext:recordCopy block:v23];
+    if (contextCopy)
     {
-      v17[2](v17);
+      contextCopy[2](contextCopy);
     }
   }
 
-  else if (v17)
+  else if (contextCopy)
   {
-    v17[2](v17);
+    contextCopy[2](contextCopy);
   }
 }
 
-- (id)_internalQueue_fallbackDataForPublisherClient:(uint64_t)a3 domain:
+- (id)_internalQueue_fallbackDataForPublisherClient:(uint64_t)client domain:
 {
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 88);
+    v5 = *(self + 88);
     v6 = a2;
     dispatch_assert_queue_V2(v5);
-    v7 = [*(a1 + 32) objectForKey:v6];
+    v7 = [*(self + 32) objectForKey:v6];
 
-    v8 = [*(a1 + 40) recordForKey:@"volatileData"];
-    v9 = [v8 fallbackDataForClientKey:v7 domain:a3];
+    v8 = [*(self + 40) recordForKey:@"volatileData"];
+    v9 = [v8 fallbackDataForClientKey:v7 domain:client];
   }
 
   else

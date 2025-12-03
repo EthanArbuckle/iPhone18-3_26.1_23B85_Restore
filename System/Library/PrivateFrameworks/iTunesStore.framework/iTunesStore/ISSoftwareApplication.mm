@@ -1,28 +1,28 @@
 @interface ISSoftwareApplication
 - (BOOL)isLaunchProhibited;
-- (ISSoftwareApplication)initWithLaunchServicesApplication:(id)a3;
-- (ISSoftwareApplication)initWithLaunchServicesApplication:(id)a3 containerPath:(id)a4;
-- (ISSoftwareApplication)initWithXPCEncoding:(id)a3;
+- (ISSoftwareApplication)initWithLaunchServicesApplication:(id)application;
+- (ISSoftwareApplication)initWithLaunchServicesApplication:(id)application containerPath:(id)path;
+- (ISSoftwareApplication)initWithXPCEncoding:(id)encoding;
 - (NSString)description;
 - (NSString)deviceIdentifierForVendor;
 - (NSString)vendorName;
 - (id)ITunesMetadataDictionary;
 - (id)copyXPCEncoding;
 - (unint64_t)vppStateFlags;
-- (void)_loadMetadataFromContainer:(id)a3;
+- (void)_loadMetadataFromContainer:(id)container;
 - (void)dealloc;
 @end
 
 @implementation ISSoftwareApplication
 
-- (ISSoftwareApplication)initWithLaunchServicesApplication:(id)a3
+- (ISSoftwareApplication)initWithLaunchServicesApplication:(id)application
 {
-  v5 = [objc_msgSend(a3 "bundleContainerURL")];
+  v5 = [objc_msgSend(application "bundleContainerURL")];
 
-  return [(ISSoftwareApplication *)self initWithLaunchServicesApplication:a3 containerPath:v5];
+  return [(ISSoftwareApplication *)self initWithLaunchServicesApplication:application containerPath:v5];
 }
 
-- (ISSoftwareApplication)initWithLaunchServicesApplication:(id)a3 containerPath:(id)a4
+- (ISSoftwareApplication)initWithLaunchServicesApplication:(id)application containerPath:(id)path
 {
   __ISRecordSPIClassUsage(self);
   v9.receiver = self;
@@ -30,25 +30,25 @@
   v7 = [(ISSoftwareApplication *)&v9 init];
   if (v7)
   {
-    [a3 applicationDSID];
+    [application applicationDSID];
     [(ISSoftwareApplication *)v7 setAccountDSID:SSAccountGetUniqueIdentifierFromValue()];
-    -[ISSoftwareApplication setBeta:](v7, "setBeta:", [a3 isBetaApp]);
-    -[ISSoftwareApplication setBundleIdentifier:](v7, "setBundleIdentifier:", [a3 bundleIdentifier]);
-    -[ISSoftwareApplication setBundleShortVersionString:](v7, "setBundleShortVersionString:", [a3 shortVersionString]);
-    -[ISSoftwareApplication setBundleVersion:](v7, "setBundleVersion:", [a3 bundleVersion]);
-    [(ISSoftwareApplication *)v7 setContainerPath:a4];
-    -[ISSoftwareApplication setPlaceholder:](v7, "setPlaceholder:", [a3 isPlaceholder]);
-    -[ISSoftwareApplication setProfileValidated:](v7, "setProfileValidated:", [a3 profileValidated]);
-    [(ISSoftwareApplication *)v7 _loadMetadataFromContainer:a4];
-    -[ISSoftwareApplication setHasMIDBasedSINF:](v7, "setHasMIDBasedSINF:", [a3 hasMIDBasedSINF]);
-    -[ISSoftwareApplication setMissingRequiredSINF:](v7, "setMissingRequiredSINF:", [a3 missingRequiredSINF]);
+    -[ISSoftwareApplication setBeta:](v7, "setBeta:", [application isBetaApp]);
+    -[ISSoftwareApplication setBundleIdentifier:](v7, "setBundleIdentifier:", [application bundleIdentifier]);
+    -[ISSoftwareApplication setBundleShortVersionString:](v7, "setBundleShortVersionString:", [application shortVersionString]);
+    -[ISSoftwareApplication setBundleVersion:](v7, "setBundleVersion:", [application bundleVersion]);
+    [(ISSoftwareApplication *)v7 setContainerPath:path];
+    -[ISSoftwareApplication setPlaceholder:](v7, "setPlaceholder:", [application isPlaceholder]);
+    -[ISSoftwareApplication setProfileValidated:](v7, "setProfileValidated:", [application profileValidated]);
+    [(ISSoftwareApplication *)v7 _loadMetadataFromContainer:path];
+    -[ISSoftwareApplication setHasMIDBasedSINF:](v7, "setHasMIDBasedSINF:", [application hasMIDBasedSINF]);
+    -[ISSoftwareApplication setMissingRequiredSINF:](v7, "setMissingRequiredSINF:", [application missingRequiredSINF]);
     v7->_removableStatus = 0;
-    if ([objc_msgSend(a3 "applicationType")] && objc_msgSend(a3, "isDeletable"))
+    if ([objc_msgSend(application "applicationType")] && objc_msgSend(application, "isDeletable"))
     {
       v7->_removableStatus |= 2uLL;
     }
 
-    if ([a3 isRemovedSystemApp])
+    if ([application isRemovedSystemApp])
     {
       v7->_removableStatus |= 4uLL;
     }
@@ -174,8 +174,8 @@ LABEL_18:
             goto LABEL_19;
           }
 
-          v15 = [v12 expirationDate];
-          if ([v15 compare:{objc_msgSend(MEMORY[0x277CBEAA8], "date")}] == -1)
+          expirationDate = [v12 expirationDate];
+          if ([expirationDate compare:{objc_msgSend(MEMORY[0x277CBEAA8], "date")}] == -1)
           {
             v13 = 4;
             goto LABEL_18;
@@ -250,9 +250,9 @@ LABEL_20:
   return v3;
 }
 
-- (ISSoftwareApplication)initWithXPCEncoding:(id)a3
+- (ISSoftwareApplication)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x277C8C570](a3, a2) == MEMORY[0x277D86468])
+  if (encoding && MEMORY[0x277C8C570](encoding, a2) == MEMORY[0x277D86468])
   {
     v9.receiver = self;
     v9.super_class = ISSoftwareApplication;
@@ -273,13 +273,13 @@ LABEL_20:
       v5->_containerPath = SSXPCDictionaryCopyCFObjectWithClass();
       objc_opt_class();
       v5->_familyAccountIdentifier = SSXPCDictionaryCopyCFObjectWithClass();
-      v5->_hasMIDBasedSINF = xpc_dictionary_get_BOOL(a3, "15");
+      v5->_hasMIDBasedSINF = xpc_dictionary_get_BOOL(encoding, "15");
       objc_opt_class();
       v5->_itemIdentifier = SSXPCDictionaryCopyCFObjectWithClass();
       objc_opt_class();
       v5->_itemName = SSXPCDictionaryCopyCFObjectWithClass();
-      v5->_missingRequiredSINF = xpc_dictionary_get_BOOL(a3, "16");
-      v5->_profileValidated = xpc_dictionary_get_BOOL(a3, "9");
+      v5->_missingRequiredSINF = xpc_dictionary_get_BOOL(encoding, "16");
+      v5->_profileValidated = xpc_dictionary_get_BOOL(encoding, "9");
       objc_opt_class();
       v5->_softwareType = SSXPCDictionaryCopyCFObjectWithClass();
       objc_opt_class();
@@ -288,7 +288,7 @@ LABEL_20:
       v5->_versionIdentifier = SSXPCDictionaryCopyCFObjectWithClass();
       objc_opt_class();
       v5->_versionOrdering = SSXPCDictionaryCopyCFObjectWithClass();
-      value = xpc_dictionary_get_value(a3, "6");
+      value = xpc_dictionary_get_value(encoding, "6");
       if (value)
       {
         v8 = value;
@@ -309,9 +309,9 @@ LABEL_20:
   return v5;
 }
 
-- (void)_loadMetadataFromContainer:(id)a3
+- (void)_loadMetadataFromContainer:(id)container
 {
-  v4 = [a3 stringByAppendingPathComponent:@"iTunesMetadata.plist"];
+  v4 = [container stringByAppendingPathComponent:@"iTunesMetadata.plist"];
   v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:v4];
   if (v5)
   {

@@ -1,37 +1,37 @@
 @interface STGeneratedAudioMetadata
-- (STGeneratedAudioMetadata)initWithCoder:(id)a3;
-- (STGeneratedAudioMetadata)initWithUUID:(id)a3 text:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (STGeneratedAudioMetadata)initWithCoder:(id)coder;
+- (STGeneratedAudioMetadata)initWithUUID:(id)d text:(id)text;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STGeneratedAudioMetadata
 
-- (STGeneratedAudioMetadata)initWithUUID:(id)a3 text:(id)a4
+- (STGeneratedAudioMetadata)initWithUUID:(id)d text:(id)text
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  textCopy = text;
   v17.receiver = self;
   v17.super_class = STGeneratedAudioMetadata;
   v8 = [(STGeneratedAudioMetadata *)&v17 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      uUID = v9;
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
     }
 
     uuid = v8->_uuid;
-    v8->_uuid = v11;
+    v8->_uuid = uUID;
 
-    v13 = [v7 copy];
+    v13 = [textCopy copy];
     text = v8->_text;
     v8->_text = v13;
 
@@ -41,27 +41,27 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"uuid"];
-  [v5 encodeObject:self->_text forKey:@"text"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_text forKey:@"text"];
 }
 
-- (STGeneratedAudioMetadata)initWithCoder:(id)a3
+- (STGeneratedAudioMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = STGeneratedAudioMetadata;
   v5 = [(STGeneratedAudioMetadata *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v8;
 
@@ -71,7 +71,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [STGeneratedAudioMetadata alloc];
   uuid = self->_uuid;

@@ -1,47 +1,47 @@
 @interface PDFAKPageAdaptor
-- (PDFAKPageAdaptor)initWithPDFPage:(id)a3;
-- (PDFAKPageAdaptor)initWithPDFPage:(id)a3 pageModelController:(id)a4;
+- (PDFAKPageAdaptor)initWithPDFPage:(id)page;
+- (PDFAKPageAdaptor)initWithPDFPage:(id)page pageModelController:(id)controller;
 - (PDFPage)pdfPage;
-- (void)_annotationsWereAdded:(id)a3;
-- (void)_annotationsWereRemoved:(id)a3;
+- (void)_annotationsWereAdded:(id)added;
+- (void)_annotationsWereRemoved:(id)removed;
 - (void)_startObservingPageModel;
 - (void)_stopObservingPageModel;
 - (void)_teardown;
 - (void)dealloc;
-- (void)initializeExifAndScaleOnAnnotation:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pdfPage:(id)a3 didAddAnnotation:(id)a4;
-- (void)pdfPage:(id)a3 didRemoveAnnotation:(id)a4;
-- (void)pdfPageWasRotated:(id)a3;
+- (void)initializeExifAndScaleOnAnnotation:(id)annotation;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pdfPage:(id)page didAddAnnotation:(id)annotation;
+- (void)pdfPage:(id)page didRemoveAnnotation:(id)annotation;
+- (void)pdfPageWasRotated:(id)rotated;
 - (void)teardown;
 @end
 
 @implementation PDFAKPageAdaptor
 
-- (PDFAKPageAdaptor)initWithPDFPage:(id)a3
+- (PDFAKPageAdaptor)initWithPDFPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   if (GetDefaultsWriteAKEnabled())
   {
     v5 = objc_alloc_init(AKPageModelControllerClass());
-    [v5 setRepresentedObject:v4];
-    self = [(PDFAKPageAdaptor *)self initWithPDFPage:v4 pageModelController:v5];
+    [v5 setRepresentedObject:pageCopy];
+    self = [(PDFAKPageAdaptor *)self initWithPDFPage:pageCopy pageModelController:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (PDFAKPageAdaptor)initWithPDFPage:(id)a3 pageModelController:(id)a4
+- (PDFAKPageAdaptor)initWithPDFPage:(id)page pageModelController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  pageCopy = page;
+  controllerCopy = controller;
   if (GetDefaultsWriteAKEnabled())
   {
     v13.receiver = self;
@@ -53,21 +53,21 @@
       v10 = v8->_private;
       v8->_private = v9;
 
-      objc_storeWeak(&v8->_private->pdfPage, v6);
-      objc_storeStrong(&v8->_private->akPageModelController, a4);
+      objc_storeWeak(&v8->_private->pdfPage, pageCopy);
+      objc_storeStrong(&v8->_private->akPageModelController, controller);
       [(PDFAKPageAdaptor *)v8 _startObservingPageModel];
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -133,57 +133,57 @@
   return WeakRetained;
 }
 
-- (void)pdfPage:(id)a3 didAddAnnotation:(id)a4
+- (void)pdfPage:(id)page didAddAnnotation:(id)annotation
 {
   v5 = self->_private;
   if (!v5->isSyncingFromAKPageModel)
   {
     isSyncingFromPDFPage = v5->isSyncingFromPDFPage;
     v5->isSyncingFromPDFPage = 1;
-    v10 = [a4 akAnnotationAdaptor];
-    v8 = [v10 akAnnotation];
-    if (v8)
+    akAnnotationAdaptor = [annotation akAnnotationAdaptor];
+    akAnnotation = [akAnnotationAdaptor akAnnotation];
+    if (akAnnotation)
     {
-      [(PDFAKPageAdaptor *)self initializeExifAndScaleOnAnnotation:v8];
+      [(PDFAKPageAdaptor *)self initializeExifAndScaleOnAnnotation:akAnnotation];
       v9 = [(AKPageModelController *)self->_private->akPageModelController mutableArrayValueForKey:@"annotations"];
-      [v9 addObject:v8];
+      [v9 addObject:akAnnotation];
     }
 
     self->_private->isSyncingFromPDFPage = isSyncingFromPDFPage;
   }
 }
 
-- (void)pdfPage:(id)a3 didRemoveAnnotation:(id)a4
+- (void)pdfPage:(id)page didRemoveAnnotation:(id)annotation
 {
   v5 = self->_private;
   if (!v5->isSyncingFromAKPageModel)
   {
     isSyncingFromPDFPage = v5->isSyncingFromPDFPage;
     v5->isSyncingFromPDFPage = 1;
-    v10 = [a4 akAnnotationAdaptor];
-    v8 = [v10 akAnnotation];
-    if (v8)
+    akAnnotationAdaptor = [annotation akAnnotationAdaptor];
+    akAnnotation = [akAnnotationAdaptor akAnnotation];
+    if (akAnnotation)
     {
       v9 = [(AKPageModelController *)self->_private->akPageModelController mutableArrayValueForKey:@"annotations"];
-      [v9 removeObject:v8];
+      [v9 removeObject:akAnnotation];
     }
 
     self->_private->isSyncingFromPDFPage = isSyncingFromPDFPage;
   }
 }
 
-- (void)pdfPageWasRotated:(id)a3
+- (void)pdfPageWasRotated:(id)rotated
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = self->_private;
   isSyncingFromPDFPage = v4->isSyncingFromPDFPage;
   v4->isSyncingFromPDFPage = 1;
-  v6 = [a3 annotations];
+  annotations = [rotated annotations];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [annotations countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -195,17 +195,17 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(annotations);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) akAnnotationAdaptor];
-        [v11 invalidateAppearanceStream];
+        akAnnotationAdaptor = [*(*(&v12 + 1) + 8 * v10) akAnnotationAdaptor];
+        [akAnnotationAdaptor invalidateAppearanceStream];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [annotations countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -214,30 +214,30 @@
   self->_private->isSyncingFromPDFPage = isSyncingFromPDFPage;
 }
 
-- (void)initializeExifAndScaleOnAnnotation:(id)a3
+- (void)initializeExifAndScaleOnAnnotation:(id)annotation
 {
-  v21 = a3;
-  [v21 originalModelBaseScaleFactor];
-  if (v4 == 0.0 || ![v21 originalExifOrientation])
+  annotationCopy = annotation;
+  [annotationCopy originalModelBaseScaleFactor];
+  if (v4 == 0.0 || ![annotationCopy originalExifOrientation])
   {
-    v5 = [(PDFAKPageAdaptor *)self pdfPage];
-    v6 = [v5 view];
-    v7 = v6;
+    pdfPage = [(PDFAKPageAdaptor *)self pdfPage];
+    view = [pdfPage view];
+    v7 = view;
     v8 = 1.0;
-    if (v6 && ([v6 window], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+    if (view && ([view window], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
     {
-      v10 = [v5 document];
-      v11 = v10;
-      if (v10)
+      document = [pdfPage document];
+      v11 = document;
+      if (document)
       {
-        v12 = [v10 akDocumentAdaptor];
-        v13 = [v12 akMainController];
-        v14 = v13;
-        if (v13)
+        akDocumentAdaptor = [document akDocumentAdaptor];
+        akMainController = [akDocumentAdaptor akMainController];
+        v14 = akMainController;
+        if (akMainController)
         {
-          v15 = [v13 modelController];
-          v16 = [v15 pageModelControllers];
-          v17 = [v16 indexOfObjectIdenticalTo:self->_private->akPageModelController];
+          modelController = [akMainController modelController];
+          pageModelControllers = [modelController pageModelControllers];
+          v17 = [pageModelControllers indexOfObjectIdenticalTo:self->_private->akPageModelController];
 
           if (v17 == 0x7FFFFFFFFFFFFFFFLL || ![v14 isOverlayViewLoadedAtIndex:v17])
           {
@@ -269,15 +269,15 @@
       v19 = 1;
     }
 
-    [v21 originalModelBaseScaleFactor];
+    [annotationCopy originalModelBaseScaleFactor];
     if (v20 == 0.0)
     {
-      [v21 setOriginalModelBaseScaleFactor:v8];
+      [annotationCopy setOriginalModelBaseScaleFactor:v8];
     }
 
-    if (![v21 originalExifOrientation])
+    if (![annotationCopy originalExifOrientation])
     {
-      [v21 setOriginalExifOrientation:v19];
+      [annotationCopy setOriginalExifOrientation:v19];
     }
   }
 }
@@ -306,13 +306,13 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == @"PDFAKPageAdaptor.modelAnnotationsObservationContext")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == @"PDFAKPageAdaptor.modelAnnotationsObservationContext")
   {
     v13 = self->_private;
     if (!v13->isSyncingFromPDFPage)
@@ -320,8 +320,8 @@
       isSyncingFromAKPageModel = v13->isSyncingFromAKPageModel;
       v13->isSyncingFromAKPageModel = 1;
       v15 = self->_private->akPageModelController;
-      v16 = [v12 objectForKey:*MEMORY[0x1E696A500]];
-      v17 = [v12 objectForKey:*MEMORY[0x1E696A4F0]];
+      v16 = [changeCopy objectForKey:*MEMORY[0x1E696A500]];
+      v17 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
       if (v16)
       {
         [(PDFAKPageAdaptor *)self _annotationsWereRemoved:v16];
@@ -336,21 +336,21 @@
     }
   }
 
-  else if (a6 == @"PDFAKPageAdaptor.modelSelectedAnnotationsObservationContext")
+  else if (context == @"PDFAKPageAdaptor.modelSelectedAnnotationsObservationContext")
   {
-    v33 = v11;
-    v34 = v10;
-    v18 = [(AKPageModelController *)self->_private->akPageModelController selectedAnnotations];
-    v19 = [v18 allObjects];
+    v33 = objectCopy;
+    v34 = pathCopy;
+    selectedAnnotations = [(AKPageModelController *)self->_private->akPageModelController selectedAnnotations];
+    allObjects = [selectedAnnotations allObjects];
 
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v32 = [(PDFAKPageAdaptor *)self pdfPage];
-    v21 = [v32 annotations];
+    pdfPage = [(PDFAKPageAdaptor *)self pdfPage];
+    annotations = [pdfPage annotations];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v22 = [v21 countByEnumeratingWithState:&v36 objects:v42 count:16];
+    v22 = [annotations countByEnumeratingWithState:&v36 objects:v42 count:16];
     if (v22)
     {
       v23 = v22;
@@ -361,55 +361,55 @@
         {
           if (*v37 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(annotations);
           }
 
           v26 = *(*(&v36 + 1) + 8 * i);
-          v27 = [v26 akAnnotationAdaptor];
-          v28 = [v27 akAnnotation];
-          if (v28 && [v19 containsObject:v28])
+          akAnnotationAdaptor = [v26 akAnnotationAdaptor];
+          akAnnotation = [akAnnotationAdaptor akAnnotation];
+          if (akAnnotation && [allObjects containsObject:akAnnotation])
           {
             [v20 addObject:v26];
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v36 objects:v42 count:16];
+        v23 = [annotations countByEnumeratingWithState:&v36 objects:v42 count:16];
       }
 
       while (v23);
     }
 
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    v30 = [v32 view];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    view = [pdfPage view];
     v40 = @"PDFAnnotationsHit";
     v41 = v20;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-    [v29 postNotificationName:@"PDFViewAnnotationHit" object:v30 userInfo:v31];
+    [defaultCenter postNotificationName:@"PDFViewAnnotationHit" object:view userInfo:v31];
 
-    v11 = v33;
-    v10 = v34;
+    objectCopy = v33;
+    pathCopy = v34;
   }
 
   else
   {
     v35.receiver = self;
     v35.super_class = PDFAKPageAdaptor;
-    [(PDFAKPageAdaptor *)&v35 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PDFAKPageAdaptor *)&v35 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)_annotationsWereRemoved:(id)a3
+- (void)_annotationsWereRemoved:(id)removed
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:removed];
   v5 = objc_opt_new();
-  v6 = [(PDFAKPageAdaptor *)self pdfPage];
-  v7 = [v6 annotations];
+  pdfPage = [(PDFAKPageAdaptor *)self pdfPage];
+  annotations = [pdfPage annotations];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v8 = [annotations countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -420,19 +420,19 @@
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(annotations);
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 akAnnotationAdaptor];
-        v14 = [v13 akAnnotation];
-        if (v14 && [v4 containsObject:v14])
+        akAnnotationAdaptor = [v12 akAnnotationAdaptor];
+        akAnnotation = [akAnnotationAdaptor akAnnotation];
+        if (akAnnotation && [v4 containsObject:akAnnotation])
         {
           [v5 addObject:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v9 = [annotations countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v9);
@@ -457,7 +457,7 @@
           objc_enumerationMutation(v15);
         }
 
-        [v6 removeAnnotation:{*(*(&v20 + 1) + 8 * j), v20}];
+        [pdfPage removeAnnotation:{*(*(&v20 + 1) + 8 * j), v20}];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -467,19 +467,19 @@
   }
 }
 
-- (void)_annotationsWereAdded:(id)a3
+- (void)_annotationsWereAdded:(id)added
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PDFAKPageAdaptor *)self pdfPage];
-  v33 = [v5 annotations];
+  addedCopy = added;
+  pdfPage = [(PDFAKPageAdaptor *)self pdfPage];
+  annotations = [pdfPage annotations];
   v30 = self->_private->akPageModelController;
-  v6 = [(AKPageModelController *)v30 annotations];
+  annotations2 = [(AKPageModelController *)v30 annotations];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v7 = v4;
+  v7 = addedCopy;
   v8 = [v7 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v8)
   {
@@ -487,7 +487,7 @@
     v10 = *v43;
     p_vtable = &OBJC_METACLASS___PDFAKPageOverlayViewProvider.vtable;
     v31 = *v43;
-    v32 = v5;
+    v32 = pdfPage;
     do
     {
       v12 = 0;
@@ -504,38 +504,38 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v5 view];
-          v15 = [v14 activeAnnotation];
-          if (v15)
+          view = [pdfPage view];
+          activeAnnotation = [view activeAnnotation];
+          if (activeAnnotation)
           {
-            v16 = v15;
-            v17 = [v14 undoManager];
-            [v17 undo];
+            v16 = activeAnnotation;
+            undoManager = [view undoManager];
+            [undoManager undo];
 
             v9 = v35;
             [v16 setSignatureAnnotationForRendering:v13];
-            [v14 removeControlForAnnotation:v16];
+            [view removeControlForAnnotation:v16];
             goto LABEL_42;
           }
         }
 
         v18 = [p_vtable + 182 newPDFAnnotationFromAKAnnotation:v13];
-        v14 = v18;
+        view = v18;
         if (!v18)
         {
           goto LABEL_43;
         }
 
         v36 = v18;
-        v19 = [v6 indexOfObjectIdenticalTo:v13];
+        v19 = [annotations2 indexOfObjectIdenticalTo:v13];
         for (i = v19 + 1; ; ++i)
         {
-          if (i >= [v6 count])
+          if (i >= [annotations2 count])
           {
             goto LABEL_18;
           }
 
-          v16 = [v6 objectAtIndex:i];
+          v16 = [annotations2 objectAtIndex:i];
           if (([v7 containsObject:v16] & 1) == 0)
           {
             AKCropAnnotationClass();
@@ -559,10 +559,10 @@ LABEL_18:
           goto LABEL_40;
         }
 
-        v14 = v36;
+        view = v36;
         while (1)
         {
-          v16 = [v6 objectAtIndex:--v19];
+          v16 = [annotations2 objectAtIndex:--v19];
           if (([v7 containsObject:v16] & 1) == 0)
           {
             AKCropAnnotationClass();
@@ -587,7 +587,7 @@ LABEL_27:
           v41 = 0u;
           v38 = 0u;
           v39 = 0u;
-          obj = v33;
+          obj = annotations;
           v21 = [obj countByEnumeratingWithState:&v38 objects:v46 count:16];
           if (v21)
           {
@@ -603,10 +603,10 @@ LABEL_29:
               }
 
               v25 = *(*(&v38 + 1) + 8 * v24);
-              v26 = [v25 akAnnotationAdaptor];
-              v27 = [v26 akAnnotation];
-              v28 = v27;
-              if (v27 == v16)
+              akAnnotationAdaptor = [v25 akAnnotationAdaptor];
+              akAnnotation = [akAnnotationAdaptor akAnnotation];
+              v28 = akAnnotation;
+              if (akAnnotation == v16)
               {
                 break;
               }
@@ -628,10 +628,10 @@ LABEL_29:
 
             if (v29)
             {
-              v5 = v32;
+              pdfPage = v32;
               [v32 insertAnnotation:v36 atIndex:{objc_msgSend(obj, "indexOfObjectIdenticalTo:", v29) + v34}];
 
-              v14 = v36;
+              view = v36;
               v10 = v31;
               p_vtable = (&OBJC_METACLASS___PDFAKPageOverlayViewProvider + 24);
               v9 = v35;
@@ -639,7 +639,7 @@ LABEL_29:
             }
 
             v10 = v31;
-            v5 = v32;
+            pdfPage = v32;
             p_vtable = (&OBJC_METACLASS___PDFAKPageOverlayViewProvider + 24);
           }
 
@@ -648,16 +648,16 @@ LABEL_29:
 LABEL_35:
 
             v10 = v31;
-            v5 = v32;
+            pdfPage = v32;
           }
 
           v9 = v35;
 LABEL_40:
-          v14 = v36;
+          view = v36;
         }
 
 LABEL_41:
-        [v5 addAnnotation:v14];
+        [pdfPage addAnnotation:view];
 LABEL_42:
 
 LABEL_43:

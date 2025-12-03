@@ -1,6 +1,6 @@
 @interface _DYSharedCache
 + (id)installedSharedCaches;
-+ (id)installedSharedCachesForSystemPath:(id)a3;
++ (id)installedSharedCachesForSystemPath:(id)path;
 - (BOOL)mappedPrivate;
 - (BOOL)pinMappings;
 - (NSArray)filePaths;
@@ -21,16 +21,16 @@
 
 - (unint64_t)vmsize
 {
-  v2 = self;
-  v6 = sub_1AE4B5228(v2, v3, v4, v5);
+  selfCopy = self;
+  v6 = sub_1AE4B5228(selfCopy, v3, v4, v5);
 
   return v6;
 }
 
 - (unint64_t)address
 {
-  v2 = self;
-  v6 = sub_1AE4B5380(v2, v3, v4, v5);
+  selfCopy = self;
+  v6 = sub_1AE4B5380(selfCopy, v3, v4, v5);
 
   return v6;
 }
@@ -42,8 +42,8 @@
   v5 = *(v4 + 64);
   MEMORY[0x1EEE9AC00](v3);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
-  sub_1AE4BD300(v8, v9, v10, v11);
+  selfCopy = self;
+  sub_1AE4BD300(selfCopy, v9, v10, v11);
 
   v12 = sub_1AE4EAAD0();
   (*(v4 + 8))(v7, v3);
@@ -75,8 +75,8 @@ LABEL_5:
 
 - (unint64_t)preferredLoadAddress
 {
-  v2 = self;
-  v6 = sub_1AE4E2FC4(v2, v3, v4, v5);
+  selfCopy = self;
+  v6 = sub_1AE4E2FC4(selfCopy, v3, v4, v5);
 
   return v6;
 }
@@ -87,7 +87,7 @@ LABEL_5:
   if (v2)
   {
     v3 = *(&self[1].super.isa + OBJC_IVAR____DYSharedCache_impl);
-    v4 = self;
+    selfCopy = self;
     sub_1AE4BD9A8(v2);
     sub_1AE4CE2F8();
 
@@ -110,7 +110,7 @@ LABEL_5:
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v16 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1AE4E329C(v8, v9, v6);
 
   v10 = sub_1AE4EAB10();
@@ -133,7 +133,7 @@ LABEL_5:
   if (v2)
   {
     v3 = *(self + OBJC_IVAR____DYSharedCache_impl + 8);
-    v4 = self;
+    selfCopy = self;
     sub_1AE4BD9A8(v2);
     v5 = sub_1AE4DDCF4();
     v7 = v6;
@@ -163,7 +163,7 @@ LABEL_5:
   if (v2)
   {
     v3 = *(&self[1].super.isa + OBJC_IVAR____DYSharedCache_impl);
-    v4 = self;
+    selfCopy = self;
     sub_1AE4BD9A8(v2);
     v5 = sub_1AE4CEF4C();
     v7 = v6;
@@ -193,7 +193,7 @@ LABEL_5:
 
 - (NSArray)images
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AE4E3A80(&OBJC_IVAR____DYSharedCache____lazy_storage___images, sub_1AE4DDCD4, off_1E7A260D0, &OBJC_IVAR____DYImage_impl);
 
   type metadata accessor for _DYImage(v3);
@@ -212,7 +212,7 @@ LABEL_5:
   }
 
   v3 = *&self->$__lazy_storage_$_images[OBJC_IVAR____DYSharedCache_impl];
-  v4 = self;
+  selfCopy = self;
   sub_1AE4BD9A8(v2);
   sub_1AE4DC0D0();
   self = swift_weakLoadStrong();
@@ -223,9 +223,9 @@ LABEL_5:
     return self;
   }
 
-  v5 = self;
+  selfCopy2 = self;
 
-  v6 = sub_1AE4D6498(v5);
+  v6 = sub_1AE4D6498(selfCopy2);
 
   LOBYTE(self) = v6 & 1;
   return self;
@@ -237,7 +237,7 @@ LABEL_5:
   if (v2)
   {
     v3 = *&self->$__lazy_storage_$_images[OBJC_IVAR____DYSharedCache_impl];
-    v4 = self;
+    selfCopy = self;
     sub_1AE4BD9A8(v2);
     v5 = sub_1AE4DC0D0();
 
@@ -255,7 +255,7 @@ LABEL_5:
 
 - (NSArray)subCaches
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AE4E3A80(&OBJC_IVAR____DYSharedCache____lazy_storage___subCaches, sub_1AE4DDE10, &off_1E7A260F8, &OBJC_IVAR____DYSubCache_impl);
 
   type metadata accessor for _DYSubCache(v3);
@@ -273,7 +273,7 @@ LABEL_5:
   return v3;
 }
 
-+ (id)installedSharedCachesForSystemPath:(id)a3
++ (id)installedSharedCachesForSystemPath:(id)path
 {
   v3 = sub_1AE4EAD40();
   sub_1AE4E51C4(v3, v4);

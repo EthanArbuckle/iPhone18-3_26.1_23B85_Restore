@@ -1,10 +1,10 @@
 @interface AVMobileChromelessContainerView
 - (AVMobileChromelessContainerViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)itemLayoutMargins;
 - (void)layoutSubviews;
-- (void)setItemViews:(id)a3;
+- (void)setItemViews:(id)views;
 @end
 
 @implementation AVMobileChromelessContainerView
@@ -37,9 +37,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
@@ -174,21 +174,21 @@ LABEL_3:
     while (v12);
   }
 
-  v26 = [(AVMobileChromelessContainerView *)self delegate];
+  delegate = [(AVMobileChromelessContainerView *)self delegate];
 
-  if (v26)
+  if (delegate)
   {
-    v27 = [(AVMobileChromelessContainerView *)self delegate];
-    [v27 containerView:self layoutWithHiddenViews:v4];
+    delegate2 = [(AVMobileChromelessContainerView *)self delegate];
+    [delegate2 containerView:self layoutWithHiddenViews:v4];
   }
 }
 
-- (void)setItemViews:(id)a3
+- (void)setItemViews:(id)views
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewsCopy = views;
   itemViews = self->_itemViews;
-  if (itemViews != v5)
+  if (itemViews != viewsCopy)
   {
     v24 = 0u;
     v25 = 0u;
@@ -220,7 +220,7 @@ LABEL_3:
       while (v9);
     }
 
-    objc_storeStrong(&self->_itemViews, a3);
+    objc_storeStrong(&self->_itemViews, views);
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -252,8 +252,8 @@ LABEL_3:
     }
 
     [(AVMobileChromelessContainerView *)self invalidateIntrinsicContentSize];
-    v17 = [(AVMobileChromelessContainerView *)self superview];
-    [v17 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview = [(AVMobileChromelessContainerView *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
   }
 }
 

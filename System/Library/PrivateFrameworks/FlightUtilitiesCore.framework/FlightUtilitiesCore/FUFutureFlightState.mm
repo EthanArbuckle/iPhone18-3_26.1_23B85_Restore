@@ -1,33 +1,33 @@
 @interface FUFutureFlightState
-+ (id)newWithState:(int64_t)a3 andDate:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (FUFutureFlightState)initWithCoder:(id)a3;
-- (FUFutureFlightState)initWithState:(int64_t)a3 andDate:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)newWithState:(int64_t)state andDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (FUFutureFlightState)initWithCoder:(id)coder;
+- (FUFutureFlightState)initWithState:(int64_t)state andDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FUFutureFlightState
 
-+ (id)newWithState:(int64_t)a3 andDate:(id)a4
++ (id)newWithState:(int64_t)state andDate:(id)date
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithState:a3 andDate:v6];
+  dateCopy = date;
+  v7 = [[self alloc] initWithState:state andDate:dateCopy];
 
   return v7;
 }
 
-- (FUFutureFlightState)initWithState:(int64_t)a3 andDate:(id)a4
+- (FUFutureFlightState)initWithState:(int64_t)state andDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = FUFutureFlightState;
   v7 = [(FUFutureFlightState *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_futureState = a3;
-    v9 = [v6 copy];
+    v7->_futureState = state;
+    v9 = [dateCopy copy];
     expectedDate = v8->_expectedDate;
     v8->_expectedDate = v9;
   }
@@ -35,24 +35,24 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[FUFutureFlightState futureState](self, "futureState"), v5 == [v4 futureState]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[FUFutureFlightState futureState](self, "futureState"), v5 == [equalCopy futureState]))
   {
-    v6 = [(FUFutureFlightState *)self expectedDate];
-    v7 = [v4 expectedDate];
-    if (v6 == v7)
+    expectedDate = [(FUFutureFlightState *)self expectedDate];
+    expectedDate2 = [equalCopy expectedDate];
+    if (expectedDate == expectedDate2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(FUFutureFlightState *)self expectedDate];
-      v9 = [v4 expectedDate];
-      v10 = [v8 isEqual:v9];
+      expectedDate3 = [(FUFutureFlightState *)self expectedDate];
+      expectedDate4 = [equalCopy expectedDate];
+      v10 = [expectedDate3 isEqual:expectedDate4];
     }
   }
 
@@ -64,35 +64,35 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(FUFutureFlightState *)self futureState];
-  v7 = [(FUFutureFlightState *)self expectedDate];
-  v8 = [v7 copyWithZone:a3];
-  v9 = [v5 initWithState:v6 andDate:v8];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  futureState = [(FUFutureFlightState *)self futureState];
+  expectedDate = [(FUFutureFlightState *)self expectedDate];
+  v8 = [expectedDate copyWithZone:zone];
+  v9 = [v5 initWithState:futureState andDate:v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[FUFutureFlightState futureState](self forKey:{"futureState"), @"futureState"}];
-  v5 = [(FUFutureFlightState *)self expectedDate];
-  [v4 encodeObject:v5 forKey:@"expectedDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[FUFutureFlightState futureState](self forKey:{"futureState"), @"futureState"}];
+  expectedDate = [(FUFutureFlightState *)self expectedDate];
+  [coderCopy encodeObject:expectedDate forKey:@"expectedDate"];
 }
 
-- (FUFutureFlightState)initWithCoder:(id)a3
+- (FUFutureFlightState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FUFutureFlightState;
   v5 = [(FUFutureFlightState *)&v9 init];
   if (v5)
   {
-    v5->_futureState = [v4 decodeIntegerForKey:@"futureState"];
-    v6 = [v4 decodeObjectForKey:@"expectedDate"];
+    v5->_futureState = [coderCopy decodeIntegerForKey:@"futureState"];
+    v6 = [coderCopy decodeObjectForKey:@"expectedDate"];
     expectedDate = v5->_expectedDate;
     v5->_expectedDate = v6;
   }

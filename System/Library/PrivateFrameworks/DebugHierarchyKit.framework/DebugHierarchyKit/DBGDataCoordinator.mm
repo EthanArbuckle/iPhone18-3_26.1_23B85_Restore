@@ -1,36 +1,36 @@
 @interface DBGDataCoordinator
-+ (id)coordinatorWithDataSourceConnection:(id)a3;
-- (DBGDataCoordinator)initWithDataSourceConnection:(id)a3;
++ (id)coordinatorWithDataSourceConnection:(id)connection;
+- (DBGDataCoordinator)initWithDataSourceConnection:(id)connection;
 - (DBGSnapshotManager)snapshotManager;
 - (NSArray)snapshotTransformers;
 - (void)_performNextRequest;
-- (void)addSnapshotTransformer:(id)a3;
+- (void)addSnapshotTransformer:(id)transformer;
 - (void)cancelAllRequests;
-- (void)cancelRequest:(id)a3;
-- (void)didReceiveData:(id)a3 forRequest:(id)a4;
-- (void)performRequest:(id)a3;
+- (void)cancelRequest:(id)request;
+- (void)didReceiveData:(id)data forRequest:(id)request;
+- (void)performRequest:(id)request;
 @end
 
 @implementation DBGDataCoordinator
 
-+ (id)coordinatorWithDataSourceConnection:(id)a3
++ (id)coordinatorWithDataSourceConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDataSourceConnection:v4];
+  connectionCopy = connection;
+  v5 = [[self alloc] initWithDataSourceConnection:connectionCopy];
 
   return v5;
 }
 
-- (DBGDataCoordinator)initWithDataSourceConnection:(id)a3
+- (DBGDataCoordinator)initWithDataSourceConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = DBGDataCoordinator;
   v6 = [(DBGDataCoordinator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSourceConnection, a3);
+    objc_storeStrong(&v6->_dataSourceConnection, connection);
     [(DBGDataSourceConnection *)v7->_dataSourceConnection setDelegate:v7];
     v8 = +[NSMutableArray array];
     enqueuedRequests = v7->_enqueuedRequests;
@@ -45,10 +45,10 @@
   return v7;
 }
 
-- (void)performRequest:(id)a3
+- (void)performRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     if (DebugHierarchyPOIOSLog___dvt_lazy_init_predicate != -1)
     {
@@ -62,38 +62,38 @@
       v7 = v6;
       if (os_signpost_enabled(v5))
       {
-        v8 = [v4 name];
+        name = [requestCopy name];
         v24 = 138543362;
-        v25 = v8;
+        v25 = name;
         _os_signpost_emit_with_name_impl(&dword_0, v5, OS_SIGNPOST_EVENT, v7, "Equeue Request", "%{public}@", &v24, 0xCu);
       }
     }
 
-    v9 = [(DBGDataCoordinator *)self enqueuedRequests];
-    v10 = [v9 containsObject:v4];
+    enqueuedRequests = [(DBGDataCoordinator *)self enqueuedRequests];
+    v10 = [enqueuedRequests containsObject:requestCopy];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [(DBGDataCoordinator *)self enqueuedRequests];
-      v12 = [v11 count];
+      enqueuedRequests2 = [(DBGDataCoordinator *)self enqueuedRequests];
+      v12 = [enqueuedRequests2 count];
 
-      if (![v4 priority])
+      if (![requestCopy priority])
       {
-        v15 = [(DBGDataCoordinator *)self enqueuedRequests];
-        v16 = [v15 count];
+        enqueuedRequests3 = [(DBGDataCoordinator *)self enqueuedRequests];
+        v16 = [enqueuedRequests3 count];
 
         if (v16)
         {
-          v17 = [(DBGDataCoordinator *)self enqueuedRequests];
-          v18 = [v17 count];
+          enqueuedRequests4 = [(DBGDataCoordinator *)self enqueuedRequests];
+          v18 = [enqueuedRequests4 count];
 
           if (v18)
           {
             v19 = 0;
             do
             {
-              v20 = [(DBGDataCoordinator *)self enqueuedRequests];
-              v21 = [v20 objectAtIndexedSubscript:v19];
+              enqueuedRequests5 = [(DBGDataCoordinator *)self enqueuedRequests];
+              v21 = [enqueuedRequests5 objectAtIndexedSubscript:v19];
 
               if ([v21 priority] == &dword_0 + 1)
               {
@@ -101,8 +101,8 @@
               }
 
               ++v19;
-              v22 = [(DBGDataCoordinator *)self enqueuedRequests];
-              v23 = [v22 count];
+              enqueuedRequests6 = [(DBGDataCoordinator *)self enqueuedRequests];
+              v23 = [enqueuedRequests6 count];
             }
 
             while (v23 > v19);
@@ -111,15 +111,15 @@
       }
 
       [(DBGDataCoordinator *)self willChangeValueForKey:@"enqueuedRequests"];
-      v13 = [(DBGDataCoordinator *)self enqueuedRequests];
-      [v13 insertObject:v4 atIndex:v12];
+      enqueuedRequests7 = [(DBGDataCoordinator *)self enqueuedRequests];
+      [enqueuedRequests7 insertObject:requestCopy atIndex:v12];
 
       [(DBGDataCoordinator *)self didChangeValueForKey:@"enqueuedRequests"];
     }
 
-    v14 = [(DBGDataCoordinator *)self executingRequest];
+    executingRequest = [(DBGDataCoordinator *)self executingRequest];
 
-    if (!v14)
+    if (!executingRequest)
     {
       [(DBGDataCoordinator *)self _performNextRequest];
     }
@@ -128,32 +128,32 @@
 
 - (void)_performNextRequest
 {
-  v3 = [(DBGDataCoordinator *)self enqueuedRequests];
-  v6 = [v3 firstObject];
+  enqueuedRequests = [(DBGDataCoordinator *)self enqueuedRequests];
+  firstObject = [enqueuedRequests firstObject];
 
-  if (v6)
+  if (firstObject)
   {
     [(DBGDataCoordinator *)self willChangeValueForKey:@"enqueuedRequests"];
-    v4 = [(DBGDataCoordinator *)self enqueuedRequests];
-    [v4 removeObjectAtIndex:0];
+    enqueuedRequests2 = [(DBGDataCoordinator *)self enqueuedRequests];
+    [enqueuedRequests2 removeObjectAtIndex:0];
 
     [(DBGDataCoordinator *)self didChangeValueForKey:@"enqueuedRequests"];
-    [(DBGDataCoordinator *)self setExecutingRequest:v6];
-    v5 = [(DBGDataCoordinator *)self dataSourceConnection];
-    [v5 performRequest:v6];
+    [(DBGDataCoordinator *)self setExecutingRequest:firstObject];
+    dataSourceConnection = [(DBGDataCoordinator *)self dataSourceConnection];
+    [dataSourceConnection performRequest:firstObject];
   }
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
-  v8 = a3;
-  v4 = [(DBGDataCoordinator *)self executingRequest];
-  v5 = [v4 isEqual:v8];
+  requestCopy = request;
+  executingRequest = [(DBGDataCoordinator *)self executingRequest];
+  v5 = [executingRequest isEqual:requestCopy];
 
   if (v5)
   {
-    v6 = [(DBGDataCoordinator *)self executingRequest];
-    [v6 cancel];
+    executingRequest2 = [(DBGDataCoordinator *)self executingRequest];
+    [executingRequest2 cancel];
 
     [(DBGDataCoordinator *)self setExecutingRequest:0];
   }
@@ -161,21 +161,21 @@
   else
   {
     [(DBGDataCoordinator *)self willChangeValueForKey:@"enqueuedRequests"];
-    v7 = [(DBGDataCoordinator *)self enqueuedRequests];
-    [v7 removeObject:v8];
+    enqueuedRequests = [(DBGDataCoordinator *)self enqueuedRequests];
+    [enqueuedRequests removeObject:requestCopy];
 
     [(DBGDataCoordinator *)self didChangeValueForKey:@"enqueuedRequests"];
-    [v8 cancel];
+    [requestCopy cancel];
   }
 }
 
 - (void)cancelAllRequests
 {
-  v3 = [(DBGDataCoordinator *)self executingRequest];
-  [(DBGDataCoordinator *)self cancelRequest:v3];
+  executingRequest = [(DBGDataCoordinator *)self executingRequest];
+  [(DBGDataCoordinator *)self cancelRequest:executingRequest];
 
-  v4 = [(DBGDataCoordinator *)self enqueuedRequests];
-  v5 = [v4 copy];
+  enqueuedRequests = [(DBGDataCoordinator *)self enqueuedRequests];
+  v5 = [enqueuedRequests copy];
 
   v13 = 0u;
   v14 = 0u;
@@ -209,42 +209,42 @@
   }
 }
 
-- (void)addSnapshotTransformer:(id)a3
+- (void)addSnapshotTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [(DBGDataCoordinator *)self snapshotTransformerStore];
+  transformerCopy = transformer;
+  snapshotTransformerStore = [(DBGDataCoordinator *)self snapshotTransformerStore];
 
-  if (!v5)
+  if (!snapshotTransformerStore)
   {
     v6 = [NSMutableArray arrayWithCapacity:1];
     [(DBGDataCoordinator *)self setSnapshotTransformerStore:v6];
   }
 
-  v7 = [(DBGDataCoordinator *)self snapshotTransformerStore];
-  [v7 addObject:v4];
+  snapshotTransformerStore2 = [(DBGDataCoordinator *)self snapshotTransformerStore];
+  [snapshotTransformerStore2 addObject:transformerCopy];
 }
 
 - (NSArray)snapshotTransformers
 {
-  v2 = [(DBGDataCoordinator *)self snapshotTransformerStore];
-  v3 = [v2 copy];
+  snapshotTransformerStore = [(DBGDataCoordinator *)self snapshotTransformerStore];
+  v3 = [snapshotTransformerStore copy];
 
   return v3;
 }
 
-- (void)didReceiveData:(id)a3 forRequest:(id)a4
+- (void)didReceiveData:(id)data forRequest:(id)request
 {
-  v9 = a4;
-  v5 = [(DBGDataCoordinator *)self executingRequest];
-  v6 = [v9 isEqual:v5];
+  requestCopy = request;
+  executingRequest = [(DBGDataCoordinator *)self executingRequest];
+  v6 = [requestCopy isEqual:executingRequest];
 
   if (v6)
   {
-    v7 = [(DBGDataCoordinator *)self shouldStoreCompletedRequests];
-    if (v9 && v7)
+    shouldStoreCompletedRequests = [(DBGDataCoordinator *)self shouldStoreCompletedRequests];
+    if (requestCopy && shouldStoreCompletedRequests)
     {
-      v8 = [(DBGDataCoordinator *)self completedRequests];
-      [v8 addObject:v9];
+      completedRequests = [(DBGDataCoordinator *)self completedRequests];
+      [completedRequests addObject:requestCopy];
     }
 
     [(DBGDataCoordinator *)self setExecutingRequest:0];

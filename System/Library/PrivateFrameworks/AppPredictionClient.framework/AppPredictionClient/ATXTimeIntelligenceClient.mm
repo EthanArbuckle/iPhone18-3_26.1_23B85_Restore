@@ -1,27 +1,27 @@
 @interface ATXTimeIntelligenceClient
 - (ATXTimeIntelligenceClient)init;
 - (void)_notifyObserversOfReload;
-- (void)computeCompactTimeSummaryWithOptions:(int64_t)a3 completionHandler:(id)a4;
-- (void)computeDailySummaryWithDate:(id)a3 completionHandler:(id)a4;
-- (void)dataSourcesDidUpdateWithCompletionHandler:(id)a3;
-- (void)deletePinnedTimeEvent:(id)a3 completionHandler:(id)a4;
-- (void)dumpTimeFeedbackStream:(id)a3;
-- (void)invokeActionWithIdentifier:(id)a3 forEvent:(id)a4 completionHandler:(id)a5;
-- (void)invokeFeedbackOption:(id)a3 forEvent:(id)a4 referenceDate:(id)a5 completionHandler:(id)a6;
-- (void)loadPinnedTimeEventsWithCompletionHandler:(id)a3;
-- (void)logDidInvokeWidgetForEvent:(id)a3 completionHandler:(id)a4;
-- (void)logFocusFilterDidChange:(int64_t)a3 completionHandler:(id)a4;
-- (void)predictedDailyOverviewWithDate:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)predictedFreeMomentsWithDateRange:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)predictedTimelineWithDate:(id)a3 completionHandler:(id)a4;
-- (void)printRLPolicyTable:(id)a3;
-- (void)registerGoalWithData:(id)a3 completionHandler:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)rescheduleEvent:(id)a3 proposedDate:(id)a4 referenceDate:(id)a5 completionHandler:(id)a6;
-- (void)savePinnedTimeEvent:(id)a3 completionHandler:(id)a4;
-- (void)saveScheduledPinnedTimeEvent:(id)a3 completionHandler:(id)a4;
-- (void)triggerNudgerToPollWithCompletionHandler:(id)a3;
-- (void)unhideAllEventsFromSource:(int64_t)a3 completionHandler:(id)a4;
+- (void)computeCompactTimeSummaryWithOptions:(int64_t)options completionHandler:(id)handler;
+- (void)computeDailySummaryWithDate:(id)date completionHandler:(id)handler;
+- (void)dataSourcesDidUpdateWithCompletionHandler:(id)handler;
+- (void)deletePinnedTimeEvent:(id)event completionHandler:(id)handler;
+- (void)dumpTimeFeedbackStream:(id)stream;
+- (void)invokeActionWithIdentifier:(id)identifier forEvent:(id)event completionHandler:(id)handler;
+- (void)invokeFeedbackOption:(id)option forEvent:(id)event referenceDate:(id)date completionHandler:(id)handler;
+- (void)loadPinnedTimeEventsWithCompletionHandler:(id)handler;
+- (void)logDidInvokeWidgetForEvent:(id)event completionHandler:(id)handler;
+- (void)logFocusFilterDidChange:(int64_t)change completionHandler:(id)handler;
+- (void)predictedDailyOverviewWithDate:(id)date options:(id)options completionHandler:(id)handler;
+- (void)predictedFreeMomentsWithDateRange:(id)range options:(id)options completionHandler:(id)handler;
+- (void)predictedTimelineWithDate:(id)date completionHandler:(id)handler;
+- (void)printRLPolicyTable:(id)table;
+- (void)registerGoalWithData:(id)data completionHandler:(id)handler;
+- (void)registerObserver:(id)observer;
+- (void)rescheduleEvent:(id)event proposedDate:(id)date referenceDate:(id)referenceDate completionHandler:(id)handler;
+- (void)savePinnedTimeEvent:(id)event completionHandler:(id)handler;
+- (void)saveScheduledPinnedTimeEvent:(id)event completionHandler:(id)handler;
+- (void)triggerNudgerToPollWithCompletionHandler:(id)handler;
+- (void)unhideAllEventsFromSource:(int64_t)source completionHandler:(id)handler;
 @end
 
 @implementation ATXTimeIntelligenceClient
@@ -49,9 +49,9 @@
     [(NSXPCConnection *)v2->_xpcConnection setInterruptionHandler:&__block_literal_global_61];
     [(NSXPCConnection *)v2->_xpcConnection setInvalidationHandler:&__block_literal_global_4];
     [(NSXPCConnection *)v2->_xpcConnection resume];
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v9;
+    v2->_observers = weakObjectsHashTable;
   }
 
   return v2;
@@ -76,16 +76,16 @@ void __33__ATXTimeIntelligenceClient_init__block_invoke_2()
   }
 }
 
-- (void)dataSourcesDidUpdateWithCompletionHandler:(id)a3
+- (void)dataSourcesDidUpdateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__ATXTimeIntelligenceClient_dataSourcesDidUpdateWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E80C0D78;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -134,28 +134,28 @@ uint64_t __71__ATXTimeIntelligenceClient_dataSourcesDidUpdateWithCompletionHandl
   objc_sync_exit(v3);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)predictedTimelineWithDate:(id)a3 completionHandler:(id)a4
+- (void)predictedTimelineWithDate:(id)date completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  dateCopy = date;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__ATXTimeIntelligenceClient_predictedTimelineWithDate_completionHandler___block_invoke;
   v11[3] = &unk_1E80C08E0;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-  [v10 predictedTimelineWithDate:v7 completionHandler:v9];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
+  [v10 predictedTimelineWithDate:dateCopy completionHandler:v9];
 }
 
 void __73__ATXTimeIntelligenceClient_predictedTimelineWithDate_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -170,20 +170,20 @@ void __73__ATXTimeIntelligenceClient_predictedTimelineWithDate_completionHandler
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)predictedDailyOverviewWithDate:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictedDailyOverviewWithDate:(id)date options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  optionsCopy = options;
+  dateCopy = date;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __86__ATXTimeIntelligenceClient_predictedDailyOverviewWithDate_options_completionHandler___block_invoke;
   v14[3] = &unk_1E80C08E0;
-  v15 = v8;
-  v12 = v8;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
-  [v13 predictedDailyOverviewWithDate:v10 options:v9 completionHandler:v12];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+  [v13 predictedDailyOverviewWithDate:dateCopy options:optionsCopy completionHandler:v12];
 }
 
 void __86__ATXTimeIntelligenceClient_predictedDailyOverviewWithDate_options_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -198,20 +198,20 @@ void __86__ATXTimeIntelligenceClient_predictedDailyOverviewWithDate_options_comp
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)predictedFreeMomentsWithDateRange:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictedFreeMomentsWithDateRange:(id)range options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  optionsCopy = options;
+  rangeCopy = range;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __89__ATXTimeIntelligenceClient_predictedFreeMomentsWithDateRange_options_completionHandler___block_invoke;
   v14[3] = &unk_1E80C08E0;
-  v15 = v8;
-  v12 = v8;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
-  [v13 predictedFreeMomentsWithDateRange:v10 options:v9 completionHandler:v12];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+  [v13 predictedFreeMomentsWithDateRange:rangeCopy options:optionsCopy completionHandler:v12];
 }
 
 void __89__ATXTimeIntelligenceClient_predictedFreeMomentsWithDateRange_options_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -226,241 +226,241 @@ void __89__ATXTimeIntelligenceClient_predictedFreeMomentsWithDateRange_options_c
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)computeDailySummaryWithDate:(id)a3 completionHandler:(id)a4
+- (void)computeDailySummaryWithDate:(id)date completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  dateCopy = date;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __75__ATXTimeIntelligenceClient_computeDailySummaryWithDate_completionHandler___block_invoke;
   v11[3] = &unk_1E80C08E0;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-  [v10 computeDailySummaryWithDate:v7 completionHandler:v9];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
+  [v10 computeDailySummaryWithDate:dateCopy completionHandler:v9];
 }
 
-- (void)computeCompactTimeSummaryWithOptions:(int64_t)a3 completionHandler:(id)a4
+- (void)computeCompactTimeSummaryWithOptions:(int64_t)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__ATXTimeIntelligenceClient_computeCompactTimeSummaryWithOptions_completionHandler___block_invoke;
   v10[3] = &unk_1E80C08E0;
-  v11 = v6;
-  v8 = v6;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v10];
-  [v9 computeCompactTimeSummaryWithOptions:a3 completionHandler:v8];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v10];
+  [v9 computeCompactTimeSummaryWithOptions:options completionHandler:v8];
 }
 
-- (void)invokeActionWithIdentifier:(id)a3 forEvent:(id)a4 completionHandler:(id)a5
+- (void)invokeActionWithIdentifier:(id)identifier forEvent:(id)event completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  eventCopy = event;
+  identifierCopy = identifier;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __83__ATXTimeIntelligenceClient_invokeActionWithIdentifier_forEvent_completionHandler___block_invoke;
   v14[3] = &unk_1E80C08E0;
-  v15 = v8;
-  v12 = v8;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
-  [v13 invokeActionWithIdentifier:v10 forEvent:v9 completionHandler:v12];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+  [v13 invokeActionWithIdentifier:identifierCopy forEvent:eventCopy completionHandler:v12];
 }
 
-- (void)invokeFeedbackOption:(id)a3 forEvent:(id)a4 referenceDate:(id)a5 completionHandler:(id)a6
+- (void)invokeFeedbackOption:(id)option forEvent:(id)event referenceDate:(id)date completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  dateCopy = date;
+  eventCopy = event;
+  optionCopy = option;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __91__ATXTimeIntelligenceClient_invokeFeedbackOption_forEvent_referenceDate_completionHandler___block_invoke;
   v17[3] = &unk_1E80C08E0;
-  v18 = v10;
-  v15 = v10;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v17];
-  [v16 invokeFeedbackOption:v13 forEvent:v12 referenceDate:v11 completionHandler:v15];
+  v18 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+  [v16 invokeFeedbackOption:optionCopy forEvent:eventCopy referenceDate:dateCopy completionHandler:v15];
 }
 
-- (void)rescheduleEvent:(id)a3 proposedDate:(id)a4 referenceDate:(id)a5 completionHandler:(id)a6
+- (void)rescheduleEvent:(id)event proposedDate:(id)date referenceDate:(id)referenceDate completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  referenceDateCopy = referenceDate;
+  dateCopy = date;
+  eventCopy = event;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __90__ATXTimeIntelligenceClient_rescheduleEvent_proposedDate_referenceDate_completionHandler___block_invoke;
   v17[3] = &unk_1E80C08E0;
-  v18 = v10;
-  v15 = v10;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v17];
-  [v16 rescheduleEvent:v13 proposedDate:v12 referenceDate:v11 completionHandler:v15];
+  v18 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+  [v16 rescheduleEvent:eventCopy proposedDate:dateCopy referenceDate:referenceDateCopy completionHandler:v15];
 }
 
-- (void)loadPinnedTimeEventsWithCompletionHandler:(id)a3
+- (void)loadPinnedTimeEventsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__ATXTimeIntelligenceClient_loadPinnedTimeEventsWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E80C08E0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
   [v7 loadPinnedTimeEventsWithCompletionHandler:v6];
 }
 
-- (void)savePinnedTimeEvent:(id)a3 completionHandler:(id)a4
+- (void)savePinnedTimeEvent:(id)event completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  eventCopy = event;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__ATXTimeIntelligenceClient_savePinnedTimeEvent_completionHandler___block_invoke;
   v11[3] = &unk_1E80C08E0;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-  [v10 savePinnedTimeEvent:v7 completionHandler:v9];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
+  [v10 savePinnedTimeEvent:eventCopy completionHandler:v9];
 }
 
-- (void)deletePinnedTimeEvent:(id)a3 completionHandler:(id)a4
+- (void)deletePinnedTimeEvent:(id)event completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  eventCopy = event;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__ATXTimeIntelligenceClient_deletePinnedTimeEvent_completionHandler___block_invoke;
   v11[3] = &unk_1E80C08E0;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-  [v10 deletePinnedTimeEvent:v7 completionHandler:v9];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
+  [v10 deletePinnedTimeEvent:eventCopy completionHandler:v9];
 }
 
-- (void)saveScheduledPinnedTimeEvent:(id)a3 completionHandler:(id)a4
+- (void)saveScheduledPinnedTimeEvent:(id)event completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  eventCopy = event;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__ATXTimeIntelligenceClient_saveScheduledPinnedTimeEvent_completionHandler___block_invoke;
   v11[3] = &unk_1E80C08E0;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-  [v10 saveScheduledPinnedTimeEvent:v7 completionHandler:v9];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
+  [v10 saveScheduledPinnedTimeEvent:eventCopy completionHandler:v9];
 }
 
-- (void)logFocusFilterDidChange:(int64_t)a3 completionHandler:(id)a4
+- (void)logFocusFilterDidChange:(int64_t)change completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__ATXTimeIntelligenceClient_logFocusFilterDidChange_completionHandler___block_invoke;
   v10[3] = &unk_1E80C08E0;
-  v11 = v6;
-  v8 = v6;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v10];
-  [v9 logFocusFilterDidChange:a3 completionHandler:v8];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v10];
+  [v9 logFocusFilterDidChange:change completionHandler:v8];
 }
 
-- (void)logDidInvokeWidgetForEvent:(id)a3 completionHandler:(id)a4
+- (void)logDidInvokeWidgetForEvent:(id)event completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  eventCopy = event;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__ATXTimeIntelligenceClient_logDidInvokeWidgetForEvent_completionHandler___block_invoke;
   v11[3] = &unk_1E80C08E0;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-  [v10 logDidInvokeWidgetForEvent:v7 completionHandler:v9];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
+  [v10 logDidInvokeWidgetForEvent:eventCopy completionHandler:v9];
 }
 
-- (void)triggerNudgerToPollWithCompletionHandler:(id)a3
+- (void)triggerNudgerToPollWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__ATXTimeIntelligenceClient_triggerNudgerToPollWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E80C08E0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
   [v7 triggerNudgerToPollWithCompletionHandler:v6];
 }
 
-- (void)dumpTimeFeedbackStream:(id)a3
+- (void)dumpTimeFeedbackStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  streamCopy = stream;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__ATXTimeIntelligenceClient_dumpTimeFeedbackStream___block_invoke;
   v8[3] = &unk_1E80C08E0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = streamCopy;
+  v6 = streamCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
   [v7 dumpTimeFeedbackStream:v6];
 }
 
-- (void)unhideAllEventsFromSource:(int64_t)a3 completionHandler:(id)a4
+- (void)unhideAllEventsFromSource:(int64_t)source completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__ATXTimeIntelligenceClient_unhideAllEventsFromSource_completionHandler___block_invoke;
   v10[3] = &unk_1E80C08E0;
-  v11 = v6;
-  v8 = v6;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v10];
-  [v9 unhideAllEventsFromSource:a3 completionHandler:v8];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v10];
+  [v9 unhideAllEventsFromSource:source completionHandler:v8];
 }
 
-- (void)registerGoalWithData:(id)a3 completionHandler:(id)a4
+- (void)registerGoalWithData:(id)data completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  handlerCopy = handler;
+  dataCopy = data;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__ATXTimeIntelligenceClient_registerGoalWithData_completionHandler___block_invoke;
   v11[3] = &unk_1E80C08E0;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-  [v10 registerGoalWithData:v7 completionHandler:v9];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
+  [v10 registerGoalWithData:dataCopy completionHandler:v9];
 }
 
-- (void)printRLPolicyTable:(id)a3
+- (void)printRLPolicyTable:(id)table
 {
-  v4 = a3;
-  v5 = [(ATXTimeIntelligenceClient *)self xpcConnection];
+  tableCopy = table;
+  xpcConnection = [(ATXTimeIntelligenceClient *)self xpcConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__ATXTimeIntelligenceClient_printRLPolicyTable___block_invoke;
   v8[3] = &unk_1E80C08E0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = tableCopy;
+  v6 = tableCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
   [v7 printRLPolicyTable:v6];
 }
 

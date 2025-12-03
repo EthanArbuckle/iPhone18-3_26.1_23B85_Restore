@@ -1,69 +1,69 @@
 @interface BuddyAppleIDSignInTask
 - (BYPasscodeCacheManager)cacheManager;
-- (BuddyAppleIDSignInTask)initWithFeatureFlags:(id)a3 accountTools:(id)a4;
+- (BuddyAppleIDSignInTask)initWithFeatureFlags:(id)flags accountTools:(id)tools;
 - (id)_createAuthenticationContext;
-- (id)_createServiceContextWithAuthenticationResults:(id)a3;
+- (id)_createServiceContextWithAuthenticationResults:(id)results;
 - (id)_requiredTerms;
-- (void)_addCachedLocalSecretToCDPContext:(id)a3;
-- (void)_authenticateWithContext:(id)a3 completion:(id)a4;
-- (void)_signInToAllServicesUsingContext:(id)a3 serviceOwnersManager:(id)a4 completion:(id)a5;
-- (void)_updateAgreedTerms:(id)a3;
-- (void)authenticateForAccountCreationWithCompletion:(id)a3;
-- (void)authenticateForCredentialRecoveryWithCompletion:(id)a3;
-- (void)authenticateWithProximity:(id)a3;
-- (void)authenticateWithUsername:(id)a3 companionDevice:(id)a4 anisetteDataProvider:(id)a5 completion:(id)a6;
-- (void)authenticateWithUsername:(id)a3 password:(id)a4 completion:(id)a5;
-- (void)prepareSignInContext:(id)a3;
-- (void)signInToAllServicesWithAuthenticationResults:(id)a3 completion:(id)a4;
-- (void)signInToServices:(id)a3 authenticationResults:(id)a4 completion:(id)a5;
+- (void)_addCachedLocalSecretToCDPContext:(id)context;
+- (void)_authenticateWithContext:(id)context completion:(id)completion;
+- (void)_signInToAllServicesUsingContext:(id)context serviceOwnersManager:(id)manager completion:(id)completion;
+- (void)_updateAgreedTerms:(id)terms;
+- (void)authenticateForAccountCreationWithCompletion:(id)completion;
+- (void)authenticateForCredentialRecoveryWithCompletion:(id)completion;
+- (void)authenticateWithProximity:(id)proximity;
+- (void)authenticateWithUsername:(id)username companionDevice:(id)device anisetteDataProvider:(id)provider completion:(id)completion;
+- (void)authenticateWithUsername:(id)username password:(id)password completion:(id)completion;
+- (void)prepareSignInContext:(id)context;
+- (void)signInToAllServicesWithAuthenticationResults:(id)results completion:(id)completion;
+- (void)signInToServices:(id)services authenticationResults:(id)results completion:(id)completion;
 @end
 
 @implementation BuddyAppleIDSignInTask
 
-- (BuddyAppleIDSignInTask)initWithFeatureFlags:(id)a3 accountTools:(id)a4
+- (BuddyAppleIDSignInTask)initWithFeatureFlags:(id)flags accountTools:(id)tools
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, flags);
   obj = 0;
-  objc_storeStrong(&obj, a4);
-  v5 = v12;
-  v12 = 0;
+  objc_storeStrong(&obj, tools);
+  v5 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v5;
   v9.super_class = BuddyAppleIDSignInTask;
-  v12 = [(BuddyAppleIDSignInTask *)&v9 init];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(BuddyAppleIDSignInTask *)&v9 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    *(v12 + 3) = 1;
-    *(v12 + 10) = 1;
-    *(v12 + 11) = 1;
+    *(selfCopy + 3) = 1;
+    *(selfCopy + 10) = 1;
+    *(selfCopy + 11) = 1;
     v6 = +[AMSDevice deviceIsBundle];
-    *(v12 + 14) = v6 & 1;
-    objc_storeStrong(v12 + 6, location[0]);
-    objc_storeStrong(v12 + 7, obj);
+    *(selfCopy + 14) = v6 & 1;
+    objc_storeStrong(selfCopy + 6, location[0]);
+    objc_storeStrong(selfCopy + 7, obj);
   }
 
-  v7 = v12;
+  v7 = selfCopy;
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)authenticateWithProximity:(id)a3
+- (void)authenticateWithProximity:(id)proximity
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, proximity);
   v5 = objc_alloc_init(AKAppleIDProximityAuthenticationContext);
   [v5 setProximityAIDAHandler:&stru_10032E020];
-  v3 = [(BuddyAppleIDSignInTask *)v7 navigationController];
-  [v5 setPresentingViewController:v3];
+  navigationController = [(BuddyAppleIDSignInTask *)selfCopy navigationController];
+  [v5 setPresentingViewController:navigationController];
 
-  if ([(BuddyAppleIDSignInTask *)v7 requireAppleMAID])
+  if ([(BuddyAppleIDSignInTask *)selfCopy requireAppleMAID])
   {
     [v5 setAppProvidedContext:kAppleMAIDSignInProvidedContext];
   }
@@ -75,124 +75,124 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)authenticateWithUsername:(id)a3 password:(id)a4 completion:(id)a5
+- (void)authenticateWithUsername:(id)username password:(id)password completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, password);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v12 = [(BuddyAppleIDSignInTask *)v16 _createAuthenticationContext];
+  objc_storeStrong(&v13, completion);
+  _createAuthenticationContext = [(BuddyAppleIDSignInTask *)selfCopy _createAuthenticationContext];
   v7 = location[0];
   v8 = +[NSCharacterSet whitespaceCharacterSet];
   v9 = [v7 stringByTrimmingCharactersInSet:v8];
   v10 = location[0];
   location[0] = v9;
 
-  v11 = [(BuddyAppleIDSignInTask *)v16 navigationController];
-  [v12 setPresentingViewController:v11];
+  navigationController = [(BuddyAppleIDSignInTask *)selfCopy navigationController];
+  [_createAuthenticationContext setPresentingViewController:navigationController];
 
-  [v12 setUsername:location[0]];
-  [v12 _setPassword:v14];
-  if ([(BuddyAppleIDSignInTask *)v16 requireAppleMAID])
+  [_createAuthenticationContext setUsername:location[0]];
+  [_createAuthenticationContext _setPassword:v14];
+  if ([(BuddyAppleIDSignInTask *)selfCopy requireAppleMAID])
   {
-    [v12 setAppProvidedContext:kAppleMAIDSignInProvidedContext];
+    [_createAuthenticationContext setAppProvidedContext:kAppleMAIDSignInProvidedContext];
   }
 
-  [(BuddyAppleIDSignInTask *)v16 _authenticateWithContext:v12 completion:v13];
-  objc_storeStrong(&v12, 0);
+  [(BuddyAppleIDSignInTask *)selfCopy _authenticateWithContext:_createAuthenticationContext completion:v13];
+  objc_storeStrong(&_createAuthenticationContext, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)authenticateWithUsername:(id)a3 companionDevice:(id)a4 anisetteDataProvider:(id)a5 completion:(id)a6
+- (void)authenticateWithUsername:(id)username companionDevice:(id)device anisetteDataProvider:(id)provider completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, device);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, provider);
   v11 = 0;
-  objc_storeStrong(&v11, a6);
-  v10 = [(BuddyAppleIDSignInTask *)v15 _createAuthenticationContext];
-  [v10 setUsername:location[0]];
-  v9 = [(BuddyAppleIDSignInTask *)v15 navigationController];
-  [v10 setPresentingViewController:v9];
+  objc_storeStrong(&v11, completion);
+  _createAuthenticationContext = [(BuddyAppleIDSignInTask *)selfCopy _createAuthenticationContext];
+  [_createAuthenticationContext setUsername:location[0]];
+  navigationController = [(BuddyAppleIDSignInTask *)selfCopy navigationController];
+  [_createAuthenticationContext setPresentingViewController:navigationController];
 
-  [v10 setCompanionDevice:v13];
-  [v10 setAnisetteDataProvider:v12];
-  [v10 setIsUsernameEditable:0];
-  [v10 setShouldAllowAppleIDCreation:0];
-  [v10 setShouldForceInteractiveAuth:0];
-  [v10 setShouldUpdatePersistentServiceTokens:1];
-  [v10 _setProxyingForApp:1];
-  if ([(BuddyAppleIDSignInTask *)v15 requireAppleMAID])
+  [_createAuthenticationContext setCompanionDevice:v13];
+  [_createAuthenticationContext setAnisetteDataProvider:v12];
+  [_createAuthenticationContext setIsUsernameEditable:0];
+  [_createAuthenticationContext setShouldAllowAppleIDCreation:0];
+  [_createAuthenticationContext setShouldForceInteractiveAuth:0];
+  [_createAuthenticationContext setShouldUpdatePersistentServiceTokens:1];
+  [_createAuthenticationContext _setProxyingForApp:1];
+  if ([(BuddyAppleIDSignInTask *)selfCopy requireAppleMAID])
   {
-    [v10 setAppProvidedContext:kAppleMAIDSignInProvidedContext];
+    [_createAuthenticationContext setAppProvidedContext:kAppleMAIDSignInProvidedContext];
   }
 
-  [(BuddyAppleIDSignInTask *)v15 _authenticateWithContext:v10 completion:v11];
-  objc_storeStrong(&v10, 0);
+  [(BuddyAppleIDSignInTask *)selfCopy _authenticateWithContext:_createAuthenticationContext completion:v11];
+  objc_storeStrong(&_createAuthenticationContext, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)authenticateForAccountCreationWithCompletion:(id)a3
+- (void)authenticateForAccountCreationWithCompletion:(id)completion
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(BuddyAppleIDSignInTask *)v6 _createAuthenticationContext];
-  v3 = [(BuddyAppleIDSignInTask *)v6 navigationController];
-  [v4 setPresentingViewController:v3];
+  objc_storeStrong(location, completion);
+  _createAuthenticationContext = [(BuddyAppleIDSignInTask *)selfCopy _createAuthenticationContext];
+  navigationController = [(BuddyAppleIDSignInTask *)selfCopy navigationController];
+  [_createAuthenticationContext setPresentingViewController:navigationController];
 
-  [v4 setNeedsNewAppleID:1];
-  [(BuddyAppleIDSignInTask *)v6 _authenticateWithContext:v4 completion:location[0]];
-  objc_storeStrong(&v4, 0);
+  [_createAuthenticationContext setNeedsNewAppleID:1];
+  [(BuddyAppleIDSignInTask *)selfCopy _authenticateWithContext:_createAuthenticationContext completion:location[0]];
+  objc_storeStrong(&_createAuthenticationContext, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)authenticateForCredentialRecoveryWithCompletion:(id)a3
+- (void)authenticateForCredentialRecoveryWithCompletion:(id)completion
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(BuddyAppleIDSignInTask *)v6 _createAuthenticationContext];
-  v3 = [(BuddyAppleIDSignInTask *)v6 navigationController];
-  [v4 setPresentingViewController:v3];
+  objc_storeStrong(location, completion);
+  _createAuthenticationContext = [(BuddyAppleIDSignInTask *)selfCopy _createAuthenticationContext];
+  navigationController = [(BuddyAppleIDSignInTask *)selfCopy navigationController];
+  [_createAuthenticationContext setPresentingViewController:navigationController];
 
-  [v4 setNeedsCredentialRecovery:1];
-  [(BuddyAppleIDSignInTask *)v6 _authenticateWithContext:v4 completion:location[0]];
-  objc_storeStrong(&v4, 0);
+  [_createAuthenticationContext setNeedsCredentialRecovery:1];
+  [(BuddyAppleIDSignInTask *)selfCopy _authenticateWithContext:_createAuthenticationContext completion:location[0]];
+  objc_storeStrong(&_createAuthenticationContext, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)signInToAllServicesWithAuthenticationResults:(id)a3 completion:(id)a4
+- (void)signInToAllServicesWithAuthenticationResults:(id)results completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v5 = v16;
+  objc_storeStrong(&v14, completion);
+  v5 = selfCopy;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_10018CCA4;
   v10 = &unk_10032BC78;
-  v11 = v16;
+  v11 = selfCopy;
   v12 = location[0];
   v13 = v14;
   [(BuddyAppleIDSignInTask *)v5 prepareSignInContext:&v6];
@@ -203,23 +203,23 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)signInToServices:(id)a3 authenticationResults:(id)a4 completion:(id)a5
+- (void)signInToServices:(id)services authenticationResults:(id)results completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, services);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, results);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v7 = v20;
+  objc_storeStrong(&v17, completion);
+  v7 = selfCopy;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_10018D6A0;
   v12 = &unk_10032D150;
-  v13 = v20;
+  v13 = selfCopy;
   v14 = v18;
   v15 = location[0];
   v16 = v17;
@@ -233,18 +233,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)prepareSignInContext:(id)a3
+- (void)prepareSignInContext:(id)context
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppleIDSignInTask *)v6 accountTools];
+  objc_storeStrong(location, context);
+  accountTools = [(BuddyAppleIDSignInTask *)selfCopy accountTools];
 
-  if (v3)
+  if (accountTools)
   {
-    v4 = [(BuddyAppleIDSignInTask *)v6 accountTools];
-    [(BuddyAccountTools *)v4 waitUntilSafeToSignInWithCompletion:location[0]];
+    accountTools2 = [(BuddyAppleIDSignInTask *)selfCopy accountTools];
+    [(BuddyAccountTools *)accountTools2 waitUntilSafeToSignInWithCompletion:location[0]];
   }
 
   else if (location[0])
@@ -257,11 +257,11 @@
 
 - (id)_createAuthenticationContext
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = objc_alloc_init(AKAppleIDAuthenticationPurpleBuddyContext);
   [location[0] setShouldOfferSecurityUpgrade:1];
-  [location[0] setServiceType:{-[BuddyAppleIDSignInTask serviceType](v5, "serviceType")}];
+  [location[0] setServiceType:{-[BuddyAppleIDSignInTask serviceType](selfCopy, "serviceType")}];
   [location[0] setAnticipateEscrowAttempt:1];
   if ((+[BYWarranty shouldDisplay]& 1) != 0)
   {
@@ -273,77 +273,77 @@
   return v2;
 }
 
-- (id)_createServiceContextWithAuthenticationResults:(id)a3
+- (id)_createServiceContextWithAuthenticationResults:(id)results
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v3 = [CDPUIController alloc];
-  v4 = [(BuddyAppleIDSignInTask *)v38 navigationController];
-  v5 = [v3 initWithPresentingViewController:v4];
-  [(BuddyAppleIDSignInTask *)v38 setCdpUIController:v5];
+  navigationController = [(BuddyAppleIDSignInTask *)selfCopy navigationController];
+  v5 = [v3 initWithPresentingViewController:navigationController];
+  [(BuddyAppleIDSignInTask *)selfCopy setCdpUIController:v5];
 
-  v6 = [(BuddyAppleIDSignInTask *)v38 cdpUIController];
-  [(CDPUIController *)v6 setForceInlinePresentation:1];
+  cdpUIController = [(BuddyAppleIDSignInTask *)selfCopy cdpUIController];
+  [(CDPUIController *)cdpUIController setForceInlinePresentation:1];
 
   v7 = [AAUISignInFlowControllerDelegate alloc];
-  v8 = [(BuddyAppleIDSignInTask *)v38 navigationController];
-  v9 = [v7 initWithPresentingViewController:v8];
-  [(BuddyAppleIDSignInTask *)v38 setFlowControllerDelegate:v9];
+  navigationController2 = [(BuddyAppleIDSignInTask *)selfCopy navigationController];
+  v9 = [v7 initWithPresentingViewController:navigationController2];
+  [(BuddyAppleIDSignInTask *)selfCopy setFlowControllerDelegate:v9];
 
-  v10 = [(BuddyAppleIDSignInTask *)v38 flowControllerDelegate];
-  [(AAUISignInFlowControllerDelegate *)v10 setShouldStashLoginResponse:1];
+  flowControllerDelegate = [(BuddyAppleIDSignInTask *)selfCopy flowControllerDelegate];
+  [(AAUISignInFlowControllerDelegate *)flowControllerDelegate setShouldStashLoginResponse:1];
 
   v11 = [location[0] objectForKeyedSubscript:AKAuthenticationAcceptedTermsKey];
   if (!v11)
   {
-    v12 = [(BuddyAppleIDSignInTask *)v38 _requiredTerms];
-    v13 = [(BuddyAppleIDSignInTask *)v38 flowControllerDelegate];
-    [(AAUISignInFlowControllerDelegate *)v13 setRequiredTerms:v12];
+    _requiredTerms = [(BuddyAppleIDSignInTask *)selfCopy _requiredTerms];
+    flowControllerDelegate2 = [(BuddyAppleIDSignInTask *)selfCopy flowControllerDelegate];
+    [(AAUISignInFlowControllerDelegate *)flowControllerDelegate2 setRequiredTerms:_requiredTerms];
   }
 
-  if ([(BuddyAppleIDSignInTask *)v38 enableFindMy])
+  if ([(BuddyAppleIDSignInTask *)selfCopy enableFindMy])
   {
-    v14 = [(BuddyAppleIDSignInTask *)v38 flowControllerDelegate];
-    [(AAUISignInFlowControllerDelegate *)v14 setFindMyActivationAction:0];
+    flowControllerDelegate3 = [(BuddyAppleIDSignInTask *)selfCopy flowControllerDelegate];
+    [(AAUISignInFlowControllerDelegate *)flowControllerDelegate3 setFindMyActivationAction:0];
   }
 
   else
   {
-    v14 = [(BuddyAppleIDSignInTask *)v38 flowControllerDelegate];
-    [(AAUISignInFlowControllerDelegate *)v14 setFindMyActivationAction:2];
+    flowControllerDelegate3 = [(BuddyAppleIDSignInTask *)selfCopy flowControllerDelegate];
+    [(AAUISignInFlowControllerDelegate *)flowControllerDelegate3 setFindMyActivationAction:2];
   }
 
   v15 = [CDPContext alloc];
   v16 = [v15 initWithAuthenticationResults:location[0]];
-  v17 = [(BuddyAppleIDSignInTask *)v38 flowControllerDelegate];
-  [(AAUISignInFlowControllerDelegate *)v17 setCdpContext:v16];
+  flowControllerDelegate4 = [(BuddyAppleIDSignInTask *)selfCopy flowControllerDelegate];
+  [(AAUISignInFlowControllerDelegate *)flowControllerDelegate4 setCdpContext:v16];
 
-  LOBYTE(v16) = [(BuddyAppleIDSignInTask *)v38 ignoreLockAssertErrors];
-  v18 = [(BuddyAppleIDSignInTask *)v38 flowControllerDelegate];
-  v19 = [(AAUISignInFlowControllerDelegate *)v18 cdpContext];
-  [v19 set_ignoreLockAssertErrors:v16 & 1];
+  LOBYTE(v16) = [(BuddyAppleIDSignInTask *)selfCopy ignoreLockAssertErrors];
+  flowControllerDelegate5 = [(BuddyAppleIDSignInTask *)selfCopy flowControllerDelegate];
+  cdpContext = [(AAUISignInFlowControllerDelegate *)flowControllerDelegate5 cdpContext];
+  [cdpContext set_ignoreLockAssertErrors:v16 & 1];
 
-  v20 = [(BuddyAppleIDSignInTask *)v38 messageSession];
-  v21 = [(BuddyAppleIDSignInTask *)v38 flowControllerDelegate];
-  v22 = [(AAUISignInFlowControllerDelegate *)v21 cdpContext];
-  [v22 setSharingChannel:v20];
+  messageSession = [(BuddyAppleIDSignInTask *)selfCopy messageSession];
+  flowControllerDelegate6 = [(BuddyAppleIDSignInTask *)selfCopy flowControllerDelegate];
+  cdpContext2 = [(AAUISignInFlowControllerDelegate *)flowControllerDelegate6 cdpContext];
+  [cdpContext2 setSharingChannel:messageSession];
 
-  LOBYTE(v20) = [(BuddyAppleIDSignInTask *)v38 restoreFromBackupMode];
-  v23 = [(BuddyAppleIDSignInTask *)v38 flowControllerDelegate];
-  v24 = [(AAUISignInFlowControllerDelegate *)v23 cdpContext];
-  [v24 setIsAttemptingBackupRestore:v20 & 1];
+  LOBYTE(messageSession) = [(BuddyAppleIDSignInTask *)selfCopy restoreFromBackupMode];
+  flowControllerDelegate7 = [(BuddyAppleIDSignInTask *)selfCopy flowControllerDelegate];
+  cdpContext3 = [(AAUISignInFlowControllerDelegate *)flowControllerDelegate7 cdpContext];
+  [cdpContext3 setIsAttemptingBackupRestore:messageSession & 1];
 
-  v25 = [(BuddyAppleIDSignInTask *)v38 featureFlags];
-  LOBYTE(v23) = [(BuddyFeatureFlags *)v25 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
+  featureFlags = [(BuddyAppleIDSignInTask *)selfCopy featureFlags];
+  LOBYTE(flowControllerDelegate7) = [(BuddyFeatureFlags *)featureFlags isUseCDPContextSecretInsteadOfSBDSecretEnabled];
 
-  if (v23)
+  if (flowControllerDelegate7)
   {
-    v26 = v38;
-    v27 = [(BuddyAppleIDSignInTask *)v38 flowControllerDelegate];
-    v28 = [(AAUISignInFlowControllerDelegate *)v27 cdpContext];
-    [(BuddyAppleIDSignInTask *)v26 _addCachedLocalSecretToCDPContext:v28];
+    v26 = selfCopy;
+    flowControllerDelegate8 = [(BuddyAppleIDSignInTask *)selfCopy flowControllerDelegate];
+    cdpContext4 = [(AAUISignInFlowControllerDelegate *)flowControllerDelegate8 cdpContext];
+    [(BuddyAppleIDSignInTask *)v26 _addCachedLocalSecretToCDPContext:cdpContext4];
   }
 
   v36 = objc_alloc_init(AMSSignInContext);
@@ -351,17 +351,17 @@
   [v36 setDebugReason:@"Setup Assistant"];
   v35 = objc_alloc_init(AIDAMutableServiceContext);
   [v35 setAuthenticationResults:location[0]];
-  v29 = [(BuddyAppleIDSignInTask *)v38 navigationController];
-  [v35 setViewController:v29];
+  navigationController3 = [(BuddyAppleIDSignInTask *)selfCopy navigationController];
+  [v35 setViewController:navigationController3];
 
-  v30 = [(BuddyAppleIDSignInTask *)v38 cdpUIController];
-  [v35 setCdpUiProvider:v30];
+  cdpUIController2 = [(BuddyAppleIDSignInTask *)selfCopy cdpUIController];
+  [v35 setCdpUiProvider:cdpUIController2];
 
   [v35 setShouldForceOperation:0];
   [v35 setOperationUIPermissions:1];
   v39[0] = AIDAServiceTypeCloud;
-  v31 = [(BuddyAppleIDSignInTask *)v38 flowControllerDelegate];
-  v40[0] = v31;
+  flowControllerDelegate9 = [(BuddyAppleIDSignInTask *)selfCopy flowControllerDelegate];
+  v40[0] = flowControllerDelegate9;
   v39[1] = AIDAServiceTypeStore;
   v40[1] = v36;
   v32 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:2];
@@ -374,25 +374,25 @@
   return v33;
 }
 
-- (void)_addCachedLocalSecretToCDPContext:(id)a3
+- (void)_addCachedLocalSecretToCDPContext:(id)context
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   if (location[0])
   {
-    v11 = [(BuddyAppleIDSignInTask *)v16 cacheManager];
-    if (v11)
+    cacheManager = [(BuddyAppleIDSignInTask *)selfCopy cacheManager];
+    if (cacheManager)
     {
-      v8 = [v11 cachedLocalSecret];
-      if (v8)
+      cachedLocalSecret = [cacheManager cachedLocalSecret];
+      if (cachedLocalSecret)
       {
-        v3 = [v8 validatedSecret];
-        [location[0] setCachedLocalSecret:v3];
+        validatedSecret = [cachedLocalSecret validatedSecret];
+        [location[0] setCachedLocalSecret:validatedSecret];
 
-        v4 = [v8 secretType];
-        [location[0] setCachedLocalSecretType:v4];
+        secretType = [cachedLocalSecret secretType];
+        [location[0] setCachedLocalSecretType:secretType];
         v5 = _BYLoggingFacility();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
@@ -418,7 +418,7 @@
         v12 = 1;
       }
 
-      objc_storeStrong(&v8, 0);
+      objc_storeStrong(&cachedLocalSecret, 0);
     }
 
     else
@@ -435,7 +435,7 @@
       v12 = 1;
     }
 
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&cacheManager, 0);
   }
 
   else
@@ -455,14 +455,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_authenticateWithContext:(id)a3 completion:(id)a4
+- (void)_authenticateWithContext:(id)context completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, completion);
   v5 = objc_alloc_init(AKAppleIDAuthenticationController);
   [v5 authenticateWithContext:location[0] completion:v6];
   objc_storeStrong(&v5, 0);
@@ -490,15 +490,15 @@
   return v2;
 }
 
-- (void)_updateAgreedTerms:(id)a3
+- (void)_updateAgreedTerms:(id)terms
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, terms);
   v5 = [location[0] accountForService:AIDAServiceTypeCloud];
-  v3 = [v5 aa_lastAgreedTermsInfo];
-  v4 = [v3 objectForKeyedSubscript:@"SLAVersion"];
+  aa_lastAgreedTermsInfo = [v5 aa_lastAgreedTermsInfo];
+  v4 = [aa_lastAgreedTermsInfo objectForKeyedSubscript:@"SLAVersion"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -512,17 +512,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_signInToAllServicesUsingContext:(id)a3 serviceOwnersManager:(id)a4 completion:(id)a5
+- (void)_signInToAllServicesUsingContext:(id)context serviceOwnersManager:(id)manager completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, manager);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
-  if ([(BuddyAppleIDSignInTask *)v24 forceForegroundSignIn])
+  objc_storeStrong(&v21, completion);
+  if ([(BuddyAppleIDSignInTask *)selfCopy forceForegroundSignIn])
   {
     oslog = _BYLoggingFacility();
     v19 = OS_LOG_TYPE_DEFAULT;

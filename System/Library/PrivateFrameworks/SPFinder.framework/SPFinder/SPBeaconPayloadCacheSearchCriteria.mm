@@ -1,30 +1,30 @@
 @interface SPBeaconPayloadCacheSearchCriteria
-- (SPBeaconPayloadCacheSearchCriteria)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPBeaconPayloadCacheSearchCriteria)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPBeaconPayloadCacheSearchCriteria
 
-- (SPBeaconPayloadCacheSearchCriteria)initWithCoder:(id)a3
+- (SPBeaconPayloadCacheSearchCriteria)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchResultMarker"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchResultMarker"];
   [(SPBeaconPayloadCacheSearchCriteria *)self setSearchResultMarker:v5];
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fetchLimit"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fetchLimit"];
 
   [(SPBeaconPayloadCacheSearchCriteria *)self setFetchLimit:v6];
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SPBeaconPayloadCacheSearchCriteria *)self searchResultMarker];
-  [v4 encodeObject:v5 forKey:@"searchResultMarker"];
+  coderCopy = coder;
+  searchResultMarker = [(SPBeaconPayloadCacheSearchCriteria *)self searchResultMarker];
+  [coderCopy encodeObject:searchResultMarker forKey:@"searchResultMarker"];
 
-  v6 = [(SPBeaconPayloadCacheSearchCriteria *)self fetchLimit];
-  [v4 encodeObject:v6 forKey:@"fetchLimit"];
+  fetchLimit = [(SPBeaconPayloadCacheSearchCriteria *)self fetchLimit];
+  [coderCopy encodeObject:fetchLimit forKey:@"fetchLimit"];
 }
 
 @end

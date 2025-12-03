@@ -1,18 +1,18 @@
 @interface NSError
-- (BOOL)isFBAErrorWithCode:(int64_t)a3;
+- (BOOL)isFBAErrorWithCode:(int64_t)code;
 @end
 
 @implementation NSError
 
-- (BOOL)isFBAErrorWithCode:(int64_t)a3
+- (BOOL)isFBAErrorWithCode:(int64_t)code
 {
-  if ([(NSError *)self code]!= a3)
+  if ([(NSError *)self code]!= code)
   {
     return 0;
   }
 
-  v4 = [(NSError *)self domain];
-  v5 = [v4 isEqualToString:@"com.apple.appleseed.FeedbackAssistant"];
+  domain = [(NSError *)self domain];
+  v5 = [domain isEqualToString:@"com.apple.appleseed.FeedbackAssistant"];
 
   return v5;
 }

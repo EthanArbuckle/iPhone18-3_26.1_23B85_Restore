@@ -2,11 +2,11 @@
 - (PUToolbarViewModelChange)currentChange;
 - (UIViewController)_viewController;
 - (void)didPublishChanges;
-- (void)setAccessoryView:(id)a3;
-- (void)setAccessoryViewMaximumHeight:(double)a3;
-- (void)setAccessoryViewTopOutset:(double)a3;
-- (void)setMaximumHeight:(double)a3;
-- (void)setToolbarItems:(id)a3;
+- (void)setAccessoryView:(id)view;
+- (void)setAccessoryViewMaximumHeight:(double)height;
+- (void)setAccessoryViewTopOutset:(double)outset;
+- (void)setMaximumHeight:(double)height;
+- (void)setToolbarItems:(id)items;
 @end
 
 @implementation PUToolbarViewModel
@@ -26,12 +26,12 @@
   if ([(PUToolbarViewModel *)self needsToUpdateToolbarSize])
   {
     [(PUToolbarViewModel *)self setNeedsToUpdateToolbarSize:0];
-    v3 = [(PUToolbarViewModel *)self _viewController];
-    v4 = [v3 navigationController];
+    _viewController = [(PUToolbarViewModel *)self _viewController];
+    navigationController = [_viewController navigationController];
 
-    if (([v4 isToolbarHidden] & 1) == 0)
+    if (([navigationController isToolbarHidden] & 1) == 0)
     {
-      [v4 _positionToolbarHidden:0];
+      [navigationController _positionToolbarHidden:0];
     }
   }
 }
@@ -40,78 +40,78 @@
 {
   v4.receiver = self;
   v4.super_class = PUToolbarViewModel;
-  v2 = [(PUViewModel *)&v4 currentChange];
+  currentChange = [(PUViewModel *)&v4 currentChange];
 
-  return v2;
+  return currentChange;
 }
 
-- (void)setMaximumHeight:(double)a3
+- (void)setMaximumHeight:(double)height
 {
-  if (self->_maximumHeight != a3)
+  if (self->_maximumHeight != height)
   {
-    self->_maximumHeight = a3;
-    v4 = [(PUToolbarViewModel *)self currentChange];
-    [v4 _setMaximumHeightChanged:1];
+    self->_maximumHeight = height;
+    currentChange = [(PUToolbarViewModel *)self currentChange];
+    [currentChange _setMaximumHeightChanged:1];
   }
 }
 
-- (void)setAccessoryViewMaximumHeight:(double)a3
+- (void)setAccessoryViewMaximumHeight:(double)height
 {
-  if (self->_accessoryViewMaximumHeight != a3)
+  if (self->_accessoryViewMaximumHeight != height)
   {
-    self->_accessoryViewMaximumHeight = a3;
-    v4 = [(PUToolbarViewModel *)self currentChange];
-    [v4 _setAccessoryViewMaximumHeightChanged:1];
+    self->_accessoryViewMaximumHeight = height;
+    currentChange = [(PUToolbarViewModel *)self currentChange];
+    [currentChange _setAccessoryViewMaximumHeightChanged:1];
   }
 }
 
-- (void)setAccessoryViewTopOutset:(double)a3
+- (void)setAccessoryViewTopOutset:(double)outset
 {
-  if (self->_accessoryViewTopOutset != a3)
+  if (self->_accessoryViewTopOutset != outset)
   {
-    self->_accessoryViewTopOutset = a3;
-    v4 = [(PUToolbarViewModel *)self currentChange];
-    [v4 _setAccessoryViewTopOutsetChanged:1];
+    self->_accessoryViewTopOutset = outset;
+    currentChange = [(PUToolbarViewModel *)self currentChange];
+    [currentChange _setAccessoryViewTopOutsetChanged:1];
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
-  if (self->_accessoryView != v5)
+  viewCopy = view;
+  if (self->_accessoryView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_accessoryView, a3);
-    v6 = [(PUToolbarViewModel *)self currentChange];
-    [v6 _setAccessoryViewChanged:1];
+    v7 = viewCopy;
+    objc_storeStrong(&self->_accessoryView, view);
+    currentChange = [(PUToolbarViewModel *)self currentChange];
+    [currentChange _setAccessoryViewChanged:1];
 
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setToolbarItems:(id)a3
+- (void)setToolbarItems:(id)items
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_toolbarItems != v4)
+  itemsCopy = items;
+  v5 = itemsCopy;
+  if (self->_toolbarItems != itemsCopy)
   {
-    v9 = v4;
-    v4 = [(NSArray *)v4 isEqual:?];
+    v9 = itemsCopy;
+    itemsCopy = [(NSArray *)itemsCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((itemsCopy & 1) == 0)
     {
       v6 = [(NSArray *)v9 copy];
       toolbarItems = self->_toolbarItems;
       self->_toolbarItems = v6;
 
-      v8 = [(PUToolbarViewModel *)self currentChange];
-      [v8 _setToolbarItemsChanged:1];
+      currentChange = [(PUToolbarViewModel *)self currentChange];
+      [currentChange _setToolbarItemsChanged:1];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](itemsCopy, v5);
 }
 
 @end

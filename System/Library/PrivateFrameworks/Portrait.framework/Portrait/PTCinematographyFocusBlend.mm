@@ -1,41 +1,41 @@
 @interface PTCinematographyFocusBlend
-- (BOOL)isEqual:(id)a3;
-- (PTCinematographyFocusBlend)initWithPrimaryDetection:(id)a3 secondaryDetection:(id)a4 primaryCoefficient:(float)a5;
+- (BOOL)isEqual:(id)equal;
+- (PTCinematographyFocusBlend)initWithPrimaryDetection:(id)detection secondaryDetection:(id)secondaryDetection primaryCoefficient:(float)coefficient;
 - (id)_asCinematographyDictionary;
 - (id)_asCoefficientsDictionary;
-- (id)_initWithDetections:(id)a3 cinematographyDictionary:(id)a4;
-- (id)_initWithDetections:(id)a3 coefficients:(id)a4;
-- (id)_initWithDetections:(id)a3 coefficientsDictionary:(id)a4;
+- (id)_initWithDetections:(id)detections cinematographyDictionary:(id)dictionary;
+- (id)_initWithDetections:(id)detections coefficients:(id)coefficients;
+- (id)_initWithDetections:(id)detections coefficientsDictionary:(id)dictionary;
 - (id)description;
-- (id)initFocusedBetweenDetection:(id)a3 detection:(id)a4 coefficient:(float)a5;
-- (id)initFocusedOnDetection:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)initFocusedBetweenDetection:(id)detection detection:(id)a4 coefficient:(float)coefficient;
+- (id)initFocusedOnDetection:(id)detection;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_setFocusBetweenDetection:(id)a3 detection:(id)a4 coefficient:(float)a5;
-- (void)_setFocusOnDetection:(id)a3;
-- (void)_setFocusOnPrimaryDetection:(id)a3 secondaryDetection:(id)a4 primaryCoefficient:(float)a5;
+- (void)_setFocusBetweenDetection:(id)detection detection:(id)a4 coefficient:(float)coefficient;
+- (void)_setFocusOnDetection:(id)detection;
+- (void)_setFocusOnPrimaryDetection:(id)detection secondaryDetection:(id)secondaryDetection primaryCoefficient:(float)coefficient;
 @end
 
 @implementation PTCinematographyFocusBlend
 
-- (id)initFocusedOnDetection:(id)a3
+- (id)initFocusedOnDetection:(id)detection
 {
-  v4 = a3;
+  detectionCopy = detection;
   v8.receiver = self;
   v8.super_class = PTCinematographyFocusBlend;
   v5 = [(PTCinematographyFocusBlend *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PTCinematographyFocusBlend *)v5 _setFocusOnDetection:v4];
+    [(PTCinematographyFocusBlend *)v5 _setFocusOnDetection:detectionCopy];
   }
 
   return v6;
 }
 
-- (id)initFocusedBetweenDetection:(id)a3 detection:(id)a4 coefficient:(float)a5
+- (id)initFocusedBetweenDetection:(id)detection detection:(id)a4 coefficient:(float)coefficient
 {
-  v8 = a3;
+  detectionCopy = detection;
   v9 = a4;
   v14.receiver = self;
   v14.super_class = PTCinematographyFocusBlend;
@@ -43,42 +43,42 @@
   v12 = v10;
   if (v10)
   {
-    *&v11 = a5;
-    [(PTCinematographyFocusBlend *)v10 _setFocusBetweenDetection:v8 detection:v9 coefficient:v11];
+    *&v11 = coefficient;
+    [(PTCinematographyFocusBlend *)v10 _setFocusBetweenDetection:detectionCopy detection:v9 coefficient:v11];
   }
 
   return v12;
 }
 
-- (PTCinematographyFocusBlend)initWithPrimaryDetection:(id)a3 secondaryDetection:(id)a4 primaryCoefficient:(float)a5
+- (PTCinematographyFocusBlend)initWithPrimaryDetection:(id)detection secondaryDetection:(id)secondaryDetection primaryCoefficient:(float)coefficient
 {
-  v8 = a3;
-  v9 = a4;
+  detectionCopy = detection;
+  secondaryDetectionCopy = secondaryDetection;
   v14.receiver = self;
   v14.super_class = PTCinematographyFocusBlend;
   v10 = [(PTCinematographyFocusBlend *)&v14 init];
   v12 = v10;
   if (v10)
   {
-    *&v11 = a5;
-    [(PTCinematographyFocusBlend *)v10 _setFocusOnPrimaryDetection:v8 secondaryDetection:v9 primaryCoefficient:v11];
+    *&v11 = coefficient;
+    [(PTCinematographyFocusBlend *)v10 _setFocusOnPrimaryDetection:detectionCopy secondaryDetection:secondaryDetectionCopy primaryCoefficient:v11];
   }
 
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PTCinematographyFocusBlend);
   if (v4)
   {
-    v5 = [(PTCinematographyFocusBlend *)self primaryFocusDetection];
+    primaryFocusDetection = [(PTCinematographyFocusBlend *)self primaryFocusDetection];
     primaryFocusDetection = v4->_primaryFocusDetection;
-    v4->_primaryFocusDetection = v5;
+    v4->_primaryFocusDetection = primaryFocusDetection;
 
-    v7 = [(PTCinematographyFocusBlend *)self secondaryFocusDetection];
+    secondaryFocusDetection = [(PTCinematographyFocusBlend *)self secondaryFocusDetection];
     secondaryFocusDetection = v4->_secondaryFocusDetection;
-    v4->_secondaryFocusDetection = v7;
+    v4->_secondaryFocusDetection = secondaryFocusDetection;
 
     [(PTCinematographyFocusBlend *)self primaryFocusCoefficient];
     v4->_primaryFocusCoefficient = v9;
@@ -89,10 +89,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (v7 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -102,7 +102,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = equalCopy;
       [(PTCinematographyFocusBlend *)self primaryFocusCoefficient];
       v10 = v9;
       [(PTCinematographyFocusBlend *)v8 primaryFocusCoefficient];
@@ -114,12 +114,12 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v12 = [(PTCinematographyFocusBlend *)self primaryFocusDetection];
-      if (v12 || ([(PTCinematographyFocusBlend *)v8 primaryFocusDetection], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      primaryFocusDetection = [(PTCinematographyFocusBlend *)self primaryFocusDetection];
+      if (primaryFocusDetection || ([(PTCinematographyFocusBlend *)v8 primaryFocusDetection], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v4 = [(PTCinematographyFocusBlend *)self primaryFocusDetection];
-        v5 = [(PTCinematographyFocusBlend *)v8 primaryFocusDetection];
-        if (([v4 isEqual:v5] & 1) == 0)
+        primaryFocusDetection2 = [(PTCinematographyFocusBlend *)self primaryFocusDetection];
+        primaryFocusDetection3 = [(PTCinematographyFocusBlend *)v8 primaryFocusDetection];
+        if (([primaryFocusDetection2 isEqual:primaryFocusDetection3] & 1) == 0)
         {
 
           v14 = 0;
@@ -139,16 +139,16 @@ LABEL_24:
       [(PTCinematographyFocusBlend *)v8 secondaryFocusCoefficient];
       if (v16 == v17)
       {
-        v18 = [(PTCinematographyFocusBlend *)self secondaryFocusDetection];
-        if (v18 || ([(PTCinematographyFocusBlend *)v8 secondaryFocusDetection], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+        secondaryFocusDetection = [(PTCinematographyFocusBlend *)self secondaryFocusDetection];
+        if (secondaryFocusDetection || ([(PTCinematographyFocusBlend *)v8 secondaryFocusDetection], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v25 = v13;
           v13 = v3;
-          v19 = [(PTCinematographyFocusBlend *)self secondaryFocusDetection];
-          v20 = [(PTCinematographyFocusBlend *)v8 secondaryFocusDetection];
-          v14 = [v19 isEqual:v20];
+          secondaryFocusDetection2 = [(PTCinematographyFocusBlend *)self secondaryFocusDetection];
+          secondaryFocusDetection3 = [(PTCinematographyFocusBlend *)v8 secondaryFocusDetection];
+          v14 = [secondaryFocusDetection2 isEqual:secondaryFocusDetection3];
 
-          if (v18)
+          if (secondaryFocusDetection)
           {
 
             v3 = v13;
@@ -188,7 +188,7 @@ LABEL_20:
       }
 
 LABEL_21:
-      if (!v12)
+      if (!primaryFocusDetection)
       {
       }
 
@@ -207,12 +207,12 @@ LABEL_25:
 {
   [(PTCinematographyFocusBlend *)self primaryFocusCoefficient];
   v4 = v3;
-  v5 = [(PTCinematographyFocusBlend *)self primaryFocusDetection];
-  v6 = [v5 hash];
+  primaryFocusDetection = [(PTCinematographyFocusBlend *)self primaryFocusDetection];
+  v6 = [primaryFocusDetection hash];
   [(PTCinematographyFocusBlend *)self secondaryFocusCoefficient];
   v8 = v7;
-  v9 = [(PTCinematographyFocusBlend *)self secondaryFocusDetection];
-  v10 = (((v8 * [v9 hash]) + (v4 * v6)) * 1000.0);
+  secondaryFocusDetection = [(PTCinematographyFocusBlend *)self secondaryFocusDetection];
+  v10 = (((v8 * [secondaryFocusDetection hash]) + (v4 * v6)) * 1000.0);
 
   return v10;
 }
@@ -220,37 +220,37 @@ LABEL_25:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PTCinematographyFocusBlend *)self primaryFocusDetection];
-  v5 = [v4 focusIdentifier];
+  primaryFocusDetection = [(PTCinematographyFocusBlend *)self primaryFocusDetection];
+  focusIdentifier = [primaryFocusDetection focusIdentifier];
   v6 = MEMORY[0x277CCABB0];
   [(PTCinematographyFocusBlend *)self primaryFocusCoefficient];
   v7 = [v6 numberWithFloat:?];
-  v8 = [(PTCinematographyFocusBlend *)self secondaryFocusDetection];
-  v9 = [v8 focusIdentifier];
+  secondaryFocusDetection = [(PTCinematographyFocusBlend *)self secondaryFocusDetection];
+  focusIdentifier2 = [secondaryFocusDetection focusIdentifier];
   v10 = MEMORY[0x277CCABB0];
   [(PTCinematographyFocusBlend *)self secondaryFocusCoefficient];
   v11 = [v10 numberWithFloat:?];
-  v12 = [v3 stringWithFormat:@"FocusBlend(%@: %@ %@: %@)", v5, v7, v9, v11];;
+  v12 = [v3 stringWithFormat:@"FocusBlend(%@: %@ %@: %@)", focusIdentifier, v7, focusIdentifier2, v11];;
 
   return v12;
 }
 
-- (id)_initWithDetections:(id)a3 coefficients:(id)a4
+- (id)_initWithDetections:(id)detections coefficients:(id)coefficients
 {
-  v6 = a3;
-  v7 = a4;
+  detectionsCopy = detections;
+  coefficientsCopy = coefficients;
   v19.receiver = self;
   v19.super_class = PTCinematographyFocusBlend;
   v8 = [(PTCinematographyFocusBlend *)&v19 init];
-  if (v8 && [v6 count])
+  if (v8 && [detectionsCopy count])
   {
     v9 = 0;
     p_primaryFocusCoefficient = &v8->_primaryFocusCoefficient;
     p_secondaryFocusCoefficient = &v8->_secondaryFocusCoefficient;
     while (1)
     {
-      v12 = [v6 objectAtIndexedSubscript:v9];
-      v13 = [v7 objectAtIndexedSubscript:v9];
+      v12 = [detectionsCopy objectAtIndexedSubscript:v9];
+      v13 = [coefficientsCopy objectAtIndexedSubscript:v9];
       [v13 floatValue];
       v15 = v14;
 
@@ -268,7 +268,7 @@ LABEL_25:
 
 LABEL_8:
 
-      if (++v9 >= [v6 count])
+      if (++v9 >= [detectionsCopy count])
       {
         goto LABEL_9;
       }
@@ -289,10 +289,10 @@ LABEL_9:
   return v8;
 }
 
-- (void)_setFocusOnDetection:(id)a3
+- (void)_setFocusOnDetection:(id)detection
 {
-  objc_storeStrong(&self->_primaryFocusDetection, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_primaryFocusDetection, detection);
+  detectionCopy = detection;
   self->_primaryFocusCoefficient = 1.0;
   secondaryFocusDetection = self->_secondaryFocusDetection;
   self->_secondaryFocusDetection = 0;
@@ -300,47 +300,47 @@ LABEL_9:
   self->_secondaryFocusCoefficient = 0.0;
 }
 
-- (void)_setFocusBetweenDetection:(id)a3 detection:(id)a4 coefficient:(float)a5
+- (void)_setFocusBetweenDetection:(id)detection detection:(id)a4 coefficient:(float)coefficient
 {
-  v9 = 1.0 - a5;
-  if ((1.0 - a5) > a5)
+  v9 = 1.0 - coefficient;
+  if ((1.0 - coefficient) > coefficient)
   {
-    v10 = a4;
+    detectionCopy = a4;
   }
 
   else
   {
-    v10 = a3;
+    detectionCopy = detection;
   }
 
-  if ((1.0 - a5) > a5)
+  if ((1.0 - coefficient) > coefficient)
   {
-    v11 = a5;
+    coefficientCopy = coefficient;
   }
 
   else
   {
-    v11 = 1.0 - a5;
+    coefficientCopy = 1.0 - coefficient;
   }
 
-  objc_storeStrong(&self->_primaryFocusDetection, v10);
+  objc_storeStrong(&self->_primaryFocusDetection, detectionCopy);
   v12 = a4;
-  v13 = a3;
-  v14 = v13;
-  if (v9 > a5)
+  detectionCopy2 = detection;
+  v14 = detectionCopy2;
+  if (v9 > coefficient)
   {
-    v15 = 1.0 - a5;
+    coefficientCopy2 = 1.0 - coefficient;
   }
 
   else
   {
-    v15 = a5;
+    coefficientCopy2 = coefficient;
   }
 
-  self->_primaryFocusCoefficient = v15;
-  if (v9 > a5)
+  self->_primaryFocusCoefficient = coefficientCopy2;
+  if (v9 > coefficient)
   {
-    v16 = v13;
+    v16 = detectionCopy2;
   }
 
   else
@@ -350,28 +350,28 @@ LABEL_9:
 
   objc_storeStrong(&self->_secondaryFocusDetection, v16);
 
-  self->_secondaryFocusCoefficient = v11;
+  self->_secondaryFocusCoefficient = coefficientCopy;
 }
 
-- (void)_setFocusOnPrimaryDetection:(id)a3 secondaryDetection:(id)a4 primaryCoefficient:(float)a5
+- (void)_setFocusOnPrimaryDetection:(id)detection secondaryDetection:(id)secondaryDetection primaryCoefficient:(float)coefficient
 {
-  v10 = a3;
-  v9 = a4;
-  objc_storeStrong(&self->_primaryFocusDetection, a3);
-  self->_primaryFocusCoefficient = a5;
-  if (a5 < 1.0)
+  detectionCopy = detection;
+  secondaryDetectionCopy = secondaryDetection;
+  objc_storeStrong(&self->_primaryFocusDetection, detection);
+  self->_primaryFocusCoefficient = coefficient;
+  if (coefficient < 1.0)
   {
-    objc_storeStrong(&self->_secondaryFocusDetection, a4);
-    self->_secondaryFocusCoefficient = 1.0 - a5;
+    objc_storeStrong(&self->_secondaryFocusDetection, secondaryDetection);
+    self->_secondaryFocusCoefficient = 1.0 - coefficient;
   }
 }
 
-- (id)_initWithDetections:(id)a3 cinematographyDictionary:(id)a4
+- (id)_initWithDetections:(id)detections cinematographyDictionary:(id)dictionary
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v36 = a4;
-  v38 = [v36 objectForKeyedSubscript:@"primary"];
+  detectionsCopy = detections;
+  dictionaryCopy = dictionary;
+  v38 = [dictionaryCopy objectForKeyedSubscript:@"primary"];
   if (!v38)
   {
     v9 = 0;
@@ -382,7 +382,7 @@ LABEL_9:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v6 = v5;
+  v6 = detectionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (!v7)
   {
@@ -403,15 +403,15 @@ LABEL_9:
       }
 
       v12 = *(*(&v43 + 1) + 8 * i);
-      v13 = [v12 trackNumber];
-      if ([v13 isEqual:v38])
+      trackNumber = [v12 trackNumber];
+      if ([trackNumber isEqual:v38])
       {
       }
 
       else
       {
-        v14 = [v12 focusIdentifier];
-        v15 = [v14 isEqual:v38];
+        focusIdentifier = [v12 focusIdentifier];
+        v15 = [focusIdentifier isEqual:v38];
 
         if (!v15)
         {
@@ -431,15 +431,15 @@ LABEL_9:
 LABEL_16:
 
 LABEL_17:
-  v17 = [v36 objectForKeyedSubscript:@"secondary"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"secondary"];
   if (v17)
   {
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v34 = v5;
-    obj = v5;
+    v34 = detectionsCopy;
+    obj = detectionsCopy;
     v18 = [obj countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (!v18)
     {
@@ -460,15 +460,15 @@ LABEL_17:
         }
 
         v23 = *(*(&v39 + 1) + 8 * j);
-        v24 = [v23 trackNumber];
-        if ([v24 isEqual:v17])
+        trackNumber2 = [v23 trackNumber];
+        if ([trackNumber2 isEqual:v17])
         {
         }
 
         else
         {
-          v25 = [v23 focusIdentifier];
-          v26 = [v25 isEqual:v17];
+          focusIdentifier2 = [v23 focusIdentifier];
+          v26 = [focusIdentifier2 isEqual:v17];
 
           if (!v26)
           {
@@ -486,7 +486,7 @@ LABEL_17:
       {
 LABEL_32:
 
-        v5 = v34;
+        detectionsCopy = v34;
         goto LABEL_33;
       }
     }
@@ -494,7 +494,7 @@ LABEL_32:
 
   v20 = 0;
 LABEL_33:
-  v28 = [v36 objectForKeyedSubscript:@"coefficient"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"coefficient"];
   [v28 floatValue];
   v30 = v29;
 
@@ -507,28 +507,28 @@ LABEL_33:
 - (id)_asCinematographyDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(PTCinematographyDetection *)self->_primaryFocusDetection trackNumber];
-  if (v4)
+  trackNumber = [(PTCinematographyDetection *)self->_primaryFocusDetection trackNumber];
+  if (trackNumber)
   {
-    [v3 setObject:v4 forKeyedSubscript:@"primary"];
+    [v3 setObject:trackNumber forKeyedSubscript:@"primary"];
   }
 
   else
   {
-    v5 = [(PTCinematographyDetection *)self->_primaryFocusDetection focusIdentifier];
-    [v3 setObject:v5 forKeyedSubscript:@"primary"];
+    focusIdentifier = [(PTCinematographyDetection *)self->_primaryFocusDetection focusIdentifier];
+    [v3 setObject:focusIdentifier forKeyedSubscript:@"primary"];
   }
 
-  v6 = [(PTCinematographyDetection *)self->_secondaryFocusDetection trackNumber];
-  if (v6)
+  trackNumber2 = [(PTCinematographyDetection *)self->_secondaryFocusDetection trackNumber];
+  if (trackNumber2)
   {
-    [v3 setObject:v6 forKeyedSubscript:@"secondary"];
+    [v3 setObject:trackNumber2 forKeyedSubscript:@"secondary"];
   }
 
   else
   {
-    v7 = [(PTCinematographyDetection *)self->_secondaryFocusDetection focusIdentifier];
-    [v3 setObject:v7 forKeyedSubscript:@"secondary"];
+    focusIdentifier2 = [(PTCinematographyDetection *)self->_secondaryFocusDetection focusIdentifier];
+    [v3 setObject:focusIdentifier2 forKeyedSubscript:@"secondary"];
   }
 
   *&v8 = self->_primaryFocusCoefficient;
@@ -540,17 +540,17 @@ LABEL_33:
   return v10;
 }
 
-- (id)_initWithDetections:(id)a3 coefficientsDictionary:(id)a4
+- (id)_initWithDetections:(id)detections coefficientsDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  detectionsCopy = detections;
+  dictionaryCopy = dictionary;
   v8 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = detectionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -565,8 +565,8 @@ LABEL_33:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * i) focusIdentifier];
-        v15 = [v7 objectForKeyedSubscript:v14];
+        focusIdentifier = [*(*(&v20 + 1) + 8 * i) focusIdentifier];
+        v15 = [dictionaryCopy objectForKeyedSubscript:focusIdentifier];
         v16 = v15;
         if (v15)
         {
@@ -594,24 +594,24 @@ LABEL_33:
 - (id)_asCoefficientsDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(PTCinematographyDetection *)self->_primaryFocusDetection focusIdentifier];
+  focusIdentifier = [(PTCinematographyDetection *)self->_primaryFocusDetection focusIdentifier];
 
-  if (v4)
+  if (focusIdentifier)
   {
     *&v5 = self->_primaryFocusCoefficient;
     v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
-    v7 = [(PTCinematographyDetection *)self->_primaryFocusDetection focusIdentifier];
-    [v3 setObject:v6 forKeyedSubscript:v7];
+    focusIdentifier2 = [(PTCinematographyDetection *)self->_primaryFocusDetection focusIdentifier];
+    [v3 setObject:v6 forKeyedSubscript:focusIdentifier2];
   }
 
-  v8 = [(PTCinematographyDetection *)self->_secondaryFocusDetection focusIdentifier];
+  focusIdentifier3 = [(PTCinematographyDetection *)self->_secondaryFocusDetection focusIdentifier];
 
-  if (v8)
+  if (focusIdentifier3)
   {
     *&v9 = self->_secondaryFocusCoefficient;
     v10 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
-    v11 = [(PTCinematographyDetection *)self->_secondaryFocusDetection focusIdentifier];
-    [v3 setObject:v10 forKeyedSubscript:v11];
+    focusIdentifier4 = [(PTCinematographyDetection *)self->_secondaryFocusDetection focusIdentifier];
+    [v3 setObject:v10 forKeyedSubscript:focusIdentifier4];
   }
 
   v12 = [v3 copy];

@@ -1,21 +1,21 @@
 @interface TUIAttributeValueMap
-- (ResolvedValue)valueForAttribute:(SEL)a3;
-- (TUIAttributeValueMap)initWithOther:(id)a3;
+- (ResolvedValue)valueForAttribute:(SEL)attribute;
+- (TUIAttributeValueMap)initWithOther:(id)other;
 - (id).cxx_construct;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TUIAttributeValueMap
 
-- (TUIAttributeValueMap)initWithOther:(id)a3
+- (TUIAttributeValueMap)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v8.receiver = self;
   v8.super_class = TUIAttributeValueMap;
   v5 = [(TUIAttributeValueMap *)&v8 init];
   if (v5)
   {
-    v6 = [v4 map];
+    v6 = [otherCopy map];
     if (&v5->_map != v6)
     {
       v5->_map.__table_.__max_load_factor_ = v6->__table_.__max_load_factor_;
@@ -26,14 +26,14 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TUIMutableAttributeValueMap allocWithZone:a3];
+  v4 = [TUIMutableAttributeValueMap allocWithZone:zone];
 
   return [(TUIAttributeValueMap *)v4 initWithOther:self];
 }
 
-- (ResolvedValue)valueForAttribute:(SEL)a3
+- (ResolvedValue)valueForAttribute:(SEL)attribute
 {
   v8 = a4;
   result = sub_11F88(&self->_map.__table_.__bucket_list_.__ptr_, &v8);

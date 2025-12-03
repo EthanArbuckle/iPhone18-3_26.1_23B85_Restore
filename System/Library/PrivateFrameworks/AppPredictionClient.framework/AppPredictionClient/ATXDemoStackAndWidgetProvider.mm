@@ -1,8 +1,8 @@
 @interface ATXDemoStackAndWidgetProvider
 + (BOOL)_shouldShowStackInGallery;
 + (BOOL)isDemoModeEnabled;
-+ (id)_widgetArrayForPrefixKey:(id)a3 countKey:(id)a4 defaults:(id)a5 descriptors:(id)a6;
-+ (id)_widgetFromDictionary:(id)a3 descriptors:(id)a4;
++ (id)_widgetArrayForPrefixKey:(id)key countKey:(id)countKey defaults:(id)defaults descriptors:(id)descriptors;
++ (id)_widgetFromDictionary:(id)dictionary descriptors:(id)descriptors;
 + (id)demoStackAndWidgets;
 + (void)startYourEngines;
 @end
@@ -11,16 +11,16 @@
 
 + (BOOL)isDemoModeEnabled
 {
-  v2 = [MEMORY[0x1E69C5CF8] isInternalBuild];
-  if (v2)
+  isInternalBuild = [MEMORY[0x1E69C5CF8] isInternalBuild];
+  if (isInternalBuild)
   {
     v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.DuetExpertCenter.AppPredictionExpert"];
     v4 = [v3 BOOLForKey:@"ATXWidgetsDemoModeEnabled"];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isInternalBuild) = v4;
   }
 
-  return v2;
+  return isInternalBuild;
 }
 
 + (void)startYourEngines
@@ -37,17 +37,17 @@
   v44 = *MEMORY[0x1E69E9840];
   if ([MEMORY[0x1E69C5CF8] isInternalBuild])
   {
-    v30 = a1;
+    selfCopy = self;
     v3 = objc_alloc(MEMORY[0x1E695DF90]);
-    v4 = [sDescriptorProvider descriptors];
-    v31 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+    descriptors = [sDescriptorProvider descriptors];
+    v31 = [v3 initWithCapacity:{objc_msgSend(descriptors, "count")}];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v5 = [sDescriptorProvider descriptors];
-    v6 = [v5 countByEnumeratingWithState:&v36 objects:v43 count:16];
+    descriptors2 = [sDescriptorProvider descriptors];
+    v6 = [descriptors2 countByEnumeratingWithState:&v36 objects:v43 count:16];
     if (v6)
     {
       v7 = v6;
@@ -58,19 +58,19 @@
         {
           if (*v37 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(descriptors2);
           }
 
           v10 = *(*(&v36 + 1) + 8 * i);
           v11 = MEMORY[0x1E696AEC0];
-          v12 = [v10 extensionBundleIdentifier];
-          v13 = [v10 kind];
-          v14 = [v11 stringWithFormat:@"%@-%@", v12, v13];
+          extensionBundleIdentifier = [v10 extensionBundleIdentifier];
+          kind = [v10 kind];
+          v14 = [v11 stringWithFormat:@"%@-%@", extensionBundleIdentifier, kind];
 
           [v31 setObject:v10 forKeyedSubscript:v14];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v36 objects:v43 count:16];
+        v7 = [descriptors2 countByEnumeratingWithState:&v36 objects:v43 count:16];
       }
 
       while (v7);
@@ -100,8 +100,8 @@
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:10];
     [v15 registerDefaults:v16];
 
-    v17 = [v30 _widgetArrayForPrefixKey:@"ATXWidgetsDemoStackWidget" countKey:@"ATXWidgetsDemoNumberOfWidgetsInStack" defaults:v15 descriptors:v31];
-    v18 = [v30 _widgetArrayForPrefixKey:@"ATXWidgetsDemoGalleryWidget" countKey:@"ATXWidgetsDemoNumberOfWidgetsInGallery" defaults:v15 descriptors:v31];
+    v17 = [selfCopy _widgetArrayForPrefixKey:@"ATXWidgetsDemoStackWidget" countKey:@"ATXWidgetsDemoNumberOfWidgetsInStack" defaults:v15 descriptors:v31];
+    v18 = [selfCopy _widgetArrayForPrefixKey:@"ATXWidgetsDemoGalleryWidget" countKey:@"ATXWidgetsDemoNumberOfWidgetsInGallery" defaults:v15 descriptors:v31];
     v19 = objc_opt_new();
     if (+[ATXDemoStackAndWidgetProvider _shouldShowStackInGallery])
     {
@@ -155,23 +155,23 @@
   return v28;
 }
 
-+ (id)_widgetArrayForPrefixKey:(id)a3 countKey:(id)a4 defaults:(id)a5 descriptors:(id)a6
++ (id)_widgetArrayForPrefixKey:(id)key countKey:(id)countKey defaults:(id)defaults descriptors:(id)descriptors
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 integerForKey:a4];
+  keyCopy = key;
+  defaultsCopy = defaults;
+  descriptorsCopy = descriptors;
+  v12 = [defaultsCopy integerForKey:countKey];
   v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v12];
   if (v12 >= 1)
   {
     v13 = 1;
     do
     {
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%ld", v9, v13];
-      v15 = [v10 dictionaryForKey:v14];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%ld", keyCopy, v13];
+      v15 = [defaultsCopy dictionaryForKey:v14];
       if (v15)
       {
-        v16 = [a1 _widgetFromDictionary:v15 descriptors:v11];
+        v16 = [self _widgetFromDictionary:v15 descriptors:descriptorsCopy];
         if (v16)
         {
           [v18 addObject:v16];
@@ -188,12 +188,12 @@
   return v18;
 }
 
-+ (id)_widgetFromDictionary:(id)a3 descriptors:(id)a4
++ (id)_widgetFromDictionary:(id)dictionary descriptors:(id)descriptors
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = [v5 objectForKey:@"extensionBundleId"];
+  descriptorsCopy = descriptors;
+  v8 = [dictionaryCopy objectForKey:@"extensionBundleId"];
   v9 = v8;
   if (v8)
   {
@@ -205,7 +205,7 @@
     v10 = &stru_1F3E050C8;
   }
 
-  v11 = [v5 objectForKey:@"kind"];
+  v11 = [dictionaryCopy objectForKey:@"kind"];
   v12 = v11;
   if (v11)
   {
@@ -219,13 +219,13 @@
 
   v14 = [v6 stringWithFormat:@"%@-%@", v10, v13];
 
-  v15 = [v7 objectForKeyedSubscript:v14];
+  v15 = [descriptorsCopy objectForKeyedSubscript:v14];
 
   if (v15)
   {
     v16 = objc_opt_new();
     [v16 setAvocadoDescriptor:v15];
-    v17 = [v5 objectForKey:@"appBundleId"];
+    v17 = [dictionaryCopy objectForKey:@"appBundleId"];
     v18 = v17;
     if (v17)
     {
@@ -241,7 +241,7 @@
 
     v20 = 1;
     [v16 setRankType:1];
-    v21 = [v5 objectForKey:@"size"];
+    v21 = [dictionaryCopy objectForKey:@"size"];
     v22 = v21;
     if (v21)
     {

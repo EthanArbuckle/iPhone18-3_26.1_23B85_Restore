@@ -1,23 +1,23 @@
 @interface TouchIdViewControllerWithCoachings
 - (void)_configureUI;
-- (void)_dismissUIWithCompletionHandler:(id)a3;
-- (void)_presentUI:(id)a3;
+- (void)_dismissUIWithCompletionHandler:(id)handler;
+- (void)_presentUI:(id)i;
 - (void)_setupCoachingView;
 - (void)_setupDimming;
 - (void)_setupUI;
 - (void)_updateUI;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TouchIdViewControllerWithCoachings
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = TouchIdViewControllerWithCoachings;
-  [(TouchIdViewControllerWithCoachings *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(TouchIdViewControllerWithCoachings *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(TouchIdViewControllerWithCoachings *)self _updateUI];
 }
 
@@ -29,13 +29,13 @@
   [(TouchIdViewControllerWithCoachings *)self _updateUI];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = TouchIdViewControllerWithCoachings;
-  [(TouchIdViewControllerWithCoachings *)&v6 willTransitionToTraitCollection:a3 withTransitionCoordinator:a4];
-  v5 = [(TouchIdViewControllerWithCoachings *)self traitCollection];
-  -[LAUIPhysicalButtonView setStyle:](self->_coachingView, "setStyle:", [v5 userInterfaceStyle] == 2);
+  [(TouchIdViewControllerWithCoachings *)&v6 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinator];
+  traitCollection = [(TouchIdViewControllerWithCoachings *)self traitCollection];
+  -[LAUIPhysicalButtonView setStyle:](self->_coachingView, "setStyle:", [traitCollection userInterfaceStyle] == 2);
 }
 
 - (void)_setupUI
@@ -54,7 +54,7 @@
   [(LAUIPhysicalButtonView *)self->_coachingView setIsInstructionHidden:[(TouchIdViewController *)self _isSensorActive]^ 1];
 }
 
-- (void)_presentUI:(id)a3
+- (void)_presentUI:(id)i
 {
   [(TouchIdViewControllerWithCoachings *)self _setupDimming];
   v5[0] = _NSConcreteStackBlock;
@@ -75,14 +75,14 @@ id __49__TouchIdViewControllerWithCoachings__presentUI___block_invoke(uint64_t a
   return objc_msgSendSuper2(&v3, "_addFrontMostSubview:", v1);
 }
 
-- (void)_dismissUIWithCompletionHandler:(id)a3
+- (void)_dismissUIWithCompletionHandler:(id)handler
 {
   coachingView = self->_coachingView;
-  v5 = a3;
+  handlerCopy = handler;
   [(LAUIPhysicalButtonView *)coachingView removeFromSuperview];
   v6.receiver = self;
   v6.super_class = TouchIdViewControllerWithCoachings;
-  [(TouchIdViewController *)&v6 _dismissUIWithCompletionHandler:v5];
+  [(TouchIdViewController *)&v6 _dismissUIWithCompletionHandler:handlerCopy];
 }
 
 - (void)_setupCoachingView
@@ -109,11 +109,11 @@ id __49__TouchIdViewControllerWithCoachings__presentUI___block_invoke(uint64_t a
   v6[3] = &unk_1000AABC0;
   v6[4] = self;
   v3 = __51__TouchIdViewControllerWithCoachings__setupDimming__block_invoke(v6);
-  v4 = [(TouchIdViewController *)self dimmingView];
-  [v4 setDimLevel:v3];
+  dimmingView = [(TouchIdViewController *)self dimmingView];
+  [dimmingView setDimLevel:v3];
 
-  v5 = [(TouchIdViewController *)self dimmingView];
-  [v5 setDimEnabled:1];
+  dimmingView2 = [(TouchIdViewController *)self dimmingView];
+  [dimmingView2 setDimEnabled:1];
 }
 
 double __51__TouchIdViewControllerWithCoachings__setupDimming__block_invoke(uint64_t a1)

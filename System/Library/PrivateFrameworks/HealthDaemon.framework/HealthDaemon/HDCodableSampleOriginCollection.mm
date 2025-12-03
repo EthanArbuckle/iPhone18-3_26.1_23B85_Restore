@@ -1,51 +1,51 @@
 @interface HDCodableSampleOriginCollection
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addContributor:(id)a3;
-- (void)addDevice:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContributor:(id)contributor;
+- (void)addDevice:(id)device;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableSampleOriginCollection
 
-- (void)addDevice:(id)a3
+- (void)addDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   devices = self->_devices;
-  v8 = v4;
+  v8 = deviceCopy;
   if (!devices)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_devices;
     self->_devices = v6;
 
-    v4 = v8;
+    deviceCopy = v8;
     devices = self->_devices;
   }
 
-  [(NSMutableArray *)devices addObject:v4];
+  [(NSMutableArray *)devices addObject:deviceCopy];
 }
 
-- (void)addContributor:(id)a3
+- (void)addContributor:(id)contributor
 {
-  v4 = a3;
+  contributorCopy = contributor;
   contributors = self->_contributors;
-  v8 = v4;
+  v8 = contributorCopy;
   if (!contributors)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_contributors;
     self->_contributors = v6;
 
-    v4 = v8;
+    contributorCopy = v8;
     contributors = self->_contributors;
   }
 
-  [(NSMutableArray *)contributors addObject:v4];
+  [(NSMutableArray *)contributors addObject:contributorCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableSampleOriginCollection;
   v4 = [(HDCodableSampleOriginCollection *)&v8 description];
-  v5 = [(HDCodableSampleOriginCollection *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableSampleOriginCollection *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -63,7 +63,7 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_devices count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_devices, "count")}];
@@ -86,8 +86,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -96,7 +96,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"device"];
+    [dictionary setObject:v4 forKey:@"device"];
   }
 
   if ([(NSMutableArray *)self->_contributors count])
@@ -121,8 +121,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v20 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -131,18 +131,18 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"contributor"];
+    [dictionary setObject:v11 forKey:@"contributor"];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -210,44 +210,44 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(HDCodableSampleOriginCollection *)self devicesCount])
   {
-    [v12 clearDevices];
-    v4 = [(HDCodableSampleOriginCollection *)self devicesCount];
-    if (v4)
+    [toCopy clearDevices];
+    devicesCount = [(HDCodableSampleOriginCollection *)self devicesCount];
+    if (devicesCount)
     {
-      v5 = v4;
+      v5 = devicesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableSampleOriginCollection *)self deviceAtIndex:i];
-        [v12 addDevice:v7];
+        [toCopy addDevice:v7];
       }
     }
   }
 
   if ([(HDCodableSampleOriginCollection *)self contributorsCount])
   {
-    [v12 clearContributors];
-    v8 = [(HDCodableSampleOriginCollection *)self contributorsCount];
-    if (v8)
+    [toCopy clearContributors];
+    contributorsCount = [(HDCodableSampleOriginCollection *)self contributorsCount];
+    if (contributorsCount)
     {
-      v9 = v8;
+      v9 = contributorsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HDCodableSampleOriginCollection *)self contributorAtIndex:j];
-        [v12 addContributor:v11];
+        [toCopy addContributor:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -268,7 +268,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addDevice:v11];
 
         ++v10;
@@ -301,7 +301,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addContributor:v17];
 
         ++v16;
@@ -318,13 +318,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((devices = self->_devices, !(devices | v4[2])) || -[NSMutableArray isEqual:](devices, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((devices = self->_devices, !(devices | equalCopy[2])) || -[NSMutableArray isEqual:](devices, "isEqual:")))
   {
     contributors = self->_contributors;
-    if (contributors | v4[1])
+    if (contributors | equalCopy[1])
     {
       v7 = [(NSMutableArray *)contributors isEqual:?];
     }
@@ -343,15 +343,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -381,7 +381,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

@@ -1,7 +1,7 @@
 @interface _UIFocusRegionSearchContextState
-+ (id)stateWithRegionContainer:(id)a3 focusSystem:(id)a4 clippingRect:(CGRect)a5;
++ (id)stateWithRegionContainer:(id)container focusSystem:(id)system clippingRect:(CGRect)rect;
 - (CGRect)clippingRect;
-- (_UIFocusRegionSearchContextState)initWithRegionContainer:(id)a3 focusSystem:(id)a4 clippingRect:(CGRect)a5;
+- (_UIFocusRegionSearchContextState)initWithRegionContainer:(id)container focusSystem:(id)system clippingRect:(CGRect)rect;
 @end
 
 @implementation _UIFocusRegionSearchContextState
@@ -19,22 +19,22 @@
   return result;
 }
 
-- (_UIFocusRegionSearchContextState)initWithRegionContainer:(id)a3 focusSystem:(id)a4 clippingRect:(CGRect)a5
+- (_UIFocusRegionSearchContextState)initWithRegionContainer:(id)container focusSystem:(id)system clippingRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3;
-  v13 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  containerCopy = container;
+  systemCopy = system;
   v17.receiver = self;
   v17.super_class = _UIFocusRegionSearchContextState;
   v14 = [(_UIFocusRegionSearchContextState *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_regionContainer, a3);
-    objc_storeStrong(&v15->_regionContainerFocusSystem, a4);
+    objc_storeStrong(&v14->_regionContainer, container);
+    objc_storeStrong(&v15->_regionContainerFocusSystem, system);
     v15->_clippingRect.origin.x = x;
     v15->_clippingRect.origin.y = y;
     v15->_clippingRect.size.width = width;
@@ -44,15 +44,15 @@
   return v15;
 }
 
-+ (id)stateWithRegionContainer:(id)a3 focusSystem:(id)a4 clippingRect:(CGRect)a5
++ (id)stateWithRegionContainer:(id)container focusSystem:(id)system clippingRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithRegionContainer:v12 focusSystem:v11 clippingRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  systemCopy = system;
+  containerCopy = container;
+  v13 = [[self alloc] initWithRegionContainer:containerCopy focusSystem:systemCopy clippingRect:{x, y, width, height}];
 
   return v13;
 }

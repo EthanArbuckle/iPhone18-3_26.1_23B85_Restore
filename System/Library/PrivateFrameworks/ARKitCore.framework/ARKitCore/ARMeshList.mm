@@ -1,23 +1,23 @@
 @interface ARMeshList
 - (void)dealloc;
-- (void)setMeshList:(CV3DReconMeshList *)a3 updatedAnchors:(id)a4 removedAnchors:(id)a5 timestamp:(double)a6;
+- (void)setMeshList:(CV3DReconMeshList *)list updatedAnchors:(id)anchors removedAnchors:(id)removedAnchors timestamp:(double)timestamp;
 @end
 
 @implementation ARMeshList
 
-- (void)setMeshList:(CV3DReconMeshList *)a3 updatedAnchors:(id)a4 removedAnchors:(id)a5 timestamp:(double)a6
+- (void)setMeshList:(CV3DReconMeshList *)list updatedAnchors:(id)anchors removedAnchors:(id)removedAnchors timestamp:(double)timestamp
 {
-  v11 = a4;
-  v10 = a5;
+  anchorsCopy = anchors;
+  removedAnchorsCopy = removedAnchors;
   if (self->_meshList)
   {
     CV3DReconMeshListRelease();
   }
 
-  self->_timestamp = a6;
-  self->_meshList = a3;
-  [(ARMeshList *)self setUpdatedAnchors:v11];
-  [(ARMeshList *)self setRemovedAnchors:v10];
+  self->_timestamp = timestamp;
+  self->_meshList = list;
+  [(ARMeshList *)self setUpdatedAnchors:anchorsCopy];
+  [(ARMeshList *)self setRemovedAnchors:removedAnchorsCopy];
   if (self->_meshList)
   {
     CV3DReconMeshListRetain();

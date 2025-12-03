@@ -1,34 +1,34 @@
 @interface HAPDataStreamHAPControllerPayload
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPDataStreamHAPControllerPayload)init;
-- (HAPDataStreamHAPControllerPayload)initWithPayload:(id)a3 sessionIdentifier:(id)a4 forceClose:(id)a5;
+- (HAPDataStreamHAPControllerPayload)initWithPayload:(id)payload sessionIdentifier:(id)identifier forceClose:(id)close;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPDataStreamHAPControllerPayload
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPDataStreamHAPControllerPayload);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPDataStreamHAPControllerPayload *)v6 parseFromData:v5 error:&v11];
+    [(HAPDataStreamHAPControllerPayload *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,37 +48,37 @@
   return [(HAPDataStreamHAPControllerPayload *)&v3 init];
 }
 
-- (HAPDataStreamHAPControllerPayload)initWithPayload:(id)a3 sessionIdentifier:(id)a4 forceClose:(id)a5
+- (HAPDataStreamHAPControllerPayload)initWithPayload:(id)payload sessionIdentifier:(id)identifier forceClose:(id)close
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  closeCopy = close;
   v15.receiver = self;
   v15.super_class = HAPDataStreamHAPControllerPayload;
   v12 = [(HAPDataStreamHAPControllerPayload *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_payload, a3);
-    objc_storeStrong(&v13->_sessionIdentifier, a4);
-    objc_storeStrong(&v13->_forceClose, a5);
+    objc_storeStrong(&v12->_payload, payload);
+    objc_storeStrong(&v13->_sessionIdentifier, identifier);
+    objc_storeStrong(&v13->_forceClose, close);
   }
 
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
     v11 = 0;
     v12 = 0;
 LABEL_23:
-    [(HAPDataStreamHAPControllerPayload *)self setPayload:v12, v25];
+    [(HAPDataStreamHAPControllerPayload *)self setPayload:v12, selfCopy];
     [(HAPDataStreamHAPControllerPayload *)self setSessionIdentifier:v11];
     [(HAPDataStreamHAPControllerPayload *)self setForceClose:v10];
     v9 = 0;
@@ -86,13 +86,13 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v25 = self;
-  v26 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v33 = 0;
@@ -144,7 +144,7 @@ LABEL_13:
         goto LABEL_12;
       case 1:
         v30 = v9;
-        v15 = sub_100021B74(1, v7, v13, v31, &v30);
+        v15 = sub_100021B74(1, bytes, v13, v31, &v30);
         v16 = v30;
 
         if (!v16)
@@ -160,17 +160,17 @@ LABEL_13:
         goto LABEL_13;
     }
 
-    v7 = v31[0];
+    bytes = v31[0];
     if (v31[0] >= v13)
     {
       if (v9)
       {
 LABEL_16:
-        if (v26)
+        if (errorCopy)
         {
           v21 = v9;
           v22 = 0;
-          *v26 = v9;
+          *errorCopy = v9;
           goto LABEL_25;
         }
 
@@ -178,15 +178,15 @@ LABEL_16:
       }
 
 LABEL_22:
-      self = v25;
+      self = selfCopy;
       goto LABEL_23;
     }
   }
 
-  if (v26)
+  if (errorCopy)
   {
     sub_100041618(Next);
-    *v26 = v22 = 0;
+    *errorCopy = v22 = 0;
     goto LABEL_25;
   }
 
@@ -197,7 +197,7 @@ LABEL_25:
   return v22;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v45 = 0u;
   v46 = 0u;
@@ -221,13 +221,13 @@ LABEL_25:
   v28 = 0u;
   v26 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPDataStreamHAPControllerPayload *)self payload];
+  payload = [(HAPDataStreamHAPControllerPayload *)self payload];
 
-  if (v5)
+  if (payload)
   {
-    v6 = [(HAPDataStreamHAPControllerPayload *)self payload];
+    payload2 = [(HAPDataStreamHAPControllerPayload *)self payload];
     v25 = 0;
-    v7 = [v6 serializeWithError:&v25];
+    v7 = [payload2 serializeWithError:&v25];
     v8 = v25;
 
     if (v8)
@@ -236,19 +236,19 @@ LABEL_25:
       goto LABEL_22;
     }
 
-    v9 = [v7 bytes];
-    v10 = [v7 length] + v9;
+    bytes = [v7 bytes];
+    v10 = [v7 length] + bytes;
     while (1)
     {
-      v11 = v10 - v9 >= 255 ? 255 : v10 - v9;
+      v11 = v10 - bytes >= 255 ? 255 : v10 - bytes;
       v12 = TLV8BufferAppend();
       if (v12)
       {
         break;
       }
 
-      v9 += v11;
-      if (v9 >= v10)
+      bytes += v11;
+      if (bytes >= v10)
       {
 
         goto LABEL_11;
@@ -258,11 +258,11 @@ LABEL_25:
     v19 = v12;
 
 LABEL_25:
-    if (a3)
+    if (error)
     {
       sub_100041618(v19);
       v8 = 0;
-      *a3 = v21 = 0;
+      *error = v21 = 0;
       goto LABEL_30;
     }
 
@@ -271,16 +271,16 @@ LABEL_25:
   }
 
 LABEL_11:
-  v13 = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
+  sessionIdentifier = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
 
-  if (!v13)
+  if (!sessionIdentifier)
   {
     goto LABEL_15;
   }
 
-  v14 = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
+  sessionIdentifier2 = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
   v24 = 0;
-  v15 = [v14 serializeWithError:&v24];
+  v15 = [sessionIdentifier2 serializeWithError:&v24];
   v8 = v24;
 
   if (v8)
@@ -297,16 +297,16 @@ LABEL_17:
   {
 
 LABEL_15:
-    v17 = [(HAPDataStreamHAPControllerPayload *)self forceClose];
+    forceClose = [(HAPDataStreamHAPControllerPayload *)self forceClose];
 
-    if (!v17)
+    if (!forceClose)
     {
       goto LABEL_27;
     }
 
-    v18 = [(HAPDataStreamHAPControllerPayload *)self forceClose];
+    forceClose2 = [(HAPDataStreamHAPControllerPayload *)self forceClose];
     v23 = 0;
-    v15 = [v18 serializeWithError:&v23];
+    v15 = [forceClose2 serializeWithError:&v23];
     v8 = v23;
 
     if (v8)
@@ -336,11 +336,11 @@ LABEL_27:
   }
 
 LABEL_22:
-  if (a3)
+  if (error)
   {
     v20 = v8;
     v21 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_30;
   }
 
@@ -352,21 +352,21 @@ LABEL_30:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPDataStreamHAPControllerPayload allocWithZone:a3];
-  v5 = [(HAPDataStreamHAPControllerPayload *)self payload];
-  v6 = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
-  v7 = [(HAPDataStreamHAPControllerPayload *)self forceClose];
-  v8 = [(HAPDataStreamHAPControllerPayload *)v4 initWithPayload:v5 sessionIdentifier:v6 forceClose:v7];
+  v4 = [HAPDataStreamHAPControllerPayload allocWithZone:zone];
+  payload = [(HAPDataStreamHAPControllerPayload *)self payload];
+  sessionIdentifier = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
+  forceClose = [(HAPDataStreamHAPControllerPayload *)self forceClose];
+  v8 = [(HAPDataStreamHAPControllerPayload *)v4 initWithPayload:payload sessionIdentifier:sessionIdentifier forceClose:forceClose];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -376,46 +376,46 @@ LABEL_30:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HAPDataStreamHAPControllerPayload *)self payload];
-      v9 = [(HAPDataStreamHAPControllerPayload *)v7 payload];
-      if (v8 != v9)
+      v7 = equalCopy;
+      payload = [(HAPDataStreamHAPControllerPayload *)self payload];
+      payload2 = [(HAPDataStreamHAPControllerPayload *)v7 payload];
+      if (payload != payload2)
       {
-        v3 = [(HAPDataStreamHAPControllerPayload *)self payload];
-        v4 = [(HAPDataStreamHAPControllerPayload *)v7 payload];
-        if (![v3 isEqual:v4])
+        payload3 = [(HAPDataStreamHAPControllerPayload *)self payload];
+        payload4 = [(HAPDataStreamHAPControllerPayload *)v7 payload];
+        if (![payload3 isEqual:payload4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
-      v12 = [(HAPDataStreamHAPControllerPayload *)v7 sessionIdentifier];
-      v13 = v12;
-      if (v11 == v12)
+      sessionIdentifier = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
+      sessionIdentifier2 = [(HAPDataStreamHAPControllerPayload *)v7 sessionIdentifier];
+      v13 = sessionIdentifier2;
+      if (sessionIdentifier == sessionIdentifier2)
       {
-        v28 = v12;
+        v28 = sessionIdentifier2;
       }
 
       else
       {
-        v14 = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
-        v27 = [(HAPDataStreamHAPControllerPayload *)v7 sessionIdentifier];
-        if (![v14 isEqual:?])
+        sessionIdentifier3 = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
+        sessionIdentifier4 = [(HAPDataStreamHAPControllerPayload *)v7 sessionIdentifier];
+        if (![sessionIdentifier3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = sessionIdentifier3;
         v28 = v13;
       }
 
-      v15 = [(HAPDataStreamHAPControllerPayload *)self forceClose];
-      v16 = [(HAPDataStreamHAPControllerPayload *)v7 forceClose];
-      v17 = v16;
-      if (v15 == v16)
+      forceClose = [(HAPDataStreamHAPControllerPayload *)self forceClose];
+      forceClose2 = [(HAPDataStreamHAPControllerPayload *)v7 forceClose];
+      v17 = forceClose2;
+      if (forceClose == forceClose2)
       {
 
         v10 = 1;
@@ -424,29 +424,29 @@ LABEL_30:
       else
       {
         [(HAPDataStreamHAPControllerPayload *)self forceClose];
-        v18 = v25 = v3;
+        v18 = v25 = payload3;
         [(HAPDataStreamHAPControllerPayload *)v7 forceClose];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = sessionIdentifier;
+        v19 = payload4;
+        v20 = payload2;
+        v22 = v21 = payload;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        payload = v21;
+        payload2 = v20;
+        payload4 = v19;
+        sessionIdentifier = v24;
 
-        v3 = v25;
+        payload3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      sessionIdentifier3 = v26;
+      if (sessionIdentifier == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (payload == payload2)
         {
 LABEL_20:
 
@@ -473,10 +473,10 @@ LABEL_21:
 
 - (NSString)description
 {
-  v3 = [(HAPDataStreamHAPControllerPayload *)self payload];
-  v4 = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
-  v5 = [(HAPDataStreamHAPControllerPayload *)self forceClose];
-  v6 = [NSString stringWithFormat:@"<HAPDataStreamHAPControllerPayload payload=%@, sessionIdentifier=%@, forceClose=%@>", v3, v4, v5];
+  payload = [(HAPDataStreamHAPControllerPayload *)self payload];
+  sessionIdentifier = [(HAPDataStreamHAPControllerPayload *)self sessionIdentifier];
+  forceClose = [(HAPDataStreamHAPControllerPayload *)self forceClose];
+  v6 = [NSString stringWithFormat:@"<HAPDataStreamHAPControllerPayload payload=%@, sessionIdentifier=%@, forceClose=%@>", payload, sessionIdentifier, forceClose];
 
   return v6;
 }

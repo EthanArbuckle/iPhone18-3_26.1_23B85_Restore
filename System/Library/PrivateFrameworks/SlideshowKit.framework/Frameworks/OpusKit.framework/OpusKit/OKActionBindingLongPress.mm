@@ -1,12 +1,12 @@
 @interface OKActionBindingLongPress
 + (id)supportedSettings;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (OKActionBindingLongPress)init;
-- (OKActionBindingLongPress)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKActionBindingLongPress)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)handleLongPress:(id)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
+- (void)handleLongPress:(id)press;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
 - (void)unload;
 @end
 
@@ -28,33 +28,33 @@
   return result;
 }
 
-- (OKActionBindingLongPress)initWithSettings:(id)a3
+- (OKActionBindingLongPress)initWithSettings:(id)settings
 {
   v12.receiver = self;
   v12.super_class = OKActionBindingLongPress;
   v4 = [(OKActionBinding *)&v12 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"numberOfTapsRequired"];
+    v5 = [settings objectForKey:@"numberOfTapsRequired"];
     if (v5)
     {
       v4->_numberOfTapsRequired = [v5 unsignedIntegerValue];
     }
 
-    v6 = [a3 objectForKey:@"numberOfTouchesRequired"];
+    v6 = [settings objectForKey:@"numberOfTouchesRequired"];
     if (v6)
     {
       v4->_numberOfTouchesRequired = [v6 unsignedIntegerValue];
     }
 
-    v7 = [a3 objectForKey:@"minimumPressDuration"];
+    v7 = [settings objectForKey:@"minimumPressDuration"];
     if (v7)
     {
       [v7 doubleValue];
       v4->_minimumPressDuration = v8;
     }
 
-    v9 = [a3 objectForKey:@"allowableMovement"];
+    v9 = [settings objectForKey:@"allowableMovement"];
     if (v9)
     {
       [v9 doubleValue];
@@ -80,11 +80,11 @@
   [(OKActionBinding *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingLongPress;
-  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -100,7 +100,7 @@
 + (id)supportedSettings
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKActionBindingLongPress;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v13[0] = @"numberOfTapsRequired";
@@ -131,17 +131,17 @@
   return v2;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v9.receiver = self;
   v9.super_class = OKActionBindingLongPress;
-  [(OKActionBindingProxy *)&v9 loadForResponder:a3 scope:a4];
+  [(OKActionBindingProxy *)&v9 loadForResponder:responder scope:scope];
   if (([(OKActionBindingProxy *)self scope]& 1) != 0)
   {
-    v6 = [a3 actionView];
-    if (v6)
+    actionView = [responder actionView];
+    if (actionView)
     {
-      v7 = v6;
+      v7 = actionView;
       v8 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_handleLongPress_];
       self->_longPressGestureRecognizer = v8;
       [(UILongPressGestureRecognizer *)v8 setDelegate:self];
@@ -171,40 +171,40 @@
   [(OKActionBindingProxy *)&v4 unload];
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
-  v7 = [(OKActionBindingProxy *)self scope];
-  if (([a3 scope] & v7) == 0)
+  scope = [(OKActionBindingProxy *)self scope];
+  if (([action scope] & scope) == 0)
   {
     return 0;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || !a4 && [a3 touchCount] != self->_numberOfTouchesRequired)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || !agnostic && [action touchCount] != self->_numberOfTouchesRequired)
   {
     return 0;
   }
 
-  if ([a3 tapCount] != self->_numberOfTapsRequired)
+  if ([action tapCount] != self->_numberOfTapsRequired)
   {
     return 0;
   }
 
-  [a3 pressDuration];
+  [action pressDuration];
   return v8 >= self->_minimumPressDuration;
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  if ([a3 state] == 1)
+  if ([press state] == 1)
   {
-    [(OKActionBindingProxy *)self locationForActionFromGesture:a3];
+    [(OKActionBindingProxy *)self locationForActionFromGesture:press];
     v6 = v5;
     v8 = v7;
-    v9 = [a3 numberOfTapsRequired];
-    v10 = [a3 numberOfTouches];
-    [a3 minimumPressDuration];
-    v12 = +[OKActionLongPress longPressActionWithLocation:tapCount:touchCount:pressDuration:context:](OKActionLongPress, "longPressActionWithLocation:tapCount:touchCount:pressDuration:context:", v9, v10, [MEMORY[0x277CBEB38] dictionary], v6, v8, v11);
+    numberOfTapsRequired = [press numberOfTapsRequired];
+    numberOfTouches = [press numberOfTouches];
+    [press minimumPressDuration];
+    v12 = +[OKActionLongPress longPressActionWithLocation:tapCount:touchCount:pressDuration:context:](OKActionLongPress, "longPressActionWithLocation:tapCount:touchCount:pressDuration:context:", numberOfTapsRequired, numberOfTouches, [MEMORY[0x277CBEB38] dictionary], v6, v8, v11);
 
     [(OKActionBindingProxy *)self performAction:v12];
   }

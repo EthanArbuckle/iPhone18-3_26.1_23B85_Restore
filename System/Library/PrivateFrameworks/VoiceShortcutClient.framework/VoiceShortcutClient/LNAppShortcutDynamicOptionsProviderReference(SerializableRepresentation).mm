@@ -9,16 +9,16 @@
 {
   v10[4] = *MEMORY[0x1E69E9840];
   v9[0] = @"appShortcutsProviderMangledTypeName";
-  v2 = [a1 appShortcutsProviderMangledTypeName];
-  v10[0] = v2;
+  appShortcutsProviderMangledTypeName = [self appShortcutsProviderMangledTypeName];
+  v10[0] = appShortcutsProviderMangledTypeName;
   v9[1] = @"parameterIdentifier";
-  v3 = [a1 parameterIdentifier];
-  v10[1] = v3;
+  parameterIdentifier = [self parameterIdentifier];
+  v10[1] = parameterIdentifier;
   v9[2] = @"appShortcutIndex";
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "appShortcutIndex")}];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "appShortcutIndex")}];
   v10[2] = v4;
   v9[3] = @"optionsProviderIndex";
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "optionsProviderIndex")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "optionsProviderIndex")}];
   v10[3] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:4];
 
@@ -39,20 +39,20 @@
     v8 = [v5 valueForKey:@"appShortcutIndex"];
     v9 = [v5 valueForKey:@"optionsProviderIndex"];
     v10 = v9;
-    v11 = 0;
+    selfCopy = 0;
     if (v6 && v7 && v8 && v9)
     {
-      a1 = [a1 initWithAppShortcutsProviderMangledTypeName:v6 parameterIdentifier:v7 appShortcutIndex:objc_msgSend(v8 optionsProviderIndex:{"integerValue"), objc_msgSend(v9, "integerValue")}];
-      v11 = a1;
+      self = [self initWithAppShortcutsProviderMangledTypeName:v6 parameterIdentifier:v7 appShortcutIndex:objc_msgSend(v8 optionsProviderIndex:{"integerValue"), objc_msgSend(v9, "integerValue")}];
+      selfCopy = self;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface NanoCompassBaseComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
 + (NSString)appNameLocalizationKey;
 + (NSString)bundleIdentifierSuffix;
 + (NSString)complicationNameLocalizationKey;
@@ -8,7 +8,7 @@
 + (id)localizedComplicationName;
 - (CLKComplicationTemplate)alwaysOnTemplate;
 - (CLKComplicationTimelineEntry)timelineEntry;
-- (NanoCompassBaseComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5 mode:(int64_t)a6;
+- (NanoCompassBaseComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device mode:(int64_t)mode;
 - (id)currentSwitcherTemplate;
 - (id)newTemplate;
 - (id)noDataTemplate;
@@ -17,15 +17,15 @@
 - (void)_startObservingNotifications;
 - (void)_stopObservingNotifications;
 - (void)dealloc;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation NanoCompassBaseComplicationDataSource
 
 + (id)localizedAppName
 {
-  v4 = objc_msgSend_appNameLocalizationKey(a1, a2, v2, v3);
+  v4 = objc_msgSend_appNameLocalizationKey(self, a2, v2, v3);
   v5 = NanoCompassLocalizedString(v4);
 
   return v5;
@@ -33,7 +33,7 @@
 
 + (id)localizedComplicationName
 {
-  v4 = objc_msgSend_complicationNameLocalizationKey(a1, a2, v2, v3);
+  v4 = objc_msgSend_complicationNameLocalizationKey(self, a2, v2, v3);
   v5 = NanoCompassLocalizedString(v4);
 
   return v5;
@@ -45,25 +45,25 @@
   block[1] = 3221225472;
   block[2] = sub_23BD2DE68;
   block[3] = &unk_278B940E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27E1C4B78 != -1)
   {
     dispatch_once(&qword_27E1C4B78, block);
   }
 
   v5 = qword_27E1C4B70;
-  v6 = objc_msgSend_bundleIdentifierSuffix(a1, a2, v2, v3);
+  v6 = objc_msgSend_bundleIdentifierSuffix(self, a2, v2, v3);
   v9 = objc_msgSend_stringByAppendingString_(v5, v7, v6, v8);
 
   return v9;
 }
 
-- (NanoCompassBaseComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5 mode:(int64_t)a6
+- (NanoCompassBaseComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device mode:(int64_t)mode
 {
-  v6 = a6;
+  modeCopy = mode;
   v62 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  complicationCopy = complication;
+  deviceCopy = device;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
@@ -71,24 +71,24 @@
     *buf = 138412546;
     v59 = v13;
     v60 = 2048;
-    v61 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23BD26000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[%@<%p> init...]", buf, 0x16u);
   }
 
   v57.receiver = self;
   v57.super_class = NanoCompassBaseComplicationDataSource;
-  v17 = [(CLKCComplicationDataSource *)&v57 initWithComplication:v10 family:a4 forDevice:v11];
+  v17 = [(CLKCComplicationDataSource *)&v57 initWithComplication:complicationCopy family:family forDevice:deviceCopy];
   if (v17)
   {
     v18 = objc_msgSend_sharedComplicationManager(NCManager, v14, v15, v16);
     objc_msgSend_setManager_(v17, v19, v18, v20);
 
-    v17->_usesMotion = v6 & 1;
-    v17->_usesBearing = (v6 & 2) != 0;
-    v17->_usesLocation = (v6 & 4) != 0;
+    v17->_usesMotion = modeCopy & 1;
+    v17->_usesBearing = (modeCopy & 2) != 0;
+    v17->_usesLocation = (modeCopy & 4) != 0;
     if (supportAbsoluteAltimeterFeatures())
     {
-      v17->_useAltimeter = (v6 & 8) != 0;
+      v17->_useAltimeter = (modeCopy & 8) != 0;
     }
 
     v24 = objc_msgSend_idealizedHeading(NCHeading, v21, v22, v23);
@@ -123,7 +123,7 @@
     *buf = 138412546;
     v22 = v6;
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23BD26000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[%@<%p> dealloc]", buf, 0x16u);
   }
 
@@ -181,7 +181,7 @@
     v14 = 138412546;
     v15 = v7;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23BD26000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[%@<%p> currentSwitcherTemplate]", &v14, 0x16u);
   }
 
@@ -205,11 +205,11 @@
   return alwaysOnTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v9 = objc_msgSend_timelineEntry(self, v6, v7, v8);
-  (*(a3 + 2))(v5, v9);
+  (*(handler + 2))(handlerCopy, v9);
 }
 
 - (void)_invalidate
@@ -236,14 +236,14 @@
   objc_msgSend_removeObserver_name_object_(v6, v5, self, *MEMORY[0x277CBE620], 0);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  isEqualToString = a5;
+  isEqualToString = change;
   v11 = isEqualToString;
-  if (a6 == &off_278B94108)
+  if (context == &off_278B94108)
   {
     v26 = isEqualToString;
-    isEqualToString = objc_msgSend_isEqualToString_(a3, isEqualToString, @"bearing", v10);
+    isEqualToString = objc_msgSend_isEqualToString_(path, isEqualToString, @"bearing", v10);
     v11 = v26;
     if (isEqualToString)
     {
@@ -320,7 +320,7 @@
   return v2;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
   sub_23BD29238();
   sub_23BD2921C();

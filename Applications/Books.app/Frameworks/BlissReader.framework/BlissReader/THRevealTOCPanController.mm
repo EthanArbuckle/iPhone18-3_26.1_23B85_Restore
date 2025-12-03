@@ -1,28 +1,28 @@
 @interface THRevealTOCPanController
-- (BOOL)wantsToHandlePanInDirection:(CGPoint)a3;
+- (BOOL)wantsToHandlePanInDirection:(CGPoint)direction;
 - (CGPoint)startCenterPoint;
-- (THRevealTOCPanController)initWithDelegate:(id)a3 interactiveCanvasController:(id)a4;
-- (double)p_shrinkAmountForMovement:(CGPoint)a3;
-- (id)completionAnimationFromContentLocation:(id)a3 movement:(CGPoint)a4 velocity:(CGPoint)a5;
-- (id)contentLocationForMovement:(CGPoint)a3 velocity:(CGPoint)a4 placement:(id *)a5 currentLocation:(id)a6;
-- (id)p_contentLocationForMovement:(CGPoint)a3;
+- (THRevealTOCPanController)initWithDelegate:(id)delegate interactiveCanvasController:(id)controller;
+- (double)p_shrinkAmountForMovement:(CGPoint)movement;
+- (id)completionAnimationFromContentLocation:(id)location movement:(CGPoint)movement velocity:(CGPoint)velocity;
+- (id)contentLocationForMovement:(CGPoint)movement velocity:(CGPoint)velocity placement:(id *)placement currentLocation:(id)location;
+- (id)p_contentLocationForMovement:(CGPoint)movement;
 - (void)dealloc;
 - (void)guidedPanDidEnd;
 - (void)guidedPanDidFinishCompletionAnimation;
-- (void)guidedPanWillBeginAtPoint:(CGPoint)a3 withCenterPoint:(CGPoint)a4;
+- (void)guidedPanWillBeginAtPoint:(CGPoint)point withCenterPoint:(CGPoint)centerPoint;
 @end
 
 @implementation THRevealTOCPanController
 
-- (THRevealTOCPanController)initWithDelegate:(id)a3 interactiveCanvasController:(id)a4
+- (THRevealTOCPanController)initWithDelegate:(id)delegate interactiveCanvasController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = THRevealTOCPanController;
   result = [(THRevealTOCPanController *)&v7 init];
   if (result)
   {
-    result->_delegate = a3;
-    result->_icc = a4;
+    result->_delegate = delegate;
+    result->_icc = controller;
   }
 
   return result;
@@ -40,9 +40,9 @@
   [(THRevealTOCPanController *)&v3 dealloc];
 }
 
-- (BOOL)wantsToHandlePanInDirection:(CGPoint)a3
+- (BOOL)wantsToHandlePanInDirection:(CGPoint)direction
 {
-  y = a3.y;
+  y = direction.y;
   result = [(THRevealTOCDelegate *)self->_delegate canRevealTOC];
   if (y <= 0.6)
   {
@@ -52,11 +52,11 @@
   return result;
 }
 
-- (void)guidedPanWillBeginAtPoint:(CGPoint)a3 withCenterPoint:(CGPoint)a4
+- (void)guidedPanWillBeginAtPoint:(CGPoint)point withCenterPoint:(CGPoint)centerPoint
 {
-  y = a4.y;
-  x = a4.x;
-  [(THRevealTOCDelegate *)self->_delegate willRevealTOC:a3.x];
+  y = centerPoint.y;
+  x = centerPoint.x;
+  [(THRevealTOCDelegate *)self->_delegate willRevealTOC:point.x];
   v34 = x;
   v35 = y;
   pageLayout = [objc_msgSend(-[THInteractiveCanvasController hitRep:allowsAllReps:](self->_icc hitRep:1 allowsAllReps:{x, y), "layout"), "pageLayout"}];
@@ -108,9 +108,9 @@
   self->_startContentLocation = [TSDContentLocation contentLocationWithUnscaledPoint:v34 viewScale:v35, v31];
 }
 
-- (id)p_contentLocationForMovement:(CGPoint)a3
+- (id)p_contentLocationForMovement:(CGPoint)movement
 {
-  [(THInteractiveCanvasController *)self->_icc convertBoundsToUnscaledPoint:a3.x, a3.y];
+  [(THInteractiveCanvasController *)self->_icc convertBoundsToUnscaledPoint:movement.x, movement.y];
   [(TSDContentLocation *)self->_startContentLocation unscaledPoint];
   TSDSubtractPoints();
   v5 = v4;
@@ -120,9 +120,9 @@
   return [TSDContentLocation contentLocationWithUnscaledPoint:v5 viewScale:v7, v8];
 }
 
-- (double)p_shrinkAmountForMovement:(CGPoint)a3
+- (double)p_shrinkAmountForMovement:(CGPoint)movement
 {
-  v4 = [(THRevealTOCPanController *)self p_contentLocationForMovement:a3.x, a3.y];
+  v4 = [(THRevealTOCPanController *)self p_contentLocationForMovement:movement.x, movement.y];
   [(TSDContentLocation *)self->_startContentLocation unscaledPoint];
   v6 = v5;
   [(TSDContentLocation *)self->_targetContentLocation unscaledPoint];
@@ -146,11 +146,11 @@
   return fmin((v13 - v14) / v8, 1.0);
 }
 
-- (id)contentLocationForMovement:(CGPoint)a3 velocity:(CGPoint)a4 placement:(id *)a5 currentLocation:(id)a6
+- (id)contentLocationForMovement:(CGPoint)movement velocity:(CGPoint)velocity placement:(id *)placement currentLocation:(id)location
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = [(THRevealTOCPanController *)self p_contentLocationForMovement:a5, a6, a3.x, a3.y, a4.x, a4.y];
+  y = movement.y;
+  x = movement.x;
+  v10 = [(THRevealTOCPanController *)self p_contentLocationForMovement:placement, location, movement.x, movement.y, velocity.x, velocity.y];
   [(THRevealTOCPanController *)self p_shrinkAmountForMovement:x, y];
   v12 = v11;
   if (v11 != 0.0)
@@ -162,14 +162,14 @@
   }
 
   [(THRevealTOCDelegate *)self->_delegate revealTOCByAmount:v12];
-  *a5 = kTSDContentPlacementCenter;
+  *placement = kTSDContentPlacementCenter;
   return v10;
 }
 
-- (id)completionAnimationFromContentLocation:(id)a3 movement:(CGPoint)a4 velocity:(CGPoint)a5
+- (id)completionAnimationFromContentLocation:(id)location movement:(CGPoint)movement velocity:(CGPoint)velocity
 {
-  y = a5.y;
-  [(THRevealTOCPanController *)self p_shrinkAmountForMovement:a4.x, a4.y, a5.x];
+  y = velocity.y;
+  [(THRevealTOCPanController *)self p_shrinkAmountForMovement:movement.x, movement.y, velocity.x];
   if (y <= 100.0 && (y >= -100.0 ? (v9 = v8 <= 0.300000012) : (v9 = 1), v9))
   {
     v11 = 0;
@@ -185,7 +185,7 @@
   v12 = *p_startContentLocation;
   v13 = +[TSDContentPathAnimation animation];
   [v13 setDuration:0.25];
-  [v13 setContentLocations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", a3, v12, 0)}];
+  [v13 setContentLocations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", location, v12, 0)}];
   [v13 setTimingFunction:{+[CAMediaTimingFunction functionWithName:](CAMediaTimingFunction, "functionWithName:", kCAMediaTimingFunctionEaseInEaseOut)}];
   delegate = self->_delegate;
   if (v11)

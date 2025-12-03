@@ -1,16 +1,16 @@
 @interface VNDetectBarcodesRequestConfiguration
-- (VNDetectBarcodesRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDefaultSymbologiesForRevision:(unint64_t)a3;
+- (VNDetectBarcodesRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDefaultSymbologiesForRevision:(unint64_t)revision;
 @end
 
 @implementation VNDetectBarcodesRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = VNDetectBarcodesRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -23,11 +23,11 @@
   return v5;
 }
 
-- (VNDetectBarcodesRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNDetectBarcodesRequestConfiguration)initWithRequestClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = VNDetectBarcodesRequestConfiguration;
-  v3 = [(VNImageBasedRequestConfiguration *)&v7 initWithRequestClass:a3];
+  v3 = [(VNImageBasedRequestConfiguration *)&v7 initWithRequestClass:class];
   v4 = v3;
   if (v3)
   {
@@ -38,20 +38,20 @@
   return v4;
 }
 
-- (void)setDefaultSymbologiesForRevision:(unint64_t)a3
+- (void)setDefaultSymbologiesForRevision:(unint64_t)revision
 {
-  if (a3 > 3)
+  if (revision > 3)
   {
-    if (a3 > 3737841664)
+    if (revision > 3737841664)
     {
-      if (a3 == 3737841665)
+      if (revision == 3737841665)
       {
         v10 = +[VNDetectBarcodesRequest _allBarcodeSymbologiesRev3Private];
       }
 
       else
       {
-        if (a3 != 3737841666)
+        if (revision != 3737841666)
         {
           goto LABEL_14;
         }
@@ -62,9 +62,9 @@
 
     else
     {
-      if (a3 != 4)
+      if (revision != 4)
       {
-        if (a3 == 3737841664)
+        if (revision == 3737841664)
         {
           v9 = +[VNDetectBarcodesRequest _allBarcodeSymbologiesRev2Private];
 LABEL_21:
@@ -89,7 +89,7 @@ LABEL_19:
     return;
   }
 
-  switch(a3)
+  switch(revision)
   {
     case 1uLL:
       v9 = +[VNDetectBarcodesRequest _allBarcodeSymbologiesRev1];
@@ -103,7 +103,7 @@ LABEL_19:
   }
 
 LABEL_14:
-  VNValidatedLog(4, @"Unable to obtain the supported barcode symbologies", a3, v3, v4, v5, v6, v7, v14);
+  VNValidatedLog(4, @"Unable to obtain the supported barcode symbologies", revision, v3, v4, v5, v6, v7, v14);
   v11 = self->_symbologies;
   self->_symbologies = 0;
 }

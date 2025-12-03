@@ -3,14 +3,14 @@
 + (void)load;
 - (NSData)dataValue;
 - (id)formattedValue;
-- (void)setDataValue:(id)a3;
+- (void)setDataValue:(id)value;
 @end
 
 @implementation CAFDataCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFDataCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -18,10 +18,10 @@
 - (NSData)dataValue
 {
   objc_opt_class();
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  value = [(CAFCharacteristic *)self value];
+  if (value && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = value;
   }
 
   else
@@ -32,22 +32,22 @@
   return v4;
 }
 
-- (void)setDataValue:(id)a3
+- (void)setDataValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   [(CAFCharacteristic *)self setValue:v4];
 }
 
 - (id)formattedValue
 {
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3)
+  value = [(CAFCharacteristic *)self value];
+  if (value)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(CAFDataCharacteristic *)self dataValue];
-    v6 = [v5 length];
-    v7 = [(CAFDataCharacteristic *)self dataValue];
-    v8 = [v7 description];
+    dataValue = [(CAFDataCharacteristic *)self dataValue];
+    v6 = [dataValue length];
+    dataValue2 = [(CAFDataCharacteristic *)self dataValue];
+    v8 = [dataValue2 description];
     v9 = [v4 stringWithFormat:@"bytes=%lu %@", v6, v8];
   }
 

@@ -1,28 +1,28 @@
 @interface NSMutableDictionary
-- (void)MCDeepCopyEntriesFromDictionary:(id)a3;
-- (void)MCDeepCopyMissingEntriesFromDictionary:(id)a3;
-- (void)MCDeleteBoolRestriction:(id)a3;
+- (void)MCDeepCopyEntriesFromDictionary:(id)dictionary;
+- (void)MCDeepCopyMissingEntriesFromDictionary:(id)dictionary;
+- (void)MCDeleteBoolRestriction:(id)restriction;
 - (void)MCFixUpRestrictionsDictionaryForMDMReporting;
 - (void)MCSanitizeRestrictions;
-- (void)MCSetIntersectionRestriction:(id)a3 values:(id)a4;
-- (void)MCSetIntersectionSetting:(id)a3 values:(id)a4;
-- (void)MCSetObjectIfNotNil:(id)a3 forKey:(id)a4;
-- (void)MCSetUnionRestriction:(id)a3 values:(id)a4;
-- (void)MCSetUnionSetting:(id)a3 values:(id)a4;
-- (void)MCSetValueRestriction:(id)a3 value:(id)a4;
-- (void)_MCFilterRestrictionPayloadKeys:(id)a3 filterOut:(BOOL)a4;
+- (void)MCSetIntersectionRestriction:(id)restriction values:(id)values;
+- (void)MCSetIntersectionSetting:(id)setting values:(id)values;
+- (void)MCSetObjectIfNotNil:(id)nil forKey:(id)key;
+- (void)MCSetUnionRestriction:(id)restriction values:(id)values;
+- (void)MCSetUnionSetting:(id)setting values:(id)values;
+- (void)MCSetValueRestriction:(id)restriction value:(id)value;
+- (void)_MCFilterRestrictionPayloadKeys:(id)keys filterOut:(BOOL)out;
 @end
 
 @implementation NSMutableDictionary
 
-- (void)MCDeepCopyEntriesFromDictionary:(id)a3
+- (void)MCDeepCopyEntriesFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [dictionaryCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -33,11 +33,11 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dictionaryCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v4 objectForKey:v9];
+        v10 = [dictionaryCopy objectForKey:v9];
         v11 = [(NSMutableDictionary *)self objectForKey:v9];
         v12 = v11;
         if (v10)
@@ -67,7 +67,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v10 MCMutableDeepCopy];
+          mCMutableDeepCopy = [v10 MCMutableDeepCopy];
         }
 
         else
@@ -77,30 +77,30 @@
             goto LABEL_18;
           }
 
-          v14 = [v10 copy];
+          mCMutableDeepCopy = [v10 copy];
         }
 
-        v15 = v14;
-        [(NSMutableDictionary *)self setObject:v14 forKey:v9];
+        v15 = mCMutableDeepCopy;
+        [(NSMutableDictionary *)self setObject:mCMutableDeepCopy forKey:v9];
 
 LABEL_18:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [dictionaryCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)MCDeepCopyMissingEntriesFromDictionary:(id)a3
+- (void)MCDeepCopyMissingEntriesFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [dictionaryCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -111,12 +111,12 @@ LABEL_18:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dictionaryCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self objectForKey:v9];
-        v11 = [v4 objectForKey:v9];
+        v11 = [dictionaryCopy objectForKey:v9];
         if (v11)
         {
           v12 = v10 == 0;
@@ -137,7 +137,7 @@ LABEL_18:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v11 MCMutableDeepCopy];
+            mCMutableDeepCopy = [v11 MCMutableDeepCopy];
           }
 
           else
@@ -147,11 +147,11 @@ LABEL_18:
               goto LABEL_20;
             }
 
-            v13 = [v11 copy];
+            mCMutableDeepCopy = [v11 copy];
           }
 
-          v15 = v13;
-          [(NSMutableDictionary *)self setObject:v13 forKey:v9];
+          v15 = mCMutableDeepCopy;
+          [(NSMutableDictionary *)self setObject:mCMutableDeepCopy forKey:v9];
         }
 
         else
@@ -171,66 +171,66 @@ LABEL_18:
 LABEL_20:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [dictionaryCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)MCSetObjectIfNotNil:(id)a3 forKey:(id)a4
+- (void)MCSetObjectIfNotNil:(id)nil forKey:(id)key
 {
-  if (a3)
+  if (nil)
   {
-    [(NSMutableDictionary *)self setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self setObject:nil forKey:key];
   }
 }
 
-- (void)MCDeleteBoolRestriction:(id)a3
+- (void)MCDeleteBoolRestriction:(id)restriction
 {
-  v9 = a3;
+  restrictionCopy = restriction;
   v4 = MCRestrictedBoolKey;
   v5 = [(NSMutableDictionary *)self objectForKeyedSubscript:MCRestrictedBoolKey];
   v6 = [v5 mutableCopy];
 
   if (v6)
   {
-    [v6 removeObjectForKey:v9];
+    [v6 removeObjectForKey:restrictionCopy];
     if ([v6 count])
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = v6;
     }
 
     else
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 0;
     }
 
-    [(NSMutableDictionary *)v7 setObject:v8 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)selfCopy2 setObject:v8 forKeyedSubscript:v4];
   }
 }
 
-- (void)MCSetValueRestriction:(id)a3 value:(id)a4
+- (void)MCSetValueRestriction:(id)restriction value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  restrictionCopy = restriction;
+  valueCopy = value;
+  if (valueCopy)
   {
     v8 = +[MCRestrictionManager sharedManager];
-    v9 = [v8 defaultRestrictions];
+    defaultRestrictions = [v8 defaultRestrictions];
 
     v10 = MCRestrictedValueKey;
-    v11 = [v9 objectForKeyedSubscript:MCRestrictedValueKey];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    v11 = [defaultRestrictions objectForKeyedSubscript:MCRestrictedValueKey];
+    v12 = [v11 objectForKeyedSubscript:restrictionCopy];
     v13 = MCRestrictedValuePreferSmallerValuesKey;
     v14 = [v12 objectForKeyedSubscript:MCRestrictedValuePreferSmallerValuesKey];
 
     if (!v14)
     {
-      v23 = [NSString stringWithFormat:@"%@ is not a value restriction.", v6];
-      v24 = [NSException exceptionWithName:NSInvalidArgumentException reason:v23 userInfo:0];
+      restrictionCopy = [NSString stringWithFormat:@"%@ is not a value restriction.", restrictionCopy];
+      v24 = [NSException exceptionWithName:NSInvalidArgumentException reason:restrictionCopy userInfo:0];
       v25 = v24;
 
       objc_exception_throw(v24);
@@ -247,9 +247,9 @@ LABEL_20:
     v26[0] = v13;
     v26[1] = MCRestrictedValueValueKey;
     v27[0] = v14;
-    v27[1] = v7;
+    v27[1] = valueCopy;
     v17 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
-    [v16 setObject:v17 forKeyedSubscript:v6];
+    [v16 setObject:v17 forKeyedSubscript:restrictionCopy];
 
     [(NSMutableDictionary *)self setObject:v16 forKeyedSubscript:v10];
   }
@@ -262,41 +262,41 @@ LABEL_20:
 
     if (v20)
     {
-      [v20 removeObjectForKey:v6];
+      [v20 removeObjectForKey:restrictionCopy];
       if ([v20 count])
       {
-        v21 = self;
+        selfCopy2 = self;
         v22 = v20;
       }
 
       else
       {
-        v21 = self;
+        selfCopy2 = self;
         v22 = 0;
       }
 
-      [(NSMutableDictionary *)v21 setObject:v22 forKeyedSubscript:v18];
+      [(NSMutableDictionary *)selfCopy2 setObject:v22 forKeyedSubscript:v18];
     }
   }
 }
 
-- (void)MCSetIntersectionRestriction:(id)a3 values:(id)a4
+- (void)MCSetIntersectionRestriction:(id)restriction values:(id)values
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  restrictionCopy = restriction;
+  valuesCopy = values;
+  if (valuesCopy)
   {
     v8 = +[MCRestrictionManager sharedManager];
-    v9 = [v8 defaultRestrictions];
+    defaultRestrictions = [v8 defaultRestrictions];
 
     v10 = MCIntersectionKey;
-    v11 = [v9 objectForKeyedSubscript:MCIntersectionKey];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    v11 = [defaultRestrictions objectForKeyedSubscript:MCIntersectionKey];
+    v12 = [v11 objectForKeyedSubscript:restrictionCopy];
 
     if (!v12)
     {
-      v21 = [NSString stringWithFormat:@"%@ is not an intersection restriction.", v6];
-      v22 = [NSException exceptionWithName:NSInvalidArgumentException reason:v21 userInfo:0];
+      restrictionCopy = [NSString stringWithFormat:@"%@ is not an intersection restriction.", restrictionCopy];
+      v22 = [NSException exceptionWithName:NSInvalidArgumentException reason:restrictionCopy userInfo:0];
       v23 = v22;
 
       objc_exception_throw(v22);
@@ -311,9 +311,9 @@ LABEL_20:
     }
 
     v24 = MCIntersectionValuesKey;
-    v25 = v7;
+    v25 = valuesCopy;
     v15 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    [v14 setObject:v15 forKeyedSubscript:v6];
+    [v14 setObject:v15 forKeyedSubscript:restrictionCopy];
 
     [(NSMutableDictionary *)self setObject:v14 forKeyedSubscript:v10];
   }
@@ -326,41 +326,41 @@ LABEL_20:
 
     if (v18)
     {
-      [v18 removeObjectForKey:v6];
+      [v18 removeObjectForKey:restrictionCopy];
       if ([v18 count])
       {
-        v19 = self;
+        selfCopy2 = self;
         v20 = v18;
       }
 
       else
       {
-        v19 = self;
+        selfCopy2 = self;
         v20 = 0;
       }
 
-      [(NSMutableDictionary *)v19 setObject:v20 forKeyedSubscript:v16];
+      [(NSMutableDictionary *)selfCopy2 setObject:v20 forKeyedSubscript:v16];
     }
   }
 }
 
-- (void)MCSetUnionRestriction:(id)a3 values:(id)a4
+- (void)MCSetUnionRestriction:(id)restriction values:(id)values
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  restrictionCopy = restriction;
+  valuesCopy = values;
+  if (valuesCopy)
   {
     v8 = +[MCRestrictionManager sharedManager];
-    v9 = [v8 defaultRestrictions];
+    defaultRestrictions = [v8 defaultRestrictions];
 
     v10 = MCUnionKey;
-    v11 = [v9 objectForKeyedSubscript:MCUnionKey];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    v11 = [defaultRestrictions objectForKeyedSubscript:MCUnionKey];
+    v12 = [v11 objectForKeyedSubscript:restrictionCopy];
 
     if (!v12)
     {
-      v21 = [NSString stringWithFormat:@"%@ is not an union restriction.", v6];
-      v22 = [NSException exceptionWithName:NSInvalidArgumentException reason:v21 userInfo:0];
+      restrictionCopy = [NSString stringWithFormat:@"%@ is not an union restriction.", restrictionCopy];
+      v22 = [NSException exceptionWithName:NSInvalidArgumentException reason:restrictionCopy userInfo:0];
       v23 = v22;
 
       objc_exception_throw(v22);
@@ -375,9 +375,9 @@ LABEL_20:
     }
 
     v24 = MCUnionValuesKey;
-    v25 = v7;
+    v25 = valuesCopy;
     v15 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    [v14 setObject:v15 forKeyedSubscript:v6];
+    [v14 setObject:v15 forKeyedSubscript:restrictionCopy];
 
     [(NSMutableDictionary *)self setObject:v14 forKeyedSubscript:v10];
   }
@@ -390,41 +390,41 @@ LABEL_20:
 
     if (v18)
     {
-      [v18 removeObjectForKey:v6];
+      [v18 removeObjectForKey:restrictionCopy];
       if ([v18 count])
       {
-        v19 = self;
+        selfCopy2 = self;
         v20 = v18;
       }
 
       else
       {
-        v19 = self;
+        selfCopy2 = self;
         v20 = 0;
       }
 
-      [(NSMutableDictionary *)v19 setObject:v20 forKeyedSubscript:v16];
+      [(NSMutableDictionary *)selfCopy2 setObject:v20 forKeyedSubscript:v16];
     }
   }
 }
 
-- (void)MCSetIntersectionSetting:(id)a3 values:(id)a4
+- (void)MCSetIntersectionSetting:(id)setting values:(id)values
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  settingCopy = setting;
+  valuesCopy = values;
+  if (valuesCopy)
   {
     v8 = +[MCRestrictionManager sharedManager];
-    v9 = [v8 defaultSettings];
+    defaultSettings = [v8 defaultSettings];
 
     v10 = MCIntersectionKey;
-    v11 = [v9 objectForKeyedSubscript:MCIntersectionKey];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    v11 = [defaultSettings objectForKeyedSubscript:MCIntersectionKey];
+    v12 = [v11 objectForKeyedSubscript:settingCopy];
 
     if (!v12)
     {
-      v21 = [NSString stringWithFormat:@"%@ is not an intersection setting.", v6];
-      v22 = [NSException exceptionWithName:NSInvalidArgumentException reason:v21 userInfo:0];
+      settingCopy = [NSString stringWithFormat:@"%@ is not an intersection setting.", settingCopy];
+      v22 = [NSException exceptionWithName:NSInvalidArgumentException reason:settingCopy userInfo:0];
       v23 = v22;
 
       objc_exception_throw(v22);
@@ -439,9 +439,9 @@ LABEL_20:
     }
 
     v24 = MCIntersectionValuesKey;
-    v25 = v7;
+    v25 = valuesCopy;
     v15 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    [v14 setObject:v15 forKeyedSubscript:v6];
+    [v14 setObject:v15 forKeyedSubscript:settingCopy];
 
     [(NSMutableDictionary *)self setObject:v14 forKeyedSubscript:v10];
   }
@@ -454,41 +454,41 @@ LABEL_20:
 
     if (v18)
     {
-      [v18 removeObjectForKey:v6];
+      [v18 removeObjectForKey:settingCopy];
       if ([v18 count])
       {
-        v19 = self;
+        selfCopy2 = self;
         v20 = v18;
       }
 
       else
       {
-        v19 = self;
+        selfCopy2 = self;
         v20 = 0;
       }
 
-      [(NSMutableDictionary *)v19 setObject:v20 forKeyedSubscript:v16];
+      [(NSMutableDictionary *)selfCopy2 setObject:v20 forKeyedSubscript:v16];
     }
   }
 }
 
-- (void)MCSetUnionSetting:(id)a3 values:(id)a4
+- (void)MCSetUnionSetting:(id)setting values:(id)values
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  settingCopy = setting;
+  valuesCopy = values;
+  if (valuesCopy)
   {
     v8 = +[MCRestrictionManager sharedManager];
-    v9 = [v8 defaultSettings];
+    defaultSettings = [v8 defaultSettings];
 
     v10 = MCUnionKey;
-    v11 = [v9 objectForKeyedSubscript:MCUnionKey];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    v11 = [defaultSettings objectForKeyedSubscript:MCUnionKey];
+    v12 = [v11 objectForKeyedSubscript:settingCopy];
 
     if (!v12)
     {
-      v21 = [NSString stringWithFormat:@"%@ is not an union setting.", v6];
-      v22 = [NSException exceptionWithName:NSInvalidArgumentException reason:v21 userInfo:0];
+      settingCopy = [NSString stringWithFormat:@"%@ is not an union setting.", settingCopy];
+      v22 = [NSException exceptionWithName:NSInvalidArgumentException reason:settingCopy userInfo:0];
       v23 = v22;
 
       objc_exception_throw(v22);
@@ -503,9 +503,9 @@ LABEL_20:
     }
 
     v24 = MCUnionValuesKey;
-    v25 = v7;
+    v25 = valuesCopy;
     v15 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    [v14 setObject:v15 forKeyedSubscript:v6];
+    [v14 setObject:v15 forKeyedSubscript:settingCopy];
 
     [(NSMutableDictionary *)self setObject:v14 forKeyedSubscript:v10];
   }
@@ -518,37 +518,37 @@ LABEL_20:
 
     if (v18)
     {
-      [v18 removeObjectForKey:v6];
+      [v18 removeObjectForKey:settingCopy];
       if ([v18 count])
       {
-        v19 = self;
+        selfCopy2 = self;
         v20 = v18;
       }
 
       else
       {
-        v19 = self;
+        selfCopy2 = self;
         v20 = 0;
       }
 
-      [(NSMutableDictionary *)v19 setObject:v20 forKeyedSubscript:v16];
+      [(NSMutableDictionary *)selfCopy2 setObject:v20 forKeyedSubscript:v16];
     }
   }
 }
 
-- (void)_MCFilterRestrictionPayloadKeys:(id)a3 filterOut:(BOOL)a4
+- (void)_MCFilterRestrictionPayloadKeys:(id)keys filterOut:(BOOL)out
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  keysCopy = keys;
+  v7 = keysCopy;
+  if (keysCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100015AA8;
     v9[3] = &unk_10011BEB8;
     v9[4] = self;
-    v10 = v6;
-    v11 = a4;
+    v10 = keysCopy;
+    outCopy = out;
     v8 = objc_retainBlock(v9);
     (v8[2])(v8, MCRestrictedBoolKey);
     (v8[2])(v8, MCRestrictedValueKey);
@@ -559,7 +559,7 @@ LABEL_20:
 
 - (void)MCFixUpRestrictionsDictionaryForMDMReporting
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MCRestrictedValueKey;
   v4 = [(NSMutableDictionary *)self objectForKey:MCRestrictedValueKey];
   v5 = v4;
@@ -577,11 +577,11 @@ LABEL_20:
       v13 = v12;
       if (v12)
       {
-        v14 = v2;
+        v14 = selfCopy;
         v15 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v12 longValue] / 60);
         [v10 setObject:v15 forKey:v11];
 
-        v2 = v14;
+        selfCopy = v14;
       }
 
       [v6 setObject:v10 forKey:v7];
@@ -598,26 +598,26 @@ LABEL_20:
       v22 = v21;
       if (v21)
       {
-        v23 = v2;
+        v23 = selfCopy;
         v24 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v21 longValue] / 60);
         [v19 setObject:v24 forKey:v20];
 
-        v2 = v23;
+        selfCopy = v23;
       }
 
       [v6 setObject:v19 forKey:v16];
     }
 
-    [(NSMutableDictionary *)v2 setObject:v6 forKey:v3];
+    [(NSMutableDictionary *)selfCopy setObject:v6 forKey:v3];
   }
 
   v25 = MCIntersectionKey;
-  v26 = [(NSMutableDictionary *)v2 objectForKey:MCIntersectionKey];
+  v26 = [(NSMutableDictionary *)selfCopy objectForKey:MCIntersectionKey];
   if (v26)
   {
     v41 = v25;
     v42 = v26;
-    v43 = v2;
+    v43 = selfCopy;
     v44 = v5;
     v27 = [v26 mutableCopy];
     +[MCRestrictionUtilities intersectionFeaturesWithPayloadRestictionKeyAlias];
@@ -709,7 +709,7 @@ LABEL_20:
 - (void)MCSanitizeRestrictions
 {
   v3 = +[MCRestrictionManager sharedManager];
-  v4 = [v3 defaultRestrictions];
+  defaultRestrictions = [v3 defaultRestrictions];
 
   v5 = MCRestrictedBoolKey;
   v6 = [(NSMutableDictionary *)self objectForKeyedSubscript:MCRestrictedBoolKey];
@@ -734,7 +734,7 @@ LABEL_20:
         }
 
         v13 = *(*(&v61 + 1) + 8 * i);
-        if (([(NSMutableDictionary *)self MCValidateBoolRestriction:v13 inRestrictions:v8 defaultRestrictions:v4]& 1) == 0)
+        if (([(NSMutableDictionary *)self MCValidateBoolRestriction:v13 inRestrictions:v8 defaultRestrictions:defaultRestrictions]& 1) == 0)
         {
           [v7 setObject:0 forKeyedSubscript:v13];
         }
@@ -774,7 +774,7 @@ LABEL_20:
         }
 
         v23 = *(*(&v57 + 1) + 8 * j);
-        if (([(NSMutableDictionary *)self MCValidateValueRestriction:v23 inRestrictions:v18 defaultRestrictions:v4]& 1) == 0)
+        if (([(NSMutableDictionary *)self MCValidateValueRestriction:v23 inRestrictions:v18 defaultRestrictions:defaultRestrictions]& 1) == 0)
         {
           [v17 setObject:0 forKeyedSubscript:v23];
         }
@@ -815,7 +815,7 @@ LABEL_20:
         }
 
         v33 = *(*(&v53 + 1) + 8 * k);
-        if (([(NSMutableDictionary *)self MCValidateIntersectionRestriction:v33 inRestrictions:v28 defaultRestrictions:v4]& 1) == 0)
+        if (([(NSMutableDictionary *)self MCValidateIntersectionRestriction:v33 inRestrictions:v28 defaultRestrictions:defaultRestrictions]& 1) == 0)
         {
           [v27 setObject:0 forKeyedSubscript:v33];
         }
@@ -854,7 +854,7 @@ LABEL_20:
         }
 
         v42 = *(*(&v49 + 1) + 8 * m);
-        if (([(NSMutableDictionary *)self MCValidateUnionRestriction:v42 inRestrictions:v37 defaultRestrictions:v4]& 1) == 0)
+        if (([(NSMutableDictionary *)self MCValidateUnionRestriction:v42 inRestrictions:v37 defaultRestrictions:defaultRestrictions]& 1) == 0)
         {
           [v36 setObject:0 forKeyedSubscript:v42];
         }

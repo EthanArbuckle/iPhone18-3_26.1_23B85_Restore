@@ -1,24 +1,24 @@
 @interface CMContinuityCaptureNWTransportBase
-- (CMContinuityCaptureNWTransportBase)initWithDevice:(id)a3;
+- (CMContinuityCaptureNWTransportBase)initWithDevice:(id)device;
 - (ContinuityCaptureTaskDelegate)taskDelegate;
-- (void)createTimeSyncClock:(id)a3;
-- (void)enqueueResponse:(id)a3 identifier:(id)a4;
-- (void)handleRequest:(id)a3;
-- (void)scheduleReadForConnection:(id)a3 dataTillNow:(id)a4;
+- (void)createTimeSyncClock:(id)clock;
+- (void)enqueueResponse:(id)response identifier:(id)identifier;
+- (void)handleRequest:(id)request;
+- (void)scheduleReadForConnection:(id)connection dataTillNow:(id)now;
 @end
 
 @implementation CMContinuityCaptureNWTransportBase
 
-- (CMContinuityCaptureNWTransportBase)initWithDevice:(id)a3
+- (CMContinuityCaptureNWTransportBase)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = CMContinuityCaptureNWTransportBase;
   v6 = [(CMContinuityCaptureNWTransportBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
@@ -31,9 +31,9 @@
   return WeakRetained;
 }
 
-- (void)createTimeSyncClock:(id)a3
+- (void)createTimeSyncClock:(id)clock
 {
-  v4 = a3;
+  clockCopy = clock;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D714D0];
   v7[0] = MEMORY[0x277D85DD0];
@@ -41,7 +41,7 @@
   v7[2] = __58__CMContinuityCaptureNWTransportBase_createTimeSyncClock___block_invoke;
   v7[3] = &unk_278D5C688;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = clockCopy;
   v8 = v6;
   [v5 notifyWhenClockManagerIsAvailable:v7];
 
@@ -121,18 +121,18 @@ void __58__CMContinuityCaptureNWTransportBase_createTimeSyncClock___block_invoke
   }
 }
 
-- (void)enqueueResponse:(id)a3 identifier:(id)a4
+- (void)enqueueResponse:(id)response identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
     objc_initWeak(location, self);
-    v9 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+    v9 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
     if (v9)
     {
-      v10 = [v6 objectForKeyedSubscript:@"ContinuityCaptureArgs"];
+      v10 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureArgs"];
 
       if (!v10)
       {
@@ -146,7 +146,7 @@ LABEL_104:
         goto LABEL_105;
       }
 
-      v11 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+      v11 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -155,12 +155,12 @@ LABEL_104:
         v13 = CMContinuityCaptureLog(2);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
-          v15 = [v6 objectForKeyedSubscript:@"ContinuityCaptureGID"];
+          v14 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+          v15 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureGID"];
           *buf = 138544130;
-          v126 = self;
+          selfCopy8 = self;
           v127 = 2114;
-          *v128 = v7;
+          *v128 = identifierCopy;
           *&v128[8] = 2114;
           v129 = v14;
           v130 = 2114;
@@ -168,30 +168,30 @@ LABEL_104:
           _os_log_impl(&dword_242545000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ enqueueResponse identifier:%{public}@ selector %{public}@ gid %{public}@", buf, 0x2Au);
         }
 
-        v16 = [v6 objectForKeyedSubscript:@"ContinuityCaptureArgs"];
+        v16 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureArgs"];
         objc_opt_class();
         v17 = objc_opt_isKindOfClass();
 
         if (v17)
         {
-          v18 = [v6 objectForKeyedSubscript:@"ContinuityCaptureArgs"];
-          if ([v7 isEqualToString:@"ContinuityCaptureCommand"])
+          v18 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureArgs"];
+          if ([identifierCopy isEqualToString:@"ContinuityCaptureCommand"])
           {
-            v19 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
-            v20 = [v19 unsignedIntegerValue];
+            v19 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+            unsignedIntegerValue = [v19 unsignedIntegerValue];
 
             v9 = 0;
-            if (v20 > 3)
+            if (unsignedIntegerValue > 3)
             {
-              if (v20 <= 5)
+              if (unsignedIntegerValue <= 5)
               {
-                if (v20 != 4)
+                if (unsignedIntegerValue != 4)
                 {
                   v21 = CMContinuityCaptureLog(2);
                   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138543362;
-                    v126 = self;
+                    selfCopy8 = self;
                     _os_log_impl(&dword_242545000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ SynchronizeAudioClockComplete", buf, 0xCu);
                   }
 
@@ -234,7 +234,7 @@ LABEL_104:
                 {
                   v109 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v107, "unsignedLongLongValue")}];
                   *buf = 138544130;
-                  v126 = self;
+                  selfCopy8 = self;
                   v127 = 2112;
                   *v128 = v54;
                   *&v128[8] = 2112;
@@ -250,9 +250,9 @@ LABEL_101:
                 goto LABEL_102;
               }
 
-              if (v20 != 6)
+              if (unsignedIntegerValue != 6)
               {
-                if (v20 == 9)
+                if (unsignedIntegerValue == 9)
                 {
                   if (!v18)
                   {
@@ -284,21 +284,21 @@ LABEL_101:
 
                   v54 = [v18 objectAtIndexedSubscript:0];
                   v55 = [v18 objectAtIndexedSubscript:1];
-                  v56 = [v55 unsignedIntValue];
+                  unsignedIntValue = [v55 unsignedIntValue];
 
                   v57 = CMContinuityCaptureLog(2);
                   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138543874;
-                    v126 = self;
+                    selfCopy8 = self;
                     v127 = 2112;
                     *v128 = v54;
                     *&v128[8] = 2048;
-                    v129 = v56;
+                    v129 = unsignedIntValue;
                     _os_log_impl(&dword_242545000, v57, OS_LOG_TYPE_DEFAULT, "%{public}@ EnqueueReactionEffect %@ entity %ld", buf, 0x20u);
                   }
 
-                  [WeakRetained enqueueReactionEffect:v54 entity:v56];
+                  [WeakRetained enqueueReactionEffect:v54 entity:unsignedIntValue];
                   goto LABEL_101;
                 }
 
@@ -349,17 +349,17 @@ LABEL_101:
               }
 
               v88 = [v18 objectAtIndexedSubscript:1];
-              v89 = [v88 unsignedIntValue];
+              unsignedIntValue2 = [v88 unsignedIntValue];
 
               v90 = CMContinuityCaptureLog(2);
               if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543874;
-                v126 = self;
+                selfCopy8 = self;
                 v127 = 2112;
                 *v128 = v40;
                 *&v128[8] = 2048;
-                v129 = v89;
+                v129 = unsignedIntValue2;
                 _os_log_impl(&dword_242545000, v90, OS_LOG_TYPE_DEFAULT, "%{public}@ CaptureStillImage %@ entity %ld", buf, 0x20u);
               }
 
@@ -369,8 +369,8 @@ LABEL_101:
               v119[3] = &unk_278D5CAC8;
               objc_copyWeak(v121, location);
               v120 = v40;
-              v121[1] = v89;
-              [WeakRetained captureStillImage:v120 entity:v89 completion:v119];
+              v121[1] = unsignedIntValue2;
+              [WeakRetained captureStillImage:v120 entity:unsignedIntValue2 completion:v119];
 
               v80 = v121;
 LABEL_80:
@@ -384,7 +384,7 @@ LABEL_103:
               goto LABEL_104;
             }
 
-            switch(v20)
+            switch(unsignedIntegerValue)
             {
               case 1:
                 if ([v18 count] != 3)
@@ -438,18 +438,18 @@ LABEL_103:
                 if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
                 {
                   v76 = [v18 objectAtIndexedSubscript:1];
-                  v77 = [v76 unsignedIntValue];
+                  unsignedIntValue3 = [v76 unsignedIntValue];
                   *buf = 138543874;
-                  v126 = self;
+                  selfCopy8 = self;
                   v127 = 2114;
                   *v128 = v74;
                   *&v128[8] = 1024;
-                  LODWORD(v129) = v77;
+                  LODWORD(v129) = unsignedIntValue3;
                   _os_log_impl(&dword_242545000, v75, OS_LOG_TYPE_DEFAULT, "%{public}@ StartStream Configuration %{public}@ option %u", buf, 0x1Cu);
                 }
 
                 v78 = [v18 objectAtIndexedSubscript:1];
-                v79 = [v78 unsignedIntValue];
+                unsignedIntValue4 = [v78 unsignedIntValue];
                 v115[0] = MEMORY[0x277D85DD0];
                 v115[1] = 3221225472;
                 v115[2] = __65__CMContinuityCaptureNWTransportBase_enqueueResponse_identifier___block_invoke_22;
@@ -457,7 +457,7 @@ LABEL_103:
                 objc_copyWeak(&v117, location);
                 v40 = v74;
                 v116 = v40;
-                [WeakRetained startStream:v40 option:v79 completion:v115];
+                [WeakRetained startStream:v40 option:unsignedIntValue4 completion:v115];
 
                 v80 = &v117;
                 goto LABEL_80;
@@ -486,22 +486,22 @@ LABEL_103:
                         if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
                         {
                           v98 = [v18 objectAtIndexedSubscript:0];
-                          v99 = [v98 unsignedIntValue];
+                          unsignedIntValue5 = [v98 unsignedIntValue];
                           v100 = [v18 objectAtIndexedSubscript:1];
-                          v101 = [v100 unsignedIntValue];
+                          unsignedIntValue6 = [v100 unsignedIntValue];
                           *buf = 138543874;
-                          v126 = self;
+                          selfCopy8 = self;
                           v127 = 1024;
-                          *v128 = v99;
+                          *v128 = unsignedIntValue5;
                           *&v128[4] = 1024;
-                          *&v128[6] = v101;
+                          *&v128[6] = unsignedIntValue6;
                           _os_log_impl(&dword_242545000, v97, OS_LOG_TYPE_DEFAULT, "%{public}@ StopStream entity %u option %u", buf, 0x18u);
                         }
 
                         v102 = [v18 objectAtIndexedSubscript:0];
-                        v103 = [v102 unsignedIntValue];
+                        unsignedIntValue7 = [v102 unsignedIntValue];
                         v104 = [v18 objectAtIndexedSubscript:1];
-                        v105 = [v104 unsignedIntValue];
+                        unsignedIntValue8 = [v104 unsignedIntValue];
                         v112[0] = MEMORY[0x277D85DD0];
                         v112[1] = 3221225472;
                         v112[2] = __65__CMContinuityCaptureNWTransportBase_enqueueResponse_identifier___block_invoke_23;
@@ -509,7 +509,7 @@ LABEL_103:
                         objc_copyWeak(&v114, location);
                         v18 = v18;
                         v113 = v18;
-                        [WeakRetained stopStream:v103 option:v105 completion:v112];
+                        [WeakRetained stopStream:unsignedIntValue7 option:unsignedIntValue8 completion:v112];
 
                         objc_destroyWeak(&v114);
                       }
@@ -546,12 +546,12 @@ LABEL_103:
                         else
                         {
                           v46 = [v18 objectAtIndexedSubscript:1];
-                          v47 = [v46 unsignedIntValue];
+                          unsignedIntValue9 = [v46 unsignedIntValue];
                           v123 = @"CMContinuityCaptureStateMachineEventDataKeyPostTime";
                           v48 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:mach_continuous_time()];
                           v124 = v48;
                           v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v124 forKeys:&v123 count:1];
-                          [WeakRetained postEvent:v10 entity:v47 data:v49];
+                          [WeakRetained postEvent:v10 entity:unsignedIntValue9 data:v49];
                         }
 
                         v9 = 0;
@@ -571,12 +571,12 @@ LABEL_56:
             goto LABEL_104;
           }
 
-          if ([v7 isEqualToString:@"ContinuityCaptureControl"])
+          if ([identifierCopy isEqualToString:@"ContinuityCaptureControl"])
           {
-            v23 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
-            v24 = [v23 unsignedIntegerValue];
+            v23 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+            unsignedIntegerValue2 = [v23 unsignedIntegerValue];
 
-            if (v24 == 2)
+            if (unsignedIntegerValue2 == 2)
             {
               if ([v18 count] == 2)
               {
@@ -593,9 +593,9 @@ LABEL_56:
                   if (v61)
                   {
                     v62 = [v18 objectAtIndexedSubscript:0];
-                    v63 = [v62 unsignedIntValue];
+                    unsignedIntValue10 = [v62 unsignedIntValue];
                     v64 = [v18 objectAtIndexedSubscript:1];
-                    [WeakRetained handleAVCNegotiation:v63 data:v64];
+                    [WeakRetained handleAVCNegotiation:unsignedIntValue10 data:v64];
                   }
                 }
               }
@@ -603,7 +603,7 @@ LABEL_56:
               goto LABEL_102;
             }
 
-            if (v24 == 1)
+            if (unsignedIntegerValue2 == 1)
             {
               if (v18)
               {
@@ -628,7 +628,7 @@ LABEL_56:
                       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
                       {
                         *buf = 138543618;
-                        v126 = self;
+                        selfCopy8 = self;
                         v127 = 2114;
                         *v128 = v9;
                         _os_log_impl(&dword_242545000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ dispatch update for %{public}@", buf, 0x16u);
@@ -648,13 +648,13 @@ LABEL_56:
             }
           }
 
-          else if ([v7 isEqualToString:@"ContinuityCaptureData"])
+          else if ([identifierCopy isEqualToString:@"ContinuityCaptureData"])
           {
-            v31 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
-            v32 = [v31 unsignedIntegerValue];
+            v31 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+            unsignedIntegerValue3 = [v31 unsignedIntegerValue];
 
             v9 = 0;
-            if (!v32 && v18)
+            if (!unsignedIntegerValue3 && v18)
             {
               if ([v18 count] != 2)
               {
@@ -774,19 +774,19 @@ void __65__CMContinuityCaptureNWTransportBase_enqueueResponse_identifier___block
   }
 }
 
-- (void)scheduleReadForConnection:(id)a3 dataTillNow:(id)a4
+- (void)scheduleReadForConnection:(id)connection dataTillNow:(id)now
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  nowCopy = now;
   v8 = objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__CMContinuityCaptureNWTransportBase_scheduleReadForConnection_dataTillNow___block_invoke;
   v10[3] = &unk_278D5DB40;
   objc_copyWeak(&v12, &location);
-  v9 = v6;
+  v9 = connectionCopy;
   v11 = v9;
-  CMContinuityCaptureReceiveDataFromNWConnection(v9, v7, self, v10);
+  CMContinuityCaptureReceiveDataFromNWConnection(v9, nowCopy, self, v10);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -887,11 +887,11 @@ LABEL_7:
   }
 }
 
-- (void)handleRequest:(id)a3
+- (void)handleRequest:(id)request
 {
-  v5 = a3;
-  v6 = [a3 bytes];
-  v7 = [MEMORY[0x277CBEA90] dataWithBytes:v6 + 1 length:*v6 - 8];
+  requestCopy = request;
+  bytes = [request bytes];
+  v7 = [MEMORY[0x277CBEA90] dataWithBytes:bytes + 1 length:*bytes - 8];
   v8 = MEMORY[0x277CCAAC8];
   v9 = MEMORY[0x277CBEB98];
   v10 = objc_opt_class();
@@ -908,7 +908,7 @@ LABEL_7:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v16;
     _os_log_impl(&dword_242545000, v18, OS_LOG_TYPE_DEFAULT, "%@ NW response %@", buf, 0x16u);

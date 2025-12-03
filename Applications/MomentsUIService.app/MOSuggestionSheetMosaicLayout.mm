@@ -1,9 +1,9 @@
 @interface MOSuggestionSheetMosaicLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
 - (_TtC16MomentsUIService29MOSuggestionSheetMosaicLayout)init;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -11,14 +11,14 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionSheetMosaicLayout.prepare()();
 }
 
 - (CGSize)collectionViewContentSize
 {
   v2 = *((swift_isaMask & self->super.super.isa) + 0x88);
-  v3 = self;
+  selfCopy = self;
   v2();
   v5 = v4;
   v7 = v6;
@@ -30,16 +30,16 @@
   return result;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = self;
-  v6 = [(MOSuggestionSheetMosaicLayout *)v5 collectionView];
-  if (v6)
+  height = change.size.height;
+  width = change.size.width;
+  selfCopy = self;
+  collectionView = [(MOSuggestionSheetMosaicLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v7 = v6;
-    [v6 bounds];
+    v7 = collectionView;
+    [collectionView bounds];
     v10.width = width;
     v10.height = height;
     v8 = CGSizeEqualToSize(v10, v11);
@@ -54,7 +54,7 @@
   }
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -62,7 +62,7 @@
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = *((swift_isaMask & self->super.super.isa) + 0x70);
-  v9 = self;
+  selfCopy = self;
   v10 = v8();
   if (v10 >> 62)
   {
@@ -111,13 +111,13 @@ LABEL_9:
   return v14;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = MOSuggestionSheetMosaicLayout.layoutAttributesForElements(in:)(x, y, width, height);
 
   if (v8)

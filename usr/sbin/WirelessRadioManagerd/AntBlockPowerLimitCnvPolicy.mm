@@ -1,7 +1,7 @@
 @interface AntBlockPowerLimitCnvPolicy
 - (AntBlockPowerLimitCnvPolicy)init;
 - (id)constructXpcMessage;
-- (void)extractPolicy:(id)a3;
+- (void)extractPolicy:(id)policy;
 @end
 
 @implementation AntBlockPowerLimitCnvPolicy
@@ -15,13 +15,13 @@
   return result;
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
   v6.receiver = self;
   v6.super_class = AntBlockPowerLimitCnvPolicy;
-  v4 = a3;
-  [(AntBlockPowerLimitBasePolicy *)&v6 extractPolicy:v4];
-  v5 = [v4 objectForKey:{@"Condition_Id", v6.receiver, v6.super_class}];
+  policyCopy = policy;
+  [(AntBlockPowerLimitBasePolicy *)&v6 extractPolicy:policyCopy];
+  v5 = [policyCopy objectForKey:{@"Condition_Id", v6.receiver, v6.super_class}];
 
   -[AntBlockPowerLimitCnvPolicy setParameterConditionId:](self, "setParameterConditionId:", [v5 integerValue]);
 }
@@ -30,11 +30,11 @@
 {
   v6.receiver = self;
   v6.super_class = AntBlockPowerLimitCnvPolicy;
-  v3 = [(AntBlockPowerLimitBasePolicy *)&v6 constructXpcMessage];
-  v4 = v3;
-  if (v3)
+  constructXpcMessage = [(AntBlockPowerLimitBasePolicy *)&v6 constructXpcMessage];
+  v4 = constructXpcMessage;
+  if (constructXpcMessage)
   {
-    xpc_dictionary_set_uint64(v3, "kWCMCellularSetAntBlocking_Policy_ConditionId", self->_mConditionId);
+    xpc_dictionary_set_uint64(constructXpcMessage, "kWCMCellularSetAntBlocking_Policy_ConditionId", self->_mConditionId);
   }
 
   return v4;

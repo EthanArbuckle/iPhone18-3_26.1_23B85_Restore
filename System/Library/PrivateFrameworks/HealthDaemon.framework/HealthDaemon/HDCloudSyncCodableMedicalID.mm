@@ -1,32 +1,32 @@
 @interface HDCloudSyncCodableMedicalID
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addMedicalIDLogs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMedicalIDLogs:(id)logs;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableMedicalID
 
-- (void)addMedicalIDLogs:(id)a3
+- (void)addMedicalIDLogs:(id)logs
 {
-  v4 = a3;
+  logsCopy = logs;
   medicalIDLogs = self->_medicalIDLogs;
-  v8 = v4;
+  v8 = logsCopy;
   if (!medicalIDLogs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_medicalIDLogs;
     self->_medicalIDLogs = v6;
 
-    v4 = v8;
+    logsCopy = v8;
     medicalIDLogs = self->_medicalIDLogs;
   }
 
-  [(NSMutableArray *)medicalIDLogs addObject:v4];
+  [(NSMutableArray *)medicalIDLogs addObject:logsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableMedicalID;
   v4 = [(HDCloudSyncCodableMedicalID *)&v8 description];
-  v5 = [(HDCloudSyncCodableMedicalID *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableMedicalID *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   medicalIDData = self->_medicalIDData;
   if (medicalIDData)
   {
-    v5 = [(HDCodableMedicalIDData *)medicalIDData dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"medicalIDData"];
+    dictionaryRepresentation = [(HDCodableMedicalIDData *)medicalIDData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"medicalIDData"];
   }
 
   if ([(NSMutableArray *)self->_medicalIDLogs count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -84,18 +84,18 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"medicalIDLogs"];
+    [dictionary setObject:v6 forKey:@"medicalIDLogs"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_medicalIDData)
   {
     PBDataWriterWriteSubmessage();
@@ -136,35 +136,35 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_medicalIDData)
   {
-    [v8 setMedicalIDData:?];
+    [toCopy setMedicalIDData:?];
   }
 
   if ([(HDCloudSyncCodableMedicalID *)self medicalIDLogsCount])
   {
-    [v8 clearMedicalIDLogs];
-    v4 = [(HDCloudSyncCodableMedicalID *)self medicalIDLogsCount];
-    if (v4)
+    [toCopy clearMedicalIDLogs];
+    medicalIDLogsCount = [(HDCloudSyncCodableMedicalID *)self medicalIDLogsCount];
+    if (medicalIDLogsCount)
     {
-      v5 = v4;
+      v5 = medicalIDLogsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCloudSyncCodableMedicalID *)self medicalIDLogsAtIndex:i];
-        [v8 addMedicalIDLogs:v7];
+        [toCopy addMedicalIDLogs:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableMedicalIDData *)self->_medicalIDData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableMedicalIDData *)self->_medicalIDData copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -188,7 +188,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addMedicalIDLogs:v13];
 
         ++v12;
@@ -205,13 +205,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((medicalIDData = self->_medicalIDData, !(medicalIDData | v4[1])) || -[HDCodableMedicalIDData isEqual:](medicalIDData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((medicalIDData = self->_medicalIDData, !(medicalIDData | equalCopy[1])) || -[HDCodableMedicalIDData isEqual:](medicalIDData, "isEqual:")))
   {
     medicalIDLogs = self->_medicalIDLogs;
-    if (medicalIDLogs | v4[2])
+    if (medicalIDLogs | equalCopy[2])
     {
       v7 = [(NSMutableArray *)medicalIDLogs isEqual:?];
     }
@@ -230,12 +230,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   medicalIDData = self->_medicalIDData;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (medicalIDData)
   {
     if (v6)
@@ -253,7 +253,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

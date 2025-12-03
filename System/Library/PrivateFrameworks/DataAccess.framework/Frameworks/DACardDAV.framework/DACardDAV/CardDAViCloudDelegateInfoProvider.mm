@@ -1,12 +1,12 @@
 @interface CardDAViCloudDelegateInfoProvider
-- (BOOL)fetchGuardianStatus:(BOOL *)a3 family:(id)a4 account:(id)a5 error:(id *)a6;
+- (BOOL)fetchGuardianStatus:(BOOL *)status family:(id)family account:(id)account error:(id *)error;
 - (CardDAViCloudDelegateInfoProvider)init;
-- (id)appleIDsOfExistingDelegates:(id)a3;
+- (id)appleIDsOfExistingDelegates:(id)delegates;
 - (id)cardDAVAccounts;
-- (id)collectDelegatesForAccount:(id)a3 error:(id *)a4;
-- (id)familyCircleReturningError:(id *)a3;
+- (id)collectDelegatesForAccount:(id)account error:(id *)error;
+- (id)familyCircleReturningError:(id *)error;
 - (id)familyMembersPromise;
-- (id)nonParentsInFamily:(id)a3 error:(id *)a4;
+- (id)nonParentsInFamily:(id)family error:(id *)error;
 @end
 
 @implementation CardDAViCloudDelegateInfoProvider
@@ -29,16 +29,16 @@
   return v2;
 }
 
-- (id)collectDelegatesForAccount:(id)a3 error:(id *)a4
+- (id)collectDelegatesForAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   v13 = 0;
-  v7 = [(CardDAViCloudDelegateInfoProvider *)self familyCircleReturningError:a4];
-  if (v7 && ([v6 displayAccount], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[CardDAViCloudDelegateInfoProvider fetchGuardianStatus:family:account:error:](self, "fetchGuardianStatus:family:account:error:", &v13, v7, v8, a4), v8, v9))
+  v7 = [(CardDAViCloudDelegateInfoProvider *)self familyCircleReturningError:error];
+  if (v7 && ([accountCopy displayAccount], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[CardDAViCloudDelegateInfoProvider fetchGuardianStatus:family:account:error:](self, "fetchGuardianStatus:family:account:error:", &v13, v7, v8, error), v8, v9))
   {
     if (v13 == 1)
     {
-      v10 = [(CardDAViCloudDelegateInfoProvider *)self nonParentsInFamily:v7 error:a4];
+      v10 = [(CardDAViCloudDelegateInfoProvider *)self nonParentsInFamily:v7 error:error];
       if (v10)
       {
         v11 = [objc_opt_class() delegateInfoForFamilyMembers:v10];
@@ -75,19 +75,19 @@ CardDAVDelegateInfo *__66__CardDAViCloudDelegateInfoProvider_delegateInfoForFami
 - (id)cardDAVAccounts
 {
   v3 = sharedDAAccountStore();
-  v4 = [(CardDAViCloudDelegateInfoProvider *)self accountsType];
-  v5 = [v3 accountsWithAccountType:v4];
+  accountsType = [(CardDAViCloudDelegateInfoProvider *)self accountsType];
+  v5 = [v3 accountsWithAccountType:accountsType];
 
   return v5;
 }
 
-- (id)familyCircleReturningError:(id *)a3
+- (id)familyCircleReturningError:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(CardDAViCloudDelegateInfoProvider *)self familyMembersPromise];
-  v5 = [v4 future];
+  familyMembersPromise = [(CardDAViCloudDelegateInfoProvider *)self familyMembersPromise];
+  future = [familyMembersPromise future];
   v14 = 0;
-  v6 = [v5 resultWithTimeout:&v14 error:30.0];
+  v6 = [future resultWithTimeout:&v14 error:30.0];
   v7 = v14;
 
   if (v6)
@@ -106,10 +106,10 @@ CardDAVDelegateInfo *__66__CardDAViCloudDelegateInfoProvider_delegateInfoForFami
       _os_log_impl(&dword_24850D000, v9, v10, "Failed to fetch family circle data. error: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v7;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -121,16 +121,16 @@ CardDAVDelegateInfo *__66__CardDAViCloudDelegateInfoProvider_delegateInfoForFami
 - (id)familyMembersPromise
 {
   v2 = objc_alloc_init(MEMORY[0x277CFBE90]);
-  v3 = [v2 future];
-  [v3 addSuccessBlock:&__block_literal_global_20];
+  future = [v2 future];
+  [future addSuccessBlock:&__block_literal_global_20];
 
-  v4 = [v2 future];
-  [v4 addFailureBlock:&__block_literal_global_24];
+  future2 = [v2 future];
+  [future2 addFailureBlock:&__block_literal_global_24];
 
   v5 = objc_alloc_init(MEMORY[0x277D08280]);
   [v5 setPromptUserToResolveAuthenticatonFailure:0];
-  v6 = [v2 completionHandlerAdapter];
-  [v5 startRequestWithCompletionHandler:v6];
+  completionHandlerAdapter = [v2 completionHandlerAdapter];
+  [v5 startRequestWithCompletionHandler:completionHandlerAdapter];
 
   return v2;
 }
@@ -167,22 +167,22 @@ void __57__CardDAViCloudDelegateInfoProvider_familyMembersPromise__block_invoke_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appleIDsOfExistingDelegates:(id)a3
+- (id)appleIDsOfExistingDelegates:(id)delegates
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [a3 childAccounts];
-  v5 = [v4 _cn_map:&__block_literal_global_29];
+  childAccounts = [delegates childAccounts];
+  v5 = [childAccounts _cn_map:&__block_literal_global_29];
   v6 = [v3 setWithArray:v5];
 
   return v6;
 }
 
-- (id)nonParentsInFamily:(id)a3 error:(id *)a4
+- (id)nonParentsInFamily:(id)family error:(id *)error
 {
-  if (a3)
+  if (family)
   {
-    v4 = [a3 members];
-    v5 = [v4 _cn_filter:&__block_literal_global_32];
+    members = [family members];
+    v5 = [members _cn_filter:&__block_literal_global_32];
 
     v6 = [v5 _cn_filter:&__block_literal_global_34];
   }
@@ -191,11 +191,11 @@ void __57__CardDAViCloudDelegateInfoProvider_familyMembersPromise__block_invoke_
   {
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CFBCD8] code:9 userInfo:0];
     v5 = v8;
-    if (a4)
+    if (error)
     {
       v9 = v8;
       v6 = 0;
-      *a4 = v5;
+      *error = v5;
     }
 
     else
@@ -282,46 +282,46 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)fetchGuardianStatus:(BOOL *)a3 family:(id)a4 account:(id)a5 error:(id *)a6
+- (BOOL)fetchGuardianStatus:(BOOL *)status family:(id)family account:(id)account error:(id *)error
 {
-  v9 = a5;
-  if (a4)
+  accountCopy = account;
+  if (family)
   {
-    v10 = [a4 members];
+    members = [family members];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __78__CardDAViCloudDelegateInfoProvider_fetchGuardianStatus_family_account_error___block_invoke;
     v15[3] = &unk_278F1AE70;
-    v16 = v9;
-    v11 = [v10 _cn_firstObjectPassingTest:v15];
+    v16 = accountCopy;
+    v11 = [members _cn_firstObjectPassingTest:v15];
 
-    if (a3)
+    if (status)
     {
       if ([v11 isParent])
       {
-        v12 = 1;
+        isOrganizer = 1;
       }
 
       else
       {
-        v12 = [v11 isOrganizer];
+        isOrganizer = [v11 isOrganizer];
       }
 
-      *a3 = v12;
+      *status = isOrganizer;
     }
   }
 
   else
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CFBCD8] code:9 userInfo:0];
-    if (a6)
+    if (error)
     {
       v13 = v13;
-      *a6 = v13;
+      *error = v13;
     }
   }
 
-  return a4 != 0;
+  return family != 0;
 }
 
 uint64_t __78__CardDAViCloudDelegateInfoProvider_fetchGuardianStatus_family_account_error___block_invoke(uint64_t a1, void *a2)

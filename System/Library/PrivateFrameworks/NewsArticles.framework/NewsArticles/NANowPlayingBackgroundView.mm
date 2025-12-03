@@ -1,15 +1,15 @@
 @interface NANowPlayingBackgroundView
-- (NANowPlayingBackgroundView)initWithFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
+- (NANowPlayingBackgroundView)initWithFrame:(CGRect)frame;
+- (void)setImage:(id)image;
 @end
 
 @implementation NANowPlayingBackgroundView
 
-- (NANowPlayingBackgroundView)initWithFrame:(CGRect)a3
+- (NANowPlayingBackgroundView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = NANowPlayingBackgroundView;
-  v3 = [(NANowPlayingBackgroundView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NANowPlayingBackgroundView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -60,19 +60,19 @@ id __44__NANowPlayingBackgroundView_initWithFrame___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = MEMORY[0x1E69DD250];
-  v6 = [(NANowPlayingBackgroundView *)self imageView];
+  imageView = [(NANowPlayingBackgroundView *)self imageView];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__NANowPlayingBackgroundView_setImage___block_invoke;
   v8[3] = &unk_1E84EA210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 transitionWithView:v6 duration:5242880 options:v8 animations:0 completion:0.25];
+  v9 = imageCopy;
+  v7 = imageCopy;
+  [v5 transitionWithView:imageView duration:5242880 options:v8 animations:0 completion:0.25];
 }
 
 void __39__NANowPlayingBackgroundView_setImage___block_invoke(uint64_t a1)

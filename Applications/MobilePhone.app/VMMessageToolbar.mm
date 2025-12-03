@@ -4,77 +4,77 @@
 - (VMPlayerControlsView)playerControlsView;
 - (double)playerControlButtonWidthLayoutConstraintConstant;
 - (void)commonInit;
-- (void)handleActionForButtonSender:(id)a3 event:(id)a4;
-- (void)handleActionForPlayerControlButtonSender:(id)a3 event:(id)a4;
-- (void)handleActionForRTTButtonSender:(id)a3 event:(id)a4;
+- (void)handleActionForButtonSender:(id)sender event:(id)event;
+- (void)handleActionForPlayerControlButtonSender:(id)sender event:(id)event;
+- (void)handleActionForRTTButtonSender:(id)sender event:(id)event;
 - (void)loadConstraints;
 - (void)loadViews;
-- (void)setButtonType:(unint64_t)a3 enabled:(BOOL)a4;
-- (void)setPlayerControlState:(int64_t)a3;
-- (void)setRestricted:(BOOL)a3;
+- (void)setButtonType:(unint64_t)type enabled:(BOOL)enabled;
+- (void)setPlayerControlState:(int64_t)state;
+- (void)setRestricted:(BOOL)restricted;
 - (void)unloadConstraints;
-- (void)updateAudioRouteButtonWithTouchUpInsideEnabled:(BOOL)a3;
+- (void)updateAudioRouteButtonWithTouchUpInsideEnabled:(BOOL)enabled;
 - (void)updateButtonsState;
 - (void)updateRTTButton;
 @end
 
 @implementation VMMessageToolbar
 
-- (void)setButtonType:(unint64_t)a3 enabled:(BOOL)a4
+- (void)setButtonType:(unint64_t)type enabled:(BOOL)enabled
 {
-  v4 = a4;
-  switch(a3)
+  enabledCopy = enabled;
+  switch(type)
   {
     case 3uLL:
-      v5 = [(VMMessageToolbar *)self trashButton];
+      trashButton = [(VMMessageToolbar *)self trashButton];
       break;
     case 2uLL:
-      v5 = [(VMMessageToolbar *)self dialRequestButton];
+      trashButton = [(VMMessageToolbar *)self dialRequestButton];
       break;
     case 1uLL:
-      v5 = [(VMMessageToolbar *)self audioRouteButton];
+      trashButton = [(VMMessageToolbar *)self audioRouteButton];
       break;
     default:
       return;
   }
 
-  v6 = v5;
-  [v5 setHidden:!v4];
+  v6 = trashButton;
+  [trashButton setHidden:!enabledCopy];
 }
 
-- (void)setRestricted:(BOOL)a3
+- (void)setRestricted:(BOOL)restricted
 {
-  if (self->_restricted != a3)
+  if (self->_restricted != restricted)
   {
-    self->_restricted = a3;
+    self->_restricted = restricted;
     [(VMMessageToolbar *)self updateButtonsState];
   }
 }
 
-- (void)updateAudioRouteButtonWithTouchUpInsideEnabled:(BOOL)a3
+- (void)updateAudioRouteButtonWithTouchUpInsideEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(VMMessageToolbar *)self audioRouteButton];
-  v6 = v5;
-  if (v3)
+  enabledCopy = enabled;
+  audioRouteButton = [(VMMessageToolbar *)self audioRouteButton];
+  v6 = audioRouteButton;
+  if (enabledCopy)
   {
-    [v5 addTarget:self action:"handleActionForButtonSender:event:" forControlEvents:64];
+    [audioRouteButton addTarget:self action:"handleActionForButtonSender:event:" forControlEvents:64];
   }
 
   else
   {
-    [v5 removeTarget:self forEvents:64];
+    [audioRouteButton removeTarget:self forEvents:64];
   }
 }
 
 - (void)updateButtonsState
 {
-  v3 = [(VMMessageToolbar *)self isRestricted];
-  v4 = [(VMMessageToolbar *)self playerControlButton];
-  [v4 setEnabled:v3 ^ 1];
+  isRestricted = [(VMMessageToolbar *)self isRestricted];
+  playerControlButton = [(VMMessageToolbar *)self playerControlButton];
+  [playerControlButton setEnabled:isRestricted ^ 1];
 
-  v5 = [(VMMessageToolbar *)self audioRouteButton];
-  [v5 setEnabled:v3 ^ 1];
+  audioRouteButton = [(VMMessageToolbar *)self audioRouteButton];
+  [audioRouteButton setEnabled:isRestricted ^ 1];
 
   [(VMMessageToolbar *)self updateRTTButton];
 }
@@ -137,129 +137,129 @@
   v98.super_class = VMMessageToolbar;
   [(VMMessageToolbar *)&v98 loadConstraints];
   v96 = [NSMutableArray alloc];
-  v92 = [(VMMessageToolbar *)self leadingAnchor];
-  v94 = [(VMMessageToolbar *)self playerControlButton];
-  v90 = [v94 leadingAnchor];
-  v88 = [v92 constraintEqualToAnchor:v90 constant:0.0];
+  leadingAnchor = [(VMMessageToolbar *)self leadingAnchor];
+  playerControlButton = [(VMMessageToolbar *)self playerControlButton];
+  leadingAnchor2 = [playerControlButton leadingAnchor];
+  v88 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   v100[0] = v88;
-  v84 = [(VMMessageToolbar *)self topAnchor];
-  v86 = [(VMMessageToolbar *)self playerControlButton];
-  v82 = [v86 topAnchor];
-  v81 = [v84 constraintEqualToAnchor:v82 constant:-18.0];
+  topAnchor = [(VMMessageToolbar *)self topAnchor];
+  playerControlButton2 = [(VMMessageToolbar *)self playerControlButton];
+  topAnchor2 = [playerControlButton2 topAnchor];
+  v81 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-18.0];
   v100[1] = v81;
-  v79 = [(VMMessageToolbar *)self bottomAnchor];
-  v80 = [(VMMessageToolbar *)self playerControlButton];
-  v78 = [v80 bottomAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78 constant:16.0];
+  bottomAnchor = [(VMMessageToolbar *)self bottomAnchor];
+  playerControlButton3 = [(VMMessageToolbar *)self playerControlButton];
+  bottomAnchor2 = [playerControlButton3 bottomAnchor];
+  v77 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:16.0];
   v100[2] = v77;
-  v76 = [(VMMessageToolbar *)self playerControlButton];
-  v75 = [v76 widthAnchor];
+  playerControlButton4 = [(VMMessageToolbar *)self playerControlButton];
+  widthAnchor = [playerControlButton4 widthAnchor];
   [(VMMessageToolbar *)self playerControlButtonWidthLayoutConstraintConstant];
-  v74 = [v75 constraintEqualToConstant:?];
+  v74 = [widthAnchor constraintEqualToConstant:?];
   v100[3] = v74;
-  v73 = [(VMMessageToolbar *)self audioRouteButton];
-  v71 = [v73 centerYAnchor];
-  v72 = [(VMMessageToolbar *)self playerControlButton];
-  v70 = [v72 centerYAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70];
+  audioRouteButton = [(VMMessageToolbar *)self audioRouteButton];
+  centerYAnchor = [audioRouteButton centerYAnchor];
+  playerControlButton5 = [(VMMessageToolbar *)self playerControlButton];
+  centerYAnchor2 = [playerControlButton5 centerYAnchor];
+  v69 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v100[4] = v69;
-  v68 = [(VMMessageToolbar *)self audioRouteButton];
-  v67 = [v68 heightAnchor];
-  v66 = [v67 constraintEqualToConstant:37.0];
+  audioRouteButton2 = [(VMMessageToolbar *)self audioRouteButton];
+  heightAnchor = [audioRouteButton2 heightAnchor];
+  v66 = [heightAnchor constraintEqualToConstant:37.0];
   v100[5] = v66;
-  v65 = [(VMMessageToolbar *)self audioRouteButton];
-  v63 = [v65 bottomAnchor];
-  v64 = [(VMMessageToolbar *)self playerControlButton];
-  v62 = [v64 bottomAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  audioRouteButton3 = [(VMMessageToolbar *)self audioRouteButton];
+  bottomAnchor3 = [audioRouteButton3 bottomAnchor];
+  playerControlButton6 = [(VMMessageToolbar *)self playerControlButton];
+  bottomAnchor4 = [playerControlButton6 bottomAnchor];
+  v61 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v100[6] = v61;
-  v60 = [(VMMessageToolbar *)self audioRouteButton];
-  v58 = [v60 trailingAnchor];
-  v59 = [(VMMessageToolbar *)self dialRequestButton];
-  v57 = [v59 leadingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57 constant:-20.0];
+  audioRouteButton4 = [(VMMessageToolbar *)self audioRouteButton];
+  trailingAnchor = [audioRouteButton4 trailingAnchor];
+  dialRequestButton = [(VMMessageToolbar *)self dialRequestButton];
+  leadingAnchor3 = [dialRequestButton leadingAnchor];
+  v56 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-20.0];
   v100[7] = v56;
-  v55 = [(VMMessageToolbar *)self audioRouteButton];
-  v54 = [v55 widthAnchor];
-  v53 = [v54 constraintEqualToConstant:37.0];
+  audioRouteButton5 = [(VMMessageToolbar *)self audioRouteButton];
+  widthAnchor2 = [audioRouteButton5 widthAnchor];
+  v53 = [widthAnchor2 constraintEqualToConstant:37.0];
   v100[8] = v53;
-  v52 = [(VMMessageToolbar *)self dialRequestButton];
-  v50 = [v52 topAnchor];
-  v51 = [(VMMessageToolbar *)self playerControlButton];
-  v49 = [v51 topAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  dialRequestButton2 = [(VMMessageToolbar *)self dialRequestButton];
+  topAnchor3 = [dialRequestButton2 topAnchor];
+  playerControlButton7 = [(VMMessageToolbar *)self playerControlButton];
+  topAnchor4 = [playerControlButton7 topAnchor];
+  v48 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v100[9] = v48;
-  v47 = [(VMMessageToolbar *)self dialRequestButton];
-  v45 = [v47 bottomAnchor];
-  v46 = [(VMMessageToolbar *)self playerControlButton];
-  v44 = [v46 bottomAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  dialRequestButton3 = [(VMMessageToolbar *)self dialRequestButton];
+  bottomAnchor5 = [dialRequestButton3 bottomAnchor];
+  playerControlButton8 = [(VMMessageToolbar *)self playerControlButton];
+  bottomAnchor6 = [playerControlButton8 bottomAnchor];
+  v43 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v100[10] = v43;
-  v42 = [(VMMessageToolbar *)self dialRequestButton];
-  v40 = [v42 trailingAnchor];
-  v41 = [(VMMessageToolbar *)self trashButton];
-  v39 = [v41 leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39 constant:-20.0];
+  dialRequestButton4 = [(VMMessageToolbar *)self dialRequestButton];
+  trailingAnchor2 = [dialRequestButton4 trailingAnchor];
+  trashButton = [(VMMessageToolbar *)self trashButton];
+  leadingAnchor4 = [trashButton leadingAnchor];
+  v38 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4 constant:-20.0];
   v100[11] = v38;
-  v37 = [(VMMessageToolbar *)self dialRequestButton];
-  v35 = [v37 widthAnchor];
-  v36 = [(VMMessageToolbar *)self audioRouteButton];
-  v34 = [v36 widthAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  dialRequestButton5 = [(VMMessageToolbar *)self dialRequestButton];
+  widthAnchor3 = [dialRequestButton5 widthAnchor];
+  audioRouteButton6 = [(VMMessageToolbar *)self audioRouteButton];
+  widthAnchor4 = [audioRouteButton6 widthAnchor];
+  v33 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   v100[12] = v33;
-  v32 = [(VMMessageToolbar *)self trashButton];
-  v30 = [v32 topAnchor];
-  v31 = [(VMMessageToolbar *)self playerControlButton];
-  v29 = [v31 topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  trashButton2 = [(VMMessageToolbar *)self trashButton];
+  topAnchor5 = [trashButton2 topAnchor];
+  playerControlButton9 = [(VMMessageToolbar *)self playerControlButton];
+  topAnchor6 = [playerControlButton9 topAnchor];
+  v28 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v100[13] = v28;
-  v27 = [(VMMessageToolbar *)self trashButton];
-  v25 = [v27 bottomAnchor];
-  v26 = [(VMMessageToolbar *)self playerControlButton];
-  v24 = [v26 bottomAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  trashButton3 = [(VMMessageToolbar *)self trashButton];
+  bottomAnchor7 = [trashButton3 bottomAnchor];
+  playerControlButton10 = [(VMMessageToolbar *)self playerControlButton];
+  bottomAnchor8 = [playerControlButton10 bottomAnchor];
+  v23 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v100[14] = v23;
-  v22 = [(VMMessageToolbar *)self trashButton];
-  v3 = [v22 widthAnchor];
-  v4 = [(VMMessageToolbar *)self dialRequestButton];
-  v5 = [v4 widthAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  trashButton4 = [(VMMessageToolbar *)self trashButton];
+  widthAnchor5 = [trashButton4 widthAnchor];
+  dialRequestButton6 = [(VMMessageToolbar *)self dialRequestButton];
+  widthAnchor6 = [dialRequestButton6 widthAnchor];
+  v6 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
   v100[15] = v6;
-  v7 = [(VMMessageToolbar *)self trashButton];
-  v8 = [v7 trailingAnchor];
-  v9 = [(VMMessageToolbar *)self trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  trashButton5 = [(VMMessageToolbar *)self trashButton];
+  trailingAnchor3 = [trashButton5 trailingAnchor];
+  trailingAnchor4 = [(VMMessageToolbar *)self trailingAnchor];
+  v10 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v100[16] = v10;
   v11 = [NSArray arrayWithObjects:v100 count:17];
   v97 = [v96 initWithArray:v11];
 
   if (TUCallScreeningRTTEnabled())
   {
-    v95 = [(VMMessageToolbar *)self rttButton];
-    v91 = [v95 topAnchor];
-    v93 = [(VMMessageToolbar *)self playerControlButton];
-    v89 = [v93 topAnchor];
-    v87 = [v91 constraintEqualToAnchor:v89];
+    rttButton = [(VMMessageToolbar *)self rttButton];
+    topAnchor7 = [rttButton topAnchor];
+    playerControlButton11 = [(VMMessageToolbar *)self playerControlButton];
+    topAnchor8 = [playerControlButton11 topAnchor];
+    v87 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
     v99[0] = v87;
-    v85 = [(VMMessageToolbar *)self rttButton];
-    v83 = [v85 bottomAnchor];
-    v12 = [(VMMessageToolbar *)self playerControlButton];
-    v13 = [v12 bottomAnchor];
-    v14 = [v83 constraintEqualToAnchor:v13];
+    rttButton2 = [(VMMessageToolbar *)self rttButton];
+    bottomAnchor9 = [rttButton2 bottomAnchor];
+    playerControlButton12 = [(VMMessageToolbar *)self playerControlButton];
+    bottomAnchor10 = [playerControlButton12 bottomAnchor];
+    v14 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
     v99[1] = v14;
-    v15 = [(VMMessageToolbar *)self rttButton];
-    v16 = [v15 leadingAnchor];
-    v17 = [(VMMessageToolbar *)self playerControlButton];
-    v18 = [v17 trailingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18 constant:20.0];
+    rttButton3 = [(VMMessageToolbar *)self rttButton];
+    leadingAnchor5 = [rttButton3 leadingAnchor];
+    playerControlButton13 = [(VMMessageToolbar *)self playerControlButton];
+    trailingAnchor5 = [playerControlButton13 trailingAnchor];
+    v19 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor5 constant:20.0];
     v99[2] = v19;
     v20 = [NSArray arrayWithObjects:v99 count:3];
     [v97 addObjectsFromArray:v20];
   }
 
   [(VMMessageToolbar *)self setStandardConstraints:v97];
-  v21 = [(VMMessageToolbar *)self standardConstraints];
-  [NSLayoutConstraint activateConstraints:v21];
+  standardConstraints = [(VMMessageToolbar *)self standardConstraints];
+  [NSLayoutConstraint activateConstraints:standardConstraints];
 }
 
 - (void)unloadConstraints
@@ -267,17 +267,17 @@
   v4.receiver = self;
   v4.super_class = VMMessageToolbar;
   [(VMMessageToolbar *)&v4 unloadConstraints];
-  v3 = [(VMMessageToolbar *)self standardConstraints];
-  [NSLayoutConstraint deactivateConstraints:v3];
+  standardConstraints = [(VMMessageToolbar *)self standardConstraints];
+  [NSLayoutConstraint deactivateConstraints:standardConstraints];
 }
 
-- (void)setPlayerControlState:(int64_t)a3
+- (void)setPlayerControlState:(int64_t)state
 {
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    v4 = qword_1002088E0[a3];
-    v5 = [(VMMessageToolbar *)self playerControlButton];
-    [v5 setPlayerState:v4 enabled:1];
+    v4 = qword_1002088E0[state];
+    playerControlButton = [(VMMessageToolbar *)self playerControlButton];
+    [playerControlButton setPlayerState:v4 enabled:1];
   }
 }
 
@@ -295,11 +295,11 @@
     v4 = 1;
   }
 
-  v5 = [(VMMessageToolbar *)self rttButton];
-  [v5 setHidden:v4];
+  rttButton = [(VMMessageToolbar *)self rttButton];
+  [rttButton setHidden:v4];
 
-  v6 = [(VMMessageToolbar *)self rttButton];
-  [v6 setEnabled:v3];
+  rttButton2 = [(VMMessageToolbar *)self rttButton];
+  [rttButton2 setEnabled:v3];
 }
 
 - (BOOL)_shouldShowRTTButton
@@ -309,18 +309,18 @@
     return 0;
   }
 
-  v3 = [(VMMessageToolbar *)self delegate];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___VMMessageToolbarDelegate];
+  delegate = [(VMMessageToolbar *)self delegate];
+  v4 = [delegate conformsToProtocol:&OBJC_PROTOCOL___VMMessageToolbarDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(VMMessageToolbar *)self delegate];
+  delegate2 = [(VMMessageToolbar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 messageToolbarShouldShowRTTButton:self];
+    v6 = [delegate2 messageToolbarShouldShowRTTButton:self];
   }
 
   else
@@ -331,96 +331,96 @@
   return v6;
 }
 
-- (void)handleActionForPlayerControlButtonSender:(id)a3 event:(id)a4
+- (void)handleActionForPlayerControlButtonSender:(id)sender event:(id)event
 {
-  v13 = a3;
-  v5 = [(VMMessageToolbar *)self playerControlButton];
+  senderCopy = sender;
+  playerControlButton = [(VMMessageToolbar *)self playerControlButton];
 
-  v6 = v13;
-  if (v5 == v13)
+  v6 = senderCopy;
+  if (playerControlButton == senderCopy)
   {
-    v7 = [v13 playerState];
-    v8 = v7 == 1 ? 2 : v7 == 0;
-    [v13 setPlayerState:v7 != 1 enabled:1];
-    v9 = [(VMMessageToolbar *)self playerControlsView];
+    playerState = [senderCopy playerState];
+    v8 = playerState == 1 ? 2 : playerState == 0;
+    [senderCopy setPlayerState:playerState != 1 enabled:1];
+    playerControlsView = [(VMMessageToolbar *)self playerControlsView];
 
-    v6 = v13;
-    if (v9)
+    v6 = senderCopy;
+    if (playerControlsView)
     {
-      v10 = [(VMMessageToolbar *)self playerControlsView];
-      v11 = [v10 delegate];
+      playerControlsView2 = [(VMMessageToolbar *)self playerControlsView];
+      delegate = [playerControlsView2 delegate];
 
       if (objc_opt_respondsToSelector())
       {
-        v12 = [(VMMessageToolbar *)self playerControlsView];
-        [v11 playbackControls:v12 didRequestState:v8];
+        playerControlsView3 = [(VMMessageToolbar *)self playerControlsView];
+        [delegate playbackControls:playerControlsView3 didRequestState:v8];
       }
 
-      v6 = v13;
+      v6 = senderCopy;
     }
   }
 }
 
-- (void)handleActionForButtonSender:(id)a3 event:(id)a4
+- (void)handleActionForButtonSender:(id)sender event:(id)event
 {
-  v12 = a3;
-  v5 = [(VMMessageToolbar *)self delegate];
-  v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___VMMessageToolbarDelegate];
+  senderCopy = sender;
+  delegate = [(VMMessageToolbar *)self delegate];
+  v6 = [delegate conformsToProtocol:&OBJC_PROTOCOL___VMMessageToolbarDelegate];
 
   if (v6)
   {
-    v7 = [(VMMessageToolbar *)self delegate];
+    delegate2 = [(VMMessageToolbar *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(VMMessageToolbar *)self audioRouteButton];
+      audioRouteButton = [(VMMessageToolbar *)self audioRouteButton];
 
-      if (v8 == v12)
+      if (audioRouteButton == senderCopy)
       {
         v11 = 1;
         goto LABEL_9;
       }
 
-      v9 = [(VMMessageToolbar *)self dialRequestButton];
+      dialRequestButton = [(VMMessageToolbar *)self dialRequestButton];
 
-      if (v9 == v12)
+      if (dialRequestButton == senderCopy)
       {
         v11 = 2;
         goto LABEL_9;
       }
 
-      v10 = [(VMMessageToolbar *)self trashButton];
+      trashButton = [(VMMessageToolbar *)self trashButton];
 
-      if (v10 == v12)
+      if (trashButton == senderCopy)
       {
         v11 = 3;
 LABEL_9:
-        [v7 messageToolbar:self handleActionForButtonType:v11];
+        [delegate2 messageToolbar:self handleActionForButtonType:v11];
       }
     }
   }
 }
 
-- (void)handleActionForRTTButtonSender:(id)a3 event:(id)a4
+- (void)handleActionForRTTButtonSender:(id)sender event:(id)event
 {
-  v5 = [(VMMessageToolbar *)self delegate:a3];
+  v5 = [(VMMessageToolbar *)self delegate:sender];
   v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___VMMessageToolbarDelegate];
 
   if (v6)
   {
-    v7 = [(VMMessageToolbar *)self delegate];
+    delegate = [(VMMessageToolbar *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 messageToolbarDidSelectRTTButton:self];
+      [delegate messageToolbarDidSelectRTTButton:self];
     }
   }
 }
 
 - (double)playerControlButtonWidthLayoutConstraintConstant
 {
-  v2 = [(VMMessageToolbar *)self playerControlButton];
-  v3 = [v2 playerState];
+  playerControlButton = [(VMMessageToolbar *)self playerControlButton];
+  playerState = [playerControlButton playerState];
 
-  if (v3 == 1)
+  if (playerState == 1)
   {
     +[UIImage voicemailPlayGlyphImage];
   }

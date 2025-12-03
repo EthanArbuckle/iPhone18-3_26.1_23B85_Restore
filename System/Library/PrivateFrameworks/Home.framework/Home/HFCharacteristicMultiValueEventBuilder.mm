@@ -1,26 +1,26 @@
 @interface HFCharacteristicMultiValueEventBuilder
-- (BOOL)isEqual:(id)a3;
-- (BOOL)wouldFireForCharacteristic:(id)a3 value:(id)a4;
-- (HFCharacteristicMultiValueEventBuilder)initWithCharacteristic:(id)a3 values:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)wouldFireForCharacteristic:(id)characteristic value:(id)value;
+- (HFCharacteristicMultiValueEventBuilder)initWithCharacteristic:(id)characteristic values:(id)values;
 - (id)buildNewEventsFromCurrentState;
 - (id)comparisonKey;
 - (id)hf_representativeTriggerValue;
-- (id)naturalLanguageNameWithOptions:(id)a3;
+- (id)naturalLanguageNameWithOptions:(id)options;
 - (unint64_t)hash;
-- (void)copyValuesFromCharacteristicEventBuilder:(id)a3;
+- (void)copyValuesFromCharacteristicEventBuilder:(id)builder;
 @end
 
 @implementation HFCharacteristicMultiValueEventBuilder
 
-- (HFCharacteristicMultiValueEventBuilder)initWithCharacteristic:(id)a3 values:(id)a4
+- (HFCharacteristicMultiValueEventBuilder)initWithCharacteristic:(id)characteristic values:(id)values
 {
-  v6 = a4;
+  valuesCopy = values;
   v12.receiver = self;
   v12.super_class = HFCharacteristicMultiValueEventBuilder;
-  v7 = [(HFCharacteristicEventBuilder *)&v12 _initWithCharacteristic:a3];
+  v7 = [(HFCharacteristicEventBuilder *)&v12 _initWithCharacteristic:characteristic];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [valuesCopy copy];
     triggerValues = v7->_triggerValues;
     v7->_triggerValues = v8;
 
@@ -31,11 +31,11 @@
   return v7;
 }
 
-- (BOOL)wouldFireForCharacteristic:(id)a3 value:(id)a4
+- (BOOL)wouldFireForCharacteristic:(id)characteristic value:(id)value
 {
-  v5 = a4;
-  v6 = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
-  v7 = [v6 containsObject:v5];
+  valueCopy = value;
+  triggerValues = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
+  v7 = [triggerValues containsObject:valueCopy];
 
   return v7;
 }
@@ -45,25 +45,25 @@
   v3 = MEMORY[0x277CCACA8];
   v12.receiver = self;
   v12.super_class = HFCharacteristicMultiValueEventBuilder;
-  v4 = [(HFEventBuilder *)&v12 comparisonKey];
-  v5 = [(HFCharacteristicEventBuilder *)self characteristic];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
-  v8 = [v7 allObjects];
-  v9 = [v8 componentsJoinedByString:{@", "}];
-  v10 = [v3 stringWithFormat:@"%@-%@:(%@)", v4, v6, v9];
+  comparisonKey = [(HFEventBuilder *)&v12 comparisonKey];
+  characteristic = [(HFCharacteristicEventBuilder *)self characteristic];
+  uniqueIdentifier = [characteristic uniqueIdentifier];
+  triggerValues = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
+  allObjects = [triggerValues allObjects];
+  v9 = [allObjects componentsJoinedByString:{@", "}];
+  v10 = [v3 stringWithFormat:@"%@-%@:(%@)", comparisonKey, uniqueIdentifier, v9];
 
   return v10;
 }
 
-- (void)copyValuesFromCharacteristicEventBuilder:(id)a3
+- (void)copyValuesFromCharacteristicEventBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v10.receiver = self;
   v10.super_class = HFCharacteristicMultiValueEventBuilder;
-  [(HFCharacteristicEventBuilder *)&v10 copyValuesFromCharacteristicEventBuilder:v4];
+  [(HFCharacteristicEventBuilder *)&v10 copyValuesFromCharacteristicEventBuilder:builderCopy];
   objc_opt_class();
-  v5 = v4;
+  v5 = builderCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -78,21 +78,21 @@
 
   if (v7)
   {
-    v8 = [v7 triggerValues];
+    triggerValues = [v7 triggerValues];
     triggerValues = self->_triggerValues;
-    self->_triggerValues = v8;
+    self->_triggerValues = triggerValues;
   }
 }
 
 - (id)buildNewEventsFromCurrentState
 {
-  v3 = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
+  triggerValues = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__HFCharacteristicMultiValueEventBuilder_buildNewEventsFromCurrentState__block_invoke;
   v6[3] = &unk_277DF3798;
   v6[4] = self;
-  v4 = [v3 na_map:v6];
+  v4 = [triggerValues na_map:v6];
 
   return v4;
 }
@@ -108,42 +108,42 @@ id __72__HFCharacteristicMultiValueEventBuilder_buildNewEventsFromCurrentState__
   return v7;
 }
 
-- (id)naturalLanguageNameWithOptions:(id)a3
+- (id)naturalLanguageNameWithOptions:(id)options
 {
   v4 = MEMORY[0x277CD19F8];
   v5 = MEMORY[0x277CBEB98];
-  v6 = a3;
-  v7 = [(HFCharacteristicEventBuilder *)self characteristic];
-  v8 = [v5 setWithObject:v7];
-  v9 = [(HFCharacteristicMultiValueEventBuilder *)self hf_representativeTriggerValue];
-  v10 = [v4 hf_naturalLanguageNameWithOptions:v6 characteristics:v8 triggerValue:v9];
+  optionsCopy = options;
+  characteristic = [(HFCharacteristicEventBuilder *)self characteristic];
+  v8 = [v5 setWithObject:characteristic];
+  hf_representativeTriggerValue = [(HFCharacteristicMultiValueEventBuilder *)self hf_representativeTriggerValue];
+  v10 = [v4 hf_naturalLanguageNameWithOptions:optionsCopy characteristics:v8 triggerValue:hf_representativeTriggerValue];
 
   return v10;
 }
 
 - (id)hf_representativeTriggerValue
 {
-  v3 = [(HFCharacteristicMultiValueEventBuilder *)self representativeTargetValue];
+  representativeTargetValue = [(HFCharacteristicMultiValueEventBuilder *)self representativeTargetValue];
 
-  if (v3)
+  if (representativeTargetValue)
   {
-    v4 = [(HFCharacteristicMultiValueEventBuilder *)self representativeTargetValue];
+    representativeTargetValue2 = [(HFCharacteristicMultiValueEventBuilder *)self representativeTargetValue];
   }
 
   else
   {
-    v5 = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
-    v4 = [v5 anyObject];
+    triggerValues = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
+    representativeTargetValue2 = [triggerValues anyObject];
   }
 
-  return v4;
+  return representativeTargetValue2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -168,9 +168,9 @@ id __72__HFCharacteristicMultiValueEventBuilder_buildNewEventsFromCurrentState__
     v8 = 0;
     if ([(HFCharacteristicEventBuilder *)&v12 isEqual:v5]&& v7)
     {
-      v9 = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
-      v10 = [(HFCharacteristicMultiValueEventBuilder *)v7 triggerValues];
-      v8 = [v9 isEqualToSet:v10];
+      triggerValues = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
+      triggerValues2 = [(HFCharacteristicMultiValueEventBuilder *)v7 triggerValues];
+      v8 = [triggerValues isEqualToSet:triggerValues2];
     }
   }
 
@@ -182,8 +182,8 @@ id __72__HFCharacteristicMultiValueEventBuilder_buildNewEventsFromCurrentState__
   v7.receiver = self;
   v7.super_class = HFCharacteristicMultiValueEventBuilder;
   v3 = [(HFCharacteristicEventBuilder *)&v7 hash];
-  v4 = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
-  v5 = [v4 hash];
+  triggerValues = [(HFCharacteristicMultiValueEventBuilder *)self triggerValues];
+  v5 = [triggerValues hash];
 
   return v5 ^ v3;
 }

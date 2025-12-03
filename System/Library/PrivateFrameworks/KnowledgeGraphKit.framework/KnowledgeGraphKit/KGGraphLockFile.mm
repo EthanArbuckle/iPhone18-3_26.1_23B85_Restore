@@ -1,6 +1,6 @@
 @interface KGGraphLockFile
 - (BOOL)lock;
-- (KGGraphLockFile)initWithDatabaseURL:(id)a3;
+- (KGGraphLockFile)initWithDatabaseURL:(id)l;
 - (void)unlock;
 @end
 
@@ -97,15 +97,15 @@
   return result;
 }
 
-- (KGGraphLockFile)initWithDatabaseURL:(id)a3
+- (KGGraphLockFile)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = KGGraphLockFile;
   v5 = [(KGGraphLockFile *)&v9 init];
   if (v5)
   {
-    v6 = [v4 URLByAppendingPathExtension:@"lock"];
+    v6 = [lCopy URLByAppendingPathExtension:@"lock"];
     fileURL = v5->_fileURL;
     v5->_fileURL = v6;
 

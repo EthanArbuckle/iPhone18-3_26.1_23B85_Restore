@@ -1,36 +1,36 @@
 @interface PTEffectBackgroundURL
-- (BOOL)isEqual:(id)a3;
-- (PTEffectBackgroundURL)initWithFullsize:(id)a3 thumbnail:(id)a4 inputBufferChecksum:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PTEffectBackgroundURL)initWithFullsize:(id)fullsize thumbnail:(id)thumbnail inputBufferChecksum:(id)checksum;
 - (id)URLs;
 - (unint64_t)hash;
 @end
 
 @implementation PTEffectBackgroundURL
 
-- (PTEffectBackgroundURL)initWithFullsize:(id)a3 thumbnail:(id)a4 inputBufferChecksum:(id)a5
+- (PTEffectBackgroundURL)initWithFullsize:(id)fullsize thumbnail:(id)thumbnail inputBufferChecksum:(id)checksum
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fullsizeCopy = fullsize;
+  thumbnailCopy = thumbnail;
+  checksumCopy = checksum;
   v16.receiver = self;
   v16.super_class = PTEffectBackgroundURL;
   v12 = [(PTEffectBackgroundURL *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fullsizeURL, a3);
-    objc_storeStrong(&v13->_thumbnailURL, a4);
-    objc_storeStrong(&v13->_inputBufferChecksum, a5);
+    objc_storeStrong(&v12->_fullsizeURL, fullsize);
+    objc_storeStrong(&v13->_thumbnailURL, thumbnail);
+    objc_storeStrong(&v13->_inputBufferChecksum, checksum);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -40,18 +40,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PTEffectBackgroundURL *)v5 fullsizeURL];
-      v7 = [(PTEffectBackgroundURL *)self fullsizeURL];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      fullsizeURL = [(PTEffectBackgroundURL *)v5 fullsizeURL];
+      fullsizeURL2 = [(PTEffectBackgroundURL *)self fullsizeURL];
+      if ([fullsizeURL isEqual:fullsizeURL2])
       {
-        v8 = [(PTEffectBackgroundURL *)v5 thumbnailURL];
-        v9 = [(PTEffectBackgroundURL *)self thumbnailURL];
-        if ([v8 isEqual:v9])
+        thumbnailURL = [(PTEffectBackgroundURL *)v5 thumbnailURL];
+        thumbnailURL2 = [(PTEffectBackgroundURL *)self thumbnailURL];
+        if ([thumbnailURL isEqual:thumbnailURL2])
         {
-          v10 = [(PTEffectBackgroundURL *)v5 inputBufferChecksum];
-          v11 = [(PTEffectBackgroundURL *)self inputBufferChecksum];
-          v12 = [v10 isEqual:v11];
+          inputBufferChecksum = [(PTEffectBackgroundURL *)v5 inputBufferChecksum];
+          inputBufferChecksum2 = [(PTEffectBackgroundURL *)self inputBufferChecksum];
+          v12 = [inputBufferChecksum isEqual:inputBufferChecksum2];
         }
 
         else

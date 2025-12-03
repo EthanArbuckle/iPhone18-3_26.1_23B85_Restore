@@ -1,52 +1,52 @@
 @interface PKNumericSuggestion
-+ (id)suggestionWithTitle:(id)a3 value:(id)a4 currencyCode:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (PKNumericSuggestion)initWithCoder:(id)a3;
-- (id)_initWithTitle:(id)a3 value:(id)a4 currencyCode:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)suggestionWithTitle:(id)title value:(id)value currencyCode:(id)code;
+- (BOOL)isEqual:(id)equal;
+- (PKNumericSuggestion)initWithCoder:(id)coder;
+- (id)_initWithTitle:(id)title value:(id)value currencyCode:(id)code;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKNumericSuggestion
 
-+ (id)suggestionWithTitle:(id)a3 value:(id)a4 currencyCode:(id)a5
++ (id)suggestionWithTitle:(id)title value:(id)value currencyCode:(id)code
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] _initWithTitle:v10 value:v9 currencyCode:v8];
+  codeCopy = code;
+  valueCopy = value;
+  titleCopy = title;
+  v11 = [[self alloc] _initWithTitle:titleCopy value:valueCopy currencyCode:codeCopy];
 
   return v11;
 }
 
-- (id)_initWithTitle:(id)a3 value:(id)a4 currencyCode:(id)a5
+- (id)_initWithTitle:(id)title value:(id)value currencyCode:(id)code
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  valueCopy = value;
+  codeCopy = code;
   v20.receiver = self;
   v20.super_class = PKNumericSuggestion;
   v12 = [(PKNumericSuggestion *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v13->_value, a4);
-    objc_storeStrong(&v13->_currencyCode, a5);
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v13->_value, value);
+    objc_storeStrong(&v13->_currencyCode, code);
     v13->_usedMaximumSuggestion = 0;
-    v14 = [[PKCurrencyAmount alloc] initWithAmount:v10 currency:v11 exponent:0];
-    v15 = [(PKCurrencyAmount *)v14 minimalFormattedStringValue];
-    v16 = v15;
-    if (v9)
+    v14 = [[PKCurrencyAmount alloc] initWithAmount:valueCopy currency:codeCopy exponent:0];
+    minimalFormattedStringValue = [(PKCurrencyAmount *)v14 minimalFormattedStringValue];
+    v16 = minimalFormattedStringValue;
+    if (titleCopy)
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v9, v15];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", titleCopy, minimalFormattedStringValue];
     }
 
     else
     {
-      v17 = v15;
+      v17 = minimalFormattedStringValue;
     }
 
     displayValue = v13->_displayValue;
@@ -56,9 +56,9 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -66,7 +66,7 @@
   }
 
   value = self->_value;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (!value || !v6)
   {
     if (value == v6)
@@ -86,7 +86,7 @@ LABEL_9:
 
 LABEL_5:
   title = self->_title;
-  v8 = v4[4];
+  v8 = equalCopy[4];
   if (title && v8)
   {
     v9 = [(NSString *)title isEqual:?];
@@ -104,10 +104,10 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_title];
-  [v3 safelyAddObject:self->_value];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_title];
+  [array safelyAddObject:self->_value];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
@@ -124,63 +124,63 @@ LABEL_10:
   return v3;
 }
 
-- (PKNumericSuggestion)initWithCoder:(id)a3
+- (PKNumericSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKNumericSuggestion;
   v5 = [(PKNumericSuggestion *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayValue"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayValue"];
     displayValue = v5->_displayValue;
     v5->_displayValue = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v12;
 
-    v5->_usedMaximumSuggestion = [v4 decodeBoolForKey:@"usedMaximumSuggestion"];
+    v5->_usedMaximumSuggestion = [coderCopy decodeBoolForKey:@"usedMaximumSuggestion"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_value forKey:@"value"];
-  [v5 encodeObject:self->_displayValue forKey:@"displayValue"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeBool:self->_usedMaximumSuggestion forKey:@"usedMaximumSuggestion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
+  [coderCopy encodeObject:self->_displayValue forKey:@"displayValue"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeBool:self->_usedMaximumSuggestion forKey:@"usedMaximumSuggestion"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKNumericSuggestion allocWithZone:](PKNumericSuggestion init];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v6;
 
-  v8 = [(NSDecimalNumber *)self->_value copyWithZone:a3];
+  v8 = [(NSDecimalNumber *)self->_value copyWithZone:zone];
   value = v5->_value;
   v5->_value = v8;
 
-  v10 = [(NSString *)self->_displayValue copyWithZone:a3];
+  v10 = [(NSString *)self->_displayValue copyWithZone:zone];
   displayValue = v5->_displayValue;
   v5->_displayValue = v10;
 
-  v12 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v12 = [(NSString *)self->_currencyCode copyWithZone:zone];
   currencyCode = v5->_currencyCode;
   v5->_currencyCode = v12;
 

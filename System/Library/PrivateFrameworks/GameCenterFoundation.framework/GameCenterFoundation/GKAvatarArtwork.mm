@@ -1,22 +1,22 @@
 @interface GKAvatarArtwork
 + (id)secureCodedPropertyKeys;
-- (GKAvatarArtwork)initWithType:(id)a3 metadata:(id)a4;
+- (GKAvatarArtwork)initWithType:(id)type metadata:(id)metadata;
 @end
 
 @implementation GKAvatarArtwork
 
-- (GKAvatarArtwork)initWithType:(id)a3 metadata:(id)a4
+- (GKAvatarArtwork)initWithType:(id)type metadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = GKAvatarArtwork;
   v9 = [(GKAvatarArtwork *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_type, a3);
-    objc_storeStrong(&v10->_metadata, a4);
+    objc_storeStrong(&v9->_type, type);
+    objc_storeStrong(&v10->_metadata, metadata);
   }
 
   return v10;

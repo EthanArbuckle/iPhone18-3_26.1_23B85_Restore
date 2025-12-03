@@ -7,14 +7,14 @@
 - (void)main
 {
   v53 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 primaryCKContainer];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  primaryCKContainer = [repository primaryCKContainer];
 
-  v6 = [(HDCloudSyncOperation *)self configuration];
-  v7 = [v6 cachedCloudState];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration2 cachedCloudState];
   v44 = 0;
-  v8 = [v7 zonesByIdentifierWithError:&v44];
+  v8 = [cachedCloudState zonesByIdentifierWithError:&v44];
   v9 = v44;
 
   if (v8 || !v9)
@@ -23,8 +23,8 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v11 = [v8 allKeys];
-    v12 = [v11 countByEnumeratingWithState:&v40 objects:v52 count:16];
+    allKeys = [v8 allKeys];
+    v12 = [allKeys countByEnumeratingWithState:&v40 objects:v52 count:16];
     if (v12)
     {
       v13 = v12;
@@ -35,13 +35,13 @@
         {
           if (*v41 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v16 = *(*(&v40 + 1) + 8 * i);
-          v17 = [v16 containerIdentifier];
-          v18 = [v5 containerIdentifier];
-          v19 = [v17 isEqualToString:v18];
+          containerIdentifier = [v16 containerIdentifier];
+          containerIdentifier2 = [primaryCKContainer containerIdentifier];
+          v19 = [containerIdentifier isEqualToString:containerIdentifier2];
 
           if (v19)
           {
@@ -50,13 +50,13 @@
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
             {
               v33 = v32;
-              v34 = [v5 containerIdentifier];
+              containerIdentifier3 = [primaryCKContainer containerIdentifier];
               *buf = 138543874;
-              v47 = self;
+              selfCopy3 = self;
               v48 = 2114;
               v49 = v16;
               v50 = 2114;
-              v51 = v34;
+              v51 = containerIdentifier3;
               _os_log_impl(&dword_228986000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: Found existing zone %{public}@ in primary container %{public}@; ready for sharing.", buf, 0x20u);
             }
 
@@ -65,7 +65,7 @@
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v40 objects:v52 count:16];
+        v13 = [allKeys countByEnumeratingWithState:&v40 objects:v52 count:16];
         if (v13)
         {
           continue;
@@ -80,26 +80,26 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v21 = v20;
-      v22 = [v5 containerIdentifier];
+      containerIdentifier4 = [primaryCKContainer containerIdentifier];
       *buf = 138543618;
-      v47 = self;
+      selfCopy3 = self;
       v48 = 2114;
-      v49 = v22;
+      v49 = containerIdentifier4;
       _os_log_impl(&dword_228986000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: No existing zones found in primary contaienr %{public}@; creating master zone.", buf, 0x16u);
     }
 
     v23 = objc_alloc(MEMORY[0x277CBC5E8]);
     v24 = MEMORY[0x277CBC5F8];
-    v25 = [(HDCloudSyncOperation *)self configuration];
-    v26 = [v25 syncContainerPrefix];
-    v27 = [v24 hd_masterZoneIDForSyncCircleIdentifier:v26];
-    v11 = [v23 initWithZoneID:v27];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    syncContainerPrefix = [configuration3 syncContainerPrefix];
+    v27 = [v24 hd_masterZoneIDForSyncCircleIdentifier:syncContainerPrefix];
+    allKeys = [v23 initWithZoneID:v27];
 
     v28 = [HDCloudSyncModifyRecordZonesOperation alloc];
-    v29 = [(HDCloudSyncOperation *)self configuration];
-    v45 = v11;
+    configuration4 = [(HDCloudSyncOperation *)self configuration];
+    v45 = allKeys;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
-    v31 = [(HDCloudSyncModifyRecordZonesOperation *)v28 initWithConfiguration:v29 container:v5 recordZonesToSave:v30 recordZoneIDsToDelete:0];
+    v31 = [(HDCloudSyncModifyRecordZonesOperation *)v28 initWithConfiguration:configuration4 container:primaryCKContainer recordZonesToSave:v30 recordZoneIDsToDelete:0];
 
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
@@ -127,7 +127,7 @@ LABEL_20:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v47 = self;
+      selfCopy3 = self;
       v48 = 2114;
       v49 = v9;
       _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get cached zones, %{public}@", buf, 0x16u);

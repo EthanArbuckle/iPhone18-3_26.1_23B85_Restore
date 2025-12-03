@@ -1,68 +1,68 @@
 @interface MAAutoAssetSelector
-- (BOOL)isEqual:(id)a3;
-- (MAAutoAssetSelector)initWithCoder:(id)a3;
-- (id)_initForAssetType:(id)a3 withAssetSpecifier:(id)a4 matchingAssetVersion:(id)a5 usingDecryptionKey:(id)a6 setAtomicInstanceUUID:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (MAAutoAssetSelector)initWithCoder:(id)coder;
+- (id)_initForAssetType:(id)type withAssetSpecifier:(id)specifier matchingAssetVersion:(id)version usingDecryptionKey:(id)key setAtomicInstanceUUID:(id)d;
 - (id)copy;
 - (id)copyClearingWriteOnlyFields;
-- (id)initForAssetType:(id)a3;
-- (id)initForAssetType:(id)a3 withAssetSpecifier:(id)a4;
-- (id)initForAssetType:(id)a3 withAssetSpecifier:(id)a4 matchingAssetVersion:(id)a5;
-- (id)initForAssetType:(id)a3 withAssetSpecifier:(id)a4 matchingAssetVersion:(id)a5 usingDecryptionKey:(id)a6;
-- (id)initForAssetType:(id)a3 withAssetSpecifier:(id)a4 usingDecryptionKey:(id)a5;
-- (id)initForSetAtomicInstanceUUID:(id)a3;
+- (id)initForAssetType:(id)type;
+- (id)initForAssetType:(id)type withAssetSpecifier:(id)specifier;
+- (id)initForAssetType:(id)type withAssetSpecifier:(id)specifier matchingAssetVersion:(id)version;
+- (id)initForAssetType:(id)type withAssetSpecifier:(id)specifier matchingAssetVersion:(id)version usingDecryptionKey:(id)key;
+- (id)initForAssetType:(id)type withAssetSpecifier:(id)specifier usingDecryptionKey:(id)key;
+- (id)initForSetAtomicInstanceUUID:(id)d;
 - (id)newSummaryDictionary;
 - (id)persistedEntryID;
 - (id)shortName;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetSelector
 
 - (id)summary
 {
-  v3 = [(MAAutoAssetSelector *)self assetVersion];
-  if (v3 || ([(MAAutoAssetSelector *)self assetSpecifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  assetVersion = [(MAAutoAssetSelector *)self assetVersion];
+  if (assetVersion || ([(MAAutoAssetSelector *)self assetSpecifier], (assetVersion = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v15 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+    setAtomicInstanceUUID = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
 
-    if (v15)
+    if (setAtomicInstanceUUID)
     {
       v16 = MEMORY[0x1E696AEC0];
-      v7 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
-      v13 = [v16 stringWithFormat:@"setAtomicInstanceUUID:%@", v7];
+      setAtomicInstanceUUID2 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+      v13 = [v16 stringWithFormat:@"setAtomicInstanceUUID:%@", setAtomicInstanceUUID2];
       goto LABEL_10;
     }
   }
 
-  v4 = [(MAAutoAssetSelector *)self assetVersion];
-  if (v4)
+  assetVersion2 = [(MAAutoAssetSelector *)self assetVersion];
+  if (assetVersion2)
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [(MAAutoAssetSelector *)self assetVersion];
-    v7 = [v5 initWithFormat:@"|version:%@", v6];
+    assetVersion3 = [(MAAutoAssetSelector *)self assetVersion];
+    setAtomicInstanceUUID2 = [v5 initWithFormat:@"|version:%@", assetVersion3];
   }
 
   else
   {
-    v7 = @"(any version)";
+    setAtomicInstanceUUID2 = @"(any version)";
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(MAAutoAssetSelector *)self assetType];
-  v10 = [(MAAutoAssetSelector *)self assetSpecifier];
-  v11 = [(MAAutoAssetSelector *)self downloadDecryptionKey];
+  assetType = [(MAAutoAssetSelector *)self assetType];
+  assetSpecifier = [(MAAutoAssetSelector *)self assetSpecifier];
+  downloadDecryptionKey = [(MAAutoAssetSelector *)self downloadDecryptionKey];
   v12 = @"|decryption:Y";
-  if (!v11)
+  if (!downloadDecryptionKey)
   {
     v12 = &stru_1F0C1B388;
   }
 
-  v13 = [v8 stringWithFormat:@"type:%@|specifier:%@%@%@", v9, v10, v7, v12];
+  v13 = [v8 stringWithFormat:@"type:%@|specifier:%@%@%@", assetType, assetSpecifier, setAtomicInstanceUUID2, v12];
 
 LABEL_10:
 
@@ -71,40 +71,40 @@ LABEL_10:
 
 - (id)persistedEntryID
 {
-  v3 = [(MAAutoAssetSelector *)self assetVersion];
+  assetVersion = [(MAAutoAssetSelector *)self assetVersion];
 
-  if (v3)
+  if (assetVersion)
   {
     v4 = objc_alloc(MEMORY[0x1E696AD60]);
-    v5 = [(MAAutoAssetSelector *)self assetVersion];
-    v6 = [v4 initWithString:v5];
+    assetVersion2 = [(MAAutoAssetSelector *)self assetVersion];
+    setAtomicInstanceUUID2 = [v4 initWithString:assetVersion2];
 
-    [v6 replaceOccurrencesOfString:@" withString:" options:@"_" range:{2, 0, objc_msgSend(v6, "length")}];
+    [setAtomicInstanceUUID2 replaceOccurrencesOfString:@" withString:" options:@"_" range:{2, 0, objc_msgSend(setAtomicInstanceUUID2, "length")}];
     v7 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v8 = [(MAAutoAssetSelector *)self assetType];
-    v9 = [(MAAutoAssetSelector *)self assetSpecifier];
-    v10 = [v7 initWithFormat:@"%@_%@_%@", v8, v9, v6];
+    assetType = [(MAAutoAssetSelector *)self assetType];
+    assetSpecifier = [(MAAutoAssetSelector *)self assetSpecifier];
+    v10 = [v7 initWithFormat:@"%@_%@_%@", assetType, assetSpecifier, setAtomicInstanceUUID2];
   }
 
   else
   {
-    v11 = [(MAAutoAssetSelector *)self assetSpecifier];
+    assetSpecifier2 = [(MAAutoAssetSelector *)self assetSpecifier];
 
-    if (!v11)
+    if (!assetSpecifier2)
     {
-      v14 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+      setAtomicInstanceUUID = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
 
       v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-      if (v14)
+      if (setAtomicInstanceUUID)
       {
-        v6 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
-        v16 = [v15 initWithFormat:@"%@_SET_ATOMIC_INSTANCE", v6];
+        setAtomicInstanceUUID2 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+        v16 = [v15 initWithFormat:@"%@_SET_ATOMIC_INSTANCE", setAtomicInstanceUUID2];
       }
 
       else
       {
-        v6 = [(MAAutoAssetSelector *)self assetType];
-        v16 = [v15 initWithFormat:@"%@_ENTIRE_ASSET_TYPE", v6];
+        setAtomicInstanceUUID2 = [(MAAutoAssetSelector *)self assetType];
+        v16 = [v15 initWithFormat:@"%@_ENTIRE_ASSET_TYPE", setAtomicInstanceUUID2];
       }
 
       v10 = v16;
@@ -112,9 +112,9 @@ LABEL_10:
     }
 
     v12 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [(MAAutoAssetSelector *)self assetType];
-    v8 = [(MAAutoAssetSelector *)self assetSpecifier];
-    v10 = [v12 initWithFormat:@"%@_%@", v6, v8];
+    setAtomicInstanceUUID2 = [(MAAutoAssetSelector *)self assetType];
+    assetType = [(MAAutoAssetSelector *)self assetSpecifier];
+    v10 = [v12 initWithFormat:@"%@_%@", setAtomicInstanceUUID2, assetType];
   }
 
 LABEL_6:
@@ -122,18 +122,18 @@ LABEL_6:
   return v10;
 }
 
-- (id)initForAssetType:(id)a3 withAssetSpecifier:(id)a4
+- (id)initForAssetType:(id)type withAssetSpecifier:(id)specifier
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  specifierCopy = specifier;
   v15.receiver = self;
   v15.super_class = MAAutoAssetSelector;
   v9 = [(MAAutoAssetSelector *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetType, a3);
-    objc_storeStrong(&v10->_assetSpecifier, a4);
+    objc_storeStrong(&v9->_assetType, type);
+    objc_storeStrong(&v10->_assetSpecifier, specifier);
     assetVersion = v10->_assetVersion;
     v10->_assetVersion = 0;
 
@@ -147,23 +147,23 @@ LABEL_6:
   return v10;
 }
 
-- (id)initForAssetType:(id)a3 withAssetSpecifier:(id)a4 usingDecryptionKey:(id)a5
+- (id)initForAssetType:(id)type withAssetSpecifier:(id)specifier usingDecryptionKey:(id)key
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  specifierCopy = specifier;
+  keyCopy = key;
   v17.receiver = self;
   v17.super_class = MAAutoAssetSelector;
   v12 = [(MAAutoAssetSelector *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assetType, a3);
-    objc_storeStrong(&v13->_assetSpecifier, a4);
+    objc_storeStrong(&v12->_assetType, type);
+    objc_storeStrong(&v13->_assetSpecifier, specifier);
     assetVersion = v13->_assetVersion;
     v13->_assetVersion = 0;
 
-    objc_storeStrong(&v13->_downloadDecryptionKey, a5);
+    objc_storeStrong(&v13->_downloadDecryptionKey, key);
     setAtomicInstanceUUID = v13->_setAtomicInstanceUUID;
     v13->_setAtomicInstanceUUID = 0;
   }
@@ -171,20 +171,20 @@ LABEL_6:
   return v13;
 }
 
-- (id)initForAssetType:(id)a3 withAssetSpecifier:(id)a4 matchingAssetVersion:(id)a5
+- (id)initForAssetType:(id)type withAssetSpecifier:(id)specifier matchingAssetVersion:(id)version
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  specifierCopy = specifier;
+  versionCopy = version;
   v17.receiver = self;
   v17.super_class = MAAutoAssetSelector;
   v12 = [(MAAutoAssetSelector *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assetType, a3);
-    objc_storeStrong(&v13->_assetSpecifier, a4);
-    objc_storeStrong(&v13->_assetVersion, a5);
+    objc_storeStrong(&v12->_assetType, type);
+    objc_storeStrong(&v13->_assetSpecifier, specifier);
+    objc_storeStrong(&v13->_assetVersion, version);
     downloadDecryptionKey = v13->_downloadDecryptionKey;
     v13->_downloadDecryptionKey = 0;
 
@@ -195,16 +195,16 @@ LABEL_6:
   return v13;
 }
 
-- (id)initForAssetType:(id)a3
+- (id)initForAssetType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = MAAutoAssetSelector;
   v6 = [(MAAutoAssetSelector *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetType, a3);
+    objc_storeStrong(&v6->_assetType, type);
     assetSpecifier = v7->_assetSpecifier;
     v7->_assetSpecifier = 0;
 
@@ -221,9 +221,9 @@ LABEL_6:
   return v7;
 }
 
-- (id)initForSetAtomicInstanceUUID:(id)a3
+- (id)initForSetAtomicInstanceUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = MAAutoAssetSelector;
   v6 = [(MAAutoAssetSelector *)&v13 init];
@@ -242,28 +242,28 @@ LABEL_6:
     downloadDecryptionKey = v7->_downloadDecryptionKey;
     v7->_downloadDecryptionKey = 0;
 
-    objc_storeStrong(&v7->_setAtomicInstanceUUID, a3);
+    objc_storeStrong(&v7->_setAtomicInstanceUUID, d);
   }
 
   return v7;
 }
 
-- (id)initForAssetType:(id)a3 withAssetSpecifier:(id)a4 matchingAssetVersion:(id)a5 usingDecryptionKey:(id)a6
+- (id)initForAssetType:(id)type withAssetSpecifier:(id)specifier matchingAssetVersion:(id)version usingDecryptionKey:(id)key
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  specifierCopy = specifier;
+  versionCopy = version;
+  keyCopy = key;
   v19.receiver = self;
   v19.super_class = MAAutoAssetSelector;
   v15 = [(MAAutoAssetSelector *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_assetType, a3);
-    objc_storeStrong(&v16->_assetSpecifier, a4);
-    objc_storeStrong(&v16->_assetVersion, a5);
-    objc_storeStrong(&v16->_downloadDecryptionKey, a6);
+    objc_storeStrong(&v15->_assetType, type);
+    objc_storeStrong(&v16->_assetSpecifier, specifier);
+    objc_storeStrong(&v16->_assetVersion, version);
+    objc_storeStrong(&v16->_downloadDecryptionKey, key);
     setAtomicInstanceUUID = v16->_setAtomicInstanceUUID;
     v16->_setAtomicInstanceUUID = 0;
   }
@@ -271,54 +271,54 @@ LABEL_6:
   return v16;
 }
 
-- (id)_initForAssetType:(id)a3 withAssetSpecifier:(id)a4 matchingAssetVersion:(id)a5 usingDecryptionKey:(id)a6 setAtomicInstanceUUID:(id)a7
+- (id)_initForAssetType:(id)type withAssetSpecifier:(id)specifier matchingAssetVersion:(id)version usingDecryptionKey:(id)key setAtomicInstanceUUID:(id)d
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  specifierCopy = specifier;
+  versionCopy = version;
+  keyCopy = key;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = MAAutoAssetSelector;
   v17 = [(MAAutoAssetSelector *)&v21 init];
   p_isa = &v17->super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_assetType, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
+    objc_storeStrong(&v17->_assetType, type);
+    objc_storeStrong(p_isa + 2, specifier);
+    objc_storeStrong(p_isa + 3, version);
+    objc_storeStrong(p_isa + 4, key);
+    objc_storeStrong(p_isa + 5, d);
   }
 
   return p_isa;
 }
 
-- (MAAutoAssetSelector)initWithCoder:(id)a3
+- (MAAutoAssetSelector)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MAAutoAssetSelector;
   v5 = [(MAAutoAssetSelector *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setAtomicInstanceUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setAtomicInstanceUUID"];
     setAtomicInstanceUUID = v5->_setAtomicInstanceUUID;
     v5->_setAtomicInstanceUUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
     assetType = v5->_assetType;
     v5->_assetType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSpecifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSpecifier"];
     assetSpecifier = v5->_assetSpecifier;
     v5->_assetSpecifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetVersion"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetVersion"];
     assetVersion = v5->_assetVersion;
     v5->_assetVersion = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadDecryptionKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadDecryptionKey"];
     downloadDecryptionKey = v5->_downloadDecryptionKey;
     v5->_downloadDecryptionKey = v14;
   }
@@ -326,41 +326,41 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
-  [v4 encodeObject:v5 forKey:@"setAtomicInstanceUUID"];
+  coderCopy = coder;
+  setAtomicInstanceUUID = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+  [coderCopy encodeObject:setAtomicInstanceUUID forKey:@"setAtomicInstanceUUID"];
 
-  v6 = [(MAAutoAssetSelector *)self assetType];
-  [v4 encodeObject:v6 forKey:@"assetType"];
+  assetType = [(MAAutoAssetSelector *)self assetType];
+  [coderCopy encodeObject:assetType forKey:@"assetType"];
 
-  v7 = [(MAAutoAssetSelector *)self assetSpecifier];
-  [v4 encodeObject:v7 forKey:@"assetSpecifier"];
+  assetSpecifier = [(MAAutoAssetSelector *)self assetSpecifier];
+  [coderCopy encodeObject:assetSpecifier forKey:@"assetSpecifier"];
 
-  v8 = [(MAAutoAssetSelector *)self assetVersion];
-  [v4 encodeObject:v8 forKey:@"assetVersion"];
+  assetVersion = [(MAAutoAssetSelector *)self assetVersion];
+  [coderCopy encodeObject:assetVersion forKey:@"assetVersion"];
 
-  v9 = [(MAAutoAssetSelector *)self downloadDecryptionKey];
-  [v4 encodeObject:v9 forKey:@"downloadDecryptionKey"];
+  downloadDecryptionKey = [(MAAutoAssetSelector *)self downloadDecryptionKey];
+  [coderCopy encodeObject:downloadDecryptionKey forKey:@"downloadDecryptionKey"];
 }
 
 - (id)copy
 {
   v3 = [MAAutoAssetSelector alloc];
-  v4 = [(MAAutoAssetSelector *)self assetType];
-  v5 = [(MAAutoAssetSelector *)self assetSpecifier];
-  v6 = [(MAAutoAssetSelector *)self assetVersion];
-  v7 = [(MAAutoAssetSelector *)self downloadDecryptionKey];
-  v8 = [(MAAutoAssetSelector *)v3 initForAssetType:v4 withAssetSpecifier:v5 matchingAssetVersion:v6 usingDecryptionKey:v7];
+  assetType = [(MAAutoAssetSelector *)self assetType];
+  assetSpecifier = [(MAAutoAssetSelector *)self assetSpecifier];
+  assetVersion = [(MAAutoAssetSelector *)self assetVersion];
+  downloadDecryptionKey = [(MAAutoAssetSelector *)self downloadDecryptionKey];
+  v8 = [(MAAutoAssetSelector *)v3 initForAssetType:assetType withAssetSpecifier:assetSpecifier matchingAssetVersion:assetVersion usingDecryptionKey:downloadDecryptionKey];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -370,14 +370,14 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(MAAutoAssetSelector *)v6 setAtomicInstanceUUID];
-      if (!v7)
+      v6 = equalCopy;
+      setAtomicInstanceUUID = [(MAAutoAssetSelector *)v6 setAtomicInstanceUUID];
+      if (!setAtomicInstanceUUID)
       {
-        v11 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
-        if (v11)
+        setAtomicInstanceUUID2 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+        if (setAtomicInstanceUUID2)
         {
-          v12 = v11;
+          assetType2 = setAtomicInstanceUUID2;
 LABEL_23:
           v10 = 0;
 LABEL_52:
@@ -386,21 +386,21 @@ LABEL_52:
         }
       }
 
-      v8 = [(MAAutoAssetSelector *)v6 setAtomicInstanceUUID];
-      if (v8)
+      setAtomicInstanceUUID3 = [(MAAutoAssetSelector *)v6 setAtomicInstanceUUID];
+      if (setAtomicInstanceUUID3)
       {
-        v9 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+        setAtomicInstanceUUID4 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
 
-        if (v7)
+        if (setAtomicInstanceUUID)
         {
 
-          if (!v9)
+          if (!setAtomicInstanceUUID4)
           {
             goto LABEL_40;
           }
         }
 
-        else if (!v9)
+        else if (!setAtomicInstanceUUID4)
         {
           goto LABEL_40;
         }
@@ -409,18 +409,18 @@ LABEL_52:
       else
       {
 
-        if (v7)
+        if (setAtomicInstanceUUID)
         {
         }
       }
 
-      v13 = [(MAAutoAssetSelector *)v6 setAtomicInstanceUUID];
-      if (v13)
+      setAtomicInstanceUUID5 = [(MAAutoAssetSelector *)v6 setAtomicInstanceUUID];
+      if (setAtomicInstanceUUID5)
       {
-        v14 = v13;
-        v15 = [(MAAutoAssetSelector *)v6 setAtomicInstanceUUID];
-        v16 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
-        v17 = [v15 isEqualToString:v16];
+        v14 = setAtomicInstanceUUID5;
+        setAtomicInstanceUUID6 = [(MAAutoAssetSelector *)v6 setAtomicInstanceUUID];
+        setAtomicInstanceUUID7 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+        v17 = [setAtomicInstanceUUID6 isEqualToString:setAtomicInstanceUUID7];
 
         if (!v17)
         {
@@ -428,88 +428,88 @@ LABEL_52:
         }
       }
 
-      v18 = [(MAAutoAssetSelector *)v6 assetType];
-      if (!v18)
+      assetType = [(MAAutoAssetSelector *)v6 assetType];
+      if (!assetType)
       {
         goto LABEL_40;
       }
 
-      v12 = v18;
-      v19 = [(MAAutoAssetSelector *)v6 assetSpecifier];
-      if (!v19)
+      assetType2 = assetType;
+      assetSpecifier = [(MAAutoAssetSelector *)v6 assetSpecifier];
+      if (!assetSpecifier)
       {
         goto LABEL_23;
       }
 
-      v20 = v19;
-      v21 = [(MAAutoAssetSelector *)v6 assetVersion];
-      if (!v21)
+      assetType3 = assetSpecifier;
+      assetVersion = [(MAAutoAssetSelector *)v6 assetVersion];
+      if (!assetVersion)
       {
-        v24 = [(MAAutoAssetSelector *)self assetVersion];
-        if (v24)
+        assetVersion2 = [(MAAutoAssetSelector *)self assetVersion];
+        if (assetVersion2)
         {
-          v25 = v24;
+          assetSpecifier2 = assetVersion2;
           v10 = 0;
           goto LABEL_50;
         }
       }
 
-      v22 = [(MAAutoAssetSelector *)v6 assetVersion];
-      if (v22)
+      assetVersion3 = [(MAAutoAssetSelector *)v6 assetVersion];
+      if (assetVersion3)
       {
-        v3 = [(MAAutoAssetSelector *)self assetVersion];
-        if (!v3)
+        assetVersion4 = [(MAAutoAssetSelector *)self assetVersion];
+        if (!assetVersion4)
         {
-          LOBYTE(v23) = 1;
+          LOBYTE(downloadDecryptionKey3) = 1;
           goto LABEL_38;
         }
       }
 
-      v26 = [(MAAutoAssetSelector *)v6 downloadDecryptionKey];
-      if (!v26)
+      downloadDecryptionKey = [(MAAutoAssetSelector *)v6 downloadDecryptionKey];
+      if (!downloadDecryptionKey)
       {
-        v29 = [(MAAutoAssetSelector *)self downloadDecryptionKey];
-        if (v29)
+        downloadDecryptionKey2 = [(MAAutoAssetSelector *)self downloadDecryptionKey];
+        if (downloadDecryptionKey2)
         {
-          LOBYTE(v23) = 1;
+          LOBYTE(downloadDecryptionKey3) = 1;
           goto LABEL_37;
         }
       }
 
-      v23 = [(MAAutoAssetSelector *)v6 downloadDecryptionKey];
-      if (v23)
+      downloadDecryptionKey3 = [(MAAutoAssetSelector *)v6 downloadDecryptionKey];
+      if (downloadDecryptionKey3)
       {
-        v35 = v3;
-        v27 = [(MAAutoAssetSelector *)self downloadDecryptionKey];
-        v28 = v27 == 0;
+        v35 = assetVersion4;
+        downloadDecryptionKey4 = [(MAAutoAssetSelector *)self downloadDecryptionKey];
+        v28 = downloadDecryptionKey4 == 0;
 
-        if (v26)
+        if (downloadDecryptionKey)
         {
-          LOBYTE(v23) = v28;
-          v3 = v35;
+          LOBYTE(downloadDecryptionKey3) = v28;
+          assetVersion4 = v35;
           goto LABEL_33;
         }
 
-        v29 = 0;
-        LOBYTE(v23) = v28;
-        v3 = v35;
+        downloadDecryptionKey2 = 0;
+        LOBYTE(downloadDecryptionKey3) = v28;
+        assetVersion4 = v35;
       }
 
       else
       {
-        if (v26)
+        if (downloadDecryptionKey)
         {
 LABEL_33:
 
-          if (!v22)
+          if (!assetVersion3)
           {
 LABEL_39:
 
-            if ((v23 & 1) == 0)
+            if ((downloadDecryptionKey3 & 1) == 0)
             {
-              v12 = [(MAAutoAssetSelector *)v6 assetType];
-              v20 = [(MAAutoAssetSelector *)self assetType];
-              if (![v12 isEqualToString:v20])
+              assetType2 = [(MAAutoAssetSelector *)v6 assetType];
+              assetType3 = [(MAAutoAssetSelector *)self assetType];
+              if (![assetType2 isEqualToString:assetType3])
               {
                 v10 = 0;
 LABEL_51:
@@ -517,16 +517,16 @@ LABEL_51:
                 goto LABEL_52;
               }
 
-              v25 = [(MAAutoAssetSelector *)v6 assetSpecifier];
-              v30 = [(MAAutoAssetSelector *)self assetSpecifier];
-              if ([v25 isEqualToString:v30])
+              assetSpecifier2 = [(MAAutoAssetSelector *)v6 assetSpecifier];
+              assetSpecifier3 = [(MAAutoAssetSelector *)self assetSpecifier];
+              if ([assetSpecifier2 isEqualToString:assetSpecifier3])
               {
-                v31 = [(MAAutoAssetSelector *)v6 assetVersion];
-                if (v31)
+                assetVersion5 = [(MAAutoAssetSelector *)v6 assetVersion];
+                if (assetVersion5)
                 {
-                  v32 = [(MAAutoAssetSelector *)v6 assetVersion];
-                  v33 = [(MAAutoAssetSelector *)self assetVersion];
-                  v10 = [v32 isEqualToString:v33];
+                  assetVersion6 = [(MAAutoAssetSelector *)v6 assetVersion];
+                  assetVersion7 = [(MAAutoAssetSelector *)self assetVersion];
+                  v10 = [assetVersion6 isEqualToString:assetVersion7];
                 }
 
                 else
@@ -556,12 +556,12 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v29 = 0;
+        downloadDecryptionKey2 = 0;
       }
 
 LABEL_37:
 
-      if (!v22)
+      if (!assetVersion3)
       {
         goto LABEL_39;
       }
@@ -580,40 +580,40 @@ LABEL_54:
 - (id)copyClearingWriteOnlyFields
 {
   v3 = [MAAutoAssetSelector alloc];
-  v4 = [(MAAutoAssetSelector *)self assetType];
-  v5 = [(MAAutoAssetSelector *)self assetSpecifier];
-  v6 = [(MAAutoAssetSelector *)self assetVersion];
-  v7 = [(MAAutoAssetSelector *)v3 initForAssetType:v4 withAssetSpecifier:v5 matchingAssetVersion:v6];
+  assetType = [(MAAutoAssetSelector *)self assetType];
+  assetSpecifier = [(MAAutoAssetSelector *)self assetSpecifier];
+  assetVersion = [(MAAutoAssetSelector *)self assetVersion];
+  v7 = [(MAAutoAssetSelector *)v3 initForAssetType:assetType withAssetSpecifier:assetSpecifier matchingAssetVersion:assetVersion];
 
   return v7;
 }
 
 - (id)shortName
 {
-  v3 = [(MAAutoAssetSelector *)self assetVersion];
+  assetVersion = [(MAAutoAssetSelector *)self assetVersion];
 
-  if (v3)
+  if (assetVersion)
   {
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v5 = [(MAAutoAssetSelector *)self assetSpecifier];
-    v6 = [(MAAutoAssetSelector *)self assetVersion];
-    v7 = [v4 initWithFormat:@"%@(%@)", v5, v6];
+    assetSpecifier = [(MAAutoAssetSelector *)self assetSpecifier];
+    assetVersion2 = [(MAAutoAssetSelector *)self assetVersion];
+    v7 = [v4 initWithFormat:@"%@(%@)", assetSpecifier, assetVersion2];
   }
 
   else
   {
-    v8 = [(MAAutoAssetSelector *)self assetSpecifier];
+    assetSpecifier2 = [(MAAutoAssetSelector *)self assetSpecifier];
 
-    if (v8)
+    if (assetSpecifier2)
     {
-      v9 = [(MAAutoAssetSelector *)self assetSpecifier];
+      assetSpecifier3 = [(MAAutoAssetSelector *)self assetSpecifier];
     }
 
     else
     {
-      v10 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+      setAtomicInstanceUUID = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
 
-      if (v10)
+      if (setAtomicInstanceUUID)
       {
         [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
       }
@@ -622,10 +622,10 @@ LABEL_54:
       {
         [(MAAutoAssetSelector *)self assetType];
       }
-      v9 = ;
+      assetSpecifier3 = ;
     }
 
-    v7 = v9;
+    v7 = assetSpecifier3;
   }
 
   return v7;
@@ -634,20 +634,20 @@ LABEL_54:
 - (id)newSummaryDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
-  [v3 setSafeObject:v4 forKey:@"setAtomicInstanceUUID"];
+  setAtomicInstanceUUID = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+  [v3 setSafeObject:setAtomicInstanceUUID forKey:@"setAtomicInstanceUUID"];
 
-  v5 = [(MAAutoAssetSelector *)self assetType];
-  [v3 setSafeObject:v5 forKey:@"assetType"];
+  assetType = [(MAAutoAssetSelector *)self assetType];
+  [v3 setSafeObject:assetType forKey:@"assetType"];
 
-  v6 = [(MAAutoAssetSelector *)self assetSpecifier];
-  [v3 setSafeObject:v6 forKey:@"assetSpecifier"];
+  assetSpecifier = [(MAAutoAssetSelector *)self assetSpecifier];
+  [v3 setSafeObject:assetSpecifier forKey:@"assetSpecifier"];
 
-  v7 = [(MAAutoAssetSelector *)self assetVersion];
-  if (v7)
+  assetVersion = [(MAAutoAssetSelector *)self assetVersion];
+  if (assetVersion)
   {
-    v8 = [(MAAutoAssetSelector *)self assetVersion];
-    [v3 setSafeObject:v8 forKey:@"assetVersion"];
+    assetVersion2 = [(MAAutoAssetSelector *)self assetVersion];
+    [v3 setSafeObject:assetVersion2 forKey:@"assetVersion"];
   }
 
   else
@@ -655,8 +655,8 @@ LABEL_54:
     [v3 setSafeObject:@"ANY-VERSION" forKey:@"assetVersion"];
   }
 
-  v9 = [(MAAutoAssetSelector *)self downloadDecryptionKey];
-  if (v9)
+  downloadDecryptionKey = [(MAAutoAssetSelector *)self downloadDecryptionKey];
+  if (downloadDecryptionKey)
   {
     v10 = @"YES";
   }

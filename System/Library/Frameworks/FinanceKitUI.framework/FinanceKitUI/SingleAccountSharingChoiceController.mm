@@ -1,17 +1,17 @@
 @interface SingleAccountSharingChoiceController
-- (_TtC12FinanceKitUI36SingleAccountSharingChoiceController)initWithCoder:(id)a3;
-- (_TtC12FinanceKitUI36SingleAccountSharingChoiceController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12FinanceKitUI36SingleAccountSharingChoiceController)initWithCoder:(id)coder;
+- (_TtC12FinanceKitUI36SingleAccountSharingChoiceController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)emptySetter:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)emptySetter:(id)setter;
 - (void)menuUpdated;
-- (void)setStartDate:(id)a3;
+- (void)setStartDate:(id)date;
 - (void)updateStartSharingTime;
 @end
 
 @implementation SingleAccountSharingChoiceController
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -21,9 +21,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  SingleAccountSharingChoiceController.didMove(toParent:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  SingleAccountSharingChoiceController.didMove(toParent:)(controller);
 }
 
 - (id)specifiers
@@ -36,7 +36,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = SingleAccountSharingChoiceController.specifiers()();
 
   if (v4)
@@ -53,7 +53,7 @@
   return v5;
 }
 
-- (_TtC12FinanceKitUI36SingleAccountSharingChoiceController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12FinanceKitUI36SingleAccountSharingChoiceController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -63,10 +63,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = sub_23875EA80();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -74,13 +74,13 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = SingleAccountSharingChoiceController.init(nibName:bundle:)(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = SingleAccountSharingChoiceController.init(nibName:bundle:)(v6, name, bundle);
 
   return v9;
 }
 
-- (_TtC12FinanceKitUI36SingleAccountSharingChoiceController)initWithCoder:(id)a3
+- (_TtC12FinanceKitUI36SingleAccountSharingChoiceController)initWithCoder:(id)coder
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -90,7 +90,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = SingleAccountSharingChoiceController.init(coder:)(a3);
+  v4 = SingleAccountSharingChoiceController.init(coder:)(coder);
 
   return v4;
 }
@@ -105,11 +105,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_2386C8160();
 }
 
-- (void)emptySetter:(id)a3
+- (void)emptySetter:(id)setter
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -137,16 +137,16 @@
 
   v8 = sub_23875ED80();
   (*(*(v8 - 8) + 56))(v6, 1, 1, v8);
-  v9 = self;
+  selfCopy = self;
   v10 = sub_23875ED40();
   v11 = swift_allocObject();
   v11[2] = v10;
   v11[3] = v7;
-  v11[4] = v9;
+  v11[4] = selfCopy;
   sub_2386C3BA4(0, 0, v6, &unk_23877FC38, v11);
 }
 
-- (void)setStartDate:(id)a3
+- (void)setStartDate:(id)date
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -156,9 +156,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_2386CA15C(v5);
+  dateCopy = date;
+  selfCopy = self;
+  sub_2386CA15C(dateCopy);
 }
 
 @end

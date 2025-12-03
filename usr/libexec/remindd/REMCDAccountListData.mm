@@ -1,6 +1,6 @@
 @interface REMCDAccountListData
 + (id)cdEntityName;
-- (REMCDAccountListData)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (REMCDAccountListData)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation REMCDAccountListData
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (REMCDAccountListData)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (REMCDAccountListData)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for REMCDAccountListData();
-  return [(REMCDAccountListData *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(REMCDAccountListData *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

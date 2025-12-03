@@ -1,15 +1,15 @@
 @interface CARSoundRecognitionSetting
-+ (id)settingWithSoundType:(id)a3;
++ (id)settingWithSoundType:(id)type;
 - (id)description;
 @end
 
 @implementation CARSoundRecognitionSetting
 
-+ (id)settingWithSoundType:(id)a3
++ (id)settingWithSoundType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_opt_new();
-  [v4 setSound:v3];
+  [v4 setSound:typeCopy];
 
   return v4;
 }
@@ -19,8 +19,8 @@
   v7.receiver = self;
   v7.super_class = CARSoundRecognitionSetting;
   v3 = [(CARSoundRecognitionSetting *)&v7 description];
-  v4 = [(CARSoundRecognitionSetting *)self sound];
-  v5 = [NSString stringWithFormat:@"%@ [name: %@]", v3, v4];
+  sound = [(CARSoundRecognitionSetting *)self sound];
+  v5 = [NSString stringWithFormat:@"%@ [name: %@]", v3, sound];
 
   return v5;
 }

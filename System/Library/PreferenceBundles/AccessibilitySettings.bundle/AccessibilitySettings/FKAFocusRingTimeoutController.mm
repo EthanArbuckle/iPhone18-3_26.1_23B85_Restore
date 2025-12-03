@@ -1,8 +1,8 @@
 @interface FKAFocusRingTimeoutController
 - (BOOL)numericalPreferenceEnabled;
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation FKAFocusRingTimeoutController
@@ -10,16 +10,16 @@
 - (BOOL)numericalPreferenceEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 fullKeyboardAccessFocusRingTimeoutEnabled];
+  fullKeyboardAccessFocusRingTimeoutEnabled = [v2 fullKeyboardAccessFocusRingTimeoutEnabled];
 
-  return v3;
+  return fullKeyboardAccessFocusRingTimeoutEnabled;
 }
 
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = +[AXSettings sharedInstance];
-  [v4 setFullKeyboardAccessFocusRingTimeoutEnabled:v3];
+  [v4 setFullKeyboardAccessFocusRingTimeoutEnabled:userCopy];
 }
 
 - (double)numericalPreferenceValue
@@ -31,10 +31,10 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setFullKeyboardAccessFocusRingTimeout:a3];
+  [v4 setFullKeyboardAccessFocusRingTimeout:user];
 }
 
 @end

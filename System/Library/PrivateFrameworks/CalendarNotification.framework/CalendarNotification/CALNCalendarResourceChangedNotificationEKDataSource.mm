@@ -1,31 +1,31 @@
 @interface CALNCalendarResourceChangedNotificationEKDataSource
-- (CALNCalendarResourceChangedNotificationEKDataSource)initWithEventStoreProvider:(id)a3 inboxNotificationProvider:(id)a4 notificationReferenceProvider:(id)a5 preferences:(id)a6;
-- (id)_notificationInfoFromNotification:(id)a3;
-- (id)_notificationInfoFromNotificationReference:(id)a3;
-- (id)fetchCalendarResourceChangedNotificationSourceClientIdentifiers:(id)a3;
-- (id)fetchCalendarResourceChangedNotificationWithSourceClientIdentifier:(id)a3;
+- (CALNCalendarResourceChangedNotificationEKDataSource)initWithEventStoreProvider:(id)provider inboxNotificationProvider:(id)notificationProvider notificationReferenceProvider:(id)referenceProvider preferences:(id)preferences;
+- (id)_notificationInfoFromNotification:(id)notification;
+- (id)_notificationInfoFromNotificationReference:(id)reference;
+- (id)fetchCalendarResourceChangedNotificationSourceClientIdentifiers:(id)identifiers;
+- (id)fetchCalendarResourceChangedNotificationWithSourceClientIdentifier:(id)identifier;
 - (id)fetchCalendarResourceChangedNotifications;
-- (void)clearCalendarResourceChangedNotificationWithSourceClientIdentifier:(id)a3;
+- (void)clearCalendarResourceChangedNotificationWithSourceClientIdentifier:(id)identifier;
 @end
 
 @implementation CALNCalendarResourceChangedNotificationEKDataSource
 
-- (CALNCalendarResourceChangedNotificationEKDataSource)initWithEventStoreProvider:(id)a3 inboxNotificationProvider:(id)a4 notificationReferenceProvider:(id)a5 preferences:(id)a6
+- (CALNCalendarResourceChangedNotificationEKDataSource)initWithEventStoreProvider:(id)provider inboxNotificationProvider:(id)notificationProvider notificationReferenceProvider:(id)referenceProvider preferences:(id)preferences
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  notificationProviderCopy = notificationProvider;
+  referenceProviderCopy = referenceProvider;
+  preferencesCopy = preferences;
   v18.receiver = self;
   v18.super_class = CALNCalendarResourceChangedNotificationEKDataSource;
   v15 = [(CALNCalendarResourceChangedNotificationEKDataSource *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_eventStoreProvider, a3);
-    objc_storeStrong(&v16->_inboxNotificationProvider, a4);
-    objc_storeStrong(&v16->_notificationReferenceProvider, a5);
-    objc_storeStrong(&v16->_preferences, a6);
+    objc_storeStrong(&v15->_eventStoreProvider, provider);
+    objc_storeStrong(&v16->_inboxNotificationProvider, notificationProvider);
+    objc_storeStrong(&v16->_notificationReferenceProvider, referenceProvider);
+    objc_storeStrong(&v16->_preferences, preferences);
   }
 
   return v16;
@@ -83,32 +83,32 @@
   return v13;
 }
 
-- (id)fetchCalendarResourceChangedNotificationSourceClientIdentifiers:(id)a3
+- (id)fetchCalendarResourceChangedNotificationSourceClientIdentifiers:(id)identifiers
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CALNCalendarResourceChangedNotificationEKDataSource *)self preferences];
-  v6 = [v5 sharedCalendarNotificationsDisabled];
+  identifiersCopy = identifiers;
+  preferences = [(CALNCalendarResourceChangedNotificationEKDataSource *)self preferences];
+  sharedCalendarNotificationsDisabled = [preferences sharedCalendarNotificationsDisabled];
 
-  if (v6)
+  if (sharedCalendarNotificationsDisabled)
   {
     v28 = objc_opt_new();
   }
 
   else
   {
-    v7 = [(CALNCalendarResourceChangedNotificationEKDataSource *)self inboxNotificationProvider];
-    v8 = [v7 eventNotificationReferences];
+    inboxNotificationProvider = [(CALNCalendarResourceChangedNotificationEKDataSource *)self inboxNotificationProvider];
+    eventNotificationReferences = [inboxNotificationProvider eventNotificationReferences];
 
-    v28 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
-    v9 = [(CALNCalendarResourceChangedNotificationEKDataSource *)self eventStoreProvider];
-    v10 = [v9 eventStore];
+    v28 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(eventNotificationReferences, "count")}];
+    eventStoreProvider = [(CALNCalendarResourceChangedNotificationEKDataSource *)self eventStoreProvider];
+    eventStore = [eventStoreProvider eventStore];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v11 = v8;
+    v11 = eventNotificationReferences;
     v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v12)
     {
@@ -126,21 +126,21 @@
           v16 = *(*(&v29 + 1) + 8 * i);
           if ([v16 type] == 4)
           {
-            if (!v4 || ([v16 objectID], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "stringRepresentation"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v4, "containsObject:", v18), v18, v17, v19))
+            if (!identifiersCopy || ([v16 objectID], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "stringRepresentation"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(identifiersCopy, "containsObject:", v18), v18, v17, v19))
             {
-              v20 = [v16 notification];
-              v21 = [v20 URL];
+              notification = [v16 notification];
+              v21 = [notification URL];
               if (v21)
               {
                 v22 = v21;
-                v23 = [v20 hiddenFromNotificationCenter];
+                hiddenFromNotificationCenter = [notification hiddenFromNotificationCenter];
 
-                if ((v23 & 1) == 0)
+                if ((hiddenFromNotificationCenter & 1) == 0)
                 {
-                  v24 = [v20 resourceChangeFromEventStore:v10];
+                  v24 = [notification resourceChangeFromEventStore:eventStore];
                   if (([v24 alerted] & 1) == 0)
                   {
-                    v25 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:v20];
+                    v25 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:notification];
                     [v28 addObject:v25];
                   }
                 }
@@ -161,17 +161,17 @@
   return v28;
 }
 
-- (id)fetchCalendarResourceChangedNotificationWithSourceClientIdentifier:(id)a3
+- (id)fetchCalendarResourceChangedNotificationWithSourceClientIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(CALNCalendarResourceChangedNotificationEKDataSource *)self eventStoreProvider];
-    v6 = [v5 eventStore];
+    eventStoreProvider = [(CALNCalendarResourceChangedNotificationEKDataSource *)self eventStoreProvider];
+    eventStore = [eventStoreProvider eventStore];
 
-    v7 = [(CALNCalendarResourceChangedNotificationEKDataSource *)self notificationReferenceProvider];
-    v8 = [CALNNotificationDataSourceUtils notificationReferenceOfType:4 withSourceClientIdentifier:v4 inEventStore:v6 withNotificationReferenceProvider:v7];
+    notificationReferenceProvider = [(CALNCalendarResourceChangedNotificationEKDataSource *)self notificationReferenceProvider];
+    v8 = [CALNNotificationDataSourceUtils notificationReferenceOfType:4 withSourceClientIdentifier:identifierCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 
     if (v8)
     {
@@ -180,7 +180,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138543618;
-        v21 = v4;
+        v21 = identifierCopy;
         v22 = 2112;
         v23 = v9;
         _os_log_impl(&dword_242909000, v10, OS_LOG_TYPE_DEFAULT, "Fetched calendar resource changed notification with sourceClientIdentifier = %{public}@. Info = %@", &v20, 0x16u);
@@ -195,10 +195,10 @@
 
   else
   {
-    v6 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    eventStore = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(eventStore, OS_LOG_TYPE_ERROR))
     {
-      [(CALNCalendarResourceChangedNotificationEKDataSource *)v6 fetchCalendarResourceChangedNotificationWithSourceClientIdentifier:v11, v12, v13, v14, v15, v16, v17];
+      [(CALNCalendarResourceChangedNotificationEKDataSource *)eventStore fetchCalendarResourceChangedNotificationWithSourceClientIdentifier:v11, v12, v13, v14, v15, v16, v17];
     }
 
     v9 = 0;
@@ -209,30 +209,30 @@
   return v9;
 }
 
-- (void)clearCalendarResourceChangedNotificationWithSourceClientIdentifier:(id)a3
+- (void)clearCalendarResourceChangedNotificationWithSourceClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CALNCalendarResourceChangedNotificationEKDataSource *)self eventStoreProvider];
-  v6 = [v5 eventStore];
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNCalendarResourceChangedNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v7 = [(CALNCalendarResourceChangedNotificationEKDataSource *)self notificationReferenceProvider];
-  v8 = [CALNNotificationDataSourceUtils notificationReferenceOfType:4 withSourceClientIdentifier:v4 inEventStore:v6 withNotificationReferenceProvider:v7];
+  notificationReferenceProvider = [(CALNCalendarResourceChangedNotificationEKDataSource *)self notificationReferenceProvider];
+  v8 = [CALNNotificationDataSourceUtils notificationReferenceOfType:4 withSourceClientIdentifier:identifierCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 
   if (v8)
   {
-    v9 = [v8 notification];
-    v10 = v9;
-    if (v9)
+    notification = [v8 notification];
+    v10 = notification;
+    if (notification)
     {
       v21 = 0;
-      v11 = [v9 acknowledgeWithEventStore:v6 error:&v21];
+      v11 = [notification acknowledgeWithEventStore:eventStore error:&v21];
       v12 = v21;
       if ((v11 & 1) == 0)
       {
         v13 = +[CALNLogSubsystem calendar];
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          [(CALNCalendarResourceChangedNotificationEKDataSource *)v10 clearCalendarResourceChangedNotificationWithSourceClientIdentifier:v4, v13];
+          [(CALNCalendarResourceChangedNotificationEKDataSource *)v10 clearCalendarResourceChangedNotificationWithSourceClientIdentifier:identifierCopy, v13];
         }
       }
     }
@@ -248,12 +248,12 @@
   }
 }
 
-- (id)_notificationInfoFromNotificationReference:(id)a3
+- (id)_notificationInfoFromNotificationReference:(id)reference
 {
-  v4 = [a3 notification];
-  if (v4)
+  notification = [reference notification];
+  if (notification)
   {
-    v5 = [(CALNCalendarResourceChangedNotificationEKDataSource *)self _notificationInfoFromNotification:v4];
+    v5 = [(CALNCalendarResourceChangedNotificationEKDataSource *)self _notificationInfoFromNotification:notification];
   }
 
   else
@@ -270,26 +270,26 @@
   return v5;
 }
 
-- (id)_notificationInfoFromNotification:(id)a3
+- (id)_notificationInfoFromNotification:(id)notification
 {
-  v4 = a3;
-  v21 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:v4];
-  v20 = [CALNResourceChangedNotificationDataSourceUtils expirationDateForNotification:v4];
-  v5 = [(CALNCalendarResourceChangedNotificationEKDataSource *)self eventStoreProvider];
-  v6 = [v5 eventStore];
+  notificationCopy = notification;
+  v21 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:notificationCopy];
+  v20 = [CALNResourceChangedNotificationDataSourceUtils expirationDateForNotification:notificationCopy];
+  eventStoreProvider = [(CALNCalendarResourceChangedNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v19 = [CALNResourceChangedNotificationDataSourceUtils launchURLForNotification:v4 inEventStore:v6];
-  v7 = [v4 source];
-  v18 = [v7 isDelegate];
-  v17 = [v7 title];
-  v8 = [v7 uniqueIdentifier];
+  v19 = [CALNResourceChangedNotificationDataSourceUtils launchURLForNotification:notificationCopy inEventStore:eventStore];
+  source = [notificationCopy source];
+  isDelegate = [source isDelegate];
+  title = [source title];
+  uniqueIdentifier = [source uniqueIdentifier];
   v9 = [CALNCalendarResourceChangedNotificationInfo alloc];
-  v10 = [v4 changeType];
-  v11 = [v4 startDate];
-  v12 = [v4 allDay];
-  v13 = [v6 timeZone];
-  LOBYTE(v16) = v18;
-  v14 = [(CALNCalendarResourceChangedNotificationInfo *)v9 initWithSourceClientIdentifier:v21 calendarNotification:v4 changeType:v10 date:v11 allDay:v12 timeZone:v13 expirationDate:v20 launchURL:v19 isDelegate:v16 sourceTitle:v17 sourceIdentifier:v8];
+  changeType = [notificationCopy changeType];
+  startDate = [notificationCopy startDate];
+  allDay = [notificationCopy allDay];
+  timeZone = [eventStore timeZone];
+  LOBYTE(v16) = isDelegate;
+  v14 = [(CALNCalendarResourceChangedNotificationInfo *)v9 initWithSourceClientIdentifier:v21 calendarNotification:notificationCopy changeType:changeType date:startDate allDay:allDay timeZone:timeZone expirationDate:v20 launchURL:v19 isDelegate:v16 sourceTitle:title sourceIdentifier:uniqueIdentifier];
 
   return v14;
 }

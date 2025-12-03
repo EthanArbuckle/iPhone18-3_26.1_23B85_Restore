@@ -1,106 +1,106 @@
 @interface SKProductPageRemoteViewController
 - (SKProductPageRemoteViewControllerDelegate)delegate;
 - (void)finishImmediately;
-- (void)finishWithResult:(unint64_t)a3 completion:(id)a4;
+- (void)finishWithResult:(unint64_t)result completion:(id)completion;
 - (void)loadDidFinish;
-- (void)setCancelButtonTitle:(id)a3;
-- (void)setPreview:(id)a3;
-- (void)setPromptString:(id)a3;
-- (void)setRightBarButtonTitle:(id)a3;
-- (void)setUsageContext:(id)a3;
-- (void)setVisibleInClientWindow:(id)a3;
-- (void)setupWithClientBundleID:(id)a3 bagType:(int64_t)a4;
-- (void)userDidInteractWithProduct:(unint64_t)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)setCancelButtonTitle:(id)title;
+- (void)setPreview:(id)preview;
+- (void)setPromptString:(id)string;
+- (void)setRightBarButtonTitle:(id)title;
+- (void)setUsageContext:(id)context;
+- (void)setVisibleInClientWindow:(id)window;
+- (void)setupWithClientBundleID:(id)d bagType:(int64_t)type;
+- (void)userDidInteractWithProduct:(unint64_t)product;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SKProductPageRemoteViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(SKProductPageRemoteViewController *)self delegate];
+  errorCopy = error;
+  delegate = [(SKProductPageRemoteViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SKProductPageRemoteViewController *)self delegate];
-    [v6 productPageRemoteViewController:self didTerminateWithError:v7];
+    delegate2 = [(SKProductPageRemoteViewController *)self delegate];
+    [delegate2 productPageRemoteViewController:self didTerminateWithError:errorCopy];
   }
 }
 
-- (void)finishWithResult:(unint64_t)a3 completion:(id)a4
+- (void)finishWithResult:(unint64_t)result completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(SKProductPageRemoteViewController *)self delegate];
-  [v7 productPageRemoteViewController:self finishWithResult:a3 completion:v6];
+  completionCopy = completion;
+  delegate = [(SKProductPageRemoteViewController *)self delegate];
+  [delegate productPageRemoteViewController:self finishWithResult:result completion:completionCopy];
 }
 
 - (void)loadDidFinish
 {
-  v3 = [(SKProductPageRemoteViewController *)self delegate];
-  [v3 productPageRemoteViewControllerLoadDidFinish:self];
+  delegate = [(SKProductPageRemoteViewController *)self delegate];
+  [delegate productPageRemoteViewControllerLoadDidFinish:self];
 }
 
-- (void)userDidInteractWithProduct:(unint64_t)a3
+- (void)userDidInteractWithProduct:(unint64_t)product
 {
-  v5 = [(SKProductPageRemoteViewController *)self delegate];
-  [v5 productPageRemoteViewController:self userDidInteractWithProduct:a3];
+  delegate = [(SKProductPageRemoteViewController *)self delegate];
+  [delegate productPageRemoteViewController:self userDidInteractWithProduct:product];
 }
 
-- (void)setCancelButtonTitle:(id)a3
+- (void)setCancelButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(SKProductPageRemoteViewController *)self extensionProxy];
-  [v5 _setCancelButtonTitle:v4];
+  titleCopy = title;
+  extensionProxy = [(SKProductPageRemoteViewController *)self extensionProxy];
+  [extensionProxy _setCancelButtonTitle:titleCopy];
 }
 
-- (void)setRightBarButtonTitle:(id)a3
+- (void)setRightBarButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(SKProductPageRemoteViewController *)self extensionProxy];
-  [v5 _setRightBarButtonTitle:v4];
+  titleCopy = title;
+  extensionProxy = [(SKProductPageRemoteViewController *)self extensionProxy];
+  [extensionProxy _setRightBarButtonTitle:titleCopy];
 }
 
-- (void)setPromptString:(id)a3
+- (void)setPromptString:(id)string
 {
-  v4 = a3;
-  v5 = [(SKProductPageRemoteViewController *)self extensionProxy];
-  [v5 _setPromptString:v4];
+  stringCopy = string;
+  extensionProxy = [(SKProductPageRemoteViewController *)self extensionProxy];
+  [extensionProxy _setPromptString:stringCopy];
 }
 
-- (void)setUsageContext:(id)a3
+- (void)setUsageContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SKProductPageRemoteViewController *)self extensionProxy];
-  [v5 _setUsageContext:v4];
+  contextCopy = context;
+  extensionProxy = [(SKProductPageRemoteViewController *)self extensionProxy];
+  [extensionProxy _setUsageContext:contextCopy];
 }
 
-- (void)setVisibleInClientWindow:(id)a3
+- (void)setVisibleInClientWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(SKProductPageRemoteViewController *)self extensionProxy];
-  [v5 setVisibleInClientWindow:v4];
+  windowCopy = window;
+  extensionProxy = [(SKProductPageRemoteViewController *)self extensionProxy];
+  [extensionProxy setVisibleInClientWindow:windowCopy];
 }
 
 - (void)finishImmediately
 {
-  v3 = [(SKProductPageRemoteViewController *)self delegate];
-  [v3 productPageRemoteViewController:self finishWithResult:0 completion:0];
+  delegate = [(SKProductPageRemoteViewController *)self delegate];
+  [delegate productPageRemoteViewController:self finishWithResult:0 completion:0];
 }
 
-- (void)setPreview:(id)a3
+- (void)setPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(SKProductPageRemoteViewController *)self extensionProxy];
-  [v5 setPreview:v4];
+  previewCopy = preview;
+  extensionProxy = [(SKProductPageRemoteViewController *)self extensionProxy];
+  [extensionProxy setPreview:previewCopy];
 }
 
-- (void)setupWithClientBundleID:(id)a3 bagType:(int64_t)a4
+- (void)setupWithClientBundleID:(id)d bagType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(SKProductPageRemoteViewController *)self extensionProxy];
-  [v7 _setupWithClientBundleID:v6 bagType:a4];
+  dCopy = d;
+  extensionProxy = [(SKProductPageRemoteViewController *)self extensionProxy];
+  [extensionProxy _setupWithClientBundleID:dCopy bagType:type];
 }
 
 - (SKProductPageRemoteViewControllerDelegate)delegate

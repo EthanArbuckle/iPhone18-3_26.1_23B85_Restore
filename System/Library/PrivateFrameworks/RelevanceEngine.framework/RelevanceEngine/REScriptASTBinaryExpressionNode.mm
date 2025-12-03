@@ -1,30 +1,30 @@
 @interface REScriptASTBinaryExpressionNode
-+ (id)parseBuffer:(id)a3 error:(id *)a4;
-- (REScriptASTBinaryExpressionNode)initWithOperator:(id)a3 expression:(id)a4;
++ (id)parseBuffer:(id)buffer error:(id *)error;
+- (REScriptASTBinaryExpressionNode)initWithOperator:(id)operator expression:(id)expression;
 @end
 
 @implementation REScriptASTBinaryExpressionNode
 
-+ (id)parseBuffer:(id)a3 error:(id *)a4
++ (id)parseBuffer:(id)buffer error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 currentToken];
-  v7 = [v5 currentToken];
-  v8 = [v7 type];
+  bufferCopy = buffer;
+  currentToken = [bufferCopy currentToken];
+  currentToken2 = [bufferCopy currentToken];
+  type = [currentToken2 type];
 
-  if (v8 > 0x2D || ((1 << v8) & 0x3F0070180000) == 0)
+  if (type > 0x2D || ((1 << type) & 0x3F0070180000) == 0)
   {
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x277CCACA8];
-      v15 = [v6 value];
-      v16 = [v14 stringWithFormat:@"Unexpected token %@ found. Expecting operator token.", v15];
+      value = [currentToken value];
+      v16 = [v14 stringWithFormat:@"Unexpected token %@ found. Expecting operator token.", value];
 
       v18 = @"REErrorTokenKey";
-      v19[0] = v6;
+      v19[0] = currentToken;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      *a4 = RECreateErrorWithCodeMessageAndUseInfo(204, v16, v17);
+      *error = RECreateErrorWithCodeMessageAndUseInfo(204, v16, v17);
     }
 
     v11 = 0;
@@ -32,18 +32,18 @@
 
   else
   {
-    [v5 push];
-    [v5 next];
-    v10 = [REScriptASTPrefixExpressionNode parseBuffer:v5 error:a4];
+    [bufferCopy push];
+    [bufferCopy next];
+    v10 = [REScriptASTPrefixExpressionNode parseBuffer:bufferCopy error:error];
     if (v10)
     {
-      [v5 consume];
-      v11 = [[REScriptASTBinaryExpressionNode alloc] initWithOperator:v6 expression:v10];
+      [bufferCopy consume];
+      v11 = [[REScriptASTBinaryExpressionNode alloc] initWithOperator:currentToken expression:v10];
     }
 
     else
     {
-      [v5 pop];
+      [bufferCopy pop];
       v11 = 0;
     }
   }
@@ -53,18 +53,18 @@
   return v11;
 }
 
-- (REScriptASTBinaryExpressionNode)initWithOperator:(id)a3 expression:(id)a4
+- (REScriptASTBinaryExpressionNode)initWithOperator:(id)operator expression:(id)expression
 {
-  v7 = a3;
-  v8 = a4;
+  operatorCopy = operator;
+  expressionCopy = expression;
   v12.receiver = self;
   v12.super_class = REScriptASTBinaryExpressionNode;
-  v9 = [(REScriptASTNode *)&v12 initWithToken:v7];
+  v9 = [(REScriptASTNode *)&v12 initWithToken:operatorCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_binaryOperator, a3);
-    objc_storeStrong(&v10->_expression, a4);
+    objc_storeStrong(&v9->_binaryOperator, operator);
+    objc_storeStrong(&v10->_expression, expression);
   }
 
   return v10;

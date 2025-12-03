@@ -1,5 +1,5 @@
 @interface _UIPlatterTransformViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_axCachedPlatterElements;
 - (id)accessibilityElements;
@@ -8,14 +8,14 @@
 - (uint64_t)_accessibilityIsExpandedTransformView;
 - (uint64_t)_accessibilitySetIsExpandedTransformView:(uint64_t)result;
 - (uint64_t)_axShowsSourceViewDirectly;
-- (void)_axSetCachedPlatterElements:(uint64_t)a1;
+- (void)_axSetCachedPlatterElements:(uint64_t)elements;
 @end
 
 @implementation _UIPlatterTransformViewAccessibility
 
 - (uint64_t)_accessibilityIsExpandedTransformView
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedBool() & 1;
   }
@@ -38,14 +38,14 @@
   return result;
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIPlatterTransformView";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
   [location[0] validateClass:v3 hasInstanceMethod:@"shouldTakeOwnershipOfSourceView" withFullSignature:{"B", 0}];
@@ -54,9 +54,9 @@
 
 - (id)_axCachedPlatterElements
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &___UIPlatterTransformViewAccessibility___axCachedPlatterElements);
+    v2 = objc_getAssociatedObject(self, &___UIPlatterTransformViewAccessibility___axCachedPlatterElements);
   }
 
   else
@@ -67,12 +67,12 @@
   return v2;
 }
 
-- (void)_axSetCachedPlatterElements:(uint64_t)a1
+- (void)_axSetCachedPlatterElements:(uint64_t)elements
 {
-  v3 = a1;
+  elementsCopy = elements;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (elementsCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -82,23 +82,23 @@
 
 - (int64_t)accessibilityContainerType
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (([(_UIPlatterTransformViewAccessibility *)self _accessibilityIsExpandedTransformView]& 1) != 0)
   {
     return 4;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = _UIPlatterTransformViewAccessibility;
   return [(_UIPlatterTransformViewAccessibility *)&v3 accessibilityContainerType];
 }
 
 - (uint64_t)_axShowsSourceViewDirectly
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 safeBoolForKey:@"shouldTakeOwnershipOfSourceView"] & 1;
+    v2 = [self safeBoolForKey:@"shouldTakeOwnershipOfSourceView"] & 1;
   }
 
   else
@@ -111,28 +111,28 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v5 = 0;
   LOBYTE(v3) = 0;
   if (AXRequestingClient() == 4)
   {
-    v6 = [MEMORY[0x29EDBDFA0] sharedInstance];
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
     v5 = 1;
     LOBYTE(v3) = 0;
-    if (([v6 assistiveTouchScannerSpeechEnabled] & 1) == 0)
+    if (([mEMORY[0x29EDBDFA0] assistiveTouchScannerSpeechEnabled] & 1) == 0)
     {
       LOBYTE(v3) = 0;
-      if (([(_UIPlatterTransformViewAccessibility *)v8 _accessibilityIsExpandedTransformView]& 1) != 0)
+      if (([(_UIPlatterTransformViewAccessibility *)selfCopy _accessibilityIsExpandedTransformView]& 1) != 0)
       {
-        v3 = [(_UIPlatterTransformViewAccessibility *)v8 _axShowsSourceViewDirectly]^ 1;
+        v3 = [(_UIPlatterTransformViewAccessibility *)selfCopy _axShowsSourceViewDirectly]^ 1;
       }
     }
   }
 
   if (v5)
   {
-    MEMORY[0x29EDC9740](v6);
+    MEMORY[0x29EDC9740](mEMORY[0x29EDBDFA0]);
   }
 
   if (v3)
@@ -140,28 +140,28 @@
     return 1;
   }
 
-  v4.receiver = v8;
+  v4.receiver = selfCopy;
   v4.super_class = _UIPlatterTransformViewAccessibility;
   return [(_UIPlatterTransformViewAccessibility *)&v4 isAccessibilityElement];
 }
 
 - (id)accessibilityLabel
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   if (([(_UIPlatterTransformViewAccessibility *)self _accessibilityIsExpandedTransformView]& 1) != 0)
   {
-    v7 = accessibilityLocalizedString(@"context.menu.preview");
+    accessibilityLabel = accessibilityLocalizedString(@"context.menu.preview");
   }
 
   else
   {
-    v4.receiver = v6;
+    v4.receiver = selfCopy;
     v4.super_class = _UIPlatterTransformViewAccessibility;
-    v7 = [(_UIPlatterTransformViewAccessibility *)&v4 accessibilityLabel];
+    accessibilityLabel = [(_UIPlatterTransformViewAccessibility *)&v4 accessibilityLabel];
   }
 
-  v2 = v7;
+  v2 = accessibilityLabel;
 
   return v2;
 }
@@ -169,41 +169,41 @@
 - (id)accessibilityElements
 {
   v58 = *MEMORY[0x29EDCA608];
-  v55 = self;
+  selfCopy = self;
   v54[1] = a2;
-  if (([(_UIPlatterTransformViewAccessibility *)self _accessibilityIsExpandedTransformView]& 1) == 0 || ([(_UIPlatterTransformViewAccessibility *)v55 _axShowsSourceViewDirectly]& 1) != 0)
+  if (([(_UIPlatterTransformViewAccessibility *)self _accessibilityIsExpandedTransformView]& 1) == 0 || ([(_UIPlatterTransformViewAccessibility *)selfCopy _axShowsSourceViewDirectly]& 1) != 0)
   {
-    v25.receiver = v55;
+    v25.receiver = selfCopy;
     v25.super_class = _UIPlatterTransformViewAccessibility;
-    v56 = [(_UIPlatterTransformViewAccessibility *)&v25 accessibilityElements];
+    accessibilityElements = [(_UIPlatterTransformViewAccessibility *)&v25 accessibilityElements];
   }
 
   else
   {
-    v54[0] = [(_UIPlatterTransformViewAccessibility *)v55 safeUIViewForKey:@"sourceView"];
-    v53 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%p-sourceViewElements", v55];
-    v52 = [*MEMORY[0x29EDC7300] objectForKeyedSubscript:v53];
+    v54[0] = [(_UIPlatterTransformViewAccessibility *)selfCopy safeUIViewForKey:@"sourceView"];
+    selfCopy = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%p-sourceViewElements", selfCopy];
+    v52 = [*MEMORY[0x29EDC7300] objectForKeyedSubscript:selfCopy];
     if (!v52)
     {
-      v51 = [MEMORY[0x29EDB8DE8] array];
-      v50 = [MEMORY[0x29EDC7328] options];
+      array = [MEMORY[0x29EDB8DE8] array];
+      options = [MEMORY[0x29EDC7328] options];
       v44 = MEMORY[0x29EDCA5F8];
       v45 = -1073741824;
       v46 = 0;
       v47 = __61___UIPlatterTransformViewAccessibility_accessibilityElements__block_invoke;
       v48 = &unk_29F30C818;
       v49 = MEMORY[0x29EDC9748](v54[0]);
-      [v50 setLeafNodePredicate:&v44];
+      [options setLeafNodePredicate:&v44];
       v22 = MEMORY[0x29EDC8008];
-      v43 = [*MEMORY[0x29EDC8008] _accessibilityContainerToStopVisibilityCheck];
-      v42 = [*v22 _accessibilityShouldIgnoreOpaqueElementProviders];
+      _accessibilityContainerToStopVisibilityCheck = [*MEMORY[0x29EDC8008] _accessibilityContainerToStopVisibilityCheck];
+      _accessibilityShouldIgnoreOpaqueElementProviders = [*v22 _accessibilityShouldIgnoreOpaqueElementProviders];
       [*v22 _accessibilitySetShouldIgnoreOpaqueElementProviders:1];
       [*v22 _accessibilitySetContainerToStopVisibilityCheck:v54[0]];
-      v41 = [v54[0] _accessibilityLeafDescendantsWithOptions:v50];
-      [*v22 _accessibilitySetShouldIgnoreOpaqueElementProviders:v42 & 1];
-      [*v22 _accessibilitySetContainerToStopVisibilityCheck:v43];
-      v40 = [(_UIPlatterTransformViewAccessibility *)v55 _axCachedPlatterElements];
-      v39 = [MEMORY[0x29EDB8E00] dictionary];
+      v41 = [v54[0] _accessibilityLeafDescendantsWithOptions:options];
+      [*v22 _accessibilitySetShouldIgnoreOpaqueElementProviders:_accessibilityShouldIgnoreOpaqueElementProviders & 1];
+      [*v22 _accessibilitySetContainerToStopVisibilityCheck:_accessibilityContainerToStopVisibilityCheck];
+      _axCachedPlatterElements = [(_UIPlatterTransformViewAccessibility *)selfCopy _axCachedPlatterElements];
+      dictionary = [MEMORY[0x29EDB8E00] dictionary];
       memset(__b, 0, sizeof(__b));
       obj = MEMORY[0x29EDC9748](v41);
       v24 = [obj countByEnumeratingWithState:__b objects:v57 count:16];
@@ -222,13 +222,13 @@
 
           v38 = *(__b[1] + 8 * v20);
           v36 = [MEMORY[0x29EDBA168] valueWithPointer:v38];
-          location = [v40 objectForKeyedSubscript:v36];
+          location = [_axCachedPlatterElements objectForKeyedSubscript:v36];
           if (!location)
           {
             if ([v38 _accessibilityIsRemoteElement])
             {
               v2 = objc_alloc(MEMORY[0x29EDC78F8]);
-              v3 = [v2 initWithAccessibilityContainer:v55];
+              v3 = [v2 initWithAccessibilityContainer:selfCopy];
               v4 = location;
               location = v3;
               *&v5 = MEMORY[0x29EDC9740](v4).n128_u64[0];
@@ -254,7 +254,7 @@
             else
             {
               v14 = [AXPlatterContentMockElement alloc];
-              v26 = [(AXPlatterContentMockElement *)v14 initWithAccessibilityContainer:v55];
+              v26 = [(AXPlatterContentMockElement *)v14 initWithAccessibilityContainer:selfCopy];
               [(AXPlatterContentMockElement *)v26 setSourceElement:v38];
               [(AXPlatterContentMockElement *)v26 setSourceView:?];
               objc_storeStrong(&location, v26);
@@ -262,8 +262,8 @@
             }
           }
 
-          [v51 addObject:location];
-          [v39 setObject:location forKeyedSubscript:v36];
+          [array addObject:location];
+          [dictionary setObject:location forKeyedSubscript:v36];
           objc_storeStrong(&location, 0);
           objc_storeStrong(&v36, 0);
           ++v20;
@@ -280,25 +280,25 @@
       }
 
       MEMORY[0x29EDC9740](obj);
-      [(_UIPlatterTransformViewAccessibility *)v55 _axSetCachedPlatterElements:v39];
-      objc_storeStrong(&v52, v51);
-      [*MEMORY[0x29EDC7300] setObject:v52 forKeyedSubscript:v53];
-      objc_storeStrong(&v39, 0);
-      objc_storeStrong(&v40, 0);
+      [(_UIPlatterTransformViewAccessibility *)selfCopy _axSetCachedPlatterElements:dictionary];
+      objc_storeStrong(&v52, array);
+      [*MEMORY[0x29EDC7300] setObject:v52 forKeyedSubscript:selfCopy];
+      objc_storeStrong(&dictionary, 0);
+      objc_storeStrong(&_axCachedPlatterElements, 0);
       objc_storeStrong(&v41, 0);
-      objc_storeStrong(&v43, 0);
+      objc_storeStrong(&_accessibilityContainerToStopVisibilityCheck, 0);
       objc_storeStrong(&v49, 0);
-      objc_storeStrong(&v50, 0);
-      objc_storeStrong(&v51, 0);
+      objc_storeStrong(&options, 0);
+      objc_storeStrong(&array, 0);
     }
 
-    v56 = MEMORY[0x29EDC9748](v52);
+    accessibilityElements = MEMORY[0x29EDC9748](v52);
     objc_storeStrong(&v52, 0);
-    objc_storeStrong(&v53, 0);
+    objc_storeStrong(&selfCopy, 0);
     objc_storeStrong(v54, 0);
   }
 
-  v15 = v56;
+  v15 = accessibilityElements;
 
   return v15;
 }

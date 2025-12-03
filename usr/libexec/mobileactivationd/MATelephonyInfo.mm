@@ -1,28 +1,28 @@
 @interface MATelephonyInfo
 + (id)sharedInstance;
-- (BOOL)bootstrapDataServiceAvailableWithError:(id *)a3;
-- (BOOL)setCellularBootstrapAssertion:(BOOL)a3 withError:(id *)a4;
-- (BOOL)setOTAActivationAssertion:(BOOL)a3 withError:(id *)a4;
+- (BOOL)bootstrapDataServiceAvailableWithError:(id *)error;
+- (BOOL)setCellularBootstrapAssertion:(BOOL)assertion withError:(id *)error;
+- (BOOL)setOTAActivationAssertion:(BOOL)assertion withError:(id *)error;
 - (MATelephonyInfo)init;
-- (id)_copyConnectionAvailabilityWithSlotID:(int64_t)a3 error:(id *)a4;
-- (id)_copyPhoneNumberWithSlotID:(int64_t)a3 error:(id *)a4;
-- (id)_copySIMStatusWithSlotID:(int64_t)a3 error:(id *)a4;
-- (id)copyConnectionAvailabilityWithSlotID:(int64_t)a3 error:(id *)a4;
-- (id)copyPhoneNumberWithSlotID:(int64_t)a3 error:(id *)a4;
-- (id)copySIMStatusWithSlotID:(int64_t)a3 error:(id *)a4;
-- (void)connectionAvailability:(id)a3 availableConnections:(id)a4;
+- (id)_copyConnectionAvailabilityWithSlotID:(int64_t)d error:(id *)error;
+- (id)_copyPhoneNumberWithSlotID:(int64_t)d error:(id *)error;
+- (id)_copySIMStatusWithSlotID:(int64_t)d error:(id *)error;
+- (id)copyConnectionAvailabilityWithSlotID:(int64_t)d error:(id *)error;
+- (id)copyPhoneNumberWithSlotID:(int64_t)d error:(id *)error;
+- (id)copySIMStatusWithSlotID:(int64_t)d error:(id *)error;
+- (void)connectionAvailability:(id)availability availableConnections:(id)connections;
 - (void)dealloc;
-- (void)phoneNumberChanged:(id)a3;
-- (void)setOtaActivationAssertion:(void *)a3;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (void)phoneNumberChanged:(id)changed;
+- (void)setOtaActivationAssertion:(void *)assertion;
+- (void)simStatusDidChange:(id)change status:(id)status;
 @end
 
 @implementation MATelephonyInfo
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!sharedInstance_telephony)
   {
     v3 = objc_alloc_init(MATelephonyInfo);
@@ -30,7 +30,7 @@
     sharedInstance_telephony = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = sharedInstance_telephony;
 
@@ -189,9 +189,9 @@ LABEL_22:
   [(MATelephonyInfo *)&v4 dealloc];
 }
 
-- (BOOL)setCellularBootstrapAssertion:(BOOL)a3 withError:(id *)a4
+- (BOOL)setCellularBootstrapAssertion:(BOOL)assertion withError:(id *)error
 {
-  v5 = a3;
+  assertionCopy = assertion;
   if (objc_opt_class())
   {
     v6 = +[CTCellularPlanManager sharedManager];
@@ -199,7 +199,7 @@ LABEL_22:
     {
       v7 = v6;
       v8 = +[CTCellularPlanManager sharedManager];
-      [v8 setUserInPurchaseFlow:v5];
+      [v8 setUserInPurchaseFlow:assertionCopy];
 
       v9 = 0;
       v10 = 1;
@@ -215,11 +215,11 @@ LABEL_22:
   }
 
   v9 = MobileActivationError;
-  if (a4)
+  if (error)
   {
     v9 = v9;
     v10 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -232,7 +232,7 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)setOTAActivationAssertion:(BOOL)a3 withError:(id *)a4
+- (BOOL)setOTAActivationAssertion:(BOOL)assertion withError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -244,21 +244,21 @@ LABEL_9:
   v15 = __Block_byref_object_copy__7;
   v16 = __Block_byref_object_dispose__7;
   v17 = 0;
-  v7 = [(MATelephonyInfo *)self queue];
+  queue = [(MATelephonyInfo *)self queue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3254779904;
   v10[2] = __55__MATelephonyInfo_setOTAActivationAssertion_withError___block_invoke;
   v10[3] = &__block_descriptor_57_e8_32s40r48r_e5_v8__0l;
-  v11 = a3;
+  assertionCopy = assertion;
   v10[4] = self;
   v10[5] = &v18;
   v10[6] = &v12;
-  dispatch_sync(v7, v10);
+  dispatch_sync(queue, v10);
 
   v8 = *(v19 + 24);
-  if (a4 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a4 = v13[5];
+    *error = v13[5];
     v8 = *(v19 + 24);
   }
 
@@ -315,7 +315,7 @@ LABEL_8:
   }
 }
 
-- (void)setOtaActivationAssertion:(void *)a3
+- (void)setOtaActivationAssertion:(void *)assertion
 {
   otaActivationAssertion = self->_otaActivationAssertion;
   if (otaActivationAssertion)
@@ -323,20 +323,20 @@ LABEL_8:
     CFRelease(otaActivationAssertion);
   }
 
-  self->_otaActivationAssertion = a3;
+  self->_otaActivationAssertion = assertion;
 }
 
-- (BOOL)bootstrapDataServiceAvailableWithError:(id *)a3
+- (BOOL)bootstrapDataServiceAvailableWithError:(id *)error
 {
-  v4 = [(MATelephonyInfo *)self telephonyClient];
+  telephonyClient = [(MATelephonyInfo *)self telephonyClient];
   v11 = 0;
-  v5 = [(CoreTelephonyClient *)v4 usingBootstrapDataService:&v11];
+  v5 = [(CoreTelephonyClient *)telephonyClient usingBootstrapDataService:&v11];
   v6 = v11;
 
   if (v5)
   {
-    v7 = [v5 BOOLValue];
-    if (!a3)
+    bOOLValue = [v5 BOOLValue];
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -346,26 +346,26 @@ LABEL_8:
   {
     v8 = createMobileActivationError("[MATelephonyInfo bootstrapDataServiceAvailableWithError:]", 240, @"com.apple.MobileActivation.ErrorDomain", -1, v6, @"Failed to query bootstrap data service state.");
 
-    v7 = 0;
+    bOOLValue = 0;
     v6 = v8;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
   }
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v9 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
 LABEL_7:
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)copyPhoneNumberWithSlotID:(int64_t)a3 error:(id *)a4
+- (id)copyPhoneNumberWithSlotID:(int64_t)d error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -379,12 +379,12 @@ LABEL_7:
   v19 = __Block_byref_object_copy__7;
   v20 = __Block_byref_object_dispose__7;
   v21 = 0;
-  v7 = [(MATelephonyInfo *)self queue];
-  dispatch_assert_queue_not_V2(v7);
+  queue = [(MATelephonyInfo *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  if ((a3 - 3) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((d - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
-    v11 = [(MATelephonyInfo *)self queue];
+    queue2 = [(MATelephonyInfo *)self queue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3254779904;
     v15[2] = __51__MATelephonyInfo_copyPhoneNumberWithSlotID_error___block_invoke;
@@ -392,9 +392,9 @@ LABEL_7:
     v15[4] = self;
     v15[5] = &v16;
     v15[6] = &v22;
-    v15[7] = a3;
-    dispatch_sync(v11, v15);
-    v10 = v11;
+    v15[7] = d;
+    dispatch_sync(queue2, v15);
+    v10 = queue2;
   }
 
   else
@@ -406,9 +406,9 @@ LABEL_7:
   }
 
   v12 = v23[5];
-  if (a4 && !v12)
+  if (error && !v12)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v12 = v23[5];
   }
 
@@ -486,7 +486,7 @@ void __51__MATelephonyInfo_copyPhoneNumberWithSlotID_error___block_invoke(uint64
   *(v14 + 40) = v9;
 }
 
-- (id)copySIMStatusWithSlotID:(int64_t)a3 error:(id *)a4
+- (id)copySIMStatusWithSlotID:(int64_t)d error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -500,12 +500,12 @@ void __51__MATelephonyInfo_copyPhoneNumberWithSlotID_error___block_invoke(uint64
   v19 = __Block_byref_object_copy__7;
   v20 = __Block_byref_object_dispose__7;
   v21 = 0;
-  v7 = [(MATelephonyInfo *)self queue];
-  dispatch_assert_queue_not_V2(v7);
+  queue = [(MATelephonyInfo *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  if ((a3 - 3) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((d - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
-    v11 = [(MATelephonyInfo *)self queue];
+    queue2 = [(MATelephonyInfo *)self queue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3254779904;
     v15[2] = __49__MATelephonyInfo_copySIMStatusWithSlotID_error___block_invoke;
@@ -513,9 +513,9 @@ void __51__MATelephonyInfo_copyPhoneNumberWithSlotID_error___block_invoke(uint64
     v15[4] = self;
     v15[5] = &v16;
     v15[6] = &v22;
-    v15[7] = a3;
-    dispatch_sync(v11, v15);
-    v10 = v11;
+    v15[7] = d;
+    dispatch_sync(queue2, v15);
+    v10 = queue2;
   }
 
   else
@@ -527,9 +527,9 @@ void __51__MATelephonyInfo_copyPhoneNumberWithSlotID_error___block_invoke(uint64
   }
 
   v12 = v23[5];
-  if (a4 && !v12)
+  if (error && !v12)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v12 = v23[5];
   }
 
@@ -607,7 +607,7 @@ void __49__MATelephonyInfo_copySIMStatusWithSlotID_error___block_invoke(uint64_t
   *(v14 + 40) = v9;
 }
 
-- (id)copyConnectionAvailabilityWithSlotID:(int64_t)a3 error:(id *)a4
+- (id)copyConnectionAvailabilityWithSlotID:(int64_t)d error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -621,12 +621,12 @@ void __49__MATelephonyInfo_copySIMStatusWithSlotID_error___block_invoke(uint64_t
   v19 = __Block_byref_object_copy__7;
   v20 = __Block_byref_object_dispose__7;
   v21 = 0;
-  v7 = [(MATelephonyInfo *)self queue];
-  dispatch_assert_queue_not_V2(v7);
+  queue = [(MATelephonyInfo *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  if ((a3 - 3) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((d - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
-    v11 = [(MATelephonyInfo *)self queue];
+    queue2 = [(MATelephonyInfo *)self queue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3254779904;
     v15[2] = __62__MATelephonyInfo_copyConnectionAvailabilityWithSlotID_error___block_invoke;
@@ -634,9 +634,9 @@ void __49__MATelephonyInfo_copySIMStatusWithSlotID_error___block_invoke(uint64_t
     v15[4] = self;
     v15[5] = &v16;
     v15[6] = &v22;
-    v15[7] = a3;
-    dispatch_sync(v11, v15);
-    v10 = v11;
+    v15[7] = d;
+    dispatch_sync(queue2, v15);
+    v10 = queue2;
   }
 
   else
@@ -648,9 +648,9 @@ void __49__MATelephonyInfo_copySIMStatusWithSlotID_error___block_invoke(uint64_t
   }
 
   v12 = v23[5];
-  if (a4 && !v12)
+  if (error && !v12)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v12 = v23[5];
   }
 
@@ -728,14 +728,14 @@ void __62__MATelephonyInfo_copyConnectionAvailabilityWithSlotID_error___block_in
   *(v14 + 40) = v9;
 }
 
-- (id)_copySIMStatusWithSlotID:(int64_t)a3 error:(id *)a4
+- (id)_copySIMStatusWithSlotID:(int64_t)d error:(id *)error
 {
-  if ((a3 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((d - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v5 = createMobileActivationError("[MATelephonyInfo _copySIMStatusWithSlotID:error:]", 388, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Invalid input.");
     v6 = 0;
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -748,7 +748,7 @@ void __62__MATelephonyInfo_copyConnectionAvailabilityWithSlotID_error___block_in
   {
     v5 = createMobileActivationError("[MATelephonyInfo _copySIMStatusWithSlotID:error:]", 394, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to create semaphore.");
     v6 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -756,11 +756,11 @@ void __62__MATelephonyInfo_copyConnectionAvailabilityWithSlotID_error___block_in
     goto LABEL_11;
   }
 
-  v6 = [CTXPCServiceSubscriptionContext contextWithSlot:a3];
+  v6 = [CTXPCServiceSubscriptionContext contextWithSlot:d];
   if (!v6)
   {
-    v5 = createMobileActivationError("[MATelephonyInfo _copySIMStatusWithSlotID:error:]", 400, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to retrieve context for slot ID %ld.", a3);
-    if (!a4)
+    v5 = createMobileActivationError("[MATelephonyInfo _copySIMStatusWithSlotID:error:]", 400, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to retrieve context for slot ID %ld.", d);
+    if (!error)
     {
 LABEL_13:
       v12 = 0;
@@ -770,13 +770,13 @@ LABEL_13:
 LABEL_11:
     v13 = v5;
     v12 = 0;
-    *a4 = v5;
+    *error = v5;
     goto LABEL_14;
   }
 
-  v10 = [(MATelephonyInfo *)self telephonyClient];
+  telephonyClient = [(MATelephonyInfo *)self telephonyClient];
   v16 = 0;
-  v11 = [(CoreTelephonyClient *)v10 getSIMStatus:v6 error:&v16];
+  v11 = [(CoreTelephonyClient *)telephonyClient getSIMStatus:v6 error:&v16];
   v5 = v16;
 
   if (!v11)
@@ -784,7 +784,7 @@ LABEL_11:
     v14 = createMobileActivationError("[MATelephonyInfo _copySIMStatusWithSlotID:error:]", 406, @"com.apple.MobileActivation.ErrorDomain", -1, v5, @"Failed to retrieve SIM status for SIM slot ID %d.", [(CTXPCServiceSubscriptionContext *)v6 slotID]);
 
     v5 = v14;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -798,12 +798,12 @@ LABEL_14:
   return v12;
 }
 
-- (id)_copyPhoneNumberWithSlotID:(int64_t)a3 error:(id *)a4
+- (id)_copyPhoneNumberWithSlotID:(int64_t)d error:(id *)error
 {
-  if ((a3 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((d - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v5 = createMobileActivationError("[MATelephonyInfo _copyPhoneNumberWithSlotID:error:]", 429, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Invalid input.");
-    v6 = 0;
+    number = 0;
     v7 = 0;
     goto LABEL_10;
   }
@@ -811,11 +811,11 @@ LABEL_14:
   v7 = [CTXPCServiceSubscriptionContext contextWithSlot:?];
   if (!v7)
   {
-    v5 = createMobileActivationError("[MATelephonyInfo _copyPhoneNumberWithSlotID:error:]", 435, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to retrieve context for slot ID %ld.", a3);
-    v6 = 0;
+    v5 = createMobileActivationError("[MATelephonyInfo _copyPhoneNumberWithSlotID:error:]", 435, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to retrieve context for slot ID %ld.", d);
+    number = 0;
 LABEL_10:
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -823,17 +823,17 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(MATelephonyInfo *)self telephonyClient];
+  telephonyClient = [(MATelephonyInfo *)self telephonyClient];
   v16 = 0;
-  v11 = [(CoreTelephonyClient *)v10 getPhoneNumber:v7 error:&v16];
+  v11 = [(CoreTelephonyClient *)telephonyClient getPhoneNumber:v7 error:&v16];
   v5 = v16;
 
   if (v11)
   {
-    if (![v11 isPresent] || (v6 = objc_msgSend(v11, "number"), v6, v6))
+    if (![v11 isPresent] || (number = objc_msgSend(v11, "number"), number, number))
     {
-      v6 = [v11 number];
-      if (!a4)
+      number = [v11 number];
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -848,31 +848,31 @@ LABEL_10:
   {
     v15 = createMobileActivationError("[MATelephonyInfo _copyPhoneNumberWithSlotID:error:]", 441, @"com.apple.MobileActivation.ErrorDomain", -1, v5, @"Failed to retrieve phone number information for subscription context.");
 
-    v6 = 0;
+    number = 0;
   }
 
   v5 = v15;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_13;
   }
 
 LABEL_11:
-  if (!v6)
+  if (!number)
   {
     v12 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
 LABEL_13:
-  v13 = v6;
+  v13 = number;
 
   return v13;
 }
 
-- (id)_copyConnectionAvailabilityWithSlotID:(int64_t)a3 error:(id *)a4
+- (id)_copyConnectionAvailabilityWithSlotID:(int64_t)d error:(id *)error
 {
-  if ((a3 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((d - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v5 = createMobileActivationError("[MATelephonyInfo _copyConnectionAvailabilityWithSlotID:error:]", 469, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Invalid input.");
     v6 = 0;
@@ -883,11 +883,11 @@ LABEL_13:
   v7 = [CTXPCServiceSubscriptionContext contextWithSlot:?];
   if (!v7)
   {
-    v5 = createMobileActivationError("[MATelephonyInfo _copyConnectionAvailabilityWithSlotID:error:]", 475, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to retrieve context for slot ID %ld.", a3);
+    v5 = createMobileActivationError("[MATelephonyInfo _copyConnectionAvailabilityWithSlotID:error:]", 475, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to retrieve context for slot ID %ld.", d);
     v6 = 0;
 LABEL_8:
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -895,15 +895,15 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = [(MATelephonyInfo *)self telephonyClient];
+  telephonyClient = [(MATelephonyInfo *)self telephonyClient];
   v15 = 0;
-  v6 = [(CoreTelephonyClient *)v10 getConnectionAvailability:v7 connectionType:9 error:&v15];
+  v6 = [(CoreTelephonyClient *)telephonyClient getConnectionAvailability:v7 connectionType:9 error:&v15];
   v5 = v15;
 
   if (v6)
   {
     v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 available]);
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -916,7 +916,7 @@ LABEL_8:
     v6 = 0;
     v11 = 0;
     v5 = v14;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -926,7 +926,7 @@ LABEL_9:
   if (!v11)
   {
     v12 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
 LABEL_11:
@@ -934,25 +934,25 @@ LABEL_11:
   return v11;
 }
 
-- (void)phoneNumberChanged:(id)a3
+- (void)phoneNumberChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = [v4 slotID];
+    slotID = [changedCopy slotID];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Phone number changed (%d).", buf, 8u);
   }
 
-  v5 = [(MATelephonyInfo *)self queue];
+  queue = [(MATelephonyInfo *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3254779904;
   v7[2] = __38__MATelephonyInfo_phoneNumberChanged___block_invoke;
   v7[3] = &__block_descriptor_48_e8_32s40s_e5_v8__0l;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = changedCopy;
+  v6 = changedCopy;
+  dispatch_barrier_async(queue, v7);
 }
 
 void __38__MATelephonyInfo_phoneNumberChanged___block_invoke(uint64_t a1)
@@ -975,28 +975,28 @@ void __38__MATelephonyInfo_phoneNumberChanged___block_invoke(uint64_t a1)
   }
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  statusCopy = status;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = [v6 slotID];
+    slotID = [changeCopy slotID];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "SIM status changed (%d).", buf, 8u);
   }
 
-  v8 = [(MATelephonyInfo *)self queue];
+  queue = [(MATelephonyInfo *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __45__MATelephonyInfo_simStatusDidChange_status___block_invoke;
   block[3] = &__block_descriptor_56_e8_32s40s48s_e5_v8__0l;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_async(v8, block);
+  v12 = changeCopy;
+  selfCopy = self;
+  v14 = statusCopy;
+  v9 = statusCopy;
+  v10 = changeCopy;
+  dispatch_barrier_async(queue, block);
 }
 
 id __45__MATelephonyInfo_simStatusDidChange_status___block_invoke(uint64_t a1)
@@ -1024,28 +1024,28 @@ id __45__MATelephonyInfo_simStatusDidChange_status___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)connectionAvailability:(id)a3 availableConnections:(id)a4
+- (void)connectionAvailability:(id)availability availableConnections:(id)connections
 {
-  v6 = a3;
-  v7 = a4;
+  availabilityCopy = availability;
+  connectionsCopy = connections;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = [v6 slotID];
+    slotID = [availabilityCopy slotID];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Connection availability changed (%d).", buf, 8u);
   }
 
-  v8 = [(MATelephonyInfo *)self queue];
+  queue = [(MATelephonyInfo *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __63__MATelephonyInfo_connectionAvailability_availableConnections___block_invoke;
   block[3] = &__block_descriptor_56_e8_32s40s48s_e5_v8__0l;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_barrier_async(v8, block);
+  v12 = connectionsCopy;
+  v13 = availabilityCopy;
+  selfCopy = self;
+  v9 = availabilityCopy;
+  v10 = connectionsCopy;
+  dispatch_barrier_async(queue, block);
 }
 
 id __63__MATelephonyInfo_connectionAvailability_availableConnections___block_invoke(id *a1)

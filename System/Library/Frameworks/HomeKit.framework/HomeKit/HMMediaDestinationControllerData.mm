@@ -1,26 +1,26 @@
 @interface HMMediaDestinationControllerData
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMMediaDestinationControllerData)initWithCoder:(id)a3;
-- (HMMediaDestinationControllerData)initWithIdentifier:(id)a3 parentIdentifier:(id)a4 destinationIdentifier:(id)a5 supportedOptions:(unint64_t)a6 availableDestinationIdentifiers:(id)a7;
-- (HMMediaDestinationControllerData)initWithProtoBufferData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMMediaDestinationControllerData)initWithCoder:(id)coder;
+- (HMMediaDestinationControllerData)initWithIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier destinationIdentifier:(id)destinationIdentifier supportedOptions:(unint64_t)options availableDestinationIdentifiers:(id)identifiers;
+- (HMMediaDestinationControllerData)initWithProtoBufferData:(id)data;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)encodeToProtoBufferData;
 - (id)logIdentifier;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMMediaDestinationControllerData
 
-- (HMMediaDestinationControllerData)initWithProtoBufferData:(id)a3
+- (HMMediaDestinationControllerData)initWithProtoBufferData:(id)data
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[HMMediaGroupProtoMediaDestinationControllerData alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[HMMediaGroupProtoMediaDestinationControllerData alloc] initWithData:dataCopy];
   v6 = v5;
   if (!v5)
   {
@@ -43,7 +43,7 @@ LABEL_11:
 LABEL_12:
 
     objc_autoreleasePoolPop(v16);
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_36;
   }
 
@@ -70,19 +70,19 @@ LABEL_12:
   }
 
   v7 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v8 = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 identifier];
-  v9 = [v7 initWithUUIDString:v8];
+  identifier = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 identifier];
+  v9 = [v7 initWithUUIDString:identifier];
 
   if ([(HMMediaGroupProtoMediaDestinationControllerData *)v6 hasParentIdentifier])
   {
     v10 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v11 = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 parentIdentifier];
-    v12 = [v10 initWithUUIDString:v11];
+    parentIdentifier = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 parentIdentifier];
+    v12 = [v10 initWithUUIDString:parentIdentifier];
 
     if ([(HMMediaGroupProtoMediaDestinationControllerData *)v6 hasDestinationIdentifier])
     {
-      v13 = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 destinationIdentifier];
-      v14 = [v13 isEqual:@"00000000-0000-0000-0000-000000000000"];
+      destinationIdentifier = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 destinationIdentifier];
+      v14 = [destinationIdentifier isEqual:@"00000000-0000-0000-0000-000000000000"];
 
       if (v14)
       {
@@ -92,22 +92,22 @@ LABEL_12:
       else
       {
         v29 = objc_alloc(MEMORY[0x1E696AFB0]);
-        v30 = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 destinationIdentifier];
-        v15 = [v29 initWithUUIDString:v30];
+        destinationIdentifier2 = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 destinationIdentifier];
+        v15 = [v29 initWithUUIDString:destinationIdentifier2];
       }
 
-      v31 = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 availableDestinations];
+      availableDestinations = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 availableDestinations];
 
-      if (v31)
+      if (availableDestinations)
       {
-        v32 = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 availableDestinations];
-        v33 = [v32 na_map:&__block_literal_global_80];
+        availableDestinations2 = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 availableDestinations];
+        v33 = [availableDestinations2 na_map:&__block_literal_global_80];
 
         if ([v33 count] == 1)
         {
-          v34 = [v33 firstObject];
-          v35 = [v34 UUIDString];
-          v36 = [v35 isEqualToString:@"00000000-0000-0000-0000-000000000000"];
+          firstObject = [v33 firstObject];
+          uUIDString = [firstObject UUIDString];
+          v36 = [uUIDString isEqualToString:@"00000000-0000-0000-0000-000000000000"];
 
           if (v36)
           {
@@ -118,7 +118,7 @@ LABEL_12:
 
         if ([(HMMediaGroupProtoMediaDestinationControllerData *)v6 hasSupportedOptions])
         {
-          v37 = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 supportedOptions];
+          supportedOptions = [(HMMediaGroupProtoMediaDestinationControllerData *)v6 supportedOptions];
         }
 
         else
@@ -138,12 +138,12 @@ LABEL_12:
           }
 
           objc_autoreleasePoolPop(v41);
-          v37 = 0;
+          supportedOptions = 0;
         }
 
-        self = [(HMMediaDestinationControllerData *)self initWithIdentifier:v9 parentIdentifier:v12 destinationIdentifier:v15 supportedOptions:v37 availableDestinationIdentifiers:v33];
+        self = [(HMMediaDestinationControllerData *)self initWithIdentifier:v9 parentIdentifier:v12 destinationIdentifier:v15 supportedOptions:supportedOptions availableDestinationIdentifiers:v33];
 
-        v22 = self;
+        selfCopy = self;
       }
 
       else
@@ -163,7 +163,7 @@ LABEL_12:
         }
 
         objc_autoreleasePoolPop(v38);
-        v22 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -184,7 +184,7 @@ LABEL_12:
       }
 
       objc_autoreleasePoolPop(v26);
-      v22 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -205,12 +205,12 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v23);
-    v22 = 0;
+    selfCopy = 0;
   }
 
 LABEL_36:
   v44 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
 id __60__HMMediaDestinationControllerData_initWithProtoBufferData___block_invoke(uint64_t a1, void *a2)
@@ -226,20 +226,20 @@ id __60__HMMediaDestinationControllerData_initWithProtoBufferData___block_invoke
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(HMMediaGroupProtoMediaDestinationControllerData);
-  v4 = [(HMMediaDestinationControllerData *)self identifier];
-  v5 = [v4 UUIDString];
-  [(HMMediaGroupProtoMediaDestinationControllerData *)v3 setIdentifier:v5];
+  identifier = [(HMMediaDestinationControllerData *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [(HMMediaGroupProtoMediaDestinationControllerData *)v3 setIdentifier:uUIDString];
 
-  v6 = [(HMMediaDestinationControllerData *)self parentIdentifier];
-  v7 = [v6 UUIDString];
-  [(HMMediaGroupProtoMediaDestinationControllerData *)v3 setParentIdentifier:v7];
+  parentIdentifier = [(HMMediaDestinationControllerData *)self parentIdentifier];
+  uUIDString2 = [parentIdentifier UUIDString];
+  [(HMMediaGroupProtoMediaDestinationControllerData *)v3 setParentIdentifier:uUIDString2];
 
-  v8 = [(HMMediaDestinationControllerData *)self destinationIdentifier];
-  v9 = [v8 UUIDString];
-  v10 = v9;
-  if (v9)
+  destinationIdentifier = [(HMMediaDestinationControllerData *)self destinationIdentifier];
+  uUIDString3 = [destinationIdentifier UUIDString];
+  v10 = uUIDString3;
+  if (uUIDString3)
   {
-    v11 = v9;
+    v11 = uUIDString3;
   }
 
   else
@@ -250,67 +250,67 @@ id __60__HMMediaDestinationControllerData_initWithProtoBufferData___block_invoke
   [(HMMediaGroupProtoMediaDestinationControllerData *)v3 setDestinationIdentifier:v11];
 
   [(HMMediaGroupProtoMediaDestinationControllerData *)v3 setSupportedOptions:[(HMMediaDestinationControllerData *)self supportedOptions]];
-  v12 = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
-  v13 = [v12 na_map:&__block_literal_global_77];
+  availableDestinationIdentifiers = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
+  v13 = [availableDestinationIdentifiers na_map:&__block_literal_global_77];
   v14 = [v13 mutableCopy];
   [(HMMediaGroupProtoMediaDestinationControllerData *)v3 setAvailableDestinations:v14];
 
-  v15 = [(HMMediaGroupProtoMediaDestinationControllerData *)v3 availableDestinations];
-  if ([v15 count])
+  availableDestinations = [(HMMediaGroupProtoMediaDestinationControllerData *)v3 availableDestinations];
+  if ([availableDestinations count])
   {
-    v16 = [(HMMediaGroupProtoMediaDestinationControllerData *)v3 availableDestinations];
-    [(HMMediaGroupProtoMediaDestinationControllerData *)v3 setAvailableDestinations:v16];
+    availableDestinations2 = [(HMMediaGroupProtoMediaDestinationControllerData *)v3 availableDestinations];
+    [(HMMediaGroupProtoMediaDestinationControllerData *)v3 setAvailableDestinations:availableDestinations2];
   }
 
   else
   {
     v21[0] = @"00000000-0000-0000-0000-000000000000";
-    v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-    v17 = [v16 mutableCopy];
+    availableDestinations2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
+    v17 = [availableDestinations2 mutableCopy];
     [(HMMediaGroupProtoMediaDestinationControllerData *)v3 setAvailableDestinations:v17];
   }
 
-  v18 = [(HMMediaGroupProtoMediaDestinationControllerData *)v3 data];
+  data = [(HMMediaGroupProtoMediaDestinationControllerData *)v3 data];
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return data;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMMediaDestinationControllerData *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HMMediaDestinationControllerIdentifierCodingKey"];
+  coderCopy = coder;
+  identifier = [(HMMediaDestinationControllerData *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HMMediaDestinationControllerIdentifierCodingKey"];
 
-  v6 = [(HMMediaDestinationControllerData *)self parentIdentifier];
-  [v4 encodeObject:v6 forKey:@"HMMediaDestinationControllerParentIdentifierCodingKey"];
+  parentIdentifier = [(HMMediaDestinationControllerData *)self parentIdentifier];
+  [coderCopy encodeObject:parentIdentifier forKey:@"HMMediaDestinationControllerParentIdentifierCodingKey"];
 
-  v7 = [(HMMediaDestinationControllerData *)self destinationIdentifier];
-  [v4 encodeObject:v7 forKey:@"HMMediaDestinationControllerDestinationIdentifierCodingKey"];
+  destinationIdentifier = [(HMMediaDestinationControllerData *)self destinationIdentifier];
+  [coderCopy encodeObject:destinationIdentifier forKey:@"HMMediaDestinationControllerDestinationIdentifierCodingKey"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMMediaDestinationControllerData supportedOptions](self, "supportedOptions")}];
-  [v4 encodeObject:v8 forKey:@"HMMediaDestinationControllerSupportedOptionsCodingKey"];
+  [coderCopy encodeObject:v8 forKey:@"HMMediaDestinationControllerSupportedOptionsCodingKey"];
 
-  v9 = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
-  [v4 encodeObject:v9 forKey:@"HMMediaDestinationControllerAvailableDestinationIdentifiersCodingKey"];
+  availableDestinationIdentifiers = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
+  [coderCopy encodeObject:availableDestinationIdentifiers forKey:@"HMMediaDestinationControllerAvailableDestinationIdentifiersCodingKey"];
 }
 
-- (HMMediaDestinationControllerData)initWithCoder:(id)a3
+- (HMMediaDestinationControllerData)initWithCoder:(id)coder
 {
   v52[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationControllerIdentifierCodingKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationControllerParentIdentifierCodingKey"];
-  v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationControllerDestinationIdentifierCodingKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationControllerSupportedOptionsCodingKey"];
-  v42 = [v7 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationControllerIdentifierCodingKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationControllerParentIdentifierCodingKey"];
+  v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationControllerDestinationIdentifierCodingKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationControllerSupportedOptionsCodingKey"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
   v8 = MEMORY[0x1E695DFD8];
   v52[0] = objc_opt_class();
   v52[1] = objc_opt_class();
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:2];
   v10 = [v8 setWithArray:v9];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"HMMediaDestinationControllerAvailableDestinationIdentifiersCodingKey"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"HMMediaDestinationControllerAvailableDestinationIdentifiersCodingKey"];
 
   if (v11)
   {
@@ -324,8 +324,8 @@ id __60__HMMediaDestinationControllerData_initWithProtoBufferData___block_invoke
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v41 = self;
-    v14 = self;
+    selfCopy = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -341,7 +341,7 @@ id __60__HMMediaDestinationControllerData_initWithProtoBufferData___block_invoke
     v51[1] = objc_opt_class();
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
     v19 = [v17 setWithArray:v18];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"HMMediaDestinationControllerAvailableDestinationsCodingKey"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"HMMediaDestinationControllerAvailableDestinationsCodingKey"];
 
     v11 = [v20 na_map:&__block_literal_global_73_25080];
 
@@ -351,7 +351,7 @@ id __60__HMMediaDestinationControllerData_initWithProtoBufferData___block_invoke
     }
 
     v21 = objc_autoreleasePoolPush();
-    v22 = v14;
+    v22 = selfCopy2;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -367,7 +367,7 @@ id __60__HMMediaDestinationControllerData_initWithProtoBufferData___block_invoke
     v50[1] = objc_opt_class();
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
     v27 = [v25 setWithArray:v26];
-    v11 = [v4 decodeObjectOfClasses:v27 forKey:@"HMDMediaDestinationControllerAvailableDestinationIdentifiersCodingKey"];
+    v11 = [coderCopy decodeObjectOfClasses:v27 forKey:@"HMDMediaDestinationControllerAvailableDestinationIdentifiersCodingKey"];
 
     if (v11)
     {
@@ -393,7 +393,7 @@ LABEL_10:
       v11 = MEMORY[0x1E695E0F0];
     }
 
-    self = v41;
+    self = selfCopy;
     if (!v5)
     {
       goto LABEL_14;
@@ -402,16 +402,16 @@ LABEL_10:
 
   if (v6)
   {
-    v28 = [(HMMediaDestinationControllerData *)self initWithIdentifier:v5 parentIdentifier:v6 destinationIdentifier:v12 supportedOptions:v42 availableDestinationIdentifiers:v11];
+    v28 = [(HMMediaDestinationControllerData *)self initWithIdentifier:v5 parentIdentifier:v6 destinationIdentifier:v12 supportedOptions:unsignedIntegerValue availableDestinationIdentifiers:v11];
     v29 = v28;
     goto LABEL_17;
   }
 
 LABEL_14:
   v30 = objc_autoreleasePoolPush();
-  v31 = self;
+  selfCopy3 = self;
   v32 = v30;
-  v28 = v31;
+  v28 = selfCopy3;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
@@ -435,16 +435,16 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v2 = [(HMMediaDestinationControllerData *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMMediaDestinationControllerData *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -454,7 +454,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -465,19 +465,19 @@ LABEL_17:
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMMediaDestinationControllerData *)self identifier];
-      v8 = [(HMMediaDestinationControllerData *)v6 identifier];
-      if ([v7 hmf_isEqualToUUID:v8])
+      identifier = [(HMMediaDestinationControllerData *)self identifier];
+      identifier2 = [(HMMediaDestinationControllerData *)v6 identifier];
+      if ([identifier hmf_isEqualToUUID:identifier2])
       {
-        v9 = [(HMMediaDestinationControllerData *)self parentIdentifier];
-        v10 = [(HMMediaDestinationControllerData *)v6 parentIdentifier];
-        if (![v9 hmf_isEqualToUUID:v10])
+        parentIdentifier = [(HMMediaDestinationControllerData *)self parentIdentifier];
+        parentIdentifier2 = [(HMMediaDestinationControllerData *)v6 parentIdentifier];
+        if (![parentIdentifier hmf_isEqualToUUID:parentIdentifier2])
         {
           goto LABEL_15;
         }
 
-        v11 = [(HMMediaDestinationControllerData *)self destinationIdentifier];
-        v12 = [(HMMediaDestinationControllerData *)v6 destinationIdentifier];
+        destinationIdentifier = [(HMMediaDestinationControllerData *)self destinationIdentifier];
+        destinationIdentifier2 = [(HMMediaDestinationControllerData *)v6 destinationIdentifier];
         v13 = HMFEqualObjects();
 
         if (!v13)
@@ -485,21 +485,21 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = [(HMMediaDestinationControllerData *)self supportedOptions];
-        if (v14 == [(HMMediaDestinationControllerData *)v6 supportedOptions])
+        supportedOptions = [(HMMediaDestinationControllerData *)self supportedOptions];
+        if (supportedOptions == [(HMMediaDestinationControllerData *)v6 supportedOptions])
         {
-          v15 = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
-          v16 = [v15 count];
-          v17 = [(HMMediaDestinationControllerData *)v6 availableDestinationIdentifiers];
-          if (v16 == [v17 count])
+          availableDestinationIdentifiers = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
+          v16 = [availableDestinationIdentifiers count];
+          availableDestinationIdentifiers2 = [(HMMediaDestinationControllerData *)v6 availableDestinationIdentifiers];
+          if (v16 == [availableDestinationIdentifiers2 count])
           {
-            v18 = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
+            availableDestinationIdentifiers3 = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
             v21[0] = MEMORY[0x1E69E9820];
             v21[1] = 3221225472;
             v21[2] = __44__HMMediaDestinationControllerData_isEqual___block_invoke;
             v21[3] = &unk_1E7548C60;
             v22 = v6;
-            v19 = [v18 na_allObjectsPassTest:v21];
+            v19 = [availableDestinationIdentifiers3 na_allObjectsPassTest:v21];
           }
 
           else
@@ -540,15 +540,15 @@ uint64_t __44__HMMediaDestinationControllerData_isEqual___block_invoke(uint64_t 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMMutableMediaDestinationControllerData alloc];
-  v5 = [(HMMediaDestinationControllerData *)self identifier];
-  v6 = [(HMMediaDestinationControllerData *)self parentIdentifier];
-  v7 = [(HMMediaDestinationControllerData *)self destinationIdentifier];
-  v8 = [(HMMediaDestinationControllerData *)self supportedOptions];
-  v9 = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
-  v10 = [(HMMediaDestinationControllerData *)v4 initWithIdentifier:v5 parentIdentifier:v6 destinationIdentifier:v7 supportedOptions:v8 availableDestinationIdentifiers:v9];
+  identifier = [(HMMediaDestinationControllerData *)self identifier];
+  parentIdentifier = [(HMMediaDestinationControllerData *)self parentIdentifier];
+  destinationIdentifier = [(HMMediaDestinationControllerData *)self destinationIdentifier];
+  supportedOptions = [(HMMediaDestinationControllerData *)self supportedOptions];
+  availableDestinationIdentifiers = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
+  v10 = [(HMMediaDestinationControllerData *)v4 initWithIdentifier:identifier parentIdentifier:parentIdentifier destinationIdentifier:destinationIdentifier supportedOptions:supportedOptions availableDestinationIdentifiers:availableDestinationIdentifiers];
 
   return v10;
 }
@@ -586,19 +586,19 @@ uint64_t __47__HMMediaDestinationControllerData_logCategory__block_invoke()
 {
   v23[5] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v22 = [(HMMediaDestinationControllerData *)self identifier];
-  v4 = [v3 initWithName:@"identifier" value:v22];
+  identifier = [(HMMediaDestinationControllerData *)self identifier];
+  v4 = [v3 initWithName:@"identifier" value:identifier];
   v23[0] = v4;
   v5 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v6 = [(HMMediaDestinationControllerData *)self parentIdentifier];
-  v7 = [v5 initWithName:@"parentIdentifier" value:v6];
+  parentIdentifier = [(HMMediaDestinationControllerData *)self parentIdentifier];
+  v7 = [v5 initWithName:@"parentIdentifier" value:parentIdentifier];
   v23[1] = v7;
   v8 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v9 = [(HMMediaDestinationControllerData *)self destinationIdentifier];
-  v10 = v9;
-  if (v9)
+  destinationIdentifier = [(HMMediaDestinationControllerData *)self destinationIdentifier];
+  v10 = destinationIdentifier;
+  if (destinationIdentifier)
   {
-    v11 = v9;
+    v11 = destinationIdentifier;
   }
 
   else
@@ -613,8 +613,8 @@ uint64_t __47__HMMediaDestinationControllerData_logCategory__block_invoke()
   v15 = [v13 initWithName:@"supportedOptions" value:v14];
   v23[3] = v15;
   v16 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v17 = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
-  v18 = [v16 initWithName:@"availableDestinationIdentifiers" value:v17];
+  availableDestinationIdentifiers = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
+  v18 = [v16 initWithName:@"availableDestinationIdentifiers" value:availableDestinationIdentifiers];
   v23[4] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:5];
 
@@ -632,33 +632,33 @@ uint64_t __47__HMMediaDestinationControllerData_logCategory__block_invoke()
 
 - (id)logIdentifier
 {
-  v2 = [(HMMediaDestinationControllerData *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMMediaDestinationControllerData *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (HMMediaDestinationControllerData)initWithIdentifier:(id)a3 parentIdentifier:(id)a4 destinationIdentifier:(id)a5 supportedOptions:(unint64_t)a6 availableDestinationIdentifiers:(id)a7
+- (HMMediaDestinationControllerData)initWithIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier destinationIdentifier:(id)destinationIdentifier supportedOptions:(unint64_t)options availableDestinationIdentifiers:(id)identifiers
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (!v13)
+  identifierCopy = identifier;
+  parentIdentifierCopy = parentIdentifier;
+  destinationIdentifierCopy = destinationIdentifier;
+  identifiersCopy = identifiers;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v14)
+  if (!parentIdentifierCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v17 = v16;
-  if (!v16)
+  v17 = identifiersCopy;
+  if (!identifiersCopy)
   {
 LABEL_9:
     v21 = _HMFPreconditionFailure();
@@ -672,11 +672,11 @@ LABEL_9:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(&v19->_parentIdentifier, a4);
-    objc_storeStrong(&v19->_destinationIdentifier, a5);
-    v19->_supportedOptions = a6;
-    objc_storeStrong(&v19->_availableDestinationIdentifiers, a7);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_parentIdentifier, parentIdentifier);
+    objc_storeStrong(&v19->_destinationIdentifier, destinationIdentifier);
+    v19->_supportedOptions = options;
+    objc_storeStrong(&v19->_availableDestinationIdentifiers, identifiers);
   }
 
   return v19;

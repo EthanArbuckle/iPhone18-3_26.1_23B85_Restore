@@ -1,16 +1,16 @@
 @interface HSPCCreateHomeViewController
-- (HSPCCreateHomeViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCCreateHomeViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
 - (id)hu_preloadContent;
 @end
 
 @implementation HSPCCreateHomeViewController
 
-- (HSPCCreateHomeViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCCreateHomeViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
   v8.receiver = self;
   v8.super_class = HSPCCreateHomeViewController;
-  v4 = [(HSPCTextFieldViewController *)&v8 initWithCoordinator:a3 config:a4];
+  v4 = [(HSPCTextFieldViewController *)&v8 initWithCoordinator:coordinator config:config];
   if (v4)
   {
     v5 = HULocalizedString();
@@ -26,19 +26,19 @@
 - (id)commitConfiguration
 {
   [(HSPCTextFieldViewController *)self endEditing];
-  v3 = [(HSPCTextFieldViewController *)self textFieldText];
-  v4 = [(HSPCTextFieldViewController *)self config];
-  v5 = [v4 isSetupInitiatedByOtherMatterEcosystem];
+  textFieldText = [(HSPCTextFieldViewController *)self textFieldText];
+  config = [(HSPCTextFieldViewController *)self config];
+  isSetupInitiatedByOtherMatterEcosystem = [config isSetupInitiatedByOtherMatterEcosystem];
 
-  if (v5)
+  if (isSetupInitiatedByOtherMatterEcosystem)
   {
     v6 = objc_opt_class();
-    v7 = [(HSPCTextFieldViewController *)self config];
-    if (v7)
+    config2 = [(HSPCTextFieldViewController *)self config];
+    if (config2)
     {
       if (objc_opt_isKindOfClass())
       {
-        v8 = v7;
+        v8 = config2;
       }
 
       else
@@ -49,7 +49,7 @@
       v9 = v8;
       if (!v9)
       {
-        sub_1000774F0(v7, v6);
+        sub_1000774F0(config2, v6);
       }
     }
 
@@ -58,7 +58,7 @@
       v9 = 0;
     }
 
-    v17 = [[MTSDeviceSetupHome alloc] initWithName:v3];
+    v17 = [[MTSDeviceSetupHome alloc] initWithName:textFieldText];
     [v9 setSelectedPartnerHome:v17];
 
     v16 = [NAFuture futureWithResult:&off_1000CD5D0];
@@ -66,20 +66,20 @@
 
   else
   {
-    v10 = [(HSPCCreateHomeViewController *)self builder];
-    [v10 setName:v3];
+    builder = [(HSPCCreateHomeViewController *)self builder];
+    [builder setName:textFieldText];
 
     objc_initWeak(&location, self);
-    v11 = [(HSPCCreateHomeViewController *)self builder];
-    v12 = [v11 commitItem];
+    builder2 = [(HSPCCreateHomeViewController *)self builder];
+    commitItem = [builder2 commitItem];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000269A8;
     v19[3] = &unk_1000C5830;
     objc_copyWeak(&v20, &location);
-    v13 = [v12 flatMap:v19];
-    v14 = [(HSPCTextFieldViewController *)self textFieldText];
-    v15 = [NSString stringWithFormat:@"Create Home %@", v14];
+    v13 = [commitItem flatMap:v19];
+    textFieldText2 = [(HSPCTextFieldViewController *)self textFieldText];
+    v15 = [NSString stringWithFormat:@"Create Home %@", textFieldText2];
     v16 = [v13 hs_commitConfigurationFutureWithContextMessage:v15];
 
     objc_destroyWeak(&v20);
@@ -92,13 +92,13 @@
 - (id)hu_preloadContent
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 allHomesFuture];
+  allHomesFuture = [v3 allHomesFuture];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100026B2C;
   v7[3] = &unk_1000C6718;
   v7[4] = self;
-  v5 = [v4 flatMap:v7];
+  v5 = [allHomesFuture flatMap:v7];
 
   return v5;
 }

@@ -1,77 +1,77 @@
 @interface TPSNotificationCache
-+ (id)notificationCacheWithCollectionIdentifier:(id)a3 document:(id)a4 type:(unint64_t)a5;
++ (id)notificationCacheWithCollectionIdentifier:(id)identifier document:(id)document type:(unint64_t)type;
 - (BOOL)hasLocaleChanged;
-- (TPSNotificationCache)initWithCoder:(id)a3;
-- (TPSNotificationCache)initWithCollectionIdentifier:(id)a3 document:(id)a4 type:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSNotificationCache)initWithCoder:(id)coder;
+- (TPSNotificationCache)initWithCollectionIdentifier:(id)identifier document:(id)document type:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSNotificationCache
 
-+ (id)notificationCacheWithCollectionIdentifier:(id)a3 document:(id)a4 type:(unint64_t)a5
++ (id)notificationCacheWithCollectionIdentifier:(id)identifier document:(id)document type:(unint64_t)type
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [objc_alloc(objc_opt_class()) initWithCollectionIdentifier:v8 document:v7 type:a5];
+  documentCopy = document;
+  identifierCopy = identifier;
+  v9 = [objc_alloc(objc_opt_class()) initWithCollectionIdentifier:identifierCopy document:documentCopy type:type];
 
   return v9;
 }
 
-- (TPSNotificationCache)initWithCollectionIdentifier:(id)a3 document:(id)a4 type:(unint64_t)a5
+- (TPSNotificationCache)initWithCollectionIdentifier:(id)identifier document:(id)document type:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  documentCopy = document;
   v11 = [(TPSNotificationCache *)self init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a5;
-    objc_storeStrong(&v11->_collectionIdentifier, a3);
-    objc_storeStrong(&v12->_document, a4);
-    v13 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v14 = [v13 firstObject];
+    v11->_type = type;
+    objc_storeStrong(&v11->_collectionIdentifier, identifier);
+    objc_storeStrong(&v12->_document, document);
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
     locale = v12->_locale;
-    v12->_locale = v14;
+    v12->_locale = firstObject;
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TPSNotificationCache *)self locale];
-  [v4 setLocale:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  locale = [(TPSNotificationCache *)self locale];
+  [v4 setLocale:locale];
 
   [v4 setType:{-[TPSNotificationCache type](self, "type")}];
-  v6 = [(TPSNotificationCache *)self extensionPayload];
-  [v4 setExtensionPayload:v6];
+  extensionPayload = [(TPSNotificationCache *)self extensionPayload];
+  [v4 setExtensionPayload:extensionPayload];
 
-  v7 = [(TPSNotificationCache *)self document];
-  [v4 setDocument:v7];
+  document = [(TPSNotificationCache *)self document];
+  [v4 setDocument:document];
 
-  v8 = [(TPSNotificationCache *)self attachmentURL];
-  [v4 setAttachmentURL:v8];
+  attachmentURL = [(TPSNotificationCache *)self attachmentURL];
+  [v4 setAttachmentURL:attachmentURL];
 
-  v9 = [(TPSNotificationCache *)self collectionIdentifier];
-  [v4 setCollectionIdentifier:v9];
+  collectionIdentifier = [(TPSNotificationCache *)self collectionIdentifier];
+  [v4 setCollectionIdentifier:collectionIdentifier];
 
   return v4;
 }
 
-- (TPSNotificationCache)initWithCoder:(id)a3
+- (TPSNotificationCache)initWithCoder:(id)coder
 {
   v26[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = TPSNotificationCache;
   v5 = [(TPSNotificationCache *)&v24 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
     locale = v5->_locale;
     v5->_locale = v6;
 
@@ -84,7 +84,7 @@
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:5];
     v10 = [v8 setWithArray:v9];
 
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"extensionPayload"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"extensionPayload"];
     extensionPayload = v5->_extensionPayload;
     v5->_extensionPayload = v11;
 
@@ -95,15 +95,15 @@
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
     v15 = [v13 setWithArray:v14];
 
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"document"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"document"];
     document = v5->_document;
     v5->_document = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collectionIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collectionIdentifier"];
     collectionIdentifier = v5->_collectionIdentifier;
     v5->_collectionIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attachmentURL"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attachmentURL"];
     attachmentURL = v5->_attachmentURL;
     v5->_attachmentURL = v20;
   }
@@ -112,35 +112,35 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[TPSNotificationCache type](self forKey:{"type"), @"type"}];
-  v5 = [(TPSNotificationCache *)self locale];
-  [v4 encodeObject:v5 forKey:@"locale"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[TPSNotificationCache type](self forKey:{"type"), @"type"}];
+  locale = [(TPSNotificationCache *)self locale];
+  [coderCopy encodeObject:locale forKey:@"locale"];
 
-  v6 = [(TPSNotificationCache *)self extensionPayload];
-  [v4 encodeObject:v6 forKey:@"extensionPayload"];
+  extensionPayload = [(TPSNotificationCache *)self extensionPayload];
+  [coderCopy encodeObject:extensionPayload forKey:@"extensionPayload"];
 
-  v7 = [(TPSNotificationCache *)self document];
-  [v4 encodeObject:v7 forKey:@"document"];
+  document = [(TPSNotificationCache *)self document];
+  [coderCopy encodeObject:document forKey:@"document"];
 
-  v8 = [(TPSNotificationCache *)self collectionIdentifier];
-  [v4 encodeObject:v8 forKey:@"collectionIdentifier"];
+  collectionIdentifier = [(TPSNotificationCache *)self collectionIdentifier];
+  [coderCopy encodeObject:collectionIdentifier forKey:@"collectionIdentifier"];
 
-  v9 = [(TPSNotificationCache *)self attachmentURL];
-  [v4 encodeObject:v9 forKey:@"attachmentURL"];
+  attachmentURL = [(TPSNotificationCache *)self attachmentURL];
+  [coderCopy encodeObject:attachmentURL forKey:@"attachmentURL"];
 }
 
 - (BOOL)hasLocaleChanged
 {
-  v3 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v4 = [v3 firstObject];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  v5 = [(TPSNotificationCache *)self locale];
-  LOBYTE(v3) = [v4 isEqualToString:v5];
+  locale = [(TPSNotificationCache *)self locale];
+  LOBYTE(preferredLanguages) = [firstObject isEqualToString:locale];
 
-  return v3 ^ 1;
+  return preferredLanguages ^ 1;
 }
 
 - (id)debugDescription
@@ -152,25 +152,25 @@
   v5 = [v3 initWithString:v4];
 
   [v5 appendFormat:@"\n%@ = %lu\n", @"type", -[TPSNotificationCache type](self, "type")];
-  v6 = [(TPSNotificationCache *)self document];
-  v7 = [v6 debugDescription];
+  document = [(TPSNotificationCache *)self document];
+  v7 = [document debugDescription];
   [v5 appendFormat:@"%@ = %@\n", @"document", v7];
 
-  v8 = [(TPSNotificationCache *)self collectionIdentifier];
-  [v5 appendFormat:@"%@ = %@\n", @"collectionIdentifier", v8];
+  collectionIdentifier = [(TPSNotificationCache *)self collectionIdentifier];
+  [v5 appendFormat:@"%@ = %@\n", @"collectionIdentifier", collectionIdentifier];
 
-  v9 = [(TPSNotificationCache *)self locale];
-  [v5 appendFormat:@"%@ = %@\n", @"locale", v9];
+  locale = [(TPSNotificationCache *)self locale];
+  [v5 appendFormat:@"%@ = %@\n", @"locale", locale];
 
-  v10 = [(TPSNotificationCache *)self attachmentURL];
-  [v5 appendFormat:@"%@ = %@\n", @"attachmentURL", v10];
+  attachmentURL = [(TPSNotificationCache *)self attachmentURL];
+  [v5 appendFormat:@"%@ = %@\n", @"attachmentURL", attachmentURL];
 
-  v11 = [(TPSNotificationCache *)self extensionPayload];
+  extensionPayload = [(TPSNotificationCache *)self extensionPayload];
 
-  if (v11)
+  if (extensionPayload)
   {
-    v12 = [(TPSNotificationCache *)self extensionPayload];
-    [v5 appendFormat:@"%@ = %@\n", @"extensionPayload", v12];
+    extensionPayload2 = [(TPSNotificationCache *)self extensionPayload];
+    [v5 appendFormat:@"%@ = %@\n", @"extensionPayload", extensionPayload2];
   }
 
   return v5;

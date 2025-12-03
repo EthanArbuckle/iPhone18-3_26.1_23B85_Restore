@@ -1,6 +1,6 @@
 @interface CPLBatterySaverWatcher
 - (BOOL)_updateBatterySaverMode;
-- (CPLBatterySaverWatcher)initWithDispatchQueue:(id)a3 delegate:(id)a4;
+- (CPLBatterySaverWatcher)initWithDispatchQueue:(id)queue delegate:(id)delegate;
 - (CPLBatterySaverWatcherDelegate)delegate;
 - (void)_batterySaverModeTriggered;
 - (void)_registerForBatterySaverMode;
@@ -11,10 +11,10 @@
 
 @implementation CPLBatterySaverWatcher
 
-- (CPLBatterySaverWatcher)initWithDispatchQueue:(id)a3 delegate:(id)a4
+- (CPLBatterySaverWatcher)initWithDispatchQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = CPLBatterySaverWatcher;
   v9 = [(CPLBatterySaverWatcher *)&v12 init];
@@ -22,8 +22,8 @@
   if (v9)
   {
     v9->_batterySaverMode = 0;
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
@@ -54,15 +54,15 @@
 - (BOOL)_updateBatterySaverMode
 {
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v3 isLowPowerModeEnabled];
 
   batterySaverMode = self->_batterySaverMode;
-  if (batterySaverMode != v4)
+  if (batterySaverMode != isLowPowerModeEnabled)
   {
-    self->_batterySaverMode = v4;
+    self->_batterySaverMode = isLowPowerModeEnabled;
   }
 
-  return batterySaverMode != v4;
+  return batterySaverMode != isLowPowerModeEnabled;
 }
 
 - (void)_batterySaverModeTriggered

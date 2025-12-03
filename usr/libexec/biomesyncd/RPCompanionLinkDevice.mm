@@ -6,8 +6,8 @@
 
 - (NSString)bm_companionLinkDeviceIdentifier
 {
-  v2 = [(RPCompanionLinkDevice *)self idsDeviceIdentifier];
-  v3 = [v2 copy];
+  idsDeviceIdentifier = [(RPCompanionLinkDevice *)self idsDeviceIdentifier];
+  v3 = [idsDeviceIdentifier copy];
 
   return v3;
 }

@@ -1,11 +1,11 @@
 @interface MUIAboutCategoriesViewController
-- (MUIAboutCategoriesViewController)initWithCoder:(id)a3;
-- (MUIAboutCategoriesViewController)initWithDaemonInterface:(id)a3 delegate:(id)a4;
-- (MUIAboutCategoriesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MUIAboutCategoriesViewController)initWithCoder:(id)coder;
+- (MUIAboutCategoriesViewController)initWithDaemonInterface:(id)interface delegate:(id)delegate;
+- (MUIAboutCategoriesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (MUIAboutCategoriesViewControllerDelegate)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MUIAboutCategoriesViewController
@@ -20,7 +20,7 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
@@ -29,18 +29,18 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (MUIAboutCategoriesViewController)initWithDaemonInterface:(id)a3 delegate:(id)a4
+- (MUIAboutCategoriesViewController)initWithDaemonInterface:(id)interface delegate:(id)delegate
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](interface);
   swift_unknownObjectRetain();
-  return sub_214BF8430(a3, a4);
+  return sub_214BF8430(interface, delegate);
 }
 
-- (MUIAboutCategoriesViewController)initWithCoder:(id)a3
+- (MUIAboutCategoriesViewController)initWithCoder:(id)coder
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](coder);
   MUIAboutCategoriesViewController.init(coder:)();
 }
 
@@ -52,7 +52,7 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   swift_getObjectType();
   MEMORY[0x277D82BE0](self);
@@ -61,16 +61,16 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (MUIAboutCategoriesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MUIAboutCategoriesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  if (a3)
+  MEMORY[0x277D82BE0](name);
+  MEMORY[0x277D82BE0](bundle);
+  if (name)
   {
     sub_214CCF564();
     v6 = v4;
-    MEMORY[0x277D82BD8](a3);
+    MEMORY[0x277D82BD8](name);
     v5 = v6;
   }
 

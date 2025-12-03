@@ -1,16 +1,16 @@
 @interface WPDObjectDiscoveryClient
-- (WPDObjectDiscoveryClient)initWithXPCConnection:(id)a3 server:(id)a4;
+- (WPDObjectDiscoveryClient)initWithXPCConnection:(id)connection server:(id)server;
 - (WPDObjectDiscoveryManager)objectDiscoveryManager;
 - (void)dealloc;
 - (void)destroy;
 - (void)endTestMode;
 - (void)generateStateDump;
-- (void)notifyClientObjectDiscoveryStateChange:(int64_t)a3;
-- (void)registerWithDaemon:(id)a3 forProcess:(id)a4 machName:(id)a5 holdVouchers:(int64_t)a6;
-- (void)sendTestRequest:(id)a3;
-- (void)startAdvertising:(id)a3;
+- (void)notifyClientObjectDiscoveryStateChange:(int64_t)change;
+- (void)registerWithDaemon:(id)daemon forProcess:(id)process machName:(id)name holdVouchers:(int64_t)vouchers;
+- (void)sendTestRequest:(id)request;
+- (void)startAdvertising:(id)advertising;
 - (void)startSPBeaconing;
-- (void)stopAdvertising:(id)a3;
+- (void)stopAdvertising:(id)advertising;
 - (void)stopSPBeaconing;
 - (void)updateSPBeaconing;
 - (void)updateSPNearbyTokens;
@@ -18,13 +18,13 @@
 
 @implementation WPDObjectDiscoveryClient
 
-- (WPDObjectDiscoveryClient)initWithXPCConnection:(id)a3 server:(id)a4
+- (WPDObjectDiscoveryClient)initWithXPCConnection:(id)connection server:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  serverCopy = server;
   v25.receiver = self;
   v25.super_class = WPDObjectDiscoveryClient;
-  v8 = [(WPDClient *)&v25 initWithXPCConnection:0 server:v7];
+  v8 = [(WPDClient *)&v25 initWithXPCConnection:0 server:serverCopy];
   v9 = v8;
   if (v8)
   {
@@ -43,7 +43,7 @@
     {
       objc_initWeak(location, v9);
       v14 = [WPDSearchPartyAgent alloc];
-      v15 = [(WPDClient *)v9 serverQueue];
+      serverQueue = [(WPDClient *)v9 serverQueue];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __57__WPDObjectDiscoveryClient_initWithXPCConnection_server___block_invoke;
@@ -54,7 +54,7 @@
       v20[2] = __57__WPDObjectDiscoveryClient_initWithXPCConnection_server___block_invoke_152;
       v20[3] = &unk_279E59530;
       objc_copyWeak(&v21, location);
-      v16 = [(WPDSearchPartyAgent *)v14 initWithQueue:v15 beaconChange:v22 tokensChange:v20];
+      v16 = [(WPDSearchPartyAgent *)v14 initWithQueue:serverQueue beaconChange:v22 tokensChange:v20];
       v17 = v9->_spAgent;
       v9->_spAgent = v16;
 
@@ -160,9 +160,9 @@ LABEL_8:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [(WPDClient *)self clientUUID];
+    clientUUID = [(WPDClient *)self clientUUID];
     *buf = 138412290;
-    v9 = v5;
+    v9 = clientUUID;
     _os_log_impl(&dword_272965000, v4, OS_LOG_TYPE_INFO, "Deallocing WPDObjectDiscoveryClient %@", buf, 0xCu);
   }
 
@@ -185,12 +185,12 @@ LABEL_8:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(WPDClient *)self clientTypeString];
-    v6 = [(WPDClient *)self clientUUID];
+    clientTypeString = [(WPDClient *)self clientTypeString];
+    clientUUID = [(WPDClient *)self clientUUID];
     v12 = 138412546;
-    v13 = v5;
+    v13 = clientTypeString;
     v14 = 2112;
-    v15 = v6;
+    v15 = clientUUID;
     _os_log_impl(&dword_272965000, v4, OS_LOG_TYPE_DEFAULT, "WPDaemon statedump: ========= %@ %@ =========", &v12, 0x16u);
   }
 
@@ -203,14 +203,14 @@ LABEL_8:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(WPDObjectDiscoveryClient *)self keyAddressAndPayload];
+    keyAddressAndPayload = [(WPDObjectDiscoveryClient *)self keyAddressAndPayload];
     v12 = 138412290;
-    v13 = v9;
+    v13 = keyAddressAndPayload;
     _os_log_impl(&dword_272965000, v8, OS_LOG_TYPE_DEFAULT, "WPDaemon statedump: beacon buffer %@", &v12, 0xCu);
   }
 
-  v10 = [(WPDObjectDiscoveryClient *)self spAgent];
-  [v10 generateStateDump];
+  spAgent = [(WPDObjectDiscoveryClient *)self spAgent];
+  [spAgent generateStateDump];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -227,18 +227,18 @@ LABEL_8:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [(WPDClient *)self clientUUID];
+    clientUUID = [(WPDClient *)self clientUUID];
     *buf = 138412290;
-    v11 = v5;
+    v11 = clientUUID;
     _os_log_impl(&dword_272965000, v4, OS_LOG_TYPE_INFO, "Ending test mode WPDObjectDiscoveryClient %@", buf, 0xCu);
   }
 
-  v6 = [(WPDObjectDiscoveryClient *)self spAgent];
+  spAgent = [(WPDObjectDiscoveryClient *)self spAgent];
 
-  if (v6)
+  if (spAgent)
   {
-    v7 = [(WPDObjectDiscoveryClient *)self spAgent];
-    [v7 stopTest];
+    spAgent2 = [(WPDObjectDiscoveryClient *)self spAgent];
+    [spAgent2 stopTest];
   }
 
   v9.receiver = self;
@@ -247,14 +247,14 @@ LABEL_8:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerWithDaemon:(id)a3 forProcess:(id)a4 machName:(id)a5 holdVouchers:(int64_t)a6
+- (void)registerWithDaemon:(id)daemon forProcess:(id)process machName:(id)name holdVouchers:(int64_t)vouchers
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  daemonCopy = daemon;
+  processCopy = process;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = WPDObjectDiscoveryClient;
-  [(WPDClient *)&v21 registerWithDaemon:v10 forProcess:v11 machName:v12 holdVouchers:a6];
+  [(WPDClient *)&v21 registerWithDaemon:daemonCopy forProcess:processCopy machName:nameCopy holdVouchers:vouchers];
   objc_initWeak(&location, self);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
@@ -263,7 +263,7 @@ LABEL_8:
   objc_copyWeak(&v19, &location);
   v13 = MEMORY[0x2743D14E0](&v15);
   v14 = [(WPDClient *)self server:v15];
-  [v14 registerClient:self withMachName:v12 withCompletion:v13];
+  [v14 registerClient:self withMachName:nameCopy withCompletion:v13];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -294,29 +294,29 @@ void __80__WPDObjectDiscoveryClient_registerWithDaemon_forProcess_machName_holdV
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(WPDClient *)self clientUUID];
-    v6 = [(WPDClient *)self processName];
+    clientUUID = [(WPDClient *)self clientUUID];
+    processName = [(WPDClient *)self processName];
     v12 = 138543874;
-    v13 = v5;
+    v13 = clientUUID;
     v14 = 2114;
-    v15 = v6;
+    v15 = processName;
     v16 = 1024;
-    v17 = [(WPDClient *)self processID];
+    processID = [(WPDClient *)self processID];
     _os_log_impl(&dword_272965000, v4, OS_LOG_TYPE_DEFAULT, "Removing WPDObjectDiscoveryClient %{public}@ of process %{public}@ (%d)", &v12, 0x1Cu);
   }
 
   if ([(WPDClient *)self registered])
   {
-    v7 = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
-    v8 = [(WPDClient *)self clientUUID];
-    [v7 removeAdvertisingRequestsForClient:v8];
+    objectDiscoveryManager = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
+    clientUUID2 = [(WPDClient *)self clientUUID];
+    [objectDiscoveryManager removeAdvertisingRequestsForClient:clientUUID2];
 
-    v9 = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
-    [v9 updateNearbyTokens:0];
+    objectDiscoveryManager2 = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
+    [objectDiscoveryManager2 updateNearbyTokens:0];
   }
 
-  v10 = [(WPDClient *)self server];
-  [v10 removeClient:self];
+  server = [(WPDClient *)self server];
+  [server removeClient:self];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -331,9 +331,9 @@ void __80__WPDObjectDiscoveryClient_registerWithDaemon_forProcess_machName_holdV
 - (void)updateSPBeaconing
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 spAgent];
-  if ([v4 beaconState])
+  selfCopy = self;
+  spAgent = [a2 spAgent];
+  if ([spAgent beaconState])
   {
     v5 = "ON";
   }
@@ -343,10 +343,10 @@ void __80__WPDObjectDiscoveryClient_registerWithDaemon_forProcess_machName_holdV
     v5 = "OFF";
   }
 
-  v6 = [a2 objectDiscoveryManager];
+  objectDiscoveryManager = [a2 objectDiscoveryManager];
   v9 = 136315650;
   v10 = "[WPDObjectDiscoveryClient updateSPBeaconing]";
-  if ([v6 state] == 3)
+  if ([objectDiscoveryManager state] == 3)
   {
     v7 = "ON";
   }
@@ -360,7 +360,7 @@ void __80__WPDObjectDiscoveryClient_registerWithDaemon_forProcess_machName_holdV
   v12 = v5;
   v13 = 2080;
   v14 = v7;
-  _os_log_debug_impl(&dword_272965000, v3, OS_LOG_TYPE_DEBUG, "%s spAgent.beaconState: %s objectDiscoveryManager.state: %s", &v9, 0x20u);
+  _os_log_debug_impl(&dword_272965000, selfCopy, OS_LOG_TYPE_DEBUG, "%s spAgent.beaconState: %s objectDiscoveryManager.state: %s", &v9, 0x20u);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -377,14 +377,14 @@ void __80__WPDObjectDiscoveryClient_registerWithDaemon_forProcess_machName_holdV
 {
   v4 = [WPAdvertisingRequest requestForClientType:18];
   [(WPDObjectDiscoveryClient *)self stopAdvertising:v4];
-  v3 = [(WPDObjectDiscoveryClient *)self keyAddressAndPayload];
-  [v3 wipeout];
+  keyAddressAndPayload = [(WPDObjectDiscoveryClient *)self keyAddressAndPayload];
+  [keyAddressAndPayload wipeout];
 }
 
-- (void)startAdvertising:(id)a3
+- (void)startAdvertising:(id)advertising
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  advertisingCopy = advertising;
   if (WPLogInitOnce != -1)
   {
     [WPDObjectDiscoveryClient startAdvertising:];
@@ -395,7 +395,7 @@ void __80__WPDObjectDiscoveryClient_registerWithDaemon_forProcess_machName_holdV
     [WPDObjectDiscoveryClient startAdvertising:];
   }
 
-  v5 = [v4 clientType];
+  clientType = [advertisingCopy clientType];
   if (![(WPDClient *)self registered])
   {
     if (WPLogInitOnce != -1)
@@ -418,9 +418,9 @@ void __80__WPDObjectDiscoveryClient_registerWithDaemon_forProcess_machName_holdV
     goto LABEL_27;
   }
 
-  v6 = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
+  objectDiscoveryManager = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
 
-  if (!v6)
+  if (!objectDiscoveryManager)
   {
     if (WPLogInitOnce != -1)
     {
@@ -462,23 +462,23 @@ LABEL_37:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(WPDClient *)self processName];
+    processName = [(WPDClient *)self processName];
     v23 = 138544386;
-    v24 = v9;
+    v24 = processName;
     v25 = 1024;
-    v26 = [(WPDClient *)self processID];
+    processID = [(WPDClient *)self processID];
     v27 = 2048;
-    v28 = v5;
+    v28 = clientType;
     v29 = 2048;
-    v30 = [v4 advertisingRate];
+    advertisingRate = [advertisingCopy advertisingRate];
     v31 = 2048;
-    v32 = [v4 advertisingRate] * 0.625;
+    v32 = [advertisingCopy advertisingRate] * 0.625;
     _os_log_impl(&dword_272965000, v8, OS_LOG_TYPE_DEFAULT, "ObjectDiscovery Start advertising for process %{public}@ (%d) of type %ld with advertising interval %ld (%.2f ms)", &v23, 0x30u);
   }
 
-  v10 = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
-  v11 = [(WPDClient *)self clientUUID];
-  v12 = [v10 addAdvertisingRequest:v4 forClient:v11];
+  objectDiscoveryManager2 = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
+  clientUUID = [(WPDClient *)self clientUUID];
+  v12 = [objectDiscoveryManager2 addAdvertisingRequest:advertisingCopy forClient:clientUUID];
 
   if (!v12)
   {
@@ -509,7 +509,7 @@ LABEL_29:
     [WPDObjectDiscoveryClient startAdvertising:];
   }
 
-  [(WPDClient *)self advertisingFailedToStart:v12 ofType:v5];
+  [(WPDClient *)self advertisingFailedToStart:v12 ofType:clientType];
   [(WPDObjectDiscoveryClient *)self setPendingSent:0];
   v21 = 0;
   if (v14)
@@ -522,10 +522,10 @@ LABEL_38:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopAdvertising:(id)a3
+- (void)stopAdvertising:(id)advertising
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  advertisingCopy = advertising;
   if (WPLogInitOnce != -1)
   {
     [WPDObjectDiscoveryClient stopAdvertising:];
@@ -558,9 +558,9 @@ LABEL_38:
     goto LABEL_26;
   }
 
-  v5 = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
+  objectDiscoveryManager = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
 
-  if (!v5)
+  if (!objectDiscoveryManager)
   {
     if (WPLogInitOnce != -1)
     {
@@ -587,7 +587,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v6 = [v4 clientType];
+  clientType = [advertisingCopy clientType];
   if (WPLogInitOnce != -1)
   {
     [WPDObjectDiscoveryClient stopAdvertising:];
@@ -597,25 +597,25 @@ LABEL_27:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(WPDClient *)self processName];
+    processName = [(WPDClient *)self processName];
     v24 = 138543874;
-    v25 = v9;
+    v25 = processName;
     v26 = 1024;
-    v27 = [(WPDClient *)self processID];
+    processID = [(WPDClient *)self processID];
     v28 = 2048;
-    v29 = v6;
+    v29 = clientType;
     _os_log_impl(&dword_272965000, v8, OS_LOG_TYPE_DEFAULT, "ObjectDiscovery Stop advertising for process %{public}@ (%d) of type %ld", &v24, 0x1Cu);
   }
 
-  v10 = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
-  v11 = [(WPDClient *)self clientUUID];
-  v12 = [v10 removeAdvertisingRequest:v4 forClient:v11];
+  objectDiscoveryManager2 = [(WPDObjectDiscoveryClient *)self objectDiscoveryManager];
+  clientUUID = [(WPDClient *)self clientUUID];
+  v12 = [objectDiscoveryManager2 removeAdvertisingRequest:advertisingCopy forClient:clientUUID];
 
   if (!v12)
   {
-    v22 = [(WPDClient *)self conn];
-    v23 = [v22 remoteObjectProxy];
-    [v23 advertisingStoppedOfType:objc_msgSend(v4 withError:{"clientType"), 0}];
+    conn = [(WPDClient *)self conn];
+    remoteObjectProxy = [conn remoteObjectProxy];
+    [remoteObjectProxy advertisingStoppedOfType:objc_msgSend(advertisingCopy withError:{"clientType"), 0}];
 
     [(WPDObjectDiscoveryClient *)self setPendingSent:0];
     v12 = 0;
@@ -639,9 +639,9 @@ LABEL_28:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyClientObjectDiscoveryStateChange:(int64_t)a3
+- (void)notifyClientObjectDiscoveryStateChange:(int64_t)change
 {
-  if (notifyClientObjectDiscoveryStateChange__state != a3)
+  if (notifyClientObjectDiscoveryStateChange__state != change)
   {
     if (WPLogInitOnce != -1)
     {
@@ -653,15 +653,15 @@ LABEL_28:
       [WPDObjectDiscoveryClient notifyClientObjectDiscoveryStateChange:];
     }
 
-    notifyClientObjectDiscoveryStateChange__state = a3;
+    notifyClientObjectDiscoveryStateChange__state = change;
     objc_initWeak(&location, self);
-    v5 = [(WPDClient *)self serverQueue];
+    serverQueue = [(WPDClient *)self serverQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __67__WPDObjectDiscoveryClient_notifyClientObjectDiscoveryStateChange___block_invoke_253;
     v6[3] = &unk_279E58EE8;
     objc_copyWeak(&v7, &location);
-    dispatch_async(v5, v6);
+    dispatch_async(serverQueue, v6);
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -680,9 +680,9 @@ void __67__WPDObjectDiscoveryClient_notifyClientObjectDiscoveryStateChange___blo
   }
 }
 
-- (void)sendTestRequest:(id)a3
+- (void)sendTestRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (WPLogInitOnce != -1)
   {
     [WPDObjectDiscoveryClient sendTestRequest:];
@@ -691,10 +691,10 @@ void __67__WPDObjectDiscoveryClient_notifyClientObjectDiscoveryStateChange___blo
   v5 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [(WPDObjectDiscoveryClient *)v4 sendTestRequest:v5, self];
+    [(WPDObjectDiscoveryClient *)requestCopy sendTestRequest:v5, self];
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"kWPTestRequestKeyID"];
+  v6 = [requestCopy objectForKeyedSubscript:@"kWPTestRequestKeyID"];
   v7 = v6;
   if (!v6)
   {
@@ -702,26 +702,26 @@ void __67__WPDObjectDiscoveryClient_notifyClientObjectDiscoveryStateChange___blo
     goto LABEL_12;
   }
 
-  v8 = [v6 integerValue];
-  v9 = v8;
-  if (v8 <= 4)
+  integerValue = [v6 integerValue];
+  v9 = integerValue;
+  if (integerValue <= 4)
   {
-    if (v8 <= 2)
+    if (integerValue <= 2)
     {
-      if (v8 == 1)
+      if (integerValue == 1)
       {
         [(WPDClient *)self setIsTestModeClient:1];
-        v17 = [(WPDObjectDiscoveryClient *)self spAgent];
-        [v17 startTest];
+        spAgent = [(WPDObjectDiscoveryClient *)self spAgent];
+        [spAgent startTest];
 
         goto LABEL_41;
       }
 
-      if (v8 == 2)
+      if (integerValue == 2)
       {
         [(WPDClient *)self setIsTestModeClient:0];
-        v10 = [(WPDObjectDiscoveryClient *)self spAgent];
-        [v10 stopTest];
+        spAgent2 = [(WPDObjectDiscoveryClient *)self spAgent];
+        [spAgent2 stopTest];
 
         [(WPDObjectDiscoveryClient *)self setTestBeaconingInterval:0];
         goto LABEL_41;
@@ -730,9 +730,9 @@ void __67__WPDObjectDiscoveryClient_notifyClientObjectDiscoveryStateChange___blo
       goto LABEL_12;
     }
 
-    if (v8 == 3)
+    if (integerValue == 3)
     {
-      v18 = [v4 objectForKeyedSubscript:@"kWPTestBeaconKeysKey"];
+      v18 = [requestCopy objectForKeyedSubscript:@"kWPTestBeaconKeysKey"];
       if (v18)
       {
         v12 = v18;
@@ -743,13 +743,13 @@ void __67__WPDObjectDiscoveryClient_notifyClientObjectDiscoveryStateChange___blo
         v12 = MEMORY[0x277CBEBF8];
       }
 
-      v13 = [(WPDObjectDiscoveryClient *)self spAgent];
-      [v13 updateTestBeaconKeys:v12];
+      spAgent3 = [(WPDObjectDiscoveryClient *)self spAgent];
+      [spAgent3 updateTestBeaconKeys:v12];
     }
 
     else
     {
-      v14 = [v4 objectForKeyedSubscript:@"kWPTestNearOwnerTokensKey"];
+      v14 = [requestCopy objectForKeyedSubscript:@"kWPTestNearOwnerTokensKey"];
       if (v14)
       {
         v12 = v14;
@@ -760,8 +760,8 @@ void __67__WPDObjectDiscoveryClient_notifyClientObjectDiscoveryStateChange___blo
         v12 = MEMORY[0x277CBEBF8];
       }
 
-      v13 = [(WPDObjectDiscoveryClient *)self spAgent];
-      [v13 updateTestNearOwnerTokens:v12];
+      spAgent3 = [(WPDObjectDiscoveryClient *)self spAgent];
+      [spAgent3 updateTestNearOwnerTokens:v12];
     }
 
 LABEL_40:
@@ -769,28 +769,28 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if (v8 <= 6)
+  if (integerValue <= 6)
   {
-    if (v8 == 5)
+    if (integerValue == 5)
     {
-      v12 = [v4 objectForKeyedSubscript:@"kWPTestBeaconStatusKey"];
-      v13 = [(WPDObjectDiscoveryClient *)self spAgent];
-      [v13 updateTestBeaconStatus:v12];
+      v12 = [requestCopy objectForKeyedSubscript:@"kWPTestBeaconStatusKey"];
+      spAgent3 = [(WPDObjectDiscoveryClient *)self spAgent];
+      [spAgent3 updateTestBeaconStatus:v12];
     }
 
     else
     {
-      v12 = [v4 objectForKeyedSubscript:@"kWPTestBeaconExtendedKey"];
-      v13 = [(WPDObjectDiscoveryClient *)self spAgent];
-      [v13 updateTestBeaconExtended:v12];
+      v12 = [requestCopy objectForKeyedSubscript:@"kWPTestBeaconExtendedKey"];
+      spAgent3 = [(WPDObjectDiscoveryClient *)self spAgent];
+      [spAgent3 updateTestBeaconExtended:v12];
     }
 
     goto LABEL_40;
   }
 
-  if (v8 == 7)
+  if (integerValue == 7)
   {
-    v19 = [v4 objectForKeyedSubscript:@"kWPTestBeaconStateKey"];
+    v19 = [requestCopy objectForKeyedSubscript:@"kWPTestBeaconStateKey"];
     if (v19)
     {
       v12 = v19;
@@ -801,12 +801,12 @@ LABEL_40:
       v12 = MEMORY[0x277CBEC28];
     }
 
-    v13 = [(WPDObjectDiscoveryClient *)self spAgent];
-    [v13 updateTestBeaconState:v12];
+    spAgent3 = [(WPDObjectDiscoveryClient *)self spAgent];
+    [spAgent3 updateTestBeaconState:v12];
     goto LABEL_40;
   }
 
-  if (v8 != 8)
+  if (integerValue != 8)
   {
 LABEL_12:
     if (WPLogInitOnce != -1)
@@ -823,7 +823,7 @@ LABEL_12:
     goto LABEL_41;
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"kWPTestBeaconIntervalKey"];
+  v15 = [requestCopy objectForKeyedSubscript:@"kWPTestBeaconIntervalKey"];
   [(WPDObjectDiscoveryClient *)self setTestBeaconingInterval:v15];
 
   if (WPLogInitOnce != -1)

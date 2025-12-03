@@ -1,20 +1,20 @@
 @interface SBCrossfadeDosidoSwitcherModifier
-- (BOOL)_isFromAppLayoutAtIndex:(unint64_t)a3;
-- (BOOL)_isToAppLayoutAtIndex:(unint64_t)a3;
-- (BOOL)_isToOrFromAppLayoutAtIndex:(unint64_t)a3;
+- (BOOL)_isFromAppLayoutAtIndex:(unint64_t)index;
+- (BOOL)_isToAppLayoutAtIndex:(unint64_t)index;
+- (BOOL)_isToOrFromAppLayoutAtIndex:(unint64_t)index;
 - (BOOL)isHomeScreenContentRequired;
 - (BOOL)isWallpaperRequiredForSwitcher;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBCrossfadeDosidoSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBCrossfadeDosidoSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout;
 - (double)homeScreenAlpha;
 - (double)homeScreenBackdropBlurProgress;
 - (double)homeScreenDimmingAlpha;
 - (double)homeScreenScale;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
 - (double)wallpaperScale;
 - (id)_opacitySettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)topMostLayoutElements;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
@@ -24,18 +24,18 @@
 
 @implementation SBCrossfadeDosidoSwitcherModifier
 
-- (SBCrossfadeDosidoSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5
+- (SBCrossfadeDosidoSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout
 {
-  v9 = a4;
-  v10 = a5;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v14.receiver = self;
   v14.super_class = SBCrossfadeDosidoSwitcherModifier;
-  v11 = [(SBTransitionSwitcherModifier *)&v14 initWithTransitionID:a3];
+  v11 = [(SBTransitionSwitcherModifier *)&v14 initWithTransitionID:d];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_fromAppLayout, a4);
-    objc_storeStrong(&v12->_toAppLayout, a5);
+    objc_storeStrong(&v11->_fromAppLayout, layout);
+    objc_storeStrong(&v12->_toAppLayout, appLayout);
   }
 
   return v12;
@@ -45,16 +45,16 @@
 {
   v6.receiver = self;
   v6.super_class = SBCrossfadeDosidoSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:2];
-  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v2];
+  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:transitionWillBegin];
 
   return v4;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  if ([(SBCrossfadeDosidoSwitcherModifier *)self isFullScreenTransition]&& [(SBCrossfadeDosidoSwitcherModifier *)self _isToOrFromAppLayoutAtIndex:a3])
+  if ([(SBCrossfadeDosidoSwitcherModifier *)self isFullScreenTransition]&& [(SBCrossfadeDosidoSwitcherModifier *)self _isToOrFromAppLayoutAtIndex:index])
   {
     [(SBCrossfadeDosidoSwitcherModifier *)self containerViewBounds];
   }
@@ -63,7 +63,7 @@
   {
     v9.receiver = self;
     v9.super_class = SBCrossfadeDosidoSwitcherModifier;
-    [(SBCrossfadeDosidoSwitcherModifier *)&v9 frameForIndex:a3];
+    [(SBCrossfadeDosidoSwitcherModifier *)&v9 frameForIndex:index];
   }
 
   result.size.height = v8;
@@ -73,13 +73,13 @@
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  if (![(SBCrossfadeDosidoSwitcherModifier *)self isFullScreenTransition]|| (v6 = [(SBCrossfadeDosidoSwitcherModifier *)self _isToOrFromAppLayoutAtIndex:a3], result = 1.0, !v6))
+  if (![(SBCrossfadeDosidoSwitcherModifier *)self isFullScreenTransition]|| (v6 = [(SBCrossfadeDosidoSwitcherModifier *)self _isToOrFromAppLayoutAtIndex:index], result = 1.0, !v6))
   {
     v7.receiver = self;
     v7.super_class = SBCrossfadeDosidoSwitcherModifier;
-    [(SBCrossfadeDosidoSwitcherModifier *)&v7 scaleForIndex:a3, result];
+    [(SBCrossfadeDosidoSwitcherModifier *)&v7 scaleForIndex:index, result];
   }
 
   return result;
@@ -102,15 +102,15 @@
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBCrossfadeDosidoSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBCrossfadeDosidoSwitcherModifier *)self _opacitySettings];
-  [v5 setOpacitySettings:v6];
+  _opacitySettings = [(SBCrossfadeDosidoSwitcherModifier *)self _opacitySettings];
+  [v5 setOpacitySettings:_opacitySettings];
 
   [v5 setUpdateMode:3];
 
@@ -119,20 +119,20 @@
 
 - (id)_opacitySettings
 {
-  v2 = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 crossfadeDosidoSettings];
+  switcherSettings = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  crossfadeDosidoSettings = [animationSettings crossfadeDosidoSettings];
 
-  return v4;
+  return crossfadeDosidoSettings;
 }
 
 - (double)homeScreenAlpha
 {
   if ([(SBCrossfadeDosidoSwitcherModifier *)self _shouldEnsureHomeScreenVisible])
   {
-    v3 = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
-    v4 = [v3 animationSettings];
-    [v4 homeScreenAlphaForMode:1];
+    switcherSettings = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings homeScreenAlphaForMode:1];
     v6 = v5;
 
     return v6;
@@ -152,9 +152,9 @@
 {
   if ([(SBCrossfadeDosidoSwitcherModifier *)self _shouldEnsureHomeScreenVisible])
   {
-    v3 = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
-    v4 = [v3 animationSettings];
-    [v4 homeScreenScaleForMode:1];
+    switcherSettings = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings homeScreenScaleForMode:1];
     v6 = v5;
 
     return v6;
@@ -174,9 +174,9 @@
 {
   if ([(SBCrossfadeDosidoSwitcherModifier *)self _shouldEnsureHomeScreenVisible])
   {
-    v3 = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
-    v4 = [v3 animationSettings];
-    [v4 wallpaperScaleForMode:1];
+    switcherSettings = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings wallpaperScaleForMode:1];
     v6 = v5;
 
     return v6;
@@ -196,9 +196,9 @@
 {
   if ([(SBCrossfadeDosidoSwitcherModifier *)self _shouldEnsureHomeScreenVisible])
   {
-    v3 = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
-    v4 = [v3 animationSettings];
-    [v4 homeScreenDimmingAlphaForMode:1];
+    switcherSettings = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings homeScreenDimmingAlphaForMode:1];
     v6 = v5;
 
     return v6;
@@ -230,9 +230,9 @@
 {
   if ([(SBCrossfadeDosidoSwitcherModifier *)self _shouldEnsureHomeScreenVisible])
   {
-    v3 = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
-    v4 = [v3 animationSettings];
-    [v4 homeScreenBlurProgressForMode:1];
+    switcherSettings = [(SBCrossfadeDosidoSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings homeScreenBlurProgressForMode:1];
     v6 = v5;
 
     return v6;
@@ -284,21 +284,21 @@
   return [(SBCrossfadeDosidoSwitcherModifier *)&v4 wallpaperStyle];
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = [(SBTransitionSwitcherModifier *)self transitionPhase];
-  v10 = [(SBCrossfadeDosidoSwitcherModifier *)self _isFromAppLayoutAtIndex:a5];
-  if (v9 > 1)
+  layoutCopy = layout;
+  transitionPhase = [(SBTransitionSwitcherModifier *)self transitionPhase];
+  v10 = [(SBCrossfadeDosidoSwitcherModifier *)self _isFromAppLayoutAtIndex:index];
+  if (transitionPhase > 1)
   {
     v11 = 0.0;
     if (!v10)
     {
       v11 = 1.0;
-      if (![(SBCrossfadeDosidoSwitcherModifier *)self _isToAppLayoutAtIndex:a5])
+      if (![(SBCrossfadeDosidoSwitcherModifier *)self _isToAppLayoutAtIndex:index])
       {
-        v15 = self;
-        v12 = &v15;
+        selfCopy = self;
+        v12 = &selfCopy;
         goto LABEL_8;
       }
     }
@@ -310,13 +310,13 @@
     if (!v10)
     {
       v11 = 0.0;
-      if (![(SBCrossfadeDosidoSwitcherModifier *)self _isToAppLayoutAtIndex:a5])
+      if (![(SBCrossfadeDosidoSwitcherModifier *)self _isToAppLayoutAtIndex:index])
       {
-        v16 = self;
-        v12 = &v16;
+        selfCopy2 = self;
+        v12 = &selfCopy2;
 LABEL_8:
         v12[1] = SBCrossfadeDosidoSwitcherModifier;
-        objc_msgSendSuper2(v12, sel_opacityForLayoutRole_inAppLayout_atIndex_, a3, v8, a5, v15);
+        objc_msgSendSuper2(v12, sel_opacityForLayoutRole_inAppLayout_atIndex_, role, layoutCopy, index, selfCopy);
         v11 = v13;
       }
     }
@@ -331,57 +331,57 @@ LABEL_8:
   if (self->_toAppLayout)
   {
     v5[0] = self->_toAppLayout;
-    v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
+    topMostLayoutElements = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SBCrossfadeDosidoSwitcherModifier;
-    v2 = [(SBCrossfadeDosidoSwitcherModifier *)&v4 topMostLayoutElements];
+    topMostLayoutElements = [(SBCrossfadeDosidoSwitcherModifier *)&v4 topMostLayoutElements];
   }
 
-  return v2;
+  return topMostLayoutElements;
 }
 
-- (BOOL)_isFromAppLayoutAtIndex:(unint64_t)a3
+- (BOOL)_isFromAppLayoutAtIndex:(unint64_t)index
 {
   if (!self->_fromAppLayout)
   {
     return 0;
   }
 
-  v4 = self;
-  v5 = [(SBCrossfadeDosidoSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBCrossfadeDosidoSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_fromAppLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_fromAppLayout];
+  return selfCopy;
 }
 
-- (BOOL)_isToAppLayoutAtIndex:(unint64_t)a3
+- (BOOL)_isToAppLayoutAtIndex:(unint64_t)index
 {
   if (!self->_toAppLayout)
   {
     return 0;
   }
 
-  v4 = self;
-  v5 = [(SBCrossfadeDosidoSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBCrossfadeDosidoSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_toAppLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_toAppLayout];
+  return selfCopy;
 }
 
-- (BOOL)_isToOrFromAppLayoutAtIndex:(unint64_t)a3
+- (BOOL)_isToOrFromAppLayoutAtIndex:(unint64_t)index
 {
   if ([(SBCrossfadeDosidoSwitcherModifier *)self _isFromAppLayoutAtIndex:?])
   {
     return 1;
   }
 
-  return [(SBCrossfadeDosidoSwitcherModifier *)self _isToAppLayoutAtIndex:a3];
+  return [(SBCrossfadeDosidoSwitcherModifier *)self _isToAppLayoutAtIndex:index];
 }
 
 @end

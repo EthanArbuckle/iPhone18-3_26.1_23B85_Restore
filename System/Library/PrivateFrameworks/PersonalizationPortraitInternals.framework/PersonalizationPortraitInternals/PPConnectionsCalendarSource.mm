@@ -1,29 +1,29 @@
 @interface PPConnectionsCalendarSource
 + (PPConnectionsCalendarSource)sharedInstance;
-+ (id)locationLabelFromEvent:(id)a3;
-+ (id)locationNameFromEvent:(id)a3;
-+ (id)locationValueFromEvent:(id)a3;
-- (BOOL)isCalendarEventEligibleForLocationPrediction:(id)a3;
++ (id)locationLabelFromEvent:(id)event;
++ (id)locationNameFromEvent:(id)event;
++ (id)locationValueFromEvent:(id)event;
+- (BOOL)isCalendarEventEligibleForLocationPrediction:(id)prediction;
 - (PPConnectionsCalendarSource)init;
-- (id)locationItemsWithCriteria:(id)a3 earliest:(id)a4 latest:(id)a5 limit:(unint64_t)a6 consumer:(unint64_t)a7 explanationSet:(id)a8;
+- (id)locationItemsWithCriteria:(id)criteria earliest:(id)earliest latest:(id)latest limit:(unint64_t)limit consumer:(unint64_t)consumer explanationSet:(id)set;
 @end
 
 @implementation PPConnectionsCalendarSource
 
-- (id)locationItemsWithCriteria:(id)a3 earliest:(id)a4 latest:(id)a5 limit:(unint64_t)a6 consumer:(unint64_t)a7 explanationSet:(id)a8
+- (id)locationItemsWithCriteria:(id)criteria earliest:(id)earliest latest:(id)latest limit:(unint64_t)limit consumer:(unint64_t)consumer explanationSet:(id)set
 {
-  v9 = a7;
+  consumerCopy = consumer;
   v48 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a8;
-  if ((v9 & 6) != 0 || [a3 locationField] == 10)
+  latestCopy = latest;
+  setCopy = set;
+  if ((consumerCopy & 6) != 0 || [criteria locationField] == 10)
   {
     v14 = 0;
   }
 
   else
   {
-    [v12 timeIntervalSinceNow];
+    [latestCopy timeIntervalSinceNow];
     v18 = v17;
     v19 = objc_opt_new();
     v20 = v19;
@@ -79,7 +79,7 @@ LABEL_12:
             }
 
 LABEL_25:
-            v40 = v13;
+            v40 = setCopy;
             v41 = 30;
             goto LABEL_22;
           }
@@ -123,7 +123,7 @@ LABEL_25:
 
     else
     {
-      v40 = v13;
+      v40 = setCopy;
       v41 = 29;
 LABEL_22:
       [v40 push:v41];
@@ -138,14 +138,14 @@ LABEL_27:
   return v14;
 }
 
-- (BOOL)isCalendarEventEligibleForLocationPrediction:(id)a3
+- (BOOL)isCalendarEventEligibleForLocationPrediction:(id)prediction
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 eventFlags] & 4) != 0)
+  predictionCopy = prediction;
+  v4 = predictionCopy;
+  if (predictionCopy && ([predictionCopy eventFlags] & 4) != 0)
   {
-    v6 = [v4 structuredLocationAddress];
-    v5 = v6 != 0;
+    structuredLocationAddress = [v4 structuredLocationAddress];
+    v5 = structuredLocationAddress != 0;
   }
 
   else
@@ -171,14 +171,14 @@ LABEL_27:
   return v2;
 }
 
-+ (id)locationValueFromEvent:(id)a3
++ (id)locationValueFromEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 structuredLocationAddress];
-  if (v4)
+  eventCopy = event;
+  structuredLocationAddress = [eventCopy structuredLocationAddress];
+  if (structuredLocationAddress)
   {
-    v5 = [v3 structuredLocationAddress];
-    v6 = [v5 stringByReplacingOccurrencesOfString:@" withString:{", @" "}];
+    structuredLocationAddress2 = [eventCopy structuredLocationAddress];
+    v6 = [structuredLocationAddress2 stringByReplacingOccurrencesOfString:@" withString:{", @" "}];
     v7 = PPCollapseWhitespaceAndStrip();
   }
 
@@ -190,36 +190,36 @@ LABEL_27:
   return v7;
 }
 
-+ (id)locationLabelFromEvent:(id)a3
++ (id)locationLabelFromEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 structuredLocationTitle];
-  if (v4)
+  eventCopy = event;
+  structuredLocationTitle = [eventCopy structuredLocationTitle];
+  if (structuredLocationTitle)
   {
     v5 = PPCollapseWhitespaceAndStrip();
   }
 
   else
   {
-    v6 = [v3 title];
+    title = [eventCopy title];
     v5 = PPCollapseWhitespaceAndStrip();
   }
 
   return v5;
 }
 
-+ (id)locationNameFromEvent:(id)a3
++ (id)locationNameFromEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 structuredLocationTitle];
-  if (v4)
+  eventCopy = event;
+  structuredLocationTitle = [eventCopy structuredLocationTitle];
+  if (structuredLocationTitle)
   {
     v5 = PPCollapseWhitespaceAndStrip();
   }
 
   else
   {
-    v6 = [v3 title];
+    title = [eventCopy title];
     v5 = PPCollapseWhitespaceAndStrip();
   }
 

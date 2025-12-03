@@ -1,32 +1,32 @@
 @interface CollectionViewTableFlowLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)setSectionFootersPinToVisibleBounds:(BOOL)a3;
-- (void)setSectionHeadersPinToVisibleBounds:(BOOL)a3;
+- (void)setSectionFootersPinToVisibleBounds:(BOOL)bounds;
+- (void)setSectionHeadersPinToVisibleBounds:(BOOL)bounds;
 @end
 
 @implementation CollectionViewTableFlowLayout
 
-- (void)setSectionHeadersPinToVisibleBounds:(BOOL)a3
+- (void)setSectionHeadersPinToVisibleBounds:(BOOL)bounds
 {
-  v3 = self;
+  selfCopy = self;
   sub_1004BE398();
 }
 
-- (void)setSectionFootersPinToVisibleBounds:(BOOL)a3
+- (void)setSectionFootersPinToVisibleBounds:(BOOL)bounds
 {
-  v3 = self;
+  selfCopy = self;
   sub_1004BE4B8();
 }
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004BCE1C();
 }
 
@@ -47,14 +47,14 @@
   return result;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_1007417F4();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100741744();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1004BD094();
 
   (*(v5 + 8))(v7, v4);
@@ -62,13 +62,13 @@
   return v9;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_1004BD668(x, y, width, height);
 
   if (v8)
@@ -85,35 +85,35 @@
   return v9.super.isa;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = sub_1004BDCC8(x, y, width, height);
 
   return v8 & 1;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = sub_1004BDE60(x, y, width, height);
 
   return v8;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1004BE104(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1004BE104(contextCopy);
 }
 
 @end

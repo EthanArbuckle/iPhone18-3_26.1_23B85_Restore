@@ -1,26 +1,26 @@
 @interface SBHUDControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_dismissHUD:(id)a3 animated:(BOOL)a4;
-- (void)_presentHUD:(id)a3 animated:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_dismissHUD:(id)d animated:(BOOL)animated;
+- (void)_presentHUD:(id)d animated:(BOOL)animated;
 @end
 
 @implementation SBHUDControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHUDController" hasInstanceMethod:@"_dismissHUD:animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"SBHUDController" hasInstanceMethod:@"_presentHUD:animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"SBHUDController" hasInstanceMethod:@"HUDWindow" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHUDController" hasInstanceMethod:@"_dismissHUD:animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"SBHUDController" hasInstanceMethod:@"_presentHUD:animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"SBHUDController" hasInstanceMethod:@"HUDWindow" withFullSignature:{"@", 0}];
 }
 
-- (void)_dismissHUD:(id)a3 animated:(BOOL)a4
+- (void)_dismissHUD:(id)d animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = SBHUDControllerAccessibility;
-  [(SBHUDControllerAccessibility *)&v9 _dismissHUD:v6 animated:v4];
+  [(SBHUDControllerAccessibility *)&v9 _dismissHUD:dCopy animated:animatedCopy];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     objc_opt_class();
@@ -31,13 +31,13 @@
   }
 }
 
-- (void)_presentHUD:(id)a3 animated:(BOOL)a4
+- (void)_presentHUD:(id)d animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = SBHUDControllerAccessibility;
-  [(SBHUDControllerAccessibility *)&v9 _presentHUD:v6 animated:v4];
+  [(SBHUDControllerAccessibility *)&v9 _presentHUD:dCopy animated:animatedCopy];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     objc_opt_class();

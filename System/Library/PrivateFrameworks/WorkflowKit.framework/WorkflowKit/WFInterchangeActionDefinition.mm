@@ -4,7 +4,7 @@
 - (BOOL)inputsMultipleItems;
 - (BOOL)isDiscontinued;
 - (BOOL)isDiscoverable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)outputsMultipleItems;
 - (BOOL)skipItemClassesSupportingInput;
 - (NSArray)capabilities;
@@ -19,34 +19,34 @@
 - (NSString)wfActionClassName;
 - (WFActionDescriptionDefinition)descriptionDefinition;
 - (WFActionParameterSummary)parameterSummaryDefinition;
-- (WFInterchangeActionDefinition)initWithDefinition:(id)a3 app:(id)a4;
+- (WFInterchangeActionDefinition)initWithDefinition:(id)definition app:(id)app;
 - (_NSLocalizedStringResource)keywords;
 - (id)description;
-- (id)localizedNameWithContext:(id)a3;
-- (id)localizedSubcategoryWithContext:(id)a3;
+- (id)localizedNameWithContext:(id)context;
+- (id)localizedSubcategoryWithContext:(id)context;
 - (unint64_t)hash;
-- (void)processInput:(id)a3 parameters:(id)a4 completionHandler:(id)a5;
+- (void)processInput:(id)input parameters:(id)parameters completionHandler:(id)handler;
 @end
 
 @implementation WFInterchangeActionDefinition
 
-- (void)processInput:(id)a3 parameters:(id)a4 completionHandler:(id)a5
+- (void)processInput:(id)input parameters:(id)parameters completionHandler:(id)handler
 {
   v65 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v34 = a4;
-  v32 = a5;
+  inputCopy = input;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v8 = dispatch_group_create();
-  v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v10 = objc_opt_new();
   v11 = objc_opt_new();
   v62[0] = 0;
   v62[1] = v62;
   v62[2] = 0x2020000000;
-  v12 = [v34 objectForKey:@"DisableCallback"];
-  v13 = [v12 BOOLValue];
+  v12 = [parametersCopy objectForKey:@"DisableCallback"];
+  bOOLValue = [v12 BOOLValue];
 
-  v63 = v13;
+  v63 = bOOLValue;
   v60[0] = 0;
   v60[1] = v60;
   v60[2] = 0x3032000000;
@@ -60,7 +60,7 @@
   v29 = v11;
   v55 = v29;
   v58 = v60;
-  v31 = v9;
+  v31 = strongToStrongObjectsMapTable;
   v56 = v31;
   v30 = v10;
   v57 = v30;
@@ -76,8 +76,8 @@
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v15 = [(WFInterchangeActionDefinition *)self inputMapping];
-  v16 = [v15 countByEnumeratingWithState:&v48 objects:v64 count:16];
+  inputMapping = [(WFInterchangeActionDefinition *)self inputMapping];
+  v16 = [inputMapping countByEnumeratingWithState:&v48 objects:v64 count:16];
   if (v16)
   {
     v17 = *v49;
@@ -87,12 +87,12 @@
       {
         if (*v49 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(inputMapping);
         }
 
         v19 = *(*(&v48 + 1) + 8 * i);
-        v20 = [v19 destinationType];
-        v21 = [v20 isEqualToString:@"Clipboard"];
+        destinationType = [v19 destinationType];
+        v21 = [destinationType isEqualToString:@"Clipboard"];
         dispatch_group_enter(v8);
         if (v21)
         {
@@ -104,7 +104,7 @@
           v45[4] = v19;
           v46 = v8;
           v47[1] = v52;
-          [v19 getContentCollection:v45 withInput:v33 parameters:v34];
+          [v19 getContentCollection:v45 withInput:inputCopy parameters:parametersCopy];
           v22 = &v46;
           v23 = v47;
         }
@@ -118,13 +118,13 @@
           v44 = v14;
           v42[4] = v19;
           v43 = v8;
-          [v19 getStringRepresentation:v42 withInput:v33 parameters:v34];
+          [v19 getStringRepresentation:v42 withInput:inputCopy parameters:parametersCopy];
           v22 = &v43;
           v23 = &v44;
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v48 objects:v64 count:16];
+      v16 = [inputMapping countByEnumeratingWithState:&v48 objects:v64 count:16];
     }
 
     while (v16);
@@ -135,7 +135,7 @@
   block[1] = 3221225472;
   block[2] = __75__WFInterchangeActionDefinition_processInput_parameters_completionHandler___block_invoke_6;
   block[3] = &unk_1E8379E60;
-  v38 = v32;
+  v38 = handlerCopy;
   v39 = v52;
   v36 = v31;
   v37 = v30;
@@ -143,7 +143,7 @@
   v41 = v62;
   v25 = v30;
   v26 = v31;
-  v27 = v32;
+  v27 = handlerCopy;
   dispatch_group_notify(v8, v24, block);
 
   _Block_object_dispose(v52, 8);
@@ -429,27 +429,27 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
   v11.receiver = self;
   v11.super_class = WFInterchangeActionDefinition;
   v4 = [(WFInterchangeActionDefinition *)&v11 description];
-  v5 = [MEMORY[0x1E69E0BE0] defaultContext];
-  v6 = [(WFInterchangeActionDefinition *)self localizedNameWithContext:v5];
+  defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+  v6 = [(WFInterchangeActionDefinition *)self localizedNameWithContext:defaultContext];
   v7 = [(WFInterchangeActionDefinition *)self app];
-  v8 = [v7 localizedName];
-  v9 = [v3 stringWithFormat:@"%@: %@ from %@", v4, v6, v8];
+  localizedName = [v7 localizedName];
+  v9 = [v3 stringWithFormat:@"%@: %@ from %@", v4, v6, localizedName];
 
   return v9;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 hash];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -459,12 +459,12 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFInterchangeActionDefinition *)self definition];
-      v6 = [(WFInterchangeActionDefinition *)v4 definition];
-      if ([v5 isEqual:v6])
+      definition = [(WFInterchangeActionDefinition *)self definition];
+      definition2 = [(WFInterchangeActionDefinition *)equalCopy definition];
+      if ([definition isEqual:definition2])
       {
         v7 = [(WFInterchangeActionDefinition *)self app];
-        v8 = [(WFInterchangeActionDefinition *)v4 app];
+        v8 = [(WFInterchangeActionDefinition *)equalCopy app];
         v9 = [v7 isEqual:v8];
       }
 
@@ -485,45 +485,45 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
 
 - (NSArray)requiredResourceNames
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"RequiredResourceNames"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"RequiredResourceNames"];
 
   return v3;
 }
 
 - (NSString)wfActionClassName
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"WFActionClass"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"WFActionClass"];
 
   return v3;
 }
 
 - (BOOL)createsWFAction
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"CreatesWFAction"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"CreatesWFAction"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)skipItemClassesSupportingInput
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"SkipItemClassesSupportingInput"];
-  v4 = [v3 BOOLValue];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"SkipItemClassesSupportingInput"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSArray)outputContentClasses
@@ -537,8 +537,8 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [(WFInterchangeActionDefinition *)self outputMapping];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    outputMapping = [(WFInterchangeActionDefinition *)self outputMapping];
+    v6 = [outputMapping countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
       v7 = v6;
@@ -549,29 +549,29 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(outputMapping);
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
-          v11 = [v10 destinationType];
-          v12 = [v11 isEqualToString:@"Output"];
+          destinationType = [v10 destinationType];
+          v12 = [destinationType isEqualToString:@"Output"];
 
           if (v12)
           {
-            v13 = [v10 contentItemClasses];
-            [v4 unionOrderedSet:v13];
+            contentItemClasses = [v10 contentItemClasses];
+            [v4 unionOrderedSet:contentItemClasses];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [outputMapping countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v7);
     }
 
-    v14 = [v4 array];
+    array = [v4 array];
     v15 = self->_outputContentClasses;
-    self->_outputContentClasses = v14;
+    self->_outputContentClasses = array;
 
     outputContentClasses = self->_outputContentClasses;
   }
@@ -592,8 +592,8 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [(WFInterchangeActionDefinition *)self inputMapping];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    inputMapping = [(WFInterchangeActionDefinition *)self inputMapping];
+    v6 = [inputMapping countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
       v7 = v6;
@@ -604,29 +604,29 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(inputMapping);
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
-          v11 = [v10 sourceType];
-          v12 = [v11 isEqualToString:@"Input"];
+          sourceType = [v10 sourceType];
+          v12 = [sourceType isEqualToString:@"Input"];
 
           if (v12)
           {
-            v13 = [v10 contentItemClasses];
-            [v4 unionOrderedSet:v13];
+            contentItemClasses = [v10 contentItemClasses];
+            [v4 unionOrderedSet:contentItemClasses];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [inputMapping countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v7);
     }
 
-    v14 = [v4 array];
+    array = [v4 array];
     v15 = self->_inputContentClasses;
-    self->_inputContentClasses = v14;
+    self->_inputContentClasses = array;
 
     inputContentClasses = self->_inputContentClasses;
   }
@@ -643,8 +643,8 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(WFInterchangeActionDefinition *)self outputMapping];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  outputMapping = [(WFInterchangeActionDefinition *)self outputMapping];
+  v3 = [outputMapping countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -656,12 +656,12 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(outputMapping);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 sourceType];
-        v10 = [v9 isEqualToString:@"Output"];
+        sourceType = [v8 sourceType];
+        v10 = [sourceType isEqualToString:@"Output"];
 
         if (v10)
         {
@@ -669,7 +669,7 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [outputMapping countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -691,8 +691,8 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(WFInterchangeActionDefinition *)self inputMapping];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  inputMapping = [(WFInterchangeActionDefinition *)self inputMapping];
+  v3 = [inputMapping countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -704,12 +704,12 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(inputMapping);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 sourceType];
-        v10 = [v9 isEqualToString:@"Input"];
+        sourceType = [v8 sourceType];
+        v10 = [sourceType isEqualToString:@"Input"];
 
         if (v10)
         {
@@ -717,7 +717,7 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [inputMapping countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -739,8 +739,8 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(WFInterchangeActionDefinition *)self inputMapping];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  inputMapping = [(WFInterchangeActionDefinition *)self inputMapping];
+  v3 = [inputMapping countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -752,12 +752,12 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(inputMapping);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 sourceType];
-        v10 = [v9 isEqualToString:@"Input"];
+        sourceType = [v8 sourceType];
+        v10 = [sourceType isEqualToString:@"Input"];
 
         if (v10)
         {
@@ -765,7 +765,7 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [inputMapping countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -782,8 +782,8 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
 
 - (WFActionDescriptionDefinition)descriptionDefinition
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"Description"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"Description"];
 
   if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -797,64 +797,64 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
 
 - (BOOL)isDiscoverable
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"Discoverable"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"Discoverable"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isDiscontinued
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"Discontinued"];
-  v4 = [v3 BOOLValue];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"Discontinued"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSDate)lastModifiedDate
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"LastModifiedDate"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"LastModifiedDate"];
 
   return v3;
 }
 
 - (NSDate)creationDate
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"CreationDate"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"CreationDate"];
 
   return v3;
 }
 
 - (_NSLocalizedStringResource)keywords
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"ActionKeywords"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"ActionKeywords"];
 
   return v3;
 }
 
-- (id)localizedSubcategoryWithContext:(id)a3
+- (id)localizedSubcategoryWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFInterchangeActionDefinition *)self definition];
-  v6 = [v5 objectForKey:@"Subcategory"];
+  contextCopy = context;
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v6 = [definition objectForKey:@"Subcategory"];
 
   if (v6)
   {
-    v7 = [v4 localize:v6];
+    v7 = [contextCopy localize:v6];
   }
 
   else
@@ -867,23 +867,23 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
 
 - (NSString)category
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"Category"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"Category"];
 
   return v3;
 }
 
 - (NSString)identifier
 {
-  v3 = [(WFInterchangeActionDefinition *)self definition];
-  v4 = [v3 objectForKey:@"Identifier"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v4 = [definition objectForKey:@"Identifier"];
 
   if (v4)
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = [(WFInterchangeActionDefinition *)self app];
-    v7 = [v6 identifier];
-    v8 = [v5 stringWithFormat:@"%@.%@", v7, v4];
+    identifier = [v6 identifier];
+    v8 = [v5 stringWithFormat:@"%@.%@", identifier, v4];
   }
 
   else
@@ -896,8 +896,8 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
 
 - (NSString)inputParameterSourceKey
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"InputMapping"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"InputMapping"];
 
   v4 = [v3 objectMatchingKey:@"SourceType" value:@"Input"];
   v5 = [v4 objectForKey:@"SourceKey"];
@@ -907,21 +907,21 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
 
 - (WFActionParameterSummary)parameterSummaryDefinition
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"ParameterSummary"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"ParameterSummary"];
 
   return v3;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFInterchangeActionDefinition *)self definition];
-  v6 = [v5 objectForKey:@"Name"];
+  contextCopy = context;
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v6 = [definition objectForKey:@"Name"];
 
   if (v6)
   {
-    v7 = [v4 localize:v6];
+    v7 = [contextCopy localize:v6];
   }
 
   else
@@ -934,33 +934,33 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
 
 - (NSArray)capabilities
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"Capabilities"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"Capabilities"];
 
   return v3;
 }
 
-- (WFInterchangeActionDefinition)initWithDefinition:(id)a3 app:(id)a4
+- (WFInterchangeActionDefinition)initWithDefinition:(id)definition app:(id)app
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"ActionClass"];
+  definitionCopy = definition;
+  appCopy = app;
+  v8 = [definitionCopy objectForKey:@"ActionClass"];
   v9 = v8;
   if (v8 && !NSClassFromString(v8))
   {
-    v23 = 0;
+    selfCopy2 = 0;
   }
 
   else
   {
-    obj = a4;
+    obj = app;
     v45 = v9;
-    v46 = v7;
-    v10 = [v6 objectForKey:@"InputMapping"];
+    v46 = appCopy;
+    v10 = [definitionCopy objectForKey:@"InputMapping"];
     v11 = 0x1E695D000uLL;
-    v48 = self;
-    v49 = v6;
+    selfCopy = self;
+    v49 = definitionCopy;
     v47 = v10;
     if ([v10 count])
     {
@@ -995,9 +995,9 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
             v21 = [[v20 alloc] initWithDefinition:v18];
             if (!v21)
             {
-              v23 = 0;
-              self = v48;
-              v6 = v49;
+              selfCopy2 = 0;
+              self = selfCopy;
+              definitionCopy = v49;
               v10 = v47;
               goto LABEL_36;
             }
@@ -1016,8 +1016,8 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
         }
       }
 
-      self = v48;
-      v6 = v49;
+      self = selfCopy;
+      definitionCopy = v49;
       v10 = v47;
       v11 = 0x1E695D000;
     }
@@ -1027,7 +1027,7 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
       v12 = 0;
     }
 
-    v24 = [v6 objectForKey:@"OutputMapping"];
+    v24 = [definitionCopy objectForKey:@"OutputMapping"];
     if ([v24 count])
     {
       v13 = [objc_alloc(*(v11 + 3952)) initWithCapacity:{objc_msgSend(v24, "count")}];
@@ -1063,9 +1063,9 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
             if (!v33)
             {
 
-              v23 = 0;
-              self = v48;
-              v6 = v49;
+              selfCopy2 = 0;
+              self = selfCopy;
+              definitionCopy = v49;
               v10 = v47;
               v24 = v43;
               goto LABEL_35;
@@ -1085,8 +1085,8 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
         }
       }
 
-      self = v48;
-      v6 = v49;
+      self = selfCopy;
+      definitionCopy = v49;
       v10 = v47;
       v24 = v43;
     }
@@ -1096,24 +1096,24 @@ void __75__WFInterchangeActionDefinition_processInput_parameters_completionHandl
       v13 = 0;
     }
 
-    v23 = [(WFInterchangeActionDefinition *)self init];
-    if (v23)
+    selfCopy2 = [(WFInterchangeActionDefinition *)self init];
+    if (selfCopy2)
     {
-      v35 = [v6 copy];
-      definition = v23->_definition;
-      v23->_definition = v35;
+      v35 = [definitionCopy copy];
+      definition = selfCopy2->_definition;
+      selfCopy2->_definition = v35;
 
-      objc_storeStrong(&v23->_app, obj);
+      objc_storeStrong(&selfCopy2->_app, obj);
       v37 = [v12 copy];
-      inputMapping = v23->_inputMapping;
-      v23->_inputMapping = v37;
+      inputMapping = selfCopy2->_inputMapping;
+      selfCopy2->_inputMapping = v37;
 
       v39 = [v13 copy];
-      outputMapping = v23->_outputMapping;
-      v23->_outputMapping = v39;
+      outputMapping = selfCopy2->_outputMapping;
+      selfCopy2->_outputMapping = v39;
 
-      self = v23;
-      v23 = self;
+      self = selfCopy2;
+      selfCopy2 = self;
     }
 
     else
@@ -1125,11 +1125,11 @@ LABEL_35:
 
 LABEL_36:
     v9 = v45;
-    v7 = v46;
+    appCopy = v46;
   }
 
   v41 = *MEMORY[0x1E69E9840];
-  return v23;
+  return selfCopy2;
 }
 
 @end

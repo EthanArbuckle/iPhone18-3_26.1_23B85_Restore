@@ -1,21 +1,21 @@
 @interface HMMediaGroup
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMMediaGroup)initWithCoder:(id)a3;
-- (HMMediaGroup)initWithIdentifier:(id)a3 parentIdentifier:(id)a4 name:(id)a5 defaultName:(BOOL)a6 destinationIdentifiers:(id)a7 associatedGroupIdentifier:(id)a8;
-- (HMMediaGroup)initWithProtoBufferData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMMediaGroup)initWithCoder:(id)coder;
+- (HMMediaGroup)initWithIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier name:(id)name defaultName:(BOOL)defaultName destinationIdentifiers:(id)identifiers associatedGroupIdentifier:(id)groupIdentifier;
+- (HMMediaGroup)initWithProtoBufferData:(id)data;
 - (NSArray)attributeDescriptions;
 - (NSArray)destinationIdentifiers;
 - (NSString)shortDescription;
 - (id)encodeToProtoBufferData;
-- (id)initClassWithProtoBufferData:(id)a3;
+- (id)initClassWithProtoBufferData:(id)data;
 - (id)logIdentifier;
 - (id)mediaSystemData;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeToProtoBufferDataWithEvent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeToProtoBufferDataWithEvent:(id)event;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMMediaGroup
@@ -24,51 +24,51 @@
 {
   v3 = objc_alloc_init(HMMediaGroupProtoMediaGroupData);
   [(HMMediaGroup *)self encodeToProtoBufferDataWithEvent:v3];
-  v4 = [(HMMediaGroupProtoMediaGroupData *)v3 data];
+  data = [(HMMediaGroupProtoMediaGroupData *)v3 data];
 
-  return v4;
+  return data;
 }
 
-- (void)encodeToProtoBufferDataWithEvent:(id)a3
+- (void)encodeToProtoBufferDataWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMMediaGroup *)self identifier];
-  v6 = [v5 UUIDString];
-  [v4 setIdentifier:v6];
+  eventCopy = event;
+  identifier = [(HMMediaGroup *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [eventCopy setIdentifier:uUIDString];
 
-  v7 = [(HMMediaGroup *)self parentIdentifier];
-  v8 = [v7 UUIDString];
-  [v4 setParentIdentifier:v8];
+  parentIdentifier = [(HMMediaGroup *)self parentIdentifier];
+  uUIDString2 = [parentIdentifier UUIDString];
+  [eventCopy setParentIdentifier:uUIDString2];
 
-  v9 = [(HMMediaGroup *)self name];
-  [v4 setName:v9];
+  name = [(HMMediaGroup *)self name];
+  [eventCopy setName:name];
 
-  [v4 setIsDefaultName:{-[HMMediaGroup isDefaultName](self, "isDefaultName")}];
-  v10 = [(HMMediaGroup *)self destinationIdentifiers];
-  v11 = [v10 mutableCopy];
-  [v4 setDestinationIdentifiers:v11];
+  [eventCopy setIsDefaultName:{-[HMMediaGroup isDefaultName](self, "isDefaultName")}];
+  destinationIdentifiers = [(HMMediaGroup *)self destinationIdentifiers];
+  v11 = [destinationIdentifiers mutableCopy];
+  [eventCopy setDestinationIdentifiers:v11];
 
-  v13 = [(HMMediaGroup *)self associatedGroupIdentifier];
-  v12 = [v13 UUIDString];
-  [v4 setAssociatedGroupIdentifier:v12];
+  associatedGroupIdentifier = [(HMMediaGroup *)self associatedGroupIdentifier];
+  uUIDString3 = [associatedGroupIdentifier UUIDString];
+  [eventCopy setAssociatedGroupIdentifier:uUIDString3];
 }
 
-- (HMMediaGroup)initWithProtoBufferData:(id)a3
+- (HMMediaGroup)initWithProtoBufferData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[HMMediaGroupProtoMediaGroupData alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[HMMediaGroupProtoMediaGroupData alloc] initWithData:dataCopy];
   v6 = v5;
   if (v5)
   {
     if (-[HMMediaGroupProtoMediaGroupData hasGroupRole](v5, "hasGroupRole") && (-[HMMediaGroupProtoMediaGroupData groupRole](v6, "groupRole"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 hasMediaSystem], v7, v8))
     {
-      v9 = [[HMMediaSystemData alloc] initWithProtoBufferData:v4];
+      v9 = [[HMMediaSystemData alloc] initWithProtoBufferData:dataCopy];
     }
 
     else
     {
-      v9 = [(HMMediaGroup *)self initClassWithProtoBufferData:v4];
+      v9 = [(HMMediaGroup *)self initClassWithProtoBufferData:dataCopy];
       self = &v9->super;
     }
 
@@ -99,11 +99,11 @@
   return p_super;
 }
 
-- (id)initClassWithProtoBufferData:(id)a3
+- (id)initClassWithProtoBufferData:(id)data
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[HMMediaGroupProtoMediaGroupData alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[HMMediaGroupProtoMediaGroupData alloc] initWithData:dataCopy];
   v6 = v5;
   if (!v5)
   {
@@ -126,7 +126,7 @@ LABEL_10:
 LABEL_11:
 
     objc_autoreleasePoolPop(v12);
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_29;
   }
 
@@ -151,56 +151,56 @@ LABEL_11:
   }
 
   v7 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v8 = [(HMMediaGroupProtoMediaGroupData *)v6 identifier];
-  v9 = [v7 initWithUUIDString:v8];
+  identifier = [(HMMediaGroupProtoMediaGroupData *)v6 identifier];
+  v9 = [v7 initWithUUIDString:identifier];
 
   if ([(HMMediaGroupProtoMediaGroupData *)v6 hasName])
   {
-    v10 = [(HMMediaGroupProtoMediaGroupData *)v6 name];
+    name = [(HMMediaGroupProtoMediaGroupData *)v6 name];
     if ([(HMMediaGroupProtoMediaGroupData *)v6 hasIsDefaultName])
     {
-      v11 = [(HMMediaGroupProtoMediaGroupData *)v6 isDefaultName];
+      isDefaultName = [(HMMediaGroupProtoMediaGroupData *)v6 isDefaultName];
     }
 
     else
     {
-      v11 = 0;
+      isDefaultName = 0;
     }
 
     if ([(HMMediaGroupProtoMediaGroupData *)v6 hasParentIdentifier])
     {
       v20 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v21 = [(HMMediaGroupProtoMediaGroupData *)v6 parentIdentifier];
-      v22 = [v20 initWithUUIDString:v21];
+      parentIdentifier = [(HMMediaGroupProtoMediaGroupData *)v6 parentIdentifier];
+      v22 = [v20 initWithUUIDString:parentIdentifier];
 
-      v23 = [(HMMediaGroupProtoMediaGroupData *)v6 destinationIdentifiers];
-      if (v23)
+      destinationIdentifiers = [(HMMediaGroupProtoMediaGroupData *)v6 destinationIdentifiers];
+      if (destinationIdentifiers)
       {
-        v24 = [(HMMediaGroupProtoMediaGroupData *)v6 destinationIdentifiers];
+        destinationIdentifiers2 = [(HMMediaGroupProtoMediaGroupData *)v6 destinationIdentifiers];
       }
 
       else
       {
-        v24 = MEMORY[0x1E695E0F0];
+        destinationIdentifiers2 = MEMORY[0x1E695E0F0];
       }
 
-      v28 = [v24 na_map:&__block_literal_global_84_41185];
+      v28 = [destinationIdentifiers2 na_map:&__block_literal_global_84_41185];
       if ([(HMMediaGroupProtoMediaGroupData *)v6 hasAssociatedGroupIdentifier])
       {
         v29 = objc_alloc(MEMORY[0x1E696AFB0]);
         [(HMMediaGroupProtoMediaGroupData *)v6 associatedGroupIdentifier];
-        v38 = v24;
+        v38 = destinationIdentifiers2;
         v30 = v9;
         v31 = v22;
-        v32 = v11;
-        v34 = v33 = v10;
+        v32 = isDefaultName;
+        v34 = v33 = name;
         v35 = [v29 initWithUUIDString:v34];
 
-        v10 = v33;
-        v11 = v32;
+        name = v33;
+        isDefaultName = v32;
         v22 = v31;
         v9 = v30;
-        v24 = v38;
+        destinationIdentifiers2 = v38;
       }
 
       else
@@ -208,9 +208,9 @@ LABEL_11:
         v35 = 0;
       }
 
-      self = [(HMMediaGroup *)self initWithIdentifier:v9 parentIdentifier:v22 name:v10 defaultName:v11 destinationIdentifiers:v28 associatedGroupIdentifier:v35];
+      self = [(HMMediaGroup *)self initWithIdentifier:v9 parentIdentifier:v22 name:name defaultName:isDefaultName destinationIdentifiers:v28 associatedGroupIdentifier:v35];
 
-      v16 = self;
+      selfCopy = self;
     }
 
     else
@@ -230,7 +230,7 @@ LABEL_11:
       }
 
       objc_autoreleasePoolPop(v25);
-      v16 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -251,12 +251,12 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v17);
-    v16 = 0;
+    selfCopy = 0;
   }
 
 LABEL_29:
   v36 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy;
 }
 
 id __45__HMMediaGroup_initClassWithProtoBufferData___block_invoke(uint64_t a1, void *a2)
@@ -268,48 +268,48 @@ id __45__HMMediaGroup_initClassWithProtoBufferData___block_invoke(uint64_t a1, v
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMMediaGroup *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HMMediaGroupIdentifierCodingKey"];
+  coderCopy = coder;
+  identifier = [(HMMediaGroup *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HMMediaGroupIdentifierCodingKey"];
 
-  v6 = [(HMMediaGroup *)self parentIdentifier];
-  [v4 encodeObject:v6 forKey:@"HMMediaGroupParentIdentifierCodingKey"];
+  parentIdentifier = [(HMMediaGroup *)self parentIdentifier];
+  [coderCopy encodeObject:parentIdentifier forKey:@"HMMediaGroupParentIdentifierCodingKey"];
 
-  v7 = [(HMMediaGroup *)self name];
-  [v4 encodeObject:v7 forKey:@"HMMediaGroupNameCodingKey"];
+  name = [(HMMediaGroup *)self name];
+  [coderCopy encodeObject:name forKey:@"HMMediaGroupNameCodingKey"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[HMMediaGroup isDefaultName](self, "isDefaultName")}];
-  [v4 encodeObject:v8 forKey:@"HMMediaGroupDefaultNameCodingKey"];
+  [coderCopy encodeObject:v8 forKey:@"HMMediaGroupDefaultNameCodingKey"];
 
-  v9 = [(HMMediaGroup *)self destinationIdentifiers];
-  [v4 encodeObject:v9 forKey:@"HMMediaGroupDestinationIdentifiersCodingKey"];
+  destinationIdentifiers = [(HMMediaGroup *)self destinationIdentifiers];
+  [coderCopy encodeObject:destinationIdentifiers forKey:@"HMMediaGroupDestinationIdentifiersCodingKey"];
 
-  v10 = [(HMMediaGroup *)self associatedGroupIdentifier];
-  [v4 encodeObject:v10 forKey:@"HMMediaGroupAssociatedGroupIdentifierCodingKey"];
+  associatedGroupIdentifier = [(HMMediaGroup *)self associatedGroupIdentifier];
+  [coderCopy encodeObject:associatedGroupIdentifier forKey:@"HMMediaGroupAssociatedGroupIdentifierCodingKey"];
 }
 
-- (HMMediaGroup)initWithCoder:(id)a3
+- (HMMediaGroup)initWithCoder:(id)coder
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaGroupIdentifierCodingKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaGroupParentIdentifierCodingKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaGroupNameCodingKey"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaGroupDefaultNameCodingKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaGroupIdentifierCodingKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaGroupParentIdentifierCodingKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaGroupNameCodingKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaGroupDefaultNameCodingKey"];
   v9 = MEMORY[0x1E695DFD8];
   v26[0] = objc_opt_class();
   v26[1] = objc_opt_class();
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
   v11 = [v9 setWithArray:v10];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"HMMediaGroupDestinationIdentifiersCodingKey"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"HMMediaGroupDestinationIdentifiersCodingKey"];
 
   v13 = [v12 na_map:&__block_literal_global_75];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaGroupAssociatedGroupIdentifierCodingKey"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaGroupAssociatedGroupIdentifierCodingKey"];
   if (!v6)
   {
-    v21 = self;
+    selfCopy = self;
     v15 = objc_autoreleasePoolPush();
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -324,7 +324,7 @@ id __45__HMMediaGroup_initClassWithProtoBufferData___block_invoke(uint64_t a1, v
 
     objc_autoreleasePoolPop(v15);
     v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"00000000-0000-0000-0000-000000000000"];
-    self = v21;
+    self = selfCopy;
   }
 
   v18 = -[HMMediaGroup initWithIdentifier:parentIdentifier:name:defaultName:destinationIdentifiers:associatedGroupIdentifier:](self, "initWithIdentifier:parentIdentifier:name:defaultName:destinationIdentifiers:associatedGroupIdentifier:", v5, v6, v7, [v8 BOOLValue], v13, v14);
@@ -344,16 +344,16 @@ id __30__HMMediaGroup_initWithCoder___block_invoke(uint64_t a1, void *a2)
 
 - (unint64_t)hash
 {
-  v2 = [(HMMediaGroup *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMMediaGroup *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -363,7 +363,7 @@ id __30__HMMediaGroup_initWithCoder___block_invoke(uint64_t a1, void *a2)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -374,31 +374,31 @@ id __30__HMMediaGroup_initWithCoder___block_invoke(uint64_t a1, void *a2)
     v6 = v5;
     if (v6 && ((v7 = objc_opt_class(), ([v7 isEqual:objc_opt_class()] & 1) == 0) && (v8 = objc_opt_class(), !objc_msgSend(v8, "isEqual:", objc_opt_class())) || (v9 = objc_opt_class(), (objc_msgSend(v9, "isEqual:", objc_opt_class()) & 1) != 0) || (v10 = objc_opt_class(), objc_msgSend(v10, "isEqual:", objc_opt_class()))))
     {
-      v11 = [(HMMediaGroup *)self identifier];
-      v12 = [(HMMediaGroup *)v6 identifier];
-      if ([v11 hmf_isEqualToUUID:v12])
+      identifier = [(HMMediaGroup *)self identifier];
+      identifier2 = [(HMMediaGroup *)v6 identifier];
+      if ([identifier hmf_isEqualToUUID:identifier2])
       {
-        v13 = [(HMMediaGroup *)self parentIdentifier];
-        v14 = [(HMMediaGroup *)v6 parentIdentifier];
-        if ([v13 hmf_isEqualToUUID:v14])
+        parentIdentifier = [(HMMediaGroup *)self parentIdentifier];
+        parentIdentifier2 = [(HMMediaGroup *)v6 parentIdentifier];
+        if ([parentIdentifier hmf_isEqualToUUID:parentIdentifier2])
         {
-          v15 = [(HMMediaGroup *)self name];
-          v16 = [(HMMediaGroup *)v6 name];
-          if ([v15 isEqualToString:v16] && (v17 = -[HMMediaGroup isDefaultName](self, "isDefaultName"), v17 == -[HMMediaGroup isDefaultName](v6, "isDefaultName")))
+          name = [(HMMediaGroup *)self name];
+          name2 = [(HMMediaGroup *)v6 name];
+          if ([name isEqualToString:name2] && (v17 = -[HMMediaGroup isDefaultName](self, "isDefaultName"), v17 == -[HMMediaGroup isDefaultName](v6, "isDefaultName")))
           {
             v19 = MEMORY[0x1E695DFD8];
-            v30 = [(HMMediaGroup *)self destinationIdentifiers];
+            destinationIdentifiers = [(HMMediaGroup *)self destinationIdentifiers];
             v20 = [v19 setWithArray:?];
             v28 = MEMORY[0x1E695DFD8];
-            v27 = [(HMMediaGroup *)v6 destinationIdentifiers];
+            destinationIdentifiers2 = [(HMMediaGroup *)v6 destinationIdentifiers];
             v21 = [v28 setWithArray:?];
             v29 = v20;
             v22 = v20;
             v23 = v21;
             if ([v22 isEqual:v21])
             {
-              v26 = [(HMMediaGroup *)self associatedGroupIdentifier];
-              v25 = [(HMMediaGroup *)v6 associatedGroupIdentifier];
+              associatedGroupIdentifier = [(HMMediaGroup *)self associatedGroupIdentifier];
+              associatedGroupIdentifier2 = [(HMMediaGroup *)v6 associatedGroupIdentifier];
               v18 = HMFEqualObjects();
             }
 
@@ -472,16 +472,16 @@ uint64_t __27__HMMediaGroup_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMMutableMediaGroup alloc];
-  v5 = [(HMMediaGroup *)self identifier];
-  v6 = [(HMMediaGroup *)self parentIdentifier];
-  v7 = [(HMMediaGroup *)self name];
-  v8 = [(HMMediaGroup *)self isDefaultName];
-  v9 = [(HMMediaGroup *)self destinationUniqueIdentifiers];
-  v10 = [(HMMediaGroup *)self associatedGroupIdentifier];
-  v11 = [(HMMediaGroup *)v4 initWithIdentifier:v5 parentIdentifier:v6 name:v7 defaultName:v8 destinationIdentifiers:v9 associatedGroupIdentifier:v10];
+  identifier = [(HMMediaGroup *)self identifier];
+  parentIdentifier = [(HMMediaGroup *)self parentIdentifier];
+  name = [(HMMediaGroup *)self name];
+  isDefaultName = [(HMMediaGroup *)self isDefaultName];
+  destinationUniqueIdentifiers = [(HMMediaGroup *)self destinationUniqueIdentifiers];
+  associatedGroupIdentifier = [(HMMediaGroup *)self associatedGroupIdentifier];
+  v11 = [(HMMediaGroup *)v4 initWithIdentifier:identifier parentIdentifier:parentIdentifier name:name defaultName:isDefaultName destinationIdentifiers:destinationUniqueIdentifiers associatedGroupIdentifier:associatedGroupIdentifier];
 
   return v11;
 }
@@ -490,16 +490,16 @@ uint64_t __27__HMMediaGroup_logCategory__block_invoke()
 {
   v24[6] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v23 = [(HMMediaGroup *)self identifier];
-  v22 = [v3 initWithName:@"identifier" value:v23];
+  identifier = [(HMMediaGroup *)self identifier];
+  v22 = [v3 initWithName:@"identifier" value:identifier];
   v24[0] = v22;
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v21 = [(HMMediaGroup *)self parentIdentifier];
-  v5 = [v4 initWithName:@"parentIdentifier" value:v21];
+  parentIdentifier = [(HMMediaGroup *)self parentIdentifier];
+  v5 = [v4 initWithName:@"parentIdentifier" value:parentIdentifier];
   v24[1] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMMediaGroup *)self name];
-  v8 = [v6 initWithName:@"name" value:v7];
+  name = [(HMMediaGroup *)self name];
+  v8 = [v6 initWithName:@"name" value:name];
   v24[2] = v8;
   v9 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMMediaGroup *)self isDefaultName];
@@ -507,12 +507,12 @@ uint64_t __27__HMMediaGroup_logCategory__block_invoke()
   v11 = [v9 initWithName:@"isDefaultName" value:v10];
   v24[3] = v11;
   v12 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v13 = [(HMMediaGroup *)self destinationUniqueIdentifiers];
-  v14 = [v12 initWithName:@"destinationIdentifiers" value:v13];
+  destinationUniqueIdentifiers = [(HMMediaGroup *)self destinationUniqueIdentifiers];
+  v14 = [v12 initWithName:@"destinationIdentifiers" value:destinationUniqueIdentifiers];
   v24[4] = v14;
   v15 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v16 = [(HMMediaGroup *)self associatedGroupIdentifier];
-  v17 = [v15 initWithName:@"associatedGroupIdentifier" value:v16];
+  associatedGroupIdentifier = [(HMMediaGroup *)self associatedGroupIdentifier];
+  v17 = [v15 initWithName:@"associatedGroupIdentifier" value:associatedGroupIdentifier];
   v24[5] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:6];
 
@@ -530,19 +530,19 @@ uint64_t __27__HMMediaGroup_logCategory__block_invoke()
 
 - (id)logIdentifier
 {
-  v2 = [(HMMediaGroup *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMMediaGroup *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)mediaSystemData
 {
-  v2 = self;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else
@@ -557,40 +557,40 @@ uint64_t __27__HMMediaGroup_logCategory__block_invoke()
 
 - (NSArray)destinationIdentifiers
 {
-  v2 = [(HMMediaGroup *)self destinationUniqueIdentifiers];
-  v3 = [v2 na_map:&__block_literal_global_41242];
+  destinationUniqueIdentifiers = [(HMMediaGroup *)self destinationUniqueIdentifiers];
+  v3 = [destinationUniqueIdentifiers na_map:&__block_literal_global_41242];
 
   return v3;
 }
 
-- (HMMediaGroup)initWithIdentifier:(id)a3 parentIdentifier:(id)a4 name:(id)a5 defaultName:(BOOL)a6 destinationIdentifiers:(id)a7 associatedGroupIdentifier:(id)a8
+- (HMMediaGroup)initWithIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier name:(id)name defaultName:(BOOL)defaultName destinationIdentifiers:(id)identifiers associatedGroupIdentifier:(id)groupIdentifier
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (!v14)
+  identifierCopy = identifier;
+  parentIdentifierCopy = parentIdentifier;
+  nameCopy = name;
+  identifiersCopy = identifiers;
+  groupIdentifierCopy = groupIdentifier;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v15)
+  if (!parentIdentifierCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v16)
+  if (!nameCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v17)
+  if (!identifiersCopy)
   {
 LABEL_11:
     v23 = _HMFPreconditionFailure();
@@ -598,19 +598,19 @@ LABEL_11:
     return result;
   }
 
-  obj = a8;
-  v19 = v18;
+  obj = groupIdentifier;
+  v19 = groupIdentifierCopy;
   v29.receiver = self;
   v29.super_class = HMMediaGroup;
   v20 = [(HMMediaGroup *)&v29 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_identifier, a3);
-    objc_storeStrong(&v21->_parentIdentifier, a4);
-    objc_storeStrong(&v21->_name, a5);
-    v21->_defaultName = a6;
-    objc_storeStrong(&v21->_destinationUniqueIdentifiersInternal, a7);
+    objc_storeStrong(&v20->_identifier, identifier);
+    objc_storeStrong(&v21->_parentIdentifier, parentIdentifier);
+    objc_storeStrong(&v21->_name, name);
+    v21->_defaultName = defaultName;
+    objc_storeStrong(&v21->_destinationUniqueIdentifiersInternal, identifiers);
     objc_storeStrong(&v21->_associatedGroupIdentifier, obj);
   }
 

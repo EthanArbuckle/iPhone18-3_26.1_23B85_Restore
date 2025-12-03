@@ -1,17 +1,17 @@
 @interface MTRAsyncWorkItem
-- (MTRAsyncWorkItem)initWithQueue:(id)a3;
+- (MTRAsyncWorkItem)initWithQueue:(id)queue;
 - (id)description;
-- (void)setBatchingID:(unint64_t)a3 data:(id)a4 handler:(id)a5;
-- (void)setCancelHandler:(id)a3;
-- (void)setDuplicateTypeID:(unint64_t)a3 handler:(id)a4;
-- (void)setReadyHandler:(id)a3;
+- (void)setBatchingID:(unint64_t)d data:(id)data handler:(id)handler;
+- (void)setCancelHandler:(id)handler;
+- (void)setDuplicateTypeID:(unint64_t)d handler:(id)handler;
+- (void)setReadyHandler:(id)handler;
 @end
 
 @implementation MTRAsyncWorkItem
 
-- (MTRAsyncWorkItem)initWithQueue:(id)a3
+- (MTRAsyncWorkItem)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = MTRAsyncWorkItem;
   v6 = [(MTRAsyncWorkItem *)&v9 init];
@@ -19,43 +19,43 @@
   if (v6)
   {
     v6->_uniqueID = atomic_fetch_add(&qword_27DF76530, 1uLL);
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v7->_state = 0;
   }
 
   return v7;
 }
 
-- (void)setReadyHandler:(id)a3
+- (void)setReadyHandler:(id)handler
 {
-  v4 = MEMORY[0x23EE78590](a3, a2);
+  v4 = MEMORY[0x23EE78590](handler, a2);
   readyHandler = self->_readyHandler;
   self->_readyHandler = v4;
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
-  v4 = MEMORY[0x23EE78590](a3, a2);
+  v4 = MEMORY[0x23EE78590](handler, a2);
   cancelHandler = self->_cancelHandler;
   self->_cancelHandler = v4;
 }
 
-- (void)setBatchingID:(unint64_t)a3 data:(id)a4 handler:(id)a5
+- (void)setBatchingID:(unint64_t)d data:(id)data handler:(id)handler
 {
-  self->_batchingID = a3;
-  objc_storeStrong(&self->_batchableData, a4);
-  v11 = a4;
-  v8 = a5;
+  self->_batchingID = d;
+  objc_storeStrong(&self->_batchableData, data);
+  dataCopy = data;
+  handlerCopy = handler;
   v9 = MEMORY[0x23EE78590]();
 
   batchingHandler = self->_batchingHandler;
   self->_batchingHandler = v9;
 }
 
-- (void)setDuplicateTypeID:(unint64_t)a3 handler:(id)a4
+- (void)setDuplicateTypeID:(unint64_t)d handler:(id)handler
 {
-  self->_duplicateTypeID = a3;
-  v5 = MEMORY[0x23EE78590](a4, a2);
+  self->_duplicateTypeID = d;
+  v5 = MEMORY[0x23EE78590](handler, a2);
   duplicateCheckHandler = self->_duplicateCheckHandler;
   self->_duplicateCheckHandler = v5;
 }

@@ -1,29 +1,29 @@
 @interface CNPlatterBackBarButtonItem
-- (CNPlatterBackBarButtonItem)initWithTarget:(id)a3 action:(SEL)a4 isRTL:(BOOL)a5;
-- (id)backButtonPlatterImageForRTL:(BOOL)a3;
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5;
+- (CNPlatterBackBarButtonItem)initWithTarget:(id)target action:(SEL)action isRTL:(BOOL)l;
+- (id)backButtonPlatterImageForRTL:(BOOL)l;
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics;
 @end
 
 @implementation CNPlatterBackBarButtonItem
 
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics
 {
-  v8 = a3;
-  v9 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v10 = [v9 featureFlags];
-  v11 = [v10 isFeatureEnabled:29];
+  imageCopy = image;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v11 = [featureFlags isFeatureEnabled:29];
 
-  if ((v11 & 1) != 0 || ([(CNPlatterBackBarButtonItem *)self backgroundImageForState:a4 barMetrics:a5], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
+  if ((v11 & 1) != 0 || ([(CNPlatterBackBarButtonItem *)self backgroundImageForState:state barMetrics:metrics], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
   {
     v13.receiver = self;
     v13.super_class = CNPlatterBackBarButtonItem;
-    [(CNPlatterBackBarButtonItem *)&v13 setBackgroundImage:v8 forState:a4 barMetrics:a5];
+    [(CNPlatterBackBarButtonItem *)&v13 setBackgroundImage:imageCopy forState:state barMetrics:metrics];
   }
 }
 
-- (id)backButtonPlatterImageForRTL:(BOOL)a3
+- (id)backButtonPlatterImageForRTL:(BOOL)l
 {
-  if (a3)
+  if (l)
   {
     v3 = @"back-button-platter-rtl";
   }
@@ -38,20 +38,20 @@
   return v4;
 }
 
-- (CNPlatterBackBarButtonItem)initWithTarget:(id)a3 action:(SEL)a4 isRTL:(BOOL)a5
+- (CNPlatterBackBarButtonItem)initWithTarget:(id)target action:(SEL)action isRTL:(BOOL)l
 {
-  v5 = a5;
+  lCopy = l;
   v8 = MEMORY[0x1E69966E8];
-  v9 = a3;
-  v10 = [v8 currentEnvironment];
-  v11 = [v10 featureFlags];
-  v12 = [v11 isFeatureEnabled:29];
+  targetCopy = target;
+  currentEnvironment = [v8 currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v12 = [featureFlags isFeatureEnabled:29];
 
   if (v12)
   {
     v16.receiver = self;
     v16.super_class = CNPlatterBackBarButtonItem;
-    v13 = [(CNPlatterBackBarButtonItem *)&v16 initWithBarButtonSystemItem:101 target:v9 action:a4];
+    v13 = [(CNPlatterBackBarButtonItem *)&v16 initWithBarButtonSystemItem:101 target:targetCopy action:action];
 LABEL_5:
 
     return v13;
@@ -59,12 +59,12 @@ LABEL_5:
 
   v15.receiver = self;
   v15.super_class = CNPlatterBackBarButtonItem;
-  v13 = [(CNPlatterBackBarButtonItem *)&v15 initWithTitle:@" " style:0 target:v9 action:a4];
+  v13 = [(CNPlatterBackBarButtonItem *)&v15 initWithTitle:@" " style:0 target:targetCopy action:action];
 
   if (v13)
   {
-    v9 = [(CNPlatterBackBarButtonItem *)v13 backButtonPlatterImageForRTL:v5];
-    [(CNPlatterBackBarButtonItem *)v13 setBackgroundImage:v9 forState:0 barMetrics:0];
+    targetCopy = [(CNPlatterBackBarButtonItem *)v13 backButtonPlatterImageForRTL:lCopy];
+    [(CNPlatterBackBarButtonItem *)v13 setBackgroundImage:targetCopy forState:0 barMetrics:0];
     goto LABEL_5;
   }
 

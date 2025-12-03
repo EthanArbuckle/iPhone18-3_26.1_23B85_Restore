@@ -5,15 +5,15 @@
 - (CGPoint)fadeControlPoint2;
 - (CGPoint)zoomControlPoint1;
 - (CGPoint)zoomControlPoint2;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation BKCrossFadeZoomTransition
 
 + (id)transition
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -36,7 +36,7 @@
   return result;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   [(BKCrossFadeZoomTransition *)self zoomDuration];
   v5 = v4;
@@ -49,39 +49,39 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v43 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v6 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v7 = [v43 view];
-  v8 = [v6 view];
-  [v5 insertSubview:v8 belowSubview:v7];
-  v9 = [v5 window];
-  [v9 setUserInteractionEnabled:0];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v43 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v6 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  view = [v43 view];
+  view2 = [v6 view];
+  [containerView insertSubview:view2 belowSubview:view];
+  window = [containerView window];
+  [window setUserInteractionEnabled:0];
 
-  [v7 frame];
-  [v8 setFrame:?];
-  [v7 alpha];
+  [view frame];
+  [view2 setFrame:?];
+  [view alpha];
   v11 = v10;
   v12 = *&CGAffineTransformIdentity.c;
   v54[0] = *&CGAffineTransformIdentity.a;
   v54[1] = v12;
   v54[2] = *&CGAffineTransformIdentity.tx;
-  [v7 setTransform:v54];
+  [view setTransform:v54];
   v13 = objc_alloc_init(BCViewPropertyAnimatorCounter);
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = sub_100187BEC;
   v49[3] = &unk_100A075D8;
-  v50 = v5;
-  v14 = v7;
+  v50 = containerView;
+  v14 = view;
   v53 = v11;
   v51 = v14;
-  v52 = v4;
-  v15 = v4;
-  v16 = v5;
+  v52 = transitionCopy;
+  v15 = transitionCopy;
+  v16 = containerView;
   [v13 setAnimationDidEnd:v49];
   v17 = [UIViewPropertyAnimator alloc];
   [(BKCrossFadeZoomTransition *)self zoomDuration];
@@ -98,7 +98,7 @@
   v46[3] = &unk_100A03440;
   v28 = v14;
   v47 = v28;
-  v48 = self;
+  selfCopy = self;
   v29 = [v17 initWithDuration:v46 controlPoint1:v19 controlPoint2:v21 animations:{v23, v25, v27}];
   [v13 animate:v29];
   v30 = [UIViewPropertyAnimator alloc];

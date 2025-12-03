@@ -1,26 +1,26 @@
 @interface NTKLilypadFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
-- (id)prideFacesForDevice:(id)a3;
-- (void)argon_generateNotificationContentWithCompletion:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
+- (id)prideFacesForDevice:(id)device;
+- (void)argon_generateNotificationContentWithCompletion:(id)completion;
 @end
 
 @implementation NTKLilypadFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKLilypadFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKLilypadFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -35,22 +35,22 @@
   return v3;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:360081074])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:360081074])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKLilypadFaceBundle *)self prideFacesForDevice:v4];
-    v7 = [v6 firstObject];
+    v6 = [(NTKLilypadFaceBundle *)self prideFacesForDevice:deviceCopy];
+    firstObject = [v6 firstObject];
 
     v8 = [NTKFaceBundleSortableGalleryFace alloc];
-    v9 = [v7 face];
-    v10 = [v8 initWithFace:v9 priority:1300];
+    face = [firstObject face];
+    v10 = [v8 initWithFace:face priority:1300];
 
     v12 = v10;
     v5 = [NSArray arrayWithObjects:&v12 count:1];
@@ -59,19 +59,19 @@
   return v5;
 }
 
-- (id)prideFacesForDevice:(id)a3
+- (id)prideFacesForDevice:(id)device
 {
-  v4 = a3;
-  if (([(objc_class *)[(NTKLilypadFaceBundle *)self faceClass] isRestrictedForDevice:v4]& 1) != 0)
+  deviceCopy = device;
+  if (([(objc_class *)[(NTKLilypadFaceBundle *)self faceClass] isRestrictedForDevice:deviceCopy]& 1) != 0)
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [objc_opt_class() identifier];
-    v7 = [objc_opt_class() analyticsIdentifier];
-    v8 = [NTKLilypadFace bundledFaceWithIdentifier:v6 analyticsIdentifier:v7 forDevice:v4 initCustomization:0];
+    identifier = [objc_opt_class() identifier];
+    analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+    v8 = [NTKLilypadFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
     v9 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v8 priority:900];
     v11 = v9;
@@ -81,10 +81,10 @@
   return v5;
 }
 
-- (void)argon_generateNotificationContentWithCompletion:(id)a3
+- (void)argon_generateNotificationContentWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = +[CLKDevice currentDevice];
     v6 = [(NTKLilypadFaceBundle *)self defaultFaceForDevice:v5];
@@ -95,19 +95,19 @@
       v8[2] = sub_1380;
       v8[3] = &unk_C3B8;
       v8[4] = self;
-      v9 = v4;
+      v9 = completionCopy;
       [v6 argon_notificationContentWithCompletion:v8];
     }
 
     else
     {
       v7 = [NSError errorWithDomain:@"NTKLilypadFaceDomain" code:403 userInfo:&off_C9A0];
-      (*(v4 + 2))(v4, 0, 0, v7);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v7);
     }
   }
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_C9C8;
   v6 = &off_C9E0;
@@ -116,19 +116,19 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (NTKShowGalleryLiteUI())
   {
     v5 = +[NSMutableArray array];
-    v6 = [NTKFaceBackgroundStyleEditOption numberOfOptionsForDevice:v4];
+    v6 = [NTKFaceBackgroundStyleEditOption numberOfOptionsForDevice:deviceCopy];
     if ((v6 - 1) >= 0)
     {
       v7 = v6;
       while (1)
       {
-        v8 = [(NTKLilypadFaceBundle *)self defaultFaceForDevice:v4];
+        v8 = [(NTKLilypadFaceBundle *)self defaultFaceForDevice:deviceCopy];
         if (v8)
         {
           break;
@@ -142,7 +142,7 @@ LABEL_11:
         }
       }
 
-      v9 = [NTKFaceBackgroundStyleEditOption optionAtIndex:v7 - 1 forDevice:v4];
+      v9 = [NTKFaceBackgroundStyleEditOption optionAtIndex:v7 - 1 forDevice:deviceCopy];
       [v8 selectOption:v9 forCustomEditMode:15 slot:0];
       if (v7 == &dword_0 + 2)
       {

@@ -1,13 +1,13 @@
 @interface MRDMRRelayConnectionManager
 + (id)sharedManager;
 - (NSString)debugDescription;
-- (id)connectionForOutputDeviceUID:(id)a3;
+- (id)connectionForOutputDeviceUID:(id)d;
 - (void)_callPendingCompletions;
-- (void)addObserver:(id)a3;
-- (void)ingestConnection:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)transportDidClose:(id)a3 error:(id)a4;
-- (void)waitForConnectionWithOutputDeviceUID:(id)a3 timeout:(double)a4 completion:(id)a5;
+- (void)addObserver:(id)observer;
+- (void)ingestConnection:(id)connection;
+- (void)removeObserver:(id)observer;
+- (void)transportDidClose:(id)close error:(id)error;
+- (void)waitForConnectionWithOutputDeviceUID:(id)d timeout:(double)timeout completion:(id)completion;
 @end
 
 @implementation MRDMRRelayConnectionManager
@@ -28,40 +28,40 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MRDMRRelayConnectionManager *)self connections];
-  v6 = [v5 mr_formattedDebugDescription];
-  v7 = [(MRDMRRelayConnectionManager *)self pendingCompletionsPerOutputDeviceUID];
-  v8 = [v3 initWithFormat:@"<%@:%p {\n   connections=%@\n   completions=%@\n>", v4, self, v6, v7];
+  connections = [(MRDMRRelayConnectionManager *)self connections];
+  mr_formattedDebugDescription = [connections mr_formattedDebugDescription];
+  pendingCompletionsPerOutputDeviceUID = [(MRDMRRelayConnectionManager *)self pendingCompletionsPerOutputDeviceUID];
+  v8 = [v3 initWithFormat:@"<%@:%p {\n   connections=%@\n   completions=%@\n>", v4, self, mr_formattedDebugDescription, pendingCompletionsPerOutputDeviceUID];
 
   return v8;
 }
 
-- (void)ingestConnection:(id)a3
+- (void)ingestConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MRDMRRelayConnectionManager *)v5 connections];
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connections = [(MRDMRRelayConnectionManager *)selfCopy connections];
 
-  if (!v6)
+  if (!connections)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
-    [(MRDMRRelayConnectionManager *)v5 setConnections:v7];
+    [(MRDMRRelayConnectionManager *)selfCopy setConnections:v7];
   }
 
-  v8 = [v4 connection];
-  [v8 addObserver:v5];
+  connection = [connectionCopy connection];
+  [connection addObserver:selfCopy];
 
-  v9 = [v4 connection];
-  v10 = [v9 isValid];
+  connection2 = [connectionCopy connection];
+  isValid = [connection2 isValid];
 
-  if (v10)
+  if (isValid)
   {
-    v11 = [v4 deviceInfo];
-    v12 = [v11 deviceUID];
+    deviceInfo = [connectionCopy deviceInfo];
+    deviceUID = [deviceInfo deviceUID];
 
-    v13 = [(MRDMRRelayConnectionManager *)v5 connections];
-    v14 = [v13 objectForKeyedSubscript:v12];
+    connections2 = [(MRDMRRelayConnectionManager *)selfCopy connections];
+    v14 = [connections2 objectForKeyedSubscript:deviceUID];
 
     if (v14)
     {
@@ -71,7 +71,7 @@
         *buf = 138543618;
         v28 = v14;
         v29 = 2114;
-        v30 = v12;
+        v30 = deviceUID;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[MRDMRRelayConnectionManager] Pre-exisiting connection will be dropped: %{public}@, outputDeviceUID: %{public}@", buf, 0x16u);
       }
     }
@@ -79,67 +79,67 @@
     v16 = _MRLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v4 connection];
+      connection3 = [connectionCopy connection];
       *buf = 138543618;
-      v28 = v17;
+      v28 = connection3;
       v29 = 2114;
-      v30 = v12;
+      v30 = deviceUID;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[MRDMRRelayConnectionManager] Ingesting connection: %{public}@, outputDeviceUID: %{public}@", buf, 0x16u);
     }
 
-    v18 = [(MRDMRRelayConnectionManager *)v5 connections];
-    [v18 setObject:v4 forKeyedSubscript:v12];
+    connections3 = [(MRDMRRelayConnectionManager *)selfCopy connections];
+    [connections3 setObject:connectionCopy forKeyedSubscript:deviceUID];
 
-    v19 = [(MRDMRRelayConnectionManager *)v5 observers];
-    v20 = [v19 allObjects];
+    observers = [(MRDMRRelayConnectionManager *)selfCopy observers];
+    allObjects = [observers allObjects];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000990E8;
     block[3] = &unk_1004B69D0;
-    v24 = v20;
-    v25 = v5;
-    v26 = v4;
-    v21 = v20;
+    v24 = allObjects;
+    v25 = selfCopy;
+    v26 = connectionCopy;
+    v21 = allObjects;
     dispatch_async(&_dispatch_main_q, block);
   }
 
   else
   {
-    v22 = [v4 connection];
-    [v22 removeObserver:v5];
+    connection4 = [connectionCopy connection];
+    [connection4 removeObserver:selfCopy];
   }
 
-  [(MRDMRRelayConnectionManager *)v5 _callPendingCompletions];
-  objc_sync_exit(v5);
+  [(MRDMRRelayConnectionManager *)selfCopy _callPendingCompletions];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)connectionForOutputDeviceUID:(id)a3
+- (id)connectionForOutputDeviceUID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MRDMRRelayConnectionManager *)v5 connections];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connections = [(MRDMRRelayConnectionManager *)selfCopy connections];
+  v7 = [connections objectForKeyedSubscript:dCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)waitForConnectionWithOutputDeviceUID:(id)a3 timeout:(double)a4 completion:(id)a5
+- (void)waitForConnectionWithOutputDeviceUID:(id)d timeout:(double)timeout completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10 = +[NSDate date];
   v11 = +[NSUUID UUID];
-  v12 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
 
-  v13 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"MRDMRRelayConnectionManager.waitForConnection", v12];
+  v13 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"MRDMRRelayConnectionManager.waitForConnection", uUIDString];
   v14 = v13;
-  if (v8)
+  if (dCopy)
   {
-    [v13 appendFormat:@" for %@", v8];
+    [v13 appendFormat:@" for %@", dCopy];
   }
 
   v15 = _MRLogForCategory();
@@ -154,46 +154,46 @@
   v37[1] = 3221225472;
   v37[2] = sub_100099668;
   v37[3] = &unk_1004B9900;
-  v16 = v8;
+  v16 = dCopy;
   v38 = v16;
-  v17 = v12;
+  v17 = uUIDString;
   v39 = v17;
   v18 = v10;
   v40 = v18;
-  v19 = v9;
+  v19 = completionCopy;
   v41 = v19;
   v20 = objc_retainBlock(v37);
-  v21 = self;
-  objc_sync_enter(v21);
-  v22 = [(MRDMRRelayConnectionManager *)v21 pendingCompletionsPerOutputDeviceUID];
-  v23 = v22 == 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingCompletionsPerOutputDeviceUID = [(MRDMRRelayConnectionManager *)selfCopy pendingCompletionsPerOutputDeviceUID];
+  v23 = pendingCompletionsPerOutputDeviceUID == 0;
 
   if (v23)
   {
     v24 = objc_alloc_init(NSMutableDictionary);
-    [(MRDMRRelayConnectionManager *)v21 setPendingCompletionsPerOutputDeviceUID:v24];
+    [(MRDMRRelayConnectionManager *)selfCopy setPendingCompletionsPerOutputDeviceUID:v24];
   }
 
-  v25 = [(MRDMRRelayConnectionManager *)v21 pendingCompletionsPerOutputDeviceUID];
-  v26 = [v25 objectForKeyedSubscript:v16];
+  pendingCompletionsPerOutputDeviceUID2 = [(MRDMRRelayConnectionManager *)selfCopy pendingCompletionsPerOutputDeviceUID];
+  v26 = [pendingCompletionsPerOutputDeviceUID2 objectForKeyedSubscript:v16];
 
   if (!v26)
   {
     v26 = objc_alloc_init(NSMutableArray);
-    v27 = [(MRDMRRelayConnectionManager *)v21 pendingCompletionsPerOutputDeviceUID];
-    [v27 setObject:v26 forKeyedSubscript:v16];
+    pendingCompletionsPerOutputDeviceUID3 = [(MRDMRRelayConnectionManager *)selfCopy pendingCompletionsPerOutputDeviceUID];
+    [pendingCompletionsPerOutputDeviceUID3 setObject:v26 forKeyedSubscript:v16];
   }
 
   v28 = objc_retainBlock(v20);
   [v26 addObject:v28];
 
-  [(MRDMRRelayConnectionManager *)v21 _callPendingCompletions];
-  v29 = dispatch_time(0, (a4 * 1000000000.0));
+  [(MRDMRRelayConnectionManager *)selfCopy _callPendingCompletions];
+  v29 = dispatch_time(0, (timeout * 1000000000.0));
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000999FC;
   block[3] = &unk_1004B9928;
-  block[4] = v21;
+  block[4] = selfCopy;
   v34 = v26;
   v35 = v19;
   v36 = v20;
@@ -202,23 +202,23 @@
   v32 = v26;
   dispatch_after(v29, &_dispatch_main_q, block);
 
-  objc_sync_exit(v21);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)transportDidClose:(id)a3 error:(id)a4
+- (void)transportDidClose:(id)close error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(MRDMRRelayConnectionManager *)v8 connections];
+  closeCopy = close;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connections = [(MRDMRRelayConnectionManager *)selfCopy connections];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100099CC4;
   v15[3] = &unk_1004B9950;
-  v10 = v6;
+  v10 = closeCopy;
   v16 = v10;
-  v11 = [v9 msv_firstWhere:v15];
+  v11 = [connections msv_firstWhere:v15];
 
   if (v11)
   {
@@ -232,53 +232,53 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[MRDMRRelayConnectionManager] Removing connection: %{public}@ outputDeviceUID: %{public}@", buf, 0x16u);
     }
 
-    v13 = [(MRDMRRelayConnectionManager *)v8 connections];
-    v14 = [v11 first];
-    [v13 removeObjectForKey:v14];
+    connections2 = [(MRDMRRelayConnectionManager *)selfCopy connections];
+    first = [v11 first];
+    [connections2 removeObjectForKey:first];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MRDMRRelayConnectionManager *)v4 observers];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(MRDMRRelayConnectionManager *)selfCopy observers];
 
-  if (!v5)
+  if (!observers)
   {
     v6 = +[NSHashTable weakObjectsHashTable];
-    [(MRDMRRelayConnectionManager *)v4 setObservers:v6];
+    [(MRDMRRelayConnectionManager *)selfCopy setObservers:v6];
   }
 
-  v7 = [(MRDMRRelayConnectionManager *)v4 observers];
-  [v7 addObject:v8];
+  observers2 = [(MRDMRRelayConnectionManager *)selfCopy observers];
+  [observers2 addObject:observerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MRDMRRelayConnectionManager *)v4 observers];
-  [v5 removeObject:v6];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(MRDMRRelayConnectionManager *)selfCopy observers];
+  [observers removeObject:observerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_callPendingCompletions
 {
-  v3 = [(MRDMRRelayConnectionManager *)self pendingCompletionsPerOutputDeviceUID];
+  pendingCompletionsPerOutputDeviceUID = [(MRDMRRelayConnectionManager *)self pendingCompletionsPerOutputDeviceUID];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100099EE0;
   v4[3] = &unk_1004B9978;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [pendingCompletionsPerOutputDeviceUID enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 @end

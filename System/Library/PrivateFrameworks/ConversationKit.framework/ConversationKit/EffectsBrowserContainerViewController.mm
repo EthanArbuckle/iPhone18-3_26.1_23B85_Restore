@@ -1,17 +1,17 @@
 @interface EffectsBrowserContainerViewController
-- (_TtC15ConversationKit37EffectsBrowserContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit37EffectsBrowserContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation EffectsBrowserContainerViewController
 
-- (_TtC15ConversationKit37EffectsBrowserContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit37EffectsBrowserContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   EffectsBrowserContainerViewController.init(nibName:bundle:)();
 }
 

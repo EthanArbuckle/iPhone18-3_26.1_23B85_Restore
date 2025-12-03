@@ -1,17 +1,17 @@
 @interface TSCHChartAxisTitleLayoutItemWithStaticPadding
-- (TSCHChartAxisTitleLayoutItemWithStaticPadding)initWithParent:(id)a3 padding:(double)a4;
+- (TSCHChartAxisTitleLayoutItemWithStaticPadding)initWithParent:(id)parent padding:(double)padding;
 @end
 
 @implementation TSCHChartAxisTitleLayoutItemWithStaticPadding
 
-- (TSCHChartAxisTitleLayoutItemWithStaticPadding)initWithParent:(id)a3 padding:(double)a4
+- (TSCHChartAxisTitleLayoutItemWithStaticPadding)initWithParent:(id)parent padding:(double)padding
 {
   v6.receiver = self;
   v6.super_class = TSCHChartAxisTitleLayoutItemWithStaticPadding;
-  result = [(TSCHChartAxisTitleLayoutItem *)&v6 initWithParent:a3];
+  result = [(TSCHChartAxisTitleLayoutItem *)&v6 initWithParent:parent];
   if (result)
   {
-    result->_titlePadding = a4;
+    result->_titlePadding = padding;
   }
 
   return result;

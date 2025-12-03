@@ -1,59 +1,59 @@
 @interface TCSContacts
-+ (BOOL)_contact:(id)a3 hasKeysForFormatterStye:(int64_t)a4;
-+ (BOOL)_isContact:(id)a3 similarToContact:(id)a4;
-+ (BOOL)_isUnknownContact:(id)a3 equalToUnknownContact:(id)a4;
-+ (id)_canonicalDestinationForString:(id)a3;
-+ (id)_canonicalPhoneNumberFromCNPhoneNumber:(id)a3;
-+ (id)_canonicalPhoneNumberFromPhoneNumberString:(id)a3;
-+ (id)_destinationsFromAllowlistDictionary:(id)a3 onlyAccepted:(BOOL)a4;
-+ (id)_firstPhoneNumberOrEmailAddressFromContact:(id)a3 formatPhoneNumber:(BOOL)a4;
++ (BOOL)_contact:(id)_contact hasKeysForFormatterStye:(int64_t)stye;
++ (BOOL)_isContact:(id)contact similarToContact:(id)toContact;
++ (BOOL)_isUnknownContact:(id)contact equalToUnknownContact:(id)unknownContact;
++ (id)_canonicalDestinationForString:(id)string;
++ (id)_canonicalPhoneNumberFromCNPhoneNumber:(id)number;
++ (id)_canonicalPhoneNumberFromPhoneNumberString:(id)string;
++ (id)_destinationsFromAllowlistDictionary:(id)dictionary onlyAccepted:(BOOL)accepted;
++ (id)_firstPhoneNumberOrEmailAddressFromContact:(id)contact formatPhoneNumber:(BOOL)number;
 + (id)_pauseCharacterSet;
-+ (id)_safeContactDetailStringForLogging:(id)a3;
-+ (id)_safeContactNameStringForLogging:(id)a3 handle:(id)a4;
++ (id)_safeContactDetailStringForLogging:(id)logging;
++ (id)_safeContactNameStringForLogging:(id)logging handle:(id)handle;
 + (id)_tinCanUserNotificationCenter;
-+ (id)_unifiedContactWithIdentifier:(id)a3 orDestination:(id)a4 usingContactStore:(id)a5 keysToFetch:(id)a6;
-+ (id)_unifiedMeContactFromContactStore:(id)a3 keysToFetch:(id)a4;
-+ (id)_unknownContactWithDestination:(id)a3;
-+ (id)canonicalDestinationsForContact:(id)a3;
-+ (id)validatedAllowlistFromDictionary:(id)a3;
-+ (void)dismissInvitationNotificationsFromContact:(id)a3;
-- (BOOL)_didIncomingOutgoingOrSupportChange:(id)a3;
++ (id)_unifiedContactWithIdentifier:(id)identifier orDestination:(id)destination usingContactStore:(id)store keysToFetch:(id)fetch;
++ (id)_unifiedMeContactFromContactStore:(id)store keysToFetch:(id)fetch;
++ (id)_unknownContactWithDestination:(id)destination;
++ (id)canonicalDestinationsForContact:(id)contact;
++ (id)validatedAllowlistFromDictionary:(id)dictionary;
++ (void)dismissInvitationNotificationsFromContact:(id)contact;
+- (BOOL)_didIncomingOutgoingOrSupportChange:(id)change;
 - (BOOL)_generateDestinationsFromAllowlist;
 - (BOOL)_loadAllowlistFromDefaults;
 - (BOOL)_shouldHandleResetStoreDemoContent;
-- (BOOL)contactSupportsTinCan:(id)a3;
-- (BOOL)isContactAccepted:(id)a3;
-- (BOOL)isContactAnInviter:(id)a3;
-- (BOOL)isDestinationAccepted:(id)a3;
-- (BOOL)isDestinationAnInviter:(id)a3;
+- (BOOL)contactSupportsTinCan:(id)can;
+- (BOOL)isContactAccepted:(id)accepted;
+- (BOOL)isContactAnInviter:(id)inviter;
+- (BOOL)isDestinationAccepted:(id)accepted;
+- (BOOL)isDestinationAnInviter:(id)inviter;
 - (NSUserDefaults)defaults;
 - (TCSContacts)init;
-- (id)_removeDestinationFromAllowlist:(id)a3;
-- (id)dateAddedForDestination:(id)a3;
-- (id)mostRecentCallDateForContact:(id)a3;
-- (id)mostRecentCallDateForDestination:(id)a3;
-- (int64_t)stateForContact:(id)a3;
-- (void)_addDestinations:(id)a3 asType:(int64_t)a4;
+- (id)_removeDestinationFromAllowlist:(id)allowlist;
+- (id)dateAddedForDestination:(id)destination;
+- (id)mostRecentCallDateForContact:(id)contact;
+- (id)mostRecentCallDateForDestination:(id)destination;
+- (int64_t)stateForContact:(id)contact;
+- (void)_addDestinations:(id)destinations asType:(int64_t)type;
 - (void)_deleteAllowlist;
-- (void)_didInitiateCallToDestination:(id)a3 date:(id)a4;
-- (void)_didReceiveCallFromDestination:(id)a3 date:(id)a4;
+- (void)_didInitiateCallToDestination:(id)destination date:(id)date;
+- (void)_didReceiveCallFromDestination:(id)destination date:(id)date;
 - (void)_handleDeviceFirstUnlock;
 - (void)_loadDataFromDefaults;
 - (void)_logDestinations;
-- (void)_notifyObserversContactBecameAccepted:(id)a3;
+- (void)_notifyObserversContactBecameAccepted:(id)accepted;
 - (void)_notifyObserversDestinationsChanged;
 - (void)_notifyObserversRecencyChanged;
 - (void)_reloadAllowlist;
 - (void)_resetStoreDemoContent;
 - (void)_saveAllowlist;
 - (void)dealloc;
-- (void)didInitiateCallToContact:(id)a3 date:(id)a4;
-- (void)didReceiveCallFromContact:(id)a3 date:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeDestinations:(id)a3;
-- (void)setContactAsAccepted:(id)a3;
-- (void)setDestinationAsAccepted:(id)a3;
-- (void)setShouldObserveAllowlistDefaultChanges:(BOOL)a3;
+- (void)didInitiateCallToContact:(id)contact date:(id)date;
+- (void)didReceiveCallFromContact:(id)contact date:(id)date;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeDestinations:(id)destinations;
+- (void)setContactAsAccepted:(id)accepted;
+- (void)setDestinationAsAccepted:(id)accepted;
+- (void)setShouldObserveAllowlistDefaultChanges:(BOOL)changes;
 @end
 
 @implementation TCSContacts
@@ -67,9 +67,9 @@
   if (v2)
   {
     v2->_allowlistLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = weakObjectsHashTable;
 
     v6 = objc_opt_new();
     npsManager = v3->_npsManager;
@@ -90,12 +90,12 @@
         _os_log_impl(&dword_26F110000, v8, OS_LOG_TYPE_DEFAULT, "TCSContacts needs to wait for first device unlock before loading data.", buf, 2u);
       }
 
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v10 = +[TCSBehavior sharedBehavior];
-      [v9 addObserver:v3 selector:sel__handleDeviceFirstUnlock name:@"TCSFirstUnlockNotification" object:v10];
+      [defaultCenter addObserver:v3 selector:sel__handleDeviceFirstUnlock name:@"TCSFirstUnlockNotification" object:v10];
     }
 
-    v11 = [MEMORY[0x277CFBEB0] defaultProvider];
+    defaultProvider = [MEMORY[0x277CFBEB0] defaultProvider];
     objc_initWeak(buf, v3);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -104,14 +104,14 @@
     objc_copyWeak(&v25, buf);
     v12 = MEMORY[0x274388AC0](v24);
     v13 = objc_alloc(MEMORY[0x277CFBDD0]);
-    v14 = [v11 mainThreadScheduler];
-    v15 = [v13 initWithDelay:1 options:v12 block:v11 schedulerProvider:v14 downstreamScheduler:0.3];
+    mainThreadScheduler = [defaultProvider mainThreadScheduler];
+    v15 = [v13 initWithDelay:1 options:v12 block:defaultProvider schedulerProvider:mainThreadScheduler downstreamScheduler:0.3];
     allowlistSaveTimer = v3->_allowlistSaveTimer;
     v3->_allowlistSaveTimer = v15;
 
     [(TCSContacts *)v3 setShouldObserveAllowlistDefaultChanges:1];
     objc_initWeak(&location, v3);
-    v17 = [@"TCSContactsDidChangeNotification" UTF8String];
+    uTF8String = [@"TCSContactsDidChangeNotification" UTF8String];
     v18 = MEMORY[0x277D85CD0];
     v19 = MEMORY[0x277D85CD0];
     handler[0] = MEMORY[0x277D85DD0];
@@ -119,7 +119,7 @@
     handler[2] = __19__TCSContacts_init__block_invoke_2;
     handler[3] = &unk_279DC1A78;
     objc_copyWeak(&v22, &location);
-    notify_register_dispatch(v17, &v3->_prefSyncToken, v18, handler);
+    notify_register_dispatch(uTF8String, &v3->_prefSyncToken, v18, handler);
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -152,8 +152,8 @@ void __19__TCSContacts_init__block_invoke_2(uint64_t a1, int a2)
 {
   [(TCSContacts *)self setShouldObserveAllowlistDefaultChanges:0];
   notify_cancel(self->_prefSyncToken);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TCSContacts;
@@ -175,38 +175,38 @@ void __19__TCSContacts_init__block_invoke_2(uint64_t a1, int a2)
   return defaults;
 }
 
-- (void)setShouldObserveAllowlistDefaultChanges:(BOOL)a3
+- (void)setShouldObserveAllowlistDefaultChanges:(BOOL)changes
 {
-  if (self->_shouldObserveAllowlistDefaultChanges != a3)
+  if (self->_shouldObserveAllowlistDefaultChanges != changes)
   {
-    v4 = a3;
-    self->_shouldObserveAllowlistDefaultChanges = a3;
-    v7 = [(TCSContacts *)self defaults];
+    changesCopy = changes;
+    self->_shouldObserveAllowlistDefaultChanges = changes;
+    defaults = [(TCSContacts *)self defaults];
     v6 = +[TCSTinCanUserDefaults allowListKey];
-    if (v4)
+    if (changesCopy)
     {
-      [v7 addObserver:self forKeyPath:v6 options:1 context:TCSContactsObservationContext];
+      [defaults addObserver:self forKeyPath:v6 options:1 context:TCSContactsObservationContext];
     }
 
     else
     {
-      [v7 removeObserver:self forKeyPath:v6 context:TCSContactsObservationContext];
+      [defaults removeObserver:self forKeyPath:v6 context:TCSContactsObservationContext];
     }
   }
 }
 
-+ (void)dismissInvitationNotificationsFromContact:(id)a3
++ (void)dismissInvitationNotificationsFromContact:(id)contact
 {
-  v4 = a3;
-  v5 = [a1 _tinCanUserNotificationCenter];
+  contactCopy = contact;
+  _tinCanUserNotificationCenter = [self _tinCanUserNotificationCenter];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__TCSContacts_dismissInvitationNotificationsFromContact___block_invoke;
   v7[3] = &unk_279DC2050;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  [v5 getDeliveredNotificationsWithCompletionHandler:v7];
+  v8 = contactCopy;
+  selfCopy = self;
+  v6 = contactCopy;
+  [_tinCanUserNotificationCenter getDeliveredNotificationsWithCompletionHandler:v7];
 }
 
 void __57__TCSContacts_dismissInvitationNotificationsFromContact___block_invoke(uint64_t a1, void *a2)
@@ -339,16 +339,16 @@ LABEL_23:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDestinations:(id)a3
+- (void)removeDestinations:(id)destinations
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  destinationsCopy = destinations;
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = destinationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
@@ -366,7 +366,7 @@ LABEL_23:
 
         v11 = [TCSContacts _canonicalDestinationForString:*(*(&v18 + 1) + 8 * v10), v18];
         v12 = [(TCSContacts *)self _removeDestinationFromAllowlist:v11];
-        [v5 addObjectsFromArray:v12];
+        [array addObjectsFromArray:v12];
 
         ++v10;
       }
@@ -378,14 +378,14 @@ LABEL_23:
     while (v8);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
     _TCSInitializeLogging();
     v13 = TCSLogDefault;
     if (os_log_type_enabled(TCSLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [v5 componentsJoinedByString:{@", "}];
+      v15 = [array componentsJoinedByString:{@", "}];
       v16 = TCSLogSafeDescription(v15);
       *buf = 138412290;
       v23 = v16;
@@ -400,10 +400,10 @@ LABEL_23:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)contactSupportsTinCan:(id)a3
+- (BOOL)contactSupportsTinCan:(id)can
 {
   v21 = *MEMORY[0x277D85DE8];
-  [TCSContacts canonicalDestinationsForContact:a3];
+  [TCSContacts canonicalDestinationsForContact:can];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -427,9 +427,9 @@ LABEL_23:
         v10 = [(NSMutableDictionary *)self->_allowlist objectForKeyedSubscript:v9];
         os_unfair_lock_unlock(&self->_allowlistLock);
         v11 = [v10 objectForKeyedSubscript:@"Supported"];
-        v12 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
 
-        if (v12)
+        if (bOOLValue)
         {
           v13 = 1;
           goto LABEL_11;
@@ -453,34 +453,34 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)isDestinationAccepted:(id)a3
+- (BOOL)isDestinationAccepted:(id)accepted
 {
-  v4 = [TCSContacts _canonicalDestinationForString:a3];
+  v4 = [TCSContacts _canonicalDestinationForString:accepted];
   os_unfair_lock_lock(&self->_allowlistLock);
   v5 = [(NSMutableDictionary *)self->_allowlist objectForKeyedSubscript:v4];
   os_unfair_lock_unlock(&self->_allowlistLock);
   v6 = [v5 objectForKeyedSubscript:@"Accepted"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)isDestinationAnInviter:(id)a3
+- (BOOL)isDestinationAnInviter:(id)inviter
 {
-  v4 = [TCSContacts _canonicalDestinationForString:a3];
+  v4 = [TCSContacts _canonicalDestinationForString:inviter];
   os_unfair_lock_lock(&self->_allowlistLock);
   v5 = [(NSMutableDictionary *)self->_allowlist objectForKeyedSubscript:v4];
   os_unfair_lock_unlock(&self->_allowlistLock);
   v6 = [v5 objectForKeyedSubscript:@"Inviter"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)setDestinationAsAccepted:(id)a3
+- (void)setDestinationAsAccepted:(id)accepted
 {
-  v4 = a3;
-  v5 = [TCSContacts _canonicalDestinationForString:v4];
+  acceptedCopy = accepted;
+  v5 = [TCSContacts _canonicalDestinationForString:acceptedCopy];
   os_unfair_lock_lock(&self->_allowlistLock);
   v6 = [(NSMutableDictionary *)self->_allowlist objectForKey:v5];
   v7 = [v6 mutableCopy];
@@ -489,9 +489,9 @@ LABEL_11:
   if (v7)
   {
     v8 = [v7 objectForKeyedSubscript:@"Accepted"];
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       _TCSInitializeLogging();
       v10 = TCSLogDefault;
@@ -504,8 +504,8 @@ LABEL_11:
     else
     {
       [v7 setObject:MEMORY[0x277CBEC38] forKey:@"Accepted"];
-      v12 = [MEMORY[0x277CBEAA8] date];
-      [v7 setObject:v12 forKey:@"Added"];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v7 setObject:date forKey:@"Added"];
 
       [v7 removeObjectForKey:@"Inviter"];
       os_unfair_lock_lock(&self->_allowlistLock);
@@ -526,10 +526,10 @@ LABEL_11:
   }
 }
 
-- (BOOL)isContactAccepted:(id)a3
+- (BOOL)isContactAccepted:(id)accepted
 {
   v17 = *MEMORY[0x277D85DE8];
-  [TCSContacts canonicalDestinationsForContact:a3];
+  [TCSContacts canonicalDestinationsForContact:accepted];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -572,10 +572,10 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)isContactAnInviter:(id)a3
+- (BOOL)isContactAnInviter:(id)inviter
 {
   v17 = *MEMORY[0x277D85DE8];
-  [TCSContacts canonicalDestinationsForContact:a3];
+  [TCSContacts canonicalDestinationsForContact:inviter];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -618,11 +618,11 @@ LABEL_11:
   return v9;
 }
 
-- (void)setContactAsAccepted:(id)a3
+- (void)setContactAsAccepted:(id)accepted
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [TCSContacts canonicalDestinationsForContact:v4];
+  acceptedCopy = accepted;
+  v5 = [TCSContacts canonicalDestinationsForContact:acceptedCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -652,16 +652,16 @@ LABEL_11:
     while (v7);
   }
 
-  [(TCSContacts *)self _notifyObserversContactBecameAccepted:v4];
+  [(TCSContacts *)self _notifyObserversContactBecameAccepted:acceptedCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didInitiateCallToContact:(id)a3 date:(id)a4
+- (void)didInitiateCallToContact:(id)contact date:(id)date
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [TCSContacts canonicalDestinationsForContact:a3];
+  dateCopy = date;
+  v7 = [TCSContacts canonicalDestinationsForContact:contact];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -681,7 +681,7 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        [(TCSContacts *)self _didInitiateCallToDestination:*(*(&v13 + 1) + 8 * v11++) date:v6];
+        [(TCSContacts *)self _didInitiateCallToDestination:*(*(&v13 + 1) + 8 * v11++) date:dateCopy];
       }
 
       while (v9 != v11);
@@ -697,11 +697,11 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveCallFromContact:(id)a3 date:(id)a4
+- (void)didReceiveCallFromContact:(id)contact date:(id)date
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [TCSContacts canonicalDestinationsForContact:a3];
+  dateCopy = date;
+  v7 = [TCSContacts canonicalDestinationsForContact:contact];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -721,7 +721,7 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        [(TCSContacts *)self _didReceiveCallFromDestination:*(*(&v13 + 1) + 8 * v11++) date:v6];
+        [(TCSContacts *)self _didReceiveCallFromDestination:*(*(&v13 + 1) + 8 * v11++) date:dateCopy];
       }
 
       while (v9 != v11);
@@ -737,11 +737,11 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didInitiateCallToDestination:(id)a3 date:(id)a4
+- (void)_didInitiateCallToDestination:(id)destination date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [TCSContacts _canonicalDestinationForString:v6];
+  destinationCopy = destination;
+  dateCopy = date;
+  v8 = [TCSContacts _canonicalDestinationForString:destinationCopy];
   os_unfair_lock_lock(&self->_allowlistLock);
   v9 = [(NSMutableDictionary *)self->_allowlist objectForKeyedSubscript:v8];
   v10 = [v9 mutableCopy];
@@ -754,17 +754,17 @@ LABEL_11:
     v15 = v14;
     if (v14)
     {
-      v16 = v14;
+      array = v14;
     }
 
     else
     {
-      v16 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    v18 = v16;
+    v18 = array;
 
-    [v18 enqueue:v7];
+    [v18 enqueue:dateCopy];
     [v10 setObject:v18 forKey:@"Outgoing"];
     os_unfair_lock_lock(&self->_allowlistLock);
     [(NSMutableDictionary *)self->_allowlist setObject:v10 forKey:v8];
@@ -783,11 +783,11 @@ LABEL_11:
   }
 }
 
-- (void)_didReceiveCallFromDestination:(id)a3 date:(id)a4
+- (void)_didReceiveCallFromDestination:(id)destination date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [TCSContacts _canonicalDestinationForString:v6];
+  destinationCopy = destination;
+  dateCopy = date;
+  v8 = [TCSContacts _canonicalDestinationForString:destinationCopy];
   os_unfair_lock_lock(&self->_allowlistLock);
   v9 = [(NSMutableDictionary *)self->_allowlist objectForKeyedSubscript:v8];
   v10 = [v9 mutableCopy];
@@ -800,17 +800,17 @@ LABEL_11:
     v15 = v14;
     if (v14)
     {
-      v16 = v14;
+      array = v14;
     }
 
     else
     {
-      v16 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    v18 = v16;
+    v18 = array;
 
-    [v18 enqueue:v7];
+    [v18 enqueue:dateCopy];
     [v10 setObject:v18 forKey:@"Incoming"];
     os_unfair_lock_lock(&self->_allowlistLock);
     [(NSMutableDictionary *)self->_allowlist setObject:v10 forKey:v8];
@@ -829,14 +829,14 @@ LABEL_11:
   }
 }
 
-- (id)mostRecentCallDateForContact:(id)a3
+- (id)mostRecentCallDateForContact:(id)contact
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [TCSContacts canonicalDestinationsForContact:a3, 0];
+  v4 = [TCSContacts canonicalDestinationsForContact:contact, 0];
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -883,35 +883,35 @@ LABEL_11:
   return v7;
 }
 
-- (id)mostRecentCallDateForDestination:(id)a3
+- (id)mostRecentCallDateForDestination:(id)destination
 {
-  v4 = [TCSContacts _canonicalDestinationForString:a3];
+  v4 = [TCSContacts _canonicalDestinationForString:destination];
   os_unfair_lock_lock(&self->_allowlistLock);
   v5 = [(NSMutableDictionary *)self->_allowlist objectForKeyedSubscript:v4];
   os_unfair_lock_unlock(&self->_allowlistLock);
   v6 = [v5 objectForKeyedSubscript:@"Incoming"];
-  v7 = [v6 lastObject];
+  lastObject = [v6 lastObject];
 
   v8 = [v5 objectForKeyedSubscript:@"Outgoing"];
-  v9 = [v8 lastObject];
+  lastObject2 = [v8 lastObject];
 
   v10 = [v5 objectForKeyedSubscript:@"InvitationReceived"];
   v11 = v10;
-  if (v7)
+  if (lastObject)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = v9 == 0;
+    v12 = lastObject2 == 0;
   }
 
   if (!v12 || v10 == 0)
   {
-    if (v7)
+    if (lastObject)
     {
-      v14 = v9 == 0;
+      v14 = lastObject2 == 0;
     }
 
     else
@@ -921,14 +921,14 @@ LABEL_11:
 
     if (v14)
     {
-      if (v7)
+      if (lastObject)
       {
-        v15 = v7;
+        v15 = lastObject;
       }
 
       else
       {
-        v15 = v9;
+        v15 = lastObject2;
       }
 
       v16 = v15;
@@ -936,7 +936,7 @@ LABEL_11:
 
     else
     {
-      v16 = [v7 laterDate:v9];
+      v16 = [lastObject laterDate:lastObject2];
     }
   }
 
@@ -950,9 +950,9 @@ LABEL_11:
   return v17;
 }
 
-- (id)dateAddedForDestination:(id)a3
+- (id)dateAddedForDestination:(id)destination
 {
-  v4 = [TCSContacts _canonicalDestinationForString:a3];
+  v4 = [TCSContacts _canonicalDestinationForString:destination];
   os_unfair_lock_lock(&self->_allowlistLock);
   v5 = [(NSMutableDictionary *)self->_allowlist objectForKeyedSubscript:v4];
   os_unfair_lock_unlock(&self->_allowlistLock);
@@ -962,15 +962,15 @@ LABEL_11:
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      distantPast = v6;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
-    v10 = v8;
+    v10 = distantPast;
   }
 
   else
@@ -988,21 +988,21 @@ LABEL_11:
   return v10;
 }
 
-- (int64_t)stateForContact:(id)a3
+- (int64_t)stateForContact:(id)contact
 {
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v5 = [(TCSContacts *)self isContactAccepted:v4];
-    v6 = [(TCSContacts *)self isContactAnInviter:v4];
+    v5 = [(TCSContacts *)self isContactAccepted:contactCopy];
+    v6 = [(TCSContacts *)self isContactAnInviter:contactCopy];
     if (v5 || !v6)
     {
-      if (v5 && ([(TCSContacts *)self mostRecentCallDateForContact:v4], v8 = objc_claimAutoreleasedReturnValue(), v8, v8) || +[TCSBehavior isRunningInStoreDemoModeOrSimulator])
+      if (v5 && ([(TCSContacts *)self mostRecentCallDateForContact:contactCopy], v8 = objc_claimAutoreleasedReturnValue(), v8, v8) || +[TCSBehavior isRunningInStoreDemoModeOrSimulator])
       {
         v7 = 3;
       }
 
-      else if ([(TCSContacts *)self contactSupportsTinCan:v4])
+      else if ([(TCSContacts *)self contactSupportsTinCan:contactCopy])
       {
         v7 = 2;
       }
@@ -1027,9 +1027,9 @@ LABEL_11:
   return v7;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (TCSContactsObservationContext == a6)
+  if (TCSContactsObservationContext == context)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -1043,20 +1043,20 @@ LABEL_11:
   {
     v6.receiver = self;
     v6.super_class = TCSContacts;
-    [(TCSContacts *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(TCSContacts *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-+ (id)validatedAllowlistFromDictionary:(id)a3
++ (id)validatedAllowlistFromDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [a3 mutableCopy];
-  v4 = [v3 allKeys];
+  v3 = [dictionary mutableCopy];
+  allKeys = [v3 allKeys];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1067,7 +1067,7 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -1079,7 +1079,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1114,17 +1114,17 @@ LABEL_11:
   [(TCSContacts *)self _logDestinations];
 }
 
-- (void)_addDestinations:(id)a3 asType:(int64_t)a4
+- (void)_addDestinations:(id)destinations asType:(int64_t)type
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v27 = [MEMORY[0x277CBEB18] array];
-  v26 = [MEMORY[0x277CBEAA8] date];
+  destinationsCopy = destinations;
+  array = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v6;
+  obj = destinationsCopy;
   v30 = [obj countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v30)
   {
@@ -1145,47 +1145,47 @@ LABEL_11:
         v11 = v10;
         if (v10)
         {
-          v12 = v10;
+          dictionary = v10;
         }
 
         else
         {
-          v12 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
         }
 
-        v13 = v12;
+        v13 = dictionary;
 
         os_unfair_lock_unlock(&self->_allowlistLock);
         v14 = [v13 objectForKeyedSubscript:@"Accepted"];
-        v15 = [v14 BOOLValue];
+        bOOLValue = [v14 BOOLValue];
 
         v16 = [v13 objectForKeyedSubscript:@"Inviter"];
-        v17 = [v16 BOOLValue];
+        bOOLValue2 = [v16 BOOLValue];
 
-        if (((a4 == 0) & v15) == 0 && ((a4 == 1) & (v15 | v17)) == 0)
+        if (((type == 0) & bOOLValue) == 0 && ((type == 1) & (bOOLValue | bOOLValue2)) == 0)
         {
-          if (a4)
+          if (type)
           {
-            if (a4 == 1)
+            if (type == 1)
             {
               v18 = MEMORY[0x277CBEC38];
               [v13 setObject:MEMORY[0x277CBEC38] forKey:@"Supported"];
               [v13 setObject:v18 forKey:@"Inviter"];
-              [v13 setObject:v26 forKey:@"InvitationReceived"];
+              [v13 setObject:date forKey:@"InvitationReceived"];
             }
           }
 
           else
           {
             [v13 setObject:MEMORY[0x277CBEC38] forKey:@"Accepted"];
-            [v13 setObject:v26 forKey:@"Added"];
+            [v13 setObject:date forKey:@"Added"];
             [v13 removeObjectForKey:@"Inviter"];
           }
 
           os_unfair_lock_lock(&self->_allowlistLock);
           [(NSMutableDictionary *)self->_allowlist setObject:v13 forKey:v8];
           os_unfair_lock_unlock(&self->_allowlistLock);
-          [v27 addObject:v8];
+          [array addObject:v8];
         }
       }
 
@@ -1195,18 +1195,18 @@ LABEL_11:
     while (v30);
   }
 
-  if ([v27 count])
+  if ([array count])
   {
     _TCSInitializeLogging();
     v19 = TCSLogDefault;
     if (os_log_type_enabled(TCSLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v27 componentsJoinedByString:{@", "}];
+      v21 = [array componentsJoinedByString:{@", "}];
       v22 = TCSLogSafeDescription(v21);
       v23 = v22;
       v24 = @"inviter";
-      if (!a4)
+      if (!type)
       {
         v24 = @"allowed";
       }
@@ -1226,24 +1226,24 @@ LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_removeDestinationFromAllowlist:(id)a3
+- (id)_removeDestinationFromAllowlist:(id)allowlist
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  allowlistCopy = allowlist;
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_lock_lock(&self->_allowlistLock);
-  v6 = [(NSMutableDictionary *)self->_allowlist objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_allowlist objectForKey:allowlistCopy];
 
   if (v6)
   {
-    [(NSMutableDictionary *)self->_allowlist removeObjectForKey:v4];
-    [v5 addObject:v4];
+    [(NSMutableDictionary *)self->_allowlist removeObjectForKey:allowlistCopy];
+    [array addObject:allowlistCopy];
   }
 
-  if ([v4 destinationIdIsEmailAddress])
+  if ([allowlistCopy destinationIdIsEmailAddress])
   {
-    v7 = [(NSMutableDictionary *)self->_allowlist allKeys];
-    v8 = [v7 copy];
+    allKeys = [(NSMutableDictionary *)self->_allowlist allKeys];
+    v8 = [allKeys copy];
 
     v20 = 0u;
     v21 = 0u;
@@ -1265,10 +1265,10 @@ LABEL_11:
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          if ([v14 destinationIdIsEmailAddress] && objc_msgSend(v4, "isEqualToIgnoringCase:", v14))
+          if ([v14 destinationIdIsEmailAddress] && objc_msgSend(allowlistCopy, "isEqualToIgnoringCase:", v14))
           {
             [(NSMutableDictionary *)self->_allowlist removeObjectForKey:v14];
-            [v5 addObject:v14];
+            [array addObject:v14];
           }
         }
 
@@ -1280,7 +1280,7 @@ LABEL_11:
   }
 
   os_unfair_lock_unlock(&self->_allowlistLock);
-  v15 = [v5 copy];
+  v15 = [array copy];
 
   v16 = *MEMORY[0x277D85DE8];
 
@@ -1289,21 +1289,21 @@ LABEL_11:
 
 - (BOOL)_loadAllowlistFromDefaults
 {
-  v3 = [(TCSContacts *)self defaults];
+  defaults = [(TCSContacts *)self defaults];
   v4 = +[TCSTinCanUserDefaults allowListKey];
-  v5 = [v3 dictionaryForKey:v4];
+  v5 = [defaults dictionaryForKey:v4];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    dictionary = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  v8 = v7;
+  v8 = dictionary;
 
   os_unfair_lock_lock(&self->_allowlistLock);
   v9 = [v8 isEqualToDictionary:self->_allowlist];
@@ -1338,8 +1338,8 @@ LABEL_11:
 
 - (void)_reloadAllowlist
 {
-  v3 = [(TCSContacts *)self allowlist];
-  v4 = [v3 copy];
+  allowlist = [(TCSContacts *)self allowlist];
+  v4 = [allowlist copy];
 
   if ([(TCSContacts *)self _loadAllowlistFromDefaults])
   {
@@ -1356,9 +1356,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)_didIncomingOutgoingOrSupportChange:(id)a3
+- (BOOL)_didIncomingOutgoingOrSupportChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -1369,7 +1369,7 @@ LABEL_11:
   v6[3] = &unk_279DC2078;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [changeCopy enumerateKeysAndObjectsUsingBlock:v6];
   LOBYTE(self) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -1460,16 +1460,16 @@ void __51__TCSContacts__didIncomingOutgoingOrSupportChange___block_invoke(uint64
 {
   [(TCSContacts *)self setShouldObserveAllowlistDefaultChanges:0];
   os_unfair_lock_lock(&self->_allowlistLock);
-  v3 = [(TCSContacts *)self defaults];
+  defaults = [(TCSContacts *)self defaults];
   allowlist = self->_allowlist;
-  v5 = allowlist;
+  dictionary = allowlist;
   if (!allowlist)
   {
-    v5 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
   v6 = +[TCSTinCanUserDefaults allowListKey];
-  [v3 setObject:v5 forKey:v6];
+  [defaults setObject:dictionary forKey:v6];
 
   if (!allowlist)
   {
@@ -1571,10 +1571,10 @@ void __51__TCSContacts__didIncomingOutgoingOrSupportChange___block_invoke(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversContactBecameAccepted:(id)a3
+- (void)_notifyObserversContactBecameAccepted:(id)accepted
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  acceptedCopy = accepted;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1598,7 +1598,7 @@ void __51__TCSContacts__didIncomingOutgoingOrSupportChange___block_invoke(uint64
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 contactBecameAccepted:v4];
+          [v10 contactBecameAccepted:acceptedCopy];
         }
 
         ++v9;
@@ -1616,16 +1616,16 @@ void __51__TCSContacts__didIncomingOutgoingOrSupportChange___block_invoke(uint64
 
 - (BOOL)_shouldHandleResetStoreDemoContent
 {
-  v2 = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
-  if (v2)
+  isRunningInStoreDemoMode = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
+  if (isRunningInStoreDemoMode)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 isFrontBoard];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    isFrontBoard = [mEMORY[0x277D75128] isFrontBoard];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isRunningInStoreDemoMode) = isFrontBoard;
   }
 
-  return v2;
+  return isRunningInStoreDemoMode;
 }
 
 - (void)_resetStoreDemoContent
@@ -1640,33 +1640,33 @@ void __51__TCSContacts__didIncomingOutgoingOrSupportChange___block_invoke(uint64
       _os_log_impl(&dword_26F110000, v3, OS_LOG_TYPE_DEFAULT, "TCSContacts will reset demo content.", v16, 2u);
     }
 
-    v4 = [(TCSContacts *)self defaults];
-    [v4 removeObjectForKey:@"Suggestions"];
+    defaults = [(TCSContacts *)self defaults];
+    [defaults removeObjectForKey:@"Suggestions"];
 
-    v5 = [(TCSContacts *)self defaults];
-    [v5 removeObjectForKey:@"SuggestionsFirstGenerated"];
+    defaults2 = [(TCSContacts *)self defaults];
+    [defaults2 removeObjectForKey:@"SuggestionsFirstGenerated"];
 
-    v6 = [(TCSContacts *)self defaults];
-    [v6 removeObjectForKey:@"SuggestionsPreviouslyGenerated"];
+    defaults3 = [(TCSContacts *)self defaults];
+    [defaults3 removeObjectForKey:@"SuggestionsPreviouslyGenerated"];
 
-    v7 = [(TCSContacts *)self defaults];
-    [v7 removeObjectForKey:@"SawTalkButtonTutorial"];
+    defaults4 = [(TCSContacts *)self defaults];
+    [defaults4 removeObjectForKey:@"SawTalkButtonTutorial"];
 
-    v8 = [(TCSContacts *)self defaults];
+    defaults5 = [(TCSContacts *)self defaults];
     v9 = +[TCSTinCanUserDefaults storeDemoAllowlistKey];
-    v10 = [v8 dictionaryForKey:v9];
+    v10 = [defaults5 dictionaryForKey:v9];
     v11 = v10;
     if (v10)
     {
-      v12 = v10;
+      dictionary = v10;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
     }
 
-    v13 = v12;
+    v13 = dictionary;
 
     os_unfair_lock_lock(&self->_allowlistLock);
     v14 = [v13 mutableCopy];
@@ -1684,17 +1684,17 @@ void __51__TCSContacts__didIncomingOutgoingOrSupportChange___block_invoke(uint64
 
 - (void)_deleteAllowlist
 {
-  v3 = [(TCSContacts *)self defaults];
+  defaults = [(TCSContacts *)self defaults];
   v2 = +[TCSTinCanUserDefaults allowListKey];
-  [v3 removeObjectForKey:v2];
+  [defaults removeObjectForKey:v2];
 }
 
-+ (id)_destinationsFromAllowlistDictionary:(id)a3 onlyAccepted:(BOOL)a4
++ (id)_destinationsFromAllowlistDictionary:(id)dictionary onlyAccepted:(BOOL)accepted
 {
-  if (a4)
+  if (accepted)
   {
     v4 = MEMORY[0x277CBEB58];
-    v5 = a3;
+    dictionaryCopy = dictionary;
     v6 = [v4 set];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -1702,18 +1702,18 @@ void __51__TCSContacts__didIncomingOutgoingOrSupportChange___block_invoke(uint64
     v11[3] = &unk_279DC19B8;
     v12 = v6;
     v7 = v6;
-    [v5 enumerateKeysAndObjectsUsingBlock:v11];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v11];
 
-    v8 = [v7 allObjects];
+    allObjects = [v7 allObjects];
   }
 
   else
   {
-    v9 = a3;
-    v8 = [v9 allKeys];
+    dictionaryCopy2 = dictionary;
+    allObjects = [dictionaryCopy2 allKeys];
   }
 
-  return v8;
+  return allObjects;
 }
 
 void __65__TCSContacts__destinationsFromAllowlistDictionary_onlyAccepted___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1728,10 +1728,10 @@ void __65__TCSContacts__destinationsFromAllowlistDictionary_onlyAccepted___block
   }
 }
 
-+ (id)_unifiedMeContactFromContactStore:(id)a3 keysToFetch:(id)a4
++ (id)_unifiedMeContactFromContactStore:(id)store keysToFetch:(id)fetch
 {
   v8 = 0;
-  v4 = [a3 _ios_meContactWithKeysToFetch:a4 error:&v8];
+  v4 = [store _ios_meContactWithKeysToFetch:fetch error:&v8];
   v5 = v8;
   v6 = v5;
   if (!v4)
@@ -1752,25 +1752,25 @@ void __65__TCSContacts__destinationsFromAllowlistDictionary_onlyAccepted___block
   return v4;
 }
 
-+ (id)_unifiedContactWithIdentifier:(id)a3 orDestination:(id)a4 usingContactStore:(id)a5 keysToFetch:(id)a6
++ (id)_unifiedContactWithIdentifier:(id)identifier orDestination:(id)destination usingContactStore:(id)store keysToFetch:(id)fetch
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v10 length])
+  identifierCopy = identifier;
+  destinationCopy = destination;
+  storeCopy = store;
+  fetchCopy = fetch;
+  if (![identifierCopy length])
   {
-    if (v11)
+    if (destinationCopy)
     {
-      if ([v11 destinationIdIsPhoneNumber])
+      if ([destinationCopy destinationIdIsPhoneNumber])
       {
-        v21 = [a1 _pauseCharacterSet];
-        v22 = [v11 _cn_containsCharacterInSet:v21];
+        _pauseCharacterSet = [self _pauseCharacterSet];
+        v22 = [destinationCopy _cn_containsCharacterInSet:_pauseCharacterSet];
 
         if (!v22)
         {
-          v15 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v11];
+          v15 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:destinationCopy];
           v16 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:v15];
           goto LABEL_3;
         }
@@ -1783,13 +1783,13 @@ void __65__TCSContacts__destinationsFromAllowlistDictionary_onlyAccepted___block
         }
 
 LABEL_20:
-        v20 = 0;
+        firstObject = 0;
         goto LABEL_21;
       }
 
-      if ([v11 destinationIdIsEmailAddress])
+      if ([destinationCopy destinationIdIsEmailAddress])
       {
-        v17 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v11];
+        v17 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:destinationCopy];
         goto LABEL_4;
       }
     }
@@ -1798,14 +1798,14 @@ LABEL_20:
     v24 = TCSLogDefault;
     if (os_log_type_enabled(TCSLogDefault, OS_LOG_TYPE_ERROR))
     {
-      [TCSContacts _unifiedContactWithIdentifier:v10 orDestination:v24 usingContactStore:v11 keysToFetch:?];
+      [TCSContacts _unifiedContactWithIdentifier:identifierCopy orDestination:v24 usingContactStore:destinationCopy keysToFetch:?];
     }
 
     goto LABEL_20;
   }
 
   v14 = MEMORY[0x277CBDA58];
-  v28[0] = v10;
+  v28[0] = identifierCopy;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   v16 = [v14 predicateForContactsWithIdentifiers:v15];
 LABEL_3:
@@ -1813,7 +1813,7 @@ LABEL_3:
 
 LABEL_4:
   v27 = 0;
-  v18 = [v12 unifiedContactsMatchingPredicate:v17 keysToFetch:v13 error:&v27];
+  v18 = [storeCopy unifiedContactsMatchingPredicate:v17 keysToFetch:fetchCopy error:&v27];
   v19 = v27;
   if (v19)
   {
@@ -1823,22 +1823,22 @@ LABEL_4:
       +[TCSContacts _unifiedContactWithIdentifier:orDestination:usingContactStore:keysToFetch:];
     }
 
-    v20 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v20 = [v18 firstObject];
-    if (!v20)
+    firstObject = [v18 firstObject];
+    if (!firstObject)
     {
-      v20 = [a1 _unknownContactWithDestination:v11];
+      firstObject = [self _unknownContactWithDestination:destinationCopy];
     }
   }
 
 LABEL_21:
   v25 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return firstObject;
 }
 
 + (id)_pauseCharacterSet
@@ -1860,22 +1860,22 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)_canonicalPhoneNumberFromCNPhoneNumber:(id)a3
++ (id)_canonicalPhoneNumberFromCNPhoneNumber:(id)number
 {
-  v3 = [a3 digits];
+  digits = [number digits];
   v4 = MEMORY[0x277D6EF18];
   v5 = TUHomeCountryCode();
-  v6 = [v4 phoneNumberWithDigits:v3 countryCode:v5];
-  v7 = [v6 unformattedInternationalRepresentation];
+  v6 = [v4 phoneNumberWithDigits:digits countryCode:v5];
+  unformattedInternationalRepresentation = [v6 unformattedInternationalRepresentation];
 
-  if (v7)
+  if (unformattedInternationalRepresentation)
   {
-    v8 = v7;
+    v8 = unformattedInternationalRepresentation;
   }
 
   else
   {
-    v8 = v3;
+    v8 = digits;
   }
 
   v9 = v8;
@@ -1883,34 +1883,34 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
   return v8;
 }
 
-+ (id)_canonicalPhoneNumberFromPhoneNumberString:(id)a3
++ (id)_canonicalPhoneNumberFromPhoneNumberString:(id)string
 {
-  v4 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:a3];
-  v5 = [a1 _canonicalPhoneNumberFromCNPhoneNumber:v4];
+  v4 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:string];
+  v5 = [self _canonicalPhoneNumberFromCNPhoneNumber:v4];
 
   return v5;
 }
 
-+ (id)_canonicalDestinationForString:(id)a3
++ (id)_canonicalDestinationForString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if ([v4 destinationIdIsPhoneNumber])
+  stringCopy = string;
+  v5 = stringCopy;
+  if ([stringCopy destinationIdIsPhoneNumber])
   {
-    v5 = [a1 _canonicalPhoneNumberFromPhoneNumberString:v4];
+    v5 = [self _canonicalPhoneNumberFromPhoneNumberString:stringCopy];
   }
 
   return v5;
 }
 
-+ (id)canonicalDestinationsForContact:(id)a3
++ (id)canonicalDestinationsForContact:(id)contact
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contactCopy = contact;
   v5 = [MEMORY[0x277CBEB58] set];
   v37[0] = *MEMORY[0x277CBD098];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
-  v7 = [v4 areKeysAvailable:v6];
+  v7 = [contactCopy areKeysAvailable:v6];
 
   if (v7)
   {
@@ -1918,8 +1918,8 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v8 = [v4 phoneNumbers];
-    v9 = [v8 countByEnumeratingWithState:&v30 objects:v36 count:16];
+    phoneNumbers = [contactCopy phoneNumbers];
+    v9 = [phoneNumbers countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1930,15 +1930,15 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
         {
           if (*v31 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(phoneNumbers);
           }
 
-          v13 = [*(*(&v30 + 1) + 8 * i) value];
-          v14 = [a1 _canonicalPhoneNumberFromCNPhoneNumber:v13];
+          value = [*(*(&v30 + 1) + 8 * i) value];
+          v14 = [self _canonicalPhoneNumberFromCNPhoneNumber:value];
           [v5 addObject:v14];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v30 objects:v36 count:16];
+        v10 = [phoneNumbers countByEnumeratingWithState:&v30 objects:v36 count:16];
       }
 
       while (v10);
@@ -1947,7 +1947,7 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
 
   v35 = *MEMORY[0x277CBCFC0];
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-  v16 = [v4 areKeysAvailable:v15];
+  v16 = [contactCopy areKeysAvailable:v15];
 
   if (v16)
   {
@@ -1955,8 +1955,8 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = [v4 emailAddresses];
-    v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    emailAddresses = [contactCopy emailAddresses];
+    v18 = [emailAddresses countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v18)
     {
       v19 = v18;
@@ -1967,37 +1967,37 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
         {
           if (*v27 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(emailAddresses);
           }
 
-          v22 = [*(*(&v26 + 1) + 8 * j) value];
-          [v5 addObject:v22];
+          value2 = [*(*(&v26 + 1) + 8 * j) value];
+          [v5 addObject:value2];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v19 = [emailAddresses countByEnumeratingWithState:&v26 objects:v34 count:16];
       }
 
       while (v19);
     }
   }
 
-  v23 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return allObjects;
 }
 
-+ (id)_unknownContactWithDestination:(id)a3
++ (id)_unknownContactWithDestination:(id)destination
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  destinationCopy = destination;
   v4 = objc_opt_new();
-  if ([v3 destinationIdIsPhoneNumber])
+  if ([destinationCopy destinationIdIsPhoneNumber])
   {
     v5 = MEMORY[0x277CBDB20];
     v6 = *MEMORY[0x277CBD900];
-    v7 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v3];
+    v7 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:destinationCopy];
     v8 = [v5 labeledValueWithLabel:v6 value:v7];
     v14[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -2005,9 +2005,9 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
     [v4 setPhoneNumbers:v9];
   }
 
-  else if ([v3 destinationIdIsEmailAddress])
+  else if ([destinationCopy destinationIdIsEmailAddress])
   {
-    v10 = [MEMORY[0x277CBDB20] labeledValueWithLabel:*MEMORY[0x277CBD8E0] value:v3];
+    v10 = [MEMORY[0x277CBDB20] labeledValueWithLabel:*MEMORY[0x277CBD8E0] value:destinationCopy];
     v13 = v10;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
 
@@ -2031,14 +2031,14 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
   return v4;
 }
 
-+ (BOOL)_contact:(id)a3 hasKeysForFormatterStye:(int64_t)a4
++ (BOOL)_contact:(id)_contact hasKeysForFormatterStye:(int64_t)stye
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:a4];
+  _contactCopy = _contact;
+  v6 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:stye];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v8 = [v5 areKeysAvailable:v7];
+  v8 = [_contactCopy areKeysAvailable:v7];
 
   if ((v8 & 1) == 0)
   {
@@ -2046,7 +2046,7 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
     v9 = TCSLogDefault;
     if (os_log_type_enabled(TCSLogDefault, OS_LOG_TYPE_ERROR))
     {
-      [TCSContacts _contact:v9 hasKeysForFormatterStye:v5];
+      [TCSContacts _contact:v9 hasKeysForFormatterStye:_contactCopy];
     }
   }
 
@@ -2054,126 +2054,126 @@ uint64_t __33__TCSContacts__pauseCharacterSet__block_invoke()
   return v8;
 }
 
-+ (BOOL)_isContact:(id)a3 similarToContact:(id)a4
++ (BOOL)_isContact:(id)contact similarToContact:(id)toContact
 {
-  v6 = a4;
-  v7 = a3;
+  toContactCopy = toContact;
+  contactCopy = contact;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
   v9 = objc_opt_isKindOfClass();
   if (isKindOfClass & 1) != 0 || (v9)
   {
-    v12 = [a1 _isUnknownContact:v7 equalToUnknownContact:v6];
+    v12 = [self _isUnknownContact:contactCopy equalToUnknownContact:toContactCopy];
   }
 
   else
   {
-    v10 = [v7 identifier];
+    identifier = [contactCopy identifier];
 
-    v11 = [v6 identifier];
-    v12 = [v10 isEqualToString:v11];
+    identifier2 = [toContactCopy identifier];
+    v12 = [identifier isEqualToString:identifier2];
 
-    v7 = v10;
+    contactCopy = identifier;
   }
 
   return v12;
 }
 
-+ (BOOL)_isUnknownContact:(id)a3 equalToUnknownContact:(id)a4
++ (BOOL)_isUnknownContact:(id)contact equalToUnknownContact:(id)unknownContact
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a4;
-  v7 = [a3 idsCanonicalDestinations];
-  v8 = [v5 setWithArray:v7];
+  unknownContactCopy = unknownContact;
+  idsCanonicalDestinations = [contact idsCanonicalDestinations];
+  v8 = [v5 setWithArray:idsCanonicalDestinations];
 
   v9 = MEMORY[0x277CBEB98];
-  v10 = [v6 idsCanonicalDestinations];
+  idsCanonicalDestinations2 = [unknownContactCopy idsCanonicalDestinations];
 
-  v11 = [v9 setWithArray:v10];
+  v11 = [v9 setWithArray:idsCanonicalDestinations2];
 
-  LOBYTE(v6) = [v8 isEqualToSet:v11];
-  return v6;
+  LOBYTE(unknownContactCopy) = [v8 isEqualToSet:v11];
+  return unknownContactCopy;
 }
 
-+ (id)_firstPhoneNumberOrEmailAddressFromContact:(id)a3 formatPhoneNumber:(BOOL)a4
++ (id)_firstPhoneNumberOrEmailAddressFromContact:(id)contact formatPhoneNumber:(BOOL)number
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contactCopy = contact;
   v20[0] = *MEMORY[0x277CBD098];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-  v7 = [v5 areKeysAvailable:v6];
+  v7 = [contactCopy areKeysAvailable:v6];
 
   if (!v7)
   {
     goto LABEL_6;
   }
 
-  v8 = [v5 phoneNumbers];
-  v9 = [v8 firstObject];
-  v10 = [v9 value];
-  v11 = v10;
-  if (a4)
+  phoneNumbers = [contactCopy phoneNumbers];
+  firstObject = [phoneNumbers firstObject];
+  value = [firstObject value];
+  v11 = value;
+  if (number)
   {
-    [v10 formattedInternationalStringValue];
+    [value formattedInternationalStringValue];
   }
 
   else
   {
-    [v10 unformattedInternationalStringValue];
+    [value unformattedInternationalStringValue];
   }
-  v12 = ;
+  value2 = ;
 
-  if (!v12)
+  if (!value2)
   {
 LABEL_6:
     v19 = *MEMORY[0x277CBCFC0];
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-    v14 = [v5 areKeysAvailable:v13];
+    v14 = [contactCopy areKeysAvailable:v13];
 
     if (v14)
     {
-      v15 = [v5 emailAddresses];
-      v16 = [v15 firstObject];
-      v12 = [v16 value];
+      emailAddresses = [contactCopy emailAddresses];
+      firstObject2 = [emailAddresses firstObject];
+      value2 = [firstObject2 value];
     }
 
     else
     {
-      v12 = 0;
+      value2 = 0;
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return value2;
 }
 
 + (id)_tinCanUserNotificationCenter
 {
   if (TCSIsProcessTinCan())
   {
-    v2 = [MEMORY[0x277CE2028] currentNotificationCenter];
+    currentNotificationCenter = [MEMORY[0x277CE2028] currentNotificationCenter];
   }
 
   else
   {
-    v2 = [objc_alloc(MEMORY[0x277CE2028]) initWithBundleIdentifier:@"com.apple.tincan"];
+    currentNotificationCenter = [objc_alloc(MEMORY[0x277CE2028]) initWithBundleIdentifier:@"com.apple.tincan"];
   }
 
-  return v2;
+  return currentNotificationCenter;
 }
 
-+ (id)_safeContactNameStringForLogging:(id)a3 handle:(id)a4
++ (id)_safeContactNameStringForLogging:(id)logging handle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _contact:v6 hasKeysForFormatterStye:0])
+  loggingCopy = logging;
+  handleCopy = handle;
+  if ([self _contact:loggingCopy hasKeysForFormatterStye:0])
   {
-    v8 = [MEMORY[0x277CBDA78] stringFromContact:v6 style:0];
+    v8 = [MEMORY[0x277CBDA78] stringFromContact:loggingCopy style:0];
     if (!v8)
     {
-      v9 = [TCSContacts _firstPhoneNumberOrEmailAddressFromContact:v6 formatPhoneNumber:0];
+      v9 = [TCSContacts _firstPhoneNumberOrEmailAddressFromContact:loggingCopy formatPhoneNumber:0];
       if (v9)
       {
         v8 = IDSCopyRawAddressForDestination();
@@ -2193,7 +2193,7 @@ LABEL_6:
     v8 = @"<name formatter keys missing>";
   }
 
-  if (!v7)
+  if (!handleCopy)
   {
     goto LABEL_9;
   }
@@ -2211,16 +2211,16 @@ LABEL_9:
   return v12;
 }
 
-+ (id)_safeContactDetailStringForLogging:(id)a3
++ (id)_safeContactDetailStringForLogging:(id)logging
 {
-  v4 = a3;
+  loggingCopy = logging;
   v5 = MEMORY[0x277CCAB68];
-  v6 = [v4 identifier];
-  v7 = [v5 stringWithFormat:@"ID: %@", v6];
+  identifier = [loggingCopy identifier];
+  v7 = [v5 stringWithFormat:@"ID: %@", identifier];
 
-  if ([a1 _contact:v4 hasKeysForFormatterStye:0])
+  if ([self _contact:loggingCopy hasKeysForFormatterStye:0])
   {
-    v8 = [MEMORY[0x277CBDA78] stringFromContact:v4 style:0];
+    v8 = [MEMORY[0x277CBDA78] stringFromContact:loggingCopy style:0];
   }
 
   else
@@ -2236,7 +2236,7 @@ LABEL_9:
     [v7 appendString:v11];
   }
 
-  v12 = [a1 canonicalDestinationsForContact:v4];
+  v12 = [self canonicalDestinationsForContact:loggingCopy];
   v13 = [v12 componentsJoinedByString:{@", "}];
 
   if ([v13 length])

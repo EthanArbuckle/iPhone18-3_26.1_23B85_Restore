@@ -1,23 +1,23 @@
 @interface GKContactSkipControl
-- (GKContactSkipControl)initWithFrame:(CGRect)a3;
-- (id)compactPhoneValues:(int64_t)a3;
-- (id)nextTitleFollowingValue:(id)a3;
-- (int64_t)valueButtonCountThatFitsHeight:(double)a3;
+- (GKContactSkipControl)initWithFrame:(CGRect)frame;
+- (id)compactPhoneValues:(int64_t)values;
+- (id)nextTitleFollowingValue:(id)value;
+- (int64_t)valueButtonCountThatFitsHeight:(double)height;
 - (void)awakeFromNib;
-- (void)determineButtonFromGesture:(id)a3;
-- (void)setValues:(id)a3;
+- (void)determineButtonFromGesture:(id)gesture;
+- (void)setValues:(id)values;
 - (void)setupButtonView;
 - (void)setupValueButtons;
-- (void)valueSelected:(id)a3;
+- (void)valueSelected:(id)selected;
 @end
 
 @implementation GKContactSkipControl
 
-- (GKContactSkipControl)initWithFrame:(CGRect)a3
+- (GKContactSkipControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GKContactSkipControl;
-  v3 = [(GKContactSkipControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKContactSkipControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -44,8 +44,8 @@
     v4 = [v3 initWithFrame:?];
     [(GKContactSkipControl *)self setButtonView:v4];
 
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)self->_buttonView setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)self->_buttonView setBackgroundColor:clearColor];
 
     [(UIView *)self->_buttonView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(GKContactSkipControl *)self addSubview:self->_buttonView];
@@ -79,8 +79,8 @@
     v19 = objc_alloc(MEMORY[0x277D75D18]);
     [(GKContactSkipControl *)self bounds];
     v24 = [v19 initWithFrame:?];
-    v20 = [MEMORY[0x277D75348] clearColor];
-    [v24 setBackgroundColor:v20];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [v24 setBackgroundColor:clearColor2];
 
     [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
     v21 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_determineButtonFromGesture_];
@@ -95,17 +95,17 @@
   }
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
-  v5 = a3;
-  if (([v5 isEqualToArray:self->_values] & 1) == 0)
+  valuesCopy = values;
+  if (([valuesCopy isEqualToArray:self->_values] & 1) == 0)
   {
-    objc_storeStrong(&self->_values, a3);
+    objc_storeStrong(&self->_values, values);
     [(GKContactSkipControl *)self setupValueButtons];
   }
 }
 
-- (id)compactPhoneValues:(int64_t)a3
+- (id)compactPhoneValues:(int64_t)values
 {
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:20];
   v6 = [(NSArray *)self->_values count]+ -1.0;
@@ -118,7 +118,7 @@
       [v5 addObject:v8];
 
       [v5 addObject:@"•"];
-      v7 = v6 / a3 + v7;
+      v7 = v6 / values + v7;
     }
 
     while (v7 < v6);
@@ -126,8 +126,8 @@
 
   if ([v5 containsObject:@"#"])
   {
-    v9 = [v5 lastObject];
-    v10 = [v9 isEqualToString:@"•"];
+    lastObject = [v5 lastObject];
+    v10 = [lastObject isEqualToString:@"•"];
 
     if (v10)
     {
@@ -137,8 +137,8 @@
 
   else if ([(NSArray *)self->_values count])
   {
-    v11 = [(NSArray *)self->_values lastObject];
-    [v5 addObject:v11];
+    lastObject2 = [(NSArray *)self->_values lastObject];
+    [v5 addObject:lastObject2];
   }
 
   v12 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
@@ -146,9 +146,9 @@
   return v12;
 }
 
-- (id)nextTitleFollowingValue:(id)a3
+- (id)nextTitleFollowingValue:(id)value
 {
-  v4 = [(NSArray *)self->_values indexOfObject:a3];
+  v4 = [(NSArray *)self->_values indexOfObject:value];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4 + 1, v4 + 1 >= [(NSArray *)self->_values count]))
   {
     v6 = 0;
@@ -162,7 +162,7 @@
   return v6;
 }
 
-- (int64_t)valueButtonCountThatFitsHeight:(double)a3
+- (int64_t)valueButtonCountThatFitsHeight:(double)height
 {
   v5 = [MEMORY[0x277D75220] buttonWithType:0];
   [v5 frame];
@@ -173,21 +173,21 @@
   v10 = MEMORY[0x277D74300];
   [MEMORY[0x277D74300] smallSystemFontSize];
   v11 = [v10 systemFontOfSize:?];
-  v12 = [v5 titleLabel];
-  [v12 setFont:v11];
+  titleLabel = [v5 titleLabel];
+  [titleLabel setFont:v11];
 
-  v13 = [v5 titleLabel];
-  [v13 setAdjustsFontSizeToFitWidth:1];
+  titleLabel2 = [v5 titleLabel];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-  v14 = [v5 titleLabel];
-  [v14 setTextAlignment:1];
+  titleLabel3 = [v5 titleLabel];
+  [titleLabel3 setTextAlignment:1];
 
   [v5 setTitle:@"A" forState:0];
   [v5 setTitleEdgeInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   [v5 setContentEdgeInsets:{-1.0, 0.0, -1.0, 0.0}];
   [v5 sizeToFit];
   [v5 bounds];
-  v16 = (a3 / v15);
+  v16 = (height / v15);
 
   return v16;
 }
@@ -274,23 +274,23 @@
       v23 = MEMORY[0x277D74300];
       [MEMORY[0x277D74300] smallSystemFontSize];
       v24 = [v23 systemFontOfSize:?];
-      v25 = [(UIView *)v14 titleLabel];
-      [v25 setFont:v24];
+      titleLabel = [(UIView *)v14 titleLabel];
+      [titleLabel setFont:v24];
 
-      v26 = [(UIView *)v14 titleLabel];
-      [v26 setAdjustsFontSizeToFitWidth:1];
+      titleLabel2 = [(UIView *)v14 titleLabel];
+      [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-      v27 = [(UIView *)v14 titleLabel];
-      [v27 setTextAlignment:1];
+      titleLabel3 = [(UIView *)v14 titleLabel];
+      [titleLabel3 setTextAlignment:1];
 
-      v28 = [(GKContactSkipControl *)self tintColor];
-      [(UIView *)v14 setTitleColor:v28 forState:0];
+      tintColor = [(GKContactSkipControl *)self tintColor];
+      [(UIView *)v14 setTitleColor:tintColor forState:0];
 
       [(UIView *)v14 setTitle:v22 forState:0];
       [(UIView *)v14 setTitleEdgeInsets:v15, v16, v18, v19];
       [(UIView *)v14 setContentEdgeInsets:-1.0, 0.0, -1.0, 0.0];
-      v29 = [MEMORY[0x277D75348] clearColor];
-      [(UIView *)v14 setBackgroundColor:v29];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIView *)v14 setBackgroundColor:clearColor];
 
       [(UIView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
       v30 = v22;
@@ -364,9 +364,9 @@ LABEL_26:
   [(GKContactSkipControl *)self setButtons:v48];
 }
 
-- (void)determineButtonFromGesture:(id)a3
+- (void)determineButtonFromGesture:(id)gesture
 {
-  [a3 locationInView:self->_buttonView];
+  [gesture locationInView:self->_buttonView];
   v4 = [(UIView *)self->_buttonView hitTest:0 withEvent:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -375,14 +375,14 @@ LABEL_26:
   }
 }
 
-- (void)valueSelected:(id)a3
+- (void)valueSelected:(id)selected
 {
   buttonsToTitles = self->_buttonsToTitles;
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a3, "tag")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(selected, "tag")}];
   v7 = [(NSMutableDictionary *)buttonsToTitles objectForKey:v5];
 
-  v6 = [(GKContactSkipControl *)self lastSelectedValue];
-  LOBYTE(v5) = [v6 isEqualToString:v7];
+  lastSelectedValue = [(GKContactSkipControl *)self lastSelectedValue];
+  LOBYTE(v5) = [lastSelectedValue isEqualToString:v7];
 
   if ((v5 & 1) == 0)
   {

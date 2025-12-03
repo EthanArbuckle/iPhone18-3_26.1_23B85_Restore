@@ -1,8 +1,8 @@
 @interface _DASBatteryTemperatureAnalyzer
 - (NSMutableDictionary)analyticsStatus;
-- (_DASBatteryTemperatureAnalyzer)initWithQueueLimit:(unint64_t)a3 reader:(id)a4 monitoringInterval:(unint64_t)a5 analyzeToMonitorRatio:(unint64_t)a6;
-- (double)getReferenceTemperatureForContext:(id)a3 reader:(id)a4;
-- (void)analyzeValues:(id)a3 currentContext:(id)a4;
+- (_DASBatteryTemperatureAnalyzer)initWithQueueLimit:(unint64_t)limit reader:(id)reader monitoringInterval:(unint64_t)interval analyzeToMonitorRatio:(unint64_t)ratio;
+- (double)getReferenceTemperatureForContext:(id)context reader:(id)reader;
+- (void)analyzeValues:(id)values currentContext:(id)context;
 - (void)recordValue;
 - (void)start;
 - (void)stop;
@@ -10,15 +10,15 @@
 
 @implementation _DASBatteryTemperatureAnalyzer
 
-- (_DASBatteryTemperatureAnalyzer)initWithQueueLimit:(unint64_t)a3 reader:(id)a4 monitoringInterval:(unint64_t)a5 analyzeToMonitorRatio:(unint64_t)a6
+- (_DASBatteryTemperatureAnalyzer)initWithQueueLimit:(unint64_t)limit reader:(id)reader monitoringInterval:(unint64_t)interval analyzeToMonitorRatio:(unint64_t)ratio
 {
-  v11 = a4;
+  readerCopy = reader;
   v26.receiver = self;
   v26.super_class = _DASBatteryTemperatureAnalyzer;
   v12 = [(_DASBatteryTemperatureAnalyzer *)&v26 init];
   if (v12)
   {
-    v13 = [[_DASSignalQueue alloc] initWithCount:a3];
+    v13 = [[_DASSignalQueue alloc] initWithCount:limit];
     batterytemperatureQueue = v12->_batterytemperatureQueue;
     v12->_batterytemperatureQueue = v13;
 
@@ -31,9 +31,9 @@
     executionQueue = v12->_executionQueue;
     v12->_executionQueue = v18;
 
-    objc_storeStrong(&v12->_reader, a4);
-    v12->_monitorInterval = a5;
-    v12->_analyzeToMonitorRatio = a6;
+    objc_storeStrong(&v12->_reader, reader);
+    v12->_monitorInterval = interval;
+    v12->_analyzeToMonitorRatio = ratio;
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1000288D8;
@@ -81,16 +81,16 @@
   dispatch_sync(executionQueue, block);
 }
 
-- (double)getReferenceTemperatureForContext:(id)a3 reader:(id)a4
+- (double)getReferenceTemperatureForContext:(id)context reader:(id)reader
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[_CDContextQueries keyPathForBatteryLevel];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [contextCopy objectForKeyedSubscript:v5];
 
-  v7 = [v6 integerValue];
-  if (v7 >= 60)
+  integerValue = [v6 integerValue];
+  if (integerValue >= 60)
   {
-    return (8.14409 / (pow(v7 / 77.02316, 45.64696) + 1.0) + 34.17899 + -1.0) * 100.0;
+    return (8.14409 / (pow(integerValue / 77.02316, 45.64696) + 1.0) + 34.17899 + -1.0) * 100.0;
   }
 
   else
@@ -121,20 +121,20 @@
   return v3;
 }
 
-- (void)analyzeValues:(id)a3 currentContext:(id)a4
+- (void)analyzeValues:(id)values currentContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  contextCopy = context;
   executionQueue = self->_executionQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100028E68;
   block[3] = &unk_1001B56B8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valuesCopy;
+  selfCopy = self;
+  v14 = contextCopy;
+  v9 = contextCopy;
+  v10 = valuesCopy;
   dispatch_sync(executionQueue, block);
 }
 

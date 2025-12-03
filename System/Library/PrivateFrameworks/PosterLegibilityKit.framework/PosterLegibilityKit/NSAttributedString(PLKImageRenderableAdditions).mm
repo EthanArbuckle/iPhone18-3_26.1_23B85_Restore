@@ -7,9 +7,9 @@
 - (uint64_t)plk_renderWithContext:()PLKImageRenderableAdditions
 {
   [a3 contentRect];
-  [a1 boundingRectWithSize:0 options:0 context:{v4, v5}];
+  [self boundingRectWithSize:0 options:0 context:{v4, v5}];
 
-  return [a1 drawInRect:?];
+  return [self drawInRect:?];
 }
 
 @end

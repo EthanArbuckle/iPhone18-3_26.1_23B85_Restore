@@ -1,71 +1,71 @@
 @interface PRComplicationSceneHostViewController
-- (PRComplicationSceneHostViewController)initWithScene:(id)a3;
+- (PRComplicationSceneHostViewController)initWithScene:(id)scene;
 - (void)_clearTouchDeliveryPolicies;
 - (void)_updateTouchDeliveryPolicies;
 - (void)invalidate;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 @end
 
 @implementation PRComplicationSceneHostViewController
 
-- (PRComplicationSceneHostViewController)initWithScene:(id)a3
+- (PRComplicationSceneHostViewController)initWithScene:(id)scene
 {
   v34[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sceneCopy = scene;
   v33.receiver = self;
   v33.super_class = PRComplicationSceneHostViewController;
   v6 = [(PRComplicationSceneHostViewController *)&v33 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scene, a3);
+    objc_storeStrong(&v6->_scene, scene);
     [(FBScene *)v7->_scene configureParameters:&__block_literal_global_22];
-    v8 = [(FBScene *)v7->_scene uiPresentationManager];
-    v9 = [v8 createPresenterWithIdentifier:@"complications"];
-    v32 = v5;
+    uiPresentationManager = [(FBScene *)v7->_scene uiPresentationManager];
+    v9 = [uiPresentationManager createPresenterWithIdentifier:@"complications"];
+    v32 = sceneCopy;
     scenePresenter = v7->_scenePresenter;
     v7->_scenePresenter = v9;
 
     [(UIScenePresenter *)v7->_scenePresenter modifyPresentationContext:&__block_literal_global_7_0];
     [(UIScenePresenter *)v7->_scenePresenter activate];
-    v11 = [(UIScenePresenter *)v7->_scenePresenter presentationView];
-    [v11 setClipsToBounds:1];
-    v12 = [v11 layer];
-    [v12 setName:@"Scene View"];
+    presentationView = [(UIScenePresenter *)v7->_scenePresenter presentationView];
+    [presentationView setClipsToBounds:1];
+    layer = [presentationView layer];
+    [layer setName:@"Scene View"];
 
     [(FBScene *)v7->_scene activateWithTransitionContext:0];
-    v13 = [(FBScene *)v7->_scene layerManager];
-    [v13 addObserver:v7];
+    layerManager = [(FBScene *)v7->_scene layerManager];
+    [layerManager addObserver:v7];
 
-    v14 = [(PRComplicationSceneHostViewController *)v7 view];
-    [v14 addSubview:v11];
+    view = [(PRComplicationSceneHostViewController *)v7 view];
+    [view addSubview:presentationView];
 
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(PRComplicationSceneHostViewController *)v7 view];
+    [presentationView setTranslatesAutoresizingMaskIntoConstraints:0];
+    view2 = [(PRComplicationSceneHostViewController *)v7 view];
     v16 = MEMORY[0x1E695DF70];
-    v31 = [v11 leadingAnchor];
-    v30 = [v15 leadingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    leadingAnchor = [presentationView leadingAnchor];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v34[0] = v29;
-    v28 = [v11 trailingAnchor];
-    v27 = [v15 trailingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    trailingAnchor = [presentationView trailingAnchor];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v34[1] = v26;
-    v25 = [v11 topAnchor];
-    v17 = [v15 topAnchor];
-    v18 = [v25 constraintEqualToAnchor:v17];
+    topAnchor = [presentationView topAnchor];
+    topAnchor2 = [view2 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v34[2] = v18;
-    v19 = [v11 bottomAnchor];
-    v20 = [v15 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    bottomAnchor = [presentationView bottomAnchor];
+    bottomAnchor2 = [view2 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v34[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:4];
     v23 = [v16 arrayWithArray:v22];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v23];
-    v5 = v32;
+    sceneCopy = v32;
   }
 
   return v7;
@@ -114,15 +114,15 @@ void __55__PRComplicationSceneHostViewController_initWithScene___block_invoke_3(
   v13.receiver = self;
   v13.super_class = PRComplicationSceneHostViewController;
   [(PRComplicationSceneHostViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(PRComplicationSceneHostViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 interfaceOrientation];
+  view = [(PRComplicationSceneHostViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  [v3 bounds];
+  [view bounds];
   scene = self->_scene;
   v12[1] = 3221225472;
-  if ((v6 - 3) >= 2)
+  if ((interfaceOrientation - 3) >= 2)
   {
     v10 = v7;
   }
@@ -135,7 +135,7 @@ void __55__PRComplicationSceneHostViewController_initWithScene___block_invoke_3(
   v12[0] = MEMORY[0x1E69E9820];
   v12[2] = __62__PRComplicationSceneHostViewController_viewDidLayoutSubviews__block_invoke;
   v12[3] = &__block_descriptor_72_e63_v24__0__FBSMutableSceneSettings_8__FBSSceneTransitionContext_16l;
-  if ((v6 - 3) >= 2)
+  if ((interfaceOrientation - 3) >= 2)
   {
     v11 = v8;
   }
@@ -149,7 +149,7 @@ void __55__PRComplicationSceneHostViewController_initWithScene___block_invoke_3(
   v12[5] = 0;
   v12[6] = v10;
   v12[7] = v11;
-  v12[8] = v6;
+  v12[8] = interfaceOrientation;
   [(FBScene *)scene performUpdate:v12];
 }
 
@@ -164,12 +164,12 @@ void __62__PRComplicationSceneHostViewController_viewDidLayoutSubviews__block_in
   [v7 setInterfaceOrientation:*(a1 + 8)];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PRComplicationSceneHostViewController;
-  [(PRComplicationSceneHostViewController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(PRComplicationSceneHostViewController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     [(PRComplicationSceneHostViewController *)self _updateTouchDeliveryPolicies];
   }
@@ -183,29 +183,29 @@ void __62__PRComplicationSceneHostViewController_viewDidLayoutSubviews__block_in
 - (void)_updateTouchDeliveryPolicies
 {
   v66 = *MEMORY[0x1E69E9840];
-  v3 = [(PRComplicationSceneHostViewController *)self view];
-  v4 = [v3 _window];
+  view = [(PRComplicationSceneHostViewController *)self view];
+  _window = [view _window];
 
-  if (v4)
+  if (_window)
   {
-    v5 = [(FBScene *)self->_scene layerManager];
-    v6 = [v5 layers];
+    layerManager = [(FBScene *)self->_scene layerManager];
+    layers = [layerManager layers];
 
     v7 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v8 = [(NSMutableDictionary *)self->_touchDeliveryPolicyAssertions allKeys];
-    v42 = [v7 initWithArray:v8];
+    allKeys = [(NSMutableDictionary *)self->_touchDeliveryPolicyAssertions allKeys];
+    v42 = [v7 initWithArray:allKeys];
 
-    v9 = [(PRComplicationSceneHostViewController *)self view];
-    v10 = [v9 _window];
-    v39 = [v10 _contextId];
+    view2 = [(PRComplicationSceneHostViewController *)self view];
+    _window2 = [view2 _window];
+    _contextId = [_window2 _contextId];
 
     v11 = PRLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v60 = self;
+      selfCopy3 = self;
       v61 = 2114;
-      v62 = v6;
+      v62 = layers;
       _os_log_impl(&dword_1A8AA7000, v11, OS_LOG_TYPE_DEFAULT, "[%p] Updating touch delivery policies for layers: %{public}@", buf, 0x16u);
     }
 
@@ -213,7 +213,7 @@ void __62__PRComplicationSceneHostViewController_viewDidLayoutSubviews__block_in
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    obj = v6;
+    obj = layers;
     v12 = [obj countByEnumeratingWithState:&v54 objects:v65 count:16];
     if (v12)
     {
@@ -229,21 +229,21 @@ void __62__PRComplicationSceneHostViewController_viewDidLayoutSubviews__block_in
             objc_enumerationMutation(obj);
           }
 
-          v15 = [*(*(&v54 + 1) + 8 * i) contextID];
-          v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15];
+          contextID = [*(*(&v54 + 1) + 8 * i) contextID];
+          v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:contextID];
           [v42 removeObject:v16];
 
           touchDeliveryPolicyAssertions = self->_touchDeliveryPolicyAssertions;
-          v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15];
+          v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:contextID];
           v19 = [(NSMutableDictionary *)touchDeliveryPolicyAssertions objectForKey:v18];
           LODWORD(touchDeliveryPolicyAssertions) = v19 == 0;
 
           if (touchDeliveryPolicyAssertions)
           {
             v20 = objc_alloc_init(MEMORY[0x1E698E440]);
-            v21 = [MEMORY[0x1E698E438] policyRequiringSharingOfTouchesDeliveredToChildContextId:v15 withHostContextId:v39];
-            v22 = [v20 endpoint];
-            [v21 setAssertionEndpoint:v22];
+            v21 = [MEMORY[0x1E698E438] policyRequiringSharingOfTouchesDeliveredToChildContextId:contextID withHostContextId:_contextId];
+            endpoint = [v20 endpoint];
+            [v21 setAssertionEndpoint:endpoint];
 
             objc_initWeak(&location, self);
             v47 = MEMORY[0x1E69E9820];
@@ -260,11 +260,11 @@ void __62__PRComplicationSceneHostViewController_viewDidLayoutSubviews__block_in
               if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = v38;
-                v60 = self;
+                selfCopy3 = self;
                 v61 = 2114;
                 v62 = v20;
                 v63 = 1024;
-                v64 = v15;
+                v64 = contextID;
                 _os_log_impl(&dword_1A8AA7000, v25, OS_LOG_TYPE_DEFAULT, "[%p] Saving touch policy assertion %{public}@ for context id %u", buf, 0x1Cu);
               }
 
@@ -278,7 +278,7 @@ void __62__PRComplicationSceneHostViewController_viewDidLayoutSubviews__block_in
                 v26 = self->_touchDeliveryPolicyAssertions;
               }
 
-              v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15];
+              v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:contextID];
               [(NSMutableDictionary *)v26 setObject:v20 forKey:v29];
 
               [v24 ipc_addPolicy:v23];
@@ -320,13 +320,13 @@ void __62__PRComplicationSceneHostViewController_viewDidLayoutSubviews__block_in
           v36 = PRLogCommon();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
-            v37 = [v34 unsignedIntValue];
+            unsignedIntValue = [v34 unsignedIntValue];
             *buf = 134218498;
-            v60 = self;
+            selfCopy3 = self;
             v61 = 2114;
             v62 = v35;
             v63 = 1024;
-            v64 = v37;
+            v64 = unsignedIntValue;
             _os_log_impl(&dword_1A8AA7000, v36, OS_LOG_TYPE_DEFAULT, "[%p] Invalidating assertion %{public}@ for context id %u", buf, 0x1Cu);
           }
         }
@@ -368,7 +368,7 @@ void __69__PRComplicationSceneHostViewController__updateTouchDeliveryPolicies__b
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A8AA7000, v3, OS_LOG_TYPE_DEFAULT, "[%p] Clearing any touch delivery policies", &v4, 0xCu);
   }
 

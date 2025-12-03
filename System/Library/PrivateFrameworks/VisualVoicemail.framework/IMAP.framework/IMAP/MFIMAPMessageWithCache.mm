@@ -3,7 +3,7 @@
 - (id)headerData;
 - (id)messageData;
 - (void)dealloc;
-- (void)setHeaders:(id)a3;
+- (void)setHeaders:(id)headers;
 @end
 
 @implementation MFIMAPMessageWithCache
@@ -31,9 +31,9 @@
   {
     v6.receiver = self;
     v6.super_class = MFIMAPMessageWithCache;
-    v4 = [(MFIMAPMessageWithCache *)&v6 messageData];
+    messageData = [(MFIMAPMessageWithCache *)&v6 messageData];
 
-    v3 = v4;
+    v3 = messageData;
   }
 
   return v3;
@@ -52,29 +52,29 @@
   }
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
-  v5 = a3;
-  if (self->_headers != v5)
+  headersCopy = headers;
+  if (self->_headers != headersCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_headers, a3);
-    v5 = v6;
+    v6 = headersCopy;
+    objc_storeStrong(&self->_headers, headers);
+    headersCopy = v6;
   }
 }
 
 - (id)headerData
 {
-  v3 = [(MFIMAPMessageWithCache *)self messageData];
-  v4 = v3;
-  if (!v3 || (v5 = [v3 mf_rangeOfRFC822HeaderData], v5 == 0x7FFFFFFFFFFFFFFFLL) || (objc_msgSend(v4, "mf_subdataWithRange:", v5, v6), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  messageData = [(MFIMAPMessageWithCache *)self messageData];
+  v4 = messageData;
+  if (!messageData || (v5 = [messageData mf_rangeOfRFC822HeaderData], v5 == 0x7FFFFFFFFFFFFFFFLL) || (objc_msgSend(v4, "mf_subdataWithRange:", v5, v6), (headerData = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9.receiver = self;
     v9.super_class = MFIMAPMessageWithCache;
-    v7 = [(MFIMAPMessageWithCache *)&v9 headerData];
+    headerData = [(MFIMAPMessageWithCache *)&v9 headerData];
   }
 
-  return v7;
+  return headerData;
 }
 
 @end

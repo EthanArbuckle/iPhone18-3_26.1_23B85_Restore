@@ -1,14 +1,14 @@
 @interface TSKHideOnTouchOutsideViewGestureRecognizer
-- (TSKHideOnTouchOutsideViewGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 watchView:(id)a5;
-- (void)addTarget:(id)a3 action:(SEL)a4;
+- (TSKHideOnTouchOutsideViewGestureRecognizer)initWithTarget:(id)target action:(SEL)action watchView:(id)view;
+- (void)addTarget:(id)target action:(SEL)action;
 - (void)dealloc;
-- (void)removeTarget:(id)a3 action:(SEL)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)removeTarget:(id)target action:(SEL)action;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation TSKHideOnTouchOutsideViewGestureRecognizer
 
-- (TSKHideOnTouchOutsideViewGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 watchView:(id)a5
+- (TSKHideOnTouchOutsideViewGestureRecognizer)initWithTarget:(id)target action:(SEL)action watchView:(id)view
 {
   v11.receiver = self;
   v11.super_class = TSKHideOnTouchOutsideViewGestureRecognizer;
@@ -16,10 +16,10 @@
   v9 = v8;
   if (v8)
   {
-    v8->mWatchView = a5;
+    v8->mWatchView = view;
     v8->mTargets = objc_alloc_init(MEMORY[0x277CBEB58]);
     [(TSKHideOnTouchOutsideViewGestureRecognizer *)v9 setDelegate:v9];
-    [(TSKHideOnTouchOutsideViewGestureRecognizer *)v9 addTarget:a3 action:a4];
+    [(TSKHideOnTouchOutsideViewGestureRecognizer *)v9 addTarget:target action:action];
   }
 
   return v9;
@@ -36,15 +36,15 @@
   [(TSKHideOnTouchOutsideViewGestureRecognizer *)&v3 dealloc];
 }
 
-- (void)addTarget:(id)a3 action:(SEL)a4
+- (void)addTarget:(id)target action:(SEL)action
 {
   v7 = objc_alloc_init(TSKHideOnTouchOutsideViewGestureRecognizerTarget);
-  [(TSKHideOnTouchOutsideViewGestureRecognizerTarget *)v7 setTarget:a3];
-  [(TSKHideOnTouchOutsideViewGestureRecognizerTarget *)v7 setAction:a4];
+  [(TSKHideOnTouchOutsideViewGestureRecognizerTarget *)v7 setTarget:target];
+  [(TSKHideOnTouchOutsideViewGestureRecognizerTarget *)v7 setAction:action];
   [(NSMutableSet *)self->mTargets addObject:v7];
 }
 
-- (void)removeTarget:(id)a3 action:(SEL)a4
+- (void)removeTarget:(id)target action:(SEL)action
 {
   v28 = *MEMORY[0x277D85DE8];
   v7 = [MEMORY[0x277CBEB58] set];
@@ -68,7 +68,7 @@
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        if ((!a3 || [*(*(&v22 + 1) + 8 * i) target] == a3) && (!a4 || objc_msgSend(v13, "action") == a4))
+        if ((!target || [*(*(&v22 + 1) + 8 * i) target] == target) && (!action || objc_msgSend(v13, "action") == action))
         {
           [v7 addObject:v13];
         }
@@ -108,11 +108,11 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v49 = *MEMORY[0x277D85DE8];
   sGestureInFlight = 1;
-  if (-[TSKHideOnTouchOutsideViewGestureRecognizer watchView](self, "watchView") && (-[UIView bounds](-[TSKHideOnTouchOutsideViewGestureRecognizer watchView](self, "watchView"), "bounds"), v8 = v7, v10 = v9, v12 = v11, v14 = v13, v42 = 0u, v43 = 0u, v44 = 0u, v45 = 0u, (v15 = [a3 countByEnumeratingWithState:&v42 objects:v48 count:16]) != 0))
+  if (-[TSKHideOnTouchOutsideViewGestureRecognizer watchView](self, "watchView") && (-[UIView bounds](-[TSKHideOnTouchOutsideViewGestureRecognizer watchView](self, "watchView"), "bounds"), v8 = v7, v10 = v9, v12 = v11, v14 = v13, v42 = 0u, v43 = 0u, v44 = 0u, v45 = 0u, (v15 = [began countByEnumeratingWithState:&v42 objects:v48 count:16]) != 0))
   {
     v16 = v15;
     v17 = 0;
@@ -123,7 +123,7 @@
       {
         if (*v43 != v18)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(began);
         }
 
         [*(*(&v42 + 1) + 8 * i) locationInView:{-[TSKHideOnTouchOutsideViewGestureRecognizer watchView](self, "watchView")}];
@@ -136,7 +136,7 @@
         v17 |= CGRectContainsPoint(v51, v50);
       }
 
-      v16 = [a3 countByEnumeratingWithState:&v42 objects:v48 count:16];
+      v16 = [began countByEnumeratingWithState:&v42 objects:v48 count:16];
     }
 
     while (v16);
@@ -151,8 +151,8 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v22 = [a4 allTouches];
-  v23 = [v22 countByEnumeratingWithState:&v38 objects:v47 count:16];
+  allTouches = [event allTouches];
+  v23 = [allTouches countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v23)
   {
     v24 = v23;
@@ -164,13 +164,13 @@
       {
         if (*v39 != v26)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(allTouches);
         }
 
-        v25 |= [a3 containsObject:*(*(&v38 + 1) + 8 * j)] ^ 1;
+        v25 |= [began containsObject:*(*(&v38 + 1) + 8 * j)] ^ 1;
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v38 objects:v47 count:16];
+      v24 = [allTouches countByEnumeratingWithState:&v38 objects:v47 count:16];
     }
 
     while (v24);

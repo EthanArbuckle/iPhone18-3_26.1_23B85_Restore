@@ -1,21 +1,21 @@
 @interface NSMutableDictionary
-- (void)addLines:(id)a3 fromOwner:(id)a4;
+- (void)addLines:(id)lines fromOwner:(id)owner;
 @end
 
 @implementation NSMutableDictionary
 
-- (void)addLines:(id)a3 fromOwner:(id)a4
+- (void)addLines:(id)lines fromOwner:(id)owner
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self objectForKey:v6];
+  linesCopy = lines;
+  ownerCopy = owner;
+  v7 = [(NSMutableDictionary *)self objectForKey:ownerCopy];
   if (!v7)
   {
     v7 = objc_opt_new();
   }
 
-  [v7 addLines:v8];
-  [(NSMutableDictionary *)self setValue:v7 forKey:v6];
+  [v7 addLines:linesCopy];
+  [(NSMutableDictionary *)self setValue:v7 forKey:ownerCopy];
 }
 
 @end

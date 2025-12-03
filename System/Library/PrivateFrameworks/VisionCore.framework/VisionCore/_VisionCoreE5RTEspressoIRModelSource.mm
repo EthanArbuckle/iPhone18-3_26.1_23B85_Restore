@@ -1,16 +1,16 @@
 @interface _VisionCoreE5RTEspressoIRModelSource
-+ (BOOL)isModelSourceURL:(id)a3;
++ (BOOL)isModelSourceURL:(id)l;
 @end
 
 @implementation _VisionCoreE5RTEspressoIRModelSource
 
-+ (BOOL)isModelSourceURL:(id)a3
++ (BOOL)isModelSourceURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = [v3 lastPathComponent];
-    v5 = [v4 hasSuffix:@".espresso.net"];
+    lastPathComponent = [lCopy lastPathComponent];
+    v5 = [lastPathComponent hasSuffix:@".espresso.net"];
   }
 
   else

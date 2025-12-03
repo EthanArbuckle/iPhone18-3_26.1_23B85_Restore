@@ -2,11 +2,11 @@
 + (id)policy;
 - (char)actualTrainName;
 - (char)syntheticTrainName;
-- (id)_stringPreferenceValueForKey:(id)a3;
-- (id)checkPreferencesForOverride:(id)a3;
-- (id)getSystemAppURL:(id)a3 assetType:(id)a4;
-- (id)serverURLForAssetType:(id)a3;
-- (void)getDelay:(double *)a3 andGracePeriod:(double *)a4 forUpdateInterval:(double)a5;
+- (id)_stringPreferenceValueForKey:(id)key;
+- (id)checkPreferencesForOverride:(id)override;
+- (id)getSystemAppURL:(id)l assetType:(id)type;
+- (id)serverURLForAssetType:(id)type;
+- (void)getDelay:(double *)delay andGracePeriod:(double *)period forUpdateInterval:(double)interval;
 @end
 
 @implementation ASAssetMetadataUpdatePolicy
@@ -30,25 +30,25 @@ void __37__ASAssetMetadataUpdatePolicy_policy__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (void)getDelay:(double *)a3 andGracePeriod:(double *)a4 forUpdateInterval:(double)a5
+- (void)getDelay:(double *)delay andGracePeriod:(double *)period forUpdateInterval:(double)interval
 {
-  v5 = fmax(a5 + 86400.0, 43200.0);
-  v6 = fmax(a5, 0.0);
-  v7 = a5 < 0.0;
+  v5 = fmax(interval + 86400.0, 43200.0);
+  v6 = fmax(interval, 0.0);
+  v7 = interval < 0.0;
   v8 = 259200.0;
   if (v7)
   {
     v8 = v5;
   }
 
-  *a3 = v6;
-  *a4 = v8;
+  *delay = v6;
+  *period = v8;
 }
 
-- (id)_stringPreferenceValueForKey:(id)a3
+- (id)_stringPreferenceValueForKey:(id)key
 {
-  v3 = a3;
-  v4 = _MAPreferencesCopyValue(v3);
+  keyCopy = key;
+  v4 = _MAPreferencesCopyValue(keyCopy);
   if (v4)
   {
     objc_opt_class();
@@ -60,7 +60,7 @@ void __37__ASAssetMetadataUpdatePolicy_policy__block_invoke(id a1)
         v6 = objc_opt_class();
         v7 = NSStringFromClass(v6);
         v9 = 138543874;
-        v10 = v3;
+        v10 = keyCopy;
         v11 = 2114;
         v12 = v4;
         v13 = 2114;
@@ -250,13 +250,13 @@ LABEL_6:
   actualTrainName_trainName = v2;
 }
 
-- (id)serverURLForAssetType:(id)a3
+- (id)serverURLForAssetType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   IsInternalAllowed = _MAPreferencesIsInternalAllowed();
   v6 = MGCopyAnswer();
   v7 = MGCopyAnswer();
-  if (isSystemAppType(v4))
+  if (isSystemAppType(typeCopy))
   {
     if (IsInternalAllowed)
     {
@@ -268,11 +268,11 @@ LABEL_6:
       v8 = @"https://mesu.apple.com/systemassets/";
     }
 
-    v10 = [(ASAssetMetadataUpdatePolicy *)self getSystemAppURL:v8 assetType:v4];
+    v10 = [(ASAssetMetadataUpdatePolicy *)self getSystemAppURL:v8 assetType:typeCopy];
     goto LABEL_44;
   }
 
-  if (isBuildAlignedType(v4))
+  if (isBuildAlignedType(typeCopy))
   {
     if (v6 && v7)
     {
@@ -284,7 +284,7 @@ LABEL_6:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v30 = v4;
+      v30 = typeCopy;
       v31 = 2112;
       v32 = v7;
       v33 = 2112;
@@ -297,16 +297,16 @@ LABEL_6:
 LABEL_14:
   if (IsInternalAllowed)
   {
-    v12 = [(ASAssetMetadataUpdatePolicy *)self syntheticTrainName];
-    if (v12)
+    syntheticTrainName = [(ASAssetMetadataUpdatePolicy *)self syntheticTrainName];
+    if (syntheticTrainName)
     {
-      v13 = v12;
-      v14 = [(ASAssetMetadataUpdatePolicy *)self actualTrainName];
-      if (v14)
+      v13 = syntheticTrainName;
+      actualTrainName = [(ASAssetMetadataUpdatePolicy *)self actualTrainName];
+      if (actualTrainName)
       {
         if (v9)
         {
-          [NSString stringWithFormat:@"https://basejumper.apple.com/assets/%s/%s%@/", v14, v14, v6];
+          [NSString stringWithFormat:@"https://basejumper.apple.com/assets/%s/%s%@/", actualTrainName, actualTrainName, v6];
         }
 
         else
@@ -335,11 +335,11 @@ LABEL_14:
   [NSString stringWithFormat:@"%@builds/%@/", @"https://mesu.apple.com/assets/", v7, v28];
   v16 = LABEL_24:;
 LABEL_25:
-  if (v4)
+  if (typeCopy)
   {
-    if ([MAThirdPartyCompatibilityDaemon isThirdPartyAssetType:v4])
+    if ([MAThirdPartyCompatibilityDaemon isThirdPartyAssetType:typeCopy])
     {
-      v17 = [MAThirdPartyCompatibilityDaemon thirdPartyServerURLForAssetType:v4];
+      v17 = [MAThirdPartyCompatibilityDaemon thirdPartyServerURLForAssetType:typeCopy];
       v18 = v17;
       if (v17)
       {
@@ -353,7 +353,7 @@ LABEL_25:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v30 = v4;
+          v30 = typeCopy;
           _os_log_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "Asset-Type: (%@) is a 3rd party asset, but contains no server URL.", buf, 0xCu);
         }
       }
@@ -367,7 +367,7 @@ LABEL_25:
     }
 
     v21 = v16;
-    v22 = [(ASAssetMetadataUpdatePolicy *)self checkPreferencesForOverride:v4];
+    v22 = [(ASAssetMetadataUpdatePolicy *)self checkPreferencesForOverride:typeCopy];
     objc_opt_class();
     v23 = v21;
     if (objc_opt_isKindOfClass())
@@ -378,7 +378,7 @@ LABEL_25:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v30 = v4;
+          v30 = typeCopy;
           v31 = 2112;
           v32 = v22;
           _os_log_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "Asset-Type: (%@) has an overridden URL (%@) that will not be honored.", buf, 0x16u);
@@ -414,14 +414,14 @@ LABEL_44:
   return v10;
 }
 
-- (id)getSystemAppURL:(id)a3 assetType:(id)a4
+- (id)getSystemAppURL:(id)l assetType:(id)type
 {
-  v6 = a3;
-  v7 = [NSString stringWithFormat:@"%@-%@", @"MobileAssetServerURL", a4];
-  v8 = [(ASAssetMetadataUpdatePolicy *)self _stringPreferenceValueForKey:v7];
+  lCopy = l;
+  type = [NSString stringWithFormat:@"%@-%@", @"MobileAssetServerURL", type];
+  v8 = [(ASAssetMetadataUpdatePolicy *)self _stringPreferenceValueForKey:type];
   if (!v8)
   {
-    v8 = v6;
+    v8 = lCopy;
   }
 
   v9 = [NSURL URLWithString:v8];
@@ -429,11 +429,11 @@ LABEL_44:
   return v9;
 }
 
-- (id)checkPreferencesForOverride:(id)a3
+- (id)checkPreferencesForOverride:(id)override
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"%@-%@", @"MobileAssetServerURL", v4];
-  v6 = [(ASAssetMetadataUpdatePolicy *)self _stringPreferenceValueForKey:v5];
+  overrideCopy = override;
+  overrideCopy = [NSString stringWithFormat:@"%@-%@", @"MobileAssetServerURL", overrideCopy];
+  v6 = [(ASAssetMetadataUpdatePolicy *)self _stringPreferenceValueForKey:overrideCopy];
   if (v6)
   {
     v7 = v6;
@@ -441,16 +441,16 @@ LABEL_44:
 
   else
   {
-    v8 = [NSString stringWithFormat:@"default-%@-%@", @"MobileAssetServerURL", v4];
+    overrideCopy2 = [NSString stringWithFormat:@"default-%@-%@", @"MobileAssetServerURL", overrideCopy];
 
-    v9 = [(ASAssetMetadataUpdatePolicy *)self _stringPreferenceValueForKey:v8];
+    v9 = [(ASAssetMetadataUpdatePolicy *)self _stringPreferenceValueForKey:overrideCopy2];
     if (!v9)
     {
       v9 = [(ASAssetMetadataUpdatePolicy *)self _stringPreferenceValueForKey:@"MobileAssetServerURL"];
     }
 
     v7 = v9;
-    v5 = v8;
+    overrideCopy = overrideCopy2;
   }
 
   return v7;

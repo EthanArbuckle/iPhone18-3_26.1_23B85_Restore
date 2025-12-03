@@ -1,6 +1,6 @@
 @interface ISUserNotification
 - (ISUserNotification)init;
-- (ISUserNotification)initWithDictionary:(id)a3 options:(unint64_t)a4;
+- (ISUserNotification)initWithDictionary:(id)dictionary options:(unint64_t)options;
 - (NSDictionary)dictionary;
 - (__CFUserNotification)copyUserNotification;
 - (void)dealloc;
@@ -21,13 +21,13 @@
   return result;
 }
 
-- (ISUserNotification)initWithDictionary:(id)a3 options:(unint64_t)a4
+- (ISUserNotification)initWithDictionary:(id)dictionary options:(unint64_t)options
 {
   v6 = [(ISUserNotification *)self init];
   if (v6)
   {
-    v6->_dictionary = [a3 copy];
-    v6->_optionFlags = a4;
+    v6->_dictionary = [dictionary copy];
+    v6->_optionFlags = options;
   }
 
   return v6;

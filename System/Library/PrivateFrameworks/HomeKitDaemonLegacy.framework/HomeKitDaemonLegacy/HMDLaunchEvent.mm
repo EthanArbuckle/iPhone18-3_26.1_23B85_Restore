@@ -1,18 +1,18 @@
 @interface HMDLaunchEvent
-- (HMDLaunchEvent)initWithFirstLaunchAfterBoot:(BOOL)a3;
+- (HMDLaunchEvent)initWithFirstLaunchAfterBoot:(BOOL)boot;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
 @implementation HMDLaunchEvent
 
-- (HMDLaunchEvent)initWithFirstLaunchAfterBoot:(BOOL)a3
+- (HMDLaunchEvent)initWithFirstLaunchAfterBoot:(BOOL)boot
 {
   v5.receiver = self;
   v5.super_class = HMDLaunchEvent;
   result = [(HMMDatedLogEvent *)&v5 init];
   if (result)
   {
-    result->_firstLaunchAfterBoot = a3;
+    result->_firstLaunchAfterBoot = boot;
   }
 
   return result;

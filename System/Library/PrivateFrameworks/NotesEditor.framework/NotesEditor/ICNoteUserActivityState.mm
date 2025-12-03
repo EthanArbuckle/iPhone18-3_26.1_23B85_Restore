@@ -1,52 +1,52 @@
 @interface ICNoteUserActivityState
-- (ICNoteUserActivityState)initWithNote:(id)a3;
+- (ICNoteUserActivityState)initWithNote:(id)note;
 - (_NSRange)selectionRange;
 - (_NSRange)visibleRange;
-- (void)updateUserActivity:(id)a3;
+- (void)updateUserActivity:(id)activity;
 @end
 
 @implementation ICNoteUserActivityState
 
-- (ICNoteUserActivityState)initWithNote:(id)a3
+- (ICNoteUserActivityState)initWithNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   v15.receiver = self;
   v15.super_class = ICNoteUserActivityState;
-  v5 = [(ICNoteBaseUserActivityState *)&v15 initWithNote:v4];
+  v5 = [(ICNoteBaseUserActivityState *)&v15 initWithNote:noteCopy];
   if (v5)
   {
-    v6 = [v4 title];
-    [(ICNoteUserActivityState *)v5 setTitle:v6];
+    title = [noteCopy title];
+    [(ICNoteUserActivityState *)v5 setTitle:title];
 
-    v7 = [v4 identifier];
-    [(ICNoteUserActivityState *)v5 setNoteID:v7];
+    identifier = [noteCopy identifier];
+    [(ICNoteUserActivityState *)v5 setNoteID:identifier];
 
-    v8 = [v4 folder];
-    v9 = [v8 identifier];
-    [(ICNoteUserActivityState *)v5 setFolderID:v9];
+    folder = [noteCopy folder];
+    identifier2 = [folder identifier];
+    [(ICNoteUserActivityState *)v5 setFolderID:identifier2];
 
-    v10 = [v4 folder];
-    v11 = [v10 title];
-    [(ICNoteUserActivityState *)v5 setFolderName:v11];
+    folder2 = [noteCopy folder];
+    title2 = [folder2 title];
+    [(ICNoteUserActivityState *)v5 setFolderName:title2];
 
-    [(ICNoteUserActivityState *)v5 setWantsContinuationStreams:ICNotesSupportsContinuationStreamsForNote(v4)];
-    v12 = [v4 modificationDate];
-    [(ICNoteUserActivityState *)v5 setModificationDate:v12];
+    [(ICNoteUserActivityState *)v5 setWantsContinuationStreams:ICNotesSupportsContinuationStreamsForNote(noteCopy)];
+    modificationDate = [noteCopy modificationDate];
+    [(ICNoteUserActivityState *)v5 setModificationDate:modificationDate];
 
-    v13 = [v4 creationDate];
-    [(ICNoteUserActivityState *)v5 setCreationDate:v13];
+    creationDate = [noteCopy creationDate];
+    [(ICNoteUserActivityState *)v5 setCreationDate:creationDate];
   }
 
   return v5;
 }
 
-- (void)updateUserActivity:(id)a3
+- (void)updateUserActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = ICNoteUserActivityState;
-  v4 = a3;
-  [(ICNoteBaseUserActivityState *)&v5 updateUserActivity:v4];
-  ICNotesUpdateUserActivityForViewingNoteWithState(v4, self);
+  activityCopy = activity;
+  [(ICNoteBaseUserActivityState *)&v5 updateUserActivity:activityCopy];
+  ICNotesUpdateUserActivityForViewingNoteWithState(activityCopy, self);
 }
 
 - (_NSRange)visibleRange

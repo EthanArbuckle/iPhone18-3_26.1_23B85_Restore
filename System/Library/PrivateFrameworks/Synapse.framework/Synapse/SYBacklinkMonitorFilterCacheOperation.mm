@@ -1,7 +1,7 @@
 @interface SYBacklinkMonitorFilterCacheOperation
 - (void)_finishProcessingAndNotify;
 - (void)_searchBacklinksForInputUserActivity;
-- (void)_updateBacklinkFilterCacheWithInfos:(id)a3;
+- (void)_updateBacklinkFilterCacheWithInfos:(id)infos;
 @end
 
 @implementation SYBacklinkMonitorFilterCacheOperation
@@ -9,24 +9,24 @@
 - (void)_searchBacklinksForInputUserActivity
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(SYBacklinkMonitorOperation *)self processingQueue];
-  dispatch_assert_queue_V2(v3);
+  processingQueue = [(SYBacklinkMonitorOperation *)self processingQueue];
+  dispatch_assert_queue_V2(processingQueue);
 
   [(SYBacklinkMonitorOperation *)self _setOperationState:1];
-  v4 = [(SYBacklinkMonitorOperation *)self inputUserActivityInfo];
-  v5 = v4;
-  if (v4 && SYIsLinkableUserActivity(v4))
+  inputUserActivityInfo = [(SYBacklinkMonitorOperation *)self inputUserActivityInfo];
+  v5 = inputUserActivityInfo;
+  if (inputUserActivityInfo && SYIsLinkableUserActivity(inputUserActivityInfo))
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v7 = v6;
-    v8 = [v5 activityType];
+    activityType = [v5 activityType];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __77__SYBacklinkMonitorFilterCacheOperation__searchBacklinksForInputUserActivity__block_invoke;
     v12[3] = &unk_27856BD68;
     v12[5] = v7;
     v12[4] = self;
-    [SYItemIndexingManager fetchActivitiesWithActivityType:v8 completion:v12];
+    [SYItemIndexingManager fetchActivitiesWithActivityType:activityType completion:v12];
   }
 
   else
@@ -41,7 +41,7 @@
       }
 
       *buf = 134218242;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       v16 = v10;
       _os_log_impl(&dword_225901000, v9, OS_LOG_TYPE_DEFAULT, "BacklinkMonitorFilterOperation %p: Skipping query, input activity is %@.", buf, 0x16u);
@@ -93,23 +93,23 @@ uint64_t __77__SYBacklinkMonitorFilterCacheOperation__searchBacklinksForInputUse
   return result;
 }
 
-- (void)_updateBacklinkFilterCacheWithInfos:(id)a3
+- (void)_updateBacklinkFilterCacheWithInfos:(id)infos
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SYBacklinkMonitorOperation *)self processingQueue];
-  dispatch_assert_queue_V2(v5);
+  infosCopy = infos;
+  processingQueue = [(SYBacklinkMonitorOperation *)self processingQueue];
+  dispatch_assert_queue_V2(processingQueue);
 
   [(SYBacklinkMonitorOperation *)self _setOperationState:2];
-  v6 = [(SYBacklinkMonitorOperation *)self inputUserActivityInfo];
-  v7 = [v6 activityType];
+  inputUserActivityInfo = [(SYBacklinkMonitorOperation *)self inputUserActivityInfo];
+  activityType = [inputUserActivityInfo activityType];
 
-  if (v7)
+  if (activityType)
   {
     v8 = [SYBacklinkFilterCache alloc];
-    v9 = [(SYBacklinkMonitorOperation *)self inputUserActivityInfo];
-    v10 = [v9 activityType];
-    v27[0] = v10;
+    inputUserActivityInfo2 = [(SYBacklinkMonitorOperation *)self inputUserActivityInfo];
+    activityType2 = [inputUserActivityInfo2 activityType];
+    v27[0] = activityType2;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
     v12 = [(SYBacklinkFilterCache *)v8 initWithActivityTypes:v11];
 
@@ -117,7 +117,7 @@ uint64_t __77__SYBacklinkMonitorFilterCacheOperation__searchBacklinksForInputUse
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = v4;
+    v13 = infosCopy;
     v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v14)
     {
@@ -151,13 +151,13 @@ uint64_t __77__SYBacklinkMonitorFilterCacheOperation__searchBacklinksForInputUse
     v12 = 0;
   }
 
-  v18 = [(SYBacklinkMonitorOperation *)self delegate];
+  delegate = [(SYBacklinkMonitorOperation *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(SYBacklinkMonitorOperation *)self delegate];
-    [v20 backlinkMonitorOperation:self shouldUpdateFilterCache:v12];
+    delegate2 = [(SYBacklinkMonitorOperation *)self delegate];
+    [delegate2 backlinkMonitorOperation:self shouldUpdateFilterCache:v12];
   }
 
   [(SYBacklinkMonitorFilterCacheOperation *)self _finishProcessingAndNotify];
@@ -168,20 +168,20 @@ uint64_t __77__SYBacklinkMonitorFilterCacheOperation__searchBacklinksForInputUse
 - (void)_finishProcessingAndNotify
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(SYBacklinkMonitorOperation *)self processingQueue];
-  dispatch_assert_queue_V2(v3);
+  processingQueue = [(SYBacklinkMonitorOperation *)self processingQueue];
+  dispatch_assert_queue_V2(processingQueue);
 
   [(SYBacklinkMonitorOperation *)self _setOperationState:3];
   v4 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_225901000, v4, OS_LOG_TYPE_DEFAULT, "BacklinkMonitorFilterOperation %p: Finished, notifying delegate.", &v7, 0xCu);
   }
 
-  v5 = [(SYBacklinkMonitorOperation *)self delegate];
-  [v5 backlinkMonitorOperationDidFinish:self];
+  delegate = [(SYBacklinkMonitorOperation *)self delegate];
+  [delegate backlinkMonitorOperationDidFinish:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }

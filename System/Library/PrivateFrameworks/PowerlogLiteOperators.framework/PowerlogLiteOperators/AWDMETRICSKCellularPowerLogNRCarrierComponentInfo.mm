@@ -1,25 +1,25 @@
 @interface AWDMETRICSKCellularPowerLogNRCarrierComponentInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFreqRange:(id)a3;
+- (int)StringAsFreqRange:(id)range;
 - (int)freqRange;
 - (unint64_t)hash;
-- (void)addCarrierInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFreqRange:(BOOL)a3;
-- (void)setHasIsDataPreferred:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCarrierInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFreqRange:(BOOL)range;
+- (void)setHasIsDataPreferred:(BOOL)preferred;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogNRCarrierComponentInfo
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -32,22 +32,22 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addCarrierInfo:(id)a3
+- (void)addCarrierInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   carrierInfos = self->_carrierInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!carrierInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_carrierInfos;
     self->_carrierInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     carrierInfos = self->_carrierInfos;
   }
 
-  [(NSMutableArray *)carrierInfos addObject:v4];
+  [(NSMutableArray *)carrierInfos addObject:infoCopy];
 }
 
 - (int)freqRange
@@ -63,9 +63,9 @@
   }
 }
 
-- (void)setHasFreqRange:(BOOL)a3
+- (void)setHasFreqRange:(BOOL)range
 {
-  if (a3)
+  if (range)
   {
     v3 = 2;
   }
@@ -78,20 +78,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsFreqRange:(id)a3
+- (int)StringAsFreqRange:(id)range
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FR1"])
+  rangeCopy = range;
+  if ([rangeCopy isEqualToString:@"FR1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FR2"])
+  else if ([rangeCopy isEqualToString:@"FR2"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FR1_FR2"])
+  else if ([rangeCopy isEqualToString:@"FR1_FR2"])
   {
     v4 = 3;
   }
@@ -104,9 +104,9 @@
   return v4;
 }
 
-- (void)setHasIsDataPreferred:(BOOL)a3
+- (void)setHasIsDataPreferred:(BOOL)preferred
 {
-  if (a3)
+  if (preferred)
   {
     v3 = 8;
   }
@@ -125,8 +125,8 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogNRCarrierComponentInfo;
   v4 = [(AWDMETRICSKCellularPowerLogNRCarrierComponentInfo *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogNRCarrierComponentInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogNRCarrierComponentInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -134,12 +134,12 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -147,7 +147,7 @@
   if ((has & 4) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v6 forKey:@"subs_id"];
+    [dictionary setObject:v6 forKey:@"subs_id"];
   }
 
   if ([(NSMutableArray *)self->_carrierInfos count])
@@ -172,8 +172,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -182,7 +182,7 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"carrier_info"];
+    [dictionary setObject:v7 forKey:@"carrier_info"];
   }
 
   v14 = self->_has;
@@ -199,7 +199,7 @@
       v16 = off_27825D2D0[v15];
     }
 
-    [v3 setObject:v16 forKey:@"freq_range"];
+    [dictionary setObject:v16 forKey:@"freq_range"];
 
     v14 = self->_has;
   }
@@ -207,18 +207,18 @@
   if ((v14 & 8) != 0)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDataPreferred];
-    [v3 setObject:v17 forKey:@"is_data_preferred"];
+    [dictionary setObject:v17 forKey:@"is_data_preferred"];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -279,31 +279,31 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 7) = self->_subsId;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 7) = self->_subsId;
+    *(toCopy + 36) |= 4u;
   }
 
-  v11 = v4;
+  v11 = toCopy;
   if ([(AWDMETRICSKCellularPowerLogNRCarrierComponentInfo *)self carrierInfosCount])
   {
     [v11 clearCarrierInfos];
-    v6 = [(AWDMETRICSKCellularPowerLogNRCarrierComponentInfo *)self carrierInfosCount];
-    if (v6)
+    carrierInfosCount = [(AWDMETRICSKCellularPowerLogNRCarrierComponentInfo *)self carrierInfosCount];
+    if (carrierInfosCount)
     {
-      v7 = v6;
+      v7 = carrierInfosCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(AWDMETRICSKCellularPowerLogNRCarrierComponentInfo *)self carrierInfoAtIndex:i];
@@ -327,10 +327,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -365,7 +365,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [v6 addCarrierInfo:v13];
       }
 
@@ -393,44 +393,44 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_subsId != *(v4 + 7))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_subsId != *(equalCopy + 7))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_22;
   }
 
   carrierInfos = self->_carrierInfos;
-  if (carrierInfos | *(v4 + 2))
+  if (carrierInfos | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)carrierInfos isEqual:?])
     {
@@ -438,12 +438,12 @@
     }
 
     has = self->_has;
-    v6 = *(v4 + 36);
+    v6 = *(equalCopy + 36);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_freqRange != *(v4 + 6))
+    if ((v6 & 2) == 0 || self->_freqRange != *(equalCopy + 6))
     {
       goto LABEL_22;
     }
@@ -461,13 +461,13 @@
     {
       if (self->_isDataPreferred)
       {
-        if ((*(v4 + 32) & 1) == 0)
+        if ((*(equalCopy + 32) & 1) == 0)
         {
           goto LABEL_22;
         }
       }
 
-      else if (*(v4 + 32))
+      else if (*(equalCopy + 32))
       {
         goto LABEL_22;
       }
@@ -534,22 +534,22 @@ LABEL_8:
   return v4 ^ v3 ^ v6 ^ v7 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 36);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 36);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 36);
+    v6 = *(fromCopy + 36);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_subsId = *(v4 + 7);
+    self->_subsId = *(fromCopy + 7);
     *&self->_has |= 4u;
   }
 
@@ -557,7 +557,7 @@ LABEL_8:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {

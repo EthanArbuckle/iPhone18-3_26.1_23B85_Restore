@@ -1,51 +1,51 @@
 @interface STCommunicationConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCommunicationConfiguration:(id)a3;
-- (STCommunicationConfiguration)initWithCoder:(id)a3;
-- (STCommunicationConfiguration)initWithCommunicationSafetySendingRestricted:(BOOL)a3 communicationSafetyReceivingRestricted:(BOOL)a4 communicationSafetyNotificationEnabled:(BOOL)a5 communicationSafetyAnalyticsEnabled:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCommunicationConfiguration:(id)configuration;
+- (STCommunicationConfiguration)initWithCoder:(id)coder;
+- (STCommunicationConfiguration)initWithCommunicationSafetySendingRestricted:(BOOL)restricted communicationSafetyReceivingRestricted:(BOOL)receivingRestricted communicationSafetyNotificationEnabled:(BOOL)enabled communicationSafetyAnalyticsEnabled:(BOOL)analyticsEnabled;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STCommunicationConfiguration
 
-- (STCommunicationConfiguration)initWithCommunicationSafetySendingRestricted:(BOOL)a3 communicationSafetyReceivingRestricted:(BOOL)a4 communicationSafetyNotificationEnabled:(BOOL)a5 communicationSafetyAnalyticsEnabled:(BOOL)a6
+- (STCommunicationConfiguration)initWithCommunicationSafetySendingRestricted:(BOOL)restricted communicationSafetyReceivingRestricted:(BOOL)receivingRestricted communicationSafetyNotificationEnabled:(BOOL)enabled communicationSafetyAnalyticsEnabled:(BOOL)analyticsEnabled
 {
   v11.receiver = self;
   v11.super_class = STCommunicationConfiguration;
   result = [(STCommunicationConfiguration *)&v11 init];
-  result->_isCommunicationSafetySendingRestricted = a3;
-  result->_isCommunicationSafetyReceivingRestricted = a4;
-  result->_isCommunicationSafetyNotificationEnabled = a5;
-  result->_isCommunicationSafetyAnalyticsEnabled = a6;
+  result->_isCommunicationSafetySendingRestricted = restricted;
+  result->_isCommunicationSafetyReceivingRestricted = receivingRestricted;
+  result->_isCommunicationSafetyNotificationEnabled = enabled;
+  result->_isCommunicationSafetyAnalyticsEnabled = analyticsEnabled;
   return result;
 }
 
-- (STCommunicationConfiguration)initWithCoder:(id)a3
+- (STCommunicationConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"isCommunicationSafetySendingRestricted"];
-  v6 = [v4 decodeBoolForKey:@"isCommunicationSafetyReceivingRestricted"];
-  v7 = [v4 decodeBoolForKey:@"isCommunicationSafetyNotificationEnabled"];
-  v8 = [v4 decodeBoolForKey:@"isCommunicationSafetyAnalyticsEnabled"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"isCommunicationSafetySendingRestricted"];
+  v6 = [coderCopy decodeBoolForKey:@"isCommunicationSafetyReceivingRestricted"];
+  v7 = [coderCopy decodeBoolForKey:@"isCommunicationSafetyNotificationEnabled"];
+  v8 = [coderCopy decodeBoolForKey:@"isCommunicationSafetyAnalyticsEnabled"];
 
   return [(STCommunicationConfiguration *)self initWithCommunicationSafetySendingRestricted:v5 communicationSafetyReceivingRestricted:v6 communicationSafetyNotificationEnabled:v7 communicationSafetyAnalyticsEnabled:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isCommunicationSafetySendingRestricted = self->_isCommunicationSafetySendingRestricted;
-  v5 = a3;
-  [v5 encodeBool:isCommunicationSafetySendingRestricted forKey:@"isCommunicationSafetySendingRestricted"];
-  [v5 encodeBool:self->_isCommunicationSafetyReceivingRestricted forKey:@"isCommunicationSafetyReceivingRestricted"];
-  [v5 encodeBool:self->_isCommunicationSafetyNotificationEnabled forKey:@"isCommunicationSafetyNotificationEnabled"];
-  [v5 encodeBool:self->_isCommunicationSafetyAnalyticsEnabled forKey:@"isCommunicationSafetyAnalyticsEnabled"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isCommunicationSafetySendingRestricted forKey:@"isCommunicationSafetySendingRestricted"];
+  [coderCopy encodeBool:self->_isCommunicationSafetyReceivingRestricted forKey:@"isCommunicationSafetyReceivingRestricted"];
+  [coderCopy encodeBool:self->_isCommunicationSafetyNotificationEnabled forKey:@"isCommunicationSafetyNotificationEnabled"];
+  [coderCopy encodeBool:self->_isCommunicationSafetyAnalyticsEnabled forKey:@"isCommunicationSafetyAnalyticsEnabled"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   isCommunicationSafetySendingRestricted = self->_isCommunicationSafetySendingRestricted;
   isCommunicationSafetyReceivingRestricted = self->_isCommunicationSafetyReceivingRestricted;
   isCommunicationSafetyNotificationEnabled = self->_isCommunicationSafetyNotificationEnabled;
@@ -54,10 +54,10 @@
   return [v4 initWithCommunicationSafetySendingRestricted:isCommunicationSafetySendingRestricted communicationSafetyReceivingRestricted:isCommunicationSafetyReceivingRestricted communicationSafetyNotificationEnabled:isCommunicationSafetyNotificationEnabled communicationSafetyAnalyticsEnabled:isCommunicationSafetyAnalyticsEnabled];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -65,28 +65,28 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STCommunicationConfiguration *)self isEqualToCommunicationConfiguration:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STCommunicationConfiguration *)self isEqualToCommunicationConfiguration:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCommunicationConfiguration:(id)a3
+- (BOOL)isEqualToCommunicationConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy == self)
   {
     LOBYTE(v9) = 1;
   }
 
   else
   {
-    v6 = [(STCommunicationConfiguration *)v4 isCommunicationSafetySendingRestricted];
-    if (v6 == [(STCommunicationConfiguration *)self isCommunicationSafetySendingRestricted]&& (v7 = [(STCommunicationConfiguration *)v5 isCommunicationSafetyReceivingRestricted], v7 == [(STCommunicationConfiguration *)self isCommunicationSafetyReceivingRestricted]) && (v8 = [(STCommunicationConfiguration *)v5 isCommunicationSafetyNotificationEnabled], v8 == [(STCommunicationConfiguration *)self isCommunicationSafetyNotificationEnabled]))
+    isCommunicationSafetySendingRestricted = [(STCommunicationConfiguration *)configurationCopy isCommunicationSafetySendingRestricted];
+    if (isCommunicationSafetySendingRestricted == [(STCommunicationConfiguration *)self isCommunicationSafetySendingRestricted]&& (v7 = [(STCommunicationConfiguration *)v5 isCommunicationSafetyReceivingRestricted], v7 == [(STCommunicationConfiguration *)self isCommunicationSafetyReceivingRestricted]) && (v8 = [(STCommunicationConfiguration *)v5 isCommunicationSafetyNotificationEnabled], v8 == [(STCommunicationConfiguration *)self isCommunicationSafetyNotificationEnabled]))
     {
-      v11 = [(STCommunicationConfiguration *)v5 isCommunicationSafetyAnalyticsEnabled];
-      v9 = v11 ^ [(STCommunicationConfiguration *)self isCommunicationSafetyAnalyticsEnabled]^ 1;
+      isCommunicationSafetyAnalyticsEnabled = [(STCommunicationConfiguration *)v5 isCommunicationSafetyAnalyticsEnabled];
+      v9 = isCommunicationSafetyAnalyticsEnabled ^ [(STCommunicationConfiguration *)self isCommunicationSafetyAnalyticsEnabled]^ 1;
     }
 
     else
@@ -100,15 +100,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(STCommunicationConfiguration *)self isCommunicationSafetySendingRestricted];
-  v4 = [(STCommunicationConfiguration *)self isCommunicationSafetyReceivingRestricted];
+  isCommunicationSafetySendingRestricted = [(STCommunicationConfiguration *)self isCommunicationSafetySendingRestricted];
+  isCommunicationSafetyReceivingRestricted = [(STCommunicationConfiguration *)self isCommunicationSafetyReceivingRestricted];
   v5 = 2;
-  if (!v4)
+  if (!isCommunicationSafetyReceivingRestricted)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
+  v6 = v5 | isCommunicationSafetySendingRestricted;
   if ([(STCommunicationConfiguration *)self isCommunicationSafetyNotificationEnabled])
   {
     v7 = 4;
@@ -119,9 +119,9 @@
     v7 = 0;
   }
 
-  v8 = [(STCommunicationConfiguration *)self isCommunicationSafetyAnalyticsEnabled];
+  isCommunicationSafetyAnalyticsEnabled = [(STCommunicationConfiguration *)self isCommunicationSafetyAnalyticsEnabled];
   v9 = 8;
-  if (!v8)
+  if (!isCommunicationSafetyAnalyticsEnabled)
   {
     v9 = 0;
   }

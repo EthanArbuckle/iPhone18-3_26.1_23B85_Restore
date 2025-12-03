@@ -1,57 +1,57 @@
 @interface _UINavigationBarTitleRenamerRemoteSession
-- (BOOL)_client_textFieldShouldEndEditingWithText:(id)a3;
+- (BOOL)_client_textFieldShouldEndEditingWithText:(id)text;
 - (BOOL)_isServerSide;
-- (BOOL)_server_textFieldShouldEndEditingWithText:(id)a3;
-- (BOOL)_textFieldShouldEndEditingWithText:(id)a3;
+- (BOOL)_server_textFieldShouldEndEditingWithText:(id)text;
+- (BOOL)_textFieldShouldEndEditingWithText:(id)text;
 - (NSURL)fileURL;
-- (_UINavigationBarTitleRenamerRemoteSession)initWithBSXPCCoder:(id)a3;
-- (_UINavigationBarTitleRenamerRemoteSession)initWithFileURL:(id)a3 iconMetadata:(id)a4 error:(id *)a5 scene:(id)a6;
-- (_UINavigationBarTitleRenamerRemoteSession)initWithSuggestedTitle:(id)a3 iconMetadata:(id)a4 scene:(id)a5;
-- (id)_client_willBeginRenamingWithText:(id)a3 selectedRange:(_NSRange *)a4;
-- (id)_server_willBeginRenamingWithText:(id)a3 selectedRange:(_NSRange *)a4;
-- (id)_willBeginRenamingWithText:(id)a3 selectedRange:(_NSRange *)a4;
+- (_UINavigationBarTitleRenamerRemoteSession)initWithBSXPCCoder:(id)coder;
+- (_UINavigationBarTitleRenamerRemoteSession)initWithFileURL:(id)l iconMetadata:(id)metadata error:(id *)error scene:(id)scene;
+- (_UINavigationBarTitleRenamerRemoteSession)initWithSuggestedTitle:(id)title iconMetadata:(id)metadata scene:(id)scene;
+- (id)_client_willBeginRenamingWithText:(id)text selectedRange:(_NSRange *)range;
+- (id)_server_willBeginRenamingWithText:(id)text selectedRange:(_NSRange *)range;
+- (id)_willBeginRenamingWithText:(id)text selectedRange:(_NSRange *)range;
 - (id)createRenamerContentView;
-- (void)_attemptLocalRenameForFileURL:(id)a3 proposedName:(id)a4 completionHandler:(id)a5;
-- (void)_client_cancelSessionAndNotify:(BOOL)a3;
-- (void)_client_fileRenameDidEnd:(id)a3;
-- (void)_client_fileRenameDidFail:(id)a3 proposedName:(id)a4;
+- (void)_attemptLocalRenameForFileURL:(id)l proposedName:(id)name completionHandler:(id)handler;
+- (void)_client_cancelSessionAndNotify:(BOOL)notify;
+- (void)_client_fileRenameDidEnd:(id)end;
+- (void)_client_fileRenameDidFail:(id)fail proposedName:(id)name;
 - (void)_client_sessionDidEnd;
-- (void)_client_sessionDidStartInRenamer:(id)a3;
-- (void)_client_textFieldDidEndEditingWithText:(id)a3;
-- (void)_server_cancelSessionAndNotify:(BOOL)a3;
-- (void)_server_fileRenameDidEnd:(id)a3;
-- (void)_server_fileRenameDidFail:(id)a3 proposedName:(id)a4;
+- (void)_client_sessionDidStartInRenamer:(id)renamer;
+- (void)_client_textFieldDidEndEditingWithText:(id)text;
+- (void)_server_cancelSessionAndNotify:(BOOL)notify;
+- (void)_server_fileRenameDidEnd:(id)end;
+- (void)_server_fileRenameDidFail:(id)fail proposedName:(id)name;
 - (void)_server_sessionDidEnd;
-- (void)_server_sessionDidStartInRenamer:(id)a3;
-- (void)_server_textFieldDidEndEditingWithText:(id)a3;
-- (void)_textFieldDidEndEditingWithText:(id)a3;
-- (void)_updateSessionWithAction:(int64_t)a3;
-- (void)cancelSessionAndNotify:(BOOL)a3;
+- (void)_server_sessionDidStartInRenamer:(id)renamer;
+- (void)_server_textFieldDidEndEditingWithText:(id)text;
+- (void)_textFieldDidEndEditingWithText:(id)text;
+- (void)_updateSessionWithAction:(int64_t)action;
+- (void)cancelSessionAndNotify:(BOOL)notify;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)fileRenameDidEnd:(id)a3;
-- (void)fileRenameDidFail:(id)a3 proposedName:(id)a4;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)fileRenameDidEnd:(id)end;
+- (void)fileRenameDidFail:(id)fail proposedName:(id)name;
 - (void)sessionDidEnd;
-- (void)sessionDidStartInRenamer:(id)a3;
-- (void)setConnection:(id)a3;
+- (void)sessionDidStartInRenamer:(id)renamer;
+- (void)setConnection:(id)connection;
 @end
 
 @implementation _UINavigationBarTitleRenamerRemoteSession
 
-- (_UINavigationBarTitleRenamerRemoteSession)initWithSuggestedTitle:(id)a3 iconMetadata:(id)a4 scene:(id)a5
+- (_UINavigationBarTitleRenamerRemoteSession)initWithSuggestedTitle:(id)title iconMetadata:(id)metadata scene:(id)scene
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  metadataCopy = metadata;
+  sceneCopy = scene;
   if (_UIApplicationProcessIsOverlayUI())
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenamerRemoteSession.m" lineNumber:348 description:@"initializing a remote session in this process is not allowed outside of decoding a session from another process."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenamerRemoteSession.m" lineNumber:348 description:@"initializing a remote session in this process is not allowed outside of decoding a session from another process."];
   }
 
   v21.receiver = self;
   v21.super_class = _UINavigationBarTitleRenamerRemoteSession;
-  v12 = [(_UINavigationBarTitleRenamerSession *)&v21 initWithSuggestedTitle:v9 iconMetadata:v10];
+  v12 = [(_UINavigationBarTitleRenamerSession *)&v21 initWithSuggestedTitle:titleCopy iconMetadata:metadataCopy];
   if (v12)
   {
     v13 = objc_opt_new();
@@ -61,10 +61,10 @@
     v12->_overlayService = v13;
     v15 = v13;
 
-    v16 = [v11 _FBSScene];
-    v17 = [v16 identityToken];
+    _FBSScene = [sceneCopy _FBSScene];
+    identityToken = [_FBSScene identityToken];
     sceneOriginIdentityToken = v12->_sceneOriginIdentityToken;
-    v12->_sceneOriginIdentityToken = v17;
+    v12->_sceneOriginIdentityToken = identityToken;
 
     v12->_currentState = 1;
   }
@@ -72,43 +72,43 @@
   return v12;
 }
 
-- (_UINavigationBarTitleRenamerRemoteSession)initWithFileURL:(id)a3 iconMetadata:(id)a4 error:(id *)a5 scene:(id)a6
+- (_UINavigationBarTitleRenamerRemoteSession)initWithFileURL:(id)l iconMetadata:(id)metadata error:(id *)error scene:(id)scene
 {
   v34 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  v13 = a4;
+  lCopy = l;
+  sceneCopy = scene;
+  metadataCopy = metadata;
   if (_UIApplicationProcessIsOverlayUI())
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenamerRemoteSession.m" lineNumber:376 description:@"initializing a remote session in this process is not allowed outside of decoding a session from another process."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenamerRemoteSession.m" lineNumber:376 description:@"initializing a remote session in this process is not allowed outside of decoding a session from another process."];
   }
 
-  v14 = [v11 lastPathComponent];
-  v15 = [v14 stringByDeletingPathExtension];
-  v16 = [(_UINavigationBarTitleRenamerRemoteSession *)self initWithSuggestedTitle:v15 iconMetadata:v13 scene:v12];
+  lastPathComponent = [lCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v16 = [(_UINavigationBarTitleRenamerRemoteSession *)self initWithSuggestedTitle:stringByDeletingPathExtension iconMetadata:metadataCopy scene:sceneCopy];
 
   if (!v16)
   {
     goto LABEL_9;
   }
 
-  v17 = [v11 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
   v29 = 0;
-  v18 = [getFPSandboxingURLWrapperClass() wrapperWithURL:v11 readonly:0 error:&v29];
+  v18 = [getFPSandboxingURLWrapperClass() wrapperWithURL:lCopy readonly:0 error:&v29];
   v19 = v29;
   urlWrapper = v16->_urlWrapper;
   v16->_urlWrapper = v18;
 
-  if (v17)
+  if (startAccessingSecurityScopedResource)
   {
-    [v11 stopAccessingSecurityScopedResource];
+    [lCopy stopAccessingSecurityScopedResource];
   }
 
   if (v19)
   {
     v21 = v19;
-    *a5 = v19;
+    *error = v19;
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("OOPRename", &initWithFileURL_iconMetadata_error_scene____s_category);
     if (*CategoryCachedImpl)
     {
@@ -116,9 +116,9 @@
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v27 = v26;
-        v28 = [(_UINavigationBarTitleRenamerSession *)v16 sessionIdentifier];
+        sessionIdentifier = [(_UINavigationBarTitleRenamerSession *)v16 sessionIdentifier];
         *buf = 138412546;
-        v31 = v28;
+        v31 = sessionIdentifier;
         v32 = 2112;
         v33 = v19;
         _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_ERROR, "[%@] Unable to get sandbox extension for URL. Session will behave like a local session: %@", buf, 0x16u);
@@ -147,9 +147,9 @@ LABEL_9:
 
 - (id)createRenamerContentView
 {
-  v3 = [(_UINavigationBarTitleRenamerRemoteSession *)self overlayService];
+  overlayService = [(_UINavigationBarTitleRenamerRemoteSession *)self overlayService];
 
-  if (v3)
+  if (overlayService)
   {
     v4 = [[_UINavigationBarTitleRenameRemoteView alloc] initWithSession:self];
   }
@@ -157,8 +157,8 @@ LABEL_9:
   else
   {
     v4 = [[_UINavigationBarTitleRenameTextField alloc] initWithSession:self];
-    v5 = [(_UINavigationBarTitleRenamerRemoteSession *)self sceneOriginIdentityToken];
-    [(_UINavigationBarTitleRenameRemoteView *)v4 _setLayeringSceneIdentity:v5];
+    sceneOriginIdentityToken = [(_UINavigationBarTitleRenamerRemoteSession *)self sceneOriginIdentityToken];
+    [(_UINavigationBarTitleRenameRemoteView *)v4 _setLayeringSceneIdentity:sceneOriginIdentityToken];
   }
 
   return v4;
@@ -166,40 +166,40 @@ LABEL_9:
 
 - (NSURL)fileURL
 {
-  v2 = [(_UINavigationBarTitleRenamerRemoteSession *)self urlWrapper];
-  v3 = [v2 url];
+  urlWrapper = [(_UINavigationBarTitleRenamerRemoteSession *)self urlWrapper];
+  v3 = [urlWrapper url];
 
   return v3;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = _UINavigationBarTitleRenamerRemoteSession;
-  [(_UINavigationBarTitleRenamerSession *)&v6 encodeWithBSXPCCoder:v4];
+  [(_UINavigationBarTitleRenamerSession *)&v6 encodeWithBSXPCCoder:coderCopy];
   urlWrapper = self->_urlWrapper;
   if (urlWrapper)
   {
-    [v4 encodeObject:urlWrapper forKey:@"_UINavigationBarTitleRenamerRemoteSessionURLWrapper"];
+    [coderCopy encodeObject:urlWrapper forKey:@"_UINavigationBarTitleRenamerRemoteSessionURLWrapper"];
   }
 
-  [v4 encodeObject:self->_sceneOriginIdentityToken forKey:@"_UINavigationBarTitleRenamerRemoteSessionSceneOriginIdentityToken"];
+  [coderCopy encodeObject:self->_sceneOriginIdentityToken forKey:@"_UINavigationBarTitleRenamerRemoteSessionSceneOriginIdentityToken"];
 }
 
-- (_UINavigationBarTitleRenamerRemoteSession)initWithBSXPCCoder:(id)a3
+- (_UINavigationBarTitleRenamerRemoteSession)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UINavigationBarTitleRenamerRemoteSession;
-  v5 = [(_UINavigationBarTitleRenamerSession *)&v11 initWithBSXPCCoder:v4];
+  v5 = [(_UINavigationBarTitleRenamerSession *)&v11 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:getFPSandboxingURLWrapperClass() forKey:@"_UINavigationBarTitleRenamerRemoteSessionURLWrapper"];
+    v6 = [coderCopy decodeObjectOfClass:getFPSandboxingURLWrapperClass() forKey:@"_UINavigationBarTitleRenamerRemoteSessionURLWrapper"];
     urlWrapper = v5->_urlWrapper;
     v5->_urlWrapper = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UINavigationBarTitleRenamerRemoteSessionSceneOriginIdentityToken"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UINavigationBarTitleRenamerRemoteSessionSceneOriginIdentityToken"];
     sceneOriginIdentityToken = v5->_sceneOriginIdentityToken;
     v5->_sceneOriginIdentityToken = v8;
 
@@ -211,16 +211,16 @@ LABEL_9:
 
 - (BOOL)_isServerSide
 {
-  v2 = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
-  v3 = v2 != 0;
+  connection = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
+  v3 = connection != 0;
 
   return v3;
 }
 
-- (void)sessionDidStartInRenamer:(id)a3
+- (void)sessionDidStartInRenamer:(id)renamer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  renamerCopy = renamer;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("OOPRename", &sessionDidStartInRenamer____s_category);
   if (*CategoryCachedImpl)
   {
@@ -237,7 +237,7 @@ LABEL_9:
 
   v13 = 0;
   *&v9 = self;
-  *(&v9 + 1) = v4;
+  *(&v9 + 1) = renamerCopy;
   v10 = 0;
   v11 = 0;
   v12 = 0;
@@ -269,7 +269,7 @@ LABEL_9:
   handleEvent(stateMachineSpec_6, self->_currentState, 4, v7, &self->_currentState);
 }
 
-- (void)cancelSessionAndNotify:(BOOL)a3
+- (void)cancelSessionAndNotify:(BOOL)notify
 {
   v12 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("OOPRename", &cancelSessionAndNotify____s_category);
@@ -290,19 +290,19 @@ LABEL_9:
   v11 = 0u;
   *&v9[8] = 0u;
   *v9 = self;
-  BYTE8(v10) = a3;
+  BYTE8(v10) = notify;
   handleEvent(stateMachineSpec_6, self->_currentState, 7, v9, &self->_currentState);
 }
 
-- (id)_willBeginRenamingWithText:(id)a3 selectedRange:(_NSRange *)a4
+- (id)_willBeginRenamingWithText:(id)text selectedRange:(_NSRange *)range
 {
-  v6 = a3;
+  textCopy = text;
   v12 = 0;
   v13 = 0;
   v9[0] = self;
   v9[1] = 0;
-  v10 = v6;
-  v11 = a4;
+  v10 = textCopy;
+  rangeCopy = range;
   v14 = 0;
   if ((handleEvent(stateMachineSpec_6, self->_currentState, 1, v9, &self->_currentState) & 1) == 0)
   {
@@ -314,12 +314,12 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)_textFieldShouldEndEditingWithText:(id)a3
+- (BOOL)_textFieldShouldEndEditingWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v7[0] = self;
   v7[1] = 0;
-  v7[2] = v4;
+  v7[2] = textCopy;
   v8 = 0u;
   v9 = 0u;
   if ((handleEvent(stateMachineSpec_6, self->_currentState, 2, v7, &self->_currentState) & 1) == 0)
@@ -332,12 +332,12 @@ LABEL_9:
   return v5;
 }
 
-- (void)_textFieldDidEndEditingWithText:(id)a3
+- (void)_textFieldDidEndEditingWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5[0] = self;
   v5[1] = 0;
-  v5[2] = v4;
+  v5[2] = textCopy;
   v6 = 0u;
   v7 = 0u;
   if ((handleEvent(stateMachineSpec_6, self->_currentState, 3, v5, &self->_currentState) & 1) == 0)
@@ -346,11 +346,11 @@ LABEL_9:
   }
 }
 
-- (void)fileRenameDidFail:(id)a3 proposedName:(id)a4
+- (void)fileRenameDidFail:(id)fail proposedName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  failCopy = fail;
+  nameCopy = name;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("OOPRename", &fileRenameDidFail_proposedName____s_category);
   if (*CategoryCachedImpl)
   {
@@ -361,7 +361,7 @@ LABEL_9:
       [(_UINavigationBarTitleRenamerSession *)self sessionIdentifier];
       *&v13[4] = *v13 = 138412546;
       *&v13[12] = 2112;
-      *&v13[14] = v6;
+      *&v13[14] = failCopy;
       v12 = *&v13[4];
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "[%@] Session file rename did fail: %@", v13, 0x16u);
     }
@@ -371,8 +371,8 @@ LABEL_9:
   *&v13[8] = 0;
   v14 = 0;
   v15 = 0;
-  *&v13[16] = v7;
-  v9 = v6;
+  *&v13[16] = nameCopy;
+  v9 = failCopy;
   v16 = v9;
   v17 = 0;
   if ((handleEvent(stateMachineSpec_6, self->_currentState, 5, v13, &self->_currentState) & 1) == 0)
@@ -381,20 +381,20 @@ LABEL_9:
   }
 }
 
-- (void)fileRenameDidEnd:(id)a3
+- (void)fileRenameDidEnd:(id)end
 {
   v6 = 0;
   v5[0] = self;
   memset(&v5[1], 0, 32);
-  v4 = a3;
-  v7 = v4;
+  endCopy = end;
+  v7 = endCopy;
   if ((handleEvent(stateMachineSpec_6, *(v5[0] + 56), 6, v5, (v5[0] + 56)) & 1) == 0)
   {
     [(_UINavigationBarTitleRenamerRemoteSession *)self cancelSessionAndNotify:1];
   }
 }
 
-- (void)_updateSessionWithAction:(int64_t)a3
+- (void)_updateSessionWithAction:(int64_t)action
 {
   v5 = [_UIONavigationBarTitleRenamerConnectionAction alloc];
   v8[0] = MEMORY[0x1E69E9820];
@@ -402,16 +402,16 @@ LABEL_9:
   v8[2] = __70___UINavigationBarTitleRenamerRemoteSession__updateSessionWithAction___block_invoke;
   v8[3] = &unk_1E711D748;
   v8[4] = self;
-  v6 = [(_UIONavigationBarTitleRenamerConnectionAction *)v5 initWithSession:self action:a3 responseHandler:v8];
-  v7 = [(_UINavigationBarTitleRenamerRemoteSession *)self overlayService];
-  [v7 sendOverlayAction:v6];
+  v6 = [(_UIONavigationBarTitleRenamerConnectionAction *)v5 initWithSession:self action:action responseHandler:v8];
+  overlayService = [(_UINavigationBarTitleRenamerRemoteSession *)self overlayService];
+  [overlayService sendOverlayAction:v6];
 }
 
-- (void)_client_sessionDidStartInRenamer:(id)a3
+- (void)_client_sessionDidStartInRenamer:(id)renamer
 {
   v4.receiver = self;
   v4.super_class = _UINavigationBarTitleRenamerRemoteSession;
-  [(_UINavigationBarTitleRenamerSession *)&v4 sessionDidStartInRenamer:a3];
+  [(_UINavigationBarTitleRenamerSession *)&v4 sessionDidStartInRenamer:renamer];
   [(_UINavigationBarTitleRenamerRemoteSession *)self _updateSessionWithAction:0];
 }
 
@@ -423,77 +423,77 @@ LABEL_9:
   [(_UINavigationBarTitleRenamerRemoteSession *)self _updateSessionWithAction:1];
 }
 
-- (void)_client_cancelSessionAndNotify:(BOOL)a3
+- (void)_client_cancelSessionAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   v5.receiver = self;
   v5.super_class = _UINavigationBarTitleRenamerRemoteSession;
   [(_UINavigationBarTitleRenamerSession *)&v5 cancelSession];
-  if (v3)
+  if (notifyCopy)
   {
     [(_UINavigationBarTitleRenamerRemoteSession *)self _updateSessionWithAction:2];
   }
 }
 
-- (id)_client_willBeginRenamingWithText:(id)a3 selectedRange:(_NSRange *)a4
+- (id)_client_willBeginRenamingWithText:(id)text selectedRange:(_NSRange *)range
 {
   v6.receiver = self;
   v6.super_class = _UINavigationBarTitleRenamerRemoteSession;
-  v4 = [(_UINavigationBarTitleRenamerSession *)&v6 _willBeginRenamingWithText:a3 selectedRange:a4];
+  v4 = [(_UINavigationBarTitleRenamerSession *)&v6 _willBeginRenamingWithText:text selectedRange:range];
 
   return v4;
 }
 
-- (BOOL)_client_textFieldShouldEndEditingWithText:(id)a3
+- (BOOL)_client_textFieldShouldEndEditingWithText:(id)text
 {
   v4.receiver = self;
   v4.super_class = _UINavigationBarTitleRenamerRemoteSession;
-  return [(_UINavigationBarTitleRenamerSession *)&v4 _textFieldShouldEndEditingWithText:a3];
+  return [(_UINavigationBarTitleRenamerSession *)&v4 _textFieldShouldEndEditingWithText:text];
 }
 
-- (void)_client_textFieldDidEndEditingWithText:(id)a3
+- (void)_client_textFieldDidEndEditingWithText:(id)text
 {
   v3.receiver = self;
   v3.super_class = _UINavigationBarTitleRenamerRemoteSession;
-  [(_UINavigationBarTitleRenamerSession *)&v3 _textFieldDidEndEditingWithText:a3];
+  [(_UINavigationBarTitleRenamerSession *)&v3 _textFieldDidEndEditingWithText:text];
 }
 
-- (void)_attemptLocalRenameForFileURL:(id)a3 proposedName:(id)a4 completionHandler:(id)a5
+- (void)_attemptLocalRenameForFileURL:(id)l proposedName:(id)name completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  nameCopy = name;
+  handlerCopy = handler;
   v10 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __106___UINavigationBarTitleRenamerRemoteSession__attemptLocalRenameForFileURL_proposedName_completionHandler___block_invoke;
   block[3] = &unk_1E70FCE28;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = lCopy;
+  v16 = nameCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = nameCopy;
+  v13 = lCopy;
   dispatch_async(v10, block);
 }
 
-- (void)_client_fileRenameDidFail:(id)a3 proposedName:(id)a4
+- (void)_client_fileRenameDidFail:(id)fail proposedName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UINavigationBarTitleRenamerRemoteSession *)self fileURL];
-  v9 = [v6 domain];
-  if (![v9 isEqualToString:*MEMORY[0x1E696A250]] || objc_msgSend(v6, "code") != 4)
+  failCopy = fail;
+  nameCopy = name;
+  fileURL = [(_UINavigationBarTitleRenamerRemoteSession *)self fileURL];
+  domain = [failCopy domain];
+  if (![domain isEqualToString:*MEMORY[0x1E696A250]] || objc_msgSend(failCopy, "code") != 4)
   {
 
     goto LABEL_6;
   }
 
-  if (!v8)
+  if (!fileURL)
   {
 LABEL_6:
-    v10 = [(_UINavigationBarTitleRenamerSession *)self attachedRenamer];
-    [v10 _session:self fileRenameDidFail:v6];
+    attachedRenamer = [(_UINavigationBarTitleRenamerSession *)self attachedRenamer];
+    [attachedRenamer _session:self fileRenameDidFail:failCopy];
 
     goto LABEL_7;
   }
@@ -503,36 +503,36 @@ LABEL_6:
   v11[2] = __84___UINavigationBarTitleRenamerRemoteSession__client_fileRenameDidFail_proposedName___block_invoke;
   v11[3] = &unk_1E7121830;
   v11[4] = self;
-  [(_UINavigationBarTitleRenamerRemoteSession *)self _attemptLocalRenameForFileURL:v8 proposedName:v7 completionHandler:v11];
+  [(_UINavigationBarTitleRenamerRemoteSession *)self _attemptLocalRenameForFileURL:fileURL proposedName:nameCopy completionHandler:v11];
 LABEL_7:
 }
 
-- (void)_client_fileRenameDidEnd:(id)a3
+- (void)_client_fileRenameDidEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(_UINavigationBarTitleRenamerSession *)self attachedRenamer];
-  [v5 _session:self fileRenameDidEnd:v4];
+  endCopy = end;
+  attachedRenamer = [(_UINavigationBarTitleRenamerSession *)self attachedRenamer];
+  [attachedRenamer _session:self fileRenameDidEnd:endCopy];
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   connection = self->_connection;
-  if (connection != v5)
+  if (connection != connectionCopy)
   {
-    v7 = v5;
+    v7 = connectionCopy;
     [(_UIOServiceConnection *)connection removeObserver:self];
-    objc_storeStrong(&self->_connection, a3);
+    objc_storeStrong(&self->_connection, connection);
     [(_UIOServiceConnection *)v7 addObserver:self];
-    v5 = v7;
+    connectionCopy = v7;
   }
 }
 
-- (void)_server_sessionDidStartInRenamer:(id)a3
+- (void)_server_sessionDidStartInRenamer:(id)renamer
 {
   v3.receiver = self;
   v3.super_class = _UINavigationBarTitleRenamerRemoteSession;
-  [(_UINavigationBarTitleRenamerSession *)&v3 sessionDidStartInRenamer:a3];
+  [(_UINavigationBarTitleRenamerSession *)&v3 sessionDidStartInRenamer:renamer];
 }
 
 - (void)_server_sessionDidEnd
@@ -542,27 +542,27 @@ LABEL_7:
   [(_UINavigationBarTitleRenamerSession *)&v2 sessionDidEnd];
 }
 
-- (void)_server_cancelSessionAndNotify:(BOOL)a3
+- (void)_server_cancelSessionAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   v7.receiver = self;
   v7.super_class = _UINavigationBarTitleRenamerRemoteSession;
   [(_UINavigationBarTitleRenamerSession *)&v7 cancelSession];
-  if (v3)
+  if (notifyCopy)
   {
     v5 = [_UIONavigationBarTitleRenamerRemoteSessionAction didCancelSession:self responseHandler:&__block_literal_global_63_4];
-    v6 = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
-    [v6 sendAction:v5];
+    connection = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
+    [connection sendAction:v5];
   }
 }
 
-- (id)_server_willBeginRenamingWithText:(id)a3 selectedRange:(_NSRange *)a4
+- (id)_server_willBeginRenamingWithText:(id)text selectedRange:(_NSRange *)range
 {
-  v6 = a3;
-  v7 = [(_UINavigationBarTitleRenamerRemoteSession *)self fileURL];
-  if (v7)
+  textCopy = text;
+  fileURL = [(_UINavigationBarTitleRenamerRemoteSession *)self fileURL];
+  if (fileURL)
   {
-    v8 = v6;
+    v8 = textCopy;
   }
 
   else
@@ -589,23 +589,23 @@ LABEL_7:
     v20 = &v21;
     v10 = v9;
     v18 = v10;
-    v11 = [_UIONavigationBarTitleRenamerRemoteSessionAction willBeginRenamingActionWithSession:self text:v6 selectedRange:a4->location responseHandler:a4->length, v17];
-    v12 = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
-    [v12 sendAction:v11];
+    v11 = [_UIONavigationBarTitleRenamerRemoteSessionAction willBeginRenamingActionWithSession:self text:textCopy selectedRange:range->location responseHandler:range->length, v17];
+    connection = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
+    [connection sendAction:v11];
 
     v13 = dispatch_time(0, 2000000000);
     dispatch_group_wait(v10, v13);
     v14 = v28;
     if (v28[5])
     {
-      *a4 = v22[2];
+      *range = v22[2];
       v15 = v14[5];
     }
 
     else
     {
       [(_UINavigationBarTitleRenamerRemoteSession *)self cancelSessionAndNotify:1];
-      v15 = v6;
+      v15 = textCopy;
     }
 
     v8 = v15;
@@ -617,12 +617,12 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)_server_textFieldShouldEndEditingWithText:(id)a3
+- (BOOL)_server_textFieldShouldEndEditingWithText:(id)text
 {
-  v4 = a3;
-  v5 = [(_UINavigationBarTitleRenamerRemoteSession *)self fileURL];
+  textCopy = text;
+  fileURL = [(_UINavigationBarTitleRenamerRemoteSession *)self fileURL];
   v6 = 1;
-  if (!v5)
+  if (!fileURL)
   {
     v7 = dispatch_group_create();
     dispatch_group_enter(v7);
@@ -637,7 +637,7 @@ LABEL_7:
     v18 = &v19;
     v8 = v7;
     v17 = v8;
-    v9 = [_UIONavigationBarTitleRenamerRemoteSessionAction shouldEndEditingActionWithSession:self text:v4 responseHandler:&v13];
+    v9 = [_UIONavigationBarTitleRenamerRemoteSessionAction shouldEndEditingActionWithSession:self text:textCopy responseHandler:&v13];
     v10 = [(_UINavigationBarTitleRenamerRemoteSession *)self connection:v13];
     [v10 sendAction:v9];
 
@@ -651,25 +651,25 @@ LABEL_7:
   return v6 & 1;
 }
 
-- (void)_server_textFieldDidEndEditingWithText:(id)a3
+- (void)_server_textFieldDidEndEditingWithText:(id)text
 {
-  v4 = a3;
-  v5 = [(_UINavigationBarTitleRenamerRemoteSession *)self fileURL];
-  if (v5)
+  textCopy = text;
+  fileURL = [(_UINavigationBarTitleRenamerRemoteSession *)self fileURL];
+  if (fileURL)
   {
     objc_initWeak(&location, self);
-    v6 = [v5 lastPathComponent];
-    v7 = [v6 stringByDeletingPathExtension];
-    v8 = [v7 isEqual:v4];
+    lastPathComponent = [fileURL lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    v8 = [stringByDeletingPathExtension isEqual:textCopy];
 
     if (v8)
     {
-      [(_UINavigationBarTitleRenamerRemoteSession *)self fileRenameDidEnd:v5];
+      [(_UINavigationBarTitleRenamerRemoteSession *)self fileRenameDidEnd:fileURL];
     }
 
     else
     {
-      v11 = [v5 startAccessingSecurityScopedResource];
+      startAccessingSecurityScopedResource = [fileURL startAccessingSecurityScopedResource];
       v21 = 0;
       v22 = &v21;
       v23 = 0x2050000000;
@@ -693,9 +693,9 @@ LABEL_7:
       v14[2] = __84___UINavigationBarTitleRenamerRemoteSession__server_textFieldDidEndEditingWithText___block_invoke;
       v14[3] = &unk_1E71218C8;
       objc_copyWeak(&v17, &location);
-      v15 = v4;
-      v18 = v11;
-      v16 = v5;
+      v15 = textCopy;
+      v18 = startAccessingSecurityScopedResource;
+      v16 = fileURL;
       [v12 _spi_renameDocumentAtURL:v16 proposedName:v15 completionHandler:v14];
 
       objc_destroyWeak(&v17);
@@ -706,24 +706,24 @@ LABEL_7:
 
   else
   {
-    v9 = [_UIONavigationBarTitleRenamerRemoteSessionAction didEndEditingActionWithSession:self text:v4 responseHandler:&__block_literal_global_65_5];
-    v10 = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
-    [v10 sendAction:v9];
+    v9 = [_UIONavigationBarTitleRenamerRemoteSessionAction didEndEditingActionWithSession:self text:textCopy responseHandler:&__block_literal_global_65_5];
+    connection = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
+    [connection sendAction:v9];
   }
 }
 
-- (void)_server_fileRenameDidFail:(id)a3 proposedName:(id)a4
+- (void)_server_fileRenameDidFail:(id)fail proposedName:(id)name
 {
-  v6 = [_UIONavigationBarTitleRenamerRemoteSessionAction fileRenameDidFailInSession:self withError:a3 proposedName:a4 responseHandler:&__block_literal_global_67_2];
-  v5 = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
-  [v5 sendAction:v6];
+  v6 = [_UIONavigationBarTitleRenamerRemoteSessionAction fileRenameDidFailInSession:self withError:fail proposedName:name responseHandler:&__block_literal_global_67_2];
+  connection = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
+  [connection sendAction:v6];
 }
 
-- (void)_server_fileRenameDidEnd:(id)a3
+- (void)_server_fileRenameDidEnd:(id)end
 {
-  v5 = [_UIONavigationBarTitleRenamerRemoteSessionAction fileRenameDidEndInSession:self withFinalURL:a3 responseHandler:&__block_literal_global_69_3];
-  v4 = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
-  [v4 sendAction:v5];
+  v5 = [_UIONavigationBarTitleRenamerRemoteSessionAction fileRenameDidEndInSession:self withFinalURL:end responseHandler:&__block_literal_global_69_3];
+  connection = [(_UINavigationBarTitleRenamerRemoteSession *)self connection];
+  [connection sendAction:v5];
 }
 
 @end

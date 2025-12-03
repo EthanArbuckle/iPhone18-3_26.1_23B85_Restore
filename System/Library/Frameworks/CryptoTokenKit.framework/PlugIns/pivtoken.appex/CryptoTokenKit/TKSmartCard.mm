@@ -1,12 +1,12 @@
 @interface TKSmartCard
-- (id)recordsOfObject:(id)a3 error:(id *)a4;
+- (id)recordsOfObject:(id)object error:(id *)error;
 @end
 
 @implementation TKSmartCard
 
-- (id)recordsOfObject:(id)a3 error:(id *)a4
+- (id)recordsOfObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -16,14 +16,14 @@
       sub_1000037E8();
     }
 
-    v8 = [[TKBERTLVRecord alloc] initWithTag:92 value:v6];
+    v8 = [[TKBERTLVRecord alloc] initWithTag:92 value:objectCopy];
     v15 = 0;
-    v9 = [(TKSmartCard *)self sendIns:203 p1:63 p2:255 request:v8 expectedTag:83 sw:&v15 error:a4];
+    v9 = [(TKSmartCard *)self sendIns:203 p1:63 p2:255 request:v8 expectedTag:83 sw:&v15 error:error];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 value];
-      v12 = [TKBERTLVRecord sequenceOfRecordsFromData:v11];
+      value = [v9 value];
+      v12 = [TKBERTLVRecord sequenceOfRecordsFromData:value];
 
       if (!v12)
       {
@@ -33,9 +33,9 @@
           sub_10000385C();
         }
 
-        if (a4)
+        if (error)
         {
-          *a4 = [NSError errorWithDomain:TKErrorDomain code:-3 userInfo:0];
+          *error = [NSError errorWithDomain:TKErrorDomain code:-3 userInfo:0];
         }
       }
     }
@@ -46,10 +46,10 @@
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [NSError errorWithDomain:TKErrorDomain code:-6 userInfo:0];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else

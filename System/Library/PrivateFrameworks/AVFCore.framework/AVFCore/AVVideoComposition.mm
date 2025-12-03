@@ -1,41 +1,41 @@
 @interface AVVideoComposition
 + (AVVideoComposition)videoCompositionWithAsset:(AVAsset *)asset applyingCIFiltersWithHandler:(void *)applier;
 + (AVVideoComposition)videoCompositionWithPropertiesOfAsset:(AVAsset *)asset;
-+ (AVVideoComposition)videoCompositionWithPropertiesOfAsset:(id)a3 videoGravity:(id)a4;
-+ (id)_mutableVideoCompositionWithAsset:(id)a3 applyingCIFiltersWithHandler:(id)a4;
++ (AVVideoComposition)videoCompositionWithPropertiesOfAsset:(id)asset videoGravity:(id)gravity;
++ (id)_mutableVideoCompositionWithAsset:(id)asset applyingCIFiltersWithHandler:(id)handler;
 + (void)initialize;
 + (void)videoCompositionWithAsset:(AVAsset *)asset applyingCIFiltersWithHandler:(void *)applier completionHandler:(void *)completionHandler;
 + (void)videoCompositionWithPropertiesOfAsset:(AVAsset *)asset completionHandler:(void *)completionHandler;
 - (AVVideoComposition)init;
-- (BOOL)_copyFigVideoCompositor:(const void *)a3 andSession:(id *)a4 recyclingSession:(id)a5 forFigRemaker:(BOOL)a6 error:(id *)a7;
-- (BOOL)_isValidReturningExceptionReason:(id *)a3;
+- (BOOL)_copyFigVideoCompositor:(const void *)compositor andSession:(id *)session recyclingSession:(id)recyclingSession forFigRemaker:(BOOL)remaker error:(id *)error;
+- (BOOL)_isValidReturningExceptionReason:(id *)reason;
 - (BOOL)isValidForAsset:(AVAsset *)asset timeRange:(CMTimeRange *)timeRange validationDelegate:(id)validationDelegate;
-- (BOOL)isValidForTracks:(id)a3 assetDuration:(id *)a4 timeRange:(id *)a5 validationDelegate:(id)a6;
+- (BOOL)isValidForTracks:(id)tracks assetDuration:(id *)duration timeRange:(id *)range validationDelegate:(id)delegate;
 - (CGSize)renderSize;
 - (id)_deepCopy;
 - (id)_postProcessingVideoLayer;
 - (id)_serializableInstructions;
-- (id)_trackWithTrackID:(int)a3 inTracks:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)instructionForFigInstruction:(void *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_setFrameDurationForFrameRate:(float)a3 sourceTrackIDForFrameTiming:(int)a4;
+- (id)_trackWithTrackID:(int)d inTracks:(id)tracks;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)instructionForFigInstruction:(void *)instruction;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_setFrameDurationForFrameRate:(float)rate sourceTrackIDForFrameTiming:(int)timing;
 - (void)dealloc;
 - (void)determineValidityForAsset:(AVAsset *)asset timeRange:(CMTimeRange *)timeRange validationDelegate:(id)validationDelegate completionHandler:(void *)completionHandler;
-- (void)setAnimationTool:(id)a3;
-- (void)setBuiltInCompositorName:(id)a3;
-- (void)setColorPrimaries:(id)a3;
-- (void)setColorTransferFunction:(id)a3;
-- (void)setColorYCbCrMatrix:(id)a3;
-- (void)setFrameDuration:(id *)a3;
-- (void)setInstructions:(id)a3;
-- (void)setLookupableSpatialVideoConfigurations:(id)a3;
-- (void)setOutputBufferDescription:(id)a3;
-- (void)setPerFrameHDRDisplayMetadataPolicy:(id)a3;
-- (void)setSourceSampleDataTrackWindowsForTrackIDs:(id)a3;
-- (void)setSourceVideoTrackWindowsForTrackIDs:(id)a3;
-- (void)setSpatialVideoConfigurations:(id)a3;
-- (void)videoCompositionOutputColorPropertiesWithCustomCompositor:(id)a3 formatDescriptions:(id)a4 colorPrimaries:(id *)a5 transferFunction:(id *)a6 yCbCrMatrix:(id *)a7 perFrameHDRDisplayMetadataPolicy:(id *)a8;
+- (void)setAnimationTool:(id)tool;
+- (void)setBuiltInCompositorName:(id)name;
+- (void)setColorPrimaries:(id)primaries;
+- (void)setColorTransferFunction:(id)function;
+- (void)setColorYCbCrMatrix:(id)matrix;
+- (void)setFrameDuration:(id *)duration;
+- (void)setInstructions:(id)instructions;
+- (void)setLookupableSpatialVideoConfigurations:(id)configurations;
+- (void)setOutputBufferDescription:(id)description;
+- (void)setPerFrameHDRDisplayMetadataPolicy:(id)policy;
+- (void)setSourceSampleDataTrackWindowsForTrackIDs:(id)ds;
+- (void)setSourceVideoTrackWindowsForTrackIDs:(id)ds;
+- (void)setSpatialVideoConfigurations:(id)configurations;
+- (void)videoCompositionOutputColorPropertiesWithCustomCompositor:(id)compositor formatDescriptions:(id)descriptions colorPrimaries:(id *)primaries transferFunction:(id *)function yCbCrMatrix:(id *)matrix perFrameHDRDisplayMetadataPolicy:(id *)policy;
 @end
 
 @implementation AVVideoComposition
@@ -53,22 +53,22 @@
   v4[1] = 3221225472;
   v4[2] = __78__AVVideoComposition_videoCompositionWithPropertiesOfAsset_completionHandler___block_invoke;
   v4[3] = &unk_1E7462078;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = asset;
   v4[6] = completionHandler;
   AVLoadValuesAsynchronously(asset, &unk_1F0AD3700, v4);
 }
 
-+ (AVVideoComposition)videoCompositionWithPropertiesOfAsset:(id)a3 videoGravity:(id)a4
++ (AVVideoComposition)videoCompositionWithPropertiesOfAsset:(id)asset videoGravity:(id)gravity
 {
-  v4 = [+[AVMutableVideoComposition videoCompositionWithPropertiesOfAsset:videoGravity:](AVMutableVideoComposition copy:a3];
+  v4 = [+[AVMutableVideoComposition videoCompositionWithPropertiesOfAsset:videoGravity:](AVMutableVideoComposition copy:asset];
 
   return v4;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sPreferredBuiltInVideoCompositor = @"VideoCompositor_DeviceSpecific";
   }
@@ -118,7 +118,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(AVVideoComposition *)self isMemberOfClass:objc_opt_class()])
   {
@@ -167,7 +167,7 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(AVVideoComposition *)[AVMutableVideoComposition allocWithZone:?]];
   if (v4)
@@ -211,13 +211,13 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = [(AVVideoComposition *)self mutableCopy];
-  v4 = [(AVVideoComposition *)self instructions];
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](v4, "count")}];
+  instructions = [(AVVideoComposition *)self instructions];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](instructions, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [(NSArray *)instructions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -229,22 +229,22 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(instructions);
         }
 
-        v10 = *(*(&v12 + 1) + 8 * v9);
+        _deepCopy = *(*(&v12 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v10 _deepCopy];
+          _deepCopy = [_deepCopy _deepCopy];
         }
 
-        [v5 addObject:v10];
+        [v5 addObject:_deepCopy];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [(NSArray *)instructions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -268,24 +268,24 @@
   [(AVVideoComposition *)&v4 dealloc];
 }
 
-- (void)setBuiltInCompositorName:(id)a3
+- (void)setBuiltInCompositorName:(id)name
 {
   builtInCompositorName = self->_videoComposition->builtInCompositorName;
-  if (builtInCompositorName != a3)
+  if (builtInCompositorName != name)
   {
 
-    self->_videoComposition->builtInCompositorName = [a3 copy];
+    self->_videoComposition->builtInCompositorName = [name copy];
   }
 }
 
-- (BOOL)_copyFigVideoCompositor:(const void *)a3 andSession:(id *)a4 recyclingSession:(id)a5 forFigRemaker:(BOOL)a6 error:(id *)a7
+- (BOOL)_copyFigVideoCompositor:(const void *)compositor andSession:(id *)session recyclingSession:(id)recyclingSession forFigRemaker:(BOOL)remaker error:(id *)error
 {
-  v8 = a6;
+  remakerCopy = remaker;
   if ([(AVVideoComposition *)self customVideoCompositorClass])
   {
-    v13 = [AVCustomVideoCompositorSession sessionWithVideoComposition:self recyclingSession:a5];
-    v14 = [(AVCustomVideoCompositorSession *)v13 _copyFigVideoCompositor];
-    if (!a7)
+    v13 = [AVCustomVideoCompositorSession sessionWithVideoComposition:self recyclingSession:recyclingSession];
+    _copyFigVideoCompositor = [(AVCustomVideoCompositorSession *)v13 _copyFigVideoCompositor];
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -293,27 +293,27 @@
     goto LABEL_16;
   }
 
-  v15 = [(AVVideoComposition *)self builtInCompositorName];
-  v14 = v15;
-  if (v8)
+  builtInCompositorName = [(AVVideoComposition *)self builtInCompositorName];
+  _copyFigVideoCompositor = builtInCompositorName;
+  if (remakerCopy)
   {
-    if ([(OpaqueFigVideoCompositor *)v15 isEqualToString:@"VideoCompositor_DeviceSpecific"])
+    if ([(OpaqueFigVideoCompositor *)builtInCompositorName isEqualToString:@"VideoCompositor_DeviceSpecific"])
     {
       v16 = MEMORY[0x1E69735E8];
     }
 
-    else if ([(OpaqueFigVideoCompositor *)v14 isEqualToString:@"VideoCompositor_Basic"])
+    else if ([(OpaqueFigVideoCompositor *)_copyFigVideoCompositor isEqualToString:@"VideoCompositor_Basic"])
     {
       v16 = MEMORY[0x1E69735E0];
     }
 
     else
     {
-      if (![(OpaqueFigVideoCompositor *)v14 isEqualToString:@"VideoCompositor_OpenGL"])
+      if (![(OpaqueFigVideoCompositor *)_copyFigVideoCompositor isEqualToString:@"VideoCompositor_OpenGL"])
       {
         v13 = 0;
-        v14 = 0;
-        if (!a7)
+        _copyFigVideoCompositor = 0;
+        if (!error)
         {
           goto LABEL_18;
         }
@@ -324,39 +324,39 @@
       v16 = MEMORY[0x1E69735F0];
     }
 
-    v15 = *v16;
+    builtInCompositorName = *v16;
   }
 
-  else if (!v15)
+  else if (!builtInCompositorName)
   {
     goto LABEL_15;
   }
 
-  v14 = CFRetain(v15);
+  _copyFigVideoCompositor = CFRetain(builtInCompositorName);
 LABEL_15:
   v13 = 0;
-  if (!a7)
+  if (!error)
   {
     goto LABEL_18;
   }
 
 LABEL_16:
-  if (!v14)
+  if (!_copyFigVideoCompositor)
   {
-    *a7 = AVLocalizedError(@"AVFoundationErrorDomain", -11841, 0);
+    *error = AVLocalizedError(@"AVFoundationErrorDomain", -11841, 0);
   }
 
 LABEL_18:
-  if (a4)
+  if (session)
   {
-    *a4 = v13;
+    *session = v13;
   }
 
-  if (a3)
+  if (compositor)
   {
-    if (v14)
+    if (_copyFigVideoCompositor)
     {
-      v17 = CFRetain(v14);
+      v17 = CFRetain(_copyFigVideoCompositor);
     }
 
     else
@@ -364,22 +364,22 @@ LABEL_18:
       v17 = 0;
     }
 
-    *a3 = v17;
+    *compositor = v17;
   }
 
-  if (v14)
+  if (_copyFigVideoCompositor)
   {
-    CFRelease(v14);
+    CFRelease(_copyFigVideoCompositor);
   }
 
-  return v14 != 0;
+  return _copyFigVideoCompositor != 0;
 }
 
-- (void)setFrameDuration:(id *)a3
+- (void)setFrameDuration:(id *)duration
 {
   videoComposition = self->_videoComposition;
-  v4 = *&a3->var0;
-  videoComposition->frameDuration.epoch = a3->var3;
+  v4 = *&duration->var0;
+  videoComposition->frameDuration.epoch = duration->var3;
   *&videoComposition->frameDuration.value = v4;
 }
 
@@ -393,38 +393,38 @@ LABEL_18:
   return result;
 }
 
-- (void)setInstructions:(id)a3
+- (void)setInstructions:(id)instructions
 {
   instructions = self->_videoComposition->instructions;
-  if (instructions != a3)
+  if (instructions != instructions)
   {
 
-    self->_videoComposition->instructions = [a3 copy];
+    self->_videoComposition->instructions = [instructions copy];
   }
 }
 
 - (id)_postProcessingVideoLayer
 {
-  v2 = [(AVVideoComposition *)self _postProcessingVideoLayers];
+  _postProcessingVideoLayers = [(AVVideoComposition *)self _postProcessingVideoLayers];
 
-  return [v2 firstObject];
+  return [_postProcessingVideoLayers firstObject];
 }
 
-- (void)setAnimationTool:(id)a3
+- (void)setAnimationTool:(id)tool
 {
-  v5 = a3;
+  toolCopy = tool;
 
-  self->_videoComposition->animationTool = a3;
+  self->_videoComposition->animationTool = tool;
 }
 
-- (void)setOutputBufferDescription:(id)a3
+- (void)setOutputBufferDescription:(id)description
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [description countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -436,7 +436,7 @@ LABEL_18:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(description);
         }
 
         v10 = CFGetTypeID(*(*(&v18 + 1) + 8 * v9));
@@ -450,48 +450,48 @@ LABEL_18:
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [description countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 
-  v16 = [a3 copy];
+  v16 = [description copy];
 
   self->_videoComposition->outputBufferDescription = v16;
 }
 
-- (void)setSpatialVideoConfigurations:(id)a3
+- (void)setSpatialVideoConfigurations:(id)configurations
 {
-  v4 = [a3 copy];
+  v4 = [configurations copy];
 
   self->_videoComposition->spatialVideoConfigurations = v4;
 }
 
-- (void)setLookupableSpatialVideoConfigurations:(id)a3
+- (void)setLookupableSpatialVideoConfigurations:(id)configurations
 {
-  v4 = [a3 copy];
+  v4 = [configurations copy];
 
   self->_videoComposition->lookupableSpatialVideoConfigurations = v4;
 }
 
-- (void)setSourceVideoTrackWindowsForTrackIDs:(id)a3
+- (void)setSourceVideoTrackWindowsForTrackIDs:(id)ds
 {
   sourceVideoTrackWindowsForTrackIDs = self->_videoComposition->sourceVideoTrackWindowsForTrackIDs;
-  if (sourceVideoTrackWindowsForTrackIDs != a3)
+  if (sourceVideoTrackWindowsForTrackIDs != ds)
   {
 
-    self->_videoComposition->sourceVideoTrackWindowsForTrackIDs = [a3 copy];
+    self->_videoComposition->sourceVideoTrackWindowsForTrackIDs = [ds copy];
   }
 }
 
-- (void)setSourceSampleDataTrackWindowsForTrackIDs:(id)a3
+- (void)setSourceSampleDataTrackWindowsForTrackIDs:(id)ds
 {
   sourceSampleDataTrackWindowsForTrackIDs = self->_videoComposition->sourceSampleDataTrackWindowsForTrackIDs;
-  if (sourceSampleDataTrackWindowsForTrackIDs != a3)
+  if (sourceSampleDataTrackWindowsForTrackIDs != ds)
   {
 
-    self->_videoComposition->sourceSampleDataTrackWindowsForTrackIDs = [a3 copy];
+    self->_videoComposition->sourceSampleDataTrackWindowsForTrackIDs = [ds copy];
   }
 }
 
@@ -540,35 +540,35 @@ LABEL_18:
           v11 = NSDictionaryFromCMTime(&v23);
           v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "enablePostProcessing")}];
           v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "containsTweening")}];
-          v14 = [v9 dictionaryWithObjectsAndKeys:{v10, @"StartTime", v11, @"EndTime", v12, @"EnablePostProcessing", v13, @"ContainsTweening", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", v6), @"InstructionIdentifier", 0}];
-          v15 = [v8 requiredSourceTrackIDs];
-          if (v15)
+          dictionaryRepresentation = [v9 dictionaryWithObjectsAndKeys:{v10, @"StartTime", v11, @"EndTime", v12, @"EnablePostProcessing", v13, @"ContainsTweening", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", v6), @"InstructionIdentifier", 0}];
+          requiredSourceTrackIDs = [v8 requiredSourceTrackIDs];
+          if (requiredSourceTrackIDs)
           {
-            [v14 setObject:v15 forKey:@"RequiredVideoTrackIDArray"];
+            [dictionaryRepresentation setObject:requiredSourceTrackIDs forKey:@"RequiredVideoTrackIDArray"];
           }
 
-          v16 = [v8 passthroughTrackID];
-          if (v16)
+          passthroughTrackID = [v8 passthroughTrackID];
+          if (passthroughTrackID)
           {
-            [v14 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", v16), @"PassthroughSourceVideoTrackID"}];
+            [dictionaryRepresentation setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", passthroughTrackID), @"PassthroughSourceVideoTrackID"}];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v17 = [v8 requiredSourceSampleDataTrackIDs];
-            if (v17)
+            requiredSourceSampleDataTrackIDs = [v8 requiredSourceSampleDataTrackIDs];
+            if (requiredSourceSampleDataTrackIDs)
             {
-              [v14 setObject:v17 forKey:@"RequiredSampleDataTrackIDArray"];
+              [dictionaryRepresentation setObject:requiredSourceSampleDataTrackIDs forKey:@"RequiredSampleDataTrackIDArray"];
             }
           }
         }
 
         else
         {
-          v14 = [v8 dictionaryRepresentation];
+          dictionaryRepresentation = [v8 dictionaryRepresentation];
         }
 
-        [v21 addObject:v14];
+        [v21 addObject:dictionaryRepresentation];
         ++v6;
         ++v7;
       }
@@ -583,7 +583,7 @@ LABEL_18:
   return v21;
 }
 
-- (BOOL)_isValidReturningExceptionReason:(id *)a3
+- (BOOL)_isValidReturningExceptionReason:(id *)reason
 {
   videoComposition = self->_videoComposition;
   if (videoComposition->renderSize.width <= 0.0 || videoComposition->renderSize.height <= 0.0)
@@ -619,9 +619,9 @@ LABEL_18:
     v8 = @"video composition must have a positive frameDuration";
   }
 
-  if (a3)
+  if (reason)
   {
-    *a3 = v8;
+    *reason = v8;
   }
 
   return result;
@@ -629,7 +629,7 @@ LABEL_18:
 
 - (BOOL)isValidForAsset:(AVAsset *)asset timeRange:(CMTimeRange *)timeRange validationDelegate:(id)validationDelegate
 {
-  v9 = [(AVAsset *)asset tracks];
+  tracks = [(AVAsset *)asset tracks];
   if (asset)
   {
     [(AVAsset *)asset duration];
@@ -644,17 +644,17 @@ LABEL_18:
   v12[0] = *&timeRange->start.value;
   v12[1] = v10;
   v12[2] = *&timeRange->duration.timescale;
-  return [(AVVideoComposition *)self isValidForTracks:v9 assetDuration:v13 timeRange:v12 validationDelegate:validationDelegate];
+  return [(AVVideoComposition *)self isValidForTracks:tracks assetDuration:v13 timeRange:v12 validationDelegate:validationDelegate];
 }
 
-- (id)_trackWithTrackID:(int)a3 inTracks:(id)a4
+- (id)_trackWithTrackID:(int)d inTracks:(id)tracks
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [tracks countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
     return 0;
@@ -668,18 +668,18 @@ LABEL_3:
   {
     if (*v13 != v8)
     {
-      objc_enumerationMutation(a4);
+      objc_enumerationMutation(tracks);
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([v10 trackID] == a3)
+    if ([v10 trackID] == d)
     {
       return v10;
     }
 
     if (v7 == ++v9)
     {
-      v7 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [tracks countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -690,14 +690,14 @@ LABEL_3:
   }
 }
 
-- (BOOL)isValidForTracks:(id)a3 assetDuration:(id *)a4 timeRange:(id *)a5 validationDelegate:(id)a6
+- (BOOL)isValidForTracks:(id)tracks assetDuration:(id *)duration timeRange:(id *)range validationDelegate:(id)delegate
 {
   v99 = *MEMORY[0x1E69E9840];
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v12 = [a3 countByEnumeratingWithState:&v91 objects:v98 count:16];
+  v12 = [tracks countByEnumeratingWithState:&v91 objects:v98 count:16];
   if (v12)
   {
     v13 = v12;
@@ -709,13 +709,13 @@ LABEL_3:
       {
         if (*v92 != v15)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(tracks);
         }
 
-        v17 = [*(*(&v91 + 1) + 8 * i) asset];
+        asset = [*(*(&v91 + 1) + 8 * i) asset];
         if (v14)
         {
-          if (v17 != v14)
+          if (asset != v14)
           {
             v52 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Tracks must be from the same asset", v18, v19, v20, v21, v22, v53), 0}];
             objc_exception_throw(v52);
@@ -724,11 +724,11 @@ LABEL_3:
 
         else
         {
-          v14 = v17;
+          v14 = asset;
         }
       }
 
-      v13 = [a3 countByEnumeratingWithState:&v91 objects:v98 count:16];
+      v13 = [tracks countByEnumeratingWithState:&v91 objects:v98 count:16];
     }
 
     while (v13);
@@ -740,10 +740,10 @@ LABEL_3:
   }
 
   v23 = objc_opt_respondsToSelector();
-  v24 = [(AVVideoComposition *)self customVideoCompositorClass];
-  if (v24 && ([v24 conformsToProtocol:&unk_1F0B09EF0] & 1) == 0)
+  customVideoCompositorClass = [(AVVideoComposition *)self customVideoCompositorClass];
+  if (customVideoCompositorClass && ([customVideoCompositorClass conformsToProtocol:&unk_1F0B09EF0] & 1) == 0)
   {
-    if (!a6)
+    if (!delegate)
     {
       return 0;
     }
@@ -751,7 +751,7 @@ LABEL_3:
     if (v23)
     {
       v25 = 0;
-      if (![a6 videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"customVideoCompositorClass"])
+      if (![delegate videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"customVideoCompositorClass"])
       {
         return v25;
       }
@@ -771,14 +771,14 @@ LABEL_3:
   videoComposition = self->_videoComposition;
   if (videoComposition->renderSize.width <= 0.0 || videoComposition->renderSize.height <= 0.0)
   {
-    if (!a6)
+    if (!delegate)
     {
       return 0;
     }
 
     if (v23)
     {
-      if (![a6 videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"renderSize"])
+      if (![delegate videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"renderSize"])
       {
         return 0;
       }
@@ -795,14 +795,14 @@ LABEL_3:
 
   if (videoComposition->renderScale <= 0.0)
   {
-    if (!a6)
+    if (!delegate)
     {
       return 0;
     }
 
     if (v23)
     {
-      if (![a6 videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"renderScale"])
+      if (![delegate videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"renderScale"])
       {
         return 0;
       }
@@ -819,7 +819,7 @@ LABEL_3:
 
   if ((videoComposition->frameDuration.flags & 1) == 0 || (*&time1.start.value = *&videoComposition->frameDuration.value, time1.start.epoch = videoComposition->frameDuration.epoch, *&time2.start.value = *MEMORY[0x1E6960CC0], time2.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&time1.start, &time2.start) <= 0))
   {
-    if (!a6)
+    if (!delegate)
     {
       return 0;
     }
@@ -827,7 +827,7 @@ LABEL_3:
     if (v23)
     {
       v25 = 0;
-      if (![a6 videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"frameDuration"])
+      if (![delegate videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"frameDuration"])
       {
         return v25;
       }
@@ -840,9 +840,9 @@ LABEL_3:
   }
 
   sourceTrackIDForFrameTiming = self->_videoComposition->sourceTrackIDForFrameTiming;
-  if (sourceTrackIDForFrameTiming && ![(AVVideoComposition *)self _trackWithTrackID:sourceTrackIDForFrameTiming inTracks:a3])
+  if (sourceTrackIDForFrameTiming && ![(AVVideoComposition *)self _trackWithTrackID:sourceTrackIDForFrameTiming inTracks:tracks])
   {
-    if (!a6)
+    if (!delegate)
     {
       return 0;
     }
@@ -850,7 +850,7 @@ LABEL_3:
     if (v23)
     {
       v25 = 0;
-      if (![a6 videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"sourceTrackIDForFrameTiming"])
+      if (![delegate videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"sourceTrackIDForFrameTiming"])
       {
         return v25;
       }
@@ -864,7 +864,7 @@ LABEL_3:
 
   if (![(NSArray *)self->_videoComposition->instructions count])
   {
-    if (!a6)
+    if (!delegate)
     {
       return 0;
     }
@@ -872,7 +872,7 @@ LABEL_3:
     if (v23)
     {
       v25 = 0;
-      if (![a6 videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"instructions"])
+      if (![delegate videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"instructions"])
       {
         return v25;
       }
@@ -884,13 +884,13 @@ LABEL_3:
     }
   }
 
-  if ((a5->var0.var2 & 1) != 0 && (a5->var1.var2 & 1) != 0 && !a5->var1.var3 && (a5->var1.var0 & 0x8000000000000000) == 0)
+  if ((range->var0.var2 & 1) != 0 && (range->var1.var2 & 1) != 0 && !range->var1.var3 && (range->var1.var0 & 0x8000000000000000) == 0)
   {
-    v28 = *&a5->var0.var3;
-    var0 = a5->var0;
+    v28 = *&range->var0.var3;
+    var0 = range->var0;
     memset(&v89, 0, sizeof(v89));
-    v29 = *&a5->var1.var1;
-    *&time1.start.value = *&a5->var0.var0;
+    v29 = *&range->var1.var1;
+    *&time1.start.value = *&range->var0.var0;
     *&time1.start.epoch = v28;
     *&time1.duration.timescale = v29;
     CMTimeRangeGetEnd(&v89, &time1);
@@ -933,10 +933,10 @@ LABEL_3:
           {
             range = time1;
             memset(&time2, 0, sizeof(time2));
-            v33 = *&a5->var0.var3;
-            *&otherRange.start.value = *&a5->var0.var0;
+            v33 = *&range->var0.var3;
+            *&otherRange.start.value = *&range->var0.var0;
             *&otherRange.start.epoch = v33;
-            *&otherRange.duration.timescale = *&a5->var1.var1;
+            *&otherRange.duration.timescale = *&range->var1.var1;
             CMTimeRangeGetIntersection(&time2, &range, &otherRange);
             if ((time2.start.flags & 1) == 0 || (time2.duration.flags & 1) == 0 || time2.duration.epoch || time2.duration.value < 0 || (range.start = time2.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&range.start, &otherRange.start) <= 0))
             {
@@ -965,7 +965,7 @@ LABEL_3:
               CMTimeSubtract(&otherRange.start, &lhs, &rhs);
               lhs = start;
               CMTimeRangeMake(&range, &lhs, &otherRange.start);
-              if (!a6)
+              if (!delegate)
               {
                 return 0;
               }
@@ -973,7 +973,7 @@ LABEL_3:
               if (v56)
               {
                 otherRange = range;
-                if (([a6 videoComposition:self shouldContinueValidatingAfterFindingEmptyTimeRange:&otherRange] & 1) == 0)
+                if (([delegate videoComposition:self shouldContinueValidatingAfterFindingEmptyTimeRange:&otherRange] & 1) == 0)
                 {
                   return 0;
                 }
@@ -989,7 +989,7 @@ LABEL_3:
               otherRange.start = start;
               if (CMTimeCompare(&range.start, &otherRange.start) < 0)
               {
-                if (!a6 || (v30 & 1) != 0 && ![a6 videoComposition:self shouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction:v32])
+                if (!delegate || (v30 & 1) != 0 && ![delegate videoComposition:self shouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction:v32])
                 {
                   return 0;
                 }
@@ -1012,19 +1012,19 @@ LABEL_77:
 
             if (v14)
             {
-              v34 = [v32 requiredSourceTrackIDs];
+              requiredSourceTrackIDs = [v32 requiredSourceTrackIDs];
               v74 = 0u;
               v75 = 0u;
               v76 = 0u;
               v77 = 0u;
-              v64 = v34;
-              v69 = [v34 countByEnumeratingWithState:&v74 objects:v96 count:16];
+              v64 = requiredSourceTrackIDs;
+              v69 = [requiredSourceTrackIDs countByEnumeratingWithState:&v74 objects:v96 count:16];
               if (v69)
               {
                 v59 = v32;
-                v67 = a4;
+                durationCopy = duration;
                 v68 = *v75;
-                v66 = a5;
+                rangeCopy = range;
                 do
                 {
                   for (j = 0; j != v69; ++j)
@@ -1034,15 +1034,15 @@ LABEL_77:
                       objc_enumerationMutation(v64);
                     }
 
-                    v36 = [*(*(&v74 + 1) + 8 * j) intValue];
+                    intValue = [*(*(&v74 + 1) + 8 * j) intValue];
                     animationTool = self->_videoComposition->animationTool;
-                    if (!animationTool || ((v38 = [(AVVideoCompositionCoreAnimationTool *)animationTool _auxiliaryTrackID]) != 0 ? (v39 = v36 == v38) : (v39 = 0), !v39))
+                    if (!animationTool || ((v38 = [(AVVideoCompositionCoreAnimationTool *)animationTool _auxiliaryTrackID]) != 0 ? (v39 = intValue == v38) : (v39 = 0), !v39))
                     {
-                      v40 = [(AVVideoComposition *)self _trackWithTrackID:v36 inTracks:a3];
-                      v41 = [v40 mediaType];
-                      if (!v40 || (v42 = v41, ([v41 isEqualToString:@"vide"] & 1) == 0) && (objc_msgSend(v42, "isEqualToString:", @"auxv") & 1) == 0 && (objc_msgSend(v42, "isEqualToString:", @"scen") & 1) == 0)
+                      v40 = [(AVVideoComposition *)self _trackWithTrackID:intValue inTracks:tracks];
+                      mediaType = [v40 mediaType];
+                      if (!v40 || (v42 = mediaType, ([mediaType isEqualToString:@"vide"] & 1) == 0) && (objc_msgSend(v42, "isEqualToString:", @"auxv") & 1) == 0 && (objc_msgSend(v42, "isEqualToString:", @"scen") & 1) == 0)
                       {
-                        if (!a6)
+                        if (!delegate)
                         {
                           return 0;
                         }
@@ -1052,13 +1052,13 @@ LABEL_77:
                           objc_opt_class();
                           if (objc_opt_isKindOfClass())
                           {
-                            v43 = [v59 layerInstructions];
+                            layerInstructions = [v59 layerInstructions];
                             v70 = 0u;
                             v71 = 0u;
                             v72 = 0u;
                             v73 = 0u;
-                            v65 = v43;
-                            v44 = [v43 countByEnumeratingWithState:&v70 objects:v95 count:16];
+                            v65 = layerInstructions;
+                            v44 = [layerInstructions countByEnumeratingWithState:&v70 objects:v95 count:16];
                             if (v44)
                             {
                               v45 = v44;
@@ -1073,7 +1073,7 @@ LABEL_100:
                                 }
 
                                 v48 = *(*(&v70 + 1) + 8 * v47);
-                                if (v36 == [v48 trackID])
+                                if (intValue == [v48 trackID])
                                 {
                                   break;
                                 }
@@ -1091,7 +1091,7 @@ LABEL_100:
                                 }
                               }
 
-                              if (v48 && ![a6 videoComposition:self shouldContinueValidatingAfterFindingInvalidTrackIDInInstruction:v59 layerInstruction:v48 asset:v14])
+                              if (v48 && ![delegate videoComposition:self shouldContinueValidatingAfterFindingInvalidTrackIDInInstruction:v59 layerInstruction:v48 asset:v14])
                               {
                                 return 0;
                               }
@@ -1104,8 +1104,8 @@ LABEL_100:
                     }
 
 LABEL_110:
-                    a5 = v66;
-                    a4 = v67;
+                    range = rangeCopy;
+                    duration = durationCopy;
                   }
 
                   v69 = [v64 countByEnumeratingWithState:&v74 objects:v96 count:16];
@@ -1122,7 +1122,7 @@ LABEL_110:
           }
         }
 
-        if (!a6 || (v30 & 1) != 0 && ([a6 videoComposition:self shouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction:v32] & 1) == 0)
+        if (!delegate || (v30 & 1) != 0 && ([delegate videoComposition:self shouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction:v32] & 1) == 0)
         {
           return 0;
         }
@@ -1143,7 +1143,7 @@ LABEL_60:
         }
 
 LABEL_121:
-        if (!a6)
+        if (!delegate)
         {
           return 0;
         }
@@ -1151,7 +1151,7 @@ LABEL_121:
         if (v23)
         {
           v25 = 0;
-          if (![a6 videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"instructions"])
+          if (![delegate videoComposition:self shouldContinueValidatingAfterFindingInvalidValueForKey:@"instructions"])
           {
             return v25;
           }
@@ -1166,7 +1166,7 @@ LABEL_136:
         flags = v89.flags;
         if ((v89.flags & 0x1D) != 1)
         {
-          v89 = *a4;
+          v89 = *duration;
           flags = v89.flags;
         }
 
@@ -1182,10 +1182,10 @@ LABEL_136:
             CMTimeSubtract(&time2.start, &range.start, &otherRange.start);
             range.start = start;
             CMTimeRangeMake(&time1, &range.start, &time2.start);
-            if (((a6 != 0) & v56) == 1)
+            if (((delegate != 0) & v56) == 1)
             {
               time2 = time1;
-              [a6 videoComposition:self shouldContinueValidatingAfterFindingEmptyTimeRange:&time2];
+              [delegate videoComposition:self shouldContinueValidatingAfterFindingEmptyTimeRange:&time2];
             }
 
             return 0;
@@ -1217,10 +1217,10 @@ LABEL_136:
   AVLoadValuesAsynchronously(asset, &unk_1F0AD3718, v7);
 }
 
-- (void)_setFrameDurationForFrameRate:(float)a3 sourceTrackIDForFrameTiming:(int)a4
+- (void)_setFrameDurationForFrameRate:(float)rate sourceTrackIDForFrameTiming:(int)timing
 {
-  v4 = *&a4;
-  if (a3 == 0.0)
+  v4 = *&timing;
+  if (rate == 0.0)
   {
     CMTimeMake(&v10, 1, 30);
     v8 = *&v10.value;
@@ -1229,7 +1229,7 @@ LABEL_136:
 
   else
   {
-    CMTimeMakeWithSeconds(&v7, 1.0 / a3, 90000);
+    CMTimeMakeWithSeconds(&v7, 1.0 / rate, 90000);
     v8 = *&v7.value;
     epoch = v7.epoch;
   }
@@ -1242,62 +1242,62 @@ LABEL_136:
   }
 }
 
-- (void)setColorPrimaries:(id)a3
+- (void)setColorPrimaries:(id)primaries
 {
   colorPrimaries = self->_videoComposition->colorPrimaries;
-  if (colorPrimaries != a3)
+  if (colorPrimaries != primaries)
   {
 
-    self->_videoComposition->colorPrimaries = [a3 copy];
+    self->_videoComposition->colorPrimaries = [primaries copy];
   }
 }
 
-- (void)setColorYCbCrMatrix:(id)a3
+- (void)setColorYCbCrMatrix:(id)matrix
 {
   colorYCbCrMatrix = self->_videoComposition->colorYCbCrMatrix;
-  if (colorYCbCrMatrix != a3)
+  if (colorYCbCrMatrix != matrix)
   {
 
-    self->_videoComposition->colorYCbCrMatrix = [a3 copy];
+    self->_videoComposition->colorYCbCrMatrix = [matrix copy];
   }
 }
 
-- (void)setColorTransferFunction:(id)a3
+- (void)setColorTransferFunction:(id)function
 {
   colorTransferFunction = self->_videoComposition->colorTransferFunction;
-  if (colorTransferFunction != a3)
+  if (colorTransferFunction != function)
   {
 
-    self->_videoComposition->colorTransferFunction = [a3 copy];
+    self->_videoComposition->colorTransferFunction = [function copy];
   }
 }
 
-- (void)setPerFrameHDRDisplayMetadataPolicy:(id)a3
+- (void)setPerFrameHDRDisplayMetadataPolicy:(id)policy
 {
   perFrameHDRDisplayMetadataPolicy = self->_videoComposition->perFrameHDRDisplayMetadataPolicy;
-  if (perFrameHDRDisplayMetadataPolicy != a3)
+  if (perFrameHDRDisplayMetadataPolicy != policy)
   {
 
-    self->_videoComposition->perFrameHDRDisplayMetadataPolicy = [a3 copy];
+    self->_videoComposition->perFrameHDRDisplayMetadataPolicy = [policy copy];
   }
 }
 
-- (void)videoCompositionOutputColorPropertiesWithCustomCompositor:(id)a3 formatDescriptions:(id)a4 colorPrimaries:(id *)a5 transferFunction:(id *)a6 yCbCrMatrix:(id *)a7 perFrameHDRDisplayMetadataPolicy:(id *)a8
+- (void)videoCompositionOutputColorPropertiesWithCustomCompositor:(id)compositor formatDescriptions:(id)descriptions colorPrimaries:(id *)primaries transferFunction:(id *)function yCbCrMatrix:(id *)matrix perFrameHDRDisplayMetadataPolicy:(id *)policy
 {
-  v13 = [(AVVideoComposition *)self colorPrimaries];
-  v14 = [(AVVideoComposition *)self colorTransferFunction];
-  v15 = [(AVVideoComposition *)self colorYCbCrMatrix];
-  v19 = [(AVVideoComposition *)self perFrameHDRDisplayMetadataPolicy];
-  if (a3)
+  colorPrimaries = [(AVVideoComposition *)self colorPrimaries];
+  colorTransferFunction = [(AVVideoComposition *)self colorTransferFunction];
+  colorYCbCrMatrix = [(AVVideoComposition *)self colorYCbCrMatrix];
+  perFrameHDRDisplayMetadataPolicy = [(AVVideoComposition *)self perFrameHDRDisplayMetadataPolicy];
+  if (compositor)
   {
-    [a3 supportsWideColorSourceFrames];
-    [a3 supportsHDRSourceFrames];
+    [compositor supportsWideColorSourceFrames];
+    [compositor supportsHDRSourceFrames];
   }
 
   CMFormatDescriptionGetWidestGamutAndLargestDynamicRangeColorPropertiesFromFormatDescriptions();
-  if (v13)
+  if (colorPrimaries)
   {
-    v16 = v13;
+    v16 = colorPrimaries;
   }
 
   else
@@ -1305,9 +1305,9 @@ LABEL_136:
     v16 = 0;
   }
 
-  if (v14)
+  if (colorTransferFunction)
   {
-    v17 = v14;
+    v17 = colorTransferFunction;
   }
 
   else
@@ -1315,9 +1315,9 @@ LABEL_136:
     v17 = 0;
   }
 
-  if (v15)
+  if (colorYCbCrMatrix)
   {
-    v18 = v15;
+    v18 = colorYCbCrMatrix;
   }
 
   else
@@ -1332,24 +1332,24 @@ LABEL_136:
     v18 = @"ITU_R_709_2";
   }
 
-  if (a5)
+  if (primaries)
   {
-    *a5 = v16;
+    *primaries = v16;
   }
 
-  if (a6)
+  if (function)
   {
-    *a6 = v17;
+    *function = v17;
   }
 
-  if (a7)
+  if (matrix)
   {
-    *a7 = v18;
+    *matrix = v18;
   }
 
-  if (a8)
+  if (policy)
   {
-    *a8 = v19;
+    *policy = perFrameHDRDisplayMetadataPolicy;
   }
 }
 
@@ -1369,11 +1369,11 @@ LABEL_136:
     v11 = *MEMORY[0x1E695D940];
     v12 = "handler";
 LABEL_8:
-    v13 = [v10 exceptionWithName:v11 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, @"invalid parameter not satisfying: %s", applier, v4, v5, v6, v7, v12), 0}];
+    v13 = [v10 exceptionWithName:v11 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", applier, v4, v5, v6, v7, v12), 0}];
     objc_exception_throw(v13);
   }
 
-  v8 = [objc_msgSend(a1 "_mutableVideoCompositionWithAsset:"copy" applyingCIFiltersWithHandler:?")];
+  v8 = [objc_msgSend(self "_mutableVideoCompositionWithAsset:"copy" applyingCIFiltersWithHandler:?")];
 
   return v8;
 }
@@ -1402,7 +1402,7 @@ LABEL_8:
     v9 = *MEMORY[0x1E695D940];
     v10 = "completionHandler != nil";
 LABEL_8:
-    v11 = [v8 exceptionWithName:v9 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, @"invalid parameter not satisfying: %s", applier, completionHandler, v5, v6, v7, v10), 0}];
+    v11 = [v8 exceptionWithName:v9 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", applier, completionHandler, v5, v6, v7, v10), 0}];
     objc_exception_throw(v11);
   }
 
@@ -1410,7 +1410,7 @@ LABEL_8:
   v12[1] = 3221225472;
   v12[2] = __124__AVVideoComposition_AVVideoCompositionFiltering__videoCompositionWithAsset_applyingCIFiltersWithHandler_completionHandler___block_invoke;
   v12[3] = &unk_1E7463928;
-  v12[4] = a1;
+  v12[4] = self;
   v12[5] = asset;
   v12[6] = applier;
   v12[7] = completionHandler;
@@ -1430,14 +1430,14 @@ uint64_t __78__AVVideoComposition_videoCompositionWithPropertiesOfAsset_completi
   return v2();
 }
 
-- (id)instructionForFigInstruction:(void *)a3
+- (id)instructionForFigInstruction:(void *)instruction
 {
   if (![(NSArray *)self->_videoComposition->instructions count])
   {
     return 0;
   }
 
-  v5 = [objc_msgSend(a3 objectForKey:{@"InstructionIdentifier", "intValue"}] - 1;
+  v5 = [objc_msgSend(instruction objectForKey:{@"InstructionIdentifier", "intValue"}] - 1;
   if ([(NSArray *)self->_videoComposition->instructions count]<= v5)
   {
     return 0;
@@ -1466,10 +1466,10 @@ uint64_t __95__AVVideoComposition_determineValidityForAsset_timeRange_validation
   return (*(*(v0 + 56) + 16))();
 }
 
-+ (id)_mutableVideoCompositionWithAsset:(id)a3 applyingCIFiltersWithHandler:(id)a4
++ (id)_mutableVideoCompositionWithAsset:(id)asset applyingCIFiltersWithHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = [a3 tracksWithMediaType:@"vide"];
+  v6 = [asset tracksWithMediaType:@"vide"];
   v7 = OUTLINED_FUNCTION_4_0();
   v9 = [v8 countByEnumeratingWithState:v7 objects:? count:?];
   if (!v9)
@@ -1512,9 +1512,9 @@ LABEL_3:
   }
 
   v15 = [AVCoreImageFilterVideoCompositionInstruction alloc];
-  if (a3)
+  if (asset)
   {
-    [a3 duration];
+    [asset duration];
   }
 
   else
@@ -1525,11 +1525,11 @@ LABEL_3:
   start = **&MEMORY[0x1E6960CC0];
   CMTimeRangeMake(&v33, &start, &duration);
   v32 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v13, "trackID")}];
-  v16 = -[AVCoreImageFilterVideoCompositionInstruction initWithTimeRange:sourceTrackIDs:handler:](v15, "initWithTimeRange:sourceTrackIDs:handler:", &v33, [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1], a4);
+  v16 = -[AVCoreImageFilterVideoCompositionInstruction initWithTimeRange:sourceTrackIDs:handler:](v15, "initWithTimeRange:sourceTrackIDs:handler:", &v33, [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1], handler);
   [v13 preferredTransform];
   v33 = v28;
   [(AVCoreImageFilterVideoCompositionInstruction *)v16 setSourceTrackPreferredTransform:&v33];
-  v14 = [AVMutableVideoComposition videoCompositionWithPropertiesOfAsset:a3];
+  v14 = [AVMutableVideoComposition videoCompositionWithPropertiesOfAsset:asset];
   [(AVMutableVideoComposition *)v14 setCustomVideoCompositorClass:objc_opt_class()];
   v31 = v16;
   -[AVMutableVideoComposition setInstructions:](v14, "setInstructions:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1]);
@@ -1546,9 +1546,9 @@ LABEL_3:
   height = v36.size.height;
   [v13 nominalFrameRate];
   v24 = v23;
-  v25 = [v13 trackID];
+  trackID = [v13 trackID];
   LODWORD(v26) = v24;
-  [(AVVideoComposition *)v14 _setFrameDurationForFrameRate:v25 sourceTrackIDForFrameTiming:v26];
+  [(AVVideoComposition *)v14 _setFrameDurationForFrameRate:trackID sourceTrackIDForFrameTiming:v26];
   [(AVMutableVideoComposition *)v14 setRenderSize:width, height];
   return v14;
 }

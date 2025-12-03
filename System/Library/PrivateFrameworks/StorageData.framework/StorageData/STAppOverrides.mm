@@ -1,17 +1,17 @@
 @interface STAppOverrides
 + (id)overrides;
-+ (id)overridesFor:(id)a3;
-+ (id)overridesForApplication:(id)a3;
++ (id)overridesFor:(id)for;
++ (id)overridesForApplication:(id)application;
 - (BOOL)excludeUsageBundle;
 - (BOOL)isMediaApp;
-- (STAppOverrides)initWithDictionary:(id)a3;
+- (STAppOverrides)initWithDictionary:(id)dictionary;
 @end
 
 @implementation STAppOverrides
 
-- (STAppOverrides)initWithDictionary:(id)a3
+- (STAppOverrides)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = STAppOverrides;
   v5 = [(STAppOverrides *)&v10 init];
@@ -23,7 +23,7 @@
     v8[2] = __37__STAppOverrides_initWithDictionary___block_invoke;
     v8[3] = &unk_279D1D130;
     v9 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:v8];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v8];
   }
 
   return v6;
@@ -31,10 +31,10 @@
 
 - (BOOL)isMediaApp
 {
-  v2 = [(STAppOverrides *)self category];
-  if (v2)
+  category = [(STAppOverrides *)self category];
+  if (category)
   {
-    v3 = v2 == 7;
+    v3 = category == 7;
   }
 
   else
@@ -47,22 +47,22 @@
 
 - (BOOL)excludeUsageBundle
 {
-  v3 = [(STAppOverrides *)self includeFsPaths];
-  v4 = [v3 count];
-  v5 = [(STAppOverrides *)self includeMediaUsage];
-  v6 = [v5 count] + v4;
-  v7 = [(STAppOverrides *)self includeCacheDeleteKeys];
-  v8 = v6 + [v7 count] || -[STAppOverrides includeSoftwareUpdates](self, "includeSoftwareUpdates") || -[STAppOverrides forceExcludeUsageBundle](self, "forceExcludeUsageBundle");
+  includeFsPaths = [(STAppOverrides *)self includeFsPaths];
+  v4 = [includeFsPaths count];
+  includeMediaUsage = [(STAppOverrides *)self includeMediaUsage];
+  v6 = [includeMediaUsage count] + v4;
+  includeCacheDeleteKeys = [(STAppOverrides *)self includeCacheDeleteKeys];
+  v8 = v6 + [includeCacheDeleteKeys count] || -[STAppOverrides includeSoftwareUpdates](self, "includeSoftwareUpdates") || -[STAppOverrides forceExcludeUsageBundle](self, "forceExcludeUsageBundle");
 
   return v8;
 }
 
-+ (id)overridesForApplication:(id)a3
++ (id)overridesForApplication:(id)application
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 applicationIdentifier];
-  v6 = [a1 overridesFor:v5];
+  applicationCopy = application;
+  applicationIdentifier = [applicationCopy applicationIdentifier];
+  v6 = [self overridesFor:applicationIdentifier];
 
   if (!v6)
   {
@@ -70,8 +70,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [v4 counterpartIdentifiers];
-    v6 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    counterpartIdentifiers = [applicationCopy counterpartIdentifiers];
+    v6 = [counterpartIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v8 = *v14;
@@ -81,20 +81,20 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(counterpartIdentifiers);
           }
 
-          v10 = [a1 overridesFor:*(*(&v13 + 1) + 8 * i)];
+          v10 = [self overridesFor:*(*(&v13 + 1) + 8 * i)];
           if (v10)
           {
             v6 = v10;
 
-            v7 = v6;
+            counterpartIdentifiers = v6;
             goto LABEL_12;
           }
         }
 
-        v6 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [counterpartIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;
@@ -112,11 +112,11 @@ LABEL_12:
   return v6;
 }
 
-+ (id)overridesFor:(id)a3
++ (id)overridesFor:(id)for
 {
-  v4 = a3;
-  v5 = [a1 overrides];
-  v6 = [v5 objectForKey:v4];
+  forCopy = for;
+  overrides = [self overrides];
+  v6 = [overrides objectForKey:forCopy];
 
   return v6;
 }

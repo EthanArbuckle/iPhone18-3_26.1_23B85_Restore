@@ -1,26 +1,26 @@
 @interface PUTilingViewTransitionHelper
-+ (id)_transitionEndPointWithViewController:(id)a3;
-+ (id)concatenatedProgressBlockForTilingView:(id)a3 transitionOperation:(int64_t)a4;
-+ (int64_t)typeOfEndPoint:(id)a3 forTransitionFromViewController:(id)a4 toViewController:(id)a5;
-+ (void)registerTransitionEndPoint:(id)a3 forViewController:(id)a4;
-- (BOOL)_endPointUsesTransientTilingView:(id)a3;
-- (BOOL)_validateTransitionFromEndPoint:(id)a3 toEndPoint:(id)a4;
++ (id)_transitionEndPointWithViewController:(id)controller;
++ (id)concatenatedProgressBlockForTilingView:(id)view transitionOperation:(int64_t)operation;
++ (int64_t)typeOfEndPoint:(id)point forTransitionFromViewController:(id)controller toViewController:(id)viewController;
++ (void)registerTransitionEndPoint:(id)point forViewController:(id)controller;
+- (BOOL)_endPointUsesTransientTilingView:(id)view;
+- (BOOL)_validateTransitionFromEndPoint:(id)point toEndPoint:(id)endPoint;
 - (PUTilingView)_tilingView;
 - (PUTilingViewControllerTransition)transition;
 - (PUTilingViewControllerTransitionEndPoint)_endPointOwningTilingView;
 - (PUTilingViewControllerTransitionEndPoint)_fromEndPoint;
 - (PUTilingViewControllerTransitionEndPoint)_toEndPoint;
 - (PUTilingViewControllerTransitionEndPoint)endPoint;
-- (PUTilingViewTransitionHelper)initWithPresentationDuration:(double)a3 dismissalDuration:(double)a4 endPoint:(id)a5;
-- (int64_t)_barStyleForEndPoint:(id)a3;
-- (void)_getTransitionProgress:(double *)a3 backgroundProgress:(double *)a4 chromeProgress:(double *)a5;
-- (void)_performWhenToEndPoint:(id)a3 isReadyToAdoptTilingView:(id)a4 fromEndPoint:(id)a5 action:(id)a6;
-- (void)_performWhenToEndPoint:(id)a3 isReadyToAdoptTilingView:(id)a4 fromEndPoint:(id)a5 retryCount:(int64_t)a6 startTime:(double)a7 action:(id)a8;
-- (void)_setEndPointOwningTilingView:(id)a3;
-- (void)animateTransitionWithOperation:(int64_t)a3 startedInteractively:(BOOL)a4;
-- (void)pauseTransitionWithOptions:(unint64_t)a3;
-- (void)resumeTransition:(BOOL)a3;
-- (void)updatePausedTransitionWithProgress:(double)a3 interactionProgress:(double)a4;
+- (PUTilingViewTransitionHelper)initWithPresentationDuration:(double)duration dismissalDuration:(double)dismissalDuration endPoint:(id)point;
+- (int64_t)_barStyleForEndPoint:(id)point;
+- (void)_getTransitionProgress:(double *)progress backgroundProgress:(double *)backgroundProgress chromeProgress:(double *)chromeProgress;
+- (void)_performWhenToEndPoint:(id)point isReadyToAdoptTilingView:(id)view fromEndPoint:(id)endPoint action:(id)action;
+- (void)_performWhenToEndPoint:(id)point isReadyToAdoptTilingView:(id)view fromEndPoint:(id)endPoint retryCount:(int64_t)count startTime:(double)time action:(id)action;
+- (void)_setEndPointOwningTilingView:(id)view;
+- (void)animateTransitionWithOperation:(int64_t)operation startedInteractively:(BOOL)interactively;
+- (void)pauseTransitionWithOptions:(unint64_t)options;
+- (void)resumeTransition:(BOOL)transition;
+- (void)updatePausedTransitionWithProgress:(double)progress interactionProgress:(double)interactionProgress;
 @end
 
 @implementation PUTilingViewTransitionHelper
@@ -67,40 +67,40 @@
   return WeakRetained;
 }
 
-- (void)_setEndPointOwningTilingView:(id)a3
+- (void)_setEndPointOwningTilingView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->__endPointOwningTilingView);
 
   if (WeakRetained != obj)
   {
     v6 = objc_loadWeakRetained(&self->__endPointOwningTilingView);
     objc_storeWeak(&self->__endPointOwningTilingView, obj);
-    v7 = [(PUTilingViewTransitionHelper *)self transition];
-    v8 = [v6 tilingViewControllerTransition:v7 tilingViewToTransferToEndPoint:obj];
-    v9 = [(PUTilingViewTransitionHelper *)self _tilingView];
+    transition = [(PUTilingViewTransitionHelper *)self transition];
+    v8 = [v6 tilingViewControllerTransition:transition tilingViewToTransferToEndPoint:obj];
+    _tilingView = [(PUTilingViewTransitionHelper *)self _tilingView];
 
-    if (v8 != v9)
+    if (v8 != _tilingView)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      v13 = [(PUTilingViewTransitionHelper *)self _tilingView];
-      [v12 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:719 description:{@"tiling view %@ to transfer from %@ to %@ isn't the transition's tiling view %@", v8, v6, obj, v13}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      _tilingView2 = [(PUTilingViewTransitionHelper *)self _tilingView];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:719 description:{@"tiling view %@ to transfer from %@ to %@ isn't the transition's tiling view %@", v8, v6, obj, _tilingView2}];
     }
 
-    [v6 tilingViewControllerTransition:v7 abandonTilingView:v8 toEndPoint:obj];
-    v10 = [(PUTilingViewTransitionHelper *)self _fromEndPoint];
-    v11 = v10 == obj;
+    [v6 tilingViewControllerTransition:transition abandonTilingView:v8 toEndPoint:obj];
+    _fromEndPoint = [(PUTilingViewTransitionHelper *)self _fromEndPoint];
+    v11 = _fromEndPoint == obj;
 
-    [obj tilingViewControllerTransition:v7 adoptTilingView:v8 fromEndPoint:v6 isCancelingTransition:v11 animationSetupCompletionHandler:0];
+    [obj tilingViewControllerTransition:transition adoptTilingView:v8 fromEndPoint:v6 isCancelingTransition:v11 animationSetupCompletionHandler:0];
   }
 }
 
-- (int64_t)_barStyleForEndPoint:(id)a3
+- (int64_t)_barStyleForEndPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 tilingViewControllerTransitionPreferredBarStyle:self];
+    pu_preferredBarStyle = [pointCopy tilingViewControllerTransitionPreferredBarStyle:self];
   }
 
   else
@@ -112,21 +112,21 @@
       goto LABEL_7;
     }
 
-    v5 = [v4 pu_preferredBarStyle];
+    pu_preferredBarStyle = [pointCopy pu_preferredBarStyle];
   }
 
-  v6 = v5;
+  v6 = pu_preferredBarStyle;
 LABEL_7:
 
   return v6;
 }
 
-- (BOOL)_endPointUsesTransientTilingView:(id)a3
+- (BOOL)_endPointUsesTransientTilingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 tilingViewControllerTransitionUsesTransientTilingView:self];
+    v5 = [viewCopy tilingViewControllerTransitionUsesTransientTilingView:self];
   }
 
   else
@@ -137,14 +137,14 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)_validateTransitionFromEndPoint:(id)a3 toEndPoint:(id)a4
+- (BOOL)_validateTransitionFromEndPoint:(id)point toEndPoint:(id)endPoint
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  pointCopy = point;
+  endPointCopy = endPoint;
+  v8 = endPointCopy;
+  if (pointCopy)
   {
-    v9 = v7 == 0;
+    v9 = endPointCopy == 0;
   }
 
   else
@@ -155,16 +155,16 @@ LABEL_7:
   v10 = !v9;
   if (v9)
   {
-    v11 = [(PUTilingViewTransitionHelper *)self transition];
+    transition = [(PUTilingViewTransitionHelper *)self transition];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __75__PUTilingViewTransitionHelper__validateTransitionFromEndPoint_toEndPoint___block_invoke;
     v14[3] = &unk_1E7B7F1D0;
-    v15 = v11;
-    v16 = v6;
-    v17 = self;
+    v15 = transition;
+    v16 = pointCopy;
+    selfCopy = self;
     v18 = v8;
-    v12 = v11;
+    v12 = transition;
     dispatch_async(MEMORY[0x1E69E96A0], v14);
   }
 
@@ -192,32 +192,32 @@ uint64_t __75__PUTilingViewTransitionHelper__validateTransitionFromEndPoint_toEn
   return result;
 }
 
-- (void)_performWhenToEndPoint:(id)a3 isReadyToAdoptTilingView:(id)a4 fromEndPoint:(id)a5 retryCount:(int64_t)a6 startTime:(double)a7 action:(id)a8
+- (void)_performWhenToEndPoint:(id)point isReadyToAdoptTilingView:(id)view fromEndPoint:(id)endPoint retryCount:(int64_t)count startTime:(double)time action:(id)action
 {
   v41 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  pointCopy = point;
+  viewCopy = view;
+  endPointCopy = endPoint;
+  actionCopy = action;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  v19 = v18 - a7;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || [(PUTilingViewTransitionHelper *)v14 isReadyToAdoptTilingView:v15 fromEndPoint:v16])
+  v19 = v18 - time;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || [(PUTilingViewTransitionHelper *)pointCopy isReadyToAdoptTilingView:viewCopy fromEndPoint:endPointCopy])
   {
     v20 = PLOneUpGetLog();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_6:
 
-      v17[2](v17);
+      actionCopy[2](actionCopy);
       goto LABEL_7;
     }
 
     *buf = 134218754;
-    v34 = self;
+    selfCopy2 = self;
     v35 = 2112;
-    v36 = v14;
+    v36 = pointCopy;
     v37 = 2048;
-    v38 = a6;
+    countCopy = count;
     v39 = 2048;
     v40 = v19;
     v21 = "[animateTransition] %p end point %@ ready after retries: %ti delay: %0.3f s";
@@ -231,7 +231,7 @@ LABEL_5:
 
   v25 = PLOneUpGetLog();
   v20 = v25;
-  if (a6 > 99 || v19 >= 1.0)
+  if (count > 99 || v19 >= 1.0)
   {
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
@@ -239,7 +239,7 @@ LABEL_5:
     }
 
     *buf = 138412290;
-    v34 = v14;
+    selfCopy2 = pointCopy;
     v21 = "End point not ready to adopt tiling view %@. Failing gracefully, but animation might be glitchy.";
     v22 = v20;
     v23 = OS_LOG_TYPE_FAULT;
@@ -250,9 +250,9 @@ LABEL_5:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v34 = self;
+    selfCopy2 = self;
     v35 = 2112;
-    v36 = v14;
+    v36 = pointCopy;
     _os_log_impl(&dword_1B36F3000, v20, OS_LOG_TYPE_DEBUG, "[animateTransition] %p end point %@ not ready yet", buf, 0x16u);
   }
 
@@ -261,72 +261,72 @@ LABEL_5:
   block[2] = __121__PUTilingViewTransitionHelper__performWhenToEndPoint_isReadyToAdoptTilingView_fromEndPoint_retryCount_startTime_action___block_invoke;
   block[3] = &unk_1E7B7F1A8;
   block[4] = self;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v31 = a6;
-  v32 = a7;
-  v30 = v17;
+  v27 = pointCopy;
+  v28 = viewCopy;
+  v29 = endPointCopy;
+  countCopy2 = count;
+  timeCopy = time;
+  v30 = actionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
 LABEL_7:
 }
 
-- (void)_performWhenToEndPoint:(id)a3 isReadyToAdoptTilingView:(id)a4 fromEndPoint:(id)a5 action:(id)a6
+- (void)_performWhenToEndPoint:(id)point isReadyToAdoptTilingView:(id)view fromEndPoint:(id)endPoint action:(id)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pointCopy = point;
+  viewCopy = view;
+  endPointCopy = endPoint;
+  actionCopy = action;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __100__PUTilingViewTransitionHelper__performWhenToEndPoint_isReadyToAdoptTilingView_fromEndPoint_action___block_invoke;
   v19[3] = &unk_1E7B7F180;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
+  v20 = pointCopy;
+  v21 = viewCopy;
+  v22 = endPointCopy;
   v24 = v14;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v23 = actionCopy;
+  v15 = actionCopy;
+  v16 = endPointCopy;
+  v17 = viewCopy;
+  v18 = pointCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v19);
 }
 
-- (void)animateTransitionWithOperation:(int64_t)a3 startedInteractively:(BOOL)a4
+- (void)animateTransitionWithOperation:(int64_t)operation startedInteractively:(BOOL)interactively
 {
-  v94 = a4;
+  interactivelyCopy = interactively;
   v186 = *MEMORY[0x1E69E9840];
   v6 = PLOneUpGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v177 = self;
+    selfCopy6 = self;
     v178 = 2048;
-    v179 = a3;
+    operationCopy = operation;
     _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "[animateTransition] %p animate transition with operation %li", buf, 0x16u);
   }
 
-  [(PUTilingViewTransitionHelper *)self _setCurrentOperation:a3];
-  v7 = [(PUTilingViewTransitionHelper *)self transition];
-  v8 = [v7 fromViewController];
-  v9 = [v7 toViewController];
-  v10 = [(PUTilingViewTransitionHelper *)self endPoint];
-  v11 = [objc_opt_class() typeOfEndPoint:v10 forTransitionFromViewController:v8 toViewController:v9];
+  [(PUTilingViewTransitionHelper *)self _setCurrentOperation:operation];
+  transition = [(PUTilingViewTransitionHelper *)self transition];
+  fromViewController = [transition fromViewController];
+  toViewController = [transition toViewController];
+  endPoint = [(PUTilingViewTransitionHelper *)self endPoint];
+  v11 = [objc_opt_class() typeOfEndPoint:endPoint forTransitionFromViewController:fromViewController toViewController:toViewController];
   if (!v11)
   {
     v14 = PLOneUpGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v177 = v10;
+      selfCopy6 = endPoint;
       v178 = 2112;
-      v179 = v8;
+      operationCopy = fromViewController;
       v180 = 2112;
-      v181 = v9;
+      v181 = toViewController;
       _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_ERROR, "[animateTransition] Couldn't find type of end point %@ for transition from %@ to %@", buf, 0x20u);
     }
 
@@ -337,14 +337,14 @@ LABEL_7:
   {
     if (v11 == 1)
     {
-      v12 = v10;
+      v12 = endPoint;
       goto LABEL_13;
     }
 
 LABEL_12:
     v12 = 0;
 LABEL_13:
-    v13 = [objc_opt_class() _transitionEndPointWithViewController:v9];
+    v13 = [objc_opt_class() _transitionEndPointWithViewController:toViewController];
     if (v12)
     {
       goto LABEL_15;
@@ -353,14 +353,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v13 = v10;
+  v13 = endPoint;
   if (!v13)
   {
     goto LABEL_12;
   }
 
 LABEL_14:
-  v12 = [objc_opt_class() _transitionEndPointWithViewController:v8];
+  v12 = [objc_opt_class() _transitionEndPointWithViewController:fromViewController];
 LABEL_15:
   if ([(PUTilingViewTransitionHelper *)self _validateTransitionFromEndPoint:v12 toEndPoint:v13])
   {
@@ -370,90 +370,90 @@ LABEL_15:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134219010;
-      v177 = self;
+      selfCopy6 = self;
       v178 = 2112;
-      v179 = v8;
+      operationCopy = fromViewController;
       v180 = 2112;
       v181 = v12;
       v182 = 2112;
-      v183 = v9;
+      v183 = toViewController;
       v184 = 2112;
       v185 = v13;
       _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_DEFAULT, "[animateTransition] %p fromVC: %@, fromEndPoint: %@, toVC: %@, toEndPoint: %@", buf, 0x34u);
     }
 
-    v112 = [v8 navigationController];
-    if (!v112)
+    navigationController = [fromViewController navigationController];
+    if (!navigationController)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || (v112 = v8) == 0)
+      if ((objc_opt_isKindOfClass() & 1) == 0 || (navigationController = fromViewController) == 0)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v112 = v9;
+          navigationController = toViewController;
         }
 
         else
         {
-          v112 = 0;
+          navigationController = 0;
         }
       }
     }
 
-    v105 = [v8 tabBarController];
-    v88 = [(PUTilingViewTransitionHelper *)v112 _useStandardStatusBarHeight];
-    v16 = [v8 prefersStatusBarHidden];
-    if (v16 != [(PUTilingViewTransitionHelper *)v9 prefersStatusBarHidden])
+    tabBarController = [fromViewController tabBarController];
+    _useStandardStatusBarHeight = [(PUTilingViewTransitionHelper *)navigationController _useStandardStatusBarHeight];
+    prefersStatusBarHidden = [fromViewController prefersStatusBarHidden];
+    if (prefersStatusBarHidden != [(PUTilingViewTransitionHelper *)toViewController prefersStatusBarHidden])
     {
-      [(PUTilingViewTransitionHelper *)v112 _setUseStandardStatusBarHeight:1];
+      [(PUTilingViewTransitionHelper *)navigationController _setUseStandardStatusBarHeight:1];
     }
 
-    v17 = [v7 containerView];
-    v96 = [v17 subviews];
-    v18 = [v7 transitionContext];
-    v93 = [v18 viewForKey:*MEMORY[0x1E69DE770]];
+    containerView = [transition containerView];
+    subviews = [containerView subviews];
+    transitionContext = [transition transitionContext];
+    v93 = [transitionContext viewForKey:*MEMORY[0x1E69DE770]];
 
-    v19 = [v7 transitionContext];
-    v110 = [v19 viewForKey:*MEMORY[0x1E69DE780]];
+    transitionContext2 = [transition transitionContext];
+    v110 = [transitionContext2 viewForKey:*MEMORY[0x1E69DE780]];
 
-    v20 = [(PUTilingViewTransitionHelper *)v9 presentedViewController];
-    v98 = v17;
-    v90 = v20;
-    if (v20)
+    presentedViewController = [(PUTilingViewTransitionHelper *)toViewController presentedViewController];
+    v98 = containerView;
+    v90 = presentedViewController;
+    if (presentedViewController)
     {
-      v21 = [v20 presentationController];
-      v22 = [v21 containerView];
+      presentationController = [presentedViewController presentationController];
+      containerView2 = [presentationController containerView];
 
-      v17 = v98;
-      if (([v22 isDescendantOfView:v98] & 1) == 0)
+      containerView = v98;
+      if (([containerView2 isDescendantOfView:v98] & 1) == 0)
       {
-        v23 = v22;
+        v23 = containerView2;
 
         v110 = v23;
-        v17 = v98;
+        containerView = v98;
       }
     }
 
-    v91 = v10;
-    v92 = v8;
-    v107 = v9;
-    [v7 finalToViewFrame];
+    v91 = endPoint;
+    v92 = fromViewController;
+    v107 = toViewController;
+    [transition finalToViewFrame];
     v24 = v110;
     [v110 setFrame:?];
     if (v110)
     {
-      [v17 addSubview:v110];
+      [containerView addSubview:v110];
     }
 
-    v25 = [v17 superview];
-    if (v25 != v17)
+    superview = [containerView superview];
+    if (superview != containerView)
     {
       v173 = 0u;
       v174 = 0u;
       v171 = 0u;
       v172 = 0u;
-      v26 = v96;
+      v26 = subviews;
       v27 = [v26 countByEnumeratingWithState:&v171 objects:v175 count:16];
       if (v27)
       {
@@ -468,7 +468,7 @@ LABEL_15:
               objc_enumerationMutation(v26);
             }
 
-            [*(*(&v171 + 1) + 8 * i) px_transferToSuperview:v25];
+            [*(*(&v171 + 1) + 8 * i) px_transferToSuperview:superview];
           }
 
           v28 = [v26 countByEnumeratingWithState:&v171 objects:v175 count:16];
@@ -478,39 +478,39 @@ LABEL_15:
       }
 
       v24 = v110;
-      [v110 px_transferToSuperview:v25];
+      [v110 px_transferToSuperview:superview];
     }
 
     v109 = v13;
-    v31 = [(PUTilingViewTransitionHelper *)v12 tilingViewControllerTransition:v7 tilingViewToTransferToEndPoint:v13];
+    v31 = [(PUTilingViewTransitionHelper *)v12 tilingViewControllerTransition:transition tilingViewToTransferToEndPoint:v13];
     v32 = PLOneUpGetLog();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v177 = self;
+      selfCopy6 = self;
       v178 = 2112;
-      v179 = v31;
+      operationCopy = v31;
       _os_log_impl(&dword_1B36F3000, v32, OS_LOG_TYPE_DEFAULT, "[animateTransition] %p tilingView: %@", buf, 0x16u);
     }
 
     [(PUTilingViewTransitionHelper *)self _setTilingView:v31];
-    v86 = [v31 tileAnimator];
-    [v31 px_transferToSuperview:v25];
-    if (a3 == 2)
+    tileAnimator = [v31 tileAnimator];
+    [v31 px_transferToSuperview:superview];
+    if (operation == 2)
     {
       if (!v93)
       {
-        v74 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v74 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"fromView != nil"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"fromView != nil"}];
       }
 
-      [v25 bringSubviewToFront:v93];
+      [superview bringSubviewToFront:v93];
       v165[0] = MEMORY[0x1E69E9820];
       v165[1] = 3221225472;
       v165[2] = __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedInteractively___block_invoke_2;
       v165[3] = &unk_1E7B7EFD0;
       v166 = v12;
-      v167 = self;
+      selfCopy4 = self;
       v168 = v93;
       v104 = _Block_copy(v165);
       [(PUTilingViewTransitionHelper *)self dismissalDuration];
@@ -518,18 +518,18 @@ LABEL_15:
       v101 = [objc_opt_class() concatenatedProgressBlockForTilingView:v31 transitionOperation:2];
 
       v100 = 0;
-      v35 = v166;
+      currentHandler3 = v166;
     }
 
-    else if (a3 == 1)
+    else if (operation == 1)
     {
       if (!v24)
       {
-        v73 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v73 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"toView != nil"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"toView != nil"}];
       }
 
-      [v25 bringSubviewToFront:v24];
+      [superview bringSubviewToFront:v24];
       [v24 setAlpha:0.0];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -541,13 +541,13 @@ LABEL_15:
       v34 = v33;
       v100 = [objc_opt_class() concatenatedProgressBlockForTilingView:v31 transitionOperation:1];
       v101 = 0;
-      v35 = v170;
+      currentHandler3 = v170;
     }
 
     else
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:338 description:@"unexpected operation"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:338 description:@"unexpected operation"];
       v100 = 0;
       v101 = 0;
       v104 = 0;
@@ -559,7 +559,7 @@ LABEL_15:
     {
       v39 = v38;
       v40 = 0;
-      if (!v39 || !v94)
+      if (!v39 || !interactivelyCopy)
       {
         goto LABEL_62;
       }
@@ -567,19 +567,19 @@ LABEL_15:
       if (([(PUTilingViewTransitionHelper *)self _interactionOptions]& 0x10) == 0)
       {
         v41 = +[PUTilingViewSettings sharedInstance];
-        v42 = [v41 transitionProgressBehavior];
+        transitionProgressBehavior = [v41 transitionProgressBehavior];
 
-        v40 = (v42 - 1) < 2;
+        v40 = (transitionProgressBehavior - 1) < 2;
 LABEL_62:
         v43 = PLOneUpGetLog();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          LODWORD(v177) = v40;
+          LODWORD(selfCopy6) = v40;
           _os_log_impl(&dword_1B36F3000, v43, OS_LOG_TYPE_DEFAULT, "[animateTransition] shouldAnimateTilingViewBackground: %d", buf, 8u);
         }
 
-        v108 = v7;
+        v108 = transition;
         v106 = v12;
         v95 = v39;
         if (v40)
@@ -628,8 +628,8 @@ LABEL_62:
           v161 = v50;
           v164 = v44;
           v51 = _Block_copy(v160);
-          v52 = [v50 backgroundColor];
-          v53 = [v52 copy];
+          backgroundColor = [v50 backgroundColor];
+          v53 = [backgroundColor copy];
 
           v157[0] = MEMORY[0x1E69E9820];
           v157[1] = 3221225472;
@@ -649,7 +649,7 @@ LABEL_62:
 
         v55 = 0.0;
         v56 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{-1.79769313e308, -1.79769313e308, 0.0, 0.0}];
-        [v25 addSubview:v56];
+        [superview addSubview:v56];
         UIAnimationDragCoefficient();
         v58 = MEMORY[0x1E69DD250];
         v152[0] = MEMORY[0x1E69E9820];
@@ -669,14 +669,14 @@ LABEL_62:
         v60 = v153;
         [v58 animateWithDuration:v152 animations:v150 completion:v59];
 
-        v61 = [(PUTilingViewTransitionHelper *)v112 navigationBar];
-        v79 = [v61 isUserInteractionEnabled];
-        v82 = v61;
-        [v61 setUserInteractionEnabled:0];
-        v62 = [v105 tabBar];
-        v77 = [v62 isUserInteractionEnabled];
-        [v62 setUserInteractionEnabled:0];
-        v76 = [v24 isUserInteractionEnabled];
+        navigationBar = [(PUTilingViewTransitionHelper *)navigationController navigationBar];
+        isUserInteractionEnabled = [navigationBar isUserInteractionEnabled];
+        v82 = navigationBar;
+        [navigationBar setUserInteractionEnabled:0];
+        tabBar = [tabBarController tabBar];
+        isUserInteractionEnabled2 = [tabBar isUserInteractionEnabled];
+        [tabBar setUserInteractionEnabled:0];
+        isUserInteractionEnabled3 = [v24 isUserInteractionEnabled];
         [v24 setUserInteractionEnabled:0];
         [(PUTilingViewTransitionHelper *)self _setTransitionProgressOffset:0.0];
         [(PUTilingViewTransitionHelper *)self _setBackgroundProgressOffset:0.0];
@@ -707,15 +707,15 @@ LABEL_62:
         v121[1] = 3221225472;
         v121[2] = __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedInteractively___block_invoke_7;
         v121[3] = &unk_1E7B7F098;
-        v122 = v112;
-        v123 = self;
+        v122 = navigationController;
+        selfCopy5 = self;
         v81 = v144;
         v124 = v81;
-        v125 = v96;
+        v125 = subviews;
         v126 = v98;
         v127 = v110;
         v128 = v107;
-        v80 = v86;
+        v80 = tileAnimator;
         v129 = v80;
         v135 = v84;
         v64 = v142;
@@ -725,18 +725,18 @@ LABEL_62:
         v65 = v141;
         v132 = v65;
         v133 = v82;
-        v136 = v79;
-        v134 = v62;
-        v137 = v77;
-        v138 = v76;
-        v139 = v88;
-        v89 = v62;
+        v136 = isUserInteractionEnabled;
+        v134 = tabBar;
+        v137 = isUserInteractionEnabled2;
+        v138 = isUserInteractionEnabled3;
+        v139 = _useStandardStatusBarHeight;
+        v89 = tabBar;
         v87 = v82;
         v85 = v84;
         v111 = v110;
         v99 = v98;
-        v97 = v96;
-        v83 = v112;
+        v97 = subviews;
+        v83 = navigationController;
         v102 = v101;
         v66 = v100;
         v113 = v104;
@@ -746,9 +746,9 @@ LABEL_62:
         if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218242;
-          v177 = self;
+          selfCopy6 = self;
           v178 = 2112;
-          v179 = v64;
+          operationCopy = v64;
           _os_log_impl(&dword_1B36F3000, v69, OS_LOG_TYPE_DEFAULT, "[animateTransition] %p waiting to start transition to end point %@", buf, 0x16u);
         }
 
@@ -768,10 +768,10 @@ LABEL_62:
         v72 = v65;
         [(PUTilingViewTransitionHelper *)self _performWhenToEndPoint:v115 isReadyToAdoptTilingView:v72 fromEndPoint:v116 action:v114];
 
-        v9 = v107;
-        v7 = v108;
-        v10 = v91;
-        v8 = v92;
+        toViewController = v107;
+        transition = v108;
+        endPoint = v91;
+        fromViewController = v92;
         v12 = v106;
         v13 = v109;
         goto LABEL_81;
@@ -791,14 +791,14 @@ LABEL_62:
   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v177 = v12;
+    selfCopy6 = v12;
     v178 = 2112;
-    v179 = v13;
+    operationCopy = v13;
     _os_log_impl(&dword_1B36F3000, v36, OS_LOG_TYPE_ERROR, "[animateTransition] Failed to validate fromEndPoint: %@ toEndPoint: %@", buf, 0x16u);
   }
 
-  [v7 finishInteractiveTransition];
-  [v7 completeTransition:1];
+  [transition finishInteractiveTransition];
+  [transition completeTransition:1];
 LABEL_81:
 }
 
@@ -1173,7 +1173,7 @@ void __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedIn
   }
 }
 
-- (void)_getTransitionProgress:(double *)a3 backgroundProgress:(double *)a4 chromeProgress:(double *)a5
+- (void)_getTransitionProgress:(double *)progress backgroundProgress:(double *)backgroundProgress chromeProgress:(double *)chromeProgress
 {
   v9 = 0.0;
   if ([(PUTilingViewTransitionHelper *)self hasStarted])
@@ -1197,19 +1197,19 @@ void __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedIn
   v17 = v15 + v16;
   [(PUTilingViewTransitionHelper *)self _backgroundProgressOffset];
   v19 = v18;
-  v20 = [(PUTilingViewTransitionHelper *)self _transitionProgressValueFilter];
-  v33 = v20;
-  if (v20)
+  _transitionProgressValueFilter = [(PUTilingViewTransitionHelper *)self _transitionProgressValueFilter];
+  v33 = _transitionProgressValueFilter;
+  if (_transitionProgressValueFilter)
   {
-    [v20 setInputValue:v17];
+    [_transitionProgressValueFilter setInputValue:v17];
     [v33 outputValue];
     v17 = v21;
   }
 
   if (([(PUTilingViewTransitionHelper *)self _interactionOptions]& 4) != 0)
   {
-    v27 = [(PUTilingViewTransitionHelper *)self isTransitionPaused];
-    if (v14 < 0.0 || v27)
+    isTransitionPaused = [(PUTilingViewTransitionHelper *)self isTransitionPaused];
+    if (v14 < 0.0 || isTransitionPaused)
     {
       v29 = 0.0;
     }
@@ -1226,8 +1226,8 @@ void __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedIn
     [v22 transitionChromeDelay];
     v24 = v23;
 
-    v25 = [(PUTilingViewTransitionHelper *)self _currentOperation];
-    if (v25 == 2)
+    _currentOperation = [(PUTilingViewTransitionHelper *)self _currentOperation];
+    if (_currentOperation == 2)
     {
       v26 = v17 / (1.0 - v24);
     }
@@ -1235,7 +1235,7 @@ void __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedIn
     else
     {
       v26 = v17;
-      if (v25 == 1)
+      if (_currentOperation == 1)
       {
         v26 = (v17 + -1.0) / (1.0 - v24) + 1.0;
       }
@@ -1249,42 +1249,42 @@ void __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedIn
     v29 = fmin(v26, 1.0);
   }
 
-  v30 = [(PUTilingViewTransitionHelper *)self _chromeProgressValueFilter];
-  v31 = v30;
-  if (v30)
+  _chromeProgressValueFilter = [(PUTilingViewTransitionHelper *)self _chromeProgressValueFilter];
+  v31 = _chromeProgressValueFilter;
+  if (_chromeProgressValueFilter)
   {
-    [v30 setInputValue:v29];
+    [_chromeProgressValueFilter setInputValue:v29];
     [v31 outputValue];
     v29 = v32;
   }
 
-  if (a3)
+  if (progress)
   {
-    *a3 = v17;
+    *progress = v17;
   }
 
-  if (a4)
+  if (backgroundProgress)
   {
-    *a4 = v15 + v19;
+    *backgroundProgress = v15 + v19;
   }
 
-  if (a5)
+  if (chromeProgress)
   {
-    *a5 = v29;
+    *chromeProgress = v29;
   }
 }
 
-- (void)resumeTransition:(BOOL)a3
+- (void)resumeTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   v17 = *MEMORY[0x1E69E9840];
   v5 = PLOneUpGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v13 = 134218240;
-    v14 = self;
+    selfCopy = self;
     v15 = 1024;
-    v16 = v3;
+    v16 = transitionCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "%p resuming transition %i", &v13, 0x12u);
   }
 
@@ -1292,7 +1292,7 @@ void __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedIn
   {
     [(PUTilingViewTransitionHelper *)self _setTransitionPaused:0];
     [(PUTilingViewTransitionHelper *)self setTransitionPausingCall:0];
-    if (([(PUTilingViewTransitionHelper *)self _currentOperation]!= 1) == v3)
+    if (([(PUTilingViewTransitionHelper *)self _currentOperation]!= 1) == transitionCopy)
     {
       [(PUTilingViewTransitionHelper *)self dismissalDuration];
     }
@@ -1306,7 +1306,7 @@ void __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedIn
     UIAnimationDragCoefficient();
     v9 = v7 * v8;
     v10 = -1.0;
-    if (v3)
+    if (transitionCopy)
     {
       v10 = 1.0;
     }
@@ -1317,7 +1317,7 @@ void __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedIn
     [(PUTilingViewTransitionHelper *)self _setProgressSpeed:v11];
     if ([(PUTilingViewTransitionHelper *)self hasStarted])
     {
-      if (v3)
+      if (transitionCopy)
       {
         [(PUTilingViewTransitionHelper *)self _toEndPoint];
       }
@@ -1332,42 +1332,42 @@ void __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedIn
   }
 }
 
-- (void)updatePausedTransitionWithProgress:(double)a3 interactionProgress:(double)a4
+- (void)updatePausedTransitionWithProgress:(double)progress interactionProgress:(double)interactionProgress
 {
   if (![(PUTilingViewTransitionHelper *)self isTransitionPaused])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"[self isTransitionPaused]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"[self isTransitionPaused]"}];
   }
 
   [(PUTilingViewTransitionHelper *)self _progressSpeed];
   if (v8 != 0.0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"[self _progressSpeed] == 0.0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"[self _progressSpeed] == 0.0"}];
   }
 
-  [(PUTilingViewTransitionHelper *)self _setTransitionProgressOffset:a3];
+  [(PUTilingViewTransitionHelper *)self _setTransitionProgressOffset:progress];
 
-  [(PUTilingViewTransitionHelper *)self _setBackgroundProgressOffset:a4];
+  [(PUTilingViewTransitionHelper *)self _setBackgroundProgressOffset:interactionProgress];
 }
 
-- (void)pauseTransitionWithOptions:(unint64_t)a3
+- (void)pauseTransitionWithOptions:(unint64_t)options
 {
   v17 = *MEMORY[0x1E69E9840];
   if (![(PUTilingViewTransitionHelper *)self isTransitionPaused])
   {
     [(PUTilingViewTransitionHelper *)self _setTransitionPaused:1];
-    [(PUTilingViewTransitionHelper *)self _setInteractionOptions:a3];
-    v7 = [MEMORY[0x1E696AF00] callStackSymbols];
-    [(PUTilingViewTransitionHelper *)self setTransitionPausingCall:v7];
+    [(PUTilingViewTransitionHelper *)self _setInteractionOptions:options];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+    [(PUTilingViewTransitionHelper *)self setTransitionPausingCall:callStackSymbols];
 
     v13 = 0.0;
     *buf = 0;
     v12 = 0.0;
     [(PUTilingViewTransitionHelper *)self _getTransitionProgress:buf backgroundProgress:&v13 chromeProgress:&v12];
     v5 = 0;
-    if (a3)
+    if (options)
     {
       v5 = objc_alloc_init(PUMaximumChangeRateValueFilter);
       v8 = +[PUTilingViewSettings sharedInstance];
@@ -1377,55 +1377,55 @@ void __84__PUTilingViewTransitionHelper_animateTransitionWithOperation_startedIn
       [(PUDynamicValueFilter *)v5 setInputValue:*buf];
     }
 
-    if ((a3 & 2) != 0)
+    if ((options & 2) != 0)
     {
-      v6 = objc_alloc_init(PUMaximumChangeRateValueFilter);
+      transitionPausingCall = objc_alloc_init(PUMaximumChangeRateValueFilter);
       v10 = +[PUTilingViewSettings sharedInstance];
       [v10 transitionDuration];
-      [(PUMaximumChangeRateValueFilter *)v6 setMaximumChangeRate:1.0 / v11];
+      [(PUMaximumChangeRateValueFilter *)transitionPausingCall setMaximumChangeRate:1.0 / v11];
 
-      [(PUDynamicValueFilter *)v6 setInputValue:v12];
+      [(PUDynamicValueFilter *)transitionPausingCall setInputValue:v12];
     }
 
     else
     {
-      v6 = 0;
+      transitionPausingCall = 0;
     }
 
     [(PUTilingViewTransitionHelper *)self _setProgressSpeed:0.0];
     [(PUTilingViewTransitionHelper *)self _setTransitionProgressOffset:*buf];
     [(PUTilingViewTransitionHelper *)self _setBackgroundProgressOffset:v13];
     [(PUTilingViewTransitionHelper *)self _setTransitionProgressValueFilter:v5];
-    [(PUTilingViewTransitionHelper *)self _setChromeProgressValueFilter:v6];
+    [(PUTilingViewTransitionHelper *)self _setChromeProgressValueFilter:transitionPausingCall];
     goto LABEL_10;
   }
 
   v5 = PXAssertGetLog();
   if (os_log_type_enabled(&v5->super.super.super, OS_LOG_TYPE_FAULT))
   {
-    v6 = [(PUTilingViewTransitionHelper *)self transitionPausingCall];
+    transitionPausingCall = [(PUTilingViewTransitionHelper *)self transitionPausingCall];
     *buf = 134218242;
     *&buf[4] = self;
     v15 = 2112;
-    v16 = v6;
+    v16 = transitionPausingCall;
     _os_log_fault_impl(&dword_1B36F3000, &v5->super.super.super, OS_LOG_TYPE_FAULT, "tiling view transition %p already paused from %@", buf, 0x16u);
 LABEL_10:
   }
 }
 
-- (PUTilingViewTransitionHelper)initWithPresentationDuration:(double)a3 dismissalDuration:(double)a4 endPoint:(id)a5
+- (PUTilingViewTransitionHelper)initWithPresentationDuration:(double)duration dismissalDuration:(double)dismissalDuration endPoint:(id)point
 {
-  v9 = a5;
-  if (a3 <= 0.0)
+  pointCopy = point;
+  if (duration <= 0.0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"presentationDuration > 0.0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"presentationDuration > 0.0"}];
   }
 
-  if (a4 <= 0.0)
+  if (dismissalDuration <= 0.0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"dismissalDuration > 0.0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingViewControllerTransition.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"dismissalDuration > 0.0"}];
   }
 
   v15.receiver = self;
@@ -1434,49 +1434,49 @@ LABEL_10:
   v11 = v10;
   if (v10)
   {
-    v10->_presentationDuration = a3;
-    v10->_dismissalDuration = a4;
-    objc_storeWeak(&v10->_endPoint, v9);
+    v10->_presentationDuration = duration;
+    v10->_dismissalDuration = dismissalDuration;
+    objc_storeWeak(&v10->_endPoint, pointCopy);
   }
 
   return v11;
 }
 
-+ (void)registerTransitionEndPoint:(id)a3 forViewController:(id)a4
++ (void)registerTransitionEndPoint:(id)point forViewController:(id)controller
 {
-  v9 = a3;
-  v5 = a4;
+  pointCopy = point;
+  controllerCopy = controller;
   v6 = PURegisteredTilingViewTransitionEndPoints;
   if (!PURegisteredTilingViewTransitionEndPoints)
   {
-    v7 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v8 = PURegisteredTilingViewTransitionEndPoints;
-    PURegisteredTilingViewTransitionEndPoints = v7;
+    PURegisteredTilingViewTransitionEndPoints = weakToWeakObjectsMapTable;
 
     v6 = PURegisteredTilingViewTransitionEndPoints;
   }
 
-  [v6 setObject:v9 forKey:v5];
+  [v6 setObject:pointCopy forKey:controllerCopy];
 }
 
-+ (id)_transitionEndPointWithViewController:(id)a3
++ (id)_transitionEndPointWithViewController:(id)controller
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 presentedViewController];
-  v6 = [v5 presentingViewController];
-  v7 = v6;
-  if (v6 == v4)
+  controllerCopy = controller;
+  presentedViewController = [controllerCopy presentedViewController];
+  presentingViewController = [presentedViewController presentingViewController];
+  v7 = presentingViewController;
+  if (presentingViewController == controllerCopy)
   {
-    v8 = [v4 presentedViewController];
-    v9 = [v8 modalPresentationStyle];
+    presentedViewController2 = [controllerCopy presentedViewController];
+    modalPresentationStyle = [presentedViewController2 modalPresentationStyle];
 
-    if (v9 == 3)
+    if (modalPresentationStyle == 3)
     {
-      v10 = [v4 presentedViewController];
+      presentedViewController3 = [controllerCopy presentedViewController];
 LABEL_9:
-      v11 = v10;
-      v12 = [a1 _transitionEndPointWithViewController:v10];
+      childViewControllers = presentedViewController3;
+      v12 = [self _transitionEndPointWithViewController:presentedViewController3];
 LABEL_10:
       v13 = v12;
 LABEL_11:
@@ -1492,52 +1492,52 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v4 topViewController];
+    presentedViewController3 = [controllerCopy topViewController];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v4 selectedViewController];
+    presentedViewController3 = [controllerCopy selectedViewController];
     goto LABEL_9;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 style])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [controllerCopy style])
   {
-    v11 = v4;
-    if (![v11 isCollapsed] || objc_msgSend(v11, "style") != 2 || (objc_msgSend(v11, "viewControllerForColumn:", 1), (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+    childViewControllers = controllerCopy;
+    if (![childViewControllers isCollapsed] || objc_msgSend(childViewControllers, "style") != 2 || (objc_msgSend(childViewControllers, "viewControllerForColumn:", 1), (v15 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v15 = [v11 viewControllerForColumn:2];
+      v15 = [childViewControllers viewControllerForColumn:2];
       if (!v15)
       {
-        v15 = [v11 viewControllerForColumn:3];
+        v15 = [childViewControllers viewControllerForColumn:3];
       }
     }
 
     v16 = v15;
-    v13 = [a1 _transitionEndPointWithViewController:v15];
+    v13 = [self _transitionEndPointWithViewController:v15];
 
     goto LABEL_11;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = v4;
+    v13 = controllerCopy;
   }
 
   else
   {
-    v13 = [PURegisteredTilingViewTransitionEndPoints objectForKey:v4];
+    v13 = [PURegisteredTilingViewTransitionEndPoints objectForKey:controllerCopy];
     if (!v13)
     {
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v11 = [v4 childViewControllers];
-      v17 = [v11 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      childViewControllers = [controllerCopy childViewControllers];
+      v17 = [childViewControllers countByEnumeratingWithState:&v22 objects:v28 count:16];
       if (v17)
       {
         v18 = v17;
@@ -1548,10 +1548,10 @@ LABEL_28:
         {
           if (*v23 != v19)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(childViewControllers);
           }
 
-          v12 = [a1 _transitionEndPointWithViewController:*(*(&v22 + 1) + 8 * v20)];
+          v12 = [self _transitionEndPointWithViewController:*(*(&v22 + 1) + 8 * v20)];
           if (v12)
           {
             goto LABEL_10;
@@ -1559,7 +1559,7 @@ LABEL_28:
 
           if (v18 == ++v20)
           {
-            v18 = [v11 countByEnumeratingWithState:&v22 objects:v28 count:16];
+            v18 = [childViewControllers countByEnumeratingWithState:&v22 objects:v28 count:16];
             if (v18)
             {
               goto LABEL_28;
@@ -1574,7 +1574,7 @@ LABEL_28:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v27 = v4;
+        v27 = controllerCopy;
         _os_log_impl(&dword_1B36F3000, v21, OS_LOG_TYPE_ERROR, "couldn't find tiling view controller transition end point for %@", buf, 0xCu);
       }
 
@@ -1587,20 +1587,20 @@ LABEL_12:
   return v13;
 }
 
-+ (int64_t)typeOfEndPoint:(id)a3 forTransitionFromViewController:(id)a4 toViewController:(id)a5
++ (int64_t)typeOfEndPoint:(id)point forTransitionFromViewController:(id)controller toViewController:(id)viewController
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 tilingViewControllerTransitionEndPointHostViewController];
-  if (([v9 px_isDescendantOfOrPresentedByViewController:v8] & 1) == 0)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  tilingViewControllerTransitionEndPointHostViewController = [point tilingViewControllerTransitionEndPointHostViewController];
+  if (([tilingViewControllerTransitionEndPointHostViewController px_isDescendantOfOrPresentedByViewController:viewControllerCopy] & 1) == 0)
   {
-    if ([v9 px_isDescendantOfOrPresentedByViewController:v7] & 1) != 0 || objc_msgSend(v7, "px_isDescendantOfOrPresentedByViewController:", v9) && (objc_msgSend(v8, "px_isDescendantOfOrPresentedByViewController:", v7))
+    if ([tilingViewControllerTransitionEndPointHostViewController px_isDescendantOfOrPresentedByViewController:controllerCopy] & 1) != 0 || objc_msgSend(controllerCopy, "px_isDescendantOfOrPresentedByViewController:", tilingViewControllerTransitionEndPointHostViewController) && (objc_msgSend(viewControllerCopy, "px_isDescendantOfOrPresentedByViewController:", controllerCopy))
     {
       v10 = 1;
       goto LABEL_10;
     }
 
-    if (![v8 px_isDescendantOfOrPresentedByViewController:v9] || (objc_msgSend(v7, "px_isDescendantOfOrPresentedByViewController:", v8) & 1) == 0)
+    if (![viewControllerCopy px_isDescendantOfOrPresentedByViewController:tilingViewControllerTransitionEndPointHostViewController] || (objc_msgSend(controllerCopy, "px_isDescendantOfOrPresentedByViewController:", viewControllerCopy) & 1) == 0)
     {
       v10 = 0;
       goto LABEL_10;
@@ -1613,11 +1613,11 @@ LABEL_10:
   return v10;
 }
 
-+ (id)concatenatedProgressBlockForTilingView:(id)a3 transitionOperation:(int64_t)a4
++ (id)concatenatedProgressBlockForTilingView:(id)view transitionOperation:(int64_t)operation
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (operation)
   {
     v16 = 0;
     v17 = &v16;
@@ -1634,9 +1634,9 @@ LABEL_10:
     v9[2] = __91__PUTilingViewTransitionHelper_concatenatedProgressBlockForTilingView_transitionOperation___block_invoke_2;
     v9[3] = &unk_1E7B7F158;
     v9[5] = &v16;
-    v9[6] = a4;
+    v9[6] = operation;
     v9[4] = &v10;
-    [v5 enumerateAllTileControllersUsingBlock:v9];
+    [viewCopy enumerateAllTileControllersUsingBlock:v9];
     if (*(v17 + 24) == 1)
     {
       v7 = v11[5];
@@ -1647,13 +1647,13 @@ LABEL_10:
       v7 = 0;
     }
 
-    a4 = _Block_copy(v7);
+    operation = _Block_copy(v7);
     _Block_object_dispose(&v10, 8);
 
     _Block_object_dispose(&v16, 8);
   }
 
-  return a4;
+  return operation;
 }
 
 void __91__PUTilingViewTransitionHelper_concatenatedProgressBlockForTilingView_transitionOperation___block_invoke_2(void *a1, void *a2)

@@ -1,17 +1,17 @@
 @interface DKFocusObservation
 - (CGRect)rect;
-- (DKFocusObservation)initWithIdentifier:(int64_t)a3 rect:(CGRect)a4 focusStrong:(BOOL)a5;
-- (DKFocusObservation)initWithIdentifier:(int64_t)a3 rect:(CGRect)a4 focusStrong:(BOOL)a5 detectionType:(unint64_t)a6;
+- (DKFocusObservation)initWithIdentifier:(int64_t)identifier rect:(CGRect)rect focusStrong:(BOOL)strong;
+- (DKFocusObservation)initWithIdentifier:(int64_t)identifier rect:(CGRect)rect focusStrong:(BOOL)strong detectionType:(unint64_t)type;
 @end
 
 @implementation DKFocusObservation
 
-- (DKFocusObservation)initWithIdentifier:(int64_t)a3 rect:(CGRect)a4 focusStrong:(BOOL)a5 detectionType:(unint64_t)a6
+- (DKFocusObservation)initWithIdentifier:(int64_t)identifier rect:(CGRect)rect focusStrong:(BOOL)strong detectionType:(unint64_t)type
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v14.receiver = self;
   v14.super_class = DKFocusObservation;
   result = [(DKFocusObservation *)&v14 init];
@@ -21,20 +21,20 @@
     result->_rect.origin.y = y;
     result->_rect.size.width = width;
     result->_rect.size.height = height;
-    result->_focusStrong = a5;
-    result->_identifier = a3;
-    result->_detectionType = a6;
+    result->_focusStrong = strong;
+    result->_identifier = identifier;
+    result->_detectionType = type;
   }
 
   return result;
 }
 
-- (DKFocusObservation)initWithIdentifier:(int64_t)a3 rect:(CGRect)a4 focusStrong:(BOOL)a5
+- (DKFocusObservation)initWithIdentifier:(int64_t)identifier rect:(CGRect)rect focusStrong:(BOOL)strong
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12.receiver = self;
   v12.super_class = DKFocusObservation;
   result = [(DKFocusObservation *)&v12 init];
@@ -44,8 +44,8 @@
     result->_rect.origin.y = y;
     result->_rect.size.width = width;
     result->_rect.size.height = height;
-    result->_focusStrong = a5;
-    result->_identifier = a3;
+    result->_focusStrong = strong;
+    result->_identifier = identifier;
     result->_detectionType = 0;
   }
 

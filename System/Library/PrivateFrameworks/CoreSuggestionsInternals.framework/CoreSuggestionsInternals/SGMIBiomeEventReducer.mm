@@ -1,20 +1,20 @@
 @interface SGMIBiomeEventReducer
-+ (void)updateSummaryDict:(id)a3 fetchedUnreadMessages:(id)a4 event:(id)a5 timestamp:(double)a6;
++ (void)updateSummaryDict:(id)dict fetchedUnreadMessages:(id)messages event:(id)event timestamp:(double)timestamp;
 @end
 
 @implementation SGMIBiomeEventReducer
 
-+ (void)updateSummaryDict:(id)a3 fetchedUnreadMessages:(id)a4 event:(id)a5 timestamp:(double)a6
++ (void)updateSummaryDict:(id)dict fetchedUnreadMessages:(id)messages event:(id)event timestamp:(double)timestamp
 {
   v72 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dictCopy = dict;
+  messagesCopy = messages;
+  eventCopy = event;
   v12 = objc_autoreleasePoolPush();
   v13 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{@"app_launch", @"app_resume", 0}];
   objc_autoreleasePoolPop(v12);
-  v14 = [v11 eventName];
-  v15 = [v13 containsObject:v14];
+  eventName = [eventCopy eventName];
+  v15 = [v13 containsObject:eventName];
 
   if (v15)
   {
@@ -22,7 +22,7 @@
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v16 = v10;
+    v16 = messagesCopy;
     v17 = [v16 countByEnumeratingWithState:&v65 objects:v71 count:16];
     if (v17)
     {
@@ -37,8 +37,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [v9 objectForKeyedSubscript:*(*(&v65 + 1) + 8 * i)];
-          [v21 updateWithAppLaunchAtTime:a6];
+          v21 = [dictCopy objectForKeyedSubscript:*(*(&v65 + 1) + 8 * i)];
+          [v21 updateWithAppLaunchAtTime:timestamp];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v65 objects:v71 count:16];
@@ -48,35 +48,35 @@
     }
   }
 
-  v22 = [v11 messageId];
+  messageId = [eventCopy messageId];
 
-  if (v22)
+  if (messageId)
   {
     v23 = objc_alloc(MEMORY[0x277CCACA8]);
-    v24 = [v11 messageId];
-    v25 = [v23 initWithFormat:@"<%@>", v24];
+    messageId2 = [eventCopy messageId];
+    v25 = [v23 initWithFormat:@"<%@>", messageId2];
 
-    v26 = [v9 objectForKeyedSubscript:v25];
+    v26 = [dictCopy objectForKeyedSubscript:v25];
 
     if (!v26)
     {
       v27 = objc_opt_new();
-      [v9 setObject:v27 forKeyedSubscript:v25];
+      [dictCopy setObject:v27 forKeyedSubscript:v25];
     }
 
-    v28 = [v11 eventName];
-    v29 = [v28 isEqualToString:@"message_fetched"];
+    eventName2 = [eventCopy eventName];
+    v29 = [eventName2 isEqualToString:@"message_fetched"];
 
     if (v29)
     {
-      v30 = [v9 objectForKeyedSubscript:v25];
-      [v30 updateWithMessageFetchedEventAtTime:a6];
+      v30 = [dictCopy objectForKeyedSubscript:v25];
+      [v30 updateWithMessageFetchedEventAtTime:timestamp];
 
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v31 = v10;
+      v31 = messagesCopy;
       v32 = [v31 countByEnumeratingWithState:&v61 objects:v70 count:16];
       if (v32)
       {
@@ -91,7 +91,7 @@
               objc_enumerationMutation(v31);
             }
 
-            v36 = [v9 objectForKeyedSubscript:*(*(&v61 + 1) + 8 * j)];
+            v36 = [dictCopy objectForKeyedSubscript:*(*(&v61 + 1) + 8 * j)];
             [v36 incrementNumberOfMoreRecentUnreadMessageAtFirstViewTime];
           }
 
@@ -105,24 +105,24 @@
       goto LABEL_39;
     }
 
-    v37 = [v11 eventName];
-    v38 = [v37 isEqualToString:@"message_view_start"];
+    eventName3 = [eventCopy eventName];
+    v38 = [eventName3 isEqualToString:@"message_view_start"];
 
     if (v38)
     {
-      if ([v10 containsObject:v25])
+      if ([messagesCopy containsObject:v25])
       {
-        [v10 removeObject:v25];
+        [messagesCopy removeObject:v25];
       }
 
-      v39 = [v9 objectForKeyedSubscript:v25];
-      [v39 updateWithViewStartAtTime:objc_msgSend(v10 unreadMessageCount:{"count"), a6}];
+      v39 = [dictCopy objectForKeyedSubscript:v25];
+      [v39 updateWithViewStartAtTime:objc_msgSend(messagesCopy unreadMessageCount:{"count"), timestamp}];
 
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v40 = v10;
+      v40 = messagesCopy;
       v41 = [v40 countByEnumeratingWithState:&v57 objects:v69 count:16];
       if (v41)
       {
@@ -137,7 +137,7 @@
               objc_enumerationMutation(v40);
             }
 
-            v45 = [v9 objectForKeyedSubscript:*(*(&v57 + 1) + 8 * k)];
+            v45 = [dictCopy objectForKeyedSubscript:*(*(&v57 + 1) + 8 * k)];
             [v45 incrementNumberOfMailsViewedBeforeSinceAvailable];
           }
 
@@ -150,53 +150,53 @@
       goto LABEL_38;
     }
 
-    v46 = [v11 eventName];
-    v47 = [v46 isEqualToString:@"message_view_end"];
+    eventName4 = [eventCopy eventName];
+    v47 = [eventName4 isEqualToString:@"message_view_end"];
 
     if (v47)
     {
-      v40 = [v9 objectForKeyedSubscript:v25];
-      v48 = [v11 payload];
-      [v40 updateWithViewEndWithPayload:v48];
+      v40 = [dictCopy objectForKeyedSubscript:v25];
+      payload = [eventCopy payload];
+      [v40 updateWithViewEndWithPayload:payload];
     }
 
     else
     {
-      v49 = [v11 eventName];
-      v50 = [v49 isEqualToString:@"read_changed"];
+      eventName5 = [eventCopy eventName];
+      v50 = [eventName5 isEqualToString:@"read_changed"];
 
       if (v50)
       {
-        v40 = [v9 objectForKeyedSubscript:v25];
-        v48 = [v11 payload];
-        [v40 updateWithReadChangedEventWithPayload:v48];
+        v40 = [dictCopy objectForKeyedSubscript:v25];
+        payload = [eventCopy payload];
+        [v40 updateWithReadChangedEventWithPayload:payload];
       }
 
       else
       {
-        v52 = [v11 eventName];
-        v53 = [v52 isEqualToString:@"flag_changed"];
+        eventName6 = [eventCopy eventName];
+        v53 = [eventName6 isEqualToString:@"flag_changed"];
 
         if (v53)
         {
-          v40 = [v9 objectForKeyedSubscript:v25];
+          v40 = [dictCopy objectForKeyedSubscript:v25];
           [v40 updateWithFlagChangedEvent];
           goto LABEL_38;
         }
 
-        v54 = [v11 eventName];
-        v55 = [v54 isEqualToString:@"message_moved"];
+        eventName7 = [eventCopy eventName];
+        v55 = [eventName7 isEqualToString:@"message_moved"];
 
-        v56 = [v9 objectForKeyedSubscript:v25];
+        v56 = [dictCopy objectForKeyedSubscript:v25];
         v40 = v56;
         if (!v55)
         {
-          [v56 updateWithEvent:v11 eventTimestamp:a6];
+          [v56 updateWithEvent:eventCopy eventTimestamp:timestamp];
           goto LABEL_38;
         }
 
-        v48 = [v11 payload];
-        [v40 updateWithMessageMovedEventWithPayload:v48];
+        payload = [eventCopy payload];
+        [v40 updateWithMessageMovedEventWithPayload:payload];
       }
     }
 

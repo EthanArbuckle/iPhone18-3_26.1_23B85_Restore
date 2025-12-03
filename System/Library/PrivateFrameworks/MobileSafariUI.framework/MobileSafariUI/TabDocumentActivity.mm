@@ -1,20 +1,20 @@
 @interface TabDocumentActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion;
 - (void)performActivity;
-- (void)prepareWithTabDocument:(id)a3 completion:(id)a4;
+- (void)prepareWithTabDocument:(id)document completion:(id)completion;
 @end
 
 @implementation TabDocumentActivity
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = [a3 safari_firstObjectPassingTest:&__block_literal_global_41];
+  v4 = [items safari_firstObjectPassingTest:&__block_literal_global_41];
   tabDocument = self->_tabDocument;
   self->_tabDocument = v4;
 
-  v6 = [(TabDocument *)self->_tabDocument isShowingStartPageOverriddenByExtension];
-  if (![(TabDocumentActivity *)self canPerformOnNewTabPage]&& ([(TabDocument *)self->_tabDocument isBlank]|| v6) || !self->_tabDocument)
+  isShowingStartPageOverriddenByExtension = [(TabDocument *)self->_tabDocument isShowingStartPageOverriddenByExtension];
+  if (![(TabDocumentActivity *)self canPerformOnNewTabPage]&& ([(TabDocument *)self->_tabDocument isBlank]|| isShowingStartPageOverriddenByExtension) || !self->_tabDocument)
   {
     return 0;
   }
@@ -31,14 +31,14 @@ uint64_t __51__TabDocumentActivity_canPerformWithActivityItems___block_invoke(ui
   return isKindOfClass & 1;
 }
 
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion
 {
-  v8 = a4;
-  v6 = [a3 safari_firstObjectPassingTest:&__block_literal_global_3_2];
+  completionCopy = completion;
+  v6 = [items safari_firstObjectPassingTest:&__block_literal_global_3_2];
   tabDocument = self->_tabDocument;
   self->_tabDocument = v6;
 
-  [(TabDocumentActivity *)self prepareWithTabDocument:self->_tabDocument completion:v8];
+  [(TabDocumentActivity *)self prepareWithTabDocument:self->_tabDocument completion:completionCopy];
 }
 
 uint64_t __60__TabDocumentActivity__prepareWithActivityItems_completion___block_invoke(uint64_t a1, void *a2)
@@ -50,21 +50,21 @@ uint64_t __60__TabDocumentActivity__prepareWithActivityItems_completion___block_
   return isKindOfClass & 1;
 }
 
-- (void)prepareWithTabDocument:(id)a3 completion:(id)a4
+- (void)prepareWithTabDocument:(id)document completion:(id)completion
 {
-  v6 = a4;
-  [(TabDocumentActivity *)self prepareWithTabDocument:a3];
-  v6[2]();
+  completionCopy = completion;
+  [(TabDocumentActivity *)self prepareWithTabDocument:document];
+  completionCopy[2]();
 }
 
 - (void)performActivity
 {
   [(TabDocumentActivity *)self performActivityWithTabDocument:self->_tabDocument];
-  v4 = [(_SFActivity *)self delegate];
+  delegate = [(_SFActivity *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [MEMORY[0x277D499B8] sharedLogger];
-    [v3 _sf_didPerformFormatMenuAction:-[TabDocumentActivity actionType](self provenance:{"actionType"), objc_msgSend(v4, "provenanceForSafariActivity:", self)}];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] _sf_didPerformFormatMenuAction:-[TabDocumentActivity actionType](self provenance:{"actionType"), objc_msgSend(delegate, "provenanceForSafariActivity:", self)}];
   }
 }
 

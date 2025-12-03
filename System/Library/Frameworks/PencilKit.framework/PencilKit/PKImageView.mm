@@ -1,71 +1,71 @@
 @interface PKImageView
-- (PKImageView)initWithFrame:(CGRect)a3;
-- (PKImageView)initWithImage:(id)a3;
-- (id)_createViewWithImage:(id)a3 compositingFiler:(id)a4;
+- (PKImageView)initWithFrame:(CGRect)frame;
+- (PKImageView)initWithImage:(id)image;
+- (id)_createViewWithImage:(id)image compositingFiler:(id)filer;
 - (void)_updateAddLayer;
 - (void)_updateImageLayer;
 - (void)_updateLayerFrames;
 - (void)_updateMulLayer;
-- (void)setAddImage:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)setMulImage:(id)a3;
-- (void)setupWithDrawing:(id)a3 imageSize:(CGSize)a4 scale:(double)a5 strokeSpaceClipRect:(CGRect)a6 sixChannel:(BOOL)a7 extendedDynamicRange:(BOOL)a8;
+- (void)setAddImage:(id)image;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image;
+- (void)setMulImage:(id)image;
+- (void)setupWithDrawing:(id)drawing imageSize:(CGSize)size scale:(double)scale strokeSpaceClipRect:(CGRect)rect sixChannel:(BOOL)channel extendedDynamicRange:(BOOL)range;
 @end
 
 @implementation PKImageView
 
-- (PKImageView)initWithFrame:(CGRect)a3
+- (PKImageView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PKImageView;
-  v3 = [(PKImageView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKImageView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKImageView *)v3 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(PKImageView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v6 = [(PKImageView *)v4 layer];
-    [v6 setAllowsGroupOpacity:0];
+    layer2 = [(PKImageView *)v4 layer];
+    [layer2 setAllowsGroupOpacity:0];
   }
 
   return v4;
 }
 
-- (PKImageView)initWithImage:(id)a3
+- (PKImageView)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v11.receiver = self;
   v11.super_class = PKImageView;
   v6 = [(PKImageView *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    v8 = [(PKImageView *)v6 layer];
-    [v8 setAllowsGroupBlending:0];
+    layer = [(PKImageView *)v6 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v9 = [(PKImageView *)v7 layer];
-    [v9 setAllowsGroupOpacity:0];
+    layer2 = [(PKImageView *)v7 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
-    objc_storeStrong(&v7->_image, a3);
+    objc_storeStrong(&v7->_image, image);
     [(PKImageView *)v7 _updateImageLayer];
   }
 
   return v7;
 }
 
-- (void)setupWithDrawing:(id)a3 imageSize:(CGSize)a4 scale:(double)a5 strokeSpaceClipRect:(CGRect)a6 sixChannel:(BOOL)a7 extendedDynamicRange:(BOOL)a8
+- (void)setupWithDrawing:(id)drawing imageSize:(CGSize)size scale:(double)scale strokeSpaceClipRect:(CGRect)rect sixChannel:(BOOL)channel extendedDynamicRange:(BOOL)range
 {
-  v8 = a8;
-  v9 = a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a4.height;
-  v16 = a4.width;
-  v18 = a3;
+  rangeCopy = range;
+  channelCopy = channel;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = size.height;
+  v16 = size.width;
+  drawingCopy = drawing;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -84,13 +84,13 @@
   v29 = __Block_byref_object_copy__8;
   v30 = __Block_byref_object_dispose__8;
   v31 = 0;
-  v19 = [[PKImageRenderer alloc] initWithSize:0 scale:v9 renderQueue:0 sixChannelBlending:v8 transparentBlending:v16 extendedDynamicRange:v15, a5];
-  v20 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  -[PKImageRenderer setInvertColors:](v19, "setInvertColors:", [v20 userInterfaceStyle] == 2);
+  scale = [[PKImageRenderer alloc] initWithSize:0 scale:channelCopy renderQueue:0 sixChannelBlending:rangeCopy transparentBlending:v16 extendedDynamicRange:v15, scale];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  -[PKImageRenderer setInvertColors:](scale, "setInvertColors:", [currentTraitCollection userInterfaceStyle] == 2);
 
   v21 = dispatch_semaphore_create(0);
   v22 = v21;
-  if (v9)
+  if (channelCopy)
   {
     v23 = v25;
     v25[0] = MEMORY[0x1E69E9820];
@@ -100,7 +100,7 @@
     v25[5] = &v32;
     v25[6] = &v26;
     v25[4] = v21;
-    [(PKImageRenderer *)v19 sixChannelCGRenderDrawing:v18 clippedToStrokeSpaceRect:v25 scale:x completion:y, width, height, a5];
+    [(PKImageRenderer *)scale sixChannelCGRenderDrawing:drawingCopy clippedToStrokeSpaceRect:v25 scale:x completion:y, width, height, scale];
   }
 
   else
@@ -112,7 +112,7 @@
     v24[3] = &unk_1E82D82B8;
     v24[5] = &v38;
     v24[4] = v21;
-    [(PKImageRenderer *)v19 renderDrawing:v18 clippedToStrokeSpaceRect:v24 scale:x completion:y, width, height, a5];
+    [(PKImageRenderer *)scale renderDrawing:drawingCopy clippedToStrokeSpaceRect:v24 scale:x completion:y, width, height, scale];
   }
 
   dispatch_semaphore_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
@@ -156,77 +156,77 @@ void __100__PKImageView_setupWithDrawing_imageSize_scale_strokeSpaceClipRect_six
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PKImageView;
-  [(PKImageView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PKImageView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PKImageView *)self _updateLayerFrames];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [(PKImageView *)self _updateImageLayer];
     [MEMORY[0x1E6979518] commit];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setAddImage:(id)a3
+- (void)setAddImage:(id)image
 {
-  v5 = a3;
-  if (self->_addImage != v5)
+  imageCopy = image;
+  if (self->_addImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_addImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_addImage, image);
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [(PKImageView *)self _updateAddLayer];
     [MEMORY[0x1E6979518] commit];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setMulImage:(id)a3
+- (void)setMulImage:(id)image
 {
-  v5 = a3;
-  if (self->_mulImage != v5)
+  imageCopy = image;
+  if (self->_mulImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mulImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_mulImage, image);
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [(PKImageView *)self _updateMulLayer];
     [MEMORY[0x1E6979518] commit];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (id)_createViewWithImage:(id)a3 compositingFiler:(id)a4
+- (id)_createViewWithImage:(id)image compositingFiler:(id)filer
 {
   v6 = MEMORY[0x1E69DD250];
-  v7 = a4;
-  v8 = a3;
+  filerCopy = filer;
+  imageCopy = image;
   v9 = objc_alloc_init(v6);
-  v10 = [v9 layer];
+  layer = [v9 layer];
   [(PKImageView *)self bounds];
-  [v10 setFrame:?];
-  [v10 setOpaque:0];
-  [v10 setAllowsGroupOpacity:0];
-  [v10 setAllowsGroupBlending:0];
-  v11 = [MEMORY[0x1E6979378] filterWithType:v7];
+  [layer setFrame:?];
+  [layer setOpaque:0];
+  [layer setAllowsGroupOpacity:0];
+  [layer setAllowsGroupBlending:0];
+  v11 = [MEMORY[0x1E6979378] filterWithType:filerCopy];
 
-  [v10 setCompositingFilter:v11];
-  v12 = [v8 CGImage];
+  [layer setCompositingFilter:v11];
+  cGImage = [imageCopy CGImage];
 
-  [v10 setContents:v12];
+  [layer setContents:cGImage];
 
   return v9;
 }
@@ -245,10 +245,10 @@ void __100__PKImageView_setupWithDrawing_imageSize_scale_strokeSpaceClipRect_six
 
   if (imageView)
   {
-    v5 = [(UIImage *)image CGImage];
-    v10 = [(UIView *)self->_imageView layer];
-    [(UIView *)v10 setContents:v5];
-    v6 = v10;
+    cGImage = [(UIImage *)image CGImage];
+    layer = [(UIView *)self->_imageView layer];
+    [(UIView *)layer setContents:cGImage];
+    v6 = layer;
 LABEL_5:
 
     return;
@@ -277,10 +277,10 @@ LABEL_5:
 
   if (addView)
   {
-    v5 = [(UIImage *)addImage CGImage];
-    v10 = [(UIView *)self->_addView layer];
-    [(UIView *)v10 setContents:v5];
-    v6 = v10;
+    cGImage = [(UIImage *)addImage CGImage];
+    layer = [(UIView *)self->_addView layer];
+    [(UIView *)layer setContents:cGImage];
+    v6 = layer;
 LABEL_5:
 
     return;
@@ -318,10 +318,10 @@ LABEL_5:
 
   if (mulView)
   {
-    v5 = [(UIImage *)mulImage CGImage];
-    v10 = [(UIView *)self->_mulView layer];
-    [(UIView *)v10 setContents:v5];
-    v6 = v10;
+    cGImage = [(UIImage *)mulImage CGImage];
+    layer = [(UIView *)self->_mulView layer];
+    [(UIView *)layer setContents:cGImage];
+    v6 = layer;
 LABEL_5:
 
     return;

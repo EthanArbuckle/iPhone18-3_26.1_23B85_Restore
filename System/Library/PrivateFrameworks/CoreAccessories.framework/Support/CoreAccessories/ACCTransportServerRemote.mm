@@ -1,33 +1,33 @@
 @interface ACCTransportServerRemote
 - (ACCTransportClientInfo)clientInfo;
-- (ACCTransportServerRemote)initWithClientInfo:(id)a3;
-- (void)accessoryInfoForConnectionWithUUID:(id)a3 withReply:(id)a4;
-- (void)accessoryInfoForEndpointWithUUID:(id)a3 withReply:(id)a4;
-- (void)addToDictionaryProperty:(id)a3 values:(id)a4 forConnectionWithUUID:(id)a5 withReply:(id)a6;
-- (void)addToDictionaryProperty:(id)a3 values:(id)a4 forEndpointWithUUID:(id)a5 withReply:(id)a6;
-- (void)appendToArrayProperty:(id)a3 values:(id)a4 forConnectionWithUUID:(id)a5 withReply:(id)a6;
-- (void)appendToArrayProperty:(id)a3 values:(id)a4 forEndpointWithUUID:(id)a5 withReply:(id)a6;
-- (void)authStatusForConnectionWithUUID:(id)a3 authType:(int)a4 withReply:(id)a5;
-- (void)connectionUUIDForEndpointWithUUID:(id)a3 withReply:(id)a4;
-- (void)destroyConnectionWithUUID:(id)a3 withReply:(id)a4;
-- (void)destroyEndpointWithUUID:(id)a3 withReply:(id)a4;
-- (void)enableSecureTunnelDataReceiveHandlerForEndpoint:(id)a3;
-- (void)endpointUUIDsForConnectionWithUUID:(id)a3 withReply:(id)a4;
-- (void)identifierForConnectionWithUUID:(id)a3 withReply:(id)a4;
-- (void)identifierForEndpointWithUUID:(id)a3 withReply:(id)a4;
-- (void)isConnectionAuthenticatedForUUID:(id)a3 withReply:(id)a4;
+- (ACCTransportServerRemote)initWithClientInfo:(id)info;
+- (void)accessoryInfoForConnectionWithUUID:(id)d withReply:(id)reply;
+- (void)accessoryInfoForEndpointWithUUID:(id)d withReply:(id)reply;
+- (void)addToDictionaryProperty:(id)property values:(id)values forConnectionWithUUID:(id)d withReply:(id)reply;
+- (void)addToDictionaryProperty:(id)property values:(id)values forEndpointWithUUID:(id)d withReply:(id)reply;
+- (void)appendToArrayProperty:(id)property values:(id)values forConnectionWithUUID:(id)d withReply:(id)reply;
+- (void)appendToArrayProperty:(id)property values:(id)values forEndpointWithUUID:(id)d withReply:(id)reply;
+- (void)authStatusForConnectionWithUUID:(id)d authType:(int)type withReply:(id)reply;
+- (void)connectionUUIDForEndpointWithUUID:(id)d withReply:(id)reply;
+- (void)destroyConnectionWithUUID:(id)d withReply:(id)reply;
+- (void)destroyEndpointWithUUID:(id)d withReply:(id)reply;
+- (void)enableSecureTunnelDataReceiveHandlerForEndpoint:(id)endpoint;
+- (void)endpointUUIDsForConnectionWithUUID:(id)d withReply:(id)reply;
+- (void)identifierForConnectionWithUUID:(id)d withReply:(id)reply;
+- (void)identifierForEndpointWithUUID:(id)d withReply:(id)reply;
+- (void)isConnectionAuthenticatedForUUID:(id)d withReply:(id)reply;
 - (void)launchServer;
-- (void)processIncomingData:(id)a3 forEndpointWithUUID:(id)a4 withReply:(id)a5;
-- (void)propertiesForConnectionWithUUID:(id)a3 withReply:(id)a4;
-- (void)propertiesForEndpointWithUUID:(id)a3 withReply:(id)a4;
-- (void)publishConnectionWithUUID:(id)a3 withReply:(id)a4;
-- (void)removeProperty:(id)a3 forConnectionWithUUID:(id)a4 withReply:(id)a5;
-- (void)removeProperty:(id)a3 forEndpointWithUUID:(id)a4 withReply:(id)a5;
-- (void)sendOutgoingSecureTunnelData:(id)a3 forEndpointWithUUID:(id)a4 forType:(unsigned __int16)a5 withResult:(id)a6;
-- (void)setAccessoryInfo:(id)a3 forEndpointWithUUID:(id)a4 withReply:(id)a5;
-- (void)setConnectionAuthenticated:(id)a3 state:(BOOL)a4;
-- (void)setProperties:(id)a3 forConnectionWithUUID:(id)a4 withReply:(id)a5;
-- (void)setProperties:(id)a3 forEndpointWithUUID:(id)a4 withReply:(id)a5;
+- (void)processIncomingData:(id)data forEndpointWithUUID:(id)d withReply:(id)reply;
+- (void)propertiesForConnectionWithUUID:(id)d withReply:(id)reply;
+- (void)propertiesForEndpointWithUUID:(id)d withReply:(id)reply;
+- (void)publishConnectionWithUUID:(id)d withReply:(id)reply;
+- (void)removeProperty:(id)property forConnectionWithUUID:(id)d withReply:(id)reply;
+- (void)removeProperty:(id)property forEndpointWithUUID:(id)d withReply:(id)reply;
+- (void)sendOutgoingSecureTunnelData:(id)data forEndpointWithUUID:(id)d forType:(unsigned __int16)type withResult:(id)result;
+- (void)setAccessoryInfo:(id)info forEndpointWithUUID:(id)d withReply:(id)reply;
+- (void)setConnectionAuthenticated:(id)authenticated state:(BOOL)state;
+- (void)setProperties:(id)properties forConnectionWithUUID:(id)d withReply:(id)reply;
+- (void)setProperties:(id)properties forEndpointWithUUID:(id)d withReply:(id)reply;
 @end
 
 @implementation ACCTransportServerRemote
@@ -39,18 +39,18 @@
   return WeakRetained;
 }
 
-- (ACCTransportServerRemote)initWithClientInfo:(id)a3
+- (ACCTransportServerRemote)initWithClientInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = ACCTransportServerRemote;
   v5 = [(ACCTransportServerRemote *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (infoCopy)
     {
-      objc_storeWeak(&v5->_clientInfo, v4);
+      objc_storeWeak(&v5->_clientInfo, infoCopy);
     }
 
     else
@@ -108,11 +108,11 @@ id __77__ACCTransportServerRemote_createConnectionWithType_andIdentifier_withRep
   return v10;
 }
 
-- (void)setProperties:(id)a3 forConnectionWithUUID:(id)a4 withReply:(id)a5
+- (void)setProperties:(id)properties forConnectionWithUUID:(id)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertiesCopy = properties;
+  dCopy = d;
+  replyCopy = reply;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -145,20 +145,20 @@ id __77__ACCTransportServerRemote_createConnectionWithType_andIdentifier_withRep
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [(ACCTransportServerRemote *)self clientInfo];
-    v15 = [v14 connectionUUIDs];
+    clientInfo = [(ACCTransportServerRemote *)self clientInfo];
+    connectionUUIDs = [clientInfo connectionUUIDs];
     *buf = 138412802;
-    v33 = v8;
+    v33 = propertiesCopy;
     v34 = 2112;
-    v35 = v9;
+    v35 = dCopy;
     v36 = 2112;
-    v37 = v15;
+    v37 = connectionUUIDs;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "setProperties: %@ forConnectionWithUUID: %@ withReply: , connectionUUIDs = %@", buf, 0x20u);
   }
 
-  v16 = [(ACCTransportServerRemote *)self clientInfo];
-  v17 = [v16 connectionUUIDs];
-  v18 = [v17 containsObject:v9];
+  clientInfo2 = [(ACCTransportServerRemote *)self clientInfo];
+  connectionUUIDs2 = [clientInfo2 connectionUUIDs];
+  v18 = [connectionUUIDs2 containsObject:dCopy];
 
   if (v18)
   {
@@ -166,9 +166,9 @@ id __77__ACCTransportServerRemote_createConnectionWithType_andIdentifier_withRep
     v24[1] = 3221225472;
     v24[2] = __74__ACCTransportServerRemote_setProperties_forConnectionWithUUID_withReply___block_invoke;
     v24[3] = &unk_100227308;
-    v19 = v9;
+    v19 = dCopy;
     v25 = v19;
-    v26 = v8;
+    v26 = propertiesCopy;
     v27 = &v28;
     if ((acc_manager_protectedConnectionCall(v19, 0, 0, v24) & 1) == 0)
     {
@@ -222,14 +222,14 @@ id __77__ACCTransportServerRemote_createConnectionWithType_andIdentifier_withRep
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v33 = v9;
+      v33 = dCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Attempt to modify properties on connection not created by client, ignore! connectionUUID %@", buf, 0xCu);
     }
   }
 
-  if (v10)
+  if (replyCopy)
   {
-    v10[2](v10, *(v29 + 24));
+    replyCopy[2](replyCopy, *(v29 + 24));
   }
 
   _Block_object_dispose(&v28, 8);
@@ -272,19 +272,19 @@ uint64_t __74__ACCTransportServerRemote_setProperties_forConnectionWithUUID_with
   return 1;
 }
 
-- (void)appendToArrayProperty:(id)a3 values:(id)a4 forConnectionWithUUID:(id)a5 withReply:(id)a6
+- (void)appendToArrayProperty:(id)property values:(id)values forConnectionWithUUID:(id)d withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  propertyCopy = property;
+  valuesCopy = values;
+  dCopy = d;
+  replyCopy = reply;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v14 = [(ACCTransportServerRemote *)self clientInfo];
-  v15 = [v14 connectionUUIDs];
-  v16 = [v15 containsObject:v12];
+  clientInfo = [(ACCTransportServerRemote *)self clientInfo];
+  connectionUUIDs = [clientInfo connectionUUIDs];
+  v16 = [connectionUUIDs containsObject:dCopy];
 
   if (v16)
   {
@@ -292,10 +292,10 @@ uint64_t __74__ACCTransportServerRemote_setProperties_forConnectionWithUUID_with
     v22[1] = 3221225472;
     v22[2] = __89__ACCTransportServerRemote_appendToArrayProperty_values_forConnectionWithUUID_withReply___block_invoke;
     v22[3] = &unk_100229598;
-    v17 = v12;
+    v17 = dCopy;
     v23 = v17;
-    v24 = v10;
-    v25 = v11;
+    v24 = propertyCopy;
+    v25 = valuesCopy;
     v26 = &v27;
     if ((acc_manager_protectedConnectionCall(v17, 0, 0, v22) & 1) == 0)
     {
@@ -349,14 +349,14 @@ uint64_t __74__ACCTransportServerRemote_setProperties_forConnectionWithUUID_with
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v32 = v12;
+      v32 = dCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Attempt to modify properties on connection not created by client, ignore! connectionUUID %@", buf, 0xCu);
     }
   }
 
-  if (v13)
+  if (replyCopy)
   {
-    v13[2](v13, *(v28 + 24));
+    replyCopy[2](replyCopy, *(v28 + 24));
   }
 
   _Block_object_dispose(&v27, 8);
@@ -399,19 +399,19 @@ uint64_t __89__ACCTransportServerRemote_appendToArrayProperty_values_forConnecti
   return 1;
 }
 
-- (void)addToDictionaryProperty:(id)a3 values:(id)a4 forConnectionWithUUID:(id)a5 withReply:(id)a6
+- (void)addToDictionaryProperty:(id)property values:(id)values forConnectionWithUUID:(id)d withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  propertyCopy = property;
+  valuesCopy = values;
+  dCopy = d;
+  replyCopy = reply;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v14 = [(ACCTransportServerRemote *)self clientInfo];
-  v15 = [v14 connectionUUIDs];
-  v16 = [v15 containsObject:v12];
+  clientInfo = [(ACCTransportServerRemote *)self clientInfo];
+  connectionUUIDs = [clientInfo connectionUUIDs];
+  v16 = [connectionUUIDs containsObject:dCopy];
 
   if (v16)
   {
@@ -419,10 +419,10 @@ uint64_t __89__ACCTransportServerRemote_appendToArrayProperty_values_forConnecti
     v22[1] = 3221225472;
     v22[2] = __91__ACCTransportServerRemote_addToDictionaryProperty_values_forConnectionWithUUID_withReply___block_invoke;
     v22[3] = &unk_100229598;
-    v17 = v12;
+    v17 = dCopy;
     v23 = v17;
-    v24 = v10;
-    v25 = v11;
+    v24 = propertyCopy;
+    v25 = valuesCopy;
     v26 = &v27;
     if ((acc_manager_protectedConnectionCall(v17, 0, 0, v22) & 1) == 0)
     {
@@ -476,14 +476,14 @@ uint64_t __89__ACCTransportServerRemote_appendToArrayProperty_values_forConnecti
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v32 = v12;
+      v32 = dCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Attempt to modify properties on connection not created by client, ignore! connectionUUID %@", buf, 0xCu);
     }
   }
 
-  if (v13)
+  if (replyCopy)
   {
-    v13[2](v13, *(v28 + 24));
+    replyCopy[2](replyCopy, *(v28 + 24));
   }
 
   _Block_object_dispose(&v27, 8);
@@ -526,11 +526,11 @@ uint64_t __91__ACCTransportServerRemote_addToDictionaryProperty_values_forConnec
   return 1;
 }
 
-- (void)removeProperty:(id)a3 forConnectionWithUUID:(id)a4 withReply:(id)a5
+- (void)removeProperty:(id)property forConnectionWithUUID:(id)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  dCopy = d;
+  replyCopy = reply;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -563,20 +563,20 @@ uint64_t __91__ACCTransportServerRemote_addToDictionaryProperty_values_forConnec
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [(ACCTransportServerRemote *)self clientInfo];
-    v15 = [v14 connectionUUIDs];
+    clientInfo = [(ACCTransportServerRemote *)self clientInfo];
+    connectionUUIDs = [clientInfo connectionUUIDs];
     *buf = 138412802;
-    v33 = v8;
+    v33 = propertyCopy;
     v34 = 2112;
-    v35 = v9;
+    v35 = dCopy;
     v36 = 2112;
-    v37 = v15;
+    v37 = connectionUUIDs;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "removeProperty: %@ forConnectionWithUUID: %@ withReply: , connectionUUIDs = %@", buf, 0x20u);
   }
 
-  v16 = [(ACCTransportServerRemote *)self clientInfo];
-  v17 = [v16 connectionUUIDs];
-  v18 = [v17 containsObject:v9];
+  clientInfo2 = [(ACCTransportServerRemote *)self clientInfo];
+  connectionUUIDs2 = [clientInfo2 connectionUUIDs];
+  v18 = [connectionUUIDs2 containsObject:dCopy];
 
   if (v18)
   {
@@ -584,9 +584,9 @@ uint64_t __91__ACCTransportServerRemote_addToDictionaryProperty_values_forConnec
     v24[1] = 3221225472;
     v24[2] = __75__ACCTransportServerRemote_removeProperty_forConnectionWithUUID_withReply___block_invoke;
     v24[3] = &unk_100227308;
-    v19 = v9;
+    v19 = dCopy;
     v25 = v19;
-    v26 = v8;
+    v26 = propertyCopy;
     v27 = &v28;
     if ((acc_manager_protectedConnectionCall(v19, 0, 0, v24) & 1) == 0)
     {
@@ -640,14 +640,14 @@ uint64_t __91__ACCTransportServerRemote_addToDictionaryProperty_values_forConnec
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v33 = v9;
+      v33 = dCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Attempt to modify properties on connection not created by client, ignore! connectionUUID %@", buf, 0xCu);
     }
   }
 
-  if (v10)
+  if (replyCopy)
   {
-    v10[2](v10, *(v29 + 24));
+    replyCopy[2](replyCopy, *(v29 + 24));
   }
 
   _Block_object_dispose(&v28, 8);
@@ -690,11 +690,11 @@ uint64_t __75__ACCTransportServerRemote_removeProperty_forConnectionWithUUID_wit
   return 1;
 }
 
-- (void)setAccessoryInfo:(id)a3 forEndpointWithUUID:(id)a4 withReply:(id)a5
+- (void)setAccessoryInfo:(id)info forEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  dCopy = d;
+  replyCopy = reply;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -705,9 +705,9 @@ uint64_t __75__ACCTransportServerRemote_removeProperty_forConnectionWithUUID_wit
   v14[3] = &unk_1002295C0;
   v14[4] = self;
   v16 = &v17;
-  v11 = v8;
+  v11 = infoCopy;
   v15 = v11;
-  if ((acc_manager_protectedEndpointCall(v9, 0, 0, v14) & 1) == 0)
+  if ((acc_manager_protectedEndpointCall(dCopy, 0, 0, v14) & 1) == 0)
   {
     if (gLogObjects && gNumLogObjects >= 3)
     {
@@ -730,14 +730,14 @@ uint64_t __75__ACCTransportServerRemote_removeProperty_forConnectionWithUUID_wit
       *buf = 136315394;
       v22 = "[ACCTransportServerRemote setAccessoryInfo:forEndpointWithUUID:withReply:]";
       v23 = 2112;
-      v24 = v9;
+      v24 = dCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s: didn't find endpointUUID %@", buf, 0x16u);
     }
   }
 
-  if (v10)
+  if (replyCopy)
   {
-    v10[2](v10, *(v18 + 24));
+    replyCopy[2](replyCopy, *(v18 + 24));
   }
 
   _Block_object_dispose(&v17, 8);
@@ -785,11 +785,11 @@ uint64_t __75__ACCTransportServerRemote_setAccessoryInfo_forEndpointWithUUID_wit
   return 1;
 }
 
-- (void)setProperties:(id)a3 forEndpointWithUUID:(id)a4 withReply:(id)a5
+- (void)setProperties:(id)properties forEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertiesCopy = properties;
+  dCopy = d;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -800,9 +800,9 @@ uint64_t __75__ACCTransportServerRemote_setAccessoryInfo_forEndpointWithUUID_wit
   v15[3] = &unk_1002295E8;
   v15[4] = self;
   v18 = &v19;
-  v11 = v8;
+  v11 = propertiesCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = dCopy;
   v17 = v12;
   if ((acc_manager_protectedEndpointCall(v12, 0, 0, v15) & 1) == 0)
   {
@@ -832,9 +832,9 @@ uint64_t __75__ACCTransportServerRemote_setAccessoryInfo_forEndpointWithUUID_wit
     }
   }
 
-  if (v10)
+  if (replyCopy)
   {
-    v10[2](v10, *(v20 + 24));
+    replyCopy[2](replyCopy, *(v20 + 24));
   }
 
   _Block_object_dispose(&v19, 8);
@@ -924,12 +924,12 @@ uint64_t __72__ACCTransportServerRemote_setProperties_forEndpointWithUUID_withRe
   return 1;
 }
 
-- (void)appendToArrayProperty:(id)a3 values:(id)a4 forEndpointWithUUID:(id)a5 withReply:(id)a6
+- (void)appendToArrayProperty:(id)property values:(id)values forEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  propertyCopy = property;
+  valuesCopy = values;
+  dCopy = d;
+  replyCopy = reply;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -940,11 +940,11 @@ uint64_t __72__ACCTransportServerRemote_setProperties_forEndpointWithUUID_withRe
   v19[3] = &unk_100229610;
   v19[4] = self;
   v23 = &v24;
-  v14 = v10;
+  v14 = propertyCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = valuesCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = dCopy;
   v22 = v16;
   if ((acc_manager_protectedEndpointCall(v16, 0, 0, v19) & 1) == 0)
   {
@@ -974,9 +974,9 @@ uint64_t __72__ACCTransportServerRemote_setProperties_forEndpointWithUUID_withRe
     }
   }
 
-  if (v13)
+  if (replyCopy)
   {
-    v13[2](v13, *(v25 + 24));
+    replyCopy[2](replyCopy, *(v25 + 24));
   }
 
   _Block_object_dispose(&v24, 8);
@@ -1066,12 +1066,12 @@ uint64_t __87__ACCTransportServerRemote_appendToArrayProperty_values_forEndpoint
   return 1;
 }
 
-- (void)addToDictionaryProperty:(id)a3 values:(id)a4 forEndpointWithUUID:(id)a5 withReply:(id)a6
+- (void)addToDictionaryProperty:(id)property values:(id)values forEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  propertyCopy = property;
+  valuesCopy = values;
+  dCopy = d;
+  replyCopy = reply;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1082,11 +1082,11 @@ uint64_t __87__ACCTransportServerRemote_appendToArrayProperty_values_forEndpoint
   v19[3] = &unk_100229610;
   v19[4] = self;
   v23 = &v24;
-  v14 = v10;
+  v14 = propertyCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = valuesCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = dCopy;
   v22 = v16;
   if ((acc_manager_protectedEndpointCall(v16, 0, 0, v19) & 1) == 0)
   {
@@ -1116,9 +1116,9 @@ uint64_t __87__ACCTransportServerRemote_appendToArrayProperty_values_forEndpoint
     }
   }
 
-  if (v13)
+  if (replyCopy)
   {
-    v13[2](v13, *(v25 + 24));
+    replyCopy[2](replyCopy, *(v25 + 24));
   }
 
   _Block_object_dispose(&v24, 8);
@@ -1208,11 +1208,11 @@ uint64_t __89__ACCTransportServerRemote_addToDictionaryProperty_values_forEndpoi
   return 1;
 }
 
-- (void)removeProperty:(id)a3 forEndpointWithUUID:(id)a4 withReply:(id)a5
+- (void)removeProperty:(id)property forEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  dCopy = d;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1223,9 +1223,9 @@ uint64_t __89__ACCTransportServerRemote_addToDictionaryProperty_values_forEndpoi
   v15[3] = &unk_1002295E8;
   v15[4] = self;
   v18 = &v19;
-  v11 = v8;
+  v11 = propertyCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = dCopy;
   v17 = v12;
   if ((acc_manager_protectedEndpointCall(v12, 0, 0, v15) & 1) == 0)
   {
@@ -1255,9 +1255,9 @@ uint64_t __89__ACCTransportServerRemote_addToDictionaryProperty_values_forEndpoi
     }
   }
 
-  if (v10)
+  if (replyCopy)
   {
-    v10[2](v10, *(v20 + 24));
+    replyCopy[2](replyCopy, *(v20 + 24));
   }
 
   _Block_object_dispose(&v19, 8);
@@ -1310,51 +1310,51 @@ uint64_t __73__ACCTransportServerRemote_removeProperty_forEndpointWithUUID_withR
   return 1;
 }
 
-- (void)publishConnectionWithUUID:(id)a3 withReply:(id)a4
+- (void)publishConnectionWithUUID:(id)d withReply:(id)reply
 {
-  v7 = a4;
-  v5 = acc_manager_publishConnectionWithUUID(a3);
-  v6 = v7;
-  if (v7)
+  replyCopy = reply;
+  v5 = acc_manager_publishConnectionWithUUID(d);
+  v6 = replyCopy;
+  if (replyCopy)
   {
-    (*(v7 + 2))(v7, v5);
-    v6 = v7;
+    (*(replyCopy + 2))(replyCopy, v5);
+    v6 = replyCopy;
   }
 }
 
-- (void)destroyEndpointWithUUID:(id)a3 withReply:(id)a4
+- (void)destroyEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v7 = a4;
-  v5 = acc_manager_removeEndpointWithUUID(a3);
-  v6 = v7;
-  if (v7)
+  replyCopy = reply;
+  v5 = acc_manager_removeEndpointWithUUID(d);
+  v6 = replyCopy;
+  if (replyCopy)
   {
-    (*(v7 + 2))(v7, v5);
-    v6 = v7;
+    (*(replyCopy + 2))(replyCopy, v5);
+    v6 = replyCopy;
   }
 }
 
-- (void)destroyConnectionWithUUID:(id)a3 withReply:(id)a4
+- (void)destroyConnectionWithUUID:(id)d withReply:(id)reply
 {
-  v12 = a4;
-  v6 = a3;
-  v8 = acc_manager_removeConnectionWithUUID(v6, v7);
-  v9 = [(ACCTransportServerRemote *)self clientInfo];
-  v10 = [v9 connectionUUIDs];
-  [v10 removeObject:v6];
+  replyCopy = reply;
+  dCopy = d;
+  v8 = acc_manager_removeConnectionWithUUID(dCopy, v7);
+  clientInfo = [(ACCTransportServerRemote *)self clientInfo];
+  connectionUUIDs = [clientInfo connectionUUIDs];
+  [connectionUUIDs removeObject:dCopy];
 
-  v11 = v12;
-  if (v12)
+  v11 = replyCopy;
+  if (replyCopy)
   {
-    (*(v12 + 2))(v12, v8);
-    v11 = v12;
+    (*(replyCopy + 2))(replyCopy, v8);
+    v11 = replyCopy;
   }
 }
 
-- (void)connectionUUIDForEndpointWithUUID:(id)a3 withReply:(id)a4
+- (void)connectionUUIDForEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -1366,7 +1366,7 @@ uint64_t __73__ACCTransportServerRemote_removeProperty_forEndpointWithUUID_withR
   v9[2] = __72__ACCTransportServerRemote_connectionUUIDForEndpointWithUUID_withReply___block_invoke;
   v9[3] = &unk_100227380;
   v9[4] = &v10;
-  if ((acc_manager_protectedEndpointCall(v5, 0, 0, v9) & 1) == 0)
+  if ((acc_manager_protectedEndpointCall(dCopy, 0, 0, v9) & 1) == 0)
   {
     if (gLogObjects && gNumLogObjects >= 3)
     {
@@ -1389,14 +1389,14 @@ uint64_t __73__ACCTransportServerRemote_removeProperty_forEndpointWithUUID_withR
       *buf = 136315394;
       v17 = "[ACCTransportServerRemote connectionUUIDForEndpointWithUUID:withReply:]";
       v18 = 2112;
-      v19 = v5;
+      v19 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: didn't find endpointUUID %@", buf, 0x16u);
     }
   }
 
-  if (v6)
+  if (replyCopy)
   {
-    v6[2](v6, v11[5]);
+    replyCopy[2](replyCopy, v11[5]);
   }
 
   _Block_object_dispose(&v10, 8);
@@ -1412,15 +1412,15 @@ uint64_t __72__ACCTransportServerRemote_connectionUUIDForEndpointWithUUID_withRe
   return 1;
 }
 
-- (void)endpointUUIDsForConnectionWithUUID:(id)a3 withReply:(id)a4
+- (void)endpointUUIDsForConnectionWithUUID:(id)d withReply:(id)reply
 {
-  v9 = a3;
-  v5 = a4;
-  if (v5)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v9)
+    if (dCopy)
     {
-      v6 = acc_manager_copyEndpointUUIDsForConnection(v9);
+      v6 = acc_manager_copyEndpointUUIDsForConnection(dCopy);
       if (v6)
       {
         v7 = v6;
@@ -1437,16 +1437,16 @@ uint64_t __72__ACCTransportServerRemote_connectionUUIDForEndpointWithUUID_withRe
       v7 = 0;
     }
 
-    v8 = [(__CFSet *)v7 allObjects];
-    v5[2](v5, v8);
+    allObjects = [(__CFSet *)v7 allObjects];
+    replyCopy[2](replyCopy, allObjects);
   }
 }
 
-- (void)authStatusForConnectionWithUUID:(id)a3 authType:(int)a4 withReply:(id)a5
+- (void)authStatusForConnectionWithUUID:(id)d authType:(int)type withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
-  if (v8)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -1456,8 +1456,8 @@ uint64_t __72__ACCTransportServerRemote_connectionUUIDForEndpointWithUUID_withRe
     v12[1] = 3221225472;
     v12[2] = __79__ACCTransportServerRemote_authStatusForConnectionWithUUID_authType_withReply___block_invoke;
     v12[3] = &unk_100229638;
-    v9 = v7;
-    v15 = a4;
+    v9 = dCopy;
+    typeCopy = type;
     v13 = v9;
     v14 = &v16;
     if ((acc_manager_protectedConnectionCall(v9, 0, 0, v12) & 1) == 0)
@@ -1488,7 +1488,7 @@ uint64_t __72__ACCTransportServerRemote_connectionUUIDForEndpointWithUUID_withRe
       }
     }
 
-    v8[2](v8, *(v17 + 6));
+    replyCopy[2](replyCopy, *(v17 + 6));
 
     _Block_object_dispose(&v16, 8);
   }
@@ -1531,11 +1531,11 @@ uint64_t __79__ACCTransportServerRemote_authStatusForConnectionWithUUID_authType
   return 1;
 }
 
-- (void)isConnectionAuthenticatedForUUID:(id)a3 withReply:(id)a4
+- (void)isConnectionAuthenticatedForUUID:(id)d withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -1545,7 +1545,7 @@ uint64_t __79__ACCTransportServerRemote_authStatusForConnectionWithUUID_authType
     v10[1] = 3221225472;
     v10[2] = __71__ACCTransportServerRemote_isConnectionAuthenticatedForUUID_withReply___block_invoke;
     v10[3] = &unk_100229660;
-    v7 = v5;
+    v7 = dCopy;
     v11 = v7;
     v12 = &v13;
     if ((acc_manager_protectedConnectionCall(v7, 0, 0, v10) & 1) == 0)
@@ -1576,7 +1576,7 @@ uint64_t __79__ACCTransportServerRemote_authStatusForConnectionWithUUID_authType
       }
     }
 
-    v6[2](v6, *(v14 + 24));
+    replyCopy[2](replyCopy, *(v14 + 24));
 
     _Block_object_dispose(&v13, 8);
   }
@@ -1619,10 +1619,10 @@ uint64_t __71__ACCTransportServerRemote_isConnectionAuthenticatedForUUID_withRep
   return 1;
 }
 
-- (void)setConnectionAuthenticated:(id)a3 state:(BOOL)a4
+- (void)setConnectionAuthenticated:(id)authenticated state:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
+  stateCopy = state;
+  authenticatedCopy = authenticated;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 3;
@@ -1652,21 +1652,21 @@ uint64_t __71__ACCTransportServerRemote_isConnectionAuthenticatedForUUID_withRep
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v6;
+    v27 = authenticatedCopy;
     v28 = 1024;
-    LODWORD(v29) = v4;
+    LODWORD(v29) = stateCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "setConnectionAuthenticated: %@ state: %d", buf, 0x12u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_clientInfo);
-  v11 = [WeakRetained XPCConnection];
-  v12 = [v11 hasEntitlement:@"com.apple.accessories.transport.allowauth"];
+  xPCConnection = [WeakRetained XPCConnection];
+  v12 = [xPCConnection hasEntitlement:@"com.apple.accessories.transport.allowauth"];
 
   if (v12)
   {
-    v13 = [(ACCTransportServerRemote *)self clientInfo];
-    v14 = [v13 connectionUUIDs];
-    v15 = [v14 containsObject:v6];
+    clientInfo = [(ACCTransportServerRemote *)self clientInfo];
+    connectionUUIDs = [clientInfo connectionUUIDs];
+    v15 = [connectionUUIDs containsObject:authenticatedCopy];
 
     if (v15)
     {
@@ -1674,8 +1674,8 @@ uint64_t __71__ACCTransportServerRemote_isConnectionAuthenticatedForUUID_withRep
       v23[1] = 3221225472;
       v23[2] = __61__ACCTransportServerRemote_setConnectionAuthenticated_state___block_invoke;
       v23[3] = &unk_100229688;
-      v25 = v4;
-      v16 = v6;
+      v25 = stateCopy;
+      v16 = authenticatedCopy;
       v24 = v16;
       if ((acc_manager_protectedConnectionCall(v16, 0, 0, v23) & 1) == 0)
       {
@@ -1728,7 +1728,7 @@ uint64_t __71__ACCTransportServerRemote_isConnectionAuthenticatedForUUID_withRep
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v6;
+      v27 = authenticatedCopy;
       v20 = "Attempt to set Authenticated state on connection not created by client, ignore! connectionUUID %@";
       goto LABEL_33;
     }
@@ -1755,7 +1755,7 @@ uint64_t __71__ACCTransportServerRemote_isConnectionAuthenticatedForUUID_withRep
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v6;
+      v27 = authenticatedCopy;
       v20 = "setConnectionAuthenticated: %@, ERROR: No entitlement!";
 LABEL_33:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, v20, buf, 0xCu);
@@ -1824,11 +1824,11 @@ uint64_t __61__ACCTransportServerRemote_setConnectionAuthenticated_state___block
   return 1;
 }
 
-- (void)accessoryInfoForConnectionWithUUID:(id)a3 withReply:(id)a4
+- (void)accessoryInfoForConnectionWithUUID:(id)d withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -1840,7 +1840,7 @@ uint64_t __61__ACCTransportServerRemote_setConnectionAuthenticated_state___block
     v10[1] = 3221225472;
     v10[2] = __73__ACCTransportServerRemote_accessoryInfoForConnectionWithUUID_withReply___block_invoke;
     v10[3] = &unk_100229660;
-    v7 = v5;
+    v7 = dCopy;
     v11 = v7;
     v12 = &v13;
     if ((acc_manager_protectedConnectionCall(v7, 0, 0, v10) & 1) == 0)
@@ -1871,7 +1871,7 @@ uint64_t __61__ACCTransportServerRemote_setConnectionAuthenticated_state___block
       }
     }
 
-    v6[2](v6, v14[5]);
+    replyCopy[2](replyCopy, v14[5]);
 
     _Block_object_dispose(&v13, 8);
   }
@@ -1922,11 +1922,11 @@ uint64_t __73__ACCTransportServerRemote_accessoryInfoForConnectionWithUUID_withR
   return 1;
 }
 
-- (void)accessoryInfoForEndpointWithUUID:(id)a3 withReply:(id)a4
+- (void)accessoryInfoForEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v10 = 0;
     v11 = &v10;
@@ -1939,7 +1939,7 @@ uint64_t __73__ACCTransportServerRemote_accessoryInfoForConnectionWithUUID_withR
     v9[2] = __71__ACCTransportServerRemote_accessoryInfoForEndpointWithUUID_withReply___block_invoke;
     v9[3] = &unk_100227380;
     v9[4] = &v10;
-    if ((acc_manager_protectedEndpointCall(v5, 0, 0, v9) & 1) == 0)
+    if ((acc_manager_protectedEndpointCall(dCopy, 0, 0, v9) & 1) == 0)
     {
       if (gLogObjects && gNumLogObjects >= 3)
       {
@@ -1962,12 +1962,12 @@ uint64_t __73__ACCTransportServerRemote_accessoryInfoForConnectionWithUUID_withR
         *buf = 136315394;
         v17 = "[ACCTransportServerRemote accessoryInfoForEndpointWithUUID:withReply:]";
         v18 = 2112;
-        v19 = v5;
+        v19 = dCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: didn't find endpointUUID %@", buf, 0x16u);
       }
     }
 
-    v6[2](v6, v11[5]);
+    replyCopy[2](replyCopy, v11[5]);
     _Block_object_dispose(&v10, 8);
   }
 }
@@ -1983,11 +1983,11 @@ uint64_t __71__ACCTransportServerRemote_accessoryInfoForEndpointWithUUID_withRep
   return 1;
 }
 
-- (void)propertiesForConnectionWithUUID:(id)a3 withReply:(id)a4
+- (void)propertiesForConnectionWithUUID:(id)d withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -1999,7 +1999,7 @@ uint64_t __71__ACCTransportServerRemote_accessoryInfoForEndpointWithUUID_withRep
     v10[1] = 3221225472;
     v10[2] = __70__ACCTransportServerRemote_propertiesForConnectionWithUUID_withReply___block_invoke;
     v10[3] = &unk_100229660;
-    v7 = v5;
+    v7 = dCopy;
     v11 = v7;
     v12 = &v13;
     if ((acc_manager_protectedConnectionCall(v7, 0, 0, v10) & 1) == 0)
@@ -2030,7 +2030,7 @@ uint64_t __71__ACCTransportServerRemote_accessoryInfoForEndpointWithUUID_withRep
       }
     }
 
-    v6[2](v6, v14[5]);
+    replyCopy[2](replyCopy, v14[5]);
 
     _Block_object_dispose(&v13, 8);
   }
@@ -2077,11 +2077,11 @@ uint64_t __70__ACCTransportServerRemote_propertiesForConnectionWithUUID_withRepl
   return 1;
 }
 
-- (void)propertiesForEndpointWithUUID:(id)a3 withReply:(id)a4
+- (void)propertiesForEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -2093,7 +2093,7 @@ uint64_t __70__ACCTransportServerRemote_propertiesForConnectionWithUUID_withRepl
     v10[1] = 3221225472;
     v10[2] = __68__ACCTransportServerRemote_propertiesForEndpointWithUUID_withReply___block_invoke;
     v10[3] = &unk_1002296B0;
-    v7 = v5;
+    v7 = dCopy;
     v11 = v7;
     v12 = &v13;
     if ((acc_manager_protectedEndpointCall(v7, 0, 0, v10) & 1) == 0)
@@ -2124,7 +2124,7 @@ uint64_t __70__ACCTransportServerRemote_propertiesForConnectionWithUUID_withRepl
       }
     }
 
-    v6[2](v6, v14[5]);
+    replyCopy[2](replyCopy, v14[5]);
 
     _Block_object_dispose(&v13, 8);
   }
@@ -2171,11 +2171,11 @@ uint64_t __68__ACCTransportServerRemote_propertiesForEndpointWithUUID_withReply_
   return 1;
 }
 
-- (void)identifierForConnectionWithUUID:(id)a3 withReply:(id)a4
+- (void)identifierForConnectionWithUUID:(id)d withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -2187,7 +2187,7 @@ uint64_t __68__ACCTransportServerRemote_propertiesForEndpointWithUUID_withReply_
     v10[1] = 3221225472;
     v10[2] = __70__ACCTransportServerRemote_identifierForConnectionWithUUID_withReply___block_invoke;
     v10[3] = &unk_100229660;
-    v7 = v5;
+    v7 = dCopy;
     v11 = v7;
     v12 = &v13;
     if ((acc_manager_protectedConnectionCall(v7, 0, 0, v10) & 1) == 0)
@@ -2218,7 +2218,7 @@ uint64_t __68__ACCTransportServerRemote_propertiesForEndpointWithUUID_withReply_
       }
     }
 
-    v6[2](v6, v14[5]);
+    replyCopy[2](replyCopy, v14[5]);
 
     _Block_object_dispose(&v13, 8);
   }
@@ -2265,11 +2265,11 @@ uint64_t __70__ACCTransportServerRemote_identifierForConnectionWithUUID_withRepl
   return 1;
 }
 
-- (void)identifierForEndpointWithUUID:(id)a3 withReply:(id)a4
+- (void)identifierForEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -2281,7 +2281,7 @@ uint64_t __70__ACCTransportServerRemote_identifierForConnectionWithUUID_withRepl
     v10[1] = 3221225472;
     v10[2] = __68__ACCTransportServerRemote_identifierForEndpointWithUUID_withReply___block_invoke;
     v10[3] = &unk_1002296B0;
-    v7 = v5;
+    v7 = dCopy;
     v11 = v7;
     v12 = &v13;
     if ((acc_manager_protectedEndpointCall(v7, 0, 0, v10) & 1) == 0)
@@ -2312,7 +2312,7 @@ uint64_t __70__ACCTransportServerRemote_identifierForConnectionWithUUID_withRepl
       }
     }
 
-    v6[2](v6, v14[5]);
+    replyCopy[2](replyCopy, v14[5]);
 
     _Block_object_dispose(&v13, 8);
   }
@@ -2359,17 +2359,17 @@ uint64_t __68__ACCTransportServerRemote_identifierForEndpointWithUUID_withReply_
   return 1;
 }
 
-- (void)processIncomingData:(id)a3 forEndpointWithUUID:(id)a4 withReply:(id)a5
+- (void)processIncomingData:(id)data forEndpointWithUUID:(id)d withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 && v8)
+  dataCopy = data;
+  dCopy = d;
+  replyCopy = reply;
+  if (dataCopy && dCopy)
   {
-    v10 = v7;
-    v11 = acc_manager_processIncomingDataForEndpointWithUUID(v8, v10);
+    v10 = dataCopy;
+    v11 = acc_manager_processIncomingDataForEndpointWithUUID(dCopy, v10);
     CFRelease(v10);
-    if (!v9)
+    if (!replyCopy)
     {
       goto LABEL_17;
     }
@@ -2409,21 +2409,21 @@ uint64_t __68__ACCTransportServerRemote_identifierForEndpointWithUUID_withReply_
   }
 
   v11 = 0;
-  if (v9)
+  if (replyCopy)
   {
 LABEL_16:
-    v9[2](v9, v11);
+    replyCopy[2](replyCopy, v11);
   }
 
 LABEL_17:
 }
 
-- (void)sendOutgoingSecureTunnelData:(id)a3 forEndpointWithUUID:(id)a4 forType:(unsigned __int16)a5 withResult:(id)a6
+- (void)sendOutgoingSecureTunnelData:(id)data forEndpointWithUUID:(id)d forType:(unsigned __int16)type withResult:(id)result
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  typeCopy = type;
+  dataCopy = data;
+  dCopy = d;
+  resultCopy = result;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -2457,24 +2457,24 @@ LABEL_17:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v26 = v10;
+    v26 = dCopy;
     v27 = 1024;
-    LODWORD(v28[0]) = v7;
+    LODWORD(v28[0]) = typeCopy;
     WORD2(v28[0]) = 2112;
-    *(v28 + 6) = v9;
+    *(v28 + 6) = dataCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "sendOutgoingSecureTunnelData, endpoint %@, type %d, dataOut %@", buf, 0x1Cu);
   }
 
-  if (v9)
+  if (dataCopy)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = &__96__ACCTransportServerRemote_sendOutgoingSecureTunnelData_forEndpointWithUUID_forType_withResult___block_invoke;
     v17[3] = &unk_1002296D8;
-    v18 = v9;
+    v18 = dataCopy;
     v19 = &v21;
-    v20 = v7;
-    if ((acc_manager_protectedEndpointCall(v10, 0, 0, v17) & 1) == 0)
+    v20 = typeCopy;
+    if ((acc_manager_protectedEndpointCall(dCopy, 0, 0, v17) & 1) == 0)
     {
       if (gLogObjects && gNumLogObjects >= 3)
       {
@@ -2497,23 +2497,23 @@ LABEL_17:
         *buf = 136315394;
         v26 = "[ACCTransportServerRemote sendOutgoingSecureTunnelData:forEndpointWithUUID:forType:withResult:]";
         v27 = 2112;
-        v28[0] = v10;
+        v28[0] = dCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s: didn't find endpointUUID %@", buf, 0x16u);
       }
     }
   }
 
-  if (v11)
+  if (resultCopy)
   {
-    v11[2](v11, *(v22 + 24));
+    resultCopy[2](resultCopy, *(v22 + 24));
   }
 
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)enableSecureTunnelDataReceiveHandlerForEndpoint:(id)a3
+- (void)enableSecureTunnelDataReceiveHandlerForEndpoint:(id)endpoint
 {
-  v3 = a3;
+  endpointCopy = endpoint;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 3;
@@ -2543,11 +2543,11 @@ LABEL_17:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v3;
+    v11 = endpointCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Notified that a secure tunnel handler has been added for endpoint: %@", &v10, 0xCu);
   }
 
-  if (!v3)
+  if (!endpointCopy)
   {
     if (gLogObjects && gNumLogObjects >= 3)
     {
@@ -2573,7 +2573,7 @@ LABEL_17:
     goto LABEL_29;
   }
 
-  if ((acc_manager_protectedEndpointCall(v3, 0, 0, &__block_literal_global_30) & 1) == 0)
+  if ((acc_manager_protectedEndpointCall(endpointCopy, 0, 0, &__block_literal_global_30) & 1) == 0)
   {
     if (gLogObjects && gNumLogObjects >= 3)
     {
@@ -2593,7 +2593,7 @@ LABEL_17:
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(ACCTransportServerRemote *)v3 enableSecureTunnelDataReceiveHandlerForEndpoint:v7];
+      [(ACCTransportServerRemote *)endpointCopy enableSecureTunnelDataReceiveHandlerForEndpoint:v7];
     }
 
 LABEL_29:

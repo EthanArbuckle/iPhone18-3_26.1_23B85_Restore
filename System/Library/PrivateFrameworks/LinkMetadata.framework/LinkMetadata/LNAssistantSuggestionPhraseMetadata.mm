@@ -1,10 +1,10 @@
 @interface LNAssistantSuggestionPhraseMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNAssistantSuggestionPhraseMetadata)initWithActionIdentifier:(id)a3 templateKey:(id)a4 parametersMetadata:(id)a5;
-- (LNAssistantSuggestionPhraseMetadata)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNAssistantSuggestionPhraseMetadata)initWithActionIdentifier:(id)identifier templateKey:(id)key parametersMetadata:(id)metadata;
+- (LNAssistantSuggestionPhraseMetadata)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAssistantSuggestionPhraseMetadata
@@ -12,35 +12,35 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LNAssistantSuggestionPhraseMetadata *)self actionIdentifier];
-  v5 = [(LNAssistantSuggestionPhraseMetadata *)self templateKey];
-  v6 = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
-  v7 = [v6 valueForKeyPath:@"description"];
+  actionIdentifier = [(LNAssistantSuggestionPhraseMetadata *)self actionIdentifier];
+  templateKey = [(LNAssistantSuggestionPhraseMetadata *)self templateKey];
+  parametersMetadata = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
+  v7 = [parametersMetadata valueForKeyPath:@"description"];
   v8 = [v7 componentsJoinedByString:{@", "}];
-  v9 = [v3 stringWithFormat:@"actionIdentifier:%@, templateKey:%@, parametersMetadata:[%@]", v4, v5, v8];
+  v9 = [v3 stringWithFormat:@"actionIdentifier:%@, templateKey:%@, parametersMetadata:[%@]", actionIdentifier, templateKey, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parametersMetadata3) = 0;
 LABEL_27:
 
       goto LABEL_28;
     }
 
-    v7 = [(LNAssistantSuggestionPhraseMetadata *)self actionIdentifier];
-    v8 = [(LNAssistantSuggestionPhraseMetadata *)v6 actionIdentifier];
-    v9 = v7;
-    v10 = v8;
+    actionIdentifier = [(LNAssistantSuggestionPhraseMetadata *)self actionIdentifier];
+    actionIdentifier2 = [(LNAssistantSuggestionPhraseMetadata *)v6 actionIdentifier];
+    v9 = actionIdentifier;
+    v10 = actionIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -48,7 +48,7 @@ LABEL_27:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parametersMetadata3) = 0;
       v13 = v10;
       v14 = v9;
       if (!v9 || !v10)
@@ -60,17 +60,17 @@ LABEL_27:
 
       if (!v15)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(parametersMetadata3) = 0;
 LABEL_26:
 
         goto LABEL_27;
       }
     }
 
-    v16 = [(LNAssistantSuggestionPhraseMetadata *)self templateKey];
-    v17 = [(LNAssistantSuggestionPhraseMetadata *)v6 templateKey];
-    v14 = v16;
-    v18 = v17;
+    templateKey = [(LNAssistantSuggestionPhraseMetadata *)self templateKey];
+    templateKey2 = [(LNAssistantSuggestionPhraseMetadata *)v6 templateKey];
+    v14 = templateKey;
+    v18 = templateKey2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -78,112 +78,112 @@ LABEL_26:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parametersMetadata3) = 0;
       v19 = v18;
-      v20 = v14;
+      parametersMetadata5 = v14;
       if (!v14 || !v18)
       {
         goto LABEL_22;
       }
 
-      LODWORD(v12) = [v14 isEqualToString:v18];
+      LODWORD(parametersMetadata3) = [v14 isEqualToString:v18];
 
-      if (!v12)
+      if (!parametersMetadata3)
       {
         goto LABEL_25;
       }
     }
 
-    v21 = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
-    v22 = [(LNAssistantSuggestionPhraseMetadata *)v6 parametersMetadata];
+    parametersMetadata = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
+    parametersMetadata2 = [(LNAssistantSuggestionPhraseMetadata *)v6 parametersMetadata];
 
-    if (v21 == v22)
+    if (parametersMetadata == parametersMetadata2)
     {
-      LOBYTE(v12) = 1;
+      LOBYTE(parametersMetadata3) = 1;
       goto LABEL_25;
     }
 
-    v12 = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
-    if (!v12)
+    parametersMetadata3 = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
+    if (!parametersMetadata3)
     {
 LABEL_25:
 
       goto LABEL_26;
     }
 
-    v23 = [(LNAssistantSuggestionPhraseMetadata *)v6 parametersMetadata];
+    parametersMetadata4 = [(LNAssistantSuggestionPhraseMetadata *)v6 parametersMetadata];
 
-    if (!v23)
+    if (!parametersMetadata4)
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parametersMetadata3) = 0;
       goto LABEL_25;
     }
 
     v24 = MEMORY[0x1E695DFD8];
-    v20 = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
-    v19 = [v24 setWithArray:v20];
-    v12 = MEMORY[0x1E695DFD8];
-    v27 = [(LNAssistantSuggestionPhraseMetadata *)v6 parametersMetadata];
-    v25 = [v12 setWithArray:v27];
-    LOBYTE(v12) = [v19 isEqualToSet:v25];
+    parametersMetadata5 = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
+    v19 = [v24 setWithArray:parametersMetadata5];
+    parametersMetadata3 = MEMORY[0x1E695DFD8];
+    parametersMetadata6 = [(LNAssistantSuggestionPhraseMetadata *)v6 parametersMetadata];
+    v25 = [parametersMetadata3 setWithArray:parametersMetadata6];
+    LOBYTE(parametersMetadata3) = [v19 isEqualToSet:v25];
 
 LABEL_22:
     goto LABEL_25;
   }
 
-  LOBYTE(v12) = 1;
+  LOBYTE(parametersMetadata3) = 1;
 LABEL_28:
 
-  return v12;
+  return parametersMetadata3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNAssistantSuggestionPhraseMetadata *)self actionIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNAssistantSuggestionPhraseMetadata *)self templateKey];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
-  v8 = [v7 hash];
+  actionIdentifier = [(LNAssistantSuggestionPhraseMetadata *)self actionIdentifier];
+  v4 = [actionIdentifier hash];
+  templateKey = [(LNAssistantSuggestionPhraseMetadata *)self templateKey];
+  v6 = [templateKey hash] ^ v4;
+  parametersMetadata = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
+  v8 = [parametersMetadata hash];
 
   return v6 ^ v8;
 }
 
-- (LNAssistantSuggestionPhraseMetadata)initWithCoder:(id)a3
+- (LNAssistantSuggestionPhraseMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templateKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templateKey"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"parametersMetadata"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"parametersMetadata"];
 
   v11 = [(LNAssistantSuggestionPhraseMetadata *)self initWithActionIdentifier:v5 templateKey:v6 parametersMetadata:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAssistantSuggestionPhraseMetadata *)self actionIdentifier];
-  [v4 encodeObject:v5 forKey:@"actionIdentifier"];
+  coderCopy = coder;
+  actionIdentifier = [(LNAssistantSuggestionPhraseMetadata *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 
-  v6 = [(LNAssistantSuggestionPhraseMetadata *)self templateKey];
-  [v4 encodeObject:v6 forKey:@"templateKey"];
+  templateKey = [(LNAssistantSuggestionPhraseMetadata *)self templateKey];
+  [coderCopy encodeObject:templateKey forKey:@"templateKey"];
 
-  v7 = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
-  [v4 encodeObject:v7 forKey:@"parametersMetadata"];
+  parametersMetadata = [(LNAssistantSuggestionPhraseMetadata *)self parametersMetadata];
+  [coderCopy encodeObject:parametersMetadata forKey:@"parametersMetadata"];
 }
 
-- (LNAssistantSuggestionPhraseMetadata)initWithActionIdentifier:(id)a3 templateKey:(id)a4 parametersMetadata:(id)a5
+- (LNAssistantSuggestionPhraseMetadata)initWithActionIdentifier:(id)identifier templateKey:(id)key parametersMetadata:(id)metadata
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  keyCopy = key;
+  metadataCopy = metadata;
+  if (identifierCopy)
   {
-    if (v10)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -191,20 +191,20 @@ LABEL_28:
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"LNAssistantSuggestionPhraseMetadata.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAssistantSuggestionPhraseMetadata.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
-    if (v10)
+    if (keyCopy)
     {
 LABEL_3:
-      if (v11)
+      if (metadataCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_9:
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"LNAssistantSuggestionPhraseMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"parametersMetadata"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAssistantSuggestionPhraseMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"parametersMetadata"}];
 
       if (!self)
       {
@@ -215,10 +215,10 @@ LABEL_9:
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"LNAssistantSuggestionPhraseMetadata.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"templateKey"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNAssistantSuggestionPhraseMetadata.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"templateKey"}];
 
-  if (!v11)
+  if (!metadataCopy)
   {
     goto LABEL_9;
   }
@@ -227,19 +227,19 @@ LABEL_4:
   if (self)
   {
 LABEL_5:
-    v12 = [v9 copy];
+    v12 = [identifierCopy copy];
     actionIdentifier = self->_actionIdentifier;
     self->_actionIdentifier = v12;
 
-    v14 = [v10 copy];
+    v14 = [keyCopy copy];
     templateKey = self->_templateKey;
     self->_templateKey = v14;
 
-    v16 = [v11 copy];
+    v16 = [metadataCopy copy];
     parametersMetadata = self->_parametersMetadata;
     self->_parametersMetadata = v16;
 
-    v18 = self;
+    selfCopy = self;
   }
 
 LABEL_6:

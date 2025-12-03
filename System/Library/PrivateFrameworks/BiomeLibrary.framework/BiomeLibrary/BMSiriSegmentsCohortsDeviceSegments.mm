@@ -1,26 +1,26 @@
 @interface BMSiriSegmentsCohortsDeviceSegments
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriSegmentsCohortsDeviceSegments)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriSegmentsCohortsDeviceSegments)initWithSegmentType:(id)a3 segmentDataAvailabilityState:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriSegmentsCohortsDeviceSegments)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriSegmentsCohortsDeviceSegments)initWithSegmentType:(id)type segmentDataAvailabilityState:(id)state;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriSegmentsCohortsDeviceSegments
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMSiriSegmentsCohortsDeviceSegments hasSegmentType](self, "hasSegmentType") || [v5 hasSegmentType])
     {
       if (![(BMSiriSegmentsCohortsDeviceSegments *)self hasSegmentType])
@@ -33,8 +33,8 @@
         goto LABEL_13;
       }
 
-      v6 = [(BMSiriSegmentsCohortsDeviceSegments *)self segmentType];
-      if (v6 != [v5 segmentType])
+      segmentType = [(BMSiriSegmentsCohortsDeviceSegments *)self segmentType];
+      if (segmentType != [v5 segmentType])
       {
         goto LABEL_13;
       }
@@ -48,8 +48,8 @@
 
     if (-[BMSiriSegmentsCohortsDeviceSegments hasSegmentDataAvailabilityState](self, "hasSegmentDataAvailabilityState") && [v5 hasSegmentDataAvailabilityState])
     {
-      v7 = [(BMSiriSegmentsCohortsDeviceSegments *)self segmentDataAvailabilityState];
-      v8 = v7 == [v5 segmentDataAvailabilityState];
+      segmentDataAvailabilityState = [(BMSiriSegmentsCohortsDeviceSegments *)self segmentDataAvailabilityState];
+      v8 = segmentDataAvailabilityState == [v5 segmentDataAvailabilityState];
     }
 
     else
@@ -93,21 +93,21 @@ LABEL_15:
   }
 
   v10[0] = @"segmentType";
-  v5 = v3;
+  null = v3;
   if (!v3)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"segmentDataAvailabilityState";
-  v11[0] = v5;
-  v6 = v4;
+  v11[0] = null;
+  null2 = v4;
   if (!v4)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (v4)
   {
@@ -132,20 +132,20 @@ LABEL_13:
   return v7;
 }
 
-- (BMSiriSegmentsCohortsDeviceSegments)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriSegmentsCohortsDeviceSegments)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"segmentType"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"segmentType"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v8 = 0;
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_9;
       }
 
@@ -157,8 +157,8 @@ LABEL_13:
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v16 = [v14 initWithDomain:v15 code:2 userInfo:v9];
       v8 = 0;
-      v11 = 0;
-      *a4 = v16;
+      selfCopy = 0;
+      *error = v16;
       goto LABEL_8;
     }
 
@@ -170,13 +170,13 @@ LABEL_13:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"segmentDataAvailabilityState"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"segmentDataAvailabilityState"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v17 = objc_alloc(MEMORY[0x1E696ABC0]);
         v18 = *MEMORY[0x1E698F240];
@@ -184,11 +184,11 @@ LABEL_13:
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"segmentDataAvailabilityState"];
         v22 = v19;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        *a4 = [v17 initWithDomain:v18 code:2 userInfo:v20];
+        *error = [v17 initWithDomain:v18 code:2 userInfo:v20];
       }
 
       v10 = 0;
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
 
@@ -201,45 +201,45 @@ LABEL_13:
   }
 
   self = [(BMSiriSegmentsCohortsDeviceSegments *)self initWithSegmentType:v8 segmentDataAvailabilityState:v10];
-  v11 = self;
+  selfCopy = self;
 LABEL_8:
 
 LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriSegmentsCohortsDeviceSegments *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_hasSegmentType)
   {
     segmentType = self->_segmentType;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_hasSegmentDataAvailabilityState)
   {
     segmentDataAvailabilityState = self->_segmentDataAvailabilityState;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMSiriSegmentsCohortsDeviceSegments;
   v5 = [(BMEventBase *)&v32 init];
@@ -248,12 +248,12 @@ LABEL_9:
     goto LABEL_49;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -264,18 +264,18 @@ LABEL_9:
       while (1)
       {
         v33 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v33 & 0x7F) << v7;
@@ -292,9 +292,9 @@ LABEL_9:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -308,18 +308,18 @@ LABEL_16:
         while (1)
         {
           v33 = 0;
-          v26 = [v4 position] + 1;
-          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+          v26 = [fromCopy position] + 1;
+          if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
           {
-            v28 = [v4 data];
-            [v28 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v17 |= (v33 & 0x7F) << v24;
@@ -360,18 +360,18 @@ LABEL_16:
         while (1)
         {
           v33 = 0;
-          v18 = [v4 position] + 1;
-          if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 1, v19 <= objc_msgSend(v4, "length")))
+          v18 = [fromCopy position] + 1;
+          if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 1, v19 <= objc_msgSend(fromCopy, "length")))
           {
-            v20 = [v4 data];
-            [v20 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v17 |= (v33 & 0x7F) << v15;
@@ -393,7 +393,7 @@ LABEL_16:
         v23 = &OBJC_IVAR___BMSiriSegmentsCohortsDeviceSegments__segmentType;
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v22 = 0;
       }
@@ -406,13 +406,13 @@ LABEL_16:
 LABEL_45:
       *(&v5->super.super.isa + *v23) = v22;
 LABEL_46:
-      v29 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v29 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_48:
     v30 = 0;
@@ -437,42 +437,42 @@ LABEL_49:
   return v6;
 }
 
-- (BMSiriSegmentsCohortsDeviceSegments)initWithSegmentType:(id)a3 segmentDataAvailabilityState:(id)a4
+- (BMSiriSegmentsCohortsDeviceSegments)initWithSegmentType:(id)type segmentDataAvailabilityState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = BMSiriSegmentsCohortsDeviceSegments;
   v8 = [(BMEventBase *)&v12 init];
   if (v8)
   {
     v8->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v6)
+    if (typeCopy)
     {
       v8->_hasSegmentType = 1;
-      v9 = [v6 intValue];
+      intValue = [typeCopy intValue];
     }
 
     else
     {
       v8->_hasSegmentType = 0;
-      v9 = -1;
+      intValue = -1;
     }
 
-    v8->_segmentType = v9;
-    if (v7)
+    v8->_segmentType = intValue;
+    if (stateCopy)
     {
       v8->_hasSegmentDataAvailabilityState = 1;
-      v10 = [v7 intValue];
+      intValue2 = [stateCopy intValue];
     }
 
     else
     {
       v8->_hasSegmentDataAvailabilityState = 0;
-      v10 = -1;
+      intValue2 = -1;
     }
 
-    v8->_segmentDataAvailabilityState = v10;
+    v8->_segmentDataAvailabilityState = intValue2;
   }
 
   return v8;
@@ -506,9 +506,9 @@ LABEL_49:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -516,8 +516,8 @@ LABEL_49:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriSegmentsCohortsDeviceSegments alloc] initByReadFrom:v7];
     v4 = v8;

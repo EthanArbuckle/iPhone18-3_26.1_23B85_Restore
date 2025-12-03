@@ -1,15 +1,15 @@
 @interface MPSImageLaplacianPyramidSubtract
-- (MPSImageLaplacianPyramidSubtract)initWithCoder:(id)a3 device:(id)a4;
-- (MPSImageLaplacianPyramidSubtract)initWithDevice:(id)a3 kernelWidth:(unint64_t)a4 kernelHeight:(unint64_t)a5 weights:(const float *)a6;
+- (MPSImageLaplacianPyramidSubtract)initWithCoder:(id)coder device:(id)device;
+- (MPSImageLaplacianPyramidSubtract)initWithDevice:(id)device kernelWidth:(unint64_t)width kernelHeight:(unint64_t)height weights:(const float *)weights;
 @end
 
 @implementation MPSImageLaplacianPyramidSubtract
 
-- (MPSImageLaplacianPyramidSubtract)initWithDevice:(id)a3 kernelWidth:(unint64_t)a4 kernelHeight:(unint64_t)a5 weights:(const float *)a6
+- (MPSImageLaplacianPyramidSubtract)initWithDevice:(id)device kernelWidth:(unint64_t)width kernelHeight:(unint64_t)height weights:(const float *)weights
 {
   v12.receiver = self;
   v12.super_class = MPSImageLaplacianPyramidSubtract;
-  result = [(MPSImageLaplacianPyramid *)&v12 initWithDevice:a3 kernelWidth:a4 kernelHeight:a5 weights:a6];
+  result = [(MPSImageLaplacianPyramid *)&v12 initWithDevice:device kernelWidth:width kernelHeight:height weights:weights];
   if (result)
   {
     v11 = result;
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (MPSImageLaplacianPyramidSubtract)initWithCoder:(id)a3 device:(id)a4
+- (MPSImageLaplacianPyramidSubtract)initWithCoder:(id)coder device:(id)device
 {
   v10.receiver = self;
   v10.super_class = MPSImageLaplacianPyramidSubtract;
-  result = [(MPSImageLaplacianPyramid *)&v10 initWithCoder:a3 device:a4];
+  result = [(MPSImageLaplacianPyramid *)&v10 initWithCoder:coder device:device];
   if (result)
   {
     v9 = result;

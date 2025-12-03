@@ -1,16 +1,16 @@
 @interface PXHorizontalCollectionGadgetProvider
 - (PXHorizontalCollectionGadgetProvider)init;
-- (PXHorizontalCollectionGadgetProvider)initWithContentGadgetProvider:(id)a3 title:(id)a4;
-- (PXHorizontalCollectionGadgetProvider)initWithContentGadgetProvider:(id)a3 title:(id)a4 horizontalCollectionGadgetClass:(Class)a5;
-- (PXHorizontalCollectionGadgetProvider)initWithIdentifier:(id)a3;
-- (PXHorizontalCollectionGadgetProvider)initWithIdentifier:(id)a3 contentGadgetProvider:(id)a4 title:(id)a5 horizontalCollectionGadgetClass:(Class)a6;
+- (PXHorizontalCollectionGadgetProvider)initWithContentGadgetProvider:(id)provider title:(id)title;
+- (PXHorizontalCollectionGadgetProvider)initWithContentGadgetProvider:(id)provider title:(id)title horizontalCollectionGadgetClass:(Class)class;
+- (PXHorizontalCollectionGadgetProvider)initWithIdentifier:(id)identifier;
+- (PXHorizontalCollectionGadgetProvider)initWithIdentifier:(id)identifier contentGadgetProvider:(id)provider title:(id)title horizontalCollectionGadgetClass:(Class)class;
 - (id)_createHorizontalGadget;
 - (void)_updateHorizontalGadget;
 - (void)generateGadgets;
-- (void)setColumnSpanForTraitCollection:(id)a3;
-- (void)setDefaultColumnSpan:(int64_t)a3;
-- (void)setGadgetType:(unint64_t)a3;
-- (void)setPrefersPagingEnabled:(BOOL)a3;
+- (void)setColumnSpanForTraitCollection:(id)collection;
+- (void)setDefaultColumnSpan:(int64_t)span;
+- (void)setGadgetType:(unint64_t)type;
+- (void)setPrefersPagingEnabled:(BOOL)enabled;
 @end
 
 @implementation PXHorizontalCollectionGadgetProvider
@@ -24,8 +24,8 @@
   v5 = [v3 initWithProviders:v4];
 
   [v5 setDefaultColumnSpan:{-[PXHorizontalCollectionGadgetProvider defaultColumnSpan](self, "defaultColumnSpan")}];
-  v6 = [(PXHorizontalCollectionGadgetProvider *)self columnSpanForTraitCollection];
-  [v5 setColumnSpans:v6];
+  columnSpanForTraitCollection = [(PXHorizontalCollectionGadgetProvider *)self columnSpanForTraitCollection];
+  [v5 setColumnSpans:columnSpanForTraitCollection];
 
   [v5 setGadgetType:{-[PXHorizontalCollectionGadgetProvider gadgetType](self, "gadgetType")}];
   [v5 setHeaderStyle:{-[PXHorizontalCollectionGadgetProvider headerStyle](self, "headerStyle")}];
@@ -52,11 +52,11 @@ void __63__PXHorizontalCollectionGadgetProvider__createHorizontalGadget__block_i
 
 - (void)_updateHorizontalGadget
 {
-  v3 = [(PXHorizontalCollectionGadgetProvider *)self estimatedNumberOfGadgets];
-  v4 = [(PXGadgetProvider *)self gadgets];
-  v5 = [v4 count];
+  estimatedNumberOfGadgets = [(PXHorizontalCollectionGadgetProvider *)self estimatedNumberOfGadgets];
+  gadgets = [(PXGadgetProvider *)self gadgets];
+  v5 = [gadgets count];
 
-  if (v3)
+  if (estimatedNumberOfGadgets)
   {
     if (self->_horizontalGadget || ([(PXHorizontalCollectionGadgetProvider *)self _createHorizontalGadget], v6 = objc_claimAutoreleasedReturnValue(), horizontalGadget = self->_horizontalGadget, self->_horizontalGadget = v6, horizontalGadget, self->_horizontalGadget))
     {
@@ -89,23 +89,23 @@ void __63__PXHorizontalCollectionGadgetProvider__updateHorizontalGadget__block_i
   [v3 addGadgets:{v4, v5, v6}];
 }
 
-- (void)setPrefersPagingEnabled:(BOOL)a3
+- (void)setPrefersPagingEnabled:(BOOL)enabled
 {
-  if (self->_prefersPagingEnabled != a3)
+  if (self->_prefersPagingEnabled != enabled)
   {
-    v4 = a3;
-    self->_prefersPagingEnabled = a3;
-    v5 = [(PXGadgetUIViewController *)self->_horizontalGadget layout];
-    [v5 setPrefersPagingEnabled:v4];
+    enabledCopy = enabled;
+    self->_prefersPagingEnabled = enabled;
+    layout = [(PXGadgetUIViewController *)self->_horizontalGadget layout];
+    [layout setPrefersPagingEnabled:enabledCopy];
   }
 }
 
-- (void)setColumnSpanForTraitCollection:(id)a3
+- (void)setColumnSpanForTraitCollection:(id)collection
 {
-  v6 = a3;
+  collectionCopy = collection;
   if (![(NSDictionary *)self->_columnSpanForTraitCollection isEqualToDictionary:?])
   {
-    v4 = [v6 copy];
+    v4 = [collectionCopy copy];
     columnSpanForTraitCollection = self->_columnSpanForTraitCollection;
     self->_columnSpanForTraitCollection = v4;
 
@@ -113,20 +113,20 @@ void __63__PXHorizontalCollectionGadgetProvider__updateHorizontalGadget__block_i
   }
 }
 
-- (void)setDefaultColumnSpan:(int64_t)a3
+- (void)setDefaultColumnSpan:(int64_t)span
 {
-  if (self->_defaultColumnSpan != a3)
+  if (self->_defaultColumnSpan != span)
   {
-    self->_defaultColumnSpan = a3;
+    self->_defaultColumnSpan = span;
     [(PXHorizontalCollectionGadget *)self->_horizontalGadget setDefaultColumnSpan:?];
   }
 }
 
-- (void)setGadgetType:(unint64_t)a3
+- (void)setGadgetType:(unint64_t)type
 {
-  if (self->_gadgetType != a3)
+  if (self->_gadgetType != type)
   {
-    self->_gadgetType = a3;
+    self->_gadgetType = type;
     [(PXHorizontalCollectionGadget *)self->_horizontalGadget setGadgetType:?];
   }
 }
@@ -140,23 +140,23 @@ void __63__PXHorizontalCollectionGadgetProvider__updateHorizontalGadget__block_i
   }
 }
 
-- (PXHorizontalCollectionGadgetProvider)initWithIdentifier:(id)a3 contentGadgetProvider:(id)a4 title:(id)a5 horizontalCollectionGadgetClass:(Class)a6
+- (PXHorizontalCollectionGadgetProvider)initWithIdentifier:(id)identifier contentGadgetProvider:(id)provider title:(id)title horizontalCollectionGadgetClass:(Class)class
 {
-  v11 = a4;
-  v12 = a5;
+  providerCopy = provider;
+  titleCopy = title;
   v18.receiver = self;
   v18.super_class = PXHorizontalCollectionGadgetProvider;
-  v13 = [(PXGadgetProvider *)&v18 initWithIdentifier:a3];
+  v13 = [(PXGadgetProvider *)&v18 initWithIdentifier:identifier];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_contentGadgetProvider, a4);
+    objc_storeStrong(&v13->_contentGadgetProvider, provider);
     [(PXGadgetProvider *)v14->_contentGadgetProvider setDelegate:v14];
-    v15 = [v12 copy];
+    v15 = [titleCopy copy];
     title = v14->_title;
     v14->_title = v15;
 
-    v14->_horizontalCollectionGadgetClass = a6;
+    v14->_horizontalCollectionGadgetClass = class;
     v14->_defaultColumnSpan = 1;
     v14->_prefersPagingEnabled = 1;
   }
@@ -164,40 +164,40 @@ void __63__PXHorizontalCollectionGadgetProvider__updateHorizontalGadget__block_i
   return v14;
 }
 
-- (PXHorizontalCollectionGadgetProvider)initWithContentGadgetProvider:(id)a3 title:(id)a4 horizontalCollectionGadgetClass:(Class)a5
+- (PXHorizontalCollectionGadgetProvider)initWithContentGadgetProvider:(id)provider title:(id)title horizontalCollectionGadgetClass:(Class)class
 {
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a4;
-  v10 = a3;
+  titleCopy = title;
+  providerCopy = provider;
   v11 = objc_opt_class();
   v12 = [v8 stringWithFormat:@"%@:%@", v11, objc_opt_class()];
-  v13 = [(PXHorizontalCollectionGadgetProvider *)self initWithIdentifier:v12 contentGadgetProvider:v10 title:v9 horizontalCollectionGadgetClass:a5];
+  v13 = [(PXHorizontalCollectionGadgetProvider *)self initWithIdentifier:v12 contentGadgetProvider:providerCopy title:titleCopy horizontalCollectionGadgetClass:class];
 
   return v13;
 }
 
-- (PXHorizontalCollectionGadgetProvider)initWithContentGadgetProvider:(id)a3 title:(id)a4
+- (PXHorizontalCollectionGadgetProvider)initWithContentGadgetProvider:(id)provider title:(id)title
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXHorizontalCollectionGadgetProvider *)self initWithContentGadgetProvider:v7 title:v6 horizontalCollectionGadgetClass:objc_opt_class()];
+  titleCopy = title;
+  providerCopy = provider;
+  v8 = [(PXHorizontalCollectionGadgetProvider *)self initWithContentGadgetProvider:providerCopy title:titleCopy horizontalCollectionGadgetClass:objc_opt_class()];
 
   return v8;
 }
 
-- (PXHorizontalCollectionGadgetProvider)initWithIdentifier:(id)a3
+- (PXHorizontalCollectionGadgetProvider)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadgetProvider.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXHorizontalCollectionGadgetProvider initWithIdentifier:]"}];
+  identifierCopy = identifier;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadgetProvider.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXHorizontalCollectionGadgetProvider initWithIdentifier:]"}];
 
   abort();
 }
 
 - (PXHorizontalCollectionGadgetProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadgetProvider.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PXHorizontalCollectionGadgetProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXHorizontalCollectionGadgetProvider.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PXHorizontalCollectionGadgetProvider init]"}];
 
   abort();
 }

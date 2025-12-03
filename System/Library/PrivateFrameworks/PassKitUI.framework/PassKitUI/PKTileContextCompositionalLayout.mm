@@ -1,6 +1,6 @@
 @interface PKTileContextCompositionalLayout
 - (PKTileContextCompositionalLayout)init;
-- (id)layoutSectionAtIndex:(int64_t)a3 layoutEnvironment:(id)a4;
+- (id)layoutSectionAtIndex:(int64_t)index layoutEnvironment:(id)environment;
 @end
 
 @implementation PKTileContextCompositionalLayout
@@ -41,13 +41,13 @@ id __40__PKTileContextCompositionalLayout_init__block_invoke(uint64_t a1, uint64
   return v7;
 }
 
-- (id)layoutSectionAtIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionAtIndex:(int64_t)index layoutEnvironment:(id)environment
 {
-  v4 = a3;
-  v6 = [(PKTileContextCompositionalLayout *)self collectionView:a3];
-  v7 = [v6 delegate];
-  v8 = [v6 dataSource];
-  v9 = [v8 collectionView:v6 numberOfItemsInSection:v4];
+  indexCopy = index;
+  v6 = [(PKTileContextCompositionalLayout *)self collectionView:index];
+  delegate = [v6 delegate];
+  dataSource = [v6 dataSource];
+  v9 = [dataSource collectionView:v6 numberOfItemsInSection:indexCopy];
 
   if (v9 < 1)
   {
@@ -62,7 +62,7 @@ id __40__PKTileContextCompositionalLayout_init__block_invoke(uint64_t a1, uint64
     v13 = 12.0;
     if (v10)
     {
-      if ([v7 collectionView:v6 layout:self hasHeaderForSectionAtIndex:v4])
+      if ([delegate collectionView:v6 layout:self hasHeaderForSectionAtIndex:indexCopy])
       {
         v13 = 0.0;
       }
@@ -75,7 +75,7 @@ id __40__PKTileContextCompositionalLayout_init__block_invoke(uint64_t a1, uint64
 
     if (v11)
     {
-      if ([v7 collectionView:v6 layout:self hasFooterForSectionAtIndex:v4])
+      if ([delegate collectionView:v6 layout:self hasFooterForSectionAtIndex:indexCopy])
       {
         v12 = 0.0;
       }
@@ -93,19 +93,19 @@ id __40__PKTileContextCompositionalLayout_init__block_invoke(uint64_t a1, uint64
     v16 = 0.0;
     do
     {
-      v17 = [MEMORY[0x1E696AC88] indexPathForRow:v15 inSection:v4];
-      [v7 collectionView:v6 layout:self sizeForItemAtIndexPath:v17];
+      v17 = [MEMORY[0x1E696AC88] indexPathForRow:v15 inSection:indexCopy];
+      [delegate collectionView:v6 layout:self sizeForItemAtIndexPath:v17];
       v19 = v18;
       PKFloatRoundToPixel();
       [MEMORY[0x1E6995570] customItemWithFrame:?];
-      v20 = v4;
+      v20 = indexCopy;
       v21 = v6;
-      v23 = v22 = v7;
+      v23 = v22 = delegate;
       [v14 addObject:v23];
 
-      v7 = v22;
+      delegate = v22;
       v6 = v21;
-      v4 = v20;
+      indexCopy = v20;
       v16 = v16 + v19;
 
       ++v15;

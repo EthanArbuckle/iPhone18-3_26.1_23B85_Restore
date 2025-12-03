@@ -1,21 +1,21 @@
 @interface AVControlItem
-+ (id)prominentMediaControlItemWithTitle:(id)a3;
-- (AVControlItem)initWithTitle:(id)a3 type:(int64_t)a4;
++ (id)prominentMediaControlItemWithTitle:(id)title;
+- (AVControlItem)initWithTitle:(id)title type:(int64_t)type;
 - (AVControlItemDelegate)delegate;
 - (id)_formattedTitleString;
-- (void)_buttonTouchUpInside:(id)a3;
+- (void)_buttonTouchUpInside:(id)inside;
 - (void)_createButton;
 - (void)_notifyDelegateOfChangesIfNeeded;
 - (void)_updateButton;
 - (void)_updateTintColor;
-- (void)setAction:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFirstGenerationControl:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setMenu:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleFont:(id)a3;
+- (void)setAction:(id)action;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFirstGenerationControl:(BOOL)control;
+- (void)setImage:(id)image;
+- (void)setMenu:(id)menu;
+- (void)setTintColor:(id)color;
+- (void)setTitle:(id)title;
+- (void)setTitleFont:(id)font;
 @end
 
 @implementation AVControlItem
@@ -30,79 +30,79 @@
 - (void)_updateButton
 {
   button = self->_button;
-  v4 = [(AVControlItem *)self title];
-  [(AVButton *)button setAccessibilityLabel:v4];
+  title = [(AVControlItem *)self title];
+  [(AVButton *)button setAccessibilityLabel:title];
 
   [(AVButton *)self->_button setEnabled:[(AVControlItem *)self isEnabled]];
   v5 = self->_button;
-  v6 = [(AVControlItem *)self image];
-  [(AVButton *)v5 setImage:v6 forState:0];
+  image = [(AVControlItem *)self image];
+  [(AVButton *)v5 setImage:image forState:0];
 
-  v7 = [(AVControlItem *)self image];
+  image2 = [(AVControlItem *)self image];
 
-  if (v7)
+  if (image2)
   {
     [(AVButton *)self->_button setAppliesTransformToImageViewWhenHighlighted:1];
   }
 
   firstGenerationControl = self->_firstGenerationControl;
-  v9 = [(AVControlItem *)self image];
-  v10 = v9;
+  image3 = [(AVControlItem *)self image];
+  v10 = image3;
   if (firstGenerationControl)
   {
-    if (v9)
+    if (image3)
     {
-      v11 = 0;
+      title2 = 0;
     }
 
     else
     {
-      v11 = [(AVControlItem *)self title];
+      title2 = [(AVControlItem *)self title];
     }
 
-    [(AVButton *)self->_button setTitle:v11 forState:0];
+    [(AVButton *)self->_button setTitle:title2 forState:0];
   }
 
   else
   {
-    if (v9)
+    if (image3)
     {
-      v11 = 0;
+      title2 = 0;
     }
 
     else
     {
-      v11 = [(AVControlItem *)self _formattedTitleString];
+      title2 = [(AVControlItem *)self _formattedTitleString];
     }
 
-    [(AVButton *)self->_button setAttributedTitle:v11 forState:0];
+    [(AVButton *)self->_button setAttributedTitle:title2 forState:0];
     if (!self->_titleLabelEncapsulated)
     {
-      v12 = [(AVButton *)self->_button titleLabel];
-      [v12 setAdjustsFontSizeToFitWidth:1];
+      titleLabel = [(AVButton *)self->_button titleLabel];
+      [titleLabel setAdjustsFontSizeToFitWidth:1];
     }
   }
 
-  v13 = [(AVButton *)self->_button titleLabel];
-  v14 = [(AVControlItem *)self titleFont];
-  [v13 setFont:v14];
+  titleLabel2 = [(AVButton *)self->_button titleLabel];
+  titleFont = [(AVControlItem *)self titleFont];
+  [titleLabel2 setFont:titleFont];
 
   [(AVControlItem *)self _notifyDelegateOfChangesIfNeeded];
 }
 
 - (void)_notifyDelegateOfChangesIfNeeded
 {
-  v3 = [(AVControlItem *)self delegate];
-  if (v3)
+  delegate = [(AVControlItem *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(AVControlItem *)self delegate];
+    v4 = delegate;
+    delegate2 = [(AVControlItem *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(AVControlItem *)self delegate];
-      [v7 controlItemDidUpdateVisualConfiguration:self];
+      delegate3 = [(AVControlItem *)self delegate];
+      [delegate3 controlItemDidUpdateVisualConfiguration:self];
     }
   }
 }
@@ -113,8 +113,8 @@
   if (self->_firstGenerationControl)
   {
     v3 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v4 = [(AVControlItem *)self title];
-    v5 = [v3 initWithString:v4 attributes:0];
+    title = [(AVControlItem *)self title];
+    v5 = [v3 initWithString:title attributes:0];
   }
 
   else
@@ -123,48 +123,48 @@
     {
       v6 = objc_alloc_init(MEMORY[0x1E69655F0]);
       v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v8 = [(AVControlItem *)self title];
+      title2 = [(AVControlItem *)self title];
       v22[0] = *MEMORY[0x1E69DB648];
-      v9 = [(AVControlItem *)self titleFont];
+      titleFont = [(AVControlItem *)self titleFont];
       v10 = *MEMORY[0x1E69655D0];
-      v23[0] = v9;
+      v23[0] = titleFont;
       v23[1] = v6;
       v11 = *MEMORY[0x1E69DB650];
       v22[1] = v10;
       v22[2] = v11;
-      v12 = [MEMORY[0x1E69DC888] labelColor];
-      v23[2] = v12;
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      v23[2] = labelColor;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
-      v5 = [v7 initWithString:v8 attributes:v13];
+      v5 = [v7 initWithString:title2 attributes:v13];
     }
 
     else
     {
       v6 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD78] variant:1024 maximumContentSizeCategory:*MEMORY[0x1E69DDC70]];
       v14 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v15 = [(AVControlItem *)self title];
+      title3 = [(AVControlItem *)self title];
       v16 = *MEMORY[0x1E69DB650];
       v20[0] = *MEMORY[0x1E69DB648];
       v20[1] = v16;
       v21[0] = v6;
-      v17 = [MEMORY[0x1E69DC888] whiteColor];
-      v21[1] = v17;
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      v21[1] = whiteColor;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
-      v5 = [v14 initWithString:v15 attributes:v18];
+      v5 = [v14 initWithString:title3 attributes:v18];
     }
   }
 
   return v5;
 }
 
-- (void)_buttonTouchUpInside:(id)a3
+- (void)_buttonTouchUpInside:(id)inside
 {
-  v3 = [(AVControlItem *)self action];
-  if (v3)
+  action = [(AVControlItem *)self action];
+  if (action)
   {
-    v4 = v3;
-    v3[2]();
-    v3 = v4;
+    v4 = action;
+    action[2]();
+    action = v4;
   }
 }
 
@@ -189,27 +189,27 @@
   [(AVControlItem *)self _updateButton];
 }
 
-- (void)setFirstGenerationControl:(BOOL)a3
+- (void)setFirstGenerationControl:(BOOL)control
 {
-  if (self->_firstGenerationControl != a3)
+  if (self->_firstGenerationControl != control)
   {
-    self->_firstGenerationControl = a3;
+    self->_firstGenerationControl = control;
     [(AVControlItem *)self _createButton];
   }
 }
 
 - (void)_updateTintColor
 {
-  v3 = [(AVControlItem *)self tintColor];
-  [AVBackdropView applyGlyphTintColor:v3 toView:self->_button];
+  tintColor = [(AVControlItem *)self tintColor];
+  [AVBackdropView applyGlyphTintColor:tintColor toView:self->_button];
 
   [(AVControlItem *)self _notifyDelegateOfChangesIfNeeded];
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v4 = a3;
-  if (!v4)
+  fontCopy = font;
+  if (!fontCopy)
   {
     v5 = 20.0;
     if (self->_firstGenerationControl)
@@ -217,82 +217,82 @@
       v5 = 12.0;
     }
 
-    v4 = [MEMORY[0x1E69DB878] systemFontOfSize:v5];
+    fontCopy = [MEMORY[0x1E69DB878] systemFontOfSize:v5];
   }
 
-  obj = v4;
-  if (([(UIFont *)self->_titleFont isEqual:v4]& 1) == 0)
+  obj = fontCopy;
+  if (([(UIFont *)self->_titleFont isEqual:fontCopy]& 1) == 0)
   {
     objc_storeStrong(&self->_titleFont, obj);
     [(AVControlItem *)self _updateButton];
   }
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = +[AVBackdropView secondaryGlyphTintColor];
+    colorCopy = +[AVBackdropView secondaryGlyphTintColor];
   }
 
   p_tintColor = &self->_tintColor;
-  if (self->_tintColor != v4)
+  if (self->_tintColor != colorCopy)
   {
-    v6 = v4;
-    objc_storeStrong(p_tintColor, v4);
+    v6 = colorCopy;
+    objc_storeStrong(p_tintColor, colorCopy);
     p_tintColor = [(AVControlItem *)self _updateTintColor];
-    v4 = v6;
+    colorCopy = v6;
   }
 
-  MEMORY[0x1EEE66BB8](p_tintColor, v4);
+  MEMORY[0x1EEE66BB8](p_tintColor, colorCopy);
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
-  v6 = a3;
-  v4 = [(AVButton *)self->_button menu];
+  menuCopy = menu;
+  menu = [(AVButton *)self->_button menu];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = menuCopy;
+  if (menu != menuCopy)
   {
-    [(AVButton *)self->_button setMenu:v6];
+    [(AVButton *)self->_button setMenu:menuCopy];
     [(AVControlItem *)self _updateShowsMenuAsPrimaryActionStateIfNeeded];
     [(AVControlItem *)self _updateButton];
-    v5 = v6;
+    v5 = menuCopy;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(AVControlItem *)self _updateButton];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   p_image = &self->_image;
-  if (self->_image != v5)
+  if (self->_image != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_image, a3);
+    v7 = imageCopy;
+    objc_storeStrong(p_image, image);
     [(AVControlItem *)self _updateButton];
     p_image = [(AVControlItem *)self _updateTintColor];
-    v5 = v7;
+    imageCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_image, v5);
+  MEMORY[0x1EEE66BB8](p_image, imageCopy);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (self->_title != a3)
+  if (self->_title != title)
   {
-    v5 = [a3 copy];
+    v5 = [title copy];
     title = self->_title;
     self->_title = v5;
 
@@ -302,11 +302,11 @@
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  if (self->_action != a3)
+  if (self->_action != action)
   {
-    v5 = [a3 copy];
+    v5 = [action copy];
     action = self->_action;
     self->_action = v5;
 
@@ -314,24 +314,24 @@
   }
 }
 
-- (AVControlItem)initWithTitle:(id)a3 type:(int64_t)a4
+- (AVControlItem)initWithTitle:(id)title type:(int64_t)type
 {
-  v6 = a3;
+  titleCopy = title;
   v14.receiver = self;
   v14.super_class = AVControlItem;
   v7 = [(AVControlItem *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [titleCopy copy];
     title = v7->_title;
     v7->_title = v8;
 
-    v7->_type = a4;
+    v7->_type = type;
     v7->_enabled = 1;
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v7->_identifier;
-    v7->_identifier = v11;
+    v7->_identifier = uUIDString;
 
     v7->_firstGenerationControl = 0;
     v7->_style = 0;
@@ -341,10 +341,10 @@
   return v7;
 }
 
-+ (id)prominentMediaControlItemWithTitle:(id)a3
++ (id)prominentMediaControlItemWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [[AVControlItem alloc] initWithTitle:v3 type:2];
+  titleCopy = title;
+  v4 = [[AVControlItem alloc] initWithTitle:titleCopy type:2];
 
   v4->_style = 1;
 

@@ -11,109 +11,109 @@
 {
   v42 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(HDCodableActivityCache);
-  v38.receiver = a1;
+  v38.receiver = self;
   v38.super_class = &off_283D425D8;
   v3 = objc_msgSendSuper2(&v38, sel_codableRepresentationForSync);
   [(HDCodableActivityCache *)v2 setSample:v3];
-  -[HDCodableActivityCache setCacheIndex:](v2, "setCacheIndex:", [a1 cacheIndex]);
-  -[HDCodableActivityCache setSequence:](v2, "setSequence:", [a1 sequence]);
-  if ([a1 hasEnergyBurned])
+  -[HDCodableActivityCache setCacheIndex:](v2, "setCacheIndex:", [self cacheIndex]);
+  -[HDCodableActivityCache setSequence:](v2, "setSequence:", [self sequence]);
+  if ([self hasEnergyBurned])
   {
-    [a1 _energyBurnedInKilocalories];
+    [self _energyBurnedInKilocalories];
     [(HDCodableActivityCache *)v2 setEnergyBurned:?];
   }
 
-  if ([a1 hasMoveMinutes])
+  if ([self hasMoveMinutes])
   {
-    [a1 moveMinutes];
+    [self moveMinutes];
     [(HDCodableActivityCache *)v2 setMoveMinutes:?];
   }
 
-  if ([a1 hasBriskMinutes])
+  if ([self hasBriskMinutes])
   {
-    [a1 briskMinutes];
+    [self briskMinutes];
     [(HDCodableActivityCache *)v2 setBriskMinutes:?];
   }
 
-  if ([a1 hasActiveHours])
+  if ([self hasActiveHours])
   {
-    [a1 activeHours];
+    [self activeHours];
     [(HDCodableActivityCache *)v2 setActiveHours:?];
   }
 
-  if ([a1 hasStepCount])
+  if ([self hasStepCount])
   {
-    -[HDCodableActivityCache setStepCount:](v2, "setStepCount:", [a1 stepCount]);
+    -[HDCodableActivityCache setStepCount:](v2, "setStepCount:", [self stepCount]);
   }
 
-  if ([a1 hasEnergyBurnedGoal])
+  if ([self hasEnergyBurnedGoal])
   {
-    [a1 _energyBurnedGoalInKilocalories];
+    [self _energyBurnedGoalInKilocalories];
     [(HDCodableActivityCache *)v2 setEnergyBurnedGoal:?];
-    v4 = [a1 energyBurnedGoalDate];
-    [v4 timeIntervalSinceReferenceDate];
+    energyBurnedGoalDate = [self energyBurnedGoalDate];
+    [energyBurnedGoalDate timeIntervalSinceReferenceDate];
     [(HDCodableActivityCache *)v2 setEnergyBurnedGoalDate:?];
   }
 
-  if ([a1 hasMoveMinutesGoal])
+  if ([self hasMoveMinutesGoal])
   {
-    [a1 _moveMinutesGoalInMinutes];
+    [self _moveMinutesGoalInMinutes];
     [(HDCodableActivityCache *)v2 setMoveMinutesGoal:?];
-    v5 = [a1 moveMinutesGoalDate];
-    [v5 timeIntervalSinceReferenceDate];
+    moveMinutesGoalDate = [self moveMinutesGoalDate];
+    [moveMinutesGoalDate timeIntervalSinceReferenceDate];
     [(HDCodableActivityCache *)v2 setMoveMinutesGoalDate:?];
   }
 
-  if ([a1 hasBriskMinutesGoal])
+  if ([self hasBriskMinutesGoal])
   {
-    [a1 _briskMinutesGoalInMinutes];
+    [self _briskMinutesGoalInMinutes];
     [(HDCodableActivityCache *)v2 setBriskMinutesGoal:?];
   }
 
-  if ([a1 hasActiveHoursGoal])
+  if ([self hasActiveHoursGoal])
   {
-    [a1 _activeHoursGoalCount];
+    [self _activeHoursGoalCount];
     [(HDCodableActivityCache *)v2 setActiveHoursGoal:?];
   }
 
-  if ([a1 hasWalkingAndRunningDistance])
+  if ([self hasWalkingAndRunningDistance])
   {
-    [a1 _walkingAndRunningDistanceInMeters];
+    [self _walkingAndRunningDistanceInMeters];
     [(HDCodableActivityCache *)v2 setWalkingAndRunningDistance:?];
   }
 
-  if ([a1 hasFlightsClimbed])
+  if ([self hasFlightsClimbed])
   {
-    -[HDCodableActivityCache setFlightsClimbed:](v2, "setFlightsClimbed:", [a1 flightsClimbed]);
+    -[HDCodableActivityCache setFlightsClimbed:](v2, "setFlightsClimbed:", [self flightsClimbed]);
   }
 
-  if ([a1 hasDeepBreathingDuration])
+  if ([self hasDeepBreathingDuration])
   {
-    [a1 deepBreathingDuration];
+    [self deepBreathingDuration];
     [(HDCodableActivityCache *)v2 setDeepBreathingDuration:?];
   }
 
-  if ([a1 hasPushCount])
+  if ([self hasPushCount])
   {
-    -[HDCodableActivityCache setPushCount:](v2, "setPushCount:", [a1 pushCount]);
+    -[HDCodableActivityCache setPushCount:](v2, "setPushCount:", [self pushCount]);
   }
 
-  if ([a1 hasWheelchairUse])
+  if ([self hasWheelchairUse])
   {
-    -[HDCodableActivityCache setWheelchairUse:](v2, "setWheelchairUse:", [a1 wheelchairUse]);
+    -[HDCodableActivityCache setWheelchairUse:](v2, "setWheelchairUse:", [self wheelchairUse]);
   }
 
-  -[HDCodableActivityCache setActivityMoveMode:](v2, "setActivityMoveMode:", [a1 activityMoveMode]);
-  -[HDCodableActivityCache setPaused:](v2, "setPaused:", [a1 isPaused]);
-  -[HDCodableActivityCache setVersion:](v2, "setVersion:", [a1 version]);
-  if ([a1 hasDailyEnergyBurnedStatistics])
+  -[HDCodableActivityCache setActivityMoveMode:](v2, "setActivityMoveMode:", [self activityMoveMode]);
+  -[HDCodableActivityCache setPaused:](v2, "setPaused:", [self isPaused]);
+  -[HDCodableActivityCache setVersion:](v2, "setVersion:", [self version]);
+  if ([self hasDailyEnergyBurnedStatistics])
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v6 = [a1 dailyEnergyBurnedStatistics];
-    v7 = [v6 countByEnumeratingWithState:&v34 objects:v41 count:16];
+    dailyEnergyBurnedStatistics = [self dailyEnergyBurnedStatistics];
+    v7 = [dailyEnergyBurnedStatistics countByEnumeratingWithState:&v34 objects:v41 count:16];
     if (v7)
     {
       v8 = v7;
@@ -124,28 +124,28 @@
         {
           if (*v35 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(dailyEnergyBurnedStatistics);
           }
 
-          v11 = [*(*(&v34 + 1) + 8 * i) codableRepresentationForSync];
-          [(HDCodableActivityCache *)v2 addDailyEnergyBurnedStatistics:v11];
+          codableRepresentationForSync = [*(*(&v34 + 1) + 8 * i) codableRepresentationForSync];
+          [(HDCodableActivityCache *)v2 addDailyEnergyBurnedStatistics:codableRepresentationForSync];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v34 objects:v41 count:16];
+        v8 = [dailyEnergyBurnedStatistics countByEnumeratingWithState:&v34 objects:v41 count:16];
       }
 
       while (v8);
     }
   }
 
-  if ([a1 hasDailyMoveMinutesStatistics])
+  if ([self hasDailyMoveMinutesStatistics])
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v12 = [a1 dailyMoveMinutesStatistics];
-    v13 = [v12 countByEnumeratingWithState:&v30 objects:v40 count:16];
+    dailyMoveMinutesStatistics = [self dailyMoveMinutesStatistics];
+    v13 = [dailyMoveMinutesStatistics countByEnumeratingWithState:&v30 objects:v40 count:16];
     if (v13)
     {
       v14 = v13;
@@ -156,28 +156,28 @@
         {
           if (*v31 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(dailyMoveMinutesStatistics);
           }
 
-          v17 = [*(*(&v30 + 1) + 8 * j) codableRepresentationForSync];
-          [(HDCodableActivityCache *)v2 addDailyMoveMinutesStatistics:v17];
+          codableRepresentationForSync2 = [*(*(&v30 + 1) + 8 * j) codableRepresentationForSync];
+          [(HDCodableActivityCache *)v2 addDailyMoveMinutesStatistics:codableRepresentationForSync2];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v30 objects:v40 count:16];
+        v14 = [dailyMoveMinutesStatistics countByEnumeratingWithState:&v30 objects:v40 count:16];
       }
 
       while (v14);
     }
   }
 
-  if ([a1 hasDailyBriskMinutesStatistics])
+  if ([self hasDailyBriskMinutesStatistics])
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v18 = [a1 dailyBriskMinutesStatistics];
-    v19 = [v18 countByEnumeratingWithState:&v26 objects:v39 count:16];
+    dailyBriskMinutesStatistics = [self dailyBriskMinutesStatistics];
+    v19 = [dailyBriskMinutesStatistics countByEnumeratingWithState:&v26 objects:v39 count:16];
     if (v19)
     {
       v20 = v19;
@@ -188,14 +188,14 @@
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(dailyBriskMinutesStatistics);
           }
 
-          v23 = [*(*(&v26 + 1) + 8 * k) codableRepresentationForSync];
-          [(HDCodableActivityCache *)v2 addDailyBriskMinutesStatistics:v23];
+          codableRepresentationForSync3 = [*(*(&v26 + 1) + 8 * k) codableRepresentationForSync];
+          [(HDCodableActivityCache *)v2 addDailyBriskMinutesStatistics:codableRepresentationForSync3];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v26 objects:v39 count:16];
+        v20 = [dailyBriskMinutesStatistics countByEnumeratingWithState:&v26 objects:v39 count:16];
       }
 
       while (v20);
@@ -210,9 +210,9 @@
 - (uint64_t)addCodableRepresentationToCollectionForJournal:()HDCodingSupport
 {
   v4 = a3;
-  if (a1 && ([a1 codableRepresentationForSync], (a1 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (self && ([self codableRepresentationForSync], (self = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    [v4 addActivityCaches:a1];
+    [v4 addActivityCaches:self];
     v5 = 1;
   }
 
@@ -227,13 +227,13 @@
 - (BOOL)addCodableRepresentationToCollectionForSync:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addActivityCaches:v5];
+    [v4 addActivityCaches:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 + (id)createWithCodable:()HDCodingSupport
@@ -243,10 +243,10 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [[a1 alloc] _init];
-    if ([v5 applyToObject:v6] && (v7 = HKDefaultObjectValidationConfigurationIgnoringAllOptions(), objc_msgSend(v6, "_validateWithConfiguration:", v7, v8), v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+    _init = [[self alloc] _init];
+    if ([v5 applyToObject:_init] && (v7 = HKDefaultObjectValidationConfigurationIgnoringAllOptions(), objc_msgSend(_init, "_validateWithConfiguration:", v7, v8), v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
     {
-      v10 = v6;
+      v10 = _init;
     }
 
     else

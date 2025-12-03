@@ -1,25 +1,25 @@
 @interface ICEditorExtensionViewController
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (ICEditorExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)addUserActivityData:(id)a3;
-- (void)checkInWithReply:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (ICEditorExtensionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)addUserActivityData:(id)data;
+- (void)checkInWithReply:(id)reply;
 - (void)dealloc;
-- (void)motionBegan:(int64_t)a3 withEvent:(id)a4;
-- (void)motionCancelled:(int64_t)a3 withEvent:(id)a4;
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4;
-- (void)noteEditorRequestsDismissal:(id)a3 cancelled:(BOOL)a4;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)motionBegan:(int64_t)began withEvent:(id)event;
+- (void)motionCancelled:(int64_t)cancelled withEvent:(id)event;
+- (void)motionEnded:(int64_t)ended withEvent:(id)event;
+- (void)noteEditorRequestsDismissal:(id)dismissal cancelled:(BOOL)cancelled;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation ICEditorExtensionViewController
 
-- (ICEditorExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICEditorExtensionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_10000B474();
     v7 = v6;
@@ -31,78 +31,78 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100002448(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100002448(v5, v7, bundle);
 }
 
 - (void)dealloc
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR___ICEditorExtensionViewController_analyticsController);
-  v3 = self;
+  selfCopy = self;
   [v2 appSessionDidTerminate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for EditorExtensionViewController();
   [(ICEditorExtensionViewController *)&v4 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000028BC();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100003D54();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100003FF0(a3);
+  selfCopy = self;
+  sub_100003FF0(appear);
 }
 
-- (void)motionBegan:(int64_t)a3 withEvent:(id)a4
+- (void)motionBegan:(int64_t)began withEvent:(id)event
 {
-  v5 = a4;
-  v6 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_100009D18();
 }
 
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4
+- (void)motionEnded:(int64_t)ended withEvent:(id)event
 {
-  v5 = a4;
-  v6 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_100009DF0();
 }
 
-- (void)motionCancelled:(int64_t)a3 withEvent:(id)a4
+- (void)motionCancelled:(int64_t)cancelled withEvent:(id)event
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___ICEditorExtensionViewController_feedbackGenerator);
   *(&self->super.super.super.isa + OBJC_IVAR___ICEditorExtensionViewController_feedbackGenerator) = 0;
   _objc_release_x1();
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR___ICEditorExtensionViewController_noteEditor);
   if (v3)
   {
-    v4 = self;
-    v5 = [v3 note];
-    if (v5)
+    selfCopy = self;
+    note = [v3 note];
+    if (note)
     {
-      v6 = v5;
-      v7 = [v5 isEmpty];
+      v6 = note;
+      isEmpty = [note isEmpty];
     }
 
     else
     {
-      v7 = 1;
+      isEmpty = 1;
     }
 
-    LOBYTE(self) = v7;
+    LOBYTE(self) = isEmpty;
   }
 
   else
@@ -113,7 +113,7 @@
   return self;
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___ICEditorExtensionViewController_noteEditor);
   if (v4)
@@ -122,27 +122,27 @@
   }
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  sub_100007D3C(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_100007D3C(connectionCopy);
 
   return 1;
 }
 
-- (void)checkInWithReply:(id)a3
+- (void)checkInWithReply:(id)reply
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(reply);
   v3[2]();
 
   _Block_release(v3);
 }
 
-- (void)addUserActivityData:(id)a3
+- (void)addUserActivityData:(id)data
 {
-  v4 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v5 = sub_10000B374();
   v7 = v6;
 
@@ -150,11 +150,11 @@
   sub_10000A518(v5, v7);
 }
 
-- (void)noteEditorRequestsDismissal:(id)a3 cancelled:(BOOL)a4
+- (void)noteEditorRequestsDismissal:(id)dismissal cancelled:(BOOL)cancelled
 {
-  v6 = a3;
-  v7 = self;
-  sub_10000A418(a4);
+  dismissalCopy = dismissal;
+  selfCopy = self;
+  sub_10000A418(cancelled);
 }
 
 @end

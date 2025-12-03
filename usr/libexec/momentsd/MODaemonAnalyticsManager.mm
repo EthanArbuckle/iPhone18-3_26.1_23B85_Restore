@@ -1,18 +1,18 @@
 @interface MODaemonAnalyticsManager
-- (MODaemonAnalyticsManager)initWithUniverse:(id)a3;
-- (id)calculateDeltaTime:(id)a3 fromPreviousTime:(id)a4 withBinArray:(id)a5;
-- (id)checkTriggerSuccess:(id)a3;
+- (MODaemonAnalyticsManager)initWithUniverse:(id)universe;
+- (id)calculateDeltaTime:(id)time fromPreviousTime:(id)previousTime withBinArray:(id)array;
+- (id)checkTriggerSuccess:(id)success;
 - (id)getDaemonPlistFileURL;
-- (id)readPersistenceTable:(id)a3;
-- (void)persistDaemonMetrics:(id)a3 withData:(id)a4;
-- (void)sendDataToCoreAnalytics:(id)a3;
+- (id)readPersistenceTable:(id)table;
+- (void)persistDaemonMetrics:(id)metrics withData:(id)data;
+- (void)sendDataToCoreAnalytics:(id)analytics;
 @end
 
 @implementation MODaemonAnalyticsManager
 
-- (MODaemonAnalyticsManager)initWithUniverse:(id)a3
+- (MODaemonAnalyticsManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v52.receiver = self;
   v52.super_class = MODaemonAnalyticsManager;
   v6 = [(MODaemonAnalyticsManager *)&v52 init];
@@ -28,7 +28,7 @@
     v48 = 0x3032000000;
     v49 = __Block_byref_object_copy__25;
     v50 = __Block_byref_object_dispose__25;
-    v51 = [(MODaemonAnalyticsManager *)v6 getDaemonPlistFileURL];
+    getDaemonPlistFileURL = [(MODaemonAnalyticsManager *)v6 getDaemonPlistFileURL];
     v10 = [(MODaemonAnalyticsManager *)v6 readPersistenceTable:v47[5]];
     v11 = v10;
     if (v10)
@@ -53,10 +53,10 @@
     v38 = v16;
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [v5 getService:v19];
+    v20 = [universeCopy getService:v19];
 
-    v21 = [v5 getService:@"EventRefreshSchedulerNotifier"];
-    v22 = [v5 getService:@"DaemonClientNotifier"];
+    v21 = [universeCopy getService:@"EventRefreshSchedulerNotifier"];
+    v22 = [universeCopy getService:@"DaemonClientNotifier"];
     v23 = v22;
     v36 = v11;
     if (v20)
@@ -835,16 +835,16 @@ void __45__MODaemonAnalyticsManager_initWithUniverse___block_invoke_93(uint64_t 
   }
 }
 
-- (id)checkTriggerSuccess:(id)a3
+- (id)checkTriggerSuccess:(id)success
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"resultWorkoutsSuccess"];
+  successCopy = success;
+  v4 = [successCopy objectForKey:@"resultWorkoutsSuccess"];
   if (![v4 BOOLValue])
   {
     goto LABEL_24;
   }
 
-  v5 = [v3 objectForKey:@"resultMindfulSessionsSuccess"];
+  v5 = [successCopy objectForKey:@"resultMindfulSessionsSuccess"];
   if (![v5 BOOLValue])
   {
 LABEL_23:
@@ -853,7 +853,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v6 = [v3 objectForKey:@"resultVisitsSuccess"];
+  v6 = [successCopy objectForKey:@"resultVisitsSuccess"];
   if (![v6 BOOLValue])
   {
 LABEL_22:
@@ -861,7 +861,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v7 = [v3 objectForKey:@"resultVisitsTrainingSuccess"];
+  v7 = [successCopy objectForKey:@"resultVisitsTrainingSuccess"];
   if (![v7 BOOLValue])
   {
 LABEL_21:
@@ -869,7 +869,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v8 = [v3 objectForKey:@"resultPhotosSuccess"];
+  v8 = [successCopy objectForKey:@"resultPhotosSuccess"];
   if (![v8 BOOLValue])
   {
 LABEL_20:
@@ -877,7 +877,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v9 = [v3 objectForKey:@"resultSharedPhotosSuccess"];
+  v9 = [successCopy objectForKey:@"resultSharedPhotosSuccess"];
   if (![v9 BOOLValue])
   {
 LABEL_19:
@@ -885,7 +885,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v10 = [v3 objectForKey:@"resultTopicsSuccess"];
+  v10 = [successCopy objectForKey:@"resultTopicsSuccess"];
   if (![v10 BOOLValue])
   {
 LABEL_18:
@@ -893,7 +893,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v11 = [v3 objectForKey:@"resultSharedSuccess"];
+  v11 = [successCopy objectForKey:@"resultSharedSuccess"];
   if (![v11 BOOLValue])
   {
 LABEL_17:
@@ -901,7 +901,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v12 = [v3 objectForKey:@"resultSuggestedSuccess"];
+  v12 = [successCopy objectForKey:@"resultSuggestedSuccess"];
   if (![v12 BOOLValue])
   {
 LABEL_16:
@@ -910,7 +910,7 @@ LABEL_16:
   }
 
   v22 = v12;
-  v13 = [v3 objectForKey:@"resultTripsSuccess"];
+  v13 = [successCopy objectForKey:@"resultTripsSuccess"];
   if (![v13 BOOLValue])
   {
 
@@ -919,37 +919,37 @@ LABEL_16:
   }
 
   v21 = v13;
-  v20 = [v3 objectForKey:@"resultMusicSuccess"];
+  v20 = [successCopy objectForKey:@"resultMusicSuccess"];
   if ([v20 BOOLValue])
   {
-    v19 = [v3 objectForKey:@"resultContactsSuccess"];
+    v19 = [successCopy objectForKey:@"resultContactsSuccess"];
     if ([v19 BOOLValue])
     {
-      v18 = [v3 objectForKey:@"stateDatabaseAvailable"];
+      v18 = [successCopy objectForKey:@"stateDatabaseAvailable"];
       if ([v18 BOOLValue])
       {
-        v17 = [v3 objectForKey:@"resultLifeEventsSuccess"];
-        v14 = [v17 BOOLValue];
+        v17 = [successCopy objectForKey:@"resultLifeEventsSuccess"];
+        bOOLValue = [v17 BOOLValue];
       }
 
       else
       {
-        v14 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v14 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    bOOLValue = 0;
   }
 
-  if (v14)
+  if (bOOLValue)
   {
     v15 = &__kCFBooleanTrue;
     goto LABEL_26;
@@ -962,12 +962,12 @@ LABEL_26:
   return v15;
 }
 
-- (id)calculateDeltaTime:(id)a3 fromPreviousTime:(id)a4 withBinArray:(id)a5
+- (id)calculateDeltaTime:(id)time fromPreviousTime:(id)previousTime withBinArray:(id)array
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  timeCopy = time;
+  previousTimeCopy = previousTime;
+  arrayCopy = array;
+  if (!timeCopy)
   {
     v19 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -979,12 +979,12 @@ LABEL_26:
     v17 = v20;
     v21 = @"Invalid parameter not satisfying: currentTime != nil";
     v22 = a2;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 400;
     goto LABEL_14;
   }
 
-  if (!v10)
+  if (!previousTimeCopy)
   {
     v25 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -996,17 +996,17 @@ LABEL_26:
     v17 = v20;
     v21 = @"Invalid parameter not satisfying: lastTime != nil";
     v22 = a2;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 401;
 LABEL_14:
-    [v20 handleFailureInMethod:v22 object:v23 file:@"MODaemonAnalyticsManager.m" lineNumber:v24 description:v21];
+    [v20 handleFailureInMethod:v22 object:selfCopy2 file:@"MODaemonAnalyticsManager.m" lineNumber:v24 description:v21];
     v18 = 0;
     goto LABEL_15;
   }
 
-  [v9 doubleValue];
+  [timeCopy doubleValue];
   v13 = v12;
-  [v10 doubleValue];
+  [previousTimeCopy doubleValue];
   v15 = v13 - v14;
   if (v15 < 0.0)
   {
@@ -1019,18 +1019,18 @@ LABEL_14:
   }
 
   v17 = [NSNumber numberWithDouble:v15];
-  v18 = [MOMetric binForNumber:v17 bins:v11];
+  v18 = [MOMetric binForNumber:v17 bins:arrayCopy];
 LABEL_15:
 
   return v18;
 }
 
-- (id)readPersistenceTable:(id)a3
+- (id)readPersistenceTable:(id)table
 {
-  v3 = a3;
+  tableCopy = table;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  path = [tableCopy path];
+  v6 = [v4 fileExistsAtPath:path];
 
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonAnalyticsManager);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
@@ -1044,7 +1044,7 @@ LABEL_15:
     }
 
     v17 = 0;
-    v9 = [[NSDictionary alloc] initWithContentsOfURL:v3 error:&v17];
+    v9 = [[NSDictionary alloc] initWithContentsOfURL:tableCopy error:&v17];
     v10 = v17;
     if (v10)
     {
@@ -1055,7 +1055,7 @@ LABEL_15:
       }
 
       v16 = 0;
-      [v4 removeItemAtURL:v3 error:&v16];
+      [v4 removeItemAtURL:tableCopy error:&v16];
       if (v16)
       {
         v12 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonAnalyticsManager);
@@ -1090,12 +1090,12 @@ LABEL_15:
   return v14;
 }
 
-- (void)persistDaemonMetrics:(id)a3 withData:(id)a4
+- (void)persistDaemonMetrics:(id)metrics withData:(id)data
 {
-  if (a3)
+  if (metrics)
   {
     v9 = 0;
-    v4 = [a4 writeToURL:a3 error:&v9];
+    v4 = [data writeToURL:metrics error:&v9];
     v5 = v9;
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonAnalyticsManager);
     v7 = v6;
@@ -1147,10 +1147,10 @@ LABEL_15:
   return v4;
 }
 
-- (void)sendDataToCoreAnalytics:(id)a3
+- (void)sendDataToCoreAnalytics:(id)analytics
 {
-  v4 = a3;
-  v3 = v4;
+  analyticsCopy = analytics;
+  v3 = analyticsCopy;
   AnalyticsSendEventLazy();
 }
 

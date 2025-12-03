@@ -1,9 +1,9 @@
 @interface HFCameraTimelapseVideoProvider
 + (id)sharedProvider;
 - (HFCameraTimelapseVideoProvider)init;
-- (void)_getVideoForTimelapseClip:(id)a3 taskType:(unint64_t)a4 delegate:(id)a5;
-- (void)getVideoForTimelapseClip:(id)a3 taskType:(unint64_t)a4 delegate:(id)a5;
-- (void)setTimelapseVideoDownloader:(id)a3;
+- (void)_getVideoForTimelapseClip:(id)clip taskType:(unint64_t)type delegate:(id)delegate;
+- (void)getVideoForTimelapseClip:(id)clip taskType:(unint64_t)type delegate:(id)delegate;
+- (void)setTimelapseVideoDownloader:(id)downloader;
 - (void)waitUntilAllDownloadsAreFinished;
 @end
 
@@ -49,56 +49,56 @@ void __48__HFCameraTimelapseVideoProvider_sharedProvider__block_invoke()
   return v2;
 }
 
-- (void)setTimelapseVideoDownloader:(id)a3
+- (void)setTimelapseVideoDownloader:(id)downloader
 {
-  v4 = a3;
-  v5 = [(HFCameraTimelapseVideoProvider *)self downloadQueue];
-  [v5 cancelAllOperations];
+  downloaderCopy = downloader;
+  downloadQueue = [(HFCameraTimelapseVideoProvider *)self downloadQueue];
+  [downloadQueue cancelAllOperations];
 
   timelapseVideoDownloader = self->_timelapseVideoDownloader;
-  self->_timelapseVideoDownloader = v4;
+  self->_timelapseVideoDownloader = downloaderCopy;
 }
 
 - (void)waitUntilAllDownloadsAreFinished
 {
-  v2 = [(HFCameraTimelapseVideoProvider *)self downloadQueue];
-  [v2 waitUntilAllOperationsAreFinished];
+  downloadQueue = [(HFCameraTimelapseVideoProvider *)self downloadQueue];
+  [downloadQueue waitUntilAllOperationsAreFinished];
 }
 
-- (void)getVideoForTimelapseClip:(id)a3 taskType:(unint64_t)a4 delegate:(id)a5
+- (void)getVideoForTimelapseClip:(id)clip taskType:(unint64_t)type delegate:(id)delegate
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  clipCopy = clip;
+  delegateCopy = delegate;
   v10 = HFLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 uniqueIdentifier];
+    uniqueIdentifier = [clipCopy uniqueIdentifier];
     *buf = 138412546;
-    v19 = v11;
+    v19 = uniqueIdentifier;
     v20 = 2048;
-    v21 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "Provider asked for clip: %@ with task type %lu", buf, 0x16u);
   }
 
   if (+[HFUtilities isInternalTest])
   {
-    [(HFCameraTimelapseVideoProvider *)self _getVideoForTimelapseClip:v8 taskType:a4 delegate:v9];
+    [(HFCameraTimelapseVideoProvider *)self _getVideoForTimelapseClip:clipCopy taskType:type delegate:delegateCopy];
   }
 
   else
   {
     objc_initWeak(buf, self);
-    v12 = [(HFCameraTimelapseVideoProvider *)self bookkeepingQueue];
+    bookkeepingQueue = [(HFCameraTimelapseVideoProvider *)self bookkeepingQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __77__HFCameraTimelapseVideoProvider_getVideoForTimelapseClip_taskType_delegate___block_invoke;
     v14[3] = &unk_277DF3540;
     objc_copyWeak(v17, buf);
-    v15 = v8;
-    v17[1] = a4;
-    v16 = v9;
-    dispatch_async(v12, v14);
+    v15 = clipCopy;
+    v17[1] = type;
+    v16 = delegateCopy;
+    dispatch_async(bookkeepingQueue, v14);
 
     objc_destroyWeak(v17);
     objc_destroyWeak(buf);
@@ -113,31 +113,31 @@ void __77__HFCameraTimelapseVideoProvider_getVideoForTimelapseClip_taskType_dele
   [WeakRetained _getVideoForTimelapseClip:*(a1 + 32) taskType:*(a1 + 56) delegate:*(a1 + 40)];
 }
 
-- (void)_getVideoForTimelapseClip:(id)a3 taskType:(unint64_t)a4 delegate:(id)a5
+- (void)_getVideoForTimelapseClip:(id)clip taskType:(unint64_t)type delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HFCameraTimelapseVideoProvider *)self timelapseVideoDownloader];
+  clipCopy = clip;
+  delegateCopy = delegate;
+  timelapseVideoDownloader = [(HFCameraTimelapseVideoProvider *)self timelapseVideoDownloader];
 
-  if (v10)
+  if (timelapseVideoDownloader)
   {
-    v11 = [(HFCameraTimelapseVideoProvider *)self timelapseVideoDownloader];
-    v12 = [v11 priorityDownloadOperationForClip:v8];
+    timelapseVideoDownloader2 = [(HFCameraTimelapseVideoProvider *)self timelapseVideoDownloader];
+    v12 = [timelapseVideoDownloader2 priorityDownloadOperationForClip:clipCopy];
 
-    [v12 setDelegate:v9];
-    v13 = [(HFCameraTimelapseVideoProvider *)self downloadQueue];
-    v14 = [v13 operations];
+    [v12 setDelegate:delegateCopy];
+    downloadQueue = [(HFCameraTimelapseVideoProvider *)self downloadQueue];
+    operations = [downloadQueue operations];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __78__HFCameraTimelapseVideoProvider__getVideoForTimelapseClip_taskType_delegate___block_invoke;
     v25[3] = &unk_277DF5C80;
     v15 = v12;
     v26 = v15;
-    v16 = [v14 na_firstObjectPassingTest:v25];
+    v16 = [operations na_firstObjectPassingTest:v25];
 
     if (v16)
     {
-      if (!a4)
+      if (!type)
       {
         [v16 setQueuePriority:{objc_msgSend(v15, "queuePriority")}];
       }
@@ -145,16 +145,16 @@ void __77__HFCameraTimelapseVideoProvider_getVideoForTimelapseClip_taskType_dele
       [v15 addDependency:v16];
     }
 
-    else if (!a4)
+    else if (!type)
     {
-      v17 = [(HFCameraTimelapseVideoProvider *)self downloadQueue];
-      v18 = [v17 operations];
+      downloadQueue2 = [(HFCameraTimelapseVideoProvider *)self downloadQueue];
+      operations2 = [downloadQueue2 operations];
       v20 = MEMORY[0x277D85DD0];
       v21 = 3221225472;
       v22 = __78__HFCameraTimelapseVideoProvider__getVideoForTimelapseClip_taskType_delegate___block_invoke_2;
       v23 = &unk_277DFBEB8;
       v24 = v15;
-      [v18 na_each:&v20];
+      [operations2 na_each:&v20];
     }
 
     v19 = [(HFCameraTimelapseVideoProvider *)self downloadQueue:v20];

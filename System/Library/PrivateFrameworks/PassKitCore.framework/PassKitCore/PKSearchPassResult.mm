@@ -1,47 +1,47 @@
 @interface PKSearchPassResult
-- (BOOL)isEqual:(id)a3;
-- (PKSearchPassResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSearchPassResult)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSearchPassResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passUniqueIdentifier = self->_passUniqueIdentifier;
-  v5 = a3;
-  [v5 encodeObject:passUniqueIdentifier forKey:@"passUniqueIdentifier"];
-  [v5 encodeObject:self->_thumbnailData forKey:@"thumbnailData"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_contentDescription forKey:@"contentDescription"];
-  [v5 encodeObject:self->_groupPassUniqueIdentifiers forKey:@"groupPassUniqueIdentifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passUniqueIdentifier forKey:@"passUniqueIdentifier"];
+  [coderCopy encodeObject:self->_thumbnailData forKey:@"thumbnailData"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_contentDescription forKey:@"contentDescription"];
+  [coderCopy encodeObject:self->_groupPassUniqueIdentifiers forKey:@"groupPassUniqueIdentifiers"];
 }
 
-- (PKSearchPassResult)initWithCoder:(id)a3
+- (PKSearchPassResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchPassResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
     passUniqueIdentifier = v5->_passUniqueIdentifier;
     v5->_passUniqueIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailData"];
     thumbnailData = v5->_thumbnailData;
     v5->_thumbnailData = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentDescription"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentDescription"];
     contentDescription = v5->_contentDescription;
     v5->_contentDescription = v12;
 
-    v14 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"groupPassUniqueIdentifiers"];
+    v14 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"groupPassUniqueIdentifiers"];
     groupPassUniqueIdentifiers = v5->_groupPassUniqueIdentifiers;
     v5->_groupPassUniqueIdentifiers = v14;
   }
@@ -72,9 +72,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -82,7 +82,7 @@
   }
 
   passUniqueIdentifier = self->_passUniqueIdentifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (passUniqueIdentifier && v6)
   {
     if (([(NSString *)passUniqueIdentifier isEqual:?]& 1) == 0)
@@ -97,7 +97,7 @@
   }
 
   thumbnailData = self->_thumbnailData;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (thumbnailData && v8)
   {
     if (([(NSData *)thumbnailData isEqual:?]& 1) == 0)
@@ -112,7 +112,7 @@
   }
 
   displayName = self->_displayName;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (displayName && v10)
   {
     if (([(NSString *)displayName isEqual:?]& 1) == 0)
@@ -127,7 +127,7 @@
   }
 
   contentDescription = self->_contentDescription;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (!contentDescription || !v12)
   {
     if (contentDescription == v12)
@@ -147,7 +147,7 @@ LABEL_24:
 
 LABEL_20:
   groupPassUniqueIdentifiers = self->_groupPassUniqueIdentifiers;
-  v14 = v4[5];
+  v14 = equalCopy[5];
   if (groupPassUniqueIdentifiers && v14)
   {
     v15 = [(NSArray *)groupPassUniqueIdentifiers isEqual:?];

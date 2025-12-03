@@ -6,16 +6,16 @@
 
 - (void)_searchUIButtonItemGeneratorClass
 {
-  v1 = [a1 command];
-  v2 = [v1 _searchUIButtonItemGeneratorClass];
-  if (!v2)
+  command = [self command];
+  _searchUIButtonItemGeneratorClass = [command _searchUIButtonItemGeneratorClass];
+  if (!_searchUIButtonItemGeneratorClass)
   {
-    v2 = objc_opt_class();
+    _searchUIButtonItemGeneratorClass = objc_opt_class();
   }
 
-  v3 = v2;
+  v3 = _searchUIButtonItemGeneratorClass;
 
-  return v2;
+  return _searchUIButtonItemGeneratorClass;
 }
 
 @end

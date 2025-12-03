@@ -3,7 +3,7 @@
 + (id)sharedInstance;
 - (VUICurrentSiriNavControllerContainer)init;
 - (id)currentSiriNavController;
-- (void)setCurrentSiriNavController:(id)a3;
+- (void)setCurrentSiriNavController:(id)controller;
 @end
 
 @implementation VUICurrentSiriNavControllerContainer
@@ -34,9 +34,9 @@ void __54__VUICurrentSiriNavControllerContainer_sharedInstance__block_invoke()
   v2 = [(VUICurrentSiriNavControllerContainer *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     activeNavigationControllers = v2->_activeNavigationControllers;
-    v2->_activeNavigationControllers = v3;
+    v2->_activeNavigationControllers = weakObjectsPointerArray;
   }
 
   return v2;
@@ -44,28 +44,28 @@ void __54__VUICurrentSiriNavControllerContainer_sharedInstance__block_invoke()
 
 + (BOOL)isRunningInSiriPluggin
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"com.apple.siri"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqualToString:@"com.apple.siri"];
+  return mainBundle;
 }
 
-- (void)setCurrentSiriNavController:(id)a3
+- (void)setCurrentSiriNavController:(id)controller
 {
   activeNavigationControllers = self->_activeNavigationControllers;
-  v5 = a3;
+  controllerCopy = controller;
   [(NSPointerArray *)activeNavigationControllers compact];
-  [(NSPointerArray *)self->_activeNavigationControllers addPointer:v5];
+  [(NSPointerArray *)self->_activeNavigationControllers addPointer:controllerCopy];
 }
 
 - (id)currentSiriNavController
 {
   [(NSPointerArray *)self->_activeNavigationControllers compact];
-  v3 = [(NSPointerArray *)self->_activeNavigationControllers allObjects];
-  v4 = [v3 lastObject];
+  allObjects = [(NSPointerArray *)self->_activeNavigationControllers allObjects];
+  lastObject = [allObjects lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 @end

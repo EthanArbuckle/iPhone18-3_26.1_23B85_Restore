@@ -1,16 +1,16 @@
 @interface TUMetadataClientController
 + (TUMetadataClientController)sharedInstance;
 - (TUMetadataClientController)init;
-- (id)_metadataDestinationIdForSearchItem:(id)a3;
-- (id)directoryLabelForDestinationID:(id)a3;
-- (id)directoryLabelForSearchItem:(id)a3;
-- (id)locationForDestinationID:(id)a3;
-- (id)locationForSearchItem:(id)a3;
-- (id)suggestionForDestinationID:(id)a3;
-- (id)suggestionForSearchItem:(id)a3;
-- (void)updateMetadataForCall:(id)a3 completion:(id)a4;
-- (void)updateMetadataForDestinationID:(id)a3 completion:(id)a4;
-- (void)updateMetadataForRecentCalls:(id)a3 completion:(id)a4;
+- (id)_metadataDestinationIdForSearchItem:(id)item;
+- (id)directoryLabelForDestinationID:(id)d;
+- (id)directoryLabelForSearchItem:(id)item;
+- (id)locationForDestinationID:(id)d;
+- (id)locationForSearchItem:(id)item;
+- (id)suggestionForDestinationID:(id)d;
+- (id)suggestionForSearchItem:(id)item;
+- (void)updateMetadataForCall:(id)call completion:(id)completion;
+- (void)updateMetadataForDestinationID:(id)d completion:(id)completion;
+- (void)updateMetadataForRecentCalls:(id)calls completion:(id)completion;
 @end
 
 @implementation TUMetadataClientController
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __44__TUMetadataClientController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -62,42 +62,42 @@ uint64_t __44__TUMetadataClientController_sharedInstance__block_invoke(uint64_t 
   return v2;
 }
 
-- (id)suggestionForDestinationID:(id)a3
+- (id)suggestionForDestinationID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUMetadataClientController *)self metadataCache];
-  v6 = [v5 metadataForDestinationID:v4];
+  dCopy = d;
+  metadataCache = [(TUMetadataClientController *)self metadataCache];
+  v6 = [metadataCache metadataForDestinationID:dCopy];
 
   v7 = [v6 metadataForProvider:objc_opt_class()];
 
   return v7;
 }
 
-- (id)locationForDestinationID:(id)a3
+- (id)locationForDestinationID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUMetadataClientController *)self metadataCache];
-  v6 = [v5 metadataForDestinationID:v4];
+  dCopy = d;
+  metadataCache = [(TUMetadataClientController *)self metadataCache];
+  v6 = [metadataCache metadataForDestinationID:dCopy];
 
   v7 = [v6 metadataForProvider:objc_opt_class()];
 
   return v7;
 }
 
-- (id)directoryLabelForDestinationID:(id)a3
+- (id)directoryLabelForDestinationID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUMetadataClientController *)self metadataCache];
-  v6 = [v5 metadataForDestinationID:v4];
+  dCopy = d;
+  metadataCache = [(TUMetadataClientController *)self metadataCache];
+  v6 = [metadataCache metadataForDestinationID:dCopy];
 
   v7 = [v6 metadataForProvider:objc_opt_class()];
 
   return v7;
 }
 
-- (id)suggestionForSearchItem:(id)a3
+- (id)suggestionForSearchItem:(id)item
 {
-  v4 = [(TUMetadataClientController *)self _metadataDestinationIdForSearchItem:a3];
+  v4 = [(TUMetadataClientController *)self _metadataDestinationIdForSearchItem:item];
   if (v4)
   {
     v5 = [(TUMetadataClientController *)self suggestionForDestinationID:v4];
@@ -111,9 +111,9 @@ uint64_t __44__TUMetadataClientController_sharedInstance__block_invoke(uint64_t 
   return v5;
 }
 
-- (id)locationForSearchItem:(id)a3
+- (id)locationForSearchItem:(id)item
 {
-  v4 = [(TUMetadataClientController *)self _metadataDestinationIdForSearchItem:a3];
+  v4 = [(TUMetadataClientController *)self _metadataDestinationIdForSearchItem:item];
   if (v4)
   {
     v5 = [(TUMetadataClientController *)self locationForDestinationID:v4];
@@ -127,9 +127,9 @@ uint64_t __44__TUMetadataClientController_sharedInstance__block_invoke(uint64_t 
   return v5;
 }
 
-- (id)directoryLabelForSearchItem:(id)a3
+- (id)directoryLabelForSearchItem:(id)item
 {
-  v4 = [(TUMetadataClientController *)self _metadataDestinationIdForSearchItem:a3];
+  v4 = [(TUMetadataClientController *)self _metadataDestinationIdForSearchItem:item];
   if (v4)
   {
     v5 = [(TUMetadataClientController *)self directoryLabelForDestinationID:v4];
@@ -143,36 +143,36 @@ uint64_t __44__TUMetadataClientController_sharedInstance__block_invoke(uint64_t 
   return v5;
 }
 
-- (id)_metadataDestinationIdForSearchItem:(id)a3
+- (id)_metadataDestinationIdForSearchItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 recentCall];
-    v5 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCall:v4];
-    v6 = [v5 firstObject];
+    recentCall = [itemCopy recentCall];
+    v5 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCall:recentCall];
+    firstObject = [v5 firstObject];
 LABEL_13:
-    v8 = v6;
+    v8 = firstObject;
     goto LABEL_14;
   }
 
-  v4 = [v3 destinationId];
-  if (![v4 length])
+  recentCall = [itemCopy destinationId];
+  if (![recentCall length])
   {
     v8 = 0;
     goto LABEL_15;
   }
 
-  if ([v4 destinationIdIsEmailAddress])
+  if ([recentCall destinationIdIsEmailAddress])
   {
-    v7 = [TUHandle normalizedEmailAddressHandleForValue:v4];
+    v7 = [TUHandle normalizedEmailAddressHandleForValue:recentCall];
     goto LABEL_11;
   }
 
-  if (![v4 destinationIdIsPhoneNumber])
+  if (![recentCall destinationIdIsPhoneNumber])
   {
-    v7 = [TUHandle normalizedGenericHandleForValue:v4];
+    v7 = [TUHandle normalizedGenericHandleForValue:recentCall];
 LABEL_11:
     v5 = v7;
     if (v7)
@@ -183,13 +183,13 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  v9 = [v3 isoCountryCode];
-  v5 = [TUHandle normalizedPhoneNumberHandleForValue:v4 isoCountryCode:v9];
+  isoCountryCode = [itemCopy isoCountryCode];
+  v5 = [TUHandle normalizedPhoneNumberHandleForValue:recentCall isoCountryCode:isoCountryCode];
 
   if (v5)
   {
 LABEL_12:
-    v6 = [[TUMetadataDestinationID alloc] initWithHandle:v5];
+    firstObject = [[TUMetadataDestinationID alloc] initWithHandle:v5];
     goto LABEL_13;
   }
 
@@ -202,37 +202,37 @@ LABEL_15:
   return v8;
 }
 
-- (void)updateMetadataForCall:(id)a3 completion:(id)a4
+- (void)updateMetadataForCall:(id)call completion:(id)completion
 {
-  v7 = a4;
-  v6 = [TUMetadataDestinationID metadataDestinationIDForCall:a3];
+  completionCopy = completion;
+  v6 = [TUMetadataDestinationID metadataDestinationIDForCall:call];
   if (v6)
   {
-    [(TUMetadataClientController *)self updateMetadataForDestinationID:v6 completion:v7];
+    [(TUMetadataClientController *)self updateMetadataForDestinationID:v6 completion:completionCopy];
   }
 }
 
-- (void)updateMetadataForRecentCalls:(id)a3 completion:(id)a4
+- (void)updateMetadataForRecentCalls:(id)calls completion:(id)completion
 {
-  v8 = a4;
-  v6 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCalls:a3];
+  completionCopy = completion;
+  v6 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCalls:calls];
   if ([v6 count])
   {
-    v7 = [(TUMetadataClientController *)self metadataCache];
-    [v7 updateCacheWithDestinationIDs:v6 completion:v8];
+    metadataCache = [(TUMetadataClientController *)self metadataCache];
+    [metadataCache updateCacheWithDestinationIDs:v6 completion:completionCopy];
   }
 }
 
-- (void)updateMetadataForDestinationID:(id)a3 completion:(id)a4
+- (void)updateMetadataForDestinationID:(id)d completion:(id)completion
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUMetadataClientController *)self metadataCache];
-  v11[0] = v7;
+  completionCopy = completion;
+  dCopy = d;
+  metadataCache = [(TUMetadataClientController *)self metadataCache];
+  v11[0] = dCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
-  [v8 updateCacheForEmptyDataProvidersWithDestinationIDs:v9 completion:v6];
+  [metadataCache updateCacheForEmptyDataProvidersWithDestinationIDs:v9 completion:completionCopy];
   v10 = *MEMORY[0x1E69E9840];
 }
 

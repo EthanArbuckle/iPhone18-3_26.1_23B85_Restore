@@ -3,10 +3,10 @@
 + (Class)hkBehaviorClass;
 + (Class)hkHealthStoreClass;
 + (Class)hkSourceStoreClass;
-+ (void)healthKitDataPresentForAppWithBundleID:(id)a3 completion:(id)a4;
++ (void)healthKitDataPresentForAppWithBundleID:(id)d completion:(id)completion;
 + (void)openHealthKitClasses;
-+ (void)viewHealthKitDataForAppWithBundleID:(id)a3;
-- (IXSHealthKitDataUninstallAlert)initWithAppRecord:(id)a3 bundleIdentifier:(id)a4;
++ (void)viewHealthKitDataForAppWithBundleID:(id)d;
+- (IXSHealthKitDataUninstallAlert)initWithAppRecord:(id)record bundleIdentifier:(id)identifier;
 - (id)cancelButtonLabel;
 - (id)message;
 - (id)title;
@@ -57,11 +57,11 @@
   return byte_100121E10;
 }
 
-- (IXSHealthKitDataUninstallAlert)initWithAppRecord:(id)a3 bundleIdentifier:(id)a4
+- (IXSHealthKitDataUninstallAlert)initWithAppRecord:(id)record bundleIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = IXSHealthKitDataUninstallAlert;
-  v4 = [(IXSUninstallAlert *)&v7 initWithAppRecord:a3 bundleIdentifier:a4 removability:1 deletionIsRestricted:0];
+  v4 = [(IXSUninstallAlert *)&v7 initWithAppRecord:record bundleIdentifier:identifier removability:1 deletionIsRestricted:0];
   v5 = v4;
   if (v4)
   {
@@ -78,9 +78,9 @@
   v4 = [(IXSUninstallAlert *)self localizedStringForKey:@"HEALTHKIT_SHOW_DATA_TITLE" withFormatHint:@"There is data from “%@” saved in Health"];
   if (v4 != @"There is data from “%@” saved in Health")
   {
-    v5 = [(IXSUninstallAlert *)self appRecord];
-    v6 = [v5 localizedName];
-    v3 = [NSString localizedStringWithFormat:v4, v6];
+    appRecord = [(IXSUninstallAlert *)self appRecord];
+    localizedName = [appRecord localizedName];
+    v3 = [NSString localizedStringWithFormat:v4, localizedName];
   }
 
   return v3;
@@ -126,14 +126,14 @@
   }
 }
 
-+ (void)healthKitDataPresentForAppWithBundleID:(id)a3 completion:(id)a4
++ (void)healthKitDataPresentForAppWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([@"com.apple.Health" isEqualToString:v6])
+  dCopy = d;
+  completionCopy = completion;
+  if ([@"com.apple.Health" isEqualToString:dCopy])
   {
 LABEL_11:
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_12;
   }
 
@@ -145,7 +145,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Checking if HealthKit data is available", buf, 0xCu);
   }
 
-  v9 = [objc_msgSend(a1 "hkHealthStoreClass")];
+  v9 = [objc_msgSend(self "hkHealthStoreClass")];
   v10 = sub_1000031B0(off_100121958);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
   if (!v9)
@@ -167,34 +167,34 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Checking if this app has HealthKit data", buf, 0xCu);
   }
 
-  v12 = objc_alloc_init([a1 hkHealthStoreClass]);
-  v13 = [objc_alloc(objc_msgSend(a1 "hkSourceStoreClass"))];
+  v12 = objc_alloc_init([self hkHealthStoreClass]);
+  v13 = [objc_alloc(objc_msgSend(self "hkSourceStoreClass"))];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100070ACC;
   v14[3] = &unk_1001031F0;
-  v15 = v6;
-  v16 = v7;
+  v15 = dCopy;
+  v16 = completionCopy;
   [v13 fetchHasSampleWithBundleIdentifier:v15 completion:v14];
 
 LABEL_12:
 }
 
-+ (void)viewHealthKitDataForAppWithBundleID:(id)a3
++ (void)viewHealthKitDataForAppWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 "hkBehaviorClass")];
-  v6 = [v5 healthAppHiddenOrNotInstalled];
+  dCopy = d;
+  v5 = [objc_msgSend(self "hkBehaviorClass")];
+  healthAppHiddenOrNotInstalled = [v5 healthAppHiddenOrNotInstalled];
 
-  if (v6)
+  if (healthAppHiddenOrNotInstalled)
   {
     v7 = [NSURL URLWithString:@"prefs:root=HEALTH"];
   }
 
   else
   {
-    v8 = [NSString stringWithFormat:@"x-apple-health://AuthorizationManagement/%@", v4];
-    v7 = [NSURL URLWithString:v8];
+    dCopy = [NSString stringWithFormat:@"x-apple-health://AuthorizationManagement/%@", dCopy];
+    v7 = [NSURL URLWithString:dCopy];
   }
 
   v9 = +[LSApplicationWorkspace defaultWorkspace];

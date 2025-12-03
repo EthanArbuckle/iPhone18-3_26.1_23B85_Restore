@@ -1,11 +1,11 @@
 @interface MTL4AccelerationStructureMotionTriangleGeometryDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4AccelerationStructureMotionTriangleGeometryDescriptor)init;
 - (MTL4BufferRange)indexBuffer;
 - (MTL4BufferRange)transformationMatrixBuffer;
 - (MTL4BufferRange)vertexBuffers;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -35,11 +35,11 @@
   [(MTL4AccelerationStructureGeometryDescriptor *)&v2 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTL4AccelerationStructureMotionTriangleGeometryDescriptor;
-  v4 = [(MTL4AccelerationStructureGeometryDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MTL4AccelerationStructureGeometryDescriptor *)&v6 copyWithZone:zone];
   [v4 setVertexBuffers:{self->_vertexBuffers.bufferAddress, self->_vertexBuffers.length}];
   [v4 setVertexStride:self->_vertexStride];
   [v4 setIndexBuffer:{self->_indexBuffer.bufferAddress, self->_indexBuffer.length}];
@@ -51,9 +51,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
     return v8;
@@ -62,53 +62,53 @@
   v31 = v3;
   v32 = v4;
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     goto LABEL_3;
   }
 
   v30.receiver = self;
   v30.super_class = MTL4AccelerationStructureMotionTriangleGeometryDescriptor;
-  v8 = [(MTL4AccelerationStructureGeometryDescriptor *)&v30 isEqual:a3];
+  v8 = [(MTL4AccelerationStructureGeometryDescriptor *)&v30 isEqual:equal];
   if (v8)
   {
-    v9 = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self vertexBuffers];
+    vertexBuffers = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self vertexBuffers];
     v11 = v10;
-    v13 = [a3 vertexBuffers];
+    vertexBuffers2 = [equal vertexBuffers];
     LOBYTE(v8) = 0;
-    if (v9 == v13 && v11 == v12)
+    if (vertexBuffers == vertexBuffers2 && v11 == v12)
     {
-      v14 = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self vertexStride];
-      if (v14 != [a3 vertexStride])
+      vertexStride = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self vertexStride];
+      if (vertexStride != [equal vertexStride])
       {
         goto LABEL_3;
       }
 
-      v15 = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self indexBuffer];
+      indexBuffer = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self indexBuffer];
       v17 = v16;
-      v19 = [a3 indexBuffer];
+      indexBuffer2 = [equal indexBuffer];
       LOBYTE(v8) = 0;
-      if (v15 != v19 || v17 != v18)
+      if (indexBuffer != indexBuffer2 || v17 != v18)
       {
         return v8;
       }
 
-      v20 = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self indexType];
-      if (v20 != [a3 indexType] || (v21 = -[MTL4AccelerationStructureMotionTriangleGeometryDescriptor triangleCount](self, "triangleCount"), v21 != objc_msgSend(a3, "triangleCount")) || (v22 = -[MTL4AccelerationStructureMotionTriangleGeometryDescriptor vertexFormat](self, "vertexFormat"), v22 != objc_msgSend(a3, "vertexFormat")))
+      indexType = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self indexType];
+      if (indexType != [equal indexType] || (v21 = -[MTL4AccelerationStructureMotionTriangleGeometryDescriptor triangleCount](self, "triangleCount"), v21 != objc_msgSend(equal, "triangleCount")) || (v22 = -[MTL4AccelerationStructureMotionTriangleGeometryDescriptor vertexFormat](self, "vertexFormat"), v22 != objc_msgSend(equal, "vertexFormat")))
       {
 LABEL_3:
         LOBYTE(v8) = 0;
         return v8;
       }
 
-      v23 = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self transformationMatrixBuffer];
+      transformationMatrixBuffer = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self transformationMatrixBuffer];
       v25 = v24;
-      v27 = [a3 transformationMatrixBuffer];
+      transformationMatrixBuffer2 = [equal transformationMatrixBuffer];
       LOBYTE(v8) = 0;
-      if (v23 == v27 && v25 == v26)
+      if (transformationMatrixBuffer == transformationMatrixBuffer2 && v25 == v26)
       {
-        v28 = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self transformationMatrixLayout];
-        LOBYTE(v8) = v28 == [a3 transformationMatrixLayout];
+        transformationMatrixLayout = [(MTL4AccelerationStructureMotionTriangleGeometryDescriptor *)self transformationMatrixLayout];
+        LOBYTE(v8) = transformationMatrixLayout == [equal transformationMatrixLayout];
       }
     }
   }

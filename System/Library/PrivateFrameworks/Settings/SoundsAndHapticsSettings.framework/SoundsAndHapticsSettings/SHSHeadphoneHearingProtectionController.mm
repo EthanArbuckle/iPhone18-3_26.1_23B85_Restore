@@ -18,17 +18,17 @@
 - (id)startDate;
 - (id)updateHeadphoneLevelLimitDescriptionText;
 - (id)updateHeadphoneLevelLimitText;
-- (id)weeklyNotificationCount:(id)a3;
+- (id)weeklyNotificationCount:(id)count;
 - (void)dealloc;
 - (void)loadView;
 - (void)openAboutHeadphoneNotifications;
 - (void)openHealthArticleSafeListening;
 - (void)openHealthPrivacySettings;
-- (void)queryNotificationCountsFromDate:(id)a3 toDate:(id)a4;
-- (void)setHeadphoneLevelLimitEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setHeadphoneLevelLimitValue:(id)a3 forSpecifier:(id)a4;
-- (void)setHeadphoneNotificationsEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)updateMonthlyNotificationCounts:(id)a3 withNames:(id)a4 forDates:(id)a5;
+- (void)queryNotificationCountsFromDate:(id)date toDate:(id)toDate;
+- (void)setHeadphoneLevelLimitEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setHeadphoneLevelLimitValue:(id)value forSpecifier:(id)specifier;
+- (void)setHeadphoneNotificationsEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)updateMonthlyNotificationCounts:(id)counts withNames:(id)names forDates:(id)dates;
 @end
 
 @implementation SHSHeadphoneHearingProtectionController
@@ -78,8 +78,8 @@
   audioSettingsManager = self->_audioSettingsManager;
   self->_audioSettingsManager = v5;
 
-  v7 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v8 = [v7 getPreferenceFor:*MEMORY[0x277CEFB28]];
+  audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v8 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFB28]];
   [(SHSHeadphoneHearingProtectionController *)self setLevelLimitThreshold:v8];
 
   v9 = objc_alloc_init(MEMORY[0x277CCABB8]);
@@ -99,8 +99,8 @@
   }
 
   [(SHSHeadphoneHearingProtectionController *)self setDeviceiPod:v13];
-  v14 = [MEMORY[0x277D75418] currentDevice];
-  -[SHSHeadphoneHearingProtectionController setDeviceInRetailKioskMode:](self, "setDeviceInRetailKioskMode:", [v14 sf_inRetailKioskMode]);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  -[SHSHeadphoneHearingProtectionController setDeviceInRetailKioskMode:](self, "setDeviceInRetailKioskMode:", [currentDevice sf_inRetailKioskMode]);
 
   if ([(SHSHeadphoneHearingProtectionController *)self shouldShowHealthFeatures]|| _os_feature_enabled_impl())
   {
@@ -124,64 +124,64 @@
   v5 = objc_opt_new();
   if (_os_feature_enabled_impl() && ([(SHSHeadphoneHearingProtectionController *)self shouldShowHealthFeatures]|| _os_feature_enabled_impl()))
   {
-    v6 = [(SHSHeadphoneHearingProtectionController *)self headphoneNotificationsGroupSpecifier];
-    [v5 addObject:v6];
+    headphoneNotificationsGroupSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneNotificationsGroupSpecifier];
+    [v5 addObject:headphoneNotificationsGroupSpecifier];
 
-    v7 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+    audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
     v8 = *MEMORY[0x277CEFAF8];
-    v9 = [v7 getPreferenceFor:*MEMORY[0x277CEFAF8]];
-    v10 = [v9 BOOLValue];
+    v9 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFAF8]];
+    bOOLValue = [v9 BOOLValue];
 
-    if ((v10 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v11 = [(SHSHeadphoneHearingProtectionController *)self headphoneNotificationsSwitchSpecifier];
-      [v5 addObject:v11];
+      headphoneNotificationsSwitchSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneNotificationsSwitchSpecifier];
+      [v5 addObject:headphoneNotificationsSwitchSpecifier];
     }
 
-    v12 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-    v13 = [v12 getPreferenceFor:*MEMORY[0x277CEFAF0]];
+    audioSettingsManager2 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+    v13 = [audioSettingsManager2 getPreferenceFor:*MEMORY[0x277CEFAF0]];
     if ([v13 BOOLValue])
     {
 
 LABEL_10:
-      v17 = [(SHSHeadphoneHearingProtectionController *)self headphoneWeeklyNotificationDescriptionSpecifier];
-      [v5 addObject:v17];
+      headphoneWeeklyNotificationDescriptionSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneWeeklyNotificationDescriptionSpecifier];
+      [v5 addObject:headphoneWeeklyNotificationDescriptionSpecifier];
 
       goto LABEL_11;
     }
 
-    v14 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-    v15 = [v14 getPreferenceFor:v8];
-    v16 = [v15 BOOLValue];
+    audioSettingsManager3 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+    v15 = [audioSettingsManager3 getPreferenceFor:v8];
+    bOOLValue2 = [v15 BOOLValue];
 
-    if (v16)
+    if (bOOLValue2)
     {
       goto LABEL_10;
     }
   }
 
 LABEL_11:
-  v18 = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitGroupSpecifier];
-  [v5 addObject:v18];
+  headphoneLevelLimitGroupSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitGroupSpecifier];
+  [v5 addObject:headphoneLevelLimitGroupSpecifier];
 
-  v19 = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitSwitchSpecifier];
-  [v5 addObject:v19];
+  headphoneLevelLimitSwitchSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitSwitchSpecifier];
+  [v5 addObject:headphoneLevelLimitSwitchSpecifier];
 
-  v20 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v21 = [v20 getPreferenceFor:*MEMORY[0x277CEFB20]];
-  v22 = [v21 BOOLValue];
+  audioSettingsManager4 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v21 = [audioSettingsManager4 getPreferenceFor:*MEMORY[0x277CEFB20]];
+  bOOLValue3 = [v21 BOOLValue];
 
-  if (v22)
+  if (bOOLValue3)
   {
-    v23 = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitDescriptionSpecifier];
-    [v5 addObject:v23];
+    headphoneLevelLimitDescriptionSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitDescriptionSpecifier];
+    [v5 addObject:headphoneLevelLimitDescriptionSpecifier];
 
-    v24 = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitSliderSpecifier];
-    [v5 addObject:v24];
+    headphoneLevelLimitSliderSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitSliderSpecifier];
+    [v5 addObject:headphoneLevelLimitSliderSpecifier];
   }
 
-  v25 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v26 = [v25 getPreferenceFor:*MEMORY[0x277CEFAE0]];
+  audioSettingsManager5 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v26 = [audioSettingsManager5 getPreferenceFor:*MEMORY[0x277CEFAE0]];
 
   if ([(SHSHeadphoneHearingProtectionController *)self shouldShowHealthFeatures])
   {
@@ -190,8 +190,8 @@ LABEL_11:
       v29 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SHSHeadphoneAudioDevicesGroupKey"];
       [v5 addObject:v29];
 
-      v30 = [(SHSHeadphoneHearingProtectionController *)self headphoneAudioDevicesSpecifier];
-      [v5 addObject:v30];
+      headphoneAudioDevicesSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneAudioDevicesSpecifier];
+      [v5 addObject:headphoneAudioDevicesSpecifier];
     }
   }
 
@@ -243,11 +243,11 @@ LABEL_18:
   v4 = SHS_LocalizedStringForSounds(@"HEADPHONE_LEVEL_NOTIFICATIONS_FOOTER");
   v5 = *MEMORY[0x277D3FF50];
   [v3 setProperty:@"openAboutHeadphoneNotifications" forKey:*MEMORY[0x277D3FF50]];
-  v6 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v7 = [v6 getPreferenceFor:*MEMORY[0x277CEFAF8]];
-  v8 = [v7 BOOLValue];
+  audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v7 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFAF8]];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = SHS_LocalizedStringForSounds(@"HEADPHONE_LEVEL_NOTIFICATIONS_GROUP");
     [v3 setName:v9];
@@ -267,11 +267,11 @@ LABEL_18:
     v17 = SHS_LocalizedStringForSounds(@"LEARN_MORE_IN_HEALTH_LINK");
     v15 = [v16 stringWithFormat:v4, v17];
 
-    v18 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-    v19 = [v18 getPreferenceFor:*MEMORY[0x277CEFAB8]];
-    v20 = [v19 BOOLValue];
+    audioSettingsManager2 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+    v19 = [audioSettingsManager2 getPreferenceFor:*MEMORY[0x277CEFAB8]];
+    bOOLValue2 = [v19 BOOLValue];
 
-    if ((v20 & 1) == 0)
+    if ((bOOLValue2 & 1) == 0)
     {
       v21 = MEMORY[0x277CCACA8];
       v22 = SHS_LocalizedStringForSounds(@"HEADPHONE_LEVEL_NOTIFICATIONS_DISABLED_FOOTER");
@@ -308,8 +308,8 @@ LABEL_18:
 
   [v5 setProperty:@"SHSHeadphoneNotificationsSwitchKey" forKey:*MEMORY[0x277D3FFB8]];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v8 = [v7 getPreferenceFor:*MEMORY[0x277CEFAB8]];
+  audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v8 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFAB8]];
   v9 = [v6 numberWithBool:{objc_msgSend(v8, "BOOLValue")}];
   [v5 setProperty:v9 forKey:*MEMORY[0x277D3FF38]];
 
@@ -386,8 +386,8 @@ LABEL_18:
 - (id)headphoneLevelLimitDescriptionSpecifier
 {
   v3 = MEMORY[0x277D3FAD8];
-  v4 = [(SHSHeadphoneHearingProtectionController *)self updateHeadphoneLevelLimitText];
-  v5 = [v3 preferenceSpecifierNamed:v4 target:self set:0 get:sel_updateHeadphoneLevelLimitDescriptionText detail:0 cell:4 edit:0];
+  updateHeadphoneLevelLimitText = [(SHSHeadphoneHearingProtectionController *)self updateHeadphoneLevelLimitText];
+  v5 = [v3 preferenceSpecifierNamed:updateHeadphoneLevelLimitText target:self set:0 get:sel_updateHeadphoneLevelLimitDescriptionText detail:0 cell:4 edit:0];
 
   [v5 setProperty:@"SHSHeadphoneLevelLimitDescriptionKey" forKey:*MEMORY[0x277D3FFB8]];
   [v5 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
@@ -407,13 +407,13 @@ LABEL_18:
   [v3 setProperty:&unk_287730800 forKey:*MEMORY[0x277D3FEC0]];
   [v3 setProperty:&unk_287730818 forKey:*MEMORY[0x277D3FEB8]];
   v5 = [MEMORY[0x277D755B8] systemImageNamed:@"speaker.2.fill"];
-  v6 = [MEMORY[0x277D75348] systemGrayColor];
-  v7 = [v5 imageWithTintColor:v6 renderingMode:1];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  v7 = [v5 imageWithTintColor:systemGrayColor renderingMode:1];
   [v3 setProperty:v7 forKey:*MEMORY[0x277D400D0]];
 
   v8 = [MEMORY[0x277D755B8] systemImageNamed:@"speaker.3.fill"];
-  v9 = [MEMORY[0x277D75348] systemGrayColor];
-  v10 = [v8 imageWithTintColor:v9 renderingMode:1];
+  systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+  v10 = [v8 imageWithTintColor:systemGrayColor2 renderingMode:1];
   [v3 setProperty:v10 forKey:*MEMORY[0x277D400E0]];
 
   [v3 setProperty:v4 forKey:*MEMORY[0x277D3FFC8]];
@@ -446,8 +446,8 @@ LABEL_18:
 
 - (id)updateHeadphoneLevelLimitText
 {
-  v2 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v3 = [v2 getPreferenceFor:*MEMORY[0x277CEFB28]];
+  audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v3 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFB28]];
 
   v4 = MEMORY[0x277CCACA8];
   v5 = SHS_LocalizedStringForSounds(@"HEADPHONE_LEVEL_LIMIT_SET_LEVEL");
@@ -458,12 +458,12 @@ LABEL_18:
 
 - (id)updateHeadphoneLevelLimitDescriptionText
 {
-  v2 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v3 = [v2 getPreferenceFor:*MEMORY[0x277CEFB28]];
+  audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v3 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFB28]];
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [v3 stringValue];
-  v6 = [v4 stringWithFormat:@"HEADPHONE_LEVEL_LIMIT_%@_INFO", v5];
+  stringValue = [v3 stringValue];
+  v6 = [v4 stringWithFormat:@"HEADPHONE_LEVEL_LIMIT_%@_INFO", stringValue];
   v7 = SHS_LocalizedStringForSounds(v6);
 
   return v7;
@@ -471,9 +471,9 @@ LABEL_18:
 
 - (void)openHealthPrivacySettings
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v2 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=Privacy&path=HEALTH/HEADPHONE_AUDIO_LEVELS"];
-  [v3 openSensitiveURL:v2 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v2 withOptions:0];
 }
 
 - (void)openAboutHeadphoneNotifications
@@ -484,25 +484,25 @@ LABEL_18:
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_dismiss];
   [v4 setRightBarButtonItem:v5];
   v6 = objc_alloc(MEMORY[0x277D75780]);
-  v7 = [(SHSHeadphoneHearingProtectionController *)self view];
-  [v7 frame];
+  view = [(SHSHeadphoneHearingProtectionController *)self view];
+  [view frame];
   v9 = v8;
-  v10 = [(SHSHeadphoneHearingProtectionController *)self navigationController];
-  v11 = [v10 navigationBar];
-  [v11 frame];
+  navigationController = [(SHSHeadphoneHearingProtectionController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v12 = [v6 initWithFrame:{0.0, 0.0, v9}];
 
   v17[0] = v4;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   [v12 setItems:v13];
 
-  v14 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v12 setBarTintColor:v14];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [v12 setBarTintColor:systemBackgroundColor];
 
   [v12 setTranslucent:0];
   [v12 _setHidesShadow:1];
-  v15 = [(SHSHeadphoneNotificationsController *)v3 view];
-  [v15 addSubview:v12];
+  view2 = [(SHSHeadphoneNotificationsController *)v3 view];
+  [view2 addSubview:v12];
 
   [(SHSHeadphoneHearingProtectionController *)self presentViewController:v3 animated:1 completion:0];
   v16 = *MEMORY[0x277D85DE8];
@@ -525,16 +525,16 @@ LABEL_18:
   [v3 openURL:v4 withCompletionHandler:0];
 }
 
-- (void)setHeadphoneLevelLimitEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setHeadphoneLevelLimitEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 BOOLValue])
+  enabledCopy = enabled;
+  if ([enabledCopy BOOLValue])
   {
-    v6 = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitDescriptionSpecifier];
-    v12[0] = v6;
-    v7 = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitSliderSpecifier];
-    v12[1] = v7;
+    headphoneLevelLimitDescriptionSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitDescriptionSpecifier];
+    v12[0] = headphoneLevelLimitDescriptionSpecifier;
+    headphoneLevelLimitSliderSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneLevelLimitSliderSpecifier];
+    v12[1] = headphoneLevelLimitSliderSpecifier;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
     [(SHSHeadphoneHearingProtectionController *)self insertContiguousSpecifiers:v8 afterSpecifierID:@"SHSHeadphoneLevelLimitSwitchKey" animated:1];
   }
@@ -545,35 +545,35 @@ LABEL_18:
     [(SHSHeadphoneHearingProtectionController *)self removeSpecifierID:@"SHSHeadphoneLevelLimitSliderKey" animated:1];
   }
 
-  v9 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v10 = [v9 setPreferenceFor:*MEMORY[0x277CEFB20] value:v5];
+  audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v10 = [audioSettingsManager setPreferenceFor:*MEMORY[0x277CEFB20] value:enabledCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (id)getHeadphoneLevelLimitEnabled
 {
-  v2 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v3 = [v2 getPreferenceFor:*MEMORY[0x277CEFB20]];
+  audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v3 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFB20]];
 
   return v3;
 }
 
-- (void)setHeadphoneLevelLimitValue:(id)a3 forSpecifier:(id)a4
+- (void)setHeadphoneLevelLimitValue:(id)value forSpecifier:(id)specifier
 {
-  v12 = a3;
-  v5 = [(SHSHeadphoneHearingProtectionController *)self levelLimitThreshold];
+  valueCopy = value;
+  levelLimitThreshold = [(SHSHeadphoneHearingProtectionController *)self levelLimitThreshold];
 
-  if (v5 != v12)
+  if (levelLimitThreshold != valueCopy)
   {
-    [(SHSHeadphoneHearingProtectionController *)self setLevelLimitThreshold:v12];
-    v6 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-    v7 = [v6 setPreferenceFor:*MEMORY[0x277CEFB28] value:v12];
+    [(SHSHeadphoneHearingProtectionController *)self setLevelLimitThreshold:valueCopy];
+    audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+    v7 = [audioSettingsManager setPreferenceFor:*MEMORY[0x277CEFB28] value:valueCopy];
 
     v8 = *MEMORY[0x277D3FC48];
     v9 = [*(&self->super.super.super.super.super.isa + v8) specifierForID:@"SHSHeadphoneLevelLimitDescriptionKey"];
-    v10 = [(SHSHeadphoneHearingProtectionController *)self updateHeadphoneLevelLimitText];
-    [v9 setName:v10];
+    updateHeadphoneLevelLimitText = [(SHSHeadphoneHearingProtectionController *)self updateHeadphoneLevelLimitText];
+    [v9 setName:updateHeadphoneLevelLimitText];
 
     v11 = [*(&self->super.super.super.super.super.isa + v8) specifierForID:@"SHSHeadphoneLevelLimitDescriptionKey"];
     [(SHSHeadphoneHearingProtectionController *)self reloadSpecifier:v11];
@@ -582,19 +582,19 @@ LABEL_18:
 
 - (id)getHeadphoneLevelLimitSetting
 {
-  v2 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v3 = [v2 getPreferenceFor:*MEMORY[0x277CEFB28]];
+  audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v3 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFB28]];
 
   return v3;
 }
 
-- (void)setHeadphoneNotificationsEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setHeadphoneNotificationsEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v8 = a3;
-  if ([v8 BOOLValue])
+  enabledCopy = enabled;
+  if ([enabledCopy BOOLValue])
   {
-    v5 = [(SHSHeadphoneHearingProtectionController *)self headphoneWeeklyNotificationDescriptionSpecifier];
-    [(SHSHeadphoneHearingProtectionController *)self insertSpecifier:v5 afterSpecifierID:@"SHSHeadphoneNotificationsSwitchKey" animated:1];
+    headphoneWeeklyNotificationDescriptionSpecifier = [(SHSHeadphoneHearingProtectionController *)self headphoneWeeklyNotificationDescriptionSpecifier];
+    [(SHSHeadphoneHearingProtectionController *)self insertSpecifier:headphoneWeeklyNotificationDescriptionSpecifier afterSpecifierID:@"SHSHeadphoneNotificationsSwitchKey" animated:1];
   }
 
   else
@@ -602,14 +602,14 @@ LABEL_18:
     [(SHSHeadphoneHearingProtectionController *)self removeSpecifierID:@"SHSHeadphoneWeeklyNotificationsKey" animated:1];
   }
 
-  v6 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v7 = [v6 setPreferenceFor:*MEMORY[0x277CEFAF0] value:v8];
+  audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v7 = [audioSettingsManager setPreferenceFor:*MEMORY[0x277CEFAF0] value:enabledCopy];
 }
 
 - (id)getHeadphoneNotificationsEnabled
 {
-  v2 = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
-  v3 = [v2 getPreferenceFor:*MEMORY[0x277CEFAF0]];
+  audioSettingsManager = [(SHSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  v3 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFAF0]];
 
   return v3;
 }
@@ -622,62 +622,62 @@ LABEL_18:
   return v3;
 }
 
-- (id)weeklyNotificationCount:(id)a3
+- (id)weeklyNotificationCount:(id)count
 {
-  v4 = [(SHSHeadphoneHearingProtectionController *)self numberFormatter];
+  numberFormatter = [(SHSHeadphoneHearingProtectionController *)self numberFormatter];
   v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_weeklyNotificationCount];
-  v6 = [v4 stringFromNumber:v5];
+  v6 = [numberFormatter stringFromNumber:v5];
 
   return v6;
 }
 
-- (void)updateMonthlyNotificationCounts:(id)a3 withNames:(id)a4 forDates:(id)a5
+- (void)updateMonthlyNotificationCounts:(id)counts withNames:(id)names forDates:(id)dates
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  countsCopy = counts;
+  namesCopy = names;
+  datesCopy = dates;
   v23 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v23 setDateFormat:@"M"];
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v8 count])
+  if ([namesCopy count])
   {
     v10 = 0;
     do
     {
       v27[0] = @"month";
-      v26 = [v8 objectAtIndexedSubscript:v10];
+      v26 = [namesCopy objectAtIndexedSubscript:v10];
       v28[0] = v26;
       v27[1] = @"date";
-      v11 = [v9 objectAtIndexedSubscript:v10];
+      v11 = [datesCopy objectAtIndexedSubscript:v10];
       v28[1] = v11;
       v27[2] = @"count";
-      v12 = [v7 objectAtIndexedSubscript:v10];
+      v12 = [countsCopy objectAtIndexedSubscript:v10];
       v28[2] = v12;
       v27[3] = @"desc";
       v13 = MEMORY[0x277CCACA8];
       v14 = SHS_LocalizedStringForSounds(@"HEADPHONE_LEVEL_NOTIFICATIONS_VOICE_OVER_DESCRIPTION");
-      [v7 objectAtIndexedSubscript:v10];
-      v15 = v7;
-      v17 = v16 = v9;
+      [countsCopy objectAtIndexedSubscript:v10];
+      v15 = countsCopy;
+      v17 = v16 = datesCopy;
       v18 = [v13 stringWithFormat:v14, objc_msgSend(v17, "integerValue")];
       v28[3] = v18;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:4];
       [(NSArray *)v25 setObject:v19 atIndexedSubscript:v10];
 
-      v9 = v16;
-      v7 = v15;
+      datesCopy = v16;
+      countsCopy = v15;
 
       ++v10;
     }
 
-    while ([v8 count] > v10);
+    while ([namesCopy count] > v10);
   }
 
   weeklyNotificationData = self->_weeklyNotificationData;
   self->_weeklyNotificationData = v25;
 
-  v21 = [v7 valueForKeyPath:@"@sum.self"];
+  v21 = [countsCopy valueForKeyPath:@"@sum.self"];
   -[SHSHeadphoneHearingProtectionController setWeeklyNotificationCount:](self, "setWeeklyNotificationCount:", [v21 intValue]);
 
   v22 = *MEMORY[0x277D85DE8];
@@ -685,36 +685,36 @@ LABEL_18:
 
 - (id)startDate
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [v3 components:2097404 fromDate:v2];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v4 = [currentCalendar components:2097404 fromDate:date];
   [v4 setMonth:{objc_msgSend(v4, "month") - 5}];
   [v4 setDay:1];
-  v5 = [v3 dateFromComponents:v4];
-  v6 = [v3 startOfDayForDate:v5];
+  v5 = [currentCalendar dateFromComponents:v4];
+  v6 = [currentCalendar startOfDayForDate:v5];
 
   return v6;
 }
 
-- (void)queryNotificationCountsFromDate:(id)a3 toDate:(id)a4
+- (void)queryNotificationCountsFromDate:(id)date toDate:(id)toDate
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v27 = a4;
+  dateCopy = date;
+  toDateCopy = toDate;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v9 = objc_alloc_init(MEMORY[0x277CCA968]);
-  v10 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v9 setLocale:v10];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v9 setLocale:currentLocale];
 
   [v9 setDateFormat:@"MMM"];
   v11 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   for (i = 0; i != 6; ++i)
   {
     [v11 setMonth:i];
-    v13 = [v8 dateByAddingComponents:v11 toDate:v29 options:0];
+    v13 = [currentCalendar dateByAddingComponents:v11 toDate:dateCopy options:0];
     [v7 addObject:v13];
     v14 = [v9 stringFromDate:v13];
     [v5 addObject:v14];
@@ -722,7 +722,7 @@ LABEL_18:
   }
 
   v25 = [MEMORY[0x277CCD720] categoryTypeForIdentifier:*MEMORY[0x277CCB9A0]];
-  v24 = [MEMORY[0x277CCD838] predicateForSamplesWithStartDate:v29 endDate:v27 options:0];
+  v24 = [MEMORY[0x277CCD838] predicateForSamplesWithStartDate:dateCopy endDate:toDateCopy options:0];
   v15 = objc_alloc(MEMORY[0x277CCAC98]);
   v26 = [v15 initWithKey:*MEMORY[0x277CCCD38] ascending:0];
   objc_initWeak(&location, self);

@@ -1,25 +1,25 @@
 @interface RTInferredMapItem
-+ (BOOL)hasKnownTypeItem:(id)a3;
-+ (double)consolidatedConfidenceFromConfidences:(id)a3;
-+ (id)dedupeInferredMapItems:(id)a3;
-+ (id)heaviestMapItemFrom:(id)a3 closestToLocation:(id)a4 distanceCalculator:(id)a5 error:(id *)a6;
-+ (unint64_t)consolidatedSourceFromInferredMapItems:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (RTInferredMapItem)initWithCoder:(id)a3;
-- (RTInferredMapItem)initWithMapItem:(id)a3 confidence:(double)a4 source:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)hasKnownTypeItem:(id)item;
++ (double)consolidatedConfidenceFromConfidences:(id)confidences;
++ (id)dedupeInferredMapItems:(id)items;
++ (id)heaviestMapItemFrom:(id)from closestToLocation:(id)location distanceCalculator:(id)calculator error:(id *)error;
++ (unint64_t)consolidatedSourceFromInferredMapItems:(id)items;
+- (BOOL)isEqual:(id)equal;
+- (RTInferredMapItem)initWithCoder:(id)coder;
+- (RTInferredMapItem)initWithMapItem:(id)item confidence:(double)confidence source:(unint64_t)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTInferredMapItem
 
-- (RTInferredMapItem)initWithMapItem:(id)a3 confidence:(double)a4 source:(unint64_t)a5
+- (RTInferredMapItem)initWithMapItem:(id)item confidence:(double)confidence source:(unint64_t)source
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (!v9)
+  itemCopy = item;
+  if (!itemCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@
     }
   }
 
-  if (a4 < 0.0 || a4 > 1.0)
+  if (confidence < 0.0 || confidence > 1.0)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -45,8 +45,8 @@
     }
   }
 
-  v13 = 0;
-  if (v9 && a4 >= 0.0 && a4 <= 1.0 && (a5 & 0xFFFFFFFFFFC00020) == 0)
+  selfCopy = 0;
+  if (itemCopy && confidence >= 0.0 && confidence <= 1.0 && (source & 0xFFFFFFFFFFC00020) == 0)
   {
     v18.receiver = self;
     v18.super_class = RTInferredMapItem;
@@ -54,37 +54,37 @@
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_mapItem, a3);
-      v15->_confidence = a4;
-      v15->_source = a5;
+      objc_storeStrong(&v14->_mapItem, item);
+      v15->_confidence = confidence;
+      v15->_source = source;
     }
 
     self = v15;
-    v13 = self;
+    selfCopy = self;
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTInferredMapItem *)self mapItem];
+  mapItem = [(RTInferredMapItem *)self mapItem];
   [(RTInferredMapItem *)self confidence];
   v6 = v5;
   v7 = [RTMapItem sourceToString:[(RTInferredMapItem *)self source]];
-  v8 = [v3 stringWithFormat:@"mapItem, %@, confidence, %.3f, source, %@", v4, v6, v7];
+  v8 = [v3 stringWithFormat:@"mapItem, %@, confidence, %.3f, source, %@", mapItem, v6, v7];
 
   return v8;
 }
 
-+ (BOOL)hasKnownTypeItem:(id)a3
++ (BOOL)hasKnownTypeItem:(id)item
 {
-  v3 = a3;
-  if ([v3 count])
+  itemCopy = item;
+  if ([itemCopy count])
   {
-    v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_1] != 0x7FFFFFFFFFFFFFFFLL;
+    v4 = [itemCopy indexOfObjectPassingTest:&__block_literal_global_1] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -104,17 +104,17 @@ uint64_t __38__RTInferredMapItem_hasKnownTypeItem___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (double)consolidatedConfidenceFromConfidences:(id)a3
++ (double)consolidatedConfidenceFromConfidences:(id)confidences
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  confidencesCopy = confidences;
   v4 = 0.0;
-  if ([v3 count])
+  if ([confidencesCopy count])
   {
-    if ([v3 count] == 1)
+    if ([confidencesCopy count] == 1)
     {
-      v5 = [v3 firstObject];
-      [v5 doubleValue];
+      firstObject = [confidencesCopy firstObject];
+      [firstObject doubleValue];
       v4 = v6;
     }
 
@@ -124,7 +124,7 @@ uint64_t __38__RTInferredMapItem_hasKnownTypeItem___block_invoke(uint64_t a1, vo
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v7 = v3;
+      v7 = confidencesCopy;
       v8 = [v7 countByEnumeratingWithState:&v22 objects:v32 count:16];
       if (v8)
       {
@@ -187,15 +187,15 @@ uint64_t __38__RTInferredMapItem_hasKnownTypeItem___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (unint64_t)consolidatedSourceFromInferredMapItems:(id)a3
++ (unint64_t)consolidatedSourceFromInferredMapItems:(id)items
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -207,13 +207,13 @@ uint64_t __38__RTInferredMapItem_hasKnownTypeItem___block_invoke(uint64_t a1, vo
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v6 |= [*(*(&v11 + 1) + 8 * i) source];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -228,24 +228,24 @@ uint64_t __38__RTInferredMapItem_hasKnownTypeItem___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-+ (id)dedupeInferredMapItems:(id)a3
++ (id)dedupeInferredMapItems:(id)items
 {
   v71 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] <= 1)
+  itemsCopy = items;
+  if ([itemsCopy count] <= 1)
   {
-    v4 = [v3 copy];
+    v4 = [itemsCopy copy];
     goto LABEL_36;
   }
 
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-  v56 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
+  v56 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v51 = v3;
-  v6 = v3;
+  v51 = itemsCopy;
+  v6 = itemsCopy;
   v53 = v6;
   v55 = [v6 countByEnumeratingWithState:&v65 objects:v70 count:16];
   if (!v55)
@@ -266,32 +266,32 @@ uint64_t __38__RTInferredMapItem_hasKnownTypeItem___block_invoke(uint64_t a1, vo
       }
 
       v9 = *(*(&v65 + 1) + 8 * i);
-      v10 = [v9 mapItem];
+      mapItem = [v9 mapItem];
       v63[0] = MEMORY[0x1E69E9820];
       v63[1] = 3221225472;
       v63[2] = __44__RTInferredMapItem_dedupeInferredMapItems___block_invoke;
       v63[3] = &unk_1E80B48F8;
-      v11 = v10;
+      v11 = mapItem;
       v64 = v11;
       v12 = [v5 indexOfObjectPassingTest:v63];
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
         [v5 addObject:v11];
         v13 = [MEMORY[0x1E695DF70] arrayWithObject:v9];
-        v14 = [v11 identifier];
-        [v56 setObject:v13 forKeyedSubscript:v14];
+        identifier = [v11 identifier];
+        [v56 setObject:v13 forKeyedSubscript:identifier];
       }
 
       else
       {
         v15 = v12;
         v13 = [v5 objectAtIndexedSubscript:v12];
-        v16 = [v13 identifier];
-        v17 = [v56 objectForKeyedSubscript:v16];
+        identifier2 = [v13 identifier];
+        v17 = [v56 objectForKeyedSubscript:identifier2];
         [v17 addObject:v9];
 
-        v18 = [v13 source];
-        v19 = [v11 source] & v18;
+        source = [v13 source];
+        v19 = [v11 source] & source;
         if (v19 == [v11 source])
         {
           goto LABEL_21;
@@ -310,8 +310,8 @@ uint64_t __38__RTInferredMapItem_hasKnownTypeItem___block_invoke(uint64_t a1, vo
           v23 = v11;
         }
 
-        v14 = v23;
-        if (v14 == v11)
+        identifier = v23;
+        if (identifier == v11)
         {
           v24 = v13;
         }
@@ -322,21 +322,21 @@ uint64_t __38__RTInferredMapItem_hasKnownTypeItem___block_invoke(uint64_t a1, vo
         }
 
         v25 = v24;
-        v26 = [v14 appendSource:{objc_msgSend(v25, "source")}];
+        v26 = [identifier appendSource:{objc_msgSend(v25, "source")}];
         [v5 setObject:v26 atIndexedSubscript:v15];
 
         v27 = [v5 objectAtIndexedSubscript:v15];
-        v28 = [v27 identifier];
-        v29 = [v13 identifier];
-        v30 = [v28 isEqual:v29];
+        identifier3 = [v27 identifier];
+        identifier4 = [v13 identifier];
+        v30 = [identifier3 isEqual:identifier4];
 
         if ((v30 & 1) == 0)
         {
-          v31 = [v13 identifier];
-          v32 = [v56 objectForKeyedSubscript:v31];
+          identifier5 = [v13 identifier];
+          v32 = [v56 objectForKeyedSubscript:identifier5];
           v33 = [v54 objectAtIndexedSubscript:v15];
-          v34 = [v33 identifier];
-          [v56 setObject:v32 forKeyedSubscript:v34];
+          identifier6 = [v33 identifier];
+          [v56 setObject:v32 forKeyedSubscript:identifier6];
         }
 
         v6 = v53;
@@ -376,19 +376,19 @@ LABEL_23:
         }
 
         v42 = *(*(&v59 + 1) + 8 * j);
-        v43 = [v42 identifier];
-        v44 = [v56 objectForKeyedSubscript:v43];
+        identifier7 = [v42 identifier];
+        v44 = [v56 objectForKeyedSubscript:identifier7];
 
         if ([v44 count] == 1)
         {
-          v45 = [v44 firstObject];
-          [v4 addObject:v45];
+          firstObject = [v44 firstObject];
+          [v4 addObject:firstObject];
         }
 
         else
         {
-          v45 = [v44 valueForKeyPath:@"confidence"];
-          [objc_opt_class() consolidatedConfidenceFromConfidences:v45];
+          firstObject = [v44 valueForKeyPath:@"confidence"];
+          [objc_opt_class() consolidatedConfidenceFromConfidences:firstObject];
           v47 = -[RTInferredMapItem initWithMapItem:confidence:source:]([RTInferredMapItem alloc], "initWithMapItem:confidence:source:", v42, [objc_opt_class() consolidatedSourceFromInferredMapItems:v44], v46);
           [v4 addObject:v47];
         }
@@ -411,7 +411,7 @@ LABEL_23:
     [v4 enumerateObjectsUsingBlock:v57];
   }
 
-  v3 = v51;
+  itemsCopy = v51;
 LABEL_36:
 
   v49 = *MEMORY[0x1E69E9840];
@@ -457,19 +457,19 @@ void __44__RTInferredMapItem_dedupeInferredMapItems___block_invoke_2(uint64_t a1
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)heaviestMapItemFrom:(id)a3 closestToLocation:(id)a4 distanceCalculator:(id)a5 error:(id *)a6
++ (id)heaviestMapItemFrom:(id)from closestToLocation:(id)location distanceCalculator:(id)calculator error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 count] > 1)
+  fromCopy = from;
+  locationCopy = location;
+  calculatorCopy = calculator;
+  if ([fromCopy count] > 1)
   {
-    v13 = [v9 valueForKeyPath:@"mapItem"];
-    v14 = [RTMapItem heaviestMapItemFrom:v13 closestToLocation:v10 distanceCalculator:v11 error:a6];
-    if (*a6)
+    v13 = [fromCopy valueForKeyPath:@"mapItem"];
+    v14 = [RTMapItem heaviestMapItemFrom:v13 closestToLocation:locationCopy distanceCalculator:calculatorCopy error:error];
+    if (*error)
     {
-      v12 = 0;
+      firstObject = 0;
     }
 
     else
@@ -478,15 +478,15 @@ void __44__RTInferredMapItem_dedupeInferredMapItems___block_invoke_2(uint64_t a1
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v15 = v9;
-      v12 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
-      if (v12)
+      v15 = fromCopy;
+      firstObject = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      if (firstObject)
       {
         v22 = v13;
         v16 = *v24;
         while (2)
         {
-          for (i = 0; i != v12; i = i + 1)
+          for (i = 0; i != firstObject; i = i + 1)
           {
             if (*v24 != v16)
             {
@@ -494,17 +494,17 @@ void __44__RTInferredMapItem_dedupeInferredMapItems___block_invoke_2(uint64_t a1
             }
 
             v18 = *(*(&v23 + 1) + 8 * i);
-            v19 = [v18 mapItem];
+            mapItem = [v18 mapItem];
 
-            if (v19 == v14)
+            if (mapItem == v14)
             {
-              v12 = v18;
+              firstObject = v18;
               goto LABEL_15;
             }
           }
 
-          v12 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
-          if (v12)
+          firstObject = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          if (firstObject)
           {
             continue;
           }
@@ -520,17 +520,17 @@ LABEL_15:
 
   else
   {
-    v12 = [v9 firstObject];
+    firstObject = [fromCopy firstObject];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   mapItem = self->_mapItem;
   confidence = self->_confidence;
   source = self->_source;
@@ -538,22 +538,22 @@ LABEL_15:
   return [v4 initWithMapItem:mapItem confidence:source source:confidence];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mapItem = self->_mapItem;
-  v5 = a3;
-  [v5 encodeObject:mapItem forKey:@"mapItem"];
-  [v5 encodeDouble:@"confidence" forKey:self->_confidence];
-  [v5 encodeInteger:self->_source forKey:@"source"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mapItem forKey:@"mapItem"];
+  [coderCopy encodeDouble:@"confidence" forKey:self->_confidence];
+  [coderCopy encodeInteger:self->_source forKey:@"source"];
 }
 
-- (RTInferredMapItem)initWithCoder:(id)a3
+- (RTInferredMapItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
-  [v4 decodeDoubleForKey:@"confidence"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
+  [coderCopy decodeDoubleForKey:@"confidence"];
   v7 = v6;
-  v8 = [v4 decodeIntegerForKey:@"source"];
+  v8 = [coderCopy decodeIntegerForKey:@"source"];
 
   v9 = [(RTInferredMapItem *)self initWithMapItem:v5 confidence:v8 source:v7];
   return v9;
@@ -570,10 +570,10 @@ LABEL_15:
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -583,17 +583,17 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTInferredMapItem *)self mapItem];
-      v7 = [(RTInferredMapItem *)v5 mapItem];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      mapItem = [(RTInferredMapItem *)self mapItem];
+      mapItem2 = [(RTInferredMapItem *)v5 mapItem];
+      v8 = [mapItem isEqual:mapItem2];
 
       [(RTInferredMapItem *)self confidence];
       v10 = v9;
       [(RTInferredMapItem *)v5 confidence];
       v12 = v11;
-      v13 = [(RTInferredMapItem *)self source];
-      v14 = [(RTInferredMapItem *)v5 source];
+      source = [(RTInferredMapItem *)self source];
+      source2 = [(RTInferredMapItem *)v5 source];
 
       if (v10 == v12)
       {
@@ -605,7 +605,7 @@ LABEL_15:
         v15 = 0;
       }
 
-      v16 = v13 == v14 && v15;
+      v16 = source == source2 && v15;
     }
 
     else

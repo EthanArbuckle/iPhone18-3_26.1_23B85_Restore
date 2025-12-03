@@ -6,8 +6,8 @@
 
 - (double)sb_debugFrame
 {
-  v2 = *[a1 _value];
-  [a1 sb_debugSize];
+  v2 = *[self _value];
+  [self sb_debugSize];
   return v2 - v3 * 0.5;
 }
 

@@ -1,12 +1,12 @@
 @interface HDCodableMenstrualCyclesExperienceModel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableMenstrualCyclesExperienceModel
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableMenstrualCyclesExperienceModel;
   v4 = [(HDCodableMenstrualCyclesExperienceModel *)&v8 description];
-  v5 = [(HDCodableMenstrualCyclesExperienceModel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableMenstrualCyclesExperienceModel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   menstrualCyclesExperienceModelData = self->_menstrualCyclesExperienceModelData;
   if (menstrualCyclesExperienceModelData)
   {
-    [v3 setObject:menstrualCyclesExperienceModelData forKey:@"menstrualCyclesExperienceModelData"];
+    [dictionary setObject:menstrualCyclesExperienceModelData forKey:@"menstrualCyclesExperienceModelData"];
   }
 
   if (*&self->_has)
@@ -42,45 +42,45 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_menstrualCyclesExperienceModelData)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     epoch = self->_epoch;
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_menstrualCyclesExperienceModelData)
   {
-    v5 = v4;
-    [v4 setMenstrualCyclesExperienceModelData:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setMenstrualCyclesExperienceModelData:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_epoch;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 1) = self->_epoch;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_menstrualCyclesExperienceModelData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_menstrualCyclesExperienceModelData copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -93,16 +93,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   menstrualCyclesExperienceModelData = self->_menstrualCyclesExperienceModelData;
-  if (menstrualCyclesExperienceModelData | *(v4 + 2))
+  if (menstrualCyclesExperienceModelData | *(equalCopy + 2))
   {
     if (![(NSData *)menstrualCyclesExperienceModelData isEqual:?])
     {
@@ -110,10 +110,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_epoch == *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_epoch == *(equalCopy + 1))
     {
       v6 = 1;
       goto LABEL_9;
@@ -144,19 +144,19 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[2])
+  fromCopy = from;
+  if (fromCopy[2])
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(HDCodableMenstrualCyclesExperienceModel *)self setMenstrualCyclesExperienceModelData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
-    self->_epoch = v4[1];
+    self->_epoch = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

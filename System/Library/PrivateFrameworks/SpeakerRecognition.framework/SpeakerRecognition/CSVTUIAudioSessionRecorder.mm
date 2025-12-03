@@ -1,25 +1,25 @@
 @interface CSVTUIAudioSessionRecorder
 - (BOOL)_hasCorrectInputAudioRoute;
-- (BOOL)_hasCorrectInputAudioRouteFromHardwareConfiguration:(int64_t)a3;
+- (BOOL)_hasCorrectInputAudioRouteFromHardwareConfiguration:(int64_t)configuration;
 - (BOOL)_hasCorrectOutputAudioRoute;
 - (BOOL)prepareRecord;
 - (BOOL)startRecording;
 - (CSVTUIAudioSessionDelegate)delegate;
-- (CSVTUIAudioSessionRecorder)initWithAudioProvider:(id)a3 forceSupportsRemoteDarwinDisplay:(BOOL)a4;
-- (CSVTUIAudioSessionRecorder)initWithAudioProviderSelector:(id)a3;
-- (id)_forceFetchAudioProvider:(BOOL)a3 recordContext:(id)a4;
-- (int64_t)convertStopReason:(int64_t)a3;
+- (CSVTUIAudioSessionRecorder)initWithAudioProvider:(id)provider forceSupportsRemoteDarwinDisplay:(BOOL)display;
+- (CSVTUIAudioSessionRecorder)initWithAudioProviderSelector:(id)selector;
+- (id)_forceFetchAudioProvider:(BOOL)provider recordContext:(id)context;
+- (int64_t)convertStopReason:(int64_t)reason;
 - (unint64_t)audioSource;
 - (unsigned)getAudioSessionID;
-- (void)_handleDidStopWithReason:(int64_t)a3;
+- (void)_handleDidStopWithReason:(int64_t)reason;
 - (void)_updateRemoteDarwinDisplayConnectedIfNeeded;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didHardwareConfigurationChange:(int64_t)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didHardwareConfigurationChange:(int64_t)change;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
 - (void)releaseAudioSession;
-- (void)setAudioRecordingHostTime:(unint64_t)a3;
+- (void)setAudioRecordingHostTime:(unint64_t)time;
 - (void)stopRecording;
-- (void)updateAudioRecorderForTrainingDevice:(unint64_t)a3 deviceUUIDs:(id)a4;
+- (void)updateAudioRecorderForTrainingDevice:(unint64_t)device deviceUUIDs:(id)ds;
 @end
 
 @implementation CSVTUIAudioSessionRecorder
@@ -36,8 +36,8 @@
   v25 = *MEMORY[0x277D85DE8];
   if ((CSIsIPad() & 1) != 0 || self->_forceSupportsRemoteDarwinDisplay)
   {
-    v3 = [MEMORY[0x277D26E60] sharedAVSystemController];
-    v4 = [v3 pickableRoutesForCategory:@"PlayAndRecord" andMode:@"SpeechRecognition"];
+    mEMORY[0x277D26E60] = [MEMORY[0x277D26E60] sharedAVSystemController];
+    v4 = [mEMORY[0x277D26E60] pickableRoutesForCategory:@"PlayAndRecord" andMode:@"SpeechRecognition"];
 
     v5 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -98,9 +98,9 @@ LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioStreamProvider:(id)a3 didHardwareConfigurationChange:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didHardwareConfigurationChange:(int64_t)change
 {
-  if (![(CSVTUIAudioSessionRecorder *)self _hasCorrectInputAudioRouteFromHardwareConfiguration:a4])
+  if (![(CSVTUIAudioSessionRecorder *)self _hasCorrectInputAudioRouteFromHardwareConfiguration:change])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
@@ -126,9 +126,9 @@ LABEL_16:
   dispatch_async(queue, block);
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
-  [(CSVTUIAudioSessionRecorder *)self _handleDidStopWithReason:[(CSVTUIAudioSessionRecorder *)self convertStopReason:a4]];
+  [(CSVTUIAudioSessionRecorder *)self _handleDidStopWithReason:[(CSVTUIAudioSessionRecorder *)self convertStopReason:unexpectedly]];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -144,15 +144,15 @@ LABEL_16:
   }
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
-  v6 = [v5 numSamples];
-  v14 = [v5 data];
+  availableCopy = available;
+  numSamples = [availableCopy numSamples];
+  data = [availableCopy data];
 
   powerMeter = self->_powerMeter;
-  v8 = v14;
-  -[CSAudioPowerMeter processShortBuffer:stride:inFrameToProcess:](powerMeter, "processShortBuffer:stride:inFrameToProcess:", [v14 bytes], 1, v6);
+  v8 = data;
+  -[CSAudioPowerMeter processShortBuffer:stride:inFrameToProcess:](powerMeter, "processShortBuffer:stride:inFrameToProcess:", [data bytes], 1, numSamples);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -163,12 +163,12 @@ LABEL_16:
     if (v12)
     {
       v13 = objc_loadWeakRetained(&self->_delegate);
-      [v13 audioSessionRecordBufferAvailable:v14];
+      [v13 audioSessionRecordBufferAvailable:data];
     }
   }
 }
 
-- (void)_handleDidStopWithReason:(int64_t)a3
+- (void)_handleDidStopWithReason:(int64_t)reason
 {
   [(CSAudioPowerMeter *)self->_powerMeter reset];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -181,7 +181,7 @@ LABEL_16:
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
-      [v9 audioSessionDidStopRecording:a3];
+      [v9 audioSessionDidStopRecording:reason];
     }
   }
 }
@@ -199,14 +199,14 @@ LABEL_16:
     return 6;
   }
 
-  v5 = [(CSAudioProvider *)audioProvider playbackRoute];
-  if (!v5)
+  playbackRoute = [(CSAudioProvider *)audioProvider playbackRoute];
+  if (!playbackRoute)
   {
     return 6;
   }
 
-  v6 = v5;
-  if ([v5 isEqualToString:*MEMORY[0x277CB81F0]] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CB81D8]) & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CB8208]))
+  v6 = playbackRoute;
+  if ([playbackRoute isEqualToString:*MEMORY[0x277CB81F0]] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CB81D8]) & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CB8208]))
   {
     v3 = 1;
   }
@@ -239,10 +239,10 @@ LABEL_16:
   return v3;
 }
 
-- (int64_t)convertStopReason:(int64_t)a3
+- (int64_t)convertStopReason:(int64_t)reason
 {
   v3 = -11785;
-  if (a3 == -11786)
+  if (reason == -11786)
   {
     v4 = -11786;
   }
@@ -252,12 +252,12 @@ LABEL_16:
     v4 = -11785;
   }
 
-  if (!a3)
+  if (!reason)
   {
     v4 = 0;
   }
 
-  if (a3 == -11787)
+  if (reason == -11787)
   {
     v5 = -11787;
   }
@@ -267,17 +267,17 @@ LABEL_16:
     v5 = v4;
   }
 
-  if (a3 == -11788)
+  if (reason == -11788)
   {
     v3 = -11788;
   }
 
-  if (a3 == -11789)
+  if (reason == -11789)
   {
     v3 = -11789;
   }
 
-  if (a3 <= -11788)
+  if (reason <= -11788)
   {
     return v3;
   }
@@ -304,18 +304,18 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v5 = [(CSAudioProvider *)audioProvider playbackRoute];
+  playbackRoute = [(CSAudioProvider *)audioProvider playbackRoute];
   v6 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[CSVTUIAudioSessionRecorder _hasCorrectOutputAudioRoute]";
     v11 = 2112;
-    v12 = v5;
+    v12 = playbackRoute;
     _os_log_impl(&dword_225E12000, v6, OS_LOG_TYPE_DEFAULT, "%s audioOutput:[%@]", &v9, 0x16u);
   }
 
-  if (!v5)
+  if (!playbackRoute)
   {
     if ([MEMORY[0x277D018F8] isExclaveHardware])
     {
@@ -327,19 +327,19 @@ LABEL_2:
     goto LABEL_14;
   }
 
-  if (self->_isRemoteDarwinDisplayConnected && ([v5 isEqualToString:*MEMORY[0x277CB81D8]] & 1) != 0)
+  if (self->_isRemoteDarwinDisplayConnected && ([playbackRoute isEqualToString:*MEMORY[0x277CB81D8]] & 1) != 0)
   {
     LOBYTE(v3) = 1;
   }
 
-  else if ([v5 isEqualToString:*MEMORY[0x277CB81F0]] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CB81D8]))
+  else if ([playbackRoute isEqualToString:*MEMORY[0x277CB81F0]] & 1) != 0 || (objc_msgSend(playbackRoute, "isEqualToString:", *MEMORY[0x277CB81D8]))
   {
     LOBYTE(v3) = 0;
   }
 
   else
   {
-    v3 = [v5 isEqualToString:*MEMORY[0x277CB81C8]] ^ 1;
+    v3 = [playbackRoute isEqualToString:*MEMORY[0x277CB81C8]] ^ 1;
   }
 
 LABEL_17:
@@ -347,7 +347,7 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)_hasCorrectInputAudioRouteFromHardwareConfiguration:(int64_t)a3
+- (BOOL)_hasCorrectInputAudioRouteFromHardwareConfiguration:(int64_t)configuration
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D015D8];
@@ -356,12 +356,12 @@ LABEL_17:
     v7 = 136315394;
     v8 = "[CSVTUIAudioSessionRecorder _hasCorrectInputAudioRouteFromHardwareConfiguration:]";
     v9 = 2048;
-    v10 = a3;
+    configurationCopy = configuration;
     _os_log_impl(&dword_225E12000, v4, OS_LOG_TYPE_DEFAULT, "%s hardwareConfig: %ld", &v7, 0x16u);
   }
 
   result = CSIsOSX();
-  if ((a3 - 1) < 3)
+  if ((configuration - 1) < 3)
   {
     result = 1;
   }
@@ -383,18 +383,18 @@ LABEL_17:
     audioProvider = self->_audioProvider;
     if (audioProvider)
     {
-      v5 = [(CSAudioProvider *)audioProvider recordRoute];
+      recordRoute = [(CSAudioProvider *)audioProvider recordRoute];
       v6 = *MEMORY[0x277D015D8];
       if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
       {
         v9 = 136315394;
         v10 = "[CSVTUIAudioSessionRecorder _hasCorrectInputAudioRoute]";
         v11 = 2112;
-        v12 = v5;
+        v12 = recordRoute;
         _os_log_impl(&dword_225E12000, v6, OS_LOG_TYPE_DEFAULT, "%s audioInput:[%@]", &v9, 0x16u);
       }
 
-      v3 = v5 && (([v5 isEqualToString:@"Borealis Input"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CB8188]) & 1) != 0 || objc_msgSend(MEMORY[0x277D018F8], "isExclaveHardware") && (objc_msgSend(v5, "isEqualToString:", @"HACBuiltIn") & 1) != 0);
+      v3 = recordRoute && (([recordRoute isEqualToString:@"Borealis Input"] & 1) != 0 || (objc_msgSend(recordRoute, "isEqualToString:", *MEMORY[0x277CB8188]) & 1) != 0 || objc_msgSend(MEMORY[0x277D018F8], "isExclaveHardware") && (objc_msgSend(recordRoute, "isEqualToString:", @"HACBuiltIn") & 1) != 0);
     }
 
     else
@@ -409,10 +409,10 @@ LABEL_17:
 
 - (unsigned)getAudioSessionID
 {
-  v2 = [MEMORY[0x277CB83F0] sharedInstance];
-  v3 = [v2 opaqueSessionID];
+  mEMORY[0x277CB83F0] = [MEMORY[0x277CB83F0] sharedInstance];
+  opaqueSessionID = [mEMORY[0x277CB83F0] opaqueSessionID];
 
-  return v3;
+  return opaqueSessionID;
 }
 
 - (void)releaseAudioSession
@@ -481,13 +481,13 @@ void __43__CSVTUIAudioSessionRecorder_stopRecording__block_invoke(uint64_t a1, c
 - (BOOL)startRecording
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D01678] noAlertOption];
-  [v3 setRequireSingleChannelLookup:1];
-  [v3 setSelectedChannel:0];
+  noAlertOption = [MEMORY[0x277D01678] noAlertOption];
+  [noAlertOption setRequireSingleChannelLookup:1];
+  [noAlertOption setSelectedChannel:0];
   if (self->_shouldUseRecordingStartHostTime)
   {
-    [v3 setRequestHistoricalAudioDataWithHostTime:1];
-    [v3 setStartRecordingHostTime:self->_startRecordingHostTime];
+    [noAlertOption setRequestHistoricalAudioDataWithHostTime:1];
+    [noAlertOption setStartRecordingHostTime:self->_startRecordingHostTime];
   }
 
   audioStream = self->_audioStream;
@@ -498,7 +498,7 @@ void __43__CSVTUIAudioSessionRecorder_stopRecording__block_invoke(uint64_t a1, c
     v8[2] = __44__CSVTUIAudioSessionRecorder_startRecording__block_invoke;
     v8[3] = &unk_2785782A0;
     v8[4] = self;
-    [(CSAudioStream *)audioStream startAudioStreamWithOption:v3 completion:v8];
+    [(CSAudioStream *)audioStream startAudioStreamWithOption:noAlertOption completion:v8];
   }
 
   else
@@ -534,12 +534,12 @@ void __44__CSVTUIAudioSessionRecorder_startRecording__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)updateAudioRecorderForTrainingDevice:(unint64_t)a3 deviceUUIDs:(id)a4
+- (void)updateAudioRecorderForTrainingDevice:(unint64_t)device deviceUUIDs:(id)ds
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dsCopy = ds;
   v7 = CSIsOSX();
-  if (a3 == 1 && v7)
+  if (device == 1 && v7)
   {
     v8 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -549,16 +549,16 @@ void __44__CSVTUIAudioSessionRecorder_startRecording__block_invoke(uint64_t a1, 
       v18 = 2048;
       v19 = 1;
       v20 = 2113;
-      v21 = v6;
+      v21 = dsCopy;
       _os_log_impl(&dword_225E12000, v8, OS_LOG_TYPE_DEFAULT, "%s Update to latest record context with device type: %zu, Remote device UUID list: %{private}@", &v16, 0x20u);
     }
 
-    v9 = [v6 firstObject];
-    v10 = [v9 UUIDString];
+    firstObject = [dsCopy firstObject];
+    uUIDString = [firstObject UUIDString];
 
-    v11 = [MEMORY[0x277D01858] sharedInstance];
-    [v11 deviceConnectedWithUUID:v10];
-    v12 = [v11 fetchRichDeviceUIDStringFromUUID:v10];
+    mEMORY[0x277D01858] = [MEMORY[0x277D01858] sharedInstance];
+    [mEMORY[0x277D01858] deviceConnectedWithUUID:uUIDString];
+    v12 = [mEMORY[0x277D01858] fetchRichDeviceUIDStringFromUUID:uUIDString];
     v13 = [objc_alloc(MEMORY[0x277D01648]) initWithRecordType:4 deviceId:v12];
     v14 = [(CSVTUIAudioSessionRecorder *)self _forceFetchAudioProvider:1 recordContext:v13];
     [v14 setLatestRecordContext:v13 streamType:3];
@@ -570,8 +570,8 @@ void __44__CSVTUIAudioSessionRecorder_startRecording__block_invoke(uint64_t a1, 
 - (BOOL)prepareRecord
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D01648] contextForVoiceTriggerTraining];
-  v4 = [(CSVTUIAudioSessionRecorder *)self _forceFetchAudioProvider:0 recordContext:v3];
+  contextForVoiceTriggerTraining = [MEMORY[0x277D01648] contextForVoiceTriggerTraining];
+  v4 = [(CSVTUIAudioSessionRecorder *)self _forceFetchAudioProvider:0 recordContext:contextForVoiceTriggerTraining];
 
   if (v4)
   {
@@ -583,8 +583,8 @@ void __44__CSVTUIAudioSessionRecorder_startRecording__block_invoke(uint64_t a1, 
       audioStream = self->_audioStream;
       if (!audioStream || ![(CSAudioStream *)audioStream isStreaming])
       {
-        v15 = [MEMORY[0x277D01648] contextForVoiceTriggerTraining];
-        v16 = [MEMORY[0x277D016A0] defaultRequestWithContext:v15];
+        contextForVoiceTriggerTraining2 = [MEMORY[0x277D01648] contextForVoiceTriggerTraining];
+        v16 = [MEMORY[0x277D016A0] defaultRequestWithContext:contextForVoiceTriggerTraining2];
         [v16 setClientIdentity:7];
         [v16 setRequestRecordModeLock:1];
         if ([MEMORY[0x277D018F8] isExclaveHardware])
@@ -624,11 +624,11 @@ void __44__CSVTUIAudioSessionRecorder_startRecording__block_invoke(uint64_t a1, 
         else if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           v27 = v21;
-          v28 = [v14 localizedDescription];
+          localizedDescription = [v14 localizedDescription];
           *buf = 136315394;
           v32 = "[CSVTUIAudioSessionRecorder prepareRecord]";
           v33 = 2114;
-          v34 = v28;
+          v34 = localizedDescription;
           _os_log_error_impl(&dword_225E12000, v27, OS_LOG_TYPE_ERROR, "%s Failed to prepareAudioStreamRecord : %{public}@", buf, 0x16u);
         }
 
@@ -656,11 +656,11 @@ void __44__CSVTUIAudioSessionRecorder_startRecording__block_invoke(uint64_t a1, 
       if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = [v6 localizedDescription];
+        localizedDescription2 = [v6 localizedDescription];
         *buf = 136315394;
         v32 = "[CSVTUIAudioSessionRecorder prepareRecord]";
         v33 = 2114;
-        v34 = v13;
+        v34 = localizedDescription2;
         _os_log_impl(&dword_225E12000, v12, OS_LOG_TYPE_DEFAULT, "%s Failed to activate audio session, error : %{public}@", buf, 0x16u);
       }
 
@@ -688,13 +688,13 @@ LABEL_31:
   return v9;
 }
 
-- (id)_forceFetchAudioProvider:(BOOL)a3 recordContext:(id)a4
+- (id)_forceFetchAudioProvider:(BOOL)provider recordContext:(id)context
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   p_audioProvider = &self->_audioProvider;
   audioProvider = self->_audioProvider;
-  if (audioProvider && !a3)
+  if (audioProvider && !provider)
   {
     v9 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -735,7 +735,7 @@ LABEL_31:
     }
 
     v40 = 0;
-    audioProvider = [(CSAudioProviderSelecting *)audioProviderSelector audioProviderWithContext:v6 error:&v40];
+    audioProvider = [(CSAudioProviderSelecting *)audioProviderSelector audioProviderWithContext:contextCopy error:&v40];
     v16 = v40;
     if (v16)
     {
@@ -788,7 +788,7 @@ LABEL_27:
     v34[4] = v47;
     v34[5] = &v35;
     v34[6] = buf;
-    [v20 setContext:v6 completion:v34];
+    [v20 setContext:contextCopy completion:v34];
     v21 = MEMORY[0x277D015D8];
     v22 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -797,7 +797,7 @@ LABEL_27:
       *v41 = 136315650;
       v42 = "[CSVTUIAudioSessionRecorder _forceFetchAudioProvider:recordContext:]";
       v43 = 2114;
-      v44 = v6;
+      v44 = contextCopy;
       v45 = 2048;
       v46 = v23;
       _os_log_impl(&dword_225E12000, v22, OS_LOG_TYPE_DEFAULT, "%s For Context : %{public}@, audioStreamId(%llu) has allocated", v41, 0x20u);
@@ -808,7 +808,7 @@ LABEL_27:
     if (v24)
     {
       v26 = objc_alloc(MEMORY[0x277D01640]);
-      audioProvider = [v26 initWithAudioStreamHandleId:*(*&v47[8] + 24) audioStreamType:v36[3] audioRecordContext:v6 audioRecorder:v20];
+      audioProvider = [v26 initWithAudioStreamHandleId:*(*&v47[8] + 24) audioStreamType:v36[3] audioRecordContext:contextCopy audioRecorder:v20];
       [audioProvider start];
       [audioProvider setAudioProviderDelegate:self];
     }
@@ -818,11 +818,11 @@ LABEL_27:
       v28 = *v21;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v33 = [*(*&buf[8] + 40) localizedDescription];
+        localizedDescription = [*(*&buf[8] + 40) localizedDescription];
         *v41 = 136315394;
         v42 = "[CSVTUIAudioSessionRecorder _forceFetchAudioProvider:recordContext:]";
         v43 = 2112;
-        v44 = v33;
+        v44 = localizedDescription;
         _os_log_error_impl(&dword_225E12000, v28, OS_LOG_TYPE_ERROR, "%s Failed to get audio stream handle ID : %{publid}@", v41, 0x16u);
       }
 
@@ -838,11 +838,11 @@ LABEL_27:
     v27 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v32 = [*(*&buf[8] + 40) localizedDescription];
+      localizedDescription2 = [*(*&buf[8] + 40) localizedDescription];
       *v47 = 136315394;
       *&v47[4] = "[CSVTUIAudioSessionRecorder _forceFetchAudioProvider:recordContext:]";
       *&v47[12] = 2114;
-      *&v47[14] = v32;
+      *&v47[14] = localizedDescription2;
       _os_log_error_impl(&dword_225E12000, v27, OS_LOG_TYPE_ERROR, "%s Failed to create audio recorder : %{public}@", v47, 0x16u);
     }
 
@@ -871,33 +871,33 @@ void __69__CSVTUIAudioSessionRecorder__forceFetchAudioProvider_recordContext___b
   objc_storeStrong((*(a1[6] + 8) + 40), obj);
 }
 
-- (void)setAudioRecordingHostTime:(unint64_t)a3
+- (void)setAudioRecordingHostTime:(unint64_t)time
 {
   v10 = *MEMORY[0x277D85DE8];
   self->_shouldUseRecordingStartHostTime = 1;
-  self->_startRecordingHostTime = a3;
+  self->_startRecordingHostTime = time;
   v4 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[CSVTUIAudioSessionRecorder setAudioRecordingHostTime:]";
     v8 = 2048;
-    v9 = a3;
+    timeCopy = time;
     _os_log_impl(&dword_225E12000, v4, OS_LOG_TYPE_DEFAULT, "%s Setting start recording time to %llu", &v6, 0x16u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (CSVTUIAudioSessionRecorder)initWithAudioProvider:(id)a3 forceSupportsRemoteDarwinDisplay:(BOOL)a4
+- (CSVTUIAudioSessionRecorder)initWithAudioProvider:(id)provider forceSupportsRemoteDarwinDisplay:(BOOL)display
 {
-  v7 = a3;
+  providerCopy = provider;
   v8 = [(CSVTUIAudioSessionRecorder *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_audioProvider, a3);
-    v9->_forceSupportsRemoteDarwinDisplay = a4;
+    objc_storeStrong(&v8->_audioProvider, provider);
+    v9->_forceSupportsRemoteDarwinDisplay = display;
     [(CSVTUIAudioSessionRecorder *)v9 _updateRemoteDarwinDisplayConnectedIfNeeded];
     v9->_startRecordingHostTime = 0;
     v9->_shouldUseRecordingStartHostTime = 0;
@@ -906,10 +906,10 @@ void __69__CSVTUIAudioSessionRecorder__forceFetchAudioProvider_recordContext___b
   return v9;
 }
 
-- (CSVTUIAudioSessionRecorder)initWithAudioProviderSelector:(id)a3
+- (CSVTUIAudioSessionRecorder)initWithAudioProviderSelector:(id)selector
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  selectorCopy = selector;
   v19.receiver = self;
   v19.super_class = CSVTUIAudioSessionRecorder;
   v6 = [(CSVTUIAudioSessionRecorder *)&v19 init];
@@ -924,9 +924,9 @@ void __69__CSVTUIAudioSessionRecorder__forceFetchAudioProvider_recordContext___b
   queue = v7->_queue;
   v7->_queue = v8;
 
-  objc_storeStrong(&v7->_audioProviderSelector, a3);
-  v10 = [MEMORY[0x277D01648] contextForVoiceTriggerTraining];
-  v11 = [(CSVTUIAudioSessionRecorder *)v7 _forceFetchAudioProvider:0 recordContext:v10];
+  objc_storeStrong(&v7->_audioProviderSelector, selector);
+  contextForVoiceTriggerTraining = [MEMORY[0x277D01648] contextForVoiceTriggerTraining];
+  v11 = [(CSVTUIAudioSessionRecorder *)v7 _forceFetchAudioProvider:0 recordContext:contextForVoiceTriggerTraining];
 
   if (v7->_audioProvider)
   {

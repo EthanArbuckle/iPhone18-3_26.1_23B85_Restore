@@ -8,7 +8,7 @@
 - (void)_certificateChain;
 - (void)dealloc;
 - (void)securityIdentity;
-- (void)verifyCertificate:(id)a3 completion:(id)a4;
+- (void)verifyCertificate:(id)certificate completion:(id)completion;
 @end
 
 @implementation AXSSInterDeviceSecurityHelper
@@ -68,7 +68,7 @@
 
     if ([v4 count])
     {
-      v6 = [v4 lastObject];
+      lastObject = [v4 lastObject];
       v7 = _AppleIDCopySecIdentityForAppleIDAccount();
       if (v7)
       {
@@ -103,8 +103,8 @@
 
     else
     {
-      v6 = AXSSLogForCategory(1);
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      lastObject = AXSSLogForCategory(1);
+      if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
       {
         [(AXSSInterDeviceSecurityHelper *)&v12 _appleIDIdentity];
       }
@@ -122,12 +122,12 @@
   cachedCertificateChain = self->_cachedCertificateChain;
   if (!cachedCertificateChain)
   {
-    v4 = [(AXSSInterDeviceSecurityHelper *)self _appleIDIdentity];
-    if (v4)
+    _appleIDIdentity = [(AXSSInterDeviceSecurityHelper *)self _appleIDIdentity];
+    if (_appleIDIdentity)
     {
-      v5 = v4;
+      v5 = _appleIDIdentity;
       certificateRef = 0;
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v7 = SecIdentityCopyCertificate(v5, &certificateRef);
       if (!certificateRef || v7)
       {
@@ -193,15 +193,15 @@
                   v18 = [(__CFArray *)v16 objectAtIndex:i];
                   if (v18)
                   {
-                    [v6 addObject:v18];
+                    [array addObject:v18];
                   }
                 }
               }
             }
 
-            if ([v6 count] == 2)
+            if ([array count] == 2)
             {
-              v19 = v6;
+              v19 = array;
               p_super = &self->_cachedCertificateChain->super;
               self->_cachedCertificateChain = v19;
             }
@@ -248,15 +248,15 @@
   cachedSecurityIdentity = self->_cachedSecurityIdentity;
   if (!cachedSecurityIdentity)
   {
-    v4 = [(AXSSInterDeviceSecurityHelper *)self _certificateChain];
-    if ([v4 count])
+    _certificateChain = [(AXSSInterDeviceSecurityHelper *)self _certificateChain];
+    if ([_certificateChain count])
     {
-      v5 = [(AXSSInterDeviceSecurityHelper *)self _appleIDIdentity];
-      if (v5)
+      _appleIDIdentity = [(AXSSInterDeviceSecurityHelper *)self _appleIDIdentity];
+      if (_appleIDIdentity)
       {
-        v11[0] = v5;
+        v11[0] = _appleIDIdentity;
         v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-        v7 = [v6 arrayByAddingObjectsFromArray:v4];
+        v7 = [v6 arrayByAddingObjectsFromArray:_certificateChain];
         v8 = self->_cachedSecurityIdentity;
         self->_cachedSecurityIdentity = v7;
       }
@@ -279,18 +279,18 @@
   return cachedSecurityIdentity;
 }
 
-- (void)verifyCertificate:(id)a3 completion:(id)a4
+- (void)verifyCertificate:(id)certificate completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (certificate)
   {
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __62__AXSSInterDeviceSecurityHelper_verifyCertificate_completion___block_invoke;
     v13 = &unk_1E81347E0;
-    v14 = self;
-    v15 = v6;
+    selfCopy = self;
+    v15 = completionCopy;
     SFAppleIDVerifyCertificateChain();
   }
 
@@ -402,7 +402,7 @@ LABEL_29:
 - (void)_appleIDIdentity
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x1E69E9840];

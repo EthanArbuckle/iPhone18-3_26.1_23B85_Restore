@@ -1,11 +1,11 @@
 @interface TaskOperator
 - (TaskOperator)init;
-- (TaskOperator)initWithTask:(unsigned int)a3;
+- (TaskOperator)initWithTask:(unsigned int)task;
 @end
 
 @implementation TaskOperator
 
-- (TaskOperator)initWithTask:(unsigned int)a3
+- (TaskOperator)initWithTask:(unsigned int)task
 {
   v4 = sub_100026AF4();
   v5 = self + OBJC_IVAR___TaskOperator_extraction;

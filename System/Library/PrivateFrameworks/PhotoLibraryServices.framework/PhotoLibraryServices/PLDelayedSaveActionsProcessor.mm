@@ -1,60 +1,60 @@
 @interface PLDelayedSaveActionsProcessor
-- (PLDelayedSaveActionsProcessor)initWithLibraryServicesManager:(id)a3;
-- (id)_assetIDsByContainingSocialGroupIDsFromAssetIDsNeedingContainmentUpdates:(id)a3 inContext:(id)a4;
-- (id)_assetIDsByNodeIDFromAssetPersonEdgeDictionaries:(id)a3 assetIDsNeedingContainmentUpdates:(id)a4 inContext:(id)a5;
-- (id)_assetIDsByPersonUUIDWithAllPersonsFromAssetsNeedingContainmentUpdates:(id)a3 assetIDsNeedingContainmentUpdates:(id)a4 inContext:(id)a5;
-- (id)_personUUIDsByNodeIDFromAssetPersonDictionaries:(id)a3 inContext:(id)a4;
-- (id)_socialGroupNodeIDsContainingMember:(id)a3 library:(id)a4 error:(id *)a5;
-- (void)_deleteUUIDs:(id)a3 fromCoreDuetStreams:(id)a4 transaction:(id)a5;
-- (void)_processAssetContainmentUpdatesForSocialGroupsContainingMemberPersonIDs:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processAssetIDsByPersonUUIDNeedingContainmentUpdates:(id)a3 assetIDsNeedingContainmentUpdates:(id)a4 pendingMemberIDsOfSocialGroupsNeedingContainmentUpdates:(BOOL)a5 library:(id)a6 transaction:(id)a7;
-- (void)_processAssetsNeedingAssetPersonEdgeUpdates:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedAlbumCountsAndDateRangeUpdates:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedAlbumKeyAssetsUpdates:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedAlbumTrashUpdates:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedAlbumWidgetTimelineReload:(BOOL)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedAssetsForDuetDelete:(id)a3 transaction:(id)a4;
-- (void)_processDelayedAssetsForWallpaperFavoriteAlbumRemoval:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedAssetsForWallpaperUserAlbumRemoval:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedAssetsForWidgetFavoriteAlbumRemoval:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedAssetsForWidgetUserAlbumRemoval:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedBackgroundUploadEventUpdate:(BOOL)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedCloudFeedAlbumUpdates:(id)a3 collectionShareUpdates:(id)a4 collectionShareDeletes:(id)a5 assetInserts:(id)a6 assetUpdates:(id)a7 commentInserts:(id)a8 invitationRecordUpdates:(id)a9 shareParticipantUpdates:(id)a10 shareParticipantDeletes:(id)a11 deletionEntries:(id)a12 transaction:(id)a13;
-- (void)_processDelayedFeaturedContentUpdateAndWidgetTimelineReload:(BOOL)a3 withPersonUUIDs:(id)a4 shouldReloadWidgetTimeline:(BOOL)a5 library:(id)a6 transaction:(id)a7;
-- (void)_processDelayedForYouWidgetTimelineReload:(BOOL)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedImportSessionCountsAndDateRangeUpdates:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedLibraryScopeParticipantsUpdate:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedLibraryScopeRulesUpdate:(BOOL)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedMemoriesAssetUpdate:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processDelayedMemoriesForDuetDelete:(id)a3 transaction:(id)a4;
-- (void)_processDelayedMomentChangesWithTransaction:(id)a3;
-- (void)_processDelayedWallpaperSuggestionReload:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_processMembersOfSocialGroupsNeedingDeduplication:(id)a3 pendingSocialGroupIDsNeedingDeduplication:(BOOL)a4 library:(id)a5 transaction:(id)a6;
-- (void)_processSocialGroupsNeedingDeduplication:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)_runAssetContainmentForSocialGroup:(id)a3 assetIDsToUpdate:(id)a4;
-- (void)_runContainmentOnAllGroupsNeedingContainmentUpdates:(id)a3 inLibrary:(id)a4;
-- (void)processDelayedDeletionsFromChangeHubEvent:(id)a3 library:(id)a4 transaction:(id)a5;
-- (void)processDelayedMomentGeneratorSaveActionsFromDetail:(id)a3;
-- (void)processDelayedSaveActionsDetail:(id)a3 withPhotoLibrary:(id)a4 transaction:(id)a5;
+- (PLDelayedSaveActionsProcessor)initWithLibraryServicesManager:(id)manager;
+- (id)_assetIDsByContainingSocialGroupIDsFromAssetIDsNeedingContainmentUpdates:(id)updates inContext:(id)context;
+- (id)_assetIDsByNodeIDFromAssetPersonEdgeDictionaries:(id)dictionaries assetIDsNeedingContainmentUpdates:(id)updates inContext:(id)context;
+- (id)_assetIDsByPersonUUIDWithAllPersonsFromAssetsNeedingContainmentUpdates:(id)updates assetIDsNeedingContainmentUpdates:(id)containmentUpdates inContext:(id)context;
+- (id)_personUUIDsByNodeIDFromAssetPersonDictionaries:(id)dictionaries inContext:(id)context;
+- (id)_socialGroupNodeIDsContainingMember:(id)member library:(id)library error:(id *)error;
+- (void)_deleteUUIDs:(id)ds fromCoreDuetStreams:(id)streams transaction:(id)transaction;
+- (void)_processAssetContainmentUpdatesForSocialGroupsContainingMemberPersonIDs:(id)ds library:(id)library transaction:(id)transaction;
+- (void)_processAssetIDsByPersonUUIDNeedingContainmentUpdates:(id)updates assetIDsNeedingContainmentUpdates:(id)containmentUpdates pendingMemberIDsOfSocialGroupsNeedingContainmentUpdates:(BOOL)needingContainmentUpdates library:(id)library transaction:(id)transaction;
+- (void)_processAssetsNeedingAssetPersonEdgeUpdates:(id)updates library:(id)library transaction:(id)transaction;
+- (void)_processDelayedAlbumCountsAndDateRangeUpdates:(id)updates library:(id)library transaction:(id)transaction;
+- (void)_processDelayedAlbumKeyAssetsUpdates:(id)updates library:(id)library transaction:(id)transaction;
+- (void)_processDelayedAlbumTrashUpdates:(id)updates library:(id)library transaction:(id)transaction;
+- (void)_processDelayedAlbumWidgetTimelineReload:(BOOL)reload library:(id)library transaction:(id)transaction;
+- (void)_processDelayedAssetsForDuetDelete:(id)delete transaction:(id)transaction;
+- (void)_processDelayedAssetsForWallpaperFavoriteAlbumRemoval:(id)removal library:(id)library transaction:(id)transaction;
+- (void)_processDelayedAssetsForWallpaperUserAlbumRemoval:(id)removal library:(id)library transaction:(id)transaction;
+- (void)_processDelayedAssetsForWidgetFavoriteAlbumRemoval:(id)removal library:(id)library transaction:(id)transaction;
+- (void)_processDelayedAssetsForWidgetUserAlbumRemoval:(id)removal library:(id)library transaction:(id)transaction;
+- (void)_processDelayedBackgroundUploadEventUpdate:(BOOL)update library:(id)library transaction:(id)transaction;
+- (void)_processDelayedCloudFeedAlbumUpdates:(id)updates collectionShareUpdates:(id)shareUpdates collectionShareDeletes:(id)deletes assetInserts:(id)inserts assetUpdates:(id)assetUpdates commentInserts:(id)commentInserts invitationRecordUpdates:(id)recordUpdates shareParticipantUpdates:(id)self0 shareParticipantDeletes:(id)self1 deletionEntries:(id)self2 transaction:(id)self3;
+- (void)_processDelayedFeaturedContentUpdateAndWidgetTimelineReload:(BOOL)reload withPersonUUIDs:(id)ds shouldReloadWidgetTimeline:(BOOL)timeline library:(id)library transaction:(id)transaction;
+- (void)_processDelayedForYouWidgetTimelineReload:(BOOL)reload library:(id)library transaction:(id)transaction;
+- (void)_processDelayedImportSessionCountsAndDateRangeUpdates:(id)updates library:(id)library transaction:(id)transaction;
+- (void)_processDelayedLibraryScopeParticipantsUpdate:(id)update library:(id)library transaction:(id)transaction;
+- (void)_processDelayedLibraryScopeRulesUpdate:(BOOL)update library:(id)library transaction:(id)transaction;
+- (void)_processDelayedMemoriesAssetUpdate:(id)update library:(id)library transaction:(id)transaction;
+- (void)_processDelayedMemoriesForDuetDelete:(id)delete transaction:(id)transaction;
+- (void)_processDelayedMomentChangesWithTransaction:(id)transaction;
+- (void)_processDelayedWallpaperSuggestionReload:(id)reload library:(id)library transaction:(id)transaction;
+- (void)_processMembersOfSocialGroupsNeedingDeduplication:(id)deduplication pendingSocialGroupIDsNeedingDeduplication:(BOOL)needingDeduplication library:(id)library transaction:(id)transaction;
+- (void)_processSocialGroupsNeedingDeduplication:(id)deduplication library:(id)library transaction:(id)transaction;
+- (void)_runAssetContainmentForSocialGroup:(id)group assetIDsToUpdate:(id)update;
+- (void)_runContainmentOnAllGroupsNeedingContainmentUpdates:(id)updates inLibrary:(id)library;
+- (void)processDelayedDeletionsFromChangeHubEvent:(id)event library:(id)library transaction:(id)transaction;
+- (void)processDelayedMomentGeneratorSaveActionsFromDetail:(id)detail;
+- (void)processDelayedSaveActionsDetail:(id)detail withPhotoLibrary:(id)library transaction:(id)transaction;
 @end
 
 @implementation PLDelayedSaveActionsProcessor
 
-- (void)_processDelayedBackgroundUploadEventUpdate:(BOOL)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedBackgroundUploadEventUpdate:(BOOL)update library:(id)library transaction:(id)transaction
 {
-  v5 = a3;
-  v6 = a4;
+  updateCopy = update;
+  libraryCopy = library;
   if (PLIsAssetsd())
   {
-    if (v5)
+    if (updateCopy)
     {
-      v7 = [v6 libraryServicesManager];
-      v8 = +[PLBackgroundJobResourceUploadExtensionRunnerWorker supportsWellKnownPhotoLibraryIdentifier:](PLBackgroundJobResourceUploadExtensionRunnerWorker, "supportsWellKnownPhotoLibraryIdentifier:", [v7 wellKnownPhotoLibraryIdentifier]);
+      libraryServicesManager = [libraryCopy libraryServicesManager];
+      v8 = +[PLBackgroundJobResourceUploadExtensionRunnerWorker supportsWellKnownPhotoLibraryIdentifier:](PLBackgroundJobResourceUploadExtensionRunnerWorker, "supportsWellKnownPhotoLibraryIdentifier:", [libraryServicesManager wellKnownPhotoLibraryIdentifier]);
 
       if (v8)
       {
-        v9 = [v6 libraryBundle];
-        v10 = [PLBackgroundJobResourceUploadExtensionRunnerWorker isEnabledForBundle:v9];
+        libraryBundle = [libraryCopy libraryBundle];
+        v10 = [PLBackgroundJobResourceUploadExtensionRunnerWorker isEnabledForBundle:libraryBundle];
 
         if (v10)
         {
@@ -69,7 +69,7 @@
           v12[1] = 3221225472;
           v12[2] = __96__PLDelayedSaveActionsProcessor__processDelayedBackgroundUploadEventUpdate_library_transaction___block_invoke;
           v12[3] = &unk_1E75781E8;
-          v13 = v6;
+          v13 = libraryCopy;
           [v13 performTransaction:v12];
         }
       }
@@ -77,24 +77,24 @@
   }
 }
 
-- (void)_processSocialGroupsNeedingDeduplication:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processSocialGroupsNeedingDeduplication:(id)deduplication library:(id)library transaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (PLIsAssetsd() && [v7 count])
+  deduplicationCopy = deduplication;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && [deduplicationCopy count])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __94__PLDelayedSaveActionsProcessor__processSocialGroupsNeedingDeduplication_library_transaction___block_invoke;
     v12[3] = &unk_1E7578848;
-    v13 = v7;
-    v14 = v8;
+    v13 = deduplicationCopy;
+    v14 = libraryCopy;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __94__PLDelayedSaveActionsProcessor__processSocialGroupsNeedingDeduplication_library_transaction___block_invoke_171;
     v10[3] = &unk_1E75781E8;
-    v11 = v9;
+    v11 = transactionCopy;
     [v14 performTransactionAndWait:v12 completionHandler:v10];
   }
 }
@@ -192,26 +192,26 @@ void *__94__PLDelayedSaveActionsProcessor__processSocialGroupsNeedingDeduplicati
   return result;
 }
 
-- (void)_processMembersOfSocialGroupsNeedingDeduplication:(id)a3 pendingSocialGroupIDsNeedingDeduplication:(BOOL)a4 library:(id)a5 transaction:(id)a6
+- (void)_processMembersOfSocialGroupsNeedingDeduplication:(id)deduplication pendingSocialGroupIDsNeedingDeduplication:(BOOL)needingDeduplication library:(id)library transaction:(id)transaction
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (PLIsAssetsd() && [v10 count])
+  deduplicationCopy = deduplication;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && [deduplicationCopy count])
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __145__PLDelayedSaveActionsProcessor__processMembersOfSocialGroupsNeedingDeduplication_pendingSocialGroupIDsNeedingDeduplication_library_transaction___block_invoke;
     v16[3] = &unk_1E75761B8;
     v16[4] = self;
-    v17 = v10;
-    v18 = v11;
+    v17 = deduplicationCopy;
+    v18 = libraryCopy;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __145__PLDelayedSaveActionsProcessor__processMembersOfSocialGroupsNeedingDeduplication_pendingSocialGroupIDsNeedingDeduplication_library_transaction___block_invoke_170;
     v13[3] = &unk_1E7576F80;
-    v14 = v12;
-    v15 = a4;
+    v14 = transactionCopy;
+    needingDeduplicationCopy = needingDeduplication;
     [v18 performBlockAndWait:v16 completionHandler:v13];
   }
 }
@@ -252,24 +252,24 @@ uint64_t __145__PLDelayedSaveActionsProcessor__processMembersOfSocialGroupsNeedi
   return result;
 }
 
-- (void)_processAssetsNeedingAssetPersonEdgeUpdates:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processAssetsNeedingAssetPersonEdgeUpdates:(id)updates library:(id)library transaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (PLIsAssetsd() && [v7 count])
+  updatesCopy = updates;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && [updatesCopy count])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __97__PLDelayedSaveActionsProcessor__processAssetsNeedingAssetPersonEdgeUpdates_library_transaction___block_invoke;
     v12[3] = &unk_1E7578848;
-    v13 = v7;
-    v14 = v8;
+    v13 = updatesCopy;
+    v14 = libraryCopy;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __97__PLDelayedSaveActionsProcessor__processAssetsNeedingAssetPersonEdgeUpdates_library_transaction___block_invoke_169;
     v10[3] = &unk_1E75781E8;
-    v11 = v9;
+    v11 = transactionCopy;
     [v14 performBlockAndWait:v12 completionHandler:v10];
   }
 }
@@ -303,13 +303,13 @@ uint64_t __97__PLDelayedSaveActionsProcessor__processAssetsNeedingAssetPersonEdg
   return [v2 completeTransactionScope:@"PLTransactionScopeSocialGroupAssetPersonEdges"];
 }
 
-- (void)_processAssetIDsByPersonUUIDNeedingContainmentUpdates:(id)a3 assetIDsNeedingContainmentUpdates:(id)a4 pendingMemberIDsOfSocialGroupsNeedingContainmentUpdates:(BOOL)a5 library:(id)a6 transaction:(id)a7
+- (void)_processAssetIDsByPersonUUIDNeedingContainmentUpdates:(id)updates assetIDsNeedingContainmentUpdates:(id)containmentUpdates pendingMemberIDsOfSocialGroupsNeedingContainmentUpdates:(BOOL)needingContainmentUpdates library:(id)library transaction:(id)transaction
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (PLIsAssetsd() && ([v12 count] || objc_msgSend(v13, "count")))
+  updatesCopy = updates;
+  containmentUpdatesCopy = containmentUpdates;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && ([updatesCopy count] || objc_msgSend(containmentUpdatesCopy, "count")))
   {
     v16 = objc_autoreleasePoolPush();
     v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -317,10 +317,10 @@ uint64_t __97__PLDelayedSaveActionsProcessor__processAssetsNeedingAssetPersonEdg
     v24[1] = 3221225472;
     v24[2] = __197__PLDelayedSaveActionsProcessor__processAssetIDsByPersonUUIDNeedingContainmentUpdates_assetIDsNeedingContainmentUpdates_pendingMemberIDsOfSocialGroupsNeedingContainmentUpdates_library_transaction___block_invoke;
     v24[3] = &unk_1E75730F8;
-    v25 = v14;
-    v26 = self;
-    v27 = v12;
-    v28 = v13;
+    v25 = libraryCopy;
+    selfCopy = self;
+    v27 = updatesCopy;
+    v28 = containmentUpdatesCopy;
     v29 = v17;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -328,8 +328,8 @@ uint64_t __97__PLDelayedSaveActionsProcessor__processAssetsNeedingAssetPersonEdg
     v19[3] = &unk_1E7576310;
     v20 = v29;
     v21 = v25;
-    v22 = v15;
-    v23 = a5;
+    v22 = transactionCopy;
+    needingContainmentUpdatesCopy = needingContainmentUpdates;
     v18 = v29;
     [v21 performTransactionAndWait:v24 completionHandler:v19];
 
@@ -413,15 +413,15 @@ void __197__PLDelayedSaveActionsProcessor__processAssetIDsByPersonUUIDNeedingCon
   }
 }
 
-- (id)_assetIDsByNodeIDFromAssetPersonEdgeDictionaries:(id)a3 assetIDsNeedingContainmentUpdates:(id)a4 inContext:(id)a5
+- (id)_assetIDsByNodeIDFromAssetPersonEdgeDictionaries:(id)dictionaries assetIDsNeedingContainmentUpdates:(id)updates inContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PLDelayedSaveActionsProcessor *)self _personUUIDsByNodeIDFromAssetPersonDictionaries:v8 inContext:v10];
-  if (v9)
+  dictionariesCopy = dictionaries;
+  updatesCopy = updates;
+  contextCopy = context;
+  v11 = [(PLDelayedSaveActionsProcessor *)self _personUUIDsByNodeIDFromAssetPersonDictionaries:dictionariesCopy inContext:contextCopy];
+  if (updatesCopy)
   {
-    [(PLDelayedSaveActionsProcessor *)self _assetIDsByContainingSocialGroupIDsFromAssetIDsNeedingContainmentUpdates:v9 inContext:v10];
+    [(PLDelayedSaveActionsProcessor *)self _assetIDsByContainingSocialGroupIDsFromAssetIDsNeedingContainmentUpdates:updatesCopy inContext:contextCopy];
   }
 
   else
@@ -429,15 +429,15 @@ void __197__PLDelayedSaveActionsProcessor__processAssetIDsByPersonUUIDNeedingCon
     [MEMORY[0x1E695DF20] dictionary];
   }
   v12 = ;
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __126__PLDelayedSaveActionsProcessor__assetIDsByNodeIDFromAssetPersonEdgeDictionaries_assetIDsNeedingContainmentUpdates_inContext___block_invoke;
   v22[3] = &unk_1E756EA00;
-  v14 = v13;
+  v14 = dictionary;
   v23 = v14;
-  v24 = v8;
-  v15 = v8;
+  v24 = dictionariesCopy;
+  v15 = dictionariesCopy;
   [v11 enumerateKeysAndObjectsUsingBlock:v22];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -517,21 +517,21 @@ void __126__PLDelayedSaveActionsProcessor__assetIDsByNodeIDFromAssetPersonEdgeDi
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)_assetIDsByContainingSocialGroupIDsFromAssetIDsNeedingContainmentUpdates:(id)a3 inContext:(id)a4
+- (id)_assetIDsByContainingSocialGroupIDsFromAssetIDsNeedingContainmentUpdates:(id)updates inContext:(id)context
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v32 = [v6 pl_graphCache];
-  v7 = [v32 labelWithCode:1000 inContext:v6];
+  updatesCopy = updates;
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v7 = [pl_graphCache labelWithCode:1000 inContext:contextCopy];
   v8 = +[PLGraphEdge fetchRequest];
   v9 = MEMORY[0x1E696AB28];
   v31 = v7;
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"sourceNode.primaryLabel", v7];
   v45[0] = v10;
-  v34 = v5;
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"targetAsset", v5];
-  v45[1] = v11;
+  v34 = updatesCopy;
+  updatesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"targetAsset", updatesCopy];
+  v45[1] = updatesCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:2];
   v13 = [v9 andPredicateWithSubpredicates:v12];
   [v8 setPredicate:v13];
@@ -545,9 +545,9 @@ void __126__PLDelayedSaveActionsProcessor__assetIDsByNodeIDFromAssetPersonEdgeDi
 
   [v8 setFetchBatchSize:100];
   v40 = 0;
-  v33 = v6;
+  v33 = contextCopy;
   v30 = v8;
-  v15 = [v6 executeFetchRequest:v8 error:&v40];
+  v15 = [contextCopy executeFetchRequest:v8 error:&v40];
   v16 = v40;
   if (!v15)
   {
@@ -561,7 +561,7 @@ void __126__PLDelayedSaveActionsProcessor__assetIDsByNodeIDFromAssetPersonEdgeDi
   }
 
   v29 = v16;
-  v18 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -585,14 +585,14 @@ void __126__PLDelayedSaveActionsProcessor__assetIDsByNodeIDFromAssetPersonEdgeDi
         v24 = objc_autoreleasePoolPush();
         v25 = [v23 objectForKeyedSubscript:@"targetAsset"];
         v26 = [v23 objectForKeyedSubscript:@"sourceNode"];
-        v27 = [v18 objectForKeyedSubscript:v26];
+        v27 = [dictionary objectForKeyedSubscript:v26];
         if (!v27)
         {
           v27 = [MEMORY[0x1E695DFA8] set];
         }
 
         [v27 addObject:v25];
-        [v18 setObject:v27 forKeyedSubscript:v26];
+        [dictionary setObject:v27 forKeyedSubscript:v26];
 
         objc_autoreleasePoolPop(v24);
       }
@@ -603,22 +603,22 @@ void __126__PLDelayedSaveActionsProcessor__assetIDsByNodeIDFromAssetPersonEdgeDi
     while (v20);
   }
 
-  return v18;
+  return dictionary;
 }
 
-- (id)_personUUIDsByNodeIDFromAssetPersonDictionaries:(id)a3 inContext:(id)a4
+- (id)_personUUIDsByNodeIDFromAssetPersonDictionaries:(id)dictionaries inContext:(id)context
 {
   v46[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v33 = [v6 pl_graphCache];
-  v7 = [v33 labelWithCode:1000 inContext:v6];
+  dictionariesCopy = dictionaries;
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v7 = [pl_graphCache labelWithCode:1000 inContext:contextCopy];
   v8 = +[PLGraphEdge fetchRequest];
   v9 = MEMORY[0x1E696AB28];
   v10 = MEMORY[0x1E696AE18];
-  v35 = v5;
-  v11 = [v5 allKeys];
-  v12 = [v10 predicateWithFormat:@"%K in %@", @"targetPerson.personUUID", v11];
+  v35 = dictionariesCopy;
+  allKeys = [dictionariesCopy allKeys];
+  v12 = [v10 predicateWithFormat:@"%K in %@", @"targetPerson.personUUID", allKeys];
   v46[0] = v12;
   v32 = v7;
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"sourceNode.primaryLabel", v7];
@@ -636,8 +636,8 @@ void __126__PLDelayedSaveActionsProcessor__assetIDsByNodeIDFromAssetPersonEdgeDi
 
   [v8 setFetchBatchSize:100];
   v41 = 0;
-  v34 = v6;
-  v17 = [v6 executeFetchRequest:v8 error:&v41];
+  v34 = contextCopy;
+  v17 = [contextCopy executeFetchRequest:v8 error:&v41];
   v18 = v41;
   if (!v17)
   {
@@ -651,7 +651,7 @@ void __126__PLDelayedSaveActionsProcessor__assetIDsByNodeIDFromAssetPersonEdgeDi
   }
 
   v31 = v18;
-  v20 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -675,14 +675,14 @@ void __126__PLDelayedSaveActionsProcessor__assetIDsByNodeIDFromAssetPersonEdgeDi
         v26 = objc_autoreleasePoolPush();
         v27 = [v25 objectForKeyedSubscript:@"targetPerson.personUUID"];
         v28 = [v25 objectForKeyedSubscript:@"sourceNode"];
-        v29 = [v20 objectForKeyedSubscript:v28];
+        v29 = [dictionary objectForKeyedSubscript:v28];
         if (!v29)
         {
           v29 = [MEMORY[0x1E695DFA8] set];
         }
 
         [v29 addObject:v27];
-        [v20 setObject:v29 forKeyedSubscript:v28];
+        [dictionary setObject:v29 forKeyedSubscript:v28];
 
         objc_autoreleasePoolPop(v26);
       }
@@ -693,27 +693,27 @@ void __126__PLDelayedSaveActionsProcessor__assetIDsByNodeIDFromAssetPersonEdgeDi
     while (v22);
   }
 
-  return v20;
+  return dictionary;
 }
 
-- (id)_assetIDsByPersonUUIDWithAllPersonsFromAssetsNeedingContainmentUpdates:(id)a3 assetIDsNeedingContainmentUpdates:(id)a4 inContext:(id)a5
+- (id)_assetIDsByPersonUUIDWithAllPersonsFromAssetsNeedingContainmentUpdates:(id)updates assetIDsNeedingContainmentUpdates:(id)containmentUpdates inContext:(id)context
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  updatesCopy = updates;
+  containmentUpdatesCopy = containmentUpdates;
+  contextCopy = context;
+  if (updatesCopy)
   {
-    v10 = [v7 mutableCopy];
+    dictionary = [updatesCopy mutableCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v11 = v10;
-  if (!v8)
+  v11 = dictionary;
+  if (!containmentUpdatesCopy)
   {
 LABEL_16:
     v32 = v11;
@@ -722,8 +722,8 @@ LABEL_16:
 
   v12 = +[PLGraphEdge fetchRequest];
   v13 = MEMORY[0x1E696AB28];
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"sourceAsset", v8];
-  v49[0] = v14;
+  containmentUpdatesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"sourceAsset", containmentUpdatesCopy];
+  v49[0] = containmentUpdatesCopy;
   v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil", @"targetPerson"];
   v49[1] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
@@ -740,14 +740,14 @@ LABEL_16:
   [v12 setFetchBatchSize:100];
   v44 = 0;
   v38 = v12;
-  v19 = [v9 executeFetchRequest:v12 error:&v44];
+  v19 = [contextCopy executeFetchRequest:v12 error:&v44];
   v20 = v44;
   v21 = v20;
   if (v19)
   {
     v35 = v20;
-    v36 = v9;
-    v37 = v7;
+    v36 = contextCopy;
+    v37 = updatesCopy;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
@@ -791,8 +791,8 @@ LABEL_16:
       while (v23);
     }
 
-    v7 = v37;
-    v9 = v36;
+    updatesCopy = v37;
+    contextCopy = v36;
     goto LABEL_16;
   }
 
@@ -810,25 +810,25 @@ LABEL_20:
   return v32;
 }
 
-- (void)_processAssetContainmentUpdatesForSocialGroupsContainingMemberPersonIDs:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processAssetContainmentUpdatesForSocialGroupsContainingMemberPersonIDs:(id)ds library:(id)library transaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (PLIsAssetsd() && [v8 count])
+  dsCopy = ds;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && [dsCopy count])
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __125__PLDelayedSaveActionsProcessor__processAssetContainmentUpdatesForSocialGroupsContainingMemberPersonIDs_library_transaction___block_invoke;
     v13[3] = &unk_1E75761B8;
     v13[4] = self;
-    v14 = v8;
-    v15 = v9;
+    v14 = dsCopy;
+    v15 = libraryCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __125__PLDelayedSaveActionsProcessor__processAssetContainmentUpdatesForSocialGroupsContainingMemberPersonIDs_library_transaction___block_invoke_141;
     v11[3] = &unk_1E75781E8;
-    v12 = v10;
+    v12 = transactionCopy;
     [v15 performTransactionAndWait:v13 completionHandler:v11];
   }
 }
@@ -870,48 +870,48 @@ void *__125__PLDelayedSaveActionsProcessor__processAssetContainmentUpdatesForSoc
   return result;
 }
 
-- (id)_socialGroupNodeIDsContainingMember:(id)a3 library:(id)a4 error:(id *)a5
+- (id)_socialGroupNodeIDsContainingMember:(id)member library:(id)library error:(id *)error
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 managedObjectContext];
-  v10 = [v9 pl_graphCache];
+  memberCopy = member;
+  libraryCopy = library;
+  managedObjectContext = [libraryCopy managedObjectContext];
+  pl_graphCache = [managedObjectContext pl_graphCache];
 
-  v11 = [v8 managedObjectContext];
-  v12 = [v10 labelWithCode:1000 inContext:v11];
+  managedObjectContext2 = [libraryCopy managedObjectContext];
+  v12 = [pl_graphCache labelWithCode:1000 inContext:managedObjectContext2];
 
   if (v12)
   {
-    v45 = v10;
+    v45 = pl_graphCache;
     v13 = [MEMORY[0x1E695DFA8] set];
     v14 = MEMORY[0x1E695D5E0];
     v15 = +[PLGraphEdge entityName];
     v16 = [v14 fetchRequestWithEntityName:v15];
 
     v17 = MEMORY[0x1E696AB28];
-    v46 = v8;
+    v46 = libraryCopy;
     v44 = v12;
     v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"sourceNode.primaryLabel", v12];
     v53[0] = v18;
-    v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"targetPerson", v7];
-    v53[1] = v19;
+    memberCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"targetPerson", memberCopy];
+    v53[1] = memberCopy;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
     v21 = [v17 andPredicateWithSubpredicates:v20];
     [v16 setPredicate:v21];
 
-    v22 = [v8 managedObjectContext];
+    managedObjectContext3 = [libraryCopy managedObjectContext];
     v51 = 0;
-    v23 = [v22 executeFetchRequest:v16 error:&v51];
+    v23 = [managedObjectContext3 executeFetchRequest:v16 error:&v51];
     v24 = v51;
 
     if (v24)
     {
-      if (a5)
+      if (error)
       {
         v25 = v24;
         v26 = 0;
-        *a5 = v24;
+        *error = v24;
       }
 
       else
@@ -923,7 +923,7 @@ void *__125__PLDelayedSaveActionsProcessor__processAssetContainmentUpdatesForSoc
     else
     {
       v42 = v23;
-      v43 = v7;
+      v43 = memberCopy;
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
@@ -944,15 +944,15 @@ void *__125__PLDelayedSaveActionsProcessor__processAssetContainmentUpdatesForSoc
             }
 
             v36 = *(*(&v47 + 1) + 8 * i);
-            v37 = [v36 sourceNode];
-            v38 = v37;
-            if (v37 && ([v37 isDeleted] & 1) == 0)
+            sourceNode = [v36 sourceNode];
+            v38 = sourceNode;
+            if (sourceNode && ([sourceNode isDeleted] & 1) == 0)
             {
-              v39 = [v36 sourceNode];
-              v40 = [v39 objectID];
-              if (v40)
+              sourceNode2 = [v36 sourceNode];
+              objectID = [sourceNode2 objectID];
+              if (objectID)
               {
-                [v13 addObject:v40];
+                [v13 addObject:objectID];
               }
             }
           }
@@ -965,12 +965,12 @@ void *__125__PLDelayedSaveActionsProcessor__processAssetContainmentUpdatesForSoc
 
       v26 = v13;
       v23 = v42;
-      v7 = v43;
-      v8 = v46;
+      memberCopy = v43;
+      libraryCopy = v46;
     }
 
     v12 = v44;
-    v10 = v45;
+    pl_graphCache = v45;
   }
 
   else
@@ -982,11 +982,11 @@ void *__125__PLDelayedSaveActionsProcessor__processAssetContainmentUpdatesForSoc
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:&v54 count:1];
     v29 = [v27 errorWithDomain:v28 code:46502 userInfo:v13];
     v16 = v29;
-    if (a5)
+    if (error)
     {
       v30 = v29;
       v26 = 0;
-      *a5 = v16;
+      *error = v16;
     }
 
     else
@@ -998,17 +998,17 @@ void *__125__PLDelayedSaveActionsProcessor__processAssetContainmentUpdatesForSoc
   return v26;
 }
 
-- (void)_runContainmentOnAllGroupsNeedingContainmentUpdates:(id)a3 inLibrary:(id)a4
+- (void)_runContainmentOnAllGroupsNeedingContainmentUpdates:(id)updates inLibrary:(id)library
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  updatesCopy = updates;
+  libraryCopy = library;
   v19 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v5;
+  v7 = updatesCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v8)
   {
@@ -1025,9 +1025,9 @@ void *__125__PLDelayedSaveActionsProcessor__processAssetContainmentUpdatesForSoc
 
         v12 = *(*(&v22 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v6 managedObjectContext];
+        managedObjectContext = [libraryCopy managedObjectContext];
         v21 = 0;
-        v15 = [v14 existingObjectWithID:v12 error:&v21];
+        v15 = [managedObjectContext existingObjectWithID:v12 error:&v21];
         v16 = v21;
 
         if (v15)
@@ -1041,8 +1041,8 @@ void *__125__PLDelayedSaveActionsProcessor__processAssetContainmentUpdatesForSoc
           [(PLDelayedSaveActionsProcessor *)self _runAssetContainmentForSocialGroup:v17 assetIDsToUpdate:0];
           if ([v17 keyAssetIsNeeded])
           {
-            v18 = [v17 uuid];
-            [v19 addObject:v18];
+            uuid = [v17 uuid];
+            [v19 addObject:uuid];
           }
         }
 
@@ -1067,15 +1067,15 @@ LABEL_13:
     while (v9);
   }
 
-  [PLSocialGroup updateKeyAssetOfSocialGroupsWithUUIDs:v19 inLibrary:v6];
+  [PLSocialGroup updateKeyAssetOfSocialGroupsWithUUIDs:v19 inLibrary:libraryCopy];
 }
 
-- (void)_runAssetContainmentForSocialGroup:(id)a3 assetIDsToUpdate:(id)a4
+- (void)_runAssetContainmentForSocialGroup:(id)group assetIDsToUpdate:(id)update
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (([v5 socialGroupVerifiedType] - 1) > 1u)
+  groupCopy = group;
+  updateCopy = update;
+  if (([groupCopy socialGroupVerifiedType] - 1) > 1u)
   {
     v8 = 0;
   }
@@ -1083,7 +1083,7 @@ LABEL_13:
   else
   {
     v10 = 0;
-    v7 = [v5 runAssetContainmentWithError:&v10 assetIDsToUpdate:v6];
+    v7 = [groupCopy runAssetContainmentWithError:&v10 assetIDsToUpdate:updateCopy];
     v8 = v10;
     if ((v7 & 1) == 0)
     {
@@ -1098,11 +1098,11 @@ LABEL_13:
   }
 }
 
-- (void)_processDelayedLibraryScopeRulesUpdate:(BOOL)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedLibraryScopeRulesUpdate:(BOOL)update library:(id)library transaction:(id)transaction
 {
-  v5 = a3;
-  v6 = a4;
-  if (PLIsAssetsd() && v5)
+  updateCopy = update;
+  libraryCopy = library;
+  if (PLIsAssetsd() && updateCopy)
   {
     v7 = PLBackendGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1111,23 +1111,23 @@ LABEL_13:
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Delayed save actions processor: Reset sharing suggestions on library scope rules update", v9, 2u);
     }
 
-    v8 = [v6 photoAnalysisClient];
-    [v8 requestReprocessSuggestionsOnLibraryScopeRulesChangeWithReply:0];
+    photoAnalysisClient = [libraryCopy photoAnalysisClient];
+    [photoAnalysisClient requestReprocessSuggestionsOnLibraryScopeRulesChangeWithReply:0];
   }
 }
 
-- (void)_processDelayedLibraryScopeParticipantsUpdate:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedLibraryScopeParticipantsUpdate:(id)update library:(id)library transaction:(id)transaction
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (PLIsAssetsd() && [v6 count])
+  updateCopy = update;
+  libraryCopy = library;
+  if (PLIsAssetsd() && [updateCopy count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v6;
+    v8 = updateCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v9)
     {
@@ -1151,8 +1151,8 @@ LABEL_13:
             _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "Delayed save actions processor: Updating smart-sharing cache with photo analysis %@", buf, 0xCu);
           }
 
-          v15 = [v7 photoAnalysisClient];
-          [v15 asyncRequestCameraSmartSharingProcessingForLibraryScopeWithUUID:v13 withOptions:0 reply:0];
+          photoAnalysisClient = [libraryCopy photoAnalysisClient];
+          [photoAnalysisClient asyncRequestCameraSmartSharingProcessingForLibraryScopeWithUUID:v13 withOptions:0 reply:0];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v16 objects:v22 count:16];
@@ -1163,18 +1163,18 @@ LABEL_13:
   }
 }
 
-- (void)_processDelayedMemoriesAssetUpdate:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedMemoriesAssetUpdate:(id)update library:(id)library transaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
-  if (PLIsAssetsd() && [v6 count])
+  updateCopy = update;
+  libraryCopy = library;
+  if (PLIsAssetsd() && [updateCopy count])
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __88__PLDelayedSaveActionsProcessor__processDelayedMemoriesAssetUpdate_library_transaction___block_invoke;
     v8[3] = &unk_1E7578848;
-    v9 = v6;
-    v10 = v7;
+    v9 = updateCopy;
+    v10 = libraryCopy;
     [v10 performTransaction:v8];
   }
 }
@@ -1216,17 +1216,17 @@ void __88__PLDelayedSaveActionsProcessor__processDelayedMemoriesAssetUpdate_libr
   }
 }
 
-- (void)_deleteUUIDs:(id)a3 fromCoreDuetStreams:(id)a4 transaction:(id)a5
+- (void)_deleteUUIDs:(id)ds fromCoreDuetStreams:(id)streams transaction:(id)transaction
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v31 = a5;
-  v30 = [MEMORY[0x1E69979D0] predicateForEventsWithStreamNames:v8];
-  v29 = [MEMORY[0x1E69979A0] knowledgeStore];
-  v26 = v7;
-  v28 = [v7 allObjects];
-  v9 = [v28 count];
+  dsCopy = ds;
+  streamsCopy = streams;
+  transactionCopy = transaction;
+  v30 = [MEMORY[0x1E69979D0] predicateForEventsWithStreamNames:streamsCopy];
+  knowledgeStore = [MEMORY[0x1E69979A0] knowledgeStore];
+  v26 = dsCopy;
+  allObjects = [dsCopy allObjects];
+  v9 = [allObjects count];
   if (v9)
   {
     v10 = v9;
@@ -1241,7 +1241,7 @@ void __88__PLDelayedSaveActionsProcessor__processDelayedMemoriesAssetUpdate_libr
         v10 = 10;
       }
 
-      v12 = [v28 subarrayWithRange:{v11, v10}];
+      v12 = [allObjects subarrayWithRange:{v11, v10}];
       v32 = v10;
       v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10];
       v39 = 0u;
@@ -1298,8 +1298,8 @@ void __88__PLDelayedSaveActionsProcessor__processDelayedMemoriesAssetUpdate_libr
       v36[1] = 3221225472;
       v36[2] = __78__PLDelayedSaveActionsProcessor__deleteUUIDs_fromCoreDuetStreams_transaction___block_invoke;
       v36[3] = &unk_1E756E9D8;
-      v37 = v31;
-      [v29 deleteAllEventsMatchingPredicate:v24 responseQueue:coreDuetCallback withCompletion:v36];
+      v37 = transactionCopy;
+      [knowledgeStore deleteAllEventsMatchingPredicate:v24 responseQueue:coreDuetCallback withCompletion:v36];
       v10 = v35 - v32;
       v11 = v34 + v32;
 
@@ -1328,18 +1328,18 @@ void __78__PLDelayedSaveActionsProcessor__deleteUUIDs_fromCoreDuetStreams_transa
   [*(a1 + 32) stillAlive];
 }
 
-- (void)_processDelayedMemoriesForDuetDelete:(id)a3 transaction:(id)a4
+- (void)_processDelayedMemoriesForDuetDelete:(id)delete transaction:(id)transaction
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  deleteCopy = delete;
+  transactionCopy = transaction;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:446 description:@"Must be in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:446 description:@"Must be in assetsd"];
   }
 
-  v9 = [v7 count];
+  v9 = [deleteCopy count];
   if (v9)
   {
     v10 = v9;
@@ -1351,28 +1351,28 @@ void __78__PLDelayedSaveActionsProcessor__deleteUUIDs_fromCoreDuetStreams_transa
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Going to delete %lu memories from knowledge store", &v13, 0xCu);
     }
 
-    [(PLDelayedSaveActionsProcessor *)self _deleteUUIDs:v7 fromCoreDuetStreams:&unk_1F0FBFD30 transaction:v8];
+    [(PLDelayedSaveActionsProcessor *)self _deleteUUIDs:deleteCopy fromCoreDuetStreams:&unk_1F0FBFD30 transaction:transactionCopy];
   }
 }
 
-- (void)_processDelayedAssetsForDuetDelete:(id)a3 transaction:(id)a4
+- (void)_processDelayedAssetsForDuetDelete:(id)delete transaction:(id)transaction
 {
   v82 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  deleteCopy = delete;
+  transactionCopy = transaction;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:399 description:@"Must be in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:399 description:@"Must be in assetsd"];
   }
 
-  v9 = [v7 count];
+  v9 = [deleteCopy count];
   if (v9)
   {
     v10 = v9;
-    v76 = v8;
-    v77 = self;
-    v78 = v7;
+    v76 = transactionCopy;
+    selfCopy = self;
+    v78 = deleteCopy;
     v11 = PLBackendGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -1381,141 +1381,141 @@ void __78__PLDelayedSaveActionsProcessor__deleteUUIDs_fromCoreDuetStreams_transa
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Going to delete %lu assets from knowledge store", buf, 0xCu);
     }
 
-    v75 = [MEMORY[0x1E69979B8] sharesStream];
-    v74 = [v75 name];
-    v79[0] = v74;
-    v73 = [MEMORY[0x1E69979B8] shareExtensionStream];
-    v72 = [v73 name];
-    v79[1] = v72;
-    v71 = [MEMORY[0x1E69979B8] useAsWallpaperStream];
-    v70 = [v71 name];
-    v79[2] = v70;
-    v69 = [MEMORY[0x1E69979B8] createWatchFaceStream];
-    v68 = [v69 name];
-    v79[3] = v68;
-    v67 = [MEMORY[0x1E69979B8] airplayStream];
-    v66 = [v67 name];
-    v79[4] = v66;
-    v65 = [MEMORY[0x1E69979B8] airdropStream];
-    v64 = [v65 name];
-    v79[5] = v64;
-    v63 = [MEMORY[0x1E69979B8] saveToFilesStream];
-    v62 = [v63 name];
-    v79[6] = v62;
-    v61 = [MEMORY[0x1E69979B8] assignToContactStream];
-    v60 = [v61 name];
-    v79[7] = v60;
-    v59 = [MEMORY[0x1E69979B8] addToAlbumStream];
-    v58 = [v59 name];
-    v79[8] = v58;
-    v57 = [MEMORY[0x1E69979B8] addToSharedAlbumStream];
-    v56 = [v57 name];
-    v79[9] = v56;
-    v55 = [MEMORY[0x1E69979B8] hideStream];
-    v54 = [v55 name];
-    v79[10] = v54;
-    v53 = [MEMORY[0x1E69979B8] viewedFor1SecondStream];
-    v52 = [v53 name];
-    v79[11] = v52;
-    v51 = [MEMORY[0x1E69979B8] viewedFor2SecondsStream];
-    v50 = [v51 name];
-    v79[12] = v50;
-    v49 = [MEMORY[0x1E69979B8] viewedFor3SecondsStream];
-    v48 = [v49 name];
-    v79[13] = v48;
-    v47 = [MEMORY[0x1E69979B8] eyeCatchinessStream];
-    v46 = [v47 name];
-    v79[14] = v46;
-    v45 = [MEMORY[0x1E69979B8] zoomEngagementStream];
-    v44 = [v45 name];
-    v79[15] = v44;
-    v43 = [MEMORY[0x1E69979B8] otherEngagementStream];
-    v42 = [v43 name];
-    v79[16] = v42;
-    v41 = [MEMORY[0x1E69979B8] recentFavoritesStream];
-    v40 = [v41 name];
-    v79[17] = v40;
-    v39 = [MEMORY[0x1E69979B8] oldFavoritesStream];
-    v38 = [v39 name];
-    v79[18] = v38;
-    v36 = [MEMORY[0x1E69979B8] otherFavoritesStream];
-    v35 = [v36 name];
-    v79[19] = v35;
-    v34 = [MEMORY[0x1E69979B8] recentDeletionsStream];
-    v33 = [v34 name];
-    v79[20] = v33;
-    v32 = [MEMORY[0x1E69979B8] oldDeletionsStream];
-    v31 = [v32 name];
-    v79[21] = v31;
-    v30 = [MEMORY[0x1E69979B8] allDeletionsStream];
-    v29 = [v30 name];
-    v79[22] = v29;
-    v28 = [MEMORY[0x1E69979B8] editFilterStream];
-    v27 = [v28 name];
-    v79[23] = v27;
-    v26 = [MEMORY[0x1E69979B8] editLightingStream];
-    v25 = [v26 name];
-    v79[24] = v25;
-    v24 = [MEMORY[0x1E69979B8] editCropStream];
-    v23 = [v24 name];
-    v79[25] = v23;
-    v12 = [MEMORY[0x1E69979B8] editAllStream];
-    v13 = [v12 name];
-    v79[26] = v13;
-    v14 = [MEMORY[0x1E69979B8] livePhotosLoopStream];
-    v15 = [v14 name];
-    v79[27] = v15;
-    v16 = [MEMORY[0x1E69979B8] livePhotosBounceStream];
-    v17 = [v16 name];
-    v79[28] = v17;
-    v18 = [MEMORY[0x1E69979B8] livePhotosLongExposureStream];
-    v19 = [v18 name];
-    v79[29] = v19;
-    v20 = [MEMORY[0x1E69979B8] livePhotosOtherStream];
-    v21 = [v20 name];
-    v79[30] = v21;
+    sharesStream = [MEMORY[0x1E69979B8] sharesStream];
+    name = [sharesStream name];
+    v79[0] = name;
+    shareExtensionStream = [MEMORY[0x1E69979B8] shareExtensionStream];
+    name2 = [shareExtensionStream name];
+    v79[1] = name2;
+    useAsWallpaperStream = [MEMORY[0x1E69979B8] useAsWallpaperStream];
+    name3 = [useAsWallpaperStream name];
+    v79[2] = name3;
+    createWatchFaceStream = [MEMORY[0x1E69979B8] createWatchFaceStream];
+    name4 = [createWatchFaceStream name];
+    v79[3] = name4;
+    airplayStream = [MEMORY[0x1E69979B8] airplayStream];
+    name5 = [airplayStream name];
+    v79[4] = name5;
+    airdropStream = [MEMORY[0x1E69979B8] airdropStream];
+    name6 = [airdropStream name];
+    v79[5] = name6;
+    saveToFilesStream = [MEMORY[0x1E69979B8] saveToFilesStream];
+    name7 = [saveToFilesStream name];
+    v79[6] = name7;
+    assignToContactStream = [MEMORY[0x1E69979B8] assignToContactStream];
+    name8 = [assignToContactStream name];
+    v79[7] = name8;
+    addToAlbumStream = [MEMORY[0x1E69979B8] addToAlbumStream];
+    name9 = [addToAlbumStream name];
+    v79[8] = name9;
+    addToSharedAlbumStream = [MEMORY[0x1E69979B8] addToSharedAlbumStream];
+    name10 = [addToSharedAlbumStream name];
+    v79[9] = name10;
+    hideStream = [MEMORY[0x1E69979B8] hideStream];
+    name11 = [hideStream name];
+    v79[10] = name11;
+    viewedFor1SecondStream = [MEMORY[0x1E69979B8] viewedFor1SecondStream];
+    name12 = [viewedFor1SecondStream name];
+    v79[11] = name12;
+    viewedFor2SecondsStream = [MEMORY[0x1E69979B8] viewedFor2SecondsStream];
+    name13 = [viewedFor2SecondsStream name];
+    v79[12] = name13;
+    viewedFor3SecondsStream = [MEMORY[0x1E69979B8] viewedFor3SecondsStream];
+    name14 = [viewedFor3SecondsStream name];
+    v79[13] = name14;
+    eyeCatchinessStream = [MEMORY[0x1E69979B8] eyeCatchinessStream];
+    name15 = [eyeCatchinessStream name];
+    v79[14] = name15;
+    zoomEngagementStream = [MEMORY[0x1E69979B8] zoomEngagementStream];
+    name16 = [zoomEngagementStream name];
+    v79[15] = name16;
+    otherEngagementStream = [MEMORY[0x1E69979B8] otherEngagementStream];
+    name17 = [otherEngagementStream name];
+    v79[16] = name17;
+    recentFavoritesStream = [MEMORY[0x1E69979B8] recentFavoritesStream];
+    name18 = [recentFavoritesStream name];
+    v79[17] = name18;
+    oldFavoritesStream = [MEMORY[0x1E69979B8] oldFavoritesStream];
+    name19 = [oldFavoritesStream name];
+    v79[18] = name19;
+    otherFavoritesStream = [MEMORY[0x1E69979B8] otherFavoritesStream];
+    name20 = [otherFavoritesStream name];
+    v79[19] = name20;
+    recentDeletionsStream = [MEMORY[0x1E69979B8] recentDeletionsStream];
+    name21 = [recentDeletionsStream name];
+    v79[20] = name21;
+    oldDeletionsStream = [MEMORY[0x1E69979B8] oldDeletionsStream];
+    name22 = [oldDeletionsStream name];
+    v79[21] = name22;
+    allDeletionsStream = [MEMORY[0x1E69979B8] allDeletionsStream];
+    name23 = [allDeletionsStream name];
+    v79[22] = name23;
+    editFilterStream = [MEMORY[0x1E69979B8] editFilterStream];
+    name24 = [editFilterStream name];
+    v79[23] = name24;
+    editLightingStream = [MEMORY[0x1E69979B8] editLightingStream];
+    name25 = [editLightingStream name];
+    v79[24] = name25;
+    editCropStream = [MEMORY[0x1E69979B8] editCropStream];
+    name26 = [editCropStream name];
+    v79[25] = name26;
+    editAllStream = [MEMORY[0x1E69979B8] editAllStream];
+    name27 = [editAllStream name];
+    v79[26] = name27;
+    livePhotosLoopStream = [MEMORY[0x1E69979B8] livePhotosLoopStream];
+    name28 = [livePhotosLoopStream name];
+    v79[27] = name28;
+    livePhotosBounceStream = [MEMORY[0x1E69979B8] livePhotosBounceStream];
+    name29 = [livePhotosBounceStream name];
+    v79[28] = name29;
+    livePhotosLongExposureStream = [MEMORY[0x1E69979B8] livePhotosLongExposureStream];
+    name30 = [livePhotosLongExposureStream name];
+    v79[29] = name30;
+    livePhotosOtherStream = [MEMORY[0x1E69979B8] livePhotosOtherStream];
+    name31 = [livePhotosOtherStream name];
+    v79[30] = name31;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:31];
 
-    v7 = v78;
-    v8 = v76;
-    [(PLDelayedSaveActionsProcessor *)v77 _deleteUUIDs:v78 fromCoreDuetStreams:v37 transaction:v76];
+    deleteCopy = v78;
+    transactionCopy = v76;
+    [(PLDelayedSaveActionsProcessor *)selfCopy _deleteUUIDs:v78 fromCoreDuetStreams:v37 transaction:v76];
   }
 }
 
-- (void)_processDelayedWallpaperSuggestionReload:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedWallpaperSuggestionReload:(id)reload library:(id)library transaction:(id)transaction
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (PLIsAssetsd() && [v6 count])
+  reloadCopy = reload;
+  libraryCopy = library;
+  if (PLIsAssetsd() && [reloadCopy count])
   {
-    v8 = [v7 photoAnalysisClient];
-    [v8 reloadWallpaperSuggestions:v6 reply:0];
+    photoAnalysisClient = [libraryCopy photoAnalysisClient];
+    [photoAnalysisClient reloadWallpaperSuggestions:reloadCopy reply:0];
     v9 = PLBackendGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = 134217984;
-      v11 = [v6 count];
+      v11 = [reloadCopy count];
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_INFO, "Delayed save actions processor: reloading wallpaper suggestions. suggestion count %lu", &v10, 0xCu);
     }
   }
 }
 
-- (void)_processDelayedAssetsForWallpaperFavoriteAlbumRemoval:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedAssetsForWallpaperFavoriteAlbumRemoval:(id)removal library:(id)library transaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (PLIsAssetsd() && [v8 count])
+  removalCopy = removal;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && [removalCopy count])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __107__PLDelayedSaveActionsProcessor__processDelayedAssetsForWallpaperFavoriteAlbumRemoval_library_transaction___block_invoke;
     v11[3] = &unk_1E7578100;
-    v12 = v9;
-    v13 = v8;
-    v14 = self;
-    v15 = v10;
+    v12 = libraryCopy;
+    v13 = removalCopy;
+    selfCopy = self;
+    v15 = transactionCopy;
     [v12 performTransaction:v11];
   }
 }
@@ -1578,21 +1578,21 @@ void __107__PLDelayedSaveActionsProcessor__processDelayedAssetsForWallpaperFavor
   }
 }
 
-- (void)_processDelayedAssetsForWallpaperUserAlbumRemoval:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedAssetsForWallpaperUserAlbumRemoval:(id)removal library:(id)library transaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (PLIsAssetsd() && [v8 count])
+  removalCopy = removal;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && [removalCopy count])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __103__PLDelayedSaveActionsProcessor__processDelayedAssetsForWallpaperUserAlbumRemoval_library_transaction___block_invoke;
     v11[3] = &unk_1E7578100;
-    v12 = v9;
-    v13 = v8;
-    v14 = self;
-    v15 = v10;
+    v12 = libraryCopy;
+    v13 = removalCopy;
+    selfCopy = self;
+    v15 = transactionCopy;
     [v12 performTransaction:v11];
   }
 }
@@ -1694,21 +1694,21 @@ void __103__PLDelayedSaveActionsProcessor__processDelayedAssetsForWallpaperUserA
   }
 }
 
-- (void)_processDelayedAssetsForWidgetFavoriteAlbumRemoval:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedAssetsForWidgetFavoriteAlbumRemoval:(id)removal library:(id)library transaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (PLIsAssetsd() && [v8 count])
+  removalCopy = removal;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && [removalCopy count])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __104__PLDelayedSaveActionsProcessor__processDelayedAssetsForWidgetFavoriteAlbumRemoval_library_transaction___block_invoke;
     v11[3] = &unk_1E7578100;
-    v12 = v9;
-    v13 = v8;
-    v14 = self;
-    v15 = v10;
+    v12 = libraryCopy;
+    v13 = removalCopy;
+    selfCopy = self;
+    v15 = transactionCopy;
     [v12 performTransaction:v11];
   }
 }
@@ -1766,21 +1766,21 @@ void __104__PLDelayedSaveActionsProcessor__processDelayedAssetsForWidgetFavorite
   }
 }
 
-- (void)_processDelayedAssetsForWidgetUserAlbumRemoval:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedAssetsForWidgetUserAlbumRemoval:(id)removal library:(id)library transaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (PLIsAssetsd() && [v8 count])
+  removalCopy = removal;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && [removalCopy count])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __100__PLDelayedSaveActionsProcessor__processDelayedAssetsForWidgetUserAlbumRemoval_library_transaction___block_invoke;
     v11[3] = &unk_1E7578100;
-    v12 = v8;
-    v13 = v9;
-    v14 = self;
-    v15 = v10;
+    v12 = removalCopy;
+    v13 = libraryCopy;
+    selfCopy = self;
+    v15 = transactionCopy;
     [v13 performTransaction:v11];
   }
 }
@@ -1885,11 +1885,11 @@ void __100__PLDelayedSaveActionsProcessor__processDelayedAssetsForWidgetUserAlbu
   }
 }
 
-- (void)_processDelayedForYouWidgetTimelineReload:(BOOL)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedForYouWidgetTimelineReload:(BOOL)reload library:(id)library transaction:(id)transaction
 {
-  v5 = a3;
-  v6 = a4;
-  if (PLIsAssetsd() && v5)
+  reloadCopy = reload;
+  libraryCopy = library;
+  if (PLIsAssetsd() && reloadCopy)
   {
     v7 = PLBackendGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1898,16 +1898,16 @@ void __100__PLDelayedSaveActionsProcessor__processDelayedAssetsForWidgetUserAlbu
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Delayed save actions processor: Invalidating ForYou widget timeline with photo analysis", v9, 2u);
     }
 
-    v8 = [v6 photoAnalysisClient];
-    [v8 reloadForYouWidgetTimelineWithReply:0];
+    photoAnalysisClient = [libraryCopy photoAnalysisClient];
+    [photoAnalysisClient reloadForYouWidgetTimelineWithReply:0];
   }
 }
 
-- (void)_processDelayedAlbumWidgetTimelineReload:(BOOL)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedAlbumWidgetTimelineReload:(BOOL)reload library:(id)library transaction:(id)transaction
 {
-  v5 = a3;
-  v6 = a4;
-  if (PLIsAssetsd() && v5)
+  reloadCopy = reload;
+  libraryCopy = library;
+  if (PLIsAssetsd() && reloadCopy)
   {
     v7 = PLBackendGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1916,19 +1916,19 @@ void __100__PLDelayedSaveActionsProcessor__processDelayedAssetsForWidgetUserAlbu
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Delayed save actions processor: Invalidating Album widget timeline with photo analysis", v9, 2u);
     }
 
-    v8 = [v6 photoAnalysisClient];
-    [v8 reloadAlbumWidgetTimelineWithReply:0];
+    photoAnalysisClient = [libraryCopy photoAnalysisClient];
+    [photoAnalysisClient reloadAlbumWidgetTimelineWithReply:0];
   }
 }
 
-- (void)_processDelayedFeaturedContentUpdateAndWidgetTimelineReload:(BOOL)a3 withPersonUUIDs:(id)a4 shouldReloadWidgetTimeline:(BOOL)a5 library:(id)a6 transaction:(id)a7
+- (void)_processDelayedFeaturedContentUpdateAndWidgetTimelineReload:(BOOL)reload withPersonUUIDs:(id)ds shouldReloadWidgetTimeline:(BOOL)timeline library:(id)library transaction:(id)transaction
 {
-  v9 = a5;
-  v10 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  if (PLIsAssetsd() && v10)
+  timelineCopy = timeline;
+  reloadCopy = reload;
+  dsCopy = ds;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && reloadCopy)
   {
     v15 = PLBackendGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1937,21 +1937,21 @@ void __100__PLDelayedSaveActionsProcessor__processDelayedAssetsForWidgetUserAlbu
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Delayed save actions processor: updating featured content with photo analysis", buf, 2u);
     }
 
-    v16 = [v13 photoAnalysisClient];
+    photoAnalysisClient = [libraryCopy photoAnalysisClient];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __156__PLDelayedSaveActionsProcessor__processDelayedFeaturedContentUpdateAndWidgetTimelineReload_withPersonUUIDs_shouldReloadWidgetTimeline_library_transaction___block_invoke;
     v17[3] = &unk_1E756E9B0;
-    v20 = v9;
+    v20 = timelineCopy;
     v17[4] = self;
-    v18 = v13;
-    v19 = v14;
-    [v16 requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs:v12 reply:v17];
+    v18 = libraryCopy;
+    v19 = transactionCopy;
+    [photoAnalysisClient requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs:dsCopy reply:v17];
   }
 
   else
   {
-    [(PLDelayedSaveActionsProcessor *)self _processDelayedForYouWidgetTimelineReload:v9 library:v13 transaction:v14];
+    [(PLDelayedSaveActionsProcessor *)self _processDelayedForYouWidgetTimelineReload:timelineCopy library:libraryCopy transaction:transactionCopy];
   }
 }
 
@@ -1974,41 +1974,41 @@ void __156__PLDelayedSaveActionsProcessor__processDelayedFeaturedContentUpdateAn
   [*(a1 + 48) stillAlive];
 }
 
-- (void)_processDelayedImportSessionCountsAndDateRangeUpdates:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedImportSessionCountsAndDateRangeUpdates:(id)updates library:(id)library transaction:(id)transaction
 {
-  v11 = a3;
-  v8 = a4;
-  if (PLIsAssetsd() && [v11 count])
+  updatesCopy = updates;
+  libraryCopy = library;
+  if (PLIsAssetsd() && [updatesCopy count])
   {
-    v9 = [v8 libraryServicesManager];
-    if (!v9)
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    if (!libraryServicesManager)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:240 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:240 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
     }
 
-    [v9 refreshImportSessionCountForImportSessionIDs:v11];
+    [libraryServicesManager refreshImportSessionCountForImportSessionIDs:updatesCopy];
   }
 }
 
-- (void)_processDelayedAlbumTrashUpdates:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedAlbumTrashUpdates:(id)updates library:(id)library transaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (PLIsAssetsd() && [v7 count])
+  updatesCopy = updates;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && [updatesCopy count])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __86__PLDelayedSaveActionsProcessor__processDelayedAlbumTrashUpdates_library_transaction___block_invoke;
     v12[3] = &unk_1E7578848;
-    v13 = v7;
-    v14 = v8;
+    v13 = updatesCopy;
+    v14 = libraryCopy;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __86__PLDelayedSaveActionsProcessor__processDelayedAlbumTrashUpdates_library_transaction___block_invoke_2;
     v10[3] = &unk_1E75781E8;
-    v11 = v9;
+    v11 = transactionCopy;
     [v14 performTransactionAndWait:v12 completionHandler:v10];
   }
 }
@@ -2021,24 +2021,24 @@ uint64_t __86__PLDelayedSaveActionsProcessor__processDelayedAlbumTrashUpdates_li
   return [v2 stillAlive];
 }
 
-- (void)_processDelayedAlbumKeyAssetsUpdates:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedAlbumKeyAssetsUpdates:(id)updates library:(id)library transaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (PLIsAssetsd() && [v7 count])
+  updatesCopy = updates;
+  libraryCopy = library;
+  transactionCopy = transaction;
+  if (PLIsAssetsd() && [updatesCopy count])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __90__PLDelayedSaveActionsProcessor__processDelayedAlbumKeyAssetsUpdates_library_transaction___block_invoke;
     v12[3] = &unk_1E7578848;
-    v13 = v8;
-    v14 = v7;
+    v13 = libraryCopy;
+    v14 = updatesCopy;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __90__PLDelayedSaveActionsProcessor__processDelayedAlbumKeyAssetsUpdates_library_transaction___block_invoke_2;
     v10[3] = &unk_1E75781E8;
-    v11 = v9;
+    v11 = transactionCopy;
     [v13 performTransaction:v12 completionHandler:v10];
   }
 }
@@ -2051,42 +2051,42 @@ uint64_t __90__PLDelayedSaveActionsProcessor__processDelayedAlbumKeyAssetsUpdate
   return [v2 stillAlive];
 }
 
-- (void)_processDelayedAlbumCountsAndDateRangeUpdates:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)_processDelayedAlbumCountsAndDateRangeUpdates:(id)updates library:(id)library transaction:(id)transaction
 {
-  v11 = a3;
-  v8 = a4;
-  if (PLIsAssetsd() && [v11 count])
+  updatesCopy = updates;
+  libraryCopy = library;
+  if (PLIsAssetsd() && [updatesCopy count])
   {
-    v9 = [v8 libraryServicesManager];
-    if (!v9)
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    if (!libraryServicesManager)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
     }
 
-    [v9 refreshAlbumCountForAlbumIDs:v11];
+    [libraryServicesManager refreshAlbumCountForAlbumIDs:updatesCopy];
   }
 }
 
-- (void)_processDelayedMomentChangesWithTransaction:(id)a3
+- (void)_processDelayedMomentChangesWithTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:163 description:@"Must be in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:163 description:@"Must be in assetsd"];
   }
 
-  v6 = [(PLLibraryServicesManager *)self->_libraryServicesManager momentGenerationDataManager];
-  v7 = [v6 generator];
+  momentGenerationDataManager = [(PLLibraryServicesManager *)self->_libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77__PLDelayedSaveActionsProcessor__processDelayedMomentChangesWithTransaction___block_invoke;
   v10[3] = &unk_1E75781E8;
-  v11 = v5;
-  v8 = v5;
-  [v7 generateWithIncrementalDataCompletionHandler:v10];
+  v11 = transactionCopy;
+  v8 = transactionCopy;
+  [generator generateWithIncrementalDataCompletionHandler:v10];
 }
 
 uint64_t __77__PLDelayedSaveActionsProcessor__processDelayedMomentChangesWithTransaction___block_invoke(uint64_t a1)
@@ -2097,38 +2097,38 @@ uint64_t __77__PLDelayedSaveActionsProcessor__processDelayedMomentChangesWithTra
   return [v2 stillAlive];
 }
 
-- (void)_processDelayedCloudFeedAlbumUpdates:(id)a3 collectionShareUpdates:(id)a4 collectionShareDeletes:(id)a5 assetInserts:(id)a6 assetUpdates:(id)a7 commentInserts:(id)a8 invitationRecordUpdates:(id)a9 shareParticipantUpdates:(id)a10 shareParticipantDeletes:(id)a11 deletionEntries:(id)a12 transaction:(id)a13
+- (void)_processDelayedCloudFeedAlbumUpdates:(id)updates collectionShareUpdates:(id)shareUpdates collectionShareDeletes:(id)deletes assetInserts:(id)inserts assetUpdates:(id)assetUpdates commentInserts:(id)commentInserts invitationRecordUpdates:(id)recordUpdates shareParticipantUpdates:(id)self0 shareParticipantDeletes:(id)self1 deletionEntries:(id)self2 transaction:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v35 = a5;
-  v34 = a6;
-  v33 = a7;
-  v32 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
+  updatesCopy = updates;
+  shareUpdatesCopy = shareUpdates;
+  deletesCopy = deletes;
+  insertsCopy = inserts;
+  assetUpdatesCopy = assetUpdates;
+  commentInsertsCopy = commentInserts;
+  recordUpdatesCopy = recordUpdates;
+  participantUpdatesCopy = participantUpdates;
+  participantDeletesCopy = participantDeletes;
+  entriesCopy = entries;
+  transactionCopy = transaction;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:144 description:@"Must be in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:144 description:@"Must be in assetsd"];
   }
 
-  if ([v18 count] || (v25 = v19, objc_msgSend(v19, "count")) || objc_msgSend(v35, "count") || objc_msgSend(v34, "count") || objc_msgSend(v33, "count") || objc_msgSend(v32, "count") || objc_msgSend(v20, "count") || objc_msgSend(v21, "count") || objc_msgSend(v22, "count") || objc_msgSend(v23, "count"))
+  if ([updatesCopy count] || (v25 = shareUpdatesCopy, objc_msgSend(shareUpdatesCopy, "count")) || objc_msgSend(deletesCopy, "count") || objc_msgSend(insertsCopy, "count") || objc_msgSend(assetUpdatesCopy, "count") || objc_msgSend(commentInsertsCopy, "count") || objc_msgSend(recordUpdatesCopy, "count") || objc_msgSend(participantUpdatesCopy, "count") || objc_msgSend(participantDeletesCopy, "count") || objc_msgSend(entriesCopy, "count"))
   {
-    v26 = [(PLLibraryServicesManager *)self->_libraryServicesManager databaseContext];
-    v27 = [v26 newShortLivedLibraryWithName:"delayedSaveActions_cloudFeed_processAlbumUpdates"];
+    databaseContext = [(PLLibraryServicesManager *)self->_libraryServicesManager databaseContext];
+    v27 = [databaseContext newShortLivedLibraryWithName:"delayedSaveActions_cloudFeed_processAlbumUpdates"];
 
     v28 = [[PLCloudFeedEntriesManager alloc] initWithPhotoLibrary:v27];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __257__PLDelayedSaveActionsProcessor__processDelayedCloudFeedAlbumUpdates_collectionShareUpdates_collectionShareDeletes_assetInserts_assetUpdates_commentInserts_invitationRecordUpdates_shareParticipantUpdates_shareParticipantDeletes_deletionEntries_transaction___block_invoke;
     v36[3] = &unk_1E75781E8;
-    v37 = v24;
-    v25 = v19;
-    [(PLCloudFeedEntriesManager *)v28 processAlbumUpdates:v18 collectionShareUpdates:v19 collectionShareDeletes:v35 assetInserts:v34 assetUpdates:v33 commentInserts:v32 invitationRecordUpdates:v20 shareParticipantUpdates:v21 shareParticipantDeletes:v22 deletionEntries:v23 completionHandler:v36];
+    v37 = transactionCopy;
+    v25 = shareUpdatesCopy;
+    [(PLCloudFeedEntriesManager *)v28 processAlbumUpdates:updatesCopy collectionShareUpdates:shareUpdatesCopy collectionShareDeletes:deletesCopy assetInserts:insertsCopy assetUpdates:assetUpdatesCopy commentInserts:commentInsertsCopy invitationRecordUpdates:recordUpdatesCopy shareParticipantUpdates:participantUpdatesCopy shareParticipantDeletes:participantDeletesCopy deletionEntries:entriesCopy completionHandler:v36];
   }
 }
 
@@ -2140,151 +2140,151 @@ uint64_t __257__PLDelayedSaveActionsProcessor__processDelayedCloudFeedAlbumUpdat
   return [v2 stillAlive];
 }
 
-- (void)processDelayedSaveActionsDetail:(id)a3 withPhotoLibrary:(id)a4 transaction:(id)a5
+- (void)processDelayedSaveActionsDetail:(id)detail withPhotoLibrary:(id)library transaction:(id)transaction
 {
-  v49 = a3;
-  v8 = a5;
-  v9 = a4;
+  detailCopy = detail;
+  transactionCopy = transaction;
+  libraryCopy = library;
   if (PLPlatformCloudFeedSupported())
   {
-    v47 = [v49 cloudFeedAlbumUpdates];
-    v46 = [v49 cloudFeedCollectionShareUpdates];
-    v48 = [v49 cloudFeedCollectionShareDeletes];
-    v10 = [v49 cloudFeedAssetInserts];
-    v45 = [v49 cloudFeedAssetUpdates];
-    v44 = [v49 cloudFeedCommentInserts];
-    v43 = [v49 cloudFeedInvitationRecordUpdates];
-    v11 = [v49 cloudFeedShareParticipantUpdates];
-    v12 = [v49 cloudFeedShareParticipantDeletes];
-    v13 = [v49 cloudFeedDeletionEntries];
-    [(PLDelayedSaveActionsProcessor *)self _processDelayedCloudFeedAlbumUpdates:v47 collectionShareUpdates:v46 collectionShareDeletes:v48 assetInserts:v10 assetUpdates:v45 commentInserts:v44 invitationRecordUpdates:v43 shareParticipantUpdates:v11 shareParticipantDeletes:v12 deletionEntries:v13 transaction:v8];
+    cloudFeedAlbumUpdates = [detailCopy cloudFeedAlbumUpdates];
+    cloudFeedCollectionShareUpdates = [detailCopy cloudFeedCollectionShareUpdates];
+    cloudFeedCollectionShareDeletes = [detailCopy cloudFeedCollectionShareDeletes];
+    cloudFeedAssetInserts = [detailCopy cloudFeedAssetInserts];
+    cloudFeedAssetUpdates = [detailCopy cloudFeedAssetUpdates];
+    cloudFeedCommentInserts = [detailCopy cloudFeedCommentInserts];
+    cloudFeedInvitationRecordUpdates = [detailCopy cloudFeedInvitationRecordUpdates];
+    cloudFeedShareParticipantUpdates = [detailCopy cloudFeedShareParticipantUpdates];
+    cloudFeedShareParticipantDeletes = [detailCopy cloudFeedShareParticipantDeletes];
+    cloudFeedDeletionEntries = [detailCopy cloudFeedDeletionEntries];
+    [(PLDelayedSaveActionsProcessor *)self _processDelayedCloudFeedAlbumUpdates:cloudFeedAlbumUpdates collectionShareUpdates:cloudFeedCollectionShareUpdates collectionShareDeletes:cloudFeedCollectionShareDeletes assetInserts:cloudFeedAssetInserts assetUpdates:cloudFeedAssetUpdates commentInserts:cloudFeedCommentInserts invitationRecordUpdates:cloudFeedInvitationRecordUpdates shareParticipantUpdates:cloudFeedShareParticipantUpdates shareParticipantDeletes:cloudFeedShareParticipantDeletes deletionEntries:cloudFeedDeletionEntries transaction:transactionCopy];
   }
 
-  if ([v49 shouldHandleMoments])
+  if ([detailCopy shouldHandleMoments])
   {
-    [(PLDelayedSaveActionsProcessor *)self _processDelayedMomentChangesWithTransaction:v8];
+    [(PLDelayedSaveActionsProcessor *)self _processDelayedMomentChangesWithTransaction:transactionCopy];
   }
 
-  v14 = [v49 albumCountsAndDateRangeUpdates];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedAlbumCountsAndDateRangeUpdates:v14 library:v9 transaction:v8];
+  albumCountsAndDateRangeUpdates = [detailCopy albumCountsAndDateRangeUpdates];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedAlbumCountsAndDateRangeUpdates:albumCountsAndDateRangeUpdates library:libraryCopy transaction:transactionCopy];
 
-  v15 = [v49 albumKeyAssetsUpdates];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedAlbumKeyAssetsUpdates:v15 library:v9 transaction:v8];
+  albumKeyAssetsUpdates = [detailCopy albumKeyAssetsUpdates];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedAlbumKeyAssetsUpdates:albumKeyAssetsUpdates library:libraryCopy transaction:transactionCopy];
 
-  v16 = [v49 albumTrashCycleUpdates];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedAlbumTrashUpdates:v16 library:v9 transaction:v8];
+  albumTrashCycleUpdates = [detailCopy albumTrashCycleUpdates];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedAlbumTrashUpdates:albumTrashCycleUpdates library:libraryCopy transaction:transactionCopy];
 
-  v17 = [v49 importSessionCountsAndDateRangeUpdates];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedImportSessionCountsAndDateRangeUpdates:v17 library:v9 transaction:v8];
+  importSessionCountsAndDateRangeUpdates = [detailCopy importSessionCountsAndDateRangeUpdates];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedImportSessionCountsAndDateRangeUpdates:importSessionCountsAndDateRangeUpdates library:libraryCopy transaction:transactionCopy];
 
-  v18 = [v49 widgetTimelineReloadTypesNeeded];
-  v19 = [v18 containsObject:&unk_1F0FBD1F8];
+  widgetTimelineReloadTypesNeeded = [detailCopy widgetTimelineReloadTypesNeeded];
+  v19 = [widgetTimelineReloadTypesNeeded containsObject:&unk_1F0FBD1F8];
 
-  v20 = [v49 shouldUpdateFeaturedContent];
-  v21 = [v49 personsToUpdateForFeaturedContent];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedFeaturedContentUpdateAndWidgetTimelineReload:v20 withPersonUUIDs:v21 shouldReloadWidgetTimeline:v19 library:v9 transaction:v8];
+  shouldUpdateFeaturedContent = [detailCopy shouldUpdateFeaturedContent];
+  personsToUpdateForFeaturedContent = [detailCopy personsToUpdateForFeaturedContent];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedFeaturedContentUpdateAndWidgetTimelineReload:shouldUpdateFeaturedContent withPersonUUIDs:personsToUpdateForFeaturedContent shouldReloadWidgetTimeline:v19 library:libraryCopy transaction:transactionCopy];
 
-  v22 = [v49 assetsForWidgetUserAlbumRemoval];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedAssetsForWidgetUserAlbumRemoval:v22 library:v9 transaction:v8];
+  assetsForWidgetUserAlbumRemoval = [detailCopy assetsForWidgetUserAlbumRemoval];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedAssetsForWidgetUserAlbumRemoval:assetsForWidgetUserAlbumRemoval library:libraryCopy transaction:transactionCopy];
 
-  v23 = [v49 assetsForWidgetFavoriteAlbumRemoval];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedAssetsForWidgetFavoriteAlbumRemoval:v23 library:v9 transaction:v8];
+  assetsForWidgetFavoriteAlbumRemoval = [detailCopy assetsForWidgetFavoriteAlbumRemoval];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedAssetsForWidgetFavoriteAlbumRemoval:assetsForWidgetFavoriteAlbumRemoval library:libraryCopy transaction:transactionCopy];
 
-  v24 = [v49 widgetTimelineReloadTypesNeeded];
-  v25 = [v24 containsObject:&unk_1F0FBD210];
+  widgetTimelineReloadTypesNeeded2 = [detailCopy widgetTimelineReloadTypesNeeded];
+  v25 = [widgetTimelineReloadTypesNeeded2 containsObject:&unk_1F0FBD210];
 
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedAlbumWidgetTimelineReload:v25 library:v9 transaction:v8];
-  v26 = [v49 assetsForWallpaperUserAlbumRemoval];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedAssetsForWallpaperUserAlbumRemoval:v26 library:v9 transaction:v8];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedAlbumWidgetTimelineReload:v25 library:libraryCopy transaction:transactionCopy];
+  assetsForWallpaperUserAlbumRemoval = [detailCopy assetsForWallpaperUserAlbumRemoval];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedAssetsForWallpaperUserAlbumRemoval:assetsForWallpaperUserAlbumRemoval library:libraryCopy transaction:transactionCopy];
 
-  v27 = [v49 assetsForWallpaperFavoriteAlbumRemoval];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedAssetsForWallpaperFavoriteAlbumRemoval:v27 library:v9 transaction:v8];
+  assetsForWallpaperFavoriteAlbumRemoval = [detailCopy assetsForWallpaperFavoriteAlbumRemoval];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedAssetsForWallpaperFavoriteAlbumRemoval:assetsForWallpaperFavoriteAlbumRemoval library:libraryCopy transaction:transactionCopy];
 
-  v28 = [v49 wallpaperSuggestionReloadUUIDs];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedWallpaperSuggestionReload:v28 library:v9 transaction:v8];
+  wallpaperSuggestionReloadUUIDs = [detailCopy wallpaperSuggestionReloadUUIDs];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedWallpaperSuggestionReload:wallpaperSuggestionReloadUUIDs library:libraryCopy transaction:transactionCopy];
 
-  v29 = [v49 assetsForDuetDelete];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedAssetsForDuetDelete:v29 transaction:v8];
+  assetsForDuetDelete = [detailCopy assetsForDuetDelete];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedAssetsForDuetDelete:assetsForDuetDelete transaction:transactionCopy];
 
-  v30 = [v49 memoriesForDuetDelete];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedMemoriesForDuetDelete:v30 transaction:v8];
+  memoriesForDuetDelete = [detailCopy memoriesForDuetDelete];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedMemoriesForDuetDelete:memoriesForDuetDelete transaction:transactionCopy];
 
-  v31 = [v49 memoriesForAssetUpdate];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedMemoriesAssetUpdate:v31 library:v9 transaction:v8];
+  memoriesForAssetUpdate = [detailCopy memoriesForAssetUpdate];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedMemoriesAssetUpdate:memoriesForAssetUpdate library:libraryCopy transaction:transactionCopy];
 
-  v32 = [v49 libraryScopeParticipantsForUpdate];
-  [(PLDelayedSaveActionsProcessor *)self _processDelayedLibraryScopeParticipantsUpdate:v32 library:v9 transaction:v8];
+  libraryScopeParticipantsForUpdate = [detailCopy libraryScopeParticipantsForUpdate];
+  [(PLDelayedSaveActionsProcessor *)self _processDelayedLibraryScopeParticipantsUpdate:libraryScopeParticipantsForUpdate library:libraryCopy transaction:transactionCopy];
 
-  -[PLDelayedSaveActionsProcessor _processDelayedLibraryScopeRulesUpdate:library:transaction:](self, "_processDelayedLibraryScopeRulesUpdate:library:transaction:", [v49 libraryScopeRulesUpdated], v9, v8);
-  v33 = [v49 socialGroupNodeIDsNeedingDeduplication];
-  v34 = [v33 count] != 0;
+  -[PLDelayedSaveActionsProcessor _processDelayedLibraryScopeRulesUpdate:library:transaction:](self, "_processDelayedLibraryScopeRulesUpdate:library:transaction:", [detailCopy libraryScopeRulesUpdated], libraryCopy, transactionCopy);
+  socialGroupNodeIDsNeedingDeduplication = [detailCopy socialGroupNodeIDsNeedingDeduplication];
+  v34 = [socialGroupNodeIDsNeedingDeduplication count] != 0;
 
-  v35 = [v49 memberIDsOfSocialGroupsNeedingDeduplication];
-  [(PLDelayedSaveActionsProcessor *)self _processMembersOfSocialGroupsNeedingDeduplication:v35 pendingSocialGroupIDsNeedingDeduplication:v34 library:v9 transaction:v8];
+  memberIDsOfSocialGroupsNeedingDeduplication = [detailCopy memberIDsOfSocialGroupsNeedingDeduplication];
+  [(PLDelayedSaveActionsProcessor *)self _processMembersOfSocialGroupsNeedingDeduplication:memberIDsOfSocialGroupsNeedingDeduplication pendingSocialGroupIDsNeedingDeduplication:v34 library:libraryCopy transaction:transactionCopy];
 
-  v36 = [v49 socialGroupNodeIDsNeedingDeduplication];
-  [(PLDelayedSaveActionsProcessor *)self _processSocialGroupsNeedingDeduplication:v36 library:v9 transaction:v8];
+  socialGroupNodeIDsNeedingDeduplication2 = [detailCopy socialGroupNodeIDsNeedingDeduplication];
+  [(PLDelayedSaveActionsProcessor *)self _processSocialGroupsNeedingDeduplication:socialGroupNodeIDsNeedingDeduplication2 library:libraryCopy transaction:transactionCopy];
 
-  v37 = [v49 assetIDsNeedingAssetPersonEdgeUpdates];
-  [(PLDelayedSaveActionsProcessor *)self _processAssetsNeedingAssetPersonEdgeUpdates:v37 library:v9 transaction:v8];
+  assetIDsNeedingAssetPersonEdgeUpdates = [detailCopy assetIDsNeedingAssetPersonEdgeUpdates];
+  [(PLDelayedSaveActionsProcessor *)self _processAssetsNeedingAssetPersonEdgeUpdates:assetIDsNeedingAssetPersonEdgeUpdates library:libraryCopy transaction:transactionCopy];
 
-  v38 = [v49 memberIDsOfSocialGroupsNeedingContainmentUpdates];
-  v39 = [v38 count] != 0;
+  memberIDsOfSocialGroupsNeedingContainmentUpdates = [detailCopy memberIDsOfSocialGroupsNeedingContainmentUpdates];
+  v39 = [memberIDsOfSocialGroupsNeedingContainmentUpdates count] != 0;
 
-  v40 = [v49 assetIDsByPersonUUIDNeedingContainmentUpdates];
-  v41 = [v49 assetIDsNeedingContainmentUpdates];
-  [(PLDelayedSaveActionsProcessor *)self _processAssetIDsByPersonUUIDNeedingContainmentUpdates:v40 assetIDsNeedingContainmentUpdates:v41 pendingMemberIDsOfSocialGroupsNeedingContainmentUpdates:v39 library:v9 transaction:v8];
+  assetIDsByPersonUUIDNeedingContainmentUpdates = [detailCopy assetIDsByPersonUUIDNeedingContainmentUpdates];
+  assetIDsNeedingContainmentUpdates = [detailCopy assetIDsNeedingContainmentUpdates];
+  [(PLDelayedSaveActionsProcessor *)self _processAssetIDsByPersonUUIDNeedingContainmentUpdates:assetIDsByPersonUUIDNeedingContainmentUpdates assetIDsNeedingContainmentUpdates:assetIDsNeedingContainmentUpdates pendingMemberIDsOfSocialGroupsNeedingContainmentUpdates:v39 library:libraryCopy transaction:transactionCopy];
 
-  v42 = [v49 memberIDsOfSocialGroupsNeedingContainmentUpdates];
-  [(PLDelayedSaveActionsProcessor *)self _processAssetContainmentUpdatesForSocialGroupsContainingMemberPersonIDs:v42 library:v9 transaction:v8];
+  memberIDsOfSocialGroupsNeedingContainmentUpdates2 = [detailCopy memberIDsOfSocialGroupsNeedingContainmentUpdates];
+  [(PLDelayedSaveActionsProcessor *)self _processAssetContainmentUpdatesForSocialGroupsContainingMemberPersonIDs:memberIDsOfSocialGroupsNeedingContainmentUpdates2 library:libraryCopy transaction:transactionCopy];
 
-  -[PLDelayedSaveActionsProcessor _processDelayedBackgroundUploadEventUpdate:library:transaction:](self, "_processDelayedBackgroundUploadEventUpdate:library:transaction:", [v49 backgroundUploadEventUpdated], v9, v8);
-  [v8 completeTransactionScope:@"PLTransactionScopeFileIngestion"];
+  -[PLDelayedSaveActionsProcessor _processDelayedBackgroundUploadEventUpdate:library:transaction:](self, "_processDelayedBackgroundUploadEventUpdate:library:transaction:", [detailCopy backgroundUploadEventUpdated], libraryCopy, transactionCopy);
+  [transactionCopy completeTransactionScope:@"PLTransactionScopeFileIngestion"];
 }
 
-- (void)processDelayedMomentGeneratorSaveActionsFromDetail:(id)a3
+- (void)processDelayedMomentGeneratorSaveActionsFromDetail:(id)detail
 {
   libraryServicesManager = self->_libraryServicesManager;
-  v4 = a3;
-  v5 = [(PLLibraryServicesManager *)libraryServicesManager momentGenerationDataManager];
-  v11 = [v5 generator];
+  detailCopy = detail;
+  momentGenerationDataManager = [(PLLibraryServicesManager *)libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
-  v6 = [v4 momentInsertsAndUpdates];
-  v7 = [v4 momentDeletes];
-  v8 = [v4 updatedAssetIDsForHighlights];
-  v9 = [v4 updatedMomentIDsForHighlights];
-  v10 = [v4 sharedAssetContainerIncrementalChangesByAssetID];
+  momentInsertsAndUpdates = [detailCopy momentInsertsAndUpdates];
+  momentDeletes = [detailCopy momentDeletes];
+  updatedAssetIDsForHighlights = [detailCopy updatedAssetIDsForHighlights];
+  updatedMomentIDsForHighlights = [detailCopy updatedMomentIDsForHighlights];
+  sharedAssetContainerIncrementalChangesByAssetID = [detailCopy sharedAssetContainerIncrementalChangesByAssetID];
 
-  [v11 saveChangesForAssetInsertsAndUpdates:v6 assetDeletes:v7 assetUpdatesForHighlights:v8 momentUpdatesForHighlights:v9 sharedAssetContainerIncrementalChangesByAssetID:v10];
+  [generator saveChangesForAssetInsertsAndUpdates:momentInsertsAndUpdates assetDeletes:momentDeletes assetUpdatesForHighlights:updatedAssetIDsForHighlights momentUpdatesForHighlights:updatedMomentIDsForHighlights sharedAssetContainerIncrementalChangesByAssetID:sharedAssetContainerIncrementalChangesByAssetID];
 }
 
-- (void)processDelayedDeletionsFromChangeHubEvent:(id)a3 library:(id)a4 transaction:(id)a5
+- (void)processDelayedDeletionsFromChangeHubEvent:(id)event library:(id)library transaction:(id)transaction
 {
-  v13 = a3;
-  v9 = a5;
-  v10 = a4;
+  eventCopy = event;
+  transactionCopy = transaction;
+  libraryCopy = library;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:69 description:@"Must be in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDelayedSaveActionsProcessor.m" lineNumber:69 description:@"Must be in assetsd"];
   }
 
-  v11 = [PLDelayedFiledSystemDeletions deletionsFromChangeHubEvent:v13];
-  [v11 deleteAllRemainingFilesAndThumbnailsWithPhotoLibrary:v10];
+  v11 = [PLDelayedFiledSystemDeletions deletionsFromChangeHubEvent:eventCopy];
+  [v11 deleteAllRemainingFilesAndThumbnailsWithPhotoLibrary:libraryCopy];
 
-  [v9 stillAlive];
+  [transactionCopy stillAlive];
 }
 
-- (PLDelayedSaveActionsProcessor)initWithLibraryServicesManager:(id)a3
+- (PLDelayedSaveActionsProcessor)initWithLibraryServicesManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = PLDelayedSaveActionsProcessor;
   v6 = [(PLDelayedSaveActionsProcessor *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryServicesManager, a3);
+    objc_storeStrong(&v6->_libraryServicesManager, manager);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_BACKGROUND, 0);
 

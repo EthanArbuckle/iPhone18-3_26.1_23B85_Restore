@@ -18,7 +18,7 @@
   v8 = [v4 stringWithFormat:@"%@-CarPlay-%lu", v7, objc_msgSend(v5, "hash")];
 
   v9 = [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277D77FD0]];
-  v10 = [a1 _notificationRequestForDestinations:v9 withAlertItem:v5 identifier:v8];
+  v10 = [self _notificationRequestForDestinations:v9 withAlertItem:v5 identifier:v8];
 
   return v10;
 }
@@ -38,7 +38,7 @@
   v15[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
   v12 = [v9 setWithArray:v11];
-  v13 = [a1 _notificationRequestForDestinations:v12 withAlertItem:v5 identifier:v8];
+  v13 = [self _notificationRequestForDestinations:v12 withAlertItem:v5 identifier:v8];
 
   return v13;
 }
@@ -50,14 +50,14 @@
   v9 = a5;
   v10 = a3;
   v11 = objc_opt_new();
-  v12 = [v8 alertController];
-  v13 = [v12 title];
+  alertController = [v8 alertController];
+  title = [alertController title];
 
-  if (!v13)
+  if (!title)
   {
     v14 = [v8 _prepareNewAlertControllerWithLockedState:1 requirePasscodeForActions:1];
 
-    v12 = v14;
+    alertController = v14;
   }
 
   [v11 setNotificationIdentifier:v9];
@@ -72,16 +72,16 @@
   v20 = NSStringFromClass(v19);
   [v11 setThreadIdentifier:v20];
 
-  v21 = [MEMORY[0x277CBEAA8] date];
-  [v11 setTimestamp:v21];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v11 setTimestamp:date];
 
   [v11 setRequestDestinations:v10];
   v22 = objc_opt_new();
-  v23 = [v12 title];
-  if ([v23 length])
+  title2 = [alertController title];
+  if ([title2 length])
   {
-    v24 = [v12 message];
-    v25 = [v24 length];
+    message = [alertController message];
+    v25 = [message length];
 
     if (v25)
     {
@@ -93,24 +93,24 @@
   {
   }
 
-  v26 = [MEMORY[0x277CCA8D8] mainBundle];
-  v27 = [v26 localizedStringForKey:@"SYSTEM_NOTIFICATION_HEADER" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v27 = [mainBundle localizedStringForKey:@"SYSTEM_NOTIFICATION_HEADER" value:&stru_283094718 table:@"SpringBoard"];
   [v22 setCustomHeader:v27];
 
 LABEL_8:
-  v28 = [v12 title];
-  [v22 setTitle:v28];
+  title3 = [alertController title];
+  [v22 setTitle:title3];
 
-  v29 = [v12 message];
-  [v22 setMessage:v29];
+  message2 = [alertController message];
+  [v22 setMessage:message2];
 
-  v30 = [v8 contactIdentifier];
+  contactIdentifier = [v8 contactIdentifier];
 
-  if (v30)
+  if (contactIdentifier)
   {
     v31 = objc_alloc_init(MEMORY[0x277CE2050]);
-    v32 = [v8 contactIdentifier];
-    [v31 setCnContactIdentifier:v32];
+    contactIdentifier2 = [v8 contactIdentifier];
+    [v31 setCnContactIdentifier:contactIdentifier2];
 
     v33 = objc_alloc_init(MEMORY[0x277CE2048]);
     [v33 setSender:v31];
@@ -118,23 +118,23 @@ LABEL_8:
     [v22 setCommunicationContext:v33];
   }
 
-  v34 = [v8 contentType];
-  [v22 setContentType:v34];
+  contentType = [v8 contentType];
+  [v22 setContentType:contentType];
 
-  v35 = [v8 iconImage];
-  if (!v35)
+  iconImage = [v8 iconImage];
+  if (!iconImage)
   {
     goto LABEL_18;
   }
 
-  v36 = v35;
+  v36 = iconImage;
   if ([v8 shouldMaskIcon])
   {
     v65 = v9;
     v37 = objc_alloc(MEMORY[0x277D1B160]);
-    v38 = [v36 CGImage];
+    cGImage = [v36 CGImage];
     [v36 scale];
-    v39 = [v37 initWithCGImage:v38 scale:?];
+    v39 = [v37 initWithCGImage:cGImage scale:?];
     v40 = objc_alloc(MEMORY[0x277D1B1A8]);
     v68[0] = v39;
     v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v68 count:1];
@@ -152,8 +152,8 @@ LABEL_8:
     }
 
     v44 = objc_alloc(MEMORY[0x277D1B1C8]);
-    v45 = [MEMORY[0x277D759A0] mainScreen];
-    [v45 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v47 = [v44 initWithSize:v43 scale:{v43, v46}];
 
     v48 = [v66 imageForDescriptor:v47];
@@ -162,13 +162,13 @@ LABEL_8:
     {
       v50 = MEMORY[0x277D755B8];
       v64 = v39;
-      v51 = a1;
-      v52 = [v48 CGImage];
+      selfCopy = self;
+      cGImage2 = [v48 CGImage];
       [v49 scale];
-      v53 = [v50 imageWithCGImage:v52 scale:0 orientation:?];
+      v53 = [v50 imageWithCGImage:cGImage2 scale:0 orientation:?];
 
       v36 = v53;
-      a1 = v51;
+      self = selfCopy;
       v39 = v64;
     }
 
@@ -178,25 +178,25 @@ LABEL_8:
 LABEL_18:
       v54 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.circle"];
       v55 = [MEMORY[0x277D74300] defaultFontForTextStyle:*MEMORY[0x277D76A28]];
-      v56 = a1;
+      selfCopy2 = self;
       v57 = MEMORY[0x277D755D0];
       [v55 pointSize];
       v58 = [v57 configurationWithPointSize:?];
       v36 = [v54 imageWithConfiguration:v58];
 
-      a1 = v56;
+      self = selfCopy2;
     }
   }
 
   [v22 setIcon:v36];
-  v59 = [v8 _attachmentImage];
-  if (v59)
+  _attachmentImage = [v8 _attachmentImage];
+  if (_attachmentImage)
   {
-    [v22 setAttachmentImage:v59];
+    [v22 setAttachmentImage:_attachmentImage];
   }
 
   [v11 setContent:v22];
-  v60 = [a1 _notificationOptionsForAlertController:v12 item:v8];
+  v60 = [self _notificationOptionsForAlertController:alertController item:v8];
   [v11 setOptions:v60];
 
   v61 = [MEMORY[0x277D77E30] defaultNotificationActionForSBAlertItem:v8];
@@ -230,12 +230,12 @@ LABEL_18:
   [v7 setCanPlaySound:1];
   [v7 setCanTurnOnDisplay:{objc_msgSend(v6, "wakeDisplay")}];
   [v7 setHideClearActionInList:{objc_msgSend(v6, "allowLockScreenDismissal") ^ 1}];
-  v8 = [v6 allowMessageInCar];
+  allowMessageInCar = [v6 allowMessageInCar];
 
-  if (v8)
+  if (allowMessageInCar)
   {
-    v9 = [v5 message];
-    [v7 setLauchUsingSiriForCarPlayDefaultAction:{objc_msgSend(v9, "length") != 0}];
+    message = [v5 message];
+    [v7 setLauchUsingSiriForCarPlayDefaultAction:{objc_msgSend(message, "length") != 0}];
   }
 
   else
@@ -262,8 +262,8 @@ LABEL_18:
 + (id)_notificationSoundFromSound:()UserAlert
 {
   v4 = a3;
-  v5 = [v4 soundType];
-  if (v5 > 4 || v5 == 2)
+  soundType = [v4 soundType];
+  if (soundType > 4 || soundType == 2)
   {
     v7 = 0;
   }
@@ -271,14 +271,14 @@ LABEL_18:
   else
   {
     v7 = objc_opt_new();
-    [v7 setSoundType:{objc_msgSend(a1, "_soundTypeForSBSoundType:", objc_msgSend(v4, "soundType"))}];
-    v8 = [v4 songPath];
-    [v7 setSongPath:v8];
+    [v7 setSoundType:{objc_msgSend(self, "_soundTypeForSBSoundType:", objc_msgSend(v4, "soundType"))}];
+    songPath = [v4 songPath];
+    [v7 setSongPath:songPath];
 
     [v7 setSystemSoundID:{objc_msgSend(v4, "systemSoundID")}];
     [v7 setSoundBehavior:{objc_msgSend(v4, "soundBehavior")}];
-    v9 = [v4 vibrationPattern];
-    [v7 setVibrationPattern:v9];
+    vibrationPattern = [v4 vibrationPattern];
+    [v7 setVibrationPattern:vibrationPattern];
   }
 
   return v7;

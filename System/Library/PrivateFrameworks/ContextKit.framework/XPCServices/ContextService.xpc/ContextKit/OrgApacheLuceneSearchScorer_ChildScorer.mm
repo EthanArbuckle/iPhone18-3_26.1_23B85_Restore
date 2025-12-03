@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchScorer_ChildScorer
-- (OrgApacheLuceneSearchScorer_ChildScorer)initWithOrgApacheLuceneSearchScorer:(id)a3 withNSString:(id)a4;
+- (OrgApacheLuceneSearchScorer_ChildScorer)initWithOrgApacheLuceneSearchScorer:(id)scorer withNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchScorer_ChildScorer
 
-- (OrgApacheLuceneSearchScorer_ChildScorer)initWithOrgApacheLuceneSearchScorer:(id)a3 withNSString:(id)a4
+- (OrgApacheLuceneSearchScorer_ChildScorer)initWithOrgApacheLuceneSearchScorer:(id)scorer withNSString:(id)string
 {
-  JreStrongAssign(&self->child_, a3);
-  JreStrongAssign(&self->relationship_, a4);
+  JreStrongAssign(&self->child_, scorer);
+  JreStrongAssign(&self->relationship_, string);
   return self;
 }
 

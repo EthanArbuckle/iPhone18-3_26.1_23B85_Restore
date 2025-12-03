@@ -1,20 +1,20 @@
 @interface AMSDelegatePaymentSheetTask
-- (AMSDelegatePaymentSheetTask)initWithRequest:(id)a3 bag:(id)a4;
+- (AMSDelegatePaymentSheetTask)initWithRequest:(id)request bag:(id)bag;
 - (id)perform;
 @end
 
 @implementation AMSDelegatePaymentSheetTask
 
-- (AMSDelegatePaymentSheetTask)initWithRequest:(id)a3 bag:(id)a4
+- (AMSDelegatePaymentSheetTask)initWithRequest:(id)request bag:(id)bag
 {
-  v7 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = AMSDelegatePaymentSheetTask;
-  v8 = [(AMSPaymentSheetTask *)&v11 initWithRequest:v7 bag:a4];
+  v8 = [(AMSPaymentSheetTask *)&v11 initWithRequest:requestCopy bag:bag];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_request, a3);
+    objc_storeStrong(&v8->_request, request);
   }
 
   return v9;

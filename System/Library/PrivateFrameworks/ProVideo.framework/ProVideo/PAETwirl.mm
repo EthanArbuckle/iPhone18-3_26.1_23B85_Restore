@@ -1,20 +1,20 @@
 @interface PAETwirl
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAETwirl)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAETwirl)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
 @end
 
 @implementation PAETwirl
 
-- (PAETwirl)initWithAPIManager:(id)a3
+- (PAETwirl)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAETwirl;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -27,11 +27,11 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"MayRemapTime", v4, @"PositionIndependent", v5, @"SupportsLargeRenderScale", v6, @"SupportsHeliumRendering", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 3), @"AutoColorProcessingSupport", 0}];
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
-  v7 = [(PAEFilterDefaultBase *)self getParamAPIWithError:a4];
+  v7 = [(PAEFilterDefaultBase *)self getParamAPIWithError:error];
   v13 = 0.0;
-  if ([v7 getFloatValue:&v13 fromParm:1 atFxTime:a3.var1] & 1) != 0 && (v12 = 0, (objc_msgSend(v7, "getBoolValue:fromParm:atFxTime:", &v12, 4, a3.var1)))
+  if ([v7 getFloatValue:&v13 fromParm:1 atFxTime:time.var1] & 1) != 0 && (v12 = 0, (objc_msgSend(v7, "getBoolValue:fromParm:atFxTime:", &v12, 4, time.var1)))
   {
     if (v12 & 1 | (v13 != 0.0))
     {
@@ -46,12 +46,12 @@
     return [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", v8, v13), @"PixelTransformSupport", 0}];
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = objc_opt_class();
     v11 = [(PAEFilterDefaultBase *)self getParamErrorFor:NSStringFromClass(v10)];
     result = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -93,23 +93,23 @@
   return v6;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735B780];
   if (v10)
   {
     v11 = v10;
     LOBYTE(v10) = 0;
-    if (a3)
+    if (width)
     {
-      if (a4)
+      if (height)
       {
         v18 = 0.0;
-        [v11 getFloatValue:&v18 fromParm:1 atFxTime:a6->var0.var1];
+        [v11 getFloatValue:&v18 fromParm:1 atFxTime:info->var0.var1];
         v17 = 0;
-        [v11 getBoolValue:&v17 fromParm:4 atFxTime:a6->var0.var1];
-        var0 = a5->var0;
-        var1 = a5->var1;
+        [v11 getBoolValue:&v17 fromParm:4 atFxTime:info->var0.var1];
+        var0 = input->var0;
+        var1 = input->var1;
         if ((v17 & 1) == 0)
         {
           v14 = v18 * var0;
@@ -118,8 +118,8 @@
           var1 += v15;
         }
 
-        *a3 = var0;
-        *a4 = var1;
+        *width = var0;
+        *height = var1;
         LOBYTE(v10) = 1;
       }
     }
@@ -128,7 +128,7 @@
   return v10;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -148,14 +148,14 @@
   }
 
   v13 = v10;
-  var1 = a5->var0.var1;
+  var1 = info->var0.var1;
   v33 = 0.0;
   [v9 getFloatValue:&v33 fromParm:1 atFxTime:var1];
   if (v33 == 0.0)
   {
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -163,7 +163,7 @@
       v31[0] = 0;
     }
 
-    [a3 setHeliumRef:v31];
+    [output setHeliumRef:v31];
     if (v31[0])
     {
       (*(*v31[0] + 24))(v31[0]);
@@ -173,25 +173,25 @@
     return v12;
   }
 
-  v15 = [v13 versionAtCreation];
-  v16 = v15;
-  v17 = v15 == 1 || v15 > 2;
+  versionAtCreation = [v13 versionAtCreation];
+  v16 = versionAtCreation;
+  v17 = versionAtCreation == 1 || versionAtCreation > 2;
   v18 = v17;
-  v19 = v18 ? a4 : a3;
+  v19 = v18 ? input : output;
   [v19 width];
   v32 = 0;
   [v9 getFloatValue:&v32 fromParm:2 atFxTime:var1];
-  [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
+  [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
   __asm { FMOV            V0.2D, #0.5 }
 
   v30 = _Q0;
   [v9 getXValue:&v30 YValue:&v30 + 8 fromParm:3 atFxTime:var1];
-  v24 = v16 == 1 ? a3 : a4;
+  v24 = v16 == 1 ? output : input;
   [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:&v30 withImage:v24];
   v30 = v29;
   v28 = 0;
-  [v9 getBoolValue:&v28 fromParm:4 atFxTime:a5->var0.var1];
-  v25 = v18 ? a3 : a4;
+  [v9 getBoolValue:&v28 fromParm:4 atFxTime:info->var0.var1];
+  v25 = v18 ? output : input;
   if ([v25 imageType] != 3)
   {
 LABEL_6:
@@ -199,12 +199,12 @@ LABEL_6:
     return v12;
   }
 
-  v12 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+  v12 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
   if (v12)
   {
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -219,15 +219,15 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

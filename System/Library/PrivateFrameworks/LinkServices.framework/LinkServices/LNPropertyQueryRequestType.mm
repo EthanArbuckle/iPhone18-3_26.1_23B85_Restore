@@ -1,20 +1,20 @@
 @interface LNPropertyQueryRequestType
-- (BOOL)isEqual:(id)a3;
-- (LNPropertyQueryRequestType)initWithCoder:(id)a3;
-- (LNPropertyQueryRequestType)initWithPropertyQuery:(id)a3 sortingOptions:(id)a4 maximumResultCount:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNPropertyQueryRequestType)initWithCoder:(id)coder;
+- (LNPropertyQueryRequestType)initWithPropertyQuery:(id)query sortingOptions:(id)options maximumResultCount:(id)count;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNPropertyQueryRequestType
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v12 = 0;
@@ -23,10 +23,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNPropertyQueryRequestType *)self propertyQuery];
-    v8 = [(LNPropertyQueryRequestType *)v6 propertyQuery];
-    v9 = v7;
-    v10 = v8;
+    propertyQuery = [(LNPropertyQueryRequestType *)self propertyQuery];
+    propertyQuery2 = [(LNPropertyQueryRequestType *)v6 propertyQuery];
+    v9 = propertyQuery;
+    v10 = propertyQuery2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -53,10 +53,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNPropertyQueryRequestType *)self sortingOptions];
-    v17 = [(LNPropertyQueryRequestType *)v6 sortingOptions];
-    v14 = v16;
-    v18 = v17;
+    sortingOptions = [(LNPropertyQueryRequestType *)self sortingOptions];
+    sortingOptions2 = [(LNPropertyQueryRequestType *)v6 sortingOptions];
+    v14 = sortingOptions;
+    v18 = sortingOptions2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -87,10 +87,10 @@ LABEL_25:
       }
     }
 
-    v24 = [(LNPropertyQueryRequestType *)self maximumResultCount];
-    v25 = [(LNPropertyQueryRequestType *)v6 maximumResultCount];
-    v20 = v24;
-    v26 = v25;
+    maximumResultCount = [(LNPropertyQueryRequestType *)self maximumResultCount];
+    maximumResultCount2 = [(LNPropertyQueryRequestType *)v6 maximumResultCount];
+    v20 = maximumResultCount;
+    v26 = maximumResultCount2;
     v19 = v26;
     if (v20 == v26)
     {
@@ -122,48 +122,48 @@ LABEL_28:
   return v4 ^ [(NSNumber *)self->_maximumResultCount hash];
 }
 
-- (LNPropertyQueryRequestType)initWithCoder:(id)a3
+- (LNPropertyQueryRequestType)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"propertyQuery"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"propertyQuery"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"sortingOptions"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"sortingOptions"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximumResultCount"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximumResultCount"];
 
   v11 = [(LNPropertyQueryRequestType *)self initWithPropertyQuery:v5 sortingOptions:v9 maximumResultCount:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNPropertyQueryRequestType *)self propertyQuery];
-  [v4 encodeObject:v5 forKey:@"propertyQuery"];
+  coderCopy = coder;
+  propertyQuery = [(LNPropertyQueryRequestType *)self propertyQuery];
+  [coderCopy encodeObject:propertyQuery forKey:@"propertyQuery"];
 
-  v6 = [(LNPropertyQueryRequestType *)self sortingOptions];
-  [v4 encodeObject:v6 forKey:@"sortingOptions"];
+  sortingOptions = [(LNPropertyQueryRequestType *)self sortingOptions];
+  [coderCopy encodeObject:sortingOptions forKey:@"sortingOptions"];
 
-  v7 = [(LNPropertyQueryRequestType *)self maximumResultCount];
-  [v4 encodeObject:v7 forKey:@"maximumResultCount"];
+  maximumResultCount = [(LNPropertyQueryRequestType *)self maximumResultCount];
+  [coderCopy encodeObject:maximumResultCount forKey:@"maximumResultCount"];
 }
 
-- (LNPropertyQueryRequestType)initWithPropertyQuery:(id)a3 sortingOptions:(id)a4 maximumResultCount:(id)a5
+- (LNPropertyQueryRequestType)initWithPropertyQuery:(id)query sortingOptions:(id)options maximumResultCount:(id)count
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queryCopy = query;
+  optionsCopy = options;
+  countCopy = count;
   v16.receiver = self;
   v16.super_class = LNPropertyQueryRequestType;
-  v12 = [(LNQueryRequestTypeBase *)&v16 _init];
-  v13 = v12;
-  if (v12)
+  _init = [(LNQueryRequestTypeBase *)&v16 _init];
+  v13 = _init;
+  if (_init)
   {
-    objc_storeStrong(v12 + 1, a3);
-    objc_storeStrong(&v13->_sortingOptions, a4);
-    objc_storeStrong(&v13->_maximumResultCount, a5);
+    objc_storeStrong(_init + 1, query);
+    objc_storeStrong(&v13->_sortingOptions, options);
+    objc_storeStrong(&v13->_maximumResultCount, count);
     v14 = v13;
   }
 

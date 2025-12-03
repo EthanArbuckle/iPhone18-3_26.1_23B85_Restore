@@ -1,6 +1,6 @@
 @interface NRFDeepFusionOutput
 - (__n128)refFrameTransform;
-- (__n128)setRefFrameTransform:(__n128)a3;
+- (__n128)setRefFrameTransform:(__n128)transform;
 - (void)dealloc;
 @end
 
@@ -24,16 +24,16 @@
 
 - (__n128)refFrameTransform
 {
-  result = *(a1 + 176);
-  v2 = *(a1 + 192);
-  v3 = *(a1 + 208);
+  result = *(self + 176);
+  v2 = *(self + 192);
+  v3 = *(self + 208);
   return result;
 }
 
-- (__n128)setRefFrameTransform:(__n128)a3
+- (__n128)setRefFrameTransform:(__n128)transform
 {
   result[11] = a2;
-  result[12] = a3;
+  result[12] = transform;
   result[13] = a4;
   return result;
 }

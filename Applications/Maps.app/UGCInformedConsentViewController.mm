@@ -1,8 +1,8 @@
 @interface UGCInformedConsentViewController
-+ (void)presentIfNeededWithPresentingViewController:(id)a3 presentationContext:(int64_t)a4 completion:(id)a5;
-- (UGCInformedConsentViewController)initWithCompletion:(id)a3;
++ (void)presentIfNeededWithPresentingViewController:(id)controller presentationContext:(int64_t)context completion:(id)completion;
+- (UGCInformedConsentViewController)initWithCompletion:(id)completion;
 - (void)_continuePressed;
-- (void)_invokeCompletionWithHasGivenConsent:(BOOL)a3;
+- (void)_invokeCompletionWithHasGivenConsent:(BOOL)consent;
 - (void)_notNowPressed;
 - (void)_setupPrivacyController;
 - (void)viewDidLoad;
@@ -10,9 +10,9 @@
 
 @implementation UGCInformedConsentViewController
 
-- (void)_invokeCompletionWithHasGivenConsent:(BOOL)a3
+- (void)_invokeCompletionWithHasGivenConsent:(BOOL)consent
 {
-  v5 = a3;
+  consentCopy = consent;
   HasUserConsentedToAddingContributions = MKGetHasUserConsentedToAddingContributions();
   MKSetHasUserConsentedToAddingContributions();
   +[RatingRequestHomeAvailability setHasShownTipKitAlertOnProactiveTray];
@@ -22,8 +22,8 @@
   v7[2] = sub_100CC87DC;
   v7[3] = &unk_1016505E8;
   objc_copyWeak(&v8, &location);
-  v9 = v5;
-  v10 = ((HasUserConsentedToAddingContributions != 1) | ~a3) & (HasUserConsentedToAddingContributions != 2 || a3) & 1;
+  v9 = consentCopy;
+  v10 = ((HasUserConsentedToAddingContributions != 1) | ~consent) & (HasUserConsentedToAddingContributions != 2 || consent) & 1;
   [(UGCInformedConsentViewController *)self dismissViewControllerAnimated:1 completion:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -104,16 +104,16 @@
   [v25 setTitle:v27 forState:0];
 
   [v25 addTarget:self action:"_notNowPressed" forControlEvents:64];
-  v28 = [(UGCInformedConsentViewController *)self buttonTray];
+  buttonTray = [(UGCInformedConsentViewController *)self buttonTray];
   v40 = @"com.apple.onboarding.ratingsAndPhotos";
   v29 = [NSArray arrayWithObjects:&v40 count:1];
-  [v28 setPrivacyLinkForBundles:v29];
+  [buttonTray setPrivacyLinkForBundles:v29];
 
-  v30 = [(UGCInformedConsentViewController *)self buttonTray];
-  [v30 addButton:v22];
+  buttonTray2 = [(UGCInformedConsentViewController *)self buttonTray];
+  [buttonTray2 addButton:v22];
 
-  v31 = [(UGCInformedConsentViewController *)self buttonTray];
-  [v31 addButton:v25];
+  buttonTray3 = [(UGCInformedConsentViewController *)self buttonTray];
+  [buttonTray3 addButton:v25];
 }
 
 - (void)viewDidLoad
@@ -122,14 +122,14 @@
   v6.super_class = UGCInformedConsentViewController;
   [(UGCInformedConsentViewController *)&v6 viewDidLoad];
   [(UGCInformedConsentViewController *)self _setupPrivacyController];
-  v3 = [(UGCInformedConsentViewController *)self presentationContext];
+  presentationContext = [(UGCInformedConsentViewController *)self presentationContext];
   v4 = @"placecard";
-  if (v3 != 1)
+  if (presentationContext != 1)
   {
     v4 = 0;
   }
 
-  if (v3 == 2)
+  if (presentationContext == 2)
   {
     v5 = @"suggestion";
   }
@@ -142,9 +142,9 @@
   [(UGCInformedConsentViewController *)self _captureUserAction:45 withValue:v5];
 }
 
-- (UGCInformedConsentViewController)initWithCompletion:(id)a3
+- (UGCInformedConsentViewController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   IsEnabled_ARPCommunityID = MapsFeature_IsEnabled_ARPCommunityID();
   v6 = +[NSBundle mainBundle];
   v7 = v6;
@@ -165,7 +165,7 @@
   v10 = [(UGCInformedConsentViewController *)&v14 initWithTitle:v9 detailText:0 icon:0];
   if (v10)
   {
-    v11 = [v4 copy];
+    v11 = [completionCopy copy];
     completion = v10->_completion;
     v10->_completion = v11;
   }
@@ -173,30 +173,30 @@
   return v10;
 }
 
-+ (void)presentIfNeededWithPresentingViewController:(id)a3 presentationContext:(int64_t)a4 completion:(id)a5
++ (void)presentIfNeededWithPresentingViewController:(id)controller presentationContext:(int64_t)context completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  if (v8)
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (MKGetHasUserConsentedToAddingContributions() == 1)
     {
-      v8[2](v8, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
     {
-      v9 = [[UGCInformedConsentViewController alloc] initWithCompletion:v8];
+      v9 = [[UGCInformedConsentViewController alloc] initWithCompletion:completionCopy];
       [(UGCInformedConsentViewController *)v9 setModalPresentationStyle:2];
-      [(UGCInformedConsentViewController *)v9 setPresentationContext:a4];
+      [(UGCInformedConsentViewController *)v9 setPresentationContext:context];
       if (sub_10000FA08(v9) == 5)
       {
-        [v7 presentViewController:v9 animated:1 completion:0];
+        [controllerCopy presentViewController:v9 animated:1 completion:0];
       }
 
       else
       {
-        [v7 _maps_topMostPresentViewController:v9 animated:1 completion:0];
+        [controllerCopy _maps_topMostPresentViewController:v9 animated:1 completion:0];
       }
     }
   }

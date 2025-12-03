@@ -1,43 +1,43 @@
 @interface HMDCloudLegacyMetadataRecord
-+ (id)legacyModelWithMetadata:(id)a3;
-- (BOOL)encodeObjectChange:(id)a3;
++ (id)legacyModelWithMetadata:(id)metadata;
+- (BOOL)encodeObjectChange:(id)change;
 - (id)data;
 - (id)extractObjectChange;
 - (void)clearData;
-- (void)setData:(id)a3;
+- (void)setData:(id)data;
 @end
 
 @implementation HMDCloudLegacyMetadataRecord
 
 - (void)clearData
 {
-  v2 = [(HMDCloudRecord *)self record];
-  [v2 setObject:0 forKeyedSubscript:@"kRecordEncodedDataBlobKey"];
+  record = [(HMDCloudRecord *)self record];
+  [record setObject:0 forKeyedSubscript:@"kRecordEncodedDataBlobKey"];
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = a3;
-  v5 = [(HMDCloudRecord *)self record];
-  [v5 setObject:v4 forKeyedSubscript:@"kRecordEncodedDataBlobKey"];
+  dataCopy = data;
+  record = [(HMDCloudRecord *)self record];
+  [record setObject:dataCopy forKeyedSubscript:@"kRecordEncodedDataBlobKey"];
 }
 
 - (id)data
 {
-  v2 = [(HMDCloudRecord *)self record];
-  v3 = [v2 objectForKeyedSubscript:@"kRecordEncodedDataBlobKey"];
+  record = [(HMDCloudRecord *)self record];
+  v3 = [record objectForKeyedSubscript:@"kRecordEncodedDataBlobKey"];
 
   return v3;
 }
 
-- (BOOL)encodeObjectChange:(id)a3
+- (BOOL)encodeObjectChange:(id)change
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = changeCopy;
   }
 
   else
@@ -47,31 +47,31 @@
 
   v6 = v5;
 
-  v7 = [v6 data1];
-  if (v7 && (v8 = v7, [v6 data1], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v8, v10))
+  data1 = [v6 data1];
+  if (data1 && (v8 = data1, [v6 data1], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v8, v10))
   {
-    v11 = [v6 data1];
-    v12 = [v11 length];
+    data12 = [v6 data1];
+    v12 = [data12 length];
 
-    v13 = [v6 data1];
-    v14 = [(HMDCloudRecord *)self record];
-    [v14 setObject:v13 forKeyedSubscript:@"kRecordEncodedDataBlobKey"];
+    data13 = [v6 data1];
+    record = [(HMDCloudRecord *)self record];
+    [record setObject:data13 forKeyedSubscript:@"kRecordEncodedDataBlobKey"];
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [(HMDCloudRecord *)v16 record];
-      v20 = [v19 recordType];
-      v21 = [(HMDCloudRecord *)v16 recordName];
+      record2 = [(HMDCloudRecord *)selfCopy record];
+      recordType = [record2 recordType];
+      recordName = [(HMDCloudRecord *)selfCopy recordName];
       *buf = 138544130;
       v37 = v18;
       v38 = 2112;
-      v39 = v20;
+      v39 = recordType;
       v40 = 2112;
-      v41 = v21;
+      v41 = recordName;
       v42 = 2048;
       v43 = v12;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Legacy metadata record %@/%@ %lu bytes", buf, 0x2Au);
@@ -79,15 +79,15 @@
 
     objc_autoreleasePoolPop(v15);
     v35 = 0;
-    v22 = [v4 encodeWithEncoding:1 error:&v35];
+    v22 = [changeCopy encodeWithEncoding:1 error:&v35];
     v23 = v35;
-    [(HMDCloudRecord *)v16 setCachedData:v22];
+    [(HMDCloudRecord *)selfCopy setCachedData:v22];
 
     v24 = v23 == 0;
     if (v23)
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v16;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
@@ -106,7 +106,7 @@
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -127,15 +127,15 @@
 - (id)extractObjectChange
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudRecord *)self cachedData];
-  if (v3)
+  cachedData = [(HMDCloudRecord *)self cachedData];
+  if (cachedData)
   {
   }
 
   else if ([(HMDCloudRecord *)self isRecordCached])
   {
-    v4 = [(HMDCloudRecord *)self record];
-    v5 = [v4 objectForKeyedSubscript:@"kRecordEncodedDataBlobKey"];
+    record = [(HMDCloudRecord *)self record];
+    v5 = [record objectForKeyedSubscript:@"kRecordEncodedDataBlobKey"];
 
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -155,7 +155,7 @@
     if (v14)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -170,21 +170,21 @@
       objc_autoreleasePoolPop(v15);
     }
 
-    v19 = [(HMDCloudRecord *)self record];
-    [v19 setObject:0 forKeyedSubscript:@"kRecordEncodedDataBlobKey"];
+    record2 = [(HMDCloudRecord *)self record];
+    [record2 setObject:0 forKeyedSubscript:@"kRecordEncodedDataBlobKey"];
 
     goto LABEL_17;
   }
 
-  v7 = [(HMDCloudRecord *)self cachedData];
+  cachedData2 = [(HMDCloudRecord *)self cachedData];
   v30 = 0;
-  v6 = [HMDBackingStoreModelObject objectFromData:v7 encoding:1 error:&v30];
+  v6 = [HMDBackingStoreModelObject objectFromData:cachedData2 encoding:1 error:&v30];
   v8 = v30;
 
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -203,12 +203,12 @@ LABEL_25:
   }
 
 LABEL_17:
-  v20 = [(HMDCloudRecord *)self cachedData];
+  cachedData3 = [(HMDCloudRecord *)self cachedData];
 
-  if (!v20)
+  if (!cachedData3)
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy3 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -224,12 +224,12 @@ LABEL_17:
 
   if (v6)
   {
-    v21 = [v6 uuid];
+    uuid = [v6 uuid];
 
-    if (v21)
+    if (uuid)
     {
-      v22 = [v6 uuid];
-      [(HMDCloudRecord *)self setObjectID:v22];
+      uuid2 = [v6 uuid];
+      [(HMDCloudRecord *)self setObjectID:uuid2];
     }
   }
 
@@ -242,14 +242,14 @@ LABEL_26:
   return v23;
 }
 
-+ (id)legacyModelWithMetadata:(id)a3
++ (id)legacyModelWithMetadata:(id)metadata
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = [[v3 alloc] initWithUUIDString:@"457C009B-1DA4-4B71-BD69-93D344A81A8B"];
   v6 = [(HMDBackingStoreModelObject *)[HMDCloudLegacyModelObject alloc] initWithObjectChangeType:1 uuid:v5 parentUUID:0];
   [(HMDCloudLegacyModelObject *)v6 setLegacyRecordType:&unk_286629D28];
-  [(HMDCloudLegacyModelObject *)v6 setData1:v4];
+  [(HMDCloudLegacyModelObject *)v6 setData1:metadataCopy];
 
   return v6;
 }

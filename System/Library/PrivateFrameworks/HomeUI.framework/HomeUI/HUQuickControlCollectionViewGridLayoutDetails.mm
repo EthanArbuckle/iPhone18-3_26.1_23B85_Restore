@@ -1,16 +1,16 @@
 @interface HUQuickControlCollectionViewGridLayoutDetails
 - (CGRect)contentFrame;
-- (id)indexPathForRow:(unint64_t)a3 column:(unint64_t)a4;
+- (id)indexPathForRow:(unint64_t)row column:(unint64_t)column;
 - (id)indexPathForSectionHeader;
-- (unint64_t)numberOfColumnsInRow:(unint64_t)a3;
+- (unint64_t)numberOfColumnsInRow:(unint64_t)row;
 @end
 
 @implementation HUQuickControlCollectionViewGridLayoutDetails
 
 - (id)indexPathForSectionHeader
 {
-  v3 = [(HUQuickControlCollectionViewGridLayoutDetails *)self sectionHeaderLayout];
-  if (v3)
+  sectionHeaderLayout = [(HUQuickControlCollectionViewGridLayoutDetails *)self sectionHeaderLayout];
+  if (sectionHeaderLayout)
   {
     v4 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:{-[HUQuickControlCollectionViewGridLayoutDetails sectionIndex](self, "sectionIndex")}];
   }
@@ -23,33 +23,33 @@
   return v4;
 }
 
-- (id)indexPathForRow:(unint64_t)a3 column:(unint64_t)a4
+- (id)indexPathForRow:(unint64_t)row column:(unint64_t)column
 {
-  v7 = [(HUQuickControlCollectionViewGridLayoutDetails *)self settings];
-  v8 = a4 + [v7 numberOfColumns] * a3;
+  settings = [(HUQuickControlCollectionViewGridLayoutDetails *)self settings];
+  v8 = column + [settings numberOfColumns] * row;
 
   v9 = MEMORY[0x277CCAA70];
-  v10 = [(HUQuickControlCollectionViewGridLayoutDetails *)self sectionIndex];
+  sectionIndex = [(HUQuickControlCollectionViewGridLayoutDetails *)self sectionIndex];
 
-  return [v9 indexPathForItem:v8 inSection:v10];
+  return [v9 indexPathForItem:v8 inSection:sectionIndex];
 }
 
-- (unint64_t)numberOfColumnsInRow:(unint64_t)a3
+- (unint64_t)numberOfColumnsInRow:(unint64_t)row
 {
-  v5 = [(HUQuickControlCollectionViewGridLayoutDetails *)self settings];
-  v6 = [v5 numberOfColumns];
+  settings = [(HUQuickControlCollectionViewGridLayoutDetails *)self settings];
+  numberOfColumns = [settings numberOfColumns];
 
-  if (v6)
+  if (numberOfColumns)
   {
-    v7 = [(HUQuickControlCollectionViewGridLayoutDetails *)self settings];
-    v8 = [v7 numberOfRows] - 1;
+    settings2 = [(HUQuickControlCollectionViewGridLayoutDetails *)self settings];
+    v8 = [settings2 numberOfRows] - 1;
 
-    if (v8 == a3)
+    if (v8 == row)
     {
-      v9 = [(HUQuickControlCollectionViewGridLayoutDetails *)self settings];
-      v10 = [v9 numberOfItems];
-      v11 = [(HUQuickControlCollectionViewGridLayoutDetails *)self settings];
-      v12 = v10 % [v11 numberOfColumns];
+      settings3 = [(HUQuickControlCollectionViewGridLayoutDetails *)self settings];
+      numberOfItems = [settings3 numberOfItems];
+      settings4 = [(HUQuickControlCollectionViewGridLayoutDetails *)self settings];
+      v12 = numberOfItems % [settings4 numberOfColumns];
 
       if (v12)
       {
@@ -58,7 +58,7 @@
     }
   }
 
-  return v6;
+  return numberOfColumns;
 }
 
 - (CGRect)contentFrame

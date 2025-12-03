@@ -50,15 +50,15 @@
 
     while (1)
     {
-      v13 = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
+      nextObject = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
       v27[0] = 0;
-      [v13 getResourceValue:v27 forKey:v6 error:0];
+      [nextObject getResourceValue:v27 forKey:v6 error:0];
       if ([v27[0] BOOLValue])
       {
         goto LABEL_12;
       }
 
-      if (!v13)
+      if (!nextObject)
       {
         v15 = self->_currentSensorDirectoryIndex + 1;
         self->_currentSensorDirectoryIndex = v15;
@@ -81,8 +81,8 @@
 
         v19 = -[NSFileManager enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:", [v18 objectAtIndexedSubscript:self->_currentSensorDirectoryIndex], 0, 4, 0);
         objc_setProperty_atomic(self, v20, v19, 24);
-        v13 = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
-        if (!v13)
+        nextObject = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
+        if (!nextObject)
         {
 LABEL_28:
           objc_setProperty_atomic(self, v17, 0, 24);
@@ -90,7 +90,7 @@ LABEL_28:
         }
       }
 
-      v21 = [objc_msgSend(v13 "URLByDeletingPathExtension")];
+      v21 = [objc_msgSend(nextObject "URLByDeletingPathExtension")];
       v22 = self->_sensorsCache;
       if (!v22)
       {
@@ -101,9 +101,9 @@ LABEL_12:
       else
       {
         v23 = v21;
-        v24 = [v21 sr_sensorByDeletingDeletionRecord];
-        v25 = [(NSURL *)v24 isEqualToString:v23];
-        v8 = [(NSCache *)v22->_sensorsCache objectForKey:v24];
+        sr_sensorByDeletingDeletionRecord = [v21 sr_sensorByDeletingDeletionRecord];
+        v25 = [(NSURL *)sr_sensorByDeletingDeletionRecord isEqualToString:v23];
+        v8 = [(NSCache *)v22->_sensorsCache objectForKey:sr_sensorByDeletingDeletionRecord];
         if (v8)
         {
           if ((v25 & 1) == 0)
@@ -114,7 +114,7 @@ LABEL_12:
 
         else
         {
-          v8 = sub_100019470(v22, v24);
+          v8 = sub_100019470(v22, sr_sensorByDeletingDeletionRecord);
           if (!((v8 == 0) | v25 & 1))
           {
 LABEL_27:

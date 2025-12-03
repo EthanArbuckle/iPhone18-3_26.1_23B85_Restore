@@ -1,33 +1,33 @@
 @interface CAMModeDial
-- (CAMModeDial)initWithCoder:(id)a3;
-- (CAMModeDial)initWithFrame:(CGRect)a3;
-- (CAMModeDial)initWithLayoutStyle:(int64_t)a3;
-- (CGPoint)_horizontalContainerCenterForMode:(int64_t)a3;
-- (CGPoint)_verticalContainerCenterForMode:(int64_t)a3;
+- (CAMModeDial)initWithCoder:(id)coder;
+- (CAMModeDial)initWithFrame:(CGRect)frame;
+- (CAMModeDial)initWithLayoutStyle:(int64_t)style;
+- (CGPoint)_horizontalContainerCenterForMode:(int64_t)mode;
+- (CGPoint)_verticalContainerCenterForMode:(int64_t)mode;
 - (CGSize)_interpolatedHorizontalMeshTransformSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_centeringNudgeForMode:(int64_t)a3;
-- (id)_fontForLayoutStyle:(int64_t)a3 selected:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_centeringNudgeForMode:(int64_t)mode;
+- (id)_fontForLayoutStyle:(int64_t)style selected:(BOOL)selected;
 - (id)_horizontalMeshTransform;
-- (id)_meshTransformForLayoutStyle:(int64_t)a3;
+- (id)_meshTransformForLayoutStyle:(int64_t)style;
 - (id)_selectedItem;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
-- (int64_t)_nearestCaptureModeForLocation:(CGPoint)a3;
-- (void)_commonCAMModeDialInitializationWithLayoutStyle:(int64_t)a3;
-- (void)_configureGradientForLayoutStyle:(int64_t)a3;
-- (void)_configureMeshTransformForLayoutStyle:(int64_t)a3;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
+- (int64_t)_nearestCaptureModeForLocation:(CGPoint)location;
+- (void)_commonCAMModeDialInitializationWithLayoutStyle:(int64_t)style;
+- (void)_configureGradientForLayoutStyle:(int64_t)style;
+- (void)_configureMeshTransformForLayoutStyle:(int64_t)style;
 - (void)_layoutHorizontalModeDial;
 - (void)_layoutVerticalModeDial;
-- (void)_updateContainerCenterFromSelectedModeAnimated:(BOOL)a3;
+- (void)_updateContainerCenterFromSelectedModeAnimated:(BOOL)animated;
 - (void)_updateForLayoutStyle;
-- (void)_updateItemsForLayoutStyle:(int64_t)a3;
-- (void)_updateSelectedItemBackgroundForLayoutStyle:(int64_t)a3;
+- (void)_updateItemsForLayoutStyle:(int64_t)style;
+- (void)_updateSelectedItemBackgroundForLayoutStyle:(int64_t)style;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)selectedByAccessibilityHUDManager:(id)a3;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setSelectedMode:(int64_t)a3 animated:(BOOL)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)selectedByAccessibilityHUDManager:(id)manager;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setSelectedMode:(int64_t)mode animated:(BOOL)animated;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation CAMModeDial
@@ -47,11 +47,11 @@
 
 - (void)_updateForLayoutStyle
 {
-  v3 = [(CAMModeDial *)self layoutStyle];
-  [(CAMModeDial *)self _configureGradientForLayoutStyle:v3];
-  [(CAMModeDial *)self _configureMeshTransformForLayoutStyle:v3];
-  [(CAMModeDial *)self _updateItemsForLayoutStyle:v3];
-  [(CAMModeDial *)self _updateSelectedItemBackgroundForLayoutStyle:v3];
+  layoutStyle = [(CAMModeDial *)self layoutStyle];
+  [(CAMModeDial *)self _configureGradientForLayoutStyle:layoutStyle];
+  [(CAMModeDial *)self _configureMeshTransformForLayoutStyle:layoutStyle];
+  [(CAMModeDial *)self _updateItemsForLayoutStyle:layoutStyle];
+  [(CAMModeDial *)self _updateSelectedItemBackgroundForLayoutStyle:layoutStyle];
   [(CAMModeDial *)self _updateContainerCenterFromSelectedModeAnimated:0];
   [(CAMModeDial *)self reloadData];
 
@@ -60,10 +60,10 @@
 
 - (id)_selectedItem
 {
-  v3 = [(CAMModeDial *)self selectedMode];
-  v4 = [(CAMModeDial *)self _items];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:v3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  selectedMode = [(CAMModeDial *)self selectedMode];
+  _items = [(CAMModeDial *)self _items];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:selectedMode];
+  v6 = [_items objectForKeyedSubscript:v5];
 
   return v6;
 }
@@ -71,17 +71,17 @@
 - (void)reloadData
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMModeDial *)self dataSource];
-  if (v3)
+  dataSource = [(CAMModeDial *)self dataSource];
+  if (dataSource)
   {
-    v29 = [(CAMModeDial *)self _items];
-    v28 = [v29 allValues];
-    [v28 makeObjectsPerformSelector:sel_removeFromSuperview];
-    v30 = v3;
-    v4 = [v3 modesForModeDial:self];
+    _items = [(CAMModeDial *)self _items];
+    allValues = [_items allValues];
+    [allValues makeObjectsPerformSelector:sel_removeFromSuperview];
+    v30 = dataSource;
+    v4 = [dataSource modesForModeDial:self];
     [(CAMModeDial *)self _setModes:v4];
-    v5 = [(CAMModeDial *)self selectedMode];
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+    selectedMode = [(CAMModeDial *)self selectedMode];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:selectedMode];
     v7 = [v4 containsObject:v6];
 
     if ((v7 & 1) == 0)
@@ -91,20 +91,20 @@
 
       if ((v9 & 1) != 0 || ![v4 count])
       {
-        v11 = 0;
+        integerValue = 0;
       }
 
       else
       {
-        v10 = [v4 firstObject];
-        v11 = [v10 integerValue];
+        firstObject = [v4 firstObject];
+        integerValue = [firstObject integerValue];
       }
 
-      [(CAMModeDial *)self setSelectedMode:v11];
+      [(CAMModeDial *)self setSelectedMode:integerValue];
     }
 
-    v33 = [(CAMModeDial *)self selectedMode];
-    v12 = [(CAMModeDial *)self layoutStyle];
+    selectedMode2 = [(CAMModeDial *)self selectedMode];
+    layoutStyle = [(CAMModeDial *)self layoutStyle];
     v34 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v41 = 0u;
     v42 = 0u;
@@ -129,33 +129,33 @@
           }
 
           v18 = *(*(&v41 + 1) + 8 * i);
-          v19 = [v18 integerValue];
+          integerValue2 = [v18 integerValue];
           v20 = [[CAMModeDialItem alloc] initWithFrame:v13, v14, v15, v16];
-          v21 = v19 == v33;
-          v22 = [MEMORY[0x1E696AEC0] cam_localizedTitleForMode:v19 wantsCompactTitle:{objc_msgSend(objc_opt_class(), "wantsVerticalModeDialForLayoutStyle:", v12)}];
-          v23 = [(CAMModeDial *)self _fontForLayoutStyle:v12 selected:v21];
-          if ((v12 - 2) < 2)
+          v21 = integerValue2 == selectedMode2;
+          v22 = [MEMORY[0x1E696AEC0] cam_localizedTitleForMode:integerValue2 wantsCompactTitle:{objc_msgSend(objc_opt_class(), "wantsVerticalModeDialForLayoutStyle:", layoutStyle)}];
+          v23 = [(CAMModeDial *)self _fontForLayoutStyle:layoutStyle selected:v21];
+          if ((layoutStyle - 2) < 2)
           {
 LABEL_16:
             v24 = +[CAMCaptureCapabilities capabilities];
-            v25 = [v24 wantsFullscreenViewfinder];
+            wantsFullscreenViewfinder = [v24 wantsFullscreenViewfinder];
 
             goto LABEL_19;
           }
 
-          if (v12 == 1)
+          if (layoutStyle == 1)
           {
-            v25 = 1;
+            wantsFullscreenViewfinder = 1;
           }
 
           else
           {
-            if (!v12)
+            if (!layoutStyle)
             {
               goto LABEL_16;
             }
 
-            v25 = 0;
+            wantsFullscreenViewfinder = 0;
           }
 
 LABEL_19:
@@ -165,7 +165,7 @@ LABEL_19:
           v36[3] = &unk_1E76FAEA8;
           v37 = v23;
           v38 = v22;
-          v39 = v25;
+          v39 = wantsFullscreenViewfinder;
           v40 = v21;
           v26 = v22;
           v27 = v23;
@@ -183,7 +183,7 @@ LABEL_19:
     [(CAMModeDial *)self _setItems:v34];
     [(CAMModeDial *)self setNeedsLayout];
 
-    v3 = v30;
+    dataSource = v30;
   }
 }
 
@@ -234,8 +234,8 @@ LABEL_19:
   v52.size.width = v8;
   v52.size.height = v10;
   v19 = CGRectGetMaxY(v52) - v14;
-  v20 = [(CAMModeDial *)self _meshTransformView];
-  [v20 setFrame:{v17, v19, v12, v14}];
+  _meshTransformView = [(CAMModeDial *)self _meshTransformView];
+  [_meshTransformView setFrame:{v17, v19, v12, v14}];
   v53.origin.x = v17;
   v53.origin.y = v19;
   v53.size.width = v12;
@@ -246,10 +246,10 @@ LABEL_19:
   v54.size.width = v12;
   v54.size.height = v14;
   v42 = -CGRectGetMinY(v54);
-  v21 = [(CAMModeDial *)self _gradientLayer];
-  [v21 setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v12, v14}];
-  v22 = [(CAMModeDial *)self _modes];
-  v23 = [(CAMModeDial *)self _items];
+  _gradientLayer = [(CAMModeDial *)self _gradientLayer];
+  [_gradientLayer setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v12, v14}];
+  _modes = [(CAMModeDial *)self _modes];
+  _items = [(CAMModeDial *)self _items];
   v55.origin.x = v18;
   v55.origin.y = v6;
   v55.size.width = v8;
@@ -264,7 +264,7 @@ LABEL_19:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v26 = v22;
+  v26 = _modes;
   v27 = [v26 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v27)
   {
@@ -282,7 +282,7 @@ LABEL_19:
           objc_enumerationMutation(v26);
         }
 
-        v34 = [v23 objectForKey:*(*(&v44 + 1) + 8 * i)];
+        v34 = [_items objectForKey:*(*(&v44 + 1) + 8 * i)];
         [v34 sizeThatFits:{v30, v31}];
         v36 = v35;
         v38 = v37;
@@ -312,8 +312,8 @@ LABEL_19:
     v32 = 0.0;
   }
 
-  v41 = [(CAMModeDial *)self _itemsContainerView];
-  [v41 setFrame:{v43, v42, v32, Height}];
+  _itemsContainerView = [(CAMModeDial *)self _itemsContainerView];
+  [_itemsContainerView setFrame:{v43, v42, v32, Height}];
 }
 
 - (CGSize)_interpolatedHorizontalMeshTransformSize
@@ -330,14 +330,14 @@ LABEL_19:
   return result;
 }
 
-- (void)_commonCAMModeDialInitializationWithLayoutStyle:(int64_t)a3
+- (void)_commonCAMModeDialInitializationWithLayoutStyle:(int64_t)style
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69DC888] systemYellowColor];
-  [(CAMModeDial *)self setTintColor:v5];
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  [(CAMModeDial *)self setTintColor:systemYellowColor];
 
   [(CAMModeDial *)self setClipsToBounds:1];
-  self->_layoutStyle = a3;
+  self->_layoutStyle = style;
   v6 = objc_alloc(MEMORY[0x1E69DD250]);
   v7 = *MEMORY[0x1E695F058];
   v8 = *(MEMORY[0x1E695F058] + 8);
@@ -349,34 +349,34 @@ LABEL_19:
 
   [(UIView *)self->__meshTransformView setUserInteractionEnabled:0];
   [(CAMModeDial *)self addSubview:self->__meshTransformView];
-  [(CAMModeDial *)self _configureMeshTransformForLayoutStyle:a3];
+  [(CAMModeDial *)self _configureMeshTransformForLayoutStyle:style];
   v13 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v7, v8, v9, v10}];
   itemsContainerView = self->__itemsContainerView;
   self->__itemsContainerView = v13;
 
   [(UIView *)self->__itemsContainerView setUserInteractionEnabled:0];
   [(UIView *)self->__meshTransformView addSubview:self->__itemsContainerView];
-  v15 = [MEMORY[0x1E6979380] layer];
+  layer = [MEMORY[0x1E6979380] layer];
   gradientLayer = self->__gradientLayer;
-  self->__gradientLayer = v15;
+  self->__gradientLayer = layer;
 
-  v17 = [MEMORY[0x1E69DC888] clearColor];
-  -[CAGradientLayer setBackgroundColor:](self->__gradientLayer, "setBackgroundColor:", [v17 CGColor]);
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  -[CAGradientLayer setBackgroundColor:](self->__gradientLayer, "setBackgroundColor:", [clearColor CGColor]);
 
   v18 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
   [(CAGradientLayer *)self->__gradientLayer setCompositingFilter:v18];
 
-  v19 = [(UIView *)self->__meshTransformView layer];
-  [v19 addSublayer:self->__gradientLayer];
+  layer2 = [(UIView *)self->__meshTransformView layer];
+  [layer2 addSublayer:self->__gradientLayer];
 
-  [(CAMModeDial *)self _configureGradientForLayoutStyle:a3];
+  [(CAMModeDial *)self _configureGradientForLayoutStyle:style];
   [(CAMModeDial *)self _updateForLayoutStyle];
   v22[0] = objc_opt_class();
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   v21 = [(CAMModeDial *)self registerForTraitChanges:v20 withAction:sel_reloadData];
 }
 
-- (CAMModeDial)initWithLayoutStyle:(int64_t)a3
+- (CAMModeDial)initWithLayoutStyle:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = CAMModeDial;
@@ -384,43 +384,43 @@ LABEL_19:
   v5 = v4;
   if (v4)
   {
-    [(CAMModeDial *)v4 _commonCAMModeDialInitializationWithLayoutStyle:a3];
+    [(CAMModeDial *)v4 _commonCAMModeDialInitializationWithLayoutStyle:style];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (CAMModeDial)initWithFrame:(CGRect)a3
+- (CAMModeDial)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMModeDial *)self initWithLayoutStyle:v5];
+  return [(CAMModeDial *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (CAMModeDial)initWithCoder:(id)a3
+- (CAMModeDial)initWithCoder:(id)coder
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMModeDial *)self initWithLayoutStyle:v5];
+  return [(CAMModeDial *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v26 = *MEMORY[0x1E69E9840];
   if ([objc_opt_class() wantsVerticalModeDialForLayoutStyle:{-[CAMModeDial layoutStyle](self, "layoutStyle")}])
   {
-    v6 = [(CAMModeDial *)self _modes];
-    v7 = [(CAMModeDial *)self _items];
+    _modes = [(CAMModeDial *)self _modes];
+    _items = [(CAMModeDial *)self _items];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v6;
+    v8 = _modes;
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
@@ -438,7 +438,7 @@ LABEL_19:
             objc_enumerationMutation(v8);
           }
 
-          v16 = [v7 objectForKey:{*(*(&v21 + 1) + 8 * i), v21}];
+          v16 = [_items objectForKey:{*(*(&v21 + 1) + 8 * i), v21}];
           [v16 sizeThatFits:{v12, v13}];
           if (v17 > v14)
           {
@@ -471,21 +471,21 @@ LABEL_19:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v34 = [(CAMModeDial *)self _meshTransformView];
+  _meshTransformView = [(CAMModeDial *)self _meshTransformView];
   v35 = v4;
   v36 = v6;
-  [v34 setFrame:{v4, v6, v8, v10}];
-  v11 = [(CAMModeDial *)self _gradientLayer];
+  [_meshTransformView setFrame:{v4, v6, v8, v10}];
+  _gradientLayer = [(CAMModeDial *)self _gradientLayer];
   v12 = v8;
-  [v11 setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v8, v10}];
-  v13 = [(CAMModeDial *)self _modes];
-  v14 = [(CAMModeDial *)self _items];
-  v15 = [(CAMModeDial *)self _itemsContainerView];
+  [_gradientLayer setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v8, v10}];
+  _modes = [(CAMModeDial *)self _modes];
+  _items = [(CAMModeDial *)self _items];
+  _itemsContainerView = [(CAMModeDial *)self _itemsContainerView];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v16 = v13;
+  v16 = _modes;
   v17 = [v16 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v17)
   {
@@ -502,15 +502,15 @@ LABEL_19:
           objc_enumerationMutation(v16);
         }
 
-        v23 = [v14 objectForKey:*(*(&v37 + 1) + 8 * i)];
+        v23 = [_items objectForKey:*(*(&v37 + 1) + 8 * i)];
         [v23 sizeThatFits:{v20, v21}];
         v43.origin.x = v35;
         v43.origin.y = v36;
         v43.size.width = v12;
         v43.size.height = v10;
         CGRectGetWidth(v43);
-        v24 = [(CAMModeDial *)self traitCollection];
-        [v24 displayScale];
+        traitCollection = [(CAMModeDial *)self traitCollection];
+        [traitCollection displayScale];
         UIRectIntegralWithScale();
         v26 = v25;
         v28 = v27;
@@ -536,33 +536,33 @@ LABEL_19:
     v33 = 0.0;
   }
 
-  [v15 setFrame:{v35, v36, v12, v33}];
+  [_itemsContainerView setFrame:{v35, v36, v12, v33}];
 }
 
-- (void)setSelectedMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setSelectedMode:(int64_t)mode animated:(BOOL)animated
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (self->_selectedMode != a3)
+  if (self->_selectedMode != mode)
   {
-    v19 = a4;
-    if (a4)
+    animatedCopy = animated;
+    if (animated)
     {
       [(CAMModeDial *)self layoutIfNeeded];
     }
 
-    v5 = [(CAMModeDial *)self _items];
+    _items = [(CAMModeDial *)self _items];
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_selectedMode];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v7 = [_items objectForKeyedSubscript:v6];
 
-    self->_selectedMode = a3;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v9 = [v5 objectForKeyedSubscript:v8];
+    self->_selectedMode = mode;
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+    v9 = [_items objectForKeyedSubscript:v8];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = v5;
+    v10 = _items;
     v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v11)
     {
@@ -579,16 +579,16 @@ LABEL_19:
 
           v15 = *(*(&v27 + 1) + 8 * i);
           v16 = [v10 objectForKeyedSubscript:v15];
-          v17 = [v15 integerValue];
+          integerValue = [v15 integerValue];
           v21[0] = MEMORY[0x1E69E9820];
           v21[1] = 3221225472;
           v21[2] = __40__CAMModeDial_setSelectedMode_animated___block_invoke;
           v21[3] = &unk_1E76FAE30;
-          v25 = v17 == a3;
+          v25 = integerValue == mode;
           v21[4] = self;
           v22 = v16;
           v23 = v9;
-          v26 = v19;
+          v26 = animatedCopy;
           v24 = v7;
           v18 = v16;
           [v18 configure:v21];
@@ -600,7 +600,7 @@ LABEL_19:
       while (v12);
     }
 
-    [(CAMModeDial *)self _updateContainerCenterFromSelectedModeAnimated:v19];
+    [(CAMModeDial *)self _updateContainerCenterFromSelectedModeAnimated:animatedCopy];
   }
 }
 
@@ -618,12 +618,12 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
   }
 }
 
-- (double)_centeringNudgeForMode:(int64_t)a3
+- (double)_centeringNudgeForMode:(int64_t)mode
 {
   result = 0.0;
-  if (a3 > 3)
+  if (mode > 3)
   {
-    if ((a3 - 4) > 1)
+    if ((mode - 4) > 1)
     {
       return result;
     }
@@ -631,14 +631,14 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
 
   else
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       return 1.0 - CAMPixelWidthForView(self);
     }
 
-    if (a3 != 2)
+    if (mode != 2)
     {
-      if (a3 == 3)
+      if (mode == 3)
       {
         return -CAMPixelWidthForView(self);
       }
@@ -650,10 +650,10 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
   return CAMPixelWidthForView(self);
 }
 
-- (CGPoint)_horizontalContainerCenterForMode:(int64_t)a3
+- (CGPoint)_horizontalContainerCenterForMode:(int64_t)mode
 {
-  v5 = [(CAMModeDial *)self _itemsContainerView];
-  v6 = [v5 superview];
+  _itemsContainerView = [(CAMModeDial *)self _itemsContainerView];
+  superview = [_itemsContainerView superview];
   [(CAMModeDial *)self bounds];
   x = v22.origin.x;
   y = v22.origin.y;
@@ -664,14 +664,14 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
   v23.origin.y = y;
   v23.size.width = width;
   v23.size.height = height;
-  [v6 convertPoint:self fromView:{MidX, CGRectGetMidY(v23)}];
-  v12 = [(CAMModeDial *)self _selectedItem];
-  [(CAMModeDial *)self _centeringNudgeForMode:a3];
-  [v12 center];
-  [v6 convertPoint:v5 fromView:?];
+  [superview convertPoint:self fromView:{MidX, CGRectGetMidY(v23)}];
+  _selectedItem = [(CAMModeDial *)self _selectedItem];
+  [(CAMModeDial *)self _centeringNudgeForMode:mode];
+  [_selectedItem center];
+  [superview convertPoint:_itemsContainerView fromView:?];
   UIRoundToViewScale();
   v14 = v13;
-  [v5 center];
+  [_itemsContainerView center];
   v16 = v15;
   v18 = v14 + v17;
 
@@ -682,10 +682,10 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
   return result;
 }
 
-- (CGPoint)_verticalContainerCenterForMode:(int64_t)a3
+- (CGPoint)_verticalContainerCenterForMode:(int64_t)mode
 {
-  v4 = [(CAMModeDial *)self _itemsContainerView];
-  v5 = [v4 superview];
+  _itemsContainerView = [(CAMModeDial *)self _itemsContainerView];
+  superview = [_itemsContainerView superview];
   [(CAMModeDial *)self bounds];
   x = v21.origin.x;
   y = v21.origin.y;
@@ -696,13 +696,13 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
   v22.origin.y = y;
   v22.size.width = width;
   v22.size.height = height;
-  [v5 convertPoint:self fromView:{MidX, CGRectGetMidY(v22)}];
-  v11 = [(CAMModeDial *)self _selectedItem];
-  [v11 center];
-  [v5 convertPoint:v4 fromView:?];
+  [superview convertPoint:self fromView:{MidX, CGRectGetMidY(v22)}];
+  _selectedItem = [(CAMModeDial *)self _selectedItem];
+  [_selectedItem center];
+  [superview convertPoint:_itemsContainerView fromView:?];
   UIRoundToViewScale();
   v13 = v12;
-  [v4 center];
+  [_itemsContainerView center];
   v15 = v14;
   v17 = v13 + v16;
 
@@ -713,30 +713,30 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
   return result;
 }
 
-- (void)_updateContainerCenterFromSelectedModeAnimated:(BOOL)a3
+- (void)_updateContainerCenterFromSelectedModeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMModeDial *)self selectedMode];
+  animatedCopy = animated;
+  selectedMode = [(CAMModeDial *)self selectedMode];
   v6 = [objc_opt_class() wantsVerticalModeDialForLayoutStyle:{-[CAMModeDial layoutStyle](self, "layoutStyle")}];
   if (v6)
   {
-    [(CAMModeDial *)self _verticalContainerCenterForMode:v5];
+    [(CAMModeDial *)self _verticalContainerCenterForMode:selectedMode];
   }
 
   else
   {
-    [(CAMModeDial *)self _horizontalContainerCenterForMode:v5];
+    [(CAMModeDial *)self _horizontalContainerCenterForMode:selectedMode];
   }
 
   v9 = v7;
   v10 = v8;
-  v11 = [(CAMModeDial *)self _itemsContainerView];
-  v12 = v11;
-  if (v3)
+  _itemsContainerView = [(CAMModeDial *)self _itemsContainerView];
+  v12 = _itemsContainerView;
+  if (animatedCopy)
   {
-    v13 = [v11 layer];
-    v14 = [v13 presentationLayer];
-    [v14 position];
+    layer = [_itemsContainerView layer];
+    presentationLayer = [layer presentationLayer];
+    [presentationLayer position];
     v16 = v15;
     v18 = v17;
 
@@ -756,8 +756,8 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
     v27 = [MEMORY[0x1E69793D0] functionWithControlPoints:v25 :v23 :v24 :v26];
     [v19 setTimingFunction:v27];
 
-    [v13 addAnimation:v19 forKey:@"centerTranslation"];
-    [v13 setPosition:{v9, v10}];
+    [layer addAnimation:v19 forKey:@"centerTranslation"];
+    [layer setPosition:{v9, v10}];
 
     if (!v6)
     {
@@ -767,7 +767,7 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
 
   else
   {
-    [v11 setCenter:{v9, v10}];
+    [_itemsContainerView setCenter:{v9, v10}];
     if (!v6)
     {
       goto LABEL_11;
@@ -778,17 +778,17 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
   v35 = &v34;
   v36 = 0x2020000000;
   v37 = 0;
-  v28 = [(CAMModeDial *)self _items];
+  _items = [(CAMModeDial *)self _items];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __62__CAMModeDial__updateContainerCenterFromSelectedModeAnimated___block_invoke;
   v33[3] = &unk_1E76FAE58;
   v33[4] = &v34;
-  [v28 enumerateKeysAndObjectsUsingBlock:v33];
+  [_items enumerateKeysAndObjectsUsingBlock:v33];
   UICeilToViewScale();
   v30 = v29;
-  v31 = [(CAMModeDial *)self _selectedItem];
-  [v31 frame];
+  _selectedItem = [(CAMModeDial *)self _selectedItem];
+  [_selectedItem frame];
   if (CGRectGetHeight(v38) > v35[3] * 1.8)
   {
     UICeilToViewScale();
@@ -797,8 +797,8 @@ void __40__CAMModeDial_setSelectedMode_animated___block_invoke(uint64_t a1, void
   [(CAMModeDial *)self bounds];
   UIRectCenteredIntegralRectScale();
   [(UIView *)self->__selectedItemBackgroundView setFrame:0];
-  v32 = [(UIView *)self->__selectedItemBackgroundView layer];
-  [v32 setCornerRadius:v30 * 0.5];
+  layer2 = [(UIView *)self->__selectedItemBackgroundView layer];
+  [layer2 setCornerRadius:v30 * 0.5];
 
   _Block_object_dispose(&v34, 8);
 LABEL_11:
@@ -816,21 +816,21 @@ void __62__CAMModeDial__updateContainerCenterFromSelectedModeAnimated___block_in
   }
 }
 
-- (id)_fontForLayoutStyle:(int64_t)a3 selected:(BOOL)a4
+- (id)_fontForLayoutStyle:(int64_t)style selected:(BOOL)selected
 {
-  v4 = a4;
-  v5 = [(CAMModeDial *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
+  selectedCopy = selected;
+  traitCollection = [(CAMModeDial *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v7 = [CAMFont cameraModeDialFontForContentSize:v6];
-  if (v4)
+  v7 = [CAMFont cameraModeDialFontForContentSize:preferredContentSizeCategory];
+  if (selectedCopy)
   {
     v8 = +[CAMCaptureCapabilities capabilities];
-    v9 = [v8 wantsFullscreenViewfinder];
+    wantsFullscreenViewfinder = [v8 wantsFullscreenViewfinder];
 
-    if (v9)
+    if (wantsFullscreenViewfinder)
     {
-      v10 = [CAMFont cameraModeDialFontForContentSize:v6 weight:*MEMORY[0x1E69DB980]];
+      v10 = [CAMFont cameraModeDialFontForContentSize:preferredContentSizeCategory weight:*MEMORY[0x1E69DB980]];
 
       v7 = v10;
     }
@@ -839,15 +839,15 @@ void __62__CAMModeDial__updateContainerCenterFromSelectedModeAnimated___block_in
   return v7;
 }
 
-- (void)_updateItemsForLayoutStyle:(int64_t)a3
+- (void)_updateItemsForLayoutStyle:(int64_t)style
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [(CAMModeDial *)self _items];
+  _items = [(CAMModeDial *)self _items];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v6 = [_items countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -858,14 +858,14 @@ void __62__CAMModeDial__updateContainerCenterFromSelectedModeAnimated___block_in
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_items);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 integerValue];
-        v12 = [v5 objectForKeyedSubscript:v10];
-        v13 = [MEMORY[0x1E696AEC0] cam_localizedTitleForMode:v11 wantsCompactTitle:{objc_msgSend(objc_opt_class(), "wantsVerticalModeDialForLayoutStyle:", a3)}];
-        v14 = [(CAMModeDial *)self _fontForLayoutStyle:a3 selected:v11 == [(CAMModeDial *)self selectedMode]];
+        integerValue = [v10 integerValue];
+        v12 = [_items objectForKeyedSubscript:v10];
+        v13 = [MEMORY[0x1E696AEC0] cam_localizedTitleForMode:integerValue wantsCompactTitle:{objc_msgSend(objc_opt_class(), "wantsVerticalModeDialForLayoutStyle:", style)}];
+        v14 = [(CAMModeDial *)self _fontForLayoutStyle:style selected:integerValue == [(CAMModeDial *)self selectedMode]];
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __42__CAMModeDial__updateItemsForLayoutStyle___block_invoke;
@@ -877,7 +877,7 @@ void __62__CAMModeDial__updateContainerCenterFromSelectedModeAnimated___block_in
         [v12 configure:v17];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [_items countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v7);
@@ -904,19 +904,19 @@ void __25__CAMModeDial_reloadData__block_invoke(uint64_t a1, void *a2)
   [v4 setSelected:*(a1 + 49)];
 }
 
-- (int64_t)_nearestCaptureModeForLocation:(CGPoint)a3
+- (int64_t)_nearestCaptureModeForLocation:(CGPoint)location
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [(CAMModeDial *)self _modes];
+  _modes = [(CAMModeDial *)self _modes];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [_modes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    integerValue = 0;
     v8 = *v18;
     v9 = 1.79769313e308;
     do
@@ -925,23 +925,23 @@ void __25__CAMModeDial_reloadData__block_invoke(uint64_t a1, void *a2)
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_modes);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(CAMModeDial *)self _items];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        _items = [(CAMModeDial *)self _items];
+        v13 = [_items objectForKeyedSubscript:v11];
         [v13 frame];
         UIDistanceBetweenPointAndRect();
         if (v14 < v9)
         {
           v15 = v14;
-          v7 = [v11 integerValue];
+          integerValue = [v11 integerValue];
           v9 = v15;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [_modes countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -949,18 +949,18 @@ void __25__CAMModeDial_reloadData__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (void)_configureGradientForLayoutStyle:(int64_t)a3
+- (void)_configureGradientForLayoutStyle:(int64_t)style
 {
   v17[6] = *MEMORY[0x1E69E9840];
-  v4 = [(CAMModeDial *)self _gradientLayer];
-  v5 = [objc_opt_class() wantsVerticalModeDialForLayoutStyle:a3];
-  [v4 setType:*MEMORY[0x1E6979DA0]];
+  _gradientLayer = [(CAMModeDial *)self _gradientLayer];
+  v5 = [objc_opt_class() wantsVerticalModeDialForLayoutStyle:style];
+  [_gradientLayer setType:*MEMORY[0x1E6979DA0]];
   if (v5)
   {
     v6 = 0.5;
@@ -1001,89 +1001,89 @@ void __25__CAMModeDial_reloadData__block_invoke(uint64_t a1, void *a2)
     v9 = &unk_1F16C9698;
   }
 
-  [v4 setStartPoint:v6];
-  [v4 setEndPoint:{v7, v8}];
-  v10 = [MEMORY[0x1E69DC888] blackColor];
-  v17[0] = [v10 CGColor];
-  v11 = [MEMORY[0x1E69DC888] blackColor];
-  v17[1] = [v11 CGColor];
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  v17[2] = [v12 CGColor];
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  v17[3] = [v13 CGColor];
-  v14 = [MEMORY[0x1E69DC888] blackColor];
-  v17[4] = [v14 CGColor];
-  v15 = [MEMORY[0x1E69DC888] blackColor];
-  v17[5] = [v15 CGColor];
+  [_gradientLayer setStartPoint:v6];
+  [_gradientLayer setEndPoint:{v7, v8}];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v17[0] = [blackColor CGColor];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  v17[1] = [blackColor2 CGColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v17[2] = [clearColor CGColor];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  v17[3] = [clearColor2 CGColor];
+  blackColor3 = [MEMORY[0x1E69DC888] blackColor];
+  v17[4] = [blackColor3 CGColor];
+  blackColor4 = [MEMORY[0x1E69DC888] blackColor];
+  v17[5] = [blackColor4 CGColor];
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:6];
-  [v4 setColors:v16];
+  [_gradientLayer setColors:v16];
 
-  [v4 setLocations:v9];
+  [_gradientLayer setLocations:v9];
 }
 
-- (id)_meshTransformForLayoutStyle:(int64_t)a3
+- (id)_meshTransformForLayoutStyle:(int64_t)style
 {
-  if ([objc_opt_class() wantsVerticalModeDialForLayoutStyle:a3])
+  if ([objc_opt_class() wantsVerticalModeDialForLayoutStyle:style])
   {
-    v4 = 0;
+    _horizontalMeshTransform = 0;
   }
 
   else
   {
-    v4 = [(CAMModeDial *)self _horizontalMeshTransform];
+    _horizontalMeshTransform = [(CAMModeDial *)self _horizontalMeshTransform];
   }
 
-  return v4;
+  return _horizontalMeshTransform;
 }
 
-- (void)_configureMeshTransformForLayoutStyle:(int64_t)a3
+- (void)_configureMeshTransformForLayoutStyle:(int64_t)style
 {
-  v5 = [objc_opt_class() wantsVerticalModeDialForLayoutStyle:a3];
-  v8 = [(UIView *)self->__meshTransformView layer];
-  v6 = [(CAMModeDial *)self _meshTransformForLayoutStyle:a3];
-  [v8 setMeshTransform:v6];
-  v7 = [(CAMModeDial *)self traitCollection];
-  [v7 displayScale];
-  [v8 setRasterizationScale:?];
+  v5 = [objc_opt_class() wantsVerticalModeDialForLayoutStyle:style];
+  layer = [(UIView *)self->__meshTransformView layer];
+  v6 = [(CAMModeDial *)self _meshTransformForLayoutStyle:style];
+  [layer setMeshTransform:v6];
+  traitCollection = [(CAMModeDial *)self traitCollection];
+  [traitCollection displayScale];
+  [layer setRasterizationScale:?];
 
-  [v8 setAllowsGroupBlending:v5];
+  [layer setAllowsGroupBlending:v5];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v12 = [a3 anyObject];
-  v5 = [(CAMModeDial *)self _itemsContainerView];
-  [v12 locationInView:v5];
+  anyObject = [ended anyObject];
+  _itemsContainerView = [(CAMModeDial *)self _itemsContainerView];
+  [anyObject locationInView:_itemsContainerView];
   v7 = v6;
   v9 = v8;
-  v10 = [(CAMModeDial *)self selectedMode];
+  selectedMode = [(CAMModeDial *)self selectedMode];
   v11 = [(CAMModeDial *)self _nearestCaptureModeForLocation:v7, v9];
-  if (v10 != v11)
+  if (selectedMode != v11)
   {
     [(CAMModeDial *)self setSelectedMode:v11 animated:1];
     [(CAMModeDial *)self sendActionsForControlEvents:4096];
   }
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(CAMModeDial *)self _updateForLayoutStyle];
   }
 }
 
-- (void)_updateSelectedItemBackgroundForLayoutStyle:(int64_t)a3
+- (void)_updateSelectedItemBackgroundForLayoutStyle:(int64_t)style
 {
-  if (!a3 || a3 == 3)
+  if (!style || style == 3)
   {
     [(UIView *)self->__selectedItemBackgroundView removeFromSuperview];
     selectedItemBackgroundView = self->__selectedItemBackgroundView;
     self->__selectedItemBackgroundView = 0;
   }
 
-  else if (a3 == 1)
+  else if (style == 1)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -1100,29 +1100,29 @@ void __25__CAMModeDial_reloadData__block_invoke(uint64_t a1, void *a2)
   [(CAMModeDial *)self setNeedsLayout];
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(CAMModeDial *)self _itemsContainerView];
-  [v4 locationOfAccessibilityGestureInView:v5];
+  managerCopy = manager;
+  _itemsContainerView = [(CAMModeDial *)self _itemsContainerView];
+  [managerCopy locationOfAccessibilityGestureInView:_itemsContainerView];
   v7 = v6;
   v9 = v8;
 
   v10 = [(CAMModeDial *)self _nearestCaptureModeForLocation:v7, v9];
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
   v12 = [(NSDictionary *)self->__items objectForKeyedSubscript:v11];
-  v13 = [v12 title];
+  title = [v12 title];
   v14 = objc_alloc(MEMORY[0x1E69DC618]);
-  v15 = [v14 initWithTitle:v13 image:0 imageInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  v15 = [v14 initWithTitle:title image:0 imageInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
   return v15;
 }
 
-- (void)selectedByAccessibilityHUDManager:(id)a3
+- (void)selectedByAccessibilityHUDManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(CAMModeDial *)self _itemsContainerView];
-  [v4 locationOfAccessibilityGestureInView:v5];
+  managerCopy = manager;
+  _itemsContainerView = [(CAMModeDial *)self _itemsContainerView];
+  [managerCopy locationOfAccessibilityGestureInView:_itemsContainerView];
   v7 = v6;
   v9 = v8;
 

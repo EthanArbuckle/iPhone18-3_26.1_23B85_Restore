@@ -10,27 +10,27 @@
 - (void)addDetailValuesToSection:()HKDataMetadataDetailSection
 {
   v4 = a3;
-  v5 = [a1 sampleType];
-  v6 = [v5 code];
+  sampleType = [self sampleType];
+  code = [sampleType code];
 
-  if (v6 != 140)
+  if (code != 140)
   {
-    if (v6 == 250)
+    if (code == 250)
     {
-      [a1 _addWalkingSteadinessEventDetailValuesToSection:v4];
+      [self _addWalkingSteadinessEventDetailValuesToSection:v4];
       goto LABEL_7;
     }
 
-    if (v6 != 147)
+    if (code != 147)
     {
-      [a1 _addDefaultCategoryDetailValuesToSection:v4];
+      [self _addDefaultCategoryDetailValuesToSection:v4];
       goto LABEL_7;
     }
   }
 
-  [a1 _addHeartEventDetailValuesToSection:v4];
+  [self _addHeartEventDetailValuesToSection:v4];
 LABEL_7:
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &off_1F4457820;
   objc_msgSendSuper2(&v7, sel_addDetailValuesToSection_, v4);
 }
@@ -39,26 +39,26 @@ LABEL_7:
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [v4 displayTypeController];
-  v6 = [a1 sampleType];
-  v7 = [v5 displayTypeForObjectType:v6];
+  displayTypeController = [v4 displayTypeController];
+  sampleType = [self sampleType];
+  v7 = [displayTypeController displayTypeForObjectType:sampleType];
 
-  v8 = [v7 hk_enumeratedValueLabels];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "value")}];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  hk_enumeratedValueLabels = [v7 hk_enumeratedValueLabels];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "value")}];
+  v10 = [hk_enumeratedValueLabels objectForKeyedSubscript:v9];
 
-  v11 = [v7 localization];
-  v12 = [v11 displayName];
+  localization = [v7 localization];
+  displayName = [localization displayName];
 
   if ([v10 length])
   {
-    v13 = [a1 sampleType];
-    v14 = [v13 identifier];
-    v17[0] = v14;
+    sampleType2 = [self sampleType];
+    identifier = [sampleType2 identifier];
+    v17[0] = identifier;
     v17[1] = @"DisplayType";
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     v16 = HKUIJoinStringsForAutomationIdentifier(v15);
-    [v4 addText:v10 detail:v12 baseIdentifier:v16];
+    [v4 addText:v10 detail:displayName baseIdentifier:v16];
   }
 }
 
@@ -66,17 +66,17 @@ LABEL_7:
 {
   v45[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E696C510] _countPerMinuteUnit];
+  _countPerMinuteUnit = [MEMORY[0x1E696C510] _countPerMinuteUnit];
   v6 = MEMORY[0x1E696AEC0];
   v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v8 = [v7 localizedStringForKey:@"BEATS_PER_MINUTE_NUMBERLESS_UNIT" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v9 = v6;
-  v10 = a1;
+  selfCopy = self;
   v11 = [v9 localizedStringWithFormat:v8, 0];
 
-  v12 = [a1 metadata];
+  metadata = [self metadata];
   v13 = *MEMORY[0x1E696C730];
-  v14 = [v12 objectForKey:*MEMORY[0x1E696C730]];
+  v14 = [metadata objectForKey:*MEMORY[0x1E696C730]];
 
   if (v14)
   {
@@ -84,10 +84,10 @@ LABEL_7:
     v16 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v17 = [v16 localizedStringForKey:v13 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
-    v18 = [a1 sampleType];
-    [v18 identifier];
-    v41 = a1;
-    v20 = v19 = v5;
+    sampleType = [self sampleType];
+    [sampleType identifier];
+    selfCopy2 = self;
+    v20 = v19 = _countPerMinuteUnit;
     v45[0] = v20;
     v45[1] = @"Range";
     [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:2];
@@ -99,31 +99,31 @@ LABEL_7:
     v11 = v22;
     v14 = v21;
 
-    v5 = v19;
-    v10 = v41;
+    _countPerMinuteUnit = v19;
+    selfCopy = selfCopy2;
   }
 
-  v25 = [v10 metadata];
+  metadata2 = [selfCopy metadata];
   v26 = *MEMORY[0x1E696BAC0];
-  v27 = [v25 objectForKeyedSubscript:*MEMORY[0x1E696BAC0]];
+  v27 = [metadata2 objectForKeyedSubscript:*MEMORY[0x1E696BAC0]];
   v43 = v4;
   if (v27)
   {
     v28 = v27;
 
 LABEL_6:
-    [v28 doubleValueForUnit:v5];
+    [v28 doubleValueForUnit:_countPerMinuteUnit];
     v30 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     v31 = HKLocalizedStringForNumberWithDecimalPrecision(v30, 0, 0);
 
     HKFormatValueAndUnit(v31, v11);
-    v32 = v42 = v5;
+    v32 = v42 = _countPerMinuteUnit;
     v33 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v34 = [v33 localizedStringForKey:v26 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
-    v35 = [v10 sampleType];
-    v36 = [v35 identifier];
-    v44[0] = v36;
+    sampleType2 = [selfCopy sampleType];
+    identifier = [sampleType2 identifier];
+    v44[0] = identifier;
     v44[1] = @"Threshold";
     [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
     v37 = v14;
@@ -134,12 +134,12 @@ LABEL_6:
     v11 = v38;
     v14 = v37;
 
-    v5 = v42;
+    _countPerMinuteUnit = v42;
     goto LABEL_7;
   }
 
-  v29 = [v10 metadata];
-  v28 = [v29 objectForKeyedSubscript:*MEMORY[0x1E696C728]];
+  metadata3 = [selfCopy metadata];
+  v28 = [metadata3 objectForKeyedSubscript:*MEMORY[0x1E696C728]];
 
   if (v28)
   {
@@ -153,16 +153,16 @@ LABEL_7:
 {
   v24[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 sampleType];
-  v6 = [v5 identifier];
+  sampleType = [self sampleType];
+  identifier = [sampleType identifier];
 
-  v7 = [a1 value] - 1;
+  v7 = [self value] - 1;
   if (v7 <= 3 && ([HKMobilityUtilities localizedTitleForClassification:qword_1C3D5DBD0[v7]], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
     v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v11 = [v10 localizedStringForKey:@"WALKING_STEADINESS_EVENT_VALUE_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-WalkingSteadiness"];
-    v24[0] = v6;
+    v24[0] = identifier;
     v24[1] = @"EventValue";
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     v13 = HKUIJoinStringsForAutomationIdentifier(v12);
@@ -175,11 +175,11 @@ LABEL_7:
     v14 = *MEMORY[0x1E696B980];
     if (os_log_type_enabled(*MEMORY[0x1E696B980], OS_LOG_TYPE_FAULT))
     {
-      [(HKCategorySample(HKDataMetadataDetailSection) *)v14 _addWalkingSteadinessEventDetailValuesToSection:a1];
+      [(HKCategorySample(HKDataMetadataDetailSection) *)v14 _addWalkingSteadinessEventDetailValuesToSection:self];
     }
   }
 
-  v15 = [a1 value] - 1;
+  v15 = [self value] - 1;
   if (v15 <= 3)
   {
     v16 = off_1E81BB610[v15];
@@ -190,7 +190,7 @@ LABEL_7:
     {
       v19 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v20 = [v19 localizedStringForKey:@"WALKING_STEADINESS_EVENT_TYPE_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-WalkingSteadiness"];
-      v23[0] = v6;
+      v23[0] = identifier;
       v23[1] = @"EventType";
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
       v22 = HKUIJoinStringsForAutomationIdentifier(v21);

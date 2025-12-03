@@ -1,32 +1,32 @@
 @interface VSJavaScriptDataValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSJavaScriptDataValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isString])
+  valueCopy = value;
+  if ([valueCopy isString])
   {
-    v4 = [v3 toString];
-    if (!v4 || (v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v4 options:0]) == 0)
+    toString = [valueCopy toString];
+    if (!toString || (v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:toString options:0]) == 0)
     {
-      v5 = [v4 dataUsingEncoding:4];
+      v5 = [toString dataUsingEncoding:4];
     }
   }
 
   else
   {
-    v6 = [v3 context];
-    v7 = [v6 JSGlobalContextRef];
+    context = [valueCopy context];
+    jSGlobalContextRef = [context JSGlobalContextRef];
 
-    v8 = [v3 JSValueRef];
-    if (JSValueGetTypedArrayType(v7, v8, 0) == kJSTypedArrayTypeArrayBuffer && JSValueIsObject(v7, v8))
+    jSValueRef = [valueCopy JSValueRef];
+    if (JSValueGetTypedArrayType(jSGlobalContextRef, jSValueRef, 0) == kJSTypedArrayTypeArrayBuffer && JSValueIsObject(jSGlobalContextRef, jSValueRef))
     {
-      ArrayBufferByteLength = JSObjectGetArrayBufferByteLength(v7, v8, 0);
-      v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:JSObjectGetArrayBufferBytesPtr(v7 length:{v8, 0), ArrayBufferByteLength}];
+      ArrayBufferByteLength = JSObjectGetArrayBufferByteLength(jSGlobalContextRef, jSValueRef, 0);
+      v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:JSObjectGetArrayBufferBytesPtr(jSGlobalContextRef length:{jSValueRef, 0), ArrayBufferByteLength}];
     }
 
     else
@@ -38,23 +38,23 @@
   return v5;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 object];
+    object = [valueCopy object];
 
-    v3 = v4;
+    valueCopy = object;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x277CD4640] currentContext];
-    v6 = [v3 base64EncodedStringWithOptions:0];
-    v7 = [MEMORY[0x277CD4658] valueWithObject:v6 inContext:v5];
+    currentContext = [MEMORY[0x277CD4640] currentContext];
+    v6 = [valueCopy base64EncodedStringWithOptions:0];
+    v7 = [MEMORY[0x277CD4658] valueWithObject:v6 inContext:currentContext];
   }
 
   else

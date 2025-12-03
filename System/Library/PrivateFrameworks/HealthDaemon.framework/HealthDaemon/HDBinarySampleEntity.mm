@@ -1,9 +1,9 @@
 @interface HDBinarySampleEntity
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (BOOL)validateEntityWithProfile:(id)a3 error:(id *)a4 validationErrorHandler:(id)a5;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (BOOL)validateEntityWithProfile:(id)profile error:(id *)error validationErrorHandler:(id)handler;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)foreignKeys;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
 @end
 
 @implementation HDBinarySampleEntity
@@ -21,32 +21,32 @@
   return v3;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  objectCopy = object;
+  databaseCopy = database;
+  dCopy = d;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"HDBinarySampleEntity.m" lineNumber:56 description:{@"Subclasses must override %s", "+[HDBinarySampleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDBinarySampleEntity.m" lineNumber:56 description:{@"Subclasses must override %s", "+[HDBinarySampleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __86__HDBinarySampleEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
   v25[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v25[4] = a1;
+  v25[4] = self;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __86__HDBinarySampleEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke_2;
   v22[3] = &unk_278613038;
-  v23 = v14;
-  v24 = v12;
-  v16 = v12;
-  v17 = v14;
-  if ([v13 executeCachedStatementForKey:&insertDataObject_withProvenance_inDatabase_persistentID_error__insertKey error:a7 SQLGenerator:v25 bindingHandler:v22 enumerationHandler:0])
+  v23 = dCopy;
+  v24 = objectCopy;
+  v16 = objectCopy;
+  v17 = dCopy;
+  if ([databaseCopy executeCachedStatementForKey:&insertDataObject_withProvenance_inDatabase_persistentID_error__insertKey error:error SQLGenerator:v25 bindingHandler:v22 enumerationHandler:0])
   {
     v18 = v17;
   }
@@ -78,36 +78,36 @@ void __86__HDBinarySampleEntity_insertDataObject_withProvenance_inDatabase_persi
   HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addBinarySamples:a3];
+    [collection addBinarySamples:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDBinarySampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDBinarySampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (BOOL)validateEntityWithProfile:(id)a3 error:(id *)a4 validationErrorHandler:(id)a5
++ (BOOL)validateEntityWithProfile:(id)profile error:(id *)error validationErrorHandler:(id)handler
 {
   v8 = MEMORY[0x277CCD720];
-  v9 = a5;
-  v10 = a3;
+  handlerCopy = handler;
+  profileCopy = profile;
   v11 = [v8 _allTypesOfClass:objc_opt_class()];
-  LOBYTE(a4) = [a1 validateEntitiesOfTypes:v11 profile:v10 error:a4 validationErrorHandler:v9];
+  LOBYTE(error) = [self validateEntitiesOfTypes:v11 profile:profileCopy error:error validationErrorHandler:handlerCopy];
 
-  return a4;
+  return error;
 }
 
 @end

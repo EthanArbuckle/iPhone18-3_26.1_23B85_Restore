@@ -1,31 +1,31 @@
 @interface ICCryptoConvergenceController
 + (ICCryptoConvergenceController)sharedController;
-- (BOOL)convergeAttachmentsInNoteWithID:(id)a3 configuration:(id)a4;
-- (BOOL)convergeNotesInAccountWithID:(id)a3 configuration:(id)a4 progress:(id)a5;
-- (BOOL)unsafelyConvergeAttachment:(id)a3 configuration:(id)a4;
-- (BOOL)unsafelyConvergeAttachmentsInNote:(id)a3 configuration:(id)a4;
-- (BOOL)unsafelyConvergeNote:(id)a3 configuration:(id)a4;
-- (BOOL)unsafelyConvergeNotesInAccount:(id)a3 configuration:(id)a4;
-- (ICCryptoConvergenceController)initWithWorkerContext:(id)a3;
-- (void)authenticationStateDidDeauthenticate:(id)a3;
-- (void)cancelAndWaitWithReason:(id)a3;
+- (BOOL)convergeAttachmentsInNoteWithID:(id)d configuration:(id)configuration;
+- (BOOL)convergeNotesInAccountWithID:(id)d configuration:(id)configuration progress:(id)progress;
+- (BOOL)unsafelyConvergeAttachment:(id)attachment configuration:(id)configuration;
+- (BOOL)unsafelyConvergeAttachmentsInNote:(id)note configuration:(id)configuration;
+- (BOOL)unsafelyConvergeNote:(id)note configuration:(id)configuration;
+- (BOOL)unsafelyConvergeNotesInAccount:(id)account configuration:(id)configuration;
+- (ICCryptoConvergenceController)initWithWorkerContext:(id)context;
+- (void)authenticationStateDidDeauthenticate:(id)deauthenticate;
+- (void)cancelAndWaitWithReason:(id)reason;
 @end
 
 @implementation ICCryptoConvergenceController
 
-- (ICCryptoConvergenceController)initWithWorkerContext:(id)a3
+- (ICCryptoConvergenceController)initWithWorkerContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = ICCryptoConvergenceController;
   v6 = [(ICCryptoConvergenceController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workerContext, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_storeStrong(&v6->_workerContext, context);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = +[ICAuthenticationState sharedState];
-    [v8 addObserver:v7 selector:sel_authenticationStateDidDeauthenticate_ name:@"ICAuthenticationStateDidDeauthenticateNotification" object:v9];
+    [defaultCenter addObserver:v7 selector:sel_authenticationStateDidDeauthenticate_ name:@"ICAuthenticationStateDidDeauthenticateNotification" object:v9];
   }
 
   return v7;
@@ -58,64 +58,64 @@ void __49__ICCryptoConvergenceController_sharedController__block_invoke()
   _sharedController = v1;
 }
 
-- (BOOL)convergeNotesInAccountWithID:(id)a3 configuration:(id)a4 progress:(id)a5
+- (BOOL)convergeNotesInAccountWithID:(id)d configuration:(id)configuration progress:(id)progress
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 copy];
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(ICCryptoConvergenceController *)v11 progress];
-  if (v12 && (v13 = [v10 isUserInitiated], v12, (v13 & 1) == 0))
+  dCopy = d;
+  progressCopy = progress;
+  v10 = [configuration copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  progress = [(ICCryptoConvergenceController *)selfCopy progress];
+  if (progress && (v13 = [v10 isUserInitiated], progress, (v13 & 1) == 0))
   {
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
 
     v18 = 0;
   }
 
   else
   {
-    v14 = [(ICCryptoConvergenceController *)v11 progress];
+    progress2 = [(ICCryptoConvergenceController *)selfCopy progress];
 
-    if (v14)
+    if (progress2)
     {
-      [(ICCryptoConvergenceController *)v11 cancelAndWaitWithReason:@"User-initiated operation"];
+      [(ICCryptoConvergenceController *)selfCopy cancelAndWaitWithReason:@"User-initiated operation"];
     }
 
-    v15 = [(ICCryptoConvergenceController *)v11 progress];
+    progress3 = [(ICCryptoConvergenceController *)selfCopy progress];
 
-    if (v15)
+    if (progress3)
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((self.progress) == nil)" functionName:"-[ICCryptoConvergenceController convergeNotesInAccountWithID:configuration:progress:]" simulateCrash:1 showAlert:0 format:{@"Expected nil value for '%s'", "self.progress"}];
     }
 
-    v16 = v9;
-    if (!v9)
+    v16 = progressCopy;
+    if (!progressCopy)
     {
       v16 = objc_alloc_init(MEMORY[0x277CCAC48]);
     }
 
-    [(ICCryptoConvergenceController *)v11 setProgress:v16];
-    if (!v9)
+    [(ICCryptoConvergenceController *)selfCopy setProgress:v16];
+    if (!progressCopy)
     {
     }
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
 
     v24 = 0;
     v25 = &v24;
     v26 = 0x2020000000;
     v27 = 0;
-    v17 = [(ICCryptoConvergenceController *)v11 workerContext];
+    workerContext = [(ICCryptoConvergenceController *)selfCopy workerContext];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __85__ICCryptoConvergenceController_convergeNotesInAccountWithID_configuration_progress___block_invoke;
     v20[3] = &unk_2781960A8;
-    v20[4] = v11;
-    v21 = v8;
+    v20[4] = selfCopy;
+    v21 = dCopy;
     v22 = v10;
     v23 = &v24;
-    [v17 performBlockAndWait:v20];
+    [workerContext performBlockAndWait:v20];
 
     v18 = *(v25 + 24);
     _Block_object_dispose(&v24, 8);
@@ -160,80 +160,80 @@ void __85__ICCryptoConvergenceController_convergeNotesInAccountWithID_configurat
   }
 }
 
-- (BOOL)unsafelyConvergeNotesInAccount:(id)a3 configuration:(id)a4
+- (BOOL)unsafelyConvergeNotesInAccount:(id)account configuration:(id)configuration
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  configurationCopy = configuration;
   v8 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [ICCryptoConvergenceController unsafelyConvergeNotesInAccount:v6 configuration:?];
+    [ICCryptoConvergenceController unsafelyConvergeNotesInAccount:accountCopy configuration:?];
   }
 
-  if (([v6 isAuthenticated] & 1) == 0)
+  if (([accountCopy isAuthenticated] & 1) == 0)
   {
-    v9 = [v7 passphrase];
-    v10 = [v9 length];
+    passphrase = [configurationCopy passphrase];
+    v10 = [passphrase length];
 
     if (v10)
     {
       v11 = +[ICAuthenticationState sharedState];
       [v11 beginBlockingDeauthentication];
 
-      v12 = [v6 cryptoStrategy];
-      v13 = [v7 passphrase];
-      [v12 authenticateWithPassphrase:v13];
+      cryptoStrategy = [accountCopy cryptoStrategy];
+      passphrase2 = [configurationCopy passphrase];
+      [cryptoStrategy authenticateWithPassphrase:passphrase2];
 
       v14 = +[ICAuthenticationState sharedState];
       [v14 endBlockingDeauthentication];
     }
   }
 
-  v15 = [v7 v1MainKey];
-  if (v15)
+  v1MainKey = [configurationCopy v1MainKey];
+  if (v1MainKey)
   {
-    [v7 setV1MainKey:v15];
+    [configurationCopy setV1MainKey:v1MainKey];
   }
 
   else
   {
     v16 = +[ICAuthenticationState sharedState];
-    v17 = [v6 identifier];
-    v18 = [v16 cachedMainKeyForIdentifier:v17];
-    [v7 setV1MainKey:v18];
+    identifier = [accountCopy identifier];
+    v18 = [v16 cachedMainKeyForIdentifier:identifier];
+    [configurationCopy setV1MainKey:v18];
   }
 
-  v19 = [v7 v1NeoMainKey];
-  if (v19)
+  v1NeoMainKey = [configurationCopy v1NeoMainKey];
+  if (v1NeoMainKey)
   {
-    [v7 setV1NeoMainKey:v19];
+    [configurationCopy setV1NeoMainKey:v1NeoMainKey];
   }
 
   else
   {
     v20 = +[ICAuthenticationState sharedState];
-    v21 = [v6 accountData];
-    v22 = [v21 identifier];
-    v23 = [v20 cachedMainKeyForIdentifier:v22];
-    [v7 setV1NeoMainKey:v23];
+    accountData = [accountCopy accountData];
+    identifier2 = [accountData identifier];
+    v23 = [v20 cachedMainKeyForIdentifier:identifier2];
+    [configurationCopy setV1NeoMainKey:v23];
   }
 
-  v24 = [v7 v1MainKey];
-  if (v24)
+  v1MainKey2 = [configurationCopy v1MainKey];
+  if (v1MainKey2)
   {
   }
 
   else
   {
-    v25 = [v7 v1NeoMainKey];
+    v1NeoMainKey2 = [configurationCopy v1NeoMainKey];
 
-    if (!v25)
+    if (!v1NeoMainKey2)
     {
       v50 = os_log_create("com.apple.notes", "Crypto");
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
       {
-        [ICCryptoConvergenceController unsafelyConvergeNotesInAccount:v6 configuration:?];
+        [ICCryptoConvergenceController unsafelyConvergeNotesInAccount:accountCopy configuration:?];
       }
 
       v32 = 0;
@@ -242,16 +242,16 @@ void __85__ICCryptoConvergenceController_convergeNotesInAccountWithID_configurat
     }
   }
 
-  v26 = [v6 passwordProtectedNotes];
-  v27 = [v26 count];
-  v28 = [(ICCryptoConvergenceController *)self progress];
-  [v28 setTotalUnitCount:v27];
+  passwordProtectedNotes = [accountCopy passwordProtectedNotes];
+  v27 = [passwordProtectedNotes count];
+  progress = [(ICCryptoConvergenceController *)self progress];
+  [progress setTotalUnitCount:v27];
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v26;
+  obj = passwordProtectedNotes;
   v29 = [obj countByEnumeratingWithState:&v54 objects:v60 count:16];
   if (!v29)
   {
@@ -262,10 +262,10 @@ void __85__ICCryptoConvergenceController_convergeNotesInAccountWithID_configurat
   v30 = v29;
   v31 = *v55;
   v32 = 1;
-  v52 = v6;
+  v52 = accountCopy;
   while (2)
   {
-    v33 = v7;
+    v33 = configurationCopy;
     for (i = 0; i != v30; ++i)
     {
       if (*v55 != v31)
@@ -274,19 +274,19 @@ void __85__ICCryptoConvergenceController_convergeNotesInAccountWithID_configurat
       }
 
       v35 = *(*(&v54 + 1) + 8 * i);
-      v36 = [(ICCryptoConvergenceController *)self progress];
-      v37 = [v36 isCancelled];
+      progress2 = [(ICCryptoConvergenceController *)self progress];
+      isCancelled = [progress2 isCancelled];
 
-      if (v37)
+      if (isCancelled)
       {
         v49 = os_log_create("com.apple.notes", "Crypto");
-        v6 = v52;
+        accountCopy = v52;
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
         {
           [ICCryptoConvergenceController unsafelyConvergeNotesInAccount:v52 configuration:?];
         }
 
-        v7 = v33;
+        configurationCopy = v33;
         goto LABEL_35;
       }
 
@@ -294,9 +294,9 @@ void __85__ICCryptoConvergenceController_convergeNotesInAccountWithID_configurat
       [v38 beginBlockingDeauthentication];
 
       v39 = +[ICAuthenticationState sharedState];
-      v40 = [v39 isAuthenticated];
+      isAuthenticated = [v39 isAuthenticated];
 
-      if (v40)
+      if (isAuthenticated)
       {
         v41 = [(ICCryptoConvergenceController *)self unsafelyConvergeNote:v35 configuration:v33];
         v42 = +[ICAuthenticationState sharedState];
@@ -304,9 +304,9 @@ void __85__ICCryptoConvergenceController_convergeNotesInAccountWithID_configurat
 
         if (v41)
         {
-          v43 = [(ICCryptoConvergenceController *)self workerContext];
-          v44 = [v35 shortLoggingDescription];
-          v45 = [v43 ic_saveWithLogDescription:{@"Saved after converging note {note: %@}", v44}];
+          workerContext = [(ICCryptoConvergenceController *)self workerContext];
+          shortLoggingDescription = [v35 shortLoggingDescription];
+          v45 = [workerContext ic_saveWithLogDescription:{@"Saved after converging note {note: %@}", shortLoggingDescription}];
 
           goto LABEL_28;
         }
@@ -324,19 +324,19 @@ void __85__ICCryptoConvergenceController_convergeNotesInAccountWithID_configurat
         [v47 endBlockingDeauthentication];
       }
 
-      v43 = [(ICCryptoConvergenceController *)self workerContext];
-      [v43 rollback];
+      workerContext = [(ICCryptoConvergenceController *)self workerContext];
+      [workerContext rollback];
       v45 = 0;
 LABEL_28:
 
       v32 &= v45;
-      v48 = [(ICCryptoConvergenceController *)self progress];
-      [v48 setCompletedUnitCount:{objc_msgSend(v48, "completedUnitCount") + 1}];
+      progress3 = [(ICCryptoConvergenceController *)self progress];
+      [progress3 setCompletedUnitCount:{objc_msgSend(progress3, "completedUnitCount") + 1}];
     }
 
     v30 = [obj countByEnumeratingWithState:&v54 objects:v60 count:16];
-    v6 = v52;
-    v7 = v33;
+    accountCopy = v52;
+    configurationCopy = v33;
     if (v30)
     {
       continue;
@@ -350,46 +350,46 @@ LABEL_35:
   v50 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
   {
-    [ICCryptoConvergenceController unsafelyConvergeNotesInAccount:v6 configuration:v32 & 1];
+    [ICCryptoConvergenceController unsafelyConvergeNotesInAccount:accountCopy configuration:v32 & 1];
   }
 
 LABEL_38:
   return v32 & 1;
 }
 
-- (BOOL)unsafelyConvergeNote:(id)a3 configuration:(id)a4
+- (BOOL)unsafelyConvergeNote:(id)note configuration:(id)configuration
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [ICCryptoStrategyFactory cipherVersionForObject:v5];
+  noteCopy = note;
+  configurationCopy = configuration;
+  v7 = [ICCryptoStrategyFactory cipherVersionForObject:noteCopy];
   v8 = 0x277CCA000uLL;
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = *MEMORY[0x277CBE1B0];
-  v11 = [v5 managedObjectContext];
-  v12 = [v9 addObserverForName:v10 object:v11 queue:0 usingBlock:&__block_literal_global_28];
+  managedObjectContext = [noteCopy managedObjectContext];
+  v12 = [defaultCenter addObserverForName:v10 object:managedObjectContext queue:0 usingBlock:&__block_literal_global_28];
 
-  v13 = [v6 passphrase];
-  if (v13)
+  passphrase = [configurationCopy passphrase];
+  if (passphrase)
   {
-    v14 = v13;
-    v15 = [v6 v1MainKey];
-    if (!v15 || v7)
+    v14 = passphrase;
+    v1MainKey = [configurationCopy v1MainKey];
+    if (!v1MainKey || v7)
     {
       goto LABEL_6;
     }
 
-    v16 = [v6 passphrase];
-    if ([v5 isPassphraseCorrect:v16])
+    passphrase2 = [configurationCopy passphrase];
+    if ([noteCopy isPassphraseCorrect:passphrase2])
     {
 
 LABEL_6:
       goto LABEL_7;
     }
 
-    v32 = [v5 cryptoStrategy];
-    v33 = [v6 v1MainKey];
-    v34 = [v32 mainKeyDecryptsPrimaryData:v33];
+    cryptoStrategy = [noteCopy cryptoStrategy];
+    v1MainKey2 = [configurationCopy v1MainKey];
+    v34 = [cryptoStrategy mainKeyDecryptsPrimaryData:v1MainKey2];
 
     v8 = 0x277CCA000;
     if (v34)
@@ -397,60 +397,60 @@ LABEL_6:
       v35 = os_log_create("com.apple.notes", "Crypto");
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
-        v36 = [v5 shortLoggingDescription];
+        shortLoggingDescription = [noteCopy shortLoggingDescription];
         v52 = 138412290;
-        v53 = v36;
+        v53 = shortLoggingDescription;
         _os_log_impl(&dword_214D51000, v35, OS_LOG_TYPE_INFO, "Fixing v1 note crypto goo using account main key… {note: %@}", &v52, 0xCu);
       }
 
-      v37 = [v6 v1MainKey];
-      v38 = [v37 metadata];
-      v39 = [v38 passphraseSalt];
-      [v5 setCryptoSalt:v39];
+      v1MainKey3 = [configurationCopy v1MainKey];
+      metadata = [v1MainKey3 metadata];
+      passphraseSalt = [metadata passphraseSalt];
+      [noteCopy setCryptoSalt:passphraseSalt];
 
-      v40 = [v6 v1MainKey];
-      v41 = [v40 metadata];
-      [v5 setCryptoIterationCount:{objc_msgSend(v41, "passphraseIterationCount")}];
+      v1MainKey4 = [configurationCopy v1MainKey];
+      metadata2 = [v1MainKey4 metadata];
+      [noteCopy setCryptoIterationCount:{objc_msgSend(metadata2, "passphraseIterationCount")}];
 
-      v42 = [v6 v1MainKey];
-      v43 = [v42 metadata];
-      v44 = [v43 passphraseHint];
-      [v5 setPasswordHint:v44];
+      v1MainKey5 = [configurationCopy v1MainKey];
+      metadata3 = [v1MainKey5 metadata];
+      passphraseHint = [metadata3 passphraseHint];
+      [noteCopy setPasswordHint:passphraseHint];
 
-      [v5 updateChangeCountWithReason:@"Fixed v1 Crypto Goo"];
+      [noteCopy updateChangeCountWithReason:@"Fixed v1 Crypto Goo"];
     }
   }
 
 LABEL_7:
-  if ([v6 shouldConvergeObject:v5])
+  if ([configurationCopy shouldConvergeObject:noteCopy])
   {
-    v17 = [v6 v1MainKey];
-    v18 = v17;
-    if (!v17 || v7)
+    v1MainKey6 = [configurationCopy v1MainKey];
+    v18 = v1MainKey6;
+    if (!v1MainKey6 || v7)
     {
     }
 
     else
     {
-      v19 = [v5 cryptoStrategy];
-      v20 = [v6 v1MainKey];
-      v21 = [v19 mainKeyDecryptsPrimaryData:v20];
+      cryptoStrategy2 = [noteCopy cryptoStrategy];
+      v1MainKey7 = [configurationCopy v1MainKey];
+      v21 = [cryptoStrategy2 mainKeyDecryptsPrimaryData:v1MainKey7];
 
       if ((v21 & 1) == 0)
       {
         objc_opt_class();
-        v22 = [v5 cryptoStrategy];
+        cryptoStrategy3 = [noteCopy cryptoStrategy];
         v23 = ICCheckedDynamicCast();
-        v24 = [v6 v1MainKey];
-        v25 = [v23 rewrapWithMainKey:v24];
+        v1MainKey8 = [configurationCopy v1MainKey];
+        v25 = [v23 rewrapWithMainKey:v1MainKey8];
 
         v26 = os_log_create("com.apple.notes", "Crypto");
-        v27 = v26;
+        v1NeoMainKey = v26;
         if (v25)
         {
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
-            [ICCryptoConvergenceController unsafelyConvergeNote:v5 configuration:?];
+            [ICCryptoConvergenceController unsafelyConvergeNote:noteCopy configuration:?];
           }
 
 LABEL_26:
@@ -463,39 +463,39 @@ LABEL_33:
 
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          [ICCryptoConvergenceController unsafelyConvergeNote:v5 configuration:?];
+          [ICCryptoConvergenceController unsafelyConvergeNote:noteCopy configuration:?];
         }
 
         goto LABEL_31;
       }
     }
 
-    v27 = [v6 v1NeoMainKey];
+    v1NeoMainKey = [configurationCopy v1NeoMainKey];
     v28 = 1;
-    if (!v27 || v7 != 2)
+    if (!v1NeoMainKey || v7 != 2)
     {
       goto LABEL_33;
     }
 
-    v29 = [v5 cryptoStrategy];
-    v30 = [v6 v1NeoMainKey];
-    v31 = [v29 mainKeyDecryptsPrimaryData:v30];
+    cryptoStrategy4 = [noteCopy cryptoStrategy];
+    v1NeoMainKey2 = [configurationCopy v1NeoMainKey];
+    v31 = [cryptoStrategy4 mainKeyDecryptsPrimaryData:v1NeoMainKey2];
 
     if ((v31 & 1) == 0)
     {
       objc_opt_class();
-      v45 = [v5 cryptoStrategy];
+      cryptoStrategy5 = [noteCopy cryptoStrategy];
       v46 = ICCheckedDynamicCast();
-      v47 = [v6 v1NeoMainKey];
-      v48 = [v46 rewrapWithMainKey:v47];
+      v1NeoMainKey3 = [configurationCopy v1NeoMainKey];
+      v48 = [v46 rewrapWithMainKey:v1NeoMainKey3];
 
       v49 = os_log_create("com.apple.notes", "Crypto");
-      v27 = v49;
+      v1NeoMainKey = v49;
       if (v48)
       {
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
         {
-          [ICCryptoConvergenceController unsafelyConvergeNote:v5 configuration:?];
+          [ICCryptoConvergenceController unsafelyConvergeNote:noteCopy configuration:?];
         }
 
         goto LABEL_26;
@@ -503,7 +503,7 @@ LABEL_33:
 
       if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
       {
-        [ICCryptoConvergenceController unsafelyConvergeNote:v5 configuration:?];
+        [ICCryptoConvergenceController unsafelyConvergeNote:noteCopy configuration:?];
       }
 
 LABEL_31:
@@ -514,37 +514,37 @@ LABEL_31:
 
   v28 = 1;
 LABEL_34:
-  v50 = [*(v8 + 2968) defaultCenter];
-  [v50 removeObserver:v12];
+  defaultCenter2 = [*(v8 + 2968) defaultCenter];
+  [defaultCenter2 removeObserver:v12];
 
   return v28;
 }
 
-- (BOOL)convergeAttachmentsInNoteWithID:(id)a3 configuration:(id)a4
+- (BOOL)convergeAttachmentsInNoteWithID:(id)d configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  configurationCopy = configuration;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(ICCryptoConvergenceController *)self workerContext];
+  workerContext = [(ICCryptoConvergenceController *)self workerContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __79__ICCryptoConvergenceController_convergeAttachmentsInNoteWithID_configuration___block_invoke;
   v12[3] = &unk_2781960F0;
   v12[4] = self;
-  v9 = v6;
+  v9 = dCopy;
   v13 = v9;
   v15 = &v16;
-  v10 = v7;
+  v10 = configurationCopy;
   v14 = v10;
-  [v8 performBlockAndWait:v12];
+  [workerContext performBlockAndWait:v12];
 
-  LOBYTE(v8) = *(v17 + 24);
+  LOBYTE(workerContext) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
 
-  return v8;
+  return workerContext;
 }
 
 void __79__ICCryptoConvergenceController_convergeAttachmentsInNoteWithID_configuration___block_invoke(uint64_t a1)
@@ -575,23 +575,23 @@ void __79__ICCryptoConvergenceController_convergeAttachmentsInNoteWithID_configu
   }
 }
 
-- (BOOL)unsafelyConvergeAttachmentsInNote:(id)a3 configuration:(id)a4
+- (BOOL)unsafelyConvergeAttachmentsInNote:(id)note configuration:(id)configuration
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  configurationCopy = configuration;
   v8 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [ICCryptoConvergenceController unsafelyConvergeAttachmentsInNote:v6 configuration:?];
+    [ICCryptoConvergenceController unsafelyConvergeAttachmentsInNote:noteCopy configuration:?];
   }
 
-  if (([v6 isPasswordProtected] & 1) == 0)
+  if (([noteCopy isPasswordProtected] & 1) == 0)
   {
     v17 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [ICCryptoConvergenceController unsafelyConvergeAttachmentsInNote:v6 configuration:?];
+      [ICCryptoConvergenceController unsafelyConvergeAttachmentsInNote:noteCopy configuration:?];
     }
 
     goto LABEL_12;
@@ -600,16 +600,16 @@ void __79__ICCryptoConvergenceController_convergeAttachmentsInNoteWithID_configu
   v9 = +[ICAuthenticationState sharedState];
   [v9 beginBlockingDeauthentication];
 
-  if (([v6 isAuthenticated] & 1) == 0)
+  if (([noteCopy isAuthenticated] & 1) == 0)
   {
-    v10 = [v7 passphrase];
-    v11 = [v10 length];
+    passphrase = [configurationCopy passphrase];
+    v11 = [passphrase length];
 
     if (v11)
     {
-      v12 = [v6 cryptoStrategy];
-      v13 = [v7 passphrase];
-      v14 = [v12 authenticateWithPassphrase:v13];
+      cryptoStrategy = [noteCopy cryptoStrategy];
+      passphrase2 = [configurationCopy passphrase];
+      v14 = [cryptoStrategy authenticateWithPassphrase:passphrase2];
 
       if ((v14 & 1) == 0)
       {
@@ -623,19 +623,19 @@ LABEL_12:
   }
 
   v15 = +[ICAuthenticationState sharedState];
-  v16 = [v6 identifier];
-  v17 = [v15 cachedMainKeyForIdentifier:v16];
+  identifier = [noteCopy identifier];
+  v17 = [v15 cachedMainKeyForIdentifier:identifier];
 
-  v18 = [v7 v1MainKey];
-  if (v18)
+  v1MainKey = [configurationCopy v1MainKey];
+  if (v1MainKey)
   {
-    [v7 setV1MainKey:v18];
+    [configurationCopy setV1MainKey:v1MainKey];
   }
 
   else
   {
-    v20 = [v17 metadata];
-    if ([v20 cipherVersion])
+    metadata = [v17 metadata];
+    if ([metadata cipherVersion])
     {
       v21 = 0;
     }
@@ -645,19 +645,19 @@ LABEL_12:
       v21 = v17;
     }
 
-    [v7 setV1MainKey:v21];
+    [configurationCopy setV1MainKey:v21];
   }
 
-  v22 = [v7 v1NeoMainKey];
-  if (v22)
+  v1NeoMainKey = [configurationCopy v1NeoMainKey];
+  if (v1NeoMainKey)
   {
-    [v7 setV1NeoMainKey:v22];
+    [configurationCopy setV1NeoMainKey:v1NeoMainKey];
   }
 
   else
   {
-    v23 = [v17 metadata];
-    if ([v23 cipherVersion] == 2)
+    metadata2 = [v17 metadata];
+    if ([metadata2 cipherVersion] == 2)
     {
       v24 = v17;
     }
@@ -667,21 +667,21 @@ LABEL_12:
       v24 = 0;
     }
 
-    [v7 setV1NeoMainKey:v24];
+    [configurationCopy setV1NeoMainKey:v24];
   }
 
-  v25 = [v6 attachments];
-  v26 = [v25 copy];
-  v27 = [v6 inlineAttachments];
-  v28 = [v27 copy];
+  attachments = [noteCopy attachments];
+  v26 = [attachments copy];
+  inlineAttachments = [noteCopy inlineAttachments];
+  v28 = [inlineAttachments copy];
   v29 = [v26 setByAddingObjectsFromSet:v28];
 
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __81__ICCryptoConvergenceController_unsafelyConvergeAttachmentsInNote_configuration___block_invoke;
   v53[3] = &unk_278196118;
-  v48 = v7;
-  v30 = v7;
+  v48 = configurationCopy;
+  v30 = configurationCopy;
   v54 = v30;
   v47 = v29;
   v31 = [v29 ic_objectsPassingTest:v53];
@@ -694,7 +694,7 @@ LABEL_12:
   {
     v33 = v32;
     v45 = v17;
-    v46 = v6;
+    v46 = noteCopy;
     v34 = *v50;
     v19 = 1;
     do
@@ -708,12 +708,12 @@ LABEL_12:
 
         v36 = *(*(&v49 + 1) + 8 * i);
         v37 = [(ICCryptoConvergenceController *)self unsafelyConvergeAttachment:v36 configuration:v30];
-        v38 = [(ICCryptoConvergenceController *)self workerContext];
-        v39 = v38;
+        workerContext = [(ICCryptoConvergenceController *)self workerContext];
+        v39 = workerContext;
         if (v37)
         {
-          v40 = [v36 shortLoggingDescription];
-          v41 = [v39 ic_saveWithLogDescription:{@"Saved after converging attachment {attachment: %@}", v40}];
+          shortLoggingDescription = [v36 shortLoggingDescription];
+          v41 = [v39 ic_saveWithLogDescription:{@"Saved after converging attachment {attachment: %@}", shortLoggingDescription}];
           if (v19)
           {
             v19 = v41;
@@ -727,7 +727,7 @@ LABEL_12:
 
         else
         {
-          [v38 rollback];
+          [workerContext rollback];
           v19 = 0;
         }
       }
@@ -737,7 +737,7 @@ LABEL_12:
 
     while (v33);
     v17 = v45;
-    v6 = v46;
+    noteCopy = v46;
   }
 
   else
@@ -749,10 +749,10 @@ LABEL_12:
   [v42 endBlockingDeauthentication];
 
   v43 = os_log_create("com.apple.notes", "Crypto");
-  v7 = v48;
+  configurationCopy = v48;
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
   {
-    [ICCryptoConvergenceController unsafelyConvergeAttachmentsInNote:v6 configuration:v19];
+    [ICCryptoConvergenceController unsafelyConvergeAttachmentsInNote:noteCopy configuration:v19];
   }
 
 LABEL_41:
@@ -776,35 +776,35 @@ uint64_t __81__ICCryptoConvergenceController_unsafelyConvergeAttachmentsInNote_c
   return v5;
 }
 
-- (BOOL)unsafelyConvergeAttachment:(id)a3 configuration:(id)a4
+- (BOOL)unsafelyConvergeAttachment:(id)attachment configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [ICCryptoStrategyFactory cipherVersionForObject:v5];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  attachmentCopy = attachment;
+  configurationCopy = configuration;
+  v7 = [ICCryptoStrategyFactory cipherVersionForObject:attachmentCopy];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = *MEMORY[0x277CBE1B0];
-  v10 = [v5 managedObjectContext];
-  v11 = [v8 addObserverForName:v9 object:v10 queue:0 usingBlock:&__block_literal_global_44];
+  managedObjectContext = [attachmentCopy managedObjectContext];
+  v11 = [defaultCenter addObserverForName:v9 object:managedObjectContext queue:0 usingBlock:&__block_literal_global_44];
 
-  v12 = [v6 v1MainKey];
-  v13 = v12;
-  if (!v12 || v7)
+  v1MainKey = [configurationCopy v1MainKey];
+  v13 = v1MainKey;
+  if (!v1MainKey || v7)
   {
   }
 
   else
   {
-    v14 = [v5 cryptoStrategy];
-    v15 = [v6 v1MainKey];
-    v16 = [v14 mainKeyDecryptsPrimaryData:v15];
+    cryptoStrategy = [attachmentCopy cryptoStrategy];
+    v1MainKey2 = [configurationCopy v1MainKey];
+    v16 = [cryptoStrategy mainKeyDecryptsPrimaryData:v1MainKey2];
 
     if ((v16 & 1) == 0)
     {
       objc_opt_class();
-      v17 = [v5 cryptoStrategy];
+      cryptoStrategy2 = [attachmentCopy cryptoStrategy];
       v18 = ICCheckedDynamicCast();
-      v19 = [v6 v1MainKey];
-      v20 = [v18 rewrapWithMainKey:v19];
+      v1MainKey3 = [configurationCopy v1MainKey];
+      v20 = [v18 rewrapWithMainKey:v1MainKey3];
 
       v21 = os_log_create("com.apple.notes", "Crypto");
       v22 = v21;
@@ -812,7 +812,7 @@ uint64_t __81__ICCryptoConvergenceController_unsafelyConvergeAttachmentsInNote_c
       {
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          [ICCryptoConvergenceController unsafelyConvergeAttachment:v5 configuration:?];
+          [ICCryptoConvergenceController unsafelyConvergeAttachment:attachmentCopy configuration:?];
         }
 
 LABEL_14:
@@ -822,32 +822,32 @@ LABEL_14:
 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [ICCryptoConvergenceController unsafelyConvergeAttachment:v5 configuration:?];
+        [ICCryptoConvergenceController unsafelyConvergeAttachment:attachmentCopy configuration:?];
       }
 
       goto LABEL_21;
     }
   }
 
-  v23 = [v6 v1NeoMainKey];
-  v24 = v23;
-  if (!v23 || v7 != 2)
+  v1NeoMainKey = [configurationCopy v1NeoMainKey];
+  v24 = v1NeoMainKey;
+  if (!v1NeoMainKey || v7 != 2)
   {
 
     goto LABEL_16;
   }
 
-  v25 = [v5 cryptoStrategy];
-  v26 = [v6 v1NeoMainKey];
-  v27 = [v25 mainKeyDecryptsPrimaryData:v26];
+  cryptoStrategy3 = [attachmentCopy cryptoStrategy];
+  v1NeoMainKey2 = [configurationCopy v1NeoMainKey];
+  v27 = [cryptoStrategy3 mainKeyDecryptsPrimaryData:v1NeoMainKey2];
 
   if ((v27 & 1) == 0)
   {
     objc_opt_class();
-    v28 = [v5 cryptoStrategy];
+    cryptoStrategy4 = [attachmentCopy cryptoStrategy];
     v29 = ICCheckedDynamicCast();
-    v30 = [v6 v1NeoMainKey];
-    v31 = [v29 rewrapWithMainKey:v30];
+    v1NeoMainKey3 = [configurationCopy v1NeoMainKey];
+    v31 = [v29 rewrapWithMainKey:v1NeoMainKey3];
 
     v32 = os_log_create("com.apple.notes", "Crypto");
     v22 = v32;
@@ -855,7 +855,7 @@ LABEL_14:
     {
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        [ICCryptoConvergenceController unsafelyConvergeAttachment:v5 configuration:?];
+        [ICCryptoConvergenceController unsafelyConvergeAttachment:attachmentCopy configuration:?];
       }
 
       goto LABEL_14;
@@ -863,7 +863,7 @@ LABEL_14:
 
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      [ICCryptoConvergenceController unsafelyConvergeAttachment:v5 configuration:?];
+      [ICCryptoConvergenceController unsafelyConvergeAttachment:attachmentCopy configuration:?];
     }
 
 LABEL_21:
@@ -875,21 +875,21 @@ LABEL_21:
 LABEL_16:
   v33 = 1;
 LABEL_22:
-  v34 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v34 removeObserver:v11];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:v11];
 
   return v33;
 }
 
-- (void)cancelAndWaitWithReason:(id)a3
+- (void)cancelAndWaitWithReason:(id)reason
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v12 = v4;
+    v12 = reasonCopy;
     v13 = 2080;
     v14 = "[ICCryptoConvergenceController cancelAndWaitWithReason:]";
     v15 = 1024;
@@ -897,17 +897,17 @@ LABEL_22:
     _os_log_impl(&dword_214D51000, v5, OS_LOG_TYPE_DEFAULT, "Cancelling converging notes… {reason: %@}%s:%d", buf, 0x1Cu);
   }
 
-  v6 = [(ICCryptoConvergenceController *)self progress];
-  [v6 cancel];
+  progress = [(ICCryptoConvergenceController *)self progress];
+  [progress cancel];
 
-  v7 = [(ICCryptoConvergenceController *)self workerContext];
+  workerContext = [(ICCryptoConvergenceController *)self workerContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__ICCryptoConvergenceController_cancelAndWaitWithReason___block_invoke;
   v9[3] = &unk_278194B00;
-  v10 = v4;
-  v8 = v4;
-  [v7 performBlockAndWait:v9];
+  v10 = reasonCopy;
+  v8 = reasonCopy;
+  [workerContext performBlockAndWait:v9];
 }
 
 void __57__ICCryptoConvergenceController_cancelAndWaitWithReason___block_invoke(uint64_t a1)
@@ -919,12 +919,12 @@ void __57__ICCryptoConvergenceController_cancelAndWaitWithReason___block_invoke(
   }
 }
 
-- (void)authenticationStateDidDeauthenticate:(id)a3
+- (void)authenticationStateDidDeauthenticate:(id)deauthenticate
 {
   v3 = +[ICAuthenticationState sharedState];
-  v4 = [v3 isAuthenticated];
+  isAuthenticated = [v3 isAuthenticated];
 
-  if ((v4 & 1) == 0)
+  if ((isAuthenticated & 1) == 0)
   {
     v5 = dispatch_get_global_queue(-32768, 0);
     dispatch_async(v5, &__block_literal_global_51);

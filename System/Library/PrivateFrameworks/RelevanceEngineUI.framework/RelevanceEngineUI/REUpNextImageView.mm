@@ -1,21 +1,21 @@
 @interface REUpNextImageView
 - (BOOL)_hasMultipartImages;
 - (CGSize)intrinsicContentSize;
-- (REUpNextImageView)initWithFrame:(CGRect)a3;
+- (REUpNextImageView)initWithFrame:(CGRect)frame;
 - (void)_updateColors;
 - (void)layoutSubviews;
-- (void)setContentMode:(int64_t)a3;
-- (void)setImageProvider:(id)a3;
-- (void)setOverrideImage:(id)a3;
+- (void)setContentMode:(int64_t)mode;
+- (void)setImageProvider:(id)provider;
+- (void)setOverrideImage:(id)image;
 @end
 
 @implementation REUpNextImageView
 
-- (REUpNextImageView)initWithFrame:(CGRect)a3
+- (REUpNextImageView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = REUpNextImageView;
-  v3 = [(REUpNextImageView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(REUpNextImageView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
@@ -81,14 +81,14 @@
       v19[3] = &unk_279AF63F0;
       v19[4] = &v20;
       v10 = MEMORY[0x2667182D0](v19);
-      v11 = [(CLKImageProvider *)self->_imageProvider twoPieceImageBackground];
-      (v10)[2](v10, v11);
+      twoPieceImageBackground = [(CLKImageProvider *)self->_imageProvider twoPieceImageBackground];
+      (v10)[2](v10, twoPieceImageBackground);
 
-      v12 = [(CLKImageProvider *)self->_imageProvider twoPieceImageForeground];
-      (v10)[2](v10, v12);
+      twoPieceImageForeground = [(CLKImageProvider *)self->_imageProvider twoPieceImageForeground];
+      (v10)[2](v10, twoPieceImageForeground);
 
-      v13 = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
-      (v10)[2](v10, v13);
+      foregroundAccentImage = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
+      (v10)[2](v10, foregroundAccentImage);
 
       v7 = v21[4];
       v6 = v21[5];
@@ -98,8 +98,8 @@
 
     else
     {
-      v14 = [(CLKImageProvider *)self->_imageProvider onePieceImage];
-      [v14 size];
+      onePieceImage = [(CLKImageProvider *)self->_imageProvider onePieceImage];
+      [onePieceImage size];
       v7 = v15;
       v6 = v16;
     }
@@ -164,11 +164,11 @@ void __41__REUpNextImageView_intrinsicContentSize__block_invoke(uint64_t a1, voi
 
 - (BOOL)_hasMultipartImages
 {
-  v3 = [(CLKImageProvider *)self->_imageProvider twoPieceImageBackground];
-  if (v3)
+  twoPieceImageBackground = [(CLKImageProvider *)self->_imageProvider twoPieceImageBackground];
+  if (twoPieceImageBackground)
   {
-    v4 = [(CLKImageProvider *)self->_imageProvider twoPieceImageForeground];
-    if (v4)
+    twoPieceImageForeground = [(CLKImageProvider *)self->_imageProvider twoPieceImageForeground];
+    if (twoPieceImageForeground)
     {
       v5 = 1;
 LABEL_6:
@@ -177,12 +177,12 @@ LABEL_6:
     }
   }
 
-  v6 = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
-  v5 = v6 != 0;
+  foregroundAccentImage = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
+  v5 = foregroundAccentImage != 0;
 
-  if (v3)
+  if (twoPieceImageBackground)
   {
-    v4 = 0;
+    twoPieceImageForeground = 0;
     goto LABEL_6;
   }
 
@@ -191,36 +191,36 @@ LABEL_7:
   return v5;
 }
 
-- (void)setImageProvider:(id)a3
+- (void)setImageProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_imageProvider != v5)
+  providerCopy = provider;
+  if (self->_imageProvider != providerCopy)
   {
-    v20 = v5;
+    v20 = providerCopy;
     overrideImage = self->_overrideImage;
     self->_overrideImage = 0;
 
-    objc_storeStrong(&self->_imageProvider, a3);
-    v7 = [(REUpNextImageView *)self _hasMultipartImages];
+    objc_storeStrong(&self->_imageProvider, provider);
+    _hasMultipartImages = [(REUpNextImageView *)self _hasMultipartImages];
     [(UIImageView *)self->_backgroundImageView setHidden:0];
     foregroundImageView = self->_foregroundImageView;
-    if (v7)
+    if (_hasMultipartImages)
     {
       [(UIImageView *)foregroundImageView setHidden:0];
       [(UIImageView *)self->_foregroundAccentImageView setHidden:0];
       v9 = self->_foregroundImageView;
-      v10 = [(CLKImageProvider *)self->_imageProvider twoPieceImageForeground];
-      v11 = [v10 imageWithRenderingMode:2];
+      twoPieceImageForeground = [(CLKImageProvider *)self->_imageProvider twoPieceImageForeground];
+      v11 = [twoPieceImageForeground imageWithRenderingMode:2];
       [(UIImageView *)v9 setImage:v11];
 
       backgroundImageView = self->_backgroundImageView;
-      v13 = [(CLKImageProvider *)self->_imageProvider twoPieceImageBackground];
-      v14 = [v13 imageWithRenderingMode:2];
+      twoPieceImageBackground = [(CLKImageProvider *)self->_imageProvider twoPieceImageBackground];
+      v14 = [twoPieceImageBackground imageWithRenderingMode:2];
       [(UIImageView *)backgroundImageView setImage:v14];
 
       foregroundAccentImageView = self->_foregroundAccentImageView;
-      v16 = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
-      v17 = v16;
+      foregroundAccentImage = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
+      v17 = foregroundAccentImage;
       v18 = 1;
     }
 
@@ -229,27 +229,27 @@ LABEL_7:
       [(UIImageView *)foregroundImageView setHidden:1];
       [(UIImageView *)self->_foregroundAccentImageView setHidden:1];
       foregroundAccentImageView = self->_backgroundImageView;
-      v16 = [(CLKImageProvider *)self->_imageProvider onePieceImage];
-      v17 = v16;
+      foregroundAccentImage = [(CLKImageProvider *)self->_imageProvider onePieceImage];
+      v17 = foregroundAccentImage;
       v18 = 2;
     }
 
-    v19 = [v16 imageWithRenderingMode:v18];
+    v19 = [foregroundAccentImage imageWithRenderingMode:v18];
     [(UIImageView *)foregroundAccentImageView setImage:v19];
 
     [(REUpNextImageView *)self _updateColors];
     [(REUpNextImageView *)self invalidateIntrinsicContentSize];
-    v5 = v20;
+    providerCopy = v20;
   }
 }
 
-- (void)setOverrideImage:(id)a3
+- (void)setOverrideImage:(id)image
 {
-  v5 = a3;
-  if (self->_overrideImage != v5)
+  imageCopy = image;
+  if (self->_overrideImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_overrideImage, a3);
+    v7 = imageCopy;
+    objc_storeStrong(&self->_overrideImage, image);
     imageProvider = self->_imageProvider;
     self->_imageProvider = 0;
 
@@ -258,41 +258,41 @@ LABEL_7:
     [(UIImageView *)self->_foregroundAccentImageView setHidden:0];
     [(UIImageView *)self->_foregroundAccentImageView setImage:self->_overrideImage];
     [(REUpNextImageView *)self invalidateIntrinsicContentSize];
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
 - (void)_updateColors
 {
-  v3 = [(CLKImageProvider *)self->_imageProvider tintColor];
-  fallbackTintColor = v3;
-  if (v3 || (fallbackTintColor = self->_fallbackTintColor) != 0)
+  tintColor = [(CLKImageProvider *)self->_imageProvider tintColor];
+  fallbackTintColor = tintColor;
+  if (tintColor || (fallbackTintColor = self->_fallbackTintColor) != 0)
   {
-    v5 = fallbackTintColor;
+    whiteColor = fallbackTintColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v8 = v5;
+  v8 = whiteColor;
 
   foregroundImageView = self->_foregroundImageView;
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  [(UIImageView *)foregroundImageView setTintColor:v7];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [(UIImageView *)foregroundImageView setTintColor:whiteColor2];
 
   [(UIImageView *)self->_backgroundImageView setTintColor:v8];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = REUpNextImageView;
   [(REUpNextImageView *)&v5 setContentMode:?];
-  [(UIImageView *)self->_foregroundImageView setContentMode:a3];
-  [(UIImageView *)self->_backgroundImageView setContentMode:a3];
-  [(UIImageView *)self->_foregroundAccentImageView setContentMode:a3];
+  [(UIImageView *)self->_foregroundImageView setContentMode:mode];
+  [(UIImageView *)self->_backgroundImageView setContentMode:mode];
+  [(UIImageView *)self->_foregroundAccentImageView setContentMode:mode];
 }
 
 @end

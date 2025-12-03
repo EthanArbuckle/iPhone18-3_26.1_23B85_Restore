@@ -1,8 +1,8 @@
 @interface CKBrowserSwitcherFooterViewStickersDataSource
 - (CKBrowserSwitcherFooterViewStickersDataSource)init;
-- (id)switcherView:(id)a3 indexPathOfModelWithIdentifier:(id)a4;
-- (id)switcherView:(id)a3 modelAtIndexPath:(id)a4 type:(int64_t *)a5;
-- (unint64_t)numberOfPluginsInSwitcherView:(id)a3 forSection:(unint64_t)a4;
+- (id)switcherView:(id)view indexPathOfModelWithIdentifier:(id)identifier;
+- (id)switcherView:(id)view modelAtIndexPath:(id)path type:(int64_t *)type;
+- (unint64_t)numberOfPluginsInSwitcherView:(id)view forSection:(unint64_t)section;
 @end
 
 @implementation CKBrowserSwitcherFooterViewStickersDataSource
@@ -21,29 +21,29 @@
   return v2;
 }
 
-- (unint64_t)numberOfPluginsInSwitcherView:(id)a3 forSection:(unint64_t)a4
+- (unint64_t)numberOfPluginsInSwitcherView:(id)view forSection:(unint64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
 
-  v4 = [(CKBrowserSwitcherFooterViewStickersDataSource *)self pluginManager];
-  v5 = [v4 combinedStickerApps];
-  v6 = [v5 count];
+  pluginManager = [(CKBrowserSwitcherFooterViewStickersDataSource *)self pluginManager];
+  combinedStickerApps = [pluginManager combinedStickerApps];
+  v6 = [combinedStickerApps count];
 
   return v6;
 }
 
-- (id)switcherView:(id)a3 modelAtIndexPath:(id)a4 type:(int64_t *)a5
+- (id)switcherView:(id)view modelAtIndexPath:(id)path type:(int64_t *)type
 {
-  v7 = a4;
-  v8 = [(CKBrowserSwitcherFooterViewStickersDataSource *)self pluginManager];
-  v9 = [v8 orderedCombinedStickerApps];
-  v10 = [v7 item];
-  if (v10 < [v9 count])
+  pathCopy = path;
+  pluginManager = [(CKBrowserSwitcherFooterViewStickersDataSource *)self pluginManager];
+  orderedCombinedStickerApps = [pluginManager orderedCombinedStickerApps];
+  item = [pathCopy item];
+  if (item < [orderedCombinedStickerApps count])
   {
-    v11 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+    v11 = [orderedCombinedStickerApps objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
         v12 = 0;
 LABEL_10:
 
-        if (!a5)
+        if (!type)
         {
           goto LABEL_12;
         }
@@ -76,10 +76,10 @@ LABEL_10:
 
   v13 = 0;
   v12 = 0;
-  if (a5)
+  if (type)
   {
 LABEL_11:
-    *a5 = v12;
+    *type = v12;
   }
 
 LABEL_12:
@@ -87,12 +87,12 @@ LABEL_12:
   return v13;
 }
 
-- (id)switcherView:(id)a3 indexPathOfModelWithIdentifier:(id)a4
+- (id)switcherView:(id)view indexPathOfModelWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(CKBrowserSwitcherFooterViewStickersDataSource *)self pluginManager];
-  v7 = [v6 combinedStickersAppsIndexPathMap];
-  v8 = [v7 objectForKey:v5];
+  identifierCopy = identifier;
+  pluginManager = [(CKBrowserSwitcherFooterViewStickersDataSource *)self pluginManager];
+  combinedStickersAppsIndexPathMap = [pluginManager combinedStickersAppsIndexPathMap];
+  v8 = [combinedStickersAppsIndexPathMap objectForKey:identifierCopy];
 
   if (v8)
   {

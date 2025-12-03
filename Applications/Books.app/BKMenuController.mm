@@ -7,7 +7,7 @@
 
 - (void)updateKeyWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005C98B4();
 }
 

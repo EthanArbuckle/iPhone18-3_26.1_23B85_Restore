@@ -1,32 +1,32 @@
 @interface AXCaptionStyleChooserController
-- (AXCaptionStyleChooserController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AXCaptionStyleChooserController)initWithNibName:(id)name bundle:(id)bundle;
 - (BOOL)isPreviewExpanded;
-- (BOOL)isStoredColorType:(int)a3 equalWithColors:(id)a4;
-- (BOOL)isStoredTransparencyType:(int)a3 equalWithTransparency:(id)a4;
+- (BOOL)isStoredColorType:(int)type equalWithColors:(id)colors;
+- (BOOL)isStoredTransparencyType:(int)type equalWithTransparency:(id)transparency;
 - (NSArray)captionPreviewSpecifiers;
 - (NSArray)videoOverrideSpecifiers;
 - (__CFString)profileId;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (id)_snapshotWindow:(id)a3 opaque:(BOOL)a4;
-- (id)_splitImageAppropriately:(id)a3 statusBar:(id)a4 secondHalfStart:(CGPoint)a5 secondHalfEnd:(CGPoint)a6;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (id)_snapshotWindow:(id)window opaque:(BOOL)opaque;
+- (id)_splitImageAppropriately:(id)appropriately statusBar:(id)bar secondHalfStart:(CGPoint)start secondHalfEnd:(CGPoint)end;
 - (id)_videoOverrideText;
-- (id)_videoOverridesStyle:(id)a3;
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4;
-- (void)captionPreviewWasTapped:(BOOL)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateTableCheckedSelection:(id)a3;
+- (id)_videoOverridesStyle:(id)style;
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier;
+- (void)captionPreviewWasTapped:(BOOL)tapped;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateTableCheckedSelection:(id)selection;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willResignActive;
 @end
 
 @implementation AXCaptionStyleChooserController
 
-- (AXCaptionStyleChooserController)initWithNibName:(id)a3 bundle:(id)a4
+- (AXCaptionStyleChooserController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = AXCaptionStyleChooserController;
-  return [(AXCaptionStyleChooserController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(AXCaptionStyleChooserController *)&v5 initWithNibName:name bundle:bundle];
 }
 
 - (NSArray)captionPreviewSpecifiers
@@ -42,12 +42,12 @@
   return v5;
 }
 
-- (void)updateTableCheckedSelection:(id)a3
+- (void)updateTableCheckedSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v5 = OBJC_IVAR___PSListController__table;
-  v11 = v4;
-  v6 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] numberOfRowsInSection:{objc_msgSend(v4, "section")}];
+  v11 = selectionCopy;
+  v6 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] numberOfRowsInSection:{objc_msgSend(selectionCopy, "section")}];
   if (v6 >= 1)
   {
     v7 = v6;
@@ -65,10 +65,10 @@
   v6.receiver = self;
   v6.super_class = AXCaptionStyleChooserController;
   [(AXCaptionStyleChooserController *)&v6 viewDidLoad];
-  v3 = [(AXCaptionStyleChooserController *)self table];
+  table = [(AXCaptionStyleChooserController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXCaptionPreviewCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (void)willResignActive
@@ -85,8 +85,8 @@
   v3 = [PSSpecifier preferenceSpecifierNamed:&stru_25D420 target:self set:0 get:0 detail:0 cell:0 edit:0];
   v4 = PSIDKey;
   [v3 setProperty:@"VideoOverridesStyleGroup" forKey:PSIDKey];
-  v5 = [(AXCaptionStyleChooserController *)self _videoOverrideText];
-  [v3 setProperty:v5 forKey:PSFooterTextGroupKey];
+  _videoOverrideText = [(AXCaptionStyleChooserController *)self _videoOverrideText];
+  [v3 setProperty:_videoOverrideText forKey:PSFooterTextGroupKey];
 
   v6 = settingsLocString(@"CONTENT_PROVIDED_SWITCH", @"Captioning");
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:"_setVideoOverridesStyle:specifier:" get:"_videoOverridesStyle:" detail:0 cell:6 edit:0];
@@ -101,41 +101,41 @@
 
 - (__CFString)profileId
 {
-  v2 = [(AXCaptionStyleChooserController *)self parentController];
+  parentController = [(AXCaptionStyleChooserController *)self parentController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 profileId];
+    profileId = [parentController profileId];
   }
 
   else
   {
-    v3 = 0;
+    profileId = 0;
   }
 
-  return v3;
+  return profileId;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v7 captionPreviewView];
-    [v6 setPreviewDelegate:self];
+    captionPreviewView = [cellCopy captionPreviewView];
+    [captionPreviewView setPreviewDelegate:self];
   }
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 row] || objc_msgSend(v7, "section"))
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row] || objc_msgSend(pathCopy, "section"))
   {
     v12.receiver = self;
     v12.super_class = AXCaptionStyleChooserController;
-    [(AXCaptionStyleChooserController *)&v12 tableView:v6 estimatedHeightForRowAtIndexPath:v7];
+    [(AXCaptionStyleChooserController *)&v12 tableView:viewCopy estimatedHeightForRowAtIndexPath:pathCopy];
     v9 = v8;
   }
 
@@ -148,10 +148,10 @@
   return v9;
 }
 
-- (BOOL)isStoredTransparencyType:(int)a3 equalWithTransparency:(id)a4
+- (BOOL)isStoredTransparencyType:(int)type equalWithTransparency:(id)transparency
 {
-  v6 = a4;
-  switch(a3)
+  transparencyCopy = transparency;
+  switch(type)
   {
     case 1:
       [(AXCaptionStyleChooserController *)self profileId];
@@ -167,7 +167,7 @@
       break;
     default:
 LABEL_8:
-      v9 = AXCaptionTransparencyDefault(a3);
+      v9 = AXCaptionTransparencyDefault(type);
       v8 = [v9 objectForKey:@"alpha"];
 
       goto LABEL_9;
@@ -180,15 +180,15 @@ LABEL_8:
   }
 
 LABEL_9:
-  v10 = [v6 isEqual:v8];
+  v10 = [transparencyCopy isEqual:v8];
 
   return v10;
 }
 
-- (BOOL)isStoredColorType:(int)a3 equalWithColors:(id)a4
+- (BOOL)isStoredColorType:(int)type equalWithColors:(id)colors
 {
-  v6 = a4;
-  switch(a3)
+  colorsCopy = colors;
+  switch(type)
   {
     case 1:
       [(AXCaptionStyleChooserController *)self profileId];
@@ -204,7 +204,7 @@ LABEL_9:
       break;
     default:
 LABEL_11:
-      i = AXCaptionColorDefault(a3);
+      i = AXCaptionColorDefault(type);
       goto LABEL_12;
   }
 
@@ -232,7 +232,7 @@ LABEL_12:
     [v16 floatValue];
     v18 = v17;
 
-    v19 = [v6 objectAtIndexedSubscript:j];
+    v19 = [colorsCopy objectAtIndexedSubscript:j];
     [v19 floatValue];
     v21 = v20;
 
@@ -247,12 +247,12 @@ LABEL_12:
   return v14;
 }
 
-- (id)_splitImageAppropriately:(id)a3 statusBar:(id)a4 secondHalfStart:(CGPoint)a5 secondHalfEnd:(CGPoint)a6
+- (id)_splitImageAppropriately:(id)appropriately statusBar:(id)bar secondHalfStart:(CGPoint)start secondHalfEnd:(CGPoint)end
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a3;
-  v11 = a4;
+  y = start.y;
+  x = start.x;
+  appropriatelyCopy = appropriately;
+  barCopy = bar;
   v12 = +[UIScreen mainScreen];
   [v12 scale];
   v14 = v13;
@@ -261,28 +261,28 @@ LABEL_12:
   [v15 bounds];
   v17 = v16;
 
-  [v10 size];
+  [appropriatelyCopy size];
   v19 = v18;
   v21 = v20;
-  v22 = [v10 CGImage];
-  v23 = [(AXCaptionStyleChooserController *)self view];
-  v24 = [v23 window];
-  v25 = [v24 windowScene];
-  v26 = [v25 statusBarManager];
-  [v26 statusBarFrame];
+  cGImage = [appropriatelyCopy CGImage];
+  view = [(AXCaptionStyleChooserController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   v72.origin.y = v14 * v27;
   v72.size.height = v14 * 44.0;
   v72.origin.x = 0.0;
   v72.size.width = v14 * v19;
-  v28 = CGImageCreateWithImageInRect(v22, v72);
+  v28 = CGImageCreateWithImageInRect(cGImage, v72);
 
   v29 = [UIImage imageWithCGImage:v28 scale:0 orientation:v14];
   CGImageRelease(v28);
-  v30 = [(AXCaptionStyleChooserController *)self view];
-  v31 = [v30 window];
-  v32 = [v31 windowScene];
-  v33 = [v32 statusBarManager];
-  [v33 statusBarFrame];
+  view2 = [(AXCaptionStyleChooserController *)self view];
+  window2 = [view2 window];
+  windowScene2 = [window2 windowScene];
+  statusBarManager2 = [windowScene2 statusBarManager];
+  [statusBarManager2 statusBarFrame];
   v35 = v34 + 44.0;
   v36 = +[UIScreen mainScreen];
   [v36 scale];
@@ -291,43 +291,43 @@ LABEL_12:
   v71.height = v35;
   UIGraphicsBeginImageContextWithOptions(v71, 0, v38);
 
-  [v11 drawAtPoint:{0.0, 0.0}];
-  v39 = [(AXCaptionStyleChooserController *)self view];
-  v40 = [v39 window];
-  v41 = [v40 windowScene];
-  v42 = [v41 statusBarManager];
-  [v42 statusBarFrame];
+  [barCopy drawAtPoint:{0.0, 0.0}];
+  view3 = [(AXCaptionStyleChooserController *)self view];
+  window3 = [view3 window];
+  windowScene3 = [window3 windowScene];
+  statusBarManager3 = [windowScene3 statusBarManager];
+  [statusBarManager3 statusBarFrame];
   [v29 drawAtPoint:{0.0, v43}];
 
   v44 = UIGraphicsGetImageFromCurrentImageContext();
 
   UIGraphicsEndImageContext();
-  v45 = [v10 CGImage];
+  cGImage2 = [appropriatelyCopy CGImage];
   v73.origin.y = y * v14;
   v73.size.height = v14 * (v21 - y);
   v73.origin.x = 0.0;
   v73.size.width = v14 * v19;
-  v46 = CGImageCreateWithImageInRect(v45, v73);
+  v46 = CGImageCreateWithImageInRect(cGImage2, v73);
   v47 = [UIImage imageWithCGImage:v46 scale:0 orientation:v14];
   CGImageRelease(v46);
   v48 = +[UIDevice currentDevice];
-  v49 = [v48 userInterfaceIdiom];
+  userInterfaceIdiom = [v48 userInterfaceIdiom];
 
-  if (v49 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
-    v50 = [(AXCaptionStyleChooserController *)self view];
-    v51 = [v50 window];
-    v52 = [v51 windowScene];
-    v53 = [v52 statusBarManager];
-    [v53 statusBarFrame];
+    view4 = [(AXCaptionStyleChooserController *)self view];
+    window4 = [view4 window];
+    windowScene4 = [window4 windowScene];
+    statusBarManager4 = [windowScene4 statusBarManager];
+    [statusBarManager4 statusBarFrame];
     v55 = v54 + 44.0;
 
     v56 = +[UIApplication sharedApplication];
-    v57 = [v56 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [v56 userInterfaceLayoutDirection];
 
-    if (v57 == &dword_0 + 1)
+    if (userInterfaceLayoutDirection == &dword_0 + 1)
     {
-      v58 = a6.x * v14;
+      v58 = end.x * v14;
     }
 
     else
@@ -335,7 +335,7 @@ LABEL_12:
       v58 = 0.0;
     }
 
-    if (v57 == &dword_0 + 1)
+    if (userInterfaceLayoutDirection == &dword_0 + 1)
     {
       v59 = v17;
     }
@@ -345,19 +345,19 @@ LABEL_12:
       v59 = x * v14;
     }
 
-    v60 = a6.y;
-    if (v57 != &dword_0 + 1)
+    v60 = end.y;
+    if (userInterfaceLayoutDirection != &dword_0 + 1)
     {
       v60 = y;
     }
 
     v61 = v14 * (v60 - v55);
-    v62 = [v10 CGImage];
+    cGImage3 = [appropriatelyCopy CGImage];
     v74.origin.x = v58;
     v74.origin.y = v14 * v55;
     v74.size.width = v59;
     v74.size.height = v61;
-    v63 = CGImageCreateWithImageInRect(v62, v74);
+    v63 = CGImageCreateWithImageInRect(cGImage3, v74);
     v64 = [UIImage imageWithCGImage:v63 scale:0 orientation:v14];
     CGImageRelease(v63);
     v69[0] = v44;
@@ -376,10 +376,10 @@ LABEL_12:
   return v65;
 }
 
-- (id)_snapshotWindow:(id)a3 opaque:(BOOL)a4
+- (id)_snapshotWindow:(id)window opaque:(BOOL)opaque
 {
-  v5 = a3;
-  [v5 bounds];
+  windowCopy = window;
+  [windowCopy bounds];
   v7 = v6;
   v9 = v8;
   v10 = +[UIScreen mainScreen];
@@ -387,7 +387,7 @@ LABEL_12:
   v12 = v11;
   v20.width = v7;
   v20.height = v9;
-  UIGraphicsBeginImageContextWithOptions(v20, a4, v12);
+  UIGraphicsBeginImageContextWithOptions(v20, opaque, v12);
 
   CurrentContext = UIGraphicsGetCurrentContext();
   v21.origin.x = 0.0;
@@ -395,7 +395,7 @@ LABEL_12:
   v21.size.width = v7;
   v21.size.height = v9;
   CGContextClearRect(CurrentContext, v21);
-  if (!a4)
+  if (!opaque)
   {
     v14 = +[UIColor whiteColor];
     [v14 setFill];
@@ -408,8 +408,8 @@ LABEL_12:
     CGContextFillRect(v15, v22);
   }
 
-  v16 = [v5 layer];
-  [v16 renderInContext:UIGraphicsGetCurrentContext()];
+  layer = [windowCopy layer];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
 
   v17 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -426,31 +426,31 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 captionPreviewView];
-    v6 = [v5 isExpanded];
+    captionPreviewView = [v4 captionPreviewView];
+    isExpanded = [captionPreviewView isExpanded];
   }
 
   else
   {
     NSLog(@"Who was my first cell?");
-    v6 = 0;
+    isExpanded = 0;
   }
 
-  return v6;
+  return isExpanded;
 }
 
-- (void)captionPreviewWasTapped:(BOOL)a3
+- (void)captionPreviewWasTapped:(BOOL)tapped
 {
-  v3 = a3;
+  tappedCopy = tapped;
   v5 = objc_alloc_init(AXFullscreenCaptionPreviewViewController);
-  [(AXCaptionStyleChooserController *)self presentViewController:v5 animated:v3 completion:0];
+  [(AXCaptionStyleChooserController *)self presentViewController:v5 animated:tappedCopy completion:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4.receiver = self;
   v4.super_class = AXCaptionStyleChooserController;
-  [(AXCaptionStyleChooserController *)&v4 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(AXCaptionStyleChooserController *)&v4 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
@@ -484,7 +484,7 @@ void __55__AXCaptionStyleChooserController_scrollViewDidScroll___block_invoke(ui
   }
 }
 
-- (id)_videoOverridesStyle:(id)a3
+- (id)_videoOverridesStyle:(id)style
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_1();
@@ -492,7 +492,7 @@ void __55__AXCaptionStyleChooserController_scrollViewDidScroll___block_invoke(ui
   return 0;
 }
 
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_1();

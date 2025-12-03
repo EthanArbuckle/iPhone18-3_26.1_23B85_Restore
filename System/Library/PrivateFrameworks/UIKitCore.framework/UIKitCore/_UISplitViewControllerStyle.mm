@@ -1,7 +1,7 @@
 @interface _UISplitViewControllerStyle
-- (NSDirectionalEdgeInsets)frameInsetsForColumn:(int64_t)a3;
+- (NSDirectionalEdgeInsets)frameInsetsForColumn:(int64_t)column;
 - (UISplitViewController)splitViewController;
-- (_UISplitViewControllerStyle)initWithSplitViewController:(id)a3;
+- (_UISplitViewControllerStyle)initWithSplitViewController:(id)controller;
 @end
 
 @implementation _UISplitViewControllerStyle
@@ -13,7 +13,7 @@
   return WeakRetained;
 }
 
-- (_UISplitViewControllerStyle)initWithSplitViewController:(id)a3
+- (_UISplitViewControllerStyle)initWithSplitViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = _UISplitViewControllerStyle;
@@ -21,14 +21,14 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_splitViewController, a3);
+    objc_storeWeak(&v4->_splitViewController, controller);
     v5->_showsSeparators = 1;
   }
 
   return v5;
 }
 
-- (NSDirectionalEdgeInsets)frameInsetsForColumn:(int64_t)a3
+- (NSDirectionalEdgeInsets)frameInsetsForColumn:(int64_t)column
 {
   v3 = 0.0;
   v4 = 0.0;

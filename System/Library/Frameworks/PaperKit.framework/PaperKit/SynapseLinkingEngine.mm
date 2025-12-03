@@ -1,6 +1,6 @@
 @interface SynapseLinkingEngine
 - (_TtC8PaperKit20SynapseLinkingEngine)init;
-- (void)linkableItemFinderItemsMightHaveChanged:(id)a3;
+- (void)linkableItemFinderItemsMightHaveChanged:(id)changed;
 @end
 
 @implementation SynapseLinkingEngine
@@ -19,10 +19,10 @@
   return v5;
 }
 
-- (void)linkableItemFinderItemsMightHaveChanged:(id)a3
+- (void)linkableItemFinderItemsMightHaveChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
+  changedCopy = changed;
+  selfCopy = self;
   specialized SynapseLinkingEngine.linkableItemFinderItemsMightHaveChanged(_:)();
 }
 

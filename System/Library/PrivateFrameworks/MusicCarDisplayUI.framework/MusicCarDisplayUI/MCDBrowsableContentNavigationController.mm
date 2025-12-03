@@ -1,57 +1,57 @@
 @interface MCDBrowsableContentNavigationController
-- (MCDBrowsableContentNavigationController)initWithBundleID:(id)a3 model:(id)a4;
-- (id)_hostTabAtIndex:(unint64_t)a3 dummyTab:(BOOL)a4;
-- (id)_tabBarItemForViewController:(id)a3 fromItem:(id)a4;
-- (void)_appRegisteredForContent:(id)a3;
+- (MCDBrowsableContentNavigationController)initWithBundleID:(id)d model:(id)model;
+- (id)_hostTabAtIndex:(unint64_t)index dummyTab:(BOOL)tab;
+- (id)_tabBarItemForViewController:(id)controller fromItem:(id)item;
+- (void)_appRegisteredForContent:(id)content;
 - (void)_loadAllHostTabs;
-- (void)_nowPlayingButtonTapped:(id)a3;
-- (void)_nowPlayingDidChange:(id)a3;
+- (void)_nowPlayingButtonTapped:(id)tapped;
+- (void)_nowPlayingDidChange:(id)change;
 - (void)_updateNowPlayingButtonVisibility;
-- (void)container:(id)a3 didInvalidateIndicies:(id)a4;
-- (void)invalidateAndReloadTabsWithCompletion:(id)a3;
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateTitleAndTabBarItemsAtIndexes:(id)a3;
+- (void)container:(id)container didInvalidateIndicies:(id)indicies;
+- (void)invalidateAndReloadTabsWithCompletion:(id)completion;
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateTitleAndTabBarItemsAtIndexes:(id)indexes;
 @end
 
 @implementation MCDBrowsableContentNavigationController
 
-- (MCDBrowsableContentNavigationController)initWithBundleID:(id)a3 model:(id)a4
+- (MCDBrowsableContentNavigationController)initWithBundleID:(id)d model:(id)model
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = MCDBrowsableContentNavigationController;
   v8 = [(MCDBrowsableContentNavigationController *)&v17 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     bundleID = v8->_bundleID;
     v8->_bundleID = v9;
 
-    objc_storeStrong(&v8->_model, a4);
+    objc_storeStrong(&v8->_model, model);
     v11 = dispatch_queue_create("com.apple.MusicCarDisplayUI.playableContent.navigationController", 0);
     serialQueue = v8->_serialQueue;
     v8->_serialQueue = v11;
 
-    v13 = [(MCDPCModel *)v8->_model containerForRoot];
+    containerForRoot = [(MCDPCModel *)v8->_model containerForRoot];
     container = v8->_container;
-    v8->_container = v13;
+    v8->_container = containerForRoot;
 
     [(MCDPCContainer *)v8->_container setDelegate:v8];
     [(MCDBrowsableContentNavigationController *)v8 setDelegate:v8];
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v8 selector:sel__appRegisteredForContent_ name:@"appReadyToFetch" object:0];
-    [v15 addObserver:v8 selector:sel__nowPlayingDidChange_ name:@"nowPlayingChange" object:0];
-    [v15 addObserver:v8 selector:sel__nowPlayingDidChange_ name:@"MCDContentItemsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__appRegisteredForContent_ name:@"appReadyToFetch" object:0];
+    [defaultCenter addObserver:v8 selector:sel__nowPlayingDidChange_ name:@"nowPlayingChange" object:0];
+    [defaultCenter addObserver:v8 selector:sel__nowPlayingDidChange_ name:@"MCDContentItemsChangedNotification" object:0];
   }
 
   return v8;
 }
 
-- (void)_appRegisteredForContent:(id)a3
+- (void)_appRegisteredForContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   objc_initWeak(&location, self);
   v5 = +[MCDMediaRemoteSerialQueueManager sharedInstance];
   v7 = MEMORY[0x277D85DD0];
@@ -61,8 +61,8 @@
   objc_copyWeak(&v11, &location);
   [v5 addOperation:&v7 cancelAllOperations:1];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:@"appReadyToFetch" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"appReadyToFetch" object:0];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -130,7 +130,7 @@ uint64_t __68__MCDBrowsableContentNavigationController__appRegisteredForContent_
   return result;
 }
 
-- (void)_nowPlayingDidChange:(id)a3
+- (void)_nowPlayingDidChange:(id)change
 {
   v4 = MCDGeneralLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -246,12 +246,12 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)_nowPlayingButtonTapped:(id)a3
+- (void)_nowPlayingButtonTapped:(id)tapped
 {
   v4 = [MCDNowPlayingViewController alloc];
-  v5 = [(MCDPCModel *)self->_model bundleID];
-  v6 = [(MCDPCModel *)self->_model appTitle];
-  v7 = [(MCDNowPlayingViewController *)v4 initWithPlayableBundleID:v5 appName:v6];
+  bundleID = [(MCDPCModel *)self->_model bundleID];
+  appTitle = [(MCDPCModel *)self->_model appTitle];
+  v7 = [(MCDNowPlayingViewController *)v4 initWithPlayableBundleID:bundleID appName:appTitle];
 
   v8 = MCDGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -260,26 +260,26 @@ LABEL_18:
     _os_log_impl(&dword_25AD8E000, v8, OS_LOG_TYPE_DEFAULT, "Now playing button tapped in tab bar, pushing to Now Playing screen", v11, 2u);
   }
 
-  v9 = [(MCDBrowsableContentNavigationController *)self navigationController];
-  [v9 setNavigationBarHidden:0];
+  navigationController = [(MCDBrowsableContentNavigationController *)self navigationController];
+  [navigationController setNavigationBarHidden:0];
 
-  v10 = [(MCDBrowsableContentNavigationController *)self navigationController];
-  [v10 pushViewController:v7 animated:1];
+  navigationController2 = [(MCDBrowsableContentNavigationController *)self navigationController];
+  [navigationController2 pushViewController:v7 animated:1];
 }
 
-- (void)container:(id)a3 didInvalidateIndicies:(id)a4
+- (void)container:(id)container didInvalidateIndicies:(id)indicies
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  indiciesCopy = indicies;
   v8 = MCDGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identifier];
+    identifier = [containerCopy identifier];
     *buf = 138543618;
-    v19 = v9;
+    v19 = identifier;
     v20 = 2114;
-    v21 = v7;
+    v21 = indiciesCopy;
     _os_log_impl(&dword_25AD8E000, v8, OS_LOG_TYPE_DEFAULT, "Some content has invalidated, preparing to reload tab views for container: %{public}@, indicies: %{public}@", buf, 0x16u);
   }
 
@@ -290,9 +290,9 @@ LABEL_18:
   v14[2] = __75__MCDBrowsableContentNavigationController_container_didInvalidateIndicies___block_invoke;
   v14[3] = &unk_279924218;
   objc_copyWeak(&v17, buf);
-  v11 = v6;
+  v11 = containerCopy;
   v15 = v11;
-  v12 = v7;
+  v12 = indiciesCopy;
   v16 = v12;
   [v10 addOperation:v14 cancelAllOperations:0];
 
@@ -380,33 +380,33 @@ void __75__MCDBrowsableContentNavigationController_container_didInvalidateIndici
 - (void)_loadAllHostTabs
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(MCDBrowsableContentNavigationController *)self container];
-  v4 = [v3 cachedCount];
+  container = [(MCDBrowsableContentNavigationController *)self container];
+  cachedCount = [container cachedCount];
 
   v5 = MCDGeneralLogging();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (cachedCount)
   {
     if (v6)
     {
-      v7 = [(MCDBrowsableContentNavigationController *)self bundleID];
+      bundleID = [(MCDBrowsableContentNavigationController *)self bundleID];
       *buf = 138543618;
-      v31 = v7;
+      v31 = bundleID;
       v32 = 2050;
-      v33 = v4;
+      v33 = cachedCount;
       _os_log_impl(&dword_25AD8E000, v5, OS_LOG_TYPE_DEFAULT, "Number of tabs returned from client %{public}@: %{public}ld", buf, 0x16u);
     }
 
-    v8 = v4;
+    v8 = cachedCount;
   }
 
   else
   {
     if (v6)
     {
-      v9 = [(MCDBrowsableContentNavigationController *)self bundleID];
+      bundleID2 = [(MCDBrowsableContentNavigationController *)self bundleID];
       *buf = 138543362;
-      v31 = v9;
+      v31 = bundleID2;
       _os_log_impl(&dword_25AD8E000, v5, OS_LOG_TYPE_DEFAULT, "No tabs available from host, loading default tabs for %{public}@", buf, 0xCu);
     }
 
@@ -415,9 +415,9 @@ void __75__MCDBrowsableContentNavigationController_container_didInvalidateIndici
       v10 = MCDGeneralLogging();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(MCDBrowsableContentNavigationController *)self bundleID];
+        bundleID3 = [(MCDBrowsableContentNavigationController *)self bundleID];
         *buf = 138543362;
-        v31 = v11;
+        v31 = bundleID3;
         _os_log_impl(&dword_25AD8E000, v10, OS_LOG_TYPE_DEFAULT, "Scheduling dummy tab reload for %{public}@", buf, 0xCu);
       }
 
@@ -434,15 +434,15 @@ void __75__MCDBrowsableContentNavigationController_container_didInvalidateIndici
     v8 = 3;
   }
 
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(MCDBrowsableContentNavigationController *)self selectedIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = 0;
+    selectedIndex = 0;
   }
 
   else
   {
-    v15 = [(MCDBrowsableContentNavigationController *)self selectedIndex];
+    selectedIndex = [(MCDBrowsableContentNavigationController *)self selectedIndex];
   }
 
   v16 = 0;
@@ -450,23 +450,23 @@ void __75__MCDBrowsableContentNavigationController_container_didInvalidateIndici
   v28 = v14;
   do
   {
-    v17 = [(MCDBrowsableContentNavigationController *)self _hostTabAtIndex:v16 dummyTab:v4 == 0];
+    v17 = [(MCDBrowsableContentNavigationController *)self _hostTabAtIndex:v16 dummyTab:cachedCount == 0];
     if (v17)
     {
-      if (v4)
+      if (cachedCount)
       {
         v18 = MCDGeneralLogging();
         v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-        if (v15 == v16)
+        if (selectedIndex == v16)
         {
           if (v19)
           {
-            v20 = [v17 container];
-            v21 = [v20 identifier];
+            container2 = [v17 container];
+            identifier = [container2 identifier];
             *buf = v28;
-            v31 = v21;
+            v31 = identifier;
             v32 = 2050;
-            v33 = v15;
+            v33 = selectedIndex;
             _os_log_impl(&dword_25AD8E000, v18, OS_LOG_TYPE_DEFAULT, "Refreshing view controller %{public}@ because it is the selected index: %{public}ld", buf, 0x16u);
           }
 
@@ -477,15 +477,15 @@ void __75__MCDBrowsableContentNavigationController_container_didInvalidateIndici
         {
           if (v19)
           {
-            v24 = [v17 container];
-            v25 = [v24 identifier];
+            container3 = [v17 container];
+            identifier2 = [container3 identifier];
             *buf = 138543362;
-            v31 = v25;
+            v31 = identifier2;
             _os_log_impl(&dword_25AD8E000, v18, OS_LOG_TYPE_DEFAULT, "View controller %{public}@ is not selected but is reloaded, begin loading item", buf, 0xCu);
           }
 
-          v26 = [v17 container];
-          [v26 beginLoadingItemWithCompletion:0];
+          container4 = [v17 container];
+          [container4 beginLoadingItemWithCompletion:0];
         }
       }
 
@@ -494,21 +494,21 @@ void __75__MCDBrowsableContentNavigationController_container_didInvalidateIndici
         v22 = MCDGeneralLogging();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [(MCDBrowsableContentNavigationController *)self bundleID];
+          bundleID4 = [(MCDBrowsableContentNavigationController *)self bundleID];
           *buf = 138543362;
-          v31 = v23;
+          v31 = bundleID4;
           _os_log_impl(&dword_25AD8E000, v22, OS_LOG_TYPE_DEFAULT, "Dummy tab, no need to refresh in %{public}@", buf, 0xCu);
         }
       }
 
-      [v13 addObject:{v17, v28}];
+      [array addObject:{v17, v28}];
     }
 
     ++v16;
   }
 
   while (v8 != v16);
-  [(MCDBrowsableContentNavigationController *)self setViewControllers:v13];
+  [(MCDBrowsableContentNavigationController *)self setViewControllers:array];
 
   v27 = *MEMORY[0x277D85DE8];
 }
@@ -530,9 +530,9 @@ uint64_t __59__MCDBrowsableContentNavigationController__loadAllHostTabs__block_i
   return result;
 }
 
-- (void)invalidateAndReloadTabsWithCompletion:(id)a3
+- (void)invalidateAndReloadTabsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = +[MCDMediaRemoteSerialQueueManager sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
@@ -540,7 +540,7 @@ uint64_t __59__MCDBrowsableContentNavigationController__loadAllHostTabs__block_i
   v7[2] = __81__MCDBrowsableContentNavigationController_invalidateAndReloadTabsWithCompletion___block_invoke;
   v7[3] = &unk_279923F78;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [v5 addOperation:v7 cancelAllOperations:0];
 
@@ -601,97 +601,97 @@ uint64_t __81__MCDBrowsableContentNavigationController_invalidateAndReloadTabsWi
   return result;
 }
 
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  viewControllerCopy = viewController;
   v5 = MCDGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 title];
+    title = [viewControllerCopy title];
     v8 = 138543362;
-    v9 = v6;
+    v9 = title;
     _os_log_impl(&dword_25AD8E000, v5, OS_LOG_TYPE_DEFAULT, "Tab selected, reloading content for %{public}@", &v8, 0xCu);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 reloadWithCompletion:0];
+    [viewControllerCopy reloadWithCompletion:0];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_tabBarItemForViewController:(id)a3 fromItem:(id)a4
+- (id)_tabBarItemForViewController:(id)controller fromItem:(id)item
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 artworkImage];
-  v8 = [v7 imageWithRenderingMode:2];
+  controllerCopy = controller;
+  itemCopy = item;
+  artworkImage = [itemCopy artworkImage];
+  v8 = [artworkImage imageWithRenderingMode:2];
 
-  v9 = [v5 tabBarItem];
+  tabBarItem = [controllerCopy tabBarItem];
 
-  if (!v9)
+  if (!tabBarItem)
   {
-    v10 = MCDGeneralLogging();
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    tabBarItem2 = MCDGeneralLogging();
+    if (!os_log_type_enabled(tabBarItem2, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_14:
 
       v20 = MCDGeneralLogging();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v6 title];
-        v22 = [v6 artworkImage];
+        title = [itemCopy title];
+        artworkImage2 = [itemCopy artworkImage];
         v23 = @"NO";
-        if (!v22)
+        if (!artworkImage2)
         {
           v23 = @"YES";
         }
 
         v28 = 138412546;
-        v29 = v21;
+        v29 = title;
         v30 = 2112;
         v31 = v23;
         _os_log_impl(&dword_25AD8E000, v20, OS_LOG_TYPE_DEFAULT, "Creating tab bar item for item: %@, artwork is nil? %@", &v28, 0x16u);
       }
 
       v24 = objc_alloc(MEMORY[0x277D75B28]);
-      v16 = [v6 title];
-      v10 = [v24 initWithTitle:v16 image:v8 selectedImage:v8];
+      title2 = [itemCopy title];
+      tabBarItem2 = [v24 initWithTitle:title2 image:v8 selectedImage:v8];
       goto LABEL_19;
     }
 
-    v16 = [v6 title];
+    title2 = [itemCopy title];
     v28 = 138412290;
-    v29 = v16;
-    _os_log_impl(&dword_25AD8E000, v10, OS_LOG_TYPE_DEFAULT, "No existing tab bar item and artwork for item: %@", &v28, 0xCu);
+    v29 = title2;
+    _os_log_impl(&dword_25AD8E000, tabBarItem2, OS_LOG_TYPE_DEFAULT, "No existing tab bar item and artwork for item: %@", &v28, 0xCu);
     goto LABEL_13;
   }
 
-  v10 = [v5 tabBarItem];
+  tabBarItem2 = [controllerCopy tabBarItem];
   v11 = MCDGeneralLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 title];
+    title3 = [itemCopy title];
     v28 = 138412290;
-    v29 = v12;
+    v29 = title3;
     _os_log_impl(&dword_25AD8E000, v11, OS_LOG_TYPE_DEFAULT, "Examining existing tab bar item and artwork for item: %@", &v28, 0xCu);
   }
 
-  v13 = [v10 title];
-  v14 = [v6 title];
-  v15 = [v13 isEqualToString:v14];
+  title4 = [tabBarItem2 title];
+  title5 = [itemCopy title];
+  v15 = [title4 isEqualToString:title5];
 
   if ((v15 & 1) == 0)
   {
-    v16 = MCDGeneralLogging();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    title2 = MCDGeneralLogging();
+    if (os_log_type_enabled(title2, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v6 title];
+      title6 = [itemCopy title];
       v28 = 138412290;
-      v29 = v18;
+      v29 = title6;
       v19 = "Titles differ; invalidating tab bar item: %@";
       goto LABEL_12;
     }
@@ -701,18 +701,18 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v16 = MCDGeneralLogging();
-  v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
+  title2 = MCDGeneralLogging();
+  v17 = os_log_type_enabled(title2, OS_LOG_TYPE_DEFAULT);
   if (v8)
   {
     if (v17)
     {
-      v18 = [v6 title];
+      title6 = [itemCopy title];
       v28 = 138412290;
-      v29 = v18;
+      v29 = title6;
       v19 = "New image provided; invalidating tab bar item: %@";
 LABEL_12:
-      _os_log_impl(&dword_25AD8E000, v16, OS_LOG_TYPE_DEFAULT, v19, &v28, 0xCu);
+      _os_log_impl(&dword_25AD8E000, title2, OS_LOG_TYPE_DEFAULT, v19, &v28, 0xCu);
 
       goto LABEL_13;
     }
@@ -722,56 +722,56 @@ LABEL_12:
 
   if (v17)
   {
-    v27 = [v6 title];
+    title7 = [itemCopy title];
     v28 = 138412290;
-    v29 = v27;
-    _os_log_impl(&dword_25AD8E000, v16, OS_LOG_TYPE_DEFAULT, "Repurposing tab bar item and artwork for tab bar item: %@", &v28, 0xCu);
+    v29 = title7;
+    _os_log_impl(&dword_25AD8E000, title2, OS_LOG_TYPE_DEFAULT, "Repurposing tab bar item and artwork for tab bar item: %@", &v28, 0xCu);
   }
 
 LABEL_19:
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return tabBarItem2;
 }
 
-- (id)_hostTabAtIndex:(unint64_t)a3 dummyTab:(BOOL)a4
+- (id)_hostTabAtIndex:(unint64_t)index dummyTab:(BOOL)tab
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (tab)
   {
     v4 = [[MCDBrowsableContentTableViewController alloc] initWithContainer:0 tabbedBrowsing:1];
   }
 
   else
   {
-    v7 = [(MCDBrowsableContentNavigationController *)self container];
-    v8 = [v7 containerAtIndex:a3];
+    container = [(MCDBrowsableContentNavigationController *)self container];
+    v8 = [container containerAtIndex:index];
 
-    v9 = [(MCDBrowsableContentNavigationController *)self container];
-    v10 = [v9 cachedItemForIndex:a3];
+    container2 = [(MCDBrowsableContentNavigationController *)self container];
+    v10 = [container2 cachedItemForIndex:index];
 
     if ([v10 isContainer] && (objc_msgSend(v10, "isPlayable") & 1) == 0)
     {
-      v11 = [v10 title];
-      v12 = [(MCDBrowsableContentNavigationController *)self viewControllers];
-      v13 = [v12 count];
+      title = [v10 title];
+      viewControllers = [(MCDBrowsableContentNavigationController *)self viewControllers];
+      v13 = [viewControllers count];
 
-      if (v13 <= a3)
+      if (v13 <= index)
       {
         v4 = 0;
       }
 
       else
       {
-        v14 = [(MCDBrowsableContentNavigationController *)self viewControllers];
-        v4 = [v14 objectAtIndexedSubscript:a3];
+        viewControllers2 = [(MCDBrowsableContentNavigationController *)self viewControllers];
+        v4 = [viewControllers2 objectAtIndexedSubscript:index];
       }
 
-      v15 = [(MCDBrowsableContentTableViewController *)v4 container];
-      v16 = [v15 identifier];
-      v17 = [v8 identifier];
-      v18 = [v16 isEqualToString:v17];
+      container3 = [(MCDBrowsableContentTableViewController *)v4 container];
+      identifier = [container3 identifier];
+      identifier2 = [v8 identifier];
+      v18 = [identifier isEqualToString:identifier2];
 
       if ((v18 & 1) == 0)
       {
@@ -783,25 +783,25 @@ LABEL_19:
       v20 = MCDGeneralLogging();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v10 title];
-        v22 = [v10 artworkImage];
+        title2 = [v10 title];
+        artworkImage = [v10 artworkImage];
         v23 = @"NO";
-        if (!v22)
+        if (!artworkImage)
         {
           v23 = @"YES";
         }
 
         v29 = 138412546;
-        v30 = v21;
+        v30 = title2;
         v31 = 2112;
         v32 = v23;
         _os_log_impl(&dword_25AD8E000, v20, OS_LOG_TYPE_DEFAULT, "Adding view controller for tab: %@, artwork is nil? %@", &v29, 0x16u);
       }
 
-      [(MCDBrowsableContentTableViewController *)v4 setTitle:v11];
+      [(MCDBrowsableContentTableViewController *)v4 setTitle:title];
       v24 = [(MCDBrowsableContentNavigationController *)self _tabBarItemForViewController:v4 fromItem:v10];
-      v25 = [(MCDBrowsableContentTableViewController *)v4 tabBarItem];
-      v26 = [v24 isEqual:v25];
+      tabBarItem = [(MCDBrowsableContentTableViewController *)v4 tabBarItem];
+      v26 = [v24 isEqual:tabBarItem];
 
       if ((v26 & 1) == 0)
       {
@@ -820,11 +820,11 @@ LABEL_19:
   return v4;
 }
 
-- (void)updateTitleAndTabBarItemsAtIndexes:(id)a3
+- (void)updateTitleAndTabBarItemsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(MCDBrowsableContentNavigationController *)self viewControllers];
-  v6 = [v5 mutableCopy];
+  indexesCopy = indexes;
+  viewControllers = [(MCDBrowsableContentNavigationController *)self viewControllers];
+  v6 = [viewControllers mutableCopy];
 
   v7 = [v6 count];
   v9[0] = MEMORY[0x277D85DD0];
@@ -835,7 +835,7 @@ LABEL_19:
   v11 = v7;
   v9[4] = self;
   v8 = v6;
-  [v4 enumerateIndexesUsingBlock:v9];
+  [indexesCopy enumerateIndexesUsingBlock:v9];
 
   [(MCDBrowsableContentNavigationController *)self setViewControllers:v8];
 }
@@ -884,13 +884,13 @@ void __78__MCDBrowsableContentNavigationController_updateTitleAndTabBarItemsAtIn
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = MCDBrowsableContentNavigationController;
-  [(MCDBrowsableContentNavigationController *)&v7 traitCollectionDidChange:a3];
-  v4 = [(MCDBrowsableContentNavigationController *)self traitCollection];
-  -[MCDBrowsableContentNavigationController setHasCarScreen:](self, "setHasCarScreen:", [v4 userInterfaceIdiom] == 3);
+  [(MCDBrowsableContentNavigationController *)&v7 traitCollectionDidChange:change];
+  traitCollection = [(MCDBrowsableContentNavigationController *)self traitCollection];
+  -[MCDBrowsableContentNavigationController setHasCarScreen:](self, "setHasCarScreen:", [traitCollection userInterfaceIdiom] == 3);
 
   v5 = MCDGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

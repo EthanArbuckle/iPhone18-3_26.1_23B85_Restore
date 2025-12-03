@@ -1,6 +1,6 @@
 @interface HDCloudSyncPipelineStageDescribe
-- (HDCloudSyncPipelineStageDescribe)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncPipelineStageDescribe)initWithConfiguration:(id)a3 cloudState:(id)a4 respositoryDescriptionHandler:(id)a5;
+- (HDCloudSyncPipelineStageDescribe)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncPipelineStageDescribe)initWithConfiguration:(id)configuration cloudState:(id)state respositoryDescriptionHandler:(id)handler;
 - (id)respositoryDescriptionHandler;
 - (void)main;
 @end
@@ -21,9 +21,9 @@
   return v3;
 }
 
-- (HDCloudSyncPipelineStageDescribe)initWithConfiguration:(id)a3 cloudState:(id)a4 respositoryDescriptionHandler:(id)a5
+- (HDCloudSyncPipelineStageDescribe)initWithConfiguration:(id)configuration cloudState:(id)state respositoryDescriptionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = (self + OBJC_IVAR___HDCloudSyncPipelineStageDescribe_respositoryDescriptionHandler);
@@ -31,16 +31,16 @@
   v10[1] = v9;
   v12.receiver = self;
   v12.super_class = HDCloudSyncPipelineStageDescribe;
-  return [(HDCloudSyncPipelineStage *)&v12 initWithConfiguration:a3 cloudState:a4];
+  return [(HDCloudSyncPipelineStage *)&v12 initWithConfiguration:configuration cloudState:state];
 }
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   HDCloudSyncPipelineStageDescribe.main()();
 }
 
-- (HDCloudSyncPipelineStageDescribe)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPipelineStageDescribe)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

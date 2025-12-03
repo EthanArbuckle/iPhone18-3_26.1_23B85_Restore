@@ -1,9 +1,9 @@
 @interface CHCallInteractionManager
 - (CHCallInteractionManager)init;
-- (CHCallInteractionManager)initWithDataSource:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)callInteractionsDidChangeForDataSource:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (CHCallInteractionManager)initWithDataSource:(id)source;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)callInteractionsDidChangeForDataSource:(id)source;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation CHCallInteractionManager
@@ -16,16 +16,16 @@
   return v4;
 }
 
-- (CHCallInteractionManager)initWithDataSource:(id)a3
+- (CHCallInteractionManager)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = CHCallInteractionManager;
   v6 = [(CHCallInteractionManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     [(CHCallInteractionDataSource *)v7->_dataSource setDelegate:v7];
     v8 = objc_alloc_init(CHDelegateController);
     delegateController = v7->_delegateController;
@@ -35,30 +35,30 @@
   return v7;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CHCallInteractionManager *)self delegateController];
-  [v8 addDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  delegateController = [(CHCallInteractionManager *)self delegateController];
+  [delegateController addDelegate:delegateCopy queue:queueCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CHCallInteractionManager *)self delegateController];
-  [v5 removeDelegate:v4];
+  delegateCopy = delegate;
+  delegateController = [(CHCallInteractionManager *)self delegateController];
+  [delegateController removeDelegate:delegateCopy];
 }
 
-- (void)callInteractionsDidChangeForDataSource:(id)a3
+- (void)callInteractionsDidChangeForDataSource:(id)source
 {
-  v4 = [(CHCallInteractionManager *)self delegateController];
+  delegateController = [(CHCallInteractionManager *)self delegateController];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __67__CHCallInteractionManager_callInteractionsDidChangeForDataSource___block_invoke;
   v5[3] = &unk_1E81DCD40;
   v5[4] = self;
-  [v4 enumerateDelegatesUsingBlock:v5];
+  [delegateController enumerateDelegatesUsingBlock:v5];
 }
 
 void __67__CHCallInteractionManager_callInteractionsDidChangeForDataSource___block_invoke(uint64_t a1, void *a2, void *a3)

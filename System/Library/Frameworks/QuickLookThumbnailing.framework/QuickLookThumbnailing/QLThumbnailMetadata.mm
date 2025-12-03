@@ -1,10 +1,10 @@
 @interface QLThumbnailMetadata
-+ (id)thumbnailMetadataFromPropertiesDictionary:(id)a3;
++ (id)thumbnailMetadataFromPropertiesDictionary:(id)dictionary;
 - (QLThumbnailMetadata)init;
-- (QLThumbnailMetadata)initWithCoder:(id)a3;
+- (QLThumbnailMetadata)initWithCoder:(id)coder;
 - (id)description;
 - (id)propertiesDict;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLThumbnailMetadata
@@ -23,20 +23,20 @@
   return result;
 }
 
-+ (id)thumbnailMetadataFromPropertiesDictionary:(id)a3
++ (id)thumbnailMetadataFromPropertiesDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v4 = objc_alloc_init(QLThumbnailMetadata);
-    v5 = [v3 objectForKeyedSubscript:@"inlinePreviewMode"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"inlinePreviewMode"];
     v6 = v5;
     if (v5)
     {
       -[QLThumbnailMetadata setInlinePreviewMode:](v4, "setInlinePreviewMode:", [v5 intValue]);
     }
 
-    v7 = [v3 objectForKeyedSubscript:@"yBaseline"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"yBaseline"];
     v8 = v7;
     if (v7)
     {
@@ -79,37 +79,37 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[QLThumbnailMetadata inlinePreviewMode](self forKey:{"inlinePreviewMode"), @"inlinePreviewMode"}];
-  [v4 encodeInteger:-[QLThumbnailMetadata baseline](self forKey:{"baseline"), @"baseline"}];
-  [v4 encodeInt:-[QLThumbnailMetadata iconFlavor](self forKey:{"iconFlavor"), @"iconFlavor"}];
-  v5 = [(QLThumbnailMetadata *)self extensionBadge];
-  [v4 encodeObject:v5 forKey:@"extensionBadge"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[QLThumbnailMetadata inlinePreviewMode](self forKey:{"inlinePreviewMode"), @"inlinePreviewMode"}];
+  [coderCopy encodeInteger:-[QLThumbnailMetadata baseline](self forKey:{"baseline"), @"baseline"}];
+  [coderCopy encodeInt:-[QLThumbnailMetadata iconFlavor](self forKey:{"iconFlavor"), @"iconFlavor"}];
+  extensionBadge = [(QLThumbnailMetadata *)self extensionBadge];
+  [coderCopy encodeObject:extensionBadge forKey:@"extensionBadge"];
 
-  [v4 encodeBool:-[QLThumbnailMetadata isLowQuality](self forKey:{"isLowQuality"), @"isLowQuality"}];
-  [v4 encodeBool:-[QLThumbnailMetadata hasIconModeApplied](self forKey:{"hasIconModeApplied"), @"hasIconModeApplied"}];
-  v6 = [(QLThumbnailMetadata *)self additionalProperties];
-  [v4 encodeObject:v6 forKey:@"additionalProperties"];
+  [coderCopy encodeBool:-[QLThumbnailMetadata isLowQuality](self forKey:{"isLowQuality"), @"isLowQuality"}];
+  [coderCopy encodeBool:-[QLThumbnailMetadata hasIconModeApplied](self forKey:{"hasIconModeApplied"), @"hasIconModeApplied"}];
+  additionalProperties = [(QLThumbnailMetadata *)self additionalProperties];
+  [coderCopy encodeObject:additionalProperties forKey:@"additionalProperties"];
 }
 
-- (QLThumbnailMetadata)initWithCoder:(id)a3
+- (QLThumbnailMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(QLThumbnailMetadata *)self init];
   if (v5)
   {
-    v5->_inlinePreviewMode = [v4 decodeIntForKey:@"inlinePreviewMode"];
-    v5->_baseline = [v4 decodeIntegerForKey:@"baseline"];
-    v5->_iconFlavor = [v4 decodeIntForKey:@"iconFlavor"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBadge"];
+    v5->_inlinePreviewMode = [coderCopy decodeIntForKey:@"inlinePreviewMode"];
+    v5->_baseline = [coderCopy decodeIntegerForKey:@"baseline"];
+    v5->_iconFlavor = [coderCopy decodeIntForKey:@"iconFlavor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBadge"];
     extensionBadge = v5->_extensionBadge;
     v5->_extensionBadge = v6;
 
-    v5->_isLowQuality = [v4 decodeBoolForKey:@"isLowQuality"];
-    v5->_hasIconModeApplied = [v4 decodeBoolForKey:@"hasIconModeApplied"];
-    v8 = [v4 decodePropertyListForKey:@"additionalProperties"];
+    v5->_isLowQuality = [coderCopy decodeBoolForKey:@"isLowQuality"];
+    v5->_hasIconModeApplied = [coderCopy decodeBoolForKey:@"hasIconModeApplied"];
+    v8 = [coderCopy decodePropertyListForKey:@"additionalProperties"];
     additionalProperties = v5->_additionalProperties;
     v5->_additionalProperties = v8;
   }

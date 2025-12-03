@@ -1,8 +1,8 @@
 @interface SNKShotFeaturizationStreamResult
 - (MLMultiArray)data;
 - (SNKShotLabel)label;
-- (void)setData:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)setData:(id)data;
+- (void)setLabel:(id)label;
 @end
 
 @implementation SNKShotFeaturizationStreamResult
@@ -14,26 +14,26 @@
   return v2;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C97B100C(v4);
+  dataCopy = data;
+  selfCopy = self;
+  sub_1C97B100C(dataCopy);
 }
 
 - (SNKShotLabel)label
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C97B1154();
 
   return v3;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C97B1210(v4);
+  labelCopy = label;
+  selfCopy = self;
+  sub_1C97B1210(labelCopy);
 }
 
 @end

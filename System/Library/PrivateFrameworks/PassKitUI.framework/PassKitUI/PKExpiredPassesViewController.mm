@@ -1,70 +1,70 @@
 @interface PKExpiredPassesViewController
-+ (id)detailTextStringForPass:(id)a3;
-- (BOOL)passExistsWithUniqueIdentifier:(id)a3;
-- (PKExpiredPassesViewController)initWithExistingGroupsController:(id)a3 delegate:(id)a4;
-- (id)_buildDetailText:(id)a3 pass:(id)a4;
++ (id)detailTextStringForPass:(id)pass;
+- (BOOL)passExistsWithUniqueIdentifier:(id)identifier;
+- (PKExpiredPassesViewController)initWithExistingGroupsController:(id)controller delegate:(id)delegate;
+- (id)_buildDetailText:(id)text pass:(id)pass;
 - (id)_hyperlinkFooterView;
-- (id)indexPathOfExpiredPassWithUniqueID:(id)a3;
-- (id)passAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (id)viewControllerForRowAtIndexPath:(id)a3;
-- (void)_applyEditingStyle:(int64_t)a3;
+- (id)indexPathOfExpiredPassWithUniqueID:(id)d;
+- (id)passAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (id)viewControllerForRowAtIndexPath:(id)path;
+- (void)_applyEditingStyle:(int64_t)style;
 - (void)_deletePressed;
 - (void)_done;
-- (void)_finishedEditingExpiredPassAtIndexPath:(id)a3;
+- (void)_finishedEditingExpiredPassAtIndexPath:(id)path;
 - (void)_processGeocodeRequestsIfNecessary;
 - (void)_select;
 - (void)_unhidePressed;
 - (void)_updateTitles;
-- (void)configureCell:(id)a3 atIndexPath:(id)a4 withPass:(id)a5;
-- (void)deletePass:(id)a3 atIndexPath:(id)a4;
-- (void)prefetchItemsAtIndexPaths:(id)a3;
-- (void)removeExpiredSectionPassWithUniqueID:(id)a3 isDeletion:(BOOL)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableViewDidUpdateSelection:(id)a3;
-- (void)unhidePass:(id)a3 atIndexPath:(id)a4;
+- (void)configureCell:(id)cell atIndexPath:(id)path withPass:(id)pass;
+- (void)deletePass:(id)pass atIndexPath:(id)path;
+- (void)prefetchItemsAtIndexPaths:(id)paths;
+- (void)removeExpiredSectionPassWithUniqueID:(id)d isDeletion:(BOOL)deletion;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableViewDidUpdateSelection:(id)selection;
+- (void)unhidePass:(id)pass atIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKExpiredPassesViewController
 
-- (PKExpiredPassesViewController)initWithExistingGroupsController:(id)a3 delegate:(id)a4
+- (PKExpiredPassesViewController)initWithExistingGroupsController:(id)controller delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v48.receiver = self;
   v48.super_class = PKExpiredPassesViewController;
   v8 = -[PKExpiredTableViewController initWithStyle:](&v48, sel_initWithStyle_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1]);
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v10 = objc_alloc_init(MEMORY[0x1E695FBC8]);
     geocoder = v9->_geocoder;
     v9->_geocoder = v10;
 
     v9->_itemsLock._os_unfair_lock_opaque = 0;
-    [(PKExpiredTableViewController *)v9 setExistingGroupsController:v6];
+    [(PKExpiredTableViewController *)v9 setExistingGroupsController:controllerCopy];
     v12 = [objc_alloc(MEMORY[0x1E69B88E0]) initWithPassTypeMask:0 passFilters:0 allowedPassUniqueIDs:0];
     groupsController = v9->_groupsController;
     v9->_groupsController = v12;
 
     [(PKGroupsController *)v9->_groupsController loadGroupsSynchronously];
-    v14 = [(PKGroupsController *)v9->_groupsController expiredSectionPasses];
+    expiredSectionPasses = [(PKGroupsController *)v9->_groupsController expiredSectionPasses];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __75__PKExpiredPassesViewController_initWithExistingGroupsController_delegate___block_invoke;
     v46[3] = &unk_1E8017B98;
     v15 = v9;
     v47 = v15;
-    v16 = [v14 sortedArrayUsingComparator:v46];
+    v16 = [expiredSectionPasses sortedArrayUsingComparator:v46];
     expiredSectionPasses = v15->_expiredSectionPasses;
     v15->_expiredSectionPasses = v16;
 
@@ -79,16 +79,16 @@
     viewingPass = v15->_viewingPass;
     v15->_viewingPass = 0;
 
-    v23 = [(PKExpiredPassesViewController *)v15 _hyperlinkFooterView];
+    _hyperlinkFooterView = [(PKExpiredPassesViewController *)v15 _hyperlinkFooterView];
     footerView = v15->_footerView;
-    v15->_footerView = v23;
+    v15->_footerView = _hyperlinkFooterView;
 
-    v25 = [(PKExpiredPassesViewController *)v15 navigationItem];
-    [v25 setLeftItemsSupplementBackButton:0];
+    navigationItem = [(PKExpiredPassesViewController *)v15 navigationItem];
+    [navigationItem setLeftItemsSupplementBackButton:0];
     v26 = PKLocalizedString(&cfstr_ExpiredPassesT.isa);
-    [v25 setBackButtonTitle:v26];
+    [navigationItem setBackButtonTitle:v26];
 
-    [v25 setBackButtonDisplayMode:2];
+    [navigationItem setBackButtonDisplayMode:2];
     v27 = objc_alloc(MEMORY[0x1E69DC708]);
     if (_UISolariumFeatureFlagEnabled())
     {
@@ -172,37 +172,37 @@ BOOL __75__PKExpiredPassesViewController_initWithExistingGroupsController_delega
   v6.super_class = PKExpiredPassesViewController;
   [(PKExpiredTableViewController *)&v6 viewDidLoad];
   [(PKExpiredPassesViewController *)self setEditing:0 animated:0];
-  v3 = [(PKExpiredPassesViewController *)self tableView];
+  tableView = [(PKExpiredPassesViewController *)self tableView];
   tableView = self->_tableView;
-  self->_tableView = v3;
+  self->_tableView = tableView;
 
   [(PKExpiredTableViewController *)self setCachingDelegate:self];
   [(UITableView *)self->_tableView reloadData];
-  v5 = [(PKExpiredPassesViewController *)self view];
-  [v5 setAccessibilityIdentifier:*MEMORY[0x1E69B97A0]];
+  view = [(PKExpiredPassesViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B97A0]];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKExpiredPassesViewController;
-  [(PKExpiredPassesViewController *)&v5 viewWillAppear:a3];
+  [(PKExpiredPassesViewController *)&v5 viewWillAppear:appear];
   viewingPass = self->_viewingPass;
   self->_viewingPass = 0;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v10[3] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PKExpiredPassesViewController;
-  [(PKExpiredPassesViewController *)&v9 setEditing:a3 animated:a4];
-  v6 = [(PKExpiredPassesViewController *)self navigationController];
-  v7 = v6;
-  if (v4)
+  [(PKExpiredPassesViewController *)&v9 setEditing:editing animated:animated];
+  navigationController = [(PKExpiredPassesViewController *)self navigationController];
+  v7 = navigationController;
+  if (editingCopy)
   {
-    [v6 setToolbarHidden:0 animated:1];
+    [navigationController setToolbarHidden:0 animated:1];
 
     v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
     self->_selectedPassesCount = 0;
@@ -215,21 +215,21 @@ BOOL __75__PKExpiredPassesViewController_initWithExistingGroupsController_delega
 
   else
   {
-    [v6 setToolbarHidden:1 animated:1];
+    [navigationController setToolbarHidden:1 animated:1];
   }
 
   [(PKExpiredPassesViewController *)self _updateTitles];
 }
 
-- (id)indexPathOfExpiredPassWithUniqueID:(id)a3
+- (id)indexPathOfExpiredPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   expiredSectionPasses = self->_expiredSectionPasses;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__PKExpiredPassesViewController_indexPathOfExpiredPassWithUniqueID___block_invoke;
   v10[3] = &unk_1E8017BC0;
-  v6 = v4;
+  v6 = dCopy;
   v11 = v6;
   v7 = [(NSArray *)expiredSectionPasses indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -269,51 +269,51 @@ uint64_t __68__PKExpiredPassesViewController_indexPathOfExpiredPassWithUniqueID_
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKExpiredTableViewController *)self tableView:a3 cellWithReuseIdentifier:@"cellPassExpiredIdentifier"];
-  v8 = -[NSArray objectAtIndex:](self->_expiredSectionPasses, "objectAtIndex:", [v6 row]);
-  [(PKExpiredPassesViewController *)self configureCell:v7 atIndexPath:v6 withPass:v8];
+  pathCopy = path;
+  v7 = [(PKExpiredTableViewController *)self tableView:view cellWithReuseIdentifier:@"cellPassExpiredIdentifier"];
+  v8 = -[NSArray objectAtIndex:](self->_expiredSectionPasses, "objectAtIndex:", [pathCopy row]);
+  [(PKExpiredPassesViewController *)self configureCell:v7 atIndexPath:pathCopy withPass:v8];
 
   return v7;
 }
 
-- (void)configureCell:(id)a3 atIndexPath:(id)a4 withPass:(id)a5
+- (void)configureCell:(id)cell atIndexPath:(id)path withPass:(id)pass
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
+  cellCopy = cell;
+  pathCopy = path;
+  passCopy = pass;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v21 setPass:v9];
+    [cellCopy setPass:passCopy];
     v10 = PKDisplayTitleStringForPass();
-    [v21 setPrimaryText:v10];
+    [cellCopy setPrimaryText:v10];
 
     v11 = PKDateStringForExpiredPass();
-    [v21 setTertiaryText:v11];
-    v12 = [v9 uniqueID];
-    v13 = [(NSMutableDictionary *)self->_locationStringsForPassUniqueIDs objectForKeyedSubscript:v12];
+    [cellCopy setTertiaryText:v11];
+    uniqueID = [passCopy uniqueID];
+    v13 = [(NSMutableDictionary *)self->_locationStringsForPassUniqueIDs objectForKeyedSubscript:uniqueID];
     if (v13)
     {
-      v14 = 0;
+      firstObject = 0;
     }
 
     else
     {
-      v15 = [v9 embeddedLocationsArray];
-      v14 = [v15 firstObject];
+      embeddedLocationsArray = [passCopy embeddedLocationsArray];
+      firstObject = [embeddedLocationsArray firstObject];
     }
 
-    v16 = [(PKExpiredPassesViewController *)self _buildDetailText:v13 pass:v9];
-    [v21 setSecondaryText:v16];
+    v16 = [(PKExpiredPassesViewController *)self _buildDetailText:v13 pass:passCopy];
+    [cellCopy setSecondaryText:v16];
 
-    if (v14)
+    if (firstObject)
     {
-      [v14 coordinate];
+      [firstObject coordinate];
       v20 = [objc_alloc(MEMORY[0x1E6985C40]) initWithLatitude:v17 longitude:v18];
-      v19 = [[PKExpiredPassesGeocodeRequestItem alloc] initWithCell:v21 location:v20 indexPath:v8];
+      v19 = [[PKExpiredPassesGeocodeRequestItem alloc] initWithCell:cellCopy location:v20 indexPath:pathCopy];
       os_unfair_lock_lock(&self->_itemsLock);
       [(NSMutableArray *)self->_geocodeRequests addObject:v19];
       os_unfair_lock_unlock(&self->_itemsLock);
@@ -322,22 +322,22 @@ uint64_t __68__PKExpiredPassesViewController_indexPathOfExpiredPassWithUniqueID_
   }
 }
 
-- (id)_buildDetailText:(id)a3 pass:(id)a4
+- (id)_buildDetailText:(id)text pass:(id)pass
 {
-  v5 = a3;
-  v6 = [PKExpiredPassesViewController detailTextStringForPass:a4];
+  textCopy = text;
+  v6 = [PKExpiredPassesViewController detailTextStringForPass:pass];
   v7 = v6;
-  if (v5)
+  if (textCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@, %@", v6, v5];
+    textCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@, %@", v6, textCopy];
   }
 
   else
   {
-    v8 = v6;
+    textCopy = v6;
   }
 
-  v9 = v8;
+  v9 = textCopy;
 
   return v9;
 }
@@ -367,15 +367,15 @@ uint64_t __68__PKExpiredPassesViewController_indexPathOfExpiredPassWithUniqueID_
       v19 = 0x3032000000;
       v20 = __Block_byref_object_copy__18;
       v21 = __Block_byref_object_dispose__18;
-      v22 = [(NSMutableArray *)self->_geocodeRequests firstObject];
+      firstObject = [(NSMutableArray *)self->_geocodeRequests firstObject];
       v15[0] = 0;
       v15[1] = v15;
       v15[2] = 0x3032000000;
       v15[3] = __Block_byref_object_copy__18;
       v15[4] = __Block_byref_object_dispose__18;
-      v16 = [*(v18 + 5) uniqueID];
-      v5 = [*(v18 + 5) location];
-      v6 = [*(v18 + 5) indexPath];
+      uniqueID = [*(v18 + 5) uniqueID];
+      location = [*(v18 + 5) location];
+      indexPath = [*(v18 + 5) indexPath];
       os_unfair_lock_unlock(&self->_itemsLock);
       objc_initWeak(&location, self);
       geocoder = self->_geocoder;
@@ -387,9 +387,9 @@ uint64_t __68__PKExpiredPassesViewController_indexPathOfExpiredPassWithUniqueID_
       v9[4] = self;
       v11 = v15;
       v12 = buf;
-      v8 = v6;
+      v8 = indexPath;
       v10 = v8;
-      [(CLGeocoder *)geocoder reverseGeocodeLocation:v5 completionHandler:v9];
+      [(CLGeocoder *)geocoder reverseGeocodeLocation:location completionHandler:v9];
 
       objc_destroyWeak(&v13);
       objc_destroyWeak(&location);
@@ -524,21 +524,21 @@ BOOL __67__PKExpiredPassesViewController__processGeocodeRequestsIfNecessary__blo
   return v4;
 }
 
-+ (id)detailTextStringForPass:(id)a3
++ (id)detailTextStringForPass:(id)pass
 {
-  v3 = a3;
-  v4 = [v3 style];
-  if (v4 <= 6)
+  passCopy = pass;
+  style = [passCopy style];
+  if (style <= 6)
   {
-    if (!v4)
+    if (!style)
     {
       v5 = @"EXPIRED_PASSES_PASS_STYLE_COUPON";
       goto LABEL_12;
     }
 
-    if (v4 != 2)
+    if (style != 2)
     {
-      if (v4 != 4)
+      if (style != 4)
       {
 LABEL_5:
         v5 = @"EXPIRED_PASSES_PASS_STYLE_PASS";
@@ -555,11 +555,11 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v4 != 7)
+  if (style != 7)
   {
-    if (v4 != 9)
+    if (style != 9)
     {
-      if (v4 != 10)
+      if (style != 10)
       {
         goto LABEL_5;
       }
@@ -572,8 +572,8 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v8 = [v3 secureElementPass];
-  [v8 accessType];
+  secureElementPass = [passCopy secureElementPass];
+  [secureElementPass accessType];
   v6 = PKSecureElementAccessPassTypeToAccessKeyString();
 
 LABEL_13:
@@ -581,11 +581,11 @@ LABEL_13:
   return v6;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = PKExpiredPassesViewController;
-  v5 = [(PKExpiredTableViewController *)&v7 tableView:a3 willSelectRowAtIndexPath:a4];
+  v5 = [(PKExpiredTableViewController *)&v7 tableView:view willSelectRowAtIndexPath:path];
   if (v5 && [(UITableView *)self->_tableView isEditing])
   {
     ++self->_selectedPassesCount;
@@ -595,11 +595,11 @@ LABEL_13:
   return v5;
 }
 
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = PKExpiredPassesViewController;
-  v5 = [(PKExpiredTableViewController *)&v7 tableView:a3 willDeselectRowAtIndexPath:a4];
+  v5 = [(PKExpiredTableViewController *)&v7 tableView:view willDeselectRowAtIndexPath:path];
   if (v5 && [(UITableView *)self->_tableView isEditing])
   {
     --self->_selectedPassesCount;
@@ -609,63 +609,63 @@ LABEL_13:
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v11 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (![(UITableView *)self->_tableView isEditing])
   {
-    [v11 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     if (!self->_viewingPass)
     {
-      v7 = [(PKExpiredPassesViewController *)self viewControllerForRowAtIndexPath:v6];
-      v8 = [v7 pass];
+      v7 = [(PKExpiredPassesViewController *)self viewControllerForRowAtIndexPath:pathCopy];
+      pass = [v7 pass];
       viewingPass = self->_viewingPass;
-      self->_viewingPass = v8;
+      self->_viewingPass = pass;
 
-      v10 = [(PKExpiredPassesViewController *)self navigationController];
-      [v10 pushViewController:v7 animated:1];
+      navigationController = [(PKExpiredPassesViewController *)self navigationController];
+      [navigationController pushViewController:v7 animated:1];
     }
   }
 }
 
-- (void)unhidePass:(id)a3 atIndexPath:(id)a4
+- (void)unhidePass:(id)pass atIndexPath:(id)path
 {
-  v6 = a4;
-  v9 = [a3 uniqueID];
-  v7 = [MEMORY[0x1E69B8A58] sharedInstance];
-  [v7 recoverPassWithUniqueID:v9];
+  pathCopy = path;
+  uniqueID = [pass uniqueID];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  [mEMORY[0x1E69B8A58] recoverPassWithUniqueID:uniqueID];
 
-  v8 = [(PKExpiredTableViewController *)self existingGroupsController];
-  [v8 handleUserPassRecover:v9];
+  existingGroupsController = [(PKExpiredTableViewController *)self existingGroupsController];
+  [existingGroupsController handleUserPassRecover:uniqueID];
 
-  [(PKExpiredPassesViewController *)self _finishedEditingExpiredPassAtIndexPath:v6];
+  [(PKExpiredPassesViewController *)self _finishedEditingExpiredPassAtIndexPath:pathCopy];
 }
 
-- (void)deletePass:(id)a3 atIndexPath:(id)a4
+- (void)deletePass:(id)pass atIndexPath:(id)path
 {
   v6 = MEMORY[0x1E69B8A58];
-  v11 = a4;
-  v7 = a3;
-  v8 = [v6 sharedInstance];
-  [v8 removePass:v7];
+  pathCopy = path;
+  passCopy = pass;
+  sharedInstance = [v6 sharedInstance];
+  [sharedInstance removePass:passCopy];
 
-  v9 = [(PKExpiredTableViewController *)self existingGroupsController];
-  v10 = [v7 uniqueID];
+  existingGroupsController = [(PKExpiredTableViewController *)self existingGroupsController];
+  uniqueID = [passCopy uniqueID];
 
-  [v9 handleUserPassDelete:v10];
-  [(PKExpiredPassesViewController *)self _finishedEditingExpiredPassAtIndexPath:v11];
+  [existingGroupsController handleUserPassDelete:uniqueID];
+  [(PKExpiredPassesViewController *)self _finishedEditingExpiredPassAtIndexPath:pathCopy];
 }
 
-- (void)_finishedEditingExpiredPassAtIndexPath:(id)a3
+- (void)_finishedEditingExpiredPassAtIndexPath:(id)path
 {
   v11 = *MEMORY[0x1E69E9840];
   tableView = self->_tableView;
-  v10 = a3;
+  pathCopy = path;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a3;
-  v7 = [v5 arrayWithObjects:&v10 count:1];
-  [(UITableView *)tableView deleteRowsAtIndexPaths:v7 withRowAnimation:100, v10, v11];
+  pathCopy2 = path;
+  v7 = [v5 arrayWithObjects:&pathCopy count:1];
+  [(UITableView *)tableView deleteRowsAtIndexPaths:v7 withRowAnimation:100, pathCopy, v11];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained finishedEditingExpiredPass];
@@ -677,35 +677,35 @@ LABEL_13:
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a5;
-  v10 = -[NSArray objectAtIndex:](self->_expiredSectionPasses, "objectAtIndex:", [v7 row]);
+  pathCopy = path;
+  v10 = -[NSArray objectAtIndex:](self->_expiredSectionPasses, "objectAtIndex:", [pathCopy row]);
   v8 = [(NSArray *)self->_expiredSectionPasses pk_arrayByRemovingObject:?];
   expiredSectionPasses = self->_expiredSectionPasses;
   self->_expiredSectionPasses = v8;
 
-  if (a4 == 1)
+  if (style == 1)
   {
-    [(PKExpiredPassesViewController *)self deletePass:v10 atIndexPath:v7];
+    [(PKExpiredPassesViewController *)self deletePass:v10 atIndexPath:pathCopy];
   }
 
   else
   {
-    [(PKExpiredPassesViewController *)self unhidePass:v10 atIndexPath:v7];
+    [(PKExpiredPassesViewController *)self unhidePass:v10 atIndexPath:pathCopy];
   }
 }
 
-- (void)removeExpiredSectionPassWithUniqueID:(id)a3 isDeletion:(BOOL)a4
+- (void)removeExpiredSectionPassWithUniqueID:(id)d isDeletion:(BOOL)deletion
 {
-  v4 = a4;
-  v6 = a3;
+  deletionCopy = deletion;
+  dCopy = d;
   expiredSectionPasses = self->_expiredSectionPasses;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__PKExpiredPassesViewController_removeExpiredSectionPassWithUniqueID_isDeletion___block_invoke;
   v15[3] = &unk_1E8017BC0;
-  v8 = v6;
+  v8 = dCopy;
   v16 = v8;
   v9 = [(NSArray *)expiredSectionPasses indexOfObjectPassingTest:v15];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
@@ -717,7 +717,7 @@ LABEL_13:
     self->_expiredSectionPasses = v12;
 
     v14 = [MEMORY[0x1E696AC88] indexPathForRow:v10 inSection:0];
-    if (v4)
+    if (deletionCopy)
     {
       [(PKExpiredPassesViewController *)self deletePass:v11 atIndexPath:v14];
     }
@@ -769,7 +769,7 @@ uint64_t __81__PKExpiredPassesViewController_removeExpiredSectionPassWithUniqueI
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   footerView = self->_footerView;
   if (footerView)
@@ -779,7 +779,7 @@ uint64_t __81__PKExpiredPassesViewController_removeExpiredSectionPassWithUniqueI
 
   else
   {
-    v5 = [(PKExpiredPassesViewController *)self _hyperlinkFooterView:a3];
+    v5 = [(PKExpiredPassesViewController *)self _hyperlinkFooterView:view];
   }
 
   return v5;
@@ -787,7 +787,7 @@ uint64_t __81__PKExpiredPassesViewController_removeExpiredSectionPassWithUniqueI
 
 - (void)_updateTitles
 {
-  v13 = [(PKExpiredPassesViewController *)self navigationItem];
+  navigationItem = [(PKExpiredPassesViewController *)self navigationItem];
   v3 = self->_selectedPassesCount > 0;
   [(UIBarButtonItem *)self->_deleteButton setEnabled:v3];
   [(UIBarButtonItem *)self->_unhideButton setEnabled:v3];
@@ -810,8 +810,8 @@ uint64_t __81__PKExpiredPassesViewController_removeExpiredSectionPassWithUniqueI
 
   if ([(PKExpiredPassesViewController *)self isEditing])
   {
-    v10 = [(PKExpiredPassesViewController *)self _selectedExpiredPassesString];
-    [v13 setTitle:v10];
+    _selectedExpiredPassesString = [(PKExpiredPassesViewController *)self _selectedExpiredPassesString];
+    [navigationItem setTitle:_selectedExpiredPassesString];
 
     v11 = &OBJC_IVAR___PKExpiredPassesViewController__cancelButton;
   }
@@ -819,20 +819,20 @@ uint64_t __81__PKExpiredPassesViewController_removeExpiredSectionPassWithUniqueI
   else
   {
     v12 = PKLocalizedString(&cfstr_ExpiredPassesT.isa);
-    [v13 setTitle:v12];
+    [navigationItem setTitle:v12];
 
     v11 = &OBJC_IVAR___PKExpiredPassesViewController__doneButton;
     v6 = 1160;
   }
 
-  [v13 setLeftBarButtonItem:*(&self->super.super.super.super.super.isa + v6) animated:1];
-  [v13 setRightBarButtonItem:*(&self->super.super.super.super.super.isa + *v11) animated:1];
+  [navigationItem setLeftBarButtonItem:*(&self->super.super.super.super.super.isa + v6) animated:1];
+  [navigationItem setRightBarButtonItem:*(&self->super.super.super.super.super.isa + *v11) animated:1];
 }
 
 - (void)_done
 {
-  v2 = [(PKExpiredPassesViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKExpiredPassesViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_select
@@ -864,7 +864,7 @@ uint64_t __81__PKExpiredPassesViewController_removeExpiredSectionPassWithUniqueI
   [(PKExpiredPassesViewController *)self tableViewDidUpdateSelection:v10];
 }
 
-- (void)_applyEditingStyle:(int64_t)a3
+- (void)_applyEditingStyle:(int64_t)style
 {
   tableView = self->_tableView;
   v4[4] = self;
@@ -873,7 +873,7 @@ uint64_t __81__PKExpiredPassesViewController_removeExpiredSectionPassWithUniqueI
   v5[2] = __52__PKExpiredPassesViewController__applyEditingStyle___block_invoke;
   v5[3] = &unk_1E80119C8;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = style;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __52__PKExpiredPassesViewController__applyEditingStyle___block_invoke_2;
@@ -924,8 +924,8 @@ void __52__PKExpiredPassesViewController__applyEditingStyle___block_invoke(uint6
   v4 = PKLocalizedString(&cfstr_ExpiredPassesD_2.isa, &cfstr_Lu.isa, self->_selectedPassesCount);
   v5 = [v3 alertControllerWithTitle:0 message:v4 preferredStyle:0];
 
-  v6 = [v5 popoverPresentationController];
-  [v6 setSourceItem:self->_deleteButton];
+  popoverPresentationController = [v5 popoverPresentationController];
+  [popoverPresentationController setSourceItem:self->_deleteButton];
 
   v7 = MEMORY[0x1E69DC648];
   v8 = PKLocalizedString(&cfstr_ExpiredPassesC.isa);
@@ -951,8 +951,8 @@ void __52__PKExpiredPassesViewController__applyEditingStyle___block_invoke(uint6
   v4 = PKLocalizedString(&cfstr_ExpiredPassesU_1.isa, &cfstr_Lu.isa, self->_selectedPassesCount);
   v5 = [v3 alertControllerWithTitle:0 message:v4 preferredStyle:0];
 
-  v6 = [v5 popoverPresentationController];
-  [v6 setSourceItem:self->_unhideButton];
+  popoverPresentationController = [v5 popoverPresentationController];
+  [popoverPresentationController setSourceItem:self->_unhideButton];
 
   v7 = MEMORY[0x1E69DC648];
   v8 = PKLocalizedString(&cfstr_ExpiredPassesC.isa);
@@ -972,19 +972,19 @@ void __52__PKExpiredPassesViewController__applyEditingStyle___block_invoke(uint6
   [(PKExpiredPassesViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)tableViewDidUpdateSelection:(id)a3
+- (void)tableViewDidUpdateSelection:(id)selection
 {
-  v4 = [(UITableView *)self->_tableView indexPathsForSelectedRows];
-  self->_selectedPassesCount = [v4 count];
+  indexPathsForSelectedRows = [(UITableView *)self->_tableView indexPathsForSelectedRows];
+  self->_selectedPassesCount = [indexPathsForSelectedRows count];
 
   [(PKExpiredPassesViewController *)self _updateTitles];
 }
 
-- (id)viewControllerForRowAtIndexPath:(id)a3
+- (id)viewControllerForRowAtIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v3 = -[NSArray objectAtIndex:](self->_expiredSectionPasses, "objectAtIndex:", [a3 row]);
+    v3 = -[NSArray objectAtIndex:](self->_expiredSectionPasses, "objectAtIndex:", [path row]);
     v4 = [[PKExpiredSinglePassViewController alloc] initWithPass:v3];
   }
 
@@ -996,9 +996,9 @@ void __52__PKExpiredPassesViewController__applyEditingStyle___block_invoke(uint6
   return v4;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v5 = [(PKExpiredPassesViewController *)self viewControllerForRowAtIndexPath:a4, a5.x, a5.y];
+  v5 = [(PKExpiredPassesViewController *)self viewControllerForRowAtIndexPath:path, point.x, point.y];
   v6 = v5;
   if (v5)
   {
@@ -1019,13 +1019,13 @@ void __52__PKExpiredPassesViewController__applyEditingStyle___block_invoke(uint6
   return v8;
 }
 
-- (id)passAtIndexPath:(id)a3
+- (id)passAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   expiredSectionPasses = self->_expiredSectionPasses;
-  if (expiredSectionPasses && (v6 = -[NSArray count](expiredSectionPasses, "count"), v6 > [v4 row]))
+  if (expiredSectionPasses && (v6 = -[NSArray count](expiredSectionPasses, "count"), v6 > [pathCopy row]))
   {
-    v7 = -[NSArray objectAtIndex:](self->_expiredSectionPasses, "objectAtIndex:", [v4 row]);
+    v7 = -[NSArray objectAtIndex:](self->_expiredSectionPasses, "objectAtIndex:", [pathCopy row]);
   }
 
   else
@@ -1036,16 +1036,16 @@ void __52__PKExpiredPassesViewController__applyEditingStyle___block_invoke(uint6
   return v7;
 }
 
-- (void)prefetchItemsAtIndexPaths:(id)a3
+- (void)prefetchItemsAtIndexPaths:(id)paths
 {
-  v9 = a3;
-  v4 = [v9 count];
+  pathsCopy = paths;
+  v4 = [pathsCopy count];
   if (v4 - 1 >= 0)
   {
     v5 = v4;
     do
     {
-      v6 = [v9 objectAtIndex:--v5];
+      v6 = [pathsCopy objectAtIndex:--v5];
       v7 = [v6 row];
       if ([(NSArray *)self->_expiredSectionPasses count]> v7)
       {
@@ -1058,16 +1058,16 @@ void __52__PKExpiredPassesViewController__applyEditingStyle___block_invoke(uint6
   }
 }
 
-- (BOOL)passExistsWithUniqueIdentifier:(id)a3
+- (BOOL)passExistsWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   expiredSectionPasses = self->_expiredSectionPasses;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__PKExpiredPassesViewController_passExistsWithUniqueIdentifier___block_invoke;
   v8[3] = &unk_1E8011C28;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   LOBYTE(expiredSectionPasses) = [(NSArray *)expiredSectionPasses pk_containsObjectPassingTest:v8];
 
   return expiredSectionPasses;

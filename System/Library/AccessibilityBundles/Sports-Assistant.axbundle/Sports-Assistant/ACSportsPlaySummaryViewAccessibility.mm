@@ -1,15 +1,15 @@
 @interface ACSportsPlaySummaryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation ACSportsPlaySummaryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ACSportsPlaySummaryView" hasInstanceMethod:@"goalTime" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ACSportsPlaySummaryView" hasInstanceMethod:@"goalScorer" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ACSportsPlaySummaryView" hasInstanceMethod:@"goalTime" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ACSportsPlaySummaryView" hasInstanceMethod:@"goalScorer" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -46,17 +46,17 @@
       v15 = v12;
     }
 
-    v16 = v15;
+    accessibilityLabel = v15;
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = ACSportsPlaySummaryViewAccessibility;
-    v16 = [(ACSportsPlaySummaryViewAccessibility *)&v18 accessibilityLabel];
+    accessibilityLabel = [(ACSportsPlaySummaryViewAccessibility *)&v18 accessibilityLabel];
   }
 
-  return v16;
+  return accessibilityLabel;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface PDFWithCustomFooterTextPage
-- (void)drawWithBox:(int64_t)a3 toContext:(CGContext *)a4;
+- (void)drawWithBox:(int64_t)box toContext:(CGContext *)context;
 @end
 
 @implementation PDFWithCustomFooterTextPage
 
-- (void)drawWithBox:(int64_t)a3 toContext:(CGContext *)a4
+- (void)drawWithBox:(int64_t)box toContext:(CGContext *)context
 {
-  v6 = a4;
-  v7 = self;
-  sub_1BA4501DC(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1BA4501DC(box, contextCopy);
 }
 
 @end

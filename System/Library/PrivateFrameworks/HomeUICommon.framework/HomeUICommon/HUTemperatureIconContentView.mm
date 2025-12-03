@@ -1,16 +1,16 @@
 @interface HUTemperatureIconContentView
-- (HUTemperatureIconContentView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (HUTemperatureIconContentView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)tintColorDidChange;
 @end
 
 @implementation HUTemperatureIconContentView
 
-- (HUTemperatureIconContentView)initWithFrame:(CGRect)a3
+- (HUTemperatureIconContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUTemperatureIconContentView;
-  v3 = [(HUIconContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUIconContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,65 +33,65 @@
   [(HUTemperatureIconContentView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  width = a3.size.width;
+  width = rect.size.width;
   v82[1] = *MEMORY[0x277D85DE8];
-  v5 = [(HUIconContentView *)self iconDescriptor:a3.origin.x];
-  v6 = [v5 targetHeatingCoolingMode];
+  v5 = [(HUIconContentView *)self iconDescriptor:rect.origin.x];
+  targetHeatingCoolingMode = [v5 targetHeatingCoolingMode];
 
-  if (v6)
+  if (targetHeatingCoolingMode)
   {
-    v7 = [(HUIconContentView *)self iconDescriptor];
-    v8 = [v7 heatingCoolingMode];
+    iconDescriptor = [(HUIconContentView *)self iconDescriptor];
+    heatingCoolingMode = [iconDescriptor heatingCoolingMode];
 
-    v9 = 0;
+    systemGrayColor = 0;
     v10 = 1;
-    if (v8 > 1)
+    if (heatingCoolingMode > 1)
     {
-      if (v8 == 2)
+      if (heatingCoolingMode == 2)
       {
-        v11 = [MEMORY[0x277D75340] systemTealColor];
+        systemTealColor = [MEMORY[0x277D75340] systemTealColor];
       }
 
       else
       {
-        if (v8 != 3)
+        if (heatingCoolingMode != 3)
         {
           goto LABEL_15;
         }
 
-        v11 = [MEMORY[0x277D75340] darkGrayColor];
+        systemTealColor = [MEMORY[0x277D75340] darkGrayColor];
       }
     }
 
-    else if (v8)
+    else if (heatingCoolingMode)
     {
-      if (v8 != 1)
+      if (heatingCoolingMode != 1)
       {
         goto LABEL_15;
       }
 
-      v11 = [MEMORY[0x277D75340] systemOrangeColor];
+      systemTealColor = [MEMORY[0x277D75340] systemOrangeColor];
     }
 
     else
     {
-      v11 = [MEMORY[0x277D75340] systemGreenColor];
+      systemTealColor = [MEMORY[0x277D75340] systemGreenColor];
     }
 
-    v9 = v11;
+    systemGrayColor = systemTealColor;
   }
 
   else if ([(HUIconContentView *)self displayStyle]== 1)
   {
-    v9 = [MEMORY[0x277D75340] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75340] systemGrayColor];
     v10 = 1;
   }
 
   else
   {
-    v9 = [(HUTemperatureIconContentView *)self tintColor];
+    systemGrayColor = [(HUTemperatureIconContentView *)self tintColor];
     v10 = 0;
   }
 
@@ -104,7 +104,7 @@ LABEL_15:
   v20 = v19;
   [(HUTemperatureIconContentView *)self bounds];
   v22 = [v12 bezierPathWithRoundedRect:v14 cornerRadius:{v16, v18, v20, v21 * 0.5}];
-  [v9 setFill];
+  [systemGrayColor setFill];
   [v22 fill];
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
@@ -113,17 +113,17 @@ LABEL_15:
     CGContextSetBlendMode(CurrentContext, kCGBlendModeSourceOut);
   }
 
-  v24 = [MEMORY[0x277D74250] defaultParagraphStyle];
-  v25 = [v24 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74250] defaultParagraphStyle];
+  v25 = [defaultParagraphStyle mutableCopy];
 
   [v25 setAlignment:1];
   [v25 setAllowsDefaultTighteningForTruncation:1];
-  v26 = [(HUIconContentView *)self iconDescriptor];
-  v27 = [v26 formattedTemperature];
-  v28 = v27;
-  if (v27)
+  iconDescriptor2 = [(HUIconContentView *)self iconDescriptor];
+  formattedTemperature = [iconDescriptor2 formattedTemperature];
+  v28 = formattedTemperature;
+  if (formattedTemperature)
   {
-    v29 = v27;
+    v29 = formattedTemperature;
   }
 
   else
@@ -133,23 +133,23 @@ LABEL_15:
 
   v30 = v29;
 
-  v73 = v9;
+  v73 = systemGrayColor;
   v74 = v30;
   if (!self)
   {
-    v35 = 0;
+    lastFontFittingSize2 = 0;
     goto LABEL_39;
   }
 
-  v31 = [(HUTemperatureIconContentView *)self lastFontFittingSize];
-  if (v31 && ([(HUTemperatureIconContentView *)self lastFontFittedWidth], v32 == width))
+  lastFontFittingSize = [(HUTemperatureIconContentView *)self lastFontFittingSize];
+  if (lastFontFittingSize && ([(HUTemperatureIconContentView *)self lastFontFittedWidth], v32 == width))
   {
-    v33 = [(HUTemperatureIconContentView *)self lastFontFittedText];
-    v34 = [v33 isEqualToString:v74];
+    lastFontFittedText = [(HUTemperatureIconContentView *)self lastFontFittedText];
+    v34 = [lastFontFittedText isEqualToString:v74];
 
     if (v34)
     {
-      v35 = [(HUTemperatureIconContentView *)self lastFontFittingSize];
+      lastFontFittingSize2 = [(HUTemperatureIconContentView *)self lastFontFittingSize];
       goto LABEL_39;
     }
   }
@@ -163,8 +163,8 @@ LABEL_15:
   [(HUTemperatureIconContentView *)self bounds];
   v37 = v36 * 0.03125;
   v70 = [MEMORY[0x277D742F8] boldSystemFontOfSize:13.0];
-  v38 = [v70 fontDescriptor];
-  v39 = [HUFontUtilities fontDescriptorWithMonospacedDigitsForFontDescriptor:v38];
+  fontDescriptor = [v70 fontDescriptor];
+  v39 = [HUFontUtilities fontDescriptorWithMonospacedDigitsForFontDescriptor:fontDescriptor];
 
   v69 = v39;
   v40 = [MEMORY[0x277D742F8] fontWithDescriptor:v39 size:13.0];
@@ -173,7 +173,7 @@ LABEL_15:
   v42 = width * 0.75;
   v43 = v41;
   v44 = v74;
-  v45 = [v43 fontDescriptor];
+  fontDescriptor2 = [v43 fontDescriptor];
   v46 = *MEMORY[0x277D740B0];
   v81 = *MEMORY[0x277D740B0];
   v82[0] = v43;
@@ -183,15 +183,15 @@ LABEL_15:
 
   if (v49 <= width * 0.75)
   {
-    v35 = v43;
+    lastFontFittingSize2 = v43;
   }
 
   else
   {
     [v43 pointSize];
-    v35 = [MEMORY[0x277D742F8] fontWithDescriptor:v45 size:floor(v42 / v49 * v50 + v42 / v49 * v50) * 0.5];
+    lastFontFittingSize2 = [MEMORY[0x277D742F8] fontWithDescriptor:fontDescriptor2 size:floor(v42 / v49 * v50 + v42 / v49 * v50) * 0.5];
     v79 = v46;
-    v80 = v35;
+    v80 = lastFontFittingSize2;
     v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
     [v44 sizeWithAttributes:v51];
     v53 = v52;
@@ -209,8 +209,8 @@ LABEL_15:
     while (1)
     {
       v55 = MEMORY[0x277D742F8];
-      [v35 pointSize];
-      v57 = [v55 fontWithDescriptor:v45 size:v56 + v54 * 0.5];
+      [lastFontFittingSize2 pointSize];
+      v57 = [v55 fontWithDescriptor:fontDescriptor2 size:v56 + v54 * 0.5];
       v77 = v46;
       v78 = v57;
       v58 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
@@ -227,18 +227,18 @@ LABEL_15:
         goto LABEL_37;
       }
 
-      v35 = v57;
+      lastFontFittingSize2 = v57;
     }
 
     v61 = v57;
 
-    v35 = v61;
+    lastFontFittingSize2 = v61;
 LABEL_37:
   }
 
   CurrentContext = v72;
 
-  [(HUTemperatureIconContentView *)self setLastFontFittingSize:v35];
+  [(HUTemperatureIconContentView *)self setLastFontFittingSize:lastFontFittingSize2];
   [(HUTemperatureIconContentView *)self setLastFontFittedWidth:width];
   [(HUTemperatureIconContentView *)self setLastFontFittedText:v44];
 
@@ -246,18 +246,18 @@ LABEL_37:
 LABEL_39:
 
   v62 = *MEMORY[0x277D740B0];
-  v76[0] = v35;
+  v76[0] = lastFontFittingSize2;
   v63 = *MEMORY[0x277D740B8];
   v75[0] = v62;
   v75[1] = v63;
-  v64 = [MEMORY[0x277D75340] systemWhiteColor];
+  systemWhiteColor = [MEMORY[0x277D75340] systemWhiteColor];
   v75[2] = *MEMORY[0x277D74110];
-  v76[1] = v64;
+  v76[1] = systemWhiteColor;
   v76[2] = v25;
   v65 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:v75 count:3];
 
   [(HUTemperatureIconContentView *)self bounds];
-  [v35 lineHeight];
+  [lastFontFittingSize2 lineHeight];
   [(HUTemperatureIconContentView *)self center];
   [(HUTemperatureIconContentView *)self center];
   v66 = *MEMORY[0x277CBF348];

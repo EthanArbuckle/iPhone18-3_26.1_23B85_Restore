@@ -1,49 +1,49 @@
 @interface PXTimelineEntry
-+ (id)descriptionForRejectReason:(unint64_t)a3;
-+ (id)descriptionForTimelineContentType:(unint64_t)a3;
-+ (id)emptyWidgetURLForContentType:(unint64_t)a3 sourceIdentifier:(id)a4;
-+ (id)fallbackEntryForAlbumNotFoundWithLocalIdentifier:(id)a3 size:(unint64_t)a4;
-+ (id)fallbackEntryForContentType:(unint64_t)a3 sourceIdentifier:(id)a4 size:(unint64_t)a5;
-+ (id)placeholderEntryForContentType:(unint64_t)a3;
-+ (id)privacyDisclosureEntryForContentType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (PXTimelineEntry)initWithAlbumFeaturedPhoto:(id)a3 localAlbumIdentifier:(id)a4 andFeaturedPhotoKeyAsset:(id)a5 suggestedCrop:(id)a6;
-- (PXTimelineEntry)initWithAsset:(id)a3 suggestedCrop:(id)a4;
-- (PXTimelineEntry)initWithFeaturedPhoto:(id)a3 andFeaturedPhotoKeyAsset:(id)a4 suggestedCrop:(id)a5;
-- (PXTimelineEntry)initWithMemory:(id)a3 andMemoryKeyAsset:(id)a4;
-- (PXTimelineEntry)initWithTitle:(id)a3 subtitle:(id)a4 localIdentifier:(id)a5 assetLocalIdentifier:(id)a6 deeplink:(id)a7 contentType:(unint64_t)a8 sourceIdentifier:(id)a9 relevanceScore:(double)a10 proactiveCriterion:(id)a11 suggestedCrop:(id)a12 rejectReason:(unint64_t)a13;
-- (id)_initWithTimelineEntry:(id)a3;
++ (id)descriptionForRejectReason:(unint64_t)reason;
++ (id)descriptionForTimelineContentType:(unint64_t)type;
++ (id)emptyWidgetURLForContentType:(unint64_t)type sourceIdentifier:(id)identifier;
++ (id)fallbackEntryForAlbumNotFoundWithLocalIdentifier:(id)identifier size:(unint64_t)size;
++ (id)fallbackEntryForContentType:(unint64_t)type sourceIdentifier:(id)identifier size:(unint64_t)size;
++ (id)placeholderEntryForContentType:(unint64_t)type;
++ (id)privacyDisclosureEntryForContentType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (PXTimelineEntry)initWithAlbumFeaturedPhoto:(id)photo localAlbumIdentifier:(id)identifier andFeaturedPhotoKeyAsset:(id)asset suggestedCrop:(id)crop;
+- (PXTimelineEntry)initWithAsset:(id)asset suggestedCrop:(id)crop;
+- (PXTimelineEntry)initWithFeaturedPhoto:(id)photo andFeaturedPhotoKeyAsset:(id)asset suggestedCrop:(id)crop;
+- (PXTimelineEntry)initWithMemory:(id)memory andMemoryKeyAsset:(id)asset;
+- (PXTimelineEntry)initWithTitle:(id)title subtitle:(id)subtitle localIdentifier:(id)identifier assetLocalIdentifier:(id)localIdentifier deeplink:(id)deeplink contentType:(unint64_t)type sourceIdentifier:(id)sourceIdentifier relevanceScore:(double)self0 proactiveCriterion:(id)self1 suggestedCrop:(id)self2 rejectReason:(unint64_t)self3;
+- (id)_initWithTimelineEntry:(id)entry;
 - (id)_localTimeFormatter;
 - (id)_utcTimeFormatter;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setEndTime:(id)a3;
-- (void)setStartTime:(id)a3;
+- (void)setEndTime:(id)time;
+- (void)setStartTime:(id)time;
 @end
 
 @implementation PXTimelineEntry
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PXTimelineEntry allocWithZone:a3];
+  v4 = [PXTimelineEntry allocWithZone:zone];
 
   return [(PXTimelineEntry *)v4 _initWithTimelineEntry:self];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PXTimelineEntry *)self localIdentifier];
-  v3 = [v2 hash];
+  localIdentifier = [(PXTimelineEntry *)self localIdentifier];
+  v3 = [localIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -53,11 +53,11 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
-      v8 = [(PXTimelineEntry *)self localIdentifier];
-      v9 = [(PXTimelineEntry *)v7 localIdentifier];
+      v7 = equalCopy;
+      localIdentifier = [(PXTimelineEntry *)self localIdentifier];
+      localIdentifier2 = [(PXTimelineEntry *)v7 localIdentifier];
 
-      v6 = [v8 isEqualToString:v9];
+      v6 = [localIdentifier isEqualToString:localIdentifier2];
     }
 
     else
@@ -71,10 +71,10 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(PXTimelineEntry *)self _localTimeFormatter];
-  v4 = [(PXTimelineEntry *)self _utcTimeFormatter];
-  v5 = [(PXTimelineEntry *)self startTime];
-  v6 = [(PXTimelineEntry *)self endTime];
+  _localTimeFormatter = [(PXTimelineEntry *)self _localTimeFormatter];
+  _utcTimeFormatter = [(PXTimelineEntry *)self _utcTimeFormatter];
+  startTime = [(PXTimelineEntry *)self startTime];
+  endTime = [(PXTimelineEntry *)self endTime];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = MEMORY[0x1E696AEC0];
   v9 = objc_opt_class();
@@ -82,52 +82,52 @@
   v11 = [v8 stringWithFormat:@"%@ <%p>:\n", v10, self];
   [v7 setObject:v11 forKeyedSubscript:@"id"];
 
-  v12 = [v3 stringFromDate:v5];
+  v12 = [_localTimeFormatter stringFromDate:startTime];
   [v7 setObject:v12 forKeyedSubscript:@"StartTime (Local Time)"];
 
-  v13 = [v3 stringFromDate:v6];
+  v13 = [_localTimeFormatter stringFromDate:endTime];
   [v7 setObject:v13 forKeyedSubscript:@"EndTime (Local Time)"];
 
-  v14 = [v4 stringFromDate:v5];
+  v14 = [_utcTimeFormatter stringFromDate:startTime];
   [v7 setObject:v14 forKeyedSubscript:@"StartTime(UTC)"];
 
-  v15 = [v4 stringFromDate:v6];
+  v15 = [_utcTimeFormatter stringFromDate:endTime];
   [v7 setObject:v15 forKeyedSubscript:@"EndTime(UTC)"];
 
   v16 = [PXTimelineEntry descriptionForTimelineContentType:[(PXTimelineEntry *)self contentType]];
   [v7 setObject:v16 forKeyedSubscript:@"ContentType"];
 
-  v17 = [(PXTimelineEntry *)self sourceIdentifier];
-  [v7 setObject:v17 forKeyedSubscript:@"SourceIdentifier"];
+  sourceIdentifier = [(PXTimelineEntry *)self sourceIdentifier];
+  [v7 setObject:sourceIdentifier forKeyedSubscript:@"SourceIdentifier"];
 
-  v18 = [(PXTimelineEntry *)self title];
-  v19 = [v18 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+  title = [(PXTimelineEntry *)self title];
+  v19 = [title stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
   [v7 setObject:v19 forKeyedSubscript:@"Title"];
 
-  v20 = [(PXTimelineEntry *)self subtitle];
-  v21 = [v20 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+  subtitle = [(PXTimelineEntry *)self subtitle];
+  v21 = [subtitle stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
   [v7 setObject:v21 forKeyedSubscript:@"Subtitle"];
 
-  v22 = [(PXTimelineEntry *)self localIdentifier];
-  [v7 setObject:v22 forKeyedSubscript:@"LocalIdentifier"];
+  localIdentifier = [(PXTimelineEntry *)self localIdentifier];
+  [v7 setObject:localIdentifier forKeyedSubscript:@"LocalIdentifier"];
 
-  v23 = [(PXTimelineEntry *)self assetLocalIdentifier];
-  [v7 setObject:v23 forKeyedSubscript:@"AssetLocalIdentifier"];
+  assetLocalIdentifier = [(PXTimelineEntry *)self assetLocalIdentifier];
+  [v7 setObject:assetLocalIdentifier forKeyedSubscript:@"AssetLocalIdentifier"];
 
-  v24 = [(PXTimelineEntry *)self deeplink];
-  v25 = [v24 absoluteString];
-  [v7 setObject:v25 forKeyedSubscript:@"Deeplink"];
+  deeplink = [(PXTimelineEntry *)self deeplink];
+  absoluteString = [deeplink absoluteString];
+  [v7 setObject:absoluteString forKeyedSubscript:@"Deeplink"];
 
   v26 = MEMORY[0x1E696AD98];
   [(PXTimelineEntry *)self relevanceScore];
   v27 = [v26 numberWithDouble:?];
   [v7 setObject:v27 forKeyedSubscript:@"RelevanceScore"];
 
-  v28 = [(PXTimelineEntry *)self proactiveCriterion];
-  [v7 setObject:v28 forKeyedSubscript:@"ProactiveCriterion"];
+  proactiveCriterion = [(PXTimelineEntry *)self proactiveCriterion];
+  [v7 setObject:proactiveCriterion forKeyedSubscript:@"ProactiveCriterion"];
 
-  v29 = [(PXTimelineEntry *)self suggestedCrop];
-  [v7 setObject:v29 forKeyedSubscript:@"SuggestedCrop"];
+  suggestedCrop = [(PXTimelineEntry *)self suggestedCrop];
+  [v7 setObject:suggestedCrop forKeyedSubscript:@"SuggestedCrop"];
 
   v30 = [PXTimelineEntry descriptionForRejectReason:[(PXTimelineEntry *)self rejectReason]];
   [v7 setObject:v30 forKeyedSubscript:@"RejectReason"];
@@ -137,52 +137,52 @@
 
 - (id)description
 {
-  v3 = [(PXTimelineEntry *)self _localTimeFormatter];
-  v4 = [(PXTimelineEntry *)self startTime];
-  v5 = [(PXTimelineEntry *)self endTime];
+  _localTimeFormatter = [(PXTimelineEntry *)self _localTimeFormatter];
+  startTime = [(PXTimelineEntry *)self startTime];
+  endTime = [(PXTimelineEntry *)self endTime];
   v6 = MEMORY[0x1E696AD60];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [v6 stringWithFormat:@"%@ <%p>:\n", v8, self];
 
-  v10 = [v3 stringFromDate:v4];
+  v10 = [_localTimeFormatter stringFromDate:startTime];
   [v9 appendFormat:@" StartTime (Local Time): %@\n", v10];
 
-  v11 = [v3 stringFromDate:v5];
+  v11 = [_localTimeFormatter stringFromDate:endTime];
   [v9 appendFormat:@" EndTime (Local Time): %@\n", v11];
 
-  [v9 appendFormat:@" StartTime(UTC): %@\n", v4];
-  [v9 appendFormat:@" EndTime(UTC): %@\n", v5];
+  [v9 appendFormat:@" StartTime(UTC): %@\n", startTime];
+  [v9 appendFormat:@" EndTime(UTC): %@\n", endTime];
   v12 = [PXTimelineEntry descriptionForTimelineContentType:[(PXTimelineEntry *)self contentType]];
   [v9 appendFormat:@" ContentType: %@\n", v12];
 
-  v13 = [(PXTimelineEntry *)self sourceIdentifier];
-  [v9 appendFormat:@" SourceIdentifier: %@\n", v13];
+  sourceIdentifier = [(PXTimelineEntry *)self sourceIdentifier];
+  [v9 appendFormat:@" SourceIdentifier: %@\n", sourceIdentifier];
 
-  v14 = [(PXTimelineEntry *)self title];
-  v15 = [v14 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+  title = [(PXTimelineEntry *)self title];
+  v15 = [title stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
   [v9 appendFormat:@" Title: %@\n", v15];
 
-  v16 = [(PXTimelineEntry *)self subtitle];
-  v17 = [v16 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+  subtitle = [(PXTimelineEntry *)self subtitle];
+  v17 = [subtitle stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
   [v9 appendFormat:@" Subtitle: %@\n", v17];
 
-  v18 = [(PXTimelineEntry *)self localIdentifier];
-  [v9 appendFormat:@" LocalIdentifier: %@\n", v18];
+  localIdentifier = [(PXTimelineEntry *)self localIdentifier];
+  [v9 appendFormat:@" LocalIdentifier: %@\n", localIdentifier];
 
-  v19 = [(PXTimelineEntry *)self assetLocalIdentifier];
-  [v9 appendFormat:@" AssetLocalIdentifier: %@\n", v19];
+  assetLocalIdentifier = [(PXTimelineEntry *)self assetLocalIdentifier];
+  [v9 appendFormat:@" AssetLocalIdentifier: %@\n", assetLocalIdentifier];
 
-  v20 = [(PXTimelineEntry *)self deeplink];
-  [v9 appendFormat:@" Deeplink: %@\n", v20];
+  deeplink = [(PXTimelineEntry *)self deeplink];
+  [v9 appendFormat:@" Deeplink: %@\n", deeplink];
 
   [(PXTimelineEntry *)self relevanceScore];
   [v9 appendFormat:@" RelevanceScore: %f\n", v21];
-  v22 = [(PXTimelineEntry *)self proactiveCriterion];
-  [v9 appendFormat:@" ProactiveCriterion: %@\n", v22];
+  proactiveCriterion = [(PXTimelineEntry *)self proactiveCriterion];
+  [v9 appendFormat:@" ProactiveCriterion: %@\n", proactiveCriterion];
 
-  v23 = [(PXTimelineEntry *)self suggestedCrop];
-  [v9 appendFormat:@" SuggestedCrop: %@\n", v23];
+  suggestedCrop = [(PXTimelineEntry *)self suggestedCrop];
+  [v9 appendFormat:@" SuggestedCrop: %@\n", suggestedCrop];
 
   v24 = [PXTimelineEntry descriptionForRejectReason:[(PXTimelineEntry *)self rejectReason]];
   [v9 appendFormat:@" RejectReason: %@\n", v24];
@@ -236,235 +236,235 @@ uint64_t __38__PXTimelineEntry__localTimeFormatter__block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
 }
 
-- (void)setEndTime:(id)a3
+- (void)setEndTime:(id)time
 {
-  v4 = [a3 copy];
+  v4 = [time copy];
   endTime = self->_endTime;
   self->_endTime = v4;
 }
 
-- (void)setStartTime:(id)a3
+- (void)setStartTime:(id)time
 {
-  v4 = [a3 copy];
+  v4 = [time copy];
   startTime = self->_startTime;
   self->_startTime = v4;
 }
 
-- (id)_initWithTimelineEntry:(id)a3
+- (id)_initWithTimelineEntry:(id)entry
 {
-  v3 = a3;
-  v17 = [v3 title];
-  v4 = [v3 subtitle];
-  v5 = [v3 localIdentifier];
-  v6 = [v3 assetLocalIdentifier];
-  v7 = [v3 deeplink];
-  v8 = [v3 contentType];
-  v9 = [v3 sourceIdentifier];
-  [v3 relevanceScore];
+  entryCopy = entry;
+  title = [entryCopy title];
+  subtitle = [entryCopy subtitle];
+  localIdentifier = [entryCopy localIdentifier];
+  assetLocalIdentifier = [entryCopy assetLocalIdentifier];
+  deeplink = [entryCopy deeplink];
+  contentType = [entryCopy contentType];
+  sourceIdentifier = [entryCopy sourceIdentifier];
+  [entryCopy relevanceScore];
   v11 = v10;
-  v12 = [v3 proactiveCriterion];
-  v13 = [v3 suggestedCrop];
-  v14 = [v3 rejectReason];
+  proactiveCriterion = [entryCopy proactiveCriterion];
+  suggestedCrop = [entryCopy suggestedCrop];
+  rejectReason = [entryCopy rejectReason];
 
-  v15 = [(PXTimelineEntry *)self initWithTitle:v17 subtitle:v4 localIdentifier:v5 assetLocalIdentifier:v6 deeplink:v7 contentType:v8 sourceIdentifier:v11 relevanceScore:v9 proactiveCriterion:v12 suggestedCrop:v13 rejectReason:v14];
+  v15 = [(PXTimelineEntry *)self initWithTitle:title subtitle:subtitle localIdentifier:localIdentifier assetLocalIdentifier:assetLocalIdentifier deeplink:deeplink contentType:contentType sourceIdentifier:v11 relevanceScore:sourceIdentifier proactiveCriterion:proactiveCriterion suggestedCrop:suggestedCrop rejectReason:rejectReason];
   return v15;
 }
 
-- (PXTimelineEntry)initWithTitle:(id)a3 subtitle:(id)a4 localIdentifier:(id)a5 assetLocalIdentifier:(id)a6 deeplink:(id)a7 contentType:(unint64_t)a8 sourceIdentifier:(id)a9 relevanceScore:(double)a10 proactiveCriterion:(id)a11 suggestedCrop:(id)a12 rejectReason:(unint64_t)a13
+- (PXTimelineEntry)initWithTitle:(id)title subtitle:(id)subtitle localIdentifier:(id)identifier assetLocalIdentifier:(id)localIdentifier deeplink:(id)deeplink contentType:(unint64_t)type sourceIdentifier:(id)sourceIdentifier relevanceScore:(double)self0 proactiveCriterion:(id)self1 suggestedCrop:(id)self2 rejectReason:(unint64_t)self3
 {
-  v41 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a9;
-  v24 = a11;
-  v25 = a12;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  identifierCopy = identifier;
+  localIdentifierCopy = localIdentifier;
+  deeplinkCopy = deeplink;
+  sourceIdentifierCopy = sourceIdentifier;
+  criterionCopy = criterion;
+  cropCopy = crop;
   v42.receiver = self;
   v42.super_class = PXTimelineEntry;
   v26 = [(PXTimelineEntry *)&v42 init];
   if (v26)
   {
-    v27 = [v41 copy];
+    v27 = [titleCopy copy];
     title = v26->_title;
     v26->_title = v27;
 
-    v29 = [v19 copy];
+    v29 = [subtitleCopy copy];
     subtitle = v26->_subtitle;
     v26->_subtitle = v29;
 
-    v31 = [v20 copy];
+    v31 = [identifierCopy copy];
     localIdentifier = v26->_localIdentifier;
     v26->_localIdentifier = v31;
 
-    v33 = [v21 copy];
+    v33 = [localIdentifierCopy copy];
     assetLocalIdentifier = v26->_assetLocalIdentifier;
     v26->_assetLocalIdentifier = v33;
 
-    v35 = [v22 copy];
+    v35 = [deeplinkCopy copy];
     deeplink = v26->_deeplink;
     v26->_deeplink = v35;
 
-    v26->_contentType = a8;
-    v37 = [v23 copy];
+    v26->_contentType = type;
+    v37 = [sourceIdentifierCopy copy];
     sourceIdentifier = v26->_sourceIdentifier;
     v26->_sourceIdentifier = v37;
 
-    v26->_relevanceScore = a10;
-    objc_storeStrong(&v26->_proactiveCriterion, a11);
-    objc_storeStrong(&v26->_suggestedCrop, a12);
-    v26->_rejectReason = a13;
+    v26->_relevanceScore = score;
+    objc_storeStrong(&v26->_proactiveCriterion, criterion);
+    objc_storeStrong(&v26->_suggestedCrop, crop);
+    v26->_rejectReason = reason;
   }
 
   return v26;
 }
 
-- (PXTimelineEntry)initWithAsset:(id)a3 suggestedCrop:(id)a4
+- (PXTimelineEntry)initWithAsset:(id)asset suggestedCrop:(id)crop
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 localIdentifier];
-  v9 = [MEMORY[0x1E6978630] uuidFromLocalIdentifier:v8];
+  cropCopy = crop;
+  assetCopy = asset;
+  localIdentifier = [assetCopy localIdentifier];
+  v9 = [MEMORY[0x1E6978630] uuidFromLocalIdentifier:localIdentifier];
   v10 = MEMORY[0x1E695DFF8];
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos://asset?uuid=%@", v9];
   v12 = [v10 URLWithString:v11];
 
-  v13 = [v7 localIdentifier];
+  localIdentifier2 = [assetCopy localIdentifier];
 
-  v14 = [(PXTimelineEntry *)self initWithTitle:0 subtitle:0 localIdentifier:v13 assetLocalIdentifier:v8 deeplink:v12 contentType:3 sourceIdentifier:0.0 relevanceScore:0 proactiveCriterion:0 suggestedCrop:v6 rejectReason:0];
+  v14 = [(PXTimelineEntry *)self initWithTitle:0 subtitle:0 localIdentifier:localIdentifier2 assetLocalIdentifier:localIdentifier deeplink:v12 contentType:3 sourceIdentifier:0.0 relevanceScore:0 proactiveCriterion:0 suggestedCrop:cropCopy rejectReason:0];
   return v14;
 }
 
-- (PXTimelineEntry)initWithAlbumFeaturedPhoto:(id)a3 localAlbumIdentifier:(id)a4 andFeaturedPhotoKeyAsset:(id)a5 suggestedCrop:(id)a6
+- (PXTimelineEntry)initWithAlbumFeaturedPhoto:(id)photo localAlbumIdentifier:(id)identifier andFeaturedPhotoKeyAsset:(id)asset suggestedCrop:(id)crop
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a5 localIdentifier];
-  v14 = [MEMORY[0x1E6978630] uuidFromLocalIdentifier:v13];
-  v15 = [MEMORY[0x1E6978650] uuidFromLocalIdentifier:v11];
+  cropCopy = crop;
+  identifierCopy = identifier;
+  photoCopy = photo;
+  localIdentifier = [asset localIdentifier];
+  v14 = [MEMORY[0x1E6978630] uuidFromLocalIdentifier:localIdentifier];
+  v15 = [MEMORY[0x1E6978650] uuidFromLocalIdentifier:identifierCopy];
   v16 = MEMORY[0x1E695DFF8];
   v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos://asset?uuid=%@&albumuuid=%@&oneUp=1&source=widget", v14, v15];
   v18 = [v16 URLWithString:v17];
 
-  v19 = [PXProactiveSuggester proactiveCriterionForFeaturedPhoto:v12];
-  v20 = [v12 localIdentifier];
+  v19 = [PXProactiveSuggester proactiveCriterionForFeaturedPhoto:photoCopy];
+  localIdentifier2 = [photoCopy localIdentifier];
 
-  v21 = [(PXTimelineEntry *)self initWithTitle:0 subtitle:0 localIdentifier:v20 assetLocalIdentifier:v13 deeplink:v18 contentType:2 sourceIdentifier:0.0 relevanceScore:v11 proactiveCriterion:v19 suggestedCrop:v10 rejectReason:0];
+  v21 = [(PXTimelineEntry *)self initWithTitle:0 subtitle:0 localIdentifier:localIdentifier2 assetLocalIdentifier:localIdentifier deeplink:v18 contentType:2 sourceIdentifier:0.0 relevanceScore:identifierCopy proactiveCriterion:v19 suggestedCrop:cropCopy rejectReason:0];
   return v21;
 }
 
-- (PXTimelineEntry)initWithFeaturedPhoto:(id)a3 andFeaturedPhotoKeyAsset:(id)a4 suggestedCrop:(id)a5
+- (PXTimelineEntry)initWithFeaturedPhoto:(id)photo andFeaturedPhotoKeyAsset:(id)asset suggestedCrop:(id)crop
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 localIdentifier];
+  cropCopy = crop;
+  assetCopy = asset;
+  photoCopy = photo;
+  localIdentifier = [photoCopy localIdentifier];
   v12 = MEMORY[0x1E695DFF8];
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos://featuredPhoto?identifier=%@&source=widget", v11];
+  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos://featuredPhoto?identifier=%@&source=widget", localIdentifier];
   v14 = [v12 URLWithString:v13];
 
-  v15 = [PXProactiveSuggester proactiveCriterionForFeaturedPhoto:v10];
-  v16 = [v10 localIdentifier];
+  v15 = [PXProactiveSuggester proactiveCriterionForFeaturedPhoto:photoCopy];
+  localIdentifier2 = [photoCopy localIdentifier];
 
-  v17 = [v9 localIdentifier];
+  localIdentifier3 = [assetCopy localIdentifier];
 
-  v18 = [(PXTimelineEntry *)self initWithTitle:0 subtitle:0 localIdentifier:v16 assetLocalIdentifier:v17 deeplink:v14 contentType:1 sourceIdentifier:0.0 relevanceScore:0 proactiveCriterion:v15 suggestedCrop:v8 rejectReason:0];
+  v18 = [(PXTimelineEntry *)self initWithTitle:0 subtitle:0 localIdentifier:localIdentifier2 assetLocalIdentifier:localIdentifier3 deeplink:v14 contentType:1 sourceIdentifier:0.0 relevanceScore:0 proactiveCriterion:v15 suggestedCrop:cropCopy rejectReason:0];
   return v18;
 }
 
-- (PXTimelineEntry)initWithMemory:(id)a3 andMemoryKeyAsset:(id)a4
+- (PXTimelineEntry)initWithMemory:(id)memory andMemoryKeyAsset:(id)asset
 {
-  v6 = a4;
+  assetCopy = asset;
   v7 = MEMORY[0x1E695DFF8];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a3;
-  v10 = [v9 localIdentifier];
-  v11 = [v8 stringWithFormat:@"photos://memory?identifier=%@&source=widget", v10];
+  memoryCopy = memory;
+  localIdentifier = [memoryCopy localIdentifier];
+  v11 = [v8 stringWithFormat:@"photos://memory?identifier=%@&source=widget", localIdentifier];
   v12 = [v7 URLWithString:v11];
 
   v13 = MEMORY[0x1E6978918];
-  v14 = [MEMORY[0x1E695DF00] date];
-  [v13 relevanceScoreForMemory:v9 atDate:v14];
+  date = [MEMORY[0x1E695DF00] date];
+  [v13 relevanceScoreForMemory:memoryCopy atDate:date];
   v16 = v15;
 
-  v17 = [PXProactiveSuggester proactiveCriterionForMemory:v9];
-  v18 = [v9 localizedTitle];
-  v19 = [v9 localizedSubtitle];
-  v20 = [v9 localIdentifier];
+  v17 = [PXProactiveSuggester proactiveCriterionForMemory:memoryCopy];
+  localizedTitle = [memoryCopy localizedTitle];
+  localizedSubtitle = [memoryCopy localizedSubtitle];
+  localIdentifier2 = [memoryCopy localIdentifier];
 
-  if (v6)
+  if (assetCopy)
   {
-    v21 = [v6 localIdentifier];
-    v22 = [(PXTimelineEntry *)self initWithTitle:v18 subtitle:v19 localIdentifier:v20 assetLocalIdentifier:v21 deeplink:v12 contentType:0 sourceIdentifier:v16 relevanceScore:0 proactiveCriterion:v17 suggestedCrop:0 rejectReason:0];
+    localIdentifier3 = [assetCopy localIdentifier];
+    v22 = [(PXTimelineEntry *)self initWithTitle:localizedTitle subtitle:localizedSubtitle localIdentifier:localIdentifier2 assetLocalIdentifier:localIdentifier3 deeplink:v12 contentType:0 sourceIdentifier:v16 relevanceScore:0 proactiveCriterion:v17 suggestedCrop:0 rejectReason:0];
   }
 
   else
   {
-    v22 = [(PXTimelineEntry *)self initWithTitle:v18 subtitle:v19 localIdentifier:v20 assetLocalIdentifier:&stru_1F1741150 deeplink:v12 contentType:0 sourceIdentifier:v16 relevanceScore:0 proactiveCriterion:v17 suggestedCrop:0 rejectReason:0];
+    v22 = [(PXTimelineEntry *)self initWithTitle:localizedTitle subtitle:localizedSubtitle localIdentifier:localIdentifier2 assetLocalIdentifier:&stru_1F1741150 deeplink:v12 contentType:0 sourceIdentifier:v16 relevanceScore:0 proactiveCriterion:v17 suggestedCrop:0 rejectReason:0];
   }
 
   return v22;
 }
 
-+ (id)descriptionForRejectReason:(unint64_t)a3
++ (id)descriptionForRejectReason:(unint64_t)reason
 {
-  if (a3 - 1 > 3)
+  if (reason - 1 > 3)
   {
     return @"None";
   }
 
   else
   {
-    return off_1E7731ED0[a3 - 1];
+    return off_1E7731ED0[reason - 1];
   }
 }
 
-+ (id)descriptionForTimelineContentType:(unint64_t)a3
++ (id)descriptionForTimelineContentType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return @"Memory";
   }
 
   else
   {
-    return off_1E7731EB8[a3 - 1];
+    return off_1E7731EB8[type - 1];
   }
 }
 
-+ (id)privacyDisclosureEntryForContentType:(unint64_t)a3
++ (id)privacyDisclosureEntryForContentType:(unint64_t)type
 {
   v5 = PXLocalizedStringFromTable(@"PXTimelinePrivacyDisclosureRequired", @"PhotosUICore");
-  v6 = [a1 emptyWidgetURLForContentType:a3 sourceIdentifier:0];
-  v7 = [[PXTimelineEntry alloc] initWithTitle:v5 subtitle:@"-------" localIdentifier:&stru_1F1741150 assetLocalIdentifier:&stru_1F1741150 deeplink:v6 contentType:a3 sourceIdentifier:0.0 relevanceScore:0 proactiveCriterion:0 suggestedCrop:0 rejectReason:0];
+  v6 = [self emptyWidgetURLForContentType:type sourceIdentifier:0];
+  v7 = [[PXTimelineEntry alloc] initWithTitle:v5 subtitle:@"-------" localIdentifier:&stru_1F1741150 assetLocalIdentifier:&stru_1F1741150 deeplink:v6 contentType:type sourceIdentifier:0.0 relevanceScore:0 proactiveCriterion:0 suggestedCrop:0 rejectReason:0];
 
   return v7;
 }
 
-+ (id)fallbackEntryForAlbumNotFoundWithLocalIdentifier:(id)a3 size:(unint64_t)a4
++ (id)fallbackEntryForAlbumNotFoundWithLocalIdentifier:(id)identifier size:(unint64_t)size
 {
-  v6 = a3;
-  if (a4 > 3)
+  identifierCopy = identifier;
+  if (size > 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = PXLocalizedStringFromTable(off_1E7731E98[a4], @"PhotosUICore");
+    v7 = PXLocalizedStringFromTable(off_1E7731E98[size], @"PhotosUICore");
   }
 
-  v8 = [a1 emptyWidgetURLForContentType:2 sourceIdentifier:v6];
-  v9 = [[PXTimelineEntry alloc] initWithTitle:v7 subtitle:0 localIdentifier:&stru_1F1741150 assetLocalIdentifier:&stru_1F1741150 deeplink:v8 contentType:2 sourceIdentifier:0.0 relevanceScore:v6 proactiveCriterion:0 suggestedCrop:0 rejectReason:0];
+  v8 = [self emptyWidgetURLForContentType:2 sourceIdentifier:identifierCopy];
+  v9 = [[PXTimelineEntry alloc] initWithTitle:v7 subtitle:0 localIdentifier:&stru_1F1741150 assetLocalIdentifier:&stru_1F1741150 deeplink:v8 contentType:2 sourceIdentifier:0.0 relevanceScore:identifierCopy proactiveCriterion:0 suggestedCrop:0 rejectReason:0];
 
   return v9;
 }
 
-+ (id)fallbackEntryForContentType:(unint64_t)a3 sourceIdentifier:(id)a4 size:(unint64_t)a5
++ (id)fallbackEntryForContentType:(unint64_t)type sourceIdentifier:(id)identifier size:(unint64_t)size
 {
-  v7 = a4;
-  if (a3 == 2)
+  identifierCopy = identifier;
+  if (type == 2)
   {
     v8 = @"PXTimelineNoAlbumContentTitle";
   }
@@ -480,26 +480,26 @@ uint64_t __38__PXTimelineEntry__localTimeFormatter__block_invoke()
   }
 
   v9 = PXLocalizedStringFromTable(v8, @"PhotosUICore");
-  v10 = [a1 emptyWidgetURLForContentType:a3 sourceIdentifier:v7];
-  v11 = [[PXTimelineEntry alloc] initWithTitle:v9 subtitle:0 localIdentifier:&stru_1F1741150 assetLocalIdentifier:&stru_1F1741150 deeplink:v10 contentType:a3 sourceIdentifier:0.0 relevanceScore:v7 proactiveCriterion:0 suggestedCrop:0 rejectReason:0];
+  v10 = [self emptyWidgetURLForContentType:type sourceIdentifier:identifierCopy];
+  v11 = [[PXTimelineEntry alloc] initWithTitle:v9 subtitle:0 localIdentifier:&stru_1F1741150 assetLocalIdentifier:&stru_1F1741150 deeplink:v10 contentType:type sourceIdentifier:0.0 relevanceScore:identifierCopy proactiveCriterion:0 suggestedCrop:0 rejectReason:0];
 
   return v11;
 }
 
-+ (id)placeholderEntryForContentType:(unint64_t)a3
++ (id)placeholderEntryForContentType:(unint64_t)type
 {
   v5 = [PXTimelineEntry alloc];
-  v6 = [a1 emptyWidgetURLForContentType:a3 sourceIdentifier:0];
-  v7 = [(PXTimelineEntry *)v5 initWithTitle:@"---------------" subtitle:@"-------" localIdentifier:&stru_1F1741150 assetLocalIdentifier:&stru_1F1741150 deeplink:v6 contentType:a3 sourceIdentifier:0.0 relevanceScore:0 proactiveCriterion:0 suggestedCrop:0 rejectReason:0];
+  v6 = [self emptyWidgetURLForContentType:type sourceIdentifier:0];
+  v7 = [(PXTimelineEntry *)v5 initWithTitle:@"---------------" subtitle:@"-------" localIdentifier:&stru_1F1741150 assetLocalIdentifier:&stru_1F1741150 deeplink:v6 contentType:type sourceIdentifier:0.0 relevanceScore:0 proactiveCriterion:0 suggestedCrop:0 rejectReason:0];
 
   return v7;
 }
 
-+ (id)emptyWidgetURLForContentType:(unint64_t)a3 sourceIdentifier:(id)a4
++ (id)emptyWidgetURLForContentType:(unint64_t)type sourceIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 < 2)
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (type < 2)
   {
     v9 = PLIsFeaturedContentAllowed();
     v7 = MEMORY[0x1E695DFF8];
@@ -514,11 +514,11 @@ uint64_t __38__PXTimelineEntry__localTimeFormatter__block_invoke()
     }
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
-    if (v5)
+    if (identifierCopy)
     {
-      v10 = [MEMORY[0x1E6978650] uuidFromLocalIdentifier:v5];
+      v10 = [MEMORY[0x1E6978650] uuidFromLocalIdentifier:identifierCopy];
       v11 = MEMORY[0x1E695DFF8];
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos://album?uuid=%@", v10];
       v13 = [v11 URLWithString:v12];
@@ -532,7 +532,7 @@ uint64_t __38__PXTimelineEntry__localTimeFormatter__block_invoke()
 
   else
   {
-    if (a3 != 3)
+    if (type != 3)
     {
       v13 = 0;
       goto LABEL_13;

@@ -1,15 +1,15 @@
 @interface CSDInterventionProvider
-- (BOOL)interventionRequiredFor:(id)a3 callType:(unint64_t)a4;
+- (BOOL)interventionRequiredFor:(id)for callType:(unint64_t)type;
 @end
 
 @implementation CSDInterventionProvider
 
-- (BOOL)interventionRequiredFor:(id)a3 callType:(unint64_t)a4
+- (BOOL)interventionRequiredFor:(id)for callType:(unint64_t)type
 {
-  v5 = a3;
+  forCopy = for;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [SCAnalysisHistory willNeedInterventionForOutgoingCallToParticipants:v5 callType:a4 error:0];
+    v6 = [SCAnalysisHistory willNeedInterventionForOutgoingCallToParticipants:forCopy callType:type error:0];
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {

@@ -9,21 +9,21 @@
 - (HDCodableSample)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableSample);
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_283D35988;
   v3 = objc_msgSendSuper2(&v8, sel_codableRepresentationForSync);
   [(HDCodableSample *)v2 setObject:v3];
 
-  v4 = [a1 sampleType];
-  -[HDCodableSample setDataType:](v2, "setDataType:", [v4 code]);
+  sampleType = [self sampleType];
+  -[HDCodableSample setDataType:](v2, "setDataType:", [sampleType code]);
 
-  [a1 _startTimestamp];
+  [self _startTimestamp];
   if (v5 != 2.22507386e-308)
   {
     [(HDCodableSample *)v2 setStartDate:?];
   }
 
-  [a1 _endTimestamp];
+  [self _endTimestamp];
   if (v6 != 2.22507386e-308)
   {
     [(HDCodableSample *)v2 setEndDate:?];
@@ -35,13 +35,13 @@
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  if ([a1 conformsToProtocol:&unk_283D3FFC8])
+  if ([self conformsToProtocol:&unk_283D3FFC8])
   {
-    v5 = [a1 codableRepresentationForSync];
-    v6 = v5 != 0;
-    if (v5)
+    codableRepresentationForSync = [self codableRepresentationForSync];
+    v6 = codableRepresentationForSync != 0;
+    if (codableRepresentationForSync)
     {
-      [v4 addBinarySamples:v5];
+      [v4 addBinarySamples:codableRepresentationForSync];
     }
   }
 
@@ -65,12 +65,12 @@
   }
 
   v4 = v3;
-  v5 = [v4 sample];
-  v6 = [v5 dataType];
+  sample = [v4 sample];
+  dataType = [sample dataType];
 
   if (_HKValidDataTypeCode())
   {
-    v7 = [MEMORY[0x277CCD720] dataTypeWithCode:v6];
+    v7 = [MEMORY[0x277CCD720] dataTypeWithCode:dataType];
     v8 = [objc_alloc(objc_msgSend(v7 "dataObjectClass"))];
     if ([v8 conformsToProtocol:&unk_283D3FFC8])
     {

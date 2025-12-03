@@ -1,28 +1,28 @@
 @interface TSTMasterLayout
-+ (CGSize)tableNameTextSize:(id)a3;
-+ (double)effectiveTableNameHeightForModel:(id)a3;
-+ (id)tableNameTextEngine:(id)a3;
-- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)layoutCellIDForModelCellID:(id)a3;
-- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)modelCellIDForLayoutCellID:(id)a3;
-- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)modelCellIDForStrokesOfLayoutCellID:(id)a3;
-- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)p_validateFittingInfoForEmptyCellsBetween:(id)a3 andCellID:(id)a4 inRange:(id)a5;
-- (BOOL)cell:(id *)a3 forCellID:(id)a4;
-- (BOOL)hintIsValid:(id)a3;
++ (CGSize)tableNameTextSize:(id)size;
++ (double)effectiveTableNameHeightForModel:(id)model;
++ (id)tableNameTextEngine:(id)engine;
+- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)layoutCellIDForModelCellID:(id)d;
+- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)modelCellIDForLayoutCellID:(id)d;
+- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)modelCellIDForStrokesOfLayoutCellID:(id)d;
+- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)p_validateFittingInfoForEmptyCellsBetween:(id)between andCellID:(id)d inRange:(id)range;
+- (BOOL)cell:(id *)cell forCellID:(id)d;
+- (BOOL)hintIsValid:(id)valid;
 - (BOOL)isDynamicallyChangingContent;
 - (BOOL)isDynamicallyChangingRowOrColumnCount;
-- (BOOL)isDynamicallyHidingContentOfCellID:(id)a3;
+- (BOOL)isDynamicallyHidingContentOfCellID:(id)d;
 - (BOOL)isDynamicallyHidingRowsCols;
-- (BOOL)isDynamicallyHidingRowsCols:(int)a3 rowColIndex:(unsigned __int16)a4;
-- (BOOL)isDynamicallyHidingRowsColsCellID:(id)a3;
-- (BOOL)isDynamicallyHidingTextOfCellID:(id)a3;
-- (BOOL)isDynamicallyResizing:(int)a3;
-- (BOOL)isDynamicallyResizing:(int)a3 rowColIndex:(unsigned __int16)a4;
-- (BOOL)isDynamicallyResizingCellID:(id)a3;
+- (BOOL)isDynamicallyHidingRowsCols:(int)cols rowColIndex:(unsigned __int16)index;
+- (BOOL)isDynamicallyHidingRowsColsCellID:(id)d;
+- (BOOL)isDynamicallyHidingTextOfCellID:(id)d;
+- (BOOL)isDynamicallyResizing:(int)resizing;
+- (BOOL)isDynamicallyResizing:(int)resizing rowColIndex:(unsigned __int16)index;
+- (BOOL)isDynamicallyResizingCellID:(id)d;
 - (BOOL)isDynamicallyRevealingRowsCols;
-- (BOOL)isDynamicallyRevealingRowsCols:(int)a3 rowColIndex:(unsigned __int16)a4;
+- (BOOL)isDynamicallyRevealingRowsCols:(int)cols rowColIndex:(unsigned __int16)index;
 - (BOOL)isGrouped;
-- (BOOL)shouldRowUseBandedFill:(unsigned __int16)a3;
-- (BOOL)updateDynamicChangeRowOrColumnCount:(int)a3 count:(int)a4 newlyAddedElementSize:(double)a5;
+- (BOOL)shouldRowUseBandedFill:(unsigned __int16)fill;
+- (BOOL)updateDynamicChangeRowOrColumnCount:(int)count count:(int)a4 newlyAddedElementSize:(double)size;
 - (BOOL)useBandedFill;
 - (CGSize)maximumPartitionSize;
 - (CGSize)tableNameTextSize;
@@ -30,91 +30,91 @@
 - (NSIndexSet)visibleRowIndices;
 - (NSString)description;
 - (TSTLayout)dynamicLayout;
-- (TSTMasterLayout)initWithInfo:(id)a3;
-- (UIEdgeInsets)defaultPaddingForCellID:(id)a3;
-- (UIEdgeInsets)edgeInsetsFromPadding:(id)a3;
-- (UIEdgeInsets)paddingForCellID:(id)a3;
-- (double)calculatedTableNameHeightIncludingDynamicResize:(BOOL)a3;
-- (double)fontHeightOfParagraphStyle:(id)a3;
+- (TSTMasterLayout)initWithInfo:(id)info;
+- (UIEdgeInsets)defaultPaddingForCellID:(id)d;
+- (UIEdgeInsets)edgeInsetsFromPadding:(id)padding;
+- (UIEdgeInsets)paddingForCellID:(id)d;
+- (double)calculatedTableNameHeightIncludingDynamicResize:(BOOL)resize;
+- (double)fontHeightOfParagraphStyle:(id)style;
 - (double)tableNameHeight;
-- (id)accountingParagraphStylePropertyMapForCell:(id)a3 atCellID:(id)a4;
+- (id)accountingParagraphStylePropertyMapForCell:(id)cell atCellID:(id)d;
 - (id)newLayoutHint;
-- (id)newTextEngineForCell:(id)a3 atCellID:(id)a4;
-- (id)regionForStrokeValidationFromChangeDescriptors:(id)a3;
+- (id)newTextEngineForCell:(id)cell atCellID:(id)d;
+- (id)regionForStrokeValidationFromChangeDescriptors:(id)descriptors;
 - (id)tableNameTextEngine;
-- (id)validateCellForDrawing:(id)a3 cell:(id)a4 contents:(id)a5 wrap:(BOOL)a6 verticalAlignment:(unsigned int)a7 padding:(id)a8 layoutCacheFlags:(int)a9 pageNumber:(unint64_t)a10 pageCount:(unint64_t)a11;
-- (id)validateFittingInfoForChangeDescriptors:(id)a3 rowsNeedingFittingInfo:(id)a4;
-- (unsigned)tableAreaForCellID:(id)a3;
-- (void)addChangeDescriptor:(id)a3;
-- (void)addChangeDescriptorWithType:(int)a3 andCellRange:(id)a4 andStrokeRange:(id)a5;
-- (void)addDynamicLayoutBeginIfNecessary:(id)a3;
-- (void)beginDynamicMode:(id)a3;
-- (void)calculateRawTableSize:(CGSize *)a3 andStrokeDelta:(CGSize *)a4;
+- (id)validateCellForDrawing:(id)drawing cell:(id)cell contents:(id)contents wrap:(BOOL)wrap verticalAlignment:(unsigned int)alignment padding:(id)padding layoutCacheFlags:(int)flags pageNumber:(unint64_t)self0 pageCount:(unint64_t)self1;
+- (id)validateFittingInfoForChangeDescriptors:(id)descriptors rowsNeedingFittingInfo:(id)info;
+- (unsigned)tableAreaForCellID:(id)d;
+- (void)addChangeDescriptor:(id)descriptor;
+- (void)addChangeDescriptorWithType:(int)type andCellRange:(id)range andStrokeRange:(id)strokeRange;
+- (void)addDynamicLayoutBeginIfNecessary:(id)necessary;
+- (void)beginDynamicMode:(id)mode;
+- (void)calculateRawTableSize:(CGSize *)size andStrokeDelta:(CGSize *)delta;
 - (void)cancelDynamicModeChanges;
-- (void)clearModelHeightWidthCacheForCellRange:(id)a3;
+- (void)clearModelHeightWidthCacheForCellRange:(id)range;
 - (void)dealloc;
 - (void)endDynamicMode;
-- (void)measureTextForLayoutState:(id)a3;
+- (void)measureTextForLayoutState:(id)state;
 - (void)p_cancelDynamicRowColCountChanges;
-- (void)p_processChange:(id)a3 forChangeSource:(id)a4;
-- (void)p_validateFittingInfoForCellID:(id)a3 inMergeRange:(id)a4;
-- (void)p_validateFittingInfoForEmptyCellsOnSingleRowBetween:(id)a3 andEndCellID:(id)a4;
-- (void)processLayoutTask:(id)a3;
-- (void)queueCellForValidation:(id)a3 cell:(id)a4 mergeRange:(id)a5 wrap:(BOOL)a6 verticalAlignment:(unsigned int)a7 padding:(id)a8 prop:(BOOL)a9 layoutCacheFlags:(int)a10;
-- (void)removeDynamicLayoutEndIfNecessary:(id)a3;
+- (void)p_processChange:(id)change forChangeSource:(id)source;
+- (void)p_validateFittingInfoForCellID:(id)d inMergeRange:(id)range;
+- (void)p_validateFittingInfoForEmptyCellsOnSingleRowBetween:(id)between andEndCellID:(id)d;
+- (void)processLayoutTask:(id)task;
+- (void)queueCellForValidation:(id)validation cell:(id)cell mergeRange:(id)range wrap:(BOOL)wrap verticalAlignment:(unsigned int)alignment padding:(id)padding prop:(BOOL)prop layoutCacheFlags:(int)self0;
+- (void)removeDynamicLayoutEndIfNecessary:(id)necessary;
 - (void)resetModelHeightWidthCache;
-- (void)setChangeNotifier:(id)a3;
-- (void)setMaxConcurrentTasks:(unsigned int)a3;
-- (void)setProcessHiddenRowsForExport:(BOOL)a3;
-- (void)syncProcessChanges:(id)a3 forChangeSource:(id)a4;
-- (void)updateDynamicColumnSwapDelegate:(id)a3;
-- (void)updateDynamicContentDelegate:(id)a3;
-- (void)updateDynamicFontColor:(id)a3 andRange:(id)a4;
-- (void)updateDynamicHidingRowsCols:(int)a3 hidingCellRange:(id)a4;
-- (void)updateDynamicResize:(int)a3 resizingRange:(id)a4 resizeAdjustment:(double)a5;
-- (void)updateDynamicRevealingRowsCols:(int)a3 revealingCellRange:(id)a4;
-- (void)updateDynamicRowSwapDelegate:(id)a3;
-- (void)updateDynamicSelectionRegion:(id)a3;
+- (void)setChangeNotifier:(id)notifier;
+- (void)setMaxConcurrentTasks:(unsigned int)tasks;
+- (void)setProcessHiddenRowsForExport:(BOOL)export;
+- (void)syncProcessChanges:(id)changes forChangeSource:(id)source;
+- (void)updateDynamicColumnSwapDelegate:(id)delegate;
+- (void)updateDynamicContentDelegate:(id)delegate;
+- (void)updateDynamicFontColor:(id)color andRange:(id)range;
+- (void)updateDynamicHidingRowsCols:(int)cols hidingCellRange:(id)range;
+- (void)updateDynamicResize:(int)resize resizingRange:(id)range resizeAdjustment:(double)adjustment;
+- (void)updateDynamicRevealingRowsCols:(int)cols revealingCellRange:(id)range;
+- (void)updateDynamicRowSwapDelegate:(id)delegate;
+- (void)updateDynamicSelectionRegion:(id)region;
 - (void)updateWHCForMergeRanges;
 - (void)validate;
 - (void)validateBandedFill;
 - (void)validateChangeDescriptorQueue;
 - (void)validateDefaultFontHeights;
-- (void)validateFittingInfoForCell:(id)a3 cellID:(id)a4 mergeRange:(id)a5 setFitting:(BOOL)a6;
-- (void)validateFittingInfoWithCellRange:(id)a3;
-- (void)validateFittingWidthsForRegion:(id)a3;
-- (void)validateLayoutHint:(id)a3;
-- (void)validateMasterLayoutForChangeDescriptors:(id)a3;
-- (void)validateStrokesForRegion:(id)a3 regionAlreadyValidated:(id)a4;
+- (void)validateFittingInfoForCell:(id)cell cellID:(id)d mergeRange:(id)range setFitting:(BOOL)fitting;
+- (void)validateFittingInfoWithCellRange:(id)range;
+- (void)validateFittingWidthsForRegion:(id)region;
+- (void)validateLayoutHint:(id)hint;
+- (void)validateMasterLayoutForChangeDescriptors:(id)descriptors;
+- (void)validateStrokesForRegion:(id)region regionAlreadyValidated:(id)validated;
 - (void)validateTableRowsBehavior;
 - (void)waitForLayoutToComplete;
 - (void)wasRemovedFromDocumentRoot;
-- (void)willBeAddedToDocumentRoot:(id)a3;
+- (void)willBeAddedToDocumentRoot:(id)root;
 @end
 
 @implementation TSTMasterLayout
 
-- (void)setChangeNotifier:(id)a3
+- (void)setChangeNotifier:(id)notifier
 {
   if (!self->mChangeNotifier)
   {
-    self->mChangeNotifier = a3;
-    v6 = a3;
+    self->mChangeNotifier = notifier;
+    notifierCopy = notifier;
     mTableInfo = self->mTableInfo;
 
-    [a3 addObserver:self forChangeSource:mTableInfo];
+    [notifier addObserver:self forChangeSource:mTableInfo];
   }
 }
 
-- (void)setProcessHiddenRowsForExport:(BOOL)a3
+- (void)setProcessHiddenRowsForExport:(BOOL)export
 {
-  self->mProcessHiddenRowsForExport = a3;
-  v4 = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] range];
+  self->mProcessHiddenRowsForExport = export;
+  range = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] range];
 
-  TSTMasterLayoutInvalidateStrokeRange(self, *&v4);
+  TSTMasterLayoutInvalidateStrokeRange(self, *&range);
 }
 
-- (TSTMasterLayout)initWithInfo:(id)a3
+- (TSTMasterLayout)initWithInfo:(id)info
 {
   v14.receiver = self;
   v14.super_class = TSTMasterLayout;
@@ -123,11 +123,11 @@
   if (v4)
   {
     p_mDynamicHidingContent = &v4->mDynamicHidingContent;
-    v4->mTableInfo = a3;
+    v4->mTableInfo = info;
     v4->mCellIDToWPColumnCache = [(TSUConcurrentCache *)[TSTWPColumnCache alloc] initWithName:@"cell id to wp column $"];
     *(v5 + 40) = [(TSUConcurrentCache *)[TSTDupContentCache alloc] initWithName:@"dup $"];
     *(v5 + 48) = [(TSUConcurrentCache *)[TSTWPColumnCache alloc] initWithName:@"temp wp column $"];
-    *(v5 + 56) = -[TSTWidthHeightCache initWithNumRows:andNumCols:]([TSTWidthHeightCache alloc], "initWithNumRows:andNumCols:", [objc_msgSend(a3 "tableModel")], objc_msgSend(objc_msgSend(a3, "tableModel"), "numberOfColumns"));
+    *(v5 + 56) = -[TSTWidthHeightCache initWithNumRows:andNumCols:]([TSTWidthHeightCache alloc], "initWithNumRows:andNumCols:", [objc_msgSend(info "tableModel")], objc_msgSend(objc_msgSend(info, "tableModel"), "numberOfColumns"));
     *(v5 + 64) = [objc_alloc(MEMORY[0x277D6C360]) initWithIdentifier:@"TSTWHCacheQueue"];
     *(v5 + 88) = dispatch_group_create();
     *(v5 + 112) = 0xA0000000ALL;
@@ -222,7 +222,7 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] tableName];
+  tableName = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] tableName];
   TableNumberOfColumns = TSTMasterLayoutGetTableNumberOfColumns(self);
   TableNumberOfRows = TSTMasterLayoutGetTableNumberOfRows(self);
   v9 = MEMORY[0x277CCACA8];
@@ -238,7 +238,7 @@
     v12 = @"NO";
   }
 
-  return [v3 stringWithFormat:@"<%@:%p %@ range:%@ dynamic_mode:%@ >", v5, self, v6, v11, v12];
+  return [v3 stringWithFormat:@"<%@:%p %@ range:%@ dynamic_mode:%@ >", v5, self, tableName, v11, v12];
 }
 
 - (id)newLayoutHint
@@ -255,7 +255,7 @@
   return v3;
 }
 
-- (BOOL)hintIsValid:(id)a3
+- (BOOL)hintIsValid:(id)valid
 {
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
@@ -301,7 +301,7 @@
     v12 = TableNumberOfColumns - mCachedNumberOfHeaderColumns;
   }
 
-  v13 = [a3 cellRange];
+  cellRange = [valid cellRange];
   v14 = 0;
   v15 = 16711680;
   v16 = 0xFFFFLL;
@@ -333,13 +333,13 @@
   v14 = 0;
   v15 = 16711680;
   v16 = 0xFFFFLL;
-  if (v13 == 0xFFFF)
+  if (cellRange == 0xFFFF)
   {
     goto LABEL_35;
   }
 
   v17 = 0;
-  if ((v13 & 0xFF0000) == 0xFF0000)
+  if ((cellRange & 0xFF0000) == 0xFF0000)
   {
     goto LABEL_36;
   }
@@ -347,7 +347,7 @@
   v14 = 0;
   v15 = 16711680;
   v16 = 0xFFFFLL;
-  if (!HIWORD(v13))
+  if (!HIWORD(cellRange))
   {
 LABEL_35:
     v17 = 0;
@@ -355,18 +355,18 @@ LABEL_35:
   }
 
   v17 = 0;
-  if ((v13 & 0xFFFF00000000) != 0)
+  if ((cellRange & 0xFFFF00000000) != 0)
   {
     v16 = 0;
-    v18 = BYTE2(v13);
-    if (mCachedNumberOfHeaderColumns > BYTE2(v13))
+    v18 = BYTE2(cellRange);
+    if (mCachedNumberOfHeaderColumns > BYTE2(cellRange))
     {
       v18 = mCachedNumberOfHeaderColumns;
     }
 
-    if (mCachedNumberOfHeaderRows <= v13)
+    if (mCachedNumberOfHeaderRows <= cellRange)
     {
-      v19 = v13;
+      v19 = cellRange;
     }
 
     else
@@ -374,9 +374,9 @@ LABEL_35:
       v19 = mCachedNumberOfHeaderRows;
     }
 
-    if ((mCachedNumberOfHeaderColumns + v12 - 1) >= (BYTE4(v13) + BYTE2(v13) - 1))
+    if ((mCachedNumberOfHeaderColumns + v12 - 1) >= (BYTE4(cellRange) + BYTE2(cellRange) - 1))
     {
-      v20 = (BYTE4(v13) + BYTE2(v13) - 1);
+      v20 = (BYTE4(cellRange) + BYTE2(cellRange) - 1);
     }
 
     else
@@ -384,9 +384,9 @@ LABEL_35:
       v20 = (mCachedNumberOfHeaderColumns + v12 - 1);
     }
 
-    if ((TableNumberOfRows - mCachedNumberOfFooterRows - 1) >= (v13 + HIWORD(v13) - 1))
+    if ((TableNumberOfRows - mCachedNumberOfFooterRows - 1) >= (cellRange + HIWORD(cellRange) - 1))
     {
-      v21 = (v13 + HIWORD(v13) - 1);
+      v21 = (cellRange + HIWORD(cellRange) - 1);
     }
 
     else
@@ -410,7 +410,7 @@ LABEL_36:
   v22 = v15 | v16;
   v23 = v14 | v17;
   mHeaderRowsRepeat = self->mHeaderRowsRepeat;
-  if ((mCachedNumberOfHeaderRows - 1) < [a3 cellRange] && mHeaderRowsRepeat)
+  if ((mCachedNumberOfHeaderRows - 1) < [valid cellRange] && mHeaderRowsRepeat)
   {
     v25 = 0;
     do
@@ -422,20 +422,20 @@ LABEL_36:
   }
 
   v26 = v22 | v23;
-  v27 = [a3 cellRange];
-  v28 = [a3 cellRange];
-  if ((v28 + HIWORD(v28) - 1) >= v27)
+  cellRange2 = [valid cellRange];
+  cellRange3 = [valid cellRange];
+  if ((cellRange3 + HIWORD(cellRange3) - 1) >= cellRange2)
   {
     do
     {
-      v6 = v6 + TSTMasterLayoutHeightOfRow(self, v27++, 0, 0, 1, 1);
-      v29 = [a3 cellRange];
+      v6 = v6 + TSTMasterLayoutHeightOfRow(self, cellRange2++, 0, 0, 1, 1);
+      cellRange4 = [valid cellRange];
     }
 
-    while (v27 <= (v29 + HIWORD(v29) - 1));
+    while (cellRange2 <= (cellRange4 + HIWORD(cellRange4) - 1));
   }
 
-  [a3 maximumSize];
+  [valid maximumSize];
   v32 = v6 > v30 && HIWORD(v26) == 1;
   if (![(TSDDrawableInfo *)[(TSTMasterLayout *)self tableInfo] isInlineWithText])
   {
@@ -449,7 +449,7 @@ LABEL_36:
       v33 = self->mCachedNumberOfHeaderColumns;
     }
 
-    if ((v33 - 1) < ([a3 cellRange] >> 16))
+    if ((v33 - 1) < ([valid cellRange] >> 16))
     {
       v34 = 0;
       do
@@ -460,61 +460,61 @@ LABEL_36:
       while (v34 < v33);
     }
 
-    v35 = [a3 cellRange];
-    v36 = [a3 cellRange];
-    if (BYTE2(v35) <= (BYTE4(v36) + BYTE2(v36) - 1))
+    cellRange5 = [valid cellRange];
+    cellRange6 = [valid cellRange];
+    if (BYTE2(cellRange5) <= (BYTE4(cellRange6) + BYTE2(cellRange6) - 1))
     {
-      v37 = v35 >> 16;
+      v37 = cellRange5 >> 16;
       do
       {
         v5 = v5 + TSTMasterLayoutWidthOfColumn(self, v37, 0, 0, 1);
         LODWORD(v37) = v37 + 1;
-        v38 = [a3 cellRange];
+        cellRange7 = [valid cellRange];
       }
 
-      while (v37 <= (BYTE4(v38) + BYTE2(v38) - 1));
+      while (v37 <= (BYTE4(cellRange7) + BYTE2(cellRange7) - 1));
     }
 
-    [a3 maximumSize];
+    [valid maximumSize];
     v41 = v5 > v39 && (v26 & 0xFFFF00000000) == 0x100000000;
     v32 |= v41;
   }
 
-  [a3 maximumSize];
+  [valid maximumSize];
   if (v6 <= v42)
   {
-    [a3 maximumSize];
+    [valid maximumSize];
     if (v5 <= v43)
     {
       v32 = 1;
     }
   }
 
-  [a3 setIsValid:v32 & 1];
+  [valid setIsValid:v32 & 1];
 
-  return [a3 isValid];
+  return [valid isValid];
 }
 
-- (void)validateLayoutHint:(id)a3
+- (void)validateLayoutHint:(id)hint
 {
-  v5 = [(TSTMasterLayout *)self tableInfo];
+  tableInfo = [(TSTMasterLayout *)self tableInfo];
   objc_opt_class();
-  [(TSTTableInfo *)v5 partitioner];
+  [(TSTTableInfo *)tableInfo partitioner];
   v6 = TSUDynamicCast();
   TableNumberOfColumns = TSTMasterLayoutGetTableNumberOfColumns(self);
   TableNumberOfRows = TSTMasterLayoutGetTableNumberOfRows(self);
-  v9 = [a3 cellRange];
-  if (!v6 || ([a3 maximumSize], v11 = v9, v12 == INFINITY) && (v11 = v9, v10 == INFINITY))
+  cellRange = [hint cellRange];
+  if (!v6 || ([hint maximumSize], v11 = cellRange, v12 == INFINITY) && (v11 = cellRange, v10 == INFINITY))
   {
     v13 = TSTMasterLayoutGetTableNumberOfColumns(self);
     v11 = (v13 << 32) | (TSTMasterLayoutGetTableNumberOfRows(self) << 48);
-    [a3 setMaximumSize:{INFINITY, INFINITY}];
-    [a3 setCacheHintID:0];
+    [hint setMaximumSize:{INFINITY, INFINITY}];
+    [hint setCacheHintID:0];
   }
 
-  v14 = [(TSDDrawableInfo *)v5 isInlineWithText];
+  isInlineWithText = [(TSDDrawableInfo *)tableInfo isInlineWithText];
   v15 = (TableNumberOfColumns - 1);
-  if (v15 <= (BYTE4(v9) + BYTE2(v9) - 1))
+  if (v15 <= (BYTE4(cellRange) + BYTE2(cellRange) - 1))
   {
     v16 = v11;
   }
@@ -524,7 +524,7 @@ LABEL_36:
     v16 = TableNumberOfColumns << 32;
   }
 
-  if (!v14)
+  if (!isInlineWithText)
   {
     v16 = v11;
   }
@@ -565,44 +565,44 @@ LABEL_36:
   {
     *&self->mHeaderColumnsRepeat = 0;
     self->mHeaderColumnsFrozen = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] headerColumnsFrozen];
-    v21 = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] headerRowsFrozen];
+    headerRowsFrozen = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] headerRowsFrozen];
   }
 
   else
   {
     self->mHeaderColumnsRepeat = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] repeatingHeaderColumnsEnabled];
-    v22 = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] repeatingHeaderRowsEnabled];
-    v21 = 0;
-    self->mHeaderRowsRepeat = v22;
+    repeatingHeaderRowsEnabled = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] repeatingHeaderRowsEnabled];
+    headerRowsFrozen = 0;
+    self->mHeaderRowsRepeat = repeatingHeaderRowsEnabled;
     self->mHeaderColumnsFrozen = 0;
   }
 
-  self->mHeaderRowsFrozen = v21;
-  [a3 setPartitionPosition:v20];
-  [a3 setCellRange:v11 & 0xFFFF0000FFFFFFFFLL | (v19 << 32)];
+  self->mHeaderRowsFrozen = headerRowsFrozen;
+  [hint setPartitionPosition:v20];
+  [hint setCellRange:v11 & 0xFFFF0000FFFFFFFFLL | (v19 << 32)];
 
-  [a3 setIsValid:1];
+  [hint setIsValid:1];
 }
 
 - (void)resetModelHeightWidthCache
 {
-  v2 = [(TSTMasterLayout *)self widthHeightCache];
+  widthHeightCache = [(TSTMasterLayout *)self widthHeightCache];
 
-  [(TSTWidthHeightCache *)v2 resetModelCache];
+  [(TSTWidthHeightCache *)widthHeightCache resetModelCache];
 }
 
-- (void)clearModelHeightWidthCacheForCellRange:(id)a3
+- (void)clearModelHeightWidthCacheForCellRange:(id)range
 {
-  v4 = [(TSTMasterLayout *)self widthHeightCache];
+  widthHeightCache = [(TSTMasterLayout *)self widthHeightCache];
 
-  [(TSTWidthHeightCache *)v4 resetModelCacheRange:a3];
+  [(TSTWidthHeightCache *)widthHeightCache resetModelCacheRange:range];
 }
 
 - (id)tableNameTextEngine
 {
-  v2 = [(TSTMasterLayout *)self tableModel];
+  tableModel = [(TSTMasterLayout *)self tableModel];
 
-  return [TSTMasterLayout tableNameTextEngine:v2];
+  return [TSTMasterLayout tableNameTextEngine:tableModel];
 }
 
 - (CGSize)tableNameTextSize
@@ -623,39 +623,39 @@ LABEL_36:
   return result;
 }
 
-+ (id)tableNameTextEngine:(id)a3
++ (id)tableNameTextEngine:(id)engine
 {
-  v4 = +[TSWPColumnStyle defaultStyleWithContext:](TSWPColumnStyle, "defaultStyleWithContext:", [a3 context]);
-  [v4 setIntValue:objc_msgSend(objc_msgSend(a3 forProperty:{"tableNameShapeStyle"), "intValueForProperty:", 149), 149}];
-  v5 = [objc_msgSend(a3 "tableNameShapeStyle")];
+  v4 = +[TSWPColumnStyle defaultStyleWithContext:](TSWPColumnStyle, "defaultStyleWithContext:", [engine context]);
+  [v4 setIntValue:objc_msgSend(objc_msgSend(engine forProperty:{"tableNameShapeStyle"), "intValueForProperty:", 149), 149}];
+  v5 = [objc_msgSend(engine "tableNameShapeStyle")];
   if (!v5)
   {
     v5 = +[TSWPPadding padding];
   }
 
   [v4 setValue:v5 forProperty:146];
-  v6 = -[TSWPText initWithParagraphStyle:columnStyle:]([TSWPText alloc], "initWithParagraphStyle:columnStyle:", [a3 tableNameStyle], v4);
+  v6 = -[TSWPText initWithParagraphStyle:columnStyle:]([TSWPText alloc], "initWithParagraphStyle:columnStyle:", [engine tableNameStyle], v4);
 
   return v6;
 }
 
-+ (CGSize)tableNameTextSize:(id)a3
++ (CGSize)tableNameTextSize:(id)size
 {
-  v4 = [a3 tableName];
+  tableName = [size tableName];
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
-  if (v4)
+  if (tableName)
   {
-    v7 = v4;
-    if ([v4 length])
+    v7 = tableName;
+    if ([tableName length])
     {
-      v8 = [TSTMasterLayout tableNameTextEngine:a3];
+      v8 = [TSTMasterLayout tableNameTextEngine:size];
       [v8 measureText:v7];
       v5 = v9;
       v11 = v10;
       [objc_msgSend(v8 "paragraphStyle")];
       v13 = v11 + v12;
-      v14 = [*(a3 + 30) valueForProperty:146];
+      v14 = [*(size + 30) valueForProperty:146];
       [v14 topInset];
       v16 = v15;
       [v14 bottomInset];
@@ -670,11 +670,11 @@ LABEL_36:
   return result;
 }
 
-+ (double)effectiveTableNameHeightForModel:(id)a3
++ (double)effectiveTableNameHeightForModel:(id)model
 {
-  [a3 tableNameHeight];
+  [model tableNameHeight];
   v5 = v4;
-  [TSTMasterLayout tableNameTextSize:a3];
+  [TSTMasterLayout tableNameTextSize:model];
   if (v5 >= v6)
   {
     result = v5;
@@ -704,9 +704,9 @@ LABEL_36:
   return result;
 }
 
-- (double)calculatedTableNameHeightIncludingDynamicResize:(BOOL)a3
+- (double)calculatedTableNameHeightIncludingDynamicResize:(BOOL)resize
 {
-  v3 = a3;
+  resizeCopy = resize;
   if (self->mCachedTableNameHeight < 0.0)
   {
     self->mCachedTableNameHeight = 0.0;
@@ -714,9 +714,9 @@ LABEL_36:
     self->mCachedTableNameHeight = v5;
   }
 
-  v6 = [(TSTMasterLayout *)self isDynamicallyResizingTableName];
+  isDynamicallyResizingTableName = [(TSTMasterLayout *)self isDynamicallyResizingTableName];
   mCachedTableNameHeight = self->mCachedTableNameHeight;
-  if (v6 && v3)
+  if (isDynamicallyResizingTableName && resizeCopy)
   {
     [(TSTMasterLayout *)self dynamicTableNameResize];
     return mCachedTableNameHeight + v8;
@@ -725,16 +725,16 @@ LABEL_36:
   return mCachedTableNameHeight;
 }
 
-- (unsigned)tableAreaForCellID:(id)a3
+- (unsigned)tableAreaForCellID:(id)d
 {
   EntireFooterRowsCellRange = TSTMasterLayoutGetEntireFooterRowsCellRange(self);
-  if (HIWORD(EntireFooterRowsCellRange) && (EntireFooterRowsCellRange & 0xFFFF00000000) != 0 && EntireFooterRowsCellRange <= a3.var0 && (EntireFooterRowsCellRange + HIWORD(EntireFooterRowsCellRange) - 1) >= a3.var0 && a3.var1 >= BYTE2(EntireFooterRowsCellRange) && a3.var1 <= (BYTE4(EntireFooterRowsCellRange) + BYTE2(EntireFooterRowsCellRange) - 1))
+  if (HIWORD(EntireFooterRowsCellRange) && (EntireFooterRowsCellRange & 0xFFFF00000000) != 0 && EntireFooterRowsCellRange <= d.var0 && (EntireFooterRowsCellRange + HIWORD(EntireFooterRowsCellRange) - 1) >= d.var0 && d.var1 >= BYTE2(EntireFooterRowsCellRange) && d.var1 <= (BYTE4(EntireFooterRowsCellRange) + BYTE2(EntireFooterRowsCellRange) - 1))
   {
     return 3;
   }
 
   EntireHeaderRowsCellRange = TSTMasterLayoutGetEntireHeaderRowsCellRange(self);
-  if (HIWORD(EntireHeaderRowsCellRange) && (EntireHeaderRowsCellRange & 0xFFFF00000000) != 0 && EntireHeaderRowsCellRange <= a3.var0 && (EntireHeaderRowsCellRange + HIWORD(EntireHeaderRowsCellRange) - 1) >= a3.var0 && a3.var1 >= BYTE2(EntireHeaderRowsCellRange) && a3.var1 <= (BYTE4(EntireHeaderRowsCellRange) + BYTE2(EntireHeaderRowsCellRange) - 1))
+  if (HIWORD(EntireHeaderRowsCellRange) && (EntireHeaderRowsCellRange & 0xFFFF00000000) != 0 && EntireHeaderRowsCellRange <= d.var0 && (EntireHeaderRowsCellRange + HIWORD(EntireHeaderRowsCellRange) - 1) >= d.var0 && d.var1 >= BYTE2(EntireHeaderRowsCellRange) && d.var1 <= (BYTE4(EntireHeaderRowsCellRange) + BYTE2(EntireHeaderRowsCellRange) - 1))
   {
     return 1;
   }
@@ -743,9 +743,9 @@ LABEL_36:
   v8 = 0;
   if (HIWORD(EntireHeaderColumnsCellRange) && (EntireHeaderColumnsCellRange & 0xFFFF00000000) != 0)
   {
-    if (EntireHeaderColumnsCellRange <= a3.var0 && (EntireHeaderColumnsCellRange + HIWORD(EntireHeaderColumnsCellRange) - 1) >= a3.var0 && a3.var1 >= BYTE2(EntireHeaderColumnsCellRange))
+    if (EntireHeaderColumnsCellRange <= d.var0 && (EntireHeaderColumnsCellRange + HIWORD(EntireHeaderColumnsCellRange) - 1) >= d.var0 && d.var1 >= BYTE2(EntireHeaderColumnsCellRange))
     {
-      return 2 * (a3.var1 <= (BYTE4(EntireHeaderColumnsCellRange) + BYTE2(EntireHeaderColumnsCellRange) - 1));
+      return 2 * (d.var1 <= (BYTE4(EntireHeaderColumnsCellRange) + BYTE2(EntireHeaderColumnsCellRange) - 1));
     }
 
     else
@@ -757,7 +757,7 @@ LABEL_36:
   return v8;
 }
 
-- (id)regionForStrokeValidationFromChangeDescriptors:(id)a3
+- (id)regionForStrokeValidationFromChangeDescriptors:(id)descriptors
 {
   v31 = *MEMORY[0x277D85DE8];
   TableNumberOfColumns = TSTMasterLayoutGetTableNumberOfColumns(self);
@@ -766,8 +766,8 @@ LABEL_36:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = a3;
-  v7 = [a3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  obj = descriptors;
+  v7 = [descriptors countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (!v7)
   {
     v10 = 0;
@@ -792,22 +792,22 @@ LABEL_36:
       }
 
       v13 = *(*(&v26 + 1) + 8 * i);
-      v14 = [v13 changeDescriptor];
-      v15 = [v13 cellID];
-      v16 = [v13 strokeRegion];
-      v17 = v16;
-      if (v14 > 0x28)
+      changeDescriptor = [v13 changeDescriptor];
+      cellID = [v13 cellID];
+      strokeRegion = [v13 strokeRegion];
+      0x1000100000000 = strokeRegion;
+      if (changeDescriptor > 0x28)
       {
         goto LABEL_11;
       }
 
-      if (((1 << v14) & 0x10010004700) == 0)
+      if (((1 << changeDescriptor) & 0x10010004700) == 0)
       {
-        if (((1 << v14) & 0x600006) == 0)
+        if (((1 << changeDescriptor) & 0x600006) == 0)
         {
-          if (((1 << v14) & 0x8000C8) != 0)
+          if (((1 << changeDescriptor) & 0x8000C8) != 0)
           {
-            v17 = [v16 regionByUnioningEveryRangeInRegionWithRange:v15 | 0x1000100000000];
+            0x1000100000000 = [strokeRegion regionByUnioningEveryRangeInRegionWithRange:cellID | 0x1000100000000];
           }
 
 LABEL_11:
@@ -819,19 +819,19 @@ LABEL_11:
           goto LABEL_15;
         }
 
-        v17 = [v16 regionByUnioningEveryRangeInRegionWithRange:v23 | 0x1000100000000];
+        0x1000100000000 = [strokeRegion regionByUnioningEveryRangeInRegionWithRange:v23 | 0x1000100000000];
       }
 
       v9 = 1;
       if (v10)
       {
 LABEL_12:
-        v10 = [v10 regionByAddingRegion:v17];
+        v10 = [v10 regionByAddingRegion:0x1000100000000];
         continue;
       }
 
 LABEL_15:
-      v10 = v17;
+      v10 = 0x1000100000000;
     }
 
     v8 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -856,9 +856,9 @@ LABEL_22:
   return v19;
 }
 
-- (void)validateStrokesForRegion:(id)a3 regionAlreadyValidated:(id)a4
+- (void)validateStrokesForRegion:(id)region regionAlreadyValidated:(id)validated
 {
-  v5 = [a3 regionBySubtractingRegion:a4];
+  v5 = [region regionBySubtractingRegion:validated];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__TSTMasterLayout_validateStrokesForRegion_regionAlreadyValidated___block_invoke;
@@ -924,12 +924,12 @@ LABEL_3:
   return [(TSTMasterLayout *)self dynamicBandedFill];
 }
 
-- (BOOL)shouldRowUseBandedFill:(unsigned __int16)a3
+- (BOOL)shouldRowUseBandedFill:(unsigned __int16)fill
 {
-  v3 = a3;
+  fillCopy = fill;
   if (![(TSTMasterLayout *)self isDynamicallySettingBandedFill])
   {
-    return ([(TSTMasterLayout *)self emptyFilteredTable]|| self->mCachedNumberOfHeaderRows <= v3) && ([(TSTHiddenRowsColumnsCache *)self->mHiddenRowsColumnsCache numberOfVisibleRowsFromHeader:v3]& 1) == 0;
+    return ([(TSTMasterLayout *)self emptyFilteredTable]|| self->mCachedNumberOfHeaderRows <= fillCopy) && ([(TSTHiddenRowsColumnsCache *)self->mHiddenRowsColumnsCache numberOfVisibleRowsFromHeader:fillCopy]& 1) == 0;
   }
 
   return [(TSTMasterLayout *)self dynamicBandedFillSetting];
@@ -978,11 +978,11 @@ LABEL_7:
 {
   if (!self->mTableDefaultFontHeightsAreValid)
   {
-    v3 = [(TSTMasterLayout *)self tableModel];
+    tableModel = [(TSTMasterLayout *)self tableModel];
     for (i = 0; i != 4; ++i)
     {
       v5 = objc_alloc_init(TSTCell);
-      [(TSTTableModel *)v3 defaultCell:v5 forTableArea:i];
+      [(TSTTableModel *)tableModel defaultCell:v5 forTableArea:i];
       v6 = objc_alloc_init(TSTCellStateForLayout);
       [(TSTCellStateForLayout *)v6 setModelCellID:0xFFFFFFLL];
       [(TSTCellStateForLayout *)v6 setCell:v5];
@@ -999,11 +999,11 @@ LABEL_7:
       [(TSTCellStateForLayout *)v6 setPageNumber:0];
       [(TSTCellStateForLayout *)v6 setPageCount:0];
       [(TSTMasterLayout *)self measureTextForLayoutState:v6];
-      v7 = [(TSTCellStateForLayout *)v6 wpColumn];
-      [(TSWPColumn *)v7 typographicBoundsForCell];
-      [(TSWPColumn *)v7 frameBounds];
+      wpColumn = [(TSTCellStateForLayout *)v6 wpColumn];
+      [(TSWPColumn *)wpColumn typographicBoundsForCell];
+      [(TSWPColumn *)wpColumn frameBounds];
       v9 = v8;
-      v10 = [-[TSTTableModel defaultCellStyleForTableArea:](v3 defaultCellStyleForTableArea:{i), "valueForProperty:", 904}];
+      v10 = [-[TSTTableModel defaultCellStyleForTableArea:](tableModel defaultCellStyleForTableArea:{i), "valueForProperty:", 904}];
       [v10 topInset];
       v12 = v11;
       [v10 leftInset];
@@ -1017,22 +1017,22 @@ LABEL_7:
   }
 }
 
-- (void)calculateRawTableSize:(CGSize *)a3 andStrokeDelta:(CGSize *)a4
+- (void)calculateRawTableSize:(CGSize *)size andStrokeDelta:(CGSize *)delta
 {
   v6 = MEMORY[0x277CBF3A8];
-  *a4 = *MEMORY[0x277CBF3A8];
-  *a3 = *v6;
-  v23 = [(TSTMasterLayout *)self dynamicRepResize];
+  *delta = *MEMORY[0x277CBF3A8];
+  *size = *v6;
+  dynamicRepResize = [(TSTMasterLayout *)self dynamicRepResize];
   [(TSTMasterLayout *)self setDynamicRepResize:0];
-  v7 = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] range];
-  v8 = v7;
-  v9 = *&v7 >> 16;
-  v10 = HIWORD(*&v7);
+  range = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] range];
+  v8 = range;
+  v9 = *&range >> 16;
+  v10 = HIWORD(*&range);
   width = v6->width;
   height = v6->height;
-  if (HIWORD(*&v7) > v7.var0.var0)
+  if (HIWORD(*&range) > range.var0.var0)
   {
-    var0 = v7.var0;
+    var0 = range.var0;
     do
     {
       height = height + TSTMasterLayoutHeightOfRow(self, var0.var0, 0, 0, 1, 1);
@@ -1060,52 +1060,52 @@ LABEL_7:
   v19 = TSTMasterLayoutStrokeWidthOfGridColumn(self, (LOBYTE(v8.var1.var0) + v8.var0.var1 - 1) + 1, 0, 0xFFFFFFFF);
   if (v10 <= v8.var0.var0)
   {
-    v21 = a3->height;
-    v20 = a4;
+    v21 = size->height;
+    deltaCopy2 = delta;
   }
 
   else
   {
-    v20 = a4;
+    deltaCopy2 = delta;
     do
     {
-      v21 = TSTMasterLayoutHeightOfRow(self, v8.var0.var0, 0, 0, 0, 1) + a3->height;
-      a3->height = v21;
+      v21 = TSTMasterLayoutHeightOfRow(self, v8.var0.var0, 0, 0, 0, 1) + size->height;
+      size->height = v21;
       ++*&v8.var0;
     }
 
     while (v10 > v8.var0.var0);
   }
 
-  v20->height = v17 - v21;
+  deltaCopy2->height = v17 - v21;
   if (v8.var1.var0 <= var1)
   {
-    v22 = a3->width;
+    v22 = size->width;
   }
 
   else
   {
     do
     {
-      v22 = TSTMasterLayoutWidthOfColumn(self, v9, 0, 0, 1) + a3->width;
-      a3->width = v22;
+      v22 = TSTMasterLayoutWidthOfColumn(self, v9, 0, 0, 1) + size->width;
+      size->width = v22;
       LODWORD(v9) = v9 + 1;
     }
 
     while (v8.var1.var0 > v9);
   }
 
-  v20->width = width + (v18 + v19) * 0.5 - v22;
+  deltaCopy2->width = width + (v18 + v19) * 0.5 - v22;
 
-  [(TSTMasterLayout *)self setDynamicRepResize:v23];
+  [(TSTMasterLayout *)self setDynamicRepResize:dynamicRepResize];
 }
 
-- (void)beginDynamicMode:(id)a3
+- (void)beginDynamicMode:(id)mode
 {
-  if (a3)
+  if (mode)
   {
-    [(NSMutableSet *)[(TSTMasterLayout *)self dynamicLayouts] addObject:a3];
-    -[TSTMasterLayout setDynamicSavedLayoutGeometry:](self, "setDynamicSavedLayoutGeometry:", [a3 geometry]);
+    [(NSMutableSet *)[(TSTMasterLayout *)self dynamicLayouts] addObject:mode];
+    -[TSTMasterLayout setDynamicSavedLayoutGeometry:](self, "setDynamicSavedLayoutGeometry:", [mode geometry]);
   }
 
   self->mInDynamicLayoutMode = 1;
@@ -1190,13 +1190,13 @@ LABEL_7:
   self->mDynamicSuppressingConditionalStylesCellID = 0xFFFFFF;
 }
 
-- (void)addDynamicLayoutBeginIfNecessary:(id)a3
+- (void)addDynamicLayoutBeginIfNecessary:(id)necessary
 {
   if (self->mInDynamicLayoutMode)
   {
-    v4 = [(TSTMasterLayout *)self dynamicLayouts];
+    dynamicLayouts = [(TSTMasterLayout *)self dynamicLayouts];
 
-    [(NSMutableSet *)v4 addObject:a3];
+    [(NSMutableSet *)dynamicLayouts addObject:necessary];
   }
 
   else
@@ -1206,7 +1206,7 @@ LABEL_7:
   }
 }
 
-- (void)removeDynamicLayoutEndIfNecessary:(id)a3
+- (void)removeDynamicLayoutEndIfNecessary:(id)necessary
 {
   if ([(NSMutableSet *)[(TSTMasterLayout *)self dynamicLayouts] count]< 2)
   {
@@ -1216,23 +1216,23 @@ LABEL_7:
 
   else
   {
-    v5 = [(TSTMasterLayout *)self dynamicLayouts];
+    dynamicLayouts = [(TSTMasterLayout *)self dynamicLayouts];
 
-    [(NSMutableSet *)v5 removeObject:a3];
+    [(NSMutableSet *)dynamicLayouts removeObject:necessary];
   }
 }
 
-- (BOOL)cell:(id *)a3 forCellID:(id)a4
+- (BOOL)cell:(id *)cell forCellID:(id)d
 {
   mDynamicContentDelegate = self->mDynamicContentDelegate;
   if (mDynamicContentDelegate)
   {
     if (!-[TSTLayoutDynamicContentProtocol dynamicContentMustDrawOnMainThread](mDynamicContentDelegate, "dynamicContentMustDrawOnMainThread") || (LODWORD(mDynamicContentDelegate) = [MEMORY[0x277CCACC8] isMainThread], mDynamicContentDelegate))
     {
-      if (([(TSTLayoutDynamicContentProtocol *)self->mDynamicContentDelegate cell:a3 forCellID:*&a4]& 1) == 0)
+      if (([(TSTLayoutDynamicContentProtocol *)self->mDynamicContentDelegate cell:cell forCellID:*&d]& 1) == 0)
       {
         v8 = objc_alloc_init(TSTCell);
-        if (TSTCellAtCellID([(TSTMasterLayout *)self tableModel], *&a4, v8))
+        if (TSTCellAtCellID([(TSTMasterLayout *)self tableModel], *&d, v8))
         {
           v9 = 1;
         }
@@ -1248,7 +1248,7 @@ LABEL_7:
           return mDynamicContentDelegate;
         }
 
-        *a3 = v8;
+        *cell = v8;
       }
 
       LOBYTE(mDynamicContentDelegate) = 1;
@@ -1258,10 +1258,10 @@ LABEL_7:
   return mDynamicContentDelegate;
 }
 
-- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)modelCellIDForLayoutCellID:(id)a3
+- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)modelCellIDForLayoutCellID:(id)d
 {
-  v3 = *&a3.var0;
-  v5 = *&a3.var0 >> 16;
+  v3 = *&d.var0;
+  v5 = *&d.var0 >> 16;
   if ([(TSTMasterLayout *)self isDynamicallySwappingRows])
   {
     v6 = [(TSTLayoutDynamicRowSwapProtocol *)[(TSTMasterLayout *)self dynamicRowSwapDelegate] modelRowForLayoutRow:v3];
@@ -1344,17 +1344,17 @@ LABEL_7:
   return ((v5 << 16) | (v7 << 24) | v6);
 }
 
-- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)modelCellIDForStrokesOfLayoutCellID:(id)a3
+- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)modelCellIDForStrokesOfLayoutCellID:(id)d
 {
-  v5 = *&a3.var0 >> 16;
+  v5 = *&d.var0 >> 16;
   if ([(TSTMasterLayout *)self isDynamicallySwappingRows])
   {
-    var0 = [(TSTLayoutDynamicRowSwapProtocol *)[(TSTMasterLayout *)self dynamicRowSwapDelegate] modelRowForLayoutRow:a3.var0];
+    var0 = [(TSTLayoutDynamicRowSwapProtocol *)[(TSTMasterLayout *)self dynamicRowSwapDelegate] modelRowForLayoutRow:d.var0];
   }
 
   else
   {
-    var0 = a3.var0;
+    var0 = d.var0;
   }
 
   if ([(TSTMasterLayout *)self isDynamicallySwappingColumns])
@@ -1377,7 +1377,7 @@ LABEL_7:
 
     v9 = TableNumberOfRows - mCachedNumberOfFooterRows;
     mDynamicRowAdjustment = self->mDynamicRowAdjustment;
-    if (a3.var0 >= v9)
+    if (d.var0 >= v9)
     {
       var0 -= mDynamicRowAdjustment;
     }
@@ -1385,7 +1385,7 @@ LABEL_7:
     else
     {
       v11 = v9 - mDynamicRowAdjustment;
-      if (a3.var0 >= v11)
+      if (d.var0 >= v11)
       {
         var0 = [(TSTHiddenRowsColumnsCache *)[(TSTMasterLayout *)self hiddenRowsColumnsCache] previousVisibleRow:(v11 - 1)];
       }
@@ -1395,22 +1395,22 @@ LABEL_7:
   if ([(TSTMasterLayout *)self isDynamicallyChangingColumnCount])
   {
     v12 = TSTMasterLayoutGetTableNumberOfColumns(self) - self->mDynamicColumnAdjustment;
-    if (v12 <= a3.var1)
+    if (v12 <= d.var1)
     {
       LOBYTE(v5) = [(TSTHiddenRowsColumnsCache *)[(TSTMasterLayout *)self hiddenRowsColumnsCache] previousVisibleColumn:(v12 - 1)];
     }
   }
 
-  return (*&a3 & 0xFF000000 | (v5 << 16) | var0);
+  return (*&d & 0xFF000000 | (v5 << 16) | var0);
 }
 
-- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)layoutCellIDForModelCellID:(id)a3
+- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)layoutCellIDForModelCellID:(id)d
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = d.var1;
+  var0 = d.var0;
   if ([(TSTMasterLayout *)self isDynamicallySwappingRows])
   {
-    var0 = [(TSTLayoutDynamicRowSwapProtocol *)[(TSTMasterLayout *)self dynamicRowSwapDelegate] layoutRowForModelRow:a3.var0];
+    var0 = [(TSTLayoutDynamicRowSwapProtocol *)[(TSTMasterLayout *)self dynamicRowSwapDelegate] layoutRowForModelRow:d.var0];
   }
 
   if ([(TSTMasterLayout *)self isDynamicallySwappingColumns])
@@ -1425,24 +1425,24 @@ LABEL_7:
 
   if ([(TSTMasterLayout *)self isDynamicallyChangingRowCount])
   {
-    v8 = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] footerRowRange];
-    if (HIWORD(*&v8))
+    footerRowRange = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] footerRowRange];
+    if (HIWORD(*&footerRowRange))
     {
-      if ((*&v8 & 0xFFFF00000000) != 0 && v8.var0.var0 <= a3.var0 && (v8.var0.var0 + v8.var1.var1 - 1) >= a3.var0 && v8.var0.var1 <= var1 && var1 <= (LOBYTE(v8.var1.var0) + v8.var0.var1 - 1))
+      if ((*&footerRowRange & 0xFFFF00000000) != 0 && footerRowRange.var0.var0 <= d.var0 && (footerRowRange.var0.var0 + footerRowRange.var1.var1 - 1) >= d.var0 && footerRowRange.var0.var1 <= var1 && var1 <= (LOBYTE(footerRowRange.var1.var0) + footerRowRange.var0.var1 - 1))
       {
         var0 += LOWORD(self->mDynamicRowAdjustment);
       }
     }
   }
 
-  return (*&a3 & 0xFF000000 | (v7 << 16) | var0);
+  return (*&d & 0xFF000000 | (v7 << 16) | var0);
 }
 
-- (BOOL)isDynamicallyResizing:(int)a3
+- (BOOL)isDynamicallyResizing:(int)resizing
 {
-  if (a3)
+  if (resizing)
   {
-    if (a3 != 1 || !self->mDynamicResizingColumns)
+    if (resizing != 1 || !self->mDynamicResizingColumns)
     {
       return 0;
     }
@@ -1475,16 +1475,16 @@ LABEL_7:
   return 0;
 }
 
-- (BOOL)isDynamicallyResizing:(int)a3 rowColIndex:(unsigned __int16)a4
+- (BOOL)isDynamicallyResizing:(int)resizing rowColIndex:(unsigned __int16)index
 {
-  if (!a3)
+  if (!resizing)
   {
     if (self->mDynamicResizingRows)
     {
       mDynamicResizingRowRange = self->mDynamicResizingRowRange;
       v7 = !HIWORD(*&mDynamicResizingRowRange) || (*&mDynamicResizingRowRange & 0xFFFF00000000) == 0;
-      v8 = v7 || mDynamicResizingRowRange.origin.column > a4;
-      if (!v8 && a4 <= (LOBYTE(mDynamicResizingRowRange.size.numberOfColumns) + mDynamicResizingRowRange.origin.column - 1))
+      v8 = v7 || mDynamicResizingRowRange.origin.column > index;
+      if (!v8 && index <= (LOBYTE(mDynamicResizingRowRange.size.numberOfColumns) + mDynamicResizingRowRange.origin.column - 1))
       {
         return 1;
       }
@@ -1493,17 +1493,17 @@ LABEL_7:
     return 0;
   }
 
-  if (a3 != 1 || !self->mDynamicResizingColumns)
+  if (resizing != 1 || !self->mDynamicResizingColumns)
   {
     return 0;
   }
 
   mDynamicResizingColumnRange = self->mDynamicResizingColumnRange;
   v5 = !HIWORD(*&mDynamicResizingColumnRange) || (*&mDynamicResizingColumnRange & 0xFFFF00000000) == 0;
-  return !v5 && a4 >= mDynamicResizingColumnRange.origin.row && a4 <= (mDynamicResizingColumnRange.origin.row + mDynamicResizingColumnRange.size.numberOfRows - 1);
+  return !v5 && index >= mDynamicResizingColumnRange.origin.row && index <= (mDynamicResizingColumnRange.origin.row + mDynamicResizingColumnRange.size.numberOfRows - 1);
 }
 
-- (BOOL)isDynamicallyResizingCellID:(id)a3
+- (BOOL)isDynamicallyResizingCellID:(id)d
 {
   if (!self->mDynamicResizingRows || self->mDynamicResizingRowAdjustment == 0.0 || ((mDynamicResizingRowRange = self->mDynamicResizingRowRange, HIWORD(*&mDynamicResizingRowRange)) ? (v4 = (*&mDynamicResizingRowRange & 0xFFFF00000000) == 0) : (v4 = 1), v4))
   {
@@ -1512,8 +1512,8 @@ LABEL_7:
 
   else
   {
-    v9 = (mDynamicResizingRowRange.origin.row + mDynamicResizingRowRange.size.numberOfRows - 1) >= a3.var0;
-    if (*&self->mDynamicResizingRowRange > a3.var0)
+    v9 = (mDynamicResizingRowRange.origin.row + mDynamicResizingRowRange.size.numberOfRows - 1) >= d.var0;
+    if (*&self->mDynamicResizingRowRange > d.var0)
     {
       v9 = 0;
     }
@@ -1532,9 +1532,9 @@ LABEL_7:
       v6 = 1;
     }
 
-    if (!v6 && mDynamicResizingColumnRange.origin.column <= a3.var1)
+    if (!v6 && mDynamicResizingColumnRange.origin.column <= d.var1)
     {
-      v9 |= a3.var1 <= (LOBYTE(mDynamicResizingColumnRange.size.numberOfColumns) + mDynamicResizingColumnRange.origin.column - 1);
+      v9 |= d.var1 <= (LOBYTE(mDynamicResizingColumnRange.size.numberOfColumns) + mDynamicResizingColumnRange.origin.column - 1);
     }
   }
 
@@ -1543,23 +1543,23 @@ LABEL_7:
 
 - (NSIndexSet)visibleRowIndices
 {
-  v2 = [(TSTMasterLayout *)self hiddenRowsColumnsCache];
+  hiddenRowsColumnsCache = [(TSTMasterLayout *)self hiddenRowsColumnsCache];
 
-  return [(TSTHiddenRowsColumnsCache *)v2 visibleRowIndices];
+  return [(TSTHiddenRowsColumnsCache *)hiddenRowsColumnsCache visibleRowIndices];
 }
 
 - (NSIndexSet)visibleColumnIndices
 {
-  v2 = [(TSTMasterLayout *)self hiddenRowsColumnsCache];
+  hiddenRowsColumnsCache = [(TSTMasterLayout *)self hiddenRowsColumnsCache];
 
-  return [(TSTHiddenRowsColumnsCache *)v2 visibleColumnIndices];
+  return [(TSTHiddenRowsColumnsCache *)hiddenRowsColumnsCache visibleColumnIndices];
 }
 
 - (TSTLayout)dynamicLayout
 {
-  v2 = [(TSTMasterLayout *)self dynamicLayouts];
+  dynamicLayouts = [(TSTMasterLayout *)self dynamicLayouts];
 
-  return [(NSMutableSet *)v2 anyObject];
+  return [(NSMutableSet *)dynamicLayouts anyObject];
 }
 
 - (BOOL)isDynamicallyHidingRowsCols
@@ -1578,7 +1578,7 @@ LABEL_7:
   return v3 != 16711680 && v6;
 }
 
-- (BOOL)isDynamicallyHidingRowsCols:(int)a3 rowColIndex:(unsigned __int16)a4
+- (BOOL)isDynamicallyHidingRowsCols:(int)cols rowColIndex:(unsigned __int16)index
 {
   mDynamicHidingRowsCols = self->mDynamicHidingRowsCols;
   if (self->mDynamicHidingRowsCols.origin.row == 0xFFFF)
@@ -1588,20 +1588,20 @@ LABEL_7:
 
   v5 = (*&mDynamicHidingRowsCols & 0xFF0000) == 0xFF0000 || HIWORD(*&mDynamicHidingRowsCols) == 0;
   v6 = v5 || (*&mDynamicHidingRowsCols & 0xFFFF00000000) == 0;
-  if (v6 || self->mDynamicHidingRowsColsDirection != a3)
+  if (v6 || self->mDynamicHidingRowsColsDirection != cols)
   {
     return 0;
   }
 
-  if (a3 == 1)
+  if (cols == 1)
   {
-    return a4 >= mDynamicHidingRowsCols.origin.column && a4 <= (LOBYTE(mDynamicHidingRowsCols.size.numberOfColumns) + mDynamicHidingRowsCols.origin.column - 1);
+    return index >= mDynamicHidingRowsCols.origin.column && index <= (LOBYTE(mDynamicHidingRowsCols.size.numberOfColumns) + mDynamicHidingRowsCols.origin.column - 1);
   }
 
-  return !a3 && a4 >= mDynamicHidingRowsCols.origin.row && a4 <= (mDynamicHidingRowsCols.origin.row + mDynamicHidingRowsCols.size.numberOfRows - 1);
+  return !cols && index >= mDynamicHidingRowsCols.origin.row && index <= (mDynamicHidingRowsCols.origin.row + mDynamicHidingRowsCols.size.numberOfRows - 1);
 }
 
-- (BOOL)isDynamicallyHidingRowsColsCellID:(id)a3
+- (BOOL)isDynamicallyHidingRowsColsCellID:(id)d
 {
   mDynamicHidingRowsCols = self->mDynamicHidingRowsCols;
   result = 0;
@@ -1609,7 +1609,7 @@ LABEL_7:
   {
     v4 = (*&mDynamicHidingRowsCols & 0xFF0000) == 0xFF0000 || HIWORD(*&mDynamicHidingRowsCols) == 0;
     v5 = v4 || (*&mDynamicHidingRowsCols & 0xFFFF00000000) == 0;
-    if (!v5 && *&self->mDynamicHidingRowsCols <= a3.var0 && (mDynamicHidingRowsCols.origin.row + mDynamicHidingRowsCols.size.numberOfRows - 1) >= a3.var0 && a3.var1 >= mDynamicHidingRowsCols.origin.column && a3.var1 <= (LOBYTE(mDynamicHidingRowsCols.size.numberOfColumns) + mDynamicHidingRowsCols.origin.column - 1))
+    if (!v5 && *&self->mDynamicHidingRowsCols <= d.var0 && (mDynamicHidingRowsCols.origin.row + mDynamicHidingRowsCols.size.numberOfRows - 1) >= d.var0 && d.var1 >= mDynamicHidingRowsCols.origin.column && d.var1 <= (LOBYTE(mDynamicHidingRowsCols.size.numberOfColumns) + mDynamicHidingRowsCols.origin.column - 1))
     {
       return 1;
     }
@@ -1618,7 +1618,7 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isDynamicallyHidingContentOfCellID:(id)a3
+- (BOOL)isDynamicallyHidingContentOfCellID:(id)d
 {
   mDynamicHidingContent = self->mDynamicHidingContent;
   result = 0;
@@ -1626,7 +1626,7 @@ LABEL_7:
   {
     v4 = (*&mDynamicHidingContent & 0xFF0000) == 0xFF0000 || HIWORD(*&mDynamicHidingContent) == 0;
     v5 = v4 || (*&mDynamicHidingContent & 0xFFFF00000000) == 0;
-    if (!v5 && *&self->mDynamicHidingContent <= a3.var0 && (mDynamicHidingContent.origin.row + mDynamicHidingContent.size.numberOfRows - 1) >= a3.var0 && a3.var1 >= mDynamicHidingContent.origin.column && a3.var1 <= (LOBYTE(mDynamicHidingContent.size.numberOfColumns) + mDynamicHidingContent.origin.column - 1))
+    if (!v5 && *&self->mDynamicHidingContent <= d.var0 && (mDynamicHidingContent.origin.row + mDynamicHidingContent.size.numberOfRows - 1) >= d.var0 && d.var1 >= mDynamicHidingContent.origin.column && d.var1 <= (LOBYTE(mDynamicHidingContent.size.numberOfColumns) + mDynamicHidingContent.origin.column - 1))
     {
       return 1;
     }
@@ -1635,7 +1635,7 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isDynamicallyHidingTextOfCellID:(id)a3
+- (BOOL)isDynamicallyHidingTextOfCellID:(id)d
 {
   mDynamicHidingText = self->mDynamicHidingText;
   result = 0;
@@ -1643,7 +1643,7 @@ LABEL_7:
   {
     v4 = (*&mDynamicHidingText & 0xFF0000) == 0xFF0000 || HIWORD(*&mDynamicHidingText) == 0;
     v5 = v4 || (*&mDynamicHidingText & 0xFFFF00000000) == 0;
-    if (!v5 && *&self->mDynamicHidingText <= a3.var0 && (mDynamicHidingText.origin.row + mDynamicHidingText.size.numberOfRows - 1) >= a3.var0 && a3.var1 >= mDynamicHidingText.origin.column && a3.var1 <= (LOBYTE(mDynamicHidingText.size.numberOfColumns) + mDynamicHidingText.origin.column - 1))
+    if (!v5 && *&self->mDynamicHidingText <= d.var0 && (mDynamicHidingText.origin.row + mDynamicHidingText.size.numberOfRows - 1) >= d.var0 && d.var1 >= mDynamicHidingText.origin.column && d.var1 <= (LOBYTE(mDynamicHidingText.size.numberOfColumns) + mDynamicHidingText.origin.column - 1))
     {
       return 1;
     }
@@ -1652,9 +1652,9 @@ LABEL_7:
   return result;
 }
 
-- (void)updateDynamicResize:(int)a3 resizingRange:(id)a4 resizeAdjustment:(double)a5
+- (void)updateDynamicResize:(int)resize resizingRange:(id)range resizeAdjustment:(double)adjustment
 {
-  if (a3 == 1)
+  if (resize == 1)
   {
     p_mDynamicResizingColumnAdjustment = &self->mDynamicResizingColumnAdjustment;
     mDynamicResizingColumnRange = self->mDynamicResizingColumnRange;
@@ -1705,9 +1705,9 @@ LABEL_7:
     }
 
 LABEL_26:
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMasterLayout updateDynamicResize:resizingRange:resizeAdjustment:]"];
-    [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMasterLayout.mm"), v13, @"Dynamic resize invariants violated."}];
+    [currentHandler handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMasterLayout.mm"), v13, @"Dynamic resize invariants violated."}];
     goto LABEL_27;
   }
 
@@ -1757,8 +1757,8 @@ LABEL_22:
 
 LABEL_27:
   *(&self->super.isa + v11) = 1;
-  *(&self->super.isa + v10) = a4;
-  *p_mDynamicResizingColumnAdjustment = a5;
+  *(&self->super.isa + v10) = range;
+  *p_mDynamicResizingColumnAdjustment = adjustment;
 }
 
 - (BOOL)isDynamicallyRevealingRowsCols
@@ -1777,7 +1777,7 @@ LABEL_27:
   return v3 != 16711680 && v6;
 }
 
-- (BOOL)isDynamicallyRevealingRowsCols:(int)a3 rowColIndex:(unsigned __int16)a4
+- (BOOL)isDynamicallyRevealingRowsCols:(int)cols rowColIndex:(unsigned __int16)index
 {
   mDynamicRevealingRowsCols = self->mDynamicRevealingRowsCols;
   if (self->mDynamicRevealingRowsCols.origin.row == 0xFFFF)
@@ -1787,17 +1787,17 @@ LABEL_27:
 
   v5 = (*&mDynamicRevealingRowsCols & 0xFF0000) == 0xFF0000 || HIWORD(*&mDynamicRevealingRowsCols) == 0;
   v6 = v5 || (*&mDynamicRevealingRowsCols & 0xFFFF00000000) == 0;
-  if (v6 || self->mDynamicRevealingRowsColsDirection != a3)
+  if (v6 || self->mDynamicRevealingRowsColsDirection != cols)
   {
     return 0;
   }
 
-  if (a3 == 1)
+  if (cols == 1)
   {
-    return a4 >= mDynamicRevealingRowsCols.origin.column && a4 <= (LOBYTE(mDynamicRevealingRowsCols.size.numberOfColumns) + mDynamicRevealingRowsCols.origin.column - 1);
+    return index >= mDynamicRevealingRowsCols.origin.column && index <= (LOBYTE(mDynamicRevealingRowsCols.size.numberOfColumns) + mDynamicRevealingRowsCols.origin.column - 1);
   }
 
-  return !a3 && a4 >= mDynamicRevealingRowsCols.origin.row && a4 <= (mDynamicRevealingRowsCols.origin.row + mDynamicRevealingRowsCols.size.numberOfRows - 1);
+  return !cols && index >= mDynamicRevealingRowsCols.origin.row && index <= (mDynamicRevealingRowsCols.origin.row + mDynamicRevealingRowsCols.size.numberOfRows - 1);
 }
 
 - (BOOL)isDynamicallyChangingRowOrColumnCount
@@ -1810,7 +1810,7 @@ LABEL_27:
   return [(TSTMasterLayout *)self isDynamicallyChangingColumnCount];
 }
 
-- (void)updateDynamicSelectionRegion:(id)a3
+- (void)updateDynamicSelectionRegion:(id)region
 {
   mDynamicSelectionRegion = self->mDynamicSelectionRegion;
   if (mDynamicSelectionRegion)
@@ -1819,14 +1819,14 @@ LABEL_27:
     self->mDynamicSelectionRegion = 0;
   }
 
-  if (a3)
+  if (region)
   {
-    v6 = a3;
-    self->mDynamicSelectionRegion = a3;
+    regionCopy = region;
+    self->mDynamicSelectionRegion = region;
   }
 }
 
-- (BOOL)updateDynamicChangeRowOrColumnCount:(int)a3 count:(int)a4 newlyAddedElementSize:(double)a5
+- (BOOL)updateDynamicChangeRowOrColumnCount:(int)count count:(int)a4 newlyAddedElementSize:(double)size
 {
   if (!a4)
   {
@@ -1836,12 +1836,12 @@ LABEL_27:
   v6 = *&a4;
   TableNumberOfColumns = TSTMasterLayoutGetTableNumberOfColumns(self);
   TableNumberOfRows = TSTMasterLayoutGetTableNumberOfRows(self);
-  v11 = [(TSTMasterLayout *)self tableModel];
-  if (!a3)
+  tableModel = [(TSTMasterLayout *)self tableModel];
+  if (!count)
   {
-    v15 = [(TSTTableModel *)v11 numberOfRows]+ v6 + self->mDynamicRowAdjustment;
+    v15 = [(TSTTableModel *)tableModel numberOfRows]+ v6 + self->mDynamicRowAdjustment;
     self->mDynamicResizingRows = 1;
-    self->mDynamicAddOrRemoveRowElementSize = a5;
+    self->mDynamicAddOrRemoveRowElementSize = size;
     if (v15 <= SLODWORD(self->mCachedMaxNumberOfRows))
     {
       v16 = [(TSTMasterLayout *)self emptyFilteredTable]? 0 : self->mCachedNumberOfHeaderRows;
@@ -1868,7 +1868,7 @@ LABEL_27:
           v27 = (TableNumberOfRows + v6 - mCachedNumberOfFooterRows);
           v19 = v27 | (-v6 << 48) | v26;
           v20 = v27 | ((mCachedNumberOfFooterRows - v6 + 1) << 48) | v26;
-          v21 = self;
+          selfCopy4 = self;
           v22 = 21;
         }
 
@@ -1876,7 +1876,7 @@ LABEL_27:
         {
           v19 = (TableNumberOfRows - mCachedNumberOfFooterRows) | (v6 << 48) | v26;
           v20 = (TableNumberOfRows + ~mCachedNumberOfFooterRows) | ((v6 + mCachedNumberOfFooterRows + 1) << 48) | v26;
-          v21 = self;
+          selfCopy4 = self;
           v22 = 22;
         }
 
@@ -1887,9 +1887,9 @@ LABEL_27:
     return 0;
   }
 
-  v12 = [(TSTTableModel *)v11 numberOfColumns]+ v6 + self->mDynamicColumnAdjustment;
+  v12 = [(TSTTableModel *)tableModel numberOfColumns]+ v6 + self->mDynamicColumnAdjustment;
   self->mDynamicResizingColumns = 1;
-  self->mDynamicAddOrRemoveColumnElementSize = a5;
+  self->mDynamicAddOrRemoveColumnElementSize = size;
   if (v12 > SLODWORD(self->mCachedMaxNumberOfColumns))
   {
     return 0;
@@ -1909,7 +1909,7 @@ LABEL_27:
   {
     v19 = v18 | (((TableNumberOfColumns + v6) - (v6 << 16)) << 16);
     v20 = (((TableNumberOfColumns + v6) << 16) + 16711680) & 0xFF0000 | ((1 - v6) << 32) | v18;
-    v21 = self;
+    selfCopy4 = self;
     v22 = 1;
   }
 
@@ -1917,23 +1917,23 @@ LABEL_27:
   {
     v19 = v18 | ((TableNumberOfColumns | (v6 << 16)) << 16);
     v20 = ((v6 + 1) << 32) | ((TableNumberOfColumns - 1) << 16) | v18;
-    v21 = self;
+    selfCopy4 = self;
     v22 = 2;
   }
 
 LABEL_27:
-  [(TSTMasterLayout *)v21 addChangeDescriptorWithType:v22 andCellRange:v19 andStrokeRange:v20];
+  [(TSTMasterLayout *)selfCopy4 addChangeDescriptorWithType:v22 andCellRange:v19 andStrokeRange:v20];
   *p_mDynamicRowAdjustment += v6;
   [(TSTLayout *)[(TSTMasterLayout *)self dynamicLayout] invalidateSize];
   [(TSTLayout *)[(TSTMasterLayout *)self dynamicLayout] validate];
   return 1;
 }
 
-- (void)updateDynamicHidingRowsCols:(int)a3 hidingCellRange:(id)a4
+- (void)updateDynamicHidingRowsCols:(int)cols hidingCellRange:(id)range
 {
   mDynamicHidingRowsColsDirection = self->mDynamicHidingRowsColsDirection;
   mDynamicHidingRowsCols = self->mDynamicHidingRowsCols;
-  if (mDynamicHidingRowsColsDirection != a3 || ((*&mDynamicHidingRowsCols ^ *&a4) & 0xFFFFFFFF00FFFFFFLL) != 0)
+  if (mDynamicHidingRowsColsDirection != cols || ((*&mDynamicHidingRowsCols ^ *&range) & 0xFFFFFFFF00FFFFFFLL) != 0)
   {
     if (mDynamicHidingRowsCols.origin.row != 0xFFFF)
     {
@@ -1954,9 +1954,9 @@ LABEL_27:
       }
     }
 
-    if (a4.var0.var0 != 0xFFFF && (*&a4 & 0xFF0000) != 0xFF0000 && HIWORD(*&a4) && (*&a4 & 0xFFFF00000000) != 0)
+    if (range.var0.var0 != 0xFFFF && (*&range & 0xFF0000) != 0xFF0000 && HIWORD(*&range) && (*&range & 0xFFFF00000000) != 0)
     {
-      if (a3 == 1)
+      if (cols == 1)
       {
         v13 = 5;
       }
@@ -1966,19 +1966,19 @@ LABEL_27:
         v13 = 26;
       }
 
-      [(TSTMasterLayout *)self addChangeDescriptorWithType:v13 andCellRange:a4 andStrokeRange:a4];
+      [(TSTMasterLayout *)self addChangeDescriptorWithType:v13 andCellRange:range andStrokeRange:range];
     }
 
-    self->mDynamicHidingRowsCols = a4;
-    self->mDynamicHidingRowsColsDirection = a3;
+    self->mDynamicHidingRowsCols = range;
+    self->mDynamicHidingRowsColsDirection = cols;
   }
 }
 
-- (void)updateDynamicRevealingRowsCols:(int)a3 revealingCellRange:(id)a4
+- (void)updateDynamicRevealingRowsCols:(int)cols revealingCellRange:(id)range
 {
   mDynamicRevealingRowsColsDirection = self->mDynamicRevealingRowsColsDirection;
   mDynamicRevealingRowsCols = self->mDynamicRevealingRowsCols;
-  if (mDynamicRevealingRowsColsDirection != a3 || ((*&mDynamicRevealingRowsCols ^ *&a4) & 0xFFFFFFFF00FFFFFFLL) != 0)
+  if (mDynamicRevealingRowsColsDirection != cols || ((*&mDynamicRevealingRowsCols ^ *&range) & 0xFFFFFFFF00FFFFFFLL) != 0)
   {
     if (mDynamicRevealingRowsCols.origin.row != 0xFFFF)
     {
@@ -1999,9 +1999,9 @@ LABEL_27:
       }
     }
 
-    if (a4.var0.var0 != 0xFFFF && (*&a4 & 0xFF0000) != 0xFF0000 && HIWORD(*&a4) && (*&a4 & 0xFFFF00000000) != 0)
+    if (range.var0.var0 != 0xFFFF && (*&range & 0xFF0000) != 0xFF0000 && HIWORD(*&range) && (*&range & 0xFFFF00000000) != 0)
     {
-      if (a3 == 1)
+      if (cols == 1)
       {
         v13 = 5;
       }
@@ -2011,18 +2011,18 @@ LABEL_27:
         v13 = 26;
       }
 
-      [(TSTMasterLayout *)self addChangeDescriptorWithType:v13 andCellRange:a4 andStrokeRange:a4];
+      [(TSTMasterLayout *)self addChangeDescriptorWithType:v13 andCellRange:range andStrokeRange:range];
     }
 
-    self->mDynamicRevealingRowsCols = a4;
-    self->mDynamicRevealingRowsColsDirection = a3;
+    self->mDynamicRevealingRowsCols = range;
+    self->mDynamicRevealingRowsColsDirection = cols;
   }
 }
 
-- (void)updateDynamicContentDelegate:(id)a3
+- (void)updateDynamicContentDelegate:(id)delegate
 {
   mDynamicContentDelegate = self->mDynamicContentDelegate;
-  if (mDynamicContentDelegate != a3)
+  if (mDynamicContentDelegate != delegate)
   {
     if (mDynamicContentDelegate)
     {
@@ -2030,15 +2030,15 @@ LABEL_27:
       self->mDynamicContentDelegate = 0;
     }
 
-    if (a3)
+    if (delegate)
     {
-      v6 = a3;
-      self->mDynamicContentDelegate = a3;
+      delegateCopy = delegate;
+      self->mDynamicContentDelegate = delegate;
     }
   }
 }
 
-- (void)updateDynamicFontColor:(id)a3 andRange:(id)a4
+- (void)updateDynamicFontColor:(id)color andRange:(id)range
 {
   mDynamicFontColor = self->mDynamicFontColor;
   if (mDynamicFontColor)
@@ -2047,16 +2047,16 @@ LABEL_27:
     self->mDynamicFontColor = 0;
   }
 
-  if (a3)
+  if (color)
   {
-    v8 = a3;
-    self->mDynamicFontColor = a3;
+    colorCopy = color;
+    self->mDynamicFontColor = color;
   }
 
-  self->mDynamicFontColorCellRange = a4;
+  self->mDynamicFontColorCellRange = range;
 }
 
-- (void)updateDynamicRowSwapDelegate:(id)a3
+- (void)updateDynamicRowSwapDelegate:(id)delegate
 {
   mDynamicRowSwapDelegate = self->mDynamicRowSwapDelegate;
   if (mDynamicRowSwapDelegate)
@@ -2065,14 +2065,14 @@ LABEL_27:
     self->mDynamicRowSwapDelegate = 0;
   }
 
-  if (a3)
+  if (delegate)
   {
-    v6 = a3;
-    self->mDynamicRowSwapDelegate = a3;
+    delegateCopy = delegate;
+    self->mDynamicRowSwapDelegate = delegate;
   }
 }
 
-- (void)updateDynamicColumnSwapDelegate:(id)a3
+- (void)updateDynamicColumnSwapDelegate:(id)delegate
 {
   mDynamicColumnSwapDelegate = self->mDynamicColumnSwapDelegate;
   if (mDynamicColumnSwapDelegate)
@@ -2081,10 +2081,10 @@ LABEL_27:
     self->mDynamicColumnSwapDelegate = 0;
   }
 
-  if (a3)
+  if (delegate)
   {
-    v6 = a3;
-    self->mDynamicColumnSwapDelegate = a3;
+    delegateCopy = delegate;
+    self->mDynamicColumnSwapDelegate = delegate;
   }
 }
 
@@ -2109,26 +2109,26 @@ LABEL_27:
   return objc_opt_isKindOfClass() & 1;
 }
 
-- (void)p_processChange:(id)a3 forChangeSource:(id)a4
+- (void)p_processChange:(id)change forChangeSource:(id)source
 {
-  if ([a4 isEqual:{-[TSTMasterLayout tableInfo](self, "tableInfo")}])
+  if ([source isEqual:{-[TSTMasterLayout tableInfo](self, "tableInfo")}])
   {
     objc_opt_class();
-    [a3 details];
+    [change details];
     v6 = TSUDynamicCast();
     if (!v6)
     {
       objc_opt_class();
-      [a3 details];
+      [change details];
       v7 = TSUDynamicCast();
       if (!v7)
       {
         return;
       }
 
-      v8 = [v7 changedProperties];
-      v9 = [v8 propertySetByIntersectingWithPropertySet:{+[TSWPParagraphStyle properties](TSWPParagraphStyle, "properties")}];
-      v10 = [v8 propertySetByIntersectingWithPropertySet:{+[TSTCellStyle properties](TSTCellStyle, "properties")}];
+      changedProperties = [v7 changedProperties];
+      v9 = [changedProperties propertySetByIntersectingWithPropertySet:{+[TSWPParagraphStyle properties](TSWPParagraphStyle, "properties")}];
+      v10 = [changedProperties propertySetByIntersectingWithPropertySet:{+[TSTCellStyle properties](TSTCellStyle, "properties")}];
       if (![v9 count] && !objc_msgSend(v10, "count"))
       {
         return;
@@ -2147,17 +2147,17 @@ LABEL_27:
     v11 = TSUDynamicCast();
     if ([v11 wpKind] == 5)
     {
-      v12 = [(TSTEditingState *)[(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] editingState] editingCellID];
-      v13 = [v11 hyperlinkCellID];
-      if (v13 != 0xFFFF && (v13 & 0xFF0000) != 0xFF0000)
+      editingCellID = [(TSTEditingState *)[(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] editingState] editingCellID];
+      hyperlinkCellID = [v11 hyperlinkCellID];
+      if (hyperlinkCellID != 0xFFFF && (hyperlinkCellID & 0xFF0000) != 0xFF0000)
       {
-        v12 = [v11 hyperlinkCellID];
+        editingCellID = [v11 hyperlinkCellID];
       }
 
-      v14 = *&v12 | 0x1000100000000;
+      v14 = *&editingCellID | 0x1000100000000;
       if (![(TSTMasterLayout *)self emptyFilteredTable])
       {
-        v14 = TSTTableExpandCellRangeToCoverMergedCells([(TSTMasterLayout *)self tableModel], *&v12 | 0x1000100000000);
+        v14 = TSTTableExpandCellRangeToCoverMergedCells([(TSTMasterLayout *)self tableModel], *&editingCellID | 0x1000100000000);
       }
 
       if (v14 != 0xFFFF && (v14 & 0xFF0000) != 0xFF0000 && HIWORD(v14) && (v14 & 0xFFFF00000000) != 0)
@@ -2171,16 +2171,16 @@ LABEL_19:
   }
 }
 
-- (void)syncProcessChanges:(id)a3 forChangeSource:(id)a4
+- (void)syncProcessChanges:(id)changes forChangeSource:(id)source
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 && [a3 count])
+  if (changes && [changes count])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [changes countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2192,53 +2192,53 @@ LABEL_19:
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(changes);
           }
 
-          [(TSTMasterLayout *)self p_processChange:*(*(&v11 + 1) + 8 * v10++) forChangeSource:a4];
+          [(TSTMasterLayout *)self p_processChange:*(*(&v11 + 1) + 8 * v10++) forChangeSource:source];
         }
 
         while (v8 != v10);
-        v8 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [changes countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
     }
 
-    if ([(TSTMasterLayout *)self tableInfo]== a4)
+    if ([(TSTMasterLayout *)self tableInfo]== source)
     {
-      [(TSTLayout *)[(TSTTablePartitioner *)[(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] partitioner] scaledLayout] processChanges:a3];
+      [(TSTLayout *)[(TSTTablePartitioner *)[(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] partitioner] scaledLayout] processChanges:changes];
     }
   }
 }
 
-- (void)addChangeDescriptorWithType:(int)a3 andCellRange:(id)a4 andStrokeRange:(id)a5
+- (void)addChangeDescriptorWithType:(int)type andCellRange:(id)range andStrokeRange:(id)strokeRange
 {
-  v6 = [TSTChangeDescriptor changeDescriptorWithType:*&a3 cellRange:a4 strokeRange:a5];
+  v6 = [TSTChangeDescriptor changeDescriptorWithType:*&type cellRange:range strokeRange:strokeRange];
 
   [(TSTMasterLayout *)self addChangeDescriptor:v6];
 }
 
-- (void)addChangeDescriptor:(id)a3
+- (void)addChangeDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     mChangeDescriptors = self->mChangeDescriptors;
     objc_sync_enter(mChangeDescriptors);
-    if ([a3 changeDescriptor] != 33 && objc_msgSend(a3, "changeDescriptor") != 29 || (objc_msgSend(-[NSMutableArray lastObject](-[TSTMasterLayout changeDescriptors](self, "changeDescriptors"), "lastObject"), "isEqual:", a3) & 1) == 0)
+    if ([descriptor changeDescriptor] != 33 && objc_msgSend(descriptor, "changeDescriptor") != 29 || (objc_msgSend(-[NSMutableArray lastObject](-[TSTMasterLayout changeDescriptors](self, "changeDescriptors"), "lastObject"), "isEqual:", descriptor) & 1) == 0)
     {
-      [(NSMutableArray *)[(TSTMasterLayout *)self changeDescriptors] addObject:a3];
+      [(NSMutableArray *)[(TSTMasterLayout *)self changeDescriptors] addObject:descriptor];
     }
 
     objc_sync_exit(mChangeDescriptors);
   }
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3
+- (void)willBeAddedToDocumentRoot:(id)root
 {
-  v4 = [a3 changeNotifier];
+  changeNotifier = [root changeNotifier];
 
-  [(TSTMasterLayout *)self setChangeNotifier:v4];
+  [(TSTMasterLayout *)self setChangeNotifier:changeNotifier];
 }
 
 - (void)wasRemovedFromDocumentRoot
@@ -2261,10 +2261,10 @@ LABEL_19:
   self->mCachedNumberOfHeaderColumns = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] numberOfHeaderColumns];
   self->mCachedNumberOfHeaderRows = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] numberOfHeaderRows];
   self->mCachedNumberOfFooterRows = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] numberOfFooterRows];
-  v3 = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] tableNameEnabled];
-  if (self->mTableNameEnabled != v3)
+  tableNameEnabled = [(TSTTableModel *)[(TSTMasterLayout *)self tableModel] tableNameEnabled];
+  if (self->mTableNameEnabled != tableNameEnabled)
   {
-    self->mTableNameEnabled = v3;
+    self->mTableNameEnabled = tableNameEnabled;
   }
 
   TSTMasterLayoutStrokesArrayRangeUpdate(self);
@@ -2277,14 +2277,14 @@ LABEL_19:
   [(NSLock *)mLock unlock];
 }
 
-- (void)validateMasterLayoutForChangeDescriptors:(id)a3
+- (void)validateMasterLayoutForChangeDescriptors:(id)descriptors
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [descriptors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2297,7 +2297,7 @@ LABEL_19:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(descriptors);
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
@@ -2305,7 +2305,7 @@ LABEL_19:
         v8 |= [v11 changeDescriptor] == 29;
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [descriptors countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -2364,21 +2364,21 @@ LABEL_19:
 
 - (void)updateWHCForMergeRanges
 {
-  v6 = [(TSTMergeRangeSortedSet *)self->mMergeRanges begin];
-  if (v6.var0.var0 != 0xFFFF && (*&v6 & 0xFF0000) != 0xFF0000)
+  begin = [(TSTMergeRangeSortedSet *)self->mMergeRanges begin];
+  if (begin.var0.var0 != 0xFFFF && (*&begin & 0xFF0000) != 0xFF0000)
   {
     do
     {
-      if (!HIWORD(*&v6) || (*&v6 & 0xFFFF00000000) == 0)
+      if (!HIWORD(*&begin) || (*&begin & 0xFFFF00000000) == 0)
       {
         break;
       }
 
       [(TSTMergeRangeSortedSet *)self->mMergeRanges getSize];
       v8 = v7;
-      v9 = v6.var0.var0 + v6.var1.var1 - 1;
-      var0 = v6.var0;
-      if (v9 > v6.var0.var0)
+      v9 = begin.var0.var0 + begin.var1.var1 - 1;
+      var0 = begin.var0;
+      if (v9 > begin.var0.var0)
       {
         do
         {
@@ -2389,14 +2389,14 @@ LABEL_19:
         while (var0.var0 < v9);
       }
 
-      v11 = *&v6.var0 & 0xFF0000 | v9;
+      v11 = *&begin.var0 & 0xFF0000 | v9;
       [(TSTMergeRangeSortedSet *)self->mMergeRanges isCheckbox];
       [(TSTMergeRangeSortedSet *)self->mMergeRanges getPaddingInsets];
       if (v8 <= 8.0)
       {
         v3 = v3 & 0xFFFFFFFF00000000 | v11;
         v18 = [(TSTMasterLayout *)self tableAreaForCellID:v3];
-        v15 = [(TSTMasterLayout *)self widthHeightCache];
+        widthHeightCache = [(TSTMasterLayout *)self widthHeightCache];
         v16 = self->mTableDefaultFontHeightForArea[v18];
         v2 = v2 & 0xFFFFFFFF00000000 | v11;
         v17 = v2;
@@ -2405,21 +2405,21 @@ LABEL_19:
       else
       {
         v14 = v13 + v8 + v12;
-        v15 = [(TSTMasterLayout *)self widthHeightCache];
+        widthHeightCache = [(TSTMasterLayout *)self widthHeightCache];
         v4 = v4 & 0xFFFFFFFF00000000 | v11;
         v16 = v14;
         v17 = v4;
       }
 
-      [(TSTWidthHeightCache *)v15 setFitHeight:v17 forCellID:v16];
-      v6 = [(TSTMergeRangeSortedSet *)self->mMergeRanges iter];
-      if (v6.var0.var0 == 0xFFFF)
+      [(TSTWidthHeightCache *)widthHeightCache setFitHeight:v17 forCellID:v16];
+      begin = [(TSTMergeRangeSortedSet *)self->mMergeRanges iter];
+      if (begin.var0.var0 == 0xFFFF)
       {
         break;
       }
     }
 
-    while ((*&v6 & 0xFF0000) != 0xFF0000);
+    while ((*&begin & 0xFF0000) != 0xFF0000);
   }
 
   mMergeRanges = self->mMergeRanges;
@@ -2427,16 +2427,16 @@ LABEL_19:
   [(TSTMergeRangeSortedSet *)mMergeRanges reset];
 }
 
-- (void)validateFittingInfoForCell:(id)a3 cellID:(id)a4 mergeRange:(id)a5 setFitting:(BOOL)a6
+- (void)validateFittingInfoForCell:(id)cell cellID:(id)d mergeRange:(id)range setFitting:(BOOL)fitting
 {
-  var1 = a5.var1.var1;
-  v11 = [(TSTMasterLayout *)self modelCellIDForLayoutCellID:*&a5.var0];
-  v12 = a4;
-  v13 = [(TSTMasterLayout *)self modelCellIDForLayoutCellID:*&a4];
+  var1 = range.var1.var1;
+  v11 = [(TSTMasterLayout *)self modelCellIDForLayoutCellID:*&range.var0];
+  dCopy = d;
+  v13 = [(TSTMasterLayout *)self modelCellIDForLayoutCellID:*&d];
   v14 = v13;
-  if (v11.var0 == 0xFFFF || (*&v11.var0 & 0xFF0000) == 0xFF0000 || !var1 || (*&a5 & 0xFFFF00000000) == 0)
+  if (v11.var0 == 0xFFFF || (*&v11.var0 & 0xFF0000) == 0xFF0000 || !var1 || (*&range & 0xFFFF00000000) == 0)
   {
-    v56 = 0x100000000;
+    rangeCopy = 0x100000000;
     v57 = 1;
   }
 
@@ -2447,22 +2447,22 @@ LABEL_19:
       return;
     }
 
-    v56 = a5;
+    rangeCopy = range;
     v57 = var1;
-    a4 = v11;
+    d = v11;
   }
 
-  v58 = a4;
-  v60 = v12;
-  if (a3)
+  dCopy2 = d;
+  v60 = dCopy;
+  if (cell)
   {
-    v15 = *(a3 + 9);
-    v16 = *(a3 + 5);
+    v15 = *(cell + 9);
+    v16 = *(cell + 5);
     if (v16)
     {
       v17 = v13;
 LABEL_13:
-      v18 = *(a3 + 7);
+      v18 = *(cell + 7);
       goto LABEL_15;
     }
   }
@@ -2474,7 +2474,7 @@ LABEL_13:
 
   v17 = v13;
   v16 = TSTTableCellStyleForCellWithEmptyStyleAtCellID([(TSTMasterLayout *)self tableModel], *&v13, 0);
-  if (a3)
+  if (cell)
   {
     goto LABEL_13;
   }
@@ -2494,24 +2494,24 @@ LABEL_15:
     v20 = v19;
   }
 
-  if (a5.var0.var0 != 0xFFFF && (*&a5 & 0xFF0000) != 0xFF0000)
+  if (range.var0.var0 != 0xFFFF && (*&range & 0xFF0000) != 0xFF0000)
   {
-    v22 = (*&a5 & 0xFFFF00000000) != 0 && var1 != 0;
+    v22 = (*&range & 0xFFFF00000000) != 0 && var1 != 0;
     v64 = v22;
   }
 
   v55 = v15;
-  v54 = *&a5 & 0xFF0000;
+  v54 = *&range & 0xFF0000;
   v62 = v19;
   if (v15 == 3 || v15 == 9)
   {
-    if (!a3)
+    if (!cell)
     {
       goto LABEL_31;
     }
   }
 
-  else if (!*(a3 + 25) || *(a3 + 26) != 266)
+  else if (!*(cell + 25) || *(cell + 26) != 266)
   {
     v25 = 0;
     v63 = 0;
@@ -2519,7 +2519,7 @@ LABEL_15:
     goto LABEL_42;
   }
 
-  v23 = *(a3 + 2);
+  v23 = *(cell + 2);
   if ((v23 & 0x10000) != 0)
   {
     v24 = HIWORD(v23) & 1;
@@ -2527,7 +2527,7 @@ LABEL_15:
   }
 
 LABEL_31:
-  v24 = -[__CFString rangeOfCharacterFromSet:](TSTTableStringForCellAtCellID(-[TSTMasterLayout tableModel](self, "tableModel"), a3, v65), "rangeOfCharacterFromSet:", [MEMORY[0x277CCA900] newlineCharacterSet]) != 0x7FFFFFFFFFFFFFFFLL;
+  v24 = -[__CFString rangeOfCharacterFromSet:](TSTTableStringForCellAtCellID(-[TSTMasterLayout tableModel](self, "tableModel"), cell, v65), "rangeOfCharacterFromSet:", [MEMORY[0x277CCA900] newlineCharacterSet]) != 0x7FFFFFFFFFFFFFFFLL;
 LABEL_36:
   v61 = v24;
   if (v16)
@@ -2603,12 +2603,12 @@ LABEL_42:
     v44 = (v55 == 9) | v33;
   }
 
-  if (v32 || v34 || v20 != v62 || v40 != v43) && v64 && *&a5 >> 49 != 0 || (v44)
+  if (v32 || v34 || v20 != v62 || v40 != v43) && v64 && *&range >> 49 != 0 || (v44)
   {
     v49 = [v16 intValueForProperty:903];
     if (v64)
     {
-      v50 = *&v56 & 0xFFFF00000000 | (v57 << 48) | *&v58;
+      v50 = *&rangeCopy & 0xFFFF00000000 | (v57 << 48) | *&dCopy2;
     }
 
     else
@@ -2616,7 +2616,7 @@ LABEL_42:
       v50 = 0xFFFFFFLL;
     }
 
-    if (TSTCellFormatUsesAccountingStyle(a3))
+    if (TSTCellFormatUsesAccountingStyle(cell))
     {
       v51 = 0;
     }
@@ -2628,7 +2628,7 @@ LABEL_42:
 
     HIDWORD(v53) = v51;
     LOBYTE(v53) = 1;
-    [(TSTMasterLayout *)self queueCellForValidation:*&v56 & 0xFFFF00000000 | (v57 << 48) | *&v58 cell:a3 mergeRange:v50 wrap:v63 verticalAlignment:v49 padding:v35 prop:v53 layoutCacheFlags:?];
+    [(TSTMasterLayout *)self queueCellForValidation:*&rangeCopy & 0xFFFF00000000 | (v57 << 48) | *&dCopy2 cell:cell mergeRange:v50 wrap:v63 verticalAlignment:v49 padding:v35 prop:v53 layoutCacheFlags:?];
   }
 
   else
@@ -2640,7 +2640,7 @@ LABEL_42:
       mWidthHeightCache = self->mWidthHeightCache;
       if (v64)
       {
-        v48 = (a5.var0.var0 + v59 - 1) | v54;
+        v48 = (range.var0.var0 + v59 - 1) | v54;
       }
 
       else
@@ -2653,7 +2653,7 @@ LABEL_42:
     {
       if (v64)
       {
-        v52 = (a5.var0.var0 + v59 - 1) | v54;
+        v52 = (range.var0.var0 + v59 - 1) | v54;
       }
 
       else
@@ -2670,19 +2670,19 @@ LABEL_42:
   }
 }
 
-- (void)validateFittingInfoWithCellRange:(id)a3
+- (void)validateFittingInfoWithCellRange:(id)range
 {
-  v6 = self;
-  v7 = [(TSTMasterLayout *)self tableRowsBehavior]== 3 || [(TSTMasterLayout *)v6 tableRowsBehavior]== 1;
+  selfCopy = self;
+  v7 = [(TSTMasterLayout *)self tableRowsBehavior]== 3 || [(TSTMasterLayout *)selfCopy tableRowsBehavior]== 1;
   v29 = v7;
-  v38 = v6;
-  v31 = [[TSTLayoutCellIterator alloc] initWithMasterLayout:v6 range:a3];
+  v38 = selfCopy;
+  v31 = [[TSTLayoutCellIterator alloc] initWithMasterLayout:selfCopy range:range];
   v33 = objc_alloc_init(TSTCell);
   v8 = objc_alloc_init(TSTCell);
   v9 = 0;
-  LODWORD(v6) = 0;
-  v11 = (*&a3 & 0xFFFF00000000) == 0 || HIWORD(*&a3) == 0;
-  v34 = a3.var0.var0 + a3.var1.var1 - 1;
+  LODWORD(selfCopy) = 0;
+  v11 = (*&range & 0xFFFF00000000) == 0 || HIWORD(*&range) == 0;
+  v34 = range.var0.var0 + range.var1.var1 - 1;
   v35 = v11;
   LODWORD(v12) = 255;
   LOWORD(v13) = -1;
@@ -2712,7 +2712,7 @@ LABEL_11:
         break;
       }
 
-      v6 = HIBYTE(v39);
+      selfCopy = HIBYTE(v39);
       TSTLayoutCellIteratorExpandCell(v31, &v39);
       v32 = v40 != 0;
       if (v40)
@@ -2721,12 +2721,12 @@ LABEL_11:
       }
 
       v14 = v41;
-      v28 = v15 | (v16 << 16) | (v6 << 24) | v28 & 0xFFFFFFFF00000000;
-      TSTMasterLayoutUpdateStrokesForCell(v38, v33, v15 | (v16 << 16) | (v6 << 24));
+      v28 = v15 | (v16 << 16) | (selfCopy << 24) | v28 & 0xFFFFFFFF00000000;
+      TSTMasterLayoutUpdateStrokesForCell(v38, v33, v15 | (v16 << 16) | (selfCopy << 24));
     }
 
     v18 = v15;
-    if (v15 < a3.var0.var0)
+    if (v15 < range.var0.var0)
     {
       v19 = 1;
     }
@@ -2747,7 +2747,7 @@ LABEL_11:
     {
       LODWORD(v12) = 255;
       LODWORD(v13) = 0xFFFF;
-      if (v16 + 1 < a3.var0.var1 || v16 >= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1))
+      if (v16 + 1 < range.var0.var1 || v16 >= (LOBYTE(range.var1.var0) + range.var0.var1 - 1))
       {
         LODWORD(v30) = 0;
       }
@@ -2774,23 +2774,23 @@ LABEL_11:
       }
     }
 
-    v20 = [(TSTEditingState *)[(TSTTableInfo *)[(TSTMasterLayout *)v38 tableInfo] editingState] editingCellID];
-    if (v20 != 0xFFFF && (v20 & 0xFF0000) != 0xFF0000 && !-[TSTMasterLayout dynamicContentDelegate](v38, "dynamicContentDelegate") && [+[TSTConfiguration sharedTableConfiguration](TSTConfiguration "sharedTableConfiguration")] && -[TSDDrawableInfo isInlineWithText](-[TSTMasterLayout tableInfo](v38, "tableInfo"), "isInlineWithText") && (-[TSTEditingState editingCellID](-[TSTTableInfo editingState](-[TSTMasterLayout tableInfo](v38, "tableInfo"), "editingState"), "editingCellID") & 0xFFFFFF) == (v15 | (v16 << 16)))
+    editingCellID = [(TSTEditingState *)[(TSTTableInfo *)[(TSTMasterLayout *)v38 tableInfo] editingState] editingCellID];
+    if (editingCellID != 0xFFFF && (editingCellID & 0xFF0000) != 0xFF0000 && !-[TSTMasterLayout dynamicContentDelegate](v38, "dynamicContentDelegate") && [+[TSTConfiguration sharedTableConfiguration](TSTConfiguration "sharedTableConfiguration")] && -[TSDDrawableInfo isInlineWithText](-[TSTMasterLayout tableInfo](v38, "tableInfo"), "isInlineWithText") && (-[TSTEditingState editingCellID](-[TSTTableInfo editingState](-[TSTMasterLayout tableInfo](v38, "tableInfo"), "editingState"), "editingCellID") & 0xFFFFFF) == (v15 | (v16 << 16)))
     {
       TSTCellCopy([(TSTEditingState *)[(TSTTableInfo *)[(TSTMasterLayout *)v38 tableInfo] editingState] editingCell], v33);
     }
 
-    v21 = (v6 << 24) | (v16 << 16);
+    v21 = (selfCopy << 24) | (v16 << 16);
     if (v14 != 0xFFFF && (v14 & 0xFF0000) != 0xFF0000 && HIWORD(v14) && (v14 & 0xFFFF00000000) != 0)
     {
       v27 = v27 & 0xFFFFFFFF00000000 | v21 | v15;
       [TSTMasterLayout p_validateFittingInfoForCellID:v38 inMergeRange:"p_validateFittingInfoForCellID:inMergeRange:"];
     }
 
-    v6 = (v21 | v15);
+    selfCopy = (v21 | v15);
     v16 = v4 & 0xFFFFFFFF00000000 | v36;
-    v36 = [(TSTMasterLayout *)v38 p_validateFittingInfoForEmptyCellsBetween:v16 andCellID:v5 & 0xFFFFFFFF00000000 | v6 inRange:a3];
-    v3 = v3 & 0xFFFFFFFF00000000 | v6;
+    v36 = [(TSTMasterLayout *)v38 p_validateFittingInfoForEmptyCellsBetween:v16 andCellID:v5 & 0xFFFFFFFF00000000 | selfCopy inRange:range];
+    v3 = v3 & 0xFFFFFFFF00000000 | selfCopy;
     [(TSTMasterLayout *)v38 validateFittingInfoForCell:v33 cellID:v3 mergeRange:v14 setFitting:v29];
     if (v32)
     {
@@ -2799,18 +2799,18 @@ LABEL_11:
 
     if (v13 != 0xFFFF && v12 != 255)
     {
-      v5 = v5 & 0xFFFFFFFF00000000 | v6;
+      v5 = v5 & 0xFFFFFFFF00000000 | selfCopy;
       v4 = v16;
       v8 = v33;
       v33 = v26;
       v9 = v24;
       v14 = v23;
-      LODWORD(v6) = v30;
+      LODWORD(selfCopy) = v30;
       goto LABEL_11;
     }
 
     v22 = v35;
-    if ((v15 + 1) < a3.var0.var0)
+    if ((v15 + 1) < range.var0.var0)
     {
       v22 = 1;
     }
@@ -2820,37 +2820,37 @@ LABEL_11:
       break;
     }
 
-    v5 = v5 & 0xFFFFFFFF00000000 | v6;
+    v5 = v5 & 0xFFFFFFFF00000000 | selfCopy;
     v4 = v16;
-    LODWORD(v6) = 0;
+    LODWORD(selfCopy) = 0;
     LODWORD(v16) = 255;
     LOWORD(v15) = -1;
     v14 = 0xFFFFFFLL;
   }
 
   while (v18 < v34);
-  [(TSTMasterLayout *)v38 p_validateFittingInfoForEmptyCellsBetween:v36 andCellID:0xFFFFFFLL inRange:a3, v17];
+  [(TSTMasterLayout *)v38 p_validateFittingInfoForEmptyCellsBetween:v36 andCellID:0xFFFFFFLL inRange:range, v17];
 
-  TSTMasterLayoutSetStrokesValidForRange(v38, *&a3);
+  TSTMasterLayoutSetStrokesValidForRange(v38, *&range);
 }
 
-- (void)p_validateFittingInfoForEmptyCellsOnSingleRowBetween:(id)a3 andEndCellID:(id)a4
+- (void)p_validateFittingInfoForEmptyCellsOnSingleRowBetween:(id)between andEndCellID:(id)d
 {
-  if (![(TSTHiddenRowsColumnsCache *)[(TSTMasterLayout *)self hiddenRowsColumnsCache] isRowHidden:a3.var0])
+  if (![(TSTHiddenRowsColumnsCache *)[(TSTMasterLayout *)self hiddenRowsColumnsCache] isRowHidden:between.var0])
   {
-    v7 = [(TSTHiddenRowsColumnsCache *)[(TSTMasterLayout *)self hiddenRowsColumnsCache] nextVisibleColumn:a3.var1];
-    if (a4.var1 >= v7)
+    v7 = [(TSTHiddenRowsColumnsCache *)[(TSTMasterLayout *)self hiddenRowsColumnsCache] nextVisibleColumn:between.var1];
+    if (d.var1 >= v7)
     {
       v8 = v7;
-      v9 = *&a3 & 0xFF00FFFF | (v7 << 16);
+      v9 = *&between & 0xFF00FFFF | (v7 << 16);
       v10 = [(TSTMasterLayout *)self tableAreaForCellID:v9];
       [(TSTWidthHeightCache *)self->mWidthHeightCache setFitHeight:v9 forCellID:self->mTableDefaultFontHeightForArea[v10]];
-      if ((a4.var0 | (a4.var1 << 16)) != (v9 & 0xFFFFFF))
+      if ((d.var0 | (d.var1 << 16)) != (v9 & 0xFFFFFF))
       {
-        v11 = [(TSTHiddenRowsColumnsCache *)[(TSTMasterLayout *)self hiddenRowsColumnsCache] previousVisibleColumn:a4.var1];
+        v11 = [(TSTHiddenRowsColumnsCache *)[(TSTMasterLayout *)self hiddenRowsColumnsCache] previousVisibleColumn:d.var1];
         if (v8 <= v11)
         {
-          v12 = *&a4 & 0xFF000000 | (v11 << 16) | a4.var0;
+          v12 = *&d & 0xFF000000 | (v11 << 16) | d.var0;
           v13 = [(TSTMasterLayout *)self tableAreaForCellID:v12];
           if (v10 != v13)
           {
@@ -2865,20 +2865,20 @@ LABEL_11:
   }
 }
 
-- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)p_validateFittingInfoForEmptyCellsBetween:(id)a3 andCellID:(id)a4 inRange:(id)a5
+- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)p_validateFittingInfoForEmptyCellsBetween:(id)between andCellID:(id)d inRange:(id)range
 {
-  v5 = a5;
-  var0 = a4.var0;
-  if (a3.var0 == 0xFFFF || (*&a3.var0 & 0xFF0000) == 0xFF0000)
+  rangeCopy = range;
+  var0 = d.var0;
+  if (between.var0 == 0xFFFF || (*&between.var0 & 0xFF0000) == 0xFF0000)
   {
-    v8 = *&a5 >> 16;
-    a3 = a5.var0;
-    v9 = a5;
+    v8 = *&range >> 16;
+    between = range.var0;
+    rangeCopy2 = range;
   }
 
-  else if (a3.var1 >= (LOBYTE(a5.var1.var0) + a5.var0.var1 - 1))
+  else if (between.var1 >= (LOBYTE(range.var1.var0) + range.var0.var1 - 1))
   {
-    if (a3.var0 >= (a5.var0.var0 + a5.var1.var1 - 1))
+    if (between.var0 >= (range.var0.var0 + range.var1.var1 - 1))
     {
       LODWORD(v11) = 0;
       LOBYTE(v10) = -1;
@@ -2886,71 +2886,71 @@ LABEL_11:
       return ((v10 << 16) | (v11 << 24) | var0);
     }
 
-    v8 = *&a5 >> 16;
-    v9 = (*&a3 + 1);
+    v8 = *&range >> 16;
+    rangeCopy2 = (*&between + 1);
   }
 
   else
   {
-    LOBYTE(v8) = a3.var1 + 1;
-    v9 = *&a3.var0;
+    LOBYTE(v8) = between.var1 + 1;
+    rangeCopy2 = *&between.var0;
   }
 
-  v10 = *&a4.var0 >> 16;
-  v11 = *&a4.var0 >> 24;
-  if (a4.var0 == 0xFFFF || (*&a4 & 0xFF0000) == 0xFF0000)
+  v10 = *&d.var0 >> 16;
+  v11 = *&d.var0 >> 24;
+  if (d.var0 == 0xFFFF || (*&d & 0xFF0000) == 0xFF0000)
   {
     LODWORD(v14) = 0;
-    v13 = a5.var0.var0 + a5.var1.var1 - 1;
-    v12 = (*&a5.var0 + (*&a5.var0.var1 & 0xFF0000u) + 16711680) >> 16;
+    v13 = range.var0.var0 + range.var1.var1 - 1;
+    v12 = (*&range.var0 + (*&range.var0.var1 & 0xFF0000u) + 16711680) >> 16;
   }
 
   else
   {
-    if (a4.var1 <= a5.var0.var1)
+    if (d.var1 <= range.var0.var1)
     {
-      if (a4.var0 <= a5.var0.var0)
+      if (d.var0 <= range.var0.var0)
       {
         return ((v10 << 16) | (v11 << 24) | var0);
       }
 
-      LOBYTE(v12) = LOBYTE(a5.var1.var0) + a5.var0.var1 - 1;
-      v13 = a4.var0 - 1;
+      LOBYTE(v12) = LOBYTE(range.var1.var0) + range.var0.var1 - 1;
+      v13 = d.var0 - 1;
     }
 
     else
     {
-      LOBYTE(v12) = a4.var1 - 1;
-      v13 = a4.var0;
+      LOBYTE(v12) = d.var1 - 1;
+      v13 = d.var0;
     }
 
-    v14 = *&a4.var0 >> 24;
+    v14 = *&d.var0 >> 24;
   }
 
   v15 = v13;
-  if (v13 > v9 || v13 == v9 && v12 >= v8)
+  if (v13 > rangeCopy2 || v13 == rangeCopy2 && v12 >= v8)
   {
-    v16 = *&a3 & 0xFF000000;
-    v17 = *&a3 & 0xFF000000 | (v8 << 16) | v9;
-    if (v15 == v9)
+    v16 = *&between & 0xFF000000;
+    v17 = *&between & 0xFF000000 | (v8 << 16) | rangeCopy2;
+    if (v15 == rangeCopy2)
     {
       [(TSTMasterLayout *)self p_validateFittingInfoForEmptyCellsOnSingleRowBetween:v17 andEndCellID:(v12 << 16) | (v14 << 24) | v15];
     }
 
     else
     {
-      v18 = (*&a5.var0 + (*&a5.var0.var1 & 0xFF0000) + 16711680) & 0xFF0000;
-      [(TSTMasterLayout *)self p_validateFittingInfoForEmptyCellsOnSingleRowBetween:v17 andEndCellID:v18 | v9 | v16];
-      [(TSTMasterLayout *)self p_validateFittingInfoForEmptyCellsOnSingleRowBetween:v5 & 0xFF0000 | v15 & 0xFFFFFF | (v14 << 24) andEndCellID:(v14 << 24) | (v12 << 16) | v15];
-      if (v15 > (v9 + 1))
+      v18 = (*&range.var0 + (*&range.var0.var1 & 0xFF0000) + 16711680) & 0xFF0000;
+      [(TSTMasterLayout *)self p_validateFittingInfoForEmptyCellsOnSingleRowBetween:v17 andEndCellID:v18 | rangeCopy2 | v16];
+      [(TSTMasterLayout *)self p_validateFittingInfoForEmptyCellsOnSingleRowBetween:rangeCopy & 0xFF0000 | v15 & 0xFFFFFF | (v14 << 24) andEndCellID:(v14 << 24) | (v12 << 16) | v15];
+      if (v15 > (rangeCopy2 + 1))
       {
-        v19 = (v9 + 1);
-        v20 = v5 & 0xFF0000;
+        v19 = (rangeCopy2 + 1);
+        v20 = rangeCopy & 0xFF0000;
         do
         {
-          v9 = v20 | v9 & 0xFFFFFFFF00000000 | v19;
-          v5 = v5 & 0xFFFFFFFF00000000 | v18 | v19;
-          [(TSTMasterLayout *)self p_validateFittingInfoForEmptyCellsOnSingleRowBetween:v9 andEndCellID:v5];
+          rangeCopy2 = v20 | rangeCopy2 & 0xFFFFFFFF00000000 | v19;
+          rangeCopy = rangeCopy & 0xFFFFFFFF00000000 | v18 | v19;
+          [(TSTMasterLayout *)self p_validateFittingInfoForEmptyCellsOnSingleRowBetween:rangeCopy2 andEndCellID:rangeCopy];
           ++v19;
         }
 
@@ -2962,22 +2962,22 @@ LABEL_11:
   return ((v10 << 16) | (v11 << 24) | var0);
 }
 
-- (void)p_validateFittingInfoForCellID:(id)a3 inMergeRange:(id)a4
+- (void)p_validateFittingInfoForCellID:(id)d inMergeRange:(id)range
 {
-  var1 = a3.var1;
-  if (a3.var1 == a4.var0.var1)
+  var1 = d.var1;
+  if (d.var1 == range.var0.var1)
   {
-    v7 = self->mTableDefaultFontHeightForArea[[(TSTMasterLayout *)self tableAreaForCellID:*&a4.var0 & 0xFF00FFFF | (a3.var1 << 16)]];
+    v7 = self->mTableDefaultFontHeightForArea[[(TSTMasterLayout *)self tableAreaForCellID:*&range.var0 & 0xFF00FFFF | (d.var1 << 16)]];
     mWidthHeightCache = self->mWidthHeightCache;
 
-    [(TSTWidthHeightCache *)mWidthHeightCache setFitHeight:*&a3 & 0xFF00FFFF | (var1 << 16) forCellID:v7];
+    [(TSTWidthHeightCache *)mWidthHeightCache setFitHeight:*&d & 0xFF00FFFF | (var1 << 16) forCellID:v7];
   }
 }
 
-- (id)validateFittingInfoForChangeDescriptors:(id)a3 rowsNeedingFittingInfo:(id)a4
+- (id)validateFittingInfoForChangeDescriptors:(id)descriptors rowsNeedingFittingInfo:(id)info
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = [(TSTMasterLayout *)self tableModel];
+  tableModel = [(TSTMasterLayout *)self tableModel];
   v34 = 0;
   v35 = &v34;
   v36 = 0x3052000000;
@@ -2988,7 +2988,7 @@ LABEL_11:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v30 objects:v40 count:16];
+  v6 = [descriptors countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v6)
   {
     v7 = *v31;
@@ -2998,32 +2998,32 @@ LABEL_11:
       {
         if (*v31 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(descriptors);
         }
 
         v9 = *(*(&v30 + 1) + 8 * i);
-        v10 = [v9 changeDescriptor];
-        v11 = [v9 cellRegion];
+        changeDescriptor = [v9 changeDescriptor];
+        cellRegion = [v9 cellRegion];
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __82__TSTMasterLayout_validateFittingInfoForChangeDescriptors_rowsNeedingFittingInfo___block_invoke;
         v28[3] = &unk_279D4A928;
-        v29 = v10;
+        v29 = changeDescriptor;
         v28[4] = self;
-        v28[5] = v5;
+        v28[5] = tableModel;
         v28[6] = &v34;
-        [v11 enumerateCellRangesUsingBlock:v28];
-        v12 = [v9 expandedRegion];
+        [cellRegion enumerateCellRangesUsingBlock:v28];
+        expandedRegion = [v9 expandedRegion];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __82__TSTMasterLayout_validateFittingInfoForChangeDescriptors_rowsNeedingFittingInfo___block_invoke_2;
         v26[3] = &unk_279D4A950;
-        v27 = v10;
+        v27 = changeDescriptor;
         v26[4] = &v34;
-        [v12 enumerateCellRangesUsingBlock:v26];
+        [expandedRegion enumerateCellRangesUsingBlock:v26];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v30 objects:v40 count:16];
+      v6 = [descriptors countByEnumeratingWithState:&v30 objects:v40 count:16];
     }
 
     while (v6);
@@ -3046,10 +3046,10 @@ LABEL_11:
   v24[3] = &unk_279D4A4E8;
   v24[4] = self;
   [v16 enumerateCellRangesUsingBlock:v24];
-  if (a4)
+  if (info)
   {
-    [a4 tsu_intersectionWithIndexSet:{-[TSTHiddenRowsColumnsCache visibleRowIndices](-[TSTMasterLayout hiddenRowsColumnsCache](self, "hiddenRowsColumnsCache"), "visibleRowIndices")}];
-    if ([a4 firstIndex] != 0x7FFFFFFFFFFFFFFFLL)
+    [info tsu_intersectionWithIndexSet:{-[TSTHiddenRowsColumnsCache visibleRowIndices](-[TSTMasterLayout hiddenRowsColumnsCache](self, "hiddenRowsColumnsCache"), "visibleRowIndices")}];
+    if ([info firstIndex] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v17 = [(TSTHiddenRowsColumnsCache *)[(TSTMasterLayout *)self hiddenRowsColumnsCache] nextVisibleColumn:0];
       v22[0] = MEMORY[0x277D85DD0];
@@ -3058,7 +3058,7 @@ LABEL_11:
       v22[3] = &unk_279D4A978;
       v22[4] = self;
       v23 = v17;
-      [a4 enumerateIndexesUsingBlock:v22];
+      [info enumerateIndexesUsingBlock:v22];
     }
   }
 
@@ -3236,11 +3236,11 @@ uint64_t __82__TSTMasterLayout_validateFittingInfoForChangeDescriptors_rowsNeedi
   return result;
 }
 
-- (void)validateFittingWidthsForRegion:(id)a3
+- (void)validateFittingWidthsForRegion:(id)region
 {
-  v5 = [(TSTMasterLayout *)self tableModel];
+  tableModel = [(TSTMasterLayout *)self tableModel];
   TableNumberOfRows = TSTMasterLayoutGetTableNumberOfRows(self);
-  if (!-[TSTMasterLayout inDynamicLayoutMode](self, "inDynamicLayoutMode") && TableNumberOfRows <= 0x200 && ([a3 isEmpty] & 1) == 0)
+  if (!-[TSTMasterLayout inDynamicLayoutMode](self, "inDynamicLayoutMode") && TableNumberOfRows <= 0x200 && ([region isEmpty] & 1) == 0)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -3248,8 +3248,8 @@ uint64_t __82__TSTMasterLayout_validateFittingInfoForChangeDescriptors_rowsNeedi
     v7[3] = &unk_279D4A9A0;
     v8 = TableNumberOfRows;
     v7[4] = self;
-    v7[5] = v5;
-    [a3 enumerateColumnsUsingBlock:v7];
+    v7[5] = tableModel;
+    [region enumerateColumnsUsingBlock:v7];
   }
 }
 
@@ -3488,57 +3488,57 @@ LABEL_28:
   }
 }
 
-- (id)validateCellForDrawing:(id)a3 cell:(id)a4 contents:(id)a5 wrap:(BOOL)a6 verticalAlignment:(unsigned int)a7 padding:(id)a8 layoutCacheFlags:(int)a9 pageNumber:(unint64_t)a10 pageCount:(unint64_t)a11
+- (id)validateCellForDrawing:(id)drawing cell:(id)cell contents:(id)contents wrap:(BOOL)wrap verticalAlignment:(unsigned int)alignment padding:(id)padding layoutCacheFlags:(int)flags pageNumber:(unint64_t)self0 pageCount:(unint64_t)self1
 {
-  v12 = *&a7;
-  v76 = a6;
+  v12 = *&alignment;
+  wrapCopy = wrap;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [a5 length] == 0;
+    v17 = [contents length] == 0;
   }
 
   else
   {
-    v17 = a5 == 0;
+    v17 = contents == 0;
   }
 
   v18 = !v17;
-  v19 = [(TSTMasterLayout *)self tableInfo];
-  v20 = [(TSTTableInfo *)v19 tableModel];
+  tableInfo = [(TSTMasterLayout *)self tableInfo];
+  tableModel = [(TSTTableInfo *)tableInfo tableModel];
   if (!v18)
   {
     return 0;
   }
 
-  v21 = v20;
-  v71 = v19;
-  v72 = a4;
-  v22 = a9;
-  v75 = a3;
-  v23 = TSTTableMergeRangeAtCellID(v20, *&a3);
+  v21 = tableModel;
+  v71 = tableInfo;
+  cellCopy = cell;
+  flagsCopy2 = flags;
+  drawingCopy = drawing;
+  v23 = TSTTableMergeRangeAtCellID(tableModel, *&drawing);
   v24 = v23;
-  v73 = a8;
+  paddingCopy = padding;
   v74 = v23;
   if (v23 == 0xFFFF || (v23 & 0xFF0000) == 0xFF0000)
   {
     v42 = 0x1000100000000;
-    LODWORD(v43) = [(TSTMasterLayout *)self layoutCellIDForModelCellID:*&a3];
+    LODWORD(v43) = [(TSTMasterLayout *)self layoutCellIDForModelCellID:*&drawing];
     goto LABEL_36;
   }
 
   v25 = HIWORD(v23);
   if (HIWORD(v23) && (v23 & 0xFFFF00000000) != 0)
   {
-    v26 = a3;
+    drawingCopy2 = drawing;
     v27 = v23;
     v69 = HIDWORD(v23);
-    v70 = v26;
-    if (((v23 ^ *&v26) & 0xFFFFFF) != 0)
+    v70 = drawingCopy2;
+    if (((v23 ^ *&drawingCopy2) & 0xFFFFFF) != 0)
     {
-      v28 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMasterLayout validateCellForDrawing:cell:contents:wrap:verticalAlignment:padding:layoutCacheFlags:pageNumber:pageCount:]"];
-      [v28 handleFailureInFunction:v29 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMasterLayout.mm"), 5372, @"Trying to draw merged cell other than origin."}];
+      [currentHandler handleFailureInFunction:v29 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMasterLayout.mm"), 5372, @"Trying to draw merged cell other than origin."}];
     }
 
     v30 = v24;
@@ -3555,7 +3555,7 @@ LABEL_28:
     v35 = 0;
     v36 = 16711680;
     var0 = 0xFFFFLL;
-    a3 = v70;
+    drawing = v70;
     if (TableNumberOfColumns)
     {
       v38 = 0;
@@ -3627,14 +3627,14 @@ LABEL_34:
   }
 
   v42 = 0x1000100000000;
-  LODWORD(v43) = [(TSTMasterLayout *)self layoutCellIDForModelCellID:*&a3];
+  LODWORD(v43) = [(TSTMasterLayout *)self layoutCellIDForModelCellID:*&drawing];
 LABEL_35:
-  v22 = a9;
+  flagsCopy2 = flags;
 LABEL_36:
   v44 = v43;
   v45 = TSTMasterLayoutContentWidthForCellRange(self, v42 | v43, 0);
   v46 = TSTMasterLayoutContentHeightForCellRange(self, v42 | v44, 0);
-  if (v76)
+  if (wrapCopy)
   {
     v47 = 8.0;
   }
@@ -3644,7 +3644,7 @@ LABEL_36:
     v47 = v45;
   }
 
-  if (v76)
+  if (wrapCopy)
   {
     v48 = v45;
   }
@@ -3674,7 +3674,7 @@ LABEL_36:
     v50 = 8.0;
   }
 
-  if ((v22 & 4) == 0)
+  if ((flagsCopy2 & 4) == 0)
   {
     v41 = 0;
 LABEL_53:
@@ -3682,11 +3682,11 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  v51 = [(TSTMasterLayout *)self cellIDToWPColumnCache];
-  HIDWORD(v53) = a3;
-  LODWORD(v53) = a3;
+  cellIDToWPColumnCache = [(TSTMasterLayout *)self cellIDToWPColumnCache];
+  HIDWORD(v53) = drawing;
+  LODWORD(v53) = drawing;
   v52 = v53 >> 16;
-  v54 = -[TSUConcurrentCache objectForKey:](v51, "objectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:(v53 >> 16) & 0xFFFF00FF]);
+  v54 = -[TSUConcurrentCache objectForKey:](cellIDToWPColumnCache, "objectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:(v53 >> 16) & 0xFFFF00FF]);
   v41 = v54;
   if (!v54)
   {
@@ -3698,8 +3698,8 @@ LABEL_53:
   [v41 frameBounds];
   if (v56 != v45)
   {
-    v57 = [(TSTMasterLayout *)self cellIDToWPColumnCache];
-    -[TSUConcurrentCache removeObjectForKey:](v57, "removeObjectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:v52 & 0xFFFF00FF]);
+    cellIDToWPColumnCache2 = [(TSTMasterLayout *)self cellIDToWPColumnCache];
+    -[TSUConcurrentCache removeObjectForKey:](cellIDToWPColumnCache2, "removeObjectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:v52 & 0xFFFF00FF]);
     goto LABEL_53;
   }
 
@@ -3751,11 +3751,11 @@ LABEL_65:
   v59 = v24 & 0xFFFFFFFF00000000;
   v60 = [(TSTMasterLayout *)[(TSTTableInfo *)v71 masterLayout] layoutCellIDForModelCellID:v74];
   v61 = objc_alloc_init(TSTCellStateForLayout);
-  [(TSTCellStateForLayout *)v61 setModelCellID:v75];
-  [(TSTCellStateForLayout *)v61 setCell:v72];
+  [(TSTCellStateForLayout *)v61 setModelCellID:drawingCopy];
+  [(TSTCellStateForLayout *)v61 setCell:cellCopy];
   [(TSTCellStateForLayout *)v61 setCellPropsRowHeight:0];
-  [(TSTCellStateForLayout *)v61 setCellWraps:v76];
-  [(TSTMasterLayout *)self edgeInsetsFromPadding:v73];
+  [(TSTCellStateForLayout *)v61 setCellWraps:wrapCopy];
+  [(TSTMasterLayout *)self edgeInsetsFromPadding:paddingCopy];
   [(TSTCellStateForLayout *)v61 setPaddingInsets:?];
   [(TSTCellStateForLayout *)v61 setVerticalAlignment:v12];
   [(TSTCellStateForLayout *)v61 setMinSize:v47, v50];
@@ -3763,55 +3763,55 @@ LABEL_65:
   [(TSTCellStateForLayout *)v61 setForDrawing:1];
   [(TSTCellStateForLayout *)v61 setMergedRange:v59 | *&v60];
   [(TSTCellStateForLayout *)v61 setInDynamicLayout:[(TSTMasterLayout *)self inDynamicLayoutMode]];
-  [(TSTCellStateForLayout *)v61 setCellContents:a5];
+  [(TSTCellStateForLayout *)v61 setCellContents:contents];
   objc_opt_class();
   v62 = TSUDynamicCast();
   if (v62)
   {
     if ([v62 hasAttachmentsThatChangeWithPageNumberOrPageCount])
     {
-      v22 = 0;
+      flagsCopy2 = 0;
     }
 
     else
     {
-      v22 = v22;
+      flagsCopy2 = flagsCopy2;
     }
   }
 
-  [(TSTCellStateForLayout *)v61 setLayoutCacheFlags:v22];
-  [(TSTCellStateForLayout *)v61 setPageNumber:a10];
-  [(TSTCellStateForLayout *)v61 setPageCount:a11];
+  [(TSTCellStateForLayout *)v61 setLayoutCacheFlags:flagsCopy2];
+  [(TSTCellStateForLayout *)v61 setPageNumber:number];
+  [(TSTCellStateForLayout *)v61 setPageCount:count];
   [(TSTMasterLayout *)self measureTextForLayoutState:v61];
-  v63 = [(TSTCellStateForLayout *)v61 keyVal];
-  if ((v22 & 2) != 0 && v63)
+  keyVal = [(TSTCellStateForLayout *)v61 keyVal];
+  if ((flagsCopy2 & 2) != 0 && keyVal)
   {
     [(TSUConcurrentCache *)[(TSTMasterLayout *)self dupContentCache] setObject:[(TSTCellStateForLayout *)v61 wpColumn] forKey:[(TSTCellStateForLayout *)v61 keyVal]];
   }
 
   if (([(TSTCellStateForLayout *)v61 layoutCacheFlags]& 1) != 0)
   {
-    v64 = [(TSTMasterLayout *)self cellIDToWPColumnCache];
-    v65 = [(TSTCellStateForLayout *)v61 wpColumn];
-    HIDWORD(v66) = a3;
-    LODWORD(v66) = a3;
-    -[TSUConcurrentCache setObject:forKey:](v64, "setObject:forKey:", v65, [MEMORY[0x277CCABB0] numberWithUnsignedInt:(v66 >> 16) & 0xFFFF00FF]);
+    cellIDToWPColumnCache3 = [(TSTMasterLayout *)self cellIDToWPColumnCache];
+    wpColumn = [(TSTCellStateForLayout *)v61 wpColumn];
+    HIDWORD(v66) = drawing;
+    LODWORD(v66) = drawing;
+    -[TSUConcurrentCache setObject:forKey:](cellIDToWPColumnCache3, "setObject:forKey:", wpColumn, [MEMORY[0x277CCABB0] numberWithUnsignedInt:(v66 >> 16) & 0xFFFF00FF]);
   }
 
   v67 = v61;
   return [(TSTCellStateForLayout *)v61 wpColumn];
 }
 
-- (void)queueCellForValidation:(id)a3 cell:(id)a4 mergeRange:(id)a5 wrap:(BOOL)a6 verticalAlignment:(unsigned int)a7 padding:(id)a8 prop:(BOOL)a9 layoutCacheFlags:(int)a10
+- (void)queueCellForValidation:(id)validation cell:(id)cell mergeRange:(id)range wrap:(BOOL)wrap verticalAlignment:(unsigned int)alignment padding:(id)padding prop:(BOOL)prop layoutCacheFlags:(int)self0
 {
-  v11 = a6;
-  v15 = a10;
+  wrapCopy = wrap;
+  flagsCopy2 = flags;
   v36 = objc_alloc_init(TSTCellStateForLayout);
-  v16 = [(TSTMasterLayout *)self modelCellIDForLayoutCellID:*&a3.var0];
+  v16 = [(TSTMasterLayout *)self modelCellIDForLayoutCellID:*&validation.var0];
   [(TSTCellStateForLayout *)v36 setModelCellID:*&v16];
-  [(TSTCellStateForLayout *)v36 setCell:a4];
+  [(TSTCellStateForLayout *)v36 setCell:cell];
   v17 = [-[TSTCellStateForLayout cellContents](v36 "cellContents")];
-  v18 = [(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] tableModel];
+  tableModel = [(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] tableModel];
   if (v17)
   {
     objc_opt_class();
@@ -3821,23 +3821,23 @@ LABEL_65:
     {
       if ([v19 hasAttachmentsThatChangeWithPageNumberOrPageCount])
       {
-        v15 = 0;
+        flagsCopy2 = 0;
       }
 
       else
       {
-        v15 = a10;
+        flagsCopy2 = flags;
       }
     }
   }
 
   else
   {
-    v15 = 10;
+    flagsCopy2 = 10;
   }
 
-  v20 = TSTMasterLayoutContentWidthForCellRange(self, *&a3, 0);
-  if (v11)
+  v20 = TSTMasterLayoutContentWidthForCellRange(self, *&validation, 0);
+  if (wrapCopy)
   {
     v21 = 8.0;
   }
@@ -3847,7 +3847,7 @@ LABEL_65:
     v21 = v20;
   }
 
-  if (v11)
+  if (wrapCopy)
   {
     v22 = v20;
   }
@@ -3859,7 +3859,7 @@ LABEL_65:
 
   if ([(TSTMasterLayout *)self dynamicRepResize])
   {
-    v23 = TSTTableNumberOfPopulatedCells(v18);
+    v23 = TSTTableNumberOfPopulatedCells(tableModel);
     v24 = 0.0;
     if (v21 >= 0.0)
     {
@@ -3883,12 +3883,12 @@ LABEL_65:
     }
   }
 
-  v26 = [(TSTMasterLayout *)self cellIDToWPColumnCache];
+  cellIDToWPColumnCache = [(TSTMasterLayout *)self cellIDToWPColumnCache];
   HIDWORD(v28) = v16;
   LODWORD(v28) = v16;
   v27 = v28 >> 16;
-  v29 = -[TSUConcurrentCache objectForKey:](v26, "objectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:(v28 >> 16) & 0xFFFF00FF]);
-  if ((![(TSTMasterLayout *)self containedTextEditor]|| (([(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] editingCellID]^ *&a3.var0) & 0xFFFFFFLL) != 0) && v29)
+  v29 = -[TSUConcurrentCache objectForKey:](cellIDToWPColumnCache, "objectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:(v28 >> 16) & 0xFFFF00FF]);
+  if ((![(TSTMasterLayout *)self containedTextEditor]|| (([(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] editingCellID]^ *&validation.var0) & 0xFFFFFFLL) != 0) && v29)
   {
     [v29 typographicBoundsForCell];
     v31 = v30;
@@ -3898,19 +3898,19 @@ LABEL_65:
       goto LABEL_28;
     }
 
-    v32 = [(TSTMasterLayout *)self cellIDToWPColumnCache];
-    -[TSUConcurrentCache removeObjectForKey:](v32, "removeObjectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:v27 & 0xFFFF00FF]);
+    cellIDToWPColumnCache2 = [(TSTMasterLayout *)self cellIDToWPColumnCache];
+    -[TSUConcurrentCache removeObjectForKey:](cellIDToWPColumnCache2, "removeObjectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:v27 & 0xFFFF00FF]);
   }
 
-  [(TSTCellStateForLayout *)v36 setCellPropsRowHeight:a9];
-  [(TSTCellStateForLayout *)v36 setCellWraps:v11];
-  [(TSTMasterLayout *)self edgeInsetsFromPadding:a8];
+  [(TSTCellStateForLayout *)v36 setCellPropsRowHeight:prop];
+  [(TSTCellStateForLayout *)v36 setCellWraps:wrapCopy];
+  [(TSTMasterLayout *)self edgeInsetsFromPadding:padding];
   [(TSTCellStateForLayout *)v36 setPaddingInsets:?];
-  [(TSTCellStateForLayout *)v36 setVerticalAlignment:a7];
+  [(TSTCellStateForLayout *)v36 setVerticalAlignment:alignment];
   [(TSTCellStateForLayout *)v36 setMinSize:v21, 8.0];
   [(TSTCellStateForLayout *)v36 setMaxSize:v22, 4294967300.0];
-  [(TSTCellStateForLayout *)v36 setMergedRange:a5];
-  [(TSTCellStateForLayout *)v36 setLayoutCacheFlags:v15];
+  [(TSTCellStateForLayout *)v36 setMergedRange:range];
+  [(TSTCellStateForLayout *)v36 setLayoutCacheFlags:flagsCopy2];
   [(NSMutableArray *)[(TSTLayoutTask *)self->mCurrentLayoutTask cellStatesToLayout] addObject:v36];
   v33 = [(NSMutableArray *)[(TSTLayoutTask *)self->mCurrentLayoutTask cellStatesToLayout] count];
   if (v33 >= [(TSTMasterLayout *)self numCellsPerTask])
@@ -3924,40 +3924,40 @@ LABEL_65:
 LABEL_28:
 }
 
-- (void)measureTextForLayoutState:(id)a3
+- (void)measureTextForLayoutState:(id)state
 {
-  v4 = a3;
-  v5 = [a3 modelCellID];
-  [a3 minSize];
+  stateCopy = state;
+  modelCellID = [state modelCellID];
+  [state minSize];
   v7 = v6;
   v9 = v8;
-  [a3 maxSize];
+  [state maxSize];
   v11 = v10;
   v13 = v12;
-  v14 = [a3 cellWraps];
+  cellWraps = [state cellWraps];
   objc_opt_class();
-  [a3 cellContents];
+  [state cellContents];
   v15 = TSUDynamicCast();
-  if (([a3 hasContent] & 1) == 0)
+  if (([state hasContent] & 1) == 0)
   {
-    [a3 setLayoutCacheFlags:{objc_msgSend(a3, "layoutCacheFlags") & 0xFFFFFFFCLL}];
+    [state setLayoutCacheFlags:{objc_msgSend(state, "layoutCacheFlags") & 0xFFFFFFFCLL}];
     v15 = @"Z";
   }
 
-  v16 = -[TSTMasterLayout newTextEngineForCell:atCellID:](self, "newTextEngineForCell:atCellID:", [a3 cell], objc_msgSend(a3, "modelCellID"));
-  if (([a3 layoutCacheFlags] & 8) != 0)
+  v16 = -[TSTMasterLayout newTextEngineForCell:atCellID:](self, "newTextEngineForCell:atCellID:", [state cell], objc_msgSend(state, "modelCellID"));
+  if (([state layoutCacheFlags] & 8) != 0)
   {
-    v17 = [a3 cell];
-    if (!v17 || *(v17 + 9) << 8 != 2304)
+    cell = [state cell];
+    if (!cell || *(cell + 9) << 8 != 2304)
     {
       v18 = [TSTLayoutContentCachedKey alloc];
-      v19 = v14 ? v11 : v7;
-      v20 = [v16 paragraphStyle];
-      v21 = [a3 cell];
-      v22 = v21 ? *(v21 + 9) : 0;
-      [a3 paddingInsets];
-      v27 = -[TSTLayoutContentCachedKey initWithString:width:height:paragraphStyle:cellWraps:valueType:paddingInsets:verticalAlignment:writingDirection:](v18, "initWithString:width:height:paragraphStyle:cellWraps:valueType:paddingInsets:verticalAlignment:writingDirection:", v15, v20, v14, v22, [a3 verticalAlignment], -[TSSStyle intValueForProperty:](-[TSTTableModel tableStyle](-[TSTMasterLayout tableModel](self, "tableModel"), "tableStyle"), "intValueForProperty:", 798), v19, v9, v23, v24, v25, v26);
-      [a3 setKeyVal:v27];
+      v19 = cellWraps ? v11 : v7;
+      paragraphStyle = [v16 paragraphStyle];
+      cell2 = [state cell];
+      v22 = cell2 ? *(cell2 + 9) : 0;
+      [state paddingInsets];
+      v27 = -[TSTLayoutContentCachedKey initWithString:width:height:paragraphStyle:cellWraps:valueType:paddingInsets:verticalAlignment:writingDirection:](v18, "initWithString:width:height:paragraphStyle:cellWraps:valueType:paddingInsets:verticalAlignment:writingDirection:", v15, paragraphStyle, cellWraps, v22, [state verticalAlignment], -[TSSStyle intValueForProperty:](-[TSTTableModel tableStyle](-[TSTMasterLayout tableModel](self, "tableModel"), "tableStyle"), "intValueForProperty:", 798), v19, v9, v23, v24, v25, v26);
+      [state setKeyVal:v27];
       v28 = [(TSUConcurrentCache *)[(TSTMasterLayout *)self dupContentCache] objectForKey:v27];
       if (v28)
       {
@@ -3969,15 +3969,15 @@ LABEL_28:
   }
 
   v30 = [TSTTextEngineDelegate alloc];
-  [a3 paddingInsets];
-  v35 = -[TSTTextEngineDelegate initWithPadding:verticalAlignment:](v30, "initWithPadding:verticalAlignment:", [a3 verticalAlignment], v31, v32, v33, v34);
+  [state paddingInsets];
+  v35 = -[TSTTextEngineDelegate initWithPadding:verticalAlignment:](v30, "initWithPadding:verticalAlignment:", [state verticalAlignment], v31, v32, v33, v34);
   [v16 setDelegate:v35];
-  if ([(TSTMasterLayout *)self containedTextEditor]&& (([(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] editingCellID]^ v5) & 0xFFFFFF) == 0)
+  if ([(TSTMasterLayout *)self containedTextEditor]&& (([(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] editingCellID]^ modelCellID) & 0xFFFFFF) == 0)
   {
-    v39 = [(TSTEditingState *)[(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] editingState] editingStorage];
+    editingStorage = [(TSTEditingState *)[(TSTTableInfo *)[(TSTMasterLayout *)self tableInfo] editingState] editingStorage];
 LABEL_25:
-    v40 = v39;
-    if (v39 && ![-[TSWPStorage string](v39 "string")])
+    v40 = editingStorage;
+    if (editingStorage && ![-[TSWPStorage string](editingStorage "string")])
     {
       v40 = 0;
       v15 = @"Z";
@@ -3986,24 +3986,24 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  v36 = [a3 cell];
-  if (v36 && *(v36 + 9) << 8 == 2304)
+  cell3 = [state cell];
+  if (cell3 && *(cell3 + 9) << 8 == 2304)
   {
-    v37 = (*&self->mDynamicSuppressingConditionalStylesCellID ^ v5) & 0xFFFFFF;
-    v38 = [a3 cell];
+    v37 = (*&self->mDynamicSuppressingConditionalStylesCellID ^ modelCellID) & 0xFFFFFF;
+    cell4 = [state cell];
     if (v37)
     {
-      v39 = TSTCellRichTextStorageForLayout(v38);
+      editingStorage = TSTCellRichTextStorageForLayout(cell4);
     }
 
     else
     {
-      if (v38)
+      if (cell4)
       {
-        v38 = v38[9];
+        cell4 = cell4[9];
       }
 
-      v39 = [v38 storage];
+      editingStorage = [cell4 storage];
     }
 
     goto LABEL_25;
@@ -4011,7 +4011,7 @@ LABEL_25:
 
   v40 = 0;
 LABEL_28:
-  if (v14)
+  if (cellWraps)
   {
     v41 = 3;
   }
@@ -4033,7 +4033,7 @@ LABEL_28:
 
   if (v40)
   {
-    v44 = [v16 layoutTextStorage:v40 minSize:objc_msgSend(a3 maxSize:"pageNumber") anchor:objc_msgSend(a3 pageNumber:"pageCount") pageCount:v43 flags:{v7, v9, v11, v13, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+    v44 = [v16 layoutTextStorage:v40 minSize:objc_msgSend(state maxSize:"pageNumber") anchor:objc_msgSend(state pageNumber:"pageCount") pageCount:v43 flags:{v7, v9, v11, v13, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
   }
 
   else
@@ -4046,23 +4046,23 @@ LABEL_28:
 
   if (!v29)
   {
-    if ([a3 hasContent])
+    if ([state hasContent])
     {
-      v45 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMasterLayout measureTextForLayoutState:]"];
-      [v45 handleFailureInFunction:v46 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMasterLayout.mm"), 5719, @"No layout found for cell in col %d, row %d\n", BYTE2(v5), v5}];
+      [currentHandler handleFailureInFunction:v46 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMasterLayout.mm"), 5719, @"No layout found for cell in col %d, row %d\n", BYTE2(modelCellID), modelCellID}];
     }
 
     v29 = 0;
   }
 
 LABEL_44:
-  [a3 setWpColumn:v29];
+  [state setWpColumn:v29];
 }
 
-- (void)processLayoutTask:(id)a3
+- (void)processLayoutTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   dispatch_semaphore_wait(self->mLayoutSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   mLayoutInFlight = self->mLayoutInFlight;
   global_queue = dispatch_get_global_queue(0, 0);
@@ -4070,7 +4070,7 @@ LABEL_44:
   v8[1] = 3221225472;
   v8[2] = __37__TSTMasterLayout_processLayoutTask___block_invoke;
   v8[3] = &unk_279D47708;
-  v8[4] = a3;
+  v8[4] = task;
   v8[5] = self;
   dispatch_group_async(mLayoutInFlight, global_queue, v8);
 }
@@ -4104,36 +4104,36 @@ uint64_t __37__TSTMasterLayout_processLayoutTask___block_invoke_2(uint64_t a1)
 {
   dispatch_group_wait(self->mLayoutInFlight, 0xFFFFFFFFFFFFFFFFLL);
   [(TSUReadWriteQueue *)[(TSUConcurrentCache *)[(TSTMasterLayout *)self cellIDToWPColumnCache] readWriteQueue] waitOnInFlightWriters];
-  v3 = [(TSTMasterLayout *)self whCacheQueue];
+  whCacheQueue = [(TSTMasterLayout *)self whCacheQueue];
 
-  [(TSUReadWriteQueue *)v3 waitOnInFlightWriters];
+  [(TSUReadWriteQueue *)whCacheQueue waitOnInFlightWriters];
 }
 
-- (void)setMaxConcurrentTasks:(unsigned int)a3
+- (void)setMaxConcurrentTasks:(unsigned int)tasks
 {
   dispatch_release(self->mLayoutSemaphore);
-  self->mMaxConcurrentTasks = a3;
-  self->mLayoutSemaphore = dispatch_semaphore_create(a3);
+  self->mMaxConcurrentTasks = tasks;
+  self->mLayoutSemaphore = dispatch_semaphore_create(tasks);
 }
 
-- (id)newTextEngineForCell:(id)a3 atCellID:(id)a4
+- (id)newTextEngineForCell:(id)cell atCellID:(id)d
 {
-  if (!a3 || (v7 = *(a3 + 7)) == 0)
+  if (!cell || (v7 = *(cell + 7)) == 0)
   {
     LOBYTE(v22) = 0;
-    v7 = TSTTableTextStyleForCellWithEmptyStyleAtCellID([(TSTMasterLayout *)self tableModel], *&a4, &v22);
-    if (!a3)
+    v7 = TSTTableTextStyleForCellWithEmptyStyleAtCellID([(TSTMasterLayout *)self tableModel], *&d, &v22);
+    if (!cell)
     {
       goto LABEL_18;
     }
   }
 
-  if (*(a3 + 9) << 8 != 512 || *(a3 + 2) >= 0.0)
+  if (*(cell + 9) << 8 != 512 || *(cell + 2) >= 0.0)
   {
     goto LABEL_12;
   }
 
-  v8 = *(a3 + 26);
+  v8 = *(cell + 26);
   v24 = 0;
   v22 = 0u;
   v23 = 0u;
@@ -4145,7 +4145,7 @@ uint64_t __37__TSTMasterLayout_processLayoutTask___block_invoke_2(uint64_t a1)
       goto LABEL_12;
     }
 
-    TSTCellGetFormatOfType(a3, *(a3 + 34), &v22);
+    TSTCellGetFormatOfType(cell, *(cell + 34), &v22);
     if ((v22 & 0xFFFFFFFC) != 0x100)
     {
       goto LABEL_12;
@@ -4154,10 +4154,10 @@ uint64_t __37__TSTMasterLayout_processLayoutTask___block_invoke_2(uint64_t a1)
 
   else
   {
-    v9 = *(a3 + 120);
-    v22 = *(a3 + 104);
+    v9 = *(cell + 120);
+    v22 = *(cell + 104);
     v23 = v9;
-    v24 = *(a3 + 17);
+    v24 = *(cell + 17);
   }
 
   if ((v23 & 0x1500) == 0x100)
@@ -4167,7 +4167,7 @@ uint64_t __37__TSTMasterLayout_processLayoutTask___block_invoke_2(uint64_t a1)
   }
 
 LABEL_12:
-  v10 = *(a3 + 9);
+  v10 = *(cell + 9);
   v11 = v10 > 7;
   v12 = (1 << v10) & 0xA4;
   if (v11 || v12 == 0)
@@ -4177,7 +4177,7 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v14 = [(TSTMasterLayout *)self accountingParagraphStylePropertyMapForCell:a3 atCellID:*&a4];
+  v14 = [(TSTMasterLayout *)self accountingParagraphStylePropertyMapForCell:cell atCellID:*&d];
   if (v14)
   {
     v15 = v14;
@@ -4203,7 +4203,7 @@ LABEL_20:
     }
 
 LABEL_24:
-    if (a3 && *(a3 + 9) << 8 == 2304)
+    if (cell && *(cell + 9) << 8 == 2304)
     {
       v19 = 4;
     }
@@ -4225,7 +4225,7 @@ LABEL_22:
   v19 = 1;
 LABEL_28:
   v20 = [[TSWPText alloc] initWithParagraphStyle:v7 columnStyle:v17 alignmentForNaturalAlignment:v19 naturalDirection:v18];
-  if ([(TSTMasterLayout *)self isDynamicallyChangingFontColorOfCellID:*&a4])
+  if ([(TSTMasterLayout *)self isDynamicallyChangingFontColorOfCellID:*&d])
   {
     [(TSWPText *)v20 setTextColorOverride:[(TSTMasterLayout *)self dynamicFontColor]];
   }
@@ -4233,31 +4233,31 @@ LABEL_28:
   return v20;
 }
 
-- (id)accountingParagraphStylePropertyMapForCell:(id)a3 atCellID:(id)a4
+- (id)accountingParagraphStylePropertyMapForCell:(id)cell atCellID:(id)d
 {
-  if (!TSTCellFormatUsesAccountingStyle(a3))
+  if (!TSTCellFormatUsesAccountingStyle(cell))
   {
     return 0;
   }
 
-  v6 = a4;
-  v7 = TSTTableMergeRangeAtCellID([(TSTMasterLayout *)self tableModel], *&a4);
+  dCopy = d;
+  v7 = TSTTableMergeRangeAtCellID([(TSTMasterLayout *)self tableModel], *&d);
   v8 = v7;
   if (v7 == 0xFFFF || (v7 & 0xFF0000) == 0xFF0000 || !HIWORD(v7) || (v7 & 0xFFFF00000000) == 0)
   {
-    v8 = *&a4 | 0x1000100000000;
+    v8 = *&d | 0x1000100000000;
   }
 
-  else if (((v7 ^ *&a4) & 0xFFFFFF) != 0)
+  else if (((v7 ^ *&d) & 0xFFFFFF) != 0)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTMasterLayout accountingParagraphStylePropertyMapForCell:atCellID:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMasterLayout.mm"), 5894, @"Trying create a text engine for a merged cell other than origin."}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTMasterLayout.mm"), 5894, @"Trying create a text engine for a merged cell other than origin."}];
   }
 
   v12 = TSTMasterLayoutContentWidthForCellRange(self, v8, 0);
   v13 = +[TSWPTab tab];
-  [(TSTMasterLayout *)self paddingForCellID:v6];
+  [(TSTMasterLayout *)self paddingForCellID:dCopy];
   [v13 setPosition:v12 + -4.0 - v14];
   [v13 setAlignment:2];
   v15 = +[TSWPTabs tabs];
@@ -4268,15 +4268,15 @@ LABEL_28:
   return v11;
 }
 
-- (UIEdgeInsets)edgeInsetsFromPadding:(id)a3
+- (UIEdgeInsets)edgeInsetsFromPadding:(id)padding
 {
-  [a3 topInset];
+  [padding topInset];
   v5 = v4;
-  [a3 leftInset];
+  [padding leftInset];
   v7 = v6;
-  [a3 bottomInset];
+  [padding bottomInset];
   v9 = v8;
-  [a3 rightInset];
+  [padding rightInset];
   v10 = fmax(v7, 2.0);
   v12 = fmax(v11, 2.0);
   v13 = v5;
@@ -4288,9 +4288,9 @@ LABEL_28:
   return result;
 }
 
-- (UIEdgeInsets)paddingForCellID:(id)a3
+- (UIEdgeInsets)paddingForCellID:(id)d
 {
-  if ((a3.var0 == 0xFFFF || (*&a3.var0 & 0xFF0000) == 0xFF0000 || (CellStyleAtCellID = TSTTableGetCellStyleAtCellID([(TSTMasterLayout *)self tableModel], *&a3, 0)) == 0) && (CellStyleAtCellID = TSTTableCellStyleForCellWithEmptyStyleAtCellID([(TSTMasterLayout *)self tableModel], *&a3, 0)) == 0)
+  if ((d.var0 == 0xFFFF || (*&d.var0 & 0xFF0000) == 0xFF0000 || (CellStyleAtCellID = TSTTableGetCellStyleAtCellID([(TSTMasterLayout *)self tableModel], *&d, 0)) == 0) && (CellStyleAtCellID = TSTTableCellStyleForCellWithEmptyStyleAtCellID([(TSTMasterLayout *)self tableModel], *&d, 0)) == 0)
   {
     v6 = 0;
   }
@@ -4308,9 +4308,9 @@ LABEL_28:
   return result;
 }
 
-- (UIEdgeInsets)defaultPaddingForCellID:(id)a3
+- (UIEdgeInsets)defaultPaddingForCellID:(id)d
 {
-  v4 = TSTTableCellStyleForCellWithEmptyStyleAtCellID([(TSTMasterLayout *)self tableModel], *&a3, 0);
+  v4 = TSTTableCellStyleForCellWithEmptyStyleAtCellID([(TSTMasterLayout *)self tableModel], *&d, 0);
   if (v4)
   {
     v5 = [v4 valueForProperty:904];
@@ -4329,15 +4329,15 @@ LABEL_28:
   return result;
 }
 
-- (double)fontHeightOfParagraphStyle:(id)a3
+- (double)fontHeightOfParagraphStyle:(id)style
 {
-  v5 = a3;
-  if (!a3)
+  styleCopy = style;
+  if (!style)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    styleCopy = [MEMORY[0x277CBEB68] null];
   }
 
-  v6 = [(TSURetainedPointerKeyDictionary *)self->mParaStyleToHeightCache objectForKey:v5];
+  v6 = [(TSURetainedPointerKeyDictionary *)self->mParaStyleToHeightCache objectForKey:styleCopy];
   if (v6)
   {
 
@@ -4346,10 +4346,10 @@ LABEL_28:
 
   else
   {
-    FontForStyle = TSWPFastCreateFontForStyle(0, a3, 0x64uLL);
+    FontForStyle = TSWPFastCreateFontForStyle(0, style, 0x64uLL);
     v9 = ceil(TSWPDefaultLineHeightForFont(FontForStyle));
     CFRelease(FontForStyle);
-    -[TSURetainedPointerKeyDictionary setObject:forKey:](self->mParaStyleToHeightCache, "setObject:forKey:", [MEMORY[0x277CCABB0] tsu_numberWithCGFloat:v9], v5);
+    -[TSURetainedPointerKeyDictionary setObject:forKey:](self->mParaStyleToHeightCache, "setObject:forKey:", [MEMORY[0x277CCABB0] tsu_numberWithCGFloat:v9], styleCopy);
     return v9;
   }
 

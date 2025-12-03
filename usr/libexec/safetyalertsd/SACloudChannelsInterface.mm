@@ -1,24 +1,24 @@
 @interface SACloudChannelsInterface
-- (BOOL)isSubscribedChannel:(id)a3;
-- (SACloudChannelsInterface)initWithQueue:(id)a3 isProduction:(BOOL)a4 channelType:(int)a5;
+- (BOOL)isSubscribedChannel:(id)channel;
+- (SACloudChannelsInterface)initWithQueue:(id)queue isProduction:(BOOL)production channelType:(int)type;
 - (id).cxx_construct;
-- (void)addToSubscribedChannels:(id)a3;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)removeFromSubscribedChannels:(id)a3;
-- (void)subscribe:(id)a3 topic:(id)a4;
-- (void)unsubcribeForgottenChannels:(id)a3;
-- (void)unsubcribeForgottenChannelsForTopic:(id)a3 topicName:(id)a4;
-- (void)unsubscribe:(id)a3 topic:(id)a4;
+- (void)addToSubscribedChannels:(id)channels;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)removeFromSubscribedChannels:(id)channels;
+- (void)subscribe:(id)subscribe topic:(id)topic;
+- (void)unsubcribeForgottenChannels:(id)channels;
+- (void)unsubcribeForgottenChannelsForTopic:(id)topic topicName:(id)name;
+- (void)unsubscribe:(id)unsubscribe topic:(id)topic;
 @end
 
 @implementation SACloudChannelsInterface
 
-- (SACloudChannelsInterface)initWithQueue:(id)a3 isProduction:(BOOL)a4 channelType:(int)a5
+- (SACloudChannelsInterface)initWithQueue:(id)queue isProduction:(BOOL)production channelType:(int)type
 {
-  v6 = a4;
-  v9 = a3;
+  productionCopy = production;
+  queueCopy = queue;
   v10 = [NSArray arrayWithObjects:@"com.apple.aps.locationd.safetyalert", @"com.apple.aps.mantis.safetyalert", 0];
   v23.receiver = self;
   v23.super_class = SACloudChannelsInterface;
@@ -27,7 +27,7 @@
   v13 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_queue, a3);
+    objc_storeStrong(&v11->_queue, queue);
     v14 = SALogObjectGeneral;
     if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
     {
@@ -36,15 +36,15 @@
       v26 = 2082;
       v27 = "";
       v28 = 1026;
-      v29 = v6;
+      v29 = productionCopy;
       v30 = 1026;
-      v31 = a5;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#channel,initWithQueue, isProduction:%{public}hhd, type:%{public}d}", buf, 0x1Eu);
     }
 
     v15 = [APSConnection alloc];
     v16 = &APSEnvironmentProduction;
-    if (!v6)
+    if (!productionCopy)
     {
       v16 = &APSEnvironmentDevelopment;
     }
@@ -83,12 +83,12 @@
   return v13;
 }
 
-- (BOOL)isSubscribedChannel:(id)a3
+- (BOOL)isSubscribedChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   begin = self->_activeSubscibedChannels.__begin_;
   end = self->_activeSubscibedChannels.__end_;
-  v7 = v4;
+  v7 = channelCopy;
   if (begin != end)
   {
     while (1)
@@ -113,7 +113,7 @@
         v12 = SHIBYTE(__p.__r_.__value_.__r.__words[2]);
         v13 = __p.__r_.__value_.__r.__words[0];
         v14 = v7;
-        v15 = [v7 UTF8String];
+        uTF8String = [v7 UTF8String];
         *buf = 68289795;
         p_p = &__p;
         if (v12 < 0)
@@ -126,7 +126,7 @@
         v23 = 2081;
         v24 = p_p;
         v25 = 2081;
-        v26 = v15;
+        v26 = uTF8String;
         v27 = 1026;
         v28 = v10;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#channel,isSubscribedChannel, candidate:%{private, location:escape_only}s, matchedWith:%{private, location:escape_only}s, result:%{public}d}", buf, 0x2Cu);
@@ -155,14 +155,14 @@
   return v17;
 }
 
-- (void)addToSubscribedChannels:(id)a3
+- (void)addToSubscribedChannels:(id)channels
 {
-  v4 = a3;
-  v31 = v4;
-  if (![(SACloudChannelsInterface *)self isSubscribedChannel:v4])
+  channelsCopy = channels;
+  v31 = channelsCopy;
+  if (![(SACloudChannelsInterface *)self isSubscribedChannel:channelsCopy])
   {
-    v5 = [v4 UTF8String];
-    v6 = strlen(v5);
+    uTF8String = [channelsCopy UTF8String];
+    v6 = strlen(uTF8String);
     if (v6 >= 0x7FFFFFFFFFFFFFF8)
     {
       sub_100004D90();
@@ -177,7 +177,7 @@
     HIBYTE(v33) = v6;
     if (v6)
     {
-      memmove(&__dst, v5, v6);
+      memmove(&__dst, uTF8String, v6);
     }
 
     *(&__dst + v7) = 0;
@@ -248,15 +248,15 @@
   v22 = SALogObjectGeneral;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = v4;
-    v24 = [v4 UTF8String];
+    v23 = channelsCopy;
+    uTF8String2 = [channelsCopy UTF8String];
     v25 = -1431655765 * ((self->_activeSubscibedChannels.__end_ - self->_activeSubscibedChannels.__begin_) >> 3);
     *buf = 68289539;
     *&buf[4] = 0;
     *v35 = 2082;
     *&v35[2] = "";
     *&v35[10] = 2081;
-    *&v35[12] = v24;
+    *&v35[12] = uTF8String2;
     *&v35[20] = 1026;
     *&v35[22] = v25;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#channel,addToSubscribedChannels, channel:%{private, location:escape_only}s, len:%{public}d}", buf, 0x22u);
@@ -306,12 +306,12 @@
   }
 }
 
-- (void)removeFromSubscribedChannels:(id)a3
+- (void)removeFromSubscribedChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   begin = self->_activeSubscibedChannels.__begin_;
   end = self->_activeSubscibedChannels.__end_;
-  v7 = v4;
+  v7 = channelsCopy;
   if (begin != end)
   {
     while (1)
@@ -368,12 +368,12 @@
   }
 }
 
-- (void)subscribe:(id)a3 topic:(id)a4
+- (void)subscribe:(id)subscribe topic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
+  subscribeCopy = subscribe;
+  topicCopy = topic;
   v8 = SALogObjectGeneral;
-  if (v6)
+  if (subscribeCopy)
   {
     v9 = SALogObjectGeneral;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -383,15 +383,15 @@
       v13 = 2082;
       v14 = "";
       v15 = 2081;
-      v16 = [v6 UTF8String];
+      uTF8String = [subscribeCopy UTF8String];
       v17 = 2081;
-      v18 = [v7 UTF8String];
+      uTF8String2 = [topicCopy UTF8String];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#ch,subscribe, channel:%{private, location:escape_only}s, channelTopic:%{private, location:escape_only}s}", &v11, 0x26u);
     }
 
-    v10 = [[PKPublicChannel alloc] initWithChannelID:v6];
-    [(SACloudChannelsInterface *)self addToSubscribedChannels:v6];
-    [(APSConnection *)self->_pushConnection subscribeToChannel:v10 forTopic:v7];
+    v10 = [[PKPublicChannel alloc] initWithChannelID:subscribeCopy];
+    [(SACloudChannelsInterface *)self addToSubscribedChannels:subscribeCopy];
+    [(APSConnection *)self->_pushConnection subscribeToChannel:v10 forTopic:topicCopy];
   }
 
   else if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_ERROR))
@@ -404,12 +404,12 @@
   }
 }
 
-- (void)unsubscribe:(id)a3 topic:(id)a4
+- (void)unsubscribe:(id)unsubscribe topic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
+  unsubscribeCopy = unsubscribe;
+  topicCopy = topic;
   v8 = SALogObjectGeneral;
-  if (v6)
+  if (unsubscribeCopy)
   {
     v9 = SALogObjectGeneral;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -419,15 +419,15 @@
       v13 = 2082;
       v14 = "";
       v15 = 2081;
-      v16 = [v6 UTF8String];
+      uTF8String = [unsubscribeCopy UTF8String];
       v17 = 2081;
-      v18 = [v7 UTF8String];
+      uTF8String2 = [topicCopy UTF8String];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#ch,unsubscribe, channel:%{private, location:escape_only}s, channelTopic:%{private, location:escape_only}s}", &v11, 0x26u);
     }
 
-    v10 = [[PKPublicChannel alloc] initWithChannelID:v6];
-    [(SACloudChannelsInterface *)self removeFromSubscribedChannels:v6];
-    [(APSConnection *)self->_pushConnection unsubscribeFromChannel:v10 forTopic:v7];
+    v10 = [[PKPublicChannel alloc] initWithChannelID:unsubscribeCopy];
+    [(SACloudChannelsInterface *)self removeFromSubscribedChannels:unsubscribeCopy];
+    [(APSConnection *)self->_pushConnection unsubscribeFromChannel:v10 forTopic:topicCopy];
   }
 
   else if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_ERROR))
@@ -440,12 +440,12 @@
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   v14 = objc_autoreleasePoolPush();
   v15 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
@@ -454,23 +454,23 @@
     v18 = 2082;
     v19 = "";
     v20 = 2113;
-    v21 = v11;
+    v21 = tokenCopy;
     v22 = 2113;
-    v23 = v12;
+    v23 = topicCopy;
     v24 = 2113;
-    v25 = v13;
+    v25 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#channel,received push token, token:%{private, location:escape_only}@, topic:%{private, location:escape_only}@, identifier:%{private, location:escape_only}@}", &v17, 0x30u);
   }
 
-  v16 = [(SACloudChannelsInterface *)self channelProxy];
-  (*(v16->var0 + 5))(v16, 1);
+  channelProxy = [(SACloudChannelsInterface *)self channelProxy];
+  (*(channelProxy->var0 + 5))(channelProxy, 1);
   objc_autoreleasePoolPop(v14);
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   v8 = objc_autoreleasePoolPush();
   v9 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
@@ -480,25 +480,25 @@
     v12 = 2082;
     v13 = "";
     v14 = 2113;
-    v15 = v7;
+    v15 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#channel,received public push token, token:%{private, location:escape_only}@}", v11, 0x1Cu);
   }
 
-  v10 = [(SACloudChannelsInterface *)self channelProxy];
-  (*(v10->var0 + 6))(v10, 1);
+  channelProxy = [(SACloudChannelsInterface *)self channelProxy];
+  (*(channelProxy->var0 + 6))(channelProxy, 1);
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v8 = objc_autoreleasePoolPush();
-  v9 = [v7 topic];
-  v10 = [v7 userInfo];
-  v11 = [v7 incomingInterface];
+  topic = [messageCopy topic];
+  userInfo = [messageCopy userInfo];
+  incomingInterface = [messageCopy incomingInterface];
   v23 = kIncomingMessageInterfaceKey;
-  v12 = [NSNumber numberWithInt:v11];
+  v12 = [NSNumber numberWithInt:incomingInterface];
   v24 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
 
@@ -510,42 +510,42 @@
     v17 = 2082;
     v18 = "";
     v19 = 2113;
-    v20 = v9;
+    v20 = topic;
     v21 = 2113;
-    v22 = v7;
+    v22 = messageCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#channel,Received push message, topic:%{private, location:escape_only}@, message:%{private, location:escape_only}@}", v16, 0x26u);
   }
 
-  [v10 enumerateKeysAndObjectsUsingBlock:&stru_10013FC00];
+  [userInfo enumerateKeysAndObjectsUsingBlock:&stru_10013FC00];
   [v13 enumerateKeysAndObjectsUsingBlock:&stru_10013FC20];
-  v15 = [(SACloudChannelsInterface *)self channelProxy];
-  (*(v15->var0 + 4))(v15, v10, v13);
+  channelProxy = [(SACloudChannelsInterface *)self channelProxy];
+  (*(channelProxy->var0 + 4))(channelProxy, userInfo, v13);
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)unsubcribeForgottenChannels:(id)a3
+- (void)unsubcribeForgottenChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   [SACloudChannelsInterface unsubcribeForgottenChannelsForTopic:"unsubcribeForgottenChannelsForTopic:topicName:" topicName:?];
-  [(SACloudChannelsInterface *)self unsubcribeForgottenChannelsForTopic:v4 topicName:@"com.apple.aps.mantis.safetyalert"];
+  [(SACloudChannelsInterface *)self unsubcribeForgottenChannelsForTopic:channelsCopy topicName:@"com.apple.aps.mantis.safetyalert"];
 }
 
-- (void)unsubcribeForgottenChannelsForTopic:(id)a3 topicName:(id)a4
+- (void)unsubcribeForgottenChannelsForTopic:(id)topic topicName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  topicCopy = topic;
+  nameCopy = name;
+  if (nameCopy)
   {
-    v8 = [(SACloudChannelsInterface *)self getPushConnection];
+    getPushConnection = [(SACloudChannelsInterface *)self getPushConnection];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000C3CF8;
     v10[3] = &unk_10013FC48;
-    v11 = v7;
-    v12 = self;
-    v13 = v6;
-    [v8 getRegisteredChannelsForTopic:v11 withCompletion:v10];
+    v11 = nameCopy;
+    selfCopy = self;
+    v13 = topicCopy;
+    [getPushConnection getRegisteredChannelsForTopic:v11 withCompletion:v10];
   }
 
   else

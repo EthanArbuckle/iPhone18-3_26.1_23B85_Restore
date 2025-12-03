@@ -1,57 +1,57 @@
 @interface _SFPBSplitCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSplitCardSection)initWithDictionary:(id)a3;
-- (_SFPBSplitCardSection)initWithFacade:(id)a3;
-- (_SFPBSplitCardSection)initWithJSON:(id)a3;
+- (_SFPBSplitCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBSplitCardSection)initWithFacade:(id)facade;
+- (_SFPBSplitCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addListItems:(id)a3;
-- (void)setListItems:(id)a3;
-- (void)setListMoreString:(id)a3;
-- (void)setListPrefix:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addListItems:(id)items;
+- (void)setListItems:(id)items;
+- (void)setListMoreString:(id)string;
+- (void)setListPrefix:(id)prefix;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSplitCardSection
 
-- (_SFPBSplitCardSection)initWithFacade:(id)a3
+- (_SFPBSplitCardSection)initWithFacade:(id)facade
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSplitCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 topTitle];
+    topTitle = [facadeCopy topTitle];
 
-    if (v6)
+    if (topTitle)
     {
       v7 = [_SFPBRichText alloc];
-      v8 = [v4 topTitle];
-      v9 = [(_SFPBRichText *)v7 initWithFacade:v8];
+      topTitle2 = [facadeCopy topTitle];
+      v9 = [(_SFPBRichText *)v7 initWithFacade:topTitle2];
       [(_SFPBSplitCardSection *)v5 setTopTitle:v9];
     }
 
-    v10 = [v4 secondaryTopTitle];
+    secondaryTopTitle = [facadeCopy secondaryTopTitle];
 
-    if (v10)
+    if (secondaryTopTitle)
     {
       v11 = [_SFPBRichText alloc];
-      v12 = [v4 secondaryTopTitle];
-      v13 = [(_SFPBRichText *)v11 initWithFacade:v12];
+      secondaryTopTitle2 = [facadeCopy secondaryTopTitle];
+      v13 = [(_SFPBRichText *)v11 initWithFacade:secondaryTopTitle2];
       [(_SFPBSplitCardSection *)v5 setSecondaryTopTitle:v13];
     }
 
-    v14 = [v4 listPrefix];
+    listPrefix = [facadeCopy listPrefix];
 
-    if (v14)
+    if (listPrefix)
     {
-      v15 = [v4 listPrefix];
-      [(_SFPBSplitCardSection *)v5 setListPrefix:v15];
+      listPrefix2 = [facadeCopy listPrefix];
+      [(_SFPBSplitCardSection *)v5 setListPrefix:listPrefix2];
     }
 
-    v16 = [v4 listItems];
-    if (v16)
+    listItems = [facadeCopy listItems];
+    if (listItems)
     {
       v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -65,8 +65,8 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v18 = [v4 listItems];
-    v19 = [v18 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    listItems2 = [facadeCopy listItems];
+    v19 = [listItems2 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v19)
     {
       v20 = v19;
@@ -77,7 +77,7 @@
         {
           if (*v37 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(listItems2);
           }
 
           if (*(*(&v36 + 1) + 8 * i))
@@ -86,38 +86,38 @@
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v20 = [listItems2 countByEnumeratingWithState:&v36 objects:v40 count:16];
       }
 
       while (v20);
     }
 
     [(_SFPBSplitCardSection *)v5 setListItems:v17];
-    v23 = [v4 listMoreString];
+    listMoreString = [facadeCopy listMoreString];
 
-    if (v23)
+    if (listMoreString)
     {
-      v24 = [v4 listMoreString];
-      [(_SFPBSplitCardSection *)v5 setListMoreString:v24];
+      listMoreString2 = [facadeCopy listMoreString];
+      [(_SFPBSplitCardSection *)v5 setListMoreString:listMoreString2];
     }
 
-    v25 = [v4 bottomTitle];
+    bottomTitle = [facadeCopy bottomTitle];
 
-    if (v25)
+    if (bottomTitle)
     {
       v26 = [_SFPBRichText alloc];
-      v27 = [v4 bottomTitle];
-      v28 = [(_SFPBRichText *)v26 initWithFacade:v27];
+      bottomTitle2 = [facadeCopy bottomTitle];
+      v28 = [(_SFPBRichText *)v26 initWithFacade:bottomTitle2];
       [(_SFPBSplitCardSection *)v5 setBottomTitle:v28];
     }
 
-    v29 = [v4 body];
+    body = [facadeCopy body];
 
-    if (v29)
+    if (body)
     {
       v30 = [_SFPBRichText alloc];
-      v31 = [v4 body];
-      v32 = [(_SFPBRichText *)v30 initWithFacade:v31];
+      body2 = [facadeCopy body];
+      v32 = [(_SFPBRichText *)v30 initWithFacade:body2];
       [(_SFPBSplitCardSection *)v5 setBody:v32];
     }
 
@@ -128,16 +128,16 @@
   return v5;
 }
 
-- (_SFPBSplitCardSection)initWithDictionary:(id)a3
+- (_SFPBSplitCardSection)initWithDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = _SFPBSplitCardSection;
   v5 = [(_SFPBSplitCardSection *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"topTitle"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"topTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -145,7 +145,7 @@
       [(_SFPBSplitCardSection *)v5 setTopTitle:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"secondaryTopTitle"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"secondaryTopTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -153,7 +153,7 @@
       [(_SFPBSplitCardSection *)v5 setSecondaryTopTitle:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"listPrefix"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"listPrefix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -161,7 +161,7 @@
       [(_SFPBSplitCardSection *)v5 setListPrefix:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"listItems"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"listItems"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -209,7 +209,7 @@
       v6 = v30;
     }
 
-    v20 = [v4 objectForKeyedSubscript:{@"listMoreString", v29, v30, v31}];
+    v20 = [dictionaryCopy objectForKeyedSubscript:{@"listMoreString", v29, v30, v31}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -217,7 +217,7 @@
       [(_SFPBSplitCardSection *)v5 setListMoreString:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"bottomTitle"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"bottomTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -225,7 +225,7 @@
       [(_SFPBSplitCardSection *)v5 setBottomTitle:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"body"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"body"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -240,30 +240,30 @@
   return v5;
 }
 
-- (_SFPBSplitCardSection)initWithJSON:(id)a3
+- (_SFPBSplitCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSplitCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSplitCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSplitCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -276,93 +276,93 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_body)
   {
-    v4 = [(_SFPBSplitCardSection *)self body];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    body = [(_SFPBSplitCardSection *)self body];
+    dictionaryRepresentation = [body dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"body"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"body"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"body"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"body"];
     }
   }
 
   if (self->_bottomTitle)
   {
-    v7 = [(_SFPBSplitCardSection *)self bottomTitle];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    bottomTitle = [(_SFPBSplitCardSection *)self bottomTitle];
+    dictionaryRepresentation2 = [bottomTitle dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"bottomTitle"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"bottomTitle"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"bottomTitle"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"bottomTitle"];
     }
   }
 
   if (self->_listItems)
   {
-    v10 = [(_SFPBSplitCardSection *)self listItems];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"listItems"];
+    listItems = [(_SFPBSplitCardSection *)self listItems];
+    v11 = [listItems copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"listItems"];
   }
 
   if (self->_listMoreString)
   {
-    v12 = [(_SFPBSplitCardSection *)self listMoreString];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"listMoreString"];
+    listMoreString = [(_SFPBSplitCardSection *)self listMoreString];
+    v13 = [listMoreString copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"listMoreString"];
   }
 
   if (self->_listPrefix)
   {
-    v14 = [(_SFPBSplitCardSection *)self listPrefix];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"listPrefix"];
+    listPrefix = [(_SFPBSplitCardSection *)self listPrefix];
+    v15 = [listPrefix copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"listPrefix"];
   }
 
   if (self->_secondaryTopTitle)
   {
-    v16 = [(_SFPBSplitCardSection *)self secondaryTopTitle];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    secondaryTopTitle = [(_SFPBSplitCardSection *)self secondaryTopTitle];
+    dictionaryRepresentation3 = [secondaryTopTitle dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"secondaryTopTitle"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"secondaryTopTitle"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"secondaryTopTitle"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"secondaryTopTitle"];
     }
   }
 
   if (self->_topTitle)
   {
-    v19 = [(_SFPBSplitCardSection *)self topTitle];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    topTitle = [(_SFPBSplitCardSection *)self topTitle];
+    dictionaryRepresentation4 = [topTitle dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"topTitle"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"topTitle"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"topTitle"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"topTitle"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -376,28 +376,28 @@
   return v6 ^ v8 ^ [(_SFPBRichText *)self->_body hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  v5 = [(_SFPBSplitCardSection *)self topTitle];
-  v6 = [v4 topTitle];
-  if ((v5 != 0) == (v6 == 0))
+  topTitle = [(_SFPBSplitCardSection *)self topTitle];
+  topTitle2 = [equalCopy topTitle];
+  if ((topTitle != 0) == (topTitle2 == 0))
   {
     goto LABEL_36;
   }
 
-  v7 = [(_SFPBSplitCardSection *)self topTitle];
-  if (v7)
+  topTitle3 = [(_SFPBSplitCardSection *)self topTitle];
+  if (topTitle3)
   {
-    v8 = v7;
-    v9 = [(_SFPBSplitCardSection *)self topTitle];
-    v10 = [v4 topTitle];
-    v11 = [v9 isEqual:v10];
+    v8 = topTitle3;
+    topTitle4 = [(_SFPBSplitCardSection *)self topTitle];
+    topTitle5 = [equalCopy topTitle];
+    v11 = [topTitle4 isEqual:topTitle5];
 
     if (!v11)
     {
@@ -409,20 +409,20 @@
   {
   }
 
-  v5 = [(_SFPBSplitCardSection *)self secondaryTopTitle];
-  v6 = [v4 secondaryTopTitle];
-  if ((v5 != 0) == (v6 == 0))
+  topTitle = [(_SFPBSplitCardSection *)self secondaryTopTitle];
+  topTitle2 = [equalCopy secondaryTopTitle];
+  if ((topTitle != 0) == (topTitle2 == 0))
   {
     goto LABEL_36;
   }
 
-  v12 = [(_SFPBSplitCardSection *)self secondaryTopTitle];
-  if (v12)
+  secondaryTopTitle = [(_SFPBSplitCardSection *)self secondaryTopTitle];
+  if (secondaryTopTitle)
   {
-    v13 = v12;
-    v14 = [(_SFPBSplitCardSection *)self secondaryTopTitle];
-    v15 = [v4 secondaryTopTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = secondaryTopTitle;
+    secondaryTopTitle2 = [(_SFPBSplitCardSection *)self secondaryTopTitle];
+    secondaryTopTitle3 = [equalCopy secondaryTopTitle];
+    v16 = [secondaryTopTitle2 isEqual:secondaryTopTitle3];
 
     if (!v16)
     {
@@ -434,20 +434,20 @@
   {
   }
 
-  v5 = [(_SFPBSplitCardSection *)self listPrefix];
-  v6 = [v4 listPrefix];
-  if ((v5 != 0) == (v6 == 0))
+  topTitle = [(_SFPBSplitCardSection *)self listPrefix];
+  topTitle2 = [equalCopy listPrefix];
+  if ((topTitle != 0) == (topTitle2 == 0))
   {
     goto LABEL_36;
   }
 
-  v17 = [(_SFPBSplitCardSection *)self listPrefix];
-  if (v17)
+  listPrefix = [(_SFPBSplitCardSection *)self listPrefix];
+  if (listPrefix)
   {
-    v18 = v17;
-    v19 = [(_SFPBSplitCardSection *)self listPrefix];
-    v20 = [v4 listPrefix];
-    v21 = [v19 isEqual:v20];
+    v18 = listPrefix;
+    listPrefix2 = [(_SFPBSplitCardSection *)self listPrefix];
+    listPrefix3 = [equalCopy listPrefix];
+    v21 = [listPrefix2 isEqual:listPrefix3];
 
     if (!v21)
     {
@@ -459,20 +459,20 @@
   {
   }
 
-  v5 = [(_SFPBSplitCardSection *)self listItems];
-  v6 = [v4 listItems];
-  if ((v5 != 0) == (v6 == 0))
+  topTitle = [(_SFPBSplitCardSection *)self listItems];
+  topTitle2 = [equalCopy listItems];
+  if ((topTitle != 0) == (topTitle2 == 0))
   {
     goto LABEL_36;
   }
 
-  v22 = [(_SFPBSplitCardSection *)self listItems];
-  if (v22)
+  listItems = [(_SFPBSplitCardSection *)self listItems];
+  if (listItems)
   {
-    v23 = v22;
-    v24 = [(_SFPBSplitCardSection *)self listItems];
-    v25 = [v4 listItems];
-    v26 = [v24 isEqual:v25];
+    v23 = listItems;
+    listItems2 = [(_SFPBSplitCardSection *)self listItems];
+    listItems3 = [equalCopy listItems];
+    v26 = [listItems2 isEqual:listItems3];
 
     if (!v26)
     {
@@ -484,20 +484,20 @@
   {
   }
 
-  v5 = [(_SFPBSplitCardSection *)self listMoreString];
-  v6 = [v4 listMoreString];
-  if ((v5 != 0) == (v6 == 0))
+  topTitle = [(_SFPBSplitCardSection *)self listMoreString];
+  topTitle2 = [equalCopy listMoreString];
+  if ((topTitle != 0) == (topTitle2 == 0))
   {
     goto LABEL_36;
   }
 
-  v27 = [(_SFPBSplitCardSection *)self listMoreString];
-  if (v27)
+  listMoreString = [(_SFPBSplitCardSection *)self listMoreString];
+  if (listMoreString)
   {
-    v28 = v27;
-    v29 = [(_SFPBSplitCardSection *)self listMoreString];
-    v30 = [v4 listMoreString];
-    v31 = [v29 isEqual:v30];
+    v28 = listMoreString;
+    listMoreString2 = [(_SFPBSplitCardSection *)self listMoreString];
+    listMoreString3 = [equalCopy listMoreString];
+    v31 = [listMoreString2 isEqual:listMoreString3];
 
     if (!v31)
     {
@@ -509,20 +509,20 @@
   {
   }
 
-  v5 = [(_SFPBSplitCardSection *)self bottomTitle];
-  v6 = [v4 bottomTitle];
-  if ((v5 != 0) == (v6 == 0))
+  topTitle = [(_SFPBSplitCardSection *)self bottomTitle];
+  topTitle2 = [equalCopy bottomTitle];
+  if ((topTitle != 0) == (topTitle2 == 0))
   {
     goto LABEL_36;
   }
 
-  v32 = [(_SFPBSplitCardSection *)self bottomTitle];
-  if (v32)
+  bottomTitle = [(_SFPBSplitCardSection *)self bottomTitle];
+  if (bottomTitle)
   {
-    v33 = v32;
-    v34 = [(_SFPBSplitCardSection *)self bottomTitle];
-    v35 = [v4 bottomTitle];
-    v36 = [v34 isEqual:v35];
+    v33 = bottomTitle;
+    bottomTitle2 = [(_SFPBSplitCardSection *)self bottomTitle];
+    bottomTitle3 = [equalCopy bottomTitle];
+    v36 = [bottomTitle2 isEqual:bottomTitle3];
 
     if (!v36)
     {
@@ -534,12 +534,12 @@
   {
   }
 
-  v5 = [(_SFPBSplitCardSection *)self body];
-  v6 = [v4 body];
-  if ((v5 != 0) != (v6 == 0))
+  topTitle = [(_SFPBSplitCardSection *)self body];
+  topTitle2 = [equalCopy body];
+  if ((topTitle != 0) != (topTitle2 == 0))
   {
-    v37 = [(_SFPBSplitCardSection *)self body];
-    if (!v37)
+    body = [(_SFPBSplitCardSection *)self body];
+    if (!body)
     {
 
 LABEL_40:
@@ -547,10 +547,10 @@ LABEL_40:
       goto LABEL_38;
     }
 
-    v38 = v37;
-    v39 = [(_SFPBSplitCardSection *)self body];
-    v40 = [v4 body];
-    v41 = [v39 isEqual:v40];
+    v38 = body;
+    body2 = [(_SFPBSplitCardSection *)self body];
+    body3 = [equalCopy body];
+    v41 = [body2 isEqual:body3];
 
     if (v41)
     {
@@ -570,34 +570,34 @@ LABEL_38:
   return v42;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBSplitCardSection *)self topTitle];
-  if (v5)
+  toCopy = to;
+  topTitle = [(_SFPBSplitCardSection *)self topTitle];
+  if (topTitle)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBSplitCardSection *)self secondaryTopTitle];
-  if (v6)
+  secondaryTopTitle = [(_SFPBSplitCardSection *)self secondaryTopTitle];
+  if (secondaryTopTitle)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBSplitCardSection *)self listPrefix];
-  if (v7)
+  listPrefix = [(_SFPBSplitCardSection *)self listPrefix];
+  if (listPrefix)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBSplitCardSection *)self listItems];
+  listItems = [(_SFPBSplitCardSection *)self listItems];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [listItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -609,7 +609,7 @@ LABEL_38:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(listItems);
         }
 
         v13 = *(*(&v18 + 1) + 8 * v12);
@@ -618,26 +618,26 @@ LABEL_38:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [listItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(_SFPBSplitCardSection *)self listMoreString];
-  if (v14)
+  listMoreString = [(_SFPBSplitCardSection *)self listMoreString];
+  if (listMoreString)
   {
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_SFPBSplitCardSection *)self bottomTitle];
-  if (v15)
+  bottomTitle = [(_SFPBSplitCardSection *)self bottomTitle];
+  if (bottomTitle)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_SFPBSplitCardSection *)self body];
-  if (v16)
+  body = [(_SFPBSplitCardSection *)self body];
+  if (body)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -645,45 +645,45 @@ LABEL_38:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setListMoreString:(id)a3
+- (void)setListMoreString:(id)string
 {
-  v4 = [a3 copy];
+  v4 = [string copy];
   listMoreString = self->_listMoreString;
   self->_listMoreString = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addListItems:(id)a3
+- (void)addListItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   listItems = self->_listItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!listItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_listItems;
-    self->_listItems = v6;
+    self->_listItems = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     listItems = self->_listItems;
   }
 
-  [(NSArray *)listItems addObject:v4];
+  [(NSArray *)listItems addObject:itemsCopy];
 }
 
-- (void)setListItems:(id)a3
+- (void)setListItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   listItems = self->_listItems;
   self->_listItems = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setListPrefix:(id)a3
+- (void)setListPrefix:(id)prefix
 {
-  v4 = [a3 copy];
+  v4 = [prefix copy];
   listPrefix = self->_listPrefix;
   self->_listPrefix = v4;
 

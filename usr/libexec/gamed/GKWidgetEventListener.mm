@@ -1,9 +1,9 @@
 @interface GKWidgetEventListener
-- (BOOL)isActionDefined:(id)a3;
-- (BOOL)isKnownScheme:(id)a3;
-- (id)makeDeepLinkDictionaryFrom:(id)a3;
+- (BOOL)isActionDefined:(id)defined;
+- (BOOL)isKnownScheme:(id)scheme;
+- (id)makeDeepLinkDictionaryFrom:(id)from;
 - (void)activateListener;
-- (void)eventServiceListener:(id)a3 didReceiveOpenEventWithURL:(id)a4;
+- (void)eventServiceListener:(id)listener didReceiveOpenEventWithURL:(id)l;
 @end
 
 @implementation GKWidgetEventListener
@@ -13,8 +13,8 @@
   v3 = [[CHSWidgetEventServiceListener alloc] initWithServiceDomain:@"com.apple.chrono.event-service.gamed" delegate:self];
   [(GKWidgetEventListener *)self setListener:v3];
 
-  v4 = [(GKWidgetEventListener *)self listener];
-  [v4 activate];
+  listener = [(GKWidgetEventListener *)self listener];
+  [listener activate];
 
   if (!os_log_GKGeneral)
   {
@@ -29,44 +29,44 @@
   }
 }
 
-- (BOOL)isKnownScheme:(id)a3
+- (BOOL)isKnownScheme:(id)scheme
 {
   v3 = qword_1003B94A0[0];
-  v4 = a3;
+  schemeCopy = scheme;
   if (v3 != -1)
   {
     sub_1002968AC();
   }
 
-  v5 = [qword_1003B9498 containsObject:v4];
+  v5 = [qword_1003B9498 containsObject:schemeCopy];
 
   return v5;
 }
 
-- (BOOL)isActionDefined:(id)a3
+- (BOOL)isActionDefined:(id)defined
 {
-  v3 = a3;
-  if ([v3 isEqualToString:GKActivityFeedMarkdownURLFormulationPathComponentPlayer] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", GKActivityFeedMarkdownURLFormulationPathComponentLeaderboard) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", GKActivityFeedMarkdownURLFormulationPathComponentAchievement) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", GKActivityFeedMarkdownURLFormulationPathComponentGame))
+  definedCopy = defined;
+  if ([definedCopy isEqualToString:GKActivityFeedMarkdownURLFormulationPathComponentPlayer] & 1) != 0 || (objc_msgSend(definedCopy, "isEqualToString:", GKActivityFeedMarkdownURLFormulationPathComponentLeaderboard) & 1) != 0 || (objc_msgSend(definedCopy, "isEqualToString:", GKActivityFeedMarkdownURLFormulationPathComponentAchievement) & 1) != 0 || (objc_msgSend(definedCopy, "isEqualToString:", GKActivityFeedMarkdownURLFormulationPathComponentGame))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:GKActivityFeedMarkdownURLFormulationPathComponentDashboard];
+    v4 = [definedCopy isEqualToString:GKActivityFeedMarkdownURLFormulationPathComponentDashboard];
   }
 
   return v4;
 }
 
-- (id)makeDeepLinkDictionaryFrom:(id)a3
+- (id)makeDeepLinkDictionaryFrom:(id)from
 {
-  v42 = a3;
-  v3 = [v42 host];
-  v4 = v3;
-  if (v3)
+  fromCopy = from;
+  host = [fromCopy host];
+  v4 = host;
+  if (host)
   {
-    v41 = v3;
+    v41 = host;
     *buf = 0;
     v94 = buf;
     v95 = 0x3032000000;
@@ -121,7 +121,7 @@
     v48 = sub_1001A3E94;
     v49 = sub_1001A3EA4;
     v50 = 0;
-    v5 = [v42 queryItems];
+    queryItems = [fromCopy queryItems];
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_1001A3EAC;
@@ -135,7 +135,7 @@
     v44[10] = &v57;
     v44[11] = &v45;
     v44[12] = &v51;
-    [v5 enumerateObjectsUsingBlock:v44];
+    [queryItems enumerateObjectsUsingBlock:v44];
 
     if ([v41 isEqualToString:GKActivityFeedMarkdownURLFormulationPathComponentDashboard])
     {
@@ -429,10 +429,10 @@ LABEL_75:
   return v16;
 }
 
-- (void)eventServiceListener:(id)a3 didReceiveOpenEventWithURL:(id)a4
+- (void)eventServiceListener:(id)listener didReceiveOpenEventWithURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  lCopy = l;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -442,19 +442,19 @@ LABEL_75:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v7 absoluteString];
+    absoluteString = [lCopy absoluteString];
     *buf = 138412290;
-    v126 = v11;
+    v126 = absoluteString;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "GKWidgetEventListener: Received url %@", buf, 0xCu);
   }
 
-  v12 = [[NSURLComponents alloc] initWithURL:v7 resolvingAgainstBaseURL:0];
+  v12 = [[NSURLComponents alloc] initWithURL:lCopy resolvingAgainstBaseURL:0];
   if (v12)
   {
     if (_os_feature_enabled_impl())
     {
-      v13 = [v12 scheme];
-      v14 = [v13 isEqualToString:@"game-overlay-ui"];
+      scheme = [v12 scheme];
+      v14 = [scheme isEqualToString:@"game-overlay-ui"];
 
       if (v14)
       {
@@ -473,26 +473,26 @@ LABEL_75:
       }
     }
 
-    v17 = [v12 scheme];
-    v18 = [v17 isEqualToString:@"GCActivityFeedLockup"];
+    scheme2 = [v12 scheme];
+    v18 = [scheme2 isEqualToString:@"GCActivityFeedLockup"];
 
     if (v18)
     {
       v19 = +[GKClientProxy gameCenterClient];
       v20 = [(GKService *)GKUtilityServicePrivate serviceWithTransport:0 forClient:v19 credential:0];
 
-      v21 = [v12 host];
-      if ([(__CFString *)v21 isEqualToString:GKMarkdownURLFormulationPathComponentASCLaunchTrampoline])
+      host = [v12 host];
+      if ([(__CFString *)host isEqualToString:GKMarkdownURLFormulationPathComponentASCLaunchTrampoline])
       {
         v22 = objc_opt_new();
-        v23 = [v12 queryItems];
+        queryItems = [v12 queryItems];
         v119[0] = _NSConcreteStackBlock;
         v119[1] = 3221225472;
         v119[2] = sub_1001A4FAC;
         v119[3] = &unk_10036A640;
         v24 = v22;
         v120 = v24;
-        [v23 enumerateObjectsUsingBlock:v119];
+        [queryItems enumerateObjectsUsingBlock:v119];
 
         v104 = [(__CFString *)v24 objectForKeyedSubscript:GKActivityFeedMarkdownURLFormulationQueryAdamId];
         v102 = [(__CFString *)v24 objectForKeyedSubscript:GKActivityFeedMarkdownURLFormulationQueryBundleId];
@@ -540,7 +540,7 @@ LABEL_75:
         v107 = v20;
         if (v104)
         {
-          v101 = v6;
+          v101 = listenerCopy;
           v59 = [(__CFString *)v24 objectForKeyedSubscript:GKMarkdownURLFormulationQueryOpenInGamesUI];
           v60 = v59;
           v61 = @"false";
@@ -552,7 +552,7 @@ LABEL_75:
           v62 = v61;
 
           v63 = [(__CFString *)v62 isEqual:@"true"];
-          v64 = [v30 intValue];
+          intValue = [v30 intValue];
           v65 = [(__CFString *)v24 objectForKeyedSubscript:GKMarkdownURLFormulationQueryTopic];
           v66 = v65;
           if (v65)
@@ -569,7 +569,7 @@ LABEL_75:
           {
             v68 = v104;
             v69 = v99;
-            v70 = v64;
+            v70 = intValue;
             v71 = v97;
             [ASCAppLaunchTrampolineURL gamesURLWithAdamId:v104 bundleId:v102 widgetId:v99 widgetSize:v70 deepLinkUrl:0 localizedName:v97 sourceApplication:@"com.apple.gamecenter.widgets.extension" topic:v67];
           }
@@ -578,7 +578,7 @@ LABEL_75:
           {
             v68 = v104;
             v69 = v99;
-            v74 = v64;
+            v74 = intValue;
             v71 = v97;
             [ASCAppLaunchTrampolineURL URLWithAdamId:v104 bundleId:v102 widgetId:v99 widgetSize:v74 localizedName:v97 sourceApplication:@"com.apple.gamecenter.widgets.extension" topic:v67];
           }
@@ -595,7 +595,7 @@ LABEL_75:
           v118 = v107;
           [v118 invokeASCAppLaunchTrampolineWithURL:v75 handler:v113];
 
-          v6 = v101;
+          listenerCopy = v101;
         }
 
         else
@@ -622,10 +622,10 @@ LABEL_75:
         v20 = v107;
       }
 
-      else if ([(GKWidgetEventListener *)self isActionDefined:v21])
+      else if ([(GKWidgetEventListener *)self isActionDefined:host])
       {
         v106 = v20;
-        v100 = v6;
+        v100 = listenerCopy;
         v39 = [(GKWidgetEventListener *)self makeDeepLinkDictionaryFrom:v12];
         v40 = v39;
         v41 = &__NSDictionary0__struct;
@@ -674,14 +674,14 @@ LABEL_75:
           v20 = v106;
         }
 
-        if ([(__CFString *)v21 isEqualToString:GKActivityFeedMarkdownURLFormulationPathComponentGame])
+        if ([(__CFString *)host isEqualToString:GKActivityFeedMarkdownURLFormulationPathComponentGame])
         {
           v76 = [(__CFString *)v24 objectForKeyedSubscript:GKRemoteAlertDeeplinkGameAdamIdKey];
           v77 = [(__CFString *)v24 objectForKeyedSubscript:GKRemoteAlertDeeplinkGameBundleIdentifierKey];
           if (v76)
           {
-            v78 = [v103 intValue];
-            [ASCAppLaunchTrampolineURL URLWithAdamId:v76 bundleId:v77 widgetId:v105 widgetSize:v78 localizedName:&stru_100374F10 sourceApplication:@"com.apple.gamecenter.widgets.extension" topic:GKReporterCSTopic];
+            intValue2 = [v103 intValue];
+            [ASCAppLaunchTrampolineURL URLWithAdamId:v76 bundleId:v77 widgetId:v105 widgetSize:intValue2 localizedName:&stru_100374F10 sourceApplication:@"com.apple.gamecenter.widgets.extension" topic:GKReporterCSTopic];
             v80 = v79 = v77;
             v108[0] = _NSConcreteStackBlock;
             v108[1] = 3221225472;
@@ -693,7 +693,7 @@ LABEL_75:
             v112 = v20;
             [v112 invokeASCAppLaunchTrampolineWithURL:v80 handler:v108];
 
-            v6 = v100;
+            listenerCopy = v100;
           }
 
           else
@@ -704,7 +704,7 @@ LABEL_75:
             }
 
             v96 = os_log_GKDaemon;
-            v6 = v100;
+            listenerCopy = v100;
             v79 = v77;
             if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
             {
@@ -734,9 +734,9 @@ LABEL_75:
 
           v83 = +[GKPlayerActivityItemInternal typeToConstantMapMetrics];
           v84 = [(__CFString *)v24 objectForKeyedSubscript:GKRemoteAlertDeeplinkActionActivityTypeKey];
-          v85 = [v84 integerValue];
+          integerValue = [v84 integerValue];
 
-          v86 = [NSNumber numberWithInteger:v85];
+          v86 = [NSNumber numberWithInteger:integerValue];
           v87 = [v83 objectForKeyedSubscript:v86];
           v88 = v87;
           v89 = @"dashboard";
@@ -785,7 +785,7 @@ LABEL_75:
 
           v76 = +[GKGameInternal createGamedGameInternal];
           [v106 openDashboardAsRemoteAlertForGame:v76 hostPID:getpid() deeplink:v24 launchContext:GKDashboardLaunchContextWidget];
-          v6 = v100;
+          listenerCopy = v100;
         }
       }
 
@@ -800,7 +800,7 @@ LABEL_75:
         if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v126 = v21;
+          v126 = host;
           _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "GKWidgetEventListener: No action defined for %@", buf, 0xCu);
         }
 
@@ -811,8 +811,8 @@ LABEL_75:
 
     else
     {
-      v33 = [v12 scheme];
-      v34 = [(GKWidgetEventListener *)self isKnownScheme:v33];
+      scheme3 = [v12 scheme];
+      v34 = [(GKWidgetEventListener *)self isKnownScheme:scheme3];
 
       if (v34)
       {
@@ -829,14 +829,14 @@ LABEL_75:
 
 LABEL_27:
         v36 = v16;
-        v37 = [v12 scheme];
+        scheme4 = [v12 scheme];
         *buf = 138412290;
-        v126 = v37;
+        v126 = scheme4;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "GKWidgetEventListener: Received a known scheme %@ and will open the URL", buf, 0xCu);
 
 LABEL_28:
         v38 = +[GKApplicationWorkspace defaultWorkspace];
-        [v38 openURL:v7];
+        [v38 openURL:lCopy];
 LABEL_29:
 
         goto LABEL_88;
@@ -851,9 +851,9 @@ LABEL_29:
       if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
       {
         v38 = v52;
-        v53 = [v12 scheme];
+        scheme5 = [v12 scheme];
         *buf = 138412290;
-        v126 = v53;
+        v126 = scheme5;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "GKWidgetEventListener: Received an unknown scheme %@", buf, 0xCu);
 
         goto LABEL_29;

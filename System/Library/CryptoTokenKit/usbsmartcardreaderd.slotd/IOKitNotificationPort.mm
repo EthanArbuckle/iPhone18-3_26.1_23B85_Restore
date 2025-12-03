@@ -1,6 +1,6 @@
 @interface IOKitNotificationPort
 - (IOKitNotificationPort)init;
-- (void)addMatching:(id)a3 type:(const char *)a4 block:(id)a5;
+- (void)addMatching:(id)matching type:(const char *)type block:(id)block;
 - (void)dealloc;
 @end
 
@@ -34,17 +34,17 @@
   [(IOKitNotificationPort *)&v3 dealloc];
 }
 
-- (void)addMatching:(id)a3 type:(const char *)a4 block:(id)a5
+- (void)addMatching:(id)matching type:(const char *)type block:(id)block
 {
   refCon = self;
-  v8 = a3;
-  v9 = objc_retainBlock(a5);
+  matchingCopy = matching;
+  v9 = objc_retainBlock(block);
   block = self->block;
   self->block = v9;
 
   port = self->port;
-  v12 = v8;
-  v13 = IOServiceAddMatchingNotification(port, a4, v12, sub_1000013B0, &refCon, [(IOKitObjectHolder *)self->iterator holderPtr]);
+  v12 = matchingCopy;
+  v13 = IOServiceAddMatchingNotification(port, type, v12, sub_1000013B0, &refCon, [(IOKitObjectHolder *)self->iterator holderPtr]);
   if (v13)
   {
     v14 = v13;

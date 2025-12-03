@@ -1,14 +1,14 @@
 @interface StoredMobileDocumentRegistration
-- (StoredMobileDocumentRegistration)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (StoredMobileDocumentRegistration)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation StoredMobileDocumentRegistration
 
-- (StoredMobileDocumentRegistration)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (StoredMobileDocumentRegistration)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for StoredMobileDocumentRegistration();
-  return [(StoredMobileDocumentRegistration *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(StoredMobileDocumentRegistration *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

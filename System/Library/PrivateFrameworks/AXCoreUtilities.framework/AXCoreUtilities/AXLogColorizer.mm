@@ -1,24 +1,24 @@
 @interface AXLogColorizer
-+ (char)ansiColorSeqForAXLogColor:(int64_t)a3;
-+ (id)coloredString:(id)a3 withColor:(int64_t)a4;
-+ (id)colorizeStringIfEnabled:(id)a3 withColor:(int64_t)a4;
++ (char)ansiColorSeqForAXLogColor:(int64_t)color;
++ (id)coloredString:(id)string withColor:(int64_t)color;
++ (id)colorizeStringIfEnabled:(id)enabled withColor:(int64_t)color;
 + (id)defaultColorizer;
 - (AXLogColorTheme)colorTheme;
-- (id)blueString:(id)a3;
-- (id)cyanString:(id)a3;
-- (id)debugString:(id)a3;
+- (id)blueString:(id)string;
+- (id)cyanString:(id)string;
+- (id)debugString:(id)string;
 - (id)description;
-- (id)errorString:(id)a3;
-- (id)greenString:(id)a3;
-- (id)greyString:(id)a3;
-- (id)infoString:(id)a3;
-- (id)magentaString:(id)a3;
-- (id)redString:(id)a3;
-- (id)warningString:(id)a3;
-- (id)whiteOrBlackString:(id)a3;
-- (id)yellowString:(id)a3;
+- (id)errorString:(id)string;
+- (id)greenString:(id)string;
+- (id)greyString:(id)string;
+- (id)infoString:(id)string;
+- (id)magentaString:(id)string;
+- (id)redString:(id)string;
+- (id)warningString:(id)string;
+- (id)whiteOrBlackString:(id)string;
+- (id)yellowString:(id)string;
 - (void)_updateSettingsFromUserPrefs;
-- (void)setColorTheme:(AXLogColorTheme *)a3;
+- (void)setColorTheme:(AXLogColorTheme *)theme;
 @end
 
 @implementation AXLogColorizer
@@ -42,50 +42,50 @@ uint64_t __34__AXLogColorizer_defaultColorizer__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (char)ansiColorSeqForAXLogColor:(int64_t)a3
++ (char)ansiColorSeqForAXLogColor:(int64_t)color
 {
-  if ((a3 - 1) > 0xD)
+  if ((color - 1) > 0xD)
   {
     return "\x1B[30m";
   }
 
   else
   {
-    return off_1E735AD98[a3 - 1];
+    return off_1E735AD98[color - 1];
   }
 }
 
-+ (id)coloredString:(id)a3 withColor:(int64_t)a4
++ (id)coloredString:(id)string withColor:(int64_t)color
 {
-  v5 = a3;
-  v6 = [AXLogColorizer ansiColorSeqForAXLogColor:a4];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s%@%s", v6, v5, "\x1B[0m"];
+  stringCopy = string;
+  v6 = [AXLogColorizer ansiColorSeqForAXLogColor:color];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s%@%s", v6, stringCopy, "\x1B[0m"];
 
   return v7;
 }
 
-+ (id)colorizeStringIfEnabled:(id)a3 withColor:(int64_t)a4
++ (id)colorizeStringIfEnabled:(id)enabled withColor:(int64_t)color
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXLogColorizer defaultColorizer];
-  v7 = [v6 isActive];
+  isActive = [v6 isActive];
 
-  if (v7)
+  if (isActive)
   {
-    v8 = [AXLogColorizer coloredString:v5 withColor:a4];
+    v8 = [AXLogColorizer coloredString:enabledCopy withColor:color];
 
-    v5 = v8;
+    enabledCopy = v8;
   }
 
-  return v5;
+  return enabledCopy;
 }
 
 - (void)_updateSettingsFromUserPrefs
 {
-  v3 = [getAXSettingsClass() sharedInstance];
-  v4 = [v3 internalLoggingColorTheme];
+  sharedInstance = [getAXSettingsClass() sharedInstance];
+  internalLoggingColorTheme = [sharedInstance internalLoggingColorTheme];
 
-  if (v4 == 1)
+  if (internalLoggingColorTheme == 1)
   {
     [(AXLogColorizer *)self setActive:1];
     +[AXLogColorizer defaultLightColorsTheme];
@@ -99,7 +99,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v4 != 2)
+  if (internalLoggingColorTheme != 2)
   {
     [(AXLogColorizer *)self setActive:0];
     +[AXLogColorizer defaultLightColorsTheme];
@@ -129,18 +129,18 @@ LABEL_7:
   return v7;
 }
 
-- (id)errorString:(id)a3
+- (id)errorString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     [(AXLogColorizer *)self colorTheme];
-    v5 = [AXLogColorizer coloredString:v4 withColor:v8];
+    v5 = [AXLogColorizer coloredString:stringCopy withColor:v8];
   }
 
   else
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   v6 = v5;
@@ -148,18 +148,18 @@ LABEL_7:
   return v6;
 }
 
-- (id)warningString:(id)a3
+- (id)warningString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     [(AXLogColorizer *)self colorTheme];
-    v5 = [AXLogColorizer coloredString:v4 withColor:v8];
+    v5 = [AXLogColorizer coloredString:stringCopy withColor:v8];
   }
 
   else
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   v6 = v5;
@@ -167,18 +167,18 @@ LABEL_7:
   return v6;
 }
 
-- (id)infoString:(id)a3
+- (id)infoString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     [(AXLogColorizer *)self colorTheme];
-    v5 = [AXLogColorizer coloredString:v4 withColor:v8];
+    v5 = [AXLogColorizer coloredString:stringCopy withColor:v8];
   }
 
   else
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   v6 = v5;
@@ -186,18 +186,18 @@ LABEL_7:
   return v6;
 }
 
-- (id)debugString:(id)a3
+- (id)debugString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     [(AXLogColorizer *)self colorTheme];
-    v5 = [AXLogColorizer coloredString:v4 withColor:v8];
+    v5 = [AXLogColorizer coloredString:stringCopy withColor:v8];
   }
 
   else
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   v6 = v5;
@@ -205,9 +205,9 @@ LABEL_7:
   return v6;
 }
 
-- (id)whiteOrBlackString:(id)a3
+- (id)whiteOrBlackString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     if ([(AXLogColorizer *)self preferDarkColors])
@@ -220,12 +220,12 @@ LABEL_7:
       v5 = 14;
     }
 
-    v6 = [AXLogColorizer coloredString:v4 withColor:v5];
+    v6 = [AXLogColorizer coloredString:stringCopy withColor:v5];
   }
 
   else
   {
-    v6 = v4;
+    v6 = stringCopy;
   }
 
   v7 = v6;
@@ -233,17 +233,17 @@ LABEL_7:
   return v7;
 }
 
-- (id)greyString:(id)a3
+- (id)greyString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
-    v5 = [AXLogColorizer coloredString:v4 withColor:1];
+    v5 = [AXLogColorizer coloredString:stringCopy withColor:1];
   }
 
   else
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   v6 = v5;
@@ -251,9 +251,9 @@ LABEL_7:
   return v6;
 }
 
-- (id)redString:(id)a3
+- (id)redString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     if ([(AXLogColorizer *)self preferDarkColors])
@@ -266,12 +266,12 @@ LABEL_7:
       v5 = 3;
     }
 
-    v6 = [AXLogColorizer coloredString:v4 withColor:v5];
+    v6 = [AXLogColorizer coloredString:stringCopy withColor:v5];
   }
 
   else
   {
-    v6 = v4;
+    v6 = stringCopy;
   }
 
   v7 = v6;
@@ -279,9 +279,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)greenString:(id)a3
+- (id)greenString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     if ([(AXLogColorizer *)self preferDarkColors])
@@ -294,12 +294,12 @@ LABEL_7:
       v5 = 5;
     }
 
-    v6 = [AXLogColorizer coloredString:v4 withColor:v5];
+    v6 = [AXLogColorizer coloredString:stringCopy withColor:v5];
   }
 
   else
   {
-    v6 = v4;
+    v6 = stringCopy;
   }
 
   v7 = v6;
@@ -307,9 +307,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)yellowString:(id)a3
+- (id)yellowString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     if ([(AXLogColorizer *)self preferDarkColors])
@@ -322,12 +322,12 @@ LABEL_7:
       v5 = 7;
     }
 
-    v6 = [AXLogColorizer coloredString:v4 withColor:v5];
+    v6 = [AXLogColorizer coloredString:stringCopy withColor:v5];
   }
 
   else
   {
-    v6 = v4;
+    v6 = stringCopy;
   }
 
   v7 = v6;
@@ -335,9 +335,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)blueString:(id)a3
+- (id)blueString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     if ([(AXLogColorizer *)self preferDarkColors])
@@ -350,12 +350,12 @@ LABEL_7:
       v5 = 9;
     }
 
-    v6 = [AXLogColorizer coloredString:v4 withColor:v5];
+    v6 = [AXLogColorizer coloredString:stringCopy withColor:v5];
   }
 
   else
   {
-    v6 = v4;
+    v6 = stringCopy;
   }
 
   v7 = v6;
@@ -363,9 +363,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)magentaString:(id)a3
+- (id)magentaString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     if ([(AXLogColorizer *)self preferDarkColors])
@@ -378,12 +378,12 @@ LABEL_7:
       v5 = 11;
     }
 
-    v6 = [AXLogColorizer coloredString:v4 withColor:v5];
+    v6 = [AXLogColorizer coloredString:stringCopy withColor:v5];
   }
 
   else
   {
-    v6 = v4;
+    v6 = stringCopy;
   }
 
   v7 = v6;
@@ -391,9 +391,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)cyanString:(id)a3
+- (id)cyanString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(AXLogColorizer *)self isActive])
   {
     if ([(AXLogColorizer *)self preferDarkColors])
@@ -406,12 +406,12 @@ LABEL_7:
       v5 = 13;
     }
 
-    v6 = [AXLogColorizer coloredString:v4 withColor:v5];
+    v6 = [AXLogColorizer coloredString:stringCopy withColor:v5];
   }
 
   else
   {
-    v6 = v4;
+    v6 = stringCopy;
   }
 
   v7 = v6;
@@ -427,10 +427,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setColorTheme:(AXLogColorTheme *)a3
+- (void)setColorTheme:(AXLogColorTheme *)theme
 {
-  v3 = *&a3->infoColor;
-  *&self->_colorTheme.errorColor = *&a3->errorColor;
+  v3 = *&theme->infoColor;
+  *&self->_colorTheme.errorColor = *&theme->errorColor;
   *&self->_colorTheme.infoColor = v3;
 }
 

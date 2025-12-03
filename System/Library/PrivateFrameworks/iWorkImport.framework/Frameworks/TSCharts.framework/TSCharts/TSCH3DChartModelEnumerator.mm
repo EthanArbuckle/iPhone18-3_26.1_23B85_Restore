@@ -1,49 +1,49 @@
 @interface TSCH3DChartModelEnumerator
-+ (TSCH3DChartModelEnumerator)enumeratorWithModel:(id)a3 chartType:(id)a4 seriesType:(id)a5;
++ (TSCH3DChartModelEnumerator)enumeratorWithModel:(id)model chartType:(id)type seriesType:(id)seriesType;
 - (BOOL)isStackedPercentageThatRoundsDownToZero;
 - (BOOL)isValidNonZero;
 - (BOOL)showSeriesName;
 - (BOOL)showValueLabels;
-- (TSCH3DChartModelEnumerator)initWithModel:(id)a3 chartType:(id)a4 seriesType:(id)a5;
+- (TSCH3DChartModelEnumerator)initWithModel:(id)model chartType:(id)type seriesType:(id)seriesType;
 - (double)axisSpaceValue;
 - (id).cxx_construct;
-- (id)nextElement:(unint64_t)a3;
+- (id)nextElement:(unint64_t)element;
 - (id)nextSeries;
-- (id)nextSeries:(unint64_t)a3;
+- (id)nextSeries:(unint64_t)series;
 - (id)p_resetCoordinateEnumeration;
 - (id)seriesFill;
 - (id)seriesFillOrStrokeColor;
 - (id)seriesName;
 - (id)valueString;
-- (id)valueStringForLabelResources:(id)a3;
+- (id)valueStringForLabelResources:(id)resources;
 - (tvec2<int>)position;
 - (tvec2<int>)size;
 - (unint64_t)countSeries;
 - (unint64_t)numberOfSeries;
-- (unsigned)valueLabelPositionForAxisValue:(double)a3;
-- (void)resetForReverseSeriesEnumeration:(BOOL)a3;
+- (unsigned)valueLabelPositionForAxisValue:(double)value;
+- (void)resetForReverseSeriesEnumeration:(BOOL)enumeration;
 - (void)updateAxes;
 - (void)updateValue;
 @end
 
 @implementation TSCH3DChartModelEnumerator
 
-+ (TSCH3DChartModelEnumerator)enumeratorWithModel:(id)a3 chartType:(id)a4 seriesType:(id)a5
++ (TSCH3DChartModelEnumerator)enumeratorWithModel:(id)model chartType:(id)type seriesType:(id)seriesType
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 alloc];
-  v16 = objc_msgSend_initWithModel_chartType_seriesType_(v11, v12, v13, v14, v15, v8, v9, v10);
+  modelCopy = model;
+  typeCopy = type;
+  seriesTypeCopy = seriesType;
+  v11 = [self alloc];
+  v16 = objc_msgSend_initWithModel_chartType_seriesType_(v11, v12, v13, v14, v15, modelCopy, typeCopy, seriesTypeCopy);
 
   return v16;
 }
 
-- (TSCH3DChartModelEnumerator)initWithModel:(id)a3 chartType:(id)a4 seriesType:(id)a5
+- (TSCH3DChartModelEnumerator)initWithModel:(id)model chartType:(id)type seriesType:(id)seriesType
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modelCopy = model;
+  typeCopy = type;
+  seriesTypeCopy = seriesType;
   objc_opt_class();
   v13 = TSUDynamicCast();
   if (!v13)
@@ -62,9 +62,9 @@
   v33 = v32;
   if (v32)
   {
-    objc_storeStrong(&v32->_model, a3);
+    objc_storeStrong(&v32->_model, model);
     objc_storeStrong(&v33->_chartType, v13);
-    objc_storeStrong(&v33->_seriesType, a5);
+    objc_storeStrong(&v33->_seriesType, seriesType);
     objc_msgSend_resetForReverseSeriesEnumeration_(v33, v34, v35, v36, v37, 0);
   }
 
@@ -148,18 +148,18 @@
   return result;
 }
 
-- (void)resetForReverseSeriesEnumeration:(BOOL)a3
+- (void)resetForReverseSeriesEnumeration:(BOOL)enumeration
 {
-  v6 = a3;
+  enumerationCopy = enumeration;
   v8 = objc_msgSend_seriesList(self->_model, a2, v3, v4, v5);
   seriesList = self->_seriesList;
   self->_seriesList = v8;
 
   self->_numberOfValues = objc_msgSend_numberOfGroupsInAllSeries(self->_model, v10, v11, v12, v13);
   v18 = objc_msgSend_numberOfSeries(self, v14, v15, v16, v17);
-  v19 = self;
-  v20 = v19;
-  if (v6)
+  selfCopy = self;
+  v20 = selfCopy;
+  if (enumerationCopy)
   {
     v21 = v18;
   }
@@ -169,10 +169,10 @@
     v21 = -1;
   }
 
-  v19->_seriesEnumerator._index = v21;
-  v19->_seriesEnumerator._max = v18;
-  v19->_seriesEnumerator._value = NAN;
-  self->_seriesEnumerator._forward = !v6;
+  selfCopy->_seriesEnumerator._index = v21;
+  selfCopy->_seriesEnumerator._max = v18;
+  selfCopy->_seriesEnumerator._value = NAN;
+  self->_seriesEnumerator._forward = !enumerationCopy;
 
   v26 = objc_msgSend_p_resetCoordinateEnumeration(v20, v22, v23, v24, v25);
 }
@@ -254,16 +254,16 @@
   return sub_2762205E0(&self->_seriesEnumerator, self, sel_updateAxes);
 }
 
-- (id)nextSeries:(unint64_t)a3
+- (id)nextSeries:(unint64_t)series
 {
   if (self->_seriesEnumerator._forward)
   {
-    v6 = a3 - 1;
+    v6 = series - 1;
   }
 
   else
   {
-    v6 = a3 + 1;
+    v6 = series + 1;
   }
 
   self->_seriesEnumerator._index = v6;
@@ -307,11 +307,11 @@
   self->_coordinateEnumerator._value = begin[index];
 }
 
-- (id)nextElement:(unint64_t)a3
+- (id)nextElement:(unint64_t)element
 {
-  if (a3)
+  if (element)
   {
-    self->_coordinateEnumerator._index = a3 - 1;
+    self->_coordinateEnumerator._index = element - 1;
   }
 
   else
@@ -406,16 +406,16 @@
   return v26;
 }
 
-- (id)valueStringForLabelResources:(id)a3
+- (id)valueStringForLabelResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   if (objc_msgSend_isValid(self, v5, v6, v7, v8))
   {
     v13 = objc_msgSend_elementIndex(self, v9, v10, v11, v12);
     index = self->_seriesEnumerator._index;
     v40[0] = v13;
     v40[1] = index;
-    if (!objc_msgSend_hasResourceAtIndex_(v4, v15, v16, v17, v18, v40) || (objc_opt_class(), objc_msgSend_resourceAtIndex_(v4, v23, v24, v25, v26, v40), v27 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(), v28 = objc_claimAutoreleasedReturnValue(), v27, objc_msgSend_attributes(v28, v29, v30, v31, v32), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend_string(v33, v34, v35, v36, v37), v38 = objc_claimAutoreleasedReturnValue(), v33, v28, !v38))
+    if (!objc_msgSend_hasResourceAtIndex_(resourcesCopy, v15, v16, v17, v18, v40) || (objc_opt_class(), objc_msgSend_resourceAtIndex_(resourcesCopy, v23, v24, v25, v26, v40), v27 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(), v28 = objc_claimAutoreleasedReturnValue(), v27, objc_msgSend_attributes(v28, v29, v30, v31, v32), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend_string(v33, v34, v35, v36, v37), v38 = objc_claimAutoreleasedReturnValue(), v33, v28, !v38))
     {
       v38 = objc_msgSend_valueString(self, v19, v20, v21, v22);
     }
@@ -501,18 +501,18 @@ LABEL_9:
   return v15;
 }
 
-- (unsigned)valueLabelPositionForAxisValue:(double)a3
+- (unsigned)valueLabelPositionForAxisValue:(double)value
 {
-  v6 = self;
-  v7 = objc_msgSend_objectAtIndexedSubscript_(self->_seriesList, a2, a3, v3, v4, self->_seriesEnumerator._index);
-  seriesType = v6->_seriesType;
+  selfCopy = self;
+  v7 = objc_msgSend_objectAtIndexedSubscript_(self->_seriesList, a2, value, v3, v4, self->_seriesEnumerator._index);
+  seriesType = selfCopy->_seriesType;
   v13 = objc_msgSend_intValueForProperty_defaultValue_(v7, v9, v10, v11, v12, 1208, 0);
   v18 = objc_msgSend_filterChartLabelPosition_forSeries_(seriesType, v14, v15, v16, v17, v13, v7);
-  v19 = v6->_seriesType;
-  objc_msgSend_intercept(v6, v20, v21, v22, v23);
-  LODWORD(v6) = objc_msgSend_adjustLabelPosition_forAxisValue_intercept_(v19, v24, a3, v25, v26, v18);
+  v19 = selfCopy->_seriesType;
+  objc_msgSend_intercept(selfCopy, v20, v21, v22, v23);
+  LODWORD(selfCopy) = objc_msgSend_adjustLabelPosition_forAxisValue_intercept_(v19, v24, value, v25, v26, v18);
 
-  return v6;
+  return selfCopy;
 }
 
 - (id).cxx_construct

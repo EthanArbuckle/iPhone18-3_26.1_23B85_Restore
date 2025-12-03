@@ -3,15 +3,15 @@
 - (LKLoginController)init;
 - (id)proxy;
 - (id)recentUsers;
-- (void)checkInWithCurrentEnvironment:(unint64_t)a3 completionHandler:(id)a4;
-- (void)chooseUserWithIdentifier:(id)a3 inClassWithID:(id)a4 password:(id)a5 withCompletionHandler:(id)a6;
+- (void)checkInWithCurrentEnvironment:(unint64_t)environment completionHandler:(id)handler;
+- (void)chooseUserWithIdentifier:(id)identifier inClassWithID:(id)d password:(id)password withCompletionHandler:(id)handler;
 - (void)interruptLocalUserSwitchTest;
-- (void)isReadyToLoginWithCompletionHandler:(id)a3;
-- (void)isReadyToLogoutWithCompletionHandler:(id)a3;
-- (void)logoutWithLogoutType:(unint64_t)a3 completionHandler:(id)a4;
-- (void)saveClassConfiguration:(id)a3 withCompletionHandler:(id)a4;
-- (void)triggerLocalUserSwitchTestForType:(unint64_t)a3 count:(int64_t)a4 username:(id)a5 password:(id)a6 loginDelay:(int64_t)a7 logoutDelay:(int64_t)a8 completionHandler:(id)a9;
-- (void)updateGlobalDefaultsValue:(id)a3 forKey:(id)a4 completionHandler:(id)a5;
+- (void)isReadyToLoginWithCompletionHandler:(id)handler;
+- (void)isReadyToLogoutWithCompletionHandler:(id)handler;
+- (void)logoutWithLogoutType:(unint64_t)type completionHandler:(id)handler;
+- (void)saveClassConfiguration:(id)configuration withCompletionHandler:(id)handler;
+- (void)triggerLocalUserSwitchTestForType:(unint64_t)type count:(int64_t)count username:(id)username password:(id)password loginDelay:(int64_t)delay logoutDelay:(int64_t)logoutDelay completionHandler:(id)handler;
+- (void)updateGlobalDefaultsValue:(id)value forKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation LKLoginController
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __37__LKLoginController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken != -1)
   {
     dispatch_once(&sharedController_onceToken, block);
@@ -125,13 +125,13 @@ void __37__LKLoginController_sharedController__block_invoke_3(uint64_t a1)
 
 - (id)proxy
 {
-  v3 = [(LKLoginController *)self connection];
+  connection = [(LKLoginController *)self connection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __26__LKLoginController_proxy__block_invoke;
   v6[3] = &unk_2798263D0;
   v6[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [connection remoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
@@ -153,53 +153,53 @@ void __26__LKLoginController_proxy__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)logoutWithLogoutType:(unint64_t)a3 completionHandler:(id)a4
+- (void)logoutWithLogoutType:(unint64_t)type completionHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v5 = objc_opt_new();
   v6 = v5;
-  if (a3 == 1)
+  if (type == 1)
   {
-    [v5 logoutToLoginSessionWithCompletionHandler:v7];
+    [v5 logoutToLoginSessionWithCompletionHandler:handlerCopy];
   }
 
-  else if (!a3)
+  else if (!type)
   {
-    [v5 logoutToLoginUserWithCompletionHandler:v7];
+    [v5 logoutToLoginUserWithCompletionHandler:handlerCopy];
   }
 }
 
-- (void)chooseUserWithIdentifier:(id)a3 inClassWithID:(id)a4 password:(id)a5 withCompletionHandler:(id)a6
+- (void)chooseUserWithIdentifier:(id)identifier inClassWithID:(id)d password:(id)password withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  dCopy = d;
+  passwordCopy = password;
+  handlerCopy = handler;
   if (isMultiUser())
   {
-    v14 = [(LKLoginController *)self completionHandler];
+    completionHandler = [(LKLoginController *)self completionHandler];
 
-    if (v14)
+    if (completionHandler)
     {
       v15 = [LKError errorWithCode:3];
-      v16 = [(LKLoginController *)self completionHandler];
-      (v16)[2](v16, v15);
+      completionHandler2 = [(LKLoginController *)self completionHandler];
+      (completionHandler2)[2](completionHandler2, v15);
     }
 
-    [(LKLoginController *)self setCompletionHandler:v13];
-    v17 = [(LKLoginController *)self proxy];
+    [(LKLoginController *)self setCompletionHandler:handlerCopy];
+    proxy = [(LKLoginController *)self proxy];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __91__LKLoginController_chooseUserWithIdentifier_inClassWithID_password_withCompletionHandler___block_invoke;
     v19[3] = &unk_2798263D0;
     v19[4] = self;
-    [v17 chooseUserWithIdentifier:v10 inClassWithID:v11 password:v12 withCompletionHandler:v19];
+    [proxy chooseUserWithIdentifier:identifierCopy inClassWithID:dCopy password:passwordCopy withCompletionHandler:v19];
   }
 
-  else if (v13)
+  else if (handlerCopy)
   {
     v18 = [LKError errorWithCode:28];
-    v13[2](v13, v18);
+    handlerCopy[2](handlerCopy, v18);
   }
 }
 
@@ -231,26 +231,26 @@ void __99__LKLoginController_loginAppleID_password_localLoginOnly_isTemporarySes
   }
 }
 
-- (void)saveClassConfiguration:(id)a3 withCompletionHandler:(id)a4
+- (void)saveClassConfiguration:(id)configuration withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   if (isMultiUser())
   {
-    [(LKLoginController *)self setCompletionHandler:v7];
-    v8 = [(LKLoginController *)self proxy];
+    [(LKLoginController *)self setCompletionHandler:handlerCopy];
+    proxy = [(LKLoginController *)self proxy];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __66__LKLoginController_saveClassConfiguration_withCompletionHandler___block_invoke;
     v10[3] = &unk_2798263D0;
     v10[4] = self;
-    [v8 saveClassConfiguration:v6 withCompletionHandler:v10];
+    [proxy saveClassConfiguration:configurationCopy withCompletionHandler:v10];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
     v9 = [LKError errorWithCode:28];
-    v7[2](v7, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 
@@ -268,25 +268,25 @@ void __66__LKLoginController_saveClassConfiguration_withCompletionHandler___bloc
   }
 }
 
-- (void)isReadyToLoginWithCompletionHandler:(id)a3
+- (void)isReadyToLoginWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (isMultiUser())
   {
-    [(LKLoginController *)self setCompletionHandler:v4];
-    v5 = [(LKLoginController *)self proxy];
+    [(LKLoginController *)self setCompletionHandler:handlerCopy];
+    proxy = [(LKLoginController *)self proxy];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __57__LKLoginController_isReadyToLoginWithCompletionHandler___block_invoke;
     v7[3] = &unk_2798263D0;
     v7[4] = self;
-    [v5 isReadyToLoginWithCompletionHandler:v7];
+    [proxy isReadyToLoginWithCompletionHandler:v7];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
     v6 = [LKError errorWithCode:28];
-    v4[2](v4, v6);
+    handlerCopy[2](handlerCopy, v6);
   }
 }
 
@@ -304,25 +304,25 @@ void __57__LKLoginController_isReadyToLoginWithCompletionHandler___block_invoke(
   }
 }
 
-- (void)isReadyToLogoutWithCompletionHandler:(id)a3
+- (void)isReadyToLogoutWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (isMultiUser())
   {
-    [(LKLoginController *)self setCompletionHandler:v4];
-    v5 = [(LKLoginController *)self proxy];
+    [(LKLoginController *)self setCompletionHandler:handlerCopy];
+    proxy = [(LKLoginController *)self proxy];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __58__LKLoginController_isReadyToLogoutWithCompletionHandler___block_invoke;
     v7[3] = &unk_2798263D0;
     v7[4] = self;
-    [v5 isReadyToLogoutWithCompletionHandler:v7];
+    [proxy isReadyToLogoutWithCompletionHandler:v7];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
     v6 = [LKError errorWithCode:28];
-    v4[2](v4, v6);
+    handlerCopy[2](handlerCopy, v6);
   }
 }
 
@@ -340,25 +340,25 @@ void __58__LKLoginController_isReadyToLogoutWithCompletionHandler___block_invoke
   }
 }
 
-- (void)checkInWithCurrentEnvironment:(unint64_t)a3 completionHandler:(id)a4
+- (void)checkInWithCurrentEnvironment:(unint64_t)environment completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (isMultiUser())
   {
-    [(LKLoginController *)self setCompletionHandler:v6];
-    v7 = [(LKLoginController *)self proxy];
+    [(LKLoginController *)self setCompletionHandler:handlerCopy];
+    proxy = [(LKLoginController *)self proxy];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __69__LKLoginController_checkInWithCurrentEnvironment_completionHandler___block_invoke;
     v9[3] = &unk_2798263D0;
     v9[4] = self;
-    [v7 checkInWithCurrentEnvironment:a3 completionHandler:v9];
+    [proxy checkInWithCurrentEnvironment:environment completionHandler:v9];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
     v8 = [LKError errorWithCode:28];
-    v6[2](v6, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 }
 
@@ -379,15 +379,15 @@ void __69__LKLoginController_checkInWithCurrentEnvironment_completionHandler___b
 - (id)recentUsers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 allUsers];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  allUsers = [mEMORY[0x277D77BF8] allUsers];
 
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(allUsers, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = allUsers;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -420,28 +420,28 @@ void __69__LKLoginController_checkInWithCurrentEnvironment_completionHandler___b
   return v4;
 }
 
-- (void)updateGlobalDefaultsValue:(id)a3 forKey:(id)a4 completionHandler:(id)a5
+- (void)updateGlobalDefaultsValue:(id)value forKey:(id)key completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(LKLoginController *)self proxy];
-  [v11 updateGlobalDefaultsValue:v10 forKey:v9 completionHandler:v8];
+  handlerCopy = handler;
+  keyCopy = key;
+  valueCopy = value;
+  proxy = [(LKLoginController *)self proxy];
+  [proxy updateGlobalDefaultsValue:valueCopy forKey:keyCopy completionHandler:handlerCopy];
 }
 
-- (void)triggerLocalUserSwitchTestForType:(unint64_t)a3 count:(int64_t)a4 username:(id)a5 password:(id)a6 loginDelay:(int64_t)a7 logoutDelay:(int64_t)a8 completionHandler:(id)a9
+- (void)triggerLocalUserSwitchTestForType:(unint64_t)type count:(int64_t)count username:(id)username password:(id)password loginDelay:(int64_t)delay logoutDelay:(int64_t)logoutDelay completionHandler:(id)handler
 {
-  v16 = a9;
-  v17 = a6;
-  v18 = a5;
-  v19 = [(LKLoginController *)self proxy];
-  [v19 triggerLocalUserSwitchTestForType:a3 count:a4 username:v18 password:v17 loginDelay:a7 logoutDelay:a8 completionHandler:v16];
+  handlerCopy = handler;
+  passwordCopy = password;
+  usernameCopy = username;
+  proxy = [(LKLoginController *)self proxy];
+  [proxy triggerLocalUserSwitchTestForType:type count:count username:usernameCopy password:passwordCopy loginDelay:delay logoutDelay:logoutDelay completionHandler:handlerCopy];
 }
 
 - (void)interruptLocalUserSwitchTest
 {
-  v2 = [(LKLoginController *)self proxy];
-  [v2 interruptLocalUserSwitchTest];
+  proxy = [(LKLoginController *)self proxy];
+  [proxy interruptLocalUserSwitchTest];
 }
 
 @end

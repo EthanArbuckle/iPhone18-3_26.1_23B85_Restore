@@ -1,24 +1,24 @@
 @interface NRPreferWiFiAgent
 + (id)agentDomain;
 + (id)agentType;
-- (BOOL)assertAgentWithOptions:(id)a3;
-- (BOOL)startAgentWithOptions:(id)a3;
+- (BOOL)assertAgentWithOptions:(id)options;
+- (BOOL)startAgentWithOptions:(id)options;
 - (NRPreferWiFiAgent)init;
 - (id)description;
 - (void)dealloc;
-- (void)unassertAgentWithOptions:(id)a3;
+- (void)unassertAgentWithOptions:(id)options;
 @end
 
 @implementation NRPreferWiFiAgent
 
-- (void)unassertAgentWithOptions:(id)a3
+- (void)unassertAgentWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5)
+  optionsCopy = options;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    queue = v5->_queue;
+    queue = selfCopy->_queue;
   }
 
   else
@@ -30,22 +30,22 @@
   v8[1] = 3221225472;
   v8[2] = sub_10007251C;
   v8[3] = &unk_1001FD060;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = optionsCopy;
+  v7 = optionsCopy;
   dispatch_async(queue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)assertAgentWithOptions:(id)a3
+- (BOOL)assertAgentWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5)
+  optionsCopy = options;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    queue = v5->_queue;
+    queue = selfCopy->_queue;
   }
 
   else
@@ -57,20 +57,20 @@
   v9[1] = 3221225472;
   v9[2] = sub_100072C9C;
   v9[3] = &unk_1001FD060;
-  v9[4] = v5;
-  v10 = v4;
-  v7 = v4;
+  v9[4] = selfCopy;
+  v10 = optionsCopy;
+  v7 = optionsCopy;
   dispatch_async(queue, v9);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return 1;
 }
 
-- (BOOL)startAgentWithOptions:(id)a3
+- (BOOL)startAgentWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  optionsCopy = options;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (qword_100228FF0 != -1)
   {
     dispatch_once(&qword_100228FF0, &stru_1001FAE10);
@@ -90,7 +90,7 @@
     _NRLogWithArgs();
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return 0;
 }
@@ -98,8 +98,8 @@
 - (id)description
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(NRPreferWiFiAgent *)self agentUUID];
-  [v3 appendFormat:@"agent UUID: %@\n", v4];
+  agentUUID = [(NRPreferWiFiAgent *)self agentUUID];
+  [v3 appendFormat:@"agent UUID: %@\n", agentUUID];
 
   if (self)
   {
@@ -133,7 +133,7 @@
     }
 
     v5 = 55;
-    v6 = self;
+    selfCopy = self;
     v3 = "";
     v4 = "[NRPreferWiFiAgent dealloc]";
     _NRLogWithArgs();
@@ -203,9 +203,9 @@
   [(NRPreferWiFiAgent *)v3 setAgentUUID:v4];
 
   v5 = [NSString alloc];
-  v6 = [(NRPreferWiFiAgent *)v3 agentUUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 initWithFormat:@"NRPreferWiFiAgent-%@", v7];
+  agentUUID = [(NRPreferWiFiAgent *)v3 agentUUID];
+  uUIDString = [agentUUID UUIDString];
+  v8 = [v5 initWithFormat:@"NRPreferWiFiAgent-%@", uUIDString];
   policyIdentifier = v3->_policyIdentifier;
   v3->_policyIdentifier = v8;
 
@@ -217,9 +217,9 @@
   p2pClientUUIDSet = v3->_p2pClientUUIDSet;
   v3->_p2pClientUUIDSet = v12;
 
-  v14 = [(NRPreferWiFiAgent *)v3 agentUUID];
-  v15 = [v14 UUIDString];
-  sub_1000059A8(0, 15001, 0, v15);
+  agentUUID2 = [(NRPreferWiFiAgent *)v3 agentUUID];
+  uUIDString2 = [agentUUID2 UUIDString];
+  sub_1000059A8(0, 15001, 0, uUIDString2);
 
   return v3;
 }

@@ -1,22 +1,22 @@
 @interface TSTravelEducationFlow
-- (TSTravelEducationFlow)initWithOptions:(id)a3;
-- (id)_getSFSafariViewControllerWithURL:(id)a3;
+- (TSTravelEducationFlow)initWithOptions:(id)options;
+- (id)_getSFSafariViewControllerWithURL:(id)l;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
+- (void)firstViewController:(id)controller;
 @end
 
 @implementation TSTravelEducationFlow
 
-- (TSTravelEducationFlow)initWithOptions:(id)a3
+- (TSTravelEducationFlow)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = TSTravelEducationFlow;
   v5 = [(TSSIMSetupFlow *)&v8 init];
   options = v5->_options;
-  v5->_options = v4;
+  v5->_options = optionsCopy;
 
   return v5;
 }
@@ -32,17 +32,17 @@
   return 0;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (v4)
+  if (controllerCopy)
   {
-    v5 = [MEMORY[0x277CF96D8] sharedManager];
-    v6 = [v5 getSupportedFlowTypes];
+    mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+    getSupportedFlowTypes = [mEMORY[0x277CF96D8] getSupportedFlowTypes];
 
-    if (v6)
+    if (getSupportedFlowTypes)
     {
       v7 = [[TSTravelEducationIntroViewController alloc] initWithOptions:self->_options];
       v8 = _TSLogDomain();
@@ -58,22 +58,22 @@
 
       [(TSTravelEducationIntroViewController *)v7 setDelegate:self];
       [(TSSIMSetupFlow *)self setTopViewController:v7];
-      v4[2](v4, v7);
+      controllerCopy[2](controllerCopy, v7);
     }
 
     else
     {
-      v4[2](v4, 0);
+      controllerCopy[2](controllerCopy, 0);
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -84,23 +84,23 @@
       goto LABEL_20;
     }
 
-    v5 = v4;
-    v10 = [v5 selectedCarrierItem];
+    v5 = fromCopy;
+    selectedCarrierItem = [v5 selectedCarrierItem];
 
-    if (v10)
+    if (selectedCarrierItem)
     {
       v11 = [TSSubFlowViewController alloc];
       v19[0] = &unk_287583E20;
       v18[0] = @"FlowTypeKey";
       v18[1] = @"Plan";
-      v8 = [v5 selectedCarrierItem];
-      v12 = [v8 plan];
+      selectedCarrierItem2 = [v5 selectedCarrierItem];
+      plan = [selectedCarrierItem2 plan];
       v18[2] = @"HostViewController";
-      v19[1] = v12;
+      v19[1] = plan;
       v19[2] = v5;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
-      v14 = [v5 navigationController];
-      v9 = [(TSSubFlowViewController *)v11 initWithOptions:v13 navigationController:v14 delegate:self];
+      navigationController = [v5 navigationController];
+      v9 = [(TSSubFlowViewController *)v11 initWithOptions:v13 navigationController:navigationController delegate:self];
 
       goto LABEL_9;
     }
@@ -108,7 +108,7 @@
     goto LABEL_16;
   }
 
-  v5 = v4;
+  v5 = fromCopy;
   if (![v5 isRoamingTapped])
   {
     if ([v5 isExistingPlanTapped])
@@ -121,7 +121,7 @@
     {
       if (!+[TSUtilities isPad])
       {
-        v7 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/ht212780?cid=mc-ols-esim-article_ht212780-ios_ui-07192022"];
+        roamingInfo2 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/ht212780?cid=mc-ols-esim-article_ht212780-ios_ui-07192022"];
         goto LABEL_5;
       }
 
@@ -136,18 +136,18 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v6 = [v5 roamingInfo];
+  roamingInfo = [v5 roamingInfo];
 
-  if (!v6)
+  if (!roamingInfo)
   {
     v15 = TSTravelEducationRoamingViewController;
     goto LABEL_18;
   }
 
-  v7 = [v5 roamingInfo];
+  roamingInfo2 = [v5 roamingInfo];
 LABEL_5:
-  v8 = v7;
-  v9 = [(TSTravelEducationFlow *)self _getSFSafariViewControllerWithURL:v7];
+  selectedCarrierItem2 = roamingInfo2;
+  v9 = [(TSTravelEducationFlow *)self _getSFSafariViewControllerWithURL:roamingInfo2];
 LABEL_9:
 
 LABEL_19:
@@ -158,15 +158,15 @@ LABEL_20:
   return v9;
 }
 
-- (id)_getSFSafariViewControllerWithURL:(id)a3
+- (id)_getSFSafariViewControllerWithURL:(id)l
 {
   v4 = MEMORY[0x277CDB708];
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc_init(v4);
   [v6 setEntersReaderIfAvailable:0];
   [v6 _setEphemeral:1];
   [v6 set_isBeingUsedForCellularServiceBootstrap:1];
-  v7 = [objc_alloc(MEMORY[0x277CDB700]) initWithURL:v5 configuration:v6];
+  v7 = [objc_alloc(MEMORY[0x277CDB700]) initWithURL:lCopy configuration:v6];
 
   [v7 setDelegate:self];
   [v7 _setShowingLinkPreview:0];

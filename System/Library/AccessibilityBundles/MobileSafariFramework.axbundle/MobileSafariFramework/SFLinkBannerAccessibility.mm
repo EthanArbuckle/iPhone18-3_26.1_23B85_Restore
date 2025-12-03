@@ -1,18 +1,18 @@
 @interface SFLinkBannerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)automationElements;
 @end
 
 @implementation SFLinkBannerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFLinkBanner" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFLinkBanner" hasInstanceMethod:@"messageLabelText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFLinkBanner" hasInstanceMethod:@"_open" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SFLinkBanner" hasInstanceMethod:@"openButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFLinkBanner" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFLinkBanner" hasInstanceMethod:@"messageLabelText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFLinkBanner" hasInstanceMethod:@"_open" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SFLinkBanner" hasInstanceMethod:@"openButton" withFullSignature:{"@", 0}];
 }
 
 - (id)automationElements
@@ -27,10 +27,10 @@
 - (id)accessibilityLabel
 {
   v3 = [(SFLinkBannerAccessibility *)self safeValueForKey:@"titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(SFLinkBannerAccessibility *)self safeValueForKey:@"messageLabelText"];
   v6 = [(SFLinkBannerAccessibility *)self safeValueForKey:@"openButton"];
-  v9 = [v6 accessibilityLabel];
+  accessibilityLabel2 = [v6 accessibilityLabel];
   v7 = __UIAXStringForVariables();
 
   return v7;

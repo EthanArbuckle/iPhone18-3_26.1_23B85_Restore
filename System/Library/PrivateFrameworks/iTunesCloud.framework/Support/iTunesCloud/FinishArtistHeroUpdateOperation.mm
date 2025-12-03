@@ -8,16 +8,16 @@
 {
   if (![(QueueAwareOperation *)self shouldProcessSpecificArtists])
   {
-    v3 = [(QueueAwareOperation *)self musicLibrary];
+    musicLibrary = [(QueueAwareOperation *)self musicLibrary];
     v4 = +[NSDate date];
-    v5 = v3;
+    v5 = musicLibrary;
     [v4 timeIntervalSinceReferenceDate];
     v6 = [NSNumber numberWithDouble:?];
     [v5 setValue:v6 forDatabaseProperty:@"MLArtistHeroImageImportDate"];
   }
 
-  v7 = [(QueueAwareOperation *)self musicLibrary];
-  sub_1000710A8(v7, [(FinishArtistHeroUpdateOperation *)self currentDatabaseRevision]);
+  musicLibrary2 = [(QueueAwareOperation *)self musicLibrary];
+  sub_1000710A8(musicLibrary2, [(FinishArtistHeroUpdateOperation *)self currentDatabaseRevision]);
 
   v8 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))

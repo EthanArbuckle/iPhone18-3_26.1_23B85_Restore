@@ -1,20 +1,20 @@
 @interface VUIOfferViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation VUIOfferViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIOfferView" hasProperty:@"titleLabel" withType:"@"];
-  [v3 validateClass:@"VUIOfferView" hasProperty:@"subtitleLabel" withType:"@"];
-  [v3 validateClass:@"VUIOfferView" hasProperty:@"textLabel" withType:"@"];
-  [v3 validateClass:@"VUIOfferView" hasProperty:@"versionsButton" withType:"@"];
-  [v3 validateClass:@"VUIOfferView" hasProperty:@"imageView" withType:"@"];
-  [v3 validateClass:@"VUIOfferView" hasProperty:@"appIconView" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIOfferView" hasProperty:@"titleLabel" withType:"@"];
+  [validationsCopy validateClass:@"VUIOfferView" hasProperty:@"subtitleLabel" withType:"@"];
+  [validationsCopy validateClass:@"VUIOfferView" hasProperty:@"textLabel" withType:"@"];
+  [validationsCopy validateClass:@"VUIOfferView" hasProperty:@"versionsButton" withType:"@"];
+  [validationsCopy validateClass:@"VUIOfferView" hasProperty:@"imageView" withType:"@"];
+  [validationsCopy validateClass:@"VUIOfferView" hasProperty:@"appIconView" withType:"@"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -26,11 +26,11 @@
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v16.receiver = self;
   v16.super_class = VUIOfferViewAccessibility;
-  v4 = [(VUIOfferViewAccessibility *)&v16 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomActions = [(VUIOfferViewAccessibility *)&v16 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
   v5 = [(VUIOfferViewAccessibility *)self safeValueForKey:@"versionsButton"];
   if (v5)
@@ -45,12 +45,12 @@
     objc_copyWeak(&v14, &location);
     v8 = [v6 initWithName:v7 actionHandler:&v10];
 
-    [v3 axSafelyAddObject:{v8, v10, v11, v12, v13}];
+    [array axSafelyAddObject:{v8, v10, v11, v12, v13}];
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return array;
 }
 
 uint64_t __55__VUIOfferViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)

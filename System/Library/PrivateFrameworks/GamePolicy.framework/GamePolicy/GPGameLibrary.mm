@@ -1,18 +1,18 @@
 @interface GPGameLibrary
-+ (id)gameLibraryAppsFromGameLibraryGames:(id)a3;
++ (id)gameLibraryAppsFromGameLibraryGames:(id)games;
 - (GPGameLibrary)init;
-- (id)appsWithBundleIdentifiers:(id)a3;
-- (id)appsWithStoreIdentifiers:(id)a3;
+- (id)appsWithBundleIdentifiers:(id)identifiers;
+- (id)appsWithStoreIdentifiers:(id)identifiers;
 - (id)installedGames;
 - (void)_onqueue_connectToXPCService;
 - (void)dealloc;
-- (void)fetchAppsWithBundleIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)fetchAppsWithStoreIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)fetchInstalledGamesWithCompletionHandler:(id)a3;
-- (void)installedGamesDidChange:(id)a3;
+- (void)fetchAppsWithBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)fetchAppsWithStoreIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)fetchInstalledGamesWithCompletionHandler:(id)handler;
+- (void)installedGamesDidChange:(id)change;
 - (void)pong;
 - (void)refreshInstalledGamesLibrary;
-- (void)registerInstalledGamesDidChangeHandler:(id)a3;
+- (void)registerInstalledGamesDidChangeHandler:(id)handler;
 @end
 
 @implementation GPGameLibrary
@@ -98,8 +98,8 @@ void __21__GPGameLibrary_init__block_invoke(uint64_t a1)
   objc_copyWeak(&v11, &location);
   [(NSXPCConnection *)v8 setInterruptionHandler:v10];
   [(NSXPCConnection *)self->_daemonConnection resume];
-  v9 = [(NSXPCConnection *)self->_daemonConnection remoteObjectProxy];
-  [v9 ping];
+  remoteObjectProxy = [(NSXPCConnection *)self->_daemonConnection remoteObjectProxy];
+  [remoteObjectProxy ping];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);
@@ -168,12 +168,12 @@ void __45__GPGameLibrary__onqueue_connectToXPCService__block_invoke_7(uint64_t a
   }
 }
 
-- (void)installedGamesDidChange:(id)a3
+- (void)installedGamesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (gp_isInternalBuild())
   {
-    [GPGameLibrary installedGamesDidChange:v4];
+    [GPGameLibrary installedGamesDidChange:changeCopy];
   }
 
   if (!self->_libraryInitialized)
@@ -194,8 +194,8 @@ void __45__GPGameLibrary__onqueue_connectToXPCService__block_invoke_7(uint64_t a
   block[2] = __41__GPGameLibrary_installedGamesDidChange___block_invoke;
   block[3] = &unk_279685870;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
+  v9 = changeCopy;
+  v7 = changeCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v10);
@@ -222,9 +222,9 @@ void __41__GPGameLibrary_installedGamesDidChange___block_invoke(uint64_t a1)
   }
 }
 
-- (void)registerInstalledGamesDidChangeHandler:(id)a3
+- (void)registerInstalledGamesDidChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -232,8 +232,8 @@ void __41__GPGameLibrary_installedGamesDidChange___block_invoke(uint64_t a1)
   block[2] = __56__GPGameLibrary_registerInstalledGamesDidChangeHandler___block_invoke;
   block[3] = &unk_2796858C0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -267,16 +267,16 @@ void __56__GPGameLibrary_registerInstalledGamesDidChangeHandler___block_invoke(u
   }
 }
 
-+ (id)gameLibraryAppsFromGameLibraryGames:(id)a3
++ (id)gameLibraryAppsFromGameLibraryGames:(id)games
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  gamesCopy = games;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = gamesCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -293,10 +293,10 @@ void __56__GPGameLibrary_registerInstalledGamesDidChangeHandler___block_invoke(u
 
         v9 = *(*(&v18 + 1) + 8 * i);
         v10 = [GPGameLibraryApp alloc];
-        v11 = [v9 persistentIdentifier];
-        v12 = [v9 bundleID];
-        v13 = [v9 adamID];
-        v14 = -[GPGameLibraryApp initWithPersistentIdentifier:bundleID:adamID:isGame:](v10, "initWithPersistentIdentifier:bundleID:adamID:isGame:", v11, v12, v13, [v9 isGame]);
+        persistentIdentifier = [v9 persistentIdentifier];
+        bundleID = [v9 bundleID];
+        adamID = [v9 adamID];
+        v14 = -[GPGameLibraryApp initWithPersistentIdentifier:bundleID:adamID:isGame:](v10, "initWithPersistentIdentifier:bundleID:adamID:isGame:", persistentIdentifier, bundleID, adamID, [v9 isGame]);
 
         [v4 addObject:v14];
       }
@@ -340,10 +340,10 @@ void __45__GPGameLibrary_refreshInstalledGamesLibrary__block_invoke(uint64_t a1)
   }
 }
 
-- (void)fetchInstalledGamesWithCompletionHandler:(id)a3
+- (void)fetchInstalledGamesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -352,7 +352,7 @@ void __45__GPGameLibrary_refreshInstalledGamesLibrary__block_invoke(uint64_t a1)
     block[2] = __58__GPGameLibrary_fetchInstalledGamesWithCompletionHandler___block_invoke;
     block[3] = &unk_2796858C0;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = handlerCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v8);
@@ -392,11 +392,11 @@ void __58__GPGameLibrary_fetchInstalledGamesWithCompletionHandler___block_invoke
   }
 }
 
-- (void)fetchAppsWithBundleIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)fetchAppsWithBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -405,8 +405,8 @@ void __58__GPGameLibrary_fetchInstalledGamesWithCompletionHandler___block_invoke
     v9[2] = __66__GPGameLibrary_fetchAppsWithBundleIdentifiers_completionHandler___block_invoke;
     v9[3] = &unk_279685930;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    v10 = v6;
+    v11 = handlerCopy;
+    v10 = identifiersCopy;
     dispatch_async(queue, v9);
 
     objc_destroyWeak(&v12);
@@ -456,11 +456,11 @@ void __66__GPGameLibrary_fetchAppsWithBundleIdentifiers_completionHandler___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchAppsWithStoreIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)fetchAppsWithStoreIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -469,8 +469,8 @@ void __66__GPGameLibrary_fetchAppsWithBundleIdentifiers_completionHandler___bloc
     v9[2] = __65__GPGameLibrary_fetchAppsWithStoreIdentifiers_completionHandler___block_invoke;
     v9[3] = &unk_279685930;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    v10 = v6;
+    v11 = handlerCopy;
+    v10 = identifiersCopy;
     dispatch_async(queue, v9);
 
     objc_destroyWeak(&v12);
@@ -624,9 +624,9 @@ void __31__GPGameLibrary_installedGames__block_invoke_2(uint64_t a1, void *a2)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appsWithBundleIdentifiers:(id)a3
+- (id)appsWithBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -639,9 +639,9 @@ void __31__GPGameLibrary_installedGames__block_invoke_2(uint64_t a1, void *a2)
   block[2] = __43__GPGameLibrary_appsWithBundleIdentifiers___block_invoke;
   block[3] = &unk_2796859A8;
   block[4] = self;
-  v10 = v4;
+  v10 = identifiersCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifiersCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -733,9 +733,9 @@ void __43__GPGameLibrary_appsWithBundleIdentifiers___block_invoke_2(uint64_t a1,
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appsWithStoreIdentifiers:(id)a3
+- (id)appsWithStoreIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -748,9 +748,9 @@ void __43__GPGameLibrary_appsWithBundleIdentifiers___block_invoke_2(uint64_t a1,
   block[2] = __42__GPGameLibrary_appsWithStoreIdentifiers___block_invoke;
   block[3] = &unk_2796859A8;
   block[4] = self;
-  v10 = v4;
+  v10 = identifiersCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifiersCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 

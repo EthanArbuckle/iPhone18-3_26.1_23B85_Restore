@@ -1,6 +1,6 @@
 @interface NavigationBarManualCheckLayoutMarginsChange
-- (_TtC22SubscribePageExtension43NavigationBarManualCheckLayoutMarginsChange)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension43NavigationBarManualCheckLayoutMarginsChange)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension43NavigationBarManualCheckLayoutMarginsChange)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension43NavigationBarManualCheckLayoutMarginsChange)initWithFrame:(CGRect)frame;
 - (void)layoutMarginsDidChange;
 @end
 
@@ -8,16 +8,16 @@
 
 - (void)layoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000328DC();
 }
 
-- (_TtC22SubscribePageExtension43NavigationBarManualCheckLayoutMarginsChange)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension43NavigationBarManualCheckLayoutMarginsChange)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = self + OBJC_IVAR____TtC22SubscribePageExtension43NavigationBarManualCheckLayoutMarginsChange__cachedLayoutMargins;
   *v9 = 0u;
@@ -28,7 +28,7 @@
   return [(NavigationBarManualCheckLayoutMarginsChange *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC22SubscribePageExtension43NavigationBarManualCheckLayoutMarginsChange)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension43NavigationBarManualCheckLayoutMarginsChange)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = self + OBJC_IVAR____TtC22SubscribePageExtension43NavigationBarManualCheckLayoutMarginsChange__cachedLayoutMargins;
@@ -37,8 +37,8 @@
   v6[32] = 1;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(NavigationBarManualCheckLayoutMarginsChange *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(NavigationBarManualCheckLayoutMarginsChange *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

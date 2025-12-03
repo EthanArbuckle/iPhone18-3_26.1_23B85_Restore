@@ -1,28 +1,28 @@
 @interface NTKRingView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NTKRingView)initWithFrame:(CGRect)a3 radius:(double)a4 ringWidth:(double)a5 overlapWidth:(double)a6;
+- (NTKRingView)initWithFrame:(CGRect)frame radius:(double)radius ringWidth:(double)width overlapWidth:(double)overlapWidth;
 - (int64_t)filterStyle;
-- (void)_drawRingWithRadius:(double)a3 fillFraction:(double)a4 alpha:(double)a5 hidesOverlapShadow:(BOOL)a6;
-- (void)drawRect:(CGRect)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)_drawRingWithRadius:(double)radius fillFraction:(double)fraction alpha:(double)alpha hidesOverlapShadow:(BOOL)shadow;
+- (void)drawRect:(CGRect)rect;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKRingView
 
-- (NTKRingView)initWithFrame:(CGRect)a3 radius:(double)a4 ringWidth:(double)a5 overlapWidth:(double)a6
+- (NTKRingView)initWithFrame:(CGRect)frame radius:(double)radius ringWidth:(double)width overlapWidth:(double)overlapWidth
 {
   v13.receiver = self;
   v13.super_class = NTKRingView;
-  v9 = [(CLKUIColoringView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(CLKUIColoringView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v10 = v9;
   if (v9)
   {
-    v9->_radius = a4;
-    v9->_ringWidth = a5;
-    v9->_overlapWidth = a6;
-    v11 = [(NTKRingView *)v9 layer];
-    [v11 setNeedsDisplayOnBoundsChange:1];
+    v9->_radius = radius;
+    v9->_ringWidth = width;
+    v9->_overlapWidth = overlapWidth;
+    layer = [(NTKRingView *)v9 layer];
+    [layer setNeedsDisplayOnBoundsChange:1];
 
     [(NTKRingView *)v10 setOpaque:0];
   }
@@ -43,13 +43,13 @@
   }
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v5 = [(NTKRingView *)self filterProvider];
-  v9 = [v5 filtersForView:self style:-[NTKRingView filterStyle](self fraction:{"filterStyle"), a3}];
+  filterProvider = [(NTKRingView *)self filterProvider];
+  v9 = [filterProvider filtersForView:self style:-[NTKRingView filterStyle](self fraction:{"filterStyle"), fraction}];
 
-  v6 = [(NTKRingView *)self layer];
-  v7 = v6;
+  layer = [(NTKRingView *)self layer];
+  v7 = layer;
   if (v9)
   {
     v8 = v9;
@@ -60,16 +60,16 @@
     v8 = 0;
   }
 
-  [v6 setFilters:v8];
+  [layer setFilters:v8];
 }
 
 - (void)updateMonochromeColor
 {
-  v3 = [(NTKRingView *)self filterProvider];
-  v7 = [v3 filtersForView:self style:{-[NTKRingView filterStyle](self, "filterStyle")}];
+  filterProvider = [(NTKRingView *)self filterProvider];
+  v7 = [filterProvider filtersForView:self style:{-[NTKRingView filterStyle](self, "filterStyle")}];
 
-  v4 = [(NTKRingView *)self layer];
-  v5 = v4;
+  layer = [(NTKRingView *)self layer];
+  v5 = layer;
   if (v7)
   {
     v6 = v7;
@@ -80,12 +80,12 @@
     v6 = 0;
   }
 
-  [v4 setFilters:v6];
+  [layer setFilters:v6];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(NTKRingView *)self contentColor:a3.origin.x];
+  v4 = [(NTKRingView *)self contentColor:rect.origin.x];
   [v4 set];
 
   [(NTKRingView *)self _drawBackgroundRings];
@@ -96,32 +96,32 @@
   [(NTKRingView *)self _drawRingWithRadius:hidesOverlapShadow fillFraction:radius alpha:fillFraction hidesOverlapShadow:1.0];
 }
 
-- (void)_drawRingWithRadius:(double)a3 fillFraction:(double)a4 alpha:(double)a5 hidesOverlapShadow:(BOOL)a6
+- (void)_drawRingWithRadius:(double)radius fillFraction:(double)fraction alpha:(double)alpha hidesOverlapShadow:(BOOL)shadow
 {
   CLKInterpolateBetweenFloatsClipped();
   v12 = v11;
-  if (a4 < 0.999999881)
+  if (fraction < 0.999999881)
   {
-    v13 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-    v14 = [v13 device];
-    __73__NTKRingView__drawRingWithRadius_fillFraction_alpha_hidesOverlapShadow___block_invoke(v14, v14);
+    mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+    device = [mEMORY[0x277CBBB68] device];
+    __73__NTKRingView__drawRingWithRadius_fillFraction_alpha_hidesOverlapShadow___block_invoke(device, device);
 
-    if (v12 >= 4.71238898 - (self->_ringWidth + *&_drawRingWithRadius_fillFraction_alpha_hidesOverlapShadow____onePixel) / a3)
+    if (v12 >= 4.71238898 - (self->_ringWidth + *&_drawRingWithRadius_fillFraction_alpha_hidesOverlapShadow____onePixel) / radius)
     {
-      v12 = 4.71238898 - (self->_ringWidth + *&_drawRingWithRadius_fillFraction_alpha_hidesOverlapShadow____onePixel) / a3;
+      v12 = 4.71238898 - (self->_ringWidth + *&_drawRingWithRadius_fillFraction_alpha_hidesOverlapShadow____onePixel) / radius;
     }
 
-    a6 = 1;
+    shadow = 1;
   }
 
   [(NTKRingView *)self bounds];
   MidX = CGRectGetMidX(v28);
   [(NTKRingView *)self bounds];
-  v26 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:MidX startAngle:CGRectGetMidY(v29) endAngle:a3 clockwise:{-1.57079633, v12}];
+  v26 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:MidX startAngle:CGRectGetMidY(v29) endAngle:radius clockwise:{-1.57079633, v12}];
   [v26 setLineWidth:self->_ringWidth];
   [v26 setLineCapStyle:1];
-  [v26 strokeWithBlendMode:17 alpha:a5];
-  if (!a6)
+  [v26 strokeWithBlendMode:17 alpha:alpha];
+  if (!shadow)
   {
     CLKInterpolateBetweenFloatsClipped();
     v17 = v16;
@@ -133,8 +133,8 @@
     radius = self->_radius;
     v22 = v17;
     v23 = __sincosf_stret(v22);
-    v24 = [MEMORY[0x277D75348] clearColor];
-    [v24 setStroke];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [clearColor setStroke];
 
     v25 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:v18 + radius * v23.__cosval startAngle:MidY + radius * v23.__sinval endAngle:v20 clockwise:{v17, v17 + 3.14159265}];
     [v25 setLineWidth:self->_overlapWidth];

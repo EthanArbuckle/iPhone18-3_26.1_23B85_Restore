@@ -1,80 +1,80 @@
 @interface UIKeyboardFlipTransitionView
-- (UIKeyboardFlipTransitionView)initWithFrame:(CGRect)a3;
+- (UIKeyboardFlipTransitionView)initWithFrame:(CGRect)frame;
 - (void)_delayedUpdateTransition;
-- (void)_flipToFront:(BOOL)a3 animated:(BOOL)a4;
+- (void)_flipToFront:(BOOL)front animated:(BOOL)animated;
 - (void)rebuildBackgroundTransition;
-- (void)rebuildControlSlicesForKeyName:(id)a3;
+- (void)rebuildControlSlicesForKeyName:(id)name;
 - (void)rebuildMoreIntlKeys;
-- (void)setFrame:(CGRect)a3;
-- (void)setShowingFrontFace:(BOOL)a3;
-- (void)updateMoreIntlKey:(id)a3 asStart:(BOOL)a4 withRect:(CGRect)a5 showIntl:(BOOL)a6 showDictKey:(BOOL)a7;
+- (void)setFrame:(CGRect)frame;
+- (void)setShowingFrontFace:(BOOL)face;
+- (void)updateMoreIntlKey:(id)key asStart:(BOOL)start withRect:(CGRect)rect showIntl:(BOOL)intl showDictKey:(BOOL)dictKey;
 @end
 
 @implementation UIKeyboardFlipTransitionView
 
-- (UIKeyboardFlipTransitionView)initWithFrame:(CGRect)a3
+- (UIKeyboardFlipTransitionView)initWithFrame:(CGRect)frame
 {
   v37.receiver = self;
   v37.super_class = UIKeyboardFlipTransitionView;
-  v3 = [(UIView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(UIView *)v3 setAnchorPoint:0.5, 0.5];
-    v5 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     container = v4->_container;
-    v4->_container = v5;
+    v4->_container = layer;
 
     [(UIView *)v4 anchorPoint];
     [(CALayer *)v4->_container setAnchorPoint:?];
-    v7 = [MEMORY[0x1E6979398] layer];
+    layer2 = [MEMORY[0x1E6979398] layer];
     frontFace = v4->_frontFace;
-    v4->_frontFace = v7;
+    v4->_frontFace = layer2;
 
-    v9 = [MEMORY[0x1E6979398] layer];
+    layer3 = [MEMORY[0x1E6979398] layer];
     backFace = v4->_backFace;
-    v4->_backFace = v9;
+    v4->_backFace = layer3;
 
     [(UIKeyboardSplitTransitionView *)v4 initializeLayers];
     v11 = v4->_frontFace;
-    v12 = [(UIKeyboardSplitTransitionView *)v4 backgroundLayers];
-    v13 = [v12 objectAtIndex:0];
+    backgroundLayers = [(UIKeyboardSplitTransitionView *)v4 backgroundLayers];
+    v13 = [backgroundLayers objectAtIndex:0];
     [(CALayer *)v11 addSublayer:v13];
 
     v14 = v4->_backFace;
-    v15 = [(UIKeyboardSplitTransitionView *)v4 backgroundLayers];
-    v16 = [v15 objectAtIndex:1];
+    backgroundLayers2 = [(UIKeyboardSplitTransitionView *)v4 backgroundLayers];
+    v16 = [backgroundLayers2 objectAtIndex:1];
     [(CALayer *)v14 addSublayer:v16];
 
     v17 = v4->_backFace;
-    v18 = [(UIKeyboardSplitTransitionView *)v4 backgroundLayers];
-    v19 = [v18 objectAtIndex:2];
+    backgroundLayers3 = [(UIKeyboardSplitTransitionView *)v4 backgroundLayers];
+    v19 = [backgroundLayers3 objectAtIndex:2];
     [(CALayer *)v17 addSublayer:v19];
 
-    v20 = [MEMORY[0x1E6979398] layer];
+    layer4 = [MEMORY[0x1E6979398] layer];
     frontDarkening = v4->_frontDarkening;
-    v4->_frontDarkening = v20;
+    v4->_frontDarkening = layer4;
 
     v22 = +[UIColor blackColor];
     -[CALayer setBackgroundColor:](v4->_frontDarkening, "setBackgroundColor:", [v22 CGColor]);
 
-    v23 = [MEMORY[0x1E6979398] layer];
+    layer5 = [MEMORY[0x1E6979398] layer];
     backDarkening = v4->_backDarkening;
-    v4->_backDarkening = v23;
+    v4->_backDarkening = layer5;
 
     v25 = +[UIColor blackColor];
     -[CALayer setBackgroundColor:](v4->_backDarkening, "setBackgroundColor:", [v25 CGColor]);
 
-    v26 = [MEMORY[0x1E6979398] layer];
+    layer6 = [MEMORY[0x1E6979398] layer];
     backDarkeningLeft = v4->_backDarkeningLeft;
-    v4->_backDarkeningLeft = v26;
+    v4->_backDarkeningLeft = layer6;
 
     v28 = +[UIColor blackColor];
     -[CALayer setBackgroundColor:](v4->_backDarkeningLeft, "setBackgroundColor:", [v28 CGColor]);
 
-    v29 = [MEMORY[0x1E6979398] layer];
+    layer7 = [MEMORY[0x1E6979398] layer];
     backDarkeningRight = v4->_backDarkeningRight;
-    v4->_backDarkeningRight = v29;
+    v4->_backDarkeningRight = layer7;
 
     v31 = +[UIColor blackColor];
     -[CALayer setBackgroundColor:](v4->_backDarkeningRight, "setBackgroundColor:", [v31 CGColor]);
@@ -87,8 +87,8 @@
     controlKeys = v4->_controlKeys;
     v4->_controlKeys = v32;
 
-    v34 = [(UIView *)v4 layer];
-    [v34 addSublayer:v4->_container];
+    layer8 = [(UIView *)v4 layer];
+    [layer8 addSublayer:v4->_container];
 
     [(CALayer *)v4->_container addSublayer:v4->_frontFace];
     [(CALayer *)v4->_container addSublayer:v4->_backFace];
@@ -98,13 +98,13 @@
   return v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsEmpty(a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectIsEmpty(frame))
   {
     v12.receiver = self;
     v12.super_class = UIKeyboardFlipTransitionView;
@@ -113,18 +113,18 @@
     [(UIView *)self setCenter:width * 0.5, v8 * 0.5];
     [(UIView *)self bounds];
     [(CALayer *)self->_container setBounds:?];
-    v9 = [(UIView *)self layer];
-    [v9 position];
+    layer = [(UIView *)self layer];
+    [layer position];
     [(CALayer *)self->_container setPosition:?];
 
     [(CALayer *)self->_container setPerspectiveDistance:width];
-    v10 = [(CALayer *)self->_container sublayers];
+    sublayers = [(CALayer *)self->_container sublayers];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __41__UIKeyboardFlipTransitionView_setFrame___block_invoke;
     v11[3] = &unk_1E70F5BE0;
     v11[4] = self;
-    [v10 enumerateObjectsUsingBlock:v11];
+    [sublayers enumerateObjectsUsingBlock:v11];
   }
 }
 
@@ -144,13 +144,13 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)_flipToFront:(BOOL)a3 animated:(BOOL)a4
+- (void)_flipToFront:(BOOL)front animated:(BOOL)animated
 {
-  v4 = a3;
+  frontCopy = front;
   v5 = *(MEMORY[0x1E69792E8] + 80);
   v82 = v5;
   v84 = *(MEMORY[0x1E69792E8] + 64);
-  if (a4)
+  if (animated)
   {
     v6 = 0.4;
   }
@@ -190,8 +190,8 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
   CATransform3DMakeRotation(&v89, -1.57079633, 1.0, 0.0, 0.0);
   memset(&v88, 0, sizeof(v88));
   CATransform3DMakeRotation(&v88, -3.14159265, 1.0, 0.0, 0.0);
-  v72 = v4;
-  if (v4)
+  v72 = frontCopy;
+  if (frontCopy)
   {
     v93 = v91;
     v7 = &v91;
@@ -254,8 +254,8 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
   [v27 setDuration:v6];
   [v27 setCalculationMode:@"cubic"];
   v81 = v18;
-  v28 = [v18 keyTimes];
-  [v27 setKeyTimes:v28];
+  keyTimes = [v18 keyTimes];
+  [v27 setKeyTimes:keyTimes];
 
   v83 = v17;
   [v27 setValues:v17];
@@ -348,31 +348,31 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
   [(CALayer *)*p_backDarkening addAnimation:v48 forKey:@"back hidden animation"];
 }
 
-- (void)setShowingFrontFace:(BOOL)a3
+- (void)setShowingFrontFace:(BOOL)face
 {
-  if (self->_showingFrontFace != a3)
+  if (self->_showingFrontFace != face)
   {
-    self->_showingFrontFace = a3;
+    self->_showingFrontFace = face;
     [UIKeyboardFlipTransitionView _flipToFront:"_flipToFront:animated:" animated:?];
   }
 }
 
 - (void)rebuildBackgroundTransition
 {
-  v3 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
-  v46 = [v3 objectAtIndex:0];
+  backgroundLayers = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+  v46 = [backgroundLayers objectAtIndex:0];
 
   [(CALayer *)self->_frontFace insertSublayer:v46 atIndex:0];
-  v4 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
-  v5 = [v4 objectAtIndex:1];
+  backgroundLayers2 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+  v5 = [backgroundLayers2 objectAtIndex:1];
 
-  v6 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
-  v7 = [v6 objectAtIndex:2];
+  backgroundLayers3 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+  v7 = [backgroundLayers3 objectAtIndex:2];
 
   centerFilled = self->super._centerFilled;
   v9 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v10 = [v9 preferencesActions];
-  [v10 rivenSizeFactor:9.0];
+  preferencesActions = [v9 preferencesActions];
+  [preferencesActions rivenSizeFactor:9.0];
   v12 = -v11;
   if (centerFilled)
   {
@@ -380,8 +380,8 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
     [(CALayer *)self->_backFace frame];
     v15 = v14;
     v16 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v17 = [v16 preferencesActions];
-    [v17 rivenSizeFactor:9.0];
+    preferencesActions2 = [v16 preferencesActions];
+    [preferencesActions2 rivenSizeFactor:9.0];
     v19 = v15 + v18 + v18;
     [(UIKeyboardSliceSet *)self->super._sliceSet endRect];
     [v5 setBounds:{v12, 0.0, v19}];
@@ -395,8 +395,8 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
     [(UIKeyboardSliceSet *)self->super._sliceSet leftWidth];
     v23 = v22;
     v24 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v25 = [v24 preferencesActions];
-    [v25 rivenSizeFactor:9.0];
+    preferencesActions3 = [v24 preferencesActions];
+    [preferencesActions3 rivenSizeFactor:9.0];
     v27 = v23 + v26;
     [(UIKeyboardSliceSet *)self->super._sliceSet endRect];
     [v5 setBounds:{v12, 0.0, v27}];
@@ -404,8 +404,8 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
     [(UIKeyboardSliceSet *)self->super._sliceSet rightWidth];
     v29 = v28;
     v30 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v31 = [v30 preferencesActions];
-    [v31 rivenSizeFactor:9.0];
+    preferencesActions4 = [v30 preferencesActions];
+    [preferencesActions4 rivenSizeFactor:9.0];
     v33 = v29 + v32;
     [(UIKeyboardSliceSet *)self->super._sliceSet endRect];
     [v7 setBounds:{0.0, 0.0, v33}];
@@ -423,8 +423,8 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
   v39 = v38;
   v41 = v40;
   v42 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v43 = [v42 preferencesActions];
-  [v43 rivenSizeFactor:9.0];
+  preferencesActions5 = [v42 preferencesActions];
+  [preferencesActions5 rivenSizeFactor:9.0];
   v45 = -v44;
   v48.origin.x = v35;
   v48.origin.y = v37;
@@ -448,12 +448,12 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
   [(CALayer *)self->_backFace addSublayer:self->_backDarkeningRight];
 }
 
-- (void)rebuildControlSlicesForKeyName:(id)a3
+- (void)rebuildControlSlicesForKeyName:(id)name
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  controlKeys = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v6 = [controlKeys objectForKey:nameCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -483,23 +483,23 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 endToken];
-        v15 = v14;
-        if (v14)
+        endToken = [v13 endToken];
+        v15 = endToken;
+        if (endToken)
         {
-          v16 = v14;
+          startToken = endToken;
         }
 
         else
         {
-          v16 = [v13 startToken];
+          startToken = [v13 startToken];
         }
 
-        v17 = v16;
+        v17 = startToken;
 
         controlKeys = self->_controlKeys;
-        v19 = [v17 name];
-        v20 = [(NSMutableDictionary *)controlKeys objectForKeyedSubscript:v19];
+        name = [v17 name];
+        v20 = [(NSMutableDictionary *)controlKeys objectForKeyedSubscript:name];
 
         v21 = [v20 objectForKeyedSubscript:v17];
         [v21 setContents:{-[UIKeyboardSplitTransitionView keyImageWithToken:](self, "keyImageWithToken:", v17)}];
@@ -512,19 +512,19 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)updateMoreIntlKey:(id)a3 asStart:(BOOL)a4 withRect:(CGRect)a5 showIntl:(BOOL)a6 showDictKey:(BOOL)a7
+- (void)updateMoreIntlKey:(id)key asStart:(BOOL)start withRect:(CGRect)rect showIntl:(BOOL)intl showDictKey:(BOOL)dictKey
 {
-  v7 = a7;
-  v8 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v20 = a3;
-  v15 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-  v16 = [v15 objectForKey:v20];
+  dictKeyCopy = dictKey;
+  intlCopy = intl;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  keyCopy = key;
+  controlKeys = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v16 = [controlKeys objectForKey:keyCopy];
 
-  if (a4)
+  if (start)
   {
     [v16 startToken];
   }
@@ -534,30 +534,30 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
     [v16 endToken];
   }
   v17 = ;
-  v18 = [(NSMutableDictionary *)self->_controlKeys objectForKeyedSubscript:v20];
+  v18 = [(NSMutableDictionary *)self->_controlKeys objectForKeyedSubscript:keyCopy];
   v19 = [v18 objectForKeyedSubscript:v17];
 
   [v17 setSize:{width, height}];
   [v19 setFrame:{x, y, width, height}];
   [v16 setStartRect:{x, y, width, height}];
   [v19 setContents:{-[UIKeyboardSplitTransitionView keyImageWithToken:](self, "keyImageWithToken:", v17)}];
-  if ([v20 hasSuffix:@"International-Key"])
+  if ([keyCopy hasSuffix:@"International-Key"])
   {
-    [v19 setHidden:!v8];
+    [v19 setHidden:!intlCopy];
   }
 
-  if ([v20 hasSuffix:@"Dictation-Key"])
+  if ([keyCopy hasSuffix:@"Dictation-Key"])
   {
-    [v19 setHidden:!v7];
+    [v19 setHidden:!dictKeyCopy];
   }
 }
 
 - (void)rebuildMoreIntlKeys
 {
   v69 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardSplitTransitionView *)self showIntlKey];
-  v58 = [(UIKeyboardSplitTransitionView *)self showDictationKey];
-  if (v58)
+  showIntlKey = [(UIKeyboardSplitTransitionView *)self showIntlKey];
+  showDictationKey = [(UIKeyboardSplitTransitionView *)self showDictationKey];
+  if (showDictationKey)
   {
     v4 = 2;
   }
@@ -567,42 +567,42 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
     v4 = 0;
   }
 
-  v5 = v3;
-  v6 = v4 | v3;
-  v7 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-  v8 = [v7 objectForKey:@"MoreIntlStartNames"];
+  v5 = showIntlKey;
+  v6 = v4 | showIntlKey;
+  controlKeys = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v8 = [controlKeys objectForKey:@"MoreIntlStartNames"];
 
   if (!v8)
   {
-    v9 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-    v8 = [v9 objectForKey:@"MoreIntlNames"];
+    controlKeys2 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+    v8 = [controlKeys2 objectForKey:@"MoreIntlNames"];
   }
 
-  v10 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-  v11 = [v10 objectForKey:@"MoreIntlStartLeftAligned"];
+  controlKeys3 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v11 = [controlKeys3 objectForKey:@"MoreIntlStartLeftAligned"];
   v12 = v6 | (16 * (v11 != 0));
 
-  v13 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-  v14 = [v13 objectForKey:@"MoreIntlStarts"];
+  controlKeys4 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v14 = [controlKeys4 objectForKey:@"MoreIntlStarts"];
   v57 = [UIKBTree shapesForControlKeyShapes:v14 options:v12 | 4u];
 
-  v15 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-  v16 = [v15 objectForKey:@"MoreIntlEndNames"];
+  controlKeys5 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v16 = [controlKeys5 objectForKey:@"MoreIntlEndNames"];
 
   if (!v16)
   {
-    v17 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-    v16 = [v17 objectForKey:@"MoreIntlNames"];
+    controlKeys6 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+    v16 = [controlKeys6 objectForKey:@"MoreIntlNames"];
   }
 
   v56 = v16;
-  v18 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-  v19 = [v18 objectForKey:@"MoreIntlEndLeftAligned"];
+  controlKeys7 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v19 = [controlKeys7 objectForKey:@"MoreIntlEndLeftAligned"];
   v20 = v6 | (16 * (v19 != 0));
 
-  v21 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-  v22 = [v21 objectForKey:@"MoreIntlEnds"];
-  v23 = [UIKBTree shapesForControlKeyShapes:v22 options:v20 | 0xCu];
+  controlKeys8 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v22 = [controlKeys8 objectForKey:@"MoreIntlEnds"];
+  0xCu = [UIKBTree shapesForControlKeyShapes:v22 options:v20 | 0xCu];
 
   v65 = 0u;
   v66 = 0u;
@@ -634,7 +634,7 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
           v37 = v36;
           v39 = v38;
 
-          [(UIKeyboardFlipTransitionView *)self updateMoreIntlKey:v30 asStart:1 withRect:v5 showIntl:v58 showDictKey:v33, v35, v37, v39];
+          [(UIKeyboardFlipTransitionView *)self updateMoreIntlKey:v30 asStart:1 withRect:v5 showIntl:showDictationKey showDictKey:v33, v35, v37, v39];
         }
       }
 
@@ -665,14 +665,14 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
 
         v45 = *(*(&v59 + 1) + 8 * j);
         v46 = [v40 objectForKey:v45];
-        v47 = [v23 objectForKey:v45];
+        v47 = [0xCu objectForKey:v45];
         [v47 paddedFrame];
         v49 = v48;
         v51 = v50;
         v53 = v52;
         v55 = v54;
 
-        [(UIKeyboardFlipTransitionView *)self updateMoreIntlKey:v46 asStart:0 withRect:v5 showIntl:v58 showDictKey:v49, v51, v53, v55];
+        [(UIKeyboardFlipTransitionView *)self updateMoreIntlKey:v46 asStart:0 withRect:v5 showIntl:showDictationKey showDictKey:v49, v51, v53, v55];
       }
 
       v42 = [v40 countByEnumeratingWithState:&v59 objects:v67 count:16];
@@ -696,12 +696,12 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
     self->super._centerFilled = [v3 centerFilled];
 
     v4 = +[UIKeyboardImpl activeInstance];
-    v5 = [v4 showsCandidateBar];
+    showsCandidateBar = [v4 showsCandidateBar];
 
     if (+[UIKeyboardImpl isSplit])
     {
-      v6 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-      v7 = [v6 objectForKey:@"Candidate-Selection"];
+      controlKeys = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+      v7 = [controlKeys objectForKey:@"Candidate-Selection"];
       v8 = v7 != 0;
 
       centerFilled = self->super._centerFilled;
@@ -712,13 +712,13 @@ void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, voi
 
       else
       {
-        v10 = v5 ^ 1;
+        v10 = showsCandidateBar ^ 1;
       }
     }
 
     else
     {
-      v10 = self->super._centerFilled & (v5 ^ 1);
+      v10 = self->super._centerFilled & (showsCandidateBar ^ 1);
     }
 
     self->super._centerFilled = v10 & 1;

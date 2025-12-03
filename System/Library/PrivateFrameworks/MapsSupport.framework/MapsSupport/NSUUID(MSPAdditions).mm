@@ -24,8 +24,8 @@
   v4 = a3;
   v5 = [[v3 alloc] initWithUUIDString:v4];
 
-  v6 = [objc_opt_class() _maps_zeroUUID];
-  LOBYTE(v4) = [v5 isEqual:v6];
+  _maps_zeroUUID = [objc_opt_class() _maps_zeroUUID];
+  LOBYTE(v4) = [v5 isEqual:_maps_zeroUUID];
 
   if (v4)
   {
@@ -48,7 +48,7 @@
   *uu2 = 0;
   v9 = 0;
   v4 = a3;
-  [a1 getUUIDBytes:uu1];
+  [self getUUIDBytes:uu1];
   [v4 getUUIDBytes:uu2];
 
   v5 = uuid_compare(uu1, uu2);

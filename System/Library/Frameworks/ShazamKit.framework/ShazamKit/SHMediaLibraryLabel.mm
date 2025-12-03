@@ -1,25 +1,25 @@
 @interface SHMediaLibraryLabel
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualLabel:(id)a3;
-- (SHMediaLibraryLabel)initWithCoder:(id)a3;
-- (SHMediaLibraryLabel)initWithName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualLabel:(id)label;
+- (SHMediaLibraryLabel)initWithCoder:(id)coder;
+- (SHMediaLibraryLabel)initWithName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation SHMediaLibraryLabel
 
-- (SHMediaLibraryLabel)initWithName:(id)a3
+- (SHMediaLibraryLabel)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = SHMediaLibraryLabel;
   v6 = [(SHMediaLibraryLabel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
@@ -27,35 +27,35 @@
 
 - (int64_t)type
 {
-  v2 = [(SHMediaLibraryLabel *)self name];
-  v3 = [v2 hasPrefix:@"platform"];
+  name = [(SHMediaLibraryLabel *)self name];
+  v3 = [name hasPrefix:@"platform"];
 
   return v3 ^ 1u;
 }
 
-- (SHMediaLibraryLabel)initWithCoder:(id)a3
+- (SHMediaLibraryLabel)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryLabelName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryLabelName"];
 
   v6 = [(SHMediaLibraryLabel *)self initWithName:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SHMediaLibraryLabel allocWithZone:?];
-  v6 = [(SHMediaLibraryLabel *)self name];
-  v7 = [v6 copyWithZone:a3];
+  name = [(SHMediaLibraryLabel *)self name];
+  v7 = [name copyWithZone:zone];
   v8 = [(SHMediaLibraryLabel *)v5 initWithName:v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -63,29 +63,29 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SHMediaLibraryLabel *)self isEqualLabel:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SHMediaLibraryLabel *)self isEqualLabel:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualLabel:(id)a3
+- (BOOL)isEqualLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(SHMediaLibraryLabel *)self name];
-  v6 = [v5 lowercaseString];
-  v7 = [v4 name];
+  labelCopy = label;
+  name = [(SHMediaLibraryLabel *)self name];
+  lowercaseString = [name lowercaseString];
+  name2 = [labelCopy name];
 
-  v8 = [v7 lowercaseString];
-  v9 = [v6 isEqualToString:v8];
+  lowercaseString2 = [name2 lowercaseString];
+  v9 = [lowercaseString isEqualToString:lowercaseString2];
 
   return v9;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SHMediaLibraryLabel *)self name];
-  v3 = [v2 hash];
+  name = [(SHMediaLibraryLabel *)self name];
+  v3 = [name hash];
 
   return v3;
 }

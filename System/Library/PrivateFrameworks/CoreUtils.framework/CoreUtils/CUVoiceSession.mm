@@ -1,46 +1,46 @@
 @interface CUVoiceSession
 - (CUVoiceSession)init;
-- (void)_completeAllRequestsWithError:(id)a3;
-- (void)_completeRequest:(id)a3 error:(id)a4;
+- (void)_completeAllRequestsWithError:(id)error;
+- (void)_completeRequest:(id)request error:(id)error;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_processQueuedRequests;
-- (void)_speakText:(id)a3 flags:(unsigned int)a4 languageCode:(id)a5 volume:(double)a6 completion:(id)a7;
+- (void)_speakText:(id)text flags:(unsigned int)flags languageCode:(id)code volume:(double)volume completion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)invalidateWithFlags:(unsigned int)a3;
-- (void)setLabel:(id)a3;
-- (void)speakText:(id)a3 flags:(unsigned int)a4 languageCode:(id)a5 volume:(double)a6 completionHandler:(id)a7;
+- (void)invalidateWithFlags:(unsigned int)flags;
+- (void)setLabel:(id)label;
+- (void)speakText:(id)text flags:(unsigned int)flags languageCode:(id)code volume:(double)volume completionHandler:(id)handler;
 - (void)stopSpeaking;
 @end
 
 @implementation CUVoiceSession
 
-- (void)_completeRequest:(id)a3 error:(id)a4
+- (void)_completeRequest:(id)request error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v10;
+  requestCopy = request;
+  errorCopy = error;
+  v7 = requestCopy;
   currentRequest = self->_currentRequest;
-  if (currentRequest == v10)
+  if (currentRequest == requestCopy)
   {
     self->_currentRequest = 0;
 
-    v7 = v10;
+    v7 = requestCopy;
   }
 
-  v9 = [(CUVoiceRequest *)v7 completion];
-  if (v9)
+  completion = [(CUVoiceRequest *)v7 completion];
+  if (completion)
   {
-    [(CUVoiceRequest *)v10 setCompletion:0];
-    (v9)[2](v9, v6);
+    [(CUVoiceRequest *)requestCopy setCompletion:0];
+    (completion)[2](completion, errorCopy);
   }
 }
 
-- (void)_completeAllRequestsWithError:(id)a3
+- (void)_completeAllRequestsWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -61,7 +61,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [(CUVoiceSession *)self _completeRequest:*(*(&v10 + 1) + 8 * v9++) error:v4, v10];
+        [(CUVoiceSession *)self _completeRequest:*(*(&v10 + 1) + 8 * v9++) error:errorCopy, v10];
       }
 
       while (v7 != v9);
@@ -79,17 +79,17 @@
   p_currentRequest = &self->_currentRequest;
   if (!self->_currentRequest)
   {
-    v4 = [(NSMutableArray *)self->_requests popFirstObject];
-    if (!v4)
+    popFirstObject = [(NSMutableArray *)self->_requests popFirstObject];
+    if (!popFirstObject)
     {
 LABEL_15:
 
       return;
     }
 
-    objc_storeStrong(p_currentRequest, v4);
-    v9 = [v4 speechRequest];
-    if (!v9)
+    objc_storeStrong(p_currentRequest, popFirstObject);
+    speechRequest = [popFirstObject speechRequest];
+    if (!speechRequest)
     {
 LABEL_14:
 
@@ -103,12 +103,12 @@ LABEL_14:
 
     if (IsAppleInternalBuild_sIsInternal)
     {
-      v10 = [v9 text];
+      text = [speechRequest text];
     }
 
     else
     {
-      v10 = @"*";
+      text = @"*";
     }
 
     ucat = self->_ucat;
@@ -124,7 +124,7 @@ LABEL_14:
         ucat = self->_ucat;
       }
 
-      LogPrintF(ucat, "[CUVoiceSession _processQueuedRequests]", 0x1Eu, "Start speaking text '%@'\n", v5, v6, v7, v8, v10);
+      LogPrintF(ucat, "[CUVoiceSession _processQueuedRequests]", 0x1Eu, "Start speaking text '%@'\n", v5, v6, v7, v8, text);
     }
 
 LABEL_13:
@@ -133,10 +133,10 @@ LABEL_13:
     v16[2] = __40__CUVoiceSession__processQueuedRequests__block_invoke;
     v16[3] = &unk_1E73A49F0;
     v16[4] = self;
-    v16[5] = v10;
-    [v9 setDidStartSpeaking:v16];
-    v12 = [getAVAudioSessionClass_9481[0]() sharedInstance];
-    [v12 setCategory:@"AVAudioSessionCategoryPlayback" mode:@"AVAudioSessionModeDefault" routeSharingPolicy:1 options:0 error:0];
+    v16[5] = text;
+    [speechRequest setDidStartSpeaking:v16];
+    sharedInstance = [getAVAudioSessionClass_9481[0]() sharedInstance];
+    [sharedInstance setCategory:@"AVAudioSessionCategoryPlayback" mode:@"AVAudioSessionModeDefault" routeSharingPolicy:1 options:0 error:0];
 
     speechSynthesizer = self->_speechSynthesizer;
     v14[0] = MEMORY[0x1E69E9820];
@@ -144,8 +144,8 @@ LABEL_13:
     v14[2] = __40__CUVoiceSession__processQueuedRequests__block_invoke_2;
     v14[3] = &unk_1E73A4200;
     v14[4] = self;
-    v14[5] = v10;
-    v15 = v9;
+    v14[5] = text;
+    v15 = speechRequest;
     [(SiriTTSDaemonSession *)speechSynthesizer speakWithSpeechRequest:v15 didFinish:v14];
 
     goto LABEL_14;
@@ -293,12 +293,12 @@ LABEL_6:
   return MEMORY[0x1EEE66BB8](v2, v7);
 }
 
-- (void)_speakText:(id)a3 flags:(unsigned int)a4 languageCode:(id)a5 volume:(double)a6 completion:(id)a7
+- (void)_speakText:(id)text flags:(unsigned int)flags languageCode:(id)code volume:(double)volume completion:(id)completion
 {
-  v10 = *&a4;
-  v46 = a3;
-  v12 = a5;
-  v13 = a7;
+  v10 = *&flags;
+  textCopy = text;
+  codeCopy = code;
+  completionCopy = completion;
   if (!self->_speechSynthesizer)
   {
     v14 = objc_alloc_init(getSiriTTSDaemonSessionClass[0]());
@@ -306,9 +306,9 @@ LABEL_6:
     self->_speechSynthesizer = v14;
   }
 
-  v16 = [(CUVoiceRequest *)self->_currentRequest speechRequest];
-  v21 = v16;
-  if ((v10 & 1) == 0 && v16)
+  speechRequest = [(CUVoiceRequest *)self->_currentRequest speechRequest];
+  v21 = speechRequest;
+  if ((v10 & 1) == 0 && speechRequest)
   {
     ucat = self->_ucat;
     if (ucat->var0 <= 30)
@@ -330,8 +330,8 @@ LABEL_9:
     [(SiriTTSDaemonSession *)self->_speechSynthesizer cancelWithRequest:v21];
   }
 
-  v23 = v12;
-  if (!v12)
+  v23 = codeCopy;
+  if (!codeCopy)
   {
     v24 = softLinkVSPreferencesCopyDefaultOutputLanguageIdentifierForUserPreferences[0]();
     v23 = @"en-US";
@@ -344,13 +344,13 @@ LABEL_9:
   v25 = v23;
   if ((v10 & 4) != 0)
   {
-    v27 = [getAFPreferencesClass[0]() sharedPreferences];
-    v28 = [v27 outputVoice];
-    v29 = [v28 name];
+    sharedPreferences = [getAFPreferencesClass[0]() sharedPreferences];
+    outputVoice = [sharedPreferences outputVoice];
+    name = [outputVoice name];
 
-    if (v29)
+    if (name)
     {
-      v26 = v29;
+      v26 = name;
     }
 
     else
@@ -384,7 +384,7 @@ LABEL_9:
 
     if (IsAppleInternalBuild_sIsInternal)
     {
-      v31 = v46;
+      v31 = textCopy;
     }
 
     else
@@ -398,16 +398,16 @@ LABEL_9:
 
 LABEL_27:
   v36 = [objc_alloc(getSiriTTSSynthesisVoiceClass[0]()) initWithLanguage:v25 name:v26];
-  v37 = [objc_alloc(getSiriTTSSpeechRequestClass[0]()) initWithText:v46 voice:v36];
+  v37 = [objc_alloc(getSiriTTSSpeechRequestClass[0]()) initWithText:textCopy voice:v36];
   v39 = v37;
   if ((v10 & 8) != 0)
   {
     [v37 setDisableCompactVoice:1];
   }
 
-  if (a6 > 0.0)
+  if (volume > 0.0)
   {
-    *&v38 = a6;
+    *&v38 = volume;
     [v39 setPlaybackVolume:v38];
   }
 
@@ -417,7 +417,7 @@ LABEL_27:
   }
 
   v40 = objc_alloc_init(CUVoiceRequest);
-  [(CUVoiceRequest *)v40 setCompletion:v13];
+  [(CUVoiceRequest *)v40 setCompletion:completionCopy];
   [(CUVoiceRequest *)v40 setFlags:v10];
   [(CUVoiceRequest *)v40 setOwner:self];
   [(CUVoiceRequest *)v40 setSpeechRequest:v39];
@@ -435,25 +435,25 @@ LABEL_27:
   [(CUVoiceSession *)self _processQueuedRequests];
 }
 
-- (void)speakText:(id)a3 flags:(unsigned int)a4 languageCode:(id)a5 volume:(double)a6 completionHandler:(id)a7
+- (void)speakText:(id)text flags:(unsigned int)flags languageCode:(id)code volume:(double)volume completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  textCopy = text;
+  codeCopy = code;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __72__CUVoiceSession_speakText_flags_languageCode_volume_completionHandler___block_invoke;
   v19[3] = &unk_1E73A41D8;
   v19[4] = self;
-  v20 = v12;
-  v24 = a4;
-  v23 = a6;
-  v21 = v13;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
+  v20 = textCopy;
+  flagsCopy = flags;
+  volumeCopy = volume;
+  v21 = codeCopy;
+  v22 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = codeCopy;
+  v18 = textCopy;
   dispatch_async(dispatchQueue, v19);
 }
 
@@ -496,12 +496,12 @@ LABEL_27:
 
 - (void)_invalidate
 {
-  v3 = [(CUVoiceRequest *)self->_currentRequest speechRequest];
-  v9 = v3;
-  v15 = v3;
+  speechRequest = [(CUVoiceRequest *)self->_currentRequest speechRequest];
+  v9 = speechRequest;
+  v15 = speechRequest;
   if ((self->_invalidateFlags & 2) == 0 || !self->_currentRequest)
   {
-    if (!v3)
+    if (!speechRequest)
     {
       v12 = NSErrorWithOSStatusF(4294960573, "Invalidated", 0, v4, v5, v6, v7, v8, v14);
       [(CUVoiceSession *)self _completeAllRequestsWithError:v12];
@@ -556,7 +556,7 @@ LABEL_13:
   [(CUVoiceSession *)self _invalidated];
 }
 
-- (void)invalidateWithFlags:(unsigned int)a3
+- (void)invalidateWithFlags:(unsigned int)flags
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -564,7 +564,7 @@ LABEL_13:
   v4[2] = __38__CUVoiceSession_invalidateWithFlags___block_invoke;
   v4[3] = &unk_1E73A42A0;
   v4[4] = self;
-  v5 = a3;
+  flagsCopy = flags;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -651,13 +651,13 @@ LABEL_6:
   return [v12 _invalidate];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADEA848;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

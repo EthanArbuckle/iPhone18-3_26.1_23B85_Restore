@@ -1,39 +1,39 @@
 @interface HDWorkoutClusterManager
-- (BOOL)createWorkoutCluster:(id)a3 error:(id *)a4;
-- (BOOL)deleteWorkoutClusterWithUUID:(id)a3 error:(id *)a4;
-- (BOOL)enumerateRouteLocationsForWorkoutUUID:(id)a3 startDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6 handler:(id)a7;
-- (BOOL)performUsingAccessibilityAssertionWithError:(id *)a3 block:(id)a4;
-- (BOOL)updateWorkoutClusterWithUUID:(id)a3 newRelevance:(id)a4 newLastWorkoutUUID:(id)a5 newBestWorkoutUUID:(id)a6 newWorkoutAssociations:(id)a7 workoutAssociationsToRemove:(id)a8 error:(id *)a9;
-- (BOOL)updateWorkoutClusterWithUUID:(id)a3 newRouteLabel:(id)a4 error:(id *)a5;
-- (BOOL)updateWorkoutClusterWithUUID:(id)a3 newRouteSnapshot:(id)a4 error:(id *)a5;
+- (BOOL)createWorkoutCluster:(id)cluster error:(id *)error;
+- (BOOL)deleteWorkoutClusterWithUUID:(id)d error:(id *)error;
+- (BOOL)enumerateRouteLocationsForWorkoutUUID:(id)d startDate:(id)date limit:(unint64_t)limit error:(id *)error handler:(id)handler;
+- (BOOL)performUsingAccessibilityAssertionWithError:(id *)error block:(id)block;
+- (BOOL)updateWorkoutClusterWithUUID:(id)d newRelevance:(id)relevance newLastWorkoutUUID:(id)iD newBestWorkoutUUID:(id)uID newWorkoutAssociations:(id)associations workoutAssociationsToRemove:(id)remove error:(id *)error;
+- (BOOL)updateWorkoutClusterWithUUID:(id)d newRouteLabel:(id)label error:(id *)error;
+- (BOOL)updateWorkoutClusterWithUUID:(id)d newRouteSnapshot:(id)snapshot error:(id *)error;
 - (HDMutableDatabaseTransactionContext)_transactionContextWithAccessibilityAssertion;
 - (HDProfile)profile;
-- (HDWorkoutClusterManager)initWithProfile:(id)a3;
+- (HDWorkoutClusterManager)initWithProfile:(id)profile;
 - (id)accessibilityAssertion;
-- (id)allWorkoutClustersWithError:(id *)a3;
-- (id)allWorkoutUUIDsForClusterUUID:(id)a3 error:(id *)a4;
-- (id)workoutClusterContainingWorkoutUUID:(id)a3 error:(id *)a4;
-- (id)workoutClustersContainingWorkoutUUIDs:(id)a3 error:(id *)a4;
-- (id)workoutCountWithFilter:(id)a3 error:(id *)a4;
-- (id)workoutRouteSnapshotForClusterUUID:(id)a3 error:(id *)a4;
-- (id)workoutsWithFilter:(id)a3 anchor:(id)a4 limit:(unint64_t)a5 newAnchor:(id *)a6 error:(id *)a7;
-- (id)workoutsWithFilter:(id)a3 limit:(unint64_t)a4 sortDescriptors:(id)a5 error:(id *)a6;
+- (id)allWorkoutClustersWithError:(id *)error;
+- (id)allWorkoutUUIDsForClusterUUID:(id)d error:(id *)error;
+- (id)workoutClusterContainingWorkoutUUID:(id)d error:(id *)error;
+- (id)workoutClustersContainingWorkoutUUIDs:(id)ds error:(id *)error;
+- (id)workoutCountWithFilter:(id)filter error:(id *)error;
+- (id)workoutRouteSnapshotForClusterUUID:(id)d error:(id *)error;
+- (id)workoutsWithFilter:(id)filter anchor:(id)anchor limit:(unint64_t)limit newAnchor:(id *)newAnchor error:(id *)error;
+- (id)workoutsWithFilter:(id)filter limit:(unint64_t)limit sortDescriptors:(id)descriptors error:(id *)error;
 - (void)dealloc;
 - (void)takeAccessibilityAssertionIfNeeded;
 @end
 
 @implementation HDWorkoutClusterManager
 
-- (HDWorkoutClusterManager)initWithProfile:(id)a3
+- (HDWorkoutClusterManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDWorkoutClusterManager;
   v5 = [(HDWorkoutClusterManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -55,22 +55,22 @@
   if (!self->_accessibilityAssertion)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v5 = [WeakRetained database];
+    database = [WeakRetained database];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v19 = 0;
-    v8 = [v5 takeAccessibilityAssertionWithOwnerIdentifier:v7 timeout:&v19 error:600.0];
+    v8 = [database takeAccessibilityAssertionWithOwnerIdentifier:v7 timeout:&v19 error:600.0];
     v9 = v19;
     accessibilityAssertion = self->_accessibilityAssertion;
     self->_accessibilityAssertion = v8;
 
     if (!self->_accessibilityAssertion)
     {
-      v11 = [v9 hk_isDatabaseAccessibilityError];
+      hk_isDatabaseAccessibilityError = [v9 hk_isDatabaseAccessibilityError];
       _HKInitializeLogging();
       v12 = *MEMORY[0x277CCC330];
       v13 = *MEMORY[0x277CCC330];
-      if (v11)
+      if (hk_isDatabaseAccessibilityError)
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
@@ -120,26 +120,26 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)performUsingAccessibilityAssertionWithError:(id *)a3 block:(id)a4
+- (BOOL)performUsingAccessibilityAssertionWithError:(id *)error block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
-  v9 = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
-  LOBYTE(a3) = [v8 performWithTransactionContext:v9 error:a3 block:v6];
+  database = [WeakRetained database];
+  _transactionContextWithAccessibilityAssertion = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
+  LOBYTE(error) = [database performWithTransactionContext:_transactionContextWithAccessibilityAssertion error:error block:blockCopy];
 
-  return a3;
+  return error;
 }
 
 - (HDMutableDatabaseTransactionContext)_transactionContextWithAccessibilityAssertion
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(HDMutableDatabaseTransactionContext);
-    v3 = [a1 accessibilityAssertion];
-    if (v3)
+    accessibilityAssertion = [self accessibilityAssertion];
+    if (accessibilityAssertion)
     {
-      [(HDMutableDatabaseTransactionContext *)v2 addAccessibilityAssertion:v3];
+      [(HDMutableDatabaseTransactionContext *)v2 addAccessibilityAssertion:accessibilityAssertion];
     }
   }
 
@@ -151,9 +151,9 @@ LABEL_12:
   return v2;
 }
 
-- (id)workoutCountWithFilter:(id)a3 error:(id *)a4
+- (id)workoutCountWithFilter:(id)filter error:(id *)error
 {
-  v6 = a3;
+  filterCopy = filter;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -161,19 +161,19 @@ LABEL_12:
   v22 = __Block_byref_object_dispose__130;
   v23 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
-  v9 = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
+  database = [WeakRetained database];
+  _transactionContextWithAccessibilityAssertion = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__HDWorkoutClusterManager_workoutCountWithFilter_error___block_invoke;
   v14[3] = &unk_278614288;
   v17 = &v18;
-  v10 = v6;
+  v10 = filterCopy;
   v15 = v10;
-  v16 = self;
-  LODWORD(a4) = [(HDHealthEntity *)HDWorkoutEntity performReadTransactionWithHealthDatabase:v8 context:v9 error:a4 block:v14];
+  selfCopy = self;
+  LODWORD(error) = [(HDHealthEntity *)HDWorkoutEntity performReadTransactionWithHealthDatabase:database context:_transactionContextWithAccessibilityAssertion error:error block:v14];
 
-  if (a4)
+  if (error)
   {
     v11 = v19[5];
   }
@@ -208,33 +208,33 @@ BOOL __56__HDWorkoutClusterManager_workoutCountWithFilter_error___block_invoke(v
   return v14;
 }
 
-- (id)workoutsWithFilter:(id)a3 anchor:(id)a4 limit:(unint64_t)a5 newAnchor:(id *)a6 error:(id *)a7
+- (id)workoutsWithFilter:(id)filter anchor:(id)anchor limit:(unint64_t)limit newAnchor:(id *)newAnchor error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a5];
-  v14 = [MEMORY[0x277CCD8D8] workoutType];
+  filterCopy = filter;
+  anchorCopy = anchor;
+  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:limit];
+  workoutType = [MEMORY[0x277CCD8D8] workoutType];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v16 = [(HDSampleEntity *)HDWorkoutEntity entityEnumeratorWithType:v14 profile:WeakRetained];
+  v16 = [(HDSampleEntity *)HDWorkoutEntity entityEnumeratorWithType:workoutType profile:WeakRetained];
 
   v17 = objc_loadWeakRetained(&self->_profile);
-  v18 = [v11 predicateWithProfile:v17];
+  v18 = [filterCopy predicateWithProfile:v17];
   [v16 setPredicate:v18];
 
-  if (v12)
+  if (anchorCopy)
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v12, "_rowid")}];
+    v19 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(anchorCopy, "_rowid")}];
     [v16 setAnchor:v19];
   }
 
-  [v16 setLimitCount:a5];
-  v20 = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
-  [v16 setDatabaseTransactionContext:v20];
+  [v16 setLimitCount:limit];
+  _transactionContextWithAccessibilityAssertion = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
+  [v16 setDatabaseTransactionContext:_transactionContextWithAccessibilityAssertion];
 
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
-  v31 = [v12 _rowid];
+  _rowid = [anchorCopy _rowid];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __75__HDWorkoutClusterManager_workoutsWithFilter_anchor_limit_newAnchor_error___block_invoke;
@@ -242,11 +242,11 @@ BOOL __56__HDWorkoutClusterManager_workoutCountWithFilter_error___block_invoke(v
   v21 = v13;
   v26 = v21;
   v27 = &v28;
-  if ([v16 enumerateWithError:a7 handler:v25])
+  if ([v16 enumerateWithError:error handler:v25])
   {
-    if (a6)
+    if (newAnchor)
     {
-      *a6 = [MEMORY[0x277CCD840] _anchorWithRowid:v29[3]];
+      *newAnchor = [MEMORY[0x277CCD840] _anchorWithRowid:v29[3]];
     }
 
     v22 = [v21 copy];
@@ -269,25 +269,25 @@ uint64_t __75__HDWorkoutClusterManager_workoutsWithFilter_anchor_limit_newAnchor
   return 1;
 }
 
-- (id)workoutsWithFilter:(id)a3 limit:(unint64_t)a4 sortDescriptors:(id)a5 error:(id *)a6
+- (id)workoutsWithFilter:(id)filter limit:(unint64_t)limit sortDescriptors:(id)descriptors error:(id *)error
 {
   v10 = MEMORY[0x277CBEB18];
-  v11 = a5;
-  v12 = a3;
-  v13 = [[v10 alloc] initWithCapacity:a4];
-  v14 = [MEMORY[0x277CCD8D8] workoutType];
+  descriptorsCopy = descriptors;
+  filterCopy = filter;
+  v13 = [[v10 alloc] initWithCapacity:limit];
+  workoutType = [MEMORY[0x277CCD8D8] workoutType];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v16 = [(HDSampleEntity *)HDWorkoutEntity entityEnumeratorWithType:v14 profile:WeakRetained];
+  v16 = [(HDSampleEntity *)HDWorkoutEntity entityEnumeratorWithType:workoutType profile:WeakRetained];
 
   v17 = objc_loadWeakRetained(&self->_profile);
-  v18 = [v12 predicateWithProfile:v17];
+  v18 = [filterCopy predicateWithProfile:v17];
 
   [v16 setPredicate:v18];
-  [v16 setLimitCount:a4];
-  [v16 setSortDescriptors:v11];
+  [v16 setLimitCount:limit];
+  [v16 setSortDescriptors:descriptorsCopy];
 
-  v19 = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
-  [v16 setDatabaseTransactionContext:v19];
+  _transactionContextWithAccessibilityAssertion = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
+  [v16 setDatabaseTransactionContext:_transactionContextWithAccessibilityAssertion];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -295,7 +295,7 @@ uint64_t __75__HDWorkoutClusterManager_workoutsWithFilter_anchor_limit_newAnchor
   v23[3] = &unk_2786204C8;
   v20 = v13;
   v24 = v20;
-  if ([v16 enumerateWithError:a6 handler:v23])
+  if ([v16 enumerateWithError:error handler:v23])
   {
     v21 = [v20 copy];
   }
@@ -308,29 +308,29 @@ uint64_t __75__HDWorkoutClusterManager_workoutsWithFilter_anchor_limit_newAnchor
   return v21;
 }
 
-- (BOOL)enumerateRouteLocationsForWorkoutUUID:(id)a3 startDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6 handler:(id)a7
+- (BOOL)enumerateRouteLocationsForWorkoutUUID:(id)d startDate:(id)date limit:(unint64_t)limit error:(id *)error handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  dCopy = d;
+  dateCopy = date;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v16 = [WeakRetained database];
-  v17 = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
+  database = [WeakRetained database];
+  _transactionContextWithAccessibilityAssertion = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __95__HDWorkoutClusterManager_enumerateRouteLocationsForWorkoutUUID_startDate_limit_error_handler___block_invoke;
   v22[3] = &unk_278625690;
-  v23 = v12;
-  v24 = self;
-  v25 = v13;
-  v26 = v14;
-  v27 = a5;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  LOBYTE(a6) = [(HDHealthEntity *)HDSeriesSampleEntity performReadTransactionWithHealthDatabase:v16 context:v17 error:a6 block:v22];
+  v23 = dCopy;
+  selfCopy = self;
+  v25 = dateCopy;
+  v26 = handlerCopy;
+  limitCopy = limit;
+  v18 = handlerCopy;
+  v19 = dateCopy;
+  v20 = dCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDSeriesSampleEntity performReadTransactionWithHealthDatabase:database context:_transactionContextWithAccessibilityAssertion error:error block:v22];
 
-  return a6;
+  return error;
 }
 
 uint64_t __95__HDWorkoutClusterManager_enumerateRouteLocationsForWorkoutUUID_startDate_limit_error_handler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -503,19 +503,19 @@ uint64_t __76__HDWorkoutClusterManager__routeSeriesIdentifiersForWorkout_databas
   return 1;
 }
 
-- (BOOL)createWorkoutCluster:(id)a3 error:(id *)a4
+- (BOOL)createWorkoutCluster:(id)cluster error:(id *)error
 {
-  v6 = a3;
+  clusterCopy = cluster;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__HDWorkoutClusterManager_createWorkoutCluster_error___block_invoke;
   v9[3] = &unk_278620C68;
-  v10 = v6;
-  v11 = self;
-  v7 = v6;
-  LOBYTE(a4) = [(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:a4 block:v9];
+  v10 = clusterCopy;
+  selfCopy = self;
+  v7 = clusterCopy;
+  LOBYTE(error) = [(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:error block:v9];
 
-  return a4;
+  return error;
 }
 
 BOOL __54__HDWorkoutClusterManager_createWorkoutCluster_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -527,7 +527,7 @@ BOOL __54__HDWorkoutClusterManager_createWorkoutCluster_error___block_invoke(uin
   return v5 != 0;
 }
 
-- (id)allWorkoutClustersWithError:(id *)a3
+- (id)allWorkoutClustersWithError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -541,7 +541,7 @@ BOOL __54__HDWorkoutClusterManager_createWorkoutCluster_error___block_invoke(uin
   v6[3] = &unk_27861A418;
   v6[4] = self;
   v6[5] = &v7;
-  if ([(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:a3 block:v6])
+  if ([(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:error block:v6])
   {
     v3 = v8[5];
   }
@@ -568,9 +568,9 @@ BOOL __55__HDWorkoutClusterManager_allWorkoutClustersWithError___block_invoke(ui
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (id)workoutClusterContainingWorkoutUUID:(id)a3 error:(id *)a4
+- (id)workoutClusterContainingWorkoutUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -582,10 +582,10 @@ BOOL __55__HDWorkoutClusterManager_allWorkoutClustersWithError___block_invoke(ui
   v11[2] = __69__HDWorkoutClusterManager_workoutClusterContainingWorkoutUUID_error___block_invoke;
   v11[3] = &unk_27861A440;
   v14 = &v15;
-  v7 = v6;
+  v7 = dCopy;
   v12 = v7;
-  v13 = self;
-  if ([(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:a4 block:v11])
+  selfCopy = self;
+  if ([(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:error block:v11])
   {
     v8 = v16[5];
   }
@@ -614,9 +614,9 @@ BOOL __69__HDWorkoutClusterManager_workoutClusterContainingWorkoutUUID_error___b
   return *(*(a1[6] + 8) + 40) != 0;
 }
 
-- (id)workoutClustersContainingWorkoutUUIDs:(id)a3 error:(id *)a4
+- (id)workoutClustersContainingWorkoutUUIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
+  dsCopy = ds;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -628,10 +628,10 @@ BOOL __69__HDWorkoutClusterManager_workoutClusterContainingWorkoutUUID_error___b
   v11[2] = __71__HDWorkoutClusterManager_workoutClustersContainingWorkoutUUIDs_error___block_invoke;
   v11[3] = &unk_27861A440;
   v14 = &v15;
-  v7 = v6;
+  v7 = dsCopy;
   v12 = v7;
-  v13 = self;
-  if ([(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:a4 block:v11])
+  selfCopy = self;
+  if ([(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:error block:v11])
   {
     v8 = v16[5];
   }
@@ -660,9 +660,9 @@ BOOL __71__HDWorkoutClusterManager_workoutClustersContainingWorkoutUUIDs_error__
   return *(*(a1[6] + 8) + 40) != 0;
 }
 
-- (id)allWorkoutUUIDsForClusterUUID:(id)a3 error:(id *)a4
+- (id)allWorkoutUUIDsForClusterUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -674,10 +674,10 @@ BOOL __71__HDWorkoutClusterManager_workoutClustersContainingWorkoutUUIDs_error__
   v11[2] = __63__HDWorkoutClusterManager_allWorkoutUUIDsForClusterUUID_error___block_invoke;
   v11[3] = &unk_27861A440;
   v14 = &v15;
-  v7 = v6;
+  v7 = dCopy;
   v12 = v7;
-  v13 = self;
-  if ([(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:a4 block:v11])
+  selfCopy = self;
+  if ([(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:error block:v11])
   {
     v8 = v16[5];
   }
@@ -706,9 +706,9 @@ BOOL __63__HDWorkoutClusterManager_allWorkoutUUIDsForClusterUUID_error___block_i
   return *(*(a1[6] + 8) + 40) != 0;
 }
 
-- (id)workoutRouteSnapshotForClusterUUID:(id)a3 error:(id *)a4
+- (id)workoutRouteSnapshotForClusterUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -716,18 +716,18 @@ BOOL __63__HDWorkoutClusterManager_allWorkoutUUIDsForClusterUUID_error___block_i
   v21 = __Block_byref_object_dispose__130;
   v22 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
-  v9 = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
+  database = [WeakRetained database];
+  _transactionContextWithAccessibilityAssertion = [(HDWorkoutClusterManager *)self _transactionContextWithAccessibilityAssertion];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__HDWorkoutClusterManager_workoutRouteSnapshotForClusterUUID_error___block_invoke;
   v14[3] = &unk_278614110;
-  v10 = v6;
+  v10 = dCopy;
   v15 = v10;
   v16 = &v17;
-  LODWORD(a4) = [(HDHealthEntity *)HDWorkoutClusterEntity performReadTransactionWithHealthDatabase:v8 context:v9 error:a4 block:v14];
+  LODWORD(error) = [(HDHealthEntity *)HDWorkoutClusterEntity performReadTransactionWithHealthDatabase:database context:_transactionContextWithAccessibilityAssertion error:error block:v14];
 
-  if (a4)
+  if (error)
   {
     v11 = v18[5];
   }
@@ -767,22 +767,22 @@ BOOL __68__HDWorkoutClusterManager_workoutRouteSnapshotForClusterUUID_error___bl
   return v11;
 }
 
-- (BOOL)updateWorkoutClusterWithUUID:(id)a3 newRouteSnapshot:(id)a4 error:(id *)a5
+- (BOOL)updateWorkoutClusterWithUUID:(id)d newRouteSnapshot:(id)snapshot error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  snapshotCopy = snapshot;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__HDWorkoutClusterManager_updateWorkoutClusterWithUUID_newRouteSnapshot_error___block_invoke;
   v13[3] = &unk_27861A028;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v10 = v9;
-  v11 = v8;
-  LOBYTE(a5) = [(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:a5 block:v13];
+  v14 = dCopy;
+  v15 = snapshotCopy;
+  selfCopy = self;
+  v10 = snapshotCopy;
+  v11 = dCopy;
+  LOBYTE(error) = [(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:error block:v13];
 
-  return a5;
+  return error;
 }
 
 BOOL __79__HDWorkoutClusterManager_updateWorkoutClusterWithUUID_newRouteSnapshot_error___block_invoke(void *a1, uint64_t a2)
@@ -795,22 +795,22 @@ BOOL __79__HDWorkoutClusterManager_updateWorkoutClusterWithUUID_newRouteSnapshot
   return v6;
 }
 
-- (BOOL)updateWorkoutClusterWithUUID:(id)a3 newRouteLabel:(id)a4 error:(id *)a5
+- (BOOL)updateWorkoutClusterWithUUID:(id)d newRouteLabel:(id)label error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  labelCopy = label;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__HDWorkoutClusterManager_updateWorkoutClusterWithUUID_newRouteLabel_error___block_invoke;
   v13[3] = &unk_27861A028;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v10 = v9;
-  v11 = v8;
-  LOBYTE(a5) = [(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:a5 block:v13];
+  v14 = dCopy;
+  v15 = labelCopy;
+  selfCopy = self;
+  v10 = labelCopy;
+  v11 = dCopy;
+  LOBYTE(error) = [(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:error block:v13];
 
-  return a5;
+  return error;
 }
 
 BOOL __76__HDWorkoutClusterManager_updateWorkoutClusterWithUUID_newRouteLabel_error___block_invoke(void *a1, uint64_t a2)
@@ -823,32 +823,32 @@ BOOL __76__HDWorkoutClusterManager_updateWorkoutClusterWithUUID_newRouteLabel_er
   return v6;
 }
 
-- (BOOL)updateWorkoutClusterWithUUID:(id)a3 newRelevance:(id)a4 newLastWorkoutUUID:(id)a5 newBestWorkoutUUID:(id)a6 newWorkoutAssociations:(id)a7 workoutAssociationsToRemove:(id)a8 error:(id *)a9
+- (BOOL)updateWorkoutClusterWithUUID:(id)d newRelevance:(id)relevance newLastWorkoutUUID:(id)iD newBestWorkoutUUID:(id)uID newWorkoutAssociations:(id)associations workoutAssociationsToRemove:(id)remove error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  dCopy = d;
+  relevanceCopy = relevance;
+  iDCopy = iD;
+  uIDCopy = uID;
+  associationsCopy = associations;
+  removeCopy = remove;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __164__HDWorkoutClusterManager_updateWorkoutClusterWithUUID_newRelevance_newLastWorkoutUUID_newBestWorkoutUUID_newWorkoutAssociations_workoutAssociationsToRemove_error___block_invoke;
   v28[3] = &unk_2786256B8;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = v18;
-  v33 = v19;
-  v34 = v20;
-  v35 = self;
-  v21 = v20;
-  v22 = v19;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
-  LOBYTE(self) = [(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:a9 block:v28];
+  v29 = dCopy;
+  v30 = relevanceCopy;
+  v31 = iDCopy;
+  v32 = uIDCopy;
+  v33 = associationsCopy;
+  v34 = removeCopy;
+  selfCopy = self;
+  v21 = removeCopy;
+  v22 = associationsCopy;
+  v23 = uIDCopy;
+  v24 = iDCopy;
+  v25 = relevanceCopy;
+  v26 = dCopy;
+  LOBYTE(self) = [(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:error block:v28];
 
   return self;
 }
@@ -867,19 +867,19 @@ BOOL __164__HDWorkoutClusterManager_updateWorkoutClusterWithUUID_newRelevance_ne
   return v10;
 }
 
-- (BOOL)deleteWorkoutClusterWithUUID:(id)a3 error:(id *)a4
+- (BOOL)deleteWorkoutClusterWithUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__HDWorkoutClusterManager_deleteWorkoutClusterWithUUID_error___block_invoke;
   v9[3] = &unk_278620C68;
-  v10 = v6;
-  v11 = self;
-  v7 = v6;
-  LOBYTE(a4) = [(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:a4 block:v9];
+  v10 = dCopy;
+  selfCopy = self;
+  v7 = dCopy;
+  LOBYTE(error) = [(HDWorkoutClusterManager *)self performUsingAccessibilityAssertionWithError:error block:v9];
 
-  return a4;
+  return error;
 }
 
 BOOL __62__HDWorkoutClusterManager_deleteWorkoutClusterWithUUID_error___block_invoke(uint64_t a1, uint64_t a2)

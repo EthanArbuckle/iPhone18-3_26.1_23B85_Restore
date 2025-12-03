@@ -1,61 +1,61 @@
 @interface CMWorkout
 + (BOOL)isAvailable;
-+ (BOOL)workoutIsTypePedestrian:(int64_t)a3;
-+ (id)workoutLocationName:(int64_t)a3;
-+ (id)workoutModeName:(unint64_t)a3;
-+ (id)workoutName:(int64_t)a3;
-+ (int)CLMotionActivityTypeFromCMWorkoutType:(int64_t)a3;
-+ (int64_t)CMSwimWorkoutLocationFromCMWorkoutLocationType:(int64_t)a3;
-+ (int64_t)CMWorkoutLocationTypeFromCMSwimWorkoutLocation:(int64_t)a3;
-+ (int64_t)CMWorkoutTypeFromCLMotionActivityType:(int)a3;
-+ (int64_t)workoutLocationTypeFromCMWorkoutType:(int64_t)a3;
-- (BOOL)isSameWorkout:(id)a3;
-- (CMWorkout)initWithCoder:(id)a3;
-- (CMWorkout)initWithSessionId:(id)a3 type:(int64_t)a4;
-- (CMWorkout)initWithSessionId:(id)a3 type:(int64_t)a4 locationType:(int64_t)a5;
-- (CMWorkout)initWithSessionId:(id)a3 type:(int64_t)a4 locationType:(int64_t)a5 mode:(unint64_t)a6;
-- (CMWorkout)initWithSessionId:(id)a3 type:(int64_t)a4 locationType:(int64_t)a5 mode:(unint64_t)a6 startDate:(id)a7 endDate:(id)a8;
-- (id)_initWithSessionId:(id)a3 type:(int64_t)a4 locationType:(int64_t)a5 mode:(unint64_t)a6 startDate:(id)a7 endDate:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)workoutIsTypePedestrian:(int64_t)pedestrian;
++ (id)workoutLocationName:(int64_t)name;
++ (id)workoutModeName:(unint64_t)name;
++ (id)workoutName:(int64_t)name;
++ (int)CLMotionActivityTypeFromCMWorkoutType:(int64_t)type;
++ (int64_t)CMSwimWorkoutLocationFromCMWorkoutLocationType:(int64_t)type;
++ (int64_t)CMWorkoutLocationTypeFromCMSwimWorkoutLocation:(int64_t)location;
++ (int64_t)CMWorkoutTypeFromCLMotionActivityType:(int)type;
++ (int64_t)workoutLocationTypeFromCMWorkoutType:(int64_t)type;
+- (BOOL)isSameWorkout:(id)workout;
+- (CMWorkout)initWithCoder:(id)coder;
+- (CMWorkout)initWithSessionId:(id)id type:(int64_t)type;
+- (CMWorkout)initWithSessionId:(id)id type:(int64_t)type locationType:(int64_t)locationType;
+- (CMWorkout)initWithSessionId:(id)id type:(int64_t)type locationType:(int64_t)locationType mode:(unint64_t)mode;
+- (CMWorkout)initWithSessionId:(id)id type:(int64_t)type locationType:(int64_t)locationType mode:(unint64_t)mode startDate:(id)date endDate:(id)endDate;
+- (id)_initWithSessionId:(id)id type:(int64_t)type locationType:(int64_t)locationType mode:(unint64_t)mode startDate:(id)date endDate:(id)endDate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMWorkout
 
-+ (int)CLMotionActivityTypeFromCMWorkoutType:(int64_t)a3
++ (int)CLMotionActivityTypeFromCMWorkoutType:(int64_t)type
 {
-  if ((a3 - 1) > 0x5E)
+  if ((type - 1) > 0x5E)
   {
     return 0;
   }
 
   else
   {
-    return dword_19B7B8FF0[a3 - 1];
+    return dword_19B7B8FF0[type - 1];
   }
 }
 
-+ (int64_t)CMWorkoutTypeFromCLMotionActivityType:(int)a3
++ (int64_t)CMWorkoutTypeFromCLMotionActivityType:(int)type
 {
   result = 0;
-  if (a3 > 15229)
+  if (type > 15229)
   {
-    if (a3 > 15710)
+    if (type > 15710)
     {
-      if (a3 > 19089)
+      if (type > 19089)
       {
-        if (a3 > 90602)
+        if (type > 90602)
         {
           v13 = 515651;
           v43 = 37;
-          if (a3 != 519150)
+          if (type != 519150)
           {
             v43 = 0;
           }
 
-          if (a3 == 515652)
+          if (type == 515652)
           {
             v15 = 53;
           }
@@ -67,7 +67,7 @@
 
           v16 = 90603;
           v17 = 21;
-          v18 = a3 == 515621;
+          v18 = type == 515621;
           v19 = 60;
         }
 
@@ -75,12 +75,12 @@
         {
           v13 = 90120;
           v23 = 66;
-          if (a3 != 90122)
+          if (type != 90122)
           {
             v23 = 0;
           }
 
-          if (a3 == 90121)
+          if (type == 90121)
           {
             v15 = 67;
           }
@@ -92,7 +92,7 @@
 
           v16 = 19090;
           v17 = 36;
-          v18 = a3 == 19150;
+          v18 = type == 19150;
           v19 = 23;
         }
 
@@ -101,12 +101,12 @@
 
       v13 = 18049;
       v37 = 47;
-      if (a3 != 19030)
+      if (type != 19030)
       {
         v37 = 0;
       }
 
-      if (a3 == 18240)
+      if (type == 18240)
       {
         v38 = 19;
       }
@@ -117,12 +117,12 @@
       }
 
       v39 = 38;
-      if (a3 != 18100)
+      if (type != 18100)
       {
         v39 = 0;
       }
 
-      if (a3 == 18050)
+      if (type == 18050)
       {
         v40 = 35;
       }
@@ -132,7 +132,7 @@
         v40 = v39;
       }
 
-      if (a3 <= 18239)
+      if (type <= 18239)
       {
         v15 = v40;
       }
@@ -146,24 +146,24 @@
       v17 = 55;
       v28 = 15733;
       v29 = 58;
-      v30 = a3 == 17150;
+      v30 = type == 17150;
       v31 = 16;
     }
 
     else
     {
-      if (a3 > 15559)
+      if (type > 15559)
       {
-        if (a3 > 15651)
+        if (type > 15651)
         {
           v13 = 15669;
           v41 = 51;
-          if (a3 != 15675)
+          if (type != 15675)
           {
             v41 = 0;
           }
 
-          if (a3 == 15670)
+          if (type == 15670)
           {
             v15 = 31;
           }
@@ -175,7 +175,7 @@
 
           v16 = 15652;
           v17 = 56;
-          v18 = a3 == 15660;
+          v18 = type == 15660;
           v19 = 62;
         }
 
@@ -183,12 +183,12 @@
         {
           v13 = 15609;
           v14 = 59;
-          if (a3 != 15620)
+          if (type != 15620)
           {
             v14 = 0;
           }
 
-          if (a3 == 15610)
+          if (type == 15610)
           {
             v15 = 39;
           }
@@ -200,7 +200,7 @@
 
           v16 = 15560;
           v17 = 44;
-          v18 = a3 == 15592;
+          v18 = type == 15592;
           v19 = 46;
         }
 
@@ -211,7 +211,7 @@ LABEL_130:
         }
 
 LABEL_132:
-        if (a3 == v16)
+        if (type == v16)
         {
           v21 = v17;
         }
@@ -222,7 +222,7 @@ LABEL_132:
         }
 
 LABEL_135:
-        if (a3 <= v13)
+        if (type <= v13)
         {
           return v21;
         }
@@ -235,12 +235,12 @@ LABEL_135:
 
       v13 = 15329;
       v24 = 45;
-      if (a3 != 15460)
+      if (type != 15460)
       {
         v24 = 0;
       }
 
-      if (a3 == 15360)
+      if (type == 15360)
       {
         v25 = 48;
       }
@@ -251,12 +251,12 @@ LABEL_135:
       }
 
       v26 = 49;
-      if (a3 != 15350)
+      if (type != 15350)
       {
         v26 = 0;
       }
 
-      if (a3 == 15330)
+      if (type == 15330)
       {
         v27 = 57;
       }
@@ -266,7 +266,7 @@ LABEL_135:
         v27 = v26;
       }
 
-      if (a3 <= 15359)
+      if (type <= 15359)
       {
         v15 = v27;
       }
@@ -280,7 +280,7 @@ LABEL_135:
       v17 = 42;
       v28 = 15250;
       v29 = 43;
-      v30 = a3 == 15255;
+      v30 = type == 15255;
       v31 = 27;
     }
 
@@ -289,7 +289,7 @@ LABEL_135:
       v31 = 0;
     }
 
-    if (a3 == v28)
+    if (type == v28)
     {
       v19 = v29;
     }
@@ -302,35 +302,35 @@ LABEL_135:
     goto LABEL_132;
   }
 
-  if (a3 > 2060)
+  if (type > 2060)
   {
-    if (a3 <= 3014)
+    if (type <= 3014)
     {
       v4 = 32;
       v32 = 6;
-      if (a3 != 2150)
+      if (type != 2150)
       {
         v32 = 0;
       }
 
-      if (a3 != 2105)
+      if (type != 2105)
       {
         v4 = v32;
       }
 
       v33 = 12;
       v34 = 29;
-      if (a3 != 2101)
+      if (type != 2101)
       {
         v34 = 0;
       }
 
-      if (a3 != 2071)
+      if (type != 2071)
       {
         v33 = v34;
       }
 
-      if (a3 <= 2104)
+      if (type <= 2104)
       {
         v4 = v33;
       }
@@ -338,35 +338,35 @@ LABEL_135:
       v8 = 8;
       v35 = 11;
       v36 = 63;
-      if (a3 != 2068)
+      if (type != 2068)
       {
         v36 = 0;
       }
 
-      if (a3 != 2065)
+      if (type != 2065)
       {
         v35 = v36;
       }
 
-      if (a3 != 2061)
+      if (type != 2061)
       {
         v8 = v35;
       }
 
-      v12 = a3 <= 2070;
+      v12 = type <= 2070;
       goto LABEL_90;
     }
 
-    if (a3 <= 15054)
+    if (type <= 15054)
     {
       v13 = 12149;
       v20 = 52;
-      if (a3 != 15030)
+      if (type != 15030)
       {
         v20 = 0;
       }
 
-      if (a3 == 12150)
+      if (type == 12150)
       {
         v15 = 18;
       }
@@ -378,12 +378,12 @@ LABEL_135:
 
       v21 = 7;
       v22 = 65;
-      if (a3 != 3016)
+      if (type != 3016)
       {
         v22 = 0;
       }
 
-      if (a3 != 3015)
+      if (type != 3015)
       {
         v21 = v22;
       }
@@ -393,12 +393,12 @@ LABEL_135:
 
     v13 = 15109;
     v42 = 61;
-    if (a3 != 15150)
+    if (type != 15150)
     {
       v42 = 0;
     }
 
-    if (a3 == 15110)
+    if (type == 15110)
     {
       v15 = 34;
     }
@@ -410,72 +410,72 @@ LABEL_135:
 
     v16 = 15055;
     v17 = 50;
-    v18 = a3 == 15100;
+    v18 = type == 15100;
     v19 = 64;
     goto LABEL_130;
   }
 
-  if (a3 > 63)
+  if (type > 63)
   {
     v4 = 30;
     v5 = 9;
-    if (a3 != 2048)
+    if (type != 2048)
     {
       v5 = 0;
     }
 
-    if (a3 != 2024)
+    if (type != 2024)
     {
       v4 = v5;
     }
 
     v6 = 22;
     v7 = 28;
-    if (a3 != 2022)
+    if (type != 2022)
     {
       v7 = 0;
     }
 
-    if (a3 != 2020)
+    if (type != 2020)
     {
       v6 = v7;
     }
 
-    if (a3 <= 2023)
+    if (type <= 2023)
     {
       v4 = v6;
     }
 
     v8 = 54;
     v9 = 5;
-    if (a3 != 2010)
+    if (type != 2010)
     {
       v9 = 0;
     }
 
-    if (a3 != 66)
+    if (type != 66)
     {
       v8 = v9;
     }
 
     v10 = 40;
     v11 = 41;
-    if (a3 != 65)
+    if (type != 65)
     {
       v11 = 0;
     }
 
-    if (a3 != 64)
+    if (type != 64)
     {
       v10 = v11;
     }
 
-    if (a3 <= 65)
+    if (type <= 65)
     {
       v8 = v10;
     }
 
-    v12 = a3 <= 2019;
+    v12 = type <= 2019;
 LABEL_90:
     if (v12)
     {
@@ -488,16 +488,16 @@ LABEL_90:
     }
   }
 
-  if (a3 > 7)
+  if (type > 7)
   {
-    if (a3 <= 61)
+    if (type <= 61)
     {
-      if (a3 == 8)
+      if (type == 8)
       {
         return 17;
       }
 
-      if (a3 != 41)
+      if (type != 41)
       {
         return result;
       }
@@ -505,7 +505,7 @@ LABEL_90:
       return 15;
     }
 
-    if (a3 != 62)
+    if (type != 62)
     {
       return 33;
     }
@@ -513,7 +513,7 @@ LABEL_90:
     return 14;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 4:
       return 15;
@@ -526,15 +526,15 @@ LABEL_90:
   return result;
 }
 
-+ (int64_t)CMWorkoutLocationTypeFromCMSwimWorkoutLocation:(int64_t)a3
++ (int64_t)CMWorkoutLocationTypeFromCMSwimWorkoutLocation:(int64_t)location
 {
-  if (a3 >= 2)
+  if (location >= 2)
   {
-    v7 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v8, a2, a1, @"CMWorkout.mm", 463, @"Invalid parameter not satisfying: %@", @"cmSwimWorkoutLocation == kCMSwimWorkoutLocationPool || cmSwimWorkoutLocation == kCMSwimWorkoutLocationOpenWater");
+    v7 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, location);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v8, a2, self, @"CMWorkout.mm", 463, @"Invalid parameter not satisfying: %@", @"cmSwimWorkoutLocation == kCMSwimWorkoutLocationPool || cmSwimWorkoutLocation == kCMSwimWorkoutLocationOpenWater");
   }
 
-  if (a3)
+  if (location)
   {
     return 2;
   }
@@ -545,26 +545,26 @@ LABEL_90:
   }
 }
 
-+ (int64_t)CMSwimWorkoutLocationFromCMWorkoutLocationType:(int64_t)a3
++ (int64_t)CMSwimWorkoutLocationFromCMWorkoutLocationType:(int64_t)type
 {
-  if ((a3 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((type - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v8, a2, a1, @"CMWorkout.mm", 470, @"Invalid parameter not satisfying: %@", @"cmWorkoutLocationType == kCMWorkoutLocationTypeIndoor || cmWorkoutLocationType == kCMWorkoutLocationTypeOutdoor");
+    v7 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, type);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v8, a2, self, @"CMWorkout.mm", 470, @"Invalid parameter not satisfying: %@", @"cmWorkoutLocationType == kCMWorkoutLocationTypeIndoor || cmWorkoutLocationType == kCMWorkoutLocationTypeOutdoor");
   }
 
-  return a3 != 1;
+  return type != 1;
 }
 
-+ (BOOL)workoutIsTypePedestrian:(int64_t)a3
++ (BOOL)workoutIsTypePedestrian:(int64_t)pedestrian
 {
-  if (objc_msgSend_workoutIsTypeWalking_(a1, a2, a3))
+  if (objc_msgSend_workoutIsTypeWalking_(self, a2, pedestrian))
   {
     return 1;
   }
 
-  result = objc_msgSend_workoutIsTypeRunning_(a1, v5, a3);
-  if (a3 == 24)
+  result = objc_msgSend_workoutIsTypeRunning_(self, v5, pedestrian);
+  if (pedestrian == 24)
   {
     return 1;
   }
@@ -591,17 +591,17 @@ LABEL_90:
   return sub_19B4426E4();
 }
 
-- (CMWorkout)initWithSessionId:(id)a3 type:(int64_t)a4
+- (CMWorkout)initWithSessionId:(id)id type:(int64_t)type
 {
-  if (!a3)
+  if (!id)
   {
     v12 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CMWorkout.mm", 510, @"Invalid parameter not satisfying: %@", @"sessionId");
   }
 
-  if (a4 >= 96)
+  if (type >= 96)
   {
-    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, id);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CMWorkout.mm", 511, @"Invalid parameter not satisfying: %@", @"type < kCMWorkoutTypeMax");
   }
 
@@ -610,9 +610,9 @@ LABEL_90:
   v8 = [(CMWorkout *)&v16 init];
   if (v8)
   {
-    v8->fSessionId = a3;
-    v8->fType = a4;
-    v10 = objc_msgSend_workoutLocationTypeFromCMWorkoutType_(CMWorkout, v9, a4);
+    v8->fSessionId = id;
+    v8->fType = type;
+    v10 = objc_msgSend_workoutLocationTypeFromCMWorkoutType_(CMWorkout, v9, type);
     v8->fIsUserInitiated = 1;
     v8->fStartDate = 0;
     v8->fEndDate = 0;
@@ -624,64 +624,64 @@ LABEL_90:
   return v8;
 }
 
-- (CMWorkout)initWithSessionId:(id)a3 type:(int64_t)a4 locationType:(int64_t)a5
+- (CMWorkout)initWithSessionId:(id)id type:(int64_t)type locationType:(int64_t)locationType
 {
-  if (a5 >= 4)
+  if (locationType >= 4)
   {
-    v11 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v11 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, id);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v11, v12, a2, self, @"CMWorkout.mm", 529, @"Invalid parameter not satisfying: %@", @"locationType < kCMWorkoutLocationTypeMax");
   }
 
-  result = objc_msgSend_initWithSessionId_type_(self, a2, a3, a4);
+  result = objc_msgSend_initWithSessionId_type_(self, a2, id, type);
   if (result)
   {
-    result->fLocationType = a5;
+    result->fLocationType = locationType;
   }
 
   return result;
 }
 
-- (CMWorkout)initWithSessionId:(id)a3 type:(int64_t)a4 locationType:(int64_t)a5 mode:(unint64_t)a6
+- (CMWorkout)initWithSessionId:(id)id type:(int64_t)type locationType:(int64_t)locationType mode:(unint64_t)mode
 {
-  if (a6 == 1 && (objc_msgSend_workoutIsSupportedForLowPower_(CMWorkout, a2, a4) & 1) == 0)
+  if (mode == 1 && (objc_msgSend_workoutIsSupportedForLowPower_(CMWorkout, a2, type) & 1) == 0)
   {
-    v15 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v15 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, id);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v15, v16, a2, self, @"CMWorkout.mm", 542, @"Invalid parameter not satisfying: %@", @"mode != CMWorkoutModeExtended || [CMWorkout workoutIsSupportedForLowPower:type]");
   }
 
-  if (a5 >= 4)
+  if (locationType >= 4)
   {
-    v13 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v13 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, id);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v13, v14, a2, self, @"CMWorkout.mm", 544, @"Invalid parameter not satisfying: %@", @"locationType < kCMWorkoutLocationTypeMax");
   }
 
-  result = objc_msgSend_initWithSessionId_type_locationType_(self, a2, a3, a4, a5);
+  result = objc_msgSend_initWithSessionId_type_locationType_(self, a2, id, type, locationType);
   if (result)
   {
-    result->fMode = a6;
+    result->fMode = mode;
   }
 
   return result;
 }
 
-- (id)_initWithSessionId:(id)a3 type:(int64_t)a4 locationType:(int64_t)a5 mode:(unint64_t)a6 startDate:(id)a7 endDate:(id)a8
+- (id)_initWithSessionId:(id)id type:(int64_t)type locationType:(int64_t)locationType mode:(unint64_t)mode startDate:(id)date endDate:(id)endDate
 {
-  v10 = objc_msgSend_initWithSessionId_type_locationType_mode_(self, a2, a3, a4, a5, a6);
+  v10 = objc_msgSend_initWithSessionId_type_locationType_mode_(self, a2, id, type, locationType, mode);
   if (v10)
   {
-    *(v10 + 32) = a7;
-    *(v10 + 40) = a8;
+    *(v10 + 32) = date;
+    *(v10 + 40) = endDate;
     *(v10 + 48) = 0;
   }
 
   return v10;
 }
 
-- (CMWorkout)initWithSessionId:(id)a3 type:(int64_t)a4 locationType:(int64_t)a5 mode:(unint64_t)a6 startDate:(id)a7 endDate:(id)a8
+- (CMWorkout)initWithSessionId:(id)id type:(int64_t)type locationType:(int64_t)locationType mode:(unint64_t)mode startDate:(id)date endDate:(id)endDate
 {
-  if (a7)
+  if (date)
   {
-    if (a8)
+    if (endDate)
     {
       goto LABEL_3;
     }
@@ -689,36 +689,36 @@ LABEL_90:
 
   else
   {
-    v17 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v17 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, id);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, self, @"CMWorkout.mm", 573, @"Invalid parameter not satisfying: %@", @"startDate");
-    if (a8)
+    if (endDate)
     {
       goto LABEL_3;
     }
   }
 
-  v19 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+  v19 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, id);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v19, v20, a2, self, @"CMWorkout.mm", 574, @"Invalid parameter not satisfying: %@", @"endDate");
 LABEL_3:
 
-  return objc_msgSend__initWithSessionId_type_locationType_mode_startDate_endDate_(self, a2, a3, a4, a5, a6, a7, a8);
+  return objc_msgSend__initWithSessionId_type_locationType_mode_startDate_endDate_(self, a2, id, type, locationType, mode, date, endDate);
 }
 
-- (BOOL)isSameWorkout:(id)a3
+- (BOOL)isSameWorkout:(id)workout
 {
-  if (!a3)
+  if (!workout)
   {
     v17 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, self, @"CMWorkout.mm", 600, @"Invalid parameter not satisfying: %@", @"workout");
   }
 
-  v5 = objc_msgSend_sessionId(self, a2, a3);
-  v8 = objc_msgSend_sessionId(a3, v6, v7);
+  v5 = objc_msgSend_sessionId(self, a2, workout);
+  v8 = objc_msgSend_sessionId(workout, v6, v7);
   isEqual = objc_msgSend_isEqual_(v5, v9, v8);
   if (isEqual)
   {
     v13 = objc_msgSend_type(self, v11, v12);
-    LOBYTE(isEqual) = v13 == objc_msgSend_type(a3, v14, v15);
+    LOBYTE(isEqual) = v13 == objc_msgSend_type(workout, v14, v15);
   }
 
   return isEqual;
@@ -731,7 +731,7 @@ LABEL_3:
   [(CMWorkout *)&v3 dealloc];
 }
 
-- (CMWorkout)initWithCoder:(id)a3
+- (CMWorkout)initWithCoder:(id)coder
 {
   v25.receiver = self;
   v25.super_class = CMWorkout;
@@ -739,11 +739,11 @@ LABEL_3:
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->fSessionId = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMWorkoutDataCodingKeySessionId");
-    v4->fType = objc_msgSend_decodeIntegerForKey_(a3, v7, @"kCMWorkoutDataCodingKeyType");
-    if (objc_msgSend_containsValueForKey_(a3, v8, @"kCMWorkoutDataCodingKeyLocationType"))
+    v4->fSessionId = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMWorkoutDataCodingKeySessionId");
+    v4->fType = objc_msgSend_decodeIntegerForKey_(coder, v7, @"kCMWorkoutDataCodingKeyType");
+    if (objc_msgSend_containsValueForKey_(coder, v8, @"kCMWorkoutDataCodingKeyLocationType"))
     {
-      v10 = objc_msgSend_decodeIntegerForKey_(a3, v9, @"kCMWorkoutDataCodingKeyLocationType");
+      v10 = objc_msgSend_decodeIntegerForKey_(coder, v9, @"kCMWorkoutDataCodingKeyLocationType");
     }
 
     else
@@ -752,9 +752,9 @@ LABEL_3:
     }
 
     v4->fLocationType = v10;
-    if (objc_msgSend_containsValueForKey_(a3, v9, @"kCMWorkoutDataCodingKeyMode"))
+    if (objc_msgSend_containsValueForKey_(coder, v9, @"kCMWorkoutDataCodingKeyMode"))
     {
-      v12 = objc_msgSend_decodeIntegerForKey_(a3, v11, @"kCMWorkoutDataCodingKeyMode");
+      v12 = objc_msgSend_decodeIntegerForKey_(coder, v11, @"kCMWorkoutDataCodingKeyMode");
     }
 
     else
@@ -763,10 +763,10 @@ LABEL_3:
     }
 
     v4->fMode = v12;
-    if (objc_msgSend_containsValueForKey_(a3, v11, @"kCMWorkoutDataCodingKeyStartDate"))
+    if (objc_msgSend_containsValueForKey_(coder, v11, @"kCMWorkoutDataCodingKeyStartDate"))
     {
       v14 = objc_opt_class();
-      v16 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v15, v14, @"kCMWorkoutDataCodingKeyStartDate");
+      v16 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v15, v14, @"kCMWorkoutDataCodingKeyStartDate");
     }
 
     else
@@ -775,10 +775,10 @@ LABEL_3:
     }
 
     v4->fStartDate = v16;
-    if (objc_msgSend_containsValueForKey_(a3, v13, @"kCMWorkoutDataCodingKeyEndDate"))
+    if (objc_msgSend_containsValueForKey_(coder, v13, @"kCMWorkoutDataCodingKeyEndDate"))
     {
       v18 = objc_opt_class();
-      v20 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v19, v18, @"kCMWorkoutDataCodingKeyEndDate");
+      v20 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v19, v18, @"kCMWorkoutDataCodingKeyEndDate");
     }
 
     else
@@ -787,10 +787,10 @@ LABEL_3:
     }
 
     v4->fEndDate = v20;
-    if (objc_msgSend_containsValueForKey_(a3, v17, @"kCMWorkoutDataCodingKeyAppId"))
+    if (objc_msgSend_containsValueForKey_(coder, v17, @"kCMWorkoutDataCodingKeyAppId"))
     {
       v21 = objc_opt_class();
-      v23 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v22, v21, @"kCMWorkoutDataCodingKeyAppId");
+      v23 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v22, v21, @"kCMWorkoutDataCodingKeyAppId");
     }
 
     else
@@ -804,10 +804,10 @@ LABEL_3:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_sessionId(self, v8, v9);
   v13 = objc_msgSend_type(self, v11, v12);
   v16 = objc_msgSend_locationType(self, v14, v15);
@@ -820,54 +820,54 @@ LABEL_3:
   return v27;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->fSessionId, @"kCMWorkoutDataCodingKeySessionId");
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->fType, @"kCMWorkoutDataCodingKeyType");
-  objc_msgSend_encodeInteger_forKey_(a3, v6, self->fLocationType, @"kCMWorkoutDataCodingKeyLocationType");
-  objc_msgSend_encodeInteger_forKey_(a3, v7, self->fMode, @"kCMWorkoutDataCodingKeyMode");
-  objc_msgSend_encodeObject_forKey_(a3, v8, self->fStartDate, @"kCMWorkoutDataCodingKeyStartDate");
-  objc_msgSend_encodeObject_forKey_(a3, v9, self->fEndDate, @"kCMWorkoutDataCodingKeyEndDate");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->fSessionId, @"kCMWorkoutDataCodingKeySessionId");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->fType, @"kCMWorkoutDataCodingKeyType");
+  objc_msgSend_encodeInteger_forKey_(coder, v6, self->fLocationType, @"kCMWorkoutDataCodingKeyLocationType");
+  objc_msgSend_encodeInteger_forKey_(coder, v7, self->fMode, @"kCMWorkoutDataCodingKeyMode");
+  objc_msgSend_encodeObject_forKey_(coder, v8, self->fStartDate, @"kCMWorkoutDataCodingKeyStartDate");
+  objc_msgSend_encodeObject_forKey_(coder, v9, self->fEndDate, @"kCMWorkoutDataCodingKeyEndDate");
   fAppId = self->fAppId;
 
-  objc_msgSend_encodeObject_forKey_(a3, v10, fAppId, @"kCMWorkoutDataCodingKeyAppId");
+  objc_msgSend_encodeObject_forKey_(coder, v10, fAppId, @"kCMWorkoutDataCodingKeyAppId");
 }
 
-+ (id)workoutName:(int64_t)a3
++ (id)workoutName:(int64_t)name
 {
-  if (a3 > 0x60)
+  if (name > 0x60)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7532F10[a3];
+    return off_1E7532F10[name];
   }
 }
 
-+ (id)workoutLocationName:(int64_t)a3
++ (id)workoutLocationName:(int64_t)name
 {
-  if (a3 > 3)
+  if (name > 3)
   {
     return @"Unhandled workout location type";
   }
 
   else
   {
-    return off_1E7533218[a3];
+    return off_1E7533218[name];
   }
 }
 
-+ (id)workoutModeName:(unint64_t)a3
++ (id)workoutModeName:(unint64_t)name
 {
   v3 = @"Unhandled workout mode";
-  if (a3 == 1)
+  if (name == 1)
   {
     v3 = @"Extended";
   }
 
-  if (a3)
+  if (name)
   {
     return v3;
   }
@@ -878,16 +878,16 @@ LABEL_3:
   }
 }
 
-+ (int64_t)workoutLocationTypeFromCMWorkoutType:(int64_t)a3
++ (int64_t)workoutLocationTypeFromCMWorkoutType:(int64_t)type
 {
-  if ((a3 - 4) > 0x3F)
+  if ((type - 4) > 0x3F)
   {
     return 0;
   }
 
   else
   {
-    return qword_19B7B9170[a3 - 4];
+    return qword_19B7B9170[type - 4];
   }
 }
 

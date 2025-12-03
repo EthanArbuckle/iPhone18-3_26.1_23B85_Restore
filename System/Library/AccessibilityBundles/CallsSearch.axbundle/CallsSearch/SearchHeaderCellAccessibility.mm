@@ -1,5 +1,5 @@
 @interface SearchHeaderCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateTraits;
 - (void)layoutSubviews;
@@ -7,12 +7,12 @@
 
 @implementation SearchHeaderCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CallsSearch.SearchHeaderCell" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"CallsSearch.SearchHeaderCell" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CallsSearch.SearchHeaderCell" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CallsSearch.SearchHeaderCell" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"CallsSearch.SearchHeaderCell" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CallsSearch.SearchHeaderCell" isKindOfClass:@"UIView"];
 }
 
 - (void)_axUpdateTraits

@@ -2,21 +2,21 @@
 + (id)emptyOptions;
 - (BOOL)isNotEmpty;
 - (TSKUIDStruct)sortingAggregateRuleUid;
-- (TSTPivotGroupingColumnOptions)initWithFlags:(int64_t)a3 sortingAggregateRuleUid:(TSKUIDStruct)a4;
+- (TSTPivotGroupingColumnOptions)initWithFlags:(int64_t)flags sortingAggregateRuleUid:(TSKUIDStruct)uid;
 @end
 
 @implementation TSTPivotGroupingColumnOptions
 
-- (TSTPivotGroupingColumnOptions)initWithFlags:(int64_t)a3 sortingAggregateRuleUid:(TSKUIDStruct)a4
+- (TSTPivotGroupingColumnOptions)initWithFlags:(int64_t)flags sortingAggregateRuleUid:(TSKUIDStruct)uid
 {
-  upper = a4._upper;
-  lower = a4._lower;
+  upper = uid._upper;
+  lower = uid._lower;
   v8.receiver = self;
   v8.super_class = TSTPivotGroupingColumnOptions;
   result = [(TSTPivotGroupingColumnOptions *)&v8 init];
   if (result)
   {
-    result->_flags = a3;
+    result->_flags = flags;
     result->_sortingAggregateRuleUid._lower = lower;
     result->_sortingAggregateRuleUid._upper = upper;
   }

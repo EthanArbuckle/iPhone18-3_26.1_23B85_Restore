@@ -1,19 +1,19 @@
 @interface OrgApacheLuceneIndexIndexWriter_ReaderPool
-- (OrgApacheLuceneIndexIndexWriter_ReaderPool)initWithOrgApacheLuceneIndexIndexWriter:(id)a3;
-- (id)getWithOrgApacheLuceneIndexSegmentCommitInfo:(id)a3 withBoolean:(BOOL)a4;
+- (OrgApacheLuceneIndexIndexWriter_ReaderPool)initWithOrgApacheLuceneIndexIndexWriter:(id)writer;
+- (id)getWithOrgApacheLuceneIndexSegmentCommitInfo:(id)info withBoolean:(BOOL)boolean;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexIndexWriter_ReaderPool
 
-- (id)getWithOrgApacheLuceneIndexSegmentCommitInfo:(id)a3 withBoolean:(BOOL)a4
+- (id)getWithOrgApacheLuceneIndexSegmentCommitInfo:(id)info withBoolean:(BOOL)boolean
 {
   objc_sync_enter(self);
   objc_sync_exit(self);
   return 0;
 }
 
-- (OrgApacheLuceneIndexIndexWriter_ReaderPool)initWithOrgApacheLuceneIndexIndexWriter:(id)a3
+- (OrgApacheLuceneIndexIndexWriter_ReaderPool)initWithOrgApacheLuceneIndexIndexWriter:(id)writer
 {
   v4 = new_JavaUtilHashMap_init();
   JreStrongAssignAndConsume(&self->readerMap_, v4);

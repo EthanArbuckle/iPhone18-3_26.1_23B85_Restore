@@ -1,43 +1,43 @@
 @interface CBTwilightPolicy
-- (BOOL)nitsAreInActiveRange:(float)a3;
-- (CBTwilightPolicy)initWithParams:(id)a3;
+- (BOOL)nitsAreInActiveRange:(float)range;
+- (CBTwilightPolicy)initWithParams:(id)params;
 - (float)rampTargetLuxCap;
 - (void)dealloc;
 @end
 
 @implementation CBTwilightPolicy
 
-- (CBTwilightPolicy)initWithParams:(id)a3
+- (CBTwilightPolicy)initWithParams:(id)params
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  paramsCopy = params;
   v4.receiver = self;
   v4.super_class = CBTwilightPolicy;
-  v7 = [(CBTwilightPolicy *)&v4 init];
-  v7->_params = v5;
-  return v7;
+  selfCopy = [(CBTwilightPolicy *)&v4 init];
+  selfCopy->_params = paramsCopy;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   *&v2 = MEMORY[0x1E69E5920](self->_params).n128_u64[0];
-  v5->_params = 0;
-  v3.receiver = v5;
+  selfCopy->_params = 0;
+  v3.receiver = selfCopy;
   v3.super_class = CBTwilightPolicy;
   [(CBTwilightPolicy *)&v3 dealloc];
 }
 
-- (BOOL)nitsAreInActiveRange:(float)a3
+- (BOOL)nitsAreInActiveRange:(float)range
 {
   [(CBFloatArray *)[(CBChromaticCorrectionParams *)self->_params nitsTable] get:0];
   v7 = 0;
-  if (a3 >= v3)
+  if (range >= v3)
   {
     [(CBChromaticCorrectionParams *)self->_params nitsActivationThreshold];
-    return a3 <= v4;
+    return range <= v4;
   }
 
   return v7;

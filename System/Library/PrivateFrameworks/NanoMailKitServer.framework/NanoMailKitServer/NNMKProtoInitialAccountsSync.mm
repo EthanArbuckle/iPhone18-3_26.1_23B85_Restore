@@ -1,33 +1,33 @@
 @interface NNMKProtoInitialAccountsSync
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInitialAccount:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addInitialAccount:(id)account;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoInitialAccountsSync
 
-- (void)addInitialAccount:(id)a3
+- (void)addInitialAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   initialAccounts = self->_initialAccounts;
-  v8 = v4;
+  v8 = accountCopy;
   if (!initialAccounts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_initialAccounts;
     self->_initialAccounts = v6;
 
-    v4 = v8;
+    accountCopy = v8;
     initialAccounts = self->_initialAccounts;
   }
 
-  [(NSMutableArray *)initialAccounts addObject:v4];
+  [(NSMutableArray *)initialAccounts addObject:accountCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoInitialAccountsSync;
   v4 = [(NNMKProtoInitialAccountsSync *)&v8 description];
-  v5 = [(NNMKProtoInitialAccountsSync *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoInitialAccountsSync *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,7 +45,7 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_initialAccounts count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_initialAccounts, "count")}];
@@ -68,8 +68,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -78,36 +78,36 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"initialAccount"];
+    [dictionary setObject:v4 forKey:@"initialAccount"];
   }
 
   initialSyncVersion = self->_initialSyncVersion;
   if (initialSyncVersion)
   {
-    [v3 setObject:initialSyncVersion forKey:@"initialSyncVersion"];
+    [dictionary setObject:initialSyncVersion forKey:@"initialSyncVersion"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_fullSyncVersion];
-    [v3 setObject:v12 forKey:@"fullSyncVersion"];
+    [dictionary setObject:v12 forKey:@"fullSyncVersion"];
   }
 
   dateSynced = self->_dateSynced;
   if (dateSynced)
   {
-    [v3 setObject:dateSynced forKey:@"dateSynced"];
+    [dictionary setObject:dateSynced forKey:@"dateSynced"];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -159,47 +159,47 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(NNMKProtoInitialAccountsSync *)self initialAccountsCount])
   {
-    [v9 clearInitialAccounts];
-    v4 = [(NNMKProtoInitialAccountsSync *)self initialAccountsCount];
-    if (v4)
+    [toCopy clearInitialAccounts];
+    initialAccountsCount = [(NNMKProtoInitialAccountsSync *)self initialAccountsCount];
+    if (initialAccountsCount)
     {
-      v5 = v4;
+      v5 = initialAccountsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NNMKProtoInitialAccountsSync *)self initialAccountAtIndex:i];
-        [v9 addInitialAccount:v7];
+        [toCopy addInitialAccount:v7];
       }
     }
   }
 
   if (self->_initialSyncVersion)
   {
-    [v9 setInitialSyncVersion:?];
+    [toCopy setInitialSyncVersion:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (*&self->_has)
   {
-    *(v9 + 4) = self->_fullSyncVersion;
-    *(v9 + 40) |= 1u;
+    *(toCopy + 4) = self->_fullSyncVersion;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_dateSynced)
   {
-    [v9 setDateSynced:?];
-    v8 = v9;
+    [toCopy setDateSynced:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -220,7 +220,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v10) copyWithZone:{a3, v18}];
+        v11 = [*(*(&v18 + 1) + 8 * v10) copyWithZone:{zone, v18}];
         [v5 addInitialAccount:v11];
 
         ++v10;
@@ -233,7 +233,7 @@
     while (v8);
   }
 
-  v12 = [(NSString *)self->_initialSyncVersion copyWithZone:a3];
+  v12 = [(NSString *)self->_initialSyncVersion copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
@@ -243,7 +243,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v14 = [(NSData *)self->_dateSynced copyWithZone:a3, v18];
+  v14 = [(NSData *)self->_dateSynced copyWithZone:zone, v18];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
@@ -251,16 +251,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   initialAccounts = self->_initialAccounts;
-  if (initialAccounts | *(v4 + 3))
+  if (initialAccounts | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)initialAccounts isEqual:?])
     {
@@ -269,7 +269,7 @@
   }
 
   initialSyncVersion = self->_initialSyncVersion;
-  if (initialSyncVersion | *(v4 + 4))
+  if (initialSyncVersion | *(equalCopy + 4))
   {
     if (![(NSString *)initialSyncVersion isEqual:?])
     {
@@ -277,16 +277,16 @@
     }
   }
 
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_fullSyncVersion != *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_fullSyncVersion != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -294,7 +294,7 @@ LABEL_13:
   }
 
   dateSynced = self->_dateSynced;
-  if (dateSynced | *(v4 + 1))
+  if (dateSynced | *(equalCopy + 1))
   {
     v9 = [(NSData *)dateSynced isEqual:?];
   }
@@ -326,15 +326,15 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ [(NSData *)self->_dateSynced hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -358,18 +358,18 @@ LABEL_14:
     while (v7);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NNMKProtoInitialAccountsSync *)self setInitialSyncVersion:?];
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_fullSyncVersion = *(v4 + 4);
+    self->_fullSyncVersion = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NNMKProtoInitialAccountsSync *)self setDateSynced:?];
   }

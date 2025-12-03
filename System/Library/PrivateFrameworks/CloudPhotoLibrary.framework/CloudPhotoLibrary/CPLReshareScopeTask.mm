@@ -1,8 +1,8 @@
 @interface CPLReshareScopeTask
-- (CPLReshareScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7;
+- (CPLReshareScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope;
 - (id)scopesForTask;
-- (void)_bumpIgnoredDatesOfRecords:(id)a3 hasResharedSomeRecords:(BOOL)a4;
-- (void)_bumpIgnoredDatesOfRejectedRecords:(id)a3;
+- (void)_bumpIgnoredDatesOfRecords:(id)records hasResharedSomeRecords:(BOOL)someRecords;
+- (void)_bumpIgnoredDatesOfRejectedRecords:(id)records;
 - (void)_doOneIteration;
 - (void)cancel;
 - (void)launch;
@@ -16,18 +16,18 @@
   {
     v7.receiver = self;
     v7.super_class = CPLReshareScopeTask;
-    v3 = [(CPLEngineScopedTask *)&v7 scopesForTask];
-    v4 = [v3 arrayByAddingObject:self->_primaryScope];
+    scopesForTask = [(CPLEngineScopedTask *)&v7 scopesForTask];
+    scopesForTask2 = [scopesForTask arrayByAddingObject:self->_primaryScope];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CPLReshareScopeTask;
-    v4 = [(CPLEngineScopedTask *)&v6 scopesForTask];
+    scopesForTask2 = [(CPLEngineScopedTask *)&v6 scopesForTask];
   }
 
-  return v4;
+  return scopesForTask2;
 }
 
 - (void)cancel
@@ -84,19 +84,19 @@
 
   else
   {
-    v3 = [(CPLEngineSyncTask *)self engineLibrary];
-    v4 = [v3 store];
+    engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+    store = [engineLibrary store];
 
-    v5 = [v4 scopes];
+    scopes = [store scopes];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __38__CPLReshareScopeTask__doOneIteration__block_invoke;
     v10[3] = &unk_1E86200D0;
     v10[4] = self;
-    v11 = v5;
-    v12 = v4;
-    v6 = v4;
-    v7 = v5;
+    v11 = scopes;
+    v12 = store;
+    v6 = store;
+    v7 = scopes;
     v8 = [v6 performReadTransactionWithBlock:v10];
   }
 }
@@ -532,25 +532,25 @@ void __38__CPLReshareScopeTask__doOneIteration__block_invoke_19(uint64_t a1, voi
   [v3 addCompletedWorkItemCount:objc_msgSend(v2 kindOfWork:{"count"), @"records"}];
 }
 
-- (void)_bumpIgnoredDatesOfRejectedRecords:(id)a3
+- (void)_bumpIgnoredDatesOfRejectedRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(CPLEngineSyncTask *)self engineLibrary];
-  v6 = [v5 store];
+  recordsCopy = records;
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  store = [engineLibrary store];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__CPLReshareScopeTask__bumpIgnoredDatesOfRejectedRecords___block_invoke;
   v11[3] = &unk_1E86205B8;
-  v12 = v6;
-  v13 = v4;
+  v12 = store;
+  v13 = recordsCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__CPLReshareScopeTask__bumpIgnoredDatesOfRejectedRecords___block_invoke_3;
   v10[3] = &unk_1E86205E0;
   v10[4] = self;
-  v7 = v4;
-  v8 = v6;
+  v7 = recordsCopy;
+  v8 = store;
   v9 = [v8 performWriteTransactionWithBlock:v11 completionHandler:v10];
 }
 
@@ -674,27 +674,27 @@ LABEL_15:
   return v16;
 }
 
-- (void)_bumpIgnoredDatesOfRecords:(id)a3 hasResharedSomeRecords:(BOOL)a4
+- (void)_bumpIgnoredDatesOfRecords:(id)records hasResharedSomeRecords:(BOOL)someRecords
 {
-  v6 = a3;
-  v7 = [(CPLEngineSyncTask *)self engineLibrary];
-  v8 = [v7 store];
+  recordsCopy = records;
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  store = [engineLibrary store];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__CPLReshareScopeTask__bumpIgnoredDatesOfRecords_hasResharedSomeRecords___block_invoke;
   v13[3] = &unk_1E861C438;
-  v14 = v8;
-  v15 = v6;
-  v17 = a4;
-  v16 = self;
+  v14 = store;
+  v15 = recordsCopy;
+  someRecordsCopy = someRecords;
+  selfCopy = self;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__CPLReshareScopeTask__bumpIgnoredDatesOfRecords_hasResharedSomeRecords___block_invoke_4;
   v12[3] = &unk_1E86205E0;
   v12[4] = self;
-  v9 = v6;
-  v10 = v8;
+  v9 = recordsCopy;
+  v10 = store;
   v11 = [v10 performWriteTransactionWithBlock:v13 completionHandler:v12];
 }
 
@@ -855,13 +855,13 @@ uint64_t __73__CPLReshareScopeTask__bumpIgnoredDatesOfRecords_hasResharedSomeRec
   return v6;
 }
 
-- (CPLReshareScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7
+- (CPLReshareScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope
 {
-  v12 = a6;
-  v13 = a7;
+  scopeCopy = scope;
+  transportScopeCopy = transportScope;
   v26.receiver = self;
   v26.super_class = CPLReshareScopeTask;
-  v14 = [(CPLEngineScopedTask *)&v26 initWithEngineLibrary:a3 session:a4 clientCacheIdentifier:a5 scope:v12 transportScope:v13];
+  v14 = [(CPLEngineScopedTask *)&v26 initWithEngineLibrary:library session:session clientCacheIdentifier:identifier scope:scopeCopy transportScope:transportScopeCopy];
   if (v14)
   {
     v15 = _CPLCutoffDate();
@@ -874,13 +874,13 @@ uint64_t __73__CPLReshareScopeTask__bumpIgnoredDatesOfRecords_hasResharedSomeRec
     v14->_queue = v18;
 
     v20 = [CPLTransportScopeMapping alloc];
-    v21 = [(CPLEngineSyncTask *)v14 engineLibrary];
-    v22 = [v21 transport];
-    v23 = [(CPLTransportScopeMapping *)v20 initWithTranslator:v22];
+    engineLibrary = [(CPLEngineSyncTask *)v14 engineLibrary];
+    transport = [engineLibrary transport];
+    v23 = [(CPLTransportScopeMapping *)v20 initWithTranslator:transport];
     transportScopeMapping = v14->_transportScopeMapping;
     v14->_transportScopeMapping = v23;
 
-    [(CPLTransportScopeMapping *)v14->_transportScopeMapping addTransportScope:v13 forScope:v12];
+    [(CPLTransportScopeMapping *)v14->_transportScopeMapping addTransportScope:transportScopeCopy forScope:scopeCopy];
   }
 
   return v14;

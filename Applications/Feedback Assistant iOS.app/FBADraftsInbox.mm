@@ -1,7 +1,7 @@
 @interface FBADraftsInbox
 - (id)displayText;
-- (id)fetchRequesForInboxItemsInTeam:(id)a3;
-- (unint64_t)unreadCountForTeam:(id)a3;
+- (id)fetchRequesForInboxItemsInTeam:(id)team;
+- (unint64_t)unreadCountForTeam:(id)team;
 @end
 
 @implementation FBADraftsInbox
@@ -14,25 +14,25 @@
   return v3;
 }
 
-- (id)fetchRequesForInboxItemsInTeam:(id)a3
+- (id)fetchRequesForInboxItemsInTeam:(id)team
 {
-  v4 = a3;
+  teamCopy = team;
   v5 = +[FBKContentItem fetchRequest];
-  v6 = [(FBADraftsInbox *)self predicateForTeam:v4];
+  v6 = [(FBADraftsInbox *)self predicateForTeam:teamCopy];
 
   [v5 setPredicate:v6];
 
   return v5;
 }
 
-- (unint64_t)unreadCountForTeam:(id)a3
+- (unint64_t)unreadCountForTeam:(id)team
 {
-  v4 = a3;
-  v5 = [v4 managedObjectContext];
-  v6 = [(FBADraftsInbox *)self fetchRequesForInboxItemsInTeam:v4];
+  teamCopy = team;
+  managedObjectContext = [teamCopy managedObjectContext];
+  v6 = [(FBADraftsInbox *)self fetchRequesForInboxItemsInTeam:teamCopy];
 
   v10 = 0;
-  v7 = [v5 countForFetchRequest:v6 error:&v10];
+  v7 = [managedObjectContext countForFetchRequest:v6 error:&v10];
   v8 = v10;
 
   if (v8)

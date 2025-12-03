@@ -1,52 +1,52 @@
 @interface PROverlaySceneObserverImpl
-- (PROverlaySceneObserverImpl)initWithScene:(id)a3 observer:(id)a4;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (PROverlaySceneObserverImpl)initWithScene:(id)scene observer:(id)observer;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation PROverlaySceneObserverImpl
 
-- (PROverlaySceneObserverImpl)initWithScene:(id)a3 observer:(id)a4
+- (PROverlaySceneObserverImpl)initWithScene:(id)scene observer:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  sceneCopy = scene;
+  observerCopy = observer;
   v12.receiver = self;
   v12.super_class = PROverlaySceneObserverImpl;
   v9 = [(PROverlaySceneObserverImpl *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_scene, a3);
-    objc_storeStrong(&v10->_observer, a4);
+    objc_storeStrong(&v9->_scene, scene);
+    objc_storeStrong(&v10->_observer, observer);
     [(FBSScene *)v10->_scene addObserver:v10];
   }
 
   return v10;
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
-  v16 = [v6 settingsDiff];
-  v8 = [v6 settings];
+  settingsCopy = settings;
+  sceneCopy = scene;
+  settingsDiff = [settingsCopy settingsDiff];
+  settings = [settingsCopy settings];
 
-  v9 = [MEMORY[0x1E69DCE70] _sceneForFBSScene:v7];
+  v9 = [MEMORY[0x1E69DCE70] _sceneForFBSScene:sceneCopy];
 
-  if ([v16 pr_posterHostedContentSettingsDidChange] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([settingsDiff pr_posterHostedContentSettingsDidChange] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     observer = self->_observer;
-    v11 = [v8 pr_posterHostedContentSettings];
-    [(PROverlaySceneObserving *)observer scene:v9 didUpdatePosterHostedContentSettingsTo:v11];
+    pr_posterHostedContentSettings = [settings pr_posterHostedContentSettings];
+    [(PROverlaySceneObserving *)observer scene:v9 didUpdatePosterHostedContentSettingsTo:pr_posterHostedContentSettings];
   }
 
-  if ([v16 pr_posterTitleStyleConfigurationDidChange] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([settingsDiff pr_posterTitleStyleConfigurationDidChange] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v12 = [v8 pr_posterTitleStyleConfiguration];
-    v13 = v12;
-    if (v12)
+    pr_posterTitleStyleConfiguration = [settings pr_posterTitleStyleConfiguration];
+    v13 = pr_posterTitleStyleConfiguration;
+    if (pr_posterTitleStyleConfiguration)
     {
       v14 = MEMORY[0x1E696AD98];
-      [v12 contentsLuminance];
+      [pr_posterTitleStyleConfiguration contentsLuminance];
       v15 = [v14 numberWithDouble:?];
     }
 

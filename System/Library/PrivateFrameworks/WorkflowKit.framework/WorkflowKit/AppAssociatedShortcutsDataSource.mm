@@ -1,14 +1,14 @@
 @interface AppAssociatedShortcutsDataSource
-- (void)databaseResultDidChange:(id)a3;
+- (void)databaseResultDidChange:(id)change;
 @end
 
 @implementation AppAssociatedShortcutsDataSource
 
-- (void)databaseResultDidChange:(id)a3
+- (void)databaseResultDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
-  sub_1CA2F4708(v3);
+  sub_1CA2F4708(changeCopy);
 }
 
 @end

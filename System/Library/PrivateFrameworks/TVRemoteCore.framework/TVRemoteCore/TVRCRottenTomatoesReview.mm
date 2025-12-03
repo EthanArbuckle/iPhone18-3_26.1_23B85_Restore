@@ -1,23 +1,23 @@
 @interface TVRCRottenTomatoesReview
-+ (TVRCRottenTomatoesReview)rottenTomatoesReviewWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRottenTomatoesReview:(id)a3;
-- (TVRCRottenTomatoesReview)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (TVRCRottenTomatoesReview)rottenTomatoesReviewWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRottenTomatoesReview:(id)review;
+- (TVRCRottenTomatoesReview)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)freshnessLevel;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCRottenTomatoesReview
 
-+ (TVRCRottenTomatoesReview)rottenTomatoesReviewWithDictionary:(id)a3
++ (TVRCRottenTomatoesReview)rottenTomatoesReviewWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __63__TVRCRottenTomatoesReview_rottenTomatoesReviewWithDictionary___block_invoke;
   v22[3] = &unk_279D82398;
-  v4 = v3;
+  v4 = dictionaryCopy;
   v23 = v4;
   v5 = MEMORY[0x26D6B0B70](v22);
   v17 = MEMORY[0x277D85DD0];
@@ -112,87 +112,87 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TVRCRottenTomatoesReview *)self isEqualToRottenTomatoesReview:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TVRCRottenTomatoesReview *)self isEqualToRottenTomatoesReview:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToRottenTomatoesReview:(id)a3
+- (BOOL)isEqualToRottenTomatoesReview:(id)review
 {
-  v4 = a3;
-  v5 = [(TVRCRottenTomatoesReview *)self percentage];
-  v6 = [v4 percentage];
-  v7 = (v5 == 0) ^ (v6 == 0);
+  reviewCopy = review;
+  percentage = [(TVRCRottenTomatoesReview *)self percentage];
+  percentage2 = [reviewCopy percentage];
+  v7 = (percentage == 0) ^ (percentage2 == 0);
 
   if (v7)
   {
     goto LABEL_22;
   }
 
-  v8 = [(TVRCRottenTomatoesReview *)self audienceScore];
-  v9 = [v4 audienceScore];
-  v10 = (v8 == 0) ^ (v9 == 0);
+  audienceScore = [(TVRCRottenTomatoesReview *)self audienceScore];
+  audienceScore2 = [reviewCopy audienceScore];
+  v10 = (audienceScore == 0) ^ (audienceScore2 == 0);
 
   if (v10)
   {
     goto LABEL_22;
   }
 
-  v11 = [(TVRCRottenTomatoesReview *)self averageRating];
-  v12 = [v4 averageRating];
-  v13 = (v11 == 0) ^ (v12 == 0);
+  averageRating = [(TVRCRottenTomatoesReview *)self averageRating];
+  averageRating2 = [reviewCopy averageRating];
+  v13 = (averageRating == 0) ^ (averageRating2 == 0);
 
   if (v13)
   {
     goto LABEL_22;
   }
 
-  v14 = [(TVRCRottenTomatoesReview *)self consensus];
-  v15 = [v4 consensus];
-  v16 = (v14 == 0) ^ (v15 == 0);
+  consensus = [(TVRCRottenTomatoesReview *)self consensus];
+  consensus2 = [reviewCopy consensus];
+  v16 = (consensus == 0) ^ (consensus2 == 0);
 
   if (v16)
   {
     goto LABEL_22;
   }
 
-  v17 = [(TVRCRottenTomatoesReview *)self numberOfFreshReviews];
-  v18 = [v4 numberOfFreshReviews];
-  v19 = (v17 == 0) ^ (v18 == 0);
+  numberOfFreshReviews = [(TVRCRottenTomatoesReview *)self numberOfFreshReviews];
+  numberOfFreshReviews2 = [reviewCopy numberOfFreshReviews];
+  v19 = (numberOfFreshReviews == 0) ^ (numberOfFreshReviews2 == 0);
 
   if (v19)
   {
     goto LABEL_22;
   }
 
-  v20 = [(TVRCRottenTomatoesReview *)self numberOfRottenReviews];
-  v21 = [v4 numberOfRottenReviews];
-  v22 = (v20 == 0) ^ (v21 == 0);
+  numberOfRottenReviews = [(TVRCRottenTomatoesReview *)self numberOfRottenReviews];
+  numberOfRottenReviews2 = [reviewCopy numberOfRottenReviews];
+  v22 = (numberOfRottenReviews == 0) ^ (numberOfRottenReviews2 == 0);
 
   if (v22)
   {
     goto LABEL_22;
   }
 
-  v23 = [(TVRCRottenTomatoesReview *)self freshness];
-  v24 = [v4 freshness];
-  v25 = (v23 == 0) ^ (v24 == 0);
+  freshness = [(TVRCRottenTomatoesReview *)self freshness];
+  freshness2 = [reviewCopy freshness];
+  v25 = (freshness == 0) ^ (freshness2 == 0);
 
   if (v25)
   {
     goto LABEL_22;
   }
 
-  v26 = [(TVRCRottenTomatoesReview *)self percentage];
-  if (v26)
+  percentage3 = [(TVRCRottenTomatoesReview *)self percentage];
+  if (percentage3)
   {
-    v27 = v26;
-    v28 = [(TVRCRottenTomatoesReview *)self percentage];
-    v29 = [v4 percentage];
-    v30 = [v28 isEqualToNumber:v29];
+    v27 = percentage3;
+    percentage4 = [(TVRCRottenTomatoesReview *)self percentage];
+    percentage5 = [reviewCopy percentage];
+    v30 = [percentage4 isEqualToNumber:percentage5];
 
     if (!v30)
     {
@@ -200,13 +200,13 @@ LABEL_9:
     }
   }
 
-  v31 = [(TVRCRottenTomatoesReview *)self audienceScore];
-  if (v31)
+  audienceScore3 = [(TVRCRottenTomatoesReview *)self audienceScore];
+  if (audienceScore3)
   {
-    v32 = v31;
-    v33 = [(TVRCRottenTomatoesReview *)self audienceScore];
-    v34 = [v4 audienceScore];
-    v35 = [v33 isEqualToNumber:v34];
+    v32 = audienceScore3;
+    audienceScore4 = [(TVRCRottenTomatoesReview *)self audienceScore];
+    audienceScore5 = [reviewCopy audienceScore];
+    v35 = [audienceScore4 isEqualToNumber:audienceScore5];
 
     if (!v35)
     {
@@ -214,13 +214,13 @@ LABEL_9:
     }
   }
 
-  v36 = [(TVRCRottenTomatoesReview *)self averageRating];
-  if (v36)
+  averageRating3 = [(TVRCRottenTomatoesReview *)self averageRating];
+  if (averageRating3)
   {
-    v37 = v36;
-    v38 = [(TVRCRottenTomatoesReview *)self averageRating];
-    v39 = [v4 averageRating];
-    v40 = [v38 isEqualToNumber:v39];
+    v37 = averageRating3;
+    averageRating4 = [(TVRCRottenTomatoesReview *)self averageRating];
+    averageRating5 = [reviewCopy averageRating];
+    v40 = [averageRating4 isEqualToNumber:averageRating5];
 
     if (!v40)
     {
@@ -228,13 +228,13 @@ LABEL_9:
     }
   }
 
-  v41 = [(TVRCRottenTomatoesReview *)self consensus];
-  if (v41)
+  consensus3 = [(TVRCRottenTomatoesReview *)self consensus];
+  if (consensus3)
   {
-    v42 = v41;
-    v43 = [(TVRCRottenTomatoesReview *)self consensus];
-    v44 = [v4 consensus];
-    v45 = [v43 isEqualToString:v44];
+    v42 = consensus3;
+    consensus4 = [(TVRCRottenTomatoesReview *)self consensus];
+    consensus5 = [reviewCopy consensus];
+    v45 = [consensus4 isEqualToString:consensus5];
 
     if (!v45)
     {
@@ -242,13 +242,13 @@ LABEL_9:
     }
   }
 
-  v46 = [(TVRCRottenTomatoesReview *)self numberOfFreshReviews];
-  if (v46)
+  numberOfFreshReviews3 = [(TVRCRottenTomatoesReview *)self numberOfFreshReviews];
+  if (numberOfFreshReviews3)
   {
-    v47 = v46;
-    v48 = [(TVRCRottenTomatoesReview *)self numberOfFreshReviews];
-    v49 = [v4 numberOfFreshReviews];
-    v50 = [v48 isEqualToNumber:v49];
+    v47 = numberOfFreshReviews3;
+    numberOfFreshReviews4 = [(TVRCRottenTomatoesReview *)self numberOfFreshReviews];
+    numberOfFreshReviews5 = [reviewCopy numberOfFreshReviews];
+    v50 = [numberOfFreshReviews4 isEqualToNumber:numberOfFreshReviews5];
 
     if (!v50)
     {
@@ -256,16 +256,16 @@ LABEL_9:
     }
   }
 
-  v51 = [(TVRCRottenTomatoesReview *)self numberOfRottenReviews];
-  if (!v51)
+  numberOfRottenReviews3 = [(TVRCRottenTomatoesReview *)self numberOfRottenReviews];
+  if (!numberOfRottenReviews3)
   {
     goto LABEL_20;
   }
 
-  v52 = v51;
-  v53 = [(TVRCRottenTomatoesReview *)self numberOfRottenReviews];
-  v54 = [v4 numberOfRottenReviews];
-  v55 = [v53 isEqualToNumber:v54];
+  v52 = numberOfRottenReviews3;
+  numberOfRottenReviews4 = [(TVRCRottenTomatoesReview *)self numberOfRottenReviews];
+  numberOfRottenReviews5 = [reviewCopy numberOfRottenReviews];
+  v55 = [numberOfRottenReviews4 isEqualToNumber:numberOfRottenReviews5];
 
   if (!v55)
   {
@@ -276,13 +276,13 @@ LABEL_22:
   else
   {
 LABEL_20:
-    v56 = [(TVRCRottenTomatoesReview *)self freshness];
-    if (v56)
+    freshness3 = [(TVRCRottenTomatoesReview *)self freshness];
+    if (freshness3)
     {
-      v57 = v56;
-      v58 = [(TVRCRottenTomatoesReview *)self freshness];
-      v59 = [v4 freshness];
-      v60 = [v58 isEqualToString:v59];
+      v57 = freshness3;
+      freshness4 = [(TVRCRottenTomatoesReview *)self freshness];
+      freshness5 = [reviewCopy freshness];
+      v60 = [freshness4 isEqualToString:freshness5];
     }
 
     else
@@ -296,16 +296,16 @@ LABEL_20:
 
 - (unint64_t)freshnessLevel
 {
-  v3 = [(TVRCRottenTomatoesReview *)self freshness];
-  v4 = [v3 isEqualToString:@"CertifiedFresh"];
+  freshness = [(TVRCRottenTomatoesReview *)self freshness];
+  v4 = [freshness isEqualToString:@"CertifiedFresh"];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [(TVRCRottenTomatoesReview *)self freshness];
-  v7 = [v6 isEqualToString:@"Rotten"];
+  freshness2 = [(TVRCRottenTomatoesReview *)self freshness];
+  v7 = [freshness2 isEqualToString:@"Rotten"];
 
   if (v7)
   {
@@ -318,66 +318,66 @@ LABEL_20:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TVRCRottenTomatoesReview);
-  v5 = [(TVRCRottenTomatoesReview *)self percentage];
-  [(TVRCRottenTomatoesReview *)v4 setPercentage:v5];
+  percentage = [(TVRCRottenTomatoesReview *)self percentage];
+  [(TVRCRottenTomatoesReview *)v4 setPercentage:percentage];
 
-  v6 = [(TVRCRottenTomatoesReview *)self audienceScore];
-  [(TVRCRottenTomatoesReview *)v4 setAudienceScore:v6];
+  audienceScore = [(TVRCRottenTomatoesReview *)self audienceScore];
+  [(TVRCRottenTomatoesReview *)v4 setAudienceScore:audienceScore];
 
-  v7 = [(TVRCRottenTomatoesReview *)self averageRating];
-  [(TVRCRottenTomatoesReview *)v4 setAverageRating:v7];
+  averageRating = [(TVRCRottenTomatoesReview *)self averageRating];
+  [(TVRCRottenTomatoesReview *)v4 setAverageRating:averageRating];
 
-  v8 = [(TVRCRottenTomatoesReview *)self consensus];
-  [(TVRCRottenTomatoesReview *)v4 setConsensus:v8];
+  consensus = [(TVRCRottenTomatoesReview *)self consensus];
+  [(TVRCRottenTomatoesReview *)v4 setConsensus:consensus];
 
-  v9 = [(TVRCRottenTomatoesReview *)self numberOfFreshReviews];
-  [(TVRCRottenTomatoesReview *)v4 setNumberOfFreshReviews:v9];
+  numberOfFreshReviews = [(TVRCRottenTomatoesReview *)self numberOfFreshReviews];
+  [(TVRCRottenTomatoesReview *)v4 setNumberOfFreshReviews:numberOfFreshReviews];
 
-  v10 = [(TVRCRottenTomatoesReview *)self numberOfRottenReviews];
-  [(TVRCRottenTomatoesReview *)v4 setNumberOfRottenReviews:v10];
+  numberOfRottenReviews = [(TVRCRottenTomatoesReview *)self numberOfRottenReviews];
+  [(TVRCRottenTomatoesReview *)v4 setNumberOfRottenReviews:numberOfRottenReviews];
 
-  v11 = [(TVRCRottenTomatoesReview *)self freshness];
-  [(TVRCRottenTomatoesReview *)v4 setFreshness:v11];
+  freshness = [(TVRCRottenTomatoesReview *)self freshness];
+  [(TVRCRottenTomatoesReview *)v4 setFreshness:freshness];
 
   return v4;
 }
 
-- (TVRCRottenTomatoesReview)initWithCoder:(id)a3
+- (TVRCRottenTomatoesReview)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = TVRCRottenTomatoesReview;
   v5 = [(TVRCRottenTomatoesReview *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"percentage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"percentage"];
     percentage = v5->_percentage;
     v5->_percentage = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audienceScore"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audienceScore"];
     audienceScore = v5->_audienceScore;
     v5->_audienceScore = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"averageRating"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageRating"];
     averageRating = v5->_averageRating;
     v5->_averageRating = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"consensus"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"consensus"];
     consensus = v5->_consensus;
     v5->_consensus = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberOfFreshReviews"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberOfFreshReviews"];
     numberOfFreshReviews = v5->_numberOfFreshReviews;
     v5->_numberOfFreshReviews = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberOfRottenReviews"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberOfRottenReviews"];
     numberOfRottenReviews = v5->_numberOfRottenReviews;
     v5->_numberOfRottenReviews = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"freshness"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"freshness"];
     freshness = v5->_freshness;
     v5->_freshness = v18;
   }
@@ -385,17 +385,17 @@ LABEL_20:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   percentage = self->_percentage;
-  v5 = a3;
-  [v5 encodeObject:percentage forKey:@"percentage"];
-  [v5 encodeObject:self->_audienceScore forKey:@"audienceScore"];
-  [v5 encodeObject:self->_averageRating forKey:@"averageRating"];
-  [v5 encodeObject:self->_consensus forKey:@"consensus"];
-  [v5 encodeObject:self->_numberOfFreshReviews forKey:@"numberOfFreshReviews"];
-  [v5 encodeObject:self->_numberOfRottenReviews forKey:@"numberOfRottenReviews"];
-  [v5 encodeObject:self->_freshness forKey:@"freshness"];
+  coderCopy = coder;
+  [coderCopy encodeObject:percentage forKey:@"percentage"];
+  [coderCopy encodeObject:self->_audienceScore forKey:@"audienceScore"];
+  [coderCopy encodeObject:self->_averageRating forKey:@"averageRating"];
+  [coderCopy encodeObject:self->_consensus forKey:@"consensus"];
+  [coderCopy encodeObject:self->_numberOfFreshReviews forKey:@"numberOfFreshReviews"];
+  [coderCopy encodeObject:self->_numberOfRottenReviews forKey:@"numberOfRottenReviews"];
+  [coderCopy encodeObject:self->_freshness forKey:@"freshness"];
 }
 
 @end

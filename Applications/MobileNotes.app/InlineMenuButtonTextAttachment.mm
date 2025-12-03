@@ -1,14 +1,14 @@
 @interface InlineMenuButtonTextAttachment
-- (_TtC11MobileNotes30InlineMenuButtonTextAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (_TtC11MobileNotes30InlineMenuButtonTextAttachment)initWithData:(id)data ofType:(id)type;
 @end
 
 @implementation InlineMenuButtonTextAttachment
 
-- (_TtC11MobileNotes30InlineMenuButtonTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC11MobileNotes30InlineMenuButtonTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     sub_10019671C(v5, v6);
   }

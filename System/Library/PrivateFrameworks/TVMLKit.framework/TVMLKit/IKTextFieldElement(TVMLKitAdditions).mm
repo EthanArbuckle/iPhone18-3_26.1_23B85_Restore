@@ -7,17 +7,17 @@
 
 - (uint64_t)tv_isSecure
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKeyedSubscript:@"secure"];
-  v3 = [v2 BOOLValue];
+  attributes = [self attributes];
+  v2 = [attributes objectForKeyedSubscript:@"secure"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)tv_keyboardType
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKeyedSubscript:@"keyboardType"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKeyedSubscript:@"keyboardType"];
 
   if ([v2 isEqualToString:@"emailAddress"])
   {

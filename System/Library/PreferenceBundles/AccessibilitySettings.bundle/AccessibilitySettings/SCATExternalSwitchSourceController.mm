@@ -1,18 +1,18 @@
 @interface SCATExternalSwitchSourceController
-- (BOOL)switchRegistrarShouldFilterEvents:(id)a3;
-- (BOOL)switchRegistrarShouldProcessGamepadEvent:(id)a3;
-- (BOOL)switchRegistrarShouldProcessKeyboardKeyEvent:(id)a3;
-- (BOOL)switchRegistrarShouldProcessMFIButtonEvent:(id)a3;
-- (BOOL)switchRegistrarShouldProcessMIDIEvent:(id)a3;
+- (BOOL)switchRegistrarShouldFilterEvents:(id)events;
+- (BOOL)switchRegistrarShouldProcessGamepadEvent:(id)event;
+- (BOOL)switchRegistrarShouldProcessKeyboardKeyEvent:(id)event;
+- (BOOL)switchRegistrarShouldProcessMFIButtonEvent:(id)event;
+- (BOOL)switchRegistrarShouldProcessMIDIEvent:(id)event;
 - (SCATExternalSwitchSourceController)init;
-- (id)_labelOfType:(int64_t)a3 text:(id)a4;
-- (void)_showSoftwareKeyboard:(BOOL)a3;
+- (id)_labelOfType:(int64_t)type text:(id)text;
+- (void)_showSoftwareKeyboard:(BOOL)keyboard;
 - (void)dealloc;
 - (void)loadView;
-- (void)switchRegistrar:(id)a3 didUpdateSwitch:(id)a4;
+- (void)switchRegistrar:(id)registrar didUpdateSwitch:(id)switch;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willBecomeActive;
 - (void)willResignActive;
 @end
@@ -29,8 +29,8 @@
     v3 = objc_alloc_init(AXSwitchRegistrar);
     [(SCATExternalSwitchSourceController *)v2 setSwitchRegistrar:v3];
 
-    v4 = [(SCATExternalSwitchSourceController *)v2 switchRegistrar];
-    [v4 setDelegate:v2];
+    switchRegistrar = [(SCATExternalSwitchSourceController *)v2 switchRegistrar];
+    [switchRegistrar setDelegate:v2];
 
     v5 = [[SCATAlertCoordinator alloc] initWithViewController:v2];
     [(SCATExternalSwitchSourceController *)v2 setSwitchAlertCoordinator:v5];
@@ -41,11 +41,11 @@
 
 - (void)dealloc
 {
-  v3 = [(SCATExternalSwitchSourceController *)self switchRegistrar];
-  [v3 endFilteringEvents];
+  switchRegistrar = [(SCATExternalSwitchSourceController *)self switchRegistrar];
+  [switchRegistrar endFilteringEvents];
 
-  v4 = [(SCATExternalSwitchSourceController *)self switchRegistrar];
-  [v4 setDelegate:0];
+  switchRegistrar2 = [(SCATExternalSwitchSourceController *)self switchRegistrar];
+  [switchRegistrar2 setDelegate:0];
 
   [(SCATExternalSwitchSourceController *)self setSwitchRegistrar:0];
   [(SCATExternalSwitchSourceController *)self setSwitchAlertCoordinator:0];
@@ -77,75 +77,75 @@
 
   [v8 addSubview:v10];
   [v8 addSubview:v12];
-  v13 = [v10 topAnchor];
-  v14 = [v8 safeAreaLayoutGuide];
-  v15 = [v14 topAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  topAnchor = [v10 topAnchor];
+  safeAreaLayoutGuide = [v8 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v16 setActive:1];
 
-  v17 = [v10 leftAnchor];
-  v18 = [v8 safeAreaLayoutGuide];
-  v19 = [v18 leftAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  leftAnchor = [v10 leftAnchor];
+  safeAreaLayoutGuide2 = [v8 safeAreaLayoutGuide];
+  leftAnchor2 = [safeAreaLayoutGuide2 leftAnchor];
+  v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v20 setActive:1];
 
-  v21 = [v10 rightAnchor];
-  v22 = [v8 safeAreaLayoutGuide];
-  v23 = [v22 rightAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  rightAnchor = [v10 rightAnchor];
+  safeAreaLayoutGuide3 = [v8 safeAreaLayoutGuide];
+  rightAnchor2 = [safeAreaLayoutGuide3 rightAnchor];
+  v24 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v24 setActive:1];
 
-  v25 = [v12 topAnchor];
-  v26 = [v10 bottomAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26 constant:15.0];
+  topAnchor3 = [v12 topAnchor];
+  bottomAnchor = [v10 bottomAnchor];
+  v27 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:15.0];
   [v27 setActive:1];
 
-  v28 = [v12 leftAnchor];
-  v29 = [v8 safeAreaLayoutGuide];
-  v30 = [v29 leftAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  leftAnchor3 = [v12 leftAnchor];
+  safeAreaLayoutGuide4 = [v8 safeAreaLayoutGuide];
+  leftAnchor4 = [safeAreaLayoutGuide4 leftAnchor];
+  v31 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   [v31 setActive:1];
 
-  v32 = [v12 rightAnchor];
-  v33 = [v8 safeAreaLayoutGuide];
-  v34 = [v33 rightAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  rightAnchor3 = [v12 rightAnchor];
+  safeAreaLayoutGuide5 = [v8 safeAreaLayoutGuide];
+  rightAnchor4 = [safeAreaLayoutGuide5 rightAnchor];
+  v35 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   [v35 setActive:1];
 
-  v36 = [v12 bottomAnchor];
-  v37 = [v8 safeAreaLayoutGuide];
-  v38 = [v37 bottomAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  bottomAnchor2 = [v12 bottomAnchor];
+  safeAreaLayoutGuide6 = [v8 safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide6 bottomAnchor];
+  v39 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v39 setActive:1];
 
-  v40 = [v8 centerYAnchor];
-  v41 = [v49 centerYAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41];
+  centerYAnchor = [v8 centerYAnchor];
+  centerYAnchor2 = [v49 centerYAnchor];
+  v42 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v42 setActive:1];
 
-  v43 = [v8 leftAnchor];
-  v44 = [v49 leftAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44 constant:20.0];
+  leftAnchor5 = [v8 leftAnchor];
+  leftAnchor6 = [v49 leftAnchor];
+  v45 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6 constant:20.0];
   [v45 setActive:1];
 
-  v46 = [v8 rightAnchor];
-  v47 = [v49 rightAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47 constant:-20.0];
+  rightAnchor5 = [v8 rightAnchor];
+  rightAnchor6 = [v49 rightAnchor];
+  v48 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6 constant:-20.0];
   [v48 setActive:1];
 }
 
-- (id)_labelOfType:(int64_t)a3 text:(id)a4
+- (id)_labelOfType:(int64_t)type text:(id)text
 {
-  v5 = a4;
+  textCopy = text;
   v6 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v6 setNumberOfLines:0];
-  [v6 setText:v5];
+  [v6 setText:textCopy];
 
   [v6 setTextAlignment:1];
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -177,31 +177,31 @@ LABEL_6:
   [(SCATExternalSwitchSourceController *)self setTitle:v3];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SCATExternalSwitchSourceController;
-  [(SCATExternalSwitchSourceController *)&v6 viewWillAppear:a3];
+  [(SCATExternalSwitchSourceController *)&v6 viewWillAppear:appear];
   [(SCATExternalSwitchSourceController *)self setVisible:1];
   [(SCATExternalSwitchSourceController *)self _showSoftwareKeyboard:1];
-  v4 = [(SCATExternalSwitchSourceController *)self presentedViewController];
+  presentedViewController = [(SCATExternalSwitchSourceController *)self presentedViewController];
 
-  if (!v4)
+  if (!presentedViewController)
   {
-    v5 = [(SCATExternalSwitchSourceController *)self switchRegistrar];
-    [v5 beginFilteringEvents];
+    switchRegistrar = [(SCATExternalSwitchSourceController *)self switchRegistrar];
+    [switchRegistrar beginFilteringEvents];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SCATExternalSwitchSourceController;
-  [(SCATExternalSwitchSourceController *)&v5 viewWillDisappear:a3];
+  [(SCATExternalSwitchSourceController *)&v5 viewWillDisappear:disappear];
   [(SCATExternalSwitchSourceController *)self setVisible:0];
   [(SCATExternalSwitchSourceController *)self _showSoftwareKeyboard:0];
-  v4 = [(SCATExternalSwitchSourceController *)self switchRegistrar];
-  [v4 endFilteringEvents];
+  switchRegistrar = [(SCATExternalSwitchSourceController *)self switchRegistrar];
+  [switchRegistrar endFilteringEvents];
 
   [UIApp setIdleTimerDisabled:{-[SCATExternalSwitchSourceController cachedIdleTimerPref](self, "cachedIdleTimerPref")}];
 }
@@ -214,12 +214,12 @@ LABEL_6:
   if ([(SCATExternalSwitchSourceController *)self isVisible])
   {
     [(SCATExternalSwitchSourceController *)self _showSoftwareKeyboard:1];
-    v3 = [(SCATExternalSwitchSourceController *)self presentedViewController];
+    presentedViewController = [(SCATExternalSwitchSourceController *)self presentedViewController];
 
-    if (!v3)
+    if (!presentedViewController)
     {
-      v4 = [(SCATExternalSwitchSourceController *)self switchRegistrar];
-      [v4 beginFilteringEvents];
+      switchRegistrar = [(SCATExternalSwitchSourceController *)self switchRegistrar];
+      [switchRegistrar beginFilteringEvents];
     }
   }
 }
@@ -230,16 +230,16 @@ LABEL_6:
   v4.super_class = SCATExternalSwitchSourceController;
   [(SCATExternalSwitchSourceController *)&v4 willResignActive];
   [(SCATExternalSwitchSourceController *)self _showSoftwareKeyboard:0];
-  v3 = [(SCATExternalSwitchSourceController *)self switchRegistrar];
-  [v3 endFilteringEvents];
+  switchRegistrar = [(SCATExternalSwitchSourceController *)self switchRegistrar];
+  [switchRegistrar endFilteringEvents];
 }
 
-- (void)_showSoftwareKeyboard:(BOOL)a3
+- (void)_showSoftwareKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
+  keyboardCopy = keyboard;
   v4 = +[UIKeyboardImpl sharedInstance];
   v5 = v4;
-  if (v3)
+  if (keyboardCopy)
   {
     [v4 showKeyboardWithoutSuppressionPolicy];
   }
@@ -250,20 +250,20 @@ LABEL_6:
   }
 }
 
-- (BOOL)switchRegistrarShouldFilterEvents:(id)a3
+- (BOOL)switchRegistrarShouldFilterEvents:(id)events
 {
   if (![(SCATExternalSwitchSourceController *)self isVisible])
   {
     return 0;
   }
 
-  v4 = [(SCATExternalSwitchSourceController *)self presentedViewController];
-  v5 = v4 == 0;
+  presentedViewController = [(SCATExternalSwitchSourceController *)self presentedViewController];
+  v5 = presentedViewController == 0;
 
   return v5;
 }
 
-- (BOOL)switchRegistrarShouldProcessKeyboardKeyEvent:(id)a3
+- (BOOL)switchRegistrarShouldProcessKeyboardKeyEvent:(id)event
 {
   +[NSDate timeIntervalSinceReferenceDate];
   if (v4 - *&switchRegistrarShouldProcessKeyboardKeyEvent___LastEventTime < 1.5)
@@ -272,13 +272,13 @@ LABEL_6:
   }
 
   switchRegistrarShouldProcessKeyboardKeyEvent___LastEventTime = *&v4;
-  v6 = [(SCATExternalSwitchSourceController *)self presentedViewController];
-  v5 = v6 == 0;
+  presentedViewController = [(SCATExternalSwitchSourceController *)self presentedViewController];
+  v5 = presentedViewController == 0;
 
   return v5;
 }
 
-- (BOOL)switchRegistrarShouldProcessMFIButtonEvent:(id)a3
+- (BOOL)switchRegistrarShouldProcessMFIButtonEvent:(id)event
 {
   +[NSDate timeIntervalSinceReferenceDate];
   if (v4 - *&switchRegistrarShouldProcessMFIButtonEvent___LastEventTime < 1.5)
@@ -287,20 +287,20 @@ LABEL_6:
   }
 
   switchRegistrarShouldProcessMFIButtonEvent___LastEventTime = *&v4;
-  v6 = [(SCATExternalSwitchSourceController *)self presentedViewController];
-  v5 = v6 == 0;
+  presentedViewController = [(SCATExternalSwitchSourceController *)self presentedViewController];
+  v5 = presentedViewController == 0;
 
   return v5;
 }
 
-- (BOOL)switchRegistrarShouldProcessMIDIEvent:(id)a3
+- (BOOL)switchRegistrarShouldProcessMIDIEvent:(id)event
 {
   +[NSDate timeIntervalSinceReferenceDate];
   if (v4 - *&switchRegistrarShouldProcessMIDIEvent___LastEventTime >= 1.5)
   {
     switchRegistrarShouldProcessMIDIEvent___LastEventTime = *&v4;
-    v6 = [(SCATExternalSwitchSourceController *)self presentedViewController];
-    v5 = v6 == 0;
+    presentedViewController = [(SCATExternalSwitchSourceController *)self presentedViewController];
+    v5 = presentedViewController == 0;
   }
 
   else
@@ -314,7 +314,7 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)switchRegistrarShouldProcessGamepadEvent:(id)a3
+- (BOOL)switchRegistrarShouldProcessGamepadEvent:(id)event
 {
   +[NSDate timeIntervalSinceReferenceDate];
   if (v4 - *&switchRegistrarShouldProcessGamepadEvent___LastEventTime < 1.5)
@@ -323,8 +323,8 @@ LABEL_6:
   }
 
   switchRegistrarShouldProcessGamepadEvent___LastEventTime = *&v4;
-  v6 = [(SCATExternalSwitchSourceController *)self presentedViewController];
-  v5 = v6 == 0;
+  presentedViewController = [(SCATExternalSwitchSourceController *)self presentedViewController];
+  v5 = presentedViewController == 0;
 
   return v5;
 }
@@ -349,10 +349,10 @@ void __61__SCATExternalSwitchSourceController__showSwitchAlreadyInUse__block_inv
   [v1 beginFilteringEvents];
 }
 
-- (void)switchRegistrar:(id)a3 didUpdateSwitch:(id)a4
+- (void)switchRegistrar:(id)registrar didUpdateSwitch:(id)switch
 {
-  v5 = a4;
-  v4 = v5;
+  switchCopy = switch;
+  v4 = switchCopy;
   AXPerformBlockOnMainThread();
 }
 

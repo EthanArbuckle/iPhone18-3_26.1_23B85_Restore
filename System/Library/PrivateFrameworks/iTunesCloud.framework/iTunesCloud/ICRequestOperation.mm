@@ -1,36 +1,36 @@
 @interface ICRequestOperation
 - (ICRequestOperation)init;
-- (void)finishWithError:(id)a3;
-- (void)performRequestOnOperationQueue:(id)a3 withCompletionHandler:(id)a4;
+- (void)finishWithError:(id)error;
+- (void)performRequestOnOperationQueue:(id)queue withCompletionHandler:(id)handler;
 @end
 
 @implementation ICRequestOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7.receiver = self;
   v7.super_class = ICRequestOperation;
-  [(ICAsyncOperation *)&v7 finishWithError:v4];
+  [(ICAsyncOperation *)&v7 finishWithError:errorCopy];
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, v4);
+    completionHandler[2](completionHandler, errorCopy);
     v6 = self->_completionHandler;
     self->_completionHandler = 0;
   }
 }
 
-- (void)performRequestOnOperationQueue:(id)a3 withCompletionHandler:(id)a4
+- (void)performRequestOnOperationQueue:(id)queue withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = MEMORY[0x1B8C781E0](a4);
+  queueCopy = queue;
+  v6 = MEMORY[0x1B8C781E0](handler);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v6;
 
-  if (v9)
+  if (queueCopy)
   {
-    [v9 addOperation:self];
+    [queueCopy addOperation:self];
   }
 
   else

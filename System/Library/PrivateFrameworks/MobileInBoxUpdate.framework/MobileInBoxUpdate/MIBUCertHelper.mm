@@ -1,14 +1,14 @@
 @interface MIBUCertHelper
 + (BOOL)SUCertPresent;
-+ (__SecKey)suCertKeyFromData:(id)a3 isSEPKey:(BOOL)a4 error:(id *)a5;
-+ (id)_getCertDataFromPath:(id)a3 error:(id *)a4;
-+ (id)_pandoraCertificates:(id *)a3;
-+ (id)_parseDERCertificates:(id)a3 error:(id *)a4;
-+ (id)certificatesFromData:(id)a3 error:(id *)a4;
-+ (id)pandoraCertsData:(id *)a3;
-+ (void)deleteSUCert:(id *)a3;
-+ (void)readSUIdentityWithCompletion:(id)a3;
-+ (void)trustCertificatesWithCompletion:(id)a3;
++ (__SecKey)suCertKeyFromData:(id)data isSEPKey:(BOOL)key error:(id *)error;
++ (id)_getCertDataFromPath:(id)path error:(id *)error;
++ (id)_pandoraCertificates:(id *)certificates;
++ (id)_parseDERCertificates:(id)certificates error:(id *)error;
++ (id)certificatesFromData:(id)data error:(id *)error;
++ (id)pandoraCertsData:(id *)data;
++ (void)deleteSUCert:(id *)cert;
++ (void)readSUIdentityWithCompletion:(id)completion;
++ (void)trustCertificatesWithCompletion:(id)completion;
 @end
 
 @implementation MIBUCertHelper
@@ -59,8 +59,8 @@
           }
 
           v12 = *(*(&v19 + 1) + 8 * v11);
-          v13 = [MEMORY[0x277CCAA00] defaultManager];
-          v14 = [v13 fileExistsAtPath:v12];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          v14 = [defaultManager fileExistsAtPath:v12];
 
           if ((v14 & 1) == 0)
           {
@@ -164,10 +164,10 @@ void __47__MIBUCertHelper_readSUIdentityWithCompletion___block_invoke_14()
   }
 }
 
-+ (void)trustCertificatesWithCompletion:(id)a3
++ (void)trustCertificatesWithCompletion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (!os_variant_has_internal_content())
   {
     v9 = 0;
@@ -179,12 +179,12 @@ void __47__MIBUCertHelper_readSUIdentityWithCompletion___block_invoke_14()
   }
 
   v5 = +[MIBUTestPreferences sharedInstance];
-  v6 = [v5 iseTrustCertPaths];
+  iseTrustCertPaths = [v5 iseTrustCertPaths];
 
-  if (v6)
+  if (iseTrustCertPaths)
   {
     v7 = +[MIBUTestPreferences sharedInstance];
-    v31 = [v7 iseTrustCertPaths];
+    iseTrustCertPaths2 = [v7 iseTrustCertPaths];
 
     if (MIBUOnceToken != -1)
     {
@@ -195,24 +195,24 @@ void __47__MIBUCertHelper_readSUIdentityWithCompletion___block_invoke_14()
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v41 = v31;
+      v41 = iseTrustCertPaths2;
       _os_log_impl(&dword_259ABF000, v8, OS_LOG_TYPE_DEFAULT, "Overriding ISE trust certificate paths to: %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v31 = 0;
+    iseTrustCertPaths2 = 0;
   }
 
   v13 = +[MIBUTestPreferences sharedInstance];
-  v14 = [v13 iseTrustCertName];
+  iseTrustCertName = [v13 iseTrustCertName];
 
-  if (!v14)
+  if (!iseTrustCertName)
   {
     v12 = @"retail-wifi-cert.apple.com";
-    v11 = v31;
-    if (!v31)
+    v11 = iseTrustCertPaths2;
+    if (!iseTrustCertPaths2)
     {
       goto LABEL_27;
     }
@@ -221,7 +221,7 @@ void __47__MIBUCertHelper_readSUIdentityWithCompletion___block_invoke_14()
   }
 
   v15 = +[MIBUTestPreferences sharedInstance];
-  v16 = [v15 iseTrustCertName];
+  iseTrustCertName2 = [v15 iseTrustCertName];
 
   if (MIBUOnceToken != -1)
   {
@@ -229,11 +229,11 @@ void __47__MIBUCertHelper_readSUIdentityWithCompletion___block_invoke_14()
   }
 
   v17 = MIBUConnObj;
-  v11 = v31;
+  v11 = iseTrustCertPaths2;
   if (!os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = v16;
-    if (!v31)
+    v12 = iseTrustCertName2;
+    if (!iseTrustCertPaths2)
     {
       goto LABEL_27;
     }
@@ -242,14 +242,14 @@ void __47__MIBUCertHelper_readSUIdentityWithCompletion___block_invoke_14()
   }
 
   *buf = 138543362;
-  v41 = v16;
-  v12 = v16;
+  v41 = iseTrustCertName2;
+  v12 = iseTrustCertName2;
   _os_log_impl(&dword_259ABF000, v17, OS_LOG_TYPE_DEFAULT, "Overriding ISE trust certificate name to: %{public}@", buf, 0xCu);
-  if (v31)
+  if (iseTrustCertPaths2)
   {
 LABEL_16:
     v29 = v12;
-    v30 = v4;
+    v30 = completionCopy;
     v32 = objc_opt_new();
     v35 = 0u;
     v36 = 0u;
@@ -277,7 +277,7 @@ LABEL_16:
 
           v25 = *(*(&v35 + 1) + 8 * v22);
           v34 = 0;
-          v9 = [a1 _getCertDataFromPath:v25 error:{&v34, v29, v30}];
+          v9 = [self _getCertDataFromPath:v25 error:{&v34, v29, v30}];
           v26 = v34;
 
           if (v26)
@@ -288,12 +288,12 @@ LABEL_34:
 
             v27 = 0;
             v12 = v29;
-            v4 = v30;
+            completionCopy = v30;
             goto LABEL_32;
           }
 
           v33 = 0;
-          v10 = [a1 _parseDERCertificates:v9 error:&v33];
+          v10 = [self _parseDERCertificates:v9 error:&v33];
           v26 = v33;
 
           if (v26)
@@ -324,8 +324,8 @@ LABEL_34:
       v9 = 0;
     }
 
-    v4 = v30;
-    v11 = v31;
+    completionCopy = v30;
+    v11 = iseTrustCertPaths2;
     v12 = v29;
     if (!v29)
     {
@@ -352,7 +352,7 @@ LABEL_28:
   v26 = 0;
   v27 = 0;
 LABEL_32:
-  v4[2](v4, v32, v27, v26);
+  completionCopy[2](completionCopy, v32, v27, v26);
 
   v28 = *MEMORY[0x277D85DE8];
 }
@@ -389,12 +389,12 @@ void __50__MIBUCertHelper_trustCertificatesWithCompletion___block_invoke_22()
   }
 }
 
-+ (__SecKey)suCertKeyFromData:(id)a3 isSEPKey:(BOOL)a4 error:(id *)a5
++ (__SecKey)suCertKeyFromData:(id)data isSEPKey:(BOOL)key error:(id *)error
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dataCopy = data;
   error = 0;
-  if (!os_variant_has_internal_content() || a4)
+  if (!os_variant_has_internal_content() || key)
   {
     if (MIBUOnceToken != -1)
     {
@@ -420,7 +420,7 @@ void __50__MIBUCertHelper_trustCertificatesWithCompletion___block_invoke_22()
       v28 = *MEMORY[0x277CDBEC0];
       v42[2] = *MEMORY[0x277CDC178];
       v42[3] = v28;
-      v43[2] = v7;
+      v43[2] = dataCopy;
       v43[3] = v21;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:4];
       v17 = SecKeyCreateWithData([MEMORY[0x277CBEA90] data], v19, &error);
@@ -469,7 +469,7 @@ void __50__MIBUCertHelper_trustCertificatesWithCompletion___block_invoke_22()
     v45[0] = v9;
     v45[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
-    v17 = SecKeyCreateWithData(v7, v12, &error);
+    v17 = SecKeyCreateWithData(dataCopy, v12, &error);
     if (!v17 || error)
     {
       v39 = 0;
@@ -485,10 +485,10 @@ void __50__MIBUCertHelper_trustCertificatesWithCompletion___block_invoke_22()
     v19 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v33 = v18;
-    *a5 = v18;
+    *error = v18;
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -527,16 +527,16 @@ void __51__MIBUCertHelper_suCertKeyFromData_isSEPKey_error___block_invoke_32()
   }
 }
 
-+ (id)certificatesFromData:(id)a3 error:(id *)a4
++ (id)certificatesFromData:(id)data error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v5;
+  v7 = dataCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
@@ -575,10 +575,10 @@ void __51__MIBUCertHelper_suCertKeyFromData_isSEPKey_error___block_invoke_32()
 
 LABEL_11:
 
-  if (a4)
+  if (error)
   {
     v17 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -586,7 +586,7 @@ LABEL_11:
   return v6;
 }
 
-+ (void)deleteSUCert:(id *)a3
++ (void)deleteSUCert:(id *)cert
 {
   v34 = *MEMORY[0x277D85DE8];
   if (MIBUOnceToken != -1)
@@ -623,14 +623,14 @@ LABEL_11:
         }
 
         v10 = *(*(&v25 + 1) + 8 * v9);
-        v11 = [MEMORY[0x277CCAA00] defaultManager];
-        v12 = [v11 fileExistsAtPath:v10];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v12 = [defaultManager fileExistsAtPath:v10];
 
         if (v12)
         {
-          v13 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
           v24 = v7;
-          v14 = [v13 removeItemAtPath:v10 error:&v24];
+          v14 = [defaultManager2 removeItemAtPath:v10 error:&v24];
           v15 = v24;
 
           if ((v14 & 1) == 0)
@@ -650,7 +650,7 @@ LABEL_11:
               _os_log_error_impl(&dword_259ABF000, v16, OS_LOG_TYPE_ERROR, "Failed to delete %{public}@ with error: %{public}@", buf, 0x16u);
             }
 
-            safeAssignError(a3, 50331650, v15, @"Failed to delete %@", v17, v18, v19, v20, v10);
+            safeAssignError(cert, 50331650, v15, @"Failed to delete %@", v17, v18, v19, v20, v10);
           }
 
           v7 = v15;
@@ -738,24 +738,24 @@ void __31__MIBUCertHelper_deleteSUCert___block_invoke_50()
   }
 }
 
-+ (id)_getCertDataFromPath:(id)a3 error:(id *)a4
++ (id)_getCertDataFromPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v5];
+    v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:pathCopy];
     if (!v8)
     {
-      [MIBUCertHelper _getCertDataFromPath:v5 error:a4];
+      [MIBUCertHelper _getCertDataFromPath:pathCopy error:error];
     }
   }
 
   else
   {
-    [MIBUCertHelper _getCertDataFromPath:v5 error:a4];
+    [MIBUCertHelper _getCertDataFromPath:pathCopy error:error];
     v8 = 0;
   }
 
@@ -794,19 +794,19 @@ void __45__MIBUCertHelper__getCertDataFromPath_error___block_invoke_63()
   }
 }
 
-+ (id)_pandoraCertificates:(id *)a3
++ (id)_pandoraCertificates:(id *)certificates
 {
   v29 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (os_variant_has_internal_content())
   {
     v5 = +[MIBUTestPreferences sharedInstance];
-    v6 = [v5 usePandoraNonProdCerts];
+    usePandoraNonProdCerts = [v5 usePandoraNonProdCerts];
   }
 
   else
   {
-    v6 = 0;
+    usePandoraNonProdCerts = 0;
   }
 
   if (MIBUOnceToken != -1)
@@ -818,7 +818,7 @@ void __45__MIBUCertHelper__getCertDataFromPath_error___block_invoke_63()
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"Prod";
-    if (v6)
+    if (usePandoraNonProdCerts)
     {
       v8 = @"Non-Prod";
     }
@@ -829,7 +829,7 @@ void __45__MIBUCertHelper__getCertDataFromPath_error___block_invoke_63()
   }
 
   v9 = objc_alloc(MEMORY[0x277CBEA90]);
-  if (v6)
+  if (usePandoraNonProdCerts)
   {
     v10 = fdr_pandoraks_signing_ca_dc_nonprod_issuer_pem;
   }
@@ -839,7 +839,7 @@ void __45__MIBUCertHelper__getCertDataFromPath_error___block_invoke_63()
     v10 = fdr_pandoraks_signing_ca_dc_prod_issuer_pem;
   }
 
-  if (v6)
+  if (usePandoraNonProdCerts)
   {
     v11 = fdr_pandoraks_seaship_nonprod_cert_pem;
   }
@@ -850,7 +850,7 @@ void __45__MIBUCertHelper__getCertDataFromPath_error___block_invoke_63()
   }
 
   v12 = &fdr_pandoraks_signing_ca_dc_nonprod_issuer_pem_len;
-  if (v6)
+  if (usePandoraNonProdCerts)
   {
     v13 = &fdr_pandoraks_seaship_nonprod_cert_pem_len;
   }
@@ -875,7 +875,7 @@ void __45__MIBUCertHelper__getCertDataFromPath_error___block_invoke_63()
 
   else
   {
-    safeAssignError(a3, 50331651, 0, @"Failed to create certificate from PEM data", v18, v19, v20, v21, *v28);
+    safeAssignError(certificates, 50331651, 0, @"Failed to create certificate from PEM data", v18, v19, v20, v21, *v28);
     v25 = 0;
   }
 
@@ -900,25 +900,25 @@ void __39__MIBUCertHelper__pandoraCertificates___block_invoke()
   }
 }
 
-+ (void)readSUIdentityWithCompletion:(id)a3
++ (void)readSUIdentityWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (!os_variant_has_internal_content())
   {
-    v8 = @"/private/var/hardware/factory/su/su0-cert.der";
+    factorySUCertPath2 = @"/private/var/hardware/factory/su/su0-cert.der";
 LABEL_14:
-    v13 = @"/private/var/hardware/factory/su/su0-key.der";
+    factorySUKeyPath2 = @"/private/var/hardware/factory/su/su0-key.der";
     goto LABEL_15;
   }
 
   v5 = +[MIBUTestPreferences sharedInstance];
-  v6 = [v5 factorySUCertPath];
+  factorySUCertPath = [v5 factorySUCertPath];
 
-  if (v6)
+  if (factorySUCertPath)
   {
     v7 = +[MIBUTestPreferences sharedInstance];
-    v8 = [v7 factorySUCertPath];
+    factorySUCertPath2 = [v7 factorySUCertPath];
 
     if (MIBUOnceToken != -1)
     {
@@ -929,26 +929,26 @@ LABEL_14:
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v26 = v8;
+      v26 = factorySUCertPath2;
       _os_log_impl(&dword_259ABF000, v9, OS_LOG_TYPE_DEFAULT, "Overriding SU certificate path to %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v8 = @"/private/var/hardware/factory/su/su0-cert.der";
+    factorySUCertPath2 = @"/private/var/hardware/factory/su/su0-cert.der";
   }
 
   v10 = +[MIBUTestPreferences sharedInstance];
-  v11 = [v10 factorySUKeyPath];
+  factorySUKeyPath = [v10 factorySUKeyPath];
 
-  if (!v11)
+  if (!factorySUKeyPath)
   {
     goto LABEL_14;
   }
 
   v12 = +[MIBUTestPreferences sharedInstance];
-  v13 = [v12 factorySUKeyPath];
+  factorySUKeyPath2 = [v12 factorySUKeyPath];
 
   if (MIBUOnceToken != -1)
   {
@@ -959,13 +959,13 @@ LABEL_14:
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = v13;
+    v26 = factorySUKeyPath2;
     _os_log_impl(&dword_259ABF000, v14, OS_LOG_TYPE_DEFAULT, "Overriding SU key path to %{public}@", buf, 0xCu);
   }
 
 LABEL_15:
   v24 = 0;
-  v15 = [a1 _getCertDataFromPath:v8 error:&v24];
+  v15 = [self _getCertDataFromPath:factorySUCertPath2 error:&v24];
   v16 = v24;
   if (v16)
   {
@@ -977,7 +977,7 @@ LABEL_15:
   else
   {
     v23 = 0;
-    v17 = [a1 _parseDERCertificates:v15 error:&v23];
+    v17 = [self _parseDERCertificates:v15 error:&v23];
     v18 = v23;
     if (v18)
     {
@@ -988,17 +988,17 @@ LABEL_15:
     else
     {
       v22 = 0;
-      v19 = [a1 _getCertDataFromPath:v13 error:&v22];
+      v19 = [self _getCertDataFromPath:factorySUKeyPath2 error:&v22];
       v20 = v22;
     }
   }
 
-  v4[2](v4, v17, v19, v20);
+  completionCopy[2](completionCopy, v17, v19, v20);
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)pandoraCertsData:(id *)a3
++ (id)pandoraCertsData:(id *)data
 {
   v13 = 0;
   v4 = [MIBUCertHelper _pandoraCertificates:&v13];
@@ -1006,11 +1006,11 @@ LABEL_15:
   if (v5)
   {
     v6 = 0;
-    if (a3)
+    if (data)
     {
 LABEL_6:
       v10 = v5;
-      *a3 = v5;
+      *data = v5;
     }
   }
 
@@ -1033,7 +1033,7 @@ LABEL_6:
       while (v7 < [v4 count]);
     }
 
-    if (a3)
+    if (data)
     {
       goto LABEL_6;
     }
@@ -1044,17 +1044,17 @@ LABEL_6:
   return v11;
 }
 
-+ (id)_parseDERCertificates:(id)a3 error:(id *)a4
++ (id)_parseDERCertificates:(id)certificates error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  certificatesCopy = certificates;
   memset(v19, 0, sizeof(v19));
   v18 = 0;
-  v6 = [v5 bytes];
-  v7 = CTParseCertificateSet(v6, v6 + [v5 length], v19, 3, &v18);
+  bytes = [certificatesCopy bytes];
+  v7 = CTParseCertificateSet(bytes, bytes + [certificatesCopy length], v19, 3, &v18);
   if (v7 || !v18)
   {
-    safeAssignError(a4, 50331648, 0, @"Failed to parse certificate set: 0x%08x", v8, v9, v10, v11, v7);
+    safeAssignError(error, 50331648, 0, @"Failed to parse certificate set: 0x%08x", v8, v9, v10, v11, v7);
     v12 = 0;
   }
 

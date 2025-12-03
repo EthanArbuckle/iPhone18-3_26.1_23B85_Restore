@@ -1,17 +1,17 @@
 @interface PUIPosterSceneComponent
-- (PUIPosterSceneComponent)initWithScene:(id)a3 bundleIdentifier:(id)a4 processIdentity:(id)a5 options:(unint64_t)a6;
+- (PUIPosterSceneComponent)initWithScene:(id)scene bundleIdentifier:(id)identifier processIdentity:(id)identity options:(unint64_t)options;
 - (void)_invalidateLocationInUseAssertion;
-- (void)_main_remoteMLMInvalidation:(id)a3;
+- (void)_main_remoteMLMInvalidation:(id)invalidation;
 - (void)_main_updateState;
 - (void)invalidate;
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
 @end
 
 @implementation PUIPosterSceneComponent
 
 - (void)_main_updateState
 {
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   v2 = objc_opt_class();
   v8 = NSStringFromClass(v2);
   OUTLINED_FUNCTION_0_3();
@@ -38,22 +38,22 @@
   }
 }
 
-- (PUIPosterSceneComponent)initWithScene:(id)a3 bundleIdentifier:(id)a4 processIdentity:(id)a5 options:(unint64_t)a6
+- (PUIPosterSceneComponent)initWithScene:(id)scene bundleIdentifier:(id)identifier processIdentity:(id)identity options:(unint64_t)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  sceneCopy = scene;
+  identifierCopy = identifier;
+  identityCopy = identity;
   v14 = [(PUIPosterSceneComponent *)self init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_scene, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_scene, scene);
+    v16 = [identifierCopy copy];
     bundleIdentifier = v15->_bundleIdentifier;
     v15->_bundleIdentifier = v16;
 
-    objc_storeStrong(&v15->_processIdentity, a5);
-    v15->_options = a6;
+    objc_storeStrong(&v15->_processIdentity, identity);
+    v15->_options = options;
     [(FBScene *)v15->_scene addObserver:v15];
     [(PUIPosterSceneComponent *)v15 _main_updateState];
   }
@@ -72,9 +72,9 @@
     v3 = PUILogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(FBScene *)self->_scene pui_shortDescription];
+      pui_shortDescription = [(FBScene *)self->_scene pui_shortDescription];
       v8 = 138543362;
-      v9 = v4;
+      v9 = pui_shortDescription;
       _os_log_impl(&dword_1A8C85000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Invalidating MLM assertion.", &v8, 0xCu);
     }
 
@@ -92,10 +92,10 @@
   self->_scene = 0;
 }
 
-- (void)_main_remoteMLMInvalidation:(id)a3
+- (void)_main_remoteMLMInvalidation:(id)invalidation
 {
   mlmAssertion = self->_mlmAssertion;
-  if (mlmAssertion == a3)
+  if (mlmAssertion == invalidation)
   {
     [(RBSAssertion *)mlmAssertion invalidate];
     v5 = self->_mlmAssertion;
@@ -157,31 +157,31 @@ uint64_t __44__PUIPosterSceneComponent__main_updateState__block_invoke_47(uint64
   return [*(a1 + 40) invalidate];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 pui_significantEventTimeDidChange];
-  v11 = [v9 pui_significantEventsDidChange];
+  sceneCopy = scene;
+  diffCopy = diff;
+  pui_significantEventTimeDidChange = [diffCopy pui_significantEventTimeDidChange];
+  pui_significantEventsDidChange = [diffCopy pui_significantEventsDidChange];
 
-  if ((v10 & 1) != 0 || v11)
+  if ((pui_significantEventTimeDidChange & 1) != 0 || pui_significantEventsDidChange)
   {
     [(BSTimerScheduleQuerying *)self->_eventTimer invalidate];
     eventTimer = self->_eventTimer;
     self->_eventTimer = 0;
 
-    v13 = [v8 clientSettings];
-    v14 = [v13 pui_significantEventOptions];
+    clientSettings = [sceneCopy clientSettings];
+    pui_significantEventOptions = [clientSettings pui_significantEventOptions];
 
-    v15 = [v8 clientSettings];
-    v16 = [v15 pui_significantEventOptions];
+    clientSettings2 = [sceneCopy clientSettings];
+    pui_significantEventOptions2 = [clientSettings2 pui_significantEventOptions];
 
-    v17 = [v8 pui_isLegacyProvider];
-    if ((v14 & 1) != 0 || (v16 & 8) != 0 && ((v17 ^ 1) & 1) == 0)
+    pui_isLegacyProvider = [sceneCopy pui_isLegacyProvider];
+    if ((pui_significantEventOptions & 1) != 0 || (pui_significantEventOptions2 & 8) != 0 && ((pui_isLegacyProvider ^ 1) & 1) == 0)
     {
-      v18 = [v8 clientSettings];
-      v19 = [v18 pui_significantEventTime];
+      clientSettings3 = [sceneCopy clientSettings];
+      pui_significantEventTime = [clientSettings3 pui_significantEventTime];
 
       v44 = 0;
       v45 = 0;
@@ -196,7 +196,7 @@ uint64_t __44__PUIPosterSceneComponent__main_updateState__block_invoke_47(uint64
         goto LABEL_23;
       }
 
-      if (v19 == (v44 == 2) << 63)
+      if (pui_significantEventTime == (v44 == 2) << 63)
       {
         v20 = PUILogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -242,8 +242,8 @@ LABEL_23:
         if (v44 == 3)
         {
           v33 = objc_alloc(MEMORY[0x1E698E7A0]);
-          v34 = [v8 pui_shortDescription];
-          v35 = [v33 initWithIdentifier:v34];
+          pui_shortDescription = [sceneCopy pui_shortDescription];
+          v35 = [v33 initWithIdentifier:pui_shortDescription];
           v36 = self->_eventTimer;
           self->_eventTimer = v35;
 
@@ -257,8 +257,8 @@ LABEL_23:
         else if (v44 == 2)
         {
           v28 = objc_alloc(MEMORY[0x1E698E660]);
-          v29 = [v8 pui_shortDescription];
-          v30 = [v28 initWithIdentifier:v29];
+          pui_shortDescription2 = [sceneCopy pui_shortDescription];
+          v30 = [v28 initWithIdentifier:pui_shortDescription2];
           v31 = self->_eventTimer;
           self->_eventTimer = v30;
 
@@ -271,8 +271,8 @@ LABEL_23:
           if (v44 == 1)
           {
             v23 = objc_alloc(MEMORY[0x1E698E5E8]);
-            v24 = [v8 pui_shortDescription];
-            v25 = [v23 initWithIdentifier:v24];
+            pui_shortDescription3 = [sceneCopy pui_shortDescription];
+            v25 = [v23 initWithIdentifier:pui_shortDescription3];
             v26 = self->_eventTimer;
             self->_eventTimer = v25;
 
@@ -330,12 +330,12 @@ LABEL_41:
       goto LABEL_24;
     }
 
-    if (!(((v16 & 8) == 0) | v17 & 1))
+    if (!(((pui_significantEventOptions2 & 8) == 0) | pui_isLegacyProvider & 1))
     {
       v20 = PUILogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
-        [PUIPosterSceneComponent scene:v8 didUpdateClientSettingsWithDiff:v20 oldClientSettings:? transitionContext:?];
+        [PUIPosterSceneComponent scene:sceneCopy didUpdateClientSettingsWithDiff:v20 oldClientSettings:? transitionContext:?];
       }
 
       goto LABEL_23;

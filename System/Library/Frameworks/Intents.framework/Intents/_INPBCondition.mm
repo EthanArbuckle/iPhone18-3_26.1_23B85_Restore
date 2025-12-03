@@ -1,37 +1,37 @@
 @interface _INPBCondition
-- (BOOL)isEqual:(id)a3;
-- (_INPBCondition)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCondition)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsConditionalOperator:(id)a3;
+- (int)StringAsConditionalOperator:(id)operator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConditionalOperator:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConditionalOperator:(int)operator;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCondition
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBCondition *)self hasConditionalOperator])
   {
-    v4 = [(_INPBCondition *)self conditionalOperator];
-    if ((v4 - 1) >= 4)
+    conditionalOperator = [(_INPBCondition *)self conditionalOperator];
+    if ((conditionalOperator - 1) >= 4)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", conditionalOperator];
     }
 
     else
     {
-      v5 = off_1E72831E0[(v4 - 1)];
+      v5 = off_1E72831E0[(conditionalOperator - 1)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"conditionalOperator"];
+    [dictionary setObject:v5 forKeyedSubscript:@"conditionalOperator"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -47,16 +47,16 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBCondition *)self hasConditionalOperator];
-    if (v5 == [v4 hasConditionalOperator])
+    hasConditionalOperator = [(_INPBCondition *)self hasConditionalOperator];
+    if (hasConditionalOperator == [equalCopy hasConditionalOperator])
     {
-      if (!-[_INPBCondition hasConditionalOperator](self, "hasConditionalOperator") || ![v4 hasConditionalOperator] || (conditionalOperator = self->_conditionalOperator, conditionalOperator == objc_msgSend(v4, "conditionalOperator")))
+      if (!-[_INPBCondition hasConditionalOperator](self, "hasConditionalOperator") || ![equalCopy hasConditionalOperator] || (conditionalOperator = self->_conditionalOperator, conditionalOperator == objc_msgSend(equalCopy, "conditionalOperator")))
       {
         v6 = 1;
       }
@@ -66,7 +66,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBCondition allocWithZone:?]];
   if ([(_INPBCondition *)self hasConditionalOperator])
@@ -77,33 +77,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCondition *)self data];
+  coderCopy = coder;
+  data = [(_INPBCondition *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCondition)initWithCoder:(id)a3
+- (_INPBCondition)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCondition *)self initWithData:v6];
+    self = [(_INPBCondition *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_INPBCondition *)self hasConditionalOperator])
   {
     conditionalOperator = self->_conditionalOperator;
@@ -111,25 +111,25 @@
   }
 }
 
-- (int)StringAsConditionalOperator:(id)a3
+- (int)StringAsConditionalOperator:(id)operator
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ALL"])
+  operatorCopy = operator;
+  if ([operatorCopy isEqualToString:@"ALL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANY"])
+  else if ([operatorCopy isEqualToString:@"ANY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NONE"])
+  else if ([operatorCopy isEqualToString:@"NONE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NOT_ALL"])
+  else if ([operatorCopy isEqualToString:@"NOT_ALL"])
   {
     v4 = 4;
   }
@@ -142,10 +142,10 @@
   return v4;
 }
 
-- (void)setConditionalOperator:(int)a3
+- (void)setConditionalOperator:(int)operator
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (operator == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -153,7 +153,7 @@
   else
   {
     *&self->_has = has | 1;
-    self->_conditionalOperator = a3;
+    self->_conditionalOperator = operator;
   }
 }
 

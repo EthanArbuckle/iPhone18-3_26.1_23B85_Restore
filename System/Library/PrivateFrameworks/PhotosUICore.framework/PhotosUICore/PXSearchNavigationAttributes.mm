@@ -1,24 +1,24 @@
 @interface PXSearchNavigationAttributes
-+ (id)attributesForURLComponents:(id)a3;
-+ (id)attributesWithDecoratedQuery:(id)a3;
-+ (id)attributesWithGenericSearchTerm:(id)a3;
-+ (id)attributesWithGenericSearchText:(id)a3;
-- (BOOL)_isEqualToSearchNavigationAttributes:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)attributesForURLComponents:(id)components;
++ (id)attributesWithDecoratedQuery:(id)query;
++ (id)attributesWithGenericSearchTerm:(id)term;
++ (id)attributesWithGenericSearchText:(id)text;
+- (BOOL)_isEqualToSearchNavigationAttributes:(id)attributes;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation PXSearchNavigationAttributes
 
-+ (id)attributesWithDecoratedQuery:(id)a3
++ (id)attributesWithDecoratedQuery:(id)query
 {
-  v4 = a3;
-  if ([v4 length])
+  queryCopy = query;
+  if ([queryCopy length])
   {
-    v5 = objc_alloc_init(a1);
-    v6 = [v4 string];
-    [v5 setSearchText:v6];
+    v5 = objc_alloc_init(self);
+    string = [queryCopy string];
+    [v5 setSearchText:string];
 
-    [v5 setDecoratedQuery:v4];
+    [v5 setDecoratedQuery:queryCopy];
   }
 
   else
@@ -29,13 +29,13 @@
   return v5;
 }
 
-+ (id)attributesWithGenericSearchText:(id)a3
++ (id)attributesWithGenericSearchText:(id)text
 {
-  v4 = a3;
-  if ([v4 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v5 = objc_alloc_init(a1);
-    [v5 setSearchText:v4];
+    v5 = objc_alloc_init(self);
+    [v5 setSearchText:textCopy];
   }
 
   else
@@ -46,14 +46,14 @@
   return v5;
 }
 
-+ (id)attributesWithGenericSearchTerm:(id)a3
++ (id)attributesWithGenericSearchTerm:(id)term
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  termCopy = term;
+  if ([termCopy length])
   {
-    v5 = objc_alloc_init(a1);
-    v11[0] = v4;
+    v5 = objc_alloc_init(self);
+    v11[0] = termCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     [v5 setSearchTerms:v6];
 
@@ -71,16 +71,16 @@
   return v5;
 }
 
-+ (id)attributesForURLComponents:(id)a3
++ (id)attributesForURLComponents:(id)components
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v20 = a3;
-  v3 = [v20 queryItems];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  componentsCopy = components;
+  queryItems = [componentsCopy queryItems];
+  v4 = [queryItems countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v4)
   {
     v21 = 0;
@@ -100,42 +100,42 @@
     {
       if (*v23 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(queryItems);
       }
 
       v10 = *(*(&v22 + 1) + 8 * i);
-      v11 = [v10 name];
-      if ([v11 isEqualToString:@"searchTerm"])
+      name = [v10 name];
+      if ([name isEqualToString:@"searchTerm"])
       {
-        v12 = [v10 value];
-        v13 = [v12 componentsSeparatedByString:{@", "}];
+        value = [v10 value];
+        v13 = [value componentsSeparatedByString:{@", "}];
 
         v8 = v13;
       }
 
-      else if ([v11 isEqualToString:@"searchCategory"])
+      else if ([name isEqualToString:@"searchCategory"])
       {
-        v12 = [v10 value];
-        v14 = [v12 componentsSeparatedByString:{@", "}];
+        value = [v10 value];
+        v14 = [value componentsSeparatedByString:{@", "}];
 
         v6 = v14;
       }
 
       else
       {
-        if (![v11 isEqualToString:@"completionKey"])
+        if (![name isEqualToString:@"completionKey"])
         {
           goto LABEL_13;
         }
 
         [v10 value];
-        v21 = v12 = v21;
+        v21 = value = v21;
       }
 
 LABEL_13:
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v5 = [queryItems countByEnumeratingWithState:&v22 objects:v26 count:16];
   }
 
   while (v5);
@@ -143,7 +143,7 @@ LABEL_17:
 
   if ([v8 count])
   {
-    v15 = objc_alloc_init(a1);
+    v15 = objc_alloc_init(self);
     [v15 setSearchTerms:v8];
     [v15 setSearchCategories:v6];
     v16 = v21;
@@ -161,27 +161,27 @@ LABEL_17:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PXSearchNavigationAttributes *)self _isEqualToSearchNavigationAttributes:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PXSearchNavigationAttributes *)self _isEqualToSearchNavigationAttributes:equalCopy];
 
   return v5;
 }
 
-- (BOOL)_isEqualToSearchNavigationAttributes:(id)a3
+- (BOOL)_isEqualToSearchNavigationAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   searchTerms = self->_searchTerms;
-  v6 = [v4 searchTerms];
-  v7 = v6;
-  if (searchTerms == v6)
+  searchTerms = [attributesCopy searchTerms];
+  v7 = searchTerms;
+  if (searchTerms == searchTerms)
   {
   }
 
   else
   {
-    v8 = [(NSArray *)searchTerms isEqual:v6];
+    v8 = [(NSArray *)searchTerms isEqual:searchTerms];
 
     if (!v8)
     {
@@ -190,15 +190,15 @@ LABEL_17:
   }
 
   searchCategories = self->_searchCategories;
-  v10 = [v4 searchCategories];
-  v11 = v10;
-  if (searchCategories == v10)
+  searchCategories = [attributesCopy searchCategories];
+  v11 = searchCategories;
+  if (searchCategories == searchCategories)
   {
   }
 
   else
   {
-    v12 = [(NSArray *)searchCategories isEqual:v10];
+    v12 = [(NSArray *)searchCategories isEqual:searchCategories];
 
     if (!v12)
     {
@@ -207,15 +207,15 @@ LABEL_17:
   }
 
   searchText = self->_searchText;
-  v14 = [v4 searchText];
-  v15 = v14;
-  if (searchText == v14)
+  searchText = [attributesCopy searchText];
+  v15 = searchText;
+  if (searchText == searchText)
   {
   }
 
   else
   {
-    v16 = [(NSString *)searchText isEqual:v14];
+    v16 = [(NSString *)searchText isEqual:searchText];
 
     if (!v16)
     {
@@ -224,15 +224,15 @@ LABEL_17:
   }
 
   decoratedQuery = self->_decoratedQuery;
-  v18 = [v4 decoratedQuery];
-  v19 = v18;
-  if (decoratedQuery == v18)
+  decoratedQuery = [attributesCopy decoratedQuery];
+  v19 = decoratedQuery;
+  if (decoratedQuery == decoratedQuery)
   {
   }
 
   else
   {
-    v20 = [(NSAttributedString *)decoratedQuery isEqual:v18];
+    v20 = [(NSAttributedString *)decoratedQuery isEqual:decoratedQuery];
 
     if (!v20)
     {
@@ -243,15 +243,15 @@ LABEL_15:
   }
 
   completionKey = self->_completionKey;
-  v23 = [v4 completionKey];
-  if (completionKey == v23)
+  completionKey = [attributesCopy completionKey];
+  if (completionKey == completionKey)
   {
     v21 = 1;
   }
 
   else
   {
-    v21 = [(NSString *)completionKey isEqual:v23];
+    v21 = [(NSString *)completionKey isEqual:completionKey];
   }
 
 LABEL_21:

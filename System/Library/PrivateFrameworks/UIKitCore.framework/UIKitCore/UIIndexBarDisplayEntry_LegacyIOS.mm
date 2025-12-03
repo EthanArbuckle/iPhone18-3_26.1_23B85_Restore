@@ -35,26 +35,26 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@: %p", v5, self];
+  [string appendFormat:@"<%@: %p", v5, self];
 
   [(UIIndexBarDisplayEntry_LegacyIOS *)self bounds];
   v6 = NSStringFromCGRect(v12);
-  [v3 appendFormat:@", bounds:%@", v6];
+  [string appendFormat:@", bounds:%@", v6];
 
   [(UIIndexBarDisplayEntry_LegacyIOS *)self typeBounds];
   v7 = NSStringFromCGRect(v13);
-  [v3 appendFormat:@", typeBounds:%@", v7];
+  [string appendFormat:@", typeBounds:%@", v7];
 
   [(UIIndexBarDisplayEntry_LegacyIOS *)self baselinePoint];
   v8 = NSStringFromCGPoint(v11);
-  [v3 appendFormat:@", baselinePoint:%@", v8];
+  [string appendFormat:@", baselinePoint:%@", v8];
 
-  [v3 appendFormat:@">"];
+  [string appendFormat:@">"];
 
-  return v3;
+  return string;
 }
 
 - (CGPoint)baselinePoint

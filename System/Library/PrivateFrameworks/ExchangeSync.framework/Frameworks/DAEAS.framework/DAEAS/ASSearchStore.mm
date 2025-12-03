@@ -6,7 +6,7 @@
 + (BOOL)parsingWithSubItems;
 - (id)asParseRules;
 - (id)description;
-- (void)addResult:(id)a3;
+- (void)addResult:(id)result;
 @end
 
 @implementation ASSearchStore
@@ -20,7 +20,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_1 = v2;
     acceptsTopLevelLeaves___haveChecked_1 = 1;
   }
@@ -37,7 +37,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_1 = v2;
     parsingLeafNode___haveChecked_1 = 1;
   }
@@ -54,7 +54,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_1 = v2;
     parsingWithSubItems___haveChecked_1 = 1;
   }
@@ -71,7 +71,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_1 = v2;
     frontingBasicTypes___haveChecked_1 = 1;
   }
@@ -88,7 +88,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_1 = v2;
     notifyOfUnknownTokens___haveChecked_1 = 1;
   }
@@ -99,38 +99,38 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ASSearchStore *)self status];
-  v5 = [(ASSearchStore *)self mResults];
-  v6 = [v3 stringWithFormat:@"Store status %@ results: %@", v4, v5];
+  status = [(ASSearchStore *)self status];
+  mResults = [(ASSearchStore *)self mResults];
+  v6 = [v3 stringWithFormat:@"Store status %@ results: %@", status, mResults];
 
   return v6;
 }
 
-- (void)addResult:(id)a3
+- (void)addResult:(id)result
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v6))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = resultCopy;
     _os_log_impl(&dword_24A0AC000, v5, v6, "Adding search result: %@", &v11, 0xCu);
   }
 
-  v7 = [(ASSearchStore *)self mResults];
+  mResults = [(ASSearchStore *)self mResults];
 
-  if (!v7)
+  if (!mResults)
   {
     v8 = objc_opt_new();
     [(ASSearchStore *)self setMResults:v8];
   }
 
-  if (v4)
+  if (resultCopy)
   {
-    v9 = [(ASSearchStore *)self mResults];
-    [v9 addObject:v4];
+    mResults2 = [(ASSearchStore *)self mResults];
+    [mResults2 addObject:resultCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -141,14 +141,14 @@
   v3 = off_278FC6E08;
   v4 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->super._root);
-  v6 = [WeakRetained expectedResultType];
+  expectedResultType = [WeakRetained expectedResultType];
 
-  if (v6)
+  if (expectedResultType)
   {
     v7 = objc_loadWeakRetained(&self->super._root);
-    v8 = [v7 expectedResultType];
+    expectedResultType2 = [v7 expectedResultType];
 
-    if (v8 != 1)
+    if (expectedResultType2 != 1)
     {
       goto LABEL_5;
     }

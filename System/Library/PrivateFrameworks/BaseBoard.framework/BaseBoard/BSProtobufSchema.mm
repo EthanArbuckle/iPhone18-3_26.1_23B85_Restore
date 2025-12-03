@@ -1,14 +1,14 @@
 @interface BSProtobufSchema
 - (BSProtobufSchema)init;
-- (uint64_t)_addSubclassesForField:(void *)a3 allowedSubclasses:(int)a4 assertSubclassRelationship:;
-- (void)addField:(const char *)a3 allowedClasses:(id)a4;
-- (void)addField:(const char *)a3 forTag:(int64_t)a4;
-- (void)addRepeatingField:(const char *)a3 containsClass:(Class)a4;
-- (void)addRepeatingField:(const char *)a3 containsClass:(Class)a4 forTag:(int64_t)a5;
-- (void)addRepeatingField:(const char *)a3 containsClasses:(id)a4;
-- (void)addRepeatingField:(uint64_t)a3 forTag:(void *)a4 allowedClasses:;
+- (uint64_t)_addSubclassesForField:(void *)field allowedSubclasses:(int)subclasses assertSubclassRelationship:;
+- (void)addField:(const char *)field allowedClasses:(id)classes;
+- (void)addField:(const char *)field forTag:(int64_t)tag;
+- (void)addRepeatingField:(const char *)field containsClass:(Class)class;
+- (void)addRepeatingField:(const char *)field containsClass:(Class)class forTag:(int64_t)tag;
+- (void)addRepeatingField:(const char *)field containsClasses:(id)classes;
+- (void)addRepeatingField:(uint64_t)field forTag:(void *)tag allowedClasses:;
 - (void)dealloc;
-- (void)setAcceptableConcreteSubclasses:(id)a3;
+- (void)setAcceptableConcreteSubclasses:(id)subclasses;
 @end
 
 @implementation BSProtobufSchema
@@ -52,25 +52,25 @@
   return v2;
 }
 
-- (void)addField:(const char *)a3 forTag:(int64_t)a4
+- (void)addField:(const char *)field forTag:(int64_t)tag
 {
-  v4 = a4;
+  tagCopy = tag;
   v44 = *MEMORY[0x1E69E9840];
-  BSProtobufValidateIncomingTag(self, a4);
+  BSProtobufValidateIncomingTag(self, tag);
   [(NSMutableData *)self->_memoryData increaseLengthBy:96];
-  v8 = [(NSMutableData *)self->_memoryData mutableBytes];
-  self->_entries = v8;
+  mutableBytes = [(NSMutableData *)self->_memoryData mutableBytes];
+  self->_entries = mutableBytes;
   fieldCount = self->_fieldCount;
-  v10 = &v8[fieldCount];
+  v10 = &mutableBytes[fieldCount];
   self->_fieldCount = fieldCount + 1;
-  v10->var0 = v4;
+  v10->var0 = tagCopy;
   rootClass = self->_rootClass;
-  InstanceVariable = class_getInstanceVariable(rootClass, a3);
+  InstanceVariable = class_getInstanceVariable(rootClass, field);
   Offset = ivar_getOffset(InstanceVariable);
   TypeEncoding = ivar_getTypeEncoding(InstanceVariable);
   if (!InstanceVariable)
   {
-    v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing ivar on class %@: %s", rootClass, a3];
+    field = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing ivar on class %@: %s", rootClass, field];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
@@ -80,18 +80,18 @@
       v38 = 1024;
       *v39 = 335;
       *&v39[4] = 2114;
-      *&v39[6] = v30;
+      *&v39[6] = field;
       _os_log_error_impl(&dword_18FEF6000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ (%{public}@:%i) : %{public}@", buf, 0x26u);
     }
 
-    qword_1EAD33B00 = [v30 UTF8String];
+    qword_1EAD33B00 = [field UTF8String];
     __break(0);
     JUMPOUT(0x18FF8638CLL);
   }
 
   if (!Offset)
   {
-    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing offset for %s", a3];
+    field2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing offset for %s", field];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
@@ -101,11 +101,11 @@
       v38 = 1024;
       *v39 = 336;
       *&v39[4] = 2114;
-      *&v39[6] = v31;
+      *&v39[6] = field2;
       _os_log_error_impl(&dword_18FEF6000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ (%{public}@:%i) : %{public}@", buf, 0x26u);
     }
 
-    qword_1EAD33B00 = [v31 UTF8String];
+    qword_1EAD33B00 = [field2 UTF8String];
     __break(0);
     JUMPOUT(0x18FF86448);
   }
@@ -113,7 +113,7 @@
   v15 = TypeEncoding;
   if (!TypeEncoding)
   {
-    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing encoding for ivar %@: %s", rootClass, a3];
+    field3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing encoding for ivar %@: %s", rootClass, field];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
@@ -123,11 +123,11 @@
       v38 = 1024;
       *v39 = 337;
       *&v39[4] = 2114;
-      *&v39[6] = v32;
+      *&v39[6] = field3;
       _os_log_error_impl(&dword_18FEF6000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ (%{public}@:%i) : %{public}@", buf, 0x26u);
     }
 
-    qword_1EAD33B00 = [v32 UTF8String];
+    qword_1EAD33B00 = [field3 UTF8String];
     __break(0);
     JUMPOUT(0x18FF86504);
   }
@@ -149,7 +149,7 @@
     }
 
 LABEL_33:
-    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: Unsupported encoding type %s", a3, v15];
+    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: Unsupported encoding type %s", field, v15];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v28 = NSStringFromSelector(a2);
@@ -221,12 +221,12 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v21 = _BSProtobufValidateClassForEncoding(a3, v20);
+  v21 = _BSProtobufValidateClassForEncoding(field, v20);
   v10->var6 = _BSProtobufEncodeObject;
   v10->var7 = _BSProtobufDecodeObject;
   v10->var4 = v21;
-  v22 = [(objc_class *)v21 protobufSchema];
-  v23 = v22;
+  protobufSchema = [(objc_class *)v21 protobufSchema];
+  v23 = protobufSchema;
   while (1)
   {
     v23 = v23[2];
@@ -241,43 +241,43 @@ LABEL_20:
     }
   }
 
-  v23 = v22;
+  v23 = protobufSchema;
 LABEL_23:
   v26 = v23[8];
   if (v26)
   {
 
-    [(BSProtobufSchema *)self _addSubclassesForField:a3 allowedSubclasses:v26 assertSubclassRelationship:1];
+    [(BSProtobufSchema *)self _addSubclassesForField:field allowedSubclasses:v26 assertSubclassRelationship:1];
   }
 }
 
-- (uint64_t)_addSubclassesForField:(void *)a3 allowedSubclasses:(int)a4 assertSubclassRelationship:
+- (uint64_t)_addSubclassesForField:(void *)field allowedSubclasses:(int)subclasses assertSubclassRelationship:
 {
   v44 = *MEMORY[0x1E69E9840];
   if (result)
   {
     v4 = result;
     v5 = *(result + 24);
-    v6 = [a3 count];
+    v6 = [field count];
     [*(v4 + 48) increaseLengthBy:96 * v6];
-    v7 = [*(v4 + 48) mutableBytes];
-    *(v4 + 40) = v7;
+    mutableBytes = [*(v4 + 48) mutableBytes];
+    *(v4 + 40) = mutableBytes;
     v8 = *(v4 + 24);
     *(v4 + 24) = v8 + v6;
-    v9 = v7 + 96 * v5;
+    v9 = mutableBytes + 96 * v5;
     *(v9 - 32) = v6;
     *(v9 - 24) = malloc_type_calloc(v6, 8uLL, 0x2004093837F09uLL);
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    result = [a3 countByEnumeratingWithState:&v27 objects:v43 count:16];
+    result = [field countByEnumeratingWithState:&v27 objects:v43 count:16];
     if (result)
     {
       v10 = result;
       v11 = 0;
       v12 = *v28;
-      v23 = v7 + 96 * v8;
+      v23 = mutableBytes + 96 * v8;
       do
       {
         v13 = 0;
@@ -286,7 +286,7 @@ LABEL_23:
         {
           if (*v28 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(field);
           }
 
           v15 = *(*(&v27 + 1) + 8 * v13);
@@ -294,7 +294,7 @@ LABEL_23:
           v17 = v16 + 1;
           *(v4 + 32) = v16 + 1;
           BSProtobufValidateIncomingTag(v4, (v16 + 1));
-          if (a4 && ([v15 isSubclassOfClass:*(v9 - 64)] & 1) == 0)
+          if (subclasses && ([v15 isSubclassOfClass:*(v9 - 64)] & 1) == 0)
           {
             v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' must be a subclass of '%@'", v15, *(v9 - 64)];
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -337,7 +337,7 @@ LABEL_23:
         }
 
         while (v10 != v13);
-        result = [a3 countByEnumeratingWithState:&v27 objects:v43 count:16];
+        result = [field countByEnumeratingWithState:&v27 objects:v43 count:16];
         v10 = result;
       }
 
@@ -348,7 +348,7 @@ LABEL_23:
   return result;
 }
 
-- (void)addField:(const char *)a3 allowedClasses:(id)a4
+- (void)addField:(const char *)field allowedClasses:(id)classes
 {
   v40 = *MEMORY[0x1E69E9840];
   fieldCount = self->_fieldCount;
@@ -356,19 +356,19 @@ LABEL_23:
   v10 = autotagIndex + 1;
   self->_autotagIndex = autotagIndex + 1;
   [(NSMutableData *)self->_memoryData increaseLengthBy:96];
-  v11 = [(NSMutableData *)self->_memoryData mutableBytes];
-  self->_entries = v11;
+  mutableBytes = [(NSMutableData *)self->_memoryData mutableBytes];
+  self->_entries = mutableBytes;
   v12 = self->_fieldCount;
-  v13 = &v11[v12];
+  v13 = &mutableBytes[v12];
   self->_fieldCount = v12 + 1;
   v13->var0 = v10;
   rootClass = self->_rootClass;
-  InstanceVariable = class_getInstanceVariable(rootClass, a3);
+  InstanceVariable = class_getInstanceVariable(rootClass, field);
   Offset = ivar_getOffset(InstanceVariable);
   TypeEncoding = ivar_getTypeEncoding(InstanceVariable);
   if (!InstanceVariable)
   {
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing ivar on class %@: %s", rootClass, a3];
+    field = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing ivar on class %@: %s", rootClass, field];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
@@ -378,18 +378,18 @@ LABEL_23:
       v34 = 1024;
       *v35 = 335;
       *&v35[4] = 2114;
-      *&v35[6] = v23;
+      *&v35[6] = field;
       _os_log_error_impl(&dword_18FEF6000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ (%{public}@:%i) : %{public}@", buf, 0x26u);
     }
 
-    qword_1EAD33B00 = [v23 UTF8String];
+    qword_1EAD33B00 = [field UTF8String];
     __break(0);
     JUMPOUT(0x18FF86B2CLL);
   }
 
   if (!Offset)
   {
-    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing offset for %s", a3];
+    field2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing offset for %s", field];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
@@ -399,11 +399,11 @@ LABEL_23:
       v34 = 1024;
       *v35 = 336;
       *&v35[4] = 2114;
-      *&v35[6] = v24;
+      *&v35[6] = field2;
       _os_log_error_impl(&dword_18FEF6000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ (%{public}@:%i) : %{public}@", buf, 0x26u);
     }
 
-    qword_1EAD33B00 = [v24 UTF8String];
+    qword_1EAD33B00 = [field2 UTF8String];
     __break(0);
     JUMPOUT(0x18FF86BE8);
   }
@@ -411,7 +411,7 @@ LABEL_23:
   v18 = TypeEncoding;
   if (!TypeEncoding)
   {
-    v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing encoding for ivar %@: %s", rootClass, a3];
+    field3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing encoding for ivar %@: %s", rootClass, field];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
@@ -421,11 +421,11 @@ LABEL_23:
       v34 = 1024;
       *v35 = 337;
       *&v35[4] = 2114;
-      *&v35[6] = v25;
+      *&v35[6] = field3;
       _os_log_error_impl(&dword_18FEF6000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ (%{public}@:%i) : %{public}@", buf, 0x26u);
     }
 
-    qword_1EAD33B00 = [v25 UTF8String];
+    qword_1EAD33B00 = [field3 UTF8String];
     __break(0);
     JUMPOUT(0x18FF86CA4);
   }
@@ -436,7 +436,7 @@ LABEL_23:
   v19 = strlen(TypeEncoding);
   if (v19 < 4 || *v18 != 64 || v18[1] != 34 || v18[v19 - 1] != 34)
   {
-    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ivar '%s' is not a class type and cannot be subclassed", a3];
+    field4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ivar '%s' is not a class type and cannot be subclassed", field];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v28 = NSStringFromSelector(a2);
@@ -452,11 +452,11 @@ LABEL_23:
       v36 = 1024;
       v37 = 492;
       v38 = 2114;
-      v39 = v27;
+      v39 = field4;
       _os_log_error_impl(&dword_18FEF6000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
     }
 
-    qword_1EAD33B00 = [v27 UTF8String];
+    qword_1EAD33B00 = [field4 UTF8String];
     __break(0);
     JUMPOUT(0x18FF86E34);
   }
@@ -486,52 +486,52 @@ LABEL_23:
 
   v22 = v21;
 
-  v13->var4 = _BSProtobufValidateClassForEncoding(a3, v22);
+  v13->var4 = _BSProtobufValidateClassForEncoding(field, v22);
   v13->var6 = _BSProtobufEncodeObject;
   v13->var7 = _BSProtobufDecodeObject;
-  [(BSProtobufSchema *)self _addSubclassesForField:a3 allowedSubclasses:a4 assertSubclassRelationship:1];
-  if (([a4 containsObject:v22] & 1) == 0)
+  [(BSProtobufSchema *)self _addSubclassesForField:field allowedSubclasses:classes assertSubclassRelationship:1];
+  if (([classes containsObject:v22] & 1) == 0)
   {
     self->_entries[fieldCount].var9 = 1;
   }
 }
 
-- (void)addRepeatingField:(const char *)a3 containsClass:(Class)a4
+- (void)addRepeatingField:(const char *)field containsClass:(Class)class
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = self->_autotagIndex + 1;
   self->_autotagIndex = v4;
-  v5[0] = a4;
-  -[BSProtobufSchema addRepeatingField:forTag:allowedClasses:](self, a3, v4, [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1]);
+  v5[0] = class;
+  -[BSProtobufSchema addRepeatingField:forTag:allowedClasses:](self, field, v4, [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1]);
 }
 
-- (void)addRepeatingField:(uint64_t)a3 forTag:(void *)a4 allowedClasses:
+- (void)addRepeatingField:(uint64_t)field forTag:(void *)tag allowedClasses:
 {
   v54 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v8 = [a4 firstObject];
-  if (v8 != objc_opt_class() && v8 != objc_opt_class() && v8 != objc_opt_class() && v8 != objc_opt_class())
+  firstObject = [tag firstObject];
+  if (firstObject != objc_opt_class() && firstObject != objc_opt_class() && firstObject != objc_opt_class() && firstObject != objc_opt_class())
   {
-    v8 = _BSProtobufValidateClassForEncoding(a2, v8);
+    firstObject = _BSProtobufValidateClassForEncoding(a2, firstObject);
   }
 
-  if (a3 < 1)
+  if (field < 1)
   {
     v34 = @"tag must be > 0";
     goto LABEL_66;
   }
 
-  if ((a3 - 19000) < 0x3E8)
+  if ((field - 19000) < 0x3E8)
   {
     v34 = @"tag must not be between 19000 and 19999, inclusive";
     goto LABEL_66;
   }
 
-  if (a3 >> 29)
+  if (field >> 29)
   {
     v34 = @"tag must be <= ((2^29) - 1)";
 LABEL_66:
@@ -545,7 +545,7 @@ LABEL_66:
       v46 = 2114;
       v47 = NSStringFromClass(v37);
       v48 = 2048;
-      *v49 = a1;
+      *v49 = self;
       *&v49[8] = 2114;
       *&v49[10] = @"BSProtobufSerialization.m";
       v50 = 1024;
@@ -560,12 +560,12 @@ LABEL_66:
     JUMPOUT(0x18FF877DCLL);
   }
 
-  [*(a1 + 48) increaseLengthBy:96];
-  v9 = [*(a1 + 48) mutableBytes];
-  *(a1 + 40) = v9;
-  v10 = *(a1 + 24);
-  *(a1 + 24) = v10 + 1;
-  v11 = *(a1 + 8);
+  [*(self + 48) increaseLengthBy:96];
+  mutableBytes = [*(self + 48) mutableBytes];
+  *(self + 40) = mutableBytes;
+  v10 = *(self + 24);
+  *(self + 24) = v10 + 1;
+  v11 = *(self + 8);
   v38 = a2;
   InstanceVariable = class_getInstanceVariable(v11, a2);
   Offset = ivar_getOffset(InstanceVariable);
@@ -634,7 +634,7 @@ LABEL_66:
     JUMPOUT(0x18FF8754CLL);
   }
 
-  v16 = v9 + 96 * v10;
+  v16 = mutableBytes + 96 * v10;
   *(v16 + 16) = Offset;
   *(v16 + 24) = InstanceVariable;
   *(v16 + 8) = TypeEncoding;
@@ -692,7 +692,7 @@ LABEL_66:
       v46 = 2114;
       v47 = NSStringFromClass(v32);
       v48 = 2048;
-      *v49 = a1;
+      *v49 = self;
       *&v49[8] = 2114;
       *&v49[10] = @"BSProtobufSerialization.m";
       v50 = 1024;
@@ -712,10 +712,10 @@ LABEL_66:
     v20 = objc_opt_class();
   }
 
-  *(v16 + 32) = v8;
+  *(v16 + 32) = firstObject;
   *(v16 + 40) = v20;
-  *v16 = a3;
-  if (v8 == objc_opt_class())
+  *v16 = field;
+  if (firstObject == objc_opt_class())
   {
     *(v16 + 48) = _BSProtobufEncodeRepeatFieldString;
     *(v16 + 56) = _BSProtobufDecodeRepeatFieldString;
@@ -730,7 +730,7 @@ LABEL_66:
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v22 = [a4 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    v22 = [tag countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v22)
     {
       v23 = v22;
@@ -741,7 +741,7 @@ LABEL_66:
         {
           if (*v40 != v24)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(tag);
           }
 
           v26 = *(*(&v39 + 1) + 8 * i);
@@ -756,44 +756,44 @@ LABEL_66:
           }
         }
 
-        v23 = [a4 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v23 = [tag countByEnumeratingWithState:&v39 objects:v43 count:16];
       }
 
       while (v23);
     }
 
-    if ([v21 count] > 1 || objc_msgSend(v21, "firstObject") != v8)
+    if ([v21 count] > 1 || objc_msgSend(v21, "firstObject") != firstObject)
     {
-      [(BSProtobufSchema *)a1 _addSubclassesForField:v38 allowedSubclasses:v21 assertSubclassRelationship:0];
+      [(BSProtobufSchema *)self _addSubclassesForField:v38 allowedSubclasses:v21 assertSubclassRelationship:0];
     }
   }
 }
 
-- (void)addRepeatingField:(const char *)a3 containsClasses:(id)a4
+- (void)addRepeatingField:(const char *)field containsClasses:(id)classes
 {
   v5 = self->_autotagIndex + 1;
   self->_autotagIndex = v5;
-  [(BSProtobufSchema *)self addRepeatingField:a3 forTag:v5 allowedClasses:a4];
+  [(BSProtobufSchema *)self addRepeatingField:field forTag:v5 allowedClasses:classes];
 }
 
-- (void)addRepeatingField:(const char *)a3 containsClass:(Class)a4 forTag:(int64_t)a5
+- (void)addRepeatingField:(const char *)field containsClass:(Class)class forTag:(int64_t)tag
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v5[0] = a4;
-  -[BSProtobufSchema addRepeatingField:forTag:allowedClasses:](self, a3, a5, [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1]);
+  v5[0] = class;
+  -[BSProtobufSchema addRepeatingField:forTag:allowedClasses:](self, field, tag, [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1]);
 }
 
-- (void)setAcceptableConcreteSubclasses:(id)a3
+- (void)setAcceptableConcreteSubclasses:(id)subclasses
 {
   v5 = objc_alloc_init(BSProtobufSchema);
   autotagIndex = v5->_autotagIndex;
   v7 = autotagIndex + 1;
   v5->_autotagIndex = autotagIndex + 1;
   [(NSMutableData *)v5->_memoryData increaseLengthBy:96];
-  v8 = [(NSMutableData *)v5->_memoryData mutableBytes];
-  v5->_entries = v8;
+  mutableBytes = [(NSMutableData *)v5->_memoryData mutableBytes];
+  v5->_entries = mutableBytes;
   fieldCount = v5->_fieldCount;
-  v10 = v8 + 96 * fieldCount;
+  v10 = mutableBytes + 96 * fieldCount;
   v5->_fieldCount = fieldCount + 1;
   *v10 = v7;
   *(v10 + 8) = "@";
@@ -802,14 +802,14 @@ LABEL_66:
   *(v10 + 32) = self->_rootClass;
   *(v10 + 48) = _BSProtobufEncodeObject;
   *(v10 + 56) = _BSProtobufDecodeObject;
-  if (([a3 containsObject:self->_rootClass] & 1) == 0)
+  if (([subclasses containsObject:self->_rootClass] & 1) == 0)
   {
     *(v10 + 88) = 1;
   }
 
-  [(BSProtobufSchema *)v5 _addSubclassesForField:a3 allowedSubclasses:1 assertSubclassRelationship:?];
+  [(BSProtobufSchema *)v5 _addSubclassesForField:subclasses allowedSubclasses:1 assertSubclassRelationship:?];
   self->_allowedConcreteSubclassesSchema = v5;
-  self->_allowedConcreteSubclassesClasses = [a3 copy];
+  self->_allowedConcreteSubclassesClasses = [subclasses copy];
 }
 
 @end

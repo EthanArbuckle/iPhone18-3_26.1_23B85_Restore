@@ -1,20 +1,20 @@
 @interface SRAudioGenerator
 + (void)initialize;
 - (SRAudioGenerator)init;
-- (id)generateTTSAudiosFromTexts:(id)a3 language:(id)a4 downsample:(BOOL)a5;
+- (id)generateTTSAudiosFromTexts:(id)texts language:(id)language downsample:(BOOL)downsample;
 @end
 
 @implementation SRAudioGenerator
 
-- (id)generateTTSAudiosFromTexts:(id)a3 language:(id)a4 downsample:(BOOL)a5
+- (id)generateTTSAudiosFromTexts:(id)texts language:(id)language downsample:(BOOL)downsample
 {
-  v6 = a3;
-  v37 = a4;
+  textsCopy = texts;
+  languageCopy = language;
   v7 = qword_10003FF78;
   if (os_log_type_enabled(qword_10003FF78, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v53 = v37;
+    v53 = languageCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "SRAudioGenerator: Start generating TTS audio with language: %@", buf, 0xCu);
   }
 
@@ -26,14 +26,14 @@
   if (self->_synthesizer)
   {
     group = dispatch_group_create();
-    if (v6 && [v6 count])
+    if (textsCopy && [textsCopy count])
     {
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v34 = v6;
-      v10 = v6;
+      v34 = textsCopy;
+      v10 = textsCopy;
       v11 = [v10 countByEnumeratingWithState:&v47 objects:v51 count:16];
       if (v11)
       {
@@ -54,7 +54,7 @@
 
             if (v16)
             {
-              v17 = [[SiriTTSSynthesisVoice alloc] initWithLanguage:v37 name:0];
+              v17 = [[SiriTTSSynthesisVoice alloc] initWithLanguage:languageCopy name:0];
               v18 = [SiriTTSSynthesisRequest alloc];
               v19 = [v10 objectForKeyedSubscript:v14];
               v20 = [v18 initWithText:v19 voice:v17];
@@ -103,7 +103,7 @@
       }
 
       v30 = v36;
-      v6 = v34;
+      textsCopy = v34;
     }
 
     else
@@ -143,7 +143,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10003FF78 = os_log_create("com.apple.speech.speechmodeltraining", "SRAudioGenerator");
 

@@ -6,7 +6,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   JSMenuItem.description.getter();
 
   v3 = String._bridgeToObjectiveC()();

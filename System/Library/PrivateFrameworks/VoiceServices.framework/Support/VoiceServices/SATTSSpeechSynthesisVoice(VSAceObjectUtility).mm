@@ -7,17 +7,17 @@
 - (id)vsDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v14 = [a1 languageCode];
-  v3 = [v14 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
-  v4 = [a1 type];
-  v5 = [v4 lowercaseString];
-  v6 = [a1 gender];
-  v7 = [v6 lowercaseString];
-  v8 = [a1 name];
-  v9 = [a1 quality];
-  v10 = [v9 lowercaseString];
-  v11 = [a1 contentVersion];
-  v12 = [v2 stringWithFormat:@"%@:%@:%@:%@:%@:%@", v3, v5, v7, v8, v10, v11];
+  languageCode = [self languageCode];
+  v3 = [languageCode stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  type = [self type];
+  lowercaseString = [type lowercaseString];
+  gender = [self gender];
+  lowercaseString2 = [gender lowercaseString];
+  name = [self name];
+  quality = [self quality];
+  lowercaseString3 = [quality lowercaseString];
+  contentVersion = [self contentVersion];
+  v12 = [v2 stringWithFormat:@"%@:%@:%@:%@:%@:%@", v3, lowercaseString, lowercaseString2, name, lowercaseString3, contentVersion];
 
   return v12;
 }

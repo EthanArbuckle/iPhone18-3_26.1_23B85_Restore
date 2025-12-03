@@ -1,14 +1,14 @@
 @interface DBSAlwaysOnViewController
 + (BOOL)isAlwaysOnEnabledByDefault;
-+ (id)alwaysOnSpecifierNamed:(id)a3;
-+ (id)isAlwaysOnEnabled:(id)a3;
++ (id)alwaysOnSpecifierNamed:(id)named;
++ (id)isAlwaysOnEnabled:(id)enabled;
 - (id)_alwaysOnDisplaySpecifier;
 - (id)_blurPhotosWallpaperSpecifier;
 - (id)_showNotificationsSpecifier;
 - (id)_showWallpaperSpecifier;
-- (id)_updatesForSpecifiers:(id)a3 isAlwaysOnEnabled:(BOOL)a4 animated:(BOOL)a5;
+- (id)_updatesForSpecifiers:(id)specifiers isAlwaysOnEnabled:(BOOL)enabled animated:(BOOL)animated;
 - (id)specifiers;
-- (void)setAlwaysOnDisplayEnabled:(id)a3 specifier:(id)a4;
+- (void)setAlwaysOnDisplayEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -23,12 +23,12 @@
   [(DBSAlwaysOnViewController *)self setTitle:v3];
 }
 
-+ (id)alwaysOnSpecifierNamed:(id)a3
++ (id)alwaysOnSpecifierNamed:(id)named
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D3FAD8];
-  v5 = a3;
-  v6 = [v4 preferenceSpecifierNamed:v5 target:a1 set:0 get:sel_isAlwaysOnEnabled_ detail:objc_opt_class() cell:2 edit:0];
+  namedCopy = named;
+  v6 = [v4 preferenceSpecifierNamed:namedCopy target:self set:0 get:sel_isAlwaysOnEnabled_ detail:objc_opt_class() cell:2 edit:0];
 
   [v6 setProperty:@"j8/Omm6s1lsmTDFsXjsBfA" forKey:*MEMORY[0x277D400A0]];
   v7 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -82,11 +82,11 @@
   return v7;
 }
 
-+ (id)isAlwaysOnEnabled:(id)a3
++ (id)isAlwaysOnEnabled:(id)enabled
 {
   keyExistsAndHasValidFormat = 1;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"SBEnableAlwaysOn", @"com.apple.springboard", &keyExistsAndHasValidFormat);
-  v5 = [a1 isAlwaysOnEnabledByDefault];
+  isAlwaysOnEnabledByDefault = [self isAlwaysOnEnabledByDefault];
   if (keyExistsAndHasValidFormat)
   {
     v6 = AppBooleanValue != 0;
@@ -94,7 +94,7 @@
 
   else
   {
-    v6 = v5;
+    v6 = isAlwaysOnEnabledByDefault;
   }
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:v6];
@@ -122,14 +122,14 @@
     [v5 addObject:v9];
     v11 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"ALWAYS_ON_DISPLAY_GROUP"];
     [v5 addObject:v11];
-    v12 = [(DBSAlwaysOnViewController *)self _alwaysOnDisplaySpecifier];
-    [v5 addObject:v12];
-    v13 = [v12 performGetter];
-    v14 = [v13 BOOLValue];
+    _alwaysOnDisplaySpecifier = [(DBSAlwaysOnViewController *)self _alwaysOnDisplaySpecifier];
+    [v5 addObject:_alwaysOnDisplaySpecifier];
+    performGetter = [_alwaysOnDisplaySpecifier performGetter];
+    bOOLValue = [performGetter BOOLValue];
 
-    v15 = [(DBSAlwaysOnViewController *)self _updatesForSpecifiers:v5 isAlwaysOnEnabled:v14 animated:0];
-    v16 = [v15 currentSpecifiers];
-    [v5 setArray:v16];
+    v15 = [(DBSAlwaysOnViewController *)self _updatesForSpecifiers:v5 isAlwaysOnEnabled:bOOLValue animated:0];
+    currentSpecifiers = [v15 currentSpecifiers];
+    [v5 setArray:currentSpecifiers];
 
     v17 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v5;
@@ -198,14 +198,14 @@
   return v5;
 }
 
-- (id)_updatesForSpecifiers:(id)a3 isAlwaysOnEnabled:(BOOL)a4 animated:(BOOL)a5
+- (id)_updatesForSpecifiers:(id)specifiers isAlwaysOnEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [MEMORY[0x277D3FAE8] updatesWithSpecifiers:v8];
-  v10 = [v8 specifierForID:@"ALWAYS_ON_DISPLAY_GROUP"];
-  if (v6)
+  animatedCopy = animated;
+  enabledCopy = enabled;
+  specifiersCopy = specifiers;
+  v9 = [MEMORY[0x277D3FAE8] updatesWithSpecifiers:specifiersCopy];
+  v10 = [specifiersCopy specifierForID:@"ALWAYS_ON_DISPLAY_GROUP"];
+  if (enabledCopy)
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v12 = MEMORY[0x277D3FAD8];
@@ -213,14 +213,14 @@
     v14 = [v12 groupSpecifierWithID:@"ALWAYS_ON_CONFIGURATION_GROUP" name:v13];
 
     [v11 addObject:v14];
-    v15 = [(DBSAlwaysOnViewController *)self _showWallpaperSpecifier];
-    [v11 addObject:v15];
+    _showWallpaperSpecifier = [(DBSAlwaysOnViewController *)self _showWallpaperSpecifier];
+    [v11 addObject:_showWallpaperSpecifier];
 
-    v16 = [(DBSAlwaysOnViewController *)self _blurPhotosWallpaperSpecifier];
-    [v11 addObject:v16];
+    _blurPhotosWallpaperSpecifier = [(DBSAlwaysOnViewController *)self _blurPhotosWallpaperSpecifier];
+    [v11 addObject:_blurPhotosWallpaperSpecifier];
 
-    v17 = [(DBSAlwaysOnViewController *)self _showNotificationsSpecifier];
-    [v11 addObject:v17];
+    _showNotificationsSpecifier = [(DBSAlwaysOnViewController *)self _showNotificationsSpecifier];
+    [v11 addObject:_showNotificationsSpecifier];
 
     v18 = DBS_LocalizedStringForDisplays(@"ALWAYS_ON_FOOTER");
     [v10 setProperty:v18 forKey:*MEMORY[0x277D3FF88]];
@@ -230,7 +230,7 @@
 
   else
   {
-    v19 = [v8 indexOfSpecifierWithID:@"ALWAYS_ON_CONFIGURATION_GROUP"];
+    v19 = [specifiersCopy indexOfSpecifierWithID:@"ALWAYS_ON_CONFIGURATION_GROUP"];
     if (v19 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v20 = v19;
@@ -239,20 +239,20 @@
     }
   }
 
-  v21 = [v9 context];
-  [v21 setAnimated:v5];
+  context = [v9 context];
+  [context setAnimated:animatedCopy];
 
   return v9;
 }
 
-- (void)setAlwaysOnDisplayEnabled:(id)a3 specifier:(id)a4
+- (void)setAlwaysOnDisplayEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  CFPreferencesSetAppValue(@"SBEnableAlwaysOn", v5, @"com.apple.springboard");
+  enabledCopy = enabled;
+  CFPreferencesSetAppValue(@"SBEnableAlwaysOn", enabledCopy, @"com.apple.springboard");
   v6 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v8 = [(DBSAlwaysOnViewController *)self _updatesForSpecifiers:v6 isAlwaysOnEnabled:v7 animated:1];
+  v8 = [(DBSAlwaysOnViewController *)self _updatesForSpecifiers:v6 isAlwaysOnEnabled:bOOLValue animated:1];
   [(DBSAlwaysOnViewController *)self reloadSpecifierID:@"ALWAYS_ON_DISPLAY_GROUP"];
   [(DBSAlwaysOnViewController *)self performSpecifierUpdates:v8];
 }

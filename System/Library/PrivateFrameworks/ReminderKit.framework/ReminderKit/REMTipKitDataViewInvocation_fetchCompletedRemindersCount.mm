@@ -1,5 +1,5 @@
 @interface REMTipKitDataViewInvocation_fetchCompletedRemindersCount
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (REMTipKitDataViewInvocation_fetchCompletedRemindersCount)init;
 - (unint64_t)hash;
 @end
@@ -13,9 +13,9 @@
   return [(REMStoreInvocationValueStorage *)&v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

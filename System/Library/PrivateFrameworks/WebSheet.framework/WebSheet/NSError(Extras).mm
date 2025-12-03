@@ -6,8 +6,8 @@
 
 - (id)failingURL
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"NSErrorFailingURLKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"NSErrorFailingURLKey"];
 
   return v2;
 }

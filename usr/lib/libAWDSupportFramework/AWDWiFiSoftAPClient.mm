@@ -1,25 +1,25 @@
 @interface AWDWiFiSoftAPClient
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEnhancedSecurityType:(BOOL)a3;
-- (void)setHasFailureReason:(BOOL)a3;
-- (void)setHasFamilyDevice:(BOOL)a3;
-- (void)setHasJoinedByAutoHS:(BOOL)a3;
-- (void)setHasRssi:(BOOL)a3;
-- (void)setHasSwitchedToAnotherNetwork:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEnhancedSecurityType:(BOOL)type;
+- (void)setHasFailureReason:(BOOL)reason;
+- (void)setHasFamilyDevice:(BOOL)device;
+- (void)setHasJoinedByAutoHS:(BOOL)s;
+- (void)setHasRssi:(BOOL)rssi;
+- (void)setHasSwitchedToAnotherNetwork:(BOOL)network;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiSoftAPClient
 
-- (void)setHasFamilyDevice:(BOOL)a3
+- (void)setHasFamilyDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 16;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasJoinedByAutoHS:(BOOL)a3
+- (void)setHasJoinedByAutoHS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 32;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSwitchedToAnotherNetwork:(BOOL)a3
+- (void)setHasSwitchedToAnotherNetwork:(BOOL)network
 {
-  if (a3)
+  if (network)
   {
     v3 = 64;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasFailureReason:(BOOL)a3
+- (void)setHasFailureReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRssi:(BOOL)a3
+- (void)setHasRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 8;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEnhancedSecurityType:(BOOL)a3
+- (void)setHasEnhancedSecurityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -116,11 +116,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -139,7 +139,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_familyDevice), @"familyDevice"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_familyDevice), @"familyDevice"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -153,7 +153,7 @@ LABEL_4:
   }
 
 LABEL_12:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_joinedByAutoHS), @"joinedByAutoHS"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_joinedByAutoHS), @"joinedByAutoHS"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -167,7 +167,7 @@ LABEL_5:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_switchedToAnotherNetwork), @"switchedToAnotherNetwork"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_switchedToAnotherNetwork), @"switchedToAnotherNetwork"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -178,17 +178,17 @@ LABEL_6:
     }
 
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rssi), @"rssi"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rssi), @"rssi"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_8;
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_failureReason), @"failureReason"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_failureReason), @"failureReason"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -199,13 +199,13 @@ LABEL_7:
   if ((has & 2) != 0)
   {
 LABEL_8:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_enhancedSecurityType), @"enhancedSecurityType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_enhancedSecurityType), @"enhancedSecurityType"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -303,13 +303,13 @@ LABEL_15:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -328,8 +328,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 28) = self->_familyDevice;
-  *(a3 + 32) |= 0x10u;
+  *(to + 28) = self->_familyDevice;
+  *(to + 32) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -343,8 +343,8 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(a3 + 29) = self->_joinedByAutoHS;
-  *(a3 + 32) |= 0x20u;
+  *(to + 29) = self->_joinedByAutoHS;
+  *(to + 32) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -358,8 +358,8 @@ LABEL_5:
   }
 
 LABEL_12:
-  *(a3 + 30) = self->_switchedToAnotherNetwork;
-  *(a3 + 32) |= 0x40u;
+  *(to + 30) = self->_switchedToAnotherNetwork;
+  *(to + 32) |= 0x40u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -373,8 +373,8 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(a3 + 5) = self->_failureReason;
-  *(a3 + 32) |= 4u;
+  *(to + 5) = self->_failureReason;
+  *(to + 32) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -385,23 +385,23 @@ LABEL_7:
     }
 
 LABEL_15:
-    *(a3 + 4) = self->_enhancedSecurityType;
-    *(a3 + 32) |= 2u;
+    *(to + 4) = self->_enhancedSecurityType;
+    *(to + 32) |= 2u;
     return;
   }
 
 LABEL_14:
-  *(a3 + 6) = self->_rssi;
-  *(a3 + 32) |= 8u;
+  *(to + 6) = self->_rssi;
+  *(to + 32) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_15;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -498,9 +498,9 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
@@ -508,85 +508,85 @@ LABEL_8:
 
   if (*&self->_has)
   {
-    if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_45;
     }
   }
 
-  else if (*(a3 + 32))
+  else if (*(equal + 32))
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(a3 + 32) & 0x10) == 0)
+    if ((*(equal + 32) & 0x10) == 0)
     {
       goto LABEL_45;
     }
 
-    v6 = *(a3 + 28);
+    v6 = *(equal + 28);
     if (self->_familyDevice)
     {
-      if ((*(a3 + 28) & 1) == 0)
+      if ((*(equal + 28) & 1) == 0)
       {
         goto LABEL_45;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(a3 + 32) & 0x10) != 0)
+  else if ((*(equal + 32) & 0x10) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(a3 + 32) & 0x20) == 0)
+    if ((*(equal + 32) & 0x20) == 0)
     {
       goto LABEL_45;
     }
 
-    v7 = *(a3 + 29);
+    v7 = *(equal + 29);
     if (self->_joinedByAutoHS)
     {
-      if ((*(a3 + 29) & 1) == 0)
+      if ((*(equal + 29) & 1) == 0)
       {
         goto LABEL_45;
       }
     }
 
-    else if (*(a3 + 29))
+    else if (*(equal + 29))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(a3 + 32) & 0x20) != 0)
+  else if ((*(equal + 32) & 0x20) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(a3 + 32) & 0x40) != 0)
+    if ((*(equal + 32) & 0x40) != 0)
     {
-      v8 = *(a3 + 30);
+      v8 = *(equal + 30);
       if (self->_switchedToAnotherNetwork)
       {
-        if ((*(a3 + 30) & 1) == 0)
+        if ((*(equal + 30) & 1) == 0)
         {
           goto LABEL_45;
         }
       }
 
-      else if (*(a3 + 30))
+      else if (*(equal + 30))
       {
         goto LABEL_45;
       }
@@ -599,7 +599,7 @@ LABEL_45:
     return v5;
   }
 
-  if ((*(a3 + 32) & 0x40) != 0)
+  if ((*(equal + 32) & 0x40) != 0)
   {
     goto LABEL_45;
   }
@@ -607,34 +607,34 @@ LABEL_45:
 LABEL_13:
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 32) & 4) == 0 || self->_failureReason != *(a3 + 5))
+    if ((*(equal + 32) & 4) == 0 || self->_failureReason != *(equal + 5))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(a3 + 32) & 4) != 0)
+  else if ((*(equal + 32) & 4) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 32) & 8) == 0 || self->_rssi != *(a3 + 6))
+    if ((*(equal + 32) & 8) == 0 || self->_rssi != *(equal + 6))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(a3 + 32) & 8) != 0)
+  else if ((*(equal + 32) & 8) != 0)
   {
     goto LABEL_45;
   }
 
-  LOBYTE(v5) = (*(a3 + 32) & 2) == 0;
+  LOBYTE(v5) = (*(equal + 32) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 32) & 2) == 0 || self->_enhancedSecurityType != *(a3 + 4))
+    if ((*(equal + 32) & 2) == 0 || self->_enhancedSecurityType != *(equal + 4))
     {
       goto LABEL_45;
     }
@@ -741,14 +741,14 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 32);
+    v3 = *(from + 32);
     if ((v3 & 0x10) == 0)
     {
 LABEL_3:
@@ -761,14 +761,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 32) & 0x10) == 0)
+  else if ((*(from + 32) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_familyDevice = *(a3 + 28);
+  self->_familyDevice = *(from + 28);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x20) == 0)
   {
 LABEL_4:
@@ -781,9 +781,9 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_joinedByAutoHS = *(a3 + 29);
+  self->_joinedByAutoHS = *(from + 29);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x40) == 0)
   {
 LABEL_5:
@@ -796,9 +796,9 @@ LABEL_5:
   }
 
 LABEL_12:
-  self->_switchedToAnotherNetwork = *(a3 + 30);
+  self->_switchedToAnotherNetwork = *(from + 30);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 4) == 0)
   {
 LABEL_6:
@@ -811,9 +811,9 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_failureReason = *(a3 + 5);
+  self->_failureReason = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 8) == 0)
   {
 LABEL_7:
@@ -823,15 +823,15 @@ LABEL_7:
     }
 
 LABEL_15:
-    self->_enhancedSecurityType = *(a3 + 4);
+    self->_enhancedSecurityType = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_14:
-  self->_rssi = *(a3 + 6);
+  self->_rssi = *(from + 6);
   *&self->_has |= 8u;
-  if ((*(a3 + 32) & 2) != 0)
+  if ((*(from + 32) & 2) != 0)
   {
     goto LABEL_15;
   }

@@ -1,16 +1,16 @@
 @interface WebPresentmentRemoteAlertListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC8coreidvd33WebPresentmentRemoteAlertListener)init;
 @end
 
 @implementation WebPresentmentRemoteAlertListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1004F83FC(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_1004F83FC(connectionCopy);
 
   return v9 & 1;
 }

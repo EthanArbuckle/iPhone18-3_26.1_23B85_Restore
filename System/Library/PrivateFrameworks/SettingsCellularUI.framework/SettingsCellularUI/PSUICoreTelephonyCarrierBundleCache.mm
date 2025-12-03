@@ -1,30 +1,30 @@
 @interface PSUICoreTelephonyCarrierBundleCache
 + (PSUICoreTelephonyCarrierBundleCache)sharedInstance;
-- (BOOL)getCarrierBundleFlagForKey:(id)a3 context:(id)a4;
+- (BOOL)getCarrierBundleFlagForKey:(id)key context:(id)context;
 - (BOOL)isMMSOnWhileRoamingForActiveDataPlan;
-- (BOOL)shouldOverride3Gto4G:(id)a3;
-- (BOOL)shouldOverrideLTEto4G:(id)a3;
+- (BOOL)shouldOverride3Gto4G:(id)g;
+- (BOOL)shouldOverrideLTEto4G:(id)g;
 - (BOOL)shouldShowVoiceRoamingSwitchForDefaultVoicePlan;
 - (BOOL)shouldShowWifiAssistForActiveDataPlan;
 - (PSUICoreTelephonyCarrierBundleCache)init;
-- (PSUICoreTelephonyCarrierBundleCache)initWithCoreTelephonyClient:(id)a3 simStatusCache:(id)a4;
+- (PSUICoreTelephonyCarrierBundleCache)initWithCoreTelephonyClient:(id)client simStatusCache:(id)cache;
 - (id)activeDataCarrierName;
-- (id)carrierBundleVersion:(id)a3;
-- (id)carrierServiceNameForServiceName:(id)a3 context:(id)a4;
-- (id)carrierServices:(id)a3;
-- (id)carrierServicesMyAccountUrlTitle:(id)a3;
-- (id)fetchCarrierBundleValue:(id)a3 context:(id)a4;
-- (id)getCarrierBundleArrayForKey:(id)a3 context:(id)a4;
-- (id)getCarrierBundleDictForKey:(id)a3 context:(id)a4;
-- (id)getCarrierBundleStringForKey:(id)a3 context:(id)a4;
-- (id)getCarrierBundleValueForKey:(id)a3 context:(id)a4;
-- (id)getDictionaryForSlotID:(int64_t)a3;
+- (id)carrierBundleVersion:(id)version;
+- (id)carrierServiceNameForServiceName:(id)name context:(id)context;
+- (id)carrierServices:(id)services;
+- (id)carrierServicesMyAccountUrlTitle:(id)title;
+- (id)fetchCarrierBundleValue:(id)value context:(id)context;
+- (id)getCarrierBundleArrayForKey:(id)key context:(id)context;
+- (id)getCarrierBundleDictForKey:(id)key context:(id)context;
+- (id)getCarrierBundleStringForKey:(id)key context:(id)context;
+- (id)getCarrierBundleValueForKey:(id)key context:(id)context;
+- (id)getDictionaryForSlotID:(int64_t)d;
 - (id)initPrivate;
-- (id)mmsInfoTitle:(id)a3;
+- (id)mmsInfoTitle:(id)title;
 - (void)_clearCache;
-- (void)bulkFetchCarrierServicesNamesForServices:(id)a3 context:(id)a4;
-- (void)bulkFetchForKeys:(id)a3 defaultValues:(id)a4;
-- (void)carrierBundleChange:(id)a3;
+- (void)bulkFetchCarrierServicesNamesForServices:(id)services context:(id)context;
+- (void)bulkFetchForKeys:(id)keys defaultValues:(id)values;
+- (void)carrierBundleChange:(id)change;
 - (void)createKeysAndDefaultValues;
 - (void)fetchCarrierBundleVersion;
 - (void)resetDictionariesBySlot;
@@ -57,31 +57,31 @@ uint64_t __53__PSUICoreTelephonyCarrierBundleCache_sharedInstance__block_invoke(
   v3 = objc_alloc(MEMORY[0x277CC37B0]);
   v4 = [MEMORY[0x277D4D878] createCTClientSerialQueue:@"carrier_bundle"];
   v5 = [v3 initWithQueue:v4];
-  v6 = [MEMORY[0x277D4D868] sharedInstance];
-  v7 = [(PSUICoreTelephonyCarrierBundleCache *)self initWithCoreTelephonyClient:v5 simStatusCache:v6];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  v7 = [(PSUICoreTelephonyCarrierBundleCache *)self initWithCoreTelephonyClient:v5 simStatusCache:mEMORY[0x277D4D868]];
 
   return v7;
 }
 
-- (PSUICoreTelephonyCarrierBundleCache)initWithCoreTelephonyClient:(id)a3 simStatusCache:(id)a4
+- (PSUICoreTelephonyCarrierBundleCache)initWithCoreTelephonyClient:(id)client simStatusCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = PSUICoreTelephonyCarrierBundleCache;
   v9 = [(PSUICoreTelephonyCarrierBundleCache *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_client, a3);
+    objc_storeStrong(&v9->_client, client);
     [(CoreTelephonyClient *)v10->_client setDelegate:v10];
-    objc_storeStrong(&v10->_simCache, a4);
+    objc_storeStrong(&v10->_simCache, cache);
     [(PSUICoreTelephonyCarrierBundleCache *)v10 resetDictionariesBySlot];
     [(PSUICoreTelephonyCarrierBundleCache *)v10 createKeysAndDefaultValues];
     [(PSUICoreTelephonyCarrierBundleCache *)v10 _clearCache];
     [(PSUICoreTelephonyCarrierBundleCache *)v10 bulkFetch];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v10 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
   }
 
   return v10;
@@ -90,12 +90,12 @@ uint64_t __53__PSUICoreTelephonyCarrierBundleCache_sharedInstance__block_invoke(
 - (PSUICoreTelephonyCarrierBundleCache)init
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     v3 = 136315138;
     v4 = "[PSUICoreTelephonyCarrierBundleCache init]";
-    _os_log_error_impl(&dword_2658DE000, v2, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called: %s", &v3, 0xCu);
+    _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called: %s", &v3, 0xCu);
   }
 
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
@@ -104,9 +104,9 @@ uint64_t __53__PSUICoreTelephonyCarrierBundleCache_sharedInstance__block_invoke(
 - (void)resetDictionariesBySlot
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(PSSimStatusCache *)self->_simCache subscriptionContexts];
+  subscriptionContexts = [(PSSimStatusCache *)self->_simCache subscriptionContexts];
   os_unfair_lock_lock(&cacheLock);
-  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(subscriptionContexts, "count")}];
   dictionariesBySlot = self->_dictionariesBySlot;
   self->_dictionariesBySlot = v4;
 
@@ -114,8 +114,8 @@ uint64_t __53__PSUICoreTelephonyCarrierBundleCache_sharedInstance__block_invoke(
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(PSSimStatusCache *)self->_simCache subscriptionContexts];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subscriptionContexts2 = [(PSSimStatusCache *)self->_simCache subscriptionContexts];
+  v7 = [subscriptionContexts2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -126,7 +126,7 @@ uint64_t __53__PSUICoreTelephonyCarrierBundleCache_sharedInstance__block_invoke(
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subscriptionContexts2);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -136,7 +136,7 @@ uint64_t __53__PSUICoreTelephonyCarrierBundleCache_sharedInstance__block_invoke(
         [(NSMutableDictionary *)v12 setObject:v13 forKey:v14];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [subscriptionContexts2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -178,11 +178,11 @@ void __65__PSUICoreTelephonyCarrierBundleCache_createKeysAndDefaultValues__block
 
 - (void)_clearCache
 {
-  v3 = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Clearing carrier bundle cache", v4, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing carrier bundle cache", v4, 2u);
   }
 
   os_unfair_lock_lock(&cacheLock);
@@ -198,7 +198,7 @@ void __65__PSUICoreTelephonyCarrierBundleCache_createKeysAndDefaultValues__block
   [(PSUICoreTelephonyCarrierBundleCache *)self bulkFetch];
 }
 
-- (id)getDictionaryForSlotID:(int64_t)a3
+- (id)getDictionaryForSlotID:(int64_t)d
 {
   dictionariesBySlot = self->_dictionariesBySlot;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -208,18 +208,18 @@ void __65__PSUICoreTelephonyCarrierBundleCache_createKeysAndDefaultValues__block
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v8 = self->_dictionariesBySlot;
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:d];
     [(NSMutableDictionary *)v8 setObject:v7 forKey:v9];
   }
 
   return v7;
 }
 
-- (void)bulkFetchForKeys:(id)a3 defaultValues:(id)a4
+- (void)bulkFetchForKeys:(id)keys defaultValues:(id)values
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  valuesCopy = values;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -249,8 +249,8 @@ void __65__PSUICoreTelephonyCarrierBundleCache_createKeysAndDefaultValues__block
         v17[3] = &unk_279BAA978;
         v17[4] = self;
         v17[5] = v12;
-        v18 = v6;
-        [(CoreTelephonyClient *)client copyCarrierBundleValues:v12 keys:v18 defaultValues:v7 bundleType:v14 withFallbackBundleCheck:1 completion:v17];
+        v18 = keysCopy;
+        [(CoreTelephonyClient *)client copyCarrierBundleValues:v12 keys:v18 defaultValues:valuesCopy bundleType:v14 withFallbackBundleCheck:1 completion:v17];
 
         ++v11;
       }
@@ -317,42 +317,42 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchCarrierBundleValue:(id)a3 context:(id)a4
+- (id)fetchCarrierBundleValue:(id)value context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  valueCopy = value;
+  contextCopy = context;
+  getLogger = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v20 = "[PSUICoreTelephonyCarrierBundleCache fetchCarrierBundleValue:context:]";
     v21 = 2112;
-    v22 = v7;
+    v22 = contextCopy;
     v23 = 2112;
-    v24 = v6;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "%s executing fetch %@ %@", buf, 0x20u);
+    v24 = valueCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s executing fetch %@ %@", buf, 0x20u);
   }
 
   client = self->_client;
   v18 = 0;
-  v10 = [(CoreTelephonyClient *)client context:v7 getCarrierBundleValue:v6 error:&v18];
+  v10 = [(CoreTelephonyClient *)client context:contextCopy getCarrierBundleValue:valueCopy error:&v18];
   v11 = v18;
-  v12 = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
-  v13 = v12;
+  getLogger2 = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
+  v13 = getLogger2;
   if (v11)
   {
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v7 uuid];
+      uuid = [contextCopy uuid];
       *buf = 136316162;
       v20 = "[PSUICoreTelephonyCarrierBundleCache fetchCarrierBundleValue:context:]";
       v21 = 2112;
-      v22 = v7;
+      v22 = contextCopy;
       v23 = 2114;
-      v24 = v17;
+      v24 = uuid;
       v25 = 2114;
-      v26 = v6;
+      v26 = valueCopy;
       v27 = 2114;
       v28 = v11;
       _os_log_error_impl(&dword_2658DE000, v13, OS_LOG_TYPE_ERROR, "%s fetch from: %@ with UUID:%{public}@ for key hierarchy: %{public}@ failed. Error: %{public}@", buf, 0x34u);
@@ -362,17 +362,17 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
     v10 = 0;
   }
 
-  else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  else if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v7 uuid];
+    uuid2 = [contextCopy uuid];
     *buf = 136316162;
     v20 = "[PSUICoreTelephonyCarrierBundleCache fetchCarrierBundleValue:context:]";
     v21 = 2112;
-    v22 = v7;
+    v22 = contextCopy;
     v23 = 2114;
-    v24 = v14;
+    v24 = uuid2;
     v25 = 2114;
-    v26 = v6;
+    v26 = valueCopy;
     v27 = 2114;
     v28 = v10;
     _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "%s fetch from: %@ with UUID:%{public}@ for key hierarchy: %{public}@ successful. Value:%{public}@", buf, 0x34u);
@@ -383,23 +383,23 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
   return v10;
 }
 
-- (id)getCarrierBundleValueForKey:(id)a3 context:(id)a4
+- (id)getCarrierBundleValueForKey:(id)key context:(id)context
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  contextCopy = context;
   os_unfair_lock_lock(&cacheLock);
-  v8 = -[PSUICoreTelephonyCarrierBundleCache getDictionaryForSlotID:](self, "getDictionaryForSlotID:", [v7 slotID]);
-  v9 = [v8 objectForKey:v6];
+  v8 = -[PSUICoreTelephonyCarrierBundleCache getDictionaryForSlotID:](self, "getDictionaryForSlotID:", [contextCopy slotID]);
+  v9 = [v8 objectForKey:keyCopy];
   if (!v9)
   {
-    v13[0] = v6;
+    v13[0] = keyCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    v9 = [(PSUICoreTelephonyCarrierBundleCache *)self fetchCarrierBundleValue:v10 context:v7];
+    v9 = [(PSUICoreTelephonyCarrierBundleCache *)self fetchCarrierBundleValue:v10 context:contextCopy];
 
     if (v9)
     {
-      [v8 setObject:v9 forKey:v6];
+      [v8 setObject:v9 forKey:keyCopy];
     }
   }
 
@@ -410,9 +410,9 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
   return v9;
 }
 
-- (id)getCarrierBundleStringForKey:(id)a3 context:(id)a4
+- (id)getCarrierBundleStringForKey:(id)key context:(id)context
 {
-  v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleValueForKey:a3 context:a4];
+  v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleValueForKey:key context:context];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = v4;
@@ -426,25 +426,25 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
   return v5;
 }
 
-- (BOOL)getCarrierBundleFlagForKey:(id)a3 context:(id)a4
+- (BOOL)getCarrierBundleFlagForKey:(id)key context:(id)context
 {
-  v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleValueForKey:a3 context:a4];
+  v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleValueForKey:key context:context];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)getCarrierBundleArrayForKey:(id)a3 context:(id)a4
+- (id)getCarrierBundleArrayForKey:(id)key context:(id)context
 {
-  v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleValueForKey:a3 context:a4];
+  v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleValueForKey:key context:context];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = v4;
@@ -458,9 +458,9 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
   return v5;
 }
 
-- (id)getCarrierBundleDictForKey:(id)a3 context:(id)a4
+- (id)getCarrierBundleDictForKey:(id)key context:(id)context
 {
-  v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleValueForKey:a3 context:a4];
+  v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleValueForKey:key context:context];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = v4;
@@ -476,8 +476,8 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
 
 - (id)activeDataCarrierName
 {
-  v3 = [(PSSimStatusCache *)self->_simCache activeDataSubscriptionContext];
-  v4 = [(PSUICoreTelephonyCarrierBundleCache *)self carrierName:v3];
+  activeDataSubscriptionContext = [(PSSimStatusCache *)self->_simCache activeDataSubscriptionContext];
+  v4 = [(PSUICoreTelephonyCarrierBundleCache *)self carrierName:activeDataSubscriptionContext];
 
   return v4;
 }
@@ -485,21 +485,21 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
 - (void)fetchCarrierBundleVersion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v26 = "[PSUICoreTelephonyCarrierBundleCache fetchCarrierBundleVersion]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
   }
 
-  v4 = [(PSSimStatusCache *)self->_simCache subscriptionContexts];
+  subscriptionContexts = [(PSSimStatusCache *)self->_simCache subscriptionContexts];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = subscriptionContexts;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v7)
   {
@@ -522,11 +522,11 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
         v20 = 0;
         v14 = [(CoreTelephonyClient *)client copyCarrierBundleVersion:v12 error:&v20, v19];
         v15 = v20;
-        v16 = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
-        v17 = v16;
+        getLogger2 = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
+        v17 = getLogger2;
         if (v15)
         {
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
           {
             *buf = v19;
             v26 = "[PSUICoreTelephonyCarrierBundleCache fetchCarrierBundleVersion]";
@@ -540,7 +540,7 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
 
         else
         {
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v19;
             v26 = "[PSUICoreTelephonyCarrierBundleCache fetchCarrierBundleVersion]";
@@ -572,61 +572,61 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)carrierBundleVersion:(id)a3
+- (id)carrierBundleVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCarrierBundleCache *)self carrierBundleVersionDict];
+  versionCopy = version;
+  carrierBundleVersionDict = [(PSUICoreTelephonyCarrierBundleCache *)self carrierBundleVersionDict];
 
-  if (!v5)
+  if (!carrierBundleVersionDict)
   {
     [(PSUICoreTelephonyCarrierBundleCache *)self fetchCarrierBundleVersion];
   }
 
   os_unfair_lock_lock(&cacheLock);
-  v6 = [(PSUICoreTelephonyCarrierBundleCache *)self carrierBundleVersionDict];
+  carrierBundleVersionDict2 = [(PSUICoreTelephonyCarrierBundleCache *)self carrierBundleVersionDict];
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v4 slotID];
+  slotID = [versionCopy slotID];
 
-  v9 = [v7 numberWithInteger:v8];
-  v10 = [v6 objectForKeyedSubscript:v9];
+  v9 = [v7 numberWithInteger:slotID];
+  v10 = [carrierBundleVersionDict2 objectForKeyedSubscript:v9];
 
   os_unfair_lock_unlock(&cacheLock);
 
   return v10;
 }
 
-- (BOOL)shouldOverride3Gto4G:(id)a3
+- (BOOL)shouldOverride3Gto4G:(id)g
 {
-  v3 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:@"DataIndicatorOverride" context:a3];
+  v3 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:@"DataIndicatorOverride" context:g];
   v4 = [v3 isEqualToString:@"4G"];
 
   return v4;
 }
 
-- (BOOL)shouldOverrideLTEto4G:(id)a3
+- (BOOL)shouldOverrideLTEto4G:(id)g
 {
-  v3 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:@"DataIndicatorOverrideForLTE" context:a3];
+  v3 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:@"DataIndicatorOverrideForLTE" context:g];
   v4 = [v3 isEqualToString:@"4G"];
 
   return v4;
 }
 
-- (void)bulkFetchCarrierServicesNamesForServices:(id)a3 context:(id)a4
+- (void)bulkFetchCarrierServicesNamesForServices:(id)services context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  contextCopy = context;
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
   os_unfair_lock_lock(&cacheLock);
-  v19 = v7;
-  v18 = self;
-  v8 = -[PSUICoreTelephonyCarrierBundleCache getDictionaryForSlotID:](self, "getDictionaryForSlotID:", [v7 slotID]);
+  v19 = contextCopy;
+  selfCopy = self;
+  v8 = -[PSUICoreTelephonyCarrierBundleCache getDictionaryForSlotID:](self, "getDictionaryForSlotID:", [contextCopy slotID]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = servicesCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -663,44 +663,44 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
   os_unfair_lock_unlock(&cacheLock);
   if ([v21 count])
   {
-    [(PSUICoreTelephonyCarrierBundleCache *)v18 bulkFetchForKeys:v21 defaultValues:v20];
+    [(PSUICoreTelephonyCarrierBundleCache *)selfCopy bulkFetchForKeys:v21 defaultValues:v20];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)carrierServices:(id)a3
+- (id)carrierServices:(id)services
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleArrayForKey:@"Services" context:v4];
-  [(PSUICoreTelephonyCarrierBundleCache *)self bulkFetchCarrierServicesNamesForServices:v5 context:v4];
+  servicesCopy = services;
+  v5 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleArrayForKey:@"Services" context:servicesCopy];
+  [(PSUICoreTelephonyCarrierBundleCache *)self bulkFetchCarrierServicesNamesForServices:v5 context:servicesCopy];
 
   return v5;
 }
 
-- (id)carrierServiceNameForServiceName:(id)a3 context:(id)a4
+- (id)carrierServiceNameForServiceName:(id)name context:(id)context
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithFormat:@"%@_SERVICE_NAME", v8];
+  contextCopy = context;
+  nameCopy = name;
+  nameCopy = [[v6 alloc] initWithFormat:@"%@_SERVICE_NAME", nameCopy];
 
-  v10 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:v9 context:v7];
+  v10 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:nameCopy context:contextCopy];
 
   return v10;
 }
 
-- (id)carrierServicesMyAccountUrlTitle:(id)a3
+- (id)carrierServicesMyAccountUrlTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:@"MyAccountURLTitle" context:v4];
+  titleCopy = title;
+  v5 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:@"MyAccountURLTitle" context:titleCopy];
   if (v5)
   {
     v6 = v5;
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_MYACCOUNTURLTITLE", v5];
     if (v7)
     {
-      v8 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:v7 context:v4];
+      v8 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:v7 context:titleCopy];
       if (v8 && ([v7 isEqualToString:v8] & 1) == 0)
       {
         v9 = v8;
@@ -712,23 +712,23 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
 
   else
   {
-    v6 = [(PSUICoreTelephonyCarrierBundleCache *)self carrierName:v4];
+    v6 = [(PSUICoreTelephonyCarrierBundleCache *)self carrierName:titleCopy];
   }
 
   return v6;
 }
 
-- (id)mmsInfoTitle:(id)a3
+- (id)mmsInfoTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:@"MMSInformationURLTitle" context:v4];
+  titleCopy = title;
+  v5 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:@"MMSInformationURLTitle" context:titleCopy];
   if (v5)
   {
     v6 = v5;
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_MMSINFORMATIONURLTITLE", v5];
     if (v7)
     {
-      v8 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:v7 context:v4];
+      v8 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleStringForKey:v7 context:titleCopy];
       if (v8 && ([v7 isEqualToString:v8] & 1) == 0)
       {
         v9 = v8;
@@ -740,7 +740,7 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
 
   else
   {
-    v6 = [(PSUICoreTelephonyCarrierBundleCache *)self carrierName:v4];
+    v6 = [(PSUICoreTelephonyCarrierBundleCache *)self carrierName:titleCopy];
   }
 
   return v6;
@@ -748,10 +748,10 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
 
 - (BOOL)shouldShowVoiceRoamingSwitchForDefaultVoicePlan
 {
-  v3 = [(PSSimStatusCache *)self->_simCache defaultVoiceSubscriptionContext];
-  if (v3)
+  defaultVoiceSubscriptionContext = [(PSSimStatusCache *)self->_simCache defaultVoiceSubscriptionContext];
+  if (defaultVoiceSubscriptionContext)
   {
-    v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleFlagForKey:@"ShowVoiceRoamingSwitch" context:v3];
+    v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleFlagForKey:@"ShowVoiceRoamingSwitch" context:defaultVoiceSubscriptionContext];
   }
 
   else
@@ -764,15 +764,15 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
 
 - (BOOL)isMMSOnWhileRoamingForActiveDataPlan
 {
-  v3 = [(PSSimStatusCache *)self->_simCache activeDataSubscriptionContext];
-  if (v3)
+  activeDataSubscriptionContext = [(PSSimStatusCache *)self->_simCache activeDataSubscriptionContext];
+  if (activeDataSubscriptionContext)
   {
     os_unfair_lock_lock(&cacheLock);
-    v4 = -[PSUICoreTelephonyCarrierBundleCache getDictionaryForSlotID:](self, "getDictionaryForSlotID:", [v3 slotID]);
+    v4 = -[PSUICoreTelephonyCarrierBundleCache getDictionaryForSlotID:](self, "getDictionaryForSlotID:", [activeDataSubscriptionContext slotID]);
     v5 = [v4 objectForKey:@"OnWhileRoaming"];
     if (!v5)
     {
-      v6 = [(PSUICoreTelephonyCarrierBundleCache *)self fetchCarrierBundleValue:&unk_287749308 context:v3];
+      v6 = [(PSUICoreTelephonyCarrierBundleCache *)self fetchCarrierBundleValue:&unk_287749308 context:activeDataSubscriptionContext];
       if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v5 = v6;
@@ -790,70 +790,70 @@ void __70__PSUICoreTelephonyCarrierBundleCache_bulkFetchForKeys_defaultValues___
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)shouldShowWifiAssistForActiveDataPlan
 {
-  v3 = [(PSSimStatusCache *)self->_simCache activeDataSubscriptionContext];
-  if (v3)
+  activeDataSubscriptionContext = [(PSSimStatusCache *)self->_simCache activeDataSubscriptionContext];
+  if (activeDataSubscriptionContext)
   {
-    v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleDictForKey:@"ReliableNetworkFallback" context:v3];
+    v4 = [(PSUICoreTelephonyCarrierBundleCache *)self getCarrierBundleDictForKey:@"ReliableNetworkFallback" context:activeDataSubscriptionContext];
     v5 = v4;
     if (v4)
     {
       v6 = [v4 objectForKeyedSubscript:@"UserCanEdit"];
       if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v7 = [v6 BOOLValue];
+        bOOLValue = [v6 BOOLValue];
       }
 
       else
       {
-        v7 = 1;
+        bOOLValue = 1;
       }
     }
 
     else
     {
-      v7 = 1;
+      bOOLValue = 1;
     }
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  changeCopy = change;
+  getLogger = [(PSUICoreTelephonyCarrierBundleCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[PSUICoreTelephonyCarrierBundleCache carrierBundleChange:]";
     v9 = 2112;
-    v10 = v4;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "%s updating cached values for: %@", &v7, 0x16u);
+    v10 = changeCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s updating cached values for: %@", &v7, 0x16u);
   }
 
   [(PSUICoreTelephonyCarrierBundleCache *)self _clearCache];

@@ -1,80 +1,80 @@
 @interface WBSHistoryServiceDatabaseProxy
-- (WBSHistoryServiceDatabaseProxy)initWithProxy:(id)a3;
-- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)a3;
-- (void)addAutocompleteTrigger:(id)a3 forURL:(id)a4 completionHandler:(id)a5;
-- (void)assignURLString:(id)a3 toTopicTagsWithIDs:(id)a4 completionHandler:(id)a5;
-- (void)checkIfLocalVisitExistsForDatabaseIDs:(id)a3 withCompletion:(id)a4;
-- (void)clearAllHistoryInsertingTombstoneUpToDate:(id)a3 clearAllSpotlightHistoryForProfile:(BOOL)a4 completionHandler:(id)a5;
-- (void)clearHistoryItems:(id)a3 afterDate:(id)a4 beforeDate:(id)a5 tombstoneMode:(unint64_t)a6 completionHandler:(id)a7;
-- (void)clearHistoryVisitsAddedAfterDate:(id)a3 beforeDate:(id)a4 tombstoneMode:(unint64_t)a5 clearAllSpotlightHistoryForProfile:(BOOL)a6 completionHandler:(id)a7;
-- (void)computeFrequentlyVisitedSites:(unint64_t)a3 minimalVisitCountScore:(unint64_t)a4 blockList:(id)a5 allowList:(id)a6 options:(unint64_t)a7 currentTime:(double)a8 completionHandler:(id)a9;
-- (void)convertTombstoneWithGenerationToSecureFormat:(int64_t)a3 lastSyncedGeneration:(int64_t)a4 completionHandler:(id)a5;
-- (void)createTagsForIdentifiers:(id)a3 withTitles:(id)a4 type:(unint64_t)a5 level:(int64_t)a6 completionHandler:(id)a7;
-- (void)dispatchEvent:(id)a3 listenersToIgnore:(id)a4 persistForDelayedDispatching:(BOOL)a5 completionHandler:(id)a6;
-- (void)expireOldVisits:(double)a3 completionHandler:(id)a4;
-- (void)exportHistory:(id)a3 completionHandler:(id)a4;
-- (void)fetchAllTombstonesWithCompletionHandler:(id)a3;
-- (void)fetchAutocompleteTriggersForURLString:(id)a3 completionHandler:(id)a4;
-- (void)fetchCloudClientVersionTable:(id)a3;
-- (void)fetchDatabaseURL:(id)a3;
-- (void)fetchDomainExpansions:(id)a3;
-- (void)fetchEventsForListener:(id)a3 completionHandler:(id)a4;
-- (void)fetchMetadataForKeys:(id)a3 completionHandler:(id)a4;
-- (void)fetchWithOptions:(unint64_t)a3 predicate:(id)a4 completionHandler:(id)a5;
-- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)a3;
-- (void)flushWithCompletionHandler:(id)a3;
-- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)a3 beforeDate:(id)a4 onlyFromThisDevice:(BOOL)a5 completionHandler:(id)a6;
-- (void)getItemCountBeforeDate:(id)a3 completionHandler:(id)a4;
-- (void)getVisitedLinksWithCompletionHandler:(id)a3;
-- (void)groupVisitsIntoSessionsBetweenStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5;
-- (void)lastSeenDateForCloudClientVersion:(unint64_t)a3 completionHandler:(id)a4;
-- (void)markEventsAsReceivedByListener:(id)a3 eventIDs:(id)a4 completionHandler:(id)a5;
-- (void)performMaintenanceWithAgeLimit:(double)a3 itemCountLimit:(unint64_t)a4 completionHandler:(id)a5;
-- (void)pruneTombstonesWithEndDatePriorToDate:(id)a3 completionHandler:(id)a4;
-- (void)recomputeItemScoresWithCompletionHandler:(id)a3;
-- (void)recordVisitWithIdentifier:(id)a3 sourceVisit:(id)a4 title:(id)a5 wasHTTPNonGet:(BOOL)a6 loadSuccessful:(BOOL)a7 origin:(int64_t)a8 attributes:(unint64_t)a9 statusCode:(int64_t)a10 completionHandler:(id)a11;
-- (void)replayAndAddTombstones:(id)a3 completionHandler:(id)a4;
-- (void)resetCloudHistoryDataWithCompletionHandler:(id)a3;
-- (void)searchForUserTypedString:(id)a3 options:(unint64_t)a4 currentTime:(double)a5 writeHandle:(id)a6 completionHandler:(id)a7;
-- (void)setLastSeenDate:(id)a3 forCloudClientVersion:(unint64_t)a4 completionHandler:(id)a5;
-- (void)setMetadataValue:(id)a3 forKey:(id)a4 completionHandler:(id)a5;
-- (void)setTitle:(id)a3 ofTagWithID:(int64_t)a4 completionHandler:(id)a5;
-- (void)startImportHistorySessionWithVisitTimePrecision:(unint64_t)a3 completionHandler:(id)a4;
-- (void)updateDatabaseAfterSuccessfulSyncWithGeneration:(int64_t)a3 completionHandler:(id)a4;
-- (void)updateVisitWithIdentifier:(id)a3 removeAttributes:(unint64_t)a4 addAttributes:(unint64_t)a5 completionHandler:(id)a6;
-- (void)updateVisitWithIdentifier:(id)a3 title:(id)a4 completionHandler:(id)a5;
-- (void)vacuumHistoryWithCompletionHandler:(id)a3;
-- (void)visitIdentifiersMatchingExistingVisits:(id)a3 desiredVisitTimePrecision:(unint64_t)a4 completionHandler:(id)a5;
-- (void)visitsAndTombstonesNeedingSyncWithVisitSyncWindow:(double)a3 completionHandler:(id)a4;
+- (WBSHistoryServiceDatabaseProxy)initWithProxy:(id)proxy;
+- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)handler;
+- (void)addAutocompleteTrigger:(id)trigger forURL:(id)l completionHandler:(id)handler;
+- (void)assignURLString:(id)string toTopicTagsWithIDs:(id)ds completionHandler:(id)handler;
+- (void)checkIfLocalVisitExistsForDatabaseIDs:(id)ds withCompletion:(id)completion;
+- (void)clearAllHistoryInsertingTombstoneUpToDate:(id)date clearAllSpotlightHistoryForProfile:(BOOL)profile completionHandler:(id)handler;
+- (void)clearHistoryItems:(id)items afterDate:(id)date beforeDate:(id)beforeDate tombstoneMode:(unint64_t)mode completionHandler:(id)handler;
+- (void)clearHistoryVisitsAddedAfterDate:(id)date beforeDate:(id)beforeDate tombstoneMode:(unint64_t)mode clearAllSpotlightHistoryForProfile:(BOOL)profile completionHandler:(id)handler;
+- (void)computeFrequentlyVisitedSites:(unint64_t)sites minimalVisitCountScore:(unint64_t)score blockList:(id)list allowList:(id)allowList options:(unint64_t)options currentTime:(double)time completionHandler:(id)handler;
+- (void)convertTombstoneWithGenerationToSecureFormat:(int64_t)format lastSyncedGeneration:(int64_t)generation completionHandler:(id)handler;
+- (void)createTagsForIdentifiers:(id)identifiers withTitles:(id)titles type:(unint64_t)type level:(int64_t)level completionHandler:(id)handler;
+- (void)dispatchEvent:(id)event listenersToIgnore:(id)ignore persistForDelayedDispatching:(BOOL)dispatching completionHandler:(id)handler;
+- (void)expireOldVisits:(double)visits completionHandler:(id)handler;
+- (void)exportHistory:(id)history completionHandler:(id)handler;
+- (void)fetchAllTombstonesWithCompletionHandler:(id)handler;
+- (void)fetchAutocompleteTriggersForURLString:(id)string completionHandler:(id)handler;
+- (void)fetchCloudClientVersionTable:(id)table;
+- (void)fetchDatabaseURL:(id)l;
+- (void)fetchDomainExpansions:(id)expansions;
+- (void)fetchEventsForListener:(id)listener completionHandler:(id)handler;
+- (void)fetchMetadataForKeys:(id)keys completionHandler:(id)handler;
+- (void)fetchWithOptions:(unint64_t)options predicate:(id)predicate completionHandler:(id)handler;
+- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)handler;
+- (void)flushWithCompletionHandler:(id)handler;
+- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)date beforeDate:(id)beforeDate onlyFromThisDevice:(BOOL)device completionHandler:(id)handler;
+- (void)getItemCountBeforeDate:(id)date completionHandler:(id)handler;
+- (void)getVisitedLinksWithCompletionHandler:(id)handler;
+- (void)groupVisitsIntoSessionsBetweenStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler;
+- (void)lastSeenDateForCloudClientVersion:(unint64_t)version completionHandler:(id)handler;
+- (void)markEventsAsReceivedByListener:(id)listener eventIDs:(id)ds completionHandler:(id)handler;
+- (void)performMaintenanceWithAgeLimit:(double)limit itemCountLimit:(unint64_t)countLimit completionHandler:(id)handler;
+- (void)pruneTombstonesWithEndDatePriorToDate:(id)date completionHandler:(id)handler;
+- (void)recomputeItemScoresWithCompletionHandler:(id)handler;
+- (void)recordVisitWithIdentifier:(id)identifier sourceVisit:(id)visit title:(id)title wasHTTPNonGet:(BOOL)get loadSuccessful:(BOOL)successful origin:(int64_t)origin attributes:(unint64_t)attributes statusCode:(int64_t)self0 completionHandler:(id)self1;
+- (void)replayAndAddTombstones:(id)tombstones completionHandler:(id)handler;
+- (void)resetCloudHistoryDataWithCompletionHandler:(id)handler;
+- (void)searchForUserTypedString:(id)string options:(unint64_t)options currentTime:(double)time writeHandle:(id)handle completionHandler:(id)handler;
+- (void)setLastSeenDate:(id)date forCloudClientVersion:(unint64_t)version completionHandler:(id)handler;
+- (void)setMetadataValue:(id)value forKey:(id)key completionHandler:(id)handler;
+- (void)setTitle:(id)title ofTagWithID:(int64_t)d completionHandler:(id)handler;
+- (void)startImportHistorySessionWithVisitTimePrecision:(unint64_t)precision completionHandler:(id)handler;
+- (void)updateDatabaseAfterSuccessfulSyncWithGeneration:(int64_t)generation completionHandler:(id)handler;
+- (void)updateVisitWithIdentifier:(id)identifier removeAttributes:(unint64_t)attributes addAttributes:(unint64_t)addAttributes completionHandler:(id)handler;
+- (void)updateVisitWithIdentifier:(id)identifier title:(id)title completionHandler:(id)handler;
+- (void)vacuumHistoryWithCompletionHandler:(id)handler;
+- (void)visitIdentifiersMatchingExistingVisits:(id)visits desiredVisitTimePrecision:(unint64_t)precision completionHandler:(id)handler;
+- (void)visitsAndTombstonesNeedingSyncWithVisitSyncWindow:(double)window completionHandler:(id)handler;
 @end
 
 @implementation WBSHistoryServiceDatabaseProxy
 
-- (WBSHistoryServiceDatabaseProxy)initWithProxy:(id)a3
+- (WBSHistoryServiceDatabaseProxy)initWithProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v10.receiver = self;
   v10.super_class = WBSHistoryServiceDatabaseProxy;
   v6 = [(WBSHistoryServiceDatabaseProxy *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_proxy, a3);
+    objc_storeStrong(&v6->_proxy, proxy);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)a3
+- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__WBSHistoryServiceDatabaseProxy__defaultProxyErrorHandlerWithSimpleReplyHandler___block_invoke;
   v7[3] = &unk_1E7FB8300;
-  v8 = v3;
-  v4 = v3;
+  v8 = handlerCopy;
+  v4 = handlerCopy;
   v5 = MEMORY[0x1BFB13CE0](v7);
 
   return v5;
@@ -99,216 +99,216 @@ void __82__WBSHistoryServiceDatabaseProxy__defaultProxyErrorHandlerWithSimpleRep
   }
 }
 
-- (void)fetchWithOptions:(unint64_t)a3 predicate:(id)a4 completionHandler:(id)a5
+- (void)fetchWithOptions:(unint64_t)options predicate:(id)predicate completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   proxy = self->_proxy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__WBSHistoryServiceDatabaseProxy_fetchWithOptions_predicate_completionHandler___block_invoke;
   v13[3] = &unk_1E7FB8300;
-  v14 = v8;
-  v10 = v8;
-  v11 = a4;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  predicateCopy = predicate;
   v12 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v13];
-  [v12 fetchWithOptions:a3 predicate:v11 completionHandler:v10];
+  [v12 fetchWithOptions:options predicate:predicateCopy completionHandler:v10];
 }
 
-- (void)fetchDomainExpansions:(id)a3
+- (void)fetchDomainExpansions:(id)expansions
 {
   proxy = self->_proxy;
-  v5 = a3;
-  v6 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v5];
+  expansionsCopy = expansions;
+  v6 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:expansionsCopy];
   v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
 
-  [v7 fetchDomainExpansions:v5];
+  [v7 fetchDomainExpansions:expansionsCopy];
 }
 
-- (void)clearAllHistoryInsertingTombstoneUpToDate:(id)a3 clearAllSpotlightHistoryForProfile:(BOOL)a4 completionHandler:(id)a5
+- (void)clearAllHistoryInsertingTombstoneUpToDate:(id)date clearAllSpotlightHistoryForProfile:(BOOL)profile completionHandler:(id)handler
 {
-  v5 = a4;
+  profileCopy = profile;
   proxy = self->_proxy;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v8];
-  [v10 clearAllHistoryInsertingTombstoneUpToDate:v9 clearAllSpotlightHistoryForProfile:v5 completionHandler:v8];
+  handlerCopy = handler;
+  dateCopy = date;
+  v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v10 clearAllHistoryInsertingTombstoneUpToDate:dateCopy clearAllSpotlightHistoryForProfile:profileCopy completionHandler:handlerCopy];
 }
 
-- (void)clearHistoryVisitsAddedAfterDate:(id)a3 beforeDate:(id)a4 tombstoneMode:(unint64_t)a5 clearAllSpotlightHistoryForProfile:(BOOL)a6 completionHandler:(id)a7
+- (void)clearHistoryVisitsAddedAfterDate:(id)date beforeDate:(id)beforeDate tombstoneMode:(unint64_t)mode clearAllSpotlightHistoryForProfile:(BOOL)profile completionHandler:(id)handler
 {
-  v7 = a6;
+  profileCopy = profile;
   proxy = self->_proxy;
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v12];
-  [v15 clearHistoryVisitsAddedAfterDate:v14 beforeDate:v13 tombstoneMode:a5 clearAllSpotlightHistoryForProfile:v7 completionHandler:v12];
+  handlerCopy = handler;
+  beforeDateCopy = beforeDate;
+  dateCopy = date;
+  v15 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v15 clearHistoryVisitsAddedAfterDate:dateCopy beforeDate:beforeDateCopy tombstoneMode:mode clearAllSpotlightHistoryForProfile:profileCopy completionHandler:handlerCopy];
 }
 
-- (void)clearHistoryItems:(id)a3 afterDate:(id)a4 beforeDate:(id)a5 tombstoneMode:(unint64_t)a6 completionHandler:(id)a7
+- (void)clearHistoryItems:(id)items afterDate:(id)date beforeDate:(id)beforeDate tombstoneMode:(unint64_t)mode completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v12];
-  [v16 clearHistoryItems:v15 afterDate:v14 beforeDate:v13 tombstoneMode:a6 completionHandler:v12];
+  handlerCopy = handler;
+  beforeDateCopy = beforeDate;
+  dateCopy = date;
+  itemsCopy = items;
+  v16 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v16 clearHistoryItems:itemsCopy afterDate:dateCopy beforeDate:beforeDateCopy tombstoneMode:mode completionHandler:handlerCopy];
 }
 
-- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)a3
+- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v4 = a3;
-  v5 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v4];
-  [v5 finishClearingHistoryIfNecessaryWithCompletionHandler:v4];
+  handlerCopy = handler;
+  v5 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v5 finishClearingHistoryIfNecessaryWithCompletionHandler:handlerCopy];
 }
 
-- (void)expireOldVisits:(double)a3 completionHandler:(id)a4
+- (void)expireOldVisits:(double)visits completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v6 = a4;
+  handlerCopy = handler;
+  v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v7 expireOldVisits:handlerCopy completionHandler:visits];
+}
+
+- (void)recomputeItemScoresWithCompletionHandler:(id)handler
+{
+  proxy = self->_proxy;
+  handlerCopy = handler;
+  v6 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:handlerCopy];
   v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
-  [v7 expireOldVisits:v6 completionHandler:a3];
+
+  [v7 recomputeItemScoresWithCompletionHandler:handlerCopy];
 }
 
-- (void)recomputeItemScoresWithCompletionHandler:(id)a3
+- (void)performMaintenanceWithAgeLimit:(double)limit itemCountLimit:(unint64_t)countLimit completionHandler:(id)handler
 {
-  proxy = self->_proxy;
-  v5 = a3;
-  v6 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v5];
-  v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
-
-  [v7 recomputeItemScoresWithCompletionHandler:v5];
-}
-
-- (void)performMaintenanceWithAgeLimit:(double)a3 itemCountLimit:(unint64_t)a4 completionHandler:(id)a5
-{
-  v8 = a5;
+  handlerCopy = handler;
   proxy = self->_proxy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __98__WBSHistoryServiceDatabaseProxy_performMaintenanceWithAgeLimit_itemCountLimit_completionHandler___block_invoke;
   v12[3] = &unk_1E7FB8300;
-  v13 = v8;
-  v10 = v8;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
   v11 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v12];
-  [v11 performMaintenanceWithAgeLimit:a4 itemCountLimit:v10 completionHandler:a3];
+  [v11 performMaintenanceWithAgeLimit:countLimit itemCountLimit:v10 completionHandler:limit];
 }
 
-- (void)pruneTombstonesWithEndDatePriorToDate:(id)a3 completionHandler:(id)a4
+- (void)pruneTombstonesWithEndDatePriorToDate:(id)date completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   proxy = self->_proxy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __90__WBSHistoryServiceDatabaseProxy_pruneTombstonesWithEndDatePriorToDate_completionHandler___block_invoke;
   v11[3] = &unk_1E7FB8300;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  dateCopy = date;
   v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v11];
-  [v10 pruneTombstonesWithEndDatePriorToDate:v9 completionHandler:v8];
+  [v10 pruneTombstonesWithEndDatePriorToDate:dateCopy completionHandler:v8];
 }
 
-- (void)convertTombstoneWithGenerationToSecureFormat:(int64_t)a3 lastSyncedGeneration:(int64_t)a4 completionHandler:(id)a5
+- (void)convertTombstoneWithGenerationToSecureFormat:(int64_t)format lastSyncedGeneration:(int64_t)generation completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v8 = a5;
-  v9 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v8];
-  [v9 convertTombstoneWithGenerationToSecureFormat:a3 lastSyncedGeneration:a4 completionHandler:v8];
+  handlerCopy = handler;
+  v9 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v9 convertTombstoneWithGenerationToSecureFormat:format lastSyncedGeneration:generation completionHandler:handlerCopy];
 }
 
-- (void)replayAndAddTombstones:(id)a3 completionHandler:(id)a4
+- (void)replayAndAddTombstones:(id)tombstones completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
-  [v8 replayAndAddTombstones:v7 completionHandler:v6];
+  handlerCopy = handler;
+  tombstonesCopy = tombstones;
+  v8 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v8 replayAndAddTombstones:tombstonesCopy completionHandler:handlerCopy];
 }
 
-- (void)fetchAllTombstonesWithCompletionHandler:(id)a3
+- (void)fetchAllTombstonesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   proxy = self->_proxy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__WBSHistoryServiceDatabaseProxy_fetchAllTombstonesWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7FB8300;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v8];
   [v7 fetchAllTombstonesWithCompletionHandler:v6];
 }
 
-- (void)addAutocompleteTrigger:(id)a3 forURL:(id)a4 completionHandler:(id)a5
+- (void)addAutocompleteTrigger:(id)trigger forURL:(id)l completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v8];
-  [v11 addAutocompleteTrigger:v10 forURL:v9 completionHandler:v8];
+  handlerCopy = handler;
+  lCopy = l;
+  triggerCopy = trigger;
+  v11 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v11 addAutocompleteTrigger:triggerCopy forURL:lCopy completionHandler:handlerCopy];
 }
 
-- (void)fetchAutocompleteTriggersForURLString:(id)a3 completionHandler:(id)a4
+- (void)fetchAutocompleteTriggersForURLString:(id)string completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   proxy = self->_proxy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __90__WBSHistoryServiceDatabaseProxy_fetchAutocompleteTriggersForURLString_completionHandler___block_invoke;
   v11[3] = &unk_1E7FB8300;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  stringCopy = string;
   v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v11];
-  [v10 fetchAutocompleteTriggersForURLString:v9 completionHandler:v8];
+  [v10 fetchAutocompleteTriggersForURLString:stringCopy completionHandler:v8];
 }
 
-- (void)recordVisitWithIdentifier:(id)a3 sourceVisit:(id)a4 title:(id)a5 wasHTTPNonGet:(BOOL)a6 loadSuccessful:(BOOL)a7 origin:(int64_t)a8 attributes:(unint64_t)a9 statusCode:(int64_t)a10 completionHandler:(id)a11
+- (void)recordVisitWithIdentifier:(id)identifier sourceVisit:(id)visit title:(id)title wasHTTPNonGet:(BOOL)get loadSuccessful:(BOOL)successful origin:(int64_t)origin attributes:(unint64_t)attributes statusCode:(int64_t)self0 completionHandler:(id)self1
 {
-  v12 = a7;
-  v13 = a6;
+  successfulCopy = successful;
+  getCopy = get;
   proxy = self->_proxy;
-  v18 = a11;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v18];
-  [v22 recordVisitWithIdentifier:v21 sourceVisit:v20 title:v19 wasHTTPNonGet:v13 loadSuccessful:v12 origin:a8 attributes:a9 statusCode:a10 completionHandler:v18];
+  handlerCopy = handler;
+  titleCopy = title;
+  visitCopy = visit;
+  identifierCopy = identifier;
+  v22 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v22 recordVisitWithIdentifier:identifierCopy sourceVisit:visitCopy title:titleCopy wasHTTPNonGet:getCopy loadSuccessful:successfulCopy origin:origin attributes:attributes statusCode:code completionHandler:handlerCopy];
 }
 
-- (void)updateVisitWithIdentifier:(id)a3 removeAttributes:(unint64_t)a4 addAttributes:(unint64_t)a5 completionHandler:(id)a6
-{
-  proxy = self->_proxy;
-  v10 = a6;
-  v11 = a3;
-  v12 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v10];
-  [v12 updateVisitWithIdentifier:v11 removeAttributes:a4 addAttributes:a5 completionHandler:v10];
-}
-
-- (void)updateVisitWithIdentifier:(id)a3 title:(id)a4 completionHandler:(id)a5
+- (void)updateVisitWithIdentifier:(id)identifier removeAttributes:(unint64_t)attributes addAttributes:(unint64_t)addAttributes completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v8];
-  [v11 updateVisitWithIdentifier:v10 title:v9 completionHandler:v8];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v12 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v12 updateVisitWithIdentifier:identifierCopy removeAttributes:attributes addAttributes:addAttributes completionHandler:handlerCopy];
 }
 
-- (void)flushWithCompletionHandler:(id)a3
+- (void)updateVisitWithIdentifier:(id)identifier title:(id)title completionHandler:(id)handler
 {
-  v4 = a3;
+  proxy = self->_proxy;
+  handlerCopy = handler;
+  titleCopy = title;
+  identifierCopy = identifier;
+  v11 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v11 updateVisitWithIdentifier:identifierCopy title:titleCopy completionHandler:handlerCopy];
+}
+
+- (void)flushWithCompletionHandler:(id)handler
+{
+  handlerCopy = handler;
   proxy = self->_proxy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__WBSHistoryServiceDatabaseProxy_flushWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7FB8300;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v8];
   [v7 flushWithCompletionHandler:v6];
 }
@@ -325,46 +325,46 @@ void __61__WBSHistoryServiceDatabaseProxy_flushWithCompletionHandler___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)vacuumHistoryWithCompletionHandler:(id)a3
+- (void)vacuumHistoryWithCompletionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v4 = a3;
-  v5 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v4];
-  [v5 vacuumHistoryWithCompletionHandler:v4];
+  handlerCopy = handler;
+  v5 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v5 vacuumHistoryWithCompletionHandler:handlerCopy];
 }
 
-- (void)startImportHistorySessionWithVisitTimePrecision:(unint64_t)a3 completionHandler:(id)a4
+- (void)startImportHistorySessionWithVisitTimePrecision:(unint64_t)precision completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v7 = a4;
-  v8 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v7];
+  handlerCopy = handler;
+  v8 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:handlerCopy];
   v9 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v8];
 
-  [v9 startImportHistorySessionWithVisitTimePrecision:a3 completionHandler:v7];
+  [v9 startImportHistorySessionWithVisitTimePrecision:precision completionHandler:handlerCopy];
 }
 
-- (void)exportHistory:(id)a3 completionHandler:(id)a4
+- (void)exportHistory:(id)history completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
-  [v8 exportHistory:v7 completionHandler:v6];
+  handlerCopy = handler;
+  historyCopy = history;
+  v8 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v8 exportHistory:historyCopy completionHandler:handlerCopy];
 }
 
-- (void)checkIfLocalVisitExistsForDatabaseIDs:(id)a3 withCompletion:(id)a4
+- (void)checkIfLocalVisitExistsForDatabaseIDs:(id)ds withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   proxy = self->_proxy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __87__WBSHistoryServiceDatabaseProxy_checkIfLocalVisitExistsForDatabaseIDs_withCompletion___block_invoke;
   v11[3] = &unk_1E7FB8300;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  dsCopy = ds;
   v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v11];
-  [v10 checkIfLocalVisitExistsForDatabaseIDs:v9 withCompletion:v8];
+  [v10 checkIfLocalVisitExistsForDatabaseIDs:dsCopy withCompletion:v8];
 }
 
 void __87__WBSHistoryServiceDatabaseProxy_checkIfLocalVisitExistsForDatabaseIDs_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -379,158 +379,158 @@ void __87__WBSHistoryServiceDatabaseProxy_checkIfLocalVisitExistsForDatabaseIDs_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)a3 beforeDate:(id)a4 onlyFromThisDevice:(BOOL)a5 completionHandler:(id)a6
+- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)date beforeDate:(id)beforeDate onlyFromThisDevice:(BOOL)device completionHandler:(id)handler
 {
-  v6 = a5;
+  deviceCopy = device;
   proxy = self->_proxy;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v11];
+  handlerCopy = handler;
+  beforeDateCopy = beforeDate;
+  dateCopy = date;
+  v14 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:handlerCopy];
   v15 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v14];
 
-  [v15 getHighLevelHTTPFamilyDomainsVisitedAfterDate:v13 beforeDate:v12 onlyFromThisDevice:v6 completionHandler:v11];
+  [v15 getHighLevelHTTPFamilyDomainsVisitedAfterDate:dateCopy beforeDate:beforeDateCopy onlyFromThisDevice:deviceCopy completionHandler:handlerCopy];
 }
 
-- (void)getItemCountBeforeDate:(id)a3 completionHandler:(id)a4
+- (void)getItemCountBeforeDate:(id)date completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   proxy = self->_proxy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __75__WBSHistoryServiceDatabaseProxy_getItemCountBeforeDate_completionHandler___block_invoke;
   v11[3] = &unk_1E7FB8300;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  dateCopy = date;
   v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v11];
-  [v10 getItemCountBeforeDate:v9 completionHandler:v8];
+  [v10 getItemCountBeforeDate:dateCopy completionHandler:v8];
 }
 
-- (void)getVisitedLinksWithCompletionHandler:(id)a3
+- (void)getVisitedLinksWithCompletionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v5 = a3;
-  v6 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v5];
+  handlerCopy = handler;
+  v6 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:handlerCopy];
   v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
 
-  [v7 getVisitedLinksWithCompletionHandler:v5];
+  [v7 getVisitedLinksWithCompletionHandler:handlerCopy];
 }
 
-- (void)groupVisitsIntoSessionsBetweenStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5
+- (void)groupVisitsIntoSessionsBetweenStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v9];
+  handlerCopy = handler;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v12 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:handlerCopy];
   v13 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v12];
 
-  [v13 groupVisitsIntoSessionsBetweenStartDate:v11 endDate:v10 completionHandler:v9];
+  [v13 groupVisitsIntoSessionsBetweenStartDate:dateCopy endDate:endDateCopy completionHandler:handlerCopy];
 }
 
-- (void)fetchCloudClientVersionTable:(id)a3
+- (void)fetchCloudClientVersionTable:(id)table
 {
   proxy = self->_proxy;
-  v5 = a3;
-  v6 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v5];
+  tableCopy = table;
+  v6 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:tableCopy];
   v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
 
-  [v7 fetchCloudClientVersionTable:v5];
+  [v7 fetchCloudClientVersionTable:tableCopy];
 }
 
-- (void)lastSeenDateForCloudClientVersion:(unint64_t)a3 completionHandler:(id)a4
+- (void)lastSeenDateForCloudClientVersion:(unint64_t)version completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v7 = a4;
-  v8 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v7];
+  handlerCopy = handler;
+  v8 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:handlerCopy];
   v9 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v8];
 
-  [v9 lastSeenDateForCloudClientVersion:a3 completionHandler:v7];
+  [v9 lastSeenDateForCloudClientVersion:version completionHandler:handlerCopy];
 }
 
-- (void)setLastSeenDate:(id)a3 forCloudClientVersion:(unint64_t)a4 completionHandler:(id)a5
+- (void)setLastSeenDate:(id)date forCloudClientVersion:(unint64_t)version completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v8];
-  [v10 setLastSeenDate:v9 forCloudClientVersion:a4 completionHandler:v8];
+  handlerCopy = handler;
+  dateCopy = date;
+  v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v10 setLastSeenDate:dateCopy forCloudClientVersion:version completionHandler:handlerCopy];
 }
 
-- (void)fetchMetadataForKeys:(id)a3 completionHandler:(id)a4
+- (void)fetchMetadataForKeys:(id)keys completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v7];
+  handlerCopy = handler;
+  keysCopy = keys;
+  v9 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:handlerCopy];
   v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v9];
 
-  [v10 fetchMetadataForKeys:v8 completionHandler:v7];
+  [v10 fetchMetadataForKeys:keysCopy completionHandler:handlerCopy];
 }
 
-- (void)setMetadataValue:(id)a3 forKey:(id)a4 completionHandler:(id)a5
+- (void)setMetadataValue:(id)value forKey:(id)key completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v8];
-  [v11 setMetadataValue:v10 forKey:v9 completionHandler:v8];
+  handlerCopy = handler;
+  keyCopy = key;
+  valueCopy = value;
+  v11 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v11 setMetadataValue:valueCopy forKey:keyCopy completionHandler:handlerCopy];
 }
 
-- (void)fetchDatabaseURL:(id)a3
+- (void)fetchDatabaseURL:(id)l
 {
   proxy = self->_proxy;
-  v5 = a3;
-  v6 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v5];
+  lCopy = l;
+  v6 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:lCopy];
   v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
 
-  [v7 fetchDatabaseURL:v5];
+  [v7 fetchDatabaseURL:lCopy];
 }
 
-- (void)searchForUserTypedString:(id)a3 options:(unint64_t)a4 currentTime:(double)a5 writeHandle:(id)a6 completionHandler:(id)a7
+- (void)searchForUserTypedString:(id)string options:(unint64_t)options currentTime:(double)time writeHandle:(id)handle completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  v15 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v12];
-  [v15 searchForUserTypedString:v14 options:a4 currentTime:v13 writeHandle:v12 completionHandler:a5];
+  handlerCopy = handler;
+  handleCopy = handle;
+  stringCopy = string;
+  v15 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v15 searchForUserTypedString:stringCopy options:options currentTime:handleCopy writeHandle:handlerCopy completionHandler:time];
 }
 
-- (void)computeFrequentlyVisitedSites:(unint64_t)a3 minimalVisitCountScore:(unint64_t)a4 blockList:(id)a5 allowList:(id)a6 options:(unint64_t)a7 currentTime:(double)a8 completionHandler:(id)a9
+- (void)computeFrequentlyVisitedSites:(unint64_t)sites minimalVisitCountScore:(unint64_t)score blockList:(id)list allowList:(id)allowList options:(unint64_t)options currentTime:(double)time completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v17 = a9;
-  v18 = a6;
-  v19 = a5;
-  v20 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v17];
+  handlerCopy = handler;
+  allowListCopy = allowList;
+  listCopy = list;
+  v20 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:handlerCopy];
   v21 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v20];
 
-  [v21 computeFrequentlyVisitedSites:a3 minimalVisitCountScore:a4 blockList:v19 allowList:v18 options:a7 currentTime:v17 completionHandler:a8];
+  [v21 computeFrequentlyVisitedSites:sites minimalVisitCountScore:score blockList:listCopy allowList:allowListCopy options:options currentTime:handlerCopy completionHandler:time];
 }
 
-- (void)fetchEventsForListener:(id)a3 completionHandler:(id)a4
+- (void)fetchEventsForListener:(id)listener completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v7];
+  handlerCopy = handler;
+  listenerCopy = listener;
+  v9 = [(WBSHistoryServiceDatabaseProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:handlerCopy];
   v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v9];
 
-  [v10 fetchEventsForListener:v8 completionHandler:v7];
+  [v10 fetchEventsForListener:listenerCopy completionHandler:handlerCopy];
 }
 
-- (void)markEventsAsReceivedByListener:(id)a3 eventIDs:(id)a4 completionHandler:(id)a5
+- (void)markEventsAsReceivedByListener:(id)listener eventIDs:(id)ds completionHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  listenerCopy = listener;
+  dsCopy = ds;
+  handlerCopy = handler;
   proxy = self->_proxy;
-  if (v9)
+  if (handlerCopy)
   {
-    v11 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v9];
+    v11 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
@@ -539,98 +539,98 @@ void __87__WBSHistoryServiceDatabaseProxy_checkIfLocalVisitExistsForDatabaseIDs_
   }
 
   v12 = v11;
-  [(NSXPCProxyCreating *)v11 markEventsAsReceivedByListener:v13 eventIDs:v8 completionHandler:v9];
+  [(NSXPCProxyCreating *)v11 markEventsAsReceivedByListener:listenerCopy eventIDs:dsCopy completionHandler:handlerCopy];
 }
 
-- (void)dispatchEvent:(id)a3 listenersToIgnore:(id)a4 persistForDelayedDispatching:(BOOL)a5 completionHandler:(id)a6
+- (void)dispatchEvent:(id)event listenersToIgnore:(id)ignore persistForDelayedDispatching:(BOOL)dispatching completionHandler:(id)handler
 {
-  v6 = a5;
-  v10 = a6;
+  dispatchingCopy = dispatching;
+  handlerCopy = handler;
   proxy = self->_proxy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __113__WBSHistoryServiceDatabaseProxy_dispatchEvent_listenersToIgnore_persistForDelayedDispatching_completionHandler___block_invoke;
   v16[3] = &unk_1E7FB8300;
-  v17 = v10;
-  v12 = v10;
-  v13 = a4;
-  v14 = a3;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  ignoreCopy = ignore;
+  eventCopy = event;
   v15 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v16];
-  [v15 dispatchEvent:v14 listenersToIgnore:v13 persistForDelayedDispatching:v6 completionHandler:v12];
+  [v15 dispatchEvent:eventCopy listenersToIgnore:ignoreCopy persistForDelayedDispatching:dispatchingCopy completionHandler:v12];
 }
 
-- (void)visitIdentifiersMatchingExistingVisits:(id)a3 desiredVisitTimePrecision:(unint64_t)a4 completionHandler:(id)a5
+- (void)visitIdentifiersMatchingExistingVisits:(id)visits desiredVisitTimePrecision:(unint64_t)precision completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   proxy = self->_proxy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __117__WBSHistoryServiceDatabaseProxy_visitIdentifiersMatchingExistingVisits_desiredVisitTimePrecision_completionHandler___block_invoke;
   v13[3] = &unk_1E7FB8300;
-  v14 = v8;
-  v10 = v8;
-  v11 = a3;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  visitsCopy = visits;
   v12 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v13];
-  [v12 visitIdentifiersMatchingExistingVisits:v11 desiredVisitTimePrecision:a4 completionHandler:v10];
+  [v12 visitIdentifiersMatchingExistingVisits:visitsCopy desiredVisitTimePrecision:precision completionHandler:v10];
 }
 
-- (void)resetCloudHistoryDataWithCompletionHandler:(id)a3
+- (void)resetCloudHistoryDataWithCompletionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v4 = a3;
-  v5 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v4];
-  [v5 resetCloudHistoryDataWithCompletionHandler:v4];
+  handlerCopy = handler;
+  v5 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v5 resetCloudHistoryDataWithCompletionHandler:handlerCopy];
 }
 
-- (void)visitsAndTombstonesNeedingSyncWithVisitSyncWindow:(double)a3 completionHandler:(id)a4
+- (void)visitsAndTombstonesNeedingSyncWithVisitSyncWindow:(double)window completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   proxy = self->_proxy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __102__WBSHistoryServiceDatabaseProxy_visitsAndTombstonesNeedingSyncWithVisitSyncWindow_completionHandler___block_invoke;
   v10[3] = &unk_1E7FB8300;
-  v11 = v6;
-  v8 = v6;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   v9 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v10];
-  [v9 visitsAndTombstonesNeedingSyncWithVisitSyncWindow:v8 completionHandler:a3];
+  [v9 visitsAndTombstonesNeedingSyncWithVisitSyncWindow:v8 completionHandler:window];
 }
 
-- (void)updateDatabaseAfterSuccessfulSyncWithGeneration:(int64_t)a3 completionHandler:(id)a4
+- (void)updateDatabaseAfterSuccessfulSyncWithGeneration:(int64_t)generation completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v6 = a4;
-  v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
-  [v7 updateDatabaseAfterSuccessfulSyncWithGeneration:a3 completionHandler:v6];
+  handlerCopy = handler;
+  v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v7 updateDatabaseAfterSuccessfulSyncWithGeneration:generation completionHandler:handlerCopy];
 }
 
-- (void)createTagsForIdentifiers:(id)a3 withTitles:(id)a4 type:(unint64_t)a5 level:(int64_t)a6 completionHandler:(id)a7
+- (void)createTagsForIdentifiers:(id)identifiers withTitles:(id)titles type:(unint64_t)type level:(int64_t)level completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(NSXPCProxyCreating *)proxy remoteObjectProxy];
-  [v15 createTagsForIdentifiers:v14 withTitles:v13 type:a5 level:a6 completionHandler:v12];
+  handlerCopy = handler;
+  titlesCopy = titles;
+  identifiersCopy = identifiers;
+  remoteObjectProxy = [(NSXPCProxyCreating *)proxy remoteObjectProxy];
+  [remoteObjectProxy createTagsForIdentifiers:identifiersCopy withTitles:titlesCopy type:type level:level completionHandler:handlerCopy];
 }
 
-- (void)assignURLString:(id)a3 toTopicTagsWithIDs:(id)a4 completionHandler:(id)a5
+- (void)assignURLString:(id)string toTopicTagsWithIDs:(id)ds completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NSXPCProxyCreating *)proxy remoteObjectProxy];
-  [v11 assignURLString:v10 toTopicTagsWithIDs:v9 completionHandler:v8];
+  handlerCopy = handler;
+  dsCopy = ds;
+  stringCopy = string;
+  remoteObjectProxy = [(NSXPCProxyCreating *)proxy remoteObjectProxy];
+  [remoteObjectProxy assignURLString:stringCopy toTopicTagsWithIDs:dsCopy completionHandler:handlerCopy];
 }
 
-- (void)setTitle:(id)a3 ofTagWithID:(int64_t)a4 completionHandler:(id)a5
+- (void)setTitle:(id)title ofTagWithID:(int64_t)d completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NSXPCProxyCreating *)proxy remoteObjectProxy];
-  [v10 setTitle:v9 ofTagWithID:a4 completionHandler:v8];
+  handlerCopy = handler;
+  titleCopy = title;
+  remoteObjectProxy = [(NSXPCProxyCreating *)proxy remoteObjectProxy];
+  [remoteObjectProxy setTitle:titleCopy ofTagWithID:d completionHandler:handlerCopy];
 }
 
 void __61__WBSHistoryServiceDatabaseProxy_flushWithCompletionHandler___block_invoke_cold_1(void *a1, void *a2)

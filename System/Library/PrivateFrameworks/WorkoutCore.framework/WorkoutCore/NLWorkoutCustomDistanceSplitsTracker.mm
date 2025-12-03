@@ -1,8 +1,8 @@
 @interface NLWorkoutCustomDistanceSplitsTracker
 - (NLWorkoutAlertDelegate)alertDelegate;
 - (NLWorkoutCustomDistanceSplitsTracker)init;
-- (NLWorkoutCustomDistanceSplitsTracker)initWithActivityType:(id)a3 activityMoveMode:(int64_t)a4;
-- (void)processCustomSplitEvent:(id)a3;
+- (NLWorkoutCustomDistanceSplitsTracker)initWithActivityType:(id)type activityMoveMode:(int64_t)mode;
+- (void)processCustomSplitEvent:(id)event;
 @end
 
 @implementation NLWorkoutCustomDistanceSplitsTracker
@@ -15,23 +15,23 @@
   return Strong;
 }
 
-- (NLWorkoutCustomDistanceSplitsTracker)initWithActivityType:(id)a3 activityMoveMode:(int64_t)a4
+- (NLWorkoutCustomDistanceSplitsTracker)initWithActivityType:(id)type activityMoveMode:(int64_t)mode
 {
   swift_unknownObjectWeakInit();
-  v7 = a3;
+  typeCopy = type;
   *(self + OBJC_IVAR___NLWorkoutCustomDistanceSplitsTracker_distanceType) = FIUIDistanceTypeForActivityType();
-  *(self + OBJC_IVAR___NLWorkoutCustomDistanceSplitsTracker_activityType) = v7;
-  *(self + OBJC_IVAR___NLWorkoutCustomDistanceSplitsTracker_activityMoveMode) = a4;
+  *(self + OBJC_IVAR___NLWorkoutCustomDistanceSplitsTracker_activityType) = typeCopy;
+  *(self + OBJC_IVAR___NLWorkoutCustomDistanceSplitsTracker_activityMoveMode) = mode;
   v9.receiver = self;
   v9.super_class = type metadata accessor for CustomDistanceSplitsTracker();
   return [(NLWorkoutCustomDistanceSplitsTracker *)&v9 init];
 }
 
-- (void)processCustomSplitEvent:(id)a3
+- (void)processCustomSplitEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  CustomDistanceSplitsTracker.processCustomSplitEvent(_:)(v4);
+  eventCopy = event;
+  selfCopy = self;
+  CustomDistanceSplitsTracker.processCustomSplitEvent(_:)(eventCopy);
 }
 
 - (NLWorkoutCustomDistanceSplitsTracker)init

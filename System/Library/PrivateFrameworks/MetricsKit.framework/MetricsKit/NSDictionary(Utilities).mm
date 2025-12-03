@@ -10,13 +10,13 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -27,7 +27,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -37,7 +37,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -53,7 +53,7 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   v20[1] = v20;
-  v21 = [a1 count];
+  v21 = [self count];
   v2 = 8 * v21;
   v3 = v20 - ((8 * v21 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v3, 8 * v21);
@@ -63,8 +63,8 @@
   v26 = 0u;
   v24 = 0u;
   v23 = 0u;
-  v4 = a1;
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  selfCopy = self;
+  v5 = [selfCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -76,17 +76,17 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
         objc_storeStrong(&v3[8 * v7], v10);
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [selfCopy objectForKeyedSubscript:v10];
         if (objc_opt_respondsToSelector())
         {
-          v12 = [v11 mt_deepCopy];
+          mt_deepCopy = [v11 mt_deepCopy];
 
-          v11 = v12;
+          v11 = mt_deepCopy;
         }
 
         v13 = *&v3[8 * v7];
@@ -95,7 +95,7 @@
         ++v7;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v6);
@@ -132,21 +132,21 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 objectForKey:v6];
+  v8 = [self objectForKey:v6];
   v9 = v8;
   if (v8 == v7 || [v8 isEqual:v7])
   {
-    v10 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = [a1 mutableCopy];
+    v11 = [self mutableCopy];
     [v11 setObject:v7 forKeyedSubscript:v6];
-    v10 = [v11 copy];
+    selfCopy = [v11 copy];
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

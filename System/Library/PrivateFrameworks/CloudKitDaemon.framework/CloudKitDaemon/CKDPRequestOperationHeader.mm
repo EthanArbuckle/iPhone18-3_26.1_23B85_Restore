@@ -1,39 +1,39 @@
 @interface CKDPRequestOperationHeader
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_applicationContainerEnvironmentCKLogValue;
 - (id)_isolationLevelCKLogValue;
 - (id)_targetDatabaseCKLogValue;
-- (id)applicationContainerEnvironmentAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)applicationContainerEnvironmentAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)isolationLevelAsString:(int)a3;
-- (id)requestOriginatorAsString:(int)a3;
-- (id)targetDatabaseAsString:(int)a3;
-- (int)StringAsApplicationContainerEnvironment:(id)a3;
-- (int)StringAsIsolationLevel:(id)a3;
-- (int)StringAsRequestOriginator:(id)a3;
-- (int)StringAsTargetDatabase:(id)a3;
+- (id)isolationLevelAsString:(int)string;
+- (id)requestOriginatorAsString:(int)string;
+- (id)targetDatabaseAsString:(int)string;
+- (int)StringAsApplicationContainerEnvironment:(id)environment;
+- (int)StringAsIsolationLevel:(id)level;
+- (int)StringAsRequestOriginator:(id)originator;
+- (int)StringAsTargetDatabase:(id)database;
 - (int)applicationContainerEnvironment;
 - (int)isolationLevel;
 - (int)requestOriginator;
 - (int)targetDatabase;
 - (unint64_t)hash;
-- (void)addActiveThrottlingLabel:(id)a3;
-- (void)addServiceIdentityKeyIDs:(id)a3;
-- (void)addSupplementalZoneInfos:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasApplicationContainerEnvironment:(BOOL)a3;
-- (void)setHasDeviceProtocolVersion:(BOOL)a3;
-- (void)setHasDeviceSoftwareIsAppleInternal:(BOOL)a3;
-- (void)setHasEntitlementsValidated:(BOOL)a3;
-- (void)setHasGlobalConfigVersion:(BOOL)a3;
-- (void)setHasIsolationLevel:(BOOL)a3;
-- (void)setHasOperationGroupQuantity:(BOOL)a3;
-- (void)setHasRequestOriginator:(BOOL)a3;
-- (void)setHasTargetDatabase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveThrottlingLabel:(id)label;
+- (void)addServiceIdentityKeyIDs:(id)ds;
+- (void)addSupplementalZoneInfos:(id)infos;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasApplicationContainerEnvironment:(BOOL)environment;
+- (void)setHasDeviceProtocolVersion:(BOOL)version;
+- (void)setHasDeviceSoftwareIsAppleInternal:(BOOL)internal;
+- (void)setHasEntitlementsValidated:(BOOL)validated;
+- (void)setHasGlobalConfigVersion:(BOOL)version;
+- (void)setHasIsolationLevel:(BOOL)level;
+- (void)setHasOperationGroupQuantity:(BOOL)quantity;
+- (void)setHasRequestOriginator:(BOOL)originator;
+- (void)setHasTargetDatabase:(BOOL)database;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRequestOperationHeader
@@ -96,9 +96,9 @@
   return v5;
 }
 
-- (void)setHasGlobalConfigVersion:(BOOL)a3
+- (void)setHasGlobalConfigVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -111,9 +111,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDeviceProtocolVersion:(BOOL)a3
+- (void)setHasDeviceProtocolVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -139,9 +139,9 @@
   }
 }
 
-- (void)setHasApplicationContainerEnvironment:(BOOL)a3
+- (void)setHasApplicationContainerEnvironment:(BOOL)environment
 {
-  if (a3)
+  if (environment)
   {
     v3 = 16;
   }
@@ -154,33 +154,33 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (id)applicationContainerEnvironmentAsString:(int)a3
+- (id)applicationContainerEnvironmentAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"production";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"sandbox";
   }
 
   else
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v4;
 }
 
-- (int)StringAsApplicationContainerEnvironment:(id)a3
+- (int)StringAsApplicationContainerEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   v6 = 1;
-  if ((objc_msgSend_isEqualToString_(v3, v4, @"production") & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(environmentCopy, v4, @"production") & 1) == 0)
   {
-    if (objc_msgSend_isEqualToString_(v3, v5, @"sandbox"))
+    if (objc_msgSend_isEqualToString_(environmentCopy, v5, @"sandbox"))
     {
       v6 = 2;
     }
@@ -207,9 +207,9 @@
   }
 }
 
-- (void)setHasTargetDatabase:(BOOL)a3
+- (void)setHasTargetDatabase:(BOOL)database
 {
-  if (a3)
+  if (database)
   {
     v3 = 128;
   }
@@ -222,40 +222,40 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (id)targetDatabaseAsString:(int)a3
+- (id)targetDatabaseAsString:(int)string
 {
-  if ((a3 - 1) >= 4)
+  if ((string - 1) >= 4)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CBB0[a3 - 1];
+    v4 = off_27854CBB0[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsTargetDatabase:(id)a3
+- (int)StringAsTargetDatabase:(id)database
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"privateDB"))
+  databaseCopy = database;
+  if (objc_msgSend_isEqualToString_(databaseCopy, v4, @"privateDB"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"publicDB"))
+  else if (objc_msgSend_isEqualToString_(databaseCopy, v5, @"publicDB"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"sharedDB"))
+  else if (objc_msgSend_isEqualToString_(databaseCopy, v7, @"sharedDB"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"orgDB"))
+  else if (objc_msgSend_isEqualToString_(databaseCopy, v8, @"orgDB"))
   {
     v6 = 4;
   }
@@ -281,9 +281,9 @@
   }
 }
 
-- (void)setHasIsolationLevel:(BOOL)a3
+- (void)setHasIsolationLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 32;
   }
@@ -296,33 +296,33 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (id)isolationLevelAsString:(int)a3
+- (id)isolationLevelAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"zone";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"operation";
   }
 
   else
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v4;
 }
 
-- (int)StringAsIsolationLevel:(id)a3
+- (int)StringAsIsolationLevel:(id)level
 {
-  v3 = a3;
+  levelCopy = level;
   v6 = 1;
-  if ((objc_msgSend_isEqualToString_(v3, v4, @"zone") & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(levelCopy, v4, @"zone") & 1) == 0)
   {
-    if (objc_msgSend_isEqualToString_(v3, v5, @"operation"))
+    if (objc_msgSend_isEqualToString_(levelCopy, v5, @"operation"))
     {
       v6 = 2;
     }
@@ -336,9 +336,9 @@
   return v6;
 }
 
-- (void)setHasOperationGroupQuantity:(BOOL)a3
+- (void)setHasOperationGroupQuantity:(BOOL)quantity
 {
-  if (a3)
+  if (quantity)
   {
     v3 = 8;
   }
@@ -351,27 +351,27 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)addServiceIdentityKeyIDs:(id)a3
+- (void)addServiceIdentityKeyIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   serviceIdentityKeyIDs = self->_serviceIdentityKeyIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!serviceIdentityKeyIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_serviceIdentityKeyIDs;
     self->_serviceIdentityKeyIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     serviceIdentityKeyIDs = self->_serviceIdentityKeyIDs;
   }
 
-  objc_msgSend_addObject_(serviceIdentityKeyIDs, v4, v4);
+  objc_msgSend_addObject_(serviceIdentityKeyIDs, dsCopy, dsCopy);
 }
 
-- (void)setHasDeviceSoftwareIsAppleInternal:(BOOL)a3
+- (void)setHasDeviceSoftwareIsAppleInternal:(BOOL)internal
 {
-  if (a3)
+  if (internal)
   {
     v3 = 256;
   }
@@ -384,27 +384,27 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)addActiveThrottlingLabel:(id)a3
+- (void)addActiveThrottlingLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   activeThrottlingLabels = self->_activeThrottlingLabels;
-  v8 = v4;
+  v8 = labelCopy;
   if (!activeThrottlingLabels)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_activeThrottlingLabels;
     self->_activeThrottlingLabels = v6;
 
-    v4 = v8;
+    labelCopy = v8;
     activeThrottlingLabels = self->_activeThrottlingLabels;
   }
 
-  objc_msgSend_addObject_(activeThrottlingLabels, v4, v4);
+  objc_msgSend_addObject_(activeThrottlingLabels, labelCopy, labelCopy);
 }
 
-- (void)setHasEntitlementsValidated:(BOOL)a3
+- (void)setHasEntitlementsValidated:(BOOL)validated
 {
-  if (a3)
+  if (validated)
   {
     v3 = 512;
   }
@@ -430,9 +430,9 @@
   }
 }
 
-- (void)setHasRequestOriginator:(BOOL)a3
+- (void)setHasRequestOriginator:(BOOL)originator
 {
-  if (a3)
+  if (originator)
   {
     v3 = 64;
   }
@@ -445,50 +445,50 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (id)requestOriginatorAsString:(int)a3
+- (id)requestOriginatorAsString:(int)string
 {
-  if ((a3 - 1) >= 6)
+  if ((string - 1) >= 6)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CBD0[a3 - 1];
+    v4 = off_27854CBD0[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsRequestOriginator:(id)a3
+- (int)StringAsRequestOriginator:(id)originator
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"unknown"))
+  originatorCopy = originator;
+  if (objc_msgSend_isEqualToString_(originatorCopy, v4, @"unknown"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"cloudd"))
+  else if (objc_msgSend_isEqualToString_(originatorCopy, v5, @"cloudd"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"iCloudApp"))
+  else if (objc_msgSend_isEqualToString_(originatorCopy, v7, @"iCloudApp"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"syncEngine"))
+  else if (objc_msgSend_isEqualToString_(originatorCopy, v8, @"syncEngine"))
   {
     v6 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"adopter"))
+  else if (objc_msgSend_isEqualToString_(originatorCopy, v9, @"adopter"))
   {
     v6 = 5;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v10, @"ckctl"))
+  else if (objc_msgSend_isEqualToString_(originatorCopy, v10, @"ckctl"))
   {
     v6 = 6;
   }
@@ -501,22 +501,22 @@
   return v6;
 }
 
-- (void)addSupplementalZoneInfos:(id)a3
+- (void)addSupplementalZoneInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   supplementalZoneInfos = self->_supplementalZoneInfos;
-  v8 = v4;
+  v8 = infosCopy;
   if (!supplementalZoneInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_supplementalZoneInfos;
     self->_supplementalZoneInfos = v6;
 
-    v4 = v8;
+    infosCopy = v8;
     supplementalZoneInfos = self->_supplementalZoneInfos;
   }
 
-  objc_msgSend_addObject_(supplementalZoneInfos, v4, v4);
+  objc_msgSend_addObject_(supplementalZoneInfos, infosCopy, infosCopy);
 }
 
 - (id)description
@@ -826,10 +826,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_userToken)
   {
     PBDataWriterWriteStringField();
@@ -1079,164 +1079,164 @@
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   userToken = self->_userToken;
-  v56 = v4;
+  v56 = toCopy;
   if (userToken)
   {
-    objc_msgSend_setUserToken_(v4, v5, userToken);
-    v4 = v56;
+    objc_msgSend_setUserToken_(toCopy, v5, userToken);
+    toCopy = v56;
   }
 
   applicationContainer = self->_applicationContainer;
   if (applicationContainer)
   {
     objc_msgSend_setApplicationContainer_(v56, v5, applicationContainer);
-    v4 = v56;
+    toCopy = v56;
   }
 
   applicationBundle = self->_applicationBundle;
   if (applicationBundle)
   {
     objc_msgSend_setApplicationBundle_(v56, v5, applicationBundle);
-    v4 = v56;
+    toCopy = v56;
   }
 
   applicationVersion = self->_applicationVersion;
   if (applicationVersion)
   {
     objc_msgSend_setApplicationVersion_(v56, v5, applicationVersion);
-    v4 = v56;
+    toCopy = v56;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_applicationConfigVersion;
-    *(v4 + 126) |= 1u;
+    *(toCopy + 1) = self->_applicationConfigVersion;
+    *(toCopy + 126) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = self->_globalConfigVersion;
-    *(v4 + 126) |= 4u;
+    *(toCopy + 3) = self->_globalConfigVersion;
+    *(toCopy + 126) |= 4u;
   }
 
   deviceIdentifier = self->_deviceIdentifier;
   if (deviceIdentifier)
   {
     objc_msgSend_setDeviceIdentifier_(v56, v5, deviceIdentifier);
-    v4 = v56;
+    toCopy = v56;
   }
 
   deviceSoftwareVersion = self->_deviceSoftwareVersion;
   if (deviceSoftwareVersion)
   {
     objc_msgSend_setDeviceSoftwareVersion_(v56, v5, deviceSoftwareVersion);
-    v4 = v56;
+    toCopy = v56;
   }
 
   deviceHardwareVersion = self->_deviceHardwareVersion;
   if (deviceHardwareVersion)
   {
     objc_msgSend_setDeviceHardwareVersion_(v56, v5, deviceHardwareVersion);
-    v4 = v56;
+    toCopy = v56;
   }
 
   deviceLibraryName = self->_deviceLibraryName;
   if (deviceLibraryName)
   {
     objc_msgSend_setDeviceLibraryName_(v56, v5, deviceLibraryName);
-    v4 = v56;
+    toCopy = v56;
   }
 
   deviceLibraryVersion = self->_deviceLibraryVersion;
   if (deviceLibraryVersion)
   {
     objc_msgSend_setDeviceLibraryVersion_(v56, v5, deviceLibraryVersion);
-    v4 = v56;
+    toCopy = v56;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_deviceProtocolVersion;
-    *(v4 + 126) |= 2u;
+    *(toCopy + 2) = self->_deviceProtocolVersion;
+    *(toCopy + 126) |= 2u;
   }
 
   locale = self->_locale;
   if (locale)
   {
     objc_msgSend_setLocale_(v56, v5, locale);
-    v4 = v56;
+    toCopy = v56;
   }
 
   mmcsProtocolVersion = self->_mmcsProtocolVersion;
   if (mmcsProtocolVersion)
   {
     objc_msgSend_setMmcsProtocolVersion_(v56, v5, mmcsProtocolVersion);
-    v4 = v56;
+    toCopy = v56;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 16) = self->_applicationContainerEnvironment;
-    *(v4 + 126) |= 0x10u;
+    *(toCopy + 16) = self->_applicationContainerEnvironment;
+    *(toCopy + 126) |= 0x10u;
   }
 
   clientChangeToken = self->_clientChangeToken;
   if (clientChangeToken)
   {
     objc_msgSend_setClientChangeToken_(v56, v5, clientChangeToken);
-    v4 = v56;
+    toCopy = v56;
   }
 
   deviceAssignedName = self->_deviceAssignedName;
   if (deviceAssignedName)
   {
     objc_msgSend_setDeviceAssignedName_(v56, v5, deviceAssignedName);
-    v4 = v56;
+    toCopy = v56;
   }
 
   deviceHardwareID = self->_deviceHardwareID;
   if (deviceHardwareID)
   {
     objc_msgSend_setDeviceHardwareID_(v56, v5, deviceHardwareID);
-    v4 = v56;
+    toCopy = v56;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    *(v4 + 56) = self->_targetDatabase;
-    *(v4 + 126) |= 0x80u;
+    *(toCopy + 56) = self->_targetDatabase;
+    *(toCopy + 126) |= 0x80u;
   }
 
   userIDContainerID = self->_userIDContainerID;
   if (userIDContainerID)
   {
     objc_msgSend_setUserIDContainerID_(v56, v5, userIDContainerID);
-    v4 = v56;
+    toCopy = v56;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(v4 + 42) = self->_isolationLevel;
-    *(v4 + 126) |= 0x20u;
+    *(toCopy + 42) = self->_isolationLevel;
+    *(toCopy + 126) |= 0x20u;
   }
 
   operationGroupName = self->_operationGroupName;
   if (operationGroupName)
   {
     objc_msgSend_setOperationGroupName_(v56, v5, operationGroupName);
-    v4 = v56;
+    toCopy = v56;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 4) = self->_operationGroupQuantity;
-    *(v4 + 126) |= 8u;
+    *(toCopy + 4) = self->_operationGroupQuantity;
+    *(toCopy + 126) |= 8u;
   }
 
   if (objc_msgSend_serviceIdentityKeyIDsCount(self, v5, operationGroupName))
@@ -1325,25 +1325,25 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v114 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_userToken, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_userToken, v11, zone);
   v13 = *(v10 + 240);
   *(v10 + 240) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_applicationContainer, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_applicationContainer, v14, zone);
   v16 = *(v10 + 56);
   *(v10 + 56) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_applicationBundle, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_applicationBundle, v17, zone);
   v19 = *(v10 + 48);
   *(v10 + 48) = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_applicationVersion, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_applicationVersion, v20, zone);
   v22 = *(v10 + 72);
   *(v10 + 72) = v21;
 
@@ -1361,23 +1361,23 @@
     *(v10 + 252) |= 4u;
   }
 
-  v25 = objc_msgSend_copyWithZone_(self->_deviceIdentifier, v23, a3);
+  v25 = objc_msgSend_copyWithZone_(self->_deviceIdentifier, v23, zone);
   v26 = *(v10 + 120);
   *(v10 + 120) = v25;
 
-  v28 = objc_msgSend_copyWithZone_(self->_deviceSoftwareVersion, v27, a3);
+  v28 = objc_msgSend_copyWithZone_(self->_deviceSoftwareVersion, v27, zone);
   v29 = *(v10 + 152);
   *(v10 + 152) = v28;
 
-  v31 = objc_msgSend_copyWithZone_(self->_deviceHardwareVersion, v30, a3);
+  v31 = objc_msgSend_copyWithZone_(self->_deviceHardwareVersion, v30, zone);
   v32 = *(v10 + 112);
   *(v10 + 112) = v31;
 
-  v34 = objc_msgSend_copyWithZone_(self->_deviceLibraryName, v33, a3);
+  v34 = objc_msgSend_copyWithZone_(self->_deviceLibraryName, v33, zone);
   v35 = *(v10 + 128);
   *(v10 + 128) = v34;
 
-  v37 = objc_msgSend_copyWithZone_(self->_deviceLibraryVersion, v36, a3);
+  v37 = objc_msgSend_copyWithZone_(self->_deviceLibraryVersion, v36, zone);
   v38 = *(v10 + 136);
   *(v10 + 136) = v37;
 
@@ -1387,11 +1387,11 @@
     *(v10 + 252) |= 2u;
   }
 
-  v40 = objc_msgSend_copyWithZone_(self->_locale, v39, a3);
+  v40 = objc_msgSend_copyWithZone_(self->_locale, v39, zone);
   v41 = *(v10 + 176);
   *(v10 + 176) = v40;
 
-  v43 = objc_msgSend_copyWithZone_(self->_mmcsProtocolVersion, v42, a3);
+  v43 = objc_msgSend_copyWithZone_(self->_mmcsProtocolVersion, v42, zone);
   v44 = *(v10 + 184);
   *(v10 + 184) = v43;
 
@@ -1401,15 +1401,15 @@
     *(v10 + 252) |= 0x10u;
   }
 
-  v46 = objc_msgSend_copyWithZone_(self->_clientChangeToken, v45, a3);
+  v46 = objc_msgSend_copyWithZone_(self->_clientChangeToken, v45, zone);
   v47 = *(v10 + 88);
   *(v10 + 88) = v46;
 
-  v49 = objc_msgSend_copyWithZone_(self->_deviceAssignedName, v48, a3);
+  v49 = objc_msgSend_copyWithZone_(self->_deviceAssignedName, v48, zone);
   v50 = *(v10 + 96);
   *(v10 + 96) = v49;
 
-  v52 = objc_msgSend_copyWithZone_(self->_deviceHardwareID, v51, a3);
+  v52 = objc_msgSend_copyWithZone_(self->_deviceHardwareID, v51, zone);
   v53 = *(v10 + 104);
   *(v10 + 104) = v52;
 
@@ -1419,7 +1419,7 @@
     *(v10 + 252) |= 0x80u;
   }
 
-  v55 = objc_msgSend_copyWithZone_(self->_userIDContainerID, v54, a3);
+  v55 = objc_msgSend_copyWithZone_(self->_userIDContainerID, v54, zone);
   v56 = *(v10 + 232);
   *(v10 + 232) = v55;
 
@@ -1429,7 +1429,7 @@
     *(v10 + 252) |= 0x20u;
   }
 
-  v58 = objc_msgSend_copyWithZone_(self->_operationGroupName, v57, a3);
+  v58 = objc_msgSend_copyWithZone_(self->_operationGroupName, v57, zone);
   v59 = *(v10 + 192);
   *(v10 + 192) = v58;
 
@@ -1458,7 +1458,7 @@
           objc_enumerationMutation(v60);
         }
 
-        v67 = objc_msgSend_copyWithZone_(*(*(&v107 + 1) + 8 * i), v63, a3);
+        v67 = objc_msgSend_copyWithZone_(*(*(&v107 + 1) + 8 * i), v63, zone);
         objc_msgSend_addServiceIdentityKeyIDs_(v10, v68, v67);
       }
 
@@ -1474,7 +1474,7 @@
     *(v10 + 252) |= 0x100u;
   }
 
-  v70 = objc_msgSend_copyWithZone_(self->_assetAuthorizeGetRequestOptions, v69, a3);
+  v70 = objc_msgSend_copyWithZone_(self->_assetAuthorizeGetRequestOptions, v69, zone);
   v71 = *(v10 + 80);
   *(v10 + 80) = v70;
 
@@ -1497,7 +1497,7 @@
           objc_enumerationMutation(v72);
         }
 
-        v79 = objc_msgSend_copyWithZone_(*(*(&v103 + 1) + 8 * j), v75, a3);
+        v79 = objc_msgSend_copyWithZone_(*(*(&v103 + 1) + 8 * j), v75, zone);
         objc_msgSend_addActiveThrottlingLabel_(v10, v80, v79);
       }
 
@@ -1507,11 +1507,11 @@
     while (v76);
   }
 
-  v82 = objc_msgSend_copyWithZone_(self->_deviceUDID, v81, a3);
+  v82 = objc_msgSend_copyWithZone_(self->_deviceUDID, v81, zone);
   v83 = *(v10 + 160);
   *(v10 + 160) = v82;
 
-  v85 = objc_msgSend_copyWithZone_(self->_deviceSerialNumber, v84, a3);
+  v85 = objc_msgSend_copyWithZone_(self->_deviceSerialNumber, v84, zone);
   v86 = *(v10 + 144);
   *(v10 + 144) = v85;
 
@@ -1548,7 +1548,7 @@
           objc_enumerationMutation(v88);
         }
 
-        v95 = objc_msgSend_copyWithZone_(*(*(&v99 + 1) + 8 * k), v91, a3, v99);
+        v95 = objc_msgSend_copyWithZone_(*(*(&v99 + 1) + 8 * k), v91, zone, v99);
         objc_msgSend_addSupplementalZoneInfos_(v10, v96, v95);
       }
 
@@ -1562,17 +1562,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_90;
   }
 
   userToken = self->_userToken;
-  v9 = v4[30];
+  v9 = equalCopy[30];
   if (userToken | v9)
   {
     if (!objc_msgSend_isEqual_(userToken, v7, v9))
@@ -1582,7 +1582,7 @@
   }
 
   applicationContainer = self->_applicationContainer;
-  v11 = v4[7];
+  v11 = equalCopy[7];
   if (applicationContainer | v11)
   {
     if (!objc_msgSend_isEqual_(applicationContainer, v7, v11))
@@ -1592,7 +1592,7 @@
   }
 
   applicationBundle = self->_applicationBundle;
-  v13 = v4[6];
+  v13 = equalCopy[6];
   if (applicationBundle | v13)
   {
     if (!objc_msgSend_isEqual_(applicationBundle, v7, v13))
@@ -1602,7 +1602,7 @@
   }
 
   applicationVersion = self->_applicationVersion;
-  v15 = v4[9];
+  v15 = equalCopy[9];
   if (applicationVersion | v15)
   {
     if (!objc_msgSend_isEqual_(applicationVersion, v7, v15))
@@ -1612,10 +1612,10 @@
   }
 
   has = self->_has;
-  v17 = *(v4 + 126);
+  v17 = *(equalCopy + 126);
   if (has)
   {
-    if ((v17 & 1) == 0 || self->_applicationConfigVersion != v4[1])
+    if ((v17 & 1) == 0 || self->_applicationConfigVersion != equalCopy[1])
     {
       goto LABEL_90;
     }
@@ -1628,7 +1628,7 @@
 
   if ((has & 4) != 0)
   {
-    if ((v17 & 4) == 0 || self->_globalConfigVersion != v4[3])
+    if ((v17 & 4) == 0 || self->_globalConfigVersion != equalCopy[3])
     {
       goto LABEL_90;
     }
@@ -1640,14 +1640,14 @@
   }
 
   deviceIdentifier = self->_deviceIdentifier;
-  v19 = v4[15];
+  v19 = equalCopy[15];
   if (deviceIdentifier | v19 && !objc_msgSend_isEqual_(deviceIdentifier, v7, v19))
   {
     goto LABEL_90;
   }
 
   deviceSoftwareVersion = self->_deviceSoftwareVersion;
-  v21 = v4[19];
+  v21 = equalCopy[19];
   if (deviceSoftwareVersion | v21)
   {
     if (!objc_msgSend_isEqual_(deviceSoftwareVersion, v7, v21))
@@ -1657,7 +1657,7 @@
   }
 
   deviceHardwareVersion = self->_deviceHardwareVersion;
-  v23 = v4[14];
+  v23 = equalCopy[14];
   if (deviceHardwareVersion | v23)
   {
     if (!objc_msgSend_isEqual_(deviceHardwareVersion, v7, v23))
@@ -1667,7 +1667,7 @@
   }
 
   deviceLibraryName = self->_deviceLibraryName;
-  v25 = v4[16];
+  v25 = equalCopy[16];
   if (deviceLibraryName | v25)
   {
     if (!objc_msgSend_isEqual_(deviceLibraryName, v7, v25))
@@ -1677,7 +1677,7 @@
   }
 
   deviceLibraryVersion = self->_deviceLibraryVersion;
-  v27 = v4[17];
+  v27 = equalCopy[17];
   if (deviceLibraryVersion | v27)
   {
     if (!objc_msgSend_isEqual_(deviceLibraryVersion, v7, v27))
@@ -1686,10 +1686,10 @@
     }
   }
 
-  v28 = *(v4 + 126);
+  v28 = *(equalCopy + 126);
   if ((*&self->_has & 2) != 0)
   {
-    if ((v28 & 2) == 0 || self->_deviceProtocolVersion != v4[2])
+    if ((v28 & 2) == 0 || self->_deviceProtocolVersion != equalCopy[2])
     {
       goto LABEL_90;
     }
@@ -1701,14 +1701,14 @@
   }
 
   locale = self->_locale;
-  v30 = v4[22];
+  v30 = equalCopy[22];
   if (locale | v30 && !objc_msgSend_isEqual_(locale, v7, v30))
   {
     goto LABEL_90;
   }
 
   mmcsProtocolVersion = self->_mmcsProtocolVersion;
-  v32 = v4[23];
+  v32 = equalCopy[23];
   if (mmcsProtocolVersion | v32)
   {
     if (!objc_msgSend_isEqual_(mmcsProtocolVersion, v7, v32))
@@ -1717,10 +1717,10 @@
     }
   }
 
-  v33 = *(v4 + 126);
+  v33 = *(equalCopy + 126);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v33 & 0x10) == 0 || self->_applicationContainerEnvironment != *(v4 + 16))
+    if ((v33 & 0x10) == 0 || self->_applicationContainerEnvironment != *(equalCopy + 16))
     {
       goto LABEL_90;
     }
@@ -1732,14 +1732,14 @@
   }
 
   clientChangeToken = self->_clientChangeToken;
-  v35 = v4[11];
+  v35 = equalCopy[11];
   if (clientChangeToken | v35 && !objc_msgSend_isEqual_(clientChangeToken, v7, v35))
   {
     goto LABEL_90;
   }
 
   deviceAssignedName = self->_deviceAssignedName;
-  v37 = v4[12];
+  v37 = equalCopy[12];
   if (deviceAssignedName | v37)
   {
     if (!objc_msgSend_isEqual_(deviceAssignedName, v7, v37))
@@ -1749,7 +1749,7 @@
   }
 
   deviceHardwareID = self->_deviceHardwareID;
-  v39 = v4[13];
+  v39 = equalCopy[13];
   if (deviceHardwareID | v39)
   {
     if (!objc_msgSend_isEqual_(deviceHardwareID, v7, v39))
@@ -1759,10 +1759,10 @@
   }
 
   v40 = self->_has;
-  v41 = *(v4 + 126);
+  v41 = *(equalCopy + 126);
   if ((v40 & 0x80) != 0)
   {
-    if ((v41 & 0x80) == 0 || self->_targetDatabase != *(v4 + 56))
+    if ((v41 & 0x80) == 0 || self->_targetDatabase != *(equalCopy + 56))
     {
       goto LABEL_90;
     }
@@ -1774,7 +1774,7 @@
   }
 
   userIDContainerID = self->_userIDContainerID;
-  v43 = v4[29];
+  v43 = equalCopy[29];
   if (userIDContainerID | v43)
   {
     if (!objc_msgSend_isEqual_(userIDContainerID, v7, v43))
@@ -1783,12 +1783,12 @@
     }
 
     v40 = self->_has;
-    v41 = *(v4 + 126);
+    v41 = *(equalCopy + 126);
   }
 
   if ((v40 & 0x20) != 0)
   {
-    if ((v41 & 0x20) == 0 || self->_isolationLevel != *(v4 + 42))
+    if ((v41 & 0x20) == 0 || self->_isolationLevel != *(equalCopy + 42))
     {
       goto LABEL_90;
     }
@@ -1800,7 +1800,7 @@
   }
 
   operationGroupName = self->_operationGroupName;
-  v45 = v4[24];
+  v45 = equalCopy[24];
   if (operationGroupName | v45)
   {
     if (!objc_msgSend_isEqual_(operationGroupName, v7, v45))
@@ -1809,12 +1809,12 @@
     }
 
     v40 = self->_has;
-    v41 = *(v4 + 126);
+    v41 = *(equalCopy + 126);
   }
 
   if ((v40 & 8) != 0)
   {
-    if ((v41 & 8) == 0 || self->_operationGroupQuantity != v4[4])
+    if ((v41 & 8) == 0 || self->_operationGroupQuantity != equalCopy[4])
     {
       goto LABEL_90;
     }
@@ -1826,7 +1826,7 @@
   }
 
   serviceIdentityKeyIDs = self->_serviceIdentityKeyIDs;
-  v47 = v4[26];
+  v47 = equalCopy[26];
   if (serviceIdentityKeyIDs | v47)
   {
     if (!objc_msgSend_isEqual_(serviceIdentityKeyIDs, v7, v47))
@@ -1835,7 +1835,7 @@
     }
 
     v40 = self->_has;
-    v41 = *(v4 + 126);
+    v41 = *(equalCopy + 126);
   }
 
   if ((v40 & 0x100) != 0)
@@ -1845,16 +1845,16 @@
       goto LABEL_90;
     }
 
-    v60 = *(v4 + 248);
+    v60 = *(equalCopy + 248);
     if (self->_deviceSoftwareIsAppleInternal)
     {
-      if ((v4[31] & 1) == 0)
+      if ((equalCopy[31] & 1) == 0)
       {
         goto LABEL_90;
       }
     }
 
-    else if (v4[31])
+    else if (equalCopy[31])
     {
       goto LABEL_90;
     }
@@ -1866,14 +1866,14 @@
   }
 
   assetAuthorizeGetRequestOptions = self->_assetAuthorizeGetRequestOptions;
-  v49 = v4[10];
+  v49 = equalCopy[10];
   if (assetAuthorizeGetRequestOptions | v49 && !objc_msgSend_isEqual_(assetAuthorizeGetRequestOptions, v7, v49))
   {
     goto LABEL_90;
   }
 
   activeThrottlingLabels = self->_activeThrottlingLabels;
-  v51 = v4[5];
+  v51 = equalCopy[5];
   if (activeThrottlingLabels | v51)
   {
     if (!objc_msgSend_isEqual_(activeThrottlingLabels, v7, v51))
@@ -1883,7 +1883,7 @@
   }
 
   deviceUDID = self->_deviceUDID;
-  v53 = v4[20];
+  v53 = equalCopy[20];
   if (deviceUDID | v53)
   {
     if (!objc_msgSend_isEqual_(deviceUDID, v7, v53))
@@ -1893,7 +1893,7 @@
   }
 
   deviceSerialNumber = self->_deviceSerialNumber;
-  v55 = v4[18];
+  v55 = equalCopy[18];
   if (deviceSerialNumber | v55)
   {
     if (!objc_msgSend_isEqual_(deviceSerialNumber, v7, v55))
@@ -1903,30 +1903,30 @@
   }
 
   v56 = self->_has;
-  v57 = *(v4 + 126);
+  v57 = *(equalCopy + 126);
   if ((v56 & 0x200) != 0)
   {
-    if ((*(v4 + 126) & 0x200) == 0)
+    if ((*(equalCopy + 126) & 0x200) == 0)
     {
       goto LABEL_90;
     }
 
-    v61 = *(v4 + 249);
+    v61 = *(equalCopy + 249);
     if (self->_entitlementsValidated)
     {
-      if ((*(v4 + 249) & 1) == 0)
+      if ((*(equalCopy + 249) & 1) == 0)
       {
         goto LABEL_90;
       }
     }
 
-    else if (*(v4 + 249))
+    else if (*(equalCopy + 249))
     {
       goto LABEL_90;
     }
   }
 
-  else if ((*(v4 + 126) & 0x200) != 0)
+  else if ((*(equalCopy + 126) & 0x200) != 0)
   {
     goto LABEL_90;
   }
@@ -1943,14 +1943,14 @@ LABEL_90:
     goto LABEL_91;
   }
 
-  if ((v57 & 0x40) == 0 || self->_requestOriginator != *(v4 + 50))
+  if ((v57 & 0x40) == 0 || self->_requestOriginator != *(equalCopy + 50))
   {
     goto LABEL_90;
   }
 
 LABEL_103:
   supplementalZoneInfos = self->_supplementalZoneInfos;
-  v63 = v4[27];
+  v63 = equalCopy[27];
   if (supplementalZoneInfos | v63)
   {
     isEqual = objc_msgSend_isEqual_(supplementalZoneInfos, v7, v63);
@@ -2097,50 +2097,50 @@ LABEL_26:
   return v79 ^ v80 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v38 ^ v39 ^ v42 ^ v43 ^ v44 ^ v47 ^ v50 ^ v53 ^ v57 ^ v58 ^ objc_msgSend_hash(self->_supplementalZoneInfos, v54, v55);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v69 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *(v5 + 30);
+  fromCopy = from;
+  v6 = *(fromCopy + 30);
   if (v6)
   {
     objc_msgSend_setUserToken_(self, v4, v6);
   }
 
-  v7 = *(v5 + 7);
+  v7 = *(fromCopy + 7);
   if (v7)
   {
     objc_msgSend_setApplicationContainer_(self, v4, v7);
   }
 
-  v8 = *(v5 + 6);
+  v8 = *(fromCopy + 6);
   if (v8)
   {
     objc_msgSend_setApplicationBundle_(self, v4, v8);
   }
 
-  v9 = *(v5 + 9);
+  v9 = *(fromCopy + 9);
   if (v9)
   {
     objc_msgSend_setApplicationVersion_(self, v4, v9);
   }
 
-  v10 = *(v5 + 126);
+  v10 = *(fromCopy + 126);
   if (v10)
   {
-    self->_applicationConfigVersion = *(v5 + 1);
+    self->_applicationConfigVersion = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v10 = *(v5 + 126);
+    v10 = *(fromCopy + 126);
   }
 
   if ((v10 & 4) != 0)
   {
-    self->_globalConfigVersion = *(v5 + 3);
+    self->_globalConfigVersion = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
   deviceIdentifier = self->_deviceIdentifier;
-  v12 = *(v5 + 15);
+  v12 = *(fromCopy + 15);
   if (deviceIdentifier)
   {
     if (v12)
@@ -2154,38 +2154,38 @@ LABEL_26:
     objc_msgSend_setDeviceIdentifier_(self, v4, v12);
   }
 
-  v13 = *(v5 + 19);
+  v13 = *(fromCopy + 19);
   if (v13)
   {
     objc_msgSend_setDeviceSoftwareVersion_(self, v4, v13);
   }
 
-  v14 = *(v5 + 14);
+  v14 = *(fromCopy + 14);
   if (v14)
   {
     objc_msgSend_setDeviceHardwareVersion_(self, v4, v14);
   }
 
-  v15 = *(v5 + 16);
+  v15 = *(fromCopy + 16);
   if (v15)
   {
     objc_msgSend_setDeviceLibraryName_(self, v4, v15);
   }
 
-  v16 = *(v5 + 17);
+  v16 = *(fromCopy + 17);
   if (v16)
   {
     objc_msgSend_setDeviceLibraryVersion_(self, v4, v16);
   }
 
-  if ((*(v5 + 126) & 2) != 0)
+  if ((*(fromCopy + 126) & 2) != 0)
   {
-    self->_deviceProtocolVersion = *(v5 + 2);
+    self->_deviceProtocolVersion = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
   locale = self->_locale;
-  v18 = *(v5 + 22);
+  v18 = *(fromCopy + 22);
   if (locale)
   {
     if (v18)
@@ -2199,63 +2199,63 @@ LABEL_26:
     objc_msgSend_setLocale_(self, v4, v18);
   }
 
-  v19 = *(v5 + 23);
+  v19 = *(fromCopy + 23);
   if (v19)
   {
     objc_msgSend_setMmcsProtocolVersion_(self, v4, v19);
   }
 
-  if ((*(v5 + 126) & 0x10) != 0)
+  if ((*(fromCopy + 126) & 0x10) != 0)
   {
-    self->_applicationContainerEnvironment = *(v5 + 16);
+    self->_applicationContainerEnvironment = *(fromCopy + 16);
     *&self->_has |= 0x10u;
   }
 
-  v20 = *(v5 + 11);
+  v20 = *(fromCopy + 11);
   if (v20)
   {
     objc_msgSend_setClientChangeToken_(self, v4, v20);
   }
 
-  v21 = *(v5 + 12);
+  v21 = *(fromCopy + 12);
   if (v21)
   {
     objc_msgSend_setDeviceAssignedName_(self, v4, v21);
   }
 
-  v22 = *(v5 + 13);
+  v22 = *(fromCopy + 13);
   if (v22)
   {
     objc_msgSend_setDeviceHardwareID_(self, v4, v22);
   }
 
-  if ((*(v5 + 126) & 0x80) != 0)
+  if ((*(fromCopy + 126) & 0x80) != 0)
   {
-    self->_targetDatabase = *(v5 + 56);
+    self->_targetDatabase = *(fromCopy + 56);
     *&self->_has |= 0x80u;
   }
 
-  v23 = *(v5 + 29);
+  v23 = *(fromCopy + 29);
   if (v23)
   {
     objc_msgSend_setUserIDContainerID_(self, v4, v23);
   }
 
-  if ((*(v5 + 126) & 0x20) != 0)
+  if ((*(fromCopy + 126) & 0x20) != 0)
   {
-    self->_isolationLevel = *(v5 + 42);
+    self->_isolationLevel = *(fromCopy + 42);
     *&self->_has |= 0x20u;
   }
 
-  v24 = *(v5 + 24);
+  v24 = *(fromCopy + 24);
   if (v24)
   {
     objc_msgSend_setOperationGroupName_(self, v4, v24);
   }
 
-  if ((*(v5 + 126) & 8) != 0)
+  if ((*(fromCopy + 126) & 8) != 0)
   {
-    self->_operationGroupQuantity = *(v5 + 4);
+    self->_operationGroupQuantity = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
@@ -2263,7 +2263,7 @@ LABEL_26:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v25 = *(v5 + 26);
+  v25 = *(fromCopy + 26);
   v27 = objc_msgSend_countByEnumeratingWithState_objects_count_(v25, v26, &v62, v68, 16);
   if (v27)
   {
@@ -2287,14 +2287,14 @@ LABEL_26:
     while (v29);
   }
 
-  if ((*(v5 + 126) & 0x100) != 0)
+  if ((*(fromCopy + 126) & 0x100) != 0)
   {
-    self->_deviceSoftwareIsAppleInternal = *(v5 + 248);
+    self->_deviceSoftwareIsAppleInternal = *(fromCopy + 248);
     *&self->_has |= 0x100u;
   }
 
   assetAuthorizeGetRequestOptions = self->_assetAuthorizeGetRequestOptions;
-  v34 = *(v5 + 10);
+  v34 = *(fromCopy + 10);
   if (assetAuthorizeGetRequestOptions)
   {
     if (v34)
@@ -2312,7 +2312,7 @@ LABEL_26:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v35 = *(v5 + 5);
+  v35 = *(fromCopy + 5);
   v37 = objc_msgSend_countByEnumeratingWithState_objects_count_(v35, v36, &v58, v67, 16);
   if (v37)
   {
@@ -2336,29 +2336,29 @@ LABEL_26:
     while (v39);
   }
 
-  v43 = *(v5 + 20);
+  v43 = *(fromCopy + 20);
   if (v43)
   {
     objc_msgSend_setDeviceUDID_(self, v42, v43);
   }
 
-  v44 = *(v5 + 18);
+  v44 = *(fromCopy + 18);
   if (v44)
   {
     objc_msgSend_setDeviceSerialNumber_(self, v42, v44);
   }
 
-  v45 = *(v5 + 126);
+  v45 = *(fromCopy + 126);
   if ((v45 & 0x200) != 0)
   {
-    self->_entitlementsValidated = *(v5 + 249);
+    self->_entitlementsValidated = *(fromCopy + 249);
     *&self->_has |= 0x200u;
-    v45 = *(v5 + 126);
+    v45 = *(fromCopy + 126);
   }
 
   if ((v45 & 0x40) != 0)
   {
-    self->_requestOriginator = *(v5 + 50);
+    self->_requestOriginator = *(fromCopy + 50);
     *&self->_has |= 0x40u;
   }
 
@@ -2366,7 +2366,7 @@ LABEL_26:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v46 = *(v5 + 27);
+  v46 = *(fromCopy + 27);
   v48 = objc_msgSend_countByEnumeratingWithState_objects_count_(v46, v47, &v54, v66, 16);
   if (v48)
   {

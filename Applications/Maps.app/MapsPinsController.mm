@@ -2,11 +2,11 @@
 + (id)sharedController;
 - (MSPDroppedPin)droppedPin;
 - (MapsPinsController)init;
-- (void)_handleNewOrModifiedCustomSearchResult:(id)a3;
+- (void)_handleNewOrModifiedCustomSearchResult:(id)result;
 - (void)_notifySearchManager;
-- (void)_updatePinsWithCompletion:(id)a3;
-- (void)customSearchManager:(id)a3 didModifyCustomSearchResult:(id)a4 coordinateChanged:(BOOL)a5;
-- (void)customSearchManager:(id)a3 didReplaceCustomSearchResult:(id)a4 animated:(BOOL)a5 shouldSelectOnMap:(id)a6 context:(id)a7;
+- (void)_updatePinsWithCompletion:(id)completion;
+- (void)customSearchManager:(id)manager didModifyCustomSearchResult:(id)result coordinateChanged:(BOOL)changed;
+- (void)customSearchManager:(id)manager didReplaceCustomSearchResult:(id)result animated:(BOOL)animated shouldSelectOnMap:(id)map context:(id)context;
 @end
 
 @implementation MapsPinsController
@@ -62,16 +62,16 @@
 - (void)_notifySearchManager
 {
   v3 = [SearchResult alloc];
-  v4 = [(MapsPinsController *)self droppedPin];
-  v6 = [(SearchResult *)v3 initWithDroppedPin:v4];
+  droppedPin = [(MapsPinsController *)self droppedPin];
+  v6 = [(SearchResult *)v3 initWithDroppedPin:droppedPin];
 
   v5 = +[CustomSearchManager sharedManager];
   [v5 setCustomSearchResult:v6 animated:0 shouldSelectOnMap:0 context:@"com.apple.Maps.MapsPinsController"];
 }
 
-- (void)_updatePinsWithCompletion:(id)a3
+- (void)_updatePinsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [_TtC8MapsSync20MapsSyncQueryOptions alloc];
   v6 = [[_TtC8MapsSync13MapsSyncRange alloc] initWithOffset:0 limit:1];
   v7 = [v5 initWithPredicate:0 sortDescriptors:0 range:v6];
@@ -82,16 +82,16 @@
   v10[2] = sub_100AFE5F0;
   v10[3] = &unk_1016601F0;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v8 fetchWithOptions:v7 completionHandler:v10];
 }
 
-- (void)_handleNewOrModifiedCustomSearchResult:(id)a3
+- (void)_handleNewOrModifiedCustomSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   pin = self->_pin;
-  if (!v4 && pin)
+  if (!resultCopy && pin)
   {
     v7 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
     v14 = self->_pin;
@@ -105,17 +105,17 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![(MSHistoryMarkedLocation *)pin isEqualToSearchResult:v4])
+  if (![(MSHistoryMarkedLocation *)pin isEqualToSearchResult:resultCopy])
   {
     v6 = self->_pin;
     if (v6)
     {
-      [(MSHistoryMarkedLocation *)v6 updateWithSearchResult:v4];
+      [(MSHistoryMarkedLocation *)v6 updateWithSearchResult:resultCopy];
     }
 
     else
     {
-      v10 = [[MSHistoryMarkedLocation alloc] initWithSearchResult:v4];
+      v10 = [[MSHistoryMarkedLocation alloc] initWithSearchResult:resultCopy];
       v11 = self->_pin;
       self->_pin = v10;
     }
@@ -131,20 +131,20 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)customSearchManager:(id)a3 didModifyCustomSearchResult:(id)a4 coordinateChanged:(BOOL)a5
+- (void)customSearchManager:(id)manager didModifyCustomSearchResult:(id)result coordinateChanged:(BOOL)changed
 {
-  if (a5)
+  if (changed)
   {
-    [(MapsPinsController *)self _handleNewOrModifiedCustomSearchResult:a4];
+    [(MapsPinsController *)self _handleNewOrModifiedCustomSearchResult:result];
   }
 }
 
-- (void)customSearchManager:(id)a3 didReplaceCustomSearchResult:(id)a4 animated:(BOOL)a5 shouldSelectOnMap:(id)a6 context:(id)a7
+- (void)customSearchManager:(id)manager didReplaceCustomSearchResult:(id)result animated:(BOOL)animated shouldSelectOnMap:(id)map context:(id)context
 {
-  v9 = a4;
-  if (([a7 isEqual:@"com.apple.Maps.MapsPinsController"] & 1) == 0)
+  resultCopy = result;
+  if (([context isEqual:@"com.apple.Maps.MapsPinsController"] & 1) == 0)
   {
-    [(MapsPinsController *)self _handleNewOrModifiedCustomSearchResult:v9];
+    [(MapsPinsController *)self _handleNewOrModifiedCustomSearchResult:resultCopy];
   }
 }
 

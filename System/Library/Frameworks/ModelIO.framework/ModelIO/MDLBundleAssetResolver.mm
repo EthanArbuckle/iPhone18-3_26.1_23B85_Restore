@@ -1,7 +1,7 @@
 @interface MDLBundleAssetResolver
-- (BOOL)canResolveAssetNamed:(id)a3;
+- (BOOL)canResolveAssetNamed:(id)named;
 - (MDLBundleAssetResolver)initWithBundle:(NSString *)path;
-- (id)resolveAssetNamed:(id)a3;
+- (id)resolveAssetNamed:(id)named;
 @end
 
 @implementation MDLBundleAssetResolver
@@ -22,14 +22,14 @@
   return v7;
 }
 
-- (id)resolveAssetNamed:(id)a3
+- (id)resolveAssetNamed:(id)named
 {
-  v4 = a3;
-  v5 = v4;
+  namedCopy = named;
+  v5 = namedCopy;
   if (self->_bundle)
   {
     memset(&__str, 0, sizeof(__str));
-    v6 = v4;
+    v6 = namedCopy;
     v8 = objc_msgSend_cStringUsingEncoding_(v6, v7, 4);
     sub_239E552A0(&__str, v8);
     if ((__str.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
@@ -151,12 +151,12 @@ LABEL_18:
   return v17;
 }
 
-- (BOOL)canResolveAssetNamed:(id)a3
+- (BOOL)canResolveAssetNamed:(id)named
 {
-  v5 = a3;
-  if (v5 && self->_path)
+  namedCopy = named;
+  if (namedCopy && self->_path)
   {
-    v6 = objc_msgSend_resolveAssetNamed_(self, v4, v5);
+    v6 = objc_msgSend_resolveAssetNamed_(self, v4, namedCopy);
     v7 = v6 != 0;
   }
 

@@ -5,12 +5,12 @@
 - (NSString)serviceName;
 - (NSString)trailingLabel;
 - (_TtC4Maps19WaldoAccessoryModel)init;
-- (_TtC4Maps19WaldoAccessoryModel)initWithContact:(id)a3 capabilityType:(unint64_t)a4 serviceName:(id)a5 footerText:(id)a6 state:(id)a7;
+- (_TtC4Maps19WaldoAccessoryModel)initWithContact:(id)contact capabilityType:(unint64_t)type serviceName:(id)name footerText:(id)text state:(id)state;
 - (unint64_t)capabilityType;
-- (void)setCapabilityType:(unint64_t)a3;
-- (void)setContact:(id)a3;
-- (void)setFooterText:(id)a3;
-- (void)setServiceName:(id)a3;
+- (void)setCapabilityType:(unint64_t)type;
+- (void)setContact:(id)contact;
+- (void)setFooterText:(id)text;
+- (void)setServiceName:(id)name;
 @end
 
 @implementation WaldoAccessoryModel
@@ -29,13 +29,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v5 = OBJC_IVAR____TtC4Maps19WaldoAccessoryModel_contact;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = contact;
+  contactCopy = contact;
 }
 
 - (NSString)trailingLabel
@@ -52,11 +52,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCapabilityType:(unint64_t)a3
+- (void)setCapabilityType:(unint64_t)type
 {
   v5 = OBJC_IVAR____TtC4Maps19WaldoAccessoryModel_capabilityType;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = type;
 }
 
 - (NSString)serviceName
@@ -66,13 +66,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setServiceName:(id)a3
+- (void)setServiceName:(id)name
 {
   v5 = OBJC_IVAR____TtC4Maps19WaldoAccessoryModel_serviceName;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = name;
+  nameCopy = name;
 }
 
 - (NSString)footerText
@@ -82,22 +82,22 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setFooterText:(id)a3
+- (void)setFooterText:(id)text
 {
   v5 = OBJC_IVAR____TtC4Maps19WaldoAccessoryModel_footerText;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = text;
+  textCopy = text;
 }
 
-- (_TtC4Maps19WaldoAccessoryModel)initWithContact:(id)a3 capabilityType:(unint64_t)a4 serviceName:(id)a5 footerText:(id)a6 state:(id)a7
+- (_TtC4Maps19WaldoAccessoryModel)initWithContact:(id)contact capabilityType:(unint64_t)type serviceName:(id)name footerText:(id)text state:(id)state
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  return WaldoAccessoryModel.init(contact:capabilityType:serviceName:footerText:state:)(v11, a4, v12, v13, a7);
+  contactCopy = contact;
+  nameCopy = name;
+  textCopy = text;
+  stateCopy = state;
+  return WaldoAccessoryModel.init(contact:capabilityType:serviceName:footerText:state:)(contactCopy, type, nameCopy, textCopy, state);
 }
 
 - (_TtC4Maps19WaldoAccessoryModel)init

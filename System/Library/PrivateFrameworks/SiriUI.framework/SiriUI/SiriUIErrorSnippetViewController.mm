@@ -1,20 +1,20 @@
 @interface SiriUIErrorSnippetViewController
-- (SiriUIErrorSnippetViewController)initWithError:(id)a3;
+- (SiriUIErrorSnippetViewController)initWithError:(id)error;
 - (void)loadView;
 @end
 
 @implementation SiriUIErrorSnippetViewController
 
-- (SiriUIErrorSnippetViewController)initWithError:(id)a3
+- (SiriUIErrorSnippetViewController)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v11.receiver = self;
   v11.super_class = SiriUIErrorSnippetViewController;
   v6 = [(SiriUISnippetViewController *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
     v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
     v9 = [v8 siriUILocalizedStringForKey:@"ERROR_SNIPPET_TITLE_GENERIC"];
     [(SiriUIErrorSnippetViewController *)v7 setTitle:v9];

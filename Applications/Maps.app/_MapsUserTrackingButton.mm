@@ -6,10 +6,10 @@
 
 - (int64_t)_activityIndicatorStyle
 {
-  v2 = [(_MapsUserTrackingButton *)self theme];
-  v3 = [v2 activityIndicatorStyle];
+  theme = [(_MapsUserTrackingButton *)self theme];
+  activityIndicatorStyle = [theme activityIndicatorStyle];
 
-  return v3;
+  return activityIndicatorStyle;
 }
 
 @end

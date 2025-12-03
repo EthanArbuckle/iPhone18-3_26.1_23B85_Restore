@@ -1,6 +1,6 @@
 @interface MPCMRContentItemAnimatedArtworkToken
-- (BOOL)isEqual:(id)a3;
-- (MPCMRContentItemAnimatedArtworkToken)initWithIdentifier:(id)a3 artworkIdentifier:(id)a4 artworkFormat:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (MPCMRContentItemAnimatedArtworkToken)initWithIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier artworkFormat:(id)format;
 - (id)stringRepresentation;
 @end
 
@@ -8,16 +8,16 @@
 
 - (id)stringRepresentation
 {
-  v2 = [(MPCMRContentItemAnimatedArtworkToken *)self artworkIdentifier];
-  v3 = [v2 copy];
+  artworkIdentifier = [(MPCMRContentItemAnimatedArtworkToken *)self artworkIdentifier];
+  v3 = [artworkIdentifier copy];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -27,25 +27,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
-      v7 = [(MPCMRContentItemAnimatedArtworkToken *)v5 identifier];
-      if (identifier == v7 || [(NSString *)identifier isEqual:v7])
+      identifier = [(MPCMRContentItemAnimatedArtworkToken *)v5 identifier];
+      if (identifier == identifier || [(NSString *)identifier isEqual:identifier])
       {
         artworkIdentifier = self->_artworkIdentifier;
-        v9 = [(MPCMRContentItemAnimatedArtworkToken *)v5 artworkIdentifier];
-        if (artworkIdentifier == v9 || [(NSString *)artworkIdentifier isEqual:v9])
+        artworkIdentifier = [(MPCMRContentItemAnimatedArtworkToken *)v5 artworkIdentifier];
+        if (artworkIdentifier == artworkIdentifier || [(NSString *)artworkIdentifier isEqual:artworkIdentifier])
         {
           artworkFormat = self->_artworkFormat;
-          v11 = [(MPCMRContentItemAnimatedArtworkToken *)v5 artworkFormat];
-          if (artworkFormat == v11)
+          artworkFormat = [(MPCMRContentItemAnimatedArtworkToken *)v5 artworkFormat];
+          if (artworkFormat == artworkFormat)
           {
             v12 = 1;
           }
 
           else
           {
-            v12 = [(NSString *)artworkFormat isEqual:v11];
+            v12 = [(NSString *)artworkFormat isEqual:artworkFormat];
           }
         }
 
@@ -70,20 +70,20 @@
   return v12;
 }
 
-- (MPCMRContentItemAnimatedArtworkToken)initWithIdentifier:(id)a3 artworkIdentifier:(id)a4 artworkFormat:(id)a5
+- (MPCMRContentItemAnimatedArtworkToken)initWithIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier artworkFormat:(id)format
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  artworkIdentifierCopy = artworkIdentifier;
+  formatCopy = format;
   v15.receiver = self;
   v15.super_class = MPCMRContentItemAnimatedArtworkToken;
   v12 = [(MPCMRContentItemAnimatedArtworkToken *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_artworkIdentifier, a4);
-    objc_storeStrong(&v13->_artworkFormat, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_artworkIdentifier, artworkIdentifier);
+    objc_storeStrong(&v13->_artworkFormat, format);
   }
 
   return v13;

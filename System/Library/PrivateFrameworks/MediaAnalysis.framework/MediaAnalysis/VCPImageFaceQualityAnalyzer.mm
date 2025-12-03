@@ -1,24 +1,24 @@
 @interface VCPImageFaceQualityAnalyzer
-- (int)analyzeDetectedFaces:(__CVBuffer *)a3 faceResults:(id)a4 cancel:(id)a5;
+- (int)analyzeDetectedFaces:(__CVBuffer *)faces faceResults:(id)results cancel:(id)cancel;
 @end
 
 @implementation VCPImageFaceQualityAnalyzer
 
-- (int)analyzeDetectedFaces:(__CVBuffer *)a3 faceResults:(id)a4 cancel:(id)a5
+- (int)analyzeDetectedFaces:(__CVBuffer *)faces faceResults:(id)results cancel:(id)cancel
 {
   v54 = *MEMORY[0x1E69E9840];
-  v38 = a4;
+  resultsCopy = results;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   faceQualityScores = self->_faceQualityScores;
-  v39 = self;
+  selfCopy = self;
   self->_faceQualityScores = v7;
 
   v34 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x1E695DF70] array];
-  v36 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   context = objc_autoreleasePoolPush();
   v10 = objc_alloc(MEMORY[0x1E69845B8]);
-  v37 = [v10 initWithCVPixelBuffer:a3 options:MEMORY[0x1E695E0F8]];
+  v37 = [v10 initWithCVPixelBuffer:faces options:MEMORY[0x1E695E0F8]];
   if (v37)
   {
     v11 = objc_alloc_init(MEMORY[0x1E69844B0]);
@@ -30,7 +30,7 @@
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v12 = v38;
+      v12 = resultsCopy;
       v13 = [v12 countByEnumeratingWithState:&v45 objects:v53 count:16];
       if (v13)
       {
@@ -44,8 +44,8 @@
               objc_enumerationMutation(v12);
             }
 
-            v16 = [*(*(&v45 + 1) + 8 * i) observation];
-            [v9 addObject:v16];
+            observation = [*(*(&v45 + 1) + 8 * i) observation];
+            [array addObject:observation];
           }
 
           v13 = [v12 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -54,7 +54,7 @@
         while (v13);
       }
 
-      [v33 setInputFaceObservations:v9];
+      [v33 setInputFaceObservations:array];
       v52 = v33;
       [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
       v31 = v44 = 0;
@@ -62,20 +62,20 @@
       v32 = 0;
       if (v17)
       {
-        v18 = [v33 results];
-        v19 = v18 == 0;
+        results = [v33 results];
+        v19 = results == 0;
 
         if (!v19)
         {
-          v20 = [v33 results];
-          [v36 addObjectsFromArray:v20];
+          results2 = [v33 results];
+          [array2 addObjectsFromArray:results2];
         }
 
         v42 = 0u;
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v21 = v36;
+        v21 = array2;
         v22 = [v21 countByEnumeratingWithState:&v40 objects:v49 count:16];
         if (v22)
         {
@@ -89,10 +89,10 @@
                 objc_enumerationMutation(v21);
               }
 
-              v25 = v39->_faceQualityScores;
+              v25 = selfCopy->_faceQualityScores;
               v26 = MEMORY[0x1E696AD98];
-              v27 = [*(*(&v40 + 1) + 8 * j) faceCaptureQuality];
-              [v27 floatValue];
+              faceCaptureQuality = [*(*(&v40 + 1) + 8 * j) faceCaptureQuality];
+              [faceCaptureQuality floatValue];
               v28 = [v26 numberWithFloat:?];
               [(NSMutableArray *)v25 addObject:v28];
             }

@@ -1,11 +1,11 @@
 @interface SegmentedControlCollectionViewCell
-- (_TtC8AppStore34SegmentedControlCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore34SegmentedControlCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation SegmentedControlCollectionViewCell
 
-- (_TtC8AppStore34SegmentedControlCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore34SegmentedControlCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore34SegmentedControlCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();

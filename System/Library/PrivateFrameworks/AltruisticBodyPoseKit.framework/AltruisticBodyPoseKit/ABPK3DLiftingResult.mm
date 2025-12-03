@@ -1,10 +1,10 @@
 @interface ABPK3DLiftingResult
 - (ABPK3DLiftingResult)init;
-- (ABPK3DLiftingResult)initWithJoints:(ABPK3DLiftingResult *)self numberOfJoints:(SEL)a2 rawNetworkOutputs:referenceDetectionResult:;
-- (ABPK3DLiftingResult)initWithJoints:(__n128 *)a3 rawNetworkOutputs:(__n128 *)a4 referenceDetectionResult:(void *)a5;
-- (BOOL)isJointTracked:(int64_t)a3;
+- (ABPK3DLiftingResult)initWithJoints:(ABPK3DLiftingResult *)self numberOfJoints:(SEL)joints rawNetworkOutputs:referenceDetectionResult:;
+- (ABPK3DLiftingResult)initWithJoints:(__n128 *)joints rawNetworkOutputs:(__n128 *)outputs referenceDetectionResult:(void *)result;
+- (BOOL)isJointTracked:(int64_t)tracked;
 - (id).cxx_construct;
-- (id)createResultScaledByFactor:(float)a3;
+- (id)createResultScaledByFactor:(float)factor;
 - (void)init;
 @end
 
@@ -34,24 +34,24 @@
   return v2;
 }
 
-- (ABPK3DLiftingResult)initWithJoints:(__n128 *)a3 rawNetworkOutputs:(__n128 *)a4 referenceDetectionResult:(void *)a5
+- (ABPK3DLiftingResult)initWithJoints:(__n128 *)joints rawNetworkOutputs:(__n128 *)outputs referenceDetectionResult:(void *)result
 {
-  v9 = a5;
-  v13.receiver = a1;
+  resultCopy = result;
+  v13.receiver = self;
   v13.super_class = ABPK3DLiftingResult;
   v10 = [(ABPK3DLiftingResult *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    std::vector<float>::__move_assign(v10->_anon_8, a3);
-    objc_storeStrong(&v11->_skeletonDetectionResult2D, a5);
-    std::vector<float>::__move_assign(v11->_anon_20, a4);
+    std::vector<float>::__move_assign(v10->_anon_8, joints);
+    objc_storeStrong(&v11->_skeletonDetectionResult2D, result);
+    std::vector<float>::__move_assign(v11->_anon_20, outputs);
   }
 
   return v11;
 }
 
-- (ABPK3DLiftingResult)initWithJoints:(ABPK3DLiftingResult *)self numberOfJoints:(SEL)a2 rawNetworkOutputs:referenceDetectionResult:
+- (ABPK3DLiftingResult)initWithJoints:(ABPK3DLiftingResult *)self numberOfJoints:(SEL)joints rawNetworkOutputs:referenceDetectionResult:
 {
   v6 = v4;
   v7 = v3;
@@ -85,7 +85,7 @@
   return v11;
 }
 
-- (id)createResultScaledByFactor:(float)a3
+- (id)createResultScaledByFactor:(float)factor
 {
   _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&__p, (*&self->_anon_8[8] - *self->_anon_8) >> 4);
   v4 = *self->_anon_8;
@@ -96,7 +96,7 @@
     do
     {
       v7 = *v4++;
-      *v6++ = vmulq_n_f32(v7, a3);
+      *v6++ = vmulq_n_f32(v7, factor);
     }
 
     while (v4 != v5);
@@ -105,8 +105,8 @@
   v8 = [ABPK3DLiftingResult alloc];
   v9 = __p;
   v10 = v16;
-  v11 = [(ABPK3DLiftingResult *)self skeletonDetectionResult2D];
-  v12 = [(ABPK3DLiftingResult *)v8 initWithJoints:v9 numberOfJoints:(v10 - v9) >> 4 referenceDetectionResult:v11];
+  skeletonDetectionResult2D = [(ABPK3DLiftingResult *)self skeletonDetectionResult2D];
+  v12 = [(ABPK3DLiftingResult *)v8 initWithJoints:v9 numberOfJoints:(v10 - v9) >> 4 referenceDetectionResult:skeletonDetectionResult2D];
 
   if (__p)
   {
@@ -117,16 +117,16 @@
   return v12;
 }
 
-- (BOOL)isJointTracked:(int64_t)a3
+- (BOOL)isJointTracked:(int64_t)tracked
 {
-  if (a3 < 0)
+  if (tracked < 0)
   {
     return 0;
   }
 
-  if (((*&self->_anon_8[8] - *self->_anon_8) >> 4) - 1 >= a3)
+  if (((*&self->_anon_8[8] - *self->_anon_8) >> 4) - 1 >= tracked)
   {
-    v4 = ARRigInputJointsDependencies[a3];
+    v4 = ARRigInputJointsDependencies[tracked];
     if ([(ABPK2DDetectionResult *)self->_skeletonDetectionResult2D jointCount]- 1 >= v4)
     {
       return [(ABPK2DDetectionResult *)self->_skeletonDetectionResult2D jointTrackingStates][4 * v4] == 1;
@@ -146,10 +146,10 @@
 
 - (void)init
 {
-  v2 = *a1;
+  v2 = *self;
   if (v2)
   {
-    *(a1 + 8) = v2;
+    *(self + 8) = v2;
     operator delete(v2);
   }
 }

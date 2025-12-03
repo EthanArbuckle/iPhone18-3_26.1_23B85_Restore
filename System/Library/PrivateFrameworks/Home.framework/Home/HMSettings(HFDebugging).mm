@@ -6,12 +6,12 @@
 
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
-  v4 = [HFStateDumpBuilder builderWithObject:a1 context:a3];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isControllable")}];
+  v4 = [HFStateDumpBuilder builderWithObject:self context:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isControllable")}];
   [v4 setObject:v5 forKeyedSubscript:@"controllable"];
 
-  v6 = [a1 rootGroup];
-  [v4 setObject:v6 forKeyedSubscript:@"rootGroup"];
+  rootGroup = [self rootGroup];
+  [v4 setObject:rootGroup forKeyedSubscript:@"rootGroup"];
 
   return v4;
 }

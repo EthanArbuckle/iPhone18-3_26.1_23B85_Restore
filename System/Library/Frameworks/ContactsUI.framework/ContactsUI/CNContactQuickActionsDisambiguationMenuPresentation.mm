@@ -8,9 +8,9 @@
 
 + (CNContactQuickActionsDisambiguationMenuPresentation)modalPresentation
 {
-  v2 = [(CNContactQuickActionsDisambiguationMenuPresentation *)[_CNContactQuickActionsModalDisambiguationMenuPresentation alloc] initBase];
+  initBase = [(CNContactQuickActionsDisambiguationMenuPresentation *)[_CNContactQuickActionsModalDisambiguationMenuPresentation alloc] initBase];
 
-  return v2;
+  return initBase;
 }
 
 - (id)initBase
@@ -22,9 +22,9 @@
 
 + (CNContactQuickActionsDisambiguationMenuPresentation)alertSheetPresentation
 {
-  v2 = [(CNContactQuickActionsDisambiguationMenuPresentation *)[_CNContactQuickActionsAlertSheetDisambiguationMenuPresentation alloc] initBase];
+  initBase = [(CNContactQuickActionsDisambiguationMenuPresentation *)[_CNContactQuickActionsAlertSheetDisambiguationMenuPresentation alloc] initBase];
 
-  return v2;
+  return initBase;
 }
 
 @end

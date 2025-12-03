@@ -1,5 +1,5 @@
 @interface NSDictionary
-- (void)_msv_enumerateKeysAndObjectsWithSortedKeys:(void *)a3 usingBlock:;
+- (void)_msv_enumerateKeysAndObjectsWithSortedKeys:(void *)keys usingBlock:;
 @end
 
 @implementation NSDictionary
@@ -168,12 +168,12 @@ void __37__NSDictionary_MSVSequence__msv_map___block_invoke(uint64_t a1)
   [v1 addObject:v2];
 }
 
-- (void)_msv_enumerateKeysAndObjectsWithSortedKeys:(void *)a3 usingBlock:
+- (void)_msv_enumerateKeysAndObjectsWithSortedKeys:(void *)keys usingBlock:
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  keysCopy = keys;
+  if (self)
   {
     v19 = 0;
     v15 = 0u;
@@ -196,8 +196,8 @@ LABEL_4:
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = [a1 objectForKey:{v12, v15}];
-        v6[2](v6, v12, v13, &v19);
+        v13 = [self objectForKey:{v12, v15}];
+        keysCopy[2](keysCopy, v12, v13, &v19);
         LOBYTE(v12) = v19;
 
         if (v12)

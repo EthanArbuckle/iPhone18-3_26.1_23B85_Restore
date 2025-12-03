@@ -1,22 +1,22 @@
 @interface PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper
-- (PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper)initWithLayout:(id)a3;
+- (PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper)initWithLayout:(id)layout;
 - (double)animationDuration;
-- (id)_snapshotForZoomLevel:(int64_t)a3;
-- (void)_adjustGeometries:(id *)a3 styles:(id *)a4 infos:(id *)a5 spriteIndexRange:(_PXGSpriteIndexRange)a6 appearing:(BOOL)a7;
-- (void)animation:(id)a3 prepareWithRootLayout:(id)a4 viewportShift:(CGPoint)a5;
+- (id)_snapshotForZoomLevel:(int64_t)level;
+- (void)_adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos spriteIndexRange:(_PXGSpriteIndexRange)range appearing:(BOOL)appearing;
+- (void)animation:(id)animation prepareWithRootLayout:(id)layout viewportShift:(CGPoint)shift;
 @end
 
 @implementation PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper
 
-- (void)_adjustGeometries:(id *)a3 styles:(id *)a4 infos:(id *)a5 spriteIndexRange:(_PXGSpriteIndexRange)a6 appearing:(BOOL)a7
+- (void)_adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos spriteIndexRange:(_PXGSpriteIndexRange)range appearing:(BOOL)appearing
 {
-  v7 = a7;
-  length = a6.length;
+  appearingCopy = appearing;
+  length = range.length;
   if ([(_PXCuratedLibraryLayoutAssetsSnapshot *)self->_toSnapshot zoomLevel]== 4)
   {
     v12 = self->_toSnapshot;
     v11 = self->_fromSnapshot;
-    if (v7)
+    if (appearingCopy)
     {
       goto LABEL_6;
     }
@@ -27,7 +27,7 @@
     v12 = self->_fromSnapshot;
     v13 = self->_toSnapshot;
     v11 = v13;
-    if (!v7)
+    if (!appearingCopy)
     {
 LABEL_6:
       v14 = +[PXCuratedLibrarySettings sharedInstance];
@@ -40,29 +40,29 @@ LABEL_6:
         v17 = xmmword_1A5301350;
         v18 = vdupq_n_s64(length - 1);
         v19 = vdupq_n_s64(4uLL);
-        v20 = a4;
+        stylesCopy = styles;
         do
         {
           v21 = vmovn_s64(vcgeq_u64(v18, v17));
           if (vuzp1_s16(v21, *v16.i8).u8[0])
           {
-            v20->var0 = 0.0;
+            stylesCopy->var0 = 0.0;
           }
 
           if (vuzp1_s16(v21, *&v16).i8[2])
           {
-            v20[3].var4 = 0.0;
+            stylesCopy[3].var4 = 0.0;
           }
 
           if (vuzp1_s16(*&v16, vmovn_s64(vcgeq_u64(v18, *&v16))).i32[1])
           {
-            v20[7].var1.var0.var0.var2 = 0.0;
-            v20[10].var8 = 0.0;
+            stylesCopy[7].var1.var0.var0.var2 = 0.0;
+            stylesCopy[10].var8 = 0.0;
           }
 
           v16 = vaddq_s64(v16, v19);
           v17 = vaddq_s64(v17, v19);
-          v20 = (v20 + 640);
+          stylesCopy = (stylesCopy + 640);
           v15 -= 4;
         }
 
@@ -188,20 +188,20 @@ void __131__PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelpe
   [*(a1 + 48) removeIndex:v6];
 }
 
-- (void)animation:(id)a3 prepareWithRootLayout:(id)a4 viewportShift:(CGPoint)a5
+- (void)animation:(id)animation prepareWithRootLayout:(id)layout viewportShift:(CGPoint)shift
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a3;
-  v11 = a4;
+  y = shift.y;
+  x = shift.x;
+  animationCopy = animation;
+  layoutCopy = layout;
   [(_PXCuratedLibraryLayoutAssetsSnapshot *)self->_fromSnapshot setOffset:x, y];
-  v12 = v11;
+  v12 = layoutCopy;
   if (!v12)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v38 = objc_opt_class();
     v39 = NSStringFromClass(v38);
-    [v37 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper.m" lineNumber:110 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"rootLayout", v39}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper.m" lineNumber:110 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"rootLayout", v39}];
 LABEL_13:
 
     goto LABEL_3;
@@ -210,11 +210,11 @@ LABEL_13:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v40 = objc_opt_class();
     v39 = NSStringFromClass(v40);
-    v41 = [v12 px_descriptionForAssertionMessage];
-    [v37 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper.m" lineNumber:110 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"rootLayout", v39, v41}];
+    px_descriptionForAssertionMessage = [v12 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper.m" lineNumber:110 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"rootLayout", v39, px_descriptionForAssertionMessage}];
 
     goto LABEL_13;
   }
@@ -244,8 +244,8 @@ LABEL_3:
     v62 = v23;
     v63 = v25;
     v26 = _Block_copy(aBlock);
-    v27 = [v15 dominantAssetIdentifier];
-    if (((*(v26 + 2))(v26, v27) & 1) == 0)
+    dominantAssetIdentifier = [v15 dominantAssetIdentifier];
+    if (((*(v26 + 2))(v26, dominantAssetIdentifier) & 1) == 0)
     {
       [v15 visibleRect];
       v29 = v28;
@@ -354,7 +354,7 @@ void __119__PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelpe
   }
 }
 
-- (id)_snapshotForZoomLevel:(int64_t)a3
+- (id)_snapshotForZoomLevel:(int64_t)level
 {
   v8 = 0;
   v9 = &v8;
@@ -367,7 +367,7 @@ void __119__PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelpe
   v7[2] = __95__PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper__snapshotForZoomLevel___block_invoke;
   v7[3] = &unk_1E773B5F8;
   v7[4] = &v8;
-  v7[5] = a3;
+  v7[5] = level;
   v4 = _Block_copy(v7);
   v4[2](v4, self->_fromSnapshot);
   v4[2](v4, self->_toSnapshot);
@@ -403,15 +403,15 @@ void __95__PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper
   return v4;
 }
 
-- (PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper)initWithLayout:(id)a3
+- (PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper;
-  v5 = [(PXCuratedLibraryLayoutAnimationHelper *)&v9 initWithLayout:v4];
+  v5 = [(PXCuratedLibraryLayoutAnimationHelper *)&v9 initWithLayout:layoutCopy];
   if (v5)
   {
-    v6 = [[_PXCuratedLibraryLayoutAssetsSnapshot alloc] initWithLayout:v4];
+    v6 = [[_PXCuratedLibraryLayoutAssetsSnapshot alloc] initWithLayout:layoutCopy];
     fromSnapshot = v5->_fromSnapshot;
     v5->_fromSnapshot = v6;
   }

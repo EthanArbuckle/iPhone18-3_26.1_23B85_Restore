@@ -1,23 +1,23 @@
 @interface SKUIItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSMutableDictionary)cacheRepresentation;
 - (NSString)_downloadKind;
 - (NSURL)largestArtworkURL;
-- (SKUIItem)initWithCacheRepresentation:(id)a3;
-- (SKUIItem)initWithIdentifier:(id)a3 mediaResultDictionary:(id)a4;
-- (SKUIItem)initWithLookupDictionary:(id)a3;
+- (SKUIItem)initWithCacheRepresentation:(id)representation;
+- (SKUIItem)initWithIdentifier:(id)identifier mediaResultDictionary:(id)dictionary;
+- (SKUIItem)initWithLookupDictionary:(id)dictionary;
 - (SKUIStoreIdentifier)storeIdentifier;
 - (_NSRange)ageBandRange;
-- (id)initContainerItemWithItem:(id)a3;
+- (id)initContainerItemWithItem:(id)item;
 - (id)lookupDictionary;
-- (id)valueForMetricsField:(id)a3;
+- (id)valueForMetricsField:(id)field;
 @end
 
 @implementation SKUIItem
 
-- (id)initContainerItemWithItem:(id)a3
+- (id)initContainerItemWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIItem initContainerItemWithItem:];
@@ -28,34 +28,34 @@
   v5 = [(SKUIItem *)&v25 init];
   if (v5)
   {
-    v6 = [v4 artistName];
+    artistName = [itemCopy artistName];
     artistName = v5->_artistName;
-    v5->_artistName = v6;
+    v5->_artistName = artistName;
 
-    v8 = [v4 artworksProvider];
+    artworksProvider = [itemCopy artworksProvider];
     artworksProvider = v5->_artworksProvider;
-    v5->_artworksProvider = v8;
+    v5->_artworksProvider = artworksProvider;
 
-    v10 = [v4 categoryName];
+    categoryName = [itemCopy categoryName];
     categoryName = v5->_categoryName;
-    v5->_categoryName = v10;
+    v5->_categoryName = categoryName;
 
-    v12 = [v4 productPageURLString];
+    productPageURLString = [itemCopy productPageURLString];
     productPageURLString = v5->_productPageURLString;
-    v5->_productPageURLString = v12;
+    v5->_productPageURLString = productPageURLString;
 
-    v14 = [v4 collectionName];
+    collectionName = [itemCopy collectionName];
     title = v5->_title;
-    v5->_title = v14;
+    v5->_title = collectionName;
 
     if (v5->_productPageURLString)
     {
       v16 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v5->_productPageURLString];
-      v17 = [v16 path];
-      v18 = v17;
-      if (v17)
+      path = [v16 path];
+      v18 = path;
+      if (path)
       {
-        v19 = [v17 rangeOfString:@"/id"];
+        v19 = [path rangeOfString:@"/id"];
         if (v19 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v21 = [v18 substringFromIndex:v19 + v20];
@@ -64,14 +64,14 @@
       }
     }
 
-    v22 = [v4 itemKind];
-    if (v22 == 13)
+    itemKind = [itemCopy itemKind];
+    if (itemKind == 13)
     {
       v23 = 7;
       goto LABEL_15;
     }
 
-    if (v22 == 14)
+    if (itemKind == 14)
     {
       v23 = 15;
 LABEL_15:
@@ -82,10 +82,10 @@ LABEL_15:
   return v5;
 }
 
-- (SKUIItem)initWithLookupDictionary:(id)a3
+- (SKUIItem)initWithLookupDictionary:(id)dictionary
 {
   v142 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
     v5 = MEMORY[0x277D86220];
@@ -105,14 +105,14 @@ LABEL_15:
     goto LABEL_166;
   }
 
-  v8 = [v4 objectForKey:*MEMORY[0x277D6A2F0]];
+  v8 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A2F0]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_storeStrong(&v7->_artistName, v8);
   }
 
-  v9 = [v4 objectForKey:*MEMORY[0x277D6A308]];
+  v9 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A308]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -120,7 +120,7 @@ LABEL_15:
     objc_storeStrong(&v7->_bundleID, v9);
   }
 
-  v10 = [v4 objectForKey:*MEMORY[0x277D6A340]];
+  v10 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A340]];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 count])
@@ -140,15 +140,15 @@ LABEL_15:
 
   else
   {
-    categoryName = [v4 objectForKey:@"genres"];
+    categoryName = [dictionaryCopy objectForKey:@"genres"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [categoryName firstObject];
+      firstObject = [categoryName firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v13 objectForKey:@"name"];
+        v14 = [firstObject objectForKey:@"name"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -160,7 +160,7 @@ LABEL_15:
 
   v11 = v10;
 LABEL_22:
-  v15 = [v4 objectForKey:@"collectionName"];
+  v15 = [dictionaryCopy objectForKey:@"collectionName"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -170,14 +170,14 @@ LABEL_22:
     v7->_collectionName = v16;
   }
 
-  v18 = [v4 objectForKey:*MEMORY[0x277D6A360]];
+  v18 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A360]];
 
   if (objc_opt_respondsToSelector())
   {
     v7->_itemIdentifier = [v18 longLongValue];
   }
 
-  v19 = [v4 objectForKey:@"feedUrl"];
+  v19 = [dictionaryCopy objectForKey:@"feedUrl"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -185,21 +185,21 @@ LABEL_22:
     objc_storeStrong(&v7->_feedUrlString, v19);
   }
 
-  v20 = [v4 objectForKey:@"appCount"];
+  v20 = [dictionaryCopy objectForKey:@"appCount"];
 
   if (objc_opt_respondsToSelector())
   {
     v7->_numberOfChildItems = [v20 integerValue];
   }
 
-  v21 = [v4 objectForKey:@"hasInAppPurchases"];
+  v21 = [dictionaryCopy objectForKey:@"hasInAppPurchases"];
 
   if (objc_opt_respondsToSelector())
   {
     v7->_hasInAppPurchases = [v21 BOOLValue];
   }
 
-  v22 = [v4 objectForKey:*MEMORY[0x277D6A390]];
+  v22 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A390]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -207,7 +207,7 @@ LABEL_22:
     objc_storeStrong(&v7->_productPageURLString, v22);
   }
 
-  v23 = [v4 objectForKey:*MEMORY[0x277D6A3A0]];
+  v23 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A3A0]];
 
   objc_opt_class();
   v119 = v7;
@@ -224,7 +224,7 @@ LABEL_47:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = v4;
+    v26 = dictionaryCopy;
     requiredCapabilities = objc_alloc_init(MEMORY[0x277CBEB18]);
     [v23 componentsSeparatedByString:@" "];
     v132 = 0u;
@@ -263,12 +263,12 @@ LABEL_47:
     v34 = v119->_requiredCapabilities;
     v119->_requiredCapabilities = v33;
 
-    v4 = v26;
+    dictionaryCopy = v26;
     goto LABEL_47;
   }
 
 LABEL_48:
-  v35 = [v4 objectForKey:*MEMORY[0x277D6A338]];
+  v35 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A338]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -276,7 +276,7 @@ LABEL_48:
     objc_storeStrong(&v7->_title, v35);
   }
 
-  v36 = [v4 objectForKey:*MEMORY[0x277D6A368]];
+  v36 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A368]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -301,13 +301,13 @@ LABEL_56:
     v119->_itemKind = v40;
   }
 
-  v41 = [v4 objectForKey:*MEMORY[0x277D6A300]];
+  v41 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A300]];
 
   v42 = [SKUIArtworkProvidingFactory artworkProviderForStoreResponse:v41];
   artworksProvider = v7->_artworksProvider;
   v7->_artworksProvider = v42;
 
-  v44 = [v4 objectForKey:*MEMORY[0x277D6A378]];
+  v44 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A378]];
 
   v45 = [SKUIArtworkProvidingFactory artworkProviderForStoreResponse:v44];
   newsstandArtworks = v7->_newsstandArtworks;
@@ -318,7 +318,7 @@ LABEL_56:
     v7->_newsstandApp = 1;
   }
 
-  v47 = [v4 objectForKey:@"hasMessagesExtension"];
+  v47 = [dictionaryCopy objectForKey:@"hasMessagesExtension"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -326,7 +326,7 @@ LABEL_56:
     v7->_hasMessagesExtension = [v47 BOOLValue];
   }
 
-  v48 = [v4 objectForKey:@"isHiddenFromSpringBoard"];
+  v48 = [dictionaryCopy objectForKey:@"isHiddenFromSpringBoard"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -334,7 +334,7 @@ LABEL_56:
     v7->_isHiddenFromSpringBoard = [v48 BOOLValue];
   }
 
-  v49 = [v4 objectForKey:@"isGameControllerSupported"];
+  v49 = [dictionaryCopy objectForKey:@"isGameControllerSupported"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -342,7 +342,7 @@ LABEL_56:
     v7->_gameControllerSupported = [v49 BOOLValue];
   }
 
-  v50 = [v4 objectForKey:@"requiresGameController"];
+  v50 = [dictionaryCopy objectForKey:@"requiresGameController"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -350,7 +350,7 @@ LABEL_56:
     v7->_requiresGameController = [v50 BOOLValue];
   }
 
-  v51 = [v4 objectForKey:@"ageBand"];
+  v51 = [dictionaryCopy objectForKey:@"ageBand"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -377,7 +377,7 @@ LABEL_56:
   }
 
   v7->_ageBandRange.length = v53;
-  v54 = [v4 objectForKey:*MEMORY[0x277D6A310]];
+  v54 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A310]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -395,7 +395,7 @@ LABEL_56:
     v113 = v50;
   }
 
-  v56 = [v4 objectForKey:*MEMORY[0x277D6A380]];
+  v56 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A380]];
   objc_opt_class();
   v112 = v56;
   v108 = v54;
@@ -431,7 +431,7 @@ LABEL_56:
       itemOffer = v7->_itemOffer;
       v7->_itemOffer = v62;
 
-      v64 = [v4 objectForKey:@"fileSizeByDevice"];
+      v64 = [dictionaryCopy objectForKey:@"fileSizeByDevice"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -445,10 +445,10 @@ LABEL_56:
     v56 = v112;
   }
 
-  v65 = [v4 objectForKey:@"deviceFamilies"];
+  v65 = [dictionaryCopy objectForKey:@"deviceFamilies"];
   if (!v65)
   {
-    v66 = [v4 objectForKey:*MEMORY[0x277D6A3E0]];
+    v66 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A3E0]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -469,7 +469,7 @@ LABEL_56:
   v107 = v51;
   if (objc_opt_isKindOfClass())
   {
-    v67 = v4;
+    v67 = dictionaryCopy;
     v130 = 0u;
     v131 = 0u;
     v128 = 0u;
@@ -530,7 +530,7 @@ LABEL_56:
       {
 LABEL_113:
 
-        v4 = v67;
+        dictionaryCopy = v67;
         v7 = v119;
         v65 = v117;
         v51 = v107;
@@ -543,7 +543,7 @@ LABEL_113:
 
   v7->_deviceFamilies = 15;
 LABEL_115:
-  v75 = [v4 objectForKey:@"editorialBadgeInfo"];
+  v75 = [dictionaryCopy objectForKey:@"editorialBadgeInfo"];
   objc_opt_class();
   v110 = v75;
   if (objc_opt_isKindOfClass())
@@ -560,7 +560,7 @@ LABEL_115:
 
   if (!v7->_versionIdentifier)
   {
-    v77 = [v4 objectForKey:@"version"];
+    v77 = [dictionaryCopy objectForKey:@"version"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -568,7 +568,7 @@ LABEL_115:
       objc_storeStrong(&v7->_versionString, v77);
     }
 
-    v78 = [v4 objectForKey:@"versionId"];
+    v78 = [dictionaryCopy objectForKey:@"versionId"];
 
     v113 = v78;
     if (objc_opt_respondsToSelector())
@@ -579,7 +579,7 @@ LABEL_115:
     v56 = v112;
   }
 
-  v79 = [v4 objectForKey:*MEMORY[0x277D6A418]];
+  v79 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A418]];
   objc_opt_class();
   v111 = v79;
   if (objc_opt_isKindOfClass())
@@ -620,16 +620,16 @@ LABEL_115:
     }
   }
 
-  v85 = [v4 objectForKey:@"videoPreviewByType"];
+  v85 = [dictionaryCopy objectForKey:@"videoPreviewByType"];
   objc_opt_class();
   v118 = v85;
   if (objc_opt_isKindOfClass())
   {
-    v105 = v4;
-    v86 = [MEMORY[0x277D75418] currentDevice];
-    v87 = [v86 userInterfaceIdiom];
+    v105 = dictionaryCopy;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v87 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v88 = &unk_2828D2F18;
     }
@@ -742,7 +742,7 @@ LABEL_142:
     videos = v119->_videos;
     v119->_videos = v101;
 
-    v4 = v105;
+    dictionaryCopy = v105;
     v52 = v106;
     v51 = v107;
     v54 = v108;
@@ -755,11 +755,11 @@ LABEL_166:
   return v103;
 }
 
-- (SKUIItem)initWithIdentifier:(id)a3 mediaResultDictionary:(id)a4
+- (SKUIItem)initWithIdentifier:(id)identifier mediaResultDictionary:(id)dictionary
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIItem initWithIdentifier:mediaResultDictionary:];
@@ -775,13 +775,13 @@ LABEL_166:
 
   if (objc_opt_respondsToSelector())
   {
-    v8->_itemIdentifier = [v6 longLongValue];
+    v8->_itemIdentifier = [identifierCopy longLongValue];
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"platformAttributes"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"platformAttributes"];
   v10 = [v9 objectForKeyedSubscript:@"ios"];
 
-  v11 = [v7 objectForKey:@"artistName"];
+  v11 = [dictionaryCopy objectForKey:@"artistName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -796,7 +796,7 @@ LABEL_166:
     objc_storeStrong(&v8->_bundleID, v12);
   }
 
-  v13 = [v7 objectForKey:@"genreDisplayName"];
+  v13 = [dictionaryCopy objectForKey:@"genreDisplayName"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -811,7 +811,7 @@ LABEL_166:
     v8->_hasInAppPurchases = [v14 BOOLValue];
   }
 
-  v15 = [v7 objectForKey:@"url"];
+  v15 = [dictionaryCopy objectForKey:@"url"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -836,8 +836,8 @@ LABEL_31:
   if (objc_opt_isKindOfClass())
   {
     v55 = v10;
-    v56 = v7;
-    v57 = v6;
+    v56 = dictionaryCopy;
+    v57 = identifierCopy;
     requiredCapabilities = objc_alloc_init(MEMORY[0x277CBEB18]);
     v19 = [v16 componentsSeparatedByString:@" "];
     v63 = 0u;
@@ -875,14 +875,14 @@ LABEL_31:
     v26 = v8->_requiredCapabilities;
     v8->_requiredCapabilities = v25;
 
-    v7 = v56;
-    v6 = v57;
+    dictionaryCopy = v56;
+    identifierCopy = v57;
     v10 = v55;
     goto LABEL_31;
   }
 
 LABEL_32:
-  v27 = [v7 objectForKey:@"name"];
+  v27 = [dictionaryCopy objectForKey:@"name"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -945,13 +945,13 @@ LABEL_32:
     }
   }
 
-  v40 = [v7 objectForKey:@"deviceFamilies"];
+  v40 = [dictionaryCopy objectForKey:@"deviceFamilies"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v53 = v36;
     v54 = v35;
-    v58 = v6;
+    v58 = identifierCopy;
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
@@ -1013,7 +1013,7 @@ LABEL_32:
       {
 LABEL_67:
 
-        v6 = v58;
+        identifierCopy = v58;
         v35 = v54;
         v40 = v52;
         v36 = v53;
@@ -1022,7 +1022,7 @@ LABEL_67:
     }
   }
 
-  v48 = [v7 objectForKey:{@"userRating", v52, v53}];
+  v48 = [dictionaryCopy objectForKey:{@"userRating", v52, v53}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1048,8 +1048,8 @@ LABEL_74:
 
 - (NSURL)largestArtworkURL
 {
-  v2 = [(SKUIArtworkProviding *)self->_artworksProvider largestArtwork];
-  v3 = [v2 URL];
+  largestArtwork = [(SKUIArtworkProviding *)self->_artworksProvider largestArtwork];
+  v3 = [largestArtwork URL];
 
   return v3;
 }
@@ -1063,8 +1063,8 @@ LABEL_74:
     v5 = self->_storeIdentifier;
     self->_storeIdentifier = v4;
 
-    v6 = [(SKUIItem *)self bundleIdentifier];
-    [(SKUIStoreIdentifier *)self->_storeIdentifier setBundleIdentifier:v6];
+    bundleIdentifier = [(SKUIItem *)self bundleIdentifier];
+    [(SKUIStoreIdentifier *)self->_storeIdentifier setBundleIdentifier:bundleIdentifier];
 
     [(SKUIStoreIdentifier *)self->_storeIdentifier setPodcastFeedURLIdentifier:self->_feedUrlString];
     storeIdentifier = self->_storeIdentifier;
@@ -1076,11 +1076,11 @@ LABEL_74:
 - (id)lookupDictionary
 {
   v64[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(SKUIItem *)self ageBandRange];
-  if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  ageBandRange = [(SKUIItem *)self ageBandRange];
+  if (ageBandRange != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v4;
+    v6 = ageBandRange;
     v7 = v5;
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
@@ -1089,122 +1089,122 @@ LABEL_74:
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6 + v7];
     [v8 setObject:v10 forKey:@"maxAge"];
 
-    [v3 setObject:v8 forKey:@"ageBand"];
+    [dictionary setObject:v8 forKey:@"ageBand"];
   }
 
-  v11 = [(SKUIItem *)self artistName];
-  if (v11)
+  artistName = [(SKUIItem *)self artistName];
+  if (artistName)
   {
-    [v3 setObject:v11 forKey:*MEMORY[0x277D6A2F0]];
+    [dictionary setObject:artistName forKey:*MEMORY[0x277D6A2F0]];
   }
 
-  v12 = [(SKUIItem *)self bundleIdentifier];
+  bundleIdentifier = [(SKUIItem *)self bundleIdentifier];
 
-  if (v12)
+  if (bundleIdentifier)
   {
-    [v3 setObject:v12 forKey:*MEMORY[0x277D6A308]];
+    [dictionary setObject:bundleIdentifier forKey:*MEMORY[0x277D6A308]];
   }
 
-  v13 = [(SKUIItem *)self categoryName];
+  categoryName = [(SKUIItem *)self categoryName];
 
-  if (v13)
+  if (categoryName)
   {
-    v14 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v13, 0}];
-    [v3 setObject:v14 forKey:*MEMORY[0x277D6A340]];
+    v14 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{categoryName, 0}];
+    [dictionary setObject:v14 forKey:*MEMORY[0x277D6A340]];
   }
 
-  v15 = [(SKUIItem *)self collectionName];
+  collectionName = [(SKUIItem *)self collectionName];
 
-  if (v15)
+  if (collectionName)
   {
-    [v3 setObject:v15 forKey:@"collectionName"];
+    [dictionary setObject:collectionName forKey:@"collectionName"];
   }
 
   if ([(SKUIItem *)self hasInAppPurchases])
   {
-    [v3 setObject:MEMORY[0x277CBEC38] forKey:@"hasInAppPurchases"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"hasInAppPurchases"];
   }
 
-  v16 = [(SKUIItem *)self itemIdentifier];
-  if (v16)
+  itemIdentifier = [(SKUIItem *)self itemIdentifier];
+  if (itemIdentifier)
   {
-    v17 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:v16];
-    [v3 setObject:v17 forKey:*MEMORY[0x277D6A360]];
+    v17 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:itemIdentifier];
+    [dictionary setObject:v17 forKey:*MEMORY[0x277D6A360]];
   }
 
-  v18 = [(SKUIItem *)self itemKindString];
+  itemKindString = [(SKUIItem *)self itemKindString];
 
-  if (v18)
+  if (itemKindString)
   {
-    [v3 setObject:v18 forKey:*MEMORY[0x277D6A368]];
+    [dictionary setObject:itemKindString forKey:*MEMORY[0x277D6A368]];
   }
 
-  v19 = [(SKUIItem *)self primaryItemOffer];
-  v20 = v19;
-  if (v19)
+  primaryItemOffer = [(SKUIItem *)self primaryItemOffer];
+  v20 = primaryItemOffer;
+  if (primaryItemOffer)
   {
-    v21 = [v19 lookupDictionary];
-    v64[0] = v21;
+    lookupDictionary = [primaryItemOffer lookupDictionary];
+    v64[0] = lookupDictionary;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:1];
-    [v3 setObject:v22 forKey:*MEMORY[0x277D6A380]];
+    [dictionary setObject:v22 forKey:*MEMORY[0x277D6A380]];
   }
 
-  v23 = [(SKUIItem *)self numberOfChildItems];
-  if (v23 >= 1)
+  numberOfChildItems = [(SKUIItem *)self numberOfChildItems];
+  if (numberOfChildItems >= 1)
   {
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:v23];
-    [v3 setObject:v24 forKey:@"appCount"];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:numberOfChildItems];
+    [dictionary setObject:v24 forKey:@"appCount"];
   }
 
-  v25 = [(SKUIItem *)self parentalControlsRank];
-  if (v25)
+  parentalControlsRank = [(SKUIItem *)self parentalControlsRank];
+  if (parentalControlsRank)
   {
     v62 = @"value";
-    v26 = [MEMORY[0x277CCABB0] numberWithInteger:v25];
+    v26 = [MEMORY[0x277CCABB0] numberWithInteger:parentalControlsRank];
     v63 = v26;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-    [v3 setObject:v27 forKey:*MEMORY[0x277D6A310]];
+    [dictionary setObject:v27 forKey:*MEMORY[0x277D6A310]];
   }
 
-  v28 = [(SKUIItem *)self productPageURLString];
+  productPageURLString = [(SKUIItem *)self productPageURLString];
 
-  if (v28)
+  if (productPageURLString)
   {
-    [v3 setObject:v28 forKey:*MEMORY[0x277D6A390]];
+    [dictionary setObject:productPageURLString forKey:*MEMORY[0x277D6A390]];
   }
 
-  v29 = [(SKUIItem *)self requiredCapabilities];
+  requiredCapabilities = [(SKUIItem *)self requiredCapabilities];
 
-  if (v29)
+  if (requiredCapabilities)
   {
-    [v3 setObject:v29 forKey:*MEMORY[0x277D6A3A0]];
+    [dictionary setObject:requiredCapabilities forKey:*MEMORY[0x277D6A3A0]];
   }
 
-  v30 = [(SKUIItem *)self title];
+  title = [(SKUIItem *)self title];
 
-  if (v30)
+  if (title)
   {
-    [v3 setObject:v30 forKey:*MEMORY[0x277D6A338]];
+    [dictionary setObject:title forKey:*MEMORY[0x277D6A338]];
   }
 
-  v31 = [(SKUIItem *)self versionIdentifier];
-  if (v31)
+  versionIdentifier = [(SKUIItem *)self versionIdentifier];
+  if (versionIdentifier)
   {
-    v32 = [MEMORY[0x277CCABB0] numberWithLongLong:v31];
-    [v3 setObject:v32 forKey:@"versionId"];
+    v32 = [MEMORY[0x277CCABB0] numberWithLongLong:versionIdentifier];
+    [dictionary setObject:v32 forKey:@"versionId"];
   }
 
-  v33 = [(SKUIItem *)self versionString];
+  versionString = [(SKUIItem *)self versionString];
 
-  if (v33)
+  if (versionString)
   {
-    [v3 setObject:v33 forKey:@"version"];
+    [dictionary setObject:versionString forKey:@"version"];
   }
 
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v35 = [(SKUIItem *)self deviceFamilies];
-  v36 = v35;
-  if (v35)
+  deviceFamilies = [(SKUIItem *)self deviceFamilies];
+  v36 = deviceFamilies;
+  if (deviceFamilies)
   {
     [v34 addObject:@"ipad"];
     if ((v36 & 2) == 0)
@@ -1219,7 +1219,7 @@ LABEL_35:
     }
   }
 
-  else if ((v35 & 2) == 0)
+  else if ((deviceFamilies & 2) == 0)
   {
     goto LABEL_35;
   }
@@ -1235,20 +1235,20 @@ LABEL_37:
   if ([v34 count])
   {
     v37 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v34, @"deviceFamilies", 0}];
-    [v3 setObject:v37 forKey:*MEMORY[0x277D6A3E0]];
+    [dictionary setObject:v37 forKey:*MEMORY[0x277D6A3E0]];
   }
 
   v38 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v39 = [(SKUIItem *)self itemKind];
+  itemKind = [(SKUIItem *)self itemKind];
   v40 = MEMORY[0x277D6A420];
   v41 = MEMORY[0x277D6A408];
-  if (v39 == 17)
+  if (itemKind == 17)
   {
     v41 = MEMORY[0x277D6A410];
     v40 = MEMORY[0x277D6A428];
   }
 
-  if (v39 == 12)
+  if (itemKind == 12)
   {
     v42 = MEMORY[0x277D6A410];
   }
@@ -1258,7 +1258,7 @@ LABEL_37:
     v42 = v41;
   }
 
-  if (v39 == 12)
+  if (itemKind == 12)
   {
     v43 = MEMORY[0x277D6A428];
   }
@@ -1276,13 +1276,13 @@ LABEL_37:
   v46 = [v45 numberWithFloat:?];
   [v38 setObject:v46 forKey:*v43];
 
-  [v3 setObject:v38 forKey:*MEMORY[0x277D6A418]];
-  v47 = [(SKUIItem *)self artworksProvider];
+  [dictionary setObject:v38 forKey:*MEMORY[0x277D6A418]];
+  artworksProvider = [(SKUIItem *)self artworksProvider];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v49 = [(SKUIItem *)self artworksProvider];
-  v50 = v49;
+  artworksProvider2 = [(SKUIItem *)self artworksProvider];
+  artworksProvider3 = artworksProvider2;
   if ((isKindOfClass & 1) == 0)
   {
     objc_opt_class();
@@ -1293,9 +1293,9 @@ LABEL_37:
       goto LABEL_58;
     }
 
-    v50 = [(SKUIItem *)self artworksProvider];
-    v52 = [v50 _lookupArray];
-    if (![v52 count])
+    artworksProvider3 = [(SKUIItem *)self artworksProvider];
+    _lookupArray = [artworksProvider3 _lookupArray];
+    if (![_lookupArray count])
     {
       goto LABEL_56;
     }
@@ -1303,23 +1303,23 @@ LABEL_37:
     goto LABEL_55;
   }
 
-  v51 = [v49 urlTemplateString];
+  urlTemplateString = [artworksProvider2 urlTemplateString];
 
-  if (v51)
+  if (urlTemplateString)
   {
-    v52 = [v50 _lookupDictionary];
+    _lookupArray = [artworksProvider3 _lookupDictionary];
 LABEL_55:
-    [v3 setObject:v52 forKey:*MEMORY[0x277D6A300]];
+    [dictionary setObject:_lookupArray forKey:*MEMORY[0x277D6A300]];
 LABEL_56:
   }
 
 LABEL_58:
-  v54 = [(SKUIItem *)self newsstandArtworks];
+  newsstandArtworks = [(SKUIItem *)self newsstandArtworks];
   objc_opt_class();
   v55 = objc_opt_isKindOfClass();
 
-  v56 = [(SKUIItem *)self newsstandArtworks];
-  v57 = v56;
+  newsstandArtworks2 = [(SKUIItem *)self newsstandArtworks];
+  newsstandArtworks3 = newsstandArtworks2;
   if ((v55 & 1) == 0)
   {
     objc_opt_class();
@@ -1330,9 +1330,9 @@ LABEL_58:
       goto LABEL_66;
     }
 
-    v57 = [(SKUIItem *)self newsstandArtworks];
-    v59 = [v57 _lookupArray];
-    if (![v59 count])
+    newsstandArtworks3 = [(SKUIItem *)self newsstandArtworks];
+    _lookupArray2 = [newsstandArtworks3 _lookupArray];
+    if (![_lookupArray2 count])
     {
       goto LABEL_64;
     }
@@ -1340,40 +1340,40 @@ LABEL_58:
     goto LABEL_63;
   }
 
-  v58 = [v56 urlTemplateString];
+  urlTemplateString2 = [newsstandArtworks2 urlTemplateString];
 
-  if (v58)
+  if (urlTemplateString2)
   {
-    v59 = [v57 _lookupDictionary];
+    _lookupArray2 = [newsstandArtworks3 _lookupDictionary];
 LABEL_63:
-    [v3 setObject:v59 forKey:*MEMORY[0x277D6A378]];
+    [dictionary setObject:_lookupArray2 forKey:*MEMORY[0x277D6A378]];
 LABEL_64:
   }
 
 LABEL_66:
 
-  return v3;
+  return dictionary;
 }
 
 - (NSString)_downloadKind
 {
-  v2 = [(SKUIItem *)self itemKind];
-  if (v2 <= 0x12)
+  itemKind = [(SKUIItem *)self itemKind];
+  if (itemKind <= 0x12)
   {
-    v3 = **(&unk_2781FA028 + v2);
+    v3 = **(&unk_2781FA028 + itemKind);
   }
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [v4 itemIdentifier];
-    v6 = v7 == [(SKUIItem *)self itemIdentifier];
+    itemIdentifier = [equalCopy itemIdentifier];
+    v6 = itemIdentifier == [(SKUIItem *)self itemIdentifier];
   }
 
   else
@@ -1384,9 +1384,9 @@ LABEL_66:
   return v6;
 }
 
-- (SKUIItem)initWithCacheRepresentation:(id)a3
+- (SKUIItem)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1395,7 +1395,7 @@ LABEL_66:
     v5 = [(SKUIItem *)&v59 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"artistName"];
+      v6 = [representationCopy objectForKey:@"artistName"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1404,7 +1404,7 @@ LABEL_66:
         v5->_artistName = v7;
       }
 
-      v9 = [v4 objectForKey:@"bid"];
+      v9 = [representationCopy objectForKey:@"bid"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1414,7 +1414,7 @@ LABEL_66:
         v5->_bundleID = v10;
       }
 
-      v12 = [v4 objectForKey:@"genre"];
+      v12 = [representationCopy objectForKey:@"genre"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1424,7 +1424,7 @@ LABEL_66:
         v5->_categoryName = v13;
       }
 
-      v15 = [v4 objectForKey:@"col_name"];
+      v15 = [representationCopy objectForKey:@"col_name"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1434,21 +1434,21 @@ LABEL_66:
         v5->_collectionName = v16;
       }
 
-      v18 = [v4 objectForKey:@"dev_fam"];
+      v18 = [representationCopy objectForKey:@"dev_fam"];
 
       if (objc_opt_respondsToSelector())
       {
         v5->_deviceFamilies = [v18 unsignedIntegerValue];
       }
 
-      v19 = [v4 objectForKey:@"id"];
+      v19 = [representationCopy objectForKey:@"id"];
 
       if (objc_opt_respondsToSelector())
       {
         v5->_itemIdentifier = [v19 longLongValue];
       }
 
-      v20 = [v4 objectForKey:@"offer"];
+      v20 = [representationCopy objectForKey:@"offer"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1458,28 +1458,28 @@ LABEL_66:
         v5->_itemOffer = v21;
       }
 
-      v23 = [v4 objectForKey:@"child_count"];
+      v23 = [representationCopy objectForKey:@"child_count"];
 
       if (objc_opt_respondsToSelector())
       {
         v5->_numberOfChildItems = [v23 integerValue];
       }
 
-      v24 = [v4 objectForKey:@"user_rating_count"];
+      v24 = [representationCopy objectForKey:@"user_rating_count"];
 
       if (objc_opt_respondsToSelector())
       {
         v5->_numberOfUserRatings = [v24 integerValue];
       }
 
-      v25 = [v4 objectForKey:@"parental_rank"];
+      v25 = [representationCopy objectForKey:@"parental_rank"];
 
       if (objc_opt_respondsToSelector())
       {
         v5->_parentalControlsRank = [v25 integerValue];
       }
 
-      v26 = [v4 objectForKey:@"url"];
+      v26 = [representationCopy objectForKey:@"url"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1489,7 +1489,7 @@ LABEL_66:
         v5->_productPageURLString = v27;
       }
 
-      v29 = [v4 objectForKey:@"req_caps"];
+      v29 = [representationCopy objectForKey:@"req_caps"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1499,7 +1499,7 @@ LABEL_66:
         v5->_requiredCapabilities = v30;
       }
 
-      v32 = [v4 objectForKey:@"name"];
+      v32 = [representationCopy objectForKey:@"name"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1509,7 +1509,7 @@ LABEL_66:
         v5->_title = v33;
       }
 
-      v35 = [v4 objectForKey:@"user_rating"];
+      v35 = [representationCopy objectForKey:@"user_rating"];
 
       if (objc_opt_respondsToSelector())
       {
@@ -1517,14 +1517,14 @@ LABEL_66:
         v5->_userRating = v36;
       }
 
-      v37 = [v4 objectForKey:@"version_id"];
+      v37 = [representationCopy objectForKey:@"version_id"];
 
       if (objc_opt_respondsToSelector())
       {
         v5->_versionIdentifier = [v37 longLongValue];
       }
 
-      v38 = [v4 objectForKey:@"version"];
+      v38 = [representationCopy objectForKey:@"version"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1534,7 +1534,7 @@ LABEL_66:
         v5->_versionString = v39;
       }
 
-      v41 = [v4 objectForKey:@"kind"];
+      v41 = [representationCopy objectForKey:@"kind"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1568,12 +1568,12 @@ LABEL_43:
         v5->_itemKindString = @"iosSoftware";
       }
 
-      v49 = [v4 objectForKey:@"artwork"];
+      v49 = [representationCopy objectForKey:@"artwork"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v50 = [v4 objectForKey:@"artworkProvider"];
+        v50 = [representationCopy objectForKey:@"artworkProvider"];
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 && ([v50 isEqualToString:@"artworkTemplate"])
         {
@@ -1590,23 +1590,23 @@ LABEL_43:
         v5->_artworksProvider = v52;
       }
 
-      v54 = [v4 objectForKey:@"ageblen"];
-      v55 = [v4 objectForKey:@"agebloc"];
+      v54 = [representationCopy objectForKey:@"ageblen"];
+      v55 = [representationCopy objectForKey:@"agebloc"];
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v56 = [v55 integerValue];
-        v57 = [v54 integerValue];
-        v5->_ageBandRange.location = v56;
+        integerValue = [v55 integerValue];
+        integerValue2 = [v54 integerValue];
+        v5->_ageBandRange.location = integerValue;
       }
 
       else
       {
-        v57 = 0;
+        integerValue2 = 0;
         v5->_ageBandRange.location = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      v5->_ageBandRange.length = v57;
+      v5->_ageBandRange.length = integerValue2;
     }
   }
 
@@ -1704,16 +1704,16 @@ LABEL_43:
     [v3 setObject:versionString forKey:@"version"];
   }
 
-  v23 = [(SKUIItemOffer *)self->_itemOffer cacheRepresentation];
-  if (v23)
+  cacheRepresentation = [(SKUIItemOffer *)self->_itemOffer cacheRepresentation];
+  if (cacheRepresentation)
   {
-    [v3 setObject:v23 forKey:@"offer"];
+    [v3 setObject:cacheRepresentation forKey:@"offer"];
   }
 
-  v24 = [(SKUIArtworkProviding *)self->_artworksProvider cacheRepresentation];
-  if (v24)
+  cacheRepresentation2 = [(SKUIArtworkProviding *)self->_artworksProvider cacheRepresentation];
+  if (cacheRepresentation2)
   {
-    [v3 setObject:v24 forKey:@"artwork"];
+    [v3 setObject:cacheRepresentation2 forKey:@"artwork"];
   }
 
   objc_opt_class();
@@ -1739,26 +1739,26 @@ LABEL_28:
   return v3;
 }
 
-- (id)valueForMetricsField:(id)a3
+- (id)valueForMetricsField:(id)field
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D6A490]])
+  fieldCopy = field;
+  if ([fieldCopy isEqualToString:*MEMORY[0x277D6A490]])
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemIdentifier];
+    title = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemIdentifier];
 LABEL_6:
-    v6 = v5;
+    v6 = title;
     goto LABEL_7;
   }
 
-  if (([v4 isEqualToString:*MEMORY[0x277D6A4A8]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D6A4A0]))
+  if (([fieldCopy isEqualToString:*MEMORY[0x277D6A4A8]] & 1) != 0 || objc_msgSend(fieldCopy, "isEqualToString:", *MEMORY[0x277D6A4A0]))
   {
-    v5 = [(SKUIItem *)self title];
+    title = [(SKUIItem *)self title];
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277D6A4B0]])
+  if ([fieldCopy isEqualToString:*MEMORY[0x277D6A4B0]])
   {
-    v5 = [(SKUIItem *)self itemKindString];
+    title = [(SKUIItem *)self itemKindString];
     goto LABEL_6;
   }
 

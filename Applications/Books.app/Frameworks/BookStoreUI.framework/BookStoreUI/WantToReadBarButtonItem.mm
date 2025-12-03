@@ -1,8 +1,8 @@
 @interface WantToReadBarButtonItem
 - (_TtC11BookStoreUI23WantToReadBarButtonItem)init;
-- (_TtC11BookStoreUI23WantToReadBarButtonItem)initWithCoder:(id)a3;
-- (void)imageResourceDidChangeImage:(id)a3;
-- (void)libraryItemStateCenter:(id)a3 didUpdateItemState:(id)a4 forIdentifier:(id)a5;
+- (_TtC11BookStoreUI23WantToReadBarButtonItem)initWithCoder:(id)coder;
+- (void)imageResourceDidChangeImage:(id)image;
+- (void)libraryItemStateCenter:(id)center didUpdateItemState:(id)state forIdentifier:(id)identifier;
 @end
 
 @implementation WantToReadBarButtonItem
@@ -22,7 +22,7 @@
   return v5;
 }
 
-- (_TtC11BookStoreUI23WantToReadBarButtonItem)initWithCoder:(id)a3
+- (_TtC11BookStoreUI23WantToReadBarButtonItem)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11BookStoreUI23WantToReadBarButtonItem_isInWantToRead) = 0;
   v4 = OBJC_IVAR____TtC11BookStoreUI23WantToReadBarButtonItem_editionsIsInWantToRead;
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (void)libraryItemStateCenter:(id)a3 didUpdateItemState:(id)a4 forIdentifier:(id)a5
+- (void)libraryItemStateCenter:(id)center didUpdateItemState:(id)state forIdentifier:(id)identifier
 {
   v7 = sub_6620C(&unk_3BDBB0);
   __chkstk_darwin(v7 - 8);
@@ -45,21 +45,21 @@
   (*(*(v13 - 8) + 56))(v9, 1, 1, v13);
   sub_2C5C18();
   swift_unknownObjectRetain_n();
-  v14 = self;
+  selfCopy = self;
   v15 = sub_2C5C08();
   v16 = swift_allocObject();
   v16[2] = v15;
   v16[3] = &protocol witness table for MainActor;
-  v16[4] = v14;
+  v16[4] = selfCopy;
   v16[5] = v10;
   v16[6] = v12;
-  v16[7] = a4;
+  v16[7] = state;
   sub_249B98(0, 0, v9, &unk_2E4E38, v16);
 
   swift_unknownObjectRelease();
 }
 
-- (void)imageResourceDidChangeImage:(id)a3
+- (void)imageResourceDidChangeImage:(id)image
 {
   v4 = sub_6620C(&unk_3BDBB0);
   __chkstk_darwin(v4 - 8);
@@ -67,12 +67,12 @@
   v7 = sub_2C5C58();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   sub_2C5C18();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_2C5C08();
   v10 = swift_allocObject();
   v10[2] = v9;
   v10[3] = &protocol witness table for MainActor;
-  v10[4] = v8;
+  v10[4] = selfCopy;
   sub_249B98(0, 0, v6, &unk_2E4E20, v10);
 }
 

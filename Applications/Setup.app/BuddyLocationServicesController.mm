@@ -1,14 +1,14 @@
 @interface BuddyLocationServicesController
 + (BOOL)controllerNeedsToRun;
-+ (void)_setPersistentPresentedKey:(BOOL)a3;
-+ (void)setSettingEnabled:(BOOL)a3 presented:(BOOL)a4 settingsManager:(id)a5;
-+ (void)setSettingsFromArchivedPreferences:(id)a3 settingsManager:(id)a4;
++ (void)_setPersistentPresentedKey:(BOOL)key;
++ (void)setSettingEnabled:(BOOL)enabled presented:(BOOL)presented settingsManager:(id)manager;
++ (void)setSettingsFromArchivedPreferences:(id)preferences settingsManager:(id)manager;
 + (void)skippedByCloudConfig;
 - (BuddyLocationServicesController)init;
-- (void)_disableButtonPressed:(id)a3;
-- (void)_enableButtonTapped:(id)a3;
+- (void)_disableButtonPressed:(id)pressed;
+- (void)_enableButtonTapped:(id)tapped;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyLocationServicesController
@@ -35,68 +35,68 @@
 
 - (void)viewDidLoad
 {
-  v35 = self;
+  selfCopy = self;
   v34 = a2;
   v33.receiver = self;
   v33.super_class = BuddyLocationServicesController;
   [(BuddyLocationServicesController *)&v33 viewDidLoad];
-  v2 = [(BuddyLocationServicesController *)v35 flowItemDispositionProvider];
-  v3 = [(BuddyFlowItemDispositionProvider *)v2 dispositions];
+  flowItemDispositionProvider = [(BuddyLocationServicesController *)selfCopy flowItemDispositionProvider];
+  dispositions = [(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider dispositions];
 
-  if (v3)
+  if (dispositions)
   {
-    v4 = [(BuddyLocationServicesController *)v35 flowItemDispositionProvider];
-    location = [BuddyLocalizationUtilities dispositionSpecificLocalizedStringKeyForKey:@"LOCATION_SERVICES_DESCRIPTION" disposition:[(BuddyFlowItemDispositionProvider *)v4 dispositions]];
+    flowItemDispositionProvider2 = [(BuddyLocationServicesController *)selfCopy flowItemDispositionProvider];
+    location = [BuddyLocalizationUtilities dispositionSpecificLocalizedStringKeyForKey:@"LOCATION_SERVICES_DESCRIPTION" disposition:[(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider2 dispositions]];
 
-    v5 = [(BuddyLocationServicesController *)v35 flowItemDispositionProvider];
-    v6 = [(BuddyFlowItemDispositionProvider *)v5 dispositions];
+    flowItemDispositionProvider3 = [(BuddyLocationServicesController *)selfCopy flowItemDispositionProvider];
+    dispositions2 = [(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider3 dispositions];
 
-    if (v6 == 8)
+    if (dispositions2 == 8)
     {
       v7 = [UIDevice modelSpecificLocalizedStringKeyForKey:location];
       v8 = location;
       location = v7;
     }
 
-    v9 = [(BuddyLocationServicesController *)v35 headerView];
+    headerView = [(BuddyLocationServicesController *)selfCopy headerView];
     v10 = +[NSBundle mainBundle];
     v11 = [(NSBundle *)v10 localizedStringForKey:location value:&stru_10032F900 table:@"Localizable"];
-    [v9 setDetailText:v11];
+    [headerView setDetailText:v11];
 
     objc_storeStrong(&location, 0);
   }
 
   else
   {
-    v12 = [(BuddyLocationServicesController *)v35 headerView];
+    headerView2 = [(BuddyLocationServicesController *)selfCopy headerView];
     v13 = +[NSBundle mainBundle];
     v14 = [(NSBundle *)v13 localizedStringForKey:@"LOCATION_SERVICES_DESCRIPTION" value:&stru_10032F900 table:@"Localizable"];
-    [v12 setDetailText:v14];
+    [headerView2 setDetailText:v14];
   }
 
-  v15 = [(BuddyLocationServicesController *)v35 headerView];
-  [v15 setIconInheritsTint:1];
+  headerView3 = [(BuddyLocationServicesController *)selfCopy headerView];
+  [headerView3 setIconInheritsTint:1];
 
-  v16 = v35;
+  v16 = selfCopy;
   v17 = +[NSBundle mainBundle];
   v18 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"ENABLE_LOCATION_SERVICES"];
   v19 = [(NSBundle *)v17 localizedStringForKey:v18 value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v16 addBoldButton:v19 action:"_enableButtonTapped:"];
 
-  v20 = v35;
+  v20 = selfCopy;
   v21 = +[NSBundle mainBundle];
   v22 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"DISABLE_LOCATION_SERVICES"];
   v23 = [(NSBundle *)v21 localizedStringForKey:v22 value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v20 addLinkButton:v23 action:"_disableButtonPressed:"];
 
-  v24 = [(BuddyLocationServicesController *)v35 buttonTray];
+  buttonTray = [(BuddyLocationServicesController *)selfCopy buttonTray];
   v37 = BYPrivacyLocationServicesIdentifier;
   v25 = [NSArray arrayWithObjects:&v37 count:1];
-  [v24 setPrivacyLinkForBundles:v25];
+  [buttonTray setPrivacyLinkForBundles:v25];
 
-  v26 = [(BuddyLocationServicesController *)v35 headerView];
+  headerView4 = [(BuddyLocationServicesController *)selfCopy headerView];
   LODWORD(v27) = 1045220557;
-  [v26 setTitleHyphenationFactor:v27];
+  [headerView4 setTitleHyphenationFactor:v27];
 
   v28 = [[OBAnimationState alloc] initWithStateName:@"State 1" darkStateName:@"Dark 1" transitionDuration:0.01 transitionSpeed:1.0];
   v36[0] = v28;
@@ -104,31 +104,31 @@
   v36[1] = v29;
   v31 = [NSArray arrayWithObjects:v36 count:2];
 
-  v30 = [(BuddyLocationServicesController *)v35 buddy_animationController:@"Location" animatedStates:v31 startAtFirstState:1];
-  [(BuddyLocationServicesController *)v35 setAnimationController:v30];
+  v30 = [(BuddyLocationServicesController *)selfCopy buddy_animationController:@"Location" animatedStates:v31 startAtFirstState:1];
+  [(BuddyLocationServicesController *)selfCopy setAnimationController:v30];
 
   objc_storeStrong(&v31, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = BuddyLocationServicesController;
-  [(BuddyLocationServicesController *)&v5 viewWillAppear:a3];
+  [(BuddyLocationServicesController *)&v5 viewWillAppear:appear];
   [BuddyLocationServicesController _setPersistentPresentedKey:0];
-  v3 = [(BuddyLocationServicesController *)v8 paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v3 clearActionForFeature:6];
+  paneFeatureAnalyticsManager = [(BuddyLocationServicesController *)selfCopy paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager clearActionForFeature:6];
 
-  v4 = [(BuddyLocationServicesController *)v8 animationController];
-  [(OBAnimationController *)v4 startAnimation];
+  animationController = [(BuddyLocationServicesController *)selfCopy animationController];
+  [(OBAnimationController *)animationController startAnimation];
 }
 
 + (BOOL)controllerNeedsToRun
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = CFPreferencesCopyAppValue(@"SBParentalControlsCapabilities", @"com.apple.springboard");
   location[0] = v6;
@@ -147,13 +147,13 @@
 {
   if ((BYSetupAssistantHasCompletedInitialRun() & 1) == 0)
   {
-    [CLLocationManager setLocationServicesEnabled:0, a2, a1];
+    [CLLocationManager setLocationServicesEnabled:0, a2, self];
   }
 }
 
-+ (void)_setPersistentPresentedKey:(BOOL)a3
++ (void)_setPersistentPresentedKey:(BOOL)key
 {
-  if (a3)
+  if (key)
   {
     v3 = kCFBooleanTrue;
   }
@@ -167,28 +167,28 @@
   CFPreferencesAppSynchronize(BYBuddyNotBackedUpIdentifier);
 }
 
-+ (void)setSettingEnabled:(BOOL)a3 presented:(BOOL)a4 settingsManager:(id)a5
++ (void)setSettingEnabled:(BOOL)enabled presented:(BOOL)presented settingsManager:(id)manager
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  presentedCopy = presented;
   v5 = 0;
-  objc_storeStrong(&v5, a5);
-  [CLLocationManager setLocationServicesEnabled:v7];
-  [v5 stashLocationServicesChoice:v7];
-  [v9 _setPersistentPresentedKey:v6];
+  objc_storeStrong(&v5, manager);
+  [CLLocationManager setLocationServicesEnabled:enabledCopy];
+  [v5 stashLocationServicesChoice:enabledCopy];
+  [selfCopy _setPersistentPresentedKey:presentedCopy];
   objc_storeStrong(&v5, 0);
 }
 
-+ (void)setSettingsFromArchivedPreferences:(id)a3 settingsManager:(id)a4
++ (void)setSettingsFromArchivedPreferences:(id)preferences settingsManager:(id)manager
 {
-  v17 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, preferences);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, manager);
   v14 = 0;
   if (location[0])
   {
@@ -217,9 +217,9 @@
 
       else
       {
-        v12 = [v14 domain];
+        domain = [v14 domain];
         v11 = 1;
-        v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v12, [v14 code]);
+        v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v14 code]);
         v10 = v8;
         v9 = 1;
       }
@@ -241,7 +241,7 @@
   else
   {
     [v15 stashLocationServicesSettings:location[0]];
-    [v17 _setPersistentPresentedKey:location[0] != 0];
+    [selfCopy _setPersistentPresentedKey:location[0] != 0];
   }
 
   objc_storeStrong(&v14, 0);
@@ -249,46 +249,46 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_enableButtonTapped:(id)a3
+- (void)_enableButtonTapped:(id)tapped
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   v3 = objc_opt_class();
-  v4 = [(BuddyLocationServicesController *)v8 settingsManager];
-  [v3 setSettingEnabled:1 presented:1 settingsManager:v4];
+  settingsManager = [(BuddyLocationServicesController *)selfCopy settingsManager];
+  [v3 setSettingEnabled:1 presented:1 settingsManager:settingsManager];
 
-  v5 = [(BuddyLocationServicesController *)v8 paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v5 recordActionWithValue:&__kCFBooleanTrue forFeature:6];
+  paneFeatureAnalyticsManager = [(BuddyLocationServicesController *)selfCopy paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:&__kCFBooleanTrue forFeature:6];
 
-  v6 = [(BuddyWelcomeController *)v8 delegate];
-  [(BFFFlowItemDelegate *)v6 flowItemDone:v8];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_disableButtonPressed:(id)a3
+- (void)_disableButtonPressed:(id)pressed
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, pressed);
   v35 = 0;
-  v3 = [(BuddyLocationServicesController *)v37 proximitySetupController];
-  v4 = [(ProximitySetupController *)v3 hasAppliedSettings];
+  proximitySetupController = [(BuddyLocationServicesController *)selfCopy proximitySetupController];
+  hasAppliedSettings = [(ProximitySetupController *)proximitySetupController hasAppliedSettings];
 
-  v34 = v4 & 1;
+  v34 = hasAppliedSettings & 1;
   v32 = 0;
   v30 = 0;
   v5 = 0;
-  if (v4)
+  if (hasAppliedSettings)
   {
-    v33 = [(BuddyLocationServicesController *)v37 pendingRestoreState];
+    pendingRestoreState = [(BuddyLocationServicesController *)selfCopy pendingRestoreState];
     v32 = 1;
-    v31 = [v33 backupItem];
+    backupItem = [pendingRestoreState backupItem];
     v30 = 1;
-    v5 = v31 == 0;
+    v5 = backupItem == 0;
   }
 
   v35 = v5;
@@ -329,7 +329,7 @@
   v24 = 0;
   v25 = sub_100199FDC;
   v26 = &unk_10032B598;
-  v27 = v37;
+  v27 = selfCopy;
   v17 = [UIAlertAction actionWithTitle:v16 style:0 handler:&v22];
   [v14 addAction:v17];
 
@@ -339,7 +339,7 @@
   v21 = [UIAlertAction actionWithTitle:v20 style:1 handler:0];
   [v18 addAction:v21];
 
-  [(BuddyLocationServicesController *)v37 presentViewController:v28 animated:1 completion:0];
+  [(BuddyLocationServicesController *)selfCopy presentViewController:v28 animated:1 completion:0];
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);

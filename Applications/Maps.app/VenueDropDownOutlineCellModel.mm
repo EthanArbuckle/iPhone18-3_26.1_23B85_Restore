@@ -1,7 +1,7 @@
 @interface VenueDropDownOutlineCellModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VenueDropDownOutlineCellDelegate)delegate;
-- (VenueDropDownOutlineCellModel)initWithButtonTitle:(id)a3 categories:(id)a4 selectedCategory:(id)a5 venueIdentifier:(id)a6 delegate:(id)a7;
+- (VenueDropDownOutlineCellModel)initWithButtonTitle:(id)title categories:(id)categories selectedCategory:(id)category venueIdentifier:(id)identifier delegate:(id)delegate;
 - (unint64_t)hash;
 @end
 
@@ -14,40 +14,40 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VenueDropDownOutlineCellModel *)v6 buttonTitle];
-    v8 = v7;
-    if (v7 == self->_buttonTitle || [(NSString *)v7 isEqual:?])
+    buttonTitle = [(VenueDropDownOutlineCellModel *)v6 buttonTitle];
+    v8 = buttonTitle;
+    if (buttonTitle == self->_buttonTitle || [(NSString *)buttonTitle isEqual:?])
     {
-      v9 = [(VenueDropDownOutlineCellModel *)v6 categories];
-      v10 = v9;
-      if (v9 == self->_categories || [(NSArray *)v9 isEqual:?])
+      categories = [(VenueDropDownOutlineCellModel *)v6 categories];
+      v10 = categories;
+      if (categories == self->_categories || [(NSArray *)categories isEqual:?])
       {
-        v11 = [(VenueDropDownOutlineCellModel *)v6 selectedCategory];
-        v12 = v11;
-        if (v11 == self->_selectedCategory || [(GEOSearchCategory *)v11 isEqual:?])
+        selectedCategory = [(VenueDropDownOutlineCellModel *)v6 selectedCategory];
+        v12 = selectedCategory;
+        if (selectedCategory == self->_selectedCategory || [(GEOSearchCategory *)selectedCategory isEqual:?])
         {
-          v13 = [(VenueDropDownOutlineCellModel *)v6 delegate];
+          delegate = [(VenueDropDownOutlineCellModel *)v6 delegate];
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
-          if (v13 == WeakRetained)
+          if (delegate == WeakRetained)
           {
             v15 = 1;
           }
 
           else
           {
-            v15 = [v13 isEqual:WeakRetained];
+            v15 = [delegate isEqual:WeakRetained];
           }
         }
 
@@ -84,29 +84,29 @@
   return v4 ^ [(GEOSearchCategory *)self->_selectedCategory hash];
 }
 
-- (VenueDropDownOutlineCellModel)initWithButtonTitle:(id)a3 categories:(id)a4 selectedCategory:(id)a5 venueIdentifier:(id)a6 delegate:(id)a7
+- (VenueDropDownOutlineCellModel)initWithButtonTitle:(id)title categories:(id)categories selectedCategory:(id)category venueIdentifier:(id)identifier delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  categoriesCopy = categories;
+  categoryCopy = category;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = VenueDropDownOutlineCellModel;
   v17 = [(VenueDropDownOutlineCellModel *)&v23 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [titleCopy copy];
     buttonTitle = v17->_buttonTitle;
     v17->_buttonTitle = v18;
 
-    v20 = [v13 copy];
+    v20 = [categoriesCopy copy];
     categories = v17->_categories;
     v17->_categories = v20;
 
-    objc_storeStrong(&v17->_venueIdentifier, a6);
-    objc_storeStrong(&v17->_selectedCategory, a5);
-    objc_storeWeak(&v17->_delegate, v16);
+    objc_storeStrong(&v17->_venueIdentifier, identifier);
+    objc_storeStrong(&v17->_selectedCategory, category);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
   }
 
   return v17;

@@ -1,15 +1,15 @@
 @interface StateStats
-- (StateStats)initWithCoder:(id)a3;
-- (StateStats)initWithNumActions:(int)a3;
-- (double)getIndex:(int)a3;
+- (StateStats)initWithCoder:(id)coder;
+- (StateStats)initWithNumActions:(int)actions;
+- (double)getIndex:(int)index;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)update:(int)a3 reward:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)update:(int)update reward:(double)reward;
 @end
 
 @implementation StateStats
 
-- (StateStats)initWithNumActions:(int)a3
+- (StateStats)initWithNumActions:(int)actions
 {
   v7.receiver = self;
   v7.super_class = StateStats;
@@ -19,15 +19,15 @@
   {
     [(StateStats *)v4 setTotalCount:0];
     [(StateStats *)v5 setActions:+[NSMutableArray array]];
-    if (a3 >= 1)
+    if (actions >= 1)
     {
       do
       {
         [(NSMutableArray *)[(StateStats *)v5 actions] addObject:objc_alloc_init(ActionStats)];
-        --a3;
+        --actions;
       }
 
-      while (a3);
+      while (actions);
     }
 
     +[NSDate timeIntervalSinceReferenceDate];
@@ -37,10 +37,10 @@
   return v5;
 }
 
-- (void)update:(int)a3 reward:(double)a4
+- (void)update:(int)update reward:(double)reward
 {
   [(StateStats *)self setTotalCount:[(StateStats *)self totalCount]+ 1];
-  v7 = [(NSMutableArray *)[(StateStats *)self actions] objectAtIndexedSubscript:a3];
+  v7 = [(NSMutableArray *)[(StateStats *)self actions] objectAtIndexedSubscript:update];
   [v7 setCount:{objc_msgSend(v7, "count") + 1}];
   v8 = [-[NSMutableArray objectAtIndexedSubscript:](-[StateStats actions](self "actions")];
   [-[NSMutableArray objectAtIndexedSubscript:](-[StateStats actions](self "actions")];
@@ -66,16 +66,16 @@
   }
 }
 
-- (double)getIndex:(int)a3
+- (double)getIndex:(int)index
 {
   if (([-[NSMutableArray objectAtIndexedSubscript:](-[StateStats actions](self "actions")] & 1) == 0)
   {
-    v5 = [(StateStats *)self totalCount];
+    totalCount = [(StateStats *)self totalCount];
     v6 = [(NSMutableArray *)[(StateStats *)self actions] count];
     if ([(NSMutableArray *)[(StateStats *)self actions] count])
     {
-      v7 = v5;
-      if (v5 < v6)
+      v7 = totalCount;
+      if (totalCount < v6)
       {
         v7 = v6;
       }
@@ -159,36 +159,36 @@
     }
   }
 
-  v25 = [(NSMutableArray *)[(StateStats *)self actions] objectAtIndexedSubscript:a3];
+  v25 = [(NSMutableArray *)[(StateStats *)self actions] objectAtIndexedSubscript:index];
 
   [v25 index];
   return result;
 }
 
-- (StateStats)initWithCoder:(id)a3
+- (StateStats)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = StateStats;
   v4 = [(StateStats *)&v7 init];
   if (v4)
   {
-    -[StateStats setTotalCount:](v4, "setTotalCount:", [a3 decodeIntForKey:@"totalCount"]);
+    -[StateStats setTotalCount:](v4, "setTotalCount:", [coder decodeIntForKey:@"totalCount"]);
     v5 = objc_opt_class();
-    -[StateStats setActions:](v4, "setActions:", [a3 decodeObjectOfClasses:+[NSSet setWithObjects:](NSSet forKey:{"setWithObjects:", v5, objc_opt_class(), 0), @"actions"}]);
-    [a3 decodeDoubleForKey:@"lastSeen"];
+    -[StateStats setActions:](v4, "setActions:", [coder decodeObjectOfClasses:+[NSSet setWithObjects:](NSSet forKey:{"setWithObjects:", v5, objc_opt_class(), 0), @"actions"}]);
+    [coder decodeDoubleForKey:@"lastSeen"];
     [(StateStats *)v4 setLastSeen:?];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt:-[StateStats totalCount](self forKey:{"totalCount"), @"totalCount"}];
-  [a3 encodeObject:-[StateStats actions](self forKey:{"actions"), @"actions"}];
+  [coder encodeInt:-[StateStats totalCount](self forKey:{"totalCount"), @"totalCount"}];
+  [coder encodeObject:-[StateStats actions](self forKey:{"actions"), @"actions"}];
   [(StateStats *)self lastSeen];
 
-  [a3 encodeDouble:@"lastSeen" forKey:?];
+  [coder encodeDouble:@"lastSeen" forKey:?];
 }
 
 - (void)dealloc

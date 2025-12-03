@@ -1,10 +1,10 @@
 @interface GTUNIXDomainSocketTransport_replayer
-- (GTUNIXDomainSocketTransport_replayer)initWithMode:(int)a3;
+- (GTUNIXDomainSocketTransport_replayer)initWithMode:(int)mode;
 - (id)connect;
-- (void)_connectClient:(id)a3 future:(id)a4;
-- (void)_connectServer:(id)a3 future:(id)a4;
+- (void)_connectClient:(id)client future:(id)future;
+- (void)_connectServer:(id)server future:(id)future;
 - (void)_invalidate;
-- (void)setUrl:(id)a3;
+- (void)setUrl:(id)url;
 @end
 
 @implementation GTUNIXDomainSocketTransport_replayer
@@ -36,10 +36,10 @@
   return v3;
 }
 
-- (void)_connectClient:(id)a3 future:(id)a4
+- (void)_connectClient:(id)client future:(id)future
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (client)
   {
     v7 = socket(1, 1, 0);
     if (v7 != -1)
@@ -51,7 +51,7 @@
       v28 = 0u;
       v25 = 0;
       v26 = 0u;
-      CFStringGetFileSystemRepresentation(a3, v24, 1024);
+      CFStringGetFileSystemRepresentation(client, v24, 1024);
       if (strlen(v24) - 103 > 0xFFFFFFFFFFFFFF97)
       {
         v25.sa_family = 1;
@@ -62,7 +62,7 @@
           [(GTBaseSocketTransport_replayer *)self runWithSocket:v8];
           v20 = 1;
 LABEL_14:
-          [a4 setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", v20)}];
+          [future setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", v20)}];
           v23 = *MEMORY[0x277D85DE8];
           return;
         }
@@ -81,7 +81,7 @@ LABEL_14:
         v11 = 1;
       }
 
-      [a4 setError:{-[__objc2_class errorWithDomain:code:userInfo:](v9, "errorWithDomain:code:userInfo:", v10, v11, 0)}];
+      [future setError:{-[__objc2_class errorWithDomain:code:userInfo:](v9, "errorWithDomain:code:userInfo:", v10, v11, 0)}];
       v20 = 0;
       goto LABEL_14;
     }
@@ -100,18 +100,18 @@ LABEL_14:
     v14 = 38;
   }
 
-  [a4 setError:{-[__objc2_class errorWithDomain:code:userInfo:](v12, "errorWithDomain:code:userInfo:", v13, v14, 0)}];
+  [future setError:{-[__objc2_class errorWithDomain:code:userInfo:](v12, "errorWithDomain:code:userInfo:", v13, v14, 0)}];
   v17 = [MEMORY[0x277CCABB0] numberWithBool:0];
   v18 = *MEMORY[0x277D85DE8];
 
-  [a4 setResult:v17];
+  [future setResult:v17];
 }
 
-- (void)_connectServer:(id)a3 future:(id)a4
+- (void)_connectServer:(id)server future:(id)future
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!a3)
+  serverCopy = server;
+  if (!server)
   {
     v8 = NSTemporaryDirectory();
     if (!v8)
@@ -119,10 +119,10 @@ LABEL_14:
       v8 = @"/tmp";
     }
 
-    v7 = [(__CFString *)v8 stringByAppendingPathComponent:@"dysonXXXXXX"];
+    serverCopy = [(__CFString *)v8 stringByAppendingPathComponent:@"dysonXXXXXX"];
   }
 
-  CFStringGetFileSystemRepresentation(v7, buffer, 1024);
+  CFStringGetFileSystemRepresentation(serverCopy, buffer, 1024);
   v31 = 0u;
   memset(v32, 0, sizeof(v32));
   v29 = 0u;
@@ -130,7 +130,7 @@ LABEL_14:
   v9 = strlen(buffer) + 1;
   v27 = 0;
   v28 = 0u;
-  if (a3 || v9 < 0x69)
+  if (server || v9 < 0x69)
   {
     if (v9 >= 0x69)
     {
@@ -139,12 +139,12 @@ LABEL_19:
       v18 = @"DYErrorDomain";
       v19 = 39;
 LABEL_21:
-      [a4 setError:{-[__objc2_class errorWithDomain:code:userInfo:](v17, "errorWithDomain:code:userInfo:", v18, v19, 0)}];
-      [a4 setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
+      [future setError:{-[__objc2_class errorWithDomain:code:userInfo:](v17, "errorWithDomain:code:userInfo:", v18, v19, 0)}];
+      [future setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
       goto LABEL_25;
     }
 
-    if (a3)
+    if (server)
     {
       goto LABEL_13;
     }
@@ -167,12 +167,12 @@ LABEL_21:
   }
 
   v11 = v10;
-  v7 = CFStringCreateWithFileSystemRepresentation(*MEMORY[0x277CBECE8], buffer);
+  serverCopy = CFStringCreateWithFileSystemRepresentation(*MEMORY[0x277CBECE8], buffer);
   close(v11);
 LABEL_13:
   if (!self->super.super.super._url)
   {
-    self->super.super.super._url = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v7];
+    self->super.super.super._url = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:serverCopy];
   }
 
   v27.sa_family = 1;
@@ -202,7 +202,7 @@ LABEL_13:
     handler[3] = &unk_279657DC0;
     v26 = v14;
     handler[4] = self;
-    handler[5] = a4;
+    handler[5] = future;
     dispatch_source_set_cancel_handler(v15, handler);
     v16 = *&self->_mode;
     v23[0] = MEMORY[0x277D85DD0];
@@ -211,15 +211,15 @@ LABEL_13:
     v23[3] = &unk_279657DC0;
     v24 = v14;
     v23[4] = self;
-    v23[5] = a4;
+    v23[5] = future;
     dispatch_source_set_event_handler(v16, v23);
     dispatch_resume(*&self->_mode);
     goto LABEL_25;
   }
 
 LABEL_23:
-  [a4 setError:{objc_msgSend(MEMORY[0x277CCA9B8], "errorWithDomain:code:userInfo:", *MEMORY[0x277CCA5B8], *__error(), 0)}];
-  [a4 setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
+  [future setError:{objc_msgSend(MEMORY[0x277CCA9B8], "errorWithDomain:code:userInfo:", *MEMORY[0x277CCA5B8], *__error(), 0)}];
+  [future setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
   if (v14 != -1)
   {
     close(v14);
@@ -229,7 +229,7 @@ LABEL_25:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v17 = *MEMORY[0x277D85DE8];
   if ([(GTBaseSocketTransport_replayer *)self connected])
@@ -258,7 +258,7 @@ LABEL_14:
     abort();
   }
 
-  if (a3 && ![a3 filePathURL])
+  if (url && ![url filePathURL])
   {
     if (s_logUsingOsLog == 1)
     {
@@ -266,7 +266,7 @@ LABEL_14:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
-        v16 = [objc_msgSend(a3 "absoluteString")];
+        v16 = [objc_msgSend(url "absoluteString")];
         v8 = "fail: unix domain socket url must be a file url: %s";
         v9 = v11;
         v10 = 12;
@@ -279,7 +279,7 @@ LABEL_11:
     else
     {
       v13 = *MEMORY[0x277D85DF8];
-      [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"fail: unix domain socket url must be a file url: %s", objc_msgSend(objc_msgSend(a3, "absoluteString"), "UTF8String")), "UTF8String"];
+      [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"fail: unix domain socket url must be a file url: %s", objc_msgSend(objc_msgSend(url, "absoluteString"), "UTF8String")), "UTF8String"];
       fprintf(v13, "%s\n");
     }
 
@@ -291,20 +291,20 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __38__GTUNIXDomainSocketTransport_setUrl___block_invoke;
   block[3] = &unk_279657D20;
-  block[4] = a3;
+  block[4] = url;
   block[5] = self;
   dispatch_sync(queue, block);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (GTUNIXDomainSocketTransport_replayer)initWithMode:(int)a3
+- (GTUNIXDomainSocketTransport_replayer)initWithMode:(int)mode
 {
   v5.receiver = self;
   v5.super_class = GTUNIXDomainSocketTransport_replayer;
   result = [(GTBaseSocketTransport_replayer *)&v5 init];
   if (result)
   {
-    *(&result->super._scheduledReadOnWritableSocket + 3) = a3;
+    *(&result->super._scheduledReadOnWritableSocket + 3) = mode;
   }
 
   return result;

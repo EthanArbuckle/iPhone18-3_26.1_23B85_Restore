@@ -1,13 +1,13 @@
 @interface _GCHIDEventUIKitClient
 - (_GCHIDEventUIKitClient)init;
-- (_GCHIDEventUIKitClient)initWithQueue:(id)a3;
+- (_GCHIDEventUIKitClient)initWithQueue:(id)queue;
 @end
 
 @implementation _GCHIDEventUIKitClient
 
-- (_GCHIDEventUIKitClient)initWithQueue:(id)a3
+- (_GCHIDEventUIKitClient)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = _GCHIDEventUIKitClient;
   v5 = [(_GCHIDEventSubject *)&v15 init];
@@ -18,8 +18,8 @@
   v10[3] = &unk_277E1DD08;
   v6 = v5;
   v11 = v6;
-  v12 = v4;
-  v7 = v4;
+  v12 = queueCopy;
+  v7 = queueCopy;
   objc_copyWeak(&v13, &location);
   dispatch_async(MEMORY[0x277D85CD0], v10);
   v8 = v6;

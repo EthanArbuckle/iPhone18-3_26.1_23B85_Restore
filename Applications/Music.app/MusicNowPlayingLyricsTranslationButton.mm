@@ -1,6 +1,6 @@
 @interface MusicNowPlayingLyricsTranslationButton
-- (MusicNowPlayingLyricsTranslationButton)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (MusicNowPlayingLyricsTranslationButton)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)layoutSubviews;
 @end
 
@@ -13,22 +13,22 @@
   v2 = v5.receiver;
   [(MusicNowPlayingLyricsTranslationButton *)&v5 layoutSubviews];
   v3 = sub_10065775C();
-  v4 = [v3 layer];
+  layer = [v3 layer];
 
   [*&v2[OBJC_IVAR___MusicNowPlayingLyricsTranslationButton____lazy_storage___containerView] frame];
-  [v4 setCornerRadius:CGRectGetHeight(v6) * 0.5];
+  [layer setCornerRadius:CGRectGetHeight(v6) * 0.5];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = sub_100658BEC();
 
   return v7;
 }
 
-- (MusicNowPlayingLyricsTranslationButton)initWithFrame:(CGRect)a3
+- (MusicNowPlayingLyricsTranslationButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

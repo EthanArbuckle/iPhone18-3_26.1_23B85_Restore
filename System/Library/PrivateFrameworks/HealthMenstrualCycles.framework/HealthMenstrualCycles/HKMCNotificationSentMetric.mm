@@ -1,23 +1,23 @@
 @interface HKMCNotificationSentMetric
-- (HKMCNotificationSentMetric)initWithCategory:(id)a3 areHealthNotificationsAuthorized:(id)a4;
+- (HKMCNotificationSentMetric)initWithCategory:(id)category areHealthNotificationsAuthorized:(id)authorized;
 - (NSDictionary)eventPayload;
 - (id)description;
 @end
 
 @implementation HKMCNotificationSentMetric
 
-- (HKMCNotificationSentMetric)initWithCategory:(id)a3 areHealthNotificationsAuthorized:(id)a4
+- (HKMCNotificationSentMetric)initWithCategory:(id)category areHealthNotificationsAuthorized:(id)authorized
 {
-  v7 = a3;
-  v8 = a4;
+  categoryCopy = category;
+  authorizedCopy = authorized;
   v12.receiver = self;
   v12.super_class = HKMCNotificationSentMetric;
   v9 = [(HKMCNotificationSentMetric *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_category, a3);
-    objc_storeStrong(&v10->_areHealthNotificationsAuthorized, a4);
+    objc_storeStrong(&v9->_category, category);
+    objc_storeStrong(&v10->_areHealthNotificationsAuthorized, authorized);
   }
 
   return v10;
@@ -26,23 +26,23 @@
 - (NSDictionary)eventPayload
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(HKMCNotificationSentMetric *)self category];
-  [v3 setObject:v4 forKeyedSubscript:@"category"];
+  category = [(HKMCNotificationSentMetric *)self category];
+  [v3 setObject:category forKeyedSubscript:@"category"];
 
-  v5 = [(HKMCNotificationSentMetric *)self areHealthNotificationsAuthorized];
-  [v3 setObject:v5 forKeyedSubscript:@"areHealthNotificationsAuthorized"];
+  areHealthNotificationsAuthorized = [(HKMCNotificationSentMetric *)self areHealthNotificationsAuthorized];
+  [v3 setObject:areHealthNotificationsAuthorized forKeyedSubscript:@"areHealthNotificationsAuthorized"];
 
-  v6 = [(HKMCNotificationSentMetric *)self numberOfDaysShiftedForFertileWindow];
-  [v3 setObject:v6 forKeyedSubscript:@"numberOfDaysShiftedForFertileWindow"];
+  numberOfDaysShiftedForFertileWindow = [(HKMCNotificationSentMetric *)self numberOfDaysShiftedForFertileWindow];
+  [v3 setObject:numberOfDaysShiftedForFertileWindow forKeyedSubscript:@"numberOfDaysShiftedForFertileWindow"];
 
-  v7 = [(HKMCNotificationSentMetric *)self numberOfDaysOffsetFromFertileWindowEnd];
-  [v3 setObject:v7 forKeyedSubscript:@"numberOfDaysOffsetFromFertileWindowEnd"];
+  numberOfDaysOffsetFromFertileWindowEnd = [(HKMCNotificationSentMetric *)self numberOfDaysOffsetFromFertileWindowEnd];
+  [v3 setObject:numberOfDaysOffsetFromFertileWindowEnd forKeyedSubscript:@"numberOfDaysOffsetFromFertileWindowEnd"];
 
-  v8 = [(HKMCNotificationSentMetric *)self numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification];
-  [v3 setObject:v8 forKeyedSubscript:@"numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification"];
+  numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification = [(HKMCNotificationSentMetric *)self numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification];
+  [v3 setObject:numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification forKeyedSubscript:@"numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification"];
 
-  v9 = [(HKMCNotificationSentMetric *)self internalLiveOnCycleFactorOverrideEnabled];
-  [v3 setObject:v9 forKeyedSubscript:@"internalLiveOnCycleFactorOverride"];
+  internalLiveOnCycleFactorOverrideEnabled = [(HKMCNotificationSentMetric *)self internalLiveOnCycleFactorOverrideEnabled];
+  [v3 setObject:internalLiveOnCycleFactorOverrideEnabled forKeyedSubscript:@"internalLiveOnCycleFactorOverride"];
 
   v10 = [v3 copy];
 
@@ -53,13 +53,13 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HKMCNotificationSentMetric *)self category];
-  v6 = [(HKMCNotificationSentMetric *)self areHealthNotificationsAuthorized];
-  v7 = [(HKMCNotificationSentMetric *)self numberOfDaysShiftedForFertileWindow];
-  v8 = [(HKMCNotificationSentMetric *)self numberOfDaysOffsetFromFertileWindowEnd];
-  v9 = [(HKMCNotificationSentMetric *)self numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification];
-  v10 = [(HKMCNotificationSentMetric *)self internalLiveOnCycleFactorOverrideEnabled];
-  v11 = [v3 stringWithFormat:@"<%@:%p category:%@ areHealthNotificationsAuthorized:%@ numberOfDaysShiftedForFertileWindow:%@ numberOfDaysOffsetFromFertileWindowEnd:%@ numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification:%@ internalLiveOnCycleFactorOverrideEnabled:%@>", v4, self, v5, v6, v7, v8, v9, v10];
+  category = [(HKMCNotificationSentMetric *)self category];
+  areHealthNotificationsAuthorized = [(HKMCNotificationSentMetric *)self areHealthNotificationsAuthorized];
+  numberOfDaysShiftedForFertileWindow = [(HKMCNotificationSentMetric *)self numberOfDaysShiftedForFertileWindow];
+  numberOfDaysOffsetFromFertileWindowEnd = [(HKMCNotificationSentMetric *)self numberOfDaysOffsetFromFertileWindowEnd];
+  numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification = [(HKMCNotificationSentMetric *)self numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification];
+  internalLiveOnCycleFactorOverrideEnabled = [(HKMCNotificationSentMetric *)self internalLiveOnCycleFactorOverrideEnabled];
+  v11 = [v3 stringWithFormat:@"<%@:%p category:%@ areHealthNotificationsAuthorized:%@ numberOfDaysShiftedForFertileWindow:%@ numberOfDaysOffsetFromFertileWindowEnd:%@ numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification:%@ internalLiveOnCycleFactorOverrideEnabled:%@>", v4, self, category, areHealthNotificationsAuthorized, numberOfDaysShiftedForFertileWindow, numberOfDaysOffsetFromFertileWindowEnd, numberOfDaysWithWristTemp45DaysBeforeOvulationConfirmedNotification, internalLiveOnCycleFactorOverrideEnabled];
 
   return v11;
 }

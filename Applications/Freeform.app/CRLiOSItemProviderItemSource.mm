@@ -1,38 +1,38 @@
 @interface CRLiOSItemProviderItemSource
-+ (id)jsonBoardItemProvidersFrom:(id)a3 withBoardItemFactory:(id)a4 error:(id *)a5;
-- (BOOL)canLoadItemsOfClass:(Class)a3;
++ (id)jsonBoardItemProvidersFrom:(id)from withBoardItemFactory:(id)factory error:(id *)error;
+- (BOOL)canLoadItemsOfClass:(Class)class;
 - (BOOL)canProduceBoardItems;
 - (BOOL)hasContentLanguageDrawablesType;
-- (BOOL)hasImportableBoardItemsDetectingImportableURLsInText:(BOOL)a3 skipFileURLs:(BOOL)a4;
+- (BOOL)hasImportableBoardItemsDetectingImportableURLsInText:(BOOL)text skipFileURLs:(BOOL)ls;
 - (BOOL)hasImportableImages;
 - (BOOL)hasImportableRichText;
 - (BOOL)hasImportableText;
 - (BOOL)hasNativeBoardItems;
 - (BOOL)hasNativeTypes;
-- (BOOL)hasTeamDataType:(id)a3;
-- (BOOL)p_containsAnyUTIFromList:(id)a3;
+- (BOOL)hasTeamDataType:(id)type;
+- (BOOL)p_containsAnyUTIFromList:(id)list;
 - (CRLiOSItemProviderItemSource)init;
-- (CRLiOSItemProviderItemSource)initWithItemProviders:(id)a3;
+- (CRLiOSItemProviderItemSource)initWithItemProviders:(id)providers;
 - (NSString)defaultTextFileName;
-- (id)loadImportedImagesForAssetOwner:(id)a3 compatibilityAlertPresenter:(id)a4 withHandler:(id)a5;
-- (id)loadImportedRichTextStringWithHandler:(id)a3;
-- (id)loadImportedTextStringWithHandler:(id)a3;
-- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)a3 maximumStringLength:(unint64_t)a4 WithLoadHandler:(id)a5;
-- (id)loadProvidersForNativeBoardItemsWithBoardItemFactory:(id)a3 loadHandler:(id)a4;
-- (id)loadTextStorageUsingBoardItemFactory:(id)a3 forTargetContext:(id)a4 targetStorage:(id)a5 loadHandler:(id)a6;
-- (id)p_progressWithChildren:(id)a3;
+- (id)loadImportedImagesForAssetOwner:(id)owner compatibilityAlertPresenter:(id)presenter withHandler:(id)handler;
+- (id)loadImportedRichTextStringWithHandler:(id)handler;
+- (id)loadImportedTextStringWithHandler:(id)handler;
+- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)factory maximumStringLength:(unint64_t)length WithLoadHandler:(id)handler;
+- (id)loadProvidersForNativeBoardItemsWithBoardItemFactory:(id)factory loadHandler:(id)handler;
+- (id)loadTextStorageUsingBoardItemFactory:(id)factory forTargetContext:(id)context targetStorage:(id)storage loadHandler:(id)handler;
+- (id)p_progressWithChildren:(id)children;
 - (id)p_sourceMetadata;
-- (id)p_unrecognizedTypeErrorForItemProvider:(id)a3;
-- (id)richTextBoardItemProvidersFor:(id)a3 factory:(id)a4 uti:(id)a5 maximumCharacterLimit:(int64_t)a6 completion:(id)a7;
-- (unint64_t)preferredImportableDataTypeDetectingImportableURLsInText:(BOOL)a3 skipFileURLs:(BOOL)a4;
+- (id)p_unrecognizedTypeErrorForItemProvider:(id)provider;
+- (id)richTextBoardItemProvidersFor:(id)for factory:(id)factory uti:(id)uti maximumCharacterLimit:(int64_t)limit completion:(id)completion;
+- (unint64_t)preferredImportableDataTypeDetectingImportableURLsInText:(BOOL)text skipFileURLs:(BOOL)ls;
 @end
 
 @implementation CRLiOSItemProviderItemSource
 
-- (CRLiOSItemProviderItemSource)initWithItemProviders:(id)a3
+- (CRLiOSItemProviderItemSource)initWithItemProviders:(id)providers
 {
-  v4 = a3;
-  if (![v4 count])
+  providersCopy = providers;
+  if (![providersCopy count])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -66,7 +66,7 @@
   v8 = [(CRLiOSItemProviderItemSource *)&v43 init];
   if (v8)
   {
-    v9 = [v4 copy];
+    v9 = [providersCopy copy];
     itemProviders = v8->_itemProviders;
     v8->_itemProviders = v9;
 
@@ -90,8 +90,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v39 + 1) + 8 * i) registeredTypeIdentifiers];
-          [v11 addObjectsFromArray:v17];
+          registeredTypeIdentifiers = [*(*(&v39 + 1) + 8 * i) registeredTypeIdentifiers];
+          [v11 addObjectsFromArray:registeredTypeIdentifiers];
         }
 
         v14 = [(NSArray *)v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -194,9 +194,9 @@
   objc_exception_throw(v10);
 }
 
-- (BOOL)p_containsAnyUTIFromList:(id)a3
+- (BOOL)p_containsAnyUTIFromList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -215,7 +215,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) crl_conformsToAnyUTI:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) crl_conformsToAnyUTI:{listCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -237,17 +237,17 @@ LABEL_11:
   return v6;
 }
 
-- (id)p_progressWithChildren:(id)a3
+- (id)p_progressWithChildren:(id)children
 {
-  v3 = a3;
-  if ([v3 count])
+  childrenCopy = children;
+  if ([childrenCopy count])
   {
     v4 = objc_alloc_init(NSProgress);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = childrenCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -290,21 +290,21 @@ LABEL_11:
   return v4;
 }
 
-- (id)p_unrecognizedTypeErrorForItemProvider:(id)a3
+- (id)p_unrecognizedTypeErrorForItemProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"The data is not a recognized type." value:0 table:0];
 
-  v6 = [v3 suggestedName];
-  v7 = [v6 length];
+  suggestedName = [providerCopy suggestedName];
+  v7 = [suggestedName length];
 
   if (v7)
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"The data “%@” couldn’t be inserted." value:0 table:0];
-    v10 = [v3 suggestedName];
-    v11 = [NSString stringWithFormat:v9, v10];
+    suggestedName2 = [providerCopy suggestedName];
+    v11 = [NSString stringWithFormat:v9, suggestedName2];
 
     v5 = v11;
   }
@@ -319,13 +319,13 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)canLoadItemsOfClass:(Class)a3
+- (BOOL)canLoadItemsOfClass:(Class)class
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  if ([(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___NSItemProviderReading])
+  if ([(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___NSItemProviderReading])
   {
     lockingQueueForClassDictionary = self->_lockingQueueForClassDictionary;
     block[0] = _NSConcreteStackBlock;
@@ -334,7 +334,7 @@ LABEL_11:
     block[3] = &unk_1018546F0;
     block[4] = self;
     block[5] = &v9;
-    block[6] = a3;
+    block[6] = class;
     dispatch_sync(lockingQueueForClassDictionary, block);
   }
 
@@ -343,7 +343,7 @@ LABEL_11:
   return v6;
 }
 
-- (unint64_t)preferredImportableDataTypeDetectingImportableURLsInText:(BOOL)a3 skipFileURLs:(BOOL)a4
+- (unint64_t)preferredImportableDataTypeDetectingImportableURLsInText:(BOOL)text skipFileURLs:(BOOL)ls
 {
   oncePreferredImportableDataType = self->_oncePreferredImportableDataType;
   v7[0] = _NSConcreteStackBlock;
@@ -351,7 +351,7 @@ LABEL_11:
   v7[2] = sub_1002FD0C4;
   v7[3] = &unk_10183AB38;
   v7[4] = self;
-  [(CRLOnce *)oncePreferredImportableDataType performBlockOnce:v7, a4];
+  [(CRLOnce *)oncePreferredImportableDataType performBlockOnce:v7, ls];
   return self->_preferredImportableDataType;
 }
 
@@ -367,11 +367,11 @@ LABEL_11:
   return self->_hasImportableImages;
 }
 
-- (id)loadImportedImagesForAssetOwner:(id)a3 compatibilityAlertPresenter:(id)a4 withHandler:(id)a5
+- (id)loadImportedImagesForAssetOwner:(id)owner compatibilityAlertPresenter:(id)presenter withHandler:(id)handler
 {
-  v48 = a3;
-  v47 = a4;
-  v41 = a5;
+  ownerCopy = owner;
+  presenterCopy = presenter;
+  handlerCopy = handler;
   v42 = [NSMutableArray arrayWithCapacity:[(NSArray *)self->_itemProviders count]];
   v8 = +[CRLIngestionTypes supportedImageTypes];
   group = dispatch_group_create();
@@ -381,7 +381,7 @@ LABEL_11:
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v43 = self;
+  selfCopy = self;
   obj = self->_itemProviders;
   v9 = [(NSArray *)obj countByEnumeratingWithState:&v66 objects:v74 count:16];
   if (v9)
@@ -404,8 +404,8 @@ LABEL_11:
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v14 = [v13 registeredTypeIdentifiers];
-        v15 = [v14 countByEnumeratingWithState:&v62 objects:v73 count:16];
+        registeredTypeIdentifiers = [v13 registeredTypeIdentifiers];
+        v15 = [registeredTypeIdentifiers countByEnumeratingWithState:&v62 objects:v73 count:16];
         if (v15)
         {
           v16 = v15;
@@ -416,7 +416,7 @@ LABEL_11:
             {
               if (*v63 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(registeredTypeIdentifiers);
               }
 
               v19 = *(*(&v62 + 1) + 8 * i);
@@ -428,8 +428,8 @@ LABEL_11:
                 v55[2] = sub_1002FDA90;
                 v55[3] = &unk_101854808;
                 v55[4] = v19;
-                v56 = v48;
-                v57 = v47;
+                v56 = ownerCopy;
+                v57 = presenterCopy;
                 v58 = v45;
                 v61 = v11;
                 v59 = v50;
@@ -490,7 +490,7 @@ LABEL_11:
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v62 objects:v73 count:16];
+            v16 = [registeredTypeIdentifiers countByEnumeratingWithState:&v62 objects:v73 count:16];
             if (v16)
             {
               continue;
@@ -500,7 +500,7 @@ LABEL_11:
           }
         }
 
-        v14 = [(CRLiOSItemProviderItemSource *)v43 p_unrecognizedTypeErrorForItemProvider:v13];
+        registeredTypeIdentifiers = [(CRLiOSItemProviderItemSource *)selfCopy p_unrecognizedTypeErrorForItemProvider:v13];
         if (qword_101AD5A08 != -1)
         {
           sub_10134FF94();
@@ -512,21 +512,21 @@ LABEL_11:
           v28 = v20;
           v29 = objc_opt_class();
           v30 = NSStringFromClass(v29);
-          v31 = [v14 domain];
-          v32 = [v14 code];
+          domain = [registeredTypeIdentifiers domain];
+          code = [registeredTypeIdentifiers code];
           *buf = 138544130;
           *v71 = v30;
           *&v71[8] = 2114;
-          *&v71[10] = v31;
+          *&v71[10] = domain;
           *&v71[18] = 2048;
-          *&v71[20] = v32;
+          *&v71[20] = code;
           *&v71[28] = 2112;
-          v72[0] = v14;
+          v72[0] = registeredTypeIdentifiers;
           _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Error loading image data. Error: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x2Au);
         }
 
         v21 = [NSNumber numberWithUnsignedInteger:v11];
-        [v50 setObject:v14 forKey:v21];
+        [v50 setObject:registeredTypeIdentifiers forKey:v21];
 
 LABEL_31:
         ++v11;
@@ -547,18 +547,18 @@ LABEL_31:
   block[3] = &unk_101842CD8;
   v52 = v45;
   v53 = v50;
-  v54 = v41;
-  v36 = v41;
+  v54 = handlerCopy;
+  v36 = handlerCopy;
   v37 = v50;
   v38 = v45;
   dispatch_group_notify(group, v35, block);
 
-  v39 = [(CRLiOSItemProviderItemSource *)v43 p_progressWithChildren:v42];
+  v39 = [(CRLiOSItemProviderItemSource *)selfCopy p_progressWithChildren:v42];
 
   return v39;
 }
 
-- (BOOL)hasImportableBoardItemsDetectingImportableURLsInText:(BOOL)a3 skipFileURLs:(BOOL)a4
+- (BOOL)hasImportableBoardItemsDetectingImportableURLsInText:(BOOL)text skipFileURLs:(BOOL)ls
 {
   onceHasImportableDrawables = self->_onceHasImportableDrawables;
   v7[0] = _NSConcreteStackBlock;
@@ -566,7 +566,7 @@ LABEL_31:
   v7[2] = sub_1002FE520;
   v7[3] = &unk_10183AB38;
   v7[4] = self;
-  [(CRLOnce *)onceHasImportableDrawables performBlockOnce:v7, a4];
+  [(CRLOnce *)onceHasImportableDrawables performBlockOnce:v7, ls];
   return self->_hasImportableDrawables;
 }
 
@@ -594,9 +594,9 @@ LABEL_31:
   return self->_hasImportableRichText;
 }
 
-- (id)loadImportedRichTextStringWithHandler:(id)a3
+- (id)loadImportedRichTextStringWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -608,7 +608,7 @@ LABEL_31:
     v7 = v6;
     v8 = *v37;
     v26 = v5;
-    v27 = v4;
+    v27 = handlerCopy;
     v24 = *v37;
     do
     {
@@ -626,8 +626,8 @@ LABEL_31:
         v34 = 0u;
         v35 = 0u;
         v25 = v10;
-        v11 = [v10 registeredTypeIdentifiers];
-        v12 = [v11 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        registeredTypeIdentifiers = [v10 registeredTypeIdentifiers];
+        v12 = [registeredTypeIdentifiers countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v12)
         {
           v13 = v12;
@@ -638,7 +638,7 @@ LABEL_31:
             {
               if (*v33 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(registeredTypeIdentifiers);
               }
 
               v16 = *(*(&v32 + 1) + 8 * i);
@@ -647,8 +647,8 @@ LABEL_31:
 
               if (v18)
               {
-                v20 = [UTTypeRTFD identifier];
-                v21 = [v16 isEqualToString:v20];
+                identifier = [UTTypeRTFD identifier];
+                v21 = [v16 isEqualToString:identifier];
 
                 if (v21)
                 {
@@ -656,7 +656,7 @@ LABEL_31:
                   v30[1] = 3221225472;
                   v30[2] = sub_1002FEBDC;
                   v30[3] = &unk_1018548F0;
-                  v4 = v27;
+                  handlerCopy = v27;
                   v31 = v27;
                   v19 = [v25 loadFileRepresentationForTypeIdentifier:v16 completionHandler:v30];
                   v22 = v31;
@@ -669,7 +669,7 @@ LABEL_31:
                   v28[2] = sub_1002FEF64;
                   v28[3] = &unk_101854978;
                   v28[4] = v16;
-                  v4 = v27;
+                  handlerCopy = v27;
                   v29 = v27;
                   v19 = [v25 loadDataRepresentationForTypeIdentifier:v16 completionHandler:v28];
                   v22 = v29;
@@ -680,7 +680,7 @@ LABEL_31:
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            v13 = [registeredTypeIdentifiers countByEnumeratingWithState:&v32 objects:v40 count:16];
             if (v13)
             {
               continue;
@@ -692,7 +692,7 @@ LABEL_31:
 
         v9 = v9 + 1;
         v5 = v26;
-        v4 = v27;
+        handlerCopy = v27;
         v8 = v24;
       }
 
@@ -714,9 +714,9 @@ LABEL_22:
   return v19;
 }
 
-- (id)loadImportedTextStringWithHandler:(id)a3
+- (id)loadImportedTextStringWithHandler:(id)handler
 {
-  v18 = a3;
+  handlerCopy = handler;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -741,8 +741,8 @@ LABEL_22:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v9 = [v8 registeredTypeIdentifiers];
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        registeredTypeIdentifiers = [v8 registeredTypeIdentifiers];
+        v10 = [registeredTypeIdentifiers countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v10)
         {
           v11 = v10;
@@ -753,7 +753,7 @@ LABEL_8:
           {
             if (*v22 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(registeredTypeIdentifiers);
             }
 
             v14 = *(*(&v21 + 1) + 8 * v13);
@@ -764,7 +764,7 @@ LABEL_8:
 
             if (v11 == ++v13)
             {
-              v11 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+              v11 = [registeredTypeIdentifiers countByEnumeratingWithState:&v21 objects:v29 count:16];
               if (v11)
               {
                 goto LABEL_8;
@@ -779,7 +779,7 @@ LABEL_8:
           v19[2] = sub_1002FF4CC;
           v19[3] = &unk_101854978;
           v19[4] = v14;
-          v20 = v18;
+          v20 = handlerCopy;
           v15 = [v8 loadDataRepresentationForTypeIdentifier:v14 completionHandler:v19];
 
           if (v15)
@@ -832,8 +832,8 @@ LABEL_19:
 
 - (BOOL)hasNativeBoardItems
 {
-  v2 = [(CRLiOSItemProviderItemSource *)self p_sourceMetadata];
-  v3 = [v2 containsObject:@"com.apple.freeform.pasteboardState.hasNativeBoardItems"];
+  p_sourceMetadata = [(CRLiOSItemProviderItemSource *)self p_sourceMetadata];
+  v3 = [p_sourceMetadata containsObject:@"com.apple.freeform.pasteboardState.hasNativeBoardItems"];
 
   return v3;
 }
@@ -860,10 +860,10 @@ LABEL_19:
   return [(CRLiOSItemProviderItemSource *)self hasImportableBoardItemsDetectingImportableURLsInText:1];
 }
 
-- (id)loadProvidersForNativeBoardItemsWithBoardItemFactory:(id)a3 loadHandler:(id)a4
+- (id)loadProvidersForNativeBoardItemsWithBoardItemFactory:(id)factory loadHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  handlerCopy = handler;
   if ([(NSArray *)self->_itemProviders count]!= 1)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -894,22 +894,22 @@ LABEL_19:
   }
 
   v11 = [_TtC8Freeform44CRLPasteboardObjectItemProviderReadAssistant alloc];
-  v12 = [v6 store];
-  v13 = [v6 store];
-  v14 = [v13 crdtContext];
-  v15 = [(CRLPasteboardObjectItemProviderReadAssistant *)v11 initWithStore:v12 context:v14];
+  store = [factoryCopy store];
+  store2 = [factoryCopy store];
+  crdtContext = [store2 crdtContext];
+  v15 = [(CRLPasteboardObjectItemProviderReadAssistant *)v11 initWithStore:store context:crdtContext];
 
-  v16 = [(NSArray *)self->_itemProviders firstObject];
+  firstObject = [(NSArray *)self->_itemProviders firstObject];
   v24 = _NSConcreteStackBlock;
   v25 = 3221225472;
   v26 = sub_100300268;
   v27 = &unk_101854AE0;
-  v28 = self;
-  v17 = v6;
+  selfCopy = self;
+  v17 = factoryCopy;
   v29 = v17;
-  v18 = v7;
+  v18 = handlerCopy;
   v30 = v18;
-  v19 = [(CRLPasteboardObjectItemProviderReadAssistant *)v15 readPasteboardObjectFrom:v16 completion:&v24];
+  v19 = [(CRLPasteboardObjectItemProviderReadAssistant *)v15 readPasteboardObjectFrom:firstObject completion:&v24];
 
   if (!v19)
   {
@@ -937,17 +937,17 @@ LABEL_19:
 
     v21 = [NSString stringWithUTF8String:"[CRLiOSItemProviderItemSource loadProvidersForNativeBoardItemsWithBoardItemFactory:loadHandler:]"];
     v22 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLiOSItemProviderItemSource.m"];
-    [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:557 isFatal:0 description:"invalid nil value for '%{public}s'", "progress", v24, v25, v26, v27, v28, v29];
+    [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:557 isFatal:0 description:"invalid nil value for '%{public}s'", "progress", v24, v25, v26, v27, selfCopy, v29];
   }
 
   return v19;
 }
 
-- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)a3 maximumStringLength:(unint64_t)a4 WithLoadHandler:(id)a5
+- (id)loadProvidersForImportedBoardItemsUsingBoardItemFactory:(id)factory maximumStringLength:(unint64_t)length WithLoadHandler:(id)handler
 {
-  v74 = a3;
-  v71 = a5;
-  v90 = self;
+  factoryCopy = factory;
+  handlerCopy = handler;
+  selfCopy = self;
   v75 = [NSMutableArray arrayWithCapacity:[(NSArray *)self->_itemProviders count]];
   v76 = dispatch_group_create();
   v142[0] = 0;
@@ -985,8 +985,8 @@ LABEL_19:
         v131 = &v130;
         v132 = 0x2020000000;
         v133 = 0;
-        v9 = [v8 registeredTypeIdentifiers];
-        v80 = [NSSet setWithArray:v9];
+        registeredTypeIdentifiers = [v8 registeredTypeIdentifiers];
+        v80 = [NSSet setWithArray:registeredTypeIdentifiers];
 
         v10 = +[CRLIngestionTypes highEfficiencyImageTypes];
         v11 = [NSSet setWithArray:v10];
@@ -1001,10 +1001,10 @@ LABEL_19:
         v122 = v12;
         v123 = v8;
         v128 = v142;
-        v129 = a4;
-        v86 = v74;
+        lengthCopy = length;
+        v86 = factoryCopy;
         v124 = v86;
-        v125 = v90;
+        v125 = selfCopy;
         v13 = v75;
         v126 = v13;
         v83 = objc_retainBlock(v121);
@@ -1024,8 +1024,8 @@ LABEL_19:
         v114 = 0u;
         v111 = 0u;
         v112 = 0u;
-        v14 = [v8 registeredTypeIdentifiers];
-        v15 = [v14 countByEnumeratingWithState:&v111 objects:v147 count:16];
+        registeredTypeIdentifiers2 = [v8 registeredTypeIdentifiers];
+        v15 = [registeredTypeIdentifiers2 countByEnumeratingWithState:&v111 objects:v147 count:16];
         if (!v15)
         {
 LABEL_73:
@@ -1035,7 +1035,7 @@ LABEL_73:
 
         v16 = 0;
         v79 = 0;
-        v88 = v14;
+        v88 = registeredTypeIdentifiers2;
         v89 = *v112;
         do
         {
@@ -1050,10 +1050,10 @@ LABEL_73:
             v18 = *(*(&v111 + 1) + 8 * v17);
             if (+[_TtC8Freeform19CRLFeatureFlagGroup isContentLanguageCopyPasteEnabled])
             {
-              v19 = [v8 registeredTypeIdentifiers];
-              v20 = [_TtC8Freeform20CRLCLCopyPasteHelper canvasObjectTypeIdentifierToUseFromTypeIdentifiers:v19];
+              registeredTypeIdentifiers3 = [v8 registeredTypeIdentifiers];
+              v20 = [_TtC8Freeform20CRLCLCopyPasteHelper canvasObjectTypeIdentifierToUseFromTypeIdentifiers:registeredTypeIdentifiers3];
 
-              if ([(CRLiOSItemProviderItemSource *)v90 hasContentLanguageDrawablesType])
+              if ([(CRLiOSItemProviderItemSource *)selfCopy hasContentLanguageDrawablesType])
               {
                 *(v135 + 24) = 1;
                 dispatch_group_enter(group);
@@ -1061,7 +1061,7 @@ LABEL_73:
                 v107[1] = 3221225472;
                 v107[2] = sub_1003028C4;
                 v107[3] = &unk_101854D18;
-                v107[4] = v90;
+                v107[4] = selfCopy;
                 v108 = v86;
                 v110 = v142;
                 v109 = group;
@@ -1119,8 +1119,8 @@ LABEL_73:
             }
 
             v27 = sub_1000ECE78();
-            v28 = [v27 identifier];
-            v29 = [v18 isEqualToString:v28];
+            identifier = [v27 identifier];
+            v29 = [v18 isEqualToString:identifier];
 
             v16 |= v29;
             if ([CRLIngestionTypes isValidPlainTextUTI:v18])
@@ -1130,8 +1130,8 @@ LABEL_73:
                 goto LABEL_53;
               }
 
-              v30 = [UTTypeURL identifier];
-              v31 = [v18 isEqualToString:v30];
+              identifier2 = [UTTypeURL identifier];
+              v31 = [v18 isEqualToString:identifier2];
 
               if (v31)
               {
@@ -1165,7 +1165,7 @@ LABEL_73:
               v104[3] = &unk_101854E08;
               v106 = v142;
               v105 = group;
-              v34 = [(CRLiOSItemProviderItemSource *)v90 richTextBoardItemProvidersFor:v8 factory:v86 uti:v18 maximumCharacterLimit:a4 completion:v104];
+              v34 = [(CRLiOSItemProviderItemSource *)selfCopy richTextBoardItemProvidersFor:v8 factory:v86 uti:v18 maximumCharacterLimit:length completion:v104];
               if (v34)
               {
                 [v84 addObject:v34];
@@ -1220,8 +1220,8 @@ LABEL_73:
             }
 
             v35 = sub_1000EEB38();
-            v36 = [v35 identifier];
-            v37 = [v18 isEqualToString:v36];
+            identifier3 = [v35 identifier];
+            v37 = [v18 isEqualToString:identifier3];
 
             if (v37)
             {
@@ -1234,13 +1234,13 @@ LABEL_73:
               goto LABEL_51;
             }
 
-            v38 = [UTTypeVCard identifier];
-            if ([v18 isEqualToString:v38])
+            identifier4 = [UTTypeVCard identifier];
+            if ([v18 isEqualToString:identifier4])
             {
-              v39 = [v8 registeredTypeIdentifiers];
+              registeredTypeIdentifiers4 = [v8 registeredTypeIdentifiers];
               v40 = sub_1000EEB38();
-              v41 = [v40 identifier];
-              v42 = [v39 containsObject:v41];
+              identifier5 = [v40 identifier];
+              v42 = [registeredTypeIdentifiers4 containsObject:identifier5];
 
               if (v42)
               {
@@ -1252,8 +1252,8 @@ LABEL_73:
             {
             }
 
-            v48 = [UTTypeJPEG identifier];
-            v49 = [v18 isEqualToString:v48];
+            identifier6 = [UTTypeJPEG identifier];
+            v49 = [v18 isEqualToString:identifier6];
 
             if ((v49 & v87 & 1) == 0)
             {
@@ -1277,7 +1277,7 @@ LABEL_73:
               v97 = &v134;
               v98 = &v130;
               v95 = v50;
-              v96 = v90;
+              v96 = selfCopy;
               [v51 setCancellationHandler:v94];
               if (v51)
               {
@@ -1350,15 +1350,15 @@ LABEL_70:
 
         if ((v135[3] & 1) == 0 && ((v79 ^ 1) & 1) == 0)
         {
-          v14 = [UTTypeURL identifier];
-          (v78[2])(v78, v14);
+          registeredTypeIdentifiers2 = [UTTypeURL identifier];
+          (v78[2])(v78, registeredTypeIdentifiers2);
           goto LABEL_73;
         }
 
 LABEL_74:
         if ((v135[3] & 1) == 0 && (v131[3] & 1) == 0)
         {
-          v61 = [(CRLiOSItemProviderItemSource *)v90 p_unrecognizedTypeErrorForItemProvider:v8];
+          v61 = [(CRLiOSItemProviderItemSource *)selfCopy p_unrecognizedTypeErrorForItemProvider:v8];
           if (qword_101AD5A08 != -1)
           {
             sub_101350E54();
@@ -1369,14 +1369,14 @@ LABEL_74:
           {
             v63 = objc_opt_class();
             v64 = NSStringFromClass(v63);
-            v65 = [v61 domain];
-            v66 = [v61 code];
+            domain = [v61 domain];
+            code = [v61 code];
             *buf = 138544130;
             *v145 = v64;
             *&v145[8] = 2114;
-            *&v145[10] = v65;
+            *&v145[10] = domain;
             *&v145[18] = 2048;
-            *&v145[20] = v66;
+            *&v145[20] = code;
             *&v145[28] = 2112;
             v146[0] = v61;
             _os_log_error_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "Error loading importable data. Error: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x2Au);
@@ -1400,24 +1400,24 @@ LABEL_74:
   block[1] = 3221225472;
   block[2] = sub_100302DEC;
   block[3] = &unk_101847590;
-  v68 = v71;
+  v68 = handlerCopy;
   v92 = v68;
   v93 = v142;
   dispatch_group_notify(v76, v67, block);
 
-  v69 = [(CRLiOSItemProviderItemSource *)v90 p_progressWithChildren:v75];
+  v69 = [(CRLiOSItemProviderItemSource *)selfCopy p_progressWithChildren:v75];
 
   _Block_object_dispose(v142, 8);
 
   return v69;
 }
 
-- (id)loadTextStorageUsingBoardItemFactory:(id)a3 forTargetContext:(id)a4 targetStorage:(id)a5 loadHandler:(id)a6
+- (id)loadTextStorageUsingBoardItemFactory:(id)factory forTargetContext:(id)context targetStorage:(id)storage loadHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
+  factoryCopy = factory;
+  handlerCopy = handler;
   itemProviders = self->_itemProviders;
-  v12 = a4;
+  contextCopy = context;
   if ([(NSArray *)itemProviders count]!= 1)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1447,36 +1447,36 @@ LABEL_74:
     [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:793 isFatal:0 description:"Unexpected number of item providers!"];
   }
 
-  v16 = [(NSArray *)self->_itemProviders firstObject];
+  firstObject = [(NSArray *)self->_itemProviders firstObject];
   v17 = [_TtC8Freeform44CRLPasteboardObjectItemProviderReadAssistant alloc];
-  v18 = [v12 sourceStore];
-  v19 = [v12 sourceStore];
+  sourceStore = [contextCopy sourceStore];
+  sourceStore2 = [contextCopy sourceStore];
 
-  v20 = [v19 crdtContext];
-  v21 = [(CRLPasteboardObjectItemProviderReadAssistant *)v17 initWithStore:v18 context:v20];
+  crdtContext = [sourceStore2 crdtContext];
+  v21 = [(CRLPasteboardObjectItemProviderReadAssistant *)v17 initWithStore:sourceStore context:crdtContext];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10030316C;
   v26[3] = &unk_101854FA0;
-  v27 = v9;
-  v28 = v10;
-  v22 = v10;
-  v23 = v9;
-  v24 = [(CRLPasteboardObjectItemProviderReadAssistant *)v21 readPasteboardObjectFrom:v16 completion:v26];
+  v27 = factoryCopy;
+  v28 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = factoryCopy;
+  v24 = [(CRLPasteboardObjectItemProviderReadAssistant *)v21 readPasteboardObjectFrom:firstObject completion:v26];
 
   return v24;
 }
 
-- (BOOL)hasTeamDataType:(id)a3
+- (BOOL)hasTeamDataType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CRLiOSItemProviderItemSource *)self p_sourceMetadata];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  p_sourceMetadata = [(CRLiOSItemProviderItemSource *)self p_sourceMetadata];
+  v6 = [p_sourceMetadata countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -1486,19 +1486,19 @@ LABEL_74:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(p_sourceMetadata);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         objc_opt_class();
-        if (objc_opt_isKindOfClass() & 1) != 0 && ([v9 isEqualToString:v4])
+        if (objc_opt_isKindOfClass() & 1) != 0 && ([v9 isEqualToString:typeCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_12;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [p_sourceMetadata countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -1516,11 +1516,11 @@ LABEL_12:
 - (NSString)defaultTextFileName
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 mainBundle];
+  selfCopy = self;
+  mainBundle = [v3 mainBundle];
   v6 = String._bridgeToObjectiveC()();
   v7 = String._bridgeToObjectiveC()();
-  v8 = [v5 localizedStringForKey:v6 value:v7 table:0];
+  v8 = [mainBundle localizedStringForKey:v6 value:v7 table:0];
 
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = String._bridgeToObjectiveC()();
@@ -1528,30 +1528,30 @@ LABEL_12:
   return v9;
 }
 
-- (id)richTextBoardItemProvidersFor:(id)a3 factory:(id)a4 uti:(id)a5 maximumCharacterLimit:(int64_t)a6 completion:(id)a7
+- (id)richTextBoardItemProvidersFor:(id)for factory:(id)factory uti:(id)uti maximumCharacterLimit:(int64_t)limit completion:(id)completion
 {
-  v11 = _Block_copy(a7);
+  v11 = _Block_copy(completion);
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
   _Block_copy(v11);
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
-  v18 = sub_1006B5364(v15, v16, v12, v14, a6, v17, v11);
+  forCopy = for;
+  factoryCopy = factory;
+  selfCopy = self;
+  v18 = sub_1006B5364(forCopy, factoryCopy, v12, v14, limit, selfCopy, v11);
   _Block_release(v11);
   _Block_release(v11);
 
   return v18;
 }
 
-+ (id)jsonBoardItemProvidersFrom:(id)a3 withBoardItemFactory:(id)a4 error:(id *)a5
++ (id)jsonBoardItemProvidersFrom:(id)from withBoardItemFactory:(id)factory error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  factoryCopy = factory;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
-  sub_1006B5C94(v8, v10, v7);
+  sub_1006B5C94(v8, v10, factoryCopy);
   sub_10002640C(v8, v10);
   type metadata accessor for CRLContentLanguageBoardItemProvider();
   v11.super.isa = Array._bridgeToObjectiveC()().super.isa;

@@ -1,25 +1,25 @@
 @interface VettingAcceptor
-- (VettingAcceptor)initWithCloudKitURL:(id)a3;
-- (void)completeVettingWithCompletionHandler:(id)a3;
+- (VettingAcceptor)initWithCloudKitURL:(id)l;
+- (void)completeVettingWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)retrievingDialogCancelled;
 @end
 
 @implementation VettingAcceptor
 
-- (VettingAcceptor)initWithCloudKitURL:(id)a3
+- (VettingAcceptor)initWithCloudKitURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = VettingAcceptor;
   v5 = [(VettingAcceptor *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
-    v8 = [[VettingHandler alloc] initWithCloudKitURL:v4];
+    v8 = [[VettingHandler alloc] initWithCloudKitURL:lCopy];
     vettingHandler = v5->_vettingHandler;
     v5->_vettingHandler = v8;
 
@@ -41,27 +41,27 @@
   objc_sync_exit(obj);
 }
 
-- (void)completeVettingWithCompletionHandler:(id)a3
+- (void)completeVettingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(VettingAcceptor *)self retrievingDialog];
-  [v5 schedule];
+  handlerCopy = handler;
+  retrievingDialog = [(VettingAcceptor *)self retrievingDialog];
+  [retrievingDialog schedule];
 
   objc_initWeak(&location, self);
-  v6 = [(VettingAcceptor *)self vettingHandler];
+  vettingHandler = [(VettingAcceptor *)self vettingHandler];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000155BC;
   v10[3] = &unk_100028CC0;
   objc_copyWeak(&v12, &location);
-  v7 = v4;
+  v7 = handlerCopy;
   v11 = v7;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100015A7C;
   v8[3] = &unk_100028848;
   objc_copyWeak(&v9, &location);
-  [v6 completeVettingWithCompletionHandler:v10 willIssueCompletionOperationHandler:v8];
+  [vettingHandler completeVettingWithCompletionHandler:v10 willIssueCompletionOperationHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v12);

@@ -117,9 +117,9 @@ LABEL_14:
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(FPNSFileProviderItemHelper *)self isShared])
   {
-    v3 = [(FPNSFileProviderItemHelper *)self fp_isWritable];
+    fp_isWritable = [(FPNSFileProviderItemHelper *)self fp_isWritable];
     v4 = MEMORY[0x1E695DD30];
-    if (!v3)
+    if (!fp_isWritable)
     {
       v4 = MEMORY[0x1E695DD28];
     }

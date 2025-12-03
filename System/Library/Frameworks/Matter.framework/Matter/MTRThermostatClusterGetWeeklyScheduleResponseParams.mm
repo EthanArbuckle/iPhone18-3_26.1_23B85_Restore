@@ -1,9 +1,9 @@
 @interface MTRThermostatClusterGetWeeklyScheduleResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRThermostatClusterGetWeeklyScheduleResponseParams)init;
-- (MTRThermostatClusterGetWeeklyScheduleResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRThermostatClusterGetWeeklyScheduleResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRThermostatClusterGetWeeklyScheduleResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -26,9 +26,9 @@
     modeForSequence = v3->_modeForSequence;
     v3->_modeForSequence = &unk_284C3E4C8;
 
-    v7 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     transitions = v3->_transitions;
-    v3->_transitions = v7;
+    v3->_transitions = array;
 
     timedInvokeTimeoutMs = v3->_timedInvokeTimeoutMs;
     v3->_timedInvokeTimeoutMs = 0;
@@ -37,23 +37,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterGetWeeklyScheduleResponseParams);
-  v5 = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self numberOfTransitionsForSequence];
-  [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 setNumberOfTransitionsForSequence:v5];
+  numberOfTransitionsForSequence = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self numberOfTransitionsForSequence];
+  [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 setNumberOfTransitionsForSequence:numberOfTransitionsForSequence];
 
-  v6 = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self dayOfWeekForSequence];
-  [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 setDayOfWeekForSequence:v6];
+  dayOfWeekForSequence = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self dayOfWeekForSequence];
+  [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 setDayOfWeekForSequence:dayOfWeekForSequence];
 
-  v7 = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self modeForSequence];
-  [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 setModeForSequence:v7];
+  modeForSequence = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self modeForSequence];
+  [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 setModeForSequence:modeForSequence];
 
-  v8 = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self transitions];
-  [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 setTransitions:v8];
+  transitions = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self transitions];
+  [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 setTransitions:transitions];
 
-  v9 = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -115,7 +115,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRThermostatClusterGetWeeklyScheduleResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRThermostatClusterGetWeeklyScheduleResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRThermostatClusterGetWeeklyScheduleResponseParams;
@@ -123,7 +123,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -139,22 +139,22 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self setNumberOfTransitionsForSequence:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 1)];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 1)];
   [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self setDayOfWeekForSequence:v6];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 2)];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 2)];
   [(MTRThermostatClusterGetWeeklyScheduleResponseParams *)self setModeForSequence:v7];
 
   v8 = objc_opt_new();
   sub_2393C5AAC(v22);
   v20 = 0;
   v21 = 0;
-  sub_2393C5BDC(v22, a3 + 8);
+  sub_2393C5BDC(v22, struct + 8);
   LOWORD(v23) = 0;
   BYTE2(v23) = 0;
   BYTE4(v23) = 0;

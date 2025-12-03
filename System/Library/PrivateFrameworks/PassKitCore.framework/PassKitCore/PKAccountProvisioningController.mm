@@ -1,39 +1,39 @@
 @interface PKAccountProvisioningController
-+ (BOOL)_isPaymentPassActivated:(id)a3 forAccountCredential:(id)a4;
-- (PKAccountProvisioningController)initWithAccountCredential:(id)a3 provisioningController:(id)a4 usingRemoteLibrary:(BOOL)a5;
++ (BOOL)_isPaymentPassActivated:(id)activated forAccountCredential:(id)credential;
+- (PKAccountProvisioningController)initWithAccountCredential:(id)credential provisioningController:(id)controller usingRemoteLibrary:(BOOL)library;
 - (PKAccountProvisioningControllerDelegate)delegate;
 - (id)_notificationDidChangeNames;
 - (void)_handlePassActiviated;
-- (void)_informDelegateOfError:(id)a3;
+- (void)_informDelegateOfError:(id)error;
 - (void)_informDelegateOfStateUpdate;
-- (void)_passLibraryDidChange:(id)a3;
+- (void)_passLibraryDidChange:(id)change;
 - (void)_processRemainingTasks;
-- (void)_setupAccountAndProvisionAccountCredenital:(id)a3 provisioningController:(id)a4 completion:(id)a5;
+- (void)_setupAccountAndProvisionAccountCredenital:(id)credenital provisioningController:(id)controller completion:(id)completion;
 - (void)_startPassActivationObserver;
 - (void)_stopPassActivationObserver;
 - (void)addToIDMS;
 - (void)dealloc;
 - (void)makeAccountPassDefaultOnLocalDevice;
-- (void)performAMPEnrollmentShouldEnroll:(BOOL)a3 shouldMakeDefault:(BOOL)a4;
+- (void)performAMPEnrollmentShouldEnroll:(BOOL)enroll shouldMakeDefault:(BOOL)default;
 - (void)provisionAccountPassToLocalDevice;
-- (void)provisionAccountPassToWatchAsDefault:(BOOL)a3;
+- (void)provisionAccountPassToWatchAsDefault:(BOOL)default;
 @end
 
 @implementation PKAccountProvisioningController
 
-- (PKAccountProvisioningController)initWithAccountCredential:(id)a3 provisioningController:(id)a4 usingRemoteLibrary:(BOOL)a5
+- (PKAccountProvisioningController)initWithAccountCredential:(id)credential provisioningController:(id)controller usingRemoteLibrary:(BOOL)library
 {
-  v9 = a3;
-  v10 = a4;
+  credentialCopy = credential;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = PKAccountProvisioningController;
   v11 = [(PKAccountProvisioningController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_provisioningController, a4);
-    objc_storeStrong(&v12->_accountCredential, a3);
-    v12->_usingRemoteLibrary = a5;
+    objc_storeStrong(&v11->_provisioningController, controller);
+    objc_storeStrong(&v12->_accountCredential, credential);
+    v12->_usingRemoteLibrary = library;
   }
 
   return v12;
@@ -275,14 +275,14 @@ LABEL_12:
   }
 
   self->_makeAccountPassDefaultOnLocalDeviceState = 2;
-  v5 = [(PKAccountCredential *)self->_accountCredential paymentPass];
-  PKEnableAutomaticSelectionForPaymentPass(v5);
+  paymentPass = [(PKAccountCredential *)self->_accountCredential paymentPass];
+  PKEnableAutomaticSelectionForPaymentPass(paymentPass);
 
-  v6 = [(PKPaymentProvisioningController *)self->_provisioningController webService];
-  v7 = [v6 targetDevice];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  webService = [(PKPaymentProvisioningController *)self->_provisioningController webService];
+  targetDevice = [webService targetDevice];
+  if (targetDevice && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 paymentWebService:v6 setDefaultPaymentPassUniqueIdentifier:self->_provisionedPassUniqueID];
+    [targetDevice paymentWebService:webService setDefaultPaymentPassUniqueIdentifier:self->_provisionedPassUniqueID];
   }
 
   else
@@ -300,18 +300,18 @@ LABEL_12:
   [(PKAccountProvisioningController *)self _processRemainingTasks];
 }
 
-- (void)performAMPEnrollmentShouldEnroll:(BOOL)a3 shouldMakeDefault:(BOOL)a4
+- (void)performAMPEnrollmentShouldEnroll:(BOOL)enroll shouldMakeDefault:(BOOL)default
 {
   if ((self->_addToAMPState & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    self->_enrollInAMP = a3;
-    self->_makeDefaultInAMP = a3 && a4;
+    self->_enrollInAMP = enroll;
+    self->_makeDefaultInAMP = enroll && default;
     if ([(NSString *)self->_provisionedPassUniqueID length])
     {
       self->_addToAMPState = 2;
       v6 = +[PKAMPEnrollmentManager sharedManager];
-      v7 = [(PKAccountCredential *)self->_accountCredential paymentPass];
-      v8 = PKDismissedKeyForPass(@"AMPEnrollmentDismissed", v7);
+      paymentPass = [(PKAccountCredential *)self->_accountCredential paymentPass];
+      v8 = PKDismissedKeyForPass(@"AMPEnrollmentDismissed", paymentPass);
       objc_initWeak(location, self);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -321,15 +321,15 @@ LABEL_12:
       v20 = v9;
       objc_copyWeak(&v21, location);
       v10 = _Block_copy(aBlock);
-      if (a3)
+      if (enroll)
       {
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __86__PKAccountProvisioningController_performAMPEnrollmentShouldEnroll_shouldMakeDefault___block_invoke_48;
         v13[3] = &unk_1E79D3EC8;
         v14 = v6;
-        v15 = v7;
-        v16 = self;
+        v15 = paymentPass;
+        selfCopy = self;
         v17 = v10;
         [v14 enrollmentStatusForPaymentPass:v15 completion:v13 progress:v17];
       }
@@ -433,25 +433,25 @@ void __86__PKAccountProvisioningController_performAMPEnrollmentShouldEnroll_shou
   if ((self->_addToIDMSState & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     self->_addToIDMSState = 2;
-    v3 = [(PKAccountCredential *)self->_accountCredential account];
+    account = [(PKAccountCredential *)self->_accountCredential account];
     v4 = objc_alloc_init(PKAccountWebServiceAccountActionRequest);
-    v5 = [v3 accountIdentifier];
-    [(PKAccountWebServiceAccountActionRequest *)v4 setAccountIdentifier:v5];
+    accountIdentifier = [account accountIdentifier];
+    [(PKAccountWebServiceAccountActionRequest *)v4 setAccountIdentifier:accountIdentifier];
 
-    v6 = [v3 accountBaseURL];
-    [(PKAccountWebServiceAccountActionRequest *)v4 setBaseURL:v6];
+    accountBaseURL = [account accountBaseURL];
+    [(PKAccountWebServiceAccountActionRequest *)v4 setBaseURL:accountBaseURL];
 
     v7 = objc_alloc_init(PKAccountAction);
     [(PKAccountAction *)v7 setActionType:1];
     [(PKAccountWebServiceAccountActionRequest *)v4 setAction:v7];
     objc_initWeak(&location, self);
-    v8 = [(PKPaymentProvisioningController *)self->_provisioningController webService];
+    webService = [(PKPaymentProvisioningController *)self->_provisioningController webService];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __44__PKAccountProvisioningController_addToIDMS__block_invoke;
     v9[3] = &unk_1E79D3EF0;
     objc_copyWeak(&v10, &location);
-    [v8 accountActionWithRequest:v4 completion:v9];
+    [webService accountActionWithRequest:v4 completion:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -487,9 +487,9 @@ uint64_t __44__PKAccountProvisioningController_addToIDMS__block_invoke_2(uint64_
   return [*(a1 + 32) _processRemainingTasks];
 }
 
-- (void)provisionAccountPassToWatchAsDefault:(BOOL)a3
+- (void)provisionAccountPassToWatchAsDefault:(BOOL)default
 {
-  v3 = a3;
+  defaultCopy = default;
   if (PKIsPairedWithWatch())
   {
     if ((self->_provisionWatchPassState & 0xFFFFFFFFFFFFFFFELL) != 2)
@@ -516,19 +516,19 @@ uint64_t __44__PKAccountProvisioningController_addToIDMS__block_invoke_2(uint64_
         self->_watchConnection = v7;
       }
 
-      v9 = [(PKAccountCredential *)self->_accountCredential account];
-      v10 = [v9 accountIdentifier];
+      account = [(PKAccountCredential *)self->_accountCredential account];
+      accountIdentifier = [account accountIdentifier];
 
       v11 = self->_watchConnection;
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __72__PKAccountProvisioningController_provisionAccountPassToWatchAsDefault___block_invoke_3;
       v15[3] = &unk_1E79C4568;
-      v12 = v10;
+      v12 = accountIdentifier;
       v16 = v12;
       v13 = v6;
       v17 = v13;
-      [(NPKCompanionAgentConnection *)v11 provisionPassForAccountIdentifier:v12 makeDefault:v3 completion:v15];
+      [(NPKCompanionAgentConnection *)v11 provisionPassForAccountIdentifier:v12 makeDefault:defaultCopy completion:v15];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(buf);
@@ -620,16 +620,16 @@ void __72__PKAccountProvisioningController_provisionAccountPassToWatchAsDefault_
   }
 }
 
-- (void)_setupAccountAndProvisionAccountCredenital:(id)a3 provisioningController:(id)a4 completion:(id)a5
+- (void)_setupAccountAndProvisionAccountCredenital:(id)credenital provisioningController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credenitalCopy = credenital;
+  controllerCopy = controller;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __112__PKAccountProvisioningController__setupAccountAndProvisionAccountCredenital_provisioningController_completion___block_invoke;
   aBlock[3] = &unk_1E79C4A68;
-  v11 = v10;
+  v11 = completionCopy;
   aBlock[4] = self;
   v23 = v11;
   v12 = _Block_copy(aBlock);
@@ -637,13 +637,13 @@ void __72__PKAccountProvisioningController_provisionAccountPassToWatchAsDefault_
   v17[1] = 3221225472;
   v17[2] = __112__PKAccountProvisioningController__setupAccountAndProvisionAccountCredenital_provisioningController_completion___block_invoke_2;
   v17[3] = &unk_1E79D3F60;
-  v18 = v9;
-  v19 = v8;
+  v18 = controllerCopy;
+  v19 = credenitalCopy;
   v20 = v12;
   v21 = v11;
   v13 = v11;
-  v14 = v8;
-  v15 = v9;
+  v14 = credenitalCopy;
+  v15 = controllerCopy;
   v16 = v12;
   [v15 validatePreconditionsAndRegister:v17];
 }
@@ -740,13 +740,13 @@ void __112__PKAccountProvisioningController__setupAccountAndProvisionAccountCred
   }
 }
 
-+ (BOOL)_isPaymentPassActivated:(id)a3 forAccountCredential:(id)a4
++ (BOOL)_isPaymentPassActivated:(id)activated forAccountCredential:(id)credential
 {
-  v5 = a3;
-  v6 = [a4 passDetailsResponse];
-  v7 = [v6 status];
+  activatedCopy = activated;
+  passDetailsResponse = [credential passDetailsResponse];
+  status = [passDetailsResponse status];
 
-  v8 = (v7 + 1) <= 6 && (((1 << (v7 + 1)) & 0x47) == 0 || ![v5 activationState]);
+  v8 = (status + 1) <= 6 && (((1 << (status + 1)) & 0x47) == 0 || ![activatedCopy activationState]);
   return v8;
 }
 
@@ -776,12 +776,12 @@ void __112__PKAccountProvisioningController__setupAccountAndProvisionAccountCred
     _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Starting pass activiation observer", buf, 2u);
   }
 
-  v4 = [(PKAccountProvisioningController *)self _notificationDidChangeNames];
+  _notificationDidChangeNames = [(PKAccountProvisioningController *)self _notificationDidChangeNames];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [_notificationDidChangeNames countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -792,15 +792,15 @@ void __112__PKAccountProvisioningController__setupAccountAndProvisionAccountCred
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_notificationDidChangeNames);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v10 addObserver:self selector:sel__passLibraryDidChange_ name:v9 object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:self selector:sel__passLibraryDidChange_ name:v9 object:0];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [_notificationDidChangeNames countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -862,12 +862,12 @@ void __63__PKAccountProvisioningController__startPassActivationObserver__block_i
     _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Stopping pass activiation observer", buf, 2u);
   }
 
-  v4 = [(PKAccountProvisioningController *)self _notificationDidChangeNames];
+  _notificationDidChangeNames = [(PKAccountProvisioningController *)self _notificationDidChangeNames];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  v5 = [_notificationDidChangeNames countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -879,18 +879,18 @@ void __63__PKAccountProvisioningController__startPassActivationObserver__block_i
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_notificationDidChangeNames);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v10 removeObserver:self name:v9 object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter removeObserver:self name:v9 object:0];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v6 = [_notificationDidChangeNames countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v6);
@@ -905,9 +905,9 @@ void __63__PKAccountProvisioningController__startPassActivationObserver__block_i
   }
 }
 
-- (void)_passLibraryDidChange:(id)a3
+- (void)_passLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -915,8 +915,8 @@ void __63__PKAccountProvisioningController__startPassActivationObserver__block_i
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Pass activiation observer - library did change", buf, 2u);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"PKPassLibraryReplacementPassesUserInfo"];
+  userInfo = [changeCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"PKPassLibraryReplacementPassesUserInfo"];
 
   if (v7)
   {
@@ -991,16 +991,16 @@ uint64_t __57__PKAccountProvisioningController__passLibraryDidChange___block_inv
   }
 }
 
-- (void)_informDelegateOfError:(id)a3
+- (void)_informDelegateOfError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 accountProvisioningController:self displayableError:v7];
+    [v6 accountProvisioningController:self displayableError:errorCopy];
   }
 }
 

@@ -1,74 +1,74 @@
 @interface SHSheetInteractor
 - (BOOL)hasSessionStarted;
 - (SHSheetActivityPerformerPresentationInterface)activityPresentationController;
-- (SHSheetInteractor)initWithContext:(id)a3;
+- (SHSheetInteractor)initWithContext:(id)context;
 - (SHSheetInteractorDelegate)delegate;
-- (id)_prepareActivityProxyForRequest:(id)a3;
-- (id)collaborationSharingResultForActivity:(id)a3;
+- (id)_prepareActivityProxyForRequest:(id)request;
+- (id)collaborationSharingResultForActivity:(id)activity;
 - (id)createActivityItemsConfiguration;
-- (id)linkMetadataForActivityPerformer:(id)a3;
-- (void)_deleteSharingURL:(id)a3;
-- (void)_didPerformActivityWithResult:(id)a3;
-- (void)_performActivity:(id)a3;
-- (void)_recordActivityInteractionForResult:(id)a3;
+- (id)linkMetadataForActivityPerformer:(id)performer;
+- (void)_deleteSharingURL:(id)l;
+- (void)_didPerformActivityWithResult:(id)result;
+- (void)_performActivity:(id)activity;
+- (void)_recordActivityInteractionForResult:(id)result;
 - (void)_recordActivityViewControllerInteraction;
-- (void)_runActivity:(id)a3;
+- (void)_runActivity:(id)activity;
 - (void)_setupServiceManagerIfNeeded;
-- (void)_startPerformingActivity:(id)a3 collaborationItem:(id)a4 skipCollaborationPerformer:(BOOL)a5;
+- (void)_startPerformingActivity:(id)activity collaborationItem:(id)item skipCollaborationPerformer:(BOOL)performer;
 - (void)_updateRemoteScene;
 - (void)activityViewControllerDidAppear;
 - (void)activityViewControllerDidDisappear;
-- (void)activityViewControllerSessionDidEndWithCompletionHandler:(id)a3;
-- (void)addParticipantsAllowedForCollaborationItem:(id)a3 completionHandler:(id)a4;
+- (void)activityViewControllerSessionDidEndWithCompletionHandler:(id)handler;
+- (void)addParticipantsAllowedForCollaborationItem:(id)item completionHandler:(id)handler;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
-- (void)canManageShareForDocumentInSharedFolderWithCompletionHandler:(id)a3;
-- (void)canShareFolderContainingExistingSharedItemsWithCompletionHandler:(id)a3;
-- (void)clearActivityForResult:(id)a3;
-- (void)collaborationFooterViewModelDidChangeForSession:(id)a3;
-- (void)createSharingURLForCollaborationRequest:(id)a3 completionHandler:(id)a4;
-- (void)createSharingURLWithParticipantsForCollaborationRequest:(id)a3 completionHandler:(id)a4;
-- (void)didBeginCreationForCollaborationPerformer:(id)a3;
-- (void)didCancelCreationForCollaborationPerformer:(id)a3;
-- (void)didFailCreationForCollaborationPerformer:(id)a3 error:(id)a4;
-- (void)didFinishCreationForCollaborationPerformer:(id)a3;
-- (void)favoriteUserDefaultsActivity:(BOOL)a3 withIdentifier:(id)a4 activityCategory:(int64_t)a5;
-- (void)findSupportedActivitiesWithCompletionHandler:(id)a3;
-- (void)headerMetadataDidChangeForSession:(id)a3;
+- (void)canManageShareForDocumentInSharedFolderWithCompletionHandler:(id)handler;
+- (void)canShareFolderContainingExistingSharedItemsWithCompletionHandler:(id)handler;
+- (void)clearActivityForResult:(id)result;
+- (void)collaborationFooterViewModelDidChangeForSession:(id)session;
+- (void)createSharingURLForCollaborationRequest:(id)request completionHandler:(id)handler;
+- (void)createSharingURLWithParticipantsForCollaborationRequest:(id)request completionHandler:(id)handler;
+- (void)didBeginCreationForCollaborationPerformer:(id)performer;
+- (void)didCancelCreationForCollaborationPerformer:(id)performer;
+- (void)didFailCreationForCollaborationPerformer:(id)performer error:(id)error;
+- (void)didFinishCreationForCollaborationPerformer:(id)performer;
+- (void)favoriteUserDefaultsActivity:(BOOL)activity withIdentifier:(id)identifier activityCategory:(int64_t)category;
+- (void)findSupportedActivitiesWithCompletionHandler:(id)handler;
+- (void)headerMetadataDidChangeForSession:(id)session;
 - (void)invalidateRemoteSession;
-- (void)isCollaborativeDidChangeForSession:(id)a3;
-- (void)longPressShareActivityWithIdentifier:(id)a3;
+- (void)isCollaborativeDidChangeForSession:(id)session;
+- (void)longPressShareActivityWithIdentifier:(id)identifier;
 - (void)manageShareForDocumentInSharedFolder;
-- (void)performActionActivityWithIdentifier:(id)a3;
-- (void)performActivity:(id)a3;
-- (void)performActivityWithRequest:(id)a3 forExtension:(id)a4 completion:(id)a5;
-- (void)performActivityWithType:(id)a3 completionHandler:(id)a4;
+- (void)performActionActivityWithIdentifier:(id)identifier;
+- (void)performActivity:(id)activity;
+- (void)performActivityWithRequest:(id)request forExtension:(id)extension completion:(id)completion;
+- (void)performActivityWithType:(id)type completionHandler:(id)handler;
 - (void)performEditAction;
-- (void)performPeopleSuggestion:(id)a3;
-- (void)performPersonSuggestionWithIdentifier:(id)a3;
-- (void)performShareActivityWithIdentifier:(id)a3;
-- (void)performUserDefaultsActivityWithIdentifier:(id)a3 activityCategory:(int64_t)a4;
+- (void)performPeopleSuggestion:(id)suggestion;
+- (void)performPersonSuggestionWithIdentifier:(id)identifier;
+- (void)performShareActivityWithIdentifier:(id)identifier;
+- (void)performUserDefaultsActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category;
 - (void)preheatActivitiesIfNeeded;
-- (void)provideFeedbackForPeopleSugestionIdentifier:(id)a3;
-- (void)removePersonSuggestionWithIdentifier:(id)a3;
+- (void)provideFeedbackForPeopleSugestionIdentifier:(id)identifier;
+- (void)removePersonSuggestionWithIdentifier:(id)identifier;
 - (void)requestServiceUpdate;
-- (void)serviceManager:(id)a3 didPerformInServiceActivityWithIdentifier:(id)a4 completed:(BOOL)a5 items:(id)a6 error:(id)a7;
-- (void)serviceManager:(id)a3 didUpdateAirDropTransferWithChange:(id)a4;
-- (void)serviceManager:(id)a3 performActivity:(id)a4;
-- (void)serviceManager:(id)a3 performAirdropViewActivityWithNoContentView:(BOOL)a4;
-- (void)serviceManager:(id)a3 performUserDefaultsActivityWithContext:(id)a4;
-- (void)serviceManager:(id)a3 updateUserDefaultsActivityWithContext:(id)a4;
-- (void)serviceManager:(id)a3 willPerformActivityInServiceForRequest:(id)a4 completion:(id)a5;
-- (void)session:(id)a3 didChangeMetadata:(id)a4;
-- (void)sessionConfigurationDidChangeForSession:(id)a3;
-- (void)setWantsCollaborativeSession:(BOOL)a3;
-- (void)shareStatusForURL:(id)a3 completionHandler:(id)a4;
-- (void)showOptionsDidChangeForSession:(id)a3;
+- (void)serviceManager:(id)manager didPerformInServiceActivityWithIdentifier:(id)identifier completed:(BOOL)completed items:(id)items error:(id)error;
+- (void)serviceManager:(id)manager didUpdateAirDropTransferWithChange:(id)change;
+- (void)serviceManager:(id)manager performActivity:(id)activity;
+- (void)serviceManager:(id)manager performAirdropViewActivityWithNoContentView:(BOOL)view;
+- (void)serviceManager:(id)manager performUserDefaultsActivityWithContext:(id)context;
+- (void)serviceManager:(id)manager updateUserDefaultsActivityWithContext:(id)context;
+- (void)serviceManager:(id)manager willPerformActivityInServiceForRequest:(id)request completion:(id)completion;
+- (void)session:(id)session didChangeMetadata:(id)metadata;
+- (void)sessionConfigurationDidChangeForSession:(id)session;
+- (void)setWantsCollaborativeSession:(BOOL)session;
+- (void)shareStatusForURL:(id)l completionHandler:(id)handler;
+- (void)showOptionsDidChangeForSession:(id)session;
 - (void)startSession;
 - (void)stopSession;
-- (void)toggleUserDefaultsActivityWithIdentifier:(id)a3 activityCategory:(int64_t)a4;
-- (void)updateSessionWithContext:(id)a3;
-- (void)updateUserDefaultsFavorites:(id)a3 activityCategory:(int64_t)a4;
+- (void)toggleUserDefaultsActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category;
+- (void)updateSessionWithContext:(id)context;
+- (void)updateUserDefaultsFavorites:(id)favorites activityCategory:(int64_t)category;
 - (void)userDefaultsViewControllerDidDisappear;
 @end
 
@@ -90,15 +90,15 @@
 
 - (BOOL)hasSessionStarted
 {
-  v2 = [(SHSheetInteractor *)self serviceManager];
-  v3 = [v2 connectionState] != 0;
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  v3 = [serviceManager connectionState] != 0;
 
   return v3;
 }
 
-- (SHSheetInteractor)initWithContext:(id)a3
+- (SHSheetInteractor)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = SHSheetInteractor;
   v5 = [(SHSheetInteractor *)&v10 init];
@@ -106,7 +106,7 @@
   if (v5)
   {
     [(SHSheetInteractor *)v5 _setupServiceManagerIfNeeded];
-    v7 = [[SHSheetSession alloc] initWithContext:v4 delegate:v6];
+    v7 = [[SHSheetSession alloc] initWithContext:contextCopy delegate:v6];
     session = v6->_session;
     v6->_session = v7;
   }
@@ -114,37 +114,37 @@
   return v6;
 }
 
-- (void)setWantsCollaborativeSession:(BOOL)a3
+- (void)setWantsCollaborativeSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [(SHSheetInteractor *)self session];
-  v6 = [v5 isCollaborative];
+  session = [(SHSheetInteractor *)self session];
+  isCollaborative = [session isCollaborative];
 
-  if (v6 != v3)
+  if (isCollaborative != sessionCopy)
   {
-    v7 = [(SHSheetInteractor *)self session];
-    v8 = [v7 collaborationModeRestriction];
-    if ([v8 disabledMode] == 1 && v3)
+    session2 = [(SHSheetInteractor *)self session];
+    collaborationModeRestriction = [session2 collaborationModeRestriction];
+    if ([collaborationModeRestriction disabledMode] == 1 && sessionCopy)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = !v3;
-      v10 = [(SHSheetInteractor *)self session];
-      v11 = [v10 collaborationModeRestriction];
-      if ([v11 disabledMode])
+      v9 = !sessionCopy;
+      session3 = [(SHSheetInteractor *)self session];
+      collaborationModeRestriction2 = [session3 collaborationModeRestriction];
+      if ([collaborationModeRestriction2 disabledMode])
       {
         v9 = 0;
       }
     }
 
-    v12 = [(SHSheetInteractor *)self session];
-    v13 = [v12 collaborationItem];
+    session4 = [(SHSheetInteractor *)self session];
+    collaborationItem = [session4 collaborationItem];
 
-    if (v3 && (SHSheetIsCollaborationItemEligibleForActivity(v13, 0) & 1) == 0)
+    if (sessionCopy && (SHSheetIsCollaborationItemEligibleForActivity(collaborationItem, 0) & 1) == 0)
     {
       v25 = share_sheet_log();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -153,8 +153,8 @@
         _os_log_impl(&dword_18B359000, v25, OS_LOG_TYPE_DEFAULT, "Collaboration not supported for URL", &v29, 2u);
       }
 
-      v14 = [(SHSheetInteractor *)self delegate];
-      [v14 interactorDidFailPerformActivityNotCollaborationEligible:self];
+      delegate = [(SHSheetInteractor *)self delegate];
+      [delegate interactorDidFailPerformActivityNotCollaborationEligible:self];
     }
 
     else
@@ -164,22 +164,22 @@
         goto LABEL_21;
       }
 
-      v14 = [(SHSheetInteractor *)self session];
-      v15 = [v14 collaborationModeRestriction];
-      v16 = [v15 alertTitle];
-      if (v16)
+      delegate = [(SHSheetInteractor *)self session];
+      collaborationModeRestriction3 = [delegate collaborationModeRestriction];
+      alertTitle = [collaborationModeRestriction3 alertTitle];
+      if (alertTitle)
       {
-        v17 = v16;
-        v18 = [(SHSheetInteractor *)self session];
-        v19 = [v18 collaborationModeRestriction];
-        v20 = [v19 allowContinueToMode];
+        v17 = alertTitle;
+        session5 = [(SHSheetInteractor *)self session];
+        collaborationModeRestriction4 = [session5 collaborationModeRestriction];
+        allowContinueToMode = [collaborationModeRestriction4 allowContinueToMode];
 
-        if ((v20 & 1) == 0)
+        if ((allowContinueToMode & 1) == 0)
         {
-          v21 = [(SHSheetInteractor *)self delegate];
-          v22 = [(SHSheetInteractor *)self session];
-          v23 = [v22 collaborationModeRestriction];
-          [v21 interactor:self showingModeRestriction:v23 continueHandler:0];
+          delegate2 = [(SHSheetInteractor *)self delegate];
+          session6 = [(SHSheetInteractor *)self session];
+          collaborationModeRestriction5 = [session6 collaborationModeRestriction];
+          [delegate2 interactor:self showingModeRestriction:collaborationModeRestriction5 continueHandler:0];
 
           v24 = share_sheet_log();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -197,7 +197,7 @@ LABEL_21:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           v27 = @"Send Copy";
-          if (v3)
+          if (sessionCopy)
           {
             v27 = @"Collaborative";
           }
@@ -207,8 +207,8 @@ LABEL_21:
           _os_log_impl(&dword_18B359000, v26, OS_LOG_TYPE_DEFAULT, "Changing mode to %@", &v29, 0xCu);
         }
 
-        v28 = [(SHSheetInteractor *)self session];
-        [v28 setIsCollaborative:v3];
+        session7 = [(SHSheetInteractor *)self session];
+        [session7 setIsCollaborative:sessionCopy];
 
         [(SHSheetInteractor *)self requestServiceUpdate];
         goto LABEL_26;
@@ -219,33 +219,33 @@ LABEL_21:
   }
 }
 
-- (void)updateSessionWithContext:(id)a3
+- (void)updateSessionWithContext:(id)context
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = contextCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Update session with context:%@", &v7, 0xCu);
   }
 
-  v6 = [(SHSheetInteractor *)self session];
-  [v6 updateWithContext:v4];
+  session = [(SHSheetInteractor *)self session];
+  [session updateWithContext:contextCopy];
 }
 
 - (void)startSession
 {
-  v3 = [(SHSheetInteractor *)self hasSessionStarted];
-  v4 = share_sheet_log();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  hasSessionStarted = [(SHSheetInteractor *)self hasSessionStarted];
+  session2 = share_sheet_log();
+  v5 = os_log_type_enabled(session2, OS_LOG_TYPE_DEFAULT);
+  if (hasSessionStarted)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_18B359000, v4, OS_LOG_TYPE_DEFAULT, "Session has already started.", buf, 2u);
+      _os_log_impl(&dword_18B359000, session2, OS_LOG_TYPE_DEFAULT, "Session has already started.", buf, 2u);
     }
   }
 
@@ -254,17 +254,17 @@ LABEL_21:
     if (v5)
     {
       *v9 = 0;
-      _os_log_impl(&dword_18B359000, v4, OS_LOG_TYPE_DEFAULT, "Start session", v9, 2u);
+      _os_log_impl(&dword_18B359000, session2, OS_LOG_TYPE_DEFAULT, "Start session", v9, 2u);
     }
 
     [(SHSheetInteractor *)self _setupServiceManagerIfNeeded];
-    v6 = [(SHSheetInteractor *)self serviceManager];
-    v7 = [(SHSheetInteractor *)self session];
-    [v6 connectWithSession:v7];
+    serviceManager = [(SHSheetInteractor *)self serviceManager];
+    session = [(SHSheetInteractor *)self session];
+    [serviceManager connectWithSession:session];
 
-    v4 = [(SHSheetInteractor *)self session];
-    v8 = [v4 remoteScene];
-    [v8 activate];
+    session2 = [(SHSheetInteractor *)self session];
+    remoteScene = [session2 remoteScene];
+    [remoteScene activate];
   }
 }
 
@@ -277,21 +277,21 @@ LABEL_21:
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "Stop session", v8, 2u);
   }
 
-  v4 = [(SHSheetInteractor *)self serviceManager];
-  if (!v4 || !_os_feature_enabled_impl())
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  if (!serviceManager || !_os_feature_enabled_impl())
   {
     goto LABEL_7;
   }
 
-  v5 = [(SHSheetInteractor *)self session];
-  v6 = [v5 testingSnapshot];
+  session = [(SHSheetInteractor *)self session];
+  testingSnapshot = [session testingSnapshot];
 
-  if (v6)
+  if (testingSnapshot)
   {
-    v7 = [(SHSheetInteractor *)self session];
-    v4 = [v7 snapshotHandler];
+    session2 = [(SHSheetInteractor *)self session];
+    serviceManager = [session2 snapshotHandler];
 
-    [(SHSheetInteractor *)self activityViewControllerSessionDidEndWithCompletionHandler:v4];
+    [(SHSheetInteractor *)self activityViewControllerSessionDidEndWithCompletionHandler:serviceManager];
 LABEL_7:
   }
 
@@ -300,45 +300,45 @@ LABEL_7:
 
 - (void)requestServiceUpdate
 {
-  v3 = [(SHSheetInteractor *)self session];
-  v8 = [v3 _createActivityMatchingContext];
+  session = [(SHSheetInteractor *)self session];
+  _createActivityMatchingContext = [session _createActivityMatchingContext];
 
-  v4 = [(SHSheetInteractor *)self session];
-  v5 = [v4 activitiesManager];
-  [v5 updateActivitiesWithContext:v8];
+  session2 = [(SHSheetInteractor *)self session];
+  activitiesManager = [session2 activitiesManager];
+  [activitiesManager updateActivitiesWithContext:_createActivityMatchingContext];
 
-  v6 = [(SHSheetInteractor *)self session];
-  LODWORD(v5) = [v6 useRemoteUIService];
+  session3 = [(SHSheetInteractor *)self session];
+  LODWORD(activitiesManager) = [session3 useRemoteUIService];
 
-  if (v5)
+  if (activitiesManager)
   {
     [(SHSheetInteractor *)self _updateRemoteScene];
   }
 
-  v7 = [(SHSheetInteractor *)self serviceManager];
-  [v7 update];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager update];
 }
 
 - (void)_updateRemoteScene
 {
-  v3 = [(SHSheetInteractor *)self session];
-  v6 = [v3 remoteScene];
+  session = [(SHSheetInteractor *)self session];
+  remoteScene = [session remoteScene];
 
-  if (v6)
+  if (remoteScene)
   {
-    v4 = [(SHSheetInteractor *)self session];
-    v5 = [v4 createClientContext];
+    session2 = [(SHSheetInteractor *)self session];
+    createClientContext = [session2 createClientContext];
 
-    [v6 updateWithSessionContext:v5];
+    [remoteScene updateWithSessionContext:createClientContext];
   }
 }
 
 - (void)invalidateRemoteSession
 {
-  v2 = [(SHSheetInteractor *)self session];
-  v3 = [v2 remoteScene];
+  session = [(SHSheetInteractor *)self session];
+  remoteScene = [session remoteScene];
 
-  if (v3)
+  if (remoteScene)
   {
     v4 = share_sheet_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -347,36 +347,36 @@ LABEL_7:
       _os_log_impl(&dword_18B359000, v4, OS_LOG_TYPE_DEFAULT, "invalidate remote session", v5, 2u);
     }
 
-    [v3 resetContext];
+    [remoteScene resetContext];
   }
 }
 
-- (void)clearActivityForResult:(id)a3
+- (void)clearActivityForResult:(id)result
 {
-  v4 = a3;
-  v5 = [(SHSheetInteractor *)self session];
-  v6 = [v5 activityViewController];
+  resultCopy = result;
+  session = [(SHSheetInteractor *)self session];
+  activityViewController = [session activityViewController];
 
-  v7 = [v4 activity];
-  v8 = [v4 completedState];
-  [v6 readyToInteractTimestamp];
-  [v6 creationTimestamp];
+  activity = [resultCopy activity];
+  completedState = [resultCopy completedState];
+  [activityViewController readyToInteractTimestamp];
+  [activityViewController creationTimestamp];
   v9 = UpTicksToMilliseconds();
   mach_continuous_time();
-  [v6 creationTimestamp];
+  [activityViewController creationTimestamp];
   v10 = UpTicksToMilliseconds();
-  [(SHSheetInteractor *)self _recordActivityInteractionForResult:v4];
+  [(SHSheetInteractor *)self _recordActivityInteractionForResult:resultCopy];
 
-  v11 = [(SHSheetInteractor *)self serviceManager];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
 
-  if (v11)
+  if (serviceManager)
   {
-    v12 = v8 == 5;
-    v13 = [(SHSheetInteractor *)self serviceManager];
-    v14 = [(SHSheetInteractor *)self session];
-    v15 = [v14 identifier];
-    v16 = [v7 activityType];
-    [v13 reportActivityWithSessionID:v15 presentationMs:v9 totalShareTimeMs:v10 activityType:v16 success:v12];
+    v12 = completedState == 5;
+    serviceManager2 = [(SHSheetInteractor *)self serviceManager];
+    session2 = [(SHSheetInteractor *)self session];
+    identifier = [session2 identifier];
+    activityType = [activity activityType];
+    [serviceManager2 reportActivityWithSessionID:identifier presentationMs:v9 totalShareTimeMs:v10 activityType:activityType success:v12];
   }
 
   else
@@ -392,51 +392,51 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [(SHSheetInteractor *)self session];
-    v19 = [v18 activitiesManager];
-    [v19 removeActivity:v7];
+    session3 = [(SHSheetInteractor *)self session];
+    activitiesManager = [session3 activitiesManager];
+    [activitiesManager removeActivity:activity];
   }
 }
 
-- (void)performActivity:(id)a3
+- (void)performActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(SHSheetInteractor *)self activityPerformer];
-  v6 = [v5 isRunning];
+  activityCopy = activity;
+  activityPerformer = [(SHSheetInteractor *)self activityPerformer];
+  isRunning = [activityPerformer isRunning];
 
-  if (v6)
+  if (isRunning)
   {
     v7 = share_sheet_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(SHSheetInteractor *)v4 performActivity:?];
+      [(SHSheetInteractor *)activityCopy performActivity:?];
     }
   }
 
   else
   {
-    [(SHSheetInteractor *)self _runActivity:v4];
+    [(SHSheetInteractor *)self _runActivity:activityCopy];
   }
 }
 
-- (void)performPeopleSuggestion:(id)a3
+- (void)performPeopleSuggestion:(id)suggestion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 transportBundleIdentifier];
-  v6 = [_UIActivityHelper activityTypeForBundleIdentifier:v5];
-  v7 = [(SHSheetInteractor *)self session];
-  v8 = [v7 activitiesManager];
-  v9 = [v8 activityForActivityType:v6];
+  suggestionCopy = suggestion;
+  transportBundleIdentifier = [suggestionCopy transportBundleIdentifier];
+  v6 = [_UIActivityHelper activityTypeForBundleIdentifier:transportBundleIdentifier];
+  session = [(SHSheetInteractor *)self session];
+  activitiesManager = [session activitiesManager];
+  v9 = [activitiesManager activityForActivityType:v6];
 
   if (v9)
   {
-    v10 = [(SHSheetInteractor *)self session];
-    [v10 setCurrentPeopleSuggestion:v4];
+    session2 = [(SHSheetInteractor *)self session];
+    [session2 setCurrentPeopleSuggestion:suggestionCopy];
 
-    v11 = [(SHSheetInteractor *)self serviceManager];
-    v12 = [v4 identifier];
-    [v11 provideFeedbackForPeopleSugestionIdentifier:v12];
+    serviceManager = [(SHSheetInteractor *)self serviceManager];
+    identifier = [suggestionCopy identifier];
+    [serviceManager provideFeedbackForPeopleSugestionIdentifier:identifier];
 
     [(SHSheetInteractor *)self _performActivity:v9];
   }
@@ -449,29 +449,29 @@ LABEL_7:
       v14 = 138412546;
       v15 = v6;
       v16 = 2112;
-      v17 = v4;
+      v17 = suggestionCopy;
       _os_log_impl(&dword_18B359000, v13, OS_LOG_TYPE_DEFAULT, "activityType:%@ is not available for people suggestion:%@", &v14, 0x16u);
     }
   }
 }
 
-- (void)performActivityWithRequest:(id)a3 forExtension:(id)a4 completion:(id)a5
+- (void)performActivityWithRequest:(id)request forExtension:(id)extension completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SHSheetInteractor *)self _prepareActivityProxyForRequest:v8];
+  requestCopy = request;
+  extensionCopy = extension;
+  completionCopy = completion;
+  v11 = [(SHSheetInteractor *)self _prepareActivityProxyForRequest:requestCopy];
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__SHSheetInteractor_performActivityWithRequest_forExtension_completion___block_invoke;
   v15[3] = &unk_1E71FA700;
   objc_copyWeak(&v19, &location);
-  v12 = v8;
+  v12 = requestCopy;
   v16 = v12;
-  v13 = v9;
+  v13 = extensionCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = completionCopy;
   v18 = v14;
   [v11 setDidFinishPreparingForExecution:v15];
   [(SHSheetInteractor *)self _performActivity:v11];
@@ -503,80 +503,80 @@ void __72__SHSheetInteractor_performActivityWithRequest_forExtension_completion_
 
 - (void)preheatActivitiesIfNeeded
 {
-  v3 = [(SHSheetInteractor *)self session];
-  v2 = [v3 activitiesManager];
-  [v2 preheatActivitiesIfNeeded];
+  session = [(SHSheetInteractor *)self session];
+  activitiesManager = [session activitiesManager];
+  [activitiesManager preheatActivitiesIfNeeded];
 }
 
 - (void)activityViewControllerDidAppear
 {
-  v2 = [(SHSheetInteractor *)self serviceManager];
-  [v2 activityViewControllerDidAppear];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager activityViewControllerDidAppear];
 }
 
 - (void)activityViewControllerDidDisappear
 {
-  v2 = [(SHSheetInteractor *)self serviceManager];
-  [v2 activityViewControllerDidDisappear];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager activityViewControllerDidDisappear];
 }
 
-- (void)activityViewControllerSessionDidEndWithCompletionHandler:(id)a3
+- (void)activityViewControllerSessionDidEndWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHSheetInteractor *)self serviceManager];
-  [v5 activityViewControllerSessionDidEndWithCompletionHandler:v4];
+  handlerCopy = handler;
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager activityViewControllerSessionDidEndWithCompletionHandler:handlerCopy];
 }
 
 - (void)applicationDidEnterBackground
 {
-  v2 = [(SHSheetInteractor *)self serviceManager];
-  [v2 applicationDidEnterBackground];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager applicationDidEnterBackground];
 }
 
 - (void)applicationWillEnterForeground
 {
-  v2 = [(SHSheetInteractor *)self serviceManager];
-  [v2 applicationWillEnterForeground];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager applicationWillEnterForeground];
 }
 
 - (id)createActivityItemsConfiguration
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [objc_alloc(MEMORY[0x1E69DC640]) initWithItemProviders:v2];
+  array = [MEMORY[0x1E695DF70] array];
+  v3 = [objc_alloc(MEMORY[0x1E69DC640]) initWithItemProviders:array];
 
   return v3;
 }
 
-- (void)performShareActivityWithIdentifier:(id)a3
+- (void)performShareActivityWithIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = identifierCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Perform share activity with identifier:%@", &v7, 0xCu);
   }
 
-  v6 = [(SHSheetInteractor *)self serviceManager];
-  [v6 performShareActivityWithIdentifier:v4];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager performShareActivityWithIdentifier:identifierCopy];
 }
 
-- (void)performActionActivityWithIdentifier:(id)a3
+- (void)performActionActivityWithIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = identifierCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Perform action activity with identifier:%@", &v7, 0xCu);
   }
 
-  v6 = [(SHSheetInteractor *)self serviceManager];
-  [v6 performActionActivityWithIdentifier:v4];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager performActionActivityWithIdentifier:identifierCopy];
 }
 
 - (void)performEditAction
@@ -588,105 +588,105 @@ void __72__SHSheetInteractor_performActivityWithRequest_forExtension_completion_
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "Perform edit action", v5, 2u);
   }
 
-  v4 = [(SHSheetInteractor *)self serviceManager];
-  [v4 performEditAction];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager performEditAction];
 }
 
-- (void)performPersonSuggestionWithIdentifier:(id)a3
+- (void)performPersonSuggestionWithIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = identifierCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Perform person suggestion with identifier:%@", &v7, 0xCu);
   }
 
-  v6 = [(SHSheetInteractor *)self serviceManager];
-  [v6 performPersonSuggestionWithIdentifier:v4];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager performPersonSuggestionWithIdentifier:identifierCopy];
 }
 
-- (void)removePersonSuggestionWithIdentifier:(id)a3
+- (void)removePersonSuggestionWithIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = identifierCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Remove person suggestion with identifier:%@", &v7, 0xCu);
   }
 
-  v6 = [(SHSheetInteractor *)self serviceManager];
-  [v6 removePersonSuggestionWithIdentifier:v4];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager removePersonSuggestionWithIdentifier:identifierCopy];
 }
 
-- (void)toggleUserDefaultsActivityWithIdentifier:(id)a3 activityCategory:(int64_t)a4
+- (void)toggleUserDefaultsActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = share_sheet_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = identifierCopy;
     _os_log_impl(&dword_18B359000, v7, OS_LOG_TYPE_DEFAULT, "Toggle user defaults activity with identifier:%@", &v9, 0xCu);
   }
 
-  v8 = [(SHSheetInteractor *)self serviceManager];
-  [v8 toggleUserDefaultsActivityWithIdentifier:v6 activityCategory:a4];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager toggleUserDefaultsActivityWithIdentifier:identifierCopy activityCategory:category];
 }
 
-- (void)favoriteUserDefaultsActivity:(BOOL)a3 withIdentifier:(id)a4 activityCategory:(int64_t)a5
+- (void)favoriteUserDefaultsActivity:(BOOL)activity withIdentifier:(id)identifier activityCategory:(int64_t)category
 {
-  v6 = a3;
+  activityCopy = activity;
   v13 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = share_sheet_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v8;
+    v12 = identifierCopy;
     _os_log_impl(&dword_18B359000, v9, OS_LOG_TYPE_DEFAULT, "Favorite user defaults activity with identifier:%@", &v11, 0xCu);
   }
 
-  v10 = [(SHSheetInteractor *)self serviceManager];
-  [v10 favoriteUserDefaultsActivity:v6 withIdentifier:v8 activityCategory:a5];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager favoriteUserDefaultsActivity:activityCopy withIdentifier:identifierCopy activityCategory:category];
 }
 
-- (void)updateUserDefaultsFavorites:(id)a3 activityCategory:(int64_t)a4
+- (void)updateUserDefaultsFavorites:(id)favorites activityCategory:(int64_t)category
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  favoritesCopy = favorites;
   v7 = share_sheet_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = favoritesCopy;
     _os_log_impl(&dword_18B359000, v7, OS_LOG_TYPE_DEFAULT, "Update user defaults favorites:%@", &v9, 0xCu);
   }
 
-  v8 = [(SHSheetInteractor *)self serviceManager];
-  [v8 updateUserDefaultsFavorites:v6 activityCategory:a4];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager updateUserDefaultsFavorites:favoritesCopy activityCategory:category];
 }
 
-- (void)performUserDefaultsActivityWithIdentifier:(id)a3 activityCategory:(int64_t)a4
+- (void)performUserDefaultsActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = share_sheet_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = identifierCopy;
     _os_log_impl(&dword_18B359000, v7, OS_LOG_TYPE_DEFAULT, "Perform user defaults activity with identifier:%@", &v9, 0xCu);
   }
 
-  v8 = [(SHSheetInteractor *)self serviceManager];
-  [v8 performUserDefaultsActivityWithIdentifier:v6 activityCategory:a4];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager performUserDefaultsActivityWithIdentifier:identifierCopy activityCategory:category];
 }
 
 - (void)userDefaultsViewControllerDidDisappear
@@ -698,62 +698,62 @@ void __72__SHSheetInteractor_performActivityWithRequest_forExtension_completion_
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "User defaults view controller did disappear", v5, 2u);
   }
 
-  v4 = [(SHSheetInteractor *)self serviceManager];
-  [v4 userDefaultsViewControllerDidDisappear];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager userDefaultsViewControllerDidDisappear];
 }
 
-- (void)longPressShareActivityWithIdentifier:(id)a3
+- (void)longPressShareActivityWithIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = identifierCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Long press share activity with identifier:%@", &v7, 0xCu);
   }
 
-  v6 = [(SHSheetInteractor *)self serviceManager];
-  [v6 longPressShareActivityWithIdentifier:v4];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager longPressShareActivityWithIdentifier:identifierCopy];
 }
 
-- (void)provideFeedbackForPeopleSugestionIdentifier:(id)a3
+- (void)provideFeedbackForPeopleSugestionIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = identifierCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Provide feedback for people suggestion identifier:%@", &v7, 0xCu);
   }
 
-  v6 = [(SHSheetInteractor *)self serviceManager];
-  [v6 provideFeedbackForPeopleSugestionIdentifier:v4];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager provideFeedbackForPeopleSugestionIdentifier:identifierCopy];
 }
 
-- (void)performActivityWithType:(id)a3 completionHandler:(id)a4
+- (void)performActivityWithType:(id)type completionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v8 = share_sheet_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = typeCopy;
     _os_log_impl(&dword_18B359000, v8, OS_LOG_TYPE_DEFAULT, "Perform activity with type:%@", &v10, 0xCu);
   }
 
-  v9 = [(SHSheetInteractor *)self serviceManager];
-  [v9 performActivityWithType:v6 completionHandler:v7];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager performActivityWithType:typeCopy completionHandler:handlerCopy];
 }
 
-- (void)findSupportedActivitiesWithCompletionHandler:(id)a3
+- (void)findSupportedActivitiesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -761,28 +761,28 @@ void __72__SHSheetInteractor_performActivityWithRequest_forExtension_completion_
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Find supported activities", v7, 2u);
   }
 
-  v6 = [(SHSheetInteractor *)self serviceManager];
-  [v6 findSupportedActivitiesWithCompletionHandler:v4];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager findSupportedActivitiesWithCompletionHandler:handlerCopy];
 }
 
-- (void)_performActivity:(id)a3
+- (void)_performActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(SHSheetInteractor *)self activityPerformer];
-  if (([v5 isRunning] & 1) == 0)
+  activityCopy = activity;
+  activityPerformer = [(SHSheetInteractor *)self activityPerformer];
+  if (([activityPerformer isRunning] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [(SHSheetInteractor *)self collaborationPerformer];
+  collaborationPerformer = [(SHSheetInteractor *)self collaborationPerformer];
 
-  if (v6)
+  if (collaborationPerformer)
   {
 LABEL_7:
-    v8 = [(SHSheetInteractor *)self session];
-    v9 = [v8 activityViewController];
-    [v9 _performActivity:v4];
+    session = [(SHSheetInteractor *)self session];
+    activityViewController = [session activityViewController];
+    [activityViewController _performActivity:activityCopy];
 
     goto LABEL_8;
   }
@@ -790,51 +790,51 @@ LABEL_7:
   v7 = share_sheet_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [(SHSheetInteractor *)v4 performActivity:?];
+    [(SHSheetInteractor *)activityCopy performActivity:?];
   }
 
 LABEL_8:
 }
 
-- (void)_runActivity:(id)a3
+- (void)_runActivity:(id)activity
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activityCopy = activity;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 activityType];
+    activityType = [activityCopy activityType];
     *buf = 138412290;
-    v69 = v6;
+    v69 = activityType;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Perform activity:%@", buf, 0xCu);
   }
 
-  v7 = [(SHSheetInteractor *)self collaborationPerformer];
-  v8 = [v7 isRunning];
+  collaborationPerformer = [(SHSheetInteractor *)self collaborationPerformer];
+  isRunning = [collaborationPerformer isRunning];
 
-  if (!v8)
+  if (!isRunning)
   {
-    v15 = [(SHSheetInteractor *)self session];
-    v62 = [v15 collaborationItem];
+    session = [(SHSheetInteractor *)self session];
+    collaborationItem = [session collaborationItem];
 
-    if ([v62 type])
+    if ([collaborationItem type])
     {
-      v16 = 0;
+      isiCloudDrive = 0;
     }
 
     else
     {
-      v16 = [v62 isiCloudDrive];
+      isiCloudDrive = [collaborationItem isiCloudDrive];
     }
 
-    v17 = [(SHSheetInteractor *)self collaborationPerformer];
-    v18 = [v17 activityType];
-    v19 = [v4 activityType];
-    if ([v18 isEqual:v19])
+    collaborationPerformer2 = [(SHSheetInteractor *)self collaborationPerformer];
+    activityType2 = [collaborationPerformer2 activityType];
+    activityType3 = [activityCopy activityType];
+    if ([activityType2 isEqual:activityType3])
     {
-      v20 = [(SHSheetInteractor *)self collaborationPerformer];
-      v21 = [v20 cloudSharingResult];
-      v22 = v21 != 0;
+      collaborationPerformer3 = [(SHSheetInteractor *)self collaborationPerformer];
+      cloudSharingResult = [collaborationPerformer3 cloudSharingResult];
+      v22 = cloudSharingResult != 0;
     }
 
     else
@@ -842,29 +842,29 @@ LABEL_8:
       v22 = 0;
     }
 
-    if ([v62 type] == 2)
+    if ([collaborationItem type] == 2)
     {
-      v23 = [v62 isURLProviderSupported];
+      isURLProviderSupported = [collaborationItem isURLProviderSupported];
     }
 
     else
     {
-      v23 = 0;
+      isURLProviderSupported = 0;
     }
 
-    if ([v62 type] == 1)
+    if ([collaborationItem type] == 1)
     {
       v24 = 1;
     }
 
     else
     {
-      v24 = v16 | v23;
+      v24 = isiCloudDrive | isURLProviderSupported;
     }
 
-    v25 = [objc_opt_class() activityCategory];
-    v26 = [v4 activityType];
-    if ([v26 isEqual:@"com.apple.UIKit.activity.AirDrop"])
+    activityCategory = [objc_opt_class() activityCategory];
+    activityType4 = [activityCopy activityType];
+    if ([activityType4 isEqual:@"com.apple.UIKit.activity.AirDrop"])
     {
       LOBYTE(v27) = 0;
     }
@@ -872,8 +872,8 @@ LABEL_8:
     else
     {
       v28 = MEMORY[0x1E69CDE78];
-      v29 = [v4 activityType];
-      if ([v28 isHeroCollaborationActivityType:v29])
+      activityType5 = [activityCopy activityType];
+      if ([v28 isHeroCollaborationActivityType:activityType5])
       {
         LOBYTE(v27) = 0;
       }
@@ -881,12 +881,12 @@ LABEL_8:
       else
       {
         objc_opt_class();
-        v27 = (objc_opt_isKindOfClass() ^ 1) & (v25 == 1);
+        v27 = (objc_opt_isKindOfClass() ^ 1) & (activityCategory == 1);
       }
     }
 
-    v30 = [(SHSheetInteractor *)self session];
-    if ([v30 isCollaborative])
+    session2 = [(SHSheetInteractor *)self session];
+    if ([session2 isCollaborative])
     {
       v31 = v22 | v27 & v24 ^ 1;
     }
@@ -896,78 +896,78 @@ LABEL_8:
       v31 = 1;
     }
 
-    v32 = [v4 activityType];
-    if (([v32 isEqual:@"com.apple.UIKit.activity.AirDrop"] & 1) == 0)
+    activityType6 = [activityCopy activityType];
+    if (([activityType6 isEqual:@"com.apple.UIKit.activity.AirDrop"] & 1) == 0)
     {
-      v33 = [(SHSheetInteractor *)self session];
-      if ([v33 isCollaborative])
+      session3 = [(SHSheetInteractor *)self session];
+      if ([session3 isCollaborative])
       {
-        IsCollaborationItemEligibleForActivity = SHSheetIsCollaborationItemEligibleForActivity(v62, v4);
+        IsCollaborationItemEligibleForActivity = SHSheetIsCollaborationItemEligibleForActivity(collaborationItem, activityCopy);
 
         if ((IsCollaborationItemEligibleForActivity & 1) == 0)
         {
           v35 = share_sheet_log();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
-            v36 = [v4 activityType];
+            activityType7 = [activityCopy activityType];
             *buf = 138412290;
-            v69 = v36;
+            v69 = activityType7;
             _os_log_impl(&dword_18B359000, v35, OS_LOG_TYPE_DEFAULT, "Collaboration not supported for URL - activity:%@", buf, 0xCu);
           }
 
-          v37 = [(SHSheetInteractor *)self delegate];
-          [v37 interactorDidFailPerformActivityNotCollaborationEligible:self];
+          delegate = [(SHSheetInteractor *)self delegate];
+          [delegate interactorDidFailPerformActivityNotCollaborationEligible:self];
 
           goto LABEL_57;
         }
 
 LABEL_35:
-        v61 = [(SHSheetInteractor *)self session];
-        v38 = [v61 collaborationModeRestriction];
-        v39 = [v38 disabledMode];
+        session4 = [(SHSheetInteractor *)self session];
+        collaborationModeRestriction = [session4 collaborationModeRestriction];
+        disabledMode = [collaborationModeRestriction disabledMode];
         v60 = v31 & 1;
-        if (v39 == 1)
+        if (disabledMode == 1)
         {
-          v59 = [(SHSheetInteractor *)self session];
-          if ([v59 isCollaborative])
+          session5 = [(SHSheetInteractor *)self session];
+          if ([session5 isCollaborative])
           {
 
             goto LABEL_50;
           }
         }
 
-        v40 = [(SHSheetInteractor *)self session];
-        v41 = [v40 collaborationModeRestriction];
-        v42 = [v41 disabledMode];
-        if (v42 || (-[SHSheetInteractor session](self, "session"), v58 = objc_claimAutoreleasedReturnValue(), [v58 isCollaborative]))
+        session6 = [(SHSheetInteractor *)self session];
+        collaborationModeRestriction2 = [session6 collaborationModeRestriction];
+        disabledMode2 = [collaborationModeRestriction2 disabledMode];
+        if (disabledMode2 || (-[SHSheetInteractor session](self, "session"), v58 = objc_claimAutoreleasedReturnValue(), [v58 isCollaborative]))
         {
-          v43 = [(SHSheetInteractor *)self session];
-          v44 = [v43 collaborationModeRestriction];
-          if ([v44 disabledMode])
+          session7 = [(SHSheetInteractor *)self session];
+          collaborationModeRestriction3 = [session7 collaborationModeRestriction];
+          if ([collaborationModeRestriction3 disabledMode])
           {
 
             v45 = 0;
-            if (!v42)
+            if (!disabledMode2)
             {
 LABEL_48:
 
-              if (v39 != 1)
+              if (disabledMode != 1)
               {
 LABEL_49:
 
                 if (v45)
                 {
 LABEL_50:
-                  v47 = [(SHSheetInteractor *)self session];
-                  v48 = [v47 collaborationModeRestriction];
-                  v49 = [v48 alertTitle];
-                  if (v49)
+                  session8 = [(SHSheetInteractor *)self session];
+                  collaborationModeRestriction4 = [session8 collaborationModeRestriction];
+                  alertTitle = [collaborationModeRestriction4 alertTitle];
+                  if (alertTitle)
                   {
-                    v50 = [(SHSheetInteractor *)self session];
-                    v51 = [v50 collaborationModeRestriction];
-                    v52 = [v51 allowContinueToMode];
+                    session9 = [(SHSheetInteractor *)self session];
+                    collaborationModeRestriction5 = [session9 collaborationModeRestriction];
+                    allowContinueToMode = [collaborationModeRestriction5 allowContinueToMode];
 
-                    if (v52)
+                    if (allowContinueToMode)
                     {
                       v53 = share_sheet_log();
                       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
@@ -977,18 +977,18 @@ LABEL_50:
                       }
 
                       objc_initWeak(buf, self);
-                      v54 = [(SHSheetInteractor *)self delegate];
-                      v55 = [(SHSheetInteractor *)self session];
-                      v56 = [v55 collaborationModeRestriction];
+                      delegate2 = [(SHSheetInteractor *)self delegate];
+                      session10 = [(SHSheetInteractor *)self session];
+                      collaborationModeRestriction6 = [session10 collaborationModeRestriction];
                       v63[0] = MEMORY[0x1E69E9820];
                       v63[1] = 3221225472;
                       v63[2] = __34__SHSheetInteractor__runActivity___block_invoke;
                       v63[3] = &unk_1E71FA728;
                       objc_copyWeak(&v66, buf);
-                      v64 = v4;
-                      v65 = v62;
+                      v64 = activityCopy;
+                      v65 = collaborationItem;
                       v67 = v60;
-                      [v54 interactor:self showingModeRestriction:v56 continueHandler:v63];
+                      [delegate2 interactor:self showingModeRestriction:collaborationModeRestriction6 continueHandler:v63];
 
                       objc_destroyWeak(&v66);
                       objc_destroyWeak(buf);
@@ -1002,7 +1002,7 @@ LABEL_50:
                 }
 
 LABEL_56:
-                [(SHSheetInteractor *)self _startPerformingActivity:v4 collaborationItem:v62 skipCollaborationPerformer:v60];
+                [(SHSheetInteractor *)self _startPerformingActivity:activityCopy collaborationItem:collaborationItem skipCollaborationPerformer:v60];
 LABEL_57:
 
                 goto LABEL_58;
@@ -1021,9 +1021,9 @@ LABEL_45:
 
           else
           {
-            v57 = v42 == 0;
-            v46 = [v4 activityType];
-            v45 = [v46 isEqual:@"com.apple.UIKit.activity.AirDrop"];
+            v57 = disabledMode2 == 0;
+            activityType8 = [activityCopy activityType];
+            v45 = [activityType8 isEqual:@"com.apple.UIKit.activity.AirDrop"];
 
             if (v57)
             {
@@ -1031,7 +1031,7 @@ LABEL_45:
             }
           }
 
-          if (v39 != 1)
+          if (disabledMode != 1)
           {
             goto LABEL_49;
           }
@@ -1047,19 +1047,19 @@ LABEL_45:
     goto LABEL_35;
   }
 
-  v9 = [(SHSheetInteractor *)self collaborationPerformer];
-  [v9 cancel];
+  collaborationPerformer4 = [(SHSheetInteractor *)self collaborationPerformer];
+  [collaborationPerformer4 cancel];
 
   [(SHSheetInteractor *)self setCollaborationPerformer:0];
-  v10 = [v4 activityType];
-  v11 = [(SHSheetInteractor *)self session];
-  v12 = [v11 performingActivity];
-  v13 = [v12 activityType];
-  v14 = [v10 isEqual:v13];
+  activityType9 = [activityCopy activityType];
+  session11 = [(SHSheetInteractor *)self session];
+  performingActivity = [session11 performingActivity];
+  activityType10 = [performingActivity activityType];
+  v14 = [activityType9 isEqual:activityType10];
 
   if ((v14 & 1) == 0)
   {
-    [(SHSheetInteractor *)self _runActivity:v4];
+    [(SHSheetInteractor *)self _runActivity:activityCopy];
   }
 
 LABEL_58:
@@ -1101,25 +1101,25 @@ void __34__SHSheetInteractor__runActivity___block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)_startPerformingActivity:(id)a3 collaborationItem:(id)a4 skipCollaborationPerformer:(BOOL)a5
+- (void)_startPerformingActivity:(id)activity collaborationItem:(id)item skipCollaborationPerformer:(BOOL)performer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SHSheetInteractor *)self session];
-  [v10 setPerformingActivity:v8];
+  activityCopy = activity;
+  itemCopy = item;
+  session = [(SHSheetInteractor *)self session];
+  [session setPerformingActivity:activityCopy];
 
-  if (!v9 || a5)
+  if (!itemCopy || performer)
   {
-    v16 = [(SHSheetInteractor *)self delegate];
-    [v16 interactor:self willPerformActivity:v8];
+    delegate = [(SHSheetInteractor *)self delegate];
+    [delegate interactor:self willPerformActivity:activityCopy];
 
     [(SHSheetInteractor *)self _recordActivityViewControllerInteraction];
-    v17 = [(SHSheetInteractor *)self delegate];
-    v14 = [v17 interactor:self activityPresentationControllerForActivity:v8];
+    delegate2 = [(SHSheetInteractor *)self delegate];
+    v14 = [delegate2 interactor:self activityPresentationControllerForActivity:activityCopy];
 
     v18 = [SHSheetActivityPerformer alloc];
-    v19 = [(SHSheetInteractor *)self session];
-    v20 = [(SHSheetActivityPerformer *)v18 initWithActivity:v8 session:v19];
+    session2 = [(SHSheetInteractor *)self session];
+    v20 = [(SHSheetActivityPerformer *)v18 initWithActivity:activityCopy session:session2];
 
     [(SHSheetActivityPerformer *)v20 setDelegate:self];
     [(SHSheetActivityPerformer *)v20 setPresentationController:v14];
@@ -1138,16 +1138,16 @@ void __34__SHSheetInteractor__runActivity___block_invoke(uint64_t a1, int a2)
   else
   {
     v11 = objc_alloc(MEMORY[0x1E69CDE70]);
-    v12 = [v8 activityType];
-    v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v13 scale];
-    v14 = [v11 initWithCollaborationItem:v9 activityType:v12 deviceScreenScale:?];
+    activityType = [activityCopy activityType];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v14 = [v11 initWithCollaborationItem:itemCopy activityType:activityType deviceScreenScale:?];
 
     [v14 setDelegate:self];
     [v14 setCreationDelegate:self];
     [(SHSheetInteractor *)self setCollaborationPerformer:v14];
-    v15 = [(SHSheetInteractor *)self collaborationPerformer];
-    [v15 perform];
+    collaborationPerformer = [(SHSheetInteractor *)self collaborationPerformer];
+    [collaborationPerformer perform];
   }
 }
 
@@ -1158,34 +1158,34 @@ void __91__SHSheetInteractor__startPerformingActivity_collaborationItem_skipColl
   [WeakRetained _didPerformActivityWithResult:v3];
 }
 
-- (void)_deleteSharingURL:(id)a3
+- (void)_deleteSharingURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SHSheetInteractor *)self session];
-  v6 = [v5 collaborationItem];
-  v7 = [v6 type];
+  lCopy = l;
+  session = [(SHSheetInteractor *)self session];
+  collaborationItem = [session collaborationItem];
+  type = [collaborationItem type];
 
-  if (v7 == 1)
+  if (type == 1)
   {
-    v8 = [(SHSheetInteractor *)self session];
-    v9 = [v8 collaborationItem];
+    session2 = [(SHSheetInteractor *)self session];
+    collaborationItem2 = [session2 collaborationItem];
 
-    v10 = [v9 containerSetupInfo];
+    containerSetupInfo = [collaborationItem2 containerSetupInfo];
   }
 
   else
   {
-    v10 = 0;
+    containerSetupInfo = 0;
   }
 
-  v11 = [(SHSheetInteractor *)self serviceManager];
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __39__SHSheetInteractor__deleteSharingURL___block_invoke;
   v13[3] = &unk_1E71FA778;
-  v14 = v4;
-  v12 = v4;
-  [v11 deleteSharingURL:v12 containerSetupInfo:v10 completionHandler:v13];
+  v14 = lCopy;
+  v12 = lCopy;
+  [serviceManager deleteSharingURL:v12 containerSetupInfo:containerSetupInfo completionHandler:v13];
 }
 
 void __39__SHSheetInteractor__deleteSharingURL___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1211,244 +1211,244 @@ void __39__SHSheetInteractor__deleteSharingURL___block_invoke(uint64_t a1, uint6
   }
 }
 
-- (void)_didPerformActivityWithResult:(id)a3
+- (void)_didPerformActivityWithResult:(id)result
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 completedState] == 4 || objc_msgSend(v4, "completedState") == 3;
-  v6 = [(SHSheetInteractor *)self session];
-  v7 = [v6 isCollaborative];
+  resultCopy = result;
+  v5 = [resultCopy completedState] == 4 || objc_msgSend(resultCopy, "completedState") == 3;
+  session = [(SHSheetInteractor *)self session];
+  isCollaborative = [session isCollaborative];
 
-  if (v7 && v5)
+  if (isCollaborative && v5)
   {
     v8 = MEMORY[0x1E69CDE78];
-    v9 = [(SHSheetInteractor *)self session];
-    v10 = [v9 collaborationItem];
-    LODWORD(v8) = [v8 canDeleteShareForCollaborationItem:v10];
+    session2 = [(SHSheetInteractor *)self session];
+    collaborationItem = [session2 collaborationItem];
+    LODWORD(v8) = [v8 canDeleteShareForCollaborationItem:collaborationItem];
 
     if (v8)
     {
-      v11 = [(SHSheetInteractor *)self collaborationPerformer];
-      v12 = [v11 cloudSharingResult];
-      v13 = [v12 sharingURL];
+      collaborationPerformer = [(SHSheetInteractor *)self collaborationPerformer];
+      cloudSharingResult = [collaborationPerformer cloudSharingResult];
+      sharingURL = [cloudSharingResult sharingURL];
 
-      if (v13)
+      if (sharingURL)
       {
         v14 = share_sheet_log();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v4 activity];
-          v16 = [v15 activityType];
+          activity = [resultCopy activity];
+          activityType = [activity activityType];
           v36 = 138412546;
-          v37 = v16;
+          v37 = activityType;
           v38 = 2112;
-          v39 = v13;
+          v39 = sharingURL;
           _os_log_impl(&dword_18B359000, v14, OS_LOG_TYPE_DEFAULT, "Activity failed:%@ - delete sharing URL:%@", &v36, 0x16u);
         }
 
-        [(SHSheetInteractor *)self _deleteSharingURL:v13];
+        [(SHSheetInteractor *)self _deleteSharingURL:sharingURL];
       }
     }
 
     else
     {
-      v13 = share_sheet_log();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      sharingURL = share_sheet_log();
+      if (os_log_type_enabled(sharingURL, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v4 activity];
-        v18 = [v17 activityType];
+        activity2 = [resultCopy activity];
+        activityType2 = [activity2 activityType];
         v36 = 138412290;
-        v37 = v18;
-        _os_log_impl(&dword_18B359000, v13, OS_LOG_TYPE_DEFAULT, "Activity failed:%@ - can't delete post share", &v36, 0xCu);
+        v37 = activityType2;
+        _os_log_impl(&dword_18B359000, sharingURL, OS_LOG_TYPE_DEFAULT, "Activity failed:%@ - can't delete post share", &v36, 0xCu);
       }
     }
   }
 
   if (!v5)
   {
-    v19 = [(SHSheetInteractor *)self session];
-    v20 = [v19 collaborationItem];
+    session3 = [(SHSheetInteractor *)self session];
+    collaborationItem2 = [session3 collaborationItem];
 
-    v21 = [(SHSheetInteractor *)self serviceManager];
+    serviceManager = [(SHSheetInteractor *)self serviceManager];
     v22 = MEMORY[0x1E696AD98];
-    v23 = [(SHSheetInteractor *)self session];
-    v24 = [v22 numberWithBool:{objc_msgSend(v23, "isCollaborative")}];
-    v25 = [v20 contentIdentifier];
-    [v21 saveCollaborativeMode:v24 forContentIdentifier:v25];
+    session4 = [(SHSheetInteractor *)self session];
+    v24 = [v22 numberWithBool:{objc_msgSend(session4, "isCollaborative")}];
+    contentIdentifier = [collaborationItem2 contentIdentifier];
+    [serviceManager saveCollaborativeMode:v24 forContentIdentifier:contentIdentifier];
 
-    v26 = [v20 additionalContentIdentifier];
-    if (v26)
+    additionalContentIdentifier = [collaborationItem2 additionalContentIdentifier];
+    if (additionalContentIdentifier)
     {
-      v27 = [(SHSheetInteractor *)self serviceManager];
+      serviceManager2 = [(SHSheetInteractor *)self serviceManager];
       v28 = MEMORY[0x1E696AD98];
-      v29 = [(SHSheetInteractor *)self session];
-      v30 = [v28 numberWithBool:{objc_msgSend(v29, "isCollaborative")}];
-      [v27 saveCollaborativeMode:v30 forContentIdentifier:v26];
+      session5 = [(SHSheetInteractor *)self session];
+      v30 = [v28 numberWithBool:{objc_msgSend(session5, "isCollaborative")}];
+      [serviceManager2 saveCollaborativeMode:v30 forContentIdentifier:additionalContentIdentifier];
     }
   }
 
-  v31 = [(SHSheetInteractor *)self delegate];
-  [v31 interactor:self didPerformActivityWithResult:v4];
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactor:self didPerformActivityWithResult:resultCopy];
 
   [(SHSheetInteractor *)self setActivityPerformer:0];
   [(SHSheetInteractor *)self setCollaborationPerformer:0];
-  v32 = [(SHSheetInteractor *)self session];
-  [v32 setPerformingActivity:0];
+  session6 = [(SHSheetInteractor *)self session];
+  [session6 setPerformingActivity:0];
 
-  v33 = [(SHSheetInteractor *)self session];
-  [v33 setCurrentPeopleSuggestion:0];
+  session7 = [(SHSheetInteractor *)self session];
+  [session7 setCurrentPeopleSuggestion:0];
 
-  v34 = [(SHSheetInteractor *)self session];
-  v35 = [v34 collaborationItem];
-  [v35 setCloudSharingResult:0];
+  session8 = [(SHSheetInteractor *)self session];
+  collaborationItem3 = [session8 collaborationItem];
+  [collaborationItem3 setCloudSharingResult:0];
 }
 
-- (id)_prepareActivityProxyForRequest:(id)a3
+- (id)_prepareActivityProxyForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SHSheetInteractor *)self session];
-  v6 = [v5 activityViewController];
-  v7 = [v4 activityType];
-  v8 = [v4 activitySpecificMetadata];
-  [v6 _willPerformInServiceActivityType:v7 activitySpecificMetadata:v8];
+  requestCopy = request;
+  session = [(SHSheetInteractor *)self session];
+  activityViewController = [session activityViewController];
+  activityType = [requestCopy activityType];
+  activitySpecificMetadata = [requestCopy activitySpecificMetadata];
+  [activityViewController _willPerformInServiceActivityType:activityType activitySpecificMetadata:activitySpecificMetadata];
 
-  v9 = [_UIShareServiceActivityProxy activityProxyForServiceActivityDataRequest:v4];
+  v9 = [_UIShareServiceActivityProxy activityProxyForServiceActivityDataRequest:requestCopy];
 
-  v10 = [(SHSheetInteractor *)self session];
-  v11 = [v10 activitiesManager];
-  [v11 addActivity:v9];
+  session2 = [(SHSheetInteractor *)self session];
+  activitiesManager = [session2 activitiesManager];
+  [activitiesManager addActivity:v9];
 
   return v9;
 }
 
-- (void)sessionConfigurationDidChangeForSession:(id)a3
+- (void)sessionConfigurationDidChangeForSession:(id)session
 {
-  v4 = [(SHSheetInteractor *)self delegate];
-  [v4 interactorDidUpdateSessionConfiguration:self];
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactorDidUpdateSessionConfiguration:self];
 }
 
-- (void)showOptionsDidChangeForSession:(id)a3
+- (void)showOptionsDidChangeForSession:(id)session
 {
-  v4 = [(SHSheetInteractor *)self delegate];
-  [v4 interactorDidUpdateObjectManipulationSupport:self];
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactorDidUpdateObjectManipulationSupport:self];
 }
 
-- (void)headerMetadataDidChangeForSession:(id)a3
+- (void)headerMetadataDidChangeForSession:(id)session
 {
-  v4 = [(SHSheetInteractor *)self delegate];
-  [v4 interactorDidUpdateHeaderMetadata:self];
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactorDidUpdateHeaderMetadata:self];
 }
 
-- (void)isCollaborativeDidChangeForSession:(id)a3
+- (void)isCollaborativeDidChangeForSession:(id)session
 {
-  v4 = [(SHSheetInteractor *)self delegate];
-  [v4 interactorDidUpdateCollaborationDetails:self];
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactorDidUpdateCollaborationDetails:self];
 }
 
-- (void)collaborationFooterViewModelDidChangeForSession:(id)a3
+- (void)collaborationFooterViewModelDidChangeForSession:(id)session
 {
-  v4 = [(SHSheetInteractor *)self delegate];
-  [v4 interactorDidUpdateCollaborationDetails:self];
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactorDidUpdateCollaborationDetails:self];
 }
 
-- (id)collaborationSharingResultForActivity:(id)a3
+- (id)collaborationSharingResultForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(SHSheetInteractor *)self collaborationPerformer];
-  v6 = [v5 activityType];
-  v7 = [v4 activityType];
+  activityCopy = activity;
+  collaborationPerformer = [(SHSheetInteractor *)self collaborationPerformer];
+  activityType = [collaborationPerformer activityType];
+  activityType2 = [activityCopy activityType];
 
-  LODWORD(v4) = [v6 isEqual:v7];
-  if (v4)
+  LODWORD(activityCopy) = [activityType isEqual:activityType2];
+  if (activityCopy)
   {
-    v8 = [(SHSheetInteractor *)self collaborationPerformer];
-    v9 = [v8 cloudSharingResult];
+    collaborationPerformer2 = [(SHSheetInteractor *)self collaborationPerformer];
+    cloudSharingResult = [collaborationPerformer2 cloudSharingResult];
   }
 
   else
   {
-    v9 = 0;
+    cloudSharingResult = 0;
   }
 
-  return v9;
+  return cloudSharingResult;
 }
 
-- (void)session:(id)a3 didChangeMetadata:(id)a4
+- (void)session:(id)session didChangeMetadata:(id)metadata
 {
-  v5 = a4;
-  v6 = [(SHSheetInteractor *)self delegate];
-  [v6 interactor:self didChangeMetadata:v5];
+  metadataCopy = metadata;
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactor:self didChangeMetadata:metadataCopy];
 }
 
-- (void)serviceManager:(id)a3 performActivity:(id)a4
+- (void)serviceManager:(id)manager performActivity:(id)activity
 {
-  v5 = a4;
+  activityCopy = activity;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  [(SHSheetInteractor *)self _performActivity:v5];
+  [(SHSheetInteractor *)self _performActivity:activityCopy];
 }
 
-- (void)serviceManager:(id)a3 performUserDefaultsActivityWithContext:(id)a4
+- (void)serviceManager:(id)manager performUserDefaultsActivityWithContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v6 = [(SHSheetInteractor *)self delegate];
-  [v6 interactor:self didPerformUserDefaultsActivityWithContext:v5];
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactor:self didPerformUserDefaultsActivityWithContext:contextCopy];
 }
 
-- (void)serviceManager:(id)a3 updateUserDefaultsActivityWithContext:(id)a4
+- (void)serviceManager:(id)manager updateUserDefaultsActivityWithContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v6 = [(SHSheetInteractor *)self delegate];
-  [v6 interactor:self didUpdateUserDefaultsActivityWithContext:v5];
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactor:self didUpdateUserDefaultsActivityWithContext:contextCopy];
 }
 
-- (void)serviceManager:(id)a3 performAirdropViewActivityWithNoContentView:(BOOL)a4
+- (void)serviceManager:(id)manager performAirdropViewActivityWithNoContentView:(BOOL)view
 {
-  v4 = a4;
+  viewCopy = view;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v6 = [(SHSheetInteractor *)self delegate];
-  [v6 interactor:self didPerformAirdropViewActivityWithNoContentView:v4];
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactor:self didPerformAirdropViewActivityWithNoContentView:viewCopy];
 
-  v7 = [(SHSheetInteractor *)self session];
-  v8 = [v7 testingReferenceSnapshot];
+  session = [(SHSheetInteractor *)self session];
+  testingReferenceSnapshot = [session testingReferenceSnapshot];
 
-  if (v8)
+  if (testingReferenceSnapshot)
   {
     v14 = objc_alloc_init(UIAirDropActivity);
-    v9 = [(SHSheetInteractor *)self session];
-    v10 = [v9 activityItemsManager];
-    v11 = [v10 activityItemValuesForActivity:v14];
+    session2 = [(SHSheetInteractor *)self session];
+    activityItemsManager = [session2 activityItemsManager];
+    v11 = [activityItemsManager activityItemValuesForActivity:v14];
 
-    v12 = [(SHSheetInteractor *)self session];
-    v13 = [(UIAirDropActivity *)v14 activityType];
-    [v12 _updateTestingSnapshotIfNeededForResolvedItems:v11 activityType:v13];
+    session3 = [(SHSheetInteractor *)self session];
+    activityType = [(UIAirDropActivity *)v14 activityType];
+    [session3 _updateTestingSnapshotIfNeededForResolvedItems:v11 activityType:activityType];
   }
 }
 
-- (void)serviceManager:(id)a3 didUpdateAirDropTransferWithChange:(id)a4
+- (void)serviceManager:(id)manager didUpdateAirDropTransferWithChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v6 = [(SHSheetInteractor *)self delegate];
-  [v6 interactor:self didUpdateAirDropTransferWithChange:v5];
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactor:self didUpdateAirDropTransferWithChange:changeCopy];
 }
 
-- (void)serviceManager:(id)a3 willPerformActivityInServiceForRequest:(id)a4 completion:(id)a5
+- (void)serviceManager:(id)manager willPerformActivityInServiceForRequest:(id)request completion:(id)completion
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  requestCopy = request;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v10 = [(SHSheetInteractor *)self session];
-  v11 = [v10 performingActivity];
-  if (v11)
+  session = [(SHSheetInteractor *)self session];
+  performingActivity = [session performingActivity];
+  if (performingActivity)
   {
-    v12 = [(SHSheetInteractor *)self session];
-    v13 = [v12 performingActivity];
-    v14 = [v13 activityType];
-    v15 = [v14 isEqual:@"com.apple.UIKit.activity.AirDrop"];
+    session2 = [(SHSheetInteractor *)self session];
+    performingActivity2 = [session2 performingActivity];
+    activityType = [performingActivity2 activityType];
+    v15 = [activityType isEqual:@"com.apple.UIKit.activity.AirDrop"];
 
     if ((v15 & 1) == 0)
     {
@@ -1458,7 +1458,7 @@ void __39__SHSheetInteractor__deleteSharingURL___block_invoke(uint64_t a1, uint6
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
       v18 = [v16 errorWithDomain:@"com.apple.sharesheet.activity-request" code:-1 userInfo:v17];
 
-      (*(v9 + 2))(v9, 0, 0, v18);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v18);
       goto LABEL_12;
     }
   }
@@ -1467,20 +1467,20 @@ void __39__SHSheetInteractor__deleteSharingURL___block_invoke(uint64_t a1, uint6
   {
   }
 
-  v18 = [(SHSheetInteractor *)self _prepareActivityProxyForRequest:v8];
+  v18 = [(SHSheetInteractor *)self _prepareActivityProxyForRequest:requestCopy];
   objc_initWeak(&location, self);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __86__SHSheetInteractor_serviceManager_willPerformActivityInServiceForRequest_completion___block_invoke;
   v30[3] = &unk_1E71F9CD0;
   objc_copyWeak(&v33, &location);
-  v31 = v8;
-  v32 = v9;
+  v31 = requestCopy;
+  v32 = completionCopy;
   [v18 setDidFinishPreparingForExecution:v30];
-  v19 = [(SHSheetInteractor *)self session];
-  v20 = [v19 activityViewController];
+  session3 = [(SHSheetInteractor *)self session];
+  activityViewController = [session3 activityViewController];
 
-  v21 = [v20 airDropDelegate];
+  airDropDelegate = [activityViewController airDropDelegate];
   if (objc_opt_respondsToSelector())
   {
     v22 = 1;
@@ -1491,20 +1491,20 @@ void __39__SHSheetInteractor__deleteSharingURL___block_invoke(uint64_t a1, uint6
     v22 = objc_opt_respondsToSelector();
   }
 
-  v23 = [v18 activityType];
-  v24 = [v23 isEqual:@"com.apple.UIKit.activity.AirDrop"];
+  activityType2 = [v18 activityType];
+  v24 = [activityType2 isEqual:@"com.apple.UIKit.activity.AirDrop"];
 
   if ((v24 & v22) != 0)
   {
-    v25 = [(SHSheetInteractor *)self session];
-    v26 = [v25 identifier];
+    session4 = [(SHSheetInteractor *)self session];
+    identifier = [session4 identifier];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __86__SHSheetInteractor_serviceManager_willPerformActivityInServiceForRequest_completion___block_invoke_3;
     v28[3] = &unk_1E71FA7C8;
     v28[4] = self;
     v29 = v18;
-    [_UIActivityRecipientManager requestRecipientsV2ForSessionID:v26 completionHandler:v28];
+    [_UIActivityRecipientManager requestRecipientsV2ForSessionID:identifier completionHandler:v28];
   }
 
   else
@@ -1566,21 +1566,21 @@ void __86__SHSheetInteractor_serviceManager_willPerformActivityInServiceForReque
   [*(a1 + 40) _performActivity:*(a1 + 48)];
 }
 
-- (void)serviceManager:(id)a3 didPerformInServiceActivityWithIdentifier:(id)a4 completed:(BOOL)a5 items:(id)a6 error:(id)a7
+- (void)serviceManager:(id)manager didPerformInServiceActivityWithIdentifier:(id)identifier completed:(BOOL)completed items:(id)items error:(id)error
 {
-  v9 = a5;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(SHSheetInteractor *)self activityPerformer];
-  v15 = [v14 activity];
-  v16 = [v15 activityUUID];
+  completedCopy = completed;
+  identifierCopy = identifier;
+  itemsCopy = items;
+  errorCopy = error;
+  activityPerformer = [(SHSheetInteractor *)self activityPerformer];
+  activity = [activityPerformer activity];
+  activityUUID = [activity activityUUID];
 
-  if (v16 && ([v11 isEqual:v16] & 1) != 0)
+  if (activityUUID && ([identifierCopy isEqual:activityUUID] & 1) != 0)
   {
-    v17 = [(SHSheetInteractor *)self activityPerformer];
-    v18 = [v17 activity];
-    [v18 activityDidFinish:v9 items:v12 error:v13];
+    activityPerformer2 = [(SHSheetInteractor *)self activityPerformer];
+    activity2 = [activityPerformer2 activity];
+    [activity2 activityDidFinish:completedCopy items:itemsCopy error:errorCopy];
   }
 
   else
@@ -1588,7 +1588,7 @@ void __86__SHSheetInteractor_serviceManager_willPerformActivityInServiceForReque
     v19 = share_sheet_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [SHSheetInteractor serviceManager:v11 didPerformInServiceActivityWithIdentifier:v16 completed:v19 items:? error:?];
+      [SHSheetInteractor serviceManager:identifierCopy didPerformInServiceActivityWithIdentifier:activityUUID completed:v19 items:? error:?];
     }
   }
 }
@@ -1596,28 +1596,28 @@ void __86__SHSheetInteractor_serviceManager_willPerformActivityInServiceForReque
 - (void)_recordActivityViewControllerInteraction
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(SHSheetInteractor *)self activityPerformer];
-  v4 = [v3 activity];
+  activityPerformer = [(SHSheetInteractor *)self activityPerformer];
+  activity = [activityPerformer activity];
 
-  v5 = [(SHSheetInteractor *)self session];
-  v6 = [v5 activityViewController];
+  session = [(SHSheetInteractor *)self session];
+  activityViewController = [session activityViewController];
 
-  if ([v6 readyToInteractTimestamp])
+  if ([activityViewController readyToInteractTimestamp])
   {
     v7 = share_sheet_log();
     v8 = share_sheet_log();
-    v9 = os_signpost_id_make_with_pointer(v8, v4);
+    v9 = os_signpost_id_make_with_pointer(v8, activity);
 
     if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
     {
       v21 = 134349056;
-      v22 = [v6 readyToInteractTimestamp];
+      readyToInteractTimestamp = [activityViewController readyToInteractTimestamp];
       _os_signpost_emit_with_name_impl(&dword_18B359000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v9, "Interact", "%{public, signpost.description:begin_time}llu", &v21, 0xCu);
     }
 
     v10 = share_sheet_log();
     v11 = share_sheet_log();
-    v12 = os_signpost_id_make_with_pointer(v11, v4);
+    v12 = os_signpost_id_make_with_pointer(v11, activity);
 
     if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
     {
@@ -1627,22 +1627,22 @@ void __86__SHSheetInteractor_serviceManager_willPerformActivityInServiceForReque
 
     v13 = share_sheet_log();
     v14 = share_sheet_log();
-    v15 = os_signpost_id_make_with_pointer(v14, v4);
+    v15 = os_signpost_id_make_with_pointer(v14, activity);
 
     if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
-      v16 = [v6 readyToInteractTimestamp];
-      v17 = [v4 activityType];
+      readyToInteractTimestamp2 = [activityViewController readyToInteractTimestamp];
+      activityType = [activity activityType];
       v21 = 134349314;
-      v22 = v16;
+      readyToInteractTimestamp = readyToInteractTimestamp2;
       v23 = 2114;
-      v24 = v17;
+      v24 = activityType;
       _os_signpost_emit_with_name_impl(&dword_18B359000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v15, "InteractWithType", "%{public, signpost.description:begin_time}llu activityType=%{public, signpost.telemetry:string1}@", &v21, 0x16u);
     }
 
     v18 = share_sheet_log();
     v19 = share_sheet_log();
-    v20 = os_signpost_id_make_with_pointer(v19, v4);
+    v20 = os_signpost_id_make_with_pointer(v19, activity);
 
     if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
     {
@@ -1650,27 +1650,27 @@ void __86__SHSheetInteractor_serviceManager_willPerformActivityInServiceForReque
       _os_signpost_emit_with_name_impl(&dword_18B359000, v18, OS_SIGNPOST_INTERVAL_END, v20, "InteractWithType", " enableTelemetry=YES ", &v21, 2u);
     }
 
-    [v6 setReadyToInteractTimestamp:0];
+    [activityViewController setReadyToInteractTimestamp:0];
   }
 }
 
-- (void)_recordActivityInteractionForResult:(id)a3
+- (void)_recordActivityInteractionForResult:(id)result
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 completedState];
-  v6 = [(SHSheetInteractor *)self session];
-  v7 = [v6 activityViewController];
+  resultCopy = result;
+  completedState = [resultCopy completedState];
+  session = [(SHSheetInteractor *)self session];
+  activityViewController = [session activityViewController];
 
-  if ([v7 viewWillAppearTimestamp])
+  if ([activityViewController viewWillAppearTimestamp])
   {
-    if (v5 == 5)
+    if (completedState == 5)
     {
       v8 = share_sheet_log();
       if (os_signpost_enabled(v8))
       {
         v14 = 134349056;
-        v15 = [v7 viewWillAppearTimestamp];
+        viewWillAppearTimestamp = [activityViewController viewWillAppearTimestamp];
         _os_signpost_emit_with_name_impl(&dword_18B359000, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "UserShare.Success", "%{public, signpost.description:begin_time}llu", &v14, 0xCu);
       }
 
@@ -1686,16 +1686,16 @@ void __86__SHSheetInteractor_serviceManager_willPerformActivityInServiceForReque
 
     else
     {
-      v11 = [v4 error];
+      error = [resultCopy error];
 
       v12 = share_sheet_log();
       v13 = os_signpost_enabled(v12);
-      if (v11)
+      if (error)
       {
         if (v13)
         {
           v14 = 134349056;
-          v15 = [v7 viewWillAppearTimestamp];
+          viewWillAppearTimestamp = [activityViewController viewWillAppearTimestamp];
           _os_signpost_emit_with_name_impl(&dword_18B359000, v12, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "UserShare.Error", "%{public, signpost.description:begin_time}llu", &v14, 0xCu);
         }
 
@@ -1714,7 +1714,7 @@ void __86__SHSheetInteractor_serviceManager_willPerformActivityInServiceForReque
         if (v13)
         {
           v14 = 134349056;
-          v15 = [v7 viewWillAppearTimestamp];
+          viewWillAppearTimestamp = [activityViewController viewWillAppearTimestamp];
           _os_signpost_emit_with_name_impl(&dword_18B359000, v12, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "UserShare.Cancel", "%{public, signpost.description:begin_time}llu", &v14, 0xCu);
         }
 
@@ -1732,139 +1732,139 @@ void __86__SHSheetInteractor_serviceManager_willPerformActivityInServiceForReque
     _os_signpost_emit_with_name_impl(&dword_18B359000, v9, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, v10, " enableTelemetry=YES ", &v14, 2u);
 LABEL_17:
 
-    [v7 setViewWillAppearTimestamp:0];
+    [activityViewController setViewWillAppearTimestamp:0];
   }
 }
 
-- (id)linkMetadataForActivityPerformer:(id)a3
+- (id)linkMetadataForActivityPerformer:(id)performer
 {
-  v4 = a3;
+  performerCopy = performer;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(SHSheetInteractor *)self delegate];
-  v6 = [v4 activity];
+  delegate = [(SHSheetInteractor *)self delegate];
+  activity = [performerCopy activity];
 
-  v7 = [v5 interactor:self linkMetadataForActivity:v6];
+  v7 = [delegate interactor:self linkMetadataForActivity:activity];
 
   return v7;
 }
 
-- (void)createSharingURLForCollaborationRequest:(id)a3 completionHandler:(id)a4
+- (void)createSharingURLForCollaborationRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHSheetInteractor *)self serviceManager];
-  [v8 createSharingURLForCollaborationRequest:v7 completionHandler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager createSharingURLForCollaborationRequest:requestCopy completionHandler:handlerCopy];
 }
 
-- (void)createSharingURLWithParticipantsForCollaborationRequest:(id)a3 completionHandler:(id)a4
+- (void)createSharingURLWithParticipantsForCollaborationRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHSheetInteractor *)self delegate];
-  [v8 interactor:self createSharingURLWithParticipantsForCollaborationRequest:v7 completionHandler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactor:self createSharingURLWithParticipantsForCollaborationRequest:requestCopy completionHandler:handlerCopy];
 }
 
-- (void)addParticipantsAllowedForCollaborationItem:(id)a3 completionHandler:(id)a4
+- (void)addParticipantsAllowedForCollaborationItem:(id)item completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E69CDE78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SHSheetInteractor *)self serviceManager];
-  [v6 addParticipantsAllowedForCollaborationItem:v8 collaborationService:v9 completionHandler:v7];
+  handlerCopy = handler;
+  itemCopy = item;
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [v6 addParticipantsAllowedForCollaborationItem:itemCopy collaborationService:serviceManager completionHandler:handlerCopy];
 }
 
-- (void)shareStatusForURL:(id)a3 completionHandler:(id)a4
+- (void)shareStatusForURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHSheetInteractor *)self serviceManager];
-  [v8 shareStatusForURL:v7 completionHandler:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  serviceManager = [(SHSheetInteractor *)self serviceManager];
+  [serviceManager shareStatusForURL:lCopy completionHandler:handlerCopy];
 }
 
-- (void)canShareFolderContainingExistingSharedItemsWithCompletionHandler:(id)a3
+- (void)canShareFolderContainingExistingSharedItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHSheetInteractor *)self delegate];
-  [v5 interactor:self canShareFolderContainingExistingSharedItemsWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactor:self canShareFolderContainingExistingSharedItemsWithCompletionHandler:handlerCopy];
 }
 
-- (void)canManageShareForDocumentInSharedFolderWithCompletionHandler:(id)a3
+- (void)canManageShareForDocumentInSharedFolderWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHSheetInteractor *)self delegate];
-  [v5 interactor:self canManageShareForDocumentInSharedFolderWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(SHSheetInteractor *)self delegate];
+  [delegate interactor:self canManageShareForDocumentInSharedFolderWithCompletionHandler:handlerCopy];
 }
 
 - (void)manageShareForDocumentInSharedFolder
 {
-  v6 = [a1 fileURL];
+  fileURL = [self fileURL];
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 }
 
-- (void)didBeginCreationForCollaborationPerformer:(id)a3
+- (void)didBeginCreationForCollaborationPerformer:(id)performer
 {
-  if (([a3 requiresParticipants] & 1) == 0)
+  if (([performer requiresParticipants] & 1) == 0)
   {
-    v6 = [(SHSheetInteractor *)self delegate];
-    v4 = [(SHSheetInteractor *)self session];
-    v5 = [v4 performingActivity];
-    [v6 interactor:self creatingCollaborationForActivity:v5];
+    delegate = [(SHSheetInteractor *)self delegate];
+    session = [(SHSheetInteractor *)self session];
+    performingActivity = [session performingActivity];
+    [delegate interactor:self creatingCollaborationForActivity:performingActivity];
   }
 }
 
-- (void)didFinishCreationForCollaborationPerformer:(id)a3
+- (void)didFinishCreationForCollaborationPerformer:(id)performer
 {
-  v16 = a3;
-  if (([v16 requiresParticipants] & 1) == 0)
+  performerCopy = performer;
+  if (([performerCopy requiresParticipants] & 1) == 0)
   {
-    v4 = [(SHSheetInteractor *)self delegate];
-    v5 = [(SHSheetInteractor *)self session];
-    v6 = [v5 performingActivity];
-    [v4 interactor:self didCreateCollaborationForActivity:v6];
+    delegate = [(SHSheetInteractor *)self delegate];
+    session = [(SHSheetInteractor *)self session];
+    performingActivity = [session performingActivity];
+    [delegate interactor:self didCreateCollaborationForActivity:performingActivity];
   }
 
-  v7 = [v16 cloudSharingResult];
-  v8 = [v7 sharingURL];
+  cloudSharingResult = [performerCopy cloudSharingResult];
+  sharingURL = [cloudSharingResult sharingURL];
 
-  if (v8)
+  if (sharingURL)
   {
-    v9 = [(SHSheetInteractor *)self session];
-    v10 = [v9 performingActivity];
-    [(SHSheetInteractor *)self _runActivity:v10];
+    session2 = [(SHSheetInteractor *)self session];
+    performingActivity2 = [session2 performingActivity];
+    [(SHSheetInteractor *)self _runActivity:performingActivity2];
   }
 
   else
   {
-    v11 = [(SHSheetInteractor *)self delegate];
-    v12 = [(SHSheetInteractor *)self session];
-    v13 = [v12 performingActivity];
-    v14 = [v16 cloudSharingResult];
-    v15 = [v14 error];
-    [v11 interactor:self didFailCreatingCollaborationForActivity:v13 error:v15];
+    delegate2 = [(SHSheetInteractor *)self delegate];
+    session3 = [(SHSheetInteractor *)self session];
+    performingActivity3 = [session3 performingActivity];
+    cloudSharingResult2 = [performerCopy cloudSharingResult];
+    error = [cloudSharingResult2 error];
+    [delegate2 interactor:self didFailCreatingCollaborationForActivity:performingActivity3 error:error];
 
     [(SHSheetInteractor *)self setCollaborationPerformer:0];
   }
 }
 
-- (void)didCancelCreationForCollaborationPerformer:(id)a3
+- (void)didCancelCreationForCollaborationPerformer:(id)performer
 {
-  if (([a3 requiresParticipants] & 1) == 0)
+  if (([performer requiresParticipants] & 1) == 0)
   {
-    v6 = [(SHSheetInteractor *)self delegate];
-    v4 = [(SHSheetInteractor *)self session];
-    v5 = [v4 performingActivity];
-    [v6 interactor:self didCancelCollaborationForActivity:v5];
+    delegate = [(SHSheetInteractor *)self delegate];
+    session = [(SHSheetInteractor *)self session];
+    performingActivity = [session performingActivity];
+    [delegate interactor:self didCancelCollaborationForActivity:performingActivity];
   }
 }
 
-- (void)didFailCreationForCollaborationPerformer:(id)a3 error:(id)a4
+- (void)didFailCreationForCollaborationPerformer:(id)performer error:(id)error
 {
-  v5 = a4;
-  v8 = [(SHSheetInteractor *)self delegate];
-  v6 = [(SHSheetInteractor *)self session];
-  v7 = [v6 performingActivity];
-  [v8 interactor:self didFailCreatingCollaborationForActivity:v7 error:v5];
+  errorCopy = error;
+  delegate = [(SHSheetInteractor *)self delegate];
+  session = [(SHSheetInteractor *)self session];
+  performingActivity = [session performingActivity];
+  [delegate interactor:self didFailCreatingCollaborationForActivity:performingActivity error:errorCopy];
 }
 
 - (SHSheetInteractorDelegate)delegate

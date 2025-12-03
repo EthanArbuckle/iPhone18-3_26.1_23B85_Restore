@@ -1,15 +1,15 @@
 @interface AppSecureAccessManager
-- (void)onAppUnlockedWithNotification:(id)a3;
+- (void)onAppUnlockedWithNotification:(id)notification;
 @end
 
 @implementation AppSecureAccessManager
 
-- (void)onAppUnlockedWithNotification:(id)a3
+- (void)onAppUnlockedWithNotification:(id)notification
 {
   v4 = sub_1000F24EC(&qword_100AF6E60);
   __chkstk_darwin(v4 - 8);
   v6 = &v9 - v5;
-  if (a3)
+  if (notification)
   {
     static Notification._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = type metadata accessor for Notification();

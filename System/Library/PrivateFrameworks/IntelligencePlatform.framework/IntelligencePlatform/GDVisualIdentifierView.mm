@@ -1,22 +1,22 @@
 @interface GDVisualIdentifierView
-- (GDVisualIdentifierView)initWithAccessAssertion:(id)a3 database:(id)a4;
-- (id)personForIdentifier:(id)a3;
-- (void)enumeratePeopleMatchingName:(id)a3 block:(id)a4;
-- (void)enumeratePeopleWithBlock:(id)a3;
-- (void)linkEntitiesForPerson:(id)a3;
+- (GDVisualIdentifierView)initWithAccessAssertion:(id)assertion database:(id)database;
+- (id)personForIdentifier:(id)identifier;
+- (void)enumeratePeopleMatchingName:(id)name block:(id)block;
+- (void)enumeratePeopleWithBlock:(id)block;
+- (void)linkEntitiesForPerson:(id)person;
 @end
 
 @implementation GDVisualIdentifierView
 
-- (void)enumeratePeopleMatchingName:(id)a3 block:(id)a4
+- (void)enumeratePeopleMatchingName:(id)name block:(id)block
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v31 = a4;
+  nameCopy = name;
+  blockCopy = block;
   [GDAnalytics sendEventForProductionLazyWithEventName:@"ViewEngine.Serving.Query" eventPayloadBuilder:&unk_1F20A1B98];
   v7 = objc_opt_new();
-  v29 = v6;
-  v8 = [GDFTSTokenize ftsTokenize:v6];
+  v29 = nameCopy;
+  v8 = [GDFTSTokenize ftsTokenize:nameCopy];
   [v7 setPredicates:&unk_1F20CF3D8];
   v41 = 0u;
   v42 = 0u;
@@ -106,7 +106,7 @@ LABEL_3:
         {
           [(GDVisualIdentifierView *)self linkEntitiesForPerson:v27];
           v32 = 0;
-          v31[2](v31, v27, &v32);
+          blockCopy[2](blockCopy, v27, &v32);
           if (v32 == 1)
           {
 
@@ -133,9 +133,9 @@ LABEL_22:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumeratePeopleWithBlock:(id)a3
+- (void)enumeratePeopleWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [GDAnalytics sendEventForProductionLazyWithEventName:@"ViewEngine.Serving.Query" eventPayloadBuilder:&unk_1F20A1B78];
   personRetriever = self->_personRetriever;
   v7[0] = MEMORY[0x1E69E9820];
@@ -143,15 +143,15 @@ LABEL_22:
   v7[2] = sub_1ABF0B738;
   v7[3] = &unk_1E79623B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(GDSQLGraphObjectRetriever *)personRetriever enumerateObjectsWithBlock:v7];
 }
 
-- (id)personForIdentifier:(id)a3
+- (id)personForIdentifier:(id)identifier
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   [GDAnalytics sendEventForProductionLazyWithEventName:@"ViewEngine.Serving.Query" eventPayloadBuilder:&unk_1F20A1B58];
   v18 = 0;
   v19 = &v18;
@@ -159,7 +159,7 @@ LABEL_22:
   v21 = sub_1ABF0B9C4;
   v22 = sub_1ABF0B9D4;
   v23 = 0;
-  v5 = [(GDSQLGraphObjectRetriever *)self->_personRetriever objectForIdentifier:v4];
+  v5 = [(GDSQLGraphObjectRetriever *)self->_personRetriever objectForIdentifier:identifierCopy];
   v6 = v19[5];
   v19[5] = v5;
 
@@ -172,7 +172,7 @@ LABEL_22:
   else
   {
     v9 = objc_opt_new();
-    v24[0] = v4;
+    v24[0] = identifierCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     [v9 setObjects:v10];
 
@@ -181,8 +181,8 @@ LABEL_22:
     v14[1] = 3221225472;
     v14[2] = sub_1ABF0B9DC;
     v14[3] = &unk_1E7962390;
-    v15 = v4;
-    v16 = self;
+    v15 = identifierCopy;
+    selfCopy = self;
     v17 = &v18;
     [(GDSQLGraphObjectRetriever *)personRetriever enumerateObjectsWithQuery:v9 block:v14];
     v8 = v19[5];
@@ -195,18 +195,18 @@ LABEL_22:
   return v8;
 }
 
-- (void)linkEntitiesForPerson:(id)a3
+- (void)linkEntitiesForPerson:(id)person
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  personCopy = person;
   v38 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v36 = v4;
-  v5 = [v4 postalAddressLinks];
-  v6 = [v5 countByEnumeratingWithState:&v43 objects:v48 count:16];
+  v36 = personCopy;
+  postalAddressLinks = [personCopy postalAddressLinks];
+  v6 = [postalAddressLinks countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v6)
   {
     v7 = v6;
@@ -217,25 +217,25 @@ LABEL_22:
       {
         if (*v44 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(postalAddressLinks);
         }
 
         v10 = *(*(&v43 + 1) + 8 * i);
         locationRetriever = self->_locationRetriever;
-        v12 = [v10 locationEntityIdentifier];
-        v13 = [v12 stringValue];
-        v14 = [(GDSQLGraphObjectRetriever *)locationRetriever objectForIdentifier:v13];
+        locationEntityIdentifier = [v10 locationEntityIdentifier];
+        stringValue = [locationEntityIdentifier stringValue];
+        v14 = [(GDSQLGraphObjectRetriever *)locationRetriever objectForIdentifier:stringValue];
 
         if (v14)
         {
-          v15 = [v10 label];
-          [v14 setLabel:v15];
+          label = [v10 label];
+          [v14 setLabel:label];
 
           [v38 addObject:v14];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      v7 = [postalAddressLinks countByEnumeratingWithState:&v43 objects:v48 count:16];
     }
 
     while (v7);
@@ -250,8 +250,8 @@ LABEL_22:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v18 = [v36 softwareLinks];
-  v19 = [v18 countByEnumeratingWithState:&v39 objects:v47 count:16];
+  softwareLinks = [v36 softwareLinks];
+  v19 = [softwareLinks countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (v19)
   {
     v20 = v19;
@@ -262,43 +262,43 @@ LABEL_22:
       {
         if (*v40 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(softwareLinks);
         }
 
         v23 = *(*(&v39 + 1) + 8 * j);
-        v24 = [v23 conversationIdentifier];
+        conversationIdentifier = [v23 conversationIdentifier];
 
-        if (v24)
+        if (conversationIdentifier)
         {
-          v25 = [v23 conversationIdentifier];
-          [v17 addObject:v25];
+          conversationIdentifier2 = [v23 conversationIdentifier];
+          [v17 addObject:conversationIdentifier2];
         }
 
         softwareRetriever = self->_softwareRetriever;
-        v27 = [v23 softwareEntityIdentifier];
-        v28 = [v27 stringValue];
-        v29 = [(GDSQLGraphObjectRetriever *)softwareRetriever objectForIdentifier:v28];
+        softwareEntityIdentifier = [v23 softwareEntityIdentifier];
+        stringValue2 = [softwareEntityIdentifier stringValue];
+        v29 = [(GDSQLGraphObjectRetriever *)softwareRetriever objectForIdentifier:stringValue2];
 
         if (v29)
         {
-          v30 = [v29 bundleIdentifiers];
+          bundleIdentifiers = [v29 bundleIdentifiers];
 
-          if (v30)
+          if (bundleIdentifiers)
           {
-            v31 = [v29 bundleIdentifiers];
-            [v37 addObjectsFromArray:v31];
+            bundleIdentifiers2 = [v29 bundleIdentifiers];
+            [v37 addObjectsFromArray:bundleIdentifiers2];
           }
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v39 objects:v47 count:16];
+      v20 = [softwareLinks countByEnumeratingWithState:&v39 objects:v47 count:16];
     }
 
     while (v20);
   }
 
-  v32 = [v37 allObjects];
-  v33 = [v32 copy];
+  allObjects = [v37 allObjects];
+  v33 = [allObjects copy];
   [v36 setBundleIdentifiers:v33];
 
   v34 = [v17 copy];
@@ -307,43 +307,43 @@ LABEL_22:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (GDVisualIdentifierView)initWithAccessAssertion:(id)a3 database:(id)a4
+- (GDVisualIdentifierView)initWithAccessAssertion:(id)assertion database:(id)database
 {
-  v8 = a3;
-  v9 = a4;
+  assertionCopy = assertion;
+  databaseCopy = database;
   v30.receiver = self;
   v30.super_class = GDVisualIdentifierView;
   v10 = [(GDVisualIdentifierView *)&v30 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_accessAssertion, a3);
-    objc_storeStrong(&v11->_db, a4);
-    v12 = [v8 viewArtifactTableName];
-    if (!v12)
+    objc_storeStrong(&v10->_accessAssertion, assertion);
+    objc_storeStrong(&v11->_db, database);
+    viewArtifactTableName = [assertionCopy viewArtifactTableName];
+    if (!viewArtifactTableName)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:v11 file:@"GDVisualIdentifierView.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v11 file:@"GDVisualIdentifierView.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
     }
 
     v13 = [GDSQLGraphObjectRetriever alloc];
     db = v11->_db;
     v15 = objc_opt_class();
-    v16 = sub_1ABF078B4(&v13->super.isa, db, v12, @"SB104", 2, v15);
+    v16 = sub_1ABF078B4(&v13->super.isa, db, viewArtifactTableName, @"SB104", 2, v15);
     personRetriever = v11->_personRetriever;
     v11->_personRetriever = v16;
 
     v18 = [GDSQLGraphObjectRetriever alloc];
     v19 = v11->_db;
     v20 = objc_opt_class();
-    v21 = sub_1ABF078B4(&v18->super.isa, v19, v12, @"SB152", 3, v20);
+    v21 = sub_1ABF078B4(&v18->super.isa, v19, viewArtifactTableName, @"SB152", 3, v20);
     locationRetriever = v11->_locationRetriever;
     v11->_locationRetriever = v21;
 
     v23 = [GDSQLGraphObjectRetriever alloc];
     v24 = v11->_db;
     v25 = objc_opt_class();
-    v26 = sub_1ABF078B4(&v23->super.isa, v24, v12, @"SB144", 0xA, v25);
+    v26 = sub_1ABF078B4(&v23->super.isa, v24, viewArtifactTableName, @"SB144", 0xA, v25);
     softwareRetriever = v11->_softwareRetriever;
     v11->_softwareRetriever = v26;
   }

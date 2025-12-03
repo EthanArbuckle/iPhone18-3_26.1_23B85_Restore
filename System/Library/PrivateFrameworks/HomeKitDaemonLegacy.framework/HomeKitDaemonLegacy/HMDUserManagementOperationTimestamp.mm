@@ -1,47 +1,47 @@
 @interface HMDUserManagementOperationTimestamp
-- (BOOL)isEqual:(id)a3;
-- (HMDUserManagementOperationTimestamp)initWithCoder:(id)a3;
-- (HMDUserManagementOperationTimestamp)initWithDevice:(id)a3 state:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDUserManagementOperationTimestamp)initWithCoder:(id)coder;
+- (HMDUserManagementOperationTimestamp)initWithDevice:(id)device state:(unint64_t)state;
 - (id)attributeDescriptions;
 - (id)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDUserManagementOperationTimestamp
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationTimestamp *)self device];
-  [v4 encodeObject:v5 forKey:@"HM.device"];
+  coderCopy = coder;
+  device = [(HMDUserManagementOperationTimestamp *)self device];
+  [coderCopy encodeObject:device forKey:@"HM.device"];
 
-  v6 = [(HMDUserManagementOperationTimestamp *)self timestamp];
-  [v4 encodeObject:v6 forKey:@"HM.date"];
+  timestamp = [(HMDUserManagementOperationTimestamp *)self timestamp];
+  [coderCopy encodeObject:timestamp forKey:@"HM.date"];
 
-  v7 = [(HMDUserManagementOperationTimestamp *)self state];
-  [v4 encodeObject:v7 forKey:@"HM.state"];
+  state = [(HMDUserManagementOperationTimestamp *)self state];
+  [coderCopy encodeObject:state forKey:@"HM.state"];
 }
 
-- (HMDUserManagementOperationTimestamp)initWithCoder:(id)a3
+- (HMDUserManagementOperationTimestamp)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.device"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.state"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.device"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.state"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v9 = [(HMDUserManagementOperationTimestamp *)self initWithDevice:v5 state:v8];
+  v9 = [(HMDUserManagementOperationTimestamp *)self initWithDevice:v5 state:unsignedIntegerValue];
   if (v9)
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.date"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.date"];
     if (v10)
     {
       objc_storeStrong(&v9->_timestamp, v10);
@@ -51,10 +51,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -64,7 +64,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -79,24 +79,24 @@
       goto LABEL_9;
     }
 
-    v8 = [(HMDUserManagementOperationTimestamp *)v6 timestamp];
-    v9 = [(HMDUserManagementOperationTimestamp *)self timestamp];
-    v10 = [v8 isEqual:v9];
+    timestamp = [(HMDUserManagementOperationTimestamp *)v6 timestamp];
+    timestamp2 = [(HMDUserManagementOperationTimestamp *)self timestamp];
+    v10 = [timestamp isEqual:timestamp2];
 
     if (!v10)
     {
       goto LABEL_9;
     }
 
-    v11 = [(HMDUserManagementOperationTimestamp *)v7 state];
-    v12 = [(HMDUserManagementOperationTimestamp *)self state];
-    v13 = [v11 isEqual:v12];
+    state = [(HMDUserManagementOperationTimestamp *)v7 state];
+    state2 = [(HMDUserManagementOperationTimestamp *)self state];
+    v13 = [state isEqual:state2];
 
     if (v13)
     {
-      v14 = [(HMDUserManagementOperationTimestamp *)v7 device];
-      v15 = [(HMDUserManagementOperationTimestamp *)self device];
-      v16 = [v14 isEqual:v15];
+      device = [(HMDUserManagementOperationTimestamp *)v7 device];
+      device2 = [(HMDUserManagementOperationTimestamp *)self device];
+      v16 = [device isEqual:device2];
     }
 
     else
@@ -113,15 +113,15 @@ LABEL_9:
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDUserManagementOperationTimestamp *)self device];
-  v5 = [v3 initWithName:@"Device" value:v4];
+  device = [(HMDUserManagementOperationTimestamp *)self device];
+  v5 = [v3 initWithName:@"Device" value:device];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDUserManagementOperationTimestamp *)self timestamp];
-  v8 = [v6 initWithName:@"Timestamp" value:v7];
+  timestamp = [(HMDUserManagementOperationTimestamp *)self timestamp];
+  v8 = [v6 initWithName:@"Timestamp" value:timestamp];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMDUserManagementOperationTimestamp *)self state];
-  v11 = [v9 initWithName:@"State" value:v10];
+  state = [(HMDUserManagementOperationTimestamp *)self state];
+  v11 = [v9 initWithName:@"State" value:state];
   v15[2] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
 
@@ -133,28 +133,28 @@ LABEL_9:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDUserManagementOperationTimestamp *)self timestamp];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  shortDescription = [objc_opt_class() shortDescription];
+  timestamp = [(HMDUserManagementOperationTimestamp *)self timestamp];
+  v6 = [v3 stringWithFormat:@"%@ %@", shortDescription, timestamp];
 
   return v6;
 }
 
-- (HMDUserManagementOperationTimestamp)initWithDevice:(id)a3 state:(unint64_t)a4
+- (HMDUserManagementOperationTimestamp)initWithDevice:(id)device state:(unint64_t)state
 {
-  v7 = a3;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = HMDUserManagementOperationTimestamp;
   v8 = [(HMDUserManagementOperationTimestamp *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a3);
-    v10 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&v8->_device, device);
+    date = [MEMORY[0x277CBEAA8] date];
     timestamp = v9->_timestamp;
-    v9->_timestamp = v10;
+    v9->_timestamp = date;
 
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
     state = v9->_state;
     v9->_state = v12;
   }

@@ -2,7 +2,7 @@
 - (OADAdjustPoint)controlPoint1;
 - (OADAdjustPoint)controlPoint2;
 - (OADAdjustPoint)toPoint;
-- (OADCubicBezierToPathElement)initWithControlPoint1:(OADAdjustPoint)a3 controlPoint2:(OADAdjustPoint)a4 toPoint:(OADAdjustPoint)a5;
+- (OADCubicBezierToPathElement)initWithControlPoint1:(OADAdjustPoint)point1 controlPoint2:(OADAdjustPoint)point2 toPoint:(OADAdjustPoint)point;
 @end
 
 @implementation OADCubicBezierToPathElement
@@ -37,14 +37,14 @@
   return result;
 }
 
-- (OADCubicBezierToPathElement)initWithControlPoint1:(OADAdjustPoint)a3 controlPoint2:(OADAdjustPoint)a4 toPoint:(OADAdjustPoint)a5
+- (OADCubicBezierToPathElement)initWithControlPoint1:(OADAdjustPoint)point1 controlPoint2:(OADAdjustPoint)point2 toPoint:(OADAdjustPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
+  y = point.y;
+  x = point.x;
+  v7 = point2.y;
+  v8 = point2.x;
+  v9 = point1.y;
+  v10 = point1.x;
   v12.receiver = self;
   v12.super_class = OADCubicBezierToPathElement;
   result = [(OADCubicBezierToPathElement *)&v12 init];

@@ -1,10 +1,10 @@
 @interface FullScreenConfettiCollectionViewCell
-- (_TtC7Journal36FullScreenConfettiCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC7Journal36FullScreenConfettiCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation FullScreenConfettiCollectionViewCell
 
-- (_TtC7Journal36FullScreenConfettiCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7Journal36FullScreenConfettiCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal36FullScreenConfettiCollectionViewCell_confettiAsset;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal36FullScreenConfettiCollectionViewCell_confettiAsset) = 0;

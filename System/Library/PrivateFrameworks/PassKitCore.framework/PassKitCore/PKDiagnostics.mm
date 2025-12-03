@@ -1,29 +1,29 @@
 @interface PKDiagnostics
 + (id)_allPasses;
 + (id)_flightSubscriptions;
-+ (id)_metadataForCardAtURL:(id)a3;
++ (id)_metadataForCardAtURL:(id)l;
 + (id)_recentFlights;
 + (id)_secureElementData;
-+ (id)generateUbiquityDiagnosticsFile:(BOOL)a3;
-+ (void)_createDiagnosticJsonWithDictionary:(id)a3 hasLibrary:(BOOL)a4 completion:(id)a5;
-+ (void)generateDiagnosticsPackageWithPassLibrary:(BOOL)a3 completion:(id)a4;
-+ (void)generateZippedDiagnosticsPackageWithPassLibrary:(BOOL)a3 completion:(id)a4;
-+ (void)saveTransitState:(id)a3 forPaymentApplication:(id)a4;
++ (id)generateUbiquityDiagnosticsFile:(BOOL)file;
++ (void)_createDiagnosticJsonWithDictionary:(id)dictionary hasLibrary:(BOOL)library completion:(id)completion;
++ (void)generateDiagnosticsPackageWithPassLibrary:(BOOL)library completion:(id)completion;
++ (void)generateZippedDiagnosticsPackageWithPassLibrary:(BOOL)library completion:(id)completion;
++ (void)saveTransitState:(id)state forPaymentApplication:(id)application;
 @end
 
 @implementation PKDiagnostics
 
-+ (void)generateDiagnosticsPackageWithPassLibrary:(BOOL)a3 completion:(id)a4
++ (void)generateDiagnosticsPackageWithPassLibrary:(BOOL)library completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = dispatch_get_global_queue(0, 0);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__PKDiagnostics_generateDiagnosticsPackageWithPassLibrary_completion___block_invoke;
   v8[3] = &unk_1E79C4748;
-  v10 = a3;
-  v9 = v5;
-  v7 = v5;
+  libraryCopy = library;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(v6, v8);
 }
 
@@ -482,17 +482,17 @@ void __70__PKDiagnostics_generateDiagnosticsPackageWithPassLibrary_completion___
   }
 }
 
-+ (void)generateZippedDiagnosticsPackageWithPassLibrary:(BOOL)a3 completion:(id)a4
++ (void)generateZippedDiagnosticsPackageWithPassLibrary:(BOOL)library completion:(id)completion
 {
-  v4 = a3;
-  v5 = a4;
+  libraryCopy = library;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__PKDiagnostics_generateZippedDiagnosticsPackageWithPassLibrary_completion___block_invoke;
   v7[3] = &unk_1E79DA550;
-  v8 = v5;
-  v6 = v5;
-  [PKDiagnostics generateDiagnosticsPackageWithPassLibrary:v4 completion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [PKDiagnostics generateDiagnosticsPackageWithPassLibrary:libraryCopy completion:v7];
 }
 
 void __76__PKDiagnostics_generateZippedDiagnosticsPackageWithPassLibrary_completion___block_invoke(uint64_t a1, NSURL *a2)
@@ -521,11 +521,11 @@ void __76__PKDiagnostics_generateZippedDiagnosticsPackageWithPassLibrary_complet
   }
 }
 
-+ (id)generateUbiquityDiagnosticsFile:(BOOL)a3
++ (id)generateUbiquityDiagnosticsFile:(BOOL)file
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 URLForUbiquityContainerIdentifier:@"com.apple.shoebox"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager URLForUbiquityContainerIdentifier:@"com.apple.shoebox"];
   if (!v5)
   {
     v6 = PKLogFacilityTypeGetObject(0);
@@ -540,8 +540,8 @@ void __76__PKDiagnostics_generateZippedDiagnosticsPackageWithPassLibrary_complet
 
   if (v7)
   {
-    v8 = [v7 path];
-    v9 = [v4 contentsOfDirectoryAtPath:v8 error:0];
+    path = [v7 path];
+    v9 = [defaultManager contentsOfDirectoryAtPath:path error:0];
   }
 
   else
@@ -587,8 +587,8 @@ void __76__PKDiagnostics_generateZippedDiagnosticsPackageWithPassLibrary_complet
   {
     [v17 appendString:@"\n-------\n\n"];
     [v17 appendFormat:@"Passes count: %lu \n", objc_msgSend(v10, "count")];
-    v18 = [v7 path];
-    [v17 appendFormat:@"Passes path: %@ \n", v18];
+    path2 = [v7 path];
+    [v17 appendFormat:@"Passes path: %@ \n", path2];
 
     [v17 appendString:@"\n-------\n\n"];
     v25[0] = MEMORY[0x1E69E9820];
@@ -597,8 +597,8 @@ void __76__PKDiagnostics_generateZippedDiagnosticsPackageWithPassLibrary_complet
     v25[3] = &unk_1E79DA578;
     v26 = v17;
     v27 = v7;
-    v28 = a1;
-    v29 = a3;
+    selfCopy = self;
+    fileCopy = file;
     [v10 enumerateObjectsUsingBlock:v25];
   }
 
@@ -611,7 +611,7 @@ void __76__PKDiagnostics_generateZippedDiagnosticsPackageWithPassLibrary_complet
   v20 = [v19 stringByAppendingPathComponent:@"wallet_ubiquity.txt"];
 
   v21 = [v17 dataUsingEncoding:4];
-  [v4 createFileAtPath:v20 contents:v21 attributes:0];
+  [defaultManager createFileAtPath:v20 contents:v21 attributes:0];
 
   v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:v20];
 
@@ -664,8 +664,8 @@ void __49__PKDiagnostics_generateUbiquityDiagnosticsFile___block_invoke(uint64_t
   v36 = *MEMORY[0x1E69E9840];
   v19 = +[PKSecureElement sharedSecureElement];
   v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v2 = [v19 secureElementIdentifiers];
-  [v18 setObject:v2 forKey:@"seid"];
+  secureElementIdentifiers = [v19 secureElementIdentifiers];
+  [v18 setObject:secureElementIdentifiers forKey:@"seid"];
 
   v3 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v19, "isProductionSigned")}];
   [v18 setObject:v3 forKey:@"prodSigned"];
@@ -673,8 +673,8 @@ void __49__PKDiagnostics_generateUbiquityDiagnosticsFile___block_invoke(uint64_t
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v19, "isInRestrictedMode")}];
   [v18 setObject:v4 forKey:@"restrictedMode"];
 
-  v5 = [v19 primaryRegionTopic];
-  [v18 setObject:v5 forKey:@"primaryRegionTopic"];
+  primaryRegionTopic = [v19 primaryRegionTopic];
+  [v18 setObject:primaryRegionTopic forKey:@"primaryRegionTopic"];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = dispatch_semaphore_create(0);
@@ -716,8 +716,8 @@ void __49__PKDiagnostics_generateUbiquityDiagnosticsFile___block_invoke(uint64_t
         v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v12, "lifecycleState")}];
         v34 = v13;
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-        v15 = [v12 identifier];
-        [v6 setObject:v14 forKey:v15];
+        identifier = [v12 identifier];
+        [v6 setObject:v14 forKey:identifier];
       }
 
       v9 = [v8 countByEnumeratingWithState:&v20 objects:v35 count:16];
@@ -746,8 +746,8 @@ void __35__PKDiagnostics__secureElementData__block_invoke(uint64_t a1, void *a2)
   v3 = PKHomeDirectoryPath();
   v4 = [v3 stringByAppendingPathComponent:@"Cards"];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 contentsOfDirectoryAtPath:v4 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager contentsOfDirectoryAtPath:v4 error:0];
 
   v22 = 0u;
   v23 = 0u;
@@ -769,8 +769,8 @@ void __35__PKDiagnostics__secureElementData__block_invoke(uint64_t a1, void *a2)
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 pathExtension];
-        v14 = [v13 isEqualToString:@"pkpass"];
+        pathExtension = [v12 pathExtension];
+        v14 = [pathExtension isEqualToString:@"pkpass"];
 
         if (v14)
         {
@@ -824,8 +824,8 @@ void __35__PKDiagnostics__secureElementData__block_invoke(uint64_t a1, void *a2)
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * i) asDictionary];
-        [v8 addObject:v14];
+        asDictionary = [*(*(&v16 + 1) + 8 * i) asDictionary];
+        [v8 addObject:asDictionary];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -841,14 +841,14 @@ void __35__PKDiagnostics__secureElementData__block_invoke(uint64_t a1, void *a2)
 {
   v17 = *MEMORY[0x1E69E9840];
   v2 = +[PKPassLibrary sharedInstance];
-  v3 = [v2 flightSubscriptions];
+  flightSubscriptions = [v2 flightSubscriptions];
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = flightSubscriptions;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -863,8 +863,8 @@ void __35__PKDiagnostics__secureElementData__block_invoke(uint64_t a1, void *a2)
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) asDictionary];
-        [v4 addObject:v10];
+        asDictionary = [*(*(&v12 + 1) + 8 * i) asDictionary];
+        [v4 addObject:asDictionary];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -876,16 +876,16 @@ void __35__PKDiagnostics__secureElementData__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)_metadataForCardAtURL:(id)a3
++ (id)_metadataForCardAtURL:(id)l
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v4 URLByAppendingPathComponent:@"pass.json" isDirectory:0];
+  lCopy = l;
+  defaultManager = [v3 defaultManager];
+  v6 = [lCopy URLByAppendingPathComponent:@"pass.json" isDirectory:0];
 
-  v7 = [v6 path];
+  path = [v6 path];
 
-  if ([v5 fileExistsAtPath:v7 isDirectory:0] && (v8 = objc_msgSend(objc_alloc(MEMORY[0x1E695DEF0]), "initWithContentsOfFile:", v7)) != 0)
+  if ([defaultManager fileExistsAtPath:path isDirectory:0] && (v8 = objc_msgSend(objc_alloc(MEMORY[0x1E695DEF0]), "initWithContentsOfFile:", path)) != 0)
   {
     v9 = v8;
     v10 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:4 error:0];
@@ -899,22 +899,22 @@ void __35__PKDiagnostics__secureElementData__block_invoke(uint64_t a1, void *a2)
   return v10;
 }
 
-+ (void)saveTransitState:(id)a3 forPaymentApplication:(id)a4
++ (void)saveTransitState:(id)state forPaymentApplication:(id)application
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF00] date];
+  stateCopy = state;
+  applicationCopy = application;
+  date = [MEMORY[0x1E695DF00] date];
   v8 = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__PKDiagnostics_saveTransitState_forPaymentApplication___block_invoke;
   block[3] = &unk_1E79C4E00;
-  v13 = v5;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = v5;
+  v13 = stateCopy;
+  v14 = applicationCopy;
+  v15 = date;
+  v9 = date;
+  v10 = applicationCopy;
+  v11 = stateCopy;
   dispatch_async(v8, block);
 }
 
@@ -997,41 +997,41 @@ void __56__PKDiagnostics_saveTransitState_forPaymentApplication___block_invoke_3
   }
 }
 
-+ (void)_createDiagnosticJsonWithDictionary:(id)a3 hasLibrary:(BOOL)a4 completion:(id)a5
++ (void)_createDiagnosticJsonWithDictionary:(id)dictionary hasLibrary:(BOOL)library completion:(id)completion
 {
-  v5 = a4;
+  libraryCopy = library;
   v7 = MEMORY[0x1E696AEC0];
   v8 = MEMORY[0x1E695DF00];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 date];
-  [v11 timeIntervalSince1970];
+  completionCopy = completion;
+  dictionaryCopy = dictionary;
+  date = [v8 date];
+  [date timeIntervalSince1970];
   v24 = [v7 stringWithFormat:@"WalletDiagnostics-%f", v12];
 
   v13 = NSTemporaryDirectory();
   v14 = [v13 stringByAppendingPathComponent:v24];
 
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  [v15 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v16 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v10 options:1 error:0];
+  v16 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryCopy options:1 error:0];
 
-  v17 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v18 = [v14 stringByAppendingPathComponent:@"diagnostics.json"];
-  [v17 createFileAtPath:v18 contents:v16 attributes:0];
+  [defaultManager2 createFileAtPath:v18 contents:v16 attributes:0];
 
-  if (v5)
+  if (libraryCopy)
   {
     v19 = PKHomeDirectoryPath();
     v20 = [v19 stringByAppendingPathComponent:@"passes23.sqlite"];
 
-    v21 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
     v22 = [v14 stringByAppendingPathComponent:@"passes.sqlite"];
-    [v21 copyItemAtPath:v20 toPath:v22 error:0];
+    [defaultManager3 copyItemAtPath:v20 toPath:v22 error:0];
   }
 
   v23 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14];
-  v9[2](v9, v23);
+  completionCopy[2](completionCopy, v23);
 }
 
 @end

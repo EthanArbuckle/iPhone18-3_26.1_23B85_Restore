@@ -8,26 +8,26 @@
 
 - (NSString)outputDeviceUID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 outputDeviceUID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  outputDeviceUID = [underlyingCodableMessage outputDeviceUID];
 
-  return v3;
+  return outputDeviceUID;
 }
 
 - (BOOL)isMuted
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 isMuted];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  isMuted = [underlyingCodableMessage isMuted];
 
-  return v3;
+  return isMuted;
 }
 
 - (MRRequestDetails)details
 {
   v3 = [MRRequestDetails alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 details];
-  v6 = [(MRRequestDetails *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  details = [underlyingCodableMessage details];
+  v6 = [(MRRequestDetails *)v3 initWithProtobuf:details];
 
   return v6;
 }

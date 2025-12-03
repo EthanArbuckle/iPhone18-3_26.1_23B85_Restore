@@ -1,11 +1,11 @@
 @interface NSKeyValueContainerClass
-- (NSKeyValueContainerClass)initWithOriginalClass:(Class)a3;
+- (NSKeyValueContainerClass)initWithOriginalClass:(Class)class;
 - (id)description;
 @end
 
 @implementation NSKeyValueContainerClass
 
-- (NSKeyValueContainerClass)initWithOriginalClass:(Class)a3
+- (NSKeyValueContainerClass)initWithOriginalClass:(Class)class
 {
   v13 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -14,9 +14,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_originalClass = a3;
+    v4->_originalClass = class;
     v6 = sel_registerName("observationInfo");
-    v5->_cachedObservationInfoImplementation = class_getMethodImplementation(a3, v6);
+    v5->_cachedObservationInfoImplementation = class_getMethodImplementation(class, v6);
     originalClass = v5->_originalClass;
     v8 = sel_registerName("setObservationInfo:");
     InstanceMethod = class_getInstanceMethod(originalClass, v8);

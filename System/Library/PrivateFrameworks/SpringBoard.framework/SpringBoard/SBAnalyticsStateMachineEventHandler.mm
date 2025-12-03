@@ -1,5 +1,5 @@
 @interface SBAnalyticsStateMachineEventHandler
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4;
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context;
 - (SBAnalyticsStateMachineEventHandler)init;
 @end
 
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -48,7 +48,7 @@
         v12 = *(*(&v15 + 1) + 8 * i);
         if ([v12 fromState] == self->_currentState)
         {
-          v13 = [v12 handleEvent:a3 withContext:v6];
+          v13 = [v12 handleEvent:event withContext:contextCopy];
           if (self->_currentState != v13)
           {
             self->_currentState = v13;

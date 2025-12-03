@@ -1,22 +1,22 @@
 @interface _MKSmallCalloutContainerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _MKSmallCalloutContainerView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(_MKSmallCalloutContainerView *)self subviews];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subviews = [(_MKSmallCalloutContainerView *)self subviews];
+  v9 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -27,19 +27,19 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
         [(_MKSmallCalloutContainerView *)self convertPoint:v13 toView:x, y];
-        if ([v13 pointInside:v7 withEvent:?])
+        if ([v13 pointInside:eventCopy withEvent:?])
         {
           v14 = 1;
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -55,11 +55,11 @@ LABEL_11:
   return v14;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = _MKSmallCalloutContainerView;
-  v5 = [(_MKSmallCalloutContainerView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(_MKSmallCalloutContainerView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

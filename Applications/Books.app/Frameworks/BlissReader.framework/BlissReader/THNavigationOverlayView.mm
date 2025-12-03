@@ -1,9 +1,9 @@
 @interface THNavigationOverlayView
 - (NSString)title;
-- (THNavigationOverlayView)initWithFrame:(CGRect)a3;
-- (THNavigationOverlayView)initWithFrame:(CGRect)a3 blissClassicStyle:(BOOL)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)p_customButtonWithFrame:(CGRect)a3;
+- (THNavigationOverlayView)initWithFrame:(CGRect)frame;
+- (THNavigationOverlayView)initWithFrame:(CGRect)frame blissClassicStyle:(BOOL)style;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)p_customButtonWithFrame:(CGRect)frame;
 - (void)_updateConstraints;
 - (void)_updateTheme;
 - (void)dealloc;
@@ -15,36 +15,36 @@
 - (void)p_loadCachedPillButtonImages;
 - (void)p_setNextButtonTitle;
 - (void)p_setPrevButtonTitle;
-- (void)setAlternativeNextCaption:(id)a3;
-- (void)setAlternativePrevCaption:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setNextButtonTitle:(id)a3 andEnable:(BOOL)a4;
-- (void)setOverlayHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPrevButtonTitle:(id)a3 andEnable:(BOOL)a4;
-- (void)setTheme:(id)a3;
-- (void)setTheme:(id)a3 force:(BOOL)a4;
-- (void)setTitle:(id)a3;
-- (void)setTransparentMode:(BOOL)a3;
+- (void)setAlternativeNextCaption:(id)caption;
+- (void)setAlternativePrevCaption:(id)caption;
+- (void)setBackgroundColor:(id)color;
+- (void)setNextButtonTitle:(id)title andEnable:(BOOL)enable;
+- (void)setOverlayHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setPrevButtonTitle:(id)title andEnable:(BOOL)enable;
+- (void)setTheme:(id)theme;
+- (void)setTheme:(id)theme force:(BOOL)force;
+- (void)setTitle:(id)title;
+- (void)setTransparentMode:(BOOL)mode;
 @end
 
 @implementation THNavigationOverlayView
 
-- (THNavigationOverlayView)initWithFrame:(CGRect)a3
+- (THNavigationOverlayView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   BCReportAssertionFailureWithMessage();
 
   return [(THNavigationOverlayView *)self initWithFrame:0 blissClassicStyle:x, y, width, height];
 }
 
-- (THNavigationOverlayView)initWithFrame:(CGRect)a3 blissClassicStyle:(BOOL)a4
+- (THNavigationOverlayView)initWithFrame:(CGRect)frame blissClassicStyle:(BOOL)style
 {
   v12.receiver = self;
   v12.super_class = THNavigationOverlayView;
-  v5 = [(THNavigationOverlayView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(THNavigationOverlayView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = [BEHairlineDividerView alloc];
@@ -58,7 +58,7 @@
     v10 = [UIView alloc];
     [(THNavigationOverlayView *)v5 bounds];
     v5->_backgroundView = [v10 initWithFrame:?];
-    v5->_blissClassicStyle = a4;
+    v5->_blissClassicStyle = style;
     [(THNavigationOverlayView *)v5 addSubview:v5->_backgroundView];
     [(THNavigationOverlayView *)v5 addSubview:v5->_separator];
     [(THNavigationOverlayView *)v5 addSubview:v5->_prevButton];
@@ -83,12 +83,12 @@
   [(THNavigationOverlayView *)&v3 dealloc];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = THNavigationOverlayView;
   [(THNavigationOverlayView *)&v5 setBackgroundColor:?];
-  [(UIView *)self->_backgroundView setBackgroundColor:a3];
+  [(UIView *)self->_backgroundView setBackgroundColor:color];
 }
 
 - (void)layoutSubviews
@@ -140,8 +140,8 @@
         }
 
         v8 = *(*(&v18 + 1) + 8 * v7);
-        v9 = [(THTheme *)self->_theme identifier];
-        if ([v9 isEqualToString:kIMThemeIdentifierBlissClassicTheme])
+        identifier = [(THTheme *)self->_theme identifier];
+        if ([identifier isEqualToString:kIMThemeIdentifierBlissClassicTheme])
         {
           [objc_msgSend(v8 "layer")];
         }
@@ -165,10 +165,10 @@
   [(UIButton *)[(THNavigationOverlayView *)self nextButton] setImage:[(THNavigationOverlayView *)self cachedPillModeNextImage] forState:0];
   [(UILabel *)[(UIButton *)[(THNavigationOverlayView *)self nextButton] titleLabel] setFont:[UIFont systemFontOfSize:13.0]];
   [(UILabel *)[(UIButton *)[(THNavigationOverlayView *)self nextButton] titleLabel] frame];
-  v10 = [(UILabel *)[(UIButton *)[(THNavigationOverlayView *)self nextButton] titleLabel] text];
+  text = [(UILabel *)[(UIButton *)[(THNavigationOverlayView *)self nextButton] titleLabel] text];
   v22 = NSFontAttributeName;
-  v23 = [(UILabel *)[(UIButton *)[(THNavigationOverlayView *)self nextButton] titleLabel] font];
-  [(NSString *)v10 sizeWithAttributes:[NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1]];
+  font = [(UILabel *)[(UIButton *)[(THNavigationOverlayView *)self nextButton] titleLabel] font];
+  [(NSString *)text sizeWithAttributes:[NSDictionary dictionaryWithObjects:&font forKeys:&v22 count:1]];
   v12 = v11;
   [(UIImageView *)[(UIButton *)[(THNavigationOverlayView *)self nextButton] imageView] frame];
   v14 = v13;
@@ -244,16 +244,16 @@
 - (void)pSetControlColors
 {
   v3 = +[UIColor whiteColor];
-  v4 = [(THNavigationOverlayView *)self prevButton];
-  v5 = [(THNavigationOverlayView *)self nextButton];
+  prevButton = [(THNavigationOverlayView *)self prevButton];
+  nextButton = [(THNavigationOverlayView *)self nextButton];
   if ([(THNavigationOverlayView *)self blissClassicStyle])
   {
-    [(UIButton *)v4 setTitleColor:v3 forState:0];
-    [(UIButton *)v4 setTitleColor:0 forState:1];
-    [(UIButton *)v5 setTitleColor:v3 forState:0];
-    [(UIButton *)v5 setTitleColor:0 forState:1];
+    [(UIButton *)prevButton setTitleColor:v3 forState:0];
+    [(UIButton *)prevButton setTitleColor:0 forState:1];
+    [(UIButton *)nextButton setTitleColor:v3 forState:0];
+    [(UIButton *)nextButton setTitleColor:0 forState:1];
     [(UILabel *)[(THNavigationOverlayView *)self titleLabel] setTextColor:+[UIColor clearColor]];
-    v6 = [(THNavigationOverlayView *)self separator];
+    separator = [(THNavigationOverlayView *)self separator];
     v7 = 1;
   }
 
@@ -262,39 +262,39 @@
     objc_opt_class();
     [(THNavigationOverlayView *)self theme];
     v8 = TSUDynamicCast();
-    v9 = [v8 headerTextColorDimmed];
-    v10 = [v8 tintColor];
-    [(UIButton *)v4 setTitleColor:v10 forState:0];
-    [(UIButton *)v5 setTitleColor:v10 forState:0];
-    [(UIButton *)v4 setTitleColor:v9 forState:2];
-    [(UIButton *)v5 setTitleColor:v9 forState:2];
-    [(UILabel *)[(THNavigationOverlayView *)self titleLabel] setTextColor:v9];
-    v11 = [(THNavigationOverlayView *)self separator];
-    -[BEHairlineDividerView setDividerColor:](v11, "setDividerColor:", [v8 separatorColor]);
+    headerTextColorDimmed = [v8 headerTextColorDimmed];
+    tintColor = [v8 tintColor];
+    [(UIButton *)prevButton setTitleColor:tintColor forState:0];
+    [(UIButton *)nextButton setTitleColor:tintColor forState:0];
+    [(UIButton *)prevButton setTitleColor:headerTextColorDimmed forState:2];
+    [(UIButton *)nextButton setTitleColor:headerTextColorDimmed forState:2];
+    [(UILabel *)[(THNavigationOverlayView *)self titleLabel] setTextColor:headerTextColorDimmed];
+    separator2 = [(THNavigationOverlayView *)self separator];
+    -[BEHairlineDividerView setDividerColor:](separator2, "setDividerColor:", [v8 separatorColor]);
     v7 = [(THNavigationOverlayView *)self separatorsVisible]^ 1;
-    v6 = v11;
+    separator = separator2;
   }
 
-  [(BEHairlineDividerView *)v6 setHidden:v7];
+  [(BEHairlineDividerView *)separator setHidden:v7];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   theme = self->_theme;
-  if (theme != a3)
+  if (theme != theme)
   {
 
-    self->_theme = a3;
+    self->_theme = theme;
 
     [(THNavigationOverlayView *)self _updateTheme];
   }
 }
 
-- (void)setTransparentMode:(BOOL)a3
+- (void)setTransparentMode:(BOOL)mode
 {
-  if (self->_transparentMode != a3)
+  if (self->_transparentMode != mode)
   {
-    self->_transparentMode = a3;
+    self->_transparentMode = mode;
     [(THNavigationOverlayView *)self _updateTheme];
   }
 }
@@ -317,11 +317,11 @@
   [(THNavigationOverlayView *)self pSetControlColors];
 }
 
-- (void)setTheme:(id)a3 force:(BOOL)a4
+- (void)setTheme:(id)theme force:(BOOL)force
 {
-  v4 = a4;
-  [(THNavigationOverlayView *)self setTheme:a3];
-  if (v4)
+  forceCopy = force;
+  [(THNavigationOverlayView *)self setTheme:theme];
+  if (forceCopy)
   {
 
     [(THNavigationOverlayView *)self _updateTheme];
@@ -345,39 +345,39 @@
   v16[1] = [-[UILabel centerYAnchor](-[THNavigationOverlayView titleLabel](self "titleLabel")];
   v16[2] = [-[UIButton centerYAnchor](-[THNavigationOverlayView prevButton](self "prevButton")];
   v16[3] = [-[UIButton centerYAnchor](-[THNavigationOverlayView nextButton](self "nextButton")];
-  v3 = [(UIButton *)[(THNavigationOverlayView *)self prevButton] leadingAnchor];
+  leadingAnchor = [(UIButton *)[(THNavigationOverlayView *)self prevButton] leadingAnchor];
   v4 = [-[THNavigationOverlayView safeAreaLayoutGuide](self "safeAreaLayoutGuide")];
-  v5 = [(THNavigationOverlayView *)self blissClassicStyle];
+  blissClassicStyle = [(THNavigationOverlayView *)self blissClassicStyle];
   v6 = 20.0;
-  if (v5)
+  if (blissClassicStyle)
   {
     v6 = 10.0;
   }
 
-  v16[4] = [v3 constraintEqualToAnchor:v4 constant:v6];
-  v7 = [(UIButton *)[(THNavigationOverlayView *)self nextButton] trailingAnchor];
+  v16[4] = [leadingAnchor constraintEqualToAnchor:v4 constant:v6];
+  trailingAnchor = [(UIButton *)[(THNavigationOverlayView *)self nextButton] trailingAnchor];
   v8 = [-[THNavigationOverlayView safeAreaLayoutGuide](self "safeAreaLayoutGuide")];
-  v9 = [(THNavigationOverlayView *)self blissClassicStyle];
+  blissClassicStyle2 = [(THNavigationOverlayView *)self blissClassicStyle];
   v10 = -20.0;
-  if (v9)
+  if (blissClassicStyle2)
   {
     v10 = -10.0;
   }
 
-  v16[5] = [v7 constraintEqualToAnchor:v8 constant:v10];
+  v16[5] = [trailingAnchor constraintEqualToAnchor:v8 constant:v10];
   [NSLayoutConstraint activateConstraints:[NSArray arrayWithObjects:v16 count:6]];
-  v11 = [(THNavigationOverlayView *)self blissClassicStyle];
-  v12 = [(THNavigationOverlayView *)self prevButton];
-  if (v11)
+  blissClassicStyle3 = [(THNavigationOverlayView *)self blissClassicStyle];
+  prevButton = [(THNavigationOverlayView *)self prevButton];
+  if (blissClassicStyle3)
   {
-    v15[0] = [-[UIButton widthAnchor](v12 "widthAnchor")];
+    v15[0] = [-[UIButton widthAnchor](prevButton "widthAnchor")];
     v15[1] = [-[UIButton widthAnchor](-[THNavigationOverlayView nextButton](self "nextButton")];
     v13 = v15;
   }
 
   else
   {
-    v14[0] = [-[UIButton heightAnchor](v12 "heightAnchor")];
+    v14[0] = [-[UIButton heightAnchor](prevButton "heightAnchor")];
     v14[1] = [-[UIButton heightAnchor](-[THNavigationOverlayView nextButton](self "nextButton")];
     v13 = v14;
   }
@@ -387,39 +387,39 @@
 
 - (NSString)title
 {
-  v2 = [(THNavigationOverlayView *)self titleLabel];
+  titleLabel = [(THNavigationOverlayView *)self titleLabel];
 
-  return [(UILabel *)v2 text];
+  return [(UILabel *)titleLabel text];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(UILabel *)[(THNavigationOverlayView *)self titleLabel] setText:a3];
+  [(UILabel *)[(THNavigationOverlayView *)self titleLabel] setText:title];
 
   [(THNavigationOverlayView *)self setNeedsLayout];
 }
 
-- (void)setOverlayHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setOverlayHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     [(THNavigationOverlayView *)self showHideAnimationDuration];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_13FAB0;
     v8[3] = &unk_45B2C0;
-    v9 = a3;
+    hiddenCopy = hidden;
     v8[4] = self;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_13FB08;
     v6[3] = &unk_45DE60;
-    v7 = a3;
+    hiddenCopy2 = hidden;
     v6[4] = self;
     [UIView animateWithDuration:v8 animations:v6 completion:?];
   }
 
-  else if (a3)
+  else if (hidden)
   {
     [(THNavigationOverlayView *)self setAlpha:0.0];
 
@@ -434,61 +434,61 @@
   }
 }
 
-- (void)setAlternativePrevCaption:(id)a3
+- (void)setAlternativePrevCaption:(id)caption
 {
-  v5 = a3;
+  captionCopy = caption;
 
-  self->_alternativePrevCaption = a3;
+  self->_alternativePrevCaption = caption;
 
   [(THNavigationOverlayView *)self p_setPrevButtonTitle];
 }
 
-- (void)setAlternativeNextCaption:(id)a3
+- (void)setAlternativeNextCaption:(id)caption
 {
-  v5 = a3;
+  captionCopy = caption;
 
-  self->_alternativeNextCaption = a3;
+  self->_alternativeNextCaption = caption;
 
   [(THNavigationOverlayView *)self p_setNextButtonTitle];
 }
 
-- (void)setPrevButtonTitle:(id)a3 andEnable:(BOOL)a4
+- (void)setPrevButtonTitle:(id)title andEnable:(BOOL)enable
 {
-  v4 = a4;
-  v7 = a3;
+  enableCopy = enable;
+  titleCopy = title;
 
-  self->_prevCaption = a3;
+  self->_prevCaption = title;
   [(THNavigationOverlayView *)self p_setPrevButtonTitle];
-  [(UIButton *)[(THNavigationOverlayView *)self prevButton] setEnabled:v4];
+  [(UIButton *)[(THNavigationOverlayView *)self prevButton] setEnabled:enableCopy];
   objc_opt_class();
   [(UIButton *)[(THNavigationOverlayView *)self nextButton] _titleView];
   v8 = TSUDynamicCast();
 
-  [v8 _setWantsUnderlineForAccessibilityButtonShapesEnabled:v4];
+  [v8 _setWantsUnderlineForAccessibilityButtonShapesEnabled:enableCopy];
 }
 
-- (void)setNextButtonTitle:(id)a3 andEnable:(BOOL)a4
+- (void)setNextButtonTitle:(id)title andEnable:(BOOL)enable
 {
-  v4 = a4;
-  v7 = a3;
+  enableCopy = enable;
+  titleCopy = title;
 
-  self->_nextCaption = a3;
+  self->_nextCaption = title;
   [(THNavigationOverlayView *)self p_setNextButtonTitle];
-  [(UIButton *)[(THNavigationOverlayView *)self nextButton] setEnabled:v4];
+  [(UIButton *)[(THNavigationOverlayView *)self nextButton] setEnabled:enableCopy];
   objc_opt_class();
   [(UIButton *)[(THNavigationOverlayView *)self nextButton] _titleView];
   v8 = TSUDynamicCast();
 
-  [v8 _setWantsUnderlineForAccessibilityButtonShapesEnabled:v4];
+  [v8 _setWantsUnderlineForAccessibilityButtonShapesEnabled:enableCopy];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v9.receiver = self;
   v9.super_class = THNavigationOverlayView;
-  v7 = [(THNavigationOverlayView *)&v9 hitTest:a4 withEvent:?];
+  v7 = [(THNavigationOverlayView *)&v9 hitTest:event withEvent:?];
   [(UIButton *)[(THNavigationOverlayView *)self prevButton] frame];
   v10.x = x;
   v10.y = y;
@@ -517,12 +517,12 @@
   }
 }
 
-- (id)p_customButtonWithFrame:(CGRect)a3
+- (id)p_customButtonWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [UIButton buttonWithType:0];
   [(UIButton *)v7 setTitle:@"None" forState:0];
   [(UIButton *)v7 setContentVerticalAlignment:0];
@@ -536,27 +536,27 @@
 {
   if ([(NSString *)[(THNavigationOverlayView *)self prevCaption] length])
   {
-    v3 = [(THNavigationOverlayView *)self prevCaption];
+    prevCaption = [(THNavigationOverlayView *)self prevCaption];
   }
 
   else
   {
-    v4 = [(THNavigationOverlayView *)self alternativePrevCaption];
-    if (v4)
+    alternativePrevCaption = [(THNavigationOverlayView *)self alternativePrevCaption];
+    if (alternativePrevCaption)
     {
-      v3 = v4;
+      prevCaption = alternativePrevCaption;
     }
 
     else
     {
-      v3 = &stru_471858;
+      prevCaption = &stru_471858;
     }
   }
 
-  if (([(__CFString *)v3 isEqual:[(UIButton *)[(THNavigationOverlayView *)self prevButton] titleForState:0]]& 1) == 0)
+  if (([(__CFString *)prevCaption isEqual:[(UIButton *)[(THNavigationOverlayView *)self prevButton] titleForState:0]]& 1) == 0)
   {
-    [(UIButton *)[(THNavigationOverlayView *)self prevButton] setTitle:v3 forState:0];
-    [(UIButton *)[(THNavigationOverlayView *)self prevButton] setHidden:[(__CFString *)v3 length]== 0];
+    [(UIButton *)[(THNavigationOverlayView *)self prevButton] setTitle:prevCaption forState:0];
+    [(UIButton *)[(THNavigationOverlayView *)self prevButton] setHidden:[(__CFString *)prevCaption length]== 0];
 
     [(THNavigationOverlayView *)self setNeedsLayout];
   }
@@ -566,27 +566,27 @@
 {
   if ([(NSString *)[(THNavigationOverlayView *)self nextCaption] length])
   {
-    v3 = [(THNavigationOverlayView *)self nextCaption];
+    nextCaption = [(THNavigationOverlayView *)self nextCaption];
   }
 
   else
   {
-    v4 = [(THNavigationOverlayView *)self alternativeNextCaption];
-    if (v4)
+    alternativeNextCaption = [(THNavigationOverlayView *)self alternativeNextCaption];
+    if (alternativeNextCaption)
     {
-      v3 = v4;
+      nextCaption = alternativeNextCaption;
     }
 
     else
     {
-      v3 = &stru_471858;
+      nextCaption = &stru_471858;
     }
   }
 
-  if (([(__CFString *)v3 isEqual:[(UIButton *)[(THNavigationOverlayView *)self nextButton] titleForState:0]]& 1) == 0)
+  if (([(__CFString *)nextCaption isEqual:[(UIButton *)[(THNavigationOverlayView *)self nextButton] titleForState:0]]& 1) == 0)
   {
-    [(UIButton *)[(THNavigationOverlayView *)self nextButton] setTitle:v3 forState:0];
-    [(UIButton *)[(THNavigationOverlayView *)self nextButton] setHidden:[(__CFString *)v3 length]== 0];
+    [(UIButton *)[(THNavigationOverlayView *)self nextButton] setTitle:nextCaption forState:0];
+    [(UIButton *)[(THNavigationOverlayView *)self nextButton] setHidden:[(__CFString *)nextCaption length]== 0];
 
     [(THNavigationOverlayView *)self setNeedsLayout];
   }

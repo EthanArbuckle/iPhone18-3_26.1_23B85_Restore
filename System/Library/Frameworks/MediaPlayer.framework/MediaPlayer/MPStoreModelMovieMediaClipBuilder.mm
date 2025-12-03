@@ -1,6 +1,6 @@
 @interface MPStoreModelMovieMediaClipBuilder
 + (id)allSupportedProperties;
-- (id)mediaClipWithStoreItemMetadata:(id)a3 storeItemMovieClip:(id)a4;
+- (id)mediaClipWithStoreItemMetadata:(id)metadata storeItemMovieClip:(id)clip;
 @end
 
 @implementation MPStoreModelMovieMediaClipBuilder
@@ -26,17 +26,17 @@
   return v7;
 }
 
-- (id)mediaClipWithStoreItemMetadata:(id)a3 storeItemMovieClip:(id)a4
+- (id)mediaClipWithStoreItemMetadata:(id)metadata storeItemMovieClip:(id)clip
 {
   v48 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  clipCopy = clip;
   p_requestedClipProperties = &self->_requestedClipProperties;
   if ((*&self->_requestedClipProperties & 1) == 0)
   {
-    v8 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v9 = [v8 properties];
-    if ([v9 containsObject:@"MPModelPropertyMediaClipTitle"])
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelPropertyMediaClipTitle"])
     {
       v10 = 2;
     }
@@ -47,7 +47,7 @@
     }
 
     *p_requestedClipProperties = *p_requestedClipProperties & 0xFD | v10;
-    if ([v9 containsObject:@"MPModelPropertyMediaClipPreviewArtwork"])
+    if ([properties containsObject:@"MPModelPropertyMediaClipPreviewArtwork"])
     {
       v11 = 4;
     }
@@ -58,14 +58,14 @@
     }
 
     *p_requestedClipProperties = *p_requestedClipProperties & 0xFB | v11;
-    v12 = [v8 relationships];
-    v13 = [v12 objectForKey:@"MPModelRelationshipMediaClipStaticAssets"];
+    relationships = [requestedPropertySet relationships];
+    v13 = [relationships objectForKey:@"MPModelRelationshipMediaClipStaticAssets"];
 
     if (v13)
     {
       *&self->_requestedClipProperties.staticAssets |= 1u;
-      v14 = [v13 properties];
-      if ([v14 containsObject:@"MPModelPropertyStaticAssetDuration"])
+      properties2 = [v13 properties];
+      if ([properties2 containsObject:@"MPModelPropertyStaticAssetDuration"])
       {
         v15 = 2;
       }
@@ -76,7 +76,7 @@
       }
 
       *&self->_requestedClipProperties.staticAssets = *&self->_requestedClipProperties.staticAssets & 0xFD | v15;
-      if ([v14 containsObject:@"MPModelPropertyStaticAssetURL"])
+      if ([properties2 containsObject:@"MPModelPropertyStaticAssetURL"])
       {
         v16 = 16;
       }
@@ -87,7 +87,7 @@
       }
 
       *&self->_requestedClipProperties.staticAssets = *&self->_requestedClipProperties.staticAssets & 0xEF | v16;
-      if ([v14 containsObject:@"MPModelPropertyStaticAssetMediaType"])
+      if ([properties2 containsObject:@"MPModelPropertyStaticAssetMediaType"])
       {
         v17 = 8;
       }
@@ -98,7 +98,7 @@
       }
 
       *&self->_requestedClipProperties.staticAssets = *&self->_requestedClipProperties.staticAssets & 0xF7 | v17;
-      if ([v14 containsObject:@"MPModelPropertyStaticAssetFlavorType"])
+      if ([properties2 containsObject:@"MPModelPropertyStaticAssetFlavorType"])
       {
         v18 = 4;
       }
@@ -114,12 +114,12 @@
     *p_requestedClipProperties |= 1u;
   }
 
-  v19 = [v6 assets];
+  assets = [clipCopy assets];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v20 = [v19 countByEnumeratingWithState:&v43 objects:v47 count:16];
+  v20 = [assets countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v20)
   {
     v21 = v20;
@@ -131,7 +131,7 @@
       {
         if (*v44 != v23)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(assets);
         }
 
         v25 = *(*(&v43 + 1) + 8 * i);
@@ -141,14 +141,14 @@
         {
           if (!v22)
           {
-            v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v19, "count")}];
+            v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(assets, "count")}];
           }
 
           [v22 addObject:v25];
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      v21 = [assets countByEnumeratingWithState:&v43 objects:v47 count:16];
     }
 
     while (v21);
@@ -160,11 +160,11 @@
   }
 
   v27 = [v22 sortedArrayUsingComparator:&__block_literal_global_44917];
-  v28 = [v27 firstObject];
-  v29 = [v28 url];
-  v30 = [v29 absoluteString];
+  firstObject = [v27 firstObject];
+  v29 = [firstObject url];
+  absoluteString = [v29 absoluteString];
 
-  if (v30)
+  if (absoluteString)
   {
     v31 = [MPModelMediaClip alloc];
     v32 = [MPIdentifierSet alloc];
@@ -173,14 +173,14 @@
     v41[1] = 3221225472;
     v41[2] = __87__MPStoreModelMovieMediaClipBuilder_mediaClipWithStoreItemMetadata_storeItemMovieClip___block_invoke_2;
     v41[3] = &unk_1E7680B28;
-    v42 = v30;
+    v42 = absoluteString;
     v34 = [(MPIdentifierSet *)v32 initWithSource:@"StorePlatform" modelKind:v33 block:v41];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __87__MPStoreModelMovieMediaClipBuilder_mediaClipWithStoreItemMetadata_storeItemMovieClip___block_invoke_4;
     v38[3] = &unk_1E767E920;
     v38[4] = self;
-    v39 = v6;
+    v39 = clipCopy;
     v40 = v27;
     v35 = [(MPModelObject *)v31 initWithIdentifiers:v34 block:v38];
   }

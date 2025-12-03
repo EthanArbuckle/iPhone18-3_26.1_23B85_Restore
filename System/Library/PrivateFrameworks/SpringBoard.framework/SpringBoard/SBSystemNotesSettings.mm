@@ -1,5 +1,5 @@
 @interface SBSystemNotesSettings
-+ (BOOL)ignoresKey:(id)a3;
++ (BOOL)ignoresKey:(id)key;
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
 @end
@@ -11,32 +11,32 @@
   v9.receiver = self;
   v9.super_class = SBSystemNotesSettings;
   [(PTSettings *)&v9 setDefaultValues];
-  v3 = [(PTSettings *)[SBPIPStashVisualSettings alloc] initWithDefaultValues];
-  [(SBPIPStashVisualSettings *)v3 setUserInterfaceStyle:0];
-  v4 = [(PTSettings *)[SBPIPStashMaterialSettings alloc] initWithDefaultValues];
-  [(SBPIPStashMaterialSettings *)v4 setDarkTintAlpha:0.35];
-  [(SBPIPStashMaterialSettings *)v4 setLightTintAlpha:0.14];
-  [(SBPIPStashVisualSettings *)v3 setLightModeMaterialSettings:v4];
-  [(SBSystemNotesSettings *)self setStashVisualSettings:v3];
-  v5 = [(PTSettings *)[SBDropShadowSettings alloc] initWithDefaultValues];
-  [(SBDropShadowSettings *)v5 setOpacity:0.25];
-  [(SBDropShadowSettings *)v5 setRadius:20.0];
-  [(SBDropShadowSettings *)v5 setOffsetX:0.0];
-  [(SBDropShadowSettings *)v5 setOffsetY:0.0];
-  [(SBDropShadowSettings *)v5 setContinuousCornerRadius:20.0];
-  v6 = [(SBSystemNotesSettings *)self shadowSettings];
-  [v6 setBodyShadowSettings:v5];
+  initWithDefaultValues = [(PTSettings *)[SBPIPStashVisualSettings alloc] initWithDefaultValues];
+  [(SBPIPStashVisualSettings *)initWithDefaultValues setUserInterfaceStyle:0];
+  initWithDefaultValues2 = [(PTSettings *)[SBPIPStashMaterialSettings alloc] initWithDefaultValues];
+  [(SBPIPStashMaterialSettings *)initWithDefaultValues2 setDarkTintAlpha:0.35];
+  [(SBPIPStashMaterialSettings *)initWithDefaultValues2 setLightTintAlpha:0.14];
+  [(SBPIPStashVisualSettings *)initWithDefaultValues setLightModeMaterialSettings:initWithDefaultValues2];
+  [(SBSystemNotesSettings *)self setStashVisualSettings:initWithDefaultValues];
+  initWithDefaultValues3 = [(PTSettings *)[SBDropShadowSettings alloc] initWithDefaultValues];
+  [(SBDropShadowSettings *)initWithDefaultValues3 setOpacity:0.25];
+  [(SBDropShadowSettings *)initWithDefaultValues3 setRadius:20.0];
+  [(SBDropShadowSettings *)initWithDefaultValues3 setOffsetX:0.0];
+  [(SBDropShadowSettings *)initWithDefaultValues3 setOffsetY:0.0];
+  [(SBDropShadowSettings *)initWithDefaultValues3 setContinuousCornerRadius:20.0];
+  shadowSettings = [(SBSystemNotesSettings *)self shadowSettings];
+  [shadowSettings setBodyShadowSettings:initWithDefaultValues3];
 
-  v7 = [(PTSettings *)[SBDropShadowSettings alloc] initWithDefaultValues];
-  [(SBDropShadowSettings *)v7 setOpacity:0.5];
-  [(SBDropShadowSettings *)v7 setRadius:75.0];
-  [(SBDropShadowSettings *)v7 setOffsetX:0.0];
-  [(SBDropShadowSettings *)v7 setOffsetY:15.0];
-  [(SBDropShadowSettings *)v7 setContinuousCornerRadius:20.0];
-  v8 = [(PTSettings *)[SBPIPShadowSettings alloc] initWithDefaultValues];
-  [(SBPIPShadowSettings *)v8 setBodyShadowSettings:v5];
-  [(SBPIPShadowSettings *)v8 setTabShadowSettings:v7];
-  [(SBSystemNotesSettings *)self setShadowSettings:v8];
+  initWithDefaultValues4 = [(PTSettings *)[SBDropShadowSettings alloc] initWithDefaultValues];
+  [(SBDropShadowSettings *)initWithDefaultValues4 setOpacity:0.5];
+  [(SBDropShadowSettings *)initWithDefaultValues4 setRadius:75.0];
+  [(SBDropShadowSettings *)initWithDefaultValues4 setOffsetX:0.0];
+  [(SBDropShadowSettings *)initWithDefaultValues4 setOffsetY:15.0];
+  [(SBDropShadowSettings *)initWithDefaultValues4 setContinuousCornerRadius:20.0];
+  initWithDefaultValues5 = [(PTSettings *)[SBPIPShadowSettings alloc] initWithDefaultValues];
+  [(SBPIPShadowSettings *)initWithDefaultValues5 setBodyShadowSettings:initWithDefaultValues3];
+  [(SBPIPShadowSettings *)initWithDefaultValues5 setTabShadowSettings:initWithDefaultValues4];
+  [(SBSystemNotesSettings *)self setShadowSettings:initWithDefaultValues5];
 }
 
 + (id)settingsControllerModule
@@ -80,17 +80,17 @@
   return v17;
 }
 
-+ (BOOL)ignoresKey:(id)a3
++ (BOOL)ignoresKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"pencilSettings"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"pencilSettings"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"fingerSettings"];
+    v4 = [keyCopy isEqualToString:@"fingerSettings"];
   }
 
   return v4;

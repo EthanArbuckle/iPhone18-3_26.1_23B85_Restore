@@ -1,14 +1,14 @@
 @interface TouchEventGenerator
 + (id)sharedTouchEventGenerator;
-- (BOOL)_sendHIDEvent:(__IOHIDEvent *)a3;
+- (BOOL)_sendHIDEvent:(__IOHIDEvent *)event;
 - (TouchEventGenerator)init;
-- (__IOHIDEvent)_createIOHIDEventType:(int)a3;
-- (void)_updateTouchPoints:(CGPoint *)a3 count:(unint64_t)a4;
-- (void)liftUp:(CGPoint)a3 touchCount:(unint64_t)a4;
-- (void)liftUpAtPoints:(CGPoint *)a3 touchCount:(unint64_t)a4;
-- (void)moveToPoints:(CGPoint *)a3 touchCount:(unint64_t)a4 duration:(double)a5;
-- (void)touchDown:(CGPoint)a3 touchCount:(unint64_t)a4;
-- (void)touchDownAtPoints:(CGPoint *)a3 touchCount:(unint64_t)a4;
+- (__IOHIDEvent)_createIOHIDEventType:(int)type;
+- (void)_updateTouchPoints:(CGPoint *)points count:(unint64_t)count;
+- (void)liftUp:(CGPoint)up touchCount:(unint64_t)count;
+- (void)liftUpAtPoints:(CGPoint *)points touchCount:(unint64_t)count;
+- (void)moveToPoints:(CGPoint *)points touchCount:(unint64_t)count duration:(double)duration;
+- (void)touchDown:(CGPoint)down touchCount:(unint64_t)count;
+- (void)touchDownAtPoints:(CGPoint *)points touchCount:(unint64_t)count;
 @end
 
 @implementation TouchEventGenerator
@@ -49,7 +49,7 @@
   return v3;
 }
 
-- (__IOHIDEvent)_createIOHIDEventType:(int)a3
+- (__IOHIDEvent)_createIOHIDEventType:(int)type
 {
   mach_absolute_time();
   DigitizerEvent = IOHIDEventCreateDigitizerEvent();
@@ -60,7 +60,7 @@
     p_pathProximity = &self->_activePoints[0].pathProximity;
     do
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         if (*(p_pathProximity - 2) == 0.0)
         {
@@ -78,7 +78,7 @@
         }
       }
 
-      else if ((a3 & 0xFFFFFFFE) == 4)
+      else if ((type & 0xFFFFFFFE) == 4)
       {
         *(p_pathProximity - 2) = 0;
         *(p_pathProximity - 1) = 0;
@@ -100,21 +100,21 @@
   return DigitizerEvent;
 }
 
-- (BOOL)_sendHIDEvent:(__IOHIDEvent *)a3
+- (BOOL)_sendHIDEvent:(__IOHIDEvent *)event
 {
   if (!self->_ioSystemClient)
   {
     self->_ioSystemClient = IOHIDEventSystemClientCreate();
   }
 
-  if (a3)
+  if (event)
   {
-    CFRetain(a3);
+    CFRetain(event);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__TouchEventGenerator__sendHIDEvent___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a3;
+    block[4] = event;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -165,19 +165,19 @@ void *__37__TouchEventGenerator__sendHIDEvent___block_invoke_2(uint64_t a1, void
   return v4;
 }
 
-- (void)_updateTouchPoints:(CGPoint *)a3 count:(unint64_t)a4
+- (void)_updateTouchPoints:(CGPoint *)points count:(unint64_t)count
 {
   activePointCount = self->_activePointCount;
   if (activePointCount)
   {
-    if (!a4)
+    if (!count)
     {
       self->_activePointCount = 0;
       v6 = 4;
       goto LABEL_12;
     }
 
-    if (activePointCount == a4)
+    if (activePointCount == count)
     {
       v6 = 2;
     }
@@ -187,14 +187,14 @@ void *__37__TouchEventGenerator__sendHIDEvent___block_invoke_2(uint64_t a1, void
       v6 = 3;
     }
 
-    self->_activePointCount = a4;
+    self->_activePointCount = count;
   }
 
   else
   {
-    self->_activePointCount = a4;
+    self->_activePointCount = count;
     v6 = 1;
-    if (!a4)
+    if (!count)
     {
       goto LABEL_12;
     }
@@ -203,13 +203,13 @@ void *__37__TouchEventGenerator__sendHIDEvent___block_invoke_2(uint64_t a1, void
   p_point = &self->_activePoints[0].point;
   do
   {
-    v8 = *a3++;
+    v8 = *points++;
     *p_point = v8;
     p_point += 3;
-    --a4;
+    --count;
   }
 
-  while (a4);
+  while (count);
 LABEL_12:
   v9 = [(TouchEventGenerator *)self _createIOHIDEventType:v6];
   [(TouchEventGenerator *)self _sendHIDEvent:v9];
@@ -217,26 +217,26 @@ LABEL_12:
   CFRelease(v9);
 }
 
-- (void)touchDownAtPoints:(CGPoint *)a3 touchCount:(unint64_t)a4
+- (void)touchDownAtPoints:(CGPoint *)points touchCount:(unint64_t)count
 {
-  v5 = 5;
-  if (a4 < 5)
+  countCopy = 5;
+  if (count < 5)
   {
-    v5 = a4;
+    countCopy = count;
   }
 
-  if (a4)
+  if (count)
   {
     p_point = &self->_activePoints[0].point;
     do
     {
-      v7 = *a3++;
+      v7 = *points++;
       *p_point = v7;
       p_point += 3;
-      --v5;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
   }
 
   v8 = [(TouchEventGenerator *)self _createIOHIDEventType:1];
@@ -245,26 +245,26 @@ LABEL_12:
   CFRelease(v8);
 }
 
-- (void)touchDown:(CGPoint)a3 touchCount:(unint64_t)a4
+- (void)touchDown:(CGPoint)down touchCount:(unint64_t)count
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a4 >= 5)
+  if (count >= 5)
   {
-    v4 = 5;
+    countCopy = 5;
   }
 
   else
   {
-    v4 = a4;
+    countCopy = count;
   }
 
-  if (a4)
+  if (count)
   {
-    v5 = &v7[1] - (16 * v4);
-    v6 = v4;
+    v5 = &v7[1] - (16 * countCopy);
+    v6 = countCopy;
     do
     {
-      *(v5 - 8) = a3;
+      *(v5 - 8) = down;
       v5 += 16;
       --v6;
     }
@@ -272,30 +272,30 @@ LABEL_12:
     while (v6);
   }
 
-  [(TouchEventGenerator *)self touchDownAtPoints:a3.x touchCount:a3.y];
+  [(TouchEventGenerator *)self touchDownAtPoints:down.x touchCount:down.y];
 }
 
-- (void)liftUpAtPoints:(CGPoint *)a3 touchCount:(unint64_t)a4
+- (void)liftUpAtPoints:(CGPoint *)points touchCount:(unint64_t)count
 {
   activePointCount = self->_activePointCount;
-  if (a4 >= activePointCount)
+  if (count >= activePointCount)
   {
-    v6 = self->_activePointCount;
+    countCopy = self->_activePointCount;
   }
 
   else
   {
-    v6 = a4;
+    countCopy = count;
   }
 
   v7 = 5;
-  if (v6 < 5)
+  if (countCopy < 5)
   {
-    v7 = v6;
+    v7 = countCopy;
   }
 
   v8 = activePointCount - v7;
-  if (v6)
+  if (countCopy)
   {
     if (v7 <= 1)
     {
@@ -310,7 +310,7 @@ LABEL_12:
     v10 = (&self->_activePoints[0].point.x + 48 * activePointCount - 48 * v7);
     do
     {
-      v11 = *a3++;
+      v11 = *points++;
       *v10 = v11;
       v10 += 3;
       --v9;
@@ -325,26 +325,26 @@ LABEL_12:
   self->_activePointCount = v8;
 }
 
-- (void)liftUp:(CGPoint)a3 touchCount:(unint64_t)a4
+- (void)liftUp:(CGPoint)up touchCount:(unint64_t)count
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a4 >= 5)
+  if (count >= 5)
   {
-    v4 = 5;
+    countCopy = 5;
   }
 
   else
   {
-    v4 = a4;
+    countCopy = count;
   }
 
-  if (a4)
+  if (count)
   {
-    v5 = &v7[1] - (16 * v4);
-    v6 = v4;
+    v5 = &v7[1] - (16 * countCopy);
+    v6 = countCopy;
     do
     {
-      *(v5 - 8) = a3;
+      *(v5 - 8) = up;
       v5 += 16;
       --v6;
     }
@@ -352,41 +352,41 @@ LABEL_12:
     while (v6);
   }
 
-  [(TouchEventGenerator *)self liftUpAtPoints:a3.x touchCount:a3.y];
+  [(TouchEventGenerator *)self liftUpAtPoints:up.x touchCount:up.y];
 }
 
-- (void)moveToPoints:(CGPoint *)a3 touchCount:(unint64_t)a4 duration:(double)a5
+- (void)moveToPoints:(CGPoint *)points touchCount:(unint64_t)count duration:(double)duration
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a4 >= 5)
+  if (count >= 5)
   {
-    v9 = 5;
+    countCopy = 5;
   }
 
   else
   {
-    v9 = a4;
+    countCopy = count;
   }
 
   v10 = MEMORY[0x28223BE20](self);
   MEMORY[0x28223BE20](v10);
   Current = CFAbsoluteTimeGetCurrent();
-  if (a5 + -0.016 > 0.0)
+  if (duration + -0.016 > 0.0)
   {
     v12 = 0;
     v26 = 1000000000.0;
     do
     {
       v13 = CFAbsoluteTimeGetCurrent() - Current;
-      if (a4)
+      if (count)
       {
-        v14 = sin(v13 / a5 * 3.14159265 * 0.5);
-        *&v15 = sin(v13 / a5 * v14 * 3.14159265 * 0.5);
+        v14 = sin(v13 / duration * 3.14159265 * 0.5);
+        *&v15 = sin(v13 / duration * v14 * 3.14159265 * 0.5);
         p_point = &self->_activePoints[0].point;
         v17 = vdupq_lane_s64(v15, 0);
-        v18 = (&v26 - 2 * v9);
-        v19 = a3;
-        v20 = v9;
+        v18 = (&v26 - 2 * countCopy);
+        pointsCopy = points;
+        v20 = countCopy;
         v21 = v18;
         do
         {
@@ -397,7 +397,7 @@ LABEL_12:
 
           v22 = *v21++;
           v23 = v22;
-          v24 = *v19++;
+          v24 = *pointsCopy++;
           *v18++ = vmlaq_f64(v23, v17, vsubq_f64(v24, v23));
           p_point += 3;
           --v20;
@@ -406,7 +406,7 @@ LABEL_12:
         while (v20);
       }
 
-      [(TouchEventGenerator *)self _updateTouchPoints:&v26 - 2 * v9 count:v9, *&v26];
+      [(TouchEventGenerator *)self _updateTouchPoints:&v26 - 2 * countCopy count:countCopy, *&v26];
       v25 = -(v13 - v12 * 0.016);
       if (v25 > 0.0)
       {
@@ -418,10 +418,10 @@ LABEL_12:
       ++v12;
     }
 
-    while (v13 < a5 + -0.016);
+    while (v13 < duration + -0.016);
   }
 
-  [(TouchEventGenerator *)self _updateTouchPoints:a3 count:v9];
+  [(TouchEventGenerator *)self _updateTouchPoints:points count:countCopy];
 }
 
 @end

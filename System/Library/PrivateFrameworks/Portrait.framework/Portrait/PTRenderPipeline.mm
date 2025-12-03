@@ -1,26 +1,26 @@
 @interface PTRenderPipeline
-+ (BOOL)isMetalDeviceSupported:(id)a3;
++ (BOOL)isMetalDeviceSupported:(id)supported;
 + (int)prewarmForCameraCaptured;
-+ (int)prewarmWithDescriptor:(id)a3;
++ (int)prewarmWithDescriptor:(id)descriptor;
 + (void)prewarmForCameraCaptured;
-- (PTRenderPipeline)initWithDescriptor:(id)a3;
-- (id)createRenderStateWithQuality:(int)a3;
-- (int)encodeRenderTo:(id)a3 withRenderRequest:(id)a4;
+- (PTRenderPipeline)initWithDescriptor:(id)descriptor;
+- (id)createRenderStateWithQuality:(int)quality;
+- (int)encodeRenderTo:(id)to withRenderRequest:(id)request;
 - (unint64_t)minimumResourceHeapSize;
 - (void)minimumResourceHeapSize;
 - (void)prewarm;
-- (void)setResourceHeap:(id)a3;
+- (void)setResourceHeap:(id)heap;
 @end
 
 @implementation PTRenderPipeline
 
-- (PTRenderPipeline)initWithDescriptor:(id)a3
+- (PTRenderPipeline)initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v39.receiver = self;
   v39.super_class = PTRenderPipeline;
   v5 = [(PTRenderPipeline *)&v39 init];
-  if (v5 && ([v4 device], v6 = objc_claimAutoreleasedReturnValue(), v7 = +[PTRenderPipeline isMetalDeviceSupported:](PTRenderPipeline, "isMetalDeviceSupported:", v6), v6, v7))
+  if (v5 && ([descriptorCopy device], v6 = objc_claimAutoreleasedReturnValue(), v7 = +[PTRenderPipeline isMetalDeviceSupported:](PTRenderPipeline, "isMetalDeviceSupported:", v6), v6, v7))
   {
     PTKTraceInit();
     kdebug_trace();
@@ -30,7 +30,7 @@
       [PTRenderPipeline initWithDescriptor:v8];
     }
 
-    if (!v4)
+    if (!descriptorCopy)
     {
       v9 = _PTLogSystem();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -39,21 +39,21 @@
       }
     }
 
-    v10 = [v4 copy];
+    v10 = [descriptorCopy copy];
     descriptor = v5->_descriptor;
     v5->_descriptor = v10;
 
-    v5->_activeVersion = [v4 version];
-    v12 = [v4 options];
-    v13 = [v12 objectForKeyedSubscript:&unk_2837F3778];
+    v5->_activeVersion = [descriptorCopy version];
+    options = [descriptorCopy options];
+    v13 = [options objectForKeyedSubscript:&unk_2837F3778];
     metalContext = v5->_metalContext;
     v5->_metalContext = v13;
 
     if (!v5->_metalContext)
     {
       v15 = [PTMetalContext alloc];
-      v16 = [v4 device];
-      v17 = [(PTMetalContext *)v15 initWithDevice:v16 bundleClass:objc_opt_class()];
+      device = [descriptorCopy device];
+      v17 = [(PTMetalContext *)v15 initWithDevice:device bundleClass:objc_opt_class()];
       v18 = v5->_metalContext;
       v5->_metalContext = v17;
 
@@ -61,21 +61,21 @@
     }
 
     v19 = MEMORY[0x277CCACA8];
-    [v4 disparitySize];
+    [descriptorCopy disparitySize];
     v21 = v20;
-    [v4 disparitySize];
+    [descriptorCopy disparitySize];
     v23 = v22;
-    [v4 disparitySize];
+    [descriptorCopy disparitySize];
     v25 = v24;
-    [v4 disparitySize];
+    [descriptorCopy disparitySize];
     v27 = v26;
-    [v4 colorInputSize];
+    [descriptorCopy colorInputSize];
     v29 = v28;
-    [v4 colorInputSize];
+    [descriptorCopy colorInputSize];
     v31 = v30;
-    [v4 colorOutputSize];
+    [descriptorCopy colorOutputSize];
     v33 = v32;
-    [v4 colorOutputSize];
+    [descriptorCopy colorOutputSize];
     v35 = [v19 stringWithFormat:@"i-disp: %lux%lu u-disp: %lux%lu colorInput: %lux%lu colorOutput: %lux%lu", v21, v23, v25, v27, v29, v31, v33, v34];
     description = v5->_description;
     v5->_description = v35;
@@ -92,10 +92,10 @@
   return v37;
 }
 
-+ (BOOL)isMetalDeviceSupported:(id)a3
++ (BOOL)isMetalDeviceSupported:(id)supported
 {
-  v3 = [a3 supportsNonUniformThreadgroupSize];
-  if ((v3 & 1) == 0)
+  supportsNonUniformThreadgroupSize = [supported supportsNonUniformThreadgroupSize];
+  if ((supportsNonUniformThreadgroupSize & 1) == 0)
   {
     v4 = _PTLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -104,15 +104,15 @@
     }
   }
 
-  return v3;
+  return supportsNonUniformThreadgroupSize;
 }
 
-+ (int)prewarmWithDescriptor:(id)a3
++ (int)prewarmWithDescriptor:(id)descriptor
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptorCopy = descriptor;
   kdebug_trace();
-  v4 = [[PTRenderPipeline alloc] initWithDescriptor:v3];
+  v4 = [[PTRenderPipeline alloc] initWithDescriptor:descriptorCopy];
   if (v4)
   {
     v15 = 0u;
@@ -265,30 +265,30 @@ LABEL_14:
 - (void)prewarm
 {
   v3 = [PTRenderPipelineDescriptor alloc];
-  v4 = [(PTMetalContext *)self->_metalContext device];
+  device = [(PTMetalContext *)self->_metalContext device];
   v5 = +[PTRenderPipeline latestVersion];
   [(PTRenderPipelineDescriptor *)self->_descriptor colorInputSize];
   v7 = v6;
   v9 = v8;
   [(PTRenderPipelineDescriptor *)self->_descriptor disparitySize];
-  v12 = [(PTRenderPipelineDescriptor *)v3 initWithDevice:v4 version:v5 colorSize:v7 disparitySize:v9, v10, v11];
+  v12 = [(PTRenderPipelineDescriptor *)v3 initWithDevice:device version:v5 colorSize:v7 disparitySize:v9, v10, v11];
 
   [PTRenderPipeline prewarmWithDescriptor:v12];
 }
 
-- (id)createRenderStateWithQuality:(int)a3
+- (id)createRenderStateWithQuality:(int)quality
 {
-  v3 = [[PTRenderPipelineState alloc] initWithPipelineDescriptor:self->_descriptor metalContext:self->_metalContext quality:*&a3];
+  v3 = [[PTRenderPipelineState alloc] initWithPipelineDescriptor:self->_descriptor metalContext:self->_metalContext quality:*&quality];
 
   return v3;
 }
 
-- (int)encodeRenderTo:(id)a3 withRenderRequest:(id)a4
+- (int)encodeRenderTo:(id)to withRenderRequest:(id)request
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 renderState];
-  v8 = [v7 encodeRenderTo:v6 withRenderRequest:v5];
+  requestCopy = request;
+  toCopy = to;
+  renderState = [requestCopy renderState];
+  v8 = [renderState encodeRenderTo:toCopy withRenderRequest:requestCopy];
 
   return v8;
 }
@@ -304,7 +304,7 @@ LABEL_14:
   return 0;
 }
 
-- (void)setResourceHeap:(id)a3
+- (void)setResourceHeap:(id)heap
 {
   v3 = _PTLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))

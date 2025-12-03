@@ -1,12 +1,12 @@
 @interface XPCServiceConnection
-- (XPCServiceConnection)initWithServiceName:(id)a3 client:(id)a4 queue:(id)a5;
+- (XPCServiceConnection)initWithServiceName:(id)name client:(id)client queue:(id)queue;
 - (XPCServiceConnectionDelegate)delegate;
 - (XPCServiceListener)serviceListener;
 - (id)debugDescription;
 - (void)resume;
-- (void)sendMessage:(id)a3 withHandler:(id)a4;
-- (void)shutDownCompletionBlock:(id)a3;
-- (void)workQueueHandleIncomingMessage:(id)a3;
+- (void)sendMessage:(id)message withHandler:(id)handler;
+- (void)shutDownCompletionBlock:(id)block;
+- (void)workQueueHandleIncomingMessage:(id)message;
 - (void)workQueueShutDown;
 @end
 
@@ -26,18 +26,18 @@
   return WeakRetained;
 }
 
-- (void)shutDownCompletionBlock:(id)a3
+- (void)shutDownCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(XPCServiceConnection *)self workQueue];
+  blockCopy = block;
+  workQueue = [(XPCServiceConnection *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__XPCServiceConnection_shutDownCompletionBlock___block_invoke;
   v7[3] = &unk_2798A5170;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __48__XPCServiceConnection_shutDownCompletionBlock___block_invoke(uint64_t a1)
@@ -50,32 +50,32 @@ void __48__XPCServiceConnection_shutDownCompletionBlock___block_invoke(uint64_t 
   }
 }
 
-- (void)sendMessage:(id)a3 withHandler:(id)a4
+- (void)sendMessage:(id)message withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  messageCopy = message;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     __assert_rtn("[XPCServiceConnection sendMessage:withHandler:]", "XPCKitBasic.m", 338, "handler");
   }
 
-  v8 = v7;
+  v8 = handlerCopy;
   if (_shouldLogBlock && (*(_shouldLogBlock + 16))())
   {
     _XPCLog(6, @"%@: Scheduling message to be sent to the client.", v9, v10, v11, v12, v13, v14, self);
   }
 
-  v15 = [(XPCServiceConnection *)self workQueue];
+  workQueue = [(XPCServiceConnection *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__XPCServiceConnection_sendMessage_withHandler___block_invoke;
   block[3] = &unk_2798A51E8;
-  v19 = v6;
+  v19 = messageCopy;
   v20 = v8;
   block[4] = self;
-  v16 = v6;
+  v16 = messageCopy;
   v17 = v8;
-  dispatch_async(v15, block);
+  dispatch_async(workQueue, block);
 }
 
 void __48__XPCServiceConnection_sendMessage_withHandler___block_invoke(uint64_t a1)
@@ -282,38 +282,38 @@ LABEL_40:
   xpc_connection_resume(client);
 }
 
-- (void)workQueueHandleIncomingMessage:(id)a3
+- (void)workQueueHandleIncomingMessage:(id)message
 {
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "__xpcseq");
-  v7 = [[XPCRequest alloc] initWithMessage:v4 sequence:uint64 connection:self->_client];
+  messageCopy = message;
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "__xpcseq");
+  v7 = [[XPCRequest alloc] initWithMessage:messageCopy sequence:uint64 connection:self->_client];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained XPCServiceConnection:self didReceiveRequest:v7 sequenceNumber:uint64];
 }
 
-- (XPCServiceConnection)initWithServiceName:(id)a3 client:(id)a4 queue:(id)a5
+- (XPCServiceConnection)initWithServiceName:(id)name client:(id)client queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  clientCopy = client;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = XPCServiceConnection;
   v12 = [(XPCServiceConnection *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serviceName, a3);
-    objc_storeStrong(&v13->_workQueue, a5);
-    objc_storeStrong(&v13->_client, a4);
-    xpc_connection_set_target_queue(v10, v13->_workQueue);
+    objc_storeStrong(&v12->_serviceName, name);
+    objc_storeStrong(&v13->_workQueue, queue);
+    objc_storeStrong(&v13->_client, client);
+    xpc_connection_set_target_queue(clientCopy, v13->_workQueue);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __57__XPCServiceConnection_initWithServiceName_client_queue___block_invoke;
     handler[3] = &unk_2798A5198;
     v14 = v13;
     v18 = v14;
-    xpc_connection_set_event_handler(v10, handler);
+    xpc_connection_set_event_handler(clientCopy, handler);
     v15 = v14;
   }
 

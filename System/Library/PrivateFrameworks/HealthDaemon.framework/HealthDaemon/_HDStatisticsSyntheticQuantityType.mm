@@ -1,69 +1,69 @@
 @interface _HDStatisticsSyntheticQuantityType
 + (BOOL)supportsSecureCoding;
-+ (id)syntheticQuantityTypeWithConfigurationProviding:(id)a3;
-+ (id)syntheticQuantityTypeWithUnderlyingSampleType:(id)a3 aggregationStyle:(int64_t)a4 canonicalUnit:(id)a5;
-+ (id)syntheticQuantityTypeWithUnderlyingSampleType:(id)a3 aggregationStyle:(int64_t)a4 canonicalUnit:(id)a5 shouldUseUnderlyingTypeForStatistics:(BOOL)a6;
-- (_HDStatisticsSyntheticQuantityType)initWithCoder:(id)a3;
-- (id)_initWithUnderlyingSampleType:(uint64_t)a3 aggregationStyle:(void *)a4 canonicalUnit:(char)a5 shouldUseUnderlyingTypeForStatistics:;
-- (void)encodeWithCoder:(id)a3;
++ (id)syntheticQuantityTypeWithConfigurationProviding:(id)providing;
++ (id)syntheticQuantityTypeWithUnderlyingSampleType:(id)type aggregationStyle:(int64_t)style canonicalUnit:(id)unit;
++ (id)syntheticQuantityTypeWithUnderlyingSampleType:(id)type aggregationStyle:(int64_t)style canonicalUnit:(id)unit shouldUseUnderlyingTypeForStatistics:(BOOL)statistics;
+- (_HDStatisticsSyntheticQuantityType)initWithCoder:(id)coder;
+- (id)_initWithUnderlyingSampleType:(uint64_t)type aggregationStyle:(void *)style canonicalUnit:(char)unit shouldUseUnderlyingTypeForStatistics:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HDStatisticsSyntheticQuantityType
 
-+ (id)syntheticQuantityTypeWithUnderlyingSampleType:(id)a3 aggregationStyle:(int64_t)a4 canonicalUnit:(id)a5
++ (id)syntheticQuantityTypeWithUnderlyingSampleType:(id)type aggregationStyle:(int64_t)style canonicalUnit:(id)unit
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[_HDStatisticsSyntheticQuantityType alloc] _initWithUnderlyingSampleType:v8 aggregationStyle:a4 canonicalUnit:v7 shouldUseUnderlyingTypeForStatistics:1];
+  unitCopy = unit;
+  typeCopy = type;
+  v9 = [[_HDStatisticsSyntheticQuantityType alloc] _initWithUnderlyingSampleType:typeCopy aggregationStyle:style canonicalUnit:unitCopy shouldUseUnderlyingTypeForStatistics:1];
 
   return v9;
 }
 
-- (id)_initWithUnderlyingSampleType:(uint64_t)a3 aggregationStyle:(void *)a4 canonicalUnit:(char)a5 shouldUseUnderlyingTypeForStatistics:
+- (id)_initWithUnderlyingSampleType:(uint64_t)type aggregationStyle:(void *)style canonicalUnit:(char)unit shouldUseUnderlyingTypeForStatistics:
 {
   v9 = a2;
-  v10 = a4;
-  if (a1)
+  styleCopy = style;
+  if (self)
   {
-    v16.receiver = a1;
+    v16.receiver = self;
     v16.super_class = _HDStatisticsSyntheticQuantityType;
-    a1 = objc_msgSendSuper2(&v16, sel__initWithCode_, [v9 code]);
-    if (a1)
+    self = objc_msgSendSuper2(&v16, sel__initWithCode_, [v9 code]);
+    if (self)
     {
       v11 = [v9 copy];
-      v12 = *(a1 + 6);
-      *(a1 + 6) = v11;
+      v12 = *(self + 6);
+      *(self + 6) = v11;
 
-      *(a1 + 7) = a3;
-      v13 = [v10 copy];
-      v14 = *(a1 + 8);
-      *(a1 + 8) = v13;
+      *(self + 7) = type;
+      v13 = [styleCopy copy];
+      v14 = *(self + 8);
+      *(self + 8) = v13;
 
-      *(a1 + 40) = a5;
+      *(self + 40) = unit;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)syntheticQuantityTypeWithUnderlyingSampleType:(id)a3 aggregationStyle:(int64_t)a4 canonicalUnit:(id)a5 shouldUseUnderlyingTypeForStatistics:(BOOL)a6
++ (id)syntheticQuantityTypeWithUnderlyingSampleType:(id)type aggregationStyle:(int64_t)style canonicalUnit:(id)unit shouldUseUnderlyingTypeForStatistics:(BOOL)statistics
 {
-  v9 = a5;
-  v10 = a3;
-  v11 = [[_HDStatisticsSyntheticQuantityType alloc] _initWithUnderlyingSampleType:v10 aggregationStyle:a4 canonicalUnit:v9 shouldUseUnderlyingTypeForStatistics:a6];
+  unitCopy = unit;
+  typeCopy = type;
+  v11 = [[_HDStatisticsSyntheticQuantityType alloc] _initWithUnderlyingSampleType:typeCopy aggregationStyle:style canonicalUnit:unitCopy shouldUseUnderlyingTypeForStatistics:statistics];
 
   return v11;
 }
 
-+ (id)syntheticQuantityTypeWithConfigurationProviding:(id)a3
++ (id)syntheticQuantityTypeWithConfigurationProviding:(id)providing
 {
-  v3 = a3;
+  providingCopy = providing;
   v4 = [_HDStatisticsSyntheticQuantityType alloc];
-  v5 = [v3 underlyingSampleType];
-  v6 = [v3 aggregationStyleForStatistics];
-  v7 = [v3 canonicalUnitForStatistics];
+  underlyingSampleType = [providingCopy underlyingSampleType];
+  aggregationStyleForStatistics = [providingCopy aggregationStyleForStatistics];
+  canonicalUnitForStatistics = [providingCopy canonicalUnitForStatistics];
 
-  v8 = [(_HDStatisticsSyntheticQuantityType *)v4 _initWithUnderlyingSampleType:v5 aggregationStyle:v6 canonicalUnit:v7 shouldUseUnderlyingTypeForStatistics:1];
+  v8 = [(_HDStatisticsSyntheticQuantityType *)v4 _initWithUnderlyingSampleType:underlyingSampleType aggregationStyle:aggregationStyleForStatistics canonicalUnit:canonicalUnitForStatistics shouldUseUnderlyingTypeForStatistics:1];
 
   return v8;
 }
@@ -78,7 +78,7 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -86,7 +86,7 @@
   [v3 raise:v4 format:{@"The -%@ method is not available on %@", v5, objc_opt_class()}];
 }
 
-- (_HDStatisticsSyntheticQuantityType)initWithCoder:(id)a3
+- (_HDStatisticsSyntheticQuantityType)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];

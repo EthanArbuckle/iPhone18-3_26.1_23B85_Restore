@@ -1,19 +1,19 @@
 @interface DABabysitterRegistrationToken
-- (DABabysitterRegistrationToken)initWithBlock:(id)a3;
+- (DABabysitterRegistrationToken)initWithBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation DABabysitterRegistrationToken
 
-- (DABabysitterRegistrationToken)initWithBlock:(id)a3
+- (DABabysitterRegistrationToken)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = DABabysitterRegistrationToken;
   v5 = [(DABabysitterRegistrationToken *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x245D0F110](v4);
+    v6 = MEMORY[0x245D0F110](blockCopy);
     unregisterBlock = v5->_unregisterBlock;
     v5->_unregisterBlock = v6;
   }

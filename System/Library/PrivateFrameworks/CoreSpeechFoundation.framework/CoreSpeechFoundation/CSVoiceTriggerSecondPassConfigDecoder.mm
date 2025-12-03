@@ -1,25 +1,25 @@
 @interface CSVoiceTriggerSecondPassConfigDecoder
-+ (BOOL)decodeUseKeywordSpotting:(id)a3 fromCategory:(id)a4;
-+ (float)decodePreTriggerAudioTime:(id)a3 fromCategory:(id)a4;
-+ (float)decodePrependingAudioTime:(id)a3 fromCategory:(id)a4;
-+ (float)decodeTrailingAudioTime:(id)a3 fromCategory:(id)a4;
-+ (id)categoryForFirstPass:(unint64_t)a3;
-+ (id)decodeConfigFileNDAPI:(id)a3 fromCategory:(id)a4;
-+ (id)decodeConfigFileRecognizer:(id)a3 fromCategory:(id)a4;
-+ (id)decodeConfigFrom:(id)a3 forFirstPassSource:(unint64_t)a4;
-+ (id)decodeQuasarCheckerResultCutOffCount:(id)a3 fromCategory:(id)a4;
-+ (id)decodeWearerDetectionConfig:(id)a3 fromCategory:(id)a4;
-+ (id)fetchAllVoiceTriggerSecondPassRecognizer:(id)a3;
++ (BOOL)decodeUseKeywordSpotting:(id)spotting fromCategory:(id)category;
++ (float)decodePreTriggerAudioTime:(id)time fromCategory:(id)category;
++ (float)decodePrependingAudioTime:(id)time fromCategory:(id)category;
++ (float)decodeTrailingAudioTime:(id)time fromCategory:(id)category;
++ (id)categoryForFirstPass:(unint64_t)pass;
++ (id)decodeConfigFileNDAPI:(id)i fromCategory:(id)category;
++ (id)decodeConfigFileRecognizer:(id)recognizer fromCategory:(id)category;
++ (id)decodeConfigFrom:(id)from forFirstPassSource:(unint64_t)source;
++ (id)decodeQuasarCheckerResultCutOffCount:(id)count fromCategory:(id)category;
++ (id)decodeWearerDetectionConfig:(id)config fromCategory:(id)category;
++ (id)fetchAllVoiceTriggerSecondPassRecognizer:(id)recognizer;
 @end
 
 @implementation CSVoiceTriggerSecondPassConfigDecoder
 
-+ (id)fetchAllVoiceTriggerSecondPassRecognizer:(id)a3
++ (id)fetchAllVoiceTriggerSecondPassRecognizer:(id)recognizer
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [a3 resourcePath];
+  resourcePath = [recognizer resourcePath];
   v4 = [CSAsset getConfigFileNameForAssetType:0];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
   if (+[CSUtils horsemanDeviceType]!= 1)
   {
     v7 = 0;
@@ -63,9 +63,9 @@ LABEL_7:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [v3 stringByAppendingPathComponent:{*(*(&v20 + 1) + 8 * i), v20}];
-        v16 = [v15 stringByStandardizingPath];
-        [v9 addObject:v16];
+        v15 = [resourcePath stringByAppendingPathComponent:{*(*(&v20 + 1) + 8 * i), v20}];
+        stringByStandardizingPath = [v15 stringByStandardizingPath];
+        [v9 addObject:stringByStandardizingPath];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -80,27 +80,27 @@ LABEL_7:
   return v17;
 }
 
-+ (id)decodeWearerDetectionConfig:(id)a3 fromCategory:(id)a4
++ (id)decodeWearerDetectionConfig:(id)config fromCategory:(id)category
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 getNumberForKey:@"remoteVADThreshold" category:v5 default:&unk_1F5916CC0];
+  categoryCopy = category;
+  configCopy = config;
+  v7 = [configCopy getNumberForKey:@"remoteVADThreshold" category:categoryCopy default:&unk_1F5916CC0];
   [v7 floatValue];
   v9 = v8;
 
-  v10 = [v6 getNumberForKey:@"minimumPhraseLengthForVADGating" category:v5 default:&unk_1F5916CD0];
+  v10 = [configCopy getNumberForKey:@"minimumPhraseLengthForVADGating" category:categoryCopy default:&unk_1F5916CD0];
   [v10 floatValue];
   v12 = v11;
 
-  v13 = [v6 getNumberForKey:@"secondPassShadowMicScoreThresholdForVADGating" category:v5 default:&unk_1F5916CE0];
+  v13 = [configCopy getNumberForKey:@"secondPassShadowMicScoreThresholdForVADGating" category:categoryCopy default:&unk_1F5916CE0];
   [v13 floatValue];
   v15 = v14;
 
-  v16 = [v6 getNumberForKey:@"remoteVADMyriadThreshold" category:v5 default:&unk_1F5916CC0];
+  v16 = [configCopy getNumberForKey:@"remoteVADMyriadThreshold" category:categoryCopy default:&unk_1F5916CC0];
   [v16 floatValue];
   v18 = v17;
 
-  v19 = [v6 getValueForKey:v5 category:@"phrasesToSkipBoronDecisionMaking"];
+  v19 = [configCopy getValueForKey:categoryCopy category:@"phrasesToSkipBoronDecisionMaking"];
 
   v20 = [CSVoiceTriggerAirPodWearerDetectionConfig alloc];
   LODWORD(v21) = v9;
@@ -112,34 +112,34 @@ LABEL_7:
   return v25;
 }
 
-+ (BOOL)decodeUseKeywordSpotting:(id)a3 fromCategory:(id)a4
++ (BOOL)decodeUseKeywordSpotting:(id)spotting fromCategory:(id)category
 {
-  v4 = [a3 getNumberForKey:@"useKeywordSpotting" category:a4 default:MEMORY[0x1E695E110]];
-  v5 = [v4 BOOLValue];
+  v4 = [spotting getNumberForKey:@"useKeywordSpotting" category:category default:MEMORY[0x1E695E110]];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (id)decodeConfigFileRecognizer:(id)a3 fromCategory:(id)a4
++ (id)decodeConfigFileRecognizer:(id)recognizer fromCategory:(id)category
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 resourcePath];
-  if (+[CSUtils horsemanDeviceType](CSUtils, "horsemanDeviceType") != 1 || ([v5 getStringForKey:@"configFileRecognizerB238" category:v6 default:0], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  recognizerCopy = recognizer;
+  categoryCopy = category;
+  resourcePath = [recognizerCopy resourcePath];
+  if (+[CSUtils horsemanDeviceType](CSUtils, "horsemanDeviceType") != 1 || ([recognizerCopy getStringForKey:@"configFileRecognizerB238" category:categoryCopy default:0], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [v5 getStringForKey:@"configFileRecognizer" category:v6 default:@"recognizer.json"];
+    v8 = [recognizerCopy getStringForKey:@"configFileRecognizer" category:categoryCopy default:@"recognizer.json"];
   }
 
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  v9 = [resourcePath stringByAppendingPathComponent:v8];
 
   return v9;
 }
 
-+ (id)decodeConfigFileNDAPI:(id)a3 fromCategory:(id)a4
++ (id)decodeConfigFileNDAPI:(id)i fromCategory:(id)category
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 resourcePath];
+  categoryCopy = category;
+  iCopy = i;
+  resourcePath = [iCopy resourcePath];
   if (CSIsHorseman_onceToken != -1)
   {
     dispatch_once(&CSIsHorseman_onceToken, &__block_literal_global_9);
@@ -155,43 +155,43 @@ LABEL_7:
     v8 = @"config.txt";
   }
 
-  v9 = [v6 getStringForKey:@"configFileNDAPI" category:v5 default:v8];
+  v9 = [iCopy getStringForKey:@"configFileNDAPI" category:categoryCopy default:v8];
 
-  v10 = [v7 stringByAppendingPathComponent:v9];
+  v10 = [resourcePath stringByAppendingPathComponent:v9];
 
   return v10;
 }
 
-+ (float)decodeTrailingAudioTime:(id)a3 fromCategory:(id)a4
++ (float)decodeTrailingAudioTime:(id)time fromCategory:(id)category
 {
-  v4 = [a3 getNumberForKey:@"analyzerTrailingAudioTime" category:a4 default:&unk_1F5916CB0];
+  v4 = [time getNumberForKey:@"analyzerTrailingAudioTime" category:category default:&unk_1F5916CB0];
   [v4 floatValue];
   v6 = v5;
 
   return v6;
 }
 
-+ (float)decodePrependingAudioTime:(id)a3 fromCategory:(id)a4
++ (float)decodePrependingAudioTime:(id)time fromCategory:(id)category
 {
-  v4 = [a3 getNumberForKey:@"analyzerPrependingAudioTime" category:a4 default:&unk_1F5916CA0];
+  v4 = [time getNumberForKey:@"analyzerPrependingAudioTime" category:category default:&unk_1F5916CA0];
   [v4 floatValue];
   v6 = v5;
 
   return v6;
 }
 
-+ (float)decodePreTriggerAudioTime:(id)a3 fromCategory:(id)a4
++ (float)decodePreTriggerAudioTime:(id)time fromCategory:(id)category
 {
-  v4 = [a3 getNumberForKey:@"preTriggerAudioTime" category:a4 default:&unk_1F5916CA0];
+  v4 = [time getNumberForKey:@"preTriggerAudioTime" category:category default:&unk_1F5916CA0];
   [v4 floatValue];
   v6 = v5;
 
   return v6;
 }
 
-+ (id)decodeQuasarCheckerResultCutOffCount:(id)a3 fromCategory:(id)a4
++ (id)decodeQuasarCheckerResultCutOffCount:(id)count fromCategory:(id)category
 {
-  v4 = [a3 getNumberForKey:@"quasarCheckerResultCutOffTime" category:a4 default:&unk_1F5916C90];
+  v4 = [count getNumberForKey:@"quasarCheckerResultCutOffTime" category:category default:&unk_1F5916C90];
   [v4 floatValue];
   v6 = v5;
 
@@ -202,12 +202,12 @@ LABEL_7:
   return [v7 numberWithFloat:v8];
 }
 
-+ (id)decodeConfigFrom:(id)a3 forFirstPassSource:(unint64_t)a4
++ (id)decodeConfigFrom:(id)from forFirstPassSource:(unint64_t)source
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 categoryForFirstPass:a4];
-  if (([v6 containsCategory:v7] & 1) == 0)
+  fromCopy = from;
+  v7 = [self categoryForFirstPass:source];
+  if (([fromCopy containsCategory:v7] & 1) == 0)
   {
 
     v8 = CSLogCategoryVT;
@@ -223,38 +223,38 @@ LABEL_7:
   }
 
   v9 = [CSVoiceTriggerSecondPassConfig alloc];
-  [a1 decodePreTriggerAudioTime:v6 fromCategory:v7];
+  [self decodePreTriggerAudioTime:fromCopy fromCategory:v7];
   v11 = v10;
-  [a1 decodePrependingAudioTime:v6 fromCategory:v7];
+  [self decodePrependingAudioTime:fromCopy fromCategory:v7];
   v13 = v12;
-  [a1 decodeTrailingAudioTime:v6 fromCategory:v7];
+  [self decodeTrailingAudioTime:fromCopy fromCategory:v7];
   v15 = v14;
-  v29 = [v6 resourcePath];
-  v16 = [a1 decodeConfigFileNDAPI:v6 fromCategory:v7];
-  HIDWORD(v28) = [a1 decodeUseRecognizerCombination:v6 fromCategory:v7];
-  v17 = [a1 decodeConfigFileRecognizer:v6 fromCategory:v7];
-  v18 = [a1 decodeUseKeywordSpotting:v6 fromCategory:v7];
-  v19 = [CSVoiceTriggerPhraseConfigDecoder decodeConfigFrom:v6 category:v7];
-  v20 = [a1 decodeWearerDetectionConfig:v6 fromCategory:v7];
-  v21 = [a1 decodeQuasarCheckerResultCutOffCount:v6 fromCategory:v7];
-  LOBYTE(v28) = [a1 decodeuseTimeBasedTriggerLength:v6 fromCategory:v7];
+  resourcePath = [fromCopy resourcePath];
+  v16 = [self decodeConfigFileNDAPI:fromCopy fromCategory:v7];
+  HIDWORD(v28) = [self decodeUseRecognizerCombination:fromCopy fromCategory:v7];
+  v17 = [self decodeConfigFileRecognizer:fromCopy fromCategory:v7];
+  v18 = [self decodeUseKeywordSpotting:fromCopy fromCategory:v7];
+  v19 = [CSVoiceTriggerPhraseConfigDecoder decodeConfigFrom:fromCopy category:v7];
+  v20 = [self decodeWearerDetectionConfig:fromCopy fromCategory:v7];
+  v21 = [self decodeQuasarCheckerResultCutOffCount:fromCopy fromCategory:v7];
+  LOBYTE(v28) = [self decodeuseTimeBasedTriggerLength:fromCopy fromCategory:v7];
   LODWORD(v22) = v11;
   LODWORD(v23) = v13;
   LODWORD(v24) = v15;
-  v25 = [(CSVoiceTriggerSecondPassConfig *)v9 initWithPreTriggerAudioTime:v29 prependingAudioTime:v16 trailingAudioTime:HIDWORD(v28) resourcePath:v17 configPathNDAPI:v18 useRecognizerCombination:v19 configPathRecognizer:v22 useKeywordSpotting:v23 phraseConfigs:v24 wearerDetectionConfig:v20 quasarCheckerResultCutOffCount:v21 useTimeBasedTriggerLength:v28];
+  v25 = [(CSVoiceTriggerSecondPassConfig *)v9 initWithPreTriggerAudioTime:resourcePath prependingAudioTime:v16 trailingAudioTime:HIDWORD(v28) resourcePath:v17 configPathNDAPI:v18 useRecognizerCombination:v19 configPathRecognizer:v22 useKeywordSpotting:v23 phraseConfigs:v24 wearerDetectionConfig:v20 quasarCheckerResultCutOffCount:v21 useTimeBasedTriggerLength:v28];
 
   v26 = *MEMORY[0x1E69E9840];
 
   return v25;
 }
 
-+ (id)categoryForFirstPass:(unint64_t)a3
++ (id)categoryForFirstPass:(unint64_t)pass
 {
-  if (a3 > 5)
+  if (pass > 5)
   {
-    if (a3 <= 7)
+    if (pass <= 7)
     {
-      if (a3 != 6)
+      if (pass != 6)
       {
         return @"voiceTriggerSecondPassRemora";
       }
@@ -262,7 +262,7 @@ LABEL_7:
       return @"voiceTriggerSecondPassHearst";
     }
 
-    switch(a3)
+    switch(pass)
     {
       case 8uLL:
         return @"voiceTriggerSecondPassDuringRingtone";
@@ -275,14 +275,14 @@ LABEL_7:
     return @"voiceTriggerSecondPass";
   }
 
-  if (a3 <= 2)
+  if (pass <= 2)
   {
-    if (a3 == 1)
+    if (pass == 1)
     {
       return @"voiceTriggerSecondPassAP";
     }
 
-    if (a3 == 2)
+    if (pass == 2)
     {
       return @"voiceTriggerSecondPassAOP";
     }
@@ -290,12 +290,12 @@ LABEL_7:
     return @"voiceTriggerSecondPass";
   }
 
-  if (a3 == 3)
+  if (pass == 3)
   {
     return @"voiceTriggerSecondPassHearst";
   }
 
-  if (a3 == 4)
+  if (pass == 4)
   {
     return @"voiceTriggerSecondPassJarvis";
   }

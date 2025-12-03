@@ -1,11 +1,11 @@
 @interface CNAsynchronousCacheEntry
 - (CNAsynchronousCacheEntry)init;
-- (CNAsynchronousCacheEntry)initWithSchedulerProvider:(id)a3;
+- (CNAsynchronousCacheEntry)initWithSchedulerProvider:(id)provider;
 - (id)description;
-- (void)addDelegate:(id)a3;
-- (void)removeDelegates:(id)a3;
-- (void)updateValue:(id)a3;
-- (void)withLock_compactAndRemoveDelegates:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)removeDelegates:(id)delegates;
+- (void)updateValue:(id)value;
+- (void)withLock_compactAndRemoveDelegates:(id)delegates;
 @end
 
 @implementation CNAsynchronousCacheEntry
@@ -13,22 +13,22 @@
 - (CNAsynchronousCacheEntry)init
 {
   v3 = +[(CNEnvironmentBase *)CNEnvironment];
-  v4 = [v3 schedulerProvider];
-  v5 = [(CNAsynchronousCacheEntry *)self initWithSchedulerProvider:v4];
+  schedulerProvider = [v3 schedulerProvider];
+  v5 = [(CNAsynchronousCacheEntry *)self initWithSchedulerProvider:schedulerProvider];
 
   return v5;
 }
 
-- (CNAsynchronousCacheEntry)initWithSchedulerProvider:(id)a3
+- (CNAsynchronousCacheEntry)initWithSchedulerProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = CNAsynchronousCacheEntry;
   v6 = [(CNAsynchronousCacheEntry *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_schedulerProvider, a3);
+    objc_storeStrong(&v6->_schedulerProvider, provider);
     currentValue = v7->_currentValue;
     v7->_currentValue = 0;
 
@@ -47,55 +47,55 @@
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"currentValue" object:self->_currentValue];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(CNAsynchronousCacheEntry *)v4 withLock_compactDelegates];
-  [(CNAsynchronousCacheEntry *)v4 withLock_addDelegate:v8];
-  v5 = v4->_currentValue;
-  v6 = [(CNSchedulerProvider *)v4->_schedulerProvider immediateScheduler];
-  [v6 timestamp];
-  v4->_timestampOfCurrentValue = v7;
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CNAsynchronousCacheEntry *)selfCopy withLock_compactDelegates];
+  [(CNAsynchronousCacheEntry *)selfCopy withLock_addDelegate:delegateCopy];
+  v5 = selfCopy->_currentValue;
+  immediateScheduler = [(CNSchedulerProvider *)selfCopy->_schedulerProvider immediateScheduler];
+  [immediateScheduler timestamp];
+  selfCopy->_timestampOfCurrentValue = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   if (v5)
   {
-    [v8 cacheEntryDidUpdateValue:v4];
+    [delegateCopy cacheEntryDidUpdateValue:selfCopy];
   }
 }
 
-- (void)removeDelegates:(id)a3
+- (void)removeDelegates:(id)delegates
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(CNAsynchronousCacheEntry *)v4 withLock_compactAndRemoveDelegates:v5];
-  objc_sync_exit(v4);
+  delegatesCopy = delegates;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CNAsynchronousCacheEntry *)selfCopy withLock_compactAndRemoveDelegates:delegatesCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)updateValue:(id)a3
+- (void)updateValue:(id)value
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  [(CNAsynchronousCacheEntry *)v6 withLock_compactDelegates];
-  v7 = [(CNWeakArray *)v6->_delegates allObjects];
-  objc_storeStrong(&v6->_currentValue, a3);
-  objc_sync_exit(v6);
+  valueCopy = value;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CNAsynchronousCacheEntry *)selfCopy withLock_compactDelegates];
+  allObjects = [(CNWeakArray *)selfCopy->_delegates allObjects];
+  objc_storeStrong(&selfCopy->_currentValue, value);
+  objc_sync_exit(selfCopy);
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = v7;
+  v8 = allObjects;
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
@@ -110,7 +110,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) cacheEntryDidUpdateValue:{v6, v13}];
+        [*(*(&v13 + 1) + 8 * v11++) cacheEntryDidUpdateValue:{selfCopy, v13}];
       }
 
       while (v9 != v11);
@@ -123,14 +123,14 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)withLock_compactAndRemoveDelegates:(id)a3
+- (void)withLock_compactAndRemoveDelegates:(id)delegates
 {
   delegates = self->_delegates;
-  v5 = a3;
-  v6 = [(CNWeakArray *)delegates allObjects];
-  v7 = [v6 mutableCopy];
+  delegatesCopy = delegates;
+  allObjects = [(CNWeakArray *)delegates allObjects];
+  v7 = [allObjects mutableCopy];
 
-  [v7 removeObjectsInArray:v5];
+  [v7 removeObjectsInArray:delegatesCopy];
   [(CNWeakArray *)self->_delegates setArray:v7];
 }
 

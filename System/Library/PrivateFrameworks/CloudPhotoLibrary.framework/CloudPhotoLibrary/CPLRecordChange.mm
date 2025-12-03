@@ -1,78 +1,78 @@
 @interface CPLRecordChange
-+ (BOOL)cplShouldIgnorePropertyForCoding:(id)a3;
-+ (BOOL)cplShouldIgnorePropertyForEquality:(id)a3;
-+ (Class)classForStoredClassName:(id)a3 forCPLArchiver:(id)a4;
-+ (id)_descriptionForChangeType:(unint64_t)a3 isSparseFullChange:(BOOL)a4 onlyUploadNewResources:(BOOL)a5;
-+ (id)cplAdditionalSecureClassesForProperty:(id)a3;
-+ (id)descriptionForDirection:(unint64_t)a3;
-+ (id)descriptionForSupportedFeatureCompatibleVersion:(int64_t)a3;
-+ (id)newChangeWithScopedIdentifier:(id)a3 changeType:(unint64_t)a4;
-+ (id)newChangeWithType:(unint64_t)a3;
-+ (id)newDeleteChangeWithScopedIdentifier:(id)a3;
++ (BOOL)cplShouldIgnorePropertyForCoding:(id)coding;
++ (BOOL)cplShouldIgnorePropertyForEquality:(id)equality;
++ (Class)classForStoredClassName:(id)name forCPLArchiver:(id)archiver;
++ (id)_descriptionForChangeType:(unint64_t)type isSparseFullChange:(BOOL)change onlyUploadNewResources:(BOOL)resources;
++ (id)cplAdditionalSecureClassesForProperty:(id)property;
++ (id)descriptionForDirection:(unint64_t)direction;
++ (id)descriptionForSupportedFeatureCompatibleVersion:(int64_t)version;
++ (id)newChangeWithScopedIdentifier:(id)identifier changeType:(unint64_t)type;
++ (id)newChangeWithType:(unint64_t)type;
++ (id)newDeleteChangeWithScopedIdentifier:(id)identifier;
 + (id)newRecord;
-+ (id)newRecordInScopeWithIdentifier:(id)a3;
-+ (id)newRecordWithScopedIdentifier:(id)a3;
++ (id)newRecordInScopeWithIdentifier:(id)identifier;
++ (id)newRecordWithScopedIdentifier:(id)identifier;
 + (int64_t)supportedFeatureCompatibleVersion;
 - (BOOL)allResourcesAreAvailable;
-- (BOOL)applyChange:(id)a3 copyPropertiesToFinalChange:(id)a4 forChangeType:(unint64_t)a5 direction:(unint64_t)a6 diffTracker:(id)a7;
-- (BOOL)changeIsOnlyAddingResourcesToRecord:(id)a3 addedResources:(id *)a4;
-- (BOOL)hasChangeType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isInScopeWithIdentifier:(id)a3;
-- (BOOL)isSharedInScopeWithIdentifier:(id)a3;
+- (BOOL)applyChange:(id)change copyPropertiesToFinalChange:(id)finalChange forChangeType:(unint64_t)type direction:(unint64_t)direction diffTracker:(id)tracker;
+- (BOOL)changeIsOnlyAddingResourcesToRecord:(id)record addedResources:(id *)resources;
+- (BOOL)hasChangeType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isInScopeWithIdentifier:(id)identifier;
+- (BOOL)isSharedInScopeWithIdentifier:(id)identifier;
 - (BOOL)relatedRelationshipIsWeak;
-- (BOOL)requiresStableHashForResourceType:(unint64_t)a3;
-- (BOOL)resourceChangeWillOnlyChangeDerivatives:(id)a3;
+- (BOOL)requiresStableHashForResourceType:(unint64_t)type;
+- (BOOL)resourceChangeWillOnlyChangeDerivatives:(id)derivatives;
 - (BOOL)secondaryRelationshipIsWeak;
-- (BOOL)shouldApplyPropertiesWithSelector:(SEL)a3;
+- (BOOL)shouldApplyPropertiesWithSelector:(SEL)selector;
 - (BOOL)supportsCollectionShare;
 - (BOOL)supportsDeletion;
 - (BOOL)supportsDirectDeletion;
 - (BOOL)supportsRecordModificationDate;
-- (BOOL)supportsResourceType:(unint64_t)a3;
+- (BOOL)supportsResourceType:(unint64_t)type;
 - (BOOL)supportsResources;
 - (BOOL)supportsSharing;
 - (BOOL)supportsSharingScopedIdentifier;
-- (BOOL)validateChangeWithError:(id *)a3;
-- (BOOL)validateRecordForTracker:(id)a3;
-- (CPLRecordChange)initWithCPLArchiver:(id)a3;
-- (CPLRecordChange)initWithCoder:(id)a3;
+- (BOOL)validateChangeWithError:(id *)error;
+- (BOOL)validateRecordForTracker:(id)tracker;
+- (CPLRecordChange)initWithCPLArchiver:(id)archiver;
+- (CPLRecordChange)initWithCoder:(id)coder;
 - (Class)relatedRecordClass;
 - (NSArray)sharingContributorUserIdentifiers;
 - (NSArray)updateSharingContributorUserIdentifiers;
 - (id)allRelatedScopedIdentifiers;
 - (id)asRecordView;
-- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)a3;
-- (id)compactedChangeWithRelatedChanges:(id)a3 isOnlyChange:(BOOL)a4 fullRecord:(id)a5 usingStorageView:(id)a6;
-- (id)copyChangeType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)selector;
+- (id)compactedChangeWithRelatedChanges:(id)changes isOnlyChange:(BOOL)change fullRecord:(id)record usingStorageView:(id)view;
+- (id)copyChangeType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)cplFullDescription;
 - (id)description;
-- (id)fingerprintSchemeWithContext:(id)a3;
-- (id)mergeRecordChangeWithNewRecordChange:(id)a3 direction:(unint64_t)a4;
+- (id)fingerprintSchemeWithContext:(id)context;
+- (id)mergeRecordChangeWithNewRecordChange:(id)change direction:(unint64_t)direction;
 - (id)onlyAddedResources;
-- (id)propertiesForChangeType:(unint64_t)a3;
+- (id)propertiesForChangeType:(unint64_t)type;
 - (id)proposedCloudScopedIdentifier;
 - (id)proposedLocalScopedIdentifier;
-- (id)realRecordChangeFromRecordChange:(id)a3 direction:(unint64_t)a4 newRecord:(id *)a5 changeType:(unint64_t)a6 diffTracker:(id)a7;
-- (id)realRecordChangeFromRecordChange:(id)a3 direction:(unint64_t)a4 newRecord:(id *)a5 diffTracker:(id)a6;
+- (id)realRecordChangeFromRecordChange:(id)change direction:(unint64_t)direction newRecord:(id *)record changeType:(unint64_t)type diffTracker:(id)tracker;
+- (id)realRecordChangeFromRecordChange:(id)change direction:(unint64_t)direction newRecord:(id *)record diffTracker:(id)tracker;
 - (id)realScopedIdentifier;
 - (id)redactedDescription;
 - (id)relatedScopedIdentifier;
-- (id)resourceForType:(unint64_t)a3;
+- (id)resourceForType:(unint64_t)type;
 - (id)resourcePerType;
 - (id)resources;
 - (id)resourcesDescription;
 - (id)scopedIdentifiersForMapping;
 - (id)secondaryScopedIdentifier;
 - (id)sharingRecordScopedIdentifier;
-- (id)storedClassNameForCPLArchiver:(id)a3;
-- (id)translateToClientChangeUsingIDMapping:(id)a3 error:(id *)a4;
-- (id)translateToCloudChangeUsingIDMapping:(id)a3 error:(id *)a4;
+- (id)storedClassNameForCPLArchiver:(id)archiver;
+- (id)translateToClientChangeUsingIDMapping:(id)mapping error:(id *)error;
+- (id)translateToCloudChangeUsingIDMapping:(id)mapping error:(id *)error;
 - (int64_t)dequeueOrder;
 - (unint64_t)baseDerivativeResourceType;
 - (unint64_t)baseVideoComplemenentResourceType;
-- (unint64_t)effectiveResourceSizeToUploadUsingStorage:(id)a3;
+- (unint64_t)effectiveResourceSizeToUploadUsingStorage:(id)storage;
 - (unint64_t)estimatedRecordSize;
 - (unint64_t)fullChangeTypeForFullRecord;
 - (unint64_t)largestResourceSize;
@@ -80,26 +80,26 @@
 - (unint64_t)realResourceSize;
 - (unint64_t)realUploadResourceSize;
 - (unint64_t)totalResourceSize;
-- (void)applyChange:(id)a3;
-- (void)applyChangeType:(unint64_t)a3 fromChange:(id)a4;
+- (void)applyChange:(id)change;
+- (void)applyChangeType:(unint64_t)type fromChange:(id)change;
 - (void)awakeFromStorage;
-- (void)clearChangeType:(unint64_t)a3;
+- (void)clearChangeType:(unint64_t)type;
 - (void)clearIdentifiers;
-- (void)copyDerivatives:(unint64_t *)a3 count:(int)a4 avoidResourceType:(unint64_t)a5 fromRecord:(id)a6 inResourcePerType:(id)a7;
-- (void)copyDerivativesFromRecordIfPossible:(id)a3;
-- (void)enumerateChangeTypesForChangeType:(unint64_t)a3 block:(id)a4;
+- (void)copyDerivatives:(unint64_t *)derivatives count:(int)count avoidResourceType:(unint64_t)type fromRecord:(id)record inResourcePerType:(id)perType;
+- (void)copyDerivativesFromRecordIfPossible:(id)possible;
+- (void)enumerateChangeTypesForChangeType:(unint64_t)type block:(id)block;
 - (void)markAsSparseFullChange;
 - (void)markToOnlyUploadNewResources;
 - (void)prepareForStorage;
-- (void)restoreRelationshipsFromFullRecord:(id)a3;
-- (void)setResources:(id)a3;
-- (void)setScopeIndex:(int64_t)a3;
-- (void)setSharingContributorUserIdentifiers:(id)a3;
-- (void)setSharingRecordScopedIdentifier:(id)a3;
-- (void)setSharingScopeIdentifier:(id)a3;
-- (void)setShouldFilterDefaultValuesForNewProperties:(BOOL)a3;
-- (void)setUpdateSharingContributorUserIdentifiers:(id)a3;
-- (void)updateScopeIdentifier:(id)a3;
+- (void)restoreRelationshipsFromFullRecord:(id)record;
+- (void)setResources:(id)resources;
+- (void)setScopeIndex:(int64_t)index;
+- (void)setSharingContributorUserIdentifiers:(id)identifiers;
+- (void)setSharingRecordScopedIdentifier:(id)identifier;
+- (void)setSharingScopeIdentifier:(id)identifier;
+- (void)setShouldFilterDefaultValuesForNewProperties:(BOOL)properties;
+- (void)setUpdateSharingContributorUserIdentifiers:(id)identifiers;
+- (void)updateScopeIdentifier:(id)identifier;
 @end
 
 @implementation CPLRecordChange
@@ -133,33 +133,33 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 cplCopyPropertiesFromObject:self withCopyBlock:0];
   return v4;
 }
 
-- (CPLRecordChange)initWithCoder:(id)a3
+- (CPLRecordChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CPLRecordChange;
   v5 = [(CPLRecordChange *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [v5 cplDecodePropertiesFromCoder:v4];
-    v7 = [(CPLRecordChange *)v6 scopedIdentifier];
+    [v5 cplDecodePropertiesFromCoder:coderCopy];
+    scopedIdentifier = [(CPLRecordChange *)v6 scopedIdentifier];
 
-    if (!v7)
+    if (!scopedIdentifier)
     {
       if (initWithCoder__onceToken_5237 != -1)
       {
         dispatch_once(&initWithCoder__onceToken_5237, &__block_literal_global_54_5238);
       }
 
-      v8 = [v4 decodeObjectOfClass:initWithCoder__stringClass forKey:@"identifier"];
+      v8 = [coderCopy decodeObjectOfClass:initWithCoder__stringClass forKey:@"identifier"];
       if (v8)
       {
         v9 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:@"PrimarySync" identifier:v8];
@@ -178,7 +178,7 @@ uint64_t __46__CPLRecordChange_CPLNSCoding__initWithCoder___block_invoke()
   return result;
 }
 
-- (id)storedClassNameForCPLArchiver:(id)a3
+- (id)storedClassNameForCPLArchiver:(id)archiver
 {
   v3 = NSStringFromClass([(CPLRecordChange *)self classForCoder]);
   v4 = [v3 substringWithRange:{3, objc_msgSend(v3, "length") - 9}];
@@ -186,15 +186,15 @@ uint64_t __46__CPLRecordChange_CPLNSCoding__initWithCoder___block_invoke()
   return v4;
 }
 
-+ (id)cplAdditionalSecureClassesForProperty:(id)a3
++ (id)cplAdditionalSecureClassesForProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   if (cplAdditionalSecureClassesForProperty__onceToken != -1)
   {
     dispatch_once(&cplAdditionalSecureClassesForProperty__onceToken, &__block_literal_global_5265);
   }
 
-  v5 = [cplAdditionalSecureClassesForProperty__additionalClasses objectForKey:v4];
+  v5 = [cplAdditionalSecureClassesForProperty__additionalClasses objectForKey:propertyCopy];
   v6 = v5;
   if (v5)
   {
@@ -203,9 +203,9 @@ uint64_t __46__CPLRecordChange_CPLNSCoding__initWithCoder___block_invoke()
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___CPLRecordChange;
-    v7 = objc_msgSendSuper2(&v10, sel_cplAdditionalSecureClassesForProperty_, v4);
+    v7 = objc_msgSendSuper2(&v10, sel_cplAdditionalSecureClassesForProperty_, propertyCopy);
   }
 
   v8 = v7;
@@ -244,72 +244,72 @@ void __70__CPLRecordChange_CPLNSCoding__cplAdditionalSecureClassesForProperty___
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (Class)classForStoredClassName:(id)a3 forCPLArchiver:(id)a4
++ (Class)classForStoredClassName:(id)name forCPLArchiver:(id)archiver
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:@"CPL%@Change", v5];
+  nameCopy = name;
+  nameCopy = [[v4 alloc] initWithFormat:@"CPL%@Change", nameCopy];
 
-  v7 = NSClassFromString(v6);
+  v7 = NSClassFromString(nameCopy);
 
   return v7;
 }
 
-+ (BOOL)cplShouldIgnorePropertyForEquality:(id)a3
++ (BOOL)cplShouldIgnorePropertyForEquality:(id)equality
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"identifier"])
+  equalityCopy = equality;
+  if ([equalityCopy isEqualToString:@"identifier"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLRecordChange;
-    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForEquality_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForEquality_, equalityCopy);
   }
 
   return v5;
 }
 
-+ (BOOL)cplShouldIgnorePropertyForCoding:(id)a3
++ (BOOL)cplShouldIgnorePropertyForCoding:(id)coding
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"identifier"])
+  codingCopy = coding;
+  if ([codingCopy isEqualToString:@"identifier"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLRecordChange;
-    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForCoding_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForCoding_, codingCopy);
   }
 
   return v5;
 }
 
-- (CPLRecordChange)initWithCPLArchiver:(id)a3
+- (CPLRecordChange)initWithCPLArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v11.receiver = self;
   v11.super_class = CPLRecordChange;
-  v5 = [&v11 initWithCPLArchiver:v4];
+  v5 = [&v11 initWithCPLArchiver:archiverCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CPLRecordChange *)v5 scopedIdentifier];
+    scopedIdentifier = [(CPLRecordChange *)v5 scopedIdentifier];
 
-    if (!v7)
+    if (!scopedIdentifier)
     {
       if (initWithCPLArchiver__onceToken != -1)
       {
         dispatch_once(&initWithCPLArchiver__onceToken, &__block_literal_global_1955);
       }
 
-      v8 = [v4 decodeObjectOfClass:initWithCPLArchiver__stringClass forKey:@"identifier"];
+      v8 = [archiverCopy decodeObjectOfClass:initWithCPLArchiver__stringClass forKey:@"identifier"];
       if (v8)
       {
         v9 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:@"PrimarySync" identifier:v8];
@@ -328,46 +328,46 @@ uint64_t __52__CPLRecordChange_CPLArchiver__initWithCPLArchiver___block_invoke()
   return result;
 }
 
-- (id)translateToClientChangeUsingIDMapping:(id)a3 error:(id *)a4
+- (id)translateToClientChangeUsingIDMapping:(id)mapping error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  mappingCopy = mapping;
   v7 = [(CPLRecordChange *)self copy];
   v29 = 0;
-  v8 = [(CPLRecordChange *)self scopedIdentifier];
-  if (v8)
+  scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+  if (scopedIdentifier)
   {
-    v9 = [v6 localScopedIdentifierForCloudScopedIdentifier:v8 isFinal:&v29];
+    v9 = [mappingCopy localScopedIdentifierForCloudScopedIdentifier:scopedIdentifier isFinal:&v29];
     if (v9)
     {
-      v10 = v9;
+      proposedLocalScopedIdentifier = v9;
     }
 
     else
     {
-      v10 = [(CPLRecordChange *)self proposedLocalScopedIdentifier];
-      if (![v6 addCloudScopedIdentifier:v8 forLocalScopedIdentifier:v10 isFinal:1 direction:2 error:a4])
+      proposedLocalScopedIdentifier = [(CPLRecordChange *)self proposedLocalScopedIdentifier];
+      if (![mappingCopy addCloudScopedIdentifier:scopedIdentifier forLocalScopedIdentifier:proposedLocalScopedIdentifier isFinal:1 direction:2 error:error])
       {
-        v11 = v7;
+        scopedIdentifier2 = v7;
         v7 = 0;
         goto LABEL_28;
       }
     }
 
-    [v7 setScopedIdentifier:v10];
+    [v7 setScopedIdentifier:proposedLocalScopedIdentifier];
     if (!v7 || ![v7 supportsResources] || !objc_msgSend(v7, "hasChangeType:", 8))
     {
       goto LABEL_29;
     }
 
-    v23 = a4;
-    v11 = [v7 scopedIdentifier];
+    errorCopy = error;
+    scopedIdentifier2 = [v7 scopedIdentifier];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v12 = [v7 resources];
-    v13 = [v12 countByEnumeratingWithState:&v25 objects:v34 count:16];
+    resources = [v7 resources];
+    v13 = [resources countByEnumeratingWithState:&v25 objects:v34 count:16];
     if (v13)
     {
       v14 = v13;
@@ -378,23 +378,23 @@ uint64_t __52__CPLRecordChange_CPLArchiver__initWithCPLArchiver___block_invoke()
         {
           if (*v26 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(resources);
           }
 
-          [*(*(&v25 + 1) + 8 * i) setItemScopedIdentifier:v11];
+          [*(*(&v25 + 1) + 8 * i) setItemScopedIdentifier:scopedIdentifier2];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v25 objects:v34 count:16];
+        v14 = [resources countByEnumeratingWithState:&v25 objects:v34 count:16];
       }
 
       while (v14);
     }
 
     v24 = 0;
-    v17 = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
-    if (v17)
+    resourceCopyFromScopedIdentifier = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
+    if (resourceCopyFromScopedIdentifier)
     {
-      v18 = [v6 localScopedIdentifierForCloudScopedIdentifier:v17 isFinal:&v24];
+      v18 = [mappingCopy localScopedIdentifierForCloudScopedIdentifier:resourceCopyFromScopedIdentifier isFinal:&v24];
       if (v18)
       {
         [v7 setResourceCopyFromScopedIdentifier:v18];
@@ -403,9 +403,9 @@ uint64_t __52__CPLRecordChange_CPLArchiver__initWithCPLArchiver___block_invoke()
       else
       {
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Can't map cloud resourceCopyFromScopedIdentifier in %@", objc_opt_class()];
-        if (v23)
+        if (errorCopy)
         {
-          *v23 = [CPLErrors invalidClientCacheErrorWithReason:v19];
+          *errorCopy = [CPLErrors invalidClientCacheErrorWithReason:v19];
         }
 
         if ((_CPLSilentLogging & 1) == 0)
@@ -414,9 +414,9 @@ uint64_t __52__CPLRecordChange_CPLArchiver__initWithCPLArchiver___block_invoke()
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v31 = v17;
+            v31 = resourceCopyFromScopedIdentifier;
             v32 = 2112;
-            v33 = self;
+            selfCopy = self;
             _os_log_impl(&dword_1DC05A000, v20, OS_LOG_TYPE_ERROR, "Can't map cloud resourceCopyFromScopedIdentifier (%@) of %@", buf, 0x16u);
           }
         }
@@ -434,16 +434,16 @@ LABEL_29:
   return v7;
 }
 
-- (id)translateToCloudChangeUsingIDMapping:(id)a3 error:(id *)a4
+- (id)translateToCloudChangeUsingIDMapping:(id)mapping error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  mappingCopy = mapping;
   v7 = [(CPLRecordChange *)self copy];
   v27 = 0;
-  v8 = [(CPLRecordChange *)self scopedIdentifier];
-  if (v8)
+  scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+  if (scopedIdentifier)
   {
-    v9 = [v6 cloudScopedIdentifierForLocalScopedIdentifier:v8 isFinal:&v27];
+    v9 = [mappingCopy cloudScopedIdentifierForLocalScopedIdentifier:scopedIdentifier isFinal:&v27];
     if (v9)
     {
       [v7 setScopedIdentifier:v9];
@@ -457,8 +457,8 @@ LABEL_23:
 
     else
     {
-      v10 = [(CPLRecordChange *)self proposedCloudScopedIdentifier];
-      v11 = [v6 setupCloudScopedIdentifier:v10 forLocalScopedIdentifier:v8 isFinal:0 direction:1 error:a4];
+      proposedCloudScopedIdentifier = [(CPLRecordChange *)self proposedCloudScopedIdentifier];
+      v11 = [mappingCopy setupCloudScopedIdentifier:proposedCloudScopedIdentifier forLocalScopedIdentifier:scopedIdentifier isFinal:0 direction:1 error:error];
 
       if (v11)
       {
@@ -479,13 +479,13 @@ LABEL_23:
 
     if ([v7 supportsResources] && objc_msgSend(v7, "hasChangeType:", 8))
     {
-      v12 = [v7 scopedIdentifier];
+      scopedIdentifier2 = [v7 scopedIdentifier];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v13 = [v7 resources];
-      v14 = [v13 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      resources = [v7 resources];
+      v14 = [resources countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v14)
       {
         v15 = v14;
@@ -496,26 +496,26 @@ LABEL_23:
           {
             if (*v24 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(resources);
             }
 
-            [*(*(&v23 + 1) + 8 * i) setItemScopedIdentifier:v12];
+            [*(*(&v23 + 1) + 8 * i) setItemScopedIdentifier:scopedIdentifier2];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v23 objects:v28 count:16];
+          v15 = [resources countByEnumeratingWithState:&v23 objects:v28 count:16];
         }
 
         while (v15);
       }
 
-      v18 = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
-      if (v18)
+      resourceCopyFromScopedIdentifier = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
+      if (resourceCopyFromScopedIdentifier)
       {
         v22 = 0;
-        v19 = [v6 cloudScopedIdentifierForLocalScopedIdentifier:v18 isFinal:&v22];
+        v19 = [mappingCopy cloudScopedIdentifierForLocalScopedIdentifier:resourceCopyFromScopedIdentifier isFinal:&v22];
         if (!v19)
         {
-          v19 = [v18 copy];
+          v19 = [resourceCopyFromScopedIdentifier copy];
         }
 
         [v7 setResourceCopyFromScopedIdentifier:v19];
@@ -537,17 +537,17 @@ LABEL_24:
   v10[2] = *MEMORY[0x1E69E9840];
   if ([(CPLRecordChange *)self supportsResources]&& [(CPLRecordChange *)self hasChangeType:8]&& ([(CPLRecordChange *)self resourceCopyFromScopedIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
-    v5 = [(CPLRecordChange *)self scopedIdentifier];
-    v10[0] = v5;
-    v10[1] = v4;
+    scopedIdentifier2 = v3;
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+    v10[0] = scopedIdentifier;
+    v10[1] = scopedIdentifier2;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   }
 
   else
   {
-    v4 = [(CPLRecordChange *)self scopedIdentifier];
-    v9 = v4;
+    scopedIdentifier2 = [(CPLRecordChange *)self scopedIdentifier];
+    v9 = scopedIdentifier2;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
   }
 
@@ -556,42 +556,42 @@ LABEL_24:
   return v6;
 }
 
-- (id)compactedChangeWithRelatedChanges:(id)a3 isOnlyChange:(BOOL)a4 fullRecord:(id)a5 usingStorageView:(id)a6
+- (id)compactedChangeWithRelatedChanges:(id)changes isOnlyChange:(BOOL)change fullRecord:(id)record usingStorageView:(id)view
 {
-  if (a4)
+  if (change)
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (id)_descriptionForChangeType:(unint64_t)a3 isSparseFullChange:(BOOL)a4 onlyUploadNewResources:(BOOL)a5
++ (id)_descriptionForChangeType:(unint64_t)type isSparseFullChange:(BOOL)change onlyUploadNewResources:(BOOL)resources
 {
-  if (a3 == 1024)
+  if (type == 1024)
   {
     v9 = @"[D]";
     goto LABEL_18;
   }
 
-  v5 = a5;
-  v6 = a3;
-  if (a3)
+  resourcesCopy = resources;
+  typeCopy = type;
+  if (type)
   {
     v10 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"["];
     v9 = v10;
-    if ((v6 & 2) != 0)
+    if ((typeCopy & 2) != 0)
     {
       [(__CFString *)v10 appendString:@"U"];
-      if ((v6 & 8) == 0)
+      if ((typeCopy & 8) == 0)
       {
 LABEL_8:
-        if ((v6 & 0x10) == 0)
+        if ((typeCopy & 0x10) == 0)
         {
           goto LABEL_9;
         }
@@ -600,12 +600,12 @@ LABEL_8:
       }
     }
 
-    else if ((v6 & 8) == 0)
+    else if ((typeCopy & 8) == 0)
     {
       goto LABEL_8;
     }
 
-    if (v5)
+    if (resourcesCopy)
     {
       v12 = @"r";
     }
@@ -616,10 +616,10 @@ LABEL_8:
     }
 
     [(__CFString *)v9 appendString:v12];
-    if ((v6 & 0x10) == 0)
+    if ((typeCopy & 0x10) == 0)
     {
 LABEL_9:
-      if ((v6 & 0x20) == 0)
+      if ((typeCopy & 0x20) == 0)
       {
         goto LABEL_10;
       }
@@ -629,10 +629,10 @@ LABEL_9:
 
 LABEL_26:
     [(__CFString *)v9 appendString:@"C"];
-    if ((v6 & 0x20) == 0)
+    if ((typeCopy & 0x20) == 0)
     {
 LABEL_10:
-      if ((v6 & 0x40) == 0)
+      if ((typeCopy & 0x40) == 0)
       {
         goto LABEL_11;
       }
@@ -642,10 +642,10 @@ LABEL_10:
 
 LABEL_27:
     [(__CFString *)v9 appendString:@"F"];
-    if ((v6 & 0x40) == 0)
+    if ((typeCopy & 0x40) == 0)
     {
 LABEL_11:
-      if ((v6 & 0x100) == 0)
+      if ((typeCopy & 0x100) == 0)
       {
 LABEL_13:
         [(__CFString *)v9 appendString:@"]"];
@@ -659,7 +659,7 @@ LABEL_12:
 
 LABEL_28:
     [(__CFString *)v9 appendString:@"S"];
-    if ((v6 & 0x100) == 0)
+    if ((typeCopy & 0x100) == 0)
     {
       goto LABEL_13;
     }
@@ -667,7 +667,7 @@ LABEL_28:
     goto LABEL_12;
   }
 
-  if (a5)
+  if (resources)
   {
     v7 = @"[Ar]";
     v8 = @"[ar]";
@@ -679,7 +679,7 @@ LABEL_28:
     v8 = @"[a]";
   }
 
-  if (a4)
+  if (change)
   {
     v7 = v8;
   }
@@ -690,45 +690,45 @@ LABEL_18:
   return v9;
 }
 
-+ (id)newChangeWithType:(unint64_t)a3
++ (id)newChangeWithType:(unint64_t)type
 {
-  v4 = [a1 newRecord];
-  [v4 setChangeType:a3];
-  return v4;
+  newRecord = [self newRecord];
+  [newRecord setChangeType:type];
+  return newRecord;
 }
 
-+ (id)newDeleteChangeWithScopedIdentifier:(id)a3
++ (id)newDeleteChangeWithScopedIdentifier:(id)identifier
 {
-  v3 = [a1 newRecordWithScopedIdentifier:a3];
+  v3 = [self newRecordWithScopedIdentifier:identifier];
   [v3 setChangeType:1024];
   return v3;
 }
 
-+ (id)newChangeWithScopedIdentifier:(id)a3 changeType:(unint64_t)a4
++ (id)newChangeWithScopedIdentifier:(id)identifier changeType:(unint64_t)type
 {
-  v5 = [a1 newRecordWithScopedIdentifier:a3];
-  [v5 setChangeType:a4];
+  v5 = [self newRecordWithScopedIdentifier:identifier];
+  [v5 setChangeType:type];
   return v5;
 }
 
-+ (id)newRecordWithScopedIdentifier:(id)a3
++ (id)newRecordWithScopedIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setScopedIdentifier:v3];
+  [v4 setScopedIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)newRecordInScopeWithIdentifier:(id)a3
++ (id)newRecordInScopeWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
+  identifierCopy = identifier;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v8 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:v5 identifier:v7];
-  v9 = [a1 newRecordWithScopedIdentifier:v8];
+  v8 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:identifierCopy identifier:uUIDString];
+  v9 = [self newRecordWithScopedIdentifier:v8];
 
   return v9;
 }
@@ -736,46 +736,46 @@ LABEL_18:
 + (id)newRecord
 {
   v3 = CPLPrimaryScopeIdentifierForCurrentUniverse();
-  v4 = [a1 newRecordInScopeWithIdentifier:v3];
+  v4 = [self newRecordInScopeWithIdentifier:v3];
 
   return v4;
 }
 
-+ (id)descriptionForDirection:(unint64_t)a3
++ (id)descriptionForDirection:(unint64_t)direction
 {
-  if (a3 >= 3)
+  if (direction >= 3)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown direction %lu", a3];
+    direction = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown direction %lu", direction];
   }
 
   else
   {
-    v3 = off_1E861E1D8[a3];
+    direction = off_1E861E1D8[direction];
   }
 
-  return v3;
+  return direction;
 }
 
-+ (id)descriptionForSupportedFeatureCompatibleVersion:(int64_t)a3
++ (id)descriptionForSupportedFeatureCompatibleVersion:(int64_t)version
 {
-  if (a3 >= 20220)
+  if (version >= 20220)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = 0;
     v6 = 1;
-    v7 = a3;
+    versionCopy = version;
     do
     {
       v8 = v6;
       v9 = &descriptionForSupportedFeatureCompatibleVersion__descriptions[2 * v5];
       v10 = *v9;
-      if ((*v9 & ~v7) == 0)
+      if ((*v9 & ~versionCopy) == 0)
       {
         [v4 addObject:v9[1]];
       }
 
       v6 = 0;
-      v7 &= ~v10;
+      versionCopy &= ~v10;
       v5 = 1;
     }
 
@@ -785,26 +785,26 @@ LABEL_18:
       v11 = objc_alloc(MEMORY[0x1E696AEC0]);
       v12 = [v4 componentsJoinedByString:@"|"];
       v13 = v12;
-      if (v7)
+      if (versionCopy)
       {
-        v14 = [v11 initWithFormat:@"%ld (%@ + 0x%lx)", a3, v12, v7];
+        versionCopy = [v11 initWithFormat:@"%ld (%@ + 0x%lx)", version, v12, versionCopy];
       }
 
       else
       {
-        v14 = [v11 initWithFormat:@"%ld (%@)", a3, v12, v17];
+        versionCopy = [v11 initWithFormat:@"%ld (%@)", version, v12, v17];
       }
 
-      v15 = v14;
+      version = versionCopy;
 
       goto LABEL_13;
     }
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", a3];
+  version = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", version];
 LABEL_13:
 
-  return v15;
+  return version;
 }
 
 + (int64_t)supportedFeatureCompatibleVersion
@@ -820,21 +820,21 @@ LABEL_13:
   }
 }
 
-- (void)applyChangeType:(unint64_t)a3 fromChange:(id)a4
+- (void)applyChangeType:(unint64_t)type fromChange:(id)change
 {
-  v6 = a4;
+  changeCopy = change;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __46__CPLRecordChange_applyChangeType_fromChange___block_invoke;
   v14 = &unk_1E861FC80;
-  v15 = self;
-  v16 = v6;
-  v7 = v6;
-  [(CPLRecordChange *)self enumerateChangeTypesForChangeType:a3 block:&v11];
+  selfCopy = self;
+  v16 = changeCopy;
+  v7 = changeCopy;
+  [(CPLRecordChange *)self enumerateChangeTypesForChangeType:type block:&v11];
   v8 = [(CPLRecordChange *)self changeType:v11];
   if (v8)
   {
-    v9 = a3 == 0;
+    v9 = type == 0;
   }
 
   else
@@ -849,7 +849,7 @@ LABEL_13:
 
   else
   {
-    v10 = v8 | a3;
+    v10 = v8 | type;
   }
 
   if (v8 != v10)
@@ -864,12 +864,12 @@ void __46__CPLRecordChange_applyChangeType_fromChange___block_invoke(uint64_t a1
   [*(a1 + 32) cplCopyProperties:v3 fromObject:*(a1 + 40) withCopyBlock:0];
 }
 
-- (void)applyChange:(id)a3
+- (void)applyChange:(id)change
 {
   v17 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v5 = [(CPLRecordChange *)self changeType];
-  if (v5 == 1024)
+  changeCopy = change;
+  changeType = [(CPLRecordChange *)self changeType];
+  if (changeType == 1024)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -877,57 +877,57 @@ void __46__CPLRecordChange_applyChangeType_fromChange___block_invoke(uint64_t a1
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v16 = v14;
+        v16 = changeCopy;
         _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "Can't apply %@ to a delete", buf, 0xCu);
       }
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-    [v12 handleFailureInMethod:a2 object:self file:v13 lineNumber:1485 description:{@"Can't apply %@ to a delete", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v13 lineNumber:1485 description:{@"Can't apply %@ to a delete", changeCopy}];
 
     abort();
   }
 
-  v6 = v5;
-  v7 = [v14 changeType];
-  if (v7 == 1024)
+  v6 = changeType;
+  changeType2 = [changeCopy changeType];
+  if (changeType2 == 1024)
   {
-    v8 = self;
+    selfCopy2 = self;
 LABEL_7:
-    [(CPLRecordChange *)v8 setChangeType:v7];
+    [(CPLRecordChange *)selfCopy2 setChangeType:changeType2];
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!changeType2)
   {
-    [self cplCopyPropertiesFromObject:v14 withCopyBlock:0];
+    [self cplCopyPropertiesFromObject:changeCopy withCopyBlock:0];
     if (!v6)
     {
       goto LABEL_9;
     }
 
-    v8 = self;
-    v7 = 0;
+    selfCopy2 = self;
+    changeType2 = 0;
     goto LABEL_7;
   }
 
-  [(CPLRecordChange *)self applyChangeType:v7 fromChange:v14];
-  v9 = [v14 recordModificationDate];
-  [(CPLRecordChange *)self setRecordModificationDate:v9];
+  [(CPLRecordChange *)self applyChangeType:changeType2 fromChange:changeCopy];
+  recordModificationDate = [changeCopy recordModificationDate];
+  [(CPLRecordChange *)self setRecordModificationDate:recordModificationDate];
 
 LABEL_9:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearChangeType:(unint64_t)a3
+- (void)clearChangeType:(unint64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__CPLRecordChange_clearChangeType___block_invoke;
   v3[3] = &unk_1E861FC30;
   v3[4] = self;
-  [(CPLRecordChange *)self enumerateChangeTypesForChangeType:a3 block:v3];
+  [(CPLRecordChange *)self enumerateChangeTypesForChangeType:type block:v3];
 }
 
 void __35__CPLRecordChange_clearChangeType___block_invoke(uint64_t a1, uint64_t a2)
@@ -939,9 +939,9 @@ void __35__CPLRecordChange_clearChangeType___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (id)copyChangeType:(unint64_t)a3
+- (id)copyChangeType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     if (![(CPLRecordChange *)self hasChangeType:?])
     {
@@ -949,17 +949,17 @@ void __35__CPLRecordChange_clearChangeType___block_invoke(uint64_t a1, uint64_t 
     }
 
     v5 = objc_opt_class();
-    v6 = [(CPLRecordChange *)self scopedIdentifier];
-    v7 = [v5 newChangeWithScopedIdentifier:v6 changeType:a3];
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+    v7 = [v5 newChangeWithScopedIdentifier:scopedIdentifier changeType:type];
 
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __34__CPLRecordChange_copyChangeType___block_invoke;
     v16 = &unk_1E861FC80;
-    v17 = self;
+    selfCopy = self;
     v8 = v7;
     v18 = v8;
-    [(CPLRecordChange *)self enumerateChangeTypesForChangeType:a3 block:&v13];
+    [(CPLRecordChange *)self enumerateChangeTypesForChangeType:type block:&v13];
     v9 = [(CPLRecordChange *)self recordModificationDate:v13];
     [v8 setRecordModificationDate:v9];
 
@@ -983,119 +983,119 @@ void __34__CPLRecordChange_copyChangeType___block_invoke(uint64_t a1, uint64_t a
   [*(a1 + 40) cplCopyProperties:v3 fromObject:*(a1 + 32) withCopyBlock:0];
 }
 
-- (void)enumerateChangeTypesForChangeType:(unint64_t)a3 block:(id)a4
+- (void)enumerateChangeTypesForChangeType:(unint64_t)type block:(id)block
 {
-  v7 = a4;
-  v6 = [(CPLRecordChange *)self supportedChangeTypes];
-  if ((v6 & 2) != 0 && (!a3 || (a3 & 2) != 0))
+  blockCopy = block;
+  supportedChangeTypes = [(CPLRecordChange *)self supportedChangeTypes];
+  if ((supportedChangeTypes & 2) != 0 && (!type || (type & 2) != 0))
   {
-    v7[2](v7, 2);
+    blockCopy[2](blockCopy, 2);
   }
 
-  if ((v6 & 8) != 0 && (!a3 || (a3 & 8) != 0))
+  if ((supportedChangeTypes & 8) != 0 && (!type || (type & 8) != 0))
   {
-    v7[2](v7, 8);
+    blockCopy[2](blockCopy, 8);
   }
 
-  if ((v6 & 0x10) != 0 && (!a3 || (a3 & 0x10) != 0))
+  if ((supportedChangeTypes & 0x10) != 0 && (!type || (type & 0x10) != 0))
   {
-    v7[2](v7, 16);
+    blockCopy[2](blockCopy, 16);
   }
 
-  if ((v6 & 0x20) != 0 && (!a3 || (a3 & 0x20) != 0))
+  if ((supportedChangeTypes & 0x20) != 0 && (!type || (type & 0x20) != 0))
   {
-    v7[2](v7, 32);
+    blockCopy[2](blockCopy, 32);
   }
 
-  if ((v6 & 0x40) != 0 && (!a3 || (a3 & 0x40) != 0))
+  if ((supportedChangeTypes & 0x40) != 0 && (!type || (type & 0x40) != 0))
   {
-    v7[2](v7, 64);
+    blockCopy[2](blockCopy, 64);
   }
 }
 
-- (void)copyDerivativesFromRecordIfPossible:(id)a3
+- (void)copyDerivativesFromRecordIfPossible:(id)possible
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  possibleCopy = possible;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
   v8 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:self file:v7 lineNumber:1439 description:{@"%@ should be implemented by subclass", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v7 lineNumber:1439 description:{@"%@ should be implemented by subclass", v8}];
 
   abort();
 }
 
-- (void)copyDerivatives:(unint64_t *)a3 count:(int)a4 avoidResourceType:(unint64_t)a5 fromRecord:(id)a6 inResourcePerType:(id)a7
+- (void)copyDerivatives:(unint64_t *)derivatives count:(int)count avoidResourceType:(unint64_t)type fromRecord:(id)record inResourcePerType:(id)perType
 {
-  v25 = a6;
-  v12 = a7;
-  if (a4 >= 1)
+  recordCopy = record;
+  perTypeCopy = perType;
+  if (count >= 1)
   {
-    v13 = a4;
+    countCopy = count;
     do
     {
-      v15 = *a3++;
+      v15 = *derivatives++;
       v14 = v15;
-      if (v15 != a5)
+      if (v15 != type)
       {
         v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
-        v17 = [v12 objectForKeyedSubscript:v16];
+        v17 = [perTypeCopy objectForKeyedSubscript:v16];
 
         if (!v17)
         {
-          v18 = [v25 resourceForType:v14];
+          v18 = [recordCopy resourceForType:v14];
           v19 = v18;
           if (v18)
           {
-            v20 = [v18 identity];
-            v21 = [v20 isAvailable];
+            identity = [v18 identity];
+            isAvailable = [identity isAvailable];
 
-            if (v21)
+            if (isAvailable)
             {
               v22 = [v19 copy];
-              v23 = [(CPLRecordChange *)self scopedIdentifier];
-              [v22 setItemScopedIdentifier:v23];
+              scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+              [v22 setItemScopedIdentifier:scopedIdentifier];
 
               [v22 setSourceResourceType:v14];
               v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
-              [v12 setObject:v22 forKeyedSubscript:v24];
+              [perTypeCopy setObject:v22 forKeyedSubscript:v24];
             }
           }
         }
       }
 
-      --v13;
+      --countCopy;
     }
 
-    while (v13);
+    while (countCopy);
   }
 }
 
 - (unint64_t)baseVideoComplemenentResourceType
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:1415 description:{@"%@ should be implemented in subclasses", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:1415 description:{@"%@ should be implemented in subclasses", v6}];
 
   abort();
 }
 
 - (unint64_t)baseDerivativeResourceType
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:1411 description:{@"%@ should be implemented in subclasses", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:1411 description:{@"%@ should be implemented in subclasses", v6}];
 
   abort();
 }
 
 - (id)resourcePerType
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:1407 description:{@"%@ should be implemented in subclasses", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:1407 description:{@"%@ should be implemented in subclasses", v6}];
 
   abort();
 }
@@ -1114,8 +1114,8 @@ void __34__CPLRecordChange_copyChangeType___block_invoke(uint64_t a1, uint64_t a
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(CPLRecordChange *)self resources];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    resources = [(CPLRecordChange *)self resources];
+    v5 = [resources countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1126,20 +1126,20 @@ void __34__CPLRecordChange_copyChangeType___block_invoke(uint64_t a1, uint64_t a
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(resources);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * i) identity];
-          v10 = [v9 isAvailable];
+          identity = [*(*(&v14 + 1) + 8 * i) identity];
+          isAvailable = [identity isAvailable];
 
-          if (!v10)
+          if (!isAvailable)
           {
             v11 = 0;
             goto LABEL_17;
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [resources countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;
@@ -1190,12 +1190,12 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)validateChangeWithError:(id *)a3
+- (BOOL)validateChangeWithError:(id *)error
 {
   scopedIdentifier = self->_scopedIdentifier;
-  if (a3 && !scopedIdentifier)
+  if (error && !scopedIdentifier)
   {
-    *a3 = [CPLErrors cplErrorWithCode:18 description:@"%@ has no identifier", self];
+    *error = [CPLErrors cplErrorWithCode:18 description:@"%@ has no identifier", self];
   }
 
   return scopedIdentifier != 0;
@@ -1204,15 +1204,15 @@ LABEL_17:
 - (id)onlyAddedResources
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(CPLRecordChange *)self resources];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
+  resources = [(CPLRecordChange *)self resources];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(resources, "count")}];
+  resourceCopyFromScopedIdentifier = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v3;
+  v6 = resources;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -1229,9 +1229,9 @@ LABEL_17:
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
-        v12 = [v11 identity];
-        v13 = [v12 fileURL];
-        if (v13)
+        identity = [v11 identity];
+        fileURL = [identity fileURL];
+        if (fileURL)
         {
 
 LABEL_8:
@@ -1239,11 +1239,11 @@ LABEL_8:
           goto LABEL_9;
         }
 
-        if (v5)
+        if (resourceCopyFromScopedIdentifier)
         {
-          v14 = [v11 sourceResourceType];
+          sourceResourceType = [v11 sourceResourceType];
 
-          if (v14)
+          if (sourceResourceType)
           {
             goto LABEL_8;
           }
@@ -1270,17 +1270,17 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)changeIsOnlyAddingResourcesToRecord:(id)a3 addedResources:(id *)a4
+- (BOOL)changeIsOnlyAddingResourcesToRecord:(id)record addedResources:(id *)resources
 {
-  v6 = a3;
+  recordCopy = record;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
   v40 = __Block_byref_object_copy__15115;
   v41 = __Block_byref_object_dispose__15116;
   v42 = 0;
-  v7 = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
-  v8 = v7 != 0;
+  resourceCopyFromScopedIdentifier = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
+  v8 = resourceCopyFromScopedIdentifier != 0;
 
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -1289,12 +1289,12 @@ LABEL_9:
   v36 = v8;
   v35[4] = &v37;
   v34 = MEMORY[0x1E128EBA0](v35);
-  *a4 = 0;
-  v31 = v6;
-  v32 = [v6 resources];
-  v9 = [(CPLRecordChange *)self resources];
-  v33 = [v9 count];
-  v10 = [v32 count];
+  *resources = 0;
+  v31 = recordCopy;
+  resources = [recordCopy resources];
+  resources2 = [(CPLRecordChange *)self resources];
+  v33 = [resources2 count];
+  v10 = [resources count];
   v11 = v10;
   v12 = 0;
   v13 = v33 != 0;
@@ -1305,29 +1305,29 @@ LABEL_9:
     v15 = 0;
     while (1)
     {
-      v16 = v9;
-      v17 = [v9 objectAtIndexedSubscript:v12];
-      v18 = [v32 objectAtIndexedSubscript:v15];
-      v19 = a4;
-      v20 = [v17 resourceType];
-      v21 = [v18 resourceType];
-      if (v20 == v21)
+      v16 = resources2;
+      v17 = [resources2 objectAtIndexedSubscript:v12];
+      v18 = [resources objectAtIndexedSubscript:v15];
+      resourcesCopy = resources;
+      resourceType = [v17 resourceType];
+      resourceType2 = [v18 resourceType];
+      if (resourceType == resourceType2)
       {
         if (((v34)[2](v34, v17) & 1) == 0)
         {
-          v22 = [v17 identity];
-          v23 = [v18 identity];
-          v24 = v23;
-          if (!v22 || !v23)
+          identity = [v17 identity];
+          identity2 = [v18 identity];
+          v24 = identity2;
+          if (!identity || !identity2)
           {
 
 LABEL_27:
             v26 = 0;
-            v9 = v16;
+            resources2 = v16;
             goto LABEL_28;
           }
 
-          v25 = [v22 cplIsEqual:v23 withEqualityBlock:&__block_literal_global_275];
+          v25 = [identity cplIsEqual:identity2 withEqualityBlock:&__block_literal_global_275];
 
           if (!v25)
           {
@@ -1338,7 +1338,7 @@ LABEL_27:
         ++v15;
       }
 
-      else if (v20 >= v21 || ((v34)[2](v34, v17) & 1) == 0)
+      else if (resourceType >= resourceType2 || ((v34)[2](v34, v17) & 1) == 0)
       {
         goto LABEL_27;
       }
@@ -1352,16 +1352,16 @@ LABEL_27:
         break;
       }
 
-      a4 = v19;
-      v9 = v16;
+      resources = resourcesCopy;
+      resources2 = v16;
       if (v15 >= v11)
       {
         goto LABEL_14;
       }
     }
 
-    a4 = v19;
-    v9 = v16;
+    resources = resourcesCopy;
+    resources2 = v16;
     if (v15 < v11)
     {
       goto LABEL_15;
@@ -1388,7 +1388,7 @@ LABEL_15:
   {
     do
     {
-      v27 = [v9 objectAtIndexedSubscript:v12];
+      v27 = [resources2 objectAtIndexedSubscript:v12];
       v28 = (v34)[2](v34, v27);
 
       if ((v28 & 1) == 0)
@@ -1410,7 +1410,7 @@ LABEL_15:
     v29 = MEMORY[0x1E695E0F0];
   }
 
-  *a4 = v29;
+  *resources = v29;
   v26 = 1;
 LABEL_28:
 
@@ -1486,14 +1486,14 @@ uint64_t __70__CPLRecordChange_changeIsOnlyAddingResourcesToRecord_addedResource
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v9 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_ERROR, "Trying to mark as uploading only new resources for %@", buf, 0xCu);
       }
     }
 
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-    [v6 handleFailureInMethod:a2 object:self file:v7 lineNumber:1226 description:{@"Trying to mark as uploading only new resources for %@", self}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v7 lineNumber:1226 description:{@"Trying to mark as uploading only new resources for %@", self}];
 
     abort();
   }
@@ -1519,14 +1519,14 @@ uint64_t __70__CPLRecordChange_changeIsOnlyAddingResourcesToRecord_addedResource
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v9 = self;
+          selfCopy = self;
           _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_ERROR, "Trying to mark a non full record as sparse: %@", buf, 0xCu);
         }
       }
 
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-      [v6 handleFailureInMethod:a2 object:self file:v7 lineNumber:1220 description:{@"Trying to mark a non full record as sparse: %@", self}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v7 lineNumber:1220 description:{@"Trying to mark a non full record as sparse: %@", self}];
 
       abort();
     }
@@ -1537,14 +1537,14 @@ uint64_t __70__CPLRecordChange_changeIsOnlyAddingResourcesToRecord_addedResource
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)a3
+- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)selector
 {
-  if (sel_dateDeleted == a3)
+  if (sel_dateDeleted == selector)
   {
     v4 = &__block_literal_global_264;
   }
 
-  else if (sel_sharingScopeIdentifier == a3)
+  else if (sel_sharingScopeIdentifier == selector)
   {
     v4 = MEMORY[0x1E128EBA0](_CPLDefaultValueObjectNil, a2);
   }
@@ -1565,15 +1565,15 @@ BOOL __65__CPLRecordChange_checkDefaultValueBlockForPropertyWithSelector___block
   return v3;
 }
 
-- (void)setShouldFilterDefaultValuesForNewProperties:(BOOL)a3
+- (void)setShouldFilterDefaultValuesForNewProperties:(BOOL)properties
 {
-  if (self->_shouldFilterDefaultValuesForNewProperties != a3)
+  if (self->_shouldFilterDefaultValuesForNewProperties != properties)
   {
-    self->_shouldFilterDefaultValuesForNewProperties = a3;
+    self->_shouldFilterDefaultValuesForNewProperties = properties;
   }
 }
 
-- (BOOL)shouldApplyPropertiesWithSelector:(SEL)a3
+- (BOOL)shouldApplyPropertiesWithSelector:(SEL)selector
 {
   if (self->_shouldFilterDefaultValuesForNewProperties)
   {
@@ -1581,7 +1581,7 @@ BOOL __65__CPLRecordChange_checkDefaultValueBlockForPropertyWithSelector___block
     v6 = v5;
     if (v5)
     {
-      v7 = (*(v5 + 16))(v5, self, a3) ^ 1;
+      v7 = (*(v5 + 16))(v5, self, selector) ^ 1;
     }
 
     else
@@ -1598,13 +1598,13 @@ BOOL __65__CPLRecordChange_checkDefaultValueBlockForPropertyWithSelector___block
   return v7;
 }
 
-- (id)fingerprintSchemeWithContext:(id)a3
+- (id)fingerprintSchemeWithContext:(id)context
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  contextCopy = context;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
   v8 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:self file:v7 lineNumber:1172 description:{@"%@ should be implemented by subclasses", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v7 lineNumber:1172 description:{@"%@ should be implemented by subclasses", v8}];
 
   abort();
 }
@@ -1618,8 +1618,8 @@ BOOL __65__CPLRecordChange_checkDefaultValueBlockForPropertyWithSelector___block
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v3 = [(CPLRecordChange *)self resources];
-    v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    resources = [(CPLRecordChange *)self resources];
+    v4 = [resources countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1631,19 +1631,19 @@ BOOL __65__CPLRecordChange_checkDefaultValueBlockForPropertyWithSelector___block
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(resources);
           }
 
-          v9 = [*(*(&v13 + 1) + 8 * i) identity];
-          v10 = [v9 fileSize];
+          identity = [*(*(&v13 + 1) + 8 * i) identity];
+          fileSize = [identity fileSize];
 
-          if (v6 <= v10)
+          if (v6 <= fileSize)
           {
-            v6 = v10;
+            v6 = fileSize;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [resources countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v5);
@@ -1667,16 +1667,16 @@ BOOL __65__CPLRecordChange_checkDefaultValueBlockForPropertyWithSelector___block
 - (id)resourcesDescription
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(CPLRecordChange *)self changeType];
-  v4 = [(CPLRecordChange *)self resources];
-  v5 = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
-  if ([v4 count])
+  changeType = [(CPLRecordChange *)self changeType];
+  resources = [(CPLRecordChange *)self resources];
+  resourceCopyFromScopedIdentifier = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
+  if ([resources count])
   {
 LABEL_2:
-    v6 = [v4 count];
-    if (v5)
+    v6 = [resources count];
+    if (resourceCopyFromScopedIdentifier)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu resources (from %@)", v6, v5, v22];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu resources (from %@)", v6, resourceCopyFromScopedIdentifier, v22];
       v17 = LABEL_32:;
       goto LABEL_33;
     }
@@ -1685,7 +1685,7 @@ LABEL_2:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = v4;
+    v7 = resources;
     v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v8)
     {
@@ -1703,13 +1703,13 @@ LABEL_2:
             objc_enumerationMutation(v7);
           }
 
-          v14 = [*(*(&v24 + 1) + 8 * i) identity];
-          v15 = [v14 fileURL];
+          identity = [*(*(&v24 + 1) + 8 * i) identity];
+          fileURL = [identity fileURL];
 
-          if (!v15)
+          if (!fileURL)
           {
             ++v10;
-            v11 += [v14 isAvailable] ^ 1;
+            v11 += [identity isAvailable] ^ 1;
           }
         }
 
@@ -1722,7 +1722,7 @@ LABEL_2:
       v6 = v23;
       if (v23)
       {
-        v5 = 0;
+        resourceCopyFromScopedIdentifier = 0;
         if (v10)
         {
           if (v10 == v23)
@@ -1736,9 +1736,9 @@ LABEL_2:
 
           else
           {
-            v19 = [(CPLRecordChange *)self allowsToOnlyUploadNewResources];
+            allowsToOnlyUploadNewResources = [(CPLRecordChange *)self allowsToOnlyUploadNewResources];
             v16 = @"MIXED! ";
-            if (v19)
+            if (allowsToOnlyUploadNewResources)
             {
               v16 = @"mixed ";
             }
@@ -1757,7 +1757,7 @@ LABEL_27:
 
       else
       {
-        v5 = 0;
+        resourceCopyFromScopedIdentifier = 0;
       }
 
       if (v11)
@@ -1777,9 +1777,9 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (v3)
+  if (changeType)
   {
-    if ((v3 & 8) != 0)
+    if ((changeType & 8) != 0)
     {
       goto LABEL_2;
     }
@@ -1789,12 +1789,12 @@ LABEL_23:
     goto LABEL_34;
   }
 
-  if (!v5)
+  if (!resourceCopyFromScopedIdentifier)
   {
     goto LABEL_23;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"(from %@)", v5];
+  v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"(from %@)", resourceCopyFromScopedIdentifier];
 LABEL_33:
   v18 = v17;
 LABEL_34:
@@ -1807,39 +1807,39 @@ LABEL_34:
 - (id)cplFullDescription
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"======\n%@: {\n", objc_opt_class()];
-  v4 = [(CPLRecordChange *)self changeType];
-  v5 = [objc_opt_class() _descriptionForChangeType:v4 isSparseFullChange:self->_isSparseFullChange onlyUploadNewResources:{-[CPLRecordChange shouldOnlyUploadNewResources](self, "shouldOnlyUploadNewResources")}];
+  changeType = [(CPLRecordChange *)self changeType];
+  v5 = [objc_opt_class() _descriptionForChangeType:changeType isSparseFullChange:self->_isSparseFullChange onlyUploadNewResources:{-[CPLRecordChange shouldOnlyUploadNewResources](self, "shouldOnlyUploadNewResources")}];
   [v3 appendFormat:@"  changeType: %@\n", v5];
 
-  v6 = [(CPLRecordChange *)self recordModificationDate];
-  v7 = v6;
-  if (v6)
+  recordModificationDate = [(CPLRecordChange *)self recordModificationDate];
+  v7 = recordModificationDate;
+  if (recordModificationDate)
   {
-    [v3 appendFormat:@"  recordModificationDate: %@\n", v6];
+    [v3 appendFormat:@"  recordModificationDate: %@\n", recordModificationDate];
   }
 
-  v8 = [(CPLRecordChange *)self recordChangeData];
-  v9 = v8;
-  if (v8)
+  recordChangeData = [(CPLRecordChange *)self recordChangeData];
+  v9 = recordChangeData;
+  if (recordChangeData)
   {
-    [v3 appendFormat:@"  recordChangeDataSize: %lu\n", objc_msgSend(v8, "length")];
+    [v3 appendFormat:@"  recordChangeDataSize: %lu\n", objc_msgSend(recordChangeData, "length")];
   }
 
-  v10 = [(CPLRecordChange *)self sharingRecordChangeData];
-  v11 = v10;
-  if (v10)
+  sharingRecordChangeData = [(CPLRecordChange *)self sharingRecordChangeData];
+  v11 = sharingRecordChangeData;
+  if (sharingRecordChangeData)
   {
-    [v3 appendFormat:@"  sharingRecordChangeDataSize: %lu\n", objc_msgSend(v10, "length")];
+    [v3 appendFormat:@"  sharingRecordChangeDataSize: %lu\n", objc_msgSend(sharingRecordChangeData, "length")];
   }
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __37__CPLRecordChange_cplFullDescription__block_invoke;
   v16[3] = &unk_1E861E170;
-  v19 = v4;
+  v19 = changeType;
   v12 = v3;
   v17 = v12;
-  v18 = self;
+  selfCopy = self;
   v13 = MEMORY[0x1E128EBA0](v16);
   v13[2](v13, 256);
   [(CPLRecordChange *)self enumerateChangeTypesForChangeType:[(CPLRecordChange *)self changeType] block:v13];
@@ -1947,11 +1947,11 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
 
 - (int64_t)dequeueOrder
 {
-  v2 = [(CPLRecordChange *)self recordModificationDate];
-  v3 = v2;
-  if (v2)
+  recordModificationDate = [(CPLRecordChange *)self recordModificationDate];
+  v3 = recordModificationDate;
+  if (recordModificationDate)
   {
-    [v2 timeIntervalSinceReferenceDate];
+    [recordModificationDate timeIntervalSinceReferenceDate];
     v5 = v4;
   }
 
@@ -1963,16 +1963,16 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
   return v5;
 }
 
-- (void)restoreRelationshipsFromFullRecord:(id)a3
+- (void)restoreRelationshipsFromFullRecord:(id)record
 {
-  v6 = a3;
+  recordCopy = record;
   if (![(CPLRecordChange *)self hasChangeType:2])
   {
-    v4 = [v6 relatedIdentifier];
-    [(CPLRecordChange *)self setRelatedIdentifier:v4];
+    relatedIdentifier = [recordCopy relatedIdentifier];
+    [(CPLRecordChange *)self setRelatedIdentifier:relatedIdentifier];
 
-    v5 = [v6 secondaryIdentifier];
-    [(CPLRecordChange *)self setSecondaryIdentifier:v5];
+    secondaryIdentifier = [recordCopy secondaryIdentifier];
+    [(CPLRecordChange *)self setSecondaryIdentifier:secondaryIdentifier];
   }
 }
 
@@ -1981,13 +1981,13 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
   v15 = *MEMORY[0x1E69E9840];
   if ([(CPLRecordChange *)self supportsResources])
   {
-    v3 = [(CPLRecordChange *)self scopedIdentifier];
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(CPLRecordChange *)self resources];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    resources = [(CPLRecordChange *)self resources];
+    v5 = [resources countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1999,14 +1999,14 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(resources);
           }
 
-          [*(*(&v10 + 1) + 8 * v8++) setItemScopedIdentifier:v3];
+          [*(*(&v10 + 1) + 8 * v8++) setItemScopedIdentifier:scopedIdentifier];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [resources countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -2025,8 +2025,8 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(CPLRecordChange *)self resources];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    resources = [(CPLRecordChange *)self resources];
+    v4 = [resources countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -2038,14 +2038,14 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(resources);
           }
 
           [*(*(&v9 + 1) + 8 * v7++) setItemScopedIdentifier:0];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [resources countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -2067,22 +2067,22 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
 
 - (id)allRelatedScopedIdentifiers
 {
-  v3 = [(CPLRecordChange *)self scopedIdentifier];
-  v4 = [(CPLRecordChange *)self relatedScopedIdentifier];
-  v5 = [(CPLRecordChange *)self secondaryScopedIdentifier];
-  v6 = v5;
-  if (v3 || v4 || v5)
+  scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+  relatedScopedIdentifier = [(CPLRecordChange *)self relatedScopedIdentifier];
+  secondaryScopedIdentifier = [(CPLRecordChange *)self secondaryScopedIdentifier];
+  v6 = secondaryScopedIdentifier;
+  if (scopedIdentifier || relatedScopedIdentifier || secondaryScopedIdentifier)
   {
     v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:3];
     v7 = v8;
-    if (v3)
+    if (scopedIdentifier)
     {
-      [v8 addObject:v3];
+      [v8 addObject:scopedIdentifier];
     }
 
-    if (v4)
+    if (relatedScopedIdentifier)
     {
-      [v7 addObject:v4];
+      [v7 addObject:relatedScopedIdentifier];
     }
 
     if (v6)
@@ -2101,28 +2101,28 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
 
 - (id)proposedCloudScopedIdentifier
 {
-  v2 = [(CPLRecordChange *)self scopedIdentifier];
-  v3 = [v2 copy];
+  scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+  v3 = [scopedIdentifier copy];
 
   return v3;
 }
 
 - (id)proposedLocalScopedIdentifier
 {
-  v2 = [(CPLRecordChange *)self scopedIdentifier];
-  v3 = [v2 copy];
+  scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+  v3 = [scopedIdentifier copy];
 
   return v3;
 }
 
 - (id)secondaryScopedIdentifier
 {
-  v3 = [(CPLRecordChange *)self secondaryIdentifier];
-  if (v3)
+  secondaryIdentifier = [(CPLRecordChange *)self secondaryIdentifier];
+  if (secondaryIdentifier)
   {
     v4 = [CPLScopedIdentifier alloc];
-    v5 = [(CPLRecordChange *)self scopedIdentifier];
-    v6 = [(CPLScopedIdentifier *)v4 initRelativeToScopedIdentifier:v5 identifier:v3];
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+    v6 = [(CPLScopedIdentifier *)v4 initRelativeToScopedIdentifier:scopedIdentifier identifier:secondaryIdentifier];
   }
 
   else
@@ -2142,12 +2142,12 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
 
 - (id)relatedScopedIdentifier
 {
-  v3 = [(CPLRecordChange *)self relatedIdentifier];
-  if (v3)
+  relatedIdentifier = [(CPLRecordChange *)self relatedIdentifier];
+  if (relatedIdentifier)
   {
     v4 = [CPLScopedIdentifier alloc];
-    v5 = [(CPLRecordChange *)self scopedIdentifier];
-    v6 = [(CPLScopedIdentifier *)v4 initRelativeToScopedIdentifier:v5 identifier:v3];
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+    v6 = [(CPLScopedIdentifier *)v4 initRelativeToScopedIdentifier:scopedIdentifier identifier:relatedIdentifier];
   }
 
   else
@@ -2165,9 +2165,9 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
   return [v2 relatedRelationshipIsWeak];
 }
 
-- (id)propertiesForChangeType:(unint64_t)a3
+- (id)propertiesForChangeType:(unint64_t)type
 {
-  if (a3 == 256)
+  if (type == 256)
   {
     if (propertiesForChangeType__onceToken_189 != -1)
     {
@@ -2178,7 +2178,7 @@ void __37__CPLRecordChange_cplFullDescription__block_invoke(uint64_t a1, uint64_
     goto LABEL_13;
   }
 
-  if (a3 == 64)
+  if (type == 64)
   {
     if (propertiesForChangeType__onceToken_193 != -1)
     {
@@ -2193,7 +2193,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DFD8]);
     goto LABEL_15;
@@ -2201,9 +2201,9 @@ LABEL_15:
 
   if (propertiesForChangeType__onceToken_15188 != -1)
   {
-    v7 = self;
+    selfCopy = self;
     dispatch_once(&propertiesForChangeType__onceToken_15188, &__block_literal_global_156);
-    self = v7;
+    self = selfCopy;
   }
 
   v9 = 0;
@@ -2347,26 +2347,26 @@ uint64_t __43__CPLRecordChange_propertiesForChangeType___block_invoke()
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (id)mergeRecordChangeWithNewRecordChange:(id)a3 direction:(unint64_t)a4
+- (id)mergeRecordChangeWithNewRecordChange:(id)change direction:(unint64_t)direction
 {
-  v6 = a3;
-  v7 = [v6 changeType];
-  if (v7)
+  changeCopy = change;
+  changeType = [changeCopy changeType];
+  if (changeType)
   {
-    v8 = v7;
-    if (v7 == 1024)
+    v8 = changeType;
+    if (changeType == 1024)
     {
       if ([(CPLRecordChange *)self changeType]== 1024)
       {
-        v9 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v9 = v6;
+        selfCopy = changeCopy;
       }
 
-      v17 = v9;
+      v17 = selfCopy;
     }
 
     else
@@ -2374,17 +2374,17 @@ uint64_t __43__CPLRecordChange_propertiesForChangeType___block_invoke()
       v39 = 0;
       v40 = &v39;
       v41 = 0x2020000000;
-      v42 = [(CPLRecordChange *)self changeType];
+      changeType2 = [(CPLRecordChange *)self changeType];
       v18 = v40[3];
       if (v18 == 1024)
       {
-        v17 = v6;
+        v17 = changeCopy;
       }
 
       else
       {
         v19 = [(CPLRecordChange *)self copy];
-        v20 = [objc_opt_class() copyPropertyBlockForDirection:a4];
+        v20 = [objc_opt_class() copyPropertyBlockForDirection:direction];
         v21 = v20;
         if (v20)
         {
@@ -2393,7 +2393,7 @@ uint64_t __43__CPLRecordChange_propertiesForChangeType___block_invoke()
           v36[2] = __66__CPLRecordChange_mergeRecordChangeWithNewRecordChange_direction___block_invoke_2;
           v36[3] = &unk_1E861E120;
           v37 = v20;
-          v38 = a4;
+          directionCopy = direction;
           v22 = MEMORY[0x1E128EBA0](v36);
         }
 
@@ -2410,7 +2410,7 @@ uint64_t __43__CPLRecordChange_propertiesForChangeType___block_invoke()
         v29[4] = self;
         v23 = v19;
         v30 = v23;
-        v31 = v6;
+        v31 = changeCopy;
         v24 = v22;
         v35 = v18 != 0;
         v32 = v24;
@@ -2421,12 +2421,12 @@ uint64_t __43__CPLRecordChange_propertiesForChangeType___block_invoke()
           [v23 setChangeType:v40[3]];
         }
 
-        v25 = [(CPLRecordChange *)self scopedIdentifier];
-        v26 = [v25 scopeIndex];
+        scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+        scopeIndex = [scopedIdentifier scopeIndex];
 
-        if (v26 != 0x7FFFFFFFFFFFFFFFLL)
+        if (scopeIndex != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v23 setScopeIndex:v26];
+          [v23 setScopeIndex:scopeIndex];
         }
 
         v27 = v32;
@@ -2439,7 +2439,7 @@ uint64_t __43__CPLRecordChange_propertiesForChangeType___block_invoke()
 
   else
   {
-    v10 = [objc_opt_class() copyPropertyBlockForDirection:a4];
+    v10 = [objc_opt_class() copyPropertyBlockForDirection:direction];
     if (v10)
     {
       v11 = [(CPLRecordChange *)self copy];
@@ -2450,17 +2450,17 @@ uint64_t __43__CPLRecordChange_propertiesForChangeType___block_invoke()
       v46 = v10;
       v12 = v11;
       v44 = v12;
-      v13 = v6;
+      v13 = changeCopy;
       v45 = v13;
-      v47 = a4;
+      directionCopy2 = direction;
       [v12 cplCopyPropertiesFromObject:v13 withCopyBlock:v43];
       [v12 setChangeType:0];
-      v14 = [v13 scopedIdentifier];
-      v15 = [v14 scopeIndex];
+      scopedIdentifier2 = [v13 scopedIdentifier];
+      scopeIndex2 = [scopedIdentifier2 scopeIndex];
 
-      if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+      if (scopeIndex2 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v12 setScopeIndex:v15];
+        [v12 setScopeIndex:scopeIndex2];
       }
 
       v16 = v45;
@@ -2469,7 +2469,7 @@ uint64_t __43__CPLRecordChange_propertiesForChangeType___block_invoke()
 
     else
     {
-      v17 = v6;
+      v17 = changeCopy;
     }
   }
 
@@ -2510,11 +2510,11 @@ void __66__CPLRecordChange_mergeRecordChangeWithNewRecordChange_direction___bloc
   }
 }
 
-- (BOOL)resourceChangeWillOnlyChangeDerivatives:(id)a3
+- (BOOL)resourceChangeWillOnlyChangeDerivatives:(id)derivatives
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!-[CPLRecordChange supportsResources](self, "supportsResources") || !-[CPLRecordChange isFullRecord](self, "isFullRecord") || ([v5 hasChangeType:8] & 1) == 0)
+  derivativesCopy = derivatives;
+  if (!-[CPLRecordChange supportsResources](self, "supportsResources") || !-[CPLRecordChange isFullRecord](self, "isFullRecord") || ([derivativesCopy hasChangeType:8] & 1) == 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -2522,16 +2522,16 @@ void __66__CPLRecordChange_mergeRecordChangeWithNewRecordChange_direction___bloc
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v42 = v5;
+        v42 = derivativesCopy;
         v43 = 2112;
-        v44 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v29, OS_LOG_TYPE_ERROR, "Incorrectly trying to filter out derivatives change %@ from %@", buf, 0x16u);
       }
     }
 
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-    [v30 handleFailureInMethod:a2 object:self file:v31 lineNumber:748 description:{@"Incorrectly trying to filter out derivatives change %@ from %@", v5, self}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v31 lineNumber:748 description:{@"Incorrectly trying to filter out derivatives change %@ from %@", derivativesCopy, self}];
 
     abort();
   }
@@ -2540,27 +2540,27 @@ void __66__CPLRecordChange_mergeRecordChangeWithNewRecordChange_direction___bloc
   v7 = [v6 mutableCopy];
 
   [v7 removeObject:@"resources"];
-  if ([self cplProperties:v7 areEqualToPropertiesOf:v5 withEqualityBlock:0])
+  if ([self cplProperties:v7 areEqualToPropertiesOf:derivativesCopy withEqualityBlock:0])
   {
-    v8 = [(CPLRecordChange *)self resources];
-    v9 = [v5 resources];
-    v10 = [v8 count];
-    if (v10 == [v9 count])
+    resources = [(CPLRecordChange *)self resources];
+    resources2 = [derivativesCopy resources];
+    v10 = [resources count];
+    if (v10 == [resources2 count])
     {
-      v11 = [v9 objectEnumerator];
+      objectEnumerator = [resources2 objectEnumerator];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v12 = v8;
+      v12 = resources;
       v13 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v13)
       {
         v14 = v13;
-        v32 = v9;
-        v33 = v8;
+        v32 = resources2;
+        v33 = resources;
         v34 = v7;
-        v35 = v5;
+        v35 = derivativesCopy;
         v15 = *v37;
         while (2)
         {
@@ -2572,25 +2572,25 @@ void __66__CPLRecordChange_mergeRecordChangeWithNewRecordChange_direction___bloc
             }
 
             v17 = *(*(&v36 + 1) + 8 * i);
-            v18 = [v11 nextObject];
+            nextObject = [objectEnumerator nextObject];
             if (!-[CPLRecordChange isResourceTypeAGeneratedDerivative:](self, "isResourceTypeAGeneratedDerivative:", [v17 resourceType]))
             {
-              v19 = [v17 identity];
-              v20 = [v19 isAvailable];
+              identity = [v17 identity];
+              isAvailable = [identity isAvailable];
 
-              if (!v20)
+              if (!isAvailable)
               {
                 goto LABEL_22;
               }
 
-              v21 = [v18 identity];
-              v22 = [v21 fileURL];
-              if (v22)
+              identity2 = [nextObject identity];
+              fileURL = [identity2 fileURL];
+              if (fileURL)
               {
-                v23 = v22;
-                [v21 setFileURL:0];
-                v24 = [v17 isEqual:v18];
-                [v21 setFileURL:v23];
+                v23 = fileURL;
+                [identity2 setFileURL:0];
+                v24 = [v17 isEqual:nextObject];
+                [identity2 setFileURL:v23];
 
                 if ((v24 & 1) == 0)
                 {
@@ -2600,7 +2600,7 @@ void __66__CPLRecordChange_mergeRecordChangeWithNewRecordChange_direction___bloc
 
               else
               {
-                v25 = [v17 isEqual:v18];
+                v25 = [v17 isEqual:nextObject];
 
                 if ((v25 & 1) == 0)
                 {
@@ -2625,9 +2625,9 @@ LABEL_22:
         v26 = 1;
 LABEL_23:
         v7 = v34;
-        v5 = v35;
-        v9 = v32;
-        v8 = v33;
+        derivativesCopy = v35;
+        resources2 = v32;
+        resources = v33;
       }
 
       else
@@ -2651,14 +2651,14 @@ LABEL_23:
   return v26;
 }
 
-- (id)realRecordChangeFromRecordChange:(id)a3 direction:(unint64_t)a4 newRecord:(id *)a5 diffTracker:(id)a6
+- (id)realRecordChangeFromRecordChange:(id)change direction:(unint64_t)direction newRecord:(id *)record diffTracker:(id)tracker
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [v11 changeType];
-  if (v12)
+  trackerCopy = tracker;
+  changeCopy = change;
+  changeType = [changeCopy changeType];
+  if (changeType)
   {
-    v13 = v12 | 0x100;
+    v13 = changeType | 0x100;
   }
 
   else
@@ -2666,17 +2666,17 @@ LABEL_23:
     v13 = 378;
   }
 
-  v14 = [(CPLRecordChange *)self realRecordChangeFromRecordChange:v11 direction:a4 newRecord:a5 changeType:v13 diffTracker:v10];
+  v14 = [(CPLRecordChange *)self realRecordChangeFromRecordChange:changeCopy direction:direction newRecord:record changeType:v13 diffTracker:trackerCopy];
 
   return v14;
 }
 
-- (id)realRecordChangeFromRecordChange:(id)a3 direction:(unint64_t)a4 newRecord:(id *)a5 changeType:(unint64_t)a6 diffTracker:(id)a7
+- (id)realRecordChangeFromRecordChange:(id)change direction:(unint64_t)direction newRecord:(id *)record changeType:(unint64_t)type diffTracker:(id)tracker
 {
   v57 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a7;
-  if ((a6 & 0x400) != 0)
+  changeCopy = change;
+  trackerCopy = tracker;
+  if ((type & 0x400) != 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -2684,23 +2684,23 @@ LABEL_23:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *&buf[4] = v13;
+        *&buf[4] = changeCopy;
         _os_log_impl(&dword_1DC05A000, v31, OS_LOG_TYPE_ERROR, "Trying to compute changes for a delete change: %@", buf, 0xCu);
       }
     }
 
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v33 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-    [v32 handleFailureInMethod:a2 object:self file:v33 lineNumber:669 description:{@"Trying to compute changes for a delete change: %@", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v33 lineNumber:669 description:{@"Trying to compute changes for a delete change: %@", changeCopy}];
 
 LABEL_16:
     abort();
   }
 
-  v15 = v14;
-  v16 = [v13 scopedIdentifier];
-  v17 = [(CPLRecordChange *)self scopedIdentifier];
-  v18 = [v16 isEqual:v17];
+  v15 = trackerCopy;
+  scopedIdentifier = [changeCopy scopedIdentifier];
+  scopedIdentifier2 = [(CPLRecordChange *)self scopedIdentifier];
+  v18 = [scopedIdentifier isEqual:scopedIdentifier2];
 
   if ((v18 & 1) == 0)
   {
@@ -2709,30 +2709,30 @@ LABEL_16:
       v34 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
-        v35 = [v13 scopedIdentifier];
-        v36 = [(CPLRecordChange *)self scopedIdentifier];
+        scopedIdentifier3 = [changeCopy scopedIdentifier];
+        scopedIdentifier4 = [(CPLRecordChange *)self scopedIdentifier];
         *buf = 138412546;
-        *&buf[4] = v35;
+        *&buf[4] = scopedIdentifier3;
         *&buf[12] = 2112;
-        *&buf[14] = v36;
+        *&buf[14] = scopedIdentifier4;
         _os_log_impl(&dword_1DC05A000, v34, OS_LOG_TYPE_ERROR, "Mismatched identifier between change (%@) and record (%@)", buf, 0x16u);
       }
     }
 
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-    v39 = [v13 scopedIdentifier];
-    v40 = [(CPLRecordChange *)self scopedIdentifier];
-    [v37 handleFailureInMethod:a2 object:self file:v38 lineNumber:670 description:{@"Mismatched identifier between change (%@) and record (%@)", v39, v40}];
+    scopedIdentifier5 = [changeCopy scopedIdentifier];
+    scopedIdentifier6 = [(CPLRecordChange *)self scopedIdentifier];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:v38 lineNumber:670 description:{@"Mismatched identifier between change (%@) and record (%@)", scopedIdentifier5, scopedIdentifier6}];
 
     goto LABEL_16;
   }
 
-  *a5 = 0;
+  *record = 0;
   v19 = [(CPLRecordChange *)self copy];
   v20 = objc_opt_class();
-  v21 = [(CPLRecordChange *)self scopedIdentifier];
-  v22 = [v20 newRecordWithScopedIdentifier:v21];
+  scopedIdentifier7 = [(CPLRecordChange *)self scopedIdentifier];
+  v22 = [v20 newRecordWithScopedIdentifier:scopedIdentifier7];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -2746,17 +2746,17 @@ LABEL_16:
   v42[1] = 3221225472;
   v42[2] = __95__CPLRecordChange_realRecordChangeFromRecordChange_direction_newRecord_changeType_diffTracker___block_invoke;
   v42[3] = &unk_1E861E0F8;
-  v49 = a6;
+  typeCopy = type;
   v41 = v15;
   v43 = v41;
   v23 = v19;
   v44 = v23;
-  v24 = v13;
+  v24 = changeCopy;
   v45 = v24;
   v25 = v22;
   v46 = v25;
   v47 = buf;
-  v50 = a4;
+  directionCopy = direction;
   v48 = &v51;
   v26 = MEMORY[0x1E128EBA0](v42);
   [(CPLRecordChange *)self enumerateChangeTypesForChangeType:0 block:v26];
@@ -2770,7 +2770,7 @@ LABEL_16:
   {
     [v23 setChangeType:0];
     v27 = v23;
-    *a5 = v23;
+    *record = v23;
     v52[3] &= ~0x100uLL;
     [v25 setChangeType:?];
     goto LABEL_8;
@@ -2871,27 +2871,27 @@ uint64_t __95__CPLRecordChange_realRecordChangeFromRecordChange_direction_newRec
   return result;
 }
 
-- (BOOL)applyChange:(id)a3 copyPropertiesToFinalChange:(id)a4 forChangeType:(unint64_t)a5 direction:(unint64_t)a6 diffTracker:(id)a7
+- (BOOL)applyChange:(id)change copyPropertiesToFinalChange:(id)finalChange forChangeType:(unint64_t)type direction:(unint64_t)direction diffTracker:(id)tracker
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (a5 == 256)
+  changeCopy = change;
+  finalChangeCopy = finalChange;
+  trackerCopy = tracker;
+  if (type == 256)
   {
-    v15 = [(CPLRecordChange *)self recordModificationDate];
-    v16 = [v12 recordModificationDate];
-    v17 = v16;
-    if (!v16)
+    recordModificationDate = [(CPLRecordChange *)self recordModificationDate];
+    recordModificationDate2 = [changeCopy recordModificationDate];
+    v17 = recordModificationDate2;
+    if (!recordModificationDate2)
     {
       goto LABEL_7;
     }
 
-    if (!v15)
+    if (!recordModificationDate)
     {
       goto LABEL_11;
     }
 
-    [v16 timeIntervalSinceDate:v15];
+    [recordModificationDate2 timeIntervalSinceDate:recordModificationDate];
     if (v18 < 0.0)
     {
       v18 = -v18;
@@ -2900,9 +2900,9 @@ uint64_t __95__CPLRecordChange_realRecordChangeFromRecordChange_direction_newRec
     if (v18 >= 0.00100000005)
     {
 LABEL_11:
-      [v13 setRecordModificationDate:v17];
+      [finalChangeCopy setRecordModificationDate:v17];
       [(CPLRecordChange *)self setRecordModificationDate:v17];
-      [v14 noteObjectsDifferOnProperty:@"recordModificationDate"];
+      [trackerCopy noteObjectsDifferOnProperty:@"recordModificationDate"];
       v19 = 1;
     }
 
@@ -2917,10 +2917,10 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v15 = [(CPLRecordChange *)self propertiesForChangeType:a5];
-  if (v15)
+  recordModificationDate = [(CPLRecordChange *)self propertiesForChangeType:type];
+  if (recordModificationDate)
   {
-    v20 = [objc_opt_class() equalityBlockForDirection:a6];
+    v20 = [objc_opt_class() equalityBlockForDirection:direction];
     v17 = v20;
     if (v20)
     {
@@ -2929,7 +2929,7 @@ LABEL_20:
       v44[2] = __95__CPLRecordChange_applyChange_copyPropertiesToFinalChange_forChangeType_direction_diffTracker___block_invoke;
       v44[3] = &unk_1E861E058;
       v45 = v20;
-      v46 = a6;
+      directionCopy = direction;
       v21 = MEMORY[0x1E128EBA0](v44);
     }
 
@@ -2938,10 +2938,10 @@ LABEL_20:
       v21 = 0;
     }
 
-    v22 = [self cplProperties:v15 areEqualToPropertiesOf:v12 diffTracker:v14 withEqualityBlock:v21];
+    v22 = [self cplProperties:recordModificationDate areEqualToPropertiesOf:changeCopy diffTracker:trackerCopy withEqualityBlock:v21];
     if (!v22)
     {
-      v23 = [objc_opt_class() copyPropertyBlockForDirection:a6];
+      v23 = [objc_opt_class() copyPropertyBlockForDirection:direction];
       v24 = v23;
       if (v23)
       {
@@ -2952,12 +2952,12 @@ LABEL_20:
         v31 = v23;
         v25 = v23;
         v42 = v25;
-        v39 = v13;
+        v39 = finalChangeCopy;
         v32 = v21;
-        v26 = v12;
+        v26 = changeCopy;
         v40 = v26;
-        v41 = self;
-        v43 = a6;
+        selfCopy = self;
+        directionCopy2 = direction;
         v33 = MEMORY[0x1E128EBA0](v38);
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
@@ -2970,7 +2970,7 @@ LABEL_20:
         v28 = v26;
         v21 = v32;
         v35 = v28;
-        v37 = a6;
+        directionCopy3 = direction;
         v29 = MEMORY[0x1E128EBA0](v34);
       }
 
@@ -2980,8 +2980,8 @@ LABEL_20:
         v29 = 0;
       }
 
-      [v13 cplCopyProperties:v15 fromObject:v12 withCopyBlock:{v33, v31}];
-      [self cplCopyProperties:v15 fromObject:v12 withCopyBlock:v29];
+      [finalChangeCopy cplCopyProperties:recordModificationDate fromObject:changeCopy withCopyBlock:{v33, v31}];
+      [self cplCopyProperties:recordModificationDate fromObject:changeCopy withCopyBlock:v29];
     }
 
     v19 = !v22;
@@ -2995,18 +2995,18 @@ LABEL_21:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (self->_changeType == 1024)
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(CPLRecordChange *)self scopedIdentifier];
-      v8 = [v4 scopedIdentifier];
-      v9 = v8;
-      v6 = v7 && v8 && ([v7 isEqual:v8] & 1) != 0 || (v7 | v9) == 0;
+      scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+      scopedIdentifier2 = [equalCopy scopedIdentifier];
+      v9 = scopedIdentifier2;
+      v6 = scopedIdentifier && scopedIdentifier2 && ([scopedIdentifier isEqual:scopedIdentifier2] & 1) != 0 || (scopedIdentifier | v9) == 0;
     }
 
     else
@@ -3017,7 +3017,7 @@ LABEL_21:
 
   else
   {
-    v6 = [self cplIsEqual:v4];
+    v6 = [self cplIsEqual:equalCopy];
   }
 
   return v6;
@@ -3097,33 +3097,33 @@ LABEL_10:
   v8 = [objc_opt_class() _descriptionForChangeType:changeType isSparseFullChange:self->_isSparseFullChange onlyUploadNewResources:{-[CPLRecordChange shouldOnlyUploadNewResources](self, "shouldOnlyUploadNewResources")}];
   [v4 appendFormat:@" %@", v8];
 
-  v9 = [(CPLRecordChange *)self propertiesDescription];
-  v10 = [v9 length];
-  v11 = [(CPLRecordChange *)self inTrash];
+  propertiesDescription = [(CPLRecordChange *)self propertiesDescription];
+  v10 = [propertiesDescription length];
+  inTrash = [(CPLRecordChange *)self inTrash];
   if (v10)
   {
     v12 = "";
-    if (v11)
+    if (inTrash)
     {
       v12 = "[trash] ";
     }
 
-    [v4 appendFormat:@" %s%@", v12, v9];
+    [v4 appendFormat:@" %s%@", v12, propertiesDescription];
   }
 
-  else if (v11)
+  else if (inTrash)
   {
     [v4 appendString:@" [trash]"];
   }
 
   if ([(CPLRecordChange *)self supportsSharingScopedIdentifier])
   {
-    v13 = [(CPLRecordChange *)self sharingScopeIdentifier];
-    v14 = [(CPLRecordChange *)self sharingContributorUserIdentifiers];
-    v15 = [v14 count];
+    sharingScopeIdentifier = [(CPLRecordChange *)self sharingScopeIdentifier];
+    sharingContributorUserIdentifiers = [(CPLRecordChange *)self sharingContributorUserIdentifiers];
+    v15 = [sharingContributorUserIdentifiers count];
     if (v15)
     {
-      if (v13)
+      if (sharingScopeIdentifier)
       {
         [v4 appendFormat:@" [shared %tu cont.]", v15];
 LABEL_26:
@@ -3137,7 +3137,7 @@ LABEL_26:
 
     else
     {
-      if (!v13)
+      if (!sharingScopeIdentifier)
       {
         goto LABEL_26;
       }
@@ -3164,8 +3164,8 @@ LABEL_28:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CPLRecordChange *)self resources];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  resources = [(CPLRecordChange *)self resources];
+  v3 = [resources countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3176,26 +3176,26 @@ LABEL_28:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(resources);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
         if ([v7 resourceType] == 1 || objc_msgSend(v7, "resourceType") == 17 || objc_msgSend(v7, "resourceType") == 18 || objc_msgSend(v7, "resourceType") == 23 || objc_msgSend(v7, "resourceType") == 24)
         {
-          v9 = [v7 identity];
-          v8 = [v9 fileURL];
+          identity = [v7 identity];
+          fileURL = [identity fileURL];
 
-          if (v8)
+          if (fileURL)
           {
-            v8 = [v9 fileSize];
+            fileURL = [identity fileSize];
           }
 
           goto LABEL_18;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
-      v8 = 0;
+      v4 = [resources countByEnumeratingWithState:&v12 objects:v16 count:16];
+      fileURL = 0;
       if (v4)
       {
         continue;
@@ -3207,13 +3207,13 @@ LABEL_28:
 
   else
   {
-    v8 = 0;
+    fileURL = 0;
   }
 
 LABEL_18:
 
   v10 = *MEMORY[0x1E69E9840];
-  return v8;
+  return fileURL;
 }
 
 - (unint64_t)realUploadResourceSize
@@ -3223,8 +3223,8 @@ LABEL_18:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(CPLRecordChange *)self resources];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  resources = [(CPLRecordChange *)self resources];
+  v3 = [resources countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3236,23 +3236,23 @@ LABEL_18:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(resources);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([v8 resourceType] <= 0x1D)
         {
-          v9 = [v8 identity];
-          v10 = [v9 fileURL];
+          identity = [v8 identity];
+          fileURL = [identity fileURL];
 
-          if (v10)
+          if (fileURL)
           {
-            v5 += [v9 fileSize];
+            v5 += [identity fileSize];
           }
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [resources countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -3274,8 +3274,8 @@ LABEL_18:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CPLRecordChange *)self resources];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  resources = [(CPLRecordChange *)self resources];
+  v3 = [resources countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3287,19 +3287,19 @@ LABEL_18:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(resources);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) identity];
-        v9 = [v8 fileURL];
+        identity = [*(*(&v12 + 1) + 8 * i) identity];
+        fileURL = [identity fileURL];
 
-        if (v9)
+        if (fileURL)
         {
-          v5 += [v8 fileSize];
+          v5 += [identity fileSize];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [resources countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -3314,16 +3314,16 @@ LABEL_18:
   return v5;
 }
 
-- (unint64_t)effectiveResourceSizeToUploadUsingStorage:(id)a3
+- (unint64_t)effectiveResourceSizeToUploadUsingStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   if (!self->_didCacheRealResourceSizeInStorage)
   {
-    v5 = [(CPLRecordPushContext *)self->_pushContext uploadIdentifier];
-    if (v5 && (v6 = v5, v7 = [(CPLRecordChange *)self hasChangeType:8], v6, v7))
+    uploadIdentifier = [(CPLRecordPushContext *)self->_pushContext uploadIdentifier];
+    if (uploadIdentifier && (v6 = uploadIdentifier, v7 = [(CPLRecordChange *)self hasChangeType:8], v6, v7))
     {
-      v8 = [(CPLRecordPushContext *)self->_pushContext uploadIdentifier];
-      self->_cachedRealResourceSizeInStorage = [v4 effectiveResourceSizeToUploadForUploadIdentifier:v8];
+      uploadIdentifier2 = [(CPLRecordPushContext *)self->_pushContext uploadIdentifier];
+      self->_cachedRealResourceSizeInStorage = [storageCopy effectiveResourceSizeToUploadForUploadIdentifier:uploadIdentifier2];
     }
 
     else
@@ -3346,8 +3346,8 @@ LABEL_18:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CPLRecordChange *)self resources];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  resources = [(CPLRecordChange *)self resources];
+  v3 = [resources countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3359,16 +3359,16 @@ LABEL_18:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(resources);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) identity];
-        v9 = [v8 fileSize];
+        identity = [*(*(&v12 + 1) + 8 * i) identity];
+        fileSize = [identity fileSize];
 
-        v5 += v9;
+        v5 += fileSize;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [resources countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -3383,15 +3383,15 @@ LABEL_18:
   return v5;
 }
 
-- (id)resourceForType:(unint64_t)a3
+- (id)resourceForType:(unint64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CPLRecordChange *)self resources];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  resources = [(CPLRecordChange *)self resources];
+  v5 = [resources countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3402,18 +3402,18 @@ LABEL_18:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resources);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 resourceType] == a3)
+        if ([v9 resourceType] == type)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [resources countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -3431,51 +3431,51 @@ LABEL_11:
   return v10;
 }
 
-- (void)setResources:(id)a3
+- (void)setResources:(id)resources
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  resourcesCopy = resources;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-  [v6 handleFailureInMethod:a2 object:self file:v7 lineNumber:357 description:{@"%@ does not supports resources", objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v7 lineNumber:357 description:{@"%@ does not supports resources", objc_opt_class()}];
 
   abort();
 }
 
 - (id)resources
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:352 description:{@"%@ does not supports resources", objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:352 description:{@"%@ does not supports resources", objc_opt_class()}];
 
   abort();
 }
 
-- (void)updateScopeIdentifier:(id)a3
+- (void)updateScopeIdentifier:(id)identifier
 {
-  v8 = a3;
-  v4 = [(CPLRecordChange *)self scopedIdentifier];
-  if (v4)
+  identifierCopy = identifier;
+  scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+  if (scopedIdentifier)
   {
     v5 = [CPLScopedIdentifier alloc];
-    v6 = [v4 identifier];
-    v7 = [(CPLScopedIdentifier *)v5 initWithScopeIdentifier:v8 identifier:v6];
+    identifier = [scopedIdentifier identifier];
+    v7 = [(CPLScopedIdentifier *)v5 initWithScopeIdentifier:identifierCopy identifier:identifier];
     [(CPLRecordChange *)self setScopedIdentifier:v7];
 
     [(CPLRecordChange *)self awakeFromStorage];
   }
 }
 
-- (void)setUpdateSharingContributorUserIdentifiers:(id)a3
+- (void)setUpdateSharingContributorUserIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count] > 1)
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] > 1)
   {
-    v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+    v5 = [identifiersCopy sortedArrayUsingSelector:sel_compare_];
   }
 
   else
   {
-    v5 = [v4 copy];
+    v5 = [identifiersCopy copy];
   }
 
   v6 = v5;
@@ -3484,17 +3484,17 @@ LABEL_11:
   self->_updateSharingContributorUserIdentifiers = v6;
 }
 
-- (void)setSharingContributorUserIdentifiers:(id)a3
+- (void)setSharingContributorUserIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count] > 1)
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] > 1)
   {
-    v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+    v5 = [identifiersCopy sortedArrayUsingSelector:sel_compare_];
   }
 
   else
   {
-    v5 = [v4 copy];
+    v5 = [identifiersCopy copy];
   }
 
   v6 = v5;
@@ -3503,10 +3503,10 @@ LABEL_11:
   self->_sharingContributorUserIdentifiers = v6;
 }
 
-- (BOOL)isSharedInScopeWithIdentifier:(id)a3
+- (BOOL)isSharedInScopeWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   if (![(CPLRecordChange *)self hasChangeType:64])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -3515,14 +3515,14 @@ LABEL_11:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "Trying to get sharing scope identifier for %@ while it does not contain the info", buf, 0xCu);
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-    [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:288 description:{@"Trying to get sharing scope identifier for %@ while it does not contain the info", self}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:288 description:{@"Trying to get sharing scope identifier for %@ while it does not contain the info", self}];
 
     abort();
   }
@@ -3530,7 +3530,7 @@ LABEL_11:
   sharingScopeIdentifier = self->_sharingScopeIdentifier;
   if (sharingScopeIdentifier)
   {
-    v7 = [(NSString *)sharingScopeIdentifier isEqualToString:v5];
+    v7 = [(NSString *)sharingScopeIdentifier isEqualToString:identifierCopy];
   }
 
   else
@@ -3542,17 +3542,17 @@ LABEL_11:
   return v7;
 }
 
-- (void)setSharingRecordScopedIdentifier:(id)a3
+- (void)setSharingRecordScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v10 = identifierCopy;
+  if (identifierCopy)
   {
-    v5 = [v4 scopeIdentifier];
+    scopeIdentifier = [identifierCopy scopeIdentifier];
     sharingScopeIdentifier = self->_sharingScopeIdentifier;
-    self->_sharingScopeIdentifier = v5;
+    self->_sharingScopeIdentifier = scopeIdentifier;
 
-    v7 = [v10 identifier];
+    identifier = [v10 identifier];
   }
 
   else
@@ -3560,11 +3560,11 @@ LABEL_11:
     v8 = self->_sharingScopeIdentifier;
     self->_sharingScopeIdentifier = 0;
 
-    v7 = 0;
+    identifier = 0;
   }
 
   sharingRecordIdentifier = self->_sharingRecordIdentifier;
-  self->_sharingRecordIdentifier = v7;
+  self->_sharingRecordIdentifier = identifier;
 }
 
 - (id)sharingRecordScopedIdentifier
@@ -3590,12 +3590,12 @@ LABEL_11:
   return v3;
 }
 
-- (void)setSharingScopeIdentifier:(id)a3
+- (void)setSharingScopeIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ([(CPLRecordChange *)self supportsSharingScopedIdentifier])
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     sharingScopeIdentifier = self->_sharingScopeIdentifier;
     self->_sharingScopeIdentifier = v4;
   }
@@ -3629,8 +3629,8 @@ LABEL_11:
     return 1;
   }
 
-  v4 = [(CPLRecordChange *)self realIdentifier];
-  v3 = [v4 length] != 0;
+  realIdentifier = [(CPLRecordChange *)self realIdentifier];
+  v3 = [realIdentifier length] != 0;
 
   return v3;
 }
@@ -3642,18 +3642,18 @@ LABEL_11:
   return [v2 supportsDeletion];
 }
 
-- (BOOL)requiresStableHashForResourceType:(unint64_t)a3
+- (BOOL)requiresStableHashForResourceType:(unint64_t)type
 {
   v4 = objc_opt_class();
 
-  return [v4 requiresStableHashForResourceType:a3];
+  return [v4 requiresStableHashForResourceType:type];
 }
 
-- (BOOL)supportsResourceType:(unint64_t)a3
+- (BOOL)supportsResourceType:(unint64_t)type
 {
   v4 = objc_opt_class();
 
-  return [v4 supportsResourceType:a3];
+  return [v4 supportsResourceType:type];
 }
 
 - (BOOL)supportsResources
@@ -3663,30 +3663,30 @@ LABEL_11:
   return [v2 supportsResources];
 }
 
-- (BOOL)hasChangeType:(unint64_t)a3
+- (BOOL)hasChangeType:(unint64_t)type
 {
-  if ((a3 & 8) == 0 || (v5 = [(CPLRecordChange *)self supportsResources]))
+  if ((type & 8) == 0 || (v5 = [(CPLRecordChange *)self supportsResources]))
   {
     changeType = self->_changeType;
-    if (changeType == a3)
+    if (changeType == type)
     {
       LOBYTE(v5) = 1;
     }
 
     else
     {
-      v8 = (a3 & ~changeType) == 0 || changeType == 0;
-      LOBYTE(v5) = a3 != 1024 && v8;
+      v8 = (type & ~changeType) == 0 || changeType == 0;
+      LOBYTE(v5) = type != 1024 && v8;
     }
   }
 
   return v5;
 }
 
-- (BOOL)isInScopeWithIdentifier:(id)a3
+- (BOOL)isInScopeWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   scopedIdentifier = self->_scopedIdentifier;
   if (!scopedIdentifier)
   {
@@ -3696,20 +3696,20 @@ LABEL_11:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "Missing scope identifier in %@", buf, 0xCu);
       }
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLRecordChange.m"];
-    [v12 handleFailureInMethod:a2 object:self file:v13 lineNumber:164 description:{@"Missing scope identifier in %@", self}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v13 lineNumber:164 description:{@"Missing scope identifier in %@", self}];
 
     abort();
   }
 
-  v7 = [(CPLScopedIdentifier *)scopedIdentifier scopeIdentifier];
-  v8 = [v7 isEqualToString:v5];
+  scopeIdentifier = [(CPLScopedIdentifier *)scopedIdentifier scopeIdentifier];
+  v8 = [scopeIdentifier isEqualToString:identifierCopy];
 
   v9 = *MEMORY[0x1E69E9840];
   return v8;
@@ -3717,12 +3717,12 @@ LABEL_11:
 
 - (id)realScopedIdentifier
 {
-  v3 = [(CPLRecordChange *)self realIdentifier];
-  if (v3)
+  realIdentifier = [(CPLRecordChange *)self realIdentifier];
+  if (realIdentifier)
   {
     v4 = [CPLScopedIdentifier alloc];
-    v5 = [(CPLRecordChange *)self scopedIdentifier];
-    v6 = [(CPLScopedIdentifier *)v4 initRelativeToScopedIdentifier:v5 identifier:v3];
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+    v6 = [(CPLScopedIdentifier *)v4 initRelativeToScopedIdentifier:scopedIdentifier identifier:realIdentifier];
   }
 
   else
@@ -3733,7 +3733,7 @@ LABEL_11:
   return v6;
 }
 
-- (void)setScopeIndex:(int64_t)a3
+- (void)setScopeIndex:(int64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
   [(CPLScopedIdentifier *)self->_scopedIdentifier setScopeIndex:?];
@@ -3743,8 +3743,8 @@ LABEL_11:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(CPLRecordChange *)self resources];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    resources = [(CPLRecordChange *)self resources];
+    v6 = [resources countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3756,17 +3756,17 @@ LABEL_11:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(resources);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * v9) itemScopedIdentifier];
-          [v10 setScopeIndex:a3];
+          itemScopedIdentifier = [*(*(&v12 + 1) + 8 * v9) itemScopedIdentifier];
+          [itemScopedIdentifier setScopeIndex:index];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [resources countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -3783,10 +3783,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)validateRecordForTracker:(id)a3
+- (BOOL)validateRecordForTracker:(id)tracker
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  trackerCopy = tracker;
   v30 = 0;
   v5 = [(CPLRecordChange *)self validateChangeWithError:&v30];
   v6 = v30;
@@ -3798,23 +3798,23 @@ LABEL_11:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v33 = v6;
+        selfCopy = v6;
         _os_log_impl(&dword_1DC05A000, v18, OS_LOG_TYPE_ERROR, "Client pushed an invalid record: %@", buf, 0xCu);
       }
     }
 
-    v8 = [v4 pushChangeTasks];
-    v9 = [(CPLRecordChange *)self scopedIdentifier];
-    [v8 addTask:0 forRecordWithScopedIdentifier:v9];
+    pushChangeTasks = [trackerCopy pushChangeTasks];
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+    [pushChangeTasks addTask:0 forRecordWithScopedIdentifier:scopedIdentifier];
 LABEL_25:
     v17 = 0;
     goto LABEL_26;
   }
 
-  v7 = [(CPLRecordChange *)self scopedIdentifier];
-  v8 = [v7 scopeIdentifier];
+  scopedIdentifier2 = [(CPLRecordChange *)self scopedIdentifier];
+  pushChangeTasks = [scopedIdentifier2 scopeIdentifier];
 
-  if (([v4 checkScopeIdentifier:v8] & 1) == 0)
+  if (([trackerCopy checkScopeIdentifier:pushChangeTasks] & 1) == 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -3822,14 +3822,14 @@ LABEL_25:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v33 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v19, OS_LOG_TYPE_ERROR, "Client pushed a record to an invalid scope: %@", buf, 0xCu);
       }
     }
 
-    v9 = [v4 pushChangeTasks];
-    v15 = [(CPLRecordChange *)self scopedIdentifier];
-    [v9 addTask:6 forRecordWithScopedIdentifier:v15];
+    scopedIdentifier = [trackerCopy pushChangeTasks];
+    scopedIdentifier3 = [(CPLRecordChange *)self scopedIdentifier];
+    [scopedIdentifier addTask:6 forRecordWithScopedIdentifier:scopedIdentifier3];
 LABEL_24:
 
     goto LABEL_25;
@@ -3845,8 +3845,8 @@ LABEL_24:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [(CPLRecordChange *)self resources];
-  v10 = [v9 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  scopedIdentifier = [(CPLRecordChange *)self resources];
+  v10 = [scopedIdentifier countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3858,14 +3858,14 @@ LABEL_24:
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(scopedIdentifier);
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [(CPLRecordChange *)v14 identity];
-        v16 = [v15 fileUTI];
+        scopedIdentifier3 = [(CPLRecordChange *)v14 identity];
+        fileUTI = [scopedIdentifier3 fileUTI];
 
-        if (!v16)
+        if (!fileUTI)
         {
           v6 = v25;
           if ((_CPLSilentLogging & 1) == 0)
@@ -3874,20 +3874,20 @@ LABEL_24:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v33 = v14;
+              selfCopy = v14;
               _os_log_impl(&dword_1DC05A000, v22, OS_LOG_TYPE_ERROR, "Client pushed a resource with no fileUTI: %@", buf, 0xCu);
             }
           }
 
-          v23 = [v4 pushChangeTasks];
-          v24 = [(CPLRecordChange *)self scopedIdentifier];
-          [v23 addTask:0 forRecordWithScopedIdentifier:v24];
+          pushChangeTasks2 = [trackerCopy pushChangeTasks];
+          scopedIdentifier4 = [(CPLRecordChange *)self scopedIdentifier];
+          [pushChangeTasks2 addTask:0 forRecordWithScopedIdentifier:scopedIdentifier4];
 
           goto LABEL_24;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v11 = [scopedIdentifier countByEnumeratingWithState:&v26 objects:v31 count:16];
       v17 = 1;
       if (v11)
       {

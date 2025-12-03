@@ -1,46 +1,46 @@
 @interface CoreDAVParseRule
-+ (id)ruleWithMinimumNumber:(int64_t)a3 maximumNumber:(int64_t)a4 nameSpace:(id)a5 elementName:(id)a6 objectClass:(Class)a7 setterMethod:(SEL)a8;
-- (CoreDAVParseRule)initWithMinimumNumber:(int64_t)a3 maximumNumber:(int64_t)a4 nameSpace:(id)a5 elementName:(id)a6 objectClass:(Class)a7 setterMethod:(SEL)a8;
++ (id)ruleWithMinimumNumber:(int64_t)number maximumNumber:(int64_t)maximumNumber nameSpace:(id)space elementName:(id)name objectClass:(Class)class setterMethod:(SEL)method;
+- (CoreDAVParseRule)initWithMinimumNumber:(int64_t)number maximumNumber:(int64_t)maximumNumber nameSpace:(id)space elementName:(id)name objectClass:(Class)class setterMethod:(SEL)method;
 - (SEL)setterMethod;
 @end
 
 @implementation CoreDAVParseRule
 
-+ (id)ruleWithMinimumNumber:(int64_t)a3 maximumNumber:(int64_t)a4 nameSpace:(id)a5 elementName:(id)a6 objectClass:(Class)a7 setterMethod:(SEL)a8
++ (id)ruleWithMinimumNumber:(int64_t)number maximumNumber:(int64_t)maximumNumber nameSpace:(id)space elementName:(id)name objectClass:(Class)class setterMethod:(SEL)method
 {
-  v14 = a6;
-  v15 = a5;
-  v16 = [[a1 alloc] initWithMinimumNumber:a3 maximumNumber:a4 nameSpace:v15 elementName:v14 objectClass:a7 setterMethod:a8];
+  nameCopy = name;
+  spaceCopy = space;
+  v16 = [[self alloc] initWithMinimumNumber:number maximumNumber:maximumNumber nameSpace:spaceCopy elementName:nameCopy objectClass:class setterMethod:method];
 
   return v16;
 }
 
-- (CoreDAVParseRule)initWithMinimumNumber:(int64_t)a3 maximumNumber:(int64_t)a4 nameSpace:(id)a5 elementName:(id)a6 objectClass:(Class)a7 setterMethod:(SEL)a8
+- (CoreDAVParseRule)initWithMinimumNumber:(int64_t)number maximumNumber:(int64_t)maximumNumber nameSpace:(id)space elementName:(id)name objectClass:(Class)class setterMethod:(SEL)method
 {
-  v15 = a5;
-  v16 = a6;
+  spaceCopy = space;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = CoreDAVParseRule;
   v17 = [(CoreDAVParseRule *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    v17->_minimumNumber = a3;
-    v17->_maximumNumber = a4;
-    objc_storeStrong(&v17->_nameSpace, a5);
-    objc_storeStrong(&v18->_elementName, a6);
-    v18->_objectClass = a7;
-    if (a8)
+    v17->_minimumNumber = number;
+    v17->_maximumNumber = maximumNumber;
+    objc_storeStrong(&v17->_nameSpace, space);
+    objc_storeStrong(&v18->_elementName, name);
+    v18->_objectClass = class;
+    if (method)
     {
-      v19 = a8;
+      methodCopy = method;
     }
 
     else
     {
-      v19 = 0;
+      methodCopy = 0;
     }
 
-    v18->_setterMethod = v19;
+    v18->_setterMethod = methodCopy;
   }
 
   return v18;

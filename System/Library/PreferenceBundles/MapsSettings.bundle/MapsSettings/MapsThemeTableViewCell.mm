@@ -1,34 +1,34 @@
 @interface MapsThemeTableViewCell
-- (MapsThemeTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MapsThemeTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateSelectedBackgroundColor;
 - (void)didMoveToWindow;
-- (void)setSelectedBackgroundColorProvider:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSelectedBackgroundColorProvider:(id)provider;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTheme;
 @end
 
 @implementation MapsThemeTableViewCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MapsThemeTableViewCell;
-  [(MapsThemeTableViewCell *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[MapsThemeTableViewCell traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(MapsThemeTableViewCell *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[MapsThemeTableViewCell traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(MapsThemeTableViewCell *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(MapsThemeTableViewCell *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(MapsThemeTableViewCell *)self updateTheme];
     }
@@ -40,19 +40,19 @@
   v4.receiver = self;
   v4.super_class = MapsThemeTableViewCell;
   [(MapsThemeTableViewCell *)&v4 didMoveToWindow];
-  v3 = [(MapsThemeTableViewCell *)self window];
+  window = [(MapsThemeTableViewCell *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MapsThemeTableViewCell *)self updateTheme];
   }
 }
 
-- (MapsThemeTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MapsThemeTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = MapsThemeTableViewCell;
-  v4 = [(MapsThemeTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MapsThemeTableViewCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UIView alloc];
@@ -68,19 +68,19 @@
 
 - (void)updateTheme
 {
-  v3 = [(MapsThemeTableViewCell *)self theme];
-  v4 = [v3 tableViewCellHighlightedOverlayColor];
-  v5 = [(MapsThemeTableViewCell *)self selectedBackgroundView];
-  [v5 setBackgroundColor:v4];
+  theme = [(MapsThemeTableViewCell *)self theme];
+  tableViewCellHighlightedOverlayColor = [theme tableViewCellHighlightedOverlayColor];
+  selectedBackgroundView = [(MapsThemeTableViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:tableViewCellHighlightedOverlayColor];
 
   [(MapsThemeTableViewCell *)self _updateSelectedBackgroundColor];
 }
 
-- (void)setSelectedBackgroundColorProvider:(id)a3
+- (void)setSelectedBackgroundColorProvider:(id)provider
 {
-  if (self->_selectedBackgroundColorProvider != a3)
+  if (self->_selectedBackgroundColorProvider != provider)
   {
-    v4 = objc_retainBlock(a3);
+    v4 = objc_retainBlock(provider);
     selectedBackgroundColorProvider = self->_selectedBackgroundColorProvider;
     self->_selectedBackgroundColorProvider = v4;
 
@@ -90,15 +90,15 @@
 
 - (void)_updateSelectedBackgroundColor
 {
-  v3 = [(MapsThemeTableViewCell *)self selectedBackgroundColorProvider];
+  selectedBackgroundColorProvider = [(MapsThemeTableViewCell *)self selectedBackgroundColorProvider];
 
-  if (v3)
+  if (selectedBackgroundColorProvider)
   {
-    v7 = [(MapsThemeTableViewCell *)self selectedBackgroundColorProvider];
-    v4 = [(MapsThemeTableViewCell *)self theme];
-    v5 = v7[2](v7, v4);
-    v6 = [(MapsThemeTableViewCell *)self selectedBackgroundView];
-    [v6 setBackgroundColor:v5];
+    selectedBackgroundColorProvider2 = [(MapsThemeTableViewCell *)self selectedBackgroundColorProvider];
+    theme = [(MapsThemeTableViewCell *)self theme];
+    v5 = selectedBackgroundColorProvider2[2](selectedBackgroundColorProvider2, theme);
+    selectedBackgroundView = [(MapsThemeTableViewCell *)self selectedBackgroundView];
+    [selectedBackgroundView setBackgroundColor:v5];
   }
 }
 

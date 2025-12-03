@@ -1,11 +1,11 @@
 @interface ICArchiveNotesPreviewer
 - (_TtC11MobileNotes23ICArchiveNotesPreviewer)init;
-- (id)initForArchiveAt:(id)a3 error:(id *)a4;
+- (id)initForArchiveAt:(id)at error:(id *)error;
 @end
 
 @implementation ICArchiveNotesPreviewer
 
-- (id)initForArchiveAt:(id)a3 error:(id *)a4
+- (id)initForArchiveAt:(id)at error:(id *)error
 {
   v4 = type metadata accessor for URL();
   __chkstk_darwin(v4 - 8);

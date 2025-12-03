@@ -3,7 +3,7 @@
 - (CMStepCounter)init;
 - (void)dealloc;
 - (void)deleteHistory;
-- (void)getTotalCountToQueue:(id)a3 withHandler:(id)a4;
+- (void)getTotalCountToQueue:(id)queue withHandler:(id)handler;
 - (void)queryStepCountStartingFrom:(NSDate *)start to:(NSDate *)end toQueue:(NSOperationQueue *)queue withHandler:(CMStepQueryHandler)handler;
 - (void)startStepCountingUpdatesToQueue:(NSOperationQueue *)queue updateOn:(NSInteger)stepCounts withHandler:(CMStepUpdateHandler)handler;
 - (void)stopStepCountingUpdates;
@@ -151,9 +151,9 @@ LABEL_3:
   dispatch_sync(v4, block);
 }
 
-- (void)getTotalCountToQueue:(id)a3 withHandler:(id)a4
+- (void)getTotalCountToQueue:(id)queue withHandler:(id)handler
 {
-  v5 = objc_msgSend_date(MEMORY[0x1E695DF00], a2, a3);
+  v5 = objc_msgSend_date(MEMORY[0x1E695DF00], a2, queue);
   v8 = objc_msgSend_dateByAddingTimeInterval_(v5, v6, v7, -5184000.0);
 
   MEMORY[0x1EEE66B58](self, sel_queryStepCountStartingFrom_to_toQueue_withHandler_, v8);

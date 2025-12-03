@@ -21,7 +21,7 @@
 - (NLWorkoutZoneTracker)zoneTracker;
 - (NSArray)chartDataElements;
 - (WOIntervalWorkoutTracker)init;
-- (WOIntervalWorkoutTracker)initWithConfiguration:(id)a3 builder:(id)a4 fallbackDataProvider:(id)a5 powerAccumulator:(id)a6 swimmingAccumulator:(id)a7;
+- (WOIntervalWorkoutTracker)initWithConfiguration:(id)configuration builder:(id)builder fallbackDataProvider:(id)provider powerAccumulator:(id)accumulator swimmingAccumulator:(id)swimmingAccumulator;
 - (double)averageCadence;
 - (double)averagePaceInMetersPerSecond;
 - (double)averagePower;
@@ -32,20 +32,20 @@
 - (double)instantaneousPower;
 - (double)swimDistanceRoundingThresholdDistance;
 - (double)thirtySecondAveragePower;
-- (void)beginFirstActivityWithDate:(id)a3;
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4;
-- (void)didSetDistanceGoalAchievedDuration:(double)a3;
-- (void)didUpdateMetricType:(unint64_t)a3;
+- (void)beginFirstActivityWithDate:(id)date;
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update;
+- (void)didSetDistanceGoalAchievedDuration:(double)duration;
+- (void)didUpdateMetricType:(unint64_t)type;
 - (void)moveToNextStepAutomatically;
 - (void)moveToNextStepManually;
-- (void)recoverStateWithBuilder:(id)a3;
-- (void)recoverStateWithWorkoutActivities:(id)a3 builderMetadata:(id)a4;
-- (void)setFirstActivityStarted:(BOOL)a3;
-- (void)setInstantaneousPower:(double)a3 sampleDate:(id)a4;
-- (void)setSwimDistanceRoundingThresholdDistance:(double)a3;
-- (void)setZoneTracker:(id)a3;
-- (void)updateProgressDelegate:(id)a3;
-- (void)updateZoneTrackerWithDistanceUnit:(id)a3 metadataSavingDelegate:(id)a4;
+- (void)recoverStateWithBuilder:(id)builder;
+- (void)recoverStateWithWorkoutActivities:(id)activities builderMetadata:(id)metadata;
+- (void)setFirstActivityStarted:(BOOL)started;
+- (void)setInstantaneousPower:(double)power sampleDate:(id)date;
+- (void)setSwimDistanceRoundingThresholdDistance:(double)distance;
+- (void)setZoneTracker:(id)tracker;
+- (void)updateProgressDelegate:(id)delegate;
+- (void)updateZoneTrackerWithDistanceUnit:(id)unit metadataSavingDelegate:(id)delegate;
 @end
 
 @implementation WOIntervalWorkoutTracker
@@ -60,20 +60,20 @@
 - (BOOL)instantaneousPowerStale
 {
   v2 = *(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider);
-  v3 = self;
-  v4 = [v2 powerProvider];
-  if (v4)
+  selfCopy = self;
+  powerProvider = [v2 powerProvider];
+  if (powerProvider)
   {
-    v5 = [v4 instantaneousPowerStale];
+    instantaneousPowerStale = [powerProvider instantaneousPowerStale];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v5 = 0;
+    instantaneousPowerStale = 0;
   }
 
-  return v5;
+  return instantaneousPowerStale;
 }
 
 - (double)averagePower
@@ -86,11 +86,11 @@
 - (double)thirtySecondAveragePower
 {
   v2 = *(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider);
-  v3 = self;
-  v4 = [v2 powerProvider];
-  if (v4)
+  selfCopy = self;
+  powerProvider = [v2 powerProvider];
+  if (powerProvider)
   {
-    [v4 thirtySecondAveragePower];
+    [powerProvider thirtySecondAveragePower];
     v6 = v5;
     swift_unknownObjectRelease();
   }
@@ -106,16 +106,16 @@
 - (NSArray)chartDataElements
 {
   v2 = *(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider);
-  v3 = self;
-  v4 = [v2 powerProvider];
-  if (v4)
+  selfCopy = self;
+  powerProvider = [v2 powerProvider];
+  if (powerProvider)
   {
-    v5 = [v4 chartDataElements];
+    chartDataElements = [powerProvider chartDataElements];
     swift_unknownObjectRelease();
     type metadata accessor for WorkoutChartDataElement();
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
-    v3 = v5;
+    selfCopy = chartDataElements;
   }
 
   type metadata accessor for WorkoutChartDataElement();
@@ -124,7 +124,7 @@
   return v6.super.isa;
 }
 
-- (void)setInstantaneousPower:(double)a3 sampleDate:(id)a4
+- (void)setInstantaneousPower:(double)power sampleDate:(id)date
 {
   v6 = type metadata accessor for Date();
   v7 = *(v6 - 8);
@@ -133,13 +133,13 @@
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = *(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider);
-  v12 = self;
-  v13 = [v11 powerProvider];
-  if (v13)
+  selfCopy = self;
+  powerProvider = [v11 powerProvider];
+  if (powerProvider)
   {
-    v14 = v13;
+    v14 = powerProvider;
     isa = Date._bridgeToObjectiveC()().super.isa;
-    [v14 setInstantaneousPower:isa sampleDate:a3];
+    [v14 setInstantaneousPower:isa sampleDate:power];
 
     swift_unknownObjectRelease();
   }
@@ -166,13 +166,13 @@
   return *(self + v3);
 }
 
-- (void)setZoneTracker:(id)a3
+- (void)setZoneTracker:(id)tracker
 {
   v5 = OBJC_IVAR___WOIntervalWorkoutTracker_zoneTracker;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = tracker;
+  trackerCopy = tracker;
 }
 
 - (BOOL)firstActivityStarted
@@ -182,18 +182,18 @@
   return *(self + v3);
 }
 
-- (void)setFirstActivityStarted:(BOOL)a3
+- (void)setFirstActivityStarted:(BOOL)started
 {
   v5 = OBJC_IVAR___WOIntervalWorkoutTracker_firstActivityStarted;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = started;
 }
 
-- (void)updateProgressDelegate:(id)a3
+- (void)updateProgressDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  IntervalWorkoutTracker.updateProgressDelegate(_:)(a3);
+  selfCopy = self;
+  IntervalWorkoutTracker.updateProgressDelegate(_:)(delegate);
   swift_unknownObjectRelease();
 }
 
@@ -204,32 +204,32 @@
   return *(self + v3);
 }
 
-- (void)setSwimDistanceRoundingThresholdDistance:(double)a3
+- (void)setSwimDistanceRoundingThresholdDistance:(double)distance
 {
   v5 = OBJC_IVAR___WOIntervalWorkoutTracker_swimDistanceRoundingThresholdDistance;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = distance;
 }
 
-- (WOIntervalWorkoutTracker)initWithConfiguration:(id)a3 builder:(id)a4 fallbackDataProvider:(id)a5 powerAccumulator:(id)a6 swimmingAccumulator:(id)a7
+- (WOIntervalWorkoutTracker)initWithConfiguration:(id)configuration builder:(id)builder fallbackDataProvider:(id)provider powerAccumulator:(id)accumulator swimmingAccumulator:(id)swimmingAccumulator
 {
-  v11 = a3;
-  v12 = a4;
+  configurationCopy = configuration;
+  builderCopy = builder;
   swift_unknownObjectRetain();
-  return IntervalWorkoutTracker.init(configuration:builder:fallbackDataProvider:powerAccumulator:swimmingAccumulator:)(v11, v12, a5, a6, a7);
+  return IntervalWorkoutTracker.init(configuration:builder:fallbackDataProvider:powerAccumulator:swimmingAccumulator:)(configurationCopy, builderCopy, provider, accumulator, swimmingAccumulator);
 }
 
-- (void)updateZoneTrackerWithDistanceUnit:(id)a3 metadataSavingDelegate:(id)a4
+- (void)updateZoneTrackerWithDistanceUnit:(id)unit metadataSavingDelegate:(id)delegate
 {
-  v5 = a3;
+  unitCopy = unit;
   swift_unknownObjectRetain();
-  v6 = self;
-  IntervalWorkoutTracker.updateZoneTracker(distanceUnit:metadataSavingDelegate:)(v5);
+  selfCopy = self;
+  IntervalWorkoutTracker.updateZoneTracker(distanceUnit:metadataSavingDelegate:)(unitCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)beginFirstActivityWithDate:(id)a3
+- (void)beginFirstActivityWithDate:(id)date
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -237,7 +237,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   IntervalWorkoutTracker.beginFirstActivity(date:)(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -245,32 +245,32 @@
 
 - (void)moveToNextStepManually
 {
-  v2 = self;
+  selfCopy = self;
   IntervalWorkoutTracker.moveToNextStepManually()();
 }
 
 - (void)moveToNextStepAutomatically
 {
-  v2 = self;
+  selfCopy = self;
   IntervalWorkoutTracker.moveToNextStep(successfulPreviousStep:)(1);
 }
 
-- (void)recoverStateWithBuilder:(id)a3
+- (void)recoverStateWithBuilder:(id)builder
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [v4 workoutActivities];
+  builderCopy = builder;
+  selfCopy = self;
+  workoutActivities = [builderCopy workoutActivities];
   type metadata accessor for HKWorkoutActivity(0, &lazy cache variable for type metadata for HKWorkoutActivity, 0x277CCDBF0);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
   specialized IntervalWorkoutTracker.recoverState(workoutActivities:builderMetadata:)(v6);
 }
 
-- (void)recoverStateWithWorkoutActivities:(id)a3 builderMetadata:(id)a4
+- (void)recoverStateWithWorkoutActivities:(id)activities builderMetadata:(id)metadata
 {
   type metadata accessor for HKWorkoutActivity(0, &lazy cache variable for type metadata for HKWorkoutActivity, 0x277CCDBF0);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = self;
+  selfCopy = self;
   specialized IntervalWorkoutTracker.recoverState(workoutActivities:builderMetadata:)(v5);
 }
 
@@ -281,113 +281,113 @@
   return result;
 }
 
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  IntervalWorkoutTracker.dataProvider(_:didUpdate:)(a3, a4);
+  selfCopy = self;
+  IntervalWorkoutTracker.dataProvider(_:didUpdate:)(provider, update);
   swift_unknownObjectRelease();
 }
 
-- (void)didUpdateMetricType:(unint64_t)a3
+- (void)didUpdateMetricType:(unint64_t)type
 {
   v5 = OBJC_IVAR___WOIntervalWorkoutTracker_zoneTracker;
   swift_beginAccess();
   v6 = *(self + v5);
   if (v6)
   {
-    [v6 dataProvider:self didUpdate:a3];
+    [v6 dataProvider:self didUpdate:type];
   }
 }
 
-- (void)didSetDistanceGoalAchievedDuration:(double)a3
+- (void)didSetDistanceGoalAchievedDuration:(double)duration
 {
-  v4 = self;
-  IntervalWorkoutTracker.didSetDistanceGoalAchievedDuration(_:)(a3);
+  selfCopy = self;
+  IntervalWorkoutTracker.didSetDistanceGoalAchievedDuration(_:)(duration);
 }
 
 - (NLSessionActivityDistanceProvider)distanceProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) distanceProvider];
+  distanceProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) distanceProvider];
 
-  return v2;
+  return distanceProvider;
 }
 
 - (NLSessionActivityElevationProvider)elevationProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) elevationProvider];
+  elevationProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) elevationProvider];
 
-  return v2;
+  return elevationProvider;
 }
 
 - (NLSessionActivityDistanceProvider)swimmingDistanceProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) swimmingDistanceProvider];
+  swimmingDistanceProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) swimmingDistanceProvider];
 
-  return v2;
+  return swimmingDistanceProvider;
 }
 
 - (NLSessionActivityLapsProvider)lapsProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) lapsProvider];
+  lapsProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) lapsProvider];
 
-  return v2;
+  return lapsProvider;
 }
 
 - (NLSessionActivityFlightsClimbedProvider)flightsClimbedProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) flightsClimbedProvider];
+  flightsClimbedProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) flightsClimbedProvider];
 
-  return v2;
+  return flightsClimbedProvider;
 }
 
 - (NLSessionActivityRollingPaceProvider)rollingPaceProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) rollingPaceProvider];
+  rollingPaceProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) rollingPaceProvider];
 
-  return v2;
+  return rollingPaceProvider;
 }
 
 - (NLSessionActivityElapsedTimeProvider)elapsedTimeProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) elapsedTimeProvider];
+  elapsedTimeProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) elapsedTimeProvider];
 
-  return v2;
+  return elapsedTimeProvider;
 }
 
 - (NLSessionActivityHeartRateProvider)heartRateProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) heartRateProvider];
+  heartRateProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) heartRateProvider];
 
-  return v2;
+  return heartRateProvider;
 }
 
 - (NLSessionActivityEnergyBurnProvider)energyBurnProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) energyBurnProvider];
+  energyBurnProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) energyBurnProvider];
 
-  return v2;
+  return energyBurnProvider;
 }
 
 - (NLSessionActivityGhostPacerProvider)ghostPacerProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) ghostPacerProvider];
+  ghostPacerProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) ghostPacerProvider];
 
-  return v2;
+  return ghostPacerProvider;
 }
 
 - (NLSessionActivitySegmentProvider)segmentProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) segmentProvider];
+  segmentProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) segmentProvider];
 
-  return v2;
+  return segmentProvider;
 }
 
 - (NLSessionActivitySplitProvider)splitProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) splitProvider];
+  splitProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) splitProvider];
 
-  return v2;
+  return splitProvider;
 }
 
 - (double)duration
@@ -399,23 +399,23 @@
 
 - (NLSessionActivityWaterTemperatureProvider)waterTemperatureProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) waterTemperatureProvider];
+  waterTemperatureProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) waterTemperatureProvider];
 
-  return v2;
+  return waterTemperatureProvider;
 }
 
 - (NLSessionActivityDescentProvider)descentProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) descentProvider];
+  descentProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) descentProvider];
 
-  return v2;
+  return descentProvider;
 }
 
 - (NLSessionActivityDownhillRunCountProvider)downhillRunCountProvider
 {
-  v2 = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) downhillRunCountProvider];
+  downhillRunCountProvider = [*(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider) downhillRunCountProvider];
 
-  return v2;
+  return downhillRunCountProvider;
 }
 
 - (double)currentPaceInMetersPerSecond
@@ -442,20 +442,20 @@
 - (BOOL)isPaceAvailable
 {
   v2 = *(self + OBJC_IVAR___WOIntervalWorkoutTracker_fallbackDataProvider);
-  v3 = self;
-  v4 = [v2 paceProvider];
-  if (v4)
+  selfCopy = self;
+  paceProvider = [v2 paceProvider];
+  if (paceProvider)
   {
-    v5 = [v4 isPaceAvailable];
+    isPaceAvailable = [paceProvider isPaceAvailable];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v5 = 0;
+    isPaceAvailable = 0;
   }
 
-  return v5;
+  return isPaceAvailable;
 }
 
 - (double)currentCadence

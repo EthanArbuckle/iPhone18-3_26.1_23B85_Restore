@@ -1,74 +1,74 @@
 @interface NPKQuickPaymentSession
 + (BOOL)hasOutstandingSessions;
-+ (NPKQuickPaymentSession)sessionWithQueue:(id)a3;
++ (NPKQuickPaymentSession)sessionWithQueue:(id)queue;
 + (id)_outstandingSessionHashTable;
-+ (void)_handleNewContactlessSession:(id)a3;
-- (BOOL)_invokeStateUpdateForReason:(unint64_t)a3 shouldCleanupSession:(BOOL)a4;
++ (void)_handleNewContactlessSession:(id)session;
+- (BOOL)_invokeStateUpdateForReason:(unint64_t)reason shouldCleanupSession:(BOOL)session;
 - (BOOL)_sessionQueue_enablePersistentCardEmulation;
-- (BOOL)_sessionQueue_startContactlessSessionWithSuccessfulCompletionOnInternalQueue:(id)a3;
-- (BOOL)_sessionQueue_updateContactlessSessionForPass:(id)a3 paymentApplications:(id)a4 vasPasses:(id)a5 sessionConfirmed:(BOOL)a6 deferAuthorization:(BOOL)a7;
-- (BOOL)startSessionWithCompletion:(id)a3;
-- (NPKQuickPaymentSession)initWithQueue:(id)a3;
+- (BOOL)_sessionQueue_startContactlessSessionWithSuccessfulCompletionOnInternalQueue:(id)queue;
+- (BOOL)_sessionQueue_updateContactlessSessionForPass:(id)pass paymentApplications:(id)applications vasPasses:(id)passes sessionConfirmed:(BOOL)confirmed deferAuthorization:(BOOL)authorization;
+- (BOOL)startSessionWithCompletion:(id)completion;
+- (NPKQuickPaymentSession)initWithQueue:(id)queue;
 - (NPKQuickPaymentSessionDelegate)delegate;
-- (void)_checkContactlessValidity:(unint64_t)a3 authorizationValidity:(unint64_t)a4 performWork:(id)a5;
-- (void)_checkContactlessValidity:(unint64_t)a3 performWork:(id)a4;
-- (void)_handleConventionalTransactionWithContext:(id)a3;
+- (void)_checkContactlessValidity:(unint64_t)validity authorizationValidity:(unint64_t)authorizationValidity performWork:(id)work;
+- (void)_checkContactlessValidity:(unint64_t)validity performWork:(id)work;
+- (void)_handleConventionalTransactionWithContext:(id)context;
 - (void)_handleFieldEntry;
 - (void)_handleFieldExit;
-- (void)_handleTransactionCompleteWithContext:(id)a3;
-- (void)_internalQueue_deactivateSessionWithCompletion:(id)a3;
-- (void)_internalQueue_getContactlessAndAuthorizationValidityAndPerformWork:(id)a3;
+- (void)_handleTransactionCompleteWithContext:(id)context;
+- (void)_internalQueue_deactivateSessionWithCompletion:(id)completion;
+- (void)_internalQueue_getContactlessAndAuthorizationValidityAndPerformWork:(id)work;
 - (void)_internalQueue_invokeDeactivationCompletionBlocks;
-- (void)_internalQueue_setCurrentPass:(id)a3;
-- (void)_internalQueue_updateContactlessSessionForPass:(id)a3 vasPasses:(id)a4 deferAuthorization:(BOOL)a5;
-- (void)_internalQueue_updateContactlessValidityAndPerformWork:(id)a3;
+- (void)_internalQueue_setCurrentPass:(id)pass;
+- (void)_internalQueue_updateContactlessSessionForPass:(id)pass vasPasses:(id)passes deferAuthorization:(BOOL)authorization;
+- (void)_internalQueue_updateContactlessValidityAndPerformWork:(id)work;
 - (void)_internalQueue_updateSessionWithCurrentPassAndLoyaltyState;
-- (void)_loyaltyEngineConfigurationChanged:(id)a3;
-- (void)_sessionQueue_invokeAppropriateCallbackForActivationWithSuccess:(BOOL)a3 invokeOnSuccess:(BOOL)a4 contactlessValidity:(unint64_t)a5 forPass:(id)a6;
+- (void)_loyaltyEngineConfigurationChanged:(id)changed;
+- (void)_sessionQueue_invokeAppropriateCallbackForActivationWithSuccess:(BOOL)success invokeOnSuccess:(BOOL)onSuccess contactlessValidity:(unint64_t)validity forPass:(id)pass;
 - (void)_updateAuthorizationValidity;
 - (void)_updateSessionWithCredentialAndActivate;
-- (void)authorize18013RequestWithDataToRelease:(id)a3 credential:(id)a4;
-- (void)confirmSessionExpectingCredential:(BOOL)a3;
-- (void)contactlessInterfaceSession:(id)a3 didEndPersistentCardEmulationWithContexts:(id)a4;
-- (void)contactlessInterfaceSession:(id)a3 didFinishTransactionWithContext:(id)a4;
-- (void)contactlessInterfaceSession:(id)a3 didReceive18013Request:(id)a4 readerAuthInfo:(id)a5;
-- (void)contactlessInterfaceSessionDidFail:(id)a3 forPaymentApplications:(id)a4 paymentPass:(id)a5 valueAddedServicePasses:(id)a6;
-- (void)contactlessInterfaceSessionDidFailDeferredAuthorization:(id)a3;
-- (void)contactlessInterfaceSessionDidFailTransaction:(id)a3 forPaymentApplication:(id)a4 paymentPass:(id)a5;
-- (void)contactlessInterfaceSessionDidReceiveActivityTimeout:(id)a3;
-- (void)contactlessInterfaceSessionDidReceiveTerminalError:(id)a3;
-- (void)contactlessInterfaceSessionDidReceiveUntrustedTerminal:(id)a3;
-- (void)contactlessInterfaceSessionDidSelectPayment:(id)a3;
-- (void)contactlessInterfaceSessionDidSelectValueAddedService:(id)a3;
-- (void)contactlessInterfaceSessionDidStartTransaction:(id)a3 withContext:(id)a4;
-- (void)contactlessInterfaceSessionDidTerminate:(id)a3;
-- (void)contactlessInterfaceSessionDidTerminate:(id)a3 withErrorCode:(unint64_t)a4;
-- (void)contactlessInterfaceSessionDidTimeout:(id)a3 forPaymentApplications:(id)a4 paymentPass:(id)a5 valueAddedServicePasses:(id)a6;
-- (void)contactlessInterfaceSessionHasPendingServerRequest:(id)a3;
-- (void)deactivateSessionWithCompletion:(id)a3;
+- (void)authorize18013RequestWithDataToRelease:(id)release credential:(id)credential;
+- (void)confirmSessionExpectingCredential:(BOOL)credential;
+- (void)contactlessInterfaceSession:(id)session didEndPersistentCardEmulationWithContexts:(id)contexts;
+- (void)contactlessInterfaceSession:(id)session didFinishTransactionWithContext:(id)context;
+- (void)contactlessInterfaceSession:(id)session didReceive18013Request:(id)request readerAuthInfo:(id)info;
+- (void)contactlessInterfaceSessionDidFail:(id)fail forPaymentApplications:(id)applications paymentPass:(id)pass valueAddedServicePasses:(id)passes;
+- (void)contactlessInterfaceSessionDidFailDeferredAuthorization:(id)authorization;
+- (void)contactlessInterfaceSessionDidFailTransaction:(id)transaction forPaymentApplication:(id)application paymentPass:(id)pass;
+- (void)contactlessInterfaceSessionDidReceiveActivityTimeout:(id)timeout;
+- (void)contactlessInterfaceSessionDidReceiveTerminalError:(id)error;
+- (void)contactlessInterfaceSessionDidReceiveUntrustedTerminal:(id)terminal;
+- (void)contactlessInterfaceSessionDidSelectPayment:(id)payment;
+- (void)contactlessInterfaceSessionDidSelectValueAddedService:(id)service;
+- (void)contactlessInterfaceSessionDidStartTransaction:(id)transaction withContext:(id)context;
+- (void)contactlessInterfaceSessionDidTerminate:(id)terminate;
+- (void)contactlessInterfaceSessionDidTerminate:(id)terminate withErrorCode:(unint64_t)code;
+- (void)contactlessInterfaceSessionDidTimeout:(id)timeout forPaymentApplications:(id)applications paymentPass:(id)pass valueAddedServicePasses:(id)passes;
+- (void)contactlessInterfaceSessionHasPendingServerRequest:(id)request;
+- (void)deactivateSessionWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)executeRKEActionForPass:(id)a3 function:(id)a4 action:(id)a5 withCompletion:(id)a6;
-- (void)setCredential:(id)a3;
-- (void)setCurrentPass:(id)a3;
-- (void)setDeferAuthorization:(BOOL)a3;
-- (void)setInField:(BOOL)a3;
-- (void)setInServiceMode:(BOOL)a3;
-- (void)setVasPasses:(id)a3;
-- (void)stsSession:(id)a3 didDetectField:(BOOL)a4;
+- (void)executeRKEActionForPass:(id)pass function:(id)function action:(id)action withCompletion:(id)completion;
+- (void)setCredential:(id)credential;
+- (void)setCurrentPass:(id)pass;
+- (void)setDeferAuthorization:(BOOL)authorization;
+- (void)setInField:(BOOL)field;
+- (void)setInServiceMode:(BOOL)mode;
+- (void)setVasPasses:(id)passes;
+- (void)stsSession:(id)session didDetectField:(BOOL)field;
 @end
 
 @implementation NPKQuickPaymentSession
 
-+ (NPKQuickPaymentSession)sessionWithQueue:(id)a3
++ (NPKQuickPaymentSession)sessionWithQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = off_279943028;
   if ((NPKIsRunningInUIOnlyDemoMode() & 1) == 0 && !NPKIsRunningInStoreDemoMode())
   {
     v4 = off_279943D58;
   }
 
-  v5 = [objc_alloc(*v4) initWithQueue:v3];
+  v5 = [objc_alloc(*v4) initWithQueue:queueCopy];
 
   return v5;
 }
@@ -95,7 +95,7 @@ void __54__NPKQuickPaymentSession__outstandingSessionHashTable__block_invoke()
 + (BOOL)hasOutstandingSessions
 {
   v22 = *MEMORY[0x277D85DE8];
-  [a1 _outstandingSessionHashTable];
+  [self _outstandingSessionHashTable];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -122,11 +122,11 @@ void __54__NPKQuickPaymentSession__outstandingSessionHashTable__block_invoke()
           v9 = pk_Payment_log();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
           {
-            v10 = [v6 isDeactivated];
+            isDeactivated = [v6 isDeactivated];
             *buf = 138412546;
             v18 = v6;
             v19 = 1024;
-            v20 = v10;
+            v20 = isDeactivated;
             _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: session: %@ deactivated %d", buf, 0x12u);
           }
         }
@@ -154,10 +154,10 @@ LABEL_16:
   return v3;
 }
 
-+ (void)_handleNewContactlessSession:(id)a3
++ (void)_handleNewContactlessSession:(id)session
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -167,20 +167,20 @@ LABEL_16:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = sessionCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Handling new contactless session: %@", &v10, 0xCu);
     }
   }
 
-  v8 = [a1 _outstandingSessionHashTable];
-  [v8 addObject:v4];
+  _outstandingSessionHashTable = [self _outstandingSessionHashTable];
+  [_outstandingSessionHashTable addObject:sessionCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (NPKQuickPaymentSession)initWithQueue:(id)a3
+- (NPKQuickPaymentSession)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = NPKQuickPaymentSession;
   v6 = [(NPKQuickPaymentSession *)&v13 init];
@@ -195,7 +195,7 @@ LABEL_16:
     paymentSessionQueue = v6->_paymentSessionQueue;
     v6->_paymentSessionQueue = v10;
 
-    objc_storeStrong(&v6->_callbackQueue, a3);
+    objc_storeStrong(&v6->_callbackQueue, queue);
     v6->_requireFirstInQueue = 1;
     v6->_endSessionWhenAuthorizationIsConsumed = 1;
     atomic_store(0, &v6->_atomicIsSwitchingSessionTypeCount);
@@ -206,16 +206,16 @@ LABEL_16:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(NPKQuickPaymentSession *)self contactlessSession];
-  v5 = [v4 lifecycleState];
+  contactlessSession = [(NPKQuickPaymentSession *)self contactlessSession];
+  lifecycleState = [contactlessSession lifecycleState];
 
-  if (v5 != 2)
+  if (lifecycleState != 2)
   {
-    v6 = [(NPKQuickPaymentSession *)self contactlessSession];
-    [v6 invalidateSessionWithCompletion:&__block_literal_global_117];
+    contactlessSession2 = [(NPKQuickPaymentSession *)self contactlessSession];
+    [contactlessSession2 invalidateSessionWithCompletion:&__block_literal_global_117];
   }
 
   objc_storeWeak(&self->_delegate, 0);
@@ -244,9 +244,9 @@ void __33__NPKQuickPaymentSession_dealloc__block_invoke()
   }
 }
 
-- (BOOL)startSessionWithCompletion:(id)a3
+- (BOOL)startSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -257,15 +257,15 @@ void __33__NPKQuickPaymentSession_dealloc__block_invoke()
   block[1] = 3221225472;
   block[2] = __53__NPKQuickPaymentSession_startSessionWithCompletion___block_invoke;
   block[3] = &unk_279947610;
-  v9 = v4;
+  v9 = completionCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   dispatch_sync(paymentSessionQueue, block);
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(completionCopy) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return completionCopy;
 }
 
 void __53__NPKQuickPaymentSession_startSessionWithCompletion___block_invoke(uint64_t a1)
@@ -312,11 +312,11 @@ void __53__NPKQuickPaymentSession_startSessionWithCompletion___block_invoke_2(ui
   }
 }
 
-- (void)authorize18013RequestWithDataToRelease:(id)a3 credential:(id)a4
+- (void)authorize18013RequestWithDataToRelease:(id)release credential:(id)credential
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  releaseCopy = release;
+  credentialCopy = credential;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -326,24 +326,24 @@ void __53__NPKQuickPaymentSession_startSessionWithCompletion___block_invoke_2(ui
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = v6;
+      v19 = releaseCopy;
       v20 = 2112;
-      v21 = v7;
+      v21 = credentialCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Authorizing ISO18013 Request with dataToRelease:%@ credential:%@", buf, 0x16u);
     }
   }
 
-  v11 = [(NPKQuickPaymentSession *)self paymentSessionQueue];
+  paymentSessionQueue = [(NPKQuickPaymentSession *)self paymentSessionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__NPKQuickPaymentSession_authorize18013RequestWithDataToRelease_credential___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
-  dispatch_async(v11, block);
+  v16 = releaseCopy;
+  v17 = credentialCopy;
+  v12 = credentialCopy;
+  v13 = releaseCopy;
+  dispatch_async(paymentSessionQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -354,13 +354,13 @@ void __76__NPKQuickPaymentSession_authorize18013RequestWithDataToRelease_credent
   [v2 authorize18013RequestWithDataToRelease:*(a1 + 40) credential:*(a1 + 48)];
 }
 
-- (void)executeRKEActionForPass:(id)a3 function:(id)a4 action:(id)a5 withCompletion:(id)a6
+- (void)executeRKEActionForPass:(id)pass function:(id)function action:(id)action withCompletion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  passCopy = pass;
+  functionCopy = function;
+  actionCopy = action;
+  completionCopy = completion;
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -369,13 +369,13 @@ void __76__NPKQuickPaymentSession_authorize18013RequestWithDataToRelease_credent
     v16 = pk_Payment_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = _Block_copy(v13);
+      v17 = _Block_copy(completionCopy);
       *buf = 138413058;
-      v30 = v10;
+      v30 = passCopy;
       v31 = 2112;
-      v32 = v11;
+      v32 = functionCopy;
       v33 = 2112;
-      v34 = v12;
+      v34 = actionCopy;
       v35 = 2112;
       v36 = v17;
       _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: Executing RKE action for pass:%@ function:%@ action:%@ with completion:%@", buf, 0x2Au);
@@ -410,12 +410,12 @@ void __76__NPKQuickPaymentSession_authorize18013RequestWithDataToRelease_credent
   v25[2] = __81__NPKQuickPaymentSession_executeRKEActionForPass_function_action_withCompletion___block_invoke;
   v25[3] = &unk_279947688;
   v25[4] = self;
-  v26 = v11;
-  v27 = v12;
-  v28 = v13;
-  v21 = v13;
-  v22 = v12;
-  v23 = v11;
+  v26 = functionCopy;
+  v27 = actionCopy;
+  v28 = completionCopy;
+  v21 = completionCopy;
+  v22 = actionCopy;
+  v23 = functionCopy;
   [(NPKQuickPaymentSession *)self startSessionWithCompletion:v25];
 
   v24 = *MEMORY[0x277D85DE8];
@@ -490,10 +490,10 @@ uint64_t __81__NPKQuickPaymentSession_executeRKEActionForPass_function_action_wi
   return result;
 }
 
-- (void)setCurrentPass:(id)a3
+- (void)setCurrentPass:(id)pass
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passCopy = pass;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -502,9 +502,9 @@ uint64_t __81__NPKQuickPaymentSession_executeRKEActionForPass_function_action_wi
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412290;
-      v15 = v8;
+      v15 = uniqueID;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Payment session: setting current pass to %@", buf, 0xCu);
     }
   }
@@ -515,8 +515,8 @@ uint64_t __81__NPKQuickPaymentSession_executeRKEActionForPass_function_action_wi
   v12[2] = __41__NPKQuickPaymentSession_setCurrentPass___block_invoke;
   v12[3] = &unk_2799454E0;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
+  v13 = passCopy;
+  v10 = passCopy;
   dispatch_sync(internalQueue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -705,16 +705,16 @@ void __41__NPKQuickPaymentSession_setCurrentPass___block_invoke_2(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_internalQueue_setCurrentPass:(id)a3
+- (void)_internalQueue_setCurrentPass:(id)pass
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  passCopy = pass;
   dispatch_assert_queue_V2(self->_internalQueue);
   currentPass = self->_currentPass;
-  objc_storeStrong(&self->_currentPass, a3);
-  if (currentPass != v5)
+  objc_storeStrong(&self->_currentPass, pass);
+  if (currentPass != passCopy)
   {
-    v7 = NPKQuickPaymentSessionTypeForPass(v5);
+    v7 = NPKQuickPaymentSessionTypeForPass(passCopy);
     if ([(NPKQuickPaymentSession *)self sessionStarted])
     {
       if (v7 != self->_sessionType)
@@ -732,7 +732,7 @@ void __41__NPKQuickPaymentSession_setCurrentPass___block_invoke_2(uint64_t a1)
             *buf = 138412802;
             v22 = v11;
             v23 = 2112;
-            v24 = v5;
+            v24 = passCopy;
             v25 = 2112;
             v26 = v12;
             _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_ERROR, "Error: expected session type:%@ for pass:%@, current session type:%@ doesn't match. Expect bad thing to happen.", buf, 0x20u);
@@ -746,8 +746,8 @@ void __41__NPKQuickPaymentSession_setCurrentPass___block_invoke_2(uint64_t a1)
     v16 = 3221225472;
     v17 = __56__NPKQuickPaymentSession__internalQueue_setCurrentPass___block_invoke;
     v18 = &unk_2799454E0;
-    v19 = self;
-    v20 = v5;
+    selfCopy = self;
+    v20 = passCopy;
     dispatch_async(callbackQueue, &v15);
     if (self->_contactlessSession)
     {
@@ -770,17 +770,17 @@ void __56__NPKQuickPaymentSession__internalQueue_setCurrentPass___block_invoke(u
   }
 }
 
-- (void)setVasPasses:(id)a3
+- (void)setVasPasses:(id)passes
 {
-  v4 = a3;
+  passesCopy = passes;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__NPKQuickPaymentSession_setVasPasses___block_invoke;
   v7[3] = &unk_2799454E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = passesCopy;
+  v6 = passesCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -797,10 +797,10 @@ void *__39__NPKQuickPaymentSession_setVasPasses___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCredential:(id)a3
+- (void)setCredential:(id)credential
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  credentialCopy = credential;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -810,7 +810,7 @@ void *__39__NPKQuickPaymentSession_setVasPasses___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = credentialCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: requested to set credential:%@", buf, 0xCu);
     }
   }
@@ -820,9 +820,9 @@ void *__39__NPKQuickPaymentSession_setVasPasses___block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __40__NPKQuickPaymentSession_setCredential___block_invoke;
   v11[3] = &unk_2799454E0;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
+  v12 = credentialCopy;
+  selfCopy = self;
+  v9 = credentialCopy;
   dispatch_async(internalQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -889,7 +889,7 @@ void __40__NPKQuickPaymentSession_setCredential___block_invoke_128(uint64_t a1)
   }
 }
 
-- (void)confirmSessionExpectingCredential:(BOOL)a3
+- (void)confirmSessionExpectingCredential:(BOOL)credential
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -897,7 +897,7 @@ void __40__NPKQuickPaymentSession_setCredential___block_invoke_128(uint64_t a1)
   v4[2] = __60__NPKQuickPaymentSession_confirmSessionExpectingCredential___block_invoke;
   v4[3] = &unk_279944FC0;
   v4[4] = self;
-  v5 = a3;
+  credentialCopy = credential;
   dispatch_async(internalQueue, v4);
 }
 
@@ -914,9 +914,9 @@ uint64_t __60__NPKQuickPaymentSession_confirmSessionExpectingCredential___block_
   return result;
 }
 
-- (void)setDeferAuthorization:(BOOL)a3
+- (void)setDeferAuthorization:(BOOL)authorization
 {
-  v3 = a3;
+  authorizationCopy = authorization;
   v15 = *MEMORY[0x277D85DE8];
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -927,7 +927,7 @@ uint64_t __60__NPKQuickPaymentSession_confirmSessionExpectingCredential___block_
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"no";
-      if (v3)
+      if (authorizationCopy)
       {
         v8 = @"yes";
       }
@@ -944,19 +944,19 @@ uint64_t __60__NPKQuickPaymentSession_confirmSessionExpectingCredential___block_
   v11[2] = __48__NPKQuickPaymentSession_setDeferAuthorization___block_invoke;
   v11[3] = &unk_279944FC0;
   v11[4] = self;
-  v12 = v3;
+  v12 = authorizationCopy;
   dispatch_sync(internalQueue, v11);
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInServiceMode:(BOOL)a3
+- (void)setInServiceMode:(BOOL)mode
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__NPKQuickPaymentSession_setInServiceMode___block_invoke;
   v4[3] = &unk_279944FC0;
-  v5 = a3;
+  modeCopy = mode;
   v4[4] = self;
   dispatch_sync(internalQueue, v4);
 }
@@ -1029,14 +1029,14 @@ void __43__NPKQuickPaymentSession_setInServiceMode___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setInField:(BOOL)a3
+- (void)setInField:(BOOL)field
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __37__NPKQuickPaymentSession_setInField___block_invoke;
   v4[3] = &unk_279944FC0;
-  v5 = a3;
+  fieldCopy = field;
   v4[4] = self;
   dispatch_sync(internalQueue, v4);
 }
@@ -1196,9 +1196,9 @@ void __65__NPKQuickPaymentSession__updateSessionWithCredentialAndActivate__block
   }
 }
 
-- (void)deactivateSessionWithCompletion:(id)a3
+- (void)deactivateSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1216,16 +1216,16 @@ void __65__NPKQuickPaymentSession__updateSessionWithCredentialAndActivate__block
   v16 = buf;
   v17 = 0x2020000000;
   v18 = 0;
-  v8 = [(NPKQuickPaymentSession *)self internalQueue];
+  internalQueue = [(NPKQuickPaymentSession *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__NPKQuickPaymentSession_deactivateSessionWithCompletion___block_invoke;
   block[3] = &unk_279947610;
   v14 = buf;
   block[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v13 = v9;
-  dispatch_sync(v8, block);
+  dispatch_sync(internalQueue, block);
 
   if ((v16[24] & 1) == 0)
   {
@@ -1260,12 +1260,12 @@ uint64_t __58__NPKQuickPaymentSession_deactivateSessionWithCompletion___block_in
   return [v3 _internalQueue_deactivateSessionWithCompletion:v4];
 }
 
-- (void)_internalQueue_deactivateSessionWithCompletion:(id)a3
+- (void)_internalQueue_deactivateSessionWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKQuickPaymentSession *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  internalQueue = [(NPKQuickPaymentSession *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -1276,9 +1276,9 @@ uint64_t __58__NPKQuickPaymentSession_deactivateSessionWithCompletion___block_in
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v14 = [(NPKQuickPaymentSession *)self isDeactivating];
+      isDeactivating = [(NPKQuickPaymentSession *)self isDeactivating];
       v15 = 1024;
-      v16 = [(NPKQuickPaymentSession *)self isDeactivated];
+      isDeactivated = [(NPKQuickPaymentSession *)self isDeactivated];
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Deactivate quick payment session: deactivating %d deactivated %d", buf, 0xEu);
     }
   }
@@ -1288,8 +1288,8 @@ uint64_t __58__NPKQuickPaymentSession_deactivateSessionWithCompletion___block_in
   v11[2] = __73__NPKQuickPaymentSession__internalQueue_deactivateSessionWithCompletion___block_invoke;
   v11[3] = &unk_279947728;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = completionCopy;
+  v9 = completionCopy;
   [(NPKQuickPaymentSession *)self _internalQueue_updateContactlessValidityAndPerformWork:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1390,11 +1390,11 @@ uint64_t __73__NPKQuickPaymentSession__internalQueue_deactivateSessionWithComple
   return [v2 _internalQueue_invokeDeactivationCompletionBlocks];
 }
 
-- (void)_internalQueue_updateContactlessSessionForPass:(id)a3 vasPasses:(id)a4 deferAuthorization:(BOOL)a5
+- (void)_internalQueue_updateContactlessSessionForPass:(id)pass vasPasses:(id)passes deferAuthorization:(BOOL)authorization
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  passCopy = pass;
+  passesCopy = passes;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -1403,10 +1403,10 @@ uint64_t __73__NPKQuickPaymentSession__internalQueue_deactivateSessionWithComple
     v12 = pk_Payment_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 uniqueID];
-      v14 = [v9 pk_arrayByApplyingBlock:&__block_literal_global_154];
+      uniqueID = [passCopy uniqueID];
+      v14 = [passesCopy pk_arrayByApplyingBlock:&__block_literal_global_154];
       *buf = 138412546;
-      v24 = v13;
+      v24 = uniqueID;
       v25 = 2112;
       v26 = v14;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Internal queue: updating contactless session for pass %@ auto-select VAS passes %@", buf, 0x16u);
@@ -1418,12 +1418,12 @@ uint64_t __73__NPKQuickPaymentSession__internalQueue_deactivateSessionWithComple
   v18[1] = 3221225472;
   v18[2] = __102__NPKQuickPaymentSession__internalQueue_updateContactlessSessionForPass_vasPasses_deferAuthorization___block_invoke_158;
   v18[3] = &unk_2799477A0;
-  v19 = v8;
-  v20 = self;
-  v21 = v9;
-  v22 = a5;
-  v15 = v9;
-  v16 = v8;
+  v19 = passCopy;
+  selfCopy = self;
+  v21 = passesCopy;
+  authorizationCopy = authorization;
+  v15 = passesCopy;
+  v16 = passCopy;
   [(NPKQuickPaymentSession *)self _internalQueue_updateContactlessValidityAndPerformWork:v18];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1599,14 +1599,14 @@ uint64_t __102__NPKQuickPaymentSession__internalQueue_updateContactlessSessionFo
   return result;
 }
 
-- (BOOL)_sessionQueue_updateContactlessSessionForPass:(id)a3 paymentApplications:(id)a4 vasPasses:(id)a5 sessionConfirmed:(BOOL)a6 deferAuthorization:(BOOL)a7
+- (BOOL)_sessionQueue_updateContactlessSessionForPass:(id)pass paymentApplications:(id)applications vasPasses:(id)passes sessionConfirmed:(BOOL)confirmed deferAuthorization:(BOOL)authorization
 {
-  v7 = a7;
-  v8 = a6;
+  authorizationCopy = authorization;
+  confirmedCopy = confirmed;
   v58 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  passCopy = pass;
+  applicationsCopy = applications;
+  passesCopy = passes;
   v15 = pk_Payment_log();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
 
@@ -1615,49 +1615,49 @@ uint64_t __102__NPKQuickPaymentSession__internalQueue_updateContactlessSessionFo
     v17 = pk_Payment_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v12 uniqueID];
-      v19 = [v14 pk_arrayByApplyingBlock:&__block_literal_global_160];
-      v20 = [(NPKQuickPaymentSession *)self contactlessSession];
+      uniqueID = [passCopy uniqueID];
+      v19 = [passesCopy pk_arrayByApplyingBlock:&__block_literal_global_160];
+      contactlessSession = [(NPKQuickPaymentSession *)self contactlessSession];
       *buf = 138412802;
-      v54 = v18;
+      v54 = uniqueID;
       v55 = 2112;
       *v56 = v19;
       *&v56[8] = 2112;
-      v57 = v20;
+      v57 = contactlessSession;
       _os_log_impl(&dword_25B300000, v17, OS_LOG_TYPE_DEFAULT, "Notice: Session queue update contactless session: pass %@ auto-select VAS passes %@ (session %@)", buf, 0x20u);
     }
   }
 
   dispatch_assert_queue_V2(self->_paymentSessionQueue);
-  v21 = [v12 paymentPass];
-  v22 = [(NPKQuickPaymentSession *)self contactlessSession];
+  paymentPass = [passCopy paymentPass];
+  contactlessSession2 = [(NPKQuickPaymentSession *)self contactlessSession];
 
-  if (!v22)
+  if (!contactlessSession2)
   {
     v26 = 1;
     goto LABEL_38;
   }
 
   v23 = MEMORY[0x277CBEBF8];
-  if (v14)
+  if (passesCopy)
   {
-    v23 = v14;
+    v23 = passesCopy;
   }
 
   v24 = v23;
-  v48 = v7;
-  if (!v12)
+  v48 = authorizationCopy;
+  if (!passCopy)
   {
     goto LABEL_15;
   }
 
-  if (!v21)
+  if (!paymentPass)
   {
-    v27 = [v12 nfcPayload];
+    nfcPayload = [passCopy nfcPayload];
 
-    if (v27)
+    if (nfcPayload)
     {
-      v52 = v12;
+      v52 = passCopy;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v52 count:1];
 
       v25 = 0;
@@ -1670,12 +1670,12 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v21 contactlessActivationState])
+  if ([paymentPass contactlessActivationState])
   {
     goto LABEL_15;
   }
 
-  v25 = v13;
+  v25 = applicationsCopy;
 LABEL_16:
   v29 = pk_Payment_log();
   v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
@@ -1692,13 +1692,13 @@ LABEL_16:
     }
   }
 
-  v49 = v12;
-  v50 = v8;
-  v51 = v14;
-  v33 = v13;
+  v49 = passCopy;
+  v50 = confirmedCopy;
+  v51 = passesCopy;
+  v33 = applicationsCopy;
   kdebug_trace();
-  v34 = [(NPKQuickPaymentSession *)self contactlessSession];
-  v35 = [v34 activatedValueAddedServicePasses];
+  contactlessSession3 = [(NPKQuickPaymentSession *)self contactlessSession];
+  activatedValueAddedServicePasses = [contactlessSession3 activatedValueAddedServicePasses];
   v36 = PKEqualObjects();
 
   v37 = v24;
@@ -1709,12 +1709,12 @@ LABEL_16:
 
   else
   {
-    v38 = [v34 activateValueAddedServicePasses:v24];
+    v38 = [contactlessSession3 activateValueAddedServicePasses:v24];
   }
 
   if ([v25 count])
   {
-    v39 = v21;
+    v39 = paymentPass;
   }
 
   else
@@ -1722,7 +1722,7 @@ LABEL_16:
     v39 = 0;
   }
 
-  v40 = [v34 activatePaymentApplications:v25 forPaymentPass:v39];
+  v40 = [contactlessSession3 activatePaymentApplications:v25 forPaymentPass:v39];
   kdebug_trace();
   v41 = pk_Payment_log();
   v42 = os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT);
@@ -1733,7 +1733,7 @@ LABEL_16:
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v54 = v34;
+      v54 = contactlessSession3;
       v55 = 1024;
       *v56 = v38;
       *&v56[4] = 1024;
@@ -1744,19 +1744,19 @@ LABEL_16:
     }
   }
 
-  v13 = v33;
+  applicationsCopy = v33;
   v26 = v38 | v40;
   if (v26)
   {
-    v14 = v51;
+    passesCopy = v51;
     v44 = v37;
-    v12 = v49;
+    passCopy = v49;
     if (v50)
     {
       if ([v25 count] || objc_msgSend(v44, "count"))
       {
-        v45 = [v34 activatedPaymentApplications];
-        v26 = -[NPKQuickPaymentSession _sessionQueue_authorizeWithUseCredential:deferAuthorizationIfCredentialUsed:](self, "_sessionQueue_authorizeWithUseCredential:deferAuthorizationIfCredentialUsed:", [v45 count] != 0, v48);
+        activatedPaymentApplications = [contactlessSession3 activatedPaymentApplications];
+        v26 = -[NPKQuickPaymentSession _sessionQueue_authorizeWithUseCredential:deferAuthorizationIfCredentialUsed:](self, "_sessionQueue_authorizeWithUseCredential:deferAuthorizationIfCredentialUsed:", [activatedPaymentApplications count] != 0, v48);
       }
 
       else
@@ -1768,9 +1768,9 @@ LABEL_16:
 
   else
   {
-    v14 = v51;
+    passesCopy = v51;
     v44 = v37;
-    v12 = v49;
+    passCopy = v49;
   }
 
 LABEL_38:
@@ -1778,12 +1778,12 @@ LABEL_38:
   return v26 & 1;
 }
 
-- (void)_sessionQueue_invokeAppropriateCallbackForActivationWithSuccess:(BOOL)a3 invokeOnSuccess:(BOOL)a4 contactlessValidity:(unint64_t)a5 forPass:(id)a6
+- (void)_sessionQueue_invokeAppropriateCallbackForActivationWithSuccess:(BOOL)success invokeOnSuccess:(BOOL)onSuccess contactlessValidity:(unint64_t)validity forPass:(id)pass
 {
-  v7 = a4;
-  v8 = a3;
+  onSuccessCopy = onSuccess;
+  successCopy = success;
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  passCopy = pass;
   dispatch_assert_queue_V2(self->_paymentSessionQueue);
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -1794,13 +1794,13 @@ LABEL_38:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109890;
-      v23 = v8;
+      v23 = successCopy;
       v24 = 1024;
-      v25 = v7;
+      v25 = onSuccessCopy;
       v26 = 1024;
-      v27 = a5;
+      validityCopy = validity;
       v28 = 2112;
-      v29 = v10;
+      v29 = passCopy;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Invoking callback for activation: success %d invokeOnSuccess %d contactlessValidity %u pass %@", buf, 0x1Eu);
     }
   }
@@ -1810,12 +1810,12 @@ LABEL_38:
   v17[1] = 3221225472;
   v17[2] = __134__NPKQuickPaymentSession__sessionQueue_invokeAppropriateCallbackForActivationWithSuccess_invokeOnSuccess_contactlessValidity_forPass___block_invoke;
   v17[3] = &unk_2799477F0;
-  v20 = v8;
-  v21 = v7;
-  v18 = v10;
-  v19 = a5;
+  v20 = successCopy;
+  v21 = onSuccessCopy;
+  v18 = passCopy;
+  validityCopy2 = validity;
   v17[4] = self;
-  v15 = v10;
+  v15 = passCopy;
   dispatch_async(callbackQueue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -1867,10 +1867,10 @@ void __134__NPKQuickPaymentSession__sessionQueue_invokeAppropriateCallbackForAct
   }
 }
 
-- (BOOL)_sessionQueue_startContactlessSessionWithSuccessfulCompletionOnInternalQueue:(id)a3
+- (BOOL)_sessionQueue_startContactlessSessionWithSuccessfulCompletionOnInternalQueue:(id)queue
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   dispatch_assert_queue_V2(self->_paymentSessionQueue);
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -1976,11 +1976,11 @@ void __134__NPKQuickPaymentSession__sessionQueue_invokeAppropriateCallbackForAct
     }
   }
 
-  v25 = [v18 isFirstInQueue];
-  v26 = ![(NPKQuickPaymentSession *)self requireFirstInQueue]| v25;
+  isFirstInQueue = [v18 isFirstInQueue];
+  v26 = ![(NPKQuickPaymentSession *)self requireFirstInQueue]| isFirstInQueue;
   if (v26)
   {
-    if ((v25 & 1) == 0)
+    if ((isFirstInQueue & 1) == 0)
     {
       callbackQueue = self->_callbackQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -2027,19 +2027,19 @@ void __134__NPKQuickPaymentSession__sessionQueue_invokeAppropriateCallbackForAct
   }
 
   dispatch_group_leave(v9);
-  v33 = [(NPKQuickPaymentSession *)self internalQueue];
+  internalQueue = [(NPKQuickPaymentSession *)self internalQueue];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __103__NPKQuickPaymentSession__sessionQueue_startContactlessSessionWithSuccessfulCompletionOnInternalQueue___block_invoke_2_173;
   v37[3] = &unk_279947840;
   v41 = v26 & 1;
-  v42 = v25;
+  v42 = isFirstInQueue;
   v37[4] = self;
-  v38 = v4;
+  v38 = queueCopy;
   v39 = buf;
   v40 = v51;
-  v34 = v4;
-  dispatch_group_notify(v9, v33, v37);
+  v34 = queueCopy;
+  dispatch_group_notify(v9, internalQueue, v37);
 
   _Block_object_dispose(v51, 8);
   _Block_object_dispose(buf, 8);
@@ -2181,12 +2181,12 @@ void __103__NPKQuickPaymentSession__sessionQueue_startContactlessSessionWithSucc
 - (BOOL)_sessionQueue_enablePersistentCardEmulation
 {
   dispatch_assert_queue_V2(self->_paymentSessionQueue);
-  v3 = [(NPKQuickPaymentSession *)self contactlessSession];
+  contactlessSession = [(NPKQuickPaymentSession *)self contactlessSession];
 
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
-  if (v3)
+  if (contactlessSession)
   {
     if (v5)
     {
@@ -2198,8 +2198,8 @@ void __103__NPKQuickPaymentSession__sessionQueue_startContactlessSessionWithSucc
       }
     }
 
-    v7 = [(NPKQuickPaymentSession *)self contactlessSession];
-    v8 = [v7 queuePersistentCardEmulation];
+    contactlessSession2 = [(NPKQuickPaymentSession *)self contactlessSession];
+    queuePersistentCardEmulation = [contactlessSession2 queuePersistentCardEmulation];
   }
 
   else
@@ -2209,17 +2209,17 @@ void __103__NPKQuickPaymentSession__sessionQueue_startContactlessSessionWithSucc
       return 1;
     }
 
-    v7 = pk_Payment_log();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    contactlessSession2 = pk_Payment_log();
+    if (os_log_type_enabled(contactlessSession2, OS_LOG_TYPE_DEFAULT))
     {
       *v10 = 0;
-      _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: No contactless session; not yet enabling persistent card emulation", v10, 2u);
+      _os_log_impl(&dword_25B300000, contactlessSession2, OS_LOG_TYPE_DEFAULT, "Notice: No contactless session; not yet enabling persistent card emulation", v10, 2u);
     }
 
-    v8 = 1;
+    queuePersistentCardEmulation = 1;
   }
 
-  return v8;
+  return queuePersistentCardEmulation;
 }
 
 void __102__NPKQuickPaymentSession__sessionQueue_authorizeWithUseCredential_deferAuthorizationIfCredentialUsed___block_invoke(uint64_t a1)
@@ -2252,20 +2252,20 @@ void __102__NPKQuickPaymentSession__sessionQueue_authorizeWithUseCredential_defe
   }
 
   currentPass = self->_currentPass;
-  v7 = [(NSDictionary *)self->_vasPasses allValues];
-  [(NPKQuickPaymentSession *)self _internalQueue_updateContactlessSessionForPass:currentPass vasPasses:v7 deferAuthorization:[(NPKQuickPaymentSession *)self deferAuthorization]];
+  allValues = [(NSDictionary *)self->_vasPasses allValues];
+  [(NPKQuickPaymentSession *)self _internalQueue_updateContactlessSessionForPass:currentPass vasPasses:allValues deferAuthorization:[(NPKQuickPaymentSession *)self deferAuthorization]];
 }
 
-- (void)_internalQueue_updateContactlessValidityAndPerformWork:(id)a3
+- (void)_internalQueue_updateContactlessValidityAndPerformWork:(id)work
 {
-  v5 = a3;
+  workCopy = work;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v4 = v5;
+  v4 = workCopy;
   ++self->_contactlessValidity;
-  if (v5)
+  if (workCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(workCopy + 2))(workCopy);
+    v4 = workCopy;
   }
 }
 
@@ -2280,22 +2280,22 @@ void __102__NPKQuickPaymentSession__sessionQueue_authorizeWithUseCredential_defe
   dispatch_sync(internalQueue, block);
 }
 
-- (void)_internalQueue_getContactlessAndAuthorizationValidityAndPerformWork:(id)a3
+- (void)_internalQueue_getContactlessAndAuthorizationValidityAndPerformWork:(id)work
 {
-  v5 = a3;
+  workCopy = work;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v4 = v5;
-  if (v5)
+  v4 = workCopy;
+  if (workCopy)
   {
-    (*(v5 + 2))(v5, self->_contactlessValidity, self->_authorizationValidity);
-    v4 = v5;
+    (*(workCopy + 2))(workCopy, self->_contactlessValidity, self->_authorizationValidity);
+    v4 = workCopy;
   }
 }
 
-- (void)_checkContactlessValidity:(unint64_t)a3 performWork:(id)a4
+- (void)_checkContactlessValidity:(unint64_t)validity performWork:(id)work
 {
-  v6 = a4;
-  if (v6)
+  workCopy = work;
+  if (workCopy)
   {
     v9 = 0;
     v10 = &v9;
@@ -2307,10 +2307,10 @@ void __102__NPKQuickPaymentSession__sessionQueue_authorizeWithUseCredential_defe
     block[2] = __64__NPKQuickPaymentSession__checkContactlessValidity_performWork___block_invoke;
     block[3] = &unk_279947890;
     block[5] = &v9;
-    block[6] = a3;
+    block[6] = validity;
     block[4] = self;
     dispatch_sync(internalQueue, block);
-    v6[2](v6, *(v10 + 24));
+    workCopy[2](workCopy, *(v10 + 24));
     _Block_object_dispose(&v9, 8);
   }
 }
@@ -2325,10 +2325,10 @@ void *__64__NPKQuickPaymentSession__checkContactlessValidity_performWork___block
   return result;
 }
 
-- (void)_checkContactlessValidity:(unint64_t)a3 authorizationValidity:(unint64_t)a4 performWork:(id)a5
+- (void)_checkContactlessValidity:(unint64_t)validity authorizationValidity:(unint64_t)authorizationValidity performWork:(id)work
 {
-  v8 = a5;
-  if (v8)
+  workCopy = work;
+  if (workCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -2339,12 +2339,12 @@ void *__64__NPKQuickPaymentSession__checkContactlessValidity_performWork___block
     v10[1] = 3221225472;
     v10[2] = __86__NPKQuickPaymentSession__checkContactlessValidity_authorizationValidity_performWork___block_invoke;
     v10[3] = &unk_2799478B8;
-    v10[6] = a3;
-    v10[7] = a4;
+    v10[6] = validity;
+    v10[7] = authorizationValidity;
     v10[4] = self;
     v10[5] = &v11;
     dispatch_sync(internalQueue, v10);
-    v8[2](v8, *(v12 + 24));
+    workCopy[2](workCopy, *(v12 + 24));
     _Block_object_dispose(&v11, 8);
   }
 }
@@ -2360,11 +2360,11 @@ void *__86__NPKQuickPaymentSession__checkContactlessValidity_authorizationValidi
   return result;
 }
 
-- (void)contactlessInterfaceSessionDidFailTransaction:(id)a3 forPaymentApplication:(id)a4 paymentPass:(id)a5
+- (void)contactlessInterfaceSessionDidFailTransaction:(id)transaction forPaymentApplication:(id)application paymentPass:(id)pass
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  applicationCopy = application;
+  passCopy = pass;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -2373,12 +2373,12 @@ void *__86__NPKQuickPaymentSession__checkContactlessValidity_authorizationValidi
     v11 = pk_Payment_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 applicationIdentifier];
-      v13 = [v8 uniqueID];
+      applicationIdentifier = [applicationCopy applicationIdentifier];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412546;
-      v18 = v12;
+      v18 = applicationIdentifier;
       v19 = 2112;
-      v20 = v13;
+      v20 = uniqueID;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Quick payment session: did fail transaction for AID %@ and pass with unique ID %@", buf, 0x16u);
     }
   }
@@ -2402,11 +2402,11 @@ uint64_t __106__NPKQuickPaymentSession_contactlessInterfaceSessionDidFailTransac
   return [v1 _callbackQueue_invokeDidCompleteForReason:5 withTransactionContext:0 shouldCleanupSession:v2];
 }
 
-- (void)contactlessInterfaceSessionDidTimeout:(id)a3 forPaymentApplications:(id)a4 paymentPass:(id)a5 valueAddedServicePasses:(id)a6
+- (void)contactlessInterfaceSessionDidTimeout:(id)timeout forPaymentApplications:(id)applications paymentPass:(id)pass valueAddedServicePasses:(id)passes
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [a4 pk_createArrayByApplyingBlock:&__block_literal_global_180];
+  passCopy = pass;
+  v9 = [applications pk_createArrayByApplyingBlock:&__block_literal_global_180];
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -2415,11 +2415,11 @@ uint64_t __106__NPKQuickPaymentSession_contactlessInterfaceSessionDidFailTransac
     v12 = pk_Payment_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412546;
       v18 = v9;
       v19 = 2112;
-      v20 = v13;
+      v20 = uniqueID;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Quick payment session: Session timed out for AID(s) %@ and pass with unique ID %@", buf, 0x16u);
     }
   }
@@ -2474,11 +2474,11 @@ uint64_t __123__NPKQuickPaymentSession_contactlessInterfaceSessionDidTimeout_for
   return [v1 _callbackQueue_invokeDidCompleteForReason:2 withTransactionContext:0 shouldCleanupSession:v2];
 }
 
-- (void)contactlessInterfaceSessionDidFail:(id)a3 forPaymentApplications:(id)a4 paymentPass:(id)a5 valueAddedServicePasses:(id)a6
+- (void)contactlessInterfaceSessionDidFail:(id)fail forPaymentApplications:(id)applications paymentPass:(id)pass valueAddedServicePasses:(id)passes
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [a4 pk_createArrayByApplyingBlock:&__block_literal_global_184];
+  passCopy = pass;
+  v9 = [applications pk_createArrayByApplyingBlock:&__block_literal_global_184];
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -2487,11 +2487,11 @@ uint64_t __123__NPKQuickPaymentSession_contactlessInterfaceSessionDidTimeout_for
     v12 = pk_Payment_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412546;
       v18 = v9;
       v19 = 2112;
-      v20 = v13;
+      v20 = uniqueID;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Quick payment session: Session failed for AID(s) %@ and pass with unique ID %@", buf, 0x16u);
     }
   }
@@ -2507,7 +2507,7 @@ uint64_t __123__NPKQuickPaymentSession_contactlessInterfaceSessionDidTimeout_for
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactlessInterfaceSessionDidStartTransaction:(id)a3 withContext:(id)a4
+- (void)contactlessInterfaceSessionDidStartTransaction:(id)transaction withContext:(id)context
 {
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -2574,11 +2574,11 @@ void __85__NPKQuickPaymentSession_contactlessInterfaceSessionDidStartTransaction
   }
 }
 
-- (void)contactlessInterfaceSession:(id)a3 didReceive18013Request:(id)a4 readerAuthInfo:(id)a5
+- (void)contactlessInterfaceSession:(id)session didReceive18013Request:(id)request readerAuthInfo:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  infoCopy = info;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -2588,7 +2588,7 @@ void __85__NPKQuickPaymentSession_contactlessInterfaceSessionDidStartTransaction
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v7;
+      v20 = requestCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Quick payment session: did received ISO18013 Requests %@", buf, 0xCu);
     }
   }
@@ -2599,10 +2599,10 @@ void __85__NPKQuickPaymentSession_contactlessInterfaceSessionDidStartTransaction
   block[2] = __92__NPKQuickPaymentSession_contactlessInterfaceSession_didReceive18013Request_readerAuthInfo___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v17 = v7;
-  v18 = v8;
-  v13 = v8;
-  v14 = v7;
+  v17 = requestCopy;
+  v18 = infoCopy;
+  v13 = infoCopy;
+  v14 = requestCopy;
   dispatch_async(callbackQueue, block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -2620,7 +2620,7 @@ void __92__NPKQuickPaymentSession_contactlessInterfaceSession_didReceive18013Req
   }
 }
 
-- (void)contactlessInterfaceSessionDidReceiveActivityTimeout:(id)a3
+- (void)contactlessInterfaceSessionDidReceiveActivityTimeout:(id)timeout
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -2687,10 +2687,10 @@ void __79__NPKQuickPaymentSession_contactlessInterfaceSessionDidReceiveActivityT
   }
 }
 
-- (void)contactlessInterfaceSession:(id)a3 didFinishTransactionWithContext:(id)a4
+- (void)contactlessInterfaceSession:(id)session didFinishTransactionWithContext:(id)context
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  contextCopy = context;
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -2704,12 +2704,12 @@ void __79__NPKQuickPaymentSession_contactlessInterfaceSessionDidReceiveActivityT
     }
   }
 
-  v9 = [v5 transitHistory];
-  if (v9)
+  transitHistory = [contextCopy transitHistory];
+  if (transitHistory)
   {
-    v10 = [v5 transaction];
+    transaction = [contextCopy transaction];
 
-    if (!v10)
+    if (!transaction)
     {
       v18 = pk_Payment_log();
       v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -2728,18 +2728,18 @@ LABEL_20:
       }
 
 LABEL_21:
-      [(NPKQuickPaymentSession *)self _handleTransactionCompleteWithContext:v5, v24];
+      [(NPKQuickPaymentSession *)self _handleTransactionCompleteWithContext:contextCopy, v24];
       goto LABEL_22;
     }
   }
 
-  v11 = [v5 paymentPass];
-  v12 = [v11 isTransitPass];
+  paymentPass = [contextCopy paymentPass];
+  isTransitPass = [paymentPass isTransitPass];
 
   v13 = pk_Payment_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
-  if (v12)
+  if (isTransitPass)
   {
     if (v14)
     {
@@ -2769,7 +2769,7 @@ LABEL_19:
     }
   }
 
-  [(NPKQuickPaymentSession *)self _handleConventionalTransactionWithContext:v5];
+  [(NPKQuickPaymentSession *)self _handleConventionalTransactionWithContext:contextCopy];
 LABEL_22:
   v20 = MEMORY[0x277D37D28];
   v21 = *MEMORY[0x277D38538];
@@ -2781,10 +2781,10 @@ LABEL_22:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactlessInterfaceSessionDidReceiveUntrustedTerminal:(id)a3
+- (void)contactlessInterfaceSessionDidReceiveUntrustedTerminal:(id)terminal
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  terminalCopy = terminal;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2794,7 +2794,7 @@ LABEL_22:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v4;
+      v21 = terminalCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Quick payment session: contactlessInterfaceSessionDidReceiveUntrustedTerminal:%@", buf, 0xCu);
     }
   }
@@ -2823,10 +2823,10 @@ LABEL_22:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactlessInterfaceSessionDidReceiveTerminalError:(id)a3
+- (void)contactlessInterfaceSessionDidReceiveTerminalError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2836,7 +2836,7 @@ LABEL_22:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = errorCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Quick payment session: contactlessInterfaceSessionDidReceiveTerminalError: %@", buf, 0xCu);
     }
   }
@@ -2852,10 +2852,10 @@ LABEL_22:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactlessInterfaceSessionDidTerminate:(id)a3 withErrorCode:(unint64_t)a4
+- (void)contactlessInterfaceSessionDidTerminate:(id)terminate withErrorCode:(unint64_t)code
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  terminateCopy = terminate;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -2865,9 +2865,9 @@ LABEL_22:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v14 = v6;
+      v14 = terminateCopy;
       v15 = 2048;
-      v16 = a4;
+      codeCopy = code;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: Quick payment session: contactlessInterfaceSessionDidTerminate:%@ with error code:%lu", buf, 0x16u);
     }
   }
@@ -2878,7 +2878,7 @@ LABEL_22:
   v12[2] = __80__NPKQuickPaymentSession_contactlessInterfaceSessionDidTerminate_withErrorCode___block_invoke;
   v12[3] = &unk_279945830;
   v12[4] = self;
-  v12[5] = a4;
+  v12[5] = code;
   dispatch_async(callbackQueue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -2908,10 +2908,10 @@ uint64_t __80__NPKQuickPaymentSession_contactlessInterfaceSessionDidTerminate_wi
   return [v1 _callbackQueue_invokeDidCompleteForReason:v5 withTransactionContext:0 shouldCleanupSession:1];
 }
 
-- (void)contactlessInterfaceSessionDidTerminate:(id)a3
+- (void)contactlessInterfaceSessionDidTerminate:(id)terminate
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  terminateCopy = terminate;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2921,7 +2921,7 @@ uint64_t __80__NPKQuickPaymentSession_contactlessInterfaceSessionDidTerminate_wi
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = terminateCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Quick payment session: contactlessInterfaceSessionDidTerminate:%@", buf, 0xCu);
     }
   }
@@ -2937,11 +2937,11 @@ uint64_t __80__NPKQuickPaymentSession_contactlessInterfaceSessionDidTerminate_wi
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactlessInterfaceSession:(id)a3 didEndPersistentCardEmulationWithContexts:(id)a4
+- (void)contactlessInterfaceSession:(id)session didEndPersistentCardEmulationWithContexts:(id)contexts
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  contextsCopy = contexts;
+  sessionCopy = session;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -2951,18 +2951,18 @@ uint64_t __80__NPKQuickPaymentSession_contactlessInterfaceSessionDidTerminate_wi
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = contextsCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Quick payment session: ended persistent card emulation with contexts: %@", &v13, 0xCu);
     }
   }
 
-  v11 = [v6 firstObject];
-  [(NPKQuickPaymentSession *)self contactlessInterfaceSession:v7 didFinishTransactionWithContext:v11];
+  firstObject = [contextsCopy firstObject];
+  [(NPKQuickPaymentSession *)self contactlessInterfaceSession:sessionCopy didFinishTransactionWithContext:firstObject];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactlessInterfaceSessionDidSelectPayment:(id)a3
+- (void)contactlessInterfaceSessionDidSelectPayment:(id)payment
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -2998,7 +2998,7 @@ void __70__NPKQuickPaymentSession_contactlessInterfaceSessionDidSelectPayment___
   }
 }
 
-- (void)contactlessInterfaceSessionDidSelectValueAddedService:(id)a3
+- (void)contactlessInterfaceSessionDidSelectValueAddedService:(id)service
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -3034,7 +3034,7 @@ void __80__NPKQuickPaymentSession_contactlessInterfaceSessionDidSelectValueAdded
   }
 }
 
-- (void)contactlessInterfaceSessionDidFailDeferredAuthorization:(id)a3
+- (void)contactlessInterfaceSessionDidFailDeferredAuthorization:(id)authorization
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -3058,7 +3058,7 @@ void __80__NPKQuickPaymentSession_contactlessInterfaceSessionDidSelectValueAdded
   dispatch_async(callbackQueue, block);
 }
 
-- (void)contactlessInterfaceSessionHasPendingServerRequest:(id)a3
+- (void)contactlessInterfaceSessionHasPendingServerRequest:(id)request
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -3082,9 +3082,9 @@ void __80__NPKQuickPaymentSession_contactlessInterfaceSessionDidSelectValueAdded
   dispatch_async(callbackQueue, block);
 }
 
-- (void)stsSession:(id)a3 didDetectField:(BOOL)a4
+- (void)stsSession:(id)session didDetectField:(BOOL)field
 {
-  if (a4)
+  if (field)
   {
     [(NPKQuickPaymentSession *)self _handleFieldEntry];
   }
@@ -3095,17 +3095,17 @@ void __80__NPKQuickPaymentSession_contactlessInterfaceSessionDidSelectValueAdded
   }
 }
 
-- (void)_handleTransactionCompleteWithContext:(id)a3
+- (void)_handleTransactionCompleteWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   callbackQueue = self->_callbackQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__NPKQuickPaymentSession__handleTransactionCompleteWithContext___block_invoke;
   v7[3] = &unk_2799454E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(callbackQueue, v7);
 }
 
@@ -3118,15 +3118,15 @@ uint64_t __64__NPKQuickPaymentSession__handleTransactionCompleteWithContext___bl
   return [v1 _callbackQueue_invokeDidCompleteForReason:3 withTransactionContext:v2 shouldCleanupSession:v3];
 }
 
-- (void)_handleConventionalTransactionWithContext:(id)a3
+- (void)_handleConventionalTransactionWithContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 paymentApplication];
-  v6 = [v4 paymentPass];
-  v7 = [v4 transaction];
-  v8 = [v4 valueAddedServicePasses];
-  v9 = [v4 valueAddedServiceTransactions];
+  contextCopy = context;
+  paymentApplication = [contextCopy paymentApplication];
+  paymentPass = [contextCopy paymentPass];
+  transaction = [contextCopy transaction];
+  valueAddedServicePasses = [contextCopy valueAddedServicePasses];
+  valueAddedServiceTransactions = [contextCopy valueAddedServiceTransactions];
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -3135,20 +3135,20 @@ uint64_t __64__NPKQuickPaymentSession__handleTransactionCompleteWithContext___bl
     v12 = pk_Payment_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v5 applicationIdentifier];
-      v13 = [v6 uniqueID];
+      applicationIdentifier = [paymentApplication applicationIdentifier];
+      uniqueID = [paymentPass uniqueID];
       *buf = 138413570;
-      *&buf[4] = v7;
+      *&buf[4] = transaction;
       *&buf[12] = 2112;
-      *&buf[14] = v18;
+      *&buf[14] = applicationIdentifier;
       *&buf[22] = 2112;
-      v24 = v13;
+      v24 = uniqueID;
       v25 = 2112;
-      v26 = v9;
+      v26 = valueAddedServiceTransactions;
       v27 = 2112;
-      v28 = v8;
+      v28 = valueAddedServicePasses;
       v29 = 1024;
-      v30 = [v4 success];
+      success = [contextCopy success];
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Transaction: %@ AID: %@ UniqueID: %@ valueAddedServiceTransactions: %@ valueAddedServicePasses: %@ success: %u", buf, 0x3Au);
     }
   }
@@ -3162,22 +3162,22 @@ uint64_t __64__NPKQuickPaymentSession__handleTransactionCompleteWithContext___bl
   v22[2] = __68__NPKQuickPaymentSession__handleConventionalTransactionWithContext___block_invoke;
   v22[3] = &unk_279946E28;
   v22[4] = buf;
-  [v9 enumerateObjectsUsingBlock:v22];
-  v14 = [v4 paymentPass];
-  if ([v14 isAccessPass])
+  [valueAddedServiceTransactions enumerateObjectsUsingBlock:v22];
+  paymentPass2 = [contextCopy paymentPass];
+  if ([paymentPass2 isAccessPass])
   {
-    v15 = [v4 success];
+    success2 = [contextCopy success];
   }
 
   else
   {
-    v15 = 0;
+    success2 = 0;
   }
 
-  if (v7 || ((*(*&buf[8] + 24) | v15) & 1) != 0)
+  if (transaction || ((*(*&buf[8] + 24) | success2) & 1) != 0)
   {
     kdebug_trace();
-    [(NPKQuickPaymentSession *)self _handleTransactionCompleteWithContext:v4];
+    [(NPKQuickPaymentSession *)self _handleTransactionCompleteWithContext:contextCopy];
   }
 
   else
@@ -3189,8 +3189,8 @@ uint64_t __64__NPKQuickPaymentSession__handleTransactionCompleteWithContext___bl
     block[2] = __68__NPKQuickPaymentSession__handleConventionalTransactionWithContext___block_invoke_2;
     block[3] = &unk_279945880;
     block[4] = self;
-    v20 = v9;
-    v21 = v8;
+    v20 = valueAddedServiceTransactions;
+    v21 = valueAddedServicePasses;
     dispatch_async(callbackQueue, block);
   }
 
@@ -3224,7 +3224,7 @@ void __68__NPKQuickPaymentSession__handleConventionalTransactionWithContext___bl
   }
 }
 
-- (void)_loyaltyEngineConfigurationChanged:(id)a3
+- (void)_loyaltyEngineConfigurationChanged:(id)changed
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3253,47 +3253,47 @@ uint64_t __61__NPKQuickPaymentSession__loyaltyEngineConfigurationChanged___block
   return [*(a1 + 32) _internalQueue_updateSessionWithCurrentPassAndLoyaltyState];
 }
 
-- (BOOL)_invokeStateUpdateForReason:(unint64_t)a3 shouldCleanupSession:(BOOL)a4
+- (BOOL)_invokeStateUpdateForReason:(unint64_t)reason shouldCleanupSession:(BOOL)session
 {
-  if (a4)
+  if (session)
   {
     return 0;
   }
 
-  switch(a3)
+  switch(reason)
   {
     case 2uLL:
-      v11 = [(NPKQuickPaymentSession *)self delegate];
+      delegate = [(NPKQuickPaymentSession *)self delegate];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
       {
-        v8 = [(NPKQuickPaymentSession *)self delegate];
-        [v8 paymentSessionDidReceiveAuthorizationTimeout:self];
+        delegate2 = [(NPKQuickPaymentSession *)self delegate];
+        [delegate2 paymentSessionDidReceiveAuthorizationTimeout:self];
         goto LABEL_12;
       }
 
       break;
     case 4uLL:
-      v9 = [(NPKQuickPaymentSession *)self delegate];
+      delegate3 = [(NPKQuickPaymentSession *)self delegate];
       v10 = objc_opt_respondsToSelector();
 
       if (v10)
       {
-        v8 = [(NPKQuickPaymentSession *)self delegate];
-        [v8 paymentSessionDidReceiveActivationError:self];
+        delegate2 = [(NPKQuickPaymentSession *)self delegate];
+        [delegate2 paymentSessionDidReceiveActivationError:self];
         goto LABEL_12;
       }
 
       break;
     case 5uLL:
-      v6 = [(NPKQuickPaymentSession *)self delegate];
+      delegate4 = [(NPKQuickPaymentSession *)self delegate];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
       {
-        v8 = [(NPKQuickPaymentSession *)self delegate];
-        [v8 paymentSessionDidReceiveTransactionError:self];
+        delegate2 = [(NPKQuickPaymentSession *)self delegate];
+        [delegate2 paymentSessionDidReceiveTransactionError:self];
 LABEL_12:
 
         return 1;
@@ -3308,16 +3308,16 @@ LABEL_12:
 - (void)_internalQueue_invokeDeactivationCompletionBlocks
 {
   dispatch_assert_queue_V2(self->_internalQueue);
-  v3 = [(NPKQuickPaymentSession *)self deactivationCompletionBlocks];
+  deactivationCompletionBlocks = [(NPKQuickPaymentSession *)self deactivationCompletionBlocks];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __75__NPKQuickPaymentSession__internalQueue_invokeDeactivationCompletionBlocks__block_invoke;
   v5[3] = &unk_279947900;
   v5[4] = self;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [deactivationCompletionBlocks enumerateObjectsUsingBlock:v5];
 
-  v4 = [(NPKQuickPaymentSession *)self deactivationCompletionBlocks];
-  [v4 removeAllObjects];
+  deactivationCompletionBlocks2 = [(NPKQuickPaymentSession *)self deactivationCompletionBlocks];
+  [deactivationCompletionBlocks2 removeAllObjects];
 }
 
 - (void)_handleFieldEntry

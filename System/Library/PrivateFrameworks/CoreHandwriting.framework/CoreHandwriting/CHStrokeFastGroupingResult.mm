@@ -1,30 +1,30 @@
 @interface CHStrokeFastGroupingResult
-- (CHStrokeFastGroupingResult)initWithFastGroupingClusters:(const void *)a3 clusteredStrokes:(id)a4 strokeProvider:(id)a5 strategyIdentifier:(id)a6 clutterFilter:(id)a7;
+- (CHStrokeFastGroupingResult)initWithFastGroupingClusters:(const void *)clusters clusteredStrokes:(id)strokes strokeProvider:(id)provider strategyIdentifier:(id)identifier clutterFilter:(id)filter;
 - (id).cxx_construct;
 - (vector<CHFastGroupingCluster,)fastGroupingClusters;
 @end
 
 @implementation CHStrokeFastGroupingResult
 
-- (CHStrokeFastGroupingResult)initWithFastGroupingClusters:(const void *)a3 clusteredStrokes:(id)a4 strokeProvider:(id)a5 strategyIdentifier:(id)a6 clutterFilter:(id)a7
+- (CHStrokeFastGroupingResult)initWithFastGroupingClusters:(const void *)clusters clusteredStrokes:(id)strokes strokeProvider:(id)provider strategyIdentifier:(id)identifier clutterFilter:(id)filter
 {
   p_info = &OBJC_METACLASS___CHRemoteSynthesisRequest.info;
-  v12 = a4;
-  v114 = a5;
-  v113 = a6;
-  v13 = a7;
+  strokesCopy = strokes;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  filterCopy = filter;
   objc_opt_self();
-  v111 = v13;
-  v115 = objc_msgSend_setWithCapacity_(MEMORY[0x1E695DFA8], v14, 0x8E38E38E38E38E39 * ((*(a3 + 1) - *a3) >> 3), v15, v16, v17);
-  v23 = *a3;
-  if (*a3 != *(a3 + 1))
+  v111 = filterCopy;
+  v115 = objc_msgSend_setWithCapacity_(MEMORY[0x1E695DFA8], v14, 0x8E38E38E38E38E39 * ((*(clusters + 1) - *clusters) >> 3), v15, v16, v17);
+  v23 = *clusters;
+  if (*clusters != *(clusters + 1))
   {
-    v112 = v12;
+    v112 = strokesCopy;
     do
     {
-      v24 = v12;
-      v25 = v114;
-      v26 = v113;
+      v24 = strokesCopy;
+      v25 = providerCopy;
+      v26 = identifierCopy;
       objc_opt_self();
       v27 = p_info;
       v36 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v28, *(v23 + 7), v29, v30, v31);
@@ -72,10 +72,10 @@
 
       objc_msgSend_addObject_(v115, v39, v38, v40, v41, v42);
       v23 += 72;
-      v12 = v112;
+      strokesCopy = v112;
     }
 
-    while (v23 != *(a3 + 1));
+    while (v23 != *(clusters + 1));
   }
 
   if (v111 && objc_msgSend_highDensityStrokeCount(v111, v18, v19, v20, v21, v22) >= 1)
@@ -83,9 +83,9 @@
     v62 = MEMORY[0x1E695DF70];
     v63 = objc_msgSend_highDensityStrokeCount(v111, v57, v58, v59, v60, v61);
     v73 = objc_msgSend_arrayWithCapacity_(v62, v64, v63, v65, v66, v67);
-    for (i = 0; i < objc_msgSend_count(v12, v68, v69, v70, v71, v72); ++i)
+    for (i = 0; i < objc_msgSend_count(strokesCopy, v68, v69, v70, v71, v72); ++i)
     {
-      v79 = objc_msgSend_objectAtIndexedSubscript_(v12, v75, i, v76, v77, v78);
+      v79 = objc_msgSend_objectAtIndexedSubscript_(strokesCopy, v75, i, v76, v77, v78);
       v85 = objc_msgSend_encodedStrokeIdentifier(v79, v80, v81, v82, v83, v84);
       isHighDensityStroke = objc_msgSend_isHighDensityStroke_(v111, v86, v85, v87, v88, v89);
 
@@ -96,7 +96,7 @@
       }
     }
 
-    v101 = sub_183980D4C((p_info + 196), v73, v114, v113);
+    v101 = sub_183980D4C((p_info + 196), v73, providerCopy, identifierCopy);
     objc_msgSend_addObject_(v115, v102, v101, v103, v104, v105);
   }
 
@@ -107,9 +107,9 @@
   if (v106)
   {
     p_begin = &v106->_fastGroupingClusters.__begin_;
-    if (&v107->_fastGroupingClusters != a3)
+    if (&v107->_fastGroupingClusters != clusters)
     {
-      sub_183975F34(p_begin, *a3, *(a3 + 1), 0x8E38E38E38E38E39 * ((*(a3 + 1) - *a3) >> 3));
+      sub_183975F34(p_begin, *clusters, *(clusters + 1), 0x8E38E38E38E38E39 * ((*(clusters + 1) - *clusters) >> 3));
     }
   }
 

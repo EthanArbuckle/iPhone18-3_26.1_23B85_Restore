@@ -1,42 +1,42 @@
 @interface CTXPCGetSignalStrengthInfoRequest
 + (id)allowedClassesForArguments;
 - (int)requiredEntitlement;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCGetSignalStrengthInfoRequest
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCMessage *)self namedArguments];
-  v9 = [v8 objectForKey:@"public"];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v9 = [namedArguments objectForKey:@"public"];
   v10 = CTThrowingCastIfClass<NSNumber>(v9);
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = [(CTXPCSubscriptionContextRequest *)self descriptor];
+    descriptor = [(CTXPCSubscriptionContextRequest *)self descriptor];
     v13 = v15;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __81__CTXPCGetSignalStrengthInfoRequest_performRequestWithHandler_completionHandler___block_invoke;
     v15[3] = &unk_1E6A488C8;
-    v15[4] = v7;
-    [v6 getPublicSignalStrength:v12 completion:v15];
+    v15[4] = completionHandlerCopy;
+    [handlerCopy getPublicSignalStrength:descriptor completion:v15];
   }
 
   else
   {
-    v12 = [(CTXPCSubscriptionContextRequest *)self context];
+    descriptor = [(CTXPCSubscriptionContextRequest *)self context];
     v13 = v14;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __81__CTXPCGetSignalStrengthInfoRequest_performRequestWithHandler_completionHandler___block_invoke_2;
     v14[3] = &unk_1E6A488C8;
-    v14[4] = v7;
-    [v6 getSignalStrengthInfo:v12 completion:v14];
+    v14[4] = completionHandlerCopy;
+    [handlerCopy getSignalStrengthInfo:descriptor completion:v14];
   }
 }
 
@@ -68,12 +68,12 @@ void __81__CTXPCGetSignalStrengthInfoRequest_performRequestWithHandler_completio
 
 - (int)requiredEntitlement
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"public"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"public"];
   v4 = CTThrowingCastIfClass<NSNumber>(v3);
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     return 8;
   }
@@ -86,7 +86,7 @@ void __81__CTXPCGetSignalStrengthInfoRequest_performRequestWithHandler_completio
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCGetSignalStrengthInfoRequest;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

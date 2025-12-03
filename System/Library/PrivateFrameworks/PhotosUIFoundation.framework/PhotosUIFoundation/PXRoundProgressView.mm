@@ -1,22 +1,22 @@
 @interface PXRoundProgressView
-+ (CGSize)sizeForSizeClass:(int64_t)a3;
-+ (int64_t)_sizeClassForSize:(CGSize)a3;
-- (PXRoundProgressView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)_recalculateIncreaseProgress:(double)a3 withTimeDiff:(double)a4;
++ (CGSize)sizeForSizeClass:(int64_t)class;
++ (int64_t)_sizeClassForSize:(CGSize)size;
+- (PXRoundProgressView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)_recalculateIncreaseProgress:(double)progress withTimeDiff:(double)diff;
 - (void)_resetProgress;
-- (void)_setContentsScale:(double)a3;
-- (void)_setPieRadius:(double)a3;
-- (void)_setProgressArcLayer:(id)a3;
+- (void)_setContentsScale:(double)scale;
+- (void)_setPieRadius:(double)radius;
+- (void)_setProgressArcLayer:(id)layer;
 - (void)_updateSublayersContentsScale;
 - (void)_updateSubviews;
 - (void)_updateUIProgress;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)increaseUIProgress:(id)a3;
+- (void)increaseUIProgress:(id)progress;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
-- (void)setProgress:(float)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setProgress:(float)progress;
+- (void)setStyle:(int64_t)style;
 - (void)startProgressTimer;
 - (void)stopProgressTimer;
 @end
@@ -28,30 +28,30 @@
   self->_uiProgress = 0.0;
   self->_increaseRate = 0.00166666667;
   self->_realProgress = 0.0;
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   prevUpdateTime = self->_prevUpdateTime;
-  self->_prevUpdateTime = v3;
+  self->_prevUpdateTime = date;
 
   [(PXRoundProgressView *)self stopProgressTimer];
 
   [(PXRoundProgressView *)self _updateUIProgress];
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  self->_progress = a3;
+  self->_progress = progress;
   if (!self->_progressTimer && self->_realProgress <= 1.0)
   {
     [(PXRoundProgressView *)self startProgressTimer];
   }
 
-  if (a3 > 0.0)
+  if (progress > 0.0)
   {
-    v5 = a3;
+    progressCopy = progress;
     realProgress = self->_realProgress;
-    if (realProgress < 1.0 && realProgress < v5)
+    if (realProgress < 1.0 && realProgress < progressCopy)
     {
-      if (a3 >= 1.0)
+      if (progress >= 1.0)
       {
         v13 = 1.0 - self->_uiProgress;
         v14 = 0.1;
@@ -59,27 +59,27 @@
 
       else
       {
-        v8 = [MEMORY[0x1E695DF00] date];
-        [v8 timeIntervalSinceDate:self->_prevUpdateTime];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceDate:self->_prevUpdateTime];
         v10 = v9;
 
-        v11 = [MEMORY[0x1E695DF00] date];
+        date2 = [MEMORY[0x1E695DF00] date];
         prevUpdateTime = self->_prevUpdateTime;
-        self->_prevUpdateTime = v11;
+        self->_prevUpdateTime = date2;
 
         v13 = 1.0 - self->_uiProgress;
-        v14 = v10 * (v13 / (v5 - self->_realProgress));
+        v14 = v10 * (v13 / (progressCopy - self->_realProgress));
       }
 
       [(PXRoundProgressView *)self _recalculateIncreaseProgress:v13 withTimeDiff:v14];
-      self->_realProgress = v5;
+      self->_realProgress = progressCopy;
     }
   }
 }
 
-- (void)_recalculateIncreaseProgress:(double)a3 withTimeDiff:(double)a4
+- (void)_recalculateIncreaseProgress:(double)progress withTimeDiff:(double)diff
 {
-  v4 = a3 / a4 / 60.0;
+  v4 = progress / diff / 60.0;
   if (v4 < 0.000166666667)
   {
     v4 = 0.000166666667;
@@ -92,15 +92,15 @@
 {
   [PXRoundProgressView toRadian:self->_uiProgress];
   v4 = v3 + 4.71238898;
-  v19 = [(PXRoundProgressView *)self _sliceLayer];
-  if (v19)
+  _sliceLayer = [(PXRoundProgressView *)self _sliceLayer];
+  if (_sliceLayer)
   {
     pieRadius = self->_pieRadius;
-    v6 = [(PXRoundProgressView *)self _circleLayer];
-    if ([(PXRoundProgressView *)self style]== 5 && v6)
+    _circleLayer = [(PXRoundProgressView *)self _circleLayer];
+    if ([(PXRoundProgressView *)self style]== 5 && _circleLayer)
     {
       v7 = self->_pieRadius;
-      [v6 lineWidth];
+      [_circleLayer lineWidth];
       pieRadius = v7 - v8;
     }
 
@@ -110,12 +110,12 @@
     CGPathMoveToPoint(Mutable, 0, x, y);
     CGPathAddArc(Mutable, 0, x, y, pieRadius, 4.71238898, v4, 0);
     CGPathCloseSubpath(Mutable);
-    [v19 setPath:Mutable];
+    [_sliceLayer setPath:Mutable];
     CFRelease(Mutable);
   }
 
-  v12 = [(PXRoundProgressView *)self _foregroundCircleLayer];
-  if (v12)
+  _foregroundCircleLayer = [(PXRoundProgressView *)self _foregroundCircleLayer];
+  if (_foregroundCircleLayer)
   {
     v13 = self->_pieRadius;
     v14 = self->_pieCenter.x;
@@ -123,27 +123,27 @@
     v16 = CGPathCreateMutable();
     CGPathCloseSubpath(v16);
     CGPathAddArc(v16, 0, v14, v15, v13 + -1.0, 4.71238898, v4, 0);
-    [v12 setPath:v16];
-    [v12 setLineCap:*MEMORY[0x1E6979E78]];
+    [_foregroundCircleLayer setPath:v16];
+    [_foregroundCircleLayer setLineCap:*MEMORY[0x1E6979E78]];
     CFRelease(v16);
   }
 
-  v17 = [(PXRoundProgressView *)self _progressArcLayer];
-  v18 = v17;
-  if (v17)
+  _progressArcLayer = [(PXRoundProgressView *)self _progressArcLayer];
+  v18 = _progressArcLayer;
+  if (_progressArcLayer)
   {
-    [v17 setStartAngle:4.71238898];
+    [_progressArcLayer setStartAngle:4.71238898];
     [v18 setEndAngle:v4];
   }
 }
 
-- (void)increaseUIProgress:(id)a3
+- (void)increaseUIProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   realProgress = self->_realProgress;
   uiProgress = self->_uiProgress;
   v7 = realProgress == 0.0 || uiProgress < realProgress;
-  v12 = v4;
+  v12 = progressCopy;
   if (!v7)
   {
 LABEL_17:
@@ -166,7 +166,7 @@ LABEL_16:
       self->_uiProgress = v11;
       [(PXRoundProgressView *)self _updateUIProgress];
       uiProgress = self->_uiProgress;
-      v4 = v12;
+      progressCopy = v12;
       goto LABEL_17;
     }
 
@@ -183,7 +183,7 @@ LABEL_15:
 
 LABEL_18:
   [(PXRoundProgressView *)self stopProgressTimer];
-  v4 = v12;
+  progressCopy = v12;
 LABEL_19:
 }
 
@@ -196,7 +196,7 @@ LABEL_19:
     v7[2] = 0x3032000000;
     v7[3] = __Block_byref_object_copy__16255;
     v7[4] = __Block_byref_object_dispose__16256;
-    v8 = self;
+    selfCopy = self;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __41__PXRoundProgressView_startProgressTimer__block_invoke;
@@ -206,8 +206,8 @@ LABEL_19:
     progressTimer = self->_progressTimer;
     self->_progressTimer = v3;
 
-    v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v5 addTimer:self->_progressTimer forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop addTimer:self->_progressTimer forMode:*MEMORY[0x1E695DA28]];
 
     _Block_object_dispose(v7, 8);
   }
@@ -224,9 +224,9 @@ LABEL_19:
   }
 }
 
-- (void)_setPieRadius:(double)a3
+- (void)_setPieRadius:(double)radius
 {
-  self->_pieRadius = a3;
+  self->_pieRadius = radius;
   [(PXRoundProgressView *)self bounds];
   x = v12.origin.x;
   y = v12.origin.y;
@@ -240,8 +240,8 @@ LABEL_19:
   MidY = CGRectGetMidY(v13);
   self->_pieCenter.x = MidX;
   self->_pieCenter.y = MidY;
-  v10 = [(PXRoundProgressView *)self layer];
-  [v10 setCornerRadius:self->_pieRadius];
+  layer = [(PXRoundProgressView *)self layer];
+  [layer setCornerRadius:self->_pieRadius];
 }
 
 - (void)_updateSubviews
@@ -251,18 +251,18 @@ LABEL_19:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXRoundProgressView *)self _contentView];
-  if (!v11)
+  _contentView = [(PXRoundProgressView *)self _contentView];
+  if (!_contentView)
   {
     v12 = objc_alloc(MEMORY[0x1E69DD250]);
-    v11 = [v12 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    [v11 setAutoresizingMask:18];
-    [(PXRoundProgressView *)self addSubview:v11];
-    [(PXRoundProgressView *)self _setContentView:v11];
+    _contentView = [v12 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    [_contentView setAutoresizingMask:18];
+    [(PXRoundProgressView *)self addSubview:_contentView];
+    [(PXRoundProgressView *)self _setContentView:_contentView];
   }
 
-  [v11 setFrame:{v4, v6, v8, v10}];
-  v13 = [v11 layer];
+  [_contentView setFrame:{v4, v6, v8, v10}];
+  layer = [_contentView layer];
   v14 = 0;
   v69 = 0;
   style = self->_style;
@@ -276,7 +276,7 @@ LABEL_19:
       {
         if (style == 2)
         {
-          v18 = [MEMORY[0x1E69DC888] blackColor];
+          blackColor = [MEMORY[0x1E69DC888] blackColor];
           v69 = 0;
           v14 = 0;
           v19 = 0;
@@ -300,7 +300,7 @@ LABEL_19:
       }
     }
 
-    v18 = [MEMORY[0x1E69DC888] whiteColor];
+    blackColor = [MEMORY[0x1E69DC888] whiteColor];
     v69 = 0;
     v14 = 0;
     v19 = 0;
@@ -314,7 +314,7 @@ LABEL_22:
   {
     if (style != 3)
     {
-      v18 = [MEMORY[0x1E69DC888] grayColor];
+      blackColor = [MEMORY[0x1E69DC888] grayColor];
       v69 = 0;
       v14 = 0;
       v19 = 0;
@@ -327,7 +327,7 @@ LABEL_11:
     }
 
     v69 = 0;
-    v18 = 0;
+    blackColor = 0;
     v19 = 0;
     v21 = 0;
     v22 = 0;
@@ -337,7 +337,7 @@ LABEL_11:
 
   if (style == 5)
   {
-    v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    blackColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v69 = 0;
     v14 = 0;
     v19 = 0;
@@ -349,7 +349,7 @@ LABEL_11:
   if (style != 6)
   {
 LABEL_19:
-    v18 = 0;
+    blackColor = 0;
     v19 = 0;
     v21 = 0;
     v22 = 0;
@@ -357,11 +357,11 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  v23 = [MEMORY[0x1E69DC888] whiteColor];
-  v18 = [v23 colorWithAlphaComponent:0.2];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  blackColor = [whiteColor colorWithAlphaComponent:0.2];
 
-  v24 = [MEMORY[0x1E69DC888] whiteColor];
-  v69 = [v24 colorWithAlphaComponent:0.9];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  v69 = [whiteColor2 colorWithAlphaComponent:0.9];
 
   v14 = 0;
   v22 = 0;
@@ -371,7 +371,7 @@ LABEL_19:
 LABEL_23:
   v20 = 1;
 LABEL_24:
-  [v11 setAlpha:v16];
+  [_contentView setAlpha:v16];
   v26 = v8 * 0.5;
   if (v8 * 0.5 >= v10 * 0.5)
   {
@@ -383,17 +383,17 @@ LABEL_24:
   [(PXRoundProgressView *)self _setPieRadius:v28];
   if (v22)
   {
-    v31 = [(PXRoundProgressView *)self _sliceLayer];
-    if (!v31)
+    _sliceLayer = [(PXRoundProgressView *)self _sliceLayer];
+    if (!_sliceLayer)
     {
-      v31 = [MEMORY[0x1E69794A0] layer];
-      [v13 addSublayer:v31];
-      [(PXRoundProgressView *)self _setSliceLayer:v31];
+      _sliceLayer = [MEMORY[0x1E69794A0] layer];
+      [layer addSublayer:_sliceLayer];
+      [(PXRoundProgressView *)self _setSliceLayer:_sliceLayer];
     }
 
-    [v31 setZPosition:0.0];
-    [v31 setStrokeColor:0];
-    [v31 setFillColor:{objc_msgSend(v18, "CGColor")}];
+    [_sliceLayer setZPosition:0.0];
+    [_sliceLayer setStrokeColor:0];
+    [_sliceLayer setFillColor:{objc_msgSend(blackColor, "CGColor")}];
 
     if (!v21)
     {
@@ -412,25 +412,25 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v32 = [(PXRoundProgressView *)self _circleLayer];
-  if (!v32)
+  _circleLayer = [(PXRoundProgressView *)self _circleLayer];
+  if (!_circleLayer)
   {
-    v32 = [MEMORY[0x1E69794A0] layer];
-    [v13 addSublayer:v32];
-    [(PXRoundProgressView *)self _setCircleLayer:v32];
+    _circleLayer = [MEMORY[0x1E69794A0] layer];
+    [layer addSublayer:_circleLayer];
+    [(PXRoundProgressView *)self _setCircleLayer:_circleLayer];
   }
 
-  [v32 setZPosition:0.0];
-  [v32 setStrokeColor:{objc_msgSend(v18, "CGColor")}];
-  [v32 setFillColor:0];
-  [v32 setLineWidth:v27];
+  [_circleLayer setZPosition:0.0];
+  [_circleLayer setStrokeColor:{objc_msgSend(blackColor, "CGColor")}];
+  [_circleLayer setFillColor:0];
+  [_circleLayer setLineWidth:v27];
   pieRadius = self->_pieRadius;
   x = self->_pieCenter.x;
   y = self->_pieCenter.y;
   Mutable = CGPathCreateMutable();
   CGPathAddArc(Mutable, 0, x, y, pieRadius + -1.0, 0.0, 6.28318531, 0);
   CGPathCloseSubpath(Mutable);
-  [v32 setPath:Mutable];
+  [_circleLayer setPath:Mutable];
   CGPathRelease(Mutable);
 
   if (!v19)
@@ -444,7 +444,7 @@ LABEL_29:
 LABEL_41:
     v66 = v10;
     v67 = v8;
-    [v13 bounds];
+    [layer bounds];
     v38 = v71.origin.x;
     v39 = v71.origin.y;
     width = v71.size.width;
@@ -455,24 +455,24 @@ LABEL_41:
     v72.size.width = width;
     v72.size.height = height;
     MidY = CGRectGetMidY(v72);
-    v44 = [(PXRoundProgressView *)self _progressArcLayer];
-    if (!v44)
+    _progressArcLayer = [(PXRoundProgressView *)self _progressArcLayer];
+    if (!_progressArcLayer)
     {
-      v44 = objc_alloc_init(PXProgressArcLayer);
-      [v13 addSublayer:v44];
-      [(PXRoundProgressView *)self _setProgressArcLayer:v44];
+      _progressArcLayer = objc_alloc_init(PXProgressArcLayer);
+      [layer addSublayer:_progressArcLayer];
+      [(PXRoundProgressView *)self _setProgressArcLayer:_progressArcLayer];
     }
 
-    [(PXProgressArcLayer *)v44 setPosition:MidX, MidY];
+    [(PXProgressArcLayer *)_progressArcLayer setPosition:MidX, MidY];
     v45 = *MEMORY[0x1E695EFF8];
     v46 = *(MEMORY[0x1E695EFF8] + 8);
-    [(PXProgressArcLayer *)v44 setBounds:*MEMORY[0x1E695EFF8], v46, width, height];
-    [(PXProgressArcLayer *)v44 setRadius:v28];
-    [(PXProgressArcLayer *)v44 setLineWidth:v27];
-    v47 = [(PXRoundProgressView *)self _irisGlyphLayer];
-    if (!v47)
+    [(PXProgressArcLayer *)_progressArcLayer setBounds:*MEMORY[0x1E695EFF8], v46, width, height];
+    [(PXProgressArcLayer *)_progressArcLayer setRadius:v28];
+    [(PXProgressArcLayer *)_progressArcLayer setLineWidth:v27];
+    _irisGlyphLayer = [(PXRoundProgressView *)self _irisGlyphLayer];
+    if (!_irisGlyphLayer)
     {
-      v47 = [MEMORY[0x1E6979398] layer];
+      _irisGlyphLayer = [MEMORY[0x1E6979398] layer];
       v48 = *MEMORY[0x1E695F060];
       v49 = *(MEMORY[0x1E695F060] + 8);
       v50 = *MEMORY[0x1E69DDCE0];
@@ -518,22 +518,22 @@ LABEL_41:
 
       v57 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"livephoto", 13.0, v53, v54}];
       [v57 imageWithRenderingMode:2];
-      v58 = v68 = v18;
+      v58 = v68 = blackColor;
 
-      v59 = [MEMORY[0x1E69DC888] whiteColor];
-      v60 = [(PXRoundProgressView *)self traitCollection];
-      [v60 displayScale];
-      v62 = [v58 px_tintedImageWithColor:v59 size:v55 scale:v56 insets:{v61, v50, v51, v65, v64}];
+      whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+      traitCollection = [(PXRoundProgressView *)self traitCollection];
+      [traitCollection displayScale];
+      v62 = [v58 px_tintedImageWithColor:whiteColor3 size:v55 scale:v56 insets:{v61, v50, v51, v65, v64}];
 
-      v18 = v68;
-      v63 = [v62 CGImage];
-      [v47 setBounds:{v45, v46, v55, v56}];
-      [v47 setContents:v63];
-      [(PXRoundProgressView *)self _setIrisGlyphLayer:v47];
-      [v13 addSublayer:v47];
+      blackColor = v68;
+      cGImage = [v62 CGImage];
+      [_irisGlyphLayer setBounds:{v45, v46, v55, v56}];
+      [_irisGlyphLayer setContents:cGImage];
+      [(PXRoundProgressView *)self _setIrisGlyphLayer:_irisGlyphLayer];
+      [layer addSublayer:_irisGlyphLayer];
     }
 
-    [v47 setPosition:{MidX, MidY}];
+    [_irisGlyphLayer setPosition:{MidX, MidY}];
 
     if (v20)
     {
@@ -541,23 +541,23 @@ LABEL_41:
     }
 
 LABEL_57:
-    [v13 setShadowOpacity:0.0];
+    [layer setShadowOpacity:0.0];
     goto LABEL_58;
   }
 
 LABEL_38:
-  v37 = [(PXRoundProgressView *)self _foregroundCircleLayer];
-  if (!v37)
+  _foregroundCircleLayer = [(PXRoundProgressView *)self _foregroundCircleLayer];
+  if (!_foregroundCircleLayer)
   {
-    v37 = [MEMORY[0x1E69794A0] layer];
-    [v13 addSublayer:v37];
-    [(PXRoundProgressView *)self _setForegroundCircleLayer:v37];
+    _foregroundCircleLayer = [MEMORY[0x1E69794A0] layer];
+    [layer addSublayer:_foregroundCircleLayer];
+    [(PXRoundProgressView *)self _setForegroundCircleLayer:_foregroundCircleLayer];
   }
 
-  [v37 setZPosition:0.0];
-  [v37 setStrokeColor:{objc_msgSend(v69, "CGColor")}];
-  [v37 setFillColor:0];
-  [v37 setLineWidth:v27];
+  [_foregroundCircleLayer setZPosition:0.0];
+  [_foregroundCircleLayer setStrokeColor:{objc_msgSend(v69, "CGColor")}];
+  [_foregroundCircleLayer setFillColor:0];
+  [_foregroundCircleLayer setLineWidth:v27];
 
   if (v14)
   {
@@ -572,12 +572,12 @@ LABEL_30:
 
 LABEL_31:
   v29 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.75];
-  [v13 setShadowColor:{objc_msgSend(v29, "CGColor")}];
+  [layer setShadowColor:{objc_msgSend(v29, "CGColor")}];
 
-  [v13 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  [layer setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   LODWORD(v30) = 1.0;
-  [v13 setShadowOpacity:v30];
-  [v13 setShadowRadius:0.5];
+  [layer setShadowOpacity:v30];
+  [layer setShadowRadius:0.5];
 LABEL_58:
   [(PXRoundProgressView *)self _updateUIProgress];
 }
@@ -586,27 +586,27 @@ LABEL_58:
 {
   [(PXRoundProgressView *)self _contentsScale];
   v4 = v3;
-  v5 = [(PXRoundProgressView *)self _progressArcLayer];
-  [v5 setContentsScale:v4];
+  _progressArcLayer = [(PXRoundProgressView *)self _progressArcLayer];
+  [_progressArcLayer setContentsScale:v4];
 }
 
-- (void)_setProgressArcLayer:(id)a3
+- (void)_setProgressArcLayer:(id)layer
 {
-  v5 = a3;
-  if (self->__progressArcLayer != v5)
+  layerCopy = layer;
+  if (self->__progressArcLayer != layerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__progressArcLayer, a3);
+    v6 = layerCopy;
+    objc_storeStrong(&self->__progressArcLayer, layer);
     [(PXRoundProgressView *)self _updateSublayersContentsScale];
-    v5 = v6;
+    layerCopy = v6;
   }
 }
 
-- (void)_setContentsScale:(double)a3
+- (void)_setContentsScale:(double)scale
 {
-  if (self->__contentsScale != a3)
+  if (self->__contentsScale != scale)
   {
-    self->__contentsScale = a3;
+    self->__contentsScale = scale;
     [(PXRoundProgressView *)self _updateSublayersContentsScale];
   }
 }
@@ -616,15 +616,15 @@ LABEL_58:
   v8.receiver = self;
   v8.super_class = PXRoundProgressView;
   [(PXRoundProgressView *)&v8 didMoveToWindow];
-  v3 = [(PXRoundProgressView *)self window];
-  v4 = [v3 screen];
-  [v4 scale];
+  window = [(PXRoundProgressView *)self window];
+  screen = [window screen];
+  [screen scale];
   v6 = v5;
 
   [(PXRoundProgressView *)self _setContentsScale:v6];
-  v7 = [(PXRoundProgressView *)self window];
+  window2 = [(PXRoundProgressView *)self window];
 
-  if (!v7)
+  if (!window2)
   {
     [(PXRoundProgressView *)self stopProgressTimer];
   }
@@ -657,16 +657,16 @@ LABEL_58:
   [(PXRoundProgressView *)self _updateSubviews];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    v5 = [(PXRoundProgressView *)self _contentView];
-    v7 = [v5 layer];
+    self->_style = style;
+    _contentView = [(PXRoundProgressView *)self _contentView];
+    layer = [_contentView layer];
 
-    v6 = [v7 sublayers];
-    [v6 makeObjectsPerformSelector:sel_removeFromSuperlayer];
+    sublayers = [layer sublayers];
+    [sublayers makeObjectsPerformSelector:sel_removeFromSuperlayer];
 
     [(PXRoundProgressView *)self _setSliceLayer:0];
     [(PXRoundProgressView *)self _setCircleLayer:0];
@@ -677,17 +677,17 @@ LABEL_58:
   }
 }
 
-- (PXRoundProgressView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (PXRoundProgressView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = PXRoundProgressView;
-  v5 = [(PXRoundProgressView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PXRoundProgressView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_style = a4;
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(PXRoundProgressView *)v6 setBackgroundColor:v7];
+    v5->_style = style;
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PXRoundProgressView *)v6 setBackgroundColor:clearColor];
 
     [(PXRoundProgressView *)v6 _updateSubviews];
   }
@@ -695,10 +695,10 @@ LABEL_58:
   return v6;
 }
 
-+ (int64_t)_sizeClassForSize:(CGSize)a3
++ (int64_t)_sizeClassForSize:(CGSize)size
 {
-  width = a3.width;
-  [a1 sizeForSizeClass:{2, a3.width, a3.height}];
+  width = size.width;
+  [self sizeForSizeClass:{2, size.width, size.height}];
   if (width < v4)
   {
     return 1;
@@ -710,16 +710,16 @@ LABEL_58:
   }
 }
 
-+ (CGSize)sizeForSizeClass:(int64_t)a3
++ (CGSize)sizeForSizeClass:(int64_t)class
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (class == 1)
   {
     v4 = 22.0;
     v5 = 22.0;
   }
 
-  else if (a3 == 2)
+  else if (class == 2)
   {
     v4 = 33.0;
     v5 = 33.0;
@@ -731,7 +731,7 @@ LABEL_58:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v7 = 134217984;
-      v8 = a3;
+      classCopy = class;
       _os_log_fault_impl(&dword_1B3F73000, v6, OS_LOG_TYPE_FAULT, "invalid PXRoundProgressViewSizeClass %ti", &v7, 0xCu);
     }
 

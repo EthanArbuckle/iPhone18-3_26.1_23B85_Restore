@@ -1,19 +1,19 @@
 @interface PGOnThisDaySmallMemorySuggester
-- (id)momentByMomentLocalIdentifierWithMomentLocalIdentifiers:(id)a3;
-- (id)nextSuggestionWithProgress:(id)a3;
-- (id)sortedMomentLocalIdentifiersWithDateIgnoringYearBeforeDateYear:(id)a3;
-- (id)suggestionWithMomentLocalIdentifier:(id)a3;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
+- (id)momentByMomentLocalIdentifierWithMomentLocalIdentifiers:(id)identifiers;
+- (id)nextSuggestionWithProgress:(id)progress;
+- (id)sortedMomentLocalIdentifiersWithDateIgnoringYearBeforeDateYear:(id)year;
+- (id)suggestionWithMomentLocalIdentifier:(id)identifier;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
 - (void)reset;
-- (void)startSuggestingWithOptions:(id)a3;
+- (void)startSuggestingWithOptions:(id)options;
 @end
 
 @implementation PGOnThisDaySmallMemorySuggester
 
-- (id)suggestionWithMomentLocalIdentifier:(id)a3
+- (id)suggestionWithMomentLocalIdentifier:(id)identifier
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v41 = a3;
+  identifierCopy = identifier;
   if (!self->_momentByMomentLocalIdentifier)
   {
     v4 = [(PGOnThisDaySmallMemorySuggester *)self momentByMomentLocalIdentifierWithMomentLocalIdentifiers:self->_suggestedMomentLocalIdentifiers];
@@ -29,18 +29,18 @@
     self->_titleDateMatchingTitleOnThisDay = v7;
   }
 
-  v9 = [(NSDictionary *)self->_momentByMomentLocalIdentifier objectForKeyedSubscript:v41];
+  v9 = [(NSDictionary *)self->_momentByMomentLocalIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v9)
   {
     v29 = 0;
     goto LABEL_25;
   }
 
-  v42 = [(PGAbstractSuggester *)self session];
-  oslog = [v42 loggingConnection];
-  v40 = [v42 workingContext];
-  v10 = [v40 curationManager];
-  v11 = [v42 curationContext];
+  session = [(PGAbstractSuggester *)self session];
+  oslog = [session loggingConnection];
+  workingContext = [session workingContext];
+  curationManager = [workingContext curationManager];
+  curationContext = [session curationContext];
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -52,13 +52,13 @@
   v43[2] = __71__PGOnThisDaySmallMemorySuggester_suggestionWithMomentLocalIdentifier___block_invoke;
   v43[3] = &unk_278889308;
   v47 = &v48;
-  v12 = v10;
+  v12 = curationManager;
   v44 = v12;
   v13 = v9;
   v45 = v13;
-  v14 = v11;
+  v14 = curationContext;
   v46 = v14;
-  [v40 performSynchronousConcurrentGraphReadUsingBlock:v43];
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:v43];
   v38 = v12;
   v15 = [v12 curatedKeyAssetForAssetCollection:v13 curatedAssetCollection:0 options:0 criteria:v49[5] curationContext:v14];
   v16 = v15;
@@ -75,14 +75,14 @@
       _os_log_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_DEFAULT, "On This Day: Picked key asset is a video, trying again with only images", buf, 2u);
     }
 
-    v17 = [objc_opt_class() noVideoPredicate];
-    v18 = [(PGAbstractSuggester *)self defaultAssetFetchOptionsWithInternalPredicate:v17];
+    noVideoPredicate = [objc_opt_class() noVideoPredicate];
+    v18 = [(PGAbstractSuggester *)self defaultAssetFetchOptionsWithInternalPredicate:noVideoPredicate];
 
     v19 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v13 options:v18];
     v20 = MEMORY[0x277CD97B8];
-    v21 = [v19 fetchedObjects];
-    v22 = [v40 photoLibrary];
-    v23 = [v20 transientAssetCollectionWithAssets:v21 title:&stru_2843F5C58 identifier:0 photoLibrary:v22];
+    fetchedObjects = [v19 fetchedObjects];
+    photoLibrary = [workingContext photoLibrary];
+    v23 = [v20 transientAssetCollectionWithAssets:fetchedObjects title:&stru_2843F5C58 identifier:0 photoLibrary:photoLibrary];
 
     v24 = [v38 curatedKeyAssetForAssetCollection:v23 curatedAssetCollection:0 options:0 criteria:v49[5] curationContext:v14];
 
@@ -97,8 +97,8 @@
   v25 = MEMORY[0x277CD97A8];
   v56[0] = v16;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:1];
-  v27 = [v42 curationContext];
-  [v25 prefetchOnAssets:v26 options:31 curationContext:v27];
+  curationContext2 = [session curationContext];
+  [v25 prefetchOnAssets:v26 options:31 curationContext:curationContext2];
 
   if (![(PGAbstractSuggester *)self assetIsValidForSuggesting:v16])
   {
@@ -141,8 +141,8 @@ LABEL_20:
   }
 
   v30 = objc_alloc(MEMORY[0x277CCA970]);
-  v31 = [(__CFString *)v16 cls_localDate];
-  v32 = [v30 initWithStartDate:v31 duration:0.0];
+  cls_localDate = [(__CFString *)v16 cls_localDate];
+  v32 = [v30 initWithStartDate:cls_localDate duration:0.0];
 
   [(PGSingleAssetSuggestion *)v29 setTitle:self->_titleDateMatchingTitleOnThisDay];
   v33 = [PGTimeTitleUtility timeTitleWithDateInterval:v32 allowedFormats:33];
@@ -171,15 +171,15 @@ void __71__PGOnThisDaySmallMemorySuggester_suggestionWithMomentLocalIdentifier__
   *(v6 + 40) = v5;
 }
 
-- (id)momentByMomentLocalIdentifierWithMomentLocalIdentifiers:(id)a3
+- (id)momentByMomentLocalIdentifierWithMomentLocalIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = [v5 photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  identifiersCopy = identifiers;
+  session = [(PGAbstractSuggester *)self session];
+  photoLibrary = [session photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v8 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithLocalIdentifiers:v4 options:v7];
+  v8 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithLocalIdentifiers:identifiersCopy options:librarySpecificFetchOptions];
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v19 = 0u;
   v20 = 0u;
@@ -201,8 +201,8 @@ void __71__PGOnThisDaySmallMemorySuggester_suggestionWithMomentLocalIdentifier__
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v15 localIdentifier];
-        [v9 setObject:v15 forKeyedSubscript:v16];
+        localIdentifier = [v15 localIdentifier];
+        [v9 setObject:v15 forKeyedSubscript:localIdentifier];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -216,17 +216,17 @@ void __71__PGOnThisDaySmallMemorySuggester_suggestionWithMomentLocalIdentifier__
   return v9;
 }
 
-- (id)sortedMomentLocalIdentifiersWithDateIgnoringYearBeforeDateYear:(id)a3
+- (id)sortedMomentLocalIdentifiersWithDateIgnoringYearBeforeDateYear:(id)year
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = [v5 loggingConnection];
-  v7 = [v5 workingContext];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  yearCopy = year;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  workingContext = [session workingContext];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "On This Day: Computing eligible moments", buf, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "On This Day: Computing eligible moments", buf, 2u);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -234,12 +234,12 @@ void __71__PGOnThisDaySmallMemorySuggester_suggestionWithMomentLocalIdentifier__
   v18 = 3221225472;
   v19 = __98__PGOnThisDaySmallMemorySuggester_sortedMomentLocalIdentifiersWithDateIgnoringYearBeforeDateYear___block_invoke;
   v20 = &unk_27888A638;
-  v21 = v4;
+  v21 = yearCopy;
   v9 = v8;
   v22 = v9;
-  v10 = v4;
-  [v7 performSynchronousConcurrentGraphReadUsingBlock:&v17];
-  v11 = v6;
+  v10 = yearCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:&v17];
+  v11 = loggingConnection;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = [v9 count];
@@ -382,35 +382,35 @@ void __98__PGOnThisDaySmallMemorySuggester_sortedMomentLocalIdentifiersWithDateI
 
 - (void)reset
 {
-  v3 = [(PGAbstractSuggester *)self session];
-  v4 = [v3 loggingConnection];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_22F0FC000, v4, OS_LOG_TYPE_DEFAULT, "On This Day: Resetting", v6, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "On This Day: Resetting", v6, 2u);
   }
 
   suggestedMomentLocalIdentifierEnumerator = self->_suggestedMomentLocalIdentifierEnumerator;
   self->_suggestedMomentLocalIdentifierEnumerator = 0;
 }
 
-- (id)nextSuggestionWithProgress:(id)a3
+- (id)nextSuggestionWithProgress:(id)progress
 {
   *&v26[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  progressCopy = progress;
+  v5 = _Block_copy(progressCopy);
   v6 = 0.0;
   if (!v5 || (v7 = CFAbsoluteTimeGetCurrent(), v7 < 0.01))
   {
 LABEL_8:
-    v9 = [(PGAbstractSuggester *)self session];
-    v10 = [v9 loggingConnection];
+    session = [(PGAbstractSuggester *)self session];
+    loggingConnection = [session loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_DEFAULT, "On This Day: nextSuggestion", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "On This Day: nextSuggestion", buf, 2u);
     }
 
     if (self->_suggestedMomentLocalIdentifierEnumerator)
@@ -426,17 +426,17 @@ LABEL_8:
       suggestedMomentLocalIdentifiers = self->_suggestedMomentLocalIdentifiers;
       if (!suggestedMomentLocalIdentifiers)
       {
-        v12 = [(PGSuggestionOptions *)self->_options localToday];
-        v13 = [(PGOnThisDaySmallMemorySuggester *)self sortedMomentLocalIdentifiersWithDateIgnoringYearBeforeDateYear:v12];
+        localToday = [(PGSuggestionOptions *)self->_options localToday];
+        v13 = [(PGOnThisDaySmallMemorySuggester *)self sortedMomentLocalIdentifiersWithDateIgnoringYearBeforeDateYear:localToday];
         v14 = self->_suggestedMomentLocalIdentifiers;
         self->_suggestedMomentLocalIdentifiers = v13;
 
         suggestedMomentLocalIdentifiers = self->_suggestedMomentLocalIdentifiers;
       }
 
-      v15 = [(NSArray *)suggestedMomentLocalIdentifiers objectEnumerator];
+      objectEnumerator = [(NSArray *)suggestedMomentLocalIdentifiers objectEnumerator];
       suggestedMomentLocalIdentifierEnumerator = self->_suggestedMomentLocalIdentifierEnumerator;
-      self->_suggestedMomentLocalIdentifierEnumerator = v15;
+      self->_suggestedMomentLocalIdentifierEnumerator = objectEnumerator;
 
       if (!v5)
       {
@@ -470,13 +470,13 @@ LABEL_45:
     }
 
 LABEL_22:
-    v18 = 0;
+    nextObject = 0;
     while (1)
     {
-      v19 = v18;
-      v18 = [(NSEnumerator *)self->_suggestedMomentLocalIdentifierEnumerator nextObject];
+      v19 = nextObject;
+      nextObject = [(NSEnumerator *)self->_suggestedMomentLocalIdentifierEnumerator nextObject];
 
-      if (!v18)
+      if (!nextObject)
       {
         break;
       }
@@ -508,28 +508,28 @@ LABEL_22:
         }
       }
 
-      v8 = [(PGOnThisDaySmallMemorySuggester *)self suggestionWithMomentLocalIdentifier:v18];
+      v8 = [(PGOnThisDaySmallMemorySuggester *)self suggestionWithMomentLocalIdentifier:nextObject];
       objc_autoreleasePoolPop(v20);
       if (v8)
       {
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138477827;
           *v26 = v8;
-          _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_DEFAULT, "On This Day: Suggesting %{private}@", buf, 0xCu);
+          _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "On This Day: Suggesting %{private}@", buf, 0xCu);
         }
 
         goto LABEL_34;
       }
     }
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_DEFAULT, "On This Day: Nothing to suggest", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "On This Day: Nothing to suggest", buf, 2u);
     }
 
-    v18 = 0;
+    nextObject = 0;
     v8 = 0;
 LABEL_34:
     if (v5)
@@ -583,16 +583,16 @@ LABEL_46:
   return v8;
 }
 
-- (void)startSuggestingWithOptions:(id)a3
+- (void)startSuggestingWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = [v5 loggingConnection];
+  optionsCopy = options;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *v11 = 0;
-    _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "On This Day: Starting suggesting", v11, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "On This Day: Starting suggesting", v11, 2u);
   }
 
   suggestedMomentLocalIdentifiers = self->_suggestedMomentLocalIdentifiers;
@@ -605,15 +605,15 @@ LABEL_46:
   self->_suggestedMomentLocalIdentifierEnumerator = 0;
 
   options = self->_options;
-  self->_options = v4;
+  self->_options = optionsCopy;
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = _Block_copy(v7);
+  optionsCopy = options;
+  progressCopy = progress;
+  v8 = _Block_copy(progressCopy);
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -624,18 +624,18 @@ LABEL_46:
   v39 = 0;
   if (!v8 || (v9 = CFAbsoluteTimeGetCurrent(), v9 - v37[3] < 0.01) || (v37[3] = v9, LOBYTE(v44) = 0, (*(v8 + 2))(v8, &v44, 0.0), v10 = *(v41 + 24) | v44, *(v41 + 24) = v10, (v10 & 1) == 0))
   {
-    v12 = [v6 localToday];
-    v13 = [(PGOnThisDaySmallMemorySuggester *)self sortedMomentLocalIdentifiersWithDateIgnoringYearBeforeDateYear:v12];
+    localToday = [optionsCopy localToday];
+    v13 = [(PGOnThisDaySmallMemorySuggester *)self sortedMomentLocalIdentifiersWithDateIgnoringYearBeforeDateYear:localToday];
 
     v14 = [(PGOnThisDaySmallMemorySuggester *)self momentByMomentLocalIdentifierWithMomentLocalIdentifiers:v13];
     momentByMomentLocalIdentifier = self->_momentByMomentLocalIdentifier;
     self->_momentByMomentLocalIdentifier = v14;
 
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v17 = [v6 maximumNumberOfSuggestions];
-    if (v17)
+    maximumNumberOfSuggestions = [optionsCopy maximumNumberOfSuggestions];
+    if (maximumNumberOfSuggestions)
     {
-      v18 = v17;
+      v18 = maximumNumberOfSuggestions;
     }
 
     else

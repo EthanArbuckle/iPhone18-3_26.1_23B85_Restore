@@ -5,20 +5,20 @@
 - (NSString)title;
 - (PUPhotosGridBarsHelper)init;
 - (PUPhotosGridBarsHelperDelegate)delegate;
-- (void)_handleItemsWithCountUpdateWithTitle:(id)a3 shouldReloadAllItems:(BOOL)a4;
+- (void)_handleItemsWithCountUpdateWithTitle:(id)title shouldReloadAllItems:(BOOL)items;
 - (void)_notifyBarItemsDidChange;
-- (void)_setPhotoSelectionManager:(id)a3;
-- (void)_setShouldUpdateBarItemsLazily:(BOOL)a3;
+- (void)_setPhotoSelectionManager:(id)manager;
+- (void)_setShouldUpdateBarItemsLazily:(BOOL)lazily;
 - (void)_startUpdatingItemsWithCountIfNeeded;
 - (void)_stopUpdatingItemsWithCount;
 - (void)_updateAllBarItems;
 - (void)_updateBarItemsIfNeeded;
 - (void)_updateIfNeeded;
-- (void)_updateItemsWithCountInBackgroundWithDelegate:(id)a3 photoSelectionManagerSnapshot:(id)a4;
+- (void)_updateItemsWithCountInBackgroundWithDelegate:(id)delegate photoSelectionManagerSnapshot:(id)snapshot;
 - (void)_updatePhotoSelectionManagerIfNeeded;
 - (void)_updateShouldUpdateBarItemsLazilyIfNeeded;
-- (void)setDelegate:(id)a3;
-- (void)setSwipeSelecting:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setSwipeSelecting:(BOOL)selecting;
 @end
 
 @implementation PUPhotosGridBarsHelper
@@ -30,20 +30,20 @@
   return WeakRetained;
 }
 
-- (void)_handleItemsWithCountUpdateWithTitle:(id)a3 shouldReloadAllItems:(BOOL)a4
+- (void)_handleItemsWithCountUpdateWithTitle:(id)title shouldReloadAllItems:(BOOL)items
 {
-  v4 = a4;
-  v6 = a3;
+  itemsCopy = items;
+  titleCopy = title;
   if ([(PUPhotosGridBarsHelper *)self _shouldUpdateBarItemsLazily])
   {
-    if (v4)
+    if (itemsCopy)
     {
       [(PUPhotosGridBarsHelper *)self _updateAllBarItems];
     }
 
     else
     {
-      [(PUPhotosGridBarsHelper *)self _setTitle:v6];
+      [(PUPhotosGridBarsHelper *)self _setTitle:titleCopy];
     }
 
     [(PUPhotosGridBarsHelper *)self _notifyBarItemsDidChange];
@@ -53,17 +53,17 @@
   [(PUPhotosGridBarsHelper *)self _startUpdatingItemsWithCountIfNeeded];
 }
 
-- (void)_updateItemsWithCountInBackgroundWithDelegate:(id)a3 photoSelectionManagerSnapshot:(id)a4
+- (void)_updateItemsWithCountInBackgroundWithDelegate:(id)delegate photoSelectionManagerSnapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUPhotosGridBarsHelper *)self _hadSelectionOnLastUpdate];
-  v9 = [v7 isAnyAssetSelected];
-  [(PUPhotosGridBarsHelper *)self _setHadSelectionOnLastUpdate:v9];
-  v10 = v9 & v8;
+  delegateCopy = delegate;
+  snapshotCopy = snapshot;
+  _hadSelectionOnLastUpdate = [(PUPhotosGridBarsHelper *)self _hadSelectionOnLastUpdate];
+  isAnyAssetSelected = [snapshotCopy isAnyAssetSelected];
+  [(PUPhotosGridBarsHelper *)self _setHadSelectionOnLastUpdate:isAnyAssetSelected];
+  v10 = isAnyAssetSelected & _hadSelectionOnLastUpdate;
   if (v10 == 1)
   {
-    v11 = [v6 photosGridBarsHelper:self titleForPhotoSelectionManager:v7];
+    v11 = [delegateCopy photosGridBarsHelper:self titleForPhotoSelectionManager:snapshotCopy];
   }
 
   else
@@ -92,7 +92,7 @@ void __102__PUPhotosGridBarsHelper__updateItemsWithCountInBackgroundWithDelegate
 {
   [(PUPhotosGridBarsHelper *)self _setShouldUpdateItemsWithCount:0];
   objc_initWeak(&location, self);
-  v3 = [(PUPhotosGridBarsHelper *)self _queue];
+  _queue = [(PUPhotosGridBarsHelper *)self _queue];
   objc_copyWeak(&v4, &location);
   pl_dispatch_async();
 
@@ -114,14 +114,14 @@ void __53__PUPhotosGridBarsHelper__stopUpdatingItemsWithCount__block_invoke(uint
     {
       [(PUPhotosGridBarsHelper *)self _setShouldUpdateItemsWithCount:0];
       [(PUPhotosGridBarsHelper *)self _setUpdatingItemsWithCount:1];
-      v3 = [(PUPhotosGridBarsHelper *)self delegate];
-      v4 = [(PUPhotosGridBarsHelper *)self _photoSelectionManager];
-      v5 = [v4 copy];
+      delegate = [(PUPhotosGridBarsHelper *)self delegate];
+      _photoSelectionManager = [(PUPhotosGridBarsHelper *)self _photoSelectionManager];
+      v5 = [_photoSelectionManager copy];
 
       objc_initWeak(&location, self);
-      v6 = [(PUPhotosGridBarsHelper *)self _queue];
+      _queue = [(PUPhotosGridBarsHelper *)self _queue];
       objc_copyWeak(&v9, &location);
-      v7 = v3;
+      v7 = delegate;
       v8 = v5;
       pl_dispatch_async();
 
@@ -140,13 +140,13 @@ void __62__PUPhotosGridBarsHelper__startUpdatingItemsWithCountIfNeeded__block_in
 - (void)_updateAllBarItems
 {
   v16 = 0;
-  v3 = [(PUPhotosGridBarsHelper *)self delegate];
+  delegate = [(PUPhotosGridBarsHelper *)self delegate];
   v14 = 0;
   v15 = 0;
   v12 = 0;
   v13 = 0;
-  v4 = [(PUPhotosGridBarsHelper *)self _photoSelectionManager];
-  [v3 photosGridBarsHelper:self getTitle:&v15 prompt:&v14 shouldHideBackButton:&v16 leftBarButtonItems:&v13 rightBarButtonItems:&v12 forPhotoSelectionManager:v4];
+  _photoSelectionManager = [(PUPhotosGridBarsHelper *)self _photoSelectionManager];
+  [delegate photosGridBarsHelper:self getTitle:&v15 prompt:&v14 shouldHideBackButton:&v16 leftBarButtonItems:&v13 rightBarButtonItems:&v12 forPhotoSelectionManager:_photoSelectionManager];
   v5 = v14;
   v6 = v15;
   v7 = v13;
@@ -187,9 +187,9 @@ void __62__PUPhotosGridBarsHelper__startUpdatingItemsWithCountIfNeeded__block_in
   if (self->_needsUpdateFlags.shouldUpdateBarItemsLazily)
   {
     self->_needsUpdateFlags.shouldUpdateBarItemsLazily = 0;
-    v4 = [(PUPhotosGridBarsHelper *)self isSwipeSelecting];
+    isSwipeSelecting = [(PUPhotosGridBarsHelper *)self isSwipeSelecting];
 
-    [(PUPhotosGridBarsHelper *)self _setShouldUpdateBarItemsLazily:v4];
+    [(PUPhotosGridBarsHelper *)self _setShouldUpdateBarItemsLazily:isSwipeSelecting];
   }
 }
 
@@ -198,8 +198,8 @@ void __62__PUPhotosGridBarsHelper__startUpdatingItemsWithCountIfNeeded__block_in
   if (self->_needsUpdateFlags.photoSelectionManager)
   {
     self->_needsUpdateFlags.photoSelectionManager = 0;
-    v4 = [(PUPhotosGridBarsHelper *)self delegate];
-    v5 = [v4 photosGridBarsHelperPhotoSelectionManager:self];
+    delegate = [(PUPhotosGridBarsHelper *)self delegate];
+    v5 = [delegate photosGridBarsHelperPhotoSelectionManager:self];
 
     [(PUPhotosGridBarsHelper *)self _setPhotoSelectionManager:v5];
   }
@@ -220,16 +220,16 @@ void __62__PUPhotosGridBarsHelper__startUpdatingItemsWithCountIfNeeded__block_in
 
 - (void)_notifyBarItemsDidChange
 {
-  v3 = [(PUPhotosGridBarsHelper *)self delegate];
-  [v3 photosGridBarsHelper:self didChange:1];
+  delegate = [(PUPhotosGridBarsHelper *)self delegate];
+  [delegate photosGridBarsHelper:self didChange:1];
 }
 
-- (void)_setShouldUpdateBarItemsLazily:(BOOL)a3
+- (void)_setShouldUpdateBarItemsLazily:(BOOL)lazily
 {
-  if (self->__shouldUpdateBarItemsLazily != a3)
+  if (self->__shouldUpdateBarItemsLazily != lazily)
   {
-    self->__shouldUpdateBarItemsLazily = a3;
-    if (!a3)
+    self->__shouldUpdateBarItemsLazily = lazily;
+    if (!lazily)
     {
       [(PUPhotosGridBarsHelper *)self _notifyBarItemsDidChange];
       [(PUPhotosGridBarsHelper *)self _stopUpdatingItemsWithCount];
@@ -239,21 +239,21 @@ void __62__PUPhotosGridBarsHelper__startUpdatingItemsWithCountIfNeeded__block_in
   }
 }
 
-- (void)_setPhotoSelectionManager:(id)a3
+- (void)_setPhotoSelectionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   photoSelectionManager = self->__photoSelectionManager;
-  if (photoSelectionManager != v5)
+  if (photoSelectionManager != managerCopy)
   {
-    v7 = v5;
+    v7 = managerCopy;
     [(PUPhotoSelectionManager *)photoSelectionManager unregisterChangeObserver:self];
-    objc_storeStrong(&self->__photoSelectionManager, a3);
+    objc_storeStrong(&self->__photoSelectionManager, manager);
     [(PUPhotoSelectionManager *)self->__photoSelectionManager registerChangeObserver:self];
     photoSelectionManager = [(PUPhotosGridBarsHelper *)self _invalidateBarItems];
-    v5 = v7;
+    managerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](photoSelectionManager, v5);
+  MEMORY[0x1EEE66BB8](photoSelectionManager, managerCopy);
 }
 
 - (NSArray)rightBarButtonItems
@@ -288,18 +288,18 @@ void __62__PUPhotosGridBarsHelper__startUpdatingItemsWithCountIfNeeded__block_in
   return title;
 }
 
-- (void)setSwipeSelecting:(BOOL)a3
+- (void)setSwipeSelecting:(BOOL)selecting
 {
-  if (self->_swipeSelecting != a3)
+  if (self->_swipeSelecting != selecting)
   {
-    self->_swipeSelecting = a3;
+    self->_swipeSelecting = selecting;
     [(PUPhotosGridBarsHelper *)self _invalidateShouldUpdateBarItemsLazily];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;

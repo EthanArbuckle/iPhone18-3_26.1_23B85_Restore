@@ -1,34 +1,34 @@
 @interface LNEntityIdentifier
-- (BOOL)isEqual:(id)a3;
-- (LNEntityIdentifier)initWithCoder:(id)a3;
-- (LNEntityIdentifier)initWithString:(id)a3;
-- (LNEntityIdentifier)initWithTypeIdentifier:(id)a3 bundleIdentifier:(id)a4 instanceIdentifier:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNEntityIdentifier)initWithCoder:(id)coder;
+- (LNEntityIdentifier)initWithString:(id)string;
+- (LNEntityIdentifier)initWithTypeIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier instanceIdentifier:(id)instanceIdentifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNEntityIdentifier
 
 - (unint64_t)hash
 {
-  v3 = [(LNEntityIdentifier *)self typeIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNEntityIdentifier *)self bundleIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNEntityIdentifier *)self instanceIdentifier];
-  v8 = [v7 hash];
+  typeIdentifier = [(LNEntityIdentifier *)self typeIdentifier];
+  v4 = [typeIdentifier hash];
+  bundleIdentifier = [(LNEntityIdentifier *)self bundleIdentifier];
+  v6 = [bundleIdentifier hash] ^ v4;
+  instanceIdentifier = [(LNEntityIdentifier *)self instanceIdentifier];
+  v8 = [instanceIdentifier hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -37,10 +37,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNEntityIdentifier *)self typeIdentifier];
-    v8 = [(LNEntityIdentifier *)v6 typeIdentifier];
-    v9 = v7;
-    v10 = v8;
+    typeIdentifier = [(LNEntityIdentifier *)self typeIdentifier];
+    typeIdentifier2 = [(LNEntityIdentifier *)v6 typeIdentifier];
+    v9 = typeIdentifier;
+    v10 = typeIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -67,10 +67,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNEntityIdentifier *)self bundleIdentifier];
-    v17 = [(LNEntityIdentifier *)v6 bundleIdentifier];
-    v14 = v16;
-    v18 = v17;
+    bundleIdentifier = [(LNEntityIdentifier *)self bundleIdentifier];
+    bundleIdentifier2 = [(LNEntityIdentifier *)v6 bundleIdentifier];
+    v14 = bundleIdentifier;
+    v18 = bundleIdentifier2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -97,10 +97,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNEntityIdentifier *)self instanceIdentifier];
-    v22 = [(LNEntityIdentifier *)v6 instanceIdentifier];
-    v20 = v21;
-    v23 = v22;
+    instanceIdentifier = [(LNEntityIdentifier *)self instanceIdentifier];
+    instanceIdentifier2 = [(LNEntityIdentifier *)v6 instanceIdentifier];
+    v20 = instanceIdentifier;
+    v23 = instanceIdentifier2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -125,12 +125,12 @@ LABEL_28:
   return v12;
 }
 
-- (LNEntityIdentifier)initWithCoder:(id)a3
+- (LNEntityIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"typeIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"instanceIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typeIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"instanceIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
 
   if (v5)
   {
@@ -144,47 +144,47 @@ LABEL_28:
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNEntityIdentifier *)self initWithTypeIdentifier:v5 bundleIdentifier:v7 instanceIdentifier:v6];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNEntityIdentifier *)self typeIdentifier];
-  [v4 encodeObject:v5 forKey:@"typeIdentifier"];
+  coderCopy = coder;
+  typeIdentifier = [(LNEntityIdentifier *)self typeIdentifier];
+  [coderCopy encodeObject:typeIdentifier forKey:@"typeIdentifier"];
 
-  v6 = [(LNEntityIdentifier *)self instanceIdentifier];
-  [v4 encodeObject:v6 forKey:@"instanceIdentifier"];
+  instanceIdentifier = [(LNEntityIdentifier *)self instanceIdentifier];
+  [coderCopy encodeObject:instanceIdentifier forKey:@"instanceIdentifier"];
 
-  v7 = [(LNEntityIdentifier *)self bundleIdentifier];
-  [v4 encodeObject:v7 forKey:@"bundleIdentifier"];
+  bundleIdentifier = [(LNEntityIdentifier *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 }
 
 - (id)description
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v3 = [(LNEntityIdentifier *)self bundleIdentifier];
+  bundleIdentifier = [(LNEntityIdentifier *)self bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
     v16[0] = @"bundleIdentifier";
-    v4 = [(LNEntityIdentifier *)self bundleIdentifier];
-    v17[0] = v4;
+    bundleIdentifier2 = [(LNEntityIdentifier *)self bundleIdentifier];
+    v17[0] = bundleIdentifier2;
     v16[1] = @"instanceIdentifier";
-    v5 = [(LNEntityIdentifier *)self instanceIdentifier];
-    v17[1] = v5;
+    instanceIdentifier = [(LNEntityIdentifier *)self instanceIdentifier];
+    v17[1] = instanceIdentifier;
     v16[2] = @"typeIdentifier";
-    v6 = [(LNEntityIdentifier *)self typeIdentifier];
-    v17[2] = v6;
+    typeIdentifier = [(LNEntityIdentifier *)self typeIdentifier];
+    v17[2] = typeIdentifier;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
 
     v15 = 0;
@@ -195,9 +195,9 @@ LABEL_28:
   else
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [(LNEntityIdentifier *)self typeIdentifier];
-    v12 = [(LNEntityIdentifier *)self instanceIdentifier];
-    v9 = [v10 stringWithFormat:@"%@/%@", v11, v12];
+    typeIdentifier2 = [(LNEntityIdentifier *)self typeIdentifier];
+    instanceIdentifier2 = [(LNEntityIdentifier *)self instanceIdentifier];
+    v9 = [v10 stringWithFormat:@"%@/%@", typeIdentifier2, instanceIdentifier2];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -205,23 +205,23 @@ LABEL_28:
   return v9;
 }
 
-- (LNEntityIdentifier)initWithString:(id)a3
+- (LNEntityIdentifier)initWithString:(id)string
 {
-  v5 = a3;
-  if (!v5)
+  stringCopy = string;
+  if (!stringCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"LNEntityIdentifier.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"identifierString"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNEntityIdentifier.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"identifierString"}];
   }
 
-  if ([v5 hasPrefix:@"{"])
+  if ([stringCopy hasPrefix:@"{"])
   {
-    v6 = [v5 dataUsingEncoding:4];
+    v6 = [stringCopy dataUsingEncoding:4];
     v7 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:1 error:0];
     v8 = v7;
     if (!v7)
     {
-      v13 = 0;
+      selfCopy2 = 0;
 LABEL_36:
 
       goto LABEL_37;
@@ -251,7 +251,7 @@ LABEL_36:
 
     v22 = [v21 componentsSeparatedByString:@"."];
 
-    v19 = [v22 lastObject];
+    lastObject = [v22 lastObject];
 
     v23 = [v8 objectForKeyedSubscript:@"instanceIdentifier"];
     if (v23)
@@ -297,33 +297,33 @@ LABEL_36:
 
     v27 = v26;
 
-    if ([v19 length] && objc_msgSend(v20, "length"))
+    if ([lastObject length] && objc_msgSend(v20, "length"))
     {
-      self = [(LNEntityIdentifier *)self initWithTypeIdentifier:v19 bundleIdentifier:v27 instanceIdentifier:v20];
-      v13 = self;
+      self = [(LNEntityIdentifier *)self initWithTypeIdentifier:lastObject bundleIdentifier:v27 instanceIdentifier:v20];
+      selfCopy2 = self;
     }
 
     else
     {
-      v13 = 0;
+      selfCopy2 = 0;
     }
 
 LABEL_35:
     goto LABEL_36;
   }
 
-  v11 = [v5 rangeOfString:@"/"];
+  v11 = [stringCopy rangeOfString:@"/"];
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = v11;
     v15 = v12;
-    v6 = [v5 substringToIndex:v11];
+    v6 = [stringCopy substringToIndex:v11];
     v8 = [v6 componentsSeparatedByString:@"."];
-    v16 = [v8 lastObject];
-    v17 = v16;
-    if (v16)
+    lastObject2 = [v8 lastObject];
+    v17 = lastObject2;
+    if (lastObject2)
     {
-      v18 = v16;
+      v18 = lastObject2;
     }
 
     else
@@ -331,39 +331,39 @@ LABEL_35:
       v18 = v6;
     }
 
-    v19 = v18;
+    lastObject = v18;
 
-    v20 = [v5 substringFromIndex:v14 + v15];
-    if ([v19 length] && objc_msgSend(v20, "length"))
+    v20 = [stringCopy substringFromIndex:v14 + v15];
+    if ([lastObject length] && objc_msgSend(v20, "length"))
     {
-      self = [(LNEntityIdentifier *)self initWithTypeIdentifier:v19 bundleIdentifier:0 instanceIdentifier:v20];
-      v13 = self;
+      self = [(LNEntityIdentifier *)self initWithTypeIdentifier:lastObject bundleIdentifier:0 instanceIdentifier:v20];
+      selfCopy2 = self;
     }
 
     else
     {
-      v13 = 0;
+      selfCopy2 = 0;
     }
 
     goto LABEL_35;
   }
 
-  v13 = 0;
+  selfCopy2 = 0;
 LABEL_37:
 
-  return v13;
+  return selfCopy2;
 }
 
-- (LNEntityIdentifier)initWithTypeIdentifier:(id)a3 bundleIdentifier:(id)a4 instanceIdentifier:(id)a5
+- (LNEntityIdentifier)initWithTypeIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier instanceIdentifier:(id)instanceIdentifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  instanceIdentifierCopy = instanceIdentifier;
+  v12 = instanceIdentifierCopy;
+  if (identifierCopy)
   {
-    if (v11)
+    if (instanceIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -371,8 +371,8 @@ LABEL_37:
 
   else
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"LNEntityIdentifier.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"typeIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNEntityIdentifier.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"typeIdentifier"}];
 
     if (v12)
     {
@@ -380,8 +380,8 @@ LABEL_37:
     }
   }
 
-  v28 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v28 handleFailureInMethod:a2 object:self file:@"LNEntityIdentifier.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"instanceIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNEntityIdentifier.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"instanceIdentifier"}];
 
 LABEL_3:
   v29.receiver = self;
@@ -389,7 +389,7 @@ LABEL_3:
   v13 = [(LNEntityIdentifier *)&v29 init];
   if (v13)
   {
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     typeIdentifier = v13->_typeIdentifier;
     v13->_typeIdentifier = v14;
 
@@ -401,10 +401,10 @@ LABEL_3:
 
     else
     {
-      v17 = [MEMORY[0x1E696AE30] processInfo];
-      v18 = [v17 ln_isTesting];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      ln_isTesting = [processInfo ln_isTesting];
 
-      if ((v18 & 1) == 0)
+      if ((ln_isTesting & 1) == 0)
       {
         v19 = os_log_create("com.apple.runtime-issues", "Link Runtime Issues");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -421,7 +421,7 @@ LABEL_3:
     instanceIdentifier = v13->_instanceIdentifier;
     v13->_instanceIdentifier = v20;
 
-    v22 = [v10 copy];
+    v22 = [bundleIdentifierCopy copy];
     bundleIdentifier = v13->_bundleIdentifier;
     v13->_bundleIdentifier = v22;
 

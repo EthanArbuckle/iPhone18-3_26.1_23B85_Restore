@@ -4,7 +4,7 @@
 - (BOOL)allNegativeSamples;
 - (BOOL)doDummyDataFilter;
 - (BOOL)useNewTrainingAPI;
-- (EvaluationDataSource)initWithRecipe:(id)a3 infos:(id)a4 datas:(id)a5 error:(id *)a6;
+- (EvaluationDataSource)initWithRecipe:(id)recipe infos:(id)infos datas:(id)datas error:(id *)error;
 - (NSArray)layersToTrain;
 - (NSString)freezeComponents;
 - (NSString)gradNormType;
@@ -18,30 +18,30 @@
 - (float)learningRate;
 - (float)learningRateDecay;
 - (float)negativeSamplingRate;
-- (id)extractFeatureDataForRecord:(unint64_t)a3;
-- (id)extractFullFeatureListForRecord:(unint64_t)a3;
-- (id)getRecordInfo:(unint64_t)a3;
-- (id)vectorForClassification:(int64_t)a3;
+- (id)extractFeatureDataForRecord:(unint64_t)record;
+- (id)extractFullFeatureListForRecord:(unint64_t)record;
+- (id)getRecordInfo:(unint64_t)info;
+- (id)vectorForClassification:(int64_t)classification;
 - (int)batchSize;
 - (int)labelKeyName;
 - (int)minBatchSize;
 - (int)minDaemonVersion;
 - (int)minsUntil;
 - (int)numLocalIterations;
-- (int64_t)classificationForRecord:(unint64_t)a3;
-- (void)filterInMatchedLabelData:(id)a3;
+- (int64_t)classificationForRecord:(unint64_t)record;
+- (void)filterInMatchedLabelData:(id)data;
 - (void)filteringOperation;
 - (void)filteroutDummyData;
 - (void)performDownSampling;
-- (void)selectDaemonVersion:(int)a3;
-- (void)validateRecordInfo:(id)a3;
+- (void)selectDaemonVersion:(int)version;
+- (void)validateRecordInfo:(id)info;
 @end
 
 @implementation EvaluationDataSource
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog = os_log_create("com.apple.iCloudSubscriptionOptimizerCore.PFLPlugin", "EvaluationDataSource");
 
@@ -100,28 +100,28 @@
   return v2;
 }
 
-- (EvaluationDataSource)initWithRecipe:(id)a3 infos:(id)a4 datas:(id)a5 error:(id *)a6
+- (EvaluationDataSource)initWithRecipe:(id)recipe infos:(id)infos datas:(id)datas error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  recipeCopy = recipe;
+  infosCopy = infos;
+  datasCopy = datas;
   v23.receiver = self;
   v23.super_class = EvaluationDataSource;
   v12 = [(EvaluationDataSource *)&v23 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [infosCopy copy];
     recordInfos = v12->_recordInfos;
     v12->_recordInfos = v13;
 
-    v15 = [v11 copy];
+    v15 = [datasCopy copy];
     recordDatas = v12->_recordDatas;
     v12->_recordDatas = v15;
 
     v17 = +[EvaluationDataSource defaultRecipeParams];
     v18 = [v17 mutableCopy];
 
-    [v18 addEntriesFromDictionary:v9];
+    [v18 addEntriesFromDictionary:recipeCopy];
     v19 = [v18 copy];
     recipe = v12->_recipe;
     v12->_recipe = v19;
@@ -134,17 +134,17 @@
 
 - (int)numLocalIterations
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"NumLocalIterations"];
-  v4 = [v3 intValue];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"NumLocalIterations"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (float)learningRate
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"LearningRate"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"LearningRate"];
   [v3 floatValue];
   v5 = v4;
 
@@ -153,8 +153,8 @@
 
 - (float)learningRateDecay
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"LearningRateDecay"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"LearningRateDecay"];
   [v3 floatValue];
   v5 = v4;
 
@@ -163,16 +163,16 @@
 
 - (NSArray)layersToTrain
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"TrainLayers"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"TrainLayers"];
 
   return v3;
 }
 
 - (float)gradNormFactor
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"GradientNormFactor"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"GradientNormFactor"];
   [v3 floatValue];
   v5 = v4;
 
@@ -181,14 +181,14 @@
 
 - (int)batchSize
 {
-  v3 = [(EvaluationDataSource *)self recipe];
-  v4 = [v3 objectForKeyedSubscript:@"BatchSize"];
-  v5 = [v4 intValue];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v4 = [recipe objectForKeyedSubscript:@"BatchSize"];
+  intValue = [v4 intValue];
 
   result = [(EvaluationDataSource *)self recordCount];
-  if (v5 < result)
+  if (intValue < result)
   {
-    return v5;
+    return intValue;
   }
 
   return result;
@@ -196,8 +196,8 @@
 
 - (float)l2NormBound
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"L2NormBound"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"L2NormBound"];
   [v3 floatValue];
   v5 = v4;
 
@@ -206,100 +206,100 @@
 
 - (NSString)gradNormType
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"GradientNormType"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"GradientNormType"];
 
   return v3;
 }
 
 - (NSString)objectiveFunction
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"ObjectiveFunction"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"ObjectiveFunction"];
 
   return v3;
 }
 
 - (NSString)freezeComponents
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"FrozenComponentIds"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"FrozenComponentIds"];
 
   return v3;
 }
 
 - (NSString)modelFeatures
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"ModelFeatures"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"ModelFeatures"];
 
   return v3;
 }
 
 - (int)minsUntil
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"MinsUntil"];
-  v4 = [v3 intValue];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"MinsUntil"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (int)minDaemonVersion
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"MinDaemonVersion"];
-  v4 = [v3 intValue];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"MinDaemonVersion"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)doDummyDataFilter
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"DoDummyDataFilter"];
-  v4 = [v3 BOOLValue];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"DoDummyDataFilter"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)modelOutputName
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"ModelOutputName"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"ModelOutputName"];
 
   return v3;
 }
 
 - (NSString)modelInputSchemaInputName
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"ModelInputSchemaInputName"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"ModelInputSchemaInputName"];
 
   return v3;
 }
 
 - (NSString)modelInputSchemaLabelName
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"ModelInputSchemaLabelName"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"ModelInputSchemaLabelName"];
 
   return v3;
 }
 
 - (int)minBatchSize
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"MinBatchSize"];
-  v4 = [v3 intValue];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"MinBatchSize"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (float)negativeSamplingRate
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"NegativeSamplingRate"];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"NegativeSamplingRate"];
   [v3 floatValue];
   v5 = v4;
 
@@ -308,26 +308,26 @@
 
 - (int)labelKeyName
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"LabelKeyName"];
-  v4 = [v3 intValue];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"LabelKeyName"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)useNewTrainingAPI
 {
-  v2 = [(EvaluationDataSource *)self recipe];
-  v3 = [v2 objectForKeyedSubscript:@"UseNewTrainingAPI"];
-  v4 = [v3 BOOLValue];
+  recipe = [(EvaluationDataSource *)self recipe];
+  v3 = [recipe objectForKeyedSubscript:@"UseNewTrainingAPI"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)filteroutDummyData
 {
-  v16 = [MEMORY[0x277CBEB18] array];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   if ([(NSArray *)self->_recordInfos count])
   {
     v4 = 0;
@@ -340,15 +340,15 @@
       {
         v7 = [(NSArray *)self->_recordInfos objectAtIndexedSubscript:v4];
         v8 = [v7 objectForKey:@"isDummyData"];
-        v9 = [v8 BOOLValue];
+        bOOLValue = [v8 BOOLValue];
 
-        if ((v9 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           v10 = [(NSArray *)self->_recordInfos objectAtIndexedSubscript:v4];
-          [v16 addObject:v10];
+          [array addObject:v10];
 
           v11 = [(NSArray *)self->_recordDatas objectAtIndexedSubscript:v4];
-          [v3 addObject:v11];
+          [array2 addObject:v11];
         }
       }
 
@@ -358,19 +358,19 @@
     while ([(NSArray *)self->_recordInfos count]> v4);
   }
 
-  v12 = [v16 copy];
+  v12 = [array copy];
   recordInfos = self->_recordInfos;
   self->_recordInfos = v12;
 
-  v14 = [v3 copy];
+  v14 = [array2 copy];
   recordDatas = self->_recordDatas;
   self->_recordDatas = v14;
 }
 
-- (void)selectDaemonVersion:(int)a3
+- (void)selectDaemonVersion:(int)version
 {
-  v18 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   if ([(NSArray *)self->_recordInfos count])
   {
     v6 = 0;
@@ -383,15 +383,15 @@
       {
         v9 = [(NSArray *)self->_recordInfos objectAtIndexedSubscript:v6];
         v10 = [v9 objectForKey:@"daemonVersion"];
-        v11 = [v10 intValue];
+        intValue = [v10 intValue];
 
-        if (v11 >= a3)
+        if (intValue >= version)
         {
           v12 = [(NSArray *)self->_recordInfos objectAtIndexedSubscript:v6];
-          [v18 addObject:v12];
+          [array addObject:v12];
 
           v13 = [(NSArray *)self->_recordDatas objectAtIndexedSubscript:v6];
-          [v5 addObject:v13];
+          [array2 addObject:v13];
         }
       }
 
@@ -401,11 +401,11 @@
     while ([(NSArray *)self->_recordInfos count]> v6);
   }
 
-  v14 = [v18 copy];
+  v14 = [array copy];
   recordInfos = self->_recordInfos;
   self->_recordInfos = v14;
 
-  v16 = [v5 copy];
+  v16 = [array2 copy];
   recordDatas = self->_recordDatas;
   self->_recordDatas = v16;
 }
@@ -414,25 +414,25 @@
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"MinDaemonVersion"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 >= 1)
+  if (intValue >= 1)
   {
     v5 = sLog;
     if (os_log_type_enabled(sLog, OS_LOG_TYPE_INFO))
     {
       v14[0] = 67109120;
-      v14[1] = v4;
+      v14[1] = intValue;
       _os_log_impl(&dword_275B9B000, v5, OS_LOG_TYPE_INFO, "About to select samples with daemon version >= %d only.", v14, 8u);
     }
 
-    [(EvaluationDataSource *)self selectDaemonVersion:v4];
+    [(EvaluationDataSource *)self selectDaemonVersion:intValue];
   }
 
   v6 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"DoDummyDataFilter"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = sLog;
     if (os_log_type_enabled(sLog, OS_LOG_TYPE_INFO))
@@ -445,15 +445,15 @@
   }
 
   v9 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"LabelKeyName"];
-  v10 = [v9 intValue];
+  intValue2 = [v9 intValue];
 
   v11 = @"buyLabel";
-  if (v10 == 2)
+  if (intValue2 == 2)
   {
     v11 = @"openLabelSubStream";
   }
 
-  if (v10 == 1)
+  if (intValue2 == 1)
   {
     v12 = @"icloudNotificationActionLabel";
   }
@@ -467,11 +467,11 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)vectorForClassification:(int64_t)a3
+- (id)vectorForClassification:(int64_t)classification
 {
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = v4;
-  if (a3)
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = array;
+  if (classification)
   {
     v6 = &unk_2884B23A8;
   }
@@ -481,8 +481,8 @@
     v6 = &unk_2884B23E8;
   }
 
-  [v4 addObject:v6];
-  if (a3 == 1)
+  [array addObject:v6];
+  if (classification == 1)
   {
     v7 = &unk_2884B23E8;
   }
@@ -497,14 +497,14 @@
   return v5;
 }
 
-- (int64_t)classificationForRecord:(unint64_t)a3
+- (int64_t)classificationForRecord:(unint64_t)record
 {
-  v4 = [(EvaluationDataSource *)self getRecordInfo:a3];
+  v4 = [(EvaluationDataSource *)self getRecordInfo:record];
   [(EvaluationDataSource *)self validateRecordInfo:v4];
   v5 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"LabelKeyName"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v6 == 2)
+  if (intValue == 2)
   {
     v7 = [v4 objectForKeyedSubscript:@"openLabelSubStream"];
     if ([v7 intValue] != 1)
@@ -517,7 +517,7 @@
 
   else
   {
-    if (v6 == 1)
+    if (intValue == 1)
     {
       v7 = [v4 objectForKeyedSubscript:@"icloudNotificationActionLabel"];
       if ([v7 intValue] == 1)
@@ -542,10 +542,10 @@ LABEL_11:
 
 LABEL_9:
   v9 = [v4 objectForKeyedSubscript:v8];
-  v10 = [v9 intValue];
-  v11 = [(EvaluationDataSource *)self minsUntil];
+  intValue2 = [v9 intValue];
+  minsUntil = [(EvaluationDataSource *)self minsUntil];
 
-  if (v10 >= v11)
+  if (intValue2 >= minsUntil)
   {
 LABEL_12:
     v12 = 0;
@@ -558,12 +558,12 @@ LABEL_13:
   return v12;
 }
 
-- (id)getRecordInfo:(unint64_t)a3
+- (id)getRecordInfo:(unint64_t)info
 {
   records = self->_records;
   if (records)
   {
-    v5 = [(NSArray *)records objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)records objectAtIndexedSubscript:info];
     v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/var/mobile/Library/DES/Records/com.apple.iCloudSubscriptionOptimizerCore.PFLPlugin"];
     v7 = [v6 URLByAppendingPathComponent:v5];
     v8 = [v7 URLByAppendingPathExtension:@"json"];
@@ -575,28 +575,28 @@ LABEL_13:
 
   else
   {
-    v10 = [(NSArray *)self->_recordInfos objectAtIndexedSubscript:a3];
+    v10 = [(NSArray *)self->_recordInfos objectAtIndexedSubscript:info];
   }
 
   return v10;
 }
 
-- (void)validateRecordInfo:(id)a3
+- (void)validateRecordInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"LabelKeyName"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v6 == 2)
+  if (intValue == 2)
   {
-    v9 = [v4 objectForKey:@"openLabelSubStream"];
+    v9 = [infoCopy objectForKey:@"openLabelSubStream"];
 
     if (!v9 && os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
     {
       [EvaluationDataSource validateRecordInfo:];
     }
 
-    v10 = [v4 objectForKey:@"minsUntilICloudOpenedSubStream"];
+    v10 = [infoCopy objectForKey:@"minsUntilICloudOpenedSubStream"];
 
     if (!v10 && os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
     {
@@ -604,16 +604,16 @@ LABEL_13:
     }
   }
 
-  else if (v6 == 1)
+  else if (intValue == 1)
   {
-    v7 = [v4 objectForKey:@"icloudNotificationActionLabel"];
+    v7 = [infoCopy objectForKey:@"icloudNotificationActionLabel"];
 
     if (!v7 && os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
     {
       [EvaluationDataSource validateRecordInfo:];
     }
 
-    v8 = [v4 objectForKey:@"minsUntilICloudNotificationOpened"];
+    v8 = [infoCopy objectForKey:@"minsUntilICloudNotificationOpened"];
 
     if (!v8 && os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
     {
@@ -623,14 +623,14 @@ LABEL_13:
 
   else
   {
-    v11 = [v4 objectForKey:@"buyLabel"];
+    v11 = [infoCopy objectForKey:@"buyLabel"];
 
     if (!v11 && os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
     {
       [EvaluationDataSource validateRecordInfo:];
     }
 
-    v12 = [v4 objectForKey:@"minsUntilICloudBuy"];
+    v12 = [infoCopy objectForKey:@"minsUntilICloudBuy"];
 
     if (!v12 && os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
     {
@@ -639,26 +639,26 @@ LABEL_13:
   }
 }
 
-- (void)filterInMatchedLabelData:(id)a3
+- (void)filterInMatchedLabelData:(id)data
 {
-  v15 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB18] array];
+  dataCopy = data;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   if ([(NSArray *)self->_recordInfos count])
   {
     v6 = 0;
     do
     {
       v7 = [(NSArray *)self->_recordInfos objectAtIndexedSubscript:v6];
-      v8 = [v7 objectForKey:v15];
+      v8 = [v7 objectForKey:dataCopy];
 
       if (v8)
       {
         v9 = [(NSArray *)self->_recordInfos objectAtIndexedSubscript:v6];
-        [v4 addObject:v9];
+        [array addObject:v9];
 
         v10 = [(NSArray *)self->_recordDatas objectAtIndexedSubscript:v6];
-        [v5 addObject:v10];
+        [array2 addObject:v10];
       }
 
       ++v6;
@@ -667,11 +667,11 @@ LABEL_13:
     while ([(NSArray *)self->_recordInfos count]> v6);
   }
 
-  v11 = [v4 copy];
+  v11 = [array copy];
   recordInfos = self->_recordInfos;
   self->_recordInfos = v11;
 
-  v13 = [v5 copy];
+  v13 = [array2 copy];
   recordDatas = self->_recordDatas;
   self->_recordDatas = v13;
 }
@@ -711,13 +711,13 @@ LABEL_13:
       [(EvaluationDataSource *)self negativeSamplingRate];
       if (v4 > v5)
       {
-        v6 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         recordInfos = self->_recordInfos;
-        self->_recordInfos = v6;
+        self->_recordInfos = array;
 
-        v8 = [MEMORY[0x277CBEB18] array];
+        array2 = [MEMORY[0x277CBEB18] array];
         recordDatas = self->_recordDatas;
-        self->_recordDatas = v8;
+        self->_recordDatas = array2;
 
         MEMORY[0x2821F96F8]();
       }
@@ -725,12 +725,12 @@ LABEL_13:
   }
 }
 
-- (id)extractFullFeatureListForRecord:(unint64_t)a3
+- (id)extractFullFeatureListForRecord:(unint64_t)record
 {
   records = self->_records;
   if (records)
   {
-    v5 = [(NSArray *)records objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)records objectAtIndexedSubscript:record];
     v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/var/mobile/Library/DES/Records/com.apple.iCloudSubscriptionOptimizerCore.PFLPlugin"];
     v7 = [v6 URLByAppendingPathComponent:v5];
     v8 = [v7 URLByAppendingPathExtension:@"json"];
@@ -742,7 +742,7 @@ LABEL_13:
 
   else
   {
-    v10 = [(NSArray *)self->_recordInfos objectAtIndexedSubscript:a3];
+    v10 = [(NSArray *)self->_recordInfos objectAtIndexedSubscript:record];
   }
 
   v11 = [v10 objectForKey:@"features"];
@@ -758,15 +758,15 @@ LABEL_13:
   return v13;
 }
 
-- (id)extractFeatureDataForRecord:(unint64_t)a3
+- (id)extractFeatureDataForRecord:(unint64_t)record
 {
   v47 = *MEMORY[0x277D85DE8];
   v27 = [(EvaluationDataSource *)self dataForRecord:?];
-  v5 = [(EvaluationDataSource *)self modelFeatures];
-  v30 = [(EvaluationDataSource *)self extractFullFeatureListForRecord:a3];
-  v26 = v5;
-  v6 = [v5 componentsSeparatedByString:{@", "}];
-  v7 = [MEMORY[0x277CBEB18] array];
+  modelFeatures = [(EvaluationDataSource *)self modelFeatures];
+  v30 = [(EvaluationDataSource *)self extractFullFeatureListForRecord:record];
+  v26 = modelFeatures;
+  v6 = [modelFeatures componentsSeparatedByString:{@", "}];
+  array = [MEMORY[0x277CBEB18] array];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -809,7 +809,7 @@ LABEL_13:
               if ([*(*(&v36 + 1) + 8 * j) isEqualToString:v9])
               {
                 v16 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
-                [v7 addObject:v16];
+                [array addObject:v16];
               }
 
               ++v13;
@@ -833,7 +833,7 @@ LABEL_13:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v18 = v7;
+  v18 = array;
   v19 = [v18 countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v19)
   {

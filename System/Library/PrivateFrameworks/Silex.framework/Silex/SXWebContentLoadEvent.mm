@@ -1,18 +1,18 @@
 @interface SXWebContentLoadEvent
-- (SXWebContentLoadEvent)initWithURL:(id)a3;
+- (SXWebContentLoadEvent)initWithURL:(id)l;
 @end
 
 @implementation SXWebContentLoadEvent
 
-- (SXWebContentLoadEvent)initWithURL:(id)a3
+- (SXWebContentLoadEvent)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = SXWebContentLoadEvent;
   v5 = [(SXAnalyticsEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     URL = v5->_URL;
     v5->_URL = v6;
   }

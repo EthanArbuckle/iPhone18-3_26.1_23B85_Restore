@@ -1,22 +1,22 @@
 @interface UIPageViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)_accessibilityScrollStatus;
-- (uint64_t)_axScrollPageController:(void *)a1;
+- (uint64_t)_axScrollPageController:(void *)controller;
 - (void)_accessibilitySendScrollStatus;
-- (void)_pageControlValueChanged:(id)a3;
+- (void)_pageControlValueChanged:(id)changed;
 @end
 
 @implementation UIPageViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UIPageViewController";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   v5 = "B";
@@ -32,46 +32,46 @@
 
 - (void)_accessibilitySendScrollStatus
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([v3 accessibilityScreenChangeOnScroll])
+    if ([selfCopy accessibilityScreenChangeOnScroll])
     {
       UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
     }
 
     else
     {
-      v2 = [v3 _accessibilityScrollStatus];
-      v1 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v2];
+      _accessibilityScrollStatus = [selfCopy _accessibilityScrollStatus];
+      v1 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:_accessibilityScrollStatus];
       [v1 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBDB20]];
       UIAccessibilityPostNotification(*MEMORY[0x29EDC7EF0], v1);
       objc_storeStrong(&v1, 0);
-      objc_storeStrong(&v2, 0);
+      objc_storeStrong(&_accessibilityScrollStatus, 0);
     }
   }
 }
 
-- (void)_pageControlValueChanged:(id)a3
+- (void)_pageControlValueChanged:(id)changed
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, changed);
+  v3.receiver = selfCopy;
   v3.super_class = UIPageViewControllerAccessibility;
   [(UIPageViewControllerAccessibility *)&v3 _pageControlValueChanged:location[0]];
-  [(UIPageViewControllerAccessibility *)v5 _accessibilitySendScrollStatus];
+  [(UIPageViewControllerAccessibility *)selfCopy _accessibilitySendScrollStatus];
   objc_storeStrong(location, 0);
 }
 
 - (id)_accessibilityScrollStatus
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   v15 = 0;
   objc_opt_class();
-  v8 = [(UIPageViewControllerAccessibility *)v17 safeValueForKey:@"_pageControl"];
+  v8 = [(UIPageViewControllerAccessibility *)selfCopy safeValueForKey:@"_pageControl"];
   v14 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v8);
   v13 = MEMORY[0x29EDC9748](v14);
@@ -79,13 +79,13 @@
   v16[0] = v13;
   if (v13)
   {
-    v12 = [v16[0] currentPage];
-    v11 = [v16[0] numberOfPages];
+    currentPage = [v16[0] currentPage];
+    numberOfPages = [v16[0] numberOfPages];
     v4 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityLocalizedString(@"scroll.page.summary");
     v6 = AXFormatInteger();
     v5 = AXFormatInteger();
-    v18 = [v4 stringWithFormat:v7, v6, v5];
+    _accessibilityScrollStatus = [v4 stringWithFormat:v7, v6, v5];
     MEMORY[0x29EDC9740](v5);
     MEMORY[0x29EDC9740](v6);
     MEMORY[0x29EDC9740](v7);
@@ -93,26 +93,26 @@
 
   else
   {
-    v9.receiver = v17;
+    v9.receiver = selfCopy;
     v9.super_class = UIPageViewControllerAccessibility;
-    v18 = [(UIPageViewControllerAccessibility *)&v9 _accessibilityScrollStatus];
+    _accessibilityScrollStatus = [(UIPageViewControllerAccessibility *)&v9 _accessibilityScrollStatus];
   }
 
   v10 = 1;
   objc_storeStrong(v16, 0);
-  v2 = v18;
+  v2 = _accessibilityScrollStatus;
 
   return v2;
 }
 
-- (uint64_t)_axScrollPageController:(void *)a1
+- (uint64_t)_axScrollPageController:(void *)controller
 {
-  v44 = a1;
+  controllerCopy = controller;
   v43 = a2;
-  if (a1)
+  if (controller)
   {
-    v6 = [v44 safeValueForKey:@"_viewControllers"];
-    v42 = [v6 lastObject];
+    v6 = [controllerCopy safeValueForKey:@"_viewControllers"];
+    lastObject = [v6 lastObject];
     MEMORY[0x29EDC9740](v6);
     v34 = 0;
     v35 = &v34;
@@ -127,9 +127,9 @@
     v29 = __61__UIPageViewControllerAccessibility__axScrollPageController___block_invoke;
     v30 = &unk_29F30D990;
     v32[1] = &v34;
-    v31 = MEMORY[0x29EDC9748](v44);
+    v31 = MEMORY[0x29EDC9748](controllerCopy);
     v33 = v43 & 1;
-    v32[0] = MEMORY[0x29EDC9748](v42);
+    v32[0] = MEMORY[0x29EDC9748](lastObject);
     AXPerformSafeBlock();
     v25 = MEMORY[0x29EDC9748](v35[5]);
     objc_storeStrong(v32, 0);
@@ -139,35 +139,35 @@
     v41 = v25;
     if (v25)
     {
-      v24 = [v44 safeValueForKey:@"_delegate"];
+      v24 = [controllerCopy safeValueForKey:@"_delegate"];
       v23 = [MEMORY[0x29EDB8D80] arrayWithObject:v41];
       if (objc_opt_respondsToSelector())
       {
-        [v24 pageViewController:v44 willTransitionToViewControllers:v23];
+        [v24 pageViewController:controllerCopy willTransitionToViewControllers:v23];
       }
 
-      objc_initWeak(&v22, v44);
+      objc_initWeak(&v22, controllerCopy);
       v11[1] = MEMORY[0x29EDCA5F8];
       v12 = -1073741824;
       v13 = 0;
       v14 = __61__UIPageViewControllerAccessibility__axScrollPageController___block_invoke_2;
       v15 = &unk_29F30D9E0;
-      v16 = MEMORY[0x29EDC9748](v44);
+      v16 = MEMORY[0x29EDC9748](controllerCopy);
       v17 = MEMORY[0x29EDC9748](v23);
       v21 = v43 & 1;
       objc_copyWeak(&v20, &v22);
       v18 = MEMORY[0x29EDC9748](v24);
-      v19 = MEMORY[0x29EDC9748](v42);
+      v19 = MEMORY[0x29EDC9748](lastObject);
       AXPerformSafeBlock();
       v10 = 0;
       objc_opt_class();
-      v5 = [v44 safeValueForKey:@"_pageControl"];
+      v5 = [controllerCopy safeValueForKey:@"_pageControl"];
       v9 = __UIAccessibilityCastAsClass();
       MEMORY[0x29EDC9740](v5);
       v8 = MEMORY[0x29EDC9748](v9);
       objc_storeStrong(&v9, 0);
       v11[0] = v8;
-      v4 = [v8 currentPage];
+      currentPage = [v8 currentPage];
       if ((v43 ^ 1))
       {
         v2 = 1;
@@ -178,7 +178,7 @@
         v2 = -1;
       }
 
-      v7 = v4 + v2;
+      v7 = currentPage + v2;
       if (v7 < 0)
       {
         v7 = 0;
@@ -186,7 +186,7 @@
 
       [v11[0] setCurrentPage:v7];
       [v11[0] _updateCurrentPageDisplayWithForceUpdate:1];
-      [(UIPageViewControllerAccessibility *)v44 _accessibilitySendScrollStatus];
+      [(UIPageViewControllerAccessibility *)controllerCopy _accessibilitySendScrollStatus];
       v45 = 1;
       objc_storeStrong(v11, 0);
       objc_storeStrong(&v19, 0);
@@ -205,7 +205,7 @@
     }
 
     objc_storeStrong(&v41, 0);
-    objc_storeStrong(&v42, 0);
+    objc_storeStrong(&lastObject, 0);
   }
 
   else
@@ -268,24 +268,24 @@ void __61__UIPageViewControllerAccessibility__axScrollPageController___block_inv
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
-  if (a3 == 1)
+  scrollCopy = scroll;
+  if (scroll == 1)
   {
-    return [(UIPageViewControllerAccessibility *)v7 _axScrollPageController:?]& 1;
+    return [(UIPageViewControllerAccessibility *)selfCopy _axScrollPageController:?]& 1;
   }
 
-  if (v5 == 2)
+  if (scrollCopy == 2)
   {
-    return [(UIPageViewControllerAccessibility *)v7 _axScrollPageController:?]& 1;
+    return [(UIPageViewControllerAccessibility *)selfCopy _axScrollPageController:?]& 1;
   }
 
-  v4.receiver = v7;
+  v4.receiver = selfCopy;
   v4.super_class = UIPageViewControllerAccessibility;
-  return [(UIPageViewControllerAccessibility *)&v4 accessibilityScroll:v5];
+  return [(UIPageViewControllerAccessibility *)&v4 accessibilityScroll:scrollCopy];
 }
 
 @end

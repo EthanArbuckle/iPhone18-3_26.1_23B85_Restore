@@ -1,6 +1,6 @@
 @interface TSTPerformanceLogging
 + (OS_os_log)log;
-+ (id)logForCategory:(const char *)a3;
++ (id)logForCategory:(const char *)category;
 @end
 
 @implementation TSTPerformanceLogging
@@ -17,9 +17,9 @@
   return v3;
 }
 
-+ (id)logForCategory:(const char *)a3
++ (id)logForCategory:(const char *)category
 {
-  v3 = os_log_create(qword_27CFB4CF0, a3);
+  v3 = os_log_create(qword_27CFB4CF0, category);
 
   return v3;
 }

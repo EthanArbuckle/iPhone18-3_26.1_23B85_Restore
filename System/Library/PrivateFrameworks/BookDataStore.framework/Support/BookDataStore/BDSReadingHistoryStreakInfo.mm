@@ -1,35 +1,35 @@
 @interface BDSReadingHistoryStreakInfo
-- (BDSReadingHistoryStreakInfo)initWithCoder:(id)a3;
-- (BDSReadingHistoryStreakInfo)initWithEndDate:(id)a3 length:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BDSReadingHistoryStreakInfo)initWithCoder:(id)coder;
+- (BDSReadingHistoryStreakInfo)initWithEndDate:(id)date length:(int64_t)length;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSReadingHistoryStreakInfo
 
-- (BDSReadingHistoryStreakInfo)initWithEndDate:(id)a3 length:(int64_t)a4
+- (BDSReadingHistoryStreakInfo)initWithEndDate:(id)date length:(int64_t)length
 {
-  v7 = a3;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = BDSReadingHistoryStreakInfo;
   v8 = [(BDSReadingHistoryStreakInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_endDate, a3);
-    v9->_length = a4;
+    objc_storeStrong(&v8->_endDate, date);
+    v9->_length = length;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = BUDynamicCast();
 
@@ -39,18 +39,18 @@
       goto LABEL_10;
     }
 
-    v7 = [(BDSReadingHistoryStreakInfo *)self endDate];
-    v8 = [v5 endDate];
-    v9 = v8;
-    if (v7 == v8)
+    endDate = [(BDSReadingHistoryStreakInfo *)self endDate];
+    endDate2 = [v5 endDate];
+    v9 = endDate2;
+    if (endDate == endDate2)
     {
     }
 
     else
     {
-      v10 = [(BDSReadingHistoryStreakInfo *)self endDate];
-      v11 = [v5 endDate];
-      v12 = [v10 isEqual:v11];
+      endDate3 = [(BDSReadingHistoryStreakInfo *)self endDate];
+      endDate4 = [v5 endDate];
+      v12 = [endDate3 isEqual:endDate4];
 
       if (!v12)
       {
@@ -69,38 +69,38 @@ LABEL_10:
   return 1;
 }
 
-- (BDSReadingHistoryStreakInfo)initWithCoder:(id)a3
+- (BDSReadingHistoryStreakInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BDSReadingHistoryStreakInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v6;
 
-    v5->_length = [v4 decodeIntegerForKey:@"length"];
+    v5->_length = [coderCopy decodeIntegerForKey:@"length"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(BDSReadingHistoryStreakInfo *)self endDate];
-  [v5 encodeObject:v4 forKey:@"endDate"];
+  coderCopy = coder;
+  endDate = [(BDSReadingHistoryStreakInfo *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 
-  [v5 encodeInteger:-[BDSReadingHistoryStreakInfo length](self forKey:{"length"), @"length"}];
+  [coderCopy encodeInteger:-[BDSReadingHistoryStreakInfo length](self forKey:{"length"), @"length"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BDSReadingHistoryStreakInfo);
   if (v4)
   {
-    v5 = [(BDSReadingHistoryStreakInfo *)self endDate];
-    [(BDSReadingHistoryStreakInfo *)v4 setEndDate:v5];
+    endDate = [(BDSReadingHistoryStreakInfo *)self endDate];
+    [(BDSReadingHistoryStreakInfo *)v4 setEndDate:endDate];
 
     [(BDSReadingHistoryStreakInfo *)v4 setLength:[(BDSReadingHistoryStreakInfo *)self length]];
   }
@@ -110,8 +110,8 @@ LABEL_10:
 
 - (id)description
 {
-  v3 = [(BDSReadingHistoryStreakInfo *)self endDate];
-  v4 = [NSString stringWithFormat:@"{endDate:%@, length:%ld}", v3, [(BDSReadingHistoryStreakInfo *)self length]];
+  endDate = [(BDSReadingHistoryStreakInfo *)self endDate];
+  v4 = [NSString stringWithFormat:@"{endDate:%@, length:%ld}", endDate, [(BDSReadingHistoryStreakInfo *)self length]];
 
   return v4;
 }

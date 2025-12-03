@@ -1,13 +1,13 @@
 @interface VSSpeechSynthesisTask
 - (BOOL)isSpeaking;
-- (VSSpeechSynthesisTask)initWithRequest:(id)a3;
+- (VSSpeechSynthesisTask)initWithRequest:(id)request;
 - (void)main;
 - (void)reportFinish;
 - (void)reportInstrumentMetrics;
 - (void)reportSpeechStart;
 - (void)reportTimingInfo;
-- (void)setObserverForWordTimings:(id)a3;
-- (void)setSpeakTask:(id)a3;
+- (void)setObserverForWordTimings:(id)timings;
+- (void)setSpeakTask:(id)task;
 - (void)synthesize;
 @end
 
@@ -16,37 +16,37 @@
 - (void)reportFinish
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(VSSpeechSynthesisTask *)self speakTask];
-  v4 = [v3 delegate];
+  speakTask = [(VSSpeechSynthesisTask *)self speakTask];
+  delegate = [speakTask delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VSSpeechSynthesisTask *)self speakTask];
-    v7 = [v6 delegate];
-    v8 = [(VSSpeechSpeakTask *)self request];
-    v9 = [(VSSpeechSynthesisTask *)self isCancelled];
-    v10 = [(VSSpeechSpeakTask *)self phonemes];
-    v11 = [v10 componentsJoinedByString:@" "];
-    v12 = [(VSSpeechSpeakTask *)self error];
-    [v7 speechRequest:v8 didStopWithSuccess:v9 ^ 1u phonemesSpoken:v11 error:v12];
+    speakTask2 = [(VSSpeechSynthesisTask *)self speakTask];
+    delegate2 = [speakTask2 delegate];
+    request = [(VSSpeechSpeakTask *)self request];
+    isCancelled = [(VSSpeechSynthesisTask *)self isCancelled];
+    phonemes = [(VSSpeechSpeakTask *)self phonemes];
+    v11 = [phonemes componentsJoinedByString:@" "];
+    error = [(VSSpeechSpeakTask *)self error];
+    [delegate2 speechRequest:request didStopWithSuccess:isCancelled ^ 1u phonemesSpoken:v11 error:error];
 
     v13 = VSGetLogDefault();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(VSSpeechSynthesisTask *)self speakTask];
-      v27 = [v26 instrumentMetrics];
-      v28 = [v27 requestCreatedTimestamp];
-      v29 = [(VSSpeechSpeakTask *)self error];
+      speakTask3 = [(VSSpeechSynthesisTask *)self speakTask];
+      instrumentMetrics = [speakTask3 instrumentMetrics];
+      requestCreatedTimestamp = [instrumentMetrics requestCreatedTimestamp];
+      error2 = [(VSSpeechSpeakTask *)self error];
       v33 = 134218242;
-      v34 = v28;
+      v34 = requestCreatedTimestamp;
       v35 = 2112;
-      v36 = v29;
+      v36 = error2;
       _os_log_debug_impl(&dword_2727E4000, v13, OS_LOG_TYPE_DEBUG, "Task %llu reported finish, error: %@", &v33, 0x16u);
     }
   }
 
-  v14 = [(VSSpeechSpeakTask *)self delegate];
+  delegate3 = [(VSSpeechSpeakTask *)self delegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
@@ -54,32 +54,32 @@
     v16 = VSGetLogDefault();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-      v18 = [v17 requestCreatedTimestamp];
-      v19 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+      instrumentMetrics2 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+      requestCreatedTimestamp2 = [instrumentMetrics2 requestCreatedTimestamp];
+      instrumentMetrics3 = [(VSSpeechSpeakTask *)self instrumentMetrics];
       v33 = 134218242;
-      v34 = v18;
+      v34 = requestCreatedTimestamp2;
       v35 = 2112;
-      v36 = v19;
+      v36 = instrumentMetrics3;
       _os_log_impl(&dword_2727E4000, v16, OS_LOG_TYPE_DEFAULT, "Device EagerTask %llu: Instrument metric: %@", &v33, 0x16u);
     }
 
-    v20 = [(VSSpeechSpeakTask *)self delegate];
-    v21 = [(VSSpeechSpeakTask *)self request];
-    v22 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v23 = [(VSSpeechSpeakTask *)self error];
-    [v20 synthesisRequest:v21 didFinishWithInstrumentMetrics:v22 error:v23];
+    delegate4 = [(VSSpeechSpeakTask *)self delegate];
+    request2 = [(VSSpeechSpeakTask *)self request];
+    instrumentMetrics4 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    error3 = [(VSSpeechSpeakTask *)self error];
+    [delegate4 synthesisRequest:request2 didFinishWithInstrumentMetrics:instrumentMetrics4 error:error3];
 
     v24 = VSGetLogDefault();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v30 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-      v31 = [v30 requestCreatedTimestamp];
-      v32 = [(VSSpeechSpeakTask *)self error];
+      instrumentMetrics5 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+      requestCreatedTimestamp3 = [instrumentMetrics5 requestCreatedTimestamp];
+      error4 = [(VSSpeechSpeakTask *)self error];
       v33 = 134218242;
-      v34 = v31;
+      v34 = requestCreatedTimestamp3;
       v35 = 2112;
-      v36 = v32;
+      v36 = error4;
       _os_log_debug_impl(&dword_2727E4000, v24, OS_LOG_TYPE_DEBUG, "Task %llu reported finish, error: %@", &v33, 0x16u);
     }
   }
@@ -90,33 +90,33 @@
 - (void)reportSpeechStart
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-  v4 = [v3 speechBeginTimestamp];
+  instrumentMetrics = [(VSSpeechSpeakTask *)self instrumentMetrics];
+  speechBeginTimestamp = [instrumentMetrics speechBeginTimestamp];
 
-  if (!v4)
+  if (!speechBeginTimestamp)
   {
     kdebug_trace();
     v5 = mach_absolute_time();
-    v6 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    [v6 setSpeechBeginTimestamp:v5];
+    instrumentMetrics2 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    [instrumentMetrics2 setSpeechBeginTimestamp:v5];
 
-    v7 = [(VSSpeechSynthesisTask *)self speakTask];
-    v8 = [v7 delegate];
+    speakTask = [(VSSpeechSynthesisTask *)self speakTask];
+    delegate = [speakTask delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(VSSpeechSynthesisTask *)self speakTask];
-      v11 = [v10 delegate];
-      v12 = [(VSSpeechSpeakTask *)self request];
-      [v11 speechRequestDidStart:v12];
+      speakTask2 = [(VSSpeechSynthesisTask *)self speakTask];
+      delegate2 = [speakTask2 delegate];
+      request = [(VSSpeechSpeakTask *)self request];
+      [delegate2 speechRequestDidStart:request];
 
       v13 = VSGetLogDefault();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+        instrumentMetrics3 = [(VSSpeechSpeakTask *)self instrumentMetrics];
         v16 = 134217984;
-        v17 = [v15 requestCreatedTimestamp];
+        requestCreatedTimestamp = [instrumentMetrics3 requestCreatedTimestamp];
         _os_log_debug_impl(&dword_2727E4000, v13, OS_LOG_TYPE_DEBUG, "Task %llu started speaking", &v16, 0xCu);
       }
     }
@@ -128,124 +128,124 @@
 - (void)reportInstrumentMetrics
 {
   v85 = *MEMORY[0x277D85DE8];
-  v3 = [(VSSpeechSynthesisTask *)self speakTask];
-  v4 = [v3 delegate];
+  speakTask = [(VSSpeechSynthesisTask *)self speakTask];
+  delegate = [speakTask delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v7 = [v6 utterance];
-    v8 = [(VSSpeechSynthesisTask *)self speakTask];
-    v9 = [v8 instrumentMetrics];
-    [v9 setUtterance:v7];
+    instrumentMetrics = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    utterance = [instrumentMetrics utterance];
+    speakTask2 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics2 = [speakTask2 instrumentMetrics];
+    [instrumentMetrics2 setUtterance:utterance];
 
-    v10 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v11 = [v10 voiceAssetKey];
-    v12 = [(VSSpeechSynthesisTask *)self speakTask];
-    v13 = [v12 instrumentMetrics];
-    [v13 setVoiceAssetKey:v11];
+    instrumentMetrics3 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    voiceAssetKey = [instrumentMetrics3 voiceAssetKey];
+    speakTask3 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics4 = [speakTask3 instrumentMetrics];
+    [instrumentMetrics4 setVoiceAssetKey:voiceAssetKey];
 
-    v14 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v15 = [v14 voiceResourceAssetKey];
-    v16 = [(VSSpeechSynthesisTask *)self speakTask];
-    v17 = [v16 instrumentMetrics];
-    [v17 setVoiceResourceAssetKey:v15];
+    instrumentMetrics5 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    voiceResourceAssetKey = [instrumentMetrics5 voiceResourceAssetKey];
+    speakTask4 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics6 = [speakTask4 instrumentMetrics];
+    [instrumentMetrics6 setVoiceResourceAssetKey:voiceResourceAssetKey];
 
-    v18 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v19 = [v18 synthesisBeginTimestamp];
-    v20 = [(VSSpeechSynthesisTask *)self speakTask];
-    v21 = [v20 instrumentMetrics];
-    [v21 setSynthesisBeginTimestamp:v19];
+    instrumentMetrics7 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    synthesisBeginTimestamp = [instrumentMetrics7 synthesisBeginTimestamp];
+    speakTask5 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics8 = [speakTask5 instrumentMetrics];
+    [instrumentMetrics8 setSynthesisBeginTimestamp:synthesisBeginTimestamp];
 
-    v22 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v23 = [v22 synthesisEndTimestamp];
-    v24 = [(VSSpeechSynthesisTask *)self speakTask];
-    v25 = [v24 instrumentMetrics];
-    [v25 setSynthesisEndTimestamp:v23];
+    instrumentMetrics9 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    synthesisEndTimestamp = [instrumentMetrics9 synthesisEndTimestamp];
+    speakTask6 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics10 = [speakTask6 instrumentMetrics];
+    [instrumentMetrics10 setSynthesisEndTimestamp:synthesisEndTimestamp];
 
-    v26 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v27 = [v26 speechBeginTimestamp];
-    v28 = [(VSSpeechSynthesisTask *)self speakTask];
-    v29 = [v28 instrumentMetrics];
-    [v29 setSpeechBeginTimestamp:v27];
+    instrumentMetrics11 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    speechBeginTimestamp = [instrumentMetrics11 speechBeginTimestamp];
+    speakTask7 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics12 = [speakTask7 instrumentMetrics];
+    [instrumentMetrics12 setSpeechBeginTimestamp:speechBeginTimestamp];
 
-    v30 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v31 = [v30 speechEndTimestamp];
-    v32 = [(VSSpeechSynthesisTask *)self speakTask];
-    v33 = [v32 instrumentMetrics];
-    [v33 setSpeechEndTimestamp:v31];
+    instrumentMetrics13 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    speechEndTimestamp = [instrumentMetrics13 speechEndTimestamp];
+    speakTask8 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics14 = [speakTask8 instrumentMetrics];
+    [instrumentMetrics14 setSpeechEndTimestamp:speechEndTimestamp];
 
-    v34 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v35 = [v34 audioStartTimestampDiffs];
-    v36 = [(VSSpeechSynthesisTask *)self speakTask];
-    v37 = [v36 instrumentMetrics];
-    [v37 setAudioStartTimestampDiffs:v35];
+    instrumentMetrics15 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    audioStartTimestampDiffs = [instrumentMetrics15 audioStartTimestampDiffs];
+    speakTask9 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics16 = [speakTask9 instrumentMetrics];
+    [instrumentMetrics16 setAudioStartTimestampDiffs:audioStartTimestampDiffs];
 
-    v38 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    [v38 audioDuration];
+    instrumentMetrics17 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    [instrumentMetrics17 audioDuration];
     v40 = v39;
-    v41 = [(VSSpeechSynthesisTask *)self speakTask];
-    v42 = [v41 instrumentMetrics];
-    [v42 setAudioDuration:v40];
+    speakTask10 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics18 = [speakTask10 instrumentMetrics];
+    [instrumentMetrics18 setAudioDuration:v40];
 
-    v43 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v44 = [v43 isWarmStart];
-    v45 = [(VSSpeechSynthesisTask *)self speakTask];
-    v46 = [v45 instrumentMetrics];
-    [v46 setIsWarmStart:v44];
+    instrumentMetrics19 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    isWarmStart = [instrumentMetrics19 isWarmStart];
+    speakTask11 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics20 = [speakTask11 instrumentMetrics];
+    [instrumentMetrics20 setIsWarmStart:isWarmStart];
 
-    v47 = [(VSSpeechSynthesisTask *)self speakTask];
-    v48 = [v47 instrumentMetrics];
-    v49 = [v48 requestCreatedTimestamp];
-    v50 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v51 = v49 - [v50 requestCreatedTimestamp];
-    v52 = [(VSSpeechSynthesisTask *)self speakTask];
-    v53 = [v52 instrumentMetrics];
-    [v53 setEagerRequestCreatedTimestampDiffs:v51];
+    speakTask12 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics21 = [speakTask12 instrumentMetrics];
+    requestCreatedTimestamp = [instrumentMetrics21 requestCreatedTimestamp];
+    instrumentMetrics22 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    v51 = requestCreatedTimestamp - [instrumentMetrics22 requestCreatedTimestamp];
+    speakTask13 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics23 = [speakTask13 instrumentMetrics];
+    [instrumentMetrics23 setEagerRequestCreatedTimestampDiffs:v51];
 
-    v54 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v55 = [v54 promptCount];
-    v56 = [(VSSpeechSynthesisTask *)self speakTask];
-    v57 = [v56 instrumentMetrics];
-    [v57 setPromptCount:v55];
+    instrumentMetrics24 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    promptCount = [instrumentMetrics24 promptCount];
+    speakTask14 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics25 = [speakTask14 instrumentMetrics];
+    [instrumentMetrics25 setPromptCount:promptCount];
 
-    v58 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v59 = [v58 errorCode];
-    v60 = [(VSSpeechSynthesisTask *)self speakTask];
-    v61 = [v60 instrumentMetrics];
-    [v61 setErrorCode:v59];
+    instrumentMetrics26 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    errorCode = [instrumentMetrics26 errorCode];
+    speakTask15 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics27 = [speakTask15 instrumentMetrics];
+    [instrumentMetrics27 setErrorCode:errorCode];
 
     v62 = VSGetLogDefault();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
     {
-      v63 = [(VSSpeechSynthesisTask *)self speakTask];
-      v64 = [v63 instrumentMetrics];
-      v65 = [v64 requestCreatedTimestamp];
-      v66 = [(VSSpeechSynthesisTask *)self speakTask];
-      v67 = [v66 instrumentMetrics];
+      speakTask16 = [(VSSpeechSynthesisTask *)self speakTask];
+      instrumentMetrics28 = [speakTask16 instrumentMetrics];
+      requestCreatedTimestamp2 = [instrumentMetrics28 requestCreatedTimestamp];
+      speakTask17 = [(VSSpeechSynthesisTask *)self speakTask];
+      instrumentMetrics29 = [speakTask17 instrumentMetrics];
       v81 = 134218242;
-      v82 = v65;
+      v82 = requestCreatedTimestamp2;
       v83 = 2112;
-      v84 = v67;
+      v84 = instrumentMetrics29;
       _os_log_impl(&dword_2727E4000, v62, OS_LOG_TYPE_DEFAULT, "Device SpeakTask %llu: Instrument metric: %@", &v81, 0x16u);
     }
 
-    v68 = [(VSSpeechSynthesisTask *)self speakTask];
-    v69 = [v68 delegate];
-    v70 = [(VSSpeechSynthesisTask *)self speakTask];
-    v71 = [v70 request];
-    v72 = [(VSSpeechSynthesisTask *)self speakTask];
-    v73 = [v72 instrumentMetrics];
-    [v69 speechRequest:v71 didReportInstrumentMetrics:v73];
+    speakTask18 = [(VSSpeechSynthesisTask *)self speakTask];
+    delegate2 = [speakTask18 delegate];
+    speakTask19 = [(VSSpeechSynthesisTask *)self speakTask];
+    request = [speakTask19 request];
+    speakTask20 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics30 = [speakTask20 instrumentMetrics];
+    [delegate2 speechRequest:request didReportInstrumentMetrics:instrumentMetrics30];
 
     v74 = +[VSDiagnosticService defaultService];
-    v75 = [(VSSpeechSynthesisTask *)self speakTask];
-    v76 = [v75 instrumentMetrics];
-    v77 = [v76 dictionaryMetrics];
-    v78 = [(VSSpeechSynthesisTask *)self speakTask];
-    v79 = [v78 instrumentMetrics];
-    [v74 dumpInstrumentMetrics:v77 withTimestamp:{objc_msgSend(v79, "requestCreatedTimestamp")}];
+    speakTask21 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics31 = [speakTask21 instrumentMetrics];
+    dictionaryMetrics = [instrumentMetrics31 dictionaryMetrics];
+    speakTask22 = [(VSSpeechSynthesisTask *)self speakTask];
+    instrumentMetrics32 = [speakTask22 instrumentMetrics];
+    [v74 dumpInstrumentMetrics:dictionaryMetrics withTimestamp:{objc_msgSend(instrumentMetrics32, "requestCreatedTimestamp")}];
   }
 
   v80 = *MEMORY[0x277D85DE8];
@@ -254,47 +254,47 @@
 - (void)reportTimingInfo
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(VSSpeechSpeakTask *)self delegate];
+  delegate = [(VSSpeechSpeakTask *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(VSSpeechSpeakTask *)self delegate];
-    v6 = [(VSSpeechSpeakTask *)self request];
-    v7 = [(VSSpeechSpeakTask *)self timingInfos];
-    [v5 synthesisRequest:v6 didReceiveTimingInfo:v7];
+    delegate2 = [(VSSpeechSpeakTask *)self delegate];
+    request = [(VSSpeechSpeakTask *)self request];
+    timingInfos = [(VSSpeechSpeakTask *)self timingInfos];
+    [delegate2 synthesisRequest:request didReceiveTimingInfo:timingInfos];
 
     v8 = VSGetLogDefault();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v19 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+      instrumentMetrics = [(VSSpeechSpeakTask *)self instrumentMetrics];
       v23 = 134217984;
-      v24 = [v19 requestCreatedTimestamp];
+      requestCreatedTimestamp = [instrumentMetrics requestCreatedTimestamp];
       _os_log_debug_impl(&dword_2727E4000, v8, OS_LOG_TYPE_DEBUG, "Task %llu reported word time info", &v23, 0xCu);
     }
   }
 
-  v9 = [(VSSpeechSynthesisTask *)self speakTask];
-  v10 = [v9 delegate];
+  speakTask = [(VSSpeechSynthesisTask *)self speakTask];
+  delegate3 = [speakTask delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(VSSpeechSynthesisTask *)self speakTask];
-    v13 = [v12 delegate];
-    v14 = [(VSSpeechSynthesisTask *)self speakTask];
-    v15 = [v14 request];
-    v16 = [(VSSpeechSpeakTask *)self timingInfos];
-    [v13 speechRequest:v15 didReceiveTimingInfo:v16];
+    speakTask2 = [(VSSpeechSynthesisTask *)self speakTask];
+    delegate4 = [speakTask2 delegate];
+    speakTask3 = [(VSSpeechSynthesisTask *)self speakTask];
+    request2 = [speakTask3 request];
+    timingInfos2 = [(VSSpeechSpeakTask *)self timingInfos];
+    [delegate4 speechRequest:request2 didReceiveTimingInfo:timingInfos2];
 
     v17 = VSGetLogDefault();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [(VSSpeechSynthesisTask *)self speakTask];
-      v21 = [v20 instrumentMetrics];
-      v22 = [v21 requestCreatedTimestamp];
+      speakTask4 = [(VSSpeechSynthesisTask *)self speakTask];
+      instrumentMetrics2 = [speakTask4 instrumentMetrics];
+      requestCreatedTimestamp2 = [instrumentMetrics2 requestCreatedTimestamp];
       v23 = 134217984;
-      v24 = v22;
+      requestCreatedTimestamp = requestCreatedTimestamp2;
       _os_log_debug_impl(&dword_2727E4000, v17, OS_LOG_TYPE_DEBUG, "Task %llu reported word time info", &v23, 0xCu);
     }
   }
@@ -302,23 +302,23 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObserverForWordTimings:(id)a3
+- (void)setObserverForWordTimings:(id)timings
 {
-  v4 = a3;
-  v5 = [(VSSpeechSynthesisTask *)self speakTask];
-  v6 = [v5 delegate];
+  timingsCopy = timings;
+  speakTask = [(VSSpeechSynthesisTask *)self speakTask];
+  delegate = [speakTask delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     objc_initWeak(&location, self);
-    v8 = [(VSSpeechSpeakTask *)self playbackService];
+    playbackService = [(VSSpeechSpeakTask *)self playbackService];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __51__VSSpeechSynthesisTask_setObserverForWordTimings___block_invoke;
     v9[3] = &unk_279E4B9C0;
     objc_copyWeak(&v10, &location);
-    [v8 setBoundaryTimeObserverForTimingInfos:v4 usingBlock:v9];
+    [playbackService setBoundaryTimeObserverForTimingInfos:timingsCopy usingBlock:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -340,48 +340,48 @@ void __51__VSSpeechSynthesisTask_setObserverForWordTimings___block_invoke(uint64
   }
 }
 
-- (void)setSpeakTask:(id)a3
+- (void)setSpeakTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   kdebug_trace();
   kdebug_trace();
   speakTask = self->_speakTask;
-  self->_speakTask = v4;
+  self->_speakTask = taskCopy;
 }
 
 - (void)synthesize
 {
   v31 = *MEMORY[0x277D85DE8];
   [(VSSpeechSpeakTask *)self prepareForSynthesis];
-  v3 = [(VSSpeechSpeakTask *)self error];
+  error = [(VSSpeechSpeakTask *)self error];
 
-  if (!v3 && ([(VSSpeechSynthesisTask *)self isCancelled]& 1) == 0)
+  if (!error && ([(VSSpeechSynthesisTask *)self isCancelled]& 1) == 0)
   {
-    v4 = [(VSSpeechSynthesisTask *)self speakTask];
+    speakTask = [(VSSpeechSynthesisTask *)self speakTask];
 
-    if (v4)
+    if (speakTask)
     {
-      v5 = [(VSSpeechSynthesisTask *)self speakTask];
-      v6 = [v5 request];
-      -[VSSpeechSpeakTask startPlaybackServiceWithAudioSessionID:](self, "startPlaybackServiceWithAudioSessionID:", [v6 audioSessionID]);
+      speakTask2 = [(VSSpeechSynthesisTask *)self speakTask];
+      request = [speakTask2 request];
+      -[VSSpeechSpeakTask startPlaybackServiceWithAudioSessionID:](self, "startPlaybackServiceWithAudioSessionID:", [request audioSessionID]);
     }
 
     v7 = mach_absolute_time();
-    v8 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    [v8 setSynthesisBeginTimestamp:v7];
+    instrumentMetrics = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    [instrumentMetrics setSynthesisBeginTimestamp:v7];
 
     kdebug_trace();
-    v9 = [(VSSpeechSpeakTask *)self engine];
-    v10 = [(VSSpeechSpeakTask *)self request];
-    v11 = [v10 utterance];
-    v12 = [(VSSpeechSpeakTask *)self request];
-    v13 = [v12 canLogRequestText];
+    engine = [(VSSpeechSpeakTask *)self engine];
+    request2 = [(VSSpeechSpeakTask *)self request];
+    utterance = [request2 utterance];
+    request3 = [(VSSpeechSpeakTask *)self request];
+    canLogRequestText = [request3 canLogRequestText];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __35__VSSpeechSynthesisTask_synthesize__block_invoke;
     v24[3] = &unk_279E4B460;
     v24[4] = self;
-    v14 = [v9 synthesizeText:v11 loggable:v13 callback:v24];
+    v14 = [engine synthesizeText:utterance loggable:canLogRequestText callback:v24];
 
     if (v14)
     {
@@ -391,19 +391,19 @@ void __51__VSSpeechSynthesisTask_setObserverForWordTimings___block_invoke(uint64
     v15 = VSGetLogDefault();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(VSSpeechSpeakTask *)self request];
-      v17 = [v16 utterance];
-      v18 = [v17 length];
-      v19 = [(VSSpeechSpeakTask *)self streamAudio];
-      [v19 duration];
+      request4 = [(VSSpeechSpeakTask *)self request];
+      utterance2 = [request4 utterance];
+      v18 = [utterance2 length];
+      streamAudio = [(VSSpeechSpeakTask *)self streamAudio];
+      [streamAudio duration];
       v21 = v20;
-      v22 = [(VSSpeechSpeakTask *)self error];
+      error2 = [(VSSpeechSpeakTask *)self error];
       *buf = 134218498;
       v26 = v18;
       v27 = 2048;
       v28 = v21;
       v29 = 2112;
-      v30 = v22;
+      v30 = error2;
       _os_log_impl(&dword_2727E4000, v15, OS_LOG_TYPE_INFO, "SynthesisTask done synthesize %lu characters, audio duration %f, error %@", buf, 0x20u);
     }
 
@@ -582,48 +582,48 @@ LABEL_13:
   [(VSSpeechSpeakTask *)self fetchVoiceResource];
   [(VSSpeechSpeakTask *)self fetchVoiceAsset];
   v3 = objc_opt_new();
-  v4 = [(VSSpeechSpeakTask *)self request];
-  v5 = [v4 text];
-  v6 = [(VSSpeechSpeakTask *)self request];
-  v7 = [v6 languageCode];
-  v8 = [(VSSpeechSpeakTask *)self request];
-  v9 = [v8 voiceName];
-  v10 = [v3 estimatedTTSWordTimingForText:v5 withLanguage:v7 voiceName:v9];
+  request = [(VSSpeechSpeakTask *)self request];
+  text = [request text];
+  request2 = [(VSSpeechSpeakTask *)self request];
+  languageCode = [request2 languageCode];
+  request3 = [(VSSpeechSpeakTask *)self request];
+  voiceName = [request3 voiceName];
+  v10 = [v3 estimatedTTSWordTimingForText:text withLanguage:languageCode voiceName:voiceName];
   [(VSSpeechSpeakTask *)self setTimingInfos:v10];
 
   v11 = MEMORY[0x277D799B8];
-  v12 = [(VSSpeechSpeakTask *)self timingInfos];
-  v13 = [(VSSpeechSpeakTask *)self request];
-  v14 = [v13 contextInfo];
-  [v11 adjustWordTimingInfo:v12 forContext:v14];
+  timingInfos = [(VSSpeechSpeakTask *)self timingInfos];
+  request4 = [(VSSpeechSpeakTask *)self request];
+  contextInfo = [request4 contextInfo];
+  [v11 adjustWordTimingInfo:timingInfos forContext:contextInfo];
 
-  v15 = [(VSSpeechSpeakTask *)self error];
+  error = [(VSSpeechSpeakTask *)self error];
 
-  if (!v15)
+  if (!error)
   {
-    v36 = [(VSSpeechSpeakTask *)self cachingService];
-    [v36 fetchCacheForTask:self];
+    cachingService = [(VSSpeechSpeakTask *)self cachingService];
+    [cachingService fetchCacheForTask:self];
 
-    v37 = [(VSSpeechSpeakTask *)self speechCache];
+    speechCache = [(VSSpeechSpeakTask *)self speechCache];
 
-    if (v37)
+    if (speechCache)
     {
       [(VSSpeechSynthesisTask *)self reportTimingInfo];
-      v38 = [(VSSpeechSpeakTask *)self request];
-      v39 = [v38 shouldStreamAudioData];
+      request5 = [(VSSpeechSpeakTask *)self request];
+      shouldStreamAudioData = [request5 shouldStreamAudioData];
 
-      if (v39)
+      if (shouldStreamAudioData)
       {
-        v40 = [(VSSpeechSpeakTask *)self speechCache];
-        v41 = [(VSSpeechSpeakTask *)self delegate];
-        v42 = [(VSSpeechSpeakTask *)self request];
-        v43 = [v40 audio];
-        [v41 synthesisRequest:v42 didGenerateAudioChunk:v43];
+        speechCache2 = [(VSSpeechSpeakTask *)self speechCache];
+        delegate = [(VSSpeechSpeakTask *)self delegate];
+        request6 = [(VSSpeechSpeakTask *)self request];
+        audio = [speechCache2 audio];
+        [delegate synthesisRequest:request6 didGenerateAudioChunk:audio];
       }
 
-      v44 = [(VSSpeechSynthesisTask *)self speakTask];
+      speakTask = [(VSSpeechSynthesisTask *)self speakTask];
 
-      if (v44)
+      if (speakTask)
       {
         [(VSSpeechSpeakTask *)self speakCachedAudio];
       }
@@ -632,34 +632,34 @@ LABEL_13:
     else
     {
       [(VSSpeechSynthesisTask *)self synthesize];
-      v45 = [(VSSpeechSpeakTask *)self error];
+      error2 = [(VSSpeechSpeakTask *)self error];
 
-      if (!v45)
+      if (!error2)
       {
-        v46 = [(VSSpeechSpeakTask *)self streamAudio];
-        [v46 duration];
+        streamAudio = [(VSSpeechSpeakTask *)self streamAudio];
+        [streamAudio duration];
         v48 = v47;
-        v49 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-        [v49 setAudioDuration:v48];
+        instrumentMetrics = [(VSSpeechSpeakTask *)self instrumentMetrics];
+        [instrumentMetrics setAudioDuration:v48];
       }
     }
 
-    v50 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v51 = [v50 speechBeginTimestamp];
+    instrumentMetrics2 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    speechBeginTimestamp = [instrumentMetrics2 speechBeginTimestamp];
 
-    if (v51 >= 1)
+    if (speechBeginTimestamp >= 1)
     {
       v52 = mach_absolute_time();
-      v53 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-      [v53 setSpeechEndTimestamp:v52];
+      instrumentMetrics3 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+      [instrumentMetrics3 setSpeechEndTimestamp:v52];
 
-      v54 = [(VSSpeechSpeakTask *)self playbackService];
-      LODWORD(v53) = [v54 discontinuedDuringPlayback];
+      playbackService = [(VSSpeechSpeakTask *)self playbackService];
+      LODWORD(instrumentMetrics3) = [playbackService discontinuedDuringPlayback];
 
-      if (v53)
+      if (instrumentMetrics3)
       {
-        v55 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-        [v55 setErrorCode:452];
+        instrumentMetrics4 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+        [instrumentMetrics4 setErrorCode:452];
       }
     }
   }
@@ -675,43 +675,43 @@ LABEL_13:
     [(VSSpeechSpeakTask *)self setError:v18];
   }
 
-  v19 = [(VSSpeechSpeakTask *)self error];
+  error3 = [(VSSpeechSpeakTask *)self error];
 
-  if (!v19)
+  if (!error3)
   {
     [(VSSpeechSynthesisTask *)self reportInstrumentMetrics];
   }
 
-  v20 = [(VSSpeechSpeakTask *)self error];
-  if (!v20)
+  error4 = [(VSSpeechSpeakTask *)self error];
+  if (!error4)
   {
-    v21 = [(VSSpeechSynthesisTask *)self speakTask];
+    speakTask2 = [(VSSpeechSynthesisTask *)self speakTask];
 
-    if (!v21)
+    if (!speakTask2)
     {
       goto LABEL_10;
     }
 
     kdebug_trace();
-    v20 = +[VSDiagnosticService defaultService];
-    v22 = [(VSSpeechSpeakTask *)self streamAudio];
-    v23 = [(VSSpeechSpeakTask *)self request];
-    [v20 dumpStreamAudio:v22 forRequest:v23];
+    error4 = +[VSDiagnosticService defaultService];
+    streamAudio2 = [(VSSpeechSpeakTask *)self streamAudio];
+    request7 = [(VSSpeechSpeakTask *)self request];
+    [error4 dumpStreamAudio:streamAudio2 forRequest:request7];
   }
 
 LABEL_10:
-  v24 = [(VSSpeechSpeakTask *)self error];
+  error5 = [(VSSpeechSpeakTask *)self error];
 
-  if (!v24)
+  if (!error5)
   {
-    v25 = [(VSSpeechSpeakTask *)self request];
-    v26 = [v25 outputPath];
-    v27 = [v26 path];
+    request8 = [(VSSpeechSpeakTask *)self request];
+    outputPath = [request8 outputPath];
+    path = [outputPath path];
 
-    if (v27)
+    if (path)
     {
-      v28 = [(VSSpeechSpeakTask *)self streamAudio];
-      v29 = [v28 writeWaveToFilePath:v27];
+      streamAudio3 = [(VSSpeechSpeakTask *)self streamAudio];
+      v29 = [streamAudio3 writeWaveToFilePath:path];
 
       if ((v29 & 1) == 0)
       {
@@ -729,15 +729,15 @@ LABEL_10:
       goto LABEL_19;
     }
 
-    v33 = [(VSSpeechSpeakTask *)self request];
-    if ([v33 shouldCache])
+    request9 = [(VSSpeechSpeakTask *)self request];
+    if ([request9 shouldCache])
     {
-      v34 = [(VSSpeechSpeakTask *)self speechCache];
-      if (!v34)
+      speechCache3 = [(VSSpeechSpeakTask *)self speechCache];
+      if (!speechCache3)
       {
-        v56 = [(VSSpeechSpeakTask *)self synthesisHasIssue];
+        synthesisHasIssue = [(VSSpeechSpeakTask *)self synthesisHasIssue];
 
-        if (!v56)
+        if (!synthesisHasIssue)
         {
           [(VSSpeechSpeakTask *)self enqueueCache];
         }
@@ -757,16 +757,16 @@ LABEL_19:
 
 - (BOOL)isSpeaking
 {
-  v2 = [(VSSpeechSynthesisTask *)self speakTask];
+  speakTask = [(VSSpeechSynthesisTask *)self speakTask];
 
-  return v2 != 0;
+  return speakTask != 0;
 }
 
-- (VSSpeechSynthesisTask)initWithRequest:(id)a3
+- (VSSpeechSynthesisTask)initWithRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = VSSpeechSynthesisTask;
-  result = [(VSSpeechSpeakTask *)&v4 initWithRequest:a3];
+  result = [(VSSpeechSpeakTask *)&v4 initWithRequest:request];
   if (result)
   {
     result->_readyForEagerTask = 1;

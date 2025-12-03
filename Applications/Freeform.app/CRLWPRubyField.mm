@@ -1,22 +1,22 @@
 @interface CRLWPRubyField
-- (BOOL)canCopy:(_NSRange)a3;
-- (CRLWPRubyField)initWithRubyText:(id)a3;
+- (BOOL)canCopy:(_NSRange)copy;
+- (CRLWPRubyField)initWithRubyText:(id)text;
 - (NSString)baseText;
 - (int)baseTextScript;
-- (void)setRubyText:(id)a3;
+- (void)setRubyText:(id)text;
 @end
 
 @implementation CRLWPRubyField
 
-- (CRLWPRubyField)initWithRubyText:(id)a3
+- (CRLWPRubyField)initWithRubyText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v9.receiver = self;
   v9.super_class = CRLWPRubyField;
   v5 = [(CRLWPRubyField *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [textCopy copy];
     rubyText = v5->_rubyText;
     v5->_rubyText = v6;
   }
@@ -24,26 +24,26 @@
   return v5;
 }
 
-- (void)setRubyText:(id)a3
+- (void)setRubyText:(id)text
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  textCopy = text;
+  v4 = [textCopy copy];
   rubyText = self->_rubyText;
   self->_rubyText = v4;
 
-  v6 = [(CRLWPSmartField *)self parentStorage];
-  [v6 smartFieldDidChange:self];
+  parentStorage = [(CRLWPSmartField *)self parentStorage];
+  [parentStorage smartFieldDidChange:self];
 }
 
 - (NSString)baseText
 {
-  v3 = [(CRLWPSmartField *)self parentStorage];
+  parentStorage = [(CRLWPSmartField *)self parentStorage];
 
-  if (v3)
+  if (parentStorage)
   {
-    v4 = [(CRLWPSmartField *)self parentStorage];
-    v5 = [(CRLWPSmartField *)self range];
-    v7 = [v4 substringWithRange:{v5, v6}];
+    parentStorage2 = [(CRLWPSmartField *)self parentStorage];
+    range = [(CRLWPSmartField *)self range];
+    v7 = [parentStorage2 substringWithRange:{range, v6}];
   }
 
   else
@@ -56,18 +56,18 @@
 
 - (int)baseTextScript
 {
-  v2 = [(CRLWPRubyField *)self baseText];
-  v3 = [v2 crlwp_contentsScript];
+  baseText = [(CRLWPRubyField *)self baseText];
+  crlwp_contentsScript = [baseText crlwp_contentsScript];
 
-  return v3;
+  return crlwp_contentsScript;
 }
 
-- (BOOL)canCopy:(_NSRange)a3
+- (BOOL)canCopy:(_NSRange)copy
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(CRLWPSmartField *)self range];
-  return location <= v5 && location + length >= v5 + v6;
+  length = copy.length;
+  location = copy.location;
+  range = [(CRLWPSmartField *)self range];
+  return location <= range && location + length >= range + v6;
 }
 
 @end

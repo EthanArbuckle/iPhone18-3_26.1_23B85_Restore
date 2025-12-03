@@ -1,11 +1,11 @@
 @interface QuerySuggestionTableViewCell
 + (id)identifier;
 - (AutocompleteCellAccessoryDelegate)accessoryViewDelegate;
-- (QuerySuggestionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)didTapAccessoryViewButton:(id)a3;
+- (QuerySuggestionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)didTapAccessoryViewButton:(id)button;
 - (void)prepareForReuse;
-- (void)setAccessoryViewType:(int64_t)a3;
-- (void)setTitle:(id)a3 highlightTitleRanges:(id)a4 detailText:(id)a5 style:(unint64_t)a6;
+- (void)setAccessoryViewType:(int64_t)type;
+- (void)setTitle:(id)title highlightTitleRanges:(id)ranges detailText:(id)text style:(unint64_t)style;
 @end
 
 @implementation QuerySuggestionTableViewCell
@@ -17,21 +17,21 @@
   return WeakRetained;
 }
 
-- (void)didTapAccessoryViewButton:(id)a3
+- (void)didTapAccessoryViewButton:(id)button
 {
-  v6 = [(QuerySuggestionTableViewCell *)self accessoryViewDelegate];
-  v4 = [(QuerySuggestionTableViewCell *)self accessoryViewType];
-  v5 = [(QuerySuggestionTableViewCell *)self accessoryViewObject];
-  [v6 didTapOnAccessoryView:self withType:v4 object:v5];
+  accessoryViewDelegate = [(QuerySuggestionTableViewCell *)self accessoryViewDelegate];
+  accessoryViewType = [(QuerySuggestionTableViewCell *)self accessoryViewType];
+  accessoryViewObject = [(QuerySuggestionTableViewCell *)self accessoryViewObject];
+  [accessoryViewDelegate didTapOnAccessoryView:self withType:accessoryViewType object:accessoryViewObject];
 }
 
-- (void)setAccessoryViewType:(int64_t)a3
+- (void)setAccessoryViewType:(int64_t)type
 {
   v4 = 0;
-  self->_accessoryViewType = a3;
-  if (a3 > 2)
+  self->_accessoryViewType = type;
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v28 = [UIButton buttonWithType:0];
       [v28 setBounds:{0.0, 0.0, 30.0, 30.0}];
@@ -49,7 +49,7 @@
 
     else
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         goto LABEL_17;
       }
@@ -57,9 +57,9 @@
       v28 = [UIButton buttonWithType:0];
       [v28 setBounds:{0.0, 0.0, 30.0, 30.0}];
       v9 = +[UIDevice currentDevice];
-      v10 = [v9 userInterfaceIdiom];
+      userInterfaceIdiom = [v9 userInterfaceIdiom];
       v11 = @"pin";
-      if (v10 == 5)
+      if (userInterfaceIdiom == 5)
       {
         v11 = @"pin.circle";
       }
@@ -72,22 +72,22 @@
       v14 = [UIImageSymbolConfiguration configurationWithPointSize:20.0];
       [v28 setPreferredSymbolConfiguration:v14 forImageInState:0];
 
-      v15 = [v28 theme];
-      v16 = [v15 keyColor];
-      [v28 setTintColor:v16];
+      theme = [v28 theme];
+      keyColor = [theme keyColor];
+      [v28 setTintColor:keyColor];
 
       v8 = @"AccessoryPinButton";
     }
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     v28 = [UIButton buttonWithType:0];
     [v28 setBounds:{0.0, 0.0, 30.0, 30.0}];
     v17 = +[UIDevice currentDevice];
-    v18 = [v17 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v17 userInterfaceIdiom];
     v19 = @"plus";
-    if (v18 == 5)
+    if (userInterfaceIdiom2 == 5)
     {
       v19 = @"plus.circle";
     }
@@ -100,16 +100,16 @@
     v22 = [UIImageSymbolConfiguration configurationWithPointSize:20.0];
     [v28 setPreferredSymbolConfiguration:v22 forImageInState:0];
 
-    v23 = [v28 theme];
-    v24 = [v23 keyColor];
-    [v28 setTintColor:v24];
+    theme2 = [v28 theme];
+    keyColor2 = [theme2 keyColor];
+    [v28 setTintColor:keyColor2];
 
     v8 = @"AccessoryAddButton";
   }
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_17;
     }
@@ -145,13 +145,13 @@ LABEL_17:
   [(QuerySuggestionTableViewCell *)self setAccessoryView:v4];
 }
 
-- (void)setTitle:(id)a3 highlightTitleRanges:(id)a4 detailText:(id)a5 style:(unint64_t)a6
+- (void)setTitle:(id)title highlightTitleRanges:(id)ranges detailText:(id)text style:(unint64_t)style
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(QuerySuggestionTableViewCell *)self querySuggestionView];
-  [v13 setTitle:v12 highlightTitleRanges:v11 detailText:v10 style:a6];
+  textCopy = text;
+  rangesCopy = ranges;
+  titleCopy = title;
+  querySuggestionView = [(QuerySuggestionTableViewCell *)self querySuggestionView];
+  [querySuggestionView setTitle:titleCopy highlightTitleRanges:rangesCopy detailText:textCopy style:style];
 }
 
 - (void)prepareForReuse
@@ -159,19 +159,19 @@ LABEL_17:
   v4.receiver = self;
   v4.super_class = QuerySuggestionTableViewCell;
   [(QuerySuggestionTableViewCell *)&v4 prepareForReuse];
-  v3 = [(QuerySuggestionTableViewCell *)self querySuggestionView];
-  [v3 clearContents];
+  querySuggestionView = [(QuerySuggestionTableViewCell *)self querySuggestionView];
+  [querySuggestionView clearContents];
 
   [(QuerySuggestionTableViewCell *)self setAccessoryViewType:0];
   [(QuerySuggestionTableViewCell *)self setAccessoryViewObject:0];
   [(QuerySuggestionTableViewCell *)self setAccessoryViewDelegate:0];
 }
 
-- (QuerySuggestionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (QuerySuggestionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v27.receiver = self;
   v27.super_class = QuerySuggestionTableViewCell;
-  v4 = [(QuerySuggestionTableViewCell *)&v27 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(QuerySuggestionTableViewCell *)&v27 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor clearColor];
@@ -182,28 +182,28 @@ LABEL_17:
     v4->_querySuggestionView = v6;
 
     [(QuerySuggestionView *)v4->_querySuggestionView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(QuerySuggestionTableViewCell *)v4 contentView];
-    [v8 addSubview:v4->_querySuggestionView];
+    contentView = [(QuerySuggestionTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_querySuggestionView];
 
-    v25 = [(QuerySuggestionView *)v4->_querySuggestionView leadingAnchor];
-    v26 = [(QuerySuggestionTableViewCell *)v4 contentView];
-    v24 = [v26 leadingAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    leadingAnchor = [(QuerySuggestionView *)v4->_querySuggestionView leadingAnchor];
+    contentView2 = [(QuerySuggestionTableViewCell *)v4 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v28[0] = v23;
-    v21 = [(QuerySuggestionView *)v4->_querySuggestionView trailingAnchor];
-    v22 = [(QuerySuggestionTableViewCell *)v4 contentView];
-    v20 = [v22 trailingAnchor];
-    v19 = [v21 constraintEqualToAnchor:v20];
+    trailingAnchor = [(QuerySuggestionView *)v4->_querySuggestionView trailingAnchor];
+    contentView3 = [(QuerySuggestionTableViewCell *)v4 contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v28[1] = v19;
-    v9 = [(QuerySuggestionView *)v4->_querySuggestionView topAnchor];
-    v10 = [(QuerySuggestionTableViewCell *)v4 contentView];
-    v11 = [v10 topAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11];
+    topAnchor = [(QuerySuggestionView *)v4->_querySuggestionView topAnchor];
+    contentView4 = [(QuerySuggestionTableViewCell *)v4 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[2] = v12;
-    v13 = [(QuerySuggestionView *)v4->_querySuggestionView bottomAnchor];
-    v14 = [(QuerySuggestionTableViewCell *)v4 contentView];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    bottomAnchor = [(QuerySuggestionView *)v4->_querySuggestionView bottomAnchor];
+    contentView5 = [(QuerySuggestionTableViewCell *)v4 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v28[3] = v16;
     v17 = [NSArray arrayWithObjects:v28 count:4];
     [NSLayoutConstraint activateConstraints:v17];

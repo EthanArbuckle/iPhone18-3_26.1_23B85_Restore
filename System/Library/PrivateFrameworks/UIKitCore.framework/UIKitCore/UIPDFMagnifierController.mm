@@ -1,19 +1,19 @@
 @interface UIPDFMagnifierController
-- (BOOL)isSelectionUniformlyRotated:(double *)a3;
-- (CGPoint)convertPointToEnlargedSpace:(CGPoint)a3;
-- (CGPoint)convertPointToRotatedPage:(CGPoint)a3;
-- (CGPoint)convertViewPointToEnlargedSpace:(CGPoint)a3;
+- (BOOL)isSelectionUniformlyRotated:(double *)rotated;
+- (CGPoint)convertPointToEnlargedSpace:(CGPoint)space;
+- (CGPoint)convertPointToRotatedPage:(CGPoint)page;
+- (CGPoint)convertViewPointToEnlargedSpace:(CGPoint)space;
 - (CGPoint)pointToMagnifyInPDFSpace;
 - (CGPoint)viewPointInTextEffectsSpace;
-- (CGRect)convertRectToEnlargedSpace:(CGRect)a3;
-- (CGRect)convertRectToRotatedPage:(CGRect)a3;
+- (CGRect)convertRectToEnlargedSpace:(CGRect)space;
+- (CGRect)convertRectToRotatedPage:(CGRect)page;
 - (UIPDFMagnifierController)init;
-- (id)imageReceived:(id)a3 data:(id)a4;
+- (id)imageReceived:(id)received data:(id)data;
 - (void)_show;
 - (void)addBling;
 - (void)addTextRangeHandles;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)hide;
 - (void)move;
 - (void)placeImage;
@@ -23,7 +23,7 @@
 - (void)setLayerPositions;
 - (void)setPower;
 - (void)setSelectionPath;
-- (void)setSelectionPath:(CGPath *)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5;
+- (void)setSelectionPath:(CGPath *)path bounds:(CGRect)bounds transform:(CGAffineTransform *)transform;
 - (void)setTextRangeHandlePositions;
 - (void)tearDownLayers;
 @end
@@ -236,19 +236,19 @@
   }
 }
 
-- (BOOL)isSelectionUniformlyRotated:(double *)a3
+- (BOOL)isSelectionUniformlyRotated:(double *)rotated
 {
-  v5 = [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] selection];
-  v6 = [(UIPDFSelection *)v5 numberOfRectangles];
-  if (!v6)
+  selection = [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] selection];
+  numberOfRectangles = [(UIPDFSelection *)selection numberOfRectangles];
+  if (!numberOfRectangles)
   {
-    return v6;
+    return numberOfRectangles;
   }
 
-  v7 = v6;
+  v7 = numberOfRectangles;
   memset(&v18, 0, sizeof(v18));
   memset(v17, 0, sizeof(v17));
-  [(UIPDFSelection *)v5 getBounds:v17 transform:&v18 index:0];
+  [(UIPDFSelection *)selection getBounds:v17 transform:&v18 index:0];
   pageRotation = self->_pageRotation;
   if (pageRotation)
   {
@@ -260,8 +260,8 @@
     }
 
 LABEL_6:
-    LOBYTE(v6) = 0;
-    return v6;
+    LOBYTE(numberOfRectangles) = 0;
+    return numberOfRectangles;
   }
 
   v16 = v18;
@@ -276,7 +276,7 @@ LABEL_7:
     for (i = 1; i != v7; ++i)
     {
       memset(&v16, 0, sizeof(v16));
-      [(UIPDFSelection *)v5 getBounds:v17 transform:&v16 index:i];
+      [(UIPDFSelection *)selection getBounds:v17 transform:&v16 index:i];
       pageRotation = self->_pageRotation;
       if (pageRotation)
       {
@@ -302,14 +302,14 @@ LABEL_7:
 
   v16 = v18;
   CPRotationDegreesFromTransform(&v16.a);
-  *a3 = (v12 - pageRotation) * -3.14159265 / 180.0;
-  LOBYTE(v6) = 1;
-  return v6;
+  *rotated = (v12 - pageRotation) * -3.14159265 / 180.0;
+  LOBYTE(numberOfRectangles) = 1;
+  return numberOfRectangles;
 }
 
-- (CGPoint)convertViewPointToEnlargedSpace:(CGPoint)a3
+- (CGPoint)convertViewPointToEnlargedSpace:(CGPoint)space
 {
-  [(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] convertPointToPDFPageSpace:a3.x, a3.y];
+  [(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] convertPointToPDFPageSpace:space.x, space.y];
   v5 = v4;
   v7 = v6;
   [(CALayer *)self->_imageContainer bounds];
@@ -322,10 +322,10 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)convertPointToRotatedPage:(CGPoint)a3
+- (CGPoint)convertPointToRotatedPage:(CGPoint)page
 {
-  y = a3.y;
-  x = a3.x;
+  y = page.y;
+  x = page.x;
   [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] cropBox];
   v10 = v6;
   v11 = v7;
@@ -366,12 +366,12 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)convertRectToRotatedPage:(CGRect)a3
+- (CGRect)convertRectToRotatedPage:(CGRect)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = page.size.height;
+  width = page.size.width;
+  y = page.origin.y;
+  x = page.origin.x;
   [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] cropBox];
   v12 = v8;
   v13 = v9;
@@ -437,12 +437,12 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)convertRectToEnlargedSpace:(CGRect)a3
+- (CGRect)convertRectToEnlargedSpace:(CGRect)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
   [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] cropBox];
   v9 = x - v8;
   v11 = y - v10;
@@ -481,10 +481,10 @@ LABEL_9:
   return CGRectApplyAffineTransform(v31, &t1);
 }
 
-- (CGPoint)convertPointToEnlargedSpace:(CGPoint)a3
+- (CGPoint)convertPointToEnlargedSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
+  y = space.y;
+  x = space.x;
   [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] cropBox];
   v7 = v6;
   v9 = v8;
@@ -525,11 +525,11 @@ LABEL_9:
 - (CGPoint)viewPointInTextEffectsSpace
 {
   textEffectsWindow = self->_textEffectsWindow;
-  v4 = [(UIPDFMagnifierController *)self pageView];
+  pageView = [(UIPDFMagnifierController *)self pageView];
   x = self->_touchPoint.x;
   y = self->_touchPoint.y;
 
-  [(UIView *)textEffectsWindow convertPoint:v4 fromView:x, y];
+  [(UIView *)textEffectsWindow convertPoint:pageView fromView:x, y];
   result.y = v8;
   result.x = v7;
   return result;
@@ -540,14 +540,14 @@ LABEL_9:
   [(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] convertPointToPDFPageSpace:self->_touchPoint.x, self->_pointToMagnify.y];
   v18 = v4;
   v19 = v3;
-  v5 = [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] selection];
+  selection = [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] selection];
   v6.f64[0] = v19;
   v6.f64[1] = v18;
   v20 = v6;
-  if (v5)
+  if (selection)
   {
-    v7 = v5;
-    if ([(UIPDFSelection *)v5 numberOfRectangles])
+    v7 = selection;
+    if ([(UIPDFSelection *)selection numberOfRectangles])
     {
       memset(v26, 0, sizeof(v26));
       v24 = 0u;
@@ -730,20 +730,20 @@ LABEL_9:
   [(CALayer *)v11 setBounds:0.0, 0.0, v8, v10];
   -[CALayer setContents:](self->_hiLayer, "setContents:", [v6 CGImage]);
   [(CALayer *)self->_hiLayer setContentsScale:v4];
-  v12 = [(UIView *)self->_textEffectsSubView layer];
+  layer = [(UIView *)self->_textEffectsSubView layer];
   hiLayer = self->_hiLayer;
   imageContainer = self->_imageContainer;
 
-  [(CALayer *)v12 insertSublayer:hiLayer above:imageContainer];
+  [(CALayer *)layer insertSublayer:hiLayer above:imageContainer];
 }
 
-- (void)setSelectionPath:(CGPath *)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5
+- (void)setSelectionPath:(CGPath *)path bounds:(CGRect)bounds transform:(CGAffineTransform *)transform
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MaxX = CGRectGetMaxX(a4);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  MaxX = CGRectGetMaxX(bounds);
   v46.origin.x = x;
   v46.origin.y = y;
   v46.size.width = width;
@@ -779,18 +779,18 @@ LABEL_9:
   v52.size.width = width;
   v52.size.height = height;
   v16 = CGRectGetMinY(v52);
-  b = a5->b;
-  c = a5->c;
-  d = a5->d;
-  tx = a5->tx;
-  ty = a5->ty;
-  v22 = tx + v42 * a5->a + MaxY * c;
+  b = transform->b;
+  c = transform->c;
+  d = transform->d;
+  tx = transform->tx;
+  ty = transform->ty;
+  v22 = tx + v42 * transform->a + MaxY * c;
   v23 = ty + v42 * b + MaxY * d;
-  v24 = tx + MinX * a5->a + v14 * c;
+  v24 = tx + MinX * transform->a + v14 * c;
   v25 = ty + MinX * b + v14 * d;
-  v26 = tx + v15 * a5->a + v16 * c;
+  v26 = tx + v15 * transform->a + v16 * c;
   v27 = ty + v15 * b + v16 * d;
-  [(UIPDFMagnifierController *)self convertPointToEnlargedSpace:tx + MaxX * a5->a + MinY * c, ty + MaxX * b + MinY * d];
+  [(UIPDFMagnifierController *)self convertPointToEnlargedSpace:tx + MaxX * transform->a + MinY * c, ty + MaxX * b + MinY * d];
   v29 = v28;
   v31 = v30;
   [(UIPDFMagnifierController *)self convertPointToEnlargedSpace:v22, v23];
@@ -800,15 +800,15 @@ LABEL_9:
   v37 = v36;
   v39 = v38;
   [(UIPDFMagnifierController *)self convertPointToEnlargedSpace:v26, v27];
-  CPSetCGPathPoints4(a3, v29, v31, v33, v35, v37, v39, v40, v41);
+  CPSetCGPathPoints4(path, v29, v31, v33, v35, v37, v39, v40, v41);
 
-  CGPathCloseSubpath(a3);
+  CGPathCloseSubpath(path);
 }
 
 - (void)setSelectionPath
 {
-  v3 = [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] selection];
-  if (v3 && (v4 = v3, (v5 = [(UIPDFSelection *)v3 numberOfRectangles]) != 0))
+  selection = [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] selection];
+  if (selection && (v4 = selection, (v5 = [(UIPDFSelection *)selection numberOfRectangles]) != 0))
   {
     v6 = v5;
     Mutable = CGPathCreateMutable();
@@ -858,16 +858,16 @@ LABEL_9:
   [(UIPDFMagnifierController *)self setPower];
   [(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] convertRectFromPDFPageSpace:0.0, 0.0, 1.0, 1.0];
   self->_enlargementScale = self->_power * v3;
-  v4 = [(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page];
-  [(UIPDFPage *)v4 cropBox];
+  page = [(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page];
+  [(UIPDFPage *)page cropBox];
   enlargementScale = self->_enlargementScale;
   v7 = enlargementScale * v6;
   v8 = roundf(v7);
   *&enlargementScale = enlargementScale * v9;
   v10 = roundf(*&enlargementScale);
-  v11 = [(UIPDFPage *)v4 rotation];
-  self->_pageRotation = v11;
-  if (v11 == 270 || v11 == 90)
+  rotation = [(UIPDFPage *)page rotation];
+  self->_pageRotation = rotation;
+  if (rotation == 270 || rotation == 90)
   {
     v12 = v8;
   }
@@ -912,7 +912,7 @@ LABEL_9:
   [objc_msgSend(objc_opt_self() "mainScreen")];
   v17 = v16;
   [(CALayer *)self->_imageLayer setContentsScale:?];
-  [(UIPDFPage *)v4 deliverImageWithWidth:(v10 * v17) height:(v12 * v17) receiver:self selector:sel_imageReceived_data_ info:self->_imageLayer];
+  [(UIPDFPage *)page deliverImageWithWidth:(v10 * v17) height:(v12 * v17) receiver:self selector:sel_imageReceived_data_ info:self->_imageLayer];
   [(CALayer *)[(UIView *)self->_textEffectsSubView layer] addSublayer:self->_imageContainer];
   [(UIPDFMagnifierController *)self addBling];
   [(UIPDFMagnifierController *)self setSelectionPath];
@@ -922,14 +922,14 @@ LABEL_9:
   }
 }
 
-- (id)imageReceived:(id)a3 data:(id)a4
+- (id)imageReceived:(id)received data:(id)data
 {
-  if (a3)
+  if (received)
   {
-    v5 = [a3 CGImage];
+    cGImage = [received CGImage];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    [a4 setContents:v5];
+    [data setContents:cGImage];
     [MEMORY[0x1E6979518] commit];
   }
 
@@ -957,11 +957,11 @@ LABEL_9:
   [v4 size];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 CGImage];
+  cGImage = [v4 CGImage];
   v10 = objc_alloc_init(MEMORY[0x1E6979398]);
   self->_maskLayer = v10;
   [(CALayer *)v10 setBounds:0.0, 0.0, v6, v8];
-  [(CALayer *)self->_maskLayer setContents:v9];
+  [(CALayer *)self->_maskLayer setContents:cGImage];
   [v4 scale];
   [(CALayer *)self->_maskLayer setContentsScale:?];
   if (!self->_loupe)
@@ -986,11 +986,11 @@ LABEL_9:
 
 - (void)setTextRangeHandlePositions
 {
-  v3 = [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] selection];
-  v4 = [(UIPDFSelection *)v3 numberOfRectangles];
-  if (v4)
+  selection = [[(UIPDFPageView *)[(UIPDFMagnifierController *)self pageView] page] selection];
+  numberOfRectangles = [(UIPDFSelection *)selection numberOfRectangles];
+  if (numberOfRectangles)
   {
-    v5 = v4;
+    v5 = numberOfRectangles;
     memset(&v45, 0, sizeof(v45));
     memset(&v44, 0, sizeof(v44));
     v42 = 0u;
@@ -999,8 +999,8 @@ LABEL_9:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    [(UIPDFSelection *)v3 getBounds:&v45 transform:&v41 index:0];
-    [(UIPDFSelection *)v3 getBounds:&v44 transform:&v38 index:v5 - 1];
+    [(UIPDFSelection *)selection getBounds:&v45 transform:&v41 index:0];
+    [(UIPDFSelection *)selection getBounds:&v44 transform:&v38 index:v5 - 1];
     *&v37.m11 = v38;
     *&v37.m13 = v39;
     *&v37.m21 = v40;
@@ -1108,12 +1108,12 @@ LABEL_9:
   [(CALayer *)leftGrabber setNeedsDisplay];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  [a3 bounds];
+  [layer bounds];
   grabberColor = self->_grabberColor;
 
-  CPCGInsetFillEllipseInRect(a4, grabberColor, v6, v7, v8, v9);
+  CPCGInsetFillEllipseInRect(context, grabberColor, v6, v7, v8, v9);
 }
 
 @end

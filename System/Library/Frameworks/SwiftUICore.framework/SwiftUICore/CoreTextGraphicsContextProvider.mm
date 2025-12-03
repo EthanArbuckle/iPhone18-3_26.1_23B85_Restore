@@ -35,21 +35,21 @@ uint64_t __49__CoreTextGraphicsContextProvider_sharedProvider__block_invoke()
 
 - (void)saveGraphicsState
 {
-  v2 = [+[CoreGraphicsContext current](CoreGraphicsContext CGContext];
-  if (v2)
+  cGContext = [+[CoreGraphicsContext current](CoreGraphicsContext CGContext];
+  if (cGContext)
   {
 
-    CGContextSaveGState(v2);
+    CGContextSaveGState(cGContext);
   }
 }
 
 - (void)restoreGraphicsState
 {
-  v2 = [+[CoreGraphicsContext current](CoreGraphicsContext CGContext];
-  if (v2)
+  cGContext = [+[CoreGraphicsContext current](CoreGraphicsContext CGContext];
+  if (cGContext)
   {
 
-    CGContextRestoreGState(v2);
+    CGContextRestoreGState(cGContext);
   }
 }
 

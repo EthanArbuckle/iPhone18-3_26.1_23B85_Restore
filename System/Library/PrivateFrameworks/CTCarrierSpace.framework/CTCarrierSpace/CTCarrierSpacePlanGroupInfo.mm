@@ -1,10 +1,10 @@
 @interface CTCarrierSpacePlanGroupInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCarrierSpacePlanGroupInfo)init;
-- (CTCarrierSpacePlanGroupInfo)initWithCoder:(id)a3;
+- (CTCarrierSpacePlanGroupInfo)initWithCoder:(id)coder;
 - (NSString)groupId;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSpacePlanGroupInfo
@@ -32,21 +32,21 @@
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@", planCategory=%s", CTCarrierSpacePlanCategoryAsString(-[CTCarrierSpacePlanGroupInfo planCategory](self, "planCategory"))];
-  v4 = [(CTCarrierSpacePlanGroupInfo *)self groupId];
-  [v3 appendFormat:@", groupId=%@", v4];
+  groupId = [(CTCarrierSpacePlanGroupInfo *)self groupId];
+  [v3 appendFormat:@", groupId=%@", groupId];
 
-  v5 = [(CTCarrierSpacePlanGroupInfo *)self groupOptionsList];
-  [v3 appendFormat:@", groupOptionsList=%@", v5];
+  groupOptionsList = [(CTCarrierSpacePlanGroupInfo *)self groupOptionsList];
+  [v3 appendFormat:@", groupOptionsList=%@", groupOptionsList];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -54,20 +54,20 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(CTCarrierSpacePlanGroupInfo *)self planCategory], v5 == [(CTCarrierSpacePlanGroupInfo *)v4 planCategory]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(CTCarrierSpacePlanGroupInfo *)self planCategory], v5 == [(CTCarrierSpacePlanGroupInfo *)equalCopy planCategory]))
     {
-      v6 = [(CTCarrierSpacePlanGroupInfo *)self groupOptionsList];
-      v7 = [(CTCarrierSpacePlanGroupInfo *)v4 groupOptionsList];
-      if (v6 == v7)
+      groupOptionsList = [(CTCarrierSpacePlanGroupInfo *)self groupOptionsList];
+      groupOptionsList2 = [(CTCarrierSpacePlanGroupInfo *)equalCopy groupOptionsList];
+      if (groupOptionsList == groupOptionsList2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(CTCarrierSpacePlanGroupInfo *)self groupOptionsList];
-        v9 = [(CTCarrierSpacePlanGroupInfo *)v4 groupOptionsList];
-        v10 = [v8 isEqualToArray:v9];
+        groupOptionsList3 = [(CTCarrierSpacePlanGroupInfo *)self groupOptionsList];
+        groupOptionsList4 = [(CTCarrierSpacePlanGroupInfo *)equalCopy groupOptionsList];
+        v10 = [groupOptionsList3 isEqualToArray:groupOptionsList4];
       }
     }
 
@@ -82,14 +82,14 @@
 
 - (NSString)groupId
 {
-  v2 = [(CTCarrierSpacePlanGroupInfo *)self planCategory];
+  planCategory = [(CTCarrierSpacePlanGroupInfo *)self planCategory];
   v3 = @"unknown";
-  if (v2 == 3)
+  if (planCategory == 3)
   {
     v3 = @"roaming-plans";
   }
 
-  if (v2 == 1)
+  if (planCategory == 1)
   {
     return @"domestic-plans";
   }
@@ -100,27 +100,27 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   planCategory = self->_planCategory;
-  v5 = a3;
-  [v5 encodeInteger:planCategory forKey:@"planCategory"];
-  [v5 encodeObject:self->_groupOptionsList forKey:@"groupOptionsList"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:planCategory forKey:@"planCategory"];
+  [coderCopy encodeObject:self->_groupOptionsList forKey:@"groupOptionsList"];
 }
 
-- (CTCarrierSpacePlanGroupInfo)initWithCoder:(id)a3
+- (CTCarrierSpacePlanGroupInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CTCarrierSpacePlanGroupInfo;
   v5 = [(CTCarrierSpacePlanGroupInfo *)&v12 init];
   if (v5)
   {
-    v5->_planCategory = [v4 decodeIntegerForKey:@"planCategory"];
+    v5->_planCategory = [coderCopy decodeIntegerForKey:@"planCategory"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"groupOptionsList"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"groupOptionsList"];
     groupOptionsList = v5->_groupOptionsList;
     v5->_groupOptionsList = v9;
   }

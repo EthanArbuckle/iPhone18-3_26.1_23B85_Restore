@@ -15,17 +15,17 @@
   v5 = objc_alloc_init(MTCreateAlarmIntent);
   [(MTCreateAlarmIntent *)v5 _setExtensionBundleId:@"com.apple.mobiletimer-framework.MobileTimerIntents"];
   [(MTCreateAlarmIntent *)v5 _setLaunchId:@"com.apple.mobiletimer"];
-  v6 = [a1 mt_nanoAlarmBundleIDForAlarm:v4];
+  v6 = [self mt_nanoAlarmBundleIDForAlarm:v4];
   [(MTCreateAlarmIntent *)v5 _setNanoLaunchId:v6];
 
-  v7 = [v4 intentLabel];
-  [(MTCreateAlarmIntent *)v5 setLabel:v7];
+  intentLabel = [v4 intentLabel];
+  [(MTCreateAlarmIntent *)v5 setLabel:intentLabel];
 
-  v8 = [v4 dateComponents];
-  [(MTCreateAlarmIntent *)v5 setDateComponents:v8];
+  dateComponents = [v4 dateComponents];
+  [(MTCreateAlarmIntent *)v5 setDateComponents:dateComponents];
 
-  v9 = [v4 repeatSchedule];
-  v10 = MTRepeatDaysForAlarmRepeatSchedule(v9);
+  repeatSchedule = [v4 repeatSchedule];
+  v10 = MTRepeatDaysForAlarmRepeatSchedule(repeatSchedule);
   [(MTCreateAlarmIntent *)v5 setRepeatSchedule:v10];
 
   return v5;
@@ -37,12 +37,12 @@
   v5 = objc_alloc_init(MTUpdateAlarmIntent);
   [(MTUpdateAlarmIntent *)v5 _setExtensionBundleId:@"com.apple.mobiletimer-framework.MobileTimerIntents"];
   [(MTUpdateAlarmIntent *)v5 _setLaunchId:@"com.apple.mobiletimer"];
-  v6 = [a1 mt_nanoAlarmBundleIDForAlarm:v4];
+  v6 = [self mt_nanoAlarmBundleIDForAlarm:v4];
   [(MTUpdateAlarmIntent *)v5 _setNanoLaunchId:v6];
 
-  v7 = [v4 alarmIDIntentObject];
+  alarmIDIntentObject = [v4 alarmIDIntentObject];
 
-  [(MTUpdateAlarmIntent *)v5 setAlarmID:v7];
+  [(MTUpdateAlarmIntent *)v5 setAlarmID:alarmIDIntentObject];
 
   return v5;
 }
@@ -53,12 +53,12 @@
   v5 = objc_alloc_init(MTToggleAlarmIntent);
   [(MTToggleAlarmIntent *)v5 _setExtensionBundleId:@"com.apple.mobiletimer-framework.MobileTimerIntents"];
   [(MTToggleAlarmIntent *)v5 _setLaunchId:@"com.apple.mobiletimer"];
-  v6 = [a1 mt_nanoAlarmBundleIDForAlarm:v4];
+  v6 = [self mt_nanoAlarmBundleIDForAlarm:v4];
   [(MTToggleAlarmIntent *)v5 _setNanoLaunchId:v6];
 
-  v7 = [v4 intentAlarm];
+  intentAlarm = [v4 intentAlarm];
 
-  [(MTToggleAlarmIntent *)v5 setAlarm:v7];
+  [(MTToggleAlarmIntent *)v5 setAlarm:intentAlarm];
   [(MTToggleAlarmIntent *)v5 setOperation:1];
   [(MTToggleAlarmIntent *)v5 setState:1];
 
@@ -71,12 +71,12 @@
   v5 = objc_alloc_init(MTToggleAlarmIntent);
   [(MTToggleAlarmIntent *)v5 _setExtensionBundleId:@"com.apple.mobiletimer-framework.MobileTimerIntents"];
   [(MTToggleAlarmIntent *)v5 _setLaunchId:@"com.apple.mobiletimer"];
-  v6 = [a1 mt_nanoAlarmBundleIDForAlarm:v4];
+  v6 = [self mt_nanoAlarmBundleIDForAlarm:v4];
   [(MTToggleAlarmIntent *)v5 _setNanoLaunchId:v6];
 
-  v7 = [v4 intentAlarm];
+  intentAlarm = [v4 intentAlarm];
 
-  [(MTToggleAlarmIntent *)v5 setAlarm:v7];
+  [(MTToggleAlarmIntent *)v5 setAlarm:intentAlarm];
   [(MTToggleAlarmIntent *)v5 setOperation:1];
   [(MTToggleAlarmIntent *)v5 setState:2];
 
@@ -90,10 +90,10 @@
   v8 = objc_opt_new();
   [v8 setHour:{objc_msgSend(v7, "hour")}];
   [v8 setMinute:{objc_msgSend(v7, "minute")}];
-  v9 = [v7 displayTitle];
-  v10 = [v7 alarmIDString];
+  displayTitle = [v7 displayTitle];
+  alarmIDString = [v7 alarmIDString];
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:7];
-  v12 = [v7 repeatSchedule];
+  repeatSchedule = [v7 repeatSchedule];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -101,17 +101,17 @@
   v17[3] = &unk_1E7B0DEB0;
   v13 = v11;
   v18 = v13;
-  MTAlarmRepeatScheduleEnumerateDays(v12, v17);
+  MTAlarmRepeatScheduleEnumerateDays(repeatSchedule, v17);
   v14 = objc_opt_new();
   [v14 na_safeSetObject:v8 forKey:@"time"];
-  [v14 na_safeSetObject:v9 forKey:@"label"];
-  [v14 na_safeSetObject:v10 forKey:@"identifier"];
+  [v14 na_safeSetObject:displayTitle forKey:@"label"];
+  [v14 na_safeSetObject:alarmIDString forKey:@"identifier"];
   if ([v13 count])
   {
     [v14 setObject:v13 forKeyedSubscript:@"repeat"];
   }
 
-  v15 = [a1 initWithDomain:@"Alarm" verb:v6 parametersByName:v14];
+  v15 = [self initWithDomain:@"Alarm" verb:v6 parametersByName:v14];
 
   return v15;
 }
@@ -140,11 +140,11 @@
 
   v9 = v8;
   _Block_object_dispose(&v15, 8);
-  v10 = [v8 defaultSearchableIndex];
-  v11 = [v5 alarmIDString];
-  v19[0] = v11;
+  defaultSearchableIndex = [v8 defaultSearchableIndex];
+  alarmIDString = [v5 alarmIDString];
+  v19[0] = alarmIDString;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-  [v10 deleteInteractionsWithGroupIdentifiers:v12 bundleID:v7 protectionClass:0 completionHandler:v6];
+  [defaultSearchableIndex deleteInteractionsWithGroupIdentifiers:v12 bundleID:v7 protectionClass:0 completionHandler:v6];
 
   v13 = *MEMORY[0x1E69E9840];
 }

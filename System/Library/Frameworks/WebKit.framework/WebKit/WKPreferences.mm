@@ -96,14 +96,14 @@
 - (NSString)_fixedPitchFontFamily;
 - (WKInactiveSchedulingPolicy)inactiveSchedulingPolicy;
 - (WKPreferences)init;
-- (WKPreferences)initWithCoder:(id)a3;
+- (WKPreferences)initWithCoder:(id)coder;
 - (double)_inactiveMediaCaptureStreamRepromptIntervalInMinutes;
 - (double)_interactionRegionInlinePadding;
 - (double)_interactionRegionMinimumCornerRadius;
 - (double)_managedMediaSourceHighThreshold;
 - (double)_managedMediaSourceLowThreshold;
 - (double)_mediaPreferredFullscreenWidth;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)_editableLinkBehavior;
 - (int64_t)_pitchCorrectionAlgorithm;
 - (int64_t)_storageBlockingPolicy;
@@ -111,11 +111,11 @@
 - (unint64_t)_defaultFontSize;
 - (unint64_t)_javaScriptRuntimeFlags;
 - (unint64_t)_visibleDebugOverlayRegions;
-- (void)_setEditableLinkBehavior:(int64_t)a3;
-- (void)_setFixedPitchFontFamily:(id)a3;
-- (void)_setStorageBlockingPolicy:(int64_t)a3;
+- (void)_setEditableLinkBehavior:(int64_t)behavior;
+- (void)_setFixedPitchFontFamily:(id)family;
+- (void)_setStorageBlockingPolicy:(int64_t)policy;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setInactiveSchedulingPolicy:(WKInactiveSchedulingPolicy)inactiveSchedulingPolicy;
 @end
 
@@ -123,7 +123,7 @@
 
 + (id)_features
 {
-  v2 = WebKit::WebPreferences::features(a1);
+  v2 = WebKit::WebPreferences::features(self);
   WTF::Vector<WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(v11, v2);
   API::Array::create(v11, &v10);
   v3 = v10;
@@ -160,17 +160,17 @@ LABEL_4:
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v14 = [(WKPreferences *)v3 _apiObject];
+    _apiObject = [(WKPreferences *)v3 _apiObject];
     v13 = v3;
-    WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v14, &v13, &v12);
-    v5 = [(WKPreferences *)v3 _apiObject];
+    WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &_apiObject, &v13, &v12);
+    _apiObject2 = [(WKPreferences *)v3 _apiObject];
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v6 = v12;
-    v14 = v12;
+    _apiObject = v12;
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v7 = v12;
     v13 = v12;
-    WebKit::WebPreferences::WebPreferences(v5, &v10, &v14, &v13);
+    WebKit::WebPreferences::WebPreferences(_apiObject2, &v10, &_apiObject, &v13);
     if (v7 && atomic_fetch_add_explicit(v7, 0xFFFFFFFE, memory_order_relaxed) == 2)
     {
       WTF::StringImpl::destroy(v7, v8);
@@ -226,40 +226,40 @@ LABEL_4:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(WKPreferences *)self minimumFontSize];
-  [a3 encodeDouble:@"minimumFontSize" forKey:?];
-  [a3 encodeBool:-[WKPreferences javaScriptCanOpenWindowsAutomatically](self forKey:{"javaScriptCanOpenWindowsAutomatically"), @"javaScriptCanOpenWindowsAutomatically"}];
-  [a3 encodeBool:-[WKPreferences javaScriptEnabled](self forKey:{"javaScriptEnabled"), @"javaScriptEnabled"}];
-  [a3 encodeBool:-[WKPreferences shouldPrintBackgrounds](self forKey:{"shouldPrintBackgrounds"), @"shouldPrintBackgrounds"}];
-  [a3 encodeBool:-[WKPreferences tabFocusesLinks](self forKey:{"tabFocusesLinks"), @"tabFocusesLinks"}];
-  v5 = [(WKPreferences *)self isTextInteractionEnabled];
+  [coder encodeDouble:@"minimumFontSize" forKey:?];
+  [coder encodeBool:-[WKPreferences javaScriptCanOpenWindowsAutomatically](self forKey:{"javaScriptCanOpenWindowsAutomatically"), @"javaScriptCanOpenWindowsAutomatically"}];
+  [coder encodeBool:-[WKPreferences javaScriptEnabled](self forKey:{"javaScriptEnabled"), @"javaScriptEnabled"}];
+  [coder encodeBool:-[WKPreferences shouldPrintBackgrounds](self forKey:{"shouldPrintBackgrounds"), @"shouldPrintBackgrounds"}];
+  [coder encodeBool:-[WKPreferences tabFocusesLinks](self forKey:{"tabFocusesLinks"), @"tabFocusesLinks"}];
+  isTextInteractionEnabled = [(WKPreferences *)self isTextInteractionEnabled];
 
-  [a3 encodeBool:v5 forKey:@"textInteractionEnabled"];
+  [coder encodeBool:isTextInteractionEnabled forKey:@"textInteractionEnabled"];
 }
 
-- (WKPreferences)initWithCoder:(id)a3
+- (WKPreferences)initWithCoder:(id)coder
 {
   v4 = [(WKPreferences *)self init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"minimumFontSize"];
+    [coder decodeDoubleForKey:@"minimumFontSize"];
     [(WKPreferences *)v4 setMinimumFontSize:?];
-    -[WKPreferences setJavaScriptCanOpenWindowsAutomatically:](v4, "setJavaScriptCanOpenWindowsAutomatically:", [a3 decodeBoolForKey:@"javaScriptCanOpenWindowsAutomatically"]);
-    -[WKPreferences setJavaScriptEnabled:](v4, "setJavaScriptEnabled:", [a3 decodeBoolForKey:@"javaScriptEnabled"]);
-    -[WKPreferences setShouldPrintBackgrounds:](v4, "setShouldPrintBackgrounds:", [a3 decodeBoolForKey:@"shouldPrintBackgrounds"]);
-    -[WKPreferences setTabFocusesLinks:](v4, "setTabFocusesLinks:", [a3 decodeBoolForKey:@"tabFocusesLinks"]);
-    if ([a3 containsValueForKey:@"textInteractionEnabled"])
+    -[WKPreferences setJavaScriptCanOpenWindowsAutomatically:](v4, "setJavaScriptCanOpenWindowsAutomatically:", [coder decodeBoolForKey:@"javaScriptCanOpenWindowsAutomatically"]);
+    -[WKPreferences setJavaScriptEnabled:](v4, "setJavaScriptEnabled:", [coder decodeBoolForKey:@"javaScriptEnabled"]);
+    -[WKPreferences setShouldPrintBackgrounds:](v4, "setShouldPrintBackgrounds:", [coder decodeBoolForKey:@"shouldPrintBackgrounds"]);
+    -[WKPreferences setTabFocusesLinks:](v4, "setTabFocusesLinks:", [coder decodeBoolForKey:@"tabFocusesLinks"]);
+    if ([coder containsValueForKey:@"textInteractionEnabled"])
     {
-      -[WKPreferences setTextInteractionEnabled:](v4, "setTextInteractionEnabled:", [a3 decodeBoolForKey:@"textInteractionEnabled"]);
+      -[WKPreferences setTextInteractionEnabled:](v4, "setTextInteractionEnabled:", [coder decodeBoolForKey:@"textInteractionEnabled"]);
     }
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = API::Object::newObject(0x88uLL, 91);
   v5 = *(WebKit::WebPreferences::WebPreferences(v4, &self->_preferences) + 1);
@@ -482,10 +482,10 @@ LABEL_4:
   }
 }
 
-- (void)_setStorageBlockingPolicy:(int64_t)a3
+- (void)_setStorageBlockingPolicy:(int64_t)policy
 {
-  v3 = a3 == 1;
-  if (a3 == 2)
+  v3 = policy == 1;
+  if (policy == 2)
   {
     v3 = 2;
   }
@@ -799,9 +799,9 @@ LABEL_4:
   return v5;
 }
 
-- (void)_setFixedPitchFontFamily:(id)a3
+- (void)_setFixedPitchFontFamily:(id)family
 {
-  MEMORY[0x19EB02040](&v6, a3);
+  MEMORY[0x19EB02040](&v6, family);
   WebKit::WebPreferences::setFixedFontFamily(&self->_preferences, &v6);
   v5 = v6;
   v6 = 0;
@@ -816,7 +816,7 @@ LABEL_4:
 
 + (id)_internalDebugFeatures
 {
-  v2 = WebKit::WebPreferences::internalDebugFeatures(a1);
+  v2 = WebKit::WebPreferences::internalDebugFeatures(self);
   WTF::Vector<WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(v11, v2);
   API::Array::create(v11, &v10);
   v3 = v10;
@@ -846,7 +846,7 @@ LABEL_4:
 
 + (id)_experimentalFeatures
 {
-  v2 = WebKit::WebPreferences::experimentalFeatures(a1);
+  v2 = WebKit::WebPreferences::experimentalFeatures(self);
   WTF::Vector<WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(v11, v2);
   API::Array::create(v11, &v10);
   v3 = v10;
@@ -1058,19 +1058,19 @@ LABEL_4:
   }
 }
 
-- (void)_setEditableLinkBehavior:(int64_t)a3
+- (void)_setEditableLinkBehavior:(int64_t)behavior
 {
-  if (a3 >= 5)
+  if (behavior >= 5)
   {
-    v3 = 4;
+    behaviorCopy = 4;
   }
 
   else
   {
-    v3 = a3;
+    behaviorCopy = behavior;
   }
 
-  v4 = v3;
+  v4 = behaviorCopy;
   WebKit::WebPreferences::setEditableLinkBehavior(&self->_preferences, &v4);
 }
 

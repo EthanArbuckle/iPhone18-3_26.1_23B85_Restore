@@ -1,25 +1,25 @@
 @interface CMStyle
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CMStyle)init;
-- (CMStyle)initWithStyle:(id)a3;
-- (id)attributeForName:(id)a3;
+- (CMStyle)initWithStyle:(id)style;
+- (id)attributeForName:(id)name;
 - (id)cacheFriendlyCSSStyleString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)cssStyleString;
-- (id)propertyForName:(id)a3;
-- (void)addPropertiesToCSSStyleString:(id)a3;
-- (void)appendOriginInfoFromPoint:(CGPoint)a3;
-- (void)appendPositionInfoFromRect:(CGRect)a3;
-- (void)appendPropertyForName:(id)a3 color:(id)a4;
-- (void)appendPropertyForName:(id)a3 floatValue:(float)a4;
-- (void)appendPropertyForName:(id)a3 intValue:(int)a4;
-- (void)appendPropertyForName:(id)a3 length:(double)a4 unit:(int)a5;
-- (void)appendPropertyForName:(id)a3 oadTextSpacing:(id)a4 lineHeight:(float)a5 unit:(int)a6;
-- (void)appendPropertyForName:(id)a3 oadTextSpacing:(id)a4 unit:(int)a5;
-- (void)appendPropertyForName:(id)a3 stringValue:(id)a4;
-- (void)appendPropertyForName:(id)a3 stringWithColons:(id)a4;
-- (void)appendPropertyString:(id)a3;
-- (void)appendSizeInfoFromRect:(CGRect)a3;
+- (id)propertyForName:(id)name;
+- (void)addPropertiesToCSSStyleString:(id)string;
+- (void)appendOriginInfoFromPoint:(CGPoint)point;
+- (void)appendPositionInfoFromRect:(CGRect)rect;
+- (void)appendPropertyForName:(id)name color:(id)color;
+- (void)appendPropertyForName:(id)name floatValue:(float)value;
+- (void)appendPropertyForName:(id)name intValue:(int)value;
+- (void)appendPropertyForName:(id)name length:(double)length unit:(int)unit;
+- (void)appendPropertyForName:(id)name oadTextSpacing:(id)spacing lineHeight:(float)height unit:(int)unit;
+- (void)appendPropertyForName:(id)name oadTextSpacing:(id)spacing unit:(int)unit;
+- (void)appendPropertyForName:(id)name stringValue:(id)value;
+- (void)appendPropertyForName:(id)name stringWithColons:(id)colons;
+- (void)appendPropertyString:(id)string;
+- (void)appendSizeInfoFromRect:(CGRect)rect;
 @end
 
 @implementation CMStyle
@@ -57,23 +57,23 @@
   return mStyleString;
 }
 
-- (CMStyle)initWithStyle:(id)a3
+- (CMStyle)initWithStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v16.receiver = self;
   v16.super_class = CMStyle;
   v5 = [(CMStyle *)&v16 init];
   if (v5)
   {
-    if (v4)
+    if (styleCopy)
     {
       v6 = objc_alloc(MEMORY[0x277CBEB38]);
-      v7 = [v4 properties];
-      v8 = [v6 initWithDictionary:v7];
+      properties = [styleCopy properties];
+      v8 = [v6 initWithDictionary:properties];
       properties = v5->properties;
       v5->properties = v8;
 
-      v10 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:v4[2]];
+      v10 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:styleCopy[2]];
     }
 
     else
@@ -94,24 +94,24 @@
   return v5;
 }
 
-- (id)propertyForName:(id)a3
+- (id)propertyForName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->properties objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->properties objectForKey:name];
 
   return v3;
 }
 
-- (id)attributeForName:(id)a3
+- (id)attributeForName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->properties objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->properties objectForKey:name];
 
   return v3;
 }
 
-- (void)addPropertiesToCSSStyleString:(id)a3
+- (void)addPropertiesToCSSStyleString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -136,12 +136,12 @@
         v12 = v11;
         if (v11 && [v11 length])
         {
-          if ([v4 length])
+          if ([stringCopy length])
           {
-            [v4 appendString:@" "];
+            [stringCopy appendString:@" "];
           }
 
-          [v4 appendString:v12];
+          [stringCopy appendString:v12];
         }
       }
 
@@ -160,21 +160,21 @@
   return v3;
 }
 
-- (void)appendPropertyForName:(id)a3 oadTextSpacing:(id)a4 unit:(int)a5
+- (void)appendPropertyForName:(id)name oadTextSpacing:(id)spacing unit:(int)unit
 {
-  v5 = *&a5;
-  v11 = a3;
-  v8 = a4;
-  if (v8)
+  v5 = *&unit;
+  nameCopy = name;
+  spacingCopy = spacing;
+  if (spacingCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v8 percent];
+      [spacingCopy percent];
       v10 = v9 / 100.0;
       if (v10 != 1.0)
       {
-        [(CMStyle *)self appendPropertyForName:v11 length:8 unit:(v10 * 1.2)];
+        [(CMStyle *)self appendPropertyForName:nameCopy length:8 unit:(v10 * 1.2)];
       }
     }
 
@@ -183,144 +183,144 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        -[CMStyle appendPropertyForName:length:unit:](self, "appendPropertyForName:length:unit:", v11, v5, [v8 points]);
+        -[CMStyle appendPropertyForName:length:unit:](self, "appendPropertyForName:length:unit:", nameCopy, v5, [spacingCopy points]);
       }
     }
   }
 }
 
-- (void)appendPropertyForName:(id)a3 oadTextSpacing:(id)a4 lineHeight:(float)a5 unit:(int)a6
+- (void)appendPropertyForName:(id)name oadTextSpacing:(id)spacing lineHeight:(float)height unit:(int)unit
 {
-  v6 = *&a6;
-  v12 = a3;
-  v10 = a4;
-  if (v10)
+  v6 = *&unit;
+  nameCopy = name;
+  spacingCopy = spacing;
+  if (spacingCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (![v10 points])
+      if (![spacingCopy points])
       {
         goto LABEL_7;
       }
 
-      -[CMStyle appendPropertyForName:length:unit:](self, "appendPropertyForName:length:unit:", v12, v6, [v10 points]);
+      -[CMStyle appendPropertyForName:length:unit:](self, "appendPropertyForName:length:unit:", nameCopy, v6, [spacingCopy points]);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v10 percent];
-      [(CMStyle *)self appendPropertyForName:v12 length:1 unit:((v11 / 100.0) * a5)];
+      [spacingCopy percent];
+      [(CMStyle *)self appendPropertyForName:nameCopy length:1 unit:((v11 / 100.0) * height)];
     }
   }
 
 LABEL_7:
 }
 
-- (void)appendPropertyForName:(id)a3 stringWithColons:(id)a4
+- (void)appendPropertyForName:(id)name stringWithColons:(id)colons
 {
-  v7 = a3;
-  v6 = a4;
+  nameCopy = name;
+  colonsCopy = colons;
   if ([(NSMutableString *)self->mStyleString length])
   {
     [(NSMutableString *)self->mStyleString appendString:@" "];
   }
 
-  [(NSMutableString *)self->mStyleString appendString:v7];
-  [(NSMutableString *)self->mStyleString appendString:v6];
+  [(NSMutableString *)self->mStyleString appendString:nameCopy];
+  [(NSMutableString *)self->mStyleString appendString:colonsCopy];
 }
 
-- (void)appendPropertyForName:(id)a3 stringValue:(id)a4
+- (void)appendPropertyForName:(id)name stringValue:(id)value
 {
-  v7 = a3;
-  v6 = a4;
+  nameCopy = name;
+  valueCopy = value;
   if ([(NSMutableString *)self->mStyleString length])
   {
     [(NSMutableString *)self->mStyleString appendString:@" "];
   }
 
-  [(NSMutableString *)self->mStyleString appendString:v7];
+  [(NSMutableString *)self->mStyleString appendString:nameCopy];
   [(NSMutableString *)self->mStyleString appendString:@":"];
-  [(NSMutableString *)self->mStyleString appendString:v6];
+  [(NSMutableString *)self->mStyleString appendString:valueCopy];
   [(NSMutableString *)self->mStyleString appendString:@";"];
 }
 
-- (void)appendPropertyForName:(id)a3 intValue:(int)a4
+- (void)appendPropertyForName:(id)name intValue:(int)value
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&value;
+  nameCopy = name;
   if ([(NSMutableString *)self->mStyleString length])
   {
     [(NSMutableString *)self->mStyleString appendString:@" "];
   }
 
-  [(NSMutableString *)self->mStyleString appendString:v6];
+  [(NSMutableString *)self->mStyleString appendString:nameCopy];
   [(NSMutableString *)self->mStyleString appendFormat:@": %d;", v4];
 }
 
-- (void)appendPropertyForName:(id)a3 floatValue:(float)a4
+- (void)appendPropertyForName:(id)name floatValue:(float)value
 {
-  v6 = a3;
+  nameCopy = name;
   if ([(NSMutableString *)self->mStyleString length])
   {
     [(NSMutableString *)self->mStyleString appendString:@" "];
   }
 
-  [(NSMutableString *)self->mStyleString appendString:v6];
-  [(NSMutableString *)self->mStyleString appendFormat:@": %f;", a4];
+  [(NSMutableString *)self->mStyleString appendString:nameCopy];
+  [(NSMutableString *)self->mStyleString appendFormat:@": %f;", value];
 }
 
-- (void)appendPropertyForName:(id)a3 length:(double)a4 unit:(int)a5
+- (void)appendPropertyForName:(id)name length:(double)length unit:(int)unit
 {
-  v5 = *&a5;
-  v10 = a3;
+  v5 = *&unit;
+  nameCopy = name;
   if ([(NSMutableString *)self->mStyleString length])
   {
     [(NSMutableString *)self->mStyleString appendString:@" "];
   }
 
-  [(NSMutableString *)self->mStyleString appendString:v10];
+  [(NSMutableString *)self->mStyleString appendString:nameCopy];
   mStyleString = self->mStyleString;
-  v9 = [CMLengthProperty cssStringValue:v5 unit:a4];
+  v9 = [CMLengthProperty cssStringValue:v5 unit:length];
   [(NSMutableString *)mStyleString appendString:v9];
 }
 
-- (void)appendPropertyForName:(id)a3 color:(id)a4
+- (void)appendPropertyForName:(id)name color:(id)color
 {
-  v9 = a3;
-  v6 = a4;
+  nameCopy = name;
+  colorCopy = color;
   if ([(NSMutableString *)self->mStyleString length])
   {
     [(NSMutableString *)self->mStyleString appendString:@" "];
   }
 
-  [(NSMutableString *)self->mStyleString appendString:v9];
+  [(NSMutableString *)self->mStyleString appendString:nameCopy];
   mStyleString = self->mStyleString;
-  v8 = [CMColorProperty cssStringFromTSUColor:v6];
+  v8 = [CMColorProperty cssStringFromTSUColor:colorCopy];
   [(NSMutableString *)mStyleString appendString:v8];
 }
 
-- (void)appendPropertyString:(id)a3
+- (void)appendPropertyString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     if ([(NSMutableString *)self->mStyleString length])
     {
       [(NSMutableString *)self->mStyleString appendString:@" "];
     }
 
-    [(NSMutableString *)self->mStyleString appendString:v4];
+    [(NSMutableString *)self->mStyleString appendString:stringCopy];
   }
 }
 
-- (void)appendPositionInfoFromRect:(CGRect)a3
+- (void)appendPositionInfoFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(NSMutableString *)self->mStyleString length])
   {
     [(NSMutableString *)self->mStyleString appendString:@" "];
@@ -329,10 +329,10 @@ LABEL_7:
   [(NSMutableString *)self->mStyleString appendFormat:@"top:%d; left:%d; width:%d; height:%d;", y, x, width, height];
 }
 
-- (void)appendOriginInfoFromPoint:(CGPoint)a3
+- (void)appendOriginInfoFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(NSMutableString *)self->mStyleString length])
   {
     [(NSMutableString *)self->mStyleString appendString:@" "];
@@ -341,11 +341,11 @@ LABEL_7:
   [(NSMutableString *)self->mStyleString appendFormat:@"top:%d; left:%d;", y, x];
 }
 
-- (void)appendSizeInfoFromRect:(CGRect)a3
+- (void)appendSizeInfoFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  if ([(NSMutableString *)self->mStyleString length:a3.origin.x])
+  height = rect.size.height;
+  width = rect.size.width;
+  if ([(NSMutableString *)self->mStyleString length:rect.origin.x])
   {
     [(NSMutableString *)self->mStyleString appendString:@" "];
   }
@@ -353,17 +353,17 @@ LABEL_7:
   [(NSMutableString *)self->mStyleString appendFormat:@"width:%d; height:%d;", width, height];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithStyle:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -373,7 +373,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSMutableDictionary *)self->properties isEqual:v5->properties])
       {
         v6 = [(NSMutableString *)self->mStyleString isEqualToString:v5->mStyleString];

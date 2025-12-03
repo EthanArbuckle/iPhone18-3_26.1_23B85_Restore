@@ -10,17 +10,17 @@
 - (id)_createAVPlayer;
 - (void)_pause;
 - (void)_play;
-- (void)_proximityStateChanged:(id)a3;
-- (void)currentAssetDurationWithBlock:(id)a3;
+- (void)_proximityStateChanged:(id)changed;
+- (void)currentAssetDurationWithBlock:(id)block;
 - (void)dealloc;
-- (void)handleAudioSessionRouteChangeNotification:(id)a3;
-- (void)loadAudio:(id)a3 withObserverForInterval:(id *)a4 usingBlock:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)handleAudioSessionRouteChangeNotification:(id)notification;
+- (void)loadAudio:(id)audio withObserverForInterval:(id *)interval usingBlock:(id)block;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
 - (void)resetAudioPlayer;
-- (void)seekToTime:(id *)a3;
-- (void)setDuration:(id *)a3;
+- (void)seekToTime:(id *)time;
+- (void)setDuration:(id *)duration;
 - (void)updateProximityMonitoring;
 @end
 
@@ -74,35 +74,35 @@ void __53__PHVoicemailPlayerController_sharedPlayerController__block_invoke(id a
 {
   [(AVPlayer *)self->_audioPlayer removeObserver:self forKeyPath:@"rate"];
   [(AVPlayer *)self->_audioPlayer removeObserver:self forKeyPath:@"status"];
-  v3 = [(PHVoicemailPlayerController *)self didStart];
+  didStart = [(PHVoicemailPlayerController *)self didStart];
 
-  if (v3)
+  if (didStart)
   {
     audioPlayer = self->_audioPlayer;
-    v5 = [(PHVoicemailPlayerController *)self didStart];
-    [(AVPlayer *)audioPlayer removeTimeObserver:v5];
+    didStart2 = [(PHVoicemailPlayerController *)self didStart];
+    [(AVPlayer *)audioPlayer removeTimeObserver:didStart2];
 
     [(PHVoicemailPlayerController *)self setDidStart:0];
   }
 
-  v6 = [(PHVoicemailPlayerController *)self didEnd];
+  didEnd = [(PHVoicemailPlayerController *)self didEnd];
 
-  if (v6)
+  if (didEnd)
   {
     v7 = +[NSNotificationCenter defaultCenter];
-    v8 = [(PHVoicemailPlayerController *)self didEnd];
-    [v7 removeObserver:v8];
+    didEnd2 = [(PHVoicemailPlayerController *)self didEnd];
+    [v7 removeObserver:didEnd2];
 
     [(PHVoicemailPlayerController *)self setDidEnd:0];
   }
 
-  v9 = [(PHVoicemailPlayerController *)self timeObserver];
+  timeObserver = [(PHVoicemailPlayerController *)self timeObserver];
 
-  if (v9)
+  if (timeObserver)
   {
     v10 = self->_audioPlayer;
-    v11 = [(PHVoicemailPlayerController *)self timeObserver];
-    [(AVPlayer *)v10 removeTimeObserver:v11];
+    timeObserver2 = [(PHVoicemailPlayerController *)self timeObserver];
+    [(AVPlayer *)v10 removeTimeObserver:timeObserver2];
 
     [(PHVoicemailPlayerController *)self setTimeObserver:0];
   }
@@ -114,22 +114,22 @@ void __53__PHVoicemailPlayerController_sharedPlayerController__block_invoke(id a
   self->_status = 0;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  if ([a4 isEqual:self->_audioPlayer])
+  pathCopy = path;
+  if ([object isEqual:self->_audioPlayer])
   {
-    if ([v8 isEqualToString:@"status"])
+    if ([pathCopy isEqualToString:@"status"])
     {
-      v9 = [(AVPlayer *)self->_audioPlayer status];
-      if (v9 == AVPlayerStatusUnknown)
+      status = [(AVPlayer *)self->_audioPlayer status];
+      if (status == AVPlayerStatusUnknown)
       {
         goto LABEL_21;
       }
 
-      if (v9 != AVPlayerStatusFailed)
+      if (status != AVPlayerStatusFailed)
       {
-        if (v9 == AVPlayerStatusReadyToPlay)
+        if (status == AVPlayerStatusReadyToPlay)
         {
           self->_status = 1;
 LABEL_22:
@@ -142,9 +142,9 @@ LABEL_22:
         v18 = PHDefaultLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [(AVPlayer *)self->_audioPlayer status];
+          status2 = [(AVPlayer *)self->_audioPlayer status];
           v20 = 134217984;
-          v21 = v19;
+          v21 = status2;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[WARN] PHVoicemailPlayerController encountered an AVPlayerStatus that is not known: %ld. Setting status to unknown.", &v20, 0xCu);
         }
 
@@ -153,19 +153,19 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v13 = [(AVPlayer *)self->_audioPlayer error];
+      error = [(AVPlayer *)self->_audioPlayer error];
       v14 = PHDefaultLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         [PHVoicemailPlayerController observeValueForKeyPath:ofObject:change:context:];
       }
 
-      v15 = [v13 domain];
-      if ([v15 isEqualToString:AVFoundationErrorDomain])
+      domain = [error domain];
+      if ([domain isEqualToString:AVFoundationErrorDomain])
       {
-        v16 = [v13 code];
+        code = [error code];
 
-        if (v16 != -11819)
+        if (code != -11819)
         {
 LABEL_17:
 
@@ -181,14 +181,14 @@ LABEL_17:
 
         [(PHVoicemailPlayerController *)self resetAudioPlayer];
         self->_status = 2;
-        v15 = +[NSNotificationCenter defaultCenter];
-        [v15 postNotificationName:@"PHVoicemailPlayerControllerMediaServicesResetNotification" object:0];
+        domain = +[NSNotificationCenter defaultCenter];
+        [domain postNotificationName:@"PHVoicemailPlayerControllerMediaServicesResetNotification" object:0];
       }
 
       goto LABEL_17;
     }
 
-    if ([v8 isEqualToString:@"rate"])
+    if ([pathCopy isEqualToString:@"rate"])
     {
       [(PHVoicemailPlayerController *)self updateProximityMonitoring];
       v10 = +[NSNotificationCenter defaultCenter];
@@ -202,12 +202,12 @@ LABEL_23:
 
 - (BOOL)isPlaying
 {
-  v3 = [(PHVoicemailPlayerController *)self audioPlayer];
-  [v3 rate];
+  audioPlayer = [(PHVoicemailPlayerController *)self audioPlayer];
+  [audioPlayer rate];
   if (v4 == 1.0)
   {
-    v5 = [(PHVoicemailPlayerController *)self audioPlayer];
-    v6 = [v5 status] == 1;
+    audioPlayer2 = [(PHVoicemailPlayerController *)self audioPlayer];
+    v6 = [audioPlayer2 status] == 1;
   }
 
   else
@@ -319,8 +319,8 @@ LABEL_23:
 - (id)_createAVPlayer
 {
   v3 = [AVPlayer alloc];
-  v4 = [(PHVoicemailPlayerController *)self playerItem];
-  v5 = [v3 initWithPlayerItem:v4];
+  playerItem = [(PHVoicemailPlayerController *)self playerItem];
+  v5 = [v3 initWithPlayerItem:playerItem];
 
   [v5 setActionAtItemEnd:1];
   [v5 addObserver:self forKeyPath:@"status" options:0 context:0];
@@ -341,28 +341,28 @@ void __46__PHVoicemailPlayerController__createAVPlayer__block_invoke(id a1)
   [v1 postNotificationName:@"kPHVoicemailPlayerControllerDidStartPlayingNotification" object:0];
 }
 
-- (void)loadAudio:(id)a3 withObserverForInterval:(id *)a4 usingBlock:(id)a5
+- (void)loadAudio:(id)audio withObserverForInterval:(id *)interval usingBlock:(id)block
 {
-  v8 = a3;
-  if (v8)
+  audioCopy = audio;
+  if (audioCopy)
   {
-    v9 = a5;
+    blockCopy = block;
     v10 = PHDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v8;
+      *&buf[4] = audioCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "PHVoicemailPlayerController: Loading voicemail asset: %@", buf, 0xCu);
     }
 
-    v11 = [AVPlayerItem playerItemWithAsset:v8];
+    v11 = [AVPlayerItem playerItemWithAsset:audioCopy];
     [(PHVoicemailPlayerController *)self setPlayerItem:v11];
 
     if (!self->_audioPlayer)
     {
-      v12 = [(PHVoicemailPlayerController *)self _createAVPlayer];
+      _createAVPlayer = [(PHVoicemailPlayerController *)self _createAVPlayer];
       audioPlayer = self->_audioPlayer;
-      self->_audioPlayer = v12;
+      self->_audioPlayer = _createAVPlayer;
     }
 
     *buf = *&kCMTimeIndefinite.value;
@@ -373,34 +373,34 @@ void __46__PHVoicemailPlayerController__createAVPlayer__block_invoke(id a1)
     epoch = kCMTimeZero.epoch;
     [(AVPlayer *)v14 seekToTime:buf];
     v15 = self->_audioPlayer;
-    v16 = [(PHVoicemailPlayerController *)self timeObserver];
-    [(AVPlayer *)v15 removeTimeObserver:v16];
+    timeObserver = [(PHVoicemailPlayerController *)self timeObserver];
+    [(AVPlayer *)v15 removeTimeObserver:timeObserver];
 
     v17 = self->_audioPlayer;
-    *buf = *&a4->var0;
-    epoch = a4->var3;
-    v18 = [(AVPlayer *)v17 addPeriodicTimeObserverForInterval:buf queue:0 usingBlock:v9];
+    *buf = *&interval->var0;
+    epoch = interval->var3;
+    v18 = [(AVPlayer *)v17 addPeriodicTimeObserverForInterval:buf queue:0 usingBlock:blockCopy];
 
     [(PHVoicemailPlayerController *)self setTimeObserver:v18];
-    v19 = [(PHVoicemailPlayerController *)self didEnd];
+    didEnd = [(PHVoicemailPlayerController *)self didEnd];
 
-    if (v19)
+    if (didEnd)
     {
       v20 = +[NSNotificationCenter defaultCenter];
-      v21 = [(PHVoicemailPlayerController *)self didEnd];
-      [v20 removeObserver:v21];
+      didEnd2 = [(PHVoicemailPlayerController *)self didEnd];
+      [v20 removeObserver:didEnd2];
 
       [(PHVoicemailPlayerController *)self setDidEnd:0];
     }
 
     v22 = +[NSNotificationCenter defaultCenter];
-    v23 = [(PHVoicemailPlayerController *)self playerItem];
+    playerItem = [(PHVoicemailPlayerController *)self playerItem];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = __76__PHVoicemailPlayerController_loadAudio_withObserverForInterval_usingBlock___block_invoke;
     v28[3] = &unk_1002866F8;
     v28[4] = self;
-    v24 = [v22 addObserverForName:AVPlayerItemDidPlayToEndTimeNotification object:v23 queue:0 usingBlock:v28];
+    v24 = [v22 addObserverForName:AVPlayerItemDidPlayToEndTimeNotification object:playerItem queue:0 usingBlock:v28];
     [(PHVoicemailPlayerController *)self setDidEnd:v24];
 
     self->_status = 1;
@@ -431,9 +431,9 @@ id __76__PHVoicemailPlayerController_loadAudio_withObserverForInterval_usingBloc
 
 - (void)play
 {
-  v3 = [(PHVoicemailPlayerController *)self playerItem];
+  playerItem = [(PHVoicemailPlayerController *)self playerItem];
 
-  if (v3)
+  if (playerItem)
   {
     if (![(PHVoicemailPlayerController *)self interrupted])
     {
@@ -447,21 +447,21 @@ id __76__PHVoicemailPlayerController_loadAudio_withObserverForInterval_usingBloc
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PHVoicemailPlayerController: Starting voicemail playback", v15, 2u);
     }
 
-    v5 = [(AVPlayer *)self->_audioPlayer currentItem];
-    v6 = [(PHVoicemailPlayerController *)self playerItem];
-    v7 = [v5 isEqual:v6];
+    currentItem = [(AVPlayer *)self->_audioPlayer currentItem];
+    playerItem2 = [(PHVoicemailPlayerController *)self playerItem];
+    v7 = [currentItem isEqual:playerItem2];
 
     if ((v7 & 1) == 0)
     {
       audioPlayer = self->_audioPlayer;
-      v9 = [(PHVoicemailPlayerController *)self playerItem];
-      [(AVPlayer *)audioPlayer replaceCurrentItemWithPlayerItem:v9];
+      playerItem3 = [(PHVoicemailPlayerController *)self playerItem];
+      [(AVPlayer *)audioPlayer replaceCurrentItemWithPlayerItem:playerItem3];
     }
 
     v10 = +[PHAudioDeviceController sharedAudioDeviceController];
-    v11 = [v10 receiverRouteIsPicked];
+    receiverRouteIsPicked = [v10 receiverRouteIsPicked];
 
-    if (v11)
+    if (receiverRouteIsPicked)
     {
       [(PHVoicemailPlayerController *)self setIsWaitingForProximitySensor:1];
       v12 = +[UIDevice currentDevice];
@@ -530,12 +530,12 @@ id __76__PHVoicemailPlayerController_loadAudio_withObserverForInterval_usingBloc
   [(AVPlayer *)audioPlayer pause];
 }
 
-- (void)seekToTime:(id *)a3
+- (void)seekToTime:(id *)time
 {
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = *a3;
+    v9 = *time;
     v6 = CMTimeCopyDescription(0, &v9);
     v7 = CFAutorelease(v6);
     LODWORD(v9.var0) = 138412290;
@@ -544,7 +544,7 @@ id __76__PHVoicemailPlayerController_loadAudio_withObserverForInterval_usingBloc
   }
 
   audioPlayer = self->_audioPlayer;
-  v9 = *a3;
+  v9 = *time;
   [(AVPlayer *)audioPlayer seekToTime:&v9];
 }
 
@@ -571,9 +571,9 @@ id __76__PHVoicemailPlayerController_loadAudio_withObserverForInterval_usingBloc
   return v7 / v6 >= v5 / v4;
 }
 
-- (void)currentAssetDurationWithBlock:(id)a3
+- (void)currentAssetDurationWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PHVoicemailPlayerController *)self duration];
   if ((v10[60] & 1) != 0 && ([(PHVoicemailPlayerController *)self duration], (v10[36] & 0x10) != 0))
   {
@@ -582,8 +582,8 @@ id __76__PHVoicemailPlayerController_loadAudio_withObserverForInterval_usingBloc
     v6[1] = 3221225472;
     v6[2] = __61__PHVoicemailPlayerController_currentAssetDurationWithBlock___block_invoke;
     v7 = v6[3] = &unk_100285810;
-    v8 = self;
-    v9 = v4;
+    selfCopy = self;
+    v9 = blockCopy;
     v5 = v7;
     [v5 loadValuesAsynchronouslyForKeys:&off_1002954F8 completionHandler:v6];
   }
@@ -591,7 +591,7 @@ id __76__PHVoicemailPlayerController_loadAudio_withObserverForInterval_usingBloc
   else
   {
     [(PHVoicemailPlayerController *)self duration];
-    (*(v4 + 2))(v4, v10);
+    (*(blockCopy + 2))(blockCopy, v10);
   }
 }
 
@@ -638,16 +638,16 @@ void __61__PHVoicemailPlayerController_currentAssetDurationWithBlock___block_inv
 
 - (AVAsset)currentAsset
 {
-  v2 = [(PHVoicemailPlayerController *)self playerItem];
-  v3 = [v2 asset];
+  playerItem = [(PHVoicemailPlayerController *)self playerItem];
+  asset = [playerItem asset];
 
-  return v3;
+  return asset;
 }
 
-- (void)handleAudioSessionRouteChangeNotification:(id)a3
+- (void)handleAudioSessionRouteChangeNotification:(id)notification
 {
-  v4 = a3;
-  v3 = v4;
+  notificationCopy = notification;
+  v3 = notificationCopy;
   TUDispatchMainIfNecessary();
 }
 
@@ -673,9 +673,9 @@ void __73__PHVoicemailPlayerController_handleAudioSessionRouteChangeNotification
   v3 = +[PHAudioDeviceController sharedAudioDeviceController];
   if ([v3 receiverRouteIsPicked])
   {
-    v4 = [(PHVoicemailPlayerController *)self isPlaying];
+    isPlaying = [(PHVoicemailPlayerController *)self isPlaying];
 
-    if (v4)
+    if (isPlaying)
     {
       v5 = 1;
       goto LABEL_6;
@@ -692,22 +692,22 @@ LABEL_6:
   [v6 setProximityMonitoringEnabled:v5];
 }
 
-- (void)_proximityStateChanged:(id)a3
+- (void)_proximityStateChanged:(id)changed
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 proximityState];
+  proximityState = [v4 proximityState];
 
-  if (v5)
+  if (proximityState)
   {
 
     [(PHVoicemailPlayerController *)self _play];
   }
 }
 
-- (void)setDuration:(id *)a3
+- (void)setDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_duration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_duration.epoch = duration->var3;
   *&self->_duration.value = v3;
 }
 

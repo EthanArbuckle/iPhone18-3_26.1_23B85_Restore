@@ -1,15 +1,15 @@
 @interface StockDataFormatter
 + (id)sharedDataFormatter;
 - (NSString)percentSymbol;
-- (id)_locked_formatNumber:(id)a3 withPrecision:(unint64_t)a4 useGroupSeparator:(BOOL)a5;
-- (id)_locked_formatPercent:(id)a3 withPrecision:(unint64_t)a4;
-- (id)formattedChangeInPercentForStock:(id)a3;
-- (id)formattedChangeInPointsForStock:(id)a3 withPrecision:(unint64_t)a4 droppingFractionDigitsIfLengthExceeds:(unint64_t)a5;
-- (id)formattedNumber:(id)a3 withPrecision:(unint64_t)a4 useGroupSeparator:(BOOL)a5 droppingFractionDigitsIfLengthExceeds:(unint64_t)a6;
-- (id)formattedPercent:(id)a3 withPrecision:(unint64_t)a4;
-- (id)formattedPriceForStock:(id)a3 withPrecision:(unint64_t)a4 droppingFractionDigitsIfLengthExceeds:(unint64_t)a5;
+- (id)_locked_formatNumber:(id)number withPrecision:(unint64_t)precision useGroupSeparator:(BOOL)separator;
+- (id)_locked_formatPercent:(id)percent withPrecision:(unint64_t)precision;
+- (id)formattedChangeInPercentForStock:(id)stock;
+- (id)formattedChangeInPointsForStock:(id)stock withPrecision:(unint64_t)precision droppingFractionDigitsIfLengthExceeds:(unint64_t)exceeds;
+- (id)formattedNumber:(id)number withPrecision:(unint64_t)precision useGroupSeparator:(BOOL)separator droppingFractionDigitsIfLengthExceeds:(unint64_t)exceeds;
+- (id)formattedPercent:(id)percent withPrecision:(unint64_t)precision;
+- (id)formattedPriceForStock:(id)stock withPrecision:(unint64_t)precision droppingFractionDigitsIfLengthExceeds:(unint64_t)exceeds;
 - (id)initPrivate;
-- (void)_resetLocale:(id)a3;
+- (void)_resetLocale:(id)locale;
 - (void)dealloc;
 @end
 
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __41__StockDataFormatter_sharedDataFormatter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDataFormatter_onceToken != -1)
   {
     dispatch_once(&sharedDataFormatter_onceToken, block);
@@ -55,8 +55,8 @@ uint64_t __41__StockDataFormatter_sharedDataFormatter__block_invoke()
     v2->_percentFormatterQueue = v5;
 
     [(StockDataFormatter *)v2 _resetLocale:0];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__resetLocale_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__resetLocale_ name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v2;
@@ -64,24 +64,24 @@ uint64_t __41__StockDataFormatter_sharedDataFormatter__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = StockDataFormatter;
   [(StockDataFormatter *)&v4 dealloc];
 }
 
-- (id)formattedChangeInPercentForStock:(id)a3
+- (id)formattedChangeInPercentForStock:(id)stock
 {
-  v4 = a3;
-  v5 = [v4 change];
-  [v5 floatValue];
+  stockCopy = stock;
+  change = [stockCopy change];
+  [change floatValue];
   v7 = v6;
 
-  v8 = [v4 price];
+  price = [stockCopy price];
 
-  [v8 floatValue];
+  [price floatValue];
   v10 = v9;
 
   *&v11 = v10 - v7;
@@ -100,54 +100,54 @@ uint64_t __41__StockDataFormatter_sharedDataFormatter__block_invoke()
   return v12;
 }
 
-- (id)formattedChangeInPointsForStock:(id)a3 withPrecision:(unint64_t)a4 droppingFractionDigitsIfLengthExceeds:(unint64_t)a5
+- (id)formattedChangeInPointsForStock:(id)stock withPrecision:(unint64_t)precision droppingFractionDigitsIfLengthExceeds:(unint64_t)exceeds
 {
-  v8 = [a3 change];
-  [v8 floatValue];
+  change = [stock change];
+  [change floatValue];
   v10 = v9;
 
   *&v11 = fabsf(v10);
   v12 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
-  v13 = [(StockDataFormatter *)self formattedNumber:v12 withPrecision:a4 useGroupSeparator:1 droppingFractionDigitsIfLengthExceeds:a5];
+  v13 = [(StockDataFormatter *)self formattedNumber:v12 withPrecision:precision useGroupSeparator:1 droppingFractionDigitsIfLengthExceeds:exceeds];
 
   return v13;
 }
 
-- (id)formattedPriceForStock:(id)a3 withPrecision:(unint64_t)a4 droppingFractionDigitsIfLengthExceeds:(unint64_t)a5
+- (id)formattedPriceForStock:(id)stock withPrecision:(unint64_t)precision droppingFractionDigitsIfLengthExceeds:(unint64_t)exceeds
 {
-  v8 = [a3 price];
-  [v8 floatValue];
+  price = [stock price];
+  [price floatValue];
   v10 = v9;
 
   LODWORD(v11) = v10;
   v12 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
-  v13 = [(StockDataFormatter *)self formattedNumber:v12 withPrecision:a4 useGroupSeparator:1 droppingFractionDigitsIfLengthExceeds:a5];
+  v13 = [(StockDataFormatter *)self formattedNumber:v12 withPrecision:precision useGroupSeparator:1 droppingFractionDigitsIfLengthExceeds:exceeds];
 
   return v13;
 }
 
-- (id)formattedNumber:(id)a3 withPrecision:(unint64_t)a4 useGroupSeparator:(BOOL)a5 droppingFractionDigitsIfLengthExceeds:(unint64_t)a6
+- (id)formattedNumber:(id)number withPrecision:(unint64_t)precision useGroupSeparator:(BOOL)separator droppingFractionDigitsIfLengthExceeds:(unint64_t)exceeds
 {
-  v10 = a3;
+  numberCopy = number;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy_;
   v25 = __Block_byref_object_dispose_;
   v26 = 0;
-  v11 = [(StockDataFormatter *)self decimalFormatterQueue];
+  decimalFormatterQueue = [(StockDataFormatter *)self decimalFormatterQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __108__StockDataFormatter_formattedNumber_withPrecision_useGroupSeparator_droppingFractionDigitsIfLengthExceeds___block_invoke;
   v15[3] = &unk_279D15B78;
   v15[4] = self;
-  v16 = v10;
+  v16 = numberCopy;
   v17 = &v21;
-  v18 = a4;
-  v20 = a5;
-  v19 = a6;
-  v12 = v10;
-  dispatch_sync(v11, v15);
+  precisionCopy = precision;
+  separatorCopy = separator;
+  exceedsCopy = exceeds;
+  v12 = numberCopy;
+  dispatch_sync(decimalFormatterQueue, v15);
 
   v13 = v22[5];
   _Block_object_dispose(&v21, 8);
@@ -173,26 +173,26 @@ unint64_t __108__StockDataFormatter_formattedNumber_withPrecision_useGroupSepara
   return result;
 }
 
-- (id)formattedPercent:(id)a3 withPrecision:(unint64_t)a4
+- (id)formattedPercent:(id)percent withPrecision:(unint64_t)precision
 {
-  v6 = a3;
+  percentCopy = percent;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v7 = [(StockDataFormatter *)self percentFormatterQueue];
+  percentFormatterQueue = [(StockDataFormatter *)self percentFormatterQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__StockDataFormatter_formattedPercent_withPrecision___block_invoke;
   v11[3] = &unk_279D15BA0;
   v11[4] = self;
-  v12 = v6;
+  v12 = percentCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
-  dispatch_sync(v7, v11);
+  precisionCopy = precision;
+  v8 = percentCopy;
+  dispatch_sync(percentFormatterQueue, v11);
 
   v9 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -207,26 +207,26 @@ uint64_t __53__StockDataFormatter_formattedPercent_withPrecision___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_locked_formatNumber:(id)a3 withPrecision:(unint64_t)a4 useGroupSeparator:(BOOL)a5
+- (id)_locked_formatNumber:(id)number withPrecision:(unint64_t)precision useGroupSeparator:(BOOL)separator
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(StockDataFormatter *)self decimalFormatter];
-  [v9 setMaximumFractionDigits:a4];
+  separatorCopy = separator;
+  numberCopy = number;
+  decimalFormatter = [(StockDataFormatter *)self decimalFormatter];
+  [decimalFormatter setMaximumFractionDigits:precision];
 
-  v10 = [(StockDataFormatter *)self decimalFormatter];
-  [v10 setMinimumFractionDigits:a4];
+  decimalFormatter2 = [(StockDataFormatter *)self decimalFormatter];
+  [decimalFormatter2 setMinimumFractionDigits:precision];
 
-  v11 = [(StockDataFormatter *)self decimalFormatter];
-  [v11 setUsesGroupingSeparator:v5];
+  decimalFormatter3 = [(StockDataFormatter *)self decimalFormatter];
+  [decimalFormatter3 setUsesGroupingSeparator:separatorCopy];
 
-  v12 = [(StockDataFormatter *)self decimalFormatter];
-  v13 = [v12 stringFromNumber:v8];
+  decimalFormatter4 = [(StockDataFormatter *)self decimalFormatter];
+  v13 = [decimalFormatter4 stringFromNumber:numberCopy];
 
   v14 = +[StocksPreferences sharedPreferences];
-  LODWORD(v12) = [v14 textAttachmentDirectionIsRightToLeft];
+  LODWORD(decimalFormatter4) = [v14 textAttachmentDirectionIsRightToLeft];
 
-  if (v12)
+  if (decimalFormatter4)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C%@", 8207, v13];
 
@@ -236,38 +236,38 @@ uint64_t __53__StockDataFormatter_formattedPercent_withPrecision___block_invoke(
   return v13;
 }
 
-- (id)_locked_formatPercent:(id)a3 withPrecision:(unint64_t)a4
+- (id)_locked_formatPercent:(id)percent withPrecision:(unint64_t)precision
 {
-  v6 = a3;
-  v7 = [(StockDataFormatter *)self percentFormatter];
-  [v7 setMaximumFractionDigits:a4];
+  percentCopy = percent;
+  percentFormatter = [(StockDataFormatter *)self percentFormatter];
+  [percentFormatter setMaximumFractionDigits:precision];
 
-  v8 = [(StockDataFormatter *)self percentFormatter];
-  [v8 setMinimumFractionDigits:a4];
+  percentFormatter2 = [(StockDataFormatter *)self percentFormatter];
+  [percentFormatter2 setMinimumFractionDigits:precision];
 
-  v9 = [(StockDataFormatter *)self percentFormatter];
-  v10 = [v9 stringFromNumber:v6];
+  percentFormatter3 = [(StockDataFormatter *)self percentFormatter];
+  v10 = [percentFormatter3 stringFromNumber:percentCopy];
 
   return v10;
 }
 
-- (void)_resetLocale:(id)a3
+- (void)_resetLocale:(id)locale
 {
-  v4 = [(StockDataFormatter *)self decimalFormatterQueue];
+  decimalFormatterQueue = [(StockDataFormatter *)self decimalFormatterQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__StockDataFormatter__resetLocale___block_invoke;
   block[3] = &unk_279D15BF0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(decimalFormatterQueue, block);
 
-  v5 = [(StockDataFormatter *)self percentFormatterQueue];
+  percentFormatterQueue = [(StockDataFormatter *)self percentFormatterQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__StockDataFormatter__resetLocale___block_invoke_2;
   v6[3] = &unk_279D15BF0;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(percentFormatterQueue, v6);
 }
 
 void __35__StockDataFormatter__resetLocale___block_invoke(uint64_t a1)
@@ -305,14 +305,14 @@ void __35__StockDataFormatter__resetLocale___block_invoke_2(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(StockDataFormatter *)self percentFormatterQueue];
+  percentFormatterQueue = [(StockDataFormatter *)self percentFormatterQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__StockDataFormatter_percentSymbol__block_invoke;
   v6[3] = &unk_279D15C18;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(percentFormatterQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

@@ -1,25 +1,25 @@
 @interface PEGASUSSchemaPEGASUSCirAlerts
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSCirAlerts)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSCirAlerts)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSCirAlerts)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSCirAlerts)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSCirAlerts
 
-- (PEGASUSSchemaPEGASUSCirAlerts)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSCirAlerts)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v55.receiver = self;
   v55.super_class = PEGASUSSchemaPEGASUSCirAlerts;
   v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)&v55 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"cirAlert"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"cirAlert"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlert:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"cirAlertContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlertContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"cirAlertDictionaryOverKgBoost"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertDictionaryOverKgBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlertDictionaryOverKgBoost:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"cirAlertDomainFallback"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertDomainFallback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlertDomainFallback:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"cirAlertEmergencyOverride"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertEmergencyOverride"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlertEmergencyOverride:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"cirAlertKgWaBoost"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertKgWaBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlertKgWaBoost:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"cirAlertKgWaBoostQa"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertKgWaBoostQa"];
     objc_opt_class();
     v54 = v18;
     if (objc_opt_isKindOfClass())
@@ -76,7 +76,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlertKgWaBoostQa:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"cirAlertKgWaBoostWebPost"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertKgWaBoostWebPost"];
     objc_opt_class();
     v53 = v20;
     if (objc_opt_isKindOfClass())
@@ -85,7 +85,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlertKgWaBoostWebPost:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"cirAlertKgWaBoostWebPre"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertKgWaBoostWebPre"];
     objc_opt_class();
     v52 = v22;
     if (objc_opt_isKindOfClass())
@@ -94,7 +94,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlertKgWaBoostWebPre:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"cirAlertMapsKgSwap"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertMapsKgSwap"];
     objc_opt_class();
     v51 = v24;
     if (objc_opt_isKindOfClass())
@@ -104,7 +104,7 @@
     }
 
     v49 = v8;
-    v26 = [v4 objectForKeyedSubscript:@"cirAlertMediaPodcastOverride"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertMediaPodcastOverride"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,7 +114,7 @@
 
     v44 = v26;
     v48 = v10;
-    v28 = [v4 objectForKeyedSubscript:@"cirAlertProfaneFilter"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertProfaneFilter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,7 +123,7 @@
     }
 
     v47 = v12;
-    v30 = [v4 objectForKeyedSubscript:@"cirAlertRespectIsFollowUpHeuristicFlag"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertRespectIsFollowUpHeuristicFlag"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
     }
 
     v46 = v14;
-    v32 = [v4 objectForKeyedSubscript:@"cirAlertRespectMultiTurnResolvedRankingFlag"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertRespectMultiTurnResolvedRankingFlag"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,7 +141,7 @@
     }
 
     v45 = v16;
-    v34 = [v4 objectForKeyedSubscript:@"cirAlertRespectScoreOverrides"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertRespectScoreOverrides"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -150,7 +150,7 @@
     }
 
     v50 = v6;
-    v36 = [v4 objectForKeyedSubscript:@"cirAlertVerblessQueriesKgBoost"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertVerblessQueriesKgBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -158,7 +158,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlertVerblessQueriesKgBoost:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"cirAlertVideoMediaBoost"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertVideoMediaBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -166,7 +166,7 @@
       [(PEGASUSSchemaPEGASUSCirAlerts *)v5 setCirAlertVideoMediaBoost:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"cirAlertWaBoost"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"cirAlertWaBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -180,30 +180,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSCirAlerts)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSCirAlerts)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSCirAlerts *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSCirAlerts *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -216,136 +216,136 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cirAlert)
   {
-    v4 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlert];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"cirAlert"];
+    cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlert];
+    v5 = [cirAlert copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"cirAlert"];
   }
 
   if (self->_cirAlertContext)
   {
-    v6 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertContext];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"cirAlertContext"];
+    cirAlertContext = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertContext];
+    v7 = [cirAlertContext copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"cirAlertContext"];
   }
 
   if (self->_cirAlertDictionaryOverKgBoost)
   {
-    v8 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDictionaryOverKgBoost];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"cirAlertDictionaryOverKgBoost"];
+    cirAlertDictionaryOverKgBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDictionaryOverKgBoost];
+    v9 = [cirAlertDictionaryOverKgBoost copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"cirAlertDictionaryOverKgBoost"];
   }
 
   if (self->_cirAlertDomainFallback)
   {
-    v10 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDomainFallback];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"cirAlertDomainFallback"];
+    cirAlertDomainFallback = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDomainFallback];
+    v11 = [cirAlertDomainFallback copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"cirAlertDomainFallback"];
   }
 
   if (self->_cirAlertEmergencyOverride)
   {
-    v12 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertEmergencyOverride];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"cirAlertEmergencyOverride"];
+    cirAlertEmergencyOverride = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertEmergencyOverride];
+    v13 = [cirAlertEmergencyOverride copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"cirAlertEmergencyOverride"];
   }
 
   if (self->_cirAlertKgWaBoost)
   {
-    v14 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoost];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"cirAlertKgWaBoost"];
+    cirAlertKgWaBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoost];
+    v15 = [cirAlertKgWaBoost copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"cirAlertKgWaBoost"];
   }
 
   if (self->_cirAlertKgWaBoostQa)
   {
-    v16 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostQa];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"cirAlertKgWaBoostQa"];
+    cirAlertKgWaBoostQa = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostQa];
+    v17 = [cirAlertKgWaBoostQa copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"cirAlertKgWaBoostQa"];
   }
 
   if (self->_cirAlertKgWaBoostWebPost)
   {
-    v18 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPost];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"cirAlertKgWaBoostWebPost"];
+    cirAlertKgWaBoostWebPost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPost];
+    v19 = [cirAlertKgWaBoostWebPost copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"cirAlertKgWaBoostWebPost"];
   }
 
   if (self->_cirAlertKgWaBoostWebPre)
   {
-    v20 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPre];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"cirAlertKgWaBoostWebPre"];
+    cirAlertKgWaBoostWebPre = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPre];
+    v21 = [cirAlertKgWaBoostWebPre copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"cirAlertKgWaBoostWebPre"];
   }
 
   if (self->_cirAlertMapsKgSwap)
   {
-    v22 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMapsKgSwap];
-    v23 = [v22 copy];
-    [v3 setObject:v23 forKeyedSubscript:@"cirAlertMapsKgSwap"];
+    cirAlertMapsKgSwap = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMapsKgSwap];
+    v23 = [cirAlertMapsKgSwap copy];
+    [dictionary setObject:v23 forKeyedSubscript:@"cirAlertMapsKgSwap"];
   }
 
   if (self->_cirAlertMediaPodcastOverride)
   {
-    v24 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMediaPodcastOverride];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"cirAlertMediaPodcastOverride"];
+    cirAlertMediaPodcastOverride = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMediaPodcastOverride];
+    v25 = [cirAlertMediaPodcastOverride copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"cirAlertMediaPodcastOverride"];
   }
 
   if (self->_cirAlertProfaneFilter)
   {
-    v26 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertProfaneFilter];
-    v27 = [v26 copy];
-    [v3 setObject:v27 forKeyedSubscript:@"cirAlertProfaneFilter"];
+    cirAlertProfaneFilter = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertProfaneFilter];
+    v27 = [cirAlertProfaneFilter copy];
+    [dictionary setObject:v27 forKeyedSubscript:@"cirAlertProfaneFilter"];
   }
 
   if (self->_cirAlertRespectIsFollowUpHeuristicFlag)
   {
-    v28 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectIsFollowUpHeuristicFlag];
-    v29 = [v28 copy];
-    [v3 setObject:v29 forKeyedSubscript:@"cirAlertRespectIsFollowUpHeuristicFlag"];
+    cirAlertRespectIsFollowUpHeuristicFlag = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectIsFollowUpHeuristicFlag];
+    v29 = [cirAlertRespectIsFollowUpHeuristicFlag copy];
+    [dictionary setObject:v29 forKeyedSubscript:@"cirAlertRespectIsFollowUpHeuristicFlag"];
   }
 
   if (self->_cirAlertRespectMultiTurnResolvedRankingFlag)
   {
-    v30 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectMultiTurnResolvedRankingFlag];
-    v31 = [v30 copy];
-    [v3 setObject:v31 forKeyedSubscript:@"cirAlertRespectMultiTurnResolvedRankingFlag"];
+    cirAlertRespectMultiTurnResolvedRankingFlag = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectMultiTurnResolvedRankingFlag];
+    v31 = [cirAlertRespectMultiTurnResolvedRankingFlag copy];
+    [dictionary setObject:v31 forKeyedSubscript:@"cirAlertRespectMultiTurnResolvedRankingFlag"];
   }
 
   if (self->_cirAlertRespectScoreOverrides)
   {
-    v32 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectScoreOverrides];
-    v33 = [v32 copy];
-    [v3 setObject:v33 forKeyedSubscript:@"cirAlertRespectScoreOverrides"];
+    cirAlertRespectScoreOverrides = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectScoreOverrides];
+    v33 = [cirAlertRespectScoreOverrides copy];
+    [dictionary setObject:v33 forKeyedSubscript:@"cirAlertRespectScoreOverrides"];
   }
 
   if (self->_cirAlertVerblessQueriesKgBoost)
   {
-    v34 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVerblessQueriesKgBoost];
-    v35 = [v34 copy];
-    [v3 setObject:v35 forKeyedSubscript:@"cirAlertVerblessQueriesKgBoost"];
+    cirAlertVerblessQueriesKgBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVerblessQueriesKgBoost];
+    v35 = [cirAlertVerblessQueriesKgBoost copy];
+    [dictionary setObject:v35 forKeyedSubscript:@"cirAlertVerblessQueriesKgBoost"];
   }
 
   if (self->_cirAlertVideoMediaBoost)
   {
-    v36 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVideoMediaBoost];
-    v37 = [v36 copy];
-    [v3 setObject:v37 forKeyedSubscript:@"cirAlertVideoMediaBoost"];
+    cirAlertVideoMediaBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVideoMediaBoost];
+    v37 = [cirAlertVideoMediaBoost copy];
+    [dictionary setObject:v37 forKeyedSubscript:@"cirAlertVideoMediaBoost"];
   }
 
   if (self->_cirAlertWaBoost)
   {
-    v38 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertWaBoost];
-    v39 = [v38 copy];
-    [v3 setObject:v39 forKeyedSubscript:@"cirAlertWaBoost"];
+    cirAlertWaBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertWaBoost];
+    v39 = [cirAlertWaBoost copy];
+    [dictionary setObject:v39 forKeyedSubscript:@"cirAlertWaBoost"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -370,28 +370,28 @@
   return v18 ^ v19 ^ [(NSString *)self->_cirAlertWaBoost hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_92;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlert];
-  v6 = [v4 cirAlert];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlert];
+  cirAlert2 = [equalCopy cirAlert];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlert];
-  if (v7)
+  cirAlert3 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlert];
+  if (cirAlert3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlert];
-    v10 = [v4 cirAlert];
-    v11 = [v9 isEqual:v10];
+    v8 = cirAlert3;
+    cirAlert4 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlert];
+    cirAlert5 = [equalCopy cirAlert];
+    v11 = [cirAlert4 isEqual:cirAlert5];
 
     if (!v11)
     {
@@ -403,20 +403,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertContext];
-  v6 = [v4 cirAlertContext];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertContext];
+  cirAlert2 = [equalCopy cirAlertContext];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertContext];
-  if (v12)
+  cirAlertContext = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertContext];
+  if (cirAlertContext)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertContext];
-    v15 = [v4 cirAlertContext];
-    v16 = [v14 isEqual:v15];
+    v13 = cirAlertContext;
+    cirAlertContext2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertContext];
+    cirAlertContext3 = [equalCopy cirAlertContext];
+    v16 = [cirAlertContext2 isEqual:cirAlertContext3];
 
     if (!v16)
     {
@@ -428,20 +428,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDictionaryOverKgBoost];
-  v6 = [v4 cirAlertDictionaryOverKgBoost];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDictionaryOverKgBoost];
+  cirAlert2 = [equalCopy cirAlertDictionaryOverKgBoost];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDictionaryOverKgBoost];
-  if (v17)
+  cirAlertDictionaryOverKgBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDictionaryOverKgBoost];
+  if (cirAlertDictionaryOverKgBoost)
   {
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDictionaryOverKgBoost];
-    v20 = [v4 cirAlertDictionaryOverKgBoost];
-    v21 = [v19 isEqual:v20];
+    v18 = cirAlertDictionaryOverKgBoost;
+    cirAlertDictionaryOverKgBoost2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDictionaryOverKgBoost];
+    cirAlertDictionaryOverKgBoost3 = [equalCopy cirAlertDictionaryOverKgBoost];
+    v21 = [cirAlertDictionaryOverKgBoost2 isEqual:cirAlertDictionaryOverKgBoost3];
 
     if (!v21)
     {
@@ -453,20 +453,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDomainFallback];
-  v6 = [v4 cirAlertDomainFallback];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDomainFallback];
+  cirAlert2 = [equalCopy cirAlertDomainFallback];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v22 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDomainFallback];
-  if (v22)
+  cirAlertDomainFallback = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDomainFallback];
+  if (cirAlertDomainFallback)
   {
-    v23 = v22;
-    v24 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDomainFallback];
-    v25 = [v4 cirAlertDomainFallback];
-    v26 = [v24 isEqual:v25];
+    v23 = cirAlertDomainFallback;
+    cirAlertDomainFallback2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDomainFallback];
+    cirAlertDomainFallback3 = [equalCopy cirAlertDomainFallback];
+    v26 = [cirAlertDomainFallback2 isEqual:cirAlertDomainFallback3];
 
     if (!v26)
     {
@@ -478,20 +478,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertEmergencyOverride];
-  v6 = [v4 cirAlertEmergencyOverride];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertEmergencyOverride];
+  cirAlert2 = [equalCopy cirAlertEmergencyOverride];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v27 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertEmergencyOverride];
-  if (v27)
+  cirAlertEmergencyOverride = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertEmergencyOverride];
+  if (cirAlertEmergencyOverride)
   {
-    v28 = v27;
-    v29 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertEmergencyOverride];
-    v30 = [v4 cirAlertEmergencyOverride];
-    v31 = [v29 isEqual:v30];
+    v28 = cirAlertEmergencyOverride;
+    cirAlertEmergencyOverride2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertEmergencyOverride];
+    cirAlertEmergencyOverride3 = [equalCopy cirAlertEmergencyOverride];
+    v31 = [cirAlertEmergencyOverride2 isEqual:cirAlertEmergencyOverride3];
 
     if (!v31)
     {
@@ -503,20 +503,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoost];
-  v6 = [v4 cirAlertKgWaBoost];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoost];
+  cirAlert2 = [equalCopy cirAlertKgWaBoost];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v32 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoost];
-  if (v32)
+  cirAlertKgWaBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoost];
+  if (cirAlertKgWaBoost)
   {
-    v33 = v32;
-    v34 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoost];
-    v35 = [v4 cirAlertKgWaBoost];
-    v36 = [v34 isEqual:v35];
+    v33 = cirAlertKgWaBoost;
+    cirAlertKgWaBoost2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoost];
+    cirAlertKgWaBoost3 = [equalCopy cirAlertKgWaBoost];
+    v36 = [cirAlertKgWaBoost2 isEqual:cirAlertKgWaBoost3];
 
     if (!v36)
     {
@@ -528,20 +528,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostQa];
-  v6 = [v4 cirAlertKgWaBoostQa];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostQa];
+  cirAlert2 = [equalCopy cirAlertKgWaBoostQa];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v37 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostQa];
-  if (v37)
+  cirAlertKgWaBoostQa = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostQa];
+  if (cirAlertKgWaBoostQa)
   {
-    v38 = v37;
-    v39 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostQa];
-    v40 = [v4 cirAlertKgWaBoostQa];
-    v41 = [v39 isEqual:v40];
+    v38 = cirAlertKgWaBoostQa;
+    cirAlertKgWaBoostQa2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostQa];
+    cirAlertKgWaBoostQa3 = [equalCopy cirAlertKgWaBoostQa];
+    v41 = [cirAlertKgWaBoostQa2 isEqual:cirAlertKgWaBoostQa3];
 
     if (!v41)
     {
@@ -553,20 +553,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPost];
-  v6 = [v4 cirAlertKgWaBoostWebPost];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPost];
+  cirAlert2 = [equalCopy cirAlertKgWaBoostWebPost];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v42 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPost];
-  if (v42)
+  cirAlertKgWaBoostWebPost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPost];
+  if (cirAlertKgWaBoostWebPost)
   {
-    v43 = v42;
-    v44 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPost];
-    v45 = [v4 cirAlertKgWaBoostWebPost];
-    v46 = [v44 isEqual:v45];
+    v43 = cirAlertKgWaBoostWebPost;
+    cirAlertKgWaBoostWebPost2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPost];
+    cirAlertKgWaBoostWebPost3 = [equalCopy cirAlertKgWaBoostWebPost];
+    v46 = [cirAlertKgWaBoostWebPost2 isEqual:cirAlertKgWaBoostWebPost3];
 
     if (!v46)
     {
@@ -578,20 +578,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPre];
-  v6 = [v4 cirAlertKgWaBoostWebPre];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPre];
+  cirAlert2 = [equalCopy cirAlertKgWaBoostWebPre];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v47 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPre];
-  if (v47)
+  cirAlertKgWaBoostWebPre = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPre];
+  if (cirAlertKgWaBoostWebPre)
   {
-    v48 = v47;
-    v49 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPre];
-    v50 = [v4 cirAlertKgWaBoostWebPre];
-    v51 = [v49 isEqual:v50];
+    v48 = cirAlertKgWaBoostWebPre;
+    cirAlertKgWaBoostWebPre2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPre];
+    cirAlertKgWaBoostWebPre3 = [equalCopy cirAlertKgWaBoostWebPre];
+    v51 = [cirAlertKgWaBoostWebPre2 isEqual:cirAlertKgWaBoostWebPre3];
 
     if (!v51)
     {
@@ -603,20 +603,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMapsKgSwap];
-  v6 = [v4 cirAlertMapsKgSwap];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMapsKgSwap];
+  cirAlert2 = [equalCopy cirAlertMapsKgSwap];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v52 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMapsKgSwap];
-  if (v52)
+  cirAlertMapsKgSwap = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMapsKgSwap];
+  if (cirAlertMapsKgSwap)
   {
-    v53 = v52;
-    v54 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMapsKgSwap];
-    v55 = [v4 cirAlertMapsKgSwap];
-    v56 = [v54 isEqual:v55];
+    v53 = cirAlertMapsKgSwap;
+    cirAlertMapsKgSwap2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMapsKgSwap];
+    cirAlertMapsKgSwap3 = [equalCopy cirAlertMapsKgSwap];
+    v56 = [cirAlertMapsKgSwap2 isEqual:cirAlertMapsKgSwap3];
 
     if (!v56)
     {
@@ -628,20 +628,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMediaPodcastOverride];
-  v6 = [v4 cirAlertMediaPodcastOverride];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMediaPodcastOverride];
+  cirAlert2 = [equalCopy cirAlertMediaPodcastOverride];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v57 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMediaPodcastOverride];
-  if (v57)
+  cirAlertMediaPodcastOverride = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMediaPodcastOverride];
+  if (cirAlertMediaPodcastOverride)
   {
-    v58 = v57;
-    v59 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMediaPodcastOverride];
-    v60 = [v4 cirAlertMediaPodcastOverride];
-    v61 = [v59 isEqual:v60];
+    v58 = cirAlertMediaPodcastOverride;
+    cirAlertMediaPodcastOverride2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMediaPodcastOverride];
+    cirAlertMediaPodcastOverride3 = [equalCopy cirAlertMediaPodcastOverride];
+    v61 = [cirAlertMediaPodcastOverride2 isEqual:cirAlertMediaPodcastOverride3];
 
     if (!v61)
     {
@@ -653,20 +653,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertProfaneFilter];
-  v6 = [v4 cirAlertProfaneFilter];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertProfaneFilter];
+  cirAlert2 = [equalCopy cirAlertProfaneFilter];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v62 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertProfaneFilter];
-  if (v62)
+  cirAlertProfaneFilter = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertProfaneFilter];
+  if (cirAlertProfaneFilter)
   {
-    v63 = v62;
-    v64 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertProfaneFilter];
-    v65 = [v4 cirAlertProfaneFilter];
-    v66 = [v64 isEqual:v65];
+    v63 = cirAlertProfaneFilter;
+    cirAlertProfaneFilter2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertProfaneFilter];
+    cirAlertProfaneFilter3 = [equalCopy cirAlertProfaneFilter];
+    v66 = [cirAlertProfaneFilter2 isEqual:cirAlertProfaneFilter3];
 
     if (!v66)
     {
@@ -678,20 +678,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectIsFollowUpHeuristicFlag];
-  v6 = [v4 cirAlertRespectIsFollowUpHeuristicFlag];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectIsFollowUpHeuristicFlag];
+  cirAlert2 = [equalCopy cirAlertRespectIsFollowUpHeuristicFlag];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v67 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectIsFollowUpHeuristicFlag];
-  if (v67)
+  cirAlertRespectIsFollowUpHeuristicFlag = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectIsFollowUpHeuristicFlag];
+  if (cirAlertRespectIsFollowUpHeuristicFlag)
   {
-    v68 = v67;
-    v69 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectIsFollowUpHeuristicFlag];
-    v70 = [v4 cirAlertRespectIsFollowUpHeuristicFlag];
-    v71 = [v69 isEqual:v70];
+    v68 = cirAlertRespectIsFollowUpHeuristicFlag;
+    cirAlertRespectIsFollowUpHeuristicFlag2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectIsFollowUpHeuristicFlag];
+    cirAlertRespectIsFollowUpHeuristicFlag3 = [equalCopy cirAlertRespectIsFollowUpHeuristicFlag];
+    v71 = [cirAlertRespectIsFollowUpHeuristicFlag2 isEqual:cirAlertRespectIsFollowUpHeuristicFlag3];
 
     if (!v71)
     {
@@ -703,20 +703,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectMultiTurnResolvedRankingFlag];
-  v6 = [v4 cirAlertRespectMultiTurnResolvedRankingFlag];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectMultiTurnResolvedRankingFlag];
+  cirAlert2 = [equalCopy cirAlertRespectMultiTurnResolvedRankingFlag];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v72 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectMultiTurnResolvedRankingFlag];
-  if (v72)
+  cirAlertRespectMultiTurnResolvedRankingFlag = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectMultiTurnResolvedRankingFlag];
+  if (cirAlertRespectMultiTurnResolvedRankingFlag)
   {
-    v73 = v72;
-    v74 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectMultiTurnResolvedRankingFlag];
-    v75 = [v4 cirAlertRespectMultiTurnResolvedRankingFlag];
-    v76 = [v74 isEqual:v75];
+    v73 = cirAlertRespectMultiTurnResolvedRankingFlag;
+    cirAlertRespectMultiTurnResolvedRankingFlag2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectMultiTurnResolvedRankingFlag];
+    cirAlertRespectMultiTurnResolvedRankingFlag3 = [equalCopy cirAlertRespectMultiTurnResolvedRankingFlag];
+    v76 = [cirAlertRespectMultiTurnResolvedRankingFlag2 isEqual:cirAlertRespectMultiTurnResolvedRankingFlag3];
 
     if (!v76)
     {
@@ -728,20 +728,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectScoreOverrides];
-  v6 = [v4 cirAlertRespectScoreOverrides];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectScoreOverrides];
+  cirAlert2 = [equalCopy cirAlertRespectScoreOverrides];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v77 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectScoreOverrides];
-  if (v77)
+  cirAlertRespectScoreOverrides = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectScoreOverrides];
+  if (cirAlertRespectScoreOverrides)
   {
-    v78 = v77;
-    v79 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectScoreOverrides];
-    v80 = [v4 cirAlertRespectScoreOverrides];
-    v81 = [v79 isEqual:v80];
+    v78 = cirAlertRespectScoreOverrides;
+    cirAlertRespectScoreOverrides2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectScoreOverrides];
+    cirAlertRespectScoreOverrides3 = [equalCopy cirAlertRespectScoreOverrides];
+    v81 = [cirAlertRespectScoreOverrides2 isEqual:cirAlertRespectScoreOverrides3];
 
     if (!v81)
     {
@@ -753,20 +753,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVerblessQueriesKgBoost];
-  v6 = [v4 cirAlertVerblessQueriesKgBoost];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVerblessQueriesKgBoost];
+  cirAlert2 = [equalCopy cirAlertVerblessQueriesKgBoost];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v82 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVerblessQueriesKgBoost];
-  if (v82)
+  cirAlertVerblessQueriesKgBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVerblessQueriesKgBoost];
+  if (cirAlertVerblessQueriesKgBoost)
   {
-    v83 = v82;
-    v84 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVerblessQueriesKgBoost];
-    v85 = [v4 cirAlertVerblessQueriesKgBoost];
-    v86 = [v84 isEqual:v85];
+    v83 = cirAlertVerblessQueriesKgBoost;
+    cirAlertVerblessQueriesKgBoost2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVerblessQueriesKgBoost];
+    cirAlertVerblessQueriesKgBoost3 = [equalCopy cirAlertVerblessQueriesKgBoost];
+    v86 = [cirAlertVerblessQueriesKgBoost2 isEqual:cirAlertVerblessQueriesKgBoost3];
 
     if (!v86)
     {
@@ -778,20 +778,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVideoMediaBoost];
-  v6 = [v4 cirAlertVideoMediaBoost];
-  if ((v5 != 0) == (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVideoMediaBoost];
+  cirAlert2 = [equalCopy cirAlertVideoMediaBoost];
+  if ((cirAlert != 0) == (cirAlert2 == 0))
   {
     goto LABEL_91;
   }
 
-  v87 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVideoMediaBoost];
-  if (v87)
+  cirAlertVideoMediaBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVideoMediaBoost];
+  if (cirAlertVideoMediaBoost)
   {
-    v88 = v87;
-    v89 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVideoMediaBoost];
-    v90 = [v4 cirAlertVideoMediaBoost];
-    v91 = [v89 isEqual:v90];
+    v88 = cirAlertVideoMediaBoost;
+    cirAlertVideoMediaBoost2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVideoMediaBoost];
+    cirAlertVideoMediaBoost3 = [equalCopy cirAlertVideoMediaBoost];
+    v91 = [cirAlertVideoMediaBoost2 isEqual:cirAlertVideoMediaBoost3];
 
     if (!v91)
     {
@@ -803,12 +803,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertWaBoost];
-  v6 = [v4 cirAlertWaBoost];
-  if ((v5 != 0) != (v6 == 0))
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertWaBoost];
+  cirAlert2 = [equalCopy cirAlertWaBoost];
+  if ((cirAlert != 0) != (cirAlert2 == 0))
   {
-    v92 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertWaBoost];
-    if (!v92)
+    cirAlertWaBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertWaBoost];
+    if (!cirAlertWaBoost)
     {
 
 LABEL_95:
@@ -816,10 +816,10 @@ LABEL_95:
       goto LABEL_93;
     }
 
-    v93 = v92;
-    v94 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertWaBoost];
-    v95 = [v4 cirAlertWaBoost];
-    v96 = [v94 isEqual:v95];
+    v93 = cirAlertWaBoost;
+    cirAlertWaBoost2 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertWaBoost];
+    cirAlertWaBoost3 = [equalCopy cirAlertWaBoost];
+    v96 = [cirAlertWaBoost2 isEqual:cirAlertWaBoost3];
 
     if (v96)
     {
@@ -839,135 +839,135 @@ LABEL_93:
   return v97;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
-  v4 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlert];
+  toCopy = to;
+  cirAlert = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlert];
 
-  if (v4)
+  if (cirAlert)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertContext];
+  cirAlertContext = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertContext];
 
-  if (v5)
+  if (cirAlertContext)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDictionaryOverKgBoost];
+  cirAlertDictionaryOverKgBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDictionaryOverKgBoost];
 
-  if (v6)
+  if (cirAlertDictionaryOverKgBoost)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDomainFallback];
+  cirAlertDomainFallback = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertDomainFallback];
 
-  if (v7)
+  if (cirAlertDomainFallback)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertEmergencyOverride];
+  cirAlertEmergencyOverride = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertEmergencyOverride];
 
-  if (v8)
+  if (cirAlertEmergencyOverride)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoost];
+  cirAlertKgWaBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoost];
 
-  if (v9)
+  if (cirAlertKgWaBoost)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostQa];
+  cirAlertKgWaBoostQa = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostQa];
 
-  if (v10)
+  if (cirAlertKgWaBoostQa)
   {
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPost];
+  cirAlertKgWaBoostWebPost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPost];
 
-  if (v11)
+  if (cirAlertKgWaBoostWebPost)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPre];
+  cirAlertKgWaBoostWebPre = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertKgWaBoostWebPre];
 
-  if (v12)
+  if (cirAlertKgWaBoostWebPre)
   {
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMapsKgSwap];
+  cirAlertMapsKgSwap = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMapsKgSwap];
 
-  if (v13)
+  if (cirAlertMapsKgSwap)
   {
     PBDataWriterWriteStringField();
   }
 
-  v14 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMediaPodcastOverride];
+  cirAlertMediaPodcastOverride = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertMediaPodcastOverride];
 
-  if (v14)
+  if (cirAlertMediaPodcastOverride)
   {
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertProfaneFilter];
+  cirAlertProfaneFilter = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertProfaneFilter];
 
-  if (v15)
+  if (cirAlertProfaneFilter)
   {
     PBDataWriterWriteStringField();
   }
 
-  v16 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectIsFollowUpHeuristicFlag];
+  cirAlertRespectIsFollowUpHeuristicFlag = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectIsFollowUpHeuristicFlag];
 
-  if (v16)
+  if (cirAlertRespectIsFollowUpHeuristicFlag)
   {
     PBDataWriterWriteStringField();
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectMultiTurnResolvedRankingFlag];
+  cirAlertRespectMultiTurnResolvedRankingFlag = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectMultiTurnResolvedRankingFlag];
 
-  if (v17)
+  if (cirAlertRespectMultiTurnResolvedRankingFlag)
   {
     PBDataWriterWriteStringField();
   }
 
-  v18 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectScoreOverrides];
+  cirAlertRespectScoreOverrides = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertRespectScoreOverrides];
 
-  if (v18)
+  if (cirAlertRespectScoreOverrides)
   {
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVerblessQueriesKgBoost];
+  cirAlertVerblessQueriesKgBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVerblessQueriesKgBoost];
 
-  if (v19)
+  if (cirAlertVerblessQueriesKgBoost)
   {
     PBDataWriterWriteStringField();
   }
 
-  v20 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVideoMediaBoost];
+  cirAlertVideoMediaBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertVideoMediaBoost];
 
-  if (v20)
+  if (cirAlertVideoMediaBoost)
   {
     PBDataWriterWriteStringField();
   }
 
-  v21 = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertWaBoost];
+  cirAlertWaBoost = [(PEGASUSSchemaPEGASUSCirAlerts *)self cirAlertWaBoost];
 
-  v22 = v23;
-  if (v21)
+  v22 = toCopy;
+  if (cirAlertWaBoost)
   {
     PBDataWriterWriteStringField();
-    v22 = v23;
+    v22 = toCopy;
   }
 }
 

@@ -1,16 +1,16 @@
 @interface AAPCommandQuit
-- (void)_closeApp:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_closeApp:(id)app;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation AAPCommandQuit
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v5 = [(AAPCommandQuit *)self sceneId];
+  sceneId = [(AAPCommandQuit *)self sceneId];
   v6 = AFSiriLogContextPlugin;
   v7 = os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (sceneId)
   {
     if (v7)
     {
@@ -20,7 +20,7 @@
     }
 
     v8 = objc_alloc_init(SACommandFailed);
-    (*(a3 + 2))(a3, [v8 dictionary]);
+    (*(completion + 2))(completion, [v8 dictionary]);
   }
 
   else
@@ -32,11 +32,11 @@
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "%s Null sceneId, closing app instead", &v9, 0xCu);
     }
 
-    [(AAPCommandQuit *)self _closeApp:a3];
+    [(AAPCommandQuit *)self _closeApp:completion];
   }
 }
 
-- (void)_closeApp:(id)a3
+- (void)_closeApp:(id)app
 {
   v4 = AFSiriLogContextPlugin;
   if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_INFO))
@@ -47,7 +47,7 @@
   }
 
   v5 = objc_alloc_init(SACommandFailed);
-  (*(a3 + 2))(a3, [v5 dictionary]);
+  (*(app + 2))(app, [v5 dictionary]);
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface BSServiceQuality
 + (id)main;
-+ (void)_serviceWithClass:(uint64_t)a3 relativePriority:(uint64_t)a4 main:;
-- (BOOL)isEqual:(id)a3;
++ (void)_serviceWithClass:(uint64_t)class relativePriority:(uint64_t)priority main:;
+- (BOOL)isEqual:(id)equal;
 - (BSServiceQuality)init;
 - (id)description;
-- (void)_initWithClass:(void *)a3 name:(int)a4 relativePriority:(char)a5 singleton:(char)a6 main:;
+- (void)_initWithClass:(void *)class name:(int)name relativePriority:(char)priority singleton:(char)singleton main:;
 - (void)dealloc;
 @end
 
@@ -31,7 +31,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceQuality.m";
     v18 = 1024;
@@ -48,11 +48,11 @@
   return result;
 }
 
-- (void)_initWithClass:(void *)a3 name:(int)a4 relativePriority:(char)a5 singleton:(char)a6 main:
+- (void)_initWithClass:(void *)class name:(int)name relativePriority:(char)priority singleton:(char)singleton main:
 {
   v36 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (a1)
+  classCopy = class;
+  if (self)
   {
     v12 = objc_opt_class();
     if (v12 != objc_opt_class())
@@ -68,7 +68,7 @@
         v26 = 2114;
         v27 = v21;
         v28 = 2048;
-        v29 = a1;
+        selfCopy = self;
         v30 = 2114;
         v31 = @"BSServiceQuality.m";
         v32 = 1024;
@@ -85,19 +85,19 @@
       JUMPOUT(0x19A86A894);
     }
 
-    v23.receiver = a1;
+    v23.receiver = self;
     v23.super_class = BSServiceQuality;
     v13 = objc_msgSendSuper2(&v23, sel_init);
     if (v13)
     {
-      v14 = [v11 copy];
+      v14 = [classCopy copy];
       v15 = v13[1];
       v13[1] = v14;
 
       *(v13 + 5) = a2;
-      *(v13 + 6) = a4;
-      *(v13 + 16) = a5;
-      *(v13 + 17) = a6;
+      *(v13 + 6) = name;
+      *(v13 + 16) = priority;
+      *(v13 + 17) = singleton;
     }
   }
 
@@ -110,7 +110,7 @@
   return v13;
 }
 
-+ (void)_serviceWithClass:(uint64_t)a3 relativePriority:(uint64_t)a4 main:
++ (void)_serviceWithClass:(uint64_t)class relativePriority:(uint64_t)priority main:
 {
   v46 = *MEMORY[0x1E69E9840];
   v7 = objc_opt_self();
@@ -148,11 +148,11 @@
   }
 
   v10 = off_1E7521090[v8];
-  if (a3)
+  if (class)
   {
-    if (a4)
+    if (priority)
     {
-      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot ask for main with relative priority : qos=%u rp=%i", a2, a3];
+      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot ask for main with relative priority : qos=%u rp=%i", a2, class];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v30 = NSStringFromSelector(sel__serviceWithClass_relativePriority_main_);
@@ -180,13 +180,13 @@
       JUMPOUT(0x19A86ADE4);
     }
 
-    v11 = [[BSServiceQuality alloc] _initWithClass:a2 name:v10 relativePriority:a3 singleton:0 main:0];
+    v11 = [[BSServiceQuality alloc] _initWithClass:a2 name:v10 relativePriority:class singleton:0 main:0];
   }
 
   else
   {
     os_unfair_lock_lock(&_MergedGlobals_15);
-    if (a4)
+    if (priority)
     {
       v12 = qword_1ED4A7CC8;
       if (!qword_1ED4A7CC8)
@@ -220,9 +220,9 @@
     }
 
     os_unfair_lock_unlock(&_MergedGlobals_15);
-    if (*(v11 + 5) != a2 || *(v11 + 6) || *(v11 + 16) != 1 || *(v11 + 17) != a4)
+    if (*(v11 + 5) != a2 || *(v11 + 6) || *(v11 + 16) != 1 || *(v11 + 17) != priority)
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cached properties aren't consistent : qos=%u main=%i cached=%@", a2, a4, v11];
+      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cached properties aren't consistent : qos=%u main=%i cached=%@", a2, priority, v11];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v25 = NSStringFromSelector(sel__serviceWithClass_relativePriority_main_);
@@ -272,7 +272,7 @@
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSServiceQuality.m";
       v19 = 1024;
@@ -295,10 +295,10 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -306,7 +306,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && self->_serviceClass == v4->_serviceClass && self->_relativePriority == v4->_relativePriority;
+    v6 = v5 == objc_opt_class() && self->_serviceClass == equalCopy->_serviceClass && self->_relativePriority == equalCopy->_relativePriority;
   }
 
   return v6;
@@ -336,9 +336,9 @@
   relativePriority = self->_relativePriority;
   if (relativePriority)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%+i", v5, relativePriority];
+    relativePriority = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%+i", v5, relativePriority];
 
-    v5 = v8;
+    v5 = relativePriority;
   }
 
   if (self->_singleton)

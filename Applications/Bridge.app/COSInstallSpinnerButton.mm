@@ -1,9 +1,9 @@
 @interface COSInstallSpinnerButton
 + (id)applicationSpinnerView;
-- (COSInstallSpinnerButton)initWithFrame:(CGRect)a3;
+- (COSInstallSpinnerButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareProgressIndicatorIfNeeded;
-- (void)setProgress:(double)a3 animated:(BOOL)a4;
+- (void)setProgress:(double)progress animated:(BOOL)animated;
 - (void)showProgressAnimation;
 - (void)stopSpinnerView;
 @end
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (COSInstallSpinnerButton)initWithFrame:(CGRect)a3
+- (COSInstallSpinnerButton)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = COSInstallSpinnerButton;
-  v3 = [(COSInstallSpinnerButton *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSInstallSpinnerButton *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIImageView alloc];
@@ -109,8 +109,8 @@
   if (v3 == 0.0)
   {
     [(SKUICircleProgressIndicator *)self->_progressIndicator setHidden:1];
-    v4 = [(UIImageView *)self->_spinnerView layer];
-    v5 = [v4 animationForKey:@"COSRotationAnimationKey"];
+    layer = [(UIImageView *)self->_spinnerView layer];
+    v5 = [layer animationForKey:@"COSRotationAnimationKey"];
 
     if (!v5)
     {
@@ -125,8 +125,8 @@
       [v6 setRepeatCount:v9];
       [v6 setRemovedOnCompletion:0];
       [v6 setFrameInterval:0.0333333333];
-      v10 = [(UIImageView *)self->_spinnerView layer];
-      [v10 addAnimation:v6 forKey:@"COSRotationAnimationKey"];
+      layer2 = [(UIImageView *)self->_spinnerView layer];
+      [layer2 addAnimation:v6 forKey:@"COSRotationAnimationKey"];
     }
 
     [(UIImageView *)self->_spinnerView setHidden:0];
@@ -145,8 +145,8 @@
   if (self->_showingSpinner)
   {
     self->_showingSpinner = 0;
-    v3 = [(UIImageView *)self->_spinnerView layer];
-    [v3 removeAnimationForKey:@"COSRotationAnimationKey"];
+    layer = [(UIImageView *)self->_spinnerView layer];
+    [layer removeAnimationForKey:@"COSRotationAnimationKey"];
   }
 
   [(UIImageView *)self->_spinnerView setHidden:1];
@@ -155,22 +155,22 @@
   [(SKUICircleProgressIndicator *)progressIndicator setHidden:0];
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4
+- (void)setProgress:(double)progress animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3 > 0.0 && self->_showingSpinner)
+  animatedCopy = animated;
+  if (progress > 0.0 && self->_showingSpinner)
   {
     [(COSInstallSpinnerButton *)self stopSpinnerView];
   }
 
-  if (a3 > 0.0)
+  if (progress > 0.0)
   {
     [(COSInstallSpinnerButton *)self prepareProgressIndicatorIfNeeded];
   }
 
   progressIndicator = self->_progressIndicator;
 
-  [(SKUICircleProgressIndicator *)progressIndicator setProgress:v4 animated:a3];
+  [(SKUICircleProgressIndicator *)progressIndicator setProgress:animatedCopy animated:progress];
 }
 
 @end

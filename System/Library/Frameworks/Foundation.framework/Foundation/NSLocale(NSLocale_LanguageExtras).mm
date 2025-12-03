@@ -73,7 +73,7 @@
 + (void)registerPreferredLanguage:()NSLocale_LanguageExtras usage:confidence:
 {
   v7 = _NormalizedLanguageIDFromString(a4);
-  if ((a5 & 3) != 0 && a1 > 0.5)
+  if ((a5 & 3) != 0 && self > 0.5)
   {
     v8 = v7;
     v9 = _CFLocaleCopyPreferredLanguagesForCurrentUser();
@@ -94,9 +94,9 @@
 
 + (uint64_t)mostPreferredLanguageOf:()NSLocale_LanguageExtras forUsage:options:
 {
-  v9 = [a1 preferredLanguages];
+  preferredLanguages = [self preferredLanguages];
 
-  return [a1 mostPreferredLanguageOf:a3 withPreferredLanguages:v9 forUsage:a4 options:a5];
+  return [self mostPreferredLanguageOf:a3 withPreferredLanguages:preferredLanguages forUsage:a4 options:a5];
 }
 
 + (void)mostPreferredLanguageOf:()NSLocale_LanguageExtras withPreferredLanguages:forUsage:options:

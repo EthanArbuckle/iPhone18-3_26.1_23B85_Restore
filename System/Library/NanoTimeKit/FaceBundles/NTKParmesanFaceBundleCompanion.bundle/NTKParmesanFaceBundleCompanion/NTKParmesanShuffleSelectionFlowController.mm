@@ -1,9 +1,9 @@
 @interface NTKParmesanShuffleSelectionFlowController
 - (NTKParmesanShuffleSelectionDelegate)delegate;
-- (NTKParmesanShuffleSelectionFlowController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)userDidSelectCancel:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (NTKParmesanShuffleSelectionFlowController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setDelegate:(id)delegate;
+- (void)userDidSelectCancel:(id)cancel;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NTKParmesanShuffleSelectionFlowController
@@ -15,31 +15,31 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_23BFEFAC0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_23BFEFD1C(a3);
+  selfCopy = self;
+  sub_23BFEFD1C(appear);
 }
 
-- (void)userDidSelectCancel:(id)a3
+- (void)userDidSelectCancel:(id)cancel
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_23BFFA960();
   swift_unknownObjectRelease();
-  [(NTKParmesanShuffleSelectionFlowController *)v4 dismissViewControllerAnimated:1 completion:0];
+  [(NTKParmesanShuffleSelectionFlowController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 
   sub_23BF4A9A4(&v5);
 }
 
-- (NTKParmesanShuffleSelectionFlowController)initWithNibName:(id)a3 bundle:(id)a4
+- (NTKParmesanShuffleSelectionFlowController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

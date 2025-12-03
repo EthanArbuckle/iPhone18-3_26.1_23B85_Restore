@@ -1,10 +1,10 @@
 @interface SFAnalyticsMultiSampler
-- (SFAnalyticsMultiSampler)initWithName:(id)a3 interval:(double)a4 block:(id)a5 clientClass:(Class)a6;
+- (SFAnalyticsMultiSampler)initWithName:(id)name interval:(double)interval block:(id)block clientClass:(Class)class;
 - (id)sampleNow;
 - (void)dealloc;
 - (void)newTimer;
 - (void)pauseSampling;
-- (void)setSamplingInterval:(double)a3;
+- (void)setSamplingInterval:(double)interval;
 - (void)setupOnceTimer;
 - (void)setupPeriodicTimer;
 @end
@@ -60,12 +60,12 @@ void __36__SFAnalyticsMultiSampler_sampleNow__block_invoke(uint64_t a1, void *a2
   [v8 logMetric:v6 withName:v7 oncePerReport:*(*(a1 + 32) + 56)];
 }
 
-- (void)setSamplingInterval:(double)a3
+- (void)setSamplingInterval:(double)interval
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3 >= 1.0 || a3 == -1.0)
+  if (interval >= 1.0 || interval == -1.0)
   {
-    self->_samplingInterval = a3;
+    self->_samplingInterval = interval;
     v5 = *MEMORY[0x1E69E9840];
 
     [(SFAnalyticsMultiSampler *)self newTimer];
@@ -77,7 +77,7 @@ void __36__SFAnalyticsMultiSampler_sampleNow__block_invoke(uint64_t a1, void *a2
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = a3;
+      intervalCopy = interval;
       _os_log_impl(&dword_1887D2000, v6, OS_LOG_TYPE_DEFAULT, "SFAnalyticsSampler: interval %f is not supported", &v9, 0xCu);
     }
 
@@ -219,11 +219,11 @@ void __41__SFAnalyticsMultiSampler_setupOnceTimer__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (SFAnalyticsMultiSampler)initWithName:(id)a3 interval:(double)a4 block:(id)a5 clientClass:(Class)a6
+- (SFAnalyticsMultiSampler)initWithName:(id)name interval:(double)interval block:(id)block clientClass:(Class)class
 {
   v24 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
+  nameCopy = name;
+  blockCopy = block;
   v21.receiver = self;
   v21.super_class = SFAnalyticsMultiSampler;
   v13 = [(SFAnalyticsMultiSampler *)&v21 init];
@@ -232,24 +232,24 @@ void __41__SFAnalyticsMultiSampler_setupOnceTimer__block_invoke_2(uint64_t a1, v
     goto LABEL_16;
   }
 
-  if (([(objc_class *)a6 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     v15 = secLogObjForScope("SecError");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = a6;
+      classCopy = class;
       _os_log_impl(&dword_1887D2000, v15, OS_LOG_TYPE_DEFAULT, "SFAnalyticsSampler created without valid client class (%@)", buf, 0xCu);
     }
 
     goto LABEL_13;
   }
 
-  if (v11)
+  if (nameCopy)
   {
-    if (a4 < 1.0)
+    if (interval < 1.0)
     {
-      if (!v12 || a4 != -1.0)
+      if (!blockCopy || interval != -1.0)
       {
         goto LABEL_7;
       }
@@ -257,16 +257,16 @@ void __41__SFAnalyticsMultiSampler_setupOnceTimer__block_invoke_2(uint64_t a1, v
       goto LABEL_15;
     }
 
-    if (v12)
+    if (blockCopy)
     {
 LABEL_15:
-      v13->_clientClass = a6;
-      v17 = _Block_copy(v12);
+      v13->_clientClass = class;
+      v17 = _Block_copy(blockCopy);
       block = v13->_block;
       v13->_block = v17;
 
-      objc_storeStrong(&v13->_name, a3);
-      v13->_samplingInterval = a4;
+      objc_storeStrong(&v13->_name, name);
+      v13->_samplingInterval = interval;
       [(SFAnalyticsMultiSampler *)v13 newTimer];
 LABEL_16:
       v16 = v13;

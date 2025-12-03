@@ -1,7 +1,7 @@
 @interface SBAlwaysOnPolicySettings
 + (id)settingsControllerModule;
 - (NSSet)alwaysOnDisablingFocusSemanticTypes;
-- (void)setAlwaysOnDisablingFocusSemanticTypes:(id)a3;
+- (void)setAlwaysOnDisablingFocusSemanticTypes:(id)types;
 - (void)setDefaultValues;
 @end
 
@@ -23,13 +23,13 @@
   v3 = [MEMORY[0x277D431B8] rowWithTitle:@"Strategy" valueKeyPath:@"focusStrategy"];
   v24 = [v3 possibleValues:&unk_28336EA48 titles:&unk_28336EA30];
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [&unk_2833727D8 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+  allKeys = [&unk_2833727D8 allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
   obj = v6;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
@@ -48,11 +48,11 @@
 
         v11 = *(*(&v26 + 1) + 8 * i);
         v12 = MEMORY[0x277D432A8];
-        v13 = [a1 _keyPathForSemanticTypeName:v11];
+        v13 = [self _keyPathForSemanticTypeName:v11];
         v14 = [v12 rowWithTitle:v11 valueKeyPath:v13];
         v15 = [v14 conditionFormat:@"focusStrategy = %@", &unk_283371BB8];
 
-        [v4 addObject:v15];
+        [array addObject:v15];
       }
 
       v8 = [obj countByEnumeratingWithState:&v26 objects:v32 count:16];
@@ -64,7 +64,7 @@
   v16 = MEMORY[0x277D43210];
   v31 = v24;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-  v18 = [v17 arrayByAddingObjectsFromArray:v4];
+  v18 = [v17 arrayByAddingObjectsFromArray:array];
   v19 = [v16 sectionWithRows:v18 title:@"Disabling By Focus Modes"];
 
   v20 = MEMORY[0x277D43210];
@@ -77,13 +77,13 @@
 
 - (NSSet)alwaysOnDisablingFocusSemanticTypes
 {
-  v3 = [&unk_283372800 allKeys];
+  allKeys = [&unk_283372800 allKeys];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__SBAlwaysOnPolicySettings_alwaysOnDisablingFocusSemanticTypes__block_invoke;
   v8[3] = &unk_2783A8B78;
   v8[4] = self;
-  v4 = [v3 bs_filter:v8];
+  v4 = [allKeys bs_filter:v8];
   v5 = [v4 bs_map:&__block_literal_global_329];
 
   v6 = [MEMORY[0x277CBEB98] setWithArray:v5];
@@ -103,10 +103,10 @@ uint64_t __63__SBAlwaysOnPolicySettings_alwaysOnDisablingFocusSemanticTypes__blo
   return v6;
 }
 
-- (void)setAlwaysOnDisablingFocusSemanticTypes:(id)a3
+- (void)setAlwaysOnDisablingFocusSemanticTypes:(id)types
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -128,7 +128,7 @@ uint64_t __63__SBAlwaysOnPolicySettings_alwaysOnDisablingFocusSemanticTypes__blo
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = [&unk_283372878 objectForKeyedSubscript:v9];
-        v11 = [v4 containsObject:v10];
+        v11 = [typesCopy containsObject:v10];
 
         v12 = [MEMORY[0x277CCABB0] numberWithBool:v11];
         v13 = [objc_opt_class() _keyPathForSemanticTypeName:v9];

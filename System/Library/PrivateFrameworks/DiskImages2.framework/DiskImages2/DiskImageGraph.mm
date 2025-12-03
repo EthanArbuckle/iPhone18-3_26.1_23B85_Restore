@@ -1,42 +1,42 @@
 @interface DiskImageGraph
-+ (BOOL)copyDictNodesToFolder:(id)a3 dict:(id)a4 error:(id *)a5;
-+ (BOOL)createNodesConnectivityWithNodesDict:(id)a3 error:(id *)a4;
-+ (BOOL)failWithNoPstackError:(id *)a3;
-+ (BOOL)loadPlistDictFromFileHandle:(id)a3 dict:(id *)a4 error:(id *)a5;
-+ (BOOL)populateNodesDictsWithArray:(id)a3 workDir:(id)a4 nodesDict:(id)a5 error:(id *)a6;
-+ (BOOL)saveToPlistWithDictionary:(id)a3 URL:(id)a4 error:(id *)a5;
-+ (BOOL)validateWithDictionary:(id)a3 error:(id *)a4;
-+ (id)createGraphDictWithNode:(id)a3;
-+ (id)getFirstNonCacheAncestorWithNode:(id)a3 error:(id *)a4;
-+ (id)getImageInfoDictWithURL:(id)a3 error:(id *)a4;
-+ (id)getImageUUIDStrWithIdentityInfo:(id)a3 stackableUUIDFallback:(BOOL)a4 error:(id *)a5;
-- (BOOL)appendCacheWithURL:(id)a3 tag:(id)a4 error:(id *)a5;
-- (BOOL)appendOverlayWithURL:(id)a3 tag:(id)a4 error:(id *)a5;
-- (BOOL)appendOverlayWithURL:(id)a3 tag:(id)a4 numBlocks:(unint64_t)a5 error:(id *)a6;
-- (BOOL)checkStackValidityWithError:(id *)a3;
-- (BOOL)savePstackWithURL:(id)a3 error:(id *)a4;
-- (BOOL)setActiveNodeWithTag:(id)a3 error:(id *)a4;
-- (BOOL)setActiveNodeWithUUID:(id)a3 error:(id *)a4;
-- (BOOL)validateAppendedImageWithURL:(id)a3 parentNode:(id)a4 isCache:(BOOL)a5 error:(id *)a6;
-- (DiskImageGraph)initWithBaseImageURL:(id)a3 newPstackURL:(id)a4 tag:(id)a5 error:(id *)a6;
-- (DiskImageGraph)initWithBaseImageURL:(id)a3 tag:(id)a4 error:(id *)a5;
-- (DiskImageGraph)initWithGraphDB:(id)a3 workDir:(id)a4 error:(id *)a5;
-- (DiskImageGraph)initWithPluginName:(id)a3 pluginParams:(id)a4 tag:(id)a5 error:(id *)a6;
-- (DiskImageGraph)initWithPstackURL:(id)a3 error:(id *)a4;
++ (BOOL)copyDictNodesToFolder:(id)folder dict:(id)dict error:(id *)error;
++ (BOOL)createNodesConnectivityWithNodesDict:(id)dict error:(id *)error;
++ (BOOL)failWithNoPstackError:(id *)error;
++ (BOOL)loadPlistDictFromFileHandle:(id)handle dict:(id *)dict error:(id *)error;
++ (BOOL)populateNodesDictsWithArray:(id)array workDir:(id)dir nodesDict:(id)dict error:(id *)error;
++ (BOOL)saveToPlistWithDictionary:(id)dictionary URL:(id)l error:(id *)error;
++ (BOOL)validateWithDictionary:(id)dictionary error:(id *)error;
++ (id)createGraphDictWithNode:(id)node;
++ (id)getFirstNonCacheAncestorWithNode:(id)node error:(id *)error;
++ (id)getImageInfoDictWithURL:(id)l error:(id *)error;
++ (id)getImageUUIDStrWithIdentityInfo:(id)info stackableUUIDFallback:(BOOL)fallback error:(id *)error;
+- (BOOL)appendCacheWithURL:(id)l tag:(id)tag error:(id *)error;
+- (BOOL)appendOverlayWithURL:(id)l tag:(id)tag error:(id *)error;
+- (BOOL)appendOverlayWithURL:(id)l tag:(id)tag numBlocks:(unint64_t)blocks error:(id *)error;
+- (BOOL)checkStackValidityWithError:(id *)error;
+- (BOOL)savePstackWithURL:(id)l error:(id *)error;
+- (BOOL)setActiveNodeWithTag:(id)tag error:(id *)error;
+- (BOOL)setActiveNodeWithUUID:(id)d error:(id *)error;
+- (BOOL)validateAppendedImageWithURL:(id)l parentNode:(id)node isCache:(BOOL)cache error:(id *)error;
+- (DiskImageGraph)initWithBaseImageURL:(id)l newPstackURL:(id)rL tag:(id)tag error:(id *)error;
+- (DiskImageGraph)initWithBaseImageURL:(id)l tag:(id)tag error:(id *)error;
+- (DiskImageGraph)initWithGraphDB:(id)b workDir:(id)dir error:(id *)error;
+- (DiskImageGraph)initWithPluginName:(id)name pluginParams:(id)params tag:(id)tag error:(id *)error;
+- (DiskImageGraph)initWithPstackURL:(id)l error:(id *)error;
 - (DiskImageGraphNode)rootNode;
 - (NSMutableArray)imagesDictsArray;
-- (id)cloneToURL:(id)a3 error:(id *)a4;
-- (id)getImageWithTag:(id)a3 error:(id *)a4;
-- (id)getImageWithUUID:(id)a3 error:(id *)a4;
-- (void)setActiveNode:(id)a3;
+- (id)cloneToURL:(id)l error:(id *)error;
+- (id)getImageWithTag:(id)tag error:(id *)error;
+- (id)getImageWithUUID:(id)d error:(id *)error;
+- (void)setActiveNode:(id)node;
 @end
 
 @implementation DiskImageGraph
 
-+ (BOOL)loadPlistDictFromFileHandle:(id)a3 dict:(id *)a4 error:(id *)a5
++ (BOOL)loadPlistDictFromFileHandle:(id)handle dict:(id *)dict error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = [a3 readDataUpToLength:0x100000 error:a5];
+  v7 = [handle readDataUpToLength:0x100000 error:error];
   if (v7)
   {
     v8 = [MEMORY[0x277CCAC58] propertyListWithData:v7 options:2 format:0 error:0];
@@ -50,7 +50,7 @@
         if (v9)
         {
           v10 = v8;
-          *a4 = v8;
+          *dict = v8;
           v11 = 1;
 LABEL_15:
 
@@ -94,7 +94,7 @@ LABEL_15:
       }
     }
 
-    v11 = [DiskImageGraph failWithNoPstackError:a5, v18, v19];
+    v11 = [DiskImageGraph failWithNoPstackError:error, v18, v19];
     goto LABEL_15;
   }
 
@@ -105,41 +105,41 @@ LABEL_16:
   return v11;
 }
 
-+ (BOOL)failWithNoPstackError:(id *)a3
++ (BOOL)failWithNoPstackError:(id *)error
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  [v4 setObject:@"Not a pstack." forKeyedSubscript:@"DIErrorVerboseInfo"];
-  v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.DiskImages2.ErrorDomain" code:167 userInfo:v4];
-  LOBYTE(a3) = [DIError failWithInError:v5 outError:a3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"Not a pstack." forKeyedSubscript:@"DIErrorVerboseInfo"];
+  v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.DiskImages2.ErrorDomain" code:167 userInfo:dictionary];
+  LOBYTE(error) = [DIError failWithInError:v5 outError:error];
 
-  return a3;
+  return error;
 }
 
-+ (id)createGraphDictWithNode:(id)a3
++ (id)createGraphDictWithNode:(id)node
 {
-  v3 = a3;
-  v4 = [v3 toDictionary];
-  v5 = [v4 mutableCopy];
-  [v3 setPstackDict:v5];
+  nodeCopy = node;
+  toDictionary = [nodeCopy toDictionary];
+  v5 = [toDictionary mutableCopy];
+  [nodeCopy setPstackDict:v5];
 
   v6 = MEMORY[0x277CBEB38];
-  v7 = [v3 UUID];
-  v8 = [v7 UUIDString];
+  uUID = [nodeCopy UUID];
+  uUIDString = [uUID UUIDString];
   v9 = MEMORY[0x277CBEB18];
-  v10 = [v3 pstackDict];
+  pstackDict = [nodeCopy pstackDict];
 
-  v11 = [v9 arrayWithObject:v10];
-  v12 = [v6 dictionaryWithObjectsAndKeys:{@"1.0", @"PstackVersion", v8, @"ActiveNode", v11, @"Images", 0}];
+  v11 = [v9 arrayWithObject:pstackDict];
+  v12 = [v6 dictionaryWithObjectsAndKeys:{@"1.0", @"PstackVersion", uUIDString, @"ActiveNode", v11, @"Images", 0}];
 
   return v12;
 }
 
-- (DiskImageGraph)initWithPluginName:(id)a3 pluginParams:(id)a4 tag:(id)a5 error:(id *)a6
+- (DiskImageGraph)initWithPluginName:(id)name pluginParams:(id)params tag:(id)tag error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  paramsCopy = params;
+  tagCopy = tag;
   v33.receiver = self;
   v33.super_class = DiskImageGraph;
   v12 = [(DiskImageGraph *)&v33 init];
@@ -148,12 +148,12 @@ LABEL_16:
     goto LABEL_4;
   }
 
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  if (v13)
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  if (uUID)
   {
-    v14 = v13;
+    v14 = uUID;
     LOBYTE(v32) = 0;
-    v15 = [[PluginDiskImageGraphNode alloc] initWithPluginName:v9 pluginParams:v10 tag:v11 UUID:v13 parentNode:0 metadata:0 isCache:v32];
+    v15 = [[PluginDiskImageGraphNode alloc] initWithPluginName:nameCopy pluginParams:paramsCopy tag:tagCopy UUID:uUID parentNode:0 metadata:0 isCache:v32];
     activeNode = v12->_activeNode;
     v12->_activeNode = &v15->super;
     v17 = v15;
@@ -166,10 +166,10 @@ LABEL_16:
     nodes = v12->_nodes;
     v12->_nodes = v20;
 
-    v22 = [(DiskImageGraph *)v12 nodes];
-    v23 = [(DiskImageGraphNode *)v17 UUID];
-    v24 = [v23 UUIDString];
-    [v22 setObject:v17 forKeyedSubscript:v24];
+    nodes = [(DiskImageGraph *)v12 nodes];
+    uUID2 = [(DiskImageGraphNode *)v17 UUID];
+    uUIDString = [uUID2 UUIDString];
+    [nodes setObject:v17 forKeyedSubscript:uUIDString];
 
 LABEL_4:
     v25 = v12;
@@ -215,11 +215,11 @@ LABEL_12:
   return v25;
 }
 
-- (DiskImageGraph)initWithBaseImageURL:(id)a3 tag:(id)a4 error:(id *)a5
+- (DiskImageGraph)initWithBaseImageURL:(id)l tag:(id)tag error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  tagCopy = tag;
   v26.receiver = self;
   v26.super_class = DiskImageGraph;
   v10 = [(DiskImageGraph *)&v26 init];
@@ -228,11 +228,11 @@ LABEL_12:
     goto LABEL_4;
   }
 
-  v11 = [DiskImageGraph getImageUUIDWithURL:v8 allowMissingUUID:1 error:a5];
+  v11 = [DiskImageGraph getImageUUIDWithURL:lCopy allowMissingUUID:1 error:error];
   if (v11)
   {
     v12 = v11;
-    v13 = [[NativeDiskImageGraphNode alloc] initWithURL:v8 tag:v9 UUID:v11 parentNode:0 metadata:0 isCache:0];
+    v13 = [[NativeDiskImageGraphNode alloc] initWithURL:lCopy tag:tagCopy UUID:v11 parentNode:0 metadata:0 isCache:0];
     [(DiskImageGraph *)v10 setActiveNode:v13];
     v14 = [DiskImageGraph createGraphDictWithNode:v13];
     [(DiskImageGraph *)v10 setGraphDB:v14];
@@ -240,10 +240,10 @@ LABEL_12:
     v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(DiskImageGraph *)v10 setNodes:v15];
 
-    v16 = [(DiskImageGraph *)v10 nodes];
-    v17 = [(DiskImageGraphNode *)v13 UUID];
-    v18 = [v17 UUIDString];
-    [v16 setObject:v13 forKeyedSubscript:v18];
+    nodes = [(DiskImageGraph *)v10 nodes];
+    uUID = [(DiskImageGraphNode *)v13 UUID];
+    uUIDString = [uUID UUIDString];
+    [nodes setObject:v13 forKeyedSubscript:uUIDString];
 
 LABEL_4:
     v19 = v10;
@@ -289,44 +289,44 @@ LABEL_12:
   return v19;
 }
 
-- (DiskImageGraph)initWithBaseImageURL:(id)a3 newPstackURL:(id)a4 tag:(id)a5 error:(id *)a6
+- (DiskImageGraph)initWithBaseImageURL:(id)l newPstackURL:(id)rL tag:(id)tag error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  if (v10)
+  rLCopy = rL;
+  tagCopy = tag;
+  lCopy = l;
+  if (rLCopy)
   {
-    v13 = [[SerializedDiskImageGraph alloc] initWithBaseImageURL:v12 pstackURL:v10 tag:v11 error:a6];
+    selfCopy = [[SerializedDiskImageGraph alloc] initWithBaseImageURL:lCopy pstackURL:rLCopy tag:tagCopy error:error];
   }
 
   else
   {
-    v14 = [(DiskImageGraph *)self initWithBaseImageURL:v12 tag:v11 error:a6];
+    v14 = [(DiskImageGraph *)self initWithBaseImageURL:lCopy tag:tagCopy error:error];
 
     self = v14;
-    v13 = self;
+    selfCopy = self;
   }
 
-  return &v13->super;
+  return &selfCopy->super;
 }
 
 - (NSMutableArray)imagesDictsArray
 {
-  v2 = [(DiskImageGraph *)self graphDB];
-  v3 = [v2 objectForKeyedSubscript:@"Images"];
+  graphDB = [(DiskImageGraph *)self graphDB];
+  v3 = [graphDB objectForKeyedSubscript:@"Images"];
 
   return v3;
 }
 
-+ (BOOL)validateWithDictionary:(id)a3 error:(id *)a4
++ (BOOL)validateWithDictionary:(id)dictionary error:(id *)error
 {
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
-  if ([v5 validateAndPopObjectForKey:@"PstackVersion" className:objc_opt_class() isOptional:0 error:a4] && objc_msgSend(v5, "validateAndPopObjectForKey:className:isOptional:error:", @"ActiveNode", objc_opt_class(), 0, a4) && objc_msgSend(v5, "validateAndPopObjectForKey:className:isOptional:error:", @"Images", objc_opt_class(), 0, a4))
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:dictionary];
+  if ([v5 validateAndPopObjectForKey:@"PstackVersion" className:objc_opt_class() isOptional:0 error:error] && objc_msgSend(v5, "validateAndPopObjectForKey:className:isOptional:error:", @"ActiveNode", objc_opt_class(), 0, error) && objc_msgSend(v5, "validateAndPopObjectForKey:className:isOptional:error:", @"Images", objc_opt_class(), 0, error))
   {
     if ([v5 count])
     {
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Validation failed, input contains unexpected data."];
-      v7 = [DIError failWithPOSIXCode:22 verboseInfo:v6 error:a4];
+      v7 = [DIError failWithPOSIXCode:22 verboseInfo:v6 error:error];
     }
 
     else
@@ -343,21 +343,21 @@ LABEL_12:
   return v7;
 }
 
-- (DiskImageGraph)initWithGraphDB:(id)a3 workDir:(id)a4 error:(id *)a5
+- (DiskImageGraph)initWithGraphDB:(id)b workDir:(id)dir error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  bCopy = b;
+  dirCopy = dir;
   v24.receiver = self;
   v24.super_class = DiskImageGraph;
   v10 = [(DiskImageGraph *)&v24 init];
   if (v10)
   {
-    if (![DiskImageGraph validateWithDictionary:v8 error:a5])
+    if (![DiskImageGraph validateWithDictionary:bCopy error:error])
     {
       goto LABEL_9;
     }
 
-    v11 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v8];
+    v11 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:bCopy];
     graphDB = v10->_graphDB;
     v10->_graphDB = v11;
 
@@ -366,26 +366,26 @@ LABEL_12:
     v10->_nodes = v13;
 
     v15 = [(NSMutableDictionary *)v10->_graphDB objectForKeyedSubscript:@"Images"];
-    v16 = [DiskImageGraph populateNodesDictsWithArray:v15 workDir:v9 nodesDict:v10->_nodes error:a5];
+    v16 = [DiskImageGraph populateNodesDictsWithArray:v15 workDir:dirCopy nodesDict:v10->_nodes error:error];
 
     if (!v16)
     {
       goto LABEL_9;
     }
 
-    v17 = [(DiskImageGraph *)v10 nodes];
+    nodes = [(DiskImageGraph *)v10 nodes];
     v18 = [(NSMutableDictionary *)v10->_graphDB objectForKeyedSubscript:@"ActiveNode"];
-    v19 = [v17 objectForKey:v18];
+    v19 = [nodes objectForKey:v18];
     activeNode = v10->_activeNode;
     v10->_activeNode = v19;
 
     if (!v19)
     {
-      v21 = [DIError nilWithPOSIXCode:22 description:@"Bad pstack format error:node with active UUID not found.", a5];
+      error = [DIError nilWithPOSIXCode:22 description:@"Bad pstack format error:node with active UUID not found.", error];
       goto LABEL_8;
     }
 
-    if (![DiskImageGraph createNodesConnectivityWithNodesDict:v10->_nodes error:a5]|| ![(DiskImageGraph *)v10 checkStackValidityWithError:a5])
+    if (![DiskImageGraph createNodesConnectivityWithNodesDict:v10->_nodes error:error]|| ![(DiskImageGraph *)v10 checkStackValidityWithError:error])
     {
 LABEL_9:
       v22 = 0;
@@ -393,26 +393,26 @@ LABEL_9:
     }
   }
 
-  v21 = v10;
+  error = v10;
 LABEL_8:
-  v22 = v21;
+  v22 = error;
 LABEL_10:
 
   return v22;
 }
 
-- (DiskImageGraph)initWithPstackURL:(id)a3 error:(id *)a4
+- (DiskImageGraph)initWithPstackURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [[SerializedDiskImageGraph alloc] initWithPstackURL:v6 error:a4];
+  lCopy = l;
+  v7 = [[SerializedDiskImageGraph alloc] initWithPstackURL:lCopy error:error];
 
   return &v7->super;
 }
 
-+ (BOOL)copyDictNodesToFolder:(id)a3 dict:(id)a4 error:(id *)a5
++ (BOOL)copyDictNodesToFolder:(id)folder dict:(id)dict error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  folderCopy = folder;
+  dictCopy = dict;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -424,19 +424,19 @@ LABEL_10:
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy_;
   v26 = __Block_byref_object_dispose_;
-  v27 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  v27 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dictCopy, "count")}];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __51__DiskImageGraph_copyDictNodesToFolder_dict_error___block_invoke;
   v17[3] = &unk_278F80930;
   v20 = &v28;
-  v10 = v7;
+  v10 = folderCopy;
   v18 = v10;
-  v11 = v9;
+  v11 = defaultManager;
   v19 = v11;
   v21 = &v22;
-  [v8 enumerateKeysAndObjectsUsingBlock:v17];
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v17];
   if (v29[5])
   {
     v12 = v23[5];
@@ -446,7 +446,7 @@ LABEL_10:
     v15[3] = &unk_278F80958;
     v16 = v11;
     [v12 enumerateObjectsUsingBlock:v15];
-    v13 = [DIError failWithInError:v29[5] outError:a5];
+    v13 = [DIError failWithInError:v29[5] outError:error];
   }
 
   else
@@ -502,39 +502,39 @@ void __51__DiskImageGraph_copyDictNodesToFolder_dict_error___block_invoke(void *
   }
 }
 
-- (id)cloneToURL:(id)a3 error:(id *)a4
+- (id)cloneToURL:(id)l error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lCopy = l;
   v7 = MEMORY[0x277CBEB38];
-  v8 = [(DiskImageGraph *)self graphDB];
-  v9 = [v7 dictionaryWithDictionary:v8];
+  graphDB = [(DiskImageGraph *)self graphDB];
+  v9 = [v7 dictionaryWithDictionary:graphDB];
 
-  v10 = [(DiskImageGraph *)self graphDB];
-  v11 = [v10 objectForKeyedSubscript:@"Images"];
+  graphDB2 = [(DiskImageGraph *)self graphDB];
+  v11 = [graphDB2 objectForKeyedSubscript:@"Images"];
 
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
   [v9 setObject:v12 forKeyedSubscript:@"Images"];
-  if (([v6 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
     v25 = @"Destination folder URL must be of 'file' scheme.";
     v26 = 22;
 LABEL_15:
-    v24 = [DIError nilWithPOSIXCode:v26 description:v25 error:a4];
+    v24 = [DIError nilWithPOSIXCode:v26 description:v25 error:error];
     goto LABEL_16;
   }
 
-  if (![v6 hasDirectoryPath] || (objc_msgSend(v6, "checkResourceIsReachableAndReturnError:", 0) & 1) == 0)
+  if (![lCopy hasDirectoryPath] || (objc_msgSend(lCopy, "checkResourceIsReachableAndReturnError:", 0) & 1) == 0)
   {
     v25 = @"Destination folder URL must represent an existing folder.";
     v26 = 20;
     goto LABEL_15;
   }
 
-  v29 = self;
-  v30 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v32 = v9;
-  v33 = v6;
+  v33 = lCopy;
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -559,8 +559,8 @@ LABEL_15:
         v18 = [v17 mutableCopy];
         v19 = [v17 objectForKeyedSubscript:@"FilePath"];
         v20 = [v19 componentsSeparatedByString:@"/"];
-        v21 = [v20 lastObject];
-        [v18 setObject:v21 forKeyedSubscript:@"FilePath"];
+        lastObject = [v20 lastObject];
+        [v18 setObject:lastObject forKeyedSubscript:@"FilePath"];
 
         [v12 addObject:v18];
       }
@@ -571,9 +571,9 @@ LABEL_15:
     while (v14);
   }
 
-  v22 = [(DiskImageGraph *)v29 nodes];
-  v6 = v33;
-  v23 = [DiskImageGraph copyDictNodesToFolder:v33 dict:v22 error:v30];
+  nodes = [(DiskImageGraph *)selfCopy nodes];
+  lCopy = v33;
+  v23 = [DiskImageGraph copyDictNodesToFolder:v33 dict:nodes error:errorCopy];
 
   if (v23)
   {
@@ -595,20 +595,20 @@ LABEL_16:
   return v24;
 }
 
-- (void)setActiveNode:(id)a3
+- (void)setActiveNode:(id)node
 {
-  objc_storeStrong(&self->_activeNode, a3);
-  v5 = a3;
-  v7 = [v5 UUID];
-  v6 = [v7 UUIDString];
-  [(NSMutableDictionary *)self->_graphDB setObject:v6 forKeyedSubscript:@"ActiveNode"];
+  objc_storeStrong(&self->_activeNode, node);
+  nodeCopy = node;
+  uUID = [nodeCopy UUID];
+  uUIDString = [uUID UUIDString];
+  [(NSMutableDictionary *)self->_graphDB setObject:uUIDString forKeyedSubscript:@"ActiveNode"];
 }
 
-+ (BOOL)populateNodesDictsWithArray:(id)a3 workDir:(id)a4 nodesDict:(id)a5 error:(id *)a6
++ (BOOL)populateNodesDictsWithArray:(id)array workDir:(id)dir nodesDict:(id)dict error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  arrayCopy = array;
+  dirCopy = dir;
+  dictCopy = dict;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -619,16 +619,16 @@ LABEL_16:
   v17[1] = 3221225472;
   v17[2] = __70__DiskImageGraph_populateNodesDictsWithArray_workDir_nodesDict_error___block_invoke;
   v17[3] = &unk_278F80980;
-  v12 = v10;
+  v12 = dirCopy;
   v18 = v12;
   v20 = &v21;
-  v13 = v11;
+  v13 = dictCopy;
   v19 = v13;
-  [v9 enumerateObjectsUsingBlock:v17];
+  [arrayCopy enumerateObjectsUsingBlock:v17];
   v14 = v22[5];
   if (v14)
   {
-    v15 = [DIError failWithInError:v14 outError:a6];
+    v15 = [DIError failWithInError:v14 outError:error];
   }
 
   else
@@ -661,9 +661,9 @@ void __70__DiskImageGraph_populateNodesDictsWithArray_workDir_nodesDict_error___
   }
 }
 
-+ (BOOL)createNodesConnectivityWithNodesDict:(id)a3 error:(id *)a4
++ (BOOL)createNodesConnectivityWithNodesDict:(id)dict error:(id *)error
 {
-  v5 = a3;
+  dictCopy = dict;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -674,14 +674,14 @@ void __70__DiskImageGraph_populateNodesDictsWithArray_workDir_nodesDict_error___
   v11 = 3221225472;
   v12 = __61__DiskImageGraph_createNodesConnectivityWithNodesDict_error___block_invoke;
   v13 = &unk_278F809A8;
-  v6 = v5;
+  v6 = dictCopy;
   v14 = v6;
   v15 = &v16;
   [v6 enumerateKeysAndObjectsUsingBlock:&v10];
   v7 = v17[5];
   if (v7)
   {
-    v8 = [DIError failWithInError:v7 outError:a4, v10, v11, v12, v13];
+    v8 = [DIError failWithInError:v7 outError:error, v10, v11, v12, v13];
   }
 
   else
@@ -724,38 +724,38 @@ void __61__DiskImageGraph_createNodesConnectivityWithNodesDict_error___block_inv
   }
 }
 
-- (BOOL)checkStackValidityWithError:(id *)a3
+- (BOOL)checkStackValidityWithError:(id *)error
 {
-  v5 = [(DiskImageGraph *)self activeNode];
+  activeNode = [(DiskImageGraph *)self activeNode];
   v6 = -1;
-  while (v5)
+  while (activeNode)
   {
-    v7 = [v5 parent];
+    parent = [activeNode parent];
 
-    v8 = [(DiskImageGraph *)self nodes];
-    v9 = [v8 count];
+    nodes = [(DiskImageGraph *)self nodes];
+    v9 = [nodes count];
 
     ++v6;
-    v5 = v7;
+    activeNode = parent;
     if (v9 <= v6)
     {
-      v10 = [DIError failWithPOSIXCode:22 verboseInfo:@"Invalid pstack error:Active stack contains a loop.", a3];
+      error = [DIError failWithPOSIXCode:22 verboseInfo:@"Invalid pstack error:Active stack contains a loop.", error];
 
-      return v10;
+      return error;
     }
   }
 
   return 1;
 }
 
-+ (BOOL)saveToPlistWithDictionary:(id)a3 URL:(id)a4 error:(id *)a5
++ (BOOL)saveToPlistWithDictionary:(id)dictionary URL:(id)l error:(id *)error
 {
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:100 options:0 error:a5];
+  lCopy = l;
+  v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:100 options:0 error:error];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 writeToURL:v7 options:1 error:a5];
+    v10 = [v8 writeToURL:lCopy options:1 error:error];
   }
 
   else
@@ -766,13 +766,13 @@ void __61__DiskImageGraph_createNodesConnectivityWithNodesDict_error___block_inv
   return v10;
 }
 
-- (BOOL)setActiveNodeWithUUID:(id)a3 error:(id *)a4
+- (BOOL)setActiveNodeWithUUID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(DiskImageGraph *)self nodes];
-  v8 = [v6 UUIDString];
+  dCopy = d;
+  nodes = [(DiskImageGraph *)self nodes];
+  uUIDString = [dCopy UUIDString];
 
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [nodes objectForKeyedSubscript:uUIDString];
 
   if (v9)
   {
@@ -782,36 +782,36 @@ void __61__DiskImageGraph_createNodesConnectivityWithNodesDict_error___block_inv
 
   else
   {
-    v10 = [DIError failWithPOSIXCode:22 verboseInfo:@"Cannot find image with provided UUID." error:a4];
+    v10 = [DIError failWithPOSIXCode:22 verboseInfo:@"Cannot find image with provided UUID." error:error];
   }
 
   return v10;
 }
 
-- (id)getImageWithTag:(id)a3 error:(id *)a4
+- (id)getImageWithTag:(id)tag error:(id *)error
 {
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy_;
   v16[4] = __Block_byref_object_dispose_;
-  v6 = a3;
-  v17 = v6;
-  v7 = [(DiskImageGraph *)self nodes];
+  tagCopy = tag;
+  v17 = tagCopy;
+  nodes = [(DiskImageGraph *)self nodes];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __40__DiskImageGraph_getImageWithTag_error___block_invoke;
   v15[3] = &unk_278F809D0;
   v15[4] = v16;
-  v8 = [v7 keysOfEntriesPassingTest:v15];
+  v8 = [nodes keysOfEntriesPassingTest:v15];
 
   if ([v8 count])
   {
     if ([v8 count] == 1)
     {
-      v9 = [(DiskImageGraph *)self nodes];
-      v10 = [v8 anyObject];
-      v11 = [v9 objectForKey:v10];
+      nodes2 = [(DiskImageGraph *)self nodes];
+      anyObject = [v8 anyObject];
+      v11 = [nodes2 objectForKey:anyObject];
 
       goto LABEL_7;
     }
@@ -826,7 +826,7 @@ void __61__DiskImageGraph_createNodesConnectivityWithNodesDict_error___block_inv
     v13 = 2;
   }
 
-  v11 = [DIError nilWithPOSIXCode:v13 verboseInfo:v12 error:a4];
+  v11 = [DIError nilWithPOSIXCode:v13 verboseInfo:v12 error:error];
 LABEL_7:
 
   _Block_object_dispose(v16, 8);
@@ -842,13 +842,13 @@ uint64_t __40__DiskImageGraph_getImageWithTag_error___block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (id)getImageWithUUID:(id)a3 error:(id *)a4
+- (id)getImageWithUUID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(DiskImageGraph *)self nodes];
-  v8 = [v6 UUIDString];
+  dCopy = d;
+  nodes = [(DiskImageGraph *)self nodes];
+  uUIDString = [dCopy UUIDString];
 
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [nodes objectForKeyedSubscript:uUIDString];
 
   if (v9)
   {
@@ -857,7 +857,7 @@ uint64_t __40__DiskImageGraph_getImageWithTag_error___block_invoke(uint64_t a1, 
 
   else
   {
-    v10 = [DIError nilWithPOSIXCode:2 verboseInfo:@"Cannot find image with provided uuid." error:a4];
+    v10 = [DIError nilWithPOSIXCode:2 verboseInfo:@"Cannot find image with provided uuid." error:error];
   }
 
   v11 = v10;
@@ -865,9 +865,9 @@ uint64_t __40__DiskImageGraph_getImageWithTag_error___block_invoke(uint64_t a1, 
   return v11;
 }
 
-- (BOOL)setActiveNodeWithTag:(id)a3 error:(id *)a4
+- (BOOL)setActiveNodeWithTag:(id)tag error:(id *)error
 {
-  v5 = [(DiskImageGraph *)self getImageWithTag:a3 error:a4];
+  v5 = [(DiskImageGraph *)self getImageWithTag:tag error:error];
   if (v5)
   {
     [(DiskImageGraph *)self setActiveNode:v5];
@@ -876,69 +876,69 @@ uint64_t __40__DiskImageGraph_getImageWithTag_error___block_invoke(uint64_t a1, 
   return v5 != 0;
 }
 
-- (BOOL)savePstackWithURL:(id)a3 error:(id *)a4
+- (BOOL)savePstackWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(DiskImageGraph *)self graphDB];
-  LOBYTE(a4) = [DiskImageGraph saveToPlistWithDictionary:v7 URL:v6 error:a4];
+  lCopy = l;
+  graphDB = [(DiskImageGraph *)self graphDB];
+  LOBYTE(error) = [DiskImageGraph saveToPlistWithDictionary:graphDB URL:lCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (DiskImageGraphNode)rootNode
 {
-  v2 = [(DiskImageGraph *)self activeNode];
-  v3 = [v2 parent];
+  activeNode = [(DiskImageGraph *)self activeNode];
+  parent = [activeNode parent];
 
-  if (v3)
+  if (parent)
   {
     do
     {
-      v4 = [v2 parent];
+      parent2 = [activeNode parent];
 
-      v5 = [v4 parent];
+      v4Parent = [parent2 parent];
 
-      v2 = v4;
+      activeNode = parent2;
     }
 
-    while (v5);
+    while (v4Parent);
   }
 
   else
   {
-    v4 = v2;
+    parent2 = activeNode;
   }
 
-  return v4;
+  return parent2;
 }
 
-+ (id)getImageInfoDictWithURL:(id)a3 error:(id *)a4
++ (id)getImageInfoDictWithURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [[DIImageInfoParams alloc] initWithURL:v5 error:a4];
+  lCopy = l;
+  v6 = [[DIImageInfoParams alloc] initWithURL:lCopy error:error];
 
-  if (v6 && [(DIImageInfoParams *)v6 retrieveWithError:a4])
+  if (v6 && [(DIImageInfoParams *)v6 retrieveWithError:error])
   {
-    v7 = [(DIImageInfoParams *)v6 imageInfo];
+    imageInfo = [(DIImageInfoParams *)v6 imageInfo];
   }
 
   else
   {
-    v7 = 0;
+    imageInfo = 0;
   }
 
-  return v7;
+  return imageInfo;
 }
 
-+ (id)getImageUUIDStrWithIdentityInfo:(id)a3 stackableUUIDFallback:(BOOL)a4 error:(id *)a5
++ (id)getImageUUIDStrWithIdentityInfo:(id)info stackableUUIDFallback:(BOOL)fallback error:(id *)error
 {
-  v6 = a4;
+  fallbackCopy = fallback;
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 objectForKey:@"Stable UUID"];
+  infoCopy = info;
+  v8 = [infoCopy objectForKey:@"Stable UUID"];
   if (!v8)
   {
-    if (v6 && ([v7 objectForKey:@"UUID"], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (fallbackCopy && ([infoCopy objectForKey:@"UUID"], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = v9;
       v10 = *__error();
@@ -977,7 +977,7 @@ uint64_t __40__DiskImageGraph_getImageWithTag_error___block_invoke(uint64_t a1, 
 
     else
     {
-      v8 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Provided image has no UUID info." error:a5];
+      v8 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Provided image has no UUID info." error:error];
     }
   }
 
@@ -986,50 +986,50 @@ uint64_t __40__DiskImageGraph_getImageWithTag_error___block_invoke(uint64_t a1, 
   return v8;
 }
 
-- (BOOL)appendOverlayWithURL:(id)a3 tag:(id)a4 error:(id *)a5
+- (BOOL)appendOverlayWithURL:(id)l tag:(id)tag error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(DiskImageGraph *)self activeNode];
-  LOBYTE(a5) = [(DiskImageGraph *)self appendWithURL:v9 isCache:0 tag:v8 numBlocks:0 toNode:v10 setNewActive:0 error:a5];
+  tagCopy = tag;
+  lCopy = l;
+  activeNode = [(DiskImageGraph *)self activeNode];
+  LOBYTE(error) = [(DiskImageGraph *)self appendWithURL:lCopy isCache:0 tag:tagCopy numBlocks:0 toNode:activeNode setNewActive:0 error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)appendCacheWithURL:(id)a3 tag:(id)a4 error:(id *)a5
+- (BOOL)appendCacheWithURL:(id)l tag:(id)tag error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(DiskImageGraph *)self activeNode];
-  LOBYTE(a5) = [(DiskImageGraph *)self appendWithURL:v9 isCache:1 tag:v8 numBlocks:0 toNode:v10 setNewActive:0 error:a5];
+  tagCopy = tag;
+  lCopy = l;
+  activeNode = [(DiskImageGraph *)self activeNode];
+  LOBYTE(error) = [(DiskImageGraph *)self appendWithURL:lCopy isCache:1 tag:tagCopy numBlocks:0 toNode:activeNode setNewActive:0 error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)appendOverlayWithURL:(id)a3 tag:(id)a4 numBlocks:(unint64_t)a5 error:(id *)a6
+- (BOOL)appendOverlayWithURL:(id)l tag:(id)tag numBlocks:(unint64_t)blocks error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [(DiskImageGraph *)self activeNode];
-  LOBYTE(a6) = [(DiskImageGraph *)self appendWithURL:v11 isCache:0 tag:v10 numBlocks:a5 toNode:v12 setNewActive:0 error:a6];
+  tagCopy = tag;
+  lCopy = l;
+  activeNode = [(DiskImageGraph *)self activeNode];
+  LOBYTE(error) = [(DiskImageGraph *)self appendWithURL:lCopy isCache:0 tag:tagCopy numBlocks:blocks toNode:activeNode setNewActive:0 error:error];
 
-  return a6;
+  return error;
 }
 
-+ (id)getFirstNonCacheAncestorWithNode:(id)a3 error:(id *)a4
++ (id)getFirstNonCacheAncestorWithNode:(id)node error:(id *)error
 {
-  v5 = a3;
-  if ([v5 isCache])
+  nodeCopy = node;
+  if ([nodeCopy isCache])
   {
     do
     {
-      v6 = [v5 parent];
+      parent = [nodeCopy parent];
 
-      v5 = v6;
+      nodeCopy = parent;
     }
 
-    while (([v6 isCache] & 1) != 0);
-    if (v6)
+    while (([parent isCache] & 1) != 0);
+    if (parent)
     {
       goto LABEL_4;
     }
@@ -1037,28 +1037,28 @@ uint64_t __40__DiskImageGraph_getImageWithTag_error___block_invoke(uint64_t a1, 
 
   else
   {
-    v6 = v5;
-    if (v5)
+    parent = nodeCopy;
+    if (nodeCopy)
     {
 LABEL_4:
-      v7 = v6;
+      error = parent;
       goto LABEL_7;
     }
   }
 
-  v7 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Pstack corrupted error:found a cache node without a non-cache ancestor.", a4];
+  error = [DIError nilWithPOSIXCode:22 verboseInfo:@"Pstack corrupted error:found a cache node without a non-cache ancestor.", error];
 LABEL_7:
-  v8 = v7;
+  v8 = error;
 
   return v8;
 }
 
-- (BOOL)validateAppendedImageWithURL:(id)a3 parentNode:(id)a4 isCache:(BOOL)a5 error:(id *)a6
+- (BOOL)validateAppendedImageWithURL:(id)l parentNode:(id)node isCache:(BOOL)cache error:(id *)error
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = [DiskImageGraph getImageInfoDictWithURL:a3 error:a6];
-  if (v11 && [v10 validateAppendedImageWithInfo:v11 error:a6])
+  cacheCopy = cache;
+  nodeCopy = node;
+  v11 = [DiskImageGraph getImageInfoDictWithURL:l error:error];
+  if (v11 && [nodeCopy validateAppendedImageWithInfo:v11 error:error])
   {
     v12 = [v11 objectForKeyedSubscript:@"Image Format"];
     v13 = [v12 isEqualToString:@"ASIF"];
@@ -1067,14 +1067,14 @@ LABEL_7:
     {
       v14 = [v11 objectForKeyedSubscript:@"ASIF Info"];
       v15 = [v14 objectForKeyedSubscript:@"Is Cache"];
-      v16 = [v15 BOOLValue];
+      bOOLValue = [v15 BOOLValue];
 
-      if (v16 == v7)
+      if (bOOLValue == cacheCopy)
       {
-        v19 = [(DiskImageGraph *)self nodes];
+        nodes = [(DiskImageGraph *)self nodes];
         v20 = [v11 objectForKeyedSubscript:@"Identity Info"];
         v21 = [v20 objectForKeyedSubscript:@"Stable UUID"];
-        v22 = [v19 objectForKeyedSubscript:v21];
+        v22 = [nodes objectForKeyedSubscript:v21];
 
         if (!v22)
         {
@@ -1096,7 +1096,7 @@ LABEL_7:
       v17 = @"Can only append ASIF formatted images to pstack.";
     }
 
-    v18 = [DIError failWithPOSIXCode:22 verboseInfo:v17 error:a6];
+    v18 = [DIError failWithPOSIXCode:22 verboseInfo:v17 error:error];
   }
 
   else

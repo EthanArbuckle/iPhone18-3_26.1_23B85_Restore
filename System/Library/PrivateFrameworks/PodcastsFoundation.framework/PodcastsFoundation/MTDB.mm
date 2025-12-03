@@ -15,38 +15,38 @@
 + (int64_t)coreDataVersion_deprecated;
 + (int64_t)libraryDataVersion;
 + (void)isPodcastsAppCheck;
-+ (void)setCoreDataChecksum:(id)a3;
-+ (void)setCoreDataVersion:(int64_t)a3;
-+ (void)setLibraryDataVersion:(int64_t)a3;
++ (void)setCoreDataChecksum:(id)checksum;
++ (void)setCoreDataVersion:(int64_t)version;
++ (void)setLibraryDataVersion:(int64_t)version;
 + (void)setMigrationToDeltaFeedUpdatesComplete;
-+ (void)setSharedInstance:(id)a3;
++ (void)setSharedInstance:(id)instance;
 + (void)setStoreBothFreeAndPaidUrlsPreviousBootup;
 - (MTDB)init;
-- (MTDB)initWithCoreDataContainer:(id)a3 config:(id)a4;
+- (MTDB)initWithCoreDataContainer:(id)container config:(id)config;
 - (id)carPlayContext;
-- (id)contextForName:(id)a3;
-- (id)createSingleUsePrivateContext:(id)a3;
+- (id)contextForName:(id)name;
+- (id)createSingleUsePrivateContext:(id)context;
 - (id)importContext;
 - (id)loggingContext;
 - (id)mainOrPrivateContext;
 - (id)mainQueueContext;
-- (id)managedObjectIDForURI:(id)a3 error:(id *)a4;
+- (id)managedObjectIDForURI:(id)i error:(id *)error;
 - (id)managedObjectModel;
 - (id)persistentStoreUuid;
 - (id)playbackContext;
 - (id)privateQueueContext;
 - (id)resetableImportContext;
 - (id)storeContext;
-- (void)addChangeNotifier:(id)a3;
-- (void)removeChangeNotifier:(id)a3;
+- (void)addChangeNotifier:(id)notifier;
+- (void)removeChangeNotifier:(id)notifier;
 @end
 
 @implementation MTDB
 
 + (BOOL)quickCheckForNeedsContainerMigration
 {
-  v2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  v3 = [v2 BOOLForKey:@"MTLibraryPerformedSharedContainerMigration"];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  v3 = [_applePodcastsFoundationSharedUserDefaults BOOLForKey:@"MTLibraryPerformedSharedContainerMigration"];
 
   return v3;
 }
@@ -61,8 +61,8 @@
 
 + (int64_t)libraryDataVersion
 {
-  v2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  v3 = [v2 integerForKey:@"MTLibraryMigrationVersion"];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  v3 = [_applePodcastsFoundationSharedUserDefaults integerForKey:@"MTLibraryMigrationVersion"];
 
   return v3;
 }
@@ -78,25 +78,25 @@
 
 + (id)coreDataChecksum
 {
-  v2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  v3 = [v2 stringForKey:@"MTCoreDataChecksum"];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  v3 = [_applePodcastsFoundationSharedUserDefaults stringForKey:@"MTCoreDataChecksum"];
 
   return v3;
 }
 
 + (BOOL)isCorrupt
 {
-  v2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  v3 = [v2 BOOLForKey:@"MTDetectedCorruptDB"];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  v3 = [_applePodcastsFoundationSharedUserDefaults BOOLForKey:@"MTDetectedCorruptDB"];
 
   return v3;
 }
 
 + (BOOL)serpentIdMigrationComplete
 {
-  [a1 isPodcastsAppCheck];
-  v2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  v3 = [v2 BOOLForKey:@"MTSerpentIdFeatureFlagWasEnabledLastTime"];
+  [self isPodcastsAppCheck];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  v3 = [_applePodcastsFoundationSharedUserDefaults BOOLForKey:@"MTSerpentIdFeatureFlagWasEnabledLastTime"];
 
   return v3;
 }
@@ -114,19 +114,19 @@
 
 + (BOOL)needsCacheBustForFreeAndPaidUrlStorage
 {
-  v2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  v3 = [v2 BOOLForKey:@"StoreBothFreeAndPaidUrlsFeatureFlagWasEnabledLastTime"];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  v3 = [_applePodcastsFoundationSharedUserDefaults BOOLForKey:@"StoreBothFreeAndPaidUrlsFeatureFlagWasEnabledLastTime"];
 
   return v3 ^ 1;
 }
 
 + (BOOL)needsMigrationToDeltaFeedUpdates
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"FeedManagerSystemMigrator.currentSystem"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"FeedManagerSystemMigrator.currentSystem"];
 
-  LOBYTE(v2) = [@"deltaSystem" isEqual:v3];
-  return v2 ^ 1;
+  LOBYTE(standardUserDefaults) = [@"deltaSystem" isEqual:v3];
+  return standardUserDefaults ^ 1;
 }
 
 + (id)sharedInstance
@@ -136,7 +136,7 @@
     os_unfair_lock_lock(&_lock);
     if (!_instance)
     {
-      v3 = objc_alloc_init(a1);
+      v3 = objc_alloc_init(self);
       v4 = _instance;
       _instance = v3;
 
@@ -172,83 +172,83 @@
 
 - (id)privateQueueContext
 {
-  v2 = [(MTDB *)self coreDataContainer];
-  v3 = [v2 privateQueueContext];
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  privateQueueContext = [coreDataContainer privateQueueContext];
 
-  return v3;
+  return privateQueueContext;
 }
 
 - (id)importContext
 {
-  v2 = [(MTDB *)self coreDataContainer];
-  v3 = [v2 importContext];
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  importContext = [coreDataContainer importContext];
 
-  return v3;
+  return importContext;
 }
 
 - (id)storeContext
 {
-  v2 = [(MTDB *)self coreDataContainer];
-  v3 = [v2 storeContext];
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  storeContext = [coreDataContainer storeContext];
 
-  return v3;
+  return storeContext;
 }
 
 - (id)mainOrPrivateContext
 {
-  v2 = [(MTDB *)self coreDataContainer];
-  v3 = [v2 mainOrPrivateContext];
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  mainOrPrivateContext = [coreDataContainer mainOrPrivateContext];
 
-  return v3;
+  return mainOrPrivateContext;
 }
 
 - (id)loggingContext
 {
-  v2 = [(MTDB *)self coreDataContainer];
-  v3 = [v2 loggingContext];
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  loggingContext = [coreDataContainer loggingContext];
 
-  return v3;
+  return loggingContext;
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   os_unfair_lock_lock(&_lock);
   v4 = _instance;
-  _instance = v3;
+  _instance = instanceCopy;
 
   os_unfair_lock_unlock(&_lock);
 }
 
-- (MTDB)initWithCoreDataContainer:(id)a3 config:(id)a4
+- (MTDB)initWithCoreDataContainer:(id)container config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  configCopy = config;
   v11.receiver = self;
   v11.super_class = MTDB;
   v8 = [(MTDB *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MTDB *)v8 setCoreDataContainer:v6];
-    [(MTDB *)v9 setConfig:v7];
+    [(MTDB *)v8 setCoreDataContainer:containerCopy];
+    [(MTDB *)v9 setConfig:configCopy];
   }
 
   return v9;
 }
 
-- (void)addChangeNotifier:(id)a3
+- (void)addChangeNotifier:(id)notifier
 {
-  v4 = a3;
-  v5 = [(MTDB *)self coreDataContainer];
-  [v5 addChangeNotifier:v4];
+  notifierCopy = notifier;
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  [coreDataContainer addChangeNotifier:notifierCopy];
 }
 
-- (void)removeChangeNotifier:(id)a3
+- (void)removeChangeNotifier:(id)notifier
 {
-  v4 = a3;
-  v5 = [(MTDB *)self coreDataContainer];
-  [v5 addChangeNotifier:v4];
+  notifierCopy = notifier;
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  [coreDataContainer addChangeNotifier:notifierCopy];
 }
 
 + (BOOL)createDatabaseIfNeeded
@@ -258,10 +258,10 @@
     return 0;
   }
 
-  v3 = [a1 managedObjectModel];
-  if (v3)
+  managedObjectModel = [self managedObjectModel];
+  if (managedObjectModel)
   {
-    v4 = [MTLibraryMigrationUtil createPersistentStoreForModel:v3 attemptMigration:0];
+    v4 = [MTLibraryMigrationUtil createPersistentStoreForModel:managedObjectModel attemptMigration:0];
   }
 
   else
@@ -347,128 +347,128 @@ LABEL_13:
   return v3;
 }
 
-- (id)managedObjectIDForURI:(id)a3 error:(id *)a4
+- (id)managedObjectIDForURI:(id)i error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MTDB *)self coreDataContainer];
-  v8 = [v7 managedObjectIDForURI:v6 error:a4];
+  iCopy = i;
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  v8 = [coreDataContainer managedObjectIDForURI:iCopy error:error];
 
   return v8;
 }
 
-- (id)createSingleUsePrivateContext:(id)a3
+- (id)createSingleUsePrivateContext:(id)context
 {
-  v4 = a3;
-  v5 = [(MTDB *)self coreDataContainer];
-  v6 = [v5 createSingleUsePrivateContext:v4];
+  contextCopy = context;
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  v6 = [coreDataContainer createSingleUsePrivateContext:contextCopy];
 
   return v6;
 }
 
 - (id)carPlayContext
 {
-  v2 = [(MTDB *)self coreDataContainer];
-  v3 = [v2 carPlayContext];
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  carPlayContext = [coreDataContainer carPlayContext];
 
-  return v3;
+  return carPlayContext;
 }
 
 - (id)mainQueueContext
 {
-  v2 = [(MTDB *)self coreDataContainer];
-  v3 = [v2 mainQueueContext];
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  mainQueueContext = [coreDataContainer mainQueueContext];
 
-  return v3;
+  return mainQueueContext;
 }
 
 - (id)resetableImportContext
 {
-  v2 = [(MTDB *)self coreDataContainer];
-  v3 = [v2 resetableImportContext];
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  resetableImportContext = [coreDataContainer resetableImportContext];
 
-  return v3;
+  return resetableImportContext;
 }
 
 - (id)playbackContext
 {
-  v2 = [(MTDB *)self coreDataContainer];
-  v3 = [v2 playbackContext];
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  playbackContext = [coreDataContainer playbackContext];
 
-  return v3;
+  return playbackContext;
 }
 
-- (id)contextForName:(id)a3
+- (id)contextForName:(id)name
 {
-  v4 = a3;
-  v5 = [(MTDB *)self coreDataContainer];
-  v6 = [v5 contextForName:v4];
+  nameCopy = name;
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  v6 = [coreDataContainer contextForName:nameCopy];
 
   return v6;
 }
 
 - (id)persistentStoreUuid
 {
-  v2 = [(MTDB *)self coreDataContainer];
-  v3 = [v2 persistentStoreUuid];
+  coreDataContainer = [(MTDB *)self coreDataContainer];
+  persistentStoreUuid = [coreDataContainer persistentStoreUuid];
 
-  return v3;
+  return persistentStoreUuid;
 }
 
 - (id)managedObjectModel
 {
-  v2 = [(MTDB *)self config];
-  v3 = [v2 managedObjectModel];
+  config = [(MTDB *)self config];
+  managedObjectModel = [config managedObjectModel];
 
-  return v3;
+  return managedObjectModel;
 }
 
 + (int64_t)coreDataVersion_deprecated
 {
-  v2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  v3 = [v2 integerForKey:@"MTCoreDataMigrationVersion"];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  v3 = [_applePodcastsFoundationSharedUserDefaults integerForKey:@"MTCoreDataMigrationVersion"];
 
   return v3;
 }
 
-+ (void)setLibraryDataVersion:(int64_t)a3
++ (void)setLibraryDataVersion:(int64_t)version
 {
-  [a1 isPodcastsAppCheck];
-  v4 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v4 setInteger:a3 forKey:@"MTLibraryMigrationVersion"];
+  [self isPodcastsAppCheck];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults setInteger:version forKey:@"MTLibraryMigrationVersion"];
 
-  v5 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v5 synchronize];
+  _applePodcastsFoundationSharedUserDefaults2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults2 synchronize];
 }
 
-+ (void)setCoreDataVersion:(int64_t)a3
++ (void)setCoreDataVersion:(int64_t)version
 {
-  [a1 isPodcastsAppCheck];
-  v4 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v4 setInteger:a3 forKey:@"MTCoreDataMigrationVersion"];
+  [self isPodcastsAppCheck];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults setInteger:version forKey:@"MTCoreDataMigrationVersion"];
 
-  v5 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v5 synchronize];
+  _applePodcastsFoundationSharedUserDefaults2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults2 synchronize];
 }
 
-+ (void)setCoreDataChecksum:(id)a3
++ (void)setCoreDataChecksum:(id)checksum
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 _applePodcastsFoundationSharedUserDefaults];
-  [v5 setObject:v4 forKey:@"MTCoreDataChecksum"];
+  checksumCopy = checksum;
+  _applePodcastsFoundationSharedUserDefaults = [v3 _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults setObject:checksumCopy forKey:@"MTCoreDataChecksum"];
 }
 
 + (void)setStoreBothFreeAndPaidUrlsPreviousBootup
 {
-  [a1 isPodcastsAppCheck];
-  v2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v2 setBool:1 forKey:@"StoreBothFreeAndPaidUrlsFeatureFlagWasEnabledLastTime"];
+  [self isPodcastsAppCheck];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults setBool:1 forKey:@"StoreBothFreeAndPaidUrlsFeatureFlagWasEnabledLastTime"];
 }
 
 + (void)setMigrationToDeltaFeedUpdatesComplete
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 setObject:@"deltaSystem" forKey:@"FeedManagerSystemMigrator.currentSystem"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setObject:@"deltaSystem" forKey:@"FeedManagerSystemMigrator.currentSystem"];
 }
 
 @end

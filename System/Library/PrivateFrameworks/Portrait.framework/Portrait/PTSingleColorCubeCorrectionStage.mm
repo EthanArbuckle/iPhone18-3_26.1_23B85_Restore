@@ -1,14 +1,14 @@
 @interface PTSingleColorCubeCorrectionStage
-- (id)init:(id)a3 cubeSize:(unsigned int)a4 data:(const char *)a5;
-- (int)load3DTextureFromData:(const char *)a3 cubeSize:(unsigned int)a4 metal:(id)a5 outTexture:(id *)a6;
+- (id)init:(id)init cubeSize:(unsigned int)size data:(const char *)data;
+- (int)load3DTextureFromData:(const char *)data cubeSize:(unsigned int)size metal:(id)metal outTexture:(id *)texture;
 @end
 
 @implementation PTSingleColorCubeCorrectionStage
 
-- (int)load3DTextureFromData:(const char *)a3 cubeSize:(unsigned int)a4 metal:(id)a5 outTexture:(id *)a6
+- (int)load3DTextureFromData:(const char *)data cubeSize:(unsigned int)size metal:(id)metal outTexture:(id *)texture
 {
   v9 = MEMORY[0x277CD7058];
-  v10 = a5;
+  metalCopy = metal;
   v11 = objc_alloc_init(v9);
   if (!v11)
   {
@@ -20,24 +20,24 @@
   }
 
   [v11 setTextureType:7];
-  [v11 setWidth:a4];
-  [v11 setHeight:a4];
-  [v11 setDepth:a4];
+  [v11 setWidth:size];
+  [v11 setHeight:size];
+  [v11 setDepth:size];
   [v11 setPixelFormat:70];
   [v11 setUsage:1];
-  v13 = [v10 newTextureWithDescriptor:v11];
+  v13 = [metalCopy newTextureWithDescriptor:v11];
 
-  v14 = *a6;
-  *a6 = v13;
+  v14 = *texture;
+  *texture = v13;
 
-  v15 = *a6;
-  if (*a6)
+  v15 = *texture;
+  if (*texture)
   {
     memset(v18, 0, 24);
-    v18[3] = a4;
-    v18[4] = a4;
-    v18[5] = a4;
-    [v15 replaceRegion:v18 mipmapLevel:0 slice:0 withBytes:a3 bytesPerRow:4 * a4 bytesPerImage:4 * a4 * a4];
+    v18[3] = size;
+    v18[4] = size;
+    v18[5] = size;
+    [v15 replaceRegion:v18 mipmapLevel:0 slice:0 withBytes:data bytesPerRow:4 * size bytesPerImage:4 * size * size];
     v16 = 0;
   }
 
@@ -49,17 +49,17 @@
   return v16;
 }
 
-- (id)init:(id)a3 cubeSize:(unsigned int)a4 data:(const char *)a5
+- (id)init:(id)init cubeSize:(unsigned int)size data:(const char *)data
 {
-  v6 = *&a4;
-  v8 = a3;
+  v6 = *&size;
+  initCopy = init;
   v14.receiver = self;
   v14.super_class = PTSingleColorCubeCorrectionStage;
   v9 = [(PTSingleColorCubeCorrectionStage *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    if (![(PTSingleColorCubeCorrectionStage *)v9 load3DTextureFromData:a5 cubeSize:v6 metal:v8 outTexture:&v9->_defaultCubeTexture])
+    if (![(PTSingleColorCubeCorrectionStage *)v9 load3DTextureFromData:data cubeSize:v6 metal:initCopy outTexture:&v9->_defaultCubeTexture])
     {
       v12 = v10;
       goto LABEL_8;

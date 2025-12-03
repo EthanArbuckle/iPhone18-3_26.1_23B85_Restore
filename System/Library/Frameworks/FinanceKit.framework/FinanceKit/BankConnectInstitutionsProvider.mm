@@ -1,10 +1,10 @@
 @interface BankConnectInstitutionsProvider
-+ (id)makeProviderAndReturnError:(id *)a3;
++ (id)makeProviderAndReturnError:(id *)error;
 - (FKBankConnectInstitutionsProviderDelegate)delegate;
 - (_TtC10FinanceKit31BankConnectInstitutionsProvider)init;
 - (void)dealloc;
-- (void)fetchConnectedInstitutionsWithCompletion:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)fetchConnectedInstitutionsWithCompletion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation BankConnectInstitutionsProvider
@@ -25,7 +25,7 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   sub_1B7800DA8();
   sub_1B7800D98();
@@ -43,7 +43,7 @@
 {
   if (*(self + OBJC_IVAR____TtC10FinanceKit31BankConnectInstitutionsProvider_remoteChangeNotificationTask))
   {
-    v3 = self;
+    selfCopy = self;
 
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB991110);
     sub_1B7800E68();
@@ -51,7 +51,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -59,7 +59,7 @@
   [(BankConnectInstitutionsProvider *)&v5 dealloc];
 }
 
-+ (id)makeProviderAndReturnError:(id *)a3
++ (id)makeProviderAndReturnError:(id *)error
 {
   sub_1B7800DA8();
   sub_1B7800D98();
@@ -88,7 +88,7 @@
   return v6;
 }
 
-- (void)fetchConnectedInstitutionsWithCompletion:(id)a3
+- (void)fetchConnectedInstitutionsWithCompletion:(id)completion
 {
   sub_1B7800DA8();
   sub_1B7800D98();
@@ -98,10 +98,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(completion);
   _Block_copy(v5);
-  v6 = self;
-  sub_1B7706D2C(v6, v5);
+  selfCopy = self;
+  sub_1B7706D2C(selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

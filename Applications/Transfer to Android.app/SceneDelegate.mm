@@ -1,9 +1,9 @@
 @interface SceneDelegate
 - (UIWindow)window;
 - (_TtC19Transfer_to_Android13SceneDelegate)init;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SceneDelegate
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -34,11 +34,11 @@
   }
 
   v6 = *(&self->super.super.isa + OBJC_IVAR____TtC19Transfer_to_Android13SceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC19Transfer_to_Android13SceneDelegate_window) = a3;
-  v5 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC19Transfer_to_Android13SceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -48,8 +48,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a5;
-  v6 = [v9 userActivities];
+  optionsCopy = options;
+  userActivities = [optionsCopy userActivities];
   sub_100001BA8();
   sub_100001BF4();
   v7 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
@@ -66,7 +66,7 @@
   }
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -76,7 +76,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a4;
+  activityCopy = activity;
   static UniversalLinkHandler.continueUserActivity(userActivity:)();
 }
 

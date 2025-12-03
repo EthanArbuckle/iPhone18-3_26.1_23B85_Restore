@@ -2,29 +2,29 @@
 - (NSData)body;
 - (NSDate)date;
 - (NSDictionary)headerFields;
-- (REHTTPResponse)initWithRequest:(id)a3 statusCode:(int64_t)a4;
+- (REHTTPResponse)initWithRequest:(id)request statusCode:(int64_t)code;
 - (_CFHTTPServerResponse)response;
 - (id)_dateFormatter;
-- (id)headerValueForKey:(id)a3;
+- (id)headerValueForKey:(id)key;
 - (void)dealloc;
-- (void)setBody:(id)a3;
-- (void)setDate:(id)a3;
+- (void)setBody:(id)body;
+- (void)setDate:(id)date;
 @end
 
 @implementation REHTTPResponse
 
-- (REHTTPResponse)initWithRequest:(id)a3 statusCode:(int64_t)a4
+- (REHTTPResponse)initWithRequest:(id)request statusCode:(int64_t)code
 {
-  v7 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = REHTTPResponse;
   v8 = [(REHTTPResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_request, a3);
-    v9->_statusCode = a4;
-    [v7 request];
+    objc_storeStrong(&v8->_request, request);
+    v9->_statusCode = code;
+    [requestCopy request];
     v9->_message = _CFHTTPServerRequestCreateResponseMessage();
   }
 
@@ -74,18 +74,18 @@ void __32__REHTTPResponse__dateFormatter__block_invoke()
 
 - (NSDate)date
 {
-  v3 = [(REHTTPResponse *)self _dateFormatter];
+  _dateFormatter = [(REHTTPResponse *)self _dateFormatter];
   v4 = [(REHTTPResponse *)self headerValueForKey:@"Date"];
-  v5 = [v3 dateFromString:v4];
+  v5 = [_dateFormatter dateFromString:v4];
 
   return v5;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
-  v6 = [(REHTTPResponse *)self _dateFormatter];
-  v5 = [v6 stringFromDate:v4];
+  dateCopy = date;
+  _dateFormatter = [(REHTTPResponse *)self _dateFormatter];
+  v5 = [_dateFormatter stringFromDate:dateCopy];
 
   [(REHTTPResponse *)self setHeaderValue:v5 forKey:@"Date"];
 }
@@ -104,21 +104,21 @@ void __32__REHTTPResponse__dateFormatter__block_invoke()
   return v2;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
   message = self->_message;
-  v5 = a3;
-  CFHTTPMessageSetBody(message, v5);
+  bodyCopy = body;
+  CFHTTPMessageSetBody(message, bodyCopy);
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(__CFData *)v5 length];
+  v7 = [(__CFData *)bodyCopy length];
 
   v8 = [v6 stringWithFormat:@"%lu", v7];
   [(REHTTPResponse *)self setHeaderValue:v8 forKey:@"Content-Length"];
 }
 
-- (id)headerValueForKey:(id)a3
+- (id)headerValueForKey:(id)key
 {
-  v3 = CFHTTPMessageCopyHeaderFieldValue(self->_message, a3);
+  v3 = CFHTTPMessageCopyHeaderFieldValue(self->_message, key);
 
   return v3;
 }

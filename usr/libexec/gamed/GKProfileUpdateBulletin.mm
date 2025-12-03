@@ -1,13 +1,13 @@
 @interface GKProfileUpdateBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
 @end
 
 @implementation GKProfileUpdateBulletin
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -23,7 +23,7 @@
   v9 = +[GKReporter reporter];
   [v9 reportEvent:GKReporterDomainPushCount type:GKReporterPushCountProfileUpdate];
 
-  v10 = [v5 objectForKeyedSubscript:@"i"];
+  v10 = [notificationCopy objectForKeyedSubscript:@"i"];
   if (v10)
   {
     v11 = +[GKBulletin cacheTransactionGroup];
@@ -33,9 +33,9 @@
     v14[3] = &unk_100362920;
     v15 = v10;
     [v11 performOnManagedObjectContext:v14];
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 

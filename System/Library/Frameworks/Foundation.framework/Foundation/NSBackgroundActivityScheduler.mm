@@ -1,13 +1,13 @@
 @interface NSBackgroundActivityScheduler
 - (BOOL)shouldDefer;
 - (NSBackgroundActivityScheduler)initWithIdentifier:(NSString *)identifier;
-- (void)_setAdditionalXPCActivityProperties:(id)a3;
-- (void)_updateCriteria:(id)a3;
-- (void)_updateCriteriaForCompletedActivity:(id)a3;
+- (void)_setAdditionalXPCActivityProperties:(id)properties;
+- (void)_updateCriteria:(id)criteria;
+- (void)_updateCriteriaForCompletedActivity:(id)activity;
 - (void)dealloc;
 - (void)invalidate;
 - (void)scheduleWithBlock:(void *)block;
-- (void)setCurrentActivity:(id)a3;
+- (void)setCurrentActivity:(id)activity;
 - (void)setInterval:(NSTimeInterval)interval;
 - (void)setTolerance:(NSTimeInterval)tolerance;
 @end
@@ -86,10 +86,10 @@
   atomic_fetch_or_explicit(&self->_flags, 0x20u, memory_order_relaxed);
 }
 
-- (void)_setAdditionalXPCActivityProperties:(id)a3
+- (void)_setAdditionalXPCActivityProperties:(id)properties
 {
   additionalProperties = self->_additionalProperties;
-  if (additionalProperties != a3)
+  if (additionalProperties != properties)
   {
     if (additionalProperties)
     {
@@ -97,14 +97,14 @@
       self->_additionalProperties = 0;
     }
 
-    if (a3)
+    if (properties)
     {
-      self->_additionalProperties = xpc_retain(a3);
+      self->_additionalProperties = xpc_retain(properties);
     }
   }
 }
 
-- (void)_updateCriteria:(id)a3
+- (void)_updateCriteria:(id)criteria
 {
   applier[5] = *MEMORY[0x1E69E9840];
   [(NSBackgroundActivityScheduler *)self tolerance];
@@ -134,20 +134,20 @@
       }
     }
 
-    xpc_dictionary_set_int64(a3, *MEMORY[0x1E69E9C68], v10);
-    xpc_dictionary_set_BOOL(a3, *MEMORY[0x1E69E9D88], [(NSBackgroundActivityScheduler *)self repeats]);
-    xpc_dictionary_set_int64(a3, *MEMORY[0x1E69E9CB0], llround(v8));
+    xpc_dictionary_set_int64(criteria, *MEMORY[0x1E69E9C68], v10);
+    xpc_dictionary_set_BOOL(criteria, *MEMORY[0x1E69E9D88], [(NSBackgroundActivityScheduler *)self repeats]);
+    xpc_dictionary_set_int64(criteria, *MEMORY[0x1E69E9CB0], llround(v8));
   }
 
   if ([(NSBackgroundActivityScheduler *)self _isAppRefresh])
   {
-    xpc_dictionary_set_BOOL(a3, *MEMORY[0x1E69E9C48], 1);
-    xpc_dictionary_set_BOOL(a3, *MEMORY[0x1E69E9D88], [(NSBackgroundActivityScheduler *)self repeats]);
+    xpc_dictionary_set_BOOL(criteria, *MEMORY[0x1E69E9C48], 1);
+    xpc_dictionary_set_BOOL(criteria, *MEMORY[0x1E69E9D88], [(NSBackgroundActivityScheduler *)self repeats]);
   }
 
   if (v6 != 0.0)
   {
-    xpc_dictionary_set_int64(a3, *MEMORY[0x1E69E9C98], llround(v6));
+    xpc_dictionary_set_int64(criteria, *MEMORY[0x1E69E9C98], llround(v6));
   }
 
   v11 = *MEMORY[0x1E69E9D68];
@@ -162,7 +162,7 @@
     v13 = qword_1E69F6048[v12];
   }
 
-  xpc_dictionary_set_string(a3, v11, *v13);
+  xpc_dictionary_set_string(criteria, v11, *v13);
   additionalProperties = self->_additionalProperties;
   if (additionalProperties)
   {
@@ -172,28 +172,28 @@
       applier[1] = 3221225472;
       applier[2] = __49__NSBackgroundActivityScheduler__updateCriteria___block_invoke;
       applier[3] = &unk_1E69F6000;
-      applier[4] = a3;
+      applier[4] = criteria;
       xpc_dictionary_apply(additionalProperties, applier);
     }
   }
 }
 
-- (void)_updateCriteriaForCompletedActivity:(id)a3
+- (void)_updateCriteriaForCompletedActivity:(id)activity
 {
   if ((atomic_fetch_and_explicit(&self->_flags, 0xDFu, memory_order_relaxed) & 0x20) != 0)
   {
-    v6 = xpc_activity_copy_criteria(a3);
+    v6 = xpc_activity_copy_criteria(activity);
     [(NSBackgroundActivityScheduler *)self _updateCriteria:v6];
-    xpc_activity_set_criteria(a3, v6);
+    xpc_activity_set_criteria(activity, v6);
 
     xpc_release(v6);
   }
 }
 
-- (void)setCurrentActivity:(id)a3
+- (void)setCurrentActivity:(id)activity
 {
   currentActivity = self->_currentActivity;
-  if (currentActivity != a3)
+  if (currentActivity != activity)
   {
     if (currentActivity)
     {
@@ -201,9 +201,9 @@
       self->_currentActivity = 0;
     }
 
-    if (a3)
+    if (activity)
     {
-      self->_currentActivity = xpc_retain(a3);
+      self->_currentActivity = xpc_retain(activity);
     }
   }
 }
@@ -237,13 +237,13 @@
   }
 
   atomic_fetch_and_explicit(&self->_flags, 0xDFu, memory_order_relaxed);
-  v7 = [(NSString *)[(NSBackgroundActivityScheduler *)self identifier] UTF8String];
+  uTF8String = [(NSString *)[(NSBackgroundActivityScheduler *)self identifier] UTF8String];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __51__NSBackgroundActivityScheduler_scheduleWithBlock___block_invoke;
   handler[3] = &unk_1E69F5440;
   handler[4] = self;
-  xpc_activity_register(v7, v6, handler);
+  xpc_activity_register(uTF8String, v6, handler);
   xpc_release(v6);
 }
 
@@ -350,14 +350,14 @@ void __51__NSBackgroundActivityScheduler_scheduleWithBlock___block_invoke_2(uint
 
 - (BOOL)shouldDefer
 {
-  v4 = [(NSBackgroundActivityScheduler *)self currentActivity];
-  if (!v4)
+  currentActivity = [(NSBackgroundActivityScheduler *)self currentActivity];
+  if (!currentActivity)
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: This method may only be called during the invocation of the activity block or asynchronous activity", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v6);
   }
 
-  return xpc_activity_should_defer(v4);
+  return xpc_activity_should_defer(currentActivity);
 }
 
 @end

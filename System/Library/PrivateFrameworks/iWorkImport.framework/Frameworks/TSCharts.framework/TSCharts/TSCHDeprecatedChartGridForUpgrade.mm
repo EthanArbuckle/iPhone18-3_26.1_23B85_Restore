@@ -1,14 +1,14 @@
 @interface TSCHDeprecatedChartGridForUpgrade
-- (void)loadFromUnarchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
 @end
 
 @implementation TSCHDeprecatedChartGridForUpgrade
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v22 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v22, v4, v5, v6, v7, off_2812EE5D0[8]);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, v5, v6, v7, off_2812EE5D0[8]);
 
   v9 = objc_alloc_init(TSCHChartGrid);
   objc_msgSend_loadFromPreUFFArchive_(v9, v10, v11, v12, v13, v8);

@@ -1,14 +1,14 @@
 @interface JSLocalize
-- (id)nativeString:(id)a3;
+- (id)nativeString:(id)string;
 @end
 
 @implementation JSLocalize
 
-- (id)nativeString:(id)a3
+- (id)nativeString:(id)string
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_10011E510(v4, v6);
   v9 = v8;
 

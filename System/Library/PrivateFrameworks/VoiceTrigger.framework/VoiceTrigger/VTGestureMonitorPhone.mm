@@ -1,29 +1,29 @@
 @interface VTGestureMonitorPhone
 - (VTGestureMonitorPhone)init;
 - (void)startObserving;
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4;
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture;
 @end
 
 @implementation VTGestureMonitorPhone
 
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture
 {
-  v6 = a3;
-  if (a4 == 3)
+  managerCopy = manager;
+  if (gesture == 3)
   {
     v8.receiver = self;
     v8.super_class = VTGestureMonitorPhone;
-    v7 = [(VTGestureMonitor *)&v8 delegate];
-    [v7 gestureMonitorDidReceiveSleepGesture:self];
+    delegate = [(VTGestureMonitor *)&v8 delegate];
+    [delegate gestureMonitorDidReceiveSleepGesture:self];
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (gesture == 1)
   {
     v9.receiver = self;
     v9.super_class = VTGestureMonitorPhone;
-    v7 = [(VTGestureMonitor *)&v9 delegate];
-    [v7 gestureMonitorDidReceiveWakeGesture:self];
+    delegate = [(VTGestureMonitor *)&v9 delegate];
+    [delegate gestureMonitorDidReceiveWakeGesture:self];
 LABEL_5:
   }
 }
@@ -43,9 +43,9 @@ LABEL_5:
   v2 = [(VTGestureMonitorPhone *)&v6 init];
   if (v2 && [MEMORY[0x277CC1D80] isWakeGestureAvailable])
   {
-    v3 = [MEMORY[0x277CC1D80] sharedManager];
+    mEMORY[0x277CC1D80] = [MEMORY[0x277CC1D80] sharedManager];
     gestureManager = v2->_gestureManager;
-    v2->_gestureManager = v3;
+    v2->_gestureManager = mEMORY[0x277CC1D80];
   }
 
   return v2;

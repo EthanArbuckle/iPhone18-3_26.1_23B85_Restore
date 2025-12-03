@@ -1,46 +1,46 @@
 @interface CoreDAVRecursiveContainerSyncTaskGroup
-- (BOOL)isWhitelistedError:(id)a3;
-- (BOOL)shouldSyncChildWithResourceType:(id)a3;
-- (CoreDAVRecursiveContainerSyncTaskGroup)initWithFolderURL:(id)a3 previousCTag:(id)a4 previousPTag:(id)a5 previousSyncToken:(id)a6 actions:(id)a7 syncItemOrder:(BOOL)a8 context:(id)a9 accountInfoProvider:(id)a10 taskManager:(id)a11;
+- (BOOL)isWhitelistedError:(id)error;
+- (BOOL)shouldSyncChildWithResourceType:(id)type;
+- (CoreDAVRecursiveContainerSyncTaskGroup)initWithFolderURL:(id)l previousCTag:(id)tag previousPTag:(id)pTag previousSyncToken:(id)token actions:(id)actions syncItemOrder:(BOOL)order context:(id)context accountInfoProvider:(id)self0 taskManager:(id)self1;
 - (NSString)description;
-- (id)copyFolderMultiGetTaskWithURLs:(id)a3;
-- (id)copyMultiGetTaskWithURLs:(id)a3;
+- (id)copyFolderMultiGetTaskWithURLs:(id)ls;
+- (id)copyMultiGetTaskWithURLs:(id)ls;
 - (id)dataContentType;
 - (unint64_t)_submitTasks;
-- (void)_folderModTask:(id)a3 parsedPropStats:(id)a4 error:(id)a5;
-- (void)_foundChildrenOrder:(id)a3 inFolderWithURL:(id)a4;
+- (void)_folderModTask:(id)task parsedPropStats:(id)stats error:(id)error;
+- (void)_foundChildrenOrder:(id)order inFolderWithURL:(id)l;
 - (void)_getDataPayloads;
 - (void)_getItemTags;
-- (void)_getTask:(id)a3 finishedWithParsedContents:(id)a4 deletedItems:(id)a5 error:(id)a6;
+- (void)_getTask:(id)task finishedWithParsedContents:(id)contents deletedItems:(id)items error:(id)error;
 - (void)_getTopFolderTags;
-- (void)_postTask:(id)a3 didFinishWithError:(id)a4;
+- (void)_postTask:(id)task didFinishWithError:(id)error;
 - (void)_pushActions;
-- (void)_syncReportTask:(id)a3 didFinishWithError:(id)a4;
-- (void)_taskGroupSuccessfullyFinishedWithContents:(id)a3;
+- (void)_syncReportTask:(id)task didFinishWithError:(id)error;
+- (void)_taskGroupSuccessfullyFinishedWithContents:(id)contents;
 - (void)_tearDownAllUnsubmittedTasks;
-- (void)bailWithError:(id)a3;
+- (void)bailWithError:(id)error;
 - (void)cancelTaskGroup;
-- (void)deleteTask:(id)a3 completedWithError:(id)a4;
-- (void)moveTask:(id)a3 parsedResponses:(id)a4 error:(id)a5;
-- (void)propFindTask:(id)a3 parsedResponses:(id)a4 error:(id)a5;
-- (void)putTask:(id)a3 completedWithNewETag:(id)a4 error:(id)a5;
+- (void)deleteTask:(id)task completedWithError:(id)error;
+- (void)moveTask:(id)task parsedResponses:(id)responses error:(id)error;
+- (void)propFindTask:(id)task parsedResponses:(id)responses error:(id)error;
+- (void)putTask:(id)task completedWithNewETag:(id)tag error:(id)error;
 - (void)startTaskGroup;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
-- (void)taskGroupWillCancelWithError:(id)a3;
+- (void)task:(id)task didFinishWithError:(id)error;
+- (void)taskGroupWillCancelWithError:(id)error;
 @end
 
 @implementation CoreDAVRecursiveContainerSyncTaskGroup
 
-- (CoreDAVRecursiveContainerSyncTaskGroup)initWithFolderURL:(id)a3 previousCTag:(id)a4 previousPTag:(id)a5 previousSyncToken:(id)a6 actions:(id)a7 syncItemOrder:(BOOL)a8 context:(id)a9 accountInfoProvider:(id)a10 taskManager:(id)a11
+- (CoreDAVRecursiveContainerSyncTaskGroup)initWithFolderURL:(id)l previousCTag:(id)tag previousPTag:(id)pTag previousSyncToken:(id)token actions:(id)actions syncItemOrder:(BOOL)order context:(id)context accountInfoProvider:(id)self0 taskManager:(id)self1
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
+  lCopy = l;
+  tagCopy = tag;
+  pTagCopy = pTag;
+  tokenCopy = token;
+  actionsCopy = actions;
+  contextCopy = context;
+  providerCopy = provider;
+  managerCopy = manager;
   if ([(CoreDAVRecursiveContainerSyncTaskGroup *)self isMemberOfClass:objc_opt_class()])
   {
     [CoreDAVRecursiveContainerSyncTaskGroup initWithFolderURL:previousCTag:previousPTag:previousSyncToken:actions:syncItemOrder:context:accountInfoProvider:taskManager:];
@@ -48,22 +48,22 @@
 
   v32.receiver = self;
   v32.super_class = CoreDAVRecursiveContainerSyncTaskGroup;
-  v21 = [(CoreDAVTaskGroup *)&v32 initWithAccountInfoProvider:v19 taskManager:v20, a2];
+  v21 = [(CoreDAVTaskGroup *)&v32 initWithAccountInfoProvider:providerCopy taskManager:managerCopy, a2];
   v22 = v21;
   if (v21)
   {
-    [(CoreDAVTaskGroup *)v21 setContext:v18];
-    objc_storeStrong(&v22->_folderURL, a3);
-    objc_storeStrong(&v22->_previousCTag, a4);
-    objc_storeStrong(&v22->_previousPTag, a5);
-    objc_storeStrong(&v22->_previousSyncToken, a6);
-    objc_storeStrong(&v22->_actions, a7);
+    [(CoreDAVTaskGroup *)v21 setContext:contextCopy];
+    objc_storeStrong(&v22->_folderURL, l);
+    objc_storeStrong(&v22->_previousCTag, tag);
+    objc_storeStrong(&v22->_previousPTag, pTag);
+    objc_storeStrong(&v22->_previousSyncToken, token);
+    objc_storeStrong(&v22->_actions, actions);
     v22->_multiGetBatchSize = 50;
     v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
     unsubmittedTasks = v22->_unsubmittedTasks;
     v22->_unsubmittedTasks = v23;
 
-    v22->_syncItemOrder = a8;
+    v22->_syncItemOrder = order;
   }
 
   return v22;
@@ -79,20 +79,20 @@
   return v6;
 }
 
-- (void)taskGroupWillCancelWithError:(id)a3
+- (void)taskGroupWillCancelWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CoreDAVErrorDomain" code:6 userInfo:0];
+    errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"CoreDAVErrorDomain" code:6 userInfo:0];
   }
 
-  v5 = [(CoreDAVTaskGroup *)self delegate];
-  [v5 recursiveContainerSyncTask:self completedFullSyncWithNewCTag:0 newPTag:0 newSyncToken:0 error:v4];
+  delegate = [(CoreDAVTaskGroup *)self delegate];
+  [delegate recursiveContainerSyncTask:self completedFullSyncWithNewCTag:0 newPTag:0 newSyncToken:0 error:errorCopy];
 
   v6.receiver = self;
   v6.super_class = CoreDAVRecursiveContainerSyncTaskGroup;
-  [(CoreDAVTaskGroup *)&v6 taskGroupWillCancelWithError:v4];
+  [(CoreDAVTaskGroup *)&v6 taskGroupWillCancelWithError:errorCopy];
 }
 
 - (void)_tearDownAllUnsubmittedTasks
@@ -133,11 +133,11 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_foundChildrenOrder:(id)a3 inFolderWithURL:(id)a4
+- (void)_foundChildrenOrder:(id)order inFolderWithURL:(id)l
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  orderCopy = order;
+  lCopy = l;
   folderURLToChildrenURLOrder = self->_folderURLToChildrenURLOrder;
   if (!folderURLToChildrenURLOrder)
   {
@@ -148,7 +148,7 @@
     folderURLToChildrenURLOrder = self->_folderURLToChildrenURLOrder;
   }
 
-  v11 = [(NSMutableDictionary *)folderURLToChildrenURLOrder objectForKey:v7];
+  v11 = [(NSMutableDictionary *)folderURLToChildrenURLOrder objectForKey:lCopy];
 
   if (v11)
   {
@@ -160,9 +160,9 @@
     {
       v15 = self->_folderURLToChildrenURLOrder;
       v17 = 138412802;
-      v18 = v6;
+      v18 = orderCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = lCopy;
       v21 = 2112;
       v22 = v15;
       _os_log_impl(&dword_2452FB000, v14, OS_LOG_TYPE_INFO, "Got children order %@ for folder with url %@, but I already knew about that (I had %@)", &v17, 0x20u);
@@ -171,19 +171,19 @@
 
   else
   {
-    [(NSMutableDictionary *)self->_folderURLToChildrenURLOrder setObject:v6 forKey:v7];
+    [(NSMutableDictionary *)self->_folderURLToChildrenURLOrder setObject:orderCopy forKey:lCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)bailWithError:(id)a3
+- (void)bailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(CoreDAVRecursiveContainerSyncTaskGroup *)self _tearDownAllUnsubmittedTasks];
   v5.receiver = self;
   v5.super_class = CoreDAVRecursiveContainerSyncTaskGroup;
-  [(CoreDAVTaskGroup *)&v5 bailWithError:v4];
+  [(CoreDAVTaskGroup *)&v5 bailWithError:errorCopy];
 }
 
 - (void)cancelTaskGroup
@@ -260,7 +260,7 @@
         *buf = 138544130;
         v27 = v17;
         v28 = 2048;
-        v29 = self;
+        selfCopy = self;
         v30 = 2048;
         v31 = v2;
         v32 = 2048;
@@ -274,10 +274,10 @@
   return v2;
 }
 
-- (void)_taskGroupSuccessfullyFinishedWithContents:(id)a3
+- (void)_taskGroupSuccessfullyFinishedWithContents:(id)contents
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contentsCopy = contents;
   v5 = +[CoreDAVLogging sharedLogging];
   WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
   v7 = [v5 logHandleForAccountInfoProvider:WeakRetained];
@@ -285,12 +285,12 @@
   if (v7 && os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2452FB000, v7, OS_LOG_TYPE_INFO, "Task group %@ finished", buf, 0xCu);
   }
 
-  v8 = [(CoreDAVTaskGroup *)self delegate];
-  v9 = v8;
+  delegate = [(CoreDAVTaskGroup *)self delegate];
+  v9 = delegate;
   nextCTag = self->_nextCTag;
   if (!nextCTag)
   {
@@ -303,10 +303,10 @@
     nextPTag = self->_previousPTag;
   }
 
-  [v8 recursiveContainerSyncTask:self completedSyncOfFolderWithURL:self->_folderURL newCTag:nextCTag newPTag:nextPTag addedOrModified:v4 removed:0 error:0];
+  [delegate recursiveContainerSyncTask:self completedSyncOfFolderWithURL:self->_folderURL newCTag:nextCTag newPTag:nextPTag addedOrModified:contentsCopy removed:0 error:0];
 
-  v12 = [(CoreDAVTaskGroup *)self delegate];
-  v13 = v12;
+  delegate2 = [(CoreDAVTaskGroup *)self delegate];
+  v13 = delegate2;
   previousCTag = self->_nextCTag;
   if (!previousCTag)
   {
@@ -325,7 +325,7 @@
     nextSyncToken = self->_previousSyncToken;
   }
 
-  [v12 recursiveContainerSyncTask:self completedFullSyncWithNewCTag:previousCTag newPTag:previousPTag newSyncToken:nextSyncToken error:0];
+  [delegate2 recursiveContainerSyncTask:self completedFullSyncWithNewCTag:previousCTag newPTag:previousPTag newSyncToken:nextSyncToken error:0];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -333,7 +333,7 @@
 - (void)_pushActions
 {
   OUTLINED_FUNCTION_1();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0();
   [v1 handleFailureInMethod:v0 object:? file:? lineNumber:? description:?];
 }
@@ -384,7 +384,7 @@ uint64_t __54__CoreDAVRecursiveContainerSyncTaskGroup__pushActions__block_invoke
 - (void)_getTopFolderTags
 {
   OUTLINED_FUNCTION_1();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0();
   [v1 handleFailureInMethod:v0 object:? file:? lineNumber:? description:?];
 }
@@ -392,7 +392,7 @@ uint64_t __54__CoreDAVRecursiveContainerSyncTaskGroup__pushActions__block_invoke
 - (void)_getItemTags
 {
   OUTLINED_FUNCTION_1();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0();
   [v1 handleFailureInMethod:v0 object:? file:? lineNumber:? description:?];
 }
@@ -400,7 +400,7 @@ uint64_t __54__CoreDAVRecursiveContainerSyncTaskGroup__pushActions__block_invoke
 - (void)_getDataPayloads
 {
   OUTLINED_FUNCTION_1();
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0();
   [v1 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -420,25 +420,25 @@ uint64_t __54__CoreDAVRecursiveContainerSyncTaskGroup__pushActions__block_invoke
   }
 }
 
-- (BOOL)isWhitelistedError:(id)a3
+- (BOOL)isWhitelistedError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"CoreDAVHTTPStatusErrorDomain"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:@"CoreDAVHTTPStatusErrorDomain"];
 
-  v6 = v5 && [v3 code] >= 400 && objc_msgSend(v3, "code") < 500;
+  v6 = v5 && [errorCopy code] >= 400 && objc_msgSend(errorCopy, "code") < 500;
   return v6;
 }
 
-- (void)putTask:(id)a3 completedWithNewETag:(id)a4 error:(id)a5
+- (void)putTask:(id)task completedWithNewETag:(id)tag error:(id)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![(NSMutableSet *)self->super._outstandingTasks containsObject:v8])
+  taskCopy = task;
+  tagCopy = tag;
+  errorCopy = error;
+  if (![(NSMutableSet *)self->super._outstandingTasks containsObject:taskCopy])
   {
-    if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:v8]& 1) != 0)
+    if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:taskCopy]& 1) != 0)
     {
       goto LABEL_31;
     }
@@ -452,7 +452,7 @@ uint64_t __54__CoreDAVRecursiveContainerSyncTaskGroup__pushActions__block_invoke
       outstandingTasks = self->super._outstandingTasks;
       unsubmittedTasks = self->_unsubmittedTasks;
       v32 = 138412802;
-      v33 = v8;
+      v33 = taskCopy;
       v34 = 2112;
       v35 = outstandingTasks;
       v36 = 2112;
@@ -464,10 +464,10 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  [(NSMutableSet *)self->super._outstandingTasks removeObject:v8];
+  [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
   if (!self->_phase)
   {
-    v11 = v10;
+    v11 = errorCopy;
     if ([(CoreDAVRecursiveContainerSyncTaskGroup *)self isWhitelistedError:v11])
     {
       v16 = +[CoreDAVLogging sharedLogging];
@@ -477,16 +477,16 @@ LABEL_30:
       if (v18 && os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v32 = 138412802;
-        v33 = v8;
+        v33 = taskCopy;
         v34 = 2114;
-        v35 = v9;
+        v35 = tagCopy;
         v36 = 2112;
         v37 = v11;
         _os_log_impl(&dword_2452FB000, v18, OS_LOG_TYPE_DEFAULT, "putTask:%@ completedWithNewETag:%{public}@ error:%@ Ignoring", &v32, 0x20u);
       }
 
-      v10 = 0;
-      v9 = 0;
+      errorCopy = 0;
+      tagCopy = 0;
       if (!v11)
       {
         goto LABEL_23;
@@ -495,27 +495,27 @@ LABEL_30:
 
     else
     {
-      v10 = v11;
+      errorCopy = v11;
       if (!v11)
       {
         goto LABEL_23;
       }
     }
 
-    if (!v10)
+    if (!errorCopy)
     {
-      v24 = [(CoreDAVTaskGroup *)self delegate];
-      v25 = [v8 url];
-      v26 = [v8 requestDataPayload];
-      [v24 notePutToURL:v25 withDataPayload:v26 finishedWithIgnoredError:v11];
+      delegate = [(CoreDAVTaskGroup *)self delegate];
+      v25 = [taskCopy url];
+      requestDataPayload = [taskCopy requestDataPayload];
+      [delegate notePutToURL:v25 withDataPayload:requestDataPayload finishedWithIgnoredError:v11];
 
       goto LABEL_25;
     }
 
 LABEL_23:
-    if (v10)
+    if (errorCopy)
     {
-      [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v10];
+      [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:errorCopy];
 LABEL_27:
       if (!self->super._isCancelling)
       {
@@ -530,9 +530,9 @@ LABEL_27:
     }
 
 LABEL_25:
-    v27 = [(CoreDAVTaskGroup *)self delegate];
-    v28 = [v8 url];
-    v29 = [v27 setLocalETag:v9 forItemWithURL:v28];
+    delegate2 = [(CoreDAVTaskGroup *)self delegate];
+    v28 = [taskCopy url];
+    v29 = [delegate2 setLocalETag:tagCopy forItemWithURL:v28];
 
     if ((v29 & 1) == 0)
     {
@@ -543,9 +543,9 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  if (v10)
+  if (errorCopy)
   {
-    [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v10];
+    [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:errorCopy];
   }
 
   else
@@ -565,7 +565,7 @@ LABEL_25:
     v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CoreDAVErrorDomain" code:6 userInfo:0];
     [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v23];
 
-    v10 = 0;
+    errorCopy = 0;
   }
 
 LABEL_31:
@@ -573,17 +573,17 @@ LABEL_31:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postTask:(id)a3 didFinishWithError:(id)a4
+- (void)_postTask:(id)task didFinishWithError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:v6])
+  taskCopy = task;
+  errorCopy = error;
+  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:taskCopy])
   {
-    [(NSMutableSet *)self->super._outstandingTasks removeObject:v6];
+    [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
     if (self->_phase)
     {
-      if (!v7)
+      if (!errorCopy)
       {
         v8 = +[CoreDAVLogging sharedLogging];
         WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -601,14 +601,14 @@ LABEL_31:
         [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v12];
 
 LABEL_22:
-        v7 = 0;
+        errorCopy = 0;
         goto LABEL_23;
       }
 
       goto LABEL_19;
     }
 
-    if ([(CoreDAVRecursiveContainerSyncTaskGroup *)self isWhitelistedError:v7])
+    if ([(CoreDAVRecursiveContainerSyncTaskGroup *)self isWhitelistedError:errorCopy])
     {
       v18 = +[CoreDAVLogging sharedLogging];
       v19 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -617,17 +617,17 @@ LABEL_22:
       if (v20 && os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 138412546;
-        v23 = v6;
+        v23 = taskCopy;
         v24 = 2112;
-        v25 = v7;
+        v25 = errorCopy;
         _os_log_impl(&dword_2452FB000, v20, OS_LOG_TYPE_DEFAULT, "postTask:%@ error:%@ Ignoring", &v22, 0x16u);
       }
     }
 
-    else if (v7)
+    else if (errorCopy)
     {
 LABEL_19:
-      [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v7];
+      [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:errorCopy];
       goto LABEL_23;
     }
 
@@ -640,7 +640,7 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:v6]& 1) == 0)
+  if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:taskCopy]& 1) == 0)
   {
     v13 = +[CoreDAVLogging sharedLogging];
     v14 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -651,7 +651,7 @@ LABEL_19:
       outstandingTasks = self->super._outstandingTasks;
       unsubmittedTasks = self->_unsubmittedTasks;
       v22 = 138412802;
-      v23 = v6;
+      v23 = taskCopy;
       v24 = 2112;
       v25 = outstandingTasks;
       v26 = 2112;
@@ -665,20 +665,20 @@ LABEL_23:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_folderModTask:(id)a3 parsedPropStats:(id)a4 error:(id)a5
+- (void)_folderModTask:(id)task parsedPropStats:(id)stats error:(id)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:v7])
+  taskCopy = task;
+  errorCopy = error;
+  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:taskCopy])
   {
-    [(NSMutableSet *)self->super._outstandingTasks removeObject:v7];
+    [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
     if (self->_phase)
     {
-      if (v8)
+      if (errorCopy)
       {
 LABEL_4:
-        [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v8];
+        [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:errorCopy];
         goto LABEL_42;
       }
 
@@ -698,19 +698,19 @@ LABEL_4:
       [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v26];
 
 LABEL_41:
-      v8 = 0;
+      errorCopy = 0;
       goto LABEL_42;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [(NSMutableSet *)v8 domain];
-      if ([v14 isEqualToString:@"CoreDAVHTTPStatusErrorDomain"])
+      domain = [(NSMutableSet *)errorCopy domain];
+      if ([domain isEqualToString:@"CoreDAVHTTPStatusErrorDomain"])
       {
-        v15 = [(NSMutableSet *)v8 code];
+        code = [(NSMutableSet *)errorCopy code];
 
-        if (v15 == 404)
+        if (code == 404)
         {
           v16 = +[CoreDAVLogging sharedLogging];
           v17 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -719,25 +719,25 @@ LABEL_41:
           if (v18 && os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             v38 = 138412290;
-            v39 = v7;
+            v39 = taskCopy;
             _os_log_impl(&dword_2452FB000, v18, OS_LOG_TYPE_INFO, "Got a 404 on a proppatch, replaying as mkcol.  Proppatch task was %@", &v38, 0xCu);
           }
 
-          v19 = [v7 backingAction];
-          v20 = [v19 context];
-          v21 = [v20 copyMkcolTask];
+          backingAction = [taskCopy backingAction];
+          context = [backingAction context];
+          copyMkcolTask = [context copyMkcolTask];
 LABEL_29:
-          v32 = v21;
+          v32 = copyMkcolTask;
           if (self->_syncItemOrder)
           {
-            v33 = v19;
+            v33 = backingAction;
             -[NSObject setAbsoluteOrder:](v32, "setAbsoluteOrder:", [v33 absoluteOrder]);
-            v34 = [v33 priorURL];
+            priorURL = [v33 priorURL];
 
-            [v32 setPriorOrderedURL:v34];
+            [v32 setPriorOrderedURL:priorURL];
           }
 
-          [v32 setBackingAction:v19];
+          [v32 setBackingAction:backingAction];
           [v32 setDelegate:self];
           v35 = objc_loadWeakRetained(&self->super._accountInfoProvider);
           [v32 setAccountInfoProvider:v35];
@@ -757,12 +757,12 @@ LABEL_29:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v27 = [(NSMutableSet *)v8 domain];
-      if ([v27 isEqualToString:@"CoreDAVHTTPStatusErrorDomain"])
+      domain2 = [(NSMutableSet *)errorCopy domain];
+      if ([domain2 isEqualToString:@"CoreDAVHTTPStatusErrorDomain"])
       {
-        v28 = [(NSMutableSet *)v8 code];
+        code2 = [(NSMutableSet *)errorCopy code];
 
-        if (v28 == 405)
+        if (code2 == 405)
         {
           v29 = +[CoreDAVLogging sharedLogging];
           v30 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -771,13 +771,13 @@ LABEL_29:
           if (v31 && os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
           {
             v38 = 138412290;
-            v39 = v7;
+            v39 = taskCopy;
             _os_log_impl(&dword_2452FB000, v31, OS_LOG_TYPE_INFO, "Got a 405 on a mkcol, replaying as proppatch.  Mkcol task was %@", &v38, 0xCu);
           }
 
-          v19 = [v7 backingAction];
-          v20 = [v19 context];
-          v21 = [v20 copyPropPatchTask];
+          backingAction = [taskCopy backingAction];
+          context = [backingAction context];
+          copyMkcolTask = [context copyPropPatchTask];
           goto LABEL_29;
         }
       }
@@ -787,9 +787,9 @@ LABEL_29:
       }
     }
 
-    if (![(CoreDAVRecursiveContainerSyncTaskGroup *)self isWhitelistedError:v8])
+    if (![(CoreDAVRecursiveContainerSyncTaskGroup *)self isWhitelistedError:errorCopy])
     {
-      if (v8)
+      if (errorCopy)
       {
         goto LABEL_4;
       }
@@ -797,20 +797,20 @@ LABEL_29:
       goto LABEL_39;
     }
 
-    v20 = +[CoreDAVLogging sharedLogging];
+    context = +[CoreDAVLogging sharedLogging];
     v36 = objc_loadWeakRetained(&self->super._accountInfoProvider);
-    v32 = [v20 logHandleForAccountInfoProvider:v36];
+    v32 = [context logHandleForAccountInfoProvider:v36];
 
     if (v32 && os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       v38 = 138412546;
-      v39 = v7;
+      v39 = taskCopy;
       v40 = 2112;
-      v41 = v8;
+      v41 = errorCopy;
       _os_log_impl(&dword_2452FB000, v32, OS_LOG_TYPE_DEFAULT, "folderModTask:%@ error:%@ Ignoring", &v38, 0x16u);
     }
 
-    v19 = v8;
+    backingAction = errorCopy;
 LABEL_38:
 
 LABEL_39:
@@ -823,7 +823,7 @@ LABEL_39:
     goto LABEL_41;
   }
 
-  if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:v7]& 1) == 0)
+  if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:taskCopy]& 1) == 0)
   {
     v9 = +[CoreDAVLogging sharedLogging];
     v10 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -834,7 +834,7 @@ LABEL_39:
       outstandingTasks = self->super._outstandingTasks;
       unsubmittedTasks = self->_unsubmittedTasks;
       v38 = 138412802;
-      v39 = v7;
+      v39 = taskCopy;
       v40 = 2112;
       v41 = outstandingTasks;
       v42 = 2112;
@@ -848,15 +848,15 @@ LABEL_42:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CoreDAVRecursiveContainerSyncTaskGroup *)self _postTask:v6 didFinishWithError:v7];
+    [(CoreDAVRecursiveContainerSyncTaskGroup *)self _postTask:taskCopy didFinishWithError:errorCopy];
   }
 
   else
@@ -864,7 +864,7 @@ LABEL_42:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CoreDAVRecursiveContainerSyncTaskGroup *)self _syncReportTask:v6 didFinishWithError:v7];
+      [(CoreDAVRecursiveContainerSyncTaskGroup *)self _syncReportTask:taskCopy didFinishWithError:errorCopy];
     }
 
     else
@@ -872,21 +872,21 @@ LABEL_42:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v6 parsedContents];
-        v9 = [v6 deletedURLs];
-        [(CoreDAVRecursiveContainerSyncTaskGroup *)self _getTask:v6 finishedWithParsedContents:v8 deletedItems:v9 error:v7];
+        parsedContents = [taskCopy parsedContents];
+        deletedURLs = [taskCopy deletedURLs];
+        [(CoreDAVRecursiveContainerSyncTaskGroup *)self _getTask:taskCopy finishedWithParsedContents:parsedContents deletedItems:deletedURLs error:errorCopy];
       }
 
       else
       {
-        v8 = +[CoreDAVLogging sharedLogging];
+        parsedContents = +[CoreDAVLogging sharedLogging];
         WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
-        v11 = [v8 logHandleForAccountInfoProvider:WeakRetained];
+        v11 = [parsedContents logHandleForAccountInfoProvider:WeakRetained];
 
         if (v11 && os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
           v13 = 138412290;
-          v14 = v6;
+          v14 = taskCopy;
           _os_log_impl(&dword_2452FB000, v11, OS_LOG_TYPE_ERROR, "Got a task completion invocation for a task I don't grok, %@", &v13, 0xCu);
         }
       }
@@ -896,17 +896,17 @@ LABEL_42:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)moveTask:(id)a3 parsedResponses:(id)a4 error:(id)a5
+- (void)moveTask:(id)task parsedResponses:(id)responses error:(id)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:v7])
+  taskCopy = task;
+  errorCopy = error;
+  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:taskCopy])
   {
-    [(NSMutableSet *)self->super._outstandingTasks removeObject:v7];
+    [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
   }
 
-  v9 = v8;
+  v9 = errorCopy;
   v10 = v9;
   if ([(CoreDAVRecursiveContainerSyncTaskGroup *)self isWhitelistedError:v9])
   {
@@ -919,20 +919,20 @@ LABEL_42:
       v14 = v13;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v9 domain];
-        v16 = [v9 code];
-        v17 = [v7 url];
+        domain = [v9 domain];
+        code = [v9 code];
+        v17 = [taskCopy url];
         [v17 lastPathComponent];
-        v18 = v57 = v7;
+        v18 = v57 = taskCopy;
         *buf = 138412802;
-        v60 = v15;
+        v60 = domain;
         v61 = 2048;
-        v62 = v16;
+        v62 = code;
         v63 = 2112;
         v64 = v18;
         _os_log_impl(&dword_2452FB000, v14, OS_LOG_TYPE_ERROR, "Received a Whitelisted Error [Domain:%@ Code:%ld] For Move task %@ completion. Not a Fatal Error", buf, 0x20u);
 
-        v7 = v57;
+        taskCopy = v57;
       }
     }
 
@@ -950,17 +950,17 @@ LABEL_42:
       v22 = v21;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v23 = [v7 url];
-        v24 = [v23 lastPathComponent];
+        v23 = [taskCopy url];
+        lastPathComponent = [v23 lastPathComponent];
         *buf = 138412546;
         v60 = v9;
         v61 = 2112;
-        v62 = v24;
+        v62 = lastPathComponent;
         _os_log_impl(&dword_2452FB000, v22, OS_LOG_TYPE_INFO, "Received a Whitelisted Error [%@] For Move task %@ completion .Calling delegate method with original error", buf, 0x16u);
       }
     }
 
-    v25 = [(CoreDAVTaskGroup *)self delegate];
+    delegate = [(CoreDAVTaskGroup *)self delegate];
     v26 = objc_opt_respondsToSelector();
 
     if ((v26 & 1) == 0)
@@ -968,12 +968,12 @@ LABEL_42:
       goto LABEL_31;
     }
 
-    v27 = [(CoreDAVTaskGroup *)self delegate];
-    v28 = [v7 url];
-    v29 = [v7 destinationURL];
-    v30 = v27;
+    delegate2 = [(CoreDAVTaskGroup *)self delegate];
+    v28 = [taskCopy url];
+    destinationURL = [taskCopy destinationURL];
+    v30 = delegate2;
     v31 = v28;
-    v32 = v29;
+    v32 = destinationURL;
     v33 = v9;
 LABEL_17:
     [v30 moveTaskFromURL:v31 toURL:v32 finishedWithIgnoredError:v33];
@@ -990,10 +990,10 @@ LABEL_31:
         v53 = v52;
         if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
         {
-          v54 = [v7 url];
-          v55 = [v54 lastPathComponent];
+          v54 = [taskCopy url];
+          lastPathComponent2 = [v54 lastPathComponent];
           *buf = 138412290;
-          v60 = v55;
+          v60 = lastPathComponent2;
           _os_log_impl(&dword_2452FB000, v53, OS_LOG_TYPE_INFO, "Move Task For ServerID %@", buf, 0xCu);
         }
       }
@@ -1020,15 +1020,15 @@ LABEL_31:
       v45 = v44;
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
-        v46 = [v7 url];
-        v47 = [v46 lastPathComponent];
+        v46 = [taskCopy url];
+        lastPathComponent3 = [v46 lastPathComponent];
         *buf = 138412290;
-        v60 = v47;
+        v60 = lastPathComponent3;
         _os_log_impl(&dword_2452FB000, v45, OS_LOG_TYPE_INFO, "Move Task For ServerID %@", buf, 0xCu);
       }
     }
 
-    v48 = [(CoreDAVTaskGroup *)self delegate];
+    delegate3 = [(CoreDAVTaskGroup *)self delegate];
     v49 = objc_opt_respondsToSelector();
 
     if ((v49 & 1) == 0)
@@ -1036,12 +1036,12 @@ LABEL_31:
       goto LABEL_31;
     }
 
-    v27 = [(CoreDAVTaskGroup *)self delegate];
-    v28 = [v7 url];
-    v29 = [v7 destinationURL];
-    v30 = v27;
+    delegate2 = [(CoreDAVTaskGroup *)self delegate];
+    v28 = [taskCopy url];
+    destinationURL = [taskCopy destinationURL];
+    v30 = delegate2;
     v31 = v28;
-    v32 = v29;
+    v32 = destinationURL;
     v33 = 0;
     goto LABEL_17;
   }
@@ -1055,20 +1055,20 @@ LABEL_31:
     v37 = v36;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      v38 = [v9 domain];
-      v39 = [v9 code];
-      [v7 url];
-      v40 = v58 = v7;
-      v41 = [v40 lastPathComponent];
+      domain2 = [v9 domain];
+      code2 = [v9 code];
+      [taskCopy url];
+      v40 = v58 = taskCopy;
+      lastPathComponent4 = [v40 lastPathComponent];
       *buf = 138412802;
-      v60 = v38;
+      v60 = domain2;
       v61 = 2048;
-      v62 = v39;
+      v62 = code2;
       v63 = 2112;
-      v64 = v41;
+      v64 = lastPathComponent4;
       _os_log_impl(&dword_2452FB000, v37, OS_LOG_TYPE_ERROR, "Received a Fatal Error [Domain:%@ Code:%ld] For Move task %@ completion. Bailing task-group with FatalError", buf, 0x20u);
 
-      v7 = v58;
+      taskCopy = v58;
     }
   }
 
@@ -1078,15 +1078,15 @@ LABEL_37:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteTask:(id)a3 completedWithError:(id)a4
+- (void)deleteTask:(id)task completedWithError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:v6])
+  taskCopy = task;
+  errorCopy = error;
+  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:taskCopy])
   {
-    [(NSMutableSet *)self->super._outstandingTasks removeObject:v6];
-    if ([(CoreDAVRecursiveContainerSyncTaskGroup *)self isWhitelistedError:v7])
+    [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
+    if ([(CoreDAVRecursiveContainerSyncTaskGroup *)self isWhitelistedError:errorCopy])
     {
       v8 = +[CoreDAVLogging sharedLogging];
       WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -1095,16 +1095,16 @@ LABEL_37:
       if (v10 && os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 138412546;
-        v23 = v6;
+        v23 = taskCopy;
         v24 = 2112;
-        v25 = v7;
+        v25 = errorCopy;
         _os_log_impl(&dword_2452FB000, v10, OS_LOG_TYPE_DEFAULT, "deleteTask:%@ completedWithError:%@ Ignoring", &v22, 0x16u);
       }
     }
 
-    else if (v7)
+    else if (errorCopy)
     {
-      [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v7];
+      [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:errorCopy];
       goto LABEL_22;
     }
 
@@ -1135,10 +1135,10 @@ LABEL_37:
       }
     }
 
-    v7 = 0;
+    errorCopy = 0;
   }
 
-  else if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:v6]& 1) == 0)
+  else if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:taskCopy]& 1) == 0)
   {
     v11 = +[CoreDAVLogging sharedLogging];
     v12 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -1149,7 +1149,7 @@ LABEL_37:
       outstandingTasks = self->super._outstandingTasks;
       unsubmittedTasks = self->_unsubmittedTasks;
       v22 = 138412802;
-      v23 = v6;
+      v23 = taskCopy;
       v24 = 2112;
       v25 = outstandingTasks;
       v26 = 2112;
@@ -1163,26 +1163,26 @@ LABEL_22:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_syncReportTask:(id)a3 didFinishWithError:(id)a4
+- (void)_syncReportTask:(id)task didFinishWithError:(id)error
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v56 = self;
-  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:v6])
+  taskCopy = task;
+  errorCopy = error;
+  selfCopy = self;
+  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:taskCopy])
   {
-    [(NSMutableSet *)self->super._outstandingTasks removeObject:v6];
+    [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
     if (self->_phase == 2)
     {
-      if ([v6 wasInvalidSyncToken])
+      if ([taskCopy wasInvalidSyncToken])
       {
         [(CoreDAVRecursiveContainerSyncTaskGroup *)self setPreviousSyncToken:0];
         [(CoreDAVRecursiveContainerSyncTaskGroup *)self _getTopFolderTags];
       }
 
-      else if (v7)
+      else if (errorCopy)
       {
-        [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v7];
+        [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:errorCopy];
       }
 
       else
@@ -1205,12 +1205,12 @@ LABEL_22:
         v63 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v55 = v6;
-        v17 = [v6 multiStatus];
-        v18 = [v17 responses];
+        v55 = taskCopy;
+        multiStatus = [taskCopy multiStatus];
+        responses = [multiStatus responses];
 
-        obj = v18;
-        v19 = [v18 countByEnumeratingWithState:&v60 objects:v70 count:16];
+        obj = responses;
+        v19 = [responses countByEnumeratingWithState:&v60 objects:v70 count:16];
         if (v19)
         {
           v20 = v19;
@@ -1229,29 +1229,29 @@ LABEL_22:
               }
 
               v24 = *(*(&v60 + 1) + 8 * v23);
-              v25 = [v24 firstHref];
-              v26 = [v25 payloadAsFullURL];
+              firstHref = [v24 firstHref];
+              payloadAsFullURL = [firstHref payloadAsFullURL];
 
-              v27 = [v24 successfulPropertiesToValues];
-              v28 = [v27 CDVObjectForKeyWithNameSpace:v22 andName:@"resourcetype"];
-              v29 = [v28 collection];
+              successfulPropertiesToValues = [v24 successfulPropertiesToValues];
+              v28 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:v22 andName:@"resourcetype"];
+              collection = [v28 collection];
 
-              if (v29)
+              if (collection)
               {
                 if ([(CoreDAVRecursiveContainerSyncTaskGroup *)self shouldSyncChildWithResourceType:v28])
                 {
-                  [(NSMutableArray *)self->_childCollectionURL addObject:v26];
+                  [(NSMutableArray *)self->_childCollectionURL addObject:payloadAsFullURL];
                 }
               }
 
               else
               {
                 v30 = v22;
-                v31 = [v27 CDVObjectForKeyWithNameSpace:v22 andName:@"getetag"];
-                v32 = [v31 payloadAsString];
-                if (v32)
+                v31 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:v22 andName:@"getetag"];
+                payloadAsString = [v31 payloadAsString];
+                if (payloadAsString)
                 {
-                  v33 = v26 == 0;
+                  v33 = payloadAsFullURL == 0;
                 }
 
                 else
@@ -1261,33 +1261,33 @@ LABEL_22:
 
                 if (v33)
                 {
-                  v34 = [v24 status];
-                  v35 = [v34 payloadAsString];
-                  v36 = [v35 CDVIsHTTPStatusLineWithStatusCode:404];
+                  status = [v24 status];
+                  payloadAsString2 = [status payloadAsString];
+                  v36 = [payloadAsString2 CDVIsHTTPStatusLineWithStatusCode:404];
 
-                  self = v56;
+                  self = selfCopy;
                   if ((v36 & 1) == 0)
                   {
                     v37 = +[CoreDAVLogging sharedLogging];
-                    WeakRetained = objc_loadWeakRetained(&v56->super._accountInfoProvider);
+                    WeakRetained = objc_loadWeakRetained(&selfCopy->super._accountInfoProvider);
                     v39 = [v37 logHandleForAccountInfoProvider:WeakRetained];
 
                     if (v39 && os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138543618;
-                      v65 = v32;
+                      v65 = payloadAsString;
                       v66 = 2112;
-                      v67 = v26;
+                      v67 = payloadAsFullURL;
                       _os_log_impl(&dword_2452FB000, v39, OS_LOG_TYPE_DEFAULT, "Found an eTag without one or both of eTag (%{public}@) or url (%@). Dropping it on the floor", buf, 0x16u);
                     }
 
-                    self = v56;
+                    self = selfCopy;
                   }
                 }
 
                 else
                 {
-                  [(NSMutableDictionary *)self->_leafURLToETag setObject:v32 forKey:v26];
+                  [(NSMutableDictionary *)self->_leafURLToETag setObject:payloadAsString forKey:payloadAsFullURL];
                 }
 
                 v22 = v30;
@@ -1305,10 +1305,10 @@ LABEL_22:
           while (v20);
         }
 
-        v6 = v55;
-        v40 = [v55 notFoundHREFs];
-        v7 = v54;
-        if ([v40 count])
+        taskCopy = v55;
+        notFoundHREFs = [v55 notFoundHREFs];
+        errorCopy = v54;
+        if ([notFoundHREFs count])
         {
           syncReportDeletedURLs = self->_syncReportDeletedURLs;
           if (!syncReportDeletedURLs)
@@ -1320,21 +1320,21 @@ LABEL_22:
             syncReportDeletedURLs = self->_syncReportDeletedURLs;
           }
 
-          [(NSMutableSet *)syncReportDeletedURLs unionSet:v40];
+          [(NSMutableSet *)syncReportDeletedURLs unionSet:notFoundHREFs];
         }
 
-        v44 = [v55 moreToSync];
-        v45 = [v55 nextSyncToken];
-        v46 = v45;
-        if (v44)
+        moreToSync = [v55 moreToSync];
+        nextSyncToken = [v55 nextSyncToken];
+        v46 = nextSyncToken;
+        if (moreToSync)
         {
 
           if (v46)
           {
-            v47 = [v55 nextSyncToken];
-            [(CoreDAVRecursiveContainerSyncTaskGroup *)self setPreviousSyncToken:v47];
+            nextSyncToken2 = [v55 nextSyncToken];
+            [(CoreDAVRecursiveContainerSyncTaskGroup *)self setPreviousSyncToken:nextSyncToken2];
 
-            v48 = self;
+            selfCopy2 = self;
           }
 
           else
@@ -1349,20 +1349,20 @@ LABEL_22:
               _os_log_impl(&dword_2452FB000, v52, OS_LOG_TYPE_DEFAULT, "Was told to sync more items, but got no new sync token.  Starting from scatch", buf, 2u);
             }
 
-            [(CoreDAVRecursiveContainerSyncTaskGroup *)v56 setPreviousSyncToken:0];
-            [(NSMutableDictionary *)v56->_leafURLToETag removeAllObjects];
-            [(NSMutableArray *)v56->_childCollectionURL removeAllObjects];
-            [(NSMutableSet *)v56->_syncReportDeletedURLs removeAllObjects];
-            v48 = v56;
+            [(CoreDAVRecursiveContainerSyncTaskGroup *)selfCopy setPreviousSyncToken:0];
+            [(NSMutableDictionary *)selfCopy->_leafURLToETag removeAllObjects];
+            [(NSMutableArray *)selfCopy->_childCollectionURL removeAllObjects];
+            [(NSMutableSet *)selfCopy->_syncReportDeletedURLs removeAllObjects];
+            selfCopy2 = selfCopy;
           }
 
-          [(CoreDAVRecursiveContainerSyncTaskGroup *)v48 _getItemTags];
+          [(CoreDAVRecursiveContainerSyncTaskGroup *)selfCopy2 _getItemTags];
         }
 
         else
         {
           nextSyncToken = self->_nextSyncToken;
-          self->_nextSyncToken = v45;
+          self->_nextSyncToken = nextSyncToken;
 
           [(CoreDAVRecursiveContainerSyncTaskGroup *)self _getDataPayloads];
         }
@@ -1370,7 +1370,7 @@ LABEL_22:
     }
   }
 
-  else if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:v6]& 1) == 0)
+  else if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:taskCopy]& 1) == 0)
   {
     v8 = +[CoreDAVLogging sharedLogging];
     v9 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -1378,10 +1378,10 @@ LABEL_22:
 
     if (v10 && os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      outstandingTasks = v56->super._outstandingTasks;
-      unsubmittedTasks = v56->_unsubmittedTasks;
+      outstandingTasks = selfCopy->super._outstandingTasks;
+      unsubmittedTasks = selfCopy->_unsubmittedTasks;
       *buf = 138412802;
-      v65 = v6;
+      v65 = taskCopy;
       v66 = 2112;
       v67 = outstandingTasks;
       v68 = 2112;
@@ -1393,15 +1393,15 @@ LABEL_22:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)propFindTask:(id)a3 parsedResponses:(id)a4 error:(id)a5
+- (void)propFindTask:(id)task parsedResponses:(id)responses error:(id)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![(NSMutableSet *)self->super._outstandingTasks containsObject:v8])
+  taskCopy = task;
+  responsesCopy = responses;
+  errorCopy = error;
+  if (![(NSMutableSet *)self->super._outstandingTasks containsObject:taskCopy])
   {
-    if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:v8]& 1) != 0)
+    if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:taskCopy]& 1) != 0)
     {
       goto LABEL_39;
     }
@@ -1415,7 +1415,7 @@ LABEL_22:
       outstandingTasks = self->super._outstandingTasks;
       unsubmittedTasks = self->_unsubmittedTasks;
       *buf = 138412802;
-      v54 = v8;
+      v54 = taskCopy;
       v55 = 2112;
       v56 = outstandingTasks;
       v57 = 2112;
@@ -1427,15 +1427,15 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  [(NSMutableSet *)self->super._outstandingTasks removeObject:v8];
-  if (v10)
+  [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
+  if (errorCopy)
   {
-    v11 = [v10 domain];
-    if ([v11 isEqualToString:@"CoreDAVErrorDomain"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"CoreDAVErrorDomain"])
     {
-      v12 = [v10 code];
+      code = [errorCopy code];
 
-      if (v12 == 2)
+      if (code == 2)
       {
         goto LABEL_5;
       }
@@ -1445,7 +1445,7 @@ LABEL_38:
     {
     }
 
-    [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v10];
+    [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:errorCopy];
     goto LABEL_39;
   }
 
@@ -1469,7 +1469,7 @@ LABEL_5:
     goto LABEL_37;
   }
 
-  if (![v9 count])
+  if (![responsesCopy count])
   {
     v38 = +[CoreDAVLogging sharedLogging];
     v39 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -1478,7 +1478,7 @@ LABEL_5:
     if (v40 && os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v54 = v9;
+      v54 = responsesCopy;
       _os_log_impl(&dword_2452FB000, v40, OS_LOG_TYPE_DEFAULT, "We need exactly one ctag per container.  We got %@", buf, 0xCu);
     }
 
@@ -1490,22 +1490,22 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v45 = self;
-  v46 = v10;
-  v47 = v9;
-  v48 = v8;
+  selfCopy = self;
+  v46 = errorCopy;
+  v47 = responsesCopy;
+  v48 = taskCopy;
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v13 = v9;
+  v13 = responsesCopy;
   v14 = [v13 countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v14)
   {
     v15 = v14;
-    v16 = 0;
-    v17 = 0;
-    v18 = 0;
+    payloadAsString2 = 0;
+    payloadAsString3 = 0;
+    payloadAsString = 0;
     v19 = *v50;
     while (1)
     {
@@ -1517,11 +1517,11 @@ LABEL_37:
           objc_enumerationMutation(v13);
         }
 
-        v21 = [*(*(&v49 + 1) + 8 * v20) successfulPropertiesToValues];
-        v22 = v21;
-        if (v18)
+        successfulPropertiesToValues = [*(*(&v49 + 1) + 8 * v20) successfulPropertiesToValues];
+        v22 = successfulPropertiesToValues;
+        if (payloadAsString)
         {
-          if (!v16)
+          if (!payloadAsString2)
           {
             goto LABEL_18;
           }
@@ -1529,16 +1529,16 @@ LABEL_37:
 
         else
         {
-          v23 = [v21 CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"getctag"];
-          v18 = [v23 payloadAsString];
+          v23 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"getctag"];
+          payloadAsString = [v23 payloadAsString];
 
-          if (!v16)
+          if (!payloadAsString2)
           {
 LABEL_18:
             v24 = [v22 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"sync-token"];
-            v16 = [v24 payloadAsString];
+            payloadAsString2 = [v24 payloadAsString];
 
-            if (v17)
+            if (payloadAsString3)
             {
               goto LABEL_15;
             }
@@ -1547,14 +1547,14 @@ LABEL_18:
           }
         }
 
-        if (v17)
+        if (payloadAsString3)
         {
           goto LABEL_15;
         }
 
 LABEL_19:
         v25 = [v22 CDVObjectForKeyWithNameSpace:@"http://me.com/_namespace/" andName:@"propertytag"];
-        v17 = [v25 payloadAsString];
+        payloadAsString3 = [v25 payloadAsString];
 
 LABEL_15:
         ++v20;
@@ -1570,15 +1570,15 @@ LABEL_15:
     }
   }
 
-  v16 = 0;
-  v17 = 0;
-  v18 = 0;
+  payloadAsString2 = 0;
+  payloadAsString3 = 0;
+  payloadAsString = 0;
 LABEL_41:
 
-  objc_storeStrong(&v45->_nextSyncToken, v16);
-  if (v18)
+  objc_storeStrong(&selfCopy->_nextSyncToken, payloadAsString2);
+  if (payloadAsString)
   {
-    v42 = v18;
+    v42 = payloadAsString;
   }
 
   else
@@ -1586,10 +1586,10 @@ LABEL_41:
     v42 = @"ServerDoesNotSupportCTags";
   }
 
-  [(CoreDAVRecursiveContainerSyncTaskGroup *)v45 setNextCTag:v42];
-  if (v17)
+  [(CoreDAVRecursiveContainerSyncTaskGroup *)selfCopy setNextCTag:v42];
+  if (payloadAsString3)
   {
-    v43 = v17;
+    v43 = payloadAsString3;
   }
 
   else
@@ -1597,30 +1597,30 @@ LABEL_41:
     v43 = @"ServerDoesNotSupportPTags";
   }
 
-  v10 = v46;
-  nextPTag = v45->_nextPTag;
-  v45->_nextPTag = &v43->isa;
+  errorCopy = v46;
+  nextPTag = selfCopy->_nextPTag;
+  selfCopy->_nextPTag = &v43->isa;
 
-  [(CoreDAVRecursiveContainerSyncTaskGroup *)v45 _getItemTags];
-  v9 = v47;
-  v8 = v48;
+  [(CoreDAVRecursiveContainerSyncTaskGroup *)selfCopy _getItemTags];
+  responsesCopy = v47;
+  taskCopy = v48;
 LABEL_39:
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getTask:(id)a3 finishedWithParsedContents:(id)a4 deletedItems:(id)a5 error:(id)a6
+- (void)_getTask:(id)task finishedWithParsedContents:(id)contents deletedItems:(id)items error:(id)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:v9])
+  taskCopy = task;
+  contentsCopy = contents;
+  errorCopy = error;
+  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:taskCopy])
   {
-    [(NSMutableSet *)self->super._outstandingTasks removeObject:v9];
-    if (v11)
+    [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
+    if (errorCopy)
     {
-      [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:v11];
+      [(CoreDAVRecursiveContainerSyncTaskGroup *)self bailWithError:errorCopy];
       goto LABEL_46;
     }
 
@@ -1631,18 +1631,18 @@ LABEL_39:
     v19 = v18;
     if (isKindOfClass & 1) != 0 || (v18)
     {
-      v33 = [v9 missingURLs];
-      if ([v33 count])
+      missingURLs = [taskCopy missingURLs];
+      if ([missingURLs count])
       {
-        v46 = v10;
+        v46 = contentsCopy;
         if (isKindOfClass)
         {
-          v34 = [(CoreDAVRecursiveContainerSyncTaskGroup *)self copyFolderMultiGetTaskWithURLs:v33];
+          v34 = [(CoreDAVRecursiveContainerSyncTaskGroup *)self copyFolderMultiGetTaskWithURLs:missingURLs];
         }
 
         else
         {
-          v34 = [(CoreDAVRecursiveContainerSyncTaskGroup *)self copyMultiGetTaskWithURLs:v33];
+          v34 = [(CoreDAVRecursiveContainerSyncTaskGroup *)self copyMultiGetTaskWithURLs:missingURLs];
         }
 
         v35 = v34;
@@ -1657,18 +1657,18 @@ LABEL_39:
 
         if (v38)
         {
-          v39 = v9;
+          v39 = taskCopy;
           v40 = v38;
           if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
             v52 = v35;
             v53 = 2048;
-            v54 = [v33 count];
+            v54 = [missingURLs count];
             _os_log_impl(&dword_2452FB000, v40, OS_LOG_TYPE_INFO, "%@ missed %lu items - resubmitting", buf, 0x16u);
           }
 
-          v9 = v39;
+          taskCopy = v39;
         }
 
         [v35 setDelegate:self];
@@ -1678,10 +1678,10 @@ LABEL_39:
         [v35 setTimeoutInterval:self->super._timeoutInterval];
         [(NSMutableArray *)self->_unsubmittedTasks addObject:v35];
 
-        v10 = v46;
+        contentsCopy = v46;
       }
 
-      v11 = 0;
+      errorCopy = 0;
       if (isKindOfClass)
       {
         goto LABEL_12;
@@ -1691,9 +1691,9 @@ LABEL_39:
     else if (isKindOfClass)
     {
 LABEL_12:
-      v45 = v10;
-      v20 = [v10 allObjects];
-      v21 = [v20 mutableCopy];
+      v45 = contentsCopy;
+      allObjects = [contentsCopy allObjects];
+      v21 = [allObjects mutableCopy];
 
       [v21 sortUsingComparator:&__block_literal_global_65];
       v49 = 0u;
@@ -1718,9 +1718,9 @@ LABEL_12:
             v27 = *(*(&v47 + 1) + 8 * i);
             if ([v27 isUnauthenticated])
             {
-              v28 = +[CoreDAVLogging sharedLogging];
+              delegate = +[CoreDAVLogging sharedLogging];
               v29 = objc_loadWeakRetained(&self->super._accountInfoProvider);
-              v30 = [v28 logHandleForAccountInfoProvider:v29];
+              v30 = [delegate logHandleForAccountInfoProvider:v29];
 
               if (v30 && os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
               {
@@ -1732,15 +1732,15 @@ LABEL_12:
 
             else
             {
-              v28 = [(CoreDAVTaskGroup *)self delegate];
-              [v28 recursiveContainerSyncTask:self receivedAddedOrModifiedFolder:v27];
+              delegate = [(CoreDAVTaskGroup *)self delegate];
+              [delegate recursiveContainerSyncTask:self receivedAddedOrModifiedFolder:v27];
             }
 
             if (objc_opt_respondsToSelector())
             {
-              v31 = [v27 childrenOrder];
-              v32 = [v27 serverID];
-              [(CoreDAVRecursiveContainerSyncTaskGroup *)self _foundChildrenOrder:v31 inFolderWithURL:v32];
+              childrenOrder = [v27 childrenOrder];
+              serverID = [v27 serverID];
+              [(CoreDAVRecursiveContainerSyncTaskGroup *)self _foundChildrenOrder:childrenOrder inFolderWithURL:serverID];
             }
           }
 
@@ -1756,9 +1756,9 @@ LABEL_12:
         [(CoreDAVRecursiveContainerSyncTaskGroup *)self _taskGroupSuccessfullyFinishedWithContents:0];
       }
 
-      v9 = v44;
-      v10 = v45;
-      v11 = 0;
+      taskCopy = v44;
+      contentsCopy = v45;
+      errorCopy = 0;
       goto LABEL_46;
     }
 
@@ -1767,18 +1767,18 @@ LABEL_12:
       [(CoreDAVRecursiveContainerSyncTaskGroup *)self _submitTasks];
       if ([(NSMutableSet *)self->super._outstandingTasks count])
       {
-        v42 = [(CoreDAVTaskGroup *)self delegate];
-        [v42 recursiveContainerSyncTask:self retrievedAddedOrModifiedActions:v10 removed:0];
+        delegate2 = [(CoreDAVTaskGroup *)self delegate];
+        [delegate2 recursiveContainerSyncTask:self retrievedAddedOrModifiedActions:contentsCopy removed:0];
       }
 
       else
       {
-        [(CoreDAVRecursiveContainerSyncTaskGroup *)self _taskGroupSuccessfullyFinishedWithContents:v10];
+        [(CoreDAVRecursiveContainerSyncTaskGroup *)self _taskGroupSuccessfullyFinishedWithContents:contentsCopy];
       }
     }
   }
 
-  else if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:v9]& 1) == 0)
+  else if (([(NSMutableArray *)self->_unsubmittedTasks containsObject:taskCopy]& 1) == 0)
   {
     v12 = +[CoreDAVLogging sharedLogging];
     v13 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -1789,7 +1789,7 @@ LABEL_12:
       outstandingTasks = self->super._outstandingTasks;
       unsubmittedTasks = self->_unsubmittedTasks;
       *buf = 138412802;
-      v52 = v9;
+      v52 = taskCopy;
       v53 = 2112;
       v54 = outstandingTasks;
       v55 = 2112;
@@ -1826,7 +1826,7 @@ uint64_t __97__CoreDAVRecursiveContainerSyncTaskGroup__getTask_finishedWithParse
   }
 }
 
-- (id)copyMultiGetTaskWithURLs:(id)a3
+- (id)copyMultiGetTaskWithURLs:(id)ls
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = +[CoreDAVLogging sharedLogging];
@@ -1849,7 +1849,7 @@ uint64_t __97__CoreDAVRecursiveContainerSyncTaskGroup__getTask_finishedWithParse
   return 0;
 }
 
-- (id)copyFolderMultiGetTaskWithURLs:(id)a3
+- (id)copyFolderMultiGetTaskWithURLs:(id)ls
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = +[CoreDAVLogging sharedLogging];
@@ -1895,7 +1895,7 @@ uint64_t __97__CoreDAVRecursiveContainerSyncTaskGroup__getTask_finishedWithParse
   return 0;
 }
 
-- (BOOL)shouldSyncChildWithResourceType:(id)a3
+- (BOOL)shouldSyncChildWithResourceType:(id)type
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = +[CoreDAVLogging sharedLogging];

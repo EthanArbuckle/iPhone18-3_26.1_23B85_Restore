@@ -1,6 +1,6 @@
 @interface TLSystemSound
 - (BOOL)isValid;
-- (TLSystemSound)initWithSoundFileURL:(id)a3 soundID:(unsigned int)a4 requiresLongFormPlayback:(BOOL)a5;
+- (TLSystemSound)initWithSoundFileURL:(id)l soundID:(unsigned int)d requiresLongFormPlayback:(BOOL)playback;
 - (id)_description;
 - (id)description;
 - (unsigned)soundID;
@@ -12,9 +12,9 @@
 
 @implementation TLSystemSound
 
-- (TLSystemSound)initWithSoundFileURL:(id)a3 soundID:(unsigned int)a4 requiresLongFormPlayback:(BOOL)a5
+- (TLSystemSound)initWithSoundFileURL:(id)l soundID:(unsigned int)d requiresLongFormPlayback:(BOOL)playback
 {
-  v8 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = TLSystemSound;
   v9 = [(TLSystemSound *)&v14 init];
@@ -22,12 +22,12 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    v11 = [v8 copy];
+    v11 = [lCopy copy];
     soundFileURL = v10->_soundFileURL;
     v10->_soundFileURL = v11;
 
-    v10->_soundID = a4;
-    v10->_requiresLongFormPlayback = a5;
+    v10->_soundID = d;
+    v10->_requiresLongFormPlayback = playback;
   }
 
   return v10;
@@ -54,10 +54,10 @@
     v4 = TLLogPlayback();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(TLSystemSound *)self _description];
+      _description = [(TLSystemSound *)self _description];
       soundID = self->_soundID;
       v8 = 138543874;
-      v9 = v5;
+      v9 = _description;
       v10 = 2048;
       v11 = soundID;
       v12 = 2048;
@@ -73,10 +73,10 @@
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(TLSystemSound *)self _description];
+  _description = [(TLSystemSound *)self _description];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _description;
 }
 
 - (id)_description
@@ -122,8 +122,8 @@ LABEL_9:
 - (BOOL)isValid
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
-  v3 = [(TLSystemSound *)self soundID];
-  return v3 != kSystemSoundID_NoneTone && v3 != kSystemSoundID_InvalidTone;
+  soundID = [(TLSystemSound *)self soundID];
+  return soundID != kSystemSoundID_NoneTone && soundID != kSystemSoundID_InvalidTone;
 }
 
 - (unsigned)soundID
@@ -139,9 +139,9 @@ LABEL_9:
 - (void)beginRequiringUnderlyingSoundLoaded
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 _description];
+  _description = [self _description];
   v5 = 138543362;
-  v6 = v3;
+  v6 = _description;
   _os_log_debug_impl(&dword_1D9356000, a2, OS_LOG_TYPE_DEBUG, "%{public}@: -beginRequiringUnderlyingSoundLoaded.", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];
@@ -175,11 +175,11 @@ LABEL_9:
     v7 = TLLogPlayback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(TLSystemSound *)self _description];
+      _description = [(TLSystemSound *)self _description];
       v9 = self->_soundFileURL;
       soundID = self->_soundID;
       v12 = 138544130;
-      v13 = v8;
+      v13 = _description;
       v14 = 2114;
       v15 = v9;
       v16 = 2048;

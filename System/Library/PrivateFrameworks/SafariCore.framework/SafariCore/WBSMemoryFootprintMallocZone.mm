@@ -1,13 +1,13 @@
 @interface WBSMemoryFootprintMallocZone
-- (WBSMemoryFootprintMallocZone)initWithCoder:(id)a3;
-- (WBSMemoryFootprintMallocZone)initWithMallocZone:(_malloc_zone_t *)a3;
+- (WBSMemoryFootprintMallocZone)initWithCoder:(id)coder;
+- (WBSMemoryFootprintMallocZone)initWithMallocZone:(_malloc_zone_t *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSMemoryFootprintMallocZone
 
-- (WBSMemoryFootprintMallocZone)initWithMallocZone:(_malloc_zone_t *)a3
+- (WBSMemoryFootprintMallocZone)initWithMallocZone:(_malloc_zone_t *)zone
 {
   v11.receiver = self;
   v11.super_class = WBSMemoryFootprintMallocZone;
@@ -15,8 +15,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_addr = a3;
-    zone_name = malloc_get_zone_name(a3);
+    v4->_addr = zone;
+    zone_name = malloc_get_zone_name(zone);
     if (zone_name)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:zone_name];
@@ -24,32 +24,32 @@
       v5->_name = v7;
     }
 
-    malloc_zone_statistics(a3, &v5->_statistics);
+    malloc_zone_statistics(zone, &v5->_statistics);
     v9 = v5;
   }
 
   return v5;
 }
 
-- (WBSMemoryFootprintMallocZone)initWithCoder:(id)a3
+- (WBSMemoryFootprintMallocZone)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = WBSMemoryFootprintMallocZone;
   v5 = [(WBSMemoryFootprintMallocZone *)&v13 init];
   if (v5)
   {
-    v5->_addr = [v4 decodeIntegerForKey:@"addr"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v5->_addr = [coderCopy decodeIntegerForKey:@"addr"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stats"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stats"];
     if ([v8 length] >= 0x20)
     {
-      v9 = [v8 bytes];
-      v10 = v9[1];
-      *&v5->_statistics.blocks_in_use = *v9;
+      bytes = [v8 bytes];
+      v10 = bytes[1];
+      *&v5->_statistics.blocks_in_use = *bytes;
       *&v5->_statistics.max_size_in_use = v10;
     }
 
@@ -59,14 +59,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   addr = self->_addr;
-  v5 = a3;
-  [v5 encodeInteger:addr forKey:@"addr"];
-  [v5 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:addr forKey:@"addr"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
   v6 = [MEMORY[0x1E695DEF0] dataWithBytes:&self->_statistics length:32];
-  [v5 encodeObject:v6 forKey:@"stats"];
+  [coderCopy encodeObject:v6 forKey:@"stats"];
 }
 
 - (id)dictionaryRepresentation

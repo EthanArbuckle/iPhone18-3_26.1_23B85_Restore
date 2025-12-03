@@ -21,9 +21,9 @@
     knobImage = v2->_knobImage;
     v2->_knobImage = v6;
 
-    v8 = [(UIImage *)v2->_knobImage imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [(UIImage *)v2->_knobImage imageFlippedForRightToLeftLayoutDirection];
     knobImageFlipped = v2->_knobImageFlipped;
-    v2->_knobImageFlipped = v8;
+    v2->_knobImageFlipped = imageFlippedForRightToLeftLayoutDirection;
 
     v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v5];
     knobView = v2->_knobView;
@@ -37,8 +37,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(PKDrawingAdjustmentKnob *)self tintColor];
-  [(UIImageView *)self->_knobView setTintColor:v3];
+  tintColor = [(PKDrawingAdjustmentKnob *)self tintColor];
+  [(UIImageView *)self->_knobView setTintColor:tintColor];
 
   [(PKDrawingAdjustmentKnob *)self bounds];
   v5 = v4;
@@ -53,8 +53,8 @@
 
 + (double)leftMargin
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v2 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v3 = 10.0;
   }

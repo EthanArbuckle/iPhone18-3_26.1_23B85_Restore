@@ -2,7 +2,7 @@
 - (APRotationRouter)init;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)rotate:(id)a3;
+- (void)rotate:(id)rotate;
 @end
 
 @implementation APRotationRouter
@@ -20,9 +20,9 @@
   return v2;
 }
 
-- (void)rotate:(id)a3
+- (void)rotate:(id)rotate
 {
-  v3 = a3;
+  rotateCopy = rotate;
   v4 = APLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -35,9 +35,9 @@
   [v5 rotateWithError:&v8];
   v6 = v8;
 
-  if (v3)
+  if (rotateCopy)
   {
-    v3[2](v3, v6);
+    rotateCopy[2](rotateCopy, v6);
   }
 
   v7 = +[NSNotificationCenter defaultCenter];

@@ -1,14 +1,14 @@
 @interface ButterworthHighPassFilter
-- (ButterworthHighPassFilter)initWithCutoffFrequency:(float)a3 sampleRate:(float)a4;
-- (float)filterSample:(float)a3;
+- (ButterworthHighPassFilter)initWithCutoffFrequency:(float)frequency sampleRate:(float)rate;
+- (float)filterSample:(float)sample;
 - (int)resetState;
-- (void)calculateCoefficientsWithCutoff:(float)a3 sampleRate:(float)a4;
+- (void)calculateCoefficientsWithCutoff:(float)cutoff sampleRate:(float)rate;
 - (void)dealloc;
 @end
 
 @implementation ButterworthHighPassFilter
 
-- (ButterworthHighPassFilter)initWithCutoffFrequency:(float)a3 sampleRate:(float)a4
+- (ButterworthHighPassFilter)initWithCutoffFrequency:(float)frequency sampleRate:(float)rate
 {
   v14.receiver = self;
   v14.super_class = ButterworthHighPassFilter;
@@ -21,17 +21,17 @@
     v7->_a = malloc_type_malloc(4 * v7->_order + 4, 0x100004052888210uLL);
     v7->_x = malloc_type_calloc(v7->_order, 4uLL, 0x100004052888210uLL);
     v7->_y = malloc_type_calloc(v7->_order, 4uLL, 0x100004052888210uLL);
-    *&v8 = a3;
-    *&v9 = a4;
+    *&v8 = frequency;
+    *&v9 = rate;
     objc_msgSend_calculateCoefficientsWithCutoff_sampleRate_(v7, v10, v11, v12, v8, v9);
   }
 
   return v7;
 }
 
-- (void)calculateCoefficientsWithCutoff:(float)a3 sampleRate:(float)a4
+- (void)calculateCoefficientsWithCutoff:(float)cutoff sampleRate:(float)rate
 {
-  v5 = tan((a3 / (a4 * 0.5)) * 3.14159265);
+  v5 = tan((cutoff / (rate * 0.5)) * 3.14159265);
   v6 = v5 * v5;
   v7 = v5 * 2.8284;
   *v8.i32 = v6 + (v7 + 1.0);
@@ -45,7 +45,7 @@
   a[2] = (v6 + (1.0 - v7)) / *v8.i32;
 }
 
-- (float)filterSample:(float)a3
+- (float)filterSample:(float)sample
 {
   b = self->_b;
   v4 = *b;
@@ -54,8 +54,8 @@
   x = self->_x;
   y = self->_y;
   v9 = *x;
-  v10 = ((((v5 * *x) + (v4 * a3)) + (v6 * x[1])) - (self->_a[1] * *y)) - (self->_a[2] * y[1]);
-  *x = a3;
+  v10 = ((((v5 * *x) + (v4 * sample)) + (v6 * x[1])) - (self->_a[1] * *y)) - (self->_a[2] * y[1]);
+  *x = sample;
   x[1] = v9;
   v11 = *y;
   *y = v10;

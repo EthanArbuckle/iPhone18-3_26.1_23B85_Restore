@@ -1,32 +1,32 @@
 @interface TUContactsDataProvider
 + (id)defaultContactKeyDescriptors;
 + (id)familyNameFirstLocaleCountryCodes;
-+ (id)keysByCombiningDefaultKeysWithKeysToFetch:(id)a3;
++ (id)keysByCombiningDefaultKeysWithKeysToFetch:(id)fetch;
 + (id)numberFormatter;
 + (id)unsupportedLocalesForPrefixHint;
-- (BOOL)isHandleEligibleForScreenSharingRequests:(id)a3;
-- (BOOL)shouldIgnoreHandle:(id)a3 withFetchRequest:(id)a4;
+- (BOOL)isHandleEligibleForScreenSharingRequests:(id)requests;
+- (BOOL)shouldIgnoreHandle:(id)handle withFetchRequest:(id)request;
 - (TUContactsDataProvider)init;
-- (TUContactsDataProvider)initWithContactsDataSource:(id)a3;
-- (id)ISOCountryCodeForHandle:(id)a3 fetchRequest:(id)a4;
-- (id)compositeNameForContacts:(id)a3;
-- (id)compositeNameForFetchRequest:(id)a3;
-- (id)contactLabelForContacts:(id)a3 matchingHandle:(id)a4 countryCode:(id)a5;
-- (id)contactWithIdentifier:(id)a3 keysToFetch:(id)a4;
-- (id)contactsForHandle:(id)a3 countryCode:(id)a4 keysToFetch:(id)a5 prefixHint:(id)a6;
-- (id)executeBatchFetchRequests:(id)a3;
-- (id)executeFetchRequest:(id)a3;
-- (id)formattedNameForHandle:(id)a3 countryCode:(id)a4;
+- (TUContactsDataProvider)initWithContactsDataSource:(id)source;
+- (id)ISOCountryCodeForHandle:(id)handle fetchRequest:(id)request;
+- (id)compositeNameForContacts:(id)contacts;
+- (id)compositeNameForFetchRequest:(id)request;
+- (id)contactLabelForContacts:(id)contacts matchingHandle:(id)handle countryCode:(id)code;
+- (id)contactWithIdentifier:(id)identifier keysToFetch:(id)fetch;
+- (id)contactsForHandle:(id)handle countryCode:(id)code keysToFetch:(id)fetch prefixHint:(id)hint;
+- (id)executeBatchFetchRequests:(id)requests;
+- (id)executeFetchRequest:(id)request;
+- (id)formattedNameForHandle:(id)handle countryCode:(id)code;
 - (id)getDeviceSetupDate;
-- (id)labeledHandlesForContactWithIdentifier:(id)a3;
-- (id)labeledHandlesForContacts:(id)a3;
-- (id)localizedCompositeNameForContact:(id)a3 secondContact:(id)a4;
-- (id)nameForContact:(id)a3;
-- (id)prefixHintForFetchRequest:(id)a3;
-- (id)processBatchFetchRequests:(id)a3;
-- (id)resultForSingleHandleFetchRequest:(id)a3 fetchedContacts:(id)a4;
-- (id)unifiedContactsForFetchRequest:(id)a3;
-- (int)personIDForContact:(id)a3;
+- (id)labeledHandlesForContactWithIdentifier:(id)identifier;
+- (id)labeledHandlesForContacts:(id)contacts;
+- (id)localizedCompositeNameForContact:(id)contact secondContact:(id)secondContact;
+- (id)nameForContact:(id)contact;
+- (id)prefixHintForFetchRequest:(id)request;
+- (id)processBatchFetchRequests:(id)requests;
+- (id)resultForSingleHandleFetchRequest:(id)request fetchedContacts:(id)contacts;
+- (id)unifiedContactsForFetchRequest:(id)request;
+- (int)personIDForContact:(id)contact;
 @end
 
 @implementation TUContactsDataProvider
@@ -57,15 +57,15 @@
 
 - (TUContactsDataProvider)init
 {
-  v3 = [MEMORY[0x1E695CE18] tu_contactStore];
-  v4 = [(TUContactsDataProvider *)self initWithContactsDataSource:v3];
+  tu_contactStore = [MEMORY[0x1E695CE18] tu_contactStore];
+  v4 = [(TUContactsDataProvider *)self initWithContactsDataSource:tu_contactStore];
 
   return v4;
 }
 
-- (TUContactsDataProvider)initWithContactsDataSource:(id)a3
+- (TUContactsDataProvider)initWithContactsDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v25.receiver = self;
   v25.super_class = TUContactsDataProvider;
   v6 = [(TUContactsDataProvider *)&v25 init];
@@ -74,15 +74,15 @@
     v7 = TUDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(TUContactsDataProvider *)v5 initWithContactsDataSource:v7];
+      [(TUContactsDataProvider *)sourceCopy initWithContactsDataSource:v7];
     }
 
-    objc_storeStrong(&v6->_contactsDataSource, a3);
-    v8 = [objc_opt_class() familyNameFirstLocaleCountryCodes];
-    v9 = [MEMORY[0x1E695DF58] currentLocale];
-    v10 = [v9 countryCode];
-    v11 = [v10 lowercaseString];
-    v6->_useFamilyNameFirst = [v8 containsObject:v11];
+    objc_storeStrong(&v6->_contactsDataSource, source);
+    familyNameFirstLocaleCountryCodes = [objc_opt_class() familyNameFirstLocaleCountryCodes];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    countryCode = [currentLocale countryCode];
+    lowercaseString = [countryCode lowercaseString];
+    v6->_useFamilyNameFirst = [familyNameFirstLocaleCountryCodes containsObject:lowercaseString];
 
     objc_initWeak(&location, v6);
     v19 = MEMORY[0x1E69E9820];
@@ -98,9 +98,9 @@
     appleCareHandles = v6->_appleCareHandles;
     v6->_appleCareHandles = v14;
 
-    v16 = [MEMORY[0x1E695E000] tu_defaults];
+    tu_defaults = [MEMORY[0x1E695E000] tu_defaults];
     userDefaults = v6->_userDefaults;
-    v6->_userDefaults = v16;
+    v6->_userDefaults = tu_defaults;
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&location);
@@ -152,19 +152,19 @@ LABEL_8:
   return v11 ^ 1u;
 }
 
-- (id)processBatchFetchRequests:(id)a3
+- (id)processBatchFetchRequests:(id)requests
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v33 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v32 = [MEMORY[0x1E695DF90] dictionary];
+  requestsCopy = requests;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = v4;
+  v7 = requestsCopy;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v8)
   {
@@ -181,8 +181,8 @@ LABEL_8:
         }
 
         v12 = *(*(&v34 + 1) + 8 * v11);
-        v13 = [v12 handles];
-        v14 = [v13 count];
+        handles = [v12 handles];
+        v14 = [handles count];
 
         if (v14 != 1)
         {
@@ -191,8 +191,8 @@ LABEL_8:
 
           if (_TUAssertShouldCrashApplication())
           {
-            v16 = [v12 handles];
-            v17 = [v16 count];
+            handles2 = [v12 handles];
+            v17 = [handles2 count];
 
             if (v17 != 1)
             {
@@ -202,10 +202,10 @@ LABEL_8:
         }
 
         [v12 removePsuedHandles];
-        v18 = [v12 handles];
-        v19 = [v18 firstObject];
+        handles3 = [v12 handles];
+        firstObject = [handles3 firstObject];
 
-        if (!v19)
+        if (!firstObject)
         {
           v21 = TUDefaultLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -218,35 +218,35 @@ LABEL_8:
           goto LABEL_17;
         }
 
-        [v5 setObject:v12 forKeyedSubscript:v19];
-        [v6 addObject:v19];
-        if ([(TUContactsDataProvider *)self shouldIgnoreHandle:v19 withFetchRequest:v12])
+        [dictionary setObject:v12 forKeyedSubscript:firstObject];
+        [array2 addObject:firstObject];
+        if ([(TUContactsDataProvider *)self shouldIgnoreHandle:firstObject withFetchRequest:v12])
         {
           v20 = TUDefaultLog();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v39 = v19;
+            v39 = firstObject;
             _os_log_impl(&dword_1956FD000, v20, OS_LOG_TYPE_DEFAULT, "Not looking up contact for %@ because it is in our apple care handles", buf, 0xCu);
           }
         }
 
         else
         {
-          v22 = [v19 type];
-          if ((v22 - 2) >= 2)
+          type = [firstObject type];
+          if ((type - 2) >= 2)
           {
-            if (v22 == 1)
+            if (type == 1)
             {
               v21 = [(TUContactsDataProvider *)self executeFetchRequest:v12];
-              [v32 setObject:v21 forKeyedSubscript:v19];
+              [dictionary2 setObject:v21 forKeyedSubscript:firstObject];
 LABEL_17:
             }
           }
 
           else
           {
-            [v33 addObject:v19];
+            [array addObject:firstObject];
           }
         }
 
@@ -261,10 +261,10 @@ LABEL_17:
   }
 
   v23 = [TUBatchFetchRequestProcessingResult alloc];
-  v24 = [v5 copy];
-  v25 = [v33 copy];
-  v26 = [v6 copy];
-  v27 = [v32 copy];
+  v24 = [dictionary copy];
+  v25 = [array copy];
+  v26 = [array2 copy];
+  v27 = [dictionary2 copy];
   v28 = [(TUBatchFetchRequestProcessingResult *)v23 initWithHandleToFetchRequest:v24 handlesToBatchFetch:v25 allHandlesFromFetchRequests:v26 fetchRequestResults:v27];
 
   v29 = *MEMORY[0x1E69E9840];
@@ -272,27 +272,27 @@ LABEL_17:
   return v28;
 }
 
-- (id)executeBatchFetchRequests:(id)a3
+- (id)executeBatchFetchRequests:(id)requests
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  requestsCopy = requests;
+  if ([requestsCopy count])
   {
-    v5 = [(TUContactsDataProvider *)self processBatchFetchRequests:v4];
-    v6 = [v5 fetchRequestResults];
-    v31 = [v6 mutableCopy];
+    v5 = [(TUContactsDataProvider *)self processBatchFetchRequests:requestsCopy];
+    fetchRequestResults = [v5 fetchRequestResults];
+    v31 = [fetchRequestResults mutableCopy];
 
     v7 = objc_opt_class();
-    v28 = v4;
-    v8 = [v4 firstObject];
-    v9 = [v8 auxiliaryKeysToFetch];
-    v10 = [v7 keysByCombiningDefaultKeysWithKeysToFetch:v9];
+    v28 = requestsCopy;
+    firstObject = [requestsCopy firstObject];
+    auxiliaryKeysToFetch = [firstObject auxiliaryKeysToFetch];
+    v10 = [v7 keysByCombiningDefaultKeysWithKeysToFetch:auxiliaryKeysToFetch];
 
-    v30 = self;
-    v11 = [(TUContactsDataProvider *)self contactsDataSource];
-    v12 = [v5 handlesToBatchFetch];
+    selfCopy = self;
+    contactsDataSource = [(TUContactsDataProvider *)self contactsDataSource];
+    handlesToBatchFetch = [v5 handlesToBatchFetch];
     v27 = v10;
-    v13 = [v11 tu_contactsForHandles:v12 keyDescriptors:v10 error:0];
+    v13 = [contactsDataSource tu_contactsForHandles:handlesToBatchFetch keyDescriptors:v10 error:0];
 
     v34 = 0u;
     v35 = 0u;
@@ -315,15 +315,15 @@ LABEL_17:
           }
 
           v19 = *(*(&v32 + 1) + 8 * i);
-          v20 = [v13 objectForKeyedSubscript:v19];
-          if (!v20)
+          array = [v13 objectForKeyedSubscript:v19];
+          if (!array)
           {
-            v20 = [MEMORY[0x1E695DEC8] array];
+            array = [MEMORY[0x1E695DEC8] array];
           }
 
-          v21 = [v14 handleToFetchRequest];
-          v22 = [v21 objectForKeyedSubscript:v19];
-          v23 = [(TUContactsDataProvider *)v30 resultForSingleHandleFetchRequest:v22 fetchedContacts:v20];
+          handleToFetchRequest = [v14 handleToFetchRequest];
+          v22 = [handleToFetchRequest objectForKeyedSubscript:v19];
+          v23 = [(TUContactsDataProvider *)selfCopy resultForSingleHandleFetchRequest:v22 fetchedContacts:array];
           [v31 setObject:v23 forKeyedSubscript:v19];
         }
 
@@ -333,56 +333,56 @@ LABEL_17:
       while (v16);
     }
 
-    v24 = [v31 copy];
-    v4 = v28;
+    dictionary = [v31 copy];
+    requestsCopy = v28;
   }
 
   else
   {
-    v24 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return dictionary;
 }
 
-- (id)executeFetchRequest:(id)a3
+- (id)executeFetchRequest:(id)request
 {
   v89 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v88 = v4;
+    v88 = requestCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Executing fetch request: %@", buf, 0xCu);
   }
 
   v6 = objc_alloc_init(TUContactsDataProviderResult);
-  [v4 removePsuedHandles];
-  if ([v4 isConversation])
+  [requestCopy removePsuedHandles];
+  if ([requestCopy isConversation])
   {
-    v7 = [v4 handles];
-    v8 = [v7 count];
+    handles = [requestCopy handles];
+    v8 = [handles count];
 
     if (v8 >= 2)
     {
       v63 = v6;
-      v9 = [MEMORY[0x1E695DF70] array];
-      v64 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v79 = 0u;
       v80 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v10 = [v4 handles];
-      v11 = [v10 countByEnumeratingWithState:&v79 objects:v86 count:16];
+      handles2 = [requestCopy handles];
+      v11 = [handles2 countByEnumeratingWithState:&v79 objects:v86 count:16];
       if (v11)
       {
         v12 = v11;
         v13 = *v80;
-        v66 = v10;
-        v67 = v4;
+        v66 = handles2;
+        v67 = requestCopy;
         v65 = *v80;
         do
         {
@@ -392,19 +392,19 @@ LABEL_17:
           {
             if (*v80 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(handles2);
             }
 
             v73 = v14;
             v15 = *(*(&v79 + 1) + 8 * v14);
-            v16 = [v15 value];
-            v17 = [v16 destinationIdIsPseudonym];
+            value = [v15 value];
+            destinationIdIsPseudonym = [value destinationIdIsPseudonym];
 
-            if ((v17 & 1) == 0)
+            if ((destinationIdIsPseudonym & 1) == 0)
             {
-              v18 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:v15 fetchRequest:v4];
-              v19 = [objc_opt_class() defaultContactKeyDescriptors];
-              v20 = [(TUContactsDataProvider *)self contactsForHandle:v15 countryCode:v18 keysToFetch:v19 prefixHint:0];
+              v18 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:v15 fetchRequest:requestCopy];
+              defaultContactKeyDescriptors = [objc_opt_class() defaultContactKeyDescriptors];
+              v20 = [(TUContactsDataProvider *)self contactsForHandle:v15 countryCode:v18 keysToFetch:defaultContactKeyDescriptors prefixHint:0];
 
               v21 = v20;
               if ([v20 count])
@@ -437,8 +437,8 @@ LABEL_17:
 
                       if (v29)
                       {
-                        v30 = [v27 givenName];
-                        [v9 addObject:v30];
+                        givenName = [v27 givenName];
+                        [array addObject:givenName];
                       }
                     }
 
@@ -446,8 +446,8 @@ LABEL_17:
                   }
 
                   while (v24);
-                  v10 = v66;
-                  v4 = v67;
+                  handles2 = v66;
+                  requestCopy = v67;
                   v13 = v65;
                   v21 = v69;
                   v18 = v70;
@@ -457,7 +457,7 @@ LABEL_17:
               else
               {
                 v22 = [(TUContactsDataProvider *)self formattedNameForHandle:v15 countryCode:v18];
-                [(TUContactsDataProviderResult *)v64 addObject:v22];
+                [(TUContactsDataProviderResult *)array2 addObject:v22];
               }
 
               v12 = v71;
@@ -467,17 +467,17 @@ LABEL_17:
           }
 
           while (v73 + 1 != v12);
-          v12 = [v10 countByEnumeratingWithState:&v79 objects:v86 count:16];
+          v12 = [handles2 countByEnumeratingWithState:&v79 objects:v86 count:16];
         }
 
         while (v12);
       }
 
-      [v9 sortUsingComparator:&__block_literal_global_22];
-      v6 = v64;
-      [(TUContactsDataProviderResult *)v64 sortUsingComparator:&__block_literal_global_55_0];
-      v31 = [MEMORY[0x1E695DF70] arrayWithArray:v9];
-      [v31 addObjectsFromArray:v64];
+      [array sortUsingComparator:&__block_literal_global_22];
+      v6 = array2;
+      [(TUContactsDataProviderResult *)array2 sortUsingComparator:&__block_literal_global_55_0];
+      v31 = [MEMORY[0x1E695DF70] arrayWithArray:array];
+      [v31 addObjectsFromArray:array2];
       v32 = TUBundle();
       v33 = [v32 localizedStringForKey:@"UNKNOWN" value:&stru_1F098C218 table:@"TelephonyUtilities"];
 
@@ -493,11 +493,11 @@ LABEL_17:
         v41 = TUBundle();
         v42 = [v41 localizedStringForKey:@"%@_AND_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
         [v31 objectAtIndexedSubscript:0];
-        v44 = v43 = v4;
+        v44 = v43 = requestCopy;
         v45 = [v31 objectAtIndexedSubscript:1];
         v34 = [v40 stringWithFormat:v42, v44, v45];
 
-        v4 = v43;
+        requestCopy = v43;
       }
 
       else
@@ -520,9 +520,9 @@ LABEL_17:
               goto LABEL_42;
             }
 
-            v55 = [objc_opt_class() numberFormatter];
+            numberFormatter = [objc_opt_class() numberFormatter];
             v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v31, "count") - 3}];
-            v72 = [v55 stringFromNumber:v56];
+            v72 = [numberFormatter stringFromNumber:v56];
 
             v57 = MEMORY[0x1E696AEC0];
             v74 = TUBundle();
@@ -530,11 +530,11 @@ LABEL_17:
             v59 = [v31 objectAtIndexedSubscript:0];
             v60 = [v31 objectAtIndexedSubscript:1];
             [v31 objectAtIndexedSubscript:2];
-            v62 = v61 = v4;
+            v62 = v61 = requestCopy;
             v34 = [v57 stringWithFormat:v58, v59, v60, v62, v72];
 
-            v4 = v61;
-            v6 = v64;
+            requestCopy = v61;
+            v6 = array2;
             v33 = v72;
 LABEL_41:
             v39 = v63;
@@ -553,39 +553,39 @@ LABEL_42:
         }
 
         [v47 localizedStringForKey:v48 value:&stru_1F098C218 table:@"TelephonyUtilities"];
-        v49 = v68 = v4;
+        v49 = v68 = requestCopy;
         v50 = [v31 objectAtIndexedSubscript:0];
         v51 = [v31 objectAtIndexedSubscript:1];
         v52 = [v31 objectAtIndexedSubscript:2];
         v34 = [v46 stringWithFormat:v49, v50, v51, v52];
 
-        v4 = v68;
+        requestCopy = v68;
       }
 
       v33 = v41;
-      v6 = v64;
+      v6 = array2;
       goto LABEL_41;
     }
   }
 
-  v35 = [v4 contactIdentifier];
+  contactIdentifier = [requestCopy contactIdentifier];
 
-  if (!v35)
+  if (!contactIdentifier)
   {
     goto LABEL_31;
   }
 
-  v36 = [v4 contactIdentifier];
-  v37 = [v4 auxiliaryKeysToFetch];
-  v38 = [(TUContactsDataProvider *)self contactWithIdentifier:v36 keysToFetch:v37];
+  contactIdentifier2 = [requestCopy contactIdentifier];
+  auxiliaryKeysToFetch = [requestCopy auxiliaryKeysToFetch];
+  v38 = [(TUContactsDataProvider *)self contactWithIdentifier:contactIdentifier2 keysToFetch:auxiliaryKeysToFetch];
 
-  if (!v38 || (v83 = v38, [MEMORY[0x1E695DEC8] arrayWithObjects:&v83 count:1], v9 = objc_claimAutoreleasedReturnValue(), v38, !v9))
+  if (!v38 || (v83 = v38, [MEMORY[0x1E695DEC8] arrayWithObjects:&v83 count:1], array = objc_claimAutoreleasedReturnValue(), v38, !array))
   {
 LABEL_31:
-    v9 = [(TUContactsDataProvider *)self unifiedContactsForFetchRequest:v4];
+    array = [(TUContactsDataProvider *)self unifiedContactsForFetchRequest:requestCopy];
   }
 
-  v39 = [(TUContactsDataProvider *)self resultForSingleHandleFetchRequest:v4 fetchedContacts:v9];
+  v39 = [(TUContactsDataProvider *)self resultForSingleHandleFetchRequest:requestCopy fetchedContacts:array];
 LABEL_43:
 
   v53 = *MEMORY[0x1E69E9840];
@@ -593,74 +593,74 @@ LABEL_43:
   return v39;
 }
 
-- (id)resultForSingleHandleFetchRequest:(id)a3 fetchedContacts:(id)a4
+- (id)resultForSingleHandleFetchRequest:(id)request fetchedContacts:(id)contacts
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  contactsCopy = contacts;
   v8 = objc_alloc_init(TUContactsDataProviderResult);
-  if ([v7 count])
+  if ([contactsCopy count])
   {
-    v9 = [v7 firstObject];
-    [(TUContactsDataProviderResult *)v8 setLegacyAddressBookIdentifier:[(TUContactsDataProvider *)self personIDForContact:v9]];
+    firstObject = [contactsCopy firstObject];
+    [(TUContactsDataProviderResult *)v8 setLegacyAddressBookIdentifier:[(TUContactsDataProvider *)self personIDForContact:firstObject]];
   }
 
-  if ([v7 count])
+  if ([contactsCopy count])
   {
-    v10 = [(TUContactsDataProvider *)self compositeNameForContacts:v7];
+    v10 = [(TUContactsDataProvider *)self compositeNameForContacts:contactsCopy];
     [(TUContactsDataProviderResult *)v8 setLocalizedName:v10];
 
-    v11 = [v6 handles];
-    v12 = [v11 count];
+    handles = [requestCopy handles];
+    v12 = [handles count];
 
     if (v12 == 1)
     {
-      v13 = [v6 handles];
-      v14 = [v13 firstObject];
+      handles2 = [requestCopy handles];
+      firstObject2 = [handles2 firstObject];
 
-      v15 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:v14 fetchRequest:v6];
-      v16 = [(TUContactsDataProvider *)self contactLabelForContacts:v7 matchingHandle:v14 countryCode:v15];
+      v15 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:firstObject2 fetchRequest:requestCopy];
+      v16 = [(TUContactsDataProvider *)self contactLabelForContacts:contactsCopy matchingHandle:firstObject2 countryCode:v15];
       [(TUContactsDataProviderResult *)v8 setContactLabel:v16];
     }
 
-    if ([v7 count] == 1)
+    if ([contactsCopy count] == 1)
     {
-      v17 = [v7 firstObject];
-      v18 = [v17 organizationName];
-      [(TUContactsDataProviderResult *)v8 setCompanyName:v18];
+      firstObject3 = [contactsCopy firstObject];
+      organizationName = [firstObject3 organizationName];
+      [(TUContactsDataProviderResult *)v8 setCompanyName:organizationName];
     }
   }
 
-  v19 = [(TUContactsDataProviderResult *)v8 localizedName];
+  localizedName = [(TUContactsDataProviderResult *)v8 localizedName];
 
-  if (!v19)
+  if (!localizedName)
   {
     v20 = TUDefaultLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v6 handles];
+      handles3 = [requestCopy handles];
       *v36 = 138412290;
-      *&v36[4] = v21;
+      *&v36[4] = handles3;
       _os_log_impl(&dword_1956FD000, v20, OS_LOG_TYPE_DEFAULT, "Finding the appropriate localized name to use for handles: %@", v36, 0xCu);
     }
 
-    v22 = [(TUContactsDataProvider *)self compositeNameForFetchRequest:v6];
+    v22 = [(TUContactsDataProvider *)self compositeNameForFetchRequest:requestCopy];
     if (v22)
     {
       [(TUContactsDataProviderResult *)v8 setLocalizedName:v22];
       v23 = TUDefaultLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(TUContactsDataProviderResult *)v8 localizedName];
+        localizedName2 = [(TUContactsDataProviderResult *)v8 localizedName];
         *v36 = 138412290;
-        *&v36[4] = v24;
+        *&v36[4] = localizedName2;
         v25 = "     - using formatted destination ID '%@'";
 LABEL_22:
         _os_log_impl(&dword_1956FD000, v23, OS_LOG_TYPE_DEFAULT, v25, v36, 0xCu);
       }
     }
 
-    else if ([v6 isEmergency])
+    else if ([requestCopy isEmergency])
     {
       v26 = TUBundle();
       v27 = [v26 localizedStringForKey:@"EMERGENCY_SERVICES" value:&stru_1F098C218 table:@"TelephonyUtilities"];
@@ -669,9 +669,9 @@ LABEL_22:
       v23 = TUDefaultLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(TUContactsDataProviderResult *)v8 localizedName];
+        localizedName2 = [(TUContactsDataProviderResult *)v8 localizedName];
         *v36 = 138412290;
-        *&v36[4] = v24;
+        *&v36[4] = localizedName2;
         v25 = "     - call is to emergency services, we'll use the emergency services string: '%@'";
         goto LABEL_22;
       }
@@ -679,10 +679,10 @@ LABEL_22:
 
     else
     {
-      v28 = [v6 isBlocked];
+      isBlocked = [requestCopy isBlocked];
       v29 = TUBundle();
       v30 = v29;
-      if (v28)
+      if (isBlocked)
       {
         v31 = [v29 localizedStringForKey:@"BLOCKED" value:&stru_1F098C218 table:@"TelephonyUtilities"];
         [(TUContactsDataProviderResult *)v8 setLocalizedName:v31];
@@ -690,9 +690,9 @@ LABEL_22:
         v23 = TUDefaultLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(TUContactsDataProviderResult *)v8 localizedName];
+          localizedName2 = [(TUContactsDataProviderResult *)v8 localizedName];
           *v36 = 138412290;
-          *&v36[4] = v24;
+          *&v36[4] = localizedName2;
           v25 = "     - call is blocked, we'll use the blocked string: '%@'";
           goto LABEL_22;
         }
@@ -706,9 +706,9 @@ LABEL_22:
         v23 = TUDefaultLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(TUContactsDataProviderResult *)v8 localizedName];
+          localizedName2 = [(TUContactsDataProviderResult *)v8 localizedName];
           *v36 = 138412290;
-          *&v36[4] = v24;
+          *&v36[4] = localizedName2;
           v25 = "     - falling back to the unknown string: '%@'";
           goto LABEL_22;
         }
@@ -716,7 +716,7 @@ LABEL_22:
     }
   }
 
-  [(TUContactsDataProviderResult *)v8 setContacts:v7, *v36];
+  [(TUContactsDataProviderResult *)v8 setContacts:contactsCopy, *v36];
   v33 = TUDefaultLog();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
@@ -730,23 +730,23 @@ LABEL_22:
   return v8;
 }
 
-- (id)contactLabelForContacts:(id)a3 matchingHandle:(id)a4 countryCode:(id)a5
+- (id)contactLabelForContacts:(id)contacts matchingHandle:(id)handle countryCode:(id)code
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  [(TUContactsDataProvider *)self labeledHandlesForContacts:a3];
+  handleCopy = handle;
+  codeCopy = code;
+  [(TUContactsDataProvider *)self labeledHandlesForContacts:contacts];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v10 = v22 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
-  if (v11)
+  label = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  if (label)
   {
     v12 = *v20;
     while (2)
     {
-      for (i = 0; i != v11; i = i + 1)
+      for (i = 0; i != label; i = i + 1)
       {
         if (*v20 != v12)
         {
@@ -754,18 +754,18 @@ LABEL_22:
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 handle];
-        v16 = [v15 isCanonicallyEqualToHandle:v8 isoCountryCode:v9];
+        handle = [v14 handle];
+        v16 = [handle isCanonicallyEqualToHandle:handleCopy isoCountryCode:codeCopy];
 
         if (v16)
         {
-          v11 = [v14 label];
+          label = [v14 label];
           goto LABEL_11;
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
-      if (v11)
+      label = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      if (label)
       {
         continue;
       }
@@ -778,14 +778,14 @@ LABEL_11:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return label;
 }
 
-- (id)labeledHandlesForContactWithIdentifier:(id)a3
+- (id)labeledHandlesForContactWithIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695E0F0];
-  v5 = [(TUContactsDataProvider *)self contactWithIdentifier:a3 keysToFetch:MEMORY[0x1E695E0F0]];
+  v5 = [(TUContactsDataProvider *)self contactWithIdentifier:identifier keysToFetch:MEMORY[0x1E695E0F0]];
   v6 = v5;
   if (v5)
   {
@@ -799,16 +799,16 @@ LABEL_11:
   return v4;
 }
 
-- (id)labeledHandlesForContacts:(id)a3
+- (id)labeledHandlesForContacts:(id)contacts
 {
   v59 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  contactsCopy = contacts;
+  array = [MEMORY[0x1E695DF70] array];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v3;
+  obj = contactsCopy;
   v41 = [obj countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v41)
   {
@@ -830,8 +830,8 @@ LABEL_11:
         v51 = 0u;
         v42 = v6;
         v43 = v5;
-        v7 = [v6 phoneNumbers];
-        v8 = [v7 countByEnumeratingWithState:&v48 objects:v57 count:16];
+        phoneNumbers = [v6 phoneNumbers];
+        v8 = [phoneNumbers countByEnumeratingWithState:&v48 objects:v57 count:16];
         if (v8)
         {
           v9 = v8;
@@ -842,25 +842,25 @@ LABEL_11:
             {
               if (*v49 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(phoneNumbers);
               }
 
               v12 = *(*(&v48 + 1) + 8 * i);
               v13 = [TUHandle alloc];
-              v14 = [v12 value];
-              v15 = [v14 unformattedInternationalStringValue];
-              v16 = [(TUHandle *)v13 initWithType:2 value:v15];
+              value = [v12 value];
+              unformattedInternationalStringValue = [value unformattedInternationalStringValue];
+              v16 = [(TUHandle *)v13 initWithType:2 value:unformattedInternationalStringValue];
 
               v17 = [TULabeledHandle alloc];
               v18 = MEMORY[0x1E695CEE0];
-              v19 = [v12 label];
-              v20 = [v18 localizedStringForLabel:v19];
+              label = [v12 label];
+              v20 = [v18 localizedStringForLabel:label];
               v21 = -[TULabeledHandle initWithHandle:label:isSuggested:](v17, "initWithHandle:label:isSuggested:", v16, v20, [v12 tuIsSuggested]);
 
-              [v4 addObject:v21];
+              [array addObject:v21];
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v48 objects:v57 count:16];
+            v9 = [phoneNumbers countByEnumeratingWithState:&v48 objects:v57 count:16];
           }
 
           while (v9);
@@ -870,8 +870,8 @@ LABEL_11:
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v22 = [v42 emailAddresses];
-        v23 = [v22 countByEnumeratingWithState:&v44 objects:v56 count:16];
+        emailAddresses = [v42 emailAddresses];
+        v23 = [emailAddresses countByEnumeratingWithState:&v44 objects:v56 count:16];
         if (v23)
         {
           v24 = v23;
@@ -882,24 +882,24 @@ LABEL_11:
             {
               if (*v45 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(emailAddresses);
               }
 
               v27 = *(*(&v44 + 1) + 8 * j);
               v28 = [TUHandle alloc];
-              v29 = [v27 value];
-              v30 = [(TUHandle *)v28 initWithType:3 value:v29];
+              value2 = [v27 value];
+              v30 = [(TUHandle *)v28 initWithType:3 value:value2];
 
               v31 = [TULabeledHandle alloc];
               v32 = MEMORY[0x1E695CEE0];
-              v33 = [v27 label];
-              v34 = [v32 localizedStringForLabel:v33];
+              label2 = [v27 label];
+              v34 = [v32 localizedStringForLabel:label2];
               v35 = -[TULabeledHandle initWithHandle:label:isSuggested:](v31, "initWithHandle:label:isSuggested:", v30, v34, [v27 tuIsSuggested]);
 
-              [v4 addObject:v35];
+              [array addObject:v35];
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v44 objects:v56 count:16];
+            v24 = [emailAddresses countByEnumeratingWithState:&v44 objects:v56 count:16];
           }
 
           while (v24);
@@ -915,51 +915,51 @@ LABEL_11:
     while (v41);
   }
 
-  v36 = [v4 copy];
+  v36 = [array copy];
   v37 = *MEMORY[0x1E69E9840];
 
   return v36;
 }
 
-- (id)contactWithIdentifier:(id)a3 keysToFetch:(id)a4
+- (id)contactWithIdentifier:(id)identifier keysToFetch:(id)fetch
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUContactsDataProvider *)self contactsDataSource];
-  v9 = [objc_opt_class() keysByCombiningDefaultKeysWithKeysToFetch:v7];
+  identifierCopy = identifier;
+  fetchCopy = fetch;
+  contactsDataSource = [(TUContactsDataProvider *)self contactsDataSource];
+  v9 = [objc_opt_class() keysByCombiningDefaultKeysWithKeysToFetch:fetchCopy];
 
   v16 = 0;
-  v10 = [v8 unifiedContactWithIdentifier:v6 keysToFetch:v9 error:&v16];
+  v10 = [contactsDataSource unifiedContactWithIdentifier:identifierCopy keysToFetch:v9 error:&v16];
   v11 = v16;
 
   if (v10)
   {
-    v12 = TUDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    domain = TUDefaultLog();
+    if (os_log_type_enabled(domain, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v18 = v10;
       v19 = 2112;
-      v20 = v6;
-      _os_log_impl(&dword_1956FD000, v12, OS_LOG_TYPE_DEFAULT, "Found contact: %@ for contactIdentifier %@: ", buf, 0x16u);
+      v20 = identifierCopy;
+      _os_log_impl(&dword_1956FD000, domain, OS_LOG_TYPE_DEFAULT, "Found contact: %@ for contactIdentifier %@: ", buf, 0x16u);
     }
   }
 
   else
   {
-    v12 = [v11 domain];
-    if ([v12 isEqualToString:*MEMORY[0x1E695C448]])
+    domain = [v11 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E695C448]])
     {
-      v13 = [v11 code];
+      code = [v11 code];
 
-      if (v13 == 200)
+      if (code == 200)
       {
         goto LABEL_9;
       }
 
-      v12 = TUDefaultLog();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      domain = TUDefaultLog();
+      if (os_log_type_enabled(domain, OS_LOG_TYPE_ERROR))
       {
         [TUContactsDataProvider contactWithIdentifier:keysToFetch:];
       }
@@ -972,21 +972,21 @@ LABEL_9:
   return v10;
 }
 
-- (id)unifiedContactsForFetchRequest:(id)a3
+- (id)unifiedContactsForFetchRequest:(id)request
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v22 = [MEMORY[0x1E695DF70] array];
+  requestCopy = request;
+  array = [MEMORY[0x1E695DF70] array];
   v5 = objc_opt_class();
-  v6 = [v4 auxiliaryKeysToFetch];
-  v23 = [v5 keysByCombiningDefaultKeysWithKeysToFetch:v6];
+  auxiliaryKeysToFetch = [requestCopy auxiliaryKeysToFetch];
+  v23 = [v5 keysByCombiningDefaultKeysWithKeysToFetch:auxiliaryKeysToFetch];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v4 handles];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  handles = [requestCopy handles];
+  v8 = [handles countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v8)
   {
     v10 = v8;
@@ -999,11 +999,11 @@ LABEL_9:
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(handles);
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        if ([(TUContactsDataProvider *)self shouldIgnoreHandle:v13 withFetchRequest:v4, v21])
+        if ([(TUContactsDataProvider *)self shouldIgnoreHandle:v13 withFetchRequest:requestCopy, v21])
         {
           v14 = TUDefaultLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1016,13 +1016,13 @@ LABEL_9:
 
         else
         {
-          v14 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:v13 fetchRequest:v4];
-          v15 = [(TUContactsDataProvider *)self prefixHintForFetchRequest:v4];
+          v14 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:v13 fetchRequest:requestCopy];
+          v15 = [(TUContactsDataProvider *)self prefixHintForFetchRequest:requestCopy];
           v16 = [(TUContactsDataProvider *)self contactsForHandle:v13 countryCode:v14 keysToFetch:v23 prefixHint:v15];
 
           if (v16)
           {
-            [v22 addObjectsFromArray:v16];
+            [array addObjectsFromArray:v16];
           }
 
           else
@@ -1040,37 +1040,37 @@ LABEL_9:
         }
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v10 = [handles countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v10);
   }
 
-  v18 = [v22 copy];
+  v18 = [array copy];
   v19 = *MEMORY[0x1E69E9840];
 
   return v18;
 }
 
-- (id)contactsForHandle:(id)a3 countryCode:(id)a4 keysToFetch:(id)a5 prefixHint:(id)a6
+- (id)contactsForHandle:(id)handle countryCode:(id)code keysToFetch:(id)fetch prefixHint:(id)hint
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 type];
-  switch(v14)
+  handleCopy = handle;
+  codeCopy = code;
+  fetchCopy = fetch;
+  hintCopy = hint;
+  type = [handleCopy type];
+  switch(type)
   {
     case 1:
       v24 = objc_alloc(MEMORY[0x1E695CFA0]);
-      v25 = [v10 value];
-      v15 = [v24 initWithUrlString:0 username:v25 userIdentifier:0 service:0];
+      value = [handleCopy value];
+      contactsDataSource2 = [v24 initWithUrlString:0 username:value userIdentifier:0 service:0];
 
-      v17 = [(TUContactsDataProvider *)self contactsDataSource];
-      v18 = [MEMORY[0x1E695CD58] predicateForContactsMatchingSocialProfile:v15];
-      v26 = [objc_opt_class() defaultContactKeyDescriptors];
+      contactsDataSource = [(TUContactsDataProvider *)self contactsDataSource];
+      v18 = [MEMORY[0x1E695CD58] predicateForContactsMatchingSocialProfile:contactsDataSource2];
+      defaultContactKeyDescriptors = [objc_opt_class() defaultContactKeyDescriptors];
       v29 = 0;
-      v19 = [v17 unifiedContactsMatchingPredicate:v18 keysToFetch:v26 error:&v29];
+      v19 = [contactsDataSource unifiedContactsMatchingPredicate:v18 keysToFetch:defaultContactKeyDescriptors error:&v29];
       v23 = v29;
 
 LABEL_8:
@@ -1082,22 +1082,22 @@ LABEL_8:
       goto LABEL_11;
     case 2:
       v21 = MEMORY[0x1E695CF50];
-      v22 = [v10 value];
-      v15 = [v21 phoneNumberWithDigits:v22 countryCode:v11];
+      value2 = [handleCopy value];
+      contactsDataSource2 = [v21 phoneNumberWithDigits:value2 countryCode:codeCopy];
 
-      v17 = [(TUContactsDataProvider *)self contactsDataSource];
-      v18 = [MEMORY[0x1E695CD58] predicateForContactsMatchingPhoneNumber:v15 prefixHint:v13];
+      contactsDataSource = [(TUContactsDataProvider *)self contactsDataSource];
+      v18 = [MEMORY[0x1E695CD58] predicateForContactsMatchingPhoneNumber:contactsDataSource2 prefixHint:hintCopy];
       v30 = 0;
-      v19 = [v17 unifiedContactsMatchingPredicate:v18 keysToFetch:v12 error:&v30];
+      v19 = [contactsDataSource unifiedContactsMatchingPredicate:v18 keysToFetch:fetchCopy error:&v30];
       v20 = v30;
       goto LABEL_6;
     case 3:
-      v15 = [(TUContactsDataProvider *)self contactsDataSource];
+      contactsDataSource2 = [(TUContactsDataProvider *)self contactsDataSource];
       v16 = MEMORY[0x1E695CD58];
-      v17 = [v10 value];
-      v18 = [v16 predicateForContactsMatchingEmailAddress:v17];
+      contactsDataSource = [handleCopy value];
+      v18 = [v16 predicateForContactsMatchingEmailAddress:contactsDataSource];
       v31 = 0;
-      v19 = [v15 unifiedContactsMatchingPredicate:v18 keysToFetch:v12 error:&v31];
+      v19 = [contactsDataSource2 unifiedContactsMatchingPredicate:v18 keysToFetch:fetchCopy error:&v31];
       v20 = v31;
 LABEL_6:
       v23 = v20;
@@ -1118,50 +1118,50 @@ LABEL_14:
   return v19;
 }
 
-- (id)nameForContact:(id)a3
+- (id)nameForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   if ([(TUContactsDataProvider *)self shouldUseGivenName])
   {
-    [v4 givenName];
+    [contactCopy givenName];
   }
 
   else
   {
-    [MEMORY[0x1E695CD80] stringFromContact:v4 style:0];
+    [MEMORY[0x1E695CD80] stringFromContact:contactCopy style:0];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)localizedCompositeNameForContact:(id)a3 secondContact:(id)a4
+- (id)localizedCompositeNameForContact:(id)contact secondContact:(id)secondContact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 givenName];
-  if (!v8)
+  contactCopy = contact;
+  secondContactCopy = secondContact;
+  givenName = [contactCopy givenName];
+  if (!givenName)
   {
     goto LABEL_12;
   }
 
-  v9 = v8;
-  v10 = [v6 familyName];
-  if (!v10)
+  v9 = givenName;
+  familyName = [contactCopy familyName];
+  if (!familyName)
   {
     goto LABEL_11;
   }
 
-  v11 = v10;
-  v12 = [v7 givenName];
-  if (!v12)
+  v11 = familyName;
+  givenName2 = [secondContactCopy givenName];
+  if (!givenName2)
   {
 LABEL_10:
 
 LABEL_11:
 LABEL_12:
-    v23 = [(TUContactsDataProvider *)self nameForContact:v6];
-    v28 = [(TUContactsDataProvider *)self nameForContact:v7];
+    v23 = [(TUContactsDataProvider *)self nameForContact:contactCopy];
+    v28 = [(TUContactsDataProvider *)self nameForContact:secondContactCopy];
     v24 = v28;
     if (!v23 || !v28)
     {
@@ -1180,60 +1180,60 @@ LABEL_12:
     }
 
     v29 = MEMORY[0x1E696AEC0];
-    v25 = TUBundle();
-    v26 = [v25 localizedStringForKey:@"%@_OR_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-    v27 = [v29 stringWithFormat:v26, v23, v24];
+    familyName5 = TUBundle();
+    givenName5 = [familyName5 localizedStringForKey:@"%@_OR_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
+    v27 = [v29 stringWithFormat:givenName5, v23, v24];
     goto LABEL_15;
   }
 
-  v13 = v12;
-  v14 = [v7 familyName];
-  if (!v14)
+  v13 = givenName2;
+  familyName2 = [secondContactCopy familyName];
+  if (!familyName2)
   {
 
     goto LABEL_10;
   }
 
-  v15 = v14;
-  v16 = [v7 familyName];
-  v17 = [v6 familyName];
-  v18 = [v16 localizedCaseInsensitiveCompare:v17];
+  v15 = familyName2;
+  familyName3 = [secondContactCopy familyName];
+  familyName4 = [contactCopy familyName];
+  v18 = [familyName3 localizedCaseInsensitiveCompare:familyName4];
 
   if (v18)
   {
     goto LABEL_12;
   }
 
-  v19 = [v7 givenName];
-  v20 = [v6 givenName];
-  v21 = [v19 localizedCaseInsensitiveCompare:v20];
+  givenName3 = [secondContactCopy givenName];
+  givenName4 = [contactCopy givenName];
+  v21 = [givenName3 localizedCaseInsensitiveCompare:givenName4];
 
   if (v21)
   {
     if (![(TUContactsDataProvider *)self shouldUseGivenName])
     {
-      v33 = [(TUContactsDataProvider *)self shouldUseFamilyNameFirst];
+      shouldUseFamilyNameFirst = [(TUContactsDataProvider *)self shouldUseFamilyNameFirst];
       v34 = MEMORY[0x1E696AEC0];
-      if (v33)
+      if (shouldUseFamilyNameFirst)
       {
         v35 = objc_alloc(MEMORY[0x1E696AEC0]);
         v23 = TUBundle();
         v24 = [v23 localizedStringForKey:@"%@_%@_OR_%@_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-        v25 = [v7 familyName];
-        v26 = [v6 givenName];
-        v36 = [v7 familyName];
-        v37 = [v7 givenName];
-        v30 = [v35 initWithFormat:v24, v25, v26, v36, v37];
+        familyName5 = [secondContactCopy familyName];
+        givenName5 = [contactCopy givenName];
+        familyName6 = [secondContactCopy familyName];
+        givenName6 = [secondContactCopy givenName];
+        v30 = [v35 initWithFormat:v24, familyName5, givenName5, familyName6, givenName6];
       }
 
       else
       {
         v23 = TUBundle();
         v24 = [v23 localizedStringForKey:@"%@_OR_%@_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-        v25 = [v6 givenName];
-        v26 = [v7 givenName];
-        v36 = [v7 familyName];
-        v30 = [v34 stringWithFormat:v24, v25, v26, v36];
+        familyName5 = [contactCopy givenName];
+        givenName5 = [secondContactCopy givenName];
+        familyName6 = [secondContactCopy familyName];
+        v30 = [v34 stringWithFormat:v24, familyName5, givenName5, familyName6];
       }
 
       goto LABEL_16;
@@ -1242,9 +1242,9 @@ LABEL_12:
     v22 = objc_alloc(MEMORY[0x1E696AEC0]);
     v23 = TUBundle();
     v24 = [v23 localizedStringForKey:@"%@_OR_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-    v25 = [v6 givenName];
-    v26 = [v7 givenName];
-    v27 = [v22 initWithFormat:v24, v25, v26];
+    familyName5 = [contactCopy givenName];
+    givenName5 = [secondContactCopy givenName];
+    v27 = [v22 initWithFormat:v24, familyName5, givenName5];
 LABEL_15:
     v30 = v27;
 LABEL_16:
@@ -1253,37 +1253,37 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v30 = [(TUContactsDataProvider *)self nameForContact:v6];
+  v30 = [(TUContactsDataProvider *)self nameForContact:contactCopy];
 LABEL_22:
 
   return v30;
 }
 
-- (id)compositeNameForContacts:(id)a3
+- (id)compositeNameForContacts:(id)contacts
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  if ([v4 count] == 1)
+  contactsCopy = contacts;
+  firstObject = [contactsCopy firstObject];
+  if ([contactsCopy count] == 1)
   {
-    v6 = [(TUContactsDataProvider *)self nameForContact:v5];
+    v6 = [(TUContactsDataProvider *)self nameForContact:firstObject];
   }
 
-  else if ([v4 count] == 2)
+  else if ([contactsCopy count] == 2)
   {
-    v7 = [v4 objectAtIndexedSubscript:1];
-    v6 = [(TUContactsDataProvider *)self localizedCompositeNameForContact:v5 secondContact:v7];
+    v7 = [contactsCopy objectAtIndexedSubscript:1];
+    v6 = [(TUContactsDataProvider *)self localizedCompositeNameForContact:firstObject secondContact:v7];
   }
 
   else
   {
-    if ([v4 count] >= 3)
+    if ([contactsCopy count] >= 3)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v8 = v4;
+      v8 = contactsCopy;
       v9 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v9)
       {
@@ -1306,9 +1306,9 @@ LABEL_22:
               v15 = MEMORY[0x1E696AEC0];
               v16 = TUBundle();
               v17 = [v16 localizedStringForKey:@"%@_OR_%@_OTHERS" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-              v18 = [objc_opt_class() numberFormatter];
+              numberFormatter = [objc_opt_class() numberFormatter];
               v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "count") - 1}];
-              v20 = [v18 stringFromNumber:v19];
+              v20 = [numberFormatter stringFromNumber:v19];
               v6 = [v15 stringWithFormat:v17, v14, v20, v24];
 
               goto LABEL_17;
@@ -1336,7 +1336,7 @@ LABEL_17:
     *buf = 138412546;
     v29 = v6;
     v30 = 2112;
-    v31 = v4;
+    v31 = contactsCopy;
     _os_log_impl(&dword_1956FD000, v21, OS_LOG_TYPE_DEFAULT, "Determined compositeName: %@ for contacts: %@", buf, 0x16u);
   }
 
@@ -1345,50 +1345,50 @@ LABEL_17:
   return v6;
 }
 
-- (id)compositeNameForFetchRequest:(id)a3
+- (id)compositeNameForFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 handles];
-  if ([v5 count] == 1)
+  requestCopy = request;
+  handles = [requestCopy handles];
+  if ([handles count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:v6 fetchRequest:v4];
-    v8 = [v5 firstObject];
-    v9 = [(TUContactsDataProvider *)self formattedNameForHandle:v8 countryCode:v7];
+    firstObject = [handles firstObject];
+    v7 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:firstObject fetchRequest:requestCopy];
+    firstObject2 = [handles firstObject];
+    v9 = [(TUContactsDataProvider *)self formattedNameForHandle:firstObject2 countryCode:v7];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if ([v5 count] == 2)
+  if ([handles count] == 2)
   {
-    v6 = [v5 firstObject];
-    v7 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:v6 fetchRequest:v4];
-    v10 = [v4 handles];
-    v8 = [v10 lastObject];
+    firstObject = [handles firstObject];
+    v7 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:firstObject fetchRequest:requestCopy];
+    handles2 = [requestCopy handles];
+    firstObject2 = [handles2 lastObject];
 
-    v20 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:v8 fetchRequest:v4];
+    v20 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:firstObject2 fetchRequest:requestCopy];
     v22 = MEMORY[0x1E696AEC0];
     v11 = TUBundle();
     v12 = [v11 localizedStringForKey:@"%@_AND_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-    v13 = [(TUContactsDataProvider *)self formattedNameForHandle:v6 countryCode:v7];
-    v14 = [(TUContactsDataProvider *)self formattedNameForHandle:v8 countryCode:v20];
+    v13 = [(TUContactsDataProvider *)self formattedNameForHandle:firstObject countryCode:v7];
+    v14 = [(TUContactsDataProvider *)self formattedNameForHandle:firstObject2 countryCode:v20];
     v9 = [v22 stringWithFormat:v12, v13, v14];
 
     goto LABEL_7;
   }
 
-  if ([v5 count] >= 3)
+  if ([handles count] >= 3)
   {
-    v6 = [v5 firstObject];
-    v7 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:v6 fetchRequest:v4];
+    firstObject = [handles firstObject];
+    v7 = [(TUContactsDataProvider *)self ISOCountryCodeForHandle:firstObject fetchRequest:requestCopy];
     v23 = MEMORY[0x1E696AEC0];
-    v8 = TUBundle();
-    v21 = [v8 localizedStringForKey:@"%@_AND_%@_OTHERS" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-    v19 = [(TUContactsDataProvider *)self formattedNameForHandle:v6 countryCode:v7];
-    v15 = [objc_opt_class() numberFormatter];
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "count") - 1}];
-    v17 = [v15 stringFromNumber:v16];
+    firstObject2 = TUBundle();
+    v21 = [firstObject2 localizedStringForKey:@"%@_AND_%@_OTHERS" value:&stru_1F098C218 table:@"TelephonyUtilities"];
+    v19 = [(TUContactsDataProvider *)self formattedNameForHandle:firstObject countryCode:v7];
+    numberFormatter = [objc_opt_class() numberFormatter];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(handles, "count") - 1}];
+    v17 = [numberFormatter stringFromNumber:v16];
     v9 = [v23 stringWithFormat:v21, v19, v17];
 
     goto LABEL_7;
@@ -1400,34 +1400,34 @@ LABEL_8:
   return v9;
 }
 
-- (id)formattedNameForHandle:(id)a3 countryCode:(id)a4
+- (id)formattedNameForHandle:(id)handle countryCode:(id)code
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 value];
-  if (![v7 length])
+  handleCopy = handle;
+  codeCopy = code;
+  value = [handleCopy value];
+  if (![value length])
   {
-    v8 = [v5 normalizedValue];
+    normalizedValue = [handleCopy normalizedValue];
 
-    v7 = v8;
+    value = normalizedValue;
   }
 
-  v9 = [v5 type];
+  type = [handleCopy type];
   v10 = TUDefaultLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9 == 2)
+  if (type == 2)
   {
     if (v11)
     {
       v16 = 138412546;
-      v17 = v7;
+      v17 = value;
       v18 = 2112;
-      v19 = v6;
+      v19 = codeCopy;
       _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "     - we'll format the destinationID '%@' with the country code '%@'", &v16, 0x16u);
     }
 
-    v12 = TUFormattedPhoneNumber(v7, v6);
+    v12 = TUFormattedPhoneNumber(value, codeCopy);
   }
 
   else
@@ -1435,11 +1435,11 @@ LABEL_8:
     if (v11)
     {
       v16 = 138412290;
-      v17 = v7;
+      v17 = value;
       _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "     - handle can't/shouldn't be formatted as a phone number, so using the unmodified destination ID '%@'", &v16, 0xCu);
     }
 
-    v12 = v7;
+    v12 = value;
   }
 
   v13 = v12;
@@ -1449,14 +1449,14 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)shouldIgnoreHandle:(id)a3 withFetchRequest:(id)a4
+- (BOOL)shouldIgnoreHandle:(id)handle withFetchRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isIncoming] && (objc_msgSend(v7, "isVerified") & 1) == 0)
+  handleCopy = handle;
+  requestCopy = request;
+  if ([requestCopy isIncoming] && (objc_msgSend(requestCopy, "isVerified") & 1) == 0)
   {
-    v9 = [(TUContactsDataProvider *)self appleCareHandles];
-    v8 = [v9 contains:v6];
+    appleCareHandles = [(TUContactsDataProvider *)self appleCareHandles];
+    v8 = [appleCareHandles contains:handleCopy];
   }
 
   else
@@ -1470,11 +1470,11 @@ LABEL_8:
 - (id)getDeviceSetupDate
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(TUContactsDataProvider *)self deviceSetupDate];
+  deviceSetupDate = [(TUContactsDataProvider *)self deviceSetupDate];
 
-  if (v3)
+  if (deviceSetupDate)
   {
-    v4 = [(TUContactsDataProvider *)self deviceSetupDate];
+    deviceSetupDate2 = [(TUContactsDataProvider *)self deviceSetupDate];
     goto LABEL_12;
   }
 
@@ -1496,27 +1496,27 @@ LABEL_8:
 
   v6 = v5;
   _Block_object_dispose(&v12, 8);
-  v7 = [v5 current];
-  v8 = [v7 date];
+  current = [v5 current];
+  date = [current date];
 
   v9 = TUDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = date;
     _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "BYSetupUserDisposition: %@", &buf, 0xCu);
   }
 
-  if (v8)
+  if (date)
   {
-    v4 = v8;
+    deviceSetupDate2 = date;
 LABEL_10:
-    [(TUContactsDataProvider *)self setDeviceSetupDate:v4];
+    [(TUContactsDataProvider *)self setDeviceSetupDate:deviceSetupDate2];
     goto LABEL_11;
   }
 
-  v4 = CFPreferencesCopyValue(@"SetupLastExit", @"com.apple.purplebuddy", @"mobile", *MEMORY[0x1E695E898]);
-  if (v4)
+  deviceSetupDate2 = CFPreferencesCopyValue(@"SetupLastExit", @"com.apple.purplebuddy", @"mobile", *MEMORY[0x1E695E898]);
+  if (deviceSetupDate2)
   {
     goto LABEL_10;
   }
@@ -1526,13 +1526,13 @@ LABEL_11:
 LABEL_12:
   v10 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return deviceSetupDate2;
 }
 
-- (BOOL)isHandleEligibleForScreenSharingRequests:(id)a3
+- (BOOL)isHandleEligibleForScreenSharingRequests:(id)requests
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestsCopy = requests;
   if (_TUIsInternalInstall() && (-[TUContactsDataProvider userDefaults](self, "userDefaults"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 BOOLForKey:@"ignoreContactCreationDateKey"], v5, v6))
   {
     v7 = TUDefaultLog();
@@ -1547,59 +1547,59 @@ LABEL_12:
 
   else
   {
-    v7 = [[TUContactsDataProviderFetchRequest alloc] initWithHandle:v4];
+    v7 = [[TUContactsDataProviderFetchRequest alloc] initWithHandle:requestsCopy];
     [(TUContactsDataProviderFetchRequest *)v7 setAuxiliaryKeysToFetch:&unk_1F09C6358];
     v9 = [(TUContactsDataProvider *)self executeFetchRequest:v7];
     v10 = TUDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v9 contacts];
+      contacts = [v9 contacts];
       *buf = 138412290;
-      v47 = v11;
+      v47 = contacts;
       _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Found contacts %@", buf, 0xCu);
     }
 
-    v12 = [v9 contacts];
-    v13 = [v12 count];
+    contacts2 = [v9 contacts];
+    v13 = [contacts2 count];
 
     if (v13)
     {
-      v14 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v15 = objc_alloc_init(MEMORY[0x1E695DF10]);
       [v15 setDay:-1];
-      v16 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v17 = [v16 dateByAddingComponents:v15 toDate:v14 options:0];
-      v18 = [(TUContactsDataProvider *)self getDeviceSetupDate];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v17 = [currentCalendar dateByAddingComponents:v15 toDate:date options:0];
+      getDeviceSetupDate = [(TUContactsDataProvider *)self getDeviceSetupDate];
       v19 = TUDefaultLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v47 = v18;
+        v47 = getDeviceSetupDate;
         _os_log_impl(&dword_1956FD000, v19, OS_LOG_TYPE_DEFAULT, "Got device setup date %@", buf, 0xCu);
       }
 
-      if (v18 && [v18 compare:v17] == 1)
+      if (getDeviceSetupDate && [getDeviceSetupDate compare:v17] == 1)
       {
         v8 = 1;
       }
 
       else
       {
-        v37 = v16;
+        v37 = currentCalendar;
         v38 = v15;
-        v39 = v14;
-        v41 = v4;
+        v39 = date;
+        v41 = requestsCopy;
         v20 = MEMORY[0x1E695DF70];
-        v21 = [v9 contacts];
-        v22 = [v20 arrayWithCapacity:{objc_msgSend(v21, "count")}];
+        contacts3 = [v9 contacts];
+        v22 = [v20 arrayWithCapacity:{objc_msgSend(contacts3, "count")}];
 
         v44 = 0u;
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
         v40 = v9;
-        v23 = [v9 contacts];
-        v24 = [v23 countByEnumeratingWithState:&v42 objects:v50 count:16];
+        contacts4 = [v9 contacts];
+        v24 = [contacts4 countByEnumeratingWithState:&v42 objects:v50 count:16];
         if (v24)
         {
           v25 = v24;
@@ -1610,26 +1610,26 @@ LABEL_12:
             {
               if (*v43 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(contacts4);
               }
 
               v28 = *(*(&v42 + 1) + 8 * i);
-              v29 = [v28 creationDate];
-              [v22 addObject:v29];
+              creationDate = [v28 creationDate];
+              [v22 addObject:creationDate];
 
-              v30 = [v28 creationDate];
-              v31 = [v30 compare:v17];
+              creationDate2 = [v28 creationDate];
+              v31 = [creationDate2 compare:v17];
 
               if (v31 == -1)
               {
                 v32 = TUDefaultLog();
                 if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
                 {
-                  v33 = [v28 creationDate];
+                  creationDate3 = [v28 creationDate];
                   *buf = 138412546;
                   v47 = v28;
                   v48 = 2112;
-                  v49 = v33;
+                  v49 = creationDate3;
                   _os_log_impl(&dword_1956FD000, v32, OS_LOG_TYPE_DEFAULT, "Found contact %@ with creation date %@", buf, 0x16u);
                 }
 
@@ -1638,7 +1638,7 @@ LABEL_12:
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v42 objects:v50 count:16];
+            v25 = [contacts4 countByEnumeratingWithState:&v42 objects:v50 count:16];
             if (v25)
             {
               continue;
@@ -1648,23 +1648,23 @@ LABEL_12:
           }
         }
 
-        v23 = TUDefaultLog();
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+        contacts4 = TUDefaultLog();
+        if (os_log_type_enabled(contacts4, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
           v47 = v22;
-          _os_log_impl(&dword_1956FD000, v23, OS_LOG_TYPE_DEFAULT, "No contact had a creation date > 24 hours ago. Creation dates: %@", buf, 0xCu);
+          _os_log_impl(&dword_1956FD000, contacts4, OS_LOG_TYPE_DEFAULT, "No contact had a creation date > 24 hours ago. Creation dates: %@", buf, 0xCu);
         }
 
         v8 = 0;
 LABEL_29:
         v9 = v40;
-        v4 = v41;
+        requestsCopy = v41;
         v15 = v38;
-        v14 = v39;
-        v18 = v36;
+        date = v39;
+        getDeviceSetupDate = v36;
 
-        v16 = v37;
+        currentCalendar = v37;
       }
     }
 
@@ -1678,12 +1678,12 @@ LABEL_29:
   return v8;
 }
 
-- (int)personIDForContact:(id)a3
+- (int)personIDForContact:(id)contact
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUContactsDataProvider *)self contactsDataSource];
-  v6 = [v5 personFromContact:v4];
+  contactCopy = contact;
+  contactsDataSource = [(TUContactsDataProvider *)self contactsDataSource];
+  v6 = [contactsDataSource personFromContact:contactCopy];
 
   if (v6)
   {
@@ -1696,7 +1696,7 @@ LABEL_29:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = contactCopy;
       _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "[WARN] Could not look up legacy ABPerson for contact: %@", &v11, 0xCu);
     }
 
@@ -1707,24 +1707,24 @@ LABEL_29:
   return RecordID;
 }
 
-+ (id)keysByCombiningDefaultKeysWithKeysToFetch:(id)a3
++ (id)keysByCombiningDefaultKeysWithKeysToFetch:(id)fetch
 {
-  v3 = a3;
-  if ([v3 count])
+  fetchCopy = fetch;
+  if ([fetchCopy count])
   {
     v4 = MEMORY[0x1E695DFD8];
-    v5 = [objc_opt_class() defaultContactKeyDescriptors];
-    v6 = [v5 arrayByAddingObjectsFromArray:v3];
+    defaultContactKeyDescriptors = [objc_opt_class() defaultContactKeyDescriptors];
+    v6 = [defaultContactKeyDescriptors arrayByAddingObjectsFromArray:fetchCopy];
     v7 = [v4 setWithArray:v6];
-    v8 = [v7 allObjects];
+    allObjects = [v7 allObjects];
   }
 
   else
   {
-    v8 = [objc_opt_class() defaultContactKeyDescriptors];
+    allObjects = [objc_opt_class() defaultContactKeyDescriptors];
   }
 
-  return v8;
+  return allObjects;
 }
 
 + (id)numberFormatter
@@ -1767,21 +1767,21 @@ void __54__TUContactsDataProvider_defaultContactKeyDescriptors__block_invoke()
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)prefixHintForFetchRequest:(id)a3
+- (id)prefixHintForFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TUContactsDataProvider *)self localeSupportsPrefixHintForFetchRequest];
-  if ((v5)[2](v5, v4))
+  requestCopy = request;
+  localeSupportsPrefixHintForFetchRequest = [(TUContactsDataProvider *)self localeSupportsPrefixHintForFetchRequest];
+  if ((localeSupportsPrefixHintForFetchRequest)[2](localeSupportsPrefixHintForFetchRequest, requestCopy))
   {
-    v6 = [v4 phoneNumberPrefixHint];
+    phoneNumberPrefixHint = [requestCopy phoneNumberPrefixHint];
   }
 
   else
   {
-    v6 = 0;
+    phoneNumberPrefixHint = 0;
   }
 
-  return v6;
+  return phoneNumberPrefixHint;
 }
 
 + (id)unsupportedLocalesForPrefixHint
@@ -1810,22 +1810,22 @@ uint64_t __59__TUContactsDataProvider_familyNameFirstLocaleCountryCodes__block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)ISOCountryCodeForHandle:(id)a3 fetchRequest:(id)a4
+- (id)ISOCountryCodeForHandle:(id)handle fetchRequest:(id)request
 {
-  v5 = a4;
-  v6 = [a3 isoCountryCode];
-  if (![v6 length])
+  requestCopy = request;
+  isoCountryCode = [handle isoCountryCode];
+  if (![isoCountryCode length])
   {
-    v7 = [v5 isoCountryCode];
+    isoCountryCode2 = [requestCopy isoCountryCode];
 
-    if ([v7 length])
+    if ([isoCountryCode2 length])
     {
-      v6 = v7;
+      isoCountryCode = isoCountryCode2;
     }
 
     else
     {
-      if ([v5 useNetworkCountryCode])
+      if ([requestCopy useNetworkCountryCode])
       {
         v8 = TUNetworkCountryCode();
         v9 = v8;
@@ -1839,18 +1839,18 @@ uint64_t __59__TUContactsDataProvider_familyNameFirstLocaleCountryCodes__block_i
           v10 = TUHomeCountryCode();
         }
 
-        v6 = v10;
+        isoCountryCode = v10;
       }
 
       else
       {
-        v6 = TUHomeCountryCode();
-        v9 = v7;
+        isoCountryCode = TUHomeCountryCode();
+        v9 = isoCountryCode2;
       }
     }
   }
 
-  return v6;
+  return isoCountryCode;
 }
 
 - (void)initWithContactsDataSource:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

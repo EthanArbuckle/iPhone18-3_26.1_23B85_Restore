@@ -1,65 +1,65 @@
 @interface MOEventBundleManager
 + (id)dateFormatterForKeyword;
-+ (id)getStringValueInDictionary:(id)a3 withKey:(id)a4;
-- (BOOL)isDataDumpEnabledForTrigger:(unint64_t)a3;
++ (id)getStringValueInDictionary:(id)dictionary withKey:(id)key;
+- (BOOL)isDataDumpEnabledForTrigger:(unint64_t)trigger;
 - (BOOL)persistBundlingDataWithoutRandomization;
-- (MOEventBundleManager)initWithUniverse:(id)a3;
-- (id)_concatenatedEventIdentifierForBundle:(id)a3;
-- (id)_getMetadataForTrigger:(unint64_t)a3;
-- (id)_updateIdentifiersForEventBundles:(id)a3 eventIDsToBundleIDMapping:(id)a4;
-- (id)_updateIdentifiersForEvergreenBundles:(id)a3;
-- (id)adjacentKeywordsForEventBundle:(id)a3;
-- (id)findRehydrateEvents:(id)a3 forBundle:(id)a4;
+- (MOEventBundleManager)initWithUniverse:(id)universe;
+- (id)_concatenatedEventIdentifierForBundle:(id)bundle;
+- (id)_getMetadataForTrigger:(unint64_t)trigger;
+- (id)_updateIdentifiersForEventBundles:(id)bundles eventIDsToBundleIDMapping:(id)mapping;
+- (id)_updateIdentifiersForEvergreenBundles:(id)bundles;
+- (id)adjacentKeywordsForEventBundle:(id)bundle;
+- (id)findRehydrateEvents:(id)events forBundle:(id)bundle;
 - (id)getAllowedToPromptConfiguration;
-- (id)getUnfilteredEventBundleFrom:(id)a3 with:(id)a4;
-- (id)keywordForEventBundle:(id)a3;
-- (id)matchedEventBundleForEventBundle:(id)a3 otherEventBundles:(id)a4;
-- (id)partitionedEventBundles:(id)a3;
-- (void)_annotateEventBundlesWithStartDate:(id)a3 endDate:(id)a4 allEvents:(id)a5 eventBundles:(id)a6 handler:(id)a7;
-- (void)_bundleEvents:(id)a3 startDate:(id)a4 endDate:(id)a5 submitMetricsFlg:(BOOL)a6 refreshVariant:(unint64_t)a7 handler:(id)a8;
-- (void)_bundleEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
-- (void)_cleanUpEventBundlesWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
+- (id)getUnfilteredEventBundleFrom:(id)from with:(id)with;
+- (id)keywordForEventBundle:(id)bundle;
+- (id)matchedEventBundleForEventBundle:(id)bundle otherEventBundles:(id)bundles;
+- (id)partitionedEventBundles:(id)bundles;
+- (void)_annotateEventBundlesWithStartDate:(id)date endDate:(id)endDate allEvents:(id)events eventBundles:(id)bundles handler:(id)handler;
+- (void)_bundleEvents:(id)events startDate:(id)date endDate:(id)endDate submitMetricsFlg:(BOOL)flg refreshVariant:(unint64_t)variant handler:(id)handler;
+- (void)_bundleEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)_cleanUpEventBundlesWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
 - (void)_clearEventBundles;
 - (void)_clearFSMs;
-- (void)_collectTimeCorrelatedEventsWithStartDate:(id)a3 endDate:(id)a4 events:(id)a5 submitMetricsFlg:(BOOL)a6 handler:(id)a7;
+- (void)_collectTimeCorrelatedEventsWithStartDate:(id)date endDate:(id)endDate events:(id)events submitMetricsFlg:(BOOL)flg handler:(id)handler;
 - (void)_computeEngagementScoreParams;
-- (void)_computeEvergreenScoreParams:(id)a3 withRankingParams:(id)a4;
-- (void)_computeSensedBundleEngagementScoreParams:(id)a3 withRankingParams:(id)a4;
-- (void)_expireOutdatedNotificationsWithHandler:(id)a3;
-- (void)_fetchEventBundlesWithOptions:(id)a3 CompletionHandler:(id)a4;
-- (void)_fetchEventBundlesWithPredicate:(id)a3 completionHandler:(id)a4;
-- (void)_fetchPreviousBundlesWithDateInterval:(id)a3 handler:(id)a4;
-- (void)_filterPreOnboardedVisitEvents:(id)a3 handler:(id)a4;
-- (void)_generateClusterAndAnomalyBundlesWithHandler:(id)a3;
-- (void)_generatePersonalizedReflectionBundlesWithHandler:(id)a3;
-- (void)_generateThematicSummarizationBundlesWithHandler:(id)a3;
-- (void)_processClusterBundles:(id)a3 withEmbeddings:(id)a4 onboardingStatus:(id)a5 result:(id)a6 andHandler:(id)a7;
-- (void)_rehydrateEventBundles:(id)a3 withHandler:(id)a4;
-- (void)_runAnalyticsWithOnboardingDictionary:(id)a3 andHandler:(id)a4;
-- (void)associateEventBundles:(id)a3 effectiveInterval:(id)a4;
+- (void)_computeEvergreenScoreParams:(id)params withRankingParams:(id)rankingParams;
+- (void)_computeSensedBundleEngagementScoreParams:(id)params withRankingParams:(id)rankingParams;
+- (void)_expireOutdatedNotificationsWithHandler:(id)handler;
+- (void)_fetchEventBundlesWithOptions:(id)options CompletionHandler:(id)handler;
+- (void)_fetchEventBundlesWithPredicate:(id)predicate completionHandler:(id)handler;
+- (void)_fetchPreviousBundlesWithDateInterval:(id)interval handler:(id)handler;
+- (void)_filterPreOnboardedVisitEvents:(id)events handler:(id)handler;
+- (void)_generateClusterAndAnomalyBundlesWithHandler:(id)handler;
+- (void)_generatePersonalizedReflectionBundlesWithHandler:(id)handler;
+- (void)_generateThematicSummarizationBundlesWithHandler:(id)handler;
+- (void)_processClusterBundles:(id)bundles withEmbeddings:(id)embeddings onboardingStatus:(id)status result:(id)result andHandler:(id)handler;
+- (void)_rehydrateEventBundles:(id)bundles withHandler:(id)handler;
+- (void)_runAnalyticsWithOnboardingDictionary:(id)dictionary andHandler:(id)handler;
+- (void)associateEventBundles:(id)bundles effectiveInterval:(id)interval;
 - (void)beginDataExport;
-- (void)buildLabelsForEventBundles:(id)a3;
-- (void)bundleEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
-- (void)cleanUpEventBundlesWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
-- (void)clearEventBundlesWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
-- (void)fetchAndPersistBundlesForTimeInterval:(id)a3 eventsIdsToDrop:(id)a4 withHandler:(id)a5;
-- (void)fetchAndPersistEventsForTimeInterval:(id)a3 withHandler:(id)a4;
-- (void)fetchAndSaveBundlingDataForTrigger:(unint64_t)a3 withFeedback:(id)a4 additionalMetadata:(id)a5 shouldUpload:(BOOL)a6 andHandler:(id)a7;
-- (void)fetchEventBundlesWithOptions:(id)a3 CompletionHandler:(id)a4;
-- (void)fetchEventBundlesWithPredicate:(id)a3 completionHandler:(id)a4;
-- (void)fetchRehydratedEventBundlesWithOptions:(id)a3 CompletionHandler:(id)a4;
-- (void)finalizeDataExportWithUpload:(BOOL)a3 handler:(id)a4;
-- (void)persistMetadata:(id)a3;
-- (void)persistRankingModel:(id)a3;
-- (void)saveEventBundleDictionary:(id)a3;
-- (void)saveEventBundles:(id)a3 handler:(id)a4;
-- (void)saveEventBundles:(id)a3 withStartDate:(id)a4 endDate:(id)a5 handler:(id)a6;
-- (void)submitEventBundleInternalAnalytics:(id)a3 withSubmissionDate:(id)a4 withRefreshVariant:(unint64_t)a5;
-- (void)submitMOEventData:(id)a3 startDate:(id)a4 endDate:(id)a5 subDate:(id)a6;
-- (void)submitMetricForEventBundleWithPromptMetrics:(id)a3;
-- (void)updateMetaDataForRankInEventBundles:(id)a3;
-- (void)updateMetaDataForRankforNewBundle:(id)a3 withOldBundle:(id)a4;
-- (void)updateSuggestionIDAndFirstCreationDateForNewEventBundles:(id)a3 previousEventBundles:(id)a4 updateSensitiveFlag:(BOOL)a5;
+- (void)buildLabelsForEventBundles:(id)bundles;
+- (void)bundleEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)cleanUpEventBundlesWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)clearEventBundlesWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)fetchAndPersistBundlesForTimeInterval:(id)interval eventsIdsToDrop:(id)drop withHandler:(id)handler;
+- (void)fetchAndPersistEventsForTimeInterval:(id)interval withHandler:(id)handler;
+- (void)fetchAndSaveBundlingDataForTrigger:(unint64_t)trigger withFeedback:(id)feedback additionalMetadata:(id)metadata shouldUpload:(BOOL)upload andHandler:(id)handler;
+- (void)fetchEventBundlesWithOptions:(id)options CompletionHandler:(id)handler;
+- (void)fetchEventBundlesWithPredicate:(id)predicate completionHandler:(id)handler;
+- (void)fetchRehydratedEventBundlesWithOptions:(id)options CompletionHandler:(id)handler;
+- (void)finalizeDataExportWithUpload:(BOOL)upload handler:(id)handler;
+- (void)persistMetadata:(id)metadata;
+- (void)persistRankingModel:(id)model;
+- (void)saveEventBundleDictionary:(id)dictionary;
+- (void)saveEventBundles:(id)bundles handler:(id)handler;
+- (void)saveEventBundles:(id)bundles withStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)submitEventBundleInternalAnalytics:(id)analytics withSubmissionDate:(id)date withRefreshVariant:(unint64_t)variant;
+- (void)submitMOEventData:(id)data startDate:(id)date endDate:(id)endDate subDate:(id)subDate;
+- (void)submitMetricForEventBundleWithPromptMetrics:(id)metrics;
+- (void)updateMetaDataForRankInEventBundles:(id)bundles;
+- (void)updateMetaDataForRankforNewBundle:(id)bundle withOldBundle:(id)oldBundle;
+- (void)updateSuggestionIDAndFirstCreationDateForNewEventBundles:(id)bundles previousEventBundles:(id)eventBundles updateSensitiveFlag:(BOOL)flag;
 @end
 
 @implementation MOEventBundleManager
@@ -109,12 +109,12 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
         }
 
         v8 = *(*(&v121 + 1) + 8 * i);
-        v9 = [(MOEventBundleManager *)self configurationManager];
-        v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v9 getBoolSettingForKey:v8 withFallback:0]);
+        configurationManager = [(MOEventBundleManager *)self configurationManager];
+        v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [configurationManager getBoolSettingForKey:v8 withFallback:0]);
         [v3 setObject:v10 forKey:v8];
 
-        v11 = [(MOEventBundleManager *)self defaultManager];
-        v12 = [v11 objectForKey:v8];
+        defaultManager = [(MOEventBundleManager *)self defaultManager];
+        v12 = [defaultManager objectForKey:v8];
 
         if (!v12)
         {
@@ -132,8 +132,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v14 = [MOConfigurationManager getSensedEventSettingNameFromCategory:0];
   if (v14)
   {
-    v15 = [(MOEventBundleManager *)self configurationManager];
-    v16 = [v15 isAllowedToPromptEventCategory:0];
+    configurationManager2 = [(MOEventBundleManager *)self configurationManager];
+    v16 = [configurationManager2 isAllowedToPromptEventCategory:0];
 
     v17 = [NSNumber numberWithBool:v16];
     [v13 setObject:v17 forKey:v14];
@@ -142,8 +142,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v18 = [MOConfigurationManager getSensedEventSettingNameFromCategory:1];
   if (v18)
   {
-    v19 = [(MOEventBundleManager *)self configurationManager];
-    v20 = [v19 isAllowedToPromptEventCategory:1];
+    configurationManager3 = [(MOEventBundleManager *)self configurationManager];
+    v20 = [configurationManager3 isAllowedToPromptEventCategory:1];
 
     v21 = [NSNumber numberWithBool:v20];
     [v13 setObject:v21 forKey:v18];
@@ -152,8 +152,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v22 = [MOConfigurationManager getSensedEventSettingNameFromCategory:2];
   if (v22)
   {
-    v23 = [(MOEventBundleManager *)self configurationManager];
-    v24 = [v23 isAllowedToPromptEventCategory:2];
+    configurationManager4 = [(MOEventBundleManager *)self configurationManager];
+    v24 = [configurationManager4 isAllowedToPromptEventCategory:2];
 
     v25 = [NSNumber numberWithBool:v24];
     [v13 setObject:v25 forKey:v22];
@@ -162,8 +162,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v26 = [MOConfigurationManager getSensedEventSettingNameFromCategory:3];
   if (v26)
   {
-    v27 = [(MOEventBundleManager *)self configurationManager];
-    v28 = [v27 isAllowedToPromptEventCategory:3];
+    configurationManager5 = [(MOEventBundleManager *)self configurationManager];
+    v28 = [configurationManager5 isAllowedToPromptEventCategory:3];
 
     v29 = [NSNumber numberWithBool:v28];
     [v13 setObject:v29 forKey:v26];
@@ -172,8 +172,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v30 = [MOConfigurationManager getSensedEventSettingNameFromCategory:4];
   if (v30)
   {
-    v31 = [(MOEventBundleManager *)self configurationManager];
-    v32 = [v31 isAllowedToPromptEventCategory:4];
+    configurationManager6 = [(MOEventBundleManager *)self configurationManager];
+    v32 = [configurationManager6 isAllowedToPromptEventCategory:4];
 
     v33 = [NSNumber numberWithBool:v32];
     [v13 setObject:v33 forKey:v30];
@@ -182,8 +182,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v34 = [MOConfigurationManager getSensedEventSettingNameFromCategory:5];
   if (v34)
   {
-    v35 = [(MOEventBundleManager *)self configurationManager];
-    v36 = [v35 isAllowedToPromptEventCategory:5];
+    configurationManager7 = [(MOEventBundleManager *)self configurationManager];
+    v36 = [configurationManager7 isAllowedToPromptEventCategory:5];
 
     v37 = [NSNumber numberWithBool:v36];
     [v13 setObject:v37 forKey:v34];
@@ -192,8 +192,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v38 = [MOConfigurationManager getSensedEventSettingNameFromCategory:6];
   if (v38)
   {
-    v39 = [(MOEventBundleManager *)self configurationManager];
-    v40 = [v39 isAllowedToPromptEventCategory:6];
+    configurationManager8 = [(MOEventBundleManager *)self configurationManager];
+    v40 = [configurationManager8 isAllowedToPromptEventCategory:6];
 
     v41 = [NSNumber numberWithBool:v40];
     [v13 setObject:v41 forKey:v38];
@@ -202,8 +202,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v42 = [MOConfigurationManager getSensedEventSettingNameFromCategory:7];
   if (v42)
   {
-    v43 = [(MOEventBundleManager *)self configurationManager];
-    v44 = [v43 isAllowedToPromptEventCategory:7];
+    configurationManager9 = [(MOEventBundleManager *)self configurationManager];
+    v44 = [configurationManager9 isAllowedToPromptEventCategory:7];
 
     v45 = [NSNumber numberWithBool:v44];
     [v13 setObject:v45 forKey:v42];
@@ -212,8 +212,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v46 = [MOConfigurationManager getSensedEventSettingNameFromCategory:8];
   if (v46)
   {
-    v47 = [(MOEventBundleManager *)self configurationManager];
-    v48 = [v47 isAllowedToPromptEventCategory:8];
+    configurationManager10 = [(MOEventBundleManager *)self configurationManager];
+    v48 = [configurationManager10 isAllowedToPromptEventCategory:8];
 
     v49 = [NSNumber numberWithBool:v48];
     [v13 setObject:v49 forKey:v46];
@@ -222,8 +222,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v50 = [MOConfigurationManager getSensedEventSettingNameFromCategory:9];
   if (v50)
   {
-    v51 = [(MOEventBundleManager *)self configurationManager];
-    v52 = [v51 isAllowedToPromptEventCategory:9];
+    configurationManager11 = [(MOEventBundleManager *)self configurationManager];
+    v52 = [configurationManager11 isAllowedToPromptEventCategory:9];
 
     v53 = [NSNumber numberWithBool:v52];
     [v13 setObject:v53 forKey:v50];
@@ -232,8 +232,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v54 = [MOConfigurationManager getSensedEventSettingNameFromCategory:10];
   if (v54)
   {
-    v55 = [(MOEventBundleManager *)self configurationManager];
-    v56 = [v55 isAllowedToPromptEventCategory:10];
+    configurationManager12 = [(MOEventBundleManager *)self configurationManager];
+    v56 = [configurationManager12 isAllowedToPromptEventCategory:10];
 
     v57 = [NSNumber numberWithBool:v56];
     [v13 setObject:v57 forKey:v54];
@@ -242,8 +242,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v58 = [MOConfigurationManager getSensedEventSettingNameFromCategory:11];
   if (v58)
   {
-    v59 = [(MOEventBundleManager *)self configurationManager];
-    v60 = [v59 isAllowedToPromptEventCategory:11];
+    configurationManager13 = [(MOEventBundleManager *)self configurationManager];
+    v60 = [configurationManager13 isAllowedToPromptEventCategory:11];
 
     v61 = [NSNumber numberWithBool:v60];
     [v13 setObject:v61 forKey:v58];
@@ -252,8 +252,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v62 = [MOConfigurationManager getSensedEventSettingNameFromCategory:12];
   if (v62)
   {
-    v63 = [(MOEventBundleManager *)self configurationManager];
-    v64 = [v63 isAllowedToPromptEventCategory:12];
+    configurationManager14 = [(MOEventBundleManager *)self configurationManager];
+    v64 = [configurationManager14 isAllowedToPromptEventCategory:12];
 
     v65 = [NSNumber numberWithBool:v64];
     [v13 setObject:v65 forKey:v62];
@@ -262,8 +262,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v66 = [MOConfigurationManager getSensedEventSettingNameFromCategory:13];
   if (v66)
   {
-    v67 = [(MOEventBundleManager *)self configurationManager];
-    v68 = [v67 isAllowedToPromptEventCategory:13];
+    configurationManager15 = [(MOEventBundleManager *)self configurationManager];
+    v68 = [configurationManager15 isAllowedToPromptEventCategory:13];
 
     v69 = [NSNumber numberWithBool:v68];
     [v13 setObject:v69 forKey:v66];
@@ -272,8 +272,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v70 = [MOConfigurationManager getSensedEventSettingNameFromCategory:14];
   if (v70)
   {
-    v71 = [(MOEventBundleManager *)self configurationManager];
-    v72 = [v71 isAllowedToPromptEventCategory:14];
+    configurationManager16 = [(MOEventBundleManager *)self configurationManager];
+    v72 = [configurationManager16 isAllowedToPromptEventCategory:14];
 
     v73 = [NSNumber numberWithBool:v72];
     [v13 setObject:v73 forKey:v70];
@@ -282,8 +282,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v74 = [MOConfigurationManager getSensedEventSettingNameFromCategory:15];
   if (v74)
   {
-    v75 = [(MOEventBundleManager *)self configurationManager];
-    v76 = [v75 isAllowedToPromptEventCategory:15];
+    configurationManager17 = [(MOEventBundleManager *)self configurationManager];
+    v76 = [configurationManager17 isAllowedToPromptEventCategory:15];
 
     v77 = [NSNumber numberWithBool:v76];
     [v13 setObject:v77 forKey:v74];
@@ -292,8 +292,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v78 = [MOConfigurationManager getSensedEventSettingNameFromCategory:16];
   if (v78)
   {
-    v79 = [(MOEventBundleManager *)self configurationManager];
-    v80 = [v79 isAllowedToPromptEventCategory:16];
+    configurationManager18 = [(MOEventBundleManager *)self configurationManager];
+    v80 = [configurationManager18 isAllowedToPromptEventCategory:16];
 
     v81 = [NSNumber numberWithBool:v80];
     [v13 setObject:v81 forKey:v78];
@@ -302,8 +302,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v82 = [MOConfigurationManager getSensedEventSettingNameFromCategory:17];
   if (v82)
   {
-    v83 = [(MOEventBundleManager *)self configurationManager];
-    v84 = [v83 isAllowedToPromptEventCategory:17];
+    configurationManager19 = [(MOEventBundleManager *)self configurationManager];
+    v84 = [configurationManager19 isAllowedToPromptEventCategory:17];
 
     v85 = [NSNumber numberWithBool:v84];
     [v13 setObject:v85 forKey:v82];
@@ -312,8 +312,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v86 = [MOConfigurationManager getSensedEventSettingNameFromCategory:18];
   if (v86)
   {
-    v87 = [(MOEventBundleManager *)self configurationManager];
-    v88 = [v87 isAllowedToPromptEventCategory:18];
+    configurationManager20 = [(MOEventBundleManager *)self configurationManager];
+    v88 = [configurationManager20 isAllowedToPromptEventCategory:18];
 
     v89 = [NSNumber numberWithBool:v88];
     [v13 setObject:v89 forKey:v86];
@@ -322,8 +322,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v90 = [MOConfigurationManager getSensedEventSettingNameFromCategory:19];
   if (v90)
   {
-    v91 = [(MOEventBundleManager *)self configurationManager];
-    v92 = [v91 isAllowedToPromptEventCategory:19];
+    configurationManager21 = [(MOEventBundleManager *)self configurationManager];
+    v92 = [configurationManager21 isAllowedToPromptEventCategory:19];
 
     v93 = [NSNumber numberWithBool:v92];
     [v13 setObject:v93 forKey:v90];
@@ -332,8 +332,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v94 = [MOConfigurationManager getSensedEventSettingNameFromCategory:20];
   if (v94)
   {
-    v95 = [(MOEventBundleManager *)self configurationManager];
-    v96 = [v95 isAllowedToPromptEventCategory:20];
+    configurationManager22 = [(MOEventBundleManager *)self configurationManager];
+    v96 = [configurationManager22 isAllowedToPromptEventCategory:20];
 
     v97 = [NSNumber numberWithBool:v96];
     [v13 setObject:v97 forKey:v94];
@@ -342,8 +342,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v98 = [MOConfigurationManager getSensedEventSettingNameFromCategory:21];
   if (v98)
   {
-    v99 = [(MOEventBundleManager *)self configurationManager];
-    v100 = [v99 isAllowedToPromptEventCategory:21];
+    configurationManager23 = [(MOEventBundleManager *)self configurationManager];
+    v100 = [configurationManager23 isAllowedToPromptEventCategory:21];
 
     v101 = [NSNumber numberWithBool:v100];
     [v13 setObject:v101 forKey:v98];
@@ -352,8 +352,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v102 = [MOConfigurationManager getSensedEventSettingNameFromCategory:22];
   if (v102)
   {
-    v103 = [(MOEventBundleManager *)self configurationManager];
-    v104 = [v103 isAllowedToPromptEventCategory:22];
+    configurationManager24 = [(MOEventBundleManager *)self configurationManager];
+    v104 = [configurationManager24 isAllowedToPromptEventCategory:22];
 
     v105 = [NSNumber numberWithBool:v104];
     [v13 setObject:v105 forKey:v102];
@@ -362,8 +362,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v106 = [MOConfigurationManager getSensedEventSettingNameFromCategory:23];
   if (v106)
   {
-    v107 = [(MOEventBundleManager *)self configurationManager];
-    v108 = [v107 isAllowedToPromptEventCategory:23];
+    configurationManager25 = [(MOEventBundleManager *)self configurationManager];
+    v108 = [configurationManager25 isAllowedToPromptEventCategory:23];
 
     v109 = [NSNumber numberWithBool:v108];
     [v13 setObject:v109 forKey:v106];
@@ -372,8 +372,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v110 = [MOConfigurationManager getSensedEventSettingNameFromCategory:24];
   if (v110)
   {
-    v111 = [(MOEventBundleManager *)self configurationManager];
-    v112 = [v111 isAllowedToPromptEventCategory:24];
+    configurationManager26 = [(MOEventBundleManager *)self configurationManager];
+    v112 = [configurationManager26 isAllowedToPromptEventCategory:24];
 
     v113 = [NSNumber numberWithBool:v112];
     [v13 setObject:v113 forKey:v110];
@@ -382,8 +382,8 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v114 = [MOConfigurationManager getSensedEventSettingNameFromCategory:25];
   if (v114)
   {
-    v115 = [(MOEventBundleManager *)self configurationManager];
-    v116 = [v115 isAllowedToPromptEventCategory:25];
+    configurationManager27 = [(MOEventBundleManager *)self configurationManager];
+    v116 = [configurationManager27 isAllowedToPromptEventCategory:25];
 
     v117 = [NSNumber numberWithBool:v116];
     [v13 setObject:v117 forKey:v114];
@@ -407,17 +407,17 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
     v3 = objc_alloc_init(MODataExportManager);
     [(MOEventBundleManager *)self setExportManager:v3];
 
-    v4 = [(MOEventBundleManager *)self exportManager];
-    [v4 startDataExportSession];
+    exportManager = [(MOEventBundleManager *)self exportManager];
+    [exportManager startDataExportSession];
   }
 }
 
-- (void)fetchAndPersistEventsForTimeInterval:(id)a3 withHandler:(id)a4
+- (void)fetchAndPersistEventsForTimeInterval:(id)interval withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  intervalCopy = interval;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = [[MOEventFetchOptions alloc] initWithDateInterval:v6 ascending:1 limit:0];
+  v9 = [[MOEventFetchOptions alloc] initWithDateInterval:intervalCopy ascending:1 limit:0];
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v10))
   {
@@ -433,18 +433,18 @@ void __73__MOEventBundleManager_DataDump__persistBundlingDataWithoutRandomizatio
   v22 = __Block_byref_object_copy__5;
   v23 = __Block_byref_object_dispose__5;
   v24 = objc_opt_new();
-  v12 = [(MOEventBundleManager *)self eventManager];
+  eventManager = [(MOEventBundleManager *)self eventManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __83__MOEventBundleManager_DataDump__fetchAndPersistEventsForTimeInterval_withHandler___block_invoke;
   v15[3] = &unk_100336B20;
   v15[4] = self;
   v18 = buf;
-  v13 = v7;
+  v13 = handlerCopy;
   v17 = v13;
   v14 = v11;
   v16 = v14;
-  [v12 fetchEventsWithOptions:v9 CompletionHandler:v15];
+  [eventManager fetchEventsWithOptions:v9 CompletionHandler:v15];
 
   _Block_object_dispose(buf, 8);
   objc_autoreleasePoolPop(v8);
@@ -517,13 +517,13 @@ void __83__MOEventBundleManager_DataDump__fetchAndPersistEventsForTimeInterval_w
   }
 }
 
-- (void)fetchAndPersistBundlesForTimeInterval:(id)a3 eventsIdsToDrop:(id)a4 withHandler:(id)a5
+- (void)fetchAndPersistBundlesForTimeInterval:(id)interval eventsIdsToDrop:(id)drop withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intervalCopy = interval;
+  dropCopy = drop;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = [[MOEventBundleFetchOptions alloc] initWithDateInterval:v8 ascending:1 limit:0 filterBundle:0];
+  v12 = [[MOEventBundleFetchOptions alloc] initWithDateInterval:intervalCopy ascending:1 limit:0 filterBundle:0];
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x3032000000;
@@ -543,13 +543,13 @@ void __83__MOEventBundleManager_DataDump__fetchAndPersistEventsForTimeInterval_w
   v18[1] = 3221225472;
   v18[2] = __100__MOEventBundleManager_DataDump__fetchAndPersistBundlesForTimeInterval_eventsIdsToDrop_withHandler___block_invoke;
   v18[3] = &unk_100336B70;
-  v15 = v9;
+  v15 = dropCopy;
   v23 = v25;
   v19 = v15;
-  v20 = self;
+  selfCopy = self;
   v16 = v14;
   v21 = v16;
-  v17 = v10;
+  v17 = handlerCopy;
   v22 = v17;
   [(MOEventBundleManager *)self fetchEventBundlesWithOptions:v12 CompletionHandler:v18];
 
@@ -661,42 +661,42 @@ void __100__MOEventBundleManager_DataDump__fetchAndPersistBundlesForTimeInterval
   }
 }
 
-- (void)persistRankingModel:(id)a3
+- (void)persistRankingModel:(id)model
 {
-  v6 = a3;
-  v4 = [(MOEventBundleManager *)self exportManager];
+  modelCopy = model;
+  exportManager = [(MOEventBundleManager *)self exportManager];
 
-  if (v4)
+  if (exportManager)
   {
-    v5 = [(MOEventBundleManager *)self exportManager];
-    [v5 addRankingModelToDataExportSession:v6];
+    exportManager2 = [(MOEventBundleManager *)self exportManager];
+    [exportManager2 addRankingModelToDataExportSession:modelCopy];
   }
 }
 
-- (void)persistMetadata:(id)a3
+- (void)persistMetadata:(id)metadata
 {
-  v6 = a3;
-  v4 = [(MOEventBundleManager *)self exportManager];
+  metadataCopy = metadata;
+  exportManager = [(MOEventBundleManager *)self exportManager];
 
-  if (v4)
+  if (exportManager)
   {
-    v5 = [(MOEventBundleManager *)self exportManager];
-    [v5 addMetadataToDataExportSession:v6];
+    exportManager2 = [(MOEventBundleManager *)self exportManager];
+    [exportManager2 addMetadataToDataExportSession:metadataCopy];
   }
 }
 
-- (void)finalizeDataExportWithUpload:(BOOL)a3 handler:(id)a4
+- (void)finalizeDataExportWithUpload:(BOOL)upload handler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  uploadCopy = upload;
+  handlerCopy = handler;
   v7 = objc_autoreleasePoolPush();
   if (!+[MODataExportManager isServiceAvailable])
   {
-    v9 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    exportManager2 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
+    if (os_log_type_enabled(exportManager2, OS_LOG_TYPE_INFO))
     {
       *v11 = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Data export service not available", v11, 2u);
+      _os_log_impl(&_mh_execute_header, exportManager2, OS_LOG_TYPE_INFO, "Data export service not available", v11, 2u);
     }
 
 LABEL_7:
@@ -704,37 +704,37 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(MOEventBundleManager *)self exportManager];
+  exportManager = [(MOEventBundleManager *)self exportManager];
 
-  if (v4)
+  if (uploadCopy)
   {
-    if (!v8)
+    if (!exportManager)
     {
       goto LABEL_8;
     }
 
-    v9 = [(MOEventBundleManager *)self exportManager];
-    [v9 endSessionAndUploadAsync];
+    exportManager2 = [(MOEventBundleManager *)self exportManager];
+    [exportManager2 endSessionAndUploadAsync];
     goto LABEL_7;
   }
 
-  if (v8)
+  if (exportManager)
   {
-    v10 = [(MOEventBundleManager *)self exportManager];
+    exportManager3 = [(MOEventBundleManager *)self exportManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __71__MOEventBundleManager_DataDump__finalizeDataExportWithUpload_handler___block_invoke;
     v12[3] = &unk_100336B98;
-    v13 = v6;
-    [v10 endSessionSyncWithReply:v12];
+    v13 = handlerCopy;
+    [exportManager3 endSessionSyncWithReply:v12];
 
     goto LABEL_12;
   }
 
 LABEL_8:
-  if (v6)
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0, &__NSDictionary0__struct);
+    (*(handlerCopy + 2))(handlerCopy, 0, &__NSDictionary0__struct);
   }
 
 LABEL_12:
@@ -759,9 +759,9 @@ void __71__MOEventBundleManager_DataDump__finalizeDataExportWithUpload_handler__
   }
 }
 
-+ (id)getStringValueInDictionary:(id)a3 withKey:(id)a4
++ (id)getStringValueInDictionary:(id)dictionary withKey:(id)key
 {
-  v4 = [a3 objectForKeyedSubscript:a4];
+  v4 = [dictionary objectForKeyedSubscript:key];
   if (objc_opt_respondsToSelector())
   {
     v5 = [v4 performSelector:"stringValue"];
@@ -777,16 +777,16 @@ void __71__MOEventBundleManager_DataDump__finalizeDataExportWithUpload_handler__
   return v6;
 }
 
-- (void)buildLabelsForEventBundles:(id)a3
+- (void)buildLabelsForEventBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   context = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(MOEventBundleLabelFormatter);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v3;
+  obj = bundlesCopy;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v5)
   {
@@ -807,28 +807,28 @@ void __71__MOEventBundleManager_DataDump__finalizeDataExportWithUpload_handler__
         v11 = [MOEventBundleMetaDataUtility buildMetaDataForEventBundle:v9];
         [v9 setMetaData:v11];
 
-        v12 = [v9 metaData];
+        metaData = [v9 metaData];
 
-        if (v12)
+        if (metaData)
         {
-          v13 = [v9 metaData];
-          v14 = [v9 getBundleType];
-          v15 = [(MOEventBundleLabelFormatter *)v4 formattedBundleLabelsForMetaData:v13 bundleType:v14];
+          metaData2 = [v9 metaData];
+          getBundleType = [v9 getBundleType];
+          v15 = [(MOEventBundleLabelFormatter *)v4 formattedBundleLabelsForMetaData:metaData2 bundleType:getBundleType];
           [v9 setLabels:v15];
 
-          v16 = [v9 metaData];
-          v17 = [v9 getBundleType];
-          v18 = [(MOEventBundleLabelFormatter *)v4 formattedBundlePromptsForMetaData:v16 bundleType:v17];
+          metaData3 = [v9 metaData];
+          getBundleType2 = [v9 getBundleType];
+          v18 = [(MOEventBundleLabelFormatter *)v4 formattedBundlePromptsForMetaData:metaData3 bundleType:getBundleType2];
           [v9 setPromptLanguages:v18];
 
           v19 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v21 = [v9 getBundleType];
+            getBundleType3 = [v9 getBundleType];
             *buf = 138412546;
             v32 = v9;
             v33 = 2112;
-            v34 = v21;
+            v34 = getBundleType3;
             _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "build labels, event bundle, %@, bundleType, %@", buf, 0x16u);
           }
 
@@ -844,11 +844,11 @@ void __71__MOEventBundleManager_DataDump__finalizeDataExportWithUpload_handler__
           v20 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
-            v22 = [v9 getBundleType];
+            getBundleType4 = [v9 getBundleType];
             *buf = 138412546;
             v32 = v9;
             v33 = 2112;
-            v34 = v22;
+            v34 = getBundleType4;
             _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "build labels, nil meta data, event bundle, %@, bundleType, %@", buf, 0x16u);
           }
         }
@@ -867,41 +867,41 @@ void __71__MOEventBundleManager_DataDump__finalizeDataExportWithUpload_handler__
   objc_autoreleasePoolPop(context);
 }
 
-- (MOEventBundleManager)initWithUniverse:(id)a3
+- (MOEventBundleManager)initWithUniverse:(id)universe
 {
-  v6 = a3;
-  objc_storeStrong(&self->fUniverse, a3);
+  universeCopy = universe;
+  objc_storeStrong(&self->fUniverse, universe);
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 getService:v8];
+  v9 = [universeCopy getService:v8];
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [v6 getService:v11];
+  v12 = [universeCopy getService:v11];
 
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  obj = [v6 getService:v14];
+  obj = [universeCopy getService:v14];
 
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  v17 = [v6 getService:v16];
+  v17 = [universeCopy getService:v16];
 
   v18 = objc_opt_class();
   v19 = NSStringFromClass(v18);
-  v20 = [v6 getService:v19];
+  v20 = [universeCopy getService:v19];
 
   v21 = objc_opt_class();
   v22 = NSStringFromClass(v21);
-  v60 = [v6 getService:v22];
+  v60 = [universeCopy getService:v22];
 
   v23 = objc_opt_class();
   v24 = NSStringFromClass(v23);
-  v25 = [v6 getService:v24];
+  v25 = [universeCopy getService:v24];
 
   v26 = objc_opt_class();
   v27 = NSStringFromClass(v26);
-  v28 = [v6 getService:v27];
+  v28 = [universeCopy getService:v27];
 
   if (!v9)
   {
@@ -915,7 +915,7 @@ void __71__MOEventBundleManager_DataDump__finalizeDataExportWithUpload_handler__
     v31 = v48;
     v49 = @"Invalid parameter not satisfying: eventManager";
     v50 = a2;
-    v51 = self;
+    selfCopy4 = self;
     v52 = 226;
     goto LABEL_20;
   }
@@ -932,7 +932,7 @@ void __71__MOEventBundleManager_DataDump__finalizeDataExportWithUpload_handler__
     v31 = v48;
     v49 = @"Invalid parameter not satisfying: eventBundleStore";
     v50 = a2;
-    v51 = self;
+    selfCopy4 = self;
     v52 = 227;
     goto LABEL_20;
   }
@@ -949,7 +949,7 @@ void __71__MOEventBundleManager_DataDump__finalizeDataExportWithUpload_handler__
     v31 = v48;
     v49 = @"Invalid parameter not satisfying: defaultManager";
     v50 = a2;
-    v51 = self;
+    selfCopy4 = self;
     v52 = 230;
     goto LABEL_20;
   }
@@ -966,29 +966,29 @@ void __71__MOEventBundleManager_DataDump__finalizeDataExportWithUpload_handler__
     v31 = v48;
     v49 = @"Invalid parameter not satisfying: configurationManager";
     v50 = a2;
-    v51 = self;
+    selfCopy4 = self;
     v52 = 231;
 LABEL_20:
-    [v48 handleFailureInMethod:v50 object:v51 file:@"MOEventBundleManager.m" lineNumber:v52 description:v49];
-    v46 = 0;
+    [v48 handleFailureInMethod:v50 object:selfCopy4 file:@"MOEventBundleManager.m" lineNumber:v52 description:v49];
+    selfCopy5 = 0;
     goto LABEL_21;
   }
 
   v29 = objc_opt_class();
   v30 = NSStringFromClass(v29);
-  v31 = [v6 getService:v30];
+  v31 = [universeCopy getService:v30];
 
   v32 = objc_opt_class();
   v33 = NSStringFromClass(v32);
-  v59 = [v6 getService:v33];
+  v59 = [universeCopy getService:v33];
 
   v34 = objc_opt_class();
   v35 = NSStringFromClass(v34);
-  v58 = [v6 getService:v35];
+  v58 = [universeCopy getService:v35];
 
   v36 = objc_opt_class();
   v37 = NSStringFromClass(v36);
-  v57 = [v6 getService:v37];
+  v57 = [universeCopy getService:v37];
 
   v62.receiver = self;
   v62.super_class = MOEventBundleManager;
@@ -1025,33 +1025,33 @@ LABEL_20:
 
   self = v38;
 
-  v46 = self;
+  selfCopy5 = self;
 LABEL_21:
 
-  return v46;
+  return selfCopy5;
 }
 
-- (void)bundleEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)bundleEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v8 = v7;
-  v9 = a3 - 1;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
+  v9 = variant - 1;
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerBundleEventsWrapper", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerBundleEventsWrapper", "", buf, 2u);
   }
 
   v10 = [[MOPerformanceMeasurement alloc] initWithName:@"BundleEventsWrapper" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v10 startSession];
-  v11 = [(MOEventBundleManager *)self eventBundleStore];
-  v12 = [v11 persistenceManager];
-  v13 = [v12 availability];
+  eventBundleStore = [(MOEventBundleManager *)self eventBundleStore];
+  persistenceManager = [eventBundleStore persistenceManager];
+  availability = [persistenceManager availability];
 
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   v15 = v14;
-  if (v13 == 2)
+  if (availability == 2)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1064,7 +1064,7 @@ LABEL_21:
     if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerBundleEvents", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerBundleEvents", "", buf, 2u);
     }
 
     v18 = [[MOPerformanceMeasurement alloc] initWithName:@"BundleEvents" measureRecentPeak:0];
@@ -1073,13 +1073,13 @@ LABEL_21:
     v25[1] = 3221225472;
     v25[2] = __66__MOEventBundleManager_bundleEventsWithRefreshVariant_andHandler___block_invoke;
     v25[3] = &unk_10033B988;
-    v30 = a3;
+    variantCopy = variant;
     v26 = v18;
-    v29 = v6;
-    v27 = self;
+    v29 = handlerCopy;
+    selfCopy = self;
     v28 = v10;
     v19 = v18;
-    [(MOEventBundleManager *)self _bundleEventsWithRefreshVariant:a3 andHandler:v25];
+    [(MOEventBundleManager *)self _bundleEventsWithRefreshVariant:variant andHandler:v25];
   }
 
   else
@@ -1089,7 +1089,7 @@ LABEL_21:
       [MOEventBundleManager bundleEventsWithRefreshVariant:andHandler:];
     }
 
-    if (v6)
+    if (handlerCopy)
     {
       v34 = NSLocalizedDescriptionKey;
       v35 = @"[bundleEventsWithRefreshVariant] database is not available";
@@ -1099,7 +1099,7 @@ LABEL_21:
       v32 = @"stateDatabaseAvailable";
       v33 = &__kCFBooleanFalse;
       v22 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-      (*(v6 + 2))(v6, v21, v22);
+      (*(handlerCopy + 2))(handlerCopy, v21, v22);
     }
 
     v23 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
@@ -1107,7 +1107,7 @@ LABEL_21:
     if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v24, OS_SIGNPOST_INTERVAL_END, a3, "EventBundleManagerBundleEventsWrapper", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v24, OS_SIGNPOST_INTERVAL_END, variant, "EventBundleManagerBundleEventsWrapper", "", buf, 2u);
     }
 
     [(MOPerformanceMeasurement *)v10 endSession];
@@ -1542,14 +1542,14 @@ void __66__MOEventBundleManager_bundleEventsWithRefreshVariant_andHandler___bloc
   }
 }
 
-- (void)_runAnalyticsWithOnboardingDictionary:(id)a3 andHandler:(id)a4
+- (void)_runAnalyticsWithOnboardingDictionary:(id)dictionary andHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dictionaryCopy = dictionary;
   v8 = objc_opt_new();
   v9 = dispatch_group_create();
   dispatch_group_enter(v9);
-  v10 = [(MOEventBundleManager *)self engagementAndSuggestionAnalyticsManager];
+  engagementAndSuggestionAnalyticsManager = [(MOEventBundleManager *)self engagementAndSuggestionAnalyticsManager];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = __73__MOEventBundleManager__runAnalyticsWithOnboardingDictionary_andHandler___block_invoke;
@@ -1558,10 +1558,10 @@ void __66__MOEventBundleManager_bundleEventsWithRefreshVariant_andHandler___bloc
   v26 = v11;
   v12 = v9;
   v27 = v12;
-  [v10 submitEngagementAndSuggestionPerformanceAnalyticsWithOnboardingStatus:v7 andCompletionHandler:v25];
+  [engagementAndSuggestionAnalyticsManager submitEngagementAndSuggestionPerformanceAnalyticsWithOnboardingStatus:dictionaryCopy andCompletionHandler:v25];
 
   dispatch_group_enter(v12);
-  v13 = [(MOEventBundleManager *)self notificationAnalyticsManager];
+  notificationAnalyticsManager = [(MOEventBundleManager *)self notificationAnalyticsManager];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = __73__MOEventBundleManager__runAnalyticsWithOnboardingDictionary_andHandler___block_invoke_374;
@@ -1570,18 +1570,18 @@ void __66__MOEventBundleManager_bundleEventsWithRefreshVariant_andHandler___bloc
   v23 = v14;
   v24 = v12;
   v15 = v12;
-  [v13 submitNotificationAnalyticsWithCompletion:v22];
+  [notificationAnalyticsManager submitNotificationAnalyticsWithCompletion:v22];
 
-  v16 = [(MOEventBundleManager *)self queue];
+  queue = [(MOEventBundleManager *)self queue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = __73__MOEventBundleManager__runAnalyticsWithOnboardingDictionary_andHandler___block_invoke_375;
   v19[3] = &unk_10033B9D8;
   v20 = v14;
-  v21 = v6;
+  v21 = handlerCopy;
   v17 = v14;
-  v18 = v6;
-  dispatch_group_notify(v15, v16, v19);
+  v18 = handlerCopy;
+  dispatch_group_notify(v15, queue, v19);
 }
 
 void __73__MOEventBundleManager__runAnalyticsWithOnboardingDictionary_andHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1646,13 +1646,13 @@ void __73__MOEventBundleManager__runAnalyticsWithOnboardingDictionary_andHandler
   v13 = __Block_byref_object_copy__24;
   v14 = __Block_byref_object_dispose__24;
   v15 = 0;
-  v3 = [(MOEventBundleManager *)self eventBundleStore];
+  eventBundleStore = [(MOEventBundleManager *)self eventBundleStore];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __53__MOEventBundleManager__computeEngagementScoreParams__block_invoke;
   v9[3] = &unk_100337E98;
   v9[4] = &v10;
-  [v3 getRankingParamsandCompletionHandler:v9];
+  [eventBundleStore getRankingParamsandCompletionHandler:v9];
 
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1661,8 +1661,8 @@ void __73__MOEventBundleManager__runAnalyticsWithOnboardingDictionary_andHandler
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Attempting to update engagement score for sensed bundles", v8, 2u);
   }
 
-  v5 = [(MOEventBundleManager *)self eventBundleRanking];
-  [(MOEventBundleManager *)self _computeSensedBundleEngagementScoreParams:v5 withRankingParams:v11[5]];
+  eventBundleRanking = [(MOEventBundleManager *)self eventBundleRanking];
+  [(MOEventBundleManager *)self _computeSensedBundleEngagementScoreParams:eventBundleRanking withRankingParams:v11[5]];
 
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1671,8 +1671,8 @@ void __73__MOEventBundleManager__runAnalyticsWithOnboardingDictionary_andHandler
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Attempting to update evergreen scores", v8, 2u);
   }
 
-  v7 = [(MOEventBundleManager *)self eventBundleRanking];
-  [(MOEventBundleManager *)self _computeEvergreenScoreParams:v7 withRankingParams:v11[5]];
+  eventBundleRanking2 = [(MOEventBundleManager *)self eventBundleRanking];
+  [(MOEventBundleManager *)self _computeEvergreenScoreParams:eventBundleRanking2 withRankingParams:v11[5]];
 
   _Block_object_dispose(&v10, 8);
 }
@@ -1700,10 +1700,10 @@ uint64_t __53__MOEventBundleManager__computeEngagementScoreParams__block_invoke(
   return _objc_release_x1(v5, v6);
 }
 
-- (void)_computeSensedBundleEngagementScoreParams:(id)a3 withRankingParams:(id)a4
+- (void)_computeSensedBundleEngagementScoreParams:(id)params withRankingParams:(id)rankingParams
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  rankingParamsCopy = rankingParams;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v8))
   {
@@ -1714,17 +1714,17 @@ uint64_t __53__MOEventBundleManager__computeEngagementScoreParams__block_invoke(
   v9 = [[MOPerformanceMeasurement alloc] initWithName:@"BundleEventsComputeEngagementScoreParams" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v9 startSession];
   v10 = +[NSDate date];
-  if (!v7)
+  if (!rankingParamsCopy)
   {
-    v18 = [(MOEventBundleManager *)self queue];
+    queue = [(MOEventBundleManager *)self queue];
     v103[0] = _NSConcreteStackBlock;
     v103[1] = 3221225472;
     v103[2] = __84__MOEventBundleManager__computeSensedBundleEngagementScoreParams_withRankingParams___block_invoke_382;
     v103[3] = &unk_10033B2B0;
     v103[4] = self;
-    v104 = v6;
+    v104 = paramsCopy;
     v105 = 0;
-    dispatch_async(v18, v103);
+    dispatch_async(queue, v103);
 
     v19 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -1746,21 +1746,21 @@ uint64_t __53__MOEventBundleManager__computeEngagementScoreParams__block_invoke(
   }
 
   v11 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:0.0];
-  v12 = [v7 engagementScoreParamsUpdateDate];
-  v13 = [v12 isEqual:v11];
+  engagementScoreParamsUpdateDate = [rankingParamsCopy engagementScoreParamsUpdateDate];
+  v13 = [engagementScoreParamsUpdateDate isEqual:v11];
 
   if (v13)
   {
-    [v7 setIsParamsUpdateOnHold:1];
-    v14 = [(MOEventBundleManager *)self queue];
+    [rankingParamsCopy setIsParamsUpdateOnHold:1];
+    queue2 = [(MOEventBundleManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __84__MOEventBundleManager__computeSensedBundleEngagementScoreParams_withRankingParams___block_invoke_381;
     block[3] = &unk_10033B2B0;
     block[4] = self;
-    v107 = v6;
-    v108 = v7;
-    dispatch_async(v14, block);
+    v107 = paramsCopy;
+    v108 = rankingParamsCopy;
+    dispatch_async(queue2, block);
 
     v15 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1783,28 +1783,28 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  [v6 setRankingParamsFromRankingParamsMO:v7];
-  v22 = [v6 engagementScoreParameterDict];
-  v23 = [v22 objectForKeyedSubscript:@"longTimePeriodSinceEngagementScoreParamsUpdatedSec"];
-  v24 = [v23 intValue];
+  [paramsCopy setRankingParamsFromRankingParamsMO:rankingParamsCopy];
+  engagementScoreParameterDict = [paramsCopy engagementScoreParameterDict];
+  v23 = [engagementScoreParameterDict objectForKeyedSubscript:@"longTimePeriodSinceEngagementScoreParamsUpdatedSec"];
+  intValue = [v23 intValue];
 
-  v25 = [v7 engagementScoreParamsUpdateDate];
-  [v25 timeIntervalSinceDate:v10];
+  engagementScoreParamsUpdateDate2 = [rankingParamsCopy engagementScoreParamsUpdateDate];
+  [engagementScoreParamsUpdateDate2 timeIntervalSinceDate:v10];
   v27 = fabs(v26);
-  v28 = v24;
+  v28 = intValue;
 
   if (v27 >= v28)
   {
-    [v7 setIsParamsUpdateOnHold:1];
-    v34 = [(MOEventBundleManager *)self queue];
+    [rankingParamsCopy setIsParamsUpdateOnHold:1];
+    queue3 = [(MOEventBundleManager *)self queue];
     v109[0] = _NSConcreteStackBlock;
     v109[1] = 3221225472;
     v109[2] = __84__MOEventBundleManager__computeSensedBundleEngagementScoreParams_withRankingParams___block_invoke;
     v109[3] = &unk_10033B2B0;
     v109[4] = self;
-    v110 = v6;
-    v111 = v7;
-    dispatch_async(v34, v109);
+    v110 = paramsCopy;
+    v111 = rankingParamsCopy;
+    dispatch_async(queue3, v109);
 
     v35 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
@@ -1826,62 +1826,62 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v29 = [v7 engagementScoreParamsUpdateDate];
-  v30 = [v10 isBeforeDate:v29];
+  engagementScoreParamsUpdateDate3 = [rankingParamsCopy engagementScoreParamsUpdateDate];
+  v30 = [v10 isBeforeDate:engagementScoreParamsUpdateDate3];
 
   if (!v30)
   {
-    v94 = v6;
-    v37 = [(MOEventBundleManager *)self engagementHistoryManager];
-    v38 = [v7 engagementScoreParamsUpdateDate];
-    v39 = [v37 getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedFromStartDate:v38 toEndDate:v10 withMinimumAddedCharacters:1];
+    v94 = paramsCopy;
+    engagementHistoryManager = [(MOEventBundleManager *)self engagementHistoryManager];
+    engagementScoreParamsUpdateDate4 = [rankingParamsCopy engagementScoreParamsUpdateDate];
+    v39 = [engagementHistoryManager getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedFromStartDate:engagementScoreParamsUpdateDate4 toEndDate:v10 withMinimumAddedCharacters:1];
 
     v93 = v39;
     v40 = [v39 mutableCopy];
     [v40 removeObjectForKey:&off_10036A000];
     [v40 removeObjectForKey:&off_10036A018];
-    v41 = [(MOEventBundleManager *)self engagementHistoryManager];
-    [v7 engagementScoreParamsUpdateDate];
+    engagementHistoryManager2 = [(MOEventBundleManager *)self engagementHistoryManager];
+    [rankingParamsCopy engagementScoreParamsUpdateDate];
     v42 = v99 = v10;
-    v43 = [v41 getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedButNoWritingFromStartDate:v42 toEndDate:v99];
+    v43 = [engagementHistoryManager2 getInterfaceTypeCountForUniqueSuggestionsWithJournalCreatedButNoWritingFromStartDate:v42 toEndDate:v99];
 
     v92 = v43;
     v44 = [v43 mutableCopy];
     [v44 removeObjectForKey:&off_10036A000];
     [v44 removeObjectForKey:&off_10036A018];
-    v45 = [(MOEventBundleManager *)self engagementHistoryManager];
-    v46 = [v7 engagementScoreParamsUpdateDate];
-    v47 = [v45 getInterfaceTypeCountForUniqueSuggestionsViewedButNotEngagedFromStartDate:v46 toEndDate:v99];
+    engagementHistoryManager3 = [(MOEventBundleManager *)self engagementHistoryManager];
+    engagementScoreParamsUpdateDate5 = [rankingParamsCopy engagementScoreParamsUpdateDate];
+    v47 = [engagementHistoryManager3 getInterfaceTypeCountForUniqueSuggestionsViewedButNotEngagedFromStartDate:engagementScoreParamsUpdateDate5 toEndDate:v99];
 
     v91 = v47;
     v48 = [v47 mutableCopy];
     [v48 removeObjectForKey:&off_10036A000];
     v96 = v48;
     [v48 removeObjectForKey:&off_10036A018];
-    v49 = [(MOEventBundleManager *)self engagementHistoryManager];
-    v50 = [v7 engagementScoreParamsUpdateDate];
-    v51 = [v49 getInterfaceTypeCountForUniqueSuggestionsDeletedFromStartDate:v50 toEndDate:v99];
+    engagementHistoryManager4 = [(MOEventBundleManager *)self engagementHistoryManager];
+    engagementScoreParamsUpdateDate6 = [rankingParamsCopy engagementScoreParamsUpdateDate];
+    v51 = [engagementHistoryManager4 getInterfaceTypeCountForUniqueSuggestionsDeletedFromStartDate:engagementScoreParamsUpdateDate6 toEndDate:v99];
 
     v90 = v51;
     v52 = [v51 mutableCopy];
     [v52 removeObjectForKey:&off_10036A000];
     [v52 removeObjectForKey:&off_10036A018];
     v98 = v40;
-    v88 = [v40 allValues];
-    v53 = [v88 valueForKeyPath:@"@sum.self"];
+    allValues = [v40 allValues];
+    v53 = [allValues valueForKeyPath:@"@sum.self"];
     LODWORD(v51) = [v53 intValue];
     v97 = v44;
-    v54 = [v44 allValues];
-    v55 = [v54 valueForKeyPath:@"@sum.self"];
+    allValues2 = [v44 allValues];
+    v55 = [allValues2 valueForKeyPath:@"@sum.self"];
     LODWORD(v40) = [v55 intValue] + v51;
     v95 = v52;
-    v56 = [v52 allValues];
-    v57 = [v56 valueForKeyPath:@"@sum.self"];
+    allValues3 = [v52 allValues];
+    v57 = [allValues3 valueForKeyPath:@"@sum.self"];
     v58 = v40 + [v57 intValue];
 
-    v59 = [(MOEventBundleManager *)self engagementHistoryManager];
-    v60 = [v7 engagementScoreParamsUpdateDate];
-    v61 = [v59 getInterfaceTypeCountForUniqueSuggestionsViewedFromStartDate:v60 toEndDate:v99];
+    engagementHistoryManager5 = [(MOEventBundleManager *)self engagementHistoryManager];
+    engagementScoreParamsUpdateDate7 = [rankingParamsCopy engagementScoreParamsUpdateDate];
+    v61 = [engagementHistoryManager5 getInterfaceTypeCountForUniqueSuggestionsViewedFromStartDate:engagementScoreParamsUpdateDate7 toEndDate:v99];
 
     v89 = v61;
     v62 = [v61 mutableCopy];
@@ -1890,9 +1890,9 @@ LABEL_28:
     v63 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
     if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
     {
-      v64 = [v7 engagementScoreParamsUpdateDate];
+      engagementScoreParamsUpdateDate8 = [rankingParamsCopy engagementScoreParamsUpdateDate];
       *buf = 138413826;
-      v115 = *&v64;
+      v115 = *&engagementScoreParamsUpdateDate8;
       v116 = 2112;
       v117 = v99;
       v118 = 2112;
@@ -1909,19 +1909,19 @@ LABEL_28:
     }
 
     v87 = v62;
-    v65 = [v62 allKeys];
-    v66 = [v65 count];
+    allKeys = [v62 allKeys];
+    v66 = [allKeys count];
 
-    v6 = v94;
-    v67 = [v94 engagementScoreParameterDict];
-    v68 = [v67 objectForKeyedSubscript:@"minEngagementCount"];
-    v69 = [v68 intValue];
+    paramsCopy = v94;
+    engagementScoreParameterDict2 = [v94 engagementScoreParameterDict];
+    v68 = [engagementScoreParameterDict2 objectForKeyedSubscript:@"minEngagementCount"];
+    intValue2 = [v68 intValue];
 
-    v70 = [v94 engagementScoreParameterDict];
-    v71 = [v70 objectForKeyedSubscript:@"minInterfaceTypes"];
-    v72 = [v71 intValue];
+    engagementScoreParameterDict3 = [v94 engagementScoreParameterDict];
+    v71 = [engagementScoreParameterDict3 objectForKeyedSubscript:@"minInterfaceTypes"];
+    intValue3 = [v71 intValue];
 
-    if (v66 < v72 || v58 < v69)
+    if (v66 < intValue3 || v58 < intValue2)
     {
       v82 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
       if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
@@ -1940,18 +1940,18 @@ LABEL_28:
     else
     {
       v73 = 0.0;
-      if ([v7 isParamsUpdateOnHold])
+      if ([rankingParamsCopy isParamsUpdateOnHold])
       {
-        v74 = [v94 engagementScoreParameterDict];
-        v75 = [v74 objectForKeyedSubscript:@"minTimeIntervalForUpdateSec"];
-        v76 = [v75 intValue];
+        engagementScoreParameterDict4 = [v94 engagementScoreParameterDict];
+        v75 = [engagementScoreParameterDict4 objectForKeyedSubscript:@"minTimeIntervalForUpdateSec"];
+        intValue4 = [v75 intValue];
 
-        v73 = v76;
+        v73 = intValue4;
       }
 
-      v77 = [v7 engagementScoreParamsUpdateDate];
+      engagementScoreParamsUpdateDate9 = [rankingParamsCopy engagementScoreParamsUpdateDate];
       v10 = v99;
-      [v77 timeIntervalSinceDate:v99];
+      [engagementScoreParamsUpdateDate9 timeIntervalSinceDate:v99];
       v79 = fabs(v78);
 
       v80 = v87;
@@ -1969,16 +1969,16 @@ LABEL_28:
         [v94 setInterfaceTypeCountFromSuggestionEngagementDict:v83];
 
         [v94 updateEngagementScoreParamsUsingBFGS];
-        [v7 setIsParamsUpdateOnHold:0];
-        v84 = [(MOEventBundleManager *)self queue];
+        [rankingParamsCopy setIsParamsUpdateOnHold:0];
+        queue4 = [(MOEventBundleManager *)self queue];
         v100[0] = _NSConcreteStackBlock;
         v100[1] = 3221225472;
         v100[2] = __84__MOEventBundleManager__computeSensedBundleEngagementScoreParams_withRankingParams___block_invoke_389;
         v100[3] = &unk_10033B2B0;
         v100[4] = self;
         v101 = v94;
-        v102 = v7;
-        dispatch_async(v84, v100);
+        v102 = rankingParamsCopy;
+        dispatch_async(queue4, v100);
 
         v85 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
         if (os_log_type_enabled(v85, OS_LOG_TYPE_INFO))
@@ -2016,11 +2016,11 @@ LABEL_15:
   v31 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
-    v32 = [v7 engagementScoreParamsUpdateDate];
+    engagementScoreParamsUpdateDate10 = [rankingParamsCopy engagementScoreParamsUpdateDate];
     *buf = 138412546;
     v115 = *&v10;
     v116 = 2112;
-    v117 = v32;
+    v117 = engagementScoreParamsUpdateDate10;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "current date is behind previous engage params update date %@,%@. Skip update.", buf, 0x16u);
   }
 
@@ -2059,10 +2059,10 @@ void __84__MOEventBundleManager__computeSensedBundleEngagementScoreParams_withRa
   [v2 storeRankingParams:*(a1 + 40) forContext:*(a1 + 48) forEvergreenScore:0];
 }
 
-- (void)_computeEvergreenScoreParams:(id)a3 withRankingParams:(id)a4
+- (void)_computeEvergreenScoreParams:(id)params withRankingParams:(id)rankingParams
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  rankingParamsCopy = rankingParams;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v8))
   {
@@ -2074,7 +2074,7 @@ void __84__MOEventBundleManager__computeSensedBundleEngagementScoreParams_withRa
   [(MOPerformanceMeasurement *)v9 startSession];
   +[NSDate date];
   v10 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-  if (!v7)
+  if (!rankingParamsCopy)
   {
     queue = self->_queue;
     v71[0] = _NSConcreteStackBlock;
@@ -2082,7 +2082,7 @@ void __84__MOEventBundleManager__computeSensedBundleEngagementScoreParams_withRa
     v71[2] = __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams___block_invoke_394;
     v71[3] = &unk_10033B2B0;
     v71[4] = self;
-    v72 = v6;
+    v72 = paramsCopy;
     v73 = 0;
     dispatch_async(queue, v71);
     v19 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
@@ -2105,20 +2105,20 @@ void __84__MOEventBundleManager__computeSensedBundleEngagementScoreParams_withRa
   }
 
   v11 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:0.0];
-  v12 = [v7 evergreenEngagementScoreParamsUpdateDate];
-  v13 = [v12 isEqual:v11];
+  evergreenEngagementScoreParamsUpdateDate = [rankingParamsCopy evergreenEngagementScoreParamsUpdateDate];
+  v13 = [evergreenEngagementScoreParamsUpdateDate isEqual:v11];
 
   if (v13)
   {
-    [v7 setIsEvergreenEngagementScoreParamsUpdateOnHold:1];
+    [rankingParamsCopy setIsEvergreenEngagementScoreParamsUpdateOnHold:1];
     v14 = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams___block_invoke_393;
     block[3] = &unk_10033B2B0;
     block[4] = self;
-    v75 = v6;
-    v76 = v7;
+    v75 = paramsCopy;
+    v76 = rankingParamsCopy;
     dispatch_async(v14, block);
     v15 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -2141,27 +2141,27 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  [v6 setRankingParamsFromRankingParamsMO:v7];
-  v22 = [v6 engagementScoreParameterDict];
-  v23 = [v22 objectForKeyedSubscript:@"longTimePeriodSinceEngagementScoreParamsUpdatedSec"];
-  v24 = [v23 intValue];
+  [paramsCopy setRankingParamsFromRankingParamsMO:rankingParamsCopy];
+  engagementScoreParameterDict = [paramsCopy engagementScoreParameterDict];
+  v23 = [engagementScoreParameterDict objectForKeyedSubscript:@"longTimePeriodSinceEngagementScoreParamsUpdatedSec"];
+  intValue = [v23 intValue];
 
-  v25 = [v7 evergreenEngagementScoreParamsUpdateDate];
-  [v25 timeIntervalSinceDate:*&v10];
+  evergreenEngagementScoreParamsUpdateDate2 = [rankingParamsCopy evergreenEngagementScoreParamsUpdateDate];
+  [evergreenEngagementScoreParamsUpdateDate2 timeIntervalSinceDate:*&v10];
   v27 = fabs(v26);
-  v28 = v24;
+  v28 = intValue;
 
   if (v27 >= v28)
   {
-    [v7 setIsEvergreenEngagementScoreParamsUpdateOnHold:1];
+    [rankingParamsCopy setIsEvergreenEngagementScoreParamsUpdateOnHold:1];
     v34 = self->_queue;
     v77[0] = _NSConcreteStackBlock;
     v77[1] = 3221225472;
     v77[2] = __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams___block_invoke;
     v77[3] = &unk_10033B2B0;
     v77[4] = self;
-    v78 = v6;
-    v79 = v7;
+    v78 = paramsCopy;
+    v79 = rankingParamsCopy;
     dispatch_async(v34, v77);
     v35 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
@@ -2183,26 +2183,26 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v29 = [v7 evergreenEngagementScoreParamsUpdateDate];
-  v30 = [*&v10 isBeforeDate:v29];
+  evergreenEngagementScoreParamsUpdateDate3 = [rankingParamsCopy evergreenEngagementScoreParamsUpdateDate];
+  v30 = [*&v10 isBeforeDate:evergreenEngagementScoreParamsUpdateDate3];
 
   if (!v30)
   {
-    v37 = [(MOEventBundleManager *)self engagementHistoryManager];
-    v38 = [v7 evergreenEngagementScoreParamsUpdateDate];
-    v39 = [v37 getEvergreenTypeCountForSuggestionsWithJournalCreatedFromStartDate:v38 toEndDate:*&v10 withMinimumAddedCharacters:0];
+    engagementHistoryManager = [(MOEventBundleManager *)self engagementHistoryManager];
+    evergreenEngagementScoreParamsUpdateDate4 = [rankingParamsCopy evergreenEngagementScoreParamsUpdateDate];
+    v39 = [engagementHistoryManager getEvergreenTypeCountForSuggestionsWithJournalCreatedFromStartDate:evergreenEngagementScoreParamsUpdateDate4 toEndDate:*&v10 withMinimumAddedCharacters:0];
 
     v67 = v39;
     v40 = [v39 mutableCopy];
     [v40 removeObjectForKey:&stru_1003416B0];
-    v41 = [v40 allValues];
-    v42 = [v41 valueForKeyPath:@"@sum.self"];
+    allValues = [v40 allValues];
+    v42 = [allValues valueForKeyPath:@"@sum.self"];
     *&v43 = [v42 intValue];
 
     v44 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
-      [v7 evergreenEngagementScoreParamsUpdateDate];
+      [rankingParamsCopy evergreenEngagementScoreParamsUpdateDate];
       v45 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138412802;
       v81 = v45;
@@ -2213,24 +2213,24 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "Evergreen engagement signals collected between last engagement score update date (%@) and now(%@): selected %@", buf, 0x20u);
     }
 
-    v46 = [v6 engagementScoreParameterDict];
-    v47 = [v46 objectForKeyedSubscript:@"minEngagementCount"];
-    v48 = [v47 intValue];
+    engagementScoreParameterDict2 = [paramsCopy engagementScoreParameterDict];
+    v47 = [engagementScoreParameterDict2 objectForKeyedSubscript:@"minEngagementCount"];
+    intValue2 = [v47 intValue];
 
-    if (LODWORD(v43) >= v48)
+    if (LODWORD(v43) >= intValue2)
     {
       v53 = 0.0;
-      if ([v7 isEvergreenEngagementScoreParamsUpdateOnHold])
+      if ([rankingParamsCopy isEvergreenEngagementScoreParamsUpdateOnHold])
       {
-        v54 = [v6 engagementScoreParameterDict];
-        v55 = [v54 objectForKeyedSubscript:@"minTimeIntervalForUpdateSec"];
-        v56 = [v55 intValue];
+        engagementScoreParameterDict3 = [paramsCopy engagementScoreParameterDict];
+        v55 = [engagementScoreParameterDict3 objectForKeyedSubscript:@"minTimeIntervalForUpdateSec"];
+        intValue3 = [v55 intValue];
 
-        v53 = v56;
+        v53 = intValue3;
       }
 
-      v57 = [v7 evergreenEngagementScoreParamsUpdateDate];
-      [v57 timeIntervalSinceDate:*&v10];
+      evergreenEngagementScoreParamsUpdateDate5 = [rankingParamsCopy evergreenEngagementScoreParamsUpdateDate];
+      [evergreenEngagementScoreParamsUpdateDate5 timeIntervalSinceDate:*&v10];
       v59 = fabs(v58);
 
       if (v59 >= v53)
@@ -2244,8 +2244,8 @@ LABEL_28:
         [v49 setObject:&off_10036E880 forKeyedSubscript:@"CREATIVITY"];
         if ([v40 count] == 1)
         {
-          v60 = [v40 allKeys];
-          v61 = [v60 objectAtIndexedSubscript:0];
+          allKeys = [v40 allKeys];
+          v61 = [allKeys objectAtIndexedSubscript:0];
 
           [v49 setObject:&off_10036E890 forKeyedSubscript:v61];
         }
@@ -2260,16 +2260,16 @@ LABEL_28:
           [v49 setObject:&off_10036E8A0 forKeyedSubscript:v63];
         }
 
-        [v6 setEvergreenEngagementScoreParameterDict:v49];
-        [v7 setIsEvergreenEngagementScoreParamsUpdateOnHold:0];
+        [paramsCopy setEvergreenEngagementScoreParameterDict:v49];
+        [rankingParamsCopy setIsEvergreenEngagementScoreParamsUpdateOnHold:0];
         v64 = self->_queue;
         v68[0] = _NSConcreteStackBlock;
         v68[1] = 3221225472;
         v68[2] = __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams___block_invoke_404;
         v68[3] = &unk_10033B2B0;
         v68[4] = self;
-        v69 = v6;
-        v70 = v7;
+        v69 = paramsCopy;
+        v70 = rankingParamsCopy;
         dispatch_async(v64, v68);
         v65 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
         if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
@@ -2329,11 +2329,11 @@ LABEL_15:
   v31 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
-    v32 = [v7 evergreenEngagementScoreParamsUpdateDate];
+    evergreenEngagementScoreParamsUpdateDate6 = [rankingParamsCopy evergreenEngagementScoreParamsUpdateDate];
     *buf = 138412546;
     v81 = v10;
     v82 = 2112;
-    v83 = *&v32;
+    v83 = *&evergreenEngagementScoreParamsUpdateDate6;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "Current date is behind previous evergreen params update date %@,%@. Skip update.", buf, 0x16u);
   }
 
@@ -2391,9 +2391,9 @@ void __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams__
   [v2 storeRankingParams:*(a1 + 40) forContext:*(a1 + 48) forEvergreenScore:1];
 }
 
-- (void)_bundleEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)_bundleEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -2413,17 +2413,17 @@ void __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams__
   v51[3] = &unk_10033BA20;
   v51[4] = &v58;
   v51[5] = &v52;
-  [(MOEventRefreshHelper *)v7 getBundlingDatesForVariant:a3 withHandler:v51];
+  [(MOEventRefreshHelper *)v7 getBundlingDatesForVariant:variant withHandler:v51];
   if (v59[5] && v53[5])
   {
-    if (a3 == 1280 || a3 == 768)
+    if (variant == 1280 || variant == 768)
     {
       v8 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
       v9 = 1;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v65 = a3;
+        variantCopy2 = variant;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Current refresh variant: %lu. CA and Biome analytics submissions are enabled.", buf, 0xCu);
       }
     }
@@ -2434,7 +2434,7 @@ void __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams__
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v65 = a3;
+        variantCopy2 = variant;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Current refresh variant: %lu. CA and Biome analytics submissions are disabled.", buf, 0xCu);
       }
 
@@ -2500,9 +2500,9 @@ void __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams__
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         v27 = v59[5];
-        v28 = [NSNumber numberWithUnsignedInteger:a3];
+        v28 = [NSNumber numberWithUnsignedInteger:variant];
         *buf = 138412802;
-        v65 = v27;
+        variantCopy2 = v27;
         v66 = 2112;
         v67 = v22;
         v68 = 2112;
@@ -2519,10 +2519,10 @@ void __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams__
     v31 = [[MOEventFetchOptions alloc] initWithDateInterval:v30 ascending:1 limit:0];
     v32 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
     v33 = v32;
-    if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
+    if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v33, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerBundleEventsFetchEvents", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v33, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerBundleEventsFetchEvents", "", buf, 2u);
     }
 
     v34 = [[MOPerformanceMeasurement alloc] initWithName:@"BundleEventsFetchEvents" measureRecentPeak:0];
@@ -2533,10 +2533,10 @@ void __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams__
     v38[2] = __67__MOEventBundleManager__bundleEventsWithRefreshVariant_andHandler___block_invoke_431;
     v38[3] = &unk_10033BAC0;
     v38[4] = self;
-    v45 = a3;
+    variantCopy3 = variant;
     v36 = v34;
     v39 = v36;
-    v42 = v6;
+    v42 = handlerCopy;
     v37 = v31;
     v40 = v37;
     v11 = v14;
@@ -2554,7 +2554,7 @@ void __71__MOEventBundleManager__computeEvergreenScoreParams_withRankingParams__
     v10 = [NSDictionary dictionaryWithObjects:&v72 forKeys:&v71 count:1];
     v11 = [NSError errorWithDomain:@"MOErrorDomain" code:18 userInfo:v10];
 
-    (*(v6 + 2))(v6, v11, 0);
+    (*(handlerCopy + 2))(handlerCopy, v11, 0);
   }
 
   _Block_object_dispose(&v52, 8);
@@ -2952,23 +2952,23 @@ void __67__MOEventBundleManager__bundleEventsWithRefreshVariant_andHandler___blo
   }
 }
 
-- (void)_bundleEvents:(id)a3 startDate:(id)a4 endDate:(id)a5 submitMetricsFlg:(BOOL)a6 refreshVariant:(unint64_t)a7 handler:(id)a8
+- (void)_bundleEvents:(id)events startDate:(id)date endDate:(id)endDate submitMetricsFlg:(BOOL)flg refreshVariant:(unint64_t)variant handler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
+  eventsCopy = events;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   v17 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 134218754;
-    *&buf[4] = [v13 count];
+    *&buf[4] = [eventsCopy count];
     *&buf[12] = 2112;
-    *&buf[14] = v14;
+    *&buf[14] = dateCopy;
     *&buf[22] = 2112;
-    v50 = v15;
+    v50 = endDateCopy;
     LOWORD(v51) = 2048;
-    *(&v51 + 2) = a7;
+    *(&v51 + 2) = variant;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Bundle Annotation: there are %lu event(s) to bundle.(%@ - %@), refresh variant, %lu", buf, 0x2Au);
   }
 
@@ -2977,7 +2977,7 @@ void __67__MOEventBundleManager__bundleEventsWithRefreshVariant_andHandler___blo
   *&buf[16] = 0x3032000000;
   v50 = __Block_byref_object_copy__24;
   *&v51 = __Block_byref_object_dispose__24;
-  *(&v51 + 1) = [[NSDateInterval alloc] initWithStartDate:v14 endDate:v15];
+  *(&v51 + 1) = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:endDateCopy];
   v18 = objc_opt_new();
   v47[0] = 0;
   v47[1] = v47;
@@ -3003,23 +3003,23 @@ void __67__MOEventBundleManager__bundleEventsWithRefreshVariant_andHandler___blo
   v23 = v21;
   v33 = v23;
   v41 = v47;
-  v24 = v16;
+  v24 = handlerCopy;
   v42 = buf;
   v43 = a2;
   v40 = v24;
-  v34 = self;
+  selfCopy = self;
   v25 = v18;
   v35 = v25;
-  v44 = a7;
-  v26 = v14;
+  variantCopy = variant;
+  v26 = dateCopy;
   v36 = v26;
-  v27 = v15;
+  v27 = endDateCopy;
   v37 = v27;
   v28 = v19;
   v38 = v28;
-  v29 = v13;
+  v29 = eventsCopy;
   v39 = v29;
-  v45 = a6;
+  flgCopy = flg;
   [(MOEventBundleManager *)self _fetchPreviousBundlesWithDateInterval:v22 handler:v32];
 
   _Block_object_dispose(v47, 8);
@@ -3938,11 +3938,11 @@ void __96__MOEventBundleManager__bundleEvents_startDate_endDate_submitMetricsFlg
   [(MOPerformanceMeasurement *)v30 startSession];
 }
 
-- (void)_fetchPreviousBundlesWithDateInterval:(id)a3 handler:(id)a4
+- (void)_fetchPreviousBundlesWithDateInterval:(id)interval handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MOEventBundleFetchOptions alloc] initWithDateInterval:v7 ascending:1 limit:0 includeDeletedBundles:1 skipRanking:1];
+  handlerCopy = handler;
+  intervalCopy = interval;
+  v8 = [[MOEventBundleFetchOptions alloc] initWithDateInterval:intervalCopy ascending:1 limit:0 includeDeletedBundles:1 skipRanking:1];
 
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v9))
@@ -3953,19 +3953,19 @@ void __96__MOEventBundleManager__bundleEvents_startDate_endDate_submitMetricsFlg
 
   v10 = [[MOPerformanceMeasurement alloc] initWithName:@"BundleEventsDeepFetchPreviousBundlesFetchWithOptions" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v10 startSession];
-  v11 = [(MOEventBundleManager *)self eventBundleStore];
+  eventBundleStore = [(MOEventBundleManager *)self eventBundleStore];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __70__MOEventBundleManager__fetchPreviousBundlesWithDateInterval_handler___block_invoke;
   v15[3] = &unk_1003378F0;
   v16 = v10;
   v17 = v8;
-  v18 = self;
-  v19 = v6;
+  selfCopy = self;
+  v19 = handlerCopy;
   v12 = v8;
-  v13 = v6;
+  v13 = handlerCopy;
   v14 = v10;
-  [v11 fetchEventBundleWithOptions:v12 CompletionHandler:v15];
+  [eventBundleStore fetchEventBundleWithOptions:v12 CompletionHandler:v15];
 }
 
 void __70__MOEventBundleManager__fetchPreviousBundlesWithDateInterval_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4146,25 +4146,25 @@ void __70__MOEventBundleManager__fetchPreviousBundlesWithDateInterval_handler___
   (*(v5 + 16))(v5, v6, 0);
 }
 
-- (void)_filterPreOnboardedVisitEvents:(id)a3 handler:(id)a4
+- (void)_filterPreOnboardedVisitEvents:(id)events handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 count])
+  eventsCopy = events;
+  handlerCopy = handler;
+  if (![eventsCopy count])
   {
-    v6[2](v6, &__NSArray0__struct, &__NSArray0__struct);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, &__NSArray0__struct);
     goto LABEL_28;
   }
 
-  v25 = v6;
+  v25 = handlerCopy;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v26 = v5;
-  v9 = v5;
+  v26 = eventsCopy;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (!v10)
   {
@@ -4191,12 +4191,12 @@ void __70__MOEventBundleManager__fetchPreviousBundlesWithDateInterval_handler___
           goto LABEL_17;
         }
 
-        v15 = [v14 routineEvent];
-        v16 = [v15 isPreOnboardedVisit];
+        routineEvent = [v14 routineEvent];
+        isPreOnboardedVisit = [routineEvent isPreOnboardedVisit];
 
         v17 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
         v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
-        if (v16)
+        if (isPreOnboardedVisit)
         {
           if (v18)
           {
@@ -4248,7 +4248,7 @@ LABEL_22:
   }
 
   v23 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
-  v6 = v25;
+  handlerCopy = v25;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
     v24 = [v8 count];
@@ -4258,17 +4258,17 @@ LABEL_22:
   }
 
   v25[2](v25, v7, v8);
-  v5 = v26;
+  eventsCopy = v26;
 LABEL_28:
 }
 
-- (void)_annotateEventBundlesWithStartDate:(id)a3 endDate:(id)a4 allEvents:(id)a5 eventBundles:(id)a6 handler:(id)a7
+- (void)_annotateEventBundlesWithStartDate:(id)date endDate:(id)endDate allEvents:(id)events eventBundles:(id)bundles handler:(id)handler
 {
-  v161 = a3;
-  v160 = a4;
-  v158 = a5;
-  v151 = a6;
-  v147 = a7;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  bundlesCopy = bundles;
+  handlerCopy = handler;
   v146 = objc_opt_new();
   group = dispatch_group_create();
   v343 = 0;
@@ -4289,12 +4289,12 @@ LABEL_28:
   v336[3] = &unk_10033BC78;
   v336[4] = &v343;
   v336[5] = &v337;
-  [(MOEventBundleManager *)self _filterPreOnboardedVisitEvents:v158 handler:v336];
+  [(MOEventBundleManager *)self _filterPreOnboardedVisitEvents:eventsCopy handler:v336];
   v11 = [NSArray arrayWithArray:v338[5]];
   v152 = [NSArray arrayWithArray:v344[5]];
-  v159 = [NSPredicate predicateWithFormat:@"startDate >= %@", v161];
+  dateCopy = [NSPredicate predicateWithFormat:@"startDate >= %@", dateCopy];
   v12 = [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 5];
-  v358[0] = v159;
+  v358[0] = dateCopy;
   v358[1] = v12;
   v145 = v12;
   v13 = [NSArray arrayWithObjects:v358 count:2];
@@ -4307,7 +4307,7 @@ LABEL_28:
   v163 = [v15 sortedArrayUsingDescriptors:v16];
 
   v17 = [NSPredicate predicateWithFormat:@"provider != %lu", 5];
-  [NSPredicate predicateWithFormat:@"endDate >= %@", v161];
+  [NSPredicate predicateWithFormat:@"endDate >= %@", dateCopy];
   v154 = v153 = v17;
   v356[0] = v154;
   v356[1] = v17;
@@ -4315,7 +4315,7 @@ LABEL_28:
   v19 = [NSCompoundPredicate andPredicateWithSubpredicates:v18];
   v20 = [v11 filteredArrayUsingPredicate:v19];
 
-  v156 = [v20 filteredArrayUsingPredicate:v159];
+  v156 = [v20 filteredArrayUsingPredicate:dateCopy];
 
   v21 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -4324,9 +4324,9 @@ LABEL_28:
     v23 = [v163 count];
     v24 = [v20 count];
     *buf = 138413314;
-    *&buf[4] = v161;
+    *&buf[4] = dateCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v160;
+    *&buf[14] = endDateCopy;
     *&buf[22] = 2048;
     v354 = v22;
     *v355 = 2048;
@@ -4362,16 +4362,16 @@ LABEL_28:
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
           {
             v31 = NSStringFromSelector(a2);
-            v32 = [v29 startDate];
-            v33 = [v29 endDate];
+            startDate = [v29 startDate];
+            endDate = [v29 endDate];
             *buf = 138413058;
             *&buf[4] = v31;
             *&buf[12] = 2048;
             *&buf[14] = v26;
             *&buf[22] = 2112;
-            v354 = v32;
+            v354 = startDate;
             *v355 = 2112;
-            *&v355[2] = v33;
+            *&v355[2] = endDate;
             _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "%@,TAH home visit idx, %lu, startDate, %@, endDate, %@", buf, 0x2Au);
           }
 
@@ -4389,7 +4389,7 @@ LABEL_28:
   v351[1] = v153;
   v34 = [NSArray arrayWithObjects:v351 count:2];
   v35 = [NSCompoundPredicate andPredicateWithSubpredicates:v34];
-  v36 = [v158 filteredArrayUsingPredicate:v35];
+  v36 = [eventsCopy filteredArrayUsingPredicate:v35];
 
   v330 = 0u;
   v331 = 0u;
@@ -4416,16 +4416,16 @@ LABEL_28:
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
           {
             v43 = NSStringFromSelector(a2);
-            v44 = [v41 startDate];
-            v45 = [v41 endDate];
+            startDate2 = [v41 startDate];
+            endDate2 = [v41 endDate];
             *buf = 138413058;
             *&buf[4] = v43;
             *&buf[12] = 2048;
             *&buf[14] = v26;
             *&buf[22] = 2112;
-            v354 = v44;
+            v354 = startDate2;
             *v355 = 2112;
-            *&v355[2] = v45;
+            *&v355[2] = endDate2;
             _os_log_debug_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEBUG, "%@, PAH home visit idx, %lu, startDate, %@, endDate, %@", buf, 0x2Au);
           }
         }
@@ -4456,9 +4456,9 @@ LABEL_28:
     *buf = 138413058;
     *&buf[4] = v162;
     *&buf[12] = 2112;
-    *&buf[14] = v161;
+    *&buf[14] = dateCopy;
     *&buf[22] = 2112;
-    v354 = v160;
+    v354 = endDateCopy;
     *v355 = 2048;
     *&v355[2] = v52;
     _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_INFO, "timeZoneManager, %@, startDate, %@, endDate, %@, events, %lu", buf, 0x2Au);
@@ -4549,7 +4549,7 @@ LABEL_28:
   v305 = v66;
   v67 = v64;
   v306 = v67;
-  [(MOTripAnnotationManager *)v65 performAnnotationWithEvents:aSelectora withPatternEvents:v163 eventBundles:v151 handler:v304];
+  [(MOTripAnnotationManager *)v65 performAnnotationWithEvents:aSelectora withPatternEvents:v163 eventBundles:bundlesCopy handler:v304];
   v68 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v139 = v67;
   v140 = v65;
@@ -4728,7 +4728,7 @@ LABEL_28:
   v242 = v96;
   v127 = v94;
   v243 = v127;
-  [(MOTimeAtHomeAnomalyManager *)v95 performAnnotationWithEvents:obj withPatternEvents:v163 withBundleWindowStart:v161 withBundleWindowEnd:v160 handler:v241];
+  [(MOTimeAtHomeAnomalyManager *)v95 performAnnotationWithEvents:obj withPatternEvents:v163 withBundleWindowStart:dateCopy withBundleWindowEnd:endDateCopy handler:v241];
   v97 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v128 = v95;
   if (os_signpost_enabled(v97))
@@ -4756,7 +4756,7 @@ LABEL_28:
   v232 = v100;
   v125 = v98;
   v233 = v125;
-  [(MOPhotosAtHomeManager *)v99 performAnnotationWithEvents:v37 withPatternEvents:v163 withBundleWindowStart:v161 withBundleWindowEnd:v160 handler:v231];
+  [(MOPhotosAtHomeManager *)v99 performAnnotationWithEvents:v37 withPatternEvents:v163 withBundleWindowStart:dateCopy withBundleWindowEnd:endDateCopy handler:v231];
   v101 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v126 = v99;
   if (os_signpost_enabled(v101))
@@ -4789,7 +4789,7 @@ LABEL_28:
   v219 = v104;
   v123 = v102;
   v220 = v123;
-  [(MOHostingAtHomeManager *)v103 performAnnotationWithEvents:obj withPatternEvents:v163 withBundleWindowStart:v161 withBundleWindowEnd:v160 handler:v218];
+  [(MOHostingAtHomeManager *)v103 performAnnotationWithEvents:obj withPatternEvents:v163 withBundleWindowStart:dateCopy withBundleWindowEnd:endDateCopy handler:v218];
   v105 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v124 = v103;
   if (os_signpost_enabled(v105))
@@ -4856,7 +4856,7 @@ LABEL_28:
   v116 = [[MOPerformanceMeasurement alloc] initWithName:@"BundleEventsDeepAnnotateEventBundlesEvergreen" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v116 startSession];
   dispatch_group_enter(v113);
-  v117 = [[NSDateInterval alloc] initWithStartDate:v161 endDate:v160];
+  v117 = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:endDateCopy];
   *v192 = 0;
   v193 = v192;
   v194 = 0x3032000000;
@@ -4874,7 +4874,7 @@ LABEL_28:
   v120 = v116;
   v190 = v120;
   [(MOEvergreenAnnotationManager *)v118 performAnnotationWithEvents:aSelectora withPatternEvents:v163 dateInterval:v117 handler:v188];
-  v121 = [(MOEventBundleManager *)self queue];
+  queue = [(MOEventBundleManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __98__MOEventBundleManager__annotateEventBundlesWithStartDate_endDate_allEvents_eventBundles_handler___block_invoke_625;
@@ -4896,10 +4896,10 @@ LABEL_28:
   v186 = v223;
   v187 = v246;
   v170 = v146;
-  v171 = v147;
-  v165 = v147;
+  v171 = handlerCopy;
+  v165 = handlerCopy;
   v148 = v146;
-  dispatch_group_notify(v119, v121, block);
+  dispatch_group_notify(v119, queue, block);
 
   _Block_object_dispose(v192, 8);
   _Block_object_dispose(v202, 8);
@@ -6038,14 +6038,14 @@ uint64_t __98__MOEventBundleManager__annotateEventBundlesWithStartDate_endDate_a
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)updateMetaDataForRankInEventBundles:(id)a3
+- (void)updateMetaDataForRankInEventBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  v4 = [bundlesCopy countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v4)
   {
     v6 = v4;
@@ -6058,24 +6058,24 @@ uint64_t __98__MOEventBundleManager__annotateEventBundlesWithStartDate_endDate_a
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(bundlesCopy);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
-        v10 = [v9 metaDataForRank];
-        if (!v10)
+        metaDataForRank = [v9 metaDataForRank];
+        if (!metaDataForRank)
         {
           goto LABEL_10;
         }
 
-        v11 = v10;
-        v12 = [v9 metaDataForRank];
-        v13 = [v12 objectForKey:@"LabelConfidence"];
+        v11 = metaDataForRank;
+        metaDataForRank2 = [v9 metaDataForRank];
+        v13 = [metaDataForRank2 objectForKey:@"LabelConfidence"];
 
         if (v13)
         {
-          v14 = [v9 metaDataForRank];
-          v15 = [v14 objectForKey:@"LabelConfidence"];
+          metaDataForRank3 = [v9 metaDataForRank];
+          v15 = [metaDataForRank3 objectForKey:@"LabelConfidence"];
           [v15 doubleValue];
           v17 = v16;
 
@@ -6111,12 +6111,12 @@ LABEL_10:
             v22 = [NSNumber numberWithDouble:v20];
             [v18 setObject:v22 forKey:@"LabelConfidence"];
 
-            v23 = [v9 metaDataForRank];
+            metaDataForRank4 = [v9 metaDataForRank];
 
-            if (v23)
+            if (metaDataForRank4)
             {
-              v24 = [v9 metaDataForRank];
-              [v18 addEntriesFromDictionary:v24];
+              metaDataForRank5 = [v9 metaDataForRank];
+              [v18 addEntriesFromDictionary:metaDataForRank5];
             }
 
             [v9 setMetaDataForRank:v18];
@@ -6132,47 +6132,47 @@ LABEL_10:
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v6 = [bundlesCopy countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)_concatenatedEventIdentifierForBundle:(id)a3
+- (id)_concatenatedEventIdentifierForBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 events];
-  v6 = [v5 count];
+  bundleCopy = bundle;
+  events = [bundleCopy events];
+  v6 = [events count];
 
   if (v6)
   {
     v7 = objc_opt_new();
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [v4 interfaceType]);
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [bundleCopy interfaceType]);
     [v7 addObject:v8];
 
-    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [v4 summarizationGranularity]);
+    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [bundleCopy summarizationGranularity]);
     [v7 addObject:v9];
 
-    if ([v4 interfaceType] == 7)
+    if ([bundleCopy interfaceType] == 7)
     {
-      v10 = [v4 action];
-      v11 = [v10 actionSubtype];
+      action = [bundleCopy action];
+      actionSubtype = [action actionSubtype];
 
-      if (v11 == 8)
+      if (actionSubtype == 8)
       {
-        v12 = [v4 startDate];
-        [v12 timeIntervalSinceReferenceDate];
+        startDate = [bundleCopy startDate];
+        [startDate timeIntervalSinceReferenceDate];
         v14 = [NSString stringWithFormat:@"%f", v13];
         [v7 addObject:v14];
       }
     }
 
-    v15 = [v4 events];
+    events2 = [bundleCopy events];
     v16 = [NSSortDescriptor sortDescriptorWithKey:@"eventIdentifier" ascending:1];
     v42 = v16;
     v17 = [NSArray arrayWithObjects:&v42 count:1];
-    v18 = [v15 sortedArrayUsingDescriptors:v17];
+    v18 = [events2 sortedArrayUsingDescriptors:v17];
 
     v33 = 0u;
     v34 = 0u;
@@ -6193,9 +6193,9 @@ LABEL_10:
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v31 + 1) + 8 * i) eventIdentifier];
-          v25 = [v24 UUIDString];
-          [v7 addObject:v25];
+          eventIdentifier = [*(*(&v31 + 1) + 8 * i) eventIdentifier];
+          uUIDString = [eventIdentifier UUIDString];
+          [v7 addObject:uUIDString];
         }
 
         v21 = [v19 countByEnumeratingWithState:&v31 objects:v41 count:16];
@@ -6209,11 +6209,11 @@ LABEL_10:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
       v29 = NSStringFromSelector(a2);
-      v30 = [v4 bundleIdentifier];
+      bundleIdentifier = [bundleCopy bundleIdentifier];
       *buf = 138412802;
       v36 = v29;
       v37 = 2112;
-      v38 = v30;
+      v38 = bundleIdentifier;
       v39 = 2112;
       v40 = v26;
       _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "%@, bundleID, %@, concatenated eventID, %@", buf, 0x20u);
@@ -6228,16 +6228,16 @@ LABEL_10:
   return v26;
 }
 
-- (id)_updateIdentifiersForEventBundles:(id)a3 eventIDsToBundleIDMapping:(id)a4
+- (id)_updateIdentifiersForEventBundles:(id)bundles eventIDsToBundleIDMapping:(id)mapping
 {
-  v5 = a3;
-  v24 = a4;
+  bundlesCopy = bundles;
+  mappingCopy = mapping;
   v6 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = bundlesCopy;
   v7 = [obj countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v7)
   {
@@ -6266,7 +6266,7 @@ LABEL_10:
           v14 = [(MOEventBundleManager *)self _concatenatedEventIdentifierForBundle:v12];
           if (v14)
           {
-            v13 = [v24 objectForKey:v14];
+            v13 = [mappingCopy objectForKey:v14];
           }
 
           else
@@ -6291,12 +6291,12 @@ LABEL_10:
             v19 = @"NO";
           }
 
-          v20 = [v12 bundleIdentifier];
+          bundleIdentifier = [v12 bundleIdentifier];
           v21 = v13;
           if (!v13)
           {
-            v25 = [v12 bundleIdentifier];
-            v21 = v25;
+            bundleIdentifier2 = [v12 bundleIdentifier];
+            v21 = bundleIdentifier2;
           }
 
           *buf = 138413058;
@@ -6304,7 +6304,7 @@ LABEL_10:
           v36 = 2112;
           v37 = v19;
           v38 = 2112;
-          v39 = v20;
+          v39 = bundleIdentifier;
           v40 = 2112;
           v41 = v21;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%@, update bundleID, %@, bundleID, %@, updated bundleID, %@", buf, 0x2Au);
@@ -6341,15 +6341,15 @@ LABEL_10:
   return v6;
 }
 
-- (id)_updateIdentifiersForEvergreenBundles:(id)a3
+- (id)_updateIdentifiersForEvergreenBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v4 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = bundlesCopy;
   v5 = [obj countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v5)
   {
@@ -6370,12 +6370,12 @@ LABEL_10:
         v10 = *(*(&v26 + 1) + 8 * v9);
         if ([v10 interfaceType] == 11)
         {
-          v11 = [v10 suggestionID];
+          suggestionID = [v10 suggestionID];
         }
 
         else
         {
-          v11 = 0;
+          suggestionID = 0;
         }
 
         v12 = _mo_log_facility_get_os_log(v8);
@@ -6385,7 +6385,7 @@ LABEL_10:
           v14 = v4;
           v15 = v8;
           v16 = NSStringFromSelector(a2);
-          if (v11)
+          if (suggestionID)
           {
             v17 = @"YES";
           }
@@ -6395,12 +6395,12 @@ LABEL_10:
             v17 = @"NO";
           }
 
-          v18 = [v10 bundleIdentifier];
-          v19 = v11;
-          if (!v11)
+          bundleIdentifier = [v10 bundleIdentifier];
+          v19 = suggestionID;
+          if (!suggestionID)
           {
-            v22 = [v10 bundleIdentifier];
-            v19 = v22;
+            bundleIdentifier2 = [v10 bundleIdentifier];
+            v19 = bundleIdentifier2;
           }
 
           *buf = 138413058;
@@ -6408,11 +6408,11 @@ LABEL_10:
           v32 = 2112;
           v33 = v17;
           v34 = 2112;
-          v35 = v18;
+          v35 = bundleIdentifier;
           v36 = 2112;
           v37 = v19;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%@, update bundleID for Evergreen bundle, %@, bundleID, %@, updated bundleID, %@", buf, 0x2Au);
-          if (!v11)
+          if (!suggestionID)
           {
           }
 
@@ -6422,9 +6422,9 @@ LABEL_10:
           v6 = v24;
         }
 
-        if (v11)
+        if (suggestionID)
         {
-          v20 = [[MOEventBundle alloc] initWithBundleIdentifier:v11 usingBundle:v10];
+          v20 = [[MOEventBundle alloc] initWithBundleIdentifier:suggestionID usingBundle:v10];
           [v4 addObject:v20];
         }
 
@@ -6446,20 +6446,20 @@ LABEL_10:
   return v4;
 }
 
-- (void)_collectTimeCorrelatedEventsWithStartDate:(id)a3 endDate:(id)a4 events:(id)a5 submitMetricsFlg:(BOOL)a6 handler:(id)a7
+- (void)_collectTimeCorrelatedEventsWithStartDate:(id)date endDate:(id)endDate events:(id)events submitMetricsFlg:(BOOL)flg handler:(id)handler
 {
-  v8 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  flgCopy = flg;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
   v17 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = NSStringFromSelector(a2);
     v19 = v18;
     v20 = @"NO";
-    if (v8)
+    if (flgCopy)
     {
       v20 = @"YES";
     }
@@ -6472,19 +6472,19 @@ LABEL_10:
   }
 
   v21 = objc_opt_new();
-  if (v8)
+  if (flgCopy)
   {
     v22 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v41 = v13;
+      v41 = dateCopy;
       v42 = 2112;
-      v43 = v14;
+      v43 = endDateCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "initiate bundler with startDate: %@, endDate:  %@", buf, 0x16u);
     }
 
-    v23 = [[MOEventBundler alloc] initWithStartDate:v13 endDate:v14];
+    v23 = [[MOEventBundler alloc] initWithStartDate:dateCopy endDate:endDateCopy];
     v24 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -6493,7 +6493,7 @@ LABEL_10:
     }
 
     v39 = v23;
-    v25 = [(MOEventBundler *)v23 calculateEventBundlesFromEvents:v15];
+    v25 = [(MOEventBundler *)v23 calculateEventBundlesFromEvents:eventsCopy];
     v26 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
@@ -6540,13 +6540,13 @@ LABEL_10:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v41 = v13;
+      v41 = dateCopy;
       v42 = 2112;
-      v43 = v14;
+      v43 = endDateCopy;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "initiate metrics with startDate: %@, endDate:  %@", buf, 0x16u);
     }
 
-    v34 = [[MOPromptMetrics alloc] initWithStartDate:v13 endDate:v14 EventManager:self->_eventManager];
+    v34 = [[MOPromptMetrics alloc] initWithStartDate:dateCopy endDate:endDateCopy EventManager:self->_eventManager];
     v35 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
@@ -6554,7 +6554,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "calculate metrics for raw events", buf, 2u);
     }
 
-    [(MOPromptMetrics *)v34 calculateAndSetMetricsForRawEvents:v15];
+    [(MOPromptMetrics *)v34 calculateAndSetMetricsForRawEvents:eventsCopy];
     v36 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
@@ -6583,28 +6583,28 @@ LABEL_10:
     }
 
     [(MOEventBundleManager *)self submitMetricForEventBundleWithPromptMetrics:v34];
-    if (v16)
+    if (handlerCopy)
     {
-      v16[2](v16, 0, v21);
+      handlerCopy[2](handlerCopy, 0, v21);
     }
   }
 
-  else if (v16)
+  else if (handlerCopy)
   {
-    v16[2](v16, 0, v21);
+    handlerCopy[2](handlerCopy, 0, v21);
   }
 }
 
-- (void)updateSuggestionIDAndFirstCreationDateForNewEventBundles:(id)a3 previousEventBundles:(id)a4 updateSensitiveFlag:(BOOL)a5
+- (void)updateSuggestionIDAndFirstCreationDateForNewEventBundles:(id)bundles previousEventBundles:(id)eventBundles updateSensitiveFlag:(BOOL)flag
 {
-  v29 = a5;
-  v7 = a3;
-  v8 = [(MOEventBundleManager *)self partitionedEventBundles:a4];
+  flagCopy = flag;
+  bundlesCopy = bundles;
+  v8 = [(MOEventBundleManager *)self partitionedEventBundles:eventBundles];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = v7;
+  v9 = bundlesCopy;
   v10 = v8;
   obj = v9;
   v11 = [v9 countByEnumeratingWithState:&v30 objects:v42 count:16];
@@ -6629,15 +6629,15 @@ LABEL_10:
         v18 = v17;
         if (v17)
         {
-          v19 = [v17 suggestionID];
-          if (!v19)
+          suggestionID = [v17 suggestionID];
+          if (!suggestionID)
           {
-            v19 = [v18 bundleIdentifier];
+            suggestionID = [v18 bundleIdentifier];
           }
 
-          [v16 setSuggestionID:v19];
-          v20 = [v18 firstCreationDate];
-          if (v20)
+          [v16 setSuggestionID:suggestionID];
+          firstCreationDate = [v18 firstCreationDate];
+          if (firstCreationDate)
           {
             [v18 firstCreationDate];
           }
@@ -6652,12 +6652,12 @@ LABEL_10:
           v23 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
           {
-            v24 = [v16 suggestionID];
-            v25 = [v16 firstCreationDate];
+            suggestionID2 = [v16 suggestionID];
+            firstCreationDate2 = [v16 firstCreationDate];
             *buf = v26;
-            v35 = v24;
+            v35 = suggestionID2;
             v36 = 2112;
-            v37 = v25;
+            v37 = firstCreationDate2;
             v38 = 2112;
             v39 = v18;
             v40 = 2112;
@@ -6667,7 +6667,7 @@ LABEL_10:
             v10 = v27;
           }
 
-          if (v29)
+          if (flagCopy)
           {
             [(MOEventBundleManager *)self updateMetaDataForRankforNewBundle:v16 withOldBundle:v18];
           }
@@ -6675,12 +6675,12 @@ LABEL_10:
 
         else
         {
-          v21 = [v16 bundleIdentifier];
-          [v16 setSuggestionID:v21];
+          bundleIdentifier = [v16 bundleIdentifier];
+          [v16 setSuggestionID:bundleIdentifier];
 
           v10 = v27;
-          v19 = [v16 creationDate];
-          [v16 setFirstCreationDate:v19];
+          suggestionID = [v16 creationDate];
+          [v16 setFirstCreationDate:suggestionID];
         }
       }
 
@@ -6691,84 +6691,84 @@ LABEL_10:
   }
 }
 
-- (void)updateMetaDataForRankforNewBundle:(id)a3 withOldBundle:(id)a4
+- (void)updateMetaDataForRankforNewBundle:(id)bundle withOldBundle:(id)oldBundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 metaDataForRank];
+  bundleCopy = bundle;
+  oldBundleCopy = oldBundle;
+  metaDataForRank = [oldBundleCopy metaDataForRank];
 
-  if (v7)
+  if (metaDataForRank)
   {
     v8 = objc_opt_new();
-    v9 = [v5 metaDataForRank];
+    metaDataForRank2 = [bundleCopy metaDataForRank];
 
-    if (v9)
+    if (metaDataForRank2)
     {
-      v10 = [v5 metaDataForRank];
-      v11 = [v10 mutableCopy];
+      metaDataForRank3 = [bundleCopy metaDataForRank];
+      v11 = [metaDataForRank3 mutableCopy];
 
       v8 = v11;
     }
 
-    v12 = [v6 metaDataForRank];
-    v13 = [v12 objectForKey:@"SensitiveLocation"];
+    metaDataForRank4 = [oldBundleCopy metaDataForRank];
+    v13 = [metaDataForRank4 objectForKey:@"SensitiveLocation"];
 
     if (v13)
     {
-      v14 = [v6 metaDataForRank];
-      v15 = [v14 objectForKey:@"SensitiveLocation"];
+      metaDataForRank5 = [oldBundleCopy metaDataForRank];
+      v15 = [metaDataForRank5 objectForKey:@"SensitiveLocation"];
       [v8 setObject:v15 forKey:@"SensitiveLocation"];
     }
 
-    v16 = [v6 metaDataForRank];
-    v17 = [v16 objectForKey:@"UninterestingLocation"];
+    metaDataForRank6 = [oldBundleCopy metaDataForRank];
+    v17 = [metaDataForRank6 objectForKey:@"UninterestingLocation"];
 
     if (v17)
     {
-      v18 = [v6 metaDataForRank];
-      v19 = [v18 objectForKey:@"UninterestingLocation"];
+      metaDataForRank7 = [oldBundleCopy metaDataForRank];
+      v19 = [metaDataForRank7 objectForKey:@"UninterestingLocation"];
       [v8 setObject:v19 forKey:@"UninterestingLocation"];
     }
 
-    v20 = [v6 metaDataForRank];
-    v21 = [v20 objectForKey:@"BusinessContact"];
+    metaDataForRank8 = [oldBundleCopy metaDataForRank];
+    v21 = [metaDataForRank8 objectForKey:@"BusinessContact"];
 
     if (v21)
     {
-      v22 = [v6 metaDataForRank];
-      v23 = [v22 objectForKey:@"BusinessContact"];
+      metaDataForRank9 = [oldBundleCopy metaDataForRank];
+      v23 = [metaDataForRank9 objectForKey:@"BusinessContact"];
       [v8 setObject:v23 forKey:@"BusinessContact"];
     }
 
-    [v5 setMetaDataForRank:v8];
+    [bundleCopy setMetaDataForRank:v8];
     v24 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [v5 metaDataForRank];
-      v26 = [v5 suggestionID];
-      v27 = [v5 firstCreationDate];
+      metaDataForRank10 = [bundleCopy metaDataForRank];
+      suggestionID = [bundleCopy suggestionID];
+      firstCreationDate = [bundleCopy firstCreationDate];
       v28 = 138413314;
-      v29 = v25;
+      v29 = metaDataForRank10;
       v30 = 2112;
-      v31 = v26;
+      v31 = suggestionID;
       v32 = 2112;
-      v33 = v27;
+      v33 = firstCreationDate;
       v34 = 2112;
-      v35 = v6;
+      v35 = oldBundleCopy;
       v36 = 2112;
-      v37 = v5;
+      v37 = bundleCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "newBundle get the sensitve related flag from old bundle, metadata for rank  %@, suggestion ID, %@, first creation date, %@, prev, %@, new, %@", &v28, 0x34u);
     }
   }
 }
 
-- (void)associateEventBundles:(id)a3 effectiveInterval:(id)a4
+- (void)associateEventBundles:(id)bundles effectiveInterval:(id)interval
 {
-  v82 = a4;
-  v6 = [a3 mutableCopy];
-  v84 = self;
-  v7 = [(MOEventBundleManager *)self eventBundleRanking];
-  [v7 generateBundleRanking:v6 withMinRecommendedBundleCountRequirement:0];
+  intervalCopy = interval;
+  v6 = [bundles mutableCopy];
+  selfCopy = self;
+  eventBundleRanking = [(MOEventBundleManager *)self eventBundleRanking];
+  [eventBundleRanking generateBundleRanking:v6 withMinRecommendedBundleCountRequirement:0];
 
   v80 = v6;
   v8 = [NSArray arrayWithArray:v6];
@@ -6825,19 +6825,19 @@ LABEL_10:
 
   if ([v29 count] && objc_msgSend(v21, "count"))
   {
-    v30 = [v82 startDate];
+    startDate = [intervalCopy startDate];
     v74 = v29;
-    if (v30)
+    if (startDate)
     {
-      v31 = v30;
+      startDate2 = startDate;
     }
 
     else
     {
-      v36 = [v29 firstObject];
-      v31 = [v36 startDate];
+      firstObject = [v29 firstObject];
+      startDate2 = [firstObject startDate];
 
-      if (!v31)
+      if (!startDate2)
       {
         v37 = 0;
 LABEL_14:
@@ -6849,7 +6849,7 @@ LABEL_14:
         v69 = v39;
         v70 = v37;
         v72 = v22;
-        v40 = [[MOTripAnnotationManager alloc] initWithUniverse:v84->fUniverse];
+        v40 = [[MOTripAnnotationManager alloc] initWithUniverse:selfCopy->fUniverse];
         v88 = 0u;
         v89 = 0u;
         v90 = 0u;
@@ -6874,57 +6874,57 @@ LABEL_14:
               v45 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
               if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
               {
-                v46 = [v44 startDate];
-                v47 = [v44 endDate];
-                v48 = [v44 events];
-                v49 = [v48 count];
+                startDate3 = [v44 startDate];
+                endDate = [v44 endDate];
+                events = [v44 events];
+                v49 = [events count];
                 *buf = 138412802;
-                v96 = v46;
+                v96 = startDate3;
                 v97 = 2112;
-                v98 = v47;
+                v98 = endDate;
                 v99 = 2048;
                 v100 = v49;
                 _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "Update trip bundle between %@ and %@, events, %lu", buf, 0x20u);
               }
 
-              v50 = [v44 subBundleIDs];
-              v51 = [NSSet setWithArray:v50];
+              subBundleIDs = [v44 subBundleIDs];
+              v51 = [NSSet setWithArray:subBundleIDs];
 
-              v52 = [v51 allObjects];
-              [v44 setSubBundleIDs:v52];
+              allObjects = [v51 allObjects];
+              [v44 setSubBundleIDs:allObjects];
 
-              v53 = [v44 events];
-              v54 = [NSSet setWithArray:v53];
+              events2 = [v44 events];
+              v54 = [NSSet setWithArray:events2];
 
-              v55 = [v54 allObjects];
-              [v44 setEvents:v55];
+              allObjects2 = [v54 allObjects];
+              [v44 setEvents:allObjects2];
 
-              v56 = [v44 action];
+              action = [v44 action];
 
-              if (v56)
+              if (action)
               {
                 v57 = v40;
-                v58 = [v44 events];
-                v59 = [v58 firstObject];
-                v60 = [v59 eventIdentifier];
-                v61 = [v44 action];
-                [v61 setSourceEventIdentifier:v60];
+                events3 = [v44 events];
+                firstObject2 = [events3 firstObject];
+                eventIdentifier = [firstObject2 eventIdentifier];
+                action2 = [v44 action];
+                [action2 setSourceEventIdentifier:eventIdentifier];
 
                 v62 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
                 if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
                 {
-                  v63 = [v44 action];
-                  v64 = [v63 sourceEventIdentifier];
+                  action3 = [v44 action];
+                  sourceEventIdentifier = [action3 sourceEventIdentifier];
                   *buf = 138412290;
-                  v96 = v64;
+                  v96 = sourceEventIdentifier;
                   _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_INFO, "associateEventBundles: setting container bundle action as %@ from updating event bundles", buf, 0xCu);
                 }
 
                 v40 = v57;
               }
 
-              v65 = [v44 events];
-              [(MOTripAnnotationManager *)v40 materializeTripBundle:v44 contextEvents:v65 updateWithFilteredEvents:1];
+              events4 = [v44 events];
+              [(MOTripAnnotationManager *)v40 materializeTripBundle:v44 contextEvents:events4 updateWithFilteredEvents:1];
             }
 
             v42 = [obj countByEnumeratingWithState:&v88 objects:v101 count:16];
@@ -6959,12 +6959,12 @@ LABEL_14:
       }
     }
 
-    [NSPredicate predicateWithFormat:@"%K < %@", @"startDate", v31];
+    [NSPredicate predicateWithFormat:@"%K < %@", @"startDate", startDate2];
     v92[0] = _NSConcreteStackBlock;
     v92[1] = 3221225472;
     v92[2] = __64__MOEventBundleManager_associateEventBundles_effectiveInterval___block_invoke;
     v93 = v92[3] = &unk_100335B80;
-    v37 = v31;
+    v37 = startDate2;
     v94 = v37;
     v38 = v93;
     [v21 enumerateObjectsUsingBlock:v92];
@@ -7557,32 +7557,32 @@ void __47__MOEventBundleManager_dateFormatterForKeyword__block_invoke(id a1)
   [dateFormatterForKeyword_dateFormatter setTimeZone:v4];
 }
 
-- (id)keywordForEventBundle:(id)a3
+- (id)keywordForEventBundle:(id)bundle
 {
-  v3 = a3;
-  if ([v3 bundleManagementPolicy] == 1)
+  bundleCopy = bundle;
+  if ([bundleCopy bundleManagementPolicy] == 1)
   {
-    v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [v3 interfaceType]);
+    v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [bundleCopy interfaceType]);
   }
 
   else
   {
     v5 = +[MOEventBundleManager dateFormatterForKeyword];
-    v6 = [v3 startDate];
-    v7 = [v5 stringFromDate:v6];
+    startDate = [bundleCopy startDate];
+    v7 = [v5 stringFromDate:startDate];
 
-    v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu-%@", [v3 interfaceType], v7);
+    v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu-%@", [bundleCopy interfaceType], v7);
   }
 
   return v4;
 }
 
-- (id)adjacentKeywordsForEventBundle:(id)a3
+- (id)adjacentKeywordsForEventBundle:(id)bundle
 {
-  v4 = a3;
-  if ([v4 bundleManagementPolicy] == 1)
+  bundleCopy = bundle;
+  if ([bundleCopy bundleManagementPolicy] == 1)
   {
-    v5 = [(MOEventBundleManager *)self keywordForEventBundle:v4];
+    v5 = [(MOEventBundleManager *)self keywordForEventBundle:bundleCopy];
     v20 = v5;
     v6 = [NSArray arrayWithObjects:&v20 count:1];
   }
@@ -7591,24 +7591,24 @@ void __47__MOEventBundleManager_dateFormatterForKeyword__block_invoke(id a1)
   {
     v5 = +[MOEventBundleManager dateFormatterForKeyword];
     v7 = objc_opt_new();
-    v8 = [v4 startDate];
-    v9 = [v8 dateByAddingTimeInterval:-86400.0];
+    startDate = [bundleCopy startDate];
+    v9 = [startDate dateByAddingTimeInterval:-86400.0];
     v10 = [v5 stringFromDate:v9];
 
-    v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu-%@", [v4 interfaceType], v10);
+    v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu-%@", [bundleCopy interfaceType], v10);
     [v7 addObject:v11];
 
-    v12 = [v4 startDate];
-    v13 = [v5 stringFromDate:v12];
+    startDate2 = [bundleCopy startDate];
+    v13 = [v5 stringFromDate:startDate2];
 
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu-%@", [v4 interfaceType], v13);
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu-%@", [bundleCopy interfaceType], v13);
     [v7 addObject:v14];
 
-    v15 = [v4 startDate];
-    v16 = [v15 dateByAddingTimeInterval:86400.0];
+    startDate3 = [bundleCopy startDate];
+    v16 = [startDate3 dateByAddingTimeInterval:86400.0];
     v17 = [v5 stringFromDate:v16];
 
-    v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu-%@", [v4 interfaceType], v17);
+    v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu-%@", [bundleCopy interfaceType], v17);
     [v7 addObject:v18];
 
     v6 = [v7 copy];
@@ -7617,15 +7617,15 @@ void __47__MOEventBundleManager_dateFormatterForKeyword__block_invoke(id a1)
   return v6;
 }
 
-- (id)partitionedEventBundles:(id)a3
+- (id)partitionedEventBundles:(id)bundles
 {
-  v4 = a3;
+  bundlesCopy = bundles;
   v5 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = bundlesCopy;
   v6 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v6)
   {
@@ -7663,8 +7663,8 @@ void __47__MOEventBundleManager_dateFormatterForKeyword__block_invoke(id a1)
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v25 = [v5 allKeys];
-  v14 = [v25 countByEnumeratingWithState:&v27 objects:v36 count:16];
+  allKeys = [v5 allKeys];
+  v14 = [allKeys countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v14)
   {
     v15 = v14;
@@ -7675,7 +7675,7 @@ void __47__MOEventBundleManager_dateFormatterForKeyword__block_invoke(id a1)
       {
         if (*v28 != v16)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(allKeys);
         }
 
         v18 = *(*(&v27 + 1) + 8 * j);
@@ -7688,7 +7688,7 @@ void __47__MOEventBundleManager_dateFormatterForKeyword__block_invoke(id a1)
         [v13 setObject:v22 forKey:v18];
       }
 
-      v15 = [v25 countByEnumeratingWithState:&v27 objects:v36 count:16];
+      v15 = [allKeys countByEnumeratingWithState:&v27 objects:v36 count:16];
     }
 
     while (v15);
@@ -7699,11 +7699,11 @@ void __47__MOEventBundleManager_dateFormatterForKeyword__block_invoke(id a1)
   return v23;
 }
 
-- (id)matchedEventBundleForEventBundle:(id)a3 otherEventBundles:(id)a4
+- (id)matchedEventBundleForEventBundle:(id)bundle otherEventBundles:(id)bundles
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOEventBundleManager *)self adjacentKeywordsForEventBundle:v6];
+  bundleCopy = bundle;
+  bundlesCopy = bundles;
+  v8 = [(MOEventBundleManager *)self adjacentKeywordsForEventBundle:bundleCopy];
   v9 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
@@ -7724,7 +7724,7 @@ void __47__MOEventBundleManager_dateFormatterForKeyword__block_invoke(id a1)
           objc_enumerationMutation(v10);
         }
 
-        v15 = [v7 objectForKey:*(*(&v40 + 1) + 8 * i)];
+        v15 = [bundlesCopy objectForKey:*(*(&v40 + 1) + 8 * i)];
         [v9 addObjectsFromArray:v15];
       }
 
@@ -7759,7 +7759,7 @@ LABEL_10:
       }
 
       v23 = *(*(&v36 + 1) + 8 * v22);
-      if ([v23 filtered] & 1) == 0 && (objc_msgSend(v6, "isEqualToEventBundle:", v23))
+      if ([v23 filtered] & 1) == 0 && (objc_msgSend(bundleCopy, "isEqualToEventBundle:", v23))
       {
         goto LABEL_27;
       }
@@ -7799,7 +7799,7 @@ LABEL_19:
       v23 = *(*(&v32 + 1) + 8 * v28);
       if ([v23 filtered])
       {
-        if ([v6 isEqualToEventBundle:v23])
+        if ([bundleCopy isEqualToEventBundle:v23])
         {
           break;
         }
@@ -7829,10 +7829,10 @@ LABEL_28:
   return v29;
 }
 
-- (void)submitMetricForEventBundleWithPromptMetrics:(id)a3
+- (void)submitMetricForEventBundleWithPromptMetrics:(id)metrics
 {
-  v3 = a3;
-  [v3 getAndSetAgeGender];
+  metricsCopy = metrics;
+  [metricsCopy getAndSetAgeGender];
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -7841,7 +7841,7 @@ LABEL_28:
   }
 
   v11 = 0;
-  [v3 submitMetricsWithError:&v11];
+  [metricsCopy submitMetricsWithError:&v11];
 
   v5 = v11;
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
@@ -7870,15 +7870,15 @@ LABEL_8:
   }
 }
 
-- (void)submitMOEventData:(id)a3 startDate:(id)a4 endDate:(id)a5 subDate:(id)a6
+- (void)submitMOEventData:(id)data startDate:(id)date endDate:(id)endDate subDate:(id)subDate
 {
-  v8 = a3;
-  v26 = a6;
+  dataCopy = data;
+  subDateCopy = subDate;
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v34 = [v8 count];
+    v34 = [dataCopy count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "We have %lu raw events to submit.", buf, 0xCu);
   }
 
@@ -7889,7 +7889,7 @@ LABEL_8:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = v8;
+  v11 = dataCopy;
   v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
@@ -7911,7 +7911,7 @@ LABEL_8:
         if (v18)
         {
           v19 = [NSNumber numberWithInt:0];
-          v20 = [[MOEventData alloc] initWithEvent:v16 islandID:v19 subDate:v26];
+          v20 = [[MOEventData alloc] initWithEvent:v16 islandID:v19 subDate:subDateCopy];
           v27 = 0;
           [(MOEventData *)v20 submitMetricsWithError:&v27];
           v21 = v27;
@@ -7983,40 +7983,40 @@ void __68__MOEventBundleManager_submitMOEventData_startDate_endDate_subDate___bl
   }
 }
 
-- (void)submitEventBundleInternalAnalytics:(id)a3 withSubmissionDate:(id)a4 withRefreshVariant:(unint64_t)a5
+- (void)submitEventBundleInternalAnalytics:(id)analytics withSubmissionDate:(id)date withRefreshVariant:(unint64_t)variant
 {
-  v7 = a3;
-  v121 = a4;
+  analyticsCopy = analytics;
+  dateCopy = date;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v135 = [v7 count];
+    v135 = [analyticsCopy count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%lu bundles are passed to be submitted to CoreAnalytics.", buf, 0xCu);
   }
 
   v110 = +[NSCalendar currentCalendar];
-  v9 = [v110 components:764 fromDate:v121];
-  v118 = [v9 year];
-  v117 = [v9 month];
+  v9 = [v110 components:764 fromDate:dateCopy];
+  year = [v9 year];
+  month = [v9 month];
   v116 = [v9 day];
-  v115 = [v9 hour];
+  hour = [v9 hour];
   v109 = v9;
-  v114 = [v9 minute];
+  minute = [v9 minute];
   v120 = [MOMetric binsFromStart:&off_10036A030 toEnd:&off_10036E620 gap:&off_10036E6A0];
-  v10 = [(MOEventBundleManager *)self configurationManager];
-  v11 = [v10 getTrialExperimentIdentifiers];
+  configurationManager = [(MOEventBundleManager *)self configurationManager];
+  getTrialExperimentIdentifiers = [configurationManager getTrialExperimentIdentifiers];
 
   v129 = 0u;
   v130 = 0u;
   v127 = 0u;
   v128 = 0u;
-  obj = v7;
+  obj = analyticsCopy;
   v122 = [obj countByEnumeratingWithState:&v127 objects:v133 count:16];
   if (v122)
   {
     v112 = *v128;
-    v113 = v11;
+    v113 = getTrialExperimentIdentifiers;
     do
     {
       v12 = 0;
@@ -8030,43 +8030,43 @@ void __68__MOEventBundleManager_submitMOEventData_startDate_endDate_subDate___bl
         v13 = *(*(&v127 + 1) + 8 * v12);
         context = objc_autoreleasePoolPush();
         v14 = objc_opt_new();
-        v15 = [NSNumber numberWithInteger:v118];
+        v15 = [NSNumber numberWithInteger:year];
         [v14 setObject:v15 forKeyedSubscript:@"submissionTimeYear"];
 
-        v16 = [NSNumber numberWithInteger:v117];
+        v16 = [NSNumber numberWithInteger:month];
         [v14 setObject:v16 forKeyedSubscript:@"submissionTimeMonth"];
 
         v17 = [NSNumber numberWithInteger:v116];
         [v14 setObject:v17 forKeyedSubscript:@"submissionTimeDay"];
 
-        v18 = [NSNumber numberWithInteger:v115];
+        v18 = [NSNumber numberWithInteger:hour];
         [v14 setObject:v18 forKeyedSubscript:@"submissionTimeHour"];
 
-        v19 = [NSNumber numberWithInteger:v114];
+        v19 = [NSNumber numberWithInteger:minute];
         [v14 setObject:v19 forKeyedSubscript:@"submissionTimeMinute"];
 
-        v20 = [NSNumber numberWithUnsignedInteger:a5];
+        v20 = [NSNumber numberWithUnsignedInteger:variant];
         [v14 setObject:v20 forKeyedSubscript:@"refreshVariant"];
 
-        if (v11)
+        if (getTrialExperimentIdentifiers)
         {
-          v21 = [v11 experimentId];
-          [v14 setObject:v21 forKeyedSubscript:@"trialExperimentId"];
+          experimentId = [getTrialExperimentIdentifiers experimentId];
+          [v14 setObject:experimentId forKeyedSubscript:@"trialExperimentId"];
 
-          v22 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v11 deploymentId]);
-          v23 = [v22 stringValue];
-          [v14 setObject:v23 forKeyedSubscript:@"trialDeploymentId"];
+          v22 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [getTrialExperimentIdentifiers deploymentId]);
+          stringValue = [v22 stringValue];
+          [v14 setObject:stringValue forKeyedSubscript:@"trialDeploymentId"];
 
-          v24 = [v11 treatmentId];
-          [v14 setObject:v24 forKeyedSubscript:@"trialTreatmentId"];
+          treatmentId = [getTrialExperimentIdentifiers treatmentId];
+          [v14 setObject:treatmentId forKeyedSubscript:@"trialTreatmentId"];
         }
 
-        v25 = [v13 bundleIdentifier];
-        v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v25 hash]);
+        bundleIdentifier = [v13 bundleIdentifier];
+        v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleIdentifier hash]);
         [v14 setObject:v26 forKeyedSubscript:@"bundleId"];
 
-        v27 = [v13 suggestionID];
-        v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v27 hash]);
+        suggestionID = [v13 suggestionID];
+        v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [suggestionID hash]);
         [v14 setObject:v28 forKeyedSubscript:@"suggestionId"];
 
         v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 interfaceType]);
@@ -8084,24 +8084,24 @@ void __68__MOEventBundleManager_submitMOEventData_startDate_endDate_subDate___bl
         v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 bundleSuperType]);
         [v14 setObject:v33 forKeyedSubscript:@"bundleSuperType"];
 
-        v34 = [v13 startDate];
-        [v121 timeIntervalSinceDate:v34];
+        startDate = [v13 startDate];
+        [dateCopy timeIntervalSinceDate:startDate];
         v35 = [NSNumber numberWithDouble:?];
         v36 = [MOMetric binForNumber:v35 bins:v120];
         [v14 setObject:v36 forKeyedSubscript:@"startTimeBucketed"];
 
-        v37 = [v13 endDate];
-        [v121 timeIntervalSinceDate:v37];
+        endDate = [v13 endDate];
+        [dateCopy timeIntervalSinceDate:endDate];
         v38 = [NSNumber numberWithDouble:?];
         v39 = [MOMetric binForNumber:v38 bins:v120];
         [v14 setObject:v39 forKeyedSubscript:@"endTimeBucketed"];
 
-        v40 = [v13 events];
-        v41 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v40 count]);
+        events = [v13 events];
+        v41 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [events count]);
         [v14 setObject:v41 forKeyedSubscript:@"numTotalEvents"];
 
-        v42 = [v13 events];
-        v43 = [v42 valueForKeyPath:@"@distinctUnionOfObjects.category"];
+        events2 = [v13 events];
+        v43 = [events2 valueForKeyPath:@"@distinctUnionOfObjects.category"];
 
         v125 = v43;
         v44 = [[NSCountedSet alloc] initWithArray:v43];
@@ -8150,19 +8150,19 @@ void __68__MOEventBundleManager_submitMOEventData_startDate_endDate_subDate___bl
         v59 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v44 countForObject:&off_10036A198]);
         [v14 setObject:v59 forKeyedSubscript:@"numSharedPhotoEvents"];
 
-        v60 = [v13 events];
-        v61 = [v60 valueForKeyPath:@"@distinctUnionOfObjects.provider"];
+        events3 = [v13 events];
+        v61 = [events3 valueForKeyPath:@"@distinctUnionOfObjects.provider"];
 
         v124 = v61;
         v123 = [[NSCountedSet alloc] initWithArray:v61];
         v62 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v123 countForObject:&off_10036A078]);
         [v14 setObject:v62 forKeyedSubscript:@"numPatternEvents"];
 
-        v63 = [v13 allResources];
-        v64 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v63 count]);
+        allResources = [v13 allResources];
+        v64 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allResources count]);
         [v14 setObject:v64 forKeyedSubscript:@"numTotalResources"];
 
-        v65 = [v63 valueForKeyPath:@"@distinctUnionOfObjects.type"];
+        v65 = [allResources valueForKeyPath:@"@distinctUnionOfObjects.type"];
         v66 = [[NSCountedSet alloc] initWithArray:v65];
         v67 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v66 countForObject:&off_10036A000]);
         [v14 setObject:v67 forKeyedSubscript:@"numUnknownResourceTypes"];
@@ -8214,9 +8214,9 @@ void __68__MOEventBundleManager_submitMOEventData_startDate_endDate_subDate___bl
           v82 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
           if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
           {
-            v83 = [v13 photoSource];
+            photoSource = [v13 photoSource];
             *buf = 134217984;
-            v135 = v83;
+            v135 = photoSource;
             _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_INFO, "photoSource set in ca,%lu", buf, 0xCu);
           }
 
@@ -8224,44 +8224,44 @@ void __68__MOEventBundleManager_submitMOEventData_startDate_endDate_subDate___bl
           [v14 setObject:v84 forKeyedSubscript:@"photoSource"];
         }
 
-        v85 = [v13 action];
-        v86 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v85 actionType]);
+        action = [v13 action];
+        v86 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [action actionType]);
         [v14 setObject:v86 forKeyedSubscript:@"actionType"];
 
-        v87 = [v13 persons];
-        v88 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v87 count]);
+        persons = [v13 persons];
+        v88 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [persons count]);
         [v14 setObject:v88 forKeyedSubscript:@"numPersons"];
 
-        v89 = [v13 place];
-        v90 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v89 placeUserType] != 0);
+        place = [v13 place];
+        v90 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [place placeUserType] != 0);
         [v14 setObject:v90 forKeyedSubscript:@"isPlaceUserTypeKnown"];
 
-        v91 = [v13 place];
-        v92 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v91 placeType] != 0);
+        place2 = [v13 place];
+        v92 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [place2 placeType] != 0);
         [v14 setObject:v92 forKeyedSubscript:@"isPlaceTypeKnown"];
 
-        v93 = [v13 place];
-        v94 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v93 proposition] != 0);
+        place3 = [v13 place];
+        v94 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [place3 proposition] != 0);
         [v14 setObject:v94 forKeyedSubscript:@"isPlacePropositionSet"];
 
-        v95 = [v13 time];
-        v96 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v95 timeTag] != 0);
+        time = [v13 time];
+        v96 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [time timeTag] != 0);
         [v14 setObject:v96 forKeyedSubscript:@"isTimeTagSet"];
 
-        v97 = [v13 metaDataForRank];
-        v98 = [v97 objectForKey:@"SensitiveLocation"];
+        metaDataForRank = [v13 metaDataForRank];
+        v98 = [metaDataForRank objectForKey:@"SensitiveLocation"];
         [v14 setObject:v98 forKeyedSubscript:@"qualitySensitiveLocationType"];
 
-        v99 = [v13 metaDataForRank];
-        v100 = [v99 objectForKey:@"UninterestingLocation"];
+        metaDataForRank2 = [v13 metaDataForRank];
+        v100 = [metaDataForRank2 objectForKey:@"UninterestingLocation"];
         [v14 setObject:v100 forKeyedSubscript:@"qualityUninterestingLocationType"];
 
-        v101 = [v13 metaDataForRank];
-        v102 = [v101 objectForKey:@"InterestingLocation"];
+        metaDataForRank3 = [v13 metaDataForRank];
+        v102 = [metaDataForRank3 objectForKey:@"InterestingLocation"];
         [v14 setObject:v102 forKeyedSubscript:@"qualityInterestingLocationType"];
 
-        v103 = [v13 metaDataForRank];
-        v104 = [v103 objectForKey:@"BusinessContact"];
+        metaDataForRank4 = [v13 metaDataForRank];
+        v104 = [metaDataForRank4 objectForKey:@"BusinessContact"];
         [v14 setObject:v104 forKeyedSubscript:@"qualityContactType"];
 
         if (v14)
@@ -8290,7 +8290,7 @@ void __68__MOEventBundleManager_submitMOEventData_startDate_endDate_subDate___bl
 
         objc_autoreleasePoolPop(context);
         v12 = v12 + 1;
-        v11 = v113;
+        getTrialExperimentIdentifiers = v113;
       }
 
       while (v122 != v12);
@@ -8308,25 +8308,25 @@ void __68__MOEventBundleManager_submitMOEventData_startDate_endDate_subDate___bl
   }
 }
 
-- (void)saveEventBundles:(id)a3 withStartDate:(id)a4 endDate:(id)a5 handler:(id)a6
+- (void)saveEventBundles:(id)bundles withStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  bundlesCopy = bundles;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   v14 = objc_opt_new();
-  v15 = [[NSDateInterval alloc] initWithStartDate:v11 endDate:v12];
+  v15 = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:endDateCopy];
   v16 = [[MOEventBundleFetchOptions alloc] initWithDateInterval:v15 ascending:1 limit:0 filterBundle:0];
-  v17 = [(MOEventBundleManager *)self eventBundleStore];
+  eventBundleStore = [(MOEventBundleManager *)self eventBundleStore];
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = __71__MOEventBundleManager_saveEventBundles_withStartDate_endDate_handler___block_invoke;
   v51[3] = &unk_10033BDF8;
-  v18 = v10;
+  v18 = bundlesCopy;
   v52 = v18;
   v19 = v14;
   v53 = v19;
-  [v17 fetchEventBundleWithOptions:v16 CompletionHandler:v51];
+  [eventBundleStore fetchEventBundleWithOptions:v16 CompletionHandler:v51];
 
   v45 = 0;
   v46 = &v45;
@@ -8367,17 +8367,17 @@ void __68__MOEventBundleManager_submitMOEventData_startDate_endDate_subDate___bl
   v27 = v24;
   [(MOEventBundleStore *)v22 removeEventBundles:v23 CompletionHandler:v26];
 
-  if (v13)
+  if (handlerCopy)
   {
     v25 = v46[5];
     if (v25)
     {
-      v13[2](v13, v25, v40[5]);
+      handlerCopy[2](handlerCopy, v25, v40[5]);
     }
 
     else
     {
-      v13[2](v13, v34[5], v40[5]);
+      handlerCopy[2](handlerCopy, v34[5], v40[5]);
     }
   }
 
@@ -8522,19 +8522,19 @@ void __71__MOEventBundleManager_saveEventBundles_withStartDate_endDate_handler__
   }
 }
 
-- (id)getUnfilteredEventBundleFrom:(id)a3 with:(id)a4
+- (id)getUnfilteredEventBundleFrom:(id)from with:(id)with
 {
-  v5 = a4;
-  v6 = a3;
+  withCopy = with;
+  fromCopy = from;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __58__MOEventBundleManager_getUnfilteredEventBundleFrom_with___block_invoke;
   v12[3] = &unk_10033BE70;
-  v13 = v5;
+  v13 = withCopy;
   v7 = objc_opt_new();
   v14 = v7;
-  v8 = v5;
-  [v6 enumerateKeysAndObjectsUsingBlock:v12];
+  v8 = withCopy;
+  [fromCopy enumerateKeysAndObjectsUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -8589,17 +8589,17 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)saveEventBundles:(id)a3 handler:(id)a4
+- (void)saveEventBundles:(id)bundles handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   eventBundleStore = self->_eventBundleStore;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __49__MOEventBundleManager_saveEventBundles_handler___block_invoke;
   v9[3] = &unk_100336198;
-  v10 = v6;
-  v8 = v6;
-  [(MOEventBundleStore *)eventBundleStore storeEventBundles:a3 CompletionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(MOEventBundleStore *)eventBundleStore storeEventBundles:bundles CompletionHandler:v9];
 }
 
 void __49__MOEventBundleManager_saveEventBundles_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -8629,10 +8629,10 @@ void __49__MOEventBundleManager_saveEventBundles_handler___block_invoke(uint64_t
   }
 }
 
-- (void)saveEventBundleDictionary:(id)a3
+- (void)saveEventBundleDictionary:(id)dictionary
 {
-  v4 = [a3 allValues];
-  [(MOEventBundleStore *)self->_eventBundleStore storeEventBundles:v4 CompletionHandler:&__block_literal_global_748];
+  allValues = [dictionary allValues];
+  [(MOEventBundleStore *)self->_eventBundleStore storeEventBundles:allValues CompletionHandler:&__block_literal_global_748];
 }
 
 void __50__MOEventBundleManager_saveEventBundleDictionary___block_invoke(id a1, NSError *a2, NSDictionary *a3)
@@ -8655,17 +8655,17 @@ void __50__MOEventBundleManager_saveEventBundleDictionary___block_invoke(id a1, 
   }
 }
 
-- (void)fetchRehydratedEventBundlesWithOptions:(id)a3 CompletionHandler:(id)a4
+- (void)fetchRehydratedEventBundlesWithOptions:(id)options CompletionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __81__MOEventBundleManager_fetchRehydratedEventBundlesWithOptions_CompletionHandler___block_invoke;
   v8[3] = &unk_10033BEB8;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  optionsCopy = options;
+  selfCopy = self;
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  v7 = optionsCopy;
   [(MOEventBundleManager *)self fetchEventBundlesWithOptions:v7 CompletionHandler:v8];
 }
 
@@ -8703,10 +8703,10 @@ void __81__MOEventBundleManager_fetchRehydratedEventBundlesWithOptions_Completio
   }
 }
 
-- (void)fetchEventBundlesWithOptions:(id)a3 CompletionHandler:(id)a4
+- (void)fetchEventBundlesWithOptions:(id)options CompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v8))
   {
@@ -8716,13 +8716,13 @@ void __81__MOEventBundleManager_fetchRehydratedEventBundlesWithOptions_Completio
 
   v9 = [[MOPerformanceMeasurement alloc] initWithName:@"FetchEventBundlesWrapper" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v9 startSession];
-  v10 = [(MOEventBundleManager *)self eventBundleStore];
-  v11 = [v10 persistenceManager];
-  v12 = [v11 availability];
+  eventBundleStore = [(MOEventBundleManager *)self eventBundleStore];
+  persistenceManager = [eventBundleStore persistenceManager];
+  availability = [persistenceManager availability];
 
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
   v14 = v13;
-  if (v12 == 2)
+  if (availability == 2)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -8735,8 +8735,8 @@ void __81__MOEventBundleManager_fetchRehydratedEventBundlesWithOptions_Completio
     v19[2] = __71__MOEventBundleManager_fetchEventBundlesWithOptions_CompletionHandler___block_invoke;
     v19[3] = &unk_10033BEE0;
     v20 = v9;
-    v21 = v7;
-    [(MOEventBundleManager *)self _fetchEventBundlesWithOptions:v6 CompletionHandler:v19];
+    v21 = handlerCopy;
+    [(MOEventBundleManager *)self _fetchEventBundlesWithOptions:optionsCopy CompletionHandler:v19];
 
     v15 = v20;
   }
@@ -8764,7 +8764,7 @@ void __81__MOEventBundleManager_fetchRehydratedEventBundlesWithOptions_Completio
     v23 = @"stateDatabaseAvailable";
     v24 = &__kCFBooleanFalse;
     v18 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    (*(v7 + 2))(v7, &__NSArray0__struct, v15, v18);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, v15, v18);
   }
 }
 
@@ -8788,28 +8788,28 @@ void __71__MOEventBundleManager_fetchEventBundlesWithOptions_CompletionHandler__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchEventBundlesWithOptions:(id)a3 CompletionHandler:(id)a4
+- (void)_fetchEventBundlesWithOptions:(id)options CompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__24;
   v24[4] = __Block_byref_object_dispose__24;
-  v25 = [v6 limit];
-  v8 = [v6 identifiers];
-  if (v8)
+  limit = [optionsCopy limit];
+  identifiers = [optionsCopy identifiers];
+  if (identifiers)
   {
-    v9 = v6;
+    v9 = optionsCopy;
   }
 
   else
   {
     v10 = [MOEventBundleFetchOptions alloc];
-    v11 = [v6 categories];
-    v12 = [v6 dateInterval];
-    v9 = -[MOEventBundleFetchOptions initWithAllowedCategories:dateInterval:ascending:limit:includeDeletedBundles:skipRanking:interfaceType:](v10, "initWithAllowedCategories:dateInterval:ascending:limit:includeDeletedBundles:skipRanking:interfaceType:", v11, v12, [v6 ascending], 0, objc_msgSend(v6, "includeDeletedBundles"), objc_msgSend(v6, "skipRanking"), objc_msgSend(v6, "interfaceType"));
+    categories = [optionsCopy categories];
+    dateInterval = [optionsCopy dateInterval];
+    v9 = -[MOEventBundleFetchOptions initWithAllowedCategories:dateInterval:ascending:limit:includeDeletedBundles:skipRanking:interfaceType:](v10, "initWithAllowedCategories:dateInterval:ascending:limit:includeDeletedBundles:skipRanking:interfaceType:", categories, dateInterval, [optionsCopy ascending], 0, objc_msgSend(optionsCopy, "includeDeletedBundles"), objc_msgSend(optionsCopy, "skipRanking"), objc_msgSend(optionsCopy, "interfaceType"));
   }
 
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
@@ -8836,8 +8836,8 @@ void __71__MOEventBundleManager_fetchEventBundlesWithOptions_CompletionHandler__
   v19[3] = &unk_10033BF30;
   v17 = v14;
   v20 = v17;
-  v21 = self;
-  v18 = v7;
+  selfCopy = self;
+  v18 = handlerCopy;
   v22 = v18;
   v23 = v24;
   [(MOEventBundleStore *)eventBundleStore fetchEventBundleWithOptions:v9 CompletionHandler:v19];
@@ -8932,10 +8932,10 @@ void __72__MOEventBundleManager__fetchEventBundlesWithOptions_CompletionHandler_
   }
 }
 
-- (void)fetchEventBundlesWithPredicate:(id)a3 completionHandler:(id)a4
+- (void)fetchEventBundlesWithPredicate:(id)predicate completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v8))
   {
@@ -8945,13 +8945,13 @@ void __72__MOEventBundleManager__fetchEventBundlesWithOptions_CompletionHandler_
 
   v9 = [[MOPerformanceMeasurement alloc] initWithName:@"FetchEventBundlesWrapper" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v9 startSession];
-  v10 = [(MOEventBundleManager *)self eventBundleStore];
-  v11 = [v10 persistenceManager];
-  v12 = [v11 availability];
+  eventBundleStore = [(MOEventBundleManager *)self eventBundleStore];
+  persistenceManager = [eventBundleStore persistenceManager];
+  availability = [persistenceManager availability];
 
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityEventManager);
   v14 = v13;
-  if (v12 == 2)
+  if (availability == 2)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -8964,8 +8964,8 @@ void __72__MOEventBundleManager__fetchEventBundlesWithOptions_CompletionHandler_
     v19[2] = __73__MOEventBundleManager_fetchEventBundlesWithPredicate_completionHandler___block_invoke;
     v19[3] = &unk_10033BEE0;
     v20 = v9;
-    v21 = v7;
-    [(MOEventBundleManager *)self _fetchEventBundlesWithPredicate:v6 completionHandler:v19];
+    v21 = handlerCopy;
+    [(MOEventBundleManager *)self _fetchEventBundlesWithPredicate:predicateCopy completionHandler:v19];
 
     v15 = v20;
   }
@@ -8993,7 +8993,7 @@ void __72__MOEventBundleManager__fetchEventBundlesWithOptions_CompletionHandler_
     v23 = @"stateDatabaseAvailable";
     v24 = &__kCFBooleanFalse;
     v18 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    (*(v7 + 2))(v7, &__NSArray0__struct, v15, v18);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, v15, v18);
   }
 }
 
@@ -9017,10 +9017,10 @@ void __73__MOEventBundleManager_fetchEventBundlesWithPredicate_completionHandler
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchEventBundlesWithPredicate:(id)a3 completionHandler:(id)a4
+- (void)_fetchEventBundlesWithPredicate:(id)predicate completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  predicateCopy = predicate;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v8))
   {
@@ -9036,11 +9036,11 @@ void __73__MOEventBundleManager_fetchEventBundlesWithPredicate_completionHandler
   v13[2] = __74__MOEventBundleManager__fetchEventBundlesWithPredicate_completionHandler___block_invoke;
   v13[3] = &unk_1003377E0;
   v14 = v9;
-  v15 = self;
-  v16 = v6;
-  v11 = v6;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
   v12 = v9;
-  [(MOEventBundleStore *)eventBundleStore fetchEventBundlesWithPredicate:v7 completionHandler:v13];
+  [(MOEventBundleStore *)eventBundleStore fetchEventBundlesWithPredicate:predicateCopy completionHandler:v13];
 }
 
 void __74__MOEventBundleManager__fetchEventBundlesWithPredicate_completionHandler___block_invoke(id *a1, void *a2, void *a3)
@@ -9107,18 +9107,18 @@ uint64_t __74__MOEventBundleManager__fetchEventBundlesWithPredicate_completionHa
   return result;
 }
 
-- (void)_rehydrateEventBundles:(id)a3 withHandler:(id)a4
+- (void)_rehydrateEventBundles:(id)bundles withHandler:(id)handler
 {
-  v5 = a3;
-  v32 = a4;
+  bundlesCopy = bundles;
+  handlerCopy = handler;
   v33 = objc_opt_new();
-  v31 = [v5 mutableCopy];
+  v31 = [bundlesCopy mutableCopy];
   v6 = objc_opt_new();
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v5;
+  obj = bundlesCopy;
   v7 = [obj countByEnumeratingWithState:&v47 objects:v56 count:16];
   if (v7)
   {
@@ -9137,8 +9137,8 @@ uint64_t __74__MOEventBundleManager__fetchEventBundlesWithPredicate_completionHa
         v12 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          v20 = [v11 events];
-          v21 = [v20 count];
+          events = [v11 events];
+          v21 = [events count];
           *buf = 134218242;
           v53 = v21;
           v54 = 2112;
@@ -9150,8 +9150,8 @@ uint64_t __74__MOEventBundleManager__fetchEventBundlesWithPredicate_completionHa
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v13 = [v11 events];
-        v14 = [v13 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        events2 = [v11 events];
+        v14 = [events2 countByEnumeratingWithState:&v43 objects:v51 count:16];
         if (v14)
         {
           v15 = v14;
@@ -9162,15 +9162,15 @@ uint64_t __74__MOEventBundleManager__fetchEventBundlesWithPredicate_completionHa
             {
               if (*v44 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(events2);
               }
 
               v18 = *(*(&v43 + 1) + 8 * j);
-              v19 = [v18 eventIdentifier];
-              [v6 setObject:v18 forKey:v19];
+              eventIdentifier = [v18 eventIdentifier];
+              [v6 setObject:v18 forKey:eventIdentifier];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v43 objects:v51 count:16];
+            v15 = [events2 countByEnumeratingWithState:&v43 objects:v51 count:16];
           }
 
           while (v15);
@@ -9183,7 +9183,7 @@ uint64_t __74__MOEventBundleManager__fetchEventBundlesWithPredicate_completionHa
     while (v8);
   }
 
-  v22 = [v6 allValues];
+  allValues = [v6 allValues];
   v23 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v23))
   {
@@ -9193,23 +9193,23 @@ uint64_t __74__MOEventBundleManager__fetchEventBundlesWithPredicate_completionHa
 
   v24 = [[MOPerformanceMeasurement alloc] initWithName:@"FetchEventBundlesRehydrateEvents" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v24 startSession];
-  v25 = [(MOEventBundleManager *)self eventManager];
+  eventManager = [(MOEventBundleManager *)self eventManager];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = __59__MOEventBundleManager__rehydrateEventBundles_withHandler___block_invoke;
   v36[3] = &unk_10033BFA8;
   v37 = v24;
-  v38 = self;
+  selfCopy = self;
   v39 = obj;
   v40 = v33;
   v41 = v31;
-  v42 = v32;
-  v26 = v32;
+  v42 = handlerCopy;
+  v26 = handlerCopy;
   v27 = v31;
   v28 = v33;
   v29 = obj;
   v30 = v24;
-  [v25 rehydrateEvents:v22 withHandler:v36];
+  [eventManager rehydrateEvents:allValues withHandler:v36];
 }
 
 void __59__MOEventBundleManager__rehydrateEventBundles_withHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -9440,18 +9440,18 @@ LABEL_32:
   }
 }
 
-- (id)findRehydrateEvents:(id)a3 forBundle:(id)a4
+- (id)findRehydrateEvents:(id)events forBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  bundleCopy = bundle;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = [v6 events];
-  v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  events = [bundleCopy events];
+  v10 = [events countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v10)
   {
     v11 = v10;
@@ -9462,14 +9462,14 @@ LABEL_32:
       {
         if (*v31 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(events);
         }
 
-        v14 = [*(*(&v30 + 1) + 8 * i) eventIdentifier];
-        [v8 addObject:v14];
+        eventIdentifier = [*(*(&v30 + 1) + 8 * i) eventIdentifier];
+        [v8 addObject:eventIdentifier];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v11 = [events countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v11);
@@ -9479,7 +9479,7 @@ LABEL_32:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = v5;
+  v15 = eventsCopy;
   v16 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v16)
   {
@@ -9495,8 +9495,8 @@ LABEL_32:
         }
 
         v20 = *(*(&v26 + 1) + 8 * j);
-        v21 = [v20 eventIdentifier];
-        v22 = [v8 containsObject:v21];
+        eventIdentifier2 = [v20 eventIdentifier];
+        v22 = [v8 containsObject:eventIdentifier2];
 
         if (v22)
         {
@@ -9510,22 +9510,22 @@ LABEL_32:
     while (v17);
   }
 
-  v23 = [v7 allObjects];
-  v24 = [NSArray arrayWithArray:v23];
+  allObjects = [v7 allObjects];
+  v24 = [NSArray arrayWithArray:allObjects];
 
   return v24;
 }
 
-- (void)cleanUpEventBundlesWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)cleanUpEventBundlesWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v8 = v7;
-  v9 = a3 - 1;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
+  v9 = variant - 1;
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerCleanUpEventBundlesWrapper", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerCleanUpEventBundlesWrapper", "", buf, 2u);
   }
 
   v10 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanUpEventBundlesWrapper" measureRecentPeak:0];
@@ -9535,7 +9535,7 @@ LABEL_32:
   if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerCleanUpEventBundles", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerCleanUpEventBundles", "", buf, 2u);
   }
 
   v13 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanUpEventBundles" measureRecentPeak:0];
@@ -9545,17 +9545,17 @@ LABEL_32:
   if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v15, OS_SIGNPOST_INTERVAL_END, a3, "EventBundleManagerCleanUpEventBundles", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v15, OS_SIGNPOST_INTERVAL_END, variant, "EventBundleManagerCleanUpEventBundles", "", buf, 2u);
   }
 
   [(MOPerformanceMeasurement *)v13 endSession];
-  v16 = [(MOEventBundleManager *)self eventBundleStore];
-  v17 = [v16 persistenceManager];
-  v18 = [v17 availability];
+  eventBundleStore = [(MOEventBundleManager *)self eventBundleStore];
+  persistenceManager = [eventBundleStore persistenceManager];
+  availability = [persistenceManager availability];
 
   v19 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   v20 = v19;
-  if (v18 == 2)
+  if (availability == 2)
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -9567,10 +9567,10 @@ LABEL_32:
     v25[1] = 3221225472;
     v25[2] = __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler___block_invoke;
     v25[3] = &unk_10033BFD0;
-    v27 = v6;
-    v28 = a3;
+    v27 = handlerCopy;
+    variantCopy = variant;
     v26 = v10;
-    [(MOEventBundleManager *)self _cleanUpEventBundlesWithRefreshVariant:a3 andHandler:v25];
+    [(MOEventBundleManager *)self _cleanUpEventBundlesWithRefreshVariant:variant andHandler:v25];
   }
 
   else
@@ -9580,14 +9580,14 @@ LABEL_32:
       [MOEventBundleManager cleanUpEventBundlesWithRefreshVariant:andHandler:];
     }
 
-    if (v6)
+    if (handlerCopy)
     {
       v30 = NSLocalizedDescriptionKey;
       v31 = @"[cleanUpEventBundlesWithRefreshVariant] database is not available";
       v21 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
       v22 = [NSError errorWithDomain:@"MOErrorDomain" code:16 userInfo:v21];
 
-      (*(v6 + 2))(v6, v22, &__NSDictionary0__struct);
+      (*(handlerCopy + 2))(handlerCopy, v22, &__NSDictionary0__struct);
     }
 
     v23 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
@@ -9595,7 +9595,7 @@ LABEL_32:
     if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v24, OS_SIGNPOST_INTERVAL_END, a3, "EventBundleManagerCleanUpEventBundlesWrapper", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v24, OS_SIGNPOST_INTERVAL_END, variant, "EventBundleManagerCleanUpEventBundlesWrapper", "", buf, 2u);
     }
 
     [(MOPerformanceMeasurement *)v10 endSession];
@@ -9624,9 +9624,9 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   [*(a1 + 32) endSession];
 }
 
-- (void)_cleanUpEventBundlesWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)_cleanUpEventBundlesWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
   v107[0] = 0;
   v107[1] = v107;
@@ -9696,11 +9696,11 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   v88 = 0;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v9 = v8;
-  v10 = a3 - 1;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
+  v10 = variant - 1;
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerCleanUpEventBundlesPurgeExpired", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerCleanUpEventBundlesPurgeExpired", "", buf, 2u);
   }
 
   v11 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanUpEventBundlesPurgeExpired" measureRecentPeak:0];
@@ -9711,7 +9711,7 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   v80[1] = 3221225472;
   v80[2] = __74__MOEventBundleManager__cleanUpEventBundlesWithRefreshVariant_andHandler___block_invoke;
   v80[3] = &unk_10033BFF8;
-  v85 = a3;
+  variantCopy = variant;
   v13 = v11;
   v81 = v13;
   v83 = v95;
@@ -9724,7 +9724,7 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerCleanUpEventBundlesPurgeNoEvents", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerCleanUpEventBundlesPurgeNoEvents", "", buf, 2u);
   }
 
   v17 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanUpEventBundlesPurgeNoEvents" measureRecentPeak:0];
@@ -9735,7 +9735,7 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   v74[1] = 3221225472;
   v74[2] = __74__MOEventBundleManager__cleanUpEventBundlesWithRefreshVariant_andHandler___block_invoke_791;
   v74[3] = &unk_10033BFF8;
-  v79 = a3;
+  variantCopy2 = variant;
   v19 = v17;
   v75 = v19;
   v77 = v93;
@@ -9749,10 +9749,10 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v22, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerCleanUpEventBundlesPurgeInvalidEvergreeen", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v22, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerCleanUpEventBundlesPurgeInvalidEvergreeen", "", buf, 2u);
   }
 
-  v23 = v6;
+  v23 = handlerCopy;
 
   v24 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanUpEventBundlesPurgeInvalidEvergreen" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v24 startSession];
@@ -9762,7 +9762,7 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   v68[1] = 3221225472;
   v68[2] = __74__MOEventBundleManager__cleanUpEventBundlesWithRefreshVariant_andHandler___block_invoke_795;
   v68[3] = &unk_10033BFF8;
-  v73 = a3;
+  variantCopy3 = variant;
   v26 = v24;
   v69 = v26;
   v71 = v91;
@@ -9775,13 +9775,13 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v29, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerCleanUpEventBundlesPurgeRehydrationFailure", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v29, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerCleanUpEventBundlesPurgeRehydrationFailure", "", buf, 2u);
   }
 
   v30 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanUpEventBundlesPurgeRehydrationFailure" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v30 startSession];
-  v31 = [(MOEventBundleManager *)self configurationManager];
-  v32 = [v31 getIntegerSettingForKey:@"EventManagerOverrideEventsRehydrationFailureCountThreshold" withFallback:10];
+  configurationManager = [(MOEventBundleManager *)self configurationManager];
+  v32 = [configurationManager getIntegerSettingForKey:@"EventManagerOverrideEventsRehydrationFailureCountThreshold" withFallback:10];
 
   dispatch_group_enter(v27);
   v33 = self->_eventBundleStore;
@@ -9789,7 +9789,7 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   v62[1] = 3221225472;
   v62[2] = __74__MOEventBundleManager__cleanUpEventBundlesWithRefreshVariant_andHandler___block_invoke_802;
   v62[3] = &unk_10033BFF8;
-  v67 = a3;
+  variantCopy4 = variant;
   v34 = v30;
   v63 = v34;
   v65 = v89;
@@ -9802,7 +9802,7 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v36))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v37, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerCleanUpEventBundlesPurgeDangling", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v37, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerCleanUpEventBundlesPurgeDangling", "", buf, 2u);
   }
 
   v38 = [[MOPerformanceMeasurement alloc] initWithName:@"CleanUpEventBundlesPurgeDangling" measureRecentPeak:0];
@@ -9813,7 +9813,7 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   v56[1] = 3221225472;
   v56[2] = __74__MOEventBundleManager__cleanUpEventBundlesWithRefreshVariant_andHandler___block_invoke_806;
   v56[3] = &unk_10033BFF8;
-  v61 = a3;
+  variantCopy5 = variant;
   v40 = v38;
   v57 = v40;
   v59 = v87;
@@ -9821,7 +9821,7 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   v41 = v35;
   v58 = v41;
   [(MOEventBundleStore *)v39 purgeDanglingEventBundlesWithHandler:v56];
-  v42 = [(MOEventBundleManager *)self queue];
+  queue = [(MOEventBundleManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __74__MOEventBundleManager__cleanUpEventBundlesWithRefreshVariant_andHandler___block_invoke_807;
@@ -9837,7 +9837,7 @@ void __73__MOEventBundleManager_cleanUpEventBundlesWithRefreshVariant_andHandler
   v54 = v89;
   v55 = v87;
   v43 = v23;
-  dispatch_group_notify(v41, v42, block);
+  dispatch_group_notify(v41, queue, block);
 
   _Block_object_dispose(v87, 8);
   _Block_object_dispose(v89, 8);
@@ -10165,33 +10165,33 @@ LABEL_10:
   }
 }
 
-- (void)clearEventBundlesWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (void)clearEventBundlesWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v8 = v7;
-  v9 = a3 - 1;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
+  v9 = variant - 1;
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *v28 = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerClearEventBundlesWrapper", "", v28, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerClearEventBundlesWrapper", "", v28, 2u);
   }
 
   v10 = [[MOPerformanceMeasurement alloc] initWithName:@"ClearEventBundlesWrapper" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v10 startSession];
-  if (a3 == 0xFFFF)
+  if (variant == 0xFFFF)
   {
-    v11 = [(MOEventBundleManager *)self fsmStore];
-    [v11 removeAllFSMsWithCompletionHandler:&__block_literal_global_812];
+    fsmStore = [(MOEventBundleManager *)self fsmStore];
+    [fsmStore removeAllFSMsWithCompletionHandler:&__block_literal_global_812];
   }
 
-  v12 = [(MOEventBundleManager *)self eventBundleStore];
-  v13 = [v12 persistenceManager];
-  v14 = [v13 availability];
+  eventBundleStore = [(MOEventBundleManager *)self eventBundleStore];
+  persistenceManager = [eventBundleStore persistenceManager];
+  availability = [persistenceManager availability];
 
   v15 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   v16 = v15;
-  if (v14 == 2)
+  if (availability == 2)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -10204,7 +10204,7 @@ LABEL_10:
     if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
     {
       *v28 = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_INTERVAL_BEGIN, a3, "EventBundleManagerClearEventBundles", "", v28, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_INTERVAL_BEGIN, variant, "EventBundleManagerClearEventBundles", "", v28, 2u);
     }
 
     v19 = [[MOPerformanceMeasurement alloc] initWithName:@"ClearEventBundles" measureRecentPeak:0];
@@ -10216,13 +10216,13 @@ LABEL_10:
     if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
     {
       *v28 = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v21, OS_SIGNPOST_INTERVAL_END, a3, "EventBundleManagerClearEventBundles", "", v28, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v21, OS_SIGNPOST_INTERVAL_END, variant, "EventBundleManagerClearEventBundles", "", v28, 2u);
     }
 
     [(MOPerformanceMeasurement *)v19 endSession];
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, 0, &__NSDictionary0__struct);
+      handlerCopy[2](handlerCopy, 0, &__NSDictionary0__struct);
     }
 
     v22 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
@@ -10230,7 +10230,7 @@ LABEL_10:
     if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
     {
       *v28 = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_INTERVAL_END, a3, "EventBundleManagerClearEventBundlesWrapper", "", v28, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_INTERVAL_END, variant, "EventBundleManagerClearEventBundlesWrapper", "", v28, 2u);
     }
 
     [(MOPerformanceMeasurement *)v10 endSession];
@@ -10243,14 +10243,14 @@ LABEL_10:
       [MOEventBundleManager clearEventBundlesWithRefreshVariant:andHandler:];
     }
 
-    if (v6)
+    if (handlerCopy)
     {
       v29 = NSLocalizedDescriptionKey;
       v30 = @"database is not available";
       v24 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
       v25 = [NSError errorWithDomain:@"MOErrorDomain" code:16 userInfo:v24];
 
-      (v6)[2](v6, v25, &__NSDictionary0__struct);
+      (handlerCopy)[2](handlerCopy, v25, &__NSDictionary0__struct);
     }
 
     v26 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
@@ -10258,7 +10258,7 @@ LABEL_10:
     if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
     {
       *v28 = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v27, OS_SIGNPOST_INTERVAL_END, a3, "EventBundleManagerClearEventBundlesWrapper", "", v28, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v27, OS_SIGNPOST_INTERVAL_END, variant, "EventBundleManagerClearEventBundlesWrapper", "", v28, 2u);
     }
 
     [(MOPerformanceMeasurement *)v10 endSession];
@@ -10279,8 +10279,8 @@ void __71__MOEventBundleManager_clearEventBundlesWithRefreshVariant_andHandler__
 
 - (void)_clearEventBundles
 {
-  v2 = [(MOEventBundleManager *)self eventBundleStore];
-  [v2 removeAllBundlesWithCompletionHandler:&__block_literal_global_817];
+  eventBundleStore = [(MOEventBundleManager *)self eventBundleStore];
+  [eventBundleStore removeAllBundlesWithCompletionHandler:&__block_literal_global_817];
 }
 
 void __42__MOEventBundleManager__clearEventBundles__block_invoke(id a1, NSError *a2)
@@ -10295,8 +10295,8 @@ void __42__MOEventBundleManager__clearEventBundles__block_invoke(id a1, NSError 
 
 - (void)_clearFSMs
 {
-  v2 = [(MOEventBundleManager *)self fsmStore];
-  [v2 removeAllFSMsWithCompletionHandler:&__block_literal_global_819];
+  fsmStore = [(MOEventBundleManager *)self fsmStore];
+  [fsmStore removeAllFSMsWithCompletionHandler:&__block_literal_global_819];
 }
 
 void __34__MOEventBundleManager__clearFSMs__block_invoke(id a1, NSError *a2)
@@ -10309,12 +10309,12 @@ void __34__MOEventBundleManager__clearFSMs__block_invoke(id a1, NSError *a2)
   }
 }
 
-- (BOOL)isDataDumpEnabledForTrigger:(unint64_t)a3
+- (BOOL)isDataDumpEnabledForTrigger:(unint64_t)trigger
 {
   v5 = [(MOConfigurationManagerBase *)self->_configurationManager getBoolSettingForKey:@"BundlingDataCollectionEnabled" withFallback:1];
   if ([(MOConfigurationManagerBase *)self->_configurationManager getBoolSettingForKey:@"BundlingDataUploadEnabled" withFallback:0])
   {
-    if (a3 - 1 >= 5)
+    if (trigger - 1 >= 5)
     {
       goto LABEL_9;
     }
@@ -10324,7 +10324,7 @@ void __34__MOEventBundleManager__clearFSMs__block_invoke(id a1, NSError *a2)
 
   if (!v5)
   {
-    if (a3 == 3)
+    if (trigger == 3)
     {
 LABEL_8:
       LOBYTE(v6) = 1;
@@ -10336,12 +10336,12 @@ LABEL_9:
     return v6 & 1;
   }
 
-  if (a3 >= 5)
+  if (trigger >= 5)
   {
     goto LABEL_9;
   }
 
-  v6 = 0x1Au >> a3;
+  v6 = 0x1Au >> trigger;
   return v6 & 1;
 }
 
@@ -10356,7 +10356,7 @@ void __112__MOEventBundleManager_captureCurrentDBStateForTrigger_withFeedback_ad
   }
 }
 
-- (id)_getMetadataForTrigger:(unint64_t)a3
+- (id)_getMetadataForTrigger:(unint64_t)trigger
 {
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v5))
@@ -10369,11 +10369,11 @@ void __112__MOEventBundleManager_captureCurrentDBStateForTrigger_withFeedback_ad
   [(MOPerformanceMeasurement *)v6 startSession];
   v7 = objc_opt_new();
   v8 = objc_autoreleasePoolPush();
-  v9 = [(MOEventBundleManager *)self getAllowedToPromptConfiguration];
-  v10 = v9;
-  if (v9)
+  getAllowedToPromptConfiguration = [(MOEventBundleManager *)self getAllowedToPromptConfiguration];
+  v10 = getAllowedToPromptConfiguration;
+  if (getAllowedToPromptConfiguration)
   {
-    v11 = v9;
+    v11 = getAllowedToPromptConfiguration;
   }
 
   else
@@ -10403,17 +10403,17 @@ void __112__MOEventBundleManager_captureCurrentDBStateForTrigger_withFeedback_ad
   [v7 setObject:v18 forKey:@"kMODataDumpTimestamp"];
 
   [v7 setObject:&off_10036E6B0 forKey:@"kMOBundlingCollectionVersionNumber"];
-  v19 = [NSNumber numberWithUnsignedInteger:a3];
+  v19 = [NSNumber numberWithUnsignedInteger:trigger];
   [v7 setObject:v19 forKey:@"kMODataDumpTrigger"];
 
-  v20 = [(MOEventBundleManager *)self configurationManager];
-  v21 = [v20 getIntegerSettingForKey:@"OnboardingStatus" withFallback:0];
+  configurationManager = [(MOEventBundleManager *)self configurationManager];
+  v21 = [configurationManager getIntegerSettingForKey:@"OnboardingStatus" withFallback:0];
 
   v22 = [NSNumber numberWithInt:v21];
   [v7 setObject:v22 forKey:@"kMODataOnboardingStatus"];
 
-  v23 = [(MOEventBundleManager *)self defaultManager];
-  v24 = [v23 objectForKey:@"OnboardingDate"];
+  defaultManager = [(MOEventBundleManager *)self defaultManager];
+  v24 = [defaultManager objectForKey:@"OnboardingDate"];
 
   if (v24)
   {
@@ -10425,8 +10425,8 @@ void __112__MOEventBundleManager_captureCurrentDBStateForTrigger_withFeedback_ad
   v26 = [NSNumber numberWithBool:[(MOEventBundleManager *)self persistBundlingDataWithoutRandomization]];
   [v7 setObject:v26 forKey:@"kMODataWithoutRandomization"];
 
-  v27 = [(MOEventBundleManager *)self defaultManager];
-  v28 = [v27 objectForKeyWithoutLog:@"MODataServerUploaderSubjectUUID"];
+  defaultManager2 = [(MOEventBundleManager *)self defaultManager];
+  v28 = [defaultManager2 objectForKeyWithoutLog:@"MODataServerUploaderSubjectUUID"];
 
   if (v28)
   {
@@ -10438,11 +10438,11 @@ void __112__MOEventBundleManager_captureCurrentDBStateForTrigger_withFeedback_ad
   return v7;
 }
 
-- (void)fetchAndSaveBundlingDataForTrigger:(unint64_t)a3 withFeedback:(id)a4 additionalMetadata:(id)a5 shouldUpload:(BOOL)a6 andHandler:(id)a7
+- (void)fetchAndSaveBundlingDataForTrigger:(unint64_t)trigger withFeedback:(id)feedback additionalMetadata:(id)metadata shouldUpload:(BOOL)upload andHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a7;
+  feedbackCopy = feedback;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v13))
   {
@@ -10452,8 +10452,8 @@ void __112__MOEventBundleManager_captureCurrentDBStateForTrigger_withFeedback_ad
 
   v14 = [[MOPerformanceMeasurement alloc] initWithName:@"CaptureCurrentDB" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v14 startSession];
-  v15 = [(MOEventBundleManager *)self configurationManager];
-  v16 = [v15 getIntegerSettingForKey:@"EventBundleManagerOverrideRefreshDataExportMaxLookBackWindowSecs" withFallback:2419200];
+  configurationManager = [(MOEventBundleManager *)self configurationManager];
+  v16 = [configurationManager getIntegerSettingForKey:@"EventBundleManagerOverrideRefreshDataExportMaxLookBackWindowSecs" withFallback:2419200];
 
   v17 = +[NSDate date];
   v18 = [v17 dateByAddingTimeInterval:-v16];
@@ -10461,7 +10461,7 @@ void __112__MOEventBundleManager_captureCurrentDBStateForTrigger_withFeedback_ad
   v20 = dispatch_group_create();
   [(MOEventBundleManager *)self beginDataExport];
   dispatch_group_enter(v20);
-  v21 = [(MOEventBundleManager *)self queue];
+  queue = [(MOEventBundleManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __115__MOEventBundleManager_fetchAndSaveBundlingDataForTrigger_withFeedback_additionalMetadata_shouldUpload_andHandler___block_invoke;
@@ -10471,39 +10471,39 @@ void __112__MOEventBundleManager_captureCurrentDBStateForTrigger_withFeedback_ad
   v22 = v20;
   v45 = v22;
   v31 = v19;
-  dispatch_async(v21, block);
+  dispatch_async(queue, block);
 
   dispatch_group_enter(v22);
-  v23 = [(MOEventBundleManager *)self queue];
+  queue2 = [(MOEventBundleManager *)self queue];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = __115__MOEventBundleManager_fetchAndSaveBundlingDataForTrigger_withFeedback_additionalMetadata_shouldUpload_andHandler___block_invoke_5;
   v38[3] = &unk_10033C148;
   v41 = v22;
-  v42 = a3;
+  triggerCopy = trigger;
   v38[4] = self;
-  v39 = v11;
-  v40 = v10;
+  v39 = metadataCopy;
+  v40 = feedbackCopy;
   v24 = v22;
-  v25 = v10;
-  v26 = v11;
-  dispatch_async(v23, v38);
+  v25 = feedbackCopy;
+  v26 = metadataCopy;
+  dispatch_async(queue2, v38);
 
-  v27 = [(MOEventBundleManager *)self eventBundleRanking];
-  [(MOEventBundleManager *)self persistRankingModel:v27];
+  eventBundleRanking = [(MOEventBundleManager *)self eventBundleRanking];
+  [(MOEventBundleManager *)self persistRankingModel:eventBundleRanking];
 
-  v28 = [(MOEventBundleManager *)self queue];
+  queue3 = [(MOEventBundleManager *)self queue];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = __115__MOEventBundleManager_fetchAndSaveBundlingDataForTrigger_withFeedback_additionalMetadata_shouldUpload_andHandler___block_invoke_859;
   v34[3] = &unk_10033C198;
-  v37 = a6;
+  uploadCopy = upload;
   v35 = v14;
-  v36 = v12;
+  v36 = handlerCopy;
   v34[4] = self;
   v29 = v14;
-  v30 = v12;
-  dispatch_group_notify(v24, v28, v34);
+  v30 = handlerCopy;
+  dispatch_group_notify(v24, queue3, v34);
 }
 
 void __115__MOEventBundleManager_fetchAndSaveBundlingDataForTrigger_withFeedback_additionalMetadata_shouldUpload_andHandler___block_invoke(uint64_t a1)
@@ -10688,9 +10688,9 @@ void __115__MOEventBundleManager_fetchAndSaveBundlingDataForTrigger_withFeedback
   [*(a1 + 32) endSession];
 }
 
-- (void)_generateClusterAndAnomalyBundlesWithHandler:(id)a3
+- (void)_generateClusterAndAnomalyBundlesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -10699,8 +10699,8 @@ void __115__MOEventBundleManager_fetchAndSaveBundlingDataForTrigger_withFeedback
   }
 
   v6 = +[NSDate date];
-  v7 = [(MOEventBundleManager *)self onboardingAndSettingsPersistence];
-  v8 = [v7 getSnapshotDictionaryForAnalytics];
+  onboardingAndSettingsPersistence = [(MOEventBundleManager *)self onboardingAndSettingsPersistence];
+  getSnapshotDictionaryForAnalytics = [onboardingAndSettingsPersistence getSnapshotDictionaryForAnalytics];
 
   v9 = [v6 dateByAddingTimeInterval:-2419200.0];
   v10 = [[NSDateInterval alloc] initWithStartDate:v9 endDate:v6];
@@ -10719,11 +10719,11 @@ void __115__MOEventBundleManager_fetchAndSaveBundlingDataForTrigger_withFeedback
   v17[2] = __69__MOEventBundleManager__generateClusterAndAnomalyBundlesWithHandler___block_invoke;
   v17[3] = &unk_10033C210;
   v18 = v13;
-  v19 = self;
-  v20 = v8;
-  v21 = v4;
-  v14 = v8;
-  v15 = v4;
+  selfCopy = self;
+  v20 = getSnapshotDictionaryForAnalytics;
+  v21 = handlerCopy;
+  v14 = getSnapshotDictionaryForAnalytics;
+  v15 = handlerCopy;
   v16 = v13;
   [(MOEventBundleManager *)self fetchEventBundlesWithOptions:v11 CompletionHandler:v17];
 }
@@ -11054,31 +11054,31 @@ void __69__MOEventBundleManager__generateClusterAndAnomalyBundlesWithHandler___b
   }
 }
 
-- (void)_processClusterBundles:(id)a3 withEmbeddings:(id)a4 onboardingStatus:(id)a5 result:(id)a6 andHandler:(id)a7
+- (void)_processClusterBundles:(id)bundles withEmbeddings:(id)embeddings onboardingStatus:(id)status result:(id)result andHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v15)
+  bundlesCopy = bundles;
+  embeddingsCopy = embeddings;
+  statusCopy = status;
+  resultCopy = result;
+  handlerCopy = handler;
+  if (!resultCopy)
   {
-    v15 = objc_opt_new();
+    resultCopy = objc_opt_new();
   }
 
-  v17 = [(MOEventBundleManager *)self bundleClusteringManager];
+  bundleClusteringManager = [(MOEventBundleManager *)self bundleClusteringManager];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = __97__MOEventBundleManager__processClusterBundles_withEmbeddings_onboardingStatus_result_andHandler___block_invoke;
   v21[3] = &unk_1003378F0;
-  v22 = v15;
-  v23 = self;
-  v24 = v14;
-  v25 = v16;
-  v18 = v14;
-  v19 = v16;
-  v20 = v15;
-  [v17 generateClusterBundles:v12 withEmbeddings:v13 handler:v21];
+  v22 = resultCopy;
+  selfCopy = self;
+  v24 = statusCopy;
+  v25 = handlerCopy;
+  v18 = statusCopy;
+  v19 = handlerCopy;
+  v20 = resultCopy;
+  [bundleClusteringManager generateClusterBundles:bundlesCopy withEmbeddings:embeddingsCopy handler:v21];
 }
 
 void __97__MOEventBundleManager__processClusterBundles_withEmbeddings_onboardingStatus_result_andHandler___block_invoke(id *a1, void *a2, void *a3)
@@ -11607,9 +11607,9 @@ void __97__MOEventBundleManager__processClusterBundles_withEmbeddings_onboarding
   }
 }
 
-- (void)_generateThematicSummarizationBundlesWithHandler:(id)a3
+- (void)_generateThematicSummarizationBundlesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -11619,9 +11619,9 @@ void __97__MOEventBundleManager__processClusterBundles_withEmbeddings_onboarding
 
   v6 = objc_opt_new();
   v7 = +[NSDate date];
-  v8 = [(MOEventBundleManager *)self configurationManager];
+  configurationManager = [(MOEventBundleManager *)self configurationManager];
   LODWORD(v9) = 1242802176;
-  [v8 getFloatSettingForKey:@"ThematicSummarizationInputTimeWindow" withFallback:v9];
+  [configurationManager getFloatSettingForKey:@"ThematicSummarizationInputTimeWindow" withFallback:v9];
   v11 = v10;
 
   v12 = [v7 dateByAddingTimeInterval:-v11];
@@ -11641,11 +11641,11 @@ void __97__MOEventBundleManager__processClusterBundles_withEmbeddings_onboarding
   v20[2] = __73__MOEventBundleManager__generateThematicSummarizationBundlesWithHandler___block_invoke;
   v20[3] = &unk_10033C210;
   v21 = v16;
-  v22 = self;
+  selfCopy = self;
   v23 = v6;
-  v24 = v4;
+  v24 = handlerCopy;
   v17 = v6;
-  v18 = v4;
+  v18 = handlerCopy;
   v19 = v16;
   [(MOEventBundleManager *)self fetchEventBundlesWithOptions:v14 CompletionHandler:v20];
 }
@@ -12451,9 +12451,9 @@ void __73__MOEventBundleManager__generateThematicSummarizationBundlesWithHandler
   v11();
 }
 
-- (void)_generatePersonalizedReflectionBundlesWithHandler:(id)a3
+- (void)_generatePersonalizedReflectionBundlesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSDate date];
   v6 = [v5 dateByAddingTimeInterval:-2419200.0];
   v7 = [[NSDateInterval alloc] initWithStartDate:v6 endDate:v5];
@@ -12463,8 +12463,8 @@ void __73__MOEventBundleManager__generateThematicSummarizationBundlesWithHandler
   v10[2] = __74__MOEventBundleManager__generatePersonalizedReflectionBundlesWithHandler___block_invoke;
   v10[3] = &unk_10033C318;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(MOEventBundleManager *)self fetchEventBundlesWithOptions:v8 CompletionHandler:v10];
 }
 
@@ -12572,18 +12572,18 @@ void __74__MOEventBundleManager__generatePersonalizedReflectionBundlesWithHandle
   }
 }
 
-- (void)_expireOutdatedNotificationsWithHandler:(id)a3
+- (void)_expireOutdatedNotificationsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MOEventBundleManager *)self notificationCenter];
+  handlerCopy = handler;
+  notificationCenter = [(MOEventBundleManager *)self notificationCenter];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __64__MOEventBundleManager__expireOutdatedNotificationsWithHandler___block_invoke;
   v7[3] = &unk_10033C368;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 getDeliveredNotificationsWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [notificationCenter getDeliveredNotificationsWithCompletionHandler:v7];
 }
 
 void __64__MOEventBundleManager__expireOutdatedNotificationsWithHandler___block_invoke(uint64_t a1, void *a2)

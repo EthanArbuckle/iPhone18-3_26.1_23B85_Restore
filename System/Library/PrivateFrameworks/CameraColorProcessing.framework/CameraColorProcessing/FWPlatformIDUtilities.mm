@@ -35,22 +35,22 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 + (void)getFWPlatformID
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *soft_FigCaptureGetModelSpecificName(void)"];
-  [v0 handleFailureInFunction:v1 file:@"FWPlatformIDUtilities.m" lineNumber:28 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"FWPlatformIDUtilities.m" lineNumber:28 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

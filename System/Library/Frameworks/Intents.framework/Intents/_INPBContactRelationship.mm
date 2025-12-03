@@ -1,58 +1,58 @@
 @interface _INPBContactRelationship
-- (BOOL)isEqual:(id)a3;
-- (_INPBContactRelationship)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBContactRelationship)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setName:(id)a3;
-- (void)setRelation:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setName:(id)name;
+- (void)setRelation:(id)relation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBContactRelationship
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_name)
   {
-    v4 = [(_INPBContactRelationship *)self name];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"name"];
+    name = [(_INPBContactRelationship *)self name];
+    v5 = [name copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"name"];
   }
 
   if (self->_relation)
   {
-    v6 = [(_INPBContactRelationship *)self relation];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"relation"];
+    relation = [(_INPBContactRelationship *)self relation];
+    v7 = [relation copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"relation"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBContactRelationship *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_INPBContactRelationship *)self name];
+  name2 = [equalCopy name];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBContactRelationship *)self name];
-  if (v7)
+  name3 = [(_INPBContactRelationship *)self name];
+  if (name3)
   {
-    v8 = v7;
-    v9 = [(_INPBContactRelationship *)self name];
-    v10 = [v4 name];
-    v11 = [v9 isEqual:v10];
+    v8 = name3;
+    name4 = [(_INPBContactRelationship *)self name];
+    name5 = [equalCopy name];
+    v11 = [name4 isEqual:name5];
 
     if (!v11)
     {
@@ -64,12 +64,12 @@
   {
   }
 
-  v5 = [(_INPBContactRelationship *)self relation];
-  v6 = [v4 relation];
-  if ((v5 != 0) != (v6 == 0))
+  name = [(_INPBContactRelationship *)self relation];
+  name2 = [equalCopy relation];
+  if ((name != 0) != (name2 == 0))
   {
-    v12 = [(_INPBContactRelationship *)self relation];
-    if (!v12)
+    relation = [(_INPBContactRelationship *)self relation];
+    if (!relation)
     {
 
 LABEL_15:
@@ -77,10 +77,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBContactRelationship *)self relation];
-    v15 = [v4 relation];
-    v16 = [v14 isEqual:v15];
+    v13 = relation;
+    relation2 = [(_INPBContactRelationship *)self relation];
+    relation3 = [equalCopy relation];
+    v16 = [relation2 isEqual:relation3];
 
     if (v16)
     {
@@ -100,74 +100,74 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBContactRelationship allocWithZone:](_INPBContactRelationship init];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   [(_INPBContactRelationship *)v5 setName:v6];
 
-  v7 = [(NSString *)self->_relation copyWithZone:a3];
+  v7 = [(NSString *)self->_relation copyWithZone:zone];
   [(_INPBContactRelationship *)v5 setRelation:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBContactRelationship *)self data];
+  coderCopy = coder;
+  data = [(_INPBContactRelationship *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBContactRelationship)initWithCoder:(id)a3
+- (_INPBContactRelationship)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBContactRelationship *)self initWithData:v6];
+    self = [(_INPBContactRelationship *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_INPBContactRelationship *)self name];
+  toCopy = to;
+  name = [(_INPBContactRelationship *)self name];
 
-  if (v4)
+  if (name)
   {
     name = self->_name;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBContactRelationship *)self relation];
+  relation = [(_INPBContactRelationship *)self relation];
 
-  if (v6)
+  if (relation)
   {
     relation = self->_relation;
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setRelation:(id)a3
+- (void)setRelation:(id)relation
 {
-  v4 = [a3 copy];
+  v4 = [relation copy];
   relation = self->_relation;
   self->_relation = v4;
 
   MEMORY[0x1EEE66BB8](v4, relation);
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 

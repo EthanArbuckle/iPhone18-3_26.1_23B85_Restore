@@ -1,5 +1,5 @@
 @interface APEventSessionPersistence
-- (BOOL)_isNoFileExistsError:(id)a3;
+- (BOOL)_isNoFileExistsError:(id)error;
 - (id)rootUrl;
 @end
 
@@ -17,23 +17,23 @@
   return v3;
 }
 
-- (BOOL)_isNoFileExistsError:(id)a3
+- (BOOL)_isNoFileExistsError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] == 2 && (objc_msgSend(v3, "domain"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", NSPOSIXErrorDomain), v4, (v5 & 1) != 0))
+  errorCopy = error;
+  if ([errorCopy code] == 2 && (objc_msgSend(errorCopy, "domain"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", NSPOSIXErrorDomain), v4, (v5 & 1) != 0))
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v3 underlyingErrors];
-    v8 = [v7 firstObject];
+    underlyingErrors = [errorCopy underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
 
-    if (v8 && [v8 code] == 2)
+    if (firstObject && [firstObject code] == 2)
     {
-      v9 = [v8 domain];
-      v6 = [v9 isEqualToString:NSPOSIXErrorDomain];
+      domain = [firstObject domain];
+      v6 = [domain isEqualToString:NSPOSIXErrorDomain];
     }
 
     else

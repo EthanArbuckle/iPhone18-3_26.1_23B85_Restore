@@ -16,7 +16,7 @@
   v12 = v6;
   v13 = v4;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v13;
   v9 = v6;
 

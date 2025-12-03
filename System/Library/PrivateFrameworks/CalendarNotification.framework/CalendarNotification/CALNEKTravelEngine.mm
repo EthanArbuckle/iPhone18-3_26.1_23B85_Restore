@@ -1,33 +1,33 @@
 @interface CALNEKTravelEngine
-- (CALNEKTravelEngine)initWithTravelEngine:(id)a3;
+- (CALNEKTravelEngine)initWithTravelEngine:(id)engine;
 - (CALNTravelEngineDelegate)delegate;
 - (id)_adviceReceivedBlock;
 - (id)_authorizationChangedBlock;
 - (id)_eventSignficantlyChangedBlock;
 - (void)activate;
-- (void)cancelHypothesisRefreshRequestForEventWithExternalURL:(id)a3;
-- (void)ceaseMonitoringForEventWithExternalURL:(id)a3;
+- (void)cancelHypothesisRefreshRequestForEventWithExternalURL:(id)l;
+- (void)ceaseMonitoringForEventWithExternalURL:(id)l;
 - (void)deactivate;
 - (void)didRegisterForAlarms;
-- (void)receivedAlarmNamed:(id)a3;
-- (void)receivedNotificationNamed:(id)a3;
-- (void)requestHypothesisRefreshAtDate:(id)a3 forEventWithExternalURL:(id)a4;
-- (void)sendFeedbackForPostingLeaveByNotificationForEventWithExternalURL:(id)a3;
-- (void)sendFeedbackForPostingLeaveNowNotificationForEventWithExternalURL:(id)a3;
+- (void)receivedAlarmNamed:(id)named;
+- (void)receivedNotificationNamed:(id)named;
+- (void)requestHypothesisRefreshAtDate:(id)date forEventWithExternalURL:(id)l;
+- (void)sendFeedbackForPostingLeaveByNotificationForEventWithExternalURL:(id)l;
+- (void)sendFeedbackForPostingLeaveNowNotificationForEventWithExternalURL:(id)l;
 @end
 
 @implementation CALNEKTravelEngine
 
-- (CALNEKTravelEngine)initWithTravelEngine:(id)a3
+- (CALNEKTravelEngine)initWithTravelEngine:(id)engine
 {
-  v5 = a3;
+  engineCopy = engine;
   v9.receiver = self;
   v9.super_class = CALNEKTravelEngine;
   v6 = [(CALNEKTravelEngine *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_travelEngine, a3);
+    objc_storeStrong(&v6->_travelEngine, engine);
   }
 
   return v7;
@@ -37,22 +37,22 @@
 {
   if ([MEMORY[0x277CC5A50] isTravelAdvisorySupported])
   {
-    v3 = [(CALNEKTravelEngine *)self travelEngine];
-    v4 = [(CALNEKTravelEngine *)self _adviceReceivedBlock];
-    [v3 setAdviceBlock:v4];
+    travelEngine = [(CALNEKTravelEngine *)self travelEngine];
+    _adviceReceivedBlock = [(CALNEKTravelEngine *)self _adviceReceivedBlock];
+    [travelEngine setAdviceBlock:_adviceReceivedBlock];
 
-    v5 = [(CALNEKTravelEngine *)self _eventSignficantlyChangedBlock];
-    [v3 setEventSignificantlyChangedBlock:v5];
+    _eventSignficantlyChangedBlock = [(CALNEKTravelEngine *)self _eventSignficantlyChangedBlock];
+    [travelEngine setEventSignificantlyChangedBlock:_eventSignficantlyChangedBlock];
 
     objc_initWeak(location, self);
-    objc_initWeak(&from, v3);
+    objc_initWeak(&from, travelEngine);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __30__CALNEKTravelEngine_activate__block_invoke;
     v6[3] = &unk_278D6FA40;
     objc_copyWeak(&v7, location);
     objc_copyWeak(&v8, &from);
-    [v3 setAuthorizationChangedBlock:v6];
+    [travelEngine setAuthorizationChangedBlock:v6];
     [(CALNEKTravelEngine *)self setActive:1];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&v7);
@@ -62,11 +62,11 @@
 
   else
   {
-    v3 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    travelEngine = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(travelEngine, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(location[0]) = 0;
-      _os_log_impl(&dword_242909000, v3, OS_LOG_TYPE_DEFAULT, "Travel advisories are not supported. Will not start travel engine.", location, 2u);
+      _os_log_impl(&dword_242909000, travelEngine, OS_LOG_TYPE_DEFAULT, "Travel advisories are not supported. Will not start travel engine.", location, 2u);
     }
   }
 }
@@ -85,8 +85,8 @@ void __30__CALNEKTravelEngine_activate__block_invoke(uint64_t a1)
   if ([MEMORY[0x277CC5A50] isTravelAdvisorySupported])
   {
     [(CALNEKTravelEngine *)self setActive:0];
-    v4 = [(CALNEKTravelEngine *)self travelEngine];
-    [v4 stop];
+    travelEngine = [(CALNEKTravelEngine *)self travelEngine];
+    [travelEngine stop];
   }
 
   else
@@ -100,19 +100,19 @@ void __30__CALNEKTravelEngine_activate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)receivedNotificationNamed:(id)a3
+- (void)receivedNotificationNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   if ([(CALNEKTravelEngine *)self isActive])
   {
-    v5 = [(CALNEKTravelEngine *)self travelEngine];
-    [v5 handleDarwinNotification:v4];
+    travelEngine = [(CALNEKTravelEngine *)self travelEngine];
+    [travelEngine handleDarwinNotification:namedCopy];
   }
 
   else
   {
-    v5 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    travelEngine = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(travelEngine, OS_LOG_TYPE_ERROR))
     {
       [CALNEKTravelEngine receivedNotificationNamed:];
     }
@@ -121,19 +121,19 @@ void __30__CALNEKTravelEngine_activate__block_invoke(uint64_t a1)
 
 - (void)didRegisterForAlarms
 {
-  v3 = [(CALNEKTravelEngine *)self isActive];
+  isActive = [(CALNEKTravelEngine *)self isActive];
   v4 = +[CALNLogSubsystem calendar];
-  v5 = v4;
-  if (v3)
+  travelEngine = v4;
+  if (isActive)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *v6 = 0;
-      _os_log_impl(&dword_242909000, v5, OS_LOG_TYPE_DEFAULT, "Travel engine wrapper received did register for did register for alarms message. Starting travel engine.", v6, 2u);
+      _os_log_impl(&dword_242909000, travelEngine, OS_LOG_TYPE_DEFAULT, "Travel engine wrapper received did register for did register for alarms message. Starting travel engine.", v6, 2u);
     }
 
-    v5 = [(CALNEKTravelEngine *)self travelEngine];
-    [v5 start];
+    travelEngine = [(CALNEKTravelEngine *)self travelEngine];
+    [travelEngine start];
   }
 
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -142,59 +142,59 @@ void __30__CALNEKTravelEngine_activate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)receivedAlarmNamed:(id)a3
+- (void)receivedAlarmNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   if ([(CALNEKTravelEngine *)self isActive])
   {
-    v5 = [(CALNEKTravelEngine *)self travelEngine];
-    [v5 receivedAlarmNamed:v4];
+    travelEngine = [(CALNEKTravelEngine *)self travelEngine];
+    [travelEngine receivedAlarmNamed:namedCopy];
   }
 
   else
   {
-    v5 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    travelEngine = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(travelEngine, OS_LOG_TYPE_ERROR))
     {
       [CALNEKTravelEngine receivedAlarmNamed:];
     }
   }
 }
 
-- (void)requestHypothesisRefreshAtDate:(id)a3 forEventWithExternalURL:(id)a4
+- (void)requestHypothesisRefreshAtDate:(id)date forEventWithExternalURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CALNEKTravelEngine *)self travelEngine];
-  [v8 requestHypothesisRefreshAtDate:v7 forEventWithExternalURL:v6];
+  lCopy = l;
+  dateCopy = date;
+  travelEngine = [(CALNEKTravelEngine *)self travelEngine];
+  [travelEngine requestHypothesisRefreshAtDate:dateCopy forEventWithExternalURL:lCopy];
 }
 
-- (void)cancelHypothesisRefreshRequestForEventWithExternalURL:(id)a3
+- (void)cancelHypothesisRefreshRequestForEventWithExternalURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CALNEKTravelEngine *)self travelEngine];
-  [v5 cancelHypothesisRefreshRequestForEventWithExternalURL:v4];
+  lCopy = l;
+  travelEngine = [(CALNEKTravelEngine *)self travelEngine];
+  [travelEngine cancelHypothesisRefreshRequestForEventWithExternalURL:lCopy];
 }
 
-- (void)ceaseMonitoringForEventWithExternalURL:(id)a3
+- (void)ceaseMonitoringForEventWithExternalURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CALNEKTravelEngine *)self travelEngine];
-  [v5 ceaseMonitoringForEventWithExternalURL:v4];
+  lCopy = l;
+  travelEngine = [(CALNEKTravelEngine *)self travelEngine];
+  [travelEngine ceaseMonitoringForEventWithExternalURL:lCopy];
 }
 
-- (void)sendFeedbackForPostingLeaveByNotificationForEventWithExternalURL:(id)a3
+- (void)sendFeedbackForPostingLeaveByNotificationForEventWithExternalURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CALNEKTravelEngine *)self travelEngine];
-  [v5 sendFeedbackForPostingLeaveByNotificationForEventWithExternalURL:v4];
+  lCopy = l;
+  travelEngine = [(CALNEKTravelEngine *)self travelEngine];
+  [travelEngine sendFeedbackForPostingLeaveByNotificationForEventWithExternalURL:lCopy];
 }
 
-- (void)sendFeedbackForPostingLeaveNowNotificationForEventWithExternalURL:(id)a3
+- (void)sendFeedbackForPostingLeaveNowNotificationForEventWithExternalURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CALNEKTravelEngine *)self travelEngine];
-  [v5 sendFeedbackForPostingLeaveNowNotificationForEventWithExternalURL:v4];
+  lCopy = l;
+  travelEngine = [(CALNEKTravelEngine *)self travelEngine];
+  [travelEngine sendFeedbackForPostingLeaveNowNotificationForEventWithExternalURL:lCopy];
 }
 
 - (id)_adviceReceivedBlock

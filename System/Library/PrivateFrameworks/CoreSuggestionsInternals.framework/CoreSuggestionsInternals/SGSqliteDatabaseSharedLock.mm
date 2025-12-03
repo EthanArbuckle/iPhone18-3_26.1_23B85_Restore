@@ -1,17 +1,17 @@
 @interface SGSqliteDatabaseSharedLock
 - (SGSqliteDatabaseSharedLock)init;
 - (void)dealloc;
-- (void)runWithLockAcquired:(id)a3;
+- (void)runWithLockAcquired:(id)acquired;
 @end
 
 @implementation SGSqliteDatabaseSharedLock
 
-- (void)runWithLockAcquired:(id)a3
+- (void)runWithLockAcquired:(id)acquired
 {
-  v4 = a3;
+  acquiredCopy = acquired;
   pthread_mutex_lock(&self->_lock);
   ++self->_writeTransactionDepth;
-  v4[2]();
+  acquiredCopy[2]();
   --self->_writeTransactionDepth;
   pthread_mutex_unlock(&self->_lock);
 }

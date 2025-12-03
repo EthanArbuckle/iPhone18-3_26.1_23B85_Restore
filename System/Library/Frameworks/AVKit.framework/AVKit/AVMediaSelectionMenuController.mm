@@ -1,27 +1,27 @@
 @interface AVMediaSelectionMenuController
-+ (id)displayNameForEnhanceDialogueLevel:(int64_t)a3;
-- (AVMediaSelectionMenuController)initWithAudibleOptions:(id)a3 legibleOptions:(id)a4 enhanceDialogueOptions:(id)a5;
++ (id)displayNameForEnhanceDialogueLevel:(int64_t)level;
+- (AVMediaSelectionMenuController)initWithAudibleOptions:(id)options legibleOptions:(id)legibleOptions enhanceDialogueOptions:(id)dialogueOptions;
 - (AVMediaSelectionMenuDelegate)delegate;
-- (id)_displayNameForMediaSelectionOption:(id)a3;
-- (id)_elementsForMediaSelectionOptions:(void *)a1;
+- (id)_displayNameForMediaSelectionOption:(id)option;
+- (id)_elementsForMediaSelectionOptions:(void *)options;
 - (id)_mediaSelectionMenuImage;
 - (uint64_t)_reloadAudibleOptionsMenu;
-- (void)_reloadAudioTrackMenuDisplayingInline:(void *)a1;
+- (void)_reloadAudioTrackMenuDisplayingInline:(void *)inline;
 - (void)_reloadLegibleOptionsMenu;
-- (void)_reloadMediaPresentationAudioTrackMenuDisplayingInline:(void *)a1;
-- (void)_updateEnablementForMenu:(int)a3 enabled:;
+- (void)_reloadMediaPresentationAudioTrackMenuDisplayingInline:(void *)inline;
+- (void)_updateEnablementForMenu:(int)menu enabled:;
 - (void)_updateSelectionForEnhanceDialogueMenu;
-- (void)_updateSelectionForMenu:(uint64_t)a3 selectedIndex:;
+- (void)_updateSelectionForMenu:(uint64_t)menu selectedIndex:;
 - (void)_updateSubtitleForEnhanceDialogueMenu;
-- (void)setAudibleMediaPresentationLanguages:(id)a3;
-- (void)setAudibleOptions:(id)a3;
-- (void)setCurrentAudibleOptionIndex:(unint64_t)a3;
-- (void)setCurrentEnhanceDialogueOption:(int64_t)a3;
-- (void)setCurrentLegibleOptionIndex:(unint64_t)a3;
-- (void)setEnhanceDialogueOptions:(id)a3;
-- (void)setLegibleOptions:(id)a3;
-- (void)setMediaPresentationSelectors:(id)a3;
-- (void)setShouldEnableEnhanceDialogueOptions:(BOOL)a3;
+- (void)setAudibleMediaPresentationLanguages:(id)languages;
+- (void)setAudibleOptions:(id)options;
+- (void)setCurrentAudibleOptionIndex:(unint64_t)index;
+- (void)setCurrentEnhanceDialogueOption:(int64_t)option;
+- (void)setCurrentLegibleOptionIndex:(unint64_t)index;
+- (void)setEnhanceDialogueOptions:(id)options;
+- (void)setLegibleOptions:(id)options;
+- (void)setMediaPresentationSelectors:(id)selectors;
+- (void)setShouldEnableEnhanceDialogueOptions:(BOOL)options;
 @end
 
 @implementation AVMediaSelectionMenuController
@@ -33,40 +33,40 @@
   return WeakRetained;
 }
 
-- (id)_displayNameForMediaSelectionOption:(id)a3
+- (id)_displayNameForMediaSelectionOption:(id)option
 {
-  v4 = a3;
-  v5 = [(AVMediaSelectionMenuController *)self delegate];
+  optionCopy = option;
+  delegate = [(AVMediaSelectionMenuController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
-  if ((v6 & 1) == 0 || (-[AVMediaSelectionMenuController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 mediaSelectionMenuController:self displayNameForMediaSelectionOption:v4], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if ((v6 & 1) == 0 || (-[AVMediaSelectionMenuController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 mediaSelectionMenuController:self displayNameForMediaSelectionOption:optionCopy], localizedDisplayName = objc_claimAutoreleasedReturnValue(), v7, !localizedDisplayName))
   {
-    v8 = [v4 localizedDisplayName];
+    localizedDisplayName = [optionCopy localizedDisplayName];
   }
 
-  return v8;
+  return localizedDisplayName;
 }
 
-- (void)setShouldEnableEnhanceDialogueOptions:(BOOL)a3
+- (void)setShouldEnableEnhanceDialogueOptions:(BOOL)options
 {
-  if (self->_shouldEnableEnhanceDialogueOptions != a3)
+  if (self->_shouldEnableEnhanceDialogueOptions != options)
   {
-    self->_shouldEnableEnhanceDialogueOptions = a3;
-    [(AVMediaSelectionMenuController *)self _updateEnablementForMenu:a3 enabled:?];
+    self->_shouldEnableEnhanceDialogueOptions = options;
+    [(AVMediaSelectionMenuController *)self _updateEnablementForMenu:options enabled:?];
   }
 }
 
-- (void)_updateEnablementForMenu:(int)a3 enabled:
+- (void)_updateEnablementForMenu:(int)menu enabled:
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [a2 children];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    children = [a2 children];
+    v5 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -78,7 +78,7 @@
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(children);
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
@@ -86,7 +86,7 @@
           if (objc_opt_isKindOfClass())
           {
             v10 = v9;
-            [v10 setAttributes:[v10 attributes]& 0xFFFFFFFFFFFFFFFELL | a3 ^ 1u];
+            [v10 setAttributes:[v10 attributes]& 0xFFFFFFFFFFFFFFFELL | menu ^ 1u];
           }
 
           else
@@ -103,7 +103,7 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -111,30 +111,30 @@
   }
 }
 
-- (void)setCurrentLegibleOptionIndex:(unint64_t)a3
+- (void)setCurrentLegibleOptionIndex:(unint64_t)index
 {
-  if (self->_currentLegibleOptionIndex != a3)
+  if (self->_currentLegibleOptionIndex != index)
   {
-    self->_currentLegibleOptionIndex = a3;
-    [(AVMediaSelectionMenuController *)self _updateSelectionForMenu:a3 selectedIndex:?];
+    self->_currentLegibleOptionIndex = index;
+    [(AVMediaSelectionMenuController *)self _updateSelectionForMenu:index selectedIndex:?];
   }
 }
 
-- (void)_updateSelectionForMenu:(uint64_t)a3 selectedIndex:
+- (void)_updateSelectionForMenu:(uint64_t)menu selectedIndex:
 {
-  if (a1)
+  if (self)
   {
-    v4 = [a2 children];
-    if ([v4 count])
+    children = [a2 children];
+    if ([children count])
     {
       v5 = 0;
       do
       {
-        v6 = [v4 objectAtIndexedSubscript:v5];
+        v6 = [children objectAtIndexedSubscript:v5];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v6 setState:a3 == v5];
+          [v6 setState:menu == v5];
         }
 
         else
@@ -150,16 +150,16 @@
         ++v5;
       }
 
-      while (v5 < [v4 count]);
+      while (v5 < [children count]);
     }
   }
 }
 
-- (void)setCurrentEnhanceDialogueOption:(int64_t)a3
+- (void)setCurrentEnhanceDialogueOption:(int64_t)option
 {
-  if (self->_currentEnhanceDialogueOption != a3)
+  if (self->_currentEnhanceDialogueOption != option)
   {
-    self->_currentEnhanceDialogueOption = a3;
+    self->_currentEnhanceDialogueOption = option;
     [(AVMediaSelectionMenuController *)self _updateSelectionForEnhanceDialogueMenu];
 
     [(AVMediaSelectionMenuController *)&self->super.isa _updateSubtitleForEnhanceDialogueMenu];
@@ -168,17 +168,17 @@
 
 - (void)_updateSelectionForEnhanceDialogueMenu
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 enhanceDialogueOptions];
-    v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "currentEnhanceDialogueOption")}];
-    v4 = [v2 containsObject:v3];
+    enhanceDialogueOptions = [self enhanceDialogueOptions];
+    v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "currentEnhanceDialogueOption")}];
+    v4 = [enhanceDialogueOptions containsObject:v3];
 
     if (v4)
     {
-      v5 = [a1 enhanceDialogueOptions];
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "currentEnhanceDialogueOption")}];
-      v7 = [v5 indexOfObject:v6];
+      enhanceDialogueOptions2 = [self enhanceDialogueOptions];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "currentEnhanceDialogueOption")}];
+      v7 = [enhanceDialogueOptions2 indexOfObject:v6];
     }
 
     else
@@ -186,35 +186,35 @@
       v7 = -1;
     }
 
-    v8 = a1[7];
+    v8 = self[7];
 
-    [(AVMediaSelectionMenuController *)a1 _updateSelectionForMenu:v8 selectedIndex:v7];
+    [(AVMediaSelectionMenuController *)self _updateSelectionForMenu:v8 selectedIndex:v7];
   }
 }
 
 - (void)_updateSubtitleForEnhanceDialogueMenu
 {
-  if (a1)
+  if (self)
   {
-    v2 = +[AVMediaSelectionMenuController displayNameForEnhanceDialogueLevel:](AVMediaSelectionMenuController, "displayNameForEnhanceDialogueLevel:", [a1 currentEnhanceDialogueOption]);
-    [a1[7] setSubtitle:v2];
+    v2 = +[AVMediaSelectionMenuController displayNameForEnhanceDialogueLevel:](AVMediaSelectionMenuController, "displayNameForEnhanceDialogueLevel:", [self currentEnhanceDialogueOption]);
+    [self[7] setSubtitle:v2];
   }
 }
 
-- (void)setCurrentAudibleOptionIndex:(unint64_t)a3
+- (void)setCurrentAudibleOptionIndex:(unint64_t)index
 {
-  if (self->_currentAudibleOptionIndex != a3)
+  if (self->_currentAudibleOptionIndex != index)
   {
-    self->_currentAudibleOptionIndex = a3;
-    [(AVMediaSelectionMenuController *)self _updateSelectionForMenu:a3 selectedIndex:?];
+    self->_currentAudibleOptionIndex = index;
+    [(AVMediaSelectionMenuController *)self _updateSelectionForMenu:index selectedIndex:?];
   }
 }
 
-- (void)setLegibleOptions:(id)a3
+- (void)setLegibleOptions:(id)options
 {
-  if (self->_legibleOptions != a3)
+  if (self->_legibleOptions != options)
   {
-    v5 = [a3 copy];
+    v5 = [options copy];
     legibleOptions = self->_legibleOptions;
     self->_legibleOptions = v5;
 
@@ -224,41 +224,41 @@
 
 - (void)_reloadLegibleOptionsMenu
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 legibleOptions];
-    v3 = [v2 count];
+    legibleOptions = [self legibleOptions];
+    v3 = [legibleOptions count];
 
     if (v3 > 1)
     {
       v5 = MEMORY[0x1E69DCC60];
       v6 = AVLocalizedString(@"OVERFLOW_MENU_SUBTITLES_TITLE");
       v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"captions.bubble"];
-      v8 = [a1 legibleOptions];
-      v9 = [(AVMediaSelectionMenuController *)a1 _elementsForMediaSelectionOptions:v8];
+      legibleOptions2 = [self legibleOptions];
+      v9 = [(AVMediaSelectionMenuController *)self _elementsForMediaSelectionOptions:legibleOptions2];
       v10 = [v5 menuWithTitle:v6 image:v7 identifier:@"AVSubtitlesMenu" options:0 children:v9];
-      v11 = a1[8];
-      a1[8] = v10;
+      v11 = self[8];
+      self[8] = v10;
 
-      v12 = a1[8];
-      v13 = [a1 currentLegibleOptionIndex];
+      v12 = self[8];
+      currentLegibleOptionIndex = [self currentLegibleOptionIndex];
 
-      [(AVMediaSelectionMenuController *)a1 _updateSelectionForMenu:v12 selectedIndex:v13];
+      [(AVMediaSelectionMenuController *)self _updateSelectionForMenu:v12 selectedIndex:currentLegibleOptionIndex];
     }
 
     else
     {
-      v4 = a1[8];
-      a1[8] = 0;
+      v4 = self[8];
+      self[8] = 0;
     }
   }
 }
 
-- (id)_elementsForMediaSelectionOptions:(void *)a1
+- (id)_elementsForMediaSelectionOptions:(void *)options
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -278,8 +278,8 @@
         }
 
         v8 = *(*(&v23 + 1) + 8 * i);
-        v9 = [a1 _displayNameForMediaSelectionOption:v8];
-        objc_initWeak(&location, a1);
+        v9 = [options _displayNameForMediaSelectionOption:v8];
+        objc_initWeak(&location, options);
         v10 = MEMORY[0x1E69DC628];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
@@ -288,18 +288,18 @@
         v20[4] = v8;
         objc_copyWeak(&v21, &location);
         v11 = [v10 actionWithTitle:v9 image:0 identifier:0 handler:v20];
-        v12 = [MEMORY[0x1E6987FD8] avkit_autoOption];
-        v13 = v12 == v8;
+        avkit_autoOption = [MEMORY[0x1E6987FD8] avkit_autoOption];
+        v13 = avkit_autoOption == v8;
 
         if (v13)
         {
-          v14 = [a1 delegate];
+          delegate = [options delegate];
           v15 = objc_opt_respondsToSelector();
 
           if (v15)
           {
-            v16 = [a1 delegate];
-            v17 = [v16 shouldApplyLegibleMediaSelectionCriteriaAutomaticallyForMediaSelectionMenuController:a1];
+            delegate2 = [options delegate];
+            v17 = [delegate2 shouldApplyLegibleMediaSelectionCriteriaAutomaticallyForMediaSelectionMenuController:options];
 
             if (v17)
             {
@@ -308,7 +308,7 @@
           }
         }
 
-        [v4 addObject:v11];
+        [array addObject:v11];
 
         objc_destroyWeak(&v21);
         objc_destroyWeak(&location);
@@ -320,7 +320,7 @@
     while (v5);
   }
 
-  return v4;
+  return array;
 }
 
 void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___block_invoke(uint64_t a1)
@@ -350,11 +350,11 @@ void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___bl
   }
 }
 
-- (void)setEnhanceDialogueOptions:(id)a3
+- (void)setEnhanceDialogueOptions:(id)options
 {
-  if (self->_enhanceDialogueOptions != a3)
+  if (self->_enhanceDialogueOptions != options)
   {
-    v5 = [a3 copy];
+    v5 = [options copy];
     enhanceDialogueOptions = self->_enhanceDialogueOptions;
     self->_enhanceDialogueOptions = v5;
 
@@ -369,14 +369,14 @@ void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___bl
   if (result)
   {
     v1 = +[AVKitGlobalSettings shared];
-    v2 = [v1 enhanceDialogueEnabled];
+    enhanceDialogueEnabled = [v1 enhanceDialogueEnabled];
 
-    if (v2 && ([val enhanceDialogueOptions], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "count"), v3, v4 > 1))
+    if (enhanceDialogueEnabled && ([val enhanceDialogueOptions], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "count"), v3, v4 > 1))
     {
       v55 = MEMORY[0x1E69DCC60];
       v57 = AVLocalizedString(@"ENHANCE_DIALOGUE_FEATURE_TITLE");
-      v56 = [val enhanceDialogueOptions];
-      v7 = [MEMORY[0x1E695DF70] array];
+      enhanceDialogueOptions = [val enhanceDialogueOptions];
+      array = [MEMORY[0x1E695DF70] array];
       v68 = 0u;
       v69 = 0u;
       v66 = 0u;
@@ -409,7 +409,7 @@ void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___bl
             v63 = v11;
             v15 = [v13 actionWithTitle:v14 image:0 identifier:0 handler:v61];
             [v15 setAttributes:{objc_msgSend(v15, "attributes") | 8}];
-            [v7 addObject:v15];
+            [array addObject:v15];
 
             objc_destroyWeak(&v64);
             objc_destroyWeak(&location);
@@ -421,7 +421,7 @@ void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___bl
         while (v8);
       }
 
-      v16 = [v55 menuWithTitle:v57 image:0 identifier:@"AVEnhanceDialogueMenu" options:0 children:v7];
+      v16 = [v55 menuWithTitle:v57 image:0 identifier:@"AVEnhanceDialogueMenu" options:0 children:array];
       v5 = val;
       v17 = val[7];
       val[7] = v16;
@@ -480,14 +480,14 @@ void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___bl
     if ([val[3] count])
     {
       [v28 addObjectsFromArray:val[3]];
-      v30 = [val delegate];
+      delegate = [val delegate];
       v31 = objc_opt_respondsToSelector();
 
       v29 = val;
       if (v31)
       {
-        v32 = [val delegate];
-        v33 = [v32 customMediaPresentationSettingsAudioMenuForMediaSelectionMenuController:val];
+        delegate2 = [val delegate];
+        v33 = [delegate2 customMediaPresentationSettingsAudioMenuForMediaSelectionMenuController:val];
 
         if ([v33 count])
         {
@@ -501,13 +501,13 @@ void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___bl
     if ([v28 count])
     {
       v34 = AVLocalizedString(@"OVERFLOW_MENU_AUDIO_TITLE");
-      v35 = [val delegate];
+      delegate3 = [val delegate];
       v36 = objc_opt_respondsToSelector();
 
       if (v36)
       {
-        v37 = [val delegate];
-        v38 = [v37 customMediaPresentationSettingsAudioTitleForMediaSelectionMenuController:val];
+        delegate4 = [val delegate];
+        v38 = [delegate4 customMediaPresentationSettingsAudioTitleForMediaSelectionMenuController:val];
 
         if (v38)
         {
@@ -559,8 +559,8 @@ void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___bl
 
         v45 = MEMORY[0x1E69DCC60];
         v46 = AVLocalizedString(@"OVERFLOW_MENU_AUDIO_TITLE");
-        v47 = [(AVMediaSelectionMenuController *)val _mediaSelectionMenuImage];
-        v48 = [v45 menuWithTitle:v46 image:v47 identifier:@"AVAudioMenu" options:0 children:obja];
+        _mediaSelectionMenuImage = [(AVMediaSelectionMenuController *)val _mediaSelectionMenuImage];
+        v48 = [v45 menuWithTitle:v46 image:_mediaSelectionMenuImage identifier:@"AVAudioMenu" options:0 children:obja];
         v49 = val[5];
         val[5] = v48;
 
@@ -594,19 +594,19 @@ void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___bl
   return result;
 }
 
-- (void)_reloadAudioTrackMenuDisplayingInline:(void *)a1
+- (void)_reloadAudioTrackMenuDisplayingInline:(void *)inline
 {
-  v4 = [a1 delegate];
+  delegate = [inline delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [a1 delegate];
-    v7 = [v6 isMediaPresentationSettingsEnabledForMediaSelectionMenuController:a1];
+    delegate2 = [inline delegate];
+    v7 = [delegate2 isMediaPresentationSettingsEnabledForMediaSelectionMenuController:inline];
 
     if (v7)
     {
-      v8 = [a1 delegate];
+      delegate3 = [inline delegate];
       v9 = objc_opt_respondsToSelector();
 
       if ((v9 & 1) == 0)
@@ -614,17 +614,17 @@ void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___bl
         return;
       }
 
-      v10 = [a1 delegate];
-      v11 = [v10 shouldShowMediaAvailablePresentationLanguagesForMediaSelectionMenuController:a1];
+      delegate4 = [inline delegate];
+      v11 = [delegate4 shouldShowMediaAvailablePresentationLanguagesForMediaSelectionMenuController:inline];
 
       if (v11)
       {
 
-        [AVMediaSelectionMenuController _reloadMediaPresentationAudioTrackMenuDisplayingInline:a1];
+        [AVMediaSelectionMenuController _reloadMediaPresentationAudioTrackMenuDisplayingInline:inline];
         return;
       }
 
-      v25 = [a1 delegate];
+      delegate5 = [inline delegate];
       v26 = objc_opt_respondsToSelector();
 
       if ((v26 & 1) == 0)
@@ -632,20 +632,20 @@ void __68__AVMediaSelectionMenuController__elementsForMediaSelectionOptions___bl
         return;
       }
 
-      v27 = [a1 delegate];
-      [v27 indexOfSelectedMediaPresentationLanguageForMediaSelectionMenuController:a1];
-      v14 = v27;
+      delegate6 = [inline delegate];
+      [delegate6 indexOfSelectedMediaPresentationLanguageForMediaSelectionMenuController:inline];
+      v14 = delegate6;
       goto LABEL_10;
     }
   }
 
-  v12 = [a1 audibleOptions];
-  v13 = [v12 count];
+  audibleOptions = [inline audibleOptions];
+  v13 = [audibleOptions count];
 
   if (v13 <= 1)
   {
-    v14 = a1[6];
-    a1[6] = 0;
+    v14 = inline[6];
+    inline[6] = 0;
 LABEL_10:
 
     return;
@@ -655,40 +655,40 @@ LABEL_10:
   v16 = AVLocalizedString(@"OVERFLOW_MENU_AUDIOTRACK_TITLE");
   if (a2)
   {
-    v17 = 0;
+    _mediaSelectionMenuImage = 0;
     v18 = @"AVAudioTrackMenu";
   }
 
   else
   {
-    v17 = [(AVMediaSelectionMenuController *)a1 _mediaSelectionMenuImage];
+    _mediaSelectionMenuImage = [(AVMediaSelectionMenuController *)inline _mediaSelectionMenuImage];
     v18 = @"AVAudioMenu";
   }
 
-  v19 = [a1 audibleOptions];
-  v20 = [(AVMediaSelectionMenuController *)a1 _elementsForMediaSelectionOptions:v19];
-  v21 = [v15 menuWithTitle:v16 image:v17 identifier:v18 options:a2 children:v20];
-  v22 = a1[6];
-  a1[6] = v21;
+  audibleOptions2 = [inline audibleOptions];
+  v20 = [(AVMediaSelectionMenuController *)inline _elementsForMediaSelectionOptions:audibleOptions2];
+  v21 = [v15 menuWithTitle:v16 image:_mediaSelectionMenuImage identifier:v18 options:a2 children:v20];
+  v22 = inline[6];
+  inline[6] = v21;
 
   if ((a2 & 1) == 0)
   {
   }
 
-  v23 = a1[6];
-  v24 = [a1 currentAudibleOptionIndex];
+  v23 = inline[6];
+  currentAudibleOptionIndex = [inline currentAudibleOptionIndex];
 
-  [(AVMediaSelectionMenuController *)a1 _updateSelectionForMenu:v23 selectedIndex:v24];
+  [(AVMediaSelectionMenuController *)inline _updateSelectionForMenu:v23 selectedIndex:currentAudibleOptionIndex];
 }
 
 - (id)_mediaSelectionMenuImage
 {
   v2 = @"waveform.circle";
   v3 = @"waveform.circle";
-  v4 = [a1 delegate];
+  delegate = [self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [v4 mediaSelectionOptionsImageNameForMediaSelectionMenuController:a1];
+    v2 = [delegate mediaSelectionOptionsImageNameForMediaSelectionMenuController:self];
   }
 
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:v2];
@@ -696,18 +696,18 @@ LABEL_10:
   return v5;
 }
 
-- (void)_reloadMediaPresentationAudioTrackMenuDisplayingInline:(void *)a1
+- (void)_reloadMediaPresentationAudioTrackMenuDisplayingInline:(void *)inline
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a1 && [a1[12] count])
+  if (inline && [inline[12] count])
   {
-    v2 = [a1 audibleMediaPresentationLanguages];
-    v18 = [MEMORY[0x1E695DF70] array];
+    audibleMediaPresentationLanguages = [inline audibleMediaPresentationLanguages];
+    array = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    obj = v2;
+    obj = audibleMediaPresentationLanguages;
     v3 = [obj countByEnumeratingWithState:&v22 objects:buf count:16];
     if (v3)
     {
@@ -723,7 +723,7 @@ LABEL_10:
           }
 
           v7 = *(*(&v22 + 1) + 8 * i);
-          objc_initWeak(&location, a1);
+          objc_initWeak(&location, inline);
           v8 = MEMORY[0x1E69DC628];
           v19[0] = v5;
           v19[1] = 3221225472;
@@ -732,7 +732,7 @@ LABEL_10:
           objc_copyWeak(&v20, &location);
           v19[4] = v7;
           v9 = [v8 actionWithTitle:v7 image:0 identifier:0 handler:v19];
-          [v18 addObject:v9];
+          [array addObject:v9];
 
           objc_destroyWeak(&v20);
           objc_destroyWeak(&location);
@@ -746,14 +746,14 @@ LABEL_10:
 
     v10 = MEMORY[0x1E69DCC60];
     v11 = AVLocalizedString(@"OVERFLOW_MENU_AUDIOTRACK_TITLE");
-    v12 = [v10 menuWithTitle:v11 image:0 identifier:@"AVAudioTrackMenu" options:1 children:v18];
-    v13 = a1[6];
-    a1[6] = v12;
+    v12 = [v10 menuWithTitle:v11 image:0 identifier:@"AVAudioTrackMenu" options:1 children:array];
+    v13 = inline[6];
+    inline[6] = v12;
 
-    v14 = [a1 delegate];
+    delegate = [inline delegate];
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v14 indexOfSelectedMediaPresentationLanguageForMediaSelectionMenuController:a1];
+      v15 = [delegate indexOfSelectedMediaPresentationLanguageForMediaSelectionMenuController:inline];
     }
 
     else
@@ -771,7 +771,7 @@ LABEL_10:
       _os_log_impl(&dword_18B49C000, v16, OS_LOG_TYPE_DEFAULT, "%s cmss menu index of language lang: %ld", buf, 0x16u);
     }
 
-    [(AVMediaSelectionMenuController *)a1 _updateSelectionForMenu:v15 selectedIndex:?];
+    [(AVMediaSelectionMenuController *)inline _updateSelectionForMenu:v15 selectedIndex:?];
   }
 }
 
@@ -1166,11 +1166,11 @@ void __69__AVMediaSelectionMenuController__elementsForEnhanceDialogueOptions___b
   }
 }
 
-- (void)setAudibleMediaPresentationLanguages:(id)a3
+- (void)setAudibleMediaPresentationLanguages:(id)languages
 {
-  if (self->_audibleMediaPresentationLanguages != a3)
+  if (self->_audibleMediaPresentationLanguages != languages)
   {
-    v5 = [a3 copy];
+    v5 = [languages copy];
     audibleMediaPresentationLanguages = self->_audibleMediaPresentationLanguages;
     self->_audibleMediaPresentationLanguages = v5;
 
@@ -1178,11 +1178,11 @@ void __69__AVMediaSelectionMenuController__elementsForEnhanceDialogueOptions___b
   }
 }
 
-- (void)setMediaPresentationSelectors:(id)a3
+- (void)setMediaPresentationSelectors:(id)selectors
 {
-  if (self->_audibleMediaPresentationSelectors != a3)
+  if (self->_audibleMediaPresentationSelectors != selectors)
   {
-    v5 = [a3 copy];
+    v5 = [selectors copy];
     audibleMediaPresentationSelectors = self->_audibleMediaPresentationSelectors;
     self->_audibleMediaPresentationSelectors = v5;
 
@@ -1190,11 +1190,11 @@ void __69__AVMediaSelectionMenuController__elementsForEnhanceDialogueOptions___b
   }
 }
 
-- (void)setAudibleOptions:(id)a3
+- (void)setAudibleOptions:(id)options
 {
-  if (self->_audibleOptions != a3)
+  if (self->_audibleOptions != options)
   {
-    v5 = [a3 copy];
+    v5 = [options copy];
     audibleOptions = self->_audibleOptions;
     self->_audibleOptions = v5;
 
@@ -1202,25 +1202,25 @@ void __69__AVMediaSelectionMenuController__elementsForEnhanceDialogueOptions___b
   }
 }
 
-- (AVMediaSelectionMenuController)initWithAudibleOptions:(id)a3 legibleOptions:(id)a4 enhanceDialogueOptions:(id)a5
+- (AVMediaSelectionMenuController)initWithAudibleOptions:(id)options legibleOptions:(id)legibleOptions enhanceDialogueOptions:(id)dialogueOptions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  legibleOptionsCopy = legibleOptions;
+  dialogueOptionsCopy = dialogueOptions;
   v19.receiver = self;
   v19.super_class = AVMediaSelectionMenuController;
   v11 = [(AVMediaSelectionMenuController *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [optionsCopy copy];
     audibleOptions = v11->_audibleOptions;
     v11->_audibleOptions = v12;
 
-    v14 = [v10 copy];
+    v14 = [dialogueOptionsCopy copy];
     enhanceDialogueOptions = v11->_enhanceDialogueOptions;
     v11->_enhanceDialogueOptions = v14;
 
-    v16 = [v9 copy];
+    v16 = [legibleOptionsCopy copy];
     legibleOptions = v11->_legibleOptions;
     v11->_legibleOptions = v16;
 
@@ -1234,17 +1234,17 @@ void __69__AVMediaSelectionMenuController__elementsForEnhanceDialogueOptions___b
   return v11;
 }
 
-+ (id)displayNameForEnhanceDialogueLevel:(int64_t)a3
++ (id)displayNameForEnhanceDialogueLevel:(int64_t)level
 {
-  if (a3 > 1)
+  if (level > 1)
   {
-    if (a3 == 2)
+    if (level == 2)
     {
       v3 = @"ENHANCE_DIALOGUE_OPTION_ENHANCE_MORE";
       goto LABEL_13;
     }
 
-    if (a3 == 3)
+    if (level == 3)
     {
       v3 = @"ENHANCE_DIALOGUE_OPTION_ISOLATE";
       goto LABEL_13;
@@ -1253,13 +1253,13 @@ void __69__AVMediaSelectionMenuController__elementsForEnhanceDialogueOptions___b
 
   else
   {
-    if (!a3)
+    if (!level)
     {
       v3 = @"ENHANCE_DIALOGUE_OPTION_OFF";
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (level == 1)
     {
       v3 = @"ENHANCE_DIALOGUE_OPTION_ENHANCE";
 LABEL_13:

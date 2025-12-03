@@ -4,70 +4,70 @@
 + (BOOL)processAssertionsEnabled;
 + (BOOL)purchaseAccountFallback;
 + (BOOL)suppressEngagement;
-+ (id)_propertyForKey:(id)a3 defaultValue:(id)a4 expectedType:(Class)a5;
++ (id)_propertyForKey:(id)key defaultValue:(id)value expectedType:(Class)type;
 + (int64_t)HARLoggingItemLimit;
 + (int64_t)forceLoadUrlMetrics;
-+ (void)_accessDataStoreUsingBlock:(id)a3;
-+ (void)_setProperty:(id)a3 forKey:(id)a4;
-+ (void)setForceLoadUrlMetrics:(int64_t)a3;
-+ (void)setHARLoggingItemLimit:(int64_t)a3;
-+ (void)setPreferEphemeralImageLoader:(BOOL)a3;
-+ (void)setPreferEphemeralURLSessions:(BOOL)a3;
-+ (void)setProcessAssertionsEnabled:(BOOL)a3;
-+ (void)setPurchaseAccountFallback:(BOOL)a3;
-+ (void)setSuppressEngagement:(BOOL)a3;
++ (void)_accessDataStoreUsingBlock:(id)block;
++ (void)_setProperty:(id)property forKey:(id)key;
++ (void)setForceLoadUrlMetrics:(int64_t)metrics;
++ (void)setHARLoggingItemLimit:(int64_t)limit;
++ (void)setPreferEphemeralImageLoader:(BOOL)loader;
++ (void)setPreferEphemeralURLSessions:(BOOL)sessions;
++ (void)setProcessAssertionsEnabled:(BOOL)enabled;
++ (void)setPurchaseAccountFallback:(BOOL)fallback;
++ (void)setSuppressEngagement:(BOOL)engagement;
 @end
 
 @implementation AMSEphemeralDefaults
 
 + (BOOL)suppressEngagement
 {
-  v3 = [a1 _propertyForKey:@"suppressEngagement" defaultValue:MEMORY[0x1E695E110] expectedType:objc_opt_class()];
+  v3 = [self _propertyForKey:@"suppressEngagement" defaultValue:MEMORY[0x1E695E110] expectedType:objc_opt_class()];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [a1 _propertyForKey:@"suppressEngagement" defaultValue:MEMORY[0x1E695E110] expectedType:objc_opt_class()];
-    v5 = [v4 BOOLValue];
+    v4 = [self _propertyForKey:@"suppressEngagement" defaultValue:MEMORY[0x1E695E110] expectedType:objc_opt_class()];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)preferEphemeralURLSessions
 {
-  v2 = [a1 _propertyForKey:@"preferEphemeralURLSessions" defaultValue:MEMORY[0x1E695E110] expectedType:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  v2 = [self _propertyForKey:@"preferEphemeralURLSessions" defaultValue:MEMORY[0x1E695E110] expectedType:objc_opt_class()];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (BOOL)processAssertionsEnabled
 {
-  v2 = [a1 _propertyForKey:@"processAssertionsEnabled" defaultValue:MEMORY[0x1E695E118] expectedType:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  v2 = [self _propertyForKey:@"processAssertionsEnabled" defaultValue:MEMORY[0x1E695E118] expectedType:objc_opt_class()];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (int64_t)forceLoadUrlMetrics
 {
-  v3 = [a1 _propertyForKey:@"forceLoadUrlEvent" defaultValue:&unk_1F0779538 expectedType:objc_opt_class()];
+  v3 = [self _propertyForKey:@"forceLoadUrlEvent" defaultValue:&unk_1F0779538 expectedType:objc_opt_class()];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [a1 _propertyForKey:@"forceLoadUrlEvent" defaultValue:&unk_1F0779538 expectedType:objc_opt_class()];
-    v5 = [v4 longLongValue];
+    v4 = [self _propertyForKey:@"forceLoadUrlEvent" defaultValue:&unk_1F0779538 expectedType:objc_opt_class()];
+    longLongValue = [v4 longLongValue];
   }
 
   else
   {
-    v5 = 0;
+    longLongValue = 0;
   }
 
-  return v5;
+  return longLongValue;
 }
 
 + (int64_t)HARLoggingItemLimit
@@ -82,38 +82,38 @@
 
   v5 = v4;
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
 + (BOOL)preferEphemeralImageLoader
 {
-  v2 = [a1 _propertyForKey:@"preferEphemeralImageLoader" defaultValue:MEMORY[0x1E695E118] expectedType:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  v2 = [self _propertyForKey:@"preferEphemeralImageLoader" defaultValue:MEMORY[0x1E695E118] expectedType:objc_opt_class()];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (BOOL)purchaseAccountFallback
 {
-  v3 = [a1 _propertyForKey:@"purchaseAccountFallback" defaultValue:MEMORY[0x1E695E110] expectedType:objc_opt_class()];
+  v3 = [self _propertyForKey:@"purchaseAccountFallback" defaultValue:MEMORY[0x1E695E110] expectedType:objc_opt_class()];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [a1 _propertyForKey:@"purchaseAccountFallback" defaultValue:MEMORY[0x1E695E110] expectedType:objc_opt_class()];
-    v5 = [v4 BOOLValue];
+    v4 = [self _propertyForKey:@"purchaseAccountFallback" defaultValue:MEMORY[0x1E695E110] expectedType:objc_opt_class()];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (void)setHARLoggingItemLimit:(int64_t)a3
++ (void)setHARLoggingItemLimit:(int64_t)limit
 {
-  if (a3 == -1)
+  if (limit == -1)
   {
 
     [AMSHTTPArchiveController setMaxBufferSizeOverride:0];
@@ -126,55 +126,55 @@
   }
 }
 
-+ (void)setPreferEphemeralImageLoader:(BOOL)a3
++ (void)setPreferEphemeralImageLoader:(BOOL)loader
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [a1 _setProperty:v4 forKey:@"preferEphemeralImageLoader"];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:loader];
+  [self _setProperty:v4 forKey:@"preferEphemeralImageLoader"];
 }
 
-+ (void)setPreferEphemeralURLSessions:(BOOL)a3
++ (void)setPreferEphemeralURLSessions:(BOOL)sessions
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [a1 _setProperty:v4 forKey:@"preferEphemeralURLSessions"];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:sessions];
+  [self _setProperty:v4 forKey:@"preferEphemeralURLSessions"];
 }
 
-+ (void)setProcessAssertionsEnabled:(BOOL)a3
++ (void)setProcessAssertionsEnabled:(BOOL)enabled
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [a1 _setProperty:v4 forKey:@"processAssertionsEnabled"];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
+  [self _setProperty:v4 forKey:@"processAssertionsEnabled"];
 }
 
-+ (void)setPurchaseAccountFallback:(BOOL)a3
++ (void)setPurchaseAccountFallback:(BOOL)fallback
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [a1 _setProperty:v4 forKey:@"purchaseAccountFallback"];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:fallback];
+  [self _setProperty:v4 forKey:@"purchaseAccountFallback"];
 }
 
-+ (void)setSuppressEngagement:(BOOL)a3
++ (void)setSuppressEngagement:(BOOL)engagement
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [a1 _setProperty:v4 forKey:@"suppressEngagement"];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:engagement];
+  [self _setProperty:v4 forKey:@"suppressEngagement"];
 }
 
-+ (void)setForceLoadUrlMetrics:(int64_t)a3
++ (void)setForceLoadUrlMetrics:(int64_t)metrics
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [a1 _setProperty:v4 forKey:@"forceLoadUrlEvent"];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
+  [self _setProperty:v4 forKey:@"forceLoadUrlEvent"];
 }
 
-+ (void)_setProperty:(id)a3 forKey:(id)a4
++ (void)_setProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__AMSEphemeralDefaults__setProperty_forKey___block_invoke;
   v10[3] = &unk_1E73B76B0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
-  [a1 _accessDataStoreUsingBlock:v10];
+  v11 = propertyCopy;
+  v12 = keyCopy;
+  v8 = keyCopy;
+  v9 = propertyCopy;
+  [self _accessDataStoreUsingBlock:v10];
 }
 
 uint64_t __44__AMSEphemeralDefaults__setProperty_forKey___block_invoke(uint64_t result, void *a2)
@@ -188,10 +188,10 @@ uint64_t __44__AMSEphemeralDefaults__setProperty_forKey___block_invoke(uint64_t 
   return result;
 }
 
-+ (id)_propertyForKey:(id)a3 defaultValue:(id)a4 expectedType:(Class)a5
++ (id)_propertyForKey:(id)key defaultValue:(id)value expectedType:(Class)type
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -203,13 +203,13 @@ uint64_t __44__AMSEphemeralDefaults__setProperty_forKey___block_invoke(uint64_t 
   v13[2] = __66__AMSEphemeralDefaults__propertyForKey_defaultValue_expectedType___block_invoke;
   v13[3] = &unk_1E73B2F60;
   v15 = &v16;
-  v9 = v7;
+  v9 = keyCopy;
   v14 = v9;
-  [a1 _accessDataStoreUsingBlock:v13];
+  [self _accessDataStoreUsingBlock:v13];
   v10 = v17[5];
   if (!v10)
   {
-    objc_storeStrong(v17 + 5, a4);
+    objc_storeStrong(v17 + 5, value);
     v10 = v17[5];
   }
 
@@ -227,9 +227,9 @@ uint64_t __66__AMSEphemeralDefaults__propertyForKey_defaultValue_expectedType___
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)_accessDataStoreUsingBlock:(id)a3
++ (void)_accessDataStoreUsingBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   if (qword_1ED6E29B0 != -1)
   {
     dispatch_once(&qword_1ED6E29B0, &__block_literal_global_52);
@@ -240,8 +240,8 @@ uint64_t __66__AMSEphemeralDefaults__propertyForKey_defaultValue_expectedType___
   block[1] = 3221225472;
   block[2] = __51__AMSEphemeralDefaults__accessDataStoreUsingBlock___block_invoke_2;
   block[3] = &unk_1E73B76D8;
-  v7 = v3;
-  v5 = v3;
+  v7 = blockCopy;
+  v5 = blockCopy;
   dispatch_sync(v4, block);
 }
 

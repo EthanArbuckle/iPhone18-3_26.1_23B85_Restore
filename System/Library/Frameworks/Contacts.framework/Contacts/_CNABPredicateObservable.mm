@@ -1,38 +1,38 @@
 @interface _CNABPredicateObservable
-+ (id)makeSerialFetchSchedulerUsingSchedulerProvider:(uint64_t)a1;
-+ (id)observableWithPredicates:(int)a3 sortOrdering:(uint64_t)a4 options:(uint64_t)a5 addressBook:(void *)a6 environment:;
-+ (id)schedulerForIdentifier:(void *)a3 provider:;
-- (BOOL)predicateShouldContinue:(id)a3;
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4 metadata:(id)a5;
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4 moreComing:(BOOL)a5;
-- (id)initWithPredicate:(int)a3 sortOrdering:(void *)a4 options:(const void *)a5 addressBook:(void *)a6 environment:;
-- (id)subscribe:(id)a3;
++ (id)makeSerialFetchSchedulerUsingSchedulerProvider:(uint64_t)provider;
++ (id)observableWithPredicates:(int)predicates sortOrdering:(uint64_t)ordering options:(uint64_t)options addressBook:(void *)book environment:;
++ (id)schedulerForIdentifier:(void *)identifier provider:;
+- (BOOL)predicateShouldContinue:(id)continue;
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record metadata:(id)metadata;
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record moreComing:(BOOL)coming;
+- (id)initWithPredicate:(int)predicate sortOrdering:(void *)ordering options:(const void *)options addressBook:(void *)book environment:;
+- (id)subscribe:(id)subscribe;
 - (void)dealloc;
-- (void)setObserver:(uint64_t)a1;
+- (void)setObserver:(uint64_t)observer;
 @end
 
 @implementation _CNABPredicateObservable
 
-+ (id)observableWithPredicates:(int)a3 sortOrdering:(uint64_t)a4 options:(uint64_t)a5 addressBook:(void *)a6 environment:
++ (id)observableWithPredicates:(int)predicates sortOrdering:(uint64_t)ordering options:(uint64_t)options addressBook:(void *)book environment:
 {
-  v10 = a6;
+  bookCopy = book;
   v11 = a2;
   v12 = objc_opt_self();
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __98___CNABPredicateObservable_observableWithPredicates_sortOrdering_options_addressBook_environment___block_invoke;
   v19[3] = &unk_1E74171B8;
-  v24 = a3;
-  v22 = a4;
-  v23 = a5;
-  v20 = v10;
+  predicatesCopy = predicates;
+  orderingCopy = ordering;
+  optionsCopy = options;
+  v20 = bookCopy;
   v21 = v12;
-  v13 = v10;
+  v13 = bookCopy;
   v14 = [v11 _cn_map:v19];
 
   v15 = MEMORY[0x1E6996798];
-  v16 = [v13 schedulerProvider];
-  v17 = [v15 merge:v14 schedulerProvider:v16];
+  schedulerProvider = [v13 schedulerProvider];
+  v17 = [v15 merge:v14 schedulerProvider:schedulerProvider];
 
   return v17;
 }
@@ -50,14 +50,14 @@
   [(_CNABPredicateObservable *)&v4 dealloc];
 }
 
-+ (id)schedulerForIdentifier:(void *)a3 provider:
++ (id)schedulerForIdentifier:(void *)identifier provider:
 {
   v4 = a2;
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_opt_self();
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
-    v7 = [v5 backgroundSchedulerWithQualityOfService:4];
+    v7 = [identifierCopy backgroundSchedulerWithQualityOfService:4];
   }
 
   else
@@ -73,7 +73,7 @@
     v11[2] = __60___CNABPredicateObservable_schedulerForIdentifier_provider___block_invoke_2;
     v11[3] = &unk_1E7417208;
     v13 = v6;
-    v12 = v5;
+    v12 = identifierCopy;
     v9 = v8;
     v7 = [v9 objectForKey:v4 onCacheMiss:v11];
   }
@@ -81,7 +81,7 @@
   return v7;
 }
 
-+ (id)makeSerialFetchSchedulerUsingSchedulerProvider:(uint64_t)a1
++ (id)makeSerialFetchSchedulerUsingSchedulerProvider:(uint64_t)provider
 {
   v2 = a2;
   objc_opt_self();
@@ -92,27 +92,27 @@
   return v4;
 }
 
-- (id)initWithPredicate:(int)a3 sortOrdering:(void *)a4 options:(const void *)a5 addressBook:(void *)a6 environment:
+- (id)initWithPredicate:(int)predicate sortOrdering:(void *)ordering options:(const void *)options addressBook:(void *)book environment:
 {
   v12 = a2;
-  v13 = a6;
-  if (a1)
+  bookCopy = book;
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = _CNABPredicateObservable;
-    a1 = objc_msgSendSuper2(&v18, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v18, sel_init);
+    if (self)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(a1 + 4, a2);
+        objc_storeStrong(self + 4, a2);
       }
 
-      *(a1 + 6) = a3;
-      if (a5)
+      *(self + 6) = predicate;
+      if (options)
       {
-        v14 = CFRetain(a5);
+        v14 = CFRetain(options);
       }
 
       else
@@ -120,22 +120,22 @@
         v14 = 0;
       }
 
-      a1[2] = v14;
+      self[2] = v14;
       v15 = objc_alloc_init(MEMORY[0x1E6996668]);
-      v16 = a1[7];
-      a1[7] = v15;
+      v16 = self[7];
+      self[7] = v15;
 
-      a1[5] = a4;
-      objc_storeStrong(a1 + 6, a6);
+      self[5] = ordering;
+      objc_storeStrong(self + 6, book);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   if (self)
   {
     predicate = self->_predicate;
@@ -148,7 +148,7 @@
 
   if (predicate)
   {
-    [(_CNABPredicateObservable *)self setObserver:v4];
+    [(_CNABPredicateObservable *)self setObserver:subscribeCopy];
     if (self)
     {
       environment = self->_environment;
@@ -159,7 +159,7 @@
       environment = 0;
     }
 
-    v6 = [(CNContactsEnvironment *)environment schedulerProvider];
+    schedulerProvider = [(CNContactsEnvironment *)environment schedulerProvider];
     if (self)
     {
       v10 = self->_environment;
@@ -171,7 +171,7 @@
     }
 
     v11 = v10;
-    v12 = [(CNContactsEnvironment *)v11 abPredicateRunner];
+    abPredicateRunner = [(CNContactsEnvironment *)v11 abPredicateRunner];
 
     if (self)
     {
@@ -183,15 +183,15 @@
       v13 = 0;
     }
 
-    v14 = [(ABPredicate *)v13 querySerializationIdentifier];
-    v15 = [_CNABPredicateObservable schedulerForIdentifier:v14 provider:v6];
+    querySerializationIdentifier = [(ABPredicate *)v13 querySerializationIdentifier];
+    v15 = [_CNABPredicateObservable schedulerForIdentifier:querySerializationIdentifier provider:schedulerProvider];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __38___CNABPredicateObservable_subscribe___block_invoke;
     v22 = &unk_1E74171E0;
-    v23 = v12;
-    v24 = self;
-    v16 = v12;
+    v23 = abPredicateRunner;
+    selfCopy = self;
+    v16 = abPredicateRunner;
     v17 = [v15 performCancelableBlock:&v19];
     if (self)
     {
@@ -208,8 +208,8 @@
 
   else
   {
-    v6 = [CNErrorFactory errorWithCode:400 userInfo:0];
-    [v4 observerDidFailWithError:v6];
+    schedulerProvider = [CNErrorFactory errorWithCode:400 userInfo:0];
+    [subscribeCopy observerDidFailWithError:schedulerProvider];
   }
 
   if (self)
@@ -217,20 +217,20 @@
     self = self->_cancelationToken;
   }
 
-  v7 = self;
+  selfCopy2 = self;
 
   return self;
 }
 
-- (void)setObserver:(uint64_t)a1
+- (void)setObserver:(uint64_t)observer
 {
-  if (a1)
+  if (observer)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((observer + 64), a2);
   }
 }
 
-- (BOOL)predicateShouldContinue:(id)a3
+- (BOOL)predicateShouldContinue:(id)continue
 {
   if (self)
   {
@@ -240,29 +240,29 @@
   return [(_CNABPredicateObservable *)self isCanceled]^ 1;
 }
 
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4 metadata:(id)a5
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record metadata:(id)metadata
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (a4)
+  continueCopy = continue;
+  metadataCopy = metadata;
+  if (record)
   {
     v10 = self ? self->_cancelationToken : 0;
     if (([(CNCancelationToken *)v10 isCanceled]& 1) == 0)
     {
-      if (v9)
+      if (metadataCopy)
       {
-        v12 = v9;
+        null = metadataCopy;
       }
 
       else
       {
-        v12 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      v13 = v12;
-      v17[0] = a4;
-      v17[1] = v12;
+      v13 = null;
+      v17[0] = record;
+      v17[1] = null;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
       [(CNObserver *)self->_observer observerDidReceiveResult:v14];
 
@@ -279,14 +279,14 @@ LABEL_11:
 
   cancelationToken = 0;
 LABEL_12:
-  v15 = [(CNCancelationToken *)cancelationToken isCanceled];
+  isCanceled = [(CNCancelationToken *)cancelationToken isCanceled];
 
-  return v15 ^ 1;
+  return isCanceled ^ 1;
 }
 
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4 moreComing:(BOOL)a5
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record moreComing:(BOOL)coming
 {
-  if (![(_CNABPredicateObservable *)self predicateShouldContinue:a3 afterFindingRecord:a4]|| a5)
+  if (![(_CNABPredicateObservable *)self predicateShouldContinue:continue afterFindingRecord:record]|| coming)
   {
     if (!self)
     {

@@ -1,48 +1,48 @@
 @interface PKApplePayTrustSignatureRequest
-- (PKApplePayTrustSignatureRequest)initWithCoder:(id)a3;
-- (PKApplePayTrustSignatureRequest)initWithKeyIdentifier:(id)a3 manifestHash:(id)a4 nonce:(id)a5;
+- (PKApplePayTrustSignatureRequest)initWithCoder:(id)coder;
+- (PKApplePayTrustSignatureRequest)initWithKeyIdentifier:(id)identifier manifestHash:(id)hash nonce:(id)nonce;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplePayTrustSignatureRequest
 
-- (PKApplePayTrustSignatureRequest)initWithKeyIdentifier:(id)a3 manifestHash:(id)a4 nonce:(id)a5
+- (PKApplePayTrustSignatureRequest)initWithKeyIdentifier:(id)identifier manifestHash:(id)hash nonce:(id)nonce
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  hashCopy = hash;
+  nonceCopy = nonce;
   v15.receiver = self;
   v15.super_class = PKApplePayTrustSignatureRequest;
   v12 = [(PKApplePayTrustSignatureRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_keyIdentifier, a3);
-    objc_storeStrong(&v13->_manifestHash, a4);
-    objc_storeStrong(&v13->_nonce, a5);
+    objc_storeStrong(&v12->_keyIdentifier, identifier);
+    objc_storeStrong(&v13->_manifestHash, hash);
+    objc_storeStrong(&v13->_nonce, nonce);
   }
 
   return v13;
 }
 
-- (PKApplePayTrustSignatureRequest)initWithCoder:(id)a3
+- (PKApplePayTrustSignatureRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKApplePayTrustSignatureRequest;
   v5 = [(PKApplePayTrustSignatureRequest *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manifestHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manifestHash"];
     manifestHash = v5->_manifestHash;
     v5->_manifestHash = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyIdentifier"];
     keyIdentifier = v5->_keyIdentifier;
     v5->_keyIdentifier = v10;
   }
@@ -50,13 +50,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nonce = self->_nonce;
-  v5 = a3;
-  [v5 encodeObject:nonce forKey:@"nonce"];
-  [v5 encodeObject:self->_manifestHash forKey:@"manifestHash"];
-  [v5 encodeObject:self->_keyIdentifier forKey:@"keyIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:nonce forKey:@"nonce"];
+  [coderCopy encodeObject:self->_manifestHash forKey:@"manifestHash"];
+  [coderCopy encodeObject:self->_keyIdentifier forKey:@"keyIdentifier"];
 }
 
 - (id)description

@@ -1,21 +1,21 @@
 @interface PXStoryViewModeTransition
 - ($A25D1FC0A592AF581AFDBFE54D262C37)swipeDownInteractionState;
-- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)a3 proposedOverride:(id *)a4 inViewMode:(id *)a5 layout:(int64_t)a6;
+- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)info proposedOverride:(id *)override inViewMode:(id *)mode layout:(int64_t)layout;
 - (BOOL)hasActiveAnimation;
 - (NSString)description;
 - (PXStoryViewModeTransition)init;
-- (PXStoryViewModeTransition)initWithSourceViewMode:(int64_t)a3 sourceSnapshot:(id)a4 destinationViewMode:(int64_t)a5 destinationSnapshot:(id)a6 assetReference:(id)a7;
+- (PXStoryViewModeTransition)initWithSourceViewMode:(int64_t)mode sourceSnapshot:(id)snapshot destinationViewMode:(int64_t)viewMode destinationSnapshot:(id)destinationSnapshot assetReference:(id)reference;
 - (double)springStiffness;
-- (double)valueWithFadeout:(double)a3;
+- (double)valueWithFadeout:(double)fadeout;
 - (void)_updateIsComplete;
 - (void)cancel;
 - (void)didPerformChanges;
 - (void)finish;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)setFractionCompleted:(float)a3;
-- (void)setRegionOfInterest:(id)a3;
-- (void)setSwipeDownInteractionState:(id *)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)setFractionCompleted:(float)completed;
+- (void)setRegionOfInterest:(id)interest;
+- (void)setSwipeDownInteractionState:(id *)state;
 - (void)start;
 @end
 
@@ -33,13 +33,13 @@
   return self;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ProgressAnimatorObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ProgressAnimatorObservationContext == context)
   {
-    if ((v6 & 6) != 0)
+    if ((changeCopy & 6) != 0)
     {
       v12 = v17;
       v17[0] = MEMORY[0x1E69E9820];
@@ -51,15 +51,15 @@
 
   else
   {
-    if (CompletionProgressAnimatorObservationContext != a5 && CenterAnimatorObservationContext != a5 && FadeoutAnimatorObservationContext != a5)
+    if (CompletionProgressAnimatorObservationContext != context && CenterAnimatorObservationContext != context && FadeoutAnimatorObservationContext != context)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXStoryViewModeTransition.m" lineNumber:250 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewModeTransition.m" lineNumber:250 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 6) != 0)
+    if ((changeCopy & 6) != 0)
     {
       v12 = &v15;
       v15 = MEMORY[0x1E69E9820];
@@ -94,12 +94,12 @@ uint64_t __58__PXStoryViewModeTransition_observable_didChange_context___block_in
   return [v2 _invalidateIsComplete];
 }
 
-- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)a3 proposedOverride:(id *)a4 inViewMode:(id *)a5 layout:(int64_t)a6
+- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)info proposedOverride:(id *)override inViewMode:(id *)mode layout:(int64_t)layout
 {
-  v7 = *&a5->var1.origin.y;
-  *&retstr->var0 = *&a5->var0;
+  v7 = *&mode->var1.origin.y;
+  *&retstr->var0 = *&mode->var0;
   *&retstr->var1.origin.y = v7;
-  retstr->var1.size.height = a5->var1.size.height;
+  retstr->var1.size.height = mode->var1.size.height;
   return self;
 }
 
@@ -160,11 +160,11 @@ uint64_t __58__PXStoryViewModeTransition_observable_didChange_context___block_in
 
 - (void)start
 {
-  v6 = [(PXStoryViewModeTransition *)self progressAnimator];
+  progressAnimator = [(PXStoryViewModeTransition *)self progressAnimator];
   [(PXStoryViewModeTransition *)self springStiffness];
   v4 = v3;
   [(PXStoryViewModeTransition *)self dampingRatio];
-  [v6 performChangesUsingSpringAnimationWithStiffness:&__block_literal_global_15279 dampingRatio:v4 initialVelocity:v5 changes:0.0];
+  [progressAnimator performChangesUsingSpringAnimationWithStiffness:&__block_literal_global_15279 dampingRatio:v4 initialVelocity:v5 changes:0.0];
 }
 
 - (double)springStiffness
@@ -176,22 +176,22 @@ uint64_t __58__PXStoryViewModeTransition_observable_didChange_context___block_in
   return v4;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStoryViewModeTransition;
-  [(PXStoryViewModeTransition *)&v3 performChanges:a3];
+  [(PXStoryViewModeTransition *)&v3 performChanges:changes];
 }
 
 - (BOOL)hasActiveAnimation
 {
-  v3 = [(PXStoryViewModeTransition *)self progressAnimator];
-  if (([v3 isAnimating] & 1) == 0 && (-[PXNumberAnimator isAnimating](self->_fadeoutAnimator, "isAnimating") & 1) == 0)
+  progressAnimator = [(PXStoryViewModeTransition *)self progressAnimator];
+  if (([progressAnimator isAnimating] & 1) == 0 && (-[PXNumberAnimator isAnimating](self->_fadeoutAnimator, "isAnimating") & 1) == 0)
   {
     [(PXStoryViewModeTransition *)self swipeDownInteractionState];
     if (PXStorySwipeDownInteractionStateEqualsState(v5, &PXStorySwipeDownInteractionStateNull))
     {
-      [v3 presentationValue];
+      [progressAnimator presentationValue];
       PXFloatApproximatelyEqualToFloat();
     }
   }
@@ -199,7 +199,7 @@ uint64_t __58__PXStoryViewModeTransition_observable_didChange_context___block_in
   return 1;
 }
 
-- (void)setSwipeDownInteractionState:(id *)a3
+- (void)setSwipeDownInteractionState:(id *)state
 {
   p_swipeDownInteractionState = &self->_swipeDownInteractionState;
   v6 = *&self->_swipeDownInteractionState.coordinateSpace;
@@ -209,20 +209,20 @@ uint64_t __58__PXStoryViewModeTransition_observable_didChange_context___block_in
   location = self->_swipeDownInteractionState.location;
   v15[0] = self->_swipeDownInteractionState.initialLocation;
   v15[1] = location;
-  v8 = *&a3->var3;
-  v13[2] = a3->var2;
+  v8 = *&state->var3;
+  v13[2] = state->var2;
   v13[3] = v8;
-  var5 = a3->var5;
-  var1 = a3->var1;
-  v13[0] = a3->var0;
+  var5 = state->var5;
+  var1 = state->var1;
+  v13[0] = state->var0;
   v13[1] = var1;
   if ((PXStorySwipeDownInteractionStateEqualsState(v15, v13) & 1) == 0)
   {
-    p_swipeDownInteractionState->initialLocation = a3->var0;
-    v10 = a3->var1;
-    var2 = a3->var2;
-    v12 = *&a3->var3;
-    p_swipeDownInteractionState->lastTimestamp = a3->var5;
+    p_swipeDownInteractionState->initialLocation = state->var0;
+    v10 = state->var1;
+    var2 = state->var2;
+    v12 = *&state->var3;
+    p_swipeDownInteractionState->lastTimestamp = state->var5;
     p_swipeDownInteractionState->velocity = var2;
     *&p_swipeDownInteractionState->coordinateSpace = v12;
     p_swipeDownInteractionState->location = v10;
@@ -233,39 +233,39 @@ uint64_t __58__PXStoryViewModeTransition_observable_didChange_context___block_in
   }
 }
 
-- (void)setRegionOfInterest:(id)a3
+- (void)setRegionOfInterest:(id)interest
 {
-  v5 = a3;
-  if (self->_regionOfInterest != v5)
+  interestCopy = interest;
+  if (self->_regionOfInterest != interestCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_regionOfInterest, a3);
+    v6 = interestCopy;
+    objc_storeStrong(&self->_regionOfInterest, interest);
     [(PXStoryViewModeTransition *)self signalChange:1];
-    v5 = v6;
+    interestCopy = v6;
   }
 }
 
-- (void)setFractionCompleted:(float)a3
+- (void)setFractionCompleted:(float)completed
 {
-  if (self->_fractionCompleted != a3)
+  if (self->_fractionCompleted != completed)
   {
-    self->_fractionCompleted = a3;
+    self->_fractionCompleted = completed;
     [(PXStoryViewModeTransition *)self signalChange:1];
 
     [(PXStoryViewModeTransition *)self _invalidateIsComplete];
   }
 }
 
-- (double)valueWithFadeout:(double)a3
+- (double)valueWithFadeout:(double)fadeout
 {
   fadeoutAnimator = self->_fadeoutAnimator;
   if (fadeoutAnimator)
   {
     [(PXNumberAnimator *)fadeoutAnimator presentationValue];
-    return v5 * a3;
+    return v5 * fadeout;
   }
 
-  return a3;
+  return fadeout;
 }
 
 - (NSString)description
@@ -280,11 +280,11 @@ uint64_t __58__PXStoryViewModeTransition_observable_didChange_context___block_in
   return v8;
 }
 
-- (PXStoryViewModeTransition)initWithSourceViewMode:(int64_t)a3 sourceSnapshot:(id)a4 destinationViewMode:(int64_t)a5 destinationSnapshot:(id)a6 assetReference:(id)a7
+- (PXStoryViewModeTransition)initWithSourceViewMode:(int64_t)mode sourceSnapshot:(id)snapshot destinationViewMode:(int64_t)viewMode destinationSnapshot:(id)destinationSnapshot assetReference:(id)reference
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  snapshotCopy = snapshot;
+  destinationSnapshotCopy = destinationSnapshot;
+  referenceCopy = reference;
   v22.receiver = self;
   v22.super_class = PXStoryViewModeTransition;
   v16 = [(PXStoryViewModeTransition *)&v22 init];
@@ -295,11 +295,11 @@ uint64_t __58__PXStoryViewModeTransition_observable_didChange_context___block_in
     v16->_updater = v17;
 
     [(PXUpdater *)v16->_updater addUpdateSelector:sel__updateIsComplete];
-    v16->_sourceViewMode = a3;
-    objc_storeStrong(&v16->_sourceSnapshot, a4);
-    v16->_destinationViewMode = a5;
-    objc_storeStrong(&v16->_destinationSnapshot, a6);
-    objc_storeStrong(&v16->_assetReference, a7);
+    v16->_sourceViewMode = mode;
+    objc_storeStrong(&v16->_sourceSnapshot, snapshot);
+    v16->_destinationViewMode = viewMode;
+    objc_storeStrong(&v16->_destinationSnapshot, destinationSnapshot);
+    objc_storeStrong(&v16->_assetReference, reference);
     v16->_swipeDownInteractionState.initialLocation = 0u;
     v16->_swipeDownInteractionState.location = 0u;
     v16->_swipeDownInteractionState.velocity = 0u;
@@ -317,8 +317,8 @@ uint64_t __58__PXStoryViewModeTransition_observable_didChange_context___block_in
 
 - (PXStoryViewModeTransition)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryViewModeTransition.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PXStoryViewModeTransition init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewModeTransition.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PXStoryViewModeTransition init]"}];
 
   abort();
 }

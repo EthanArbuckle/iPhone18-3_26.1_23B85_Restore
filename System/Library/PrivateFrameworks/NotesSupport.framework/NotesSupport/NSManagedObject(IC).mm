@@ -17,23 +17,23 @@
 
 - (uint64_t)ic_isTransitioning
 {
-  if (([a1 _isDeallocating] & 1) != 0 || (objc_msgSend(a1, "faultingState") & 2) != 0)
+  if (([self _isDeallocating] & 1) != 0 || (objc_msgSend(self, "faultingState") & 2) != 0)
   {
     return 1;
   }
 
-  v2 = [a1 managedObjectContext];
-  if ([v2 _isDeallocating])
+  managedObjectContext = [self managedObjectContext];
+  if ([managedObjectContext _isDeallocating])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 managedObjectContext];
-    v5 = [v4 persistentStoreCoordinator];
-    v6 = [v5 persistentStores];
-    v3 = [v6 count] == 0;
+    managedObjectContext2 = [self managedObjectContext];
+    persistentStoreCoordinator = [managedObjectContext2 persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    v3 = [persistentStores count] == 0;
   }
 
   return v3;
@@ -42,19 +42,19 @@
 - (uint64_t)ic_obtainPermanentObjectIDIfNecessary
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 objectID];
-  v3 = [v2 isTemporaryID];
+  objectID = [self objectID];
+  isTemporaryID = [objectID isTemporaryID];
 
-  if (!v3)
+  if (!isTemporaryID)
   {
     return 1;
   }
 
-  v4 = [a1 managedObjectContext];
-  v11[0] = a1;
+  managedObjectContext = [self managedObjectContext];
+  v11[0] = self;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v10 = 0;
-  v6 = [v4 obtainPermanentIDsForObjects:v5 error:&v10];
+  v6 = [managedObjectContext obtainPermanentIDsForObjects:v5 error:&v10];
   v7 = v10;
 
   if ((v6 & 1) == 0)
@@ -71,9 +71,9 @@
 
 - (uint64_t)ic_permanentObjectID
 {
-  [a1 ic_obtainPermanentObjectIDIfNecessary];
+  [self ic_obtainPermanentObjectIDIfNecessary];
 
-  return [a1 objectID];
+  return [self objectID];
 }
 
 + (id)ic_existingObjectWithID:()IC context:
@@ -94,10 +94,10 @@
       goto LABEL_12;
     }
 
-    v11 = [v9 code];
+    code = [v9 code];
     v12 = os_log_create("com.apple.notes", "CoreData");
     v13 = v12;
-    if (v11 == 133000)
+    if (code == 133000)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
@@ -138,9 +138,9 @@ LABEL_12:
   v9 = MEMORY[0x1E695D5E0];
   v10 = a5;
   v11 = a4;
-  v12 = [a1 entity];
-  v13 = [v12 name];
-  v14 = [v9 fetchRequestWithEntityName:v13];
+  entity = [self entity];
+  name = [entity name];
+  v14 = [v9 fetchRequestWithEntityName:name];
 
   [v14 setIncludesSubentities:1];
   v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF in %@", v8];
@@ -167,7 +167,7 @@ LABEL_12:
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -187,10 +187,10 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) objectID];
-        if (v10)
+        objectID = [*(*(&v12 + 1) + 8 * i) objectID];
+        if (objectID)
         {
-          [v4 addObject:v10];
+          [array addObject:objectID];
         }
       }
 
@@ -200,19 +200,19 @@ LABEL_12:
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
 + (id)ic_permanentObjectIDsFromObjects:()IC
 {
   v4 = a3;
-  v5 = [v4 firstObject];
-  if (v5)
+  firstObject = [v4 firstObject];
+  if (firstObject)
   {
     v6 = [v4 ic_objectsPassingTest:&__block_literal_global_10_2];
-    v7 = [v5 managedObjectContext];
+    managedObjectContext = [firstObject managedObjectContext];
     v13 = 0;
-    v8 = [v7 obtainPermanentIDsForObjects:v6 error:&v13];
+    v8 = [managedObjectContext obtainPermanentIDsForObjects:v6 error:&v13];
     v9 = v13;
 
     if ((v8 & 1) == 0)
@@ -225,7 +225,7 @@ LABEL_12:
     }
   }
 
-  v11 = [a1 ic_objectIDsFromObjects:v4];
+  v11 = [self ic_objectIDsFromObjects:v4];
 
   return v11;
 }
@@ -233,21 +233,21 @@ LABEL_12:
 - (void)ic_postNotificationOnMainThreadWithName:()IC
 {
   v4 = a3;
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__8;
   v15 = __Block_byref_object_dispose__8;
   v16 = 0;
-  v5 = [a1 managedObjectContext];
+  managedObjectContext = [self managedObjectContext];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__NSManagedObject_IC__ic_postNotificationOnMainThreadWithName___block_invoke;
   v9[3] = &unk_1E84856B8;
   objc_copyWeak(&v10, &location);
   v9[4] = &v11;
-  [v5 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
   if (v12[5])
   {
@@ -269,15 +269,15 @@ LABEL_12:
 - (id)ic_postNotificationOnMainThreadAfterSaveWithName:()IC
 {
   v4 = a3;
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v16 = 0;
   v17 = &v16;
   v18 = 0x3042000000;
   v19 = __Block_byref_object_copy__14;
   v20 = __Block_byref_object_dispose__15;
   v21 = 0;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  v6 = [a1 managedObjectContext];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  managedObjectContext = [self managedObjectContext];
   v7 = *MEMORY[0x1E695D358];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -287,7 +287,7 @@ LABEL_12:
   v8 = v4;
   v13 = v8;
   v14 = &v16;
-  v9 = [v5 addObserverForName:v7 object:v6 queue:0 usingBlock:v12];
+  v9 = [defaultCenter addObserverForName:v7 object:managedObjectContext queue:0 usingBlock:v12];
   objc_storeWeak(v17 + 5, v9);
 
   WeakRetained = objc_loadWeakRetained(v17 + 5);
@@ -307,15 +307,15 @@ LABEL_12:
   v15 = a4;
   v16 = a8;
   v17 = a6;
-  v18 = [a1 fetchRequest];
-  [v18 setPredicate:v14];
-  [v18 setResultType:a5];
-  [v18 setSortDescriptors:v15];
-  [v18 setRelationshipKeyPathsForPrefetching:v17];
+  fetchRequest = [self fetchRequest];
+  [fetchRequest setPredicate:v14];
+  [fetchRequest setResultType:a5];
+  [fetchRequest setSortDescriptors:v15];
+  [fetchRequest setRelationshipKeyPathsForPrefetching:v17];
 
-  [v18 setFetchLimit:a7];
+  [fetchRequest setFetchLimit:a7];
   v26 = 0;
-  v19 = [v16 executeFetchRequest:v18 error:&v26];
+  v19 = [v16 executeFetchRequest:fetchRequest error:&v26];
   v20 = v26;
   if (v20)
   {
@@ -378,20 +378,20 @@ LABEL_5:
   v16 = a5;
   v17 = a6;
   v18 = a9;
-  v19 = [a1 fetchRequest];
+  fetchRequest = [self fetchRequest];
   v45 = v14;
-  [v19 setPredicate:v14];
-  [v19 setResultType:0];
+  [fetchRequest setPredicate:v14];
+  [fetchRequest setResultType:0];
   v44 = v15;
-  [v19 setSortDescriptors:v15];
+  [fetchRequest setSortDescriptors:v15];
   v43 = v16;
-  [v19 setRelationshipKeyPathsForPrefetching:v16];
-  [v19 setReturnsObjectsAsFaults:1];
-  [v19 setFetchBatchSize:a7];
+  [fetchRequest setRelationshipKeyPathsForPrefetching:v16];
+  [fetchRequest setReturnsObjectsAsFaults:1];
+  [fetchRequest setFetchBatchSize:a7];
   v54 = 0;
   v53 = 0;
-  v42 = v19;
-  v20 = [v17 executeFetchRequest:v19 error:&v53];
+  v42 = fetchRequest;
+  v20 = [v17 executeFetchRequest:fetchRequest error:&v53];
   v40 = v53;
   v21 = [v20 count];
   v47 = v21;
@@ -420,13 +420,13 @@ LABEL_5:
     while (1)
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = [v48 nextObject];
-      if (!v27)
+      nextObject = [v48 nextObject];
+      if (!nextObject)
       {
         break;
       }
 
-      v28 = v27;
+      v28 = nextObject;
       v29 = objc_opt_class();
       v30 = ICCheckedDynamicCast(v29, v28);
       if (v30)

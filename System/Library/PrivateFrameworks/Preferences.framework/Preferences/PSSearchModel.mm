@@ -6,38 +6,38 @@
 - (id)_defaultSearchResultsSectionComparator;
 - (id)_rootSpecifiers;
 - (id)recursiveDescription;
-- (id)searchOperation:(id)a3 filteredEntriesForEntries:(id)a4;
-- (void)_addSearchEntries:(id)a3 parent:(id)a4 usingBlock:(id)a5;
-- (void)_addSpecifierDataSource:(id)a3 forSearchEntry:(id)a4;
+- (id)searchOperation:(id)operation filteredEntriesForEntries:(id)entries;
+- (void)_addSearchEntries:(id)entries parent:(id)parent usingBlock:(id)block;
+- (void)_addSpecifierDataSource:(id)source forSearchEntry:(id)entry;
 - (void)_beginIndexingIfNecessary;
-- (void)_beginSearchingEntriesForCurrentQuery:(id)a3 newSearch:(BOOL)a4;
+- (void)_beginSearchingEntriesForCurrentQuery:(id)query newSearch:(BOOL)search;
 - (void)_cancelAllSearchOperations;
-- (void)_enumerateDelegatesUsingBlock:(id)a3;
-- (void)_finishedIndexingEntry:(id)a3;
-- (void)_loadChildrenForEntry:(id)a3;
-- (void)_performDeferredUpdatesForEntry:(id)a3;
-- (void)_performSpecifierUpdates:(id)a3 forSearchEntries:(id)a4;
-- (void)_reloadSearchEntries:(id)a3;
-- (void)_removeSearchEntries:(id)a3 usingBlock:(id)a4 forReload:(BOOL)a5;
-- (void)_updateWithNewSearchResults:(id)a3 forQuery:(id)a4 newSearch:(BOOL)a5;
-- (void)_updatedEntry:(id)a3 withChildren:(id)a4;
-- (void)addDelegate:(id)a3;
-- (void)addRootSpecifier:(id)a3;
-- (void)dataSource:(id)a3 performUpdates:(id)a4;
+- (void)_enumerateDelegatesUsingBlock:(id)block;
+- (void)_finishedIndexingEntry:(id)entry;
+- (void)_loadChildrenForEntry:(id)entry;
+- (void)_performDeferredUpdatesForEntry:(id)entry;
+- (void)_performSpecifierUpdates:(id)updates forSearchEntries:(id)entries;
+- (void)_reloadSearchEntries:(id)entries;
+- (void)_removeSearchEntries:(id)entries usingBlock:(id)block forReload:(BOOL)reload;
+- (void)_updateWithNewSearchResults:(id)results forQuery:(id)query newSearch:(BOOL)search;
+- (void)_updatedEntry:(id)entry withChildren:(id)children;
+- (void)addDelegate:(id)delegate;
+- (void)addRootSpecifier:(id)specifier;
+- (void)dataSource:(id)source performUpdates:(id)updates;
 - (void)dealloc;
-- (void)invalidateSpecifiersForDataSource:(id)a3;
+- (void)invalidateSpecifiersForDataSource:(id)source;
 - (void)preheat;
-- (void)reloadRootSpecifier:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)removeRootSpecifier:(id)a3;
-- (void)searchForQuery:(id)a3;
-- (void)searchIndexOperation:(id)a3 didFindSpecifierDataSource:(id)a4;
-- (void)searchIndexOperationDidCancel:(id)a3;
-- (void)searchIndexOperationDidFinish:(id)a3 searchEntries:(id)a4;
-- (void)searchOperation:(id)a3 configureSearchResults:(id)a4;
-- (void)searchOperationDidBegin:(id)a3;
-- (void)searchOperationDidCancel:(id)a3;
-- (void)searchOperationDidFinish:(id)a3 withResults:(id)a4;
+- (void)reloadRootSpecifier:(id)specifier;
+- (void)removeDelegate:(id)delegate;
+- (void)removeRootSpecifier:(id)specifier;
+- (void)searchForQuery:(id)query;
+- (void)searchIndexOperation:(id)operation didFindSpecifierDataSource:(id)source;
+- (void)searchIndexOperationDidCancel:(id)cancel;
+- (void)searchIndexOperationDidFinish:(id)finish searchEntries:(id)entries;
+- (void)searchOperation:(id)operation configureSearchResults:(id)results;
+- (void)searchOperationDidBegin:(id)begin;
+- (void)searchOperationDidCancel:(id)cancel;
+- (void)searchOperationDidFinish:(id)finish withResults:(id)results;
 @end
 
 @implementation PSSearchModel
@@ -84,9 +84,9 @@ void __31__PSSearchModel_sharedInstance__block_invoke()
     delegates = v2->_delegates;
     v2->_delegates = v7;
 
-    v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     specifierDataSources = v2->_specifierDataSources;
-    v2->_specifierDataSources = v9;
+    v2->_specifierDataSources = strongToStrongObjectsMapTable;
 
     v11 = objc_opt_new();
     rootEntries = v2->_rootEntries;
@@ -126,12 +126,12 @@ void __31__PSSearchModel_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(NSOperationQueue *)self->_indexOperationQueue operations];
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_43_1];
+  operations = [(NSOperationQueue *)self->_indexOperationQueue operations];
+  [operations enumerateObjectsUsingBlock:&__block_literal_global_43_1];
 
   [(NSOperationQueue *)self->_indexOperationQueue cancelAllOperations];
-  v4 = [(NSOperationQueue *)self->_searchOperationQueue operations];
-  [v4 enumerateObjectsUsingBlock:&__block_literal_global_45];
+  operations2 = [(NSOperationQueue *)self->_searchOperationQueue operations];
+  [operations2 enumerateObjectsUsingBlock:&__block_literal_global_45];
 
   [(NSOperationQueue *)self->_searchOperationQueue cancelAllOperations];
   v5.receiver = self;
@@ -195,10 +195,10 @@ void __31__PSSearchModel_sharedInstance__block_invoke()
 
   if (!self->_hasLoadedRootEntries)
   {
-    v4 = [(PSSearchModel *)self _rootSpecifiers];
-    if ([v4 count])
+    _rootSpecifiers = [(PSSearchModel *)self _rootSpecifiers];
+    if ([_rootSpecifiers count])
     {
-      v5 = SearchEntriesFromSpecifiers(v4, 0, 0);
+      v5 = SearchEntriesFromSpecifiers(_rootSpecifiers, 0, 0);
       rootEntries = self->_rootEntries;
       self->_rootEntries = v5;
 
@@ -227,9 +227,9 @@ void __31__PSSearchModel_sharedInstance__block_invoke()
   }
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     delegates = self->_delegates;
     v4 = [PSWeakReference weakReferenceWithObject:?];
@@ -237,26 +237,26 @@ void __31__PSSearchModel_sharedInstance__block_invoke()
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     [(NSMutableSet *)self->_delegates removeObject:?];
   }
 }
 
-- (void)_enumerateDelegatesUsingBlock:(id)a3
+- (void)_enumerateDelegatesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     delegates = self->_delegates;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __47__PSSearchModel__enumerateDelegatesUsingBlock___block_invoke;
     v7[3] = &unk_1E71DD940;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSMutableSet *)delegates enumerateObjectsUsingBlock:v7];
   }
 }
@@ -272,28 +272,28 @@ void __47__PSSearchModel__enumerateDelegatesUsingBlock___block_invoke(uint64_t a
   }
 }
 
-- (void)_addSpecifierDataSource:(id)a3 forSearchEntry:(id)a4
+- (void)_addSpecifierDataSource:(id)source forSearchEntry:(id)entry
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_specifierDataSources objectForKey:v8];
+  sourceCopy = source;
+  entryCopy = entry;
+  v7 = [(NSMapTable *)self->_specifierDataSources objectForKey:sourceCopy];
   if (!v7)
   {
     v7 = [MEMORY[0x1E695DFA8] set];
-    [(NSMapTable *)self->_specifierDataSources setObject:v7 forKey:v8];
+    [(NSMapTable *)self->_specifierDataSources setObject:v7 forKey:sourceCopy];
   }
 
-  [v7 addObject:v6];
-  [v8 addObserver:self];
+  [v7 addObject:entryCopy];
+  [sourceCopy addObserver:self];
 }
 
-- (void)addRootSpecifier:(id)a3
+- (void)addRootSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
+  specifierCopy = specifier;
+  v5 = specifierCopy;
   if (self->_hasLoadedRootEntries)
   {
-    v6 = SearchEntryFromSpecifier(v4, 0);
+    v6 = SearchEntryFromSpecifier(specifierCopy, 0);
     if (v6)
     {
       objc_initWeak(&location, self->_rootEntries);
@@ -318,17 +318,17 @@ void __34__PSSearchModel_addRootSpecifier___block_invoke(uint64_t a1)
   [WeakRetained addObject:*(a1 + 32)];
 }
 
-- (void)reloadRootSpecifier:(id)a3
+- (void)reloadRootSpecifier:(id)specifier
 {
-  v4 = a3;
-  [(PSSearchModel *)self removeRootSpecifier:v4];
-  [(PSSearchModel *)self addRootSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSSearchModel *)self removeRootSpecifier:specifierCopy];
+  [(PSSearchModel *)self addRootSpecifier:specifierCopy];
 }
 
-- (void)removeRootSpecifier:(id)a3
+- (void)removeRootSpecifier:(id)specifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  specifierCopy = specifier;
   if (self->_hasLoadedRootEntries)
   {
     v20 = 0u;
@@ -352,9 +352,9 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v10) identifier];
-        v12 = [v4 identifier];
-        v13 = [v11 isEqualToString:v12];
+        identifier = [*(*(&v18 + 1) + 8 * v10) identifier];
+        identifier2 = [specifierCopy identifier];
+        v13 = [identifier isEqualToString:identifier2];
 
         if (v13)
         {
@@ -396,48 +396,48 @@ LABEL_4:
 LABEL_10:
 
 LABEL_12:
-      NSLog(&cfstr_ErrorNoRootSea.isa, v4);
+      NSLog(&cfstr_ErrorNoRootSea.isa, specifierCopy);
     }
   }
 }
 
-- (void)_addSearchEntries:(id)a3 parent:(id)a4 usingBlock:(id)a5
+- (void)_addSearchEntries:(id)entries parent:(id)parent usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(PSSearchModel *)self currentQuery];
+  entriesCopy = entries;
+  blockCopy = block;
+  parentCopy = parent;
+  currentQuery = [(PSSearchModel *)self currentQuery];
 
-  if (v11)
+  if (currentQuery)
   {
     searchStateAccessQueue = self->_searchStateAccessQueue;
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __53__PSSearchModel__addSearchEntries_parent_usingBlock___block_invoke;
     v17 = &unk_1E71DC570;
-    v18 = self;
-    v13 = v8;
+    selfCopy = self;
+    v13 = entriesCopy;
     v19 = v13;
     dispatch_async(searchStateAccessQueue, &v14);
 
-    v9[2](v9);
-    [(PSSearchModel *)self _beginSearchingEntriesForCurrentQuery:v13 newSearch:0, v14, v15, v16, v17, v18];
+    blockCopy[2](blockCopy);
+    [(PSSearchModel *)self _beginSearchingEntriesForCurrentQuery:v13 newSearch:0, v14, v15, v16, v17, selfCopy];
   }
 
   else
   {
-    v9[2](v9);
+    blockCopy[2](blockCopy);
   }
 
-  [(PSSearchModel *)self _updatedEntry:v10 withChildren:v8];
+  [(PSSearchModel *)self _updatedEntry:parentCopy withChildren:entriesCopy];
 }
 
-- (void)_removeSearchEntries:(id)a3 usingBlock:(id)a4 forReload:(BOOL)a5
+- (void)_removeSearchEntries:(id)entries usingBlock:(id)block forReload:(BOOL)reload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PSSearchModel *)self currentQuery];
-  if (v10)
+  entriesCopy = entries;
+  blockCopy = block;
+  currentQuery = [(PSSearchModel *)self currentQuery];
+  if (currentQuery)
   {
     searchStateAccessQueue = self->_searchStateAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -445,11 +445,11 @@ LABEL_12:
     block[2] = __59__PSSearchModel__removeSearchEntries_usingBlock_forReload___block_invoke;
     block[3] = &unk_1E71DC570;
     block[4] = self;
-    v24 = v8;
+    v24 = entriesCopy;
     dispatch_async(searchStateAccessQueue, block);
   }
 
-  if (!a5)
+  if (!reload)
   {
     removedEntriesStillIndexing = self->_removedEntriesStillIndexing;
     v22[0] = MEMORY[0x1E69E9820];
@@ -457,29 +457,29 @@ LABEL_12:
     v22[2] = __59__PSSearchModel__removeSearchEntries_usingBlock_forReload___block_invoke_2;
     v22[3] = &unk_1E71DD990;
     v22[4] = self;
-    v13 = [v8 objectsPassingTest:v22];
+    v13 = [entriesCopy objectsPassingTest:v22];
     [(NSMutableSet *)removedEntriesStillIndexing unionSet:v13];
   }
 
-  v9[2](v9);
-  if (v10)
+  blockCopy[2](blockCopy);
+  if (currentQuery)
   {
     currentResults = self->_currentResults;
-    v15 = [v8 allObjects];
-    v16 = [(PSSearchResults *)currentResults removeEntries:v15];
+    allObjects = [entriesCopy allObjects];
+    v16 = [(PSSearchResults *)currentResults removeEntries:allObjects];
 
     if (v16)
     {
       [(PSSearchResults *)self->_currentResults sortResults];
-      v17 = [(PSSearchModel *)self currentResults];
+      currentResults = [(PSSearchModel *)self currentResults];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __59__PSSearchModel__removeSearchEntries_usingBlock_forReload___block_invoke_3;
       v19[3] = &unk_1E71DD9B8;
       v19[4] = self;
-      v20 = v17;
-      v21 = v10;
-      v18 = v17;
+      v20 = currentResults;
+      v21 = currentQuery;
+      v18 = currentResults;
       [(PSSearchModel *)self _enumerateDelegatesUsingBlock:v19];
     }
   }
@@ -494,14 +494,14 @@ void __59__PSSearchModel__removeSearchEntries_usingBlock_forReload___block_invok
   }
 }
 
-- (void)_reloadSearchEntries:(id)a3
+- (void)_reloadSearchEntries:(id)entries
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __38__PSSearchModel__reloadSearchEntries___block_invoke;
   v3[3] = &unk_1E71DD9E0;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [entries enumerateObjectsUsingBlock:v3];
 }
 
 void __38__PSSearchModel__reloadSearchEntries___block_invoke(uint64_t a1, void *a2)
@@ -523,9 +523,9 @@ void __38__PSSearchModel__reloadSearchEntries___block_invoke(uint64_t a1, void *
   [*(a1 + 32) _loadChildrenForEntry:v3];
 }
 
-- (void)_performDeferredUpdatesForEntry:(id)a3
+- (void)_performDeferredUpdatesForEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableArray count](self->_deferredSpecifierUpdates, "count")}];
   v29 = 0;
   v30 = &v29;
@@ -536,20 +536,20 @@ void __38__PSSearchModel__reloadSearchEntries___block_invoke(uint64_t a1, void *
   v25[1] = 3221225472;
   v25[2] = __49__PSSearchModel__performDeferredUpdatesForEntry___block_invoke;
   v25[3] = &unk_1E71DDA08;
-  v7 = v4;
+  v7 = entryCopy;
   v26 = v7;
   v8 = v5;
   v27 = v8;
   v28 = &v29;
   [(NSMutableArray *)deferredSpecifierUpdates enumerateObjectsUsingBlock:v25];
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__PSSearchModel__performDeferredUpdatesForEntry___block_invoke_2;
   aBlock[3] = &unk_1E71DDA30;
   v10 = v7;
   v23 = v10;
-  v11 = v9;
+  v11 = array;
   v24 = v11;
   v12 = _Block_copy(aBlock);
   if (v30[3] != 0x7FFFFFFFFFFFFFFFLL)
@@ -691,11 +691,11 @@ void __42__PSSearchModel__beginIndexingIfNecessary__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_loadChildrenForEntry:(id)a3
+- (void)_loadChildrenForEntry:(id)entry
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[PSSearchIndexOperation alloc] initWithSearchEntry:v4 delegate:self];
+  entryCopy = entry;
+  v5 = [[PSSearchIndexOperation alloc] initWithSearchEntry:entryCopy delegate:self];
   if (v5)
   {
     self->_indexing = 1;
@@ -703,8 +703,8 @@ void __42__PSSearchModel__beginIndexingIfNecessary__block_invoke(uint64_t a1, vo
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 0;
-    v6 = [v4 specifier];
-    v7 = [v6 propertyForKey:@"dataSourceClass"];
+    specifier = [entryCopy specifier];
+    v7 = [specifier propertyForKey:@"dataSourceClass"];
 
     entriesBeingIndexed = self->_entriesBeingIndexed;
     v12 = MEMORY[0x1E69E9820];
@@ -717,7 +717,7 @@ void __42__PSSearchModel__beginIndexingIfNecessary__block_invoke(uint64_t a1, vo
     [(NSMutableSet *)entriesBeingIndexed enumerateObjectsUsingBlock:&v12];
     if ((v19[3] & 1) == 0)
     {
-      [(NSMutableSet *)self->_entriesBeingIndexed addObject:v4, v12, v13, v14, v15];
+      [(NSMutableSet *)self->_entriesBeingIndexed addObject:entryCopy, v12, v13, v14, v15];
       [(PSSearchIndexOperation *)v5 setQueuePriority:-4];
       indexOperationQueue = self->_indexOperationQueue;
       v22[0] = v5;
@@ -742,14 +742,14 @@ void __39__PSSearchModel__loadChildrenForEntry___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_updatedEntry:(id)a3 withChildren:(id)a4
+- (void)_updatedEntry:(id)entry withChildren:(id)children
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(NSMutableSet *)self->_removedEntriesStillIndexing containsObject:v6])
+  entryCopy = entry;
+  childrenCopy = children;
+  if ([(NSMutableSet *)self->_removedEntriesStillIndexing containsObject:entryCopy])
   {
-    [(NSMutableSet *)self->_removedEntriesStillIndexing removeObject:v6];
+    [(NSMutableSet *)self->_removedEntriesStillIndexing removeObject:entryCopy];
   }
 
   else
@@ -758,7 +758,7 @@ void __39__PSSearchModel__loadChildrenForEntry___block_invoke(uint64_t a1, void 
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v7;
+    v8 = childrenCopy;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -786,13 +786,13 @@ void __39__PSSearchModel__loadChildrenForEntry___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_finishedIndexingEntry:(id)a3
+- (void)_finishedIndexingEntry:(id)entry
 {
   entriesBeingIndexed = self->_entriesBeingIndexed;
-  v5 = a3;
-  [(NSMutableSet *)entriesBeingIndexed removeObject:v5];
-  [(NSMutableSet *)self->_indexingEntriesWithLoadedDataSources removeObject:v5];
-  [(PSSearchModel *)self _performDeferredUpdatesForEntry:v5];
+  entryCopy = entry;
+  [(NSMutableSet *)entriesBeingIndexed removeObject:entryCopy];
+  [(NSMutableSet *)self->_indexingEntriesWithLoadedDataSources removeObject:entryCopy];
+  [(PSSearchModel *)self _performDeferredUpdatesForEntry:entryCopy];
 
   if (![(NSMutableSet *)self->_entriesBeingIndexed count])
   {
@@ -815,32 +815,32 @@ void __40__PSSearchModel__finishedIndexingEntry___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)searchIndexOperation:(id)a3 didFindSpecifierDataSource:(id)a4
+- (void)searchIndexOperation:(id)operation didFindSpecifierDataSource:(id)source
 {
-  v6 = a4;
-  v7 = [a3 searchEntry];
-  [(NSMutableSet *)self->_indexingEntriesWithLoadedDataSources addObject:v7];
-  [(PSSearchModel *)self _addSpecifierDataSource:v6 forSearchEntry:v7];
+  sourceCopy = source;
+  searchEntry = [operation searchEntry];
+  [(NSMutableSet *)self->_indexingEntriesWithLoadedDataSources addObject:searchEntry];
+  [(PSSearchModel *)self _addSpecifierDataSource:sourceCopy forSearchEntry:searchEntry];
 }
 
-- (void)searchIndexOperationDidFinish:(id)a3 searchEntries:(id)a4
+- (void)searchIndexOperationDidFinish:(id)finish searchEntries:(id)entries
 {
-  v6 = a4;
-  v7 = [a3 searchEntry];
-  if ([v6 count])
+  entriesCopy = entries;
+  searchEntry = [finish searchEntry];
+  if ([entriesCopy count])
   {
-    v8 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+    v8 = [MEMORY[0x1E695DFD8] setWithArray:entriesCopy];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __61__PSSearchModel_searchIndexOperationDidFinish_searchEntries___block_invoke;
     v13 = &unk_1E71DC570;
-    v14 = v7;
+    v14 = searchEntry;
     v15 = v8;
     v9 = v8;
     [(PSSearchModel *)self _addSearchEntries:v9 parent:v14 usingBlock:&v10];
   }
 
-  [(PSSearchModel *)self _finishedIndexingEntry:v7, v10, v11, v12, v13];
+  [(PSSearchModel *)self _finishedIndexingEntry:searchEntry, v10, v11, v12, v13];
 }
 
 void __61__PSSearchModel_searchIndexOperationDidFinish_searchEntries___block_invoke(uint64_t a1)
@@ -849,27 +849,27 @@ void __61__PSSearchModel_searchIndexOperationDidFinish_searchEntries___block_inv
   [v2 unionSet:*(a1 + 40)];
 }
 
-- (void)searchIndexOperationDidCancel:(id)a3
+- (void)searchIndexOperationDidCancel:(id)cancel
 {
-  v4 = [a3 searchEntry];
-  [(PSSearchModel *)self _finishedIndexingEntry:v4];
+  searchEntry = [cancel searchEntry];
+  [(PSSearchModel *)self _finishedIndexingEntry:searchEntry];
 }
 
 - (PSSearchResults)currentResults
 {
-  v3 = [(PSSearchModel *)self activeSearchOperation];
-  v4 = v3;
-  if (v3)
+  activeSearchOperation = [(PSSearchModel *)self activeSearchOperation];
+  v4 = activeSearchOperation;
+  if (activeSearchOperation)
   {
-    v5 = [v3 currentResults];
+    currentResults = [activeSearchOperation currentResults];
     if (([v4 isNewQuery] & 1) != 0 || (-[PSSearchModel currentQuery](self, "currentQuery"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", self->_queryForCurrentResults), v6, (v7 & 1) == 0))
     {
-      v8 = v5;
+      v8 = currentResults;
     }
 
     else
     {
-      v8 = [v5 resultsByMergingWithResults:self->_currentResults];
+      v8 = [currentResults resultsByMergingWithResults:self->_currentResults];
       [v8 sortResults];
     }
   }
@@ -882,16 +882,16 @@ void __61__PSSearchModel_searchIndexOperationDidFinish_searchEntries___block_inv
   return v8;
 }
 
-- (void)searchForQuery:(id)a3
+- (void)searchForQuery:(id)query
 {
-  v7 = a3;
+  queryCopy = query;
   [(PSSearchModel *)self preheat];
-  v4 = [(PSSearchModel *)self currentQuery];
-  v5 = [v4 isEqualToString:v7];
+  currentQuery = [(PSSearchModel *)self currentQuery];
+  v5 = [currentQuery isEqualToString:queryCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(PSSearchModel *)self setCurrentQuery:v7];
+    [(PSSearchModel *)self setCurrentQuery:queryCopy];
     v6 = [MEMORY[0x1E695DFD8] setWithArray:self->_rootEntries];
     [(PSSearchModel *)self _beginSearchingEntriesForCurrentQuery:v6 newSearch:1];
   }
@@ -986,22 +986,22 @@ uint64_t __43__PSSearchModel__cancelAllSearchOperations__block_invoke(uint64_t a
   return [v2 removeAllObjects];
 }
 
-- (void)_beginSearchingEntriesForCurrentQuery:(id)a3 newSearch:(BOOL)a4
+- (void)_beginSearchingEntriesForCurrentQuery:(id)query newSearch:(BOOL)search
 {
-  v4 = a4;
+  searchCopy = search;
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v4)
+  queryCopy = query;
+  if (searchCopy)
   {
     [(PSSearchModel *)self _cancelAllSearchOperations];
   }
 
-  v7 = [(PSSearchModel *)self currentQuery];
-  if ([v7 length])
+  currentQuery = [(PSSearchModel *)self currentQuery];
+  if ([currentQuery length])
   {
-    v8 = [[PSSearchOperation alloc] initWithSearchQuery:v7 rootEntries:v6];
+    v8 = [[PSSearchOperation alloc] initWithSearchQuery:currentQuery rootEntries:queryCopy];
     [(PSSearchOperation *)v8 setDelegate:self];
-    [(PSSearchOperation *)v8 setNewQuery:v4];
+    [(PSSearchOperation *)v8 setNewQuery:searchCopy];
     searchOperationQueue = self->_searchOperationQueue;
     v11[0] = v8;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -1010,56 +1010,56 @@ uint64_t __43__PSSearchModel__cancelAllSearchOperations__block_invoke(uint64_t a
 
   else
   {
-    [(PSSearchModel *)self _updateWithNewSearchResults:0 forQuery:v7 newSearch:1];
+    [(PSSearchModel *)self _updateWithNewSearchResults:0 forQuery:currentQuery newSearch:1];
   }
 }
 
-- (void)_updateWithNewSearchResults:(id)a3 forQuery:(id)a4 newSearch:(BOOL)a5
+- (void)_updateWithNewSearchResults:(id)results forQuery:(id)query newSearch:(BOOL)search
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v5)
+  searchCopy = search;
+  resultsCopy = results;
+  queryCopy = query;
+  v11 = queryCopy;
+  if (searchCopy)
   {
-    v12 = [v10 copy];
+    v12 = [queryCopy copy];
     queryForCurrentResults = self->_queryForCurrentResults;
     self->_queryForCurrentResults = v12;
 
-    objc_storeStrong(&self->_currentResults, a3);
+    objc_storeStrong(&self->_currentResults, results);
   }
 
   else
   {
-    [(PSSearchResults *)self->_currentResults mergeWithResults:v9];
+    [(PSSearchResults *)self->_currentResults mergeWithResults:resultsCopy];
     [(PSSearchResults *)self->_currentResults sortResults];
   }
 
-  v14 = [(PSSearchModel *)self currentResults];
+  currentResults = [(PSSearchModel *)self currentResults];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __64__PSSearchModel__updateWithNewSearchResults_forQuery_newSearch___block_invoke;
   v17[3] = &unk_1E71DD9B8;
   v17[4] = self;
-  v18 = v14;
+  v18 = currentResults;
   v19 = v11;
   v15 = v11;
-  v16 = v14;
+  v16 = currentResults;
   [(PSSearchModel *)self _enumerateDelegatesUsingBlock:v17];
 }
 
-- (void)searchOperationDidBegin:(id)a3
+- (void)searchOperationDidBegin:(id)begin
 {
-  v4 = a3;
-  [(PSSearchModel *)self setActiveSearchOperation:v4];
+  beginCopy = begin;
+  [(PSSearchModel *)self setActiveSearchOperation:beginCopy];
   searchStateAccessQueue = self->_searchStateAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__PSSearchModel_searchOperationDidBegin___block_invoke;
   v7[3] = &unk_1E71DC570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = beginCopy;
+  v6 = beginCopy;
   dispatch_async(searchStateAccessQueue, v7);
 }
 
@@ -1070,25 +1070,25 @@ void __41__PSSearchModel_searchOperationDidBegin___block_invoke(uint64_t a1)
   [v1 minusSet:v2];
 }
 
-- (void)searchOperation:(id)a3 configureSearchResults:(id)a4
+- (void)searchOperation:(id)operation configureSearchResults:(id)results
 {
-  v6 = a4;
+  resultsCopy = results;
   searchStateAccessQueue = self->_searchStateAccessQueue;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __56__PSSearchModel_searchOperation_configureSearchResults___block_invoke;
   v14 = &unk_1E71DC570;
-  v8 = v6;
+  v8 = resultsCopy;
   v15 = v8;
-  v16 = self;
-  v9 = a3;
+  selfCopy = self;
+  operationCopy = operation;
   dispatch_sync(searchStateAccessQueue, &v11);
-  LODWORD(searchStateAccessQueue) = [v9 isNewQuery];
+  LODWORD(searchStateAccessQueue) = [operationCopy isNewQuery];
 
   if (searchStateAccessQueue)
   {
-    v10 = [(PSSearchModel *)self _defaultSearchResultsSectionComparator];
-    [v8 setSectionComparator:v10];
+    _defaultSearchResultsSectionComparator = [(PSSearchModel *)self _defaultSearchResultsSectionComparator];
+    [v8 setSectionComparator:_defaultSearchResultsSectionComparator];
 
     [v8 sortResults];
   }
@@ -1109,9 +1109,9 @@ void __56__PSSearchModel_searchOperation_configureSearchResults___block_invoke(u
   [*(*(a1 + 40) + 88) minusSet:v5];
 }
 
-- (id)searchOperation:(id)a3 filteredEntriesForEntries:(id)a4
+- (id)searchOperation:(id)operation filteredEntriesForEntries:(id)entries
 {
-  v5 = a4;
+  entriesCopy = entries;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1124,9 +1124,9 @@ void __56__PSSearchModel_searchOperation_configureSearchResults___block_invoke(u
   block[2] = __59__PSSearchModel_searchOperation_filteredEntriesForEntries___block_invoke;
   block[3] = &unk_1E71DDB20;
   block[4] = self;
-  v12 = v5;
+  v12 = entriesCopy;
   v13 = &v14;
-  v7 = v5;
+  v7 = entriesCopy;
   dispatch_sync(searchStateAccessQueue, block);
   v8 = v15[5];
   if (!v8)
@@ -1154,19 +1154,19 @@ void __59__PSSearchModel_searchOperation_filteredEntriesForEntries___block_invok
   }
 }
 
-- (void)searchOperationDidFinish:(id)a3 withResults:(id)a4
+- (void)searchOperationDidFinish:(id)finish withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSSearchModel *)self activeSearchOperation];
+  finishCopy = finish;
+  resultsCopy = results;
+  activeSearchOperation = [(PSSearchModel *)self activeSearchOperation];
 
-  if (v8 == v6)
+  if (activeSearchOperation == finishCopy)
   {
     [(PSSearchModel *)self setActiveSearchOperation:0];
   }
 
-  v9 = [v6 query];
-  -[PSSearchModel _updateWithNewSearchResults:forQuery:newSearch:](self, "_updateWithNewSearchResults:forQuery:newSearch:", v7, v9, [v6 isNewQuery]);
+  query = [finishCopy query];
+  -[PSSearchModel _updateWithNewSearchResults:forQuery:newSearch:](self, "_updateWithNewSearchResults:forQuery:newSearch:", resultsCopy, query, [finishCopy isNewQuery]);
 
   if (![(NSOperationQueue *)self->_searchOperationQueue operationCount])
   {
@@ -1195,33 +1195,33 @@ void __54__PSSearchModel_searchOperationDidFinish_withResults___block_invoke(uin
   }
 }
 
-- (void)searchOperationDidCancel:(id)a3
+- (void)searchOperationDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(PSSearchModel *)self activeSearchOperation];
+  cancelCopy = cancel;
+  activeSearchOperation = [(PSSearchModel *)self activeSearchOperation];
 
-  if (v5 == v4)
+  if (activeSearchOperation == cancelCopy)
   {
 
     [(PSSearchModel *)self setActiveSearchOperation:0];
   }
 }
 
-- (void)_performSpecifierUpdates:(id)a3 forSearchEntries:(id)a4
+- (void)_performSpecifierUpdates:(id)updates forSearchEntries:(id)entries
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 updates];
-  v10 = [v6 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  entriesCopy = entries;
+  updatesCopy = updates;
+  updates = [updatesCopy updates];
+  v10 = [v6 arrayWithCapacity:{objc_msgSend(updates, "count")}];
 
   v11 = MEMORY[0x1E695DFA8];
-  v12 = [v8 updates];
-  v13 = [v11 setWithCapacity:{objc_msgSend(v12, "count")}];
+  updates2 = [updatesCopy updates];
+  v13 = [v11 setWithCapacity:{objc_msgSend(updates2, "count")}];
 
   v14 = MEMORY[0x1E695DFA8];
-  v15 = [v8 updates];
-  v16 = [v14 setWithCapacity:{objc_msgSend(v15, "count")}];
+  updates3 = [updatesCopy updates];
+  v16 = [v14 setWithCapacity:{objc_msgSend(updates3, "count")}];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -1233,20 +1233,20 @@ void __54__PSSearchModel_searchOperationDidFinish_withResults___block_invoke(uin
   v30 = v18;
   v19 = v13;
   v31 = v19;
-  [v8 enumerateUpdatesUsingBlock:v28];
+  [updatesCopy enumerateUpdatesUsingBlock:v28];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __59__PSSearchModel__performSpecifierUpdates_forSearchEntries___block_invoke_2;
   v23[3] = &unk_1E71DDB70;
   v24 = v17;
-  v25 = self;
+  selfCopy = self;
   v26 = v19;
   v27 = v18;
   v20 = v18;
   v21 = v19;
   v22 = v17;
-  [v7 enumerateObjectsUsingBlock:v23];
+  [entriesCopy enumerateObjectsUsingBlock:v23];
 }
 
 void __59__PSSearchModel__performSpecifierUpdates_forSearchEntries___block_invoke(uint64_t a1, void *a2)
@@ -1375,11 +1375,11 @@ uint64_t __59__PSSearchModel__performSpecifierUpdates_forSearchEntries___block_i
   return v4;
 }
 
-- (void)dataSource:(id)a3 performUpdates:(id)a4
+- (void)dataSource:(id)source performUpdates:(id)updates
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PSSearchModel *)self _searchEntriesForSpecifierDataSource:v11];
+  sourceCopy = source;
+  updatesCopy = updates;
+  v7 = [(PSSearchModel *)self _searchEntriesForSpecifierDataSource:sourceCopy];
   v8 = [v7 mutableCopy];
 
   if ([v8 count])
@@ -1389,25 +1389,25 @@ uint64_t __59__PSSearchModel__performSpecifierUpdates_forSearchEntries___block_i
     [v8 minusSet:v9];
     if ([v8 count])
     {
-      [(PSSearchModel *)self _performSpecifierUpdates:v6 forSearchEntries:v8];
+      [(PSSearchModel *)self _performSpecifierUpdates:updatesCopy forSearchEntries:v8];
     }
 
     if ([v9 count])
     {
-      v10 = [_PSDeferredUpdates deferredUpdatesWithEntries:v9 specifierUpdates:v6];
+      v10 = [_PSDeferredUpdates deferredUpdatesWithEntries:v9 specifierUpdates:updatesCopy];
       [(NSMutableArray *)self->_deferredSpecifierUpdates addObject:v10];
     }
   }
 
   else
   {
-    NSLog(&cfstr_ErrorCouldNotF.isa, v11);
+    NSLog(&cfstr_ErrorCouldNotF.isa, sourceCopy);
   }
 }
 
-- (void)invalidateSpecifiersForDataSource:(id)a3
+- (void)invalidateSpecifiersForDataSource:(id)source
 {
-  v8 = a3;
+  sourceCopy = source;
   v4 = [(PSSearchModel *)self _searchEntriesForSpecifierDataSource:?];
   v5 = [v4 mutableCopy];
 
@@ -1430,14 +1430,14 @@ uint64_t __59__PSSearchModel__performSpecifierUpdates_forSearchEntries___block_i
 
   else
   {
-    NSLog(&cfstr_ErrorCouldNotF.isa, v8);
+    NSLog(&cfstr_ErrorCouldNotF.isa, sourceCopy);
   }
 }
 
 - (id)recursiveDescription
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1457,8 +1457,8 @@ uint64_t __59__PSSearchModel__performSpecifierUpdates_forSearchEntries___block_i
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) recursiveDescription];
-        [v3 appendFormat:@"%@\n", v9];
+        recursiveDescription = [*(*(&v12 + 1) + 8 * i) recursiveDescription];
+        [string appendFormat:@"%@\n", recursiveDescription];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1467,10 +1467,10 @@ uint64_t __59__PSSearchModel__performSpecifierUpdates_forSearchEntries___block_i
     while (v6);
   }
 
-  v10 = [MEMORY[0x1E696AD60] string];
-  [v10 appendFormat:@"<%@ %p> entries:\n%@", objc_opt_class(), self, v3];
+  string2 = [MEMORY[0x1E696AD60] string];
+  [string2 appendFormat:@"<%@ %p> entries:\n%@", objc_opt_class(), self, string];
 
-  return v10;
+  return string2;
 }
 
 - (PSSearchModelDataSource)dataSource

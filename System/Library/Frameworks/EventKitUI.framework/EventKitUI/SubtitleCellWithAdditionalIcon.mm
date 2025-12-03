@@ -1,5 +1,5 @@
 @interface SubtitleCellWithAdditionalIcon
-- (BOOL)leftFrame:(CGRect)a3 overlapsRightFrame:(CGRect)a4 difference:(double *)a5;
+- (BOOL)leftFrame:(CGRect)frame overlapsRightFrame:(CGRect)rightFrame difference:(double *)difference;
 - (UIImageView)icon;
 - (void)layoutSubviews;
 @end
@@ -15,8 +15,8 @@
     v5 = self->_icon;
     self->_icon = v4;
 
-    v6 = [(SubtitleCellWithAdditionalIcon *)self contentView];
-    [v6 addSubview:self->_icon];
+    contentView = [(SubtitleCellWithAdditionalIcon *)self contentView];
+    [contentView addSubview:self->_icon];
 
     icon = self->_icon;
   }
@@ -29,8 +29,8 @@
   v80.receiver = self;
   v80.super_class = SubtitleCellWithAdditionalIcon;
   [(EKUITableViewCell *)&v80 layoutSubviews];
-  v3 = [(SubtitleCellWithAdditionalIcon *)self contentView];
-  [v3 bounds];
+  contentView = [(SubtitleCellWithAdditionalIcon *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -38,29 +38,29 @@
 
   if (self->_icon)
   {
-    v12 = [(SubtitleCellWithAdditionalIcon *)self textLabel];
-    [v12 sizeToFit];
+    textLabel = [(SubtitleCellWithAdditionalIcon *)self textLabel];
+    [textLabel sizeToFit];
 
-    v13 = [(SubtitleCellWithAdditionalIcon *)self detailTextLabel];
-    [v13 sizeToFit];
+    detailTextLabel = [(SubtitleCellWithAdditionalIcon *)self detailTextLabel];
+    [detailTextLabel sizeToFit];
 
     [(UIImageView *)self->_icon sizeToFit];
-    v14 = [(SubtitleCellWithAdditionalIcon *)self textLabel];
-    [v14 frame];
+    textLabel2 = [(SubtitleCellWithAdditionalIcon *)self textLabel];
+    [textLabel2 frame];
     v71 = v16;
     v73 = v15;
     v69 = v17;
     v76 = v18;
 
-    v19 = [(SubtitleCellWithAdditionalIcon *)self detailTextLabel];
-    [v19 frame];
+    detailTextLabel2 = [(SubtitleCellWithAdditionalIcon *)self detailTextLabel];
+    [detailTextLabel2 frame];
     v75 = v20;
     v22 = v21;
     v24 = v23;
     v26 = v25;
 
-    v27 = [(SubtitleCellWithAdditionalIcon *)self traitCollection];
-    v28 = EKUIUsesLargeTextLayout(v27);
+    traitCollection = [(SubtitleCellWithAdditionalIcon *)self traitCollection];
+    v28 = EKUIUsesLargeTextLayout(traitCollection);
 
     icon = self->_icon;
     if (v28)
@@ -91,8 +91,8 @@
       v82.size.height = v11;
       v35 = round((CGRectGetMaxY(v82) - v33) * 0.5);
       [(UIImageView *)self->_icon setFrame:v34, v35, v31, v33];
-      v36 = [(SubtitleCellWithAdditionalIcon *)self contentView];
-      [v36 addSubview:self->_icon];
+      contentView2 = [(SubtitleCellWithAdditionalIcon *)self contentView];
+      [contentView2 addSubview:self->_icon];
 
       IsLeftToRight = CalInterfaceIsLeftToRight();
       v38 = v73;
@@ -190,8 +190,8 @@
           v38 = v73 + v79;
         }
 
-        v49 = [(SubtitleCellWithAdditionalIcon *)self textLabel];
-        [v49 setFrame:{v38, v69, v48, v76}];
+        textLabel3 = [(SubtitleCellWithAdditionalIcon *)self textLabel];
+        [textLabel3 setFrame:{v38, v69, v48, v76}];
       }
 
       v50 = CalInterfaceIsLeftToRight();
@@ -294,26 +294,26 @@
           v61 = v75 + v78;
         }
 
-        v62 = [(SubtitleCellWithAdditionalIcon *)self detailTextLabel];
-        [v62 setFrame:{v61, v68, v60, v26}];
+        detailTextLabel3 = [(SubtitleCellWithAdditionalIcon *)self detailTextLabel];
+        [detailTextLabel3 setFrame:{v61, v68, v60, v26}];
       }
     }
   }
 }
 
-- (BOOL)leftFrame:(CGRect)a3 overlapsRightFrame:(CGRect)a4 difference:(double *)a5
+- (BOOL)leftFrame:(CGRect)frame overlapsRightFrame:(CGRect)rightFrame difference:(double *)difference
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MaxX = CGRectGetMaxX(a3);
+  height = rightFrame.size.height;
+  width = rightFrame.size.width;
+  y = rightFrame.origin.y;
+  x = rightFrame.origin.x;
+  MaxX = CGRectGetMaxX(frame);
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
   v13.size.height = height;
   v11 = MaxX - (CGRectGetMinX(v13) + -5.0);
-  *a5 = v11;
+  *difference = v11;
   return v11 > 0.0;
 }
 

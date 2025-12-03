@@ -1,6 +1,6 @@
 @interface PXGPPTRowItemLayout
 - (PXGPPTRowItemLayout)init;
-- (PXGPPTRowItemLayout)initWithColor:(id)a3;
+- (PXGPPTRowItemLayout)initWithColor:(id)color;
 - (void)_invalidateContent;
 - (void)_updateContent;
 - (void)referenceSizeDidChange;
@@ -14,7 +14,7 @@
   [(PXGPPTRowItemLayout *)self referenceSize];
   v4 = v3;
   [(PXGPPTRowItemLayout *)self setContentSize:v3];
-  v5 = [(PXGPPTRowItemLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXGPPTRowItemLayout *)self localNumberOfSprites];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__PXGPPTRowItemLayout__updateContent__block_invoke;
@@ -22,7 +22,7 @@
   *&v6[5] = v4;
   *&v6[6] = v4;
   v6[4] = self;
-  [(PXGPPTRowItemLayout *)self modifySpritesInRange:v5 << 32 state:v6];
+  [(PXGPPTRowItemLayout *)self modifySpritesInRange:localNumberOfSprites << 32 state:v6];
 }
 
 - (void)_invalidateContent
@@ -41,9 +41,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXGPPTRowItemLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGPPTRowStackLayout.m" lineNumber:146 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGPPTRowStackLayout.m" lineNumber:146 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -74,9 +74,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXGPPTRowItemLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXGPPTRowStackLayout.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXGPPTRowStackLayout.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -93,9 +93,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXGPPTRowItemLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGPPTRowStackLayout.m" lineNumber:141 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXGPPTRowStackLayout.m" lineNumber:141 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -112,16 +112,16 @@ LABEL_5:
   [(PXGPPTRowItemLayout *)self _invalidateContent];
 }
 
-- (PXGPPTRowItemLayout)initWithColor:(id)a3
+- (PXGPPTRowItemLayout)initWithColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = PXGPPTRowItemLayout;
   v6 = [(PXGPPTRowItemLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_color, a3);
+    objc_storeStrong(&v6->_color, color);
     v7->_colorSpriteIndex = [(PXGPPTRowItemLayout *)v7 addSpriteCount:1 withInitialState:0];
     [(PXGPPTRowItemLayout *)v7 setContentSource:v7];
   }
@@ -131,8 +131,8 @@ LABEL_5:
 
 - (PXGPPTRowItemLayout)init
 {
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(PXGPPTRowItemLayout *)self initWithColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v4 = [(PXGPPTRowItemLayout *)self initWithColor:clearColor];
 
   return v4;
 }

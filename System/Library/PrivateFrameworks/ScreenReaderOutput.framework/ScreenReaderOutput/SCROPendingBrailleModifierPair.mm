@@ -1,22 +1,22 @@
 @interface SCROPendingBrailleModifierPair
-- (SCROPendingBrailleModifierPair)initWithPendingBraille:(id)a3 modifiers:(id)a4;
+- (SCROPendingBrailleModifierPair)initWithPendingBraille:(id)braille modifiers:(id)modifiers;
 @end
 
 @implementation SCROPendingBrailleModifierPair
 
-- (SCROPendingBrailleModifierPair)initWithPendingBraille:(id)a3 modifiers:(id)a4
+- (SCROPendingBrailleModifierPair)initWithPendingBraille:(id)braille modifiers:(id)modifiers
 {
-  v6 = a3;
-  v7 = a4;
+  brailleCopy = braille;
+  modifiersCopy = modifiers;
   v13.receiver = self;
   v13.super_class = SCROPendingBrailleModifierPair;
   v8 = [(SCROPendingBrailleModifierPair *)&v13 init];
   pendingBraille = v8->_pendingBraille;
-  v8->_pendingBraille = v6;
-  v10 = v6;
+  v8->_pendingBraille = brailleCopy;
+  v10 = brailleCopy;
 
   modifiers = v8->_modifiers;
-  v8->_modifiers = v7;
+  v8->_modifiers = modifiersCopy;
 
   return v8;
 }

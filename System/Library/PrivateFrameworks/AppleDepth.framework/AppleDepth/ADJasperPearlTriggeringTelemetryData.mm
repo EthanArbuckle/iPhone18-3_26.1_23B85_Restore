@@ -1,8 +1,8 @@
 @interface ADJasperPearlTriggeringTelemetryData
 - (ADJasperPearlTriggeringTelemetryData)init;
-- (void)notifyNewFrameArrived:(double)a3 temperature:(float)a4;
+- (void)notifyNewFrameArrived:(double)arrived temperature:(float)temperature;
 - (void)notifyTriggeringSessionEnded;
-- (void)setTriggeringEndReason:(BOOL)a3 triggerEndReasonIsMaxFrameCount:(BOOL)a4 triggerEndReasonIsValidationMetricIncreased:(BOOL)a5;
+- (void)setTriggeringEndReason:(BOOL)reason triggerEndReasonIsMaxFrameCount:(BOOL)count triggerEndReasonIsValidationMetricIncreased:(BOOL)increased;
 @end
 
 @implementation ADJasperPearlTriggeringTelemetryData
@@ -26,22 +26,22 @@
   [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsOutputValidationMetricIncreased:0];
 }
 
-- (void)setTriggeringEndReason:(BOOL)a3 triggerEndReasonIsMaxFrameCount:(BOOL)a4 triggerEndReasonIsValidationMetricIncreased:(BOOL)a5
+- (void)setTriggeringEndReason:(BOOL)reason triggerEndReasonIsMaxFrameCount:(BOOL)count triggerEndReasonIsValidationMetricIncreased:(BOOL)increased
 {
-  v5 = a5;
-  v6 = a4;
-  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsConvergence:a3];
-  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsMaxFrameCount:v6];
+  increasedCopy = increased;
+  countCopy = count;
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsConvergence:reason];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsMaxFrameCount:countCopy];
 
-  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsOutputValidationMetricIncreased:v5];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsOutputValidationMetricIncreased:increasedCopy];
 }
 
-- (void)notifyNewFrameArrived:(double)a3 temperature:(float)a4
+- (void)notifyNewFrameArrived:(double)arrived temperature:(float)temperature
 {
   [(ADJasperPearlTriggeringTelemetryData *)self caCurrentTriggerFirstFrameTimestamp];
   [(ADJasperPearlTriggeringTelemetryData *)self caCurrentTriggerFirstFrameTemperature];
-  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerLastFrameTimestamp:a3];
-  *&v7 = a4;
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerLastFrameTimestamp:arrived];
+  *&v7 = temperature;
   [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerLastFrameTemperature:v7];
   v8 = [(ADJasperPearlTriggeringTelemetryData *)self caCurrentTriggerFrameCount]+ 1;
 

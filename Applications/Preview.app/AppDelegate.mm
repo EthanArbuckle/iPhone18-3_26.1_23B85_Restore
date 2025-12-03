@@ -1,15 +1,15 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (_TtC7Preview11AppDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)newFromPasteboard:(id)a3;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)newFromPasteboard:(id)pasteboard;
 @end
 
 @implementation AppDelegate
 
-- (void)newFromPasteboard:(id)a3
+- (void)newFromPasteboard:(id)pasteboard
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -19,9 +19,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (pasteboard)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -30,7 +30,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   sub_100007D00();
@@ -38,7 +38,7 @@
   sub_100007710(v7, &qword_100206500);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -48,9 +48,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (sender)
   {
-    v7 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -59,17 +59,17 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  v9 = sub_100007FD8(a3, v11);
+  v9 = sub_100007FD8(action, v11);
 
   sub_100007710(v11, &qword_100206500);
 
   return v9 & 1;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -79,21 +79,21 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_10008A478(&unk_10020A0E0, type metadata accessor for LaunchOptionsKey);
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v9 = sub_10008CB38();
 
   return v9 & 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -103,16 +103,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  v13 = sub_10008CEE8(v10, v11);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v13 = sub_10008CEE8(sessionCopy, optionsCopy);
 
   return v13;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -125,8 +125,8 @@
   v6.receiver = self;
   v6.super_class = type metadata accessor for AppDelegate(0);
   swift_unknownObjectRetain();
-  v5 = self;
-  [(AppDelegate *)&v6 buildMenuWithBuilder:a3];
+  selfCopy = self;
+  [(AppDelegate *)&v6 buildMenuWithBuilder:builder];
   swift_getObjectType();
   sub_10000792C();
   sub_1000082A4();

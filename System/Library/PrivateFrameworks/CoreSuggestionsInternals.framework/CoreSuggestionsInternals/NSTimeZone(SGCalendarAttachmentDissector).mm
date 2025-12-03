@@ -42,20 +42,20 @@
           }
 
           v20 = [v5 substringWithRange:{v10 + 3, v19}];
-          v21 = [v20 integerValue];
+          integerValue = [v20 integerValue];
 
-          v9 = [MEMORY[0x277CBEBB0] gmtOffsetTimeZoneWithHour:v21 withMinute:0 forDate:v6];
+          v9 = [MEMORY[0x277CBEBB0] gmtOffsetTimeZoneWithHour:integerValue withMinute:0 forDate:v6];
         }
 
         else
         {
           v14 = [v5 substringWithRange:{v10 + 3, 3}];
-          v15 = [v14 integerValue];
+          integerValue2 = [v14 integerValue];
 
           v16 = [v5 substringWithRange:{v10 + 7, 2}];
-          v17 = [v16 integerValue];
+          integerValue3 = [v16 integerValue];
 
-          v18 = [MEMORY[0x277CBEBB0] gmtOffsetTimeZoneWithHour:v15 withMinute:v17 forDate:v6];
+          v18 = [MEMORY[0x277CBEBB0] gmtOffsetTimeZoneWithHour:integerValue2 withMinute:integerValue3 forDate:v6];
           if (v18)
           {
             v9 = v18;
@@ -106,23 +106,23 @@ LABEL_20:
   v11 = v10 + 60 * a3;
   v12 = 60 * v11;
   v13 = [v8 dateByAddingTimeInterval:(-60 * v11)];
-  v14 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v15 = [v14 secondsFromGMTForDate:v13];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  v15 = [localTimeZone secondsFromGMTForDate:v13];
 
   if (v12 == v15)
   {
-    v16 = [MEMORY[0x277CBEBB0] localTimeZone];
+    localTimeZone2 = [MEMORY[0x277CBEBB0] localTimeZone];
   }
 
   else
   {
     if (a4)
     {
-      v33 = a1;
+      selfCopy = self;
       v35 = v9;
       context = objc_autoreleasePoolPush();
-      v17 = [MEMORY[0x277CBEBB0] knownTimeZoneNames];
-      v18 = [&unk_28474A438 arrayByAddingObjectsFromArray:v17];
+      knownTimeZoneNames = [MEMORY[0x277CBEBB0] knownTimeZoneNames];
+      v18 = [&unk_28474A438 arrayByAddingObjectsFromArray:knownTimeZoneNames];
 
       v39 = 0u;
       v40 = 0u;
@@ -143,8 +143,8 @@ LABEL_20:
               objc_enumerationMutation(v19);
             }
 
-            v16 = [MEMORY[0x277CBEBB0] timeZoneWithName:*(*(&v37 + 1) + 8 * i)];
-            if (v12 == [v16 secondsFromGMTForDate:v13])
+            localTimeZone2 = [MEMORY[0x277CBEBB0] timeZoneWithName:*(*(&v37 + 1) + 8 * i)];
+            if (v12 == [localTimeZone2 secondsFromGMTForDate:v13])
             {
 
               objc_autoreleasePoolPop(context);
@@ -165,10 +165,10 @@ LABEL_20:
 
       objc_autoreleasePoolPop(context);
       v9 = v35;
-      a1 = v33;
+      self = selfCopy;
     }
 
-    v16 = 0;
+    localTimeZone2 = 0;
     if ((a3 + 12) <= 0x1A && !v10)
     {
       v24 = objc_autoreleasePoolPush();
@@ -182,13 +182,13 @@ LABEL_20:
 
       if (!v27)
       {
-        v32 = [MEMORY[0x277CCA890] currentHandler];
-        [v32 handleFailureInMethod:a2 object:a1 file:@"SGCalendarAttachmentDissector.m" lineNumber:404 description:{@"Invalid parameter not satisfying: %@", @"hourString"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SGCalendarAttachmentDissector.m" lineNumber:404 description:{@"Invalid parameter not satisfying: %@", @"hourString"}];
       }
 
       v28 = MEMORY[0x277CBEBB0];
       v29 = [@"Etc/GMT" stringByAppendingString:v27];
-      v16 = [v28 timeZoneWithName:v29];
+      localTimeZone2 = [v28 timeZoneWithName:v29];
 
       objc_autoreleasePoolPop(v24);
     }
@@ -198,7 +198,7 @@ LABEL_22:
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return localTimeZone2;
 }
 
 + (id)systemTimeZoneFromString:()SGCalendarAttachmentDissector
@@ -289,8 +289,8 @@ LABEL_16:
 
     v10 = __75__NSTimeZone_SGCalendarAttachmentDissector__systemTimeZoneWithWindowsName___block_invoke(v9, @": ");
 
-    v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v3 = [v10 stringByTrimmingCharactersInSet:v11];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v3 = [v10 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v12 = __75__NSTimeZone_SGCalendarAttachmentDissector__systemTimeZoneWithWindowsName___block_invoke_2(v3);
     if (v12)

@@ -10,9 +10,9 @@
 - (BOOL)hasCompletedSetup
 {
   v2 = +[LACSetUpStateProvider sharedInstance];
-  v3 = [v2 hasCompletedSetup];
+  hasCompletedSetup = [v2 hasCompletedSetup];
 
-  return v3;
+  return hasCompletedSetup;
 }
 
 - (BOOL)hasPasscodeSetForCurrentUser

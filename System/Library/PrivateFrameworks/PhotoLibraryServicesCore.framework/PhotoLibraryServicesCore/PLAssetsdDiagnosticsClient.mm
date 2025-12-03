@@ -1,15 +1,15 @@
 @interface PLAssetsdDiagnosticsClient
-- (BOOL)incompleteRestoreProcesses:(id *)a3 error:(id *)a4;
-- (void)setPhotosXPCEndpoint:(id)a3 completionHandler:(id)a4;
+- (BOOL)incompleteRestoreProcesses:(id *)processes error:(id *)error;
+- (void)setPhotosXPCEndpoint:(id)endpoint completionHandler:(id)handler;
 @end
 
 @implementation PLAssetsdDiagnosticsClient
 
-- (void)setPhotosXPCEndpoint:(id)a3 completionHandler:(id)a4
+- (void)setPhotosXPCEndpoint:(id)endpoint completionHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   v37 = 0u;
   *sel = 0u;
   v36 = 0u;
@@ -38,20 +38,20 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v13, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  if (!v7)
+  if (!endpointCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLAssetsdDiagnosticsClient.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"endpoint"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDiagnosticsClient.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"endpoint"}];
   }
 
   v17 = objc_alloc_init(MEMORY[0x1E696B0E0]);
-  [v17 _setEndpoint:v7];
-  v18 = [(PLAssetsdBaseClient *)self proxyFactory];
+  [v17 _setEndpoint:endpointCopy];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __69__PLAssetsdDiagnosticsClient_setPhotosXPCEndpoint_completionHandler___block_invoke;
   v34[3] = &unk_1E7932DA8;
-  v35 = v8;
+  v35 = handlerCopy;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3254779904;
   v26[2] = __69__PLAssetsdDiagnosticsClient_setPhotosXPCEndpoint_completionHandler___block_invoke_15;
@@ -65,7 +65,7 @@
   v27 = v19;
   v20 = v35;
   v28 = v20;
-  [v18 remoteObjectProxyWithErrorHandler:v34 handler:v26];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v34 handler:v26];
 
   if (v36 == 1)
   {
@@ -164,7 +164,7 @@ void __69__PLAssetsdDiagnosticsClient_setPhotosXPCEndpoint_completionHandler___b
   }
 }
 
-- (BOOL)incompleteRestoreProcesses:(id *)a3 error:(id *)a4
+- (BOOL)incompleteRestoreProcesses:(id *)processes error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
   v35 = 0u;
@@ -195,10 +195,10 @@ void __69__PLAssetsdDiagnosticsClient_setPhotosXPCEndpoint_completionHandler___b
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!a3)
+  if (!processes)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLAssetsdDiagnosticsClient.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"processes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDiagnosticsClient.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"processes"}];
   }
 
   *&buf = 0;
@@ -213,13 +213,13 @@ void __69__PLAssetsdDiagnosticsClient_setPhotosXPCEndpoint_completionHandler___b
   v31 = __Block_byref_object_copy__11826;
   v32 = __Block_byref_object_dispose__11827;
   v33 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __63__PLAssetsdDiagnosticsClient_incompleteRestoreProcesses_error___block_invoke;
   v27[3] = &unk_1E7932770;
   v27[4] = &buf;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v27];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v27];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __63__PLAssetsdDiagnosticsClient_incompleteRestoreProcesses_error___block_invoke_9;
@@ -228,9 +228,9 @@ void __69__PLAssetsdDiagnosticsClient_setPhotosXPCEndpoint_completionHandler___b
   [v17 incompleteRestoreProcessesWithReply:v26];
 
   v18 = v29[5];
-  if (v18 || a4 && (v18 = *(*(&buf + 1) + 40), a3 = a4, v18))
+  if (v18 || error && (v18 = *(*(&buf + 1) + 40), processes = error, v18))
   {
-    *a3 = v18;
+    *processes = v18;
   }
 
   v19 = v29[5];

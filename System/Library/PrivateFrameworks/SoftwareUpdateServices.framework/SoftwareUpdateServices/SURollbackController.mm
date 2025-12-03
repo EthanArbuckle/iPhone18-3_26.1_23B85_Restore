@@ -1,94 +1,94 @@
 @interface SURollbackController
 - (BOOL)isRollingBack;
 - (SUManagerCore)core;
-- (SURollbackController)initWithCore:(id)a3;
+- (SURollbackController)initWithCore:(id)core;
 - (id)availableRollback;
 - (id)previousRollback;
-- (void)rollbackCompleted:(id)a3 withError:(id)a4;
-- (void)rollbackReadyForReboot:(id)a3;
-- (void)rollbackStarted:(id)a3;
-- (void)rollbackUpdateWithOptions:(id)a3 completion:(id)a4;
-- (void)setRollingBack:(BOOL)a3;
+- (void)rollbackCompleted:(id)completed withError:(id)error;
+- (void)rollbackReadyForReboot:(id)reboot;
+- (void)rollbackStarted:(id)started;
+- (void)rollbackUpdateWithOptions:(id)options completion:(id)completion;
+- (void)setRollingBack:(BOOL)back;
 @end
 
 @implementation SURollbackController
 
-- (SURollbackController)initWithCore:(id)a3
+- (SURollbackController)initWithCore:(id)core
 {
-  v4 = a3;
+  coreCopy = core;
   v8.receiver = self;
   v8.super_class = SURollbackController;
   v5 = [(SURollbackController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_core, v4);
+    objc_storeWeak(&v5->_core, coreCopy);
     v6->_rollingBack = 0;
   }
 
   return v6;
 }
 
-- (void)rollbackUpdateWithOptions:(id)a3 completion:(id)a4
+- (void)rollbackUpdateWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SURollbackController *)self core];
-  v9 = [v8 workQueue];
-  dispatch_assert_queue_V2(v9);
+  optionsCopy = options;
+  completionCopy = completion;
+  core = [(SURollbackController *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v10 = +[SUPreferences sharedInstance];
-  LODWORD(v9) = [v10 disableRollback];
+  LODWORD(workQueue) = [v10 disableRollback];
 
-  if (!v9)
+  if (!workQueue)
   {
-    v19 = [(SURollbackController *)self core];
-    v18 = [v19 eligibleRollbackWithOptions:v6];
+    core2 = [(SURollbackController *)self core];
+    v18 = [core2 eligibleRollbackWithOptions:optionsCopy];
 
     if (v18)
     {
       v27 = [SUManagerEngine rollbackDescriptorForSUCoreRollbackDescriptor:v18];
-      if (!v6)
+      if (!optionsCopy)
       {
-        v6 = objc_alloc_init(SURollbackOptions);
+        optionsCopy = objc_alloc_init(SURollbackOptions);
       }
 
-      v28 = [(SURollbackController *)self core];
-      v29 = [v28 workQueue];
+      core3 = [(SURollbackController *)self core];
+      workQueue2 = [core3 workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __61__SURollbackController_rollbackUpdateWithOptions_completion___block_invoke;
       block[3] = &unk_279CAD0C0;
-      v37 = v7;
+      v37 = completionCopy;
       v33 = v27;
-      v34 = self;
+      selfCopy = self;
       v35 = v18;
-      v6 = v6;
-      v36 = v6;
+      optionsCopy = optionsCopy;
+      v36 = optionsCopy;
       v30 = v27;
-      dispatch_async(v29, block);
+      dispatch_async(workQueue2, block);
     }
 
     else
     {
       SULogInfo(@"Unable to rollback update. No eligible rollback found", v20, v21, v22, v23, v24, v25, v26, v31);
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_11;
       }
 
       v30 = [SUUtility errorWithCode:89];
-      (*(v7 + 2))(v7, 0, 0, v30);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v30);
     }
 
     goto LABEL_11;
   }
 
   SULogInfo(@"Preventing rollback due to preferences", v11, v12, v13, v14, v15, v16, v17, v31);
-  if (v7)
+  if (completionCopy)
   {
     v18 = [SUUtility errorWithCode:88];
-    (*(v7 + 2))(v7, 0, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v18);
 LABEL_11:
   }
 }
@@ -156,46 +156,46 @@ void __61__SURollbackController_rollbackUpdateWithOptions_completion___block_inv
 
 - (BOOL)isRollingBack
 {
-  v3 = [(SURollbackController *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SURollbackController *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_rollingBack;
 }
 
-- (void)setRollingBack:(BOOL)a3
+- (void)setRollingBack:(BOOL)back
 {
-  v5 = [(SURollbackController *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  core = [(SURollbackController *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  self->_rollingBack = a3;
+  self->_rollingBack = back;
 }
 
-- (void)rollbackStarted:(id)a3
+- (void)rollbackStarted:(id)started
 {
-  v4 = a3;
-  v5 = [(SURollbackController *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  startedCopy = started;
+  core = [(SURollbackController *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  SULogInfo(@"Rollback Started: %@", v7, v8, v9, v10, v11, v12, v13, v4);
+  SULogInfo(@"Rollback Started: %@", v7, v8, v9, v10, v11, v12, v13, startedCopy);
   self->_rollingBack = 1;
-  v14 = [(SURollbackController *)self core];
-  v15 = [v14 delegate];
+  core2 = [(SURollbackController *)self core];
+  delegate = [core2 delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(SURollbackController *)self core];
-    v18 = [v17 externWorkQueue];
+    core3 = [(SURollbackController *)self core];
+    externWorkQueue = [core3 externWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__SURollbackController_rollbackStarted___block_invoke;
     block[3] = &unk_279CAA7C0;
     block[4] = self;
-    v20 = v4;
-    dispatch_async(v18, block);
+    v20 = startedCopy;
+    dispatch_async(externWorkQueue, block);
   }
 }
 
@@ -206,55 +206,55 @@ void __40__SURollbackController_rollbackStarted___block_invoke(uint64_t a1)
   [v2 rollbackDidStart:*(a1 + 40)];
 }
 
-- (void)rollbackCompleted:(id)a3 withError:(id)a4
+- (void)rollbackCompleted:(id)completed withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SURollbackController *)self core];
-  v9 = [v8 workQueue];
-  dispatch_assert_queue_V2(v9);
+  completedCopy = completed;
+  errorCopy = error;
+  core = [(SURollbackController *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   self->_rollingBack = 0;
-  v10 = [MEMORY[0x277D64420] sharedDevice];
-  LODWORD(v9) = [v10 hasSemiSplatActive];
+  mEMORY[0x277D64420] = [MEMORY[0x277D64420] sharedDevice];
+  LODWORD(workQueue) = [mEMORY[0x277D64420] hasSemiSplatActive];
 
-  if (v9)
+  if (workQueue)
   {
     SULogInfo(@"Rollback already applied, just proceed to reboot", v11, v12, v13, v14, v15, v16, v17, v43);
 LABEL_6:
-    SULogInfo(@"Rollback succeeded: %@. Informing clients", v11, v12, v13, v14, v15, v16, v17, v6);
-    if (v6 || (-[SURollbackController core](self, "core"), v25 = objc_claimAutoreleasedReturnValue(), [v25 eligibleRollbackWithOptions:0], v6 = objc_claimAutoreleasedReturnValue(), v25, v6))
+    SULogInfo(@"Rollback succeeded: %@. Informing clients", v11, v12, v13, v14, v15, v16, v17, completedCopy);
+    if (completedCopy || (-[SURollbackController core](self, "core"), v25 = objc_claimAutoreleasedReturnValue(), [v25 eligibleRollbackWithOptions:0], completedCopy = objc_claimAutoreleasedReturnValue(), v25, completedCopy))
     {
-      v26 = [v6 productBuildVersion];
-      SULogInfo(@"Adding %@ to rolledBackDescritor list", v27, v28, v29, v30, v31, v32, v33, v26);
+      productBuildVersion = [completedCopy productBuildVersion];
+      SULogInfo(@"Adding %@ to rolledBackDescritor list", v27, v28, v29, v30, v31, v32, v33, productBuildVersion);
 
-      v34 = [(SURollbackController *)self core];
-      v35 = [v34 state];
-      v36 = [v6 productBuildVersion];
-      [v35 addRolledBackBuildVersion:v36];
+      core2 = [(SURollbackController *)self core];
+      state = [core2 state];
+      productBuildVersion2 = [completedCopy productBuildVersion];
+      [state addRolledBackBuildVersion:productBuildVersion2];
 
-      v37 = [(SURollbackController *)self core];
-      v38 = [v37 state];
-      [v38 save];
+      core3 = [(SURollbackController *)self core];
+      state2 = [core3 state];
+      [state2 save];
     }
 
-    v39 = [(SURollbackController *)self core];
-    v40 = [v39 delegate];
+    core4 = [(SURollbackController *)self core];
+    delegate = [core4 delegate];
     v41 = objc_opt_respondsToSelector();
 
     if (v41)
     {
-      v24 = [(SURollbackController *)self core];
-      v42 = [v24 externWorkQueue];
+      core5 = [(SURollbackController *)self core];
+      externWorkQueue = [core5 externWorkQueue];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __52__SURollbackController_rollbackCompleted_withError___block_invoke_2;
       v44[3] = &unk_279CAA7C0;
       v44[4] = self;
       v23 = &v45;
-      v6 = v6;
-      v45 = v6;
-      dispatch_async(v42, v44);
+      completedCopy = completedCopy;
+      v45 = completedCopy;
+      dispatch_async(externWorkQueue, v44);
 
       goto LABEL_11;
     }
@@ -262,32 +262,32 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!errorCopy)
   {
     goto LABEL_6;
   }
 
-  SULogInfo(@"Rollback failed with error: %@", v11, v12, v13, v14, v15, v16, v17, v7);
-  v18 = [(SURollbackController *)self core];
-  v19 = [v18 delegate];
+  SULogInfo(@"Rollback failed with error: %@", v11, v12, v13, v14, v15, v16, v17, errorCopy);
+  core6 = [(SURollbackController *)self core];
+  delegate2 = [core6 delegate];
   v20 = objc_opt_respondsToSelector();
 
   if (v20)
   {
-    v21 = [(SURollbackController *)self core];
-    v22 = [v21 externWorkQueue];
+    core7 = [(SURollbackController *)self core];
+    externWorkQueue2 = [core7 externWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __52__SURollbackController_rollbackCompleted_withError___block_invoke;
     block[3] = &unk_279CAA798;
     block[4] = self;
     v23 = &v47;
-    v6 = v6;
-    v47 = v6;
-    v48 = v7;
-    dispatch_async(v22, block);
+    completedCopy = completedCopy;
+    v47 = completedCopy;
+    v48 = errorCopy;
+    dispatch_async(externWorkQueue2, block);
 
-    v24 = v48;
+    core5 = v48;
 LABEL_11:
   }
 
@@ -308,24 +308,24 @@ void __52__SURollbackController_rollbackCompleted_withError___block_invoke_2(uin
   [v2 rollbackSucceeded:*(a1 + 40)];
 }
 
-- (void)rollbackReadyForReboot:(id)a3
+- (void)rollbackReadyForReboot:(id)reboot
 {
-  v4 = a3;
-  v5 = [(SURollbackController *)self core];
-  v6 = [v5 delegate];
+  rebootCopy = reboot;
+  core = [(SURollbackController *)self core];
+  delegate = [core delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SURollbackController *)self core];
-    v9 = [v8 externWorkQueue];
+    core2 = [(SURollbackController *)self core];
+    externWorkQueue = [core2 externWorkQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __47__SURollbackController_rollbackReadyForReboot___block_invoke;
     v10[3] = &unk_279CAA7C0;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v9, v10);
+    v11 = rebootCopy;
+    dispatch_async(externWorkQueue, v10);
   }
 }
 
@@ -338,28 +338,28 @@ void __47__SURollbackController_rollbackReadyForReboot___block_invoke(uint64_t a
 
 - (id)availableRollback
 {
-  v3 = [(SURollbackController *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SURollbackController *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(SURollbackController *)self core];
-  v6 = [v5 engine];
-  v7 = [v6 availableRollback];
+  core2 = [(SURollbackController *)self core];
+  engine = [core2 engine];
+  availableRollback = [engine availableRollback];
 
-  return v7;
+  return availableRollback;
 }
 
 - (id)previousRollback
 {
-  v3 = [(SURollbackController *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SURollbackController *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(SURollbackController *)self core];
-  v6 = [v5 engine];
-  v7 = [v6 previousRollback];
+  core2 = [(SURollbackController *)self core];
+  engine = [core2 engine];
+  previousRollback = [engine previousRollback];
 
-  return v7;
+  return previousRollback;
 }
 
 - (SUManagerCore)core

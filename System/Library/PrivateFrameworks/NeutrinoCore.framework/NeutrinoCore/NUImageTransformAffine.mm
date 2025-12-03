@@ -1,33 +1,33 @@
 @interface NUImageTransformAffine
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGeometryTransformAffine:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGeometryTransformAffine:(id)affine;
 - (BOOL)isIdentityImageTransform;
-- (CGPoint)transformPoint:(CGPoint)a3;
+- (CGPoint)transformPoint:(CGPoint)point;
 - (NUImageTransformAffine)init;
-- (NUImageTransformAffine)initWithAffineTransform:(CGAffineTransform *)a3;
+- (NUImageTransformAffine)initWithAffineTransform:(CGAffineTransform *)transform;
 - (id)inverseTransform;
-- (id)transformByRotateZ:(double)a3;
-- (id)transformByScaleX:(double)a3 scaleY:(double)a4;
-- (id)transformByTranslateX:(double)a3 translateY:(double)a4;
+- (id)transformByRotateZ:(double)z;
+- (id)transformByScaleX:(double)x scaleY:(double)y;
+- (id)transformByTranslateX:(double)x translateY:(double)y;
 - (unint64_t)hash;
-- (void)nu_updateDigest:(id)a3;
-- (void)transformMatrix:(_OWORD *)a3@<X8>;
+- (void)nu_updateDigest:(id)digest;
+- (void)transformMatrix:(_OWORD *)matrix@<X8>;
 @end
 
 @implementation NUImageTransformAffine
 
-- (void)nu_updateDigest:(id)a3
+- (void)nu_updateDigest:(id)digest
 {
-  v4 = a3;
-  [v4 addCString:"NUImageTransformAffine"];
-  [v4 addBytes:&self->_transform length:48];
+  digestCopy = digest;
+  [digestCopy addCString:"NUImageTransformAffine"];
+  [digestCopy addBytes:&self->_transform length:48];
 }
 
-- (BOOL)isEqualToGeometryTransformAffine:(id)a3
+- (BOOL)isEqualToGeometryTransformAffine:(id)affine
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  affineCopy = affine;
+  if (!affineCopy)
   {
     v11 = NUAssertLogger_21429();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -48,8 +48,8 @@
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(t1.a) = 138543618;
         *(&t1.a + 4) = v18;
         WORD2(t1.b) = 2114;
@@ -60,8 +60,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(t1.a) = 138543362;
       *(&t1.a + 4) = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &t1, 0xCu);
@@ -70,14 +70,14 @@
     _NUAssertFailHandler("[NUImageTransformAffine isEqualToGeometryTransformAffine:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 242, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "other != nil");
   }
 
-  v5 = v4;
+  v5 = affineCopy;
   v6 = *&self->_transform.c;
   *&t1.a = *&self->_transform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_transform.tx;
-  v7 = *(v4 + 56);
-  v8 = *(v4 + 88);
-  *&t2.c = *(v4 + 72);
+  v7 = *(affineCopy + 56);
+  v8 = *(affineCopy + 88);
+  *&t2.c = *(affineCopy + 72);
   *&t2.tx = v8;
   *&t2.a = v7;
   v9 = CGAffineTransformEqualToTransform(&t1, &t2);
@@ -85,10 +85,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -96,7 +96,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUImageTransformAffine *)self isEqualToGeometryTransformAffine:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUImageTransformAffine *)self isEqualToGeometryTransformAffine:equalCopy];
   }
 
   return v5;
@@ -110,14 +110,14 @@
   return v3;
 }
 
-- (id)transformByRotateZ:(double)a3
+- (id)transformByRotateZ:(double)z
 {
   v3 = *&self->_transform.c;
   *&v7.a = *&self->_transform.a;
   *&v7.c = v3;
   *&v7.tx = *&self->_transform.tx;
   memset(&v8, 0, sizeof(v8));
-  CGAffineTransformRotate(&v8, &v7, a3 * 3.14159265 / 180.0);
+  CGAffineTransformRotate(&v8, &v7, z * 3.14159265 / 180.0);
   v4 = [NUImageTransformAffine alloc];
   v7 = v8;
   v5 = [(NUImageTransformAffine *)v4 initWithAffineTransform:&v7];
@@ -125,14 +125,14 @@
   return v5;
 }
 
-- (id)transformByTranslateX:(double)a3 translateY:(double)a4
+- (id)transformByTranslateX:(double)x translateY:(double)y
 {
   v4 = *&self->_transform.c;
   *&v8.a = *&self->_transform.a;
   *&v8.c = v4;
   *&v8.tx = *&self->_transform.tx;
   memset(&v9, 0, sizeof(v9));
-  CGAffineTransformTranslate(&v9, &v8, a3, a4);
+  CGAffineTransformTranslate(&v9, &v8, x, y);
   v5 = [NUImageTransformAffine alloc];
   v8 = v9;
   v6 = [(NUImageTransformAffine *)v5 initWithAffineTransform:&v8];
@@ -140,14 +140,14 @@
   return v6;
 }
 
-- (id)transformByScaleX:(double)a3 scaleY:(double)a4
+- (id)transformByScaleX:(double)x scaleY:(double)y
 {
   v4 = *&self->_transform.c;
   *&v8.a = *&self->_transform.a;
   *&v8.c = v4;
   *&v8.tx = *&self->_transform.tx;
   memset(&v9, 0, sizeof(v9));
-  CGAffineTransformScale(&v9, &v8, a3, a4);
+  CGAffineTransformScale(&v9, &v8, x, y);
   v5 = [NUImageTransformAffine alloc];
   v8 = v9;
   v6 = [(NUImageTransformAffine *)v5 initWithAffineTransform:&v8];
@@ -155,7 +155,7 @@
   return v6;
 }
 
-- (void)transformMatrix:(_OWORD *)a3@<X8>
+- (void)transformMatrix:(_OWORD *)matrix@<X8>
 {
   v3 = 0;
   *&v4 = result[8];
@@ -178,19 +178,19 @@
   v15 = *(MEMORY[0x1E69E9B08] + 112);
   v19[6] = *(MEMORY[0x1E69E9B08] + 96);
   v19[7] = v15;
-  *a3 = 0u;
-  a3[1] = 0u;
-  a3[2] = 0u;
-  a3[3] = 0u;
-  a3[4] = 0u;
-  a3[5] = 0u;
-  a3[6] = 0u;
-  a3[7] = 0u;
+  *matrix = 0u;
+  matrix[1] = 0u;
+  matrix[2] = 0u;
+  matrix[3] = 0u;
+  matrix[4] = 0u;
+  matrix[5] = 0u;
+  matrix[6] = 0u;
+  matrix[7] = 0u;
   do
   {
     v17 = v19[v3];
     v16 = v19[v3 + 1];
-    v18 = &a3[v3];
+    v18 = &matrix[v3];
     *v18 = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v7, v17.f64[0]), v9, v17, 1), v11, v16.f64[0]), v13, v16, 1);
     v18[1] = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v6, v17.f64[0]), v8, v17, 1), v10, v16.f64[0]), v12, v16, 1);
     v3 += 2;
@@ -209,9 +209,9 @@
   return CGAffineTransformIsIdentity(&v4);
 }
 
-- (CGPoint)transformPoint:(CGPoint)a3
+- (CGPoint)transformPoint:(CGPoint)point
 {
-  v3 = vaddq_f64(*&self->_transform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->_transform.c, a3.y), *&self->_transform.a, a3.x));
+  v3 = vaddq_f64(*&self->_transform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->_transform.c, point.y), *&self->_transform.a, point.x));
   v4 = v3.f64[1];
   result.x = v3.f64[0];
   result.y = v4;
@@ -276,8 +276,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -293,8 +293,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -310,13 +310,13 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageTransformAffine init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 163, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-- (NUImageTransformAffine)initWithAffineTransform:(CGAffineTransform *)a3
+- (NUImageTransformAffine)initWithAffineTransform:(CGAffineTransform *)transform
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v5 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v5;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v6 = MEMORY[0x1E695EFD0];
   v7 = *(MEMORY[0x1E695EFD0] + 16);
   *&t2.a = *MEMORY[0x1E695EFD0];
@@ -329,9 +329,9 @@ LABEL_14:
   v10 = v9;
   if (v9)
   {
-    v12 = *&a3->c;
-    v11 = *&a3->tx;
-    *(v9 + 56) = *&a3->a;
+    v12 = *&transform->c;
+    v11 = *&transform->tx;
+    *(v9 + 56) = *&transform->a;
     *(v9 + 72) = v12;
     *(v9 + 88) = v11;
     v13 = v9 + 8;
@@ -345,10 +345,10 @@ LABEL_14:
       return v10;
     }
 
-    v16 = *&a3->c;
-    *&t2.a = *&a3->a;
+    v16 = *&transform->c;
+    *&t2.a = *&transform->a;
     *&t2.c = v16;
-    *&t2.tx = *&a3->tx;
+    *&t2.tx = *&transform->tx;
     CGAffineTransformInvert(&t1, &t2);
     v17 = *&t1.a;
     v18 = *&t1.tx;
@@ -402,8 +402,8 @@ LABEL_12:
         v30 = MEMORY[0x1E696AF00];
         v31 = specific;
         v32 = v24;
-        v33 = [v30 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(t1.a) = 138543618;
         *(&t1.a + 4) = specific;
         WORD2(t1.b) = 2114;
@@ -421,8 +421,8 @@ LABEL_18:
     {
       v37 = MEMORY[0x1E696AF00];
       v38 = v35;
-      v39 = [v37 callStackSymbols];
-      v40 = [v39 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v37 callStackSymbols];
+      v40 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(t1.a) = 138543362;
       *(&t1.a + 4) = v40;
       _os_log_error_impl(&dword_1C0184000, v38, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &t1, 0xCu);

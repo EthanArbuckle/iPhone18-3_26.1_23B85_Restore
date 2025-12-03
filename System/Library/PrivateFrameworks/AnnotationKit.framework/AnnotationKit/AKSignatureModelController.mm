@@ -1,46 +1,46 @@
 @interface AKSignatureModelController
 - (AKController)controller;
-- (AKSignatureModelController)initWithController:(id)a3;
-- (BOOL)_createNewKeychainItemWithSignature:(id)a3;
-- (BOOL)_deleteSignatureFromKeychain:(id)a3;
+- (AKSignatureModelController)initWithController:(id)controller;
+- (BOOL)_createNewKeychainItemWithSignature:(id)signature;
+- (BOOL)_deleteSignatureFromKeychain:(id)keychain;
 - (NSArray)signatures;
-- (id)_createAKSignatureFromItemRef:(id)a3;
+- (id)_createAKSignatureFromItemRef:(id)ref;
 - (void)_loadSignaturesFromPersistentStorage;
-- (void)_saveSignatureToPersistentStorage:(id)a3;
-- (void)insertObject:(id)a3 inSignaturesAtIndex:(unint64_t)a4;
+- (void)_saveSignatureToPersistentStorage:(id)storage;
+- (void)insertObject:(id)object inSignaturesAtIndex:(unint64_t)index;
 - (void)reloadSignaturesFromSource;
-- (void)removeObjectFromSignaturesAtIndex:(unint64_t)a3;
+- (void)removeObjectFromSignaturesAtIndex:(unint64_t)index;
 @end
 
 @implementation AKSignatureModelController
 
-- (AKSignatureModelController)initWithController:(id)a3
+- (AKSignatureModelController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AKSignatureModelController;
   v5 = [(AKSignatureModelController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AKSignatureModelController *)v5 setController:v4];
+    [(AKSignatureModelController *)v5 setController:controllerCopy];
   }
 
   return v6;
 }
 
-- (void)insertObject:(id)a3 inSignaturesAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inSignaturesAtIndex:(unint64_t)index
 {
   signatures = self->_signatures;
-  v7 = a3;
-  [(NSMutableArray *)signatures insertObject:v7 atIndex:a4];
-  [(AKSignatureModelController *)self _saveSignatureToPersistentStorage:v7];
+  objectCopy = object;
+  [(NSMutableArray *)signatures insertObject:objectCopy atIndex:index];
+  [(AKSignatureModelController *)self _saveSignatureToPersistentStorage:objectCopy];
 }
 
-- (void)removeObjectFromSignaturesAtIndex:(unint64_t)a3
+- (void)removeObjectFromSignaturesAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableArray *)self->_signatures objectAtIndex:?];
-  [(NSMutableArray *)self->_signatures removeObjectAtIndex:a3];
+  [(NSMutableArray *)self->_signatures removeObjectAtIndex:index];
   [(AKSignatureModelController *)self _deleteSignatureFromKeychain:v5];
 }
 
@@ -118,8 +118,8 @@
 
   else
   {
-    v24 = self;
-    v23 = [MEMORY[0x277CBEB18] array];
+    selfCopy = self;
+    array = [MEMORY[0x277CBEB18] array];
     Count = CFArrayGetCount(result);
     if (Count >= 1)
     {
@@ -155,10 +155,10 @@
 
             if (v20)
             {
-              v21 = [(AKSignatureModelController *)v24 _createAKSignatureFromItemRef:v20];
+              v21 = [(AKSignatureModelController *)selfCopy _createAKSignatureFromItemRef:v20];
               if (v21)
               {
-                [v23 addObject:v21];
+                [array addObject:v21];
               }
             }
           }
@@ -170,18 +170,18 @@
       while (v11 != v12);
     }
 
-    if ([v23 count])
+    if ([array count])
     {
-      v22 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(v23, "count")}];
+      v22 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(array, "count")}];
       if ([v22 count])
       {
-        [(AKSignatureModelController *)v24 willChange:2 valuesAtIndexes:v22 forKey:@"signatures"];
+        [(AKSignatureModelController *)selfCopy willChange:2 valuesAtIndexes:v22 forKey:@"signatures"];
       }
 
-      [(NSMutableArray *)v24->_signatures addObjectsFromArray:v23];
+      [(NSMutableArray *)selfCopy->_signatures addObjectsFromArray:array];
       if ([v22 count])
       {
-        [(AKSignatureModelController *)v24 didChange:2 valuesAtIndexes:v22 forKey:@"signatures"];
+        [(AKSignatureModelController *)selfCopy didChange:2 valuesAtIndexes:v22 forKey:@"signatures"];
       }
     }
 
@@ -189,15 +189,15 @@
   }
 }
 
-- (void)_saveSignatureToPersistentStorage:(id)a3
+- (void)_saveSignatureToPersistentStorage:(id)storage
 {
-  if (a3)
+  if (storage)
   {
     MEMORY[0x2821F9670](self, sel__createNewKeychainItemWithSignature_);
   }
 }
 
-- (BOOL)_deleteSignatureFromKeychain:(id)a3
+- (BOOL)_deleteSignatureFromKeychain:(id)keychain
 {
   v21[7] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CDC238];
@@ -217,11 +217,11 @@
   v8 = *MEMORY[0x277CDBF20];
   v20[4] = v7;
   v20[5] = v8;
-  v9 = [a3 uniqueID];
-  v10 = [v9 UUIDString];
+  uniqueID = [keychain uniqueID];
+  uUIDString = [uniqueID UUIDString];
   v20[6] = *MEMORY[0x277CDC428];
   v11 = *MEMORY[0x277CDC438];
-  v21[5] = v10;
+  v21[5] = uUIDString;
   v21[6] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:7];
 
@@ -249,15 +249,15 @@
   return v15;
 }
 
-- (BOOL)_createNewKeychainItemWithSignature:(id)a3
+- (BOOL)_createNewKeychainItemWithSignature:(id)signature
 {
   v25[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  signatureCopy = signature;
+  if (signatureCopy)
   {
     v4 = objc_autoreleasePoolPush();
     v23 = 0;
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v23];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:signatureCopy requiringSecureCoding:1 error:&v23];
     v6 = v23;
     v7 = v6;
     if (v6)
@@ -288,10 +288,10 @@
       v15 = [v14 localizedStringForKey:@"Signatures for AnnotationKit (shared by e.g. Markup & Preview). Deletion will remove all signatures from the list." value:&stru_28519E870 table:@"AKSignatureModelController"];
       v25[5] = v15;
       v24[6] = *MEMORY[0x277CDBF20];
-      v16 = [v3 uniqueID];
-      v17 = [v16 UUIDString];
+      uniqueID = [signatureCopy uniqueID];
+      uUIDString = [uniqueID UUIDString];
       v24[7] = *MEMORY[0x277CDC5E8];
-      v25[6] = v17;
+      v25[6] = uUIDString;
       v25[7] = v9;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:8];
 
@@ -324,13 +324,13 @@
   return 0;
 }
 
-- (id)_createAKSignatureFromItemRef:(id)a3
+- (id)_createAKSignatureFromItemRef:(id)ref
 {
-  if (a3)
+  if (ref)
   {
     v3 = MEMORY[0x277CCAAC8];
-    v4 = a3;
-    v5 = [[v3 alloc] initForReadingFromData:v4 error:0];
+    refCopy = ref;
+    v5 = [[v3 alloc] initForReadingFromData:refCopy error:0];
 
     v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
     [v5 finishDecoding];

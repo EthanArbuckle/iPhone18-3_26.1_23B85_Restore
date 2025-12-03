@@ -7,8 +7,8 @@
 + (id)dataWithCOSE:()COSE
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = [(COSE *)a3 sourceObject];
-  v5 = [v3 dataWithCBOR:v4];
+  sourceObject = [(COSE *)a3 sourceObject];
+  v5 = [v3 dataWithCBOR:sourceObject];
 
   return v5;
 }

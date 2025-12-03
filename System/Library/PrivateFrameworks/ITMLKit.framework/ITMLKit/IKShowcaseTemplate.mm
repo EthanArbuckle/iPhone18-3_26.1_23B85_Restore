@@ -7,20 +7,20 @@
 
 - (NSArray)modes
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"mode"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"mode"];
 
-  v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v5 = [v3 componentsSeparatedByCharactersInSet:v4];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v5 = [v3 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   return v5;
 }
 
 - (unint64_t)transition
 {
-  v2 = [(IKViewElement *)self style];
-  v3 = [v2 transition];
-  v4 = [IKViewElementStyle transitionFromString:v3];
+  style = [(IKViewElement *)self style];
+  transition = [style transition];
+  v4 = [IKViewElementStyle transitionFromString:transition];
 
   return v4;
 }

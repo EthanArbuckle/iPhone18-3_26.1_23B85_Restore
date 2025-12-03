@@ -1,25 +1,25 @@
 @interface CLPredictedWalkDistanceServiceWatch
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLPredictedWalkDistanceServiceWatch)init;
 - (id).cxx_construct;
 - (void)beginService;
 - (void)endService;
-- (void)onAddBout:(CLPredictedWalkDistanceBoutEntry *)a3;
-- (void)onMotionStateMediatorNotification:(const int *)a3 data:(const NotificationData *)a4;
-- (void)onStepCountNotification:(const int *)a3 data:(const NotificationData *)a4;
-- (void)onUserInfoUpdate:(const int *)a3 data:(const void *)a4;
+- (void)onAddBout:(CLPredictedWalkDistanceBoutEntry *)bout;
+- (void)onMotionStateMediatorNotification:(const int *)notification data:(const NotificationData *)data;
+- (void)onStepCountNotification:(const int *)notification data:(const NotificationData *)data;
+- (void)onUserInfoUpdate:(const int *)update data:(const void *)data;
 - (void)setUpAggregationOnTimer;
 @end
 
 @implementation CLPredictedWalkDistanceServiceWatch
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -80,23 +80,23 @@
   }
 }
 
-- (void)onMotionStateMediatorNotification:(const int *)a3 data:(const NotificationData *)a4
+- (void)onMotionStateMediatorNotification:(const int *)notification data:(const NotificationData *)data
 {
   [-[CLPredictedWalkDistanceServiceWatch universe](self universe];
   ptr = self->fBoutDetector.__ptr_;
 
-  sub_1005C8E44(ptr, a4 + 2);
+  sub_1005C8E44(ptr, data + 2);
 }
 
-- (void)onStepCountNotification:(const int *)a3 data:(const NotificationData *)a4
+- (void)onStepCountNotification:(const int *)notification data:(const NotificationData *)data
 {
   [-[CLPredictedWalkDistanceServiceWatch universe](self universe];
   ptr = self->fBoutDetector.__ptr_;
 
-  sub_1005C9568(ptr, a4);
+  sub_1005C9568(ptr, data);
 }
 
-- (void)onAddBout:(CLPredictedWalkDistanceBoutEntry *)a3
+- (void)onAddBout:(CLPredictedWalkDistanceBoutEntry *)bout
 {
   if (qword_1025D4430 != -1)
   {
@@ -119,14 +119,14 @@
   v6[1] = 3221225472;
   v6[2] = sub_100822634;
   v6[3] = &unk_102471720;
-  v6[4] = [NSData dataWithBytes:a3 length:120];
+  v6[4] = [NSData dataWithBytes:bout length:120];
   [objc_msgSend(objc_msgSend(-[CLPredictedWalkDistanceServiceWatch universe](self "universe")];
 }
 
-- (void)onUserInfoUpdate:(const int *)a3 data:(const void *)a4
+- (void)onUserInfoUpdate:(const int *)update data:(const void *)data
 {
   [-[CLPredictedWalkDistanceServiceWatch universe](self "universe")];
-  if (*a3 == 2)
+  if (*update == 2)
   {
     if (qword_1025D4430 != -1)
     {
@@ -145,7 +145,7 @@
       sub_10194AB08();
     }
 
-    sub_1005CA638(self->fBoutDetector.__ptr_, a4);
+    sub_1005CA638(self->fBoutDetector.__ptr_, data);
   }
 
   else
@@ -158,7 +158,7 @@
     v8 = qword_1025D4438;
     if (os_log_type_enabled(qword_1025D4438, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = *a3;
+      v9 = *update;
       v10[0] = 67109120;
       v10[1] = v9;
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEFAULT, "#Warning Unhandled notification type, %d", v10, 8u);
@@ -166,7 +166,7 @@
 
     if (sub_10000A100(121, 2))
     {
-      sub_10194AA04(a3);
+      sub_10194AA04(update);
     }
   }
 }

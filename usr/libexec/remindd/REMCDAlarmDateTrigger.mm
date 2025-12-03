@@ -9,15 +9,15 @@
 
 - (id)modelObject
 {
-  v3 = [(REMCDAlarmDateTrigger *)self account];
-  v4 = [v3 remObjectID];
+  account = [(REMCDAlarmDateTrigger *)self account];
+  remObjectID = [account remObjectID];
 
-  v5 = [(REMCDAlarmDateTrigger *)self alarm];
-  v6 = [v5 remObjectID];
+  alarm = [(REMCDAlarmDateTrigger *)self alarm];
+  remObjectID2 = [alarm remObjectID];
 
-  if (v4 && v6)
+  if (remObjectID && remObjectID2)
   {
-    v7 = [_TtC7remindd34REMAlarmDateTriggerCDIngestor_ObjC storageFrom:self accountID:v4 alarmID:v6];
+    v7 = [_TtC7remindd34REMAlarmDateTriggerCDIngestor_ObjC storageFrom:self accountID:remObjectID alarmID:remObjectID2];
   }
 
   else
@@ -25,7 +25,7 @@
     v8 = os_log_create("com.apple.reminderkit", "default");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100767760(v4, v6, v8);
+      sub_100767760(remObjectID, remObjectID2, v8);
     }
 
     v7 = 0;
@@ -41,17 +41,17 @@
     [(REMCDAlarmDateTrigger *)self setDidHandleMarkingExtraneousAlarmDuringWillSave:1];
     if ([(REMCDAlarmDateTrigger *)self markedForDeletion])
     {
-      v3 = [(REMCDAlarmDateTrigger *)self alarm];
-      if (!v3)
+      alarm = [(REMCDAlarmDateTrigger *)self alarm];
+      if (!alarm)
       {
         goto LABEL_5;
       }
 
-      v4 = v3;
-      v5 = [(REMCDAlarmDateTrigger *)self alarm];
-      v6 = [v5 reminder];
+      v4 = alarm;
+      alarm2 = [(REMCDAlarmDateTrigger *)self alarm];
+      reminder = [alarm2 reminder];
 
-      if (!v6)
+      if (!reminder)
       {
 LABEL_5:
         [(REMCDAlarmDateTrigger *)self setIsExtraneous:1];
@@ -74,7 +74,7 @@ LABEL_5:
 
 - (double)generateNonce
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDAlarmDateTrigger.generateNonce()();
 
   return v3;

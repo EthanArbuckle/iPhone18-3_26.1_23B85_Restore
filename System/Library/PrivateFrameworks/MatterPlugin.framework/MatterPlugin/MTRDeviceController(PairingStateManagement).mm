@@ -16,7 +16,7 @@
 
 - (void)__plugin__preWarmCommissioningSession
 {
-  v2 = MTRGetAssociatedHomeUUIDWithController(a1);
+  v2 = MTRGetAssociatedHomeUUIDWithController(self);
   v3 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -25,14 +25,14 @@
   }
 
   MTRSetPotentialPairing(v2, 1);
-  [a1 __plugin__preWarmCommissioningSession];
+  [self __plugin__preWarmCommissioningSession];
 }
 
 - (uint64_t)__plugin__setupCommissioningSessionWithPayload:()PairingStateManagement newNodeID:error:
 {
   v8 = a4;
   v9 = a3;
-  v10 = MTRGetAssociatedHomeUUIDWithController(a1);
+  v10 = MTRGetAssociatedHomeUUIDWithController(self);
   v11 = matterPluginLog_default;
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -41,7 +41,7 @@
   }
 
   MTRSetPotentialPairing(v10, 1);
-  v12 = [a1 __plugin__setupCommissioningSessionWithPayload:v9 newNodeID:v8 error:a5];
+  v12 = [self __plugin__setupCommissioningSessionWithPayload:v9 newNodeID:v8 error:a5];
 
   return v12;
 }

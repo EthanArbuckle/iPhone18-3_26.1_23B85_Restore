@@ -6,7 +6,7 @@
 
 - (void)px_invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000D2A8();
 }
 

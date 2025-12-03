@@ -1,25 +1,25 @@
 @interface NSTextAnimationContext
-- (BOOL)_hasRenderableComponentsForRange:(id)a3;
-- (BOOL)_updateEnclosingLocation:(id)a3 endLocation:(id)a4;
-- (CGRect)presentationLayoutFragmentFrameForTextLayoutFragment:(id)a3 proposedOrigin:(CGPoint)a4;
-- (NSTextAnimationContext)initWithTextLayoutManager:(id)a3 textRanges:(id)a4;
+- (BOOL)_hasRenderableComponentsForRange:(id)range;
+- (BOOL)_updateEnclosingLocation:(id)location endLocation:(id)endLocation;
+- (CGRect)presentationLayoutFragmentFrameForTextLayoutFragment:(id)fragment proposedOrigin:(CGPoint)origin;
+- (NSTextAnimationContext)initWithTextLayoutManager:(id)manager textRanges:(id)ranges;
 - (NSTextLayoutManager)textLayoutManager;
 - (NSTextRange)_unionTextRange;
 - (NSTextRange)enclosingTextRange;
 - (unint64_t)_effectiveComponents;
 - (unint64_t)_effectiveExclusiveComponents;
 - (void)_contentsReplaced;
-- (void)_endAnimationContext:(int64_t)a3;
-- (void)snapshotWithComponents:(unint64_t)a3 exclusiveComponents:(unint64_t)a4 usingBlock:(id)a5;
+- (void)_endAnimationContext:(int64_t)context;
+- (void)snapshotWithComponents:(unint64_t)components exclusiveComponents:(unint64_t)exclusiveComponents usingBlock:(id)block;
 @end
 
 @implementation NSTextAnimationContext
 
 - (NSTextRange)enclosingTextRange
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  enclosingTextRange = v2->_enclosingTextRange;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  enclosingTextRange = selfCopy->_enclosingTextRange;
   if (enclosingTextRange)
   {
     v4 = enclosingTextRange;
@@ -27,84 +27,84 @@
 
   else
   {
-    v4 = [[NSTextRange alloc] initWithLocation:v2->_enclosingLocation endLocation:v2->_enclosingEndLocation];
+    v4 = [[NSTextRange alloc] initWithLocation:selfCopy->_enclosingLocation endLocation:selfCopy->_enclosingEndLocation];
   }
 
   v5 = v4;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (NSTextRange)_unionTextRange
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_unionTextRange)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_unionTextRange)
   {
-    if ([(NSArray *)v2->_textRanges count]< 2)
+    if ([(NSArray *)selfCopy->_textRanges count]< 2)
     {
-      v10 = [(NSArray *)v2->_textRanges firstObject];
-      unionTextRange = v2->_unionTextRange;
-      v2->_unionTextRange = v10;
+      firstObject = [(NSArray *)selfCopy->_textRanges firstObject];
+      unionTextRange = selfCopy->_unionTextRange;
+      selfCopy->_unionTextRange = firstObject;
     }
 
     else
     {
       v3 = [NSTextRange alloc];
-      unionTextRange = [(NSArray *)v2->_textRanges firstObject];
-      v5 = [unionTextRange location];
-      v6 = [(NSArray *)v2->_textRanges lastObject];
-      v7 = [v6 endLocation];
-      v8 = [(NSTextRange *)v3 initWithLocation:v5 endLocation:v7];
-      v9 = v2->_unionTextRange;
-      v2->_unionTextRange = v8;
+      unionTextRange = [(NSArray *)selfCopy->_textRanges firstObject];
+      location = [unionTextRange location];
+      lastObject = [(NSArray *)selfCopy->_textRanges lastObject];
+      endLocation = [lastObject endLocation];
+      v8 = [(NSTextRange *)v3 initWithLocation:location endLocation:endLocation];
+      v9 = selfCopy->_unionTextRange;
+      selfCopy->_unionTextRange = v8;
     }
   }
 
-  v11 = v2->_unionTextRange;
-  objc_sync_exit(v2);
+  v11 = selfCopy->_unionTextRange;
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
-- (BOOL)_hasRenderableComponentsForRange:(id)a3
+- (BOOL)_hasRenderableComponentsForRange:(id)range
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  rangeCopy = range;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = 80;
-  if (v5->_inSnapshot)
+  if (selfCopy->_inSnapshot)
   {
     v6 = 40;
   }
 
-  v7 = *(&v5->super.isa + v6);
+  v7 = *(&selfCopy->super.isa + v6);
   v8 = 88;
-  if (v5->_inSnapshot)
+  if (selfCopy->_inSnapshot)
   {
     v8 = 48;
   }
 
-  v9 = *(&v5->super.isa + v8);
+  v9 = *(&selfCopy->super.isa + v8);
   v10 = v9 != 0;
-  if ((v7 != 0 || v9 != 0) && (-[NSTextAnimationContext enclosingTextRange](v5, "enclosingTextRange"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 intersectsWithTextRange:v4], v11, v12))
+  if ((v7 != 0 || v9 != 0) && (-[NSTextAnimationContext enclosingTextRange](selfCopy, "enclosingTextRange"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 intersectsWithTextRange:rangeCopy], v11, v12))
   {
-    textRanges = v5->_textRanges;
+    textRanges = selfCopy->_textRanges;
     v14 = 1;
     if (textRanges && (v7 != 0) != (v9 != 0))
     {
       if ([(NSArray *)textRanges count]< 2)
       {
-        v25 = [(NSArray *)v5->_textRanges firstObject];
-        v26 = [v25 intersectsWithTextRange:v4];
+        firstObject = [(NSArray *)selfCopy->_textRanges firstObject];
+        v26 = [firstObject intersectsWithTextRange:rangeCopy];
 
         v14 = v9 != 0;
         if (v26)
         {
-          v27 = [(NSArray *)v5->_textRanges firstObject];
-          v28 = [v27 containsRange:v4];
+          firstObject2 = [(NSArray *)selfCopy->_textRanges firstObject];
+          v28 = [firstObject2 containsRange:rangeCopy];
 
 LABEL_27:
           if (v7)
@@ -121,8 +121,8 @@ LABEL_27:
 
       else
       {
-        v15 = [(NSTextAnimationContext *)v5 _unionTextRange];
-        v16 = [v15 intersectsWithTextRange:v4];
+        _unionTextRange = [(NSTextAnimationContext *)selfCopy _unionTextRange];
+        v16 = [_unionTextRange intersectsWithTextRange:rangeCopy];
 
         if (v16)
         {
@@ -130,7 +130,7 @@ LABEL_27:
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          obj = v5->_textRanges;
+          obj = selfCopy->_textRanges;
           v17 = [(NSArray *)obj countByEnumeratingWithState:&v30 objects:v34 count:16];
           if (v17)
           {
@@ -145,16 +145,16 @@ LABEL_27:
                 }
 
                 v20 = *(*(&v30 + 1) + 8 * i);
-                if ([v20 intersectsWithTextRange:v4])
+                if ([v20 intersectsWithTextRange:rangeCopy])
                 {
-                  v28 = [v20 containsRange:v4];
+                  v28 = [v20 containsRange:rangeCopy];
 
                   goto LABEL_27;
                 }
 
-                v21 = [v4 endLocation];
-                v22 = [v20 location];
-                v23 = [v21 compare:v22] == -1;
+                endLocation = [rangeCopy endLocation];
+                location = [v20 location];
+                v23 = [endLocation compare:location] == -1;
 
                 if (!v23)
                 {
@@ -185,7 +185,7 @@ LABEL_20:
     v14 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
@@ -203,15 +203,15 @@ LABEL_20:
   objc_sync_exit(obj);
 }
 
-- (NSTextAnimationContext)initWithTextLayoutManager:(id)a3 textRanges:(id)a4
+- (NSTextAnimationContext)initWithTextLayoutManager:(id)manager textRanges:(id)ranges
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  rangesCopy = ranges;
   v16.receiver = self;
   v16.super_class = NSTextAnimationContext;
   v8 = [(NSTextAnimationContext *)&v16 init];
   v9 = v8;
-  if (v8 && (objc_storeWeak(&v8->_textLayoutManager, v6), objc_storeStrong(&v9->_textRanges, a4), -[NSTextAnimationContext _unionTextRange](v9, "_unionTextRange"), v10 = objc_claimAutoreleasedReturnValue(), enclosingTextRange = v9->_enclosingTextRange, v9->_enclosingTextRange = v10, enclosingTextRange, *&v9->_components = xmmword_18E8566E0, WeakRetained = objc_loadWeakRetained(&v9->_textLayoutManager), v13 = [WeakRetained _addTextAnimationContext:v9], WeakRetained, !v13))
+  if (v8 && (objc_storeWeak(&v8->_textLayoutManager, managerCopy), objc_storeStrong(&v9->_textRanges, ranges), -[NSTextAnimationContext _unionTextRange](v9, "_unionTextRange"), v10 = objc_claimAutoreleasedReturnValue(), enclosingTextRange = v9->_enclosingTextRange, v9->_enclosingTextRange = v10, enclosingTextRange, *&v9->_components = xmmword_18E8566E0, WeakRetained = objc_loadWeakRetained(&v9->_textLayoutManager), v13 = [WeakRetained _addTextAnimationContext:v9], WeakRetained, !v13))
   {
     v14 = 0;
   }
@@ -224,39 +224,39 @@ LABEL_20:
   return v14;
 }
 
-- (BOOL)_updateEnclosingLocation:(id)a3 endLocation:(id)a4
+- (BOOL)_updateEnclosingLocation:(id)location endLocation:(id)endLocation
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = v9->_enclosingTextRange;
-  if (v7 && ([v7 isEqual:v9->_enclosingLocation] & 1) == 0)
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = selfCopy->_enclosingTextRange;
+  if (locationCopy && ([locationCopy isEqual:selfCopy->_enclosingLocation] & 1) == 0)
   {
-    objc_storeStrong(&v9->_enclosingLocation, a3);
-    enclosingTextRange = v9->_enclosingTextRange;
-    v9->_enclosingTextRange = 0;
+    objc_storeStrong(&selfCopy->_enclosingLocation, location);
+    enclosingTextRange = selfCopy->_enclosingTextRange;
+    selfCopy->_enclosingTextRange = 0;
   }
 
-  if (v8 && ([v8 isEqual:v9->_enclosingEndLocation] & 1) == 0)
+  if (endLocationCopy && ([endLocationCopy isEqual:selfCopy->_enclosingEndLocation] & 1) == 0)
   {
-    objc_storeStrong(&v9->_enclosingEndLocation, a4);
-    v12 = v9->_enclosingTextRange;
-    v9->_enclosingTextRange = 0;
+    objc_storeStrong(&selfCopy->_enclosingEndLocation, endLocation);
+    v12 = selfCopy->_enclosingTextRange;
+    selfCopy->_enclosingTextRange = 0;
   }
 
-  v13 = v9->_enclosingTextRange != v10;
+  v13 = selfCopy->_enclosingTextRange != v10;
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
   return v13;
 }
 
-- (void)_endAnimationContext:(int64_t)a3
+- (void)_endAnimationContext:(int64_t)context
 {
-  v7 = [(NSTextAnimationContext *)self completionHandler];
-  if (v7)
+  completionHandler = [(NSTextAnimationContext *)self completionHandler];
+  if (completionHandler)
   {
-    v7[2](v7, self, a3 == 0);
+    completionHandler[2](completionHandler, self, context == 0);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_textLayoutManager);
@@ -268,20 +268,20 @@ LABEL_20:
   objc_storeWeak(&self->_textLayoutManager, 0);
 }
 
-- (CGRect)presentationLayoutFragmentFrameForTextLayoutFragment:(id)a3 proposedOrigin:(CGPoint)a4
+- (CGRect)presentationLayoutFragmentFrameForTextLayoutFragment:(id)fragment proposedOrigin:(CGPoint)origin
 {
-  y = a4.y;
-  x = a4.x;
+  y = origin.y;
+  x = origin.x;
   presentationSizeProvider = self->_presentationSizeProvider;
   if (presentationSizeProvider)
   {
-    x = presentationSizeProvider[2](presentationSizeProvider, self, a3, a4, *&a4.y);
+    x = presentationSizeProvider[2](presentationSizeProvider, self, fragment, origin, *&origin.y);
     y = v10;
   }
 
   else
   {
-    [a3 layoutFragmentFrame];
+    [fragment layoutFragmentFrame];
   }
 
   v11 = x;
@@ -315,35 +315,35 @@ LABEL_20:
   return *(&self->super.isa + v2);
 }
 
-- (void)snapshotWithComponents:(unint64_t)a3 exclusiveComponents:(unint64_t)a4 usingBlock:(id)a5
+- (void)snapshotWithComponents:(unint64_t)components exclusiveComponents:(unint64_t)exclusiveComponents usingBlock:(id)block
 {
-  v18 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
-  snapshotComponents = v8->_snapshotComponents;
-  snapshotExclusiveComponents = v8->_snapshotExclusiveComponents;
-  inSnapshot = v8->_inSnapshot;
-  WeakRetained = objc_loadWeakRetained(&v8->_textLayoutManager);
-  v13 = [WeakRetained _hasTextAnimationContextsSnapshotting];
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  snapshotComponents = selfCopy->_snapshotComponents;
+  snapshotExclusiveComponents = selfCopy->_snapshotExclusiveComponents;
+  inSnapshot = selfCopy->_inSnapshot;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_textLayoutManager);
+  _hasTextAnimationContextsSnapshotting = [WeakRetained _hasTextAnimationContextsSnapshotting];
 
-  v8->_snapshotComponents = a3;
-  v8->_snapshotExclusiveComponents = a4;
-  v8->_inSnapshot = 1;
-  v14 = objc_loadWeakRetained(&v8->_textLayoutManager);
+  selfCopy->_snapshotComponents = components;
+  selfCopy->_snapshotExclusiveComponents = exclusiveComponents;
+  selfCopy->_inSnapshot = 1;
+  v14 = objc_loadWeakRetained(&selfCopy->_textLayoutManager);
   [v14 set_hasTextAnimationContextsSnapshotting:1];
 
-  v15 = objc_loadWeakRetained(&v8->_textLayoutManager);
-  v16 = [(NSTextAnimationContext *)v8 enclosingTextRange];
-  [v15 ensureLayoutForRange:v16];
+  v15 = objc_loadWeakRetained(&selfCopy->_textLayoutManager);
+  enclosingTextRange = [(NSTextAnimationContext *)selfCopy enclosingTextRange];
+  [v15 ensureLayoutForRange:enclosingTextRange];
 
-  v18[2](v18, v8);
-  v8->_snapshotComponents = snapshotComponents;
-  v8->_snapshotExclusiveComponents = snapshotExclusiveComponents;
-  v8->_inSnapshot = inSnapshot;
-  v17 = objc_loadWeakRetained(&v8->_textLayoutManager);
-  [v17 set_hasTextAnimationContextsSnapshotting:v13];
+  blockCopy[2](blockCopy, selfCopy);
+  selfCopy->_snapshotComponents = snapshotComponents;
+  selfCopy->_snapshotExclusiveComponents = snapshotExclusiveComponents;
+  selfCopy->_inSnapshot = inSnapshot;
+  v17 = objc_loadWeakRetained(&selfCopy->_textLayoutManager);
+  [v17 set_hasTextAnimationContextsSnapshotting:_hasTextAnimationContextsSnapshotting];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSTextLayoutManager)textLayoutManager

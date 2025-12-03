@@ -6,9 +6,9 @@
 
 - (id)handles
 {
-  v2 = [a1 phoneNumberStrings];
-  v3 = [a1 emailAddressStrings];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  phoneNumberStrings = [self phoneNumberStrings];
+  emailAddressStrings = [self emailAddressStrings];
+  v4 = [phoneNumberStrings arrayByAddingObjectsFromArray:emailAddressStrings];
 
   return v4;
 }

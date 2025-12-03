@@ -1,11 +1,11 @@
 @interface CTLazuliSuggestedActionDialEnrichedCall
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliSuggestedActionDialEnrichedCall:(id)a3;
-- (CTLazuliSuggestedActionDialEnrichedCall)initWithCoder:(id)a3;
-- (CTLazuliSuggestedActionDialEnrichedCall)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliSuggestedActionDialEnrichedCall:(id)call;
+- (CTLazuliSuggestedActionDialEnrichedCall)initWithCoder:(id)coder;
+- (CTLazuliSuggestedActionDialEnrichedCall)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliSuggestedActionDialEnrichedCall
@@ -13,30 +13,30 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliSuggestedActionDialEnrichedCall *)self phoneNumber];
-  [v3 appendFormat:@", phoneNumber = %@", v4];
+  phoneNumber = [(CTLazuliSuggestedActionDialEnrichedCall *)self phoneNumber];
+  [v3 appendFormat:@", phoneNumber = %@", phoneNumber];
 
-  v5 = [(CTLazuliSuggestedActionDialEnrichedCall *)self fallbackUrl];
-  [v3 appendFormat:@", fallbackUrl = %@", v5];
+  fallbackUrl = [(CTLazuliSuggestedActionDialEnrichedCall *)self fallbackUrl];
+  [v3 appendFormat:@", fallbackUrl = %@", fallbackUrl];
 
-  v6 = [(CTLazuliSuggestedActionDialEnrichedCall *)self subject];
-  [v3 appendFormat:@", subject = %@", v6];
+  subject = [(CTLazuliSuggestedActionDialEnrichedCall *)self subject];
+  [v3 appendFormat:@", subject = %@", subject];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliSuggestedActionDialEnrichedCall:(id)a3
+- (BOOL)isEqualToCTLazuliSuggestedActionDialEnrichedCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CTLazuliSuggestedActionDialEnrichedCall *)self phoneNumber];
-  v6 = [v4 phoneNumber];
-  if (v5 != v6)
+  callCopy = call;
+  phoneNumber = [(CTLazuliSuggestedActionDialEnrichedCall *)self phoneNumber];
+  phoneNumber2 = [callCopy phoneNumber];
+  if (phoneNumber != phoneNumber2)
   {
-    v19 = [(CTLazuliSuggestedActionDialEnrichedCall *)self phoneNumber];
-    v17 = [v4 phoneNumber];
-    if (![v19 isEqualToString:?])
+    phoneNumber3 = [(CTLazuliSuggestedActionDialEnrichedCall *)self phoneNumber];
+    phoneNumber4 = [callCopy phoneNumber];
+    if (![phoneNumber3 isEqualToString:?])
     {
       v7 = 0;
 LABEL_13:
@@ -45,13 +45,13 @@ LABEL_13:
     }
   }
 
-  v8 = [(CTLazuliSuggestedActionDialEnrichedCall *)self fallbackUrl];
-  v9 = [v4 fallbackUrl];
-  if (v8 != v9)
+  fallbackUrl = [(CTLazuliSuggestedActionDialEnrichedCall *)self fallbackUrl];
+  fallbackUrl2 = [callCopy fallbackUrl];
+  if (fallbackUrl != fallbackUrl2)
   {
-    v18 = [(CTLazuliSuggestedActionDialEnrichedCall *)self fallbackUrl];
-    v16 = [v4 fallbackUrl];
-    if (![v18 isEqualToString:?])
+    fallbackUrl3 = [(CTLazuliSuggestedActionDialEnrichedCall *)self fallbackUrl];
+    fallbackUrl4 = [callCopy fallbackUrl];
+    if (![fallbackUrl3 isEqualToString:?])
     {
       v7 = 0;
 LABEL_11:
@@ -60,10 +60,10 @@ LABEL_11:
     }
   }
 
-  v10 = [(CTLazuliSuggestedActionDialEnrichedCall *)self subject];
-  v11 = [v4 subject];
-  v12 = v11;
-  if (v10 == v11)
+  subject = [(CTLazuliSuggestedActionDialEnrichedCall *)self subject];
+  subject2 = [callCopy subject];
+  v12 = subject2;
+  if (subject == subject2)
   {
 
     v7 = 1;
@@ -71,19 +71,19 @@ LABEL_11:
 
   else
   {
-    v13 = [(CTLazuliSuggestedActionDialEnrichedCall *)self subject];
-    v14 = [v4 subject];
-    v7 = [v13 isEqualToString:v14];
+    subject3 = [(CTLazuliSuggestedActionDialEnrichedCall *)self subject];
+    subject4 = [callCopy subject];
+    v7 = [subject3 isEqualToString:subject4];
   }
 
-  if (v8 != v9)
+  if (fallbackUrl != fallbackUrl2)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  if (v5 != v6)
+  if (phoneNumber != phoneNumber2)
   {
     goto LABEL_13;
   }
@@ -93,63 +93,63 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliSuggestedActionDialEnrichedCall *)self isEqualToCTLazuliSuggestedActionDialEnrichedCall:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliSuggestedActionDialEnrichedCall *)self isEqualToCTLazuliSuggestedActionDialEnrichedCall:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliSuggestedActionDialEnrichedCall allocWithZone:?];
-  v6 = [(NSString *)self->_phoneNumber copyWithZone:a3];
+  v6 = [(NSString *)self->_phoneNumber copyWithZone:zone];
   [(CTLazuliSuggestedActionDialEnrichedCall *)v5 setPhoneNumber:v6];
 
-  v7 = [(NSString *)self->_fallbackUrl copyWithZone:a3];
+  v7 = [(NSString *)self->_fallbackUrl copyWithZone:zone];
   [(CTLazuliSuggestedActionDialEnrichedCall *)v5 setFallbackUrl:v7];
 
-  v8 = [(NSString *)self->_subject copyWithZone:a3];
+  v8 = [(NSString *)self->_subject copyWithZone:zone];
   [(CTLazuliSuggestedActionDialEnrichedCall *)v5 setSubject:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_phoneNumber forKey:@"kPhoneNumberKey"];
-  [v4 encodeObject:self->_fallbackUrl forKey:@"kFallbackUrlKey"];
-  [v4 encodeObject:self->_subject forKey:@"kSubjectKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"kPhoneNumberKey"];
+  [coderCopy encodeObject:self->_fallbackUrl forKey:@"kFallbackUrlKey"];
+  [coderCopy encodeObject:self->_subject forKey:@"kSubjectKey"];
 }
 
-- (CTLazuliSuggestedActionDialEnrichedCall)initWithCoder:(id)a3
+- (CTLazuliSuggestedActionDialEnrichedCall)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTLazuliSuggestedActionDialEnrichedCall;
   v5 = [(CTLazuliSuggestedActionDialEnrichedCall *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPhoneNumberKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPhoneNumberKey"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kFallbackUrlKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kFallbackUrlKey"];
     fallbackUrl = v5->_fallbackUrl;
     v5->_fallbackUrl = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSubjectKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSubjectKey"];
     subject = v5->_subject;
     v5->_subject = v10;
   }
@@ -157,37 +157,37 @@ LABEL_14:
   return v5;
 }
 
-- (CTLazuliSuggestedActionDialEnrichedCall)initWithReflection:(const void *)a3
+- (CTLazuliSuggestedActionDialEnrichedCall)initWithReflection:(const void *)reflection
 {
   v18.receiver = self;
   v18.super_class = CTLazuliSuggestedActionDialEnrichedCall;
   v4 = [(CTLazuliSuggestedActionDialEnrichedCall *)&v18 init];
   if (v4)
   {
-    if (*(a3 + 23) >= 0)
+    if (*(reflection + 23) >= 0)
     {
-      v5 = a3;
+      reflectionCopy = reflection;
     }
 
     else
     {
-      v5 = *a3;
+      reflectionCopy = *reflection;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:reflectionCopy];
     phoneNumber = v4->_phoneNumber;
     v4->_phoneNumber = v6;
 
-    if (*(a3 + 48) == 1)
+    if (*(reflection + 48) == 1)
     {
-      if (*(a3 + 47) >= 0)
+      if (*(reflection + 47) >= 0)
       {
-        v8 = a3 + 24;
+        v8 = reflection + 24;
       }
 
       else
       {
-        v8 = *(a3 + 3);
+        v8 = *(reflection + 3);
       }
 
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v8];
@@ -201,10 +201,10 @@ LABEL_14:
     fallbackUrl = v4->_fallbackUrl;
     v4->_fallbackUrl = v9;
 
-    if (*(a3 + 80) == 1)
+    if (*(reflection + 80) == 1)
     {
-      v13 = *(a3 + 7);
-      v12 = a3 + 56;
+      v13 = *(reflection + 7);
+      v12 = reflection + 56;
       v11 = v13;
       if (v12[23] >= 0)
       {

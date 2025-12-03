@@ -1,43 +1,43 @@
 @interface FPUntrashOperation
-- (FPUntrashOperation)initWithItems:(id)a3 restoreDirectory:(id)a4;
+- (FPUntrashOperation)initWithItems:(id)items restoreDirectory:(id)directory;
 - (id)fp_prettyDescription;
-- (id)replicateForItems:(id)a3;
-- (unint64_t)transformItem:(id)a3 atIndex:(unint64_t)a4;
-- (void)postStitchingFinishWithResult:(id)a3 error:(id)a4;
+- (id)replicateForItems:(id)items;
+- (unint64_t)transformItem:(id)item atIndex:(unint64_t)index;
+- (void)postStitchingFinishWithResult:(id)result error:(id)error;
 - (void)presendNotifications;
-- (void)subclassPreflightWithCompletion:(id)a3;
+- (void)subclassPreflightWithCompletion:(id)completion;
 @end
 
 @implementation FPUntrashOperation
 
-- (id)replicateForItems:(id)a3
+- (id)replicateForItems:(id)items
 {
-  v4 = a3;
-  v5 = [[FPUntrashOperation alloc] initWithItems:v4 restoreDirectory:self->_restoreDirectory];
+  itemsCopy = items;
+  v5 = [[FPUntrashOperation alloc] initWithItems:itemsCopy restoreDirectory:self->_restoreDirectory];
 
   return v5;
 }
 
-- (FPUntrashOperation)initWithItems:(id)a3 restoreDirectory:(id)a4
+- (FPUntrashOperation)initWithItems:(id)items restoreDirectory:(id)directory
 {
-  v7 = a4;
+  directoryCopy = directory;
   v11.receiver = self;
   v11.super_class = FPUntrashOperation;
-  v8 = [(FPTransformOperation *)&v11 initWithItemsOfDifferentProviders:a3 action:0];
+  v8 = [(FPTransformOperation *)&v11 initWithItemsOfDifferentProviders:items action:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_restoreDirectory, a4);
+    objc_storeStrong(&v8->_restoreDirectory, directory);
     [(FPActionOperation *)v9 setSetupRemoteOperationService:1];
   }
 
   return v9;
 }
 
-- (void)subclassPreflightWithCompletion:(id)a3
+- (void)subclassPreflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   restoreDirectory = self->_restoreDirectory;
   if (restoreDirectory)
   {
@@ -57,8 +57,8 @@
 
     else
     {
-      v10 = [(FPItem *)self->_restoreDirectory itemID];
-      v11 = [(FPActionOperation *)self itemManager];
+      itemID = [(FPItem *)self->_restoreDirectory itemID];
+      itemManager = [(FPActionOperation *)self itemManager];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __54__FPUntrashOperation_subclassPreflightWithCompletion___block_invoke;
@@ -66,13 +66,13 @@
       v14 = v5;
       v12[4] = self;
       v13 = v7;
-      [v11 fetchParentsForItemID:v10 recursively:1 completionHandler:v12];
+      [itemManager fetchParentsForItemID:itemID recursively:1 completionHandler:v12];
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -170,15 +170,15 @@ void __54__FPUntrashOperation_subclassPreflightWithCompletion___block_invoke_2(u
   v9();
 }
 
-- (unint64_t)transformItem:(id)a3 atIndex:(unint64_t)a4
+- (unint64_t)transformItem:(id)item atIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [(FPItem *)self->_restoreDirectory itemIdentifier];
-  [v5 setTrashed:0];
+  itemCopy = item;
+  itemIdentifier = [(FPItem *)self->_restoreDirectory itemIdentifier];
+  [itemCopy setTrashed:0];
   rootDirectory = self->_rootDirectory;
   if (rootDirectory)
   {
-    v8 = [(FPItem *)rootDirectory itemIdentifier];
+    itemIdentifier2 = [(FPItem *)rootDirectory itemIdentifier];
 
     v9 = fp_current_or_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -186,12 +186,12 @@ void __54__FPUntrashOperation_subclassPreflightWithCompletion___block_invoke_2(u
       [FPUntrashOperation transformItem:atIndex:];
     }
 
-    v6 = v8;
+    itemIdentifier = itemIdentifier2;
   }
 
-  if (v6)
+  if (itemIdentifier)
   {
-    [v5 setParentItemIdentifier:v6];
+    [itemCopy setParentItemIdentifier:itemIdentifier];
     v10 = 1073741828;
   }
 
@@ -203,38 +203,38 @@ void __54__FPUntrashOperation_subclassPreflightWithCompletion___block_invoke_2(u
   return v10;
 }
 
-- (void)postStitchingFinishWithResult:(id)a3 error:(id)a4
+- (void)postStitchingFinishWithResult:(id)result error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(FPUntrashOperation *)self untrashCompletionBlock];
-  v8 = v7;
-  if (v7)
+  resultCopy = result;
+  errorCopy = error;
+  untrashCompletionBlock = [(FPUntrashOperation *)self untrashCompletionBlock];
+  v8 = untrashCompletionBlock;
+  if (untrashCompletionBlock)
   {
-    (*(v7 + 16))(v7, v9, v6);
+    (*(untrashCompletionBlock + 16))(untrashCompletionBlock, resultCopy, errorCopy);
     [(FPUntrashOperation *)self setUntrashCompletionBlock:0];
   }
 }
 
 - (void)presendNotifications
 {
-  v3 = [(FPActionOperation *)self stitcher];
-  [v3 start];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher start];
 
-  v4 = [(FPActionOperation *)self stitcher];
-  v5 = [(FPTransformOperation *)self items];
-  [v4 deleteItems:v5];
+  stitcher2 = [(FPActionOperation *)self stitcher];
+  items = [(FPTransformOperation *)self items];
+  [stitcher2 deleteItems:items];
 
-  v6 = [(FPActionOperation *)self stitcher];
-  [v6 flush];
+  stitcher3 = [(FPActionOperation *)self stitcher];
+  [stitcher3 flush];
 }
 
 - (id)fp_prettyDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(FPTransformOperation *)self items];
-  v4 = [v3 fp_itemIdentifiers];
-  v5 = FPAbbreviatedArrayDescription(v4);
+  items = [(FPTransformOperation *)self items];
+  fp_itemIdentifiers = [items fp_itemIdentifiers];
+  v5 = FPAbbreviatedArrayDescription(fp_itemIdentifiers);
   v6 = [v2 stringWithFormat:@"untrash %@", v5];
 
   return v6;

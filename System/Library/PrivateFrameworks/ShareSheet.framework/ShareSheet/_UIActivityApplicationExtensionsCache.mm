@@ -1,14 +1,14 @@
 @interface _UIActivityApplicationExtensionsCache
 + (id)sharedExtensionsCache;
 - (_UIActivityApplicationExtensionsCache)init;
-- (id)_matchingExtensionsCachedResultForKey:(id)a3;
-- (id)extensionsResultWithMatchingAttributes:(id)a3;
+- (id)_matchingExtensionsCachedResultForKey:(id)key;
+- (id)extensionsResultWithMatchingAttributes:(id)attributes;
 - (id)reportExtensionsCacheResult;
-- (void)_cacheMatchingExtensions:(id)a3 cacheKey:(id)a4 error:(id)a5;
-- (void)_cacheMatchingExtensionsResult:(id)a3 cacheKey:(id)a4;
-- (void)_startContinuousExtensionDiscoveryForAttributes:(id)a3 cacheKey:(id)a4;
+- (void)_cacheMatchingExtensions:(id)extensions cacheKey:(id)key error:(id)error;
+- (void)_cacheMatchingExtensionsResult:(id)result cacheKey:(id)key;
+- (void)_startContinuousExtensionDiscoveryForAttributes:(id)attributes cacheKey:(id)key;
 - (void)_startPrecachingContinuousExtensionDiscovery;
-- (void)primeExtensionsResultWithMatchingAttributes:(id)a3;
+- (void)primeExtensionsResultWithMatchingAttributes:(id)attributes;
 @end
 
 @implementation _UIActivityApplicationExtensionsCache
@@ -64,63 +64,63 @@
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "ExtensionsCache: processing %lu registrations for continuous discovery precaching", buf, 0xCu);
   }
 
-  v4 = [(_UIActivityApplicationExtensionsCache *)self discoveryQueue];
+  discoveryQueue = [(_UIActivityApplicationExtensionsCache *)self discoveryQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85___UIActivityApplicationExtensionsCache__startPrecachingContinuousExtensionDiscovery__block_invoke;
   block[3] = &unk_1E71F9510;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(discoveryQueue, block);
 }
 
-- (id)_matchingExtensionsCachedResultForKey:(id)a3
+- (id)_matchingExtensionsCachedResultForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(_UIActivityApplicationExtensionsCache *)self cachedResults];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  cachedResults = [(_UIActivityApplicationExtensionsCache *)self cachedResults];
+  v6 = [cachedResults objectForKeyedSubscript:keyCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 
   return v6;
 }
 
-- (void)_cacheMatchingExtensionsResult:(id)a3 cacheKey:(id)a4
+- (void)_cacheMatchingExtensionsResult:(id)result cacheKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  resultCopy = result;
   os_unfair_lock_lock(&self->_cacheLock);
-  v8 = [(_UIActivityApplicationExtensionsCache *)self cachedResults];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  cachedResults = [(_UIActivityApplicationExtensionsCache *)self cachedResults];
+  [cachedResults setObject:resultCopy forKeyedSubscript:keyCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
-- (void)_cacheMatchingExtensions:(id)a3 cacheKey:(id)a4 error:(id)a5
+- (void)_cacheMatchingExtensions:(id)extensions cacheKey:(id)key error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  keyCopy = key;
+  extensionsCopy = extensions;
   v13 = objc_opt_new();
-  v11 = [v10 copy];
+  v11 = [extensionsCopy copy];
 
   [v13 setExtensions:v11];
-  v12 = [v8 copy];
+  v12 = [errorCopy copy];
 
   [v13 setError:v12];
-  [(_UIActivityApplicationExtensionsCache *)self _cacheMatchingExtensionsResult:v13 cacheKey:v9];
+  [(_UIActivityApplicationExtensionsCache *)self _cacheMatchingExtensionsResult:v13 cacheKey:keyCopy];
 }
 
-- (void)_startContinuousExtensionDiscoveryForAttributes:(id)a3 cacheKey:(id)a4
+- (void)_startContinuousExtensionDiscoveryForAttributes:(id)attributes cacheKey:(id)key
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIActivityApplicationExtensionsCache *)self discoveryQueue];
-  dispatch_assert_queue_V2(v8);
+  attributesCopy = attributes;
+  keyCopy = key;
+  discoveryQueue = [(_UIActivityApplicationExtensionsCache *)self discoveryQueue];
+  dispatch_assert_queue_V2(discoveryQueue);
 
-  v9 = [(_UIActivityApplicationExtensionsCache *)self extensionMatchTokens];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  extensionMatchTokens = [(_UIActivityApplicationExtensionsCache *)self extensionMatchTokens];
+  v10 = [extensionMatchTokens objectForKeyedSubscript:keyCopy];
 
   v11 = share_sheet_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -129,7 +129,7 @@
     if (v12)
     {
       *buf = 138412290;
-      v24 = v7;
+      v24 = keyCopy;
       _os_log_impl(&dword_18B359000, v11, OS_LOG_TYPE_DEFAULT, "ExtensionsCache: continuous discovery is already running for cache key = [%@]", buf, 0xCu);
     }
   }
@@ -139,7 +139,7 @@
     if (v12)
     {
       *buf = 138412290;
-      v24 = v7;
+      v24 = keyCopy;
       _os_log_impl(&dword_18B359000, v11, OS_LOG_TYPE_DEFAULT, "ExtensionsCache: start continuous discovery for cache key = [%@]", buf, 0xCu);
     }
 
@@ -149,10 +149,10 @@
     v18 = 3221225472;
     v19 = __98___UIActivityApplicationExtensionsCache__startContinuousExtensionDiscoveryForAttributes_cacheKey___block_invoke;
     v20 = &unk_1E71F9610;
-    v14 = v7;
+    v14 = keyCopy;
     v21 = v14;
     objc_copyWeak(&v22, buf);
-    v15 = [v13 beginMatchingExtensionsWithAttributes:v6 completion:&v17];
+    v15 = [v13 beginMatchingExtensionsWithAttributes:attributesCopy completion:&v17];
     v16 = [(_UIActivityApplicationExtensionsCache *)self extensionMatchTokens:v17];
     [v16 setObject:v15 forKeyedSubscript:v14];
 
@@ -161,11 +161,11 @@
   }
 }
 
-- (void)primeExtensionsResultWithMatchingAttributes:(id)a3
+- (void)primeExtensionsResultWithMatchingAttributes:(id)attributes
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = _cacheKeyWithMatchingAttributes(v4);
+  attributesCopy = attributes;
+  v5 = _cacheKeyWithMatchingAttributes(attributesCopy);
   v6 = [(_UIActivityApplicationExtensionsCache *)self _matchingExtensionsCachedResultForKey:v5];
 
   if (v6)
@@ -183,41 +183,41 @@
   {
     self->_primed = 1;
     objc_initWeak(buf, self);
-    v8 = [(_UIActivityApplicationExtensionsCache *)self primedExtensionsQueue];
+    primedExtensionsQueue = [(_UIActivityApplicationExtensionsCache *)self primedExtensionsQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __85___UIActivityApplicationExtensionsCache_primeExtensionsResultWithMatchingAttributes___block_invoke;
     block[3] = &unk_1E71F9660;
     objc_copyWeak(&v12, buf);
     v10 = v5;
-    v11 = v4;
-    dispatch_async(v8, block);
+    v11 = attributesCopy;
+    dispatch_async(primedExtensionsQueue, block);
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(buf);
   }
 }
 
-- (id)extensionsResultWithMatchingAttributes:(id)a3
+- (id)extensionsResultWithMatchingAttributes:(id)attributes
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = _cacheKeyWithMatchingAttributes(v4);
+  attributesCopy = attributes;
+  v5 = _cacheKeyWithMatchingAttributes(attributesCopy);
   v6 = [(_UIActivityApplicationExtensionsCache *)self _matchingExtensionsCachedResultForKey:v5];
   if (v6)
   {
     v7 = share_sheet_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 extensions];
-      v9 = [v8 count];
-      v10 = [v6 error];
+      extensions = [v6 extensions];
+      v9 = [extensions count];
+      error = [v6 error];
       *buf = 134218498;
       *&buf[4] = v9;
       *&buf[12] = 2112;
       *&buf[14] = v5;
       *&buf[22] = 2112;
-      v43 = v10;
+      v43 = error;
       _os_log_impl(&dword_18B359000, v7, OS_LOG_TYPE_DEFAULT, "ExtensionsCache: found %lu cached extensions for cache key = [%@], error = %@", buf, 0x20u);
     }
 
@@ -240,7 +240,7 @@
     v43 = __Block_byref_object_copy__0;
     v44 = __Block_byref_object_dispose__0;
     v45 = 0;
-    v11 = [(_UIActivityApplicationExtensionsCache *)self primedExtensionsQueue];
+    primedExtensionsQueue = [(_UIActivityApplicationExtensionsCache *)self primedExtensionsQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __80___UIActivityApplicationExtensionsCache_extensionsResultWithMatchingAttributes___block_invoke;
@@ -249,7 +249,7 @@
     block[4] = self;
     v12 = v5;
     v34 = v12;
-    dispatch_sync(v11, block);
+    dispatch_sync(primedExtensionsQueue, block);
 
     v13 = *(*&buf[8] + 40);
     if (v13)
@@ -258,46 +258,46 @@
       v14 = share_sheet_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v6 extensions];
-        v16 = [v15 count];
-        v17 = [v6 error];
+        extensions2 = [v6 extensions];
+        v16 = [extensions2 count];
+        error2 = [v6 error];
         *v36 = 134218498;
         v37 = v16;
         v38 = 2112;
         v39 = v12;
         v40 = 2112;
-        v41 = v17;
+        v41 = error2;
         _os_log_impl(&dword_18B359000, v14, OS_LOG_TYPE_DEFAULT, "ExtensionsCache: no cache found but primed %lu extensions ready for cache key = [%@], error = %@", v36, 0x20u);
       }
     }
 
     else
     {
-      v18 = [(_UIActivityApplicationExtensionsCache *)self discoveryQueue];
+      discoveryQueue = [(_UIActivityApplicationExtensionsCache *)self discoveryQueue];
       v26 = MEMORY[0x1E69E9820];
       v27 = 3221225472;
       v28 = __80___UIActivityApplicationExtensionsCache_extensionsResultWithMatchingAttributes___block_invoke_401;
       v29 = &unk_1E71F9638;
-      v30 = self;
-      v19 = v4;
+      selfCopy = self;
+      v19 = attributesCopy;
       v31 = v19;
       v20 = v12;
       v32 = v20;
-      dispatch_async(v18, &v26);
+      dispatch_async(discoveryQueue, &v26);
 
       v6 = _syncGetExtensionsResultWithMatchingAttributes(v19, 0, 0);
       v21 = share_sheet_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v6 extensions];
-        v23 = [v22 count];
-        v24 = [v6 error];
+        extensions3 = [v6 extensions];
+        v23 = [extensions3 count];
+        error3 = [v6 error];
         *v36 = 134218498;
         v37 = v23;
         v38 = 2112;
         v39 = v20;
         v40 = 2112;
-        v41 = v24;
+        v41 = error3;
         _os_log_impl(&dword_18B359000, v21, OS_LOG_TYPE_DEFAULT, "ExtensionsCache: no cache found. got %lu new extensions for cache key = [%@], error = %@", v36, 0x20u);
       }
     }

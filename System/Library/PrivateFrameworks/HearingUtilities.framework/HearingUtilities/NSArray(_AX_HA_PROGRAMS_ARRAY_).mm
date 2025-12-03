@@ -10,7 +10,7 @@
   v71 = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = a4;
-  v10 = [a1 programThatMatchesProgram:v8];
+  v10 = [self programThatMatchesProgram:v8];
   v11 = HCLogHearingAids();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -81,15 +81,15 @@
   v27 = &v36;
   v28 = &v48;
   v29 = &v42;
-  [a1 enumerateObjectsUsingBlock:&v21];
+  [self enumerateObjectsUsingBlock:&v21];
   if (*(*&buf[8] + 40))
   {
     if ([v12 isStreamOrMixingStream])
     {
       if ([*(*&buf[8] + 40) isStreamOrMixingStream])
       {
-        v13 = [*(*&buf[8] + 40) index];
-        if (v13 != [v12 index])
+        index = [*(*&buf[8] + 40) index];
+        if (index != [v12 index])
         {
           [*(*&buf[8] + 40) setIsSelected:0];
           if (!v62[5])
@@ -206,7 +206,7 @@ LABEL_29:
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 enumerateObjectsUsingBlock:v8];
+  [self enumerateObjectsUsingBlock:v8];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);

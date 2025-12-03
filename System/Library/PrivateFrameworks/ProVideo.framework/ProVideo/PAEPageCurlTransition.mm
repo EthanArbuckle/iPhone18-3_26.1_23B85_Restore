@@ -1,8 +1,8 @@
 @interface PAEPageCurlTransition
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInputA:(id)a4 withInputB:(id)a5 withTimeFraction:(float)a6 withSpeed:(float)a7 withInfo:(id *)a8;
-- (BOOL)parameterChanged:(unsigned int)a3;
-- (void)observeNotification:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInputA:(id)a withInputB:(id)b withTimeFraction:(float)fraction withSpeed:(float)speed withInfo:(id *)info;
+- (BOOL)parameterChanged:(unsigned int)changed;
+- (void)observeNotification:(id)notification;
 @end
 
 @implementation PAEPageCurlTransition
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (BOOL)parameterChanged:(unsigned int)a3
+- (BOOL)parameterChanged:(unsigned int)changed
 {
-  if (a3 == 1)
+  if (changed == 1)
   {
     v4 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E448];
     v5 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -68,7 +68,7 @@ LABEL_10:
 
   else
   {
-    if ((a3 & 0xFFFFFFFE) != 2)
+    if ((changed & 0xFFFFFFFE) != 2)
     {
       return 1;
     }
@@ -83,19 +83,19 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInputA:(id)a4 withInputB:(id)a5 withTimeFraction:(float)a6 withSpeed:(float)a7 withInfo:(id *)a8
+- (BOOL)canThrowRenderOutput:(id)output withInputA:(id)a withInputB:(id)b withTimeFraction:(float)fraction withSpeed:(float)speed withInfo:(id *)info
 {
-  if ([a4 imageType] != 3)
+  if ([a imageType] != 3)
   {
     return 0;
   }
 
-  if ([a5 imageType] != 3)
+  if ([b imageType] != 3)
   {
     return 0;
   }
 
-  if ([a3 imageType] != 3)
+  if ([output imageType] != 3)
   {
     return 0;
   }
@@ -106,11 +106,11 @@ LABEL_10:
     return 0;
   }
 
-  v27 = 0;
-  [v14 getIntValue:&v27 fromParm:9 atFxTime:a8->var0.var1];
-  if (v27 == 2)
+  isFrontGap = 0;
+  [v14 getIntValue:&isFrontGap fromParm:9 atFxTime:info->var0.var1];
+  if (isFrontGap == 2)
   {
-    v27 = [(PAETransitionDefaultBase *)self isFrontGap];
+    isFrontGap = [(PAETransitionDefaultBase *)self isFrontGap];
   }
 
   if ([(PAETransitionDefaultBase *)self isFrontGap])
@@ -125,39 +125,39 @@ LABEL_10:
     HGSolidColor::HGSolidColor(v18);
   }
 
-  v19 = 1.0 - a6;
-  if (v27 == 1)
+  fractionCopy = 1.0 - fraction;
+  if (isFrontGap == 1)
   {
-    v20 = a4;
+    bCopy = a;
   }
 
   else
   {
-    v20 = a5;
+    bCopy = b;
   }
 
-  if (v27 == 1)
+  if (isFrontGap == 1)
   {
-    v21 = a5;
+    aCopy2 = b;
   }
 
   else
   {
-    v21 = a4;
+    aCopy2 = a;
   }
 
-  if (v27 != 1)
+  if (isFrontGap != 1)
   {
-    v19 = a6;
+    fractionCopy = fraction;
   }
 
   v22 = v26;
   v15 = v26 != 0;
   if (v26)
   {
-    if (v20)
+    if (bCopy)
     {
-      [v20 heliumRef];
+      [bCopy heliumRef];
     }
 
     else
@@ -173,7 +173,7 @@ LABEL_10:
     (*(*v23 + 96))(v23, 5);
     (*(*v23 + 120))(v23, 0, v22);
     (*(*v23 + 120))(v23, 1, v25);
-    [a3 setHeliumRef:&v24];
+    [output setHeliumRef:&v24];
     if (v24)
     {
       (*(*v24 + 24))(v24);
@@ -190,12 +190,12 @@ LABEL_10:
   return v15;
 }
 
-- (void)observeNotification:(id)a3
+- (void)observeNotification:(id)notification
 {
-  v5 = [a3 objectForKeyedSubscript:kFxNotificationName_NotificationTypeKey];
+  v5 = [notification objectForKeyedSubscript:kFxNotificationName_NotificationTypeKey];
   if (self->super._initGap >= 2u && [v5 isEqualToString:kFxNotificationName_ColorModelChanged])
   {
-    v6 = [a3 objectForKeyedSubscript:kFxNotificationKey_ColorModel];
+    v6 = [notification objectForKeyedSubscript:kFxNotificationKey_ColorModel];
 
     [(PAETransitionDefaultBase *)self showHideHDRWhiteLevelParameterForColorModel:v6];
   }

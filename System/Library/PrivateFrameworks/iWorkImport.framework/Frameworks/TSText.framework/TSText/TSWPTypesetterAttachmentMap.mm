@@ -1,25 +1,25 @@
 @interface TSWPTypesetterAttachmentMap
-+ (id)mapWithAttachment:(id)a3 layout:(id)a4 pageNumber:(unint64_t)a5 pageCount:(unint64_t)a6 footnoteMarkProvider:(id)a7 styleProvider:(id)a8 colorOverride:(id)a9 textScalePercent:(unint64_t)a10 targetSupportsPageNumbers:(BOOL)a11;
++ (id)mapWithAttachment:(id)attachment layout:(id)layout pageNumber:(unint64_t)number pageCount:(unint64_t)count footnoteMarkProvider:(id)provider styleProvider:(id)styleProvider colorOverride:(id)override textScalePercent:(unint64_t)self0 targetSupportsPageNumbers:(BOOL)self1;
 - (TSDLayout)layout;
 - (TSWPAttachment)attachment;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 - (void)layoutIfNeeded;
 @end
 
 @implementation TSWPTypesetterAttachmentMap
 
-+ (id)mapWithAttachment:(id)a3 layout:(id)a4 pageNumber:(unint64_t)a5 pageCount:(unint64_t)a6 footnoteMarkProvider:(id)a7 styleProvider:(id)a8 colorOverride:(id)a9 textScalePercent:(unint64_t)a10 targetSupportsPageNumbers:(BOOL)a11
++ (id)mapWithAttachment:(id)attachment layout:(id)layout pageNumber:(unint64_t)number pageCount:(unint64_t)count footnoteMarkProvider:(id)provider styleProvider:(id)styleProvider colorOverride:(id)override textScalePercent:(unint64_t)self0 targetSupportsPageNumbers:(BOOL)self1
 {
-  v17 = a3;
-  v122 = a4;
-  v125 = a7;
-  v124 = a8;
-  v123 = a9;
-  v20 = objc_alloc_init(a1);
+  attachmentCopy = attachment;
+  layoutCopy = layout;
+  providerCopy = provider;
+  styleProviderCopy = styleProvider;
+  overrideCopy = override;
+  v20 = objc_alloc_init(self);
   if (v20)
   {
-    if (!v17)
+    if (!attachmentCopy)
     {
       v21 = MEMORY[0x277D81150];
       v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "+[TSWPTypesetterAttachmentMap mapWithAttachment:layout:pageNumber:pageCount:footnoteMarkProvider:styleProvider:colorOverride:textScalePercent:targetSupportsPageNumbers:]");
@@ -29,10 +29,10 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27);
     }
 
-    if ((objc_msgSend_isAnchored(v17, v18, v19) & 1) == 0 && objc_msgSend_isDrawable(v17, v28, v29))
+    if ((objc_msgSend_isAnchored(attachmentCopy, v18, v19) & 1) == 0 && objc_msgSend_isDrawable(attachmentCopy, v28, v29))
     {
-      isPartitioned = objc_msgSend_isPartitioned(v17, v30, v31);
-      if (!((v122 != 0) | isPartitioned & 1))
+      isPartitioned = objc_msgSend_isPartitioned(attachmentCopy, v30, v31);
+      if (!((layoutCopy != 0) | isPartitioned & 1))
       {
         v35 = MEMORY[0x277D81150];
         v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v32, "+[TSWPTypesetterAttachmentMap mapWithAttachment:layout:pageNumber:pageCount:footnoteMarkProvider:styleProvider:colorOverride:textScalePercent:targetSupportsPageNumbers:]");
@@ -44,7 +44,7 @@
 
       if ((isPartitioned & 1) == 0)
       {
-        v42 = objc_msgSend_layoutController(v122, v32, v33);
+        v42 = objc_msgSend_layoutController(layoutCopy, v32, v33);
 
         if (!v42)
         {
@@ -58,16 +58,16 @@
       }
     }
 
-    objc_storeWeak(v20 + 2, v17);
-    objc_storeStrong(v20 + 3, a4);
+    objc_storeWeak(v20 + 2, attachmentCopy);
+    objc_storeStrong(v20 + 3, layout);
     *(v20 + 8) = 1;
-    if ((objc_msgSend_elementKind(v17, v51, v52) & 0x1E0) != 0)
+    if ((objc_msgSend_elementKind(attachmentCopy, v51, v52) & 0x1E0) != 0)
     {
       objc_opt_class();
       v53 = TSUDynamicCast();
-      v121 = v125;
-      v120 = v124;
-      v118 = v123;
+      v121 = providerCopy;
+      v120 = styleProviderCopy;
+      v118 = overrideCopy;
       v119 = objc_msgSend_parentStorage(v53, v54, v55);
       CharIndex = objc_msgSend_findCharIndex(v53, v56, v57);
       if (!v121)
@@ -95,7 +95,7 @@ LABEL_26:
         if (v83)
         {
           isWritingDirectionRightToLeftForParagraphAtCharIndex = objc_msgSend_isWritingDirectionRightToLeftForParagraphAtCharIndex_(v119, v82, CharIndex);
-          v86 = objc_msgSend_getTypesetterAttributes_scalePercent_isRightToLeft_(v83, v85, v78, a10, isWritingDirectionRightToLeftForParagraphAtCharIndex);
+          v86 = objc_msgSend_getTypesetterAttributes_scalePercent_isRightToLeft_(v83, v85, v78, percent, isWritingDirectionRightToLeftForParagraphAtCharIndex);
           v89 = objc_msgSend_mutableCopy(v86, v87, v88);
 
           if (v89)
@@ -162,7 +162,7 @@ LABEL_26:
 LABEL_20:
         if (objc_msgSend_elementKind(v53, v58, v59) == 256)
         {
-          if (!a11)
+          if (!numbers)
           {
             v64 = 0;
             v67 = &stru_28860A0F0;
@@ -170,7 +170,7 @@ LABEL_20:
           }
         }
 
-        else if (!a11)
+        else if (!numbers)
         {
           v67 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v68, @"%C", 65533);
           v64 = 0;
@@ -183,7 +183,7 @@ LABEL_20:
         }
 
         v64 = 0;
-        v77 = objc_msgSend_stringWithPageNumber_pageCount_charIndex_(v53, v68, a5, a6, CharIndex);
+        v77 = objc_msgSend_stringWithPageNumber_pageCount_charIndex_(v53, v68, number, count, CharIndex);
       }
 
       v67 = v77;
@@ -225,7 +225,7 @@ LABEL_40:
   [(TSWPTypesetterAttachmentMap *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSWPTypesetterAttachmentMap);
   if (v4)

@@ -3,26 +3,26 @@
 - (double)overlayRenderInputs;
 - (double)sceneRenderInputs;
 - (id)_buttonBaseColor;
-- (id)_sceneParamsForState:(int64_t)a3;
-- (id)initWithItems:(void *)a3 selectedIndex:(int)a4 isInWelcomeMode:(void *)a5 renderBlock:;
+- (id)_sceneParamsForState:(int64_t)state;
+- (id)initWithItems:(void *)items selectedIndex:(int)index isInWelcomeMode:(void *)mode renderBlock:;
 - (uint64_t)isInWelcomeMode;
 - (uint64_t)items;
 - (uint64_t)pause;
 - (uint64_t)resume;
 - (uint64_t)selectedIndex;
 - (void)_scheduleZoomOutIfNeeded;
-- (void)_updateForDisplayLink:(id)a3;
+- (void)_updateForDisplayLink:(id)link;
 - (void)_updateRenderInputs;
-- (void)_updateSceneInterpolatorsResettingToTarget:(BOOL)a3;
+- (void)_updateSceneInterpolatorsResettingToTarget:(BOOL)target;
 - (void)_updateTransitionSchedulerState;
-- (void)_updateWithState:(int64_t)a3 dragProgress:(id)a4;
+- (void)_updateWithState:(int64_t)state dragProgress:(id)progress;
 - (void)endDragging;
-- (void)occlusionDidChange:(void *)a1;
+- (void)occlusionDidChange:(void *)change;
 - (void)startDragging;
-- (void)updateDragProgress:(void *)a1;
-- (void)updateItems:(int)a3 animateButtonColor:;
-- (void)updateSelectedIndex:(int)a3 animateButtonColor:;
-- (void)updateWithZoomedOutSceneParamsOverride:(void *)a3 zoomedInSceneParamsOverride:;
+- (void)updateDragProgress:(void *)progress;
+- (void)updateItems:(int)items animateButtonColor:;
+- (void)updateSelectedIndex:(int)index animateButtonColor:;
+- (void)updateWithZoomedOutSceneParamsOverride:(void *)override zoomedInSceneParamsOverride:;
 - (void)zoomIn;
 - (void)zoomOut;
 - (void)zoomOutAfterDelay:(uint64_t *)val;
@@ -33,9 +33,9 @@
 - (id)_buttonBaseColor
 {
   v2 = [(NSArray *)self->_items objectAtIndexedSubscript:self->_selectedIndex];
-  v3 = [v2 color];
+  color = [v2 color];
 
-  return v3;
+  return color;
 }
 
 - (void)zoomOutAfterDelay:(uint64_t *)val
@@ -55,12 +55,12 @@
   }
 }
 
-- (id)_sceneParamsForState:(int64_t)a3
+- (id)_sceneParamsForState:(int64_t)state
 {
-  v4 = self;
-  if (a3 > 1)
+  selfCopy = self;
+  if (state > 1)
   {
-    if (a3 == 3)
+    if (state == 3)
     {
       zoomedOutParams = self->_zoomedOutParams;
 LABEL_22:
@@ -68,15 +68,15 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    if (a3 != 2)
+    if (state != 2)
     {
       goto LABEL_23;
     }
   }
 
-  else if (a3)
+  else if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       goto LABEL_23;
     }
@@ -89,12 +89,12 @@ LABEL_22:
   if (!dragProgress)
   {
     v11 = 48;
-    if (!a3)
+    if (!state)
     {
       v11 = 40;
     }
 
-    zoomedOutParams = *(&v4->super.isa + v11);
+    zoomedOutParams = *(&selfCopy->super.isa + v11);
     goto LABEL_22;
   }
 
@@ -111,7 +111,7 @@ LABEL_22:
   }
 
   v9 = 48;
-  if (a3)
+  if (state)
   {
     v10 = 48;
   }
@@ -121,18 +121,18 @@ LABEL_22:
     v10 = 40;
   }
 
-  if (a3)
+  if (state)
   {
     v9 = 40;
   }
 
-  self = ABScrollDraggingStateParams(*(&v4->super.isa + v10), *(&v4->super.isa + v9), v8, 0.1);
+  self = ABScrollDraggingStateParams(*(&selfCopy->super.isa + v10), *(&selfCopy->super.isa + v9), v8, 0.1);
 LABEL_23:
 
   return self;
 }
 
-- (void)_updateSceneInterpolatorsResettingToTarget:(BOOL)a3
+- (void)_updateSceneInterpolatorsResettingToTarget:(BOOL)target
 {
   v5 = [(ABActionSelectorDriver *)self _sceneParamsForState:self->_state];
   sceneInterpolators = self->_sceneInterpolators;
@@ -141,7 +141,7 @@ LABEL_23:
   v8[2] = __69__ABActionSelectorDriver__updateSceneInterpolatorsResettingToTarget___block_invoke;
   v8[3] = &unk_278BFFDB0;
   v9 = v5;
-  v10 = a3;
+  targetCopy = target;
   v7 = v5;
   [(NSDictionary *)sceneInterpolators enumerateKeysAndObjectsUsingBlock:v8];
 }
@@ -194,13 +194,13 @@ void __69__ABActionSelectorDriver__updateSceneInterpolatorsResettingToTarget___b
   }
 }
 
-- (void)_updateWithState:(int64_t)a3 dragProgress:(id)a4
+- (void)_updateWithState:(int64_t)state dragProgress:(id)progress
 {
-  v13 = a4;
+  progressCopy = progress;
   state = self->_state;
-  if (state == a3)
+  if (state == state)
   {
-    if (ABEqualObjects(self->_dragProgress, v13))
+    if (ABEqualObjects(self->_dragProgress, progressCopy))
     {
       goto LABEL_12;
     }
@@ -208,8 +208,8 @@ void __69__ABActionSelectorDriver__updateSceneInterpolatorsResettingToTarget___b
     state = self->_state;
   }
 
-  self->_state = a3;
-  objc_storeStrong(&self->_dragProgress, a4);
+  self->_state = state;
+  objc_storeStrong(&self->_dragProgress, progress);
   v8 = self->_state;
   if (v8 != state)
   {
@@ -280,7 +280,7 @@ LABEL_12:
   a = v58;
   CATransform3DConcat(&v57, &v56, &a);
   v17 = [(ABActionSelectorDriver *)self _sceneParamsForState:self->_state];
-  v18 = [(ABDeviceButtonAnimator *)&self->_buttonAnimator->super.isa color];
+  color = [(ABDeviceButtonAnimator *)&self->_buttonAnimator->super.isa color];
   v53 = v57;
   v19 = [(NSDictionary *)self->_sceneInterpolators objectForKeyedSubscript:@"fStop"];
   [v19 value];
@@ -298,17 +298,17 @@ LABEL_12:
   v31 = [(NSDictionary *)self->_sceneInterpolators objectForKeyedSubscript:@"LightingIntensity"];
   [v31 value];
   v33 = v32;
-  v34 = v18;
-  v35 = [(ABDeviceButtonAnimator *)self->_buttonAnimator opacity];
-  v36 = [(ABDeviceButtonAnimator *)self->_buttonAnimator pressProgress];
+  v34 = color;
+  opacity = [(ABDeviceButtonAnimator *)self->_buttonAnimator opacity];
+  pressProgress = [(ABDeviceButtonAnimator *)self->_buttonAnimator pressProgress];
   if (self->_isInWelcomeMode)
   {
-    v37 = [(ABDeviceButtonAnimator *)self->_buttonAnimator islandMode];
+    islandMode = [(ABDeviceButtonAnimator *)self->_buttonAnimator islandMode];
   }
 
   else
   {
-    v37 = 0;
+    islandMode = 0;
   }
 
   self->_sceneRenderInputs.modelTransform = v53;
@@ -317,10 +317,10 @@ LABEL_12:
   self->_sceneRenderInputs.cameraAndLight.focalLength = v27;
   self->_sceneRenderInputs.cameraAndLight.apertureBladeCount = v30;
   self->_sceneRenderInputs.cameraAndLight.lightingIntensity = v33;
-  objc_storeStrong(&self->_sceneRenderInputs.buttonHighlight.color, v18);
-  self->_sceneRenderInputs.buttonHighlight.opacity = v35;
-  self->_sceneRenderInputs.buttonPressProgress = v36;
-  self->_sceneRenderInputs.islandMode = v37;
+  objc_storeStrong(&self->_sceneRenderInputs.buttonHighlight.color, color);
+  self->_sceneRenderInputs.buttonHighlight.opacity = opacity;
+  self->_sceneRenderInputs.buttonPressProgress = pressProgress;
+  self->_sceneRenderInputs.islandMode = islandMode;
 
   v38 = [(NSDictionary *)self->_sceneInterpolators objectForKeyedSubscript:@"ZoomInProgress"];
   [v38 value];
@@ -332,10 +332,10 @@ LABEL_12:
     v41 = ABClamp((v40 + -0.25) / 0.65 + 0.0, 0.0, 1.0);
   }
 
-  v42 = [(ABDeviceButtonAnimator *)self->_buttonAnimator pressProgress];
+  pressProgress2 = [(ABDeviceButtonAnimator *)self->_buttonAnimator pressProgress];
   isInWelcomeMode = self->_isInWelcomeMode;
   v44 = v34;
-  v45 = [(ABDeviceButtonAnimator *)self->_buttonAnimator isRingHighlightVisible];
+  isRingHighlightVisible = [(ABDeviceButtonAnimator *)self->_buttonAnimator isRingHighlightVisible];
   v46 = 0.0;
   if (self->_isInWelcomeMode && (v46 = ABClamp(v40 / -0.15 + 1.0, 0.0, 1.0), self->_isInWelcomeMode))
   {
@@ -366,24 +366,24 @@ LABEL_12:
     v51 = 1;
   }
 
-  self->_overlayRenderInputs.carouselInputs.pressProgress = v42;
+  self->_overlayRenderInputs.carouselInputs.pressProgress = pressProgress2;
   self->_overlayRenderInputs.carouselInputs.itemOpacity = v41;
   self->_overlayRenderInputs.carouselInputs.selectedItemIgnoresOpacity = isInWelcomeMode;
   self->_overlayRenderInputs.carouselInputs.isScrollingEnabled = v51;
   color = self->_overlayRenderInputs.highlightRingInputs.color;
   self->_overlayRenderInputs.highlightRingInputs.color = v44;
 
-  self->_overlayRenderInputs.highlightRingInputs.isVisible = v45;
+  self->_overlayRenderInputs.highlightRingInputs.isVisible = isRingHighlightVisible;
   self->_overlayRenderInputs.detailsViewOpacity = v41;
   self->_overlayRenderInputs.welcomeViewOpacity = v46;
   self->_overlayRenderInputs.topShadowRatio = v48;
   self->_overlayRenderInputs.isZoomInByTapEnabled = v47;
 }
 
-- (void)_updateForDisplayLink:(id)a3
+- (void)_updateForDisplayLink:(id)link
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linkCopy = link;
   v5 = [(NSDictionary *)self->_sceneInterpolators objectForKeyedSubscript:?];
   [v5 value];
   v7 = v6;
@@ -393,8 +393,8 @@ LABEL_12:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = [(NSDictionary *)self->_sceneInterpolators allValues];
-  v10 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  allValues = [(NSDictionary *)self->_sceneInterpolators allValues];
+  v10 = [allValues countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v10)
   {
     v11 = v10;
@@ -421,7 +421,7 @@ LABEL_12:
       {
         if (*v37 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v16 = *(*(&v36 + 1) + 8 * i);
@@ -438,11 +438,11 @@ LABEL_12:
         }
 
         [v16 setParameters:{v18, v20, v23, v22}];
-        [v4 duration];
+        [linkCopy duration];
         [v16 step:?];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v11);
@@ -484,9 +484,9 @@ LABEL_21:
   if (self->_state == 2 && self->_isSceneRevealed)
   {
     v3 = [(NSArray *)self->_items objectAtIndexedSubscript:self->_selectedIndex];
-    v4 = [v3 canBeHighlighted];
+    canBeHighlighted = [v3 canBeHighlighted];
 
-    if (v4)
+    if (canBeHighlighted)
     {
 
       [(ABActionSelectorDriver *)self zoomOutAfterDelay:?];
@@ -503,30 +503,30 @@ LABEL_21:
 
 - (double)sceneRenderInputs
 {
-  if (a1)
+  if (self)
   {
-    v4 = *(a1 + 344);
-    *(a2 + 160) = *(a1 + 336);
-    v5 = *(a1 + 320);
-    *(a2 + 128) = *(a1 + 304);
+    v4 = *(self + 344);
+    *(a2 + 160) = *(self + 336);
+    v5 = *(self + 320);
+    *(a2 + 128) = *(self + 304);
     *(a2 + 144) = v5;
-    v6 = *(a1 + 256);
-    *(a2 + 64) = *(a1 + 240);
+    v6 = *(self + 256);
+    *(a2 + 64) = *(self + 240);
     *(a2 + 80) = v6;
-    v7 = *(a1 + 288);
-    *(a2 + 96) = *(a1 + 272);
+    v7 = *(self + 288);
+    *(a2 + 96) = *(self + 272);
     *(a2 + 112) = v7;
-    v8 = *(a1 + 192);
-    *a2 = *(a1 + 176);
+    v8 = *(self + 192);
+    *a2 = *(self + 176);
     *(a2 + 16) = v8;
-    v9 = *(a1 + 224);
-    *(a2 + 32) = *(a1 + 208);
+    v9 = *(self + 224);
+    *(a2 + 32) = *(self + 208);
     *(a2 + 48) = v9;
     v10 = v4;
-    v11 = *(a1 + 352);
+    v11 = *(self + 352);
     *(a2 + 168) = v10;
     *(a2 + 176) = v11;
-    v12 = *(a1 + 360);
+    v12 = *(self + 360);
     *(a2 + 184) = v12;
   }
 
@@ -553,15 +553,15 @@ LABEL_21:
 
 - (double)overlayRenderInputs
 {
-  if (a1)
+  if (self)
   {
-    *a2 = *(a1 + 104);
-    v4 = *(a1 + 128);
-    *(a2 + 16) = *(a1 + 120);
+    *a2 = *(self + 104);
+    v4 = *(self + 128);
+    *(a2 + 16) = *(self + 120);
     *(a2 + 24) = v4;
-    *(a2 + 32) = *(a1 + 136);
-    *(a2 + 40) = *(a1 + 144);
-    v5 = *(a1 + 153);
+    *(a2 + 32) = *(self + 136);
+    *(a2 + 40) = *(self + 144);
+    v5 = *(self + 153);
     *(a2 + 49) = v5;
   }
 
@@ -578,35 +578,35 @@ LABEL_21:
   return *&v5;
 }
 
-- (id)initWithItems:(void *)a3 selectedIndex:(int)a4 isInWelcomeMode:(void *)a5 renderBlock:
+- (id)initWithItems:(void *)items selectedIndex:(int)index isInWelcomeMode:(void *)mode renderBlock:
 {
   v44[10] = *MEMORY[0x277D85DE8];
   v10 = a2;
-  v11 = a5;
-  if (a1)
+  modeCopy = mode;
+  if (self)
   {
-    v42.receiver = a1;
+    v42.receiver = self;
     v42.super_class = ABActionSelectorDriver;
     v12 = objc_msgSendSuper2(&v42, sel_init);
-    a1 = v12;
+    self = v12;
     if (v12)
     {
       v41 = v10;
       objc_storeStrong(v12 + 11, a2);
-      a1[12] = a3;
-      *(a1 + 82) = a4;
-      v40 = v11;
-      v13 = MEMORY[0x23EF01A70](v11);
-      v14 = a1[1];
-      a1[1] = v13;
+      self[12] = items;
+      *(self + 82) = index;
+      v40 = modeCopy;
+      v13 = MEMORY[0x23EF01A70](modeCopy);
+      v14 = self[1];
+      self[1] = v13;
 
       v15 = 2;
-      if (a4)
+      if (index)
       {
         v15 = 0;
       }
 
-      a1[7] = v15;
+      self[7] = v15;
       v43[0] = @"Rotation";
       v39 = objc_opt_new();
       v44[0] = v39;
@@ -638,10 +638,10 @@ LABEL_21:
       v24 = objc_opt_new();
       v44[9] = v24;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:10];
-      v26 = a1[2];
-      a1[2] = v25;
+      v26 = self[2];
+      self[2] = v25;
 
-      if (*(a1 + 82))
+      if (*(self + 82))
       {
         ABWelcomeModeZoomedOutSceneParams();
       }
@@ -651,11 +651,11 @@ LABEL_21:
         ABDefaultZoomedOutSceneParams();
       }
       v27 = ;
-      v28 = a1[5];
-      a1[5] = v27;
+      v28 = self[5];
+      self[5] = v27;
 
       v10 = v41;
-      if (*(a1 + 82))
+      if (*(self + 82))
       {
         ABWelcomeModeZoomedInSceneParams();
       }
@@ -665,25 +665,25 @@ LABEL_21:
         ABDefaultZoomedInSceneParams();
       }
       v29 = ;
-      v30 = a1[6];
-      a1[6] = v29;
+      v30 = self[6];
+      self[6] = v29;
 
       v31 = [ABDeviceButtonAnimator alloc];
-      v32 = [a1 _buttonBaseColor];
-      v33 = [(ABDeviceButtonAnimator *)&v31->super.isa initWithBaseColor:v32];
-      v34 = a1[3];
-      a1[3] = v33;
+      _buttonBaseColor = [self _buttonBaseColor];
+      v33 = [(ABDeviceButtonAnimator *)&v31->super.isa initWithBaseColor:_buttonBaseColor];
+      v34 = self[3];
+      self[3] = v33;
 
       v35 = objc_opt_new();
-      v36 = a1[4];
-      a1[4] = v35;
+      v36 = self[4];
+      self[4] = v35;
 
-      v11 = v40;
+      modeCopy = v40;
     }
   }
 
   v37 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 - (uint64_t)resume
@@ -708,8 +708,8 @@ LABEL_21:
       [v1[8] setPreferredFrameRateRange:v11];
       [v1[8] setHighFrameRateReason:ABHighFrameRateUpdateReasonMake(101)];
       v12 = v1[8];
-      v13 = [MEMORY[0x277CBEB88] mainRunLoop];
-      [v12 addToRunLoop:v13 forMode:*MEMORY[0x277CBE738]];
+      mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+      [v12 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
       [v1 _updateSceneInterpolatorsResettingToTarget:1];
       [v1 _updateTransitionSchedulerState];
@@ -736,8 +736,8 @@ LABEL_21:
       }
 
       v9 = v1[8];
-      v10 = [MEMORY[0x277CBEB88] mainRunLoop];
-      [v9 removeFromRunLoop:v10 forMode:*MEMORY[0x277CBE738]];
+      mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+      [v9 removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
       v11 = v1[8];
       v1[8] = 0;
@@ -751,72 +751,72 @@ LABEL_21:
   return result;
 }
 
-- (void)updateSelectedIndex:(int)a3 animateButtonColor:
+- (void)updateSelectedIndex:(int)index animateButtonColor:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [*(a1 + 88) count] - 1;
+    v6 = [*(self + 88) count] - 1;
     if (v6 >= a2)
     {
       v6 = a2;
     }
 
-    *(a1 + 96) = v6;
-    if (*(a1 + 56))
+    *(self + 96) = v6;
+    if (*(self + 56))
     {
-      [a1 _scheduleZoomOutIfNeeded];
+      [self _scheduleZoomOutIfNeeded];
     }
 
-    else if ((*(a1 + 82) & 1) == 0)
+    else if ((*(self + 82) & 1) == 0)
     {
-      [a1 _updateWithState:1 dragProgress:*(a1 + 72)];
+      [self _updateWithState:1 dragProgress:*(self + 72)];
     }
 
-    v7 = *(a1 + 24);
-    v8 = [a1 _buttonBaseColor];
-    [(ABDeviceButtonAnimator *)v7 setBaseColor:v8 animated:a3];
+    v7 = *(self + 24);
+    _buttonBaseColor = [self _buttonBaseColor];
+    [(ABDeviceButtonAnimator *)v7 setBaseColor:_buttonBaseColor animated:index];
   }
 }
 
 - (void)zoomIn
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 7) - 1) >= 2)
+    if ((*(self + 7) - 1) >= 2)
     {
-      return [a1 _updateWithState:1 dragProgress:*(a1 + 9)];
+      return [self _updateWithState:1 dragProgress:*(self + 9)];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)updateItems:(int)a3 animateButtonColor:
+- (void)updateItems:(int)items animateButtonColor:
 {
   v10 = a2;
-  if (a1)
+  if (self)
   {
-    objc_storeStrong((a1 + 88), a2);
-    v6 = *(a1 + 96);
-    v7 = [*(a1 + 88) count] - 1;
+    objc_storeStrong((self + 88), a2);
+    v6 = *(self + 96);
+    v7 = [*(self + 88) count] - 1;
     if (v6 < v7)
     {
       v7 = v6;
     }
 
-    *(a1 + 96) = v7;
-    [a1 _scheduleZoomOutIfNeeded];
-    v8 = *(a1 + 24);
-    v9 = [a1 _buttonBaseColor];
-    [(ABDeviceButtonAnimator *)v8 setBaseColor:v9 animated:a3];
+    *(self + 96) = v7;
+    [self _scheduleZoomOutIfNeeded];
+    v8 = *(self + 24);
+    _buttonBaseColor = [self _buttonBaseColor];
+    [(ABDeviceButtonAnimator *)v8 setBaseColor:_buttonBaseColor animated:items];
   }
 }
 
 - (void)zoomOut
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 7);
+    v2 = *(self + 7);
     if (v2)
     {
       v3 = v2 == 3;
@@ -829,11 +829,11 @@ LABEL_21:
 
     if (!v3)
     {
-      return [a1 _updateWithState:3 dragProgress:*(a1 + 9)];
+      return [self _updateWithState:3 dragProgress:*(self + 9)];
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __44__ABActionSelectorDriver_zoomOutAfterDelay___block_invoke(uint64_t a1)
@@ -874,11 +874,11 @@ void __44__ABActionSelectorDriver_zoomOutAfterDelay___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)updateDragProgress:(void *)a1
+- (void)updateDragProgress:(void *)progress
 {
-  if (a1)
+  if (progress)
   {
-    v3 = a1[7];
+    v3 = progress[7];
     if (v3 == 3 || v3 == 0)
     {
       v5 = -a2;
@@ -894,7 +894,7 @@ void __44__ABActionSelectorDriver_zoomOutAfterDelay___block_invoke(uint64_t a1)
     }
 
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-    [a1 _updateWithState:v3 dragProgress:v6];
+    [progress _updateWithState:v3 dragProgress:v6];
   }
 }
 
@@ -947,25 +947,25 @@ void __44__ABActionSelectorDriver_zoomOutAfterDelay___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)occlusionDidChange:(void *)a1
+- (void)occlusionDidChange:(void *)change
 {
-  if (a1)
+  if (change)
   {
-    if (*(a1 + 80) != a2)
+    if (*(change + 80) != a2)
     {
-      *(a1 + 80) = a2;
-      return [a1 _updateTransitionSchedulerState];
+      *(change + 80) = a2;
+      return [change _updateTransitionSchedulerState];
     }
   }
 
-  return a1;
+  return change;
 }
 
-- (void)updateWithZoomedOutSceneParamsOverride:(void *)a3 zoomedInSceneParamsOverride:
+- (void)updateWithZoomedOutSceneParamsOverride:(void *)override zoomedInSceneParamsOverride:
 {
   v10 = a2;
-  v5 = a3;
-  if (a1)
+  overrideCopy = override;
+  if (self)
   {
     if (v10)
     {
@@ -977,12 +977,12 @@ void __44__ABActionSelectorDriver_zoomOutAfterDelay___block_invoke(uint64_t a1)
       v6 = ABDefaultZoomedOutSceneParams();
     }
 
-    v7 = a1[5];
-    a1[5] = v6;
+    v7 = self[5];
+    self[5] = v6;
 
-    if (v5)
+    if (overrideCopy)
     {
-      v8 = v5;
+      v8 = overrideCopy;
     }
 
     else
@@ -990,10 +990,10 @@ void __44__ABActionSelectorDriver_zoomOutAfterDelay___block_invoke(uint64_t a1)
       v8 = ABDefaultZoomedInSceneParams();
     }
 
-    v9 = a1[6];
-    a1[6] = v8;
+    v9 = self[6];
+    self[6] = v8;
 
-    [a1 _updateSceneInterpolatorsResettingToTarget:1];
+    [self _updateSceneInterpolatorsResettingToTarget:1];
   }
 }
 
@@ -1019,9 +1019,9 @@ void __44__ABActionSelectorDriver_zoomOutAfterDelay___block_invoke(uint64_t a1)
 
 - (uint64_t)isInWelcomeMode
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 82);
+    v1 = *(self + 82);
   }
 
   else

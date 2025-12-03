@@ -2,9 +2,9 @@
 + (id)sharedWiFiDiagnosticReporter;
 - (CWFDiagnosticReporter)init;
 - (void)initABCReporter;
-- (void)removeRequestedBlockOnWiFiABCSignature:(id)a3;
-- (void)requestWiFiToBlockABCSignatureUntil:(id)a3 signature:(id)a4;
-- (void)submitWiFiDiagnosticReportType:(id)a3 reason:(id)a4 subtypeContext:(id)a5;
+- (void)removeRequestedBlockOnWiFiABCSignature:(id)signature;
+- (void)requestWiFiToBlockABCSignatureUntil:(id)until signature:(id)signature;
+- (void)submitWiFiDiagnosticReportType:(id)type reason:(id)reason subtypeContext:(id)context;
 @end
 
 @implementation CWFDiagnosticReporter
@@ -76,16 +76,16 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)submitWiFiDiagnosticReportType:(id)a3 reason:(id)a4 subtypeContext:(id)a5
+- (void)submitWiFiDiagnosticReportType:(id)type reason:(id)reason subtypeContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  reasonCopy = reason;
+  contextCopy = context;
   ABCReporter = self->_ABCReporter;
   if (ABCReporter || ([(CWFDiagnosticReporter *)self initABCReporter], (ABCReporter = self->_ABCReporter) != 0))
   {
-    v12 = [(SDRDiagnosticReporter *)ABCReporter signatureWithDomain:@"WiFi" type:v8 subType:v9 subtypeContext:v10 detectedProcess:@"wifid" triggerThresholdValues:0];
+    v12 = [(SDRDiagnosticReporter *)ABCReporter signatureWithDomain:@"WiFi" type:typeCopy subType:reasonCopy subtypeContext:contextCopy detectedProcess:@"wifid" triggerThresholdValues:0];
     v19 = *MEMORY[0x1E69D5080];
     v20 = &unk_1F5BBD7F0;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
@@ -103,8 +103,8 @@
     v16[1] = 3221225472;
     v16[2] = sub_1E0D3F600;
     v16[3] = &unk_1E86E9B58;
-    v17 = v8;
-    v18 = v9;
+    v17 = typeCopy;
+    v18 = reasonCopy;
     [(SDRDiagnosticReporter *)v14 snapshotWithSignature:v12 delay:0 events:v13 payload:0 actions:v16 reply:0.0];
   }
 
@@ -113,35 +113,35 @@
     *buf = 136315650;
     v22 = "[CWFDiagnosticReporter submitWiFiDiagnosticReportType:reason:subtypeContext:]";
     v23 = 2112;
-    v24 = v8;
+    v24 = typeCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = reasonCopy;
     _os_log_error_impl(&dword_1E0BBF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%s: _ABCReporter failing to init, skipping submitting typeString: %@ reasonString: %@ \n", buf, 0x20u);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestWiFiToBlockABCSignatureUntil:(id)a3 signature:(id)a4
+- (void)requestWiFiToBlockABCSignatureUntil:(id)until signature:(id)signature
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  untilCopy = until;
+  signatureCopy = signature;
+  v7 = signatureCopy;
+  if (untilCopy && signatureCopy)
   {
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v9 = MEMORY[0x1E695DF90];
-    v10 = [v8 persistentDomainForName:@"com.apple.wifi.abc"];
-    v11 = [v9 dictionaryWithDictionary:v10];
+    v10 = [standardUserDefaults persistentDomainForName:@"com.apple.wifi.abc"];
+    dictionary = [v9 dictionaryWithDictionary:v10];
 
-    if (!v11)
+    if (!dictionary)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    [v11 setObject:v5 forKey:v7];
-    [v8 setPersistentDomain:v11 forName:@"com.apple.wifi.abc"];
+    [dictionary setObject:untilCopy forKey:v7];
+    [standardUserDefaults setPersistentDomain:dictionary forName:@"com.apple.wifi.abc"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v13 = 136315650;
@@ -149,7 +149,7 @@
       v15 = 2112;
       v16 = v7;
       v17 = 2112;
-      v18 = v5;
+      v18 = untilCopy;
       _os_log_impl(&dword_1E0BBF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%s: Setting Request to Mute WiFi ABC Calls %@ until %@", &v13, 0x20u);
     }
   }
@@ -159,7 +159,7 @@
     v13 = 136315650;
     v14 = "[CWFDiagnosticReporter requestWiFiToBlockABCSignatureUntil:signature:]";
     v15 = 2112;
-    v16 = v5;
+    v16 = untilCopy;
     v17 = 2112;
     v18 = v7;
     _os_log_error_impl(&dword_1E0BBF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%s: Invalid parameters - date: %@, key: %@", &v13, 0x20u);
@@ -168,15 +168,15 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeRequestedBlockOnWiFiABCSignature:(id)a3
+- (void)removeRequestedBlockOnWiFiABCSignature:(id)signature
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  signatureCopy = signature;
+  if (signatureCopy)
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v5 = MEMORY[0x1E695DF90];
-    v6 = [v4 persistentDomainForName:@"com.apple.wifi.abc"];
+    v6 = [standardUserDefaults persistentDomainForName:@"com.apple.wifi.abc"];
     v7 = [v5 dictionaryWithDictionary:v6];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -184,28 +184,28 @@
       v11 = 136315394;
       v12 = "[CWFDiagnosticReporter removeRequestedBlockOnWiFiABCSignature:]";
       v13 = 2112;
-      v14 = v3;
+      v14 = signatureCopy;
       _os_log_impl(&dword_1E0BBF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%s: Removing Request to Mute WiFi ABC Calls %@", &v11, 0x16u);
     }
 
     if (v7)
     {
-      v8 = [v7 objectForKeyedSubscript:v3];
+      v8 = [v7 objectForKeyedSubscript:signatureCopy];
 
       if (v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v7 objectForKeyedSubscript:v3];
+        v9 = [v7 objectForKeyedSubscript:signatureCopy];
         v11 = 136315650;
         v12 = "[CWFDiagnosticReporter removeRequestedBlockOnWiFiABCSignature:]";
         v13 = 2112;
-        v14 = v3;
+        v14 = signatureCopy;
         v15 = 2112;
         v16 = v9;
         _os_log_impl(&dword_1E0BBF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%s: Removed Request to Mute WiFi ABC Call %@ until %@", &v11, 0x20u);
       }
 
-      [v7 removeObjectForKey:v3];
-      [v4 setPersistentDomain:v7 forName:@"com.apple.wifi.abc"];
+      [v7 removeObjectForKey:signatureCopy];
+      [standardUserDefaults setPersistentDomain:v7 forName:@"com.apple.wifi.abc"];
     }
   }
 
@@ -218,7 +218,7 @@
       _os_log_error_impl(&dword_1E0BBF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%s: Invalid parameter - key is nil", &v11, 0xCu);
     }
 
-    v4 = 0;
+    standardUserDefaults = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];

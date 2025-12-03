@@ -1,25 +1,25 @@
 @interface ATXMPBBlendingClientModelEngagementTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEngagementType:(id)a3;
+- (int)StringAsEngagementType:(id)type;
 - (int)engagementType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConsumerSubTypeCacheAge:(BOOL)a3;
-- (void)setHasEngagementType:(BOOL)a3;
-- (void)setHasNumSuggestionsForClientModelInLayout:(BOOL)a3;
-- (void)setHasPositionInClientModelCacheOfEngagedSuggestion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConsumerSubTypeCacheAge:(BOOL)age;
+- (void)setHasEngagementType:(BOOL)type;
+- (void)setHasNumSuggestionsForClientModelInLayout:(BOOL)layout;
+- (void)setHasPositionInClientModelCacheOfEngagedSuggestion:(BOOL)suggestion;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBBlendingClientModelEngagementTracker
 
-- (void)setHasNumSuggestionsForClientModelInLayout:(BOOL)a3
+- (void)setHasNumSuggestionsForClientModelInLayout:(BOOL)layout
 {
-  if (a3)
+  if (layout)
   {
     v3 = 8;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPositionInClientModelCacheOfEngagedSuggestion:(BOOL)a3
+- (void)setHasPositionInClientModelCacheOfEngagedSuggestion:(BOOL)suggestion
 {
-  if (a3)
+  if (suggestion)
   {
     v3 = 16;
   }
@@ -60,9 +60,9 @@
   }
 }
 
-- (void)setHasEngagementType:(BOOL)a3
+- (void)setHasEngagementType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -75,45 +75,45 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsEngagementType:(id)a3
+- (int)StringAsEngagementType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ExplicitConfirm"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ExplicitConfirm"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ImplicitAbandon"])
+  else if ([typeCopy isEqualToString:@"ImplicitAbandon"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ExplicitReject"])
+  else if ([typeCopy isEqualToString:@"ExplicitReject"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ExplicitTap"])
+  else if ([typeCopy isEqualToString:@"ExplicitTap"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ImplicitDwell"])
+  else if ([typeCopy isEqualToString:@"ImplicitDwell"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ExplicitUserScroll"])
+  else if ([typeCopy isEqualToString:@"ExplicitUserScroll"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"NotSeen"])
+  else if ([typeCopy isEqualToString:@"NotSeen"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ExplicitConfirmOnlyIfHigherRankedSuggestionsWereDeduped"])
+  else if ([typeCopy isEqualToString:@"ExplicitConfirmOnlyIfHigherRankedSuggestionsWereDeduped"])
   {
     v4 = 8;
   }
@@ -126,9 +126,9 @@
   return v4;
 }
 
-- (void)setHasConsumerSubTypeCacheAge:(BOOL)a3
+- (void)setHasConsumerSubTypeCacheAge:(BOOL)age
 {
-  if (a3)
+  if (age)
   {
     v3 = 2;
   }
@@ -147,20 +147,20 @@
   v8.receiver = self;
   v8.super_class = ATXMPBBlendingClientModelEngagementTracker;
   v4 = [(ATXMPBBlendingClientModelEngagementTracker *)&v8 description];
-  v5 = [(ATXMPBBlendingClientModelEngagementTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBBlendingClientModelEngagementTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   layoutType = self->_layoutType;
   if (layoutType)
   {
-    [v3 setObject:layoutType forKey:@"layoutType"];
+    [dictionary setObject:layoutType forKey:@"layoutType"];
   }
 
   clientModelId = self->_clientModelId;
@@ -250,20 +250,20 @@ LABEL_15:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_layoutType)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_clientModelId)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -271,7 +271,7 @@ LABEL_15:
   {
     numSuggestionsForClientModelInLayout = self->_numSuggestionsForClientModelInLayout;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
   }
 
@@ -279,13 +279,13 @@ LABEL_15:
   {
     positionInClientModelCacheOfEngagedSuggestion = self->_positionInClientModelCacheOfEngagedSuggestion;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_consumerSubType)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   v8 = self->_has;
@@ -293,7 +293,7 @@ LABEL_15:
   {
     engagementType = self->_engagementType;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
     v8 = self->_has;
     if ((v8 & 2) == 0)
     {
@@ -314,70 +314,70 @@ LABEL_13:
 
   consumerSubTypeCacheAge = self->_consumerSubTypeCacheAge;
   PBDataWriterWriteUint32Field();
-  v4 = v12;
+  toCopy = v12;
   if (*&self->_has)
   {
 LABEL_14:
     clientModelCacheAge = self->_clientModelCacheAge;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_15:
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_clientModelABGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_layoutType)
   {
-    [v4 setLayoutType:?];
-    v4 = v7;
+    [toCopy setLayoutType:?];
+    toCopy = v7;
   }
 
   if (self->_clientModelId)
   {
     [v7 setClientModelId:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 16) = self->_numSuggestionsForClientModelInLayout;
-    *(v4 + 72) |= 8u;
+    *(toCopy + 16) = self->_numSuggestionsForClientModelInLayout;
+    *(toCopy + 72) |= 8u;
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
-    *(v4 + 17) = self->_positionInClientModelCacheOfEngagedSuggestion;
-    *(v4 + 72) |= 0x10u;
+    *(toCopy + 17) = self->_positionInClientModelCacheOfEngagedSuggestion;
+    *(toCopy + 72) |= 0x10u;
   }
 
   if (self->_consumerSubType)
   {
     [v7 setConsumerSubType:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    *(v4 + 13) = self->_engagementType;
-    *(v4 + 72) |= 4u;
+    *(toCopy + 13) = self->_engagementType;
+    *(toCopy + 72) |= 4u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -396,37 +396,37 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 12) = self->_consumerSubTypeCacheAge;
-  *(v4 + 72) |= 2u;
+  *(toCopy + 12) = self->_consumerSubTypeCacheAge;
+  *(toCopy + 72) |= 2u;
   if (*&self->_has)
   {
 LABEL_14:
-    *(v4 + 6) = self->_clientModelCacheAge;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 6) = self->_clientModelCacheAge;
+    *(toCopy + 72) |= 1u;
   }
 
 LABEL_15:
   if (self->_abGroup)
   {
     [v7 setAbGroup:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_clientModelABGroup)
   {
     [v7 setClientModelABGroup:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_layoutType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_layoutType copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_clientModelId copyWithZone:a3];
+  v8 = [(NSString *)self->_clientModelId copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -444,7 +444,7 @@ LABEL_15:
     *(v5 + 72) |= 0x10u;
   }
 
-  v11 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v11 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
@@ -484,27 +484,27 @@ LABEL_8:
   }
 
 LABEL_9:
-  v14 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v14 = [(NSString *)self->_abGroup copyWithZone:zone];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
-  v16 = [(NSString *)self->_clientModelABGroup copyWithZone:a3];
+  v16 = [(NSString *)self->_clientModelABGroup copyWithZone:zone];
   v17 = *(v5 + 16);
   *(v5 + 16) = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   layoutType = self->_layoutType;
-  if (layoutType | *(v4 + 7))
+  if (layoutType | *(equalCopy + 7))
   {
     if (![(NSString *)layoutType isEqual:?])
     {
@@ -513,7 +513,7 @@ LABEL_9:
   }
 
   clientModelId = self->_clientModelId;
-  if (clientModelId | *(v4 + 4))
+  if (clientModelId | *(equalCopy + 4))
   {
     if (![(NSString *)clientModelId isEqual:?])
     {
@@ -522,35 +522,35 @@ LABEL_9:
   }
 
   has = self->_has;
-  v8 = *(v4 + 72);
+  v8 = *(equalCopy + 72);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_numSuggestionsForClientModelInLayout != *(v4 + 16))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_numSuggestionsForClientModelInLayout != *(equalCopy + 16))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 72) & 0x10) == 0 || self->_positionInClientModelCacheOfEngagedSuggestion != *(v4 + 17))
+    if ((*(equalCopy + 72) & 0x10) == 0 || self->_positionInClientModelCacheOfEngagedSuggestion != *(equalCopy + 17))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 72) & 0x10) != 0)
+  else if ((*(equalCopy + 72) & 0x10) != 0)
   {
     goto LABEL_38;
   }
 
   consumerSubType = self->_consumerSubType;
-  if (consumerSubType | *(v4 + 5))
+  if (consumerSubType | *(equalCopy + 5))
   {
     if (![(NSString *)consumerSubType isEqual:?])
     {
@@ -562,54 +562,54 @@ LABEL_38:
     has = self->_has;
   }
 
-  v10 = *(v4 + 72);
+  v10 = *(equalCopy + 72);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_engagementType != *(v4 + 13))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_engagementType != *(equalCopy + 13))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_38;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_consumerSubTypeCacheAge != *(v4 + 12))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_consumerSubTypeCacheAge != *(equalCopy + 12))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_38;
   }
 
   if (has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_clientModelCacheAge != *(v4 + 6))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_clientModelCacheAge != *(equalCopy + 6))
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_38;
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 1) && ![(NSString *)abGroup isEqual:?])
+  if (abGroup | *(equalCopy + 1) && ![(NSString *)abGroup isEqual:?])
   {
     goto LABEL_38;
   }
 
   clientModelABGroup = self->_clientModelABGroup;
-  if (clientModelABGroup | *(v4 + 2))
+  if (clientModelABGroup | *(equalCopy + 2))
   {
     v13 = [(NSString *)clientModelABGroup isEqual:?];
   }
@@ -692,48 +692,48 @@ LABEL_13:
   return v11 ^ v12 ^ [(NSString *)self->_clientModelABGroup hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 7))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(ATXMPBBlendingClientModelEngagementTracker *)self setLayoutType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ATXMPBBlendingClientModelEngagementTracker *)self setClientModelId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(fromCopy + 72);
   if ((v5 & 8) != 0)
   {
-    self->_numSuggestionsForClientModelInLayout = *(v4 + 16);
+    self->_numSuggestionsForClientModelInLayout = *(fromCopy + 16);
     *&self->_has |= 8u;
-    v5 = *(v4 + 72);
+    v5 = *(fromCopy + 72);
   }
 
   if ((v5 & 0x10) != 0)
   {
-    self->_positionInClientModelCacheOfEngagedSuggestion = *(v4 + 17);
+    self->_positionInClientModelCacheOfEngagedSuggestion = *(fromCopy + 17);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ATXMPBBlendingClientModelEngagementTracker *)self setConsumerSubType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 4) != 0)
   {
-    self->_engagementType = *(v4 + 13);
+    self->_engagementType = *(fromCopy + 13);
     *&self->_has |= 4u;
-    v6 = *(v4 + 72);
+    v6 = *(fromCopy + 72);
     if ((v6 & 2) == 0)
     {
 LABEL_13:
@@ -746,31 +746,31 @@ LABEL_13:
     }
   }
 
-  else if ((*(v4 + 72) & 2) == 0)
+  else if ((*(fromCopy + 72) & 2) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_consumerSubTypeCacheAge = *(v4 + 12);
+  self->_consumerSubTypeCacheAge = *(fromCopy + 12);
   *&self->_has |= 2u;
-  if (*(v4 + 72))
+  if (*(fromCopy + 72))
   {
 LABEL_14:
-    self->_clientModelCacheAge = *(v4 + 6);
+    self->_clientModelCacheAge = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
 LABEL_15:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ATXMPBBlendingClientModelEngagementTracker *)self setAbGroup:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXMPBBlendingClientModelEngagementTracker *)self setClientModelABGroup:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

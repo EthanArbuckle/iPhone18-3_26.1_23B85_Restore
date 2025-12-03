@@ -1,28 +1,28 @@
 @interface NEIKEv2InformationalContext
 - (id)description;
-- (id)initWithPrivateNotifies:(int)a3 maxRetries:(void *)a4 retryIntervalMilliseconds:(void *)a5 callbackQueue:(void *)a6 callback:;
+- (id)initWithPrivateNotifies:(int)notifies maxRetries:(void *)retries retryIntervalMilliseconds:(void *)milliseconds callbackQueue:(void *)queue callback:;
 @end
 
 @implementation NEIKEv2InformationalContext
 
-- (id)initWithPrivateNotifies:(int)a3 maxRetries:(void *)a4 retryIntervalMilliseconds:(void *)a5 callbackQueue:(void *)a6 callback:
+- (id)initWithPrivateNotifies:(int)notifies maxRetries:(void *)retries retryIntervalMilliseconds:(void *)milliseconds callbackQueue:(void *)queue callback:
 {
   v12 = a2;
-  v13 = a5;
-  v14 = a6;
-  if (a1)
+  millisecondsCopy = milliseconds;
+  queueCopy = queue;
+  if (self)
   {
-    v20.receiver = a1;
+    v20.receiver = self;
     v20.super_class = NEIKEv2InformationalContext;
     v15 = objc_msgSendSuper2(&v20, sel_init);
     if (v15)
     {
-      a1 = v15;
+      self = v15;
       objc_storeStrong(v15 + 4, a2);
-      *(a1 + 6) = a3;
-      a1[5] = a4;
-      objc_storeStrong(a1 + 6, a5);
-      objc_setProperty_nonatomic_copy(a1, v16, v14, 56);
+      *(self + 6) = notifies;
+      self[5] = retries;
+      objc_storeStrong(self + 6, milliseconds);
+      objc_setProperty_nonatomic_copy(self, v16, queueCopy, 56);
     }
 
     else
@@ -34,11 +34,11 @@
         _os_log_fault_impl(&dword_1BA83C000, v18, OS_LOG_TYPE_FAULT, "[super init] failed", v19, 2u);
       }
 
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __59__NEIKEv2InformationalContext_sendCallbackSuccess_session___block_invoke(uint64_t result)
@@ -54,7 +54,7 @@ uint64_t __59__NEIKEv2InformationalContext_sendCallbackSuccess_session___block_i
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_privateNotifies;
@@ -64,11 +64,11 @@ uint64_t __59__NEIKEv2InformationalContext_sendCallbackSuccess_session___block_i
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   if (v3)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v5 = [(NSArray *)v2->_privateNotifies count];
-      maxRetries = v2->_maxRetries;
-      retryIntervalInMilliseconds = v2->_retryIntervalInMilliseconds;
+      v5 = [(NSArray *)selfCopy->_privateNotifies count];
+      maxRetries = selfCopy->_maxRetries;
+      retryIntervalInMilliseconds = selfCopy->_retryIntervalInMilliseconds;
     }
 
     else
@@ -78,15 +78,15 @@ uint64_t __59__NEIKEv2InformationalContext_sendCallbackSuccess_session___block_i
       retryIntervalInMilliseconds = 0;
     }
 
-    v8 = [v4 initWithFormat:@"%llu private notifies with %u retries at %llums", v5, maxRetries, retryIntervalInMilliseconds];
+    retryIntervalInMilliseconds = [v4 initWithFormat:@"%llu private notifies with %u retries at %llums", v5, maxRetries, retryIntervalInMilliseconds];
   }
 
   else
   {
-    if (v2)
+    if (selfCopy)
     {
-      v9 = v2->_maxRetries;
-      v10 = v2->_retryIntervalInMilliseconds;
+      v9 = selfCopy->_maxRetries;
+      v10 = selfCopy->_retryIntervalInMilliseconds;
     }
 
     else
@@ -95,10 +95,10 @@ uint64_t __59__NEIKEv2InformationalContext_sendCallbackSuccess_session___block_i
       v10 = 0;
     }
 
-    v8 = [v4 initWithFormat:@"keepalive with %u retries at %llums", v9, v10, v12];
+    retryIntervalInMilliseconds = [v4 initWithFormat:@"keepalive with %u retries at %llums", v9, v10, v12];
   }
 
-  return v8;
+  return retryIntervalInMilliseconds;
 }
 
 @end

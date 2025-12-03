@@ -1,13 +1,13 @@
 @interface SwiftItem
 - (_TtC4Home9SwiftItem)init;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation SwiftItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     v4 = sub_20DD64DC4();
   }
@@ -17,7 +17,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_20D9C95B4(v4);
 
   return v6;

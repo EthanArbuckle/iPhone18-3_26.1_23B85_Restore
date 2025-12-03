@@ -1,52 +1,52 @@
 @interface PageLoadTestRunner
 + ($2825F4736939C4A6D3AD43837233062D)heapStatistics;
 + (id)worldLeaksString;
-+ (void)addLeakToArray:(id)a3 count:(int)a4 name:(id)a5;
++ (void)addLeakToArray:(id)array count:(int)count name:(id)name;
 - (BOOL)checkForWorldLeaksNow;
 - (BOOL)finishCheckingForWorldLeaks;
-- (BOOL)loadTestSuiteFile:(id)a3;
-- (BOOL)startPageAction:(id)a3;
-- (PageLoadTestRunner)initWithTestName:(id)a3 browserController:(id)a4;
+- (BOOL)loadTestSuiteFile:(id)file;
+- (BOOL)startPageAction:(id)action;
+- (PageLoadTestRunner)initWithTestName:(id)name browserController:(id)controller;
 - (PageLoadTestRunnerDelegate)delegate;
-- (id)_pageLoadForTabDocument:(id)a3;
-- (void)_checkRedirect:(id)a3;
+- (id)_pageLoadForTabDocument:(id)document;
+- (void)_checkRedirect:(id)redirect;
 - (void)_closeLogStream;
-- (void)_handleActionTimer:(id)a3;
-- (void)_pageRestExpired:(id)a3;
-- (void)_pageTimeoutExpired:(id)a3;
+- (void)_handleActionTimer:(id)timer;
+- (void)_pageRestExpired:(id)expired;
+- (void)_pageTimeoutExpired:(id)expired;
 - (void)_startNextPageNow;
-- (void)_updatePageLoad:(id)a3 stats:(id)a4;
-- (void)addPageURL:(id)a3 withProcessSwap:(BOOL)a4;
+- (void)_updatePageLoad:(id)load stats:(id)stats;
+- (void)addPageURL:(id)l withProcessSwap:(BOOL)swap;
 - (void)checkForWorldLeaksSoon;
-- (void)clearCacheWithURL:(id)a3;
+- (void)clearCacheWithURL:(id)l;
 - (void)closeBrowserWindowsAndFinishCheckingForWorldLeaks;
 - (void)dealloc;
 - (void)finish;
-- (void)finishPage:(id)a3 stats:(id)a4 error:(id)a5;
-- (void)finishedTestPage:(id)a3;
+- (void)finishPage:(id)page stats:(id)stats error:(id)error;
+- (void)finishedTestPage:(id)page;
 - (void)finishedTestRunner;
-- (void)log:(id)a3;
-- (void)removeURLsInRange:(_NSRange)a3;
-- (void)setExistingProperty:(id)a3 to:(id)a4;
-- (void)setTestOptions:(id)a3;
+- (void)log:(id)log;
+- (void)removeURLsInRange:(_NSRange)range;
+- (void)setExistingProperty:(id)property to:(id)to;
+- (void)setTestOptions:(id)options;
 - (void)start;
 - (void)startNextPage;
-- (void)startingTestPage:(id)a3;
+- (void)startingTestPage:(id)page;
 @end
 
 @implementation PageLoadTestRunner
 
-- (PageLoadTestRunner)initWithTestName:(id)a3 browserController:(id)a4
+- (PageLoadTestRunner)initWithTestName:(id)name browserController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = PageLoadTestRunner;
   v8 = [(PageLoadTestRunner *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    [(PageLoadTestRunner *)v8 setTestName:v6];
+    [(PageLoadTestRunner *)v8 setTestName:nameCopy];
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pageLoadArray = v9->_pageLoadArray;
     v9->_pageLoadArray = v10;
@@ -60,7 +60,7 @@
     v9->_cacheClearDirective = 0;
     v9->_pageRestInterval = 3.0;
     v9->_measureTime = 1;
-    objc_storeStrong(&v9->_browserController, a4);
+    objc_storeStrong(&v9->_browserController, controller);
     v9->_version = 4;
     v9->_useInjectedBundle = 1;
     v9->_allSubresourcesFinishedLoadingDelay = 1.0;
@@ -90,13 +90,13 @@
   }
 }
 
-- (void)setExistingProperty:(id)a3 to:(id)a4
+- (void)setExistingProperty:(id)property to:(id)to
 {
-  v12 = a3;
-  v6 = a4;
+  propertyCopy = property;
+  toCopy = to;
   v7 = objc_opt_class();
-  v8 = v12;
-  Property = class_getProperty(v7, [v12 UTF8String]);
+  v8 = propertyCopy;
+  Property = class_getProperty(v7, [propertyCopy UTF8String]);
   if (Property)
   {
     v10 = *(property_getAttributes(Property) + 1);
@@ -105,24 +105,24 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v6, "intValue")}];
+        v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(toCopy, "intValue")}];
 
-        v6 = v11;
+        toCopy = v11;
       }
     }
 
-    [(PageLoadTestRunner *)self setValue:v6 forKey:v12];
+    [(PageLoadTestRunner *)self setValue:toCopy forKey:propertyCopy];
   }
 }
 
-- (void)setTestOptions:(id)a3
+- (void)setTestOptions:(id)options
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __37__PageLoadTestRunner_setTestOptions___block_invoke;
   v3[3] = &unk_2781D8208;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [options enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 void __37__PageLoadTestRunner_setTestOptions___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -206,16 +206,16 @@ void __37__PageLoadTestRunner_setTestOptions___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)addPageURL:(id)a3 withProcessSwap:(BOOL)a4
+- (void)addPageURL:(id)l withProcessSwap:(BOOL)swap
 {
-  v4 = a4;
-  v9 = a3;
-  if (v9 && self->_testIterations)
+  swapCopy = swap;
+  lCopy = l;
+  if (lCopy && self->_testIterations)
   {
     v6 = 0;
     do
     {
-      v7 = [[PageLoad alloc] initWithURL:v9 withProcessSwap:v4];
+      v7 = [[PageLoad alloc] initWithURL:lCopy withProcessSwap:swapCopy];
       v8 = [(NSMutableArray *)self->_pageLoadArray objectAtIndexedSubscript:v6];
       [v8 addObject:v7];
 
@@ -226,10 +226,10 @@ void __37__PageLoadTestRunner_setTestOptions___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)removeURLsInRange:(_NSRange)a3
+- (void)removeURLsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(NSMutableArray *)self->_pageLoadArray objectAtIndexedSubscript:self->_currentTestIteration];
   v7 = [v6 count];
 
@@ -253,26 +253,26 @@ void __37__PageLoadTestRunner_setTestOptions___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (BOOL)loadTestSuiteFile:(id)a3
+- (BOOL)loadTestSuiteFile:(id)file
 {
-  v4 = a3;
-  syslog(4, "safari-plt-test: pathToTestSuite=%s", [v4 UTF8String]);
-  if (!v4)
+  fileCopy = file;
+  syslog(4, "safari-plt-test: pathToTestSuite=%s", [fileCopy UTF8String]);
+  if (!fileCopy)
   {
     goto LABEL_47;
   }
 
-  v5 = [v4 lastPathComponent];
-  [(PageLoadTestRunner *)self setSuiteName:v5];
+  lastPathComponent = [fileCopy lastPathComponent];
+  [(PageLoadTestRunner *)self setSuiteName:lastPathComponent];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 contentsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager contentsAtPath:fileCopy];
 
   if (!v7)
   {
     v60 = __error();
     v61 = strerror(*v60);
-    NSLog(@"safari-plt-test: Could not load test suite '%@': %s", v4, v61);
+    NSLog(@"safari-plt-test: Could not load test suite '%@': %s", fileCopy, v61);
 LABEL_47:
     v59 = 0;
     goto LABEL_50;
@@ -285,9 +285,9 @@ LABEL_47:
   v9 = 0x277CCA000uLL;
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", v8];
   free(v8);
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v4 stringByAppendingString:@"files"];
-  v13 = [v11 contentsAtPath:v12];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v12 = [fileCopy stringByAppendingString:@"files"];
+  v13 = [defaultManager2 contentsAtPath:v12];
 
   if (v13)
   {
@@ -297,7 +297,7 @@ LABEL_47:
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", v14];
     free(v14);
     v16 = [v15 componentsSeparatedByString:@"\n"];
-    v17 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if ([v16 count])
     {
       v18 = 0;
@@ -307,7 +307,7 @@ LABEL_47:
         if ([v19 length])
         {
           v20 = [MEMORY[0x277CBEBC0] safari_urlWithDataAsString:v19];
-          [v17 addObject:v20];
+          [array addObject:v20];
         }
 
         ++v18;
@@ -408,9 +408,9 @@ LABEL_36:
     v40 = [v21 objectAtIndexedSubscript:v22];
     v23 = [v40 substringFromIndex:11];
 
-    v41 = [v23 intValue];
-    self->_testIterations = v41;
-    if (v41 >= 2)
+    intValue = [v23 intValue];
+    self->_testIterations = intValue;
+    if (intValue >= 2)
     {
       v42 = 1;
       do
@@ -443,8 +443,8 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  v49 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v50 = [v23 stringByTrimmingCharactersInSet:v49];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v50 = [v23 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   if (![v50 length])
   {
 
@@ -455,8 +455,8 @@ LABEL_35:
   if ([v50 characterAtIndex:0] == 35)
   {
     [v50 substringFromIndex:1];
-    v66 = v65 = v49;
-    v51 = [v66 stringByTrimmingCharactersInSet:v49];
+    v66 = v65 = whitespaceAndNewlineCharacterSet;
+    v51 = [v66 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v67 = v51;
     if ([v51 hasPrefix:@"["])
@@ -523,15 +523,15 @@ LABEL_50:
   logFile = self->_logFile;
   if (logFile && !self->_logStream)
   {
-    v4 = [(NSString *)logFile stringByExpandingTildeInPath];
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v5 fileExistsAtPath:v4];
+    stringByExpandingTildeInPath = [(NSString *)logFile stringByExpandingTildeInPath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:stringByExpandingTildeInPath];
 
     if (v6)
     {
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v51 = 0;
-      v8 = [v7 attributesOfItemAtPath:v4 error:&v51];
+      v8 = [defaultManager2 attributesOfItemAtPath:stringByExpandingTildeInPath error:&v51];
       v9 = v51;
 
       if (v9)
@@ -542,8 +542,8 @@ LABEL_50:
       else
       {
         v10 = objc_alloc(MEMORY[0x277CCAB68]);
-        v11 = [v4 stringByDeletingPathExtension];
-        v12 = [v10 initWithString:v11];
+        stringByDeletingPathExtension = [stringByExpandingTildeInPath stringByDeletingPathExtension];
+        v12 = [v10 initWithString:stringByDeletingPathExtension];
 
         v13 = objc_alloc_init(MEMORY[0x277CCA968]);
         [v13 setDateFormat:@"-yyyy-MM-dd-HH-mm-ss"];
@@ -551,19 +551,19 @@ LABEL_50:
         v15 = [v13 stringFromDate:v14];
         [v12 appendString:v15];
 
-        v16 = [v4 pathExtension];
-        v17 = [v16 length];
+        pathExtension = [stringByExpandingTildeInPath pathExtension];
+        v17 = [pathExtension length];
 
         if (v17)
         {
           [v12 appendString:@"."];
-          v18 = [v4 pathExtension];
-          [v12 appendString:v18];
+          pathExtension2 = [stringByExpandingTildeInPath pathExtension];
+          [v12 appendString:pathExtension2];
         }
 
-        v19 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
         v50 = 0;
-        [v19 moveItemAtPath:v4 toPath:v12 error:&v50];
+        [defaultManager3 moveItemAtPath:stringByExpandingTildeInPath toPath:v12 error:&v50];
         v9 = v50;
 
         if (v9)
@@ -573,7 +573,7 @@ LABEL_50:
       }
     }
 
-    v20 = [objc_alloc(MEMORY[0x277CBEB78]) initToFileAtPath:v4 append:0];
+    v20 = [objc_alloc(MEMORY[0x277CBEB78]) initToFileAtPath:stringByExpandingTildeInPath append:0];
     logStream = self->_logStream;
     self->_logStream = v20;
 
@@ -582,20 +582,20 @@ LABEL_50:
 
   [(PageLoadTestRunner *)self log:@"PageLoadTest Initialized."];
   [(BrowserController *)self->_browserController setFavoritesState:0];
-  v22 = [(BrowserController *)self->_browserController tabController];
-  v23 = [v22 tabCollectionViewProvider];
-  v24 = [v23 tabThumbnailCollectionView];
+  tabController = [(BrowserController *)self->_browserController tabController];
+  tabCollectionViewProvider = [tabController tabCollectionViewProvider];
+  tabThumbnailCollectionView = [tabCollectionViewProvider tabThumbnailCollectionView];
 
-  v25 = v24;
+  v25 = tabThumbnailCollectionView;
   if ([v25 presentationState] == 1)
   {
   }
 
   else
   {
-    v26 = [v25 presentationState];
+    presentationState = [v25 presentationState];
 
-    if (v26 != 2)
+    if (presentationState != 2)
     {
       goto LABEL_17;
     }
@@ -607,8 +607,8 @@ LABEL_17:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v27 = [v22 currentTabDocuments];
-  v28 = [v27 countByEnumeratingWithState:&v46 objects:v52 count:16];
+  currentTabDocuments = [tabController currentTabDocuments];
+  v28 = [currentTabDocuments countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v28)
   {
     v29 = v28;
@@ -620,7 +620,7 @@ LABEL_17:
       {
         if (*v47 != v31)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(currentTabDocuments);
         }
 
         v33 = *(*(&v46 + 1) + 8 * i);
@@ -634,7 +634,7 @@ LABEL_17:
         }
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v46 objects:v52 count:16];
+      v29 = [currentTabDocuments countByEnumeratingWithState:&v46 objects:v52 count:16];
     }
 
     while (v29);
@@ -671,16 +671,16 @@ LABEL_17:
 
   else
   {
-    v36 = [(BrowserController *)self->_browserController processPool];
-    [v36 _setObject:MEMORY[0x277CBEC38] forBundleParameter:@"enablePageLoadMeasurementCollection"];
+    processPool = [(BrowserController *)self->_browserController processPool];
+    [processPool _setObject:MEMORY[0x277CBEC38] forBundleParameter:@"enablePageLoadMeasurementCollection"];
 
-    v37 = [(BrowserController *)self->_browserController processPool];
+    processPool2 = [(BrowserController *)self->_browserController processPool];
     v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_version];
-    [v37 _setObject:v38 forBundleParameter:@"pageLoadMeasurementVersionNumber"];
+    [processPool2 _setObject:v38 forBundleParameter:@"pageLoadMeasurementVersionNumber"];
 
-    v39 = [(BrowserController *)self->_browserController processPool];
+    processPool3 = [(BrowserController *)self->_browserController processPool];
     v40 = [MEMORY[0x277CCABB0] numberWithDouble:self->_allSubresourcesFinishedLoadingDelay];
-    [v39 _setObject:v40 forBundleParameter:@"pageLoadMeasurementAllSubresourcesFinishedLoadingDelay"];
+    [processPool3 _setObject:v40 forBundleParameter:@"pageLoadMeasurementAllSubresourcesFinishedLoadingDelay"];
 
     if (self->_pageRestInterval == 0.0)
     {
@@ -703,8 +703,8 @@ LABEL_17:
         [(BrowserController *)self->_browserController setProgressEnabled:0];
       }
 
-      v42 = [(BrowserController *)self->_browserController rootViewController];
-      [v42 updateWebViewSizeAttributes];
+      rootViewController = [(BrowserController *)self->_browserController rootViewController];
+      [rootViewController updateWebViewSizeAttributes];
 
       srand(1u);
       [(PageLoadTestRunner *)self startNextPage];
@@ -746,9 +746,9 @@ LABEL_17:
 LABEL_16:
 
 LABEL_35:
-    v28 = [(BrowserController *)self->_browserController tabController];
-    v24 = [v28 activeTabDocument];
-    [v28 closeTabDocument:v24 animated:1];
+    tabController = [(BrowserController *)self->_browserController tabController];
+    activeTabDocument = [tabController activeTabDocument];
+    [tabController closeTabDocument:activeTabDocument animated:1];
     [(PageLoadTestRunner *)self finish];
     goto LABEL_42;
   }
@@ -800,8 +800,8 @@ LABEL_15:
   }
 
   v10 = [v6 URL];
-  v11 = [v10 absoluteString];
-  syslog(4, "safari-plt-test: Loading next url=%s", [v11 UTF8String]);
+  absoluteString = [v10 absoluteString];
+  syslog(4, "safari-plt-test: Loading next url=%s", [absoluteString UTF8String]);
 
   if (self->_cacheClearDirective == 2)
   {
@@ -823,8 +823,8 @@ LABEL_15:
   if (self->_measureTime)
   {
     [v6 setUiProcessStartTime:mach_continuous_time()];
-    v14 = [MEMORY[0x277CBEAA8] date];
-    [v6 setUiProcessStartDate:v14];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v6 setUiProcessStartDate:date];
 
     v15 = WBS_LOG_CHANNEL_PREFIXPLT();
     if (os_signpost_enabled(v15))
@@ -859,13 +859,13 @@ LABEL_15:
 
   [v6 setStatus:1];
   [(PageLoadTestRunner *)self startingTestPage:v6];
-  v24 = [(BrowserController *)self->_browserController tabController];
-  v25 = [v24 activeTabDocument];
-  v26 = v25;
-  if (self->_loadURLInNewTab && ![(TabDocument *)v25 isBlank])
+  activeTabDocument = [(BrowserController *)self->_browserController tabController];
+  v24ActiveTabDocument = [activeTabDocument activeTabDocument];
+  v26 = v24ActiveTabDocument;
+  if (self->_loadURLInNewTab && ![(TabDocument *)v24ActiveTabDocument isBlank])
   {
     v27 = [[TabDocument alloc] initWithBrowserController:self->_browserController];
-    [v24 insertNewTabDocument:v27 forcingOrderAfterTabDocument:v26 inBackground:0 animated:0];
+    [activeTabDocument insertNewTabDocument:v27 forcingOrderAfterTabDocument:v26 inBackground:0 animated:0];
   }
 
   else
@@ -876,9 +876,9 @@ LABEL_15:
     }
 
     v27 = [[TabDocument alloc] initWithBrowserController:self->_browserController];
-    [v24 insertNewTabDocument:v27 forcingOrderAfterTabDocument:v26 inBackground:0 animated:0];
-    [v24 setActiveTabDocument:v27 animated:0];
-    [v24 closeTabDocument:v26 animated:1];
+    [activeTabDocument insertNewTabDocument:v27 forcingOrderAfterTabDocument:v26 inBackground:0 animated:0];
+    [activeTabDocument setActiveTabDocument:v27 animated:0];
+    [activeTabDocument closeTabDocument:v26 animated:1];
   }
 
   v26 = v27;
@@ -890,17 +890,17 @@ LABEL_38:
   v32[2] = __39__PageLoadTestRunner__startNextPageNow__block_invoke;
   v32[3] = &unk_2781D8230;
   v32[4] = self;
-  v28 = v6;
-  v33 = v28;
+  tabController = v6;
+  v33 = tabController;
   [(TabDocument *)v26 loadTestURL:v29 withInjectedBundle:useInjectedBundle withCallback:v32 pagesNeedingMemoryWarningSent:self->_pagesNeedingMemoryWarningSent];
 
-  if ([v28 status] == 1)
+  if ([tabController status] == 1)
   {
-    [v28 setStatus:2];
+    [tabController setStatus:2];
     if (self->_measureTime)
     {
-      v31 = [MEMORY[0x277CBEAA8] date];
-      [v28 setWebContentProcessStartLoadDate:v31];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [tabController setWebContentProcessStartLoadDate:date2];
     }
   }
 
@@ -979,7 +979,7 @@ void __39__PageLoadTestRunner__startNextPageNow__block_invoke(uint64_t a1, void 
   }
 }
 
-- (id)_pageLoadForTabDocument:(id)a3
+- (id)_pageLoadForTabDocument:(id)document
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -1023,87 +1023,87 @@ LABEL_12:
   return v4;
 }
 
-- (void)_pageTimeoutExpired:(id)a3
+- (void)_pageTimeoutExpired:(id)expired
 {
-  v10 = a3;
-  v4 = [v10 userInfo];
-  v5 = [v4 endLoadDate];
+  expiredCopy = expired;
+  userInfo = [expiredCopy userInfo];
+  endLoadDate = [userInfo endLoadDate];
 
-  if (!v5)
+  if (!endLoadDate)
   {
-    v6 = [v10 fireDate];
-    [v4 setEndLoadDate:v6];
+    fireDate = [expiredCopy fireDate];
+    [userInfo setEndLoadDate:fireDate];
   }
 
   v7 = MEMORY[0x277CCA9B8];
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{@"Page load timed out", *MEMORY[0x277CCA450], 0}];
   v9 = [v7 errorWithDomain:@"PageLoadErrorDomain" code:-2 userInfo:v8];
 
-  [v4 setTimer:0];
-  [(PageLoadTestRunner *)self finishPage:v4 stats:0 error:v9];
+  [userInfo setTimer:0];
+  [(PageLoadTestRunner *)self finishPage:userInfo stats:0 error:v9];
 }
 
-- (void)_pageRestExpired:(id)a3
+- (void)_pageRestExpired:(id)expired
 {
-  v4 = [a3 userInfo];
-  if ([v4 status] == 4)
+  userInfo = [expired userInfo];
+  if ([userInfo status] == 4)
   {
-    [v4 setTimer:0];
-    [(PageLoadTestRunner *)self finishPage:v4 stats:0 error:0];
+    [userInfo setTimer:0];
+    [(PageLoadTestRunner *)self finishPage:userInfo stats:0 error:0];
   }
 }
 
-- (void)_checkRedirect:(id)a3
+- (void)_checkRedirect:(id)redirect
 {
-  v8 = a3;
-  v4 = [(BrowserController *)self->_browserController tabController];
-  v5 = [v4 activeTabDocument];
-  v6 = [v5 URL];
+  redirectCopy = redirect;
+  tabController = [(BrowserController *)self->_browserController tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  v6 = [activeTabDocument URL];
 
-  v7 = [v8 URL];
-  LOBYTE(v5) = [v7 isEqual:v6];
+  v7 = [redirectCopy URL];
+  LOBYTE(activeTabDocument) = [v7 isEqual:v6];
 
-  if ((v5 & 1) == 0)
+  if ((activeTabDocument & 1) == 0)
   {
-    [v8 setRedirectURL:v6];
+    [redirectCopy setRedirectURL:v6];
   }
 }
 
-- (void)_updatePageLoad:(id)a3 stats:(id)a4
+- (void)_updatePageLoad:(id)load stats:(id)stats
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  loadCopy = load;
+  statsCopy = stats;
+  v8 = statsCopy;
+  if (statsCopy)
   {
-    v9 = [v7 loadStartDate];
-    if (v9)
+    loadStartDate = [statsCopy loadStartDate];
+    if (loadStartDate)
     {
-      [v6 setWebContentProcessStartLoadDate:v9];
+      [loadCopy setWebContentProcessStartLoadDate:loadStartDate];
     }
 
-    v10 = [v8 lastPageLoadEventDate];
+    lastPageLoadEventDate = [v8 lastPageLoadEventDate];
 
-    if (v10)
+    if (lastPageLoadEventDate)
     {
-      [v6 setEndLoadDate:v10];
+      [loadCopy setEndLoadDate:lastPageLoadEventDate];
     }
 
-    v11 = [v8 firstVisualLayoutDate];
+    firstVisualLayoutDate = [v8 firstVisualLayoutDate];
 
-    if (v11)
+    if (firstVisualLayoutDate)
     {
-      [v6 setFirstVisualLayoutDate:v11];
+      [loadCopy setFirstVisualLayoutDate:firstVisualLayoutDate];
     }
 
-    v12 = [v8 domContentLoadedDate];
+    domContentLoadedDate = [v8 domContentLoadedDate];
 
-    if (v12)
+    if (domContentLoadedDate)
     {
-      [v6 setDomContentLoadedDate:v12];
-      v13 = [v6 uiProcessStartDate];
-      [v12 timeIntervalSinceDate:v13];
+      [loadCopy setDomContentLoadedDate:domContentLoadedDate];
+      uiProcessStartDate = [loadCopy uiProcessStartDate];
+      [domContentLoadedDate timeIntervalSinceDate:uiProcessStartDate];
       v15 = v14;
 
       v16 = WBS_LOG_CHANNEL_PREFIXPLT();
@@ -1111,45 +1111,45 @@ LABEL_12:
       {
         v17 = v16;
         v34 = 134217984;
-        v35 = continuousTimeAddInterval([v6 uiProcessStartTime], v15);
+        v35 = continuousTimeAddInterval([loadCopy uiProcessStartTime], v15);
         _os_signpost_emit_with_name_impl(&dword_215819000, v17, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "PLT_DOMContentLoaded", "%{signpost.description:end_time}llu", &v34, 0xCu);
       }
     }
 
-    v18 = [v8 firstMeaningfulPaintDate];
+    firstMeaningfulPaintDate = [v8 firstMeaningfulPaintDate];
 
-    if (v18)
+    if (firstMeaningfulPaintDate)
     {
-      [v6 setFirstMeaningfulPaintDate:v18];
-      v19 = [v6 uiProcessStartDate];
-      [v18 timeIntervalSinceDate:v19];
+      [loadCopy setFirstMeaningfulPaintDate:firstMeaningfulPaintDate];
+      uiProcessStartDate2 = [loadCopy uiProcessStartDate];
+      [firstMeaningfulPaintDate timeIntervalSinceDate:uiProcessStartDate2];
       v21 = v20;
 
       v22 = WBS_LOG_CHANNEL_PREFIXPLT();
       if (os_signpost_enabled(v22))
       {
         v23 = v22;
-        v24 = continuousTimeAddInterval([v6 uiProcessStartTime], v21);
+        v24 = continuousTimeAddInterval([loadCopy uiProcessStartTime], v21);
         v34 = 134217984;
         v35 = v24;
         _os_signpost_emit_with_name_impl(&dword_215819000, v23, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "PLT_FirstMeaningfulPaint", "%{signpost.description:end_time}llu", &v34, 0xCu);
       }
     }
 
-    v25 = [v8 allSubresourcesLoadedDate];
+    allSubresourcesLoadedDate = [v8 allSubresourcesLoadedDate];
 
-    if (v25)
+    if (allSubresourcesLoadedDate)
     {
-      [v6 setAllSubresourcesLoadedDate:v25];
-      v26 = [v6 uiProcessStartDate];
-      [v25 timeIntervalSinceDate:v26];
+      [loadCopy setAllSubresourcesLoadedDate:allSubresourcesLoadedDate];
+      uiProcessStartDate3 = [loadCopy uiProcessStartDate];
+      [allSubresourcesLoadedDate timeIntervalSinceDate:uiProcessStartDate3];
       v28 = v27;
 
       v29 = WBS_LOG_CHANNEL_PREFIXPLT();
       if (os_signpost_enabled(v29))
       {
         v30 = v29;
-        v31 = continuousTimeAddInterval([v6 uiProcessStartTime], v28);
+        v31 = continuousTimeAddInterval([loadCopy uiProcessStartTime], v28);
         v34 = 134217984;
         v35 = v31;
         _os_signpost_emit_with_name_impl(&dword_215819000, v30, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "PLT_AllSubresourcesLoaded", "%{signpost.description:end_time}llu", &v34, 0xCu);
@@ -1157,50 +1157,50 @@ LABEL_12:
     }
   }
 
-  v32 = [v6 endLoadDate];
+  endLoadDate = [loadCopy endLoadDate];
 
-  if (!v32)
+  if (!endLoadDate)
   {
-    v33 = [MEMORY[0x277CBEAA8] date];
-    [v6 setEndLoadDate:v33];
+    date = [MEMORY[0x277CBEAA8] date];
+    [loadCopy setEndLoadDate:date];
   }
 
   if (self->_collectHeapStatistics)
   {
-    [v6 setHeapAfter:{+[PageLoadTestRunner heapStatistics](PageLoadTestRunner, "heapStatistics")}];
+    [loadCopy setHeapAfter:{+[PageLoadTestRunner heapStatistics](PageLoadTestRunner, "heapStatistics")}];
   }
 }
 
-- (void)finishPage:(id)a3 stats:(id)a4 error:(id)a5
+- (void)finishPage:(id)page stats:(id)stats error:(id)error
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v16 status] <= 4)
+  pageCopy = page;
+  statsCopy = stats;
+  errorCopy = error;
+  if ([pageCopy status] <= 4)
   {
-    if (v9)
+    if (errorCopy)
     {
-      v10 = [v16 error];
+      error = [pageCopy error];
 
-      if (!v10)
+      if (!error)
       {
-        [v16 setError:v9];
+        [pageCopy setError:errorCopy];
       }
     }
 
-    if ([v16 status] == 2 && (-[PageLoadTestRunner _updatePageLoad:stats:](self, "_updatePageLoad:stats:", v16, v8), -[PageLoadTestRunner _checkRedirect:](self, "_checkRedirect:", v16), objc_msgSend(v16, "error"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11) && -[PageLoadTestRunner startPageAction:](self, "startPageAction:", v16))
+    if ([pageCopy status] == 2 && (-[PageLoadTestRunner _updatePageLoad:stats:](self, "_updatePageLoad:stats:", pageCopy, statsCopy), -[PageLoadTestRunner _checkRedirect:](self, "_checkRedirect:", pageCopy), objc_msgSend(pageCopy, "error"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11) && -[PageLoadTestRunner startPageAction:](self, "startPageAction:", pageCopy))
     {
-      [v16 setStatus:3];
+      [pageCopy setStatus:3];
     }
 
-    else if ([v16 status] > 3 || self->_pageRestInterval == 0.0)
+    else if ([pageCopy status] > 3 || self->_pageRestInterval == 0.0)
     {
-      if ([v16 status] != 4 || (objc_msgSend(v16, "timer"), v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+      if ([pageCopy status] != 4 || (objc_msgSend(pageCopy, "timer"), v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
       {
-        [v16 setTimer:0];
-        v14 = [v16 error];
+        [pageCopy setTimer:0];
+        error2 = [pageCopy error];
 
-        if (v14)
+        if (error2)
         {
           v15 = 6;
         }
@@ -1210,50 +1210,50 @@ LABEL_12:
           v15 = 5;
         }
 
-        [v16 setStatus:v15];
-        [(PageLoadTestRunner *)self finishedTestPage:v16];
+        [pageCopy setStatus:v15];
+        [(PageLoadTestRunner *)self finishedTestPage:pageCopy];
         [(PageLoadTestRunner *)self startNextPage];
       }
     }
 
     else
     {
-      [v16 setStatus:4];
-      v12 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__pageRestExpired_ selector:v16 userInfo:0 repeats:self->_pageRestInterval];
-      [v16 setTimer:v12];
+      [pageCopy setStatus:4];
+      v12 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__pageRestExpired_ selector:pageCopy userInfo:0 repeats:self->_pageRestInterval];
+      [pageCopy setTimer:v12];
     }
   }
 }
 
-- (BOOL)startPageAction:(id)a3
+- (BOOL)startPageAction:(id)action
 {
   pageActionInterval = self->_pageActionInterval;
   if (pageActionInterval > 0.0)
   {
     v5 = MEMORY[0x277CBEAA8];
-    v6 = a3;
-    v7 = [v5 date];
-    [v6 startRenderFps:v7];
+    actionCopy = action;
+    date = [v5 date];
+    [actionCopy startRenderFps:date];
 
-    v8 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__handleActionTimer_ selector:v6 userInfo:1 repeats:self->_pageActionInterval];
-    [v6 setTimer:v8];
+    v8 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__handleActionTimer_ selector:actionCopy userInfo:1 repeats:self->_pageActionInterval];
+    [actionCopy setTimer:v8];
 
-    v9 = [MEMORY[0x277CBEB88] mainRunLoop];
-    v10 = [v6 timer];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    timer = [actionCopy timer];
 
-    [v9 addTimer:v10 forMode:*MEMORY[0x277D77228]];
+    [mainRunLoop addTimer:timer forMode:*MEMORY[0x277D77228]];
   }
 
   return pageActionInterval > 0.0;
 }
 
-- (void)_handleActionTimer:(id)a3
+- (void)_handleActionTimer:(id)timer
 {
-  v6 = [a3 userInfo];
+  userInfo = [timer userInfo];
   if (![(PageLoadTestRunner *)self performActionForPage:?])
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v6 finishRenderFps:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [userInfo finishRenderFps:date];
 
     if ([(PageLoadTestRunner *)self resetsZoomBetweenPages])
     {
@@ -1261,7 +1261,7 @@ LABEL_12:
       [(BrowserController *)self->_browserController setZoomScale:v5];
     }
 
-    [(PageLoadTestRunner *)self finishPage:v6 stats:0 error:0];
+    [(PageLoadTestRunner *)self finishPage:userInfo stats:0 error:0];
   }
 }
 
@@ -1273,20 +1273,20 @@ LABEL_12:
   [(PageLoadTestRunner *)self log:@"PageLoadTest Finished."];
 }
 
-- (void)startingTestPage:(id)a3
+- (void)startingTestPage:(id)page
 {
-  v4 = [(PageLoadTestRunner *)self browserController];
-  v5 = [v4 tabController];
-  v6 = [v5 activeTabDocument];
-  [v6 setStoreBannersAreDisabled:1];
+  browserController = [(PageLoadTestRunner *)self browserController];
+  tabController = [browserController tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  [activeTabDocument setStoreBannersAreDisabled:1];
 
-  v7 = [(PageLoadTestRunner *)self browserController];
-  [v7 setFavoritesState:0 animated:0];
+  browserController2 = [(PageLoadTestRunner *)self browserController];
+  [browserController2 setFavoritesState:0 animated:0];
 }
 
-- (void)finishedTestPage:(id)a3
+- (void)finishedTestPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v5 = WBS_LOG_CHANNEL_PREFIXPLT();
   if (os_signpost_enabled(v5))
   {
@@ -1294,14 +1294,14 @@ LABEL_12:
     _os_signpost_emit_with_name_impl(&dword_215819000, v5, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "UIProcessPageLoad", "", buf, 2u);
   }
 
-  [(PageLoadTestRunner *)self log:@"%@", v4];
+  [(PageLoadTestRunner *)self log:@"%@", pageCopy];
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   v4 = MEMORY[0x277CCAB68];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  logCopy = log;
+  v6 = [[v4 alloc] initWithFormat:logCopy arguments:&v7];
 
   [v6 insertString:@"safari-plt-test Page Load: " atIndex:0];
   NSLog(@"%@", v6);
@@ -1312,23 +1312,23 @@ LABEL_12:
   }
 }
 
-- (void)clearCacheWithURL:(id)a3
+- (void)clearCacheWithURL:(id)l
 {
-  v3 = [MEMORY[0x277CBAB70] sharedURLCache];
-  [v3 removeAllCachedResponses];
+  mEMORY[0x277CBAB70] = [MEMORY[0x277CBAB70] sharedURLCache];
+  [mEMORY[0x277CBAB70] removeAllCachedResponses];
 
   v4 = MEMORY[0x277D7B7E8];
 
   [v4 emptyCache];
 }
 
-+ (void)addLeakToArray:(id)a3 count:(int)a4 name:(id)a5
++ (void)addLeakToArray:(id)array count:(int)count name:(id)name
 {
-  if (a4)
+  if (count)
   {
-    v6 = *&a4;
+    v6 = *&count;
     v7 = MEMORY[0x277CCACA8];
-    if (a4 == 1)
+    if (count == 1)
     {
       v8 = "";
     }
@@ -1338,25 +1338,25 @@ LABEL_12:
       v8 = "s";
     }
 
-    v9 = a3;
-    v10 = [v7 stringWithFormat:@"%d %@%s", v6, a5, v8];
-    [v9 addObject:v10];
+    arrayCopy = array;
+    v10 = [v7 stringWithFormat:@"%d %@%s", v6, name, v8];
+    [arrayCopy addObject:v10];
   }
 }
 
 + (id)worldLeaksString
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  [a1 addLeakToArray:v3 count:objc_msgSend(MEMORY[0x277D7B800] name:{"webViewCount"), @"WebView object"}];
-  [a1 addLeakToArray:v3 count:objc_msgSend(MEMORY[0x277D7B800] name:{"frameCount"), @"WebFrame object"}];
-  [a1 addLeakToArray:v3 count:objc_msgSend(MEMORY[0x277D7B800] name:{"dataSourceCount"), @"WebDataSource object"}];
-  [a1 addLeakToArray:v3 count:objc_msgSend(MEMORY[0x277D7B800] name:{"viewCount"), @"WebFrameView object"}];
-  [a1 addLeakToArray:v3 count:objc_msgSend(MEMORY[0x277D7B800] name:{"HTMLRepresentationCount"), @"WebHTMLRepresentation object"}];
-  [a1 addLeakToArray:v3 count:objc_msgSend(MEMORY[0x277D7B800] name:{"bridgeCount"), @"WebBridge object"}];
-  [a1 addLeakToArray:v3 count:objc_msgSend(MEMORY[0x277D7B7E8] name:{"javaScriptInterpretersCount"), @"JavaScript interpreter"}];
-  if ([v3 count])
+  array = [MEMORY[0x277CBEB18] array];
+  [self addLeakToArray:array count:objc_msgSend(MEMORY[0x277D7B800] name:{"webViewCount"), @"WebView object"}];
+  [self addLeakToArray:array count:objc_msgSend(MEMORY[0x277D7B800] name:{"frameCount"), @"WebFrame object"}];
+  [self addLeakToArray:array count:objc_msgSend(MEMORY[0x277D7B800] name:{"dataSourceCount"), @"WebDataSource object"}];
+  [self addLeakToArray:array count:objc_msgSend(MEMORY[0x277D7B800] name:{"viewCount"), @"WebFrameView object"}];
+  [self addLeakToArray:array count:objc_msgSend(MEMORY[0x277D7B800] name:{"HTMLRepresentationCount"), @"WebHTMLRepresentation object"}];
+  [self addLeakToArray:array count:objc_msgSend(MEMORY[0x277D7B800] name:{"bridgeCount"), @"WebBridge object"}];
+  [self addLeakToArray:array count:objc_msgSend(MEMORY[0x277D7B7E8] name:{"javaScriptInterpretersCount"), @"JavaScript interpreter"}];
+  if ([array count])
   {
-    v4 = [v3 componentsJoinedByString:{@", "}];
+    v4 = [array componentsJoinedByString:{@", "}];
   }
 
   else
@@ -1369,8 +1369,8 @@ LABEL_12:
 
 - (BOOL)finishCheckingForWorldLeaks
 {
-  v2 = [objc_opt_class() worldLeaksString];
-  v3 = v2 != 0;
+  worldLeaksString = [objc_opt_class() worldLeaksString];
+  v3 = worldLeaksString != 0;
 
   return v3;
 }

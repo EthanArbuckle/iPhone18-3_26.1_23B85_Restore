@@ -1,21 +1,21 @@
 @interface RadioURLConnectionRequest
-- (void)startWithConnectionResponseBlock:(id)a3;
+- (void)startWithConnectionResponseBlock:(id)block;
 @end
 
 @implementation RadioURLConnectionRequest
 
-- (void)startWithConnectionResponseBlock:(id)a3
+- (void)startWithConnectionResponseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__RadioURLConnectionRequest_startWithConnectionResponseBlock___block_invoke;
   v7[3] = &unk_279AEAED8;
   v7[4] = self;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = RadioURLConnectionRequest;
-  v5 = v4;
+  v5 = blockCopy;
   [(SSURLConnectionRequest *)&v6 startWithConnectionResponseBlock:v7];
 }
 

@@ -1,43 +1,43 @@
 @interface AFBDictionary
-- (AFBDictionary)initWithBufRef:(id)a3 count:(unint64_t)a4 keyClass:(Class)a5 keyAtIndex:(id)a6 tableAtIndex:(id)a7 objectForValidKey:(id)a8;
-- (AFBDictionary)initWithCoder:(id)a3;
-- (AFBDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
-- (BOOL)isEqualToDictionary:(id)a3;
+- (AFBDictionary)initWithBufRef:(id)ref count:(unint64_t)count keyClass:(Class)class keyAtIndex:(id)index tableAtIndex:(id)atIndex objectForValidKey:(id)key;
+- (AFBDictionary)initWithCoder:(id)coder;
+- (AFBDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
+- (BOOL)isEqualToDictionary:(id)dictionary;
 - (id)allKeys;
-- (id)allKeysForObject:(id)a3;
+- (id)allKeysForObject:(id)object;
 - (id)allValues;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
-- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)keyAtIndex:(void *)a1;
+- (id)objectForKey:(id)key;
+- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)keyAtIndex:(void *)index;
 @end
 
 @implementation AFBDictionary
 
-- (AFBDictionary)initWithBufRef:(id)a3 count:(unint64_t)a4 keyClass:(Class)a5 keyAtIndex:(id)a6 tableAtIndex:(id)a7 objectForValidKey:(id)a8
+- (AFBDictionary)initWithBufRef:(id)ref count:(unint64_t)count keyClass:(Class)class keyAtIndex:(id)index tableAtIndex:(id)atIndex objectForValidKey:(id)key
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  refCopy = ref;
+  indexCopy = index;
+  atIndexCopy = atIndex;
+  keyCopy = key;
   v28.receiver = self;
   v28.super_class = AFBDictionary;
   v19 = [(AFBDictionary *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_bufRef, a3);
-    v20->_count = a4;
-    v20->_keyClass = a5;
-    v21 = MEMORY[0x245CC3C60](v16);
+    objc_storeStrong(&v19->_bufRef, ref);
+    v20->_count = count;
+    v20->_keyClass = class;
+    v21 = MEMORY[0x245CC3C60](indexCopy);
     keyAtIndex = v20->_keyAtIndex;
     v20->_keyAtIndex = v21;
 
-    v23 = MEMORY[0x245CC3C60](v17);
+    v23 = MEMORY[0x245CC3C60](atIndexCopy);
     tableAtIndex = v20->_tableAtIndex;
     v20->_tableAtIndex = v23;
 
-    v25 = MEMORY[0x245CC3C60](v18);
+    v25 = MEMORY[0x245CC3C60](keyCopy);
     objectForValidKey = v20->_objectForValidKey;
     v20->_objectForValidKey = v25;
   }
@@ -45,24 +45,24 @@
   return v20;
 }
 
-- (AFBDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (AFBDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
-  v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjects:a3 forKeys:a4 count:a5];
+  v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjects:objects forKeys:keys count:count];
 
   return v6;
 }
 
-- (AFBDictionary)initWithCoder:(id)a3
+- (AFBDictionary)initWithCoder:(id)coder
 {
-  result = a3;
+  result = coder;
   __break(1u);
   return result;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  if (v4 && (keyClass = self->_keyClass, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  keyCopy = key;
+  if (keyCopy && (keyClass = self->_keyClass, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = (*(self->_objectForValidKey + 2))();
   }
@@ -82,9 +82,9 @@
   return v2;
 }
 
-- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   if (self->_count)
   {
     v6 = 0;
@@ -94,7 +94,7 @@
       v10 = 0;
       v8 = (*(self->_keyAtIndex + 2))();
       v9 = (*(self->_tableAtIndex + 2))();
-      v5[2](v5, v8, v9, &v10);
+      blockCopy[2](blockCopy, v8, v9, &v10);
 
       LODWORD(v8) = v10;
       objc_autoreleasePoolPop(v7);
@@ -140,17 +140,17 @@
   return v5;
 }
 
-- (id)allKeysForObject:(id)a3
+- (id)allKeysForObject:(id)object
 {
-  v4 = a3;
-  if (v4 && self->_count)
+  objectCopy = object;
+  if (objectCopy && self->_count)
   {
     v5 = objc_opt_new();
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __34__AFBDictionary_allKeysForObject___block_invoke;
     v12 = &unk_278CAA660;
-    v13 = v4;
+    v13 = objectCopy;
     v14 = v5;
     v6 = v5;
     [(AFBDictionary *)self enumerateKeysAndObjectsUsingBlock:&v9];
@@ -174,16 +174,16 @@ void __34__AFBDictionary_allKeysForObject___block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-- (BOOL)isEqualToDictionary:(id)a3
+- (BOOL)isEqualToDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (v6 = [(AFBDictionary *)v4 count], v6 == [(AFBDictionary *)self count]))
+  else if (dictionaryCopy && (v6 = [(AFBDictionary *)dictionaryCopy count], v6 == [(AFBDictionary *)self count]))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -268,15 +268,15 @@ void __37__AFBDictionary_isEqualToDictionary___block_invoke_2(uint64_t a1, uint6
   }
 }
 
-- (void)keyAtIndex:(void *)a1
+- (void)keyAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = (*(a1[4] + 16))();
+    index = (*(index[4] + 16))();
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 @end

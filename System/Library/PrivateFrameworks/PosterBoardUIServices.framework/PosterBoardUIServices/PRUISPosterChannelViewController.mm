@@ -1,75 +1,75 @@
 @interface PRUISPosterChannelViewController
 + (id)_emptyContext;
-- (BOOL)addEvent:(id)a3 outError:(id *)a4;
+- (BOOL)addEvent:(id)event outError:(id *)error;
 - (CGRect)salientContentRectangle;
 - (FBScene)scene;
-- (PRUISPosterChannelViewController)initWithChannel:(id)a3 purpose:(id)a4;
-- (PRUISPosterChannelViewController)initWithChannel:(id)a3 purpose:(id)a4 context:(id)a5 delegate:(id)a6 initialRenderingOptions:(id)a7;
+- (PRUISPosterChannelViewController)initWithChannel:(id)channel purpose:(id)purpose;
+- (PRUISPosterChannelViewController)initWithChannel:(id)channel purpose:(id)purpose context:(id)context delegate:(id)delegate initialRenderingOptions:(id)options;
 - (PRUISPosterChannelViewControllerDelegate)delegate;
 - (PRUISPosterMotionEventsGenerating)motionEventsGenerator;
-- (id)_createViewControllerForPoster:(id)a3;
-- (id)_fetchInitialStateSnapshotBundleForPoster:(id)a3;
-- (id)_fetchSnapshotBundlesFutureForPosterUUID:(id)a3;
-- (id)_fetchWaitingForLiveRenderingSnapshotBundlesForPoster:(id)a3;
-- (id)_latestSnapshotBundleForConfiguration:(id)a3;
+- (id)_createViewControllerForPoster:(id)poster;
+- (id)_fetchInitialStateSnapshotBundleForPoster:(id)poster;
+- (id)_fetchSnapshotBundlesFutureForPosterUUID:(id)d;
+- (id)_fetchWaitingForLiveRenderingSnapshotBundlesForPoster:(id)poster;
+- (id)_latestSnapshotBundleForConfiguration:(id)configuration;
 - (id)_logPrefix;
-- (id)_snapshotDestinationFromScene:(id)a3;
-- (id)_waitingForLiveRenderingSceneSnapshotRequestForPosterConfiguration:(id)a3;
-- (void)_addViewController:(id)a3;
-- (void)_purgeInitialStateSnapshotForPosterConfiguration:(id)a3;
-- (void)_purgeSnapshotBundle:(id)a3;
-- (void)_purgeSnapshotBundleFuture:(id)a3;
-- (void)_purgeSnapshotBundles:(id)a3;
-- (void)_purgeSnapshotBundlesFuture:(id)a3;
+- (id)_snapshotDestinationFromScene:(id)scene;
+- (id)_waitingForLiveRenderingSceneSnapshotRequestForPosterConfiguration:(id)configuration;
+- (void)_addViewController:(id)controller;
+- (void)_purgeInitialStateSnapshotForPosterConfiguration:(id)configuration;
+- (void)_purgeSnapshotBundle:(id)bundle;
+- (void)_purgeSnapshotBundleFuture:(id)future;
+- (void)_purgeSnapshotBundles:(id)bundles;
+- (void)_purgeSnapshotBundlesFuture:(id)future;
 - (void)_snapshotCurrentPosterConfiguration;
-- (void)_teardownPosterViewController:(id)a3;
-- (void)addTransition:(id)a3;
-- (void)channel:(id)a3 didUpdatePoster:(id)a4;
-- (void)channelWillInvalidate:(id)a3;
+- (void)_teardownPosterViewController:(id)controller;
+- (void)addTransition:(id)transition;
+- (void)channel:(id)channel didUpdatePoster:(id)poster;
+- (void)channelWillInvalidate:(id)invalidate;
 - (void)dealloc;
 - (void)loadView;
-- (void)setContentOcclusionRectangles:(id)a3;
-- (void)setRenderingMode:(unint64_t)a3;
-- (void)setSalientContentRectangle:(CGRect)a3;
-- (void)setSceneViewBackgroundColor:(id)a3;
-- (void)setViewBackgroundColor:(id)a3;
-- (void)userTapEventOccurredWithLocation:(CGPoint)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setContentOcclusionRectangles:(id)rectangles;
+- (void)setRenderingMode:(unint64_t)mode;
+- (void)setSalientContentRectangle:(CGRect)rectangle;
+- (void)setSceneViewBackgroundColor:(id)color;
+- (void)setViewBackgroundColor:(id)color;
+- (void)userTapEventOccurredWithLocation:(CGPoint)location;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PRUISPosterChannelViewController
 
-- (PRUISPosterChannelViewController)initWithChannel:(id)a3 purpose:(id)a4
+- (PRUISPosterChannelViewController)initWithChannel:(id)channel purpose:(id)purpose
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _emptyContext];
-  v9 = [(PRUISPosterChannelViewController *)self initWithChannel:v7 purpose:v6 context:v8];
+  purposeCopy = purpose;
+  channelCopy = channel;
+  _emptyContext = [objc_opt_class() _emptyContext];
+  v9 = [(PRUISPosterChannelViewController *)self initWithChannel:channelCopy purpose:purposeCopy context:_emptyContext];
 
   return v9;
 }
 
-- (PRUISPosterChannelViewController)initWithChannel:(id)a3 purpose:(id)a4 context:(id)a5 delegate:(id)a6 initialRenderingOptions:(id)a7
+- (PRUISPosterChannelViewController)initWithChannel:(id)channel purpose:(id)purpose context:(id)context delegate:(id)delegate initialRenderingOptions:(id)options
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (v14)
+  channelCopy = channel;
+  purposeCopy = purpose;
+  contextCopy = context;
+  delegateCopy = delegate;
+  optionsCopy = options;
+  if (channelCopy)
   {
-    if (v15)
+    if (purposeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_19:
     [PRUISPosterChannelViewController initWithChannel:a2 purpose:self context:? delegate:? initialRenderingOptions:?];
-    if (v16)
+    if (contextCopy)
     {
       goto LABEL_4;
     }
@@ -78,13 +78,13 @@ LABEL_19:
   }
 
   [PRUISPosterChannelViewController initWithChannel:a2 purpose:self context:? delegate:? initialRenderingOptions:?];
-  if (!v15)
+  if (!purposeCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_3:
-  if (v16)
+  if (contextCopy)
   {
     goto LABEL_4;
   }
@@ -98,40 +98,40 @@ LABEL_4:
   if (v19)
   {
     *(v19 + 124) = [*MEMORY[0x1E69DDA98] activeInterfaceOrientation];
-    objc_storeStrong(v19 + 137, a3);
-    [v14 addChannelObserver:v19];
-    objc_storeWeak(v19 + 135, v17);
-    objc_storeStrong(v19 + 125, a4);
-    objc_storeStrong(v19 + 126, a5);
-    v20 = [v14 snapshotController];
+    objc_storeStrong(v19 + 137, channel);
+    [channelCopy addChannelObserver:v19];
+    objc_storeWeak(v19 + 135, delegateCopy);
+    objc_storeStrong(v19 + 125, purpose);
+    objc_storeStrong(v19 + 126, context);
+    snapshotController = [channelCopy snapshotController];
     v21 = *(v19 + 129);
-    *(v19 + 129) = v20;
+    *(v19 + 129) = snapshotController;
 
-    if (v18)
+    if (optionsCopy)
     {
-      *(v19 + 133) = [v18 renderingMode];
-      [v18 salientContentRectangle];
+      *(v19 + 133) = [optionsCopy renderingMode];
+      [optionsCopy salientContentRectangle];
       *(v19 + 139) = v22;
       *(v19 + 140) = v23;
       *(v19 + 141) = v24;
       *(v19 + 142) = v25;
-      v26 = [v18 contentOcclusionRectangles];
+      contentOcclusionRectangles = [optionsCopy contentOcclusionRectangles];
     }
 
     else
     {
-      v26 = 0;
+      contentOcclusionRectangles = 0;
       *(v19 + 133) = 2;
       v27 = *(MEMORY[0x1E695F058] + 16);
       *(v19 + 1112) = *MEMORY[0x1E695F058];
       *(v19 + 1128) = v27;
     }
 
-    objc_storeStrong(v19 + 134, v26);
-    if (v18)
+    objc_storeStrong(v19 + 134, contentOcclusionRectangles);
+    if (optionsCopy)
     {
 
-      [v18 viewBackgroundColor];
+      [optionsCopy viewBackgroundColor];
     }
 
     else
@@ -141,9 +141,9 @@ LABEL_4:
     v28 = ;
     objc_storeStrong(v19 + 131, v28);
 
-    if (v18)
+    if (optionsCopy)
     {
-      [v18 sceneViewBackgroundColor];
+      [optionsCopy sceneViewBackgroundColor];
     }
 
     else
@@ -161,14 +161,14 @@ LABEL_4:
     v32 = *(v19 + 130);
     *(v19 + 130) = v31;
 
-    v33 = [*(v19 + 137) posterConfiguration];
-    if (v33)
+    posterConfiguration = [*(v19 + 137) posterConfiguration];
+    if (posterConfiguration)
     {
-      v34 = [v19 _fetchInitialStateSnapshotBundleForPoster:v33];
+      v34 = [v19 _fetchInitialStateSnapshotBundleForPoster:posterConfiguration];
       v35 = *(v19 + 127);
       *(v19 + 127) = v34;
 
-      v36 = [v19 _createViewControllerForPoster:v33];
+      v36 = [v19 _createViewControllerForPoster:posterConfiguration];
       v37 = *(v19 + 128);
       *(v19 + 128) = v36;
     }
@@ -212,9 +212,9 @@ id __101__PRUISPosterChannelViewController_initWithChannel_purpose_context_deleg
   v3 = PRUISLogChannels();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PRUISPosterChannelViewController *)self _logPrefix];
+    _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
     *buf = 138543362;
-    v8 = v4;
+    v8 = _logPrefix;
     _os_log_impl(&dword_1CAE63000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocating...", buf, 0xCu);
   }
 
@@ -229,39 +229,39 @@ id __101__PRUISPosterChannelViewController_initWithChannel_purpose_context_deleg
   [(PRUISPosterChannelViewController *)&v6 dealloc];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = PRUISPosterChannelViewController;
-  v7 = a4;
-  [(PRUISPosterChannelViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [v7 containerView];
+  coordinatorCopy = coordinator;
+  [(PRUISPosterChannelViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  containerView = [coordinatorCopy containerView];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    window = containerView;
   }
 
   else
   {
-    v9 = [v8 window];
+    window = [containerView window];
   }
 
-  v10 = v9;
-  if (v7)
+  v10 = window;
+  if (coordinatorCopy)
   {
-    v11 = [v9 _toWindowOrientation];
+    _toWindowOrientation = [window _toWindowOrientation];
   }
 
   else
   {
-    v11 = [(PRUISPosterChannelViewController *)self interfaceOrientation];
+    _toWindowOrientation = [(PRUISPosterChannelViewController *)self interfaceOrientation];
   }
 
-  self->_activeOrientation = v11;
+  self->_activeOrientation = _toWindowOrientation;
 }
 
 - (void)loadView
@@ -270,15 +270,15 @@ id __101__PRUISPosterChannelViewController_initWithChannel_purpose_context_deleg
   v6.receiver = self;
   v6.super_class = PRUISPosterChannelViewController;
   [(PRUISPosterChannelViewController *)&v6 loadView];
-  v3 = [(PRUISPosterChannelViewController *)self view];
-  [v3 setBackgroundColor:self->_viewBackgroundColor];
+  view = [(PRUISPosterChannelViewController *)self view];
+  [view setBackgroundColor:self->_viewBackgroundColor];
 
   v4 = PRUISLogChannels();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PRUISPosterChannelViewController *)self _logPrefix];
+    _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
     *buf = 138543362;
-    v8 = v5;
+    v8 = _logPrefix;
     _os_log_impl(&dword_1CAE63000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ loadView...", buf, 0xCu);
   }
 
@@ -297,31 +297,31 @@ id __101__PRUISPosterChannelViewController_initWithChannel_purpose_context_deleg
   {
     if ([(PRUISPosterChannelViewController *)self isViewLoaded])
     {
-      v3 = [(PRUISPosterRenderingViewController *)self->_viewController view];
-      v4 = [(PRUISPosterChannelViewController *)self view];
-      [v4 bounds];
-      [v3 setFrame:?];
+      view = [(PRUISPosterRenderingViewController *)self->_viewController view];
+      view2 = [(PRUISPosterChannelViewController *)self view];
+      [view2 bounds];
+      [view setFrame:?];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = PRUISPosterChannelViewController;
-  [(PRUISPosterChannelViewController *)&v11 viewDidAppear:a3];
+  [(PRUISPosterChannelViewController *)&v11 viewDidAppear:appear];
   v4 = PRUISLogChannels();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PRUISPosterChannelViewController *)self _logPrefix];
+    _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
     *buf = 138543362;
-    v13 = v5;
+    v13 = _logPrefix;
     _os_log_impl(&dword_1CAE63000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ viewDidAppear...", buf, 0xCu);
   }
 
-  v6 = [(PRUISPosterChannel *)self->_channel posterConfiguration];
-  v7 = v6;
+  posterConfiguration = [(PRUISPosterChannel *)self->_channel posterConfiguration];
+  v7 = posterConfiguration;
   if (self->_viewController)
   {
     v8 = 1;
@@ -329,12 +329,12 @@ id __101__PRUISPosterChannelViewController_initWithChannel_purpose_context_deleg
 
   else
   {
-    v8 = v6 == 0;
+    v8 = posterConfiguration == 0;
   }
 
   if (!v8)
   {
-    v9 = [(PRUISPosterChannelViewController *)self _createViewControllerForPoster:v6];
+    v9 = [(PRUISPosterChannelViewController *)self _createViewControllerForPoster:posterConfiguration];
     viewController = self->_viewController;
     self->_viewController = v9;
 
@@ -342,25 +342,25 @@ id __101__PRUISPosterChannelViewController_initWithChannel_purpose_context_deleg
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v11 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PRUISPosterChannelViewController;
-  [(PRUISPosterChannelViewController *)&v8 viewDidDisappear:a3];
+  [(PRUISPosterChannelViewController *)&v8 viewDidDisappear:disappear];
   v4 = PRUISLogChannels();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PRUISPosterChannelViewController *)self _logPrefix];
+    _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
     *buf = 138543362;
-    v10 = v5;
+    v10 = _logPrefix;
     _os_log_impl(&dword_1CAE63000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ viewDidDisappear...", buf, 0xCu);
   }
 
   if (self->_viewController)
   {
-    v6 = [(PRUISPosterChannelViewController *)self view];
-    [v6 bounds];
+    view = [(PRUISPosterChannelViewController *)self view];
+    [view bounds];
     v7 = CGRectEqualToRect(v12, *MEMORY[0x1E695F058]);
 
     if (!v7)
@@ -370,22 +370,22 @@ id __101__PRUISPosterChannelViewController_initWithChannel_purpose_context_deleg
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v10 = *MEMORY[0x1E69E9840];
   v5 = PRUISLogChannels();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PRUISPosterChannelViewController *)self _logPrefix];
+    _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
     *buf = 138543362;
-    v9 = v6;
+    v9 = _logPrefix;
     _os_log_impl(&dword_1CAE63000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ viewWillDisappear...", buf, 0xCu);
   }
 
   v7.receiver = self;
   v7.super_class = PRUISPosterChannelViewController;
-  [(PRUISPosterChannelViewController *)&v7 viewWillDisappear:v3];
+  [(PRUISPosterChannelViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
 - (PRUISPosterMotionEventsGenerating)motionEventsGenerator
@@ -399,10 +399,10 @@ id __101__PRUISPosterChannelViewController_initWithChannel_purpose_context_deleg
   return viewController;
 }
 
-- (void)channel:(id)a3 didUpdatePoster:(id)a4
+- (void)channel:(id)channel didUpdatePoster:(id)poster
 {
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  posterCopy = poster;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -411,14 +411,14 @@ id __101__PRUISPosterChannelViewController_initWithChannel_purpose_context_deleg
   objc_copyWeak(&v16, &location);
   v8 = _Block_copy(aBlock);
   v9 = self->_viewController;
-  v10 = [(PRUISPosterRenderingViewController *)v9 configuration];
-  if (v10)
+  configuration = [(PRUISPosterRenderingViewController *)v9 configuration];
+  if (configuration)
   {
-    [(PRUISPosterChannelViewController *)self _purgeInitialStateSnapshotForPosterConfiguration:v10];
+    [(PRUISPosterChannelViewController *)self _purgeInitialStateSnapshotForPosterConfiguration:configuration];
   }
 
   objc_copyWeak(&v14, &location);
-  v11 = v7;
+  v11 = posterCopy;
   v13 = v8;
   v12 = v9;
   BSDispatchMain();
@@ -531,20 +531,20 @@ void __60__PRUISPosterChannelViewController_channel_didUpdatePoster___block_invo
   [v3 setAlpha:0.0];
 }
 
-- (void)channelWillInvalidate:(id)a3
+- (void)channelWillInvalidate:(id)invalidate
 {
-  v4 = [a3 posterConfiguration];
-  if (v4)
+  posterConfiguration = [invalidate posterConfiguration];
+  if (posterConfiguration)
   {
-    v4 = [(PRUISPosterChannelViewController *)self _purgeInitialStateSnapshotForPosterConfiguration:v4];
+    posterConfiguration = [(PRUISPosterChannelViewController *)self _purgeInitialStateSnapshotForPosterConfiguration:posterConfiguration];
   }
 
-  MEMORY[0x1EEE66BB8](v4);
+  MEMORY[0x1EEE66BB8](posterConfiguration);
 }
 
-- (void)setRenderingMode:(unint64_t)a3
+- (void)setRenderingMode:(unint64_t)mode
 {
-  if (self->_renderingMode != a3)
+  if (self->_renderingMode != mode)
   {
     viewController = self->_viewController;
     if (viewController)
@@ -554,14 +554,14 @@ void __60__PRUISPosterChannelViewController_channel_didUpdatePoster___block_invo
   }
 }
 
-- (void)setSalientContentRectangle:(CGRect)a3
+- (void)setSalientContentRectangle:(CGRect)rectangle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   p_salientContentRectangle = &self->_salientContentRectangle;
-  if (!CGRectEqualToRect(self->_salientContentRectangle, a3))
+  if (!CGRectEqualToRect(self->_salientContentRectangle, rectangle))
   {
     p_salientContentRectangle->origin.x = x;
     p_salientContentRectangle->origin.y = y;
@@ -576,58 +576,58 @@ void __60__PRUISPosterChannelViewController_channel_didUpdatePoster___block_invo
   }
 }
 
-- (void)setContentOcclusionRectangles:(id)a3
+- (void)setContentOcclusionRectangles:(id)rectangles
 {
-  v6 = a3;
+  rectanglesCopy = rectangles;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_contentOcclusionRectangles, a3);
+    objc_storeStrong(&self->_contentOcclusionRectangles, rectangles);
     viewController = self->_viewController;
     if (viewController)
     {
-      [(PRUISPosterRenderingViewController *)viewController setContentOcclusionRectangles:v6];
+      [(PRUISPosterRenderingViewController *)viewController setContentOcclusionRectangles:rectanglesCopy];
     }
   }
 }
 
-- (void)setViewBackgroundColor:(id)a3
+- (void)setViewBackgroundColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_viewBackgroundColor, a3);
-    v5 = [(PRUISPosterChannelViewController *)self viewIfLoaded];
-    [v5 setBackgroundColor:v7];
+    objc_storeStrong(&self->_viewBackgroundColor, color);
+    viewIfLoaded = [(PRUISPosterChannelViewController *)self viewIfLoaded];
+    [viewIfLoaded setBackgroundColor:colorCopy];
 
     viewController = self->_viewController;
     if (viewController)
     {
-      [(PRUISPosterRenderingViewController *)viewController setViewBackgroundColor:v7];
+      [(PRUISPosterRenderingViewController *)viewController setViewBackgroundColor:colorCopy];
     }
   }
 }
 
-- (void)setSceneViewBackgroundColor:(id)a3
+- (void)setSceneViewBackgroundColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_sceneViewBackgroundColor, a3);
+    objc_storeStrong(&self->_sceneViewBackgroundColor, color);
     viewController = self->_viewController;
     if (viewController)
     {
-      [(PRUISPosterRenderingViewController *)viewController setSceneViewBackgroundColor:v6];
+      [(PRUISPosterRenderingViewController *)viewController setSceneViewBackgroundColor:colorCopy];
     }
   }
 }
 
-- (BOOL)addEvent:(id)a3 outError:(id *)a4
+- (BOOL)addEvent:(id)event outError:(id *)error
 {
   viewController = self->_viewController;
   if (viewController)
   {
 
-    return [(PRUISPosterRenderingViewController *)viewController addEvent:a3 outError:?];
+    return [(PRUISPosterRenderingViewController *)viewController addEvent:event outError:?];
   }
 
   else
@@ -641,23 +641,23 @@ void __60__PRUISPosterChannelViewController_channel_didUpdatePoster___block_invo
       [PRUISPosterChannelViewController addEvent:outError:];
     }
 
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v8;
+      *error = v8;
     }
 
     return 0;
   }
 }
 
-- (void)userTapEventOccurredWithLocation:(CGPoint)a3
+- (void)userTapEventOccurredWithLocation:(CGPoint)location
 {
   viewController = self->_viewController;
   if (viewController)
   {
 
-    [(PRUISPosterRenderingViewController *)viewController userTapEventOccurredWithLocation:a3.x, a3.y];
+    [(PRUISPosterRenderingViewController *)viewController userTapEventOccurredWithLocation:location.x, location.y];
   }
 
   else
@@ -670,13 +670,13 @@ void __60__PRUISPosterChannelViewController_channel_didUpdatePoster___block_invo
   }
 }
 
-- (void)addTransition:(id)a3
+- (void)addTransition:(id)transition
 {
   viewController = self->_viewController;
   if (viewController)
   {
 
-    [(PRUISPosterRenderingViewController *)viewController addTransition:a3];
+    [(PRUISPosterRenderingViewController *)viewController addTransition:transition];
   }
 
   else
@@ -703,7 +703,7 @@ void __60__PRUISPosterChannelViewController_channel_didUpdatePoster___block_invo
 
 - (void)_snapshotCurrentPosterConfiguration
 {
-  v1 = [a1 _logPrefix];
+  _logPrefix = [self _logPrefix];
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_1_3();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -830,20 +830,20 @@ void __71__PRUISPosterChannelViewController__snapshotCurrentPosterConfiguration_
   }
 }
 
-- (id)_snapshotDestinationFromScene:(id)a3
+- (id)_snapshotDestinationFromScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(PRUISPosterChannelViewController *)self _snapshotCache];
-  v6 = [v5 underlyingCache];
+  sceneCopy = scene;
+  _snapshotCache = [(PRUISPosterChannelViewController *)self _snapshotCache];
+  underlyingCache = [_snapshotCache underlyingCache];
 
   v7 = MEMORY[0x1E698E620];
-  v8 = [v4 clientHandle];
+  clientHandle = [sceneCopy clientHandle];
 
-  v9 = [v8 processHandle];
-  v10 = v9;
-  if (v9)
+  processHandle = [clientHandle processHandle];
+  v10 = processHandle;
+  if (processHandle)
   {
-    [v9 auditToken];
+    [processHandle auditToken];
   }
 
   else
@@ -853,16 +853,16 @@ void __71__PRUISPosterChannelViewController__snapshotCurrentPosterConfiguration_
 
   v11 = [v7 tokenFromAuditToken:v14];
 
-  v12 = [MEMORY[0x1E69C55E0] destinationForCache:v6 clientAuditToken:v11 error:0];
+  v12 = [MEMORY[0x1E69C55E0] destinationForCache:underlyingCache clientAuditToken:v11 error:0];
 
   return v12;
 }
 
-- (id)_waitingForLiveRenderingSceneSnapshotRequestForPosterConfiguration:(id)a3
+- (id)_waitingForLiveRenderingSceneSnapshotRequestForPosterConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[PRUISPosterChannelSnapshotDefinition waitingForLiveRenderingSceneDefinition];
-  v6 = [(UIViewController *)self pruis_snapshotRequestForDefinition:v5 interfaceOrientation:self->_activeOrientation bounds:0 screen:v4 posterContents:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+  v6 = [(UIViewController *)self pruis_snapshotRequestForDefinition:v5 interfaceOrientation:self->_activeOrientation bounds:0 screen:configurationCopy posterContents:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
 
   v11 = 0;
   v7 = [v6 buildPUISnapshotRequestForPriority:0 sceneAttachments:0 error:&v11];
@@ -899,22 +899,22 @@ uint64_t __49__PRUISPosterChannelViewController__emptyContext__block_invoke()
   return MEMORY[0x1EEE66BB8](v0);
 }
 
-- (void)_purgeInitialStateSnapshotForPosterConfiguration:(id)a3
+- (void)_purgeInitialStateSnapshotForPosterConfiguration:(id)configuration
 {
-  v4 = [(PRUISPosterChannelViewController *)self _fetchWaitingForLiveRenderingSnapshotBundlesForPoster:a3];
+  v4 = [(PRUISPosterChannelViewController *)self _fetchWaitingForLiveRenderingSnapshotBundlesForPoster:configuration];
   [(PRUISPosterChannelViewController *)self _purgeSnapshotBundlesFuture:v4];
 }
 
-- (void)_purgeSnapshotBundlesFuture:(id)a3
+- (void)_purgeSnapshotBundlesFuture:(id)future
 {
-  v4 = a3;
+  futureCopy = future;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__PRUISPosterChannelViewController__purgeSnapshotBundlesFuture___block_invoke;
   v5[3] = &unk_1E83A8710;
   objc_copyWeak(&v6, &location);
-  [v4 addSuccessBlock:v5];
+  [futureCopy addSuccessBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -930,16 +930,16 @@ void __64__PRUISPosterChannelViewController__purgeSnapshotBundlesFuture___block_
   }
 }
 
-- (void)_purgeSnapshotBundleFuture:(id)a3
+- (void)_purgeSnapshotBundleFuture:(id)future
 {
-  v4 = a3;
+  futureCopy = future;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63__PRUISPosterChannelViewController__purgeSnapshotBundleFuture___block_invoke;
   v5[3] = &unk_1E83A8738;
   objc_copyWeak(&v6, &location);
-  [v4 addSuccessBlock:v5];
+  [futureCopy addSuccessBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -955,30 +955,30 @@ void __63__PRUISPosterChannelViewController__purgeSnapshotBundleFuture___block_i
   }
 }
 
-- (void)_purgeSnapshotBundle:(id)a3
+- (void)_purgeSnapshotBundle:(id)bundle
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  bundleCopy = bundle;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  bundleCopy2 = bundle;
+  v6 = [v4 arrayWithObjects:&bundleCopy count:1];
 
-  [(PRUISPosterChannelViewController *)self _purgeSnapshotBundles:v6, v7, v8];
+  [(PRUISPosterChannelViewController *)self _purgeSnapshotBundles:v6, bundleCopy, v8];
 }
 
-- (void)_purgeSnapshotBundles:(id)a3
+- (void)_purgeSnapshotBundles:(id)bundles
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  bundlesCopy = bundles;
+  if ([bundlesCopy count])
   {
-    v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(bundlesCopy, "count")}];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v19 = v4;
-    v6 = v4;
+    v19 = bundlesCopy;
+    v6 = bundlesCopy;
     v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v7)
     {
@@ -993,21 +993,21 @@ void __63__PRUISPosterChannelViewController__purgeSnapshotBundleFuture___block_i
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v22 + 1) + 8 * i) bundleURL];
-          v12 = [v11 URLByStandardizingPath];
+          bundleURL = [*(*(&v22 + 1) + 8 * i) bundleURL];
+          uRLByStandardizingPath = [bundleURL URLByStandardizingPath];
 
           v13 = PRUISLogChannels();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [(PRUISPosterChannelViewController *)self _logPrefix];
+            _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
             *buf = 138543618;
-            v27 = v14;
+            v27 = _logPrefix;
             v28 = 2114;
-            v29 = v12;
+            v29 = uRLByStandardizingPath;
             _os_log_impl(&dword_1CAE63000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Purging snapshot bundle at url: %{public}@.", buf, 0x16u);
           }
 
-          [v5 addObject:v12];
+          [v5 addObject:uRLByStandardizingPath];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -1024,10 +1024,10 @@ void __63__PRUISPosterChannelViewController__purgeSnapshotBundleFuture___block_i
     v21 = v5;
     v16 = v5;
     v17 = [v15 predicateWithBlock:v20];
-    v18 = [(PRUISPosterChannelViewController *)self _snapshotCache];
-    [v18 discardSnapshotsForPostersMatchingPredicate:v17];
+    _snapshotCache = [(PRUISPosterChannelViewController *)self _snapshotCache];
+    [_snapshotCache discardSnapshotsForPostersMatchingPredicate:v17];
 
-    v4 = v19;
+    bundlesCopy = v19;
   }
 }
 
@@ -1040,14 +1040,14 @@ uint64_t __58__PRUISPosterChannelViewController__purgeSnapshotBundles___block_in
   return v4;
 }
 
-- (id)_latestSnapshotBundleForConfiguration:(id)a3
+- (id)_latestSnapshotBundleForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PRUISPosterChannelViewController *)self _waitingForLiveRenderingSceneSnapshotRequestForPosterConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [(PRUISPosterChannelViewController *)self _waitingForLiveRenderingSceneSnapshotRequestForPosterConfiguration:configurationCopy];
   v6 = [MEMORY[0x1E69C55C8] predicateMatchingRequest:v5];
-  v7 = [(PRUISPosterChannelViewController *)self _snapshotCache];
-  v8 = [v7 underlyingCache];
-  v9 = [v8 latestSnapshotBundleMatchingPredicate:v6];
+  _snapshotCache = [(PRUISPosterChannelViewController *)self _snapshotCache];
+  underlyingCache = [_snapshotCache underlyingCache];
+  v9 = [underlyingCache latestSnapshotBundleMatchingPredicate:v6];
 
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -1073,17 +1073,17 @@ void __74__PRUISPosterChannelViewController__latestSnapshotBundleForConfiguratio
   }
 }
 
-- (id)_fetchInitialStateSnapshotBundleForPoster:(id)a3
+- (id)_fetchInitialStateSnapshotBundleForPoster:(id)poster
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  posterCopy = poster;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (v6 = WeakRetained, v7 = objc_loadWeakRetained(&self->_delegate), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(PRUISPosterChannelViewController *)self _waitingForLiveRenderingSceneSnapshotRequestForPosterConfiguration:v4];
+    v9 = [(PRUISPosterChannelViewController *)self _waitingForLiveRenderingSceneSnapshotRequestForPosterConfiguration:posterCopy];
     v10 = [MEMORY[0x1E69C55C8] predicateMatchingRequest:v9];
     v11 = objc_loadWeakRetained(&self->_delegate);
-    v12 = [v11 initialStateSnapshotDescriptorForPosterConfiguration:v4];
+    v12 = [v11 initialStateSnapshotDescriptorForPosterConfiguration:posterCopy];
 
     v13 = [v10 predicateApplyingOptions:{objc_msgSend(v12, "predicateOptions")}];
 
@@ -1098,20 +1098,20 @@ void __74__PRUISPosterChannelViewController__latestSnapshotBundleForConfiguratio
     v14 = 0;
   }
 
-  v15 = [v4 pr_posterUUID];
+  pr_posterUUID = [posterCopy pr_posterUUID];
 
-  [v13 setPosterUUID:v15];
+  [v13 setPosterUUID:pr_posterUUID];
   v16 = +[PRUISPosterChannelSnapshotDefinition waitingForLiveRenderingSceneDefinition];
-  v17 = [v16 uniqueIdentifier];
-  [v13 setSnapshotDefinitionIdentifier:v17];
+  uniqueIdentifier = [v16 uniqueIdentifier];
+  [v13 setSnapshotDefinitionIdentifier:uniqueIdentifier];
 
   v18 = PRUISLogChannels();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(PRUISPosterChannelViewController *)self _logPrefix];
+    _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
     channel = self->_channel;
     v30 = 138543618;
-    v31 = v19;
+    v31 = _logPrefix;
     v32 = 2112;
     v33 = channel;
     _os_log_impl(&dword_1CAE63000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@[_fetchInitialStateSnapshotBundleForPoster] channel: %@", &v30, 0x16u);
@@ -1120,10 +1120,10 @@ void __74__PRUISPosterChannelViewController__latestSnapshotBundleForConfiguratio
   v21 = PRUISLogChannels();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(PRUISPosterChannelViewController *)self _logPrefix];
+    _logPrefix2 = [(PRUISPosterChannelViewController *)self _logPrefix];
     v23 = @"NO";
     v30 = 138543874;
-    v31 = v22;
+    v31 = _logPrefix2;
     v32 = 2114;
     if (v14)
     {
@@ -1137,8 +1137,8 @@ void __74__PRUISPosterChannelViewController__latestSnapshotBundleForConfiguratio
   }
 
   v24 = [(PRUISPosterChannel *)self->_channel cachedSnapshotBundleSatisfyingPredicate:v13];
-  v25 = PRUISLogChannels();
-  v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
+  _snapshotCache = PRUISLogChannels();
+  v26 = os_log_type_enabled(_snapshotCache, OS_LOG_TYPE_DEFAULT);
   if (v24)
   {
     if (!v26)
@@ -1146,25 +1146,25 @@ void __74__PRUISPosterChannelViewController__latestSnapshotBundleForConfiguratio
       goto LABEL_18;
     }
 
-    v27 = [(PRUISPosterChannelViewController *)self _logPrefix];
+    _logPrefix3 = [(PRUISPosterChannelViewController *)self _logPrefix];
     v30 = 138543362;
-    v31 = v27;
-    _os_log_impl(&dword_1CAE63000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@[_fetchInitialStateSnapshotBundleForPoster] found in-memory cache for snapshot bundle", &v30, 0xCu);
+    v31 = _logPrefix3;
+    _os_log_impl(&dword_1CAE63000, _snapshotCache, OS_LOG_TYPE_DEFAULT, "%{public}@[_fetchInitialStateSnapshotBundleForPoster] found in-memory cache for snapshot bundle", &v30, 0xCu);
   }
 
   else
   {
     if (v26)
     {
-      v28 = [(PRUISPosterChannelViewController *)self _logPrefix];
+      _logPrefix4 = [(PRUISPosterChannelViewController *)self _logPrefix];
       v30 = 138543362;
-      v31 = v28;
-      _os_log_impl(&dword_1CAE63000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@[_fetchInitialStateSnapshotBundleForPoster] did not find in-memory cache for snapshot bundle. Checking SQLite cache.", &v30, 0xCu);
+      v31 = _logPrefix4;
+      _os_log_impl(&dword_1CAE63000, _snapshotCache, OS_LOG_TYPE_DEFAULT, "%{public}@[_fetchInitialStateSnapshotBundleForPoster] did not find in-memory cache for snapshot bundle. Checking SQLite cache.", &v30, 0xCu);
     }
 
-    v25 = [(PRUISPosterChannelViewController *)self _snapshotCache];
-    v27 = [v25 underlyingCache];
-    v24 = [v27 latestSnapshotBundleMatchingPredicate:v13 outError:0];
+    _snapshotCache = [(PRUISPosterChannelViewController *)self _snapshotCache];
+    _logPrefix3 = [_snapshotCache underlyingCache];
+    v24 = [_logPrefix3 latestSnapshotBundleMatchingPredicate:v13 outError:0];
   }
 
 LABEL_18:
@@ -1172,18 +1172,18 @@ LABEL_18:
   return v24;
 }
 
-- (id)_fetchSnapshotBundlesFutureForPosterUUID:(id)a3
+- (id)_fetchSnapshotBundlesFutureForPosterUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = MEMORY[0x1E69C55C8];
-    v5 = a3;
+    dCopy = d;
     v6 = objc_alloc_init(v4);
-    [v6 setPosterUUID:v5];
+    [v6 setPosterUUID:dCopy];
 
-    v7 = [(PRUISPosterChannelViewController *)self _snapshotCache];
-    v8 = [v7 underlyingCache];
-    v9 = [v8 snapshotBundlesMatchingPredicate:v6];
+    _snapshotCache = [(PRUISPosterChannelViewController *)self _snapshotCache];
+    underlyingCache = [_snapshotCache underlyingCache];
+    v9 = [underlyingCache snapshotBundlesMatchingPredicate:v6];
   }
 
   else
@@ -1194,29 +1194,29 @@ LABEL_18:
   return v9;
 }
 
-- (id)_fetchWaitingForLiveRenderingSnapshotBundlesForPoster:(id)a3
+- (id)_fetchWaitingForLiveRenderingSnapshotBundlesForPoster:(id)poster
 {
   v4 = MEMORY[0x1E69C55C8];
-  v5 = a3;
+  posterCopy = poster;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 pr_posterUUID];
+  pr_posterUUID = [posterCopy pr_posterUUID];
 
-  [v6 setPosterUUID:v7];
+  [v6 setPosterUUID:pr_posterUUID];
   v8 = +[PRUISPosterChannelSnapshotDefinition waitingForLiveRenderingSceneDefinition];
-  v9 = [v8 uniqueIdentifier];
-  [v6 setSnapshotDefinitionIdentifier:v9];
+  uniqueIdentifier = [v8 uniqueIdentifier];
+  [v6 setSnapshotDefinitionIdentifier:uniqueIdentifier];
 
-  v10 = [(PRUISPosterChannelViewController *)self _snapshotCache];
-  v11 = [v10 underlyingCache];
-  v12 = [v11 snapshotBundlesMatchingPredicate:v6];
+  _snapshotCache = [(PRUISPosterChannelViewController *)self _snapshotCache];
+  underlyingCache = [_snapshotCache underlyingCache];
+  v12 = [underlyingCache snapshotBundlesMatchingPredicate:v6];
 
   return v12;
 }
 
-- (id)_createViewControllerForPoster:(id)a3
+- (id)_createViewControllerForPoster:(id)poster
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  posterCopy = poster;
   channel = self->_channel;
   v19 = 0;
   v6 = [(PRUISPosterChannel *)channel pooledExtensionInstanceWithError:&v19];
@@ -1230,10 +1230,10 @@ LABEL_18:
     {
       if (v12)
       {
-        v13 = [(PRUISPosterChannelViewController *)self _logPrefix];
+        _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
         v14 = self->_initialStateWaitingForLiveRenderingSnapshotBundle;
         *buf = 138543618;
-        v21 = v13;
+        v21 = _logPrefix;
         v22 = 2114;
         v23 = v14;
         v15 = "%{public}@ initializing rendering view controller with snapshotBundle: %{public}@";
@@ -1246,9 +1246,9 @@ LABEL_10:
 
     else if (v12)
     {
-      v13 = [(PRUISPosterChannelViewController *)self _logPrefix];
+      _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
       *buf = 138543362;
-      v21 = v13;
+      v21 = _logPrefix;
       v15 = "%{public}@ initializing rendering view controller with nil snapshotBundle";
       v16 = v11;
       v17 = 12;
@@ -1256,7 +1256,7 @@ LABEL_10:
     }
 
     v8 = [PRUISPosterSnapshotBundle snapshotBundleWithPUIPosterSnapshotBundle:self->_initialStateWaitingForLiveRenderingSnapshotBundle];
-    v9 = [[PRUISPosterRenderingViewController alloc] initWithPosterContents:v4 context:self->_renderingContext boundingShape:-1 extensionInstance:v6 snapshotController:self->_snapshotController initialSnapshotBundle:v8 renderingMode:self->_renderingMode];
+    v9 = [[PRUISPosterRenderingViewController alloc] initWithPosterContents:posterCopy context:self->_renderingContext boundingShape:-1 extensionInstance:v6 snapshotController:self->_snapshotController initialSnapshotBundle:v8 renderingMode:self->_renderingMode];
     [(PRUISPosterRenderingViewController *)v9 setShowsContentWhenReady:1];
     [(PRUISPosterRenderingViewController *)v9 setSalientContentRectangle:self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height];
     [(PRUISPosterRenderingViewController *)v9 setContentOcclusionRectangles:self->_contentOcclusionRectangles];
@@ -1277,25 +1277,25 @@ LABEL_12:
   return v9;
 }
 
-- (void)_addViewController:(id)a3
+- (void)_addViewController:(id)controller
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PRUISPosterChannelViewController *)self childViewControllers];
-  v6 = [v5 containsObject:v4];
+  controllerCopy = controller;
+  childViewControllers = [(PRUISPosterChannelViewController *)self childViewControllers];
+  v6 = [childViewControllers containsObject:controllerCopy];
 
-  v7 = PRUISLogChannels();
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
+  view = PRUISLogChannels();
+  v8 = os_log_type_enabled(view, OS_LOG_TYPE_DEFAULT);
   if (v6)
   {
     if (v8)
     {
-      v9 = [(PRUISPosterChannelViewController *)self _logPrefix];
+      _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
       v11 = 138543618;
-      v12 = v9;
+      v12 = _logPrefix;
       v13 = 2114;
-      v14 = v4;
-      _os_log_impl(&dword_1CAE63000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ view controller is already a child of self: %{public}@", &v11, 0x16u);
+      v14 = controllerCopy;
+      _os_log_impl(&dword_1CAE63000, view, OS_LOG_TYPE_DEFAULT, "%{public}@ view controller is already a child of self: %{public}@", &v11, 0x16u);
     }
   }
 
@@ -1303,39 +1303,39 @@ LABEL_12:
   {
     if (v8)
     {
-      v10 = [(PRUISPosterChannelViewController *)self _logPrefix];
+      _logPrefix2 = [(PRUISPosterChannelViewController *)self _logPrefix];
       v11 = 138543618;
-      v12 = v10;
+      v12 = _logPrefix2;
       v13 = 2114;
-      v14 = v4;
-      _os_log_impl(&dword_1CAE63000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ adding new view controller: %{public}@", &v11, 0x16u);
+      v14 = controllerCopy;
+      _os_log_impl(&dword_1CAE63000, view, OS_LOG_TYPE_DEFAULT, "%{public}@ adding new view controller: %{public}@", &v11, 0x16u);
     }
 
-    [(PRUISPosterChannelViewController *)self bs_addChildViewController:v4];
-    v7 = [(PRUISPosterChannelViewController *)self view];
-    [v7 setNeedsLayout];
+    [(PRUISPosterChannelViewController *)self bs_addChildViewController:controllerCopy];
+    view = [(PRUISPosterChannelViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)_teardownPosterViewController:(id)a3
+- (void)_teardownPosterViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     v5 = self->_channel;
-    v6 = [(PRUISPosterChannelViewController *)self _logPrefix];
-    v7 = [v4 scene];
+    _logPrefix = [(PRUISPosterChannelViewController *)self _logPrefix];
+    scene = [controllerCopy scene];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __66__PRUISPosterChannelViewController__teardownPosterViewController___block_invoke;
     v11[3] = &unk_1E83A8788;
-    v8 = v4;
+    v8 = controllerCopy;
     v12 = v8;
-    v13 = v6;
+    v13 = _logPrefix;
     v14 = v5;
     v9 = v5;
-    v10 = v6;
-    [v7 pui_invalidateWithCompletion:v11];
+    v10 = _logPrefix;
+    [scene pui_invalidateWithCompletion:v11];
 
     [(PRUISPosterChannelViewController *)self bs_removeChildViewController:v8];
   }

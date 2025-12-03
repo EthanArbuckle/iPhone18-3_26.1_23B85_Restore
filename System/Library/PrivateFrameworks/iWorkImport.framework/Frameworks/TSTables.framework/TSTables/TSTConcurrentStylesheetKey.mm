@@ -1,30 +1,30 @@
 @interface TSTConcurrentStylesheetKey
-- (BOOL)isEqual:(id)a3;
-- (TSTConcurrentStylesheetKey)initWithStyle:(id)a3 andPropertyMap:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSTConcurrentStylesheetKey)initWithStyle:(id)style andPropertyMap:(id)map;
 @end
 
 @implementation TSTConcurrentStylesheetKey
 
-- (TSTConcurrentStylesheetKey)initWithStyle:(id)a3 andPropertyMap:(id)a4
+- (TSTConcurrentStylesheetKey)initWithStyle:(id)style andPropertyMap:(id)map
 {
-  v7 = a3;
-  v8 = a4;
+  styleCopy = style;
+  mapCopy = map;
   v12.receiver = self;
   v12.super_class = TSTConcurrentStylesheetKey;
   v9 = [(TSTConcurrentStylesheetKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_style, a3);
-    objc_storeStrong(&v10->_propertyMap, a4);
+    objc_storeStrong(&v9->_style, style);
+    objc_storeStrong(&v10->_propertyMap, map);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v10 = v5;

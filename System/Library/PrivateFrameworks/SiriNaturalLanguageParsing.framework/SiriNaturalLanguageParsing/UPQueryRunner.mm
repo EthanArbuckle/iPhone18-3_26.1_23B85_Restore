@@ -1,24 +1,24 @@
 @interface UPQueryRunner
-- (UPQueryRunner)initWithCoreModel:(id)a3 domainModelBundles:(id)a4;
-- (UPQueryRunner)initWithCoreModel:(id)a3 domainModels:(id)a4;
-- (id)combinedResultFromResults:(id)a3;
-- (id)dialogActFromQuery:(id)a3;
-- (id)multiTurnPredictionFromQuery:(id)a3 modelIdentifierToDomainResults:(id)a4 dialogAct:(id)a5 error:(id *)a6;
-- (id)predictionFromProtobufQuery:(id)a3 error:(id *)a4;
-- (id)predictionFromQuery:(id)a3 error:(id *)a4;
-- (id)singleTurnPredictionFromDomainResults:(id)a3;
+- (UPQueryRunner)initWithCoreModel:(id)model domainModelBundles:(id)bundles;
+- (UPQueryRunner)initWithCoreModel:(id)model domainModels:(id)models;
+- (id)combinedResultFromResults:(id)results;
+- (id)dialogActFromQuery:(id)query;
+- (id)multiTurnPredictionFromQuery:(id)query modelIdentifierToDomainResults:(id)results dialogAct:(id)act error:(id *)error;
+- (id)predictionFromProtobufQuery:(id)query error:(id *)error;
+- (id)predictionFromQuery:(id)query error:(id *)error;
+- (id)singleTurnPredictionFromDomainResults:(id)results;
 @end
 
 @implementation UPQueryRunner
 
-- (id)multiTurnPredictionFromQuery:(id)a3 modelIdentifierToDomainResults:(id)a4 dialogAct:(id)a5 error:(id *)a6
+- (id)multiTurnPredictionFromQuery:(id)query modelIdentifierToDomainResults:(id)results dialogAct:(id)act error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v24 = a4;
-  v25 = v10;
-  v26 = a5;
-  v11 = [(UPParserModel *)self->_coreModel predictionFromQuery:v10 error:a6];
+  queryCopy = query;
+  resultsCopy = results;
+  v25 = queryCopy;
+  actCopy = act;
+  v11 = [(UPParserModel *)self->_coreModel predictionFromQuery:queryCopy error:error];
   v27 = v11;
   if (!v11)
   {
@@ -29,10 +29,10 @@ LABEL_13:
 
   if (![v11 candidateCount])
   {
-    if (a6)
+    if (error)
     {
-      [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.uaapcustomluframework" code:2 userInfo:{0, v24}];
-      *a6 = v21 = 0;
+      [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.uaapcustomluframework" code:2 userInfo:{0, resultsCopy}];
+      *error = v21 = 0;
       goto LABEL_14;
     }
 
@@ -44,7 +44,7 @@ LABEL_13:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = v24;
+  v13 = resultsCopy;
   v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v14)
   {
@@ -59,8 +59,8 @@ LABEL_13:
         }
 
         v17 = *(*(&v28 + 1) + 8 * i);
-        v18 = [v13 objectForKeyedSubscript:{v17, v24}];
-        v19 = [[UPContextualizerInput alloc] initWithDomainResult:v18 coreResult:v27 modelIdentifier:v17 query:v25 dialogAct:v26];
+        v18 = [v13 objectForKeyedSubscript:{v17, resultsCopy}];
+        v19 = [[UPContextualizerInput alloc] initWithDomainResult:v18 coreResult:v27 modelIdentifier:v17 query:v25 dialogAct:actCopy];
         v20 = [(UPContextualizer *)self->__contextualizer resultWithContextualizerInput:v19];
         [v12 addObject:v20];
       }
@@ -79,26 +79,26 @@ LABEL_14:
   return v21;
 }
 
-- (id)singleTurnPredictionFromDomainResults:(id)a3
+- (id)singleTurnPredictionFromDomainResults:(id)results
 {
-  v3 = [(UPQueryRunner *)self combinedResultFromResults:a3];
+  v3 = [(UPQueryRunner *)self combinedResultFromResults:results];
 
   return v3;
 }
 
-- (id)combinedResultFromResults:(id)a3
+- (id)combinedResultFromResults:(id)results
 {
   v29 = *MEMORY[0x277D85DE8];
-  v22 = a3;
+  resultsCopy = results;
   v20 = NSStringFromSelector(sel_queryUUID);
-  v21 = [v22 valueForKey:v20];
-  v3 = [v21 anyObject];
-  v4 = [MEMORY[0x277CBEB18] array];
+  v21 = [resultsCopy valueForKey:v20];
+  anyObject = [v21 anyObject];
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v22;
+  v5 = resultsCopy;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
@@ -113,13 +113,13 @@ LABEL_14:
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [v9 candidateCount];
-        if (v10 >= 1)
+        candidateCount = [v9 candidateCount];
+        if (candidateCount >= 1)
         {
-          for (j = 0; j != v10; ++j)
+          for (j = 0; j != candidateCount; ++j)
           {
             v12 = [v9 candidateAtRank:j];
-            [v4 addObject:v12];
+            [array addObject:v12];
           }
         }
       }
@@ -134,26 +134,26 @@ LABEL_14:
   v14 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:v13 ascending:0];
   v27 = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
-  v16 = [v4 sortedArrayUsingDescriptors:v15];
+  v16 = [array sortedArrayUsingDescriptors:v15];
 
-  v17 = [[UPResult alloc] initWithCandidates:v16 queryUUID:v3];
+  v17 = [[UPResult alloc] initWithCandidates:v16 queryUUID:anyObject];
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-- (id)dialogActFromQuery:(id)a3
+- (id)dialogActFromQuery:(id)query
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 dialogAct];
+  queryCopy = query;
+  dialogAct = [queryCopy dialogAct];
 
-  if (v5)
+  if (dialogAct)
   {
     dialogActConverter = self->__dialogActConverter;
-    v7 = [v4 dialogAct];
+    dialogAct2 = [queryCopy dialogAct];
     v16 = 0;
-    v8 = [(UPDialogActConverter *)dialogActConverter convertFromDialogAct:v7 error:&v16];
+    v8 = [(UPDialogActConverter *)dialogActConverter convertFromDialogAct:dialogAct2 error:&v16];
     v9 = v16;
 
     v10 = SNLPOSLoggerForCategory(3);
@@ -171,9 +171,9 @@ LABEL_14:
 
     else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 138739971;
-      v18 = v13;
+      v18 = localizedDescription;
       _os_log_impl(&dword_22284A000, v11, OS_LOG_TYPE_ERROR, "Could not convert query dialog act: %{sensitive}@", buf, 0xCu);
     }
   }
@@ -188,20 +188,20 @@ LABEL_14:
   return v8;
 }
 
-- (id)predictionFromQuery:(id)a3 error:(id *)a4
+- (id)predictionFromQuery:(id)query error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v38 = a3;
+  queryCopy = query;
   v4 = SNLPOSLoggerForCategory(3);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v48 = v38;
+    v48 = queryCopy;
     _os_log_impl(&dword_22284A000, v4, OS_LOG_TYPE_DEBUG, "UPQuery from non-proto service: %@", buf, 0xCu);
   }
 
-  v36 = [MEMORY[0x277CBEB38] dictionary];
-  v34 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -224,27 +224,27 @@ LABEL_14:
       }
 
       v8 = *(*(&v42 + 1) + 8 * i);
-      v9 = [v8 parserModel];
-      v10 = [v9 identifier];
+      parserModel = [v8 parserModel];
+      identifier = [parserModel identifier];
 
-      v11 = [v8 preprocessor];
+      preprocessor = [v8 preprocessor];
       v41 = 0;
-      v12 = [v11 preprocess:v38 error:&v41];
+      v12 = [preprocessor preprocess:queryCopy error:&v41];
       v13 = v41;
 
       if (!v12)
       {
-        if (a4)
+        if (error)
         {
           v25 = v13;
-          *a4 = v13;
+          *error = v13;
         }
 
         goto LABEL_32;
       }
 
-      v14 = [v8 parserModel];
-      v15 = [v14 predictionFromQuery:v38 preprocessorOutput:v12 error:a4];
+      parserModel2 = [v8 parserModel];
+      v15 = [parserModel2 predictionFromQuery:queryCopy preprocessorOutput:v12 error:error];
 
       if (!v15)
       {
@@ -253,9 +253,9 @@ LABEL_14:
 
       if (![v15 candidateCount])
       {
-        if (a4)
+        if (error)
         {
-          *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.uaapcustomluframework" code:2 userInfo:0];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.uaapcustomluframework" code:2 userInfo:0];
         }
 
 LABEL_24:
@@ -264,30 +264,30 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      [v36 setObject:v15 forKey:v10];
-      v16 = [v8 calibrationModel];
-      v17 = v16;
-      if (!v16)
+      [dictionary setObject:v15 forKey:identifier];
+      calibrationModel = [v8 calibrationModel];
+      v17 = calibrationModel;
+      if (!calibrationModel)
       {
         goto LABEL_14;
       }
 
       v40 = 0;
-      v18 = [v16 scoreFromQuery:v38 preprocessorOutput:v12 error:&v40];
+      v18 = [calibrationModel scoreFromQuery:queryCopy preprocessorOutput:v12 error:&v40];
       v19 = v40;
       v20 = v19;
       if (!v18)
       {
-        if (a4)
+        if (error)
         {
           v30 = v19;
-          *a4 = v20;
+          *error = v20;
         }
 
         goto LABEL_32;
       }
 
-      [v34 setObject:v18 forKey:v10];
+      [dictionary2 setObject:v18 forKey:identifier];
 
 LABEL_14:
     }
@@ -305,38 +305,38 @@ LABEL_16:
 
   calibration = self->__calibration;
   v39 = 0;
-  v10 = [(UPCalibration *)calibration calibrateParserResults:v36 withCalibrationScores:v34 error:&v39];
+  identifier = [(UPCalibration *)calibration calibrateParserResults:dictionary withCalibrationScores:dictionary2 error:&v39];
   obj = v39;
-  if (v10)
+  if (identifier)
   {
-    v22 = [(UPQueryRunner *)self dialogActFromQuery:v38];
+    v22 = [(UPQueryRunner *)self dialogActFromQuery:queryCopy];
     v23 = v22;
     if (self->_coreModel && v22)
     {
-      v24 = [(UPQueryRunner *)self multiTurnPredictionFromQuery:v38 modelIdentifierToDomainResults:v10 dialogAct:v22 error:a4];
+      v24 = [(UPQueryRunner *)self multiTurnPredictionFromQuery:queryCopy modelIdentifierToDomainResults:identifier dialogAct:v22 error:error];
     }
 
     else
     {
       v27 = MEMORY[0x277CBEB58];
-      v28 = [v10 allValues];
-      v29 = [v27 setWithArray:v28];
+      allValues = [identifier allValues];
+      v29 = [v27 setWithArray:allValues];
 
       v24 = [(UPQueryRunner *)self singleTurnPredictionFromDomainResults:v29];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v26 = obj;
-    v10 = 0;
+    identifier = 0;
     v24 = 0;
-    *a4 = obj;
+    *error = obj;
   }
 
   else
   {
-    v10 = 0;
+    identifier = 0;
 LABEL_33:
     v24 = 0;
   }
@@ -346,54 +346,54 @@ LABEL_33:
   return v24;
 }
 
-- (id)predictionFromProtobufQuery:(id)a3 error:(id *)a4
+- (id)predictionFromProtobufQuery:(id)query error:(id *)error
 {
-  v6 = a3;
+  queryCopy = query;
   v15 = 0;
-  v7 = [[UPQuery alloc] initWithProtobufQuery:v6 error:&v15];
+  v7 = [[UPQuery alloc] initWithProtobufQuery:queryCopy error:&v15];
   v8 = v15;
   v9 = v8;
   if (v7)
   {
-    v10 = [(UPQueryRunner *)self predictionFromQuery:v7 error:a4];
+    v10 = [(UPQueryRunner *)self predictionFromQuery:v7 error:error];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 protobufRepresentation];
+      protobufRepresentation = [v10 protobufRepresentation];
     }
 
     else
     {
-      v12 = 0;
+      protobufRepresentation = 0;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = v8;
-    v12 = 0;
-    *a4 = v9;
+    protobufRepresentation = 0;
+    *error = v9;
   }
 
   else
   {
-    v12 = 0;
+    protobufRepresentation = 0;
   }
 
-  return v12;
+  return protobufRepresentation;
 }
 
-- (UPQueryRunner)initWithCoreModel:(id)a3 domainModels:(id)a4
+- (UPQueryRunner)initWithCoreModel:(id)model domainModels:(id)models
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  modelCopy = model;
+  modelsCopy = models;
   v7 = [MEMORY[0x277CBEB58] set];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = modelsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -408,8 +408,8 @@ LABEL_33:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 preprocessor];
-        v14 = [[UPModelBundle alloc] initWithPreprocessor:v13 parserModel:v12 calibrationModel:0];
+        preprocessor = [v12 preprocessor];
+        v14 = [[UPModelBundle alloc] initWithPreprocessor:preprocessor parserModel:v12 calibrationModel:0];
         [v7 addObject:v14];
       }
 
@@ -419,23 +419,23 @@ LABEL_33:
     while (v9);
   }
 
-  v15 = [(UPQueryRunner *)self initWithCoreModel:v5 domainModelBundles:v7];
+  v15 = [(UPQueryRunner *)self initWithCoreModel:modelCopy domainModelBundles:v7];
   v16 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (UPQueryRunner)initWithCoreModel:(id)a3 domainModelBundles:(id)a4
+- (UPQueryRunner)initWithCoreModel:(id)model domainModelBundles:(id)bundles
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  bundlesCopy = bundles;
   v19.receiver = self;
   v19.super_class = UPQueryRunner;
   v9 = [(UPQueryRunner *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_coreModel, a3);
-    objc_storeStrong(&v10->_domainModelBundles, a4);
+    objc_storeStrong(&v9->_coreModel, model);
+    objc_storeStrong(&v10->_domainModelBundles, bundles);
     v11 = objc_alloc_init(UPCalibration);
     calibration = v10->__calibration;
     v10->__calibration = v11;

@@ -1,44 +1,44 @@
 @interface HKHRAFibBurdenSevenDayAnalysisManager
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_determineDayIndexRangeForPreviousCalendarWeekWithCurrentDate:(id)a3;
-- (BOOL)_isDayOneDayAfterCalendarWeekWithCurrentDate:(id)a3;
-- (HKHRAFibBurdenSevenDayAnalysisManager)initWithProfile:(id)a3 analyzer:(id)a4;
-- (HKHRAFibBurdenSevenDayAnalysisManager)initWithProfile:(id)a3 modeDeterminer:(id)a4 analyzer:(id)a5 calendarCache:(id)a6 dateGenerator:(id)a7;
-- (id)_createBurdenSampleWithPercentage:(double)a3 burdenPercentageWasClampedToLowerBound:(BOOL)a4 range:(id)a5 shouldSaveSampleToDatabase:(BOOL)a6 error:(id *)a7;
-- (id)analyzePreviousCalendarWeekWithFeatureStatus:(id)a3 shouldSaveSampleToDatabase:(BOOL)a4 breadcrumbManager:(id)a5 error:(id *)a6;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_determineDayIndexRangeForPreviousCalendarWeekWithCurrentDate:(id)date;
+- (BOOL)_isDayOneDayAfterCalendarWeekWithCurrentDate:(id)date;
+- (HKHRAFibBurdenSevenDayAnalysisManager)initWithProfile:(id)profile analyzer:(id)analyzer;
+- (HKHRAFibBurdenSevenDayAnalysisManager)initWithProfile:(id)profile modeDeterminer:(id)determiner analyzer:(id)analyzer calendarCache:(id)cache dateGenerator:(id)generator;
+- (id)_createBurdenSampleWithPercentage:(double)percentage burdenPercentageWasClampedToLowerBound:(BOOL)bound range:(id)range shouldSaveSampleToDatabase:(BOOL)database error:(id *)error;
+- (id)analyzePreviousCalendarWeekWithFeatureStatus:(id)status shouldSaveSampleToDatabase:(BOOL)database breadcrumbManager:(id)manager error:(id *)error;
 @end
 
 @implementation HKHRAFibBurdenSevenDayAnalysisManager
 
-- (HKHRAFibBurdenSevenDayAnalysisManager)initWithProfile:(id)a3 analyzer:(id)a4
+- (HKHRAFibBurdenSevenDayAnalysisManager)initWithProfile:(id)profile analyzer:(id)analyzer
 {
   v6 = MEMORY[0x277CCD0A0];
-  v7 = a4;
-  v8 = a3;
+  analyzerCopy = analyzer;
+  profileCopy = profile;
   v9 = objc_alloc_init(v6);
-  v10 = [[HKHRAFibBurdenSevenDayAnalysisModeDeterminer alloc] initWithProfile:v8 calendarCache:v9];
-  v11 = [(HKHRAFibBurdenSevenDayAnalysisManager *)self initWithProfile:v8 modeDeterminer:v10 analyzer:v7 calendarCache:v9 dateGenerator:&__block_literal_global_20];
+  v10 = [[HKHRAFibBurdenSevenDayAnalysisModeDeterminer alloc] initWithProfile:profileCopy calendarCache:v9];
+  v11 = [(HKHRAFibBurdenSevenDayAnalysisManager *)self initWithProfile:profileCopy modeDeterminer:v10 analyzer:analyzerCopy calendarCache:v9 dateGenerator:&__block_literal_global_20];
 
   return v11;
 }
 
-- (HKHRAFibBurdenSevenDayAnalysisManager)initWithProfile:(id)a3 modeDeterminer:(id)a4 analyzer:(id)a5 calendarCache:(id)a6 dateGenerator:(id)a7
+- (HKHRAFibBurdenSevenDayAnalysisManager)initWithProfile:(id)profile modeDeterminer:(id)determiner analyzer:(id)analyzer calendarCache:(id)cache dateGenerator:(id)generator
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  profileCopy = profile;
+  determinerCopy = determiner;
+  analyzerCopy = analyzer;
+  cacheCopy = cache;
+  generatorCopy = generator;
   v22.receiver = self;
   v22.super_class = HKHRAFibBurdenSevenDayAnalysisManager;
   v17 = [(HKHRAFibBurdenSevenDayAnalysisManager *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_profile, v12);
-    objc_storeStrong(&v18->_modeDeterminer, a4);
-    objc_storeStrong(&v18->_analyzer, a5);
-    objc_storeStrong(&v18->_calendarCache, a6);
-    v19 = MEMORY[0x22AACDB50](v16);
+    objc_storeWeak(&v17->_profile, profileCopy);
+    objc_storeStrong(&v18->_modeDeterminer, determiner);
+    objc_storeStrong(&v18->_analyzer, analyzer);
+    objc_storeStrong(&v18->_calendarCache, cache);
+    v19 = MEMORY[0x22AACDB50](generatorCopy);
     dateGenerator = v18->_dateGenerator;
     v18->_dateGenerator = v19;
   }
@@ -46,20 +46,20 @@
   return v18;
 }
 
-- (id)analyzePreviousCalendarWeekWithFeatureStatus:(id)a3 shouldSaveSampleToDatabase:(BOOL)a4 breadcrumbManager:(id)a5 error:(id *)a6
+- (id)analyzePreviousCalendarWeekWithFeatureStatus:(id)status shouldSaveSampleToDatabase:(BOOL)database breadcrumbManager:(id)manager error:(id *)error
 {
-  v7 = a4;
+  databaseCopy = database;
   v59 = *MEMORY[0x277D85DE8];
-  v10 = a5;
+  managerCopy = manager;
   dateGenerator = self->_dateGenerator;
   v12 = dateGenerator[2];
-  v13 = a3;
+  statusCopy = status;
   v14 = v12(dateGenerator);
   v15 = [(HKHRAFibBurdenSevenDayAnalysisManager *)self _determineDayIndexRangeForPreviousCalendarWeekWithCurrentDate:v14];
   v17 = v16;
   modeDeterminer = self->_modeDeterminer;
   v54 = 0;
-  v19 = [(HKHRAFibBurdenSevenDayAnalysisModeDeterminer *)modeDeterminer determineModeForAnalysisWeekRange:v15 featureStatus:v16 error:v13, &v54];
+  v19 = [(HKHRAFibBurdenSevenDayAnalysisModeDeterminer *)modeDeterminer determineModeForAnalysisWeekRange:v15 featureStatus:v16 error:statusCopy, &v54];
 
   v20 = v54;
   if (!v19)
@@ -74,10 +74,10 @@
     v20 = v20;
     if (v20)
     {
-      if (a6)
+      if (error)
       {
         v27 = v20;
-        *a6 = v20;
+        *error = v20;
       }
 
       else
@@ -91,17 +91,17 @@
     goto LABEL_28;
   }
 
-  v51 = v7;
-  v21 = [v19 integerValue];
+  v51 = databaseCopy;
+  integerValue = [v19 integerValue];
   _HKInitializeLogging();
   v22 = HKHRAFibBurdenLogForCategory();
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-  if (v21 == 2)
+  if (integerValue == 2)
   {
     if (v23)
     {
       *buf = 138543362;
-      v56 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_229486000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] Mode determination indicated we should not perform analysis, skipping.", buf, 0xCu);
     }
 
@@ -112,24 +112,24 @@ LABEL_28:
     goto LABEL_48;
   }
 
-  v50 = v21;
+  v50 = integerValue;
   if (v23)
   {
     v28 = NSStringFromHKDayIndexRange();
     *buf = 138412546;
-    v56 = self;
+    selfCopy4 = self;
     v57 = 2112;
     v58 = v28;
     _os_log_impl(&dword_229486000, v22, OS_LOG_TYPE_DEFAULT, "[%@] Performing analysis for day index range: %@", buf, 0x16u);
   }
 
-  [v10 dropBreadcrumb:3];
+  [managerCopy dropBreadcrumb:3];
   analyzer = self->_analyzer;
   v53 = v20;
-  v30 = [(HKHRAFibBurdenAnalyzer *)analyzer generateSevenDayBurdenWithRange:v15 breadcrumbManager:v17 error:v10, &v53];
+  v30 = [(HKHRAFibBurdenAnalyzer *)analyzer generateSevenDayBurdenWithRange:v15 breadcrumbManager:v17 error:managerCopy, &v53];
   v31 = v53;
 
-  [v10 dropBreadcrumb:5];
+  [managerCopy dropBreadcrumb:5];
   if (!v30)
   {
     _HKInitializeLogging();
@@ -142,10 +142,10 @@ LABEL_28:
     v20 = v31;
     if (v20)
     {
-      if (a6)
+      if (error)
       {
         v37 = v20;
-        *a6 = v20;
+        *error = v20;
       }
 
       else
@@ -158,10 +158,10 @@ LABEL_28:
     goto LABEL_47;
   }
 
-  v32 = [v30 unavailabilityReason];
-  if (v32 > 1)
+  unavailabilityReason = [v30 unavailabilityReason];
+  if (unavailabilityReason > 1)
   {
-    if (v32 == 2)
+    if (unavailabilityReason == 2)
     {
       v33 = 0;
       v34 = 4;
@@ -170,7 +170,7 @@ LABEL_28:
       goto LABEL_46;
     }
 
-    if (v32 == 3)
+    if (unavailabilityReason == 3)
     {
       v33 = 0;
       v34 = 5;
@@ -194,14 +194,14 @@ LABEL_29:
     goto LABEL_46;
   }
 
-  if (!v32)
+  if (!unavailabilityReason)
   {
-    v49 = [v30 burdenPercentage];
-    [v49 doubleValue];
+    burdenPercentage = [v30 burdenPercentage];
+    [burdenPercentage doubleValue];
     v41 = v40;
-    v42 = [v30 burdenPercentageWasClampedToLowerBound];
+    burdenPercentageWasClampedToLowerBound = [v30 burdenPercentageWasClampedToLowerBound];
     v52 = v31;
-    v33 = [(HKHRAFibBurdenSevenDayAnalysisManager *)self _createBurdenSampleWithPercentage:v42 burdenPercentageWasClampedToLowerBound:v15 range:v17 shouldSaveSampleToDatabase:v51 error:&v52, v41];
+    v33 = [(HKHRAFibBurdenSevenDayAnalysisManager *)self _createBurdenSampleWithPercentage:burdenPercentageWasClampedToLowerBound burdenPercentageWasClampedToLowerBound:v15 range:v17 shouldSaveSampleToDatabase:v51 error:&v52, v41];
     v20 = v52;
 
     _HKInitializeLogging();
@@ -226,7 +226,7 @@ LABEL_29:
       if (v45)
       {
         *buf = 138412290;
-        v56 = self;
+        selfCopy4 = self;
         v46 = "[%@] Saved sample to HealthKit";
 LABEL_44:
         _os_log_impl(&dword_229486000, v44, OS_LOG_TYPE_DEFAULT, v46, buf, 0xCu);
@@ -236,7 +236,7 @@ LABEL_44:
     else if (v45)
     {
       *buf = 138412290;
-      v56 = self;
+      selfCopy4 = self;
       v46 = "[%@] Sample created but not saved";
       goto LABEL_44;
     }
@@ -246,7 +246,7 @@ LABEL_44:
     goto LABEL_46;
   }
 
-  if (v32 != 1)
+  if (unavailabilityReason != 1)
   {
     goto LABEL_29;
   }
@@ -256,7 +256,7 @@ LABEL_44:
   v20 = v31;
   v35 = @"Not enough total tachograms";
 LABEL_46:
-  [v10 dropAnalysisResultBreadcrumbWithContext:v35];
+  [managerCopy dropAnalysisResultBreadcrumbWithContext:v35];
   v38 = [objc_alloc(MEMORY[0x277D12F60]) initWithResult:v34 sample:v33 onboardedWithinAnalysisInterval:v50 == 1];
 
 LABEL_47:
@@ -267,22 +267,22 @@ LABEL_48:
   return v38;
 }
 
-- (BOOL)_isDayOneDayAfterCalendarWeekWithCurrentDate:(id)a3
+- (BOOL)_isDayOneDayAfterCalendarWeekWithCurrentDate:(id)date
 {
   calendarCache = self->_calendarCache;
-  v4 = a3;
-  v5 = [(HKCalendarCache *)calendarCache currentCalendar];
-  v6 = [v5 component:512 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [(HKCalendarCache *)calendarCache currentCalendar];
+  v6 = [currentCalendar component:512 fromDate:dateCopy];
 
-  LOBYTE(v4) = v6 == *MEMORY[0x277D12EC0];
-  return v4;
+  LOBYTE(dateCopy) = v6 == *MEMORY[0x277D12EC0];
+  return dateCopy;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_determineDayIndexRangeForPreviousCalendarWeekWithCurrentDate:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_determineDayIndexRangeForPreviousCalendarWeekWithCurrentDate:(id)date
 {
   calendarCache = self->_calendarCache;
-  v4 = a3;
-  v5 = [(HKCalendarCache *)calendarCache currentCalendar];
+  dateCopy = date;
+  currentCalendar = [(HKCalendarCache *)calendarCache currentCalendar];
   v6 = HKHRAFibBurdenPreviousWeekDayIndexRange();
   v8 = v7;
 
@@ -293,51 +293,51 @@ LABEL_48:
   return result;
 }
 
-- (id)_createBurdenSampleWithPercentage:(double)a3 burdenPercentageWasClampedToLowerBound:(BOOL)a4 range:(id)a5 shouldSaveSampleToDatabase:(BOOL)a6 error:(id *)a7
+- (id)_createBurdenSampleWithPercentage:(double)percentage burdenPercentageWasClampedToLowerBound:(BOOL)bound range:(id)range shouldSaveSampleToDatabase:(BOOL)database error:(id *)error
 {
-  v46 = a6;
-  var1 = a5.var1;
-  var0 = a5.var0;
+  databaseCopy = database;
+  var1 = range.var1;
+  var0 = range.var0;
   v48[1] = *MEMORY[0x277D85DE8];
-  v12 = [(HKCalendarCache *)self->_calendarCache currentCalendar];
-  v13 = [MEMORY[0x277CBEAA8] hk_dateOnDayIndex:var0 atHour:0 calendar:v12];
+  currentCalendar = [(HKCalendarCache *)self->_calendarCache currentCalendar];
+  v13 = [MEMORY[0x277CBEAA8] hk_dateOnDayIndex:var0 atHour:0 calendar:currentCalendar];
   v14 = var0 + var1;
   v15 = v13;
-  v16 = [MEMORY[0x277CBEAA8] hk_dateOnDayIndex:v14 atHour:0 calendar:v12];
+  v16 = [MEMORY[0x277CBEAA8] hk_dateOnDayIndex:v14 atHour:0 calendar:currentCalendar];
   v17 = MEMORY[0x277CCD7E8];
-  v18 = [MEMORY[0x277CCDAB0] percentUnit];
+  percentUnit = [MEMORY[0x277CCDAB0] percentUnit];
   v19 = v17;
-  v20 = a7;
-  v21 = [v19 quantityWithUnit:v18 doubleValue:a3];
+  errorCopy = error;
+  v21 = [v19 quantityWithUnit:percentUnit doubleValue:percentage];
 
-  v22 = [MEMORY[0x277CBEBB0] localTimeZone];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
   v23 = HKHRAFibBurdenSevenDayAnalysisMetadataWithTimeZoneAndWasClamped();
 
   v24 = MEMORY[0x277CCD800];
   v25 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC950]];
-  v26 = [MEMORY[0x277CCD2E8] localDevice];
+  localDevice = [MEMORY[0x277CCD2E8] localDevice];
   v47 = v21;
-  v27 = [v24 quantitySampleWithType:v25 quantity:v21 startDate:v15 endDate:v16 device:v26 metadata:v23];
+  v27 = [v24 quantitySampleWithType:v25 quantity:v21 startDate:v15 endDate:v16 device:localDevice metadata:v23];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v29 = [WeakRetained deviceManager];
-  v30 = [v29 currentDeviceEntityWithError:v20];
+  deviceManager = [WeakRetained deviceManager];
+  v30 = [deviceManager currentDeviceEntityWithError:errorCopy];
 
   if (v30)
   {
     v45 = v16;
     v31 = objc_loadWeakRetained(&self->_profile);
-    v32 = [v31 dataProvenanceManager];
-    v33 = [v32 defaultLocalDataProvenanceWithDeviceEntity:v30];
+    dataProvenanceManager = [v31 dataProvenanceManager];
+    v33 = [dataProvenanceManager defaultLocalDataProvenanceWithDeviceEntity:v30];
 
     v34 = v27;
-    if (v46)
+    if (databaseCopy)
     {
       v35 = objc_loadWeakRetained(&self->_profile);
-      v36 = [v35 dataManager];
+      dataManager = [v35 dataManager];
       v48[0] = v27;
       v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
-      v38 = [v36 insertDataObjects:v37 withProvenance:v33 creationDate:v20 error:CFAbsoluteTimeGetCurrent()];
+      v38 = [dataManager insertDataObjects:v37 withProvenance:v33 creationDate:errorCopy error:CFAbsoluteTimeGetCurrent()];
       v39 = v15;
       v40 = v38;
 

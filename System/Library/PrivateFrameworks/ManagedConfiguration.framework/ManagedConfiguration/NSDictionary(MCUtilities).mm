@@ -29,10 +29,10 @@
 - (uint64_t)MCWriteToBinaryFile:()MCUtilities
 {
   v4 = a3;
-  v5 = [[MCDictionaryWriter alloc] initWithDictionary:a1 path:v4];
+  v5 = [[MCDictionaryWriter alloc] initWithDictionary:self path:v4];
 
-  v6 = [(MCDictionaryWriter *)v5 write];
-  return v6;
+  write = [(MCDictionaryWriter *)v5 write];
+  return write;
 }
 
 - (uint64_t)MCWriteToBinaryFile:()MCUtilities atomically:
@@ -41,7 +41,7 @@
   v6 = a3;
   v7 = objc_autoreleasePoolPush();
   v18 = 0;
-  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:a1 format:200 options:0 error:&v18];
+  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:self format:200 options:0 error:&v18];
   v9 = v18;
   if (v8)
   {
@@ -117,12 +117,12 @@ LABEL_10:
 - (void)MCMutableDeepCopyWithZone:()MCUtilities
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = [a1 keyEnumerator];
+  obj = [self keyEnumerator];
   v6 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -145,7 +145,7 @@ LABEL_10:
           v11 = [v10 mutableCopyWithZone:a3];
         }
 
-        v12 = [a1 objectForKey:v10];
+        v12 = [self objectForKey:v10];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -194,7 +194,7 @@ LABEL_14:
   v16 = a5;
   v17 = a7;
   v18 = a9;
-  v26 = [a1 objectForKey:v15];
+  v26 = [self objectForKey:v15];
   if (v26)
   {
     if (objc_opt_isKindOfClass())
@@ -236,7 +236,7 @@ LABEL_10:
   v13 = a3;
   v14 = a5;
   v15 = a7;
-  v16 = [a1 objectForKey:v13];
+  v16 = [self objectForKey:v13];
   if (v16 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     if (a8)
@@ -263,7 +263,7 @@ LABEL_10:
   v16 = a4;
   v17 = a6;
   v18 = a8;
-  v19 = [a1 objectForKey:v15];
+  v19 = [self objectForKey:v15];
   if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (a9)
@@ -308,7 +308,7 @@ LABEL_11:
   v12 = a3;
   v13 = a4;
   v14 = a6;
-  v15 = [a1 objectForKey:v12];
+  v15 = [self objectForKey:v12];
   if (!v15)
   {
     goto LABEL_4;
@@ -345,7 +345,7 @@ LABEL_8:
 
 - (id)MCShortenedPlistDescription
 {
-  v1 = [objc_opt_class() MCShortenedDictionary:a1];
+  v1 = [objc_opt_class() MCShortenedDictionary:self];
   v2 = [v1 description];
 
   return v2;
@@ -357,7 +357,7 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 MCShortenedArray:v4];
+    v5 = [self MCShortenedArray:v4];
   }
 
   else
@@ -365,7 +365,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a1 MCShortenedDictionary:v4];
+      v5 = [self MCShortenedDictionary:v4];
     }
 
     else
@@ -373,7 +373,7 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [a1 MCShortenedData:v4];
+        v5 = [self MCShortenedData:v4];
       }
 
       else
@@ -397,17 +397,17 @@ LABEL_8:
     v5 = MEMORY[0x1E696AEC0];
     if (v4 > 0x10)
     {
-      v6 = [v3 subdataWithRange:{0, 8}];
-      v8 = [v6 MCHexString];
+      mCHexString3 = [v3 subdataWithRange:{0, 8}];
+      mCHexString = [mCHexString3 MCHexString];
       v9 = [v3 subdataWithRange:{objc_msgSend(v3, "length") - 8, 8}];
-      v10 = [v9 MCHexString];
-      v7 = [v5 stringWithFormat:@"0x%@ ... 0x%@", v8, v10];
+      mCHexString2 = [v9 MCHexString];
+      v7 = [v5 stringWithFormat:@"0x%@ ... 0x%@", mCHexString, mCHexString2];
     }
 
     else
     {
-      v6 = [v3 MCHexString];
-      v7 = [v5 stringWithFormat:@"0x%@", v6];
+      mCHexString3 = [v3 MCHexString];
+      v7 = [v5 stringWithFormat:@"0x%@", mCHexString3];
     }
   }
 
@@ -445,7 +445,7 @@ LABEL_8:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 MCShortenedObject:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self MCShortenedObject:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 addObject:v11];
       }
 
@@ -471,7 +471,7 @@ LABEL_8:
   v9[3] = &unk_1E77CFE90;
   v7 = v6;
   v10 = v7;
-  v11 = a1;
+  selfCopy = self;
   [v5 enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
@@ -481,9 +481,9 @@ LABEL_8:
 {
   v47 = *MEMORY[0x1E69E9840];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 defaultRestrictions];
+  defaultRestrictions = [v2 defaultRestrictions];
 
-  [a1 objectForKeyedSubscript:@"restrictedBool"];
+  [self objectForKeyedSubscript:@"restrictedBool"];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -503,7 +503,7 @@ LABEL_8:
           objc_enumerationMutation(v4);
         }
 
-        if (![a1 MCValidateBoolRestriction:*(*(&v39 + 1) + 8 * v8) inRestrictions:v4 defaultRestrictions:v3])
+        if (![self MCValidateBoolRestriction:*(*(&v39 + 1) + 8 * v8) inRestrictions:v4 defaultRestrictions:defaultRestrictions])
         {
           v24 = 0;
           v9 = v4;
@@ -524,7 +524,7 @@ LABEL_8:
     }
   }
 
-  [a1 objectForKeyedSubscript:@"restrictedValue"];
+  [self objectForKeyedSubscript:@"restrictedValue"];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -544,7 +544,7 @@ LABEL_8:
           objc_enumerationMutation(v9);
         }
 
-        if (![a1 MCValidateValueRestriction:*(*(&v35 + 1) + 8 * v13) inRestrictions:v9 defaultRestrictions:v3])
+        if (![self MCValidateValueRestriction:*(*(&v35 + 1) + 8 * v13) inRestrictions:v9 defaultRestrictions:defaultRestrictions])
         {
           v24 = 0;
           v14 = v9;
@@ -565,7 +565,7 @@ LABEL_8:
     }
   }
 
-  [a1 objectForKeyedSubscript:@"intersection"];
+  [self objectForKeyedSubscript:@"intersection"];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -585,7 +585,7 @@ LABEL_8:
           objc_enumerationMutation(v14);
         }
 
-        if (![a1 MCValidateIntersectionRestriction:*(*(&v31 + 1) + 8 * v18) inRestrictions:v14 defaultRestrictions:v3])
+        if (![self MCValidateIntersectionRestriction:*(*(&v31 + 1) + 8 * v18) inRestrictions:v14 defaultRestrictions:defaultRestrictions])
         {
           v24 = 0;
           v19 = v14;
@@ -606,7 +606,7 @@ LABEL_8:
     }
   }
 
-  [a1 objectForKeyedSubscript:@"union"];
+  [self objectForKeyedSubscript:@"union"];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -626,7 +626,7 @@ LABEL_8:
           objc_enumerationMutation(v19);
         }
 
-        if (![a1 MCValidateUnionRestriction:*(*(&v27 + 1) + 8 * v23) inRestrictions:v19 defaultRestrictions:{v3, v27}])
+        if (![self MCValidateUnionRestriction:*(*(&v27 + 1) + 8 * v23) inRestrictions:v19 defaultRestrictions:{defaultRestrictions, v27}])
         {
           v24 = 0;
           goto LABEL_38;
@@ -793,7 +793,7 @@ LABEL_41:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [a1 objectForKeyedSubscript:{v12, v19}];
+        v13 = [self objectForKeyedSubscript:{v12, v19}];
         v14 = [v6 objectForKeyedSubscript:v12];
         if (!v13)
         {
@@ -850,8 +850,8 @@ LABEL_12:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -863,11 +863,11 @@ LABEL_12:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v6 objectForKeyedSubscript:{v12, v19}];
+        v13 = [selfCopy objectForKeyedSubscript:{v12, v19}];
         v14 = [v4 objectForKeyedSubscript:v12];
         if (v14)
         {
@@ -895,7 +895,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -910,7 +910,7 @@ LABEL_12:
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a1];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:self];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -922,7 +922,7 @@ LABEL_12:
     v8 = v7;
     v9 = *v24;
     v10 = 0x1E695D000uLL;
-    v22 = a1;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v8; ++i)
@@ -933,7 +933,7 @@ LABEL_12:
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [a1 objectForKeyedSubscript:v12];
+        v13 = [self objectForKeyedSubscript:v12];
         v14 = [v6 objectForKeyedSubscript:v12];
         if (v13)
         {
@@ -956,7 +956,7 @@ LABEL_12:
               [v17 removeObjectForKey:v12];
             }
 
-            a1 = v22;
+            self = selfCopy;
             v10 = 0x1E695D000;
           }
 
@@ -983,7 +983,7 @@ LABEL_12:
   v31 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v24 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a1];
+  v24 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:self];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -992,7 +992,7 @@ LABEL_12:
   v25 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v25)
   {
-    v22 = a1;
+    selfCopy = self;
     v23 = *v27;
     v21 = v8;
     do
@@ -1005,7 +1005,7 @@ LABEL_12:
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        v11 = [a1 objectForKeyedSubscript:v10];
+        v11 = [self objectForKeyedSubscript:v10];
         v12 = [v8 objectForKeyedSubscript:v10];
         v13 = v12;
         if (v7)
@@ -1038,7 +1038,7 @@ LABEL_12:
           v8 = v21;
           [v24 setObject:v18 forKeyedSubscript:v10];
 
-          a1 = v22;
+          self = selfCopy;
         }
 
         else
@@ -1062,13 +1062,13 @@ LABEL_12:
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a1];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:self];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1079,11 +1079,11 @@ LABEL_12:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v6 objectForKeyedSubscript:{v11, v16}];
+        v12 = [selfCopy objectForKeyedSubscript:{v11, v16}];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -1097,7 +1097,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);

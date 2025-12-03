@@ -1,5 +1,5 @@
 @interface BKPdfTocParser
-- (BKPdfTocParser)initWithDocument:(CGPDFDocument *)a3;
+- (BKPdfTocParser)initWithDocument:(CGPDFDocument *)document;
 - (id)pageDictionaryToPageNumber;
 - (void)dealloc;
 - (void)parse;
@@ -7,12 +7,12 @@
 
 @implementation BKPdfTocParser
 
-- (BKPdfTocParser)initWithDocument:(CGPDFDocument *)a3
+- (BKPdfTocParser)initWithDocument:(CGPDFDocument *)document
 {
   v4 = [(BKPdfTocParser *)self init];
   if (v4)
   {
-    v4->_document = CGPDFDocumentRetain(a3);
+    v4->_document = CGPDFDocumentRetain(document);
     [(BKPdfTocParser *)v4 parse];
   }
 

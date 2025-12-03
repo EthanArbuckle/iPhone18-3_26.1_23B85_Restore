@@ -1,10 +1,10 @@
 @interface MCSlide
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (CGPoint)center;
 - (MCAssetVideo)asset;
 - (MCPlugSlide)plug;
 - (MCSlide)init;
-- (MCSlide)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCSlide)initWithImprint:(id)imprint andMontage:(id)montage;
 - (MCSong)song;
 - (NSArray)orderedFilters;
 - (NSDictionary)frameAttributes;
@@ -13,74 +13,74 @@
 - (NSString)kenBurnsType;
 - (double)rotation;
 - (double)scale;
-- (id)addFilterWithFilterID:(id)a3;
-- (id)animationPathForKey:(id)a3;
-- (id)filterAtIndex:(unint64_t)a3;
-- (id)frameAttributeForKey:(id)a3;
+- (id)addFilterWithFilterID:(id)d;
+- (id)animationPathForKey:(id)key;
+- (id)filterAtIndex:(unint64_t)index;
+- (id)frameAttributeForKey:(id)key;
 - (id)imprint;
 - (id)imprintsForAnimationPaths;
 - (id)imprintsForFilters;
-- (id)insertFilterWithFilterID:(id)a3 atIndex:(unint64_t)a4;
+- (id)insertFilterWithFilterID:(id)d atIndex:(unint64_t)index;
 - (unint64_t)countOfAnimationPaths;
 - (unint64_t)countOfFilters;
 - (unsigned)countOfLayouts;
-- (void)_copySelfToSnapshot:(id)a3;
-- (void)addAnimationPath:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
+- (void)addAnimationPath:(id)path;
 - (void)demolish;
 - (void)demolishAnimationPaths;
 - (void)demolishFilters;
-- (void)initAnimationPathsWithImprints:(id)a3;
-- (void)initFiltersWithImprints:(id)a3;
-- (void)moveFiltersAtIndices:(id)a3 toIndex:(unint64_t)a4;
-- (void)observeFilter:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)initAnimationPathsWithImprints:(id)imprints;
+- (void)initFiltersWithImprints:(id)imprints;
+- (void)moveFiltersAtIndices:(id)indices toIndex:(unint64_t)index;
+- (void)observeFilter:(id)filter;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeAllAnimationPaths;
 - (void)removeAllFilters;
-- (void)removeAnimationPathForKey:(id)a3;
-- (void)removeFiltersAtIndices:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setCurrentLayoutIndex:(unsigned __int8)a3;
-- (void)setFrameAttribute:(id)a3 forKey:(id)a4;
-- (void)setFrameAttributes:(id)a3;
-- (void)setKenBurnsType:(id)a3;
-- (void)setPlug:(id)a3;
-- (void)setRotation:(double)a3;
-- (void)setScale:(double)a3;
-- (void)setSongForAsset:(id)a3;
-- (void)unobserveFilter:(id)a3;
+- (void)removeAnimationPathForKey:(id)key;
+- (void)removeFiltersAtIndices:(id)indices;
+- (void)setAsset:(id)asset;
+- (void)setCenter:(CGPoint)center;
+- (void)setCurrentLayoutIndex:(unsigned __int8)index;
+- (void)setFrameAttribute:(id)attribute forKey:(id)key;
+- (void)setFrameAttributes:(id)attributes;
+- (void)setKenBurnsType:(id)type;
+- (void)setPlug:(id)plug;
+- (void)setRotation:(double)rotation;
+- (void)setScale:(double)scale;
+- (void)setSongForAsset:(id)asset;
+- (void)unobserveFilter:(id)filter;
 @end
 
 @implementation MCSlide
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"builtVolume"])
+  if ([key isEqualToString:@"builtVolume"])
   {
     return [NSSet setWithObjects:@"audioVolume", @"fadeInDuration", @"fadeOutDuration", @"audioDuckLevel", @"duckInDuration", @"duckOutDuration", 0];
   }
 
-  if ([a3 isEqualToString:@"builtAudio"])
+  if ([key isEqualToString:@"builtAudio"])
   {
     v8 = @"builtVolume";
     v9 = 0;
     return [NSSet setWithObjects:@"song", @"startTime", @"duration", v8, v9, v10, v11];
   }
 
-  if ([a3 isEqualToString:@"audioNoVolume"])
+  if ([key isEqualToString:@"audioNoVolume"])
   {
     v8 = 0;
     return [NSSet setWithObjects:@"song", @"startTime", @"duration", v8, v9, v10, v11];
   }
 
-  if ([a3 isEqualToString:@"orderedFilters"])
+  if ([key isEqualToString:@"orderedFilters"])
   {
     return [NSSet setWithObjects:@"filters", 0, v6, v7, v9, v10, v11];
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___MCSlide;
-  return objc_msgSendSuper2(&v12, "keyPathsForValuesAffectingValueForKey:", a3);
+  return objc_msgSendSuper2(&v12, "keyPathsForValuesAffectingValueForKey:", key);
 }
 
 - (MCSlide)init
@@ -97,21 +97,21 @@
   return result;
 }
 
-- (MCSlide)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCSlide)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v35.receiver = self;
   v35.super_class = MCSlide;
   v6 = [MCObject initWithImprint:"initWithImprint:andMontage:" andMontage:?];
   if (v6)
   {
-    v7 = [a3 objectForKey:@"flags"];
-    if (v7)
+    unsignedIntegerValue = [imprint objectForKey:@"flags"];
+    if (unsignedIntegerValue)
     {
-      v7 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [unsignedIntegerValue unsignedIntegerValue];
     }
 
-    v6->mFlags = v7;
-    v8 = [a3 objectForKey:@"slideAssets"];
+    v6->mFlags = unsignedIntegerValue;
+    v8 = [imprint objectForKey:@"slideAssets"];
     if (v8)
     {
       v34[0] = _NSConcreteStackBlock;
@@ -119,20 +119,20 @@
       v34[2] = sub_126CFC;
       v34[3] = &unk_1AB968;
       v34[4] = v6;
-      v34[5] = a4;
+      v34[5] = montage;
       [v8 enumerateObjectsUsingBlock:v34];
     }
 
-    v9 = [a3 objectForKey:@"plug"];
+    v9 = [imprint objectForKey:@"plug"];
     if (v9)
     {
-      v6->mPlug = [MCObject objectWithImprint:v9 andMontage:a4];
+      v6->mPlug = [MCObject objectWithImprint:v9 andMontage:montage];
     }
 
-    v10 = [a3 objectForKey:@"song"];
+    v10 = [imprint objectForKey:@"song"];
     if (v10)
     {
-      v11 = [MCObject objectWithImprint:v10 andMontage:a4];
+      v11 = [MCObject objectWithImprint:v10 andMontage:montage];
       v6->mSong = v11;
       [(MCObject *)v11 setSlideIfSlideSong:v6];
       if (![(MCObject *)v6 isSnapshot])
@@ -142,14 +142,14 @@
       }
     }
 
-    v12 = [a3 objectForKey:@"index"];
-    if (v12)
+    unsignedIntegerValue2 = [imprint objectForKey:@"index"];
+    if (unsignedIntegerValue2)
     {
-      v12 = [v12 unsignedIntegerValue];
+      unsignedIntegerValue2 = [unsignedIntegerValue2 unsignedIntegerValue];
     }
 
-    v6->mIndex = v12;
-    v13 = [a3 objectForKey:@"audioVolume"];
+    v6->mIndex = unsignedIntegerValue2;
+    v13 = [imprint objectForKey:@"audioVolume"];
     if (v13)
     {
       [v13 floatValue];
@@ -161,7 +161,7 @@
     }
 
     v6->mAudioVolume = v14;
-    v15 = [a3 objectForKey:@"audioFadeInDuration"];
+    v15 = [imprint objectForKey:@"audioFadeInDuration"];
     v16 = 0.0;
     v17 = 0.0;
     if (v15)
@@ -170,7 +170,7 @@
     }
 
     v6->mAudioFadeInDuration = v17;
-    v18 = [a3 objectForKey:@"audioFadeOutDuration"];
+    v18 = [imprint objectForKey:@"audioFadeOutDuration"];
     if (v18)
     {
       [v18 doubleValue];
@@ -178,7 +178,7 @@
     }
 
     v6->mAudioFadeOutDuration = v16;
-    v20 = [a3 objectForKey:@"audioDuckLevel"];
+    v20 = [imprint objectForKey:@"audioDuckLevel"];
     if (v20)
     {
       [v20 floatValue];
@@ -190,7 +190,7 @@
     }
 
     v6->mAudioDuckLevel = v21;
-    v22 = [a3 objectForKey:@"audioDuckInDuration"];
+    v22 = [imprint objectForKey:@"audioDuckInDuration"];
     v23 = 0.0;
     v24 = 0.0;
     if (v22)
@@ -199,7 +199,7 @@
     }
 
     v6->mAudioDuckInDuration = v24;
-    v25 = [a3 objectForKey:@"audioDuckOutDuration"];
+    v25 = [imprint objectForKey:@"audioDuckOutDuration"];
     if (v25)
     {
       [v25 doubleValue];
@@ -207,7 +207,7 @@
     }
 
     v6->mAudioDuckOutDuration = v23;
-    v27 = [a3 objectForKey:@"startTime"];
+    v27 = [imprint objectForKey:@"startTime"];
     if (v27)
     {
       v6->mFlags |= 1uLL;
@@ -215,7 +215,7 @@
       v6->mStartTime = v28;
     }
 
-    v29 = [a3 objectForKey:@"duration"];
+    v29 = [imprint objectForKey:@"duration"];
     if (v29)
     {
       v6->mFlags |= 2uLL;
@@ -223,15 +223,15 @@
       v6->mDuration = v30;
     }
 
-    v6->mFrameID = [a3 objectForKey:@"frameID"];
-    v6->mFrameAttributes = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(a3, "objectForKey:", @"frameAttributes"}];
-    v31 = [a3 objectForKey:@"filters"];
+    v6->mFrameID = [imprint objectForKey:@"frameID"];
+    v6->mFrameAttributes = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(imprint, "objectForKey:", @"frameAttributes"}];
+    v31 = [imprint objectForKey:@"filters"];
     if (v31)
     {
       [(MCSlide *)v6 initFiltersWithImprints:v31];
     }
 
-    v32 = [a3 objectForKey:@"animationPaths"];
+    v32 = [imprint objectForKey:@"animationPaths"];
     if (v32)
     {
       [(MCSlide *)v6 initAnimationPathsWithImprints:v32];
@@ -296,16 +296,16 @@
 {
   v29.receiver = self;
   v29.super_class = MCSlide;
-  v3 = [(MCObject *)&v29 imprint];
+  imprint = [(MCObject *)&v29 imprint];
   if (self->mFlags)
   {
-    [v3 setObject:+[NSNumber numberWithUnsignedChar:](NSNumber forKey:{"numberWithUnsignedChar:", self->mFlags), @"flags"}];
+    [imprint setObject:+[NSNumber numberWithUnsignedChar:](NSNumber forKey:{"numberWithUnsignedChar:", self->mFlags), @"flags"}];
   }
 
   if (self->mSlideAsset)
   {
     v4 = [NSMutableArray alloc];
-    v28 = v3;
+    v28 = imprint;
     if (self->mSlideAsset)
     {
       v5 = ((self->mFlags >> 24) & 0xF) + 1;
@@ -334,31 +334,31 @@
 
       v10 = objc_alloc_init(NSMutableDictionary);
       v11 = self->mSlideAsset[v7];
-      v12 = [v11 asset];
-      if (v12)
+      asset = [v11 asset];
+      if (asset)
       {
-        v13 = v12;
-        if ([v12 isSnapshot])
+        v13 = asset;
+        if ([asset isSnapshot])
         {
-          v14 = [v13 imprint];
+          imprint2 = [v13 imprint];
           v15 = v10;
           v16 = @"asset";
         }
 
         else
         {
-          v14 = [v13 objectID];
+          imprint2 = [v13 objectID];
           v15 = v10;
           v16 = @"assetID";
         }
 
-        [v15 setObject:v14 forKey:v16];
+        [v15 setObject:imprint2 forKey:v16];
       }
 
-      v17 = [v11 kenBurnsType];
-      if (v17)
+      kenBurnsType = [v11 kenBurnsType];
+      if (kenBurnsType)
       {
-        [v10 setObject:v17 forKey:@"kenBurnsType"];
+        [v10 setObject:kenBurnsType forKey:@"kenBurnsType"];
       }
 
       v18 = v11[3];
@@ -395,7 +395,7 @@
       ++v7;
     }
 
-    v3 = v28;
+    imprint = v28;
     if (v8)
     {
       [v28 setObject:v6 forKey:@"slideAssets"];
@@ -405,96 +405,96 @@
   mPlug = self->mPlug;
   if (mPlug)
   {
-    [v3 setObject:-[MCPlug imprint](mPlug forKey:{"imprint"), @"plug"}];
+    [imprint setObject:-[MCPlug imprint](mPlug forKey:{"imprint"), @"plug"}];
   }
 
   mSong = self->mSong;
   if (mSong)
   {
-    [v3 setObject:-[MCSong imprint](mSong forKey:{"imprint"), @"song"}];
+    [imprint setObject:-[MCSong imprint](mSong forKey:{"imprint"), @"song"}];
   }
 
   if (self->mIndex)
   {
-    [v3 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:"), @"index"}];
+    [imprint setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:"), @"index"}];
   }
 
   if (self->mAudioVolume != 1.0)
   {
-    [v3 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"audioVolume"}];
+    [imprint setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"audioVolume"}];
   }
 
   if (self->mAudioFadeInDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"audioFadeInDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"audioFadeInDuration"}];
   }
 
   if (self->mAudioFadeOutDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"audioFadeOutDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"audioFadeOutDuration"}];
   }
 
   if (self->mAudioDuckLevel != 1.0)
   {
-    [v3 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"audioDuckLevel"}];
+    [imprint setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"audioDuckLevel"}];
   }
 
   if (self->mAudioDuckInDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"audioDuckInDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"audioDuckInDuration"}];
   }
 
   if (self->mAudioDuckOutDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"audioDuckOutDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"audioDuckOutDuration"}];
   }
 
   mFlags = self->mFlags;
   if (mFlags)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", self->mStartTime), @"startTime"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", self->mStartTime), @"startTime"}];
     mFlags = self->mFlags;
   }
 
   if ((mFlags & 2) != 0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", self->mDuration), @"duration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", self->mDuration), @"duration"}];
   }
 
   mFrameID = self->mFrameID;
   if (mFrameID)
   {
-    [v3 setObject:mFrameID forKey:@"frameID"];
+    [imprint setObject:mFrameID forKey:@"frameID"];
   }
 
   mFrameAttributes = self->mFrameAttributes;
   if (mFrameAttributes)
   {
-    [v3 setObject:mFrameAttributes forKey:@"frameAttributes"];
+    [imprint setObject:mFrameAttributes forKey:@"frameAttributes"];
   }
 
   if ([(NSMutableSet *)self->mAnimationPaths count])
   {
-    [v3 setObject:-[MCSlide imprintsForAnimationPaths](self forKey:{"imprintsForAnimationPaths"), @"animationPaths"}];
+    [imprint setObject:-[MCSlide imprintsForAnimationPaths](self forKey:{"imprintsForAnimationPaths"), @"animationPaths"}];
   }
 
   if ([(NSMutableSet *)self->mFilters count])
   {
-    [v3 setObject:-[MCSlide imprintsForFilters](self forKey:{"imprintsForFilters"), @"filters"}];
+    [imprint setObject:-[MCSlide imprintsForFilters](self forKey:{"imprintsForFilters"), @"filters"}];
   }
 
-  return v3;
+  return imprint;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->mSong == a4)
+  if (self->mSong == object)
   {
-    [(MCSlide *)self willChangeValueForKey:a3];
-    [(MCSlide *)self didChangeValueForKey:a3];
+    [(MCSlide *)self willChangeValueForKey:path];
+    [(MCSlide *)self didChangeValueForKey:path];
   }
 
-  if ([a3 isEqualToString:@"keyframes"])
+  if ([path isEqualToString:@"keyframes"])
   {
     v8 = @"animationPaths";
   }
@@ -528,15 +528,15 @@
         v9 = 0;
       }
 
-      v10 = [mSlideAsset[v9] asset];
+      asset = [mSlideAsset[v9] asset];
     }
 
     else
     {
-      v10 = 0;
+      asset = 0;
     }
 
-    v11 = v10;
+    v11 = asset;
     objc_sync_exit(self);
     return v11;
   }
@@ -562,9 +562,9 @@
   return [v6 asset];
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  if (!(a3 | self->mSlideAsset))
+  if (!(asset | self->mSlideAsset))
   {
     return;
   }
@@ -577,7 +577,7 @@
   {
     if (v7 <= ((mFlags >> 24) & 0xF))
     {
-      v9 = self->mSlideAsset;
+      asset = self->mSlideAsset;
 LABEL_17:
       if (mFlags >> 28 <= ((mFlags >> 24) & 0xF))
       {
@@ -589,7 +589,7 @@ LABEL_17:
         v22 = 0;
       }
 
-      v9 = [v9[v22] asset];
+      asset = [asset[v22] asset];
       goto LABEL_21;
     }
 
@@ -601,26 +601,26 @@ LABEL_17:
     LODWORD(v8) = 0;
   }
 
-  v9 = malloc_type_calloc(v7 + 1, 8uLL, 0x80040B8603338uLL);
-  self->mSlideAsset = v9;
+  asset = malloc_type_calloc(v7 + 1, 8uLL, 0x80040B8603338uLL);
+  self->mSlideAsset = asset;
   self->mFlags = self->mFlags & 0xFFFFFFFFF0FFFFFFLL | ((self->mFlags >> 28) << 24);
   if (mSlideAsset)
   {
-    memcpy(v9, mSlideAsset, 8 * v8);
+    memcpy(asset, mSlideAsset, 8 * v8);
     free(mSlideAsset);
-    v9 = self->mSlideAsset;
+    asset = self->mSlideAsset;
   }
 
   if (v8)
   {
-    v10 = v9[v8 - 1];
+    v10 = asset[v8 - 1];
     v27 = *(v10 + 24);
     v11 = *(v10 + 5);
     v12 = *(v10 + 6);
-    v13 = [v10 asset];
-    v14 = [self->mSlideAsset[(v8 - 1)] kenBurnsType];
-    v9 = self->mSlideAsset;
-    if (!v9)
+    asset2 = [v10 asset];
+    kenBurnsType = [self->mSlideAsset[(v8 - 1)] kenBurnsType];
+    asset = self->mSlideAsset;
+    if (!asset)
     {
       goto LABEL_21;
     }
@@ -628,14 +628,14 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  v13 = 0;
-  v14 = 0;
+  asset2 = 0;
+  kenBurnsType = 0;
   __asm { FMOV            V0.2D, #0.5 }
 
   v27 = _Q0;
   v12 = 0;
   v11 = 1.0;
-  if (v9)
+  if (asset)
   {
 LABEL_13:
     mFlags = self->mFlags;
@@ -649,11 +649,11 @@ LABEL_13:
         *(v21[v20] + 24) = v27;
         *(v21[v20] + 5) = v11;
         *(v21[v20] + 6) = v12;
-        [v21[v20] setAsset:v13];
-        [v13 addSlide:self];
-        [self->mSlideAsset[v20] setKenBurnsType:v14];
-        v9 = self->mSlideAsset;
-        if (!v9)
+        [v21[v20] setAsset:asset2];
+        [asset2 addSlide:self];
+        [self->mSlideAsset[v20] setKenBurnsType:kenBurnsType];
+        asset = self->mSlideAsset;
+        if (!asset)
         {
           goto LABEL_21;
         }
@@ -672,9 +672,9 @@ LABEL_13:
   }
 
 LABEL_21:
-  if (v9 != a3)
+  if (asset != asset)
   {
-    [v9 removeSlide:self];
+    [asset removeSlide:self];
     v23 = self->mSlideAsset;
     if (v23)
     {
@@ -697,8 +697,8 @@ LABEL_21:
       v26 = 0;
     }
 
-    [v26 setAsset:{a3, v27}];
-    [a3 addSlide:self];
+    [v26 setAsset:{asset, v27}];
+    [asset addSlide:self];
   }
 
   objc_sync_exit(self);
@@ -723,15 +723,15 @@ LABEL_21:
         v9 = 0;
       }
 
-      v10 = [mSlideAsset[v9] kenBurnsType];
+      kenBurnsType = [mSlideAsset[v9] kenBurnsType];
     }
 
     else
     {
-      v10 = 0;
+      kenBurnsType = 0;
     }
 
-    v11 = v10;
+    v11 = kenBurnsType;
     objc_sync_exit(self);
     return v11;
   }
@@ -757,9 +757,9 @@ LABEL_21:
   return [v6 kenBurnsType];
 }
 
-- (void)setKenBurnsType:(id)a3
+- (void)setKenBurnsType:(id)type
 {
-  if (!(a3 | self->mSlideAsset))
+  if (!(type | self->mSlideAsset))
   {
     return;
   }
@@ -772,7 +772,7 @@ LABEL_21:
   {
     if (v7 <= ((mFlags >> 24) & 0xF))
     {
-      v9 = self->mSlideAsset;
+      kenBurnsType = self->mSlideAsset;
 LABEL_17:
       if (mFlags >> 28 <= ((mFlags >> 24) & 0xF))
       {
@@ -784,7 +784,7 @@ LABEL_17:
         v22 = 0;
       }
 
-      v9 = [v9[v22] kenBurnsType];
+      kenBurnsType = [kenBurnsType[v22] kenBurnsType];
       goto LABEL_21;
     }
 
@@ -796,26 +796,26 @@ LABEL_17:
     LODWORD(v8) = 0;
   }
 
-  v9 = malloc_type_calloc(v7 + 1, 8uLL, 0x80040B8603338uLL);
-  self->mSlideAsset = v9;
+  kenBurnsType = malloc_type_calloc(v7 + 1, 8uLL, 0x80040B8603338uLL);
+  self->mSlideAsset = kenBurnsType;
   self->mFlags = self->mFlags & 0xFFFFFFFFF0FFFFFFLL | ((self->mFlags >> 28) << 24);
   if (mSlideAsset)
   {
-    memcpy(v9, mSlideAsset, 8 * v8);
+    memcpy(kenBurnsType, mSlideAsset, 8 * v8);
     free(mSlideAsset);
-    v9 = self->mSlideAsset;
+    kenBurnsType = self->mSlideAsset;
   }
 
   if (v8)
   {
-    v10 = v9[v8 - 1];
+    v10 = kenBurnsType[v8 - 1];
     v27 = *(v10 + 24);
     v11 = *(v10 + 5);
     v12 = *(v10 + 6);
-    v13 = [v10 asset];
-    v14 = [self->mSlideAsset[(v8 - 1)] kenBurnsType];
-    v9 = self->mSlideAsset;
-    if (!v9)
+    asset = [v10 asset];
+    kenBurnsType2 = [self->mSlideAsset[(v8 - 1)] kenBurnsType];
+    kenBurnsType = self->mSlideAsset;
+    if (!kenBurnsType)
     {
       goto LABEL_21;
     }
@@ -823,14 +823,14 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  v13 = 0;
-  v14 = 0;
+  asset = 0;
+  kenBurnsType2 = 0;
   __asm { FMOV            V0.2D, #0.5 }
 
   v27 = _Q0;
   v12 = 0;
   v11 = 1.0;
-  if (v9)
+  if (kenBurnsType)
   {
 LABEL_13:
     mFlags = self->mFlags;
@@ -844,11 +844,11 @@ LABEL_13:
         *(v21[v20] + 24) = v27;
         *(v21[v20] + 5) = v11;
         *(v21[v20] + 6) = v12;
-        [v21[v20] setAsset:v13];
-        [v13 addSlide:self];
-        [self->mSlideAsset[v20] setKenBurnsType:v14];
-        v9 = self->mSlideAsset;
-        if (!v9)
+        [v21[v20] setAsset:asset];
+        [asset addSlide:self];
+        [self->mSlideAsset[v20] setKenBurnsType:kenBurnsType2];
+        kenBurnsType = self->mSlideAsset;
+        if (!kenBurnsType)
         {
           goto LABEL_21;
         }
@@ -867,7 +867,7 @@ LABEL_13:
   }
 
 LABEL_21:
-  if (v9 != a3)
+  if (kenBurnsType != type)
   {
     v23 = self->mSlideAsset;
     if (v23)
@@ -891,7 +891,7 @@ LABEL_21:
       v26 = 0;
     }
 
-    [v26 setKenBurnsType:{a3, v27}];
+    [v26 setKenBurnsType:{type, v27}];
   }
 
   objc_sync_exit(self);
@@ -931,9 +931,9 @@ LABEL_21:
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  x = a3.x;
+  x = center.x;
   mSlideAsset = self->mSlideAsset;
   if (mSlideAsset)
   {
@@ -942,12 +942,12 @@ LABEL_21:
 
   else
   {
-    v5 = a3.x == 0.5;
+    v5 = center.x == 0.5;
   }
 
-  if (!v5 || a3.y != 0.5)
+  if (!v5 || center.y != 0.5)
   {
-    y = a3.y;
+    y = center.y;
     mFlags = self->mFlags;
     v10 = mFlags >> 28;
     if (mSlideAsset)
@@ -986,15 +986,15 @@ LABEL_21:
       v14 = v13[4];
       v17 = v13[5];
       v16 = *(v13 + 6);
-      v18 = [v13 asset];
-      v19 = [self->mSlideAsset[(v11 - 1)] kenBurnsType];
+      asset = [v13 asset];
+      kenBurnsType = [self->mSlideAsset[(v11 - 1)] kenBurnsType];
       v12 = self->mSlideAsset;
     }
 
     else
     {
-      v18 = 0;
-      v19 = 0;
+      asset = 0;
+      kenBurnsType = 0;
       v16 = 0;
       v14 = 0.5;
       v17 = 1.0;
@@ -1014,9 +1014,9 @@ LABEL_21:
         v22[4] = v14;
         *(v21[v20] + 5) = v17;
         *(v21[v20] + 6) = v16;
-        [v21[v20] setAsset:v18];
-        [v18 addSlide:self];
-        [self->mSlideAsset[v20] setKenBurnsType:v19];
+        [v21[v20] setAsset:asset];
+        [asset addSlide:self];
+        [self->mSlideAsset[v20] setKenBurnsType:kenBurnsType];
         v11 = (v11 + 1);
         ++v20;
       }
@@ -1051,10 +1051,10 @@ LABEL_21:
   return *(mSlideAsset[v4] + 5);
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   mSlideAsset = self->mSlideAsset;
-  if (a3 != 1.0 || mSlideAsset != 0)
+  if (scale != 1.0 || mSlideAsset != 0)
   {
     mFlags = self->mFlags;
     v8 = mFlags >> 28;
@@ -1063,7 +1063,7 @@ LABEL_21:
       if (v8 <= ((mFlags >> 24) & 0xF))
       {
 LABEL_18:
-        *(mSlideAsset[self->mFlags >> 28] + 5) = a3;
+        *(mSlideAsset[self->mFlags >> 28] + 5) = scale;
         return;
       }
 
@@ -1092,15 +1092,15 @@ LABEL_18:
       v12 = v11[4];
       v15 = v11[5];
       v14 = *(v11 + 6);
-      v16 = [v11 asset];
-      v17 = [self->mSlideAsset[(v9 - 1)] kenBurnsType];
+      asset = [v11 asset];
+      kenBurnsType = [self->mSlideAsset[(v9 - 1)] kenBurnsType];
       v10 = self->mSlideAsset;
     }
 
     else
     {
-      v16 = 0;
-      v17 = 0;
+      asset = 0;
+      kenBurnsType = 0;
       v14 = 0;
       v12 = 0.5;
       v15 = 1.0;
@@ -1120,9 +1120,9 @@ LABEL_18:
         v20[4] = v12;
         *(v19[v18] + 5) = v15;
         *(v19[v18] + 6) = v14;
-        [v19[v18] setAsset:v16];
-        [v16 addSlide:self];
-        [self->mSlideAsset[v18] setKenBurnsType:v17];
+        [v19[v18] setAsset:asset];
+        [asset addSlide:self];
+        [self->mSlideAsset[v18] setKenBurnsType:kenBurnsType];
         v9 = (v9 + 1);
         ++v18;
       }
@@ -1157,10 +1157,10 @@ LABEL_18:
   return *(mSlideAsset[v4] + 6);
 }
 
-- (void)setRotation:(double)a3
+- (void)setRotation:(double)rotation
 {
   mSlideAsset = self->mSlideAsset;
-  if (a3 != 1.0 || mSlideAsset != 0)
+  if (rotation != 1.0 || mSlideAsset != 0)
   {
     mFlags = self->mFlags;
     v8 = mFlags >> 28;
@@ -1169,7 +1169,7 @@ LABEL_18:
       if (v8 <= ((mFlags >> 24) & 0xF))
       {
 LABEL_18:
-        *(mSlideAsset[self->mFlags >> 28] + 6) = a3;
+        *(mSlideAsset[self->mFlags >> 28] + 6) = rotation;
         return;
       }
 
@@ -1198,15 +1198,15 @@ LABEL_18:
       v12 = v11[4];
       v15 = v11[5];
       v14 = *(v11 + 6);
-      v16 = [v11 asset];
-      v17 = [self->mSlideAsset[(v9 - 1)] kenBurnsType];
+      asset = [v11 asset];
+      kenBurnsType = [self->mSlideAsset[(v9 - 1)] kenBurnsType];
       v10 = self->mSlideAsset;
     }
 
     else
     {
-      v16 = 0;
-      v17 = 0;
+      asset = 0;
+      kenBurnsType = 0;
       v14 = 0;
       v12 = 0.5;
       v15 = 1.0;
@@ -1226,9 +1226,9 @@ LABEL_18:
         v20[4] = v12;
         *(v19[v18] + 5) = v15;
         *(v19[v18] + 6) = v14;
-        [v19[v18] setAsset:v16];
-        [v16 addSlide:self];
-        [self->mSlideAsset[v18] setKenBurnsType:v17];
+        [v19[v18] setAsset:asset];
+        [asset addSlide:self];
+        [self->mSlideAsset[v18] setKenBurnsType:kenBurnsType];
         v9 = (v9 + 1);
         ++v18;
       }
@@ -1254,9 +1254,9 @@ LABEL_18:
   return v3;
 }
 
-- (void)setSongForAsset:(id)a3
+- (void)setSongForAsset:(id)asset
 {
-  if ([(MCSong *)self->mSong asset]!= a3)
+  if ([(MCSong *)self->mSong asset]!= asset)
   {
     objc_sync_enter(self);
     [(MCSlide *)self willChangeValueForKey:@"song"];
@@ -1270,10 +1270,10 @@ LABEL_18:
       self->mSong = 0;
     }
 
-    if (a3)
+    if (asset)
     {
       v6 = [(MCObject *)[MCSong alloc] initFromScratchWithMontage:self->super.mMontage];
-      [(MCSong *)v6 setAsset:a3];
+      [(MCSong *)v6 setAsset:asset];
       [(MCSong *)v6 setSlideIfSlideSong:self];
       [(MCSong *)v6 addObserver:self forKeyPath:@"builtVolume" options:0 context:0];
       [(MCSong *)v6 addObserver:self forKeyPath:@"builtAudio" options:0 context:0];
@@ -1299,60 +1299,60 @@ LABEL_18:
   return v3;
 }
 
-- (void)setPlug:(id)a3
+- (void)setPlug:(id)plug
 {
-  if (self->mPlug != a3)
+  if (self->mPlug != plug)
   {
     objc_sync_enter(self);
     [(MCPlugSlide *)self->mPlug setParentSlide:0];
 
-    v5 = a3;
-    self->mPlug = v5;
-    [(MCPlugSlide *)v5 setParentSlide:self];
+    plugCopy = plug;
+    self->mPlug = plugCopy;
+    [(MCPlugSlide *)plugCopy setParentSlide:self];
 
     objc_sync_exit(self);
   }
 }
 
-- (id)frameAttributeForKey:(id)a3
+- (id)frameAttributeForKey:(id)key
 {
   if ([(MCObject *)self isSnapshot])
   {
     mFrameAttributes = self->mFrameAttributes;
 
-    return [(NSMutableDictionary *)mFrameAttributes objectForKey:a3];
+    return [(NSMutableDictionary *)mFrameAttributes objectForKey:key];
   }
 
   else
   {
     objc_sync_enter(self);
-    v7 = [(NSMutableDictionary *)self->mFrameAttributes objectForKey:a3];
+    v7 = [(NSMutableDictionary *)self->mFrameAttributes objectForKey:key];
     objc_sync_exit(self);
     return v7;
   }
 }
 
-- (void)setFrameAttribute:(id)a3 forKey:(id)a4
+- (void)setFrameAttribute:(id)attribute forKey:(id)key
 {
   [(MCSlide *)self willChangeValueForKey:@"frameAttributes"];
   objc_sync_enter(self);
   mFrameAttributes = self->mFrameAttributes;
-  if (a3)
+  if (attribute)
   {
     if (mFrameAttributes)
     {
-      [(NSMutableDictionary *)mFrameAttributes setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)mFrameAttributes setObject:attribute forKey:key];
     }
 
     else
     {
-      self->mFrameAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{a3, a4, 0}];
+      self->mFrameAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{attribute, key, 0}];
     }
   }
 
   else if (mFrameAttributes)
   {
-    [(NSMutableDictionary *)mFrameAttributes removeObjectForKey:a4];
+    [(NSMutableDictionary *)mFrameAttributes removeObjectForKey:key];
   }
 
   objc_sync_exit(self);
@@ -1373,16 +1373,16 @@ LABEL_18:
   return v3;
 }
 
-- (void)setFrameAttributes:(id)a3
+- (void)setFrameAttributes:(id)attributes
 {
-  if (self->mFrameAttributes != a3)
+  if (self->mFrameAttributes != attributes)
   {
     objc_sync_enter(self);
 
     self->mFrameAttributes = 0;
-    if (a3)
+    if (attributes)
     {
-      self->mFrameAttributes = [[NSMutableDictionary alloc] initWithDictionary:a3];
+      self->mFrameAttributes = [[NSMutableDictionary alloc] initWithDictionary:attributes];
     }
 
     objc_sync_exit(self);
@@ -1402,9 +1402,9 @@ LABEL_18:
   }
 }
 
-- (void)setCurrentLayoutIndex:(unsigned __int8)a3
+- (void)setCurrentLayoutIndex:(unsigned __int8)index
 {
-  v3 = a3;
+  indexCopy = index;
   if (self->mSlideAsset)
   {
     v5 = (self->mFlags & 0xF000000) == 0;
@@ -1417,27 +1417,27 @@ LABEL_18:
 
   if (v5)
   {
-    self->mFlags = (a3 << 28) & 0xFFFFFFFFF0000000 | self->mFlags & 0xFFFFFFF;
+    self->mFlags = (index << 28) & 0xFFFFFFFFF0000000 | self->mFlags & 0xFFFFFFF;
   }
 
   else
   {
     [(MCSlide *)self willChangeValueForKey:@"asset"];
-    self->mFlags = (v3 << 28) & 0xFFFFFFFFF0000000 | self->mFlags & 0xFFFFFFF;
+    self->mFlags = (indexCopy << 28) & 0xFFFFFFFFF0000000 | self->mFlags & 0xFFFFFFF;
 
     [(MCSlide *)self didChangeValueForKey:@"asset"];
   }
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   objc_sync_enter(self);
   mFlags = self->mFlags;
-  *(a3 + 8) = mFlags;
+  *(snapshot + 8) = mFlags;
   if (self->mSlideAsset)
   {
     v6 = 0;
-    *(a3 + 3) = malloc_type_malloc(((mFlags >> 21) & 0x78) + 8, 0x9B5DCC9EuLL);
+    *(snapshot + 3) = malloc_type_malloc(((mFlags >> 21) & 0x78) + 8, 0x9B5DCC9EuLL);
     mSlideAsset = self->mSlideAsset;
     if (!mSlideAsset)
     {
@@ -1449,12 +1449,12 @@ LABEL_3:
 LABEL_4:
     while (v6 < mSlideAsset)
     {
-      *(*(a3 + 3) + 8 * v6) = objc_alloc_init(MCSlideAsset);
-      [*(*(a3 + 3) + 8 * v6) setAsset:{objc_msgSend(objc_msgSend(self->mSlideAsset[v6], "asset"), "snapshot")}];
-      [*(*(a3 + 3) + 8 * v6) setKenBurnsType:{objc_msgSend(self->mSlideAsset[v6], "kenBurnsType")}];
-      *(*(*(a3 + 3) + 8 * v6) + 24) = *(self->mSlideAsset[v6] + 24);
+      *(*(snapshot + 3) + 8 * v6) = objc_alloc_init(MCSlideAsset);
+      [*(*(snapshot + 3) + 8 * v6) setAsset:{objc_msgSend(objc_msgSend(self->mSlideAsset[v6], "asset"), "snapshot")}];
+      [*(*(snapshot + 3) + 8 * v6) setKenBurnsType:{objc_msgSend(self->mSlideAsset[v6], "kenBurnsType")}];
+      *(*(*(snapshot + 3) + 8 * v6) + 24) = *(self->mSlideAsset[v6] + 24);
       mSlideAsset = self->mSlideAsset;
-      v8 = *(a3 + 3);
+      v8 = *(snapshot + 3);
       *(*(v8 + 8 * v6) + 40) = *(mSlideAsset[v6] + 5);
       *(*(v8 + 8 * v6) + 48) = *(mSlideAsset[v6] + 6);
       ++v6;
@@ -1465,39 +1465,39 @@ LABEL_4:
     }
   }
 
-  *(a3 + 11) = [(MCObject *)self->mSong snapshot];
-  *(a3 + 12) = self->mIndex;
-  *(a3 + 18) = LODWORD(self->mAudioVolume);
-  *(a3 + 13) = *&self->mAudioFadeInDuration;
-  *(a3 + 14) = *&self->mAudioFadeOutDuration;
-  *(a3 + 19) = LODWORD(self->mAudioDuckLevel);
-  *(a3 + 15) = *&self->mAudioDuckInDuration;
-  *(a3 + 16) = *&self->mAudioDuckOutDuration;
-  *(a3 + 17) = *&self->mStartTime;
-  *(a3 + 18) = *&self->mDuration;
+  *(snapshot + 11) = [(MCObject *)self->mSong snapshot];
+  *(snapshot + 12) = self->mIndex;
+  *(snapshot + 18) = LODWORD(self->mAudioVolume);
+  *(snapshot + 13) = *&self->mAudioFadeInDuration;
+  *(snapshot + 14) = *&self->mAudioFadeOutDuration;
+  *(snapshot + 19) = LODWORD(self->mAudioDuckLevel);
+  *(snapshot + 15) = *&self->mAudioDuckInDuration;
+  *(snapshot + 16) = *&self->mAudioDuckOutDuration;
+  *(snapshot + 17) = *&self->mStartTime;
+  *(snapshot + 18) = *&self->mDuration;
   mFrameID = self->mFrameID;
   if (mFrameID)
   {
-    *(a3 + 19) = [(NSString *)mFrameID copy];
+    *(snapshot + 19) = [(NSString *)mFrameID copy];
   }
 
   mFrameAttributes = self->mFrameAttributes;
   if (mFrameAttributes)
   {
-    *(a3 + 4) = [(NSMutableDictionary *)mFrameAttributes copy];
+    *(snapshot + 4) = [(NSMutableDictionary *)mFrameAttributes copy];
   }
 
   if (self->mAnimationPaths)
   {
-    v11 = [(MCSlide *)self animationPaths];
-    if ([(NSSet *)v11 count])
+    animationPaths = [(MCSlide *)self animationPaths];
+    if ([(NSSet *)animationPaths count])
     {
-      *(a3 + 5) = [[NSMutableSet alloc] initWithCapacity:{-[NSSet count](v11, "count")}];
+      *(snapshot + 5) = [[NSMutableSet alloc] initWithCapacity:{-[NSSet count](animationPaths, "count")}];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v12 = [(NSSet *)v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v12 = [(NSSet *)animationPaths countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v12)
       {
         v13 = *v24;
@@ -1508,15 +1508,15 @@ LABEL_4:
           {
             if (*v24 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(animationPaths);
             }
 
-            [*(a3 + 5) addObject:{objc_msgSend(*(*(&v23 + 1) + 8 * v14), "snapshot")}];
+            [*(snapshot + 5) addObject:{objc_msgSend(*(*(&v23 + 1) + 8 * v14), "snapshot")}];
             v14 = v14 + 1;
           }
 
           while (v12 != v14);
-          v12 = [(NSSet *)v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
+          v12 = [(NSSet *)animationPaths countByEnumeratingWithState:&v23 objects:v28 count:16];
         }
 
         while (v12);
@@ -1526,15 +1526,15 @@ LABEL_4:
 
   if (self->mFilters)
   {
-    v15 = [(MCSlide *)self filters];
-    if ([(NSSet *)v15 count])
+    filters = [(MCSlide *)self filters];
+    if ([(NSSet *)filters count])
     {
-      *(a3 + 6) = [[NSMutableSet alloc] initWithCapacity:{-[NSSet count](v15, "count")}];
+      *(snapshot + 6) = [[NSMutableSet alloc] initWithCapacity:{-[NSSet count](filters, "count")}];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v16 = [(NSSet *)v15 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v16 = [(NSSet *)filters countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v16)
       {
         v17 = *v20;
@@ -1545,15 +1545,15 @@ LABEL_4:
           {
             if (*v20 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(filters);
             }
 
-            [*(a3 + 6) addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v18), "snapshot")}];
+            [*(snapshot + 6) addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v18), "snapshot")}];
             v18 = v18 + 1;
           }
 
           while (v16 != v18);
-          v16 = [(NSSet *)v15 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          v16 = [(NSSet *)filters countByEnumeratingWithState:&v19 objects:v27 count:16];
         }
 
         while (v16);
@@ -1564,18 +1564,18 @@ LABEL_4:
   objc_sync_exit(self);
 }
 
-- (void)initAnimationPathsWithImprints:(id)a3
+- (void)initAnimationPathsWithImprints:(id)imprints
 {
-  if (a3)
+  if (imprints)
   {
-    if ([a3 count])
+    if ([imprints count])
     {
       self->mAnimationPaths = objc_alloc_init(NSMutableSet);
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [imprints countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         v6 = v5;
@@ -1587,7 +1587,7 @@ LABEL_4:
           {
             if (*v13 != v7)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(imprints);
             }
 
             v9 = [MCObjectLight objectWithImprint:*(*(&v12 + 1) + 8 * v8)];
@@ -1617,7 +1617,7 @@ LABEL_13:
           }
 
           while (v6 != v8);
-          v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v6 = [imprints countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v6);
@@ -1701,8 +1701,8 @@ LABEL_14:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(MCSlide *)self animationPaths];
-  v5 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  animationPaths = [(MCSlide *)self animationPaths];
+  v5 = [(NSSet *)animationPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1714,7 +1714,7 @@ LABEL_14:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animationPaths);
         }
 
         [v3 addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8), "imprint")}];
@@ -1722,7 +1722,7 @@ LABEL_14:
       }
 
       while (v6 != v8);
-      v6 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSSet *)animationPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1734,9 +1734,9 @@ LABEL_14:
 - (NSSet)animationPaths
 {
   v3 = sEmptySet;
-  v4 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mAnimationPaths = self->mAnimationPaths;
-  if ((v4 & 1) == 0)
+  if ((isSnapshot & 1) == 0)
   {
     if (mAnimationPaths)
     {
@@ -1757,9 +1757,9 @@ LABEL_14:
 
 - (unint64_t)countOfAnimationPaths
 {
-  v3 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mAnimationPaths = self->mAnimationPaths;
-  if (v3)
+  if (isSnapshot)
   {
     v5 = self->mAnimationPaths;
 
@@ -1780,7 +1780,7 @@ LABEL_14:
   }
 }
 
-- (id)animationPathForKey:(id)a3
+- (id)animationPathForKey:(id)key
 {
   if ([(MCObject *)self isSnapshot])
   {
@@ -1878,9 +1878,9 @@ LABEL_24:
   return v9;
 }
 
-- (void)addAnimationPath:(id)a3
+- (void)addAnimationPath:(id)path
 {
-  -[MCSlide removeAnimationPathForKey:](self, "removeAnimationPathForKey:", [a3 key]);
+  -[MCSlide removeAnimationPathForKey:](self, "removeAnimationPathForKey:", [path key]);
   if (!self->mAnimationPaths)
   {
     objc_sync_enter(self);
@@ -1888,11 +1888,11 @@ LABEL_24:
     objc_sync_exit(self);
   }
 
-  v7 = [[NSSet alloc] initWithObjects:{a3, 0}];
+  v7 = [[NSSet alloc] initWithObjects:{path, 0}];
   [(MCSlide *)self willChangeValueForKey:@"animationPaths" withSetMutation:1 usingObjects:?];
   mAnimationPaths = self->mAnimationPaths;
   objc_sync_enter(mAnimationPaths);
-  [(NSMutableSet *)self->mAnimationPaths addObject:a3];
+  [(NSMutableSet *)self->mAnimationPaths addObject:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1907,17 +1907,17 @@ LABEL_24:
       goto LABEL_8;
     }
 
-    [a3 addObserver:self forKeyPath:@"combineOperation" options:0 context:0];
+    [path addObserver:self forKeyPath:@"combineOperation" options:0 context:0];
     v6 = @"animationPaths";
   }
 
-  [a3 addObserver:self forKeyPath:v6 options:0 context:0];
+  [path addObserver:self forKeyPath:v6 options:0 context:0];
 LABEL_8:
   objc_sync_exit(mAnimationPaths);
   [(MCSlide *)self didChangeValueForKey:@"animationPaths" withSetMutation:1 usingObjects:v7];
 }
 
-- (void)removeAnimationPathForKey:(id)a3
+- (void)removeAnimationPathForKey:(id)key
 {
   mAnimationPaths = self->mAnimationPaths;
   if (!mAnimationPaths)
@@ -2061,18 +2061,18 @@ LABEL_13:
   }
 }
 
-- (void)initFiltersWithImprints:(id)a3
+- (void)initFiltersWithImprints:(id)imprints
 {
-  if (a3)
+  if (imprints)
   {
-    if ([a3 count])
+    if ([imprints count])
     {
       self->mFilters = objc_alloc_init(NSMutableSet);
       v10 = 0u;
       v11 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [imprints countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         v6 = v5;
@@ -2084,7 +2084,7 @@ LABEL_13:
           {
             if (*v11 != v7)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(imprints);
             }
 
             v9 = [MCObject objectWithImprint:*(*(&v10 + 1) + 8 * v8) andMontage:self->super.mMontage];
@@ -2098,7 +2098,7 @@ LABEL_13:
           }
 
           while (v6 != v8);
-          v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v6 = [imprints countByEnumeratingWithState:&v10 objects:v14 count:16];
         }
 
         while (v6);
@@ -2165,8 +2165,8 @@ LABEL_13:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(MCSlide *)self filters];
-  v5 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  filters = [(MCSlide *)self filters];
+  v5 = [(NSSet *)filters countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2178,7 +2178,7 @@ LABEL_13:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(filters);
         }
 
         [v3 addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8), "imprint")}];
@@ -2186,7 +2186,7 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v6 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSSet *)filters countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -2240,9 +2240,9 @@ LABEL_13:
 - (NSSet)filters
 {
   v3 = sEmptySet;
-  v4 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mFilters = self->mFilters;
-  if ((v4 & 1) == 0)
+  if ((isSnapshot & 1) == 0)
   {
     if (mFilters)
     {
@@ -2263,9 +2263,9 @@ LABEL_13:
 
 - (unint64_t)countOfFilters
 {
-  v3 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mFilters = self->mFilters;
-  if (v3)
+  if (isSnapshot)
   {
     v5 = self->mFilters;
 
@@ -2286,7 +2286,7 @@ LABEL_13:
   }
 }
 
-- (id)filterAtIndex:(unint64_t)a3
+- (id)filterAtIndex:(unint64_t)index
 {
   if (![(MCObject *)self isSnapshot])
   {
@@ -2297,7 +2297,7 @@ LABEL_13:
       mCachedOrderedFilters = self->mCachedOrderedFilters;
       if (mCachedOrderedFilters)
       {
-        v9 = [(NSArray *)mCachedOrderedFilters objectAtIndex:a3];
+        v9 = [(NSArray *)mCachedOrderedFilters objectAtIndex:index];
 LABEL_29:
         v14 = v9;
       }
@@ -2323,7 +2323,7 @@ LABEL_29:
               }
 
               v19 = *(*(&v20 + 1) + 8 * i);
-              if ([v19 index] == a3)
+              if ([v19 index] == index)
               {
                 v9 = v19;
                 goto LABEL_29;
@@ -2376,7 +2376,7 @@ LABEL_11:
         }
 
         v14 = *(*(&v24 + 1) + 8 * v13);
-        if ([v14 index] == a3)
+        if ([v14 index] == index)
         {
           return v14;
         }
@@ -2398,21 +2398,21 @@ LABEL_11:
     return 0;
   }
 
-  return [(NSArray *)v5 objectAtIndex:a3];
+  return [(NSArray *)v5 objectAtIndex:index];
 }
 
-- (id)addFilterWithFilterID:(id)a3
+- (id)addFilterWithFilterID:(id)d
 {
-  v5 = [(MCSlide *)self countOfFilters];
+  countOfFilters = [(MCSlide *)self countOfFilters];
 
-  return [(MCSlide *)self insertFilterWithFilterID:a3 atIndex:v5];
+  return [(MCSlide *)self insertFilterWithFilterID:d atIndex:countOfFilters];
 }
 
-- (id)insertFilterWithFilterID:(id)a3 atIndex:(unint64_t)a4
+- (id)insertFilterWithFilterID:(id)d atIndex:(unint64_t)index
 {
   v7 = [(MCObject *)[MCFilter alloc] initFromScratchWithMontage:self->super.mMontage];
-  [v7 setFilterID:a3];
-  [v7 setIndex:a4];
+  [v7 setFilterID:d];
+  [v7 setIndex:index];
   if (!self->mFilters)
   {
     objc_sync_enter(self);
@@ -2445,7 +2445,7 @@ LABEL_11:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 index] >= a4)
+        if ([v13 index] >= index)
         {
           [v13 setIndex:{objc_msgSend(v13, "index") + 1}];
         }
@@ -2465,7 +2465,7 @@ LABEL_11:
   return v7;
 }
 
-- (void)removeFiltersAtIndices:(id)a3
+- (void)removeFiltersAtIndices:(id)indices
 {
   mFilters = self->mFilters;
   if (mFilters)
@@ -2492,7 +2492,7 @@ LABEL_11:
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
-          if ([a3 containsIndex:{objc_msgSend(v11, "index")}])
+          if ([indices containsIndex:{objc_msgSend(v11, "index")}])
           {
             [(MCSlide *)self unobserveFilter:v11];
             [v6 addObject:v11];
@@ -2500,7 +2500,7 @@ LABEL_11:
 
           else
           {
-            [v11 setIndex:{objc_msgSend(v11, "index") - objc_msgSend(a3, "countOfIndexesInRange:", 0, objc_msgSend(v11, "index"))}];
+            [v11 setIndex:{objc_msgSend(v11, "index") - objc_msgSend(indices, "countOfIndexesInRange:", 0, objc_msgSend(v11, "index"))}];
           }
         }
 
@@ -2526,7 +2526,7 @@ LABEL_11:
   [(MCSlide *)self removeFiltersAtIndices:v3];
 }
 
-- (void)moveFiltersAtIndices:(id)a3 toIndex:(unint64_t)a4
+- (void)moveFiltersAtIndices:(id)indices toIndex:(unint64_t)index
 {
   if (self->mFilters)
   {
@@ -2554,18 +2554,18 @@ LABEL_11:
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          if ([a3 containsIndex:{objc_msgSend(v12, "index")}])
+          if ([indices containsIndex:{objc_msgSend(v12, "index")}])
           {
-            [v12 setIndex:{objc_msgSend(a3, "countOfIndexesInRange:", 0, objc_msgSend(v12, "index")) + a4}];
+            [v12 setIndex:{objc_msgSend(indices, "countOfIndexesInRange:", 0, objc_msgSend(v12, "index")) + index}];
           }
 
           else
           {
-            v13 = [v12 index];
-            v14 = v13 - [a3 countOfIndexesInRange:{0, objc_msgSend(v12, "index")}];
-            if (v14 >= a4)
+            index = [v12 index];
+            v14 = index - [indices countOfIndexesInRange:{0, objc_msgSend(v12, "index")}];
+            if (v14 >= index)
             {
-              v14 += [a3 count];
+              v14 += [indices count];
             }
 
             [v12 setIndex:v14];
@@ -2583,22 +2583,22 @@ LABEL_11:
   }
 }
 
-- (void)observeFilter:(id)a3
+- (void)observeFilter:(id)filter
 {
-  [a3 addObserver:self forKeyPath:@"index" options:0 context:0];
-  [a3 addObserver:self forKeyPath:@"filterID" options:0 context:0];
-  [a3 addObserver:self forKeyPath:@"attributes" options:0 context:0];
+  [filter addObserver:self forKeyPath:@"index" options:0 context:0];
+  [filter addObserver:self forKeyPath:@"filterID" options:0 context:0];
+  [filter addObserver:self forKeyPath:@"attributes" options:0 context:0];
 
-  [a3 addObserver:self forKeyPath:@"animationPaths" options:0 context:0];
+  [filter addObserver:self forKeyPath:@"animationPaths" options:0 context:0];
 }
 
-- (void)unobserveFilter:(id)a3
+- (void)unobserveFilter:(id)filter
 {
-  [a3 removeObserver:self forKeyPath:@"index"];
-  [a3 removeObserver:self forKeyPath:@"filterID"];
-  [a3 removeObserver:self forKeyPath:@"attributes"];
+  [filter removeObserver:self forKeyPath:@"index"];
+  [filter removeObserver:self forKeyPath:@"filterID"];
+  [filter removeObserver:self forKeyPath:@"attributes"];
 
-  [a3 removeObserver:self forKeyPath:@"animationPaths"];
+  [filter removeObserver:self forKeyPath:@"animationPaths"];
 }
 
 @end

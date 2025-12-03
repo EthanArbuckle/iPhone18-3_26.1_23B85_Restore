@@ -1,7 +1,7 @@
 @interface VMSpeechRecognizerOperation
 - (VMSpeechRecognizerOperation)init;
-- (VMSpeechRecognizerOperation)initWithLocale:(id)a3;
-- (VMSpeechRecognizerOperation)initWithSpeechRecognizer:(id)a3;
+- (VMSpeechRecognizerOperation)initWithLocale:(id)locale;
+- (VMSpeechRecognizerOperation)initWithSpeechRecognizer:(id)recognizer;
 - (id)locale;
 @end
 
@@ -14,35 +14,35 @@
   return 0;
 }
 
-- (VMSpeechRecognizerOperation)initWithLocale:(id)a3
+- (VMSpeechRecognizerOperation)initWithLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [[SFSpeechRecognizer alloc] initWithLocale:v4];
+  localeCopy = locale;
+  v5 = [[SFSpeechRecognizer alloc] initWithLocale:localeCopy];
 
   if (v5)
   {
     self = [(VMSpeechRecognizerOperation *)self initWithSpeechRecognizer:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (VMSpeechRecognizerOperation)initWithSpeechRecognizer:(id)a3
+- (VMSpeechRecognizerOperation)initWithSpeechRecognizer:(id)recognizer
 {
-  v5 = a3;
+  recognizerCopy = recognizer;
   v9.receiver = self;
   v9.super_class = VMSpeechRecognizerOperation;
   v6 = [(VMSpeechRecognizerOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_speechRecognizer, a3);
+    objc_storeStrong(&v6->_speechRecognizer, recognizer);
   }
 
   return v7;
@@ -50,10 +50,10 @@
 
 - (id)locale
 {
-  v2 = [(VMSpeechRecognizerOperation *)self speechRecognizer];
-  v3 = [v2 locale];
+  speechRecognizer = [(VMSpeechRecognizerOperation *)self speechRecognizer];
+  locale = [speechRecognizer locale];
 
-  return v3;
+  return locale;
 }
 
 @end

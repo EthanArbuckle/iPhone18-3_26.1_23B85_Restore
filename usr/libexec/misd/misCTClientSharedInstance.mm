@@ -1,21 +1,21 @@
 @interface misCTClientSharedInstance
 + (id)sharedInstance;
-- (BOOL)registerCellularDataStatusNotification:(BOOL)a3 callback:(void *)a4 callbackArg:(void *)a5;
+- (BOOL)registerCellularDataStatusNotification:(BOOL)notification callback:(void *)callback callbackArg:(void *)arg;
 - (__CTServerConnection)ctServerConnection;
-- (int)activateTethering:(BOOL)a3;
-- (int)getTetheringInterfaceName:(char *)a3;
-- (int)getTetheringStatus:(mis_ctinterface_tethering_status *)a3;
-- (int)isDataPlanEnabled:(BOOL *)a3;
+- (int)activateTethering:(BOOL)tethering;
+- (int)getTetheringInterfaceName:(char *)name;
+- (int)getTetheringStatus:(mis_ctinterface_tethering_status *)status;
+- (int)isDataPlanEnabled:(BOOL *)enabled;
 - (misCTClientSharedInstance)init;
 - (void)_setupCTServerConnection;
 - (void)_updateDualSimStatus;
-- (void)convertConnectionStatus:(id)a3 ctInterfaceConnStatus:(mis_ctinterface_ct_conn_status *)a4;
-- (void)convertTetheringStatus:(mis_ctinterface_tethering_status *)a3 CTStatus:(id)a4;
+- (void)convertConnectionStatus:(id)status ctInterfaceConnStatus:(mis_ctinterface_ct_conn_status *)connStatus;
+- (void)convertTetheringStatus:(mis_ctinterface_tethering_status *)status CTStatus:(id)tStatus;
 - (void)dealloc;
-- (void)handleCTNotification:(__CFString *)a3 notificationInfo:(__CFDictionary *)a4;
+- (void)handleCTNotification:(__CFString *)notification notificationInfo:(__CFDictionary *)info;
 - (void)processCTConnectionActivationError;
-- (void)processCTConnectionStateChangeNotification:(id)a3 connection:(int)a4 connectionStatus:(id)a5 ctInterfaceConnStatus:(mis_ctinterface_ct_conn_status *)a6;
-- (void)processCTTetheringStatusChangeNotification:(id)a3;
+- (void)processCTConnectionStateChangeNotification:(id)notification connection:(int)connection connectionStatus:(id)status ctInterfaceConnStatus:(mis_ctinterface_ct_conn_status *)connStatus;
+- (void)processCTTetheringStatusChangeNotification:(id)notification;
 @end
 
 @implementation misCTClientSharedInstance
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001E0DC;
   block[3] = &unk_1000310D8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000351D8 != -1)
   {
     dispatch_once(&qword_1000351D8, block);
@@ -104,18 +104,18 @@
   }
 }
 
-- (BOOL)registerCellularDataStatusNotification:(BOOL)a3 callback:(void *)a4 callbackArg:(void *)a5
+- (BOOL)registerCellularDataStatusNotification:(BOOL)notification callback:(void *)callback callbackArg:(void *)arg
 {
-  v7 = a3;
+  notificationCopy = notification;
   v9 = "NO";
-  if (a3)
+  if (notification)
   {
     v9 = "YES";
   }
 
   v11 = v9;
   sub_100001108();
-  if (!v7)
+  if (!notificationCopy)
   {
     [(CoreTelephonyClient *)self->_ctClient setDelegate:0, v11];
     self->_eventCallback = 0;
@@ -126,8 +126,8 @@
   if (self->_ctServerConnection)
   {
     [(CoreTelephonyClient *)self->_ctClient setDelegate:self->_ctClientDelegates, v11];
-    self->_eventCallback = a4;
-    self->_eventCallbackArg = a5;
+    self->_eventCallback = callback;
+    self->_eventCallbackArg = arg;
     return 1;
   }
 
@@ -167,7 +167,7 @@
   sub_100001108();
 }
 
-- (int)activateTethering:(BOOL)a3
+- (int)activateTethering:(BOOL)tethering
 {
   if (!self->_ctClient)
   {
@@ -175,13 +175,13 @@
     return -1;
   }
 
-  v3 = a3;
+  tetheringCopy = tethering;
   if (![(misCTClientSharedInstance *)self ctServerConnection])
   {
     sub_1000219C4();
   }
 
-  if (v3)
+  if (tetheringCopy)
   {
     v9 = 0;
     sub_100001108();
@@ -218,57 +218,57 @@
   return result;
 }
 
-- (void)convertConnectionStatus:(id)a3 ctInterfaceConnStatus:(mis_ctinterface_ct_conn_status *)a4
+- (void)convertConnectionStatus:(id)status ctInterfaceConnStatus:(mis_ctinterface_ct_conn_status *)connStatus
 {
   v6 = [NSMutableString stringWithCapacity:20];
-  v7 = [a3 state];
-  if (v7 >= 4)
+  state = [status state];
+  if (state >= 4)
   {
-    [a3 state];
+    [status state];
     sub_100001108();
   }
 
   else
   {
-    v8 = v7 + 1;
-    [(NSMutableString *)v6 setString:*(&off_100031148 + v7)];
-    a4->var0 = v8;
-    v9 = [(NSMutableString *)v6 UTF8String];
-    v10 = [objc_msgSend(a3 "interfaceName")];
-    v11 = [objc_msgSend(a3 "pdp")];
+    v8 = state + 1;
+    [(NSMutableString *)v6 setString:*(&off_100031148 + state)];
+    connStatus->var0 = v8;
+    uTF8String = [(NSMutableString *)v6 UTF8String];
+    v10 = [objc_msgSend(status "interfaceName")];
+    v11 = [objc_msgSend(status "pdp")];
     sub_100001108();
-    if ([a3 interfaceName])
+    if ([status interfaceName])
     {
-      strncpy(a4->var2, [objc_msgSend(a3 "interfaceName")], 0xFuLL);
-      a4->var1 = [objc_msgSend(a3 "pdp")];
+      strncpy(connStatus->var2, [objc_msgSend(status "interfaceName")], 0xFuLL);
+      connStatus->var1 = [objc_msgSend(status "pdp")];
     }
 
     else
     {
-      a4->var2[0] = 0;
-      a4->var1 = -1;
+      connStatus->var2[0] = 0;
+      connStatus->var1 = -1;
     }
   }
 }
 
-- (void)convertTetheringStatus:(mis_ctinterface_tethering_status *)a3 CTStatus:(id)a4
+- (void)convertTetheringStatus:(mis_ctinterface_tethering_status *)status CTStatus:(id)tStatus
 {
-  if (![a4 carrierEnabled] || !objc_msgSend(objc_msgSend(a4, "carrierEnabled"), "intValue"))
+  if (![tStatus carrierEnabled] || !objc_msgSend(objc_msgSend(tStatus, "carrierEnabled"), "intValue"))
   {
-    a3->var0 = 0;
+    status->var0 = 0;
 LABEL_9:
-    a3->var1 = 0;
+    status->var1 = 0;
     goto LABEL_10;
   }
 
-  a3->var0 = 1;
-  if (![a4 userAuthenticated] || !objc_msgSend(objc_msgSend(a4, "userAuthenticated"), "intValue"))
+  status->var0 = 1;
+  if (![tStatus userAuthenticated] || !objc_msgSend(objc_msgSend(tStatus, "userAuthenticated"), "intValue"))
   {
     goto LABEL_9;
   }
 
-  a3->var1 = 1;
-  if ([a4 connectionAvailabilityStatus] && (objc_msgSend(objc_msgSend(a4, "connectionAvailabilityStatus"), "available") & 1) != 0)
+  status->var1 = 1;
+  if ([tStatus connectionAvailabilityStatus] && (objc_msgSend(objc_msgSend(tStatus, "connectionAvailabilityStatus"), "available") & 1) != 0)
   {
     v7 = 1;
     goto LABEL_11;
@@ -277,10 +277,10 @@ LABEL_9:
 LABEL_10:
   v7 = 0;
 LABEL_11:
-  a3->var2 = v7;
-  if ([a4 misPdpMaxHosts])
+  status->var2 = v7;
+  if ([tStatus misPdpMaxHosts])
   {
-    v8 = [objc_msgSend(a4 "misPdpMaxHosts")];
+    v8 = [objc_msgSend(tStatus "misPdpMaxHosts")];
   }
 
   else
@@ -288,13 +288,13 @@ LABEL_11:
     v8 = 3;
   }
 
-  a3->var3 = v8;
-  v9 = [a4 connectionStatus];
+  status->var3 = v8;
+  connectionStatus = [tStatus connectionStatus];
 
-  [(misCTClientSharedInstance *)self convertConnectionStatus:v9 ctInterfaceConnStatus:&a3->var4];
+  [(misCTClientSharedInstance *)self convertConnectionStatus:connectionStatus ctInterfaceConnStatus:&status->var4];
 }
 
-- (int)getTetheringStatus:(mis_ctinterface_tethering_status *)a3
+- (int)getTetheringStatus:(mis_ctinterface_tethering_status *)status
 {
   v9 = 0;
   ctClient = self->_ctClient;
@@ -319,17 +319,17 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  [(misCTClientSharedInstance *)self convertTetheringStatus:a3 CTStatus:v6];
-  a3->var0;
-  a3->var1;
-  a3->var2;
-  var3 = a3->var3;
+  [(misCTClientSharedInstance *)self convertTetheringStatus:status CTStatus:v6];
+  status->var0;
+  status->var1;
+  status->var2;
+  var3 = status->var3;
   [objc_msgSend(objc_msgSend(v6 "connectionStatus")];
   sub_100001108();
   return 0;
 }
 
-- (int)getTetheringInterfaceName:(char *)a3
+- (int)getTetheringInterfaceName:(char *)name
 {
   v6 = 0u;
   *v7 = 0u;
@@ -339,7 +339,7 @@ LABEL_4:
   {
     if (v7[0])
     {
-      strncpy(a3, v7, 0xFuLL);
+      strncpy(name, v7, 0xFuLL);
       return 0;
     }
   }
@@ -347,9 +347,9 @@ LABEL_4:
   return result;
 }
 
-- (int)isDataPlanEnabled:(BOOL *)a3
+- (int)isDataPlanEnabled:(BOOL *)enabled
 {
-  *a3 = 0;
+  *enabled = 0;
   [(misCTClientSharedInstance *)self ctServerConnection];
   IsEnabled = _CTServerConnectionGetCellularDataIsEnabled();
   v4 = 0;
@@ -362,12 +362,12 @@ LABEL_4:
   return v4;
 }
 
-- (void)processCTTetheringStatusChangeNotification:(id)a3
+- (void)processCTTetheringStatusChangeNotification:(id)notification
 {
-  if (a3)
+  if (notification)
   {
     memset(v5, 0, sizeof(v5));
-    [(misCTClientSharedInstance *)self convertTetheringStatus:v5 CTStatus:a3];
+    [(misCTClientSharedInstance *)self convertTetheringStatus:v5 CTStatus:notification];
     eventCallback = self->_eventCallback;
     if (eventCallback)
     {
@@ -382,17 +382,17 @@ LABEL_4:
   }
 }
 
-- (void)processCTConnectionStateChangeNotification:(id)a3 connection:(int)a4 connectionStatus:(id)a5 ctInterfaceConnStatus:(mis_ctinterface_ct_conn_status *)a6
+- (void)processCTConnectionStateChangeNotification:(id)notification connection:(int)connection connectionStatus:(id)status ctInterfaceConnStatus:(mis_ctinterface_ct_conn_status *)connStatus
 {
-  if (a4 == 4)
+  if (connection == 4)
   {
-    [(misCTClientSharedInstance *)self convertConnectionStatus:a5 ctInterfaceConnStatus:a6];
+    [(misCTClientSharedInstance *)self convertConnectionStatus:status ctInterfaceConnStatus:connStatus];
     eventCallback = self->_eventCallback;
     if (eventCallback)
     {
       eventCallbackArg = self->_eventCallbackArg;
 
-      eventCallback(2, a6, eventCallbackArg);
+      eventCallback(2, connStatus, eventCallbackArg);
     }
   }
 
@@ -411,22 +411,22 @@ LABEL_4:
   }
 }
 
-- (void)handleCTNotification:(__CFString *)a3 notificationInfo:(__CFDictionary *)a4
+- (void)handleCTNotification:(__CFString *)notification notificationInfo:(__CFDictionary *)info
 {
   if (!self->_eventCallback)
   {
     goto LABEL_4;
   }
 
-  if (!CFEqual(a3, kCTConnectionInvalidatedNotification))
+  if (!CFEqual(notification, kCTConnectionInvalidatedNotification))
   {
-    if (CFEqual(a3, kCTDaemonReadyNotification))
+    if (CFEqual(notification, kCTDaemonReadyNotification))
     {
       v7 = 5;
       goto LABEL_7;
     }
 
-    CFStringGetCStringPtr(a3, 0x8000100u);
+    CFStringGetCStringPtr(notification, 0x8000100u);
 LABEL_4:
     sub_100001108();
     return;
@@ -437,7 +437,7 @@ LABEL_7:
   eventCallback = self->_eventCallback;
   eventCallbackArg = self->_eventCallbackArg;
 
-  eventCallback(v7, a4, eventCallbackArg);
+  eventCallback(v7, info, eventCallbackArg);
 }
 
 @end

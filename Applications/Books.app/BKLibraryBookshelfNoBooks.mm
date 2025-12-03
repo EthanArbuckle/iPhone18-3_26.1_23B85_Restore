@@ -1,108 +1,108 @@
 @interface BKLibraryBookshelfNoBooks
-+ (id)_createDescriptionDetailLabel:(CGRect)a3;
-+ (id)_createDescriptionHeaderLabel:(CGRect)a3;
-+ (void)_layoutDescriptionHeader:(id)a3 detail:(id)a4 topMargin:(double)a5 descWidth:(double)a6 spacing:(double)a7 inRect:(CGRect)a8;
-+ (void)adjustHeight:(id)a3 withDataSource:(id)a4;
-- (BKLibraryBookshelfNoBooks)initWithFrame:(CGRect)a3;
++ (id)_createDescriptionDetailLabel:(CGRect)label;
++ (id)_createDescriptionHeaderLabel:(CGRect)label;
++ (void)_layoutDescriptionHeader:(id)header detail:(id)detail topMargin:(double)margin descWidth:(double)width spacing:(double)spacing inRect:(CGRect)rect;
++ (void)adjustHeight:(id)height withDataSource:(id)source;
+- (BKLibraryBookshelfNoBooks)initWithFrame:(CGRect)frame;
 - (BKLibraryBookshelfSupplementaryDataSource)dataSource;
 - (UILabel)descriptionDetailLabel;
 - (UILabel)descriptionHeaderLabel;
 - (void)_updateLabels;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setDataSource:(id)a3;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation BKLibraryBookshelfNoBooks
 
-+ (id)_createDescriptionHeaderLabel:(CGRect)a3
++ (id)_createDescriptionHeaderLabel:(CGRect)label
 {
-  v3 = [[UILabel alloc] initWithFrame:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [[UILabel alloc] initWithFrame:{label.origin.x, label.origin.y, label.size.width, label.size.height}];
   [v3 setNumberOfLines:0];
 
   return v3;
 }
 
-+ (id)_createDescriptionDetailLabel:(CGRect)a3
++ (id)_createDescriptionDetailLabel:(CGRect)label
 {
-  v3 = [[UILabel alloc] initWithFrame:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [[UILabel alloc] initWithFrame:{label.origin.x, label.origin.y, label.size.width, label.size.height}];
   [v3 setNumberOfLines:0];
 
   return v3;
 }
 
-+ (void)adjustHeight:(id)a3 withDataSource:(id)a4
++ (void)adjustHeight:(id)height withDataSource:(id)source
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 mainHeaderMetrics];
-  v33 = [v7 noBooksDescriptionHeaderFontAttributes];
+  sourceCopy = source;
+  heightCopy = height;
+  mainHeaderMetrics = [heightCopy mainHeaderMetrics];
+  noBooksDescriptionHeaderFontAttributes = [mainHeaderMetrics noBooksDescriptionHeaderFontAttributes];
 
-  v8 = [v6 mainHeaderMetrics];
-  v9 = [v8 noBooksDescriptionFontAttributes];
+  mainHeaderMetrics2 = [heightCopy mainHeaderMetrics];
+  noBooksDescriptionFontAttributes = [mainHeaderMetrics2 noBooksDescriptionFontAttributes];
 
-  [v6 frame];
+  [heightCopy frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v6 mainHeaderMetrics];
-  [v18 noBooksDescriptionTopMargin];
+  mainHeaderMetrics3 = [heightCopy mainHeaderMetrics];
+  [mainHeaderMetrics3 noBooksDescriptionTopMargin];
   v20 = v19;
 
-  v21 = [v6 mainHeaderMetrics];
-  [v21 noBooksDescriptionSpacing];
+  mainHeaderMetrics4 = [heightCopy mainHeaderMetrics];
+  [mainHeaderMetrics4 noBooksDescriptionSpacing];
   v23 = v22;
 
-  v24 = [v6 mainHeaderMetrics];
-  [v24 noBooksDescriptionWidth];
+  mainHeaderMetrics5 = [heightCopy mainHeaderMetrics];
+  [mainHeaderMetrics5 noBooksDescriptionWidth];
   v26 = v25;
 
   v27 = [BKLibraryBookshelfNoBooks _createDescriptionHeaderLabel:v11, v13, v15, v17];
   v28 = [BKLibraryBookshelfNoBooks _createDescriptionDetailLabel:v11, v13, v15, v17];
-  v29 = [v5 noBooksDescriptionHeader];
-  v30 = [TUIFontSpec attributedStringWith:v29 attributes:v33];
+  noBooksDescriptionHeader = [sourceCopy noBooksDescriptionHeader];
+  v30 = [TUIFontSpec attributedStringWith:noBooksDescriptionHeader attributes:noBooksDescriptionHeaderFontAttributes];
   [v27 setAttributedText:v30];
 
-  v31 = [v5 noBooksDescription];
+  noBooksDescription = [sourceCopy noBooksDescription];
 
-  v32 = [TUIFontSpec attributedStringWith:v31 attributes:v9];
+  v32 = [TUIFontSpec attributedStringWith:noBooksDescription attributes:noBooksDescriptionFontAttributes];
   [v28 setAttributedText:v32];
 
   [BKLibraryBookshelfNoBooks _layoutDescriptionHeader:v27 detail:v28 topMargin:v20 descWidth:v26 spacing:v23 inRect:v11, v13, v15, v17];
   [v28 frame];
-  [v6 setFrame:{v11, v13, v15, CGRectGetMaxY(v35) * 1.2}];
+  [heightCopy setFrame:{v11, v13, v15, CGRectGetMaxY(v35) * 1.2}];
 }
 
-+ (void)_layoutDescriptionHeader:(id)a3 detail:(id)a4 topMargin:(double)a5 descWidth:(double)a6 spacing:(double)a7 inRect:(CGRect)a8
++ (void)_layoutDescriptionHeader:(id)header detail:(id)detail topMargin:(double)margin descWidth:(double)width spacing:(double)spacing inRect:(CGRect)rect
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v33 = a3;
-  v16 = a4;
-  v17 = [v33 attributedText];
-  if (v17)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  headerCopy = header;
+  detailCopy = detail;
+  attributedText = [headerCopy attributedText];
+  if (attributedText)
   {
-    v18 = v17;
-    v19 = [v16 attributedText];
+    v18 = attributedText;
+    attributedText2 = [detailCopy attributedText];
 
-    if (v19)
+    if (attributedText2)
     {
       v35.origin.x = x;
       v35.origin.y = y;
       v35.size.width = width;
       v35.size.height = height;
       v20 = CGRectGetHeight(v35);
-      [v33 sizeThatFits:{width, CGRectZero.size.height}];
+      [headerCopy sizeThatFits:{width, CGRectZero.size.height}];
       rect = v21;
-      v32 = a7;
-      v22 = round(v20 * a5 / 100.0);
-      [v33 setFrame:{(width - width) * 0.5, v22, width, v21}];
-      v23 = [v16 attributedText];
-      [v23 size];
-      v24 = a6;
+      spacingCopy = spacing;
+      v22 = round(v20 * margin / 100.0);
+      [headerCopy setFrame:{(width - width) * 0.5, v22, width, v21}];
+      attributedText3 = [detailCopy attributedText];
+      [attributedText3 size];
+      widthCopy = width;
       v26 = v25;
 
       v36.origin.x = x;
@@ -110,9 +110,9 @@
       v36.size.width = width;
       v36.size.height = height;
       v27 = CGRectGetWidth(v36);
-      if (v27 >= v26 / v24)
+      if (v27 >= v26 / widthCopy)
       {
-        v28 = v26 / v24;
+        v28 = v26 / widthCopy;
       }
 
       else
@@ -120,34 +120,34 @@
         v28 = v27;
       }
 
-      [v16 sizeThatFits:{v28, 1.79769313e308}];
+      [detailCopy sizeThatFits:{v28, 1.79769313e308}];
       v30 = v29;
       v37.origin.x = (width - width) * 0.5;
       v37.origin.y = v22;
       v37.size.width = width;
       v37.size.height = rect;
-      [v16 setFrame:{(width - v28) * 0.5, CGRectGetMaxY(v37) + v32, v28, v30}];
+      [detailCopy setFrame:{(width - v28) * 0.5, CGRectGetMaxY(v37) + spacingCopy, v28, v30}];
     }
   }
 }
 
-- (BKLibraryBookshelfNoBooks)initWithFrame:(CGRect)a3
+- (BKLibraryBookshelfNoBooks)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = BKLibraryBookshelfNoBooks;
   v7 = [(BKLibraryBookshelfNoBooks *)&v11 initWithFrame:?];
   if (v7)
   {
-    v8 = [BKLibraryBookshelfNoBooks _createDescriptionHeaderLabel:x, y, width, height];
-    [(BKLibraryBookshelfNoBooks *)v7 addSubview:v8];
-    [(BKLibraryBookshelfNoBooks *)v7 setDescriptionHeaderLabel:v8];
-    v9 = [BKLibraryBookshelfNoBooks _createDescriptionDetailLabel:x, y, width, height];
-    [(BKLibraryBookshelfNoBooks *)v7 addSubview:v9];
-    [(BKLibraryBookshelfNoBooks *)v7 setDescriptionDetailLabel:v9];
+    height = [BKLibraryBookshelfNoBooks _createDescriptionHeaderLabel:x, y, width, height];
+    [(BKLibraryBookshelfNoBooks *)v7 addSubview:height];
+    [(BKLibraryBookshelfNoBooks *)v7 setDescriptionHeaderLabel:height];
+    height2 = [BKLibraryBookshelfNoBooks _createDescriptionDetailLabel:x, y, width, height];
+    [(BKLibraryBookshelfNoBooks *)v7 addSubview:height2];
+    [(BKLibraryBookshelfNoBooks *)v7 setDescriptionDetailLabel:height2];
   }
 
   return v7;
@@ -163,30 +163,30 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKLibraryBookshelfNoBooks *)self descriptionHeaderLabel];
-  v12 = [(BKLibraryBookshelfNoBooks *)self descriptionDetailLabel];
+  descriptionHeaderLabel = [(BKLibraryBookshelfNoBooks *)self descriptionHeaderLabel];
+  descriptionDetailLabel = [(BKLibraryBookshelfNoBooks *)self descriptionDetailLabel];
   [(BKLibraryBookshelfNoBooks *)self descriptionTopMargin];
   v14 = v13;
   [(BKLibraryBookshelfNoBooks *)self descriptionWidth];
   v16 = v15;
   [(BKLibraryBookshelfNoBooks *)self descriptionSpacing];
-  [BKLibraryBookshelfNoBooks _layoutDescriptionHeader:v11 detail:v12 topMargin:v14 descWidth:v16 spacing:v17 inRect:v4, v6, v8, v10];
+  [BKLibraryBookshelfNoBooks _layoutDescriptionHeader:descriptionHeaderLabel detail:descriptionDetailLabel topMargin:v14 descWidth:v16 spacing:v17 inRect:v4, v6, v8, v10];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v16.receiver = self;
   v16.super_class = BKLibraryBookshelfNoBooks;
-  [(BKLibraryBookshelfNoBooks *)&v16 applyLayoutAttributes:v4];
-  v5 = v4;
+  [(BKLibraryBookshelfNoBooks *)&v16 applyLayoutAttributes:attributesCopy];
+  v5 = attributesCopy;
   if ([v5 layoutDebugMode])
   {
     v6 = +[UIColor redColor];
     v7 = [v6 colorWithAlphaComponent:0.2];
-    v8 = [v7 CGColor];
-    v9 = [(BKLibraryBookshelfNoBooks *)self layer];
-    [v9 setBorderColor:v8];
+    cGColor = [v7 CGColor];
+    layer = [(BKLibraryBookshelfNoBooks *)self layer];
+    [layer setBorderColor:cGColor];
 
     v10 = 0.5;
   }
@@ -196,23 +196,23 @@
     v10 = 0.0;
   }
 
-  v11 = [(BKLibraryBookshelfNoBooks *)self layer];
-  [v11 setBorderWidth:v10];
+  layer2 = [(BKLibraryBookshelfNoBooks *)self layer];
+  [layer2 setBorderWidth:v10];
 
-  v12 = [v5 mainHeaderMetrics];
-  [(BKLibraryBookshelfNoBooks *)self setMainHeaderMetrics:v12];
+  mainHeaderMetrics = [v5 mainHeaderMetrics];
+  [(BKLibraryBookshelfNoBooks *)self setMainHeaderMetrics:mainHeaderMetrics];
 
-  v13 = [v5 mainHeaderMetrics];
-  [v13 noBooksDescriptionTopMargin];
+  mainHeaderMetrics2 = [v5 mainHeaderMetrics];
+  [mainHeaderMetrics2 noBooksDescriptionTopMargin];
   [(BKLibraryBookshelfNoBooks *)self setDescriptionTopMargin:?];
 
-  v14 = [v5 mainHeaderMetrics];
-  [v14 noBooksDescriptionSpacing];
+  mainHeaderMetrics3 = [v5 mainHeaderMetrics];
+  [mainHeaderMetrics3 noBooksDescriptionSpacing];
   [(BKLibraryBookshelfNoBooks *)self setDescriptionSpacing:?];
 
-  v15 = [v5 mainHeaderMetrics];
+  mainHeaderMetrics4 = [v5 mainHeaderMetrics];
 
-  [v15 noBooksDescriptionWidth];
+  [mainHeaderMetrics4 noBooksDescriptionWidth];
   [(BKLibraryBookshelfNoBooks *)self setDescriptionWidth:?];
 
   [(BKLibraryBookshelfNoBooks *)self _updateLabels];
@@ -220,33 +220,33 @@
 
 - (void)_updateLabels
 {
-  v3 = [(BKLibraryBookshelfNoBooks *)self dataSource];
+  dataSource = [(BKLibraryBookshelfNoBooks *)self dataSource];
 
-  if (v3)
+  if (dataSource)
   {
-    v4 = [(BKLibraryBookshelfNoBooks *)self dataSource];
-    v5 = [v4 noBooksDescriptionHeader];
-    v6 = [(BKLibraryBookshelfNoBooks *)self mainHeaderMetrics];
-    v7 = [v6 noBooksDescriptionHeaderFontAttributes];
-    v8 = [TUIFontSpec attributedStringWith:v5 attributes:v7];
-    v9 = [(BKLibraryBookshelfNoBooks *)self descriptionHeaderLabel];
-    [v9 setAttributedText:v8];
+    dataSource2 = [(BKLibraryBookshelfNoBooks *)self dataSource];
+    noBooksDescriptionHeader = [dataSource2 noBooksDescriptionHeader];
+    mainHeaderMetrics = [(BKLibraryBookshelfNoBooks *)self mainHeaderMetrics];
+    noBooksDescriptionHeaderFontAttributes = [mainHeaderMetrics noBooksDescriptionHeaderFontAttributes];
+    v8 = [TUIFontSpec attributedStringWith:noBooksDescriptionHeader attributes:noBooksDescriptionHeaderFontAttributes];
+    descriptionHeaderLabel = [(BKLibraryBookshelfNoBooks *)self descriptionHeaderLabel];
+    [descriptionHeaderLabel setAttributedText:v8];
 
-    v10 = [(BKLibraryBookshelfNoBooks *)self dataSource];
-    v11 = [v10 noBooksDescription];
-    v12 = [(BKLibraryBookshelfNoBooks *)self mainHeaderMetrics];
-    v13 = [v12 noBooksDescriptionFontAttributes];
-    v14 = [TUIFontSpec attributedStringWith:v11 attributes:v13];
-    v15 = [(BKLibraryBookshelfNoBooks *)self descriptionDetailLabel];
-    [v15 setAttributedText:v14];
+    dataSource3 = [(BKLibraryBookshelfNoBooks *)self dataSource];
+    noBooksDescription = [dataSource3 noBooksDescription];
+    mainHeaderMetrics2 = [(BKLibraryBookshelfNoBooks *)self mainHeaderMetrics];
+    noBooksDescriptionFontAttributes = [mainHeaderMetrics2 noBooksDescriptionFontAttributes];
+    v14 = [TUIFontSpec attributedStringWith:noBooksDescription attributes:noBooksDescriptionFontAttributes];
+    descriptionDetailLabel = [(BKLibraryBookshelfNoBooks *)self descriptionDetailLabel];
+    [descriptionDetailLabel setAttributedText:v14];
 
     [(BKLibraryBookshelfNoBooks *)self setNeedsLayout];
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  objc_storeWeak(&self->_dataSource, a3);
+  objc_storeWeak(&self->_dataSource, source);
 
   [(BKLibraryBookshelfNoBooks *)self _updateLabels];
 }

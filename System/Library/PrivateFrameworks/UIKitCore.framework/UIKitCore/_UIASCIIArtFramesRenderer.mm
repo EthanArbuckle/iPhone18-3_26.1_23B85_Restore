@@ -1,27 +1,27 @@
 @interface _UIASCIIArtFramesRenderer
-- (CGRect)scaledRectForRect:(CGRect)a3 scaleSize:(CGSize)a4;
-- (_UIASCIIArtFramesRenderer)initWithFrames:(id)a3 outputLineWidth:(double)a4;
-- (id)_normalizeFrames:(id)a3;
+- (CGRect)scaledRectForRect:(CGRect)rect scaleSize:(CGSize)size;
+- (_UIASCIIArtFramesRenderer)initWithFrames:(id)frames outputLineWidth:(double)width;
+- (id)_normalizeFrames:(id)frames;
 - (id)renderedLines;
 - (id)visualDescription;
 @end
 
 @implementation _UIASCIIArtFramesRenderer
 
-- (_UIASCIIArtFramesRenderer)initWithFrames:(id)a3 outputLineWidth:(double)a4
+- (_UIASCIIArtFramesRenderer)initWithFrames:(id)frames outputLineWidth:(double)width
 {
-  v6 = a3;
+  framesCopy = frames;
   v12.receiver = self;
   v12.super_class = _UIASCIIArtFramesRenderer;
   v7 = [(_UIASCIIArtFramesRenderer *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v9 = [(_UIASCIIArtFramesRenderer *)v7 _normalizeFrames:v6];
+    v9 = [(_UIASCIIArtFramesRenderer *)v7 _normalizeFrames:framesCopy];
     frames = v8->_frames;
     v8->_frames = v9;
 
-    v8->_outputLineWidth = a4;
+    v8->_outputLineWidth = width;
   }
 
   return v8;
@@ -30,14 +30,14 @@
 - (id)visualDescription
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(_UIASCIIArtFramesRenderer *)self renderedLines];
+  renderedLines = [(_UIASCIIArtFramesRenderer *)self renderedLines];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46___UIASCIIArtFramesRenderer_visualDescription__block_invoke;
   v7[3] = &unk_1E70FA6E8;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [renderedLines enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -71,8 +71,8 @@
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v16 = [(_UIASCIIArtFramesRenderer *)self frames];
-  v17 = [v16 countByEnumeratingWithState:&v69 objects:v82 count:16];
+  frames = [(_UIASCIIArtFramesRenderer *)self frames];
+  v17 = [frames countByEnumeratingWithState:&v69 objects:v82 count:16];
   if (v17)
   {
     v18 = *v70;
@@ -82,7 +82,7 @@
       {
         if (*v70 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(frames);
         }
 
         [*(*(&v69 + 1) + 8 * i) CGRectValue];
@@ -91,7 +91,7 @@
         [v15 addObject:v20];
       }
 
-      v17 = [v16 countByEnumeratingWithState:&v69 objects:v82 count:16];
+      v17 = [frames countByEnumeratingWithState:&v69 objects:v82 count:16];
     }
 
     while (v17);
@@ -259,15 +259,15 @@
   return v49;
 }
 
-- (CGRect)scaledRectForRect:(CGRect)a3 scaleSize:(CGSize)a4
+- (CGRect)scaledRectForRect:(CGRect)rect scaleSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4.width * CGRectGetMinX(a3);
+  height = size.height;
+  width = size.width;
+  v6 = rect.size.height;
+  v7 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = size.width * CGRectGetMinX(rect);
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = v7;
@@ -290,9 +290,9 @@
   return NSIntegralRectWithOptions(*&v14, 0xF0000uLL);
 }
 
-- (id)_normalizeFrames:(id)a3
+- (id)_normalizeFrames:(id)frames
 {
-  v3 = a3;
+  framesCopy = frames;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3010000000;
@@ -303,7 +303,7 @@
   v10[2] = __46___UIASCIIArtFramesRenderer__normalizeFrames___block_invoke;
   v10[3] = &unk_1E70FA710;
   v10[4] = &v11;
-  [v3 enumerateObjectsUsingBlock:v10];
+  [framesCopy enumerateObjectsUsingBlock:v10];
   v16 = *(v12 + 2);
   _Block_object_dispose(&v11, 8);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -314,7 +314,7 @@
   v9 = v16;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [framesCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }

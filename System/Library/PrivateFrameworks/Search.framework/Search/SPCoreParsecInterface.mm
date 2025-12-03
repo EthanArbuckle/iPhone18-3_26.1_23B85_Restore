@@ -3,9 +3,9 @@
 + (id)sharedFeedbackListener;
 - (SPCoreParsecInterface)init;
 - (id)getFeedbackListener;
-- (void)activate:(double)a3;
+- (void)activate:(double)activate;
 - (void)dealloc;
-- (void)setParsecFeedbackAllowed:(BOOL)a3;
+- (void)setParsecFeedbackAllowed:(BOOL)allowed;
 - (void)setupSearchSession;
 @end
 
@@ -28,17 +28,17 @@
 
 + (id)sharedFeedbackListener
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!gSharedFeedbackListener)
   {
     v3 = +[SPCoreParsecInterface getSharedInstance];
-    v4 = [v3 getFeedbackListener];
+    getFeedbackListener = [v3 getFeedbackListener];
     v5 = gSharedFeedbackListener;
-    gSharedFeedbackListener = v4;
+    gSharedFeedbackListener = getFeedbackListener;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v6 = gSharedFeedbackListener;
 
@@ -47,8 +47,8 @@
 
 + (id)getSharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!getSharedInstance_interface)
   {
     v3 = objc_alloc_init(SPCoreParsecInterface);
@@ -56,7 +56,7 @@
     getSharedInstance_interface = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = getSharedInstance_interface;
 
@@ -73,26 +73,26 @@
     v18 = 3221225472;
     v19 = __44__SPCoreParsecInterface_getFeedbackListener__block_invoke;
     v20 = &unk_1E82F8F28;
-    v21 = self;
+    selfCopy = self;
     if (sessionOnceToken != -1)
     {
       dispatch_once(p_sessionOnceToken, &block);
     }
 
-    v5 = [(SPCoreParsecInterface *)self searchSession];
+    searchSession = [(SPCoreParsecInterface *)self searchSession];
 
-    if (!v5)
+    if (!searchSession)
     {
       [(SPCoreParsecInterface *)self setupSearchSession];
-      v6 = [(SPCoreParsecInterface *)self searchSession];
-      [client setSession:v6];
+      searchSession2 = [(SPCoreParsecInterface *)self searchSession];
+      [client setSession:searchSession2];
     }
 
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __44__SPCoreParsecInterface_getFeedbackListener__block_invoke_2;
     v15 = &unk_1E82F8F28;
-    v16 = self;
+    selfCopy2 = self;
     if (getFeedbackListener_onceToken != -1)
     {
       dispatch_once(&getFeedbackListener_onceToken, &v12);
@@ -124,27 +124,27 @@
     goto LABEL_3;
   }
 
-  v3 = [(SPCoreParsecInterface *)obj searchSession];
+  searchSession = [(SPCoreParsecInterface *)obj searchSession];
 
   v2 = obj;
-  if (v3)
+  if (searchSession)
   {
     goto LABEL_3;
   }
 
   v4 = objc_alloc(MEMORY[0x1E69D3E60]);
-  v5 = [(SPCoreParsecInterface *)obj sharedQueue];
-  v6 = [v4 initWithClient:obj clientQueue:v5];
+  sharedQueue = [(SPCoreParsecInterface *)obj sharedQueue];
+  v6 = [v4 initWithClient:obj clientQueue:sharedQueue];
   [(SPCoreParsecInterface *)obj setSearchSession:v6];
 
-  v7 = [(SPCoreParsecInterface *)obj searchSession];
+  searchSession2 = [(SPCoreParsecInterface *)obj searchSession];
 
   v2 = obj;
-  if (v7)
+  if (searchSession2)
   {
-    v8 = [(SPCoreParsecInterface *)obj searchSession];
-    v9 = [v8 listener];
-    [(SPSearchParsecFeedbackProxy *)obj->_listener setListener:v9];
+    searchSession3 = [(SPCoreParsecInterface *)obj searchSession];
+    listener = [searchSession3 listener];
+    [(SPSearchParsecFeedbackProxy *)obj->_listener setListener:listener];
 
     [SPSearchFeedbackSender synchronizedBlock:&__block_literal_global_3];
     objc_sync_exit(obj);
@@ -165,9 +165,9 @@ void __43__SPCoreParsecInterface_setupSearchSession__block_invoke()
   [v0 setParsecFeedbackAllowed:_parsecFeedbackAllowed];
 }
 
-- (void)setParsecFeedbackAllowed:(BOOL)a3
+- (void)setParsecFeedbackAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v21 = *MEMORY[0x1E69E9840];
   v5 = SPLogForSPLogCategoryDefault();
   v6 = v5;
@@ -184,7 +184,7 @@ void __43__SPCoreParsecInterface_setupSearchSession__block_invoke()
   if (os_log_type_enabled(v5, v7))
   {
     v19 = 67109120;
-    LODWORD(v20) = v3;
+    LODWORD(v20) = allowedCopy;
     _os_log_impl(&dword_1C81BF000, v6, v7, "[FEEDBACK-DEBUG] (SPCoreParsecInterface setParsecFeedbackAllowed) allowed: %d, ", &v19, 8u);
   }
 
@@ -202,19 +202,19 @@ void __43__SPCoreParsecInterface_setupSearchSession__block_invoke()
 
   if (os_log_type_enabled(v8, v10))
   {
-    v11 = [(SPCoreParsecInterface *)self searchSession];
+    searchSession = [(SPCoreParsecInterface *)self searchSession];
     v19 = 138412290;
-    v20 = v11;
+    v20 = searchSession;
     _os_log_impl(&dword_1C81BF000, v9, v10, "[FEEDBACK-DEBUG] (SPCoreParsecInterface setParsecFeedbackAllowed) self.session: %@, ", &v19, 0xCu);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = SPLogForSPLogCategoryDefault();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = "allowed";
-    if (!v3)
+    if (!allowedCopy)
     {
       v14 = "forbidden";
     }
@@ -224,15 +224,15 @@ void __43__SPCoreParsecInterface_setupSearchSession__block_invoke()
     _os_log_impl(&dword_1C81BF000, v13, OS_LOG_TYPE_DEFAULT, "Parsec feedback %s", &v19, 0xCu);
   }
 
-  v15 = xpc_BOOL_create(v3);
+  v15 = xpc_BOOL_create(allowedCopy);
   v16 = one_member_dict("allowed", v15);
   analytics_send_event();
 
-  _parsecFeedbackAllowed = v3;
-  v17 = [(SPCoreParsecInterface *)v12 searchSession];
-  [v17 setParsecFeedbackAllowed:_parsecFeedbackAllowed];
+  _parsecFeedbackAllowed = allowedCopy;
+  searchSession2 = [(SPCoreParsecInterface *)selfCopy searchSession];
+  [searchSession2 setParsecFeedbackAllowed:_parsecFeedbackAllowed];
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
   +[SPSearchFeedbackSender updateFeedbackListeners];
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -276,7 +276,7 @@ uint64_t __44__SPCoreParsecInterface_getFeedbackListener__block_invoke_2(uint64_
   [(SPCoreParsecInterface *)&v2 dealloc];
 }
 
-- (void)activate:(double)a3
+- (void)activate:(double)activate
 {
   sessionOnceToken = self->_sessionOnceToken;
   p_sessionOnceToken = &self->_sessionOnceToken;
@@ -290,17 +290,17 @@ uint64_t __44__SPCoreParsecInterface_getFeedbackListener__block_invoke_2(uint64_
     dispatch_once(p_sessionOnceToken, block);
   }
 
-  v7 = [(SPCoreParsecInterface *)self searchSession];
+  searchSession = [(SPCoreParsecInterface *)self searchSession];
 
-  if (!v7)
+  if (!searchSession)
   {
     [(SPCoreParsecInterface *)self setupSearchSession];
-    v8 = [(SPCoreParsecInterface *)self searchSession];
-    [client setSession:v8];
+    searchSession2 = [(SPCoreParsecInterface *)self searchSession];
+    [client setSession:searchSession2];
   }
 
-  self->_gSessionStartTime = a3;
-  [(PRSSearchSession *)self->_searchSession setSessionStartTime:a3];
+  self->_gSessionStartTime = activate;
+  [(PRSSearchSession *)self->_searchSession setSessionStartTime:activate];
   [(PRSSearchSession *)self->_searchSession activate];
 }
 

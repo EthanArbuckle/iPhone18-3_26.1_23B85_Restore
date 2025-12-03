@@ -4,7 +4,7 @@
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation NCBSTinkerNotEligibleViewController
@@ -25,35 +25,35 @@
 
 - (id)titleString
 {
-  v2 = [(NCBSTinkerNotEligibleViewController *)self miniFlowDelegate];
-  v3 = [v2 familyMemberFirstName];
+  miniFlowDelegate = [(NCBSTinkerNotEligibleViewController *)self miniFlowDelegate];
+  familyMemberFirstName = [miniFlowDelegate familyMemberFirstName];
 
   v4 = NanoContactsBridgeSetupBundle();
   v5 = [v4 localizedStringForKey:@"TK_CONTACTS_NOT_ELIGIBLE_TITLE" value:&stru_1C900 table:@"NanoContactsBridgeSetup"];
-  v6 = [NSString stringWithFormat:v5, v3];
+  v6 = [NSString stringWithFormat:v5, familyMemberFirstName];
 
   return v6;
 }
 
 - (id)detailString
 {
-  v3 = [(NCBSTinkerNotEligibleViewController *)self miniFlowDelegate];
-  v4 = [v3 activePairingDeviceSupportsContactsApp];
+  miniFlowDelegate = [(NCBSTinkerNotEligibleViewController *)self miniFlowDelegate];
+  activePairingDeviceSupportsContactsApp = [miniFlowDelegate activePairingDeviceSupportsContactsApp];
   v5 = @"TK_CONTACTS_NOT_ELIGIBLE_PHONEAPP_DETAIL";
-  if (v4)
+  if (activePairingDeviceSupportsContactsApp)
   {
     v5 = @"TK_CONTACTS_NOT_ELIGIBLE_CONTACTSAPP_DETAIL";
   }
 
   v6 = v5;
 
-  v7 = [(NCBSTinkerNotEligibleViewController *)self miniFlowDelegate];
-  v8 = [v7 familyMemberFirstName];
+  miniFlowDelegate2 = [(NCBSTinkerNotEligibleViewController *)self miniFlowDelegate];
+  familyMemberFirstName = [miniFlowDelegate2 familyMemberFirstName];
 
   v9 = NanoContactsBridgeSetupBundle();
   v10 = [v9 localizedStringForKey:v6 value:&stru_1C900 table:@"NanoContactsBridgeSetup"];
 
-  v11 = [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, v8];
+  v11 = [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, familyMemberFirstName];
 
   return v11;
 }
@@ -66,10 +66,10 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(NCBSTinkerNotEligibleViewController *)self miniFlowDelegate];
-  [v4 miniFlowStepComplete:self];
+  miniFlowDelegate = [(NCBSTinkerNotEligibleViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
 - (NCBSBridgeSetupControllerDelegate)miniFlowDelegate

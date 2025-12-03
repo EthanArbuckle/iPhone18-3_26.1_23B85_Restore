@@ -1,11 +1,11 @@
 @interface CRKValidXPCConnectionProvider
-- (CRKValidXPCConnectionProvider)initWithBuilder:(id)a3;
+- (CRKValidXPCConnectionProvider)initWithBuilder:(id)builder;
 - (NSXPCConnection)connection;
 - (id)captureConnection;
 - (id)invokeBuilder;
 - (id)makeConnection;
 - (id)unprotectedConnection;
-- (void)connectionDied:(id)a3;
+- (void)connectionDied:(id)died;
 - (void)dealloc;
 - (void)tearDownConnection;
 @end
@@ -20,15 +20,15 @@
   [(CRKValidXPCConnectionProvider *)&v3 dealloc];
 }
 
-- (CRKValidXPCConnectionProvider)initWithBuilder:(id)a3
+- (CRKValidXPCConnectionProvider)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = CRKValidXPCConnectionProvider;
   v5 = [(CRKValidXPCConnectionProvider *)&v12 init];
   if (v5)
   {
-    v6 = MEMORY[0x245D3AAD0](v4);
+    v6 = MEMORY[0x245D3AAD0](builderCopy);
     builder = v5->_builder;
     v5->_builder = v6;
 
@@ -49,14 +49,14 @@
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v3 = [(CRKValidXPCConnectionProvider *)self queue];
+  queue = [(CRKValidXPCConnectionProvider *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__CRKValidXPCConnectionProvider_connection__block_invoke;
   v6[3] = &unk_278DC30E8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -73,12 +73,12 @@ uint64_t __43__CRKValidXPCConnectionProvider_connection__block_invoke(uint64_t a
 
 - (id)unprotectedConnection
 {
-  v3 = [(CRKValidXPCConnectionProvider *)self backingConnection];
+  backingConnection = [(CRKValidXPCConnectionProvider *)self backingConnection];
 
-  if (!v3)
+  if (!backingConnection)
   {
-    v4 = [(CRKValidXPCConnectionProvider *)self makeConnection];
-    [(CRKValidXPCConnectionProvider *)self setBackingConnection:v4];
+    makeConnection = [(CRKValidXPCConnectionProvider *)self makeConnection];
+    [(CRKValidXPCConnectionProvider *)self setBackingConnection:makeConnection];
   }
 
   return [(CRKValidXPCConnectionProvider *)self backingConnection];
@@ -86,8 +86,8 @@ uint64_t __43__CRKValidXPCConnectionProvider_connection__block_invoke(uint64_t a
 
 - (id)makeConnection
 {
-  v3 = [(CRKValidXPCConnectionProvider *)self invokeBuilder];
-  objc_initWeak(&location, v3);
+  invokeBuilder = [(CRKValidXPCConnectionProvider *)self invokeBuilder];
+  objc_initWeak(&location, invokeBuilder);
   objc_initWeak(&from, self);
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
@@ -96,16 +96,16 @@ uint64_t __43__CRKValidXPCConnectionProvider_connection__block_invoke(uint64_t a
   objc_copyWeak(&v10, &from);
   objc_copyWeak(&v11, &location);
   v4 = MEMORY[0x245D3AAD0](&v6);
-  [v3 setInterruptionHandler:{v4, v6, v7, v8, v9}];
-  [v3 setInvalidationHandler:v4];
-  [v3 resume];
+  [invokeBuilder setInterruptionHandler:{v4, v6, v7, v8, v9}];
+  [invokeBuilder setInvalidationHandler:v4];
+  [invokeBuilder resume];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&from);
   objc_destroyWeak(&location);
 
-  return v3;
+  return invokeBuilder;
 }
 
 void __47__CRKValidXPCConnectionProvider_makeConnection__block_invoke(uint64_t a1)
@@ -137,20 +137,20 @@ void __47__CRKValidXPCConnectionProvider_makeConnection__block_invoke_2(uint64_t
 - (id)invokeBuilder
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(CRKValidXPCConnectionProvider *)self builder];
-  v5 = v4[2]();
+  builder = [(CRKValidXPCConnectionProvider *)self builder];
+  v5 = builder[2]();
 
   objc_autoreleasePoolPop(v3);
 
   return v5;
 }
 
-- (void)connectionDied:(id)a3
+- (void)connectionDied:(id)died
 {
-  v4 = a3;
-  v5 = [(CRKValidXPCConnectionProvider *)self backingConnection];
+  diedCopy = died;
+  backingConnection = [(CRKValidXPCConnectionProvider *)self backingConnection];
 
-  if (v5 == v4)
+  if (backingConnection == diedCopy)
   {
     if (_CRKLogGeneral_onceToken_34 != -1)
     {
@@ -160,7 +160,7 @@ void __47__CRKValidXPCConnectionProvider_makeConnection__block_invoke_2(uint64_t
     v6 = _CRKLogGeneral_logObj_34;
     if (os_log_type_enabled(_CRKLogGeneral_logObj_34, OS_LOG_TYPE_ERROR))
     {
-      [(CRKValidXPCConnectionProvider *)v4 connectionDied:v6];
+      [(CRKValidXPCConnectionProvider *)diedCopy connectionDied:v6];
     }
 
     [(CRKValidXPCConnectionProvider *)self tearDownConnection];
@@ -169,18 +169,18 @@ void __47__CRKValidXPCConnectionProvider_makeConnection__block_invoke_2(uint64_t
 
 - (void)tearDownConnection
 {
-  v2 = [(CRKValidXPCConnectionProvider *)self captureConnection];
-  [v2 setInterruptionHandler:0];
-  [v2 setInvalidationHandler:0];
-  [v2 invalidate];
+  captureConnection = [(CRKValidXPCConnectionProvider *)self captureConnection];
+  [captureConnection setInterruptionHandler:0];
+  [captureConnection setInvalidationHandler:0];
+  [captureConnection invalidate];
 }
 
 - (id)captureConnection
 {
-  v3 = [(CRKValidXPCConnectionProvider *)self backingConnection];
+  backingConnection = [(CRKValidXPCConnectionProvider *)self backingConnection];
   [(CRKValidXPCConnectionProvider *)self setBackingConnection:0];
 
-  return v3;
+  return backingConnection;
 }
 
 - (void)connectionDied:(uint64_t)a1 .cold.2(uint64_t a1, NSObject *a2)

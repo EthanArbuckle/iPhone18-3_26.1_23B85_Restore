@@ -1,13 +1,13 @@
 @interface PUPhotoEditAdjustmentControl
-- (BOOL)_setContentPropertyKey:(id)a3 withValue:(id)a4 forState:(unint64_t)a5;
-- (PUPhotoEditAdjustmentControl)initWithFrame:(CGRect)a3;
-- (id)_contentForState:(unint64_t)a3;
+- (BOOL)_setContentPropertyKey:(id)key withValue:(id)value forState:(unint64_t)state;
+- (PUPhotoEditAdjustmentControl)initWithFrame:(CGRect)frame;
+- (id)_contentForState:(unint64_t)state;
 - (id)_currentImage;
-- (id)colorForState:(unint64_t)a3;
-- (id)imageForState:(unint64_t)a3;
+- (id)colorForState:(unint64_t)state;
+- (id)imageForState:(unint64_t)state;
 - (void)_layoutImageView;
 - (void)_resetAllValues;
-- (void)_setContent:(id)a3 forState:(unint64_t)a4;
+- (void)_setContent:(id)content forState:(unint64_t)state;
 - (void)_setup;
 - (void)_setupImageView;
 - (void)_updateFormatter;
@@ -19,14 +19,14 @@
 - (void)_updateSubviews;
 - (void)layoutSubviews;
 - (void)resetToDefaults;
-- (void)setDefaultColor:(id)a3;
-- (void)setDisplayMappedValue:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setSelected:(BOOL)a3;
-- (void)setShouldShowCircularRing:(BOOL)a3;
-- (void)setShouldShowValueLabel:(BOOL)a3;
-- (void)setValue:(double)a3;
+- (void)setDefaultColor:(id)color;
+- (void)setDisplayMappedValue:(BOOL)value;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setSelected:(BOOL)selected;
+- (void)setShouldShowCircularRing:(BOOL)ring;
+- (void)setShouldShowValueLabel:(BOOL)label;
+- (void)setValue:(double)value;
 @end
 
 @implementation PUPhotoEditAdjustmentControl
@@ -39,8 +39,8 @@
   v5 = 0.0;
   if (v4 < v6)
   {
-    v7 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-    [v7 minValue];
+    circularIndicatorView = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+    [circularIndicatorView minValue];
     v5 = v8;
   }
 
@@ -52,8 +52,8 @@
   v14 = v13;
   [(PUPhotoEditAdjustmentControl *)self maxValue];
   v16 = v15;
-  v17 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v17 maxValue];
+  circularIndicatorView2 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView2 maxValue];
   if (v16 > v12)
   {
     if (v10 >= v14)
@@ -80,8 +80,8 @@ LABEL_10:
     v19 = 0.0;
   }
 
-  v20 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v20 setCurrentValue:v19];
+  circularIndicatorView3 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView3 setCurrentValue:v19];
 
   if (![(PUPhotoEditAdjustmentControl *)self displayMappedValue])
   {
@@ -92,8 +92,8 @@ LABEL_10:
   formatter = self->_formatter;
   v25 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
   v23 = [(NSNumberFormatter *)formatter stringFromNumber:v25];
-  v24 = [(PUPhotoEditAdjustmentControl *)self valueLabel];
-  [v24 setText:v23];
+  valueLabel = [(PUPhotoEditAdjustmentControl *)self valueLabel];
+  [valueLabel setText:v23];
 }
 
 - (void)_updateFormatter
@@ -108,14 +108,14 @@ LABEL_10:
     v3 = &unk_1F2B7EE70;
   }
 
-  v4 = [(PUPhotoEditAdjustmentControl *)self formatter];
-  [v4 setMultiplier:v3];
+  formatter = [(PUPhotoEditAdjustmentControl *)self formatter];
+  [formatter setMultiplier:v3];
 }
 
 - (void)_updateSubviewColors
 {
-  v3 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v3 currentValue];
+  circularIndicatorView = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView currentValue];
   v5 = v4;
 
   v6 = &OBJC_IVAR___PUPhotoEditAdjustmentControl__defaultColor;
@@ -125,15 +125,15 @@ LABEL_10:
   }
 
   v7 = *(&self->super.super.super.super.isa + *v6);
-  v8 = [(PUPhotoEditAdjustmentControl *)self traitCollection];
-  v9 = [v7 resolvedColorWithTraitCollection:v8];
-  v10 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v10 setRingColor:v9];
+  traitCollection = [(PUPhotoEditAdjustmentControl *)self traitCollection];
+  v9 = [v7 resolvedColorWithTraitCollection:traitCollection];
+  circularIndicatorView2 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView2 setRingColor:v9];
 
-  v13 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  v11 = [v13 ringColor];
-  v12 = [(PUPhotoEditAdjustmentControl *)self valueLabel];
-  [v12 setTextColor:v11];
+  circularIndicatorView3 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  ringColor = [circularIndicatorView3 ringColor];
+  valueLabel = [(PUPhotoEditAdjustmentControl *)self valueLabel];
+  [valueLabel setTextColor:ringColor];
 }
 
 - (void)_updateSubviews
@@ -155,8 +155,8 @@ LABEL_10:
     v3 = 1.0;
   }
 
-  v4 = [(PUPhotoEditAdjustmentControl *)self imageView];
-  [v4 setAlpha:v3];
+  imageView = [(PUPhotoEditAdjustmentControl *)self imageView];
+  [imageView setAlpha:v3];
 
   if ([(PUPhotoEditAdjustmentControl *)self shouldShowValueLabel])
   {
@@ -168,8 +168,8 @@ LABEL_10:
     v5 = 0.0;
   }
 
-  v6 = [(PUPhotoEditAdjustmentControl *)self valueLabel];
-  [v6 setAlpha:v5];
+  valueLabel = [(PUPhotoEditAdjustmentControl *)self valueLabel];
+  [valueLabel setAlpha:v5];
 }
 
 - (void)_updateRingVisibility
@@ -184,8 +184,8 @@ LABEL_10:
     v3 = 0.0;
   }
 
-  v4 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v4 setAlpha:v3];
+  circularIndicatorView = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView setAlpha:v3];
 }
 
 - (void)_updateImageView
@@ -208,36 +208,36 @@ LABEL_10:
   [(UIImageView *)*p_imageView setHidden:v3 == 0];
 }
 
-- (void)setShouldShowCircularRing:(BOOL)a3
+- (void)setShouldShowCircularRing:(BOOL)ring
 {
-  if (self->_shouldShowCircularRing != a3)
+  if (self->_shouldShowCircularRing != ring)
   {
-    self->_shouldShowCircularRing = a3;
+    self->_shouldShowCircularRing = ring;
     [(PUPhotoEditAdjustmentControl *)self _updateRingVisibility];
   }
 }
 
-- (void)setDisplayMappedValue:(BOOL)a3
+- (void)setDisplayMappedValue:(BOOL)value
 {
-  if (self->_displayMappedValue != a3)
+  if (self->_displayMappedValue != value)
   {
-    self->_displayMappedValue = a3;
+    self->_displayMappedValue = value;
     [(PUPhotoEditAdjustmentControl *)self _updateFormatter];
   }
 }
 
-- (void)setShouldShowValueLabel:(BOOL)a3
+- (void)setShouldShowValueLabel:(BOOL)label
 {
-  if (self->_shouldShowValueLabel != a3)
+  if (self->_shouldShowValueLabel != label)
   {
-    self->_shouldShowValueLabel = a3;
+    self->_shouldShowValueLabel = label;
     [(PUPhotoEditAdjustmentControl *)self _updateSubviewVisibility];
   }
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
     [(PUPhotoEditAdjustmentControl *)self minValue];
     [(PUPhotoEditAdjustmentControl *)self maxValue];
@@ -248,120 +248,120 @@ LABEL_10:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(PUPhotoEditAdjustmentControl *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(PUPhotoEditAdjustmentControl *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = PUPhotoEditAdjustmentControl;
-    [(PUPhotoEditAdjustmentControl *)&v5 setEnabled:v3];
+    [(PUPhotoEditAdjustmentControl *)&v5 setEnabled:enabledCopy];
     [(PUPhotoEditAdjustmentControl *)self setNeedsLayout];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(PUPhotoEditAdjustmentControl *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(PUPhotoEditAdjustmentControl *)self isSelected]!= selected)
   {
     v5.receiver = self;
     v5.super_class = PUPhotoEditAdjustmentControl;
-    [(PUPhotoEditAdjustmentControl *)&v5 setSelected:v3];
+    [(PUPhotoEditAdjustmentControl *)&v5 setSelected:selectedCopy];
     [(PUPhotoEditAdjustmentControl *)self setNeedsLayout];
   }
 }
 
-- (void)setDefaultColor:(id)a3
+- (void)setDefaultColor:(id)color
 {
-  v5 = a3;
-  if (self->_defaultColor != v5)
+  colorCopy = color;
+  if (self->_defaultColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_defaultColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_defaultColor, color);
     [(PUPhotoEditAdjustmentControl *)self _updateSubviewColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
 - (id)_currentImage
 {
-  v3 = [(PUPhotoEditAdjustmentControl *)self state];
+  state = [(PUPhotoEditAdjustmentControl *)self state];
 
-  return [(PUPhotoEditAdjustmentControl *)self imageForState:v3];
+  return [(PUPhotoEditAdjustmentControl *)self imageForState:state];
 }
 
-- (id)colorForState:(unint64_t)a3
+- (id)colorForState:(unint64_t)state
 {
-  v4 = [(PUPhotoEditAdjustmentControl *)self _contentForState:a3];
-  v5 = [v4 color];
+  v4 = [(PUPhotoEditAdjustmentControl *)self _contentForState:state];
+  color = [v4 color];
 
-  if (!v5)
+  if (!color)
   {
     v6 = [(PUPhotoEditAdjustmentControl *)self _contentForState:0];
-    v5 = [v6 color];
+    color = [v6 color];
   }
 
-  return v5;
+  return color;
 }
 
-- (id)imageForState:(unint64_t)a3
+- (id)imageForState:(unint64_t)state
 {
-  v4 = [(PUPhotoEditAdjustmentControl *)self _contentForState:a3];
-  v5 = [v4 image];
+  v4 = [(PUPhotoEditAdjustmentControl *)self _contentForState:state];
+  image = [v4 image];
 
-  if (!v5)
+  if (!image)
   {
     v6 = [(PUPhotoEditAdjustmentControl *)self _contentForState:0];
-    v5 = [v6 image];
+    image = [v6 image];
   }
 
-  return v5;
+  return image;
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
-  if ([(PUPhotoEditAdjustmentControl *)self _setContentPropertyKey:@"image" withValue:a3 forState:a4])
+  if ([(PUPhotoEditAdjustmentControl *)self _setContentPropertyKey:@"image" withValue:image forState:state])
   {
 
     [(PUPhotoEditAdjustmentControl *)self _updateImageView];
   }
 }
 
-- (BOOL)_setContentPropertyKey:(id)a3 withValue:(id)a4 forState:(unint64_t)a5
+- (BOOL)_setContentPropertyKey:(id)key withValue:(id)value forState:(unint64_t)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PUPhotoEditAdjustmentControl *)self _contentForState:a5];
+  keyCopy = key;
+  valueCopy = value;
+  v10 = [(PUPhotoEditAdjustmentControl *)self _contentForState:state];
   if (!v10)
   {
     v10 = objc_alloc_init(PUPhotoEditAdjustmentControlContent);
-    [(PUPhotoEditAdjustmentControl *)self _setContent:v10 forState:a5];
+    [(PUPhotoEditAdjustmentControl *)self _setContent:v10 forState:state];
   }
 
-  v11 = [(PUPhotoEditAdjustmentControlContent *)v10 valueForKey:v8];
-  if (v11 == v9)
+  v11 = [(PUPhotoEditAdjustmentControlContent *)v10 valueForKey:keyCopy];
+  if (v11 == valueCopy)
   {
     LOBYTE(v12) = 0;
   }
 
   else
   {
-    v12 = [v9 isEqual:v11] ^ 1;
+    v12 = [valueCopy isEqual:v11] ^ 1;
   }
 
-  [(PUPhotoEditAdjustmentControlContent *)v10 setValue:v9 forKey:v8];
+  [(PUPhotoEditAdjustmentControlContent *)v10 setValue:valueCopy forKey:keyCopy];
 
   return v12;
 }
 
-- (id)_contentForState:(unint64_t)a3
+- (id)_contentForState:(unint64_t)state
 {
   if (self->_stateToContentMap)
   {
-    v4 = [(PUPhotoEditAdjustmentControl *)self stateToContentMap];
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v6 = [v4 objectForKey:v5];
+    stateToContentMap = [(PUPhotoEditAdjustmentControl *)self stateToContentMap];
+    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+    v6 = [stateToContentMap objectForKey:v5];
   }
 
   else
@@ -372,26 +372,26 @@ LABEL_10:
   return v6;
 }
 
-- (void)_setContent:(id)a3 forState:(unint64_t)a4
+- (void)_setContent:(id)content forState:(unint64_t)state
 {
-  v10 = a3;
+  contentCopy = content;
   if (!self->_stateToContentMap)
   {
-    v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     stateToContentMap = self->_stateToContentMap;
-    self->_stateToContentMap = v6;
+    self->_stateToContentMap = weakToStrongObjectsMapTable;
   }
 
-  v8 = [(PUPhotoEditAdjustmentControl *)self stateToContentMap];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  if (v10)
+  stateToContentMap = [(PUPhotoEditAdjustmentControl *)self stateToContentMap];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+  if (contentCopy)
   {
-    [v8 setObject:v10 forKey:v9];
+    [stateToContentMap setObject:contentCopy forKey:v9];
   }
 
   else
   {
-    [v8 removeObjectForKey:v9];
+    [stateToContentMap removeObjectForKey:v9];
   }
 }
 
@@ -405,16 +405,16 @@ LABEL_10:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  circularIndicatorView = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView setFrame:{v4, v6, v8, v10}];
 
   [(PUPhotoEditAdjustmentControl *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(PUPhotoEditAdjustmentControl *)self valueLabel];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  valueLabel = [(PUPhotoEditAdjustmentControl *)self valueLabel];
+  [valueLabel setFrame:{v13, v15, v17, v19}];
 
   [(PUPhotoEditAdjustmentControl *)self _updateImageView];
   [(PUPhotoEditAdjustmentControl *)self _layoutImageView];
@@ -434,8 +434,8 @@ LABEL_10:
     PXRectGetCenter();
     v7 = v6;
     v9 = v8;
-    v10 = [(PUPhotoEditAdjustmentControl *)self imageView];
-    [v10 setCenter:{v7, v9}];
+    imageView = [(PUPhotoEditAdjustmentControl *)self imageView];
+    [imageView setCenter:{v7, v9}];
   }
 }
 
@@ -460,8 +460,8 @@ LABEL_10:
 
 - (void)resetToDefaults
 {
-  v3 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v3 resetToDefaults];
+  circularIndicatorView = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView resetToDefaults];
 
   [(PUPhotoEditAdjustmentControl *)self _resetAllValues];
 }
@@ -474,20 +474,20 @@ LABEL_10:
   self->_defaultValue = 0.0;
   self->_identityValue = 0.0;
   defaultColor = self->_defaultColor;
-  v4 = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v4 setRingColor:defaultColor];
+  circularIndicatorView = [(PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView setRingColor:defaultColor];
 }
 
 - (void)_setup
 {
   v20 = +[PUInterfaceManager currentTheme];
-  v3 = [v20 photoEditingAdjustmentControlDefaultColor];
+  photoEditingAdjustmentControlDefaultColor = [v20 photoEditingAdjustmentControlDefaultColor];
   defaultColor = self->_defaultColor;
-  self->_defaultColor = v3;
+  self->_defaultColor = photoEditingAdjustmentControlDefaultColor;
 
-  v5 = [v20 photoEditingAdjustmentControlAlternateColor];
+  photoEditingAdjustmentControlAlternateColor = [v20 photoEditingAdjustmentControlAlternateColor];
   alternateColor = self->_alternateColor;
-  self->_alternateColor = v5;
+  self->_alternateColor = photoEditingAdjustmentControlAlternateColor;
 
   v7 = [PUPhotoEditCircularIndicatorView alloc];
   [(PUPhotoEditAdjustmentControl *)self bounds];
@@ -508,12 +508,12 @@ LABEL_10:
   [(UILabel *)self->_valueLabel setFont:v13];
   [(UILabel *)self->_valueLabel setTextAlignment:1];
   [(UILabel *)self->_valueLabel setTextColor:self->_defaultColor];
-  v14 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   v15 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   formatter = self->_formatter;
   self->_formatter = v15;
 
-  [(NSNumberFormatter *)self->_formatter setLocale:v14];
+  [(NSNumberFormatter *)self->_formatter setLocale:currentLocale];
   [(NSNumberFormatter *)self->_formatter setMultiplier:&unk_1F2B7EE58];
   [(NSNumberFormatter *)self->_formatter setRoundingMode:4];
   v17 = self->_formatter;
@@ -528,11 +528,11 @@ LABEL_10:
   self->_displayMappedValue = 1;
 }
 
-- (PUPhotoEditAdjustmentControl)initWithFrame:(CGRect)a3
+- (PUPhotoEditAdjustmentControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PUPhotoEditAdjustmentControl;
-  v3 = [(PUPhotoEditAdjustmentControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotoEditAdjustmentControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

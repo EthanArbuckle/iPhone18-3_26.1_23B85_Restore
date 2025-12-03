@@ -1,21 +1,21 @@
 @interface RTBluetoothManagerNotificationDisconnected
-- (RTBluetoothManagerNotificationDisconnected)initWithDeviceName:(id)a3 andDeviceAddress:(id)a4;
+- (RTBluetoothManagerNotificationDisconnected)initWithDeviceName:(id)name andDeviceAddress:(id)address;
 @end
 
 @implementation RTBluetoothManagerNotificationDisconnected
 
-- (RTBluetoothManagerNotificationDisconnected)initWithDeviceName:(id)a3 andDeviceAddress:(id)a4
+- (RTBluetoothManagerNotificationDisconnected)initWithDeviceName:(id)name andDeviceAddress:(id)address
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  addressCopy = address;
   v12.receiver = self;
   v12.super_class = RTBluetoothManagerNotificationDisconnected;
   v9 = [(RTNotification *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deviceName, a3);
-    objc_storeStrong(&v10->_deviceAddress, a4);
+    objc_storeStrong(&v9->_deviceName, name);
+    objc_storeStrong(&v10->_deviceAddress, address);
   }
 
   return v10;

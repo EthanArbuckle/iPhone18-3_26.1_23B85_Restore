@@ -1,55 +1,55 @@
 @interface MOVStreamWriterStatePreparing
-- (id)cancelRecording:(id)a3;
-- (id)criticalErrorOccurred:(id)a3 context:(id)a4;
-- (id)finishRecording:(id)a3;
-- (id)forceFinishRecording:(id)a3;
-- (id)prepareFinished:(id)a3;
-- (void)activateWithContext:(id)a3;
+- (id)cancelRecording:(id)recording;
+- (id)criticalErrorOccurred:(id)occurred context:(id)context;
+- (id)finishRecording:(id)recording;
+- (id)forceFinishRecording:(id)recording;
+- (id)prepareFinished:(id)finished;
+- (void)activateWithContext:(id)context;
 @end
 
 @implementation MOVStreamWriterStatePreparing
 
-- (id)cancelRecording:(id)a3
+- (id)cancelRecording:(id)recording
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)forceFinishRecording:(id)a3
+- (id)forceFinishRecording:(id)recording
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)finishRecording:(id)a3
+- (id)finishRecording:(id)recording
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)prepareFinished:(id)a3
+- (id)prepareFinished:(id)finished
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)criticalErrorOccurred:(id)a3 context:(id)a4
+- (id)criticalErrorOccurred:(id)occurred context:(id)context
 {
-  [a4 setCriticalError:a3];
+  [context setCriticalError:occurred];
   v4 = objc_opt_new();
 
   return v4;
 }
 
-- (void)activateWithContext:(id)a3
+- (void)activateWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 movMetadataItems];
-  [v3 executePrepareToRecordWithMovieMetadata:v4];
+  contextCopy = context;
+  movMetadataItems = [contextCopy movMetadataItems];
+  [contextCopy executePrepareToRecordWithMovieMetadata:movMetadataItems];
 }
 
 @end

@@ -2,7 +2,7 @@
 + (id)workloop;
 + (void)_configure;
 + (void)checkInPorts;
-+ (void)setFunction:(void *)a3 forSymbol:(const char *)a4;
++ (void)setFunction:(void *)function forSymbol:(const char *)symbol;
 + (void)start;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __30__SBLegacyServices__configure__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_configure_onceToken != -1)
   {
     dispatch_once(&_configure_onceToken, block);
@@ -78,7 +78,7 @@ void __32__SBLegacyServices_checkInPorts__block_invoke()
 
 + (void)start
 {
-  [a1 _configure];
+  [self _configure];
   v2 = SBLogCommon();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
   {
@@ -99,21 +99,21 @@ void __25__SBLegacyServices_start__block_invoke()
 
 + (id)workloop
 {
-  [a1 _configure];
+  [self _configure];
   v2 = __SharedWorkloop;
 
   return v2;
 }
 
-+ (void)setFunction:(void *)a3 forSymbol:(const char *)a4
++ (void)setFunction:(void *)function forSymbol:(const char *)symbol
 {
-  [a1 _configure];
+  [self _configure];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__SBLegacyServices_setFunction_forSymbol___block_invoke;
   v6[3] = &__block_descriptor_48_e5_v8__0l;
-  v6[4] = a4;
-  v6[5] = a3;
+  v6[4] = symbol;
+  v6[5] = function;
   dispatch_async(__SharedWorkloop, v6);
 }
 

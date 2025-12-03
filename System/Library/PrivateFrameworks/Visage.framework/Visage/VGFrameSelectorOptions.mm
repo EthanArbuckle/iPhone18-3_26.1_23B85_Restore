@@ -1,166 +1,166 @@
 @interface VGFrameSelectorOptions
-+ (id)optionsWithCaptureOptions:(id)a3;
++ (id)optionsWithCaptureOptions:(id)options;
 - (VGFrameSelectorFrustumOffsets)frontPoseFrustumOffsets;
 - (VGFrameSelectorFrustumOffsets)pitchPosesFrustumOffsets;
 - (VGFrameSelectorFrustumOffsets)yawPosesFrustumOffsets;
-- (void)_setOptionsForFrontPose:(id)a3;
-- (void)_setOptionsForPitchPoses:(id)a3;
-- (void)_setOptionsForYawPoses:(id)a3;
+- (void)_setOptionsForFrontPose:(id)pose;
+- (void)_setOptionsForPitchPoses:(id)poses;
+- (void)_setOptionsForYawPoses:(id)poses;
 @end
 
 @implementation VGFrameSelectorOptions
 
-- (void)_setOptionsForFrontPose:(id)a3
+- (void)_setOptionsForFrontPose:(id)pose
 {
-  v26 = a3;
+  poseCopy = pose;
   [(VGFrameSelectorOptions *)self setDetectFrontPose:1];
-  v4 = [v26 frontPoseSelectionFrustum];
-  [v4 yawOffsetLeft];
+  frontPoseSelectionFrustum = [poseCopy frontPoseSelectionFrustum];
+  [frontPoseSelectionFrustum yawOffsetLeft];
   v6 = v5;
-  v7 = [v26 frontPoseSelectionFrustum];
-  [v7 yawOffsetRight];
+  frontPoseSelectionFrustum2 = [poseCopy frontPoseSelectionFrustum];
+  [frontPoseSelectionFrustum2 yawOffsetRight];
   v9 = v8;
-  v10 = [v26 frontPoseSelectionFrustum];
-  [v10 pitchOffsetTop];
+  frontPoseSelectionFrustum3 = [poseCopy frontPoseSelectionFrustum];
+  [frontPoseSelectionFrustum3 pitchOffsetTop];
   v12 = v11;
-  v13 = [v26 frontPoseSelectionFrustum];
-  [v13 pitchOffsetBottom];
+  frontPoseSelectionFrustum4 = [poseCopy frontPoseSelectionFrustum];
+  [frontPoseSelectionFrustum4 pitchOffsetBottom];
   LODWORD(v15) = v14;
   LODWORD(v16) = v6;
   LODWORD(v17) = v9;
   LODWORD(v18) = v12;
   [(VGFrameSelectorOptions *)self setFrontPoseFrustumOffsets:v16, v17, v18, v15];
 
-  v19 = [VGExpressionFilterLegacy getFrontExpressionFiltersForCaptureOptions:v26];
+  v19 = [VGExpressionFilterLegacy getFrontExpressionFiltersForCaptureOptions:poseCopy];
   [(VGFrameSelectorOptions *)self setFrontExpressionFilters:v19];
 
-  if ([v26 useFovMarginsFilterFrontPose])
+  if ([poseCopy useFovMarginsFilterFrontPose])
   {
     v20 = objc_opt_new();
-    [v26 topMarginHeadRatio];
+    [poseCopy topMarginHeadRatio];
     [v20 setTopMarginHeadRatio:?];
-    [v26 leftMarginFrontPoseHeadRatio];
+    [poseCopy leftMarginFrontPoseHeadRatio];
     [v20 setLeftMarginHeadRatio:?];
-    [v26 rightMarginFrontPoseHeadRatio];
+    [poseCopy rightMarginFrontPoseHeadRatio];
     [v20 setRightMarginHeadRatio:?];
-    [v26 bottomMarginHeadRatio];
+    [poseCopy bottomMarginHeadRatio];
     v22 = v21;
-    [v26 bottomMarginFrontPoseDelta];
+    [poseCopy bottomMarginFrontPoseDelta];
     *&v24 = v22 + v23;
     [v20 setBottomMarginHeadRatio:v24];
     [(VGFrameSelectorOptions *)self setFrontPoseMarginRatio:v20];
   }
 
-  v25 = [v26 bodyPoseGuidanceOptions];
-  [(VGFrameSelectorOptions *)self setBodyPoseGuidanceOptions:v25];
+  bodyPoseGuidanceOptions = [poseCopy bodyPoseGuidanceOptions];
+  [(VGFrameSelectorOptions *)self setBodyPoseGuidanceOptions:bodyPoseGuidanceOptions];
 }
 
-- (void)_setOptionsForYawPoses:(id)a3
+- (void)_setOptionsForYawPoses:(id)poses
 {
-  v23 = a3;
-  -[VGFrameSelectorOptions setYawFrameCount:](self, "setYawFrameCount:", [v23 requiredYawPoses]);
-  [v23 yawLimit];
+  posesCopy = poses;
+  -[VGFrameSelectorOptions setYawFrameCount:](self, "setYawFrameCount:", [posesCopy requiredYawPoses]);
+  [posesCopy yawLimit];
   v5 = v4 * 3.14159265 / 180.0;
   *&v5 = v5;
   [(VGFrameSelectorOptions *)self setYawLimit:v5];
-  v6 = [v23 selectionFrustum];
-  [v6 yawOffsetLeft];
+  selectionFrustum = [posesCopy selectionFrustum];
+  [selectionFrustum yawOffsetLeft];
   v8 = v7;
-  v9 = [v23 selectionFrustum];
-  [v9 yawOffsetRight];
+  selectionFrustum2 = [posesCopy selectionFrustum];
+  [selectionFrustum2 yawOffsetRight];
   v11 = v10;
-  v12 = [v23 selectionFrustum];
-  [v12 pitchOffsetTop];
+  selectionFrustum3 = [posesCopy selectionFrustum];
+  [selectionFrustum3 pitchOffsetTop];
   v14 = v13;
-  v15 = [v23 selectionFrustum];
-  [v15 pitchOffsetBottom];
+  selectionFrustum4 = [posesCopy selectionFrustum];
+  [selectionFrustum4 pitchOffsetBottom];
   LODWORD(v17) = v16;
   LODWORD(v18) = v8;
   LODWORD(v19) = v11;
   LODWORD(v20) = v14;
   [(VGFrameSelectorOptions *)self setYawPosesFrustumOffsets:v18, v19, v20, v17];
 
-  v21 = [VGExpressionFilterLegacy getExpressionFiltersForCaptureOptions:v23];
+  v21 = [VGExpressionFilterLegacy getExpressionFiltersForCaptureOptions:posesCopy];
   [(VGFrameSelectorOptions *)self setYawExpressionFilters:v21];
 
-  if ([v23 useFovMarginsFilterNonFrontPose])
+  if ([posesCopy useFovMarginsFilterNonFrontPose])
   {
     v22 = objc_opt_new();
-    [v23 topMarginHeadRatio];
+    [posesCopy topMarginHeadRatio];
     [v22 setTopMarginHeadRatio:?];
-    [v23 leftMarginHeadRatio];
+    [posesCopy leftMarginHeadRatio];
     [v22 setLeftMarginHeadRatio:?];
-    [v23 rightMarginHeadRatio];
+    [posesCopy rightMarginHeadRatio];
     [v22 setRightMarginHeadRatio:?];
-    [v23 bottomMarginHeadRatio];
+    [posesCopy bottomMarginHeadRatio];
     [v22 setBottomMarginHeadRatio:?];
     [(VGFrameSelectorOptions *)self setYawMarginRatio:v22];
   }
 }
 
-- (void)_setOptionsForPitchPoses:(id)a3
+- (void)_setOptionsForPitchPoses:(id)poses
 {
-  v27 = a3;
-  -[VGFrameSelectorOptions setPitchFrameCount:](self, "setPitchFrameCount:", [v27 requiredPitchPoses]);
-  [v27 pitchLimit];
+  posesCopy = poses;
+  -[VGFrameSelectorOptions setPitchFrameCount:](self, "setPitchFrameCount:", [posesCopy requiredPitchPoses]);
+  [posesCopy pitchLimit];
   v5 = v4 * 3.14159265 / 180.0;
   *&v5 = v5;
   [(VGFrameSelectorOptions *)self setPitchLimit:v5];
-  v6 = [v27 selectionFrustum];
-  [v6 yawOffsetLeft];
+  selectionFrustum = [posesCopy selectionFrustum];
+  [selectionFrustum yawOffsetLeft];
   v8 = v7;
-  v9 = [v27 selectionFrustum];
-  [v9 yawOffsetRight];
+  selectionFrustum2 = [posesCopy selectionFrustum];
+  [selectionFrustum2 yawOffsetRight];
   v11 = v10;
-  v12 = [v27 selectionFrustum];
-  [v12 pitchOffsetTop];
+  selectionFrustum3 = [posesCopy selectionFrustum];
+  [selectionFrustum3 pitchOffsetTop];
   v14 = v13;
-  v15 = [v27 selectionFrustum];
-  [v15 pitchOffsetBottom];
+  selectionFrustum4 = [posesCopy selectionFrustum];
+  [selectionFrustum4 pitchOffsetBottom];
   LODWORD(v17) = v16;
   LODWORD(v18) = v8;
   LODWORD(v19) = v11;
   LODWORD(v20) = v14;
   [(VGFrameSelectorOptions *)self setPitchPosesFrustumOffsets:v18, v19, v20, v17];
 
-  v21 = [VGExpressionFilterLegacy getExpressionFiltersForCaptureOptions:v27];
+  v21 = [VGExpressionFilterLegacy getExpressionFiltersForCaptureOptions:posesCopy];
   [(VGFrameSelectorOptions *)self setPitchExpressionFilters:v21];
 
-  if ([v27 useFovMarginsFilterNonFrontPose])
+  if ([posesCopy useFovMarginsFilterNonFrontPose])
   {
     v22 = objc_opt_new();
-    [v27 topMarginHeadRatio];
+    [posesCopy topMarginHeadRatio];
     [v22 setTopMarginHeadRatio:?];
-    [v27 leftMarginHeadRatio];
+    [posesCopy leftMarginHeadRatio];
     [v22 setLeftMarginHeadRatio:?];
-    [v27 rightMarginHeadRatio];
+    [posesCopy rightMarginHeadRatio];
     [v22 setRightMarginHeadRatio:?];
-    [v27 bottomMarginHeadRatio];
+    [posesCopy bottomMarginHeadRatio];
     v24 = v23;
-    [v27 bottomMarginPitchPoseDelta];
+    [posesCopy bottomMarginPitchPoseDelta];
     *&v26 = fmaxf(v24 + v25, 0.0);
     [v22 setBottomMarginHeadRatio:v26];
     [(VGFrameSelectorOptions *)self setPitchMarginRatio:v22];
   }
 }
 
-+ (id)optionsWithCaptureOptions:(id)a3
++ (id)optionsWithCaptureOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_opt_new();
-  [v4 setUseSimpleSelector:{objc_msgSend(v3, "useSimpleSelector")}];
-  [v3 simpleSelectorMinOffsetAngle];
+  [v4 setUseSimpleSelector:{objc_msgSend(optionsCopy, "useSimpleSelector")}];
+  [optionsCopy simpleSelectorMinOffsetAngle];
   [v4 setSimpleSelectorMinOffsetAngle:?];
-  [v3 simpleSelectorMaxOffsetAngle];
+  [optionsCopy simpleSelectorMaxOffsetAngle];
   [v4 setSimpleSelectorMaxOffsetAngle:?];
-  [v4 setUseVNFilters:{objc_msgSend(v3, "useVNFilters")}];
-  [v3 vnFrontPoseBlinkThreshold];
+  [v4 setUseVNFilters:{objc_msgSend(optionsCopy, "useVNFilters")}];
+  [optionsCopy vnFrontPoseBlinkThreshold];
   [v4 setVnFrontPoseBlinkThreshold:?];
-  [v4 setUseVNFaceLandmarksFilter:{objc_msgSend(v3, "useVNFaceLandmarksFilter")}];
-  [v4 setUseDepthFovFilterForBadAlignment:{objc_msgSend(v3, "useDepthFovFilterForBadAlignment")}];
-  [v4 _setOptionsForFrontPose:v3];
-  [v4 _setOptionsForYawPoses:v3];
-  [v4 _setOptionsForPitchPoses:v3];
+  [v4 setUseVNFaceLandmarksFilter:{objc_msgSend(optionsCopy, "useVNFaceLandmarksFilter")}];
+  [v4 setUseDepthFovFilterForBadAlignment:{objc_msgSend(optionsCopy, "useDepthFovFilterForBadAlignment")}];
+  [v4 _setOptionsForFrontPose:optionsCopy];
+  [v4 _setOptionsForYawPoses:optionsCopy];
+  [v4 _setOptionsForPitchPoses:optionsCopy];
 
   return v4;
 }

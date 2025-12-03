@@ -1,12 +1,12 @@
 @interface ActivityBannerHostViewController
-- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithActivityDescriptor:(id)a3 systemMetricsRequest:(id)a4 payloadID:(id)a5 targetBundleIdentifier:(id)a6;
-- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithActivitySceneDescriptor:(id)a3 targetBundleIdentifier:(id)a4;
-- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithCoder:(id)a3;
+- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithActivityDescriptor:(id)descriptor systemMetricsRequest:(id)request payloadID:(id)d targetBundleIdentifier:(id)identifier;
+- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithActivitySceneDescriptor:(id)descriptor targetBundleIdentifier:(id)identifier;
+- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithCoder:(id)coder;
 @end
 
 @implementation ActivityBannerHostViewController
 
-- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithActivityDescriptor:(id)a3 systemMetricsRequest:(id)a4 payloadID:(id)a5 targetBundleIdentifier:(id)a6
+- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithActivityDescriptor:(id)descriptor systemMetricsRequest:(id)request payloadID:(id)d targetBundleIdentifier:(id)identifier
 {
   v9 = sub_18E65F4C0();
   v10 = *(*(v9 - 8) + 64);
@@ -14,10 +14,10 @@
   v12 = &v20 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18E6220E4(&qword_1ED764FA8);
   sub_18E65F670();
-  if (!a5)
+  if (!d)
   {
     v13 = 0;
-    if (a6)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -28,30 +28,30 @@ LABEL_5:
   }
 
   v13 = sub_18E65F900();
-  a5 = v14;
-  if (!a6)
+  d = v14;
+  if (!identifier)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  a6 = sub_18E65F900();
+  identifier = sub_18E65F900();
   v16 = v15;
 LABEL_6:
-  v17 = a4;
-  v18 = sub_18E63E170(v12, v17, v13, a5, a6, v16);
+  requestCopy = request;
+  v18 = sub_18E63E170(v12, requestCopy, v13, d, identifier, v16);
 
   return v18;
 }
 
-- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithCoder:(id)a3
+- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithCoder:(id)coder
 {
   result = sub_18E65FCC0();
   __break(1u);
   return result;
 }
 
-- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithActivitySceneDescriptor:(id)a3 targetBundleIdentifier:(id)a4
+- (_TtC18ActivityUIServices32ActivityBannerHostViewController)initWithActivitySceneDescriptor:(id)descriptor targetBundleIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

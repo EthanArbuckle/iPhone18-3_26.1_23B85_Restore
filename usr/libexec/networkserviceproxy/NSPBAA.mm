@@ -1,8 +1,8 @@
 @interface NSPBAA
 + (void)authenticationFailure;
-+ (void)sendRequestForQuota:(id)a3 urlSession:(id)a4 quotaServiceRequest:(id)a5 completionHandler:(id)a6;
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 messageBody:(id)a5 completionHandler:(id)a6;
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 tokenActivationQuery:(id)a5 completionHandler:(id)a6;
++ (void)sendRequestForQuota:(id)quota urlSession:(id)session quotaServiceRequest:(id)request completionHandler:(id)handler;
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session messageBody:(id)body completionHandler:(id)handler;
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session tokenActivationQuery:(id)query completionHandler:(id)handler;
 @end
 
 @implementation NSPBAA
@@ -13,13 +13,13 @@
   [v2 deviceIdentityAuthenticationFailed];
 }
 
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 tokenActivationQuery:(id)a5 completionHandler:(id)a6
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session tokenActivationQuery:(id)query completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  tokensCopy = tokens;
+  sessionCopy = session;
+  queryCopy = query;
+  handlerCopy = handler;
+  if (!tokensCopy)
   {
     v15 = nplog_obj();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -32,11 +32,11 @@
 
 LABEL_11:
 
-    (*(v12 + 2))(v12, 1, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0, 0, 0);
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!sessionCopy)
   {
     v15 = nplog_obj();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -50,7 +50,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v11)
+  if (!queryCopy)
   {
     v15 = nplog_obj();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -66,52 +66,52 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  [v11 setAuthType:1];
-  v13 = [v11 tokenInfo];
-  v14 = [v13 data];
+  [queryCopy setAuthType:1];
+  tokenInfo = [queryCopy tokenInfo];
+  data = [tokenInfo data];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000AFAC0;
   v17[3] = &unk_10010B190;
-  v18 = v11;
-  v19 = v9;
-  v20 = v10;
-  v21 = v12;
-  sub_1000AEFE4(NSPBAA, v14, v17);
+  v18 = queryCopy;
+  v19 = tokensCopy;
+  v20 = sessionCopy;
+  v21 = handlerCopy;
+  sub_1000AEFE4(NSPBAA, data, v17);
 
 LABEL_5:
 }
 
-+ (void)sendRequestForQuota:(id)a3 urlSession:(id)a4 quotaServiceRequest:(id)a5 completionHandler:(id)a6
++ (void)sendRequestForQuota:(id)quota urlSession:(id)session quotaServiceRequest:(id)request completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 request];
-  v14 = [v13 data];
+  quotaCopy = quota;
+  sessionCopy = session;
+  requestCopy = request;
+  handlerCopy = handler;
+  request = [requestCopy request];
+  data = [request data];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000AFE98;
   v19[3] = &unk_10010B190;
-  v20 = v11;
-  v21 = v9;
-  v22 = v10;
-  v23 = v12;
-  v15 = v12;
-  v16 = v10;
-  v17 = v9;
-  v18 = v11;
-  sub_1000AEFE4(NSPBAA, v14, v19);
+  v20 = requestCopy;
+  v21 = quotaCopy;
+  v22 = sessionCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = sessionCopy;
+  v17 = quotaCopy;
+  v18 = requestCopy;
+  sub_1000AEFE4(NSPBAA, data, v19);
 }
 
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 messageBody:(id)a5 completionHandler:(id)a6
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session messageBody:(id)body completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  tokensCopy = tokens;
+  sessionCopy = session;
+  bodyCopy = body;
+  handlerCopy = handler;
+  if (!tokensCopy)
   {
     v13 = nplog_obj();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -124,11 +124,11 @@ LABEL_5:
 
 LABEL_11:
 
-    (*(v12 + 2))(v12, 1, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0, 0, 0);
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!sessionCopy)
   {
     v13 = nplog_obj();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -142,7 +142,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v11)
+  if (!bodyCopy)
   {
     v13 = nplog_obj();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -162,10 +162,10 @@ LABEL_13:
   v15[1] = 3221225472;
   v15[2] = sub_1000B068C;
   v15[3] = &unk_10010B1E0;
-  v16 = v9;
-  v17 = v11;
-  v18 = v10;
-  v19 = v12;
+  v16 = tokensCopy;
+  v17 = bodyCopy;
+  v18 = sessionCopy;
+  v19 = handlerCopy;
   sub_1000AFFE0(NSPBAA, v17, v16, v15);
 
 LABEL_5:

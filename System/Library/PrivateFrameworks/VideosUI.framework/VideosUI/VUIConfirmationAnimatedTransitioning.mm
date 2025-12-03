@@ -1,50 +1,50 @@
 @interface VUIConfirmationAnimatedTransitioning
-- (VUIConfirmationAnimatedTransitioning)initWithPresenting:(BOOL)a3;
+- (VUIConfirmationAnimatedTransitioning)initWithPresenting:(BOOL)presenting;
 - (VUIConfirmationAnimatedTransitioningDelegate)delegate;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
 @end
 
 @implementation VUIConfirmationAnimatedTransitioning
 
-- (VUIConfirmationAnimatedTransitioning)initWithPresenting:(BOOL)a3
+- (VUIConfirmationAnimatedTransitioning)initWithPresenting:(BOOL)presenting
 {
   v5.receiver = self;
   v5.super_class = VUIConfirmationAnimatedTransitioning;
   result = [(VUIConfirmationAnimatedTransitioning *)&v5 init];
   if (result)
   {
-    result->_presenting = a3;
+    result->_presenting = presenting;
   }
 
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  [(VUIConfirmationAnimatedTransitioning *)self transitionDuration:v4];
+  transitionCopy = transition;
+  [(VUIConfirmationAnimatedTransitioning *)self transitionDuration:transitionCopy];
   v6 = v5;
-  v7 = [v4 containerView];
-  v8 = [v4 viewForKey:*MEMORY[0x1E69DE770]];
-  v9 = [v4 viewForKey:*MEMORY[0x1E69DE780]];
-  objc_initWeak(&location, v4);
+  containerView = [transitionCopy containerView];
+  v8 = [transitionCopy viewForKey:*MEMORY[0x1E69DE770]];
+  v9 = [transitionCopy viewForKey:*MEMORY[0x1E69DE780]];
+  objc_initWeak(&location, transitionCopy);
   if ([(VUIConfirmationAnimatedTransitioning *)self isPresenting])
   {
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [v7 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [containerView setBackgroundColor:clearColor];
 
-    v11 = [v9 subviews];
-    v12 = [v11 lastObject];
+    subviews = [v9 subviews];
+    lastObject = [subviews lastObject];
 
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [v12 setBackgroundColor:v13];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [lastObject setBackgroundColor:clearColor2];
 
-    v14 = [v9 layer];
+    layer = [v9 layer];
     CGAffineTransformMakeScale(&v26, 0.88, 0.88);
-    [v14 setAffineTransform:&v26];
+    [layer setAffineTransform:&v26];
 
-    [v7 addSubview:v9];
+    [containerView addSubview:v9];
     [v9 setAlpha:0.0];
     v15 = MEMORY[0x1E69DD250];
     v24[0] = MEMORY[0x1E69E9820];
@@ -78,7 +78,7 @@
     [v16 animateWithDuration:v20 animations:v17 completion:v6];
     objc_destroyWeak(&v19);
 
-    v12 = v21;
+    lastObject = v21;
   }
 
   objc_destroyWeak(&location);
@@ -123,10 +123,10 @@ void __58__VUIConfirmationAnimatedTransitioning_animateTransition___block_invoke
   [WeakRetained completeTransition:a2];
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
-  v4 = [(VUIConfirmationAnimatedTransitioning *)self delegate];
-  [v4 confirmationAnimatedTransitioningAnimationDidEnd:self];
+  delegate = [(VUIConfirmationAnimatedTransitioning *)self delegate];
+  [delegate confirmationAnimatedTransitioningAnimationDidEnd:self];
 }
 
 - (VUIConfirmationAnimatedTransitioningDelegate)delegate

@@ -1,9 +1,9 @@
 @interface WebArchivePrivate
 - (WebArchivePrivate)init;
-- (WebArchivePrivate)initWithCoreArchive:(void *)a3;
+- (WebArchivePrivate)initWithCoreArchive:(void *)archive;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)setCoreArchive:(void *)a3;
+- (void)setCoreArchive:(void *)archive;
 @end
 
 @implementation WebArchivePrivate
@@ -56,14 +56,14 @@
   return v3;
 }
 
-- (WebArchivePrivate)initWithCoreArchive:(void *)a3
+- (WebArchivePrivate)initWithCoreArchive:(void *)archive
 {
   v8.receiver = self;
   v8.super_class = WebArchivePrivate;
   result = [(WebArchivePrivate *)&v8 init];
-  if (result && (v5 = *a3) != 0)
+  if (result && (v5 = *archive) != 0)
   {
-    *a3 = 0;
+    *archive = 0;
     m_ptr = result->coreArchive.m_ptr;
     result->coreArchive.m_ptr = v5;
     if (m_ptr)
@@ -91,10 +91,10 @@
   return result;
 }
 
-- (void)setCoreArchive:(void *)a3
+- (void)setCoreArchive:(void *)archive
 {
-  v4 = *a3;
-  *a3 = 0;
+  v4 = *archive;
+  *archive = 0;
   m_ptr = self->coreArchive.m_ptr;
   self->coreArchive.m_ptr = v4;
   if (m_ptr)

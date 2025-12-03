@@ -1,17 +1,17 @@
 @interface SBDashBoardWallpaperEffectView
-- (SBDashBoardWallpaperEffectView)initWithWallpaperVariant:(int64_t)a3 transformOptions:(unint64_t)a4;
-- (void)didAddSubview:(id)a3;
+- (SBDashBoardWallpaperEffectView)initWithWallpaperVariant:(int64_t)variant transformOptions:(unint64_t)options;
+- (void)didAddSubview:(id)subview;
 - (void)layoutSubviews;
-- (void)setCoverSheetWallpaperStyle:(int64_t)a3;
+- (void)setCoverSheetWallpaperStyle:(int64_t)style;
 @end
 
 @implementation SBDashBoardWallpaperEffectView
 
-- (SBDashBoardWallpaperEffectView)initWithWallpaperVariant:(int64_t)a3 transformOptions:(unint64_t)a4
+- (SBDashBoardWallpaperEffectView)initWithWallpaperVariant:(int64_t)variant transformOptions:(unint64_t)options
 {
   v9.receiver = self;
   v9.super_class = SBDashBoardWallpaperEffectView;
-  v4 = [(SBWallpaperEffectView *)&v9 initWithWallpaperVariant:a3 transformOptions:a4];
+  v4 = [(SBWallpaperEffectView *)&v9 initWithWallpaperVariant:variant transformOptions:options];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D67998]);
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = SBDashBoardWallpaperEffectView;
-  [(SBDashBoardWallpaperEffectView *)&v4 didAddSubview:a3];
+  [(SBDashBoardWallpaperEffectView *)&v4 didAddSubview:subview];
   [(SBDashBoardWallpaperEffectView *)self bringSubviewToFront:self->_backgroundView];
 }
 
@@ -44,9 +44,9 @@
   [(SBUIBackgroundView *)backgroundView setFrame:?];
 }
 
-- (void)setCoverSheetWallpaperStyle:(int64_t)a3
+- (void)setCoverSheetWallpaperStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v3 = 10;
   }

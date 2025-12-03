@@ -1,9 +1,9 @@
 @interface STNoUsageReportedGroupSpecifierProvider
 - (STNoUsageReportedGroupSpecifierProvider)init;
-- (void)_devicesDidChange:(id)a3;
+- (void)_devicesDidChange:(id)change;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STNoUsageReportedGroupSpecifierProvider
@@ -15,8 +15,8 @@
   v2 = [(STGroupSpecifierProvider *)&v8 init];
   v3 = MEMORY[0x277D3FAD8];
   v4 = objc_opt_new();
-  v5 = [v4 UUIDString];
-  v6 = [v3 groupSpecifierWithID:v5];
+  uUIDString = [v4 UUIDString];
+  v6 = [v3 groupSpecifierWithID:uUIDString];
 
   [(STGroupSpecifierProvider *)v2 setGroupSpecifier:v6];
   return v2;
@@ -33,32 +33,32 @@
   [(STGroupSpecifierProvider *)&v3 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"usageDetailsCoordinator.devices"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.devices"];
   v6.receiver = self;
   v6.super_class = STNoUsageReportedGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"usageDetailsCoordinator.devices" options:5 context:"KVOContextNoUsageReportedGroupSpecifierProvider"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"usageDetailsCoordinator.devices" options:5 context:"KVOContextNoUsageReportedGroupSpecifierProvider"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == "KVOContextNoUsageReportedGroupSpecifierProvider")
+  changeCopy = change;
+  if (context == "KVOContextNoUsageReportedGroupSpecifierProvider")
   {
-    v12 = a3;
+    pathCopy = path;
     [(STRootGroupSpecifierProvider *)self coordinator];
 
-    v13 = [v12 isEqualToString:@"usageDetailsCoordinator.devices"];
+    v13 = [pathCopy isEqualToString:@"usageDetailsCoordinator.devices"];
     if (v13)
     {
-      v14 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null)
       {
 
         v14 = 0;
@@ -72,17 +72,17 @@
   {
     v16.receiver = self;
     v16.super_class = STNoUsageReportedGroupSpecifierProvider;
-    v11 = a3;
-    [(STNoUsageReportedGroupSpecifierProvider *)&v16 observeValueForKeyPath:v11 ofObject:a4 change:v10 context:a6];
+    pathCopy2 = path;
+    [(STNoUsageReportedGroupSpecifierProvider *)&v16 observeValueForKeyPath:pathCopy2 ofObject:object change:changeCopy context:context];
   }
 }
 
-- (void)_devicesDidChange:(id)a3
+- (void)_devicesDidChange:(id)change
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v5 = [v4 viewModel];
-  v6 = [v5 me];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v6 = [viewModel me];
 
   if ([v6 isRemoteUser])
   {
@@ -98,22 +98,22 @@
   if (![(STGroupSpecifierProvider *)self isHidden])
   {
     v47 = v6;
-    v8 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v9 = [MEMORY[0x277CBEAA8] now];
-    v10 = [v8 startOfDayForDate:v9];
-    v46 = v8;
-    v11 = [v8 dateByAddingUnit:0x2000 value:-1 toDate:v10 options:0];
+    v10 = [currentCalendar startOfDayForDate:v9];
+    v46 = currentCalendar;
+    v11 = [currentCalendar dateByAddingUnit:0x2000 value:-1 toDate:v10 options:0];
 
     v12 = objc_opt_new();
-    v13 = [(STRootGroupSpecifierProvider *)self coordinator];
-    v14 = [v13 usageDetailsCoordinator];
-    v15 = [v14 devices];
+    coordinator2 = [(STRootGroupSpecifierProvider *)self coordinator];
+    usageDetailsCoordinator = [coordinator2 usageDetailsCoordinator];
+    devices = [usageDetailsCoordinator devices];
 
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v16 = v15;
+    v16 = devices;
     v17 = [v16 countByEnumeratingWithState:&v48 objects:v52 count:16];
     if (v17)
     {
@@ -129,13 +129,13 @@
           }
 
           v21 = *(*(&v48 + 1) + 8 * i);
-          v22 = [v21 lastFamilyCheckinDate];
-          v23 = [v11 compare:v22];
+          lastFamilyCheckinDate = [v21 lastFamilyCheckinDate];
+          v23 = [v11 compare:lastFamilyCheckinDate];
 
           if (v23 == 1)
           {
-            v24 = [v21 name];
-            [v12 addObject:v24];
+            name = [v21 name];
+            [v12 addObject:name];
           }
         }
 
@@ -165,16 +165,16 @@
     v30 = [v29 localizedStringForKey:v28 value:&stru_28766E5A8 table:0];
 
     v31 = MEMORY[0x277CCACA8];
-    v32 = [v47 givenName];
+    givenName = [v47 givenName];
     v42 = v26;
     v43 = v30;
-    v33 = [v31 localizedStringWithValidatedFormat:v30 validFormatSpecifiers:@"%@ %@" error:0, v26, v32];
+    v33 = [v31 localizedStringWithValidatedFormat:v30 validFormatSpecifiers:@"%@ %@" error:0, v26, givenName];
 
-    v34 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-    v35 = [(STNoUsageReportedGroupSpecifierProvider *)self noUsageReportedAlertSpecifier];
-    v36 = [v34 indexOfObject:v35];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+    noUsageReportedAlertSpecifier = [(STNoUsageReportedGroupSpecifierProvider *)self noUsageReportedAlertSpecifier];
+    v36 = [mutableSpecifiers indexOfObject:noUsageReportedAlertSpecifier];
 
-    v44 = v34;
+    v44 = mutableSpecifiers;
     v45 = v33;
     if (v36 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -183,7 +183,7 @@
 
     else
     {
-      v38 = [v34 objectAtIndexedSubscript:v36];
+      v38 = [mutableSpecifiers objectAtIndexedSubscript:v36];
       v37 = *MEMORY[0x277D40160];
       v39 = [v38 objectForKeyedSubscript:*MEMORY[0x277D40160]];
       v40 = [v39 isEqual:v33];

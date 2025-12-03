@@ -1,17 +1,17 @@
 @interface SAIntentGroupRunSiriKitExecutor
-- (BOOL)ad_requiresProximityInformationForDeviceContextTuples:(id)a3;
-- (id)ad_executionDeviceForDeviceContextTuples:(id)a3 executionContext:(id)a4 proximityMap:(id)a5 sharedUserID:(id)a6 localDeviceIsFollower:(BOOL)a7;
+- (BOOL)ad_requiresProximityInformationForDeviceContextTuples:(id)tuples;
+- (id)ad_executionDeviceForDeviceContextTuples:(id)tuples executionContext:(id)context proximityMap:(id)map sharedUserID:(id)d localDeviceIsFollower:(BOOL)follower;
 @end
 
 @implementation SAIntentGroupRunSiriKitExecutor
 
-- (id)ad_executionDeviceForDeviceContextTuples:(id)a3 executionContext:(id)a4 proximityMap:(id)a5 sharedUserID:(id)a6 localDeviceIsFollower:(BOOL)a7
+- (id)ad_executionDeviceForDeviceContextTuples:(id)tuples executionContext:(id)context proximityMap:(id)map sharedUserID:(id)d localDeviceIsFollower:(BOOL)follower
 {
-  v8 = a3;
-  v35 = a5;
+  tuplesCopy = tuples;
+  mapCopy = map;
   if (AFSupportsHALFlowRouting())
   {
-    sub_100015560(v8);
+    sub_100015560(tuplesCopy);
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -19,7 +19,7 @@
     v9 = [obj countByEnumeratingWithState:&v36 objects:v46 count:16];
     if (v9)
     {
-      v33 = v8;
+      v33 = tuplesCopy;
       v10 = *v37;
       do
       {
@@ -31,15 +31,15 @@
           }
 
           v12 = *(*(&v36 + 1) + 8 * i);
-          v13 = [v12 deviceInfo];
-          v14 = [v13 idsDeviceUniqueIdentifier];
+          deviceInfo = [v12 deviceInfo];
+          idsDeviceUniqueIdentifier = [deviceInfo idsDeviceUniqueIdentifier];
 
-          v15 = [v35 objectForKey:v14];
-          v16 = [v15 integerValue];
+          v15 = [mapCopy objectForKey:idsDeviceUniqueIdentifier];
+          integerValue = [v15 integerValue];
 
-          v17 = [v12 af_validFlowContext];
+          af_validFlowContext = [v12 af_validFlowContext];
           v18 = AFDeviceProximityCompare();
-          v19 = [v17 promptContextProto];
+          promptContextProto = [af_validFlowContext promptContextProto];
 
           v20 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -49,11 +49,11 @@
             v42 = 1024;
             v43 = v18 == -1;
             v44 = 1024;
-            v45 = v19 != 0;
+            v45 = promptContextProto != 0;
             _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%s Candidate: isCloseEnough? %d, flowPrompted? %d", buf, 0x18u);
           }
 
-          if (v18 == -1 && v19 != 0)
+          if (v18 == -1 && promptContextProto != 0)
           {
             v9 = v12;
 
@@ -65,36 +65,36 @@
       }
 
       while (v9);
-      v16 = 0;
+      integerValue = 0;
 LABEL_18:
-      v8 = v33;
+      tuplesCopy = v33;
     }
 
     else
     {
-      v16 = 0;
+      integerValue = 0;
     }
 
     v23 = +[ADDeviceCircleManager sharedInstance];
-    v24 = [v9 deviceInfo];
-    v25 = [v23 managedPeerInfoMatchingPeerInfo:v24];
+    deviceInfo2 = [v9 deviceInfo];
+    v25 = [v23 managedPeerInfoMatchingPeerInfo:deviceInfo2];
     v26 = v25;
     if (v25)
     {
-      v27 = v25;
+      deviceInfo3 = v25;
     }
 
     else
     {
-      v27 = [v9 deviceInfo];
+      deviceInfo3 = [v9 deviceInfo];
     }
 
-    v28 = v27;
+    v28 = deviceInfo3;
 
     v29 = [[ADPeerInfo alloc] initWithAFPeerInfo:v28];
     v30 = [ADDeviceRouterResult alloc];
-    v31 = [v9 identifier];
-    v22 = [(ADDeviceRouterResult *)v30 initWithPeerInfo:v29 contextIdentifier:v31 proximity:v16 commandRelayProxyIdentifier:0 error:0];
+    identifier = [v9 identifier];
+    v22 = [(ADDeviceRouterResult *)v30 initWithPeerInfo:v29 contextIdentifier:identifier proximity:integerValue commandRelayProxyIdentifier:0 error:0];
   }
 
   else
@@ -105,12 +105,12 @@ LABEL_18:
   return v22;
 }
 
-- (BOOL)ad_requiresProximityInformationForDeviceContextTuples:(id)a3
+- (BOOL)ad_requiresProximityInformationForDeviceContextTuples:(id)tuples
 {
-  v3 = a3;
+  tuplesCopy = tuples;
   if (AFSupportsHALFlowRouting())
   {
-    v4 = sub_100015560(v3);
+    v4 = sub_100015560(tuplesCopy);
     v5 = sub_1002BC33C(v4);
     v6 = v5 != 0;
   }

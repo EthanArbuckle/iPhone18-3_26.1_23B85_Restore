@@ -1,6 +1,6 @@
 @interface SUTapToRadar
-+ (id)_stringOfClassification:(int64_t)a3;
-+ (id)_stringOfReproducibility:(int64_t)a3;
++ (id)_stringOfClassification:(int64_t)classification;
++ (id)_stringOfReproducibility:(int64_t)reproducibility;
 - (SUTapToRadar)init;
 - (void)file;
 @end
@@ -29,29 +29,29 @@
   return v3;
 }
 
-+ (id)_stringOfClassification:(int64_t)a3
++ (id)_stringOfClassification:(int64_t)classification
 {
-  if ((a3 - 1) > 9)
+  if ((classification - 1) > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_279CACA98[a3 - 1];
+    return off_279CACA98[classification - 1];
   }
 }
 
-+ (id)_stringOfReproducibility:(int64_t)a3
++ (id)_stringOfReproducibility:(int64_t)reproducibility
 {
-  if ((a3 - 1) > 5)
+  if ((reproducibility - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_279CACAE8[a3 - 1];
+    return off_279CACAE8[reproducibility - 1];
   }
 }
 
@@ -98,8 +98,8 @@
     }
 
     v16 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v18];
-    v17 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v17 openURL:v16 configuration:0 completionHandler:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace openURL:v16 configuration:0 completionHandler:0];
   }
 
   else

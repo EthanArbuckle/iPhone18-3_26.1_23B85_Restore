@@ -1,8 +1,8 @@
 @interface GAXProfileManager
 - ($DE71691BB3011260155645AE0E7AB3CC)profileAccessibilityFeatureSet;
-- (BOOL)_isProfileKeyGlobal:(id)a3;
-- (BOOL)appAllowlistActiveAndContainsAdditionalApp:(id)a3;
-- (BOOL)isAppPrivilagedToSelfLock:(id)a3;
+- (BOOL)_isProfileKeyGlobal:(id)global;
+- (BOOL)appAllowlistActiveAndContainsAdditionalApp:(id)app;
+- (BOOL)isAppPrivilagedToSelfLock:(id)lock;
 - (BOOL)shouldAllowAccessibilityShortcut;
 - (BOOL)shouldAllowAutolock;
 - (BOOL)shouldAllowExit;
@@ -43,37 +43,37 @@
 - (BOOL)timeRestrictionsEnabled;
 - (GAXProfileManager)init;
 - (GAXProfileManagerDelegate)delegate;
-- (SEL)_retrieveSelectorForProfileKey:(id)a3;
-- (id)_appIDForConfiguration:(unsigned int)a3;
-- (id)_appPropertyMapForConfiguration:(unsigned int)a3;
-- (id)_fallbackValueForProfileKey:(id)a3;
-- (id)_fallbackValueForRetrieveSelector:(SEL)a3;
-- (id)_globalPropertyMapForConfiguration:(unsigned int)a3;
-- (id)_guidedAccessProfileKeyForManagedConfigKey:(id)a3 shouldInvertValue:(BOOL *)a4;
-- (id)_profileKeyForRetrieveSelector:(SEL)a3;
+- (SEL)_retrieveSelectorForProfileKey:(id)key;
+- (id)_appIDForConfiguration:(unsigned int)configuration;
+- (id)_appPropertyMapForConfiguration:(unsigned int)configuration;
+- (id)_fallbackValueForProfileKey:(id)key;
+- (id)_fallbackValueForRetrieveSelector:(SEL)selector;
+- (id)_globalPropertyMapForConfiguration:(unsigned int)configuration;
+- (id)_guidedAccessProfileKeyForManagedConfigKey:(id)key shouldInvertValue:(BOOL *)value;
+- (id)_profileKeyForRetrieveSelector:(SEL)selector;
 - (id)_singleAppModeAppIDs;
-- (id)_valueForProfileKey:(id)a3;
-- (id)_valueForRetrieveSelector:(SEL)a3;
+- (id)_valueForProfileKey:(id)key;
+- (id)_valueForRetrieveSelector:(SEL)selector;
 - (id)description;
-- (id)ignoredTouchRegionsForOrientation:(int)a3;
+- (id)ignoredTouchRegionsForOrientation:(int)orientation;
 - (id)selfLockAppIDs;
-- (id)statesForRestrictionsWithIdentifiers:(id)a3;
-- (int)isAvailabilityValid:(unint64_t)a3 forSelfLockAppToEnableGuidedAccess:(BOOL)a4;
+- (id)statesForRestrictionsWithIdentifiers:(id)identifiers;
+- (int)isAvailabilityValid:(unint64_t)valid forSelfLockAppToEnableGuidedAccess:(BOOL)access;
 - (int64_t)appTimeoutDuration;
-- (int64_t)stateForRestrictionWithIdentifier:(id)a3;
-- (void)_applyWebTextDefineProperty:(BOOL)a3 properties:(id)a4;
-- (void)_handleSingleAppModeStateDidChange:(id)a3;
+- (int64_t)stateForRestrictionWithIdentifier:(id)identifier;
+- (void)_applyWebTextDefineProperty:(BOOL)property properties:(id)properties;
+- (void)_handleSingleAppModeStateDidChange:(id)change;
 - (void)_initializeProfileKeyToRetrieveSelectorMap;
 - (void)_initializeProfileKeys;
-- (void)_updateConfigurationAndNotifyDelegate:(BOOL)a3;
-- (void)_updateProperty:(id)a3 withValue:(id)a4 saveChanges:(BOOL)a5;
+- (void)_updateConfigurationAndNotifyDelegate:(BOOL)delegate;
+- (void)_updateProperty:(id)property withValue:(id)value saveChanges:(BOOL)changes;
 - (void)_updateSingleAppModeStateFromManagedConfiguration;
-- (void)applyUnmanagedSelfLockPropertiesMap:(id)a3 managedConfigurationSettings:(id)a4;
-- (void)applyUnmanagedSelfLockRestrictionsForStyle:(int64_t)a3 withUserInterfaceClient:(id)a4;
+- (void)applyUnmanagedSelfLockPropertiesMap:(id)map managedConfigurationSettings:(id)settings;
+- (void)applyUnmanagedSelfLockRestrictionsForStyle:(int64_t)style withUserInterfaceClient:(id)client;
 - (void)dealloc;
-- (void)removeUnmanagedSelfLockRestrictionsWithUserInterfaceClient:(id)a3;
-- (void)setIgnoredTouchRegions:(id)a3 forOrientation:(int)a4;
-- (void)setStatesForRestrictions:(id)a3;
+- (void)removeUnmanagedSelfLockRestrictionsWithUserInterfaceClient:(id)client;
+- (void)setIgnoredTouchRegions:(id)regions forOrientation:(int)orientation;
+- (void)setStatesForRestrictions:(id)restrictions;
 @end
 
 @implementation GAXProfileManager
@@ -86,13 +86,13 @@
   if (v2)
   {
     v3 = +[GAXSettings sharedInstance];
-    v4 = [v3 mutableUserAppProfile];
+    mutableUserAppProfile = [v3 mutableUserAppProfile];
     userAppPropertiesMap = v2->_userAppPropertiesMap;
-    v2->_userAppPropertiesMap = v4;
+    v2->_userAppPropertiesMap = mutableUserAppProfile;
 
-    v6 = [v3 mutableUserGlobalProfile];
+    mutableUserGlobalProfile = [v3 mutableUserGlobalProfile];
     userGlobalPropertiesMap = v2->_userGlobalPropertiesMap;
-    v2->_userGlobalPropertiesMap = v6;
+    v2->_userGlobalPropertiesMap = mutableUserGlobalProfile;
 
     v2->_configuration = 0;
     v8 = [AXAccessQueueTimer alloc];
@@ -283,14 +283,14 @@
 
 - (id)description
 {
-  v3 = [(GAXProfileManager *)self configuration];
+  configuration = [(GAXProfileManager *)self configuration];
   v4 = @"User";
-  if (v3 == 2)
+  if (configuration == 2)
   {
     v4 = @"ManagedConfiguration";
   }
 
-  if (v3 == 3)
+  if (configuration == 3)
   {
     v5 = @"AppSelfLock";
   }
@@ -330,164 +330,164 @@
   return v12;
 }
 
-- (id)_appIDForConfiguration:(unsigned int)a3
+- (id)_appIDForConfiguration:(unsigned int)configuration
 {
-  if (a3 == 2)
+  if (configuration == 2)
   {
-    v4 = [(GAXProfileManager *)self singleAppModeAppID];
+    singleAppModeAppID = [(GAXProfileManager *)self singleAppModeAppID];
   }
 
   else
   {
-    v5 = [(GAXProfileManager *)self delegate];
-    v4 = [v5 profileManagerSessionAppID:self];
+    delegate = [(GAXProfileManager *)self delegate];
+    singleAppModeAppID = [delegate profileManagerSessionAppID:self];
   }
 
-  return v4;
+  return singleAppModeAppID;
 }
 
 - (BOOL)shouldAllowKeyboardTextInput
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowTouch
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowMotion
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowLockButton
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowVolumeButtons
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowRingerSwitch
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowProximity
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowAutolock
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)appTimeoutDuration
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)timeRestrictionsEnabled
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldEnableVoiceOver
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldEnableZoom
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldEnableInvertColors
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldEnableGrayscale
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldEnableAssistiveTouch
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldEnableSpeakSelection
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldEnableMonoAudio
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldEnableCommandAndControl
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldDisableVoiceOver
@@ -629,55 +629,55 @@
 - (BOOL)shouldAllowToggleOfVoiceOver
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowToggleOfZoom
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowToggleOfInvertColors
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowToggleOfGrayscale
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowToggleOfAssistiveTouch
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowToggleOfCommandAndControl
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)ignoredTouchRegionsForOrientation:(int)a3
+- (id)ignoredTouchRegionsForOrientation:(int)orientation
 {
   v4 = &GAXProfileIgnoredTouchRegionsPortrait;
-  if ((a3 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     v4 = &GAXProfileIgnoredTouchRegionsLandscape;
   }
@@ -688,31 +688,31 @@
   return v6;
 }
 
-- (void)setIgnoredTouchRegions:(id)a3 forOrientation:(int)a4
+- (void)setIgnoredTouchRegions:(id)regions forOrientation:(int)orientation
 {
   v6 = &GAXProfileIgnoredTouchRegionsPortrait;
-  if ((a4 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     v6 = &GAXProfileIgnoredTouchRegionsLandscape;
   }
 
   v7 = *v6;
-  [(GAXProfileManager *)self updateProperty:v7 withValue:a3];
+  [(GAXProfileManager *)self updateProperty:v7 withValue:regions];
 }
 
-- (int64_t)stateForRestrictionWithIdentifier:(id)a3
+- (int64_t)stateForRestrictionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(GAXProfileManager *)self _valueForProfileKey:@"GAXProfileStatesForRestrictions"];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:identifierCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
-- (id)statesForRestrictionsWithIdentifiers:(id)a3
+- (id)statesForRestrictionsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   +[NSMutableDictionary dictionary];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
@@ -720,16 +720,16 @@
   v11 = &unk_4D320;
   v13 = v12 = self;
   v5 = v13;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [identifiersCopy enumerateObjectsUsingBlock:&v8];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (void)setStatesForRestrictions:(id)a3
+- (void)setStatesForRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   v5 = [(GAXProfileManager *)self _valueForProfileKey:@"GAXProfileStatesForRestrictions"];
   v6 = [v5 mutableCopy];
   if (!v6)
@@ -754,7 +754,7 @@
   v9 = v8;
   v10 = v6;
   v11 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v14];
+  [restrictionsCopy enumerateKeysAndObjectsUsingBlock:v14];
   v12 = [v10 copy];
   [(GAXProfileManager *)self updateProperty:@"GAXProfileStatesForRestrictions" withValue:v12];
 
@@ -765,69 +765,69 @@
 - (BOOL)shouldAllowHomeButton
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAutolaunchCrashedApps
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldShowUserConfirmationPromptsAndBanners
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAutolaunchAppsAfterSystemCrash
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAutolaunchAppsAfterLowBatteryPowerDown
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowExit
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowAccessibilityShortcut
 {
   v2 = [(GAXProfileManager *)self _valueForRetrieveSelector:a2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)_appPropertyMapForConfiguration:(unsigned int)a3
+- (id)_appPropertyMapForConfiguration:(unsigned int)configuration
 {
-  if (a3 == 3 || a3 == 2)
+  if (configuration == 3 || configuration == 2)
   {
-    v3 = [(GAXProfileManager *)self singleAppModeAppPropertiesMap];
+    singleAppModeAppPropertiesMap = [(GAXProfileManager *)self singleAppModeAppPropertiesMap];
   }
 
-  else if (a3 == 1)
+  else if (configuration == 1)
   {
-    v3 = [(GAXProfileManager *)self userAppPropertiesMap];
+    singleAppModeAppPropertiesMap = [(GAXProfileManager *)self userAppPropertiesMap];
   }
 
   else
@@ -835,22 +835,22 @@
     v5 = [NSNumber numberWithUnsignedInt:?];
     _AXAssert();
 
-    v3 = 0;
+    singleAppModeAppPropertiesMap = 0;
   }
 
-  return v3;
+  return singleAppModeAppPropertiesMap;
 }
 
-- (id)_globalPropertyMapForConfiguration:(unsigned int)a3
+- (id)_globalPropertyMapForConfiguration:(unsigned int)configuration
 {
-  if (a3 == 3 || a3 == 2)
+  if (configuration == 3 || configuration == 2)
   {
-    v3 = [(GAXProfileManager *)self singleAppModeGlobalPropertiesMap];
+    singleAppModeGlobalPropertiesMap = [(GAXProfileManager *)self singleAppModeGlobalPropertiesMap];
   }
 
-  else if (a3 == 1)
+  else if (configuration == 1)
   {
-    v3 = [(GAXProfileManager *)self userGlobalPropertiesMap];
+    singleAppModeGlobalPropertiesMap = [(GAXProfileManager *)self userGlobalPropertiesMap];
   }
 
   else
@@ -858,28 +858,28 @@
     v5 = [NSNumber numberWithUnsignedInt:?];
     _AXAssert();
 
-    v3 = 0;
+    singleAppModeGlobalPropertiesMap = 0;
   }
 
-  return v3;
+  return singleAppModeGlobalPropertiesMap;
 }
 
-- (id)_valueForProfileKey:(id)a3
+- (id)_valueForProfileKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GAXProfileManager *)self _isProfileKeyGlobal:v4];
-  v6 = [(GAXProfileManager *)self configuration];
+  keyCopy = key;
+  v5 = [(GAXProfileManager *)self _isProfileKeyGlobal:keyCopy];
+  configuration = [(GAXProfileManager *)self configuration];
   if (v5)
   {
-    if (v6 == 3)
+    if (configuration == 3)
     {
       v7 = +[GAXSettings sharedInstance];
-      v8 = [v7 selfLockUnmanaged];
+      selfLockUnmanaged = [v7 selfLockUnmanaged];
 
-      if (v8)
+      if (selfLockUnmanaged)
       {
-        v9 = [(GAXProfileManager *)self unmanagedSelfLockPropertiesMap];
-        v10 = [v9 objectForKeyedSubscript:v4];
+        unmanagedSelfLockPropertiesMap = [(GAXProfileManager *)self unmanagedSelfLockPropertiesMap];
+        v10 = [unmanagedSelfLockPropertiesMap objectForKeyedSubscript:keyCopy];
 
         if (v10)
         {
@@ -889,12 +889,12 @@
     }
 
     v11 = [(GAXProfileManager *)self _globalPropertyMapForConfiguration:[(GAXProfileManager *)self configuration]];
-    v10 = [v11 objectForKey:v4];
+    v10 = [v11 objectForKey:keyCopy];
   }
 
   else
   {
-    v11 = [(GAXProfileManager *)self _appIDForConfiguration:v6];
+    v11 = [(GAXProfileManager *)self _appIDForConfiguration:configuration];
     if (v11)
     {
       objc_opt_class();
@@ -902,7 +902,7 @@
       v13 = [v12 objectForKey:v11];
       v14 = __UIAccessibilityCastAsClass();
 
-      v10 = [v14 objectForKey:v4];
+      v10 = [v14 objectForKey:keyCopy];
     }
 
     else
@@ -913,7 +913,7 @@
 
   if (!v10)
   {
-    v10 = [(GAXProfileManager *)self _fallbackValueForProfileKey:v4];
+    v10 = [(GAXProfileManager *)self _fallbackValueForProfileKey:keyCopy];
   }
 
 LABEL_11:
@@ -929,19 +929,19 @@ LABEL_11:
   return v10;
 }
 
-- (id)_valueForRetrieveSelector:(SEL)a3
+- (id)_valueForRetrieveSelector:(SEL)selector
 {
-  v4 = [(GAXProfileManager *)self _profileKeyForRetrieveSelector:a3];
+  v4 = [(GAXProfileManager *)self _profileKeyForRetrieveSelector:selector];
   v5 = [(GAXProfileManager *)self _valueForProfileKey:v4];
 
   return v5;
 }
 
-- (SEL)_retrieveSelectorForProfileKey:(id)a3
+- (SEL)_retrieveSelectorForProfileKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GAXProfileManager *)self profileKeyToRetrieveSelectorMap];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  profileKeyToRetrieveSelectorMap = [(GAXProfileManager *)self profileKeyToRetrieveSelectorMap];
+  v6 = [profileKeyToRetrieveSelectorMap objectForKey:keyCopy];
 
   if (v6)
   {
@@ -953,7 +953,7 @@ LABEL_11:
     v8 = GAXLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_2A948(v4, v8, v9, v10, v11, v12, v13, v14);
+      sub_2A948(keyCopy, v8, v9, v10, v11, v12, v13, v14);
     }
 
     v7 = 0;
@@ -962,7 +962,7 @@ LABEL_11:
   return v7;
 }
 
-- (id)_profileKeyForRetrieveSelector:(SEL)a3
+- (id)_profileKeyForRetrieveSelector:(SEL)selector
 {
   v20 = 0;
   v21 = &v20;
@@ -970,8 +970,8 @@ LABEL_11:
   v23 = sub_E66C;
   v24 = sub_E67C;
   v25 = 0;
-  v4 = NSStringFromSelector(a3);
-  v5 = [(GAXProfileManager *)self profileKeyToRetrieveSelectorMap];
+  v4 = NSStringFromSelector(selector);
+  profileKeyToRetrieveSelectorMap = [(GAXProfileManager *)self profileKeyToRetrieveSelectorMap];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_E684;
@@ -979,7 +979,7 @@ LABEL_11:
   v6 = v4;
   v18 = v6;
   v19 = &v20;
-  [v5 enumerateKeysAndObjectsUsingBlock:v17];
+  [profileKeyToRetrieveSelectorMap enumerateKeysAndObjectsUsingBlock:v17];
 
   v7 = v21[5];
   if (!v7)
@@ -1000,50 +1000,50 @@ LABEL_11:
   return v15;
 }
 
-- (id)_fallbackValueForProfileKey:(id)a3
+- (id)_fallbackValueForProfileKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GAXProfileManager *)self _fallbackValueForProfileKey:v4 configuration:[(GAXProfileManager *)self configuration]];
+  keyCopy = key;
+  v5 = [(GAXProfileManager *)self _fallbackValueForProfileKey:keyCopy configuration:[(GAXProfileManager *)self configuration]];
 
   return v5;
 }
 
-- (id)_fallbackValueForRetrieveSelector:(SEL)a3
+- (id)_fallbackValueForRetrieveSelector:(SEL)selector
 {
-  v4 = [(GAXProfileManager *)self _profileKeyForRetrieveSelector:a3];
+  v4 = [(GAXProfileManager *)self _profileKeyForRetrieveSelector:selector];
   v5 = [(GAXProfileManager *)self _fallbackValueForProfileKey:v4];
 
   return v5;
 }
 
-- (BOOL)_isProfileKeyGlobal:(id)a3
+- (BOOL)_isProfileKeyGlobal:(id)global
 {
-  v4 = a3;
-  v5 = [(GAXProfileManager *)self globalProfileKeys];
-  v6 = [v5 containsObject:v4];
+  globalCopy = global;
+  globalProfileKeys = [(GAXProfileManager *)self globalProfileKeys];
+  v6 = [globalProfileKeys containsObject:globalCopy];
 
   return v6;
 }
 
-- (void)_updateConfigurationAndNotifyDelegate:(BOOL)a3
+- (void)_updateConfigurationAndNotifyDelegate:(BOOL)delegate
 {
-  v3 = a3;
-  v5 = [(GAXProfileManager *)self configuration];
+  delegateCopy = delegate;
+  configuration = [(GAXProfileManager *)self configuration];
   [(GAXProfileManager *)self _updateSingleAppModeStateFromManagedConfiguration];
   [(GAXProfileManager *)self setUnmanagedSelfLockPropertiesMap:0];
   [(GAXProfileManager *)self setUnmanagedSelfLockManagedConfigurationSettings:0];
   v6 = +[MCProfileConnection sharedConnection];
-  v7 = [v6 isInSingleAppMode];
+  isInSingleAppMode = [v6 isInSingleAppMode];
 
-  v8 = [(GAXProfileManager *)self _singleAppModeAppIDs];
-  v9 = [v8 count];
+  _singleAppModeAppIDs = [(GAXProfileManager *)self _singleAppModeAppIDs];
+  v9 = [_singleAppModeAppIDs count];
 
   v10 = GAXLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [NSNumber numberWithBool:v7];
+    v11 = [NSNumber numberWithBool:isInSingleAppMode];
     v12 = [NSNumber numberWithBool:v9 != 0];
-    v13 = [NSNumber numberWithUnsignedInt:v5];
+    v13 = [NSNumber numberWithUnsignedInt:configuration];
     v30 = 138543874;
     v31 = v11;
     v32 = 2114;
@@ -1053,7 +1053,7 @@ LABEL_11:
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "Guided Access updating configuration. inSingleAppMode:%{public}@ singleAppModeAppIDExists:%{public}@ previousConfiguration: %{public}@", &v30, 0x20u);
   }
 
-  if (v7)
+  if (isInSingleAppMode)
   {
     if (v9)
     {
@@ -1075,13 +1075,13 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v17 = [(GAXProfileManager *)self selfLockAppIDs];
-  if (![v17 count])
+  selfLockAppIDs = [(GAXProfileManager *)self selfLockAppIDs];
+  if (![selfLockAppIDs count])
   {
     v18 = +[GAXSettings sharedInstance];
-    v19 = [v18 selfLockUnmanaged];
+    selfLockUnmanaged = [v18 selfLockUnmanaged];
 
-    if (v19)
+    if (selfLockUnmanaged)
     {
       goto LABEL_15;
     }
@@ -1095,19 +1095,19 @@ LABEL_15:
   v14 = 3;
 LABEL_16:
   [(GAXProfileManager *)self setConfiguration:v14];
-  if (!v3)
+  if (!delegateCopy)
   {
     goto LABEL_37;
   }
 
-  v20 = [(GAXProfileManager *)self configuration];
-  v21 = v20;
-  if (v5 != 2 || v20 == 2)
+  configuration2 = [(GAXProfileManager *)self configuration];
+  v21 = configuration2;
+  if (configuration != 2 || configuration2 == 2)
   {
-    if (v5 == 3 && v20 != 3)
+    if (configuration == 3 && configuration2 != 3)
     {
-      v25 = [(GAXProfileManager *)self delegate];
-      [v25 didExitAppSelfLockModeWithProfileManager:self];
+      delegate = [(GAXProfileManager *)self delegate];
+      [delegate didExitAppSelfLockModeWithProfileManager:self];
 
       v23 = 0;
       goto LABEL_26;
@@ -1116,47 +1116,47 @@ LABEL_16:
 
   else
   {
-    v22 = [(GAXProfileManager *)self delegate];
-    [v22 didExitSingleAppModeWithProfileManager:self];
+    delegate2 = [(GAXProfileManager *)self delegate];
+    [delegate2 didExitSingleAppModeWithProfileManager:self];
   }
 
   v23 = v21 == 3;
-  if (v21 == 3 && v5 != 3)
+  if (v21 == 3 && configuration != 3)
   {
-    v24 = [(GAXProfileManager *)self delegate];
-    [v24 didEnterAppSelfLockModeWithProfileManager:self];
+    delegate3 = [(GAXProfileManager *)self delegate];
+    [delegate3 didEnterAppSelfLockModeWithProfileManager:self];
 LABEL_36:
 
     goto LABEL_37;
   }
 
 LABEL_26:
-  if (v21 != 2 || v5 == 2)
+  if (v21 != 2 || configuration == 2)
   {
-    if (v5 == 2 && v21 == 2)
+    if (configuration == 2 && v21 == 2)
     {
-      v24 = [(GAXProfileManager *)self delegate];
-      [v24 appDidChangeForSingleAppModeWithProfileManager:self];
+      delegate3 = [(GAXProfileManager *)self delegate];
+      [delegate3 appDidChangeForSingleAppModeWithProfileManager:self];
       goto LABEL_36;
     }
   }
 
   else
   {
-    v26 = [(GAXProfileManager *)self delegate];
-    [v26 didEnterSingleAppModeWithProfileManager:self];
+    delegate4 = [(GAXProfileManager *)self delegate];
+    [delegate4 didEnterSingleAppModeWithProfileManager:self];
   }
 
   v27 = !v23;
-  if (v5 != 3)
+  if (configuration != 3)
   {
     v27 = 1;
   }
 
   if ((v27 & 1) == 0)
   {
-    v24 = [(GAXProfileManager *)self delegate];
-    [v24 appDidChangeForAppSelfLockModeWithProfileManager:self];
+    delegate3 = [(GAXProfileManager *)self delegate];
+    [delegate3 appDidChangeForAppSelfLockModeWithProfileManager:self];
     goto LABEL_36;
   }
 
@@ -1171,17 +1171,17 @@ LABEL_37:
   }
 }
 
-- (void)_updateProperty:(id)a3 withValue:(id)a4 saveChanges:(BOOL)a5
+- (void)_updateProperty:(id)property withValue:(id)value saveChanges:(BOOL)changes
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  changesCopy = changes;
+  propertyCopy = property;
+  valueCopy = value;
+  if (!propertyCopy)
   {
     goto LABEL_23;
   }
 
-  if (![(GAXProfileManager *)self _isProfileKeyGlobal:v8])
+  if (![(GAXProfileManager *)self _isProfileKeyGlobal:propertyCopy])
   {
     v12 = [(GAXProfileManager *)self _appIDForConfiguration:[(GAXProfileManager *)self configuration]];
     if (!v12)
@@ -1203,10 +1203,10 @@ LABEL_37:
       [v13 setObject:v14 forKey:v12];
     }
 
-    if (v9)
+    if (valueCopy)
     {
-      [v14 setObject:v9 forKey:v8];
-      if (!v5)
+      [v14 setObject:valueCopy forKey:propertyCopy];
+      if (!changesCopy)
       {
         goto LABEL_21;
       }
@@ -1214,8 +1214,8 @@ LABEL_37:
 
     else
     {
-      [v14 removeObjectForKey:v8];
-      if (!v5)
+      [v14 removeObjectForKey:propertyCopy];
+      if (!changesCopy)
       {
 LABEL_21:
 
@@ -1226,9 +1226,9 @@ LABEL_22:
 
     if ([(GAXProfileManager *)self isUserMode])
     {
-      v25 = [(GAXProfileManager *)self userAppPropertiesMap];
+      userAppPropertiesMap = [(GAXProfileManager *)self userAppPropertiesMap];
       v26 = +[GAXSettings sharedInstance];
-      [v26 setUserAppProfile:v25];
+      [v26 setUserAppProfile:userAppPropertiesMap];
     }
 
     goto LABEL_21;
@@ -1236,21 +1236,21 @@ LABEL_22:
 
   v10 = [(GAXProfileManager *)self _globalPropertyMapForConfiguration:[(GAXProfileManager *)self configuration]];
   v11 = v10;
-  if (v9)
+  if (valueCopy)
   {
-    [v10 setObject:v9 forKey:v8];
+    [v10 setObject:valueCopy forKey:propertyCopy];
   }
 
   else
   {
-    [v10 removeObjectForKey:v8];
+    [v10 removeObjectForKey:propertyCopy];
   }
 
-  if (v5 && [(GAXProfileManager *)self isUserMode])
+  if (changesCopy && [(GAXProfileManager *)self isUserMode])
   {
-    v15 = [(GAXProfileManager *)self userGlobalPropertiesMap];
+    userGlobalPropertiesMap = [(GAXProfileManager *)self userGlobalPropertiesMap];
     v16 = +[GAXSettings sharedInstance];
-    [v16 setUserGlobalProfile:v15];
+    [v16 setUserGlobalProfile:userGlobalPropertiesMap];
   }
 
 LABEL_23:
@@ -1258,76 +1258,76 @@ LABEL_23:
 
 - (id)_singleAppModeAppIDs
 {
-  v2 = [(GAXProfileManager *)self singleAppModeAppPropertiesMap];
-  v3 = [v2 allKeys];
+  singleAppModeAppPropertiesMap = [(GAXProfileManager *)self singleAppModeAppPropertiesMap];
+  allKeys = [singleAppModeAppPropertiesMap allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)selfLockAppIDs
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 autonomousSingleAppModePermittedBundleIDs];
+  autonomousSingleAppModePermittedBundleIDs = [v2 autonomousSingleAppModePermittedBundleIDs];
 
-  if (![v3 count])
+  if (![autonomousSingleAppModePermittedBundleIDs count])
   {
 
-    v3 = 0;
+    autonomousSingleAppModePermittedBundleIDs = 0;
   }
 
-  return v3;
+  return autonomousSingleAppModePermittedBundleIDs;
 }
 
-- (BOOL)isAppPrivilagedToSelfLock:(id)a3
+- (BOOL)isAppPrivilagedToSelfLock:(id)lock
 {
-  if (!a3)
+  if (!lock)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(GAXProfileManager *)self selfLockAppIDs];
-  v6 = [v5 containsObject:v4];
+  lockCopy = lock;
+  selfLockAppIDs = [(GAXProfileManager *)self selfLockAppIDs];
+  v6 = [selfLockAppIDs containsObject:lockCopy];
 
   return v6;
 }
 
-- (int)isAvailabilityValid:(unint64_t)a3 forSelfLockAppToEnableGuidedAccess:(BOOL)a4
+- (int)isAvailabilityValid:(unint64_t)valid forSelfLockAppToEnableGuidedAccess:(BOOL)access
 {
-  if (a4)
+  if (access)
   {
-    if (a3 < 0x10)
+    if (valid < 0x10)
     {
       v4 = &unk_35BA0;
-      return v4[a3];
+      return v4[valid];
     }
   }
 
-  else if (a3 < 0x10)
+  else if (valid < 0x10)
   {
     v4 = &unk_35BE0;
-    return v4[a3];
+    return v4[valid];
   }
 
   _AXAssert();
   return 2;
 }
 
-- (BOOL)appAllowlistActiveAndContainsAdditionalApp:(id)a3
+- (BOOL)appAllowlistActiveAndContainsAdditionalApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = +[MCProfileConnection sharedConnection];
-  v5 = [v4 effectiveWhitelistedAppsAndOptions];
+  effectiveWhitelistedAppsAndOptions = [v4 effectiveWhitelistedAppsAndOptions];
 
-  v6 = [v5 count];
+  v6 = [effectiveWhitelistedAppsAndOptions count];
   v7 = 0;
-  if (v3 && v6)
+  if (appCopy && v6)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v5;
+    v8 = effectiveWhitelistedAppsAndOptions;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -1344,7 +1344,7 @@ LABEL_23:
           }
 
           v14 = [*(*(&v17 + 1) + 8 * i) objectForKey:{v12, v17}];
-          v15 = [v14 isEqualToString:v3];
+          v15 = [v14 isEqualToString:appCopy];
 
           if (v15)
           {
@@ -1370,17 +1370,17 @@ LABEL_13:
   return v7;
 }
 
-- (void)applyUnmanagedSelfLockPropertiesMap:(id)a3 managedConfigurationSettings:(id)a4
+- (void)applyUnmanagedSelfLockPropertiesMap:(id)map managedConfigurationSettings:(id)settings
 {
-  v6 = a4;
-  [(GAXProfileManager *)self setUnmanagedSelfLockPropertiesMap:a3];
-  [(GAXProfileManager *)self setUnmanagedSelfLockManagedConfigurationSettings:v6];
+  settingsCopy = settings;
+  [(GAXProfileManager *)self setUnmanagedSelfLockPropertiesMap:map];
+  [(GAXProfileManager *)self setUnmanagedSelfLockManagedConfigurationSettings:settingsCopy];
 }
 
-- (void)_applyWebTextDefineProperty:(BOOL)a3 properties:(id)a4
+- (void)_applyWebTextDefineProperty:(BOOL)property properties:(id)properties
 {
-  v4 = a3;
-  v5 = a4;
+  propertyCopy = property;
+  propertiesCopy = properties;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1403,7 +1403,7 @@ LABEL_13:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v5 objectForKey:v10];
+        v11 = [propertiesCopy objectForKey:v10];
         if (v11)
         {
           v12 = v11;
@@ -1415,10 +1415,10 @@ LABEL_13:
           v13 = +[NSMutableDictionary dictionary];
         }
 
-        v14 = [NSNumber numberWithInt:!v4];
+        v14 = [NSNumber numberWithInt:!propertyCopy];
         [v13 setObject:v14 forKey:@"GAXProfileAllowsWebTextDefine"];
 
-        [v5 setObject:v13 forKey:v10];
+        [propertiesCopy setObject:v13 forKey:v10];
       }
 
       v7 = [obj countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -1431,24 +1431,24 @@ LABEL_13:
 - (void)_updateSingleAppModeStateFromManagedConfiguration
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v29 = [v3 isWebTextDefineAllowed];
+  isWebTextDefineAllowed = [v3 isWebTextDefineAllowed];
 
   v4 = +[MCProfileConnection sharedConnection];
-  v5 = [v4 effectiveWhitelistedAppsAndOptions];
+  effectiveWhitelistedAppsAndOptions = [v4 effectiveWhitelistedAppsAndOptions];
 
-  if ([v5 count])
+  if ([effectiveWhitelistedAppsAndOptions count])
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
+    v6 = [effectiveWhitelistedAppsAndOptions objectAtIndexedSubscript:0];
     v7 = [v6 objectForKeyedSubscript:kMCAppWhitelistIdentifierKey];
     [(GAXProfileManager *)self setSingleAppModeAppID:v7];
 
     v8 = GAXLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(GAXProfileManager *)self singleAppModeAppID];
-      v10 = [v5 objectAtIndexedSubscript:0];
+      singleAppModeAppID = [(GAXProfileManager *)self singleAppModeAppID];
+      v10 = [effectiveWhitelistedAppsAndOptions objectAtIndexedSubscript:0];
       *buf = 138543618;
-      v41 = v9;
+      v41 = singleAppModeAppID;
       v42 = 2114;
       v43 = v10;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "set single app mode app ID to %{public}@ from %{public}@", buf, 0x16u);
@@ -1462,7 +1462,7 @@ LABEL_13:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v41 = v5;
+      v41 = effectiveWhitelistedAppsAndOptions;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "set single app mode app ID to nil. allowed apps is %{public}@", buf, 0xCu);
     }
   }
@@ -1472,7 +1472,7 @@ LABEL_13:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v5;
+  obj = effectiveWhitelistedAppsAndOptions;
   v11 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v11)
   {
@@ -1505,7 +1505,7 @@ LABEL_13:
         v34 = v20;
         [v19 enumerateKeysAndObjectsUsingBlock:v33];
 
-        [(GAXProfileManager *)self _applyWebTextDefineProperty:v29 properties:v20];
+        [(GAXProfileManager *)self _applyWebTextDefineProperty:isWebTextDefineAllowed properties:v20];
         v21 = [v16 objectForKey:v14];
         v31[0] = _NSConcreteStackBlock;
         v31[1] = 3221225472;
@@ -1536,7 +1536,7 @@ LABEL_13:
   [(GAXProfileManager *)self setSingleAppModeAppPropertiesMap:v30];
 }
 
-- (void)_handleSingleAppModeStateDidChange:(id)a3
+- (void)_handleSingleAppModeStateDidChange:(id)change
 {
   v4 = GAXLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1553,49 +1553,49 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)_guidedAccessProfileKeyForManagedConfigKey:(id)a3 shouldInvertValue:(BOOL *)a4
+- (id)_guidedAccessProfileKeyForManagedConfigKey:(id)key shouldInvertValue:(BOOL *)value
 {
-  v5 = a3;
-  if ([v5 isEqualToString:kMCAppWhitelistOptionDisableTouchKey])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionDisableTouchKey])
   {
     v6 = &GAXProfileAllowsTouch;
 LABEL_13:
     v7 = *v6;
-    *a4 = 1;
+    *value = 1;
     goto LABEL_14;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionDisableDeviceRotationKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionDisableDeviceRotationKey])
   {
     v6 = &GAXProfileAllowsMotion;
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionDisableVolumeButtonsKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionDisableVolumeButtonsKey])
   {
     v6 = &GAXProfileAllowsVolumeButtons;
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionDisableRingerSwitchKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionDisableRingerSwitchKey])
   {
     v6 = &GAXProfileAllowsRingerSwitch;
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionDisableSleepWakeButtonKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionDisableSleepWakeButtonKey])
   {
     v6 = &GAXProfileAllowsLockButton;
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionDisableAutoLockKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionDisableAutoLockKey])
   {
     v6 = &GAXProfileAllowsAutolock;
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionEnableVoiceOverKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionEnableVoiceOverKey])
   {
     v9 = &GAXProfileAllowsAXAutoEnableVoiceOver;
 LABEL_41:
@@ -1603,67 +1603,67 @@ LABEL_41:
     goto LABEL_14;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionEnableZoomKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionEnableZoomKey])
   {
     v9 = &GAXProfileAllowsAXAutoEnableZoom;
     goto LABEL_41;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionEnableInvertColorsKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionEnableInvertColorsKey])
   {
     v9 = &GAXProfileAllowsAXAutoEnableInvertColors;
     goto LABEL_41;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionEnableAssistiveTouchKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionEnableAssistiveTouchKey])
   {
     v9 = &GAXProfileAllowsAXAutoEnableAssistiveTouch;
     goto LABEL_41;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionEnableSpeakSelectionKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionEnableSpeakSelectionKey])
   {
     v9 = &GAXProfileAllowsAXAutoEnableSpeakSelection;
     goto LABEL_41;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionEnableMonoAudioKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionEnableMonoAudioKey])
   {
     v9 = &GAXProfileAllowsAXAutoEnableMonoAudio;
     goto LABEL_41;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistOptionEnableCommandAndControlKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistOptionEnableCommandAndControlKey])
   {
     v9 = &GAXProfileAllowsAXAutoEnableCommandAndControl;
     goto LABEL_41;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistUserEnabledOptionsVoiceOverKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistUserEnabledOptionsVoiceOverKey])
   {
     v9 = &GAXProfileAllowsAXToggleVoiceOver;
     goto LABEL_41;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistUserEnabledOptionZoomKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistUserEnabledOptionZoomKey])
   {
     v9 = &GAXProfileAllowsAXToggleZoom;
     goto LABEL_41;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistUserEnabledOptionInvertColorsKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistUserEnabledOptionInvertColorsKey])
   {
     v9 = &GAXProfileAllowsAXToggleInvertColors;
     goto LABEL_41;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistUserEnabledOptionAssistiveTouchKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistUserEnabledOptionAssistiveTouchKey])
   {
     v9 = &GAXProfileAllowsAXToggleAssistiveTouch;
     goto LABEL_41;
   }
 
-  if ([v5 isEqualToString:kMCAppWhitelistUserEnabledOptionsCommandAndControlKey])
+  if ([keyCopy isEqualToString:kMCAppWhitelistUserEnabledOptionsCommandAndControlKey])
   {
     v9 = &GAXProfileAllowsAXToggleCommandAndControl;
     goto LABEL_41;
@@ -1672,7 +1672,7 @@ LABEL_41:
   v10 = GAXLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    sub_2AAD4(v5, v10, v11, v12, v13, v14, v15, v16);
+    sub_2AAD4(keyCopy, v10, v11, v12, v13, v14, v15, v16);
   }
 
   v7 = 0;
@@ -1681,130 +1681,130 @@ LABEL_14:
   return v7;
 }
 
-- (void)applyUnmanagedSelfLockRestrictionsForStyle:(int64_t)a3 withUserInterfaceClient:(id)a4
+- (void)applyUnmanagedSelfLockRestrictionsForStyle:(int64_t)style withUserInterfaceClient:(id)client
 {
   v15[0] = &__kCFBooleanTrue;
   v14[0] = @"restrictions enabled";
   v14[1] = @"autonomous single app mode style";
-  v6 = a4;
-  v7 = [NSNumber numberWithInteger:a3];
+  clientCopy = client;
+  v7 = [NSNumber numberWithInteger:style];
   v15[1] = v7;
   v8 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  v9 = [(GAXProfileManager *)self unmanagedSelfLockManagedConfigurationSettings];
+  unmanagedSelfLockManagedConfigurationSettings = [(GAXProfileManager *)self unmanagedSelfLockManagedConfigurationSettings];
 
-  if (v9)
+  if (unmanagedSelfLockManagedConfigurationSettings)
   {
     v10 = [v8 mutableCopy];
-    v11 = [(GAXProfileManager *)self unmanagedSelfLockManagedConfigurationSettings];
-    [v10 setObject:v11 forKeyedSubscript:@"autonomous single app MC settings"];
+    unmanagedSelfLockManagedConfigurationSettings2 = [(GAXProfileManager *)self unmanagedSelfLockManagedConfigurationSettings];
+    [v10 setObject:unmanagedSelfLockManagedConfigurationSettings2 forKeyedSubscript:@"autonomous single app MC settings"];
 
     v8 = v10;
   }
 
   v12 = +[AXAccessQueue mainAccessQueue];
-  [v6 sendAsynchronousMessage:v8 withIdentifier:36 targetAccessQueue:v12 completionRequiresWritingBlock:0 completion:0];
+  [clientCopy sendAsynchronousMessage:v8 withIdentifier:36 targetAccessQueue:v12 completionRequiresWritingBlock:0 completion:0];
 
-  v13 = [(GAXProfileManager *)self delegate];
-  [v13 applyUnmanagedSelfLockStaticRestrictionsWithProfileManager:self];
+  delegate = [(GAXProfileManager *)self delegate];
+  [delegate applyUnmanagedSelfLockStaticRestrictionsWithProfileManager:self];
 }
 
-- (void)removeUnmanagedSelfLockRestrictionsWithUserInterfaceClient:(id)a3
+- (void)removeUnmanagedSelfLockRestrictionsWithUserInterfaceClient:(id)client
 {
   v8 = @"restrictions enabled";
   v9 = &__kCFBooleanFalse;
-  v4 = a3;
+  clientCopy = client;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v6 = +[AXAccessQueue mainAccessQueue];
-  [v4 sendAsynchronousMessage:v5 withIdentifier:36 targetAccessQueue:v6 completionRequiresWritingBlock:0 completion:0];
+  [clientCopy sendAsynchronousMessage:v5 withIdentifier:36 targetAccessQueue:v6 completionRequiresWritingBlock:0 completion:0];
 
-  v7 = [(GAXProfileManager *)self delegate];
-  [v7 removeUnmanagedSelfLockStaticRestrictionsWithProfileManager:self];
+  delegate = [(GAXProfileManager *)self delegate];
+  [delegate removeUnmanagedSelfLockStaticRestrictionsWithProfileManager:self];
 }
 
 - ($DE71691BB3011260155645AE0E7AB3CC)profileAccessibilityFeatureSet
 {
   if (_AXSVoiceOverTouchEnabled())
   {
-    v3 = ![(GAXProfileManager *)self shouldDisableVoiceOver];
+    shouldEnableVoiceOver = ![(GAXProfileManager *)self shouldDisableVoiceOver];
   }
 
   else
   {
-    v3 = [(GAXProfileManager *)self shouldEnableVoiceOver];
+    shouldEnableVoiceOver = [(GAXProfileManager *)self shouldEnableVoiceOver];
   }
 
   if (_AXSZoomTouchEnabled())
   {
-    v4 = ![(GAXProfileManager *)self shouldDisableZoom];
+    shouldEnableZoom = ![(GAXProfileManager *)self shouldDisableZoom];
   }
 
   else
   {
-    v4 = [(GAXProfileManager *)self shouldEnableZoom];
+    shouldEnableZoom = [(GAXProfileManager *)self shouldEnableZoom];
   }
 
   if (_AXSInvertColorsEnabled())
   {
-    v5 = ![(GAXProfileManager *)self shouldDisableInvertColors];
+    shouldEnableInvertColors = ![(GAXProfileManager *)self shouldDisableInvertColors];
   }
 
   else
   {
-    v5 = [(GAXProfileManager *)self shouldEnableInvertColors];
+    shouldEnableInvertColors = [(GAXProfileManager *)self shouldEnableInvertColors];
   }
 
   if (_AXSGrayscaleEnabled())
   {
-    v6 = ![(GAXProfileManager *)self shouldDisableGrayscale];
+    shouldEnableGrayscale = ![(GAXProfileManager *)self shouldDisableGrayscale];
   }
 
   else
   {
-    v6 = [(GAXProfileManager *)self shouldEnableGrayscale];
+    shouldEnableGrayscale = [(GAXProfileManager *)self shouldEnableGrayscale];
   }
 
   if (_AXSAssistiveTouchEnabled())
   {
-    v7 = ![(GAXProfileManager *)self shouldDisableAssistiveTouch];
+    shouldEnableAssistiveTouch = ![(GAXProfileManager *)self shouldDisableAssistiveTouch];
   }
 
   else
   {
-    v7 = [(GAXProfileManager *)self shouldEnableAssistiveTouch];
+    shouldEnableAssistiveTouch = [(GAXProfileManager *)self shouldEnableAssistiveTouch];
   }
 
   if (_AXSQuickSpeakEnabled())
   {
-    v8 = ![(GAXProfileManager *)self shouldDisableSpeakSelection];
+    shouldEnableSpeakSelection = ![(GAXProfileManager *)self shouldDisableSpeakSelection];
   }
 
   else
   {
-    v8 = [(GAXProfileManager *)self shouldEnableSpeakSelection];
+    shouldEnableSpeakSelection = [(GAXProfileManager *)self shouldEnableSpeakSelection];
   }
 
   if (_AXSMonoAudioEnabled())
   {
-    v9 = ![(GAXProfileManager *)self shouldDisableMonoAudio];
+    shouldEnableMonoAudio = ![(GAXProfileManager *)self shouldDisableMonoAudio];
   }
 
   else
   {
-    v9 = [(GAXProfileManager *)self shouldEnableMonoAudio];
+    shouldEnableMonoAudio = [(GAXProfileManager *)self shouldEnableMonoAudio];
   }
 
   if (_AXSCommandAndControlEnabled())
   {
-    v10 = ![(GAXProfileManager *)self shouldDisableCommandAndControl];
+    shouldEnableCommandAndControl = ![(GAXProfileManager *)self shouldDisableCommandAndControl];
   }
 
   else
   {
-    v10 = [(GAXProfileManager *)self shouldEnableCommandAndControl];
+    shouldEnableCommandAndControl = [(GAXProfileManager *)self shouldEnableCommandAndControl];
   }
 
-  if (v9)
+  if (shouldEnableMonoAudio)
   {
     v11 = 128;
   }
@@ -1814,7 +1814,7 @@ LABEL_14:
     v11 = 0;
   }
 
-  if (v4)
+  if (shouldEnableZoom)
   {
     v12 = 2;
   }
@@ -1824,8 +1824,8 @@ LABEL_14:
     v12 = 0;
   }
 
-  v13 = v12 | v3;
-  if (v5)
+  v13 = v12 | shouldEnableVoiceOver;
+  if (shouldEnableInvertColors)
   {
     v14 = 4;
   }
@@ -1835,7 +1835,7 @@ LABEL_14:
     v14 = 0;
   }
 
-  if (v6)
+  if (shouldEnableGrayscale)
   {
     v15 = 8;
   }
@@ -1846,7 +1846,7 @@ LABEL_14:
   }
 
   v16 = v13 | v14 | v15;
-  if (v7)
+  if (shouldEnableAssistiveTouch)
   {
     v17 = 16;
   }
@@ -1856,7 +1856,7 @@ LABEL_14:
     v17 = 0;
   }
 
-  if (v8)
+  if (shouldEnableSpeakSelection)
   {
     v18 = 64;
   }
@@ -1867,7 +1867,7 @@ LABEL_14:
   }
 
   v19 = v17 | v18;
-  if (v10)
+  if (shouldEnableCommandAndControl)
   {
     v20 = 1024;
   }

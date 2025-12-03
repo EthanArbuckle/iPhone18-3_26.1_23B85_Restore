@@ -1,25 +1,25 @@
 @interface PXFeedbackImageQualityUIViewController
 - (BOOL)wantsNegativeFeedbackSection;
-- (PXFeedbackImageQualityUIViewController)initWithAssets:(id)a3 delegate:(id)a4 feedbackType:(int64_t)a5 useCase:(int64_t)a6;
+- (PXFeedbackImageQualityUIViewController)initWithAssets:(id)assets delegate:(id)delegate feedbackType:(int64_t)type useCase:(int64_t)case;
 - (PXFeedbackImageQualityUIViewControllerDelegate)delegate;
-- (id)_captureIDFromURL:(id)a3;
-- (id)_captureIDsToCaptureFoldersInDirectory:(id)a3;
-- (id)_componentIDForComponent:(int64_t)a3;
-- (id)_componentNameForComponent:(int64_t)a3;
-- (id)_generateTitleForFeedback:(id)a3 forAssets:(id)a4;
-- (id)_generateURLsForAssetsDBGFiles:(id)a3;
-- (id)_generateZippedCaptureFoldersForAssets:(id)a3;
-- (id)_keywordIDForComponent:(int64_t)a3;
+- (id)_captureIDFromURL:(id)l;
+- (id)_captureIDsToCaptureFoldersInDirectory:(id)directory;
+- (id)_componentIDForComponent:(int64_t)component;
+- (id)_componentNameForComponent:(int64_t)component;
+- (id)_generateTitleForFeedback:(id)feedback forAssets:(id)assets;
+- (id)_generateURLsForAssetsDBGFiles:(id)files;
+- (id)_generateZippedCaptureFoldersForAssets:(id)assets;
+- (id)_keywordIDForComponent:(int64_t)component;
 - (id)negativeFeedbackKeys;
 - (id)positiveFeedbackKeys;
-- (int)_addDirectoryToArchive:(id)a3 withDirName:(id)a4 archive:(archive *)a5;
-- (int)_addFileToArchive:(id)a3 withFileName:(id)a4 archive:(archive *)a5;
-- (int64_t)_radarComponentForFeedback:(id)a3;
-- (void)_archiveFolder:(id)a3 destinationPath:(id)a4;
-- (void)_dismissActiveAlertControllerWithCompletion:(id)a3;
-- (void)_fileRadarWithAssets:(id)a3 positiveFeedback:(id)a4 negativeFeedback:(id)a5 customFeedback:(id)a6;
-- (void)userDidFinish:(BOOL)a3;
-- (void)userSentPositiveFeedback:(id)a3 negativeFeedback:(id)a4 customFeedback:(id)a5;
+- (int)_addDirectoryToArchive:(id)archive withDirName:(id)name archive:(archive *)a5;
+- (int)_addFileToArchive:(id)archive withFileName:(id)name archive:(archive *)a5;
+- (int64_t)_radarComponentForFeedback:(id)feedback;
+- (void)_archiveFolder:(id)folder destinationPath:(id)path;
+- (void)_dismissActiveAlertControllerWithCompletion:(id)completion;
+- (void)_fileRadarWithAssets:(id)assets positiveFeedback:(id)feedback negativeFeedback:(id)negativeFeedback customFeedback:(id)customFeedback;
+- (void)userDidFinish:(BOOL)finish;
+- (void)userSentPositiveFeedback:(id)feedback negativeFeedback:(id)negativeFeedback customFeedback:(id)customFeedback;
 - (void)viewDidLoad;
 @end
 
@@ -32,25 +32,25 @@
   return WeakRetained;
 }
 
-- (id)_captureIDsToCaptureFoldersInDirectory:(id)a3
+- (id)_captureIDsToCaptureFoldersInDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20 = 0;
-  v6 = [v5 contentsOfDirectoryAtPath:v4 error:&v20];
+  v6 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:&v20];
   v7 = v20;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__PXFeedbackImageQualityUIViewController__captureIDsToCaptureFoldersInDirectory___block_invoke;
   v15[3] = &unk_1E77341E0;
-  v16 = v4;
-  v17 = v5;
-  v18 = self;
-  v9 = v8;
+  v16 = directoryCopy;
+  v17 = defaultManager;
+  selfCopy = self;
+  v9 = dictionary;
   v19 = v9;
-  v10 = v5;
-  v11 = v4;
+  v10 = defaultManager;
+  v11 = directoryCopy;
   [v6 enumerateObjectsUsingBlock:v15];
   v12 = v19;
   v13 = v9;
@@ -95,13 +95,13 @@ void __81__PXFeedbackImageQualityUIViewController__captureIDsToCaptureFoldersInD
   [*(a1 + 48) setObject:*(a1 + 56) forKeyedSubscript:v5];
 }
 
-- (id)_captureIDFromURL:(id)a3
+- (id)_captureIDFromURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = 0;
-  if ([(__CFURL *)v3 checkResourceIsReachableAndReturnError:0])
+  if ([(__CFURL *)lCopy checkResourceIsReachableAndReturnError:0])
   {
-    v5 = CGImageSourceCreateWithURL(v3, 0);
+    v5 = CGImageSourceCreateWithURL(lCopy, 0);
     v4 = v5;
     if (v5)
     {
@@ -129,13 +129,13 @@ void __81__PXFeedbackImageQualityUIViewController__captureIDsToCaptureFoldersInD
   return v4;
 }
 
-- (int)_addDirectoryToArchive:(id)a3 withDirName:(id)a4 archive:(archive *)a5
+- (int)_addDirectoryToArchive:(id)archive withDirName:(id)name archive:(archive *)a5
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v28 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 contentsOfDirectoryAtPath:v6 error:0];
+  archiveCopy = archive;
+  nameCopy = name;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager contentsOfDirectoryAtPath:archiveCopy error:0];
 
   if ([v8 count])
   {
@@ -162,14 +162,14 @@ void __81__PXFeedbackImageQualityUIViewController__captureIDsToCaptureFoldersInD
           v14 = *(*(&v30 + 1) + 8 * i);
           v15 = objc_autoreleasePoolPush();
           v29 = 0;
-          v16 = [v6 stringByAppendingPathComponent:v14];
-          v17 = [MEMORY[0x1E696AC08] defaultManager];
-          v18 = [v17 fileExistsAtPath:v16 isDirectory:&v29];
+          v16 = [archiveCopy stringByAppendingPathComponent:v14];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+          v18 = [defaultManager2 fileExistsAtPath:v16 isDirectory:&v29];
 
           if (v18)
           {
-            v19 = [v14 lastPathComponent];
-            v20 = [v28 stringByAppendingPathComponent:v19];
+            lastPathComponent = [v14 lastPathComponent];
+            v20 = [nameCopy stringByAppendingPathComponent:lastPathComponent];
 
             v21 = v29 == 1 ? [(PXFeedbackImageQualityUIViewController *)self _addDirectoryToArchive:v16 withDirName:v20 archive:a5]: [(PXFeedbackImageQualityUIViewController *)self _addFileToArchive:v16 withFileName:v20 archive:a5];
             v22 = v21;
@@ -214,14 +214,14 @@ LABEL_17:
   return v23;
 }
 
-- (int)_addFileToArchive:(id)a3 withFileName:(id)a4 archive:(archive *)a5
+- (int)_addFileToArchive:(id)archive withFileName:(id)name archive:(archive *)a5
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  archiveCopy = archive;
+  nameCopy = name;
   memset(&v21, 0, sizeof(v21));
-  v8 = [v6 UTF8String];
-  if (!v8)
+  uTF8String = [archiveCopy UTF8String];
+  if (!uTF8String)
   {
     NSLog(&cfstr_NoFilename.isa);
 LABEL_7:
@@ -229,8 +229,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = v8;
-  stat(v8, &v21);
+  v9 = uTF8String;
+  stat(uTF8String, &v21);
   if (!archive_entry_new())
   {
     NSLog(&cfstr_ArchiveEntryNe.isa);
@@ -238,14 +238,14 @@ LABEL_7:
   }
 
   archive_entry_copy_stat();
-  [v7 UTF8String];
+  [nameCopy UTF8String];
   archive_entry_set_pathname();
   if (archive_write_header())
   {
     v10 = archive_errno();
-    v11 = [v7 UTF8String];
+    uTF8String2 = [nameCopy UTF8String];
     v12 = archive_error_string();
-    NSLog(&cfstr_FailedToWriteH.isa, v11, v10, v12);
+    NSLog(&cfstr_FailedToWriteH.isa, uTF8String2, v10, v12);
     archive_entry_free();
     goto LABEL_8;
   }
@@ -256,7 +256,7 @@ LABEL_7:
     v18 = __error();
     v19 = strerror(*v18);
     v20 = __error();
-    NSLog(&cfstr_ErrorOpeningFi.isa, v6, v19, *v20);
+    NSLog(&cfstr_ErrorOpeningFi.isa, archiveCopy, v19, *v20);
     archive_entry_free();
     goto LABEL_7;
   }
@@ -287,7 +287,7 @@ LABEL_14:
       }
     }
 
-    NSLog(&cfstr_ErrorWritingFi.isa, v6, v10, v17);
+    NSLog(&cfstr_ErrorWritingFi.isa, archiveCopy, v10, v17);
     LODWORD(v10) = archive_errno();
   }
 
@@ -298,29 +298,29 @@ LABEL_8:
   return v10;
 }
 
-- (void)_archiveFolder:(id)a3 destinationPath:(id)a4
+- (void)_archiveFolder:(id)folder destinationPath:(id)path
 {
-  v12 = a4;
-  v6 = a3;
+  pathCopy = path;
+  folderCopy = folder;
   v7 = archive_write_new();
   archive_write_add_filter_gzip();
   archive_write_set_format_pax();
-  v8 = v12;
-  v9 = open_dprotected_np([v12 UTF8String], 514, 3, 0, 416);
+  v8 = pathCopy;
+  v9 = open_dprotected_np([pathCopy UTF8String], 514, 3, 0, 416);
   if (v9 < 0)
   {
-    v9 = open_dprotected_np([v12 UTF8String], 514, 2, 0, 416);
+    v9 = open_dprotected_np([pathCopy UTF8String], 514, 2, 0, 416);
   }
 
   v10 = archive_write_open_fd();
   if (v10)
   {
-    NSLog(&cfstr_ErrorCreatingA.isa, v12, v10);
+    NSLog(&cfstr_ErrorCreatingA.isa, pathCopy, v10);
     v9 = -1;
   }
 
-  v11 = [v6 lastPathComponent];
-  [(PXFeedbackImageQualityUIViewController *)self _addDirectoryToArchive:v6 withDirName:v11 archive:v7];
+  lastPathComponent = [folderCopy lastPathComponent];
+  [(PXFeedbackImageQualityUIViewController *)self _addDirectoryToArchive:folderCopy withDirName:lastPathComponent archive:v7];
 
   archive_write_free();
   if ((v9 & 0x80000000) == 0)
@@ -329,20 +329,20 @@ LABEL_8:
   }
 }
 
-- (id)_generateZippedCaptureFoldersForAssets:(id)a3
+- (id)_generateZippedCaptureFoldersForAssets:(id)assets
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 photoLibrary];
-  v7 = [v6 photoLibrary];
+  assetsCopy = assets;
+  firstObject = [assetsCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  v6PhotoLibrary = [photoLibrary photoLibrary];
 
-  v30 = [MEMORY[0x1E695DF70] array];
-  if (v7)
+  array = [MEMORY[0x1E695DF70] array];
+  if (v6PhotoLibrary)
   {
-    v26 = v7;
-    v8 = [v7 pathManager];
-    v9 = [v8 photoDirectoryWithType:4];
+    v26 = v6PhotoLibrary;
+    pathManager = [v6PhotoLibrary pathManager];
+    v9 = [pathManager photoDirectoryWithType:4];
 
     v29 = v9;
     v10 = [(PXFeedbackImageQualityUIViewController *)self _captureIDsToCaptureFoldersInDirectory:v9];
@@ -350,8 +350,8 @@ LABEL_8:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v27 = v4;
-    obj = v4;
+    v27 = assetsCopy;
+    obj = assetsCopy;
     v11 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v11)
     {
@@ -366,24 +366,24 @@ LABEL_8:
             objc_enumerationMutation(obj);
           }
 
-          v15 = [*(*(&v31 + 1) + 8 * i) mainFileURL];
-          v16 = [(PXFeedbackImageQualityUIViewController *)self _captureIDFromURL:v15];
+          mainFileURL = [*(*(&v31 + 1) + 8 * i) mainFileURL];
+          v16 = [(PXFeedbackImageQualityUIViewController *)self _captureIDFromURL:mainFileURL];
 
           v17 = [v10 objectForKeyedSubscript:v16];
 
           if (v17)
           {
             v18 = [v10 objectForKeyedSubscript:v16];
-            v19 = [v18 lastPathComponent];
+            lastPathComponent = [v18 lastPathComponent];
 
             v20 = NSTemporaryDirectory();
-            v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.tar.gz", v19];
+            v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.tar.gz", lastPathComponent];
             v22 = [v20 stringByAppendingString:v21];
 
-            v23 = [v29 stringByAppendingPathComponent:v19];
+            v23 = [v29 stringByAppendingPathComponent:lastPathComponent];
             [(PXFeedbackImageQualityUIViewController *)self _archiveFolder:v23 destinationPath:v22];
             v24 = [MEMORY[0x1E695DFF8] fileURLWithPath:v22];
-            [v30 addObject:v24];
+            [array addObject:v24];
           }
         }
 
@@ -393,8 +393,8 @@ LABEL_8:
       while (v12);
     }
 
-    v7 = v26;
-    v4 = v27;
+    v6PhotoLibrary = v26;
+    assetsCopy = v27;
   }
 
   else
@@ -402,19 +402,19 @@ LABEL_8:
     NSLog(&cfstr_NoPhotoLibrary.isa);
   }
 
-  return v30;
+  return array;
 }
 
-- (id)_generateURLsForAssetsDBGFiles:(id)a3
+- (id)_generateURLsForAssetsDBGFiles:(id)files
 {
   v62 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  filesCopy = files;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v3;
+  obj = filesCopy;
   v5 = [obj countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v5)
   {
@@ -434,8 +434,8 @@ LABEL_8:
         }
 
         v10 = *(*(&v55 + 1) + 8 * v9);
-        v11 = [v10 fileURLsForDiagnosticFiles];
-        if (v11)
+        fileURLsForDiagnosticFiles = [v10 fileURLsForDiagnosticFiles];
+        if (fileURLsForDiagnosticFiles)
         {
           v12 = [MEMORY[0x1E69786D8] assetResourcesForAsset:v10];
           if ([v12 count])
@@ -461,10 +461,10 @@ LABEL_8:
                     objc_enumerationMutation(v13);
                   }
 
-                  v18 = [*(*(&v51 + 1) + 8 * i) originalFilename];
-                  if ([v18 hasPrefix:v8])
+                  originalFilename = [*(*(&v51 + 1) + 8 * i) originalFilename];
+                  if ([originalFilename hasPrefix:v8])
                   {
-                    v45 = [v18 stringByDeletingPathExtension];
+                    stringByDeletingPathExtension = [originalFilename stringByDeletingPathExtension];
 
                     goto LABEL_18;
                   }
@@ -480,14 +480,14 @@ LABEL_8:
               }
             }
 
-            v45 = &stru_1F1741150;
+            stringByDeletingPathExtension = &stru_1F1741150;
 LABEL_18:
 
-            v19 = [v10 uuid];
+            uuid = [v10 uuid];
             v20 = objc_opt_new();
             v21 = NSTemporaryDirectory();
-            v39 = v19;
-            v22 = [v21 stringByAppendingPathComponent:v19];
+            v39 = uuid;
+            v22 = [v21 stringByAppendingPathComponent:uuid];
 
             v43 = v22;
             v44 = v20;
@@ -500,8 +500,8 @@ LABEL_18:
             v50 = 0u;
             v47 = 0u;
             v48 = 0u;
-            v41 = v11;
-            v46 = v11;
+            v41 = fileURLsForDiagnosticFiles;
+            v46 = fileURLsForDiagnosticFiles;
             v23 = [v46 countByEnumeratingWithState:&v47 objects:v59 count:16];
             if (v23)
             {
@@ -517,8 +517,8 @@ LABEL_18:
                   }
 
                   v27 = *(*(&v47 + 1) + 8 * j);
-                  v28 = [v27 lastPathComponent];
-                  if ([v28 hasPrefix:v8])
+                  lastPathComponent = [v27 lastPathComponent];
+                  if ([lastPathComponent hasPrefix:v8])
                   {
                     [v4 addObject:v27];
                   }
@@ -527,7 +527,7 @@ LABEL_18:
                   {
                     v29 = v8;
                     v30 = MEMORY[0x1E695DFF8];
-                    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v45, v28];
+                    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", stringByDeletingPathExtension, lastPathComponent];
                     [v43 stringByAppendingPathComponent:v31];
                     v33 = v32 = v4;
                     v34 = [v30 fileURLWithPath:v33];
@@ -548,14 +548,14 @@ LABEL_18:
 
             v7 = v36;
             v6 = v37;
-            v11 = v41;
+            fileURLsForDiagnosticFiles = v41;
             v9 = v42;
             v12 = v40;
           }
 
           else
           {
-            [v4 addObjectsFromArray:v11];
+            [v4 addObjectsFromArray:fileURLsForDiagnosticFiles];
           }
         }
 
@@ -572,62 +572,62 @@ LABEL_18:
   return v4;
 }
 
-- (id)_keywordIDForComponent:(int64_t)a3
+- (id)_keywordIDForComponent:(int64_t)component
 {
-  if ((a3 - 4) > 5)
+  if ((component - 4) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7734260[a3 - 4];
+    return off_1E7734260[component - 4];
   }
 }
 
-- (id)_componentNameForComponent:(int64_t)a3
+- (id)_componentNameForComponent:(int64_t)component
 {
-  if ((a3 - 1) > 8)
+  if ((component - 1) > 8)
   {
     return @"Camera Image Feedback";
   }
 
   else
   {
-    return off_1E7734218[a3 - 1];
+    return off_1E7734218[component - 1];
   }
 }
 
-- (id)_componentIDForComponent:(int64_t)a3
+- (id)_componentIDForComponent:(int64_t)component
 {
   v3 = @"852230";
-  if (a3 <= 4)
+  if (component <= 4)
   {
     v4 = @"819310";
     v5 = @"1080636";
-    if (a3 != 4)
+    if (component != 4)
     {
       v5 = @"852230";
     }
 
-    if (a3 != 3)
+    if (component != 3)
     {
       v4 = v5;
     }
 
     v6 = @"863870";
     v7 = @"1576982";
-    if (a3 != 2)
+    if (component != 2)
     {
       v7 = @"852230";
     }
 
-    if (a3 != 1)
+    if (component != 1)
     {
       v6 = v7;
     }
 
-    if (a3 <= 2)
+    if (component <= 2)
     {
       v3 = v6;
     }
@@ -640,9 +640,9 @@ LABEL_18:
 
   else
   {
-    if (a3 <= 6)
+    if (component <= 6)
     {
-      if (a3 == 5)
+      if (component == 5)
       {
         v3 = @"1106155";
         goto LABEL_24;
@@ -653,7 +653,7 @@ LABEL_18:
 
     else
     {
-      switch(a3)
+      switch(component)
       {
         case 7:
           v3 = @"1104679";
@@ -677,13 +677,13 @@ LABEL_24:
   return v3;
 }
 
-- (int64_t)_radarComponentForFeedback:(id)a3
+- (int64_t)_radarComponentForFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   if ([(PXFeedbackImageQualityUIViewController *)self useCase]== 1)
   {
-    v6 = 9;
+    integerValue = 9;
   }
 
   else
@@ -694,30 +694,30 @@ LABEL_24:
     v11[3] = &unk_1E774BC88;
     v7 = v5;
     v12 = v7;
-    [v4 enumerateKeysAndObjectsUsingBlock:v11];
+    [feedbackCopy enumerateKeysAndObjectsUsingBlock:v11];
     v8 = [v7 count];
-    v6 = v8;
+    integerValue = v8;
     if (v8)
     {
       if (v8 == 1)
       {
-        v9 = [v7 anyObject];
-        v6 = [v9 integerValue];
+        anyObject = [v7 anyObject];
+        integerValue = [anyObject integerValue];
       }
 
       else if ([v7 containsObject:&unk_1F190B1D0])
       {
-        v6 = 7;
+        integerValue = 7;
       }
 
       else
       {
-        v6 = 0;
+        integerValue = 0;
       }
     }
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __69__PXFeedbackImageQualityUIViewController__radarComponentForFeedback___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -782,18 +782,18 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)_generateTitleForFeedback:(id)a3 forAssets:(id)a4
+- (id)_generateTitleForFeedback:(id)feedback forAssets:(id)assets
 {
   v33 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v5 = a4;
+  feedbackCopy = feedback;
+  assetsCopy = assets;
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ I took a photo and ", @"IQF :"];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v5;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
@@ -833,7 +833,7 @@ LABEL_11:
   v13 = v6;
   v22 = v13;
   v23 = &v24;
-  [v20 enumerateKeysAndObjectsUsingBlock:v21];
+  [feedbackCopy enumerateKeysAndObjectsUsingBlock:v21];
   if (*(v25 + 24) == 1)
   {
     v14 = MEMORY[0x1E696AEC0];
@@ -843,10 +843,10 @@ LABEL_11:
 
   else
   {
-    v17 = [(PXFeedbackImageQualityUIViewController *)self feedbackType];
-    if (v17 <= 2)
+    feedbackType = [(PXFeedbackImageQualityUIViewController *)self feedbackType];
+    if (feedbackType <= 2)
     {
-      [v13 appendString:off_1E7734200[v17]];
+      [v13 appendString:off_1E7734200[feedbackType]];
     }
 
     v16 = [MEMORY[0x1E696AEC0] stringWithString:v13];
@@ -869,32 +869,32 @@ void __78__PXFeedbackImageQualityUIViewController__generateTitleForFeedback_forA
   }
 }
 
-- (void)_dismissActiveAlertControllerWithCompletion:(id)a3
+- (void)_dismissActiveAlertControllerWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(PXFeedbackImageQualityUIViewController *)self presentedViewController];
-  if (v4)
+  completionCopy = completion;
+  presentedViewController = [(PXFeedbackImageQualityUIViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    [(PXFeedbackImageQualityUIViewController *)self dismissViewControllerAnimated:0 completion:v5];
+    [(PXFeedbackImageQualityUIViewController *)self dismissViewControllerAnimated:0 completion:completionCopy];
   }
 }
 
-- (void)_fileRadarWithAssets:(id)a3 positiveFeedback:(id)a4 negativeFeedback:(id)a5 customFeedback:(id)a6
+- (void)_fileRadarWithAssets:(id)assets positiveFeedback:(id)feedback negativeFeedback:(id)negativeFeedback customFeedback:(id)customFeedback
 {
   v68 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v39 = a4;
-  v11 = a5;
-  v36 = a6;
-  [(PXFeedbackImageQualityUIViewController *)self setAssets:v10];
-  v37 = v11;
-  [(PXFeedbackImageQualityUIViewController *)self setNegativeFeedback:v11];
+  assetsCopy = assets;
+  feedbackCopy = feedback;
+  negativeFeedbackCopy = negativeFeedback;
+  customFeedbackCopy = customFeedback;
+  [(PXFeedbackImageQualityUIViewController *)self setAssets:assetsCopy];
+  v37 = negativeFeedbackCopy;
+  [(PXFeedbackImageQualityUIViewController *)self setNegativeFeedback:negativeFeedbackCopy];
   [(PXFeedbackImageQualityUIViewController *)self setImageQualityDiagnosticFileURLs:0];
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v10;
+  obj = assetsCopy;
   v12 = [obj countByEnumeratingWithState:&v63 objects:v67 count:16];
   if (v12)
   {
@@ -939,7 +939,7 @@ LABEL_13:
   [v38 addAction:v35];
   [(PXFeedbackImageQualityUIViewController *)self presentViewController:v38 animated:1 completion:0];
   v40 = objc_opt_new();
-  [v40 addEntriesFromDictionary:v39];
+  [v40 addEntriesFromDictionary:feedbackCopy];
   [v40 addEntriesFromDictionary:v37];
   v17 = [(PXFeedbackImageQualityUIViewController *)self _generateTitleForFeedback:v40 forAssets:obj];
   if (v16)
@@ -962,7 +962,7 @@ LABEL_13:
   }
 
   [v58[5] appendString:@"— Please add any additional comments here —\n"];
-  [v58[5] appendFormat:@"%@\n \n", v36];
+  [v58[5] appendFormat:@"%@\n \n", customFeedbackCopy];
   [v58[5] appendString:@"— Image Quality Feedback —\n"];
   v55[0] = 0;
   v55[1] = v55;
@@ -974,15 +974,15 @@ LABEL_13:
   v54[3] = &unk_1E7745338;
   v54[4] = v55;
   v54[5] = &v57;
-  [v39 enumerateKeysAndObjectsUsingBlock:v54];
-  v19 = [(PXFeedbackImageQualityUIViewController *)self negativeFeedback];
+  [feedbackCopy enumerateKeysAndObjectsUsingBlock:v54];
+  negativeFeedback = [(PXFeedbackImageQualityUIViewController *)self negativeFeedback];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __112__PXFeedbackImageQualityUIViewController__fileRadarWithAssets_positiveFeedback_negativeFeedback_customFeedback___block_invoke_2;
   v53[3] = &unk_1E7745338;
   v53[4] = v55;
   v53[5] = &v57;
-  [v19 enumerateKeysAndObjectsUsingBlock:v53];
+  [negativeFeedback enumerateKeysAndObjectsUsingBlock:v53];
 
   v20 = [(PXFeedbackImageQualityUIViewController *)self _generateURLsForAssetsDBGFiles:self->_assets];
   v21 = [(PXFeedbackImageQualityUIViewController *)self _generateZippedCaptureFoldersForAssets:self->_assets];
@@ -1175,31 +1175,31 @@ void __112__PXFeedbackImageQualityUIViewController__fileRadarWithAssets_positive
   [v4 feedbackImageQualityUIViewController:v5 didFinish:a2];
 }
 
-- (void)userDidFinish:(BOOL)a3
+- (void)userDidFinish:(BOOL)finish
 {
-  v3 = a3;
-  v5 = [(PXFeedbackImageQualityUIViewController *)self delegate];
-  [v5 feedbackImageQualityUIViewController:self didFinish:v3];
+  finishCopy = finish;
+  delegate = [(PXFeedbackImageQualityUIViewController *)self delegate];
+  [delegate feedbackImageQualityUIViewController:self didFinish:finishCopy];
 }
 
 - (BOOL)wantsNegativeFeedbackSection
 {
-  v3 = [(PXFeedbackImageQualityUIViewController *)self feedbackType];
-  if (v3 != 1)
+  feedbackType = [(PXFeedbackImageQualityUIViewController *)self feedbackType];
+  if (feedbackType != 1)
   {
-    LOBYTE(v3) = [(PXFeedbackImageQualityUIViewController *)self feedbackType]== 2;
+    LOBYTE(feedbackType) = [(PXFeedbackImageQualityUIViewController *)self feedbackType]== 2;
   }
 
-  return v3;
+  return feedbackType;
 }
 
-- (void)userSentPositiveFeedback:(id)a3 negativeFeedback:(id)a4 customFeedback:(id)a5
+- (void)userSentPositiveFeedback:(id)feedback negativeFeedback:(id)negativeFeedback customFeedback:(id)customFeedback
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PXFeedbackImageQualityUIViewController *)self assets];
-  [(PXFeedbackImageQualityUIViewController *)self _fileRadarWithAssets:v11 positiveFeedback:v10 negativeFeedback:v9 customFeedback:v8];
+  customFeedbackCopy = customFeedback;
+  negativeFeedbackCopy = negativeFeedback;
+  feedbackCopy = feedback;
+  assets = [(PXFeedbackImageQualityUIViewController *)self assets];
+  [(PXFeedbackImageQualityUIViewController *)self _fileRadarWithAssets:assets positiveFeedback:feedbackCopy negativeFeedback:negativeFeedbackCopy customFeedback:customFeedbackCopy];
 }
 
 - (id)negativeFeedbackKeys
@@ -1242,10 +1242,10 @@ LABEL_17:
         }
 
         [v10 fetchPropertySetsIfNeeded];
-        v11 = [v10 spatialMediaProperties];
-        v12 = [v11 spatialMediaType];
+        spatialMediaProperties = [v10 spatialMediaProperties];
+        spatialMediaType = [spatialMediaProperties spatialMediaType];
 
-        if (v12 == 2)
+        if (spatialMediaType == 2)
         {
           goto LABEL_17;
         }
@@ -1302,57 +1302,57 @@ LABEL_19:
   v3 = objc_alloc_init(MEMORY[0x1E69DCCD8]);
   [(PXFeedbackImageQualityUIViewController *)self setNavigationController:v3];
 
-  v4 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
-  [(PXFeedbackImageQualityUIViewController *)self addChildViewController:v4];
+  navigationController = [(PXFeedbackImageQualityUIViewController *)self navigationController];
+  [(PXFeedbackImageQualityUIViewController *)self addChildViewController:navigationController];
 
-  v5 = [(PXFeedbackImageQualityUIViewController *)self view];
-  v6 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
-  v7 = [v6 view];
-  [v5 addSubview:v7];
+  view = [(PXFeedbackImageQualityUIViewController *)self view];
+  navigationController2 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
+  view2 = [navigationController2 view];
+  [view addSubview:view2];
 
-  v8 = [(PXFeedbackImageQualityUIViewController *)self view];
-  [v8 bounds];
+  view3 = [(PXFeedbackImageQualityUIViewController *)self view];
+  [view3 bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
-  v18 = [v17 view];
-  [v18 setFrame:{v10, v12, v14, v16}];
+  navigationController3 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
+  view4 = [navigationController3 view];
+  [view4 setFrame:{v10, v12, v14, v16}];
 
-  v19 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
-  v20 = [v19 view];
-  [v20 setAutoresizingMask:18];
+  navigationController4 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
+  view5 = [navigationController4 view];
+  [view5 setAutoresizingMask:18];
 
-  v21 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
-  [v21 didMoveToParentViewController:self];
+  navigationController5 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
+  [navigationController5 didMoveToParentViewController:self];
 
-  v22 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
-  [v22 setToolbarHidden:0];
+  navigationController6 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
+  [navigationController6 setToolbarHidden:0];
 
   v23 = [PXFeedbackFormUIViewController alloc];
-  v24 = [(PXFeedbackImageQualityUIViewController *)self positiveFeedbackKeys];
-  v25 = [(PXFeedbackImageQualityUIViewController *)self negativeFeedbackKeys];
-  v26 = [(PXFeedbackFormUIViewController *)v23 initWithDelegate:self positiveKeys:v24 negativeKeys:v25 wantsCustomFeedbackSection:1];
+  positiveFeedbackKeys = [(PXFeedbackImageQualityUIViewController *)self positiveFeedbackKeys];
+  negativeFeedbackKeys = [(PXFeedbackImageQualityUIViewController *)self negativeFeedbackKeys];
+  v26 = [(PXFeedbackFormUIViewController *)v23 initWithDelegate:self positiveKeys:positiveFeedbackKeys negativeKeys:negativeFeedbackKeys wantsCustomFeedbackSection:1];
 
-  v27 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
-  [v27 pushViewController:v26 animated:1];
+  navigationController7 = [(PXFeedbackImageQualityUIViewController *)self navigationController];
+  [navigationController7 pushViewController:v26 animated:1];
 }
 
-- (PXFeedbackImageQualityUIViewController)initWithAssets:(id)a3 delegate:(id)a4 feedbackType:(int64_t)a5 useCase:(int64_t)a6
+- (PXFeedbackImageQualityUIViewController)initWithAssets:(id)assets delegate:(id)delegate feedbackType:(int64_t)type useCase:(int64_t)case
 {
-  v11 = a3;
-  v12 = a4;
+  assetsCopy = assets;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = PXFeedbackImageQualityUIViewController;
   v13 = [(PXFeedbackImageQualityUIViewController *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_feedbackType = a5;
-    v13->_useCase = a6;
-    objc_storeStrong(&v13->_assets, a3);
-    objc_storeWeak(&v14->_delegate, v12);
+    v13->_feedbackType = type;
+    v13->_useCase = case;
+    objc_storeStrong(&v13->_assets, assets);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
   }
 
   return v14;

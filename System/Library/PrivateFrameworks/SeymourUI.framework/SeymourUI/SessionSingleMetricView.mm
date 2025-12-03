@@ -1,6 +1,6 @@
 @interface SessionSingleMetricView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BB90920();
 }
 
@@ -16,10 +16,10 @@
 {
   v3 = OBJC_IVAR____TtC9SeymourUI23SessionSingleMetricView_valueLabel;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI23SessionSingleMetricView_valueLabel);
-  v5 = self;
+  selfCopy = self;
   [v4 intrinsicContentSize];
   v7 = v6;
-  [*(&v5->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI23SessionSingleMetricView_unitLabel) intrinsicContentSize];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI23SessionSingleMetricView_unitLabel) intrinsicContentSize];
   v9 = v7 + v8 + 2.0;
   [*(&self->super.super.super.isa + v3) intrinsicContentSize];
   v11 = v10;
@@ -31,9 +31,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SessionSingleMetricView *)self intrinsicContentSize:a3.width];
+  [(SessionSingleMetricView *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;

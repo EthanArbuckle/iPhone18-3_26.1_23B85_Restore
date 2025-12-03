@@ -1,25 +1,25 @@
 @interface _LTLanguageDetectorFeatureCombinationModel
-- (_LTLanguageDetectorFeatureCombinationModel)initWithConfig:(id)a3;
-- (id)estimateLanguage:(id)a3 languageDetectionResults:(id)a4 partialSpeechResultConfidences:(id)a5 finalSpeechResults:(id)a6 modelVersions:(id)a7 isLowConfidencePair:(BOOL)a8;
-- (id)estimateLanguage:(id)a3 languageDetectionResults:(id)a4 partialSpeechResultConfidences:(id)a5 finalSpeechResults:(id)a6 modelVersions:(id)a7 useFinalThresholds:(BOOL)a8 isLowConfidencePair:(BOOL)a9;
-- (id)getAcousticLidConfidenceFromResult:(id)a3 locale:(id)a4;
-- (id)getModelFeatures:(id)a3 canonicalPair:(id)a4 partialSpeechResultConfidences:(id)a5 finalSpeechResults:(id)a6 modelVersion:(id)a7;
+- (_LTLanguageDetectorFeatureCombinationModel)initWithConfig:(id)config;
+- (id)estimateLanguage:(id)language languageDetectionResults:(id)results partialSpeechResultConfidences:(id)confidences finalSpeechResults:(id)speechResults modelVersions:(id)versions isLowConfidencePair:(BOOL)pair;
+- (id)estimateLanguage:(id)language languageDetectionResults:(id)results partialSpeechResultConfidences:(id)confidences finalSpeechResults:(id)speechResults modelVersions:(id)versions useFinalThresholds:(BOOL)thresholds isLowConfidencePair:(BOOL)pair;
+- (id)getAcousticLidConfidenceFromResult:(id)result locale:(id)locale;
+- (id)getModelFeatures:(id)features canonicalPair:(id)pair partialSpeechResultConfidences:(id)confidences finalSpeechResults:(id)results modelVersion:(id)version;
 @end
 
 @implementation _LTLanguageDetectorFeatureCombinationModel
 
-- (_LTLanguageDetectorFeatureCombinationModel)initWithConfig:(id)a3
+- (_LTLanguageDetectorFeatureCombinationModel)initWithConfig:(id)config
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configCopy = config;
   v51.receiver = self;
   v51.super_class = _LTLanguageDetectorFeatureCombinationModel;
   v5 = [(_LTLanguageDetectorFeatureCombinationModel *)&v51 init];
   v6 = v5;
   v7 = 0;
-  if (v4 && v5)
+  if (configCopy && v5)
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:v4];
+    v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:configCopy];
     v9 = [v8 objectForKey:@"features"];
     v10 = [v8 objectForKey:@"compiledModelFile"];
     v11 = [v8 objectForKey:@"modelInput"];
@@ -109,8 +109,8 @@
 
       else
       {
-        v33 = [v4 URLByDeletingLastPathComponent];
-        v34 = [v33 URLByAppendingPathComponent:v10];
+        uRLByDeletingLastPathComponent = [configCopy URLByDeletingLastPathComponent];
+        v34 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v10];
 
         v43 = 0;
         v35 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v34 error:&v43];
@@ -123,8 +123,8 @@
           v38 = _LTOSLogLID();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
-            v39 = [v34 path];
-            [(_LTLanguageDetectorFeatureCombinationModel *)v39 initWithConfig:buf, v38];
+            path = [v34 path];
+            [(_LTLanguageDetectorFeatureCombinationModel *)path initWithConfig:buf, v38];
           }
 
           v7 = 0;
@@ -135,9 +135,9 @@
           v40 = _LTOSLogLID();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
           {
-            v41 = [v29[1] modelDescription];
-            v42 = [v41 description];
-            [(_LTLanguageDetectorFeatureCombinationModel *)v42 initWithConfig:buf, v40, v41];
+            modelDescription = [v29[1] modelDescription];
+            v42 = [modelDescription description];
+            [(_LTLanguageDetectorFeatureCombinationModel *)v42 initWithConfig:buf, v40, modelDescription];
           }
 
           v7 = v29;
@@ -163,13 +163,13 @@
   return v7;
 }
 
-- (id)getAcousticLidConfidenceFromResult:(id)a3 locale:(id)a4
+- (id)getAcousticLidConfidenceFromResult:(id)result locale:(id)locale
 {
-  if (a3)
+  if (result)
   {
-    v6 = a4;
-    v7 = [a3 confidences];
-    v8 = [v7 objectForKey:v6];
+    localeCopy = locale;
+    confidences = [result confidences];
+    v8 = [confidences objectForKey:localeCopy];
 
     missingLanguageDetectorDefault = v8;
     if (!v8)
@@ -188,20 +188,20 @@
   return v10;
 }
 
-- (id)getModelFeatures:(id)a3 canonicalPair:(id)a4 partialSpeechResultConfidences:(id)a5 finalSpeechResults:(id)a6 modelVersion:(id)a7
+- (id)getModelFeatures:(id)features canonicalPair:(id)pair partialSpeechResultConfidences:(id)confidences finalSpeechResults:(id)results modelVersion:(id)version
 {
   v63[2] = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v12 = a4;
-  v44 = a5;
-  v43 = a6;
-  v41 = a7;
-  LODWORD(a7) = self->_modelInputIsMatrix;
+  featuresCopy = features;
+  pairCopy = pair;
+  confidencesCopy = confidences;
+  resultsCopy = results;
+  versionCopy = version;
+  LODWORD(version) = self->_modelInputIsMatrix;
   v13 = objc_alloc(MEMORY[0x277CBFF48]);
-  if (a7 == 1)
+  if (version == 1)
   {
     v63[0] = &unk_2848680E0;
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSMutableArray count](self->_features, "count", v39, v41)}];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSMutableArray count](self->_features, "count", featuresCopy, versionCopy)}];
     v63[1] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:2];
     v60 = 0;
@@ -211,7 +211,7 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSMutableArray count](self->_features, "count", v39, v41)}];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSMutableArray count](self->_features, "count", featuresCopy, versionCopy)}];
     v62 = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
     v59 = 0;
@@ -228,17 +228,17 @@
 
   else
   {
-    v20 = [v12 sourceLocale];
-    v21 = [v44 objectForKeyedSubscript:v20];
+    sourceLocale = [pairCopy sourceLocale];
+    v21 = [confidencesCopy objectForKeyedSubscript:sourceLocale];
 
-    v22 = [v12 targetLocale];
-    v23 = [v44 objectForKeyedSubscript:v22];
+    targetLocale = [pairCopy targetLocale];
+    v23 = [confidencesCopy objectForKeyedSubscript:targetLocale];
 
-    v24 = [v12 sourceLocale];
-    v25 = [v43 objectForKeyedSubscript:v24];
+    sourceLocale2 = [pairCopy sourceLocale];
+    v25 = [resultsCopy objectForKeyedSubscript:sourceLocale2];
 
-    v26 = [v12 targetLocale];
-    v27 = [v43 objectForKeyedSubscript:v26];
+    targetLocale2 = [pairCopy targetLocale];
+    v27 = [resultsCopy objectForKeyedSubscript:targetLocale2];
 
     v55 = 0;
     v56 = &v55;
@@ -258,7 +258,7 @@
     v31 = v27;
     v48 = v31;
     v49 = v40;
-    v50 = v12;
+    v50 = pairCopy;
     v32 = v21;
     v51 = v32;
     v33 = v23;
@@ -296,63 +296,63 @@
   return v19;
 }
 
-- (id)estimateLanguage:(id)a3 languageDetectionResults:(id)a4 partialSpeechResultConfidences:(id)a5 finalSpeechResults:(id)a6 modelVersions:(id)a7 useFinalThresholds:(BOOL)a8 isLowConfidencePair:(BOOL)a9
+- (id)estimateLanguage:(id)language languageDetectionResults:(id)results partialSpeechResultConfidences:(id)confidences finalSpeechResults:(id)speechResults modelVersions:(id)versions useFinalThresholds:(BOOL)thresholds isLowConfidencePair:(BOOL)pair
 {
-  v91 = a8;
+  thresholdsCopy = thresholds;
   v122[1] = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [a3 localePair];
-  v19 = [v18 canonicalLocalePair];
+  resultsCopy = results;
+  confidencesCopy = confidences;
+  speechResultsCopy = speechResults;
+  versionsCopy = versions;
+  localePair = [language localePair];
+  canonicalLocalePair = [localePair canonicalLocalePair];
 
-  v20 = [v19 sourceLocale];
-  v21 = [v17 objectForKeyedSubscript:v20];
+  sourceLocale = [canonicalLocalePair sourceLocale];
+  v21 = [versionsCopy objectForKeyedSubscript:sourceLocale];
   if (v21)
   {
-    [v19 sourceLocale];
+    [canonicalLocalePair sourceLocale];
   }
 
   else
   {
-    [v19 targetLocale];
+    [canonicalLocalePair targetLocale];
   }
   v22 = ;
-  v23 = [v17 objectForKeyedSubscript:v22];
+  v23 = [versionsCopy objectForKeyedSubscript:v22];
 
-  v24 = [v19 sourceLocale];
-  v97 = _LTPreferencesLanguageDetectorFeatureCombinationThresholdVersionForASRDataPack(v24, v23);
+  sourceLocale2 = [canonicalLocalePair sourceLocale];
+  v97 = _LTPreferencesLanguageDetectorFeatureCombinationThresholdVersionForASRDataPack(sourceLocale2, v23);
 
-  v25 = [v19 sourceLocale];
-  v26 = [v16 objectForKeyedSubscript:v25];
+  sourceLocale3 = [canonicalLocalePair sourceLocale];
+  v26 = [speechResultsCopy objectForKeyedSubscript:sourceLocale3];
 
-  v27 = [v19 targetLocale];
-  v28 = [v16 objectForKeyedSubscript:v27];
+  targetLocale = [canonicalLocalePair targetLocale];
+  v28 = [speechResultsCopy objectForKeyedSubscript:targetLocale];
 
   if (v26 && ([v26 isFinal] & 1) != 0)
   {
-    v89 = 1;
+    isFinal = 1;
   }
 
   else if (v28)
   {
-    v89 = [v28 isFinal];
+    isFinal = [v28 isFinal];
   }
 
   else
   {
-    v89 = 0;
+    isFinal = 0;
   }
 
-  v29 = [(_LTLanguageDetectorFeatureCombinationModel *)self getModelFeatures:v14 canonicalPair:v19 partialSpeechResultConfidences:v15 finalSpeechResults:v16 modelVersion:v23];
+  v29 = [(_LTLanguageDetectorFeatureCombinationModel *)self getModelFeatures:resultsCopy canonicalPair:canonicalLocalePair partialSpeechResultConfidences:confidencesCopy finalSpeechResults:speechResultsCopy modelVersion:v23];
   if (v29)
   {
     v92 = v26;
-    v30 = v17;
+    v30 = versionsCopy;
     v31 = v28;
-    v95 = v14;
-    v96 = v15;
+    v95 = resultsCopy;
+    v96 = confidencesCopy;
     v32 = objc_alloc(MEMORY[0x277CBFED0]);
     modelInput = self->_modelInput;
     v122[0] = v29;
@@ -372,10 +372,10 @@
       }
 
       v37 = 0;
-      v14 = v95;
-      v15 = v96;
+      resultsCopy = v95;
+      confidencesCopy = v96;
       v28 = v31;
-      v17 = v30;
+      versionsCopy = v30;
       v26 = v92;
     }
 
@@ -388,8 +388,8 @@
       if (v87)
       {
         v40 = _LTOSLogLID();
-        v14 = v95;
-        v15 = v96;
+        resultsCopy = v95;
+        confidencesCopy = v96;
         v28 = v31;
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
@@ -397,14 +397,14 @@
         }
 
         v37 = 0;
-        v17 = v30;
+        versionsCopy = v30;
         v26 = v92;
       }
 
       else
       {
         v41 = [v39 featureValueForName:self->_modelOutput];
-        v15 = v96;
+        confidencesCopy = v96;
         v28 = v31;
         v85 = v41;
         if (!v41)
@@ -413,54 +413,54 @@
         }
 
         v42 = v41;
-        v43 = [v41 multiArrayValue];
-        if (!v43)
+        multiArrayValue = [v41 multiArrayValue];
+        if (!multiArrayValue)
         {
           goto LABEL_33;
         }
 
-        v44 = v43;
-        v45 = [v42 multiArrayValue];
-        v46 = [v45 count];
+        v44 = multiArrayValue;
+        multiArrayValue2 = [v42 multiArrayValue];
+        v46 = [multiArrayValue2 count];
 
         v47 = v46 == 2;
-        v15 = v96;
+        confidencesCopy = v96;
         if (v47)
         {
-          v48 = [v42 multiArrayValue];
-          v49 = [v48 objectAtIndexedSubscript:0];
+          multiArrayValue3 = [v42 multiArrayValue];
+          v49 = [multiArrayValue3 objectAtIndexedSubscript:0];
 
-          v50 = [v42 multiArrayValue];
-          v84 = [v50 objectAtIndexedSubscript:1];
+          multiArrayValue4 = [v42 multiArrayValue];
+          v84 = [multiArrayValue4 objectAtIndexedSubscript:1];
 
-          v17 = v30;
+          versionsCopy = v30;
           v83 = v49;
           if (v49 && v84 && ([v49 doubleValue], v51 != INFINITY))
           {
             [v49 doubleValue];
-            v56 = _LTPreferencesLanguageDetectorFeatureCombinationModelThresholdsForLocale(v19, v97, v91);
-            v57 = [v19 sourceLocale];
+            v56 = _LTPreferencesLanguageDetectorFeatureCombinationModelThresholdsForLocale(canonicalLocalePair, v97, thresholdsCopy);
+            sourceLocale4 = [canonicalLocalePair sourceLocale];
             [v49 doubleValue];
             v58 = v56;
             v26 = v92;
             if (v59 < v56)
             {
-              v60 = [v19 targetLocale];
+              targetLocale2 = [canonicalLocalePair targetLocale];
 
-              v57 = v60;
+              sourceLocale4 = targetLocale2;
             }
 
             v61 = objc_alloc(MEMORY[0x277CE1B38]);
-            v62 = [v19 oppositeToLocale:v57];
-            v63 = v57;
+            v62 = [canonicalLocalePair oppositeToLocale:sourceLocale4];
+            v63 = sourceLocale4;
             v64 = v62;
             v82 = v63;
             v65 = [v61 initWithSourceLocale:? targetLocale:?];
 
             v81 = v65;
-            v66 = _LTPreferencesLanguageDetectorFeatureCombinationModelConfidenceThresholdsForLocale(v65, v97, v91);
+            v66 = _LTPreferencesLanguageDetectorFeatureCombinationModelConfidenceThresholdsForLocale(v65, v97, thresholdsCopy);
             v67 = v66;
-            if (a9)
+            if (pair)
             {
               v80 = 0;
             }
@@ -472,11 +472,11 @@
               v80 = vabdd_f64(v58, v69) >= v68;
             }
 
-            v70 = [v19 sourceLocale];
-            v119[0] = v70;
+            sourceLocale5 = [canonicalLocalePair sourceLocale];
+            v119[0] = sourceLocale5;
             v120[0] = v49;
-            v71 = [v19 targetLocale];
-            v119[1] = v71;
+            targetLocale3 = [canonicalLocalePair targetLocale];
+            v119[1] = targetLocale3;
             v120[1] = v84;
             v90 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v120 forKeys:v119 count:2];
 
@@ -484,27 +484,27 @@
             if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
             {
               log = v72;
-              v73 = [v82 _ltLocaleIdentifier];
+              _ltLocaleIdentifier = [v82 _ltLocaleIdentifier];
               v79 = [v90 objectForKeyedSubscript:v82];
               [v79 doubleValue];
               v75 = v74;
-              v77 = [v19 sourceLocale];
+              sourceLocale6 = [canonicalLocalePair sourceLocale];
               *buf = 138545666;
               v76 = @"1.0-";
               v100 = v97;
               v101 = 2114;
-              if (v82 == v77)
+              if (v82 == sourceLocale6)
               {
                 v76 = &stru_284834138;
               }
 
               v102 = v23;
               v103 = 1024;
-              v104 = v91;
+              v104 = thresholdsCopy;
               v105 = 1024;
-              v106 = v89;
+              v106 = isFinal;
               v107 = 2114;
-              v108 = v73;
+              v108 = _ltLocaleIdentifier;
               v109 = 2048;
               v110 = v75;
               v111 = 2114;
@@ -520,14 +520,14 @@
 
             v37 = [objc_alloc(MEMORY[0x277CE1B08]) initWithConfidences:v90 isConfident:v80 dominantLanguage:v82 isFinal:1];
 
-            v14 = v95;
-            v15 = v96;
+            resultsCopy = v95;
+            confidencesCopy = v96;
           }
 
           else
           {
             v52 = _LTOSLogLID();
-            v14 = v95;
+            resultsCopy = v95;
             v26 = v92;
             if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
             {
@@ -542,14 +542,14 @@
         {
 LABEL_33:
           v53 = _LTOSLogLID();
-          v17 = v30;
+          versionsCopy = v30;
           if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
           {
             [_LTLanguageDetectorFeatureCombinationModel estimateLanguage:languageDetectionResults:partialSpeechResultConfidences:finalSpeechResults:modelVersions:useFinalThresholds:isLowConfidencePair:];
           }
 
           v37 = 0;
-          v14 = v95;
+          resultsCopy = v95;
           v26 = v92;
         }
       }
@@ -572,39 +572,39 @@ LABEL_33:
   return v37;
 }
 
-- (id)estimateLanguage:(id)a3 languageDetectionResults:(id)a4 partialSpeechResultConfidences:(id)a5 finalSpeechResults:(id)a6 modelVersions:(id)a7 isLowConfidencePair:(BOOL)a8
+- (id)estimateLanguage:(id)language languageDetectionResults:(id)results partialSpeechResultConfidences:(id)confidences finalSpeechResults:(id)speechResults modelVersions:(id)versions isLowConfidencePair:(BOOL)pair
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [v13 localePair];
-  v19 = [v18 canonicalLocalePair];
+  languageCopy = language;
+  resultsCopy = results;
+  confidencesCopy = confidences;
+  speechResultsCopy = speechResults;
+  versionsCopy = versions;
+  localePair = [languageCopy localePair];
+  canonicalLocalePair = [localePair canonicalLocalePair];
 
-  v20 = [v19 sourceLocale];
-  v21 = [v16 objectForKeyedSubscript:v20];
+  sourceLocale = [canonicalLocalePair sourceLocale];
+  v21 = [speechResultsCopy objectForKeyedSubscript:sourceLocale];
 
-  v22 = [v19 targetLocale];
-  v23 = [v16 objectForKeyedSubscript:v22];
+  targetLocale = [canonicalLocalePair targetLocale];
+  v23 = [speechResultsCopy objectForKeyedSubscript:targetLocale];
 
   if (v21 && ([v21 isFinal] & 1) != 0)
   {
-    v24 = 1;
+    isFinal = 1;
   }
 
   else if (v23)
   {
-    v24 = [v23 isFinal];
+    isFinal = [v23 isFinal];
   }
 
   else
   {
-    v24 = 0;
+    isFinal = 0;
   }
 
-  LOBYTE(v27) = a8;
-  v25 = [(_LTLanguageDetectorFeatureCombinationModel *)self estimateLanguage:v13 languageDetectionResults:v14 partialSpeechResultConfidences:v15 finalSpeechResults:v16 modelVersions:v17 useFinalThresholds:v24 isLowConfidencePair:v27];
+  LOBYTE(v27) = pair;
+  v25 = [(_LTLanguageDetectorFeatureCombinationModel *)self estimateLanguage:languageCopy languageDetectionResults:resultsCopy partialSpeechResultConfidences:confidencesCopy finalSpeechResults:speechResultsCopy modelVersions:versionsCopy useFinalThresholds:isFinal isLowConfidencePair:v27];
 
   return v25;
 }

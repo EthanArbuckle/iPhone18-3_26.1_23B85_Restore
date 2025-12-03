@@ -1,16 +1,16 @@
 @interface ImageAlignedButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (_TtC11AppStoreKit18ImageAlignedButton)initWithFrame:(CGRect)a3;
-- (void)didTriggerPrimaryAction:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (_TtC11AppStoreKit18ImageAlignedButton)initWithFrame:(CGRect)frame;
+- (void)didTriggerPrimaryAction:(id)action;
 @end
 
 @implementation ImageAlignedButton
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  v3 = sub_1E176D5E0(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, sub_1E176CFA0);
+  v3 = sub_1E176D5E0(self, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, a2, sub_1E176CFA0);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -18,9 +18,9 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  v3 = sub_1E176D5E0(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, sub_1E176D430);
+  v3 = sub_1E176D5E0(self, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, a2, sub_1E176D430);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -28,18 +28,18 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v7 = (self + OBJC_IVAR____TtC11AppStoreKit18ImageAlignedButton_touchOutsideMargin);
   swift_beginAccess();
   v8 = *v7;
   v9 = v7[1];
   v10 = v7[2];
   v11 = v7[3];
-  v12 = self;
-  [(ImageAlignedButton *)v12 bounds];
+  selfCopy = self;
+  [(ImageAlignedButton *)selfCopy bounds];
   v19.origin.x = v13 - v9;
   v19.origin.y = v14 - v8;
   v19.size.width = v9 + v11 + v15;
@@ -51,7 +51,7 @@
   return v7;
 }
 
-- (void)didTriggerPrimaryAction:(id)a3
+- (void)didTriggerPrimaryAction:(id)action
 {
   v4 = self + OBJC_IVAR____TtC11AppStoreKit18ImageAlignedButton_primaryActionHandler;
   swift_beginAccess();
@@ -59,7 +59,7 @@
   if (*v4)
   {
     v6 = *(v4 + 1);
-    v7 = self;
+    selfCopy = self;
     v8 = sub_1E1300E34(v5);
     v5(v8);
 
@@ -67,12 +67,12 @@
   }
 }
 
-- (_TtC11AppStoreKit18ImageAlignedButton)initWithFrame:(CGRect)a3
+- (_TtC11AppStoreKit18ImageAlignedButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit18ImageAlignedButton_imageAlignment) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit18ImageAlignedButton_imageWantsBaselineAlignment) = 0;
   v8 = (self + OBJC_IVAR____TtC11AppStoreKit18ImageAlignedButton_touchOutsideMargin);

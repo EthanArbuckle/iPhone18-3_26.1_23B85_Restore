@@ -8,7 +8,7 @@
 
 - (void)addTurnstileInfoDesc:()OSAStackshotKCDataExtension count:elSize:
 {
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (a4)
   {
     v10 = 0;
@@ -20,8 +20,8 @@
       v13[1] = 3221225472;
       v14 = __86__NSMutableDictionary_OSAStackshotKCDataExtension__addTurnstileInfoDesc_count_elSize___block_invoke;
       v15 = &unk_1E7A26E50;
-      v16 = a1;
-      v17 = v9;
+      selfCopy = self;
+      v17 = array;
       v14(v13, v11, a3 + v10);
 
       ++v11;
@@ -31,15 +31,15 @@
     while (a4 != v11);
   }
 
-  if ([v9 count])
+  if ([array count])
   {
-    [a1 setObject:v9 forKeyedSubscript:@"turnstileInfo"];
+    [self setObject:array forKeyedSubscript:@"turnstileInfo"];
   }
 }
 
 - (void)addWaitInfoDesc:()OSAStackshotKCDataExtension count:elSize:
 {
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (a4)
   {
     v10 = 0;
@@ -51,8 +51,8 @@
       v13[1] = 3221225472;
       v14 = __81__NSMutableDictionary_OSAStackshotKCDataExtension__addWaitInfoDesc_count_elSize___block_invoke;
       v15 = &unk_1E7A26E78;
-      v16 = a1;
-      v17 = v9;
+      selfCopy = self;
+      v17 = array;
       v14(v13, v11, a3 + v10);
 
       ++v11;
@@ -62,20 +62,20 @@
     while (a4 != v11);
   }
 
-  if ([v9 count])
+  if ([array count])
   {
-    [a1 setObject:v9 forKeyedSubscript:@"waitInfo"];
+    [self setObject:array forKeyedSubscript:@"waitInfo"];
   }
 }
 
 - (void)parsePortLabelContainer:()OSAStackshotKCDataExtension
 {
-  v7 = [a1 objectForKeyedSubscript:@"portlabels"];
+  v7 = [self objectForKeyedSubscript:@"portlabels"];
 
   if (!v7)
   {
     v8 = objc_opt_new();
-    [a1 setObject:v8 forKeyedSubscript:@"portlabels"];
+    [self setObject:v8 forKeyedSubscript:@"portlabels"];
   }
 
   v9 = a3 + 16;
@@ -120,7 +120,7 @@
           v13 = (*(a3 + 18) & 2) != 0 ? " (service throttled by launchd)" : "";
           v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v10];
           v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%s", v17, v13];
-          v16 = [a1 objectForKeyedSubscript:@"portlabels"];
+          v16 = [self objectForKeyedSubscript:@"portlabels"];
           [v16 setObject:v15 forKeyedSubscript:v14];
 
           break;

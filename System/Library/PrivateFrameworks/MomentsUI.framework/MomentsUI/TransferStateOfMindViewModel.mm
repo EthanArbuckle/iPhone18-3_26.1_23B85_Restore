@@ -1,14 +1,14 @@
 @interface TransferStateOfMindViewModel
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TransferStateOfMindViewModel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TransferStateOfMindViewModel.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TransferStateOfMindViewModel.encode(with:)(coderCopy);
 }
 
 @end

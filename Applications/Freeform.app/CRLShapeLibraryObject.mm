@@ -1,52 +1,52 @@
 @interface CRLShapeLibraryObject
-- (CRLShapeLibraryObject)initWithDictionary:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)valueForKeyPath:(id)a3;
-- (void)i_removeObjectForKey:(id)a3;
+- (CRLShapeLibraryObject)initWithDictionary:(id)dictionary;
+- (id)objectForKey:(id)key;
+- (id)valueForKeyPath:(id)path;
+- (void)i_removeObjectForKey:(id)key;
 @end
 
 @implementation CRLShapeLibraryObject
 
-- (CRLShapeLibraryObject)initWithDictionary:(id)a3
+- (CRLShapeLibraryObject)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = CRLShapeLibraryObject;
   v6 = [(CRLShapeLibraryObject *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
   }
 
   return v7;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CRLShapeLibraryObject *)self p_dictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  p_dictionary = [(CRLShapeLibraryObject *)self p_dictionary];
+  v6 = [p_dictionary objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CRLShapeLibraryObject *)self p_dictionary];
-  v6 = [v5 valueForKeyPath:v4];
+  pathCopy = path;
+  p_dictionary = [(CRLShapeLibraryObject *)self p_dictionary];
+  v6 = [p_dictionary valueForKeyPath:pathCopy];
 
   return v6;
 }
 
-- (void)i_removeObjectForKey:(id)a3
+- (void)i_removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CRLShapeLibraryObject *)self p_dictionary];
-  v6 = [v5 mutableCopy];
+  keyCopy = key;
+  p_dictionary = [(CRLShapeLibraryObject *)self p_dictionary];
+  v6 = [p_dictionary mutableCopy];
 
-  [(NSDictionary *)v6 removeObjectForKey:v4];
+  [(NSDictionary *)v6 removeObjectForKey:keyCopy];
   dictionary = self->_dictionary;
   self->_dictionary = v6;
 }

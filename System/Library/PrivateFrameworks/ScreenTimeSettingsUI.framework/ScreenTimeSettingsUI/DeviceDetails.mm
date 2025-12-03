@@ -1,8 +1,8 @@
 @interface DeviceDetails
-+ (id)detailsForUserWithAltDSID:(id)a3 error:(id *)a4;
++ (id)detailsForUserWithAltDSID:(id)d error:(id *)error;
 - (NSDate)lastUpdatedDate;
 - (_TtC20ScreenTimeSettingsUI13DeviceDetails)init;
-- (_TtC20ScreenTimeSettingsUI13DeviceDetails)initWithCoreDuetIdentifier:(id)a3 identifier:(id)a4 name:(id)a5 platform:(signed __int16)a6 isLocalDevice:(BOOL)a7 lastUpdatedDate:(id)a8;
+- (_TtC20ScreenTimeSettingsUI13DeviceDetails)initWithCoreDuetIdentifier:(id)identifier identifier:(id)a4 name:(id)name platform:(signed __int16)platform isLocalDevice:(BOOL)device lastUpdatedDate:(id)date;
 @end
 
 @implementation DeviceDetails
@@ -20,15 +20,15 @@
   return v7;
 }
 
-- (_TtC20ScreenTimeSettingsUI13DeviceDetails)initWithCoreDuetIdentifier:(id)a3 identifier:(id)a4 name:(id)a5 platform:(signed __int16)a6 isLocalDevice:(BOOL)a7 lastUpdatedDate:(id)a8
+- (_TtC20ScreenTimeSettingsUI13DeviceDetails)initWithCoreDuetIdentifier:(id)identifier identifier:(id)a4 name:(id)name platform:(signed __int16)platform isLocalDevice:(BOOL)device lastUpdatedDate:(id)date
 {
-  v29 = a8;
-  v30 = a6;
-  v31 = a7;
+  dateCopy = date;
+  platformCopy = platform;
+  deviceCopy = device;
   v9 = sub_264CC2FCC();
   v10 = *(v9 - 8);
   MEMORY[0x28223BE20](v9);
-  v12 = &v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v12 = &dateCopy - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   v13 = sub_264CC45DC();
   v15 = v14;
   v16 = sub_264CC45DC();
@@ -45,8 +45,8 @@
   v24 = (self + OBJC_IVAR____TtC20ScreenTimeSettingsUI13DeviceDetails_name);
   *v24 = v19;
   v24[1] = v21;
-  v25 = v31;
-  *(self + OBJC_IVAR____TtC20ScreenTimeSettingsUI13DeviceDetails_platform) = v30;
+  v25 = deviceCopy;
+  *(self + OBJC_IVAR____TtC20ScreenTimeSettingsUI13DeviceDetails_platform) = platformCopy;
   *(self + OBJC_IVAR____TtC20ScreenTimeSettingsUI13DeviceDetails_isLocalDevice) = v25;
   (*(v10 + 16))(self + OBJC_IVAR____TtC20ScreenTimeSettingsUI13DeviceDetails_lastUpdatedDate, v12, v9);
   v26 = type metadata accessor for DeviceDetails();
@@ -57,9 +57,9 @@
   return v27;
 }
 
-+ (id)detailsForUserWithAltDSID:(id)a3 error:(id *)a4
++ (id)detailsForUserWithAltDSID:(id)d error:(id *)error
 {
-  if (a3)
+  if (d)
   {
     sub_264CC45DC();
   }

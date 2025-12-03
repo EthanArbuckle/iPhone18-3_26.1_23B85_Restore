@@ -1,29 +1,29 @@
 @interface _ANEModel
-+ (id)correctFileURLFormat:(id)a3;
-+ (id)modelAtURL:(id)a3 key:(id)a4 modelAttributes:(id)a5;
-+ (id)modelAtURL:(id)a3 key:(id)a4 mpsConstants:(id)a5;
-+ (id)modelAtURLWithCacheURLIdentifier:(id)a3 key:(id)a4 cacheURLIdentifier:(id)a5;
-+ (id)modelAtURLWithSourceURL:(id)a3 sourceURL:(id)a4 key:(id)a5 cacheURLIdentifier:(id)a6;
-+ (id)modelAtURLWithSourceURL:(id)a3 sourceURL:(id)a4 key:(id)a5 identifierSource:(int64_t)a6 cacheURLIdentifier:(id)a7;
-+ (id)modelAtURLWithSourceURL:(id)a3 sourceURL:(id)a4 key:(id)a5 identifierSource:(int64_t)a6 cacheURLIdentifier:(id)a7 UUID:(id)a8;
-+ (id)modelWithCacheURLIdentifier:(id)a3;
-+ (id)modelWithCacheURLIdentifier:(id)a3 UUID:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToModel:(id)a3;
-- (_ANEModel)initWithCoder:(id)a3;
-- (_ANEModel)initWithModelAtURL:(id)a3 key:(id)a4 identifierSource:(int64_t)a5 cacheURLIdentifier:(id)a6 modelAttributes:(id)a7 standardizeURL:(BOOL)a8;
-- (_ANEModel)initWithModelAtURL:(id)a3 sourceURL:(id)a4 UUID:(id)a5 key:(id)a6 identifierSource:(int64_t)a7 cacheURLIdentifier:(id)a8 modelAttributes:(id)a9 standardizeURL:(BOOL)a10 string_id:(unint64_t)a11 generateNewStringId:(BOOL)a12;
-- (_ANEModel)initWithModelAtURL:(id)a3 sourceURL:(id)a4 UUID:(id)a5 key:(id)a6 identifierSource:(int64_t)a7 cacheURLIdentifier:(id)a8 modelAttributes:(id)a9 standardizeURL:(BOOL)a10 string_id:(unint64_t)a11 generateNewStringId:(BOOL)a12 mpsConstants:(id)a13;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)correctFileURLFormat:(id)format;
++ (id)modelAtURL:(id)l key:(id)key modelAttributes:(id)attributes;
++ (id)modelAtURL:(id)l key:(id)key mpsConstants:(id)constants;
++ (id)modelAtURLWithCacheURLIdentifier:(id)identifier key:(id)key cacheURLIdentifier:(id)lIdentifier;
++ (id)modelAtURLWithSourceURL:(id)l sourceURL:(id)rL key:(id)key cacheURLIdentifier:(id)identifier;
++ (id)modelAtURLWithSourceURL:(id)l sourceURL:(id)rL key:(id)key identifierSource:(int64_t)source cacheURLIdentifier:(id)identifier;
++ (id)modelAtURLWithSourceURL:(id)l sourceURL:(id)rL key:(id)key identifierSource:(int64_t)source cacheURLIdentifier:(id)identifier UUID:(id)d;
++ (id)modelWithCacheURLIdentifier:(id)identifier;
++ (id)modelWithCacheURLIdentifier:(id)identifier UUID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToModel:(id)model;
+- (_ANEModel)initWithCoder:(id)coder;
+- (_ANEModel)initWithModelAtURL:(id)l key:(id)key identifierSource:(int64_t)source cacheURLIdentifier:(id)identifier modelAttributes:(id)attributes standardizeURL:(BOOL)rL;
+- (_ANEModel)initWithModelAtURL:(id)l sourceURL:(id)rL UUID:(id)d key:(id)key identifierSource:(int64_t)source cacheURLIdentifier:(id)identifier modelAttributes:(id)attributes standardizeURL:(BOOL)self0 string_id:(unint64_t)self1 generateNewStringId:(BOOL)self2;
+- (_ANEModel)initWithModelAtURL:(id)l sourceURL:(id)rL UUID:(id)d key:(id)key identifierSource:(int64_t)source cacheURLIdentifier:(id)identifier modelAttributes:(id)attributes standardizeURL:(BOOL)self0 string_id:(unint64_t)self1 generateNewStringId:(BOOL)self2 mpsConstants:(id)self3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)procedureInfoForProcedureIndex:(unsigned int)a3;
+- (id)procedureInfoForProcedureIndex:(unsigned int)index;
 - (id)shallowCopy;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)resetOnUnload;
-- (void)setCacheURLIdentifier:(id)a3;
-- (void)updateModelAttributes:(id)a3 state:(unint64_t)a4;
+- (void)setCacheURLIdentifier:(id)identifier;
+- (void)updateModelAttributes:(id)attributes state:(unint64_t)state;
 @end
 
 @implementation _ANEModel
@@ -33,17 +33,17 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_ANEModel *)self modelURL];
-  v7 = [v3 stringWithFormat:@"%@: { modelURL=%@ : ", v5, v6];
+  modelURL = [(_ANEModel *)self modelURL];
+  v7 = [v3 stringWithFormat:@"%@: { modelURL=%@ : ", v5, modelURL];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(_ANEModel *)self sourceURL];
-  v10 = [v8 stringWithFormat:@"sourceURL=%@ : ", v9];
+  sourceURL = [(_ANEModel *)self sourceURL];
+  v10 = [v8 stringWithFormat:@"sourceURL=%@ : ", sourceURL];
   v11 = [v7 stringByAppendingString:v10];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(_ANEModel *)self UUID];
-  v14 = [v12 stringWithFormat:@"UUID=%@ : ", v13];
+  uUID = [(_ANEModel *)self UUID];
+  v14 = [v12 stringWithFormat:@"UUID=%@ : ", uUID];
   v15 = [v11 stringByAppendingString:v14];
 
   v16 = MEMORY[0x1E696AEC0];
@@ -55,16 +55,16 @@
   v21 = [v19 stringByAppendingString:v20];
 
   v22 = MEMORY[0x1E696AEC0];
-  v23 = [(_ANEModel *)self getCacheURLIdentifier];
-  v24 = [v22 stringWithFormat:@"cacheURLIdentifier=%@ : ", v23];
+  getCacheURLIdentifier = [(_ANEModel *)self getCacheURLIdentifier];
+  v24 = [v22 stringWithFormat:@"cacheURLIdentifier=%@ : ", getCacheURLIdentifier];
   v25 = [v21 stringByAppendingString:v24];
 
   v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"string_id=0x%08llx : ", -[_ANEModel string_id](self, "string_id")];
   v27 = [v25 stringByAppendingString:v26];
 
   v28 = MEMORY[0x1E696AEC0];
-  v29 = [(_ANEModel *)self program];
-  v30 = [v28 stringWithFormat:@"program=%@ : ", v29];
+  program = [(_ANEModel *)self program];
+  v30 = [v28 stringWithFormat:@"program=%@ : ", program];
   v31 = [v27 stringByAppendingString:v30];
 
   v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"state=%lu : ", -[_ANEModel state](self, "state")];
@@ -80,8 +80,8 @@
   v39 = [v37 stringByAppendingString:v38];
 
   v40 = MEMORY[0x1E696AEC0];
-  v41 = [(_ANEModel *)self modelAttributes];
-  v42 = [v40 stringWithFormat:@"attr=%@ : ", v41];
+  modelAttributes = [(_ANEModel *)self modelAttributes];
+  v42 = [v40 stringWithFormat:@"attr=%@ : ", modelAttributes];
   v43 = [v39 stringByAppendingString:v42];
 
   v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"perfStatsMask=%u }", -[_ANEModel perfStatsMask](self, "perfStatsMask")];
@@ -122,16 +122,16 @@
   os_unfair_lock_unlock(&self->_l);
 }
 
-- (_ANEModel)initWithModelAtURL:(id)a3 sourceURL:(id)a4 UUID:(id)a5 key:(id)a6 identifierSource:(int64_t)a7 cacheURLIdentifier:(id)a8 modelAttributes:(id)a9 standardizeURL:(BOOL)a10 string_id:(unint64_t)a11 generateNewStringId:(BOOL)a12 mpsConstants:(id)a13
+- (_ANEModel)initWithModelAtURL:(id)l sourceURL:(id)rL UUID:(id)d key:(id)key identifierSource:(int64_t)source cacheURLIdentifier:(id)identifier modelAttributes:(id)attributes standardizeURL:(BOOL)self0 string_id:(unint64_t)self1 generateNewStringId:(BOOL)self2 mpsConstants:(id)self3
 {
-  v42 = a3;
-  v20 = a4;
-  v40 = a5;
-  v41 = a6;
-  v21 = a8;
-  v22 = a9;
-  v23 = a13;
-  if ([v21 containsString:@".."])
+  lCopy = l;
+  rLCopy = rL;
+  dCopy = d;
+  keyCopy = key;
+  identifierCopy = identifier;
+  attributesCopy = attributes;
+  constantsCopy = constants;
+  if ([identifierCopy containsString:@".."])
   {
     v24 = +[_ANELog common];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -141,11 +141,11 @@
 
 LABEL_12:
 
-    v25 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  if (a7 == 3 && !v21)
+  if (source == 3 && !identifierCopy)
   {
     v24 = +[_ANELog common];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -156,7 +156,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (!v20 && a7 == 2)
+  if (!rLCopy && source == 2)
   {
     v24 = +[_ANELog common];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -174,41 +174,41 @@ LABEL_12:
   if (v27)
   {
     v27->_l._os_unfair_lock_opaque = 0;
-    if (a10)
+    if (uRL)
     {
-      v29 = [v42 URLByStandardizingPath];
+      uRLByStandardizingPath = [lCopy URLByStandardizingPath];
       modelURL = v28->_modelURL;
-      v28->_modelURL = v29;
+      v28->_modelURL = uRLByStandardizingPath;
 
-      v31 = [v20 URLByStandardizingPath];
+      uRLByStandardizingPath2 = [rLCopy URLByStandardizingPath];
     }
 
     else
     {
-      objc_storeStrong(&v27->_modelURL, a3);
-      v31 = v20;
+      objc_storeStrong(&v27->_modelURL, l);
+      uRLByStandardizingPath2 = rLCopy;
     }
 
     sourceURL = v28->_sourceURL;
-    v28->_sourceURL = v31;
+    v28->_sourceURL = uRLByStandardizingPath2;
 
-    v33 = [v41 copy];
+    v33 = [keyCopy copy];
     key = v28->_key;
     v28->_key = v33;
 
-    v28->_identifierSource = a7;
-    v35 = [v21 copy];
+    v28->_identifierSource = source;
+    v35 = [identifierCopy copy];
     cacheURLIdentifier = v28->_cacheURLIdentifier;
     v28->_cacheURLIdentifier = v35;
 
-    objc_storeStrong(&v28->_modelAttributes, a9);
+    objc_storeStrong(&v28->_modelAttributes, attributes);
     v28->_state = 1;
-    objc_storeStrong(&v28->_UUID, a5);
-    objc_storeStrong(&v28->_mpsConstants, a13);
-    if (a12)
+    objc_storeStrong(&v28->_UUID, d);
+    objc_storeStrong(&v28->_mpsConstants, constants);
+    if (id)
     {
-      v37 = [v42 path];
-      [v37 UTF8String];
+      path = [lCopy path];
+      [path UTF8String];
       v28->_string_id = kdebug_trace_string();
 
       if (v28->_string_id == -1)
@@ -223,101 +223,101 @@ LABEL_12:
 
     else
     {
-      v28->_string_id = a11;
+      v28->_string_id = string_id;
     }
   }
 
   self = v28;
-  v25 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v25;
+  return selfCopy;
 }
 
-- (_ANEModel)initWithModelAtURL:(id)a3 sourceURL:(id)a4 UUID:(id)a5 key:(id)a6 identifierSource:(int64_t)a7 cacheURLIdentifier:(id)a8 modelAttributes:(id)a9 standardizeURL:(BOOL)a10 string_id:(unint64_t)a11 generateNewStringId:(BOOL)a12
+- (_ANEModel)initWithModelAtURL:(id)l sourceURL:(id)rL UUID:(id)d key:(id)key identifierSource:(int64_t)source cacheURLIdentifier:(id)identifier modelAttributes:(id)attributes standardizeURL:(BOOL)self0 string_id:(unint64_t)self1 generateNewStringId:(BOOL)self2
 {
-  LOBYTE(v14) = a12;
-  LOBYTE(v13) = a10;
-  return [(_ANEModel *)self initWithModelAtURL:a3 sourceURL:a4 UUID:a5 key:a6 identifierSource:a7 cacheURLIdentifier:a8 modelAttributes:a9 standardizeURL:v13 string_id:a11 generateNewStringId:v14 mpsConstants:0];
+  LOBYTE(v14) = id;
+  LOBYTE(v13) = uRL;
+  return [(_ANEModel *)self initWithModelAtURL:l sourceURL:rL UUID:d key:key identifierSource:source cacheURLIdentifier:identifier modelAttributes:attributes standardizeURL:v13 string_id:string_id generateNewStringId:v14 mpsConstants:0];
 }
 
-- (_ANEModel)initWithModelAtURL:(id)a3 key:(id)a4 identifierSource:(int64_t)a5 cacheURLIdentifier:(id)a6 modelAttributes:(id)a7 standardizeURL:(BOOL)a8
+- (_ANEModel)initWithModelAtURL:(id)l key:(id)key identifierSource:(int64_t)source cacheURLIdentifier:(id)identifier modelAttributes:(id)attributes standardizeURL:(BOOL)rL
 {
   v14 = MEMORY[0x1E696AFB0];
-  v15 = a7;
-  v16 = a6;
-  v17 = a4;
-  v18 = a3;
-  v19 = [v14 UUID];
+  attributesCopy = attributes;
+  identifierCopy = identifier;
+  keyCopy = key;
+  lCopy = l;
+  uUID = [v14 UUID];
   LOBYTE(v23) = 1;
-  LOBYTE(v22) = a8;
-  v20 = [(_ANEModel *)self initWithModelAtURL:v18 sourceURL:0 UUID:v19 key:v17 identifierSource:a5 cacheURLIdentifier:v16 modelAttributes:v15 standardizeURL:v22 string_id:0 generateNewStringId:v23];
+  LOBYTE(v22) = rL;
+  v20 = [(_ANEModel *)self initWithModelAtURL:lCopy sourceURL:0 UUID:uUID key:keyCopy identifierSource:source cacheURLIdentifier:identifierCopy modelAttributes:attributesCopy standardizeURL:v22 string_id:0 generateNewStringId:v23];
 
   return v20;
 }
 
-+ (id)modelAtURL:(id)a3 key:(id)a4 mpsConstants:(id)a5
++ (id)modelAtURL:(id)l key:(id)key mpsConstants:(id)constants
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
+  constantsCopy = constants;
+  keyCopy = key;
+  lCopy = l;
+  v11 = [self alloc];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   LOBYTE(v16) = 1;
   LOBYTE(v15) = 1;
-  v13 = [v11 initWithModelAtURL:v10 sourceURL:0 UUID:v12 key:v9 identifierSource:1 cacheURLIdentifier:0 modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v15 string_id:0 generateNewStringId:v16 mpsConstants:v8];
+  v13 = [v11 initWithModelAtURL:lCopy sourceURL:0 UUID:uUID key:keyCopy identifierSource:1 cacheURLIdentifier:0 modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v15 string_id:0 generateNewStringId:v16 mpsConstants:constantsCopy];
 
   return v13;
 }
 
-+ (id)modelAtURL:(id)a3 key:(id)a4 modelAttributes:(id)a5
++ (id)modelAtURL:(id)l key:(id)key modelAttributes:(id)attributes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [_ANEModel correctFileURLFormat:a3];
-  v11 = [[a1 alloc] initWithModelAtURL:v10 key:v9 identifierSource:1 cacheURLIdentifier:0 modelAttributes:v8 standardizeURL:1];
+  attributesCopy = attributes;
+  keyCopy = key;
+  v10 = [_ANEModel correctFileURLFormat:l];
+  v11 = [[self alloc] initWithModelAtURL:v10 key:keyCopy identifierSource:1 cacheURLIdentifier:0 modelAttributes:attributesCopy standardizeURL:1];
 
   return v11;
 }
 
-+ (id)modelWithCacheURLIdentifier:(id)a3
++ (id)modelWithCacheURLIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithModelIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithModelIdentifier:identifierCopy];
 
   return v5;
 }
 
-+ (id)modelWithCacheURLIdentifier:(id)a3 UUID:(id)a4
++ (id)modelWithCacheURLIdentifier:(id)identifier UUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
+  dCopy = d;
+  identifierCopy = identifier;
+  v8 = [self alloc];
   LOBYTE(v12) = 1;
   LOBYTE(v11) = 0;
-  v9 = [v8 initWithModelAtURL:0 sourceURL:0 UUID:v6 key:0 identifierSource:3 cacheURLIdentifier:v7 modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v11 string_id:0 generateNewStringId:v12];
+  v9 = [v8 initWithModelAtURL:0 sourceURL:0 UUID:dCopy key:0 identifierSource:3 cacheURLIdentifier:identifierCopy modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v11 string_id:0 generateNewStringId:v12];
 
   return v9;
 }
 
-+ (id)modelAtURLWithCacheURLIdentifier:(id)a3 key:(id)a4 cacheURLIdentifier:(id)a5
++ (id)modelAtURLWithCacheURLIdentifier:(id)identifier key:(id)key cacheURLIdentifier:(id)lIdentifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [_ANEModel correctFileURLFormat:a3];
-  v11 = [a1 alloc];
-  v12 = [v11 initWithModelAtURL:v10 key:v9 identifierSource:3 cacheURLIdentifier:v8 modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:1];
+  lIdentifierCopy = lIdentifier;
+  keyCopy = key;
+  v10 = [_ANEModel correctFileURLFormat:identifier];
+  v11 = [self alloc];
+  v12 = [v11 initWithModelAtURL:v10 key:keyCopy identifierSource:3 cacheURLIdentifier:lIdentifierCopy modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:1];
 
   return v12;
 }
 
-- (void)setCacheURLIdentifier:(id)a3
+- (void)setCacheURLIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (identifierCopy)
   {
-    v7 = [v5 containsString:@".."];
+    v7 = [identifierCopy containsString:@".."];
     v8 = +[_ANELog common];
     cacheURLIdentifier = v8;
     if (v7)
@@ -354,59 +354,59 @@ LABEL_13:
   }
 }
 
-+ (id)modelAtURLWithSourceURL:(id)a3 sourceURL:(id)a4 key:(id)a5 cacheURLIdentifier:(id)a6
++ (id)modelAtURLWithSourceURL:(id)l sourceURL:(id)rL key:(id)key cacheURLIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [_ANEModel correctFileURLFormat:a3];
-  v14 = [a1 alloc];
-  v15 = [MEMORY[0x1E696AFB0] UUID];
+  identifierCopy = identifier;
+  keyCopy = key;
+  rLCopy = rL;
+  v13 = [_ANEModel correctFileURLFormat:l];
+  v14 = [self alloc];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   LOBYTE(v19) = 1;
   LOBYTE(v18) = 1;
-  v16 = [v14 initWithModelAtURL:v13 sourceURL:v12 UUID:v15 key:v11 identifierSource:1 cacheURLIdentifier:v10 modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v18 string_id:0 generateNewStringId:v19];
+  v16 = [v14 initWithModelAtURL:v13 sourceURL:rLCopy UUID:uUID key:keyCopy identifierSource:1 cacheURLIdentifier:identifierCopy modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v18 string_id:0 generateNewStringId:v19];
 
   return v16;
 }
 
-+ (id)modelAtURLWithSourceURL:(id)a3 sourceURL:(id)a4 key:(id)a5 identifierSource:(int64_t)a6 cacheURLIdentifier:(id)a7
++ (id)modelAtURLWithSourceURL:(id)l sourceURL:(id)rL key:(id)key identifierSource:(int64_t)source cacheURLIdentifier:(id)identifier
 {
   v11 = MEMORY[0x1E696AFB0];
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v11 UUID];
-  v17 = [_ANEModel modelAtURLWithSourceURL:v15 sourceURL:v14 key:v13 identifierSource:a6 cacheURLIdentifier:v12 UUID:v16];
+  identifierCopy = identifier;
+  keyCopy = key;
+  rLCopy = rL;
+  lCopy = l;
+  uUID = [v11 UUID];
+  v17 = [_ANEModel modelAtURLWithSourceURL:lCopy sourceURL:rLCopy key:keyCopy identifierSource:source cacheURLIdentifier:identifierCopy UUID:uUID];
 
   return v17;
 }
 
-+ (id)modelAtURLWithSourceURL:(id)a3 sourceURL:(id)a4 key:(id)a5 identifierSource:(int64_t)a6 cacheURLIdentifier:(id)a7 UUID:(id)a8
++ (id)modelAtURLWithSourceURL:(id)l sourceURL:(id)rL key:(id)key identifierSource:(int64_t)source cacheURLIdentifier:(id)identifier UUID:(id)d
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = [_ANEModel correctFileURLFormat:a3];
-  v19 = [a1 alloc];
+  dCopy = d;
+  identifierCopy = identifier;
+  keyCopy = key;
+  rLCopy = rL;
+  v18 = [_ANEModel correctFileURLFormat:l];
+  v19 = [self alloc];
   LOBYTE(v23) = 1;
   LOBYTE(v22) = 1;
-  v20 = [v19 initWithModelAtURL:v18 sourceURL:v17 UUID:v14 key:v16 identifierSource:a6 cacheURLIdentifier:v15 modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v22 string_id:0 generateNewStringId:v23 mpsConstants:0];
+  v20 = [v19 initWithModelAtURL:v18 sourceURL:rLCopy UUID:dCopy key:keyCopy identifierSource:source cacheURLIdentifier:identifierCopy modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v22 string_id:0 generateNewStringId:v23 mpsConstants:0];
 
   return v20;
 }
 
-+ (id)correctFileURLFormat:(id)a3
++ (id)correctFileURLFormat:(id)format
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  formatCopy = format;
+  v5 = formatCopy;
+  if (formatCopy)
   {
-    v6 = [v4 scheme];
+    scheme = [formatCopy scheme];
 
-    if (v6)
+    if (scheme)
     {
       v7 = v5;
       if ([v5 isFileURL])
@@ -414,8 +414,8 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v8 = +[_ANELog common];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      path = +[_ANELog common];
+      if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
       {
         +[_ANEModel correctFileURLFormat:];
       }
@@ -437,17 +437,17 @@ LABEL_13:
       }
 
       v11 = MEMORY[0x1E695DFF8];
-      v8 = [v5 path];
-      v7 = [v11 fileURLWithPath:v8];
+      path = [v5 path];
+      v7 = [v11 fileURLWithPath:path];
     }
   }
 
   else
   {
-    v8 = +[_ANELog common];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    path = +[_ANELog common];
+    if (os_log_type_enabled(path, OS_LOG_TYPE_DEBUG))
     {
-      [_ANEModel correctFileURLFormat:v8];
+      [_ANEModel correctFileURLFormat:path];
     }
 
     v7 = 0;
@@ -459,22 +459,22 @@ LABEL_14:
   return v7;
 }
 
-- (void)updateModelAttributes:(id)a3 state:(unint64_t)a4
+- (void)updateModelAttributes:(id)attributes state:(unint64_t)state
 {
-  v6 = a3;
+  attributesCopy = attributes;
   os_unfair_lock_lock(&self->_l);
-  [(_ANEModel *)self setModelAttributes:v6];
+  [(_ANEModel *)self setModelAttributes:attributesCopy];
 
-  [(_ANEModel *)self setState:a4];
+  [(_ANEModel *)self setState:state];
 
   os_unfair_lock_unlock(&self->_l);
 }
 
-- (id)procedureInfoForProcedureIndex:(unsigned int)a3
+- (id)procedureInfoForProcedureIndex:(unsigned int)index
 {
   os_unfair_lock_lock(&self->_l);
-  v5 = [(_ANEModel *)self modelAttributes];
-  v6 = [v5 copy];
+  modelAttributes = [(_ANEModel *)self modelAttributes];
+  v6 = [modelAttributes copy];
 
   os_unfair_lock_unlock(&self->_l);
   v7 = [v6 objectForKeyedSubscript:kANEFModelDescriptionKey[0]];
@@ -517,7 +517,7 @@ LABEL_14:
   v17[1] = 3221225472;
   v17[2] = __44___ANEModel_procedureInfoForProcedureIndex___block_invoke;
   v17[3] = &unk_1E79BA1A0;
-  v18 = a3;
+  indexCopy = index;
   v17[4] = &v19;
   [v14 enumerateObjectsUsingBlock:v17];
   v15 = [v20[5] copy];
@@ -526,32 +526,32 @@ LABEL_14:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_ANEModel *)self modelURL];
-  [v4 encodeObject:v5 forKey:@"url"];
+  coderCopy = coder;
+  modelURL = [(_ANEModel *)self modelURL];
+  [coderCopy encodeObject:modelURL forKey:@"url"];
 
-  v6 = [(_ANEModel *)self sourceURL];
-  [v4 encodeObject:v6 forKey:@"sourceurl"];
+  sourceURL = [(_ANEModel *)self sourceURL];
+  [coderCopy encodeObject:sourceURL forKey:@"sourceurl"];
 
-  v7 = [(_ANEModel *)self UUID];
-  [v4 encodeObject:v7 forKey:@"uuid"];
+  uUID = [(_ANEModel *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"uuid"];
 
   v8 = [(_ANEModel *)self key];
-  [v4 encodeObject:v8 forKey:@"key"];
+  [coderCopy encodeObject:v8 forKey:@"key"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[_ANEModel identifierSource](self, "identifierSource")}];
-  [v4 encodeObject:v9 forKey:@"identifierSource"];
+  [coderCopy encodeObject:v9 forKey:@"identifierSource"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_ANEModel string_id](self, "string_id")}];
-  [v4 encodeObject:v10 forKey:@"string_id"];
+  [coderCopy encodeObject:v10 forKey:@"string_id"];
 
-  v11 = [(_ANEModel *)self cacheURLIdentifier];
-  [v4 encodeObject:v11 forKey:@"identifier"];
+  cacheURLIdentifier = [(_ANEModel *)self cacheURLIdentifier];
+  [coderCopy encodeObject:cacheURLIdentifier forKey:@"identifier"];
 
-  v12 = [(_ANEModel *)self mpsConstants];
-  [v4 encodeObject:v12 forKey:@"mpsConstants"];
+  mpsConstants = [(_ANEModel *)self mpsConstants];
+  [coderCopy encodeObject:mpsConstants forKey:@"mpsConstants"];
 
   v13 = +[_ANELog common];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -560,26 +560,26 @@ LABEL_14:
   }
 }
 
-- (_ANEModel)initWithCoder:(id)a3
+- (_ANEModel)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sourceurl"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifierSource"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceurl"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifierSource"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"string_id"];
-  v8 = [v7 unsignedLongLongValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"string_id"];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v10 setWithObjects:{v11, v12, v13, objc_opt_class(), 0}];
-  v15 = [v3 decodeObjectOfClasses:v14 forKey:@"mpsConstants"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"mpsConstants"];
 
   v16 = +[_ANELog common];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -589,12 +589,12 @@ LABEL_14:
 
   LOBYTE(v20) = 0;
   LOBYTE(v19) = 0;
-  v17 = [(_ANEModel *)self initWithModelAtURL:v24 sourceURL:v22 UUID:v21 key:v4 identifierSource:v6 cacheURLIdentifier:v9 modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v19 string_id:v8 generateNewStringId:v20 mpsConstants:v15];
+  v17 = [(_ANEModel *)self initWithModelAtURL:v24 sourceURL:v22 UUID:v21 key:v4 identifierSource:integerValue cacheURLIdentifier:v9 modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v19 string_id:unsignedLongLongValue generateNewStringId:v20 mpsConstants:v15];
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = +[_ANELog common];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -602,68 +602,68 @@ LABEL_14:
     [_ANEModel copyWithZone:a2];
   }
 
-  v6 = [(_ANEModel *)self cacheURLIdentifier];
+  cacheURLIdentifier = [(_ANEModel *)self cacheURLIdentifier];
 
   v7 = objc_opt_class();
-  if (v6)
+  if (cacheURLIdentifier)
   {
-    v8 = [(_ANEModel *)self cacheURLIdentifier];
-    v9 = [v7 modelWithCacheURLIdentifier:v8];
+    cacheURLIdentifier2 = [(_ANEModel *)self cacheURLIdentifier];
+    v9 = [v7 modelWithCacheURLIdentifier:cacheURLIdentifier2];
   }
 
   else
   {
-    v8 = [(_ANEModel *)self modelURL];
+    cacheURLIdentifier2 = [(_ANEModel *)self modelURL];
     v10 = [(_ANEModel *)self key];
-    v11 = [(_ANEModel *)self modelAttributes];
-    v9 = [v7 modelAtURL:v8 key:v10 modelAttributes:v11];
+    modelAttributes = [(_ANEModel *)self modelAttributes];
+    v9 = [v7 modelAtURL:cacheURLIdentifier2 key:v10 modelAttributes:modelAttributes];
   }
 
   return v9;
 }
 
-- (BOOL)isEqualToModel:(id)a3
+- (BOOL)isEqualToModel:(id)model
 {
-  v4 = a3;
-  if (!v4)
+  modelCopy = model;
+  if (!modelCopy)
   {
     goto LABEL_30;
   }
 
-  v5 = [(_ANEModel *)self cacheURLIdentifier];
-  if (v5)
+  cacheURLIdentifier = [(_ANEModel *)self cacheURLIdentifier];
+  if (cacheURLIdentifier)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v4 cacheURLIdentifier];
-    v6 = v7 == 0;
+    cacheURLIdentifier2 = [modelCopy cacheURLIdentifier];
+    v6 = cacheURLIdentifier2 == 0;
   }
 
-  v8 = [(_ANEModel *)self modelURL];
-  if (v8)
+  modelURL = [(_ANEModel *)self modelURL];
+  if (modelURL)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v4 modelURL];
-    v9 = v10 == 0;
+    modelURL2 = [modelCopy modelURL];
+    v9 = modelURL2 == 0;
   }
 
-  v11 = [(_ANEModel *)self sourceURL];
-  if (v11)
+  sourceURL = [(_ANEModel *)self sourceURL];
+  if (sourceURL)
   {
     v12 = 0;
   }
 
   else
   {
-    v13 = [v4 sourceURL];
-    v12 = v13 == 0;
+    sourceURL2 = [modelCopy sourceURL];
+    v12 = sourceURL2 == 0;
   }
 
   v14 = [(_ANEModel *)self key];
@@ -674,51 +674,51 @@ LABEL_14:
 
   else
   {
-    v16 = [v4 key];
+    v16 = [modelCopy key];
     v15 = v16 == 0;
   }
 
-  v17 = [(_ANEModel *)self identifierSource];
-  v18 = [v4 identifierSource];
-  v19 = [(_ANEModel *)self modelURL];
-  if (v19)
+  identifierSource = [(_ANEModel *)self identifierSource];
+  identifierSource2 = [modelCopy identifierSource];
+  modelURL3 = [(_ANEModel *)self modelURL];
+  if (modelURL3)
   {
-    v20 = v19;
-    v21 = [v4 modelURL];
+    v20 = modelURL3;
+    modelURL4 = [modelCopy modelURL];
 
-    if (v21)
+    if (modelURL4)
     {
-      v22 = [(_ANEModel *)self modelURL];
-      v23 = [v4 modelURL];
-      v9 = [v22 isEqual:v23];
+      modelURL5 = [(_ANEModel *)self modelURL];
+      modelURL6 = [modelCopy modelURL];
+      v9 = [modelURL5 isEqual:modelURL6];
     }
   }
 
-  v24 = [(_ANEModel *)self sourceURL];
-  if (v24)
+  sourceURL3 = [(_ANEModel *)self sourceURL];
+  if (sourceURL3)
   {
-    v25 = v24;
-    v26 = [v4 sourceURL];
+    v25 = sourceURL3;
+    sourceURL4 = [modelCopy sourceURL];
 
-    if (v26)
+    if (sourceURL4)
     {
-      v27 = [(_ANEModel *)self sourceURL];
-      v28 = [v4 sourceURL];
-      v12 = [v27 isEqual:v28];
+      sourceURL5 = [(_ANEModel *)self sourceURL];
+      sourceURL6 = [modelCopy sourceURL];
+      v12 = [sourceURL5 isEqual:sourceURL6];
     }
   }
 
-  v29 = [(_ANEModel *)self cacheURLIdentifier];
-  if (v29)
+  cacheURLIdentifier3 = [(_ANEModel *)self cacheURLIdentifier];
+  if (cacheURLIdentifier3)
   {
-    v30 = v29;
-    v31 = [v4 cacheURLIdentifier];
+    v30 = cacheURLIdentifier3;
+    cacheURLIdentifier4 = [modelCopy cacheURLIdentifier];
 
-    if (v31)
+    if (cacheURLIdentifier4)
     {
-      v32 = [(_ANEModel *)self cacheURLIdentifier];
-      v33 = [v4 cacheURLIdentifier];
-      v6 = [v32 isEqualToString:v33];
+      cacheURLIdentifier5 = [(_ANEModel *)self cacheURLIdentifier];
+      cacheURLIdentifier6 = [modelCopy cacheURLIdentifier];
+      v6 = [cacheURLIdentifier5 isEqualToString:cacheURLIdentifier6];
     }
   }
 
@@ -726,19 +726,19 @@ LABEL_14:
   if (v34)
   {
     v35 = v34;
-    v36 = [v4 key];
+    v36 = [modelCopy key];
 
     if (v36)
     {
       v37 = [(_ANEModel *)self key];
-      v38 = [v4 key];
+      v38 = [modelCopy key];
       v15 = [v37 isEqualToString:v38];
     }
   }
 
   if ((v9 & v12 & v6) == 1)
   {
-    if (v17 == v18)
+    if (identifierSource == identifierSource2)
     {
       v39 = v15;
     }
@@ -758,18 +758,18 @@ LABEL_30:
   return v39;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_ANEModel *)self isEqualToModel:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_ANEModel *)self isEqualToModel:v5];
   }
 
   return v6;
@@ -778,30 +778,30 @@ LABEL_30:
 - (id)shallowCopy
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(_ANEModel *)self modelURL];
-  v5 = [(_ANEModel *)self sourceURL];
-  v6 = [(_ANEModel *)self UUID];
+  modelURL = [(_ANEModel *)self modelURL];
+  sourceURL = [(_ANEModel *)self sourceURL];
+  uUID = [(_ANEModel *)self UUID];
   v7 = [(_ANEModel *)self key];
-  v8 = [(_ANEModel *)self identifierSource];
-  v9 = [(_ANEModel *)self cacheURLIdentifier];
-  v10 = [(_ANEModel *)self string_id];
+  identifierSource = [(_ANEModel *)self identifierSource];
+  cacheURLIdentifier = [(_ANEModel *)self cacheURLIdentifier];
+  string_id = [(_ANEModel *)self string_id];
   LOBYTE(v14) = 0;
   LOBYTE(v13) = 0;
-  v11 = [v3 initWithModelAtURL:v4 sourceURL:v5 UUID:v6 key:v7 identifierSource:v8 cacheURLIdentifier:v9 modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v13 string_id:v10 generateNewStringId:v14];
+  v11 = [v3 initWithModelAtURL:modelURL sourceURL:sourceURL UUID:uUID key:v7 identifierSource:identifierSource cacheURLIdentifier:cacheURLIdentifier modelAttributes:MEMORY[0x1E695E0F8] standardizeURL:v13 string_id:string_id generateNewStringId:v14];
 
   return v11;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(_ANEModel *)self modelURL];
-  v4 = [v3 hash];
-  v5 = [(_ANEModel *)self sourceURL];
-  v6 = [v5 hash] ^ v4;
+  modelURL = [(_ANEModel *)self modelURL];
+  v4 = [modelURL hash];
+  sourceURL = [(_ANEModel *)self sourceURL];
+  v6 = [sourceURL hash] ^ v4;
   v7 = [(_ANEModel *)self key];
   v8 = [v7 hash];
-  v9 = [(_ANEModel *)self cacheURLIdentifier];
-  v10 = v8 ^ [v9 hash];
+  cacheURLIdentifier = [(_ANEModel *)self cacheURLIdentifier];
+  v10 = v8 ^ [cacheURLIdentifier hash];
 
   return v6 ^ v10;
 }

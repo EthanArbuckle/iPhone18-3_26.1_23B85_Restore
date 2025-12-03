@@ -1,38 +1,38 @@
 @interface PKDeviceSharingCapabilities
-+ (id)deviceSharingCapbilitesRequestWithProtobuf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKDeviceSharingCapabilities)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)deviceSharingCapbilitesRequestWithProtobuf:(id)protobuf;
+- (BOOL)isEqual:(id)equal;
+- (PKDeviceSharingCapabilities)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)protobuf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDeviceSharingCapabilities
 
-+ (id)deviceSharingCapbilitesRequestWithProtobuf:(id)a3
++ (id)deviceSharingCapbilitesRequestWithProtobuf:(id)protobuf
 {
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_alloc_init(PKDeviceSharingCapabilities);
-  v5 = [v3 handle];
-  [(PKDeviceSharingCapabilities *)v4 setHandle:v5];
+  handle = [protobufCopy handle];
+  [(PKDeviceSharingCapabilities *)v4 setHandle:handle];
 
-  v6 = [v3 altDSID];
-  [(PKDeviceSharingCapabilities *)v4 setAltDSID:v6];
+  altDSID = [protobufCopy altDSID];
+  [(PKDeviceSharingCapabilities *)v4 setAltDSID:altDSID];
 
-  v7 = [v3 deviceRegion];
-  [(PKDeviceSharingCapabilities *)v4 setDeviceRegion:v7];
+  deviceRegion = [protobufCopy deviceRegion];
+  [(PKDeviceSharingCapabilities *)v4 setDeviceRegion:deviceRegion];
 
-  -[PKDeviceSharingCapabilities setSupportsManatee:](v4, "setSupportsManatee:", [v3 supportsManatee]);
-  v8 = [v3 fromDeviceVersion];
+  -[PKDeviceSharingCapabilities setSupportsManatee:](v4, "setSupportsManatee:", [protobufCopy supportsManatee]);
+  fromDeviceVersion = [protobufCopy fromDeviceVersion];
 
-  if (v8)
+  if (fromDeviceVersion)
   {
     v9 = MEMORY[0x1E696ACD0];
     v10 = objc_opt_class();
-    v11 = [v3 fromDeviceVersion];
-    v12 = [v9 unarchivedObjectOfClass:v10 fromData:v11 error:0];
+    fromDeviceVersion2 = [protobufCopy fromDeviceVersion];
+    v12 = [v9 unarchivedObjectOfClass:v10 fromData:fromDeviceVersion2 error:0];
     [(PKDeviceSharingCapabilities *)v4 setFromDeviceVersion:v12];
   }
 
@@ -42,51 +42,51 @@
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufDeviceSharingCapabilities);
-  v4 = [(PKDeviceSharingCapabilities *)self handle];
-  [(PKProtobufDeviceSharingCapabilities *)v3 setHandle:v4];
+  handle = [(PKDeviceSharingCapabilities *)self handle];
+  [(PKProtobufDeviceSharingCapabilities *)v3 setHandle:handle];
 
-  v5 = [(PKDeviceSharingCapabilities *)self altDSID];
-  [(PKProtobufDeviceSharingCapabilities *)v3 setAltDSID:v5];
+  altDSID = [(PKDeviceSharingCapabilities *)self altDSID];
+  [(PKProtobufDeviceSharingCapabilities *)v3 setAltDSID:altDSID];
 
-  v6 = [(PKDeviceSharingCapabilities *)self deviceRegion];
-  [(PKProtobufDeviceSharingCapabilities *)v3 setDeviceRegion:v6];
+  deviceRegion = [(PKDeviceSharingCapabilities *)self deviceRegion];
+  [(PKProtobufDeviceSharingCapabilities *)v3 setDeviceRegion:deviceRegion];
 
   [(PKProtobufDeviceSharingCapabilities *)v3 setSupportsManatee:[(PKDeviceSharingCapabilities *)self supportsManatee]];
-  v7 = [(PKDeviceSharingCapabilities *)self fromDeviceVersion];
+  fromDeviceVersion = [(PKDeviceSharingCapabilities *)self fromDeviceVersion];
 
-  if (v7)
+  if (fromDeviceVersion)
   {
     v8 = MEMORY[0x1E696ACC8];
-    v9 = [(PKDeviceSharingCapabilities *)self fromDeviceVersion];
-    v10 = [v8 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
+    fromDeviceVersion2 = [(PKDeviceSharingCapabilities *)self fromDeviceVersion];
+    v10 = [v8 archivedDataWithRootObject:fromDeviceVersion2 requiringSecureCoding:1 error:0];
     [(PKProtobufDeviceSharingCapabilities *)v3 setFromDeviceVersion:v10];
   }
 
   return v3;
 }
 
-- (PKDeviceSharingCapabilities)initWithCoder:(id)a3
+- (PKDeviceSharingCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKDeviceSharingCapabilities;
   v5 = [(PKDeviceSharingCapabilities *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
     handle = v5->_handle;
     v5->_handle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v8;
 
-    v5->_supportsManatee = [v4 decodeBoolForKey:@"supportsManatee"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceRegion"];
+    v5->_supportsManatee = [coderCopy decodeBoolForKey:@"supportsManatee"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceRegion"];
     deviceRegion = v5->_deviceRegion;
     v5->_deviceRegion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fromDeviceVersion"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fromDeviceVersion"];
     fromDeviceVersion = v5->_fromDeviceVersion;
     v5->_fromDeviceVersion = v12;
   }
@@ -94,37 +94,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   handle = self->_handle;
-  v5 = a3;
-  [v5 encodeObject:handle forKey:@"handle"];
-  [v5 encodeObject:self->_altDSID forKey:@"altDSID"];
-  [v5 encodeBool:self->_supportsManatee forKey:@"supportsManatee"];
-  [v5 encodeObject:self->_deviceRegion forKey:@"deviceRegion"];
-  [v5 encodeObject:self->_fromDeviceVersion forKey:@"fromDeviceVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:handle forKey:@"handle"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
+  [coderCopy encodeBool:self->_supportsManatee forKey:@"supportsManatee"];
+  [coderCopy encodeObject:self->_deviceRegion forKey:@"deviceRegion"];
+  [coderCopy encodeObject:self->_fromDeviceVersion forKey:@"fromDeviceVersion"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_handle];
-  [v3 safelyAddObject:self->_altDSID];
-  [v3 safelyAddObject:self->_deviceRegion];
-  [v3 safelyAddObject:self->_fromDeviceVersion];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_handle];
+  [array safelyAddObject:self->_altDSID];
+  [array safelyAddObject:self->_deviceRegion];
+  [array safelyAddObject:self->_fromDeviceVersion];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_supportsManatee - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -233,22 +233,22 @@ LABEL_24:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_handle copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_handle copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_altDSID copyWithZone:a3];
+  v8 = [(NSString *)self->_altDSID copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_deviceRegion copyWithZone:a3];
+  v10 = [(NSString *)self->_deviceRegion copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(PKOSVersionRequirement *)self->_fromDeviceVersion copyWithZone:a3];
+  v12 = [(PKOSVersionRequirement *)self->_fromDeviceVersion copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
@@ -273,8 +273,8 @@ LABEL_24:
   }
 
   [v3 appendFormat:@"supportsManatee: '%@'; ", v4];
-  v5 = [(PKOSVersionRequirement *)self->_fromDeviceVersion asDictionary];
-  [v3 appendFormat:@"fromDeviceVersion: '%@'; ", v5];
+  asDictionary = [(PKOSVersionRequirement *)self->_fromDeviceVersion asDictionary];
+  [v3 appendFormat:@"fromDeviceVersion: '%@'; ", asDictionary];
 
   v6 = [v3 copy];
 

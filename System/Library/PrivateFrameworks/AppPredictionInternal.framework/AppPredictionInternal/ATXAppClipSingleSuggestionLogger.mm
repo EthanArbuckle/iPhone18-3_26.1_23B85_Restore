@@ -1,22 +1,22 @@
 @interface ATXAppClipSingleSuggestionLogger
-- (ATXAppClipSingleSuggestionLogger)initWithTracker:(id)a3;
-- (void)_logAppClipEngagementMetric:(id)a3;
+- (ATXAppClipSingleSuggestionLogger)initWithTracker:(id)tracker;
+- (void)_logAppClipEngagementMetric:(id)metric;
 - (void)flushEventBuffers;
-- (void)handleSingleSuggestion:(id)a3;
+- (void)handleSingleSuggestion:(id)suggestion;
 @end
 
 @implementation ATXAppClipSingleSuggestionLogger
 
-- (ATXAppClipSingleSuggestionLogger)initWithTracker:(id)a3
+- (ATXAppClipSingleSuggestionLogger)initWithTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v13.receiver = self;
   v13.super_class = ATXAppClipSingleSuggestionLogger;
   v6 = [(ATXAppClipSingleSuggestionLogger *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tracker, a3);
+    objc_storeStrong(&v6->_tracker, tracker);
     v8 = objc_opt_new();
     positiveEventBuffer = v7->_positiveEventBuffer;
     v7->_positiveEventBuffer = v8;
@@ -29,29 +29,29 @@
   return v7;
 }
 
-- (void)_logAppClipEngagementMetric:(id)a3
+- (void)_logAppClipEngagementMetric:(id)metric
 {
-  v4 = a3;
-  [(ATXPETEventTracker2Protocol *)self->_tracker trackScalarForMessage:v4];
+  metricCopy = metric;
+  [(ATXPETEventTracker2Protocol *)self->_tracker trackScalarForMessage:metricCopy];
   v5 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXAppClipSingleSuggestionLogger *)self _logAppClipEngagementMetric:v4, v5];
+    [(ATXAppClipSingleSuggestionLogger *)self _logAppClipEngagementMetric:metricCopy, v5];
   }
 }
 
-- (void)handleSingleSuggestion:(id)a3
+- (void)handleSingleSuggestion:(id)suggestion
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionCopy = suggestion;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x277CCAAC8];
   v7 = objc_opt_class();
-  v8 = [v4 suggestion];
-  v9 = [v8 executableSpecification];
-  v10 = [v9 executable];
+  suggestion = [suggestionCopy suggestion];
+  executableSpecification = [suggestion executableSpecification];
+  executable = [executableSpecification executable];
   v55 = 0;
-  v11 = [v6 unarchivedObjectOfClass:v7 fromData:v10 error:&v55];
+  v11 = [v6 unarchivedObjectOfClass:v7 fromData:executable error:&v55];
   v12 = v55;
 
   objc_autoreleasePoolPop(v5);
@@ -65,7 +65,7 @@
       *buf = 138412802;
       *&buf[4] = v29;
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = suggestionCopy;
       *&buf[22] = 2112;
       v57 = v12;
       _os_log_error_impl(&dword_2263AA000, v19, OS_LOG_TYPE_ERROR, "%@ - not logging because could not retrieve bundleId from completed session: %@. Unarchive error: %@", buf, 0x20u);
@@ -74,8 +74,8 @@
 
   else
   {
-    v13 = [v11 bundleId];
-    v14 = [v11 urlHash];
+    bundleId = [v11 bundleId];
+    urlHash = [v11 urlHash];
     [v11 latitudeAtPredictionTime];
     v16 = v15;
     [v11 longitudeAtPredictionTime];
@@ -102,17 +102,17 @@
     v35 = &unk_278598668;
     v40 = &v49;
     v41 = buf;
-    v19 = v13;
+    v19 = bundleId;
     v36 = v19;
-    v20 = v14;
+    v20 = urlHash;
     v43 = v16;
     v44 = v18;
     v37 = v20;
-    v38 = self;
+    selfCopy = self;
     v21 = v11;
     v39 = v21;
     v42 = &v45;
-    [v4 enumerateShownAndEngagedSessionStatusesAndConsumerSubTypesWithBlock:&v32];
+    [suggestionCopy enumerateShownAndEngagedSessionStatusesAndConsumerSubTypesWithBlock:&v32];
     if ([v50[5] isEqualToNumber:{MEMORY[0x277CBEC38], v32, v33, v34, v35}])
     {
       v22 = [(ATXAppClipSingleSuggestionLogger *)self _appClipEngagementMetricWithBundleId:v19 urlHash:v20 interactionType:*(v46 + 6) consumerSubType:@"SingleSuggestionAnyConsumerSubType"];
@@ -120,20 +120,20 @@
     }
 
     v23 = +[_ATXAppPredictor sharedInstance];
-    v24 = [v23 cdnDownloaderTriggerManager];
-    v25 = [v24 heroClipManager];
-    v26 = [v25 feedback];
+    cdnDownloaderTriggerManager = [v23 cdnDownloaderTriggerManager];
+    heroClipManager = [cdnDownloaderTriggerManager heroClipManager];
+    feedback = [heroClipManager feedback];
 
     if ([*(*&buf[8] + 40) isEqualToNumber:MEMORY[0x277CBEC38]])
     {
       LODWORD(v27) = 1.0;
-      [v26 addConfirmForAppClipWithHeroAppPrediction:v21 weight:v27];
+      [feedback addConfirmForAppClipWithHeroAppPrediction:v21 weight:v27];
     }
 
     else if ([v50[5] isEqualToNumber:MEMORY[0x277CBEC38]])
     {
       LODWORD(v30) = 1.0;
-      [v26 addRejectForAppClipWithHeroAppPrediction:v21 weight:v30];
+      [feedback addRejectForAppClipWithHeroAppPrediction:v21 weight:v30];
     }
 
     _Block_object_dispose(&v45, 8);

@@ -1,16 +1,16 @@
 @interface CDMUaaPNLModelProvider
-+ (id)createModelConfigurationFromURL:(id)a3 locale:(id)a4 error:(id *)a5;
-+ (id)createModelConfigurationsFromURLs:(id)a3 locale:(id)a4 error:(id *)a5;
-+ (id)getCoreModelConfigurationForLocale:(id)a3 bundlePath:(id)a4 error:(id *)a5;
++ (id)createModelConfigurationFromURL:(id)l locale:(id)locale error:(id *)error;
++ (id)createModelConfigurationsFromURLs:(id)ls locale:(id)locale error:(id *)error;
++ (id)getCoreModelConfigurationForLocale:(id)locale bundlePath:(id)path error:(id *)error;
 + (id)modelURLsForInstalledApps;
 + (id)retrieveAllAppBundleURLs;
-+ (id)retrieveModelURLFromBundleURL:(id)a3;
++ (id)retrieveModelURLFromBundleURL:(id)l;
 - (CDMUaaPNLModelProvider)init;
 - (id)foregroundBundeIdentifiers;
-- (id)getForegroundModelConfigForLocale:(id)a3 error:(id *)a4;
-- (id)getModelConfigsForLocale:(id)a3 error:(id *)a4;
+- (id)getForegroundModelConfigForLocale:(id)locale error:(id *)error;
+- (id)getModelConfigsForLocale:(id)locale error:(id *)error;
 - (id)getModelURLForForegroundApp;
-- (id)getModelURLs:(id *)a3;
+- (id)getModelURLs:(id *)ls;
 - (id)getModelURLsFromDefaults;
 @end
 
@@ -19,14 +19,14 @@
 - (id)foregroundBundeIdentifiers
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = dispatch_semaphore_create(0);
   frontboardConfig = self->_frontboardConfig;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __52__CDMUaaPNLModelProvider_foregroundBundeIdentifiers__block_invoke;
   v17 = &unk_1E862F958;
-  v6 = v3;
+  v6 = array;
   v18 = v6;
   v7 = v4;
   v19 = v7;
@@ -160,15 +160,15 @@ void __52__CDMUaaPNLModelProvider_foregroundBundeIdentifiers__block_invoke(uint6
 - (id)getModelURLForForegroundApp
 {
   v32 = *MEMORY[0x1E69E9840];
-  v2 = [(CDMUaaPNLModelProvider *)self foregroundBundeIdentifiers];
-  v3 = v2;
-  if (v2)
+  foregroundBundeIdentifiers = [(CDMUaaPNLModelProvider *)self foregroundBundeIdentifiers];
+  v3 = foregroundBundeIdentifiers;
+  if (foregroundBundeIdentifiers)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v4 = v2;
+    v4 = foregroundBundeIdentifiers;
     v5 = [v4 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v5)
     {
@@ -190,32 +190,32 @@ void __52__CDMUaaPNLModelProvider_foregroundBundeIdentifiers__block_invoke(uint6
 
           v7 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:*(*(&v23 + 1) + 8 * v10)];
 
-          v12 = [v7 bundleURL];
+          bundleURL = [v7 bundleURL];
 
-          if (!v12)
+          if (!bundleURL)
           {
             v8 = 0;
             goto LABEL_19;
           }
 
-          v13 = [v12 URLByAppendingPathComponent:@"uaap"];
+          v13 = [bundleURL URLByAppendingPathComponent:@"uaap"];
 
           v8 = [v13 URLByAppendingPathComponent:@"customLu"];
 
-          v14 = [MEMORY[0x1E696AC08] defaultManager];
-          v15 = [v8 path];
-          v16 = [v14 fileExistsAtPath:v15];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          path = [v8 path];
+          v16 = [defaultManager fileExistsAtPath:path];
 
           if (v16)
           {
             v17 = CDMOSLoggerForCategory(0);
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
             {
-              v21 = [v7 bundleIdentifier];
+              bundleIdentifier = [v7 bundleIdentifier];
               *buf = 136315394;
               v28 = "[CDMUaaPNLModelProvider getModelURLForForegroundApp]";
               v29 = 2112;
-              v30 = v21;
+              v30 = bundleIdentifier;
               _os_log_debug_impl(&dword_1DC287000, v17, OS_LOG_TYPE_DEBUG, "%s UaaP detected foreground app with model available: %@", buf, 0x16u);
             }
 
@@ -266,15 +266,15 @@ LABEL_19:
   return v8;
 }
 
-- (id)getModelURLs:(id *)a3
+- (id)getModelURLs:(id *)ls
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = [(CDMUaaPNLModelProvider *)self getModelURLsFromDefaults];
-  if ([v4 count])
+  getModelURLsFromDefaults = [(CDMUaaPNLModelProvider *)self getModelURLsFromDefaults];
+  if ([getModelURLsFromDefaults count])
   {
-    v5 = v4;
+    v5 = getModelURLsFromDefaults;
 LABEL_5:
-    a3 = v5;
+    ls = v5;
     v6 = v5;
     goto LABEL_6;
   }
@@ -287,31 +287,31 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (a3)
+  if (ls)
   {
     v9 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A578];
     v12[0] = @"No UaaP custom NLU model config found. Did you configure the model path?";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    *a3 = [v9 errorWithDomain:@"UaaPNLService" code:1 userInfo:v10];
+    *ls = [v9 errorWithDomain:@"UaaPNLService" code:1 userInfo:v10];
 
-    a3 = 0;
+    ls = 0;
   }
 
 LABEL_6:
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return a3;
+  return ls;
 }
 
-- (id)getForegroundModelConfigForLocale:(id)a3 error:(id *)a4
+- (id)getForegroundModelConfigForLocale:(id)locale error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CDMUaaPNLModelProvider *)self getModelURLForForegroundApp];
-  if (v7)
+  localeCopy = locale;
+  getModelURLForForegroundApp = [(CDMUaaPNLModelProvider *)self getModelURLForForegroundApp];
+  if (getModelURLForForegroundApp)
   {
-    v8 = [CDMUaaPNLModelProvider createModelConfigurationFromURL:v7 locale:v6 error:a4];
+    v8 = [CDMUaaPNLModelProvider createModelConfigurationFromURL:getModelURLForForegroundApp locale:localeCopy error:error];
   }
 
   else
@@ -322,13 +322,13 @@ LABEL_6:
   return v8;
 }
 
-- (id)getModelConfigsForLocale:(id)a3 error:(id *)a4
+- (id)getModelConfigsForLocale:(id)locale error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CDMUaaPNLModelProvider *)self getModelURLs:a4];
+  localeCopy = locale;
+  v7 = [(CDMUaaPNLModelProvider *)self getModelURLs:error];
   if ([v7 count])
   {
-    v8 = [CDMUaaPNLModelProvider createModelConfigurationsFromURLs:v7 locale:v6 error:a4];
+    v8 = [CDMUaaPNLModelProvider createModelConfigurationsFromURLs:v7 locale:localeCopy error:error];
   }
 
   else
@@ -346,23 +346,23 @@ LABEL_6:
   v2 = [(CDMUaaPNLModelProvider *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
     frontboardConfig = v2->_frontboardConfig;
-    v2->_frontboardConfig = v3;
+    v2->_frontboardConfig = configurationForDefaultMainDisplayMonitor;
   }
 
   return v2;
 }
 
-+ (id)getCoreModelConfigurationForLocale:(id)a3 bundlePath:(id)a4 error:(id *)a5
++ (id)getCoreModelConfigurationForLocale:(id)locale bundlePath:(id)path error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  localeCopy = locale;
+  pathCopy = path;
   v9 = +[CDMUserDefaultsUtils readUaaPNLCoreModelPath];
   if (!v9 || ([MEMORY[0x1E695DFF8] fileURLWithPath:v9], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@/", v8, @"model-core"];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@/", pathCopy, @"model-core"];
     v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11 isDirectory:1];
     v12 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -375,25 +375,25 @@ LABEL_6:
     }
   }
 
-  v13 = [v10 URLByAppendingPathComponent:v7 isDirectory:1];
-  v14 = [MEMORY[0x1E69D14C8] configurationFromDirectoryUrl:v13 error:a5];
+  v13 = [v10 URLByAppendingPathComponent:localeCopy isDirectory:1];
+  v14 = [MEMORY[0x1E69D14C8] configurationFromDirectoryUrl:v13 error:error];
 
   v15 = *MEMORY[0x1E69E9840];
 
   return v14;
 }
 
-+ (id)createModelConfigurationsFromURLs:(id)a3 locale:(id)a4 error:(id *)a5
++ (id)createModelConfigurationsFromURLs:(id)ls locale:(id)locale error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  lsCopy = ls;
+  localeCopy = locale;
   v9 = [MEMORY[0x1E695DFA8] set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v7;
+  v10 = lsCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v11)
   {
@@ -411,7 +411,7 @@ LABEL_6:
           objc_enumerationMutation(v10);
         }
 
-        v16 = [CDMUaaPNLModelProvider createModelConfigurationFromURL:*(*(&v22 + 1) + 8 * v15) locale:v8 error:a5, v20];
+        v16 = [CDMUaaPNLModelProvider createModelConfigurationFromURL:*(*(&v22 + 1) + 8 * v15) locale:localeCopy error:error, v20];
         if (v16)
         {
           [v9 addObject:v16];
@@ -422,7 +422,7 @@ LABEL_6:
           v17 = CDMOSLoggerForCategory(0);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            v21 = [*a5 description];
+            v21 = [*error description];
             *buf = v20;
             v27 = "+[CDMUaaPNLModelProvider createModelConfigurationsFromURLs:locale:error:]";
             v28 = 2112;
@@ -446,32 +446,32 @@ LABEL_6:
   return v9;
 }
 
-+ (id)createModelConfigurationFromURL:(id)a3 locale:(id)a4 error:(id *)a5
++ (id)createModelConfigurationFromURL:(id)l locale:(id)locale error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 URLByAppendingPathComponent:a4 isDirectory:1];
+  v6 = [l URLByAppendingPathComponent:locale isDirectory:1];
   if (v6)
   {
-    a5 = [MEMORY[0x1E69D14C8] configurationFromDirectoryUrl:v6 error:a5];
+    error = [MEMORY[0x1E69D14C8] configurationFromDirectoryUrl:v6 error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     v7 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A578];
     v12[0] = @"Unable to build fullModelUrl from baseURL and locale";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    *a5 = [v7 errorWithDomain:@"UaaPNLService" code:1 userInfo:v8];
+    *error = [v7 errorWithDomain:@"UaaPNLService" code:1 userInfo:v8];
 
-    a5 = 0;
+    error = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return a5;
+  return error;
 }
 
-+ (id)retrieveModelURLFromBundleURL:(id)a3
++ (id)retrieveModelURLFromBundleURL:(id)l
 {
   Unique = _CFBundleCreateUnique();
   if (Unique)
@@ -492,7 +492,7 @@ LABEL_6:
 + (id)retrieveAllAppBundleURLs
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = [MEMORY[0x1E69635F8] enumeratorWithOptions:0];
   v11 = 0u;
   v12 = 0u;
@@ -513,7 +513,7 @@ LABEL_6:
         }
 
         v8 = [*(*(&v11 + 1) + 8 * i) URL];
-        [v2 addObject:v8];
+        [array addObject:v8];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -524,7 +524,7 @@ LABEL_6:
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return array;
 }
 
 + (id)modelURLsForInstalledApps
@@ -550,7 +550,7 @@ LABEL_6:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [a1 retrieveModelURLFromBundleURL:*(*(&v12 + 1) + 8 * i)];
+        v9 = [self retrieveModelURLFromBundleURL:*(*(&v12 + 1) + 8 * i)];
         if (v9)
         {
           [v3 addObject:v9];

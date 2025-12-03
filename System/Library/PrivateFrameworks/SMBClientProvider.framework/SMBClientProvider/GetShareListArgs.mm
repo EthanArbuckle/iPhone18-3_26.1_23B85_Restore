@@ -1,26 +1,26 @@
 @interface GetShareListArgs
-- (GetShareListArgs)initWithPiston:(id)a3 ServerName:(id)a4 ServerMaxRead:(unsigned int)a5 ServerMaxWrite:(unsigned int)a6 ServerMaxTransact:(unsigned int)a7 ShareID:(unsigned int)a8;
+- (GetShareListArgs)initWithPiston:(id)piston ServerName:(id)name ServerMaxRead:(unsigned int)read ServerMaxWrite:(unsigned int)write ServerMaxTransact:(unsigned int)transact ShareID:(unsigned int)d;
 - (void)dealloc;
 @end
 
 @implementation GetShareListArgs
 
-- (GetShareListArgs)initWithPiston:(id)a3 ServerName:(id)a4 ServerMaxRead:(unsigned int)a5 ServerMaxWrite:(unsigned int)a6 ServerMaxTransact:(unsigned int)a7 ShareID:(unsigned int)a8
+- (GetShareListArgs)initWithPiston:(id)piston ServerName:(id)name ServerMaxRead:(unsigned int)read ServerMaxWrite:(unsigned int)write ServerMaxTransact:(unsigned int)transact ShareID:(unsigned int)d
 {
-  v15 = a3;
-  v16 = a4;
+  pistonCopy = piston;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = GetShareListArgs;
   v17 = [(GetShareListArgs *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_pd, a3);
-    objc_storeStrong(&v18->_serverName, a4);
-    v18->_serverMaxRead = a5;
-    v18->_serverMaxWrite = a6;
-    v18->_serverMaxTransact = a7;
-    v18->_shareID = a8;
+    objc_storeStrong(&v17->_pd, piston);
+    objc_storeStrong(&v18->_serverName, name);
+    v18->_serverMaxRead = read;
+    v18->_serverMaxWrite = write;
+    v18->_serverMaxTransact = transact;
+    v18->_shareID = d;
     v18->_status = 0;
   }
 

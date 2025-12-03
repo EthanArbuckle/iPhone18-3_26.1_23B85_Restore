@@ -3,29 +3,29 @@
 - (NSDateFormatter)dateFormatter;
 - (NSDateFormatter)timeFormatter;
 - (NSNumberFormatter)numberFormatter;
-- (PHRecentCallDetailsView)initWithCoder:(id)a3;
-- (PHRecentCallDetailsView)initWithFrame:(CGRect)a3;
+- (PHRecentCallDetailsView)initWithCoder:(id)coder;
+- (PHRecentCallDetailsView)initWithFrame:(CGRect)frame;
 - (PHRecentCallDetailsViewDelegate)delegate;
 - (id)callOccurrences;
-- (id)emergencyItemLabelText:(id)a3;
-- (id)stringForDataUsage:(id)a3;
-- (id)stringForTimeInterval:(double)a3;
+- (id)emergencyItemLabelText:(id)text;
+- (id)stringForDataUsage:(id)usage;
+- (id)stringForTimeInterval:(double)interval;
 - (void)_replaceSubviews;
 - (void)addNotificationObservers;
 - (void)dealloc;
-- (void)handleFormattersDidChangeNotification:(id)a3;
+- (void)handleFormattersDidChangeNotification:(id)notification;
 - (void)loadSubviews;
-- (void)presentConversationForUUID:(id)a3;
-- (void)setRecentCall:(id)a3;
+- (void)presentConversationForUUID:(id)d;
+- (void)setRecentCall:(id)call;
 @end
 
 @implementation PHRecentCallDetailsView
 
-- (PHRecentCallDetailsView)initWithFrame:(CGRect)a3
+- (PHRecentCallDetailsView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PHRecentCallDetailsView;
-  v3 = [(PHRecentCallDetailsView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHRecentCallDetailsView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -35,11 +35,11 @@
   return v4;
 }
 
-- (PHRecentCallDetailsView)initWithCoder:(id)a3
+- (PHRecentCallDetailsView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PHRecentCallDetailsView;
-  v3 = [(PHRecentCallDetailsView *)&v6 initWithCoder:a3];
+  v3 = [(PHRecentCallDetailsView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -124,15 +124,15 @@
   return v2;
 }
 
-- (void)setRecentCall:(id)a3
+- (void)setRecentCall:(id)call
 {
-  v5 = a3;
-  if (self->_recentCall != v5)
+  callCopy = call;
+  if (self->_recentCall != callCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_recentCall, a3);
+    v6 = callCopy;
+    objc_storeStrong(&self->_recentCall, call);
     [(PHRecentCallDetailsView *)self loadSubviews];
-    v5 = v6;
+    callCopy = v6;
   }
 }
 
@@ -163,11 +163,11 @@
   }
 }
 
-- (void)handleFormattersDidChangeNotification:(id)a3
+- (void)handleFormattersDidChangeNotification:(id)notification
 {
-  v4 = [(PHRecentCallDetailsView *)self recentCall];
+  recentCall = [(PHRecentCallDetailsView *)self recentCall];
 
-  if (v4)
+  if (recentCall)
   {
 
     [(PHRecentCallDetailsView *)self _replaceSubviews];
@@ -177,11 +177,11 @@
 - (id)callOccurrences
 {
   v3 = [NSSortDescriptor sortDescriptorWithKey:kCHCallOccurrenceDateKey ascending:0];
-  v4 = [(PHRecentCallDetailsView *)self recentCall];
-  v5 = [v4 callOccurrences];
+  recentCall = [(PHRecentCallDetailsView *)self recentCall];
+  callOccurrences = [recentCall callOccurrences];
   v9 = v3;
   v6 = [NSArray arrayWithObjects:&v9 count:1];
-  v7 = [v5 sortedArrayUsingDescriptors:v6];
+  v7 = [callOccurrences sortedArrayUsingDescriptors:v6];
 
   return v7;
 }
@@ -189,16 +189,16 @@
 - (void)loadSubviews
 {
   v3 = +[NSMutableArray array];
-  v4 = [(PHRecentCallDetailsView *)self callOccurrences];
+  callOccurrences = [(PHRecentCallDetailsView *)self callOccurrences];
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v147 = 0u;
   v148 = 0u;
   v145 = 0u;
   v146 = 0u;
-  obj = v4;
+  obj = callOccurrences;
   v7 = [obj countByEnumeratingWithState:&v145 objects:v149 count:16];
   v8 = &UIDeviceProximityStateDidChangeNotification_ptr;
   if (!v7)
@@ -226,7 +226,7 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v127 = self;
+  selfCopy = self;
   v128 = v3;
   v125 = kCHCallOccurrenceDateKey;
   v126 = *v146;
@@ -254,10 +254,10 @@
       v19 = v18;
       v20 = [v16 objectForKeyedSubscript:v123];
       objc_opt_class();
-      v21 = v124;
+      unsignedIntValue = v124;
       if (objc_opt_isKindOfClass())
       {
-        v21 = [v20 unsignedIntValue];
+        unsignedIntValue = [v20 unsignedIntValue];
       }
 
       v22 = [v16 objectForKeyedSubscript:v122];
@@ -289,12 +289,12 @@
       v132 = v28;
       v142 = (objc_opt_isKindOfClass() & 1) != 0 && [v28 unsignedIntValue] == 1;
       v29 = objc_alloc_init(UILabel);
-      v30 = [(NSNotificationName *)v8[310] preferredSubheadline1Font];
-      [v29 setFont:v30];
+      preferredSubheadline1Font = [(NSNotificationName *)v8[310] preferredSubheadline1Font];
+      [v29 setFont:preferredSubheadline1Font];
 
-      v31 = [(PHRecentCallDetailsView *)self dateFormatter];
+      dateFormatter = [(PHRecentCallDetailsView *)self dateFormatter];
       v143 = v19;
-      v32 = [v31 stringFromDate:v19];
+      v32 = [dateFormatter stringFromDate:v19];
       [v29 setText:v32];
 
       [v29 setTextAlignment:4];
@@ -302,35 +302,35 @@
       [v29 setAdjustsFontForContentSizeCategory:1];
       [v29 setNumberOfLines:0];
       [(PHRecentCallDetailsView *)self addSubview:v29];
-      v33 = [v29 leadingAnchor];
-      v34 = [(PHRecentCallDetailsView *)self leadingAnchor];
-      v35 = [v33 constraintEqualToAnchor:v34];
+      leadingAnchor = [v29 leadingAnchor];
+      leadingAnchor2 = [(PHRecentCallDetailsView *)self leadingAnchor];
+      v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v35 setActive:1];
 
-      v36 = [v29 trailingAnchor];
-      v37 = [(PHRecentCallDetailsView *)self trailingAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      trailingAnchor = [v29 trailingAnchor];
+      trailingAnchor2 = [(PHRecentCallDetailsView *)self trailingAnchor];
+      v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v38 setActive:1];
 
       if (IsAccessibilityCategory)
       {
-        v39 = [v29 topAnchor];
-        v40 = [(PHRecentCallDetailsView *)self topAnchor];
-        v41 = [v39 constraintEqualToAnchor:v40 constant:14.0];
-        [v41 setActive:1];
+        topAnchor = [v29 topAnchor];
+        topAnchor2 = [(PHRecentCallDetailsView *)self topAnchor];
+        preferredSubheadline1Font2 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:14.0];
+        [preferredSubheadline1Font2 setActive:1];
       }
 
       else
       {
-        v39 = [v29 bottomAnchor];
-        v40 = [(PHRecentCallDetailsView *)self topAnchor];
-        v41 = [(NSNotificationName *)v8[310] preferredSubheadline1Font];
-        [v41 _scaledValueForValue:40.0];
-        v43 = [v39 constraintEqualToAnchor:v40 constant:ceil(v42)];
+        topAnchor = [v29 bottomAnchor];
+        topAnchor2 = [(PHRecentCallDetailsView *)self topAnchor];
+        preferredSubheadline1Font2 = [(NSNotificationName *)v8[310] preferredSubheadline1Font];
+        [preferredSubheadline1Font2 _scaledValueForValue:40.0];
+        v43 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:ceil(v42)];
         [v43 setActive:1];
       }
 
-      if (v21 == v119)
+      if (unsignedIntValue == v119)
       {
         v44 = &swift_dynamicCastClassUnconditional_ptr;
         v45 = +[NSBundle mainBundle];
@@ -340,7 +340,7 @@
       }
 
       v44 = &swift_dynamicCastClassUnconditional_ptr;
-      if (v21 == v116)
+      if (unsignedIntValue == v116)
       {
         v45 = +[NSBundle mainBundle];
         v46 = v45;
@@ -348,7 +348,7 @@
         goto LABEL_28;
       }
 
-      if (v21 == v115)
+      if (unsignedIntValue == v115)
       {
         v45 = +[NSBundle mainBundle];
         v46 = v45;
@@ -361,11 +361,11 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      if ((v114 & v21) != 0)
+      if ((v114 & unsignedIntValue) != 0)
       {
         v83 = +[NSBundle mainBundle];
         v84 = v83;
-        if (v21 == v113)
+        if (unsignedIntValue == v113)
         {
           v85 = @"CALL_STATUS_CONNECTED_INCOMING";
         }
@@ -401,10 +401,10 @@ LABEL_29:
       v140 = 0;
       v141 = 0;
 LABEL_30:
-      v48 = [(PHRecentCallDetailsView *)self recentCall];
-      v49 = [v48 wasEmergencyCall];
+      recentCall = [(PHRecentCallDetailsView *)self recentCall];
+      wasEmergencyCall = [recentCall wasEmergencyCall];
 
-      if (v49)
+      if (wasEmergencyCall)
       {
         v139 = [(PHRecentCallDetailsView *)self emergencyItemLabelText:v16];
       }
@@ -414,41 +414,41 @@ LABEL_30:
         v139 = 0;
       }
 
-      v50 = [(PHRecentCallDetailsView *)self recentCall];
-      v51 = [v50 screenSharingType];
+      recentCall2 = [(PHRecentCallDetailsView *)self recentCall];
+      screenSharingType = [recentCall2 screenSharingType];
 
-      if (v51)
+      if (screenSharingType)
       {
-        v52 = [(PHRecentCallDetailsView *)self recentCall];
-        v53 = [v52 screenSharingType];
+        recentCall3 = [(PHRecentCallDetailsView *)self recentCall];
+        screenSharingType2 = [recentCall3 screenSharingType];
 
-        if ((v117 & ~v53) == 0)
+        if ((v117 & ~screenSharingType2) == 0)
         {
-          v54 = [v44[356] mainBundle];
-          v55 = v54;
+          mainBundle = [v44[356] mainBundle];
+          mainBundle2 = mainBundle;
           v56 = @"SHARED_ALLOWED_REMOTE_CONTROL";
 LABEL_40:
-          v57 = [v54 localizedStringForKey:v56 value:&stru_10028F310 table:@"PHCallHistory"];
-          v58 = [(PHRecentCallDetailsView *)self recentCall];
-          v59 = [v58 callerNameForDisplay];
-          v138 = [NSString localizedStringWithFormat:v57, v59];
+          v57 = [mainBundle localizedStringForKey:v56 value:&stru_10028F310 table:@"PHCallHistory"];
+          recentCall4 = [(PHRecentCallDetailsView *)self recentCall];
+          callerNameForDisplay = [recentCall4 callerNameForDisplay];
+          v138 = [NSString localizedStringWithFormat:v57, callerNameForDisplay];
 
 LABEL_41:
           goto LABEL_42;
         }
 
-        if ((v53 & 2) != 0)
+        if ((screenSharingType2 & 2) != 0)
         {
-          v54 = [v44[356] mainBundle];
-          v55 = v54;
+          mainBundle = [v44[356] mainBundle];
+          mainBundle2 = mainBundle;
           v56 = @"REMOTE_CONTROL";
           goto LABEL_40;
         }
 
-        if (v53)
+        if (screenSharingType2)
         {
-          v55 = [v44[356] mainBundle];
-          v138 = [v55 localizedStringForKey:@"SHARED_SCREEN" value:&stru_10028F310 table:@"PHCallHistory"];
+          mainBundle2 = [v44[356] mainBundle];
+          v138 = [mainBundle2 localizedStringForKey:@"SHARED_SCREEN" value:&stru_10028F310 table:@"PHCallHistory"];
           goto LABEL_41;
         }
       }
@@ -470,44 +470,44 @@ LABEL_42:
       v133 = v26;
       if ([v61 length] && (-[PHRecentCallDetailsView delegate](self, "delegate"), v62 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v62, "rttConversationForUUID:", v61), v63 = objc_claimAutoreleasedReturnValue(), v63, v62, v63))
       {
-        v64 = [(PHRecentCallDetailsView *)self delegate];
-        v65 = [v64 recentCallTTYType];
+        delegate = [(PHRecentCallDetailsView *)self delegate];
+        recentCallTTYType = [delegate recentCallTTYType];
       }
 
       else
       {
-        v65 = 0;
+        recentCallTTYType = 0;
       }
 
       v66 = [PHRecentCallDetailsItemView alloc];
-      v67 = [(PHRecentCallDetailsView *)self timeFormatter];
-      v68 = [v67 stringFromDate:v143];
+      timeFormatter = [(PHRecentCallDetailsView *)self timeFormatter];
+      v68 = [timeFormatter stringFromDate:v143];
       LOBYTE(v112) = v142;
-      v69 = [(PHRecentCallDetailsItemView *)v66 initWithFrame:v61 callUUID:v65 ttyType:v68 timeLabel:v141 statusLabel:v140 durationAndDataText:v139 emergencyItemsText:CGRectZero.origin.x verified:y screenSharingTypeText:width, height, v112, v138];
+      v138 = [(PHRecentCallDetailsItemView *)v66 initWithFrame:v61 callUUID:recentCallTTYType ttyType:v68 timeLabel:v141 statusLabel:v140 durationAndDataText:v139 emergencyItemsText:CGRectZero.origin.x verified:y screenSharingTypeText:width, height, v112, v138];
 
-      if (v65)
+      if (recentCallTTYType)
       {
-        [(PHRecentCallDetailsItemView *)v69 setDelegate:self];
+        [(PHRecentCallDetailsItemView *)v138 setDelegate:self];
       }
 
-      [(PHRecentCallDetailsItemView *)v69 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [(PHRecentCallDetailsView *)self addSubview:v69];
-      v70 = [(PHRecentCallDetailsItemView *)v69 leadingAnchor];
-      v71 = [(PHRecentCallDetailsView *)self leadingAnchor];
-      v72 = [v70 constraintEqualToAnchor:v71];
+      [(PHRecentCallDetailsItemView *)v138 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(PHRecentCallDetailsView *)self addSubview:v138];
+      leadingAnchor3 = [(PHRecentCallDetailsItemView *)v138 leadingAnchor];
+      leadingAnchor4 = [(PHRecentCallDetailsView *)self leadingAnchor];
+      v72 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       [v72 setActive:1];
 
-      v73 = [(PHRecentCallDetailsItemView *)v69 trailingAnchor];
-      v74 = [(PHRecentCallDetailsView *)self trailingAnchor];
-      v75 = [v73 constraintEqualToAnchor:v74];
+      trailingAnchor3 = [(PHRecentCallDetailsItemView *)v138 trailingAnchor];
+      trailingAnchor4 = [(PHRecentCallDetailsView *)self trailingAnchor];
+      v75 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       [v75 setActive:1];
 
       if ([v128 count])
       {
-        v76 = [v128 lastObject];
-        v77 = [(PHRecentCallDetailsItemView *)v69 topAnchor];
-        v78 = [v76 bottomAnchor];
-        v79 = [v77 constraintEqualToAnchor:v78 constant:16.0];
+        lastObject = [v128 lastObject];
+        topAnchor3 = [(PHRecentCallDetailsItemView *)v138 topAnchor];
+        bottomAnchor = [lastObject bottomAnchor];
+        v79 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:16.0];
         [v79 setActive:1];
       }
 
@@ -517,18 +517,18 @@ LABEL_42:
         [v80 _scaledValueForValue:10.0];
         v82 = v81;
 
-        v76 = [(PHRecentCallDetailsItemView *)v69 topAnchor];
-        v77 = [v29 bottomAnchor];
-        v78 = [v76 constraintEqualToAnchor:v77 constant:ceil(v82)];
-        [v78 setActive:1];
+        lastObject = [(PHRecentCallDetailsItemView *)v138 topAnchor];
+        topAnchor3 = [v29 bottomAnchor];
+        bottomAnchor = [lastObject constraintEqualToAnchor:topAnchor3 constant:ceil(v82)];
+        [bottomAnchor setActive:1];
       }
 
       v137 |= v142;
 
-      [v128 addObject:v69];
+      [v128 addObject:v138];
       v3 = v128;
       v10 = v126;
-      self = v127;
+      self = selfCopy;
       v8 = &UIDeviceProximityStateDidChangeNotification_ptr;
       v9 = v130;
       v11 = v125;
@@ -546,60 +546,60 @@ LABEL_55:
   while (v90);
 LABEL_69:
 
-  v91 = [v3 lastObject];
-  v92 = v91;
+  lastObject2 = [v3 lastObject];
+  v92 = lastObject2;
   if (v137)
   {
-    v93 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    bottomAnchor4 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(NSNotificationName *)v8[310] preferredCaption1Font];
     v95 = v94 = v3;
-    [v93 setFont:v95];
+    [bottomAnchor4 setFont:v95];
 
-    [v93 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [bottomAnchor4 setTranslatesAutoresizingMaskIntoConstraints:0];
     v96 = +[NSBundle mainBundle];
     v97 = [v96 localizedStringForKey:@"VERIFIED_EXPLANATION" value:&stru_10028F310 table:@"PHRecents"];
-    [v93 setText:v97];
+    [bottomAnchor4 setText:v97];
 
     v98 = +[UIColor dynamicSecondaryLabelColor];
-    [v93 setTextColor:v98];
+    [bottomAnchor4 setTextColor:v98];
 
-    [v93 setAdjustsFontForContentSizeCategory:1];
-    [v93 setNumberOfLines:0];
-    [(PHRecentCallDetailsView *)self addSubview:v93];
-    v99 = [v93 leadingAnchor];
-    v100 = [(PHRecentCallDetailsView *)self leadingAnchor];
-    v101 = [v99 constraintEqualToAnchor:v100];
+    [bottomAnchor4 setAdjustsFontForContentSizeCategory:1];
+    [bottomAnchor4 setNumberOfLines:0];
+    [(PHRecentCallDetailsView *)self addSubview:bottomAnchor4];
+    leadingAnchor5 = [bottomAnchor4 leadingAnchor];
+    leadingAnchor6 = [(PHRecentCallDetailsView *)self leadingAnchor];
+    v101 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [v101 setActive:1];
 
-    v102 = [v93 trailingAnchor];
-    v103 = [(PHRecentCallDetailsView *)self trailingAnchor];
-    v104 = [v102 constraintEqualToAnchor:v103];
+    trailingAnchor5 = [bottomAnchor4 trailingAnchor];
+    trailingAnchor6 = [(PHRecentCallDetailsView *)self trailingAnchor];
+    v104 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v104 setActive:1];
 
-    v105 = [v93 topAnchor];
-    v106 = [v92 lastBaselineAnchor];
-    v107 = [v105 constraintEqualToAnchor:v106 constant:18.5];
+    topAnchor4 = [bottomAnchor4 topAnchor];
+    lastBaselineAnchor = [v92 lastBaselineAnchor];
+    v107 = [topAnchor4 constraintEqualToAnchor:lastBaselineAnchor constant:18.5];
     [v107 setActive:1];
 
-    v108 = [(PHRecentCallDetailsView *)self bottomAnchor];
-    v109 = [v93 bottomAnchor];
-    v110 = [(NSNotificationName *)v8[310] preferredSubheadline1Font];
-    [v110 _scaledValueForValue:14.0];
-    v111 = [v108 constraintEqualToAnchor:v109 constant:?];
+    bottomAnchor2 = [(PHRecentCallDetailsView *)self bottomAnchor];
+    bottomAnchor3 = [bottomAnchor4 bottomAnchor];
+    preferredSubheadline1Font3 = [(NSNotificationName *)v8[310] preferredSubheadline1Font];
+    [preferredSubheadline1Font3 _scaledValueForValue:14.0];
+    v111 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:?];
     [v111 setActive:1];
 
     v3 = v94;
     goto LABEL_73;
   }
 
-  if (v91)
+  if (lastObject2)
   {
-    v93 = [(PHRecentCallDetailsView *)self bottomAnchor];
-    v108 = [v92 bottomAnchor];
-    v109 = [(NSNotificationName *)v8[310] preferredSubheadline1Font];
-    [v109 _scaledValueForValue:14.0];
-    v110 = [v93 constraintEqualToAnchor:v108 constant:?];
-    [v110 setActive:1];
+    bottomAnchor4 = [(PHRecentCallDetailsView *)self bottomAnchor];
+    bottomAnchor2 = [v92 bottomAnchor];
+    bottomAnchor3 = [(NSNotificationName *)v8[310] preferredSubheadline1Font];
+    [bottomAnchor3 _scaledValueForValue:14.0];
+    preferredSubheadline1Font3 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:?];
+    [preferredSubheadline1Font3 setActive:1];
 LABEL_73:
   }
 
@@ -608,24 +608,24 @@ LABEL_73:
 
 - (void)_replaceSubviews
 {
-  v3 = [(PHRecentCallDetailsView *)self subviews];
-  [v3 makeObjectsPerformSelector:"removeFromSuperview"];
+  subviews = [(PHRecentCallDetailsView *)self subviews];
+  [subviews makeObjectsPerformSelector:"removeFromSuperview"];
 
   [(PHRecentCallDetailsView *)self loadSubviews];
 }
 
-- (id)stringForTimeInterval:(double)a3
+- (id)stringForTimeInterval:(double)interval
 {
-  v3 = a3;
-  if (a3)
+  intervalCopy = interval;
+  if (interval)
   {
-    if (v3 > 0x3B)
+    if (intervalCopy > 0x3B)
     {
-      if (v3 > 0xE0F)
+      if (intervalCopy > 0xE0F)
       {
         v19 = +[NSBundle mainBundle];
         v20 = v19;
-        if (v3 - 7200 >= 0xFFFFFFFFFFFFF1F0)
+        if (intervalCopy - 7200 >= 0xFFFFFFFFFFFFF1F0)
         {
           v21 = @"%@_HOUR";
         }
@@ -636,18 +636,18 @@ LABEL_73:
         }
 
         v22 = [v19 localizedStringForKey:v21 value:&stru_10028F310 table:@"PHCallHistory"];
-        v23 = [(PHRecentCallDetailsView *)self numberFormatter];
-        v24 = [NSNumber numberWithUnsignedInteger:v3 / 0xE10];
-        v25 = [v23 stringFromNumber:v24];
+        numberFormatter = [(PHRecentCallDetailsView *)self numberFormatter];
+        0xE10 = [NSNumber numberWithUnsignedInteger:intervalCopy / 0xE10];
+        v25 = [numberFormatter stringFromNumber:0xE10];
         v8 = [NSString stringWithFormat:v22, v25];
 
-        if (v3 % 0xE10 < 0x3C)
+        if (intervalCopy % 0xE10 < 0x3C)
         {
           goto LABEL_22;
         }
 
-        v26 = v3 % 0xE10 / 0x3C;
-        v27 = v3 % 0xE10 - 120;
+        v26 = intervalCopy % 0xE10 / 0x3C;
+        v27 = intervalCopy % 0xE10 - 120;
         v28 = +[NSBundle mainBundle];
         v29 = v28;
         if (v27 >= 0xFFFFFFFFFFFFFFC4)
@@ -661,9 +661,9 @@ LABEL_73:
         }
 
         v31 = [v28 localizedStringForKey:v30 value:&stru_10028F310 table:@"PHCallHistory"];
-        v32 = [(PHRecentCallDetailsView *)self numberFormatter];
+        numberFormatter2 = [(PHRecentCallDetailsView *)self numberFormatter];
         v33 = [NSNumber numberWithUnsignedInteger:v26];
-        v34 = [v32 stringFromNumber:v33];
+        v34 = [numberFormatter2 stringFromNumber:v33];
         v6 = [NSString stringWithFormat:v31, v34];
 
         v12 = [NSString stringWithFormat:@"%@ %@", v8, v6];
@@ -671,10 +671,10 @@ LABEL_73:
 
       else
       {
-        v13 = a3 / 0x3Cu;
+        v13 = interval / 0x3Cu;
         v14 = +[NSBundle mainBundle];
         v6 = v14;
-        if (v3 <= 0x77)
+        if (intervalCopy <= 0x77)
         {
           v15 = @"%@_MINUTE";
         }
@@ -685,9 +685,9 @@ LABEL_73:
         }
 
         v8 = [v14 localizedStringForKey:v15 value:&stru_10028F310 table:@"PHCallHistory"];
-        v16 = [(PHRecentCallDetailsView *)self numberFormatter];
+        numberFormatter3 = [(PHRecentCallDetailsView *)self numberFormatter];
         v17 = [NSNumber numberWithUnsignedInteger:v13];
-        v18 = [v16 stringFromNumber:v17];
+        v18 = [numberFormatter3 stringFromNumber:v17];
         v12 = [NSString stringWithFormat:v8, v18];
       }
     }
@@ -696,7 +696,7 @@ LABEL_73:
     {
       v5 = +[NSBundle mainBundle];
       v6 = v5;
-      if (v3 == 1)
+      if (intervalCopy == 1)
       {
         v7 = @"%@_SECOND";
       }
@@ -707,9 +707,9 @@ LABEL_73:
       }
 
       v8 = [v5 localizedStringForKey:v7 value:&stru_10028F310 table:@"PHCallHistory"];
-      v9 = [(PHRecentCallDetailsView *)self numberFormatter];
-      v10 = [NSNumber numberWithUnsignedInteger:v3];
-      v11 = [v9 stringFromNumber:v10];
+      numberFormatter4 = [(PHRecentCallDetailsView *)self numberFormatter];
+      v10 = [NSNumber numberWithUnsignedInteger:intervalCopy];
+      v11 = [numberFormatter4 stringFromNumber:v10];
       v12 = [NSString stringWithFormat:v8, v11];
     }
 
@@ -726,34 +726,34 @@ LABEL_22:
   return v8;
 }
 
-- (id)stringForDataUsage:(id)a3
+- (id)stringForDataUsage:(id)usage
 {
-  v3 = [a3 longLongValue];
+  longLongValue = [usage longLongValue];
 
-  return [NSByteCountFormatter stringFromByteCount:v3 countStyle:0];
+  return [NSByteCountFormatter stringFromByteCount:longLongValue countStyle:0];
 }
 
-- (id)emergencyItemLabelText:(id)a3
+- (id)emergencyItemLabelText:(id)text
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:kCHCallOccurrenceEmergencyVideosCountKey];
+  textCopy = text;
+  v4 = [textCopy objectForKeyedSubscript:kCHCallOccurrenceEmergencyVideosCountKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  v6 = [v3 objectForKeyedSubscript:kCHCallOccurrenceEmergencyImagesCountKey];
+  v6 = [textCopy objectForKeyedSubscript:kCHCallOccurrenceEmergencyImagesCountKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 integerValue];
-    if (!v5)
+    integerValue2 = [v6 integerValue];
+    if (!integerValue)
     {
       goto LABEL_11;
     }
@@ -761,39 +761,39 @@ LABEL_22:
 
   else
   {
-    v7 = 0;
-    if (!v5)
+    integerValue2 = 0;
+    if (!integerValue)
     {
       goto LABEL_11;
     }
   }
 
-  if (!v7)
+  if (!integerValue2)
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"Shared %lu videos" value:&stru_10028F310 table:0];
 LABEL_10:
-    [NSString stringWithFormat:v9, v5, v14];
+    [NSString stringWithFormat:v9, integerValue, v14];
     v10 = LABEL_14:;
 
     goto LABEL_15;
   }
 
 LABEL_11:
-  if (!v5 && v7)
+  if (!integerValue && integerValue2)
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"Shared %lu photos" value:&stru_10028F310 table:0];
-    [NSString stringWithFormat:v9, v7, v14];
+    [NSString stringWithFormat:v9, integerValue2, v14];
     goto LABEL_14;
   }
 
   v10 = 0;
-  if (v5 && v7)
+  if (integerValue && integerValue2)
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"Shared %lu videos and %lu photos" value:&stru_10028F310 table:0];
-    v14 = v7;
+    v14 = integerValue2;
     goto LABEL_10;
   }
 
@@ -812,11 +812,11 @@ LABEL_15:
   return v10;
 }
 
-- (void)presentConversationForUUID:(id)a3
+- (void)presentConversationForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PHRecentCallDetailsView *)self delegate];
-  [v5 presentConversationForUUID:v4];
+  dCopy = d;
+  delegate = [(PHRecentCallDetailsView *)self delegate];
+  [delegate presentConversationForUUID:dCopy];
 }
 
 - (PHRecentCallDetailsViewDelegate)delegate

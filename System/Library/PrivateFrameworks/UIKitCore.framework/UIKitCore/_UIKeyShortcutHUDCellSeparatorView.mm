@@ -1,15 +1,15 @@
 @interface _UIKeyShortcutHUDCellSeparatorView
-- (_UIKeyShortcutHUDCellSeparatorView)initWithFrame:(CGRect)a3;
+- (_UIKeyShortcutHUDCellSeparatorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation _UIKeyShortcutHUDCellSeparatorView
 
-- (_UIKeyShortcutHUDCellSeparatorView)initWithFrame:(CGRect)a3
+- (_UIKeyShortcutHUDCellSeparatorView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIKeyShortcutHUDCellSeparatorView;
-  v3 = [(UICollectionReusableView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionReusableView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,8 +29,8 @@
   v4.receiver = self;
   v4.super_class = _UIKeyShortcutHUDCellSeparatorView;
   [(UIView *)&v4 layoutSubviews];
-  v3 = [(UIView *)self layoutMarginsGuide];
-  [v3 layoutFrame];
+  layoutMarginsGuide = [(UIView *)self layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   [(UIView *)self->_separatorView setFrame:?];
 }
 

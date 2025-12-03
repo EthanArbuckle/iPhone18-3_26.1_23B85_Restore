@@ -1,43 +1,43 @@
 @interface UplinkSegment
-- (id)calculateAverageWithCounter:(id)a3 sumKey:(id)a4 counterKey:(id)a5;
-- (id)calculateBitrate:(id)a3 sumKey:(id)a4 counterKey:(id)a5;
-- (id)calculateFramerate:(id)a3 sumKey:(id)a4 counterKey:(id)a5;
+- (id)calculateAverageWithCounter:(id)counter sumKey:(id)key counterKey:(id)counterKey;
+- (id)calculateBitrate:(id)bitrate sumKey:(id)key counterKey:(id)counterKey;
+- (id)calculateFramerate:(id)framerate sumKey:(id)key counterKey:(id)counterKey;
 - (id)segmentReport;
 - (unsigned)audioFlushPercent;
-- (void)addBIFStatsToDictionary:(id)a3;
-- (void)addCellByteCountStats:(id)a3;
-- (void)addCelltechTelemetryToDictionary:(id)a3;
-- (void)addPerStreamGroupRTXStatsToDictionary:(id)a3 streamGroup:(id)a4;
-- (void)addPerStreamGroupStatsToDictionary:(id)a3;
-- (void)addSegmentWRMReportStats:(id)a3;
-- (void)addSmartBrakeStats:(id)a3;
-- (void)addVideoFeatureStatus:(id)a3;
-- (void)calculateUplinkAudioTimestampJumps:(id)a3;
-- (void)calculateUplinkTelemetry:(id)a3 lastReportedAudioPauseTime:(double)a4 lastReportedVideoPacketSentCount:(double)a5;
-- (void)collectStreamQualityAggregator:(id)a3;
-- (void)collectStreamTemporalStats:(id)a3;
+- (void)addBIFStatsToDictionary:(id)dictionary;
+- (void)addCellByteCountStats:(id)stats;
+- (void)addCelltechTelemetryToDictionary:(id)dictionary;
+- (void)addPerStreamGroupRTXStatsToDictionary:(id)dictionary streamGroup:(id)group;
+- (void)addPerStreamGroupStatsToDictionary:(id)dictionary;
+- (void)addSegmentWRMReportStats:(id)stats;
+- (void)addSmartBrakeStats:(id)stats;
+- (void)addVideoFeatureStatus:(id)status;
+- (void)calculateUplinkAudioTimestampJumps:(id)jumps;
+- (void)calculateUplinkTelemetry:(id)telemetry lastReportedAudioPauseTime:(double)time lastReportedVideoPacketSentCount:(double)count;
+- (void)collectStreamQualityAggregator:(id)aggregator;
+- (void)collectStreamTemporalStats:(id)stats;
 - (void)dealloc;
-- (void)processAudioTransmitterStreamData:(id)a3;
-- (void)processAverageEvent:(id)a3 forMetrics:(id)a4 withStreamGroup:(id)a5 withQuality:(id)a6 sumKey:(id)a7 counterKey:(id)a8;
-- (void)processCountEvent:(id)a3 forMetrics:(id)a4 withStreamGroup:(id)a5 withQuality:(id)a6 counterKey:(id)a7;
-- (void)processLateSmartBrakeEvent:(id)a3;
-- (void)processMediaQueueEgressIngressTelemetry:(id)a3;
-- (void)processMediaQueueTelemetry:(id)a3;
-- (void)processRTEvent:(id)a3 now:(double)a4;
-- (void)processSegmentRateControllerTelemetry:(id)a3;
-- (void)processSmartBrakeEvent:(id)a3;
-- (void)processTransmitterStats:(id)a3;
-- (void)processUplinkRTXMetricsFromStreamData:(id)a3;
-- (void)processVTPEgressIngressTelemetry:(id)a3;
-- (void)processVideoTransmitterStreamData:(id)a3;
+- (void)processAudioTransmitterStreamData:(id)data;
+- (void)processAverageEvent:(id)event forMetrics:(id)metrics withStreamGroup:(id)group withQuality:(id)quality sumKey:(id)key counterKey:(id)counterKey;
+- (void)processCountEvent:(id)event forMetrics:(id)metrics withStreamGroup:(id)group withQuality:(id)quality counterKey:(id)key;
+- (void)processLateSmartBrakeEvent:(id)event;
+- (void)processMediaQueueEgressIngressTelemetry:(id)telemetry;
+- (void)processMediaQueueTelemetry:(id)telemetry;
+- (void)processRTEvent:(id)event now:(double)now;
+- (void)processSegmentRateControllerTelemetry:(id)telemetry;
+- (void)processSmartBrakeEvent:(id)event;
+- (void)processTransmitterStats:(id)stats;
+- (void)processUplinkRTXMetricsFromStreamData:(id)data;
+- (void)processVTPEgressIngressTelemetry:(id)telemetry;
+- (void)processVideoTransmitterStreamData:(id)data;
 - (void)releaseWRMMetrics;
-- (void)reportSpatialAudioSupport:(id)a3;
+- (void)reportSpatialAudioSupport:(id)support;
 - (void)updateAdaptiveLearningSegment;
-- (void)updateAudioCodecAndMediaBitrateWithPayload:(id)a3 andCurrentTime:(double)a4 andStats:(const tagVCAudioCodecAndMediaBitrateStats *)a5;
-- (void)updateLastValuesForMediaQueueEgressIngressTelemetry:(id)a3;
-- (void)updateNetworkSendResultStats:(id)a3;
-- (void)updateSegmentStatsWifiTx:(id)a3 withSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)a4;
-- (void)updateUplinkSegmentStats:(id)a3 withSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)a4;
+- (void)updateAudioCodecAndMediaBitrateWithPayload:(id)payload andCurrentTime:(double)time andStats:(const tagVCAudioCodecAndMediaBitrateStats *)stats;
+- (void)updateLastValuesForMediaQueueEgressIngressTelemetry:(id)telemetry;
+- (void)updateNetworkSendResultStats:(id)stats;
+- (void)updateSegmentStatsWifiTx:(id)tx withSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)bytes;
+- (void)updateUplinkSegmentStats:(id)stats withSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)bytes;
 @end
 
 @implementation UplinkSegment
@@ -50,215 +50,215 @@
   [(MultiwaySegment *)&v3 dealloc];
 }
 
-- (void)updateLastValuesForMediaQueueEgressIngressTelemetry:(id)a3
+- (void)updateLastValuesForMediaQueueEgressIngressTelemetry:(id)telemetry
 {
-  if ([a3 objectForKeyedSubscript:@"VCMQIngressVideoPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQIngressVideoPkts"])
   {
-    self->_lastReportedVCMQIngressVideoPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQIngressVideoPkts", "integerValue"}];
+    self->_lastReportedVCMQIngressVideoPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQIngressVideoPkts", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQIngressAudioPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQIngressAudioPkts"])
   {
-    self->_lastReportedVCMQIngressAudioPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQIngressAudioPkts", "integerValue"}];
+    self->_lastReportedVCMQIngressAudioPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQIngressAudioPkts", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQIngressPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQIngressPkts"])
   {
-    self->_lastReportedVCMQIngressPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQIngressPkts", "integerValue"}];
+    self->_lastReportedVCMQIngressPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQIngressPkts", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressVideoPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressVideoPkts"])
   {
-    self->_lastReportedVCMQEgressVideoPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressVideoPkts", "integerValue"}];
+    self->_lastReportedVCMQEgressVideoPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressVideoPkts", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressAudioPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressAudioPkts"])
   {
-    self->_lastReportedVCMQEgressAudioPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressAudioPkts", "integerValue"}];
+    self->_lastReportedVCMQEgressAudioPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressAudioPkts", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressPkts"])
   {
-    self->_lastReportedVCMQEgressPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressPkts", "integerValue"}];
+    self->_lastReportedVCMQEgressPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressPkts", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressNonDupAudioPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressNonDupAudioPkts"])
   {
-    self->_lastReportedVCMQEgressNonDupAudioPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressNonDupAudioPkts", "integerValue"}];
+    self->_lastReportedVCMQEgressNonDupAudioPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressNonDupAudioPkts", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressNonDupVideoPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressNonDupVideoPkts"])
   {
-    self->_lastReportedVCMQEgressNonDupVideoPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressNonDupVideoPkts", "integerValue"}];
+    self->_lastReportedVCMQEgressNonDupVideoPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressNonDupVideoPkts", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressNonDupPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressNonDupPkts"])
   {
-    self->_lastReportedVCMQEgressNonDupPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressNonDupPkts", "integerValue"}];
+    self->_lastReportedVCMQEgressNonDupPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressNonDupPkts", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQIngressQueuedPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQIngressQueuedPkts"])
   {
-    self->_lastReportedVCMQIngressQueuedPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQIngressQueuedPkts", "integerValue"}];
+    self->_lastReportedVCMQIngressQueuedPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQIngressQueuedPkts", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQFlushedPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQFlushedPkts"])
   {
-    self->_lastReportedVCMQFlushedPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQFlushedPkts", "integerValue"}];
+    self->_lastReportedVCMQFlushedPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQFlushedPkts", "integerValue"}];
   }
 }
 
-- (void)processMediaQueueTelemetry:(id)a3
+- (void)processMediaQueueTelemetry:(id)telemetry
 {
   [(UplinkSegment *)self processMediaQueueEgressIngressTelemetry:?];
   streamGroupStats = self->_streamGroupStats;
 
-  _VCAggregatorMultiway_CollectMediaQueueTelemetry(streamGroupStats, a3);
+  _VCAggregatorMultiway_CollectMediaQueueTelemetry(streamGroupStats, telemetry);
 }
 
-- (void)processAverageEvent:(id)a3 forMetrics:(id)a4 withStreamGroup:(id)a5 withQuality:(id)a6 sumKey:(id)a7 counterKey:(id)a8
+- (void)processAverageEvent:(id)event forMetrics:(id)metrics withStreamGroup:(id)group withQuality:(id)quality sumKey:(id)key counterKey:(id)counterKey
 {
-  if ([a3 objectForKeyedSubscript:a4])
+  if ([event objectForKeyedSubscript:metrics])
   {
-    v15 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamQualityAggregator objectForKeyedSubscript:{a5), "objectForKeyedSubscript:", a6}];
+    v15 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamQualityAggregator objectForKeyedSubscript:{group), "objectForKeyedSubscript:", quality}];
     if (!v15)
     {
       v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamQualityAggregator objectForKeyedSubscript:{a5), "setObject:forKeyedSubscript:", v15, a6}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamQualityAggregator objectForKeyedSubscript:{group), "setObject:forKeyedSubscript:", v15, quality}];
     }
 
-    [objc_msgSend(a3 objectForKeyedSubscript:{a4), "doubleValue"}];
+    [objc_msgSend(event objectForKeyedSubscript:{metrics), "doubleValue"}];
     v17 = v16;
     v18 = MEMORY[0x277CCABA8];
-    [objc_msgSend(v15 objectForKeyedSubscript:{a7), "doubleValue"}];
-    [v15 setObject:objc_msgSend(v18 forKeyedSubscript:{"numberWithDouble:", v17 + v19), a7}];
-    v20 = [MEMORY[0x277CCABA8] numberWithInt:{objc_msgSend(objc_msgSend(v15, "objectForKeyedSubscript:", a8), "intValue") + 1}];
+    [objc_msgSend(v15 objectForKeyedSubscript:{key), "doubleValue"}];
+    [v15 setObject:objc_msgSend(v18 forKeyedSubscript:{"numberWithDouble:", v17 + v19), key}];
+    v20 = [MEMORY[0x277CCABA8] numberWithInt:{objc_msgSend(objc_msgSend(v15, "objectForKeyedSubscript:", counterKey), "intValue") + 1}];
 
-    [v15 setObject:v20 forKeyedSubscript:a8];
+    [v15 setObject:v20 forKeyedSubscript:counterKey];
   }
 }
 
-- (void)processCountEvent:(id)a3 forMetrics:(id)a4 withStreamGroup:(id)a5 withQuality:(id)a6 counterKey:(id)a7
+- (void)processCountEvent:(id)event forMetrics:(id)metrics withStreamGroup:(id)group withQuality:(id)quality counterKey:(id)key
 {
-  if ([a3 objectForKeyedSubscript:a4])
+  if ([event objectForKeyedSubscript:metrics])
   {
-    v13 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamQualityAggregator objectForKeyedSubscript:{a5), "objectForKeyedSubscript:", a6}];
+    v13 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamQualityAggregator objectForKeyedSubscript:{group), "objectForKeyedSubscript:", quality}];
     if (!v13)
     {
       v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamQualityAggregator objectForKeyedSubscript:{a5), "setObject:forKeyedSubscript:", v13, a6}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamQualityAggregator objectForKeyedSubscript:{group), "setObject:forKeyedSubscript:", v13, quality}];
     }
 
-    [objc_msgSend(a3 objectForKeyedSubscript:{a4), "doubleValue"}];
-    [v13 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:"), a4}];
-    v14 = [MEMORY[0x277CCABA8] numberWithInt:{objc_msgSend(objc_msgSend(v13, "objectForKeyedSubscript:", a7), "intValue") + 1}];
+    [objc_msgSend(event objectForKeyedSubscript:{metrics), "doubleValue"}];
+    [v13 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:"), metrics}];
+    v14 = [MEMORY[0x277CCABA8] numberWithInt:{objc_msgSend(objc_msgSend(v13, "objectForKeyedSubscript:", key), "intValue") + 1}];
 
-    [v13 setObject:v14 forKeyedSubscript:a7];
+    [v13 setObject:v14 forKeyedSubscript:key];
   }
 }
 
-- (void)processSegmentRateControllerTelemetry:(id)a3
+- (void)processSegmentRateControllerTelemetry:(id)telemetry
 {
-  v5 = [a3 objectForKeyedSubscript:@"OVSBR"];
+  v5 = [telemetry objectForKeyedSubscript:@"OVSBR"];
   if (v5)
   {
     -[UplinkSegment setOvershootSendBitrate:](self, "setOvershootSendBitrate:", -[UplinkSegment overshootSendBitrate](self, "overshootSendBitrate") + [v5 intValue]);
   }
 
-  v6 = [a3 objectForKeyedSubscript:@"UNSBR"];
+  v6 = [telemetry objectForKeyedSubscript:@"UNSBR"];
   if (v6)
   {
     -[UplinkSegment setUndershootSendBitrate:](self, "setUndershootSendBitrate:", -[UplinkSegment undershootSendBitrate](self, "undershootSendBitrate") + [v6 intValue]);
   }
 
-  v7 = [a3 objectForKeyedSubscript:@"AExTR"];
+  v7 = [telemetry objectForKeyedSubscript:@"AExTR"];
   if (v7)
   {
     -[UplinkSegment setTotalExtraTargetBitrate:](self, "setTotalExtraTargetBitrate:", -[UplinkSegment totalExtraTargetBitrate](self, "totalExtraTargetBitrate") + [v7 intValue]);
   }
 
-  v8 = [a3 objectForKeyedSubscript:@"OVBWE"];
+  v8 = [telemetry objectForKeyedSubscript:@"OVBWE"];
   if (v8)
   {
     -[UplinkSegment setOverUtilizedBandwidth:](self, "setOverUtilizedBandwidth:", -[UplinkSegment overUtilizedBandwidth](self, "overUtilizedBandwidth") + [v8 intValue]);
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"UNBWE"];
+  v9 = [telemetry objectForKeyedSubscript:@"UNBWE"];
   if (v9)
   {
     -[UplinkSegment setUnderUtilizedBandwidth:](self, "setUnderUtilizedBandwidth:", -[UplinkSegment underUtilizedBandwidth](self, "underUtilizedBandwidth") + [v9 intValue]);
   }
 
-  v10 = [a3 objectForKeyedSubscript:@"APF"];
+  v10 = [telemetry objectForKeyedSubscript:@"APF"];
   if (v10)
   {
     -[UplinkSegment setAudioFlushPacketCount:](self, "setAudioFlushPacketCount:", -[UplinkSegment audioFlushPacketCount](self, "audioFlushPacketCount") + [v10 intValue]);
   }
 
-  v11 = [a3 objectForKeyedSubscript:@"VPF"];
+  v11 = [telemetry objectForKeyedSubscript:@"VPF"];
   if (v11)
   {
     -[UplinkSegment setVideoFlushPacketCount:](self, "setVideoFlushPacketCount:", -[UplinkSegment videoFlushPacketCount](self, "videoFlushPacketCount") + [v11 intValue]);
   }
 
-  v12 = [a3 objectForKeyedSubscript:@"APBBD"];
+  v12 = [telemetry objectForKeyedSubscript:@"APBBD"];
   if (v12)
   {
     -[UplinkSegment setAudioBasebandDropPacketCount:](self, "setAudioBasebandDropPacketCount:", -[UplinkSegment audioBasebandDropPacketCount](self, "audioBasebandDropPacketCount") + [v12 intValue]);
   }
 
-  v13 = [a3 objectForKeyedSubscript:@"VPBBD"];
+  v13 = [telemetry objectForKeyedSubscript:@"VPBBD"];
   if (v13)
   {
     -[UplinkSegment setVideoBasebandDropPacketCount:](self, "setVideoBasebandDropPacketCount:", -[UplinkSegment videoBasebandDropPacketCount](self, "videoBasebandDropPacketCount") + [v13 intValue]);
   }
 
-  v14 = [a3 objectForKeyedSubscript:@"BBNOTENW"];
+  v14 = [telemetry objectForKeyedSubscript:@"BBNOTENW"];
   if (v14)
   {
     self->_rateControlBasebandNotificationNWCount += [v14 intValue];
   }
 
-  if ([a3 objectForKeyedSubscript:@"BbTx"])
+  if ([telemetry objectForKeyedSubscript:@"BbTx"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"BbTx", "floatValue"}];
+    [objc_msgSend(telemetry objectForKeyedSubscript:{@"BbTx", "floatValue"}];
     v16 = v15;
     maxBaseBandTxRate = self->_maxBaseBandTxRate;
     if (maxBaseBandTxRate < v16)
     {
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"BbTx", "floatValue"}];
+      [objc_msgSend(telemetry objectForKeyedSubscript:{@"BbTx", "floatValue"}];
       maxBaseBandTxRate = v18;
     }
 
     self->_maxBaseBandTxRate = maxBaseBandTxRate;
-    if (self->_minBaseBandTxRate == 0.0 || ([objc_msgSend(a3 objectForKeyedSubscript:{@"BbTx", "floatValue"}], v20 = v19, minBaseBandTxRate = self->_minBaseBandTxRate, minBaseBandTxRate > v20))
+    if (self->_minBaseBandTxRate == 0.0 || ([objc_msgSend(telemetry objectForKeyedSubscript:{@"BbTx", "floatValue"}], v20 = v19, minBaseBandTxRate = self->_minBaseBandTxRate, minBaseBandTxRate > v20))
     {
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"BbTx", "floatValue"}];
+      [objc_msgSend(telemetry objectForKeyedSubscript:{@"BbTx", "floatValue"}];
       minBaseBandTxRate = v22;
     }
 
     self->_minBaseBandTxRate = minBaseBandTxRate;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"BbTx", "floatValue"}];
+    [objc_msgSend(telemetry objectForKeyedSubscript:{@"BbTx", "floatValue"}];
     self->_totalBaseBandTxRate = self->_totalBaseBandTxRate + v23;
   }
 
-  if ([a3 objectForKeyedSubscript:@"SS"])
+  if ([telemetry objectForKeyedSubscript:@"SS"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"SS", "floatValue"}];
+    [objc_msgSend(telemetry objectForKeyedSubscript:{@"SS", "floatValue"}];
     v25 = v24;
-    v26 = [(UplinkSegment *)self cellStrengthRawBars];
+    cellStrengthRawBars = [(UplinkSegment *)self cellStrengthRawBars];
 
-    [(VCHistogram *)v26 addValue:v25];
+    [(VCHistogram *)cellStrengthRawBars addValue:v25];
   }
 }
 
-- (void)updateAudioCodecAndMediaBitrateWithPayload:(id)a3 andCurrentTime:(double)a4 andStats:(const tagVCAudioCodecAndMediaBitrateStats *)a5
+- (void)updateAudioCodecAndMediaBitrateWithPayload:(id)payload andCurrentTime:(double)time andStats:(const tagVCAudioCodecAndMediaBitrateStats *)stats
 {
-  if (a5)
+  if (stats)
   {
-    LODWORD(v5) = vcvtad_u64_f64(a4 - a5->var0);
-    p_var1 = &a5->var1;
-    if (a5->var1)
+    LODWORD(v5) = vcvtad_u64_f64(time - stats->var0);
+    p_var1 = &stats->var1;
+    if (stats->var1)
     {
       if (![(VCHistogram *)[(UplinkSegment *)self audioCodecPayload] addOnlyExactMatchingValue:*p_var1 increment:v5]&& VRTraceGetErrorLogLevelForModule("") >= 3)
       {
@@ -270,21 +270,21 @@
       }
     }
 
-    [(UplinkSegment *)self updateMediaBitratesWithTimeElapsed:v5 andStats:a5];
-    v11 = [a3 objectForKeyedSubscript:@"Bundle"];
+    [(UplinkSegment *)self updateMediaBitratesWithTimeElapsed:v5 andStats:stats];
+    v11 = [payload objectForKeyedSubscript:@"Bundle"];
     if (v11)
     {
       -[VCHistogram addValue:](-[UplinkSegment audioFrameBundling](self, "audioFrameBundling"), "addValue:", [v11 unsignedLongValue]);
     }
 
-    if ([a3 objectForKeyedSubscript:@"RedPayloads"])
+    if ([payload objectForKeyedSubscript:@"RedPayloads"])
     {
-      -[VCHistogram addValue:](-[UplinkSegment redNumPayloadsUsed](self, "redNumPayloadsUsed"), "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"RedPayloads", "integerValue"}]);
+      -[VCHistogram addValue:](-[UplinkSegment redNumPayloadsUsed](self, "redNumPayloadsUsed"), "addValue:", [objc_msgSend(payload objectForKeyedSubscript:{@"RedPayloads", "integerValue"}]);
     }
 
-    if ([a3 objectForKeyedSubscript:@"RedMaxDelay"])
+    if ([payload objectForKeyedSubscript:@"RedMaxDelay"])
     {
-      -[VCHistogram addValue:](-[UplinkSegment redMaxDelay](self, "redMaxDelay"), "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"RedMaxDelay", "integerValue"}]);
+      -[VCHistogram addValue:](-[UplinkSegment redMaxDelay](self, "redMaxDelay"), "addValue:", [objc_msgSend(payload objectForKeyedSubscript:{@"RedMaxDelay", "integerValue"}]);
     }
   }
 
@@ -298,14 +298,14 @@
   }
 }
 
-- (void)processTransmitterStats:(id)a3
+- (void)processTransmitterStats:(id)stats
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKeyedSubscript:@"VCSActiveStreamsList"];
+  v5 = [stats objectForKeyedSubscript:@"VCSActiveStreamsList"];
   if (v5)
   {
     v6 = v5;
-    v7 = [a3 objectForKeyedSubscript:sRTCReportingStreamCollection];
+    v7 = [stats objectForKeyedSubscript:sRTCReportingStreamCollection];
     if (v7)
     {
       v8 = v7;
@@ -408,49 +408,49 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processUplinkRTXMetricsFromStreamData:(id)a3
+- (void)processUplinkRTXMetricsFromStreamData:(id)data
 {
-  v4 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats, "objectForKeyedSubscript:", [a3 objectForKeyedSubscript:@"VCMSStreamGroup"]);
+  v4 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats, "objectForKeyedSubscript:", [data objectForKeyedSubscript:@"VCMSStreamGroup"]);
   if (v4)
   {
     v5 = v4;
-    v6 = [a3 objectForKeyedSubscript:@"UNRPC"];
+    v6 = [data objectForKeyedSubscript:@"UNRPC"];
     if (v6)
     {
       *(v5 + 16) += [v6 intValue];
     }
 
-    v7 = [a3 objectForKeyedSubscript:@"UNFPC"];
+    v7 = [data objectForKeyedSubscript:@"UNFPC"];
     if (v7)
     {
       *(v5 + 24) += [v7 intValue];
     }
 
-    v8 = [a3 objectForKeyedSubscript:@"UNCHPC"];
+    v8 = [data objectForKeyedSubscript:@"UNCHPC"];
     if (v8)
     {
       *(v5 + 32) += [v8 intValue];
     }
 
-    v9 = [a3 objectForKeyedSubscript:@"UNCMPC"];
+    v9 = [data objectForKeyedSubscript:@"UNCMPC"];
     if (v9)
     {
       *(v5 + 40) += [v9 intValue];
     }
 
-    v10 = [a3 objectForKeyedSubscript:@"UNTRC"];
+    v10 = [data objectForKeyedSubscript:@"UNTRC"];
     if (v10)
     {
       *(v5 + 48) += [v10 intValue];
     }
 
-    v11 = [a3 objectForKeyedSubscript:@"UNRRC"];
+    v11 = [data objectForKeyedSubscript:@"UNRRC"];
     if (v11)
     {
       *(v5 + 56) += [v11 intValue];
     }
 
-    v12 = [a3 objectForKeyedSubscript:@"UNRRMC"];
+    v12 = [data objectForKeyedSubscript:@"UNRRMC"];
     if (v12)
     {
       v13 = v12;
@@ -460,7 +460,7 @@
       }
     }
 
-    v14 = [a3 objectForKeyedSubscript:@"UNART"];
+    v14 = [data objectForKeyedSubscript:@"UNART"];
     if (v14)
     {
       v15 = *(v5 + 72);
@@ -468,7 +468,7 @@
       [v15 addValue:(v16 * 100.0)];
     }
 
-    v17 = [a3 objectForKeyedSubscript:@"UNALT"];
+    v17 = [data objectForKeyedSubscript:@"UNALT"];
     if (v17)
     {
       v18 = *(v5 + 80);
@@ -476,13 +476,13 @@
       [v18 addValue:(v19 * 100.0)];
     }
 
-    v20 = [a3 objectForKeyedSubscript:@"UNMB"];
+    v20 = [data objectForKeyedSubscript:@"UNMB"];
     if (v20)
     {
       [*(v5 + 88) addValue:{objc_msgSend(v20, "unsignedIntValue")}];
     }
 
-    v21 = [a3 objectForKeyedSubscript:@"UNRB"];
+    v21 = [data objectForKeyedSubscript:@"UNRB"];
     if (v21)
     {
       [*(v5 + 96) addValue:{objc_msgSend(v21, "unsignedIntValue")}];
@@ -497,13 +497,13 @@
   }
 }
 
-- (void)processVideoTransmitterStreamData:(id)a3
+- (void)processVideoTransmitterStreamData:(id)data
 {
-  v5 = [a3 objectForKeyedSubscript:@"QID"];
+  v5 = [data objectForKeyedSubscript:@"QID"];
   if (v5)
   {
     v6 = v5;
-    v7 = [a3 objectForKeyedSubscript:@"VCMSStreamGroup"];
+    v7 = [data objectForKeyedSubscript:@"VCMSStreamGroup"];
     if (v7)
     {
       v8 = v7;
@@ -513,78 +513,78 @@
         [(NSMutableDictionary *)self->_streamQualityAggregator setObject:v9 forKeyedSubscript:v8];
       }
 
-      [(UplinkSegment *)self processAverageEvent:a3 forMetrics:@"EncOutFrameCnt" withStreamGroup:v8 withQuality:v6 sumKey:@"encodedVideoFrameSum" counterKey:@"encodedVideoFrameCounter"];
-      [(UplinkSegment *)self processAverageEvent:a3 forMetrics:@"VFCCnt" withStreamGroup:v8 withQuality:v6 sumKey:@"capturedVideoFrameSum" counterKey:@"capturedVideoFrameCounter"];
-      [(UplinkSegment *)self processAverageEvent:a3 forMetrics:@"IdleFrameCount" withStreamGroup:v8 withQuality:v6 sumKey:@"capturedVideoIdleFrameSum" counterKey:@"capturedVideoIdleFrameCounter"];
-      [(UplinkSegment *)self processAverageEvent:a3 forMetrics:@"VTxR" withStreamGroup:v8 withQuality:v6 sumKey:@"totalVideoSendBitrateSum" counterKey:@"totalVideoSendBitrateCounter"];
-      [(UplinkSegment *)self processAverageEvent:a3 forMetrics:@"VTxMetadataOverhead" withStreamGroup:v8 withQuality:v6 sumKey:@"totalMetadataOverheadSendBitrateSum" counterKey:@"totalMetadataSendBitrateCounter"];
-      [(UplinkSegment *)self processAverageEvent:a3 forMetrics:@"VTxRMedia" withStreamGroup:v8 withQuality:v6 sumKey:@"videoMediaSendBitrateSum" counterKey:@"videoMediaSendBitrateCounter"];
-      [(UplinkSegment *)self processAverageEvent:a3 forMetrics:@"VTxRHDR" withStreamGroup:v8 withQuality:v6 sumKey:@"videoHeaderSendBitrateSum" counterKey:@"videoHeaderSendBitrateCounter"];
-      [(UplinkSegment *)self processAverageEvent:a3 forMetrics:@"VTxRFEC" withStreamGroup:v8 withQuality:v6 sumKey:@"videoFECSendBitrateSum" counterKey:@"videoFECSendBitrateCounter"];
-      [(UplinkSegment *)self processCountEvent:a3 forMetrics:@"VPS" withStreamGroup:v8 withQuality:v6 counterKey:@"videoPacketSentCounter"];
-      [(SegmentStatsDelegate *)self->super._delegate updateVideoFECStatsOnSegment:a3 fecStats:[(MultiwaySegment *)self fecStatsHolder] segmentLossPattern:[(MultiwaySegment *)self lossPattern] segmentLossHistogram:[(MultiwaySegment *)self lossHistogram] segmentLossFecHistogram:[(MultiwaySegment *)self lossFecHistogram] direction:0];
+      [(UplinkSegment *)self processAverageEvent:data forMetrics:@"EncOutFrameCnt" withStreamGroup:v8 withQuality:v6 sumKey:@"encodedVideoFrameSum" counterKey:@"encodedVideoFrameCounter"];
+      [(UplinkSegment *)self processAverageEvent:data forMetrics:@"VFCCnt" withStreamGroup:v8 withQuality:v6 sumKey:@"capturedVideoFrameSum" counterKey:@"capturedVideoFrameCounter"];
+      [(UplinkSegment *)self processAverageEvent:data forMetrics:@"IdleFrameCount" withStreamGroup:v8 withQuality:v6 sumKey:@"capturedVideoIdleFrameSum" counterKey:@"capturedVideoIdleFrameCounter"];
+      [(UplinkSegment *)self processAverageEvent:data forMetrics:@"VTxR" withStreamGroup:v8 withQuality:v6 sumKey:@"totalVideoSendBitrateSum" counterKey:@"totalVideoSendBitrateCounter"];
+      [(UplinkSegment *)self processAverageEvent:data forMetrics:@"VTxMetadataOverhead" withStreamGroup:v8 withQuality:v6 sumKey:@"totalMetadataOverheadSendBitrateSum" counterKey:@"totalMetadataSendBitrateCounter"];
+      [(UplinkSegment *)self processAverageEvent:data forMetrics:@"VTxRMedia" withStreamGroup:v8 withQuality:v6 sumKey:@"videoMediaSendBitrateSum" counterKey:@"videoMediaSendBitrateCounter"];
+      [(UplinkSegment *)self processAverageEvent:data forMetrics:@"VTxRHDR" withStreamGroup:v8 withQuality:v6 sumKey:@"videoHeaderSendBitrateSum" counterKey:@"videoHeaderSendBitrateCounter"];
+      [(UplinkSegment *)self processAverageEvent:data forMetrics:@"VTxRFEC" withStreamGroup:v8 withQuality:v6 sumKey:@"videoFECSendBitrateSum" counterKey:@"videoFECSendBitrateCounter"];
+      [(UplinkSegment *)self processCountEvent:data forMetrics:@"VPS" withStreamGroup:v8 withQuality:v6 counterKey:@"videoPacketSentCounter"];
+      [(SegmentStatsDelegate *)self->super._delegate updateVideoFECStatsOnSegment:data fecStats:[(MultiwaySegment *)self fecStatsHolder] segmentLossPattern:[(MultiwaySegment *)self lossPattern] segmentLossHistogram:[(MultiwaySegment *)self lossHistogram] segmentLossFecHistogram:[(MultiwaySegment *)self lossFecHistogram] direction:0];
       v10 = [(NSMutableDictionary *)self->_streamGroupStats objectForKeyedSubscript:v8];
       [objc_msgSend(v10 "videoTxFecData")];
-      v11 = [a3 objectForKeyedSubscript:@"VTxR"];
+      v11 = [data objectForKeyedSubscript:@"VTxR"];
       if (v11)
       {
         [v10 setAverageVideoBitrate:{objc_msgSend(v10, "averageVideoBitrate") + objc_msgSend(v11, "unsignedIntValue")}];
       }
 
-      v12 = [a3 objectForKeyedSubscript:@"VTxRMedia"];
+      v12 = [data objectForKeyedSubscript:@"VTxRMedia"];
       if (v12)
       {
         [v10 setAverageVideoTxMediaBitrate:{objc_msgSend(v10, "averageVideoTxMediaBitrate") + objc_msgSend(v12, "unsignedIntValue")}];
       }
 
-      v13 = [a3 objectForKeyedSubscript:@"VTxRHDR"];
+      v13 = [data objectForKeyedSubscript:@"VTxRHDR"];
       if (v13)
       {
         [v10 setAverageVideoTxHeaderBitrate:{objc_msgSend(v10, "averageVideoTxHeaderBitrate") + objc_msgSend(v13, "unsignedIntValue")}];
       }
 
-      v14 = [a3 objectForKeyedSubscript:@"VTxRFEC"];
+      v14 = [data objectForKeyedSubscript:@"VTxRFEC"];
       if (v14)
       {
         [v10 setAverageVideoTxFecBitrate:{objc_msgSend(v10, "averageVideoTxFecBitrate") + objc_msgSend(v14, "unsignedIntValue")}];
       }
 
-      v15 = [a3 objectForKeyedSubscript:@"VTxMetadataOverhead"];
+      v15 = [data objectForKeyedSubscript:@"VTxMetadataOverhead"];
       if (v15)
       {
         [v10 setAverageMetadataTxBitrate:{objc_msgSend(v10, "averageMetadataTxBitrate") + objc_msgSend(v15, "unsignedIntValue")}];
       }
 
-      v16 = [a3 objectForKeyedSubscript:@"RTPUplinkIngressVideoPkts"];
+      v16 = [data objectForKeyedSubscript:@"RTPUplinkIngressVideoPkts"];
       if (v16)
       {
         [v10 setTotalRTPUplinkIngressVideoPackets:{objc_msgSend(v10, "totalRTPUplinkIngressVideoPackets") + objc_msgSend(v16, "unsignedIntegerValue")}];
       }
 
-      v17 = [a3 objectForKeyedSubscript:@"VTxDeltaKeyFramesSent"];
+      v17 = [data objectForKeyedSubscript:@"VTxDeltaKeyFramesSent"];
       if (v17)
       {
         [v10 setIdrSentCount:{objc_msgSend(v10, "idrSentCount") + objc_msgSend(v17, "unsignedIntValue")}];
       }
 
-      v18 = [a3 objectForKeyedSubscript:@"VFCCnt"];
+      v18 = [data objectForKeyedSubscript:@"VFCCnt"];
       if (v18)
       {
         [v10 setVideoFrameCapturedCounter:{objc_msgSend(v10, "videoFrameCapturedCounter") + objc_msgSend(v18, "unsignedIntValue")}];
         [v10 setVideoFrameCaptureReportCount:{objc_msgSend(v10, "videoFrameCaptureReportCount") + 1}];
       }
 
-      v19 = [a3 objectForKeyedSubscript:@"EncOutFrameCnt"];
+      v19 = [data objectForKeyedSubscript:@"EncOutFrameCnt"];
       if (v19)
       {
         [v10 setEncodedFrameSum:{objc_msgSend(v10, "encodedFrameSum") + objc_msgSend(v19, "unsignedIntValue")}];
         [v10 setEncodedFrameReportedCount:{objc_msgSend(v10, "encodedFrameReportedCount") + 1}];
       }
 
-      [(UplinkSegment *)self processUplinkRTXMetricsFromStreamData:a3];
-      v20 = [v10 transmitterAVHostTimeData];
+      [(UplinkSegment *)self processUplinkRTXMetricsFromStreamData:data];
+      transmitterAVHostTimeData = [v10 transmitterAVHostTimeData];
 
-      [v20 updateWithPayload:a3];
+      [transmitterAVHostTimeData updateWithPayload:data];
     }
 
     else
@@ -599,82 +599,82 @@
   }
 }
 
-- (void)processAudioTransmitterStreamData:(id)a3
+- (void)processAudioTransmitterStreamData:(id)data
 {
-  v5 = [a3 objectForKeyedSubscript:@"VCMSStreamGroup"];
+  v5 = [data objectForKeyedSubscript:@"VCMSStreamGroup"];
   if (v5)
   {
     v6 = [(NSMutableDictionary *)self->_streamGroupStats objectForKeyedSubscript:v5];
     if (v6)
     {
       v7 = v6;
-      v8 = [a3 objectForKeyedSubscript:@"ATxR"];
+      v8 = [data objectForKeyedSubscript:@"ATxR"];
       if (v8)
       {
         [v7 setAverageAudioBitrate:{objc_msgSend(v7, "averageAudioBitrate") + objc_msgSend(v8, "unsignedIntValue")}];
       }
 
-      v9 = [a3 objectForKeyedSubscript:@"ATierChangeCount"];
+      v9 = [data objectForKeyedSubscript:@"ATierChangeCount"];
       if (v9)
       {
         [objc_msgSend(v7 "audioTierChangeHistogram")];
       }
 
-      v10 = [a3 objectForKeyedSubscript:@"RTPUplinkIngressAudioPkts"];
+      v10 = [data objectForKeyedSubscript:@"RTPUplinkIngressAudioPkts"];
       if (v10)
       {
         [v7 setTotalRTPUplinkIngressAudioPackets:{objc_msgSend(v7, "totalRTPUplinkIngressAudioPackets") + objc_msgSend(v10, "unsignedIntegerValue")}];
       }
 
-      v11 = [a3 objectForKeyedSubscript:@"ATxRPrimary"];
+      v11 = [data objectForKeyedSubscript:@"ATxRPrimary"];
       if (v11)
       {
         [v7 setAverageAudioMediaBitrate:{objc_msgSend(v7, "averageAudioMediaBitrate") + objc_msgSend(v11, "unsignedIntValue")}];
       }
 
-      v12 = [a3 objectForKeyedSubscript:@"ATxEncodedBitrate"];
+      v12 = [data objectForKeyedSubscript:@"ATxEncodedBitrate"];
       if (v12)
       {
-        v13 = [v12 unsignedIntValue];
+        unsignedIntValue = [v12 unsignedIntValue];
         [v7 averageAudioMediaTxNoRedBitrate];
-        [v7 setAverageAudioMediaTxNoRedBitrate:v14 + v13];
+        [v7 setAverageAudioMediaTxNoRedBitrate:v14 + unsignedIntValue];
       }
 
-      v15 = [a3 objectForKeyedSubscript:@"BundleAlt"];
+      v15 = [data objectForKeyedSubscript:@"BundleAlt"];
       if (v15)
       {
         [objc_msgSend(v7 "audioTierBundling_Alternate")];
       }
 
-      v16 = [a3 objectForKeyedSubscript:@"PayloadAlt"];
+      v16 = [data objectForKeyedSubscript:@"PayloadAlt"];
       if (v16)
       {
         [objc_msgSend(v7 "audioTierCodecPayload_Alternate")];
       }
 
-      v17 = [a3 objectForKeyedSubscript:@"BitRateAlt"];
+      v17 = [data objectForKeyedSubscript:@"BitRateAlt"];
       if (v17)
       {
         [objc_msgSend(v7 "audioTierCodecBitrate_Alternate")];
       }
 
-      v18 = [a3 objectForKeyedSubscript:@"RedPayloadsAlt"];
+      v18 = [data objectForKeyedSubscript:@"RedPayloadsAlt"];
       if (v18)
       {
         [objc_msgSend(v7 "audioTierREDPayload_Alternate")];
       }
 
-      v19 = [a3 objectForKeyedSubscript:@"RedMaxDelayAlt"];
+      v19 = [data objectForKeyedSubscript:@"RedMaxDelayAlt"];
       if (v19)
       {
         [objc_msgSend(v7 "audioTierREDMaxDelay_Alternate")];
       }
 
-      v20 = [a3 objectForKeyedSubscript:@"REDPayloadBitrate"];
+      v20 = [data objectForKeyedSubscript:@"REDPayloadBitrate"];
       if (v20)
       {
-        v21 = [v20 unsignedIntValue];
-        v22 = [v7 averageAudioRedTxBitrate] + v21;
+        unsignedIntValue2 = [v20 unsignedIntValue];
+        v22 = [v7 averageAudioRedTxBitrate] + unsignedIntValue2;
 
         [v7 setAverageAudioRedTxBitrate:v22];
       }
@@ -692,138 +692,138 @@
   }
 }
 
-- (void)processLateSmartBrakeEvent:(id)a3
+- (void)processLateSmartBrakeEvent:(id)event
 {
-  if ([a3 objectForKeyedSubscript:@"BWETTxRRatio5"])
+  if ([event objectForKeyedSubscript:@"BWETTxRRatio5"])
   {
-    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateAfter5, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"BWETTxRRatio5", "unsignedIntValue"}]);
+    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateAfter5, "addValue:", [objc_msgSend(event objectForKeyedSubscript:{@"BWETTxRRatio5", "unsignedIntValue"}]);
   }
 
-  if ([a3 objectForKeyedSubscript:@"BWETTxRRatio15"])
+  if ([event objectForKeyedSubscript:@"BWETTxRRatio15"])
   {
-    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateAfter15, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"BWETTxRRatio15", "unsignedIntValue"}]);
+    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateAfter15, "addValue:", [objc_msgSend(event objectForKeyedSubscript:{@"BWETTxRRatio15", "unsignedIntValue"}]);
   }
 
-  if ([a3 objectForKeyedSubscript:@"BWETTxRRatio30"])
+  if ([event objectForKeyedSubscript:@"BWETTxRRatio30"])
   {
     smartBrakeTargetBitrateAfter30 = self->_smartBrakeTargetBitrateAfter30;
-    v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"BWETTxRRatio30", "unsignedIntValue"}];
+    v6 = [objc_msgSend(event objectForKeyedSubscript:{@"BWETTxRRatio30", "unsignedIntValue"}];
 
     [(VCHistogram *)smartBrakeTargetBitrateAfter30 addValue:v6];
   }
 }
 
-- (void)processSmartBrakeEvent:(id)a3
+- (void)processSmartBrakeEvent:(id)event
 {
   if (!self->_isSmartBrakeHistogramPopulated)
   {
     self->_isSmartBrakeHistogramPopulated = 1;
   }
 
-  if ([a3 objectForKeyedSubscript:@"EndBWE"] && objc_msgSend(a3, "objectForKeyedSubscript:", @"StartBWE") && objc_msgSend(a3, "objectForKeyedSubscript:", @"StartTargetTxR") && objc_msgSend(a3, "objectForKeyedSubscript:", @"CongestionDuration"))
+  if ([event objectForKeyedSubscript:@"EndBWE"] && objc_msgSend(event, "objectForKeyedSubscript:", @"StartBWE") && objc_msgSend(event, "objectForKeyedSubscript:", @"StartTargetTxR") && objc_msgSend(event, "objectForKeyedSubscript:", @"CongestionDuration"))
   {
     smartBrakeDuration = self->_smartBrakeDuration;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"CongestionDuration", "doubleValue"}];
+    [objc_msgSend(event objectForKeyedSubscript:{@"CongestionDuration", "doubleValue"}];
     [(VCHistogram *)smartBrakeDuration addValue:v6];
-    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateStart, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"StartTargetTxR", "unsignedIntValue"}]);
-    -[VCHistogram addValue:](self->_smartBrakeBandwidthStart, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"StartBWE", "unsignedIntValue"}]);
-    -[VCHistogram addValue:](self->_smartBrakeBandwidthEnd, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"EndBWE", "unsignedIntValue"}]);
+    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateStart, "addValue:", [objc_msgSend(event objectForKeyedSubscript:{@"StartTargetTxR", "unsignedIntValue"}]);
+    -[VCHistogram addValue:](self->_smartBrakeBandwidthStart, "addValue:", [objc_msgSend(event objectForKeyedSubscript:{@"StartBWE", "unsignedIntValue"}]);
+    -[VCHistogram addValue:](self->_smartBrakeBandwidthEnd, "addValue:", [objc_msgSend(event objectForKeyedSubscript:{@"EndBWE", "unsignedIntValue"}]);
   }
 
-  [(UplinkSegment *)self processLateSmartBrakeEvent:a3];
+  [(UplinkSegment *)self processLateSmartBrakeEvent:event];
 }
 
-- (void)processMediaQueueEgressIngressTelemetry:(id)a3
+- (void)processMediaQueueEgressIngressTelemetry:(id)telemetry
 {
-  if ([a3 objectForKeyedSubscript:@"VCMQIngressVideoPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQIngressVideoPkts"])
   {
-    self->_totalVCMQIngressVideoPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQIngressVideoPkts", "integerValue"}] - self->_lastReportedVCMQIngressVideoPackets;
+    self->_totalVCMQIngressVideoPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQIngressVideoPkts", "integerValue"}] - self->_lastReportedVCMQIngressVideoPackets;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQIngressAudioPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQIngressAudioPkts"])
   {
-    self->_totalVCMQIngressAudioPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQIngressAudioPkts", "integerValue"}] - self->_lastReportedVCMQIngressAudioPackets;
+    self->_totalVCMQIngressAudioPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQIngressAudioPkts", "integerValue"}] - self->_lastReportedVCMQIngressAudioPackets;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQIngressPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQIngressPkts"])
   {
-    self->_totalVCMQIngressPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQIngressPkts", "integerValue"}] - self->_lastReportedVCMQIngressPackets;
+    self->_totalVCMQIngressPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQIngressPkts", "integerValue"}] - self->_lastReportedVCMQIngressPackets;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressVideoPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressVideoPkts"])
   {
-    self->_totalVCMQEgressVideoPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressVideoPkts", "integerValue"}] - self->_lastReportedVCMQEgressVideoPackets;
+    self->_totalVCMQEgressVideoPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressVideoPkts", "integerValue"}] - self->_lastReportedVCMQEgressVideoPackets;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressAudioPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressAudioPkts"])
   {
-    self->_totalVCMQEgressAudioPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressAudioPkts", "integerValue"}] - self->_lastReportedVCMQEgressAudioPackets;
+    self->_totalVCMQEgressAudioPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressAudioPkts", "integerValue"}] - self->_lastReportedVCMQEgressAudioPackets;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressPkts"])
   {
-    self->_totalVCMQEgressPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressPkts", "integerValue"}] - self->_lastReportedVCMQEgressPackets;
+    self->_totalVCMQEgressPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressPkts", "integerValue"}] - self->_lastReportedVCMQEgressPackets;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressNonDupAudioPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressNonDupAudioPkts"])
   {
-    self->_totalVCMQEgressNonDupAudioPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressNonDupAudioPkts", "integerValue"}] - self->_lastReportedVCMQEgressNonDupAudioPackets;
+    self->_totalVCMQEgressNonDupAudioPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressNonDupAudioPkts", "integerValue"}] - self->_lastReportedVCMQEgressNonDupAudioPackets;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressNonDupVideoPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressNonDupVideoPkts"])
   {
-    self->_totalVCMQEgressNonDupVideoPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressNonDupVideoPkts", "integerValue"}] - self->_lastReportedVCMQEgressNonDupVideoPackets;
+    self->_totalVCMQEgressNonDupVideoPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressNonDupVideoPkts", "integerValue"}] - self->_lastReportedVCMQEgressNonDupVideoPackets;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQEgressNonDupPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQEgressNonDupPkts"])
   {
-    self->_totalVCMQEgressNonDupPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQEgressNonDupPkts", "integerValue"}] - self->_lastReportedVCMQEgressNonDupPackets;
+    self->_totalVCMQEgressNonDupPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQEgressNonDupPkts", "integerValue"}] - self->_lastReportedVCMQEgressNonDupPackets;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQIngressQueuedPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQIngressQueuedPkts"])
   {
-    self->_totalVCMQIngressQueuedPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQIngressQueuedPkts", "integerValue"}] - self->_lastReportedVCMQIngressQueuedPackets;
+    self->_totalVCMQIngressQueuedPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQIngressQueuedPkts", "integerValue"}] - self->_lastReportedVCMQIngressQueuedPackets;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VCMQFlushedPkts"])
+  if ([telemetry objectForKeyedSubscript:@"VCMQFlushedPkts"])
   {
-    self->_totalVCMQFlushedPackets = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMQFlushedPkts", "integerValue"}] - self->_lastReportedVCMQFlushedPackets;
+    self->_totalVCMQFlushedPackets = [objc_msgSend(telemetry objectForKeyedSubscript:{@"VCMQFlushedPkts", "integerValue"}] - self->_lastReportedVCMQFlushedPackets;
   }
 }
 
-- (void)processVTPEgressIngressTelemetry:(id)a3
+- (void)processVTPEgressIngressTelemetry:(id)telemetry
 {
-  v5 = [a3 objectForKeyedSubscript:@"VTPUplinkEgressPkts"];
+  v5 = [telemetry objectForKeyedSubscript:@"VTPUplinkEgressPkts"];
   if (v5)
   {
     self->_totalVTPUplinkEgressMediaPackets += [v5 unsignedIntegerValue];
   }
 
-  v6 = [a3 objectForKeyedSubscript:@"VTPUplinkIngressPkts"];
+  v6 = [telemetry objectForKeyedSubscript:@"VTPUplinkIngressPkts"];
   if (v6)
   {
     self->_totalVTPUplinkIngressMediaPackets += [v6 unsignedIntegerValue];
   }
 }
 
-- (void)processRTEvent:(id)a3 now:(double)a4
+- (void)processRTEvent:(id)event now:(double)now
 {
-  if ([a3 objectForKeyedSubscript:@"WPSSZ"])
+  if ([event objectForKeyedSubscript:@"WPSSZ"])
   {
-    self->_averageWireSendBytes += [objc_msgSend(a3 objectForKeyedSubscript:{@"WPSSZ", "integerValue"}];
+    self->_averageWireSendBytes += [objc_msgSend(event objectForKeyedSubscript:{@"WPSSZ", "integerValue"}];
     ++self->_averageWireSendCounter;
   }
 
-  [(MultiwaySegment *)self processRTEventCommon:a3 now:a4];
+  [(MultiwaySegment *)self processRTEventCommon:event now:now];
 
-  [(UplinkSegment *)self processVTPEgressIngressTelemetry:a3];
+  [(UplinkSegment *)self processVTPEgressIngressTelemetry:event];
 }
 
-- (id)calculateBitrate:(id)a3 sumKey:(id)a4 counterKey:(id)a5
+- (id)calculateBitrate:(id)bitrate sumKey:(id)key counterKey:(id)counterKey
 {
-  [objc_msgSend(a3 objectForKeyedSubscript:{a4), "doubleValue"}];
+  [objc_msgSend(bitrate objectForKeyedSubscript:{key), "doubleValue"}];
   v8 = v7;
-  v9 = [objc_msgSend(a3 objectForKeyedSubscript:{a5), "intValue"}];
+  v9 = [objc_msgSend(bitrate objectForKeyedSubscript:{counterKey), "intValue"}];
   if (v9)
   {
     v10 = (v8 * 1000.0 / v9);
@@ -839,11 +839,11 @@
   return [v11 numberWithUnsignedInt:v10];
 }
 
-- (id)calculateAverageWithCounter:(id)a3 sumKey:(id)a4 counterKey:(id)a5
+- (id)calculateAverageWithCounter:(id)counter sumKey:(id)key counterKey:(id)counterKey
 {
-  [objc_msgSend(a3 objectForKeyedSubscript:{a4), "doubleValue"}];
+  [objc_msgSend(counter objectForKeyedSubscript:{key), "doubleValue"}];
   v9 = v8;
-  v10 = [objc_msgSend(a3 objectForKeyedSubscript:{a5), "intValue"}];
+  v10 = [objc_msgSend(counter objectForKeyedSubscript:{counterKey), "intValue"}];
   if (v10)
   {
     v11 = v9 / ([(MultiwaySegment *)self RTPeriod]* v10) * 100.0;
@@ -860,12 +860,12 @@
   return [v12 numberWithDouble:v13];
 }
 
-- (id)calculateFramerate:(id)a3 sumKey:(id)a4 counterKey:(id)a5
+- (id)calculateFramerate:(id)framerate sumKey:(id)key counterKey:(id)counterKey
 {
-  [objc_msgSend(a3 objectForKeyedSubscript:{a4), "doubleValue"}];
+  [objc_msgSend(framerate objectForKeyedSubscript:{key), "doubleValue"}];
   v9 = v8;
-  LODWORD(a5) = [objc_msgSend(a3 objectForKeyedSubscript:{a5), "intValue"}];
-  v10 = [(MultiwaySegment *)self RTPeriod]* a5;
+  LODWORD(counterKey) = [objc_msgSend(framerate objectForKeyedSubscript:{counterKey), "intValue"}];
+  v10 = [(MultiwaySegment *)self RTPeriod]* counterKey;
   if (v10)
   {
     v11 = (v9 * 1000.0 / v10);
@@ -881,54 +881,54 @@
   return [v12 numberWithUnsignedInt:v11];
 }
 
-- (void)updateNetworkSendResultStats:(id)a3
+- (void)updateNetworkSendResultStats:(id)stats
 {
-  if ([a3 objectForKeyedSubscript:@"PSSCTR"])
+  if ([stats objectForKeyedSubscript:@"PSSCTR"])
   {
-    self->_packetSendSuccessCounter += [objc_msgSend(a3 objectForKeyedSubscript:{@"PSSCTR", "intValue"}];
+    self->_packetSendSuccessCounter += [objc_msgSend(stats objectForKeyedSubscript:{@"PSSCTR", "intValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"PSFCTR"])
+  if ([stats objectForKeyedSubscript:@"PSFCTR"])
   {
-    self->_packetSendFailureCounter += [objc_msgSend(a3 objectForKeyedSubscript:{@"PSFCTR", "intValue"}];
+    self->_packetSendFailureCounter += [objc_msgSend(stats objectForKeyedSubscript:{@"PSFCTR", "intValue"}];
   }
 }
 
-- (void)updateSegmentStatsWifiTx:(id)a3 withSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)a4
+- (void)updateSegmentStatsWifiTx:(id)tx withSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)bytes
 {
-  v7 = [(UplinkSegment *)self lastReportedTotalWifiTxDataBytes];
-  var2 = a4->var2;
-  if (v7 <= var2)
+  lastReportedTotalWifiTxDataBytes = [(UplinkSegment *)self lastReportedTotalWifiTxDataBytes];
+  var2 = bytes->var2;
+  if (lastReportedTotalWifiTxDataBytes <= var2)
   {
     v9 = var2 - [(UplinkSegment *)self lastReportedTotalWifiTxDataBytes];
     var2 = v9 + [(UplinkSegment *)self totalWifiTxDataBytes];
   }
 
   [(UplinkSegment *)self setTotalWifiTxDataBytes:var2];
-  [(UplinkSegment *)self setLastReportedTotalWifiTxDataBytes:a4->var2];
-  if ([a3 objectForKeyedSubscript:@"NWQualityLossTxAvg"])
+  [(UplinkSegment *)self setLastReportedTotalWifiTxDataBytes:bytes->var2];
+  if ([tx objectForKeyedSubscript:@"NWQualityLossTxAvg"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NWQualityLossTxAvg", "floatValue"}];
+    [objc_msgSend(tx objectForKeyedSubscript:{@"NWQualityLossTxAvg", "floatValue"}];
     [(VCHistogram *)[(UplinkSegment *)self wifiQualityScoreLossTx] addValue:(v10 * 10.0)];
   }
 
-  if ([a3 objectForKeyedSubscript:@"NWQualityChannelAvg"])
+  if ([tx objectForKeyedSubscript:@"NWQualityChannelAvg"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NWQualityChannelAvg", "floatValue"}];
+    [objc_msgSend(tx objectForKeyedSubscript:{@"NWQualityChannelAvg", "floatValue"}];
     [(VCHistogram *)[(UplinkSegment *)self wifiQualityScoreChannel] addValue:(v11 * 10.0)];
   }
 
-  if ([a3 objectForKeyedSubscript:@"NWQualityDelayTxAvg"])
+  if ([tx objectForKeyedSubscript:@"NWQualityDelayTxAvg"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NWQualityDelayTxAvg", "floatValue"}];
+    [objc_msgSend(tx objectForKeyedSubscript:{@"NWQualityDelayTxAvg", "floatValue"}];
     v13 = v12;
-    v14 = [(UplinkSegment *)self wifiQualityScoreDelayTx];
+    wifiQualityScoreDelayTx = [(UplinkSegment *)self wifiQualityScoreDelayTx];
 
-    [(VCHistogram *)v14 addValue:(v13 * 10.0)];
+    [(VCHistogram *)wifiQualityScoreDelayTx addValue:(v13 * 10.0)];
   }
 }
 
-- (void)collectStreamQualityAggregator:(id)a3
+- (void)collectStreamQualityAggregator:(id)aggregator
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = [VCAggregatorUtils validBitmapIndices:self->super._segmentStreamGroups size:11];
@@ -995,15 +995,15 @@
 
               v14 = *(*(&v23 + 1) + 8 * i);
               v15 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamQualityAggregator objectForKeyedSubscript:{v10), "objectForKeyedSubscript:", v14}];
-              [a3 setObject:-[UplinkSegment calculateFramerate:sumKey:counterKey:](self forKeyedSubscript:{"calculateFramerate:sumKey:counterKey:", v15, @"encodedVideoFrameSum", @"encodedVideoFrameCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"VTEFR", v10, v14)}];
-              [a3 setObject:-[UplinkSegment calculateFramerate:sumKey:counterKey:](self forKeyedSubscript:{"calculateFramerate:sumKey:counterKey:", v15, @"capturedVideoFrameSum", @"capturedVideoFrameCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"VTCFR", v10, v14)}];
-              [a3 setObject:-[UplinkSegment calculateFramerate:sumKey:counterKey:](self forKeyedSubscript:{"calculateFramerate:sumKey:counterKey:", v15, @"capturedVideoIdleFrameSum", @"capturedVideoIdleFrameCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"ITFR", v10, v14)}];
-              [a3 setObject:-[UplinkSegment calculateBitrate:sumKey:counterKey:](self forKeyedSubscript:{"calculateBitrate:sumKey:counterKey:", v15, @"totalVideoSendBitrateSum", @"totalVideoSendBitrateCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"AVTSBR", v10, v14)}];
-              [a3 setObject:-[UplinkSegment calculateBitrate:sumKey:counterKey:](self forKeyedSubscript:{"calculateBitrate:sumKey:counterKey:", v15, @"totalMetadataOverheadSendBitrateSum", @"totalMetadataSendBitrateCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"VTAMDO", v10, v14)}];
-              [a3 setObject:-[UplinkSegment calculateBitrate:sumKey:counterKey:](self forKeyedSubscript:{"calculateBitrate:sumKey:counterKey:", v15, @"videoMediaSendBitrateSum", @"videoMediaSendBitrateCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"AVMSBR", v10, v14)}];
-              [a3 setObject:-[UplinkSegment calculateBitrate:sumKey:counterKey:](self forKeyedSubscript:{"calculateBitrate:sumKey:counterKey:", v15, @"videoHeaderSendBitrateSum", @"videoHeaderSendBitrateCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"AVHSBR", v10, v14)}];
-              [a3 setObject:-[UplinkSegment calculateBitrate:sumKey:counterKey:](self forKeyedSubscript:{"calculateBitrate:sumKey:counterKey:", v15, @"videoFECSendBitrateSum", @"videoFECSendBitrateCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"AVFSBR", v10, v14)}];
-              [a3 setObject:-[UplinkSegment calculateAverageWithCounter:sumKey:counterKey:](self forKeyedSubscript:{"calculateAverageWithCounter:sumKey:counterKey:", v15, @"VPS", @"videoPacketSentCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"PPS", v10, v14)}];
+              [aggregator setObject:-[UplinkSegment calculateFramerate:sumKey:counterKey:](self forKeyedSubscript:{"calculateFramerate:sumKey:counterKey:", v15, @"encodedVideoFrameSum", @"encodedVideoFrameCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"VTEFR", v10, v14)}];
+              [aggregator setObject:-[UplinkSegment calculateFramerate:sumKey:counterKey:](self forKeyedSubscript:{"calculateFramerate:sumKey:counterKey:", v15, @"capturedVideoFrameSum", @"capturedVideoFrameCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"VTCFR", v10, v14)}];
+              [aggregator setObject:-[UplinkSegment calculateFramerate:sumKey:counterKey:](self forKeyedSubscript:{"calculateFramerate:sumKey:counterKey:", v15, @"capturedVideoIdleFrameSum", @"capturedVideoIdleFrameCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"ITFR", v10, v14)}];
+              [aggregator setObject:-[UplinkSegment calculateBitrate:sumKey:counterKey:](self forKeyedSubscript:{"calculateBitrate:sumKey:counterKey:", v15, @"totalVideoSendBitrateSum", @"totalVideoSendBitrateCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"AVTSBR", v10, v14)}];
+              [aggregator setObject:-[UplinkSegment calculateBitrate:sumKey:counterKey:](self forKeyedSubscript:{"calculateBitrate:sumKey:counterKey:", v15, @"totalMetadataOverheadSendBitrateSum", @"totalMetadataSendBitrateCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"VTAMDO", v10, v14)}];
+              [aggregator setObject:-[UplinkSegment calculateBitrate:sumKey:counterKey:](self forKeyedSubscript:{"calculateBitrate:sumKey:counterKey:", v15, @"videoMediaSendBitrateSum", @"videoMediaSendBitrateCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"AVMSBR", v10, v14)}];
+              [aggregator setObject:-[UplinkSegment calculateBitrate:sumKey:counterKey:](self forKeyedSubscript:{"calculateBitrate:sumKey:counterKey:", v15, @"videoHeaderSendBitrateSum", @"videoHeaderSendBitrateCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"AVHSBR", v10, v14)}];
+              [aggregator setObject:-[UplinkSegment calculateBitrate:sumKey:counterKey:](self forKeyedSubscript:{"calculateBitrate:sumKey:counterKey:", v15, @"videoFECSendBitrateSum", @"videoFECSendBitrateCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"AVFSBR", v10, v14)}];
+              [aggregator setObject:-[UplinkSegment calculateAverageWithCounter:sumKey:counterKey:](self forKeyedSubscript:{"calculateAverageWithCounter:sumKey:counterKey:", v15, @"VPS", @"videoPacketSentCounter", objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@_%@", @"PPS", v10, v14)}];
             }
 
             v12 = [v21 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -1025,7 +1025,7 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)collectStreamTemporalStats:(id)a3
+- (void)collectStreamTemporalStats:(id)stats
 {
   v29 = *MEMORY[0x277D85DE8];
   v3 = [VCAggregatorUtils validBitmapIndices:self->super._segmentStreamGroups size:11];
@@ -1068,7 +1068,7 @@
           objc_enumerationMutation(v3);
         }
 
-        [a3 setObject:-[NSMutableDictionary objectForKeyedSubscript:](self->super._activeTemporalTiersBitmapStreams forKeyedSubscript:{"objectForKeyedSubscript:", *(*(&v14 + 1) + 8 * i)), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"VTXTT", *(*(&v14 + 1) + 8 * i))}];
+        [stats setObject:-[NSMutableDictionary objectForKeyedSubscript:](self->super._activeTemporalTiersBitmapStreams forKeyedSubscript:{"objectForKeyedSubscript:", *(*(&v14 + 1) + 8 * i)), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"VTXTT", *(*(&v14 + 1) + 8 * i))}];
       }
 
       v8 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -1080,71 +1080,71 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addCellByteCountStats:(id)a3
+- (void)addCellByteCountStats:(id)stats
 {
-  [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:maxAllowedValue:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:maxAllowedValue:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithUnsignedLongLong:", self->_totalCellTxDataBytes), 4, &unk_284FA5468), @"SCTXDB"}];
-  [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:maxAllowedValue:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:maxAllowedValue:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithUnsignedLongLong:", self->_totalCellDupTxDataBytes), 4, &unk_284FA5468), @"SCDTXDB"}];
-  [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:maxAllowedValue:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:maxAllowedValue:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithUnsignedLongLong:", self->_totalUsedCellBudgetTxDataBytes), 4, &unk_284FA5468), @"SUCBTXDB"}];
+  [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:maxAllowedValue:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:maxAllowedValue:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithUnsignedLongLong:", self->_totalCellTxDataBytes), 4, &unk_284FA5468), @"SCTXDB"}];
+  [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:maxAllowedValue:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:maxAllowedValue:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithUnsignedLongLong:", self->_totalCellDupTxDataBytes), 4, &unk_284FA5468), @"SCDTXDB"}];
+  [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:maxAllowedValue:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:maxAllowedValue:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithUnsignedLongLong:", self->_totalUsedCellBudgetTxDataBytes), 4, &unk_284FA5468), @"SUCBTXDB"}];
   v5 = +[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:maxAllowedValue:](VCAggregatorUtils, "safeRoundOffNumber:toSignificantDigits:maxAllowedValue:", [MEMORY[0x277CCABA8] numberWithUnsignedLongLong:self->_totalWifiTxDataBytes], 4, &unk_284FA5468);
 
-  [a3 setObject:v5 forKeyedSubscript:@"SWTXDB"];
+  [stats setObject:v5 forKeyedSubscript:@"SWTXDB"];
 }
 
-- (void)addSegmentWRMReportStats:(id)a3
+- (void)addSegmentWRMReportStats:(id)stats
 {
   v61 = *MEMORY[0x277D85DE8];
   wrmLinkTypeSuggestion = self->_wrmLinkTypeSuggestion;
   if (wrmLinkTypeSuggestion)
   {
-    [a3 setObject:wrmLinkTypeSuggestion forKeyedSubscript:@"WRMLTS"];
+    [stats setObject:wrmLinkTypeSuggestion forKeyedSubscript:@"WRMLTS"];
   }
 
   wrmLinkTypeChangeReasonCode = self->_wrmLinkTypeChangeReasonCode;
   if (wrmLinkTypeChangeReasonCode)
   {
-    [a3 setObject:wrmLinkTypeChangeReasonCode forKeyedSubscript:@"WRMLTCRC"];
+    [stats setObject:wrmLinkTypeChangeReasonCode forKeyedSubscript:@"WRMLTCRC"];
   }
 
   wrmLinkTypeWifiRSSI = self->_wrmLinkTypeWifiRSSI;
   if (wrmLinkTypeWifiRSSI)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiRSSI, 3), @"WRMLTCWRSSI"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiRSSI, 3), @"WRMLTCWRSSI"}];
   }
 
   wrmLinkTypeWifiSNR = self->_wrmLinkTypeWifiSNR;
   if (wrmLinkTypeWifiSNR)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiSNR, 3), @"WRMLTCWSNR"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiSNR, 3), @"WRMLTCWSNR"}];
   }
 
   wrmLinkTypeWifiCCA = self->_wrmLinkTypeWifiCCA;
   if (wrmLinkTypeWifiCCA)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiCCA, 3), @"WRMLTCWCCA"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiCCA, 3), @"WRMLTCWCCA"}];
   }
 
   wrmLinkTypeWifiPacketLoss = self->_wrmLinkTypeWifiPacketLoss;
   if (wrmLinkTypeWifiPacketLoss)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiPacketLoss, 3), @"WRMLTCWPL"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiPacketLoss, 3), @"WRMLTCWPL"}];
   }
 
   wrmLinkTypeCellSignalStrength = self->_wrmLinkTypeCellSignalStrength;
   if (wrmLinkTypeCellSignalStrength)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellSignalStrength, 3), @"WRMLTCCSS"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellSignalStrength, 3), @"WRMLTCCSS"}];
   }
 
   wrmLinkTypeCellSignalBar = self->_wrmLinkTypeCellSignalBar;
   if (wrmLinkTypeCellSignalBar)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellSignalBar, 3), @"WRMLTCCSB"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellSignalBar, 3), @"WRMLTCCSB"}];
   }
 
   wrmLinkTypeCellServingCellType = self->_wrmLinkTypeCellServingCellType;
   if (wrmLinkTypeCellServingCellType)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellServingCellType, 3), @"WRMLTCCSCT"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellServingCellType, 3), @"WRMLTCCSCT"}];
   }
 
   if (VRTraceGetErrorLogLevelForModule("") >= 8)
@@ -1171,7 +1171,7 @@
         v39 = 1024;
         v40 = 4608;
         v41 = 2112;
-        v42 = self;
+        selfCopy2 = self;
         v43 = 2112;
         v44 = v16;
         v45 = 2112;
@@ -1212,7 +1212,7 @@
       v39 = 1024;
       v40 = 4608;
       v41 = 2112;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 2112;
       v44 = v26;
       v45 = 2112;
@@ -1238,39 +1238,39 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSmartBrakeStats:(id)a3
+- (void)addSmartBrakeStats:(id)stats
 {
   if (self->_isSmartBrakeHistogramPopulated)
   {
-    [a3 setObject:-[VCHistogram description](self->_smartBrakeDuration forKeyedSubscript:{"description"), @"SBCGSTDRTN"}];
-    [a3 setObject:-[VCHistogram description](self->_smartBrakeTargetBitrateStart forKeyedSubscript:{"description"), @"SBTTXRS"}];
-    [a3 setObject:-[VCHistogram description](self->_smartBrakeBandwidthStart forKeyedSubscript:{"description"), @"SBBWES"}];
-    [a3 setObject:-[VCHistogram description](self->_smartBrakeBandwidthEnd forKeyedSubscript:{"description"), @"SBBWEE"}];
-    [a3 setObject:-[VCHistogram description](self->_smartBrakeTargetBitrateAfter5 forKeyedSubscript:{"description"), @"SBTTXR5"}];
-    [a3 setObject:-[VCHistogram description](self->_smartBrakeTargetBitrateAfter15 forKeyedSubscript:{"description"), @"SBTTXR15"}];
+    [stats setObject:-[VCHistogram description](self->_smartBrakeDuration forKeyedSubscript:{"description"), @"SBCGSTDRTN"}];
+    [stats setObject:-[VCHistogram description](self->_smartBrakeTargetBitrateStart forKeyedSubscript:{"description"), @"SBTTXRS"}];
+    [stats setObject:-[VCHistogram description](self->_smartBrakeBandwidthStart forKeyedSubscript:{"description"), @"SBBWES"}];
+    [stats setObject:-[VCHistogram description](self->_smartBrakeBandwidthEnd forKeyedSubscript:{"description"), @"SBBWEE"}];
+    [stats setObject:-[VCHistogram description](self->_smartBrakeTargetBitrateAfter5 forKeyedSubscript:{"description"), @"SBTTXR5"}];
+    [stats setObject:-[VCHistogram description](self->_smartBrakeTargetBitrateAfter15 forKeyedSubscript:{"description"), @"SBTTXR15"}];
     v6 = [(VCHistogram *)self->_smartBrakeTargetBitrateAfter30 description];
 
-    [a3 setObject:v6 forKeyedSubscript:@"SBTTXR30"];
+    [stats setObject:v6 forKeyedSubscript:@"SBTTXR30"];
   }
 }
 
-- (void)addCelltechTelemetryToDictionary:(id)a3
+- (void)addCelltechTelemetryToDictionary:(id)dictionary
 {
   v5.receiver = self;
   v5.super_class = UplinkSegment;
   [(MultiwaySegment *)&v5 addCelltechTelemetryToDictionary:?];
   if ([(MultiwaySegment *)self maxNegotiatedUplinkBitrate])
   {
-    [a3 setObject:self->super._maxNegotiatedUplinkBitrate forKeyedSubscript:@"MNUBRT"];
+    [dictionary setObject:self->super._maxNegotiatedUplinkBitrate forKeyedSubscript:@"MNUBRT"];
   }
 
   if (self->super._maxNegotiatedUplinkBitrate_Alternate)
   {
-    [a3 setObject:self->super._maxNegotiatedUplinkBitrate_Alternate forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"MNUBRT", @"A"}];
+    [dictionary setObject:self->super._maxNegotiatedUplinkBitrate_Alternate forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"MNUBRT", @"A"}];
   }
 }
 
-- (void)addPerStreamGroupStatsToDictionary:(id)a3
+- (void)addPerStreamGroupStatsToDictionary:(id)dictionary
 {
   v67 = *MEMORY[0x277D85DE8];
   v5 = [VCAggregatorUtils validBitmapIndices:self->super._segmentStreamGroups size:11];
@@ -1343,7 +1343,7 @@
           v12 = 0;
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v12), v11}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v12), v11}];
         if (!v10)
         {
           v14 = @"AAMTBR";
@@ -1369,7 +1369,7 @@ LABEL_23:
           v15 = 0;
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v15), v14}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v15), v14}];
         if (!v10)
         {
           v17 = @"AAEMTBR";
@@ -1396,13 +1396,13 @@ LABEL_30:
           v19 = 0;
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v19), v17}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v19), v17}];
 LABEL_34:
-        [a3 setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierBundling_Alternate"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"AATBH_A", v10)}];
-        [a3 setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierCodecBitrate_Alternate"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"TAMBR_A", v10)}];
-        [a3 setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierCodecPayload_Alternate"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"TAPAY_A", v10)}];
-        [a3 setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierREDPayload_Alternate"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"REDNPU_A", v10)}];
-        [a3 setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierREDMaxDelay_Alternate"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"REDMD_A", v10)}];
+        [dictionary setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierBundling_Alternate"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"AATBH_A", v10)}];
+        [dictionary setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierCodecBitrate_Alternate"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"TAMBR_A", v10)}];
+        [dictionary setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierCodecPayload_Alternate"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"TAPAY_A", v10)}];
+        [dictionary setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierREDPayload_Alternate"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"REDNPU_A", v10)}];
+        [dictionary setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierREDMaxDelay_Alternate"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"REDMD_A", v10)}];
         if (!v10)
         {
           v20 = @"AARTBR";
@@ -1417,7 +1417,7 @@ LABEL_38:
             v21 = 0;
           }
 
-          [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v21), v20}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v21), v20}];
           goto LABEL_42;
         }
 
@@ -1428,7 +1428,7 @@ LABEL_38:
         }
 
 LABEL_42:
-        [a3 setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierChangeHistogram"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"AATCC", v10)}];
+        [dictionary setObject:objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats forKeyedSubscript:{"objectForKeyedSubscript:", v10), "audioTierChangeHistogram"), "description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"AATCC", v10)}];
         if (v10)
         {
           v22 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"RTPULAP", v10];
@@ -1443,14 +1443,14 @@ LABEL_42:
           v22 = @"RTPULAP";
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats, "objectForKeyedSubscript:", v10), "totalRTPUplinkIngressAudioPackets")), v22}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats, "objectForKeyedSubscript:", v10), "totalRTPUplinkIngressAudioPackets")), v22}];
 LABEL_47:
         if ([v10 unsignedIntValue] != 1 && objc_msgSend(v10, "unsignedIntValue") != 3 && objc_msgSend(v10, "unsignedIntValue") != 5 && objc_msgSend(v10, "unsignedIntValue") != 7 && objc_msgSend(v10, "unsignedIntValue") != 8 && objc_msgSend(v10, "unsignedIntValue") != 10)
         {
           goto LABEL_110;
         }
 
-        [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats objectForKeyedSubscript:{v10), "videoTxFecData"), "updateReport:withStreamGroup:", a3, v10}];
+        [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats objectForKeyedSubscript:{v10), "videoTxFecData"), "updateReport:withStreamGroup:", dictionary, v10}];
         if (v10)
         {
           v23 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"AVTSBR", v10];
@@ -1475,7 +1475,7 @@ LABEL_47:
           v24 = 0;
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v24), v23}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v24), v23}];
         if (!v10)
         {
           v26 = @"AVMSBR";
@@ -1501,7 +1501,7 @@ LABEL_64:
           v27 = 0;
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v27), v26}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v27), v26}];
         if (!v10)
         {
           v29 = @"AVHSBR";
@@ -1527,7 +1527,7 @@ LABEL_71:
           v30 = 0;
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v30), v29}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v30), v29}];
         if (!v10)
         {
           v32 = @"AVFSBR";
@@ -1553,16 +1553,16 @@ LABEL_78:
           v33 = 0;
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v33), v32}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v33), v32}];
 LABEL_82:
-        [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats objectForKeyedSubscript:{v10), "firResponseTime"), "updateReport:withStreamGroup:", a3, v10}];
-        [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats objectForKeyedSubscript:{v10), "transmitterAVHostTimeData"), "updateReport:withStreamGroup:", a3, v10}];
+        [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats objectForKeyedSubscript:{v10), "firResponseTime"), "updateReport:withStreamGroup:", dictionary, v10}];
+        [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats objectForKeyedSubscript:{v10), "transmitterAVHostTimeData"), "updateReport:withStreamGroup:", dictionary, v10}];
         if (v10)
         {
           v34 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"RTPULVP", v10];
           if (v34)
           {
-            [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats, "objectForKeyedSubscript:", v10), "totalRTPUplinkIngressVideoPackets")), v34}];
+            [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats, "objectForKeyedSubscript:", v10), "totalRTPUplinkIngressVideoPackets")), v34}];
           }
 
           v35 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"VTIDRS", v10];
@@ -1581,11 +1581,11 @@ LABEL_89:
 
         else
         {
-          [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats, "objectForKeyedSubscript:", 0), "totalRTPUplinkIngressVideoPackets")), @"RTPULVP"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats, "objectForKeyedSubscript:", 0), "totalRTPUplinkIngressVideoPackets")), @"RTPULVP"}];
           v35 = @"VTIDRS";
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats, "objectForKeyedSubscript:", v10), "idrSentCount")), v35}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamGroupStats, "objectForKeyedSubscript:", v10), "idrSentCount")), v35}];
         if (v10)
         {
           goto LABEL_89;
@@ -1605,7 +1605,7 @@ LABEL_92:
           v39 = 0;
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v39), v36}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v39), v36}];
         if (!v10)
         {
           v40 = @"VTCFR";
@@ -1623,8 +1623,8 @@ LABEL_99:
         if ([v51 videoFrameCaptureReportCount])
         {
           v41 = [v51 videoFrameCapturedCounter] * 1000.0;
-          v42 = [v51 videoFrameCaptureReportCount];
-          v43 = (v41 / (v42 * [(MultiwaySegment *)self RTPeriod]));
+          videoFrameCaptureReportCount = [v51 videoFrameCaptureReportCount];
+          v43 = (v41 / (videoFrameCaptureReportCount * [(MultiwaySegment *)self RTPeriod]));
         }
 
         else
@@ -1632,7 +1632,7 @@ LABEL_99:
           v43 = 0;
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v43), v40}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v43), v40}];
         if (v10)
         {
 LABEL_103:
@@ -1650,8 +1650,8 @@ LABEL_106:
         if ([v51 encodedFrameReportedCount])
         {
           v45 = [v51 encodedFrameSum] * 1000.0;
-          v46 = [v51 encodedFrameReportedCount];
-          v47 = (v45 / (v46 * [(MultiwaySegment *)self RTPeriod]));
+          encodedFrameReportedCount = [v51 encodedFrameReportedCount];
+          v47 = (v45 / (encodedFrameReportedCount * [(MultiwaySegment *)self RTPeriod]));
         }
 
         else
@@ -1659,9 +1659,9 @@ LABEL_106:
           v47 = 0;
         }
 
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v47), v44}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v47), v44}];
 LABEL_110:
-        [(UplinkSegment *)self addPerStreamGroupRTXStatsToDictionary:a3 streamGroup:v10];
+        [(UplinkSegment *)self addPerStreamGroupRTXStatsToDictionary:dictionary streamGroup:v10];
       }
 
       v50 = [v5 countByEnumeratingWithState:&v52 objects:v56 count:16];
@@ -1673,9 +1673,9 @@ LABEL_110:
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPerStreamGroupRTXStatsToDictionary:(id)a3 streamGroup:(id)a4
+- (void)addPerStreamGroupRTXStatsToDictionary:(id)dictionary streamGroup:(id)group
 {
-  v7 = [(NSMutableDictionary *)self->_streamGroupStats objectForKeyedSubscript:a4];
+  v7 = [(NSMutableDictionary *)self->_streamGroupStats objectForKeyedSubscript:group];
   if (!v7)
   {
     [UplinkSegment addPerStreamGroupRTXStatsToDictionary:streamGroup:];
@@ -1688,30 +1688,30 @@ LABEL_110:
     return;
   }
 
-  v9 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKRQCNT", a4];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 16)), v9}];
-  v10 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKFLCNT", a4];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 24)), v10}];
-  v11 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKCHCNT", a4];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 32)), v11}];
-  v12 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKCMCNT", a4];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 40)), v12}];
-  v13 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKNRCNT", a4];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 48)), v13}];
-  v14 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"UNRRC", a4];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 56)), v14}];
-  v15 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"UNRRMC", a4];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedShort:", *(v8 + 64)), v15}];
+  group = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKRQCNT", group];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 16)), group}];
+  group2 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKFLCNT", group];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 24)), group2}];
+  group3 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKCHCNT", group];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 32)), group3}];
+  group4 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKCMCNT", group];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 40)), group4}];
+  group5 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKNRCNT", group];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 48)), group5}];
+  group6 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"UNRRC", group];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedLongLong:", *(v8 + 56)), group6}];
+  group7 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"UNRRMC", group];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedShort:", *(v8 + 64)), group7}];
   v16 = @"ULNACKRQRATE";
-  if (a4 && (v16 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKRQRATE", a4]) == 0 || ((adjustedDuration = self->super._adjustedDuration, !adjustedDuration) ? (v18 = 0) : (v18 = *(v8 + 16) / adjustedDuration), objc_msgSend(a3, "setObject:forKeyedSubscript:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithUnsignedInt:", v18), v16), a4))
+  if (group && (v16 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKRQRATE", group]) == 0 || ((adjustedDuration = self->super._adjustedDuration, !adjustedDuration) ? (v18 = 0) : (v18 = *(v8 + 16) / adjustedDuration), objc_msgSend(dictionary, "setObject:forKeyedSubscript:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithUnsignedInt:", v18), v16), group))
   {
-    v19 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKFLRATE", a4];
-    if (!v19)
+    group8 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKFLRATE", group];
+    if (!group8)
     {
       goto LABEL_16;
     }
 
-    v20 = v19;
+    v20 = group8;
   }
 
   else
@@ -1730,21 +1730,21 @@ LABEL_110:
     v22 = 0;
   }
 
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v22), v20}];
-  if (!a4)
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v22), v20}];
+  if (!group)
   {
     v24 = @"ULNACKCHRATE";
     goto LABEL_19;
   }
 
 LABEL_16:
-  v23 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKCHRATE", a4];
-  if (!v23)
+  group9 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKCHRATE", group];
+  if (!group9)
   {
     goto LABEL_23;
   }
 
-  v24 = v23;
+  v24 = group9;
 LABEL_19:
   v25 = self->super._adjustedDuration;
   if (v25)
@@ -1757,21 +1757,21 @@ LABEL_19:
     v26 = 0;
   }
 
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v26), v24}];
-  if (!a4)
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v26), v24}];
+  if (!group)
   {
     v28 = @"ULNACKNRRATE";
     goto LABEL_26;
   }
 
 LABEL_23:
-  v27 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKNRRATE", a4];
-  if (!v27)
+  group10 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKNRRATE", group];
+  if (!group10)
   {
     goto LABEL_30;
   }
 
-  v28 = v27;
+  v28 = group10;
 LABEL_26:
   v29 = self->super._adjustedDuration;
   if (v29)
@@ -1784,21 +1784,21 @@ LABEL_26:
     v30 = 0;
   }
 
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v30), v28}];
-  if (!a4)
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v30), v28}];
+  if (!group)
   {
     v32 = @"ULNACKRPRATE";
     goto LABEL_33;
   }
 
 LABEL_30:
-  v31 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKRPRATE", a4];
-  if (!v31)
+  group11 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKRPRATE", group];
+  if (!group11)
   {
     goto LABEL_37;
   }
 
-  v32 = v31;
+  v32 = group11;
 LABEL_33:
   v33 = self->super._adjustedDuration;
   if (v33)
@@ -1811,21 +1811,21 @@ LABEL_33:
     v34 = 0;
   }
 
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v34), v32}];
-  if (!a4)
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v34), v32}];
+  if (!group)
   {
     v36 = @"ULNACKNRRATE";
     goto LABEL_40;
   }
 
 LABEL_37:
-  v35 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKNRRATE", a4];
-  if (!v35)
+  group12 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKNRRATE", group];
+  if (!group12)
   {
     goto LABEL_44;
   }
 
-  v36 = v35;
+  v36 = group12;
 LABEL_40:
   v37 = self->super._adjustedDuration;
   if (v37)
@@ -1838,18 +1838,18 @@ LABEL_40:
     v38 = 0;
   }
 
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v38), v36}];
-  if (!a4)
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v38), v36}];
+  if (!group)
   {
     v40 = @"ULNACKNRRATE";
     goto LABEL_47;
   }
 
 LABEL_44:
-  v39 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKNRRATE", a4];
-  if (v39)
+  group13 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKNRRATE", group];
+  if (group13)
   {
-    v40 = v39;
+    v40 = group13;
 LABEL_47:
     v41 = self->super._adjustedDuration;
     if (v41)
@@ -1862,19 +1862,19 @@ LABEL_47:
       v42 = 0;
     }
 
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v42), v40}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v42), v40}];
   }
 
-  [a3 setObject:objc_msgSend(*(v8 + 72) forKeyedSubscript:{"description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"ULNACKAVGRESP", a4)}];
-  [a3 setObject:objc_msgSend(*(v8 + 80) forKeyedSubscript:{"description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"ULNACKAVGLATE", a4)}];
-  [a3 setObject:objc_msgSend(*(v8 + 88) forKeyedSubscript:{"description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"ULNACKMBR", a4)}];
-  v43 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKRBR", a4];
+  [dictionary setObject:objc_msgSend(*(v8 + 72) forKeyedSubscript:{"description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"ULNACKAVGRESP", group)}];
+  [dictionary setObject:objc_msgSend(*(v8 + 80) forKeyedSubscript:{"description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"ULNACKAVGLATE", group)}];
+  [dictionary setObject:objc_msgSend(*(v8 + 88) forKeyedSubscript:{"description"), objc_msgSend(MEMORY[0x277CCACA0], "stringWithFormat:", @"%@_%@", @"ULNACKMBR", group)}];
+  group14 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"ULNACKRBR", group];
   v44 = [*(v8 + 96) description];
 
-  [a3 setObject:v44 forKeyedSubscript:v43];
+  [dictionary setObject:v44 forKeyedSubscript:group14];
 }
 
-- (void)addBIFStatsToDictionary:(id)a3
+- (void)addBIFStatsToDictionary:(id)dictionary
 {
   if (self->super._shouldReportBIFPercentage)
   {
@@ -1892,7 +1892,7 @@ LABEL_47:
 
     v10 = [MEMORY[0x277CCABA8] numberWithUnsignedInt:{v9, v4, v11, v5}];
 
-    [a3 setObject:v10 forKeyedSubscript:@"BIFCngP"];
+    [dictionary setObject:v10 forKeyedSubscript:@"BIFCngP"];
   }
 }
 
@@ -1928,48 +1928,48 @@ LABEL_47:
   return 0;
 }
 
-- (void)updateUplinkSegmentStats:(id)a3 withSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)a4
+- (void)updateUplinkSegmentStats:(id)stats withSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)bytes
 {
-  v6 = [(UplinkSegment *)self lastReportedTotalCellDupTxDataBytes];
-  var7 = a4->var7;
-  if (v6 <= var7)
+  lastReportedTotalCellDupTxDataBytes = [(UplinkSegment *)self lastReportedTotalCellDupTxDataBytes];
+  var7 = bytes->var7;
+  if (lastReportedTotalCellDupTxDataBytes <= var7)
   {
     v8 = var7 - [(UplinkSegment *)self lastReportedTotalCellDupTxDataBytes];
     var7 = v8 + [(UplinkSegment *)self totalCellDupTxDataBytes];
   }
 
   [(UplinkSegment *)self setTotalCellDupTxDataBytes:var7];
-  [(UplinkSegment *)self setLastReportedTotalCellDupTxDataBytes:a4->var7];
-  v9 = [(UplinkSegment *)self lastReportedTotalUsedCellBudgetTxDataBytes];
-  var5 = a4->var5;
-  if (v9 <= var5)
+  [(UplinkSegment *)self setLastReportedTotalCellDupTxDataBytes:bytes->var7];
+  lastReportedTotalUsedCellBudgetTxDataBytes = [(UplinkSegment *)self lastReportedTotalUsedCellBudgetTxDataBytes];
+  var5 = bytes->var5;
+  if (lastReportedTotalUsedCellBudgetTxDataBytes <= var5)
   {
     v11 = var5 - [(UplinkSegment *)self lastReportedTotalUsedCellBudgetTxDataBytes];
     var5 = v11 + [(UplinkSegment *)self totalUsedCellBudgetTxDataBytes];
   }
 
   [(UplinkSegment *)self setTotalUsedCellBudgetTxDataBytes:var5];
-  [(UplinkSegment *)self setLastReportedTotalUsedCellBudgetTxDataBytes:a4->var5];
-  v12 = [(UplinkSegment *)self lastReportedTotalCellTxDataBytes];
-  var0 = a4->var0;
-  if (v12 <= a4->var0)
+  [(UplinkSegment *)self setLastReportedTotalUsedCellBudgetTxDataBytes:bytes->var5];
+  lastReportedTotalCellTxDataBytes = [(UplinkSegment *)self lastReportedTotalCellTxDataBytes];
+  var0 = bytes->var0;
+  if (lastReportedTotalCellTxDataBytes <= bytes->var0)
   {
     v14 = var0 - [(UplinkSegment *)self lastReportedTotalCellTxDataBytes];
     var0 = v14 + [(UplinkSegment *)self totalCellTxDataBytes];
   }
 
   [(UplinkSegment *)self setTotalCellTxDataBytes:var0];
-  [(UplinkSegment *)self setLastReportedTotalCellTxDataBytes:a4->var0];
-  v15 = [(UplinkSegment *)self lastReportedTotalWifiTxDataBytes];
-  var2 = a4->var2;
-  if (v15 <= var2)
+  [(UplinkSegment *)self setLastReportedTotalCellTxDataBytes:bytes->var0];
+  lastReportedTotalWifiTxDataBytes = [(UplinkSegment *)self lastReportedTotalWifiTxDataBytes];
+  var2 = bytes->var2;
+  if (lastReportedTotalWifiTxDataBytes <= var2)
   {
     v17 = var2 - [(UplinkSegment *)self lastReportedTotalWifiTxDataBytes];
     var2 = v17 + [(UplinkSegment *)self totalWifiTxDataBytes];
   }
 
   [(UplinkSegment *)self setTotalWifiTxDataBytes:var2];
-  v18 = a4->var2;
+  v18 = bytes->var2;
 
   [(UplinkSegment *)self setLastReportedTotalWifiTxDataBytes:v18];
 }
@@ -2005,14 +2005,14 @@ LABEL_47:
   {
     [(MultiwaySegment *)self complete_and_release_nw_activity:2];
 LABEL_7:
-    v6 = 0;
+    dispatchedAggregatedReportCommon = 0;
     goto LABEL_91;
   }
 
   v99.receiver = self;
   v99.super_class = UplinkSegment;
-  v6 = [(VCReportingCommon *)&v99 dispatchedAggregatedReportCommon];
-  [v6 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedChar:", -[UplinkSegment segmentReportingMode](self, "segmentReportingMode")), @"SSOPMODE"}];
+  dispatchedAggregatedReportCommon = [(VCReportingCommon *)&v99 dispatchedAggregatedReportCommon];
+  [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedChar:", -[UplinkSegment segmentReportingMode](self, "segmentReportingMode")), @"SSOPMODE"}];
   dynamicDupeLinkCount = self->super._dynamicDupeLinkCount;
   if (dynamicDupeLinkCount)
   {
@@ -2038,10 +2038,10 @@ LABEL_7:
   v14 = [(NSString *)self->super._segmentName substringToIndex:3];
   [(UplinkSegment *)self updateAdaptiveLearningSegment];
   adjustedDuration = self->super._adjustedDuration;
-  v16 = [(MultiwaySegment *)self RTPeriod];
-  if (self->_BBQueueTooLargeCount >= v16 * adjustedDuration)
+  rTPeriod = [(MultiwaySegment *)self RTPeriod];
+  if (self->_BBQueueTooLargeCount >= rTPeriod * adjustedDuration)
   {
-    BBQueueTooLargeCount = v16 * adjustedDuration;
+    BBQueueTooLargeCount = rTPeriod * adjustedDuration;
   }
 
   else
@@ -2050,10 +2050,10 @@ LABEL_7:
   }
 
   BBRateTooLowCount = self->_BBRateTooLowCount;
-  v19 = v16 * adjustedDuration;
-  if (BBRateTooLowCount >= v16 * adjustedDuration)
+  v19 = rTPeriod * adjustedDuration;
+  if (BBRateTooLowCount >= rTPeriod * adjustedDuration)
   {
-    BBRateTooLowCount = v16 * adjustedDuration;
+    BBRateTooLowCount = rTPeriod * adjustedDuration;
   }
 
   v88 = BBQueueTooLargeCount;
@@ -2440,8 +2440,8 @@ LABEL_7:
   v110[86] = [(VCHistogram *)self->_cellStrengthRawBars description];
   v109[87] = @"FECHDRVER";
   v110[87] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:self->super._fecHeaderVersion];
-  [v6 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v110, v109, 88)}];
-  [(VCReportingDistribution *)self->_cameraCaptureData updateReport:v6];
+  [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v110, v109, 88)}];
+  [(VCReportingDistribution *)self->_cameraCaptureData updateReport:dispatchedAggregatedReportCommon];
   if (self->super._isOneToOneMode)
   {
     v107[0] = @"VCMQIAP";
@@ -2470,46 +2470,46 @@ LABEL_7:
     v108[11] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:v84];
     v107[12] = @"VCSECNLinkType";
     v108[12] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:self->_ecnLinkType];
-    [v6 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v108, v107, 13)}];
+    [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v108, v107, 13)}];
     if ([(MultiwaySegment *)self linksWithMaxPacketHistory])
     {
-      [v6 setObject:-[MultiwaySegment linksWithMaxPacketHistory](self forKeyedSubscript:{"linksWithMaxPacketHistory"), @"ULPH"}];
-      [v6 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", -[MultiwaySegment packetHistoryIndex](self, "packetHistoryIndex")), @"ULPI"}];
+      [dispatchedAggregatedReportCommon setObject:-[MultiwaySegment linksWithMaxPacketHistory](self forKeyedSubscript:{"linksWithMaxPacketHistory"), @"ULPH"}];
+      [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", -[MultiwaySegment packetHistoryIndex](self, "packetHistoryIndex")), @"ULPI"}];
     }
   }
 
-  [(MultiwaySegment *)self addCommonSegmentTelemetry:v6];
-  [(UplinkSegment *)self addBIFStatsToDictionary:v6];
-  [v6 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithBool:", -[MultiwaySegment isApplePersonalHotspot](self, "isApplePersonalHotspot")), @"PHS"}];
+  [(MultiwaySegment *)self addCommonSegmentTelemetry:dispatchedAggregatedReportCommon];
+  [(UplinkSegment *)self addBIFStatsToDictionary:dispatchedAggregatedReportCommon];
+  [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithBool:", -[MultiwaySegment isApplePersonalHotspot](self, "isApplePersonalHotspot")), @"PHS"}];
   activeConnectionRegistry = self->super._activeConnectionRegistry;
   if (activeConnectionRegistry)
   {
-    [v6 setObject:activeConnectionRegistry forKeyedSubscript:@"ACAS"];
+    [dispatchedAggregatedReportCommon setObject:activeConnectionRegistry forKeyedSubscript:@"ACAS"];
   }
 
   if (self->_isUplinkScreenEnabled)
   {
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_isFullScreenCapture), @"FULLCAP"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_isFullScreenCapture), @"FULLCAP"}];
   }
 
   if (self->super._mediaQueueSchedulePolicy)
   {
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:"), @"LMQSchP"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:"), @"LMQSchP"}];
   }
 
   if (self->super._conversationTimeBase)
   {
-    [v6 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->super._startDate), @"StartDate"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->super._startDate), @"StartDate"}];
     v71 = MEMORY[0x277CCABA8];
     [objc_msgSend(MEMORY[0x277CBEAA8] "date")];
-    [v6 setObject:objc_msgSend(v71 forKeyedSubscript:{"numberWithInt:", v72), @"EndDate"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(v71 forKeyedSubscript:{"numberWithInt:", v72), @"EndDate"}];
   }
 
   if ([[(NSString *)self->super._segmentName substringFromIndex:2] hasPrefix:@"W"])
   {
     v105 = @"WiFi5GHz";
     v106 = [MEMORY[0x277CCABA8] numberWithInt:self->super._is5GHz];
-    [v6 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v106, &v105, 1)}];
+    [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v106, &v105, 1)}];
   }
 
   lossPattern = self->super._lossPattern;
@@ -2520,9 +2520,9 @@ LABEL_7:
   v102 = lossFecHistogram;
   v103 = self->super._adjustedDuration;
   v104 = 0;
-  [(SegmentStatsDelegate *)self->super._delegate addFECStats:v6 parameters:buf reportFrameSizeTelemetry:0 reportLevels:1];
-  [(MultiwaySegment *)self addRateControlExperimentInfoToSegmentReport:v6];
-  [(MultiwaySegment *)self reportVCRCMLStats:v6];
+  [(SegmentStatsDelegate *)self->super._delegate addFECStats:dispatchedAggregatedReportCommon parameters:buf reportFrameSizeTelemetry:0 reportLevels:1];
+  [(MultiwaySegment *)self addRateControlExperimentInfoToSegmentReport:dispatchedAggregatedReportCommon];
+  [(MultiwaySegment *)self reportVCRCMLStats:dispatchedAggregatedReportCommon];
   if (self->super._nwActivity)
   {
     if (self->super._useNwActivitySubmitMetrics && self->super._isNWActivityReportingEnabled)
@@ -2536,18 +2536,18 @@ LABEL_7:
     [(MultiwaySegment *)self complete_and_release_nw_activity:2];
   }
 
-  [(UplinkSegment *)self addCellByteCountStats:v6];
-  [(UplinkSegment *)self collectStreamQualityAggregator:v6];
-  [(UplinkSegment *)self collectStreamTemporalStats:v6];
-  [(UplinkSegment *)self addSegmentWRMReportStats:v6];
-  [(UplinkSegment *)self addMediaQueueStats:v6];
-  [(UplinkSegment *)self addSmartBrakeStats:v6];
-  [(UplinkSegment *)self addCelltechTelemetryToDictionary:v6];
-  [(MultiwaySegment *)self addQRServerTelemetryToDictionary:v6];
-  [(VCReportingCommon *)self addClientExperimentsToReport:v6];
-  [(UplinkSegment *)self addPerStreamGroupStatsToDictionary:v6];
-  [(UplinkSegment *)self addVideoFeatureStatus:v6];
-  [(UplinkSegment *)self reportSpatialAudioSupport:v6];
+  [(UplinkSegment *)self addCellByteCountStats:dispatchedAggregatedReportCommon];
+  [(UplinkSegment *)self collectStreamQualityAggregator:dispatchedAggregatedReportCommon];
+  [(UplinkSegment *)self collectStreamTemporalStats:dispatchedAggregatedReportCommon];
+  [(UplinkSegment *)self addSegmentWRMReportStats:dispatchedAggregatedReportCommon];
+  [(UplinkSegment *)self addMediaQueueStats:dispatchedAggregatedReportCommon];
+  [(UplinkSegment *)self addSmartBrakeStats:dispatchedAggregatedReportCommon];
+  [(UplinkSegment *)self addCelltechTelemetryToDictionary:dispatchedAggregatedReportCommon];
+  [(MultiwaySegment *)self addQRServerTelemetryToDictionary:dispatchedAggregatedReportCommon];
+  [(VCReportingCommon *)self addClientExperimentsToReport:dispatchedAggregatedReportCommon];
+  [(UplinkSegment *)self addPerStreamGroupStatsToDictionary:dispatchedAggregatedReportCommon];
+  [(UplinkSegment *)self addVideoFeatureStatus:dispatchedAggregatedReportCommon];
+  [(UplinkSegment *)self reportSpatialAudioSupport:dispatchedAggregatedReportCommon];
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
@@ -2567,7 +2567,7 @@ LABEL_7:
           objc_enumerationMutation(thermalDataCollectors);
         }
 
-        [*(*(&v95 + 1) + 8 * i) updateReport:v6];
+        [*(*(&v95 + 1) + 8 * i) updateReport:dispatchedAggregatedReportCommon];
       }
 
       v79 = [(NSSet *)thermalDataCollectors countByEnumeratingWithState:&v95 objects:v100 count:16];
@@ -2579,28 +2579,28 @@ LABEL_7:
   self->super._hasReported = 1;
 LABEL_91:
   v82 = *MEMORY[0x277D85DE8];
-  return v6;
+  return dispatchedAggregatedReportCommon;
 }
 
-- (void)addVideoFeatureStatus:(id)a3
+- (void)addVideoFeatureStatus:(id)status
 {
-  [VCAggregator addVideoFeatureStatus:self->super._centerStageStatus histogramKey:@"CSDUR" histogram:self->_centerStageDuration statusKey:@"CSFENB" report:a3];
-  [VCAggregator addVideoFeatureStatus:self->super._portraitModeStatus histogramKey:@"PMDUR" histogram:self->_portraitModeDuration statusKey:@"PMFENB" report:a3];
-  [VCAggregator addVideoFeatureStatus:self->super._studioLightStatus histogramKey:@"SLDUR" histogram:self->_studioLightDuration statusKey:@"SLFENB" report:a3];
-  [VCAggregator addVideoFeatureStatus:self->super._reactionsStatus histogramKey:@"REACDUR" histogram:self->_reactionActiveDuration statusKey:@"REFENB" report:a3];
+  [VCAggregator addVideoFeatureStatus:self->super._centerStageStatus histogramKey:@"CSDUR" histogram:self->_centerStageDuration statusKey:@"CSFENB" report:status];
+  [VCAggregator addVideoFeatureStatus:self->super._portraitModeStatus histogramKey:@"PMDUR" histogram:self->_portraitModeDuration statusKey:@"PMFENB" report:status];
+  [VCAggregator addVideoFeatureStatus:self->super._studioLightStatus histogramKey:@"SLDUR" histogram:self->_studioLightDuration statusKey:@"SLFENB" report:status];
+  [VCAggregator addVideoFeatureStatus:self->super._reactionsStatus histogramKey:@"REACDUR" histogram:self->_reactionActiveDuration statusKey:@"REFENB" report:status];
   [(VCDurationHistogram *)self->_eyeContactDuration finalize:micro()];
-  [VCAggregator addVideoFeatureStatus:self->super._eyeContactStatus histogramKey:@"ECDUR" histogram:self->_eyeContactDuration statusKey:@"ECFENB" report:a3];
+  [VCAggregator addVideoFeatureStatus:self->super._eyeContactStatus histogramKey:@"ECDUR" histogram:self->_eyeContactDuration statusKey:@"ECFENB" report:status];
   backgroundReplacementStatus = self->super._backgroundReplacementStatus;
   backgroundReplacementDuration = self->_backgroundReplacementDuration;
 
-  [VCAggregator addVideoFeatureStatus:backgroundReplacementStatus histogramKey:@"BGRDUR" histogram:backgroundReplacementDuration statusKey:@"BGRFENB" report:a3];
+  [VCAggregator addVideoFeatureStatus:backgroundReplacementStatus histogramKey:@"BGRDUR" histogram:backgroundReplacementDuration statusKey:@"BGRFENB" report:status];
 }
 
-- (void)reportSpatialAudioSupport:(id)a3
+- (void)reportSpatialAudioSupport:(id)support
 {
   v4 = [MEMORY[0x277CCABA8] numberWithChar:self->super._spatialAudioSupported];
 
-  [a3 setObject:v4 forKeyedSubscript:@"SAFSUP"];
+  [support setObject:v4 forKeyedSubscript:@"SAFSUP"];
 }
 
 - (void)releaseWRMMetrics
@@ -2608,10 +2608,10 @@ LABEL_91:
   wrmLinkTypeCellServingCellType = self->_wrmLinkTypeCellServingCellType;
 }
 
-- (void)calculateUplinkTelemetry:(id)a3 lastReportedAudioPauseTime:(double)a4 lastReportedVideoPacketSentCount:(double)a5
+- (void)calculateUplinkTelemetry:(id)telemetry lastReportedAudioPauseTime:(double)time lastReportedVideoPacketSentCount:(double)count
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = [a3 objectForKeyedSubscript:sRTCReportingStreamCollection];
+  v7 = [telemetry objectForKeyedSubscript:sRTCReportingStreamCollection];
   if ([v7 count])
   {
     OUTLINED_FUNCTION_27();
@@ -2701,8 +2701,8 @@ LABEL_91:
     }
 
     [(UplinkSegment *)self totalAudioPauseTime];
-    [(UplinkSegment *)self setTotalAudioPauseTime:v16 - a4 + v25];
-    [(UplinkSegment *)self setVideoSentPacketCount:(v22 - a5 + [(UplinkSegment *)self videoSentPacketCount])];
+    [(UplinkSegment *)self setTotalAudioPauseTime:v16 - time + v25];
+    [(UplinkSegment *)self setVideoSentPacketCount:(v22 - count + [(UplinkSegment *)self videoSentPacketCount])];
     [(VCHistogram *)[(UplinkSegment *)self videoMediaBitrate] addValue:0];
     [(VCHistogram *)[(UplinkSegment *)self videoEncodingBitrate] addValue:v24];
     [(VCHistogram *)[(UplinkSegment *)self SBR] addValue:v14];
@@ -2714,7 +2714,7 @@ LABEL_91:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)calculateUplinkAudioTimestampJumps:(id)a3
+- (void)calculateUplinkAudioTimestampJumps:(id)jumps
 {
   OUTLINED_FUNCTION_58();
   v30 = v5;
@@ -2763,15 +2763,15 @@ LABEL_91:
               v23 = 0;
             }
 
-            v24 = [v30 audioStreamTimestampJumpMax];
-            if (v24 <= v23)
+            audioStreamTimestampJumpMax = [v30 audioStreamTimestampJumpMax];
+            if (audioStreamTimestampJumpMax <= v23)
             {
               v25 = v23;
             }
 
             else
             {
-              v25 = v24;
+              v25 = audioStreamTimestampJumpMax;
             }
 
             v19 = [v30 setAudioStreamTimestampJumpMax:v25];

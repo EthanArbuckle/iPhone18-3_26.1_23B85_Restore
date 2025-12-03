@@ -1,23 +1,23 @@
 @interface NSDictionary
-- (int64_t)integerForKey:(id)a3 minValue:(int64_t)a4 maxValue:(int64_t)a5 defaultValue:(int64_t)a6;
+- (int64_t)integerForKey:(id)key minValue:(int64_t)value maxValue:(int64_t)maxValue defaultValue:(int64_t)defaultValue;
 @end
 
 @implementation NSDictionary
 
-- (int64_t)integerForKey:(id)a3 minValue:(int64_t)a4 maxValue:(int64_t)a5 defaultValue:(int64_t)a6
+- (int64_t)integerForKey:(id)key minValue:(int64_t)value maxValue:(int64_t)maxValue defaultValue:(int64_t)defaultValue
 {
-  v9 = [(NSDictionary *)self objectForKeyedSubscript:a3];
+  v9 = [(NSDictionary *)self objectForKeyedSubscript:key];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 integerValue];
-    if (v11 <= a5 && v11 >= a4)
+    integerValue = [v9 integerValue];
+    if (integerValue <= maxValue && integerValue >= value)
     {
-      a6 = v11;
+      defaultValue = integerValue;
     }
   }
 
-  return a6;
+  return defaultValue;
 }
 
 @end

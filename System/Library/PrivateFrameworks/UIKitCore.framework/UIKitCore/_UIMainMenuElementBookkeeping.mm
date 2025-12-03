@@ -1,8 +1,8 @@
 @interface _UIMainMenuElementBookkeeping
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIMainMenuElementBookkeeping)init;
-- (id)_initWithMenusForIdentifiers:(id)a3 deferredElementsForIdentifiers:(id)a4 commandsForIdentifiers:(id)a5 parentIdentifiersForIdentifiers:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithMenusForIdentifiers:(id)identifiers deferredElementsForIdentifiers:(id)forIdentifiers commandsForIdentifiers:(id)commandsForIdentifiers parentIdentifiersForIdentifiers:(id)identifiersForIdentifiers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)removeAllObjects;
@@ -12,31 +12,31 @@
 
 - (_UIMainMenuElementBookkeeping)init
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [(_UIMainMenuElementBookkeeping *)self _initWithMenusForIdentifiers:v3 deferredElementsForIdentifiers:v4 commandsForIdentifiers:v5 parentIdentifiersForIdentifiers:v6];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  v7 = [(_UIMainMenuElementBookkeeping *)self _initWithMenusForIdentifiers:dictionary deferredElementsForIdentifiers:dictionary2 commandsForIdentifiers:dictionary3 parentIdentifiersForIdentifiers:dictionary4];
 
   return v7;
 }
 
-- (id)_initWithMenusForIdentifiers:(id)a3 deferredElementsForIdentifiers:(id)a4 commandsForIdentifiers:(id)a5 parentIdentifiersForIdentifiers:(id)a6
+- (id)_initWithMenusForIdentifiers:(id)identifiers deferredElementsForIdentifiers:(id)forIdentifiers commandsForIdentifiers:(id)commandsForIdentifiers parentIdentifiersForIdentifiers:(id)identifiersForIdentifiers
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifiersCopy = identifiers;
+  forIdentifiersCopy = forIdentifiers;
+  commandsForIdentifiersCopy = commandsForIdentifiers;
+  identifiersForIdentifiersCopy = identifiersForIdentifiers;
   v18.receiver = self;
   v18.super_class = _UIMainMenuElementBookkeeping;
   v15 = [(_UIMainMenuElementBookkeeping *)&v18 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_menusForIdentifiers, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_menusForIdentifiers, identifiers);
+    objc_storeStrong(p_isa + 2, forIdentifiers);
+    objc_storeStrong(p_isa + 3, commandsForIdentifiers);
+    objc_storeStrong(p_isa + 4, identifiersForIdentifiers);
   }
 
   return p_isa;
@@ -52,10 +52,10 @@
   [(NSMutableDictionary *)parentIdentifiersForIdentifiers removeAllObjects];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -67,7 +67,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       menusForIdentifiers = v7->_menusForIdentifiers;
       v9 = self->_menusForIdentifiers;
       v10 = menusForIdentifiers;
@@ -181,7 +181,7 @@ LABEL_30:
   return v4 ^ v5 ^ [(NSMutableDictionary *)self->_parentIdentifiersForIdentifiers hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UIMainMenuElementBookkeeping alloc];
   v5 = [(NSMutableDictionary *)self->_menusForIdentifiers mutableCopy];
@@ -200,9 +200,9 @@ LABEL_30:
   [v3 appendDictionarySection:self->_deferredElementsForIdentifiers withName:@"deferredElementsForIdentifiers" skipIfEmpty:0];
   [v3 appendDictionarySection:self->_commandsForIdentifiers withName:@"commandsForIdentifiers" skipIfEmpty:0];
   [v3 appendDictionarySection:self->_parentIdentifiersForIdentifiers withName:@"parentIdentifiersForIdentifiers" skipIfEmpty:0];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

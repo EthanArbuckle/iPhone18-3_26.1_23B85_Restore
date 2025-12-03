@@ -1,21 +1,21 @@
 @interface CPLShareParticipant
-+ (id)shareParticipantsFromCKShareParticipants:(id)a3 currentUserID:(id)a4;
-- (id)initWithCKShareParticipant:(id)a3 currentUserID:(id)a4;
-- (void)updateCKShareParticipant:(id)a3;
++ (id)shareParticipantsFromCKShareParticipants:(id)participants currentUserID:(id)d;
+- (id)initWithCKShareParticipant:(id)participant currentUserID:(id)d;
+- (void)updateCKShareParticipant:(id)participant;
 @end
 
 @implementation CPLShareParticipant
 
-+ (id)shareParticipantsFromCKShareParticipants:(id)a3 currentUserID:(id)a4
++ (id)shareParticipantsFromCKShareParticipants:(id)participants currentUserID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  participantsCopy = participants;
+  dCopy = d;
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(participantsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = participantsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -32,7 +32,7 @@
 
         v13 = *(*(&v17 + 1) + 8 * i);
         v14 = [CPLShareParticipant alloc];
-        v15 = [v14 initWithCKShareParticipant:v13 currentUserID:{v6, v17}];
+        v15 = [v14 initWithCKShareParticipant:v13 currentUserID:{dCopy, v17}];
         [v7 addObject:v15];
       }
 
@@ -45,17 +45,17 @@
   return v7;
 }
 
-- (id)initWithCKShareParticipant:(id)a3 currentUserID:(id)a4
+- (id)initWithCKShareParticipant:(id)participant currentUserID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userIdentity];
-  v9 = [v8 userRecordID];
-  v10 = [v9 recordName];
+  participantCopy = participant;
+  dCopy = d;
+  userIdentity = [participantCopy userIdentity];
+  userRecordID = [userIdentity userRecordID];
+  recordName = [userRecordID recordName];
 
-  if (!v10 || !CKCurrentUserDefaultName)
+  if (!recordName || !CKCurrentUserDefaultName)
   {
-    if (v10 | CKCurrentUserDefaultName)
+    if (recordName | CKCurrentUserDefaultName)
     {
       goto LABEL_7;
     }
@@ -63,20 +63,20 @@
     goto LABEL_6;
   }
 
-  if ([v10 isEqual:CKCurrentUserDefaultName])
+  if ([recordName isEqual:CKCurrentUserDefaultName])
   {
 LABEL_6:
-    v11 = [v7 recordName];
+    recordName2 = [dCopy recordName];
 
-    v10 = v11;
+    recordName = recordName2;
   }
 
 LABEL_7:
-  v12 = [(CPLShareParticipant *)self initWithUserIdentifier:v10];
+  v12 = [(CPLShareParticipant *)self initWithUserIdentifier:recordName];
   if (v12)
   {
-    -[CPLShareParticipant setIsCurrentUser:](v12, "setIsCurrentUser:", [v6 isCurrentUser]);
-    v13 = [v6 role] - 1;
+    -[CPLShareParticipant setIsCurrentUser:](v12, "setIsCurrentUser:", [participantCopy isCurrentUser]);
+    v13 = [participantCopy role] - 1;
     if (v13 > 3)
     {
       v14 = 0;
@@ -88,69 +88,69 @@ LABEL_7:
     }
 
     [(CPLShareParticipant *)v12 setRole:v14];
-    v15 = [v6 acceptanceStatus];
-    if ((v15 - 1) >= 3)
+    acceptanceStatus = [participantCopy acceptanceStatus];
+    if ((acceptanceStatus - 1) >= 3)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = v15;
+      v16 = acceptanceStatus;
     }
 
     [(CPLShareParticipant *)v12 setAcceptanceStatus:v16];
-    v17 = [v6 permission];
-    if ((v17 - 1) >= 3)
+    permission = [participantCopy permission];
+    if ((permission - 1) >= 3)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v17;
+      v18 = permission;
     }
 
     [(CPLShareParticipant *)v12 setPermission:v18];
-    v19 = [v6 participantID];
-    [(CPLShareParticipant *)v12 setParticipantID:v19];
+    participantID = [participantCopy participantID];
+    [(CPLShareParticipant *)v12 setParticipantID:participantID];
 
-    v20 = [v8 lookupInfo];
-    v21 = [v8 nameComponents];
-    v22 = [v20 emailAddress];
-    if (v22)
+    lookupInfo = [userIdentity lookupInfo];
+    nameComponents = [userIdentity nameComponents];
+    emailAddress = [lookupInfo emailAddress];
+    if (emailAddress)
     {
-      [(CPLShareParticipant *)v12 setEmail:v22];
+      [(CPLShareParticipant *)v12 setEmail:emailAddress];
     }
 
-    v23 = [v20 phoneNumber];
-    if (v23)
+    phoneNumber = [lookupInfo phoneNumber];
+    if (phoneNumber)
     {
-      [(CPLShareParticipant *)v12 setPhoneNumber:v23];
+      [(CPLShareParticipant *)v12 setPhoneNumber:phoneNumber];
     }
 
-    [(CPLShareParticipant *)v12 setNameComponents:v21];
-    -[CPLShareParticipant setHasiCloudAccount:](v12, "setHasiCloudAccount:", [v8 hasiCloudAccount]);
+    [(CPLShareParticipant *)v12 setNameComponents:nameComponents];
+    -[CPLShareParticipant setHasiCloudAccount:](v12, "setHasiCloudAccount:", [userIdentity hasiCloudAccount]);
   }
 
   return v12;
 }
 
-- (void)updateCKShareParticipant:(id)a3
+- (void)updateCKShareParticipant:(id)participant
 {
-  v6 = a3;
-  v4 = [(CPLShareParticipant *)self permission];
-  if ((v4 - 1) >= 3)
+  participantCopy = participant;
+  permission = [(CPLShareParticipant *)self permission];
+  if ((permission - 1) >= 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = permission;
   }
 
-  [v6 setPermission:v5];
+  [participantCopy setPermission:v5];
 }
 
 @end

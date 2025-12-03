@@ -3,8 +3,8 @@
 - (id)leftImage;
 - (id)rightImage;
 - (void)dealloc;
-- (void)handleBrightnessDidChangeNotification:(id)a3;
-- (void)setValue:(double)a3 isTracking:(BOOL)a4;
+- (void)handleBrightnessDidChangeNotification:(id)notification;
+- (void)setValue:(double)value isTracking:(BOOL)tracking;
 @end
 
 @implementation ACSettingsBrightnessSetting
@@ -38,23 +38,23 @@
   [(ACSettingsBrightnessSetting *)&v4 dealloc];
 }
 
-- (void)setValue:(double)a3 isTracking:(BOOL)a4
+- (void)setValue:(double)value isTracking:(BOOL)tracking
 {
   +[PSBrightnessSettingsDetail beginBrightnessAdjustmentTransaction];
   v6 = 1.0;
-  v7 = 0.0;
-  if (a3 >= 0.0)
+  valueCopy = 0.0;
+  if (value >= 0.0)
   {
-    v7 = a3;
+    valueCopy = value;
   }
 
-  if (a3 <= 1.0)
+  if (value <= 1.0)
   {
-    v6 = v7;
+    v6 = valueCopy;
   }
 
   [PSBrightnessSettingsDetail setValue:v6];
-  if (!a4)
+  if (!tracking)
   {
 
     +[PSBrightnessSettingsDetail endBrightnessAdjustmentTransaction];
@@ -77,15 +77,15 @@
   return v3;
 }
 
-- (void)handleBrightnessDidChangeNotification:(id)a3
+- (void)handleBrightnessDidChangeNotification:(id)notification
 {
-  v4 = [(ACSettingsBasicSetting *)self delegate];
-  v5 = [v4 isTracking];
+  delegate = [(ACSettingsBasicSetting *)self delegate];
+  isTracking = [delegate isTracking];
 
-  if ((v5 & 1) == 0)
+  if ((isTracking & 1) == 0)
   {
-    v6 = [(ACSettingsBasicSetting *)self delegate];
-    [v6 settingChangedExternally:self];
+    delegate2 = [(ACSettingsBasicSetting *)self delegate];
+    [delegate2 settingChangedExternally:self];
   }
 }
 

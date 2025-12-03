@@ -3,24 +3,24 @@
 - (BOOL)hasDocumentVersionUUID;
 - (BOOL)isCrossAppPaste;
 - (BOOL)isCrossDocumentPaste;
-- (BOOL)isExternalLazyReference:(id)a3;
-- (BOOL)readLazyReference:(id)a3 object:(id *)a4 error:(id *)a5;
+- (BOOL)isExternalLazyReference:(id)reference;
+- (BOOL)readLazyReference:(id)reference object:(id *)object error:(id *)error;
 - (TSPDecoderReadCoordinator)init;
-- (TSPDecoderReadCoordinator)initWithDecoder:(id)a3 context:(id)a4 finalizeHandlerQueue:(id)a5 delegate:(id)a6;
+- (TSPDecoderReadCoordinator)initWithDecoder:(id)decoder context:(id)context finalizeHandlerQueue:(id)queue delegate:(id)delegate;
 - (id)context;
-- (id)externalObjectForIdentifier:(int64_t)a3 componentIdentifier:(int64_t)a4 isReadFinished:(BOOL)a5;
-- (id)objectForIdentifier:(int64_t)a3;
-- (id)reader:(id)a3 wantsDataForIdentifier:(int64_t)a4;
-- (id)unarchivedObjectForIdentifier:(int64_t)a3 isReadFinished:(BOOL)a4;
-- (int64_t)reader:(id)a3 wantsObjectIdentifierForUUID:(id)a4;
+- (id)externalObjectForIdentifier:(int64_t)identifier componentIdentifier:(int64_t)componentIdentifier isReadFinished:(BOOL)finished;
+- (id)objectForIdentifier:(int64_t)identifier;
+- (id)reader:(id)reader wantsDataForIdentifier:(int64_t)identifier;
+- (id)unarchivedObjectForIdentifier:(int64_t)identifier isReadFinished:(BOOL)finished;
+- (int64_t)reader:(id)reader wantsObjectIdentifierForUUID:(id)d;
 - (unint64_t)fileFormatVersion;
 - (unint64_t)readVersion;
 - (unsigned)sourceType;
-- (void)didUpdateLazyReferenceDelegate:(id)a3;
-- (void)readComponent:(id)a3 completionQueue:(id)a4 completion:(id)a5;
-- (void)readRootObjectWithCompletionQueue:(id)a3 completion:(id)a4;
-- (void)reader:(id)a3 didReadLazyReference:(id)a4;
-- (void)reader:(id)a3 didUnarchiveObject:(id)a4;
+- (void)didUpdateLazyReferenceDelegate:(id)delegate;
+- (void)readComponent:(id)component completionQueue:(id)queue completion:(id)completion;
+- (void)readRootObjectWithCompletionQueue:(id)queue completion:(id)completion;
+- (void)reader:(id)reader didReadLazyReference:(id)reference;
+- (void)reader:(id)reader didUnarchiveObject:(id)object;
 @end
 
 @implementation TSPDecoderReadCoordinator
@@ -41,22 +41,22 @@
   objc_exception_throw(v13);
 }
 
-- (TSPDecoderReadCoordinator)initWithDecoder:(id)a3 context:(id)a4 finalizeHandlerQueue:(id)a5 delegate:(id)a6
+- (TSPDecoderReadCoordinator)initWithDecoder:(id)decoder context:(id)context finalizeHandlerQueue:(id)queue delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  decoderCopy = decoder;
+  contextCopy = context;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = TSPDecoderReadCoordinator;
   v15 = [(TSPReadCoordinatorBase *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_decoder, a3);
-    objc_storeWeak(&v16->_context, v12);
-    objc_storeStrong(&v16->_finalizeHandlerQueue, a5);
-    objc_storeWeak(&v16->_delegate, v14);
+    objc_storeStrong(&v15->_decoder, decoder);
+    objc_storeWeak(&v16->_context, contextCopy);
+    objc_storeStrong(&v16->_finalizeHandlerQueue, queue);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_create("TSPDecoderReadCoordinator.Data", v17);
     dataQueue = v16->_dataQueue;
@@ -66,11 +66,11 @@
   return v16;
 }
 
-- (BOOL)isExternalLazyReference:(id)a3
+- (BOOL)isExternalLazyReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   rootObjectComponent = self->_rootObjectComponent;
-  v8 = objc_msgSend_tsp_identifier(v4, v6, v7);
+  v8 = objc_msgSend_tsp_identifier(referenceCopy, v6, v7);
   LOBYTE(rootObjectComponent) = objc_msgSend_externalReferenceInfoForObjectIdentifier_(rootObjectComponent, v9, v8) != 0;
 
   return rootObjectComponent;
@@ -103,26 +103,26 @@ LABEL_7:
   return objc_msgSend_success(self, v4, v5);
 }
 
-- (void)didUpdateLazyReferenceDelegate:(id)a3
+- (void)didUpdateLazyReferenceDelegate:(id)delegate
 {
-  v6 = a3;
-  if ((objc_msgSend_isExternalLazyReference_(self, v4, v6) & 1) == 0)
+  delegateCopy = delegate;
+  if ((objc_msgSend_isExternalLazyReference_(self, v4, delegateCopy) & 1) == 0)
   {
-    objc_msgSend_resetIdentifierFromCopy_(v6, v5, 1);
+    objc_msgSend_resetIdentifierFromCopy_(delegateCopy, v5, 1);
   }
 }
 
-- (void)readRootObjectWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)readRootObjectWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_276A47648;
   aBlock[3] = &unk_27A6E4B68;
-  v8 = v6;
+  v8 = queueCopy;
   v38 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v39 = v9;
   v10 = _Block_copy(aBlock);
   v11 = dispatch_get_global_queue(0, 0);
@@ -164,12 +164,12 @@ LABEL_7:
   }
 }
 
-- (void)readComponent:(id)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)readComponent:(id)component completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = a5;
-  if (!v8)
+  componentCopy = component;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!componentCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSPDecoderReadCoordinator readComponent:completionQueue:completion:]");
@@ -185,16 +185,16 @@ LABEL_8:
     block[2] = sub_276A47F18;
     block[3] = &unk_27A6E2C78;
     v34 = v28;
-    v35 = v12;
+    v35 = completionCopy;
     v23 = v28;
-    dispatch_async(v9, block);
+    dispatch_async(queueCopy, block);
 
     Channel = v35;
     goto LABEL_9;
   }
 
   decoder = self->_decoder;
-  if (self->_rootObjectComponent == v8)
+  if (self->_rootObjectComponent == componentCopy)
   {
     ChannelForRootObjectComponent = objc_msgSend_newReadChannelForRootObjectComponent(decoder, v10, v11);
   }
@@ -211,15 +211,15 @@ LABEL_8:
   }
 
   v24 = [TSPComponentReader alloc];
-  Channel = objc_msgSend_initWithComponent_finalizeHandlerQueue_delegate_readChannel_(v24, v25, v8, self->_finalizeHandlerQueue, self, v23);
+  Channel = objc_msgSend_initWithComponent_finalizeHandlerQueue_delegate_readChannel_(v24, v25, componentCopy, self->_finalizeHandlerQueue, self, v23);
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = sub_276A47F38;
   v30[3] = &unk_27A6E4BE0;
   v30[4] = self;
-  v31 = v8;
-  v32 = v12;
-  objc_msgSend_readWithIOCompletionQueue_ioCompletion_completionQueue_completion_(Channel, v27, 0, 0, v9, v30);
+  v31 = componentCopy;
+  v32 = completionCopy;
+  objc_msgSend_readWithIOCompletionQueue_ioCompletion_completionQueue_completion_(Channel, v27, 0, 0, queueCopy, v30);
 
 LABEL_9:
 }
@@ -247,11 +247,11 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (id)unarchivedObjectForIdentifier:(int64_t)a3 isReadFinished:(BOOL)a4
+- (id)unarchivedObjectForIdentifier:(int64_t)identifier isReadFinished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
-    v5 = objc_msgSend_tsp_objectForIdentifier_(self->_objects, a2, a3);
+    v5 = objc_msgSend_tsp_objectForIdentifier_(self->_objects, a2, identifier);
   }
 
   else
@@ -262,9 +262,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)externalObjectForIdentifier:(int64_t)a3 componentIdentifier:(int64_t)a4 isReadFinished:(BOOL)a5
+- (id)externalObjectForIdentifier:(int64_t)identifier componentIdentifier:(int64_t)componentIdentifier isReadFinished:(BOOL)finished
 {
-  v5 = a5;
+  finishedCopy = finished;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!objc_msgSend_canResolveExternalReferences(WeakRetained, v10, v11))
   {
@@ -272,11 +272,11 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (v5)
+  if (finishedCopy)
   {
     if (objc_msgSend_shouldResolveExternalReferencesUsingObjectUUID(WeakRetained, v12, v13))
     {
-      v15 = objc_msgSend_objectUUIDForExternalReferenceToIdentifier_(WeakRetained, v14, a3);
+      v15 = objc_msgSend_objectUUIDForExternalReferenceToIdentifier_(WeakRetained, v14, identifier);
       if (v15)
       {
         v16 = objc_loadWeakRetained(&self->_context);
@@ -292,13 +292,13 @@ LABEL_9:
     }
 
     v15 = objc_loadWeakRetained(&self->_context);
-    v20 = objc_msgSend_readObjectIfNeededForIdentifier_isWeakReference_componentIdentifier_(v15, v21, a3, 1, a4);
+    v20 = objc_msgSend_readObjectIfNeededForIdentifier_isWeakReference_componentIdentifier_(v15, v21, identifier, 1, componentIdentifier);
   }
 
   else
   {
     v15 = objc_loadWeakRetained(&self->_context);
-    v20 = objc_msgSend_objectForIdentifier_(v15, v19, a3);
+    v20 = objc_msgSend_objectForIdentifier_(v15, v19, identifier);
   }
 
   v18 = v20;
@@ -309,16 +309,16 @@ LABEL_11:
   return v18;
 }
 
-- (int64_t)reader:(id)a3 wantsObjectIdentifierForUUID:(id)a4
+- (int64_t)reader:(id)reader wantsObjectIdentifierForUUID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = objc_msgSend_objectIdentifierForUUID_(WeakRetained, v7, v5);
+  v8 = objc_msgSend_objectIdentifierForUUID_(WeakRetained, v7, dCopy);
 
   return v8;
 }
 
-- (id)reader:(id)a3 wantsDataForIdentifier:(int64_t)a4
+- (id)reader:(id)reader wantsDataForIdentifier:(int64_t)identifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
   v7 = objc_loadWeakRetained(&self->_delegate);
@@ -327,7 +327,7 @@ LABEL_11:
   v41 = 0x3032000000;
   v42 = sub_276A48618;
   v43 = sub_276A48628;
-  v44 = objc_msgSend_cachedDataForIdentifier_(v7, v8, a4);
+  v44 = objc_msgSend_cachedDataForIdentifier_(v7, v8, identifier);
   if (v40[5])
   {
     isDecodingTransientObject = objc_msgSend_isDecodingTransientObject(v7, v9, v10);
@@ -347,7 +347,7 @@ LABEL_11:
 
   else
   {
-    v15 = objc_msgSend_dataInfoForIdentifier_(v7, v9, a4);
+    v15 = objc_msgSend_dataInfoForIdentifier_(v7, v9, identifier);
     v20 = objc_msgSend_digest(v15, v16, v17);
     if (v20)
     {
@@ -360,8 +360,8 @@ LABEL_11:
       v37 = &v39;
       v33 = v20;
       v34 = v15;
-      v35 = self;
-      v38 = a4;
+      selfCopy = self;
+      identifierCopy = identifier;
       v36 = v7;
       dispatch_sync(dataQueue, block);
     }
@@ -389,40 +389,40 @@ LABEL_11:
   return v29;
 }
 
-- (void)reader:(id)a3 didUnarchiveObject:(id)a4
+- (void)reader:(id)reader didUnarchiveObject:(id)object
 {
-  v6 = a4;
-  objc_msgSend_setTsp_identifier_(v6, v4, 0);
-  objc_msgSend_setTsp_component_(v6, v5, 0);
+  objectCopy = object;
+  objc_msgSend_setTsp_identifier_(objectCopy, v4, 0);
+  objc_msgSend_setTsp_component_(objectCopy, v5, 0);
 }
 
-- (void)reader:(id)a3 didReadLazyReference:(id)a4
+- (void)reader:(id)reader didReadLazyReference:(id)reference
 {
-  v6 = a3;
-  v7 = a4;
+  readerCopy = reader;
+  referenceCopy = reference;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (objc_msgSend_canResolveExternalReferences(WeakRetained, v9, v10) && objc_msgSend_shouldResolveExternalReferencesUsingObjectUUID(WeakRetained, v11, v12) && objc_msgSend_isExternalLazyReference_(self, v13, v7))
+  if (objc_msgSend_canResolveExternalReferences(WeakRetained, v9, v10) && objc_msgSend_shouldResolveExternalReferencesUsingObjectUUID(WeakRetained, v11, v12) && objc_msgSend_isExternalLazyReference_(self, v13, referenceCopy))
   {
     v25 = 0;
-    v16 = objc_msgSend_tsp_identifier(v7, v14, v15);
+    v16 = objc_msgSend_tsp_identifier(referenceCopy, v14, v15);
     v19 = objc_msgSend_objectUUIDForExternalReferenceToIdentifier_(WeakRetained, v17, v16);
     if (v19)
     {
       v20 = objc_loadWeakRetained(&self->_context);
       v22 = objc_msgSend_objectWithUUID_onlyIfLoaded_validateNewObjects_identifier_(v20, v21, v19, 1, 0, &v25);
 
-      objc_msgSend_resetToIdentifier_(v7, v23, v25);
+      objc_msgSend_resetToIdentifier_(referenceCopy, v23, v25);
     }
 
     else
     {
-      objc_msgSend_resetToIdentifier_(v7, v18, 0);
+      objc_msgSend_resetToIdentifier_(referenceCopy, v18, 0);
     }
   }
 
   v24.receiver = self;
   v24.super_class = TSPDecoderReadCoordinator;
-  [(TSPReadCoordinatorBase *)&v24 reader:v6 didReadLazyReference:v7];
+  [(TSPReadCoordinatorBase *)&v24 reader:readerCopy didReadLazyReference:referenceCopy];
 }
 
 - (BOOL)hasDocumentVersionUUID
@@ -457,7 +457,7 @@ LABEL_11:
   return isCrossAppPaste;
 }
 
-- (id)objectForIdentifier:(int64_t)a3
+- (id)objectForIdentifier:(int64_t)identifier
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDecoderReadCoordinator objectForIdentifier:]");
@@ -468,10 +468,10 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)readLazyReference:(id)a3 object:(id *)a4 error:(id *)a5
+- (BOOL)readLazyReference:(id)reference object:(id *)object error:(id *)error
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDecoderReadCoordinator readLazyReference:object:error:]", a4, a5);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDecoderReadCoordinator readLazyReference:object:error:]", object, error);
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDecoderReadCoordinator.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 390, 0, "Lazy reference resolution for objects from a decoder cannot happen while the root object is getting unarchived.");
 

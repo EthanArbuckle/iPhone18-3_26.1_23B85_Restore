@@ -1,10 +1,10 @@
 @interface CLTripSegmentProcessorOptions
 - (CLTripSegmentProcessorOptions)init;
-- (CLTripSegmentProcessorOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLTripSegmentProcessorOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLTripSegmentProcessorOptions
@@ -30,9 +30,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setRunLinearInterpolator:{-[CLTripSegmentProcessorOptions runLinearInterpolator](self, "runLinearInterpolator")}];
   [v4 setRunInertialIntegrator:{-[CLTripSegmentProcessorOptions runInertialIntegrator](self, "runInertialIntegrator")}];
   [v4 setRunMapIntegrator:{-[CLTripSegmentProcessorOptions runMapIntegrator](self, "runMapIntegrator")}];
@@ -76,64 +76,64 @@
   return [v2 stringWithFormat:@"%@", NSStringFromClass(v3)];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions runLinearInterpolator](self forKey:{"runLinearInterpolator"), @"runLinearInterpolator"}];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions runInertialIntegrator](self forKey:{"runInertialIntegrator"), @"runInertialIntegrator"}];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions runMapIntegrator](self forKey:{"runMapIntegrator"), @"runMapIntegrator"}];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions useXPCServiceForMapQuery](self forKey:{"useXPCServiceForMapQuery"), @"useXPCServiceForMapQuery"}];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions shouldRecordDataInFileForReplay](self forKey:{"shouldRecordDataInFileForReplay"), @"shouldRecordDataInFileForReplay"}];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions createSparseDataFromOneHzData](self forKey:{"createSparseDataFromOneHzData"), @"createSparseDataFromOneHzData"}];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions isSimulatedSparseProcessing](self forKey:{"isSimulatedSparseProcessing"), @"isSimulatedSparseProcessing"}];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions isNetworkAccessAllowed](self forKey:{"isNetworkAccessAllowed"), @"isNetworkAccessAllowed"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions runLinearInterpolator](self forKey:{"runLinearInterpolator"), @"runLinearInterpolator"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions runInertialIntegrator](self forKey:{"runInertialIntegrator"), @"runInertialIntegrator"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions runMapIntegrator](self forKey:{"runMapIntegrator"), @"runMapIntegrator"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions useXPCServiceForMapQuery](self forKey:{"useXPCServiceForMapQuery"), @"useXPCServiceForMapQuery"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions shouldRecordDataInFileForReplay](self forKey:{"shouldRecordDataInFileForReplay"), @"shouldRecordDataInFileForReplay"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions createSparseDataFromOneHzData](self forKey:{"createSparseDataFromOneHzData"), @"createSparseDataFromOneHzData"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions isSimulatedSparseProcessing](self forKey:{"isSimulatedSparseProcessing"), @"isSimulatedSparseProcessing"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions isNetworkAccessAllowed](self forKey:{"isNetworkAccessAllowed"), @"isNetworkAccessAllowed"}];
   [(CLTripSegmentProcessorOptions *)self timeBetweenReconstructedPointsSeconds];
-  [a3 encodeDouble:@"timeBetweenReconstructedPointsSeconds" forKey:?];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions useParticleMapMatcherForSnappingInMapIntegrator](self forKey:{"useParticleMapMatcherForSnappingInMapIntegrator"), @"useParticleMapMatcherForSnappingInMapIntegrator"}];
-  [a3 encodeObject:-[CLTripSegmentProcessorOptions tripSegmentRecorderLoggingDirectory](self forKey:{"tripSegmentRecorderLoggingDirectory"), @"tripSegmentRecorderLoggingDirectory"}];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions useNonGNSSFixesForRouteReconstruction](self forKey:{"useNonGNSSFixesForRouteReconstruction"), @"useNonGNSSFixesForRouteReconstruction"}];
+  [coder encodeDouble:@"timeBetweenReconstructedPointsSeconds" forKey:?];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions useParticleMapMatcherForSnappingInMapIntegrator](self forKey:{"useParticleMapMatcherForSnappingInMapIntegrator"), @"useParticleMapMatcherForSnappingInMapIntegrator"}];
+  [coder encodeObject:-[CLTripSegmentProcessorOptions tripSegmentRecorderLoggingDirectory](self forKey:{"tripSegmentRecorderLoggingDirectory"), @"tripSegmentRecorderLoggingDirectory"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions useNonGNSSFixesForRouteReconstruction](self forKey:{"useNonGNSSFixesForRouteReconstruction"), @"useNonGNSSFixesForRouteReconstruction"}];
   [(CLTripSegmentProcessorOptions *)self maxProcessingTimeInMilliSec];
-  [a3 encodeDouble:@"maxProcessingTimeMilliSec" forKey:?];
+  [coder encodeDouble:@"maxProcessingTimeMilliSec" forKey:?];
   [(CLTripSegmentProcessorOptions *)self useXPCServiceForVehicularAStarSearch];
-  [a3 encodeBool:v5 != 0.0 forKey:@"useXPCServiceForVehicularAStarSearch"];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions runLocationOutlierRejector](self forKey:{"runLocationOutlierRejector"), @"runLocationOutlierRejector"}];
-  [a3 encodeInteger:-[CLTripSegmentProcessorOptions windowSizeForLocationOutlierRejector](self forKey:{"windowSizeForLocationOutlierRejector"), @"windowSizeForLocationOutlierRejector"}];
-  [a3 encodeInteger:-[CLTripSegmentProcessorOptions stepSizeForLocationOutlierRejector](self forKey:{"stepSizeForLocationOutlierRejector"), @"stepSizeForLocationOutlierRejector"}];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions isWatch](self forKey:{"isWatch"), @"isWatch"}];
-  [a3 encodeBool:-[CLTripSegmentProcessorOptions enableUseWifiInPTS](self forKey:{"enableUseWifiInPTS"), @"enableUseWifiInPTS"}];
+  [coder encodeBool:v5 != 0.0 forKey:@"useXPCServiceForVehicularAStarSearch"];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions runLocationOutlierRejector](self forKey:{"runLocationOutlierRejector"), @"runLocationOutlierRejector"}];
+  [coder encodeInteger:-[CLTripSegmentProcessorOptions windowSizeForLocationOutlierRejector](self forKey:{"windowSizeForLocationOutlierRejector"), @"windowSizeForLocationOutlierRejector"}];
+  [coder encodeInteger:-[CLTripSegmentProcessorOptions stepSizeForLocationOutlierRejector](self forKey:{"stepSizeForLocationOutlierRejector"), @"stepSizeForLocationOutlierRejector"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions isWatch](self forKey:{"isWatch"), @"isWatch"}];
+  [coder encodeBool:-[CLTripSegmentProcessorOptions enableUseWifiInPTS](self forKey:{"enableUseWifiInPTS"), @"enableUseWifiInPTS"}];
   [(CLTripSegmentProcessorOptions *)self minDistanceBetweenODVisitsToGenerateTripSegmentMeters];
-  [a3 encodeDouble:@"minDistanceBetweenODVisitsToGenerateTripSegmentMeters" forKey:?];
+  [coder encodeDouble:@"minDistanceBetweenODVisitsToGenerateTripSegmentMeters" forKey:?];
   [(CLTripSegmentProcessorOptions *)self maxTripSegmentDurationSeconds];
 
-  [a3 encodeDouble:@"maxTripSegmentDurationSeconds" forKey:?];
+  [coder encodeDouble:@"maxTripSegmentDurationSeconds" forKey:?];
 }
 
-- (CLTripSegmentProcessorOptions)initWithCoder:(id)a3
+- (CLTripSegmentProcessorOptions)initWithCoder:(id)coder
 {
   v4 = objc_alloc_init(CLTripSegmentProcessorOptions);
-  -[CLTripSegmentProcessorOptions setRunLinearInterpolator:](v4, "setRunLinearInterpolator:", [a3 decodeBoolForKey:@"runLinearInterpolator"]);
-  -[CLTripSegmentProcessorOptions setRunInertialIntegrator:](v4, "setRunInertialIntegrator:", [a3 decodeBoolForKey:@"runInertialIntegrator"]);
-  -[CLTripSegmentProcessorOptions setRunMapIntegrator:](v4, "setRunMapIntegrator:", [a3 decodeBoolForKey:@"runMapIntegrator"]);
-  -[CLTripSegmentProcessorOptions setUseXPCService:](v4, "setUseXPCService:", [a3 decodeBoolForKey:@"useXPCServiceForMapQuery"]);
-  -[CLTripSegmentProcessorOptions setshouldRecordDataInFileForReplay:](v4, "setshouldRecordDataInFileForReplay:", [a3 decodeBoolForKey:@"shouldRecordDataInFileForReplay"]);
-  -[CLTripSegmentProcessorOptions setCreateSparseDataFromOneHzData:](v4, "setCreateSparseDataFromOneHzData:", [a3 decodeBoolForKey:@"createSparseDataFromOneHzData"]);
-  -[CLTripSegmentProcessorOptions setSimulatedSparseProcessing:](v4, "setSimulatedSparseProcessing:", [a3 decodeBoolForKey:@"isSimulatedSparseProcessing"]);
-  -[CLTripSegmentProcessorOptions setNetworkAccessAllowed:](v4, "setNetworkAccessAllowed:", [a3 decodeBoolForKey:@"isNetworkAccessAllowed"]);
-  [a3 decodeDoubleForKey:@"timeBetweenReconstructedPointsSeconds"];
+  -[CLTripSegmentProcessorOptions setRunLinearInterpolator:](v4, "setRunLinearInterpolator:", [coder decodeBoolForKey:@"runLinearInterpolator"]);
+  -[CLTripSegmentProcessorOptions setRunInertialIntegrator:](v4, "setRunInertialIntegrator:", [coder decodeBoolForKey:@"runInertialIntegrator"]);
+  -[CLTripSegmentProcessorOptions setRunMapIntegrator:](v4, "setRunMapIntegrator:", [coder decodeBoolForKey:@"runMapIntegrator"]);
+  -[CLTripSegmentProcessorOptions setUseXPCService:](v4, "setUseXPCService:", [coder decodeBoolForKey:@"useXPCServiceForMapQuery"]);
+  -[CLTripSegmentProcessorOptions setshouldRecordDataInFileForReplay:](v4, "setshouldRecordDataInFileForReplay:", [coder decodeBoolForKey:@"shouldRecordDataInFileForReplay"]);
+  -[CLTripSegmentProcessorOptions setCreateSparseDataFromOneHzData:](v4, "setCreateSparseDataFromOneHzData:", [coder decodeBoolForKey:@"createSparseDataFromOneHzData"]);
+  -[CLTripSegmentProcessorOptions setSimulatedSparseProcessing:](v4, "setSimulatedSparseProcessing:", [coder decodeBoolForKey:@"isSimulatedSparseProcessing"]);
+  -[CLTripSegmentProcessorOptions setNetworkAccessAllowed:](v4, "setNetworkAccessAllowed:", [coder decodeBoolForKey:@"isNetworkAccessAllowed"]);
+  [coder decodeDoubleForKey:@"timeBetweenReconstructedPointsSeconds"];
   [(CLTripSegmentProcessorOptions *)v4 setTimeBetweenReconstructedPointsSeconds:?];
-  -[CLTripSegmentProcessorOptions setUseParticleMapMatcherForSnappingInMapIntegrator:](v4, "setUseParticleMapMatcherForSnappingInMapIntegrator:", [a3 decodeBoolForKey:@"useParticleMapMatcherForSnappingInMapIntegrator"]);
-  -[CLTripSegmentProcessorOptions setTripSegmentRecorderLoggingDirectory:](v4, "setTripSegmentRecorderLoggingDirectory:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"tripSegmentRecorderLoggingDirectory"]);
-  -[CLTripSegmentProcessorOptions setUseNonGNSSFixesForRouteReconstruction:](v4, "setUseNonGNSSFixesForRouteReconstruction:", [a3 decodeBoolForKey:@"useNonGNSSFixesForRouteReconstruction"]);
-  [a3 decodeDoubleForKey:@"maxProcessingTimeMilliSec"];
+  -[CLTripSegmentProcessorOptions setUseParticleMapMatcherForSnappingInMapIntegrator:](v4, "setUseParticleMapMatcherForSnappingInMapIntegrator:", [coder decodeBoolForKey:@"useParticleMapMatcherForSnappingInMapIntegrator"]);
+  -[CLTripSegmentProcessorOptions setTripSegmentRecorderLoggingDirectory:](v4, "setTripSegmentRecorderLoggingDirectory:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"tripSegmentRecorderLoggingDirectory"]);
+  -[CLTripSegmentProcessorOptions setUseNonGNSSFixesForRouteReconstruction:](v4, "setUseNonGNSSFixesForRouteReconstruction:", [coder decodeBoolForKey:@"useNonGNSSFixesForRouteReconstruction"]);
+  [coder decodeDoubleForKey:@"maxProcessingTimeMilliSec"];
   [(CLTripSegmentProcessorOptions *)v4 setMaxProcessingTimeInMilliSec:?];
-  -[CLTripSegmentProcessorOptions setUseXPCServiceForVehicularAStarSearch:](v4, "setUseXPCServiceForVehicularAStarSearch:", [a3 decodeBoolForKey:@"useXPCServiceForVehicularAStarSearch"]);
-  -[CLTripSegmentProcessorOptions setRunLocationOutlierRejector:](v4, "setRunLocationOutlierRejector:", [a3 decodeBoolForKey:@"runLocationOutlierRejector"]);
-  -[CLTripSegmentProcessorOptions setWindowSizeForLocationOutlierRejector:](v4, "setWindowSizeForLocationOutlierRejector:", [a3 decodeIntegerForKey:@"windowSizeForLocationOutlierRejector"]);
-  -[CLTripSegmentProcessorOptions setStepSizeForLocationOutlierRejector:](v4, "setStepSizeForLocationOutlierRejector:", [a3 decodeIntegerForKey:@"stepSizeForLocationOutlierRejector"]);
-  -[CLTripSegmentProcessorOptions setIsWatch:](v4, "setIsWatch:", [a3 decodeBoolForKey:@"isWatch"]);
-  -[CLTripSegmentProcessorOptions setEnableUseWifiInPTS:](v4, "setEnableUseWifiInPTS:", [a3 decodeBoolForKey:@"enableUseWifiInPTS"]);
-  [a3 decodeDoubleForKey:@"minDistanceBetweenODVisitsToGenerateTripSegmentMeters"];
+  -[CLTripSegmentProcessorOptions setUseXPCServiceForVehicularAStarSearch:](v4, "setUseXPCServiceForVehicularAStarSearch:", [coder decodeBoolForKey:@"useXPCServiceForVehicularAStarSearch"]);
+  -[CLTripSegmentProcessorOptions setRunLocationOutlierRejector:](v4, "setRunLocationOutlierRejector:", [coder decodeBoolForKey:@"runLocationOutlierRejector"]);
+  -[CLTripSegmentProcessorOptions setWindowSizeForLocationOutlierRejector:](v4, "setWindowSizeForLocationOutlierRejector:", [coder decodeIntegerForKey:@"windowSizeForLocationOutlierRejector"]);
+  -[CLTripSegmentProcessorOptions setStepSizeForLocationOutlierRejector:](v4, "setStepSizeForLocationOutlierRejector:", [coder decodeIntegerForKey:@"stepSizeForLocationOutlierRejector"]);
+  -[CLTripSegmentProcessorOptions setIsWatch:](v4, "setIsWatch:", [coder decodeBoolForKey:@"isWatch"]);
+  -[CLTripSegmentProcessorOptions setEnableUseWifiInPTS:](v4, "setEnableUseWifiInPTS:", [coder decodeBoolForKey:@"enableUseWifiInPTS"]);
+  [coder decodeDoubleForKey:@"minDistanceBetweenODVisitsToGenerateTripSegmentMeters"];
   [(CLTripSegmentProcessorOptions *)v4 setMinDistanceBetweenODVisitsToGenerateTripSegmentMeters:?];
-  [a3 decodeDoubleForKey:@"maxTripSegmentDurationSeconds"];
+  [coder decodeDoubleForKey:@"maxTripSegmentDurationSeconds"];
   [(CLTripSegmentProcessorOptions *)v4 setMaxTripSegmentDurationSeconds:?];
   return v4;
 }

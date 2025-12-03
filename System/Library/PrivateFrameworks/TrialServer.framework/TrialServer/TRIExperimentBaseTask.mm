@@ -1,28 +1,28 @@
 @interface TRIExperimentBaseTask
-- (BOOL)isEqual:(id)a3;
-- (TRIExperimentBaseTask)initWithExperiment:(id)a3;
-- (id)containerForFirstNamespaceInExperimentWithContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TRIExperimentBaseTask)initWithExperiment:(id)experiment;
+- (id)containerForFirstNamespaceInExperimentWithContext:(id)context;
 - (id)description;
 - (id)dimensions;
 - (id)metrics;
-- (id)nextTasksForRunStatus:(int)a3;
+- (id)nextTasksForRunStatus:(int)status;
 - (id)tags;
 - (id)trialSystemTelemetry;
 - (unint64_t)hash;
-- (void)addDimension:(id)a3;
-- (void)addMetric:(id)a3;
-- (void)mergeTelemetry:(id)a3;
+- (void)addDimension:(id)dimension;
+- (void)addMetric:(id)metric;
+- (void)mergeTelemetry:(id)telemetry;
 @end
 
 @implementation TRIExperimentBaseTask
 
-- (TRIExperimentBaseTask)initWithExperiment:(id)a3
+- (TRIExperimentBaseTask)initWithExperiment:(id)experiment
 {
-  v5 = a3;
-  if (!v5)
+  experimentCopy = experiment;
+  if (!experimentCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRIExperimentBaseTask.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"experiment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIExperimentBaseTask.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"experiment"}];
   }
 
   v17.receiver = self;
@@ -30,7 +30,7 @@
   v6 = [(TRIExperimentBaseTask *)&v17 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [experimentCopy copy];
     experiment = v6->_experiment;
     v6->_experiment = v7;
 
@@ -55,12 +55,12 @@
 - (id)tags
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [(TRIExperimentBaseTask *)self experiment];
-  v4 = [v3 taskTag];
-  v10[0] = v4;
-  v5 = [(TRIExperimentBaseTask *)self experiment];
-  v6 = [v5 experimentId];
-  v10[1] = v6;
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  taskTag = [experiment taskTag];
+  v10[0] = taskTag;
+  experiment2 = [(TRIExperimentBaseTask *)self experiment];
+  experimentId = [experiment2 experimentId];
+  v10[1] = experimentId;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -68,15 +68,15 @@
   return v7;
 }
 
-- (id)nextTasksForRunStatus:(int)a3
+- (id)nextTasksForRunStatus:(int)status
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 3)
+  if (status == 3)
   {
-    v4 = [(TRIExperimentBaseTask *)self experiment];
-    v5 = [v4 experimentId];
-    v6 = [(TRIExperimentBaseTask *)self experiment];
-    v7 = +[TRIDeactivateTreatmentTask taskWithExperimentId:deploymentId:failOnUnrecognizedExperiment:triggerEvent:taskAttribution:](TRIDeactivateTreatmentTask, "taskWithExperimentId:deploymentId:failOnUnrecognizedExperiment:triggerEvent:taskAttribution:", v5, [v6 deploymentId], 0, 23, 0);
+    experiment = [(TRIExperimentBaseTask *)self experiment];
+    experimentId = [experiment experimentId];
+    experiment2 = [(TRIExperimentBaseTask *)self experiment];
+    v7 = +[TRIDeactivateTreatmentTask taskWithExperimentId:deploymentId:failOnUnrecognizedExperiment:triggerEvent:taskAttribution:](TRIDeactivateTreatmentTask, "taskWithExperimentId:deploymentId:failOnUnrecognizedExperiment:triggerEvent:taskAttribution:", experimentId, [experiment2 deploymentId], 0, 23, 0);
     v11[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   }
@@ -91,53 +91,53 @@
   return v8;
 }
 
-- (id)containerForFirstNamespaceInExperimentWithContext:(id)a3
+- (id)containerForFirstNamespaceInExperimentWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 experimentDatabase];
-  v6 = [(TRIExperimentBaseTask *)self experiment];
-  v7 = [v5 experimentRecordWithExperimentDeployment:v6];
+  contextCopy = context;
+  experimentDatabase = [contextCopy experimentDatabase];
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  v7 = [experimentDatabase experimentRecordWithExperimentDeployment:experiment];
 
   if (v7)
   {
-    v8 = [v7 namespaces];
-    v9 = [v8 firstObject];
-    v10 = [v9 name];
+    namespaces = [v7 namespaces];
+    firstObject = [namespaces firstObject];
+    name = [firstObject name];
 
-    if (v10)
+    if (name)
     {
-      v11 = [v4 namespaceDatabase];
-      v12 = [v11 dynamicNamespaceRecordWithNamespaceName:v10];
+      namespaceDatabase = [contextCopy namespaceDatabase];
+      v12 = [namespaceDatabase dynamicNamespaceRecordWithNamespaceName:name];
 
       if (v12)
       {
-        v13 = [v12 appContainer];
+        appContainer = [v12 appContainer];
       }
 
       else
       {
-        v13 = 0;
+        appContainer = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      appContainer = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    appContainer = 0;
   }
 
-  return v13;
+  return appContainer;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -146,13 +146,13 @@
   {
     v10.receiver = self;
     v10.super_class = TRIExperimentBaseTask;
-    if ([(TRIBaseTask *)&v10 isEqual:v4])
+    if ([(TRIBaseTask *)&v10 isEqual:equalCopy])
     {
-      v5 = v4;
-      v6 = [(TRIExperimentBaseTask *)self experiment];
-      v7 = [(TRIExperimentBaseTask *)v5 experiment];
+      v5 = equalCopy;
+      experiment = [(TRIExperimentBaseTask *)self experiment];
+      experiment2 = [(TRIExperimentBaseTask *)v5 experiment];
 
-      v8 = [v6 isEqualToDeployment:v7];
+      v8 = [experiment isEqualToDeployment:experiment2];
     }
 
     else
@@ -169,13 +169,13 @@
   v13.receiver = self;
   v13.super_class = TRIExperimentBaseTask;
   v3 = [(TRIBaseTask *)&v13 hash];
-  v4 = [(TRIExperimentBaseTask *)self experiment];
-  v5 = [v4 experimentId];
-  if (v5)
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  experimentId = [experiment experimentId];
+  if (experimentId)
   {
-    v6 = [(TRIExperimentBaseTask *)self experiment];
-    v7 = [v6 experimentId];
-    v8 = [v7 hash];
+    experiment2 = [(TRIExperimentBaseTask *)self experiment];
+    experimentId2 = [experiment2 experimentId];
+    v8 = [experimentId2 hash];
   }
 
   else
@@ -183,42 +183,42 @@
     v8 = 0;
   }
 
-  v9 = [(TRIExperimentBaseTask *)self experiment];
-  if ([v9 hasDeploymentId])
+  experiment3 = [(TRIExperimentBaseTask *)self experiment];
+  if ([experiment3 hasDeploymentId])
   {
-    v10 = [(TRIExperimentBaseTask *)self experiment];
-    v11 = [v10 deploymentId];
+    experiment4 = [(TRIExperimentBaseTask *)self experiment];
+    deploymentId = [experiment4 deploymentId];
   }
 
   else
   {
-    v11 = -2;
+    deploymentId = -2;
   }
 
-  return v11 + 37 * (v8 + 37 * v3);
+  return deploymentId + 37 * (v8 + 37 * v3);
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TRIExperimentBaseTask *)self experiment];
-  v6 = [v5 shortDesc];
-  v7 = [v3 stringWithFormat:@"<%@:%@>", v4, v6];
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  shortDesc = [experiment shortDesc];
+  v7 = [v3 stringWithFormat:@"<%@:%@>", v4, shortDesc];
 
   return v7;
 }
 
-- (void)addMetric:(id)a3
+- (void)addMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__TRIExperimentBaseTask_addMetric___block_invoke;
   v7[3] = &unk_279DE3E18;
-  v8 = v4;
-  v6 = v4;
+  v8 = metricCopy;
+  v6 = metricCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -240,16 +240,16 @@ uint64_t __35__TRIExperimentBaseTask_addMetric___block_invoke(uint64_t a1, void 
   return [v3 addObject:v8];
 }
 
-- (void)addDimension:(id)a3
+- (void)addDimension:(id)dimension
 {
-  v4 = a3;
+  dimensionCopy = dimension;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__TRIExperimentBaseTask_addDimension___block_invoke;
   v7[3] = &unk_279DE3E18;
-  v8 = v4;
-  v6 = v4;
+  v8 = dimensionCopy;
+  v6 = dimensionCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -271,16 +271,16 @@ uint64_t __38__TRIExperimentBaseTask_addDimension___block_invoke(uint64_t a1, vo
   return [v3 addObject:v8];
 }
 
-- (void)mergeTelemetry:(id)a3
+- (void)mergeTelemetry:(id)telemetry
 {
-  v4 = a3;
+  telemetryCopy = telemetry;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__TRIExperimentBaseTask_mergeTelemetry___block_invoke;
   v7[3] = &unk_279DE3E18;
-  v8 = v4;
-  v6 = v4;
+  v8 = telemetryCopy;
+  v6 = telemetryCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -340,8 +340,8 @@ void *__32__TRIExperimentBaseTask_metrics__block_invoke(uint64_t a1, uint64_t a2
 - (id)dimensions
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(TRIExperimentBaseTask *)self experiment];
-  if (v4)
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  if (experiment)
   {
     v9 = 0;
     v10 = &v9;
@@ -389,7 +389,7 @@ uint64_t __35__TRIExperimentBaseTask_dimensions__block_invoke(uint64_t result, u
 - (id)trialSystemTelemetry
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(TRIExperimentBaseTask *)self experiment];
+  experiment = [(TRIExperimentBaseTask *)self experiment];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -402,7 +402,7 @@ uint64_t __35__TRIExperimentBaseTask_dimensions__block_invoke(uint64_t result, u
   v9[2] = __45__TRIExperimentBaseTask_trialSystemTelemetry__block_invoke;
   v9[3] = &unk_279DE3E68;
   v11 = &v12;
-  v6 = v4;
+  v6 = experiment;
   v10 = v6;
   [(_PASLock *)lock runWithLockAcquired:v9];
   v7 = v13[5];

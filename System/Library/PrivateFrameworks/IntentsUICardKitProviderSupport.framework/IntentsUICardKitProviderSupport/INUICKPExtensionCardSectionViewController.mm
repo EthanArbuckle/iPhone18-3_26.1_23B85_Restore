@@ -1,77 +1,77 @@
 @interface INUICKPExtensionCardSectionViewController
 - (CRKCardSectionViewControllingDelegate)cardSectionViewControllingDelegate;
-- (void)cardEventDidOccur:(unint64_t)a3 withIdentifier:(id)a4 userInfo:(id)a5;
-- (void)desiresInteractivity:(id)a3;
-- (void)remoteViewController:(id)a3 requestsHandlingOfIntent:(id)a4;
-- (void)remoteViewControllerWillBeginEditing:(id)a3;
+- (void)cardEventDidOccur:(unint64_t)occur withIdentifier:(id)identifier userInfo:(id)info;
+- (void)desiresInteractivity:(id)interactivity;
+- (void)remoteViewController:(id)controller requestsHandlingOfIntent:(id)intent;
+- (void)remoteViewControllerWillBeginEditing:(id)editing;
 @end
 
 @implementation INUICKPExtensionCardSectionViewController
 
-- (void)desiresInteractivity:(id)a3
+- (void)desiresInteractivity:(id)interactivity
 {
-  v4 = a3;
-  v5 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
-  [v5 desiresInteractivity:v4];
+  interactivityCopy = interactivity;
+  remoteViewController = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
+  [remoteViewController desiresInteractivity:interactivityCopy];
 }
 
-- (void)remoteViewController:(id)a3 requestsHandlingOfIntent:(id)a4
+- (void)remoteViewController:(id)controller requestsHandlingOfIntent:(id)intent
 {
-  v6 = [(INUICKPExtensionCardSectionViewController *)self cardSectionViewControllingDelegate:a3];
+  v6 = [(INUICKPExtensionCardSectionViewController *)self cardSectionViewControllingDelegate:controller];
   v5 = objc_alloc_init(MEMORY[0x277CF9468]);
   [v6 performCommand:v5 forViewController:self];
 }
 
-- (void)remoteViewControllerWillBeginEditing:(id)a3
+- (void)remoteViewControllerWillBeginEditing:(id)editing
 {
-  v5 = [(INUICKPExtensionCardSectionViewController *)self cardSectionViewControllingDelegate];
+  cardSectionViewControllingDelegate = [(INUICKPExtensionCardSectionViewController *)self cardSectionViewControllingDelegate];
   v4 = objc_alloc_init(MEMORY[0x277CF9428]);
-  [v5 performCommand:v4 forViewController:self];
+  [cardSectionViewControllingDelegate performCommand:v4 forViewController:self];
 }
 
-- (void)cardEventDidOccur:(unint64_t)a3 withIdentifier:(id)a4 userInfo:(id)a5
+- (void)cardEventDidOccur:(unint64_t)occur withIdentifier:(id)identifier userInfo:(id)info
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController:a3];
+  v7 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController:occur];
 
   if (!v7)
   {
     goto LABEL_18;
   }
 
-  if (a3 > 4)
+  if (occur > 4)
   {
-    if (a3 == 5)
+    if (occur == 5)
     {
-      v17 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
-      v18 = [v17 _cancelTouchesForCurrentEventInHostedContent];
+      remoteViewController = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
+      _cancelTouchesForCurrentEventInHostedContent = [remoteViewController _cancelTouchesForCurrentEventInHostedContent];
       touchDeliveryPolicyAssertion = self->_touchDeliveryPolicyAssertion;
-      self->_touchDeliveryPolicyAssertion = v18;
+      self->_touchDeliveryPolicyAssertion = _cancelTouchesForCurrentEventInHostedContent;
 
       v20 = *MEMORY[0x277CF93F0];
       if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
       {
         v21 = v20;
-        v22 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
+        remoteViewController2 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
         v23 = self->_touchDeliveryPolicyAssertion;
         *buf = 138412546;
-        v27 = v22;
+        v27 = remoteViewController2;
         v28 = 2112;
         v29 = v23;
         _os_log_impl(&dword_255550000, v21, OS_LOG_TYPE_INFO, "CRKEventScrollingStarted, cancelling touches for %@ with assertion %@", buf, 0x16u);
       }
     }
 
-    else if (a3 == 6)
+    else if (occur == 6)
     {
       v11 = *MEMORY[0x277CF93F0];
       if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
       {
         v12 = v11;
-        v13 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
+        remoteViewController3 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
         v14 = self->_touchDeliveryPolicyAssertion;
         *buf = 138412546;
-        v27 = v13;
+        v27 = remoteViewController3;
         v28 = 2112;
         v29 = v14;
         _os_log_impl(&dword_255550000, v12, OS_LOG_TYPE_INFO, "CRKEventScrollingEnded, resuming touches for %@ by invalidating assertion %@", buf, 0x16u);
@@ -85,12 +85,12 @@
     goto LABEL_18;
   }
 
-  if (a3 != 3)
+  if (occur != 3)
   {
-    if (a3 == 4)
+    if (occur == 4)
     {
-      v8 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
-      v9 = [v8 disconnect];
+      remoteViewController4 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
+      disconnect = [remoteViewController4 disconnect];
 
       v10 = *MEMORY[0x277D85DE8];
 
@@ -103,8 +103,8 @@ LABEL_18:
     return;
   }
 
-  v25 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
-  [v25 requestCancellation];
+  remoteViewController5 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
+  [remoteViewController5 requestCancellation];
   v16 = *MEMORY[0x277D85DE8];
 }
 

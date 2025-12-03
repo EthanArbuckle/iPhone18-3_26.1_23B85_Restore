@@ -2,7 +2,7 @@
 + (AVCaptionFormatConformer)captionFormatConformerWithConversionSettings:(NSDictionary *)conversionSettings;
 - (AVCaption)conformedCaptionForCaption:(AVCaption *)caption error:(NSError *)outError;
 - (AVCaptionFormatConformer)initWithConversionSettings:(NSDictionary *)conversionSettings;
-- (BOOL)_isConversionToClosedCaptions:(id)a3;
+- (BOOL)_isConversionToClosedCaptions:(id)captions;
 - (void)dealloc;
 @end
 
@@ -15,13 +15,13 @@
   return v3;
 }
 
-- (BOOL)_isConversionToClosedCaptions:(id)a3
+- (BOOL)_isConversionToClosedCaptions:(id)captions
 {
   result = 0;
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"AVCaptionMediaTypeKey", "isEqualToString:", @"clcp"}])
+  if ([objc_msgSend(captions objectForKeyedSubscript:{@"AVCaptionMediaTypeKey", "isEqualToString:", @"clcp"}])
   {
-    v4 = [a3 objectForKeyedSubscript:@"AVCaptionMediaSubTypeKey"];
-    if ([v4 isEqual:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithLong:", 1664495672)}] & 1) != 0 || (objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"AVCaptionMediaSubTypeKey"), "isEqual:", @"c608"))
+    v4 = [captions objectForKeyedSubscript:@"AVCaptionMediaSubTypeKey"];
+    if ([v4 isEqual:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithLong:", 1664495672)}] & 1) != 0 || (objc_msgSend(objc_msgSend(captions, "objectForKeyedSubscript:", @"AVCaptionMediaSubTypeKey"), "isEqual:", @"c608"))
     {
       return 1;
     }
@@ -34,7 +34,7 @@
 {
   if (![(AVCaptionFormatConformer *)self _isConversionToClosedCaptions:conversionSettings])
   {
-    v8 = self;
+    selfCopy = self;
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"supports conversions only to mediaType 'clcp' and mediaSubType 'c608'", v9, v10, v11, v12, v13, v15.receiver), 0}];
     objc_exception_throw(v14);
   }
@@ -77,7 +77,7 @@
 
 - (AVCaption)conformedCaptionForCaption:(AVCaption *)caption error:(NSError *)outError
 {
-  v7 = [(AVCaption *)caption _figCaptionData];
+  _figCaptionData = [(AVCaption *)caption _figCaptionData];
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
@@ -112,7 +112,7 @@ LABEL_8:
   v27 = v24;
   v28 = v25;
   v29 = v26;
-  v11 = v10(v9, v7, &v27, &cf, &v20, 0);
+  v11 = v10(v9, _figCaptionData, &v27, &cf, &v20, 0);
   if (v11)
   {
     if (outError)

@@ -23,25 +23,25 @@
 - (int64_t)synthesisPriority;
 - (int64_t)synthesisProfile;
 - (unsigned)audioSessionId;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAudibleContext:(id)a3;
-- (void)setContextInfo:(id)a3;
-- (void)setCustomResourceURLs:(id)a3;
-- (void)setDidGenerateAudio:(id)a3;
-- (void)setDidGenerateWordTimings:(id)a3;
-- (void)setDidStartSpeaking:(id)a3;
-- (void)setPitch:(float)a3;
-- (void)setPlaybackVolume:(float)a3;
-- (void)setProsodyProperties:(id)a3;
-- (void)setRate:(float)a3;
-- (void)setSiriAceViewId:(id)a3;
-- (void)setSiriRequestId:(id)a3;
-- (void)setSynthesisContext:(id)a3;
-- (void)setSynthesisPriority:(int64_t)a3;
-- (void)setSynthesisProfile:(int64_t)a3;
-- (void)setText:(id)a3;
-- (void)setVoice:(id)a3;
-- (void)setVolume:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAudibleContext:(id)context;
+- (void)setContextInfo:(id)info;
+- (void)setCustomResourceURLs:(id)ls;
+- (void)setDidGenerateAudio:(id)audio;
+- (void)setDidGenerateWordTimings:(id)timings;
+- (void)setDidStartSpeaking:(id)speaking;
+- (void)setPitch:(float)pitch;
+- (void)setPlaybackVolume:(float)volume;
+- (void)setProsodyProperties:(id)properties;
+- (void)setRate:(float)rate;
+- (void)setSiriAceViewId:(id)id;
+- (void)setSiriRequestId:(id)id;
+- (void)setSynthesisContext:(id)context;
+- (void)setSynthesisPriority:(int64_t)priority;
+- (void)setSynthesisProfile:(int64_t)profile;
+- (void)setText:(id)text;
+- (void)setVoice:(id)voice;
+- (void)setVolume:(float)volume;
 @end
 
 @implementation SiriTTSSpeechRequest
@@ -60,247 +60,247 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1AD6CBC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1AD6CBC(coderCopy);
 }
 
-- (void)setAudibleContext:(id)a3
+- (void)setAudibleContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1B1B11F9C();
 }
 
-- (void)setSynthesisContext:(id)a3
+- (void)setSynthesisContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1B1B120B0();
 }
 
 - (BOOL)whisper
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 whisper];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  whisper = [synthesisContext whisper];
 
-  return v3;
+  return whisper;
 }
 
-- (void)setDidGenerateWordTimings:(id)a3
+- (void)setDidGenerateWordTimings:(id)timings
 {
-  v4 = a3;
-  v5 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v5 setDidGenerateWordTimings:v4];
+  timingsCopy = timings;
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext setDidGenerateWordTimings:timingsCopy];
 }
 
 - (id)didGenerateWordTimings
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 didGenerateWordTimings];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  didGenerateWordTimings = [synthesisContext didGenerateWordTimings];
 
-  return v3;
+  return didGenerateWordTimings;
 }
 
-- (void)setDidGenerateAudio:(id)a3
+- (void)setDidGenerateAudio:(id)audio
 {
-  v4 = a3;
-  v5 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v5 setDidGenerateAudio:v4];
+  audioCopy = audio;
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext setDidGenerateAudio:audioCopy];
 }
 
 - (id)didGenerateAudio
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 didGenerateAudio];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  didGenerateAudio = [synthesisContext didGenerateAudio];
 
-  return v3;
+  return didGenerateAudio;
 }
 
-- (void)setProsodyProperties:(id)a3
+- (void)setProsodyProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v5 setProsodyProperties:v4];
+  propertiesCopy = properties;
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext setProsodyProperties:propertiesCopy];
 }
 
 - (id)prosodyProperties
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 prosodyProperties];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  prosodyProperties = [synthesisContext prosodyProperties];
 
-  return v3;
+  return prosodyProperties;
 }
 
-- (void)setSynthesisPriority:(int64_t)a3
+- (void)setSynthesisPriority:(int64_t)priority
 {
-  v4 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v4 setSynthesisPriority:a3];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext setSynthesisPriority:priority];
 }
 
 - (int64_t)synthesisPriority
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 synthesisPriority];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  synthesisPriority = [synthesisContext synthesisPriority];
 
-  return v3;
+  return synthesisPriority;
 }
 
-- (void)setSynthesisProfile:(int64_t)a3
+- (void)setSynthesisProfile:(int64_t)profile
 {
-  v4 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v4 setSynthesisProfile:a3];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext setSynthesisProfile:profile];
 }
 
 - (int64_t)synthesisProfile
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 synthesisProfile];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  synthesisProfile = [synthesisContext synthesisProfile];
 
-  return v3;
+  return synthesisProfile;
 }
 
 - (BOOL)disableCompactVoice
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 disableCompactVoice];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  disableCompactVoice = [synthesisContext disableCompactVoice];
 
-  return v3;
+  return disableCompactVoice;
 }
 
-- (void)setCustomResourceURLs:(id)a3
+- (void)setCustomResourceURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v5 setCustomResourceURLs:v4];
+  lsCopy = ls;
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext setCustomResourceURLs:lsCopy];
 }
 
 - (id)customResourceURLs
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 customResourceURLs];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  customResourceURLs = [synthesisContext customResourceURLs];
 
-  return v3;
+  return customResourceURLs;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  v5 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  *&v4 = a3;
-  [v5 setVolume:v4];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  *&v4 = volume;
+  [synthesisContext setVolume:v4];
 }
 
 - (float)volume
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v2 volume];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext volume];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPitch:(float)a3
+- (void)setPitch:(float)pitch
 {
-  v5 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  *&v4 = a3;
-  [v5 setPitch:v4];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  *&v4 = pitch;
+  [synthesisContext setPitch:v4];
 }
 
 - (float)pitch
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v2 pitch];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext pitch];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRate:(float)a3
+- (void)setRate:(float)rate
 {
-  v5 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  *&v4 = a3;
-  [v5 setRate:v4];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  *&v4 = rate;
+  [synthesisContext setRate:v4];
 }
 
 - (float)rate
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v2 rate];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext rate];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setContextInfo:(id)a3
+- (void)setContextInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v5 setContextInfo:v4];
+  infoCopy = info;
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext setContextInfo:infoCopy];
 }
 
 - (id)contextInfo
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 contextInfo];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  contextInfo = [synthesisContext contextInfo];
 
-  return v3;
+  return contextInfo;
 }
 
 - (BOOL)minimizeDeviceUsage
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 minimizeDeviceUsage];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  minimizeDeviceUsage = [synthesisContext minimizeDeviceUsage];
 
-  return v3;
+  return minimizeDeviceUsage;
 }
 
 - (BOOL)privacySensitive
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 privacySensitive];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  privacySensitive = [synthesisContext privacySensitive];
 
-  return v3;
+  return privacySensitive;
 }
 
-- (void)setVoice:(id)a3
+- (void)setVoice:(id)voice
 {
-  v4 = a3;
-  v5 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v5 setVoice:v4];
+  voiceCopy = voice;
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext setVoice:voiceCopy];
 }
 
 - (id)voice
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 voice];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  voice = [synthesisContext voice];
 
-  return v3;
+  return voice;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  [v5 setText:v4];
+  textCopy = text;
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  [synthesisContext setText:textCopy];
 }
 
 - (id)text
 {
-  v2 = [(SiriTTSSpeechRequest *)self synthesisContext];
-  v3 = [v2 text];
+  synthesisContext = [(SiriTTSSpeechRequest *)self synthesisContext];
+  text = [synthesisContext text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSiriAceViewId:(id)a3
+- (void)setSiriAceViewId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SiriTTSBaseRequest *)self setInteractionLinkId:v4];
+    [(SiriTTSBaseRequest *)self setInteractionLinkId:idCopy];
   }
 }
 
@@ -309,24 +309,24 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(SiriTTSBaseRequest *)self interactionLinkId];
+    interactionLinkId = [(SiriTTSBaseRequest *)self interactionLinkId];
   }
 
   else
   {
-    v3 = 0;
+    interactionLinkId = 0;
   }
 
-  return v3;
+  return interactionLinkId;
 }
 
-- (void)setSiriRequestId:(id)a3
+- (void)setSiriRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SiriTTSBaseRequest *)self setLogLinkId:v4];
+    [(SiriTTSBaseRequest *)self setLogLinkId:idCopy];
   }
 }
 
@@ -335,43 +335,43 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(SiriTTSBaseRequest *)self logLinkId];
+    logLinkId = [(SiriTTSBaseRequest *)self logLinkId];
   }
 
   else
   {
-    v3 = 0;
+    logLinkId = 0;
   }
 
-  return v3;
+  return logLinkId;
 }
 
-- (void)setDidStartSpeaking:(id)a3
+- (void)setDidStartSpeaking:(id)speaking
 {
-  v4 = a3;
-  v5 = [(SiriTTSSpeechRequest *)self audibleContext];
-  [v5 setDidStartSpeaking:v4];
+  speakingCopy = speaking;
+  audibleContext = [(SiriTTSSpeechRequest *)self audibleContext];
+  [audibleContext setDidStartSpeaking:speakingCopy];
 }
 
 - (id)didStartSpeaking
 {
-  v2 = [(SiriTTSSpeechRequest *)self audibleContext];
-  v3 = [v2 didStartSpeaking];
+  audibleContext = [(SiriTTSSpeechRequest *)self audibleContext];
+  didStartSpeaking = [audibleContext didStartSpeaking];
 
-  return v3;
+  return didStartSpeaking;
 }
 
-- (void)setPlaybackVolume:(float)a3
+- (void)setPlaybackVolume:(float)volume
 {
-  v5 = [(SiriTTSSpeechRequest *)self audibleContext];
-  *&v4 = a3;
-  [v5 setPlaybackVolume:v4];
+  audibleContext = [(SiriTTSSpeechRequest *)self audibleContext];
+  *&v4 = volume;
+  [audibleContext setPlaybackVolume:v4];
 }
 
 - (float)playbackVolume
 {
-  v2 = [(SiriTTSSpeechRequest *)self audibleContext];
-  [v2 playbackVolume];
+  audibleContext = [(SiriTTSSpeechRequest *)self audibleContext];
+  [audibleContext playbackVolume];
   v4 = v3;
 
   return v4;
@@ -379,18 +379,18 @@
 
 - (BOOL)immediate
 {
-  v2 = [(SiriTTSSpeechRequest *)self audibleContext];
-  v3 = [v2 immediate];
+  audibleContext = [(SiriTTSSpeechRequest *)self audibleContext];
+  immediate = [audibleContext immediate];
 
-  return v3;
+  return immediate;
 }
 
 - (unsigned)audioSessionId
 {
-  v2 = [(SiriTTSSpeechRequest *)self audibleContext];
-  v3 = [v2 audioSessionId];
+  audibleContext = [(SiriTTSSpeechRequest *)self audibleContext];
+  audioSessionId = [audibleContext audioSessionId];
 
-  return v3;
+  return audioSessionId;
 }
 
 @end

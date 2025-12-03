@@ -1,21 +1,21 @@
 @interface ARSegmentationData
-- (ARSegmentationData)initWithTimestamp:(double)a3 segmentationBuffer:(__CVBuffer *)a4 confidenceBuffer:(__CVBuffer *)a5 uncertaintyBuffer:(__CVBuffer *)a6 source:(int64_t)a7;
+- (ARSegmentationData)initWithTimestamp:(double)timestamp segmentationBuffer:(__CVBuffer *)buffer confidenceBuffer:(__CVBuffer *)confidenceBuffer uncertaintyBuffer:(__CVBuffer *)uncertaintyBuffer source:(int64_t)source;
 - (BOOL)hasSegmentedPeople;
 - (NSDictionary)tracingEntry;
 - (NSString)description;
-- (uint64_t)resampleSemanticsToDepthCPU:(float32x4_t)a3 depthToSemantics:(float32x4_t)a4 semanticsIntrinsics:(float32x4_t)a5 depthIntrinsics:(float32x4_t)a6;
+- (uint64_t)resampleSemanticsToDepthCPU:(float32x4_t)u depthToSemantics:(float32x4_t)semantics semanticsIntrinsics:(float32x4_t)intrinsics depthIntrinsics:(float32x4_t)depthIntrinsics;
 - (void)adjustedIntrinics;
 - (void)dealloc;
-- (void)setConfidenceSampledForDepth:(__CVBuffer *)a3;
-- (void)setMaskedSemanticsSampledForDepth:(__CVBuffer *)a3;
-- (void)setNormalsBuffer:(__CVBuffer *)a3;
-- (void)setSemanticsSampledForDepth:(__CVBuffer *)a3;
-- (void)setUncertaintySampledForDepth:(__CVBuffer *)a3;
+- (void)setConfidenceSampledForDepth:(__CVBuffer *)depth;
+- (void)setMaskedSemanticsSampledForDepth:(__CVBuffer *)depth;
+- (void)setNormalsBuffer:(__CVBuffer *)buffer;
+- (void)setSemanticsSampledForDepth:(__CVBuffer *)depth;
+- (void)setUncertaintySampledForDepth:(__CVBuffer *)depth;
 @end
 
 @implementation ARSegmentationData
 
-- (ARSegmentationData)initWithTimestamp:(double)a3 segmentationBuffer:(__CVBuffer *)a4 confidenceBuffer:(__CVBuffer *)a5 uncertaintyBuffer:(__CVBuffer *)a6 source:(int64_t)a7
+- (ARSegmentationData)initWithTimestamp:(double)timestamp segmentationBuffer:(__CVBuffer *)buffer confidenceBuffer:(__CVBuffer *)confidenceBuffer uncertaintyBuffer:(__CVBuffer *)uncertaintyBuffer source:(int64_t)source
 {
   v15.receiver = self;
   v15.super_class = ARSegmentationData;
@@ -23,19 +23,19 @@
   v13 = v12;
   if (v12)
   {
-    v12->_timestamp = a3;
-    v12->_segmentationBuffer = CVPixelBufferRetain(a4);
-    if (a5)
+    v12->_timestamp = timestamp;
+    v12->_segmentationBuffer = CVPixelBufferRetain(buffer);
+    if (confidenceBuffer)
     {
-      v13->_confidenceBuffer = CVPixelBufferRetain(a5);
+      v13->_confidenceBuffer = CVPixelBufferRetain(confidenceBuffer);
     }
 
-    if (a6)
+    if (uncertaintyBuffer)
     {
-      v13->_uncertaintyBuffer = CVPixelBufferRetain(a6);
+      v13->_uncertaintyBuffer = CVPixelBufferRetain(uncertaintyBuffer);
     }
 
-    v13->_source = a7;
+    v13->_source = source;
   }
 
   return v13;
@@ -127,17 +127,17 @@ LABEL_16:
 
 - (void)adjustedIntrinics
 {
-  v2 = *(a1 + 96);
+  v2 = *(self + 96);
   if (v2)
   {
     [v2 cameraIntrinsics];
     v14 = v4;
     v15 = v3;
     v13 = v5;
-    [*(a1 + 96) imageResolution];
+    [*(self + 96) imageResolution];
     v7 = v6;
     v9 = v8;
-    v10 = *(a1 + 24);
+    v10 = *(self + 24);
     if (v10)
     {
       Width = CVPixelBufferGetWidth(v10);
@@ -154,12 +154,12 @@ LABEL_16:
   }
 }
 
-- (uint64_t)resampleSemanticsToDepthCPU:(float32x4_t)a3 depthToSemantics:(float32x4_t)a4 semanticsIntrinsics:(float32x4_t)a5 depthIntrinsics:(float32x4_t)a6
+- (uint64_t)resampleSemanticsToDepthCPU:(float32x4_t)u depthToSemantics:(float32x4_t)semantics semanticsIntrinsics:(float32x4_t)intrinsics depthIntrinsics:(float32x4_t)depthIntrinsics
 {
   v80[1] = *MEMORY[0x1E69E9840];
   if (a10)
   {
-    v19 = a1[3] == 0;
+    v19 = self[3] == 0;
   }
 
   else
@@ -180,28 +180,28 @@ LABEL_16:
     v63 = v82.columns[2];
     Width = CVPixelBufferGetWidth(a10);
     Height = CVPixelBufferGetHeight(a10);
-    v24 = CVPixelBufferGetWidth(a1[3]);
-    v25 = CVPixelBufferGetHeight(a1[3]);
+    v24 = CVPixelBufferGetWidth(self[3]);
+    v25 = CVPixelBufferGetHeight(self[3]);
     pixelBufferOut = 0;
     v79 = *MEMORY[0x1E69660D8];
     v80[0] = MEMORY[0x1E695E0F8];
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:&v79 count:1];
     v27 = *MEMORY[0x1E695E480];
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a1[3]);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(self[3]);
     CVPixelBufferCreate(v27, Width, Height, PixelFormatType, v26, &pixelBufferOut);
     CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
     v77 = 0;
-    v29 = a1[4];
+    v29 = self[4];
     if (v29)
     {
       v30 = CVPixelBufferGetPixelFormatType(v29);
       v31 = Height;
       CVPixelBufferCreate(v27, Width, Height, v30, v26, &v77);
       CVPixelBufferLockBaseAddress(v77, 0);
-      v62 = CVPixelBufferGetBytesPerRow(a1[4]) >> 2;
+      v62 = CVPixelBufferGetBytesPerRow(self[4]) >> 2;
       v57 = CVPixelBufferGetBytesPerRow(v77) >> 2;
-      CVPixelBufferLockBaseAddress(a1[4], 1uLL);
-      BaseAddress = CVPixelBufferGetBaseAddress(a1[4]);
+      CVPixelBufferLockBaseAddress(self[4], 1uLL);
+      BaseAddress = CVPixelBufferGetBaseAddress(self[4]);
       v32 = CVPixelBufferGetBaseAddress(v77);
     }
 
@@ -215,7 +215,7 @@ LABEL_16:
     }
 
     v76 = 0;
-    v33 = a1[5];
+    v33 = self[5];
     v74 = v26;
     v59 = v31;
     if (v33)
@@ -223,10 +223,10 @@ LABEL_16:
       v34 = CVPixelBufferGetPixelFormatType(v33);
       CVPixelBufferCreate(v27, Width, v31, v34, v26, &v76);
       CVPixelBufferLockBaseAddress(v76, 0);
-      v60 = CVPixelBufferGetBytesPerRow(a1[5]) >> 2;
+      v60 = CVPixelBufferGetBytesPerRow(self[5]) >> 2;
       v56 = CVPixelBufferGetBytesPerRow(v76) >> 2;
-      CVPixelBufferLockBaseAddress(a1[5], 1uLL);
-      v35 = CVPixelBufferGetBaseAddress(a1[5]);
+      CVPixelBufferLockBaseAddress(self[5], 1uLL);
+      v35 = CVPixelBufferGetBaseAddress(self[5]);
       v36 = CVPixelBufferGetBaseAddress(v76);
     }
 
@@ -239,13 +239,13 @@ LABEL_16:
     }
 
     BytesPerRow = CVPixelBufferGetBytesPerRow(a10);
-    v37 = CVPixelBufferGetBytesPerRow(a1[3]);
+    v37 = CVPixelBufferGetBytesPerRow(self[3]);
     v58 = CVPixelBufferGetBytesPerRow(pixelBufferOut);
-    CVPixelBufferLockBaseAddress(a1[3], 1uLL);
+    CVPixelBufferLockBaseAddress(self[3], 1uLL);
     CVPixelBufferLockBaseAddress(a10, 1uLL);
     pixelBuffer = a10;
     v38 = CVPixelBufferGetBaseAddress(a10);
-    v39 = CVPixelBufferGetBaseAddress(a1[3]);
+    v39 = CVPixelBufferGetBaseAddress(self[3]);
     v40 = CVPixelBufferGetBaseAddress(pixelBufferOut);
     if (v59)
     {
@@ -260,8 +260,8 @@ LABEL_16:
           do
           {
             v44 = vmulq_n_f32(vaddq_f32(v63, vmlaq_f32(vmulq_n_f32(v65, v43), v41, v64)), v38[v43]);
-            v45 = vaddq_f32(a5, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, v44.f32[0]), a3, *v44.f32, 1), a4, v44, 2));
-            v46 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, v45.f32[0]), a7, *v45.f32, 1), a8, v45, 2);
+            v45 = vaddq_f32(intrinsics, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, v44.f32[0]), u, *v44.f32, 1), semantics, v44, 2));
+            v46 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(depthIntrinsics, v45.f32[0]), a7, *v45.f32, 1), a8, v45, 2);
             v47 = vdivq_f32(v46, vdupq_laneq_s32(v46, 2)).u64[0];
             v48 = *(&v47 + 1);
             if ((v48 & 0x80000000) == 0)
@@ -270,12 +270,12 @@ LABEL_16:
               if ((v49 & 0x80000000) == 0 && v25 > v48 && v24 > v49)
               {
                 v40[v43] = v39[v37 * v48 + v49];
-                if (a1[4])
+                if (self[4])
                 {
                   *&v32[4 * v43] = BaseAddress[v62 * v48 + v49];
                 }
 
-                if (a1[5])
+                if (self[5])
                 {
                   *&v36[4 * v43] = v35[v60 * v48 + v49];
                 }
@@ -299,49 +299,49 @@ LABEL_16:
     }
 
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 1uLL);
-    CVPixelBufferUnlockBaseAddress(a1[3], 1uLL);
-    v50 = a1[4];
+    CVPixelBufferUnlockBaseAddress(self[3], 1uLL);
+    v50 = self[4];
     if (v50)
     {
       CVPixelBufferUnlockBaseAddress(v50, 1uLL);
     }
 
-    v51 = a1[5];
+    v51 = self[5];
     if (v51)
     {
       CVPixelBufferUnlockBaseAddress(v51, 1uLL);
     }
 
     CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
-    v52 = a1[8];
+    v52 = self[8];
     if (v52)
     {
       CVPixelBufferRelease(v52);
     }
 
-    a1[8] = pixelBufferOut;
-    if (a1[4])
+    self[8] = pixelBufferOut;
+    if (self[4])
     {
       CVPixelBufferUnlockBaseAddress(v77, 0);
-      v53 = a1[9];
+      v53 = self[9];
       if (v53)
       {
         CVPixelBufferRelease(v53);
       }
 
-      a1[9] = v77;
+      self[9] = v77;
     }
 
-    if (a1[5])
+    if (self[5])
     {
       CVPixelBufferUnlockBaseAddress(v76, 0);
-      v54 = a1[10];
+      v54 = self[10];
       if (v54)
       {
         CVPixelBufferRelease(v54);
       }
 
-      a1[10] = v76;
+      self[10] = v76;
     }
 
     return v75;
@@ -350,63 +350,63 @@ LABEL_16:
   return result;
 }
 
-- (void)setNormalsBuffer:(__CVBuffer *)a3
+- (void)setNormalsBuffer:(__CVBuffer *)buffer
 {
   normalsBuffer = self->_normalsBuffer;
-  if (normalsBuffer != a3)
+  if (normalsBuffer != buffer)
   {
     CVPixelBufferRelease(normalsBuffer);
-    self->_normalsBuffer = a3;
+    self->_normalsBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setSemanticsSampledForDepth:(__CVBuffer *)a3
+- (void)setSemanticsSampledForDepth:(__CVBuffer *)depth
 {
   semanticsSampledForDepth = self->_semanticsSampledForDepth;
-  if (semanticsSampledForDepth != a3)
+  if (semanticsSampledForDepth != depth)
   {
     CVPixelBufferRelease(semanticsSampledForDepth);
-    self->_semanticsSampledForDepth = a3;
+    self->_semanticsSampledForDepth = depth;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(depth);
   }
 }
 
-- (void)setConfidenceSampledForDepth:(__CVBuffer *)a3
+- (void)setConfidenceSampledForDepth:(__CVBuffer *)depth
 {
   confidenceSampledForDepth = self->_confidenceSampledForDepth;
-  if (confidenceSampledForDepth != a3)
+  if (confidenceSampledForDepth != depth)
   {
     CVPixelBufferRelease(confidenceSampledForDepth);
-    self->_confidenceSampledForDepth = a3;
+    self->_confidenceSampledForDepth = depth;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(depth);
   }
 }
 
-- (void)setUncertaintySampledForDepth:(__CVBuffer *)a3
+- (void)setUncertaintySampledForDepth:(__CVBuffer *)depth
 {
   uncertaintySampledForDepth = self->_uncertaintySampledForDepth;
-  if (uncertaintySampledForDepth != a3)
+  if (uncertaintySampledForDepth != depth)
   {
     CVPixelBufferRelease(uncertaintySampledForDepth);
-    self->_uncertaintySampledForDepth = a3;
+    self->_uncertaintySampledForDepth = depth;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(depth);
   }
 }
 
-- (void)setMaskedSemanticsSampledForDepth:(__CVBuffer *)a3
+- (void)setMaskedSemanticsSampledForDepth:(__CVBuffer *)depth
 {
   maskedSemanticsSampledForDepth = self->_maskedSemanticsSampledForDepth;
-  if (maskedSemanticsSampledForDepth != a3)
+  if (maskedSemanticsSampledForDepth != depth)
   {
     CVPixelBufferRelease(maskedSemanticsSampledForDepth);
-    self->_maskedSemanticsSampledForDepth = a3;
+    self->_maskedSemanticsSampledForDepth = depth;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(depth);
   }
 }
 

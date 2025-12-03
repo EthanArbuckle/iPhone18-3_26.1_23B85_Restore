@@ -1,15 +1,15 @@
 @interface RMBackgroundTask
-- (RMBackgroundTask)initWithIdentifier:(id)a3 queue:(id)a4 callback:(id)a5;
+- (RMBackgroundTask)initWithIdentifier:(id)identifier queue:(id)queue callback:(id)callback;
 - (void)dealloc;
 @end
 
 @implementation RMBackgroundTask
 
-- (RMBackgroundTask)initWithIdentifier:(id)a3 queue:(id)a4 callback:(id)a5
+- (RMBackgroundTask)initWithIdentifier:(id)identifier queue:(id)queue callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  callbackCopy = callback;
   v24.receiver = self;
   v24.super_class = RMBackgroundTask;
   v11 = [(RMBackgroundTask *)&v24 init];
@@ -19,20 +19,20 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v26 = v8;
+      v26 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Initialized task: %{public}@", buf, 0xCu);
     }
 
-    [(RMBackgroundTask *)v11 setIdentifier:v8];
+    [(RMBackgroundTask *)v11 setIdentifier:identifierCopy];
     v13 = +[BGSystemTaskScheduler sharedScheduler];
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_10000B044;
     v21 = &unk_1000D0F78;
-    v14 = v8;
+    v14 = identifierCopy;
     v22 = v14;
-    v23 = v10;
-    v15 = [v13 registerForTaskWithIdentifier:v14 usingQueue:v9 launchHandler:&v18];
+    v23 = callbackCopy;
+    v15 = [v13 registerForTaskWithIdentifier:v14 usingQueue:queueCopy launchHandler:&v18];
 
     if ((v15 & 1) == 0)
     {
@@ -52,15 +52,15 @@
   v3 = +[RMLog backgroundTask];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(RMBackgroundTask *)self identifier];
+    identifier = [(RMBackgroundTask *)self identifier];
     *buf = 138543362;
-    v9 = v4;
+    v9 = identifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Deallocated task: %{public}@", buf, 0xCu);
   }
 
   v5 = +[BGSystemTaskScheduler sharedScheduler];
-  v6 = [(RMBackgroundTask *)self identifier];
-  [v5 deregisterTaskWithIdentifier:v6];
+  identifier2 = [(RMBackgroundTask *)self identifier];
+  [v5 deregisterTaskWithIdentifier:identifier2];
 
   v7.receiver = self;
   v7.super_class = RMBackgroundTask;

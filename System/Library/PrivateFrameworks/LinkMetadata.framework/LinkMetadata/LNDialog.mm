@@ -1,57 +1,57 @@
 @interface LNDialog
-- (BOOL)isEqual:(id)a3;
-- (LNDialog)initWithCoder:(id)a3;
-- (LNDialog)initWithLocaleIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNDialog)initWithCoder:(id)coder;
+- (LNDialog)initWithLocaleIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNDialog
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNDialog *)self localeIdentifier];
-  [v4 encodeObject:v5 forKey:@"localeIdentifier"];
+  coderCopy = coder;
+  localeIdentifier = [(LNDialog *)self localeIdentifier];
+  [coderCopy encodeObject:localeIdentifier forKey:@"localeIdentifier"];
 }
 
-- (LNDialog)initWithCoder:(id)a3
+- (LNDialog)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
 
   if (v5)
   {
     self = [(LNDialog *)self initWithLocaleIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNDialog *)self localeIdentifier];
-      v8 = [(LNDialog *)v6 localeIdentifier];
-      v9 = v7;
-      v10 = v8;
+      localeIdentifier = [(LNDialog *)self localeIdentifier];
+      localeIdentifier2 = [(LNDialog *)v6 localeIdentifier];
+      v9 = localeIdentifier;
+      v10 = localeIdentifier2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -79,19 +79,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(LNDialog *)self localeIdentifier];
-  v3 = [v2 hash];
+  localeIdentifier = [(LNDialog *)self localeIdentifier];
+  v3 = [localeIdentifier hash];
 
   return v3;
 }
 
-- (LNDialog)initWithLocaleIdentifier:(id)a3
+- (LNDialog)initWithLocaleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNDialog.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"localeIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNDialog.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"localeIdentifier"}];
   }
 
   v12.receiver = self;
@@ -99,7 +99,7 @@
   v6 = [(LNDialog *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     localeIdentifier = v6->_localeIdentifier;
     v6->_localeIdentifier = v7;
 

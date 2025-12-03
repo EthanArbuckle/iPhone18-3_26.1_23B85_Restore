@@ -14,7 +14,7 @@
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
-  v8[3] = [a1 count];
+  v8[3] = [self count];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__NSMutableArray_SiriUIFoundationAdditions__sruif_isValidIndexSetToInsert___block_invoke;

@@ -1,8 +1,8 @@
 @interface TextFieldAlertController
 - (NSArray)keyCommands;
-- (_TtC8StocksUI24TextFieldAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8StocksUI24TextFieldAlertController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cancel;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -14,7 +14,7 @@
   if (v2)
   {
     v3 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC8StocksUI24TextFieldAlertController_onCancel);
-    v4 = self;
+    selfCopy = self;
     v5 = sub_2204A80F0(v2, v3);
     v2(v5);
     sub_2204DA45C(v2);
@@ -22,7 +22,7 @@
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   [(TextFieldAlertController *)self dismissViewControllerAnimated:1 completion:0];
@@ -30,17 +30,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2206EA408();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(TextFieldAlertController *)&v7 viewDidAppear:v3];
+  [(TextFieldAlertController *)&v7 viewDidAppear:appearCopy];
   v5 = sub_2206E9F4C();
   [v5 setEnabled_];
 
@@ -48,7 +48,7 @@
   [v6 becomeFirstResponder];
 }
 
-- (_TtC8StocksUI24TextFieldAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8StocksUI24TextFieldAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -59,7 +59,7 @@
 {
   sub_22044D56C(0, &qword_281299860);
   sub_22089136C();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_220891A8C();
   sub_22048BC00();
   v5 = swift_allocObject();

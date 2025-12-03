@@ -1,8 +1,8 @@
 @interface SCNActionReference
-- (SCNActionReference)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionReference)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNActionReference
@@ -15,24 +15,24 @@
   [(SCNActionGroup *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SCNActionReference;
-  v4 = [(SCNActionGroup *)&v6 copyWithZone:a3];
+  v4 = [(SCNActionGroup *)&v6 copyWithZone:zone];
   [v4 setReferenceName:{-[SCNActionReference referenceName](self, "referenceName")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[SCNActionReference referenceName](self forKey:{"referenceName"), @"referenceName"}];
+  [coder encodeObject:-[SCNActionReference referenceName](self forKey:{"referenceName"), @"referenceName"}];
   v5.receiver = self;
   v5.super_class = SCNActionReference;
-  [(SCNActionGroup *)&v5 encodeWithCoder:a3];
+  [(SCNActionGroup *)&v5 encodeWithCoder:coder];
 }
 
-- (SCNActionReference)initWithCoder:(id)a3
+- (SCNActionReference)initWithCoder:(id)coder
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8.receiver = self;
@@ -43,7 +43,7 @@
     goto LABEL_7;
   }
 
-  -[SCNActionReference setReferenceName:](v4, "setReferenceName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"referenceName"]);
+  -[SCNActionReference setReferenceName:](v4, "setReferenceName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"referenceName"]);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -56,7 +56,7 @@
     goto LABEL_7;
   }
 
-  v5 = [objc_msgSend(a3 "assetCatalog")];
+  v5 = [objc_msgSend(coder "assetCatalog")];
   if (!v5)
   {
 LABEL_7:

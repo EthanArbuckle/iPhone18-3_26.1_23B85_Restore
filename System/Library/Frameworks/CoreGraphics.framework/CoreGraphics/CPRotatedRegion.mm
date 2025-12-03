@@ -6,16 +6,16 @@
 - (double)right;
 - (double)top;
 - (void)fitBoundsToChildren;
-- (void)resizeWith:(id)a3;
+- (void)resizeWith:(id)with;
 @end
 
 @implementation CPRotatedRegion
 
-- (void)resizeWith:(id)a3
+- (void)resizeWith:(id)with
 {
   v4.receiver = self;
   v4.super_class = CPRotatedRegion;
-  [(CPChunk *)&v4 resizeWith:a3];
+  [(CPChunk *)&v4 resizeWith:with];
   self->dirtyNormalizedBounds = 1;
 }
 

@@ -1,7 +1,7 @@
 @interface HostProcessIdentifier
 - (NSString)hostBundleId;
 - (_TtC11AppStoreKit21HostProcessIdentifier)init;
-- (void)setHostBundleId:(id)a3;
+- (void)setHostBundleId:(id)id;
 @end
 
 @implementation HostProcessIdentifier
@@ -24,9 +24,9 @@
   return v3;
 }
 
-- (void)setHostBundleId:(id)a3
+- (void)setHostBundleId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v4 = sub_1E1AF5DFC();
     v6 = v5;

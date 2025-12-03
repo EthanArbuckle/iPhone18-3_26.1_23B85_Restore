@@ -1,5 +1,5 @@
 @interface IDSWiFiSetupAttemptMetric
-- (IDSWiFiSetupAttemptMetric)initWithAttemptType:(unint64_t)a3 msDuration:(unint64_t)a4 result:(unint64_t)a5 client:(id)a6;
+- (IDSWiFiSetupAttemptMetric)initWithAttemptType:(unint64_t)type msDuration:(unint64_t)duration result:(unint64_t)result client:(id)client;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -26,28 +26,28 @@
     CFDictionarySetValue(v3, @"result", v6);
   }
 
-  v7 = [(IDSWiFiSetupAttemptMetric *)self client];
-  if (v7)
+  client = [(IDSWiFiSetupAttemptMetric *)self client];
+  if (client)
   {
-    CFDictionarySetValue(v3, @"client", v7);
+    CFDictionarySetValue(v3, @"client", client);
   }
 
   return v3;
 }
 
-- (IDSWiFiSetupAttemptMetric)initWithAttemptType:(unint64_t)a3 msDuration:(unint64_t)a4 result:(unint64_t)a5 client:(id)a6
+- (IDSWiFiSetupAttemptMetric)initWithAttemptType:(unint64_t)type msDuration:(unint64_t)duration result:(unint64_t)result client:(id)client
 {
-  v11 = a6;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = IDSWiFiSetupAttemptMetric;
   v12 = [(IDSWiFiSetupAttemptMetric *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_attemptType = a3;
-    v12->_msDuration = a4;
-    v12->_result = a5;
-    objc_storeStrong(&v12->_client, a6);
+    v12->_attemptType = type;
+    v12->_msDuration = duration;
+    v12->_result = result;
+    objc_storeStrong(&v12->_client, client);
   }
 
   return v13;

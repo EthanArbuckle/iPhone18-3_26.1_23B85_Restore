@@ -1,35 +1,35 @@
 @interface PXGenerativeStoryInWatchNextController
 - (BOOL)wantsMemoryCreationButton;
 - (BOOL)wantsMemoryCreationCard;
-- (CGSize)singleViewLayout:(id)a3 desiredSizeForReferenceSize:(CGSize)a4;
+- (CGSize)singleViewLayout:(id)layout desiredSizeForReferenceSize:(CGSize)size;
 - (CGSize)size;
 - (PXGSingleViewLayout)layout;
 - (PXGenerativeStoryInWatchNextController)init;
 - (int64_t)index;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)openGenerativeMemory;
-- (void)setLayout:(id)a3;
-- (void)setMemoryCardVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSize:(CGSize)a3;
-- (void)setWantsMemoryCreationButton:(BOOL)a3;
-- (void)setWantsMemoryCreationCard:(BOOL)a3;
+- (void)setLayout:(id)layout;
+- (void)setMemoryCardVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setSize:(CGSize)size;
+- (void)setWantsMemoryCreationButton:(BOOL)button;
+- (void)setWantsMemoryCreationCard:(BOOL)card;
 @end
 
 @implementation PXGenerativeStoryInWatchNextController
 
 - (PXGSingleViewLayout)layout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A3E9ADB8();
 
   return v3;
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR___PXGenerativeStoryInWatchNextController____lazy_storage___layout);
-  *(&self->super.super.isa + OBJC_IVAR___PXGenerativeStoryInWatchNextController____lazy_storage___layout) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR___PXGenerativeStoryInWatchNextController____lazy_storage___layout) = layout;
+  layoutCopy = layout;
 }
 
 - (CGSize)size
@@ -43,10 +43,10 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = (self + OBJC_IVAR___PXGenerativeStoryInWatchNextController_size);
   swift_beginAccess();
   *v5 = width;
@@ -57,7 +57,7 @@
 {
   sub_1A524CC54();
   v6[2] = self;
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1A3E9B270(sub_1A3E9DEF4, v6, "PhotosUICore/GenerativeStoryInWatchNextController.swift", 55);
 
   return v4;
@@ -70,11 +70,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setWantsMemoryCreationCard:(BOOL)a3
+- (void)setWantsMemoryCreationCard:(BOOL)card
 {
   v5 = OBJC_IVAR___PXGenerativeStoryInWatchNextController_wantsMemoryCreationCard;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = card;
 }
 
 - (BOOL)wantsMemoryCreationButton
@@ -84,36 +84,36 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setWantsMemoryCreationButton:(BOOL)a3
+- (void)setWantsMemoryCreationButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v5 = OBJC_IVAR___PXGenerativeStoryInWatchNextController_wantsMemoryCreationButton;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = v3;
-  if (v6 != v3)
+  *(&self->super.super.isa + v5) = buttonCopy;
+  if (v6 != buttonCopy)
   {
     v7 = qword_1EB19A0D0;
-    v8 = self;
+    selfCopy = self;
     if (v7 != -1)
     {
       swift_once();
     }
 
-    [(PXGenerativeStoryInWatchNextController *)v8 signalChange:qword_1EB1EB910];
+    [(PXGenerativeStoryInWatchNextController *)selfCopy signalChange:qword_1EB1EB910];
   }
 }
 
 - (void)openGenerativeMemory
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3E9C0EC();
 }
 
-- (void)setMemoryCardVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setMemoryCardVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v6 = self;
-  sub_1A3E9C7C4(a3, a4);
+  selfCopy = self;
+  sub_1A3E9C7C4(visible, animated);
 }
 
 - (PXGenerativeStoryInWatchNextController)init
@@ -123,7 +123,7 @@
   return result;
 }
 
-- (CGSize)singleViewLayout:(id)a3 desiredSizeForReferenceSize:(CGSize)a4
+- (CGSize)singleViewLayout:(id)layout desiredSizeForReferenceSize:(CGSize)size
 {
   v4 = (self + OBJC_IVAR___PXGenerativeStoryInWatchNextController_size);
   swift_beginAccess();
@@ -134,11 +134,11 @@
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 0x10) != 0)
+  if ((change & 0x10) != 0)
   {
-    v6 = self;
+    selfCopy = self;
     sub_1A3E9CA00();
   }
 }

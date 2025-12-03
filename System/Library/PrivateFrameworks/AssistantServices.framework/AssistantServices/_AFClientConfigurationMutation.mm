@@ -6,7 +6,7 @@
 - (BOOL)getIsDeviceWatchAuthenticated;
 - (BOOL)getIsEyesFreeDevice;
 - (BOOL)getSupportsCarPlayVehicleData;
-- (_AFClientConfigurationMutation)initWithBase:(id)a3;
+- (_AFClientConfigurationMutation)initWithBase:(id)base;
 - (float)getOutputVolume;
 - (id)getAccessibilityState;
 - (id)getDeviceSetupFlowBeginDate;
@@ -74,15 +74,15 @@
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_tapToSiriAudioPlaybackRequest;
+    tapToSiriAudioPlaybackRequest = self->_tapToSiriAudioPlaybackRequest;
   }
 
   else
   {
-    v2 = [(AFClientConfiguration *)self->_base tapToSiriAudioPlaybackRequest];
+    tapToSiriAudioPlaybackRequest = [(AFClientConfiguration *)self->_base tapToSiriAudioPlaybackRequest];
   }
 
-  return v2;
+  return tapToSiriAudioPlaybackRequest;
 }
 
 - (float)getOutputVolume
@@ -100,60 +100,60 @@
 {
   if ((*&self->_mutationFlags & 0x400) != 0)
   {
-    v2 = self->_twoShotAudioPlaybackRequest;
+    twoShotAudioPlaybackRequest = self->_twoShotAudioPlaybackRequest;
   }
 
   else
   {
-    v2 = [(AFClientConfiguration *)self->_base twoShotAudioPlaybackRequest];
+    twoShotAudioPlaybackRequest = [(AFClientConfiguration *)self->_base twoShotAudioPlaybackRequest];
   }
 
-  return v2;
+  return twoShotAudioPlaybackRequest;
 }
 
 - (id)getDeviceSetupFlowBeginDate
 {
   if ((*&self->_mutationFlags & 0x800) != 0)
   {
-    v2 = self->_deviceSetupFlowBeginDate;
+    deviceSetupFlowBeginDate = self->_deviceSetupFlowBeginDate;
   }
 
   else
   {
-    v2 = [(AFClientConfiguration *)self->_base deviceSetupFlowBeginDate];
+    deviceSetupFlowBeginDate = [(AFClientConfiguration *)self->_base deviceSetupFlowBeginDate];
   }
 
-  return v2;
+  return deviceSetupFlowBeginDate;
 }
 
 - (id)getDeviceSetupFlowEndDate
 {
   if ((*&self->_mutationFlags & 0x1000) != 0)
   {
-    v2 = self->_deviceSetupFlowEndDate;
+    deviceSetupFlowEndDate = self->_deviceSetupFlowEndDate;
   }
 
   else
   {
-    v2 = [(AFClientConfiguration *)self->_base deviceSetupFlowEndDate];
+    deviceSetupFlowEndDate = [(AFClientConfiguration *)self->_base deviceSetupFlowEndDate];
   }
 
-  return v2;
+  return deviceSetupFlowEndDate;
 }
 
 - (id)getAccessibilityState
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_accessibilityState;
+    accessibilityState = self->_accessibilityState;
   }
 
   else
   {
-    v2 = [(AFClientConfiguration *)self->_base accessibilityState];
+    accessibilityState = [(AFClientConfiguration *)self->_base accessibilityState];
   }
 
-  return v2;
+  return accessibilityState;
 }
 
 - (int64_t)getDeviceRingerSwitchState
@@ -208,16 +208,16 @@
   }
 }
 
-- (_AFClientConfigurationMutation)initWithBase:(id)a3
+- (_AFClientConfigurationMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFClientConfigurationMutation;
   v6 = [(_AFClientConfigurationMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

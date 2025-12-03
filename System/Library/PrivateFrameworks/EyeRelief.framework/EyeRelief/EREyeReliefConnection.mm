@@ -1,8 +1,8 @@
 @interface EREyeReliefConnection
 + (id)sharedConnection;
-- (EREyeReliefConnection)connectionWithErrorHandler:(id)a3;
-- (void)isDistanceSamplingEnabled:(id)a3;
-- (void)toggleDistanceSampling:(id)a3;
+- (EREyeReliefConnection)connectionWithErrorHandler:(id)handler;
+- (void)isDistanceSamplingEnabled:(id)enabled;
+- (void)toggleDistanceSampling:(id)sampling;
 @end
 
 @implementation EREyeReliefConnection
@@ -26,9 +26,9 @@ uint64_t __41__EREyeReliefConnection_sharedConnection__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (EREyeReliefConnection)connectionWithErrorHandler:(id)a3
+- (EREyeReliefConnection)connectionWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__EREyeReliefConnection_connectionWithErrorHandler___block_invoke;
@@ -39,14 +39,14 @@ uint64_t __41__EREyeReliefConnection_sharedConnection__block_invoke()
     dispatch_once(&connectionWithErrorHandler__onceToken, block);
   }
 
-  v5 = [(EREyeReliefConnection *)self connection];
+  connection = [(EREyeReliefConnection *)self connection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__EREyeReliefConnection_connectionWithErrorHandler___block_invoke_6;
   v9[3] = &unk_278FD7CB0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -82,15 +82,15 @@ void __52__EREyeReliefConnection_connectionWithErrorHandler___block_invoke_5()
   [ERLogging log:v0 withType:1];
 }
 
-- (void)toggleDistanceSampling:(id)a3
+- (void)toggleDistanceSampling:(id)sampling
 {
-  v4 = a3;
+  samplingCopy = sampling;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__EREyeReliefConnection_toggleDistanceSampling___block_invoke;
   v7[3] = &unk_278FD7CB0;
-  v8 = v4;
-  v5 = v4;
+  v8 = samplingCopy;
+  v5 = samplingCopy;
   v6 = [(EREyeReliefConnection *)self connectionWithErrorHandler:v7];
   [v6 toggleDistanceSampling:v5];
 }
@@ -108,15 +108,15 @@ void __48__EREyeReliefConnection_toggleDistanceSampling___block_invoke(uint64_t 
   }
 }
 
-- (void)isDistanceSamplingEnabled:(id)a3
+- (void)isDistanceSamplingEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__EREyeReliefConnection_isDistanceSamplingEnabled___block_invoke;
   v7[3] = &unk_278FD7CB0;
-  v8 = v4;
-  v5 = v4;
+  v8 = enabledCopy;
+  v5 = enabledCopy;
   v6 = [(EREyeReliefConnection *)self connectionWithErrorHandler:v7];
   [v6 isDistanceSamplingEnabled:v5];
 }

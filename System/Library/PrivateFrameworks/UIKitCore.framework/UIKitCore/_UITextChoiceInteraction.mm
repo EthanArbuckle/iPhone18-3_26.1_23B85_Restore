@@ -1,13 +1,13 @@
 @interface _UITextChoiceInteraction
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIView)textView;
 - (UIView)view;
-- (_UITextChoiceInteraction)initWithDelegate:(id)a3;
+- (_UITextChoiceInteraction)initWithDelegate:(id)delegate;
 - (_UITextChoiceInteractionDelegate)delegate;
 - (void)createGestureRecognizer;
-- (void)didMoveToView:(id)a3;
-- (void)tapInteraction:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)tapInteraction:(id)interaction;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UITextChoiceInteraction
@@ -19,88 +19,88 @@
   return WeakRetained;
 }
 
-- (_UITextChoiceInteraction)initWithDelegate:(id)a3
+- (_UITextChoiceInteraction)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _UITextChoiceInteraction;
   v5 = [(_UITextChoiceInteraction *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = [(_UITextChoiceInteraction *)self textView];
+  textView = [(_UITextChoiceInteraction *)self textView];
 
-  if (v4)
+  if (textView)
   {
-    v6 = [(_UITextChoiceInteraction *)self textView];
-    v5 = [(_UITextChoiceInteraction *)self underlineTap];
-    [v6 removeGestureRecognizer:v5];
+    textView2 = [(_UITextChoiceInteraction *)self textView];
+    underlineTap = [(_UITextChoiceInteraction *)self underlineTap];
+    [textView2 removeGestureRecognizer:underlineTap];
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(_UITextChoiceInteraction *)self createGestureRecognizer];
-  v4 = [(_UITextChoiceInteraction *)self underlineTap];
-  [v5 addGestureRecognizer:v4];
+  underlineTap = [(_UITextChoiceInteraction *)self underlineTap];
+  [viewCopy addGestureRecognizer:underlineTap];
 
-  [(_UITextChoiceInteraction *)self setTextView:v5];
+  [(_UITextChoiceInteraction *)self setTextView:viewCopy];
 }
 
 - (void)createGestureRecognizer
 {
-  v3 = [(_UITextChoiceInteraction *)self underlineTap];
+  underlineTap = [(_UITextChoiceInteraction *)self underlineTap];
 
-  if (!v3)
+  if (!underlineTap)
   {
     v4 = [[UITapGestureRecognizer alloc] initWithTarget:self action:sel_tapInteraction_];
     [(_UITextChoiceInteraction *)self setUnderlineTap:v4];
 
-    v5 = [(_UITextChoiceInteraction *)self underlineTap];
-    [v5 setNumberOfTapsRequired:1];
+    underlineTap2 = [(_UITextChoiceInteraction *)self underlineTap];
+    [underlineTap2 setNumberOfTapsRequired:1];
 
-    v6 = [(_UITextChoiceInteraction *)self underlineTap];
-    [v6 setNumberOfTouchesRequired:1];
+    underlineTap3 = [(_UITextChoiceInteraction *)self underlineTap];
+    [underlineTap3 setNumberOfTouchesRequired:1];
 
-    v7 = [(_UITextChoiceInteraction *)self underlineTap];
-    [v7 setDelegate:self];
+    underlineTap4 = [(_UITextChoiceInteraction *)self underlineTap];
+    [underlineTap4 setDelegate:self];
   }
 
-  v8 = [(_UITextChoiceInteraction *)self underlineTap];
-  [v8 setEnabled:1];
+  underlineTap5 = [(_UITextChoiceInteraction *)self underlineTap];
+  [underlineTap5 setEnabled:1];
 }
 
-- (void)tapInteraction:(id)a3
+- (void)tapInteraction:(id)interaction
 {
-  v6 = a3;
-  if ([v6 state] == 3)
+  interactionCopy = interaction;
+  if ([interactionCopy state] == 3)
   {
-    v4 = [(_UITextChoiceInteraction *)self delegate];
-    v5 = [(_UITextChoiceInteraction *)self textView];
-    [v6 locationInView:v5];
-    [v4 textChoiceInteraction:self receivedTapAtLocation:?];
+    delegate = [(_UITextChoiceInteraction *)self delegate];
+    textView = [(_UITextChoiceInteraction *)self textView];
+    [interactionCopy locationInView:textView];
+    [delegate textChoiceInteraction:self receivedTapAtLocation:?];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(_UITextChoiceInteraction *)self delegate];
-  v6 = [(_UITextChoiceInteraction *)self textView];
-  [v4 locationInView:v6];
+  beginCopy = begin;
+  delegate = [(_UITextChoiceInteraction *)self delegate];
+  textView = [(_UITextChoiceInteraction *)self textView];
+  [beginCopy locationInView:textView];
   v8 = v7;
   v10 = v9;
 
-  LOBYTE(self) = [v5 textChoiceInteraction:self shouldRespondToTapAtPoint:{v8, v10}];
+  LOBYTE(self) = [delegate textChoiceInteraction:self shouldRespondToTapAtPoint:{v8, v10}];
   return self;
 }
 

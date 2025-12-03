@@ -1,20 +1,20 @@
 @interface _UIORequestEditMenuTraitUpdateAction
 - (NSString)identifier;
-- (_UIORequestEditMenuTraitUpdateAction)initWithConfigurationIdentifier:(id)a3 userInterfaceStyle:(int64_t)a4;
+- (_UIORequestEditMenuTraitUpdateAction)initWithConfigurationIdentifier:(id)identifier userInterfaceStyle:(int64_t)style;
 - (int64_t)userInterfaceStyle;
-- (void)performActionFromConnection:(id)a3;
+- (void)performActionFromConnection:(id)connection;
 @end
 
 @implementation _UIORequestEditMenuTraitUpdateAction
 
-- (_UIORequestEditMenuTraitUpdateAction)initWithConfigurationIdentifier:(id)a3 userInterfaceStyle:(int64_t)a4
+- (_UIORequestEditMenuTraitUpdateAction)initWithConfigurationIdentifier:(id)identifier userInterfaceStyle:(int64_t)style
 {
   v6 = MEMORY[0x1E698E700];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = objc_alloc_init(v6);
-  [v8 setObject:v7 forSetting:0];
+  [v8 setObject:identifierCopy forSetting:0];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   [v8 setObject:v9 forSetting:1];
 
   v12.receiver = self;
@@ -26,26 +26,26 @@
 
 - (NSString)identifier
 {
-  v2 = [(_UIORequestEditMenuTraitUpdateAction *)self info];
-  v3 = [v2 objectForSetting:0];
+  info = [(_UIORequestEditMenuTraitUpdateAction *)self info];
+  v3 = [info objectForSetting:0];
 
   return v3;
 }
 
 - (int64_t)userInterfaceStyle
 {
-  v2 = [(_UIORequestEditMenuTraitUpdateAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(_UIORequestEditMenuTraitUpdateAction *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)performActionFromConnection:(id)a3
+- (void)performActionFromConnection:(id)connection
 {
   v5 = +[_UIEditMenuPresentationServer sharedPresentationServer];
-  v4 = [(_UIORequestEditMenuTraitUpdateAction *)self identifier];
-  [v5 updateUserInterfaceStyleForMenuWithIdentifier:v4 userInterfaceStyle:{-[_UIORequestEditMenuTraitUpdateAction userInterfaceStyle](self, "userInterfaceStyle")}];
+  identifier = [(_UIORequestEditMenuTraitUpdateAction *)self identifier];
+  [v5 updateUserInterfaceStyleForMenuWithIdentifier:identifier userInterfaceStyle:{-[_UIORequestEditMenuTraitUpdateAction userInterfaceStyle](self, "userInterfaceStyle")}];
 }
 
 @end

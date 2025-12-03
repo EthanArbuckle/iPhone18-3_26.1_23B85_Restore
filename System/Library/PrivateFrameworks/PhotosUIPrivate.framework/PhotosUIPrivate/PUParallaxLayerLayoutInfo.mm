@@ -1,5 +1,5 @@
 @interface PUParallaxLayerLayoutInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)adaptiveLayoutTransform;
 - (CGAffineTransform)additionalContentTransform;
 - (CGAffineTransform)additionalTransform;
@@ -7,10 +7,10 @@
 - (CGRect)containerFrame;
 - (CGRect)headroomFrame;
 - (CGRect)settlingEffectFrame;
-- (CGRect)viewFrameForLayerFrame:(CGRect)a3;
+- (CGRect)viewFrameForLayerFrame:(CGRect)frame;
 - (CGRect)visibleFrame;
 - (id)description;
-- (id)initWithDeviceOrientation:(void *)a3 containerFrame:(char)a4 visibleFrame:(void *)a5 settlingEffectFrame:(char)a6 headroomFrame:(void *)a7 headroomVisibilityAmount:(void *)a8 styleIsHighKey:(double)a9 clockAreaLuminance:(double)a10 primaryStyleColor:(double)a11 canApplyParallax:(double)a12 parallaxVector:(CGFloat)a13 parallaxAmount:(CGFloat)a14 visibilityAmount:(CGFloat)a15 visibilityEdge:(CGFloat)a16 visibilityEffects:(void *)a17 animateChanges:(void *)a18 adaptiveLayoutTransform:(void *)a19 animationDuration:(void *)a20 animationCurve:(void *)a21 wantsLegibilityVignette:(void *)a22 legibilityVignetteVisible:(void *)a23 bottomContentExtensionEnabled:(void *)a24;
+- (id)initWithDeviceOrientation:(void *)orientation containerFrame:(char)frame visibleFrame:(void *)visibleFrame settlingEffectFrame:(char)effectFrame headroomFrame:(void *)headroomFrame headroomVisibilityAmount:(void *)amount styleIsHighKey:(double)key clockAreaLuminance:(double)self0 primaryStyleColor:(double)self1 canApplyParallax:(double)self2 parallaxVector:(CGFloat)self3 parallaxAmount:(CGFloat)self4 visibilityAmount:(CGFloat)self5 visibilityEdge:(CGFloat)self6 visibilityEffects:(void *)self7 animateChanges:(void *)self8 adaptiveLayoutTransform:(void *)self9 animationDuration:(void *)duration animationCurve:(void *)curve wantsLegibilityVignette:(void *)vignette legibilityVignetteVisible:(void *)visible bottomContentExtensionEnabled:(void *)enabled;
 @end
 
 @implementation PUParallaxLayerLayoutInfo
@@ -187,17 +187,17 @@
 
 - (CGAffineTransform)additionalTransform
 {
-  v4 = [(PUParallaxLayerLayoutInfo *)self deviceOrientation];
+  deviceOrientation = [(PUParallaxLayerLayoutInfo *)self deviceOrientation];
 
-  return PUPosterAdditionalTransformForDeviceOrientation(v4, retstr);
+  return PUPosterAdditionalTransformForDeviceOrientation(deviceOrientation, retstr);
 }
 
-- (CGRect)viewFrameForLayerFrame:(CGRect)a3
+- (CGRect)viewFrameForLayerFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PUParallaxLayerLayoutInfo *)self visibleFrame];
   v12 = x - v11;
   v13 = 0.0;
@@ -240,10 +240,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v63) = 1;
   }
@@ -253,9 +253,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PUParallaxLayerLayoutInfo *)self deviceOrientation];
-      if (v6 != [(PUParallaxLayerLayoutInfo *)v5 deviceOrientation])
+      v5 = equalCopy;
+      deviceOrientation = [(PUParallaxLayerLayoutInfo *)self deviceOrientation];
+      if (deviceOrientation != [(PUParallaxLayerLayoutInfo *)v5 deviceOrientation])
       {
         goto LABEL_18;
       }
@@ -336,8 +336,8 @@
         goto LABEL_18;
       }
 
-      v55 = [(PUParallaxLayerLayoutInfo *)self styleIsHighKey];
-      if (v55 != [(PUParallaxLayerLayoutInfo *)v5 styleIsHighKey])
+      styleIsHighKey = [(PUParallaxLayerLayoutInfo *)self styleIsHighKey];
+      if (styleIsHighKey != [(PUParallaxLayerLayoutInfo *)v5 styleIsHighKey])
       {
         goto LABEL_18;
       }
@@ -350,16 +350,16 @@
         goto LABEL_18;
       }
 
-      v59 = [(PUParallaxLayerLayoutInfo *)self primaryStyleColor];
-      v60 = [(PUParallaxLayerLayoutInfo *)v5 primaryStyleColor];
-      v61 = v60;
-      if (v59 == v60)
+      primaryStyleColor = [(PUParallaxLayerLayoutInfo *)self primaryStyleColor];
+      primaryStyleColor2 = [(PUParallaxLayerLayoutInfo *)v5 primaryStyleColor];
+      v61 = primaryStyleColor2;
+      if (primaryStyleColor == primaryStyleColor2)
       {
       }
 
       else
       {
-        v62 = [v59 isEqual:v60];
+        v62 = [primaryStyleColor isEqual:primaryStyleColor2];
 
         if ((v62 & 1) == 0)
         {
@@ -374,8 +374,8 @@
         goto LABEL_18;
       }
 
-      v64 = [(PUParallaxLayerLayoutInfo *)self canApplyParallax];
-      if (v64 != [(PUParallaxLayerLayoutInfo *)v5 canApplyParallax])
+      canApplyParallax = [(PUParallaxLayerLayoutInfo *)self canApplyParallax];
+      if (canApplyParallax != [(PUParallaxLayerLayoutInfo *)v5 canApplyParallax])
       {
         goto LABEL_18;
       }
@@ -406,20 +406,20 @@
         goto LABEL_18;
       }
 
-      v78 = [(PUParallaxLayerLayoutInfo *)self visibilityEdge];
-      if (v78 != [(PUParallaxLayerLayoutInfo *)v5 visibilityEdge])
+      visibilityEdge = [(PUParallaxLayerLayoutInfo *)self visibilityEdge];
+      if (visibilityEdge != [(PUParallaxLayerLayoutInfo *)v5 visibilityEdge])
       {
         goto LABEL_18;
       }
 
-      v79 = [(PUParallaxLayerLayoutInfo *)self visibilityEffects];
-      if (v79 != [(PUParallaxLayerLayoutInfo *)v5 visibilityEffects])
+      visibilityEffects = [(PUParallaxLayerLayoutInfo *)self visibilityEffects];
+      if (visibilityEffects != [(PUParallaxLayerLayoutInfo *)v5 visibilityEffects])
       {
         goto LABEL_18;
       }
 
-      v80 = [(PUParallaxLayerLayoutInfo *)self animateChanges];
-      if (v80 != [(PUParallaxLayerLayoutInfo *)v5 animateChanges])
+      animateChanges = [(PUParallaxLayerLayoutInfo *)self animateChanges];
+      if (animateChanges != [(PUParallaxLayerLayoutInfo *)v5 animateChanges])
       {
         goto LABEL_18;
       }
@@ -445,21 +445,21 @@
         goto LABEL_18;
       }
 
-      v96 = [(PUParallaxLayerLayoutInfo *)self animationCurve];
-      v86 = [v96 cubicTimingParameters];
-      v87 = [(PUParallaxLayerLayoutInfo *)v5 animationCurve];
-      v88 = [v87 cubicTimingParameters];
-      if ([v86 isEqual:v88])
+      animationCurve = [(PUParallaxLayerLayoutInfo *)self animationCurve];
+      cubicTimingParameters = [animationCurve cubicTimingParameters];
+      animationCurve2 = [(PUParallaxLayerLayoutInfo *)v5 animationCurve];
+      cubicTimingParameters2 = [animationCurve2 cubicTimingParameters];
+      if ([cubicTimingParameters isEqual:cubicTimingParameters2])
       {
       }
 
       else
       {
-        v89 = [(PUParallaxLayerLayoutInfo *)self animationCurve];
-        v90 = [v89 springTimingParameters];
-        v91 = [(PUParallaxLayerLayoutInfo *)v5 animationCurve];
-        v92 = [v91 springTimingParameters];
-        v95 = [v90 isEqual:v92];
+        animationCurve3 = [(PUParallaxLayerLayoutInfo *)self animationCurve];
+        springTimingParameters = [animationCurve3 springTimingParameters];
+        animationCurve4 = [(PUParallaxLayerLayoutInfo *)v5 animationCurve];
+        springTimingParameters2 = [animationCurve4 springTimingParameters];
+        v95 = [springTimingParameters isEqual:springTimingParameters2];
 
         if ((v95 & 1) == 0)
         {
@@ -467,11 +467,11 @@
         }
       }
 
-      v93 = [(PUParallaxLayerLayoutInfo *)self legibilityVignetteVisible];
-      if (v93 == [(PUParallaxLayerLayoutInfo *)v5 legibilityVignetteVisible])
+      legibilityVignetteVisible = [(PUParallaxLayerLayoutInfo *)self legibilityVignetteVisible];
+      if (legibilityVignetteVisible == [(PUParallaxLayerLayoutInfo *)v5 legibilityVignetteVisible])
       {
-        v94 = [(PUParallaxLayerLayoutInfo *)self bottomContentExtensionEnabled];
-        v63 = v94 ^ [(PUParallaxLayerLayoutInfo *)v5 bottomContentExtensionEnabled]^ 1;
+        bottomContentExtensionEnabled = [(PUParallaxLayerLayoutInfo *)self bottomContentExtensionEnabled];
+        v63 = bottomContentExtensionEnabled ^ [(PUParallaxLayerLayoutInfo *)v5 bottomContentExtensionEnabled]^ 1;
         goto LABEL_19;
       }
 
@@ -490,54 +490,54 @@ LABEL_20:
   return v63;
 }
 
-- (id)initWithDeviceOrientation:(void *)a3 containerFrame:(char)a4 visibleFrame:(void *)a5 settlingEffectFrame:(char)a6 headroomFrame:(void *)a7 headroomVisibilityAmount:(void *)a8 styleIsHighKey:(double)a9 clockAreaLuminance:(double)a10 primaryStyleColor:(double)a11 canApplyParallax:(double)a12 parallaxVector:(CGFloat)a13 parallaxAmount:(CGFloat)a14 visibilityAmount:(CGFloat)a15 visibilityEdge:(CGFloat)a16 visibilityEffects:(void *)a17 animateChanges:(void *)a18 adaptiveLayoutTransform:(void *)a19 animationDuration:(void *)a20 animationCurve:(void *)a21 wantsLegibilityVignette:(void *)a22 legibilityVignetteVisible:(void *)a23 bottomContentExtensionEnabled:(void *)a24
+- (id)initWithDeviceOrientation:(void *)orientation containerFrame:(char)frame visibleFrame:(void *)visibleFrame settlingEffectFrame:(char)effectFrame headroomFrame:(void *)headroomFrame headroomVisibilityAmount:(void *)amount styleIsHighKey:(double)key clockAreaLuminance:(double)self0 primaryStyleColor:(double)self1 canApplyParallax:(double)self2 parallaxVector:(CGFloat)self3 parallaxAmount:(CGFloat)self4 visibilityAmount:(CGFloat)self5 visibilityEdge:(CGFloat)self6 visibilityEffects:(void *)self7 animateChanges:(void *)self8 adaptiveLayoutTransform:(void *)self9 animationDuration:(void *)duration animationCurve:(void *)curve wantsLegibilityVignette:(void *)vignette legibilityVignetteVisible:(void *)visible bottomContentExtensionEnabled:(void *)enabled
 {
-  v52 = a5;
+  visibleFrameCopy = visibleFrame;
   v53 = a34;
-  v62.origin.x = a13;
-  v62.origin.y = a14;
-  v62.size.width = a15;
-  v62.size.height = a16;
+  v62.origin.x = vector;
+  v62.origin.y = parallaxAmount;
+  v62.size.width = visibilityAmount;
+  v62.size.height = edge;
   if (CGRectIsEmpty(v62))
   {
-    v59 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v59 handleFailureInMethod:a2 object:a1 file:@"PUParallaxLayerLayoutInfo.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"!CGRectIsEmpty(visibleFrame)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerLayoutInfo.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"!CGRectIsEmpty(visibleFrame)"}];
   }
 
-  v61.receiver = a1;
+  v61.receiver = self;
   v61.super_class = PUParallaxLayerLayoutInfo;
   v54 = objc_msgSendSuper2(&v61, sel_init);
   v55 = v54;
   if (v54)
   {
-    v54[2] = a3;
-    *(v54 + 14) = a9;
-    *(v54 + 15) = a10;
-    *(v54 + 16) = a11;
-    *(v54 + 17) = a12;
-    *(v54 + 18) = a13;
-    *(v54 + 19) = a14;
-    *(v54 + 20) = a15;
-    *(v54 + 21) = a16;
-    v54[22] = a17;
-    v54[23] = a18;
-    v54[24] = a19;
-    v54[25] = a20;
-    v54[26] = a21;
-    v54[27] = a22;
-    v54[28] = a23;
-    v54[29] = a24;
-    *(v54 + 8) = a4;
+    v54[2] = orientation;
+    *(v54 + 14) = key;
+    *(v54 + 15) = luminance;
+    *(v54 + 16) = color;
+    *(v54 + 17) = parallax;
+    *(v54 + 18) = vector;
+    *(v54 + 19) = parallaxAmount;
+    *(v54 + 20) = visibilityAmount;
+    *(v54 + 21) = edge;
+    v54[22] = effects;
+    v54[23] = changes;
+    v54[24] = transform;
+    v54[25] = duration;
+    v54[26] = curve;
+    v54[27] = vignette;
+    v54[28] = visible;
+    v54[29] = enabled;
+    *(v54 + 8) = frame;
     v54[3] = a26;
-    objc_storeStrong(v54 + 4, a5);
-    *(v55 + 9) = a6;
+    objc_storeStrong(v54 + 4, visibleFrame);
+    *(v55 + 9) = effectFrame;
     v55[12] = a27;
     v55[13] = a28;
     v55[5] = a25;
     v55[6] = a29;
     v55[7] = a30;
-    v55[8] = a7;
-    v55[9] = a8;
+    v55[8] = headroomFrame;
+    v55[9] = amount;
     *(v55 + 10) = a31;
     v56 = *a32;
     v57 = a32[2];

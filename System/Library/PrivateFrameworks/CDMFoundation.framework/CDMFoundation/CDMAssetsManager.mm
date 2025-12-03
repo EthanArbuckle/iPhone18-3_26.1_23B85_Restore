@@ -1,22 +1,22 @@
 @interface CDMAssetsManager
-+ (id)getAssetSetsInCacheForGraphName:(id)a3;
-+ (id)getFactorNamesForService:(id)a3;
-+ (id)getFactorToUnprocessedNLAsset:(id)a3 cdmAssetsInfo:(id)a4 locale:(id)a5;
-+ (id)getHashKeyForAssetSets:(id)a3;
-+ (id)getHashKeyForCDMAssetsInfo:(id)a3;
++ (id)getAssetSetsInCacheForGraphName:(id)name;
++ (id)getFactorNamesForService:(id)service;
++ (id)getFactorToUnprocessedNLAsset:(id)asset cdmAssetsInfo:(id)info locale:(id)locale;
++ (id)getHashKeyForAssetSets:(id)sets;
++ (id)getHashKeyForCDMAssetsInfo:(id)info;
 + (id)getSingletonCDMAssetsManager;
-- (BOOL)areAssetsAvailableForCDMAssetsInfo:(id)a3 factorToAsset:(id)a4 withError:(id *)a5 withSelfMetadata:(id)a6 withSelfContextId:(id)a7 withDataDispatcherContext:(id)a8;
-- (BOOL)isAssetAvailableForCDMAssetsFactorConfig:(id)a3 factorToAsset:(id)a4 withError:(id *)a5;
-- (BOOL)registerForCDMAssetsInfo:(id)a3 withLocale:(id)a4 withAssetsDelegate:(id)a5 selfContextId:(id)a6 selfMetadata:(id)a7 dataDispatcherContext:(id)a8 withAssetAvailabilityType:(int64_t)a9 withError:(id *)a10;
-- (BOOL)shouldReSetupForLocale:(id)a3 cdmAssetsInfo:(id)a4;
-- (id)getAssetsByFactorNamesForCDMAssetsInfo:(id)a3 assetDirPath:(id)a4 locale:(id)a5;
-- (id)getSavedResponseFromCacheForCDMAssetsInfo:(id)a3 locale:(id)a4 assetSets:(id)a5;
+- (BOOL)areAssetsAvailableForCDMAssetsInfo:(id)info factorToAsset:(id)asset withError:(id *)error withSelfMetadata:(id)metadata withSelfContextId:(id)id withDataDispatcherContext:(id)context;
+- (BOOL)isAssetAvailableForCDMAssetsFactorConfig:(id)config factorToAsset:(id)asset withError:(id *)error;
+- (BOOL)registerForCDMAssetsInfo:(id)info withLocale:(id)locale withAssetsDelegate:(id)delegate selfContextId:(id)id selfMetadata:(id)metadata dataDispatcherContext:(id)context withAssetAvailabilityType:(int64_t)type withError:(id *)self0;
+- (BOOL)shouldReSetupForLocale:(id)locale cdmAssetsInfo:(id)info;
+- (id)getAssetsByFactorNamesForCDMAssetsInfo:(id)info assetDirPath:(id)path locale:(id)locale;
+- (id)getSavedResponseFromCacheForCDMAssetsInfo:(id)info locale:(id)locale assetSets:(id)sets;
 - (id)initManager;
-- (id)processNLAsset:(id)a3 withAssetFolders:(id)a4;
-- (id)processSideLoadedAssetForNLAsset:(id)a3 withAssetFolders:(id)a4 assetDirPath:(id)a5 locale:(id)a6;
-- (void)_setupUafAssetManagerForLocale:(id)a3 cdmAssetsInfo:(id)a4 error:(id *)a5;
-- (void)saveGetAssetsResponseForCDMAssetsInfo:(id)a3 locale:(id)a4 assetSets:(id)a5 forResponse:(id)a6;
-- (void)setupForLocale:(id)a3 cdmAssetsInfo:(id)a4 error:(id *)a5;
+- (id)processNLAsset:(id)asset withAssetFolders:(id)folders;
+- (id)processSideLoadedAssetForNLAsset:(id)asset withAssetFolders:(id)folders assetDirPath:(id)path locale:(id)locale;
+- (void)_setupUafAssetManagerForLocale:(id)locale cdmAssetsInfo:(id)info error:(id *)error;
+- (void)saveGetAssetsResponseForCDMAssetsInfo:(id)info locale:(id)locale assetSets:(id)sets forResponse:(id)response;
+- (void)setupForLocale:(id)locale cdmAssetsInfo:(id)info error:(id *)error;
 @end
 
 @implementation CDMAssetsManager
@@ -43,41 +43,41 @@
   return v3;
 }
 
-- (BOOL)registerForCDMAssetsInfo:(id)a3 withLocale:(id)a4 withAssetsDelegate:(id)a5 selfContextId:(id)a6 selfMetadata:(id)a7 dataDispatcherContext:(id)a8 withAssetAvailabilityType:(int64_t)a9 withError:(id *)a10
+- (BOOL)registerForCDMAssetsInfo:(id)info withLocale:(id)locale withAssetsDelegate:(id)delegate selfContextId:(id)id selfMetadata:(id)metadata dataDispatcherContext:(id)context withAssetAvailabilityType:(int64_t)type withError:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  infoCopy = info;
+  localeCopy = locale;
+  delegateCopy = delegate;
+  idCopy = id;
+  metadataCopy = metadata;
+  contextCopy = context;
   v22 = +[CDMUAFAssetsManager getNLUAFClientManagers];
   objc_sync_enter(v22);
-  LOBYTE(self) = [(CDMUAFAssetsManager *)self->_cdmUAFAssetsManager registerForCDMAssetsInfo:v16 withLocale:v17 withAssetsDelegate:v18 useFileManager:self->_fileManager withSelfContextId:v19 withSelfMetadata:v20 withDataDispatcherContext:v21 withAssetAvailabilityType:a9 withError:a10];
+  LOBYTE(self) = [(CDMUAFAssetsManager *)self->_cdmUAFAssetsManager registerForCDMAssetsInfo:infoCopy withLocale:localeCopy withAssetsDelegate:delegateCopy useFileManager:self->_fileManager withSelfContextId:idCopy withSelfMetadata:metadataCopy withDataDispatcherContext:contextCopy withAssetAvailabilityType:type withError:error];
   objc_sync_exit(v22);
 
   return self;
 }
 
-- (BOOL)areAssetsAvailableForCDMAssetsInfo:(id)a3 factorToAsset:(id)a4 withError:(id *)a5 withSelfMetadata:(id)a6 withSelfContextId:(id)a7 withDataDispatcherContext:(id)a8
+- (BOOL)areAssetsAvailableForCDMAssetsInfo:(id)info factorToAsset:(id)asset withError:(id *)error withSelfMetadata:(id)metadata withSelfContextId:(id)id withDataDispatcherContext:(id)context
 {
   v72 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v54 = a4;
-  v52 = a6;
-  v51 = a7;
-  v50 = a8;
+  infoCopy = info;
+  assetCopy = asset;
+  metadataCopy = metadata;
+  idCopy = id;
+  contextCopy = context;
   v14 = objc_alloc(MEMORY[0x1E695DF90]);
-  v15 = [v13 getAllAssetSets];
-  v53 = [v14 initWithCapacity:{objc_msgSend(v15, "count")}];
+  getAllAssetSets = [infoCopy getAllAssetSets];
+  v53 = [v14 initWithCapacity:{objc_msgSend(getAllAssetSets, "count")}];
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v16 = v13;
-  v17 = [v13 getAllAssetSets];
-  v18 = [v17 countByEnumeratingWithState:&v60 objects:v71 count:16];
+  v16 = infoCopy;
+  getAllAssetSets2 = [infoCopy getAllAssetSets];
+  v18 = [getAllAssetSets2 countByEnumeratingWithState:&v60 objects:v71 count:16];
   if (v18)
   {
     v19 = v18;
@@ -88,13 +88,13 @@
       {
         if (*v61 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(getAllAssetSets2);
         }
 
         v22 = *(*(&v60 + 1) + 8 * i);
         v23 = [v16 getCDMAssetsFactorConfigCDMAssetSet:{objc_msgSend(v22, "integerValue")}];
         v59 = 0;
-        v24 = [(CDMAssetsManager *)self isAssetAvailableForCDMAssetsFactorConfig:v23 factorToAsset:v54 withError:&v59];
+        v24 = [(CDMAssetsManager *)self isAssetAvailableForCDMAssetsFactorConfig:v23 factorToAsset:assetCopy withError:&v59];
         v25 = v59;
 
         if (!v24)
@@ -103,7 +103,7 @@
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v60 objects:v71 count:16];
+      v19 = [getAllAssetSets2 countByEnumeratingWithState:&v60 objects:v71 count:16];
     }
 
     while (v19);
@@ -113,11 +113,11 @@
   v27 = [v53 count];
   if (v27)
   {
-    v28 = [v53 allKeys];
+    allKeys = [v53 allKeys];
     v29 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      v48 = [v28 componentsJoinedByString:@", "];
+      v48 = [allKeys componentsJoinedByString:@", "];
       *buf = 136315394;
       v68 = "[CDMAssetsManager areAssetsAvailableForCDMAssetsInfo:factorToAsset:withError:withSelfMetadata:withSelfContextId:withDataDispatcherContext:]";
       v69 = 2112;
@@ -130,8 +130,8 @@
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v31 = [v53 allValues];
-    v32 = [v31 countByEnumeratingWithState:&v55 objects:v66 count:16];
+    allValues = [v53 allValues];
+    v32 = [allValues countByEnumeratingWithState:&v55 objects:v66 count:16];
     if (v32)
     {
       v33 = v32;
@@ -142,16 +142,16 @@
         {
           if (*v56 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(allValues);
           }
 
-          v36 = [*(*(&v55 + 1) + 8 * j) localizedFailureReason];
-          [v30 appendString:v36];
+          localizedFailureReason = [*(*(&v55 + 1) + 8 * j) localizedFailureReason];
+          [v30 appendString:localizedFailureReason];
 
           [v30 appendString:@"\n"];
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v55 objects:v66 count:16];
+        v33 = [allValues countByEnumeratingWithState:&v55 objects:v66 count:16];
       }
 
       while (v33);
@@ -160,18 +160,18 @@
     v37 = MEMORY[0x1E696ABC0];
     v64[0] = *MEMORY[0x1E696A578];
     v38 = MEMORY[0x1E696AEC0];
-    v39 = [v28 componentsJoinedByString:@", "];
+    v39 = [allKeys componentsJoinedByString:@", "];
     v40 = [v38 stringWithFormat:@"Assets are missing for services: [%@].", v39];
     v64[1] = *MEMORY[0x1E696A588];
     v65[0] = v40;
     v65[1] = v30;
     v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:2];
-    *a5 = [v37 errorWithDomain:@"CDMAssetsManager" code:0 userInfo:v41];
+    *error = [v37 errorWithDomain:@"CDMAssetsManager" code:0 userInfo:v41];
 
-    v43 = v51;
-    v42 = v52;
-    v44 = v50;
-    [CDMSELFLogUtil cdmSetupMissingAssetsDetected:v52 contextId:v51 serviceNames:0 logMessage:@"SELF setup missing assets detected message emitted" dataDispatcherContext:v50];
+    v43 = idCopy;
+    v42 = metadataCopy;
+    v44 = contextCopy;
+    [CDMSELFLogUtil cdmSetupMissingAssetsDetected:metadataCopy contextId:idCopy serviceNames:0 logMessage:@"SELF setup missing assets detected message emitted" dataDispatcherContext:contextCopy];
     v45 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
@@ -186,15 +186,15 @@
 
   else
   {
-    v28 = CDMOSLoggerForCategory(0);
-    v43 = v51;
-    v42 = v52;
-    v44 = v50;
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+    allKeys = CDMOSLoggerForCategory(0);
+    v43 = idCopy;
+    v42 = metadataCopy;
+    v44 = contextCopy;
+    if (os_log_type_enabled(allKeys, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315138;
       v68 = "[CDMAssetsManager areAssetsAvailableForCDMAssetsInfo:factorToAsset:withError:withSelfMetadata:withSelfContextId:withDataDispatcherContext:]";
-      _os_log_debug_impl(&dword_1DC287000, v28, OS_LOG_TYPE_DEBUG, "%s All required assets are available. Return YES.", buf, 0xCu);
+      _os_log_debug_impl(&dword_1DC287000, allKeys, OS_LOG_TYPE_DEBUG, "%s All required assets are available. Return YES.", buf, 0xCu);
     }
   }
 
@@ -202,13 +202,13 @@
   return v27 == 0;
 }
 
-- (BOOL)isAssetAvailableForCDMAssetsFactorConfig:(id)a3 factorToAsset:(id)a4 withError:(id *)a5
+- (BOOL)isAssetAvailableForCDMAssetsFactorConfig:(id)config factorToAsset:(id)asset withError:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 getFactorToFoldersMapping];
-  v9 = [v8 allKeys];
+  configCopy = config;
+  assetCopy = asset;
+  getFactorToFoldersMapping = [configCopy getFactorToFoldersMapping];
+  allKeys = [getFactorToFoldersMapping allKeys];
 
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -216,16 +216,16 @@
     *buf = 136315394;
     v42 = "[CDMAssetsManager isAssetAvailableForCDMAssetsFactorConfig:factorToAsset:withError:]";
     v43 = 2112;
-    v44 = v9;
+    v44 = allKeys;
     _os_log_debug_impl(&dword_1DC287000, v10, OS_LOG_TYPE_DEBUG, "%s Factors are: %@", buf, 0x16u);
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allKeys, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = v9;
+  v12 = allKeys;
   v13 = [v12 countByEnumeratingWithState:&v35 objects:v47 count:16];
   if (v13)
   {
@@ -242,7 +242,7 @@
         }
 
         v17 = *(*(&v35 + 1) + 8 * v16);
-        if (([v6 isFactorRequired:v17] & 1) == 0)
+        if (([configCopy isFactorRequired:v17] & 1) == 0)
         {
           v20 = CDMOSLoggerForCategory(0);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -257,15 +257,15 @@
           goto LABEL_14;
         }
 
-        v18 = [v7 objectForKey:v17];
-        v19 = [v18 getAssetType];
+        v18 = [assetCopy objectForKey:v17];
+        getAssetType = [v18 getAssetType];
 
-        if (v19)
+        if (getAssetType)
         {
           v20 = CDMOSLoggerForCategory(0);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
           {
-            v21 = [v7 objectForKey:v17];
+            v21 = [assetCopy objectForKey:v17];
             *buf = 136315650;
             v42 = "[CDMAssetsManager isAssetAvailableForCDMAssetsFactorConfig:factorToAsset:withError:]";
             v43 = 2112;
@@ -306,12 +306,12 @@ LABEL_15:
     v28 = [v26 stringWithFormat:@"Assets are missing for factors: [%@].", v27];
     v40[1] = v28;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
-    *a5 = [v24 errorWithDomain:@"CDMAssetsManager" code:0 userInfo:v29];
+    *error = [v24 errorWithDomain:@"CDMAssetsManager" code:0 userInfo:v29];
 
     v30 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v31 = *a5;
+      v31 = *error;
       *buf = 136315394;
       v42 = "[CDMAssetsManager isAssetAvailableForCDMAssetsFactorConfig:factorToAsset:withError:]";
       v43 = 2112;
@@ -335,20 +335,20 @@ LABEL_15:
   return v23 == 0;
 }
 
-- (id)getAssetsByFactorNamesForCDMAssetsInfo:(id)a3 assetDirPath:(id)a4 locale:(id)a5
+- (id)getAssetsByFactorNamesForCDMAssetsInfo:(id)info assetDirPath:(id)path locale:(id)locale
 {
   v62 = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v41 = a4;
-  v42 = a5;
+  infoCopy = info;
+  pathCopy = path;
+  localeCopy = locale;
   obj = +[CDMUAFAssetsManager getNLUAFClientManagers];
   objc_sync_enter(obj);
   v32 = self->_getProcessedAssetsCache;
   objc_sync_enter(v32);
-  v7 = [v39 getGraphName];
-  v33 = [CDMAssetsManager getAssetSetsInCacheForGraphName:v7];
+  getGraphName = [infoCopy getGraphName];
+  v33 = [CDMAssetsManager getAssetSetsInCacheForGraphName:getGraphName];
 
-  if (v41)
+  if (pathCopy)
   {
     v8 = CDMOSLoggerForCategory(0);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -380,7 +380,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  v44 = [(CDMAssetsManager *)self getSavedResponseFromCacheForCDMAssetsInfo:v39 locale:v42 assetSets:?];
+  v44 = [(CDMAssetsManager *)self getSavedResponseFromCacheForCDMAssetsInfo:infoCopy locale:localeCopy assetSets:?];
   if (v44)
   {
     v35 = CDMOSLoggerForCategory(0);
@@ -398,9 +398,9 @@ LABEL_43:
 
 LABEL_4:
   v44 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [v39 getAllAssetSets];
+  getAllAssetSets = [infoCopy getAllAssetSets];
   v10 = +[CDMPlatformUtils isInternalInstall];
-  if (v41)
+  if (pathCopy)
   {
     v11 = 1;
   }
@@ -415,7 +415,7 @@ LABEL_4:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v35 = v9;
+  v35 = getAllAssetSets;
   v37 = [v35 countByEnumeratingWithState:&v50 objects:v61 count:16];
   if (v37)
   {
@@ -429,19 +429,19 @@ LABEL_4:
           objc_enumerationMutation(v35);
         }
 
-        v12 = [v39 getCDMAssetsFactorConfigCDMAssetSet:{objc_msgSend(*(*(&v50 + 1) + 8 * i), "integerValue")}];
+        v12 = [infoCopy getCDMAssetsFactorConfigCDMAssetSet:{objc_msgSend(*(*(&v50 + 1) + 8 * i), "integerValue")}];
         if (v12)
         {
           v38 = v12;
-          v13 = [v12 getFactorToFoldersMapping];
-          v14 = [v42 localeIdentifier];
-          v15 = [CDMAssetsManager getFactorToUnprocessedNLAsset:v13 cdmAssetsInfo:v39 locale:v14];
+          getFactorToFoldersMapping = [v12 getFactorToFoldersMapping];
+          localeIdentifier = [localeCopy localeIdentifier];
+          v15 = [CDMAssetsManager getFactorToUnprocessedNLAsset:getFactorToFoldersMapping cdmAssetsInfo:infoCopy locale:localeIdentifier];
 
           v48 = 0u;
           v49 = 0u;
           v46 = 0u;
           v47 = 0u;
-          v16 = v13;
+          v16 = getFactorToFoldersMapping;
           v17 = [v16 countByEnumeratingWithState:&v46 objects:v60 count:16];
           if (!v17)
           {
@@ -471,7 +471,7 @@ LABEL_4:
                   goto LABEL_25;
                 }
 
-                [(CDMAssetsManager *)self processSideLoadedAssetForNLAsset:v24 withAssetFolders:v22 assetDirPath:v41 locale:v42];
+                [(CDMAssetsManager *)self processSideLoadedAssetForNLAsset:v24 withAssetFolders:v22 assetDirPath:pathCopy locale:localeCopy];
                 v24 = v25 = v24;
               }
 
@@ -511,18 +511,18 @@ LABEL_27:
   v26 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    v30 = [v39 getGraphName];
-    v31 = [v44 descriptionInStringsFileFormat];
+    getGraphName2 = [infoCopy getGraphName];
+    descriptionInStringsFileFormat = [v44 descriptionInStringsFileFormat];
     *buf = 136315650;
     v55 = "[CDMAssetsManager getAssetsByFactorNamesForCDMAssetsInfo:assetDirPath:locale:]";
     v56 = 2112;
-    v57 = v30;
+    v57 = getGraphName2;
     v58 = 2112;
-    v59 = v31;
+    v59 = descriptionInStringsFileFormat;
     _os_log_debug_impl(&dword_1DC287000, v26, OS_LOG_TYPE_DEBUG, "%s Assets paths for %@: %@", buf, 0x20u);
   }
 
-  [(CDMAssetsManager *)self saveGetAssetsResponseForCDMAssetsInfo:v39 locale:v42 assetSets:v33 forResponse:v44];
+  [(CDMAssetsManager *)self saveGetAssetsResponseForCDMAssetsInfo:infoCopy locale:localeCopy assetSets:v33 forResponse:v44];
 LABEL_37:
 
   objc_sync_exit(v32);
@@ -533,26 +533,26 @@ LABEL_37:
   return v44;
 }
 
-- (id)getSavedResponseFromCacheForCDMAssetsInfo:(id)a3 locale:(id)a4 assetSets:(id)a5
+- (id)getSavedResponseFromCacheForCDMAssetsInfo:(id)info locale:(id)locale assetSets:(id)sets
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [CDMAssetsManager getHashKeyForCDMAssetsInfo:a3];
-  v9 = [CDMAssetsManager getHashKeyForAssetSets:v7];
+  setsCopy = sets;
+  v8 = [CDMAssetsManager getHashKeyForCDMAssetsInfo:info];
+  v9 = [CDMAssetsManager getHashKeyForAssetSets:setsCopy];
 
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [(CDMAssetsManager *)self getProcessedAssetsCache];
+    getProcessedAssetsCache = [(CDMAssetsManager *)self getProcessedAssetsCache];
     v17 = 136315394;
     v18 = "[CDMAssetsManager getSavedResponseFromCacheForCDMAssetsInfo:locale:assetSets:]";
     v19 = 2112;
-    v20 = v16;
+    v20 = getProcessedAssetsCache;
     _os_log_debug_impl(&dword_1DC287000, v10, OS_LOG_TYPE_DEBUG, "%s Processed Assets Cache: %@", &v17, 0x16u);
   }
 
-  v11 = [(CDMAssetsManager *)self getProcessedAssetsCache];
-  v12 = [v11 objectForKey:v8];
+  getProcessedAssetsCache2 = [(CDMAssetsManager *)self getProcessedAssetsCache];
+  v12 = [getProcessedAssetsCache2 objectForKey:v8];
   v13 = [v12 objectForKey:v9];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -560,48 +560,48 @@ LABEL_37:
   return v13;
 }
 
-- (void)saveGetAssetsResponseForCDMAssetsInfo:(id)a3 locale:(id)a4 assetSets:(id)a5 forResponse:(id)a6
+- (void)saveGetAssetsResponseForCDMAssetsInfo:(id)info locale:(id)locale assetSets:(id)sets forResponse:(id)response
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = a5;
-  v11 = [CDMAssetsManager getHashKeyForCDMAssetsInfo:a3];
-  v12 = [CDMAssetsManager getHashKeyForAssetSets:v10];
+  responseCopy = response;
+  setsCopy = sets;
+  v11 = [CDMAssetsManager getHashKeyForCDMAssetsInfo:info];
+  v12 = [CDMAssetsManager getHashKeyForAssetSets:setsCopy];
 
   getProcessedAssetsCache = self->_getProcessedAssetsCache;
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [(NSMutableDictionary *)getProcessedAssetsCache setObject:v14 forKey:v11];
 
   v15 = [(NSMutableDictionary *)self->_getProcessedAssetsCache objectForKey:v11];
-  [v15 setObject:v9 forKey:v12];
+  [v15 setObject:responseCopy forKey:v12];
 
   v16 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(CDMAssetsManager *)self getProcessedAssetsCache];
+    getProcessedAssetsCache = [(CDMAssetsManager *)self getProcessedAssetsCache];
     v19 = 136315394;
     v20 = "[CDMAssetsManager saveGetAssetsResponseForCDMAssetsInfo:locale:assetSets:forResponse:]";
     v21 = 2112;
-    v22 = v18;
+    v22 = getProcessedAssetsCache;
     _os_log_debug_impl(&dword_1DC287000, v16, OS_LOG_TYPE_DEBUG, "%s Updated Processed Assets Cache: %@", &v19, 0x16u);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)processSideLoadedAssetForNLAsset:(id)a3 withAssetFolders:(id)a4 assetDirPath:(id)a5 locale:(id)a6
+- (id)processSideLoadedAssetForNLAsset:(id)asset withAssetFolders:(id)folders assetDirPath:(id)path locale:(id)locale
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(CDMDefaultAssetsManager *)self->_cdmDefaultAssetsManager getAbsolutePathForServiceAssetFolders:a4 assetDirPath:a5 locale:a6];
+  assetCopy = asset;
+  v11 = [(CDMDefaultAssetsManager *)self->_cdmDefaultAssetsManager getAbsolutePathForServiceAssetFolders:folders assetDirPath:path locale:locale];
   v12 = v11;
-  v13 = v10;
+  v13 = assetCopy;
   if (v11)
   {
-    v14 = [v11 getAssetPath];
+    getAssetPath = [v11 getAssetPath];
 
-    v13 = v10;
-    if (v14)
+    v13 = assetCopy;
+    if (getAssetPath)
     {
       v15 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -611,7 +611,7 @@ LABEL_37:
         v21 = 2112;
         v22 = v12;
         v23 = 2112;
-        v24 = v10;
+        v24 = assetCopy;
         _os_log_debug_impl(&dword_1DC287000, v15, OS_LOG_TYPE_DEBUG, "%s Found valid custom asset: [%@] for NLAsset: %@. Return custom asset.", &v19, 0x20u);
       }
 
@@ -626,26 +626,26 @@ LABEL_37:
   return v16;
 }
 
-- (id)processNLAsset:(id)a3 withAssetFolders:(id)a4
+- (id)processNLAsset:(id)asset withAssetFolders:(id)folders
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  assetCopy = asset;
+  foldersCopy = folders;
+  if (!assetCopy)
   {
     goto LABEL_16;
   }
 
-  v8 = [v6 getAssetPath];
+  getAssetPath = [assetCopy getAssetPath];
 
-  if (v8)
+  if (getAssetPath)
   {
-    v9 = [v6 getAssetPath];
-    v10 = [CDMAssetsUtils findExistFolderInAssetFolders:v7 underBasePath:v9 useFileManager:self->_fileManager];
+    getAssetPath2 = [assetCopy getAssetPath];
+    v10 = [CDMAssetsUtils findExistFolderInAssetFolders:foldersCopy underBasePath:getAssetPath2 useFileManager:self->_fileManager];
 
     if (v10)
     {
-      [v6 appendPathWithServiceAssetFolder:v10];
+      [assetCopy appendPathWithServiceAssetFolder:v10];
 LABEL_5:
 
       goto LABEL_6;
@@ -654,17 +654,17 @@ LABEL_5:
     v13 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v6 getAssetPath];
+      getAssetPath3 = [assetCopy getAssetPath];
       v19 = 136315650;
       v20 = "[CDMAssetsManager processNLAsset:withAssetFolders:]";
       v21 = 2112;
       v22 = 0;
       v23 = 2112;
-      v24 = v14;
+      v24 = getAssetPath3;
       _os_log_impl(&dword_1DC287000, v13, OS_LOG_TYPE_INFO, "%s [WARN]: No valid asset folders exist for asset folder: %@ under asset path: %@.", &v19, 0x20u);
     }
 
-    if (!v7 || ![v7 count])
+    if (!foldersCopy || ![foldersCopy count])
     {
       goto LABEL_5;
     }
@@ -689,11 +689,11 @@ LABEL_6:
     v19 = 136315394;
     v20 = "[CDMAssetsManager processNLAsset:withAssetFolders:]";
     v21 = 2112;
-    v22 = v6;
+    v22 = assetCopy;
     _os_log_debug_impl(&dword_1DC287000, v11, OS_LOG_TYPE_DEBUG, "%s NL asset: %@ ", &v19, 0x16u);
   }
 
-  v12 = v6;
+  v12 = assetCopy;
 LABEL_17:
   v16 = v12;
 
@@ -702,13 +702,13 @@ LABEL_17:
   return v16;
 }
 
-- (void)_setupUafAssetManagerForLocale:(id)a3 cdmAssetsInfo:(id)a4 error:(id *)a5
+- (void)_setupUafAssetManagerForLocale:(id)locale cdmAssetsInfo:(id)info error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  localeCopy = locale;
   cdmUAFAssetsManager = self->_cdmUAFAssetsManager;
   v16 = 0;
-  [(CDMUAFAssetsManager *)cdmUAFAssetsManager setupForLocale:v8 cdmAssetsInfo:a4 error:&v16];
+  [(CDMUAFAssetsManager *)cdmUAFAssetsManager setupForLocale:localeCopy cdmAssetsInfo:info error:&v16];
   v10 = v16;
   v11 = CDMOSLoggerForCategory(0);
   v12 = v11;
@@ -716,16 +716,16 @@ LABEL_17:
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v8 localeIdentifier];
+      localeIdentifier = [localeCopy localeIdentifier];
       *buf = 136315394;
       v18 = "[CDMAssetsManager _setupUafAssetManagerForLocale:cdmAssetsInfo:error:]";
       v19 = 2112;
-      v20 = v15;
+      v20 = localeIdentifier;
       _os_log_error_impl(&dword_1DC287000, v12, OS_LOG_TYPE_ERROR, "%s [ERR]: Error occurred while setting up CDMUAFAssetsManager with locale: %@.", buf, 0x16u);
     }
 
     v13 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
   else
@@ -741,11 +741,11 @@ LABEL_17:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldReSetupForLocale:(id)a3 cdmAssetsInfo:(id)a4
+- (BOOL)shouldReSetupForLocale:(id)locale cdmAssetsInfo:(id)info
 {
   v65 = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  v43 = a4;
+  localeCopy = locale;
+  infoCopy = info;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -757,8 +757,8 @@ LABEL_17:
   obj = +[CDMUAFAssetsManager getNLUAFClientManagers];
   objc_sync_enter(obj);
   v39 = +[CDMUAFAssetsManager getNLUAFClientManagers];
-  v6 = [v43 getGraphName];
-  v41 = [v39 objectForKey:v6];
+  getGraphName = [infoCopy getGraphName];
+  v41 = [v39 objectForKey:getGraphName];
 
   v54 = 0;
   v42 = [CDMUAFAssetsManager getAssetSetNameToUafClientManager:v41 withError:&v54];
@@ -767,14 +767,14 @@ LABEL_17:
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v7 = [v43 getAllAssetSets];
-  v8 = [v7 countByEnumeratingWithState:&v50 objects:v64 count:16];
+  getAllAssetSets = [infoCopy getAllAssetSets];
+  v8 = [getAllAssetSets countByEnumeratingWithState:&v50 objects:v64 count:16];
   if (v8)
   {
     v38 = *v51;
     *&v9 = 136315394;
     v34 = v9;
-    v37 = v7;
+    v37 = getAllAssetSets;
     while (2)
     {
       v35 = v8;
@@ -808,8 +808,8 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        v14 = [v12 getLocale];
-        v15 = [v14 isEqualToString:v45];
+        getLocale = [v12 getLocale];
+        v15 = [getLocale isEqualToString:localeCopy];
 
         if (v15)
         {
@@ -826,13 +826,13 @@ LABEL_36:
 
         else
         {
-          v16 = [v43 getCDMAssetsUsagesForCDMAssetSet:{objc_msgSend(v11, "integerValue")}];
+          v16 = [infoCopy getCDMAssetsUsagesForCDMAssetSet:{objc_msgSend(v11, "integerValue")}];
           v48 = 0u;
           v49 = 0u;
           v46 = 0u;
           v47 = 0u;
-          v17 = [v16 getRawUsages];
-          v18 = [v17 countByEnumeratingWithState:&v46 objects:v63 count:16];
+          getRawUsages = [v16 getRawUsages];
+          v18 = [getRawUsages countByEnumeratingWithState:&v46 objects:v63 count:16];
           if (v18)
           {
             v19 = *v47;
@@ -842,7 +842,7 @@ LABEL_36:
               {
                 if (*v47 != v19)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(getRawUsages);
                 }
 
                 v21 = *(*(&v46 + 1) + 8 * j);
@@ -861,13 +861,13 @@ LABEL_36:
                   v29 = CDMOSLoggerForCategory(0);
                   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
                   {
-                    v30 = [v13 getLocale];
+                    getLocale2 = [v13 getLocale];
                     *buf = 136315906;
                     v56 = "[CDMAssetsManager shouldReSetupForLocale:cdmAssetsInfo:]";
                     v57 = 2112;
-                    v58 = v30;
+                    v58 = getLocale2;
                     v59 = 2112;
-                    v60 = v45;
+                    v60 = localeCopy;
                     v61 = 2112;
                     v62 = v44;
                     _os_log_debug_impl(&dword_1DC287000, v29, OS_LOG_TYPE_DEBUG, "%s UAFClientManager's existing locale is: %@ but the new locale is: %@ for asset set: %@. Return Yes", buf, 0x2Au);
@@ -886,22 +886,22 @@ LABEL_36:
                   _os_log_debug_impl(&dword_1DC287000, v23, OS_LOG_TYPE_DEBUG, "%s Need to check language code for %@", buf, 0x16u);
                 }
 
-                v24 = [v13 getLocale];
-                v25 = [CDMAssetsUtils extractAssetKeyFromLocale:v45];
-                v26 = [v24 isEqualToString:v25];
+                getLocale3 = [v13 getLocale];
+                v25 = [CDMAssetsUtils extractAssetKeyFromLocale:localeCopy];
+                v26 = [getLocale3 isEqualToString:v25];
 
                 if ((v26 & 1) == 0)
                 {
                   v29 = CDMOSLoggerForCategory(0);
                   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
                   {
-                    v33 = [v13 getLocale];
+                    getLocale4 = [v13 getLocale];
                     *buf = 136315906;
                     v56 = "[CDMAssetsManager shouldReSetupForLocale:cdmAssetsInfo:]";
                     v57 = 2112;
-                    v58 = v33;
+                    v58 = getLocale4;
                     v59 = 2112;
-                    v60 = v45;
+                    v60 = localeCopy;
                     v61 = 2112;
                     v62 = v44;
                     _os_log_debug_impl(&dword_1DC287000, v29, OS_LOG_TYPE_DEBUG, "%s UAFClientManager's existing locale is: %@ but the new locale is: %@ for asset set: %@ (which uses only language code). Return Yes", buf, 0x2Au);
@@ -913,7 +913,7 @@ LABEL_35:
                 }
               }
 
-              v18 = [v17 countByEnumeratingWithState:&v46 objects:v63 count:16];
+              v18 = [getRawUsages countByEnumeratingWithState:&v46 objects:v63 count:16];
               if (v18)
               {
                 continue;
@@ -925,7 +925,7 @@ LABEL_35:
         }
       }
 
-      v7 = v37;
+      getAllAssetSets = v37;
       v8 = [v37 countByEnumeratingWithState:&v50 objects:v64 count:16];
       if (v8)
       {
@@ -954,22 +954,22 @@ LABEL_37:
   return v28;
 }
 
-- (void)setupForLocale:(id)a3 cdmAssetsInfo:(id)a4 error:(id *)a5
+- (void)setupForLocale:(id)locale cdmAssetsInfo:(id)info error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  localeCopy = locale;
+  infoCopy = info;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [v8 localeIdentifier];
-    v24 = [v9 getGraphName];
+    localeIdentifier = [localeCopy localeIdentifier];
+    getGraphName = [infoCopy getGraphName];
     v25 = 136315650;
     v26 = "[CDMAssetsManager setupForLocale:cdmAssetsInfo:error:]";
     v27 = 2112;
-    v28 = v23;
+    v28 = localeIdentifier;
     v29 = 2112;
-    v30 = v24;
+    v30 = getGraphName;
     _os_log_debug_impl(&dword_1DC287000, v10, OS_LOG_TYPE_DEBUG, "%s Setup CDMAssetsManager for locale: %@ and graph: %@", &v25, 0x20u);
   }
 
@@ -999,7 +999,7 @@ LABEL_37:
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "CDMAssetsManager", "UAFAssetsManager setup", &v25, 2u);
   }
 
-  [(CDMAssetsManager *)self _setupUafAssetManagerForLocale:v8 cdmAssetsInfo:v9 error:a5];
+  [(CDMAssetsManager *)self _setupUafAssetManagerForLocale:localeCopy cdmAssetsInfo:infoCopy error:error];
   v18 = CDMLogContext;
   v19 = v18;
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
@@ -1035,13 +1035,13 @@ LABEL_37:
       _os_log_impl(&dword_1DC287000, v3, OS_LOG_TYPE_INFO, "%s Initialize CDMAssetsManager", buf, 0xCu);
     }
 
-    v4 = [[CDMDefaultAssetsManager alloc] initManager];
+    initManager = [[CDMDefaultAssetsManager alloc] initManager];
     cdmDefaultAssetsManager = v2->_cdmDefaultAssetsManager;
-    v2->_cdmDefaultAssetsManager = v4;
+    v2->_cdmDefaultAssetsManager = initManager;
 
-    v6 = [[CDMUAFAssetsManager alloc] initManager];
+    initManager2 = [[CDMUAFAssetsManager alloc] initManager];
     cdmUAFAssetsManager = v2->_cdmUAFAssetsManager;
-    v2->_cdmUAFAssetsManager = v6;
+    v2->_cdmUAFAssetsManager = initManager2;
 
     v8 = objc_alloc_init(MEMORY[0x1E696AC08]);
     fileManager = v2->_fileManager;
@@ -1056,10 +1056,10 @@ LABEL_37:
   return v2;
 }
 
-+ (id)getAssetSetsInCacheForGraphName:(id)a3
++ (id)getAssetSetsInCacheForGraphName:(id)name
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = +[CDMUAFAssetsManager getNLUAFClientManagers];
   v6 = CDMOSLoggerForCategory(0);
@@ -1072,7 +1072,7 @@ LABEL_37:
     _os_log_debug_impl(&dword_1DC287000, v6, OS_LOG_TYPE_DEBUG, "%s All UAFClientManagers: %@", buf, 0x16u);
   }
 
-  v7 = [v5 objectForKey:v3];
+  v7 = [v5 objectForKey:nameCopy];
   v8 = v7;
   if (v7)
   {
@@ -1096,16 +1096,16 @@ LABEL_37:
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 assetSet];
+          assetSet = [v14 assetSet];
 
-          if (!v15)
+          if (!assetSet)
           {
 
             goto LABEL_14;
           }
 
-          v16 = [v14 assetSet];
-          [v4 addObject:v16];
+          assetSet2 = [v14 assetSet];
+          [v4 addObject:assetSet2];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -1132,16 +1132,16 @@ LABEL_14:
   return v17;
 }
 
-+ (id)getHashKeyForAssetSets:(id)a3
++ (id)getHashKeyForAssetSets:(id)sets
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  setsCopy = sets;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = setsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1176,25 +1176,25 @@ LABEL_14:
   return v4;
 }
 
-+ (id)getHashKeyForCDMAssetsInfo:(id)a3
++ (id)getHashKeyForCDMAssetsInfo:(id)info
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc_init(v3);
   v6 = MEMORY[0x1E696AD60];
-  v7 = [v4 getGraphName];
+  getGraphName = [infoCopy getGraphName];
 
-  v8 = [v6 stringWithFormat:@"%@%@", v5, v7];
+  v8 = [v6 stringWithFormat:@"%@%@", v5, getGraphName];
 
   return v8;
 }
 
-+ (id)getFactorToUnprocessedNLAsset:(id)a3 cdmAssetsInfo:(id)a4 locale:(id)a5
++ (id)getFactorToUnprocessedNLAsset:(id)asset cdmAssetsInfo:(id)info locale:(id)locale
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  localeCopy = locale;
+  infoCopy = info;
+  assetCopy = asset;
   v10 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1203,9 +1203,9 @@ LABEL_14:
     _os_log_debug_impl(&dword_1DC287000, v10, OS_LOG_TYPE_DEBUG, "%s Using UAF to get unprocessed NLAssets.", &v16, 0xCu);
   }
 
-  v11 = [v9 allKeys];
+  allKeys = [assetCopy allKeys];
 
-  v12 = [CDMUAFAssetsManager getUAFAssetsForFactors:v11 withCDMAssetsInfo:v8 locale:v7];
+  v12 = [CDMUAFAssetsManager getUAFAssetsForFactors:allKeys withCDMAssetsInfo:infoCopy locale:localeCopy];
 
   v13 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1222,14 +1222,14 @@ LABEL_14:
   return v12;
 }
 
-+ (id)getFactorNamesForService:(id)a3
++ (id)getFactorNamesForService:(id)service
 {
-  v3 = [NSClassFromString(a3) getCDMServiceAssetConfig];
-  v4 = [v3 getCDMAssetSetToFactorsConfig];
+  getCDMServiceAssetConfig = [NSClassFromString(service) getCDMServiceAssetConfig];
+  getCDMAssetSetToFactorsConfig = [getCDMServiceAssetConfig getCDMAssetSetToFactorsConfig];
 
-  v5 = [v4 getAllFactors];
+  getAllFactors = [getCDMAssetSetToFactorsConfig getAllFactors];
 
-  return v5;
+  return getAllFactors;
 }
 
 void __48__CDMAssetsManager_getSingletonCDMAssetsManager__block_invoke()

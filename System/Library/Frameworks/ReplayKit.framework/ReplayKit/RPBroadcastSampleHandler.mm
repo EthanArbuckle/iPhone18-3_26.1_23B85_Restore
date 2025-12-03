@@ -2,13 +2,13 @@
 - (id)audioQueue;
 - (id)group;
 - (id)videoQueue;
-- (void)_processPayload:(id)a3;
-- (void)_processPayloadWithAudioSample:(id)a3 type:(int64_t)a4;
-- (void)_processPayloadWithVideoSample:(id)a3;
-- (void)_setupListenerWithEndpoint:(id)a3;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)_processPayload:(id)payload;
+- (void)_processPayloadWithAudioSample:(id)sample type:(int64_t)type;
+- (void)_processPayloadWithVideoSample:(id)sample;
+- (void)_setupListenerWithEndpoint:(id)endpoint;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)finishBroadcastWithError:(NSError *)error;
-- (void)processPayload:(id)a3 completion:(id)a4;
+- (void)processPayload:(id)payload completion:(id)completion;
 @end
 
 @implementation RPBroadcastSampleHandler
@@ -75,7 +75,7 @@ void __38__RPBroadcastSampleHandler_videoQueue__block_invoke()
 - (void)finishBroadcastWithError:(NSError *)error
 {
   v4 = error;
-  v5 = [(RPBroadcastSampleHandler *)self group];
+  group = [(RPBroadcastSampleHandler *)self group];
   v6 = dispatch_get_global_queue(0, 0);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -84,37 +84,37 @@ void __38__RPBroadcastSampleHandler_videoQueue__block_invoke()
   v8[4] = self;
   v9 = v4;
   v7 = v4;
-  dispatch_group_notify(v5, v6, v8);
+  dispatch_group_notify(group, v6, v8);
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  [(RPBroadcastHandler *)self setExtensionContext:v4];
-  [v4 setDelegate:self];
+  contextCopy = context;
+  [(RPBroadcastHandler *)self setExtensionContext:contextCopy];
+  [contextCopy setDelegate:self];
 }
 
-- (void)_processPayload:(id)a3
+- (void)_processPayload:(id)payload
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeySampleType"];
-  v6 = [v5 integerValue];
+  payloadCopy = payload;
+  v5 = [payloadCopy objectForKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeySampleType"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeyActionType"];
-  v8 = [v7 integerValue];
+  v7 = [payloadCopy objectForKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeyActionType"];
+  integerValue2 = [v7 integerValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeyFrontmostAppBundleID"];
+  v9 = [payloadCopy objectForKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeyFrontmostAppBundleID"];
   v10 = v9;
-  if (v6 == 1)
+  if (integerValue == 1)
   {
-    [(RPBroadcastSampleHandler *)self _processPayloadWithVideoSample:v4];
+    [(RPBroadcastSampleHandler *)self _processPayloadWithVideoSample:payloadCopy];
     goto LABEL_8;
   }
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    [(RPBroadcastSampleHandler *)self _processPayloadWithAudioSample:v4 type:v6];
+    [(RPBroadcastSampleHandler *)self _processPayloadWithAudioSample:payloadCopy type:integerValue];
     goto LABEL_8;
   }
 
@@ -129,43 +129,43 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v8 > 2)
+  if (integerValue2 > 2)
   {
-    if (v8 == 3)
+    if (integerValue2 == 3)
     {
       [(RPBroadcastSampleHandler *)self broadcastResumed];
     }
 
-    else if (v8 == 4)
+    else if (integerValue2 == 4)
     {
-      v13 = [(RPBroadcastSampleHandler *)self group];
-      dispatch_group_enter(v13);
+      group = [(RPBroadcastSampleHandler *)self group];
+      dispatch_group_enter(group);
 
       [(RPBroadcastSampleHandler *)self broadcastFinished];
-      v14 = [(RPBroadcastSampleHandler *)self group];
-      dispatch_group_leave(v14);
+      group2 = [(RPBroadcastSampleHandler *)self group];
+      dispatch_group_leave(group2);
 
-      v15 = [(RPBroadcastHandler *)self extensionContext];
-      [v15 completeRequestReturningItems:MEMORY[0x277CBEBF8] completionHandler:&__block_literal_global_19];
+      extensionContext = [(RPBroadcastHandler *)self extensionContext];
+      [extensionContext completeRequestReturningItems:MEMORY[0x277CBEBF8] completionHandler:&__block_literal_global_19];
     }
   }
 
   else
   {
-    if (v8 == 1)
+    if (integerValue2 == 1)
     {
-      v16 = [(RPBroadcastSampleHandler *)self group];
-      dispatch_group_enter(v16);
+      group3 = [(RPBroadcastSampleHandler *)self group];
+      dispatch_group_enter(group3);
 
-      v11 = [v4 objectForKeyedSubscript:@"RPBroadcastExtensionKeyExtensionUserInfo"];
+      v11 = [payloadCopy objectForKeyedSubscript:@"RPBroadcastExtensionKeyExtensionUserInfo"];
       [(RPBroadcastSampleHandler *)self broadcastStartedWithSetupInfo:v11];
-      v17 = [(RPBroadcastSampleHandler *)self group];
-      dispatch_group_leave(v17);
+      group4 = [(RPBroadcastSampleHandler *)self group];
+      dispatch_group_leave(group4);
 
       goto LABEL_7;
     }
 
-    if (v8 == 2)
+    if (integerValue2 == 2)
     {
       [(RPBroadcastSampleHandler *)self broadcastPaused];
     }
@@ -185,10 +185,10 @@ void __44__RPBroadcastSampleHandler__processPayload___block_invoke()
   }
 }
 
-- (void)_processPayloadWithVideoSample:(id)a3
+- (void)_processPayloadWithVideoSample:(id)sample
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sampleCopy = sample;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.duration.value) = 136446466;
@@ -198,17 +198,17 @@ void __44__RPBroadcastSampleHandler__processPayload___block_invoke()
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Broadcast extension received video payload from replayd", &buf, 0x12u);
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeyIOSurface"];
-  v6 = [v5 ioSurface];
-  if (v6)
+  v5 = [sampleCopy objectForKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeyIOSurface"];
+  ioSurface = [v5 ioSurface];
+  if (ioSurface)
   {
-    v7 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeyTimingInfo"];
+    v7 = ioSurface;
+    v8 = [sampleCopy objectForKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeyTimingInfo"];
     memset(&buf, 0, sizeof(buf));
     [v8 getBytes:&buf length:72];
     v12 = buf;
     v9 = RPSampleBufferUtilities_CreateSampleBufferFromIOSurface(v7, &v12);
-    v10 = [v4 objectForKeyedSubscript:@"RPSampleBufferVideoOrientation"];
+    v10 = [sampleCopy objectForKeyedSubscript:@"RPSampleBufferVideoOrientation"];
 
     CMSetAttachment(v9, @"RPSampleBufferVideoOrientation", v10, 0);
     if (v9)
@@ -231,10 +231,10 @@ void __44__RPBroadcastSampleHandler__processPayload___block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processPayloadWithAudioSample:(id)a3 type:(int64_t)a4
+- (void)_processPayloadWithAudioSample:(id)sample type:(int64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sampleCopy = sample;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446466;
@@ -244,8 +244,8 @@ void __44__RPBroadcastSampleHandler__processPayload___block_invoke()
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Broadcast extension received audio payload from replayd", &v9, 0x12u);
   }
 
-  DecodeAudioSampleBuffer = RPSampleBufferUtilities_CreateDecodeAudioSampleBuffer(v6);
-  [(RPBroadcastSampleHandler *)self processSampleBuffer:DecodeAudioSampleBuffer withType:a4];
+  DecodeAudioSampleBuffer = RPSampleBufferUtilities_CreateDecodeAudioSampleBuffer(sampleCopy);
+  [(RPBroadcastSampleHandler *)self processSampleBuffer:DecodeAudioSampleBuffer withType:type];
   if (DecodeAudioSampleBuffer)
   {
     CFRelease(DecodeAudioSampleBuffer);
@@ -254,23 +254,23 @@ void __44__RPBroadcastSampleHandler__processPayload___block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processPayload:(id)a3 completion:(id)a4
+- (void)processPayload:(id)payload completion:(id)completion
 {
-  v6 = a4;
-  [(RPBroadcastSampleHandler *)self _processPayload:a3];
-  v6[2]();
+  completionCopy = completion;
+  [(RPBroadcastSampleHandler *)self _processPayload:payload];
+  completionCopy[2]();
 }
 
-- (void)_setupListenerWithEndpoint:(id)a3
+- (void)_setupListenerWithEndpoint:(id)endpoint
 {
   v21[8] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAE80];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithListenerEndpoint:v5];
+  endpointCopy = endpoint;
+  v6 = [[v4 alloc] initWithListenerEndpoint:endpointCopy];
 
   [(RPBroadcastHandler *)self setConnection:v6];
-  v7 = [(RPBroadcastHandler *)self connection];
-  [v7 setExportedObject:self];
+  connection = [(RPBroadcastHandler *)self connection];
+  [connection setExportedObject:self];
 
   v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284D944E8];
   v9 = MEMORY[0x277CBEB98];
@@ -286,24 +286,24 @@ void __44__RPBroadcastSampleHandler__processPayload___block_invoke()
   v11 = [v9 setWithArray:v10];
   [v8 setClasses:v11 forSelector:sel_processPayload_completion_ argumentIndex:0 ofReply:0];
 
-  v12 = [(RPBroadcastHandler *)self connection];
-  [v12 setExportedInterface:v8];
+  connection2 = [(RPBroadcastHandler *)self connection];
+  [connection2 setExportedInterface:v8];
 
   v13 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284D94558];
-  v14 = [(RPBroadcastHandler *)self connection];
-  [v14 setRemoteObjectInterface:v13];
+  connection3 = [(RPBroadcastHandler *)self connection];
+  [connection3 setRemoteObjectInterface:v13];
 
-  v15 = [(RPBroadcastHandler *)self connection];
-  [v15 setInvalidationHandler:&__block_literal_global_93];
+  connection4 = [(RPBroadcastHandler *)self connection];
+  [connection4 setInvalidationHandler:&__block_literal_global_93];
 
-  v16 = [(RPBroadcastHandler *)self connection];
-  [v16 setInterruptionHandler:&__block_literal_global_96];
+  connection5 = [(RPBroadcastHandler *)self connection];
+  [connection5 setInterruptionHandler:&__block_literal_global_96];
 
-  v17 = [(RPBroadcastHandler *)self connection];
-  [v17 resume];
+  connection6 = [(RPBroadcastHandler *)self connection];
+  [connection6 resume];
 
-  v18 = [(RPBroadcastHandler *)self connection];
-  v19 = [v18 remoteObjectProxyWithErrorHandler:&__block_literal_global_100];
+  connection7 = [(RPBroadcastHandler *)self connection];
+  v19 = [connection7 remoteObjectProxyWithErrorHandler:&__block_literal_global_100];
   [(RPBroadcastSampleHandler *)self setDaemonProxy:v19];
 
   [(RPBroadcastDaemonProtocol *)self->_daemonProxy ping];

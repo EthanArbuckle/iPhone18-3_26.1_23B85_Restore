@@ -1,12 +1,12 @@
 @interface NLSessionActivityWaterTemperatureAccumulator
 - (BOOL)currentWaterTemperatureStale;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
 - (void)accumulatorDidStop;
-- (void)manager:(id)a3 didUpdateEvent:(id)a4;
-- (void)manager:(id)a3 didUpdateTemperature:(id)a4;
-- (void)manager:(id)a3 errorOccurred:(id)a4;
-- (void)setCurrentWaterTemperatureStale:(BOOL)a3;
-- (void)updateWithStatistics:(id)a3 duration:(double)a4;
+- (void)manager:(id)manager didUpdateEvent:(id)event;
+- (void)manager:(id)manager didUpdateTemperature:(id)temperature;
+- (void)manager:(id)manager errorOccurred:(id)occurred;
+- (void)setCurrentWaterTemperatureStale:(BOOL)stale;
+- (void)updateWithStatistics:(id)statistics duration:(double)duration;
 @end
 
 @implementation NLSessionActivityWaterTemperatureAccumulator
@@ -18,21 +18,21 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setCurrentWaterTemperatureStale:(BOOL)a3
+- (void)setCurrentWaterTemperatureStale:(BOOL)stale
 {
   v5 = OBJC_IVAR___NLSessionActivityWaterTemperatureAccumulator_currentWaterTemperatureStale;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = stale;
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v15 - v9;
-  v11 = _Block_copy(a4);
-  if (a3)
+  v11 = _Block_copy(handler);
+  if (date)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for Date();
@@ -51,48 +51,48 @@
     v11 = _sIeyB_Ieg_TRTA_0;
   }
 
-  v14 = self;
+  selfCopy = self;
   specialized WaterTemperatureAccumulator.accumulatorDidStart(withStart:handler:)(v10);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v11);
 
   _sSo8NSObjectCSgWOhTm_0(v10, &_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
 }
 
-- (void)updateWithStatistics:(id)a3 duration:(double)a4
+- (void)updateWithStatistics:(id)statistics duration:(double)duration
 {
-  v6 = a3;
-  v7 = self;
-  WaterTemperatureAccumulator.update(with:duration:)(v6, a4);
+  statisticsCopy = statistics;
+  selfCopy = self;
+  WaterTemperatureAccumulator.update(with:duration:)(statisticsCopy, duration);
 }
 
 - (void)accumulatorDidStop
 {
-  v2 = self;
+  selfCopy = self;
   WaterTemperatureAccumulator.accumulatorDidStop()();
 }
 
-- (void)manager:(id)a3 didUpdateEvent:(id)a4
+- (void)manager:(id)manager didUpdateEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  WaterTemperatureAccumulator.manager(_:didUpdate:)(v6, v7);
+  managerCopy = manager;
+  eventCopy = event;
+  selfCopy = self;
+  WaterTemperatureAccumulator.manager(_:didUpdate:)(managerCopy, eventCopy);
 }
 
-- (void)manager:(id)a3 didUpdateTemperature:(id)a4
+- (void)manager:(id)manager didUpdateTemperature:(id)temperature
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  WaterTemperatureAccumulator.manager(_:didUpdate:)(v6, v7);
+  managerCopy = manager;
+  temperatureCopy = temperature;
+  selfCopy = self;
+  WaterTemperatureAccumulator.manager(_:didUpdate:)(managerCopy, temperatureCopy);
 }
 
-- (void)manager:(id)a3 errorOccurred:(id)a4
+- (void)manager:(id)manager errorOccurred:(id)occurred
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  WaterTemperatureAccumulator.manager(_:errorOccurred:)(v6, v8);
+  managerCopy = manager;
+  occurredCopy = occurred;
+  selfCopy = self;
+  WaterTemperatureAccumulator.manager(_:errorOccurred:)(managerCopy, occurredCopy);
 }
 
 @end

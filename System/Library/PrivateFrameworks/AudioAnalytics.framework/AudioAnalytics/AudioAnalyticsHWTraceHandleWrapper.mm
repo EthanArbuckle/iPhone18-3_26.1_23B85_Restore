@@ -8,11 +8,11 @@
 
 - (void)dealloc
 {
-  v3 = [(AudioAnalyticsHWTraceHandleWrapper *)self handle];
+  handle = [(AudioAnalyticsHWTraceHandleWrapper *)self handle];
   v4 = gettailspin_cputrace_handle_deinitSymbolLoc();
   if (v4)
   {
-    v4(v3);
+    v4(handle);
     v5.receiver = self;
     v5.super_class = AudioAnalyticsHWTraceHandleWrapper;
     [(AudioAnalyticsHWTraceHandleWrapper *)&v5 dealloc];
@@ -28,14 +28,14 @@
 
 - (BOOL)pause
 {
-  v2 = [(AudioAnalyticsHWTraceHandleWrapper *)self handle];
+  handle = [(AudioAnalyticsHWTraceHandleWrapper *)self handle];
   v3 = gettailspin_pause_cputraceSymbolLoc();
   if (!v3)
   {
     [AudioAnalyticsHWTraceHandleWrapper pause];
   }
 
-  return v3(v2);
+  return v3(handle);
 }
 
 - (void)pause

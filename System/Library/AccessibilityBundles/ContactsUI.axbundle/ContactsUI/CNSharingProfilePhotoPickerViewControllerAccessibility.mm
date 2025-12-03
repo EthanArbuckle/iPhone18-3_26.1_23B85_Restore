@@ -1,23 +1,23 @@
 @interface CNSharingProfilePhotoPickerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation CNSharingProfilePhotoPickerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNSharingProfilePhotoPickerViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CNSharingProfilePhotoPickerViewController" hasInstanceMethod:@"previewView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNSharingProfilePhotoPickerViewController" hasInstanceMethod:@"selectedItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNSharingProfilePhotoPickerViewController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"CNSharingProfilePhotoPickerItemCell"];
-  [v3 validateClass:@"CNSharingProfilePhotoPickerItemCell" hasInstanceMethod:@"pickerItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNSharingProfilePhotoPickerItem"];
-  [v3 validateClass:@"CNSharingProfilePhotoPickerItem" hasInstanceMethod:@"avatarItem" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNSharingProfilePhotoPickerViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CNSharingProfilePhotoPickerViewController" hasInstanceMethod:@"previewView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNSharingProfilePhotoPickerViewController" hasInstanceMethod:@"selectedItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNSharingProfilePhotoPickerViewController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"CNSharingProfilePhotoPickerItemCell"];
+  [validationsCopy validateClass:@"CNSharingProfilePhotoPickerItemCell" hasInstanceMethod:@"pickerItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNSharingProfilePhotoPickerItem"];
+  [validationsCopy validateClass:@"CNSharingProfilePhotoPickerItem" hasInstanceMethod:@"avatarItem" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -61,13 +61,13 @@ id __100__CNSharingProfilePhotoPickerViewControllerAccessibility__accessibilityL
   [(CNSharingProfilePhotoPickerViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = CNSharingProfilePhotoPickerViewControllerAccessibility;
-  v8 = [(CNSharingProfilePhotoPickerViewControllerAccessibility *)&v17 collectionView:v6 cellForItemAtIndexPath:v7];
+  v8 = [(CNSharingProfilePhotoPickerViewControllerAccessibility *)&v17 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   objc_initWeak(&location, self);
   objc_initWeak(&from, v8);
   [v8 setIsAccessibilityElement:1];

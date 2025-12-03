@@ -1,6 +1,6 @@
 @interface BYODOverlayCellView
 + (id)log;
-- (BYODOverlayCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BYODOverlayCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation BYODOverlayCellView
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = sub_57168;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D6590 != -1)
   {
     dispatch_once(&qword_D6590, block);
@@ -22,21 +22,21 @@
   return v2;
 }
 
-- (BYODOverlayCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BYODOverlayCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v32.receiver = self;
   v32.super_class = BYODOverlayCellView;
-  v7 = [(BYODOverlayCellView *)&v32 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(BYODOverlayCellView *)&v32 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = +[UIColor systemBackgroundColor];
     [(BYODOverlayCellView *)v7 setBackgroundColor:v8];
 
     [(BYODOverlayCellView *)v7 setSelectionStyle:0];
-    v9 = [(BYODOverlayCellView *)v7 textLabel];
+    textLabel = [(BYODOverlayCellView *)v7 textLabel];
     noteLabel = v7->_noteLabel;
-    v7->_noteLabel = v9;
+    v7->_noteLabel = textLabel;
 
     [(UILabel *)v7->_noteLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v7->_noteLabel setTextAlignment:1];
@@ -51,28 +51,28 @@
 
     [(UILabel *)v7->_noteLabel setLineBreakMode:0];
     [(UILabel *)v7->_noteLabel setNumberOfLines:0];
-    v15 = [(UILabel *)v7->_noteLabel topAnchor];
-    v16 = [(BYODOverlayCellView *)v7 contentView];
-    v17 = [v16 topAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17 constant:0.0];
+    topAnchor = [(UILabel *)v7->_noteLabel topAnchor];
+    contentView = [(BYODOverlayCellView *)v7 contentView];
+    topAnchor2 = [contentView topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     [v18 setActive:1];
 
-    v19 = [(UILabel *)v7->_noteLabel bottomAnchor];
-    v20 = [(BYODOverlayCellView *)v7 contentView];
-    v21 = [v20 bottomAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21 constant:0.0];
+    bottomAnchor = [(UILabel *)v7->_noteLabel bottomAnchor];
+    contentView2 = [(BYODOverlayCellView *)v7 contentView];
+    bottomAnchor2 = [contentView2 bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     [v22 setActive:1];
 
-    v23 = [(UILabel *)v7->_noteLabel leadingAnchor];
-    v24 = [(BYODOverlayCellView *)v7 contentView];
-    v25 = [v24 leadingAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25 constant:0.0];
+    leadingAnchor = [(UILabel *)v7->_noteLabel leadingAnchor];
+    contentView3 = [(BYODOverlayCellView *)v7 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     [v26 setActive:1];
 
-    v27 = [(UILabel *)v7->_noteLabel trailingAnchor];
-    v28 = [(BYODOverlayCellView *)v7 contentView];
-    v29 = [v28 trailingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29 constant:0.0];
+    trailingAnchor = [(UILabel *)v7->_noteLabel trailingAnchor];
+    contentView4 = [(BYODOverlayCellView *)v7 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
     [v30 setActive:1];
   }
 

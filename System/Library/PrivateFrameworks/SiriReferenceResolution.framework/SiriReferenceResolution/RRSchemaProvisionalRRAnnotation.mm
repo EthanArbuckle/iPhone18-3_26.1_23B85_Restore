@@ -1,32 +1,32 @@
 @interface RRSchemaProvisionalRRAnnotation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RRSchemaProvisionalRRAnnotation)initWithDictionary:(id)a3;
-- (RRSchemaProvisionalRRAnnotation)initWithJSON:(id)a3;
+- (RRSchemaProvisionalRRAnnotation)initWithDictionary:(id)dictionary;
+- (RRSchemaProvisionalRRAnnotation)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setHasAnnotationAddedTimestampInSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAnnotationAddedTimestampInSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RRSchemaProvisionalRRAnnotation
 
-- (RRSchemaProvisionalRRAnnotation)initWithDictionary:(id)a3
+- (RRSchemaProvisionalRRAnnotation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = RRSchemaProvisionalRRAnnotation;
   v5 = [(RRSchemaProvisionalRRAnnotation *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[RRSchemaProvisionalRRAnnotation setName:](v5, "setName:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"annotationAddedTimestampInSeconds"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"annotationAddedTimestampInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,30 +39,30 @@
   return v5;
 }
 
-- (RRSchemaProvisionalRRAnnotation)initWithJSON:(id)a3
+- (RRSchemaProvisionalRRAnnotation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RRSchemaProvisionalRRAnnotation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RRSchemaProvisionalRRAnnotation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RRSchemaProvisionalRRAnnotation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -75,12 +75,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[RRSchemaProvisionalRRAnnotation annotationAddedTimestampInSeconds](self, "annotationAddedTimestampInSeconds")}];
-    [v3 setObject:v5 forKeyedSubscript:@"annotationAddedTimestampInSeconds"];
+    [dictionary setObject:v5 forKeyedSubscript:@"annotationAddedTimestampInSeconds"];
 
     has = self->_has;
   }
@@ -98,12 +98,12 @@
       v7 = off_1E8651D58[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"name"];
+    [dictionary setObject:v7 forKeyedSubscript:@"name"];
   }
 
-  [(RRSchemaProvisionalRRAnnotation *)self willProduceDictionaryRepresentation:v3];
+  [(RRSchemaProvisionalRRAnnotation *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -132,16 +132,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((v6 & 1) != (*&has & 1))
   {
     goto LABEL_10;
@@ -150,7 +150,7 @@ LABEL_3:
   if (*&has)
   {
     name = self->_name;
-    if (name != [v4 name])
+    if (name != [equalCopy name])
     {
 LABEL_10:
       v9 = 0;
@@ -158,7 +158,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   if (((v6 ^ *&has) & 2) != 0)
@@ -169,7 +169,7 @@ LABEL_10:
   if ((*&has & 2) != 0)
   {
     annotationAddedTimestampInSeconds = self->_annotationAddedTimestampInSeconds;
-    if (annotationAddedTimestampInSeconds != [v4 annotationAddedTimestampInSeconds])
+    if (annotationAddedTimestampInSeconds != [equalCopy annotationAddedTimestampInSeconds])
     {
       goto LABEL_10;
     }
@@ -181,16 +181,16 @@ LABEL_11:
   return v9;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     name = self->_name;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -198,13 +198,13 @@ LABEL_11:
   {
     annotationAddedTimestampInSeconds = self->_annotationAddedTimestampInSeconds;
     PBDataWriterWriteUint64Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)setHasAnnotationAddedTimestampInSeconds:(BOOL)a3
+- (void)setHasAnnotationAddedTimestampInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }

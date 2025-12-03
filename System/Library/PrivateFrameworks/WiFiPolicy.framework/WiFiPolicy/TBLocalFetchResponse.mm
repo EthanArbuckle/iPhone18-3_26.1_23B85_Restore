@@ -1,72 +1,72 @@
 @interface TBLocalFetchResponse
-+ (id)responseWithResults:(id)a3 entityDescription:(id)a4;
-+ (id)responseWithResultsByBSSID:(id)a3;
-- (TBLocalFetchResponse)initWithResults:(id)a3 entityDescription:(id)a4;
-- (TBLocalFetchResponse)initWithResultsByBSSID:(id)a3;
++ (id)responseWithResults:(id)results entityDescription:(id)description;
++ (id)responseWithResultsByBSSID:(id)d;
+- (TBLocalFetchResponse)initWithResults:(id)results entityDescription:(id)description;
+- (TBLocalFetchResponse)initWithResultsByBSSID:(id)d;
 @end
 
 @implementation TBLocalFetchResponse
 
-+ (id)responseWithResults:(id)a3 entityDescription:(id)a4
++ (id)responseWithResults:(id)results entityDescription:(id)description
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TBLocalFetchResponse alloc] initWithResults:v6 entityDescription:v5];
+  descriptionCopy = description;
+  resultsCopy = results;
+  v7 = [[TBLocalFetchResponse alloc] initWithResults:resultsCopy entityDescription:descriptionCopy];
 
   return v7;
 }
 
-+ (id)responseWithResultsByBSSID:(id)a3
++ (id)responseWithResultsByBSSID:(id)d
 {
-  v3 = a3;
-  v4 = [[TBLocalFetchResponse alloc] initWithResultsByBSSID:v3];
+  dCopy = d;
+  v4 = [[TBLocalFetchResponse alloc] initWithResultsByBSSID:dCopy];
 
   return v4;
 }
 
-- (TBLocalFetchResponse)initWithResultsByBSSID:(id)a3
+- (TBLocalFetchResponse)initWithResultsByBSSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = TBLocalFetchResponse;
   v6 = [(TBLocalFetchResponse *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resultsByBSSID, a3);
-    v8 = [v5 allValues];
+    objc_storeStrong(&v6->_resultsByBSSID, d);
+    allValues = [dCopy allValues];
     results = v7->_results;
-    v7->_results = v8;
+    v7->_results = allValues;
   }
 
   return v7;
 }
 
-- (TBLocalFetchResponse)initWithResults:(id)a3 entityDescription:(id)a4
+- (TBLocalFetchResponse)initWithResults:(id)results entityDescription:(id)description
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  descriptionCopy = description;
   v52.receiver = self;
   v52.super_class = TBLocalFetchResponse;
   v8 = [(TBLocalFetchResponse *)&v52 init];
   v9 = v8;
-  if (v7 && v8)
+  if (descriptionCopy && v8)
   {
-    v10 = [v7 name];
+    name = [descriptionCopy name];
     v11 = +[TBAccessPointMO entityName];
-    v12 = [v10 isEqualToString:v11];
+    v12 = [name isEqualToString:v11];
 
     if (v12)
     {
-      v13 = [MEMORY[0x277CBEB38] dictionary];
-      v14 = [MEMORY[0x277CBEB18] array];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      array = [MEMORY[0x277CBEB18] array];
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v43 = v6;
-      v15 = v6;
+      v43 = resultsCopy;
+      v15 = resultsCopy;
       v16 = [v15 countByEnumeratingWithState:&v48 objects:v54 count:16];
       if (v16)
       {
@@ -82,12 +82,12 @@
             }
 
             v20 = *(*(&v48 + 1) + 8 * i);
-            v21 = [v20 network];
-            [(NSArray *)v14 addObject:v21];
+            network = [v20 network];
+            [(NSArray *)array addObject:network];
 
-            v22 = [v20 network];
-            v23 = [v20 BSSID];
-            [(NSDictionary *)v13 setObject:v22 forKey:v23];
+            network2 = [v20 network];
+            bSSID = [v20 BSSID];
+            [(NSDictionary *)dictionary setObject:network2 forKey:bSSID];
           }
 
           v17 = [v15 countByEnumeratingWithState:&v48 objects:v54 count:16];
@@ -97,23 +97,23 @@
       }
 
       results = v9->_results;
-      v9->_results = v14;
-      tiles = v14;
+      v9->_results = array;
+      tiles = array;
 
       resultsByBSSID = v9->_resultsByBSSID;
-      v9->_resultsByBSSID = v13;
+      v9->_resultsByBSSID = dictionary;
 
-      v6 = v43;
+      resultsCopy = v43;
       goto LABEL_23;
     }
 
-    v27 = [v7 name];
+    name2 = [descriptionCopy name];
     v28 = +[TBNetworkMO entityName];
-    v29 = [v27 isEqualToString:v28];
+    v29 = [name2 isEqualToString:v28];
 
     if (v29)
     {
-      v30 = v6;
+      v30 = resultsCopy;
       tiles = v9->_results;
       v9->_results = v30;
 LABEL_23:
@@ -121,9 +121,9 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v31 = [v7 name];
+    name3 = [descriptionCopy name];
     v32 = +[TBTileMO entityName];
-    v33 = [v31 isEqualToString:v32];
+    v33 = [name3 isEqualToString:v32];
 
     if (v33)
     {
@@ -132,7 +132,7 @@ LABEL_23:
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v35 = v6;
+      v35 = resultsCopy;
       v36 = [v35 countByEnumeratingWithState:&v44 objects:v53 count:16];
       if (v36)
       {

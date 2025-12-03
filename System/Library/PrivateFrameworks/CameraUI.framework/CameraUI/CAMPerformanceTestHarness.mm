@@ -1,25 +1,25 @@
 @interface CAMPerformanceTestHarness
-- (CAMPerformanceTestHarness)initWithTestName:(id)a3;
+- (CAMPerformanceTestHarness)initWithTestName:(id)name;
 - (CAMPerformanceTestHarnessDelegate)delegate;
-- (void)failedTestWithReason:(id)a3;
-- (void)startSubtestWithName:(id)a3;
-- (void)startSubtestWithName:(id)a3 withMetrics:(id)a4;
+- (void)failedTestWithReason:(id)reason;
+- (void)startSubtestWithName:(id)name;
+- (void)startSubtestWithName:(id)name withMetrics:(id)metrics;
 - (void)startTesting;
-- (void)stopSubtestWithName:(id)a3;
+- (void)stopSubtestWithName:(id)name;
 - (void)stopTesting;
 @end
 
 @implementation CAMPerformanceTestHarness
 
-- (CAMPerformanceTestHarness)initWithTestName:(id)a3
+- (CAMPerformanceTestHarness)initWithTestName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = CAMPerformanceTestHarness;
   v5 = [(CAMPerformanceTestHarness *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     testName = v5->_testName;
     v5->_testName = v6;
 
@@ -32,60 +32,60 @@
 - (void)startTesting
 {
   [(CAMPerformanceTestHarness *)self setRunningTest:1];
-  v3 = [(CAMPerformanceTestHarness *)self delegate];
-  [v3 willStartTestHarness:self];
+  delegate = [(CAMPerformanceTestHarness *)self delegate];
+  [delegate willStartTestHarness:self];
 
-  v4 = [(CAMPerformanceTestHarness *)self startHandler];
-  if (v4)
+  startHandler = [(CAMPerformanceTestHarness *)self startHandler];
+  if (startHandler)
   {
-    v5 = v4;
-    v4[2]();
-    v4 = v5;
+    v5 = startHandler;
+    startHandler[2]();
+    startHandler = v5;
   }
 }
 
 - (void)stopTesting
 {
   [(CAMPerformanceTestHarness *)self setRunningTest:0];
-  v3 = [(CAMPerformanceTestHarness *)self delegate];
-  [v3 willEndTestHarness:self];
+  delegate = [(CAMPerformanceTestHarness *)self delegate];
+  [delegate willEndTestHarness:self];
 
-  v4 = [(CAMPerformanceTestHarness *)self completionHandler];
-  if (v4)
+  completionHandler = [(CAMPerformanceTestHarness *)self completionHandler];
+  if (completionHandler)
   {
-    v5 = v4;
-    v4[2]();
-    v4 = v5;
+    v5 = completionHandler;
+    completionHandler[2]();
+    completionHandler = v5;
   }
 }
 
-- (void)failedTestWithReason:(id)a3
+- (void)failedTestWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(CAMPerformanceTestHarness *)self delegate];
-  [v5 didFailTestHarness:self withReason:v4];
+  reasonCopy = reason;
+  delegate = [(CAMPerformanceTestHarness *)self delegate];
+  [delegate didFailTestHarness:self withReason:reasonCopy];
 }
 
-- (void)startSubtestWithName:(id)a3
+- (void)startSubtestWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(CAMPerformanceTestHarness *)self delegate];
-  [v5 didStartSubtest:self withName:v4 withMetrics:0];
+  nameCopy = name;
+  delegate = [(CAMPerformanceTestHarness *)self delegate];
+  [delegate didStartSubtest:self withName:nameCopy withMetrics:0];
 }
 
-- (void)startSubtestWithName:(id)a3 withMetrics:(id)a4
+- (void)startSubtestWithName:(id)name withMetrics:(id)metrics
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAMPerformanceTestHarness *)self delegate];
-  [v8 didStartSubtest:self withName:v7 withMetrics:v6];
+  metricsCopy = metrics;
+  nameCopy = name;
+  delegate = [(CAMPerformanceTestHarness *)self delegate];
+  [delegate didStartSubtest:self withName:nameCopy withMetrics:metricsCopy];
 }
 
-- (void)stopSubtestWithName:(id)a3
+- (void)stopSubtestWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(CAMPerformanceTestHarness *)self delegate];
-  [v5 didStopSubtest:self withName:v4];
+  nameCopy = name;
+  delegate = [(CAMPerformanceTestHarness *)self delegate];
+  [delegate didStopSubtest:self withName:nameCopy];
 }
 
 - (CAMPerformanceTestHarnessDelegate)delegate

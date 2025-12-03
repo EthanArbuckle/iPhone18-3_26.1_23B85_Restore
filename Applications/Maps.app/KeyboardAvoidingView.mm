@@ -1,26 +1,26 @@
 @interface KeyboardAvoidingView
-- (KeyboardAvoidingView)initWithCoder:(id)a3;
-- (KeyboardAvoidingView)initWithContentView:(id)a3 frame:(CGRect)a4;
+- (KeyboardAvoidingView)initWithCoder:(id)coder;
+- (KeyboardAvoidingView)initWithContentView:(id)view frame:(CGRect)frame;
 - (void)addConstraints;
-- (void)keyboardWillOrDidChangeFrame:(id)a3;
+- (void)keyboardWillOrDidChangeFrame:(id)frame;
 - (void)layoutSubviews;
 - (void)removeConstraints;
-- (void)setConstraintPriority:(float)a3;
-- (void)setContentView:(id)a3;
+- (void)setConstraintPriority:(float)priority;
+- (void)setContentView:(id)view;
 - (void)updateConstraints;
 - (void)updateForKeyboardFrame;
-- (void)updateForKeyboardFrame:(CGRect)a3;
+- (void)updateForKeyboardFrame:(CGRect)frame;
 @end
 
 @implementation KeyboardAvoidingView
 
-- (void)updateForKeyboardFrame:(CGRect)a3
+- (void)updateForKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  IsNull = CGRectIsNull(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  IsNull = CGRectIsNull(frame);
   v9 = 0.0;
   v10 = 0.0;
   if (!IsNull)
@@ -58,17 +58,17 @@
   }
 
   v18 = fmax(v10, 0.0);
-  v19 = [(KeyboardAvoidingView *)self topConstraint];
-  [v19 setConstant:v18];
+  topConstraint = [(KeyboardAvoidingView *)self topConstraint];
+  [topConstraint setConstant:v18];
 
-  v20 = [(KeyboardAvoidingView *)self bottomConstraint];
-  [v20 setConstant:{fmin(-v9, 0.0)}];
+  bottomConstraint = [(KeyboardAvoidingView *)self bottomConstraint];
+  [bottomConstraint setConstant:{fmin(-v9, 0.0)}];
 }
 
-- (void)keyboardWillOrDidChangeFrame:(id)a3
+- (void)keyboardWillOrDidChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v9 = [v4 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [frame userInfo];
+  v9 = [userInfo objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
 
   if (v9)
   {
@@ -88,18 +88,18 @@
 
 - (void)removeConstraints
 {
-  v3 = [(KeyboardAvoidingView *)self leadingConstraint];
+  leadingConstraint = [(KeyboardAvoidingView *)self leadingConstraint];
 
-  if (v3)
+  if (leadingConstraint)
   {
-    v4 = [(KeyboardAvoidingView *)self leadingConstraint];
-    v9[0] = v4;
-    v5 = [(KeyboardAvoidingView *)self trailingConstraint];
-    v9[1] = v5;
-    v6 = [(KeyboardAvoidingView *)self topConstraint];
-    v9[2] = v6;
-    v7 = [(KeyboardAvoidingView *)self bottomConstraint];
-    v9[3] = v7;
+    leadingConstraint2 = [(KeyboardAvoidingView *)self leadingConstraint];
+    v9[0] = leadingConstraint2;
+    trailingConstraint = [(KeyboardAvoidingView *)self trailingConstraint];
+    v9[1] = trailingConstraint;
+    topConstraint = [(KeyboardAvoidingView *)self topConstraint];
+    v9[2] = topConstraint;
+    bottomConstraint = [(KeyboardAvoidingView *)self bottomConstraint];
+    v9[3] = bottomConstraint;
     v8 = [NSArray arrayWithObjects:v9 count:4];
     [NSLayoutConstraint deactivateConstraints:v8];
 
@@ -112,42 +112,42 @@
 
 - (void)addConstraints
 {
-  v3 = [(KeyboardAvoidingView *)self contentView];
+  contentView = [(KeyboardAvoidingView *)self contentView];
 
-  if (v3)
+  if (contentView)
   {
-    v4 = [(KeyboardAvoidingView *)self contentView];
-    v5 = [v4 leadingAnchor];
-    v6 = [(KeyboardAvoidingView *)self leadingAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6];
+    contentView2 = [(KeyboardAvoidingView *)self contentView];
+    leadingAnchor = [contentView2 leadingAnchor];
+    leadingAnchor2 = [(KeyboardAvoidingView *)self leadingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(KeyboardAvoidingView *)self setLeadingConstraint:v7];
 
-    v8 = [(KeyboardAvoidingView *)self contentView];
-    v9 = [v8 trailingAnchor];
-    v10 = [(KeyboardAvoidingView *)self trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    contentView3 = [(KeyboardAvoidingView *)self contentView];
+    trailingAnchor = [contentView3 trailingAnchor];
+    trailingAnchor2 = [(KeyboardAvoidingView *)self trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(KeyboardAvoidingView *)self setTrailingConstraint:v11];
 
-    v12 = [(KeyboardAvoidingView *)self contentView];
-    v13 = [v12 topAnchor];
-    v14 = [(KeyboardAvoidingView *)self topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    contentView4 = [(KeyboardAvoidingView *)self contentView];
+    topAnchor = [contentView4 topAnchor];
+    topAnchor2 = [(KeyboardAvoidingView *)self topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(KeyboardAvoidingView *)self setTopConstraint:v15];
 
-    v16 = [(KeyboardAvoidingView *)self contentView];
-    v17 = [v16 bottomAnchor];
-    v18 = [(KeyboardAvoidingView *)self bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    contentView5 = [(KeyboardAvoidingView *)self contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    bottomAnchor2 = [(KeyboardAvoidingView *)self bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(KeyboardAvoidingView *)self setBottomConstraint:v19];
 
-    v20 = [(KeyboardAvoidingView *)self leadingConstraint];
-    v25[0] = v20;
-    v21 = [(KeyboardAvoidingView *)self trailingConstraint];
-    v25[1] = v21;
-    v22 = [(KeyboardAvoidingView *)self topConstraint];
-    v25[2] = v22;
-    v23 = [(KeyboardAvoidingView *)self bottomConstraint];
-    v25[3] = v23;
+    leadingConstraint = [(KeyboardAvoidingView *)self leadingConstraint];
+    v25[0] = leadingConstraint;
+    trailingConstraint = [(KeyboardAvoidingView *)self trailingConstraint];
+    v25[1] = trailingConstraint;
+    topConstraint = [(KeyboardAvoidingView *)self topConstraint];
+    v25[2] = topConstraint;
+    bottomConstraint = [(KeyboardAvoidingView *)self bottomConstraint];
+    v25[3] = bottomConstraint;
     v24 = [NSArray arrayWithObjects:v25 count:4];
     [NSLayoutConstraint activateConstraints:v24];
   }
@@ -176,64 +176,64 @@
   [(KeyboardAvoidingView *)self updateForKeyboardFrame:?];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v8 = a3;
-  v5 = [(KeyboardAvoidingView *)self contentView];
+  viewCopy = view;
+  contentView = [(KeyboardAvoidingView *)self contentView];
 
-  v6 = v8;
-  if (v5 != v8)
+  v6 = viewCopy;
+  if (contentView != viewCopy)
   {
     [(KeyboardAvoidingView *)self removeConstraints];
-    v7 = [(KeyboardAvoidingView *)self contentView];
-    [v7 removeFromSuperview];
+    contentView2 = [(KeyboardAvoidingView *)self contentView];
+    [contentView2 removeFromSuperview];
 
-    objc_storeStrong(&self->_contentView, a3);
-    if (v8)
+    objc_storeStrong(&self->_contentView, view);
+    if (viewCopy)
     {
-      [(KeyboardAvoidingView *)self addSubview:v8];
+      [(KeyboardAvoidingView *)self addSubview:viewCopy];
     }
 
     [(KeyboardAvoidingView *)self addConstraints];
-    v6 = v8;
+    v6 = viewCopy;
   }
 }
 
-- (void)setConstraintPriority:(float)a3
+- (void)setConstraintPriority:(float)priority
 {
   [(KeyboardAvoidingView *)self constraintPriority];
-  if (v5 != a3)
+  if (v5 != priority)
   {
-    if (a3 == 1000.0 || ([(KeyboardAvoidingView *)self constraintPriority], v6 == 1000.0))
+    if (priority == 1000.0 || ([(KeyboardAvoidingView *)self constraintPriority], v6 == 1000.0))
     {
       [(KeyboardAvoidingView *)self removeConstraints];
-      self->_constraintPriority = a3;
+      self->_constraintPriority = priority;
 
       [(KeyboardAvoidingView *)self addConstraints];
     }
 
     else
     {
-      v7 = [(KeyboardAvoidingView *)self leadingConstraint];
-      *&v8 = a3;
-      [v7 setPriority:v8];
+      leadingConstraint = [(KeyboardAvoidingView *)self leadingConstraint];
+      *&v8 = priority;
+      [leadingConstraint setPriority:v8];
 
-      v9 = [(KeyboardAvoidingView *)self trailingConstraint];
-      *&v10 = a3;
-      [v9 setPriority:v10];
+      trailingConstraint = [(KeyboardAvoidingView *)self trailingConstraint];
+      *&v10 = priority;
+      [trailingConstraint setPriority:v10];
 
-      v11 = [(KeyboardAvoidingView *)self topConstraint];
-      *&v12 = a3;
-      [v11 setPriority:v12];
+      topConstraint = [(KeyboardAvoidingView *)self topConstraint];
+      *&v12 = priority;
+      [topConstraint setPriority:v12];
 
-      v14 = [(KeyboardAvoidingView *)self bottomConstraint];
-      *&v13 = a3;
-      [v14 setPriority:v13];
+      bottomConstraint = [(KeyboardAvoidingView *)self bottomConstraint];
+      *&v13 = priority;
+      [bottomConstraint setPriority:v13];
     }
   }
 }
 
-- (KeyboardAvoidingView)initWithCoder:(id)a3
+- (KeyboardAvoidingView)initWithCoder:(id)coder
 {
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -243,21 +243,21 @@
   return 0;
 }
 
-- (KeyboardAvoidingView)initWithContentView:(id)a3 frame:(CGRect)a4
+- (KeyboardAvoidingView)initWithContentView:(id)view frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = KeyboardAvoidingView;
-  v10 = [(KeyboardAvoidingView *)&v15 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(KeyboardAvoidingView *)&v15 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    v10->_constraintPriority = 750.0;
-    [(KeyboardAvoidingView *)v10 setContentView:v9];
+    height->_constraintPriority = 750.0;
+    [(KeyboardAvoidingView *)height setContentView:viewCopy];
     [(KeyboardAvoidingView *)v11 updateForKeyboardFrame];
     v12 = +[NSNotificationCenter defaultCenter];
     [v12 addObserver:v11 selector:"keyboardWillOrDidChangeFrame:" name:UIKeyboardWillChangeFrameNotification object:0];

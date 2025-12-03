@@ -1,18 +1,18 @@
 @interface CDRequesterDaemon
 - (CDRequesterDaemon)init;
-- (id)_authenticationSessionWithClient:(id)a3 request:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_authenticationSessionWithClient:(id)client request:(id)request;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_activated;
 - (void)_invalidated;
 - (void)_startServiceListener;
 - (void)activate;
 - (void)invalidate;
-- (void)serviceConnection:(id)a3 fetchDaemonStatusWithCompletionHandler:(id)a4;
-- (void)serviceConnection:(id)a3 serviceClient:(id)a4 startAuthenticationSessionWithRequest:(id)a5 completionHandler:(id)a6;
-- (void)serviceListener:(id)a3 connectionInvalidated:(id)a4;
-- (void)serviceListener:(id)a3 willAcceptConnection:(id)a4;
+- (void)serviceConnection:(id)connection fetchDaemonStatusWithCompletionHandler:(id)handler;
+- (void)serviceConnection:(id)connection serviceClient:(id)client startAuthenticationSessionWithRequest:(id)request completionHandler:(id)handler;
+- (void)serviceListener:(id)listener connectionInvalidated:(id)invalidated;
+- (void)serviceListener:(id)listener willAcceptConnection:(id)connection;
 @end
 
 @implementation CDRequesterDaemon
@@ -106,10 +106,10 @@
   [(CDServiceListener *)v5 activate];
 }
 
-- (id)_authenticationSessionWithClient:(id)a3 request:(id)a4
+- (id)_authenticationSessionWithClient:(id)client request:(id)request
 {
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  requestCopy = request;
   v7 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -117,7 +117,7 @@
   {
     v9 = off_100089018;
 LABEL_19:
-    v14 = [objc_alloc(*v9) initWithClient:v5 request:v6];
+    v14 = [objc_alloc(*v9) initWithClient:clientCopy request:requestCopy];
     goto LABEL_20;
   }
 
@@ -187,54 +187,54 @@ LABEL_20:
   return v14;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   [BSDescriptionBuilder builderWithObject:self];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100018480;
   v5 = v8[3] = &unk_10008A030;
   v9 = v5;
-  v10 = self;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v8];
+  selfCopy = self;
+  [v5 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v8];
 
   v6 = v5;
   return v5;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CDRequesterDaemon *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CDRequesterDaemon *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CDRequesterDaemon *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CDRequesterDaemon *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)serviceConnection:(id)a3 serviceClient:(id)a4 startAuthenticationSessionWithRequest:(id)a5 completionHandler:(id)a6
+- (void)serviceConnection:(id)connection serviceClient:(id)client startAuthenticationSessionWithRequest:(id)request completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  connectionCopy = connection;
+  clientCopy = client;
+  requestCopy = request;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_currentSession)
   {
     v15 = [NSError errorWithDomain:CPSErrorDomain code:102 userInfo:0];
-    v14[2](v14, v15);
+    handlerCopy[2](handlerCopy, v15);
   }
 
   else
   {
-    v16 = [(CDRequesterDaemon *)self _authenticationSessionWithClient:v12 request:v13];
+    v16 = [(CDRequesterDaemon *)self _authenticationSessionWithClient:clientCopy request:requestCopy];
     currentSession = self->_currentSession;
     self->_currentSession = v16;
 
@@ -247,7 +247,7 @@ LABEL_20:
       v42[1] = 3221225472;
       v42[2] = sub_1000189AC;
       v42[3] = &unk_10008A730;
-      v20 = v11;
+      v20 = connectionCopy;
       v43 = v20;
       [(CDRequesterSession *)v19 setPresentShieldHandler:v42];
       v21 = self->_currentSession;
@@ -288,48 +288,48 @@ LABEL_20:
       v33[3] = &unk_100089E20;
       v33[4] = self;
       [(CDRequesterSession *)v28 setInvalidationHandler:v33];
-      objc_storeStrong(&self->_currentSessionConnection, a3);
-      [(CDRequesterSession *)self->_currentSession activateWithCompletionHandler:v14];
+      objc_storeStrong(&self->_currentSessionConnection, connection);
+      [(CDRequesterSession *)self->_currentSession activateWithCompletionHandler:handlerCopy];
     }
 
     else
     {
       v29 = CPSErrorDomain;
       v44 = NSDebugDescriptionErrorKey;
-      v30 = [NSString stringWithFormat:@"Invalid authentication request: %@", v13];
-      v45 = v30;
+      requestCopy = [NSString stringWithFormat:@"Invalid authentication request: %@", requestCopy];
+      v45 = requestCopy;
       v31 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
       v32 = [NSError errorWithDomain:v29 code:101 userInfo:v31];
-      v14[2](v14, v32);
+      handlerCopy[2](handlerCopy, v32);
     }
   }
 }
 
-- (void)serviceConnection:(id)a3 fetchDaemonStatusWithCompletionHandler:(id)a4
+- (void)serviceConnection:(id)connection fetchDaemonStatusWithCompletionHandler:(id)handler
 {
   dispatchQueue = self->_dispatchQueue;
-  v6 = a4;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(dispatchQueue);
   v7 = [(CDRequesterDaemon *)self descriptionWithMultilinePrefix:0];
-  v6[2](v6, v7, 0);
+  handlerCopy[2](handlerCopy, v7, 0);
 }
 
-- (void)serviceListener:(id)a3 willAcceptConnection:(id)a4
+- (void)serviceListener:(id)listener willAcceptConnection:(id)connection
 {
   dispatchQueue = self->_dispatchQueue;
-  v6 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(dispatchQueue);
-  [v6 setDelegate:self];
+  [connectionCopy setDelegate:self];
 }
 
-- (void)serviceListener:(id)a3 connectionInvalidated:(id)a4
+- (void)serviceListener:(id)listener connectionInvalidated:(id)invalidated
 {
   dispatchQueue = self->_dispatchQueue;
-  v6 = a4;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(dispatchQueue);
   currentSessionConnection = self->_currentSessionConnection;
 
-  if (currentSessionConnection == v6)
+  if (currentSessionConnection == invalidatedCopy)
   {
     [(CDRequesterSession *)self->_currentSession invalidate];
     currentSession = self->_currentSession;

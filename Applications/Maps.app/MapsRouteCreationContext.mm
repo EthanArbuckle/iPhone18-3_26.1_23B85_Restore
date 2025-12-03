@@ -1,69 +1,69 @@
 @interface MapsRouteCreationContext
-- (BOOL)_wouldDuplicateTrailingAnchorWithCoordinate:(CLLocationCoordinate2D)a3;
-- (BOOL)chromeDidSelectAnnotationView:(id)a3;
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3;
-- (BOOL)chromeDidSelectClusteredWaypointMarker:(id)a3;
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3;
-- (BOOL)chromeDidSelectFlyoverTourLabelMarker:(id)a3;
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3;
-- (BOOL)chromeDidSelectTrafficIncident:(id)a3 latitude:(id)a4 longitude:(id)a5;
-- (BOOL)chromeDidSelectUserLocationAnnotation:(id)a3;
-- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)a3;
+- (BOOL)_wouldDuplicateTrailingAnchorWithCoordinate:(CLLocationCoordinate2D)coordinate;
+- (BOOL)chromeDidSelectAnnotationView:(id)view;
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker;
+- (BOOL)chromeDidSelectClusteredWaypointMarker:(id)marker;
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation;
+- (BOOL)chromeDidSelectFlyoverTourLabelMarker:(id)marker;
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item;
+- (BOOL)chromeDidSelectTrafficIncident:(id)incident latitude:(id)latitude longitude:(id)longitude;
+- (BOOL)chromeDidSelectUserLocationAnnotation:(id)annotation;
+- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)marker;
 - (BOOL)closeLoopEnabled;
 - (BOOL)outAndBackEnabled;
 - (BOOL)reverseEnabled;
 - (BOOL)undoEnabled;
 - (BOOL)wantsCompassLayoutControl;
 - (ChromeViewController)chromeViewController;
-- (MapsRouteCreationContext)initWithExistingMapItems:(id)a3;
+- (MapsRouteCreationContext)initWithExistingMapItems:(id)items;
 - (RouteAnnotationsConfiguration)routeAnnotationsConfiguration;
-- (id)_anchorNearCoordinate:(CLLocationCoordinate2D)a3;
-- (id)_anchorNearMapItem:(id)a3;
-- (id)_anchorNearPoint:(CGPoint)a3;
-- (id)_anchorPointNearMapItem:(id)a3 inAnchorPoints:(id)a4;
-- (id)_errorMessageForError:(id)a3 directionsError:(id)a4 request:(id)a5 isOffline:(BOOL)a6 shouldBackoutEdit:(BOOL *)a7;
-- (id)_errorMessageForUnsupportedCountry:(id)a3;
+- (id)_anchorNearCoordinate:(CLLocationCoordinate2D)coordinate;
+- (id)_anchorNearMapItem:(id)item;
+- (id)_anchorNearPoint:(CGPoint)point;
+- (id)_anchorPointNearMapItem:(id)item inAnchorPoints:(id)points;
+- (id)_errorMessageForError:(id)error directionsError:(id)directionsError request:(id)request isOffline:(BOOL)offline shouldBackoutEdit:(BOOL *)edit;
+- (id)_errorMessageForUnsupportedCountry:(id)country;
 - (id)_mostRecentlyAddedAnchor;
 - (id)_traits;
 - (id)emptyStateVideoName;
 - (id)routeData;
 - (int64_t)preferredMapScaleVisibility;
-- (unint64_t)_routeEditorActionForEditReason:(unint64_t)a3;
-- (void)_appendAnchorPoint:(id)a3;
-- (void)_appendCoordinate:(CLLocationCoordinate2D)a3 isCurrentLocation:(BOOL)a4;
-- (void)_appendMapItem:(id)a3 isCurrentLocation:(BOOL)a4 isCoordinate:(BOOL)a5;
+- (unint64_t)_routeEditorActionForEditReason:(unint64_t)reason;
+- (void)_appendAnchorPoint:(id)point;
+- (void)_appendCoordinate:(CLLocationCoordinate2D)coordinate isCurrentLocation:(BOOL)location;
+- (void)_appendMapItem:(id)item isCurrentLocation:(BOOL)location isCoordinate:(BOOL)coordinate;
 - (void)_backoutLastState;
-- (void)_centerOnCurrentRouteAnimated:(BOOL)a3;
+- (void)_centerOnCurrentRouteAnimated:(BOOL)animated;
 - (void)_createFakeButton;
-- (void)_deleteFirstAnchorPointMatchingAnchorPoint:(id)a3;
-- (void)_deleteLastAnchorPointMatchingAnchorPoint:(id)a3;
+- (void)_deleteFirstAnchorPointMatchingAnchorPoint:(id)point;
+- (void)_deleteLastAnchorPointMatchingAnchorPoint:(id)point;
 - (void)_expandCardIfNeeded;
 - (void)_insertCenterButtons;
 - (void)_insertEditStackButtons;
 - (void)_insertRecenterButtonIfNeeded;
-- (void)_insertRippleAnnotationAtCoordinate:(CLLocationCoordinate2D)a3;
-- (void)_moveContextMenuToPoint:(CGPoint)a3 anchorPoint:(id)a4;
+- (void)_insertRippleAnnotationAtCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_moveContextMenuToPoint:(CGPoint)point anchorPoint:(id)anchorPoint;
 - (void)_popEditStack;
-- (void)_presentPopupViewForMessage:(id)a3 timeout:(double)a4 isError:(BOOL)a5 ignoreChromeTransitioning:(BOOL)a6;
-- (void)_pushEditState:(id)a3 shouldRecenterOnCompletion:(BOOL)a4;
+- (void)_presentPopupViewForMessage:(id)message timeout:(double)timeout isError:(BOOL)error ignoreChromeTransitioning:(BOOL)transitioning;
+- (void)_pushEditState:(id)state shouldRecenterOnCompletion:(BOOL)completion;
 - (void)_removeCenterButtons;
 - (void)_removeEditStackButtons;
 - (void)_removeRippleView;
-- (void)_requeryStateWithAction:(unint64_t)a3 shouldRecenterOnCompletion:(BOOL)a4;
-- (void)_setMenuAttachedAnchorPoint:(id)a3;
+- (void)_requeryStateWithAction:(unint64_t)action shouldRecenterOnCompletion:(BOOL)completion;
+- (void)_setMenuAttachedAnchorPoint:(id)point;
 - (void)_showRecenterButton;
-- (void)_undoEditStack:(id)a3;
+- (void)_undoEditStack:(id)stack;
 - (void)_updateCenterButtons;
-- (void)_updateCoachingPillWithIgnoreChromeTransitioning:(BOOL)a3;
+- (void)_updateCoachingPillWithIgnoreChromeTransitioning:(BOOL)transitioning;
 - (void)_updateMenu;
 - (void)_updateScaleAndCompass;
 - (void)_updateUndoVisibility;
-- (void)applyRouteDataAddress:(id)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)didSaveCustomRoute:(id)a3;
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4;
-- (void)menuWillDismissWithAnimator:(id)a3;
+- (void)applyRouteDataAddress:(id)address;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)didSaveCustomRoute:(id)route;
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point;
+- (void)menuWillDismissWithAnimator:(id)animator;
 - (void)popContainee;
 - (void)pressedCloseLoop;
 - (void)pressedOutAndBack;
@@ -71,11 +71,11 @@
 - (void)pressedReverse;
 - (void)pressedRoutePlanning;
 - (void)pressedSave;
-- (void)pressedStartNavigationWithCompletion:(id)a3;
-- (void)pressedStartSteppingWithCompletion:(id)a3;
+- (void)pressedStartNavigationWithCompletion:(id)completion;
+- (void)pressedStartSteppingWithCompletion:(id)completion;
 - (void)pressedUndo;
 - (void)pushSaveContainee;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 @end
 
 @implementation MapsRouteCreationContext
@@ -87,16 +87,16 @@
   return WeakRetained;
 }
 
-- (void)_updateCoachingPillWithIgnoreChromeTransitioning:(BOOL)a3
+- (void)_updateCoachingPillWithIgnoreChromeTransitioning:(BOOL)transitioning
 {
-  v3 = a3;
-  v5 = [(NSMutableArray *)self->_editStack lastObject];
-  v6 = [v5 anchorPoints];
+  transitioningCopy = transitioning;
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  anchorPoints = [lastObject anchorPoints];
 
-  v7 = [(MapsRouteCreationContext *)self chromeViewController];
-  v8 = sub_10000FA08(v7);
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  v8 = sub_10000FA08(chromeViewController);
 
-  if (![v6 count])
+  if (![anchorPoints count])
   {
     v9 = +[NSBundle mainBundle];
     v10 = v9;
@@ -105,7 +105,7 @@
     goto LABEL_5;
   }
 
-  if ([v6 count] == 1)
+  if ([anchorPoints count] == 1)
   {
     v9 = +[NSBundle mainBundle];
     v10 = v9;
@@ -124,14 +124,14 @@ LABEL_5:
 
     v14 = [v9 localizedStringForKey:v13 value:@"localized string not found" table:0];
 
-    [(MapsRouteCreationContext *)self _presentPopupViewForMessage:v14 timeout:0 isError:v3 ignoreChromeTransitioning:0.0];
+    [(MapsRouteCreationContext *)self _presentPopupViewForMessage:v14 timeout:0 isError:transitioningCopy ignoreChromeTransitioning:0.0];
     goto LABEL_9;
   }
 
-  v15 = [(MapsPopupMessageView *)self->_popupMessageView superview];
-  if (v15)
+  superview = [(MapsPopupMessageView *)self->_popupMessageView superview];
+  if (superview)
   {
-    v16 = v15;
+    v16 = superview;
     [(MapsPopupMessageView *)self->_popupMessageView timeout];
     v18 = v17;
 
@@ -155,23 +155,23 @@ LABEL_9:
 
 - (void)_updateScaleAndCompass
 {
-  v3 = [(MapsPopupMessageView *)self->_popupMessageView superview];
+  superview = [(MapsPopupMessageView *)self->_popupMessageView superview];
 
-  v4 = [(MapsRouteCreationContext *)self chromeViewController];
-  v8 = [v4 mapView];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  [v8 setShowsCompass:v3 == 0];
-  v5 = [(MapsRouteCreationContext *)self chromeViewController];
-  v6 = sub_10000FA08(v5);
+  [mapView setShowsCompass:superview == 0];
+  chromeViewController2 = [(MapsRouteCreationContext *)self chromeViewController];
+  v6 = sub_10000FA08(chromeViewController2);
 
-  if (v6 != 5 && !v3)
+  if (v6 != 5 && !superview)
   {
-    [v8 _compassInsets];
-    [v8 _setCompassInsets:0.0];
+    [mapView _compassInsets];
+    [mapView _setCompassInsets:0.0];
   }
 
-  v7 = [(MapsRouteCreationContext *)self chromeViewController];
-  [v7 setNeedsUpdateComponent:@"mapScale" animated:1];
+  chromeViewController3 = [(MapsRouteCreationContext *)self chromeViewController];
+  [chromeViewController3 setNeedsUpdateComponent:@"mapScale" animated:1];
 }
 
 - (void)_updateMenu
@@ -188,19 +188,19 @@ LABEL_9:
   if (v3)
   {
     objc_initWeak(buf, self);
-    v5 = [(NSMutableArray *)self->_editStack lastObject];
-    v6 = [v5 anchorPoints];
+    lastObject = [(NSMutableArray *)self->_editStack lastObject];
+    anchorPoints = [lastObject anchorPoints];
 
-    v7 = [v6 firstObject];
-    if ([v7 isEqual:v3])
+    firstObject = [anchorPoints firstObject];
+    if ([firstObject isEqual:v3])
     {
       v8 = 0;
     }
 
     else
     {
-      v12 = [v6 lastObject];
-      v13 = [v12 isEqual:v3];
+      lastObject2 = [anchorPoints lastObject];
+      v13 = [lastObject2 isEqual:v3];
 
       v8 = v13 ^ 1;
     }
@@ -258,7 +258,7 @@ LABEL_9:
     v64 = 0u;
     v62 = 0u;
     v61 = 0u;
-    v26 = v6;
+    v26 = anchorPoints;
     v27 = [v26 countByEnumeratingWithState:&v61 objects:v71 count:16];
     if (v27)
     {
@@ -384,14 +384,14 @@ LABEL_35:
 
   if (v4)
   {
-    v8 = [(NSMutableArray *)self->_containees lastObject];
-    v5 = [v8 cardPresentationController];
-    v6 = [v5 containeeLayout];
+    lastObject = [(NSMutableArray *)self->_containees lastObject];
+    cardPresentationController = [lastObject cardPresentationController];
+    containeeLayout = [cardPresentationController containeeLayout];
 
-    if (v6 == 1)
+    if (containeeLayout == 1)
     {
-      v7 = [v8 cardPresentationController];
-      [v7 wantsExpandLayout];
+      cardPresentationController2 = [lastObject cardPresentationController];
+      [cardPresentationController2 wantsExpandLayout];
     }
   }
 }
@@ -416,44 +416,44 @@ LABEL_35:
 
 - (void)_insertRecenterButtonIfNeeded
 {
-  v3 = [(CardView *)self->_recenterButtonContainer superview];
+  superview = [(CardView *)self->_recenterButtonContainer superview];
 
-  if (!v3)
+  if (!superview)
   {
-    v4 = [(CardView *)self->_recenterButtonContainer contentView];
-    [v4 addSubview:self->_recenterButton];
+    contentView = [(CardView *)self->_recenterButtonContainer contentView];
+    [contentView addSubview:self->_recenterButton];
 
-    v5 = [(MapsRouteCreationContext *)self chromeViewController];
-    v6 = [v5 viewport];
+    chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+    viewport = [chromeViewController viewport];
 
-    [v6 addSubview:self->_recenterButtonContainer];
-    v7 = [(CardView *)self->_recenterButtonContainer trailingAnchor];
-    v27 = v6;
-    v8 = [v6 trailingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8 constant:-10.0];
+    [viewport addSubview:self->_recenterButtonContainer];
+    trailingAnchor = [(CardView *)self->_recenterButtonContainer trailingAnchor];
+    v27 = viewport;
+    trailingAnchor2 = [viewport trailingAnchor];
+    v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
     v29[0] = v9;
-    v10 = [(CardView *)self->_recenterButtonContainer bottomAnchor];
-    v11 = [v6 bottomAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:-10.0];
+    bottomAnchor = [(CardView *)self->_recenterButtonContainer bottomAnchor];
+    bottomAnchor2 = [viewport bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
     v29[1] = v12;
     v13 = [NSArray arrayWithObjects:v29 count:2];
     [NSLayoutConstraint activateConstraints:v13];
 
-    v26 = [(UIButton *)self->_recenterButton leadingAnchor];
-    v25 = [(CardView *)self->_recenterButtonContainer leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    leadingAnchor = [(UIButton *)self->_recenterButton leadingAnchor];
+    leadingAnchor2 = [(CardView *)self->_recenterButtonContainer leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v28[0] = v24;
-    v14 = [(UIButton *)self->_recenterButton trailingAnchor];
-    v15 = [(CardView *)self->_recenterButtonContainer trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    trailingAnchor3 = [(UIButton *)self->_recenterButton trailingAnchor];
+    trailingAnchor4 = [(CardView *)self->_recenterButtonContainer trailingAnchor];
+    v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v28[1] = v16;
-    v17 = [(UIButton *)self->_recenterButton topAnchor];
-    v18 = [(CardView *)self->_recenterButtonContainer topAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    topAnchor = [(UIButton *)self->_recenterButton topAnchor];
+    topAnchor2 = [(CardView *)self->_recenterButtonContainer topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[2] = v19;
-    v20 = [(UIButton *)self->_recenterButton bottomAnchor];
-    v21 = [(CardView *)self->_recenterButtonContainer bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    bottomAnchor3 = [(UIButton *)self->_recenterButton bottomAnchor];
+    bottomAnchor4 = [(CardView *)self->_recenterButtonContainer bottomAnchor];
+    v22 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v28[3] = v22;
     v23 = [NSArray arrayWithObjects:v28 count:4];
     [NSLayoutConstraint activateConstraints:v23];
@@ -462,40 +462,40 @@ LABEL_35:
 
 - (void)_insertEditStackButtons
 {
-  v3 = [(MapsRouteCreationContext *)self chromeViewController];
-  v4 = [v3 viewport];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  viewport = [chromeViewController viewport];
 
-  v5 = [(CardView *)self->_undoButtonContainer contentView];
-  [v5 addSubview:self->_undoButton];
+  contentView = [(CardView *)self->_undoButtonContainer contentView];
+  [contentView addSubview:self->_undoButton];
 
-  [v4 addSubview:self->_undoButtonContainer];
-  v6 = [(CardView *)self->_undoButtonContainer leadingAnchor];
-  v26 = v4;
-  v7 = [v4 leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:10.0];
+  [viewport addSubview:self->_undoButtonContainer];
+  leadingAnchor = [(CardView *)self->_undoButtonContainer leadingAnchor];
+  v26 = viewport;
+  leadingAnchor2 = [viewport leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v28[0] = v8;
-  v9 = [(CardView *)self->_undoButtonContainer bottomAnchor];
-  v10 = [v4 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:-10.0];
+  bottomAnchor = [(CardView *)self->_undoButtonContainer bottomAnchor];
+  bottomAnchor2 = [viewport bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
   v28[1] = v11;
   v12 = [NSArray arrayWithObjects:v28 count:2];
   [NSLayoutConstraint activateConstraints:v12];
 
-  v25 = [(UIButton *)self->_undoButton leadingAnchor];
-  v24 = [(CardView *)self->_undoButtonContainer leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor3 = [(UIButton *)self->_undoButton leadingAnchor];
+  leadingAnchor4 = [(CardView *)self->_undoButtonContainer leadingAnchor];
+  v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v27[0] = v23;
-  v22 = [(UIButton *)self->_undoButton trailingAnchor];
-  v13 = [(CardView *)self->_undoButtonContainer trailingAnchor];
-  v14 = [v22 constraintEqualToAnchor:v13];
+  trailingAnchor = [(UIButton *)self->_undoButton trailingAnchor];
+  trailingAnchor2 = [(CardView *)self->_undoButtonContainer trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v27[1] = v14;
-  v15 = [(UIButton *)self->_undoButton topAnchor];
-  v16 = [(CardView *)self->_undoButtonContainer topAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  topAnchor = [(UIButton *)self->_undoButton topAnchor];
+  topAnchor2 = [(CardView *)self->_undoButtonContainer topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v27[2] = v17;
-  v18 = [(UIButton *)self->_undoButton bottomAnchor];
-  v19 = [(CardView *)self->_undoButtonContainer bottomAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  bottomAnchor3 = [(UIButton *)self->_undoButton bottomAnchor];
+  bottomAnchor4 = [(CardView *)self->_undoButtonContainer bottomAnchor];
+  v20 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v27[3] = v20;
   v21 = [NSArray arrayWithObjects:v27 count:4];
   [NSLayoutConstraint activateConstraints:v21];
@@ -505,37 +505,37 @@ LABEL_35:
 
 - (void)_insertCenterButtons
 {
-  v3 = [(MapsRouteCreationContext *)self chromeViewController];
-  v4 = [v3 viewport];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  viewport = [chromeViewController viewport];
 
-  v5 = [(CardView *)self->_centerButtonsContainer contentView];
-  [v5 addSubview:self->_centerButtonsStackView];
+  contentView = [(CardView *)self->_centerButtonsContainer contentView];
+  [contentView addSubview:self->_centerButtonsStackView];
 
-  [v4 addSubview:self->_centerButtonsContainer];
-  v25 = [(UIStackView *)self->_centerButtonsStackView leadingAnchor];
-  v24 = [(CardView *)self->_centerButtonsContainer leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24 constant:5.0];
+  [viewport addSubview:self->_centerButtonsContainer];
+  leadingAnchor = [(UIStackView *)self->_centerButtonsStackView leadingAnchor];
+  leadingAnchor2 = [(CardView *)self->_centerButtonsContainer leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
   v26[0] = v23;
-  v22 = [(UIStackView *)self->_centerButtonsStackView trailingAnchor];
-  v21 = [(CardView *)self->_centerButtonsContainer trailingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:-5.0];
+  trailingAnchor = [(UIStackView *)self->_centerButtonsStackView trailingAnchor];
+  trailingAnchor2 = [(CardView *)self->_centerButtonsContainer trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-5.0];
   v26[1] = v20;
-  v19 = [(UIStackView *)self->_centerButtonsStackView topAnchor];
-  v18 = [(CardView *)self->_centerButtonsContainer topAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  topAnchor = [(UIStackView *)self->_centerButtonsStackView topAnchor];
+  topAnchor2 = [(CardView *)self->_centerButtonsContainer topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v17;
-  v6 = [(UIStackView *)self->_centerButtonsStackView bottomAnchor];
-  v7 = [(CardView *)self->_centerButtonsContainer bottomAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  bottomAnchor = [(UIStackView *)self->_centerButtonsStackView bottomAnchor];
+  bottomAnchor2 = [(CardView *)self->_centerButtonsContainer bottomAnchor];
+  v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v8;
-  v9 = [(CardView *)self->_centerButtonsContainer centerXAnchor];
-  v16 = v4;
-  v10 = [v4 centerXAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  centerXAnchor = [(CardView *)self->_centerButtonsContainer centerXAnchor];
+  v16 = viewport;
+  centerXAnchor2 = [viewport centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v26[4] = v11;
-  v12 = [(CardView *)self->_centerButtonsContainer bottomAnchor];
-  v13 = [v4 bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:-10.0];
+  bottomAnchor3 = [(CardView *)self->_centerButtonsContainer bottomAnchor];
+  bottomAnchor4 = [viewport bottomAnchor];
+  v14 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-10.0];
   v26[5] = v14;
   v15 = [NSArray arrayWithObjects:v26 count:6];
   [NSLayoutConstraint activateConstraints:v15];
@@ -544,13 +544,13 @@ LABEL_35:
 - (RouteAnnotationsConfiguration)routeAnnotationsConfiguration
 {
   v3 = [RouteAnnotationsMutableConfiguration alloc];
-  v4 = [(MapsRouteCreationContext *)self composedRoute];
-  v5 = [(RouteAnnotationsConfiguration *)v3 initWithRoute:v4];
+  composedRoute = [(MapsRouteCreationContext *)self composedRoute];
+  v5 = [(RouteAnnotationsConfiguration *)v3 initWithRoute:composedRoute];
 
   [(RouteAnnotationsConfiguration *)v5 setRouteTrafficFeaturesActive:0];
-  v6 = [(NSMutableArray *)self->_editStack lastObject];
-  v7 = [v6 anchorPoints];
-  [(RouteAnnotationsConfiguration *)v5 setAnchorPoints:v7];
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  anchorPoints = [lastObject anchorPoints];
+  [(RouteAnnotationsConfiguration *)v5 setAnchorPoints:anchorPoints];
 
   v8 = [(RouteAnnotationsMutableConfiguration *)v5 copy];
 
@@ -559,8 +559,8 @@ LABEL_35:
 
 - (BOOL)wantsCompassLayoutControl
 {
-  v2 = [(MapsRouteCreationContext *)self chromeViewController];
-  v3 = sub_10000FA08(v2) != 5;
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  v3 = sub_10000FA08(chromeViewController) != 5;
 
   return v3;
 }
@@ -577,14 +577,14 @@ LABEL_35:
   [(NSUndoManager *)self->_undoManager undo];
 }
 
-- (void)_presentPopupViewForMessage:(id)a3 timeout:(double)a4 isError:(BOOL)a5 ignoreChromeTransitioning:(BOOL)a6
+- (void)_presentPopupViewForMessage:(id)message timeout:(double)timeout isError:(BOOL)error ignoreChromeTransitioning:(BOOL)transitioning
 {
-  v10 = a3;
+  messageCopy = message;
   v11 = sub_1007989A4();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v30 = v10;
+    v30 = messageCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Presenting popup for message: %@", buf, 0xCu);
   }
 
@@ -594,11 +594,11 @@ LABEL_35:
   v23 = sub_1009B9598;
   v24 = &unk_101631000;
   objc_copyWeak(v26, buf);
-  v27 = a6;
-  v12 = v10;
+  transitioningCopy = transitioning;
+  v12 = messageCopy;
   v25 = v12;
-  v26[1] = *&a4;
-  v28 = a5;
+  v26[1] = *&timeout;
+  errorCopy = error;
   v13 = objc_retainBlock(&v21);
   if (-[MapsPopupMessageView isDismissing](self->_popupMessageView, "isDismissing", v21, v22, v23, v24) || (-[MapsPopupMessageView superview](self->_popupMessageView, "superview"), (v14 = objc_claimAutoreleasedReturnValue()) == 0) || (-[MapsPopupMessageView message](self->_popupMessageView, "message"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isEqual:v12], v15, v14, !v16))
   {
@@ -609,14 +609,14 @@ LABEL_35:
       goto LABEL_14;
     }
 
-    if (!a5)
+    if (!error)
     {
       [(MapsPopupMessageView *)popupMessageView timeout];
       popupMessageView = self->_popupMessageView;
       if (v18 > 2.22044605e-16)
       {
-        v19 = [(MapsPopupMessageView *)popupMessageView superview];
-        v20 = v19 == 0;
+        superview = [(MapsPopupMessageView *)popupMessageView superview];
+        v20 = superview == 0;
 
         if (!v20)
         {
@@ -638,23 +638,23 @@ LABEL_14:
   objc_destroyWeak(buf);
 }
 
-- (id)_errorMessageForError:(id)a3 directionsError:(id)a4 request:(id)a5 isOffline:(BOOL)a6 shouldBackoutEdit:(BOOL *)a7
+- (id)_errorMessageForError:(id)error directionsError:(id)directionsError request:(id)request isOffline:(BOOL)offline shouldBackoutEdit:(BOOL *)edit
 {
-  v37 = a6;
-  v10 = a3;
-  v11 = a4;
+  offlineCopy = offline;
+  errorCopy = error;
+  directionsErrorCopy = directionsError;
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_1009B9D04;
   v38[3] = &unk_1016611D0;
-  v38[4] = a7;
+  v38[4] = edit;
   v12 = objc_retainBlock(v38);
-  if (v11 && [v11 problemDetailsCount])
+  if (directionsErrorCopy && [directionsErrorCopy problemDetailsCount])
   {
     v13 = 0;
     while (1)
     {
-      v14 = [v11 problemDetailAtIndex:v13];
+      v14 = [directionsErrorCopy problemDetailAtIndex:v13];
       if (v14 > 8)
       {
         break;
@@ -673,7 +673,7 @@ LABEL_14:
         }
 
         v15 = +[NSBundle mainBundle];
-        v16 = v15;
+        _mostRecentlyAddedAnchor = v15;
         v17 = @"[Route Creation] Custom Routes no pedestrians";
 LABEL_26:
         v19 = [v15 localizedStringForKey:v17 value:@"localized string not found" table:0];
@@ -690,9 +690,9 @@ LABEL_26:
         goto LABEL_28;
       }
 
-      v16 = [(MapsRouteCreationContext *)self _mostRecentlyAddedAnchor];
-      v18 = [v16 countryCode];
-      v19 = [(MapsRouteCreationContext *)self _errorMessageForUnsupportedCountry:v18];
+      _mostRecentlyAddedAnchor = [(MapsRouteCreationContext *)self _mostRecentlyAddedAnchor];
+      countryCode = [_mostRecentlyAddedAnchor countryCode];
+      v19 = [(MapsRouteCreationContext *)self _errorMessageForUnsupportedCountry:countryCode];
 
 LABEL_27:
       if (v19)
@@ -702,7 +702,7 @@ LABEL_27:
       }
 
 LABEL_28:
-      if (++v13 >= [v11 problemDetailsCount])
+      if (++v13 >= [directionsErrorCopy problemDetailsCount])
       {
         goto LABEL_29;
       }
@@ -718,11 +718,11 @@ LABEL_28:
         }
 
 LABEL_20:
-        v20 = [(MapsRouteCreationContext *)self chromeViewController];
-        v21 = sub_10000FA08(v20);
+        chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+        v21 = sub_10000FA08(chromeViewController);
 
         v15 = +[NSBundle mainBundle];
-        v16 = v15;
+        _mostRecentlyAddedAnchor = v15;
         if (v21 == 5)
         {
           v17 = @"[Route Creation] Anchor too far MacOS";
@@ -742,19 +742,19 @@ LABEL_20:
       if (v14 == 21)
       {
         v15 = +[NSBundle mainBundle];
-        v16 = v15;
+        _mostRecentlyAddedAnchor = v15;
         v17 = @"[Route Creation] Custom Routes too many anchors";
       }
 
       else
       {
-        if (v14 != 22 || !v37)
+        if (v14 != 22 || !offlineCopy)
         {
           goto LABEL_28;
         }
 
         v15 = +[NSBundle mainBundle];
-        v16 = v15;
+        _mostRecentlyAddedAnchor = v15;
         v17 = @"[Route Creation] Offline route creation error";
       }
 
@@ -762,35 +762,35 @@ LABEL_20:
     }
 
     v15 = +[NSBundle mainBundle];
-    v16 = v15;
+    _mostRecentlyAddedAnchor = v15;
     v17 = @"[Route Creation] Custom Routes too far";
     goto LABEL_26;
   }
 
 LABEL_29:
-  v22 = [v10 domain];
-  v23 = [v22 isEqual:MNErrorDomain];
+  domain = [errorCopy domain];
+  v23 = [domain isEqual:MNErrorDomain];
 
   if (v23)
   {
-    v24 = [v10 code];
-    if (v24 == 9)
+    code = [errorCopy code];
+    if (code == 9)
     {
       (v12[2])(v12);
-      v33 = [v10 userInfo];
-      v34 = [v33 objectForKeyedSubscript:MNRouteEditorErrorUnsupportedCountriesKey];
+      userInfo = [errorCopy userInfo];
+      v34 = [userInfo objectForKeyedSubscript:MNRouteEditorErrorUnsupportedCountriesKey];
 
-      v35 = [v34 anyObject];
-      v19 = [(MapsRouteCreationContext *)self _errorMessageForUnsupportedCountry:v35];
+      anyObject = [v34 anyObject];
+      v19 = [(MapsRouteCreationContext *)self _errorMessageForUnsupportedCountry:anyObject];
 
       goto LABEL_42;
     }
 
-    if (v24 == 8)
+    if (code == 8)
     {
       (v12[2])(v12);
-      v25 = [(MapsRouteCreationContext *)self chromeViewController];
-      v26 = sub_10000FA08(v25);
+      chromeViewController2 = [(MapsRouteCreationContext *)self chromeViewController];
+      v26 = sub_10000FA08(chromeViewController2);
 
       v27 = +[NSBundle mainBundle];
       v28 = v27;
@@ -808,15 +808,15 @@ LABEL_29:
     }
   }
 
-  v30 = [v10 domain];
-  if ([v30 isEqual:NSURLErrorDomain])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqual:NSURLErrorDomain])
   {
   }
 
   else
   {
-    v31 = [v10 domain];
-    v32 = [v31 isEqual:kCFErrorDomainCFNetwork];
+    domain3 = [errorCopy domain];
+    v32 = [domain3 isEqual:kCFErrorDomainCFNetwork];
 
     if (!v32)
     {
@@ -838,7 +838,7 @@ LABEL_42:
   return v19;
 }
 
-- (id)_errorMessageForUnsupportedCountry:(id)a3
+- (id)_errorMessageForUnsupportedCountry:(id)country
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"[Route Creation] Custom Routes generic unavailability" value:@"localized string not found" table:0];
@@ -848,20 +848,20 @@ LABEL_42:
 
 - (id)_mostRecentlyAddedAnchor
 {
-  v3 = [(NSMutableArray *)self->_editStack lastObject];
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
   v4 = [(NSMutableArray *)self->_editStack count]- 2;
   if (v4 < [(NSMutableArray *)self->_editStack count]&& ([(NSMutableArray *)self->_editStack objectAtIndexedSubscript:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = v5;
-    v7 = [v3 anchorPoints];
-    v8 = [v7 copy];
+    anchorPoints3 = v5;
+    anchorPoints = [lastObject anchorPoints];
+    v8 = [anchorPoints copy];
 
-    v9 = [v6 anchorPoints];
+    anchorPoints2 = [anchorPoints3 anchorPoints];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v10 = [anchorPoints2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -872,50 +872,50 @@ LABEL_42:
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(anchorPoints2);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) uniqueID];
-          [v8 removeAnchorPointWithID:v14];
+          uniqueID = [*(*(&v17 + 1) + 8 * i) uniqueID];
+          [v8 removeAnchorPointWithID:uniqueID];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [anchorPoints2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
     }
 
-    v15 = [v8 lastObject];
+    lastObject2 = [v8 lastObject];
   }
 
   else
   {
-    v6 = [v3 anchorPoints];
-    v15 = [v6 lastObject];
+    anchorPoints3 = [lastObject anchorPoints];
+    lastObject2 = [anchorPoints3 lastObject];
   }
 
-  return v15;
+  return lastObject2;
 }
 
-- (void)_requeryStateWithAction:(unint64_t)a3 shouldRecenterOnCompletion:(BOOL)a4
+- (void)_requeryStateWithAction:(unint64_t)action shouldRecenterOnCompletion:(BOOL)completion
 {
   [(MapsRouteCreationContext *)self _updateUndoVisibility];
-  v7 = [(NSMutableArray *)self->_editStack lastObject];
-  v8 = [v7 anchorPoints];
-  v9 = [v8 count];
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  anchorPoints = [lastObject anchorPoints];
+  v9 = [anchorPoints count];
 
   if (v9 > 1)
   {
     v18 = objc_opt_new();
-    v19 = [v7 anchorPoints];
-    [v18 setAnchorPoints:v19];
+    anchorPoints2 = [lastObject anchorPoints];
+    [v18 setAnchorPoints:anchorPoints2];
 
-    [v18 setAction:a3];
+    [v18 setAction:action];
     [v18 setCurrentRoute:self->_composedRoute];
-    if (a3 - 1001 <= 1)
+    if (action - 1001 <= 1)
     {
-      v20 = [v7 routePersistentData];
-      [v18 setUndoRedoRouteData:v20];
+      routePersistentData = [lastObject routePersistentData];
+      [v18 setUndoRedoRouteData:routePersistentData];
     }
 
     v21 = objc_opt_new();
@@ -923,7 +923,7 @@ LABEL_42:
     [v21 setIncludeRoutingPathLeg:1];
     [v18 setRouteAttributes:v21];
     v22 = +[MapsOfflineUIHelper sharedHelper];
-    v23 = [v22 isUsingOfflineMaps];
+    isUsingOfflineMaps = [v22 isUsingOfflineMaps];
 
     objc_initWeak(&location, self);
     routeEditor = self->_routeEditor;
@@ -932,11 +932,11 @@ LABEL_42:
     v27[2] = sub_1009BA240;
     v27[3] = &unk_101630FD8;
     objc_copyWeak(&v30, &location);
-    v28 = v7;
-    v31 = a4;
+    v28 = lastObject;
+    completionCopy = completion;
     v25 = v18;
     v29 = v25;
-    v32 = v23;
+    v32 = isUsingOfflineMaps;
     v26 = [(MNRouteEditor *)routeEditor requestRouteGeometry:v25 finishedHandler:v27];
 
     objc_destroyWeak(&v30);
@@ -949,47 +949,47 @@ LABEL_42:
     self->_composedRoute = 0;
 
     [(MapsRouteCreationContainee *)self->_editContainee setRoute:0];
-    v11 = [v7 anchorPoints];
-    v12 = [v11 firstObject];
+    anchorPoints3 = [lastObject anchorPoints];
+    firstObject = [anchorPoints3 firstObject];
 
-    v13 = [v12 displayInfo];
-    [v13 _routeCreation_setStartWaypointCaption];
+    displayInfo = [firstObject displayInfo];
+    [displayInfo _routeCreation_setStartWaypointCaption];
 
-    if ([v12 isCurrentLocation])
+    if ([firstObject isCurrentLocation])
     {
-      v14 = [v12 displayInfo];
-      [v14 _routeCreation_setMyLocationName];
+      displayInfo2 = [firstObject displayInfo];
+      [displayInfo2 _routeCreation_setMyLocationName];
     }
 
-    v15 = [(MapsRouteCreationContext *)self chromeViewController];
-    [v15 setNeedsUpdateComponent:@"routeAnnotations" animated:1];
+    chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+    [chromeViewController setNeedsUpdateComponent:@"routeAnnotations" animated:1];
 
-    v16 = [(MapsRouteCreationContext *)self chromeViewController];
-    v17 = [v16 mapSelectionManager];
-    [v17 clearSelection];
+    chromeViewController2 = [(MapsRouteCreationContext *)self chromeViewController];
+    mapSelectionManager = [chromeViewController2 mapSelectionManager];
+    [mapSelectionManager clearSelection];
 
     [(CardView *)self->_recenterButtonContainer removeFromSuperview];
     [(UIButton *)self->_recenterButton removeFromSuperview];
   }
 }
 
-- (unint64_t)_routeEditorActionForEditReason:(unint64_t)a3
+- (unint64_t)_routeEditorActionForEditReason:(unint64_t)reason
 {
-  if (a3 - 1 > 4)
+  if (reason - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_101215030[a3 - 1];
+    return qword_101215030[reason - 1];
   }
 }
 
 - (void)_popEditStack
 {
-  v3 = [(NSMutableArray *)self->_editStack lastObject];
-  if (![v3 reason])
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  if (![lastObject reason])
   {
     [NSException raise:NSInternalInconsistencyException format:@"You should never be able to pop the initial state"];
   }
@@ -1000,58 +1000,58 @@ LABEL_42:
   [(MapsRouteCreationContext *)self _updateCenterButtons];
 }
 
-- (void)_undoEditStack:(id)a3
+- (void)_undoEditStack:(id)stack
 {
-  v5 = [(NSMutableArray *)self->_editStack lastObject];
-  [(NSUndoManager *)self->_undoManager registerUndoWithTarget:self selector:"_undoEditStack:" object:v5];
-  v4 = sub_1006DF608([v5 reason], 1);
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  [(NSUndoManager *)self->_undoManager registerUndoWithTarget:self selector:"_undoEditStack:" object:lastObject];
+  v4 = sub_1006DF608([lastObject reason], 1);
   [(NSUndoManager *)self->_undoManager setActionName:v4];
 
   [(MapsRouteCreationContext *)self _popEditStack];
 }
 
-- (void)_pushEditState:(id)a3 shouldRecenterOnCompletion:(BOOL)a4
+- (void)_pushEditState:(id)state shouldRecenterOnCompletion:(BOOL)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   editStack = self->_editStack;
-  v7 = a3;
-  [(NSMutableArray *)editStack addObject:v7];
+  stateCopy = state;
+  [(NSMutableArray *)editStack addObject:stateCopy];
   [(NSUndoManager *)self->_undoManager registerUndoWithTarget:self selector:"_undoEditStack:" object:0];
-  v8 = sub_1006DF608([v7 reason], 0);
+  v8 = sub_1006DF608([stateCopy reason], 0);
   [(NSUndoManager *)self->_undoManager setActionName:v8];
 
-  v9 = [v7 reason];
-  [(MapsRouteCreationContext *)self _requeryStateWithAction:[(MapsRouteCreationContext *)self _routeEditorActionForEditReason:v9] shouldRecenterOnCompletion:v4];
+  reason = [stateCopy reason];
+  [(MapsRouteCreationContext *)self _requeryStateWithAction:[(MapsRouteCreationContext *)self _routeEditorActionForEditReason:reason] shouldRecenterOnCompletion:completionCopy];
   [(MapsRouteCreationContext *)self _updateCoachingPillWithIgnoreChromeTransitioning:0];
 
   [(MapsRouteCreationContext *)self _updateCenterButtons];
 }
 
-- (void)applyRouteDataAddress:(id)a3
+- (void)applyRouteDataAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(MapsRouteCreationContext *)self composedRoute];
-  [v5 updateWithAddress:v4];
+  addressCopy = address;
+  composedRoute = [(MapsRouteCreationContext *)self composedRoute];
+  [composedRoute updateWithAddress:addressCopy];
 }
 
 - (id)routeData
 {
-  v2 = [(MapsRouteCreationContext *)self composedRoute];
-  v3 = [v2 persistentData];
+  composedRoute = [(MapsRouteCreationContext *)self composedRoute];
+  persistentData = [composedRoute persistentData];
 
-  return v3;
+  return persistentData;
 }
 
-- (void)menuWillDismissWithAnimator:(id)a3
+- (void)menuWillDismissWithAnimator:(id)animator
 {
-  v4 = a3;
+  animatorCopy = animator;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v14 = "[MapsRouteCreationContext menuWillDismissWithAnimator:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = animatorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -1063,14 +1063,14 @@ LABEL_42:
   objc_copyWeak(&v12, buf);
   v6 = objc_retainBlock(v11);
   v7 = v6;
-  if (v4)
+  if (animatorCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1009BAD20;
     v9[3] = &unk_101661760;
     v10 = v6;
-    [v4 addCompletion:v9];
+    [animatorCopy addCompletion:v9];
   }
 
   else
@@ -1083,19 +1083,19 @@ LABEL_42:
   objc_destroyWeak(buf);
 }
 
-- (void)_centerOnCurrentRouteAnimated:(BOOL)a3
+- (void)_centerOnCurrentRouteAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v13 = v3;
+    v13 = animatedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "_centerOnCurrentRouteAnimated: %d", buf, 8u);
   }
 
   v6 = 0.3;
-  if (!v3)
+  if (!animatedCopy)
   {
     v6 = 0.0;
   }
@@ -1108,31 +1108,31 @@ LABEL_42:
   [UIView animateWithDuration:v10 animations:v6];
   if (self->_composedRoute)
   {
-    v7 = [(MapsRouteCreationContext *)self chromeViewController];
-    v8 = [v7 mapCameraController];
+    chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+    mapCameraController = [chromeViewController mapCameraController];
     composedRoute = self->_composedRoute;
     v9 = [NSArray arrayWithObjects:&composedRoute count:1];
-    [v8 frameRoutes:v9 includeCompassInset:0 animated:v3 completion:0];
+    [mapCameraController frameRoutes:v9 includeCompassInset:0 animated:animatedCopy completion:0];
   }
 }
 
 - (void)_updateCenterButtons
 {
-  v4 = [(NSMutableArray *)self->_editStack lastObject];
-  v3 = [v4 anchorPoints];
-  -[CardView setHidden:](self->_centerButtonsContainer, "setHidden:", [v3 count] < 2);
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  anchorPoints = [lastObject anchorPoints];
+  -[CardView setHidden:](self->_centerButtonsContainer, "setHidden:", [anchorPoints count] < 2);
   [(UIButton *)self->_reverseButton setEnabled:[(MapsRouteCreationContext *)self reverseEnabled]];
   [(UIButton *)self->_outAndBackButton setEnabled:[(MapsRouteCreationContext *)self outAndBackEnabled]];
   [(UIButton *)self->_closeLoopButton setEnabled:[(MapsRouteCreationContext *)self closeLoopEnabled]];
 }
 
-- (void)_moveContextMenuToPoint:(CGPoint)a3 anchorPoint:(id)a4
+- (void)_moveContextMenuToPoint:(CGPoint)point anchorPoint:(id)anchorPoint
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(MapsMenuButton *)self->_contextMenuFakeButton superview];
+  y = point.y;
+  x = point.x;
+  superview = [(MapsMenuButton *)self->_contextMenuFakeButton superview];
 
-  if (v7)
+  if (superview)
   {
     [(MapsMenuButton *)self->_contextMenuFakeButton setFrame:x, y, 1.0, 1.0];
     block[0] = _NSConcreteStackBlock;
@@ -1156,19 +1156,19 @@ LABEL_42:
   }
 }
 
-- (void)_setMenuAttachedAnchorPoint:(id)a3
+- (void)_setMenuAttachedAnchorPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = v4;
+    v8 = pointCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Setting _anchorPointAttachedToMenu to %p", &v7, 0xCu);
   }
 
   anchorPointAttachedToMenu = self->_anchorPointAttachedToMenu;
-  self->_anchorPointAttachedToMenu = v4;
+  self->_anchorPointAttachedToMenu = pointCopy;
 }
 
 - (void)_updateUndoVisibility
@@ -1185,12 +1185,12 @@ LABEL_42:
 
 - (id)emptyStateVideoName
 {
-  v3 = [(NSMutableArray *)self->_editStack lastObject];
-  v4 = [(MapsRouteCreationContainee *)self->_editContainee traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  traitCollection = [(MapsRouteCreationContainee *)self->_editContainee traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v6 = [v3 anchorPoints];
-  v7 = [v6 count];
+  anchorPoints = [lastObject anchorPoints];
+  v7 = [anchorPoints count];
 
   if (v7 == 1)
   {
@@ -1210,7 +1210,7 @@ LABEL_42:
     v9 = @"Coaching_Start_Dark";
   }
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
     v8 = v9;
   }
@@ -1256,17 +1256,17 @@ LABEL_9:
   }
 
   [GEOAPPortal captureUserAction:6003 target:131 value:0];
-  v4 = [(MapsRouteCreationContext *)self chromeViewController];
-  [v4 resetForcedExploreModernMapFlag];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  [chromeViewController resetForcedExploreModernMapFlag];
 
-  v5 = [(MapsRouteCreationContext *)self chromeViewController];
-  v6 = [v5 contexts];
+  chromeViewController2 = [(MapsRouteCreationContext *)self chromeViewController];
+  contexts = [chromeViewController2 contexts];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v6;
+  v7 = contexts;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v8)
   {
@@ -1307,15 +1307,15 @@ LABEL_5:
       goto LABEL_14;
     }
 
-    v14 = [(MapsRouteCreationContext *)self chromeViewController];
+    chromeViewController3 = [(MapsRouteCreationContext *)self chromeViewController];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1009BB80C;
     v19[3] = &unk_101661A90;
     v20 = v13;
-    v21 = self;
+    selfCopy = self;
     v15 = v13;
-    [v14 popToContext:v15 animated:0 completion:v19];
+    [chromeViewController3 popToContext:v15 animated:0 completion:v19];
   }
 
   else
@@ -1356,9 +1356,9 @@ LABEL_14:
   }
 }
 
-- (void)pressedStartSteppingWithCompletion:(id)a3
+- (void)pressedStartSteppingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1368,12 +1368,12 @@ LABEL_14:
   }
 
   [GEOAPPortal captureUserAction:3001 target:131 value:0];
-  v6 = [(MapsRouteCreationContext *)self chromeViewController];
-  [v6 resetForcedExploreModernMapFlag];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  [chromeViewController resetForcedExploreModernMapFlag];
 
   v7 = self->_composedRoute;
-  v8 = [(GEOComposedRoute *)v7 userProvidedName];
-  if ([v8 length])
+  userProvidedName = [(GEOComposedRoute *)v7 userProvidedName];
+  if ([userProvidedName length])
   {
     [(GEOComposedRoute *)v7 userProvidedName];
   }
@@ -1384,24 +1384,24 @@ LABEL_14:
   }
   v9 = ;
 
-  v10 = [(MapsRouteCreationContext *)self chromeViewController];
-  v11 = [v10 _maps_platformController];
+  chromeViewController2 = [(MapsRouteCreationContext *)self chromeViewController];
+  _maps_platformController = [chromeViewController2 _maps_platformController];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1009BBBE8;
   v15[3] = &unk_101630FB0;
   v16 = v7;
   v17 = v9;
-  v18 = v4;
-  v12 = v4;
+  v18 = completionCopy;
+  v12 = completionCopy;
   v13 = v9;
   v14 = v7;
-  [v11 pushNavigationWithRoute:v14 navigationMode:2 shouldCheckNavSafetyAlert:1 completion:v15];
+  [_maps_platformController pushNavigationWithRoute:v14 navigationMode:2 shouldCheckNavSafetyAlert:1 completion:v15];
 }
 
-- (void)pressedStartNavigationWithCompletion:(id)a3
+- (void)pressedStartNavigationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1411,12 +1411,12 @@ LABEL_14:
   }
 
   [GEOAPPortal captureUserAction:3001 target:131 value:0];
-  v6 = [(MapsRouteCreationContext *)self chromeViewController];
-  [v6 resetForcedExploreModernMapFlag];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  [chromeViewController resetForcedExploreModernMapFlag];
 
   v7 = self->_composedRoute;
-  v8 = [(GEOComposedRoute *)v7 userProvidedName];
-  if ([v8 length])
+  userProvidedName = [(GEOComposedRoute *)v7 userProvidedName];
+  if ([userProvidedName length])
   {
     [(GEOComposedRoute *)v7 userProvidedName];
   }
@@ -1427,33 +1427,33 @@ LABEL_14:
   }
   v9 = ;
 
-  v10 = [(MapsRouteCreationContext *)self chromeViewController];
-  v11 = [v10 _maps_platformController];
+  chromeViewController2 = [(MapsRouteCreationContext *)self chromeViewController];
+  _maps_platformController = [chromeViewController2 _maps_platformController];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1009BBEA4;
   v15[3] = &unk_101630FB0;
   v16 = v7;
   v17 = v9;
-  v18 = v4;
-  v12 = v4;
+  v18 = completionCopy;
+  v12 = completionCopy;
   v13 = v9;
   v14 = v7;
-  [v11 pushNavigationWithRoute:v14 navigationMode:1 shouldCheckNavSafetyAlert:1 completion:v15];
+  [_maps_platformController pushNavigationWithRoute:v14 navigationMode:1 shouldCheckNavSafetyAlert:1 completion:v15];
 }
 
 - (BOOL)closeLoopEnabled
 {
-  v2 = [(NSMutableArray *)self->_editStack lastObject];
-  v3 = [v2 anchorPoints];
-  if ([v3 count] < 2)
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  anchorPoints = [lastObject anchorPoints];
+  if ([anchorPoints count] < 2)
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 startAndEndAreTheSame] ^ 1;
+    v4 = [anchorPoints startAndEndAreTheSame] ^ 1;
   }
 
   return v4;
@@ -1461,38 +1461,38 @@ LABEL_14:
 
 - (BOOL)outAndBackEnabled
 {
-  v2 = [(NSMutableArray *)self->_editStack lastObject];
-  v3 = [v2 anchorPoints];
-  if ([v3 count] < 2)
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  anchorPoints = [lastObject anchorPoints];
+  if ([anchorPoints count] < 2)
   {
-    v4 = 0;
+    isOutAndBackAllowed = 0;
   }
 
   else
   {
-    v4 = [v3 isOutAndBackAllowed];
+    isOutAndBackAllowed = [anchorPoints isOutAndBackAllowed];
   }
 
-  return v4;
+  return isOutAndBackAllowed;
 }
 
 - (BOOL)reverseEnabled
 {
-  v2 = [(NSMutableArray *)self->_editStack lastObject];
-  v3 = [v2 anchorPoints];
-  v4 = [v3 count] > 1;
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  anchorPoints = [lastObject anchorPoints];
+  v4 = [anchorPoints count] > 1;
 
   return v4;
 }
 
 - (BOOL)undoEnabled
 {
-  v3 = [(NSMutableArray *)self->_editStack lastObject];
-  v4 = v3;
-  if (v3 && [v3 reason])
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  v4 = lastObject;
+  if (lastObject && [lastObject reason])
   {
-    v5 = [(NSMutableArray *)self->_containees lastObject];
-    v6 = v5 != self->_saveContainee;
+    lastObject2 = [(NSMutableArray *)self->_containees lastObject];
+    v6 = lastObject2 != self->_saveContainee;
   }
 
   else
@@ -1515,18 +1515,18 @@ LABEL_14:
 
   if ([(MapsRouteCreationContext *)self closeLoopEnabled])
   {
-    v4 = [(NSMutableArray *)self->_editStack lastObject];
-    v5 = [v4 instanceByClosingTheLoop];
-    [(MapsRouteCreationContext *)self _pushEditState:v5 shouldRecenterOnCompletion:1];
+    lastObject = [(NSMutableArray *)self->_editStack lastObject];
+    instanceByClosingTheLoop = [lastObject instanceByClosingTheLoop];
+    [(MapsRouteCreationContext *)self _pushEditState:instanceByClosingTheLoop shouldRecenterOnCompletion:1];
   }
 
   else
   {
-    v4 = sub_1007989A4();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    lastObject = sub_1007989A4();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_INFO))
     {
       LOWORD(v6) = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Close loop is disabled; ignoring", &v6, 2u);
+      _os_log_impl(&_mh_execute_header, lastObject, OS_LOG_TYPE_INFO, "Close loop is disabled; ignoring", &v6, 2u);
     }
   }
 }
@@ -1543,18 +1543,18 @@ LABEL_14:
 
   if ([(MapsRouteCreationContext *)self outAndBackEnabled])
   {
-    v4 = [(NSMutableArray *)self->_editStack lastObject];
-    v5 = [v4 instanceByFormingOutAndBackAnchors];
-    [(MapsRouteCreationContext *)self _pushEditState:v5 shouldRecenterOnCompletion:1];
+    lastObject = [(NSMutableArray *)self->_editStack lastObject];
+    instanceByFormingOutAndBackAnchors = [lastObject instanceByFormingOutAndBackAnchors];
+    [(MapsRouteCreationContext *)self _pushEditState:instanceByFormingOutAndBackAnchors shouldRecenterOnCompletion:1];
   }
 
   else
   {
-    v4 = sub_1007989A4();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    lastObject = sub_1007989A4();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_INFO))
     {
       LOWORD(v6) = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Out and back is disabled; ignoring", &v6, 2u);
+      _os_log_impl(&_mh_execute_header, lastObject, OS_LOG_TYPE_INFO, "Out and back is disabled; ignoring", &v6, 2u);
     }
   }
 }
@@ -1571,18 +1571,18 @@ LABEL_14:
 
   if ([(MapsRouteCreationContext *)self reverseEnabled])
   {
-    v4 = [(NSMutableArray *)self->_editStack lastObject];
-    v5 = [v4 instanceByReversingAnchorPoints];
-    [(MapsRouteCreationContext *)self _pushEditState:v5 shouldRecenterOnCompletion:1];
+    lastObject = [(NSMutableArray *)self->_editStack lastObject];
+    instanceByReversingAnchorPoints = [lastObject instanceByReversingAnchorPoints];
+    [(MapsRouteCreationContext *)self _pushEditState:instanceByReversingAnchorPoints shouldRecenterOnCompletion:1];
   }
 
   else
   {
-    v4 = sub_1007989A4();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    lastObject = sub_1007989A4();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_INFO))
     {
       LOWORD(v6) = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Reverse is disabled; ignoring", &v6, 2u);
+      _os_log_impl(&_mh_execute_header, lastObject, OS_LOG_TYPE_INFO, "Reverse is disabled; ignoring", &v6, 2u);
     }
   }
 }
@@ -1600,43 +1600,43 @@ LABEL_14:
   [(NSUndoManager *)self->_undoManager undo];
 }
 
-- (void)_deleteLastAnchorPointMatchingAnchorPoint:(id)a3
+- (void)_deleteLastAnchorPointMatchingAnchorPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = pointCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Deleting last anchor point: %@", &v8, 0xCu);
   }
 
-  v6 = [(NSMutableArray *)self->_editStack lastObject];
-  v7 = [v6 instanceByRemovingLastAnchorPoint:v4];
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  v7 = [lastObject instanceByRemovingLastAnchorPoint:pointCopy];
   [(MapsRouteCreationContext *)self _pushEditState:v7 shouldRecenterOnCompletion:0];
 }
 
-- (void)_deleteFirstAnchorPointMatchingAnchorPoint:(id)a3
+- (void)_deleteFirstAnchorPointMatchingAnchorPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = pointCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Deleting first anchor point: %@", &v8, 0xCu);
   }
 
-  v6 = [(NSMutableArray *)self->_editStack lastObject];
-  v7 = [v6 instanceByRemovingFirstAnchorPoint:v4];
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  v7 = [lastObject instanceByRemovingFirstAnchorPoint:pointCopy];
   [(MapsRouteCreationContext *)self _pushEditState:v7 shouldRecenterOnCompletion:0];
 }
 
-- (void)_appendCoordinate:(CLLocationCoordinate2D)a3 isCurrentLocation:(BOOL)a4
+- (void)_appendCoordinate:(CLLocationCoordinate2D)coordinate isCurrentLocation:(BOOL)location
 {
-  v4 = a4;
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  locationCopy = location;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   if ([(MapsRouteCreationContext *)self _wouldDuplicateTrailingAnchorWithCoordinate:?])
   {
     v8 = sub_1007989A4();
@@ -1652,7 +1652,7 @@ LABEL_14:
 
   else
   {
-    if (!v4)
+    if (!locationCopy)
     {
       [(MapsRouteCreationContext *)self _insertRippleAnnotationAtCoordinate:latitude, longitude];
     }
@@ -1661,31 +1661,31 @@ LABEL_14:
     [(MapsRouteCreationContext *)self _expandCardIfNeeded];
     v10 = [[MKPlacemark alloc] initWithCoordinate:{latitude, longitude}];
     v9 = [[MKMapItem alloc] initWithPlacemark:v10];
-    [(MapsRouteCreationContext *)self _appendMapItem:v9 isCurrentLocation:v4 isCoordinate:1];
+    [(MapsRouteCreationContext *)self _appendMapItem:v9 isCurrentLocation:locationCopy isCoordinate:1];
   }
 }
 
-- (BOOL)_wouldDuplicateTrailingAnchorWithCoordinate:(CLLocationCoordinate2D)a3
+- (BOOL)_wouldDuplicateTrailingAnchorWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v5 = [(NSMutableArray *)self->_editStack lastObject];
-  v6 = [v5 anchorPoints];
-  v7 = [v6 lastObject];
-  [v7 locationCoordinate];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  anchorPoints = [lastObject anchorPoints];
+  lastObject2 = [anchorPoints lastObject];
+  [lastObject2 locationCoordinate];
   v11 = vabdd_f64(latitude, v10) < 0.000000999999997 && vabdd_f64(longitude, v8) < 0.000000999999997 && vabdd_f64(1.79769313e308, v9) < 0.000000999999997;
 
   return v11;
 }
 
-- (void)_appendAnchorPoint:(id)a3
+- (void)_appendAnchorPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = pointCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Appending anchor point: %@", buf, 0xCu);
   }
 
@@ -1696,7 +1696,7 @@ LABEL_14:
   v8[2] = sub_1009BCAE4;
   v8[3] = &unk_10165D288;
   objc_copyWeak(&v10, buf);
-  v7 = v4;
+  v7 = pointCopy;
   v9 = v7;
   [(MNRouteEditor *)routeEditor validateAnchorPoint:v7 handler:v8];
 
@@ -1704,9 +1704,9 @@ LABEL_14:
   objc_destroyWeak(buf);
 }
 
-- (void)_appendMapItem:(id)a3 isCurrentLocation:(BOOL)a4 isCoordinate:(BOOL)a5
+- (void)_appendMapItem:(id)item isCurrentLocation:(BOOL)location isCoordinate:(BOOL)coordinate
 {
-  v8 = a3;
+  itemCopy = item;
   [(GEOMapServiceTicket *)self->_currentReverseGeocodeTicket cancel];
   objc_initWeak(&location, self);
   v28 = _NSConcreteStackBlock;
@@ -1714,10 +1714,10 @@ LABEL_14:
   v30 = sub_1009BCFE0;
   v31 = &unk_101630F88;
   objc_copyWeak(&v33, &location);
-  v34 = a4;
-  v9 = v8;
+  locationCopy = location;
+  v9 = itemCopy;
   v32 = v9;
-  v35 = a5;
+  coordinateCopy = coordinate;
   v10 = objc_retainBlock(&v28);
   if (([v9 _hasMUID] & 1) == 0)
   {
@@ -1733,18 +1733,18 @@ LABEL_14:
     [v9 _coordinate];
     v23 = v22;
     v25 = v24;
-    v26 = [(MapsRouteCreationContext *)self _traits];
-    v18 = [v21 ticketForReverseGeocodeCoordinate:v26 traits:{v23, v25}];
+    _traits = [(MapsRouteCreationContext *)self _traits];
+    v18 = [v21 ticketForReverseGeocodeCoordinate:_traits traits:{v23, v25}];
 
     v27 = &_dispatch_main_q;
     [v18 submitWithHandler:v10 queue:&_dispatch_main_q networkActivity:0];
     goto LABEL_9;
   }
 
-  v11 = [v9 _hasResolvablePartialInformation];
+  _hasResolvablePartialInformation = [v9 _hasResolvablePartialInformation];
   v12 = sub_1007989A4();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-  if (v11)
+  if (_hasResolvablePartialInformation)
   {
     if (v13)
     {
@@ -1754,11 +1754,11 @@ LABEL_14:
     }
 
     v14 = +[MKMapService sharedService];
-    v15 = [v9 _identifier];
-    v38 = v15;
+    _identifier = [v9 _identifier];
+    v38 = _identifier;
     v16 = [NSArray arrayWithObjects:&v38 count:1];
-    v17 = [(MapsRouteCreationContext *)self _traits];
-    v18 = [v14 ticketForIdentifiers:v16 traits:v17];
+    _traits2 = [(MapsRouteCreationContext *)self _traits];
+    v18 = [v14 ticketForIdentifiers:v16 traits:_traits2];
 
     v19 = &_dispatch_main_q;
     [v18 submitWithHandler:v10 queue:&_dispatch_main_q networkActivity:0];
@@ -1792,18 +1792,18 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Stop ripple animation", v7, 2u);
   }
 
-  v4 = [(MapsRippleAnnotation *)self->_rippleAnnotation rippleView];
-  [v4 stopAnimating];
+  rippleView = [(MapsRippleAnnotation *)self->_rippleAnnotation rippleView];
+  [rippleView stopAnimating];
 
-  v5 = [(MapsRouteCreationContext *)self chromeViewController];
-  v6 = [v5 mapView];
-  [v6 removeAnnotation:self->_rippleAnnotation];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  [mapView removeAnnotation:self->_rippleAnnotation];
 }
 
-- (void)_insertRippleAnnotationAtCoordinate:(CLLocationCoordinate2D)a3
+- (void)_insertRippleAnnotationAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v6 = sub_1007989A4();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1813,12 +1813,12 @@ LABEL_13:
 
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_removeRippleView" object:0];
   [(MapsRippleAnnotation *)self->_rippleAnnotation setCoordinate:latitude, longitude];
-  v7 = [(MapsRouteCreationContext *)self chromeViewController];
-  v8 = [v7 mapView];
-  [v8 addAnnotation:self->_rippleAnnotation];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  [mapView addAnnotation:self->_rippleAnnotation];
 
-  v9 = [(MapsRippleAnnotation *)self->_rippleAnnotation rippleView];
-  [v9 startAnimating];
+  rippleView = [(MapsRippleAnnotation *)self->_rippleAnnotation rippleView];
+  [rippleView startAnimating];
 }
 
 - (void)_showRecenterButton
@@ -1853,11 +1853,11 @@ LABEL_13:
   }
 }
 
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   v8 = sub_1007989A4();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1871,18 +1871,18 @@ LABEL_13:
   v9 = [(MapsRouteCreationContext *)self _anchorNearPoint:x, y];
   if (v9)
   {
-    v10 = [(MapsRouteCreationContext *)self composedRoute];
-    v11 = [v10 anchorPoints];
-    v12 = [v11 indexOfAnchorPoint:v9];
+    composedRoute = [(MapsRouteCreationContext *)self composedRoute];
+    anchorPoints = [composedRoute anchorPoints];
+    v12 = [anchorPoints indexOfAnchorPoint:v9];
 
     if (!self->_anchorPointAttachedToMenu)
     {
       v13 = sub_1007989A4();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [(MapsRouteCreationContext *)self composedRoute];
-        v15 = [v14 anchorPoints];
-        v16 = [v15 indexOfAnchorPoint:v9];
+        composedRoute2 = [(MapsRouteCreationContext *)self composedRoute];
+        anchorPoints2 = [composedRoute2 anchorPoints];
+        v16 = [anchorPoints2 indexOfAnchorPoint:v9];
         v18 = 134217984;
         v19 = *&v16;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Tapped anchor point at index: %lu (map view)", &v18, 0xCu);
@@ -1897,7 +1897,7 @@ LABEL_13:
   {
     if (!self->_anchorPointAttachedToMenu)
     {
-      [v7 convertPoint:v7 toCoordinateFromView:{x, y}];
+      [viewCopy convertPoint:viewCopy toCoordinateFromView:{x, y}];
       [(MapsRouteCreationContext *)self _appendCoordinate:0 isCurrentLocation:?];
       goto LABEL_13;
     }
@@ -1916,21 +1916,21 @@ LABEL_13:
 LABEL_13:
 }
 
-- (id)_anchorNearPoint:(CGPoint)a3
+- (id)_anchorNearPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(MapsRouteCreationContext *)self chromeViewController];
-  v7 = [v6 mapView];
+  y = point.y;
+  x = point.x;
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [(MapsRouteCreationContext *)self composedRoute];
-  v9 = [v8 anchorPoints];
+  composedRoute = [(MapsRouteCreationContext *)self composedRoute];
+  anchorPoints = [composedRoute anchorPoints];
 
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v37 count:16];
+  v10 = [anchorPoints countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v10)
   {
     v12 = v10;
@@ -1945,12 +1945,12 @@ LABEL_13:
       {
         if (*v28 != v14)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(anchorPoints);
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
         [v17 locationCoordinate];
-        [v7 convertCoordinate:v7 toPointToView:?];
+        [mapView convertCoordinate:mapView toPointToView:?];
         v19 = v18;
         v21 = v20;
         v22 = (y - v20) * (y - v20) + (x - v18) * (x - v18);
@@ -1975,7 +1975,7 @@ LABEL_13:
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v27 objects:v37 count:16];
+      v12 = [anchorPoints countByEnumeratingWithState:&v27 objects:v37 count:16];
     }
 
     while (v12);
@@ -1989,12 +1989,12 @@ LABEL_13:
   return v13;
 }
 
-- (id)_anchorNearMapItem:(id)a3
+- (id)_anchorNearMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MapsRouteCreationContext *)self composedRoute];
-  v6 = [v5 anchorPoints];
-  v7 = [(MapsRouteCreationContext *)self _anchorPointNearMapItem:v4 inAnchorPoints:v6];
+  itemCopy = item;
+  composedRoute = [(MapsRouteCreationContext *)self composedRoute];
+  anchorPoints = [composedRoute anchorPoints];
+  v7 = [(MapsRouteCreationContext *)self _anchorPointNearMapItem:itemCopy inAnchorPoints:anchorPoints];
 
   if (v7)
   {
@@ -2003,30 +2003,30 @@ LABEL_13:
 
   else
   {
-    v9 = [(MapsRouteCreationContext *)self chromeViewController];
-    v10 = [v9 mapView];
+    chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+    mapView = [chromeViewController mapView];
 
-    v11 = [v4 location];
-    [v11 coordinate];
+    location = [itemCopy location];
+    [location coordinate];
     v13 = v12;
     v15 = v14;
 
-    [v10 convertCoordinate:v10 toPointToView:{v13, v15}];
+    [mapView convertCoordinate:mapView toPointToView:{v13, v15}];
     v8 = [(MapsRouteCreationContext *)self _anchorNearPoint:?];
   }
 
   return v8;
 }
 
-- (id)_anchorPointNearMapItem:(id)a3 inAnchorPoints:(id)a4
+- (id)_anchorPointNearMapItem:(id)item inAnchorPoints:(id)points
 {
-  v5 = a3;
+  itemCopy = item;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  pointsCopy = points;
+  v7 = [pointsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -2036,14 +2036,14 @@ LABEL_13:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pointsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 muid])
         {
-          v11 = [v10 muid];
-          if (v11 == [v5 _muid])
+          muid = [v10 muid];
+          if (muid == [itemCopy _muid])
           {
             v7 = v10;
             goto LABEL_12;
@@ -2051,7 +2051,7 @@ LABEL_13:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [pointsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -2066,46 +2066,46 @@ LABEL_12:
   return v7;
 }
 
-- (id)_anchorNearCoordinate:(CLLocationCoordinate2D)a3
+- (id)_anchorNearCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  v4 = [[CLLocation alloc] initWithLatitude:a3.latitude longitude:a3.longitude];
+  v4 = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
   v5 = [[MKMapItem alloc] initWithCLLocation:v4];
   v6 = [(MapsRouteCreationContext *)self _anchorNearMapItem:v5];
 
   return v6;
 }
 
-- (BOOL)chromeDidSelectFlyoverTourLabelMarker:(id)a3
+- (BOOL)chromeDidSelectFlyoverTourLabelMarker:(id)marker
 {
-  [a3 coordinate];
+  [marker coordinate];
   v6 = CLLocationCoordinate2DMake(v4, v5);
   [(MapsRouteCreationContext *)self _appendCoordinate:0 isCurrentLocation:v6.latitude, v6.longitude];
   return 1;
 }
 
-- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)a3
+- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)marker
 {
-  v4 = a3;
-  if ([v4 featureType] == 19)
+  markerCopy = marker;
+  if ([markerCopy featureType] == 19)
   {
-    [v4 coordinate];
+    [markerCopy coordinate];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(MapsRouteCreationContext *)self chromeViewController];
-    v10 = [v9 mapView];
+    chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+    mapView = [chromeViewController mapView];
 
-    [v10 convertCoordinate:v10 toPointToView:{v6, v8}];
+    [mapView convertCoordinate:mapView toPointToView:{v6, v8}];
     v11 = [(MapsRouteCreationContext *)self _anchorNearPoint:?];
     if (v11 && !self->_anchorPointAttachedToMenu)
     {
       v15 = sub_1007989A4();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [(MapsRouteCreationContext *)self composedRoute];
-        v17 = [v16 anchorPoints];
+        composedRoute = [(MapsRouteCreationContext *)self composedRoute];
+        anchorPoints = [composedRoute anchorPoints];
         v18 = 134217984;
-        v19 = [v17 indexOfAnchorPoint:v11];
+        v19 = [anchorPoints indexOfAnchorPoint:v11];
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Tapped anchor point at index: %lu (label marker)", &v18, 0xCu);
       }
 
@@ -2120,17 +2120,17 @@ LABEL_12:
 
   else
   {
-    v13 = [v4 isTrail];
+    isTrail = [markerCopy isTrail];
 
-    return v13 ^ 1;
+    return isTrail ^ 1;
   }
 
   return v12;
 }
 
-- (BOOL)chromeDidSelectAnnotationView:(id)a3
+- (BOOL)chromeDidSelectAnnotationView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -2139,8 +2139,8 @@ LABEL_12:
 
   else
   {
-    v6 = [v4 annotation];
-    [v6 coordinate];
+    annotation = [viewCopy annotation];
+    [annotation coordinate];
     v8 = v7;
     v10 = v9;
 
@@ -2148,19 +2148,19 @@ LABEL_12:
     v5 = v11 == 0;
     if (v11)
     {
-      v12 = [(MapsRouteCreationContext *)self chromeViewController];
-      v13 = [v12 mapView];
+      chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+      mapView = [chromeViewController mapView];
 
-      [v13 convertCoordinate:v13 toPointToView:{v8, v10}];
+      [mapView convertCoordinate:mapView toPointToView:{v8, v10}];
       v15 = v14;
       v17 = v16;
       v18 = sub_1007989A4();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [(MapsRouteCreationContext *)self composedRoute];
-        v20 = [v19 anchorPoints];
+        composedRoute = [(MapsRouteCreationContext *)self composedRoute];
+        anchorPoints = [composedRoute anchorPoints];
         v22 = 134217984;
-        v23 = [v20 indexOfAnchorPoint:v11];
+        v23 = [anchorPoints indexOfAnchorPoint:v11];
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Tapped anchor point at index: %lu (annotation view)", &v22, 0xCu);
       }
 
@@ -2170,8 +2170,8 @@ LABEL_12:
 
     else
     {
-      v13 = [v4 annotation];
-      [v13 coordinate];
+      mapView = [viewCopy annotation];
+      [mapView coordinate];
       [(MapsRouteCreationContext *)self _appendCoordinate:0 isCurrentLocation:?];
     }
   }
@@ -2179,27 +2179,27 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)chromeDidSelectUserLocationAnnotation:(id)a3
+- (BOOL)chromeDidSelectUserLocationAnnotation:(id)annotation
 {
-  [a3 coordinate];
+  [annotation coordinate];
   v5 = v4;
   v7 = v6;
   v8 = [(MapsRouteCreationContext *)self _anchorNearCoordinate:?];
   if (v8)
   {
-    v9 = [(MapsRouteCreationContext *)self chromeViewController];
-    v10 = [v9 mapView];
+    chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+    mapView = [chromeViewController mapView];
 
-    [v10 convertCoordinate:v10 toPointToView:{v5, v7}];
+    [mapView convertCoordinate:mapView toPointToView:{v5, v7}];
     v12 = v11;
     v14 = v13;
     v15 = sub_1007989A4();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(MapsRouteCreationContext *)self composedRoute];
-      v17 = [v16 anchorPoints];
+      composedRoute = [(MapsRouteCreationContext *)self composedRoute];
+      anchorPoints = [composedRoute anchorPoints];
       v19 = 134217984;
-      v20 = [v17 indexOfAnchorPoint:v8];
+      v20 = [anchorPoints indexOfAnchorPoint:v8];
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Tapped anchor point at index: %lu (user annotation)", &v19, 0xCu);
     }
 
@@ -2215,13 +2215,13 @@ LABEL_12:
   return v8 == 0;
 }
 
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MapsRouteCreationContext *)self _anchorNearMapItem:v4];
-  v6 = [(NSMutableArray *)self->_editStack lastObject];
-  v7 = [v6 anchorPoints];
-  v8 = [(MapsRouteCreationContext *)self _anchorPointNearMapItem:v4 inAnchorPoints:v7];
+  itemCopy = item;
+  v5 = [(MapsRouteCreationContext *)self _anchorNearMapItem:itemCopy];
+  lastObject = [(NSMutableArray *)self->_editStack lastObject];
+  anchorPoints = [lastObject anchorPoints];
+  v8 = [(MapsRouteCreationContext *)self _anchorPointNearMapItem:itemCopy inAnchorPoints:anchorPoints];
 
   anchorPointAttachedToMenu = self->_anchorPointAttachedToMenu;
   if (anchorPointAttachedToMenu)
@@ -2249,7 +2249,7 @@ LABEL_4:
     if (composedRoute || !v8)
     {
       [(MapsRouteCreationContext *)self _expandCardIfNeeded];
-      [(MapsRouteCreationContext *)self _appendMapItem:v4 isCurrentLocation:0 isCoordinate:0];
+      [(MapsRouteCreationContext *)self _appendMapItem:itemCopy isCurrentLocation:0 isCoordinate:0];
       goto LABEL_15;
     }
 
@@ -2268,49 +2268,49 @@ LABEL_4:
   v12 = sub_1007989A4();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(MapsRouteCreationContext *)self composedRoute];
-    v14 = [v13 anchorPoints];
+    composedRoute = [(MapsRouteCreationContext *)self composedRoute];
+    anchorPoints2 = [composedRoute anchorPoints];
     v23 = 134217984;
-    v24 = [v14 indexOfAnchorPoint:v5];
+    v24 = [anchorPoints2 indexOfAnchorPoint:v5];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Tapped anchor point at index: %lu (marker)", &v23, 0xCu);
   }
 
-  v15 = [(MapsRouteCreationContext *)self chromeViewController];
-  v16 = [v15 mapView];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
   [v5 locationCoordinate];
   v18 = v17;
   v20 = v19;
   [(MapsRouteCreationContext *)self _setMenuAttachedAnchorPoint:v5];
-  [v16 convertCoordinate:v16 toPointToView:{v18, v20}];
+  [mapView convertCoordinate:mapView toPointToView:{v18, v20}];
   [(MapsRouteCreationContext *)self _moveContextMenuToPoint:v5 anchorPoint:?];
 
 LABEL_15:
   return anchorPointAttachedToMenu == 0;
 }
 
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker
 {
-  [a3 coordinate];
+  [marker coordinate];
   v6 = CLLocationCoordinate2DMake(v4, v5);
   [(MapsRouteCreationContext *)self _appendCoordinate:0 isCurrentLocation:v6.latitude, v6.longitude];
   return 1;
 }
 
-- (BOOL)chromeDidSelectClusteredWaypointMarker:(id)a3
+- (BOOL)chromeDidSelectClusteredWaypointMarker:(id)marker
 {
-  [a3 coordinate];
+  [marker coordinate];
   v6 = CLLocationCoordinate2DMake(v4, v5);
   [(MapsRouteCreationContext *)self _appendCoordinate:0 isCurrentLocation:v6.latitude, v6.longitude];
   return 1;
 }
 
-- (BOOL)chromeDidSelectTrafficIncident:(id)a3 latitude:(id)a4 longitude:(id)a5
+- (BOOL)chromeDidSelectTrafficIncident:(id)incident latitude:(id)latitude longitude:(id)longitude
 {
-  v7 = a5;
-  [a4 doubleValue];
+  longitudeCopy = longitude;
+  [latitude doubleValue];
   v9 = v8;
-  [v7 doubleValue];
+  [longitudeCopy doubleValue];
   v11 = v10;
 
   v12 = CLLocationCoordinate2DMake(v9, v11);
@@ -2318,19 +2318,19 @@ LABEL_15:
   return 1;
 }
 
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(MapsRouteCreationContext *)self chromeViewController];
-  v6 = [v5 isTransitioning];
+  annotationCopy = annotation;
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  isTransitioning = [chromeViewController isTransitioning];
 
-  if (v6)
+  if (isTransitioning)
   {
     v7 = sub_1007989A4();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = annotationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Ignoring POI selection: %@", &v10, 0xCu);
     }
   }
@@ -2339,43 +2339,43 @@ LABEL_15:
   {
     [(UINotificationFeedbackGenerator *)self->_notificationGenerator notificationOccurred:0];
     [(MapsRouteCreationContext *)self _expandCardIfNeeded];
-    v8 = [v4 mapItem];
-    [(MapsRouteCreationContext *)self _appendMapItem:v8 isCurrentLocation:0 isCoordinate:0];
+    mapItem = [annotationCopy mapItem];
+    [(MapsRouteCreationContext *)self _appendMapItem:mapItem isCurrentLocation:0 isCoordinate:0];
   }
 
   return 1;
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  v5 = [(MapsRouteCreationContext *)self chromeViewController:a3];
+  v5 = [(MapsRouteCreationContext *)self chromeViewController:state];
   [v5 popContext:self animated:1 completion:0];
 }
 
 - (id)_traits
 {
   v3 = +[GEOMapService sharedService];
-  v4 = [v3 defaultUserInitiatedTraits];
+  defaultUserInitiatedTraits = [v3 defaultUserInitiatedTraits];
 
-  v5 = [(MapsRouteCreationContext *)self chromeViewController];
-  v6 = [v5 currentTraits];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
 
-  if (v6)
+  if (currentTraits)
   {
-    [v4 copyTo:v6];
+    [defaultUserInitiatedTraits copyTo:currentTraits];
   }
 
   else
   {
-    v6 = v4;
+    currentTraits = defaultUserInitiatedTraits;
   }
 
-  return v6;
+  return currentTraits;
 }
 
-- (void)didSaveCustomRoute:(id)a3
+- (void)didSaveCustomRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2384,25 +2384,25 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s", &v12, 0xCu);
   }
 
-  v6 = [v4 routeID];
-  v7 = [(GEOComposedRoute *)self->_composedRoute uniqueRouteID];
-  v8 = [v6 isEqual:v7];
+  routeID = [routeCopy routeID];
+  uniqueRouteID = [(GEOComposedRoute *)self->_composedRoute uniqueRouteID];
+  v8 = [routeID isEqual:uniqueRouteID];
 
   if (v8)
   {
-    [(GEOComposedRoute *)self->_composedRoute updateWithPersistentData:v4];
+    [(GEOComposedRoute *)self->_composedRoute updateWithPersistentData:routeCopy];
     v9 = [[MapsCustomRouteViewContext alloc] initWithExistingRoute:self->_composedRoute];
   }
 
   else
   {
-    v9 = [[MapsCustomRouteViewContext alloc] initWithExistingRouteData:v4];
+    v9 = [[MapsCustomRouteViewContext alloc] initWithExistingRouteData:routeCopy];
   }
 
   v10 = v9;
   [(MapsCustomRouteViewContext *)v9 setExitRouteCreationOnClose:1];
-  v11 = [(MapsRouteCreationContext *)self chromeViewController];
-  [v11 pushContext:v10 animated:1 completion:0];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  [chromeViewController pushContext:v10 animated:1 completion:0];
 }
 
 - (void)popContainee
@@ -2416,8 +2416,8 @@ LABEL_15:
   }
 
   [(NSMutableArray *)self->_containees removeLastObject];
-  v4 = [(MapsRouteCreationContext *)self chromeViewController];
-  [v4 setNeedsUpdateComponent:@"cards" animated:1];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
 - (void)pushSaveContainee
@@ -2430,18 +2430,18 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s", &v6, 0xCu);
   }
 
-  v4 = [(MapsRouteCreationContext *)self _traits];
-  [(MapsSaveRouteContainee *)self->_saveContainee setTraits:v4];
+  _traits = [(MapsRouteCreationContext *)self _traits];
+  [(MapsSaveRouteContainee *)self->_saveContainee setTraits:_traits];
 
   [(NSMutableArray *)self->_containees addObject:self->_saveContainee];
-  v5 = [(MapsRouteCreationContext *)self chromeViewController];
-  [v5 setNeedsUpdateComponent:@"cards" animated:1];
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   objc_initWeak(&location, self);
   [(MNRouteEditor *)self->_routeEditor endSession];
   v15[0] = _NSConcreteStackBlock;
@@ -2449,11 +2449,11 @@ LABEL_15:
   v15[2] = sub_1009BEF80;
   v15[3] = &unk_101661B98;
   objc_copyWeak(&v16, &location);
-  [v7 addPreparation:v15];
-  v8 = [v6 currentContextTransition];
-  v9 = [v8 enterAnimation];
+  [animationCopy addPreparation:v15];
+  currentContextTransition = [controllerCopy currentContextTransition];
+  enterAnimation = [currentContextTransition enterAnimation];
 
-  if (v9)
+  if (enterAnimation)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -2461,7 +2461,7 @@ LABEL_15:
     v13[3] = &unk_101661B98;
     v10 = &v14;
     objc_copyWeak(&v14, &location);
-    [v9 addAnimations:v13];
+    [enterAnimation addAnimations:v13];
   }
 
   else
@@ -2472,7 +2472,7 @@ LABEL_15:
     v11[3] = &unk_1016619A8;
     v10 = &v12;
     objc_copyWeak(&v12, &location);
-    [v7 addCompletion:v11];
+    [animationCopy addCompletion:v11];
   }
 
   objc_destroyWeak(v10);
@@ -2483,8 +2483,8 @@ LABEL_15:
 
 - (int64_t)preferredMapScaleVisibility
 {
-  v3 = [(MapsRouteCreationContext *)self chromeViewController];
-  v4 = sub_10000FA08(v3);
+  chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+  v4 = sub_10000FA08(chromeViewController);
 
   if (v4 == 5)
   {
@@ -2501,24 +2501,24 @@ LABEL_15:
 
   else
   {
-    v6 = [(MapsPopupMessageView *)self->_popupMessageView superview];
-    v5 = v6 != 0;
+    superview = [(MapsPopupMessageView *)self->_popupMessageView superview];
+    v5 = superview != 0;
   }
 
   return v5;
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1009BF2B4;
   v8[3] = &unk_101661B98;
   objc_copyWeak(&v9, &location);
-  [v7 addPreparation:v8];
+  [animationCopy addPreparation:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
@@ -2544,18 +2544,18 @@ LABEL_15:
 
   if (v6)
   {
-    v7 = [(MapsRouteCreationContext *)self chromeViewController];
-    v8 = [v7 mapView];
-    [v8 addSubview:self->_contextMenuFakeButton];
+    chromeViewController = [(MapsRouteCreationContext *)self chromeViewController];
+    mapView = [chromeViewController mapView];
+    [mapView addSubview:self->_contextMenuFakeButton];
   }
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (MapsRouteCreationContext)initWithExistingMapItems:(id)a3
+- (MapsRouteCreationContext)initWithExistingMapItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v138.receiver = self;
   v138.super_class = MapsRouteCreationContext;
   v5 = [(MapsRouteCreationContext *)&v138 init];
@@ -2578,10 +2578,10 @@ LABEL_15:
     v5->_containees = v12;
 
     [(ContaineeViewController *)v5->_editContainee setContaineeDelegate:v5];
-    v134 = v4;
-    if ([v4 count])
+    v134 = itemsCopy;
+    if ([itemsCopy count])
     {
-      [RouteCreationEditState initialEditStateFromMapItems:v4];
+      [RouteCreationEditState initialEditStateFromMapItems:itemsCopy];
     }
 
     else
@@ -2606,30 +2606,30 @@ LABEL_15:
     if ((_UISolariumEnabled() & 1) == 0)
     {
       v22 = [UIColor colorWithWhite:0.0 alpha:0.0799999982];
-      v23 = [v22 CGColor];
-      v24 = [v21 layer];
-      [v24 setBorderColor:v23];
+      cGColor = [v22 CGColor];
+      layer = [v21 layer];
+      [layer setBorderColor:cGColor];
 
-      v25 = [v21 layer];
-      [v25 setCornerRadius:8.0];
+      layer2 = [v21 layer];
+      [layer2 setCornerRadius:8.0];
 
-      v26 = [v21 layer];
-      [v26 setBorderWidth:0.5];
+      layer3 = [v21 layer];
+      [layer3 setBorderWidth:0.5];
 
       v27 = [UIColor colorWithWhite:0.0 alpha:0.0799999982];
-      v28 = [v27 CGColor];
-      v29 = [v21 layer];
-      [v29 setShadowColor:v28];
+      cGColor2 = [v27 CGColor];
+      layer4 = [v21 layer];
+      [layer4 setShadowColor:cGColor2];
 
-      v30 = [v21 layer];
+      layer5 = [v21 layer];
       LODWORD(v31) = *"\nף=";
-      [v30 setShadowOpacity:v31];
+      [layer5 setShadowOpacity:v31];
 
-      v32 = [v21 layer];
-      [v32 setShadowOffset:{0.0, -2.0}];
+      layer6 = [v21 layer];
+      [layer6 setShadowOffset:{0.0, -2.0}];
 
-      v33 = [v21 layer];
-      [v33 setShadowPathIsBounds:1];
+      layer7 = [v21 layer];
+      [layer7 setShadowPathIsBounds:1];
     }
 
     v136 = v21;
@@ -2654,31 +2654,31 @@ LABEL_15:
     if ((_UISolariumEnabled() & 1) == 0)
     {
       v39 = [UIColor colorWithWhite:0.0 alpha:0.0799999982];
-      v40 = [v39 CGColor];
-      v41 = [v38 layer];
-      [v41 setBorderColor:v40];
+      cGColor3 = [v39 CGColor];
+      layer8 = [v38 layer];
+      [layer8 setBorderColor:cGColor3];
 
-      v42 = [v137 layer];
-      [v42 setCornerRadius:8.0];
+      layer9 = [v137 layer];
+      [layer9 setCornerRadius:8.0];
 
-      v43 = [v137 layer];
-      [v43 setBorderWidth:0.5];
+      layer10 = [v137 layer];
+      [layer10 setBorderWidth:0.5];
 
       v44 = [UIColor colorWithWhite:0.0 alpha:0.0799999982];
-      v45 = [v44 CGColor];
-      v46 = [v137 layer];
-      [v46 setShadowColor:v45];
+      cGColor4 = [v44 CGColor];
+      layer11 = [v137 layer];
+      [layer11 setShadowColor:cGColor4];
 
       v38 = v137;
-      v47 = [v137 layer];
+      layer12 = [v137 layer];
       LODWORD(v48) = *"\nף=";
-      [v47 setShadowOpacity:v48];
+      [layer12 setShadowOpacity:v48];
 
-      v49 = [v137 layer];
-      [v49 setShadowOffset:{0.0, -2.0}];
+      layer13 = [v137 layer];
+      [layer13 setShadowOffset:{0.0, -2.0}];
 
-      v50 = [v137 layer];
-      [v50 setShadowPathIsBounds:1];
+      layer14 = [v137 layer];
+      [layer14 setShadowPathIsBounds:1];
     }
 
     objc_storeStrong(&v5->_recenterButtonContainer, v38);
@@ -2700,9 +2700,9 @@ LABEL_15:
     v55 = [UIColor colorWithDynamicProvider:&stru_101630F38];
     [v135 setTintColor:v55];
 
-    v56 = [v135 tintColor];
+    tintColor = [v135 tintColor];
     v133 = v51;
-    [v51 setTintColor:v56];
+    [v51 setTintColor:tintColor];
 
     v57 = [[CardView alloc] initAllowingBlurredForButton:1 buttonBackgroundType:0];
     [(CardView *)v57 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2710,30 +2710,30 @@ LABEL_15:
     if ((_UISolariumEnabled() & 1) == 0)
     {
       v58 = [UIColor colorWithWhite:0.0 alpha:0.0799999982];
-      v59 = [v58 CGColor];
-      v60 = [(CardView *)v57 layer];
-      [v60 setBorderColor:v59];
+      cGColor5 = [v58 CGColor];
+      layer15 = [(CardView *)v57 layer];
+      [layer15 setBorderColor:cGColor5];
 
-      v61 = [(CardView *)v57 layer];
-      [v61 setCornerRadius:8.0];
+      layer16 = [(CardView *)v57 layer];
+      [layer16 setCornerRadius:8.0];
 
-      v62 = [(CardView *)v57 layer];
-      [v62 setBorderWidth:0.5];
+      layer17 = [(CardView *)v57 layer];
+      [layer17 setBorderWidth:0.5];
 
       v63 = [UIColor colorWithWhite:0.0 alpha:0.0799999982];
-      v64 = [v63 CGColor];
-      v65 = [(CardView *)v57 layer];
-      [v65 setShadowColor:v64];
+      cGColor6 = [v63 CGColor];
+      layer18 = [(CardView *)v57 layer];
+      [layer18 setShadowColor:cGColor6];
 
-      v66 = [(CardView *)v57 layer];
+      layer19 = [(CardView *)v57 layer];
       LODWORD(v67) = *"\nף=";
-      [v66 setShadowOpacity:v67];
+      [layer19 setShadowOpacity:v67];
 
-      v68 = [(CardView *)v57 layer];
-      [v68 setShadowOffset:{0.0, -2.0}];
+      layer20 = [(CardView *)v57 layer];
+      [layer20 setShadowOffset:{0.0, -2.0}];
 
-      v69 = [(CardView *)v57 layer];
-      [v69 setShadowPathIsBounds:1];
+      layer21 = [(CardView *)v57 layer];
+      [layer21 setShadowPathIsBounds:1];
     }
 
     centerButtonsContainer = v5->_centerButtonsContainer;
@@ -2811,54 +2811,54 @@ LABEL_15:
     rippleAnnotation = v5->_rippleAnnotation;
     v5->_rippleAnnotation = v96;
 
-    v130 = [v136 widthAnchor];
-    v129 = [v130 constraintEqualToConstant:44.0];
+    widthAnchor = [v136 widthAnchor];
+    v129 = [widthAnchor constraintEqualToConstant:44.0];
     v139[0] = v129;
-    v128 = [v136 heightAnchor];
-    v127 = [v128 constraintEqualToConstant:44.0];
+    heightAnchor = [v136 heightAnchor];
+    v127 = [heightAnchor constraintEqualToConstant:44.0];
     v139[1] = v127;
-    v126 = [(UIButton *)v5->_undoButton widthAnchor];
-    v125 = [v126 constraintEqualToConstant:44.0];
+    widthAnchor2 = [(UIButton *)v5->_undoButton widthAnchor];
+    v125 = [widthAnchor2 constraintEqualToConstant:44.0];
     v139[2] = v125;
-    v124 = [(UIButton *)v5->_undoButton heightAnchor];
-    v123 = [v124 constraintEqualToConstant:44.0];
+    heightAnchor2 = [(UIButton *)v5->_undoButton heightAnchor];
+    v123 = [heightAnchor2 constraintEqualToConstant:44.0];
     v139[3] = v123;
-    v122 = [v137 widthAnchor];
-    v120 = [v122 constraintEqualToConstant:44.0];
+    widthAnchor3 = [v137 widthAnchor];
+    v120 = [widthAnchor3 constraintEqualToConstant:44.0];
     v139[4] = v120;
-    v119 = [v137 heightAnchor];
-    v118 = [v119 constraintEqualToConstant:44.0];
+    heightAnchor3 = [v137 heightAnchor];
+    v118 = [heightAnchor3 constraintEqualToConstant:44.0];
     v139[5] = v118;
-    v117 = [(UIButton *)v5->_recenterButton widthAnchor];
-    v116 = [v117 constraintEqualToConstant:44.0];
+    widthAnchor4 = [(UIButton *)v5->_recenterButton widthAnchor];
+    v116 = [widthAnchor4 constraintEqualToConstant:44.0];
     v139[6] = v116;
-    v115 = [(UIButton *)v5->_recenterButton heightAnchor];
-    v114 = [v115 constraintEqualToConstant:44.0];
+    heightAnchor4 = [(UIButton *)v5->_recenterButton heightAnchor];
+    v114 = [heightAnchor4 constraintEqualToConstant:44.0];
     v139[7] = v114;
     v107 = v76;
-    v113 = [(UIButton *)v76 widthAnchor];
-    v112 = [v113 constraintEqualToConstant:44.0];
+    widthAnchor5 = [(UIButton *)v76 widthAnchor];
+    v112 = [widthAnchor5 constraintEqualToConstant:44.0];
     v139[8] = v112;
-    v111 = [(UIButton *)v76 heightAnchor];
-    v110 = [v111 constraintEqualToConstant:44.0];
+    heightAnchor5 = [(UIButton *)v76 heightAnchor];
+    v110 = [heightAnchor5 constraintEqualToConstant:44.0];
     v139[9] = v110;
     v98 = v82;
-    v109 = [(UIButton *)v82 widthAnchor];
-    v108 = [v109 constraintEqualToConstant:44.0];
+    widthAnchor6 = [(UIButton *)v82 widthAnchor];
+    v108 = [widthAnchor6 constraintEqualToConstant:44.0];
     v139[10] = v108;
-    v99 = [(UIButton *)v82 heightAnchor];
-    v100 = [v99 constraintEqualToConstant:44.0];
+    heightAnchor6 = [(UIButton *)v82 heightAnchor];
+    v100 = [heightAnchor6 constraintEqualToConstant:44.0];
     v139[11] = v100;
-    v101 = [(UIButton *)v88 widthAnchor];
-    v102 = [v101 constraintEqualToConstant:44.0];
+    widthAnchor7 = [(UIButton *)v88 widthAnchor];
+    v102 = [widthAnchor7 constraintEqualToConstant:44.0];
     v139[12] = v102;
-    v103 = [(UIButton *)v88 heightAnchor];
-    v104 = [v103 constraintEqualToConstant:44.0];
+    heightAnchor7 = [(UIButton *)v88 heightAnchor];
+    v104 = [heightAnchor7 constraintEqualToConstant:44.0];
     v139[13] = v104;
     v105 = [NSArray arrayWithObjects:v139 count:14];
     [NSLayoutConstraint activateConstraints:v105];
 
-    v4 = v134;
+    itemsCopy = v134;
   }
 
   return v5;

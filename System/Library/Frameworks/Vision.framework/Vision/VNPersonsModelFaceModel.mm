@@ -1,73 +1,73 @@
 @interface VNPersonsModelFaceModel
-+ (BOOL)getStoredRepresentationTag:(unsigned int *)a3 forModelVersion:(unint64_t)a4 error:(id *)a5;
-+ (id)modelBuiltFromConfiguration:(id)a3 dataProvider:(id)a4 canceller:(id)a5 error:(id *)a6;
-- (BOOL)isCompatibleWithConfiguration:(id)a3;
-- (VNPersonsModelFaceModel)initWithCoder:(id)a3;
-- (id)personPredictionsForFace:(id)a3 withDescriptor:(const void *)a4 limit:(unint64_t)a5 canceller:(id)a6 error:(id *)a7;
-- (id)trainingFaceprintsForPersonWithUniqueIdentifier:(id)a3 error:(id *)a4;
++ (BOOL)getStoredRepresentationTag:(unsigned int *)tag forModelVersion:(unint64_t)version error:(id *)error;
++ (id)modelBuiltFromConfiguration:(id)configuration dataProvider:(id)provider canceller:(id)canceller error:(id *)error;
+- (BOOL)isCompatibleWithConfiguration:(id)configuration;
+- (VNPersonsModelFaceModel)initWithCoder:(id)coder;
+- (id)personPredictionsForFace:(id)face withDescriptor:(const void *)descriptor limit:(unint64_t)limit canceller:(id)canceller error:(id *)error;
+- (id)trainingFaceprintsForPersonWithUniqueIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation VNPersonsModelFaceModel
 
-- (VNPersonsModelFaceModel)initWithCoder:(id)a3
+- (VNPersonsModelFaceModel)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = VNPersonsModelFaceModel;
   return [(VNPersonsModelFaceModel *)&v4 init];
 }
 
-- (id)trainingFaceprintsForPersonWithUniqueIdentifier:(id)a3 error:(id *)a4
+- (id)trainingFaceprintsForPersonWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = VNPersonsModelErrorForUnimplementedMethod(self, a2);
+    *error = VNPersonsModelErrorForUnimplementedMethod(self, a2);
   }
 
   return 0;
 }
 
-- (BOOL)isCompatibleWithConfiguration:(id)a3
+- (BOOL)isCompatibleWithConfiguration:(id)configuration
 {
-  v3 = [a3 resolvedAlgorithmAndReturnError:0];
+  v3 = [configuration resolvedAlgorithmAndReturnError:0];
   v4 = v3;
   v6 = v3 && (v5 = [v3 faceModelClass]) != 0 && objc_opt_class() == v5;
 
   return v6;
 }
 
-- (id)personPredictionsForFace:(id)a3 withDescriptor:(const void *)a4 limit:(unint64_t)a5 canceller:(id)a6 error:(id *)a7
+- (id)personPredictionsForFace:(id)face withDescriptor:(const void *)descriptor limit:(unint64_t)limit canceller:(id)canceller error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = VNPersonsModelErrorForUnimplementedMethod(self, a2);
+    *error = VNPersonsModelErrorForUnimplementedMethod(self, a2);
   }
 
   return 0;
 }
 
-+ (id)modelBuiltFromConfiguration:(id)a3 dataProvider:(id)a4 canceller:(id)a5 error:(id *)a6
++ (id)modelBuiltFromConfiguration:(id)configuration dataProvider:(id)provider canceller:(id)canceller error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 resolvedAlgorithmAndReturnError:a6];
+  configurationCopy = configuration;
+  providerCopy = provider;
+  cancellerCopy = canceller;
+  v12 = [configurationCopy resolvedAlgorithmAndReturnError:error];
   v13 = v12;
   if (!v12)
   {
     goto LABEL_7;
   }
 
-  v14 = [v12 faceModelClass];
-  if (v14 && [(VisionCoreRuntimeUtilities *)VNRuntimeUtilities item:v14 overridesClassSelector:sel_modelBuiltFromConfiguration_dataProvider_canceller_error_])
+  faceModelClass = [v12 faceModelClass];
+  if (faceModelClass && [(VisionCoreRuntimeUtilities *)VNRuntimeUtilities item:faceModelClass overridesClassSelector:sel_modelBuiltFromConfiguration_dataProvider_canceller_error_])
   {
-    v15 = [v14 modelBuiltFromConfiguration:v9 dataProvider:v10 canceller:v11 error:a6];
+    v15 = [faceModelClass modelBuiltFromConfiguration:configurationCopy dataProvider:providerCopy canceller:cancellerCopy error:error];
     goto LABEL_8;
   }
 
-  if (a6)
+  if (error)
   {
     VNPersonsModelErrorForUnsupportedAlgorithm(v13);
-    *a6 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -81,11 +81,11 @@ LABEL_8:
   return v15;
 }
 
-+ (BOOL)getStoredRepresentationTag:(unsigned int *)a3 forModelVersion:(unint64_t)a4 error:(id *)a5
++ (BOOL)getStoredRepresentationTag:(unsigned int *)tag forModelVersion:(unint64_t)version error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [VNError errorForUnimplementedMethod:a2 ofObject:a1];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self];
   }
 
   return 0;

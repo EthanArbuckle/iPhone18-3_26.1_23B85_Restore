@@ -3,12 +3,12 @@
 - (NSString)defaultAnswer;
 - (NSString)inputType;
 - (NSString)promptText;
-- (id)datePickerModeFromInputType:(id)a3;
+- (id)datePickerModeFromInputType:(id)type;
 - (id)outputContentClasses;
-- (void)finishRunningWithDate:(id)a3;
-- (void)finishRunningWithResultText:(id)a3;
-- (void)getOutputFromIntentResponse:(id)a3 completionHandler:(id)a4;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)finishRunningWithDate:(id)date;
+- (void)finishRunningWithResultText:(id)text;
+- (void)getOutputFromIntentResponse:(id)response completionHandler:(id)handler;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFAskForInputAction
@@ -17,18 +17,18 @@
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v3 = [(WFAskForInputAction *)self parameterStateForKey:@"WFInputType"];
-  v4 = [v3 value];
-  if ([v4 isEqualToString:@"Text"])
+  value = [v3 value];
+  if ([value isEqualToString:@"Text"])
   {
     v15[0] = objc_opt_class();
     v5 = MEMORY[0x277CBEA60];
     v6 = v15;
 LABEL_11:
-    v7 = [v5 arrayWithObjects:v6 count:1];
+    outputContentClasses = [v5 arrayWithObjects:v6 count:1];
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"Number"])
+  if ([value isEqualToString:@"Number"])
   {
     v14 = objc_opt_class();
     v5 = MEMORY[0x277CBEA60];
@@ -36,7 +36,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"URL"])
+  if ([value isEqualToString:@"URL"])
   {
     v13 = objc_opt_class();
     v5 = MEMORY[0x277CBEA60];
@@ -44,7 +44,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (([v4 isEqualToString:@"Date"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Time") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"Date and Time"))
+  if (([value isEqualToString:@"Date"] & 1) != 0 || (objc_msgSend(value, "isEqualToString:", @"Time") & 1) != 0 || objc_msgSend(value, "isEqualToString:", @"Date and Time"))
   {
     v12 = objc_opt_class();
     v5 = MEMORY[0x277CBEA60];
@@ -54,47 +54,47 @@ LABEL_11:
 
   v11.receiver = self;
   v11.super_class = WFAskForInputAction;
-  v7 = [(WFAskForInputAction *)&v11 outputContentClasses];
+  outputContentClasses = [(WFAskForInputAction *)&v11 outputContentClasses];
 LABEL_12:
-  v8 = v7;
+  v8 = outputContentClasses;
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (void)finishRunningWithDate:(id)a3
+- (void)finishRunningWithDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v4 = a3;
-    v5 = [(WFAskForInputAction *)self output];
-    [v5 addObject:v4];
+    dateCopy = date;
+    output = [(WFAskForInputAction *)self output];
+    [output addObject:dateCopy];
   }
 
   [(WFHandleIntentAction *)self finishRunningWithError:0];
 }
 
-- (void)finishRunningWithResultText:(id)a3
+- (void)finishRunningWithResultText:(id)text
 {
-  v4 = a3;
-  v5 = [(WFAskForInputAction *)self inputType];
-  if (![v4 length])
+  textCopy = text;
+  inputType = [(WFAskForInputAction *)self inputType];
+  if (![textCopy length])
   {
     goto LABEL_28;
   }
 
-  if ([v5 isEqualToString:@"URL"])
+  if ([inputType isEqualToString:@"URL"])
   {
-    v6 = [MEMORY[0x277CBEBC0] URLWithString:v4];
-    if ([MEMORY[0x277CFC570] stringMatchesExactly:v4])
+    v6 = [MEMORY[0x277CBEBC0] URLWithString:textCopy];
+    if ([MEMORY[0x277CFC570] stringMatchesExactly:textCopy])
     {
-      v7 = [v6 scheme];
+      scheme = [v6 scheme];
 
-      if (!v7)
+      if (!scheme)
       {
         v8 = MEMORY[0x277CBEBC0];
-        v9 = [@"http://" stringByAppendingString:v4];
+        v9 = [@"http://" stringByAppendingString:textCopy];
         v10 = [v8 URLWithString:v9];
 
         v6 = v10;
@@ -108,12 +108,12 @@ LABEL_12:
 
     else
     {
-      v11 = v4;
+      v11 = textCopy;
     }
 
-    v12 = v11;
+    notANumber = v11;
 
-    if (!v12)
+    if (!notANumber)
     {
       goto LABEL_28;
     }
@@ -121,10 +121,10 @@ LABEL_12:
     goto LABEL_27;
   }
 
-  if (![v5 isEqualToString:@"Number"])
+  if (![inputType isEqualToString:@"Number"])
   {
-    v12 = v4;
-    if (!v12)
+    notANumber = textCopy;
+    if (!notANumber)
     {
       goto LABEL_28;
     }
@@ -133,42 +133,42 @@ LABEL_12:
   }
 
   v13 = objc_alloc_init(MEMORY[0x277CCABB8]);
-  v14 = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
-  v15 = [v13 minusSign];
-  [v14 addCharactersInString:v15];
+  decimalDigitCharacterSet = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
+  minusSign = [v13 minusSign];
+  [decimalDigitCharacterSet addCharactersInString:minusSign];
 
-  v16 = [MEMORY[0x277CBEAF8] currentLocale];
-  v17 = [v16 objectForKey:*MEMORY[0x277CBE6A8]];
-  [v14 addCharactersInString:v17];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v17 = [currentLocale objectForKey:*MEMORY[0x277CBE6A8]];
+  [decimalDigitCharacterSet addCharactersInString:v17];
 
-  v18 = [v14 invertedSet];
-  v19 = [MEMORY[0x277CFC360] resultsForString:v4 ofTypes:0x200000000 error:0];
-  v20 = [v19 number];
-  if (v20)
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  v19 = [MEMORY[0x277CFC360] resultsForString:textCopy ofTypes:0x200000000 error:0];
+  number = [v19 number];
+  if (number)
   {
-    if ([v4 wf_stringContainsCharacterInSet:v18])
+    if ([textCopy wf_stringContainsCharacterInSet:invertedSet])
     {
-      v21 = v20;
+      v21 = number;
     }
 
     else
     {
-      v21 = v4;
+      v21 = textCopy;
     }
 
-    v12 = v21;
+    notANumber = v21;
   }
 
   else
   {
     v32 = v13;
-    v22 = [v4 componentsSeparatedByCharactersInSet:v18];
+    v22 = [textCopy componentsSeparatedByCharactersInSet:invertedSet];
     v23 = [v22 componentsJoinedByString:&stru_2850323E8];
 
     v31 = v23;
     v24 = [MEMORY[0x277CCAC80] scannerWithString:v23];
-    v25 = [MEMORY[0x277CBEAF8] currentLocale];
-    [v24 setLocale:v25];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    [v24 setLocale:currentLocale2];
 
     v35 = 0.0;
     v26 = [v24 scanDouble:&v35];
@@ -189,41 +189,41 @@ LABEL_12:
         v34 = 0;
       }
 
-      v12 = [v27 decimalNumberWithDecimal:v33];
+      notANumber = [v27 decimalNumberWithDecimal:v33];
     }
 
     else
     {
-      v12 = [MEMORY[0x277CCA980] notANumber];
+      notANumber = [MEMORY[0x277CCA980] notANumber];
     }
 
     v13 = v32;
   }
 
-  if (v12)
+  if (notANumber)
   {
 LABEL_27:
-    v30 = [(WFAskForInputAction *)self output];
-    [v30 addObject:v12];
+    output = [(WFAskForInputAction *)self output];
+    [output addObject:notANumber];
   }
 
 LABEL_28:
   [(WFHandleIntentAction *)self finishRunningWithError:0];
 }
 
-- (void)getOutputFromIntentResponse:(id)a3 completionHandler:(id)a4
+- (void)getOutputFromIntentResponse:(id)response completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  responseCopy = response;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFAskForInputAction.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAskForInputAction.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v9 = objc_opt_class();
-  v10 = v7;
+  v10 = responseCopy;
   if (v10 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v12 = getWFGeneralLogObject();
@@ -249,26 +249,26 @@ LABEL_28:
     v11 = v10;
   }
 
-  v14 = [v11 result];
-  v15 = v14;
-  if (!v14)
+  result = [v11 result];
+  v15 = result;
+  if (!result)
   {
     goto LABEL_27;
   }
 
-  v16 = [v14 type];
-  if (v16 > 3)
+  type = [result type];
+  if (type > 3)
   {
-    switch(v16)
+    switch(type)
     {
       case 4:
-        v17 = [v15 dateValue];
+        dateValue = [v15 dateValue];
         break;
       case 5:
-        v17 = [v15 timeValue];
+        dateValue = [v15 timeValue];
         break;
       case 6:
-        v17 = [v15 dateAndTimeValue];
+        dateValue = [v15 dateAndTimeValue];
         break;
       default:
         goto LABEL_27;
@@ -277,26 +277,26 @@ LABEL_28:
 
   else
   {
-    switch(v16)
+    switch(type)
     {
       case 1:
-        v17 = [v15 stringValue];
+        dateValue = [v15 stringValue];
         break;
       case 2:
-        v17 = [v15 numberValue];
+        dateValue = [v15 numberValue];
         break;
       case 3:
-        v17 = [v15 urlValue];
+        dateValue = [v15 urlValue];
         break;
       default:
 LABEL_27:
-        v8[2](v8, 0);
+        handlerCopy[2](handlerCopy, 0);
         goto LABEL_28;
     }
   }
 
-  v18 = v17;
-  if (!v17)
+  v18 = dateValue;
+  if (!dateValue)
   {
     goto LABEL_27;
   }
@@ -304,33 +304,33 @@ LABEL_27:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [MEMORY[0x277CBEA80] currentCalendar];
-    v20 = [v19 dateFromComponents:v18];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v20 = [currentCalendar dateFromComponents:v18];
 
     v18 = v20;
   }
 
   v21 = objc_opt_new();
   [v21 addObject:v18];
-  (v8)[2](v8, v21);
+  (handlerCopy)[2](handlerCopy, v21);
 
 LABEL_28:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v56[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFAskForInputAction *)self userInterface];
-  v6 = [v5 userInterfaceType];
-  v7 = [v6 isEqualToString:*MEMORY[0x277CFC708]];
+  inputCopy = input;
+  userInterface = [(WFAskForInputAction *)self userInterface];
+  userInterfaceType = [userInterface userInterfaceType];
+  v7 = [userInterfaceType isEqualToString:*MEMORY[0x277CFC708]];
 
   if (v7)
   {
     v55.receiver = self;
     v55.super_class = WFAskForInputAction;
-    [(WFHandleIntentAction *)&v55 runAsynchronouslyWithInput:v4];
+    [(WFHandleIntentAction *)&v55 runAsynchronouslyWithInput:inputCopy];
   }
 
   else
@@ -339,29 +339,29 @@ LABEL_28:
     v56[1] = @"Time";
     v56[2] = @"Date and Time";
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:3];
-    v9 = [(WFAskForInputAction *)self inputType];
-    v10 = [v8 containsObject:v9];
+    inputType = [(WFAskForInputAction *)self inputType];
+    v10 = [v8 containsObject:inputType];
 
     v11 = [MEMORY[0x277CFC218] alertWithPreferredStyle:0];
-    v12 = [(WFAskForInputAction *)self promptText];
-    [v11 setTitle:v12];
+    promptText = [(WFAskForInputAction *)self promptText];
+    [v11 setTitle:promptText];
 
     v13 = dispatch_group_create();
     if (v10)
     {
       v14 = objc_alloc_init(MEMORY[0x277D79EF8]);
-      v15 = [(WFAskForInputAction *)self inputType];
-      v16 = [(WFAskForInputAction *)self datePickerModeFromInputType:v15];
+      inputType2 = [(WFAskForInputAction *)self inputType];
+      v16 = [(WFAskForInputAction *)self datePickerModeFromInputType:inputType2];
       [v14 setDatePickerMode:v16];
 
-      v17 = [(WFAskForInputAction *)self defaultAnswer];
+      defaultAnswer = [(WFAskForInputAction *)self defaultAnswer];
 
-      if (v17)
+      if (defaultAnswer)
       {
         dispatch_group_enter(v13);
         v18 = MEMORY[0x277CFC2F8];
-        v19 = [(WFAskForInputAction *)self defaultAnswer];
-        v20 = [v18 itemWithObject:v19];
+        defaultAnswer2 = [(WFAskForInputAction *)self defaultAnswer];
+        v20 = [v18 itemWithObject:defaultAnswer2];
         v52[0] = MEMORY[0x277D85DD0];
         v52[1] = 3221225472;
         v52[2] = __50__WFAskForInputAction_runAsynchronouslyWithInput___block_invoke;
@@ -383,40 +383,40 @@ LABEL_28:
 
     else
     {
-      v22 = [(WFAskForInputAction *)self inputType];
-      v23 = [v22 isEqualToString:@"Number"];
+      inputType3 = [(WFAskForInputAction *)self inputType];
+      v23 = [inputType3 isEqualToString:@"Number"];
 
       if (v23)
       {
         v24 = [(WFAskForInputAction *)self parameterValueForKey:@"WFAskActionAllowsDecimalNumbers" ofClass:objc_opt_class()];
-        v42 = [v24 BOOLValue];
+        bOOLValue = [v24 BOOLValue];
 
         v25 = [(WFAskForInputAction *)self parameterValueForKey:@"WFAskActionAllowsNegativeNumbers" ofClass:objc_opt_class()];
-        v26 = [v25 BOOLValue];
+        bOOLValue2 = [v25 BOOLValue];
 
         v21 = objc_alloc_init(MEMORY[0x277D7A178]);
-        v27 = [(WFAskForInputAction *)self defaultAnswer];
-        [v21 setText:v27];
+        defaultAnswer3 = [(WFAskForInputAction *)self defaultAnswer];
+        [v21 setText:defaultAnswer3];
 
         v28 = MEMORY[0x277D7A620];
-        if (!v42)
+        if (!bOOLValue)
         {
           v28 = MEMORY[0x277D7A640];
         }
 
         [v21 setKeyboardType:*v28];
-        [v21 setAllowsNegativeNumbers:v26];
+        [v21 setAllowsNegativeNumbers:bOOLValue2];
         [v21 setPlaceholder:@"0"];
       }
 
       else
       {
         v21 = objc_alloc_init(MEMORY[0x277D7A178]);
-        v29 = [(WFAskForInputAction *)self defaultAnswer];
-        [v21 setText:v29];
+        defaultAnswer4 = [(WFAskForInputAction *)self defaultAnswer];
+        [v21 setText:defaultAnswer4];
 
-        v30 = [(WFAskForInputAction *)self inputType];
-        v31 = [v30 isEqualToString:@"URL"];
+        inputType4 = [(WFAskForInputAction *)self inputType];
+        v31 = [inputType4 isEqualToString:@"URL"];
 
         if (v31)
         {
@@ -432,11 +432,11 @@ LABEL_28:
         else
         {
           v33 = [(WFAskForInputAction *)self parameterValueForKey:@"WFAllowsMultilineText" ofClass:objc_opt_class()];
-          v34 = [v33 BOOLValue];
+          bOOLValue3 = [v33 BOOLValue];
 
-          [v21 setMultiline:v34];
+          [v21 setMultiline:bOOLValue3];
           v35 = MEMORY[0x277D7A678];
-          if (!v34)
+          if (!bOOLValue3)
           {
             v35 = MEMORY[0x277D7A680];
           }
@@ -523,17 +523,17 @@ void __50__WFAskForInputAction_runAsynchronouslyWithInput___block_invoke_5(uint6
   [v2 presentAlert:*(a1 + 40)];
 }
 
-- (id)datePickerModeFromInputType:(id)a3
+- (id)datePickerModeFromInputType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Date"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Date"])
   {
     v4 = MEMORY[0x277D7A3A0];
   }
 
   else
   {
-    v5 = [v3 isEqualToString:@"Time"];
+    v5 = [typeCopy isEqualToString:@"Time"];
     v4 = MEMORY[0x277D7A3A8];
     if (v5)
     {
@@ -550,16 +550,16 @@ void __50__WFAskForInputAction_runAsynchronouslyWithInput___block_invoke_5(uint6
 - (BOOL)immediatelyActivateWatchDictation
 {
   v2 = [(WFAskForInputAction *)self parameterValueForKey:@"WFAskActionImmediateDictation" ofClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)defaultAnswer
 {
-  v3 = [(WFAskForInputAction *)self inputType];
+  inputType = [(WFAskForInputAction *)self inputType];
   v4 = objc_opt_class();
-  if ([v3 isEqualToString:@"Number"])
+  if ([inputType isEqualToString:@"Number"])
   {
     v5 = [(WFAskForInputAction *)self parameterValueForKey:@"WFAskActionDefaultAnswerNumber" ofClass:objc_opt_class()];
     v6 = [MEMORY[0x277CCABB8] localizedStringFromNumber:v5 numberStyle:1];
@@ -567,26 +567,26 @@ void __50__WFAskForInputAction_runAsynchronouslyWithInput___block_invoke_5(uint6
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"URL"])
+  if ([inputType isEqualToString:@"URL"])
   {
     v7 = @"WFAskActionDefaultAnswerURL";
   }
 
   else
   {
-    if ([v3 isEqualToString:@"Date"])
+    if ([inputType isEqualToString:@"Date"])
     {
       v7 = @"WFAskActionDefaultAnswerDate";
     }
 
-    else if ([v3 isEqualToString:@"Time"])
+    else if ([inputType isEqualToString:@"Time"])
     {
       v7 = @"WFAskActionDefaultAnswerTime";
     }
 
     else
     {
-      if (![v3 isEqualToString:@"Date and Time"])
+      if (![inputType isEqualToString:@"Date and Time"])
       {
         v7 = @"WFAskActionDefaultAnswer";
         goto LABEL_12;
@@ -608,8 +608,8 @@ LABEL_13:
 - (NSString)promptText
 {
   v3 = [(WFAskForInputAction *)self parameterValueForKey:@"WFAskActionPrompt" ofClass:objc_opt_class()];
-  v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v5 = [v3 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v6 = [v5 length];
 
   if ([v3 length])
@@ -633,50 +633,50 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  v8 = [(WFAskForInputAction *)self inputType];
-  if ([v8 isEqualToString:@"Text"])
+  inputType = [(WFAskForInputAction *)self inputType];
+  if ([inputType isEqualToString:@"Text"])
   {
     v11 = @"What’s the text?";
 LABEL_20:
-    v9 = WFLocalizedString(v11);
+    localizedPlaceholder = WFLocalizedString(v11);
     goto LABEL_21;
   }
 
-  if ([v8 isEqualToString:@"Number"])
+  if ([inputType isEqualToString:@"Number"])
   {
     v11 = @"What number?";
     goto LABEL_20;
   }
 
-  if ([v8 isEqualToString:@"URL"])
+  if ([inputType isEqualToString:@"URL"])
   {
     v11 = @"What URL?";
     goto LABEL_20;
   }
 
-  if ([v8 isEqualToString:@"Date"])
+  if ([inputType isEqualToString:@"Date"])
   {
     v11 = @"What date?";
     goto LABEL_20;
   }
 
-  if ([v8 isEqualToString:@"Time"])
+  if ([inputType isEqualToString:@"Time"])
   {
     v11 = @"What time?";
     goto LABEL_20;
   }
 
-  if ([v8 isEqualToString:@"Date and Time"])
+  if ([inputType isEqualToString:@"Date and Time"])
   {
     v11 = @"What date and time?";
     goto LABEL_20;
   }
 
 LABEL_7:
-  v8 = [(WFAskForInputAction *)self parameterForKey:@"WFAskActionPrompt"];
-  v9 = [v8 localizedPlaceholder];
+  inputType = [(WFAskForInputAction *)self parameterForKey:@"WFAskActionPrompt"];
+  localizedPlaceholder = [inputType localizedPlaceholder];
 LABEL_21:
-  v10 = v9;
+  v10 = localizedPlaceholder;
 
 LABEL_22:
 

@@ -1,42 +1,42 @@
 @interface HSContainersRequest
-+ (id)requestWithDatabaseID:(unsigned int)a3;
-- (HSContainersRequest)initWithAction:(id)a3;
-- (HSContainersRequest)initWithDatabaseID:(unsigned int)a3;
-- (id)canonicalResponseForResponse:(id)a3;
++ (id)requestWithDatabaseID:(unsigned int)d;
+- (HSContainersRequest)initWithAction:(id)action;
+- (HSContainersRequest)initWithDatabaseID:(unsigned int)d;
+- (id)canonicalResponseForResponse:(id)response;
 @end
 
 @implementation HSContainersRequest
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   if (self->_shouldParseResponse)
   {
-    v5 = [(HSResponse *)HSContainersResponse responseWithResponse:v4];
+    v5 = [(HSResponse *)HSContainersResponse responseWithResponse:responseCopy];
 
-    v6 = [v5 responseData];
-    v7 = [HSResponseDataParser parseResponseData:v6];
+    responseData = [v5 responseData];
+    v7 = [HSResponseDataParser parseResponseData:responseData];
 
     [v5 setContainers:v7];
-    v4 = v5;
+    responseCopy = v5;
   }
 
-  return v4;
+  return responseCopy;
 }
 
-- (HSContainersRequest)initWithDatabaseID:(unsigned int)a3
+- (HSContainersRequest)initWithDatabaseID:(unsigned int)d
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"databases/%u/containers", *&a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"databases/%u/containers", *&d];
   v5 = [(HSContainersRequest *)self initWithAction:v4];
 
   return v5;
 }
 
-- (HSContainersRequest)initWithAction:(id)a3
+- (HSContainersRequest)initWithAction:(id)action
 {
   v4.receiver = self;
   v4.super_class = HSContainersRequest;
-  result = [(HSRequest *)&v4 initWithAction:a3];
+  result = [(HSRequest *)&v4 initWithAction:action];
   if (result)
   {
     result->_shouldParseResponse = 1;
@@ -45,9 +45,9 @@
   return result;
 }
 
-+ (id)requestWithDatabaseID:(unsigned int)a3
++ (id)requestWithDatabaseID:(unsigned int)d
 {
-  v3 = [[a1 alloc] initWithDatabaseID:*&a3];
+  v3 = [[self alloc] initWithDatabaseID:*&d];
 
   return v3;
 }

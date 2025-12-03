@@ -1,11 +1,11 @@
 @interface EmitNavigationEventWrapper
-+ (void)generalEmitNavigationEventForSystemSettingWithGraphicIconIdentifier:(id)a3 title:(id)a4 localizedNavigationComponents:(id)a5 deepLink:(id)a6;
++ (void)generalEmitNavigationEventForSystemSettingWithGraphicIconIdentifier:(id)identifier title:(id)title localizedNavigationComponents:(id)components deepLink:(id)link;
 - (_TtC17GeneralSettingsUI26EmitNavigationEventWrapper)init;
 @end
 
 @implementation EmitNavigationEventWrapper
 
-+ (void)generalEmitNavigationEventForSystemSettingWithGraphicIconIdentifier:(id)a3 title:(id)a4 localizedNavigationComponents:(id)a5 deepLink:(id)a6
++ (void)generalEmitNavigationEventForSystemSettingWithGraphicIconIdentifier:(id)identifier title:(id)title localizedNavigationComponents:(id)components deepLink:(id)link
 {
   v7 = sub_21CF553F4();
   v8 = *(v7 - 8);
@@ -17,8 +17,8 @@
   sub_21CF5027C();
   v15 = sub_21CF55674();
   sub_21CF553E4();
-  v16 = a4;
-  sub_21CF4FE78(v12, v14, v16, v15, v11);
+  titleCopy = title;
+  sub_21CF4FE78(v12, v14, titleCopy, v15, v11);
 
   (*(v8 + 8))(v11, v7);
 }

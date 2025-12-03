@@ -1,26 +1,26 @@
 @interface LACUIDTOBiometryRequiredScenePresentationHandler
-- (BOOL)canHandle:(id)a3;
+- (BOOL)canHandle:(id)handle;
 - (_TtC25LocalAuthenticationCoreUI48LACUIDTOBiometryRequiredScenePresentationHandler)init;
-- (void)handle:(id)a3 inContext:(id)a4;
+- (void)handle:(id)handle inContext:(id)context;
 @end
 
 @implementation LACUIDTOBiometryRequiredScenePresentationHandler
 
-- (BOOL)canHandle:(id)a3
+- (BOOL)canHandle:(id)handle
 {
-  v3 = a3;
-  v4 = [v3 userInterfaceRequest];
-  v5 = [v4 identifier];
+  handleCopy = handle;
+  userInterfaceRequest = [handleCopy userInterfaceRequest];
+  identifier = [userInterfaceRequest identifier];
 
-  return v5 == 5;
+  return identifier == 5;
 }
 
-- (void)handle:(id)a3 inContext:(id)a4
+- (void)handle:(id)handle inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized LACUIDTOBiometryRequiredScenePresentationHandler.handle(request:inContext:)(v7);
+  handleCopy = handle;
+  contextCopy = context;
+  selfCopy = self;
+  specialized LACUIDTOBiometryRequiredScenePresentationHandler.handle(request:inContext:)(contextCopy);
 }
 
 - (_TtC25LocalAuthenticationCoreUI48LACUIDTOBiometryRequiredScenePresentationHandler)init

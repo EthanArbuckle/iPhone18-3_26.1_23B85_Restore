@@ -1,17 +1,17 @@
 @interface EducationUISceneDelegate
 - (EducationUISceneDelegate)init;
-- (void)connectToInvokerEndpoint:(id)a3;
+- (void)connectToInvokerEndpoint:(id)endpoint;
 - (void)dealloc;
-- (void)remoteAlertScene:(id)a3 didTransitionToAttachedToWindowedAccessory:(BOOL)a4 windowedAccessoryCutoutFrameInScreen:(CGRect)a5;
-- (void)remoteAlertScene:(id)a3 handleButtonActions:(id)a4;
-- (void)remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)systemActionDelegate:(id)a3 requestsDismissalOfEducationController:(id)a4;
+- (void)remoteAlertScene:(id)scene didTransitionToAttachedToWindowedAccessory:(BOOL)accessory windowedAccessoryCutoutFrameInScreen:(CGRect)screen;
+- (void)remoteAlertScene:(id)scene handleButtonActions:(id)actions;
+- (void)remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:(id)invalidation;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)systemActionDelegate:(id)delegate requestsDismissalOfEducationController:(id)controller;
 @end
 
 @implementation EducationUISceneDelegate
@@ -38,7 +38,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "deallocate delegate %@", buf, 0xCu);
   }
 
@@ -47,9 +47,9 @@
   [(EducationUISceneDelegate *)&v4 dealloc];
 }
 
-- (void)connectToInvokerEndpoint:(id)a3
+- (void)connectToInvokerEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = sub_100001F04();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -57,7 +57,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "connecting to presenter", v8, 2u);
   }
 
-  v6 = xpc_connection_create_from_endpoint(v4);
+  v6 = xpc_connection_create_from_endpoint(endpointCopy);
   connectionToPresenter = self->_connectionToPresenter;
   self->_connectionToPresenter = v6;
 
@@ -65,59 +65,59 @@
   xpc_connection_resume(self->_connectionToPresenter);
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v11 = sub_100001F04();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v36 = "[EducationUISceneDelegate scene:willConnectToSession:options:]";
     v37 = 2112;
-    v38 = v8;
+    v38 = sceneCopy;
     v39 = 2112;
-    v40 = v9;
+    v40 = sessionCopy;
     v41 = 2112;
-    v42 = v10;
+    v42 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: %@ %@ %@", buf, 0x2Au);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v8;
-    v13 = [v12 configurationContext];
-    v14 = [v13 xpcEndpoint];
+    v12 = sceneCopy;
+    configurationContext = [v12 configurationContext];
+    xpcEndpoint = [configurationContext xpcEndpoint];
 
-    if (v14)
+    if (xpcEndpoint)
     {
-      [(EducationUISceneDelegate *)self connectToInvokerEndpoint:v14];
+      [(EducationUISceneDelegate *)self connectToInvokerEndpoint:xpcEndpoint];
     }
 
-    v15 = [v12 configurationContext];
-    v16 = [v15 userInfo];
-    v17 = [v16 objectForKey:kCFBundleIdentifierKey];
+    configurationContext2 = [v12 configurationContext];
+    userInfo = [configurationContext2 userInfo];
+    v17 = [userInfo objectForKey:kCFBundleIdentifierKey];
 
     if (v17)
     {
-      v34 = v14;
-      v18 = [v12 configurationContext];
-      v19 = [v18 userInfo];
-      v20 = [v19 objectForKey:@"feature"];
-      v21 = [v20 unsignedIntegerValue];
+      v34 = xpcEndpoint;
+      configurationContext3 = [v12 configurationContext];
+      userInfo2 = [configurationContext3 userInfo];
+      v20 = [userInfo2 objectForKey:@"feature"];
+      unsignedIntegerValue = [v20 unsignedIntegerValue];
 
       v22 = sub_100001F04();
       v23 = v22;
-      if ((v21 - 4) > 0xFFFFFFFFFFFFFFFCLL)
+      if ((unsignedIntegerValue - 4) > 0xFFFFFFFFFFFFFFFCLL)
       {
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
           v36 = v17;
           v37 = 2048;
-          v38 = v21;
+          v38 = unsignedIntegerValue;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "init education VC for %@ feature %lld", buf, 0x16u);
         }
 
@@ -133,12 +133,12 @@
         v23 = [APApplication applicationWithBundleIdentifier:v17];
         v28 = APLockEducationViewController_ptr;
         v29 = APHideEducationViewController_ptr;
-        if (v21 != 2)
+        if (unsignedIntegerValue != 2)
         {
           v29 = APEducationFlowViewController_ptr;
         }
 
-        if (v21 != 1)
+        if (unsignedIntegerValue != 1)
         {
           v28 = v29;
         }
@@ -155,15 +155,15 @@
         [(UIWindow *)self->_window setRootViewController:self->_presentingVC];
         [(UIWindow *)self->_window makeKeyAndVisible];
         [v12 setAllowsAlertStacking:1];
-        v14 = v34;
+        xpcEndpoint = v34;
       }
 
       else
       {
-        v14 = v34;
+        xpcEndpoint = v34;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          sub_100002050(v21, v23);
+          sub_100002050(unsignedIntegerValue, v23);
         }
       }
     }
@@ -179,23 +179,23 @@
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v3 = a3;
+  disconnectCopy = disconnect;
   v4 = sub_100001F04();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[EducationUISceneDelegate sceneDidDisconnect:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: %@", &v5, 0x16u);
   }
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = sub_100001F04();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -203,7 +203,7 @@
     v7 = 136315650;
     v8 = "[EducationUISceneDelegate sceneDidBecomeActive:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = activeCopy;
     v11 = 2112;
     v12 = educationVC;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@; presenting education VC %@", &v7, 0x20u);
@@ -212,98 +212,98 @@
   [(APEducationVCPresentingViewController *)self->_presentingVC presentEducationViewController:self->_educationVC];
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = sub_100001F04();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[EducationUISceneDelegate sceneWillResignActive:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = activeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: %@", &v5, 0x16u);
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v3 = a3;
+  foregroundCopy = foreground;
   v4 = sub_100001F04();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[EducationUISceneDelegate sceneWillEnterForeground:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = foregroundCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: %@", &v5, 0x16u);
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   v4 = sub_100001F04();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[EducationUISceneDelegate sceneDidEnterBackground:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = backgroundCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: %@", &v5, 0x16u);
   }
 }
 
-- (void)remoteAlertScene:(id)a3 handleButtonActions:(id)a4
+- (void)remoteAlertScene:(id)scene handleButtonActions:(id)actions
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = sub_100001F04();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[EducationUISceneDelegate remoteAlertScene:handleButtonActions:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = sceneCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", &v6, 0x16u);
   }
 }
 
-- (void)remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:(id)a3
+- (void)remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:(id)invalidation
 {
-  v3 = a3;
+  invalidationCopy = invalidation;
   v4 = sub_100001F04();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[EducationUISceneDelegate remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = invalidationCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: %@", &v5, 0x16u);
   }
 }
 
-- (void)remoteAlertScene:(id)a3 didTransitionToAttachedToWindowedAccessory:(BOOL)a4 windowedAccessoryCutoutFrameInScreen:(CGRect)a5
+- (void)remoteAlertScene:(id)scene didTransitionToAttachedToWindowedAccessory:(BOOL)accessory windowedAccessoryCutoutFrameInScreen:(CGRect)screen
 {
-  v5 = a3;
+  sceneCopy = scene;
   v6 = sub_100001F04();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[EducationUISceneDelegate remoteAlertScene:didTransitionToAttachedToWindowedAccessory:windowedAccessoryCutoutFrameInScreen:]";
     v9 = 2112;
-    v10 = v5;
+    v10 = sceneCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
   }
 }
 
-- (void)systemActionDelegate:(id)a3 requestsDismissalOfEducationController:(id)a4
+- (void)systemActionDelegate:(id)delegate requestsDismissalOfEducationController:(id)controller
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100001C0C;
   v4[3] = &unk_100008258;
   v4[4] = self;
-  [a4 dismissViewControllerAnimated:1 completion:v4];
+  [controller dismissViewControllerAnimated:1 completion:v4];
 }
 
 @end

@@ -47,49 +47,49 @@
 
 - (BOOL)isExecuting
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isExecuting = v2->_state.isExecuting;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isExecuting = selfCopy->_state.isExecuting;
+  objc_sync_exit(selfCopy);
 
   return isExecuting;
 }
 
 - (BOOL)isFinished
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isFinished = v2->_state.isFinished;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isFinished = selfCopy->_state.isFinished;
+  objc_sync_exit(selfCopy);
 
   return isFinished;
 }
 
 - (void)cancel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_state.isExecuting)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_state.isExecuting)
   {
-    [(WLKAsyncOperation *)v2 willChangeValueForKey:@"isCancelled"];
-    v2->_state.isCancelled = 1;
-    [(WLKAsyncOperation *)v2 didChangeValueForKey:@"isCancelled"];
-    [(WLKAsyncOperation *)v2 _finish];
+    [(WLKAsyncOperation *)selfCopy willChangeValueForKey:@"isCancelled"];
+    selfCopy->_state.isCancelled = 1;
+    [(WLKAsyncOperation *)selfCopy didChangeValueForKey:@"isCancelled"];
+    [(WLKAsyncOperation *)selfCopy _finish];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = WLKAsyncOperation;
   [(WLKAsyncOperation *)&v3 cancel];
 }
 
 - (BOOL)isCancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isCancelled = v2->_state.isCancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isCancelled = selfCopy->_state.isCancelled;
+  objc_sync_exit(selfCopy);
 
   return isCancelled;
 }
@@ -108,20 +108,20 @@
 
 - (void)_finish
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[251];
-    v3 = a1[250];
+    v2 = self[251];
+    v3 = self[250];
     if ((v2 & 1) == 0)
     {
-      [a1 willChangeValueForKey:@"isFinished"];
+      [self willChangeValueForKey:@"isFinished"];
     }
 
     if (v3)
     {
-      [a1 willChangeValueForKey:@"isExecuting"];
+      [self willChangeValueForKey:@"isExecuting"];
       OUTLINED_FUNCTION_0_0();
-      [a1 didChangeValueForKey:@"isExecuting"];
+      [self didChangeValueForKey:@"isExecuting"];
       if (v2)
       {
         return;
@@ -137,7 +137,7 @@
       }
     }
 
-    [a1 didChangeValueForKey:@"isFinished"];
+    [self didChangeValueForKey:@"isFinished"];
   }
 }
 

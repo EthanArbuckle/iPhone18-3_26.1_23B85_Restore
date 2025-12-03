@@ -1,18 +1,18 @@
 @interface NSUnknownRequestTypeResult
-- (NSUnknownRequestTypeResult)initWithSubresults:(id)a3;
+- (NSUnknownRequestTypeResult)initWithSubresults:(id)subresults;
 - (void)dealloc;
 @end
 
 @implementation NSUnknownRequestTypeResult
 
-- (NSUnknownRequestTypeResult)initWithSubresults:(id)a3
+- (NSUnknownRequestTypeResult)initWithSubresults:(id)subresults
 {
   v6.receiver = self;
   v6.super_class = NSUnknownRequestTypeResult;
   v4 = [(NSUnknownRequestTypeResult *)&v6 init];
   if (v4)
   {
-    v4->_subresults = a3;
+    v4->_subresults = subresults;
   }
 
   return v4;

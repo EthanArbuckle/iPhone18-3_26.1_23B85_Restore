@@ -1,34 +1,34 @@
 @interface CSPasscodeViewController
 - (BOOL)_shouldEmulateInteractivePresentation;
 - (BOOL)_shouldUseLightStylePasscodeView;
-- (BOOL)handleEvent:(id)a3;
-- (CSPasscodeViewController)initWithOptions:(unint64_t)a3;
+- (BOOL)handleEvent:(id)event;
+- (CSPasscodeViewController)initWithOptions:(unint64_t)options;
 - (CSPasscodeViewControllerDelegate)delegate;
 - (id)_effectiveAverageWallpaperColor;
 - (id)_newDisplayLayoutElement;
 - (void)_emulateInteractivePresentation;
-- (void)_passcodeLockViewPasscodeEntered:(id)a3 authenticationType:(unint64_t)a4;
+- (void)_passcodeLockViewPasscodeEntered:(id)entered authenticationType:(unint64_t)type;
 - (void)_updateProudLockViewControllerConfiguration;
 - (void)_updateReduceTransparencyBackingColor;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)beginInteractivePresentationTransitionForInitialTransition:(BOOL)a3;
-- (void)commitingToEndTransitionToPresented:(BOOL)a3 forInitialTransition:(BOOL)a4;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)beginInteractivePresentationTransitionForInitialTransition:(BOOL)transition;
+- (void)commitingToEndTransitionToPresented:(BOOL)presented forInitialTransition:(BOOL)transition;
 - (void)dealloc;
-- (void)endInteractiveTransitionToPresented:(BOOL)a3 forInitialTransition:(BOOL)a4;
+- (void)endInteractiveTransitionToPresented:(BOOL)presented forInitialTransition:(BOOL)transition;
 - (void)loadView;
-- (void)passcodeLockViewCancelButtonPressed:(id)a3;
-- (void)passcodeLockViewEmergencyCallButtonPressed:(id)a3;
-- (void)passcodeLockViewPasscodeDidChange:(id)a3;
-- (void)performCustomTransitionToVisible:(BOOL)a3 withAnimationSettings:(id)a4 completion:(id)a5;
-- (void)setWallpaperAverageColorOverride:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)updateInteractiveTransitionWithPercent:(double)a3 forInitialTransition:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)passcodeLockViewCancelButtonPressed:(id)pressed;
+- (void)passcodeLockViewEmergencyCallButtonPressed:(id)pressed;
+- (void)passcodeLockViewPasscodeDidChange:(id)change;
+- (void)performCustomTransitionToVisible:(BOOL)visible withAnimationSettings:(id)settings completion:(id)completion;
+- (void)setWallpaperAverageColorOverride:(id)override;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)updateInteractiveTransitionWithPercent:(double)percent forInitialTransition:(BOOL)transition;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CSPasscodeViewController
@@ -60,8 +60,8 @@
   IsReduceTransparencyEnabled = UIAccessibilityIsReduceTransparencyEnabled();
   if (IsReduceTransparencyEnabled)
   {
-    v4 = [(CSPasscodeViewController *)self _effectiveAverageWallpaperColor];
-    [v4 sb_brightness];
+    _effectiveAverageWallpaperColor = [(CSPasscodeViewController *)self _effectiveAverageWallpaperColor];
+    [_effectiveAverageWallpaperColor sb_brightness];
     v5 = BSFloatGreaterThanFloat();
 
     LOBYTE(IsReduceTransparencyEnabled) = v5;
@@ -72,8 +72,8 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(CSPasscodeViewController *)self view];
-  [(CSCoverSheetViewControllerBase *)self registerView:v3 forRole:3];
+  view = [(CSPasscodeViewController *)self view];
+  [(CSCoverSheetViewControllerBase *)self registerView:view forRole:3];
 
   v4.receiver = self;
   v4.super_class = CSPasscodeViewController;
@@ -85,8 +85,8 @@
   v27.receiver = self;
   v27.super_class = CSPasscodeViewController;
   [(CSCoverSheetViewControllerBase *)&v27 loadView];
-  v3 = [(CSPasscodeViewController *)self view];
-  [v3 bounds];
+  view = [(CSPasscodeViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -105,12 +105,12 @@
   self->_passcodeLockView = v12;
 
   v14 = self->_passcodeLockView;
-  v15 = [MEMORY[0x277D75348] clearColor];
-  [(SBUIPasscodeLockView_Internal *)v14 setCustomBackgroundColor:v15];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SBUIPasscodeLockView_Internal *)v14 setCustomBackgroundColor:clearColor];
 
   v16 = self->_passcodeLockView;
-  v17 = [(CSWallpaperColorProvider *)self->_wallpaperColorProvider newLegibilitySettingsProvider];
-  [(SBUIPasscodeLockView_Internal *)v16 setBackgroundLegibilitySettingsProvider:v17];
+  newLegibilitySettingsProvider = [(CSWallpaperColorProvider *)self->_wallpaperColorProvider newLegibilitySettingsProvider];
+  [(SBUIPasscodeLockView_Internal *)v16 setBackgroundLegibilitySettingsProvider:newLegibilitySettingsProvider];
 
   v18 = self->_passcodeLockView;
   if (self->_options)
@@ -120,31 +120,31 @@
 
   else
   {
-    v19 = [(CSCoverSheetContextProviding *)self->_coverSheetContext telephonyStatusProvider];
-    -[SBUIPasscodeLockView_Internal setShowsEmergencyCallButton:](v18, "setShowsEmergencyCallButton:", [v19 isEmergencyCallSupported]);
+    telephonyStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext telephonyStatusProvider];
+    -[SBUIPasscodeLockView_Internal setShowsEmergencyCallButton:](v18, "setShowsEmergencyCallButton:", [telephonyStatusProvider isEmergencyCallSupported]);
   }
 
   v20 = self->_passcodeLockView;
-  v21 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationStatusProvider];
-  -[SBUIPasscodeLockView_Internal _noteDeviceHasBeenUnlockedOnceSinceBoot:](v20, "_noteDeviceHasBeenUnlockedOnceSinceBoot:", [v21 hasAuthenticatedAtLeastOnceSinceBoot]);
+  authenticationStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationStatusProvider];
+  -[SBUIPasscodeLockView_Internal _noteDeviceHasBeenUnlockedOnceSinceBoot:](v20, "_noteDeviceHasBeenUnlockedOnceSinceBoot:", [authenticationStatusProvider hasAuthenticatedAtLeastOnceSinceBoot]);
 
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setScreenOn:1];
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setDelegate:self];
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setShowsProudLock:0];
   [(CSPasscodeViewController *)self _updateProudLockViewControllerConfiguration];
   v22 = self->_passcodeLockView;
-  [v3 bounds];
+  [view bounds];
   [(SBUIPasscodeLockView_Internal *)v22 setFrame:?];
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setAutoresizingMask:18];
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setUsesBiometricPresentation:[(CSPasscodeViewController *)self useBiometricPresentation]];
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setBiometricPresentationAncillaryButtonsVisible:[(CSPasscodeViewController *)self biometricButtonsInitiallyVisible]];
   v23 = self->_passcodeLockView;
-  v24 = [(CSPasscodeViewController *)self unlockDestination];
-  [(SBUIPasscodeLockView_Internal *)v23 setUnlockDestination:v24];
+  unlockDestination = [(CSPasscodeViewController *)self unlockDestination];
+  [(SBUIPasscodeLockView_Internal *)v23 setUnlockDestination:unlockDestination];
 
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setConfirmedNotInPocket:[(CSPasscodeViewController *)self confirmedNotInPocket]];
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setCanSuggestSwipeToRetry:1];
-  [v3 addSubview:self->_passcodeLockView];
+  [view addSubview:self->_passcodeLockView];
   if ((self->_options & 2) == 0)
   {
     v25 = objc_alloc_init(CSPasscodeBackgroundView);
@@ -155,8 +155,8 @@
     [(CSPasscodeBackgroundView *)self->_backgroundView setAutoresizingMask:18];
     [(CSPasscodeBackgroundView *)self->_backgroundView setFrame:v5, v7, v9, v11];
     [(CSPasscodeViewController *)self _updateReduceTransparencyBackingColor];
-    [v3 addSubview:self->_backgroundView];
-    [v3 sendSubviewToBack:self->_backgroundView];
+    [view addSubview:self->_backgroundView];
+    [view sendSubviewToBack:self->_backgroundView];
   }
 }
 
@@ -164,8 +164,8 @@
 {
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
-    v13 = [(CSPasscodeViewController *)self _effectiveAverageWallpaperColor];
-    [v13 sb_brightness];
+    _effectiveAverageWallpaperColor = [(CSPasscodeViewController *)self _effectiveAverageWallpaperColor];
+    [_effectiveAverageWallpaperColor sb_brightness];
     v3 = BSFloatLessThanFloat();
     v4 = BSFloatGreaterThanFloat();
     v5 = 0.666666667;
@@ -203,10 +203,10 @@
 
     v11 = v10;
 
-    v12 = [(SBUIPasscodeLockView_Internal *)v11 _numberPad];
+    _numberPad = [(SBUIPasscodeLockView_Internal *)v11 _numberPad];
 
-    [v12 setReduceTransparencyButtonColor:v6];
-    [(CSPasscodeBackgroundView *)self->_backgroundView setReduceTransparencyBackingColor:v13];
+    [_numberPad setReduceTransparencyButtonColor:v6];
+    [(CSPasscodeBackgroundView *)self->_backgroundView setReduceTransparencyBackingColor:_effectiveAverageWallpaperColor];
   }
 }
 
@@ -228,9 +228,9 @@
 
 - (void)dealloc
 {
-  v3 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationManager];
-  v4 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-  [v3 setBiometricAutoUnlockingDisabled:0 forReason:v4];
+  authenticationManager = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationManager];
+  appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+  [authenticationManager setBiometricAutoUnlockingDisabled:0 forReason:appearanceIdentifier];
 
   [(SBFAuthenticationAssertion *)self->_sustainAuthenticationAssertion invalidate];
   [(CSPasscodeViewController *)self _setBiometricAuthenticationEnabledForTransientAppearanceTransition:0];
@@ -239,7 +239,7 @@
   [(CSCoverSheetViewControllerBase *)&v5 dealloc];
 }
 
-- (CSPasscodeViewController)initWithOptions:(unint64_t)a3
+- (CSPasscodeViewController)initWithOptions:(unint64_t)options
 {
   v10.receiver = self;
   v10.super_class = CSPasscodeViewController;
@@ -247,11 +247,11 @@
   v5 = v4;
   if (v4)
   {
-    v4->_options = a3;
+    v4->_options = options;
     v6 = +[CSLockScreenDomain rootSettings];
-    v7 = [v6 pearlSettings];
+    pearlSettings = [v6 pearlSettings];
     pearlSettings = v5->_pearlSettings;
-    v5->_pearlSettings = v7;
+    v5->_pearlSettings = pearlSettings;
 
     [(PTSettings *)v5->_pearlSettings addKeyObserver:v5];
     [(CSPasscodeViewController *)v5 _updateProudLockViewControllerConfiguration];
@@ -260,20 +260,20 @@
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = CSPasscodeViewController;
   [(CSCoverSheetViewControllerBase *)&v9 viewWillAppear:?];
   passcodeLockView = self->_passcodeLockView;
-  v6 = [(CSPasscodeViewController *)self proudLockContainerViewControllerToUpdate];
-  [(SBUIPasscodeLockView_Internal *)passcodeLockView setOverrideProudLockContainerViewController:v6];
+  proudLockContainerViewControllerToUpdate = [(CSPasscodeViewController *)self proudLockContainerViewControllerToUpdate];
+  [(SBUIPasscodeLockView_Internal *)passcodeLockView setOverrideProudLockContainerViewController:proudLockContainerViewControllerToUpdate];
 
   [(CSPasscodeViewController *)self _setBiometricAuthenticationEnabledForTransientAppearanceTransition:1];
-  v7 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationManager];
-  v8 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-  [v7 setBiometricAutoUnlockingDisabled:1 forReason:v8];
+  authenticationManager = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationManager];
+  appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+  [authenticationManager setBiometricAutoUnlockingDisabled:1 forReason:appearanceIdentifier];
 
   if ([(CSFaceOcclusionMonitor *)self->_faceOcclusionMonitor faceOcclusionsSinceScreenOn]& 1) != 0 && (objc_opt_respondsToSelector())
   {
@@ -285,64 +285,64 @@
     [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView noteFaceHasBeenOccluded];
   }
 
-  if (v3)
+  if (appearCopy)
   {
     [*MEMORY[0x277D76620] _performBlockAfterCATransactionCommits:&__block_literal_global_4];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  if (a3)
+  appearCopy = appear;
+  if (appear)
   {
     [*MEMORY[0x277D76620] finishedSubTest:@"DashBoardPasscodePresented" forTest:@"DashBoardPasscode"];
   }
 
   v6.receiver = self;
   v6.super_class = CSPasscodeViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:v3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:appearCopy];
   v5 = [CSAction actionWithType:3];
   [(CSCoverSheetViewControllerBase *)self sendAction:v5];
 
   [(CSPasscodeViewController *)self _setBiometricAuthenticationEnabledForTransientAppearanceTransition:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = CSPasscodeViewController;
   [(CSCoverSheetViewControllerBase *)&v8 viewWillDisappear:?];
   [(CSCoverSheetViewControllerBase *)self rebuildAppearance];
-  if (v3)
+  if (disappearCopy)
   {
     [*MEMORY[0x277D76620] _performBlockAfterCATransactionCommits:&__block_literal_global_29];
   }
 
-  v5 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationManager];
-  [v5 setPasscodeVisible:0 animated:v3];
+  authenticationManager = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationManager];
+  [authenticationManager setPasscodeVisible:0 animated:disappearCopy];
 
   [(CSPasscodeViewController *)self _setBiometricAuthenticationEnabledForTransientAppearanceTransition:0];
-  v6 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationManager];
-  v7 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-  [v6 setBiometricAutoUnlockingDisabled:0 forReason:v7];
+  authenticationManager2 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationManager];
+  appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+  [authenticationManager2 setBiometricAutoUnlockingDisabled:0 forReason:appearanceIdentifier];
 
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView resignFirstResponder];
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setOverrideProudLockContainerViewController:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  if (a3)
+  disappearCopy = disappear;
+  if (disappear)
   {
     [*MEMORY[0x277D76620] finishedSubTest:@"DashBoardPasscodeDismissed" forTest:@"DashBoardPasscode"];
   }
 
   v6.receiver = self;
   v6.super_class = CSPasscodeViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:v3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:disappearCopy];
   [(SBFAuthenticationAssertion *)self->_sustainAuthenticationAssertion invalidate];
   sustainAuthenticationAssertion = self->_sustainAuthenticationAssertion;
   self->_sustainAuthenticationAssertion = 0;
@@ -350,49 +350,49 @@
   [(CSPasscodeViewController *)self _setBiometricAuthenticationEnabledForTransientAppearanceTransition:0];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v46.receiver = self;
   v46.super_class = CSPasscodeViewController;
-  [(CSCoverSheetViewControllerBase *)&v46 aggregateAppearance:v4];
+  [(CSCoverSheetViewControllerBase *)&v46 aggregateAppearance:appearanceCopy];
   v5 = objc_opt_new();
   v6 = [v5 hidden:{-[CSPasscodeViewController showProudLock](self, "showProudLock") ^ 1}];
-  v7 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-  v8 = [v6 identifier:v7];
+  appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+  v8 = [v6 identifier:appearanceIdentifier];
   v9 = [v8 priority:60];
   v10 = [v9 prefersInlineCoaching:1];
   v11 = [v10 supportsMaterialBackground:0];
 
-  [v4 addComponent:v11];
+  [appearanceCopy addComponent:v11];
   v12 = SBUICurrentPasscodeStyleForUser();
   v13 = 0x27838A000uLL;
   if (v12 == 3)
   {
-    v14 = [*MEMORY[0x277D76620] activeInterfaceOrientation];
-    if (v14 == 4 || v14 == 2)
+    activeInterfaceOrientation = [*MEMORY[0x277D76620] activeInterfaceOrientation];
+    if (activeInterfaceOrientation == 4 || activeInterfaceOrientation == 2)
     {
       v15 = +[CSComponent poseidon];
       v16 = [v15 priority:60];
       v17 = [v16 hidden:1];
-      [v4 addComponent:v17];
+      [appearanceCopy addComponent:v17];
     }
   }
 
-  v18 = [(CSPasscodeViewController *)self delegate];
-  v19 = [v18 passcodeViewControllerShouldHideStatusBar:self];
+  delegate = [(CSPasscodeViewController *)self delegate];
+  v19 = [delegate passcodeViewControllerShouldHideStatusBar:self];
 
   v20 = objc_opt_new();
   v21 = [v20 priority:60];
   v22 = [v21 hidden:v19];
   v23 = [v22 fakeStatusBar:0];
-  [v4 addComponent:v23];
+  [appearanceCopy addComponent:v23];
 
   if ([(CSPasscodeViewController *)self _shouldUseLightStylePasscodeView])
   {
     v24 = objc_alloc(MEMORY[0x277D760A8]);
-    v25 = [MEMORY[0x277D75348] blackColor];
-    v26 = [v24 initWithStyle:2 contentColor:v25];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v26 = [v24 initWithStyle:2 contentColor:blackColor];
   }
 
   else
@@ -400,7 +400,7 @@
     v26 = CSGetLegibilitySettingsForBackgroundStyle(7);
   }
 
-  [v4 setLegibilitySettings:v26];
+  [appearanceCopy setLegibilitySettings:v26];
 
   if (SBFEffectiveHomeButtonType() == 2)
   {
@@ -408,11 +408,11 @@
     {
       v27 = objc_opt_new();
       v28 = [v27 priority:60];
-      v29 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-      v30 = [v28 identifier:v29];
+      appearanceIdentifier2 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+      v30 = [v28 identifier:appearanceIdentifier2];
       v31 = [v30 hidden:1];
       v32 = [v31 suppressTeachableMomentsAnimation:1];
-      [v4 addComponent:v32];
+      [appearanceCopy addComponent:v32];
 
       v13 = 0x27838A000;
 LABEL_19:
@@ -423,10 +423,10 @@ LABEL_19:
     if ([(SBUIPasscodeLockView_Internal *)self->_passcodeLockView passcodeLockViewState]!= 1)
     {
 LABEL_20:
-      v40 = [*(v13 + 480) controlCenterGrabber];
-      v41 = [v40 priority:60];
+      controlCenterGrabber = [*(v13 + 480) controlCenterGrabber];
+      v41 = [controlCenterGrabber priority:60];
       v42 = [v41 hidden:1];
-      [v4 addComponent:v42];
+      [appearanceCopy addComponent:v42];
 
       goto LABEL_21;
     }
@@ -443,50 +443,50 @@ LABEL_20:
         goto LABEL_17;
       }
 
-      v33 = [MEMORY[0x277D75418] currentDevice];
-      v34 = [v33 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v34 == 1)
+      if (userInterfaceIdiom == 1)
       {
 LABEL_17:
         v35 = objc_opt_new();
         v36 = [v35 priority:60];
-        v37 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-        v38 = [v36 identifier:v37];
+        appearanceIdentifier3 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+        v38 = [v36 identifier:appearanceIdentifier3];
         v39 = [v38 suppressTeachableMomentsAnimation:1];
-        [v4 addComponent:v39];
+        [appearanceCopy addComponent:v39];
       }
     }
 
 LABEL_18:
     v27 = +[CSComponent whitePoint];
     v28 = [v27 priority:60];
-    v29 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-    v30 = [v28 identifier:v29];
+    appearanceIdentifier2 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+    v30 = [v28 identifier:appearanceIdentifier2];
     v31 = [v30 hidden:1];
-    [v4 addComponent:v31];
+    [appearanceCopy addComponent:v31];
     goto LABEL_19;
   }
 
 LABEL_21:
   if ([(SBUIPasscodeLockView_Internal *)self->_passcodeLockView passcodeLockViewState]== 1)
   {
-    v43 = [*(v13 + 480) backgroundContent];
-    v44 = [v43 priority:60];
+    backgroundContent = [*(v13 + 480) backgroundContent];
+    v44 = [backgroundContent priority:60];
     v45 = [v44 flag:1];
-    [v4 addComponent:v45];
+    [appearanceCopy addComponent:v45];
   }
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
   v6.receiver = self;
   v6.super_class = CSPasscodeViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v6 aggregateBehavior:v4];
-  [v4 setIdleTimerDuration:{8, v6.receiver, v6.super_class}];
-  [v4 setIdleTimerMode:2];
-  [v4 setIdleWarnMode:1];
+  behaviorCopy = behavior;
+  [(CSCoverSheetViewControllerBase *)&v6 aggregateBehavior:behaviorCopy];
+  [behaviorCopy setIdleTimerDuration:{8, v6.receiver, v6.super_class}];
+  [behaviorCopy setIdleTimerMode:2];
+  [behaviorCopy setIdleWarnMode:1];
   if ([(SBUIPasscodeLockView_Internal *)self->_passcodeLockView passcodeLockViewState]== 1)
   {
     v5 = 2130112;
@@ -497,15 +497,15 @@ LABEL_21:
     v5 = 2134208;
   }
 
-  [v4 setRestrictedCapabilities:v5];
+  [behaviorCopy setRestrictedCapabilities:v5];
 }
 
-- (void)performCustomTransitionToVisible:(BOOL)a3 withAnimationSettings:(id)a4 completion:(id)a5
+- (void)performCustomTransitionToVisible:(BOOL)visible withAnimationSettings:(id)settings completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  visibleCopy = visible;
+  settingsCopy = settings;
+  completionCopy = completion;
+  if (visibleCopy)
   {
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -513,13 +513,13 @@ LABEL_21:
     v26[3] = &unk_27838B770;
     v26[4] = self;
     [MEMORY[0x277D75D18] performWithoutAnimation:v26];
-    [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView becomeActiveWithAnimationSettings:v8];
+    [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView becomeActiveWithAnimationSettings:settingsCopy];
   }
 
-  [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setKeypadVisible:v6 animated:v8 != 0];
-  v10 = [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView layer];
-  v11 = [v10 presentationModifiers];
-  v12 = [v11 count];
+  [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setKeypadVisible:visibleCopy animated:settingsCopy != 0];
+  layer = [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView layer];
+  presentationModifiers = [layer presentationModifiers];
+  v12 = [presentationModifiers count];
 
   if (v12)
   {
@@ -528,15 +528,15 @@ LABEL_21:
     v24[1] = 3221225472;
     v24[2] = __94__CSPasscodeViewController_performCustomTransitionToVisible_withAnimationSettings_completion___block_invoke_2;
     v24[3] = &unk_27838BC70;
-    v25 = v6;
+    v25 = visibleCopy;
     v24[4] = self;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __94__CSPasscodeViewController_performCustomTransitionToVisible_withAnimationSettings_completion___block_invoke_3;
     v22[3] = &unk_27838BDF0;
     v14 = &v23;
-    v23 = v9;
-    v15 = v9;
+    v23 = completionCopy;
+    v15 = completionCopy;
     [v13 _animateUsingSpringWithTension:0 friction:v24 interactive:v22 animations:340.0 completion:30.0];
   }
 
@@ -547,16 +547,16 @@ LABEL_21:
     v20[1] = 3221225472;
     v20[2] = __94__CSPasscodeViewController_performCustomTransitionToVisible_withAnimationSettings_completion___block_invoke_4;
     v20[3] = &unk_27838BC70;
-    v21 = v6;
+    v21 = visibleCopy;
     v20[4] = self;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __94__CSPasscodeViewController_performCustomTransitionToVisible_withAnimationSettings_completion___block_invoke_5;
     v18[3] = &unk_27838BAC0;
     v14 = &v19;
-    v19 = v9;
-    v17 = v9;
-    [v16 animateWithSettings:v8 options:2 actions:v20 completion:v18];
+    v19 = completionCopy;
+    v17 = completionCopy;
+    [v16 animateWithSettings:settingsCopy options:2 actions:v20 completion:v18];
   }
 }
 
@@ -644,9 +644,9 @@ uint64_t __94__CSPasscodeViewController_performCustomTransitionToVisible_withAni
   return result;
 }
 
-- (void)beginInteractivePresentationTransitionForInitialTransition:(BOOL)a3
+- (void)beginInteractivePresentationTransitionForInitialTransition:(BOOL)transition
 {
-  if (a3)
+  if (transition)
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
@@ -672,18 +672,18 @@ uint64_t __87__CSPasscodeViewController_beginInteractivePresentationTransitionFo
   return [v2 setWeighting:0.0];
 }
 
-- (void)updateInteractiveTransitionWithPercent:(double)a3 forInitialTransition:(BOOL)a4
+- (void)updateInteractiveTransitionWithPercent:(double)percent forInitialTransition:(BOOL)transition
 {
-  if (a4)
+  if (transition)
   {
-    v6 = fmin(fmax(a3 * a3, 0.0), 1.0);
+    v6 = fmin(fmax(percent * percent, 0.0), 1.0);
     [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setAlpha:v6];
     [(CSPasscodeBackgroundView *)self->_backgroundView setWeighting:v6];
   }
 
   else
   {
-    [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView updateTransitionWithProgress:a3];
+    [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView updateTransitionWithProgress:percent];
   }
 
   [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView frame];
@@ -694,20 +694,20 @@ uint64_t __87__CSPasscodeViewController_beginInteractivePresentationTransitionFo
   MidY = CGRectGetMidY(v16);
   passcodeLockView = self->_passcodeLockView;
 
-  [(SBUIPasscodeLockView_Internal *)passcodeLockView setFrame:v8, (1.0 - a3) * MidY, v10, v12];
+  [(SBUIPasscodeLockView_Internal *)passcodeLockView setFrame:v8, (1.0 - percent) * MidY, v10, v12];
 }
 
-- (void)commitingToEndTransitionToPresented:(BOOL)a3 forInitialTransition:(BOOL)a4
+- (void)commitingToEndTransitionToPresented:(BOOL)presented forInitialTransition:(BOOL)transition
 {
-  if (!a3)
+  if (!presented)
   {
     self->_isBeingDismissedAfterInterstitialTransitionCancelled = 1;
   }
 
-  if (!a4)
+  if (!transition)
   {
-    v5 = !a3;
-    [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView willEndTransitionToState:!a3];
+    v5 = !presented;
+    [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView willEndTransitionToState:!presented];
     if (!v5)
     {
       passcodeLockView = self->_passcodeLockView;
@@ -717,19 +717,19 @@ uint64_t __87__CSPasscodeViewController_beginInteractivePresentationTransitionFo
   }
 }
 
-- (void)endInteractiveTransitionToPresented:(BOOL)a3 forInitialTransition:(BOOL)a4
+- (void)endInteractiveTransitionToPresented:(BOOL)presented forInitialTransition:(BOOL)transition
 {
-  v4 = a4;
-  v5 = a3;
+  transitionCopy = transition;
+  presentedCopy = presented;
   [(CSPasscodeBackgroundView *)self->_backgroundView setWeighting:1.0];
   if (([(SBFAuthenticationAssertion *)self->_sustainAuthenticationAssertion isValid]& 1) == 0)
   {
     [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setAllowsAutomaticBiometricPresentationTransition:1];
   }
 
-  if (v4)
+  if (transitionCopy)
   {
-    if (v5)
+    if (presentedCopy)
     {
       [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView _resumeBiometricMatchingAdvisory:1];
     }
@@ -738,7 +738,7 @@ uint64_t __87__CSPasscodeViewController_beginInteractivePresentationTransitionFo
   else
   {
     passcodeLockView = self->_passcodeLockView;
-    if (v5)
+    if (presentedCopy)
     {
       [(SBUIPasscodeLockView_Internal *)passcodeLockView _resumeBiometricMatchingAdvisory:1];
     }
@@ -770,46 +770,46 @@ uint64_t __87__CSPasscodeViewController_beginInteractivePresentationTransitionFo
     v11[2] = __85__CSPasscodeViewController_endInteractiveTransitionToPresented_forInitialTransition___block_invoke_2;
     v11[3] = &unk_27838C888;
     v11[4] = self;
-    v11[5] = !v5;
+    v11[5] = !presentedCopy;
     [MEMORY[0x277D75D18] performWithoutAnimation:v11];
   }
 
   self->_isBeingDismissedAfterInterstitialTransitionCancelled = 0;
 }
 
-- (void)setWallpaperAverageColorOverride:(id)a3
+- (void)setWallpaperAverageColorOverride:(id)override
 {
-  if (self->_wallpaperAverageColorOverride != a3)
+  if (self->_wallpaperAverageColorOverride != override)
   {
-    self->_wallpaperAverageColorOverride = a3;
+    self->_wallpaperAverageColorOverride = override;
     [(CSPasscodeViewController *)self _updateReduceTransparencyBackingColor];
   }
 }
 
-- (void)passcodeLockViewPasscodeDidChange:(id)a3
+- (void)passcodeLockViewPasscodeDidChange:(id)change
 {
   coverSheetContext = self->_coverSheetContext;
-  v5 = a3;
-  v9 = [(CSCoverSheetContextProviding *)coverSheetContext passcodeFieldChangeObserver];
-  v6 = [v5 passcode];
+  changeCopy = change;
+  passcodeFieldChangeObserver = [(CSCoverSheetContextProviding *)coverSheetContext passcodeFieldChangeObserver];
+  passcode = [changeCopy passcode];
 
-  v7 = [v6 length];
+  v7 = [passcode length];
   if (v7)
   {
     [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setPasscodeLockViewState:1 animated:1];
-    [v9 notePasscodeEntryBegan];
+    [passcodeFieldChangeObserver notePasscodeEntryBegan];
   }
 
   else
   {
-    [v9 notePasscodeEntryCancelled];
+    [passcodeFieldChangeObserver notePasscodeEntryCancelled];
   }
 
   v8 = [CSAction actionWithType:4];
   [(CSCoverSheetViewControllerBase *)self sendAction:v8];
 }
 
-- (void)passcodeLockViewCancelButtonPressed:(id)a3
+- (void)passcodeLockViewCancelButtonPressed:(id)pressed
 {
   v4 = [CSAction actionWithType:4];
   [(CSCoverSheetViewControllerBase *)self sendAction:v4];
@@ -820,7 +820,7 @@ uint64_t __87__CSPasscodeViewController_beginInteractivePresentationTransitionFo
   [(CSCoverSheetViewControllerBase *)self dismiss];
 }
 
-- (void)passcodeLockViewEmergencyCallButtonPressed:(id)a3
+- (void)passcodeLockViewEmergencyCallButtonPressed:(id)pressed
 {
   v4 = [CSAction actionWithType:4];
   [(CSCoverSheetViewControllerBase *)self sendAction:v4];
@@ -829,43 +829,43 @@ uint64_t __87__CSPasscodeViewController_beginInteractivePresentationTransitionFo
   [(CSCoverSheetViewControllerBase *)self sendAction:v5];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = CSPasscodeViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v12, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v12, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    v5 = 0;
-    if (v6 <= 23)
+    type = [eventCopy type];
+    isConsumable = 0;
+    if (type <= 23)
     {
-      if (v6 == 5)
+      if (type == 5)
       {
         [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView resignFirstResponder];
       }
 
       else
       {
-        if (v6 != 13)
+        if (type != 13)
         {
           goto LABEL_18;
         }
 
-        v7 = [v4 value];
-        v8 = [v7 BOOLValue];
+        value = [eventCopy value];
+        bOOLValue = [value BOOLValue];
 
-        if ((v8 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
-          v9 = [(CSPasscodeViewController *)self proudLockContainerViewControllerToUpdate];
-          [v9 setAuthenticated:0];
+          proudLockContainerViewControllerToUpdate = [(CSPasscodeViewController *)self proudLockContainerViewControllerToUpdate];
+          [proudLockContainerViewControllerToUpdate setAuthenticated:0];
         }
       }
     }
 
     else
     {
-      switch(v6)
+      switch(type)
       {
         case 24:
           [(SBUIPasscodeLockView_Internal *)self->_passcodeLockView setScreenOn:1];
@@ -889,51 +889,51 @@ uint64_t __87__CSPasscodeViewController_beginInteractivePresentationTransitionFo
       }
     }
 
-    v5 = 0;
+    isConsumable = 0;
     goto LABEL_18;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_18:
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)_passcodeLockViewPasscodeEntered:(id)a3 authenticationType:(unint64_t)a4
+- (void)_passcodeLockViewPasscodeEntered:(id)entered authenticationType:(unint64_t)type
 {
-  v6 = a3;
+  enteredCopy = entered;
   if (!self->_attemptingUnlock)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained passcodeViewControllerDidBeginPasscodeEntry:self];
 
     self->_attemptingUnlock = 1;
-    if (a4 == 1)
+    if (type == 1)
     {
-      v8 = [v6 passcode];
+      passcode = [enteredCopy passcode];
     }
 
     else
     {
-      v8 = 0;
+      passcode = 0;
     }
 
-    v9 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationAssertionProvider];
-    v10 = [v9 createGracePeriodAssertionWithReason:@"DashBoardAttemptUnlock"];
+    authenticationAssertionProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationAssertionProvider];
+    v10 = [authenticationAssertionProvider createGracePeriodAssertionWithReason:@"DashBoardAttemptUnlock"];
     [v10 activate];
     isBeingDismissedAfterInterstitialTransitionCancelled = self->_isBeingDismissedAfterInterstitialTransitionCancelled;
-    v12 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationManager];
+    authenticationManager = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationManager];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __80__CSPasscodeViewController__passcodeLockViewPasscodeEntered_authenticationType___block_invoke;
     v15[3] = &unk_27838C8B0;
     v15[4] = self;
-    v16 = v9;
-    v17 = v6;
+    v16 = authenticationAssertionProvider;
+    v17 = enteredCopy;
     v18 = v10;
     v13 = v10;
-    v14 = v9;
-    [v12 attemptUnlockWithPasscode:v8 finishUIUnlock:!isBeingDismissedAfterInterstitialTransitionCancelled completion:v15];
+    v14 = authenticationAssertionProvider;
+    [authenticationManager attemptUnlockWithPasscode:passcode finishUIUnlock:!isBeingDismissedAfterInterstitialTransitionCancelled completion:v15];
   }
 }
 
@@ -981,27 +981,27 @@ uint64_t __80__CSPasscodeViewController__passcodeLockViewPasscodeEntered_authent
 
   else
   {
-    v4 = [(CSWallpaperColorProvider *)self->_wallpaperColorProvider averageColorForCurrentWallpaper];
-    v5 = v4;
-    if (v4)
+    averageColorForCurrentWallpaper = [(CSWallpaperColorProvider *)self->_wallpaperColorProvider averageColorForCurrentWallpaper];
+    v5 = averageColorForCurrentWallpaper;
+    if (averageColorForCurrentWallpaper)
     {
-      v6 = v4;
+      whiteColor = averageColorForCurrentWallpaper;
     }
 
     else
     {
-      v6 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
     }
 
-    v3 = v6;
+    v3 = whiteColor;
   }
 
   return v3;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_pearlSettings == a3)
+  if (self->_pearlSettings == settings)
   {
     [(CSPasscodeViewController *)self _updateProudLockViewControllerConfiguration];
   }

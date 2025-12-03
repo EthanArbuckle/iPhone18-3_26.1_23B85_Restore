@@ -23,8 +23,8 @@
   }
 
   v7 = v6 * 0.5;
-  v8 = [(PKRoundedCollectionViewCell *)self layer];
-  [v8 setCornerRadius:v7];
+  layer = [(PKRoundedCollectionViewCell *)self layer];
+  [layer setCornerRadius:v7];
 }
 
 @end

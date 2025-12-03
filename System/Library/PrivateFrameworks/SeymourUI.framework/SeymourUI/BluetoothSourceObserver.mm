@@ -1,6 +1,6 @@
 @interface BluetoothSourceObserver
 - (_TtC9SeymourUI23BluetoothSourceObserver)init;
-- (void)handleUpdatedSourceList:(id)a3;
+- (void)handleUpdatedSourceList:(id)list;
 @end
 
 @implementation BluetoothSourceObserver
@@ -20,13 +20,13 @@
   return [(BluetoothSourceObserver *)&v6 init];
 }
 
-- (void)handleUpdatedSourceList:(id)a3
+- (void)handleUpdatedSourceList:(id)list
 {
   sub_20B51C88C(0, &qword_27C772E78);
   sub_20C0E0E4C();
   sub_20C13CF74();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC9SeymourUI23BluetoothSourceObserver_state);
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v4 + 40));
   sub_20C0E0EB4((v4 + 16), &v6);
   os_unfair_lock_unlock((v4 + 40));

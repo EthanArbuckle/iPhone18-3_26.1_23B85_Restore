@@ -1,12 +1,12 @@
 @interface SFMCachingContactDataProvider
-- (void)contactStoreChangedWithNotification:(id)a3;
+- (void)contactStoreChangedWithNotification:(id)notification;
 @end
 
 @implementation SFMCachingContactDataProvider
 
-- (void)contactStoreChangedWithNotification:(id)a3
+- (void)contactStoreChangedWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
   sub_266D9987C(v4);
 }

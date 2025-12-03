@@ -1,6 +1,6 @@
 @interface VNCCCharBoxContext
-- (BOOL)makeAllocationsForWidth:(unint64_t)a3;
-- (void)copyFlagValue:(unint64_t)a3 toTarget:(unint64_t)a4 atIndex:(unsigned int)a5;
+- (BOOL)makeAllocationsForWidth:(unint64_t)width;
+- (void)copyFlagValue:(unint64_t)value toTarget:(unint64_t)target atIndex:(unsigned int)index;
 - (void)dealloc;
 - (void)releaseAllocations;
 @end
@@ -25,14 +25,14 @@
   *&self->loopBigBox = 0;
 }
 
-- (BOOL)makeAllocationsForWidth:(unint64_t)a3
+- (BOOL)makeAllocationsForWidth:(unint64_t)width
 {
   [(VNCCCharBoxContext *)self releaseAllocations];
-  v5 = malloc_type_calloc(a3, 4uLL, 0x100004052888210uLL);
+  v5 = malloc_type_calloc(width, 4uLL, 0x100004052888210uLL);
   self->floatVectorSumProd = v5;
-  if (v5 && (v6 = malloc_type_calloc(a3, 1uLL, 0x100004077774924uLL), (self->pulseVectorHeightCharBox = v6) != 0) && (v7 = malloc_type_calloc(a3, 1uLL, 0x100004077774924uLL), (self->pulseVectorHeightCharBoxAdaptive = v7) != 0) && (v8 = malloc_type_calloc(a3, 2uLL, 0x1000040BDFB0063uLL), (self->charboxROIFullVectorRowStart = v8) != 0) && (v9 = malloc_type_calloc(a3, 2uLL, 0x1000040BDFB0063uLL), (self->charboxROIFullVectorHeight2 = v9) != 0) && (v10 = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL), (self->charBoxFlags = v10) != 0))
+  if (v5 && (v6 = malloc_type_calloc(width, 1uLL, 0x100004077774924uLL), (self->pulseVectorHeightCharBox = v6) != 0) && (v7 = malloc_type_calloc(width, 1uLL, 0x100004077774924uLL), (self->pulseVectorHeightCharBoxAdaptive = v7) != 0) && (v8 = malloc_type_calloc(width, 2uLL, 0x1000040BDFB0063uLL), (self->charboxROIFullVectorRowStart = v8) != 0) && (v9 = malloc_type_calloc(width, 2uLL, 0x1000040BDFB0063uLL), (self->charboxROIFullVectorHeight2 = v9) != 0) && (v10 = malloc_type_calloc(width, 8uLL, 0x100004000313F17uLL), (self->charBoxFlags = v10) != 0))
   {
-    self->allocationSize = a3;
+    self->allocationSize = width;
     *&self->loopBigBox = 0;
     return 1;
   }
@@ -52,16 +52,16 @@
   [(VNCCCharBoxContext *)&v3 dealloc];
 }
 
-- (void)copyFlagValue:(unint64_t)a3 toTarget:(unint64_t)a4 atIndex:(unsigned int)a5
+- (void)copyFlagValue:(unint64_t)value toTarget:(unint64_t)target atIndex:(unsigned int)index
 {
-  if ((self->charBoxFlags[a5] & a3) != 0)
+  if ((self->charBoxFlags[index] & value) != 0)
   {
-    [(VNCCCharBoxContext *)self setFlag:a4 atIndex:*&a5];
+    [(VNCCCharBoxContext *)self setFlag:target atIndex:*&index];
   }
 
   else
   {
-    [(VNCCCharBoxContext *)self clearFlag:a4 atIndex:*&a5];
+    [(VNCCCharBoxContext *)self clearFlag:target atIndex:*&index];
   }
 }
 

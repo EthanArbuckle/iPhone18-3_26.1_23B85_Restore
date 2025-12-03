@@ -1,15 +1,15 @@
 @interface PLAmbientSuggestionComputePayloadAdapter
-- (id)payloadForChangedKeys:(id)a3;
+- (id)payloadForChangedKeys:(id)keys;
 @end
 
 @implementation PLAmbientSuggestionComputePayloadAdapter
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(PLSuggestionComputePayloadAdapter *)self isValidForJournalPersistence])
   {
-    v5 = [(PLManagedObjectJournalEntryPayload *)[PLAmbientSuggestionComputeJournalEntryPayload alloc] initWithInsertAdapter:self changedKeys:v4];
+    v5 = [(PLManagedObjectJournalEntryPayload *)[PLAmbientSuggestionComputeJournalEntryPayload alloc] initWithInsertAdapter:self changedKeys:keysCopy];
   }
 
   else

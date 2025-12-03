@@ -1,27 +1,27 @@
 @interface BreathingDisturbanceAnalyzerDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation BreathingDisturbanceAnalyzerDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v73 = a3;
+  parametersCopy = parameters;
   v3 = sub_100002E38();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v73;
+    *&buf[4] = parametersCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "attachmentsForParameters: %{public}@", buf, 0xCu);
   }
 
-  v70 = [v73 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v70 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if (([v70 isEqualToString:@"com.apple.taptoradard"] & 1) != 0 || objc_msgSend(v70, "isEqualToString:", @"com.apple.TapToRadar"))
   {
-    v4 = [v73 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
-    v5 = [v4 BOOLValue];
+    v4 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+    bOOLValue = [v4 BOOLValue];
 
-    if ((v5 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v6 = &__NSArray0__struct;
       goto LABEL_65;
@@ -85,14 +85,14 @@
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 getDateIntervalOfLastAnalysis];
-    if (v17)
+    getDateIntervalOfLastAnalysis = [v15 getDateIntervalOfLastAnalysis];
+    if (getDateIntervalOfLastAnalysis)
     {
       v18 = sub_100002E38();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        *&buf[4] = v17;
+        *&buf[4] = getDateIntervalOfLastAnalysis;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Date interval of last analysis: %{public}@", buf, 0xCu);
       }
 
@@ -116,7 +116,7 @@
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v23 = [v19 count];
-          v24 = [v17 description];
+          v24 = [getDateIntervalOfLastAnalysis description];
           *buf = 134349314;
           *&buf[4] = v23;
           *&buf[12] = 2114;
@@ -125,13 +125,13 @@
         }
 
         v25 = [BABreathingDisturbanceAnalyzerFileHandler filePath:v12 withPrefixFilename:@"input-last-analysis"];
-        [BABreathingDisturbanceAnalyzerFileHandler writeSamplesToJsonFile:v19 withDateInterval:v17 withOutputFilePath:v25];
+        [BABreathingDisturbanceAnalyzerFileHandler writeSamplesToJsonFile:v19 withDateInterval:getDateIntervalOfLastAnalysis withOutputFilePath:v25];
 
         v26 = sub_100002E38();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           v27 = [v19 count];
-          v28 = [v17 description];
+          v28 = [getDateIntervalOfLastAnalysis description];
           *buf = 134349314;
           *&buf[4] = v27;
           *&buf[12] = 2114;
@@ -139,7 +139,7 @@
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Running analysis with %{public}lu samples and analysis interval of %{public}@", buf, 0x16u);
         }
 
-        [BABreathingDisturbanceAnalyzer analyzeSamples:v19 dateInterval:v17];
+        [BABreathingDisturbanceAnalyzer analyzeSamples:v19 dateInterval:getDateIntervalOfLastAnalysis];
         v29 = sub_100002E38();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
@@ -177,10 +177,10 @@
 
   else
   {
-    v17 = sub_100002E38();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+    getDateIntervalOfLastAnalysis = sub_100002E38();
+    if (os_log_type_enabled(getDateIntervalOfLastAnalysis, OS_LOG_TYPE_FAULT))
     {
-      sub_10000C1DC(v17);
+      sub_10000C1DC(getDateIntervalOfLastAnalysis);
     }
   }
 
@@ -202,9 +202,9 @@
   v38 = sub_100002E38();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = [v37 predicateFormat];
+    predicateFormat = [v37 predicateFormat];
     *buf = 138543362;
-    *&buf[4] = v39;
+    *&buf[4] = predicateFormat;
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "datePredicate.predicateFormat: %{public}@", buf, 0xCu);
   }
 
@@ -259,9 +259,9 @@
           v53 = sub_100002E38();
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
           {
-            v54 = [v52 path];
+            path = [v52 path];
             *buf = 138543362;
-            *&buf[4] = v54;
+            *&buf[4] = path;
             _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "Returning: %{public}@", buf, 0xCu);
           }
 
@@ -288,9 +288,9 @@
       v57 = sub_100002E38();
       if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
       {
-        v58 = [v67 path];
+        path2 = [v67 path];
         *buf = 138543362;
-        *&buf[4] = v58;
+        *&buf[4] = path2;
         _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Returning an attachment from loggingPath %{public}@", buf, 0xCu);
       }
 

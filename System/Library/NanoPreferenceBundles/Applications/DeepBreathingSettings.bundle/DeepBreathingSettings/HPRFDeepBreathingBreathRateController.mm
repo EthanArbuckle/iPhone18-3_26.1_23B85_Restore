@@ -6,7 +6,7 @@
 - (id)localizedPaneTitle;
 - (id)specifiers;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -107,8 +107,8 @@
     v16 = [v14 specifierForID:v15];
 
     [v19 setProperty:v16 forKey:PSRadioGroupCheckedSpecifierKey];
-    v17 = [(HPRFDeepBreathingBreathRateController *)self localizedPaneTitle];
-    [(HPRFDeepBreathingBreathRateController *)self setTitle:v17];
+    localizedPaneTitle = [(HPRFDeepBreathingBreathRateController *)self localizedPaneTitle];
+    [(HPRFDeepBreathingBreathRateController *)self setTitle:localizedPaneTitle];
 
     v3 = *&self->BPSNotificationAppController_opaque[v20];
   }
@@ -116,18 +116,18 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(HPRFDeepBreathingBreathRateController *)self indexForIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(HPRFDeepBreathingBreathRateController *)self indexForIndexPath:pathCopy];
   v8 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v7];
   v9 = 4;
   while (1)
   {
     v10 = [NSString stringWithFormat:@"%@%ld", @"ID_BPM_", v9];
-    v11 = [v8 identifier];
-    v12 = [v10 isEqualToString:v11];
+    identifier = [v8 identifier];
+    v12 = [v10 isEqualToString:identifier];
 
     if (v12)
     {
@@ -153,12 +153,12 @@
 LABEL_6:
   [(HPRFDeepBreathingBreathRateController *)self reloadSpecifiers];
   WeakRetained = objc_loadWeakRetained(&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v19 = [(HPRFDeepBreathingBreathRateController *)self specifier];
-  [WeakRetained reloadSpecifier:v19];
+  specifier = [(HPRFDeepBreathingBreathRateController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 
   v21.receiver = self;
   v21.super_class = HPRFDeepBreathingBreathRateController;
-  [(HPRFDeepBreathingBreathRateController *)&v21 tableView:v20 didSelectRowAtIndexPath:v6];
+  [(HPRFDeepBreathingBreathRateController *)&v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (id)bundle
@@ -170,10 +170,10 @@ LABEL_6:
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFDeepBreathingBreathRateController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFDeepBreathingBreathRateController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

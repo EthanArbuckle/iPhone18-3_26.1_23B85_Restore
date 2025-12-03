@@ -6,7 +6,7 @@
 - (id)localizedPaneTitle;
 - (id)specifiers;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -162,8 +162,8 @@
     v20 = [*&self->BPSNotificationAppController_opaque[v24] specifierForID:v19];
 
     [v23 setProperty:v20 forKey:PSRadioGroupCheckedSpecifierKey];
-    v21 = [(HPRFDeepBreathingHapticLevelController *)self localizedPaneTitle];
-    [(HPRFDeepBreathingHapticLevelController *)self setTitle:v21];
+    localizedPaneTitle = [(HPRFDeepBreathingHapticLevelController *)self localizedPaneTitle];
+    [(HPRFDeepBreathingHapticLevelController *)self setTitle:localizedPaneTitle];
 
     v3 = *&self->BPSNotificationAppController_opaque[v24];
   }
@@ -171,11 +171,11 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HPRFDeepBreathingHapticLevelController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(HPRFDeepBreathingHapticLevelController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   v29 = 0u;
   v30 = 0u;
@@ -189,7 +189,7 @@
   if (v11)
   {
     v12 = v11;
-    v27 = v6;
+    v27 = viewCopy;
     v13 = *v30;
     while (2)
     {
@@ -201,8 +201,8 @@
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        v16 = [v9 identifier];
-        v17 = [v15 isEqualToString:v16];
+        identifier = [v9 identifier];
+        v17 = [v15 isEqualToString:identifier];
 
         if (v17)
         {
@@ -210,13 +210,13 @@
           if ([v18 isEqualToString:@"NONE_ID"])
           {
             v19 = 1;
-            v6 = v27;
+            viewCopy = v27;
             v20 = &FIUIDeepBreathingReminderFrequencyOptions_ptr;
           }
 
           else
           {
-            v6 = v27;
+            viewCopy = v27;
             v20 = &FIUIDeepBreathingReminderFrequencyOptions_ptr;
             if ([v18 isEqualToString:@"MINIMAL_ID"])
             {
@@ -254,19 +254,19 @@
       break;
     }
 
-    v6 = v27;
+    viewCopy = v27;
   }
 
 LABEL_16:
 
   [(HPRFDeepBreathingHapticLevelController *)self reloadSpecifiers];
   WeakRetained = objc_loadWeakRetained(&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v26 = [(HPRFDeepBreathingHapticLevelController *)self specifier];
-  [WeakRetained reloadSpecifier:v26];
+  specifier = [(HPRFDeepBreathingHapticLevelController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 
   v28.receiver = self;
   v28.super_class = HPRFDeepBreathingHapticLevelController;
-  [(HPRFDeepBreathingHapticLevelController *)&v28 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(HPRFDeepBreathingHapticLevelController *)&v28 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (id)bundle
@@ -278,10 +278,10 @@ LABEL_16:
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFDeepBreathingHapticLevelController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFDeepBreathingHapticLevelController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

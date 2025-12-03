@@ -3,19 +3,19 @@
 - (CBMetricsDaemon)init;
 - (id)description;
 - (void)_reportAggressiveScanMetricEvents;
-- (void)_reportAuthTagType:(unsigned __int8)a3 authTagStatus:(unsigned __int8)a4 integrityTagStatus:(unsigned __int8)a5 resolutionWindow:(char)a6;
+- (void)_reportAuthTagType:(unsigned __int8)type authTagStatus:(unsigned __int8)status integrityTagStatus:(unsigned __int8)tagStatus resolutionWindow:(char)window;
 - (void)_reportEvents;
 - (void)_scheduleReport;
 - (void)_setupAggressiveScanMetricExportTimer;
 - (void)_setupMetricExportTimer;
 - (void)_startIfNeeded;
 - (void)_whbMetricExportTimerFired;
-- (void)reportAggressiveScan:(id)a3 action:(id)a4;
-- (void)reportAuthTagType:(unsigned __int8)a3 authTagStatus:(unsigned __int8)a4 integrityTagStatus:(unsigned __int8)a5 resolutionWindow:(char)a6;
-- (void)reportCBDiscovery:(id)a3 daemonCnx:(id)a4 action:(id)a5;
-- (void)reportRSSIMetric:(id)a3;
-- (void)reportWhbMetric:(id)a3;
-- (void)reportxpcCBAdvertiserUpdate:(id)a3;
+- (void)reportAggressiveScan:(id)scan action:(id)action;
+- (void)reportAuthTagType:(unsigned __int8)type authTagStatus:(unsigned __int8)status integrityTagStatus:(unsigned __int8)tagStatus resolutionWindow:(char)window;
+- (void)reportCBDiscovery:(id)discovery daemonCnx:(id)cnx action:(id)action;
+- (void)reportRSSIMetric:(id)metric;
+- (void)reportWhbMetric:(id)metric;
+- (void)reportxpcCBAdvertiserUpdate:(id)update;
 @end
 
 @implementation CBMetricsDaemon
@@ -63,7 +63,7 @@
     v6[3] = &unk_100AE0B60;
     v3 = v4;
     v7 = v3;
-    v8 = self;
+    selfCopy = self;
     dispatch_source_set_event_handler(v3, v6);
     CUDispatchTimerSet();
     dispatch_activate(v3);
@@ -143,11 +143,11 @@
 
           v8 = *(*(&v29 + 1) + 8 * i);
           v35[0] = @"actn";
-          v9 = [v8 action];
-          v10 = v9;
-          if (v9)
+          action = [v8 action];
+          v10 = action;
+          if (action)
           {
-            v11 = v9;
+            v11 = action;
           }
 
           else
@@ -157,11 +157,11 @@
 
           v36[0] = v11;
           v35[1] = @"apID";
-          v12 = [v8 appID];
-          v13 = v12;
-          if (v12)
+          appID = [v8 appID];
+          v13 = appID;
+          if (appID)
           {
-            v14 = v12;
+            v14 = appID;
           }
 
           else
@@ -200,8 +200,8 @@
     v33[0] = @"dscE";
     v33[1] = @"drpE";
     v34[0] = v27;
-    v21 = [NSNumber numberWithUnsignedLongLong:discoveryEventsDroppedTotal - discoveryEventsDroppedReported];
-    v34[1] = v21;
+    discoveryEventsDroppedReported = [NSNumber numberWithUnsignedLongLong:discoveryEventsDroppedTotal - discoveryEventsDroppedReported];
+    v34[1] = discoveryEventsDroppedReported;
     v22 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
 
     if (dword_100B50C70 <= 20 && (dword_100B50C70 != -1 || _LogCategory_Initialize()))
@@ -229,7 +229,7 @@
   }
 }
 
-- (void)reportAuthTagType:(unsigned __int8)a3 authTagStatus:(unsigned __int8)a4 integrityTagStatus:(unsigned __int8)a5 resolutionWindow:(char)a6
+- (void)reportAuthTagType:(unsigned __int8)type authTagStatus:(unsigned __int8)status integrityTagStatus:(unsigned __int8)tagStatus resolutionWindow:(char)window
 {
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -237,18 +237,18 @@
   v7[2] = sub_100113F50;
   v7[3] = &unk_100ADF920;
   v7[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  typeCopy = type;
+  statusCopy = status;
+  tagStatusCopy = tagStatus;
+  windowCopy = window;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportAuthTagType:(unsigned __int8)a3 authTagStatus:(unsigned __int8)a4 integrityTagStatus:(unsigned __int8)a5 resolutionWindow:(char)a6
+- (void)_reportAuthTagType:(unsigned __int8)type authTagStatus:(unsigned __int8)status integrityTagStatus:(unsigned __int8)tagStatus resolutionWindow:(char)window
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  windowCopy = window;
+  tagStatusCopy = tagStatus;
+  statusCopy = status;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   Current = CFAbsoluteTimeGetCurrent();
   v20 = -1.0;
@@ -294,10 +294,10 @@ LABEL_11:
   v15[0] = v10;
   v15[1] = v19;
   v15[2] = v18;
-  if (v7 == 1)
+  if (tagStatusCopy == 1)
   {
     WORD1(v16) = 1;
-    switch(v6)
+    switch(windowCopy)
     {
       case -1:
         WORD1(v17) = 1;
@@ -311,12 +311,12 @@ LABEL_11:
     }
   }
 
-  else if (v8 == 5)
+  else if (statusCopy == 5)
   {
     HIWORD(v16) = 1;
   }
 
-  else if (v8 == 1)
+  else if (statusCopy == 1)
   {
     WORD2(v16) = 1;
   }
@@ -326,20 +326,20 @@ LABEL_11:
   (*(*v14 + 32))(v14, v15);
 }
 
-- (void)reportCBDiscovery:(id)a3 daemonCnx:(id)a4 action:(id)a5
+- (void)reportCBDiscovery:(id)discovery daemonCnx:(id)cnx action:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  discoveryCopy = discovery;
+  cnxCopy = cnx;
+  actionCopy = action;
   v11 = objc_alloc_init(CBMetricsDiscoveryEvent);
-  [(CBMetricsDiscoveryEvent *)v11 setAction:v10];
-  v12 = [v9 appID];
-  [(CBMetricsDiscoveryEvent *)v11 setAppID:v12];
+  [(CBMetricsDiscoveryEvent *)v11 setAction:actionCopy];
+  appID = [cnxCopy appID];
+  [(CBMetricsDiscoveryEvent *)v11 setAppID:appID];
 
-  -[CBMetricsDiscoveryEvent setClientID:](v11, "setClientID:", [v8 clientID]);
-  -[CBMetricsDiscoveryEvent setDiscoveryFlags:](v11, "setDiscoveryFlags:", [v8 discoveryFlags]);
-  -[CBMetricsDiscoveryEvent setPid:](v11, "setPid:", [v9 pid]);
-  -[CBMetricsDiscoveryEvent setScanRate:](v11, "setScanRate:", [v8 bleScanRate]);
+  -[CBMetricsDiscoveryEvent setClientID:](v11, "setClientID:", [discoveryCopy clientID]);
+  -[CBMetricsDiscoveryEvent setDiscoveryFlags:](v11, "setDiscoveryFlags:", [discoveryCopy discoveryFlags]);
+  -[CBMetricsDiscoveryEvent setPid:](v11, "setPid:", [cnxCopy pid]);
+  -[CBMetricsDiscoveryEvent setScanRate:](v11, "setScanRate:", [discoveryCopy bleScanRate]);
   [(CBMetricsDiscoveryEvent *)v11 setTimestamp:CFAbsoluteTimeGetCurrent()];
   os_unfair_lock_lock(&self->_lock);
   ++self->_discoveryEventsTotal;
@@ -371,17 +371,17 @@ LABEL_11:
     os_unfair_lock_unlock(&self->_lock);
     if (dword_100B50C70 <= 20 && (dword_100B50C70 != -1 || _LogCategory_Initialize()))
     {
-      v19 = [v9 appID];
+      appID2 = [cnxCopy appID];
       v25 = v13;
       v26 = discoveryEventsDroppedTotal;
-      v23 = [v9 pid];
-      v24 = [v8 clientID];
-      v21 = v19;
-      v22 = v10;
+      v23 = [cnxCopy pid];
+      clientID = [discoveryCopy clientID];
+      v21 = appID2;
+      v22 = actionCopy;
       LogPrintF_safe();
     }
 
-    if ([v10 isEqual:{@"strt", v21, v22, v23, v24, v25, v26}])
+    if ([actionCopy isEqual:{@"strt", v21, v22, v23, clientID, v25, v26}])
     {
       dispatchQueue = self->_dispatchQueue;
       block[0] = _NSConcreteStackBlock;
@@ -399,7 +399,7 @@ LABEL_11:
     os_unfair_lock_unlock(&self->_lock);
     if (__ROR8__(0x8F5C28F5C28F5C29 * discoveryEventsDroppedTotal, 1) <= 0x51EB851EB851EB8uLL && dword_100B50C70 <= 30 && (dword_100B50C70 != -1 || _LogCategory_Initialize()))
     {
-      v15 = [(CBMetricsDiscoveryEvent *)v11 appID];
+      appID3 = [(CBMetricsDiscoveryEvent *)v11 appID];
       [(CBMetricsDiscoveryEvent *)v11 pid];
       [(CBMetricsDiscoveryEvent *)v11 clientID];
       LogPrintF_safe();
@@ -407,41 +407,41 @@ LABEL_11:
   }
 }
 
-- (void)reportAggressiveScan:(id)a3 action:(id)a4
+- (void)reportAggressiveScan:(id)scan action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 appID];
-  if (v8)
+  scanCopy = scan;
+  actionCopy = action;
+  appID = [scanCopy appID];
+  if (appID)
   {
-    v9 = [v6 appID];
+    appID2 = [scanCopy appID];
   }
 
   else
   {
-    v9 = @"unknown";
+    appID2 = @"unknown";
   }
 
-  v10 = [v6 description];
+  v10 = [scanCopy description];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = sub_1000421E4;
   v26 = sub_100042584;
   v27 = objc_alloc_init(CBMetricsAggressiveScanEvent);
-  v11 = [v7 isEqual:@"agsN"];
+  v11 = [actionCopy isEqual:@"agsN"];
   [v23[5] setScanScreenOnCount:v11];
-  v12 = [v7 isEqual:@"agsF"];
+  v12 = [actionCopy isEqual:@"agsF"];
   [v23[5] setScanScreenOffCount:v12];
-  v13 = [v6 bleScanRate];
-  [v23[5] setScanRateScreenOn:v13];
-  v14 = [v6 bleScanRateScreenOff];
-  [v23[5] setScanRateScreenOff:v14];
-  v15 = [v6 discoveryFlags];
-  [v23[5] setDiscoveryFlags:v15];
+  bleScanRate = [scanCopy bleScanRate];
+  [v23[5] setScanRateScreenOn:bleScanRate];
+  bleScanRateScreenOff = [scanCopy bleScanRateScreenOff];
+  [v23[5] setScanRateScreenOff:bleScanRateScreenOff];
+  discoveryFlags = [scanCopy discoveryFlags];
+  [v23[5] setDiscoveryFlags:discoveryFlags];
   [v23[5] setDiscoveryTypes:0];
   [v23[5] discoveryTypesPtr];
-  [v6 discoveryTypesInternalPtr];
+  [scanCopy discoveryTypesInternalPtr];
   CBDiscoveryTypesAddTypes();
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -449,11 +449,11 @@ LABEL_11:
   block[2] = sub_1001149E4;
   block[3] = &unk_100AE0B38;
   block[4] = self;
-  block[5] = v9;
+  block[5] = appID2;
   v20 = v10;
   v21 = &v22;
-  v19 = v7;
-  v17 = v7;
+  v19 = actionCopy;
+  v17 = actionCopy;
   dispatch_async(dispatchQueue, block);
 
   _Block_object_dispose(&v22, 8);
@@ -487,30 +487,30 @@ LABEL_11:
   self->_aggrScanMetricDict = 0;
 }
 
-- (void)reportxpcCBAdvertiserUpdate:(id)a3
+- (void)reportxpcCBAdvertiserUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100115394;
   block[3] = &unk_100ADF820;
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)reportRSSIMetric:(id)a3
+- (void)reportRSSIMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001154C0;
   v7[3] = &unk_100AE0B60;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = metricCopy;
+  selfCopy = self;
+  v6 = metricCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -529,7 +529,7 @@ LABEL_11:
     v6[3] = &unk_100AE0B60;
     v3 = v4;
     v7 = v3;
-    v8 = self;
+    selfCopy = self;
     dispatch_source_set_event_handler(v3, v6);
     CUDispatchTimerSet();
     dispatch_activate(self->_whbMetricExportTimer);
@@ -581,9 +581,9 @@ LABEL_11:
   }
 }
 
-- (void)reportWhbMetric:(id)a3
+- (void)reportWhbMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   if (dword_100B50C70 <= 20 && (dword_100B50C70 != -1 || _LogCategory_Initialize()))
   {
     v7 = CUPrintNSObjectOneLine();
@@ -595,8 +595,8 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_100115954;
   block[3] = &unk_100ADF820;
-  v9 = v4;
-  v6 = v4;
+  v9 = metricCopy;
+  v6 = metricCopy;
   dispatch_async(dispatchQueue, block);
 }
 

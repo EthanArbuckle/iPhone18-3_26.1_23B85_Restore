@@ -1,15 +1,15 @@
 @interface HUQuickControlCollectionViewCellContainerView
-+ (double)preferredChromeHeightForTitlePosition:(unint64_t)a3;
++ (double)preferredChromeHeightForTitlePosition:(unint64_t)position;
 + (id)_titleFont;
-- (HUQuickControlCollectionViewCellContainerView)initWithFrame:(CGRect)a3;
-- (HUQuickControlCollectionViewCellContainerView)initWithFrame:(CGRect)a3 titlePosition:(unint64_t)a4;
+- (HUQuickControlCollectionViewCellContainerView)initWithFrame:(CGRect)frame;
+- (HUQuickControlCollectionViewCellContainerView)initWithFrame:(CGRect)frame titlePosition:(unint64_t)position;
 - (NSString)title;
 - (UIEdgeInsets)preferredContentLayoutFrameInset;
 - (void)_configureConstraintSets;
-- (void)setContentView:(id)a3;
-- (void)setPreferredContentLayoutFrameInset:(UIEdgeInsets)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitlePosition:(unint64_t)a3;
+- (void)setContentView:(id)view;
+- (void)setPreferredContentLayoutFrameInset:(UIEdgeInsets)inset;
+- (void)setTitle:(id)title;
+- (void)setTitlePosition:(unint64_t)position;
 - (void)updateConstraints;
 @end
 
@@ -23,65 +23,65 @@
   return v3;
 }
 
-- (HUQuickControlCollectionViewCellContainerView)initWithFrame:(CGRect)a3 titlePosition:(unint64_t)a4
+- (HUQuickControlCollectionViewCellContainerView)initWithFrame:(CGRect)frame titlePosition:(unint64_t)position
 {
-  result = [(HUQuickControlCollectionViewCellContainerView *)self initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(HUQuickControlCollectionViewCellContainerView *)self initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
-    result->_titlePosition = a4;
+    result->_titlePosition = position;
   }
 
   return result;
 }
 
-- (HUQuickControlCollectionViewCellContainerView)initWithFrame:(CGRect)a3
+- (HUQuickControlCollectionViewCellContainerView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = HUQuickControlCollectionViewCellContainerView;
-  v3 = [(HUQuickControlCollectionViewCellContainerView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUQuickControlCollectionViewCellContainerView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v4;
 
-    v6 = [objc_opt_class() _titleFont];
-    v7 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
-    [v7 setFont:v6];
+    _titleFont = [objc_opt_class() _titleFont];
+    titleLabel = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
+    [titleLabel setFont:_titleFont];
 
-    v8 = [MEMORY[0x277D75348] systemGrayColor];
-    v9 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
-    [v9 setTextColor:v8];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    titleLabel2 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
+    [titleLabel2 setTextColor:systemGrayColor];
 
-    v10 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
-    [v10 setTextAlignment:1];
+    titleLabel3 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
-    v11 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
-    [v11 setAdjustsFontSizeToFitWidth:1];
+    titleLabel4 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
+    [titleLabel4 setAdjustsFontSizeToFitWidth:1];
 
-    v12 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
-    [v12 setMinimumScaleFactor:0.5];
+    titleLabel5 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
+    [titleLabel5 setMinimumScaleFactor:0.5];
 
-    v13 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
-    [v13 setAllowsDefaultTighteningForTruncation:1];
+    titleLabel6 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
+    [titleLabel6 setAllowsDefaultTighteningForTruncation:1];
 
-    v14 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
+    titleLabel7 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
     LODWORD(v15) = 1148846080;
-    [v14 setContentCompressionResistancePriority:1 forAxis:v15];
+    [titleLabel7 setContentCompressionResistancePriority:1 forAxis:v15];
 
-    v16 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
+    titleLabel8 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
     LODWORD(v17) = 1148846080;
-    [v16 setContentHuggingPriority:1 forAxis:v17];
+    [titleLabel8 setContentHuggingPriority:1 forAxis:v17];
 
-    v18 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
-    [(HUQuickControlCollectionViewCellContainerView *)v3 naui_addAutoLayoutSubview:v18];
+    titleLabel9 = [(HUQuickControlCollectionViewCellContainerView *)v3 titleLabel];
+    [(HUQuickControlCollectionViewCellContainerView *)v3 naui_addAutoLayoutSubview:titleLabel9];
 
     v19 = objc_alloc_init(MEMORY[0x277D756D0]);
     preferredContentFrameLayoutGuide = v3->_preferredContentFrameLayoutGuide;
     v3->_preferredContentFrameLayoutGuide = v19;
 
-    v21 = [(HUQuickControlCollectionViewCellContainerView *)v3 preferredContentFrameLayoutGuide];
-    [(HUQuickControlCollectionViewCellContainerView *)v3 addLayoutGuide:v21];
+    preferredContentFrameLayoutGuide = [(HUQuickControlCollectionViewCellContainerView *)v3 preferredContentFrameLayoutGuide];
+    [(HUQuickControlCollectionViewCellContainerView *)v3 addLayoutGuide:preferredContentFrameLayoutGuide];
 
     [(HUQuickControlCollectionViewCellContainerView *)v3 _configureConstraintSets];
   }
@@ -91,85 +91,85 @@
 
 - (NSString)title
 {
-  v2 = [(HUQuickControlCollectionViewCellContainerView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(HUQuickControlCollectionViewCellContainerView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(HUQuickControlCollectionViewCellContainerView *)self title];
-  v6 = [v5 length] != 0;
+  titleCopy = title;
+  title = [(HUQuickControlCollectionViewCellContainerView *)self title];
+  v6 = [title length] != 0;
 
-  v7 = [(HUQuickControlCollectionViewCellContainerView *)self titleLabel];
-  [v7 setText:v4];
+  titleLabel = [(HUQuickControlCollectionViewCellContainerView *)self titleLabel];
+  [titleLabel setText:titleCopy];
 
-  v8 = [v4 length];
+  v8 = [titleCopy length];
   if (((v6 ^ (v8 == 0)) & 1) == 0)
   {
-    v9 = [(HUQuickControlCollectionViewCellContainerView *)self constraintSet];
-    [v9 invalidate];
+    constraintSet = [(HUQuickControlCollectionViewCellContainerView *)self constraintSet];
+    [constraintSet invalidate];
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(HUQuickControlCollectionViewCellContainerView *)self naui_addAutoLayoutSubview:v9];
     [(HUQuickControlCollectionViewCellContainerView *)self bringSubviewToFront:v9];
-    v7 = [(HUQuickControlCollectionViewCellContainerView *)self constraintSet];
-    [v7 invalidate];
+    constraintSet = [(HUQuickControlCollectionViewCellContainerView *)self constraintSet];
+    [constraintSet invalidate];
 
-    v8 = [(HUQuickControlCollectionViewCellContainerView *)self preferredContentFrameConstraintSet];
-    [v8 invalidate];
+    preferredContentFrameConstraintSet = [(HUQuickControlCollectionViewCellContainerView *)self preferredContentFrameConstraintSet];
+    [preferredContentFrameConstraintSet invalidate];
 
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)setPreferredContentLayoutFrameInset:(UIEdgeInsets)a3
+- (void)setPreferredContentLayoutFrameInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_preferredContentLayoutFrameInset.top, v3), vceqq_f64(*&self->_preferredContentLayoutFrameInset.bottom, v4)))) & 1) == 0)
   {
-    self->_preferredContentLayoutFrameInset = a3;
-    v5 = [(HUQuickControlCollectionViewCellContainerView *)self preferredContentFrameConstraintSet];
-    [v5 updateConstraintConstants];
+    self->_preferredContentLayoutFrameInset = inset;
+    preferredContentFrameConstraintSet = [(HUQuickControlCollectionViewCellContainerView *)self preferredContentFrameConstraintSet];
+    [preferredContentFrameConstraintSet updateConstraintConstants];
   }
 }
 
-- (void)setTitlePosition:(unint64_t)a3
+- (void)setTitlePosition:(unint64_t)position
 {
-  v5 = a3 == 2;
-  v6 = [(HUQuickControlCollectionViewCellContainerView *)self titleLabel];
-  [v6 setHidden:v5];
+  v5 = position == 2;
+  titleLabel = [(HUQuickControlCollectionViewCellContainerView *)self titleLabel];
+  [titleLabel setHidden:v5];
 
-  if (self->_titlePosition != a3)
+  if (self->_titlePosition != position)
   {
-    self->_titlePosition = a3;
-    v7 = [(HUQuickControlCollectionViewCellContainerView *)self constraintSet];
-    [v7 invalidate];
+    self->_titlePosition = position;
+    constraintSet = [(HUQuickControlCollectionViewCellContainerView *)self constraintSet];
+    [constraintSet invalidate];
   }
 }
 
 - (void)updateConstraints
 {
-  v3 = [(HUQuickControlCollectionViewCellContainerView *)self constraintSet];
-  [v3 activateIfNeeded];
+  constraintSet = [(HUQuickControlCollectionViewCellContainerView *)self constraintSet];
+  [constraintSet activateIfNeeded];
 
-  v4 = [(HUQuickControlCollectionViewCellContainerView *)self preferredContentFrameConstraintSet];
-  [v4 activateIfNeeded];
+  preferredContentFrameConstraintSet = [(HUQuickControlCollectionViewCellContainerView *)self preferredContentFrameConstraintSet];
+  [preferredContentFrameConstraintSet activateIfNeeded];
 
   v5.receiver = self;
   v5.super_class = HUQuickControlCollectionViewCellContainerView;
@@ -461,22 +461,22 @@ id __73__HUQuickControlCollectionViewCellContainerView__configureConstraintSets_
   return v6;
 }
 
-+ (double)preferredChromeHeightForTitlePosition:(unint64_t)a3
++ (double)preferredChromeHeightForTitlePosition:(unint64_t)position
 {
-  if (a3 == 1)
+  if (position == 1)
   {
-    v4 = [a1 _titleFont];
-    [v4 descender];
+    _titleFont = [self _titleFont];
+    [_titleFont descender];
     v5 = fabs(v7);
     v6 = 19.0;
     goto LABEL_5;
   }
 
   v3 = 0.0;
-  if (!a3)
+  if (!position)
   {
-    v4 = [a1 _titleFont];
-    [v4 ascender];
+    _titleFont = [self _titleFont];
+    [_titleFont ascender];
     v6 = 12.0;
 LABEL_5:
     v3 = v6 + HURoundToScreenScale(v5);

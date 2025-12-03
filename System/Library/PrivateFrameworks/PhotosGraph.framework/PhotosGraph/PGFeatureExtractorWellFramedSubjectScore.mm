@@ -1,19 +1,19 @@
 @interface PGFeatureExtractorWellFramedSubjectScore
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorWellFramedSubjectScore
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = [a3 aestheticProperties];
-  [v5 wellFramedSubjectScore];
+  aestheticProperties = [entity aestheticProperties];
+  [aestheticProperties wellFramedSubjectScore];
   v7 = v6;
   v8 = MEMORY[0x277D22C40];
-  v9 = [(PGFeatureExtractorWellFramedSubjectScore *)self featureLength];
+  featureLength = [(PGFeatureExtractorWellFramedSubjectScore *)self featureLength];
   LODWORD(v10) = v7;
-  v11 = [v8 vectorRepeatingFloat:v9 count:v10];
+  v11 = [v8 vectorRepeatingFloat:featureLength count:v10];
 
   return v11;
 }

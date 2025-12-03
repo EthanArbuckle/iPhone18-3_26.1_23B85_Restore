@@ -1,38 +1,38 @@
 @interface PREditingLegibilityView
-- (CGRect)_compactGradientFrameInBounds:(CGRect)a3;
-- (CGRect)_expandedGradientFrameInBounds:(CGRect)a3;
-- (PREditingLegibilityView)initWithFrame:(CGRect)a3;
-- (int64_t)_requiredGradientMultiplierForBounds:(CGRect)a3;
+- (CGRect)_compactGradientFrameInBounds:(CGRect)bounds;
+- (CGRect)_expandedGradientFrameInBounds:(CGRect)bounds;
+- (PREditingLegibilityView)initWithFrame:(CGRect)frame;
+- (int64_t)_requiredGradientMultiplierForBounds:(CGRect)bounds;
 - (void)_updateGradientColors;
 - (void)_updateGradientDirection;
-- (void)_updateGradientHeightMultiplierIfNeededForBounds:(CGRect)a3;
+- (void)_updateGradientHeightMultiplierIfNeededForBounds:(CGRect)bounds;
 - (void)layoutSubviews;
-- (void)setDirection:(int64_t)a3;
-- (void)setGradientColor:(id)a3;
-- (void)setGradientHeightMultiplier:(int64_t)a3;
-- (void)setHeightFactor:(double)a3;
-- (void)setShouldOverscan:(BOOL)a3;
+- (void)setDirection:(int64_t)direction;
+- (void)setGradientColor:(id)color;
+- (void)setGradientHeightMultiplier:(int64_t)multiplier;
+- (void)setHeightFactor:(double)factor;
+- (void)setShouldOverscan:(BOOL)overscan;
 @end
 
 @implementation PREditingLegibilityView
 
-- (PREditingLegibilityView)initWithFrame:(CGRect)a3
+- (PREditingLegibilityView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PREditingLegibilityView;
-  v3 = [(PREditingLegibilityView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PREditingLegibilityView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E6979380] layer];
+    layer = [MEMORY[0x1E6979380] layer];
     gradientLayer = v3->_gradientLayer;
-    v3->_gradientLayer = v4;
+    v3->_gradientLayer = layer;
 
     [(CAGradientLayer *)v3->_gradientLayer setAllowsHitTesting:0];
-    v6 = [(PREditingLegibilityView *)v3 layer];
-    [v6 addSublayer:v3->_gradientLayer];
+    layer2 = [(PREditingLegibilityView *)v3 layer];
+    [layer2 addSublayer:v3->_gradientLayer];
 
-    v7 = [MEMORY[0x1E69DC888] blackColor];
-    [(PREditingLegibilityView *)v3 setGradientColor:v7];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(PREditingLegibilityView *)v3 setGradientColor:blackColor];
 
     v3->_shouldOverscan = 0;
     v3->_direction = 0;
@@ -66,66 +66,66 @@
   [(CAGradientLayer *)self->_gradientLayer setFrame:?];
 }
 
-- (void)setGradientColor:(id)a3
+- (void)setGradientColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_gradientColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_gradientColor, a3);
+    objc_storeStrong(&self->_gradientColor, color);
     [(PREditingLegibilityView *)self _updateGradientColors];
   }
 }
 
-- (void)setGradientHeightMultiplier:(int64_t)a3
+- (void)setGradientHeightMultiplier:(int64_t)multiplier
 {
-  if (self->_gradientHeightMultiplier != a3)
+  if (self->_gradientHeightMultiplier != multiplier)
   {
-    self->_gradientHeightMultiplier = a3;
+    self->_gradientHeightMultiplier = multiplier;
     [(PREditingLegibilityView *)self _updateGradientColors];
   }
 }
 
-- (void)setHeightFactor:(double)a3
+- (void)setHeightFactor:(double)factor
 {
-  if (self->_heightFactor != a3)
+  if (self->_heightFactor != factor)
   {
-    self->_heightFactor = a3;
+    self->_heightFactor = factor;
     [(PREditingLegibilityView *)self setNeedsLayout];
   }
 }
 
-- (void)setShouldOverscan:(BOOL)a3
+- (void)setShouldOverscan:(BOOL)overscan
 {
-  if (self->_shouldOverscan != a3)
+  if (self->_shouldOverscan != overscan)
   {
-    self->_shouldOverscan = a3;
+    self->_shouldOverscan = overscan;
     [(PREditingLegibilityView *)self setNeedsLayout];
   }
 }
 
-- (void)setDirection:(int64_t)a3
+- (void)setDirection:(int64_t)direction
 {
-  if (self->_direction != a3)
+  if (self->_direction != direction)
   {
-    self->_direction = a3;
+    self->_direction = direction;
     [(PREditingLegibilityView *)self setNeedsLayout];
 
     [(PREditingLegibilityView *)self _updateGradientDirection];
   }
 }
 
-- (CGRect)_compactGradientFrameInBounds:(CGRect)a3
+- (CGRect)_compactGradientFrameInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  boundsCopy = bounds;
   v8 = *(MEMORY[0x1E695F058] + 16);
   slice.origin = *MEMORY[0x1E695F058];
   slice.size = v8;
   v8.width = y;
-  v9 = CGRectGetHeight(a3) * self->_heightFactor;
+  v9 = CGRectGetHeight(bounds) * self->_heightFactor;
   if (self->_direction)
   {
     v10 = CGRectMinYEdge;
@@ -140,7 +140,7 @@
   v17.origin.y = y;
   v17.size.width = width;
   v17.size.height = height;
-  CGRectDivide(v17, &slice, &v15, v9, v10);
+  CGRectDivide(v17, &slice, &boundsCopy, v9, v10);
   v11 = slice.origin.x;
   v12 = slice.origin.y;
   v13 = slice.size.width;
@@ -152,13 +152,13 @@
   return result;
 }
 
-- (CGRect)_expandedGradientFrameInBounds:(CGRect)a3
+- (CGRect)_expandedGradientFrameInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = CGRectGetWidth(bounds);
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
@@ -181,13 +181,13 @@
   return result;
 }
 
-- (int64_t)_requiredGradientMultiplierForBounds:(CGRect)a3
+- (int64_t)_requiredGradientMultiplierForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = CGRectGetWidth(bounds);
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -198,14 +198,14 @@
   return vcvtpd_s64_f64(ceilf(*&v9) / v10);
 }
 
-- (void)_updateGradientHeightMultiplierIfNeededForBounds:(CGRect)a3
+- (void)_updateGradientHeightMultiplierIfNeededForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v31 = a3;
-  if (*MEMORY[0x1E695EFF8] != a3.origin.x || *(MEMORY[0x1E695EFF8] + 8) != a3.origin.y)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  boundsCopy = bounds;
+  if (*MEMORY[0x1E695EFF8] != bounds.origin.x || *(MEMORY[0x1E695EFF8] + 8) != bounds.origin.y)
   {
     [(PREditingLegibilityView *)a2 _updateGradientHeightMultiplierIfNeededForBounds:?];
   }
@@ -238,7 +238,7 @@
 
   else
   {
-    v19 = &v31;
+    v19 = &boundsCopy;
   }
 
   p_previouslyConsideredBounds = &self->_previouslyConsideredBounds;
@@ -282,16 +282,16 @@
     size = v19->size;
     p_previouslyConsideredBounds->origin = v19->origin;
     self->_previouslyConsideredBounds.size = size;
-    v26 = [(PREditingLegibilityView *)self _requiredGradientMultiplierForBounds:v29, y, width, height];
+    height = [(PREditingLegibilityView *)self _requiredGradientMultiplierForBounds:v29, y, width, height];
     v27 = [(PREditingLegibilityView *)self _requiredGradientMultiplierForBounds:v10, v12, v14, v16];
-    if (v26 <= v27)
+    if (height <= v27)
     {
       v28 = v27;
     }
 
     else
     {
-      v28 = v26;
+      v28 = height;
     }
 
     [(PREditingLegibilityView *)self setGradientHeightMultiplier:v28];
@@ -301,8 +301,8 @@
 - (void)_updateGradientColors
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(UIColor *)self->_gradientColor colorWithAlphaComponent:0.07, v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v4 = [(UIColor *)self->_gradientColor colorWithAlphaComponent:0.07, clearColor];
   v14[1] = v4;
   v5 = 0.1;
   v6 = [(UIColor *)self->_gradientColor colorWithAlphaComponent:0.1];

@@ -3,7 +3,7 @@
 - (BOOL)enableTabs;
 - (void)createChildren;
 - (void)setDefaultValues;
-- (void)setEnableTabs:(BOOL)a3;
+- (void)setEnableTabs:(BOOL)tabs;
 @end
 
 @implementation PXLemonadeSettings
@@ -30,8 +30,8 @@ void __36__PXLemonadeSettings_sharedInstance__block_invoke()
 
 - (void)createChildren
 {
-  v3 = [(PTSettings *)[PXLemonadeOneUpSettings alloc] initWithDefaultValues];
-  [(PXLemonadeSettings *)self setOneUpSettings:v3];
+  initWithDefaultValues = [(PTSettings *)[PXLemonadeOneUpSettings alloc] initWithDefaultValues];
+  [(PXLemonadeSettings *)self setOneUpSettings:initWithDefaultValues];
 }
 
 - (void)setDefaultValues
@@ -157,10 +157,10 @@ void __36__PXLemonadeSettings_sharedInstance__block_invoke()
   [(PXLemonadeSettings *)self setResetAllPhotosOnDismiss:1];
   [(PXLemonadeSettings *)self setMinimumCuratedLibraryVisibleFractionForExpansion:0.25];
   [(PXLemonadeSettings *)self setYearsAndMonthsMode:2];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     v5 = 13;
   }
@@ -170,7 +170,7 @@ void __36__PXLemonadeSettings_sharedInstance__block_invoke()
     v5 = 10;
   }
 
-  [(PXLemonadeSettings *)self setCollectionPreviewTransition:v4 != 0];
+  [(PXLemonadeSettings *)self setCollectionPreviewTransition:userInterfaceIdiom != 0];
   [(PXLemonadeSettings *)self setEnableKenBurnsInCollectionPreview:1];
   [(PXLemonadeSettings *)self setCollectionPreviewKenBurnsScaleDirection:2];
   [(PXLemonadeSettings *)self setCuratedLibraryExpansionGestureSpringStiffness:150.0];
@@ -229,8 +229,8 @@ void __36__PXLemonadeSettings_sharedInstance__block_invoke()
   [(PXLemonadeSettings *)self setEnableShelves:1];
   [(PXLemonadeSettings *)self setEnableShelvesLoader:1];
   [(PXLemonadeSettings *)self setEnableShelvesLoaderGradualDelivery:1];
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  -[PXLemonadeSettings setEnabledShelvesLazyVStack:](self, "setEnabledShelvesLazyVStack:", [v6 userInterfaceIdiom] == 0);
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  -[PXLemonadeSettings setEnabledShelvesLazyVStack:](self, "setEnabledShelvesLazyVStack:", [currentDevice2 userInterfaceIdiom] == 0);
 
   [(PXLemonadeSettings *)self setEnableResponsiveScrolling:0];
   [(PXLemonadeSettings *)self setEnableLoadingStatusHUD:0];
@@ -250,9 +250,9 @@ void __36__PXLemonadeSettings_sharedInstance__block_invoke()
   return 0;
 }
 
-- (void)setEnableTabs:(BOOL)a3
+- (void)setEnableTabs:(BOOL)tabs
 {
-  if (a3)
+  if (tabs)
   {
     v4 = MEMORY[0x1A590D320](self, a2);
   }

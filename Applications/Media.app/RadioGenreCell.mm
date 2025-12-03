@@ -1,16 +1,16 @@
 @interface RadioGenreCell
-- (_TtC5Media14RadioGenreCell)initWithCoder:(id)a3;
-- (_TtC5Media14RadioGenreCell)initWithFrame:(CGRect)a3;
+- (_TtC5Media14RadioGenreCell)initWithCoder:(id)coder;
+- (_TtC5Media14RadioGenreCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation RadioGenreCell
 
-- (_TtC5Media14RadioGenreCell)initWithFrame:(CGRect)a3
+- (_TtC5Media14RadioGenreCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Media14RadioGenreCell_title);
   *v7 = 0;
   v7[1] = 0xE000000000000000;
@@ -22,7 +22,7 @@
   return [(RadioGenreCell *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5Media14RadioGenreCell)initWithCoder:(id)a3
+- (_TtC5Media14RadioGenreCell)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Media14RadioGenreCell_title);
   *v4 = 0;
@@ -32,8 +32,8 @@
   v5[1] = 0xE000000000000000;
   v9.receiver = self;
   v9.super_class = type metadata accessor for RadioGenreCell();
-  v6 = a3;
-  v7 = [(RadioGenreCell *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(RadioGenreCell *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

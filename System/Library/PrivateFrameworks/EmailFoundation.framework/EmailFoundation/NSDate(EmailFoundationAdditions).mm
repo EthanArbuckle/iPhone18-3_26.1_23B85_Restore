@@ -24,9 +24,9 @@
 
 - (id)ef_dateWithTruncatedSeconds
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 components:126 fromDate:a1];
-  v4 = [v2 dateFromComponents:v3];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar components:126 fromDate:self];
+  v4 = [currentCalendar dateFromComponents:v3];
 
   return v4;
 }
@@ -35,8 +35,8 @@
 {
   v3 = a3;
   v4 = MEMORY[0x1E695DF00];
-  v5 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v6 = [v4 _ef_gregorianCalendarForTimeZone:v5];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v6 = [v4 _ef_gregorianCalendarForTimeZone:localTimeZone];
 
   v7 = [MEMORY[0x1E695DF00] now];
   v8 = [v6 dateByAddingUnit:16 value:1 toDate:v7 options:0];
@@ -52,7 +52,7 @@
   v4 = a3;
   if (v4)
   {
-    [a1 timeIntervalSinceDate:v4];
+    [self timeIntervalSinceDate:v4];
     v6 = v5;
   }
 
@@ -66,38 +66,38 @@
 
 + (id)ef_morning
 {
-  v2 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v3 = [a1 _ef_gregorianCalendarForTimeZone:v2];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v3 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
-  v4 = [a1 _ef_morningDateComponents];
-  v5 = [v4 hour];
-  v6 = [v4 minute];
-  v7 = [v4 second];
+  _ef_morningDateComponents = [self _ef_morningDateComponents];
+  hour = [_ef_morningDateComponents hour];
+  minute = [_ef_morningDateComponents minute];
+  second = [_ef_morningDateComponents second];
   v8 = [MEMORY[0x1E695DF00] now];
-  v9 = [v3 dateBySettingHour:v5 minute:v6 second:v7 ofDate:v8 options:0];
+  v9 = [v3 dateBySettingHour:hour minute:minute second:second ofDate:v8 options:0];
 
   return v9;
 }
 
 + (id)ef_tonight
 {
-  v2 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v3 = [a1 _ef_gregorianCalendarForTimeZone:v2];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v3 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
-  v4 = [a1 _ef_nightDateComponents];
-  v5 = [v4 hour];
-  v6 = [v4 minute];
-  v7 = [v4 second];
+  _ef_nightDateComponents = [self _ef_nightDateComponents];
+  hour = [_ef_nightDateComponents hour];
+  minute = [_ef_nightDateComponents minute];
+  second = [_ef_nightDateComponents second];
   v8 = [MEMORY[0x1E695DF00] now];
-  v9 = [v3 dateBySettingHour:v5 minute:v6 second:v7 ofDate:v8 options:0];
+  v9 = [v3 dateBySettingHour:hour minute:minute second:second ofDate:v8 options:0];
 
   return v9;
 }
 
 + (id)ef_inOneHour
 {
-  v2 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v3 = [a1 _ef_gregorianCalendarForTimeZone:v2];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v3 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
   v4 = [MEMORY[0x1E695DF00] now];
   v5 = [v3 dateByAddingUnit:64 value:60 toDate:v4 options:0];
@@ -107,50 +107,50 @@
 
 + (id)ef_tomorrowNight
 {
-  v2 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v3 = [a1 _ef_gregorianCalendarForTimeZone:v2];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v3 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
-  v4 = [a1 _ef_nightDateComponents];
+  _ef_nightDateComponents = [self _ef_nightDateComponents];
   v5 = [MEMORY[0x1E695DF00] now];
   v6 = [v3 dateByAddingUnit:16 value:1 toDate:v5 options:0];
 
-  v7 = [v3 dateBySettingHour:objc_msgSend(v4 minute:"hour") second:objc_msgSend(v4 ofDate:"minute") options:{objc_msgSend(v4, "second"), v6, 0}];
+  v7 = [v3 dateBySettingHour:objc_msgSend(_ef_nightDateComponents minute:"hour") second:objc_msgSend(_ef_nightDateComponents ofDate:"minute") options:{objc_msgSend(_ef_nightDateComponents, "second"), v6, 0}];
 
   return v7;
 }
 
 + (id)ef_tomorrowMorning
 {
-  v2 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v3 = [a1 _ef_gregorianCalendarForTimeZone:v2];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v3 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
-  v4 = [a1 _ef_morningDateComponents];
+  _ef_morningDateComponents = [self _ef_morningDateComponents];
   v5 = [MEMORY[0x1E695DF00] now];
   v6 = [v3 dateByAddingUnit:16 value:1 toDate:v5 options:0];
 
-  v7 = [v3 dateBySettingHour:objc_msgSend(v4 minute:"hour") second:objc_msgSend(v4 ofDate:"minute") options:{objc_msgSend(v4, "second"), v6, 0}];
+  v7 = [v3 dateBySettingHour:objc_msgSend(_ef_morningDateComponents minute:"hour") second:objc_msgSend(_ef_morningDateComponents ofDate:"minute") options:{objc_msgSend(_ef_morningDateComponents, "second"), v6, 0}];
 
   return v7;
 }
 
 + (id)ef_nextWeekMorning
 {
-  v2 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v3 = [a1 _ef_gregorianCalendarForTimeZone:v2];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v3 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
-  v4 = [a1 _ef_morningDateComponents];
+  _ef_morningDateComponents = [self _ef_morningDateComponents];
   v5 = [MEMORY[0x1E695DF00] now];
   v6 = [v3 dateByAddingUnit:16 value:7 toDate:v5 options:0];
 
-  v7 = [v3 dateBySettingHour:objc_msgSend(v4 minute:"hour") second:objc_msgSend(v4 ofDate:"minute") options:{objc_msgSend(v4, "second"), v6, 0}];
+  v7 = [v3 dateBySettingHour:objc_msgSend(_ef_morningDateComponents minute:"hour") second:objc_msgSend(_ef_morningDateComponents ofDate:"minute") options:{objc_msgSend(_ef_morningDateComponents, "second"), v6, 0}];
 
   return v7;
 }
 
 + (id)ef_midnightInNdays:()EmailFoundationAdditions
 {
-  v5 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v6 = [a1 _ef_gregorianCalendarForTimeZone:v5];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v6 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
   v7 = [MEMORY[0x1E695DF00] now];
   v8 = [v6 dateByAddingUnit:16 value:a3 toDate:v7 options:0];
@@ -162,21 +162,21 @@
 
 + (id)ef_dateHoursAgo:()EmailFoundationAdditions
 {
-  v5 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v6 = [a1 _ef_gregorianCalendarForTimeZone:v5];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v6 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
   v7 = [MEMORY[0x1E695DF00] now];
   v8 = [v6 dateByAddingUnit:32 value:-a3 toDate:v7 options:0];
 
-  v9 = [v8 ef_dateWithTruncatedSeconds];
+  ef_dateWithTruncatedSeconds = [v8 ef_dateWithTruncatedSeconds];
 
-  return v9;
+  return ef_dateWithTruncatedSeconds;
 }
 
 + (id)ef_dateSecondsAgo:()EmailFoundationAdditions
 {
-  v5 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v6 = [a1 _ef_gregorianCalendarForTimeZone:v5];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v6 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
   v7 = [MEMORY[0x1E695DF00] now];
   v8 = [v6 dateByAddingUnit:128 value:-a3 toDate:v7 options:0];
@@ -186,11 +186,11 @@
 
 + (id)ef_thisWeekday:()EmailFoundationAdditions hour:minute:second:
 {
-  v11 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v12 = [a1 _ef_gregorianCalendarForTimeZone:v11];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v12 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
-  v13 = [MEMORY[0x1E695DF00] date];
-  v14 = [v12 dateByAddingUnit:16 value:a3 - objc_msgSend(v12 toDate:"component:fromDate:" options:{512, v13), v13, 0}];
+  date = [MEMORY[0x1E695DF00] date];
+  v14 = [v12 dateByAddingUnit:16 value:a3 - objc_msgSend(v12 toDate:"component:fromDate:" options:{512, date), date, 0}];
   v15 = [v12 dateBySettingHour:a4 minute:a5 second:a6 ofDate:v14 options:0];
 
   return v15;
@@ -198,11 +198,11 @@
 
 + (id)ef_nextWeekday:()EmailFoundationAdditions
 {
-  v5 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v6 = [a1 _ef_gregorianCalendarForTimeZone:v5];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v6 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [v6 dateByAddingUnit:16 value:a3 - objc_msgSend(v6 toDate:"component:fromDate:" options:{512, v7), v7, 0}];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [v6 dateByAddingUnit:16 value:a3 - objc_msgSend(v6 toDate:"component:fromDate:" options:{512, date), date, 0}];
 
   return v8;
 }
@@ -212,8 +212,8 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v12 = [a1 _ef_gregorianCalendarForTimeZone:v11];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v12 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
   v13 = [v12 components:28 fromDate:v8];
   v14 = [v12 components:96 fromDate:v9];
@@ -233,13 +233,13 @@
 + (uint64_t)ef_weekDayForDate:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v6 = [a1 _ef_gregorianCalendarForTimeZone:v5];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v6 = [self _ef_gregorianCalendarForTimeZone:localTimeZone];
 
   v7 = [v6 components:512 fromDate:v4];
-  v8 = [v7 weekday];
+  weekday = [v7 weekday];
 
-  return v8;
+  return weekday;
 }
 
 + (id)_ef_nightDateComponents

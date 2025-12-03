@@ -1,10 +1,10 @@
 @interface ISSetupAssistant
 - (ISSetupAssistant)init;
 - (id)accountSetupRequestParameters;
-- (void)_setCookiesWithString:(id)a3 userIdentifier:(id)a4;
-- (void)_setupHomeSharingWithParameters:(id)a3;
-- (void)_setupITunesMatchWithParameters:(id)a3;
-- (void)completeSetupWithResponseParameters:(id)a3 handler:(id)a4;
+- (void)_setCookiesWithString:(id)string userIdentifier:(id)identifier;
+- (void)_setupHomeSharingWithParameters:(id)parameters;
+- (void)_setupITunesMatchWithParameters:(id)parameters;
+- (void)completeSetupWithResponseParameters:(id)parameters handler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -41,52 +41,52 @@
   v2 = +[NSMutableDictionary dictionary];
   [v2 setObject:@"iTunes" forKey:@"drm-client"];
   v3 = +[ISDevice sharedInstance];
-  v4 = [(ISDevice *)v3 hardwareName];
-  if (v4)
+  hardwareName = [(ISDevice *)v3 hardwareName];
+  if (hardwareName)
   {
-    [v2 setObject:objc_msgSend(v4 forKey:{"lowercaseString"), @"drm-type"}];
+    [v2 setObject:objc_msgSend(hardwareName forKey:{"lowercaseString"), @"drm-type"}];
   }
 
-  v5 = [(ISDevice *)v3 guid];
-  if (v5)
+  guid = [(ISDevice *)v3 guid];
+  if (guid)
   {
-    [v2 setObject:v5 forKey:@"guid"];
+    [v2 setObject:guid forKey:@"guid"];
   }
 
-  v6 = [(ISDevice *)v3 deviceName];
-  if (v6)
+  deviceName = [(ISDevice *)v3 deviceName];
+  if (deviceName)
   {
-    [v2 setObject:v6 forKey:@"device-name"];
+    [v2 setObject:deviceName forKey:@"device-name"];
   }
 
   v7 = +[SSDevice currentDevice];
-  v8 = [v7 productVersion];
-  if (v8)
+  productVersion = [v7 productVersion];
+  if (productVersion)
   {
-    [v2 setObject:v8 forKey:@"drm-version"];
+    [v2 setObject:productVersion forKey:@"drm-version"];
   }
 
-  v9 = [v7 userAgent];
-  if (v9)
+  userAgent = [v7 userAgent];
+  if (userAgent)
   {
-    [v2 setObject:v9 forKey:@"user-agent"];
+    [v2 setObject:userAgent forKey:@"user-agent"];
   }
 
   return v2;
 }
 
-- (void)completeSetupWithResponseParameters:(id)a3 handler:(id)a4
+- (void)completeSetupWithResponseParameters:(id)parameters handler:(id)handler
 {
   v7 = +[SSLogConfig sharedConfig];
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
   if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -116,30 +116,30 @@
     }
   }
 
-  [a3 objectForKey:{@"dsid", v45}];
+  [parameters objectForKey:{@"dsid", v45}];
   UniqueIdentifierFromValue = SSAccountGetUniqueIdentifierFromValue();
   if (UniqueIdentifierFromValue)
   {
-    v15 = [a3 objectForKey:@"cookies"];
-    v48 = a4;
+    v15 = [parameters objectForKey:@"cookies"];
+    handlerCopy = handler;
     if (!v15)
     {
-      -[ISSetupAssistant _setCookiesWithString:userIdentifier:](self, "_setCookiesWithString:userIdentifier:", [a3 objectForKey:@"pod"], UniqueIdentifierFromValue);
-      v15 = [a3 objectForKey:@"weak-token"];
+      -[ISSetupAssistant _setCookiesWithString:userIdentifier:](self, "_setCookiesWithString:userIdentifier:", [parameters objectForKey:@"pod"], UniqueIdentifierFromValue);
+      v15 = [parameters objectForKey:@"weak-token"];
     }
 
     [(ISSetupAssistant *)self _setCookiesWithString:v15 userIdentifier:UniqueIdentifierFromValue];
-    v16 = [a3 objectForKey:@"storefront"];
+    v16 = [parameters objectForKey:@"storefront"];
     v17 = +[SSLogConfig sharedConfig];
-    v18 = [v17 shouldLog];
+    shouldLog2 = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog2 | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog2;
     }
 
     if (os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -172,7 +172,7 @@
       }
     }
 
-    v25 = [a3 objectForKey:{@"strong-token", v46}];
+    v25 = [parameters objectForKey:{@"strong-token", v46}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -185,16 +185,16 @@
     }
 
     v27 = +[SSAccountStore defaultStore];
-    v28 = [v27 activeAccount];
+    activeAccount = [v27 activeAccount];
     v29 = [v27 accountWithUniqueIdentifier:UniqueIdentifierFromValue];
-    v30 = (v28 | v29) == 0;
+    v30 = (activeAccount | v29) == 0;
     if (v29)
     {
       if (v26)
       {
         v31 = v29;
         [v29 setSecureToken:v26];
-        if (v28)
+        if (activeAccount)
         {
           [v27 addAccount:v31];
         }
@@ -209,31 +209,31 @@
     }
 
     v36 = objc_alloc_init(SSAccount);
-    [v36 setAccountName:{objc_msgSend(a3, "objectForKey:", @"email"}];
+    [v36 setAccountName:{objc_msgSend(parameters, "objectForKey:", @"email"}];
     [v36 setSecureToken:v26];
     [v36 setStoreFrontIdentifier:v16];
     [v36 setUniqueIdentifier:UniqueIdentifierFromValue];
-    v37 = [a3 objectForKey:@"newCustomer"];
+    v37 = [parameters objectForKey:@"newCustomer"];
     if (objc_opt_respondsToSelector())
     {
       [v36 setNewCustomer:{objc_msgSend(v37, "BOOLValue")}];
     }
 
-    if (v28 && ![v28 accountSource])
+    if (activeAccount && ![activeAccount accountSource])
     {
       [v27 addAccount:v36];
 
 LABEL_45:
       v38 = +[SSLogConfig sharedConfig];
-      v39 = [v38 shouldLog];
+      shouldLog3 = [v38 shouldLog];
       if ([v38 shouldLogToDisk])
       {
-        v40 = v39 | 2;
+        v40 = shouldLog3 | 2;
       }
 
       else
       {
-        v40 = v39;
+        v40 = shouldLog3;
       }
 
       if (os_log_type_enabled([v38 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -262,7 +262,7 @@ LABEL_45:
         }
       }
 
-      v48[2](v48, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
       return;
     }
 
@@ -284,7 +284,7 @@ LABEL_45:
     }
 
     v32 = 0;
-    a4 = v48;
+    handler = handlerCopy;
   }
 
   else
@@ -292,7 +292,7 @@ LABEL_45:
     v32 = [NSError errorWithDomain:@"ISSetupErrorDomain" code:1 userInfo:0];
   }
 
-  [(ISSetupAssistant *)self setHandler:a4];
+  [(ISSetupAssistant *)self setHandler:handler];
   v33 = dispatch_group_create();
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -300,7 +300,7 @@ LABEL_45:
   block[2] = sub_1670;
   block[3] = &unk_41B8;
   block[4] = self;
-  block[5] = a3;
+  block[5] = parameters;
   dispatch_group_async(v33, dispatchQueue, block);
   if (PSIsRunningInAssistant())
   {
@@ -310,7 +310,7 @@ LABEL_45:
     v51[2] = sub_167C;
     v51[3] = &unk_41B8;
     v51[4] = self;
-    v51[5] = a3;
+    v51[5] = parameters;
     dispatch_group_async(v33, v35, v51);
   }
 
@@ -325,23 +325,23 @@ LABEL_45:
   dispatch_release(v33);
 }
 
-- (void)_setCookiesWithString:(id)a3 userIdentifier:(id)a4
+- (void)_setCookiesWithString:(id)string userIdentifier:(id)identifier
 {
-  if (a3)
+  if (string)
   {
-    v5 = [[NSDictionary alloc] initWithObjectsAndKeys:{a3, @"Set-Cookie", 0}];
+    v5 = [[NSDictionary alloc] initWithObjectsAndKeys:{string, @"Set-Cookie", 0}];
     [+[SSVCookieStorage sharedStorage](SSVCookieStorage "sharedStorage")];
   }
 }
 
-- (void)_setupHomeSharingWithParameters:(id)a3
+- (void)_setupHomeSharingWithParameters:(id)parameters
 {
   v5 = dispatch_semaphore_create(0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1858;
   block[3] = &unk_4230;
-  block[4] = a3;
+  block[4] = parameters;
   block[5] = v5;
   block[6] = self;
   dispatch_async(&_dispatch_main_q, block);
@@ -349,22 +349,22 @@ LABEL_45:
   dispatch_release(v5);
 }
 
-- (void)_setupITunesMatchWithParameters:(id)a3
+- (void)_setupITunesMatchWithParameters:(id)parameters
 {
-  v4 = [a3 objectForKey:@"slot-acquired"];
+  v4 = [parameters objectForKey:@"slot-acquired"];
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 BOOLValue] && objc_msgSend(+[ML3MusicLibrary sharedLibrary](ML3MusicLibrary, "sharedLibrary"), "isLibraryEmpty"))
   {
     v5 = [objc_msgSend(+[SSAccountStore defaultStore](SSAccountStore "defaultStore")];
     v6 = +[SSLogConfig sharedConfig];
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
     if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -420,20 +420,20 @@ LABEL_45:
       v16 = objc_alloc_init(HSCloudClient);
       v17 = dispatch_semaphore_create(0);
       v18 = +[SSLogConfig sharedConfig];
-      v19 = [v18 shouldLog];
-      v20 = [v18 shouldLogToDisk];
-      v21 = [v18 OSLogObject];
-      if (v20)
+      shouldLog2 = [v18 shouldLog];
+      shouldLogToDisk = [v18 shouldLogToDisk];
+      oSLogObject = [v18 OSLogObject];
+      if (shouldLogToDisk)
       {
-        v19 |= 2u;
+        shouldLog2 |= 2u;
       }
 
-      if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
-        v19 &= 2u;
+        shouldLog2 &= 2u;
       }
 
-      if (v19)
+      if (shouldLog2)
       {
         v22 = objc_opt_class();
         v38 = 138412290;
@@ -463,20 +463,20 @@ LABEL_45:
     else
     {
       v26 = +[SSLogConfig sharedConfig];
-      v27 = [v26 shouldLog];
-      v28 = [v26 shouldLogToDisk];
-      v29 = [v26 OSLogObject];
-      if (v28)
+      shouldLog3 = [v26 shouldLog];
+      shouldLogToDisk2 = [v26 shouldLogToDisk];
+      oSLogObject2 = [v26 OSLogObject];
+      if (shouldLogToDisk2)
       {
-        v27 |= 2u;
+        shouldLog3 |= 2u;
       }
 
-      if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
-        v27 &= 2u;
+        shouldLog3 &= 2u;
       }
 
-      if (v27)
+      if (shouldLog3)
       {
         v30 = objc_opt_class();
         v38 = 138412290;

@@ -1,114 +1,114 @@
 @interface REMCRMergeableStringDocument
-+ (id)documentFromSerializedData:(id)a3 replicaIDSource:(id)a4 forKey:(id)a5 ofObjectID:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)documentFromSerializedData:(id)data replicaIDSource:(id)source forKey:(id)key ofObjectID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (NSAttributedString)attributedString;
 - (NSString)string;
-- (REMCRMergeableStringDocument)initWithCoder:(id)a3;
-- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)a3 attributedString:(id)a4;
-- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)a3 document:(id)a4;
-- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)a3 serializedData:(id)a4 error:(id *)a5;
-- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)a3 string:(id)a4;
+- (REMCRMergeableStringDocument)initWithCoder:(id)coder;
+- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)source attributedString:(id)string;
+- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)source document:(id)document;
+- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)source serializedData:(id)data error:(id *)error;
+- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)source string:(id)string;
 - (TTMergeableAttributedString)mergeableString;
-- (id)hashtagAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)mergedWithDocument:(id)a3 error:(id *)a4;
+- (id)hashtagAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)mergedWithDocument:(id)document error:(id *)error;
 - (id)mutableDocument;
 - (id)serializedData;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateHashtagInRange:(_NSRange)a3 options:(unint64_t)a4 usingBlock:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateHashtagInRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block;
 @end
 
 @implementation REMCRMergeableStringDocument
 
-- (id)hashtagAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)hashtagAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = [(REMCRMergeableStringDocument *)self mergeableString];
-  v7 = [v6 attributedString];
-  v8 = [v7 rem_hashtagAtIndex:a3 effectiveRange:a4];
+  mergeableString = [(REMCRMergeableStringDocument *)self mergeableString];
+  attributedString = [mergeableString attributedString];
+  v8 = [attributedString rem_hashtagAtIndex:index effectiveRange:range];
 
   return v8;
 }
 
-- (void)enumerateHashtagInRange:(_NSRange)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateHashtagInRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a5;
-  v11 = [(REMCRMergeableStringDocument *)self mergeableString];
-  v10 = [v11 attributedString];
-  [v10 rem_enumerateHashtagInRange:location options:length usingBlock:{a4, v9}];
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
+  mergeableString = [(REMCRMergeableStringDocument *)self mergeableString];
+  attributedString = [mergeableString attributedString];
+  [attributedString rem_enumerateHashtagInRange:location options:length usingBlock:{options, blockCopy}];
 }
 
-- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)a3 string:(id)a4
+- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)source string:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  sourceCopy = source;
   v8 = +[REMReplicaIDHelper replicaUUIDForCreation];
   v9 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithReplicaID:v8];
-  [(TTMergeableAttributedString *)v9 insertString:v6 atIndex:0];
+  [(TTMergeableAttributedString *)v9 insertString:stringCopy atIndex:0];
 
   v10 = [[TTMergeableStringVersionedDocument alloc] initWithMergeableString:v9];
-  v11 = [(REMCRMergeableStringDocument *)self initWithReplicaIDSource:v7 document:v10];
+  v11 = [(REMCRMergeableStringDocument *)self initWithReplicaIDSource:sourceCopy document:v10];
 
   return v11;
 }
 
-- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)a3 attributedString:(id)a4
+- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)source attributedString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  sourceCopy = source;
   v8 = +[REMReplicaIDHelper replicaUUIDForCreation];
   v9 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithReplicaID:v8];
-  [(TTMergeableString *)v9 insertAttributedString:v6 atIndex:0];
+  [(TTMergeableString *)v9 insertAttributedString:stringCopy atIndex:0];
 
   v10 = [[TTMergeableStringVersionedDocument alloc] initWithMergeableString:v9];
-  v11 = [(REMCRMergeableStringDocument *)self initWithReplicaIDSource:v7 document:v10];
+  v11 = [(REMCRMergeableStringDocument *)self initWithReplicaIDSource:sourceCopy document:v10];
 
   return v11;
 }
 
-- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)a3 serializedData:(id)a4 error:(id *)a5
+- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)source serializedData:(id)data error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  dataCopy = data;
+  sourceCopy = source;
   v9 = [TTMergeableStringVersionedDocument alloc];
   v10 = +[REMReplicaIDHelper nonEditingReplicaUUID];
-  v11 = [(TTMergeableStringVersionedDocument *)v9 initWithData:v7 andReplicaID:v10];
+  v11 = [(TTMergeableStringVersionedDocument *)v9 initWithData:dataCopy andReplicaID:v10];
 
-  v12 = [(REMCRMergeableStringDocument *)self initWithReplicaIDSource:v8 document:v11];
+  v12 = [(REMCRMergeableStringDocument *)self initWithReplicaIDSource:sourceCopy document:v11];
   return v12;
 }
 
-- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)a3 document:(id)a4
+- (REMCRMergeableStringDocument)initWithReplicaIDSource:(id)source document:(id)document
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  documentCopy = document;
   v12.receiver = self;
   v12.super_class = REMCRMergeableStringDocument;
   v9 = [(REMCRMergeableStringDocument *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_replicaIDSource, a3);
-    objc_storeStrong(&v10->_document, a4);
+    objc_storeStrong(&v9->_replicaIDSource, source);
+    objc_storeStrong(&v10->_document, document);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMCRMergeableStringDocument *)self document];
-  v7 = [v5 serialize];
+  coderCopy = coder;
+  document = [(REMCRMergeableStringDocument *)self document];
+  serialize = [document serialize];
 
-  [v4 encodeObject:v7 forKey:@"document"];
-  v6 = [(REMCRMergeableStringDocument *)self replicaIDSource];
-  [v4 encodeObject:v6 forKey:@"replicaIDSource"];
+  [coderCopy encodeObject:serialize forKey:@"document"];
+  replicaIDSource = [(REMCRMergeableStringDocument *)self replicaIDSource];
+  [coderCopy encodeObject:replicaIDSource forKey:@"replicaIDSource"];
 }
 
-- (REMCRMergeableStringDocument)initWithCoder:(id)a3
+- (REMCRMergeableStringDocument)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = REMCRMergeableStringDocument;
   v5 = [(REMCRMergeableStringDocument *)&v14 init];
@@ -117,7 +117,7 @@
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"replicaIDSource"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"replicaIDSource"];
   replicaIDSource = v5->_replicaIDSource;
   v5->_replicaIDSource = v6;
 
@@ -127,7 +127,7 @@
     goto LABEL_7;
   }
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"document"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"document"];
   if (v8)
   {
     v9 = [TTMergeableStringVersionedDocument alloc];
@@ -147,51 +147,51 @@ LABEL_7:
 
 - (TTMergeableAttributedString)mergeableString
 {
-  v2 = [(REMCRMergeableStringDocument *)self document];
-  v3 = [v2 mergeableString];
+  document = [(REMCRMergeableStringDocument *)self document];
+  mergeableString = [document mergeableString];
 
-  return v3;
+  return mergeableString;
 }
 
 - (NSAttributedString)attributedString
 {
-  v2 = [(REMCRMergeableStringDocument *)self document];
-  v3 = [v2 mergeableString];
-  v4 = [v3 attributedString];
+  document = [(REMCRMergeableStringDocument *)self document];
+  mergeableString = [document mergeableString];
+  attributedString = [mergeableString attributedString];
 
-  return v4;
+  return attributedString;
 }
 
 - (NSString)string
 {
-  v2 = [(REMCRMergeableStringDocument *)self attributedString];
-  v3 = [v2 string];
+  attributedString = [(REMCRMergeableStringDocument *)self attributedString];
+  string = [attributedString string];
 
-  return v3;
+  return string;
 }
 
 - (id)mutableDocument
 {
   v3 = [REMMutableCRMergeableStringDocument alloc];
-  v4 = [(REMCRMergeableStringDocument *)self replicaIDSource];
-  v5 = [(REMCRMergeableStringDocument *)self document];
-  v6 = [(REMMutableCRMergeableStringDocument *)v3 initWithReplicaIDSource:v4 immutableDocumentToEdit:v5];
+  replicaIDSource = [(REMCRMergeableStringDocument *)self replicaIDSource];
+  document = [(REMCRMergeableStringDocument *)self document];
+  v6 = [(REMMutableCRMergeableStringDocument *)v3 initWithReplicaIDSource:replicaIDSource immutableDocumentToEdit:document];
 
   return v6;
 }
 
 - (id)serializedData
 {
-  v2 = [(REMCRMergeableStringDocument *)self document];
-  v3 = [v2 serialize];
+  document = [(REMCRMergeableStringDocument *)self document];
+  serialize = [document serialize];
 
-  return v3;
+  return serialize;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -201,9 +201,9 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(REMCRMergeableStringDocument *)self document];
-      v6 = [(REMCRMergeableStringDocument *)v4 document];
-      v7 = [v5 rem_isEqual:v6];
+      document = [(REMCRMergeableStringDocument *)self document];
+      document2 = [(REMCRMergeableStringDocument *)equalCopy document];
+      v7 = [document rem_isEqual:document2];
     }
 
     else
@@ -215,81 +215,81 @@ LABEL_7:
   return v7;
 }
 
-- (id)mergedWithDocument:(id)a3 error:(id *)a4
+- (id)mergedWithDocument:(id)document error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(REMCRMergeableStringDocument *)self replicaIDSource];
-  v8 = [v7 crdtID];
-  v9 = [v6 replicaIDSource];
-  v10 = [v9 crdtID];
-  v11 = [v8 isEqualToString:v10];
+  documentCopy = document;
+  replicaIDSource = [(REMCRMergeableStringDocument *)self replicaIDSource];
+  crdtID = [replicaIDSource crdtID];
+  replicaIDSource2 = [documentCopy replicaIDSource];
+  crdtID2 = [replicaIDSource2 crdtID];
+  v11 = [crdtID isEqualToString:crdtID2];
 
   if ((v11 & 1) == 0)
   {
     [REMCRMergeableStringDocument mergedWithDocument:error:];
   }
 
-  v12 = [(REMCRMergeableStringDocument *)self document];
+  document = [(REMCRMergeableStringDocument *)self document];
   v13 = +[REMReplicaIDHelper nonEditingReplicaUUID];
-  v14 = [v12 rem_copyWithReplicaIDForNewEdits:v13];
+  v14 = [document rem_copyWithReplicaIDForNewEdits:v13];
 
-  v15 = [v6 document];
-  v16 = [v14 mergeWithStringVersionedDocument:v15];
+  document2 = [documentCopy document];
+  v16 = [v14 mergeWithStringVersionedDocument:document2];
 
   if (v16 == 1)
   {
-    a4 = self;
+    error = self;
   }
 
   else if (v16)
   {
     v19 = [REMCRMergeableStringDocument alloc];
-    v20 = [(REMCRMergeableStringDocument *)self replicaIDSource];
-    a4 = [(REMCRMergeableStringDocument *)v19 initWithReplicaIDSource:v20 document:v14];
+    replicaIDSource3 = [(REMCRMergeableStringDocument *)self replicaIDSource];
+    error = [(REMCRMergeableStringDocument *)v19 initWithReplicaIDSource:replicaIDSource3 document:v14];
   }
 
-  else if (a4)
+  else if (error)
   {
     v17 = objc_alloc(MEMORY[0x1E696ABC0]);
     v23 = *MEMORY[0x1E696A588];
     v24[0] = @"Failed to merge documents.";
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-    *a4 = [v17 initWithDomain:@"REMCRMergeableStringDocument" code:-1 userInfo:v18];
+    *error = [v17 initWithDomain:@"REMCRMergeableStringDocument" code:-1 userInfo:v18];
 
-    a4 = 0;
+    error = 0;
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-+ (id)documentFromSerializedData:(id)a3 replicaIDSource:(id)a4 forKey:(id)a5 ofObjectID:(id)a6
++ (id)documentFromSerializedData:(id)data replicaIDSource:(id)source forKey:(id)key ofObjectID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a6;
-  if (a3)
+  keyCopy = key;
+  dCopy = d;
+  if (data)
   {
-    v11 = a4;
-    v12 = a3;
+    sourceCopy = source;
+    dataCopy = data;
     v18 = 0;
-    a3 = [[REMCRMergeableStringDocument alloc] initWithReplicaIDSource:v11 serializedData:v12 error:&v18];
+    data = [[REMCRMergeableStringDocument alloc] initWithReplicaIDSource:sourceCopy serializedData:dataCopy error:&v18];
 
     v13 = v18;
-    if (!a3)
+    if (!data)
     {
       v14 = +[REMLog crdt];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v17 = [v13 localizedDescription];
+        localizedDescription = [v13 localizedDescription];
         *buf = 138412802;
-        v20 = v10;
+        v20 = dCopy;
         v21 = 2112;
-        v22 = v9;
+        v22 = keyCopy;
         v23 = 2112;
-        v24 = v17;
+        v24 = localizedDescription;
         _os_log_error_impl(&dword_19A0DB000, v14, OS_LOG_TYPE_ERROR, "Failed to deserialize mergeable string document {objectID: %@, key: %@}: %@", buf, 0x20u);
       }
     }
@@ -297,7 +297,7 @@ LABEL_7:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return a3;
+  return data;
 }
 
 - (void)mergedWithDocument:error:.cold.1()

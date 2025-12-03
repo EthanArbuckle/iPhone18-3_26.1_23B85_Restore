@@ -1,28 +1,28 @@
 @interface HDDeviceContextEntity
-+ (BOOL)deleteDeviceContextWithSyncIdentity:(int64_t)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)enumerateDeviceContextWithTransaction:(id)a3 error:(id *)a4 enumerationHandler:(id)a5;
-+ (BOOL)updateDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (BOOL)updateSoftwareVersionForDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)_contextForEntity:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (id)_deviceContextWithSyncIdentity:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (id)_predicateForSyncEntityIdentity:(uint64_t)a1;
++ (BOOL)deleteDeviceContextWithSyncIdentity:(int64_t)identity profile:(id)profile error:(id *)error;
++ (BOOL)enumerateDeviceContextWithTransaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)updateDeviceContext:(id)context transaction:(id)transaction error:(id *)error;
++ (BOOL)updateSoftwareVersionForDeviceContext:(id)context transaction:(id)transaction error:(id *)error;
++ (id)_contextForEntity:(void *)entity transaction:(uint64_t)transaction error:;
++ (id)_deviceContextWithSyncIdentity:(void *)identity transaction:(uint64_t)transaction error:;
++ (id)_predicateForSyncEntityIdentity:(uint64_t)identity;
 + (id)_propertiesForEntity;
-+ (id)deviceContextEntityWithSyncIdentity:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)deviceContextForLocalSyncIdentityWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (id)deviceContextEntityWithSyncIdentity:(int64_t)identity transaction:(id)transaction error:(id *)error;
++ (id)deviceContextForLocalSyncIdentityWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
-+ (id)insertDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)lookupDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)lookupOrCreateDeviceContextForLocalSyncIdentityWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)lookupOrCreateDeviceContextForSyncIdentity:(id)a3 WithTransaction:(id)a4 error:(id *)a5;
++ (id)insertDeviceContext:(id)context transaction:(id)transaction error:(id *)error;
++ (id)lookupDeviceContext:(id)context transaction:(id)transaction error:(id *)error;
++ (id)lookupOrCreateDeviceContextForLocalSyncIdentityWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
++ (id)lookupOrCreateDeviceContextForSyncIdentity:(id)identity WithTransaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDDeviceContextEntity
 
-+ (BOOL)enumerateDeviceContextWithTransaction:(id)a3 error:(id *)a4 enumerationHandler:(id)a5
++ (BOOL)enumerateDeviceContextWithTransaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 databaseForEntityClass:objc_opt_class()];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v10 = [transactionCopy databaseForEntityClass:objc_opt_class()];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -33,21 +33,21 @@
   v18[1] = 3221225472;
   v18[2] = __88__HDDeviceContextEntity_enumerateDeviceContextWithTransaction_error_enumerationHandler___block_invoke;
   v18[3] = &unk_278615698;
-  v22 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = transactionCopy;
   v19 = v11;
   v21 = &v23;
-  v12 = v9;
+  v12 = handlerCopy;
   v20 = v12;
-  v13 = [(HDSQLiteEntity *)HDDeviceContextEntity enumerateEntitiesInDatabase:v10 predicate:0 error:a4 enumerationHandler:v18];
+  v13 = [(HDSQLiteEntity *)HDDeviceContextEntity enumerateEntitiesInDatabase:v10 predicate:0 error:error enumerationHandler:v18];
   v14 = v24[5];
   v15 = v14;
   if (v14)
   {
-    if (a4)
+    if (error)
     {
       v16 = v14;
-      *a4 = v15;
+      *error = v15;
     }
 
     else
@@ -85,10 +85,10 @@ uint64_t __88__HDDeviceContextEntity_enumerateDeviceContextWithTransaction_error
   return v9;
 }
 
-+ (id)_contextForEntity:(void *)a3 transaction:(uint64_t)a4 error:
++ (id)_contextForEntity:(void *)entity transaction:(uint64_t)transaction error:
 {
   v6 = a2;
-  v7 = a3;
+  entityCopy = entity;
   objc_opt_self();
   v16 = 0;
   v17 = &v16;
@@ -97,17 +97,17 @@ uint64_t __88__HDDeviceContextEntity_enumerateDeviceContextWithTransaction_error
   v20 = __Block_byref_object_dispose__16;
   v21 = 0;
   v8 = +[HDDeviceContextEntity _propertiesForEntity];
-  v9 = [v7 unprotectedDatabase];
+  unprotectedDatabase = [entityCopy unprotectedDatabase];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__HDDeviceContextEntity__contextForEntity_transaction_error___block_invoke;
   v13[3] = &unk_2786156E0;
-  v10 = v7;
+  v10 = entityCopy;
   v14 = v10;
   v15 = &v16;
-  LOBYTE(a4) = [v6 getValuesForProperties:v8 database:v9 error:a4 handler:v13];
+  LOBYTE(transaction) = [v6 getValuesForProperties:v8 database:unprotectedDatabase error:transaction handler:v13];
 
-  if (a4)
+  if (transaction)
   {
     v11 = v17[5];
   }
@@ -122,24 +122,24 @@ uint64_t __88__HDDeviceContextEntity_enumerateDeviceContextWithTransaction_error
   return v11;
 }
 
-+ (id)insertDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)insertDeviceContext:(id)context transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 syncIdentity];
-  v11 = [HDSyncIdentityEntity insertOrLookupConcreteIdentityForIdentity:v10 transaction:v9 error:a5];
+  contextCopy = context;
+  transactionCopy = transaction;
+  syncIdentity = [contextCopy syncIdentity];
+  v11 = [HDSyncIdentityEntity insertOrLookupConcreteIdentityForIdentity:syncIdentity transaction:transactionCopy error:error];
 
   if (v11)
   {
-    v12 = [v9 unprotectedDatabase];
+    unprotectedDatabase = [transactionCopy unprotectedDatabase];
     v13 = +[HDDeviceContextEntity _propertiesForEntity];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __63__HDDeviceContextEntity_insertDeviceContext_transaction_error___block_invoke;
     v18[3] = &unk_278613DE8;
     v19 = v11;
-    v20 = v8;
-    v14 = [a1 insertOrReplaceEntity:0 database:v12 properties:v13 error:a5 bindingHandler:v18];
+    v20 = contextCopy;
+    v14 = [self insertOrReplaceEntity:0 database:unprotectedDatabase properties:v13 error:error bindingHandler:v18];
   }
 
   else
@@ -147,10 +147,10 @@ uint64_t __88__HDDeviceContextEntity_enumerateDeviceContextWithTransaction_error
     v15 = [MEMORY[0x277CCA9B8] hk_error:11 description:@"Failed to create/lookup concrete sync identity while inserting device context"];
     if (v15)
     {
-      if (a5)
+      if (error)
       {
         v16 = v15;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -206,17 +206,17 @@ uint64_t __63__HDDeviceContextEntity_insertDeviceContext_transaction_error___blo
   return MEMORY[0x22AAC6B60](a2, @"date_modified", Current);
 }
 
-+ (BOOL)deleteDeviceContextWithSyncIdentity:(int64_t)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)deleteDeviceContextWithSyncIdentity:(int64_t)identity profile:(id)profile error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDDeviceContextEntity *)a1 _predicateForSyncEntityIdentity:a3];
-  v10 = [v8 database];
+  profileCopy = profile;
+  v9 = [(HDDeviceContextEntity *)self _predicateForSyncEntityIdentity:identity];
+  database = [profileCopy database];
 
-  LOBYTE(a5) = [(HDHealthEntity *)HDDeviceContextEntity deleteEntitiesWithPredicate:v9 healthDatabase:v10 error:a5];
-  return a5;
+  LOBYTE(error) = [(HDHealthEntity *)HDDeviceContextEntity deleteEntitiesWithPredicate:v9 healthDatabase:database error:error];
+  return error;
 }
 
-+ (id)_predicateForSyncEntityIdentity:(uint64_t)a1
++ (id)_predicateForSyncEntityIdentity:(uint64_t)identity
 {
   objc_opt_self();
   v3 = MEMORY[0x277D10B18];
@@ -226,22 +226,22 @@ uint64_t __63__HDDeviceContextEntity_insertDeviceContext_transaction_error___blo
   return v5;
 }
 
-+ (id)deviceContextForLocalSyncIdentityWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)deviceContextForLocalSyncIdentityWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = +[HDDeviceContextEntity _deviceContextWithSyncIdentity:transaction:error:](a1, [a3 currentSyncIdentityPersistentID], v8, a5);
+  transactionCopy = transaction;
+  v9 = +[HDDeviceContextEntity _deviceContextWithSyncIdentity:transaction:error:](self, [profile currentSyncIdentityPersistentID], transactionCopy, error);
 
   return v9;
 }
 
-+ (id)_deviceContextWithSyncIdentity:(void *)a3 transaction:(uint64_t)a4 error:
++ (id)_deviceContextWithSyncIdentity:(void *)identity transaction:(uint64_t)transaction error:
 {
-  v6 = a3;
+  identityCopy = identity;
   v7 = objc_opt_self();
-  v8 = [v7 deviceContextEntityWithSyncIdentity:a2 transaction:v6 error:a4];
+  v8 = [v7 deviceContextEntityWithSyncIdentity:a2 transaction:identityCopy error:transaction];
   if (v8)
   {
-    v9 = [(HDDeviceContextEntity *)v7 _contextForEntity:v8 transaction:v6 error:a4];
+    v9 = [(HDDeviceContextEntity *)v7 _contextForEntity:v8 transaction:identityCopy error:transaction];
     v10 = v9;
     if (v9)
     {
@@ -257,22 +257,22 @@ uint64_t __63__HDDeviceContextEntity_insertDeviceContext_transaction_error___blo
   return v10;
 }
 
-+ (id)lookupOrCreateDeviceContextForLocalSyncIdentityWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)lookupOrCreateDeviceContextForLocalSyncIdentityWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 syncIdentityManager];
-  v10 = [v9 currentSyncIdentity];
-  v11 = [a1 lookupOrCreateDeviceContextForSyncIdentity:v10 WithTransaction:v8 error:a5];
+  transactionCopy = transaction;
+  syncIdentityManager = [profile syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+  v11 = [self lookupOrCreateDeviceContextForSyncIdentity:currentSyncIdentity WithTransaction:transactionCopy error:error];
 
   return v11;
 }
 
-+ (id)lookupOrCreateDeviceContextForSyncIdentity:(id)a3 WithTransaction:(id)a4 error:(id *)a5
++ (id)lookupOrCreateDeviceContextForSyncIdentity:(id)identity WithTransaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 entity];
-  v11 = +[HDDeviceContextEntity _deviceContextWithSyncIdentity:transaction:error:](a1, [v10 persistentID], v9, a5);
+  identityCopy = identity;
+  transactionCopy = transaction;
+  entity = [identityCopy entity];
+  v11 = +[HDDeviceContextEntity _deviceContextWithSyncIdentity:transaction:error:](self, [entity persistentID], transactionCopy, error);
 
   if (v11)
   {
@@ -281,15 +281,15 @@ uint64_t __63__HDDeviceContextEntity_insertDeviceContext_transaction_error___blo
     goto LABEL_9;
   }
 
-  v14 = [HDDeviceContext localProductTypeEnumWithError:a5];
+  v14 = [HDDeviceContext localProductTypeEnumWithError:error];
   if (v14)
   {
     v15 = [HDDeviceContext alloc];
-    v16 = [v14 intValue];
-    v17 = [v8 identity];
-    v12 = [(HDDeviceContext *)v15 initForLocalDeviceWithType:v16 syncIdentity:v17];
+    intValue = [v14 intValue];
+    identity = [identityCopy identity];
+    v12 = [(HDDeviceContext *)v15 initForLocalDeviceWithType:intValue syncIdentity:identity];
 
-    v13 = [HDDeviceContextEntity insertDeviceContext:v12 transaction:v9 error:a5];
+    v13 = [HDDeviceContextEntity insertDeviceContext:v12 transaction:transactionCopy error:error];
 
     if (!v13)
     {
@@ -311,17 +311,17 @@ LABEL_9:
   return v13;
 }
 
-+ (id)lookupDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)lookupDeviceContext:(id)context transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 syncIdentity];
+  transactionCopy = transaction;
+  syncIdentity = [context syncIdentity];
   v14 = 0;
-  v10 = [HDSyncIdentityEntity concreteIdentityForIdentity:v9 transaction:v8 error:&v14];
+  v10 = [HDSyncIdentityEntity concreteIdentityForIdentity:syncIdentity transaction:transactionCopy error:&v14];
 
   if (v10)
   {
-    v11 = [v10 entity];
-    v12 = +[HDDeviceContextEntity _deviceContextWithSyncIdentity:transaction:error:](a1, [v11 persistentID], v8, a5);
+    entity = [v10 entity];
+    v12 = +[HDDeviceContextEntity _deviceContextWithSyncIdentity:transaction:error:](self, [entity persistentID], transactionCopy, error);
   }
 
   else
@@ -332,40 +332,40 @@ LABEL_9:
   return v12;
 }
 
-+ (BOOL)updateSoftwareVersionForDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)updateSoftwareVersionForDeviceContext:(id)context transaction:(id)transaction error:(id *)error
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 syncIdentity];
-  v11 = [HDSyncIdentityEntity concreteIdentityForIdentity:v10 transaction:v9 error:a5];
+  contextCopy = context;
+  transactionCopy = transaction;
+  syncIdentity = [contextCopy syncIdentity];
+  v11 = [HDSyncIdentityEntity concreteIdentityForIdentity:syncIdentity transaction:transactionCopy error:error];
 
   if (v11)
   {
-    v12 = [v11 entity];
-    v13 = +[HDDeviceContextEntity _predicateForSyncEntityIdentity:](a1, [v12 persistentID]);
+    entity = [v11 entity];
+    v13 = +[HDDeviceContextEntity _predicateForSyncEntityIdentity:](self, [entity persistentID]);
 
     v25[0] = @"currentOS_version";
     v25[1] = @"product_type_name";
     v25[2] = @"date_modified";
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
-    v15 = [v9 databaseForEntityClass:a1];
-    v16 = [a1 updateProperties:v14 predicate:v13 database:v15 error:a5 bindingHandler:&__block_literal_global_15];
+    v15 = [transactionCopy databaseForEntityClass:self];
+    v16 = [self updateProperties:v14 predicate:v13 database:v15 error:error bindingHandler:&__block_literal_global_15];
   }
 
   else
   {
     v17 = MEMORY[0x277CCA9B8];
     v18 = MEMORY[0x277CCACA8];
-    v19 = [v8 syncIdentity];
-    v20 = [v18 stringWithFormat:@"No HDConcreteSyncIdentity found with sync identity %@", v19];
+    syncIdentity2 = [contextCopy syncIdentity];
+    v20 = [v18 stringWithFormat:@"No HDConcreteSyncIdentity found with sync identity %@", syncIdentity2];
     v21 = [v17 hk_error:11 description:v20];
     if (v21)
     {
-      if (a5)
+      if (error)
       {
         v22 = v21;
-        *a5 = v21;
+        *error = v21;
       }
 
       else
@@ -394,27 +394,27 @@ uint64_t __81__HDDeviceContextEntity_updateSoftwareVersionForDeviceContext_trans
   return MEMORY[0x22AAC6B60](a2, @"date_modified", Current);
 }
 
-+ (BOOL)updateDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)updateDeviceContext:(id)context transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 syncIdentity];
-  v11 = [HDSyncIdentityEntity concreteIdentityForIdentity:v10 transaction:v9 error:a5];
+  contextCopy = context;
+  transactionCopy = transaction;
+  syncIdentity = [contextCopy syncIdentity];
+  v11 = [HDSyncIdentityEntity concreteIdentityForIdentity:syncIdentity transaction:transactionCopy error:error];
 
   if (v11)
   {
-    v12 = [v11 entity];
-    v13 = +[HDDeviceContextEntity _predicateForSyncEntityIdentity:](a1, [v12 persistentID]);
+    entity = [v11 entity];
+    v13 = +[HDDeviceContextEntity _predicateForSyncEntityIdentity:](self, [entity persistentID]);
 
     v14 = +[HDDeviceContextEntity _propertiesForEntity];
-    v15 = [v9 databaseForEntityClass:a1];
+    v15 = [transactionCopy databaseForEntityClass:self];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __63__HDDeviceContextEntity_updateDeviceContext_transaction_error___block_invoke;
     v18[3] = &unk_278613DE8;
     v19 = v11;
-    v20 = v8;
-    v16 = [a1 updateProperties:v14 predicate:v13 database:v15 error:a5 bindingHandler:v18];
+    v20 = contextCopy;
+    v16 = [self updateProperties:v14 predicate:v13 database:v15 error:error bindingHandler:v18];
   }
 
   else
@@ -492,13 +492,13 @@ void __61__HDDeviceContextEntity__contextForEntity_transaction_error___block_inv
   }
 }
 
-+ (id)deviceContextEntityWithSyncIdentity:(int64_t)a3 transaction:(id)a4 error:(id *)a5
++ (id)deviceContextEntityWithSyncIdentity:(int64_t)identity transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 databaseForEntityClass:objc_opt_class()];
+  transactionCopy = transaction;
+  v9 = [transactionCopy databaseForEntityClass:objc_opt_class()];
 
-  v10 = [(HDDeviceContextEntity *)a1 _predicateForSyncEntityIdentity:a3];
-  v11 = [a1 anyInDatabase:v9 predicate:v10 error:a5];
+  v10 = [(HDDeviceContextEntity *)self _predicateForSyncEntityIdentity:identity];
+  v11 = [self anyInDatabase:v9 predicate:v10 error:error];
 
   return v11;
 }

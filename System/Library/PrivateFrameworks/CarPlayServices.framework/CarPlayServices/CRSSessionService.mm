@@ -1,26 +1,26 @@
 @interface CRSSessionService
 - (BOOL)isActive;
-- (CRSSessionService)initWithDelegate:(id)a3;
+- (CRSSessionService)initWithDelegate:(id)delegate;
 - (CRSSessionServiceDelegate)delegate;
-- (void)_connectionQueue_addConnection:(id)a3;
-- (void)_connectionQueue_removeConnection:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)_connectionQueue_addConnection:(id)connection;
+- (void)_connectionQueue_removeConnection:(id)connection;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation CRSSessionService
 
-- (CRSSessionService)initWithDelegate:(id)a3
+- (CRSSessionService)initWithDelegate:(id)delegate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = CRSSessionService;
   v5 = [(CRSSessionService *)&v22 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [MEMORY[0x277CF0C18] serial];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    serial = [MEMORY[0x277CF0C18] serial];
     v8 = BSDispatchQueueCreate();
     connectionQueue = v6->_connectionQueue;
     v6->_connectionQueue = v8;
@@ -74,15 +74,15 @@ void __38__CRSSessionService_initWithDelegate___block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = CRSLogForCategory(3uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = connectionCopy;
     _os_log_impl(&dword_242FB5000, v7, OS_LOG_TYPE_DEFAULT, "Received connection! %@", buf, 0xCu);
   }
 
@@ -91,24 +91,24 @@ void __38__CRSSessionService_initWithDelegate___block_invoke(uint64_t a1, void *
   v14[2] = __63__CRSSessionService_listener_didReceiveConnection_withContext___block_invoke;
   v14[3] = &unk_278D8E1A8;
   v14[4] = self;
-  [v6 configureConnection:v14];
+  [connectionCopy configureConnection:v14];
   v8 = CRSLogForCategory(3uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = connectionCopy;
     _os_log_impl(&dword_242FB5000, v8, OS_LOG_TYPE_DEFAULT, "Activating connection... %@", buf, 0xCu);
   }
 
-  v9 = [(CRSSessionService *)self connectionQueue];
+  connectionQueue = [(CRSSessionService *)self connectionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__CRSSessionService_listener_didReceiveConnection_withContext___block_invoke_10;
   block[3] = &unk_278D8E3D0;
   block[4] = self;
-  v13 = v6;
-  v10 = v6;
-  dispatch_async(v9, block);
+  v13 = connectionCopy;
+  v10 = connectionCopy;
+  dispatch_async(connectionQueue, block);
 
   [v10 activate];
   v11 = *MEMORY[0x277D85DE8];
@@ -150,12 +150,12 @@ void __63__CRSSessionService_listener_didReceiveConnection_withContext___block_i
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connectionQueue_addConnection:(id)a3
+- (void)_connectionQueue_addConnection:(id)connection
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_connections addObject:v4];
+  [(NSHashTable *)self->_lock_connections addObject:connectionCopy];
 
   v5 = CRSLogForCategory(3uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -182,12 +182,12 @@ void __52__CRSSessionService__connectionQueue_addConnection___block_invoke(uint6
   [v2 sessionServiceBecameActive:*(a1 + 32)];
 }
 
-- (void)_connectionQueue_removeConnection:(id)a3
+- (void)_connectionQueue_removeConnection:(id)connection
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_connections removeObject:v4];
+  [(NSHashTable *)self->_lock_connections removeObject:connectionCopy];
 
   v5 = CRSLogForCategory(3uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

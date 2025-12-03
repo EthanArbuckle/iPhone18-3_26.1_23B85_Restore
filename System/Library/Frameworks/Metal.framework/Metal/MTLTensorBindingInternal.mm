@@ -1,6 +1,6 @@
 @interface MTLTensorBindingInternal
-- (BOOL)isEqual:(id)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
@@ -18,14 +18,14 @@
   [(MTLBindingInternal *)&v4 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v11[9] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = MEMORY[0x1E696AEC0];
   v10.receiver = self;
   v10.super_class = MTLTensorBindingInternal;
-  v7 = [(MTLBindingInternal *)&v10 formattedDescription:a3];
+  v7 = [(MTLBindingInternal *)&v10 formattedDescription:description];
   v11[0] = v5;
   v11[1] = @"TensorDataType =";
   v11[2] = MTLTensorDataTypeString(self->_tensorDataType);
@@ -40,15 +40,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_tensorDataType == *(a3 + 21) && self->_indexType == *(a3 + 22))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_tensorDataType == *(equal + 21) && self->_indexType == *(equal + 22))
     {
       dimensions = self->_dimensions;
-      v6 = *(a3 + 23);
+      v6 = *(equal + 23);
       if (dimensions)
       {
         if (v6)
@@ -68,7 +68,7 @@
 LABEL_13:
         v9.receiver = self;
         v9.super_class = MTLTensorBindingInternal;
-        LOBYTE(v7) = [(MTLBindingInternal *)&v9 isEqual:a3];
+        LOBYTE(v7) = [(MTLBindingInternal *)&v9 isEqual:equal];
         return v7;
       }
     }

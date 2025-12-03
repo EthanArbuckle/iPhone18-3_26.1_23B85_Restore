@@ -4,56 +4,56 @@
 - (id)exportedInterface;
 - (id)remoteObjectInterface;
 - (void)activate;
-- (void)activityViewControllerDidAppearWithSessionID:(id)a3;
-- (void)activityViewControllerDidDisappearWithSessionID:(id)a3;
-- (void)activityViewControllerDidEnterBackgroundWithSessionID:(id)a3;
-- (void)activityViewControllerPerformEditActionsWithSessionID:(id)a3;
-- (void)activityViewControllerPerformedActivityWithSessionID:(id)a3 presentationMs:(unint64_t)a4 totalShareTimeMs:(unint64_t)a5 activityType:(id)a6 success:(BOOL)a7;
-- (void)activityViewControllerSessionDidEndWithSessionID:(id)a3 testingSnapshot:(id)a4 completionHandler:(id)a5;
-- (void)activityViewControllerWillEnterForegroundWithSessionID:(id)a3;
-- (void)activityViewControllerWithSessionID:(id)a3 didLongPressShareActivityWithIdentifier:(id)a4;
-- (void)activityViewControllerWithSessionID:(id)a3 favoritedActivity:(BOOL)a4 withIdentifier:(id)a5 activityCategory:(int64_t)a6;
-- (void)activityViewControllerWithSessionID:(id)a3 findSupportedActivitiesWithCompletionHandler:(id)a4;
-- (void)activityViewControllerWithSessionID:(id)a3 performActivityWithType:(id)a4 completionHandler:(id)a5;
-- (void)activityViewControllerWithSessionID:(id)a3 provideFeedbackForPeopleSuggestionWithIdentifier:(id)a4;
-- (void)activityViewControllerWithSessionID:(id)a3 removedPersonWithIdentifier:(id)a4;
-- (void)activityViewControllerWithSessionID:(id)a3 selectedActionWithIdentifier:(id)a4;
-- (void)activityViewControllerWithSessionID:(id)a3 selectedActivityWithIdentifier:(id)a4;
-- (void)activityViewControllerWithSessionID:(id)a3 selectedDefaultActivityWithIdentifier:(id)a4 activityCategory:(int64_t)a5;
-- (void)activityViewControllerWithSessionID:(id)a3 selectedPersonWithIdentifier:(id)a4;
-- (void)activityViewControllerWithSessionID:(id)a3 toggledActivityWithIdentifier:(id)a4 activityCategory:(int64_t)a5;
-- (void)activityViewControllerWithSessionID:(id)a3 updatedFavoritesProxies:(id)a4 activityCategory:(int64_t)a5;
-- (void)canShareFileURL:(id)a3 completionHandler:(id)a4;
-- (void)connectToDaemonWithContext:(id)a3 completionHandler:(id)a4;
-- (void)connectUIServiceToDaemonWithSessionID:(id)a3;
+- (void)activityViewControllerDidAppearWithSessionID:(id)d;
+- (void)activityViewControllerDidDisappearWithSessionID:(id)d;
+- (void)activityViewControllerDidEnterBackgroundWithSessionID:(id)d;
+- (void)activityViewControllerPerformEditActionsWithSessionID:(id)d;
+- (void)activityViewControllerPerformedActivityWithSessionID:(id)d presentationMs:(unint64_t)ms totalShareTimeMs:(unint64_t)timeMs activityType:(id)type success:(BOOL)success;
+- (void)activityViewControllerSessionDidEndWithSessionID:(id)d testingSnapshot:(id)snapshot completionHandler:(id)handler;
+- (void)activityViewControllerWillEnterForegroundWithSessionID:(id)d;
+- (void)activityViewControllerWithSessionID:(id)d didLongPressShareActivityWithIdentifier:(id)identifier;
+- (void)activityViewControllerWithSessionID:(id)d favoritedActivity:(BOOL)activity withIdentifier:(id)identifier activityCategory:(int64_t)category;
+- (void)activityViewControllerWithSessionID:(id)d findSupportedActivitiesWithCompletionHandler:(id)handler;
+- (void)activityViewControllerWithSessionID:(id)d performActivityWithType:(id)type completionHandler:(id)handler;
+- (void)activityViewControllerWithSessionID:(id)d provideFeedbackForPeopleSuggestionWithIdentifier:(id)identifier;
+- (void)activityViewControllerWithSessionID:(id)d removedPersonWithIdentifier:(id)identifier;
+- (void)activityViewControllerWithSessionID:(id)d selectedActionWithIdentifier:(id)identifier;
+- (void)activityViewControllerWithSessionID:(id)d selectedActivityWithIdentifier:(id)identifier;
+- (void)activityViewControllerWithSessionID:(id)d selectedDefaultActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category;
+- (void)activityViewControllerWithSessionID:(id)d selectedPersonWithIdentifier:(id)identifier;
+- (void)activityViewControllerWithSessionID:(id)d toggledActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category;
+- (void)activityViewControllerWithSessionID:(id)d updatedFavoritesProxies:(id)proxies activityCategory:(int64_t)category;
+- (void)canShareFileURL:(id)l completionHandler:(id)handler;
+- (void)connectToDaemonWithContext:(id)context completionHandler:(id)handler;
+- (void)connectUIServiceToDaemonWithSessionID:(id)d;
 - (void)connectionEstablished;
 - (void)connectionInterrupted;
-- (void)createSharingURLForCollaborationRequest:(id)a3 completionHandler:(id)a4;
-- (void)dataSourceUpdatedWithSessionConfiguration:(id)a3;
-- (void)deleteSharingURL:(id)a3 containerSetupInfo:(id)a4 completionHandler:(id)a5;
-- (void)didPerformInServiceActivityWithIdentifier:(id)a3 completed:(BOOL)a4 items:(id)a5 error:(id)a6;
-- (void)didUpdateAirDropTransferWithChange:(id)a3;
+- (void)createSharingURLForCollaborationRequest:(id)request completionHandler:(id)handler;
+- (void)dataSourceUpdatedWithSessionConfiguration:(id)configuration;
+- (void)deleteSharingURL:(id)l containerSetupInfo:(id)info completionHandler:(id)handler;
+- (void)didPerformInServiceActivityWithIdentifier:(id)identifier completed:(BOOL)completed items:(id)items error:(id)error;
+- (void)didUpdateAirDropTransferWithChange:(id)change;
 - (void)ensureConnectionEstablished;
 - (void)ensureXPCStarted;
 - (void)invalidate;
 - (void)invalidated;
-- (void)isShareOwnerOrAdminForFileURL:(id)a3 completionHandler:(id)a4;
-- (void)performActivityInHostWithUUID:(id)a3;
-- (void)performAirDropActivityInHostWithNoContentView:(BOOL)a3;
-- (void)performExtensionActivityInHostWithBundleID:(id)a3 request:(id)a4;
-- (void)performShortcutActivityInHostWithBundleID:(id)a3 singleUseToken:(id)a4;
-- (void)performUserDefaultsWithFavoritesProxies:(id)a3 suggestionProxies:(id)a4 orderedUUIDs:(id)a5 activityCategory:(int64_t)a6;
-- (void)requestAddParticipantsAllowedForURL:(id)a3 share:(id)a4 completionHandler:(id)a5;
-- (void)requestCollaborativeModeForContentIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)requestConfigurationWithSessionID:(id)a3 completion:(id)a4;
-- (void)requestDefaultShareModeCollaborationForURL:(id)a3 completionHandler:(id)a4;
-- (void)requestSharedURLForCollaborationRequest:(id)a3 completionHandler:(id)a4;
-- (void)saveCollaborativeMode:(id)a3 forContentIdentifier:(id)a4;
-- (void)sendConfiguration:(id)a3 completion:(id)a4;
-- (void)shareStatusForFileURL:(id)a3 completionHandler:(id)a4;
-- (void)updateUserDefaultsWithFavoritesProxies:(id)a3 suggestionProxies:(id)a4 orderedUUIDs:(id)a5;
-- (void)userDefaultsViewControllerDidDisappearWithSessionID:(id)a3;
-- (void)willPerformInServiceActivityWithRequest:(id)a3 completion:(id)a4;
+- (void)isShareOwnerOrAdminForFileURL:(id)l completionHandler:(id)handler;
+- (void)performActivityInHostWithUUID:(id)d;
+- (void)performAirDropActivityInHostWithNoContentView:(BOOL)view;
+- (void)performExtensionActivityInHostWithBundleID:(id)d request:(id)request;
+- (void)performShortcutActivityInHostWithBundleID:(id)d singleUseToken:(id)token;
+- (void)performUserDefaultsWithFavoritesProxies:(id)proxies suggestionProxies:(id)suggestionProxies orderedUUIDs:(id)ds activityCategory:(int64_t)category;
+- (void)requestAddParticipantsAllowedForURL:(id)l share:(id)share completionHandler:(id)handler;
+- (void)requestCollaborativeModeForContentIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)requestConfigurationWithSessionID:(id)d completion:(id)completion;
+- (void)requestDefaultShareModeCollaborationForURL:(id)l completionHandler:(id)handler;
+- (void)requestSharedURLForCollaborationRequest:(id)request completionHandler:(id)handler;
+- (void)saveCollaborativeMode:(id)mode forContentIdentifier:(id)identifier;
+- (void)sendConfiguration:(id)configuration completion:(id)completion;
+- (void)shareStatusForFileURL:(id)l completionHandler:(id)handler;
+- (void)updateUserDefaultsWithFavoritesProxies:(id)proxies suggestionProxies:(id)suggestionProxies orderedUUIDs:(id)ds;
+- (void)userDefaultsViewControllerDidDisappearWithSessionID:(id)d;
+- (void)willPerformInServiceActivityWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation SFShareSheetSlotManager
@@ -63,8 +63,8 @@
   if (!self->_connection)
   {
     v3 = objc_alloc(MEMORY[0x1E696B0B8]);
-    v4 = [(SFShareSheetSlotManager *)self machServiceName];
-    v5 = [v3 initWithMachServiceName:v4 options:0];
+    machServiceName = [(SFShareSheetSlotManager *)self machServiceName];
+    v5 = [v3 initWithMachServiceName:machServiceName options:0];
     connection = self->_connection;
     self->_connection = v5;
 
@@ -73,11 +73,11 @@
       [(NSXPCConnection *)self->_connection setDelegate:self];
     }
 
-    v7 = [(SFShareSheetSlotManager *)self remoteObjectInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v7];
+    remoteObjectInterface = [(SFShareSheetSlotManager *)self remoteObjectInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:remoteObjectInterface];
 
-    v8 = [(SFShareSheetSlotManager *)self exportedInterface];
-    [(NSXPCConnection *)self->_connection setExportedInterface:v8];
+    exportedInterface = [(SFShareSheetSlotManager *)self exportedInterface];
+    [(NSXPCConnection *)self->_connection setExportedInterface:exportedInterface];
 
     [(NSXPCConnection *)self->_connection setExportedObject:self];
     objc_initWeak(&location, self);
@@ -117,13 +117,13 @@
   }
 
   objc_initWeak(buf, self);
-  v4 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__SFShareSheetSlotManager_ensureConnectionEstablished__block_invoke;
   v5[3] = &unk_1E71F95A8;
   objc_copyWeak(&v6, buf);
-  [v4 establishConnectionWithCompletionHandler:v5];
+  [synchronousRemoteObjectProxy establishConnectionWithCompletionHandler:v5];
   objc_destroyWeak(&v6);
 
   objc_destroyWeak(buf);
@@ -219,8 +219,8 @@ void __43__SFShareSheetSlotManager_ensureXPCStarted__block_invoke_4(uint64_t a1)
     [SFShareSheetSlotManager connectionInterrupted];
   }
 
-  v4 = [(SFShareSheetSlotManager *)self delegate];
-  [v4 connectionInterrupted];
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate connectionInterrupted];
 }
 
 void __55__SFShareSheetSlotManager_synchronousRemoteObjectProxy__block_invoke(uint64_t a1, void *a2)
@@ -273,9 +273,9 @@ void __44__SFShareSheetSlotManager_remoteObjectProxy__block_invoke(uint64_t a1, 
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SFShareSheetSlotManager *)self machServiceName];
+      machServiceName = [(SFShareSheetSlotManager *)self machServiceName];
       v7 = 138412290;
-      v8 = v6;
+      v8 = machServiceName;
       _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Activating %@", &v7, 0xCu);
     }
 
@@ -305,551 +305,551 @@ void __44__SFShareSheetSlotManager_remoteObjectProxy__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)connectToDaemonWithContext:(id)a3 completionHandler:(id)a4
+- (void)connectToDaemonWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/connectToDaemonWithSessionID", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 connectToDaemonWithContext:v6 completionHandler:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy connectToDaemonWithContext:contextCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)connectUIServiceToDaemonWithSessionID:(id)a3
+- (void)connectUIServiceToDaemonWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/connectUIServiceToDaemonWithSessionID", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(v5, &v7);
-  v6 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v6 connectUIServiceToDaemonWithSessionID:v4];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy connectUIServiceToDaemonWithSessionID:dCopy];
 
   os_activity_scope_leave(&v7);
 }
 
-- (void)sendConfiguration:(id)a3 completion:(id)a4
+- (void)sendConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/sendConfiguration", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 sendConfiguration:v6 completion:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy sendConfiguration:configurationCopy completion:completionCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)requestConfigurationWithSessionID:(id)a3 completion:(id)a4
+- (void)requestConfigurationWithSessionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/requestConfigurationWithSessionID", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 requestConfigurationWithSessionID:v6 completion:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy requestConfigurationWithSessionID:dCopy completion:completionCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 selectedActivityWithIdentifier:(id)a4
+- (void)activityViewControllerWithSessionID:(id)d selectedActivityWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerSelectedActivityWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 activityViewControllerWithSessionID:v6 selectedActivityWithIdentifier:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWithSessionID:dCopy selectedActivityWithIdentifier:identifierCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 selectedActionWithIdentifier:(id)a4
+- (void)activityViewControllerWithSessionID:(id)d selectedActionWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerSelectedActionWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 activityViewControllerWithSessionID:v6 selectedActionWithIdentifier:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWithSessionID:dCopy selectedActionWithIdentifier:identifierCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 selectedPersonWithIdentifier:(id)a4
+- (void)activityViewControllerWithSessionID:(id)d selectedPersonWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerSelectedPersonWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 activityViewControllerWithSessionID:v6 selectedPersonWithIdentifier:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWithSessionID:dCopy selectedPersonWithIdentifier:identifierCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 removedPersonWithIdentifier:(id)a4
+- (void)activityViewControllerWithSessionID:(id)d removedPersonWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerRemovedPersonWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 activityViewControllerWithSessionID:v6 removedPersonWithIdentifier:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWithSessionID:dCopy removedPersonWithIdentifier:identifierCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 provideFeedbackForPeopleSuggestionWithIdentifier:(id)a4
+- (void)activityViewControllerWithSessionID:(id)d provideFeedbackForPeopleSuggestionWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerProvideFeedbackForPeopleSuggestionWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 activityViewControllerWithSessionID:v6 provideFeedbackForPeopleSuggestionWithIdentifier:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWithSessionID:dCopy provideFeedbackForPeopleSuggestionWithIdentifier:identifierCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 didLongPressShareActivityWithIdentifier:(id)a4
+- (void)activityViewControllerWithSessionID:(id)d didLongPressShareActivityWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerDidLongPressShareActivityWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 activityViewControllerWithSessionID:v6 didLongPressShareActivityWithIdentifier:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWithSessionID:dCopy didLongPressShareActivityWithIdentifier:identifierCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 toggledActivityWithIdentifier:(id)a4 activityCategory:(int64_t)a5
+- (void)activityViewControllerWithSessionID:(id)d toggledActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v10 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerToggledActivityWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v10, &v12);
-  v11 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v11 activityViewControllerWithSessionID:v8 toggledActivityWithIdentifier:v9 activityCategory:a5];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWithSessionID:dCopy toggledActivityWithIdentifier:identifierCopy activityCategory:category];
 
   os_activity_scope_leave(&v12);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 favoritedActivity:(BOOL)a4 withIdentifier:(id)a5 activityCategory:(int64_t)a6
+- (void)activityViewControllerWithSessionID:(id)d favoritedActivity:(BOOL)activity withIdentifier:(id)identifier activityCategory:(int64_t)category
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
+  activityCopy = activity;
+  dCopy = d;
+  identifierCopy = identifier;
   v12 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerFavoritedActivityWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v14.opaque[0] = 0;
   v14.opaque[1] = 0;
   os_activity_scope_enter(v12, &v14);
-  v13 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v13 activityViewControllerWithSessionID:v10 favoritedActivity:v8 withIdentifier:v11 activityCategory:a6];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWithSessionID:dCopy favoritedActivity:activityCopy withIdentifier:identifierCopy activityCategory:category];
 
   os_activity_scope_leave(&v14);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 selectedDefaultActivityWithIdentifier:(id)a4 activityCategory:(int64_t)a5
+- (void)activityViewControllerWithSessionID:(id)d selectedDefaultActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v10 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerSelectedDefaultActivityWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v10, &v12);
-  v11 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v11 activityViewControllerWithSessionID:v8 selectedDefaultActivityWithIdentifier:v9 activityCategory:a5];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWithSessionID:dCopy selectedDefaultActivityWithIdentifier:identifierCopy activityCategory:category];
 
   os_activity_scope_leave(&v12);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 updatedFavoritesProxies:(id)a4 activityCategory:(int64_t)a5
+- (void)activityViewControllerWithSessionID:(id)d updatedFavoritesProxies:(id)proxies activityCategory:(int64_t)category
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  proxiesCopy = proxies;
   v10 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerUpdatedFavoritesProxies", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v10, &v12);
-  v11 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v11 activityViewControllerWithSessionID:v8 updatedFavoritesProxies:v9 activityCategory:a5];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWithSessionID:dCopy updatedFavoritesProxies:proxiesCopy activityCategory:category];
 
   os_activity_scope_leave(&v12);
 }
 
-- (void)activityViewControllerPerformedActivityWithSessionID:(id)a3 presentationMs:(unint64_t)a4 totalShareTimeMs:(unint64_t)a5 activityType:(id)a6 success:(BOOL)a7
+- (void)activityViewControllerPerformedActivityWithSessionID:(id)d presentationMs:(unint64_t)ms totalShareTimeMs:(unint64_t)timeMs activityType:(id)type success:(BOOL)success
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a6;
+  successCopy = success;
+  dCopy = d;
+  typeCopy = type;
   v14 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerPerformedActivityWithSessionIDPresentationMsTotalShareTimeMsActivityTypeSuccess", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v16.opaque[0] = 0;
   v16.opaque[1] = 0;
   os_activity_scope_enter(v14, &v16);
-  v15 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v15 activityViewControllerPerformedActivityWithSessionID:v12 presentationMs:a4 totalShareTimeMs:a5 activityType:v13 success:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerPerformedActivityWithSessionID:dCopy presentationMs:ms totalShareTimeMs:timeMs activityType:typeCopy success:successCopy];
 
   os_activity_scope_leave(&v16);
 }
 
-- (void)activityViewControllerDidAppearWithSessionID:(id)a3
+- (void)activityViewControllerDidAppearWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerDidAppear", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(v5, &v7);
-  v6 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v6 activityViewControllerDidAppearWithSessionID:v4];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy activityViewControllerDidAppearWithSessionID:dCopy];
 
   os_activity_scope_leave(&v7);
 }
 
-- (void)activityViewControllerDidDisappearWithSessionID:(id)a3
+- (void)activityViewControllerDidDisappearWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerDidDisappear", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(v5, &v7);
-  v6 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v6 activityViewControllerDidDisappearWithSessionID:v4];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy activityViewControllerDidDisappearWithSessionID:dCopy];
 
   os_activity_scope_leave(&v7);
 }
 
-- (void)activityViewControllerSessionDidEndWithSessionID:(id)a3 testingSnapshot:(id)a4 completionHandler:(id)a5
+- (void)activityViewControllerSessionDidEndWithSessionID:(id)d testingSnapshot:(id)snapshot completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  snapshotCopy = snapshot;
+  handlerCopy = handler;
   v11 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerSessionDidEnd", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v11, &v13);
-  v12 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v12 activityViewControllerSessionDidEndWithSessionID:v8 testingSnapshot:v9 completionHandler:v10];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerSessionDidEndWithSessionID:dCopy testingSnapshot:snapshotCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v13);
 }
 
-- (void)activityViewControllerDidEnterBackgroundWithSessionID:(id)a3
+- (void)activityViewControllerDidEnterBackgroundWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerDidEnterBackground", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(v5, &v7);
-  v6 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v6 activityViewControllerDidEnterBackgroundWithSessionID:v4];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerDidEnterBackgroundWithSessionID:dCopy];
 
   os_activity_scope_leave(&v7);
 }
 
-- (void)activityViewControllerWillEnterForegroundWithSessionID:(id)a3
+- (void)activityViewControllerWillEnterForegroundWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerWillEnterForeground", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(v5, &v7);
-  v6 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v6 activityViewControllerWillEnterForegroundWithSessionID:v4];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerWillEnterForegroundWithSessionID:dCopy];
 
   os_activity_scope_leave(&v7);
 }
 
-- (void)activityViewControllerPerformEditActionsWithSessionID:(id)a3
+- (void)activityViewControllerPerformEditActionsWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerPerformEditActions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(v5, &v7);
-  v6 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v6 activityViewControllerPerformEditActionsWithSessionID:v4];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy activityViewControllerPerformEditActionsWithSessionID:dCopy];
 
   os_activity_scope_leave(&v7);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 performActivityWithType:(id)a4 completionHandler:(id)a5
+- (void)activityViewControllerWithSessionID:(id)d performActivityWithType:(id)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  typeCopy = type;
+  handlerCopy = handler;
   v11 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerWithSessionIDPerformActivityWithType", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v11, &v13);
-  v12 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v12 activityViewControllerWithSessionID:v8 performActivityWithType:v9 completionHandler:v10];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy activityViewControllerWithSessionID:dCopy performActivityWithType:typeCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v13);
 }
 
-- (void)activityViewControllerWithSessionID:(id)a3 findSupportedActivitiesWithCompletionHandler:(id)a4
+- (void)activityViewControllerWithSessionID:(id)d findSupportedActivitiesWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/activityViewControllerWithSessionIDFindSupportedActivities", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v9 activityViewControllerWithSessionID:v6 findSupportedActivitiesWithCompletionHandler:v7];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy activityViewControllerWithSessionID:dCopy findSupportedActivitiesWithCompletionHandler:handlerCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)userDefaultsViewControllerDidDisappearWithSessionID:(id)a3
+- (void)userDefaultsViewControllerDidDisappearWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/userDefaultsViewControllerDidDisappear", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(v5, &v7);
-  v6 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v6 userDefaultsViewControllerDidDisappearWithSessionID:v4];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy userDefaultsViewControllerDidDisappearWithSessionID:dCopy];
 
   os_activity_scope_leave(&v7);
 }
 
-- (void)dataSourceUpdatedWithSessionConfiguration:(id)a3
+- (void)dataSourceUpdatedWithSessionConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SFShareSheetSlotManager *)self delegate];
-  [v5 dataSourceUpdatedWithSessionConfiguration:v4];
+  configurationCopy = configuration;
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate dataSourceUpdatedWithSessionConfiguration:configurationCopy];
 }
 
-- (void)performUserDefaultsWithFavoritesProxies:(id)a3 suggestionProxies:(id)a4 orderedUUIDs:(id)a5 activityCategory:(int64_t)a6
+- (void)performUserDefaultsWithFavoritesProxies:(id)proxies suggestionProxies:(id)suggestionProxies orderedUUIDs:(id)ds activityCategory:(int64_t)category
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(SFShareSheetSlotManager *)self delegate];
-  [v13 performUserDefaultsWithFavoritesProxies:v12 suggestionProxies:v11 orderedUUIDs:v10 activityCategory:a6];
+  dsCopy = ds;
+  suggestionProxiesCopy = suggestionProxies;
+  proxiesCopy = proxies;
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate performUserDefaultsWithFavoritesProxies:proxiesCopy suggestionProxies:suggestionProxiesCopy orderedUUIDs:dsCopy activityCategory:category];
 }
 
-- (void)updateUserDefaultsWithFavoritesProxies:(id)a3 suggestionProxies:(id)a4 orderedUUIDs:(id)a5
+- (void)updateUserDefaultsWithFavoritesProxies:(id)proxies suggestionProxies:(id)suggestionProxies orderedUUIDs:(id)ds
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SFShareSheetSlotManager *)self delegate];
-  [v11 updateUserDefaultsWithFavoritesProxies:v10 suggestionProxies:v9 orderedUUIDs:v8];
+  dsCopy = ds;
+  suggestionProxiesCopy = suggestionProxies;
+  proxiesCopy = proxies;
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate updateUserDefaultsWithFavoritesProxies:proxiesCopy suggestionProxies:suggestionProxiesCopy orderedUUIDs:dsCopy];
 }
 
-- (void)performExtensionActivityInHostWithBundleID:(id)a3 request:(id)a4
+- (void)performExtensionActivityInHostWithBundleID:(id)d request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SFShareSheetSlotManager *)self delegate];
-  [v8 performExtensionActivityInHostWithBundleID:v7 request:v6];
+  requestCopy = request;
+  dCopy = d;
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate performExtensionActivityInHostWithBundleID:dCopy request:requestCopy];
 }
 
-- (void)performShortcutActivityInHostWithBundleID:(id)a3 singleUseToken:(id)a4
+- (void)performShortcutActivityInHostWithBundleID:(id)d singleUseToken:(id)token
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SFShareSheetSlotManager *)self delegate];
-  [v8 performShortcutActivityInHostWithBundleID:v7 singleUseToken:v6];
+  tokenCopy = token;
+  dCopy = d;
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate performShortcutActivityInHostWithBundleID:dCopy singleUseToken:tokenCopy];
 }
 
-- (void)performActivityInHostWithUUID:(id)a3
+- (void)performActivityInHostWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(SFShareSheetSlotManager *)self delegate];
-  [v5 performActivityInHostWithUUID:v4];
+  dCopy = d;
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate performActivityInHostWithUUID:dCopy];
 }
 
-- (void)performAirDropActivityInHostWithNoContentView:(BOOL)a3
+- (void)performAirDropActivityInHostWithNoContentView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(SFShareSheetSlotManager *)self delegate];
-  [v4 performAirDropActivityInHostWithNoContentView:v3];
+  viewCopy = view;
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate performAirDropActivityInHostWithNoContentView:viewCopy];
 }
 
-- (void)willPerformInServiceActivityWithRequest:(id)a3 completion:(id)a4
+- (void)willPerformInServiceActivityWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SFShareSheetSlotManager *)self delegate];
-  [v8 willPerformInServiceActivityWithRequest:v7 completion:v6];
+  completionCopy = completion;
+  requestCopy = request;
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate willPerformInServiceActivityWithRequest:requestCopy completion:completionCopy];
 }
 
-- (void)didPerformInServiceActivityWithIdentifier:(id)a3 completed:(BOOL)a4 items:(id)a5 error:(id)a6
+- (void)didPerformInServiceActivityWithIdentifier:(id)identifier completed:(BOOL)completed items:(id)items error:(id)error
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(SFShareSheetSlotManager *)self delegate];
-  [v13 didPerformInServiceActivityWithIdentifier:v12 completed:v7 items:v11 error:v10];
+  completedCopy = completed;
+  errorCopy = error;
+  itemsCopy = items;
+  identifierCopy = identifier;
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate didPerformInServiceActivityWithIdentifier:identifierCopy completed:completedCopy items:itemsCopy error:errorCopy];
 }
 
-- (void)didUpdateAirDropTransferWithChange:(id)a3
+- (void)didUpdateAirDropTransferWithChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SFShareSheetSlotManager *)self delegate];
-  [v5 didUpdateAirDropTransferWithChange:v4];
+  changeCopy = change;
+  delegate = [(SFShareSheetSlotManager *)self delegate];
+  [delegate didUpdateAirDropTransferWithChange:changeCopy];
 }
 
-- (void)canShareFileURL:(id)a3 completionHandler:(id)a4
+- (void)canShareFileURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v8 canShareFileURL:v7 completionHandler:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy canShareFileURL:lCopy completionHandler:handlerCopy];
 }
 
-- (void)createSharingURLForCollaborationRequest:(id)a3 completionHandler:(id)a4
+- (void)createSharingURLForCollaborationRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/createSharingURLForCollaborationRequest", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v9 createSharingURLForCollaborationRequest:v6 completionHandler:v7];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy createSharingURLForCollaborationRequest:requestCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)requestDefaultShareModeCollaborationForURL:(id)a3 completionHandler:(id)a4
+- (void)requestDefaultShareModeCollaborationForURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/requestDefaultShareModeCollaborationForURL", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 requestDefaultShareModeCollaborationForURL:v6 completionHandler:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy requestDefaultShareModeCollaborationForURL:lCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)requestSharedURLForCollaborationRequest:(id)a3 completionHandler:(id)a4
+- (void)requestSharedURLForCollaborationRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/requestSharedURLForCollaborationRequest", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v9 requestSharedURLForCollaborationRequest:v6 completionHandler:v7];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy requestSharedURLForCollaborationRequest:requestCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)requestCollaborativeModeForContentIdentifier:(id)a3 completionHandler:(id)a4
+- (void)requestCollaborativeModeForContentIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/requestCollaborativeModeForContentIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 requestCollaborativeModeForContentIdentifier:v6 completionHandler:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy requestCollaborativeModeForContentIdentifier:identifierCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)requestAddParticipantsAllowedForURL:(id)a3 share:(id)a4 completionHandler:(id)a5
+- (void)requestAddParticipantsAllowedForURL:(id)l share:(id)share completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  shareCopy = share;
+  handlerCopy = handler;
   v11 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/requestAddParticipantsAllowedForURL", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v11, &v13);
-  v12 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v12 requestAddParticipantsAllowedForURL:v8 share:v9 completionHandler:v10];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy requestAddParticipantsAllowedForURL:lCopy share:shareCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v13);
 }
 
-- (void)saveCollaborativeMode:(id)a3 forContentIdentifier:(id)a4
+- (void)saveCollaborativeMode:(id)mode forContentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  identifierCopy = identifier;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/saveCollaborativeMode", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
-  [v9 saveCollaborativeMode:v6 forContentIdentifier:v7];
+  synchronousRemoteObjectProxy = [(SFShareSheetSlotManager *)self synchronousRemoteObjectProxy];
+  [synchronousRemoteObjectProxy saveCollaborativeMode:modeCopy forContentIdentifier:identifierCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)deleteSharingURL:(id)a3 containerSetupInfo:(id)a4 completionHandler:(id)a5
+- (void)deleteSharingURL:(id)l containerSetupInfo:(id)info completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  infoCopy = info;
+  handlerCopy = handler;
   v11 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/removeSharingURL", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v11, &v13);
-  v12 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v12 deleteSharingURL:v8 containerSetupInfo:v9 completionHandler:v10];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy deleteSharingURL:lCopy containerSetupInfo:infoCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v13);
 }
 
-- (void)isShareOwnerOrAdminForFileURL:(id)a3 completionHandler:(id)a4
+- (void)isShareOwnerOrAdminForFileURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/isShareOwnerOrAdminForFileURL", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v9 isShareOwnerOrAdminForFileURL:v6 completionHandler:v7];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy isShareOwnerOrAdminForFileURL:lCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)shareStatusForFileURL:(id)a3 completionHandler:(id)a4
+- (void)shareStatusForFileURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_18B359000, "Sharing/SFShareSheetSlotManager/shareStatusForFileURL", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v8, &v10);
-  v9 = [(SFShareSheetSlotManager *)self remoteObjectProxy];
-  [v9 shareStatusForFileURL:v6 completionHandler:v7];
+  remoteObjectProxy = [(SFShareSheetSlotManager *)self remoteObjectProxy];
+  [remoteObjectProxy shareStatusForFileURL:lCopy completionHandler:handlerCopy];
 
   os_activity_scope_leave(&v10);
 }

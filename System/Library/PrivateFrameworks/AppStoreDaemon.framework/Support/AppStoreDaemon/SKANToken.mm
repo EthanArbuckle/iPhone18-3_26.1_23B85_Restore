@@ -1,8 +1,8 @@
 @interface SKANToken
 + (id)defaultProperties;
-- (SKANToken)initWithAppAdamId:(id)a3 blindedData:(id)a4;
+- (SKANToken)initWithAppAdamId:(id)id blindedData:(id)data;
 - (id)dictionaryRepresentationForRequest;
-- (void)setIsRedownload:(BOOL)a3;
+- (void)setIsRedownload:(BOOL)redownload;
 @end
 
 @implementation SKANToken
@@ -21,22 +21,22 @@
   return v2;
 }
 
-- (SKANToken)initWithAppAdamId:(id)a3 blindedData:(id)a4
+- (SKANToken)initWithAppAdamId:(id)id blindedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = SKANToken;
   v8 = [(SQLiteMemoryEntity *)&v13 init];
   v9 = v8;
-  if (v6 && v8)
+  if (idCopy && v8)
   {
-    sub_10023E000(v8, v6, @"app_adam_id");
-    v10 = [v7 blindedElement];
-    sub_10023E000(v9, v10, @"blinded_element");
+    sub_10023E000(v8, idCopy, @"app_adam_id");
+    blindedElement = [dataCopy blindedElement];
+    sub_10023E000(v9, blindedElement, @"blinded_element");
 
-    v11 = [v7 privateInput];
-    sub_10023E000(v9, v11, @"private_input");
+    privateInput = [dataCopy privateInput];
+    sub_10023E000(v9, privateInput, @"private_input");
   }
 
   return v9;
@@ -45,11 +45,11 @@
 - (id)dictionaryRepresentationForRequest
 {
   v3 = objc_opt_new();
-  v4 = [(SKANToken *)self appAdamId];
-  [v3 setObject:v4 forKeyedSubscript:@"adam-id"];
+  appAdamId = [(SKANToken *)self appAdamId];
+  [v3 setObject:appAdamId forKeyedSubscript:@"adam-id"];
 
-  v5 = [(SKANToken *)self timestamp];
-  [v3 setObject:v5 forKeyedSubscript:@"timestamp"];
+  timestamp = [(SKANToken *)self timestamp];
+  [v3 setObject:timestamp forKeyedSubscript:@"timestamp"];
 
   if (sub_10023E4DC(self, @"is_redownload"))
   {
@@ -62,21 +62,21 @@
   }
 
   [v3 setObject:v6 forKeyedSubscript:@"is-redownload"];
-  v7 = [(SKANToken *)self privateInput];
-  [v3 setObject:v7 forKeyedSubscript:@"private-input"];
+  privateInput = [(SKANToken *)self privateInput];
+  [v3 setObject:privateInput forKeyedSubscript:@"private-input"];
 
-  v8 = [(SKANToken *)self finalizedToken];
-  [v3 setObject:v8 forKeyedSubscript:@"prf-client"];
+  finalizedToken = [(SKANToken *)self finalizedToken];
+  [v3 setObject:finalizedToken forKeyedSubscript:@"prf-client"];
 
-  v9 = [(SKANToken *)self certificate];
-  [v3 setObject:v9 forKeyedSubscript:@"certificate"];
+  certificate = [(SKANToken *)self certificate];
+  [v3 setObject:certificate forKeyedSubscript:@"certificate"];
 
   return v3;
 }
 
-- (void)setIsRedownload:(BOOL)a3
+- (void)setIsRedownload:(BOOL)redownload
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:redownload];
   sub_10023E000(self, v4, @"is_redownload");
 }
 

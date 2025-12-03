@@ -2,46 +2,46 @@
 + (id)defaultConfig;
 + (id)groundTruthVersion;
 + (id)inferenceVersion;
-+ (id)rulesFromFeatures:(id)a3 lowerBounds:(id)a4 upperBounds:(id)a5 outputs:(id)a6;
-- (SGMISaliencyModelConfig)initWithSaliencyOverrideRules:(id)a3 featureNames:(id)a4 mean:(id)a5 std:(id)a6 groundTruthEstimatorRules:(id)a7 threshold:(id)a8 minCountToConsiderATokenAsHighlyDiscriminant:(id)a9 ratioToConsiderATokenAsHighlyDiscriminant:(id)a10 minCountToConsiderATokenAsExtremelyDiscriminant:(id)a11 ratioToConsiderATokenAsExtremelyDiscriminant:(id)a12;
++ (id)rulesFromFeatures:(id)features lowerBounds:(id)bounds upperBounds:(id)upperBounds outputs:(id)outputs;
+- (SGMISaliencyModelConfig)initWithSaliencyOverrideRules:(id)rules featureNames:(id)names mean:(id)mean std:(id)std groundTruthEstimatorRules:(id)estimatorRules threshold:(id)threshold minCountToConsiderATokenAsHighlyDiscriminant:(id)discriminant ratioToConsiderATokenAsHighlyDiscriminant:(id)self0 minCountToConsiderATokenAsExtremelyDiscriminant:(id)self1 ratioToConsiderATokenAsExtremelyDiscriminant:(id)self2;
 @end
 
 @implementation SGMISaliencyModelConfig
 
-- (SGMISaliencyModelConfig)initWithSaliencyOverrideRules:(id)a3 featureNames:(id)a4 mean:(id)a5 std:(id)a6 groundTruthEstimatorRules:(id)a7 threshold:(id)a8 minCountToConsiderATokenAsHighlyDiscriminant:(id)a9 ratioToConsiderATokenAsHighlyDiscriminant:(id)a10 minCountToConsiderATokenAsExtremelyDiscriminant:(id)a11 ratioToConsiderATokenAsExtremelyDiscriminant:(id)a12
+- (SGMISaliencyModelConfig)initWithSaliencyOverrideRules:(id)rules featureNames:(id)names mean:(id)mean std:(id)std groundTruthEstimatorRules:(id)estimatorRules threshold:(id)threshold minCountToConsiderATokenAsHighlyDiscriminant:(id)discriminant ratioToConsiderATokenAsHighlyDiscriminant:(id)self0 minCountToConsiderATokenAsExtremelyDiscriminant:(id)self1 ratioToConsiderATokenAsExtremelyDiscriminant:(id)self2
 {
-  v35 = a3;
-  v34 = a4;
-  obj = a5;
-  v33 = a5;
-  v32 = a6;
-  v36 = a7;
-  v31 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
+  rulesCopy = rules;
+  namesCopy = names;
+  obj = mean;
+  meanCopy = mean;
+  stdCopy = std;
+  estimatorRulesCopy = estimatorRules;
+  thresholdCopy = threshold;
+  discriminantCopy = discriminant;
+  highlyDiscriminantCopy = highlyDiscriminant;
+  extremelyDiscriminantCopy = extremelyDiscriminant;
+  asExtremelyDiscriminantCopy = asExtremelyDiscriminant;
   v37.receiver = self;
   v37.super_class = SGMISaliencyModelConfig;
   v22 = [(SGMISaliencyModelConfig *)&v37 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_saliencyOverrideRules, a3);
-    objc_storeStrong(&v23->_featureNames, a4);
+    objc_storeStrong(&v22->_saliencyOverrideRules, rules);
+    objc_storeStrong(&v23->_featureNames, names);
     objc_storeStrong(&v23->_mean, obj);
-    objc_storeStrong(&v23->_std, a6);
-    objc_storeStrong(&v23->_groundTruthEstimatorRules, a7);
-    v24 = [v36 _pas_mappedArrayWithTransform:&__block_literal_global_11811];
+    objc_storeStrong(&v23->_std, std);
+    objc_storeStrong(&v23->_groundTruthEstimatorRules, estimatorRules);
+    v24 = [estimatorRulesCopy _pas_mappedArrayWithTransform:&__block_literal_global_11811];
     groundTruthEstimatorFeatures = v23->_groundTruthEstimatorFeatures;
     v23->_groundTruthEstimatorFeatures = v24;
 
-    objc_storeStrong(&v23->_threshold, a8);
-    v23->_minCountToConsiderATokenAsHighlyDiscriminant = [v18 unsignedIntegerValue];
-    [v19 doubleValue];
+    objc_storeStrong(&v23->_threshold, threshold);
+    v23->_minCountToConsiderATokenAsHighlyDiscriminant = [discriminantCopy unsignedIntegerValue];
+    [highlyDiscriminantCopy doubleValue];
     v23->_ratioToConsiderATokenAsHighlyDiscriminant = v26;
-    v23->_minCountToConsiderATokenAsExtremelyDiscriminant = [v20 unsignedIntegerValue];
-    [v21 doubleValue];
+    v23->_minCountToConsiderATokenAsExtremelyDiscriminant = [extremelyDiscriminantCopy unsignedIntegerValue];
+    [asExtremelyDiscriminantCopy doubleValue];
     v23->_ratioToConsiderATokenAsExtremelyDiscriminant = v27;
   }
 
@@ -51,49 +51,49 @@
 + (id)inferenceVersion
 {
   v2 = +[SGMITrialClientWrapper sharedInstance];
-  v3 = [v2 modelInferenceVersion];
+  modelInferenceVersion = [v2 modelInferenceVersion];
 
-  return v3;
+  return modelInferenceVersion;
 }
 
 + (id)groundTruthVersion
 {
   v2 = +[SGMITrialClientWrapper sharedInstance];
-  v3 = [v2 modelGroundTruthVersion];
+  modelGroundTruthVersion = [v2 modelGroundTruthVersion];
 
-  return v3;
+  return modelGroundTruthVersion;
 }
 
 + (id)defaultConfig
 {
   v3 = +[SGMITrialClientWrapper sharedInstance];
-  v4 = [v3 saliencyOverrideFeatureNames];
-  v5 = [v3 saliencyOverrideFeatureLowerBounds];
-  v6 = [v3 saliencyOverrideFeatureUpperBounds];
-  v7 = [v3 saliencyOverrideOutputs];
-  v8 = [a1 rulesFromFeatures:v4 lowerBounds:v5 upperBounds:v6 outputs:v7];
+  saliencyOverrideFeatureNames = [v3 saliencyOverrideFeatureNames];
+  saliencyOverrideFeatureLowerBounds = [v3 saliencyOverrideFeatureLowerBounds];
+  saliencyOverrideFeatureUpperBounds = [v3 saliencyOverrideFeatureUpperBounds];
+  saliencyOverrideOutputs = [v3 saliencyOverrideOutputs];
+  v8 = [self rulesFromFeatures:saliencyOverrideFeatureNames lowerBounds:saliencyOverrideFeatureLowerBounds upperBounds:saliencyOverrideFeatureUpperBounds outputs:saliencyOverrideOutputs];
 
   if (v8)
   {
-    v9 = [v3 modelFeatureNames];
+    modelFeatureNames = [v3 modelFeatureNames];
     v10 = sgMap();
 
-    v11 = [v3 modelFeatureStandardizationMeans];
-    if (!v11)
+    modelFeatureStandardizationMeans = [v3 modelFeatureStandardizationMeans];
+    if (!modelFeatureStandardizationMeans)
     {
-      v12 = sgMailIntelligenceLogHandle();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+      modelFeatureStandardizationStandardDeviations = sgMailIntelligenceLogHandle();
+      if (os_log_type_enabled(modelFeatureStandardizationStandardDeviations, OS_LOG_TYPE_FAULT))
       {
         *buf = 0;
-        _os_log_fault_impl(&dword_231E60000, v12, OS_LOG_TYPE_FAULT, "SGMISaliencyModelConfig: Error, mean for feature standardization is nil.", buf, 2u);
+        _os_log_fault_impl(&dword_231E60000, modelFeatureStandardizationStandardDeviations, OS_LOG_TYPE_FAULT, "SGMISaliencyModelConfig: Error, mean for feature standardization is nil.", buf, 2u);
       }
 
       v26 = 0;
       goto LABEL_44;
     }
 
-    v12 = [v3 modelFeatureStandardizationStandardDeviations];
-    if (!v12)
+    modelFeatureStandardizationStandardDeviations = [v3 modelFeatureStandardizationStandardDeviations];
+    if (!modelFeatureStandardizationStandardDeviations)
     {
       v17 = sgMailIntelligenceLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -106,41 +106,41 @@
       goto LABEL_43;
     }
 
-    v13 = [v3 modelGroundTruthFeatureNames];
-    v14 = [v3 modelGroundTruthFeatureLowerBounds];
-    v15 = [v3 modelGroundTruthFeatureUpperBounds];
-    v16 = [v3 modelGroundTruthOutputs];
-    v17 = [a1 rulesFromFeatures:v13 lowerBounds:v14 upperBounds:v15 outputs:v16];
+    modelGroundTruthFeatureNames = [v3 modelGroundTruthFeatureNames];
+    modelGroundTruthFeatureLowerBounds = [v3 modelGroundTruthFeatureLowerBounds];
+    modelGroundTruthFeatureUpperBounds = [v3 modelGroundTruthFeatureUpperBounds];
+    modelGroundTruthOutputs = [v3 modelGroundTruthOutputs];
+    v17 = [self rulesFromFeatures:modelGroundTruthFeatureNames lowerBounds:modelGroundTruthFeatureLowerBounds upperBounds:modelGroundTruthFeatureUpperBounds outputs:modelGroundTruthOutputs];
 
     if (!v17)
     {
-      v18 = sgMailIntelligenceLogHandle();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
+      classificationThreshold = sgMailIntelligenceLogHandle();
+      if (os_log_type_enabled(classificationThreshold, OS_LOG_TYPE_FAULT))
       {
         *buf = 0;
-        _os_log_fault_impl(&dword_231E60000, v18, OS_LOG_TYPE_FAULT, "SGMISaliencyModelConfig: Error in processing ground truth estimation rules.", buf, 2u);
+        _os_log_fault_impl(&dword_231E60000, classificationThreshold, OS_LOG_TYPE_FAULT, "SGMISaliencyModelConfig: Error in processing ground truth estimation rules.", buf, 2u);
       }
 
       v26 = 0;
       goto LABEL_42;
     }
 
-    v18 = [v3 classificationThreshold];
-    if (!v18)
+    classificationThreshold = [v3 classificationThreshold];
+    if (!classificationThreshold)
     {
-      v19 = sgMailIntelligenceLogHandle();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+      minCountToConsiderATokenAsHighlyDiscriminant = sgMailIntelligenceLogHandle();
+      if (os_log_type_enabled(minCountToConsiderATokenAsHighlyDiscriminant, OS_LOG_TYPE_FAULT))
       {
         *buf = 0;
-        _os_log_fault_impl(&dword_231E60000, v19, OS_LOG_TYPE_FAULT, "SGMISaliencyModelConfig: Error, classification threshold is nil.", buf, 2u);
+        _os_log_fault_impl(&dword_231E60000, minCountToConsiderATokenAsHighlyDiscriminant, OS_LOG_TYPE_FAULT, "SGMISaliencyModelConfig: Error, classification threshold is nil.", buf, 2u);
       }
 
       v26 = 0;
       goto LABEL_41;
     }
 
-    v19 = [v3 minCountToConsiderATokenAsHighlyDiscriminant];
-    if (!v19)
+    minCountToConsiderATokenAsHighlyDiscriminant = [v3 minCountToConsiderATokenAsHighlyDiscriminant];
+    if (!minCountToConsiderATokenAsHighlyDiscriminant)
     {
       v21 = sgMailIntelligenceLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -153,9 +153,9 @@
       goto LABEL_40;
     }
 
-    v20 = [v3 ratioToConsiderATokenAsHighlyDiscriminant];
-    v21 = v20;
-    if (!v20)
+    ratioToConsiderATokenAsHighlyDiscriminant = [v3 ratioToConsiderATokenAsHighlyDiscriminant];
+    v21 = ratioToConsiderATokenAsHighlyDiscriminant;
+    if (!ratioToConsiderATokenAsHighlyDiscriminant)
     {
       v27 = sgMailIntelligenceLogHandle();
       v31 = v27;
@@ -169,17 +169,17 @@
       goto LABEL_39;
     }
 
-    v30 = v20;
-    v22 = [v3 minCountToConsiderATokenAsExtremelyDiscriminant];
-    v31 = v22;
-    if (v22)
+    v30 = ratioToConsiderATokenAsHighlyDiscriminant;
+    minCountToConsiderATokenAsExtremelyDiscriminant = [v3 minCountToConsiderATokenAsExtremelyDiscriminant];
+    v31 = minCountToConsiderATokenAsExtremelyDiscriminant;
+    if (minCountToConsiderATokenAsExtremelyDiscriminant)
     {
-      v23 = v22;
-      v24 = [v3 ratioToConsiderATokenAsExtremelyDiscriminant];
-      if (v24)
+      v23 = minCountToConsiderATokenAsExtremelyDiscriminant;
+      ratioToConsiderATokenAsExtremelyDiscriminant = [v3 ratioToConsiderATokenAsExtremelyDiscriminant];
+      if (ratioToConsiderATokenAsExtremelyDiscriminant)
       {
-        v25 = v24;
-        v26 = [[SGMISaliencyModelConfig alloc] initWithSaliencyOverrideRules:v8 featureNames:v10 mean:v11 std:v12 groundTruthEstimatorRules:v17 threshold:v18 minCountToConsiderATokenAsHighlyDiscriminant:v19 ratioToConsiderATokenAsHighlyDiscriminant:v30 minCountToConsiderATokenAsExtremelyDiscriminant:v23 ratioToConsiderATokenAsExtremelyDiscriminant:v24];
+        v25 = ratioToConsiderATokenAsExtremelyDiscriminant;
+        v26 = [[SGMISaliencyModelConfig alloc] initWithSaliencyOverrideRules:v8 featureNames:v10 mean:modelFeatureStandardizationMeans std:modelFeatureStandardizationStandardDeviations groundTruthEstimatorRules:v17 threshold:classificationThreshold minCountToConsiderATokenAsHighlyDiscriminant:minCountToConsiderATokenAsHighlyDiscriminant ratioToConsiderATokenAsHighlyDiscriminant:v30 minCountToConsiderATokenAsExtremelyDiscriminant:v23 ratioToConsiderATokenAsExtremelyDiscriminant:ratioToConsiderATokenAsExtremelyDiscriminant];
 LABEL_38:
 
         v21 = v30;
@@ -241,15 +241,15 @@ id __40__SGMISaliencyModelConfig_defaultConfig__block_invoke(uint64_t a1, void *
   return v4;
 }
 
-+ (id)rulesFromFeatures:(id)a3 lowerBounds:(id)a4 upperBounds:(id)a5 outputs:(id)a6
++ (id)rulesFromFeatures:(id)features lowerBounds:(id)bounds upperBounds:(id)upperBounds outputs:(id)outputs
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (!v9)
+  featuresCopy = features;
+  boundsCopy = bounds;
+  upperBoundsCopy = upperBounds;
+  outputsCopy = outputs;
+  v13 = outputsCopy;
+  if (!featuresCopy)
   {
     v15 = sgMailIntelligenceLogHandle();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -264,7 +264,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v10)
+  if (!boundsCopy)
   {
     v15 = sgMailIntelligenceLogHandle();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -277,7 +277,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (!v11)
+  if (!upperBoundsCopy)
   {
     v15 = sgMailIntelligenceLogHandle();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -290,7 +290,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (!v12)
+  if (!outputsCopy)
   {
     v15 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -303,8 +303,8 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v14 = [v9 count];
-  if (v14 != [v10 count] || v14 != objc_msgSend(v11, "count") || v14 != objc_msgSend(v13, "count"))
+  v14 = [featuresCopy count];
+  if (v14 != [boundsCopy count] || v14 != objc_msgSend(upperBoundsCopy, "count") || v14 != objc_msgSend(v13, "count"))
   {
     v15 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -333,12 +333,12 @@ LABEL_12:
     v16 = 0;
     v17 = 0x278948000uLL;
     v34 = v14;
-    v35 = v11;
+    v35 = upperBoundsCopy;
     while (1)
     {
-      v18 = [v9 objectAtIndex:{v16, v34}];
-      v19 = [*(v17 + 3280) allFeaturePrettyNames];
-      v20 = [v19 containsObject:v18];
+      v18 = [featuresCopy objectAtIndex:{v16, v34}];
+      allFeaturePrettyNames = [*(v17 + 3280) allFeaturePrettyNames];
+      v20 = [allFeaturePrettyNames containsObject:v18];
 
       if ((v20 & 1) == 0)
       {
@@ -346,20 +346,20 @@ LABEL_12:
       }
 
       v21 = [SGMISaliencyModelConfigRule alloc];
-      v37 = [*(v17 + 3280) prettyNamesReverseMapping];
-      v22 = [v37 objectForKeyedSubscript:v18];
-      v23 = [v10 objectAtIndex:v16];
-      v24 = [v11 objectAtIndex:v16];
+      prettyNamesReverseMapping = [*(v17 + 3280) prettyNamesReverseMapping];
+      v22 = [prettyNamesReverseMapping objectForKeyedSubscript:v18];
+      v23 = [boundsCopy objectAtIndex:v16];
+      v24 = [upperBoundsCopy objectAtIndex:v16];
       [v36 objectAtIndex:v16];
-      v25 = v9;
-      v27 = v26 = v10;
+      v25 = featuresCopy;
+      v27 = v26 = boundsCopy;
       v28 = [(SGMISaliencyModelConfigRule *)v21 initWithFeatureName:v22 strictLowerBound:v23 strictUpperBound:v24 output:v27];
       [v15 addObject:v28];
 
-      v10 = v26;
-      v9 = v25;
+      boundsCopy = v26;
+      featuresCopy = v25;
 
-      v11 = v35;
+      upperBoundsCopy = v35;
       v17 = 0x278948000;
 
       if (v34 == ++v16)

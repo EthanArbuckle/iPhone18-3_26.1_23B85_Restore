@@ -1,5 +1,5 @@
 @interface CKDetailsChatOptionsCell
-- (CKDetailsChatOptionsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CKDetailsChatOptionsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UISwitch)controlSwitch;
 - (void)_configureNewControlSwitch;
 - (void)prepareForReuse;
@@ -7,47 +7,47 @@
 
 @implementation CKDetailsChatOptionsCell
 
-- (CKDetailsChatOptionsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsChatOptionsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v31[4] = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = CKDetailsChatOptionsCell;
-  v4 = [(CKDetailsCell *)&v30 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsCell *)&v30 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 theme];
-    v7 = [v6 detailsCellStaticTextColor];
-    v8 = [(CKDetailsChatOptionsCell *)v4 textLabel];
-    [v8 setTextColor:v7];
+    theme = [v5 theme];
+    detailsCellStaticTextColor = [theme detailsCellStaticTextColor];
+    textLabel = [(CKDetailsChatOptionsCell *)v4 textLabel];
+    [textLabel setTextColor:detailsCellStaticTextColor];
 
-    v9 = [(CKDetailsChatOptionsCell *)v4 textLabel];
-    [v9 setNumberOfLines:0];
+    textLabel2 = [(CKDetailsChatOptionsCell *)v4 textLabel];
+    [textLabel2 setNumberOfLines:0];
 
-    v10 = [(CKDetailsChatOptionsCell *)v4 textLabel];
-    [v10 setLineBreakMode:0];
+    textLabel3 = [(CKDetailsChatOptionsCell *)v4 textLabel];
+    [textLabel3 setLineBreakMode:0];
 
     [(CKDetailsChatOptionsCell *)v4 _configureNewControlSwitch];
     v22 = MEMORY[0x1E696ACD8];
-    v29 = [(CKDetailsChatOptionsCell *)v4 textLabel];
-    v28 = [v29 leadingAnchor];
-    v27 = [(CKDetailsChatOptionsCell *)v4 leadingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    textLabel4 = [(CKDetailsChatOptionsCell *)v4 textLabel];
+    leadingAnchor = [textLabel4 leadingAnchor];
+    leadingAnchor2 = [(CKDetailsChatOptionsCell *)v4 leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v31[0] = v26;
-    v25 = [(CKDetailsChatOptionsCell *)v4 textLabel];
-    v24 = [v25 trailingAnchor];
-    v23 = [(CKDetailsChatOptionsCell *)v4 trailingAnchor];
-    v21 = [v24 constraintEqualToAnchor:v23];
+    textLabel5 = [(CKDetailsChatOptionsCell *)v4 textLabel];
+    trailingAnchor = [textLabel5 trailingAnchor];
+    trailingAnchor2 = [(CKDetailsChatOptionsCell *)v4 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v31[1] = v21;
-    v11 = [(CKDetailsChatOptionsCell *)v4 textLabel];
-    v12 = [v11 topAnchor];
-    v13 = [(CKDetailsChatOptionsCell *)v4 topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    textLabel6 = [(CKDetailsChatOptionsCell *)v4 textLabel];
+    topAnchor = [textLabel6 topAnchor];
+    topAnchor2 = [(CKDetailsChatOptionsCell *)v4 topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v31[2] = v14;
-    v15 = [(CKDetailsChatOptionsCell *)v4 textLabel];
-    v16 = [v15 bottomAnchor];
-    v17 = [(CKDetailsChatOptionsCell *)v4 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    textLabel7 = [(CKDetailsChatOptionsCell *)v4 textLabel];
+    bottomAnchor = [textLabel7 bottomAnchor];
+    bottomAnchor2 = [(CKDetailsChatOptionsCell *)v4 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v31[3] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
     [v22 activateConstraints:v19];
@@ -82,8 +82,8 @@
   v6 = self->_controlSwitch;
   self->_controlSwitch = v5;
 
-  v7 = [(CKDetailsChatOptionsCell *)self controlSwitch];
-  [(CKDetailsChatOptionsCell *)self setAccessoryView:v7];
+  controlSwitch = [(CKDetailsChatOptionsCell *)self controlSwitch];
+  [(CKDetailsChatOptionsCell *)self setAccessoryView:controlSwitch];
 }
 
 - (void)prepareForReuse

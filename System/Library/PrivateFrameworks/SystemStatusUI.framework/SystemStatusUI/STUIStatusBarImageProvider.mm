@@ -1,7 +1,7 @@
 @interface STUIStatusBarImageProvider
 + (id)sharedProvider;
-- (UIEdgeInsets)_alignmentInsetsForImageNamed:(id)a3 styleAttributes:(id)a4;
-- (id)imageNamed:(id)a3 styleAttributes:(id)a4;
+- (UIEdgeInsets)_alignmentInsetsForImageNamed:(id)named styleAttributes:(id)attributes;
+- (id)imageNamed:(id)named styleAttributes:(id)attributes;
 @end
 
 @implementation STUIStatusBarImageProvider
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __44__STUIStatusBarImageProvider_sharedProvider__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_53 != -1)
   {
     dispatch_once(&_MergedGlobals_53, block);
@@ -32,18 +32,18 @@ uint64_t __44__STUIStatusBarImageProvider_sharedProvider__block_invoke(uint64_t 
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (id)imageNamed:(id)a3 styleAttributes:(id)a4
+- (id)imageNamed:(id)named styleAttributes:(id)attributes
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  namedCopy = named;
+  attributesCopy = attributes;
+  v7 = namedCopy;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = [v6 imageNamePrefixes];
-  v9 = [v8 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  imageNamePrefixes = [attributesCopy imageNamePrefixes];
+  v9 = [imageNamePrefixes countByEnumeratingWithState:&v30 objects:v36 count:16];
   v10 = v7;
   if (v9)
   {
@@ -58,13 +58,13 @@ uint64_t __44__STUIStatusBarImageProvider_sharedProvider__block_invoke(uint64_t 
       {
         if (*v31 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(imageNamePrefixes);
         }
 
         v10 = [*(*(&v30 + 1) + 8 * v13) stringByAppendingString:v7];
 
-        v15 = [v6 traitCollection];
-        v16 = [STUIStatusBarImage _kitImageNamed:v10 withTrait:v15];
+        traitCollection = [attributesCopy traitCollection];
+        v16 = [STUIStatusBarImage _kitImageNamed:v10 withTrait:traitCollection];
 
         if (v16)
         {
@@ -77,7 +77,7 @@ uint64_t __44__STUIStatusBarImageProvider_sharedProvider__block_invoke(uint64_t 
       }
 
       while (v11 != v13);
-      v11 = [v8 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v11 = [imageNamePrefixes countByEnumeratingWithState:&v30 objects:v36 count:16];
       if (v11)
       {
         continue;
@@ -88,29 +88,29 @@ uint64_t __44__STUIStatusBarImageProvider_sharedProvider__block_invoke(uint64_t 
   }
 
   v17 = v7;
-  v18 = [v6 traitCollection];
-  v16 = [STUIStatusBarImage _kitImageNamed:v17 withTrait:v18];
+  traitCollection2 = [attributesCopy traitCollection];
+  v16 = [STUIStatusBarImage _kitImageNamed:v17 withTrait:traitCollection2];
 
   v10 = v17;
   if (v16)
   {
 LABEL_12:
-    [(STUIStatusBarImageProvider *)self _alignmentInsetsForImageNamed:v10 styleAttributes:v6];
+    [(STUIStatusBarImageProvider *)self _alignmentInsetsForImageNamed:v10 styleAttributes:attributesCopy];
     v20.f64[0] = v19;
     v20.f64[1] = v21;
     v23.f64[0] = v22;
     v23.f64[1] = v24;
     if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v20, *MEMORY[0x277D768C8]), vceqq_f64(v23, *(MEMORY[0x277D768C8] + 16))))) & 1) != 0 || ([v16 imageWithAlignmentRectInsets:?], v25 = objc_claimAutoreleasedReturnValue(), v16, (v16 = v25) != 0))
     {
-      if (![(STUIStatusBarImageProvider *)self _suppressHairlineThickeningForImageName:v10 styleAttributes:v6])
+      if (![(STUIStatusBarImageProvider *)self _suppressHairlineThickeningForImageName:v10 styleAttributes:attributesCopy])
       {
         goto LABEL_19;
       }
 
-      v26 = [v16 _imageThatSuppressesAccessibilityHairlineThickening];
+      _imageThatSuppressesAccessibilityHairlineThickening = [v16 _imageThatSuppressesAccessibilityHairlineThickening];
 
-      v16 = v26;
-      if (v26)
+      v16 = _imageThatSuppressesAccessibilityHairlineThickening;
+      if (_imageThatSuppressesAccessibilityHairlineThickening)
       {
         goto LABEL_19;
       }
@@ -131,21 +131,21 @@ LABEL_19:
   return v16;
 }
 
-- (UIEdgeInsets)_alignmentInsetsForImageNamed:(id)a3 styleAttributes:(id)a4
+- (UIEdgeInsets)_alignmentInsetsForImageNamed:(id)named styleAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
+  namedCopy = named;
+  attributesCopy = attributes;
   v8 = *MEMORY[0x277D768C8];
   v7 = *(MEMORY[0x277D768C8] + 8);
   v10 = *(MEMORY[0x277D768C8] + 16);
   v9 = *(MEMORY[0x277D768C8] + 24);
-  if ([v5 isEqualToString:@"Large_Bolt"])
+  if ([namedCopy isEqualToString:@"Large_Bolt"])
   {
     UIEdgeInsetsAdd();
-    [v6 effectiveLayoutDirection];
+    [attributesCopy effectiveLayoutDirection];
   }
 
-  else if (![v5 isEqualToString:@"Split_SOS"])
+  else if (![namedCopy isEqualToString:@"Split_SOS"])
   {
     goto LABEL_5;
   }
@@ -156,8 +156,8 @@ LABEL_19:
   v10 = v13;
   v9 = v14;
 LABEL_5:
-  v15 = [v6 traitCollection];
-  [v15 displayScale];
+  traitCollection = [attributesCopy traitCollection];
+  [traitCollection displayScale];
   v17 = v16;
 
   if (v17 != 3.0)

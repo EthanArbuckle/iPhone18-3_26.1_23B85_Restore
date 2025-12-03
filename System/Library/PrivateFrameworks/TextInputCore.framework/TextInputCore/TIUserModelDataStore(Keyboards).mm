@@ -33,15 +33,15 @@
 {
   if (__testingInstance_3800)
   {
-    v0 = __testingInstance_3800;
+    singletonInstance = __testingInstance_3800;
   }
 
   else
   {
-    v0 = [MEMORY[0x277D6F548] singletonInstance];
+    singletonInstance = [MEMORY[0x277D6F548] singletonInstance];
   }
 
-  return v0;
+  return singletonInstance;
 }
 
 @end

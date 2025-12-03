@@ -1,15 +1,15 @@
 @interface TrendListFooter
-- (_TtC10FitnessApp15TrendListFooter)initWithCoder:(id)a3;
-- (_TtC10FitnessApp15TrendListFooter)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC10FitnessApp15TrendListFooter)initWithCoder:(id)coder;
+- (_TtC10FitnessApp15TrendListFooter)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TrendListFooter
 
-- (_TtC10FitnessApp15TrendListFooter)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp15TrendListFooter)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -18,10 +18,10 @@
     v6 = 0;
   }
 
-  return sub_1003B0F3C(a3, a4, v6);
+  return sub_1003B0F3C(style, identifier, v6);
 }
 
-- (_TtC10FitnessApp15TrendListFooter)initWithCoder:(id)a3
+- (_TtC10FitnessApp15TrendListFooter)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC10FitnessApp15TrendListFooter_textView;
   *(&self->super.super.super.super.isa + v3) = sub_1003B0754();

@@ -1,11 +1,11 @@
 @interface SKPlaySound
-+ (id)_audioURLWithName:(id)a3 bundle:(id)a4;
-+ (id)playSoundFileNamed:(id)a3 atPosition:(CGPoint)a4 waitForCompletion:(BOOL)a5;
++ (id)_audioURLWithName:(id)name bundle:(id)bundle;
++ (id)playSoundFileNamed:(id)named atPosition:(CGPoint)position waitForCompletion:(BOOL)completion;
 - (SKPlaySound)init;
-- (SKPlaySound)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKPlaySound)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKPlaySound
@@ -26,12 +26,12 @@
   return 0;
 }
 
-- (SKPlaySound)initWithCoder:(id)a3
+- (SKPlaySound)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKPlaySound;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -39,26 +39,26 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = SKPlaySound;
-  [(SKAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_fileName forKey:@"_fileName"];
-  [v4 encodeCGPoint:@"_position" forKey:{self->_position.x, self->_position.y}];
-  [v4 encodeBool:self->_mycaction->var21 forKey:@"_wait"];
+  [(SKAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_fileName forKey:@"_fileName"];
+  [coderCopy encodeCGPoint:@"_position" forKey:{self->_position.x, self->_position.y}];
+  [coderCopy encodeBool:self->_mycaction->var21 forKey:@"_wait"];
 }
 
-+ (id)playSoundFileNamed:(id)a3 atPosition:(CGPoint)a4 waitForCompletion:(BOOL)a5
++ (id)playSoundFileNamed:(id)named atPosition:(CGPoint)position waitForCompletion:(BOOL)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
+  y = position.y;
+  x = position.x;
+  namedCopy = named;
   v9 = objc_alloc_init(SKPlaySound);
   v9->_position.x = x;
   v9->_position.y = y;
-  v10 = [v8 copy];
+  v10 = [namedCopy copy];
   fileName = v9->_fileName;
   v9->_fileName = v10;
 
@@ -66,11 +66,11 @@
   v13 = v9->_fileName;
   v14 = SKGetResourceBundle();
   v15 = [v12 _audioURLWithName:v13 bundle:v14];
-  v16 = [v15 path];
+  path = [v15 path];
   filePath = v9->_filePath;
-  v9->_filePath = v16;
+  v9->_filePath = path;
 
-  v9->_mycaction->var21 = a5;
+  v9->_mycaction->var21 = completion;
   if (v9->_filePath)
   {
     SKCRendererEnsureSoundContext();
@@ -93,23 +93,23 @@
 
     else
     {
-      NSLog(&cfstr_SkactionErrorL.isa, v8);
+      NSLog(&cfstr_SkactionErrorL.isa, namedCopy);
     }
   }
 
   else
   {
-    NSLog(&cfstr_SkactionErrorL.isa, v8);
+    NSLog(&cfstr_SkactionErrorL.isa, namedCopy);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = SKPlaySound;
-  v4 = [(SKAction *)&v11 copyWithZone:a3];
+  v4 = [(SKAction *)&v11 copyWithZone:zone];
   objc_storeStrong(v4 + 3, self->_fileName);
   objc_storeStrong(v4 + 2, self->_filePath);
   *(v4 + 40) = self->_position;
@@ -136,35 +136,35 @@
 
     else
     {
-      v9 = [*(v4 + 2) lastPathComponent];
-      NSLog(&cfstr_SkactionErrorL.isa, v9);
-      v7 = v9;
+      lastPathComponent = [*(v4 + 2) lastPathComponent];
+      NSLog(&cfstr_SkactionErrorL.isa, lastPathComponent);
+      v7 = lastPathComponent;
     }
   }
 
   return v4;
 }
 
-+ (id)_audioURLWithName:(id)a3 bundle:(id)a4
++ (id)_audioURLWithName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 URLForResource:v5 withExtension:0];
+  nameCopy = name;
+  bundleCopy = bundle;
+  v7 = [bundleCopy URLForResource:nameCopy withExtension:0];
   if (!v7)
   {
-    v7 = [v6 URLForResource:v5 withExtension:@"caf"];
+    v7 = [bundleCopy URLForResource:nameCopy withExtension:@"caf"];
     if (!v7)
     {
-      v7 = [v6 URLForResource:v5 withExtension:@"wav"];
+      v7 = [bundleCopy URLForResource:nameCopy withExtension:@"wav"];
       if (!v7)
       {
-        v7 = [v6 URLForResource:v5 withExtension:@"caff"];
+        v7 = [bundleCopy URLForResource:nameCopy withExtension:@"caff"];
         if (!v7)
         {
-          v7 = [v6 URLForResource:v5 withExtension:@"aiff"];
+          v7 = [bundleCopy URLForResource:nameCopy withExtension:@"aiff"];
           if (!v7)
           {
-            v7 = [v6 URLForResource:v5 withExtension:@"mp3"];
+            v7 = [bundleCopy URLForResource:nameCopy withExtension:@"mp3"];
           }
         }
       }

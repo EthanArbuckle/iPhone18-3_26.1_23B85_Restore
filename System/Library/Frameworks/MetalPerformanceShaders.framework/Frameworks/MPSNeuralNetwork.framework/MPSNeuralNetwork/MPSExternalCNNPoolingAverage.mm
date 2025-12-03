@@ -1,10 +1,10 @@
 @interface MPSExternalCNNPoolingAverage
-- (unint64_t)encodeToCommandBuffer:(id)a3 computeCommandEncoder:(id)a4 options:(unint64_t)a5 sourceTexture:(id)a6 sourceInfo:(id *)a7 destinationTexture:(id)a8 destinationInfo:(id *)a9 zeroPadSizeX:(unint64_t)a10 zeroPadSizeY:(unint64_t)a11;
+- (unint64_t)encodeToCommandBuffer:(id)buffer computeCommandEncoder:(id)encoder options:(unint64_t)options sourceTexture:(id)texture sourceInfo:(id *)info destinationTexture:(id)destinationTexture destinationInfo:(id *)destinationInfo zeroPadSizeX:(unint64_t)self0 zeroPadSizeY:(unint64_t)self1;
 @end
 
 @implementation MPSExternalCNNPoolingAverage
 
-- (unint64_t)encodeToCommandBuffer:(id)a3 computeCommandEncoder:(id)a4 options:(unint64_t)a5 sourceTexture:(id)a6 sourceInfo:(id *)a7 destinationTexture:(id)a8 destinationInfo:(id *)a9 zeroPadSizeX:(unint64_t)a10 zeroPadSizeY:(unint64_t)a11
+- (unint64_t)encodeToCommandBuffer:(id)buffer computeCommandEncoder:(id)encoder options:(unint64_t)options sourceTexture:(id)texture sourceInfo:(id *)info destinationTexture:(id)destinationTexture destinationInfo:(id *)destinationInfo zeroPadSizeX:(unint64_t)self0 zeroPadSizeY:(unint64_t)self1
 {
   v13 = MTLReportFailureTypeEnabled();
   v20 = *MEMORY[0x277CD72E0];

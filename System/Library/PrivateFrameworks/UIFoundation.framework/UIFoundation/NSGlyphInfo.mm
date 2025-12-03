@@ -4,10 +4,10 @@
 + (NSGlyphInfo)glyphInfoWithGlyph:(NSGlyph)glyph forFont:(NSFont *)font baseString:(NSString *)string;
 + (NSGlyphInfo)glyphInfoWithGlyphName:(NSString *)glyphName forFont:(NSFont *)font baseString:(NSString *)string;
 + (void)initialize;
-- (NSGlyphInfo)initWithBaseString:(id)a3;
-- (NSGlyphInfo)initWithCoder:(id)a3;
+- (NSGlyphInfo)initWithBaseString:(id)string;
+- (NSGlyphInfo)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSGlyphInfo
@@ -59,20 +59,20 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    __NSGlyphInfoClassObject = a1;
+    __NSGlyphInfoClassObject = self;
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
-- (NSGlyphInfo)initWithBaseString:(id)a3
+- (NSGlyphInfo)initWithBaseString:(id)string
 {
   v6.receiver = self;
   v6.super_class = NSGlyphInfo;
   v4 = [(NSGlyphInfo *)&v6 init];
-  v4->_baseString = [a3 copy];
+  v4->_baseString = [string copy];
   return v4;
 }
 
@@ -83,54 +83,54 @@
   [(NSGlyphInfo *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [a3 allowsKeyedCoding];
+  allowsKeyedCoding = [coder allowsKeyedCoding];
   baseString = self->_baseString;
-  if (v5)
+  if (allowsKeyedCoding)
   {
     if (baseString)
     {
 
-      [a3 encodeObject:? forKey:?];
+      [coder encodeObject:? forKey:?];
     }
   }
 
   else
   {
 
-    [a3 encodeObject:baseString];
+    [coder encodeObject:baseString];
   }
 }
 
-- (NSGlyphInfo)initWithCoder:(id)a3
+- (NSGlyphInfo)initWithCoder:(id)coder
 {
-  if (![a3 allowsKeyedCoding])
+  if (![coder allowsKeyedCoding])
   {
-    if ([a3 versionForClassName:@"NSGlyphInfo"] || (v11 = objc_opt_class(), v11 != objc_opt_class()))
+    if ([coder versionForClassName:@"NSGlyphInfo"] || (v11 = objc_opt_class(), v11 != objc_opt_class()))
     {
-      self->_baseString = [a3 decodeObject];
-      v10 = self;
+      self->_baseString = [coder decodeObject];
+      selfCopy = self;
       goto LABEL_9;
     }
 
     goto LABEL_15;
   }
 
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSString"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSString"];
   if (!v5)
   {
     goto LABEL_15;
   }
 
   v6 = v5;
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSFont"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSFont"];
   if (!v7)
   {
-    v14 = [a3 decodeInt32ForKey:@"NSCID_RO"];
+    v14 = [coder decodeInt32ForKey:@"NSCID_RO"];
     if (v14)
     {
-      v10 = [NSGlyphInfo glyphInfoWithCharacterIdentifier:v14 & 0xFFFFFF collection:HIBYTE(v14) baseString:v6];
+      selfCopy = [NSGlyphInfo glyphInfoWithCharacterIdentifier:v14 & 0xFFFFFF collection:HIBYTE(v14) baseString:v6];
       goto LABEL_9;
     }
 
@@ -140,22 +140,22 @@ LABEL_15:
   }
 
   v8 = v7;
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSGlyphName"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSGlyphName"];
   if (v9)
   {
-    v10 = [NSGlyphInfo glyphInfoWithGlyphName:v9 forFont:v8 baseString:v6];
+    selfCopy = [NSGlyphInfo glyphInfoWithGlyphName:v9 forFont:v8 baseString:v6];
     goto LABEL_9;
   }
 
-  v15 = [a3 decodeInt32ForKey:@"NSGlyph"];
+  v15 = [coder decodeInt32ForKey:@"NSGlyph"];
   if (!v15)
   {
     goto LABEL_15;
   }
 
-  v10 = [NSGlyphInfo glyphInfoWithGlyph:v15 forFont:v8 baseString:v6];
+  selfCopy = [NSGlyphInfo glyphInfoWithGlyph:v15 forFont:v8 baseString:v6];
 LABEL_9:
-  v12 = v10;
+  v12 = selfCopy;
 
   if (v12)
   {

@@ -1,15 +1,15 @@
 @interface PSCVPixelStream
-+ (id)cvPixelStreamWithKey:(char *)a3 options:(ps_resource_options *)a4 allocator:(void *)a5 deallocator:(void *)a6;
-+ (id)cvPixelStreamWithKey:(char *)a3 options:(ps_resource_options *)a4 properties:(id)a5;
-+ (id)cvPixelStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 allocator:(void *)a5 deallocator:(void *)a6;
-+ (id)cvPixelStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 properties:(id)a5;
-+ (id)cvPixelStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 width:(unint64_t)a5 height:(unint64_t)a6 pixelFormat:(unsigned int)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validate:(id *)a3;
++ (id)cvPixelStreamWithKey:(char *)key options:(ps_resource_options *)options allocator:(void *)allocator deallocator:(void *)deallocator;
++ (id)cvPixelStreamWithKey:(char *)key options:(ps_resource_options *)options properties:(id)properties;
++ (id)cvPixelStreamWithResourceKey:(id)key options:(ps_resource_options *)options allocator:(void *)allocator deallocator:(void *)deallocator;
++ (id)cvPixelStreamWithResourceKey:(id)key options:(ps_resource_options *)options properties:(id)properties;
++ (id)cvPixelStreamWithResourceKey:(id)key options:(ps_resource_options *)options width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validate:(id *)validate;
 - (PSCVPixelStream)init;
-- (PSCVPixelStream)initWithCoder:(id)a3;
+- (PSCVPixelStream)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSCVPixelStream
@@ -28,38 +28,38 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = PSCVPixelStream;
-  [(PSResourceStream *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_width forKey:@"width"];
-  [v4 encodeInteger:self->_height forKey:@"height"];
-  [v4 encodeInt32:self->_pixelFormat forKey:@"pixelFormat"];
-  [v4 encodeObject:self->_format forKey:@"format"];
-  [v4 encodeObject:self->_ioSurfaceProperties forKey:@"properties"];
+  [(PSResourceStream *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_width forKey:@"width"];
+  [coderCopy encodeInteger:self->_height forKey:@"height"];
+  [coderCopy encodeInt32:self->_pixelFormat forKey:@"pixelFormat"];
+  [coderCopy encodeObject:self->_format forKey:@"format"];
+  [coderCopy encodeObject:self->_ioSurfaceProperties forKey:@"properties"];
 }
 
-- (PSCVPixelStream)initWithCoder:(id)a3
+- (PSCVPixelStream)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PSCVPixelStream;
-  v5 = [(PSResourceStream *)&v14 initWithCoder:v4];
+  v5 = [(PSResourceStream *)&v14 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(PSResourceStream *)v5 setResourceClass:7];
-    v6->_width = [v4 decodeIntegerForKey:@"width"];
-    v6->_height = [v4 decodeIntegerForKey:@"height"];
-    v6->_pixelFormat = [v4 decodeInt32ForKey:@"pixelFormat"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"format"];
+    v6->_width = [coderCopy decodeIntegerForKey:@"width"];
+    v6->_height = [coderCopy decodeIntegerForKey:@"height"];
+    v6->_pixelFormat = [coderCopy decodeInt32ForKey:@"pixelFormat"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"format"];
     format = v6->_format;
     v6->_format = v7;
 
     v9 = objc_opt_class();
-    v10 = [v4 decodeDictionaryWithKeysOfClass:v9 objectsOfClass:objc_opt_class() forKey:@"properties"];
+    v10 = [coderCopy decodeDictionaryWithKeysOfClass:v9 objectsOfClass:objc_opt_class() forKey:@"properties"];
     ioSurfaceProperties = v6->_ioSurfaceProperties;
     v6->_ioSurfaceProperties = v10;
 
@@ -69,18 +69,18 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  v8 = v7;
-  if (v7 == self)
+  equalCopy = equal;
+  v8 = equalCopy;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
 
   else
   {
-    if (v7)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -100,8 +100,8 @@ LABEL_16:
         v14 = format;
         if (!format)
         {
-          v4 = [(PSCVPixelStream *)v9 format];
-          if (!v4)
+          format = [(PSCVPixelStream *)v9 format];
+          if (!format)
           {
             v24 = 0;
             v23 = 0;
@@ -111,23 +111,23 @@ LABEL_16:
           v14 = self->_format;
         }
 
-        v3 = [(PSCVPixelStream *)v9 format];
-        if (![(PSCameraStreamFormat *)v14 isEqual:v3])
+        format2 = [(PSCVPixelStream *)v9 format];
+        if (![(PSCameraStreamFormat *)v14 isEqual:format2])
         {
           v15 = 0;
           goto LABEL_32;
         }
 
-        v24 = v4;
+        v24 = format;
         v23 = 1;
 LABEL_20:
-        v17 = 240;
+        ioSurfaceProperties2 = 240;
         ioSurfaceProperties = self->_ioSurfaceProperties;
         v19 = ioSurfaceProperties;
         if (!ioSurfaceProperties)
         {
-          v5 = [(PSCVPixelStream *)v9 ioSurfaceProperties];
-          if (!v5)
+          ioSurfaceProperties = [(PSCVPixelStream *)v9 ioSurfaceProperties];
+          if (!ioSurfaceProperties)
           {
             v20 = 0;
             goto LABEL_27;
@@ -136,8 +136,8 @@ LABEL_20:
           v19 = self->_ioSurfaceProperties;
         }
 
-        v17 = [(PSCVPixelStream *)v9 ioSurfaceProperties];
-        if (![(NSDictionary *)v19 isEqual:v17])
+        ioSurfaceProperties2 = [(PSCVPixelStream *)v9 ioSurfaceProperties];
+        if (![(NSDictionary *)v19 isEqual:ioSurfaceProperties2])
         {
           v15 = 0;
           goto LABEL_29;
@@ -153,7 +153,7 @@ LABEL_27:
           if ((v20 & 1) == 0)
           {
 LABEL_30:
-            v4 = v24;
+            format = v24;
             if (ioSurfaceProperties)
             {
               if (!v23)
@@ -205,84 +205,84 @@ LABEL_17:
   return v15;
 }
 
-+ (id)cvPixelStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 width:(unint64_t)a5 height:(unint64_t)a6 pixelFormat:(unsigned int)a7
++ (id)cvPixelStreamWithResourceKey:(id)key options:(ps_resource_options *)options width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format
 {
-  v11 = a3;
+  keyCopy = key;
   v12 = objc_alloc_init(PSCVPixelStream);
-  [(PSResourceStream *)v12 setKey:v11];
+  [(PSResourceStream *)v12 setKey:keyCopy];
   [(PSResourceStream *)v12 setProvider:9];
-  v12->_width = a5;
-  v12->_height = a6;
-  v12->_pixelFormat = a7;
-  [(PSResourceStream *)v12 setOptions:a4->storage_mode, a4->creation_mode];
+  v12->_width = width;
+  v12->_height = height;
+  v12->_pixelFormat = format;
+  [(PSResourceStream *)v12 setOptions:options->storage_mode, options->creation_mode];
 
   return v12;
 }
 
-+ (id)cvPixelStreamWithKey:(char *)a3 options:(ps_resource_options *)a4 properties:(id)a5
++ (id)cvPixelStreamWithKey:(char *)key options:(ps_resource_options *)options properties:(id)properties
 {
-  v7 = a5;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", a3];
-  v9 = [PSCVPixelStream cvPixelStreamWithResourceKey:v8 options:a4 properties:v7];
+  propertiesCopy = properties;
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", key];
+  v9 = [PSCVPixelStream cvPixelStreamWithResourceKey:v8 options:options properties:propertiesCopy];
 
   return v9;
 }
 
-+ (id)cvPixelStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 properties:(id)a5
++ (id)cvPixelStreamWithResourceKey:(id)key options:(ps_resource_options *)options properties:(id)properties
 {
-  v7 = a3;
-  v8 = a5;
+  keyCopy = key;
+  propertiesCopy = properties;
   v9 = objc_alloc_init(PSCVPixelStream);
-  [(PSResourceStream *)v9 setKey:v7];
+  [(PSResourceStream *)v9 setKey:keyCopy];
   [(PSResourceStream *)v9 setProvider:9];
-  objc_storeStrong(&v9->_ioSurfaceProperties, a5);
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277CD2928]];
+  objc_storeStrong(&v9->_ioSurfaceProperties, properties);
+  v10 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x277CD2928]];
   v9->_width = [v10 unsignedLongValue];
 
-  v11 = [v8 objectForKeyedSubscript:*MEMORY[0x277CD28D0]];
+  v11 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x277CD28D0]];
   v9->_height = [v11 unsignedLongValue];
 
-  v12 = [v8 objectForKeyedSubscript:*MEMORY[0x277CD28D8]];
+  v12 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x277CD28D8]];
   v9->_pixelFormat = [v12 unsignedIntValue];
 
-  [(PSResourceStream *)v9 setOptions:a4->storage_mode, a4->creation_mode];
+  [(PSResourceStream *)v9 setOptions:options->storage_mode, options->creation_mode];
 
   return v9;
 }
 
-+ (id)cvPixelStreamWithKey:(char *)a3 options:(ps_resource_options *)a4 allocator:(void *)a5 deallocator:(void *)a6
++ (id)cvPixelStreamWithKey:(char *)key options:(ps_resource_options *)options allocator:(void *)allocator deallocator:(void *)deallocator
 {
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", a3];
-  v10 = [PSCVPixelStream cvPixelStreamWithResourceKey:v9 options:a4 allocator:a5 deallocator:a6];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", key];
+  v10 = [PSCVPixelStream cvPixelStreamWithResourceKey:v9 options:options allocator:allocator deallocator:deallocator];
 
   return v10;
 }
 
-+ (id)cvPixelStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 allocator:(void *)a5 deallocator:(void *)a6
++ (id)cvPixelStreamWithResourceKey:(id)key options:(ps_resource_options *)options allocator:(void *)allocator deallocator:(void *)deallocator
 {
-  v9 = a3;
+  keyCopy = key;
   v10 = objc_alloc_init(PSCVPixelStream);
-  [(PSResourceStream *)v10 setKey:v9];
+  [(PSResourceStream *)v10 setKey:keyCopy];
   [(PSResourceStream *)v10 setProvider:9];
-  v10->_deallocator = a6;
-  v10->_allocator = a5;
-  [(PSResourceStream *)v10 setOptions:a4->storage_mode, a4->creation_mode];
+  v10->_deallocator = deallocator;
+  v10->_allocator = allocator;
+  [(PSResourceStream *)v10 setOptions:options->storage_mode, options->creation_mode];
 
   return v10;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   if ([(PSResourceStream *)self resourceClass]!= 7)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resource Class invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
 
 LABEL_23:
-    *a3 = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v10];
+    *validate = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v10];
     goto LABEL_24;
   }
 
@@ -291,7 +291,7 @@ LABEL_23:
   if (!v5)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream key invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
@@ -303,7 +303,7 @@ LABEL_23:
   if (!v6)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.creation_mode invalid for the stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
@@ -314,7 +314,7 @@ LABEL_23:
   if ([(PSResourceStream *)self options]== 0)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.storage_mode invalid for the stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
@@ -326,7 +326,7 @@ LABEL_23:
   if (v7 == 1 && (!self->_width || !self->_height))
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"IOSurface properties required for descriptor mode (options.creation_mode)"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
@@ -341,7 +341,7 @@ LABEL_23:
   }
 
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Allocator and Deallocator required for allocator mode (options.creation_mode)"];
-  if (a3)
+  if (validate)
   {
     goto LABEL_23;
   }

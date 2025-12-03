@@ -1,11 +1,11 @@
 @interface TKSlotWatch
-+ (BOOL)smartCard:(id)a3 mightHandleAIDFromExtension:(id)a4 foundAID:(id *)a5;
-+ (id)supportedAIDsOfExtension:(id)a3;
-+ (void)parseAIDForAttribute:(id)a3 into:(id)a4;
-- (TKSlotWatch)initWithName:(id)a3 endpoint:(id)a4 slotType:(id)a5 watcher:(id)a6;
++ (BOOL)smartCard:(id)card mightHandleAIDFromExtension:(id)extension foundAID:(id *)d;
++ (id)supportedAIDsOfExtension:(id)extension;
++ (void)parseAIDForAttribute:(id)attribute into:(id)into;
+- (TKSlotWatch)initWithName:(id)name endpoint:(id)endpoint slotType:(id)type watcher:(id)watcher;
 - (void)dealloc;
-- (void)getTokenIDs:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)getTokenIDs:(id)ds;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)remove;
 - (void)startObserving;
 - (void)tokenArrived;
@@ -14,45 +14,45 @@
 
 @implementation TKSlotWatch
 
-- (TKSlotWatch)initWithName:(id)a3 endpoint:(id)a4 slotType:(id)a5 watcher:(id)a6
+- (TKSlotWatch)initWithName:(id)name endpoint:(id)endpoint slotType:(id)type watcher:(id)watcher
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  endpointCopy = endpoint;
+  typeCopy = type;
+  watcherCopy = watcher;
   v32.receiver = self;
   v32.super_class = TKSlotWatch;
   v15 = [(TKSlotWatch *)&v32 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a3);
-    objc_storeStrong(&v16->_slotType, a5);
-    objc_storeStrong(&v16->_endpoint, a4);
-    objc_storeWeak(&v16->_slotWatcher, v14);
+    objc_storeStrong(&v15->_name, name);
+    objc_storeStrong(&v16->_slotType, type);
+    objc_storeStrong(&v16->_endpoint, endpoint);
+    objc_storeWeak(&v16->_slotWatcher, watcherCopy);
     v16->_previousSlotState = 1;
     v17 = +[NSMutableDictionary dictionary];
     tokenConnections = v16->_tokenConnections;
     v16->_tokenConnections = v17;
 
     v31 = 0;
-    v19 = [[TKSmartCardSlot alloc] initWithEndpoint:v12 error:&v31];
+    v19 = [[TKSmartCardSlot alloc] initWithEndpoint:endpointCopy error:&v31];
     v20 = v31;
     smartCardSlot = v16->_smartCardSlot;
     v16->_smartCardSlot = v19;
 
     if (v16->_smartCardSlot)
     {
-      v22 = [NSString stringWithFormat:@"slotwatch:%@", v11];
-      [v22 UTF8String];
+      nameCopy = [NSString stringWithFormat:@"slotwatch:%@", nameCopy];
+      [nameCopy UTF8String];
       v23 = os_transaction_create();
       transaction = v16->_transaction;
       v16->_transaction = v23;
 
-      v25 = [NSString stringWithFormat:@"slotwatch:%@", v11];
-      v26 = [v25 UTF8String];
+      nameCopy2 = [NSString stringWithFormat:@"slotwatch:%@", nameCopy];
+      uTF8String = [nameCopy2 UTF8String];
       v27 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v28 = dispatch_queue_create(v26, v27);
+      v28 = dispatch_queue_create(uTF8String, v27);
       queue = v16->_queue;
       v16->_queue = v28;
     }
@@ -65,7 +65,7 @@
         sub_10001E98C(v20, v27);
       }
 
-      v25 = v16;
+      nameCopy2 = v16;
       v16 = 0;
     }
   }
@@ -98,44 +98,44 @@
   [WeakRetained removeSlotWatch:self];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = [a5 objectForKey:{NSKeyValueChangeNewKey, a4}];
-  v8 = [v7 integerValue];
+  v7 = [change objectForKey:{NSKeyValueChangeNewKey, object}];
+  integerValue = [v7 integerValue];
 
   previousSlotState = self->_previousSlotState;
   v10 = previousSlotState;
-  if (v8 == 2)
+  if (integerValue == 2)
   {
 LABEL_4:
-    v8 = v10;
+    integerValue = v10;
     if (previousSlotState == 1)
     {
 LABEL_5:
       WeakRetained = objc_loadWeakRetained(&self->_slotWatcher);
-      v12 = [WeakRetained registry];
-      [v12 preloadTokens];
+      registry = [WeakRetained registry];
+      [registry preloadTokens];
 
-      v8 = v10;
+      integerValue = v10;
       goto LABEL_6;
     }
 
     goto LABEL_6;
   }
 
-  if (v8 == previousSlotState)
+  if (integerValue == previousSlotState)
   {
-    v10 = v8;
+    v10 = integerValue;
     goto LABEL_4;
   }
 
-  if (!v8)
+  if (!integerValue)
   {
     [(TKSlotWatch *)self remove];
     goto LABEL_6;
   }
 
-  if (v8 == 1)
+  if (integerValue == 1)
   {
     queue = self->_queue;
     v15[0] = _NSConcreteStackBlock;
@@ -148,7 +148,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (v8 == 4)
+  if (integerValue == 4)
   {
     v13 = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -160,20 +160,20 @@ LABEL_5:
   }
 
 LABEL_6:
-  self->_previousSlotState = v8;
+  self->_previousSlotState = integerValue;
 }
 
-- (void)getTokenIDs:(id)a3
+- (void)getTokenIDs:(id)ds
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dsCopy = ds;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMutableDictionary *)v5->_tokenConnections allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)selfCopy->_tokenConnections allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -184,33 +184,33 @@ LABEL_6:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) stringRepresentation];
-        [v4 addObject:v10];
+        stringRepresentation = [*(*(&v11 + 1) + 8 * v9) stringRepresentation];
+        [dsCopy addObject:stringRepresentation];
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-+ (void)parseAIDForAttribute:(id)a3 into:(id)a4
++ (void)parseAIDForAttribute:(id)attribute into:(id)into
 {
-  v8 = a3;
-  v5 = a4;
+  attributeCopy = attribute;
+  intoCopy = into;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v8;
+    v6 = attributeCopy;
   }
 
   else
@@ -221,22 +221,22 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v6 = [NSData dataFromAIDString:v8];
+    v6 = [NSData dataFromAIDString:attributeCopy];
   }
 
   v7 = v6;
   if (v6)
   {
-    [v5 addObject:v6];
+    [intoCopy addObject:v6];
   }
 
 LABEL_7:
 }
 
-+ (id)supportedAIDsOfExtension:(id)a3
++ (id)supportedAIDsOfExtension:(id)extension
 {
-  v4 = [a3 attributes];
-  v5 = [v4 objectForKeyedSubscript:TKTokenClassDriverApplicationIDKey];
+  attributes = [extension attributes];
+  v5 = [attributes objectForKeyedSubscript:TKTokenClassDriverApplicationIDKey];
 
   if (v5)
   {
@@ -263,7 +263,7 @@ LABEL_7:
               objc_enumerationMutation(v7);
             }
 
-            [a1 parseAIDForAttribute:*(*(&v13 + 1) + 8 * i) into:{v6, v13}];
+            [self parseAIDForAttribute:*(*(&v13 + 1) + 8 * i) into:{v6, v13}];
           }
 
           v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -275,7 +275,7 @@ LABEL_7:
 
     else
     {
-      [a1 parseAIDForAttribute:v5 into:v6];
+      [self parseAIDForAttribute:v5 into:v6];
     }
   }
 
@@ -287,11 +287,11 @@ LABEL_7:
   return v6;
 }
 
-+ (BOOL)smartCard:(id)a3 mightHandleAIDFromExtension:(id)a4 foundAID:(id *)a5
++ (BOOL)smartCard:(id)card mightHandleAIDFromExtension:(id)extension foundAID:(id *)d
 {
-  v28 = a3;
-  v26 = a4;
-  v7 = [a1 supportedAIDsOfExtension:?];
+  cardCopy = card;
+  extensionCopy = extension;
+  v7 = [self supportedAIDsOfExtension:?];
   v8 = v7;
   if (v7)
   {
@@ -325,7 +325,7 @@ LABEL_7:
           v29[1] = 3221225472;
           v29[2] = sub_10000BAF0;
           v29[3] = &unk_100038B48;
-          v13 = v28;
+          v13 = cardCopy;
           v30 = v13;
           v31 = v12;
           v32 = &v38;
@@ -336,10 +336,10 @@ LABEL_7:
             v18 = sub_10000B0B8();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v23 = [v13 slot];
-              v24 = [v23 name];
+              slot = [v13 slot];
+              name = [slot name];
               *buf = 138543618;
-              v45 = v24;
+              v45 = name;
               v46 = 2114;
               v47 = v15;
               _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Error connecting SmartCard in slot %{public}@: %{public}@", buf, 0x16u);
@@ -372,7 +372,7 @@ LABEL_16:
     v17 = v19 != 0;
     if (v19)
     {
-      *a5 = v19;
+      *d = v19;
     }
 
     else
@@ -380,8 +380,8 @@ LABEL_16:
       v20 = sub_10000B0B8();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v21 = [v26 identifier];
-        sub_10001EA18(v21, buf, v20);
+        identifier = [extensionCopy identifier];
+        sub_10001EA18(identifier, buf, v20);
       }
     }
 
@@ -408,22 +408,22 @@ LABEL_16:
     sub_10001EA68(self, v2, v3);
   }
 
-  v56 = [(TKSmartCardSlot *)self->_smartCardSlot makeSmartCard];
+  makeSmartCard = [(TKSmartCardSlot *)self->_smartCardSlot makeSmartCard];
   WeakRetained = objc_loadWeakRetained(&self->_slotWatcher);
-  v55 = [WeakRetained registry];
+  registry = [WeakRetained registry];
 
   v5 = objc_loadWeakRetained(&self->_slotWatcher);
-  v6 = [v5 registry];
-  v50 = [v6 beginTransaction:@"tokenArrived"];
+  registry2 = [v5 registry];
+  v50 = [registry2 beginTransaction:@"tokenArrived"];
 
-  v49 = [v50 tokenExtensions];
+  tokenExtensions = [v50 tokenExtensions];
   v60 = [&__NSArray0__struct mutableCopy];
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v7 = [v49 allValues];
-  v8 = [v7 countByEnumeratingWithState:&v67 objects:v81 count:16];
+  allValues = [tokenExtensions allValues];
+  v8 = [allValues countByEnumeratingWithState:&v67 objects:v81 count:16];
   if (v8)
   {
     v9 = *v68;
@@ -435,18 +435,18 @@ LABEL_16:
       {
         if (*v68 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v67 + 1) + 8 * i);
-        v13 = [v12 attributes];
-        v14 = [v13 objectForKeyedSubscript:v10];
+        attributes = [v12 attributes];
+        v14 = [attributes objectForKeyedSubscript:v10];
         v15 = [v14 isEqual:@"smartcard"];
 
         if (v15)
         {
-          v16 = [v12 attributes];
-          v17 = [v16 objectForKeyedSubscript:v58];
+          attributes2 = [v12 attributes];
+          v17 = [attributes2 objectForKeyedSubscript:v58];
           v18 = [v17 isEqual:&__kCFBooleanTrue];
 
           if (v18)
@@ -461,7 +461,7 @@ LABEL_16:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v67 objects:v81 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v67 objects:v81 count:16];
     }
 
     while (v8);
@@ -492,41 +492,41 @@ LABEL_16:
         v23 = *(*(&v63 + 1) + 8 * j);
         v24 = objc_opt_class();
         v62 = 0;
-        v25 = [v24 smartCard:v56 mightHandleAIDFromExtension:v23 foundAID:&v62];
+        v25 = [v24 smartCard:makeSmartCard mightHandleAIDFromExtension:v23 foundAID:&v62];
         v61 = v62;
         if (v25)
         {
-          v26 = [v23 attributes];
-          v27 = [v26 objectForKeyedSubscript:v52];
+          attributes3 = [v23 attributes];
+          v27 = [attributes3 objectForKeyedSubscript:v52];
           v28 = [v27 isEqual:&__kCFBooleanTrue];
 
-          v29 = [v55 driverCache];
-          v59 = [v29 hostTokenDriverFromExtension:v23];
+          driverCache = [registry driverCache];
+          v59 = [driverCache hostTokenDriverFromExtension:v23];
 
-          v30 = [[TKHostTokenConnection alloc] initWithDriver:v59 slot:self->_endpoint AID:v61 proprietaryCardUsage:v28 registry:v55 error:0];
+          v30 = [[TKHostTokenConnection alloc] initWithDriver:v59 slot:self->_endpoint AID:v61 proprietaryCardUsage:v28 registry:registry error:0];
           if (v30)
           {
-            v31 = self;
-            objc_sync_enter(v31);
+            selfCopy = self;
+            objc_sync_enter(selfCopy);
             tokenConnections = self->_tokenConnections;
-            v33 = [(TKHostTokenConnection *)v30 token];
-            v34 = [v33 tokenID];
-            [(NSMutableDictionary *)tokenConnections setObject:v30 forKey:v34];
+            token = [(TKHostTokenConnection *)v30 token];
+            tokenID = [token tokenID];
+            [(NSMutableDictionary *)tokenConnections setObject:v30 forKey:tokenID];
 
             v35 = sub_10000B0B8();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
             {
               name = self->_name;
-              v37 = [v23 identifier];
-              v38 = [(TKHostTokenConnection *)v30 token];
-              v39 = [v38 tokenID];
+              identifier = [v23 identifier];
+              token2 = [(TKHostTokenConnection *)v30 token];
+              tokenID2 = [token2 tokenID];
               v40 = [NSNumber numberWithBool:v28];
               *buf = 138544130;
               v73 = name;
               v74 = 2114;
-              v75 = v37;
+              v75 = identifier;
               v76 = 2114;
-              v77 = v39;
+              v77 = tokenID2;
               v78 = 2112;
               v79 = v40;
               _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ is handling %{public}@ with proprietary card usage %@", buf, 0x2Au);
@@ -534,7 +534,7 @@ LABEL_16:
               v19 = v51;
             }
 
-            objc_sync_exit(v31);
+            objc_sync_exit(selfCopy);
             if (v28)
             {
 
@@ -556,10 +556,10 @@ LABEL_26:
             v41 = sub_10000B0B8();
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
             {
-              v42 = [v23 identifier];
+              identifier2 = [v23 identifier];
               v43 = self->_name;
               *buf = 138543618;
-              v73 = v42;
+              v73 = identifier2;
               v74 = 2114;
               v75 = v43;
               _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%{public}@ cannot handle token in slot %{public}@", buf, 0x16u);
@@ -586,11 +586,11 @@ LABEL_34:
     {
       v45 = [(TKSmartCardSlot *)self->_smartCardSlot ATR];
       v46 = [(TKSmartCardSlot *)self->_smartCardSlot ATR];
-      v47 = [v46 bytes];
+      bytes = [v46 bytes];
       *buf = 138543618;
       v73 = v45;
       v74 = 2114;
-      v75 = v47;
+      v75 = bytes;
       _os_log_error_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "No token driver found for card %{public}@ (ATR: %{public}@)", buf, 0x16u);
     }
   }
@@ -606,14 +606,14 @@ LABEL_34:
     sub_10001EADC(self, v3, v4);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMutableDictionary *)v5->_tokenConnections allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)selfCopy->_tokenConnections allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -624,26 +624,26 @@ LABEL_34:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        WeakRetained = objc_loadWeakRetained(&v5->_slotWatcher);
-        v12 = [WeakRetained registry];
-        [v12 removeTokenWithTokenID:v10];
+        WeakRetained = objc_loadWeakRetained(&selfCopy->_slotWatcher);
+        registry = [WeakRetained registry];
+        [registry removeTokenWithTokenID:v10];
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  [(NSMutableDictionary *)v5->_tokenConnections removeAllObjects];
-  objc_sync_exit(v5);
+  [(NSMutableDictionary *)selfCopy->_tokenConnections removeAllObjects];
+  objc_sync_exit(selfCopy);
 }
 
 @end

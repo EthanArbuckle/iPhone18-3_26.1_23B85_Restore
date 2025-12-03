@@ -1,33 +1,33 @@
 @interface PKDataReleaseViewController.PresentationController
-- (_TtCC9PassKitUI27PKDataReleaseViewControllerP33_6C482878A6DF466642FA70CF642E4E1022PresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_TtCC9PassKitUI27PKDataReleaseViewControllerP33_6C482878A6DF466642FA70CF642E4E1022PresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)containerViewWillLayoutSubviews;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
 @implementation PKDataReleaseViewController.PresentationController
 
-- (_TtCC9PassKitUI27PKDataReleaseViewControllerP33_6C482878A6DF466642FA70CF642E4E1022PresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtCC9PassKitUI27PKDataReleaseViewControllerP33_6C482878A6DF466642FA70CF642E4E1022PresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_1BD5BB418(v5, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  return sub_1BD5BB418(controllerCopy, viewController);
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD5BB600();
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(PKDataReleaseViewController.PresentationController *)&v5 presentationTransitionDidEnd:v3];
-  v4[OBJC_IVAR____TtCC9PassKitUI27PKDataReleaseViewControllerP33_6C482878A6DF466642FA70CF642E4E1022PresentationController_isPresentationTransitionFinished] = v3;
+  [(PKDataReleaseViewController.PresentationController *)&v5 presentationTransitionDidEnd:endCopy];
+  v4[OBJC_IVAR____TtCC9PassKitUI27PKDataReleaseViewControllerP33_6C482878A6DF466642FA70CF642E4E1022PresentationController_isPresentationTransitionFinished] = endCopy;
 }
 
 - (void)containerViewWillLayoutSubviews

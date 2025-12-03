@@ -1,115 +1,115 @@
 @interface CATIDSServiceConnectionMessageProcessor
-- (CATIDSServiceConnectionMessageProcessor)initWithWorkQueue:(id)a3 connectionIdentifier:(id)a4;
+- (CATIDSServiceConnectionMessageProcessor)initWithWorkQueue:(id)queue connectionIdentifier:(id)identifier;
 - (CATIDSServiceConnectionMessageProcessorDelegate)delegate;
-- (void)receiveMessage:(id)a3;
+- (void)receiveMessage:(id)message;
 @end
 
 @implementation CATIDSServiceConnectionMessageProcessor
 
-- (CATIDSServiceConnectionMessageProcessor)initWithWorkQueue:(id)a3 connectionIdentifier:(id)a4
+- (CATIDSServiceConnectionMessageProcessor)initWithWorkQueue:(id)queue connectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = CATIDSServiceConnectionMessageProcessor;
   v9 = [(CATIDSServiceConnectionMessageProcessor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mWorkQueue, a3);
-    objc_storeStrong(&v10->mConnectionIdentifier, a4);
+    objc_storeStrong(&v9->mWorkQueue, queue);
+    objc_storeStrong(&v10->mConnectionIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (void)receiveMessage:(id)a3
+- (void)receiveMessage:(id)message
 {
-  v15 = a3;
+  messageCopy = message;
   CATAssertIsQueue(self->mWorkQueue);
-  v4 = [v15 connectionIdentifier];
-  v5 = [v4 isEqual:self->mConnectionIdentifier];
+  connectionIdentifier = [messageCopy connectionIdentifier];
+  v5 = [connectionIdentifier isEqual:self->mConnectionIdentifier];
 
   if (v5)
   {
-    v6 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
-    [v6 messageProcessorWantsToExtendKeepAlive:self];
+    delegate = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
+    [delegate messageProcessorWantsToExtendKeepAlive:self];
 
-    v7 = [v15 receivedSequenceNumber];
+    receivedSequenceNumber = [messageCopy receivedSequenceNumber];
 
-    if (v7)
+    if (receivedSequenceNumber)
     {
-      v8 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
-      v9 = [v15 receivedSequenceNumber];
-      [v8 messageProcessor:self wantsToAckUpTo:{objc_msgSend(v9, "unsignedIntegerValue")}];
+      delegate2 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
+      receivedSequenceNumber2 = [messageCopy receivedSequenceNumber];
+      [delegate2 messageProcessor:self wantsToAckUpTo:{objc_msgSend(receivedSequenceNumber2, "unsignedIntegerValue")}];
     }
 
-    v10 = [v15 content];
-    v11 = [v10 contentType];
+    content = [messageCopy content];
+    contentType = [content contentType];
 
-    if (v11 <= 3)
+    if (contentType <= 3)
     {
-      if (v11 != 1)
+      if (contentType != 1)
       {
-        if (v11 != 2)
+        if (contentType != 2)
         {
           goto LABEL_26;
         }
 
-        v12 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
-        [v12 messageProcessorWantsToAcknowledgeRemote:self];
+        delegate3 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
+        [delegate3 messageProcessorWantsToAcknowledgeRemote:self];
         goto LABEL_25;
       }
 
-      v12 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
-      v13 = [v15 content];
+      delegate3 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
+      content2 = [messageCopy content];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         [CATIDSServiceConnectionMessageProcessor receiveMessage:];
       }
 
-      [v12 messageProcessor:self wantsAggregation:v13];
+      [delegate3 messageProcessor:self wantsAggregation:content2];
     }
 
     else
     {
-      switch(v11)
+      switch(contentType)
       {
         case 4:
-          v12 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
-          v13 = [v15 content];
+          delegate3 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
+          content2 = [messageCopy content];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             [CATIDSServiceConnectionMessageProcessor receiveMessage:];
           }
 
-          v14 = [v13 error];
-          [v12 messageProcessor:self wantsToCloseWithError:v14];
+          error = [content2 error];
+          [delegate3 messageProcessor:self wantsToCloseWithError:error];
           break;
         case 5:
-          v12 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
-          v13 = [v15 content];
+          delegate3 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
+          content2 = [messageCopy content];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             [CATIDSServiceConnectionMessageProcessor receiveMessage:];
           }
 
-          [v12 messageProcessor:self receivedExpectedSequence:{objc_msgSend(v13, "expectedSequenceNumber")}];
+          [delegate3 messageProcessor:self receivedExpectedSequence:{objc_msgSend(content2, "expectedSequenceNumber")}];
           goto LABEL_24;
         case 6:
-          v12 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
-          v13 = [v15 content];
+          delegate3 = [(CATIDSServiceConnectionMessageProcessor *)self delegate];
+          content2 = [messageCopy content];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             [CATIDSServiceConnectionMessageProcessor receiveMessage:];
           }
 
-          v14 = [v13 sequenceNumbers];
-          [v12 messageProcessor:self wantsRetransmission:v14];
+          error = [content2 sequenceNumbers];
+          [delegate3 messageProcessor:self wantsRetransmission:error];
           break;
         default:
           goto LABEL_26;

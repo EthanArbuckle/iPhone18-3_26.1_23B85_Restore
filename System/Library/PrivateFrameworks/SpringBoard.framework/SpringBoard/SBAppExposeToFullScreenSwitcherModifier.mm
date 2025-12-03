@@ -1,42 +1,42 @@
 @interface SBAppExposeToFullScreenSwitcherModifier
 - (BOOL)_isEffectivelyFullScreen;
-- (BOOL)_isIndexActive:(unint64_t)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBAppExposeToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 fullScreenAppLayout:(id)a5 floatingAppLayout:(id)a6 bundleIdentifier:(id)a7 appExposeModifier:(id)a8 fullScreenModifier:(id)a9;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
+- (BOOL)_isIndexActive:(unint64_t)active;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBAppExposeToFullScreenSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction fullScreenAppLayout:(id)layout floatingAppLayout:(id)appLayout bundleIdentifier:(id)identifier appExposeModifier:(id)modifier fullScreenModifier:(id)screenModifier;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
 - (double)plusButtonAlpha;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
 - (id)appLayouts;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
-- (void)_performBlockBySimulatingPreTransitionState:(id)a3;
+- (void)_performBlockBySimulatingPreTransitionState:(id)state;
 @end
 
 @implementation SBAppExposeToFullScreenSwitcherModifier
 
-- (SBAppExposeToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 fullScreenAppLayout:(id)a5 floatingAppLayout:(id)a6 bundleIdentifier:(id)a7 appExposeModifier:(id)a8 fullScreenModifier:(id)a9
+- (SBAppExposeToFullScreenSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction fullScreenAppLayout:(id)layout floatingAppLayout:(id)appLayout bundleIdentifier:(id)identifier appExposeModifier:(id)modifier fullScreenModifier:(id)screenModifier
 {
-  v14 = a3;
-  v15 = a5;
-  v34 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  identifierCopy = identifier;
+  modifierCopy = modifier;
+  screenModifierCopy = screenModifier;
   v36.receiver = self;
   v36.super_class = SBAppExposeToFullScreenSwitcherModifier;
-  v19 = [(SBTransitionSwitcherModifier *)&v36 initWithTransitionID:v14];
+  v19 = [(SBTransitionSwitcherModifier *)&v36 initWithTransitionID:dCopy];
   if (!v19)
   {
     goto LABEL_9;
   }
 
-  if (!v15)
+  if (!layoutCopy)
   {
     [SBAppExposeToFullScreenSwitcherModifier initWithTransitionID:a2 direction:v19 fullScreenAppLayout:? floatingAppLayout:? bundleIdentifier:? appExposeModifier:? fullScreenModifier:?];
-    if (v17)
+    if (modifierCopy)
     {
       goto LABEL_4;
     }
@@ -46,29 +46,29 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  if (!v17)
+  if (!modifierCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_4:
-  if (!v18)
+  if (!screenModifierCopy)
   {
     [SBAppExposeToFullScreenSwitcherModifier initWithTransitionID:a2 direction:v19 fullScreenAppLayout:? floatingAppLayout:? bundleIdentifier:? appExposeModifier:? fullScreenModifier:?];
   }
 
-  v19->_direction = a4;
-  objc_storeStrong(&v19->_fullScreenAppLayout, a5);
-  objc_storeStrong(&v19->_floatingAppLayout, a6);
-  v20 = [v16 copy];
+  v19->_direction = direction;
+  objc_storeStrong(&v19->_fullScreenAppLayout, layout);
+  objc_storeStrong(&v19->_floatingAppLayout, appLayout);
+  v20 = [identifierCopy copy];
   bundleIdentifier = v19->_bundleIdentifier;
   v19->_bundleIdentifier = v20;
 
-  objc_storeStrong(&v19->_appExposeModifier, a8);
-  objc_storeStrong(&v19->_fullscreenModifier, a9);
+  objc_storeStrong(&v19->_appExposeModifier, modifier);
+  objc_storeStrong(&v19->_fullscreenModifier, screenModifier);
   v22 = [SBRouteToAppExposeSwitcherModifier alloc];
-  v23 = [(SBAppExposeToFullScreenSwitcherModifier *)v19 _newAppExposeModifier];
-  v24 = [(SBRouteToAppExposeSwitcherModifier *)v22 initWithTransitionID:v14 appExposeModifier:v23];
+  _newAppExposeModifier = [(SBAppExposeToFullScreenSwitcherModifier *)v19 _newAppExposeModifier];
+  v24 = [(SBRouteToAppExposeSwitcherModifier *)v22 initWithTransitionID:dCopy appExposeModifier:_newAppExposeModifier];
   routeToAppExposeModifier = v19->_routeToAppExposeModifier;
   v19->_routeToAppExposeModifier = v24;
 
@@ -82,8 +82,8 @@ LABEL_4:
   }
 
   v29 = [SBGridToActiveAppLayoutsSwitcherModifier alloc];
-  v30 = [(SBAppExposeToFullScreenSwitcherModifier *)v19 _newAppExposeModifier];
-  v31 = [(SBGridToActiveAppLayoutsSwitcherModifier *)v29 initWithTransitionID:v14 direction:a4 activeAppLayouts:v27 gridModifier:v30];
+  _newAppExposeModifier2 = [(SBAppExposeToFullScreenSwitcherModifier *)v19 _newAppExposeModifier];
+  v31 = [(SBGridToActiveAppLayoutsSwitcherModifier *)v29 initWithTransitionID:dCopy direction:direction activeAppLayouts:v27 gridModifier:_newAppExposeModifier2];
 
   [(SBChainableModifier *)v19 addChildModifier:v31 atLevel:1 key:0];
 LABEL_9:
@@ -96,18 +96,18 @@ LABEL_9:
   v27 = *MEMORY[0x277D85DE8];
   v25.receiver = self;
   v25.super_class = SBAppExposeToFullScreenSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v25 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v25 transitionWillBegin];
   v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v4];
+  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:transitionWillBegin toResponse:v4];
 
-  v6 = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
+  appLayouts = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
   appLayoutsBeforeTransition = self->_appLayoutsBeforeTransition;
-  self->_appLayoutsBeforeTransition = v6;
+  self->_appLayoutsBeforeTransition = appLayouts;
 
   if (self->_direction == 1)
   {
-    v8 = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
-    v9 = [(SBAppExposeToFullScreenSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:v8];
+    appLayouts2 = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
+    v9 = [(SBAppExposeToFullScreenSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:appLayouts2];
 
     v10 = self->_fullScreenAppLayout;
     v21 = 0u;
@@ -173,46 +173,46 @@ LABEL_12:
 {
   v7.receiver = self;
   v7.super_class = SBAppExposeToFullScreenSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
   if (!self->_direction)
   {
     v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v4];
+    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:transitionDidEnd toResponse:v4];
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
 - (id)appLayouts
 {
   if (self->_isSimulatingPreTransitionState)
   {
-    v2 = self->_appLayoutsBeforeTransition;
+    appLayouts = self->_appLayoutsBeforeTransition;
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SBAppExposeToFullScreenSwitcherModifier;
-    v2 = [(SBAppExposeToFullScreenSwitcherModifier *)&v4 appLayouts];
+    appLayouts = [(SBAppExposeToFullScreenSwitcherModifier *)&v4 appLayouts];
   }
 
-  return v2;
+  return appLayouts;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   routeToAppExposeModifier = self->_routeToAppExposeModifier;
-  v5 = a3;
-  v6 = [(SBRouteToAppExposeSwitcherModifier *)routeToAppExposeModifier reversesFloatingCardDirection];
+  layoutsCopy = layouts;
+  reversesFloatingCardDirection = [(SBRouteToAppExposeSwitcherModifier *)routeToAppExposeModifier reversesFloatingCardDirection];
   [(SBRouteToAppExposeSwitcherModifier *)self->_routeToAppExposeModifier setReversesFloatingCardDirection:self->_direction == 1];
   v10.receiver = self;
   v10.super_class = SBAppExposeToFullScreenSwitcherModifier;
-  v7 = [(SBTransitionSwitcherModifier *)&v10 adjustedAppLayoutsForAppLayouts:v5];
+  v7 = [(SBTransitionSwitcherModifier *)&v10 adjustedAppLayoutsForAppLayouts:layoutsCopy];
 
-  [(SBRouteToAppExposeSwitcherModifier *)self->_routeToAppExposeModifier setReversesFloatingCardDirection:v6];
+  [(SBRouteToAppExposeSwitcherModifier *)self->_routeToAppExposeModifier setReversesFloatingCardDirection:reversesFloatingCardDirection];
   if (self->_direction)
   {
     v8 = v7;
@@ -235,20 +235,20 @@ LABEL_12:
   return v8;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   if (!self->_direction)
   {
-    v14 = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
-    v15 = [v14 objectAtIndex:a3];
+    appLayouts = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
+    v15 = [appLayouts objectAtIndex:index];
 
     if ([v15 containsItemWithBundleIdentifier:self->_bundleIdentifier])
     {
-      if ([(SBAppExposeToFullScreenSwitcherModifier *)self _isIndexActive:a3])
+      if ([(SBAppExposeToFullScreenSwitcherModifier *)self _isIndexActive:index])
       {
         v28.receiver = self;
         v28.super_class = SBAppExposeToFullScreenSwitcherModifier;
-        [(SBAppExposeToFullScreenSwitcherModifier *)&v28 frameForIndex:a3];
+        [(SBAppExposeToFullScreenSwitcherModifier *)&v28 frameForIndex:index];
         v6 = v16;
         v8 = v17;
         v10 = v18;
@@ -267,8 +267,8 @@ LABEL_11:
       v21 = [(NSArray *)self->_appLayoutsBeforeTransition indexOfObject:v15];
       if (v21 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v26 = [MEMORY[0x277CCA890] currentHandler];
-        [v26 handleFailureInMethod:a2 object:self file:@"SBAppExposeToFullScreenSwitcherModifier.m" lineNumber:160 description:@"preTransitionIndex should be valid for an app layout whose bundle identifier matches what we're showing in app expose"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBAppExposeToFullScreenSwitcherModifier.m" lineNumber:160 description:@"preTransitionIndex should be valid for an app layout whose bundle identifier matches what we're showing in app expose"];
       }
 
       v29[0] = MEMORY[0x277D85DD0];
@@ -296,7 +296,7 @@ LABEL_11:
       v30[3] = &unk_2783AA618;
       v30[4] = self;
       v30[5] = &v31;
-      v30[6] = a3;
+      v30[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fullscreenModifier usingBlock:v30];
     }
 
@@ -310,7 +310,7 @@ LABEL_11:
 
   v27.receiver = self;
   v27.super_class = SBAppExposeToFullScreenSwitcherModifier;
-  [(SBAppExposeToFullScreenSwitcherModifier *)&v27 frameForIndex:a3];
+  [(SBAppExposeToFullScreenSwitcherModifier *)&v27 frameForIndex:index];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -352,20 +352,20 @@ id __57__SBAppExposeToFullScreenSwitcherModifier_frameForIndex___block_invoke_2(
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   if (!self->_direction)
   {
-    v8 = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
-    v9 = [v8 objectAtIndex:a3];
+    appLayouts = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
+    v9 = [appLayouts objectAtIndex:index];
 
     if ([v9 containsItemWithBundleIdentifier:self->_bundleIdentifier])
     {
-      if ([(SBAppExposeToFullScreenSwitcherModifier *)self _isIndexActive:a3])
+      if ([(SBAppExposeToFullScreenSwitcherModifier *)self _isIndexActive:index])
       {
         v16.receiver = self;
         v16.super_class = SBAppExposeToFullScreenSwitcherModifier;
-        [(SBAppExposeToFullScreenSwitcherModifier *)&v16 scaleForIndex:a3];
+        [(SBAppExposeToFullScreenSwitcherModifier *)&v16 scaleForIndex:index];
         v6 = v10;
 LABEL_11:
 
@@ -379,8 +379,8 @@ LABEL_11:
       v12 = [(NSArray *)self->_appLayoutsBeforeTransition indexOfObject:v9];
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v14 = [MEMORY[0x277CCA890] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"SBAppExposeToFullScreenSwitcherModifier.m" lineNumber:186 description:@"preTransitionIndex should be valid for an app layout whose bundle identifier matches what we're showing in app expose"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBAppExposeToFullScreenSwitcherModifier.m" lineNumber:186 description:@"preTransitionIndex should be valid for an app layout whose bundle identifier matches what we're showing in app expose"];
       }
 
       v17[0] = MEMORY[0x277D85DD0];
@@ -406,7 +406,7 @@ LABEL_11:
       v18[3] = &unk_2783AA618;
       v18[4] = self;
       v18[5] = &v19;
-      v18[6] = a3;
+      v18[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fullscreenModifier usingBlock:v18];
     }
 
@@ -417,7 +417,7 @@ LABEL_11:
 
   v15.receiver = self;
   v15.super_class = SBAppExposeToFullScreenSwitcherModifier;
-  [(SBAppExposeToFullScreenSwitcherModifier *)&v15 scaleForIndex:a3];
+  [(SBAppExposeToFullScreenSwitcherModifier *)&v15 scaleForIndex:index];
   return v5;
 }
 
@@ -438,29 +438,29 @@ id __57__SBAppExposeToFullScreenSwitcherModifier_scaleForIndex___block_invoke_2(
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v9 = a4;
+  layoutCopy = layout;
   if (self->_direction)
   {
     v18.receiver = self;
     v18.super_class = SBAppExposeToFullScreenSwitcherModifier;
-    [(SBAppExposeToFullScreenSwitcherModifier *)&v18 opacityForLayoutRole:a3 inAppLayout:v9 atIndex:a5];
+    [(SBAppExposeToFullScreenSwitcherModifier *)&v18 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v11 = v10;
   }
 
   else
   {
-    v12 = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
-    v13 = [v12 objectAtIndex:a5];
+    appLayouts = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
+    v13 = [appLayouts objectAtIndex:index];
 
     if ([v13 containsItemWithBundleIdentifier:self->_bundleIdentifier])
     {
-      if ([(SBAppExposeToFullScreenSwitcherModifier *)self _isIndexActive:a5])
+      if ([(SBAppExposeToFullScreenSwitcherModifier *)self _isIndexActive:index])
       {
         v19.receiver = self;
         v19.super_class = SBAppExposeToFullScreenSwitcherModifier;
-        [(SBAppExposeToFullScreenSwitcherModifier *)&v19 opacityForLayoutRole:a3 inAppLayout:v13 atIndex:a5];
+        [(SBAppExposeToFullScreenSwitcherModifier *)&v19 opacityForLayoutRole:role inAppLayout:v13 atIndex:index];
         v11 = v14;
       }
 
@@ -473,8 +473,8 @@ id __57__SBAppExposeToFullScreenSwitcherModifier_scaleForIndex___block_invoke_2(
         v15 = [(NSArray *)self->_appLayoutsBeforeTransition indexOfObject:v13];
         if (v15 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v17 = [MEMORY[0x277CCA890] currentHandler];
-          [v17 handleFailureInMethod:a2 object:self file:@"SBAppExposeToFullScreenSwitcherModifier.m" lineNumber:208 description:@"preTransitionIndex should be valid for an app layout whose bundle identifier matches what we're showing in app expose"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"SBAppExposeToFullScreenSwitcherModifier.m" lineNumber:208 description:@"preTransitionIndex should be valid for an app layout whose bundle identifier matches what we're showing in app expose"];
         }
 
         v20[0] = MEMORY[0x277D85DD0];
@@ -482,10 +482,10 @@ id __57__SBAppExposeToFullScreenSwitcherModifier_scaleForIndex___block_invoke_2(
         v20[2] = __84__SBAppExposeToFullScreenSwitcherModifier_opacityForLayoutRole_inAppLayout_atIndex___block_invoke;
         v20[3] = &unk_2783AA690;
         v23 = &v26;
-        v24 = a3;
+        roleCopy = role;
         v25 = v15;
         v21 = v13;
-        v22 = self;
+        selfCopy = self;
         [(SBAppExposeToFullScreenSwitcherModifier *)self _performBlockBySimulatingPreTransitionState:v20];
         v11 = v27[3];
 
@@ -521,9 +521,9 @@ id __84__SBAppExposeToFullScreenSwitcherModifier_opacityForLayoutRole_inAppLayou
 
 - (double)plusButtonAlpha
 {
-  v2 = [(SBAppExposeToFullScreenSwitcherModifier *)self _isEffectivelyFullScreen];
+  _isEffectivelyFullScreen = [(SBAppExposeToFullScreenSwitcherModifier *)self _isEffectivelyFullScreen];
   result = 1.0;
-  if (v2)
+  if (_isEffectivelyFullScreen)
   {
     return 0.0;
   }
@@ -536,8 +536,8 @@ id __84__SBAppExposeToFullScreenSwitcherModifier_opacityForLayoutRole_inAppLayou
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
   v7.receiver = self;
   v7.super_class = SBAppExposeToFullScreenSwitcherModifier;
-  v4 = [(SBAppExposeToFullScreenSwitcherModifier *)&v7 visibleAppLayouts];
-  v5 = [v3 initWithSet:v4];
+  visibleAppLayouts = [(SBAppExposeToFullScreenSwitcherModifier *)&v7 visibleAppLayouts];
+  v5 = [v3 initWithSet:visibleAppLayouts];
 
   [v5 addObject:self->_fullScreenAppLayout];
   if (self->_floatingAppLayout)
@@ -548,9 +548,9 @@ id __84__SBAppExposeToFullScreenSwitcherModifier_opacityForLayoutRole_inAppLayou
   return v5;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2810000000;
@@ -563,7 +563,7 @@ id __84__SBAppExposeToFullScreenSwitcherModifier_opacityForLayoutRole_inAppLayou
   v8[3] = &unk_2783AB258;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = layoutCopy;
   v9 = v6;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appExposeModifier usingBlock:v8];
   LOWORD(self) = *(v12 + 16);
@@ -604,10 +604,10 @@ uint64_t __80__SBAppExposeToFullScreenSwitcherModifier_asyncRenderingAttributesF
   return v3 || v4;
 }
 
-- (BOOL)_isIndexActive:(unint64_t)a3
+- (BOOL)_isIndexActive:(unint64_t)active
 {
-  v5 = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBAppExposeToFullScreenSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:active];
 
   if ([(SBAppLayout *)self->_fullScreenAppLayout isEqual:v6])
   {
@@ -631,11 +631,11 @@ uint64_t __80__SBAppExposeToFullScreenSwitcherModifier_asyncRenderingAttributesF
   return v7;
 }
 
-- (void)_performBlockBySimulatingPreTransitionState:(id)a3
+- (void)_performBlockBySimulatingPreTransitionState:(id)state
 {
   isSimulatingPreTransitionState = self->_isSimulatingPreTransitionState;
   self->_isSimulatingPreTransitionState = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(state + 2))(state, a2);
   self->_isSimulatingPreTransitionState = isSimulatingPreTransitionState;
 }
 

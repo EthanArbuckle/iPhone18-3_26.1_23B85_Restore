@@ -3,30 +3,30 @@
 - (ATRestoreManager)init;
 - (BOOL)_iCloudPhotoLibraryEnabled;
 - (id)_dataClasses;
-- (void)_checkActiveRestoreStateWithCompletion:(id)a3;
+- (void)_checkActiveRestoreStateWithCompletion:(id)completion;
 - (void)_start;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)restoreAssetLinkDidCancelRestore:(id)a3;
-- (void)restoreAssetLinkNetworkPolicyDidChange:(id)a3;
-- (void)restoreSessionActiveWithCompletion:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)restoreAssetLinkDidCancelRestore:(id)restore;
+- (void)restoreAssetLinkNetworkPolicyDidChange:(id)change;
+- (void)restoreSessionActiveWithCompletion:(id)completion;
 - (void)resume;
-- (void)sessionDidFinish:(id)a3;
-- (void)setRestoreInProgress:(BOOL)a3;
+- (void)sessionDidFinish:(id)finish;
+- (void)setRestoreInProgress:(BOOL)progress;
 @end
 
 @implementation ATRestoreManager
 
-- (void)_checkActiveRestoreStateWithCompletion:(id)a3
+- (void)_checkActiveRestoreStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   checkRestoreStatusQueue = self->_checkRestoreStatusQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ATRestoreManager__checkActiveRestoreStateWithCompletion___block_invoke;
   v7[3] = &unk_2784E4E80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(checkRestoreStatusQueue, v7);
 }
 
@@ -180,7 +180,7 @@ void __59__ATRestoreManager__checkActiveRestoreStateWithCompletion___block_invok
   v11 = 0x2020000000;
   v12 = 0;
   v2 = dispatch_semaphore_create(0);
-  v3 = [MEMORY[0x277CB8F48] ic_sharedAccountStore];
+  ic_sharedAccountStore = [MEMORY[0x277CB8F48] ic_sharedAccountStore];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__ATRestoreManager__iCloudPhotoLibraryEnabled__block_invoke;
@@ -188,13 +188,13 @@ void __59__ATRestoreManager__checkActiveRestoreStateWithCompletion___block_invok
   v8 = &v9;
   v4 = v2;
   v7 = v4;
-  [v3 ic_primaryAppleAccountWithCompletion:v6];
+  [ic_sharedAccountStore ic_primaryAppleAccountWithCompletion:v6];
 
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(v3) = *(v10 + 24);
+  LOBYTE(ic_sharedAccountStore) = *(v10 + 24);
 
   _Block_object_dispose(&v9, 8);
-  return v3;
+  return ic_sharedAccountStore;
 }
 
 intptr_t __46__ATRestoreManager__iCloudPhotoLibraryEnabled__block_invoke(uint64_t a1, void *a2)
@@ -209,24 +209,24 @@ intptr_t __46__ATRestoreManager__iCloudPhotoLibraryEnabled__block_invoke(uint64_
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)setRestoreInProgress:(BOOL)a3
+- (void)setRestoreInProgress:(BOOL)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   v13 = *MEMORY[0x277D85DE8];
   v5 = _ATLogCategoryRestore();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = v3;
+    v12 = progressCopy;
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notifying restore progress: %d", &v9, 0x12u);
   }
 
-  v6 = [MEMORY[0x277CFE318] userContext];
+  userContext = [MEMORY[0x277CFE318] userContext];
   v7 = [MEMORY[0x277CFE358] keyPathWithKey:@"/restore/inProgress"];
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v6 setObject:v8 forKeyedSubscript:v7];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:progressCopy];
+  [userContext setObject:v8 forKeyedSubscript:v7];
 }
 
 - (void)_start
@@ -237,37 +237,37 @@ intptr_t __46__ATRestoreManager__iCloudPhotoLibraryEnabled__block_invoke(uint64_
     [(MSVXPCTransaction *)self->_xpcTransaction beginTransaction];
   }
 
-  v3 = [(ATDeviceSettings *)self->_settings activeRestoreType];
-  v4 = [MEMORY[0x277CBEB18] array];
+  activeRestoreType = [(ATDeviceSettings *)self->_settings activeRestoreType];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = self;
-  v5 = [(ATRestoreManager *)self _dataClasses];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  selfCopy = self;
+  _dataClasses = [(ATRestoreManager *)self _dataClasses];
+  v6 = [_dataClasses countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v21;
-    v9 = v3 & 0xFFFFFFFE;
+    v9 = activeRestoreType & 0xFFFFFFFE;
     do
     {
       for (i = 0; i != v7; ++i)
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_dataClasses);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        if (v9 == 2 && [*(*(&v20 + 1) + 8 * i) isEqualToString:@"Photo"] && -[ATRestoreManager _iCloudPhotoLibraryEnabled](v19, "_iCloudPhotoLibraryEnabled"))
+        if (v9 == 2 && [*(*(&v20 + 1) + 8 * i) isEqualToString:@"Photo"] && -[ATRestoreManager _iCloudPhotoLibraryEnabled](selfCopy, "_iCloudPhotoLibraryEnabled"))
         {
           v12 = _ATLogCategoryRestore();
           if (os_log_type_enabled(&v12->super.super, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v25 = v19;
+            v25 = selfCopy;
             _os_log_impl(&dword_223819000, &v12->super.super, OS_LOG_TYPE_DEFAULT, "%{public}@ skipping photos restore from iTunes because iCPL is enabled", buf, 0xCu);
           }
         }
@@ -283,28 +283,28 @@ intptr_t __46__ATRestoreManager__iCloudPhotoLibraryEnabled__block_invoke(uint64_
 
           [(ATAssetSessionTask *)v12 setRetryUntilFinished:1];
           [(ATAssetSessionTask *)v12 setShouldRetryAssetBlock:&__block_literal_global_52];
-          [v4 addObject:v12];
+          [array addObject:v12];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v7 = [_dataClasses countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  [(ATRestoreManager *)v19 setRestoreInProgress:1];
+  [(ATRestoreManager *)selfCopy setRestoreInProgress:1];
   v15 = objc_alloc(MEMORY[0x277CEA468]);
   v16 = [v15 initWithSessionTypeIdentifier:*MEMORY[0x277CEA410]];
-  restoreSession = v19->_restoreSession;
-  v19->_restoreSession = v16;
+  restoreSession = selfCopy->_restoreSession;
+  selfCopy->_restoreSession = v16;
 
-  [(ATSession *)v19->_restoreSession addSessionTasks:v4];
-  [(ATSession *)v19->_restoreSession addObserver:v19];
-  v18 = [MEMORY[0x277CE5430] sharedSessionServer];
-  [v18 addSession:v19->_restoreSession];
+  [(ATSession *)selfCopy->_restoreSession addSessionTasks:array];
+  [(ATSession *)selfCopy->_restoreSession addObserver:selfCopy];
+  mEMORY[0x277CE5430] = [MEMORY[0x277CE5430] sharedSessionServer];
+  [mEMORY[0x277CE5430] addSession:selfCopy->_restoreSession];
 
-  [(ATSession *)v19->_restoreSession start];
+  [(ATSession *)selfCopy->_restoreSession start];
 }
 
 BOOL __26__ATRestoreManager__start__block_invoke(uint64_t a1, void *a2)
@@ -353,13 +353,13 @@ void __32__ATRestoreManager__dataClasses__block_invoke()
   [v5 addObjectsFromArray:v6];
 }
 
-- (void)restoreAssetLinkNetworkPolicyDidChange:(id)a3
+- (void)restoreAssetLinkNetworkPolicyDidChange:(id)change
 {
-  v4 = [MEMORY[0x277D7FA90] sharedMonitor];
-  [(ATRestoreManager *)self environmentMonitorDidChangeNetworkReachability:v4];
+  mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+  [(ATRestoreManager *)self environmentMonitorDidChangeNetworkReachability:mEMORY[0x277D7FA90]];
 }
 
-- (void)restoreAssetLinkDidCancelRestore:(id)a3
+- (void)restoreAssetLinkDidCancelRestore:(id)restore
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -412,17 +412,17 @@ void __53__ATRestoreManager_restoreAssetLinkDidCancelRestore___block_invoke(uint
   }
 }
 
-- (void)sessionDidFinish:(id)a3
+- (void)sessionDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__ATRestoreManager_sessionDidFinish___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = finishCopy;
+  selfCopy = self;
+  v6 = finishCopy;
   dispatch_async(queue, v7);
 }
 
@@ -495,7 +495,7 @@ void __37__ATRestoreManager_sessionDidFinish___block_invoke(uint64_t a1)
   }
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -722,16 +722,16 @@ void __26__ATRestoreManager_resume__block_invoke_8(uint64_t a1)
   CFNotificationCenterAddObserver(DarwinNotifyCenter, v7, _CFNotificationCallback, @"ATHasCompletedMigrationNotificationName", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-- (void)restoreSessionActiveWithCompletion:(id)a3
+- (void)restoreSessionActiveWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__ATRestoreManager_restoreSessionActiveWithCompletion___block_invoke;
   v6[3] = &unk_2784E4E80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(ATRestoreManager *)self _checkActiveRestoreStateWithCompletion:v6];
 }
 

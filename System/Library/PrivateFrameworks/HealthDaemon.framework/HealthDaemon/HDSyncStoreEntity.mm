@@ -1,25 +1,25 @@
 @interface HDSyncStoreEntity
-+ (id)_predicateWithStoreUUID:(uint64_t)a3 type:;
-+ (id)activeStoresForMaxAnchorPruningInProfile:(id)a3 referenceDate:(id)a4 error:(id *)a5;
-+ (id)activeStoresForRestrictionPredictePruningInProfile:(id)a3 referenceDate:(id)a4 error:(id *)a5;
-+ (id)allSyncStoreEntitiesOfType:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)existingSyncStoreEntityWithUUID:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)existingSyncStoreEntityWithUUID:(id)a3 ofType:(int64_t)a4 database:(id)a5 error:(id *)a6;
-+ (id)recreateSyncStoreWithUUID:(id)a3 type:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (id)syncStoreEntityWithUUID:(id)a3 type:(int64_t)a4 creationDate:(id)a5 healthDatabase:(id)a6 error:(id *)a7;
++ (id)_predicateWithStoreUUID:(uint64_t)d type:;
++ (id)activeStoresForMaxAnchorPruningInProfile:(id)profile referenceDate:(id)date error:(id *)error;
++ (id)activeStoresForRestrictionPredictePruningInProfile:(id)profile referenceDate:(id)date error:(id *)error;
++ (id)allSyncStoreEntitiesOfType:(int64_t)type transaction:(id)transaction error:(id *)error;
++ (id)existingSyncStoreEntityWithUUID:(id)d database:(id)database error:(id *)error;
++ (id)existingSyncStoreEntityWithUUID:(id)d ofType:(int64_t)type database:(id)database error:(id *)error;
++ (id)recreateSyncStoreWithUUID:(id)d type:(int64_t)type profile:(id)profile error:(id *)error;
++ (id)syncStoreEntityWithUUID:(id)d type:(int64_t)type creationDate:(id)date healthDatabase:(id)database error:(id *)error;
 @end
 
 @implementation HDSyncStoreEntity
 
-+ (id)syncStoreEntityWithUUID:(id)a3 type:(int64_t)a4 creationDate:(id)a5 healthDatabase:(id)a6 error:(id *)a7
++ (id)syncStoreEntityWithUUID:(id)d type:(int64_t)type creationDate:(id)date healthDatabase:(id)database error:(id *)error
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  if (!v13)
+  dCopy = d;
+  dateCopy = date;
+  databaseCopy = database;
+  if (!dCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"HDSyncStoreEntity.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"UUID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncStoreEntity.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"UUID != nil"}];
   }
 
   v28 = 0;
@@ -32,14 +32,14 @@
   v22[1] = 3221225472;
   v22[2] = __84__HDSyncStoreEntity_syncStoreEntityWithUUID_type_creationDate_healthDatabase_error___block_invoke;
   v22[3] = &unk_27861E8A8;
-  v26 = a1;
-  v16 = v13;
-  v27 = a4;
+  selfCopy = self;
+  v16 = dCopy;
+  typeCopy = type;
   v23 = v16;
   v25 = &v28;
-  v17 = v14;
+  v17 = dateCopy;
   v24 = v17;
-  if ([a1 performWriteTransactionWithHealthDatabase:v15 error:a7 block:v22])
+  if ([self performWriteTransactionWithHealthDatabase:databaseCopy error:error block:v22])
   {
     v18 = v29[5];
   }
@@ -99,17 +99,17 @@ BOOL __84__HDSyncStoreEntity_syncStoreEntityWithUUID_type_creationDate_healthDat
   return v10;
 }
 
-+ (id)_predicateWithStoreUUID:(uint64_t)a3 type:
++ (id)_predicateWithStoreUUID:(uint64_t)d type:
 {
   v4 = a2;
   objc_opt_self();
   v5 = MEMORY[0x277D10B18];
-  v6 = [v4 hk_dataForUUIDBytes];
+  hk_dataForUUIDBytes = [v4 hk_dataForUUIDBytes];
 
-  v7 = [v5 predicateWithProperty:@"uuid" equalToValue:v6];
+  v7 = [v5 predicateWithProperty:@"uuid" equalToValue:hk_dataForUUIDBytes];
 
   v8 = MEMORY[0x277D10B18];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:d];
   v10 = [v8 predicateWithProperty:@"type" equalToValue:v9];
 
   v11 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v7 otherPredicate:v10];
@@ -131,58 +131,58 @@ void __84__HDSyncStoreEntity_syncStoreEntityWithUUID_type_creationDate_healthDat
   MEMORY[0x22AAC6B50](a2, @"creation_date", v4);
 }
 
-+ (id)existingSyncStoreEntityWithUUID:(id)a3 database:(id)a4 error:(id *)a5
++ (id)existingSyncStoreEntityWithUUID:(id)d database:(id)database error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  dCopy = d;
+  databaseCopy = database;
+  if (!dCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"HDSyncStoreEntity.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"UUID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncStoreEntity.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"UUID != nil"}];
   }
 
   v11 = MEMORY[0x277D10B18];
-  v12 = [v9 hk_dataForUUIDBytes];
-  v13 = [v11 predicateWithProperty:@"uuid" equalToValue:v12];
+  hk_dataForUUIDBytes = [dCopy hk_dataForUUIDBytes];
+  v13 = [v11 predicateWithProperty:@"uuid" equalToValue:hk_dataForUUIDBytes];
 
-  v14 = [a1 anyInDatabase:v10 predicate:v13 error:a5];
+  v14 = [self anyInDatabase:databaseCopy predicate:v13 error:error];
 
   return v14;
 }
 
-+ (id)existingSyncStoreEntityWithUUID:(id)a3 ofType:(int64_t)a4 database:(id)a5 error:(id *)a6
++ (id)existingSyncStoreEntityWithUUID:(id)d ofType:(int64_t)type database:(id)database error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  if (!v11)
+  dCopy = d;
+  databaseCopy = database;
+  if (!dCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"HDSyncStoreEntity.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"UUID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncStoreEntity.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"UUID != nil"}];
   }
 
   v13 = MEMORY[0x277D10B18];
-  v14 = [v11 hk_dataForUUIDBytes];
-  v15 = [v13 predicateWithProperty:@"uuid" equalToValue:v14];
+  hk_dataForUUIDBytes = [dCopy hk_dataForUUIDBytes];
+  v15 = [v13 predicateWithProperty:@"uuid" equalToValue:hk_dataForUUIDBytes];
 
   v16 = MEMORY[0x277D10B18];
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v18 = [v16 predicateWithProperty:@"type" equalToValue:v17];
 
   v19 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v15 otherPredicate:v18];
-  v20 = [a1 anyInDatabase:v12 predicate:v19 error:a6];
+  v20 = [self anyInDatabase:databaseCopy predicate:v19 error:error];
 
   return v20;
 }
 
-+ (id)allSyncStoreEntitiesOfType:(int64_t)a3 transaction:(id)a4 error:(id *)a5
++ (id)allSyncStoreEntitiesOfType:(int64_t)type transaction:(id)transaction error:(id *)error
 {
   v8 = MEMORY[0x277CBEB18];
-  v9 = a4;
+  transactionCopy = transaction;
   v10 = objc_alloc_init(v8);
-  v11 = [v9 databaseForEntityClass:a1];
+  v11 = [transactionCopy databaseForEntityClass:self];
 
   v12 = MEMORY[0x277D10B18];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v14 = [v12 predicateWithProperty:@"type" equalToValue:v13];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -190,9 +190,9 @@ void __84__HDSyncStoreEntity_syncStoreEntityWithUUID_type_creationDate_healthDat
   v19[3] = &unk_27861E8D0;
   v20 = v10;
   v15 = v10;
-  LODWORD(a5) = [a1 enumerateEntitiesInDatabase:v11 predicate:v14 error:a5 enumerationHandler:v19];
+  LODWORD(error) = [self enumerateEntitiesInDatabase:v11 predicate:v14 error:error enumerationHandler:v19];
 
-  if (a5)
+  if (error)
   {
     v16 = v15;
   }
@@ -207,15 +207,15 @@ void __84__HDSyncStoreEntity_syncStoreEntityWithUUID_type_creationDate_healthDat
   return v16;
 }
 
-+ (id)recreateSyncStoreWithUUID:(id)a3 type:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (id)recreateSyncStoreWithUUID:(id)d type:(int64_t)type profile:(id)profile error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
+  dCopy = d;
+  profileCopy = profile;
   objc_opt_self();
-  if ((a4 - 6) >= 0xFFFFFFFFFFFFFFFCLL)
+  if ((type - 6) >= 0xFFFFFFFFFFFFFFFCLL)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"HDSyncStoreEntity.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"[self _canRecreateSyncStoreWithType:type]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncStoreEntity.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"[self _canRecreateSyncStoreWithType:type]"}];
   }
 
   v27 = 0;
@@ -224,19 +224,19 @@ void __84__HDSyncStoreEntity_syncStoreEntityWithUUID_type_creationDate_healthDat
   v30 = __Block_byref_object_copy__73;
   v31 = __Block_byref_object_dispose__73;
   v32 = 0;
-  v13 = [v12 database];
+  database = [profileCopy database];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __66__HDSyncStoreEntity_recreateSyncStoreWithUUID_type_profile_error___block_invoke;
   v21[3] = &unk_27861E8A8;
-  v25 = a1;
-  v14 = v11;
-  v26 = a4;
+  selfCopy = self;
+  v14 = dCopy;
+  typeCopy = type;
   v22 = v14;
   v24 = &v27;
-  v15 = v12;
+  v15 = profileCopy;
   v23 = v15;
-  v16 = [a1 performWriteTransactionWithHealthDatabase:v13 error:a6 block:v21];
+  v16 = [self performWriteTransactionWithHealthDatabase:database error:error block:v21];
 
   if (v16)
   {
@@ -281,33 +281,33 @@ BOOL __66__HDSyncStoreEntity_recreateSyncStoreWithUUID_type_profile_error___bloc
   return v14;
 }
 
-+ (id)activeStoresForRestrictionPredictePruningInProfile:(id)a3 referenceDate:(id)a4 error:(id *)a5
++ (id)activeStoresForRestrictionPredictePruningInProfile:(id)profile referenceDate:(id)date error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  dateCopy = date;
+  profileCopy = profile;
   v10 = objc_opt_self();
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v10 disambiguatedDatabaseTable];
+  disambiguatedDatabaseTable = [v10 disambiguatedDatabaseTable];
   v13 = +[(HDSQLiteSchemaEntity *)HDSyncAnchorEntity];
-  v14 = [v11 stringWithFormat:@"SELECT %@, %@ FROM %@ AS ss WHERE ss.%@ > ? OR EXISTS (SELECT 1 FROM %@ AS sa WHERE ss.%@ == sa.%@ AND sa.%@ > ?)", @"uuid", @"type", v12, @"creation_date", v13, *MEMORY[0x277D10A40], @"store", @"frozen_updated_date"];
+  v14 = [v11 stringWithFormat:@"SELECT %@, %@ FROM %@ AS ss WHERE ss.%@ > ? OR EXISTS (SELECT 1 FROM %@ AS sa WHERE ss.%@ == sa.%@ AND sa.%@ > ?)", @"uuid", @"type", disambiguatedDatabaseTable, @"creation_date", v13, *MEMORY[0x277D10A40], @"store", @"frozen_updated_date"];
 
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v16 = [v9 database];
+  database = [profileCopy database];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __92__HDSyncStoreEntity_activeStoresForRestrictionPredictePruningInProfile_referenceDate_error___block_invoke;
   v22[3] = &unk_278613550;
-  v26 = a1;
+  selfCopy = self;
   v23 = v14;
-  v24 = v8;
+  v24 = dateCopy;
   v17 = v15;
   v25 = v17;
-  v18 = v8;
+  v18 = dateCopy;
   v19 = v14;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v16 error:a5 block:v22];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v22];
 
-  if (a5)
+  if (error)
   {
     v20 = v17;
   }
@@ -360,33 +360,33 @@ uint64_t __92__HDSyncStoreEntity_activeStoresForRestrictionPredictePruningInProf
   return 1;
 }
 
-+ (id)activeStoresForMaxAnchorPruningInProfile:(id)a3 referenceDate:(id)a4 error:(id *)a5
++ (id)activeStoresForMaxAnchorPruningInProfile:(id)profile referenceDate:(id)date error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  dateCopy = date;
+  profileCopy = profile;
   v10 = objc_opt_self();
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v10 disambiguatedDatabaseTable];
+  disambiguatedDatabaseTable = [v10 disambiguatedDatabaseTable];
   v13 = +[(HDSQLiteSchemaEntity *)HDSyncAnchorEntity];
-  v14 = [v11 stringWithFormat:@"SELECT %@ FROM %@ AS ss WHERE EXISTS (SELECT 1 FROM %@ AS sa WHERE ss.%@ == sa.%@ AND sa.%@ > ?)", @"uuid", v12, v13, *MEMORY[0x277D10A40], @"store", @"frozen_updated_date"];
+  v14 = [v11 stringWithFormat:@"SELECT %@ FROM %@ AS ss WHERE EXISTS (SELECT 1 FROM %@ AS sa WHERE ss.%@ == sa.%@ AND sa.%@ > ?)", @"uuid", disambiguatedDatabaseTable, v13, *MEMORY[0x277D10A40], @"store", @"frozen_updated_date"];
 
   v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v16 = [v9 database];
+  database = [profileCopy database];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __82__HDSyncStoreEntity_activeStoresForMaxAnchorPruningInProfile_referenceDate_error___block_invoke;
   v22[3] = &unk_278613550;
-  v26 = a1;
+  selfCopy = self;
   v23 = v14;
-  v24 = v8;
+  v24 = dateCopy;
   v17 = v15;
   v25 = v17;
-  v18 = v8;
+  v18 = dateCopy;
   v19 = v14;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v16 error:a5 block:v22];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v22];
 
-  if (a5)
+  if (error)
   {
     v20 = v17;
   }

@@ -3,7 +3,7 @@
 - (BOOL)_isIdentity;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation CISmartToneFilter
@@ -196,9 +196,9 @@
   [(CIFilter *)&v3 dealloc];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v7 = [a4 isEqualToString:@"inputImage"];
+  v7 = [key isEqualToString:@"inputImage"];
 
   self->_cubeImage = 0;
   if ((v7 & 1) == 0)
@@ -209,7 +209,7 @@
 
   v8.receiver = self;
   v8.super_class = CISmartToneFilter;
-  [(CISmartToneFilter *)&v8 setValue:a3 forKey:a4];
+  [(CISmartToneFilter *)&v8 setValue:value forKey:key];
 }
 
 - (id)outputImage
@@ -222,18 +222,18 @@
 
   if (![(CISmartToneFilter *)self _isIdentity])
   {
-    v6 = [(NSNumber *)[(CISmartToneFilter *)self inputUseCube] intValue];
+    intValue = [(NSNumber *)[(CISmartToneFilter *)self inputUseCube] intValue];
     if (CI_SMART_TONE_USE_CUBE(void)::didCheck != -1)
     {
       [CISmartToneFilter outputImage];
     }
 
-    if ((CI_SMART_TONE_USE_CUBE(void)::v & 0x80000000) == 0 && (v6 & 0x80000000) == 0)
+    if ((CI_SMART_TONE_USE_CUBE(void)::v & 0x80000000) == 0 && (intValue & 0x80000000) == 0)
     {
-      v6 = CI_SMART_TONE_USE_CUBE(void)::v;
+      intValue = CI_SMART_TONE_USE_CUBE(void)::v;
     }
 
-    if (v6 < 1)
+    if (intValue < 1)
     {
       [(NSNumber *)self->inputExposure doubleValue];
       v11 = 2.0;
@@ -302,34 +302,34 @@
       v41 = fmin(v30, v11);
       if (fabs(v32) >= 1.0e-10)
       {
-        v42 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+        imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
         if (v32 >= 0.0)
         {
-          v43 = [(CISmartToneFilter *)self _kernelBpos];
-          [(CIImage *)v42 extent];
+          _kernelBpos = [(CISmartToneFilter *)self _kernelBpos];
+          [(CIImage *)imageByUnpremultiplyingAlpha extent];
           v45 = v53;
           v47 = v54;
           v49 = v55;
           v51 = v56;
-          v115[0] = v42;
+          v115[0] = imageByUnpremultiplyingAlpha;
           v115[1] = [MEMORY[0x1E696AD98] numberWithDouble:v32 * 2.0 + 1.0];
           v52 = v115;
         }
 
         else
         {
-          v43 = [(CISmartToneFilter *)self _kernelBneg];
-          [(CIImage *)v42 extent];
+          _kernelBpos = [(CISmartToneFilter *)self _kernelBneg];
+          [(CIImage *)imageByUnpremultiplyingAlpha extent];
           v45 = v44;
           v47 = v46;
           v49 = v48;
           v51 = v50;
-          v116[0] = v42;
+          v116[0] = imageByUnpremultiplyingAlpha;
           v116[1] = [MEMORY[0x1E696AD98] numberWithDouble:v32 * -1.5 + 1.0];
           v52 = v116;
         }
 
-        inputImage = [objc_msgSend(v43 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v52, 2), v45, v47, v49, v51), "imageByPremultiplyingAlpha"}];
+        inputImage = [objc_msgSend(_kernelBpos applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v52, 2), v45, v47, v49, v51), "imageByPremultiplyingAlpha"}];
         v11 = 2.0;
       }
 
@@ -370,7 +370,7 @@
         }
 
         v105 = v65;
-        v66 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+        imageByUnpremultiplyingAlpha2 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
         v67 = v107;
         if (v107 >= 1.0e-10)
         {
@@ -379,15 +379,15 @@
             v64 = v102;
           }
 
-          v68 = [(CISmartToneFilter *)self _kernelRH];
-          [(CIImage *)v66 extent];
+          _kernelRH = [(CISmartToneFilter *)self _kernelRH];
+          [(CIImage *)imageByUnpremultiplyingAlpha2 extent];
           v103 = v69;
           v100 = v71;
           v101 = v70;
           v73 = v72;
-          v112[0] = v66;
+          v112[0] = imageByUnpremultiplyingAlpha2;
           v112[1] = [MEMORY[0x1E696AD98] numberWithDouble:v64];
-          v66 = [v68 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v112, 2), v103, v101, v100, v73}];
+          imageByUnpremultiplyingAlpha2 = [_kernelRH applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v112, 2), v103, v101, v100, v73}];
           if (v58 <= 0.0)
           {
             v67 = exp(v58 * (v58 * -0.4245) / 0.75);
@@ -401,30 +401,30 @@
           }
         }
 
-        v76 = [(CISmartToneFilter *)self _kernelH];
-        [(CIImage *)v66 extent];
+        _kernelH = [(CISmartToneFilter *)self _kernelH];
+        [(CIImage *)imageByUnpremultiplyingAlpha2 extent];
         v78 = v77;
         v80 = v79;
         v82 = v81;
         v84 = v83;
-        v111[0] = v66;
+        v111[0] = imageByUnpremultiplyingAlpha2;
         v111[1] = [MEMORY[0x1E696AD98] numberWithDouble:v64];
         v111[2] = [MEMORY[0x1E696AD98] numberWithDouble:v105];
-        inputImage = [objc_msgSend(v76 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v111, 3), v78, v80, v82, v84), "imageByPremultiplyingAlpha"}];
+        inputImage = [objc_msgSend(_kernelH applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v111, 3), v78, v80, v82, v84), "imageByPremultiplyingAlpha"}];
       }
 
       if (fabs(v59) >= 1.0e-10)
       {
-        v85 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
-        v86 = [(CISmartToneFilter *)self _kernelC];
-        [(CIImage *)v85 extent];
+        imageByUnpremultiplyingAlpha3 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+        _kernelC = [(CISmartToneFilter *)self _kernelC];
+        [(CIImage *)imageByUnpremultiplyingAlpha3 extent];
         v88 = v87;
         v90 = v89;
         v92 = v91;
         v94 = v93;
-        v110[0] = v85;
+        v110[0] = imageByUnpremultiplyingAlpha3;
         v110[1] = [MEMORY[0x1E696AD98] numberWithDouble:v59 * 3.4];
-        inputImage = [objc_msgSend(v86 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v110, 2), v88, v90, v92, v94), "imageByPremultiplyingAlpha"}];
+        inputImage = [objc_msgSend(_kernelC applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v110, 2), v88, v90, v92, v94), "imageByPremultiplyingAlpha"}];
       }
 
       if (v107 >= 1.0e-10)
@@ -450,17 +450,17 @@
 
     else
     {
-      if (v6 >= 0x20)
+      if (intValue >= 0x20)
       {
         v7 = 32;
       }
 
       else
       {
-        v7 = v6;
+        v7 = intValue;
       }
 
-      if (v6 == 1)
+      if (intValue == 1)
       {
         v8 = 32;
       }
@@ -487,10 +487,10 @@
         self->_cubeData = [v34 createColorCubeDataForFilters:objc_msgSend(MEMORY[0x1E695DEC8] dimension:{"arrayWithObjects:count:", &v121, 1), v8}];
       }
 
-      v35 = [(CISmartToneFilter *)self inputUseCubeColorSpace];
-      if (v35)
+      inputUseCubeColorSpace = [(CISmartToneFilter *)self inputUseCubeColorSpace];
+      if (inputUseCubeColorSpace)
       {
-        DeviceRGB = CGColorSpaceRetain(v35);
+        DeviceRGB = CGColorSpaceRetain(inputUseCubeColorSpace);
       }
 
       else

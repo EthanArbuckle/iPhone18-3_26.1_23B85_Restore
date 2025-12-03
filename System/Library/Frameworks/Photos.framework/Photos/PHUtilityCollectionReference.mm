@@ -1,71 +1,71 @@
 @interface PHUtilityCollectionReference
-+ (id)referenceForUtilityCollection:(id)a3;
-- (PHUtilityCollectionReference)initWithDictionary:(id)a3 referenceType:(id)a4;
-- (PHUtilityCollectionReference)initWithLocalIdentifier:(id)a3 libraryURL:(id)a4 type:(unsigned __int16)a5;
-- (id)_transientCollectionInLibrary:(id)a3;
-- (id)dictionaryForReferenceType:(id)a3;
++ (id)referenceForUtilityCollection:(id)collection;
+- (PHUtilityCollectionReference)initWithDictionary:(id)dictionary referenceType:(id)type;
+- (PHUtilityCollectionReference)initWithLocalIdentifier:(id)identifier libraryURL:(id)l type:(unsigned __int16)type;
+- (id)_transientCollectionInLibrary:(id)library;
+- (id)dictionaryForReferenceType:(id)type;
 @end
 
 @implementation PHUtilityCollectionReference
 
-- (id)_transientCollectionInLibrary:(id)a3
+- (id)_transientCollectionInLibrary:(id)library
 {
-  v4 = [a3 librarySpecificFetchOptions];
-  v5 = [PHAssetCollection fetchUtilityCollectionsWithType:[(PHUtilityCollectionReference *)self utilityCollectionType] options:v4];
-  v6 = [v5 firstObject];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  v5 = [PHAssetCollection fetchUtilityCollectionsWithType:[(PHUtilityCollectionReference *)self utilityCollectionType] options:librarySpecificFetchOptions];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-- (id)dictionaryForReferenceType:(id)a3
+- (id)dictionaryForReferenceType:(id)type
 {
   v7.receiver = self;
   v7.super_class = PHUtilityCollectionReference;
-  v4 = [(PHAssetCollectionReference *)&v7 dictionaryForReferenceType:a3];
+  v4 = [(PHAssetCollectionReference *)&v7 dictionaryForReferenceType:type];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[PHUtilityCollectionReference utilityCollectionType](self, "utilityCollectionType")}];
   [v4 setObject:v5 forKeyedSubscript:@"utilityCollectionType"];
 
   return v4;
 }
 
-- (PHUtilityCollectionReference)initWithDictionary:(id)a3 referenceType:(id)a4
+- (PHUtilityCollectionReference)initWithDictionary:(id)dictionary referenceType:(id)type
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PHUtilityCollectionReference;
-  v7 = [(PHAssetCollectionReference *)&v10 initWithDictionary:v6 referenceType:a4];
+  v7 = [(PHAssetCollectionReference *)&v10 initWithDictionary:dictionaryCopy referenceType:type];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"utilityCollectionType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"utilityCollectionType"];
     v7->_utilityCollectionType = [v8 integerValue];
   }
 
   return v7;
 }
 
-- (PHUtilityCollectionReference)initWithLocalIdentifier:(id)a3 libraryURL:(id)a4 type:(unsigned __int16)a5
+- (PHUtilityCollectionReference)initWithLocalIdentifier:(id)identifier libraryURL:(id)l type:(unsigned __int16)type
 {
   v7.receiver = self;
   v7.super_class = PHUtilityCollectionReference;
-  result = [(PHAssetCollectionReference *)&v7 initWithLocalIdentifier:a3 libraryURL:a4 type:2 subtype:0];
+  result = [(PHAssetCollectionReference *)&v7 initWithLocalIdentifier:identifier libraryURL:l type:2 subtype:0];
   if (result)
   {
-    result->_utilityCollectionType = a5;
+    result->_utilityCollectionType = type;
   }
 
   return result;
 }
 
-+ (id)referenceForUtilityCollection:(id)a3
++ (id)referenceForUtilityCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 localIdentifier];
-  v7 = [v4 photoLibrary];
-  v8 = [v7 photoLibraryURL];
-  v9 = [v4 type];
+  collectionCopy = collection;
+  v5 = [self alloc];
+  localIdentifier = [collectionCopy localIdentifier];
+  photoLibrary = [collectionCopy photoLibrary];
+  photoLibraryURL = [photoLibrary photoLibraryURL];
+  type = [collectionCopy type];
 
-  v10 = [v5 initWithLocalIdentifier:v6 libraryURL:v8 type:v9];
+  v10 = [v5 initWithLocalIdentifier:localIdentifier libraryURL:photoLibraryURL type:type];
 
   return v10;
 }

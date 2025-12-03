@@ -1,5 +1,5 @@
 @interface TapbackPickerCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsEmojiKeyboardButton;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -7,28 +7,28 @@
 
 @implementation TapbackPickerCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ChatKit.TapbackPickerCollectionViewCell" hasSwiftField:@"tapbackView" withSwiftType:"Optional<UIView & CKTapbackViewProtocol>"];
-  [v3 validateClass:@"ChatKit.TapbackEmojiKeyboardGlyphView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ChatKit.TapbackPickerCollectionViewCell" hasSwiftField:@"tapbackView" withSwiftType:"Optional<UIView & CKTapbackViewProtocol>"];
+  [validationsCopy validateClass:@"ChatKit.TapbackEmojiKeyboardGlyphView"];
 }
 
 - (id)accessibilityLabel
 {
   if ([(TapbackPickerCollectionViewCellAccessibility *)self _axIsEmojiKeyboardButton])
   {
-    v3 = accessibilityLocalizedString(@"add.custom.emoji.reaction");
+    accessibilityLabel = accessibilityLocalizedString(@"add.custom.emoji.reaction");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = TapbackPickerCollectionViewCellAccessibility;
-    v3 = [(TapbackPickerCollectionViewCellAccessibility *)&v5 accessibilityLabel];
+    accessibilityLabel = [(TapbackPickerCollectionViewCellAccessibility *)&v5 accessibilityLabel];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint

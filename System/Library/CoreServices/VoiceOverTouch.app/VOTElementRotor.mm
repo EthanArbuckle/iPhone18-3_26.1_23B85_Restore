@@ -1,18 +1,18 @@
 @interface VOTElementRotor
-- (BOOL)_customPublicRotorInRotor:(id)a3;
-- (BOOL)customActionsAreDragDrop:(id)a3;
-- (BOOL)customActionsAreValid:(id)a3;
-- (BOOL)rotorTypeIsValid:(int64_t)a3 eventOrigin:(int64_t)a4;
+- (BOOL)_customPublicRotorInRotor:(id)rotor;
+- (BOOL)customActionsAreDragDrop:(id)drop;
+- (BOOL)customActionsAreValid:(id)valid;
+- (BOOL)rotorTypeIsValid:(int64_t)valid eventOrigin:(int64_t)origin;
 - (VOTElementRotor)init;
 - (id)_currentAvailableRotorItems;
 - (id)_currentEnabledWebRotorItems;
-- (int64_t)_firstNonGesturedTextInputRotorTypeWithFallback:(int64_t)a3;
+- (int64_t)_firstNonGesturedTextInputRotorTypeWithFallback:(int64_t)fallback;
 - (void)_depromoteMLElementSupport;
 - (void)_promoteGesturedTextInputRotorIfNeeded;
 - (void)_updateWebRotorItems;
 - (void)dealloc;
-- (void)nanoUpdateRotorForElement:(id)a3;
-- (void)updateRotorForElement:(id)a3 shouldPreserveRotorNavigation:(BOOL)a4 firstResponder:(id)a5;
+- (void)nanoUpdateRotorForElement:(id)element;
+- (void)updateRotorForElement:(id)element shouldPreserveRotorNavigation:(BOOL)navigation firstResponder:(id)responder;
 @end
 
 @implementation VOTElementRotor
@@ -31,14 +31,14 @@
     [(VOTElementRotor *)v2 _updateWebRotorItems];
     v5 = +[VOTConfiguration rootConfiguration];
     v6 = [v5 preferenceForKey:@"CurrentRotorTypeSimple"];
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
 
-    if (sub_1000F8768(v7))
+    if (sub_1000F8768(intValue))
     {
-      v7 = [(VOTElementRotor *)v2 _firstNonGesturedTextInputRotorTypeWithFallback:v7];
+      intValue = [(VOTElementRotor *)v2 _firstNonGesturedTextInputRotorTypeWithFallback:intValue];
     }
 
-    [(VOTRotor *)v2 setCurrentRotorType:v7 saveToPreferences:1 userInitiated:0];
+    [(VOTRotor *)v2 setCurrentRotorType:intValue saveToPreferences:1 userInitiated:0];
     objc_initWeak(&location, v2);
     v8 = +[AXSettings sharedInstance];
     v11[0] = _NSConcreteStackBlock;
@@ -66,14 +66,14 @@
   [(VOTRotor *)&v4 dealloc];
 }
 
-- (int64_t)_firstNonGesturedTextInputRotorTypeWithFallback:(int64_t)a3
+- (int64_t)_firstNonGesturedTextInputRotorTypeWithFallback:(int64_t)fallback
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(VOTElementRotor *)self _currentAvailableRotorItems];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _currentAvailableRotorItems = [(VOTElementRotor *)self _currentAvailableRotorItems];
+  v5 = [_currentAvailableRotorItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -84,27 +84,27 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_currentAvailableRotorItems);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = [v9 objectForKey:@"VOTRotorType"];
-        v11 = [v10 intValue];
+        intValue = [v10 intValue];
 
-        if (!sub_1000F8768(v11))
+        if (!sub_1000F8768(intValue))
         {
           v12 = [v9 objectForKeyedSubscript:@"Enabled"];
-          v13 = [v12 BOOLValue];
+          bOOLValue = [v12 BOOLValue];
 
-          if (v13)
+          if (bOOLValue)
           {
-            a3 = v11;
+            fallback = intValue;
             goto LABEL_12;
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [_currentAvailableRotorItems countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -116,20 +116,20 @@
 
 LABEL_12:
 
-  return a3;
+  return fallback;
 }
 
-- (BOOL)_customPublicRotorInRotor:(id)a3
+- (BOOL)_customPublicRotorInRotor:(id)rotor
 {
-  v4 = a3;
-  if (sub_1000F8D8C(self->super._currentRotors, [VOTRotor rotorTypeForSystemRotorType:v4]) == -1)
+  rotorCopy = rotor;
+  if (sub_1000F8D8C(self->super._currentRotors, [VOTRotor rotorTypeForSystemRotorType:rotorCopy]) == -1)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(VOTRotor *)self customPublicRotors];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    customPublicRotors = [(VOTRotor *)self customPublicRotors];
+    v7 = [customPublicRotors countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -140,11 +140,11 @@ LABEL_12:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(customPublicRotors);
           }
 
           v11 = [*(*(&v14 + 1) + 8 * i) objectForKeyedSubscript:@"name"];
-          v12 = [v11 isEqualToString:v4];
+          v12 = [v11 isEqualToString:rotorCopy];
 
           if (v12)
           {
@@ -153,7 +153,7 @@ LABEL_12:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [customPublicRotors countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -179,13 +179,13 @@ LABEL_13:
 {
   v2 = +[NSMutableArray array];
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverRotorItems];
+  voiceOverRotorItems = [v3 voiceOverRotorItems];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = voiceOverRotorItems;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -230,12 +230,12 @@ LABEL_13:
   v21 = v2;
   v15 = v2;
   dispatch_sync(enabledWebRotorItemsQueue, block);
-  v16 = [(VOTElementRotor *)self updatedWebRotorItemsCallback];
+  updatedWebRotorItemsCallback = [(VOTElementRotor *)self updatedWebRotorItemsCallback];
 
-  if (v16)
+  if (updatedWebRotorItemsCallback)
   {
-    v17 = [(VOTElementRotor *)self updatedWebRotorItemsCallback];
-    (v17)[2](v17, self);
+    updatedWebRotorItemsCallback2 = [(VOTElementRotor *)self updatedWebRotorItemsCallback];
+    (updatedWebRotorItemsCallback2)[2](updatedWebRotorItemsCallback2, self);
   }
 }
 
@@ -263,8 +263,8 @@ LABEL_13:
 
 - (id)_currentAvailableRotorItems
 {
-  v2 = [(VOTElementRotor *)self _currentEnabledWebRotorItems];
-  v3 = [v2 mutableCopy];
+  _currentEnabledWebRotorItems = [(VOTElementRotor *)self _currentEnabledWebRotorItems];
+  v3 = [_currentEnabledWebRotorItems mutableCopy];
 
   v4 = 0;
   v5 = 0;
@@ -276,9 +276,9 @@ LABEL_13:
       v5 = [v3 objectAtIndex:v4];
 
       v7 = [v5 objectForKey:@"VOTRotorType"];
-      v8 = [v7 intValue];
+      intValue = [v7 intValue];
 
-      if (v8 == 24)
+      if (intValue == 24)
       {
         break;
       }
@@ -336,9 +336,9 @@ LABEL_13:
   }
 }
 
-- (void)nanoUpdateRotorForElement:(id)a3
+- (void)nanoUpdateRotorForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   currentRotors = self->super._currentRotors;
   if (currentRotors)
   {
@@ -352,13 +352,13 @@ LABEL_13:
 
   v7 = Copy;
   CFArrayRemoveAllValues(self->super._currentRotors);
-  if ([v4 doesHaveTraits:kAXAdjustableTrait])
+  if ([elementCopy doesHaveTraits:kAXAdjustableTrait])
   {
     CFArrayAppendValue(self->super._currentRotors, 1);
   }
 
-  v8 = [v4 customRotorActions];
-  v33 = [VOTElement organizedActionsByCategory:v8];
+  customRotorActions = [elementCopy customRotorActions];
+  v33 = [VOTElement organizedActionsByCategory:customRotorActions];
   objc_storeStrong(&self->super._customRotorActionCategories, v33);
   v43 = 0u;
   v44 = 0u;
@@ -369,10 +369,10 @@ LABEL_13:
   if (v10)
   {
     v11 = v10;
-    v29 = v8;
+    v29 = customRotorActions;
     v30 = v7;
-    v31 = self;
-    v32 = v4;
+    selfCopy = self;
+    v32 = elementCopy;
     v35 = 0;
     v36 = *v42;
     v12 = UIAccessibilityCustomActionCategoryEdit;
@@ -391,8 +391,8 @@ LABEL_13:
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v15 = [v14 actions];
-        v16 = [v15 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        actions = [v14 actions];
+        v16 = [actions countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v16)
         {
           v17 = v16;
@@ -403,15 +403,15 @@ LABEL_13:
             {
               if (*v38 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(actions);
               }
 
               v20 = *(*(&v37 + 1) + 8 * j);
-              v21 = [v20 name];
-              if ([v21 length])
+              name = [v20 name];
+              if ([name length])
               {
-                v22 = [v20 categoryName];
-                v23 = [v22 isEqualToString:v12];
+                categoryName = [v20 categoryName];
+                v23 = [categoryName isEqualToString:v12];
 
                 if (!v23)
                 {
@@ -425,7 +425,7 @@ LABEL_13:
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v37 objects:v45 count:16];
+            v17 = [actions countByEnumeratingWithState:&v37 objects:v45 count:16];
           }
 
           while (v17);
@@ -439,13 +439,13 @@ LABEL_22:
 
     while (v11);
 
-    self = v31;
-    v4 = v32;
+    self = selfCopy;
+    elementCopy = v32;
     v7 = v30;
-    v8 = v29;
+    customRotorActions = v29;
     if (v35)
     {
-      CFArrayAppendValue(v31->super._currentRotors, 0x36);
+      CFArrayAppendValue(selfCopy->super._currentRotors, 0x36);
     }
   }
 
@@ -505,9 +505,9 @@ LABEL_40:
 LABEL_41:
 }
 
-- (BOOL)rotorTypeIsValid:(int64_t)a3 eventOrigin:(int64_t)a4
+- (BOOL)rotorTypeIsValid:(int64_t)valid eventOrigin:(int64_t)origin
 {
-  if (a3 == 54 && a4 == 2 && (-[VOTRotor delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 actionsRotorAddBehaviorForElementRotor:self], v7, v8 != 1))
+  if (valid == 54 && origin == 2 && (-[VOTRotor delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 actionsRotorAddBehaviorForElementRotor:self], v7, v8 != 1))
   {
     v29 = 0u;
     v30 = 0u;
@@ -534,8 +534,8 @@ LABEL_41:
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v16 = [v15 actions];
-          v17 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          actions = [v15 actions];
+          v17 = [actions countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v17)
           {
             v18 = v17;
@@ -546,7 +546,7 @@ LABEL_41:
               {
                 if (*v24 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(actions);
                 }
 
                 if (![*(*(&v23 + 1) + 8 * j) ignoreWhenVoiceOverTouches])
@@ -556,7 +556,7 @@ LABEL_41:
                 }
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v18 = [actions countByEnumeratingWithState:&v23 objects:v31 count:16];
               if (v18)
               {
                 continue;
@@ -585,29 +585,29 @@ LABEL_20:
   {
     v22.receiver = self;
     v22.super_class = VOTElementRotor;
-    v9 = [(VOTRotor *)&v22 rotorTypeIsValid:a3 eventOrigin:a4];
+    v9 = [(VOTRotor *)&v22 rotorTypeIsValid:valid eventOrigin:origin];
   }
 
   return v9 & 1;
 }
 
-- (void)updateRotorForElement:(id)a3 shouldPreserveRotorNavigation:(BOOL)a4 firstResponder:(id)a5
+- (void)updateRotorForElement:(id)element shouldPreserveRotorNavigation:(BOOL)navigation firstResponder:(id)responder
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  [(VOTRotor *)self setCurrentRotorElement:v8];
+  navigationCopy = navigation;
+  elementCopy = element;
+  responderCopy = responder;
+  [(VOTRotor *)self setCurrentRotorElement:elementCopy];
   Copy = CFArrayCreateCopy(kCFAllocatorDefault, self->super._currentRotors);
   v177 = sub_1000F8D8C(Copy, 0x35);
   CFArrayRemoveAllValues(self->super._currentRotors);
   [(VOTRotor *)self setCustomActionIndex:0];
   typeKey = self->super._typeKey;
-  v204 = self;
+  selfCopy = self;
   self->super._typeKey = @"CurrentRotorTypeSimple";
 
-  v206 = v8;
-  v12 = [v8 doesHaveTraits:kAXAdjustableTrait];
-  v13 = 0;
+  v206 = elementCopy;
+  v12 = [elementCopy doesHaveTraits:kAXAdjustableTrait];
+  currentRotorType = 0;
   v178 = v12;
   if (v12)
   {
@@ -617,7 +617,7 @@ LABEL_20:
       sub_10012DDC4();
     }
 
-    v13 = 1;
+    currentRotorType = 1;
     j__CFArrayAppendValue(self->super._currentRotors, 1);
   }
 
@@ -629,15 +629,15 @@ LABEL_20:
       sub_10012DDF8();
     }
 
-    v13 = 65;
+    currentRotorType = 65;
     j__CFArrayAppendValue(self->super._currentRotors, 0x41);
   }
 
   v195 = [v206 doesHaveTraits:kAXMathEquationTrait];
   if (v195 && [v206 canNavigateMathSegments])
   {
-    v13 = [(VOTRotor *)self currentRotorType];
-    if (!sub_1000FA5FC(v13))
+    currentRotorType = [(VOTRotor *)self currentRotorType];
+    if (!sub_1000FA5FC(currentRotorType))
     {
       v16 = VOTLogRotor();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -645,7 +645,7 @@ LABEL_20:
         sub_10012DE2C();
       }
 
-      v13 = 55;
+      currentRotorType = 55;
     }
 
     j__CFArrayAppendValue(self->super._currentRotors, 0x37);
@@ -654,13 +654,13 @@ LABEL_20:
     j__CFArrayAppendValue(self->super._currentRotors, 0x3A);
   }
 
-  v184 = [v206 application];
-  v17 = [v184 typingCandidateElements];
-  v18 = [v17 count];
+  application = [v206 application];
+  typingCandidateElements = [application typingCandidateElements];
+  v18 = [typingCandidateElements count];
 
   if (v18)
   {
-    if (![(VOTElementRotor *)v204 ignoreDefaultTypeAutofill])
+    if (![(VOTElementRotor *)selfCopy ignoreDefaultTypeAutofill])
     {
       v19 = VOTLogRotor();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -668,31 +668,31 @@ LABEL_20:
         sub_10012DE60();
       }
 
-      v13 = 2;
+      currentRotorType = 2;
     }
 
-    j__CFArrayAppendValue(v204->super._currentRotors, 2);
+    j__CFArrayAppendValue(selfCopy->super._currentRotors, 2);
   }
 
-  v20 = v9;
-  v186 = v13;
+  v20 = responderCopy;
+  v186 = currentRotorType;
   cf = Copy;
   v21 = kAXWebContentTrait;
   v185 = [v206 doesHaveTraits:kAXWebContentTrait];
   if (((v195 | v185) & 1) == 0)
   {
-    j__CFArrayAppendValue(v204->super._currentRotors, 3);
-    j__CFArrayAppendValue(v204->super._currentRotors, 4);
+    j__CFArrayAppendValue(selfCopy->super._currentRotors, 3);
+    j__CFArrayAppendValue(selfCopy->super._currentRotors, 4);
   }
 
   v22 = kAXTextEntryTrait;
   v193 = kAXIsEditingTrait;
-  v202 = [v206 doesHaveAllTraits:kAXIsEditingTrait | kAXTextEntryTrait];
-  v23 = [v206 isReadingContent];
-  v24 = [v206 label];
+  kAXTextEntryTrait = [v206 doesHaveAllTraits:kAXIsEditingTrait | kAXTextEntryTrait];
+  isReadingContent = [v206 isReadingContent];
+  label = [v206 label];
   v189 = kAXTextAreaTrait;
-  v187 = v23;
-  v173 = v6;
+  v187 = isReadingContent;
+  v173 = navigationCopy;
   v197 = v21;
   if ([v206 doesHaveTraits:?])
   {
@@ -705,12 +705,12 @@ LABEL_20:
     goto LABEL_32;
   }
 
-  if (!v23)
+  if (!isReadingContent)
   {
     LOBYTE(v27) = 0;
     v28 = v206;
 LABEL_32:
-    if ((([v28 doesHaveTraits:v189] | v23) & 1) == 0)
+    if ((([v28 doesHaveTraits:v189] | isReadingContent) & 1) == 0)
     {
       goto LABEL_40;
     }
@@ -718,14 +718,14 @@ LABEL_32:
     goto LABEL_36;
   }
 
-  v29 = v24;
+  v29 = label;
   v30 = [v206 stringForLineNumber:0];
   v31 = +[NSCharacterSet whitespaceCharacterSet];
   v32 = [v30 stringByTrimmingCharactersInSet:v31];
 
-  v33 = [v206 pageContent];
+  pageContent = [v206 pageContent];
   v34 = +[NSCharacterSet whitespaceCharacterSet];
-  v35 = [v33 stringByTrimmingCharactersInSet:v34];
+  v35 = [pageContent stringByTrimmingCharactersInSet:v34];
 
   if ([v32 length] && objc_msgSend(v35, "length"))
   {
@@ -737,21 +737,21 @@ LABEL_32:
     LOBYTE(v27) = 0;
   }
 
-  v24 = v29;
+  label = v29;
 
   v28 = v206;
   [v206 doesHaveTraits:v189];
 LABEL_36:
-  v36 = [v28 previousTextNavigationElement];
-  if (v36)
+  previousTextNavigationElement = [v28 previousTextNavigationElement];
+  if (previousTextNavigationElement)
   {
     v37 = 1;
   }
 
   else
   {
-    v38 = [v28 nextTextNavigationElement];
-    v37 = v38 != 0;
+    nextTextNavigationElement = [v28 nextTextNavigationElement];
+    v37 = nextTextNavigationElement != 0;
   }
 
   LOBYTE(v27) = v27 | v37;
@@ -761,14 +761,14 @@ LABEL_40:
   v196 = [v28 doesHaveTraits:?];
   if (!v196)
   {
-    v39 = [v28 textInputElement];
-    v40 = v39;
-    if (!v39)
+    textInputElement = [v28 textInputElement];
+    v40 = textInputElement;
+    if (!textInputElement)
     {
-      v39 = v28;
+      textInputElement = v28;
     }
 
-    v182 = [v39 value];
+    value = [textInputElement value];
 
     if (v27)
     {
@@ -776,9 +776,9 @@ LABEL_40:
     }
 
 LABEL_46:
-    if (v202)
+    if (kAXTextEntryTrait)
     {
-      if (!v182)
+      if (!value)
       {
         goto LABEL_54;
       }
@@ -786,7 +786,7 @@ LABEL_46:
 
     else
     {
-      if (v182)
+      if (value)
       {
         v41 = v196;
       }
@@ -802,13 +802,13 @@ LABEL_46:
       }
     }
 
-    if ([v182 rangeOfString:@"\n"] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([value rangeOfString:@"\n"] != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_56;
     }
 
 LABEL_54:
-    if (!v24 || [v24 rangeOfString:@"\n"] == 0x7FFFFFFFFFFFFFFFLL)
+    if (!label || [label rangeOfString:@"\n"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_58;
     }
@@ -816,22 +816,22 @@ LABEL_54:
     goto LABEL_56;
   }
 
-  v182 = [v20 value];
+  value = [v20 value];
   if ((v27 & 1) == 0)
   {
     goto LABEL_46;
   }
 
 LABEL_56:
-  if (!(v195 & 1 | ((v202 & 1 | ((v185 & 1) == 0) | v23 & 1) == 0)))
+  if (!(v195 & 1 | ((kAXTextEntryTrait & 1 | ((v185 & 1) == 0) | isReadingContent & 1) == 0)))
   {
-    j__CFArrayAppendValue(v204->super._currentRotors, 5);
+    j__CFArrayAppendValue(selfCopy->super._currentRotors, 5);
   }
 
 LABEL_58:
-  v180 = v24;
-  v42 = [v28 customRotorActions];
-  v43 = [v42 ax_firstObjectUsingBlock:&stru_1001CA500];
+  v180 = label;
+  customRotorActions = [v28 customRotorActions];
+  v43 = [customRotorActions ax_firstObjectUsingBlock:&stru_1001CA500];
 
   v44 = v196 | [v28 textOperationsAvailable];
   if (v44 != 1)
@@ -841,14 +841,14 @@ LABEL_58:
       goto LABEL_64;
     }
 
-    currentRotors = v204->super._currentRotors;
+    currentRotors = selfCopy->super._currentRotors;
 LABEL_63:
     j__CFArrayAppendValue(currentRotors, 0x13);
     goto LABEL_64;
   }
 
   v45 = [v28 doesHaveTraits:kAXMenuItemTrait];
-  currentRotors = v204->super._currentRotors;
+  currentRotors = selfCopy->super._currentRotors;
   if (!v45)
   {
     goto LABEL_63;
@@ -873,28 +873,28 @@ LABEL_64:
     goto LABEL_70;
   }
 
-  j__CFArrayAppendValue(v204->super._currentRotors, 0x14);
+  j__CFArrayAppendValue(selfCopy->super._currentRotors, 0x14);
 LABEL_70:
   v51 = kAXSupportsTrackingDetailTrait;
   if (([v28 doesHaveTraits:kAXSupportsTrackingDetailTrait] & 1) != 0 || (objc_msgSend(v28, "touchContainer"), v52 = objc_claimAutoreleasedReturnValue(), v53 = objc_msgSend(v52, "doesHaveTraits:", v51), v52, v28 = v206, v53))
   {
-    j__CFArrayAppendValue(v204->super._currentRotors, 0x3E);
+    j__CFArrayAppendValue(selfCopy->super._currentRotors, 0x3E);
   }
 
-  v54 = [v28 containerTypes];
-  v55 = [v54 containsObject:&off_1001DA040];
+  containerTypes = [v28 containerTypes];
+  v55 = [containerTypes containsObject:&off_1001DA040];
 
   if (v55)
   {
-    j__CFArrayAppendValue(v204->super._currentRotors, 0x25);
+    j__CFArrayAppendValue(selfCopy->super._currentRotors, 0x25);
   }
 
   v183 = v20;
-  v56 = v204;
-  if ((v185 & 1) != 0 || [v184 isSafari] && ((objc_msgSend(v206, "doesHaveTraits:", v193) | v187) & 1) == 0)
+  v56 = selfCopy;
+  if ((v185 & 1) != 0 || [application isSafari] && ((objc_msgSend(v206, "doesHaveTraits:", v193) | v187) & 1) == 0)
   {
-    v57 = v204->super._typeKey;
-    v204->super._typeKey = @"CurrentRotorTypeWeb";
+    v57 = selfCopy->super._typeKey;
+    selfCopy->super._typeKey = @"CurrentRotorTypeWeb";
 
     v200 = 1;
   }
@@ -904,7 +904,7 @@ LABEL_70:
     v200 = 0;
   }
 
-  [(VOTElementRotor *)v204 _currentAvailableRotorItems];
+  [(VOTElementRotor *)selfCopy _currentAvailableRotorItems];
   v213 = 0u;
   v214 = 0u;
   v215 = 0u;
@@ -941,15 +941,15 @@ LABEL_70:
         v63 = *(*(&v213 + 1) + 8 * v62);
         v64 = [v63 valueForKey:@"RotorItem"];
         v65 = [VOTRotor rotorTypeForPreferenceString:v64];
-        v66 = [v65 intValue];
-        v67 = v66;
+        intValue = [v65 intValue];
+        v67 = intValue;
 
-        if (v66 == 60)
+        if (intValue == 60)
         {
           v68 = [v63 valueForKey:@"Enabled"];
-          v69 = [v68 BOOLValue];
+          bOOLValue = [v68 BOOLValue];
 
-          if (v69)
+          if (bOOLValue)
           {
             if (([v206 doesHaveTraitsForGesturedTextInput] & 1) != 0 || (objc_msgSend(v206, "application"), v70 = objc_claimAutoreleasedReturnValue(), v71 = objc_msgSend(v70, "isSoftwareKeyboardActive"), v70, v71))
             {
@@ -964,25 +964,25 @@ LABEL_70:
         }
 
         v72 = [v63 valueForKey:@"Enabled"];
-        v73 = [v72 BOOLValue];
+        bOOLValue2 = [v72 BOOLValue];
 
         if (v67 == 25)
         {
           v74 = +[AXSettings sharedInstance];
           v75 = [v74 voiceOverTouchBrailleDisplaySyncInputOutputTables] ^ 1;
 
-          v76 = v75 | v73;
-          v56 = v204;
+          v76 = v75 | bOOLValue2;
+          v56 = selfCopy;
         }
 
         else
         {
-          v76 = (v67 == 24) | v73;
+          v76 = (v67 == 24) | bOOLValue2;
         }
 
         if (v67 == 69 || (v76 & 1) == 0)
         {
-          if (v202)
+          if (kAXTextEntryTrait)
           {
             goto LABEL_214;
           }
@@ -1009,7 +1009,7 @@ LABEL_70:
           goto LABEL_214;
         }
 
-        if ((v196 | v202))
+        if ((v196 | kAXTextEntryTrait))
         {
           if (v67 != 6)
           {
@@ -1199,8 +1199,8 @@ LABEL_157:
 LABEL_144:
             if (v67 == 91)
             {
-              v84 = [VOTSharedWorkspace activities];
-              v85 = [v84 count];
+              activities = [VOTSharedWorkspace activities];
+              v85 = [activities count];
 
               if (!v85)
               {
@@ -1248,9 +1248,9 @@ LABEL_168:
             switch(v67)
             {
               case 0x17:
-                v86 = [VOTSharedWorkspace votSettings];
-                v87 = [v86 voiceRotors];
-                v88 = [v87 count];
+                votSettings = [VOTSharedWorkspace votSettings];
+                voiceRotors = [votSettings voiceRotors];
+                v88 = [voiceRotors count];
 
                 if (v88)
                 {
@@ -1261,8 +1261,8 @@ LABEL_168:
 
                 break;
               case 0x18:
-                v98 = [VOTSharedWorkspace brailleLanguageRotorItems];
-                if ([v98 count] <= 1)
+                brailleLanguageRotorItems = [VOTSharedWorkspace brailleLanguageRotorItems];
+                if ([brailleLanguageRotorItems count] <= 1)
                 {
                   goto LABEL_229;
                 }
@@ -1275,9 +1275,9 @@ LABEL_168:
 
                 [v63 valueForKey:@"Enabled"];
                 v101 = v100 = v99;
-                v174 = [v101 BOOLValue];
+                bOOLValue3 = [v101 BOOLValue];
 
-                if (v174)
+                if (bOOLValue3)
                 {
                   v80 = v56->super._currentRotors;
                   v81 = 24;
@@ -1287,12 +1287,12 @@ LABEL_168:
                 break;
               case 0x19:
                 v102 = +[AXSettings sharedInstance];
-                v103 = [v102 voiceOverTouchBrailleDisplaySyncInputOutputTables];
+                voiceOverTouchBrailleDisplaySyncInputOutputTables = [v102 voiceOverTouchBrailleDisplaySyncInputOutputTables];
 
-                if ((v103 & 1) == 0)
+                if ((voiceOverTouchBrailleDisplaySyncInputOutputTables & 1) == 0)
                 {
-                  v98 = [VOTSharedWorkspace brailleLanguageRotorItems];
-                  if ([v98 count] <= 1)
+                  brailleLanguageRotorItems = [VOTSharedWorkspace brailleLanguageRotorItems];
+                  if ([brailleLanguageRotorItems count] <= 1)
                   {
                     goto LABEL_229;
                   }
@@ -1308,9 +1308,9 @@ LABEL_229:
 
                   [v63 valueForKey:@"Enabled"];
                   v105 = v104 = v99;
-                  v175 = [v105 BOOLValue];
+                  bOOLValue4 = [v105 BOOLValue];
 
-                  if (v175)
+                  if (bOOLValue4)
                   {
                     v80 = v56->super._currentRotors;
                     v81 = 25;
@@ -1363,9 +1363,9 @@ LABEL_229:
                   if (v67 == 26)
                   {
                     v112 = +[VOTBrailleManager manager];
-                    v113 = [v112 brailleEnabled];
+                    brailleEnabled = [v112 brailleEnabled];
 
-                    if (!v113)
+                    if (!brailleEnabled)
                     {
                       goto LABEL_175;
                     }
@@ -1418,9 +1418,9 @@ LABEL_256:
                         }
 
                         v114 = +[VOTOutputManager outputManager];
-                        v176 = [v114 externalAudioRouteIsHearingAid];
+                        externalAudioRouteIsHearingAid = [v114 externalAudioRouteIsHearingAid];
 
-                        if (v176)
+                        if (externalAudioRouteIsHearingAid)
                         {
                           goto LABEL_175;
                         }
@@ -1450,17 +1450,17 @@ LABEL_256:
 
                       if (v206)
                       {
-                        v106 = [v206 application];
-                        v107 = [v106 bundleIdentifier];
+                        application2 = [v206 application];
+                        bundleIdentifier = [application2 bundleIdentifier];
                         if ((j__VOSProcessAllowsScreenRecognition() & 1) != 0 || [v206 isInAppSwitcher])
                         {
                         }
 
                         else
                         {
-                          v115 = [v206 isInStatusBar];
+                          isInStatusBar = [v206 isInStatusBar];
 
-                          if (!v115)
+                          if (!isInStatusBar)
                           {
                             goto LABEL_175;
                           }
@@ -1491,9 +1491,9 @@ LABEL_256:
                       if ([VOTSharedWorkspace hasActive2DBrailleDisplay])
                       {
                         v110 = +[VOTPlanarBrailleManager manager];
-                        v111 = [v110 zoomOutActive];
+                        zoomOutActive = [v110 zoomOutActive];
 
-                        if ((v111 & 1) == 0)
+                        if ((zoomOutActive & 1) == 0)
                         {
                           v80 = v56->super._currentRotors;
                           v81 = 32;
@@ -1527,8 +1527,8 @@ LABEL_256:
           }
         }
 
-        v82 = [VOTSharedWorkspace punctuationGroups];
-        v83 = [v82 count];
+        punctuationGroups = [VOTSharedWorkspace punctuationGroups];
+        v83 = [punctuationGroups count];
 
         if (v83)
         {
@@ -1626,14 +1626,14 @@ LABEL_177:
           if (((v67 == 96) & v190) == 1)
           {
             v91 = +[VOTWorkspace sharedWorkspace];
-            v92 = [v91 elementManager];
-            [v92 clearExpiredCopiedSpeech];
+            elementManager = [v91 elementManager];
+            [elementManager clearExpiredCopiedSpeech];
 
             v93 = +[VOTWorkspace sharedWorkspace];
-            v94 = [v93 elementManager];
-            v95 = [v94 hasCopiedSpeech];
+            elementManager2 = [v93 elementManager];
+            hasCopiedSpeech = [elementManager2 hasCopiedSpeech];
 
-            if (v95)
+            if (hasCopiedSpeech)
             {
               v89 = v56->super._currentRotors;
               v90 = 96;
@@ -1661,24 +1661,24 @@ LABEL_214:
     j__CFArrayAppendValue(v56->super._currentRotors, 0x3F);
   }
 
-  v119 = [v206 customRotorActions];
-  v198 = [VOTElement organizedActionsByCategory:v119];
+  customRotorActions2 = [v206 customRotorActions];
+  v198 = [VOTElement organizedActionsByCategory:customRotorActions2];
   v120 = [(VOTElementRotor *)v56 customActionsAreDragDrop:?];
-  v192 = [v206 shouldAddAlternateActionForLinkElement];
-  v121 = [v206 customContent];
-  v122 = [VOTSharedWorkspace elementManager];
-  v123 = [v122 dragSessionActive];
+  shouldAddAlternateActionForLinkElement = [v206 shouldAddAlternateActionForLinkElement];
+  customContent = [v206 customContent];
+  elementManager3 = [VOTSharedWorkspace elementManager];
+  dragSessionActive = [elementManager3 dragSessionActive];
 
-  v124 = v186;
+  currentRotorType2 = v186;
   if ([v206 doesHaveTraits:v179 | v193] && !v186)
   {
-    v124 = [(VOTRotor *)v56 currentRotorType];
-    if (sub_1000F80D4(v124))
+    currentRotorType2 = [(VOTRotor *)v56 currentRotorType];
+    if (sub_1000F80D4(currentRotorType2))
     {
       v125 = VOTLogRotor();
       if (os_log_type_enabled(v125, OS_LOG_TYPE_DEBUG))
       {
-        sub_10012DF54(v124, v125);
+        sub_10012DF54(currentRotorType2, v125);
       }
     }
 
@@ -1686,19 +1686,19 @@ LABEL_214:
     {
       if (![v206 doesHaveTraits:v179] || !-[VOTRotor currentSelectionRotorType](v56, "currentSelectionRotorType"))
       {
-        if ([v119 count] && ((v120 ^ 1 | v123) & 1) != 0)
+        if ([customRotorActions2 count] && ((v120 ^ 1 | dragSessionActive) & 1) != 0)
         {
-          v124 = 54;
+          currentRotorType2 = 54;
         }
 
-        else if ([v121 count])
+        else if ([customContent count])
         {
-          v124 = 92;
+          currentRotorType2 = 92;
         }
 
         else
         {
-          v124 = 3;
+          currentRotorType2 = 3;
         }
 
 LABEL_297:
@@ -1713,7 +1713,7 @@ LABEL_297:
         goto LABEL_299;
       }
 
-      v124 = [(VOTRotor *)v56 currentSelectionRotorType];
+      currentRotorType2 = [(VOTRotor *)v56 currentSelectionRotorType];
       v125 = VOTLogRotor();
       if (os_log_type_enabled(v125, OS_LOG_TYPE_DEBUG))
       {
@@ -1727,19 +1727,19 @@ LABEL_297:
 LABEL_299:
   if ([(VOTElementRotor *)v56 showsWebSearchResults])
   {
-    v124 = 39;
+    currentRotorType2 = 39;
     j__CFArrayAppendValue(v56->super._currentRotors, 0x27);
   }
 
-  if ((v185 & [v184 isSafariScribbleActive]) == 1)
+  if ((v185 & [application isSafariScribbleActive]) == 1)
   {
-    v124 = 94;
+    currentRotorType2 = 94;
     j__CFArrayAppendValue(v56->super._currentRotors, 0x5E);
   }
 
   v194 = v120;
-  v199 = v121;
-  v201 = v119;
+  v199 = customContent;
+  v201 = customRotorActions2;
   v203 = v56->super._customPublicRotors;
   v127 = objc_alloc_init(NSMutableArray);
   customPublicRotors = v56->super._customPublicRotors;
@@ -1752,12 +1752,12 @@ LABEL_299:
     {
       v130 = [obj objectAtIndex:v129];
       v131 = [v130 objectForKey:@"VOTRotorType"];
-      v132 = [v131 intValue];
+      intValue2 = [v131 intValue];
 
       v133 = [v130 objectForKey:@"Enabled"];
-      v134 = [v133 BOOLValue];
+      bOOLValue5 = [v133 BOOLValue];
 
-      v135 = (v132 == 69) & v134;
+      v135 = (intValue2 == 69) & bOOLValue5;
       if (v135 == 1)
       {
         break;
@@ -1789,11 +1789,11 @@ LABEL_299:
     (v137[2])(v137, v183, 1);
   }
 
-  v138 = v124;
-  if ([(NSMutableArray *)v204->super._customPublicRotors count])
+  v138 = currentRotorType2;
+  if ([(NSMutableArray *)selfCopy->super._customPublicRotors count])
   {
-    j__CFArrayAppendValue(v204->super._currentRotors, 0x35);
-    if ([(VOTRotor *)v204 publicCustomRotorIndex]== 0x7FFFFFFFFFFFFFFFLL)
+    j__CFArrayAppendValue(selfCopy->super._currentRotors, 0x35);
+    if ([(VOTRotor *)selfCopy publicCustomRotorIndex]== 0x7FFFFFFFFFFFFFFFLL)
     {
       v139 = 0;
     }
@@ -1801,20 +1801,20 @@ LABEL_299:
     else
     {
       v139 = [(NSMutableArray *)v203 count]- 1;
-      v141 = [(VOTRotor *)v204 publicCustomRotorIndex];
-      if (v139 >= v141)
+      publicCustomRotorIndex = [(VOTRotor *)selfCopy publicCustomRotorIndex];
+      if (v139 >= publicCustomRotorIndex)
       {
-        v139 = v141;
+        v139 = publicCustomRotorIndex;
       }
     }
 
-    if ([(VOTRotor *)v204 currentRotorType]== 53 && [(NSMutableArray *)v203 count])
+    if ([(VOTRotor *)selfCopy currentRotorType]== 53 && [(NSMutableArray *)v203 count])
     {
       v142 = [(NSMutableArray *)v203 count];
-      if (v142 == [(NSMutableArray *)v204->super._customPublicRotors count])
+      if (v142 == [(NSMutableArray *)selfCopy->super._customPublicRotors count])
       {
         v143 = [(NSMutableArray *)v203 objectAtIndexedSubscript:v139];
-        v144 = [(NSMutableArray *)v204->super._customPublicRotors objectAtIndexedSubscript:v139];
+        v144 = [(NSMutableArray *)selfCopy->super._customPublicRotors objectAtIndexedSubscript:v139];
         v145 = [v143 isEqual:v144];
       }
 
@@ -1823,7 +1823,7 @@ LABEL_299:
         v145 = 0;
       }
 
-      v138 = v124;
+      v138 = currentRotorType2;
     }
 
     else
@@ -1859,25 +1859,25 @@ LABEL_299:
     v140 = cf;
   }
 
-  v207 = [v136 customContent];
-  if ([v207 count])
+  customContent2 = [v136 customContent];
+  if ([customContent2 count])
   {
     v138 = 92;
-    j__CFArrayAppendValue(v204->super._currentRotors, 0x5C);
+    j__CFArrayAppendValue(selfCopy->super._currentRotors, 0x5C);
   }
 
   v209[0] = _NSConcreteStackBlock;
   v209[1] = 3221225472;
   v209[2] = sub_1000B5470;
   v209[3] = &unk_1001C7BC0;
-  v209[4] = v204;
+  v209[4] = selfCopy;
   v148 = [v198 ax_filteredArrayUsingBlock:v209];
 
-  objc_storeStrong(&v204->super._customRotorActionCategories, v148);
-  if (-[VOTElementRotor customActionsAreValid:](v204, "customActionsAreValid:", v204->super._customRotorActionCategories) || (-[VOTRotor delegate](v204, "delegate"), v149 = objc_claimAutoreleasedReturnValue(), v150 = [v149 actionsRotorAddBehaviorForElementRotor:v204], v149, v150 == 1))
+  objc_storeStrong(&selfCopy->super._customRotorActionCategories, v148);
+  if (-[VOTElementRotor customActionsAreValid:](selfCopy, "customActionsAreValid:", selfCopy->super._customRotorActionCategories) || (-[VOTRotor delegate](selfCopy, "delegate"), v149 = objc_claimAutoreleasedReturnValue(), v150 = [v149 actionsRotorAddBehaviorForElementRotor:selfCopy], v149, v150 == 1))
   {
-    j__CFArrayAppendValue(v204->super._currentRotors, 0x36);
-    if (((v178 | v194 | v192) & 1) == 0)
+    j__CFArrayAppendValue(selfCopy->super._currentRotors, 0x36);
+    if (((v178 | v194 | shouldAddAlternateActionForLinkElement) & 1) == 0)
     {
       v151 = VOTLogRotor();
       if (os_log_type_enabled(v151, OS_LOG_TYPE_DEBUG))
@@ -1893,10 +1893,10 @@ LABEL_299:
   v208[1] = 3221225472;
   v208[2] = sub_1000B5514;
   v208[3] = &unk_1001CA550;
-  v208[4] = v204;
+  v208[4] = selfCopy;
   [obj enumerateObjectsWithOptions:2 usingBlock:v208];
-  Count = CFArrayGetCount(v204->super._currentRotors);
-  if (([VOTSharedWorkspace updateRotorWithElement] & 1) != 0 || sub_1000F8D8C(v204->super._currentRotors, v204->super._currentRotorType) == -1)
+  Count = CFArrayGetCount(selfCopy->super._currentRotors);
+  if (([VOTSharedWorkspace updateRotorWithElement] & 1) != 0 || sub_1000F8D8C(selfCopy->super._currentRotors, selfCopy->super._currentRotorType) == -1)
   {
     if (CFArrayGetCount(v140) == Count && !v138)
     {
@@ -1911,7 +1911,7 @@ LABEL_299:
         while (1)
         {
           ValueAtIndex = CFArrayGetValueAtIndex(v140, v153);
-          if (ValueAtIndex != CFArrayGetValueAtIndex(v204->super._currentRotors, v153))
+          if (ValueAtIndex != CFArrayGetValueAtIndex(selfCopy->super._currentRotors, v153))
           {
             break;
           }
@@ -1926,29 +1926,29 @@ LABEL_299:
       if (v153 == Count)
       {
 LABEL_351:
-        v155 = v204;
+        v155 = selfCopy;
         goto LABEL_360;
       }
     }
 
-    v156 = [(VOTRotor *)v204 currentRotorType];
-    if (v156 <= 0x35 && ((1 << v156) & 0x20006000000180) != 0 && v173)
+    currentRotorType3 = [(VOTRotor *)selfCopy currentRotorType];
+    if (currentRotorType3 <= 0x35 && ((1 << currentRotorType3) & 0x20006000000180) != 0 && v173)
     {
-      v157 = v204;
-      v158 = [(VOTRotor *)v204 currentRotorType];
+      v157 = selfCopy;
+      currentRotorType4 = [(VOTRotor *)selfCopy currentRotorType];
       v159 = VOTLogRotor();
       if (os_log_type_enabled(v159, OS_LOG_TYPE_DEBUG))
       {
         sub_10012E034();
       }
 
-      [(VOTElementRotor *)v204 _depromoteMLElementSupport];
-      v160 = v158;
+      [(VOTElementRotor *)selfCopy _depromoteMLElementSupport];
+      v160 = currentRotorType4;
       goto LABEL_359;
     }
 
-    v157 = v204;
-    [(VOTElementRotor *)v204 _depromoteMLElementSupport];
+    v157 = selfCopy;
+    [(VOTElementRotor *)selfCopy _depromoteMLElementSupport];
     v160 = v138;
     if (v138)
     {
@@ -1966,34 +1966,34 @@ LABEL_360:
     }
 
     v161 = +[VOTConfiguration rootConfiguration];
-    v162 = [v161 preferenceForKey:v204->super._typeKey];
+    v162 = [v161 preferenceForKey:selfCopy->super._typeKey];
 
-    if (v162 && (v163 = [v162 intValue], v219.location = 0, v219.length = Count, CFArrayContainsValue(v204->super._currentRotors, v219, v163)) && !sub_1000F8768(v163))
+    if (v162 && (v163 = [v162 intValue], v219.location = 0, v219.length = Count, CFArrayContainsValue(selfCopy->super._currentRotors, v219, v163)) && !sub_1000F8768(v163))
     {
-      v167 = v204;
+      v167 = selfCopy;
       v168 = v163;
     }
 
     else
     {
-      if (![(NSString *)v204->super._typeKey isEqualToString:@"CurrentRotorTypeSimple"])
+      if (![(NSString *)selfCopy->super._typeKey isEqualToString:@"CurrentRotorTypeSimple"])
       {
         v164 = +[VOTConfiguration rootConfiguration];
         v165 = [v164 preferenceForKey:@"CurrentRotorTypeSimple"];
 
         if (v165)
         {
-          v166 = [v165 intValue];
+          intValue3 = [v165 intValue];
           v220.location = 0;
           v220.length = Count;
-          if (CFArrayContainsValue(v204->super._currentRotors, v220, v166) && !sub_1000F8768(v166))
+          if (CFArrayContainsValue(selfCopy->super._currentRotors, v220, intValue3) && !sub_1000F8768(intValue3))
           {
-            [(VOTRotor *)v204 setCurrentRotorType:v166 saveToPreferences:0 userInitiated:0];
+            [(VOTRotor *)selfCopy setCurrentRotorType:intValue3 saveToPreferences:0 userInitiated:0];
             v171 = +[VOTConfiguration rootConfiguration];
-            v172 = [NSNumber numberWithInteger:v204->super._currentRotorType];
-            [v171 setPreference:v172 forKey:v204->super._typeKey];
+            v172 = [NSNumber numberWithInteger:selfCopy->super._currentRotorType];
+            [v171 setPreference:v172 forKey:selfCopy->super._typeKey];
 
-            [(VOTElementRotor *)v204 _promoteGesturedTextInputRotorIfNeeded];
+            [(VOTElementRotor *)selfCopy _promoteGesturedTextInputRotorIfNeeded];
             v162 = v165;
             goto LABEL_377;
           }
@@ -2007,15 +2007,15 @@ LABEL_360:
         }
       }
 
-      if (CFArrayGetCount(v204->super._currentRotors) >= 1)
+      if (CFArrayGetCount(selfCopy->super._currentRotors) >= 1)
       {
-        [(VOTRotor *)v204 setCurrentRotorType:[(VOTElementRotor *)v204 _firstNonGesturedTextInputRotorTypeWithFallback:CFArrayGetValueAtIndex(v204->super._currentRotors saveToPreferences:0)] userInitiated:0, 0];
+        [(VOTRotor *)selfCopy setCurrentRotorType:[(VOTElementRotor *)selfCopy _firstNonGesturedTextInputRotorTypeWithFallback:CFArrayGetValueAtIndex(selfCopy->super._currentRotors saveToPreferences:0)] userInitiated:0, 0];
         v169 = +[VOTConfiguration rootConfiguration];
-        v170 = [NSNumber numberWithInteger:v204->super._currentRotorType];
-        [v169 setPreference:v170 forKey:v204->super._typeKey];
+        v170 = [NSNumber numberWithInteger:selfCopy->super._currentRotorType];
+        [v169 setPreference:v170 forKey:selfCopy->super._typeKey];
 
 LABEL_376:
-        [(VOTElementRotor *)v204 _promoteGesturedTextInputRotorIfNeeded];
+        [(VOTElementRotor *)selfCopy _promoteGesturedTextInputRotorIfNeeded];
 LABEL_377:
         if (cf)
         {
@@ -2025,7 +2025,7 @@ LABEL_377:
         goto LABEL_380;
       }
 
-      v167 = v204;
+      v167 = selfCopy;
       v168 = 3;
     }
 
@@ -2036,14 +2036,14 @@ LABEL_377:
 LABEL_380:
 }
 
-- (BOOL)customActionsAreValid:(id)a3
+- (BOOL)customActionsAreValid:(id)valid
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  validCopy = valid;
+  v5 = [validCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2054,16 +2054,16 @@ LABEL_380:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(validCopy);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) actions];
+        actions = [*(*(&v15 + 1) + 8 * i) actions];
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
         v14[2] = sub_1000B575C;
         v14[3] = &unk_1001C9CD8;
         v14[4] = self;
-        v10 = [v9 indexesOfObjectsPassingTest:v14];
+        v10 = [actions indexesOfObjectsPassingTest:v14];
         v11 = [v10 count];
 
         if (v11)
@@ -2073,7 +2073,7 @@ LABEL_380:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [validCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -2089,17 +2089,17 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)customActionsAreDragDrop:(id)a3
+- (BOOL)customActionsAreDragDrop:(id)drop
 {
-  v3 = a3;
-  if ([v3 count])
+  dropCopy = drop;
+  if ([dropCopy count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v17 = v3;
-    v4 = v3;
+    v17 = dropCopy;
+    v4 = dropCopy;
     v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v5)
     {
@@ -2117,12 +2117,12 @@ LABEL_11:
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v11 actions];
-          v13 = [v12 indexesOfObjectsPassingTest:&stru_1001CA590];
+          actions = [v11 actions];
+          v13 = [actions indexesOfObjectsPassingTest:&stru_1001CA590];
           v7 += [v13 count];
 
-          v14 = [v11 actions];
-          v8 += [v14 count];
+          actions2 = [v11 actions];
+          v8 += [actions2 count];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -2138,7 +2138,7 @@ LABEL_11:
     }
 
     v15 = v7 == v8;
-    v3 = v17;
+    dropCopy = v17;
   }
 
   else

@@ -1,30 +1,30 @@
 @interface JavaUtilCollections_SynchronizedMap
-- (BOOL)containsKeyWithId:(id)a3;
-- (BOOL)containsValueWithId:(id)a3;
+- (BOOL)containsKeyWithId:(id)id;
+- (BOOL)containsValueWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (JavaUtilCollections_SynchronizedMap)initWithJavaUtilMap:(id)a3 withId:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (JavaUtilCollections_SynchronizedMap)initWithJavaUtilMap:(id)map withId:(id)id;
 - (NSString)description;
 - (id)entrySet;
-- (id)getWithId:(id)a3;
+- (id)getWithId:(id)id;
 - (id)keySet;
-- (id)putWithId:(id)a3 withId:(id)a4;
-- (id)removeWithId:(id)a3;
+- (id)putWithId:(id)id withId:(id)withId;
+- (id)removeWithId:(id)id;
 - (id)values;
 - (int)size;
 - (unint64_t)hash;
 - (void)clear;
 - (void)dealloc;
-- (void)putAllWithJavaUtilMap:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)putAllWithJavaUtilMap:(id)map;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilCollections_SynchronizedMap
 
-- (JavaUtilCollections_SynchronizedMap)initWithJavaUtilMap:(id)a3 withId:(id)a4
+- (JavaUtilCollections_SynchronizedMap)initWithJavaUtilMap:(id)map withId:(id)id
 {
-  JreStrongAssign(&self->m_, a3);
-  JreStrongAssign(&self->mutex_, a4);
+  JreStrongAssign(&self->m_, map);
+  JreStrongAssign(&self->mutex_, id);
   return self;
 }
 
@@ -43,7 +43,7 @@
   objc_sync_exit(mutex);
 }
 
-- (BOOL)containsKeyWithId:(id)a3
+- (BOOL)containsKeyWithId:(id)id
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -53,12 +53,12 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilMap *)m containsKeyWithId:a3];
+  v7 = [(JavaUtilMap *)m containsKeyWithId:id];
   objc_sync_exit(mutex);
   return v7;
 }
 
-- (BOOL)containsValueWithId:(id)a3
+- (BOOL)containsValueWithId:(id)id
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -68,7 +68,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilMap *)m containsValueWithId:a3];
+  v7 = [(JavaUtilMap *)m containsValueWithId:id];
   objc_sync_exit(mutex);
   return v7;
 }
@@ -88,7 +88,7 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -98,12 +98,12 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilMap *)m isEqual:a3];
+  v7 = [(JavaUtilMap *)m isEqual:equal];
   objc_sync_exit(mutex);
   return v7;
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -113,7 +113,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilMap *)m getWithId:a3];
+  v7 = [(JavaUtilMap *)m getWithId:id];
   objc_sync_exit(mutex);
   return v7;
 }
@@ -143,9 +143,9 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilMap *)m isEmpty];
+  isEmpty = [(JavaUtilMap *)m isEmpty];
   objc_sync_exit(mutex);
-  return v5;
+  return isEmpty;
 }
 
 - (id)keySet
@@ -163,7 +163,7 @@
   return v5;
 }
 
-- (id)putWithId:(id)a3 withId:(id)a4
+- (id)putWithId:(id)id withId:(id)withId
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -173,12 +173,12 @@
     JreThrowNullPointerException();
   }
 
-  v9 = [(JavaUtilMap *)m putWithId:a3 withId:a4];
+  v9 = [(JavaUtilMap *)m putWithId:id withId:withId];
   objc_sync_exit(mutex);
   return v9;
 }
 
-- (void)putAllWithJavaUtilMap:(id)a3
+- (void)putAllWithJavaUtilMap:(id)map
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -188,12 +188,12 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilMap *)m putAllWithJavaUtilMap:a3];
+  [(JavaUtilMap *)m putAllWithJavaUtilMap:map];
 
   objc_sync_exit(mutex);
 }
 
-- (id)removeWithId:(id)a3
+- (id)removeWithId:(id)id
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -203,7 +203,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilMap *)m removeWithId:a3];
+  v7 = [(JavaUtilMap *)m removeWithId:id];
   objc_sync_exit(mutex);
   return v7;
 }
@@ -253,16 +253,16 @@
   return v5;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 
   objc_sync_exit(mutex);
 }

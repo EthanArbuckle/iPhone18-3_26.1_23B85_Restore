@@ -1,16 +1,16 @@
 @interface HUILiveListenLevelIndicator
-- (HUILiveListenLevelIndicator)initWithFrame:(CGRect)a3;
+- (HUILiveListenLevelIndicator)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)updateLevel:(double)a3;
+- (void)updateLevel:(double)level;
 @end
 
 @implementation HUILiveListenLevelIndicator
 
-- (HUILiveListenLevelIndicator)initWithFrame:(CGRect)a3
+- (HUILiveListenLevelIndicator)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = HUILiveListenLevelIndicator;
-  v3 = [(HUILiveListenLevelIndicator *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUILiveListenLevelIndicator *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v15.origin.x = 0.0;
@@ -18,27 +18,27 @@
     v15.size.width = 10.0;
     v15.size.height = 10.0;
     v4 = CGPathCreateWithEllipseInRect(v15, 0);
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = 5;
     do
     {
-      v7 = [MEMORY[0x277CD9F90] layer];
-      [v7 setPath:v4];
-      [v7 setBounds:{0.0, 0.0, 10.0, 10.0}];
-      v8 = [MEMORY[0x277D75348] whiteColor];
-      [v7 setFillColor:{objc_msgSend(v8, "cgColor")}];
+      layer = [MEMORY[0x277CD9F90] layer];
+      [layer setPath:v4];
+      [layer setBounds:{0.0, 0.0, 10.0, 10.0}];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [layer setFillColor:{objc_msgSend(whiteColor, "cgColor")}];
 
       LODWORD(v9) = 0.25;
-      [v7 setOpacity:v9];
-      v10 = [(HUILiveListenLevelIndicator *)v3 layer];
-      [v10 addSublayer:v7];
+      [layer setOpacity:v9];
+      layer2 = [(HUILiveListenLevelIndicator *)v3 layer];
+      [layer2 addSublayer:layer];
 
-      [v5 addObject:v7];
+      [array addObject:layer];
       --v6;
     }
 
     while (v6);
-    v11 = [v5 copy];
+    v11 = [array copy];
     levelIndicators = v3->_levelIndicators;
     v3->_levelIndicators = v11;
   }
@@ -59,7 +59,7 @@
   MidY = CGRectGetMidY(v11);
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v8 = [(HUILiveListenLevelIndicator *)self levelIndicators];
+  levelIndicators = [(HUILiveListenLevelIndicator *)self levelIndicators];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__HUILiveListenLevelIndicator_layoutSubviews__block_invoke;
@@ -70,7 +70,7 @@
   *&v9[7] = width;
   *&v9[8] = height;
   *&v9[9] = MidY;
-  [v8 enumerateObjectsUsingBlock:v9];
+  [levelIndicators enumerateObjectsUsingBlock:v9];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -99,17 +99,17 @@ void __45__HUILiveListenLevelIndicator_layoutSubviews__block_invoke(uint64_t a1,
   [v13 setPosition:{v12, *(a1 + 72)}];
 }
 
-- (void)updateLevel:(double)a3
+- (void)updateLevel:(double)level
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setAnimationDuration:0.1];
-  v5 = [(HUILiveListenLevelIndicator *)self levelIndicators];
+  levelIndicators = [(HUILiveListenLevelIndicator *)self levelIndicators];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__HUILiveListenLevelIndicator_updateLevel___block_invoke;
   v6[3] = &__block_descriptor_40_e29_v32__0__CAShapeLayer_8Q16_B24l;
-  *&v6[4] = a3;
-  [v5 enumerateObjectsUsingBlock:v6];
+  *&v6[4] = level;
+  [levelIndicators enumerateObjectsUsingBlock:v6];
 
   [MEMORY[0x277CD9FF0] commit];
 }

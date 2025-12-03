@@ -1,40 +1,40 @@
 @interface NTKUpNextBaseCell
-+ (CGSize)suggestedBodyImageSizeForDevice:(id)a3;
-+ (CGSize)suggestedHeaderImageSizeForDevice:(id)a3;
-+ (Class)suggestedCellClassForContent:(id)a3;
-+ (void)clearLabel:(id)a3;
++ (CGSize)suggestedBodyImageSizeForDevice:(id)device;
++ (CGSize)suggestedHeaderImageSizeForDevice:(id)device;
++ (Class)suggestedCellClassForContent:(id)content;
++ (void)clearLabel:(id)label;
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NTKUpNextBaseCell)initWithFrame:(CGRect)a3;
+- (NTKUpNextBaseCell)initWithFrame:(CGRect)frame;
 - (void)_updateColorOverlay;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)configureWithContent:(id)a3;
-- (void)enumerateContentsLayersWithBlock:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)configureWithContent:(id)content;
+- (void)enumerateContentsLayersWithBlock:(id)block;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContentBrightness:(double)a3 animated:(BOOL)a4;
-- (void)setContentImage:(id)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageColor:(id)a3;
-- (void)setOverrideContentImage:(id)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setContentBrightness:(double)brightness animated:(BOOL)animated;
+- (void)setContentImage:(id)image animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageColor:(id)color;
+- (void)setOverrideContentImage:(id)image;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKUpNextBaseCell
 
-+ (void)clearLabel:(id)a3
++ (void)clearLabel:(id)label
 {
-  v3 = a3;
-  [v3 setTextProvider:0];
-  [v3 setText:0];
+  labelCopy = label;
+  [labelCopy setTextProvider:0];
+  [labelCopy setText:0];
 }
 
-+ (CGSize)suggestedHeaderImageSizeForDevice:(id)a3
++ (CGSize)suggestedHeaderImageSizeForDevice:(id)device
 {
-  v3 = [a3 sizeClass];
-  if (v3 > 1)
+  sizeClass = [device sizeClass];
+  if (sizeClass > 1)
   {
-    if (v3 != 2 && v3 != 4)
+    if (sizeClass != 2 && sizeClass != 4)
     {
 LABEL_8:
       v4 = 19.0;
@@ -44,13 +44,13 @@ LABEL_8:
 
   else
   {
-    if (!v3)
+    if (!sizeClass)
     {
       v4 = 14.5;
       goto LABEL_10;
     }
 
-    if (v3 != 1)
+    if (sizeClass != 1)
     {
       goto LABEL_8;
     }
@@ -64,7 +64,7 @@ LABEL_10:
   return result;
 }
 
-+ (CGSize)suggestedBodyImageSizeForDevice:(id)a3
++ (CGSize)suggestedBodyImageSizeForDevice:(id)device
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -73,17 +73,17 @@ LABEL_10:
   return result;
 }
 
-- (NTKUpNextBaseCell)initWithFrame:(CGRect)a3
+- (NTKUpNextBaseCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = NTKUpNextBaseCell;
-  v3 = [(NTKUpNextBaseCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUpNextBaseCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-    v5 = [v4 device];
+    device = [v4 device];
     device = v3->_device;
-    v3->_device = v5;
+    v3->_device = device;
 
     ___LayoutConstants_block_invoke_69(v7, v3->_device);
     NTKImageNamed(@"platter_shadow");
@@ -92,16 +92,16 @@ LABEL_10:
   return 0;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(NTKUpNextBaseCell *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(NTKUpNextBaseCell *)self isHighlighted];
   v7.receiver = self;
   v7.super_class = NTKUpNextBaseCell;
-  [(NTKUpNextBaseCell *)&v7 setHighlighted:v3];
-  if (v5 != v3)
+  [(NTKUpNextBaseCell *)&v7 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
-    if (v3)
+    if (highlightedCopy)
     {
       [(NTKUpNextBaseCell *)self _updateColorOverlay];
     }
@@ -123,8 +123,8 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = NTKUpNextBaseCell;
   [(NTKUpNextBaseCell *)&v4 prepareForReuse];
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  [(NTKUpNextBaseCell *)self setImageColor:v3];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(NTKUpNextBaseCell *)self setImageColor:whiteColor];
 
   [(NTKUpNextBaseCell *)self setPaused:0];
 }
@@ -153,17 +153,17 @@ LABEL_10:
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)setImageColor:(id)a3
+- (void)setImageColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
+    colorCopy = [MEMORY[0x277D75348] whiteColor];
   }
 
-  if ((NTKEqualObjects(v4, self->_imageColor) & 1) == 0)
+  if ((NTKEqualObjects(colorCopy, self->_imageColor) & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [colorCopy copy];
     imageColor = self->_imageColor;
     self->_imageColor = v5;
 
@@ -183,20 +183,20 @@ void __35__NTKUpNextBaseCell_setImageColor___block_invoke(uint64_t a1, void *a2)
   [v3 setContentsMultiplyColor:{objc_msgSend(v2, "CGColor")}];
 }
 
-- (void)setContentBrightness:(double)a3 animated:(BOOL)a4
+- (void)setContentBrightness:(double)brightness animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    v7 = [MEMORY[0x277D75348] colorWithWhite:a3 alpha:1.0];
-    v8 = [v7 CGColor];
+    v7 = [MEMORY[0x277D75348] colorWithWhite:brightness alpha:1.0];
+    cGColor = [v7 CGColor];
 
     v9 = [MEMORY[0x277D75348] colorWithWhite:self->_contentBrightness alpha:1.0];
-    v10 = [v9 CGColor];
+    cGColor2 = [v9 CGColor];
 
     imageColor = self->_imageColor;
-    v12 = [MEMORY[0x277D75348] whiteColor];
-    LOBYTE(imageColor) = [(UIColor *)imageColor isEqual:v12];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    LOBYTE(imageColor) = [(UIColor *)imageColor isEqual:whiteColor];
 
     if ((imageColor & 1) == 0)
     {
@@ -205,18 +205,18 @@ void __35__NTKUpNextBaseCell_setImageColor___block_invoke(uint64_t a1, void *a2)
       v21 = 0.0;
       v22 = 0.0;
       [(UIColor *)self->_imageColor getHue:&v24 saturation:&v23 brightness:&v22 alpha:&v21];
-      v13 = [MEMORY[0x277D75348] colorWithHue:v24 saturation:v23 brightness:v22 * a3 alpha:v21];
-      v8 = [v13 CGColor];
+      v13 = [MEMORY[0x277D75348] colorWithHue:v24 saturation:v23 brightness:v22 * brightness alpha:v21];
+      cGColor = [v13 CGColor];
 
       v14 = [MEMORY[0x277D75348] colorWithHue:v24 saturation:v23 brightness:v22 * self->_contentBrightness alpha:v21];
-      v10 = [v14 CGColor];
+      cGColor2 = [v14 CGColor];
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       v15 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"contentsMultiplyColor"];
-      [v15 setToValue:v8];
-      [v15 setFromValue:v10];
+      [v15 setToValue:cGColor];
+      [v15 setFromValue:cGColor2];
       [v15 setDuration:0.5];
       v16 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
       [v15 setTimingFunction:v16];
@@ -237,25 +237,25 @@ void __35__NTKUpNextBaseCell_setImageColor___block_invoke(uint64_t a1, void *a2)
     v18[1] = 3221225472;
     v18[2] = __51__NTKUpNextBaseCell_setContentBrightness_animated___block_invoke_2;
     v18[3] = &__block_descriptor_40_e17_v16__0__CALayer_8l;
-    v18[4] = v8;
+    v18[4] = cGColor;
     [(NTKUpNextBaseCell *)self enumerateContentsLayersWithBlock:v18];
     [MEMORY[0x277CD9FF0] commit];
-    self->_contentBrightness = a3;
+    self->_contentBrightness = brightness;
   }
 }
 
-- (void)setContentImage:(id)a3 animated:(BOOL)a4
+- (void)setContentImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_contentImage != v7)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (self->_contentImage != imageCopy)
   {
     if (!self->_overrideContentImage)
     {
-      if (v4)
+      if (animatedCopy)
       {
         v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"contents"];
-        [v8 setToValue:{-[UIImage CGImage](v7, "CGImage")}];
+        [v8 setToValue:{-[UIImage CGImage](imageCopy, "CGImage")}];
         [v8 setFromValue:{-[UIImage CGImage](self->_contentImage, "CGImage")}];
         [v8 setDuration:1.0];
         v9 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
@@ -276,12 +276,12 @@ void __35__NTKUpNextBaseCell_setImageColor___block_invoke(uint64_t a1, void *a2)
       v12 = 3221225472;
       v13 = __46__NTKUpNextBaseCell_setContentImage_animated___block_invoke_2;
       v14 = &unk_278787090;
-      v15 = v7;
+      v15 = imageCopy;
       [(NTKUpNextBaseCell *)self enumerateContentsLayersWithBlock:&v11];
       [MEMORY[0x277CD9FF0] commit];
     }
 
-    objc_storeStrong(&self->_contentImage, a3);
+    objc_storeStrong(&self->_contentImage, image);
   }
 }
 
@@ -293,19 +293,19 @@ void __46__NTKUpNextBaseCell_setContentImage_animated___block_invoke_2(uint64_t 
   [v5 setContents:{objc_msgSend(v3, "CGImage")}];
 }
 
-- (void)setOverrideContentImage:(id)a3
+- (void)setOverrideContentImage:(id)image
 {
-  v5 = a3;
-  if (self->_overrideContentImage != v5)
+  imageCopy = image;
+  if (self->_overrideContentImage != imageCopy)
   {
-    objc_storeStrong(&self->_overrideContentImage, a3);
+    objc_storeStrong(&self->_overrideContentImage, image);
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__NTKUpNextBaseCell_setOverrideContentImage___block_invoke;
     v6[3] = &unk_278787090;
-    v7 = v5;
+    v7 = imageCopy;
     [(NTKUpNextBaseCell *)self enumerateContentsLayersWithBlock:v6];
     [MEMORY[0x277CD9FF0] commit];
   }
@@ -319,11 +319,11 @@ void __45__NTKUpNextBaseCell_setOverrideContentImage___block_invoke(uint64_t a1,
   [v5 setContents:{objc_msgSend(v3, "CGImage")}];
 }
 
-- (void)enumerateContentsLayersWithBlock:(id)a3
+- (void)enumerateContentsLayersWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v4[2](v4, self->_imageLayer);
+  blockCopy = block;
+  blockCopy[2](blockCopy, self->_imageLayer);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -344,10 +344,10 @@ void __45__NTKUpNextBaseCell_setOverrideContentImage___block_invoke(uint64_t a1,
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) contentsLayer];
-        if (v10)
+        contentsLayer = [*(*(&v11 + 1) + 8 * v9) contentsLayer];
+        if (contentsLayer)
         {
-          v4[2](v4, v10);
+          blockCopy[2](blockCopy, contentsLayer);
         }
 
         ++v9;
@@ -361,42 +361,42 @@ void __45__NTKUpNextBaseCell_setOverrideContentImage___block_invoke(uint64_t a1,
   }
 }
 
-- (void)configureWithContent:(id)a3
+- (void)configureWithContent:(id)content
 {
-  objc_storeStrong(&self->_content, a3);
-  v5 = a3;
-  v6 = [v5 tintColor];
+  objc_storeStrong(&self->_content, content);
+  contentCopy = content;
+  tintColor = [contentCopy tintColor];
 
-  [(NTKUpNextBaseCell *)self setTintColor:v6];
+  [(NTKUpNextBaseCell *)self setTintColor:tintColor];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   v20.receiver = self;
   v20.super_class = NTKUpNextBaseCell;
-  [(NTKUpNextBaseCell *)&v20 applyLayoutAttributes:v4];
-  -[NTKUpNextBaseCell setHidden:](self, "setHidden:", [v4 isHidden]);
+  [(NTKUpNextBaseCell *)&v20 applyLayoutAttributes:attributesCopy];
+  -[NTKUpNextBaseCell setHidden:](self, "setHidden:", [attributesCopy isHidden]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    -[NTKUpNextBaseCell setPaused:](self, "setPaused:", [v4 notVisibleToUser]);
-    v5 = [MEMORY[0x277D75D18] _isInAnimationBlock];
-    if ((v5 & 1) == 0)
+    -[NTKUpNextBaseCell setPaused:](self, "setPaused:", [attributesCopy notVisibleToUser]);
+    _isInAnimationBlock = [MEMORY[0x277D75D18] _isInAnimationBlock];
+    if ((_isInAnimationBlock & 1) == 0)
     {
       [MEMORY[0x277CD9FF0] begin];
       [MEMORY[0x277CD9FF0] setDisableActions:1];
     }
 
-    [v4 darkeningAlphaUniform];
+    [attributesCopy darkeningAlphaUniform];
     CLKInterpolateBetweenFloatsClipped();
     self->_darkeningAmount = v6;
     [(NTKUpNextBaseCell *)self _updateColorOverlay];
     if (!self->_overrideContentImage)
     {
       imageLayer = self->_imageLayer;
-      [v4 unitFrameOnScreen];
+      [attributesCopy unitFrameOnScreen];
       [(CALayer *)imageLayer setContentsRect:?];
       v18 = 0u;
       v19 = 0u;
@@ -418,9 +418,9 @@ void __45__NTKUpNextBaseCell_setOverrideContentImage___block_invoke(uint64_t a1,
             }
 
             v13 = *(*(&v16 + 1) + 8 * i);
-            v14 = [v13 contentsLayer];
-            [v13 contentsLayerBoundsForLayout:v4];
-            [v14 setContentsRect:?];
+            contentsLayer = [v13 contentsLayer];
+            [v13 contentsLayerBoundsForLayout:attributesCopy];
+            [contentsLayer setContentsRect:?];
           }
 
           v10 = [(NSHashTable *)v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -431,10 +431,10 @@ void __45__NTKUpNextBaseCell_setOverrideContentImage___block_invoke(uint64_t a1,
     }
 
     shadowView = self->_shadowView;
-    [v4 shadowAlpha];
+    [attributesCopy shadowAlpha];
     CLKInterpolateBetweenFloatsClipped();
     [(UIImageView *)shadowView setAlpha:?];
-    if ((v5 & 1) == 0)
+    if ((_isInAnimationBlock & 1) == 0)
     {
       [MEMORY[0x277CD9FF0] commit];
     }
@@ -443,9 +443,9 @@ void __45__NTKUpNextBaseCell_setOverrideContentImage___block_invoke(uint64_t a1,
 
 - (void)_updateColorOverlay
 {
-  v3 = [(NTKUpNextBaseCell *)self isHighlighted];
+  isHighlighted = [(NTKUpNextBaseCell *)self isHighlighted];
   overlayView = self->_overlayView;
-  if (v3)
+  if (isHighlighted)
   {
     v5 = 1.0;
     darkeningAmount = 0.25;
@@ -461,9 +461,9 @@ void __45__NTKUpNextBaseCell_setOverrideContentImage___block_invoke(uint64_t a1,
   [(UIView *)overlayView setBackgroundColor:v7];
 }
 
-+ (Class)suggestedCellClassForContent:(id)a3
++ (Class)suggestedCellClassForContent:(id)content
 {
-  [a3 style];
+  [content style];
   v3 = objc_opt_class();
 
   return v3;
@@ -476,7 +476,7 @@ void __45__NTKUpNextBaseCell_setOverrideContentImage___block_invoke(uint64_t a1,
   return WeakRetained;
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   objc_opt_class();
 

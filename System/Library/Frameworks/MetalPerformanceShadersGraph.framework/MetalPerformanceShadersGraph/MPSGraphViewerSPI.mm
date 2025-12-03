@@ -1,43 +1,43 @@
 @interface MPSGraphViewerSPI
-- (MPSGraphViewerSPI)initWithJSONDictionary:(id)a3;
-- (MPSGraphViewerSPI)initWithName:(id)a3 nodes:(id)a4;
+- (MPSGraphViewerSPI)initWithJSONDictionary:(id)dictionary;
+- (MPSGraphViewerSPI)initWithName:(id)name nodes:(id)nodes;
 - (id)jsonDictionary;
 @end
 
 @implementation MPSGraphViewerSPI
 
-- (MPSGraphViewerSPI)initWithName:(id)a3 nodes:(id)a4
+- (MPSGraphViewerSPI)initWithName:(id)name nodes:(id)nodes
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  nodesCopy = nodes;
   v12.receiver = self;
   v12.super_class = MPSGraphViewerSPI;
   v9 = [(MPSGraphViewerSPI *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_nodes, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_nodes, nodes);
   }
 
   return v10;
 }
 
-- (MPSGraphViewerSPI)initWithJSONDictionary:(id)a3
+- (MPSGraphViewerSPI)initWithJSONDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = MPSGraphViewerSPI;
   v5 = [(MPSGraphViewerSPI *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"name"];
+    v6 = [dictionaryCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v4 objectForKey:@"nodes"];
+    [dictionaryCopy objectForKey:@"nodes"];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -87,8 +87,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(MPSGraphViewerSPI *)self nodes];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  nodes = [(MPSGraphViewerSPI *)self nodes];
+  v5 = [nodes countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -98,23 +98,23 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodes);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v8];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v5 = [nodes countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v5);
   }
 
   v16[0] = @"name";
-  v9 = [(MPSGraphViewerSPI *)self name];
+  name = [(MPSGraphViewerSPI *)self name];
   v16[1] = @"nodes";
-  v17[0] = v9;
+  v17[0] = name;
   v17[1] = v3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 

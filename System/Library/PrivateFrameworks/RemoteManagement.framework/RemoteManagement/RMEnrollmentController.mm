@@ -1,41 +1,41 @@
 @interface RMEnrollmentController
-+ (id)synchronousEnrollmentControllerForManagementEnrollmentType:(int64_t)a3 scope:(int64_t)a4;
++ (id)synchronousEnrollmentControllerForManagementEnrollmentType:(int64_t)type scope:(int64_t)scope;
 - (BOOL)_isDeviceOrSupervisedEnrollment;
-- (RMEnrollmentController)initWithEnrollmentType:(int64_t)a3 scope:(int64_t)a4;
+- (RMEnrollmentController)initWithEnrollmentType:(int64_t)type scope:(int64_t)scope;
 - (id)_agentConnection;
-- (id)_agentProxyWithErrorHandler:(id)a3;
+- (id)_agentProxyWithErrorHandler:(id)handler;
 - (id)_daemonConnection;
-- (id)_daemonProxyWithErrorHandler:(id)a3;
-- (id)_scopedProxyWithErrorHandler:(id)a3;
-- (void)_discoverEnrollmentURLForDomain:(id)a3 port:(id)a4 completionHandler:(id)a5;
-- (void)_enrollmentURLFromWellKnownURL:(id)a3 completionHandler:(id)a4;
-- (void)_unenrollIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)a3;
-- (void)discoverEnrollmentURLForUserIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)enrollDeviceChannelWithURI:(id)a3 completionHandler:(id)a4;
-- (void)enrollUserChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)enrollViaMDMWithEnrollmentType:(int64_t)a3 uri:(id)a4 accountIdentifier:(id)a5 personaIdentifier:(id)a6 completionHandler:(id)a7;
-- (void)managementChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)managementChannelWithEnrollmentURL:(id)a3 completionHandler:(id)a4;
-- (void)syncWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)unenrollDeviceChannelWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)unenrollUserChannelWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)unenrollViaMDMWithEnrollmentType:(int64_t)a3 identifier:(id)a4 completionHandler:(id)a5;
-- (void)updateWithIdentifier:(id)a3 pushMessage:(id)a4 completionHandler:(id)a5;
-- (void)updateWithIdentifier:(id)a3 tokensResponse:(id)a4 completionHandler:(id)a5;
+- (id)_daemonProxyWithErrorHandler:(id)handler;
+- (id)_scopedProxyWithErrorHandler:(id)handler;
+- (void)_discoverEnrollmentURLForDomain:(id)domain port:(id)port completionHandler:(id)handler;
+- (void)_enrollmentURLFromWellKnownURL:(id)l completionHandler:(id)handler;
+- (void)_unenrollIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)handler;
+- (void)discoverEnrollmentURLForUserIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)enrollDeviceChannelWithURI:(id)i completionHandler:(id)handler;
+- (void)enrollUserChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)enrollViaMDMWithEnrollmentType:(int64_t)type uri:(id)uri accountIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier completionHandler:(id)handler;
+- (void)managementChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)managementChannelWithEnrollmentURL:(id)l completionHandler:(id)handler;
+- (void)syncWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)unenrollDeviceChannelWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)unenrollUserChannelWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)unenrollViaMDMWithEnrollmentType:(int64_t)type identifier:(id)identifier completionHandler:(id)handler;
+- (void)updateWithIdentifier:(id)identifier pushMessage:(id)message completionHandler:(id)handler;
+- (void)updateWithIdentifier:(id)identifier tokensResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation RMEnrollmentController
 
-+ (id)synchronousEnrollmentControllerForManagementEnrollmentType:(int64_t)a3 scope:(int64_t)a4
++ (id)synchronousEnrollmentControllerForManagementEnrollmentType:(int64_t)type scope:(int64_t)scope
 {
-  v4 = [[RMEnrollmentController alloc] initWithEnrollmentType:a3 scope:a4];
+  v4 = [[RMEnrollmentController alloc] initWithEnrollmentType:type scope:scope];
   [(RMEnrollmentController *)v4 setSynchronous:1];
 
   return v4;
 }
 
-- (RMEnrollmentController)initWithEnrollmentType:(int64_t)a3 scope:(int64_t)a4
+- (RMEnrollmentController)initWithEnrollmentType:(int64_t)type scope:(int64_t)scope
 {
   v10.receiver = self;
   v10.super_class = RMEnrollmentController;
@@ -46,23 +46,23 @@
     connectionByServiceName = v6->_connectionByServiceName;
     v6->_connectionByServiceName = v7;
 
-    v6->_enrollmentType = a3;
-    v6->_scope = a4;
+    v6->_enrollmentType = type;
+    v6->_scope = scope;
   }
 
   return v6;
 }
 
-- (void)enrollDeviceChannelWithURI:(id)a3 completionHandler:(id)a4
+- (void)enrollDeviceChannelWithURI:(id)i completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  handlerCopy = handler;
   v8 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v6;
+    v22 = iCopy;
     _os_log_impl(&dword_1E1168000, v8, OS_LOG_TYPE_DEFAULT, "Starting device channel enrollment for %{public}@", buf, 0xCu);
   }
 
@@ -72,9 +72,9 @@
     v18[1] = 3221225472;
     v18[2] = __71__RMEnrollmentController_enrollDeviceChannelWithURI_completionHandler___block_invoke;
     v18[3] = &unk_1E8706060;
-    v9 = v6;
+    v9 = iCopy;
     v19 = v9;
-    v10 = v7;
+    v10 = handlerCopy;
     v20 = v10;
     v11 = [(RMEnrollmentController *)self _scopedProxyWithErrorHandler:v18];
     v15[0] = MEMORY[0x1E69E9820];
@@ -97,7 +97,7 @@
       [RMEnrollmentController enrollDeviceChannelWithURI:completionHandler:];
     }
 
-    (*(v7 + 2))(v7, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -152,16 +152,16 @@ void __71__RMEnrollmentController_enrollDeviceChannelWithURI_completionHandler__
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enrollUserChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4
+- (void)enrollUserChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v6;
+    v22 = identifierCopy;
     _os_log_impl(&dword_1E1168000, v8, OS_LOG_TYPE_DEFAULT, "Starting user channel enrollment for account %{public}@", buf, 0xCu);
   }
 
@@ -174,7 +174,7 @@ void __71__RMEnrollmentController_enrollDeviceChannelWithURI_completionHandler__
       [RMEnrollmentController enrollUserChannelWithAccountIdentifier:completionHandler:];
     }
 
-    v7[2](v7, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 
   else
@@ -183,9 +183,9 @@ void __71__RMEnrollmentController_enrollDeviceChannelWithURI_completionHandler__
     v18[1] = 3221225472;
     v18[2] = __83__RMEnrollmentController_enrollUserChannelWithAccountIdentifier_completionHandler___block_invoke;
     v18[3] = &unk_1E8706060;
-    v11 = v6;
+    v11 = identifierCopy;
     v19 = v11;
-    v12 = v7;
+    v12 = handlerCopy;
     v20 = v12;
     v13 = [(RMEnrollmentController *)self _scopedProxyWithErrorHandler:v18];
     v15[0] = MEMORY[0x1E69E9820];
@@ -251,30 +251,30 @@ void __83__RMEnrollmentController_enrollUserChannelWithAccountIdentifier_complet
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enrollViaMDMWithEnrollmentType:(int64_t)a3 uri:(id)a4 accountIdentifier:(id)a5 personaIdentifier:(id)a6 completionHandler:(id)a7
+- (void)enrollViaMDMWithEnrollmentType:(int64_t)type uri:(id)uri accountIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  uriCopy = uri;
+  identifierCopy = identifier;
+  personaIdentifierCopy = personaIdentifier;
+  handlerCopy = handler;
   v16 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v30 = v12;
+    v30 = uriCopy;
     _os_log_impl(&dword_1E1168000, v16, OS_LOG_TYPE_DEFAULT, "Starting DDM enrollment for %{public}@", buf, 0xCu);
   }
 
-  if ([(RMEnrollmentController *)self enrollmentType]== a3)
+  if ([(RMEnrollmentController *)self enrollmentType]== type)
   {
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __115__RMEnrollmentController_enrollViaMDMWithEnrollmentType_uri_accountIdentifier_personaIdentifier_completionHandler___block_invoke;
     v26[3] = &unk_1E8706060;
-    v17 = v12;
+    v17 = uriCopy;
     v27 = v17;
-    v18 = v15;
+    v18 = handlerCopy;
     v28 = v18;
     v19 = [(RMEnrollmentController *)self _scopedProxyWithErrorHandler:v26];
     v23[0] = MEMORY[0x1E69E9820];
@@ -283,7 +283,7 @@ void __83__RMEnrollmentController_enrollUserChannelWithAccountIdentifier_complet
     v23[3] = &unk_1E8706088;
     v24 = v17;
     v25 = v18;
-    [v19 enrollViaMDMWithEnrollmentType:a3 uri:v24 accountIdentifier:v13 personaIdentifier:v14 completionHandler:v23];
+    [v19 enrollViaMDMWithEnrollmentType:type uri:v24 accountIdentifier:identifierCopy personaIdentifier:personaIdentifierCopy completionHandler:v23];
 
     v20 = v27;
   }
@@ -297,7 +297,7 @@ void __83__RMEnrollmentController_enrollUserChannelWithAccountIdentifier_complet
       [RMEnrollmentController enrollViaMDMWithEnrollmentType:uri:accountIdentifier:personaIdentifier:completionHandler:];
     }
 
-    (*(v15 + 2))(v15, 0, v20);
+    (*(handlerCopy + 2))(handlerCopy, 0, v20);
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -352,10 +352,10 @@ void __115__RMEnrollmentController_enrollViaMDMWithEnrollmentType_uri_accountIde
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unenrollDeviceChannelWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)unenrollDeviceChannelWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -365,7 +365,7 @@ void __115__RMEnrollmentController_enrollViaMDMWithEnrollmentType_uri_accountIde
 
   if ([(RMEnrollmentController *)self _isDeviceOrSupervisedEnrollment])
   {
-    [(RMEnrollmentController *)self _unenrollIdentifier:v6 completionHandler:v7];
+    [(RMEnrollmentController *)self _unenrollIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
   else
@@ -377,14 +377,14 @@ void __115__RMEnrollmentController_enrollViaMDMWithEnrollmentType_uri_accountIde
       [RMEnrollmentController enrollDeviceChannelWithURI:completionHandler:];
     }
 
-    v7[2](v7, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 
-- (void)unenrollUserChannelWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)unenrollUserChannelWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -401,19 +401,19 @@ void __115__RMEnrollmentController_enrollViaMDMWithEnrollmentType_uri_accountIde
       [RMEnrollmentController enrollUserChannelWithAccountIdentifier:completionHandler:];
     }
 
-    v7[2](v7, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   else
   {
-    [(RMEnrollmentController *)self _unenrollIdentifier:v6 completionHandler:v7];
+    [(RMEnrollmentController *)self _unenrollIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)unenrollViaMDMWithEnrollmentType:(int64_t)a3 identifier:(id)a4 completionHandler:(id)a5
+- (void)unenrollViaMDMWithEnrollmentType:(int64_t)type identifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -421,9 +421,9 @@ void __115__RMEnrollmentController_enrollViaMDMWithEnrollmentType_uri_accountIde
     _os_log_impl(&dword_1E1168000, v10, OS_LOG_TYPE_DEFAULT, "Unenrolling DDM channel", v13, 2u);
   }
 
-  if ([(RMEnrollmentController *)self enrollmentType]== a3)
+  if ([(RMEnrollmentController *)self enrollmentType]== type)
   {
-    [(RMEnrollmentController *)self _unenrollIdentifier:v8 completionHandler:v9];
+    [(RMEnrollmentController *)self _unenrollIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
   else
@@ -435,21 +435,21 @@ void __115__RMEnrollmentController_enrollViaMDMWithEnrollmentType_uri_accountIde
       [RMEnrollmentController enrollViaMDMWithEnrollmentType:uri:accountIdentifier:personaIdentifier:completionHandler:];
     }
 
-    v9[2](v9, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 }
 
-- (void)_unenrollIdentifier:(id)a3 completionHandler:(id)a4
+- (void)_unenrollIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__RMEnrollmentController__unenrollIdentifier_completionHandler___block_invoke;
   v16[3] = &unk_1E8706060;
-  v8 = v6;
+  v8 = identifierCopy;
   v17 = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v18 = v9;
   v10 = [(RMEnrollmentController *)self _scopedProxyWithErrorHandler:v16];
   v13[0] = MEMORY[0x1E69E9820];
@@ -509,9 +509,9 @@ void __64__RMEnrollmentController__unenrollIdentifier_completionHandler___block_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)a3
+- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -525,7 +525,7 @@ void __64__RMEnrollmentController__unenrollIdentifier_completionHandler___block_
     v12[1] = 3221225472;
     v12[2] = __77__RMEnrollmentController_deviceChannelEnrollmentExistsWithCompletionHandler___block_invoke;
     v12[3] = &unk_1E87060D8;
-    v6 = v4;
+    v6 = handlerCopy;
     v13 = v6;
     v7 = [(RMEnrollmentController *)self _scopedProxyWithErrorHandler:v12];
     v10[0] = MEMORY[0x1E69E9820];
@@ -547,7 +547,7 @@ void __64__RMEnrollmentController__unenrollIdentifier_completionHandler___block_
       [RMEnrollmentController enrollDeviceChannelWithURI:completionHandler:];
     }
 
-    (*(v4 + 2))(v4, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
   }
 }
 
@@ -597,10 +597,10 @@ void __77__RMEnrollmentController_deviceChannelEnrollmentExistsWithCompletionHan
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)syncWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)syncWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -612,7 +612,7 @@ void __77__RMEnrollmentController_deviceChannelEnrollmentExistsWithCompletionHan
   v14[1] = 3221225472;
   v14[2] = __63__RMEnrollmentController_syncWithIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E87060D8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
   v10 = [(RMEnrollmentController *)self _scopedProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -621,7 +621,7 @@ void __77__RMEnrollmentController_deviceChannelEnrollmentExistsWithCompletionHan
   v12[3] = &unk_1E87060D8;
   v13 = v9;
   v11 = v9;
-  [v10 syncWithIdentifier:v7 completionHandler:v12];
+  [v10 syncWithIdentifier:identifierCopy completionHandler:v12];
 }
 
 void __63__RMEnrollmentController_syncWithIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -665,11 +665,11 @@ void __63__RMEnrollmentController_syncWithIdentifier_completionHandler___block_i
   v6();
 }
 
-- (void)updateWithIdentifier:(id)a3 pushMessage:(id)a4 completionHandler:(id)a5
+- (void)updateWithIdentifier:(id)identifier pushMessage:(id)message completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  messageCopy = message;
+  identifierCopy = identifier;
   v11 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -681,7 +681,7 @@ void __63__RMEnrollmentController_syncWithIdentifier_completionHandler___block_i
   v17[1] = 3221225472;
   v17[2] = __77__RMEnrollmentController_updateWithIdentifier_pushMessage_completionHandler___block_invoke;
   v17[3] = &unk_1E87060D8;
-  v12 = v8;
+  v12 = handlerCopy;
   v18 = v12;
   v13 = [(RMEnrollmentController *)self _scopedProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x1E69E9820];
@@ -690,7 +690,7 @@ void __63__RMEnrollmentController_syncWithIdentifier_completionHandler___block_i
   v15[3] = &unk_1E87060D8;
   v16 = v12;
   v14 = v12;
-  [v13 updateWithIdentifier:v10 pushMessage:v9 completionHandler:v15];
+  [v13 updateWithIdentifier:identifierCopy pushMessage:messageCopy completionHandler:v15];
 }
 
 void __77__RMEnrollmentController_updateWithIdentifier_pushMessage_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -734,11 +734,11 @@ void __77__RMEnrollmentController_updateWithIdentifier_pushMessage_completionHan
   v6();
 }
 
-- (void)updateWithIdentifier:(id)a3 tokensResponse:(id)a4 completionHandler:(id)a5
+- (void)updateWithIdentifier:(id)identifier tokensResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  responseCopy = response;
+  identifierCopy = identifier;
   v11 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -750,7 +750,7 @@ void __77__RMEnrollmentController_updateWithIdentifier_pushMessage_completionHan
   v17[1] = 3221225472;
   v17[2] = __80__RMEnrollmentController_updateWithIdentifier_tokensResponse_completionHandler___block_invoke;
   v17[3] = &unk_1E87060D8;
-  v12 = v8;
+  v12 = handlerCopy;
   v18 = v12;
   v13 = [(RMEnrollmentController *)self _scopedProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x1E69E9820];
@@ -759,7 +759,7 @@ void __77__RMEnrollmentController_updateWithIdentifier_pushMessage_completionHan
   v15[3] = &unk_1E87060D8;
   v16 = v12;
   v14 = v12;
-  [v13 updateWithIdentifier:v10 tokensResponse:v9 completionHandler:v15];
+  [v13 updateWithIdentifier:identifierCopy tokensResponse:responseCopy completionHandler:v15];
 }
 
 void __80__RMEnrollmentController_updateWithIdentifier_tokensResponse_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -803,10 +803,10 @@ void __80__RMEnrollmentController_updateWithIdentifier_tokensResponse_completion
   v6();
 }
 
-- (void)managementChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4
+- (void)managementChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -818,7 +818,7 @@ void __80__RMEnrollmentController_updateWithIdentifier_tokensResponse_completion
   v14[1] = 3221225472;
   v14[2] = __83__RMEnrollmentController_managementChannelWithAccountIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E87060D8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
   v10 = [(RMEnrollmentController *)self _scopedProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -827,7 +827,7 @@ void __80__RMEnrollmentController_updateWithIdentifier_tokensResponse_completion
   v12[3] = &unk_1E8706128;
   v13 = v9;
   v11 = v9;
-  [v10 managementChannelWithAccountIdentifier:v7 completionHandler:v12];
+  [v10 managementChannelWithAccountIdentifier:identifierCopy completionHandler:v12];
 }
 
 void __83__RMEnrollmentController_managementChannelWithAccountIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -894,10 +894,10 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)managementChannelWithEnrollmentURL:(id)a3 completionHandler:(id)a4
+- (void)managementChannelWithEnrollmentURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v8 = +[RMLog enrollmentController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -909,7 +909,7 @@ LABEL_10:
   v14[1] = 3221225472;
   v14[2] = __79__RMEnrollmentController_managementChannelWithEnrollmentURL_completionHandler___block_invoke;
   v14[3] = &unk_1E87060D8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
   v10 = [(RMEnrollmentController *)self _scopedProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -918,7 +918,7 @@ LABEL_10:
   v12[3] = &unk_1E8706128;
   v13 = v9;
   v11 = v9;
-  [v10 managementChannelWithEnrollmentURL:v7 completionHandler:v12];
+  [v10 managementChannelWithEnrollmentURL:lCopy completionHandler:v12];
 }
 
 void __79__RMEnrollmentController_managementChannelWithEnrollmentURL_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -985,35 +985,35 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_scopedProxyWithErrorHandler:(id)a3
+- (id)_scopedProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(RMEnrollmentController *)self scope]== 1)
   {
-    [(RMEnrollmentController *)self _daemonProxyWithErrorHandler:v4];
+    [(RMEnrollmentController *)self _daemonProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    [(RMEnrollmentController *)self _agentProxyWithErrorHandler:v4];
+    [(RMEnrollmentController *)self _agentProxyWithErrorHandler:handlerCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)_daemonProxyWithErrorHandler:(id)a3
+- (id)_daemonProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMEnrollmentController *)self _daemonConnection];
+  handlerCopy = handler;
+  _daemonConnection = [(RMEnrollmentController *)self _daemonConnection];
   if ([(RMEnrollmentController *)self isSynchronous])
   {
-    [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    [v5 remoteObjectProxyWithErrorHandler:v4];
+    [_daemonConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
   v6 = ;
 
@@ -1037,18 +1037,18 @@ LABEL_10:
   return v4;
 }
 
-- (id)_agentProxyWithErrorHandler:(id)a3
+- (id)_agentProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMEnrollmentController *)self _agentConnection];
+  handlerCopy = handler;
+  _agentConnection = [(RMEnrollmentController *)self _agentConnection];
   if ([(RMEnrollmentController *)self isSynchronous])
   {
-    [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    [_agentConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    [v5 remoteObjectProxyWithErrorHandler:v4];
+    [_agentConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
   v6 = ;
 
@@ -1074,20 +1074,20 @@ LABEL_10:
 
 - (BOOL)_isDeviceOrSupervisedEnrollment
 {
-  v3 = [(RMEnrollmentController *)self enrollmentType];
-  if (v3 != 1)
+  enrollmentType = [(RMEnrollmentController *)self enrollmentType];
+  if (enrollmentType != 1)
   {
-    LOBYTE(v3) = [(RMEnrollmentController *)self enrollmentType]== 3;
+    LOBYTE(enrollmentType) = [(RMEnrollmentController *)self enrollmentType]== 3;
   }
 
-  return v3;
+  return enrollmentType;
 }
 
-- (void)discoverEnrollmentURLForUserIdentifier:(id)a3 completionHandler:(id)a4
+- (void)discoverEnrollmentURLForUserIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 componentsSeparatedByString:@"@"];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v8 = [identifierCopy componentsSeparatedByString:@"@"];
   if ([v8 count] == 2)
   {
     v9 = [v8 objectAtIndexedSubscript:1];
@@ -1097,11 +1097,11 @@ LABEL_10:
       v11 = [v10 objectAtIndexedSubscript:0];
 
       v12 = [v10 objectAtIndexedSubscript:1];
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
 
-      if (v13)
+      if (integerValue)
       {
-        v14 = v13;
+        v14 = integerValue;
       }
 
       else
@@ -1122,7 +1122,7 @@ LABEL_10:
     v17[1] = 3221225472;
     v17[2] = __83__RMEnrollmentController_discoverEnrollmentURLForUserIdentifier_completionHandler___block_invoke;
     v17[3] = &unk_1E8706150;
-    v18 = v7;
+    v18 = handlerCopy;
     [(RMEnrollmentController *)self _discoverEnrollmentURLForDomain:v9 port:v16 completionHandler:v17];
   }
 
@@ -1134,40 +1134,40 @@ LABEL_10:
       [RMEnrollmentController discoverEnrollmentURLForUserIdentifier:completionHandler:];
     }
 
-    v9 = [RMErrorUtilities createServiceDiscoveryInvalidUserIdentifierWithReason:v6];
-    (*(v7 + 2))(v7, 0, v9);
+    v9 = [RMErrorUtilities createServiceDiscoveryInvalidUserIdentifierWithReason:identifierCopy];
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 }
 
-- (void)_discoverEnrollmentURLForDomain:(id)a3 port:(id)a4 completionHandler:(id)a5
+- (void)_discoverEnrollmentURLForDomain:(id)domain port:(id)port completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  portCopy = port;
+  domainCopy = domain;
   v12 = objc_opt_new();
   [v12 setScheme:@"https"];
-  [v12 setHost:v10];
+  [v12 setHost:domainCopy];
 
-  [v12 setPort:v9];
+  [v12 setPort:portCopy];
   [v12 setPath:@"/.well-known/com.apple.remotemanagement"];
   v11 = [v12 URL];
-  [(RMEnrollmentController *)self _enrollmentURLFromWellKnownURL:v11 completionHandler:v8];
+  [(RMEnrollmentController *)self _enrollmentURLFromWellKnownURL:v11 completionHandler:handlerCopy];
 }
 
-- (void)_enrollmentURLFromWellKnownURL:(id)a3 completionHandler:(id)a4
+- (void)_enrollmentURLFromWellKnownURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AF78] sharedSession];
+  lCopy = l;
+  handlerCopy = handler;
+  mEMORY[0x1E696AF78] = [MEMORY[0x1E696AF78] sharedSession];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __75__RMEnrollmentController__enrollmentURLFromWellKnownURL_completionHandler___block_invoke;
   v14 = &unk_1E8706178;
-  v15 = v5;
-  v16 = v6;
-  v8 = v6;
-  v9 = v5;
-  v10 = [v7 dataTaskWithURL:v9 completionHandler:&v11];
+  v15 = lCopy;
+  v16 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = lCopy;
+  v10 = [mEMORY[0x1E696AF78] dataTaskWithURL:v9 completionHandler:&v11];
 
   [v10 resume];
 }

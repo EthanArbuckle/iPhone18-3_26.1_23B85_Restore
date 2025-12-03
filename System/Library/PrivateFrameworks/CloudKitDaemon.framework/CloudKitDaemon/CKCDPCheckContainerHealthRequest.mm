@@ -1,12 +1,12 @@
 @interface CKCDPCheckContainerHealthRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKCDPCheckContainerHealthRequest
@@ -42,16 +42,16 @@
   return v6;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = objc_msgSend_position(a3, a2, a3);
-  if (v5 < objc_msgSend_length(a3, v6, v7))
+  v5 = objc_msgSend_position(from, a2, from);
+  if (v5 < objc_msgSend_length(from, v6, v7))
   {
     while (1)
     {
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v10 = 0;
@@ -60,20 +60,20 @@
       while (1)
       {
         v42 = 0;
-        v13 = objc_msgSend_position(a3, v8, v9) + 1;
-        if (v13 >= objc_msgSend_position(a3, v14, v15) && (v18 = objc_msgSend_position(a3, v16, v17) + 1, v18 <= objc_msgSend_length(a3, v19, v20)))
+        v13 = objc_msgSend_position(from, v8, v9) + 1;
+        if (v13 >= objc_msgSend_position(from, v14, v15) && (v18 = objc_msgSend_position(from, v16, v17) + 1, v18 <= objc_msgSend_length(from, v19, v20)))
         {
-          v21 = objc_msgSend_data(a3, v16, v17);
-          v24 = objc_msgSend_position(a3, v22, v23);
+          v21 = objc_msgSend_data(from, v16, v17);
+          v24 = objc_msgSend_position(from, v22, v23);
           objc_msgSend_getBytes_range_(v21, v25, &v42, v24, 1);
 
-          v28 = objc_msgSend_position(a3, v26, v27);
-          objc_msgSend_setPosition_(a3, v29, v28 + 1);
+          v28 = objc_msgSend_position(from, v26, v27);
+          objc_msgSend_setPosition_(from, v29, v28 + 1);
         }
 
         else
         {
-          objc_msgSend__setError(a3, v16, v17);
+          objc_msgSend__setError(from, v16, v17);
         }
 
         v12 |= (v42 & 0x7F) << v10;
@@ -90,17 +90,17 @@
         }
       }
 
-      v31 = objc_msgSend_hasError(a3, v8, v9) ? 0 : v12;
+      v31 = objc_msgSend_hasError(from, v8, v9) ? 0 : v12;
 LABEL_15:
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v9 = v31 & 7;
       if (v9 == 4)
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       if ((v31 >> 3) == 1)
@@ -126,10 +126,10 @@ LABEL_21:
       }
 
 LABEL_23:
-      v38 = objc_msgSend_position(a3, v36, v37);
-      if (v38 >= objc_msgSend_length(a3, v39, v40))
+      v38 = objc_msgSend_position(from, v36, v37);
+      if (v38 >= objc_msgSend_length(from, v39, v40))
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
     }
 
@@ -137,69 +137,69 @@ LABEL_23:
     goto LABEL_21;
   }
 
-  return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+  return objc_msgSend_hasError(from, v8, v9) ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_containerName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_environment)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   containerName = self->_containerName;
-  v8 = v4;
+  v8 = toCopy;
   if (containerName)
   {
-    objc_msgSend_setContainerName_(v4, v5, containerName);
-    v4 = v8;
+    objc_msgSend_setContainerName_(toCopy, v5, containerName);
+    toCopy = v8;
   }
 
   environment = self->_environment;
   if (environment)
   {
     objc_msgSend_setEnvironment_(v8, v5, environment);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_containerName, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_containerName, v11, zone);
   v13 = v10[1];
   v10[1] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_environment, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_environment, v14, zone);
   v16 = v10[2];
   v10[2] = v15;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((containerName = self->_containerName, v9 = v4[1], !(containerName | v9)) || objc_msgSend_isEqual_(containerName, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((containerName = self->_containerName, v9 = equalCopy[1], !(containerName | v9)) || objc_msgSend_isEqual_(containerName, v7, v9)))
   {
     environment = self->_environment;
-    v11 = v4[2];
+    v11 = equalCopy[2];
     if (environment | v11)
     {
       isEqual = objc_msgSend_isEqual_(environment, v7, v11);
@@ -219,22 +219,22 @@ LABEL_23:
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4[1];
-  v8 = v4;
+  fromCopy = from;
+  v6 = fromCopy[1];
+  v8 = fromCopy;
   if (v6)
   {
     objc_msgSend_setContainerName_(self, v5, v6);
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = v4[2];
+  v7 = fromCopy[2];
   if (v7)
   {
     objc_msgSend_setEnvironment_(self, v5, v7);
-    v4 = v8;
+    fromCopy = v8;
   }
 }
 

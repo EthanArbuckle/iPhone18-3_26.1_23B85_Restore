@@ -2,14 +2,14 @@
 + (BOOL)isAppleInternal;
 + (BOOL)isSpringBoard;
 - (ISAVPlayer)init;
-- (ISAVPlayer)initWithDispatchQueue:(id)a3;
+- (ISAVPlayer)initWithDispatchQueue:(id)queue;
 - (void)_cancelRateCurveRequest;
-- (void)_setRate:(float)a3;
+- (void)_setRate:(float)rate;
 - (void)dealloc;
-- (void)playToTime:(id *)a3 withInitialRate:(float)a4 overDuration:(double)a5 progressHandler:(id)a6;
-- (void)setAllowsPixelBufferPoolSharing:(BOOL)a3;
-- (void)setRate:(float)a3;
-- (void)setUsesDedicatedNotificationQueueForMediaServices:(BOOL)a3;
+- (void)playToTime:(id *)time withInitialRate:(float)rate overDuration:(double)duration progressHandler:(id)handler;
+- (void)setAllowsPixelBufferPoolSharing:(BOOL)sharing;
+- (void)setRate:(float)rate;
+- (void)setUsesDedicatedNotificationQueueForMediaServices:(BOOL)services;
 @end
 
 @implementation ISAVPlayer
@@ -21,14 +21,14 @@
   self->_currentRequest = 0;
 }
 
-- (void)playToTime:(id *)a3 withInitialRate:(float)a4 overDuration:(double)a5 progressHandler:(id)a6
+- (void)playToTime:(id *)time withInitialRate:(float)rate overDuration:(double)duration progressHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   [(ISAVPlayer *)self _cancelRateCurveRequest];
   v11 = [ISRateCurveRequest alloc];
-  v15 = *a3;
-  *&v12 = a4;
-  v13 = [(ISRateCurveRequest *)v11 initWithTargetTime:&v15 duration:self initialRate:v10 avPlayer:a5 progressHandler:v12];
+  v15 = *time;
+  *&v12 = rate;
+  v13 = [(ISRateCurveRequest *)v11 initWithTargetTime:&v15 duration:self initialRate:handlerCopy avPlayer:duration progressHandler:v12];
 
   currentRequest = self->_currentRequest;
   self->_currentRequest = v13;
@@ -36,41 +36,41 @@
   [(ISRateCurveRequest *)self->_currentRequest start];
 }
 
-- (void)_setRate:(float)a3
+- (void)_setRate:(float)rate
 {
   v3.receiver = self;
   v3.super_class = ISAVPlayer;
   [(ISAVPlayer *)&v3 setRate:?];
 }
 
-- (void)setRate:(float)a3
+- (void)setRate:(float)rate
 {
   [(ISAVPlayer *)self _cancelRateCurveRequest];
-  *&v5 = a3;
+  *&v5 = rate;
 
   [(ISAVPlayer *)self _setRate:v5];
 }
 
-- (void)setAllowsPixelBufferPoolSharing:(BOOL)a3
+- (void)setAllowsPixelBufferPoolSharing:(BOOL)sharing
 {
   v3 = objc_opt_class();
 
   [v3 isAppleInternal];
 }
 
-- (void)setUsesDedicatedNotificationQueueForMediaServices:(BOOL)a3
+- (void)setUsesDedicatedNotificationQueueForMediaServices:(BOOL)services
 {
   v3 = objc_opt_class();
 
   [v3 isAppleInternal];
 }
 
-- (ISAVPlayer)initWithDispatchQueue:(id)a3
+- (ISAVPlayer)initWithDispatchQueue:(id)queue
 {
-  v5 = a3;
-  v6 = [objc_opt_class() isSpringBoard];
+  queueCopy = queue;
+  isSpringBoard = [objc_opt_class() isSpringBoard];
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"PhotosPlayer.disablePrivatePlayerQueue", @"com.apple.mobileslideshow", 0);
-  if ((v6 & 1) != 0 || (v8 = AppBooleanValue, [objc_opt_class() isAppleInternal]) && v8)
+  if ((isSpringBoard & 1) != 0 || (v8 = AppBooleanValue, [objc_opt_class() isAppleInternal]) && v8)
   {
     v21.receiver = self;
     v21.super_class = ISAVPlayer;
@@ -86,7 +86,7 @@
   {
     v20.receiver = self;
     v20.super_class = ISAVPlayer;
-    v9 = [(ISAVPlayer *)&v20 initWithDispatchQueue:v5];
+    v9 = [(ISAVPlayer *)&v20 initWithDispatchQueue:queueCopy];
     v10 = 0;
     if (!v9)
     {
@@ -94,7 +94,7 @@
     }
   }
 
-  objc_storeStrong(&v9->_initializedDispatchQueue, a3);
+  objc_storeStrong(&v9->_initializedDispatchQueue, queue);
   if (v10)
   {
     v11 = MEMORY[0x277D85CD0];
@@ -105,7 +105,7 @@
 
   else
   {
-    v14 = v5;
+    v14 = queueCopy;
     actualDispatchQueue = v9->_actualDispatchQueue;
     v9->_actualDispatchQueue = v14;
   }
@@ -122,7 +122,7 @@
 
   else
   {
-    v16 = v6;
+    v16 = isSpringBoard;
   }
 
   if (v16 == 1)

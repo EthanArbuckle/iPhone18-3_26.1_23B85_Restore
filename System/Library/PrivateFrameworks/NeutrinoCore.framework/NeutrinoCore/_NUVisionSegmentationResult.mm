@@ -1,7 +1,7 @@
 @interface _NUVisionSegmentationResult
 - (NSString)description;
 - (_NUVisionSegmentationResult)init;
-- (_NUVisionSegmentationResult)initWithSegmentedMatteBuffer:(id)a3 confidenceMapBuffer:(id)a4;
+- (_NUVisionSegmentationResult)initWithSegmentedMatteBuffer:(id)buffer confidenceMapBuffer:(id)mapBuffer;
 @end
 
 @implementation _NUVisionSegmentationResult
@@ -10,33 +10,33 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_NUVisionSegmentationResult *)self segmentationType];
-  if ((v5 - 1) > 2)
+  segmentationType = [(_NUVisionSegmentationResult *)self segmentationType];
+  if ((segmentationType - 1) > 2)
   {
     v6 = @"Unknown";
   }
 
   else
   {
-    v6 = off_1E810AEF8[v5 - 1];
+    v6 = off_1E810AEF8[segmentationType - 1];
   }
 
   return [v3 stringWithFormat:@"<%@: %p; type = %@>", v4, self, v6];
 }
 
-- (_NUVisionSegmentationResult)initWithSegmentedMatteBuffer:(id)a3 confidenceMapBuffer:(id)a4
+- (_NUVisionSegmentationResult)initWithSegmentedMatteBuffer:(id)buffer confidenceMapBuffer:(id)mapBuffer
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  mapBufferCopy = mapBuffer;
   v13.receiver = self;
   v13.super_class = _NUVisionSegmentationResult;
   v8 = [(_NUVisionSegmentationResult *)&v13 init];
   buffer = v8->_buffer;
-  v8->_buffer = v6;
-  v10 = v6;
+  v8->_buffer = bufferCopy;
+  v10 = bufferCopy;
 
   confidenceBuffer = v8->_confidenceBuffer;
-  v8->_confidenceBuffer = v7;
+  v8->_confidenceBuffer = mapBufferCopy;
 
   return v8;
 }
@@ -87,8 +87,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -104,8 +104,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

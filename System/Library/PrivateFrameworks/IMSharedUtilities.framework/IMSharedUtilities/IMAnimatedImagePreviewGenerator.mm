@@ -1,7 +1,7 @@
 @interface IMAnimatedImagePreviewGenerator
-+ (BOOL)validPreviewExistsAtPreviewURL:(id)a3;
++ (BOOL)validPreviewExistsAtPreviewURL:(id)l;
 + (id)UTITypes;
-+ (id)generateAndPersistPreviewFromSourceURL:(id)a3 senderContext:(id)a4 balloonBundleID:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 outSize:(CGSize *)a7 error:(id *)a8;
++ (id)generateAndPersistPreviewFromSourceURL:(id)l senderContext:(id)context balloonBundleID:(id)d withPreviewConstraints:(IMPreviewConstraints *)constraints outSize:(CGSize *)size error:(id *)error;
 @end
 
 @implementation IMAnimatedImagePreviewGenerator
@@ -15,17 +15,17 @@
   return v2;
 }
 
-+ (id)generateAndPersistPreviewFromSourceURL:(id)a3 senderContext:(id)a4 balloonBundleID:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 outSize:(CGSize *)a7 error:(id *)a8
++ (id)generateAndPersistPreviewFromSourceURL:(id)l senderContext:(id)context balloonBundleID:(id)d withPreviewConstraints:(IMPreviewConstraints *)constraints outSize:(CGSize *)size error:(id *)error
 {
   v108[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v78 = a5;
+  lCopy = l;
+  contextCopy = context;
+  dCopy = d;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v79 = _os_activity_create(&dword_1A85E5000, "com.apple.messages.AttachmentGeneratePreviewAnimatedImage", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v79, &state);
-  if (!v13)
+  if (!lCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -40,13 +40,13 @@
       }
     }
 
-    if (a8)
+    if (error)
     {
       v41 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:5 userInfo:0];
 LABEL_53:
       v37 = 0;
 LABEL_54:
-      *a8 = v41;
+      *error = v41;
       goto LABEL_71;
     }
 
@@ -54,9 +54,9 @@ LABEL_54:
   }
 
   v15 = +[IMFeatureFlags sharedFeatureFlags];
-  v16 = [v15 isSessionAnimatedImageUnpackerEnabled];
+  isSessionAnimatedImageUnpackerEnabled = [v15 isSessionAnimatedImageUnpackerEnabled];
 
-  if (v16)
+  if (isSessionAnimatedImageUnpackerEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -64,28 +64,28 @@ LABEL_54:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         _os_log_impl(&dword_1A85E5000, v17, OS_LOG_TYPE_INFO, "%@ generate animated preview using session BlastDoor.", buf, 0xCu);
       }
     }
 
     v18 = MEMORY[0x1E695DFF8];
     v19 = IMSafeTemporaryDirectory();
-    v20 = [v19 path];
-    v108[0] = v20;
+    path = [v19 path];
+    v108[0] = path;
     v108[1] = @"IMAnimatedImagePreviewGeneratorPreview";
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v108 count:2];
     v77 = [v18 fileURLWithPathComponents:v21];
 
-    v22 = [MEMORY[0x1E696AC08] defaultManager];
-    [v22 createDirectoryAtURL:v77 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtURL:v77 withIntermediateDirectories:1 attributes:0 error:0];
 
-    v23 = [MEMORY[0x1E696AEC0] stringGUID];
-    v24 = [v77 URLByAppendingPathComponent:v23 isDirectory:0];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    v24 = [v77 URLByAppendingPathComponent:stringGUID isDirectory:0];
     v25 = IMPreviewExtension();
     v26 = [v24 URLByAppendingPathExtension:v25];
 
-    v27 = v14;
+    v27 = contextCopy;
     v28 = objc_alloc_init(MEMORY[0x1E69A6170]);
     [v28 startTimingForKey:@"IMAnimatedImagePreviewGenerator_PreviewGenerationTime"];
     v91 = 0;
@@ -105,9 +105,9 @@ LABEL_54:
     v90 = *MEMORY[0x1E695F060];
     v29 = dispatch_group_create();
     dispatch_group_enter(v29);
-    var0 = a6->var0;
-    var2 = a6->var2;
-    var3 = a6->var3;
+    var0 = constraints->var0;
+    var2 = constraints->var2;
+    var3 = constraints->var3;
     v81[0] = MEMORY[0x1E69E9820];
     v81[1] = 3221225472;
     v81[2] = sub_1A86E2B24;
@@ -118,18 +118,18 @@ LABEL_54:
     v33 = v29;
     v82 = v33;
     v34 = v26;
-    [IMAttachmentBlastdoor generateAnimatedImagePreview:v13 senderContext:v27 destinationFileURL:v26 maxPixelDimension:200 scale:var3 maxFrameCount:v81 isSticker:var0 withCompletionBlock:var2];
+    [IMAttachmentBlastdoor generateAnimatedImagePreview:lCopy senderContext:v27 destinationFileURL:v26 maxPixelDimension:200 scale:var3 maxFrameCount:v81 isSticker:var0 withCompletionBlock:var2];
     v35 = dispatch_time(0, 5000000000);
     if (dispatch_group_wait(v33, v35))
     {
       if (!IMOSLoggingEnabled())
       {
         v37 = 0;
-        v14 = v27;
+        contextCopy = v27;
         goto LABEL_57;
       }
 
-      v14 = v27;
+      contextCopy = v27;
       v36 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
@@ -140,15 +140,15 @@ LABEL_54:
 
     else
     {
-      v54 = vmulq_n_f64(v87[2], a6->var2);
-      if (a7)
+      v54 = vmulq_n_f64(v87[2], constraints->var2);
+      if (size)
       {
-        *a7 = v54;
+        *size = v54;
       }
 
       aSizea = v54;
       [v28 stopTimingForKey:@"IMAnimatedImagePreviewGenerator_PreviewGenerationTime"];
-      v14 = v27;
+      contextCopy = v27;
       if (IMOSLoggingEnabled())
       {
         v55 = OSLogHandleForIMFoundationCategory();
@@ -174,7 +174,7 @@ LABEL_54:
           v103 = v28;
           _os_log_impl(&dword_1A85E5000, v55, OS_LOG_TYPE_INFO, "Cache miss on animated image preview generation with success: (%@), error: (%@), outSize: %@ and timing: %@", v96, 0x2Au);
 
-          v14 = v27;
+          contextCopy = v27;
         }
       }
 
@@ -187,10 +187,10 @@ LABEL_54:
         goto LABEL_57;
       }
 
-      if (a8)
+      if (error)
       {
         v37 = 0;
-        *a8 = *(*&buf[8] + 40);
+        *error = *(*&buf[8] + 40);
         goto LABEL_57;
       }
     }
@@ -211,7 +211,7 @@ LABEL_57:
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       _os_log_impl(&dword_1A85E5000, v42, OS_LOG_TYPE_INFO, "%@ generate animated preview using inefficient BlastDoor.", buf, 0xCu);
     }
   }
@@ -238,7 +238,7 @@ LABEL_57:
       }
     }
 
-    if (a8)
+    if (error)
     {
       goto LABEL_52;
     }
@@ -246,8 +246,8 @@ LABEL_57:
     goto LABEL_70;
   }
 
-  v46 = a6->var0;
-  v47 = a6->var2;
+  v46 = constraints->var0;
+  v47 = constraints->var2;
   if (![(objc_class *)v44 conformsToProtocol:&unk_1F1C42D58])
   {
     if (IMOSLoggingEnabled())
@@ -263,7 +263,7 @@ LABEL_57:
       }
     }
 
-    if (a8)
+    if (error)
     {
 LABEL_52:
       v41 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:10 userInfo:0];
@@ -276,12 +276,12 @@ LABEL_70:
   }
 
   v48 = objc_alloc_init(v45);
-  v49 = [MEMORY[0x1E696AEC0] stringGUID];
-  v37 = [v48 generateAndPersistAnimatedPreviewFromSourceURL:v13 senderContext:v14 forWidth:v49 withTransferGUID:a6->var3 isSticker:v46 / v47];
+  stringGUID2 = [MEMORY[0x1E696AEC0] stringGUID];
+  v37 = [v48 generateAndPersistAnimatedPreviewFromSourceURL:lCopy senderContext:contextCopy forWidth:stringGUID2 withTransferGUID:constraints->var3 isSticker:v46 / v47];
 
   if ([v43 conformsToProtocol:&unk_1F1C42F60])
   {
-    if (a7)
+    if (size)
     {
       if (v37)
       {
@@ -308,8 +308,8 @@ LABEL_70:
       v70 = v69;
       v72 = v71;
       [v50 scale];
-      a7->width = v70 * v73;
-      a7->height = v72 * v73;
+      size->width = v70 * v73;
+      size->height = v72 * v73;
     }
 
     goto LABEL_71;
@@ -328,7 +328,7 @@ LABEL_70:
     }
   }
 
-  if (a8)
+  if (error)
   {
     v41 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:10 userInfo:0];
     goto LABEL_54;
@@ -340,12 +340,12 @@ LABEL_71:
   return v37;
 }
 
-+ (BOOL)validPreviewExistsAtPreviewURL:(id)a3
++ (BOOL)validPreviewExistsAtPreviewURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {

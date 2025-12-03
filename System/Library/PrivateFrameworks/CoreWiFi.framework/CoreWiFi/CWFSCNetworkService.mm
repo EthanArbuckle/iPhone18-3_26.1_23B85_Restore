@@ -4,7 +4,7 @@
 - (BOOL)isMonitoringEvents;
 - (BOOL)refreshServiceID;
 - (CWFSCNetworkService)init;
-- (CWFSCNetworkService)initWithInterfaceName:(id)a3;
+- (CWFSCNetworkService)initWithInterfaceName:(id)name;
 - (NSString)serviceID;
 - (id)DHCPLeaseExpirationTimestamp;
 - (id)DHCPLeaseStartTimestamp;
@@ -44,17 +44,17 @@
 
 @implementation CWFSCNetworkService
 
-- (CWFSCNetworkService)initWithInterfaceName:(id)a3
+- (CWFSCNetworkService)initWithInterfaceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = CWFSCNetworkService;
   v5 = [(CWFSCNetworkService *)&v24 init];
   v6 = v5;
   v7 = 0;
-  if (v4 && v5)
+  if (nameCopy && v5)
   {
-    v8 = [v4 copy];
+    v8 = [nameCopy copy];
     interfaceName = v6->_interfaceName;
     v6->_interfaceName = v8;
 
@@ -401,13 +401,13 @@ LABEL_21:
 
 - (BOOL)__refreshServiceID
 {
-  v3 = [(CWFSCNetworkService *)self __updateServiceID];
-  if (v3)
+  __updateServiceID = [(CWFSCNetworkService *)self __updateServiceID];
+  if (__updateServiceID)
   {
     [(CWFSCNetworkService *)self __refreshNotificationKeys];
   }
 
-  return v3;
+  return __updateServiceID;
 }
 
 - (BOOL)refreshServiceID

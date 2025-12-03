@@ -1,14 +1,14 @@
 @interface CPLShareParticipant
-+ (id)descriptionForAcceptanceStatus:(int64_t)a3;
-+ (id)descriptionForPermission:(int64_t)a3;
-+ (id)descriptionForRole:(int64_t)a3;
++ (id)descriptionForAcceptanceStatus:(int64_t)status;
++ (id)descriptionForPermission:(int64_t)permission;
++ (id)descriptionForRole:(int64_t)role;
 + (void)initialize;
-- (CPLShareParticipant)initWithCoder:(id)a3;
-- (CPLShareParticipant)initWithUserIdentifier:(id)a3 participantID:(id)a4 phoneNumber:(id)a5 email:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CPLShareParticipant)initWithCoder:(id)coder;
+- (CPLShareParticipant)initWithUserIdentifier:(id)identifier participantID:(id)d phoneNumber:(id)number email:(id)email;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLShareParticipant
@@ -55,7 +55,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CPLShareParticipant alloc] initWithUserIdentifier:self->_userIdentifier participantID:self->_participantID phoneNumber:self->_phoneNumber email:self->_email];
   [(CPLShareParticipant *)v4 setIsCurrentUser:self->_isCurrentUser];
@@ -69,46 +69,46 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   userIdentifier = self->_userIdentifier;
-  v5 = a3;
-  [v5 encodeObject:userIdentifier forKey:@"uid"];
-  [v5 encodeBool:self->_isCurrentUser forKey:@"current"];
-  [v5 encodeInteger:self->_role forKey:@"role"];
-  [v5 encodeInteger:self->_acceptanceStatus forKey:@"status"];
-  [v5 encodeInteger:self->_permission forKey:@"perm"];
-  [v5 encodeObject:self->_email forKey:@"email"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phone"];
-  [v5 encodeObject:self->_participantID forKey:@"pid"];
-  [v5 encodeObject:self->_nameComponents forKey:@"name"];
-  [v5 encodeBool:self->_hasiCloudAccount forKey:@"iCloud"];
+  coderCopy = coder;
+  [coderCopy encodeObject:userIdentifier forKey:@"uid"];
+  [coderCopy encodeBool:self->_isCurrentUser forKey:@"current"];
+  [coderCopy encodeInteger:self->_role forKey:@"role"];
+  [coderCopy encodeInteger:self->_acceptanceStatus forKey:@"status"];
+  [coderCopy encodeInteger:self->_permission forKey:@"perm"];
+  [coderCopy encodeObject:self->_email forKey:@"email"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phone"];
+  [coderCopy encodeObject:self->_participantID forKey:@"pid"];
+  [coderCopy encodeObject:self->_nameComponents forKey:@"name"];
+  [coderCopy encodeBool:self->_hasiCloudAccount forKey:@"iCloud"];
 }
 
-- (CPLShareParticipant)initWithUserIdentifier:(id)a3 participantID:(id)a4 phoneNumber:(id)a5 email:(id)a6
+- (CPLShareParticipant)initWithUserIdentifier:(id)identifier participantID:(id)d phoneNumber:(id)number email:(id)email
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  dCopy = d;
+  numberCopy = number;
+  emailCopy = email;
   v24.receiver = self;
   v24.super_class = CPLShareParticipant;
   v14 = [(CPLShareParticipant *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     userIdentifier = v14->_userIdentifier;
     v14->_userIdentifier = v15;
 
-    v17 = [v12 copy];
+    v17 = [numberCopy copy];
     phoneNumber = v14->_phoneNumber;
     v14->_phoneNumber = v17;
 
-    v19 = [v13 copy];
+    v19 = [emailCopy copy];
     email = v14->_email;
     v14->_email = v19;
 
-    v21 = [v11 copy];
+    v21 = [dCopy copy];
     participantID = v14->_participantID;
     v14->_participantID = v21;
 
@@ -118,39 +118,39 @@
   return v14;
 }
 
-- (CPLShareParticipant)initWithCoder:(id)a3
+- (CPLShareParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CPLShareParticipant;
   v5 = [(CPLShareParticipant *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:_nsStringClass forKey:@"uid"];
+    v6 = [coderCopy decodeObjectOfClass:_nsStringClass forKey:@"uid"];
     userIdentifier = v5->_userIdentifier;
     v5->_userIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:_nsStringClass forKey:@"pid"];
+    v8 = [coderCopy decodeObjectOfClass:_nsStringClass forKey:@"pid"];
     participantID = v5->_participantID;
     v5->_participantID = v8;
 
-    v5->_isCurrentUser = [v4 decodeBoolForKey:@"current"];
-    v5->_role = [v4 decodeIntegerForKey:@"role"];
-    v5->_acceptanceStatus = [v4 decodeIntegerForKey:@"status"];
-    v5->_permission = [v4 decodeIntegerForKey:@"perm"];
-    v10 = [v4 decodeObjectOfClass:_nsStringClass forKey:@"email"];
+    v5->_isCurrentUser = [coderCopy decodeBoolForKey:@"current"];
+    v5->_role = [coderCopy decodeIntegerForKey:@"role"];
+    v5->_acceptanceStatus = [coderCopy decodeIntegerForKey:@"status"];
+    v5->_permission = [coderCopy decodeIntegerForKey:@"perm"];
+    v10 = [coderCopy decodeObjectOfClass:_nsStringClass forKey:@"email"];
     email = v5->_email;
     v5->_email = v10;
 
-    v12 = [v4 decodeObjectOfClass:_nsStringClass forKey:@"phone"];
+    v12 = [coderCopy decodeObjectOfClass:_nsStringClass forKey:@"phone"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     nameComponents = v5->_nameComponents;
     v5->_nameComponents = v14;
 
-    v5->_hasiCloudAccount = [v4 decodeBoolForKey:@"iCloud"];
+    v5->_hasiCloudAccount = [coderCopy decodeBoolForKey:@"iCloud"];
   }
 
   return v5;
@@ -158,55 +158,55 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _nsStringClass = objc_opt_class();
   }
 }
 
-+ (id)descriptionForRole:(int64_t)a3
++ (id)descriptionForRole:(int64_t)role
 {
-  if (a3 >= 5)
+  if (role >= 5)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"[role %ld]", a3];
+    role = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"[role %ld]", role];
   }
 
   else
   {
-    v3 = off_1E861C088[a3];
+    role = off_1E861C088[role];
   }
 
-  return v3;
+  return role;
 }
 
-+ (id)descriptionForPermission:(int64_t)a3
++ (id)descriptionForPermission:(int64_t)permission
 {
-  if (a3 >= 4)
+  if (permission >= 4)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"[permission %ld]", a3];
+    permission = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"[permission %ld]", permission];
   }
 
   else
   {
-    v3 = off_1E861C068[a3];
+    permission = off_1E861C068[permission];
   }
 
-  return v3;
+  return permission;
 }
 
-+ (id)descriptionForAcceptanceStatus:(int64_t)a3
++ (id)descriptionForAcceptanceStatus:(int64_t)status
 {
-  if (a3 >= 6)
+  if (status >= 6)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"[status %ld]", a3];
+    status = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"[status %ld]", status];
   }
 
   else
   {
-    v3 = off_1E861C038[a3];
+    status = off_1E861C038[status];
   }
 
-  return v3;
+  return status;
 }
 
 @end

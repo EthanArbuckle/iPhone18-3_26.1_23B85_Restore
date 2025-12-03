@@ -1,62 +1,62 @@
 @interface _PKPathView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (UIBezierPath)path;
 - (UIColor)fillColor;
-- (void)setFillColor:(id)a3;
-- (void)setPath:(id)a3;
+- (void)setFillColor:(id)color;
+- (void)setPath:(id)path;
 @end
 
 @implementation _PKPathView
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v4 = a3;
-  v6 = [(_PKPathView *)self _shapeLayer];
-  v5 = [v4 CGPath];
+  pathCopy = path;
+  _shapeLayer = [(_PKPathView *)self _shapeLayer];
+  cGPath = [pathCopy CGPath];
 
-  [v6 setPath:v5];
+  [_shapeLayer setPath:cGPath];
 }
 
 - (UIBezierPath)path
 {
   v2 = MEMORY[0x1E69DC728];
-  v3 = [(_PKPathView *)self _shapeLayer];
-  v4 = [v2 bezierPathWithCGPath:{objc_msgSend(v3, "path")}];
+  _shapeLayer = [(_PKPathView *)self _shapeLayer];
+  v4 = [v2 bezierPathWithCGPath:{objc_msgSend(_shapeLayer, "path")}];
 
   return v4;
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  v6 = [(_PKPathView *)self _shapeLayer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  _shapeLayer = [(_PKPathView *)self _shapeLayer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setFillColor:v5];
+  [_shapeLayer setFillColor:cGColor];
 }
 
 - (UIColor)fillColor
 {
   v2 = MEMORY[0x1E69DC888];
-  v3 = [(_PKPathView *)self _shapeLayer];
-  v4 = [v2 colorWithCGColor:{objc_msgSend(v3, "fillColor")}];
+  _shapeLayer = [(_PKPathView *)self _shapeLayer];
+  v4 = [v2 colorWithCGColor:{objc_msgSend(_shapeLayer, "fillColor")}];
 
   return v4;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = _PKPathView;
-  if ([(_PKPathView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(_PKPathView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"path"];
+    v5 = [keyCopy isEqualToString:@"path"];
   }
 
   return v5;

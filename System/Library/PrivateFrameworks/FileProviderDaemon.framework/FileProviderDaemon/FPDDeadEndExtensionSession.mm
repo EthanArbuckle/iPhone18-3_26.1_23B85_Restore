@@ -1,20 +1,20 @@
 @interface FPDDeadEndExtensionSession
 - (FPDDeadEndExtensionSession)init;
-- (FPDDeadEndExtensionSession)initWithError:(id)a3;
-- (id)newFileProviderProxyWithTimeout:(double)a3 pid:(int)a4;
+- (FPDDeadEndExtensionSession)initWithError:(id)error;
+- (id)newFileProviderProxyWithTimeout:(double)timeout pid:(int)pid;
 @end
 
 @implementation FPDDeadEndExtensionSession
 
-- (FPDDeadEndExtensionSession)initWithError:(id)a3
+- (FPDDeadEndExtensionSession)initWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = FPDDeadEndExtensionSession;
   v5 = [(FPDDeadEndExtensionSession *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [errorCopy copy];
     error = v5->_error;
     v5->_error = v6;
   }
@@ -37,7 +37,7 @@
   __assert_rtn("-[FPDDeadEndExtensionSession init]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDExtensionSession.m", 1012, [v2 UTF8String]);
 }
 
-- (id)newFileProviderProxyWithTimeout:(double)a3 pid:(int)a4
+- (id)newFileProviderProxyWithTimeout:(double)timeout pid:(int)pid
 {
   v5 = objc_alloc(MEMORY[0x1E69674B0]);
   error = self->_error;

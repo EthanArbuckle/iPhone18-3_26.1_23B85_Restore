@@ -1,55 +1,55 @@
 @interface ATXAppClipUsageEvent
-- (ATXAppClipUsageEvent)initWithLaunchDate:(id)a3 urlHash:(id)a4 clipBundleID:(id)a5 parentAppBundleID:(id)a6 webAppBundleID:(id)a7 launchReason:(int)a8 fullURL:(id)a9 referrerURL:(id)a10 referrerBundleID:(id)a11;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXAppClipUsageEvent:(id)a3;
+- (ATXAppClipUsageEvent)initWithLaunchDate:(id)date urlHash:(id)hash clipBundleID:(id)d parentAppBundleID:(id)iD webAppBundleID:(id)bundleID launchReason:(int)reason fullURL:(id)l referrerURL:(id)self0 referrerBundleID:(id)self1;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXAppClipUsageEvent:(id)event;
 - (unint64_t)hash;
 @end
 
 @implementation ATXAppClipUsageEvent
 
-- (ATXAppClipUsageEvent)initWithLaunchDate:(id)a3 urlHash:(id)a4 clipBundleID:(id)a5 parentAppBundleID:(id)a6 webAppBundleID:(id)a7 launchReason:(int)a8 fullURL:(id)a9 referrerURL:(id)a10 referrerBundleID:(id)a11
+- (ATXAppClipUsageEvent)initWithLaunchDate:(id)date urlHash:(id)hash clipBundleID:(id)d parentAppBundleID:(id)iD webAppBundleID:(id)bundleID launchReason:(int)reason fullURL:(id)l referrerURL:(id)self0 referrerBundleID:(id)self1
 {
-  v42 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  dateCopy = date;
+  hashCopy = hash;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  lCopy = l;
+  rLCopy = rL;
+  referrerBundleIDCopy = referrerBundleID;
   v43.receiver = self;
   v43.super_class = ATXAppClipUsageEvent;
   v25 = [(ATXAppClipUsageEvent *)&v43 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_launchDate, a3);
-    v27 = [v18 copy];
+    objc_storeStrong(&v25->_launchDate, date);
+    v27 = [hashCopy copy];
     urlHash = v26->_urlHash;
     v26->_urlHash = v27;
 
-    v29 = [v19 copy];
+    v29 = [dCopy copy];
     clipBundleID = v26->_clipBundleID;
     v26->_clipBundleID = v29;
 
-    v31 = [v20 copy];
+    v31 = [iDCopy copy];
     parentAppBundleID = v26->_parentAppBundleID;
     v26->_parentAppBundleID = v31;
 
-    v33 = [v21 copy];
+    v33 = [bundleIDCopy copy];
     webAppBundleID = v26->_webAppBundleID;
     v26->_webAppBundleID = v33;
 
-    v26->_launchReason = a8;
-    v35 = [v22 copy];
+    v26->_launchReason = reason;
+    v35 = [lCopy copy];
     fullURL = v26->_fullURL;
     v26->_fullURL = v35;
 
-    v37 = [v23 copy];
+    v37 = [rLCopy copy];
     referrerURL = v26->_referrerURL;
     v26->_referrerURL = v37;
 
-    v39 = [v24 copy];
+    v39 = [referrerBundleIDCopy copy];
     referrerBundleID = v26->_referrerBundleID;
     v26->_referrerBundleID = v39;
   }
@@ -57,29 +57,29 @@
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppClipUsageEvent *)self isEqualToATXAppClipUsageEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppClipUsageEvent *)self isEqualToATXAppClipUsageEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXAppClipUsageEvent:(id)a3
+- (BOOL)isEqualToATXAppClipUsageEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_launchDate;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == eventCopy[2])
   {
   }
 
@@ -95,7 +95,7 @@
 
   v8 = self->_urlHash;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == eventCopy[3])
   {
   }
 
@@ -111,7 +111,7 @@
 
   v11 = self->_clipBundleID;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == eventCopy[4])
   {
   }
 
@@ -127,7 +127,7 @@
 
   v14 = self->_parentAppBundleID;
   v15 = v14;
-  if (v14 == v4[5])
+  if (v14 == eventCopy[5])
   {
   }
 
@@ -143,7 +143,7 @@
 
   v17 = self->_webAppBundleID;
   v18 = v17;
-  if (v17 == v4[6])
+  if (v17 == eventCopy[6])
   {
   }
 
@@ -157,7 +157,7 @@
     }
   }
 
-  if (self->_launchReason != *(v4 + 2))
+  if (self->_launchReason != *(eventCopy + 2))
   {
 LABEL_28:
     v26 = 0;
@@ -166,7 +166,7 @@ LABEL_28:
 
   v20 = self->_fullURL;
   v21 = v20;
-  if (v20 == v4[7])
+  if (v20 == eventCopy[7])
   {
   }
 
@@ -182,7 +182,7 @@ LABEL_28:
 
   v23 = self->_referrerURL;
   v24 = v23;
-  if (v23 == v4[8])
+  if (v23 == eventCopy[8])
   {
   }
 
@@ -198,7 +198,7 @@ LABEL_28:
 
   v28 = self->_referrerBundleID;
   v29 = v28;
-  if (v28 == v4[9])
+  if (v28 == eventCopy[9])
   {
     v26 = 1;
   }
@@ -214,30 +214,30 @@ LABEL_29:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXAppClipUsageEvent *)self launchDate];
-  v4 = [v3 hash];
+  launchDate = [(ATXAppClipUsageEvent *)self launchDate];
+  v4 = [launchDate hash];
 
-  v5 = [(ATXAppClipUsageEvent *)self urlHash];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  urlHash = [(ATXAppClipUsageEvent *)self urlHash];
+  v6 = [urlHash hash] - v4 + 32 * v4;
 
-  v7 = [(ATXAppClipUsageEvent *)self clipBundleID];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  clipBundleID = [(ATXAppClipUsageEvent *)self clipBundleID];
+  v8 = [clipBundleID hash] - v6 + 32 * v6;
 
-  v9 = [(ATXAppClipUsageEvent *)self parentAppBundleID];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  parentAppBundleID = [(ATXAppClipUsageEvent *)self parentAppBundleID];
+  v10 = [parentAppBundleID hash] - v8 + 32 * v8;
 
-  v11 = [(ATXAppClipUsageEvent *)self webAppBundleID];
-  v12 = [v11 hash] - v10 + 32 * v10;
+  webAppBundleID = [(ATXAppClipUsageEvent *)self webAppBundleID];
+  v12 = [webAppBundleID hash] - v10 + 32 * v10;
 
   v13 = 31 * v12 + [(ATXAppClipUsageEvent *)self launchReason];
-  v14 = [(ATXAppClipUsageEvent *)self fullURL];
-  v15 = [v14 hash] - v13 + 32 * v13;
+  fullURL = [(ATXAppClipUsageEvent *)self fullURL];
+  v15 = [fullURL hash] - v13 + 32 * v13;
 
-  v16 = [(ATXAppClipUsageEvent *)self referrerURL];
-  v17 = [v16 hash] - v15 + 32 * v15;
+  referrerURL = [(ATXAppClipUsageEvent *)self referrerURL];
+  v17 = [referrerURL hash] - v15 + 32 * v15;
 
-  v18 = [(ATXAppClipUsageEvent *)self referrerBundleID];
-  v19 = [v18 hash] - v17 + 32 * v17;
+  referrerBundleID = [(ATXAppClipUsageEvent *)self referrerBundleID];
+  v19 = [referrerBundleID hash] - v17 + 32 * v17;
 
   return v19;
 }

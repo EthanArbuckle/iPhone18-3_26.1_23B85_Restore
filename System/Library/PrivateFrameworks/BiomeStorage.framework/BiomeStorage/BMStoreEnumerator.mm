@@ -1,20 +1,20 @@
 @interface BMStoreEnumerator
 - (BMStoreBookmark)bookmark;
-- (BMStoreEnumerator)initWithStreamDatastore:(id)a3 bookmark:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (BMStoreEnumerator)initWithStreamDatastore:(id)a3 bookmarkEnumerator:(id)a4 error:(id *)a5;
-- (BMStoreEnumerator)initWithStreamDatastore:(id)a3 currentFrameStore:(id)a4 frameStoreOffset:(unint64_t)a5 iterationStartTime:(double)a6 endTime:(double)a7 maxEvents:(unint64_t)a8 lastN:(unint64_t)a9 options:(unint64_t)a10 dataType:(Class)a11;
-- (BMStoreEnumerator)initWithStreamDatastore:(id)a3 startTime:(double)a4 endTime:(double)a5 maxEvents:(unint64_t)a6 lastN:(unint64_t)a7 options:(unint64_t)a8 dataType:(Class)a9;
+- (BMStoreEnumerator)initWithStreamDatastore:(id)datastore bookmark:(id)bookmark options:(unint64_t)options error:(id *)error;
+- (BMStoreEnumerator)initWithStreamDatastore:(id)datastore bookmarkEnumerator:(id)enumerator error:(id *)error;
+- (BMStoreEnumerator)initWithStreamDatastore:(id)datastore currentFrameStore:(id)store frameStoreOffset:(unint64_t)offset iterationStartTime:(double)time endTime:(double)endTime maxEvents:(unint64_t)events lastN:(unint64_t)n options:(unint64_t)self0 dataType:(Class)self1;
+- (BMStoreEnumerator)initWithStreamDatastore:(id)datastore startTime:(double)time endTime:(double)endTime maxEvents:(unint64_t)events lastN:(unint64_t)n options:(unint64_t)options dataType:(Class)type;
 - (BMStreamMetadata)metadata;
-- (BOOL)advanceBookmarkToStartTime:(double)a3 eventsFound:(unint64_t *)a4 lastN:(unint64_t)a5;
-- (BOOL)advanceBookmarkV1ToStartTime:(double)a3 eventsFound:(unint64_t *)a4 lastN:(unint64_t)a5;
-- (BOOL)advanceBookmarkV2ToStartTime:(double)a3 eventsFound:(unint64_t *)a4 lastN:(unint64_t)a5;
-- (BOOL)skipToBookmarkOffset:(id)a3;
-- (id)copyNextEventAndMoveBookmark:(BOOL)a3 makeEvent:(id)a4;
+- (BOOL)advanceBookmarkToStartTime:(double)time eventsFound:(unint64_t *)found lastN:(unint64_t)n;
+- (BOOL)advanceBookmarkV1ToStartTime:(double)time eventsFound:(unint64_t *)found lastN:(unint64_t)n;
+- (BOOL)advanceBookmarkV2ToStartTime:(double)time eventsFound:(unint64_t *)found lastN:(unint64_t)n;
+- (BOOL)skipToBookmarkOffset:(id)offset;
+- (id)copyNextEventAndMoveBookmark:(BOOL)bookmark makeEvent:(id)event;
 - (id)nextEvent;
 - (id)peekEvent;
 - (void)bookmark;
-- (void)nextEventWithContext:(id)a3;
-- (void)setEndTime:(double)a3 maxEvents:(unint64_t)a4 lastN:(unint64_t)a5 reverse:(BOOL)a6;
+- (void)nextEventWithContext:(id)context;
+- (void)setEndTime:(double)time maxEvents:(unint64_t)events lastN:(unint64_t)n reverse:(BOOL)reverse;
 @end
 
 @implementation BMStoreEnumerator
@@ -31,9 +31,9 @@
   metadata = self->_metadata;
   if (!metadata)
   {
-    v4 = [(BMStreamDatastore *)self->_ds metadata];
+    metadata = [(BMStreamDatastore *)self->_ds metadata];
     v5 = self->_metadata;
-    self->_metadata = v4;
+    self->_metadata = metadata;
 
     metadata = self->_metadata;
   }
@@ -68,8 +68,8 @@
     }
 
     v8 = [(BMFrameStore *)*p_currentFrameStore isCheckSumValidAtOffsetV1:*p_frameStoreOffset];
-    v9 = __biome_log_for_category();
-    v10 = os_log_type_enabled(v9, OS_LOG_TYPE_FAULT);
+    streamId = __biome_log_for_category();
+    v10 = os_log_type_enabled(streamId, OS_LOG_TYPE_FAULT);
     if (!v8)
     {
       if (v10)
@@ -90,7 +90,7 @@
 
   if ([(BMFrameStore *)*p_currentFrameStore datastoreVersion]!= 10)
   {
-    v9 = __biome_log_for_category();
+    streamId = __biome_log_for_category();
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
@@ -107,18 +107,18 @@
 
     v13 = *(*&buf[8] + 24);
     _Block_object_dispose(buf, 8);
-    if (!os_log_type_enabled(v9, v13))
+    if (!os_log_type_enabled(streamId, v13))
     {
       goto LABEL_29;
     }
 
-    v14 = [(BMFrameStore *)*p_currentFrameStore datastoreVersion];
-    v15 = [(BMFrameStore *)*p_currentFrameStore segmentPath];
+    datastoreVersion = [(BMFrameStore *)*p_currentFrameStore datastoreVersion];
+    segmentPath = [(BMFrameStore *)*p_currentFrameStore segmentPath];
     *buf = 67109378;
-    *&buf[4] = v14;
+    *&buf[4] = datastoreVersion;
     *&buf[8] = 2112;
-    *&buf[10] = v15;
-    _os_log_impl(&dword_1C928A000, v9, v13, "BMStoreEnumerator.bookmark: unknown datastoreVersion (%d) in frameStore: %@", buf, 0x12u);
+    *&buf[10] = segmentPath;
+    _os_log_impl(&dword_1C928A000, streamId, v13, "BMStoreEnumerator.bookmark: unknown datastoreVersion (%d) in frameStore: %@", buf, 0x12u);
     goto LABEL_18;
   }
 
@@ -127,8 +127,8 @@
     v12 = [(BMFrameStore *)*p_currentFrameStore frameNumberFromOffsetToOffsetTableEntryV2:?];
     if ((v12 & 0x80000000) != 0)
     {
-      v9 = __biome_log_for_category();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+      streamId = __biome_log_for_category();
+      if (os_log_type_enabled(streamId, OS_LOG_TYPE_FAULT))
       {
         [BMStoreEnumerator bookmark];
       }
@@ -144,38 +144,38 @@
 
   if (![(BMStoreEnumerator *)self isDataAccessible])
   {
-    v9 = __biome_log_for_category();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    streamId = __biome_log_for_category();
+    if (os_log_type_enabled(streamId, OS_LOG_TYPE_INFO))
     {
       v23 = MEMORY[0x1E698E9C8];
-      v24 = [(BMFrameStore *)*p_currentFrameStore segmentPath];
-      v25 = [v23 privacyPathname:v24];
+      segmentPath2 = [(BMFrameStore *)*p_currentFrameStore segmentPath];
+      v25 = [v23 privacyPathname:segmentPath2];
       *buf = 138543362;
       *&buf[4] = v25;
-      _os_log_impl(&dword_1C928A000, v9, OS_LOG_TYPE_INFO, "Segment is no longer accessible (bookmark): %{public}@", buf, 0xCu);
+      _os_log_impl(&dword_1C928A000, streamId, OS_LOG_TYPE_INFO, "Segment is no longer accessible (bookmark): %{public}@", buf, 0xCu);
     }
 
     goto LABEL_29;
   }
 
-  v16 = [(BMFrameStore *)*p_currentFrameStore atomicReadTotalFramesV2];
-  if (v12 <= v16)
+  atomicReadTotalFramesV2 = [(BMFrameStore *)*p_currentFrameStore atomicReadTotalFramesV2];
+  if (v12 <= atomicReadTotalFramesV2)
   {
     goto LABEL_30;
   }
 
-  v17 = v16;
+  v17 = atomicReadTotalFramesV2;
   v18 = [(BMFrameStore *)*p_currentFrameStore isCheckSumValidAtOffsetV2:*p_frameStoreOffset frameNumber:v12];
-  v9 = __biome_log_for_category();
-  v19 = os_log_type_enabled(v9, OS_LOG_TYPE_FAULT);
+  streamId = __biome_log_for_category();
+  v19 = os_log_type_enabled(streamId, OS_LOG_TYPE_FAULT);
   if (!v18)
   {
     if (v19)
     {
       v31 = *p_frameStoreOffset;
       v32 = MEMORY[0x1E698E9C8];
-      v33 = [(BMFrameStore *)*p_currentFrameStore segmentPath];
-      v34 = [v32 privacyPathname:v33];
+      segmentPath3 = [(BMFrameStore *)*p_currentFrameStore segmentPath];
+      v34 = [v32 privacyPathname:segmentPath3];
       *buf = 134218754;
       *&buf[4] = v31;
       *&buf[12] = 1024;
@@ -184,7 +184,7 @@
       *&buf[20] = v17;
       v37 = 2114;
       v38 = v34;
-      _os_log_fault_impl(&dword_1C928A000, v9, OS_LOG_TYPE_FAULT, "frameStore checksum mismatched, offset %zu, frame:%d is beyond totalFrames:%d for store: %{public}@", buf, 0x22u);
+      _os_log_fault_impl(&dword_1C928A000, streamId, OS_LOG_TYPE_FAULT, "frameStore checksum mismatched, offset %zu, frame:%d is beyond totalFrames:%d for store: %{public}@", buf, 0x22u);
     }
 
     goto LABEL_33;
@@ -194,8 +194,8 @@
   {
     v20 = *p_frameStoreOffset;
     v21 = MEMORY[0x1E698E9C8];
-    v22 = [(BMFrameStore *)*p_currentFrameStore segmentPath];
-    v15 = [v21 privacyPathname:v22];
+    segmentPath4 = [(BMFrameStore *)*p_currentFrameStore segmentPath];
+    segmentPath = [v21 privacyPathname:segmentPath4];
     *buf = 134218754;
     *&buf[4] = v20;
     *&buf[12] = 1024;
@@ -203,8 +203,8 @@
     *&buf[18] = 1024;
     *&buf[20] = v17;
     v37 = 2114;
-    v38 = v15;
-    _os_log_fault_impl(&dword_1C928A000, v9, OS_LOG_TYPE_FAULT, "frameStore checksum matched, although offset %zu, frame:%d is beyond totalFrames:%d for store: %{public}@", buf, 0x22u);
+    v38 = segmentPath;
+    _os_log_fault_impl(&dword_1C928A000, streamId, OS_LOG_TYPE_FAULT, "frameStore checksum matched, although offset %zu, frame:%d is beyond totalFrames:%d for store: %{public}@", buf, 0x22u);
 
 LABEL_18:
   }
@@ -226,15 +226,15 @@ LABEL_34:
     }
 
     v27 = [BMStoreBookmark alloc];
-    v9 = [(BMStreamDatastore *)self->_ds streamId];
-    v28 = [(BMFrameStore *)self->_currentFrameStore segmentName];
-    v11 = [(BMStoreBookmark *)v27 initWithStream:v9 segment:v28 iterationStartTime:self->_frameStoreOffset offset:self->_iterationStartTime];
+    streamId = [(BMStreamDatastore *)self->_ds streamId];
+    segmentName = [(BMFrameStore *)self->_currentFrameStore segmentName];
+    v11 = [(BMStoreBookmark *)v27 initWithStream:streamId segment:segmentName iterationStartTime:self->_frameStoreOffset offset:self->_iterationStartTime];
 
     goto LABEL_39;
   }
 
-  v9 = __biome_log_for_category();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+  streamId = __biome_log_for_category();
+  if (os_log_type_enabled(streamId, OS_LOG_TYPE_FAULT))
   {
     [(BMStoreEnumerator *)&self->_frameStoreOffset bookmark];
   }
@@ -249,16 +249,16 @@ LABEL_40:
   return v11;
 }
 
-- (BOOL)skipToBookmarkOffset:(id)a3
+- (BOOL)skipToBookmarkOffset:(id)offset
 {
-  v4 = a3;
-  v5 = [v4 segmentName];
-  v6 = [(BMFrameStore *)self->_currentFrameStore segmentName];
-  v7 = [v5 isEqualToString:v6];
+  offsetCopy = offset;
+  segmentName = [offsetCopy segmentName];
+  segmentName2 = [(BMFrameStore *)self->_currentFrameStore segmentName];
+  v7 = [segmentName isEqualToString:segmentName2];
 
   if (v7)
   {
-    self->_frameStoreOffset = [v4 offset];
+    self->_frameStoreOffset = [offsetCopy offset];
   }
 
   else
@@ -273,29 +273,29 @@ LABEL_40:
   return v7;
 }
 
-- (void)setEndTime:(double)a3 maxEvents:(unint64_t)a4 lastN:(unint64_t)a5 reverse:(BOOL)a6
+- (void)setEndTime:(double)time maxEvents:(unint64_t)events lastN:(unint64_t)n reverse:(BOOL)reverse
 {
-  self->_endTime = a3;
-  self->_maxEvents = a4;
+  self->_endTime = time;
+  self->_maxEvents = events;
   v6 = 8;
-  if (!a6)
+  if (!reverse)
   {
     v6 = 0;
   }
 
   v7 = self->_options & 0xFFFFFFFFFFFFFFF7 | v6;
-  self->_lastEventCount = a5;
+  self->_lastEventCount = n;
   self->_options = v7;
 }
 
-- (BMStoreEnumerator)initWithStreamDatastore:(id)a3 bookmarkEnumerator:(id)a4 error:(id *)a5
+- (BMStoreEnumerator)initWithStreamDatastore:(id)datastore bookmarkEnumerator:(id)enumerator error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 streamId];
-  v12 = [v9 config];
-  v13 = [v12 storeLocationOption] & 6;
+  datastoreCopy = datastore;
+  enumeratorCopy = enumerator;
+  streamId = [datastoreCopy streamId];
+  config = [datastoreCopy config];
+  v13 = [config storeLocationOption] & 6;
 
   if (v13)
   {
@@ -305,13 +305,13 @@ LABEL_40:
   v14 = __biome_log_for_category();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v9 streamPath];
+    streamPath = [datastoreCopy streamPath];
     *buf = 138412802;
-    v25 = v11;
+    v25 = streamId;
     v26 = 2112;
-    v27 = v15;
+    v27 = streamPath;
     v28 = 2112;
-    v29 = v10;
+    v29 = enumeratorCopy;
     _os_log_impl(&dword_1C928A000, v14, OS_LOG_TYPE_DEFAULT, "Enumerator for %@ from %@ using bookmarkEnumerator %@", buf, 0x20u);
   }
 
@@ -321,15 +321,15 @@ LABEL_40:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_ds, a3);
-    objc_storeStrong(&v17->_bookmarkEnumerator, a4);
+    objc_storeStrong(&v16->_ds, datastore);
+    objc_storeStrong(&v17->_bookmarkEnumerator, enumerator);
     currentFrameStore = v17->_currentFrameStore;
     v17->_currentFrameStore = 0;
 
     v17->_frameStoreOffset = 0;
     v17->_iterationStartTime = CFAbsoluteTimeGetCurrent();
-    v19 = [MEMORY[0x1E695DF00] distantFuture];
-    [v19 timeIntervalSinceReferenceDate];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [distantFuture timeIntervalSinceReferenceDate];
     v17->_endTime = v20;
 
     *&v17->_maxEvents = xmmword_1C92B82F0;
@@ -341,32 +341,32 @@ LABEL_40:
   return v17;
 }
 
-- (BMStoreEnumerator)initWithStreamDatastore:(id)a3 bookmark:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BMStoreEnumerator)initWithStreamDatastore:(id)datastore bookmark:(id)bookmark options:(unint64_t)options error:(id *)error
 {
   v106[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 streamId];
-  v13 = [v11 streamId];
-  v14 = [v12 isEqualToString:v13];
+  datastoreCopy = datastore;
+  bookmarkCopy = bookmark;
+  streamId = [datastoreCopy streamId];
+  streamId2 = [bookmarkCopy streamId];
+  v14 = [streamId isEqualToString:streamId2];
 
   if (v14)
   {
-    v15 = [v10 streamId];
-    v16 = [v10 config];
-    v17 = [v16 storeLocationOption];
+    streamId3 = [datastoreCopy streamId];
+    config = [datastoreCopy config];
+    storeLocationOption = [config storeLocationOption];
 
-    if ((v17 & 4) != 0)
+    if ((storeLocationOption & 4) != 0)
     {
       v20 = @":subscriptions";
     }
 
     else
     {
-      v18 = [v10 config];
-      v19 = [v18 storeLocationOption];
+      config2 = [datastoreCopy config];
+      storeLocationOption2 = [config2 storeLocationOption];
 
-      if ((v19 & 2) != 0)
+      if ((storeLocationOption2 & 2) != 0)
       {
         v20 = @":tombstones";
       }
@@ -380,67 +380,67 @@ LABEL_40:
     v28 = __biome_log_for_category();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [v10 segmentDirectory];
-      v30 = [v11 segmentName];
+      segmentDirectory = [datastoreCopy segmentDirectory];
+      segmentName = [bookmarkCopy segmentName];
       *buf = 138413314;
-      v98 = v15;
+      v98 = streamId3;
       v99 = 2112;
       *v100 = v20;
       *&v100[8] = 2112;
-      *v101 = v29;
+      *v101 = segmentDirectory;
       *&v101[8] = 2112;
-      v102 = v30;
+      v102 = segmentName;
       v103 = 2048;
-      v104 = [v11 offset];
+      offset = [bookmarkCopy offset];
       _os_log_impl(&dword_1C928A000, v28, OS_LOG_TYPE_DEFAULT, "Enumerator for %@%@ starting from %@/%@+0x%llx", buf, 0x34u);
     }
 
-    v31 = [v11 segmentName];
+    segmentName2 = [bookmarkCopy segmentName];
     v90 = 0;
-    v32 = [v10 segmentWithFilename:v31 error:&v90];
+    v32 = [datastoreCopy segmentWithFilename:segmentName2 error:&v90];
     v26 = v90;
 
     if (v26)
     {
-      if (a6)
+      if (error)
       {
         v33 = v26;
-        v27 = 0;
-        *a6 = v26;
+        selfCopy = 0;
+        *error = v26;
 LABEL_49:
 
         goto LABEL_50;
       }
 
 LABEL_48:
-      v27 = 0;
+      selfCopy = 0;
       goto LABEL_49;
     }
 
-    if (!v11 || (~[v11 offset] & 0xFFFFFFFE) == 0)
+    if (!bookmarkCopy || (~[bookmarkCopy offset] & 0xFFFFFFFE) == 0)
     {
 LABEL_19:
-      v34 = [v11 offset];
-      [v11 iterationStartTime];
+      offset2 = [bookmarkCopy offset];
+      [bookmarkCopy iterationStartTime];
       v36 = v35;
-      v37 = [MEMORY[0x1E695DF00] distantFuture];
-      [v37 timeIntervalSinceReferenceDate];
-      v39 = [(BMStoreEnumerator *)self initWithStreamDatastore:v10 currentFrameStore:v32 frameStoreOffset:v34 iterationStartTime:-1 endTime:-1 maxEvents:a5 lastN:v36 options:v38 dataType:0];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      [distantFuture timeIntervalSinceReferenceDate];
+      v39 = [(BMStoreEnumerator *)self initWithStreamDatastore:datastoreCopy currentFrameStore:v32 frameStoreOffset:offset2 iterationStartTime:-1 endTime:-1 maxEvents:options lastN:v36 options:v38 dataType:0];
 
       self = v39;
-      v27 = self;
+      selfCopy = self;
       goto LABEL_49;
     }
 
     if ([v32 datastoreVersion] == 9)
     {
-      v40 = [v11 offset];
-      if (v40 <= [v32 bytesUsed] - 56)
+      offset3 = [bookmarkCopy offset];
+      if (offset3 <= [v32 bytesUsed] - 56)
       {
         goto LABEL_19;
       }
 
-      v41 = [v32 isCheckSumValidAtOffsetV1:{objc_msgSend(v11, "offset")}];
+      v41 = [v32 isCheckSumValidAtOffsetV1:{objc_msgSend(bookmarkCopy, "offset")}];
       v42 = __biome_log_for_category();
       v43 = os_log_type_enabled(v42, OS_LOG_TYPE_FAULT);
       if (v41)
@@ -459,14 +459,14 @@ LABEL_19:
       }
 
       v85 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v82 = [v11 offset];
-      v55 = [v32 bytesUsed];
+      offset4 = [bookmarkCopy offset];
+      bytesUsed = [v32 bytesUsed];
       v56 = MEMORY[0x1E698E9C8];
-      v57 = [v32 segmentPath];
-      v58 = [v56 privacyPathname:v57];
-      v50 = [v85 initWithFormat:@"frameStore checksum mismatched and is beyond frame offset:%zu bytesUsed:%d for store: %@", v82, v55, v58];
+      segmentPath = [v32 segmentPath];
+      v58 = [v56 privacyPathname:segmentPath];
+      v50 = [v85 initWithFormat:@"frameStore checksum mismatched and is beyond frame offset:%zu bytesUsed:%d for store: %@", offset4, bytesUsed, v58];
 
-      if (!a6)
+      if (!error)
       {
 LABEL_38:
 
@@ -481,7 +481,7 @@ LABEL_38:
       v54 = &v95;
 LABEL_37:
       v59 = [v52 dictionaryWithObjects:v53 forKeys:v54 count:1];
-      *a6 = [v51 errorWithDomain:@"com.apple.biome.BiomeStorage" code:-1 userInfo:v59];
+      *error = [v51 errorWithDomain:@"com.apple.biome.BiomeStorage" code:-1 userInfo:v59];
 
       goto LABEL_38;
     }
@@ -491,9 +491,9 @@ LABEL_37:
       goto LABEL_19;
     }
 
-    if ([v11 offset])
+    if ([bookmarkCopy offset])
     {
-      v44 = [v32 frameNumberFromOffsetToOffsetTableEntryV2:{objc_msgSend(v11, "offset")}];
+      v44 = [v32 frameNumberFromOffsetToOffsetTableEntryV2:{objc_msgSend(bookmarkCopy, "offset")}];
       if ((v44 & 0x80000000) != 0)
       {
         v45 = __biome_log_for_category();
@@ -503,14 +503,14 @@ LABEL_37:
         }
 
         v84 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v81 = [v11 offset];
-        v46 = [v32 frameStoreSize];
+        offset5 = [bookmarkCopy offset];
+        frameStoreSize = [v32 frameStoreSize];
         v47 = MEMORY[0x1E698E9C8];
-        v48 = [v32 segmentPath];
-        v49 = [v47 privacyPathname:v48];
-        v50 = [v84 initWithFormat:@"initWithStreamDatastore: bookmark offset (%zu) is beyond frameStore size:%zu for store: %@", v81, v46, v49];
+        segmentPath2 = [v32 segmentPath];
+        v49 = [v47 privacyPathname:segmentPath2];
+        v50 = [v84 initWithFormat:@"initWithStreamDatastore: bookmark offset (%zu) is beyond frameStore size:%zu for store: %@", offset5, frameStoreSize, v49];
 
-        if (!a6)
+        if (!error)
         {
           goto LABEL_38;
         }
@@ -530,14 +530,14 @@ LABEL_37:
       v44 = 0;
     }
 
-    if (([v10 isDataAccessible] & 1) == 0)
+    if (([datastoreCopy isDataAccessible] & 1) == 0)
     {
       v64 = __biome_log_for_category();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
       {
         v65 = MEMORY[0x1E698E9C8];
-        v66 = [v10 streamPath];
-        v67 = [v65 privacyPathname:v66];
+        streamPath = [datastoreCopy streamPath];
+        v67 = [v65 privacyPathname:streamPath];
         *buf = 138543362;
         v98 = v67;
         _os_log_impl(&dword_1C928A000, v64, OS_LOG_TYPE_INFO, "Segment is no longer accessible: %{public}@", buf, 0xCu);
@@ -546,26 +546,26 @@ LABEL_37:
       goto LABEL_48;
     }
 
-    v60 = [v32 atomicReadTotalFramesV2];
-    if (v44 <= v60)
+    atomicReadTotalFramesV2 = [v32 atomicReadTotalFramesV2];
+    if (v44 <= atomicReadTotalFramesV2)
     {
       goto LABEL_19;
     }
 
-    v83 = v60;
-    v86 = [v32 isCheckSumValidAtOffsetV2:objc_msgSend(v11 frameNumber:{"offset"), v44}];
+    v83 = atomicReadTotalFramesV2;
+    v86 = [v32 isCheckSumValidAtOffsetV2:objc_msgSend(bookmarkCopy frameNumber:{"offset"), v44}];
     v42 = __biome_log_for_category();
     v61 = os_log_type_enabled(v42, OS_LOG_TYPE_FAULT);
     if ((v86 & 1) == 0)
     {
       if (v61)
       {
-        v80 = [v11 offset];
+        offset6 = [bookmarkCopy offset];
         v76 = MEMORY[0x1E698E9C8];
-        v89 = [v32 segmentPath];
-        v77 = [v76 privacyPathname:v89];
+        segmentPath3 = [v32 segmentPath];
+        v77 = [v76 privacyPathname:segmentPath3];
         *buf = 134218754;
-        v98 = v80;
+        v98 = offset6;
         v99 = 1024;
         *v100 = v44;
         *&v100[4] = 1024;
@@ -576,19 +576,19 @@ LABEL_37:
       }
 
       v88 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v79 = [v11 offset];
+      offset7 = [bookmarkCopy offset];
       v70 = MEMORY[0x1E698E9C8];
-      v71 = [v32 segmentPath];
-      v72 = [v70 privacyPathname:v71];
-      v73 = [v88 initWithFormat:@"frameStore checksum mismatched, offset %zu, frame:%d is beyond totalFrames:%d for store: %@", v79, v44, v83, v72];
+      segmentPath4 = [v32 segmentPath];
+      v72 = [v70 privacyPathname:segmentPath4];
+      v73 = [v88 initWithFormat:@"frameStore checksum mismatched, offset %zu, frame:%d is beyond totalFrames:%d for store: %@", offset7, v44, v83, v72];
 
-      if (a6)
+      if (error)
       {
         v74 = MEMORY[0x1E696ABC0];
         v91 = *MEMORY[0x1E696A578];
         v92 = v73;
         v75 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
-        *a6 = [v74 errorWithDomain:@"com.apple.biome.BiomeStorage" code:-1 userInfo:v75];
+        *error = [v74 errorWithDomain:@"com.apple.biome.BiomeStorage" code:-1 userInfo:v75];
       }
 
       goto LABEL_48;
@@ -596,12 +596,12 @@ LABEL_37:
 
     if (v61)
     {
-      v78 = [v11 offset];
+      offset8 = [bookmarkCopy offset];
       v62 = MEMORY[0x1E698E9C8];
-      v87 = [v32 segmentPath];
-      v63 = [v62 privacyPathname:v87];
+      segmentPath5 = [v32 segmentPath];
+      v63 = [v62 privacyPathname:segmentPath5];
       *buf = 134218754;
-      v98 = v78;
+      v98 = offset8;
       v99 = 1024;
       *v100 = v44;
       *&v100[4] = 1024;
@@ -623,73 +623,73 @@ LABEL_25:
   }
 
   v22 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v23 = [v10 streamId];
-  v24 = [v11 streamId];
-  v15 = [v22 initWithFormat:@"Data store streamId is %@ while bookmark streamId is %@", v23, v24];
+  streamId4 = [datastoreCopy streamId];
+  streamId5 = [bookmarkCopy streamId];
+  streamId3 = [v22 initWithFormat:@"Data store streamId is %@ while bookmark streamId is %@", streamId4, streamId5];
 
-  if (a6)
+  if (error)
   {
     v25 = MEMORY[0x1E696ABC0];
     v105 = *MEMORY[0x1E696A578];
-    v106[0] = v15;
+    v106[0] = streamId3;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:&v105 count:1];
     [v25 errorWithDomain:@"com.apple.biome.BiomeStorage" code:-1 userInfo:v26];
-    *a6 = v27 = 0;
+    *error = selfCopy = 0;
 LABEL_50:
 
     goto LABEL_51;
   }
 
-  v27 = 0;
+  selfCopy = 0;
 LABEL_51:
 
   v68 = *MEMORY[0x1E69E9840];
-  return v27;
+  return selfCopy;
 }
 
-- (BMStoreEnumerator)initWithStreamDatastore:(id)a3 startTime:(double)a4 endTime:(double)a5 maxEvents:(unint64_t)a6 lastN:(unint64_t)a7 options:(unint64_t)a8 dataType:(Class)a9
+- (BMStoreEnumerator)initWithStreamDatastore:(id)datastore startTime:(double)time endTime:(double)endTime maxEvents:(unint64_t)events lastN:(unint64_t)n options:(unint64_t)options dataType:(Class)type
 {
   v50 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = v16;
-  v18 = a4 < a5;
-  if ((a8 & 8) == 0)
+  datastoreCopy = datastore;
+  v17 = datastoreCopy;
+  v18 = time < endTime;
+  if ((options & 8) == 0)
   {
-    v18 = a4 > a5;
+    v18 = time > endTime;
   }
 
   if (!v18)
   {
-    if ([v16 isDataAccessible])
+    if ([datastoreCopy isDataAccessible])
     {
-      if (a7 == -1)
+      if (n == -1)
       {
-        v22 = (a8 >> 3) & 1;
+        v22 = (options >> 3) & 1;
       }
 
       else
       {
-        v22 = (a8 & 8) == 0;
+        v22 = (options & 8) == 0;
       }
 
-      if (a7 == -1)
+      if (n == -1)
       {
-        v23 = a5;
+        timeCopy = endTime;
       }
 
       else
       {
-        a8 ^= 8uLL;
-        v23 = a4;
+        options ^= 8uLL;
+        timeCopy = time;
       }
 
-      if (a7 == -1)
+      if (n == -1)
       {
-        a5 = a4;
+        endTime = time;
       }
 
-      v24 = [v17 segmentContainingTimestamp:a5];
-      self = [(BMStoreEnumerator *)self initWithStreamDatastore:v17 currentFrameStore:v24 frameStoreOffset:0xFFFFFFFFLL iterationStartTime:-1 endTime:a7 maxEvents:a8 lastN:CFAbsoluteTimeGetCurrent() options:v23 dataType:a9];
+      v24 = [v17 segmentContainingTimestamp:endTime];
+      self = [(BMStoreEnumerator *)self initWithStreamDatastore:v17 currentFrameStore:v24 frameStoreOffset:0xFFFFFFFFLL iterationStartTime:-1 endTime:n maxEvents:options lastN:CFAbsoluteTimeGetCurrent() options:timeCopy dataType:type];
 
       if (!self)
       {
@@ -697,16 +697,16 @@ LABEL_51:
       }
 
       v41 = 0;
-      v25 = [(BMStoreEnumerator *)self advanceBookmarkToStartTime:&v41 eventsFound:a7 lastN:a5];
+      v25 = [(BMStoreEnumerator *)self advanceBookmarkToStartTime:&v41 eventsFound:n lastN:endTime];
       if ([v17 isDataAccessible])
       {
-        if (a7 == -1)
+        if (n == -1)
         {
 LABEL_49:
-          self->_maxEvents = a6;
+          self->_maxEvents = events;
 LABEL_50:
           self = self;
-          v33 = self;
+          selfCopy = self;
           goto LABEL_35;
         }
 
@@ -742,11 +742,11 @@ LABEL_50:
           if (frameStoreOffset + 56 != [(BMFrameStore *)*p_currentFrameStore bytesUsed])
           {
 LABEL_47:
-            self->_endTime = a5;
+            self->_endTime = endTime;
             self->_options ^= 8uLL;
-            if (v41 < a6)
+            if (v41 < events)
             {
-              a6 = v41;
+              events = v41;
             }
 
             goto LABEL_49;
@@ -766,8 +766,8 @@ LABEL_47:
             goto LABEL_46;
           }
 
-          v36 = [(BMStoreEnumerator *)self currentFrameStore];
-          v37 = [v36 atomicReadTotalFramesV2];
+          currentFrameStore = [(BMStoreEnumerator *)self currentFrameStore];
+          atomicReadTotalFramesV2 = [currentFrameStore atomicReadTotalFramesV2];
 
           v38 = self->_frameStoreOffset;
           if (v22)
@@ -778,7 +778,7 @@ LABEL_47:
             }
           }
 
-          else if (v38 != [(BMFrameStore *)*p_currentFrameStore offsetTableOffsetFromFrameNumberV2:v37])
+          else if (v38 != [(BMFrameStore *)*p_currentFrameStore offsetTableOffsetFromFrameNumberV2:atomicReadTotalFramesV2])
           {
             goto LABEL_47;
           }
@@ -786,7 +786,7 @@ LABEL_47:
 
 LABEL_45:
         self->_frameStoreOffset = 0xFFFFFFFFLL;
-        v40 = [v17 segmentContainingTimestamp:v23];
+        v40 = [v17 segmentContainingTimestamp:timeCopy];
         p_super = &self->_currentFrameStore->super;
         self->_currentFrameStore = v40;
 LABEL_46:
@@ -801,10 +801,10 @@ LABEL_46:
       }
 
       v32 = MEMORY[0x1E698E9C8];
-      v30 = [v17 streamPath];
-      v20 = [v32 privacyPathname:v30];
+      streamPath = [v17 streamPath];
+      streamId = [v32 privacyPathname:streamPath];
       *buf = 138543362;
-      v43 = v20;
+      v43 = streamId;
       v31 = "Segment is no longer accessible: %{public}@ (after advanceBookmarkToStartTime)";
     }
 
@@ -817,10 +817,10 @@ LABEL_46:
       }
 
       v29 = MEMORY[0x1E698E9C8];
-      v30 = [v17 streamPath];
-      v20 = [v29 privacyPathname:v30];
+      streamPath = [v17 streamPath];
+      streamId = [v29 privacyPathname:streamPath];
       *buf = 138543362;
-      v43 = v20;
+      v43 = streamId;
       v31 = "Segment is no longer accessible: %{public}@";
     }
 
@@ -833,19 +833,19 @@ LABEL_33:
   v19 = __biome_log_for_category();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v20 = [v17 streamId];
+    streamId = [v17 streamId];
     v21 = "YES";
     *buf = 138544130;
-    v43 = v20;
+    v43 = streamId;
     v44 = 2048;
-    if ((a8 & 8) == 0)
+    if ((options & 8) == 0)
     {
       v21 = "NO";
     }
 
-    v45 = a4;
+    timeCopy2 = time;
     v46 = 2048;
-    v47 = a5;
+    endTimeCopy2 = endTime;
     v48 = 2080;
     v49 = v21;
     _os_log_impl(&dword_1C928A000, v19, OS_LOG_TYPE_INFO, "initWithStreamDatastore: stream: %{public}@ with startTime: %f, endTime: %f, and reverse: %s will result in no events, so returning nil", buf, 0x2Au);
@@ -854,33 +854,33 @@ LABEL_33:
 
 LABEL_34:
 
-  v33 = 0;
+  selfCopy = 0;
 LABEL_35:
 
   v34 = *MEMORY[0x1E69E9840];
-  return v33;
+  return selfCopy;
 }
 
-- (BMStoreEnumerator)initWithStreamDatastore:(id)a3 currentFrameStore:(id)a4 frameStoreOffset:(unint64_t)a5 iterationStartTime:(double)a6 endTime:(double)a7 maxEvents:(unint64_t)a8 lastN:(unint64_t)a9 options:(unint64_t)a10 dataType:(Class)a11
+- (BMStoreEnumerator)initWithStreamDatastore:(id)datastore currentFrameStore:(id)store frameStoreOffset:(unint64_t)offset iterationStartTime:(double)time endTime:(double)endTime maxEvents:(unint64_t)events lastN:(unint64_t)n options:(unint64_t)self0 dataType:(Class)self1
 {
-  v20 = a3;
-  v21 = a4;
+  datastoreCopy = datastore;
+  storeCopy = store;
   v26.receiver = self;
   v26.super_class = BMStoreEnumerator;
   v22 = [(BMStoreEnumerator *)&v26 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_ds, a3);
-    objc_storeStrong(&v23->_currentFrameStore, a4);
-    v23->_frameStoreOffset = a5;
-    v23->_iterationStartTime = a6;
-    v23->_endTime = a7;
-    v23->_maxEvents = a8;
+    objc_storeStrong(&v22->_ds, datastore);
+    objc_storeStrong(&v23->_currentFrameStore, store);
+    v23->_frameStoreOffset = offset;
+    v23->_iterationStartTime = time;
+    v23->_endTime = endTime;
+    v23->_maxEvents = events;
     v23->_eventCount = 0;
-    v23->_lastEventCount = a9;
-    v23->_options = a10;
-    v23->_dataType = a11;
+    v23->_lastEventCount = n;
+    v23->_options = options;
+    v23->_dataType = type;
     bookmarkEnumerator = v23->_bookmarkEnumerator;
     v23->_bookmarkEnumerator = 0;
   }
@@ -888,12 +888,12 @@ LABEL_35:
   return v23;
 }
 
-- (void)nextEventWithContext:(id)a3
+- (void)nextEventWithContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(BMStoreEnumerator *)self nextEvent];
-  v6[2](v6, v5, self->_currentFrameStore);
+  nextEvent = [(BMStoreEnumerator *)self nextEvent];
+  contextCopy[2](contextCopy, nextEvent, self->_currentFrameStore);
 
   objc_autoreleasePoolPop(v4);
 }
@@ -905,7 +905,7 @@ LABEL_35:
   return v2;
 }
 
-- (BOOL)advanceBookmarkToStartTime:(double)a3 eventsFound:(unint64_t *)a4 lastN:(unint64_t)a5
+- (BOOL)advanceBookmarkToStartTime:(double)time eventsFound:(unint64_t *)found lastN:(unint64_t)n
 {
   v22 = *MEMORY[0x1E69E9840];
   currentFrameStore = self->_currentFrameStore;
@@ -920,7 +920,7 @@ LABEL_15:
   {
     v10 = *MEMORY[0x1E69E9840];
 
-    return [(BMStoreEnumerator *)self advanceBookmarkV1ToStartTime:a4 eventsFound:a5 lastN:a3];
+    return [(BMStoreEnumerator *)self advanceBookmarkV1ToStartTime:found eventsFound:n lastN:time];
   }
 
   if ([(BMFrameStore *)self->_currentFrameStore datastoreVersion]!= 10)
@@ -944,12 +944,12 @@ LABEL_15:
     _Block_object_dispose(buf, 8);
     if (os_log_type_enabled(v13, v14))
     {
-      v15 = [(BMFrameStore *)self->_currentFrameStore datastoreVersion];
-      v16 = [(BMFrameStore *)self->_currentFrameStore segmentPath];
+      datastoreVersion = [(BMFrameStore *)self->_currentFrameStore datastoreVersion];
+      segmentPath = [(BMFrameStore *)self->_currentFrameStore segmentPath];
       *buf = 67109378;
-      *&buf[4] = v15;
+      *&buf[4] = datastoreVersion;
       LOWORD(v20) = 2112;
-      *(&v20 + 2) = v16;
+      *(&v20 + 2) = segmentPath;
       _os_log_impl(&dword_1C928A000, v13, v14, "advanceBookmarkToStartTime: unknown datastoreVersion (%d) in frameStore: %@", buf, 0x12u);
     }
 
@@ -958,10 +958,10 @@ LABEL_15:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return [(BMStoreEnumerator *)self advanceBookmarkV2ToStartTime:a4 eventsFound:a5 lastN:a3];
+  return [(BMStoreEnumerator *)self advanceBookmarkV2ToStartTime:found eventsFound:n lastN:time];
 }
 
-- (BOOL)advanceBookmarkV1ToStartTime:(double)a3 eventsFound:(unint64_t *)a4 lastN:(unint64_t)a5
+- (BOOL)advanceBookmarkV1ToStartTime:(double)time eventsFound:(unint64_t *)found lastN:(unint64_t)n
 {
   v27 = 0;
   v7 = 0;
@@ -1005,7 +1005,7 @@ LABEL_15:
       if (v14 > self->_endTime)
       {
         [v7 creationTimestamp];
-        if (v15 >= a3)
+        if (v15 >= time)
         {
           goto LABEL_9;
         }
@@ -1015,13 +1015,13 @@ LABEL_15:
 
       objc_storeStrong(&self->_currentFrameStore, v31[5]);
       [v37[5] creationTimestamp];
-      if (v18 < a3)
+      if (v18 < time)
       {
         goto LABEL_15;
       }
 
 LABEL_13:
-      if (a5 != -1 && ++v27 < a5)
+      if (n != -1 && ++v27 < n)
       {
 LABEL_15:
         self->_frameStoreOffset = [v37[5] nextOffset];
@@ -1043,7 +1043,7 @@ LABEL_15:
     {
       objc_storeStrong(&self->_currentFrameStore, v31[5]);
       [v37[5] creationTimestamp];
-      if (v19 > a3)
+      if (v19 > time)
       {
         goto LABEL_15;
       }
@@ -1052,7 +1052,7 @@ LABEL_15:
     }
 
     [v7 creationTimestamp];
-    if (v17 <= a3)
+    if (v17 <= time)
     {
 LABEL_9:
       self->_frameStoreOffset = [v7 offset];
@@ -1068,9 +1068,9 @@ LABEL_18:
   }
 
   while (!v22);
-  if (a4)
+  if (found)
   {
-    *a4 = v27;
+    *found = v27;
   }
 
   return v25 & 1;
@@ -1087,15 +1087,15 @@ void __68__BMStoreEnumerator_advanceBookmarkV1ToStartTime_eventsFound_lastN___bl
   }
 }
 
-- (BOOL)advanceBookmarkV2ToStartTime:(double)a3 eventsFound:(unint64_t *)a4 lastN:(unint64_t)a5
+- (BOOL)advanceBookmarkV2ToStartTime:(double)time eventsFound:(unint64_t *)found lastN:(unint64_t)n
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a5 == -1)
+  if (n == -1)
   {
     options = self->_options;
     if ([(BMStoreEnumerator *)self isDataAccessible])
     {
-      v10 = [(BMFrameStore *)self->_currentFrameStore firstFrameNumberForTimestampV2:(options >> 3) & 1 reverse:a3];
+      v10 = [(BMFrameStore *)self->_currentFrameStore firstFrameNumberForTimestampV2:(options >> 3) & 1 reverse:time];
       if (v10 == -1)
       {
         if ((options & 8) != 0)
@@ -1126,8 +1126,8 @@ void __68__BMStoreEnumerator_advanceBookmarkV1ToStartTime_eventsFound_lastN___bl
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v12 = MEMORY[0x1E698E9C8];
-        v13 = [(BMFrameStore *)self->_currentFrameStore segmentPath];
-        v14 = [v12 privacyPathname:v13];
+        segmentPath = [(BMFrameStore *)self->_currentFrameStore segmentPath];
+        v14 = [v12 privacyPathname:segmentPath];
         v17 = 138543362;
         v18 = v14;
         _os_log_impl(&dword_1C928A000, v11, OS_LOG_TYPE_INFO, "Segment is no longer accessible: %{public}@", &v17, 0xCu);
@@ -1143,17 +1143,17 @@ void __68__BMStoreEnumerator_advanceBookmarkV1ToStartTime_eventsFound_lastN___bl
   {
     v7 = *MEMORY[0x1E69E9840];
 
-    return [BMStoreEnumerator advanceBookmarkV1ToStartTime:"advanceBookmarkV1ToStartTime:eventsFound:lastN:" eventsFound:a4 lastN:?];
+    return [BMStoreEnumerator advanceBookmarkV1ToStartTime:"advanceBookmarkV1ToStartTime:eventsFound:lastN:" eventsFound:found lastN:?];
   }
 
   return result;
 }
 
-- (id)copyNextEventAndMoveBookmark:(BOOL)a3 makeEvent:(id)a4
+- (id)copyNextEventAndMoveBookmark:(BOOL)bookmark makeEvent:(id)event
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  eventCopy = event;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -1166,19 +1166,19 @@ void __68__BMStoreEnumerator_advanceBookmarkV1ToStartTime_eventsFound_lastN___bl
   v50 = __Block_byref_object_copy_;
   v51 = __Block_byref_object_dispose_;
   v52 = 0;
-  v7 = [(BMStoreEnumerator *)self bookmarkEnumerator];
+  bookmarkEnumerator = [(BMStoreEnumerator *)self bookmarkEnumerator];
 
-  if (v7)
+  if (bookmarkEnumerator)
   {
-    v8 = [(BMStoreEnumerator *)self bookmarkEnumerator];
-    v9 = [v8 nextBookmark];
+    bookmarkEnumerator2 = [(BMStoreEnumerator *)self bookmarkEnumerator];
+    nextBookmark = [bookmarkEnumerator2 nextBookmark];
 
-    if (!v9)
+    if (!nextBookmark)
     {
-      v15 = [(BMStoreEnumerator *)self bookmarkEnumerator];
-      v16 = [v15 error];
+      bookmarkEnumerator3 = [(BMStoreEnumerator *)self bookmarkEnumerator];
+      error = [bookmarkEnumerator3 error];
 
-      if (!v16)
+      if (!error)
       {
         v37 = 0;
         goto LABEL_40;
@@ -1187,23 +1187,23 @@ void __68__BMStoreEnumerator_advanceBookmarkV1ToStartTime_eventsFound_lastN___bl
       v13 = __biome_log_for_category();
       if (os_log_type_enabled(&v13->super, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(BMStoreEnumerator *)self bookmarkEnumerator];
-        v18 = [v17 error];
+        bookmarkEnumerator4 = [(BMStoreEnumerator *)self bookmarkEnumerator];
+        error2 = [bookmarkEnumerator4 error];
         v19 = [(BMStoreEnumerator *)self ds];
-        v20 = [v19 streamPath];
+        streamPath = [v19 streamPath];
         *buf = 138412546;
-        v60 = v18;
+        v60 = error2;
         v61 = 2112;
-        v62 = v20;
+        v62 = streamPath;
         _os_log_error_impl(&dword_1C928A000, &v13->super, OS_LOG_TYPE_ERROR, "Error calling [BMStoreBookmarkEnumerator nextBookmark]: %@ for stream %@ to create frame store", buf, 0x16u);
       }
 
       goto LABEL_33;
     }
 
-    v10 = [(BMFrameStore *)self->_currentFrameStore segmentName];
-    v11 = [v9 segmentName];
-    v12 = [v10 isEqualToString:v11];
+    segmentName = [(BMFrameStore *)self->_currentFrameStore segmentName];
+    segmentName2 = [nextBookmark segmentName];
+    v12 = [segmentName isEqualToString:segmentName2];
 
     if (v12)
     {
@@ -1213,9 +1213,9 @@ void __68__BMStoreEnumerator_advanceBookmarkV1ToStartTime_eventsFound_lastN___bl
     else
     {
       v21 = [(BMStoreEnumerator *)self ds];
-      v22 = [v9 segmentName];
+      segmentName3 = [nextBookmark segmentName];
       v46 = 0;
-      v13 = [v21 segmentWithFilename:v22 error:&v46];
+      v13 = [v21 segmentWithFilename:segmentName3 error:&v46];
       v23 = v46;
 
       if (v23)
@@ -1224,12 +1224,12 @@ void __68__BMStoreEnumerator_advanceBookmarkV1ToStartTime_eventsFound_lastN___bl
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           v42 = [(BMStoreEnumerator *)self ds];
-          v43 = [v42 streamPath];
-          v44 = [v9 segmentName];
+          streamPath2 = [v42 streamPath];
+          segmentName4 = [nextBookmark segmentName];
           *buf = 138412802;
-          v60 = v43;
+          v60 = streamPath2;
           v61 = 2112;
-          v62 = v44;
+          v62 = segmentName4;
           v63 = 2112;
           v64 = v23;
           _os_log_error_impl(&dword_1C928A000, v24, OS_LOG_TYPE_ERROR, "Unable to create frame store for stream: %@ from segmentName: %@, error:%@", buf, 0x20u);
@@ -1239,7 +1239,7 @@ void __68__BMStoreEnumerator_advanceBookmarkV1ToStartTime_eventsFound_lastN___bl
       }
     }
 
-    frameStoreOffset = [v9 offset];
+    frameStoreOffset = [nextBookmark offset];
   }
 
   else
@@ -1293,7 +1293,7 @@ LABEL_20:
   if ([v31 datastoreVersion] == 9 && (objc_msgSend(v54[5], "modifiedTimestamp"), v32 > self->_iterationStartTime))
   {
     v33 = 4;
-    if (!v4)
+    if (!bookmarkCopy)
     {
       goto LABEL_30;
     }
@@ -1302,7 +1302,7 @@ LABEL_20:
   else
   {
     v33 = 1;
-    if (!v4)
+    if (!bookmarkCopy)
     {
       goto LABEL_30;
     }
@@ -1323,9 +1323,9 @@ LABEL_20:
 LABEL_30:
   if (v54[5])
   {
-    if (v6)
+    if (eventCopy)
     {
-      v6[2](v6, v48[5], v54[5], v33);
+      eventCopy[2](eventCopy, v48[5], v54[5], v33);
     }
 
     else
@@ -1335,17 +1335,17 @@ LABEL_30:
     v37 = ;
     objc_storeStrong(&self->_currentFrameStore, v48[5]);
     v38 = v54[5];
-    if (v4)
+    if (bookmarkCopy)
     {
-      v39 = [v38 nextOffset];
+      nextOffset = [v38 nextOffset];
     }
 
     else
     {
-      v39 = [v38 offset];
+      nextOffset = [v38 offset];
     }
 
-    self->_frameStoreOffset = v39;
+    self->_frameStoreOffset = nextOffset;
     goto LABEL_39;
   }
 
@@ -1482,7 +1482,7 @@ void __60__BMStoreEnumerator_copyNextEventAndMoveBookmark_makeEvent___block_invo
 - (void)bookmark
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   [*a2 segmentPath];
   objc_claimAutoreleasedReturnValue();
   v10 = [OUTLINED_FUNCTION_5() privacyPathname:v2];

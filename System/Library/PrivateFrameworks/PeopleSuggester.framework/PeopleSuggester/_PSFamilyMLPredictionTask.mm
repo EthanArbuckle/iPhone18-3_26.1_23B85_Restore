@@ -1,21 +1,21 @@
 @interface _PSFamilyMLPredictionTask
 - (id)contactKeysToFetch;
-- (id)knowledgeEventUsingPredictions:(id)a3 familyRelations:(id)a4;
-- (void)enumerateContactsInContactStoreUsingBlock:(id)a3;
-- (void)execute:(id)a3;
+- (id)knowledgeEventUsingPredictions:(id)predictions familyRelations:(id)relations;
+- (void)enumerateContactsInContactStoreUsingBlock:(id)block;
+- (void)execute:(id)execute;
 @end
 
 @implementation _PSFamilyMLPredictionTask
 
-- (void)execute:(id)a3
+- (void)execute:(id)execute
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  executeCopy = execute;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __37___PSFamilyMLPredictionTask_execute___block_invoke;
   v31[3] = &unk_1E7C25830;
-  v5 = v4;
+  v5 = executeCopy;
   v32 = v5;
   v6 = MEMORY[0x1B8C8C060](v31);
   if ((v6[2])())
@@ -46,10 +46,10 @@
       v14 = [(_PSFamilyMLPredictionTask *)self knowledgeEventUsingPredictions:v13 familyRelations:v12, v18, v19, v20, v21, v22, v23];
       if (v6[2](v10))
       {
-        v15 = [MEMORY[0x1E69979A0] knowledgeStore];
+        knowledgeStore = [MEMORY[0x1E69979A0] knowledgeStore];
         v33[0] = v14;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
-        [v15 saveObjects:v16 tracker:&__block_literal_global_18 responseQueue:0 withCompletion:&__block_literal_global_24_0];
+        [knowledgeStore saveObjects:v16 tracker:&__block_literal_global_18 responseQueue:0 withCompletion:&__block_literal_global_24_0];
       }
     }
 
@@ -365,9 +365,9 @@ LABEL_45:
   return v43;
 }
 
-- (void)enumerateContactsInContactStoreUsingBlock:(id)a3
+- (void)enumerateContactsInContactStoreUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -400,25 +400,25 @@ LABEL_45:
   v9 = v8;
   _Block_object_dispose(&v13, 8);
   v10 = [v8 alloc];
-  v11 = [(_PSFamilyMLPredictionTask *)self contactKeysToFetch];
-  v12 = [v10 initWithKeysToFetch:v11];
+  contactKeysToFetch = [(_PSFamilyMLPredictionTask *)self contactKeysToFetch];
+  v12 = [v10 initWithKeysToFetch:contactKeysToFetch];
 
   [v12 setContactBatchCount:25];
-  [v7 enumerateContactsWithFetchRequest:v12 error:0 usingBlock:v4];
+  [v7 enumerateContactsWithFetchRequest:v12 error:0 usingBlock:blockCopy];
 }
 
-- (id)knowledgeEventUsingPredictions:(id)a3 familyRelations:(id)a4
+- (id)knowledgeEventUsingPredictions:(id)predictions familyRelations:(id)relations
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  predictionsCopy = predictions;
+  relationsCopy = relations;
   v7 = [MEMORY[0x1E695DF00] now];
   v8 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = v6;
+  v9 = relationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (v10)
   {
@@ -446,7 +446,7 @@ LABEL_45:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v14 = v5;
+  v14 = predictionsCopy;
   v15 = [v14 countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v15)
   {
@@ -478,12 +478,12 @@ LABEL_45:
   }
 
   v22 = MEMORY[0x1E6997960];
-  v23 = [MEMORY[0x1E69979E8] familyPredictionStream];
-  v24 = [MEMORY[0x1E6997978] suggestions];
-  v37 = v24;
+  familyPredictionStream = [MEMORY[0x1E69979E8] familyPredictionStream];
+  suggestions = [MEMORY[0x1E6997978] suggestions];
+  v37 = suggestions;
   v38 = v8;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-  v26 = [v22 eventWithStream:v23 source:0 startDate:v7 endDate:v7 identifierStringValue:@"familyPrediction" metadata:v25];
+  v26 = [v22 eventWithStream:familyPredictionStream source:0 startDate:v7 endDate:v7 identifierStringValue:@"familyPrediction" metadata:v25];
 
   v27 = *MEMORY[0x1E69E9840];
 

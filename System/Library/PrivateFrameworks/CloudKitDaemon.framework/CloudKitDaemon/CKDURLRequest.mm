@@ -7,7 +7,7 @@
 - (BOOL)isErrorInducerRequest;
 - (BOOL)isFinished;
 - (BOOL)markAsFinished;
-- (BOOL)performOnLifecycleQueueIfNotFinished:(id)a3;
+- (BOOL)performOnLifecycleQueueIfNotFinished:(id)finished;
 - (BOOL)preferAnonymousRequests;
 - (BOOL)requiresCKAnonymousUserIDs;
 - (BOOL)resolvedAutomaticallyRetryNetworkFailures;
@@ -17,7 +17,7 @@
 - (C2RequestOptions)requestOptions;
 - (CKDOperation)operation;
 - (CKDProtobufStreamWriter)streamWriter;
-- (CKDURLRequest)initWithOperation:(id)a3;
+- (CKDURLRequest)initWithOperation:(id)operation;
 - (CKRoughlyEquivalentProperties)equivalencyProperties;
 - (CKTestRequestProperties)testRequestProperties;
 - (NSArray)requestOperationClasses;
@@ -39,24 +39,24 @@
 - (OS_dispatch_queue)lifecycleQueue;
 - (double)timeoutIntervalForRequest;
 - (double)timeoutIntervalForResource;
-- (id)CKDescriptionPropertiesWithPublic:(BOOL)a3 private:(BOOL)a4 shouldExpand:(BOOL)a5;
+- (id)CKDescriptionPropertiesWithPublic:(BOOL)public private:(BOOL)private shouldExpand:(BOOL)expand;
 - (id)_CFNetworkTaskIdentifierString;
-- (id)_parseErrorDictionaryForJson:(id)a3;
+- (id)_parseErrorDictionaryForJson:(id)json;
 - (id)_protobufObjectParsedBlock;
-- (id)_wrapErrorIfNecessary:(id)a3;
+- (id)_wrapErrorIfNecessary:(id)necessary;
 - (id)ckShortDescription;
-- (id)createAssetAuthorizeGetRequestOptionsHeaderInfoWithKey:(id)a3 value:(id)a4;
-- (id)defaultParserForContentType:(id)a3;
+- (id)createAssetAuthorizeGetRequestOptionsHeaderInfoWithKey:(id)key value:(id)value;
+- (id)defaultParserForContentType:(id)type;
 - (id)generateRequestOperations;
 - (id)privacyProxyFailClosedOverride;
-- (id)recordIDs:(id)a3 filteredByZones:(id)a4;
-- (id)recordIDsUsedInZones:(id)a3;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)recordIDs:(id)ds filteredByZones:(id)zones;
+- (id)recordIDsUsedInZones:(id)zones;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationCountsByOperationType;
-- (id)statusReportWithIndent:(unint64_t)a3;
+- (id)statusReportWithIndent:(unint64_t)indent;
 - (id)traceHeaderValues;
 - (int)operationType;
-- (int64_t)_handleServerProtobufResult:(id)a3 rawData:(id)a4;
+- (int64_t)_handleServerProtobufResult:(id)result rawData:(id)data;
 - (int64_t)databaseScope;
 - (int64_t)partitionType;
 - (int64_t)qualityOfService;
@@ -64,62 +64,62 @@
 - (unint64_t)duetPreClearedMode;
 - (unint64_t)networkServiceType;
 - (unint64_t)resolvedDiscretionaryNetworkBehavior;
-- (void)URLSession:(id)a3 _taskIsWaitingForConnection:(id)a4;
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 _didReceiveData:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 _conditionalRequirementsChanged:(BOOL)a5;
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (void)URLSession:(id)session _taskIsWaitingForConnection:(id)connection;
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error;
+- (void)URLSession:(id)session dataTask:(id)task _didReceiveData:(id)data completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task _conditionalRequirementsChanged:(BOOL)changed;
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)_acquireZoneGates;
-- (void)_authTokenWithCompletionHandler:(id)a3;
+- (void)_authTokenWithCompletionHandler:(id)handler;
 - (void)_fetchContainerScopedUserID;
 - (void)_fetchDeviceID;
 - (void)_fetchServerCertificatesIfNeeded;
-- (void)_finalizeRequestOperations:(id)a3 request:(id)a4;
-- (void)_finishOnLifecycleQueueWithError:(id)a3;
+- (void)_finalizeRequestOperations:(id)operations request:(id)request;
+- (void)_finishOnLifecycleQueueWithError:(id)error;
 - (void)_handleAuthFailure;
-- (void)_handlePlistResult:(id)a3;
-- (void)_handleServerJSONResult:(id)a3;
-- (void)_loadRequest:(id)a3;
+- (void)_handlePlistResult:(id)result;
+- (void)_handleServerJSONResult:(id)result;
+- (void)_loadRequest:(id)request;
 - (void)_performRequest;
 - (void)_performWillSendTestCallback;
 - (void)_prepareAuthTokens;
 - (void)_prepareCloudKitAuthToken;
 - (void)_registerPushTokens;
-- (void)_registerRequestOperationTypesForOperations:(id)a3;
-- (void)_renewAuthTokenWithCompletionHandler:(id)a3;
+- (void)_registerRequestOperationTypesForOperations:(id)operations;
+- (void)_renewAuthTokenWithCompletionHandler:(id)handler;
 - (void)_setupConfiguration;
 - (void)_setupPrivateDatabaseURL;
 - (void)_setupPublicDatabaseURL;
 - (void)_tearDownStreamWriter;
-- (void)_triggerAutoBugCaptureWithErrorPayload:(id)a3;
+- (void)_triggerAutoBugCaptureWithErrorPayload:(id)payload;
 - (void)_validateAccountAccess;
 - (void)cancel;
 - (void)dealloc;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)finishWithError:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)finishWithError:(id)error;
 - (void)invokeCompletionBlock;
-- (void)performASyncOnLifecycleQueueIfNotFinished:(id)a3 fallbackBlock:(id)a4;
+- (void)performASyncOnLifecycleQueueIfNotFinished:(id)finished fallbackBlock:(id)block;
 - (void)performRequest;
-- (void)prepareRequestOperationsForRequest:(id)a3;
-- (void)requestDidParse509CertObject:(id)a3;
-- (void)requestDidParseJSONObject:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
-- (void)requestDidParsePlaintextObject:(id)a3;
-- (void)requestDidParsePlistObject:(id)a3;
-- (void)requestDidParseProtobufObject:(id)a3 completionHandler:(id)a4;
+- (void)prepareRequestOperationsForRequest:(id)request;
+- (void)requestDidParse509CertObject:(id)object;
+- (void)requestDidParseJSONObject:(id)object;
+- (void)requestDidParseNodeFailure:(id)failure;
+- (void)requestDidParsePlaintextObject:(id)object;
+- (void)requestDidParsePlistObject:(id)object;
+- (void)requestDidParseProtobufObject:(id)object completionHandler:(id)handler;
 - (void)retryRequest;
-- (void)setRequestOptions:(id)a3;
+- (void)setRequestOptions:(id)options;
 - (void)tearDownResources;
-- (void)updateShareIDCacheWithDeletedRecordID:(id)a3;
-- (void)updateShareIDCacheWithDeletedZoneID:(id)a3;
-- (void)updateShareIDCacheWithRecord:(id)a3;
+- (void)updateShareIDCacheWithDeletedRecordID:(id)d;
+- (void)updateShareIDCacheWithDeletedZoneID:(id)d;
+- (void)updateShareIDCacheWithRecord:(id)record;
 - (void)validateAnonymousUserIDPropagation;
 @end
 
@@ -127,10 +127,10 @@
 
 - (BOOL)isFinished
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  finished = v2->_finished;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  finished = selfCopy->_finished;
+  objc_sync_exit(selfCopy);
 
   return finished;
 }
@@ -148,7 +148,7 @@
 
 - (int64_t)partitionType
 {
-  v3 = self;
+  selfCopy = self;
   v67 = *MEMORY[0x277D85DE8];
   if (!self->_haveCachedPartitionType)
   {
@@ -157,8 +157,8 @@
     {
       cachedPartitionType = 3;
 LABEL_30:
-      v3->_cachedPartitionType = cachedPartitionType;
-      v3->_haveCachedPartitionType = 1;
+      selfCopy->_cachedPartitionType = cachedPartitionType;
+      selfCopy->_haveCachedPartitionType = 1;
 
       goto LABEL_31;
     }
@@ -169,7 +169,7 @@ LABEL_30:
 
     if (objc_msgSend_count(v5, v16, v17) >= 2)
     {
-      v50 = v3;
+      v50 = selfCopy;
       v56 = 0u;
       v57 = 0u;
       v54 = 0u;
@@ -235,7 +235,7 @@ LABEL_30:
         while (v25);
       }
 
-      v3 = v50;
+      selfCopy = v50;
       v5 = v49;
     }
 
@@ -245,7 +245,7 @@ LABEL_30:
     }
 
     v43 = sub_225081324(v15);
-    v46 = objc_msgSend_databaseScope(v3, v44, v45);
+    v46 = objc_msgSend_databaseScope(selfCopy, v44, v45);
     switch(v43)
     {
       case 0:
@@ -283,27 +283,27 @@ LABEL_31:
 
 - (OS_dispatch_queue)lifecycleQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_lifecycleQueue)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_lifecycleQueue)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v3, @"%s.%p", "com.apple.cloudkit.urlrequestlifecycle", v2);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v3, @"%s.%p", "com.apple.cloudkit.urlrequestlifecycle", selfCopy);
     v5 = v4;
     v8 = objc_msgSend_UTF8String(v5, v6, v7);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    objc_msgSend_qualityOfService(v2, v10, v11);
+    objc_msgSend_qualityOfService(selfCopy, v10, v11);
     v12 = CKQoSClassFromNSQualityOfService();
     v13 = dispatch_queue_attr_make_with_qos_class(v9, v12, 0);
     v14 = dispatch_queue_create(v8, v13);
-    lifecycleQueue = v2->_lifecycleQueue;
-    v2->_lifecycleQueue = v14;
+    lifecycleQueue = selfCopy->_lifecycleQueue;
+    selfCopy->_lifecycleQueue = v14;
 
-    dispatch_queue_set_specific(v2->_lifecycleQueue, v2->_lifecycleQueue, 1, 0);
+    dispatch_queue_set_specific(selfCopy->_lifecycleQueue, selfCopy->_lifecycleQueue, 1, 0);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v16 = v2->_lifecycleQueue;
+  v16 = selfCopy->_lifecycleQueue;
 
   return v16;
 }
@@ -522,7 +522,7 @@ LABEL_31:
 
 - (int64_t)serverType
 {
-  v3 = self;
+  selfCopy = self;
   v64 = *MEMORY[0x277D85DE8];
   if (self->_haveCachedServerType)
   {
@@ -540,7 +540,7 @@ LABEL_31:
 
       if (objc_msgSend_count(v5, v16, v17) >= 2)
       {
-        v47 = v3;
+        v47 = selfCopy;
         v53 = 0u;
         v54 = 0u;
         v51 = 0u;
@@ -606,7 +606,7 @@ LABEL_31:
           while (v25);
         }
 
-        v3 = v47;
+        selfCopy = v47;
         v5 = v46;
       }
 
@@ -631,8 +631,8 @@ LABEL_31:
       cachedServerType = 5;
     }
 
-    v3->_cachedServerType = cachedServerType;
-    v3->_haveCachedServerType = 1;
+    selfCopy->_cachedServerType = cachedServerType;
+    selfCopy->_haveCachedServerType = 1;
   }
 
   v44 = *MEMORY[0x277D85DE8];
@@ -694,11 +694,11 @@ LABEL_31:
     _os_log_debug_impl(&dword_22506F000, v8, OS_LOG_TYPE_DEBUG, "req: %{public}@, Marking as finished", &v12, 0xCu);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  finished = v4->_finished;
-  v4->_finished = 1;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  finished = selfCopy->_finished;
+  selfCopy->_finished = 1;
+  objc_sync_exit(selfCopy);
 
   v6 = *MEMORY[0x277D85DE8];
   return !finished;
@@ -911,21 +911,21 @@ LABEL_31:
 
 - (void)_tearDownStreamWriter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v6 = v2->_streamWriter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_streamWriter;
   if (v6)
   {
-    streamWriter = v2->_streamWriter;
-    v2->_streamWriter = 0;
+    streamWriter = selfCopy->_streamWriter;
+    selfCopy->_streamWriter = 0;
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
     objc_msgSend_tearDown(v6, v4, v5);
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1248,105 +1248,105 @@ LABEL_14:
 
 - (C2RequestOptions)requestOptions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  requestOptions = v2->_requestOptions;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  requestOptions = selfCopy->_requestOptions;
   if (!requestOptions)
   {
     v4 = objc_alloc_init(MEMORY[0x277CF36E0]);
-    v5 = v2->_requestOptions;
-    v2->_requestOptions = v4;
+    v5 = selfCopy->_requestOptions;
+    selfCopy->_requestOptions = v4;
 
-    v8 = objc_msgSend_container(v2, v6, v7);
+    v8 = objc_msgSend_container(selfCopy, v6, v7);
     v11 = objc_msgSend_containerID(v8, v9, v10);
     v14 = objc_msgSend_c2ContainerType(v11, v12, v13);
-    objc_msgSend_setContainerType_(v2->_requestOptions, v15, v14);
+    objc_msgSend_setContainerType_(selfCopy->_requestOptions, v15, v14);
 
     v16 = MEMORY[0x277CCACA8];
     v17 = objc_opt_class();
-    v20 = objc_msgSend_requestUUID(v2, v18, v19);
+    v20 = objc_msgSend_requestUUID(selfCopy, v18, v19);
     v22 = objc_msgSend_stringWithFormat_(v16, v21, @"%@ requestUUID:%@", v17, v20);
-    objc_msgSend_setIdentifier_(v2->_requestOptions, v23, v22);
+    objc_msgSend_setIdentifier_(selfCopy->_requestOptions, v23, v22);
 
-    v26 = objc_msgSend_qualityOfService(v2, v24, v25);
-    objc_msgSend_setQualityOfService_(v2->_requestOptions, v27, v26);
+    v26 = objc_msgSend_qualityOfService(selfCopy, v24, v25);
+    objc_msgSend_setQualityOfService_(selfCopy->_requestOptions, v27, v26);
     v30 = objc_msgSend_sharedURLSessionPool(CKDURLSessionPool, v28, v29);
     LODWORD(v22) = objc_msgSend_backgroundSessionConnectionPoolLimit(v30, v31, v32);
 
     if (v22)
     {
       v35 = objc_msgSend_backgroundSessionConnectionPoolName(CKDURLSessionPool, v33, v34);
-      objc_msgSend_setOutOfProcessPoolName_(v2->_requestOptions, v36, v35);
+      objc_msgSend_setOutOfProcessPoolName_(selfCopy->_requestOptions, v36, v35);
     }
 
-    v37 = objc_msgSend_allowsCellularAccess(v2, v33, v34);
-    objc_msgSend_setAllowsCellularAccess_(v2->_requestOptions, v38, v37);
-    v41 = objc_msgSend_allowsExpensiveNetworkAccess(v2, v39, v40);
-    objc_msgSend_set_allowsExpensiveAccess_(v2->_requestOptions, v42, v41);
-    v45 = objc_msgSend_allowsPowerNapScheduling(v2, v43, v44);
-    objc_msgSend_set_allowsPowerNapScheduling_(v2->_requestOptions, v46, v45);
-    objc_msgSend_timeoutIntervalForRequest(v2, v47, v48);
-    objc_msgSend_set_timeoutIntervalForRequest_(v2->_requestOptions, v49, v50);
-    objc_msgSend_timeoutIntervalForResource(v2, v51, v52);
-    objc_msgSend_set_timeoutIntervalForResource_(v2->_requestOptions, v53, v54);
-    v57 = objc_msgSend_applicationBundleIdentifierForNetworkAttribution(v2, v55, v56);
-    objc_msgSend_set_sourceApplicationBundleIdentifier_(v2->_requestOptions, v58, v57);
+    v37 = objc_msgSend_allowsCellularAccess(selfCopy, v33, v34);
+    objc_msgSend_setAllowsCellularAccess_(selfCopy->_requestOptions, v38, v37);
+    v41 = objc_msgSend_allowsExpensiveNetworkAccess(selfCopy, v39, v40);
+    objc_msgSend_set_allowsExpensiveAccess_(selfCopy->_requestOptions, v42, v41);
+    v45 = objc_msgSend_allowsPowerNapScheduling(selfCopy, v43, v44);
+    objc_msgSend_set_allowsPowerNapScheduling_(selfCopy->_requestOptions, v46, v45);
+    objc_msgSend_timeoutIntervalForRequest(selfCopy, v47, v48);
+    objc_msgSend_set_timeoutIntervalForRequest_(selfCopy->_requestOptions, v49, v50);
+    objc_msgSend_timeoutIntervalForResource(selfCopy, v51, v52);
+    objc_msgSend_set_timeoutIntervalForResource_(selfCopy->_requestOptions, v53, v54);
+    v57 = objc_msgSend_applicationBundleIdentifierForNetworkAttribution(selfCopy, v55, v56);
+    objc_msgSend_set_sourceApplicationBundleIdentifier_(selfCopy->_requestOptions, v58, v57);
 
-    v61 = objc_msgSend_sourceApplicationSecondaryIdentifier(v2, v59, v60);
-    objc_msgSend_set_sourceApplicationSecondaryIdentifier_(v2->_requestOptions, v62, v61);
+    v61 = objc_msgSend_sourceApplicationSecondaryIdentifier(selfCopy, v59, v60);
+    objc_msgSend_set_sourceApplicationSecondaryIdentifier_(selfCopy->_requestOptions, v62, v61);
 
-    v65 = objc_msgSend_privacyProxyFailClosedOverride(v2, v63, v64);
-    objc_msgSend_setPrivacyProxyFailClosedOverride_(v2->_requestOptions, v66, v65);
+    v65 = objc_msgSend_privacyProxyFailClosedOverride(selfCopy, v63, v64);
+    objc_msgSend_setPrivacyProxyFailClosedOverride_(selfCopy->_requestOptions, v66, v65);
 
-    if ((objc_msgSend_sendRequestAnonymously(v2, v67, v68) & 1) == 0)
+    if ((objc_msgSend_sendRequestAnonymously(selfCopy, v67, v68) & 1) == 0)
     {
-      objc_msgSend_set_appleIDContextSessionIdentifier_(v2->_requestOptions, v69, @"com.apple.cloudkit");
+      objc_msgSend_set_appleIDContextSessionIdentifier_(selfCopy->_requestOptions, v69, @"com.apple.cloudkit");
     }
 
-    objc_msgSend_setTlsPinning_(v2->_requestOptions, v69, 1);
-    objc_msgSend_setAllowRouting_(v2->_requestOptions, v70, 1);
-    v73 = objc_msgSend_container(v2, v71, v72);
+    objc_msgSend_setTlsPinning_(selfCopy->_requestOptions, v69, 1);
+    objc_msgSend_setAllowRouting_(selfCopy->_requestOptions, v70, 1);
+    v73 = objc_msgSend_container(selfCopy, v71, v72);
     v76 = objc_msgSend_serverConfig(v73, v74, v75);
-    v79 = objc_msgSend_container(v2, v77, v78);
+    v79 = objc_msgSend_container(selfCopy, v77, v78);
     v82 = objc_msgSend_containerID(v79, v80, v81);
     v84 = objc_msgSend_allowExpiredDNSBehavior_(v76, v83, v82);
-    objc_msgSend_setAllowExpiredDNSBehavior_(v2->_requestOptions, v85, v84);
+    objc_msgSend_setAllowExpiredDNSBehavior_(selfCopy->_requestOptions, v85, v84);
 
-    v89 = objc_msgSend_resolvedDiscretionaryNetworkBehavior(v2, v86, v87);
+    v89 = objc_msgSend_resolvedDiscretionaryNetworkBehavior(selfCopy, v86, v87);
     if (v89 <= 2)
     {
-      objc_msgSend_setDiscretionaryNetworkBehavior_(v2->_requestOptions, v88, v89);
+      objc_msgSend_setDiscretionaryNetworkBehavior_(selfCopy->_requestOptions, v88, v89);
     }
 
-    v91 = objc_msgSend_duetPreClearedMode(v2, v88, v89);
+    v91 = objc_msgSend_duetPreClearedMode(selfCopy, v88, v89);
     if (v91 <= 2)
     {
-      objc_msgSend_setDuetPreClearedMode_(v2->_requestOptions, v90, v91);
+      objc_msgSend_setDuetPreClearedMode_(selfCopy->_requestOptions, v90, v91);
     }
 
-    v92 = objc_msgSend_resolvedAutomaticallyRetryNetworkFailures(v2, v90, v91);
-    objc_msgSend_set_allowsRetryForBackgroundDataTasks_(v2->_requestOptions, v93, v92);
-    v95 = objc_msgSend_metricOptionsForNetworkRequest_(MEMORY[0x277CF36B8], v94, v2);
-    objc_msgSend_setMetricOptions_(v2->_requestOptions, v96, v95);
+    v92 = objc_msgSend_resolvedAutomaticallyRetryNetworkFailures(selfCopy, v90, v91);
+    objc_msgSend_set_allowsRetryForBackgroundDataTasks_(selfCopy->_requestOptions, v93, v92);
+    v95 = objc_msgSend_metricOptionsForNetworkRequest_(MEMORY[0x277CF36B8], v94, selfCopy);
+    objc_msgSend_setMetricOptions_(selfCopy->_requestOptions, v96, v95);
 
-    v99 = objc_msgSend_container(v2, v97, v98);
+    v99 = objc_msgSend_container(selfCopy, v97, v98);
     v102 = objc_msgSend_deviceContext(v99, v100, v101);
     v105 = objc_msgSend_testServer(v102, v103, v104);
 
     if (v105 && (objc_msgSend_useLiveServer(v105, v106, v107) & 1) == 0)
     {
       v110 = objc_msgSend_networkingDelegate(v105, v108, v109);
-      c2NetworkingDelegate = v2->_c2NetworkingDelegate;
-      v2->_c2NetworkingDelegate = v110;
+      c2NetworkingDelegate = selfCopy->_c2NetworkingDelegate;
+      selfCopy->_c2NetworkingDelegate = v110;
 
-      objc_msgSend_setNetworkingDelegate_(v2->_requestOptions, v112, v2->_c2NetworkingDelegate);
+      objc_msgSend_setNetworkingDelegate_(selfCopy->_requestOptions, v112, selfCopy->_c2NetworkingDelegate);
     }
 
-    requestOptions = v2->_requestOptions;
+    requestOptions = selfCopy->_requestOptions;
   }
 
   v113 = requestOptions;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v113;
 }
@@ -1534,18 +1534,18 @@ LABEL_15:
   return v6;
 }
 
-- (CKDURLRequest)initWithOperation:(id)a3
+- (CKDURLRequest)initWithOperation:(id)operation
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   v45.receiver = self;
   v45.super_class = CKDURLRequest;
   v5 = [(CKDURLRequest *)&v45 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_operation, v4);
-    v9 = objc_msgSend_container(v4, v7, v8);
+    objc_storeWeak(&v5->_operation, operationCopy);
+    v9 = objc_msgSend_container(operationCopy, v7, v8);
     container = v6->_container;
     v6->_container = v9;
 
@@ -1563,7 +1563,7 @@ LABEL_15:
     responseObjectUUIDs = v6->_responseObjectUUIDs;
     v6->_responseObjectUUIDs = v15;
 
-    v19 = objc_msgSend_operationInfo(v4, v17, v18);
+    v19 = objc_msgSend_operationInfo(operationCopy, v17, v18);
     v22 = objc_msgSend_requestOriginator(v19, v20, v21);
     if ((v22 - 1) >= 5)
     {
@@ -1584,7 +1584,7 @@ LABEL_15:
 
     if (*MEMORY[0x277CBC810] == 1)
     {
-      v30 = objc_msgSend_unitTestOverrides(v4, v28, v29);
+      v30 = objc_msgSend_unitTestOverrides(operationCopy, v28, v29);
       v32 = objc_msgSend_objectForKey_(v30, v31, @"HTTPResponseBodyOverride");
       fakeResponseData = v6->_fakeResponseData;
       v6->_fakeResponseData = v32;
@@ -1617,19 +1617,19 @@ LABEL_15:
   return v6;
 }
 
-- (id)CKDescriptionPropertiesWithPublic:(BOOL)a3 private:(BOOL)a4 shouldExpand:(BOOL)a5
+- (id)CKDescriptionPropertiesWithPublic:(BOOL)public private:(BOOL)private shouldExpand:(BOOL)expand
 {
-  v6 = a4;
-  v7 = a3;
+  privateCopy = private;
+  publicCopy = public;
   v9 = objc_alloc(MEMORY[0x277CBEB38]);
   v13 = objc_msgSend_initWithCapacity_(v9, v10, 7);
-  if (v7)
+  if (publicCopy)
   {
     v14 = objc_msgSend_requestUUID(self, v11, v12);
     objc_msgSend_CKAddPropertySafelyForKey_value_(v13, v15, @"UUID", v14);
   }
 
-  if (v6)
+  if (privateCopy)
   {
     v16 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v11, 2);
     if (objc_msgSend_isFinished(self, v17, v18))
@@ -1698,7 +1698,7 @@ LABEL_15:
     v55 = v52;
     if (v52)
     {
-      if (a5)
+      if (expand)
       {
         v56 = objc_msgSend_CKDescriptionPropertiesWithPublic_private_shouldExpand_(v52, v53, 1, 1, 1);
         objc_msgSend_CKAddPropertySafelyForKey_value_(v13, v57, @"error", v56);
@@ -1733,10 +1733,10 @@ LABEL_15:
   return 0;
 }
 
-- (void)prepareRequestOperationsForRequest:(id)a3
+- (void)prepareRequestOperationsForRequest:(id)request
 {
   v226 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestCopy = request;
   v8 = objc_msgSend_container(self, v6, v7);
   v11 = objc_msgSend_operation(self, v9, v10);
   v14 = objc_msgSend_databaseScope(self, v12, v13);
@@ -1822,7 +1822,7 @@ LABEL_6:
     }
 
     v61 = objc_msgSend_databaseScope(self, v53, v54);
-    v217 = v5;
+    v217 = requestCopy;
     v215 = v26;
     if (v61 > 4)
     {
@@ -2003,7 +2003,7 @@ LABEL_50:
       objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v202, v203, v219);
     }
 
-    v5 = v217;
+    requestCopy = v217;
     v37 = v218;
     v26 = v215;
   }
@@ -2012,17 +2012,17 @@ LABEL_50:
   v207 = objc_msgSend_request(v204, v205, v206);
   objc_msgSend_setLast_(v207, v208, 1);
 
-  objc_msgSend__finalizeRequestOperations_request_(self, v209, v20, v5);
+  objc_msgSend__finalizeRequestOperations_request_(self, v209, v20, requestCopy);
   requestOperations = self->_requestOperations;
   self->_requestOperations = v20;
 
   v211 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateShareIDCacheWithRecord:(id)a3
+- (void)updateShareIDCacheWithRecord:(id)record
 {
-  v18 = a3;
-  if (v18)
+  recordCopy = record;
+  if (recordCopy)
   {
     if (objc_msgSend_databaseScope(self, v4, v5) == 3)
     {
@@ -2034,16 +2034,16 @@ LABEL_50:
         v14 = objc_msgSend_container(self, v12, v13);
         v16 = objc_msgSend_cacheForContainer_(CKDShareIDCache, v15, v14);
 
-        objc_msgSend_addRecord_(v16, v17, v18);
+        objc_msgSend_addRecord_(v16, v17, recordCopy);
       }
     }
   }
 }
 
-- (void)updateShareIDCacheWithDeletedRecordID:(id)a3
+- (void)updateShareIDCacheWithDeletedRecordID:(id)d
 {
-  v18 = a3;
-  if (v18)
+  dCopy = d;
+  if (dCopy)
   {
     if (objc_msgSend_databaseScope(self, v4, v5) == 3)
     {
@@ -2055,16 +2055,16 @@ LABEL_50:
         v14 = objc_msgSend_container(self, v12, v13);
         v16 = objc_msgSend_cacheForContainer_(CKDShareIDCache, v15, v14);
 
-        objc_msgSend_removeRecordID_(v16, v17, v18);
+        objc_msgSend_removeRecordID_(v16, v17, dCopy);
       }
     }
   }
 }
 
-- (void)updateShareIDCacheWithDeletedZoneID:(id)a3
+- (void)updateShareIDCacheWithDeletedZoneID:(id)d
 {
-  v18 = a3;
-  if (v18)
+  dCopy = d;
+  if (dCopy)
   {
     if (objc_msgSend_databaseScope(self, v4, v5) == 3)
     {
@@ -2076,30 +2076,30 @@ LABEL_50:
         v14 = objc_msgSend_container(self, v12, v13);
         v16 = objc_msgSend_cacheForContainer_(CKDShareIDCache, v15, v14);
 
-        objc_msgSend_removeZone_(v16, v17, v18);
+        objc_msgSend_removeZone_(v16, v17, dCopy);
       }
     }
   }
 }
 
-- (id)recordIDsUsedInZones:(id)a3
+- (id)recordIDsUsedInZones:(id)zones
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)recordIDs:(id)a3 filteredByZones:(id)a4
+- (id)recordIDs:(id)ds filteredByZones:(id)zones
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  zonesCopy = zones;
   v7 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v5;
+  v8 = dsCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v22, v26, 16);
   if (v10)
   {
@@ -2116,7 +2116,7 @@ LABEL_50:
 
         v16 = *(*(&v22 + 1) + 8 * i);
         v17 = objc_msgSend_zoneID(v16, v11, v12, v22);
-        v19 = objc_msgSend_containsObject_(v6, v18, v17);
+        v19 = objc_msgSend_containsObject_(zonesCopy, v18, v17);
 
         if (v19)
         {
@@ -2135,20 +2135,20 @@ LABEL_50:
   return v7;
 }
 
-- (void)_finalizeRequestOperations:(id)a3 request:(id)a4
+- (void)_finalizeRequestOperations:(id)operations request:(id)request
 {
   v85 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v66 = a4;
+  operationsCopy = operations;
+  requestCopy = request;
   if (objc_msgSend_requiresCKAnonymousUserIDs(self, v7, v8) && objc_msgSend_requiresCKAnonymousSignature(self, v9, v10))
   {
-    v64 = objc_msgSend_uncompressedDataForStreamedObjects_(CKDProtobufStreamWriter, v11, v6);
+    v64 = objc_msgSend_uncompressedDataForStreamedObjects_(CKDProtobufStreamWriter, v11, operationsCopy);
     v65 = objc_opt_new();
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    obj = v6;
+    obj = operationsCopy;
     v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v73, v84, 16);
     if (v13)
     {
@@ -2270,7 +2270,7 @@ LABEL_50:
           v46 = objc_msgSend_stringWithFormat_(v40, v45, @"key=%@,signature=%@", v42, v44);
 
           v48 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v47, @"X-CloudKit-A2A-Share-Auth%lu", v35);
-          objc_msgSend_setValue_forHTTPHeaderField_(v66, v49, v46, v48);
+          objc_msgSend_setValue_forHTTPHeaderField_(requestCopy, v49, v46, v48);
           ++v35;
         }
 
@@ -2286,10 +2286,10 @@ LABEL_34:
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerRequestOperationTypesForOperations:(id)a3
+- (void)_registerRequestOperationTypesForOperations:(id)operations
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationsCopy = operations;
   v5 = objc_opt_new();
   objc_msgSend_setCountsByRequestOperationType_(self, v6, v5);
 
@@ -2297,7 +2297,7 @@ LABEL_34:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v4;
+  obj = operationsCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v7, &v46, v50, 16);
   if (v8)
   {
@@ -2353,10 +2353,10 @@ LABEL_34:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_authTokenWithCompletionHandler:(id)a3
+- (void)_authTokenWithCompletionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -2385,21 +2385,21 @@ LABEL_34:
   v26 = v24;
   if (v21)
   {
-    objc_msgSend_cloudKitAuthTokenWithContainer_completionHandler_(v24, v25, v18, v5);
+    objc_msgSend_cloudKitAuthTokenWithContainer_completionHandler_(v24, v25, v18, handlerCopy);
   }
 
   else
   {
-    objc_msgSend_iCloudAuthTokenWithContainer_completionHandler_(v24, v25, v18, v5);
+    objc_msgSend_iCloudAuthTokenWithContainer_completionHandler_(v24, v25, v18, handlerCopy);
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_renewAuthTokenWithCompletionHandler:(id)a3
+- (void)_renewAuthTokenWithCompletionHandler:(id)handler
 {
   v77 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   objc_msgSend_setIsWaitingOnAuthRenew_(self, v6, 1);
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -2422,7 +2422,7 @@ LABEL_34:
     v69 = 2114;
     v70 = v15;
     v71 = 2048;
-    v72 = self;
+    selfCopy = self;
     v73 = 2114;
     v74 = v20;
     v75 = 2112;
@@ -2443,7 +2443,7 @@ LABEL_34:
   v63 = sub_2253EC0E8;
   v64 = &unk_27854D838;
   objc_copyWeak(&v66, buf);
-  v31 = v5;
+  v31 = handlerCopy;
   v65 = v31;
   v32 = _Block_copy(&v61);
   v35 = objc_msgSend_container(self, v33, v34, v61, v62, v63, v64);
@@ -2525,7 +2525,7 @@ LABEL_34:
       *buf = 138543618;
       v49 = v45;
       v50 = 2112;
-      v51 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_22506F000, v42, OS_LOG_TYPE_ERROR, "req: %{public}@, Our token auth is bad and we've already retried it. Giving up on request %@", buf, 0x16u);
     }
 
@@ -2569,22 +2569,22 @@ LABEL_34:
   objc_msgSend_performRequest_(v5, v4, self);
 }
 
-- (int64_t)_handleServerProtobufResult:(id)a3 rawData:(id)a4
+- (int64_t)_handleServerProtobufResult:(id)result rawData:(id)data
 {
   v242 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  resultCopy = result;
   v8 = objc_msgSend_operation(self, v6, v7);
   v11 = objc_msgSend_container(self, v9, v10);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v5;
+    v12 = resultCopy;
     v15 = objc_msgSend_header(v12, v13, v14);
     v18 = objc_msgSend_throttleConfigs(v15, v16, v17);
 
     if (objc_msgSend_count(v18, v19, v20))
     {
-      v225 = self;
+      selfCopy = self;
       v230 = v12;
       v23 = v8;
       v24 = objc_msgSend_deviceContext(v8, v21, v22);
@@ -2626,7 +2626,7 @@ LABEL_34:
       v8 = v23;
       v12 = v230;
       v18 = v28;
-      self = v225;
+      self = selfCopy;
     }
 
     sub_2250911F4(self, v21, v22);
@@ -3068,14 +3068,14 @@ LABEL_108:
   return v47;
 }
 
-- (void)_handleServerJSONResult:(id)a3
+- (void)_handleServerJSONResult:(id)result
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = resultCopy;
     v9 = objc_msgSend_objectForKey_(v5, v6, @"throttleConfigs");
     if (v9)
     {
@@ -3192,22 +3192,22 @@ LABEL_108:
       *buf = 138543618;
       v61 = v40;
       v62 = 2112;
-      v63 = v4;
+      v63 = resultCopy;
       _os_log_impl(&dword_22506F000, v37, OS_LOG_TYPE_DEFAULT, "req: %{public}@, Warn: Cannot handle JSON response: %@", buf, 0x16u);
     }
 
-    v5 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v36, *MEMORY[0x277CBC120], 1005, @"Cannot handle JSON response: %@", v4);
+    v5 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v36, *MEMORY[0x277CBC120], 1005, @"Cannot handle JSON response: %@", resultCopy);
     objc_msgSend_finishWithError_(self, v41, v5);
   }
 
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_parseErrorDictionaryForJson:(id)a3
+- (id)_parseErrorDictionaryForJson:(id)json
 {
-  v4 = a3;
-  v6 = objc_msgSend_objectForKey_(v4, v5, @"type");
-  v8 = objc_msgSend_objectForKey_(v4, v7, @"title");
+  jsonCopy = json;
+  v6 = objc_msgSend_objectForKey_(jsonCopy, v5, @"type");
+  v8 = objc_msgSend_objectForKey_(jsonCopy, v7, @"title");
 
   v9 = objc_opt_new();
   v12 = objc_msgSend_requestUUID(self, v10, v11);
@@ -3880,10 +3880,10 @@ LABEL_247:
   return v183;
 }
 
-- (void)_handlePlistResult:(id)a3
+- (void)_handlePlistResult:(id)result
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = *MEMORY[0x277CBC878];
@@ -3905,7 +3905,7 @@ LABEL_247:
       _os_log_debug_impl(&dword_22506F000, v16, OS_LOG_TYPE_DEBUG, "req: %{public}@, Successfully parsed plist object", &v20, 0xCu);
     }
 
-    objc_msgSend_requestDidParsePlistObject_(self, v9, v4);
+    objc_msgSend_requestDidParsePlistObject_(self, v9, resultCopy);
   }
 
   else
@@ -3923,7 +3923,7 @@ LABEL_247:
       v20 = 138543618;
       v21 = v14;
       v22 = 2112;
-      v23 = v4;
+      v23 = resultCopy;
       _os_log_impl(&dword_22506F000, v11, OS_LOG_TYPE_DEFAULT, "req: %{public}@, Warn: Failed to handle plist response: %@", &v20, 0x16u);
     }
   }
@@ -3931,24 +3931,24 @@ LABEL_247:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)defaultParserForContentType:(id)a3
+- (id)defaultParserForContentType:(id)type
 {
-  v4 = a3;
-  if (!objc_msgSend_length(v4, v5, v6))
+  typeCopy = type;
+  if (!objc_msgSend_length(typeCopy, v5, v6))
   {
     v17 = 0;
     goto LABEL_21;
   }
 
-  if (objc_msgSend_rangeOfString_options_(v4, v7, *MEMORY[0x277CBC8E0], 1) == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_rangeOfString_options_(v4, v8, @"application/x-protobuf", 1) == 0x7FFFFFFFFFFFFFFFLL)
+  if (objc_msgSend_rangeOfString_options_(typeCopy, v7, *MEMORY[0x277CBC8E0], 1) == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_rangeOfString_options_(typeCopy, v8, @"application/x-protobuf", 1) == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (objc_msgSend_rangeOfString_options_(v4, v9, @"application/json", 1) == 0x7FFFFFFFFFFFFFFFLL)
+    if (objc_msgSend_rangeOfString_options_(typeCopy, v9, @"application/json", 1) == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (objc_msgSend_rangeOfString_options_(v4, v10, @"text/xml", 1) == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_rangeOfString_options_(v4, v11, @"application/x-apple-plist", 1) == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_rangeOfString_options_(v4, v12, @"application/xml", 1) == 0x7FFFFFFFFFFFFFFFLL)
+      if (objc_msgSend_rangeOfString_options_(typeCopy, v10, @"text/xml", 1) == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_rangeOfString_options_(typeCopy, v11, @"application/x-apple-plist", 1) == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_rangeOfString_options_(typeCopy, v12, @"application/xml", 1) == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (objc_msgSend_rangeOfString_options_(v4, v13, @"text/plain", 1) == 0x7FFFFFFFFFFFFFFFLL)
+        if (objc_msgSend_rangeOfString_options_(typeCopy, v13, @"text/plain", 1) == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if (objc_msgSend_rangeOfString_options_(v4, v14, @"application/x-x509-ca-cert", 1) == 0x7FFFFFFFFFFFFFFFLL)
+          if (objc_msgSend_rangeOfString_options_(typeCopy, v14, @"application/x-x509-ca-cert", 1) == 0x7FFFFFFFFFFFFFFFLL)
           {
             v17 = 0;
             goto LABEL_19;
@@ -4065,9 +4065,9 @@ LABEL_21:
   return v17;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v5 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3);
+  v5 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, object);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v5, v6, a2, self, @"CKDURLRequest.m", 1235, @"To be overridden by subclass");
 
   v8 = MEMORY[0x277CBC560];
@@ -4076,55 +4076,55 @@ LABEL_21:
   return objc_msgSend_errorWithDomain_code_format_(v8, v7, v9, 12, @"To be overridden by subclass");
 }
 
-- (void)requestDidParseProtobufObject:(id)a3 completionHandler:(id)a4
+- (void)requestDidParseProtobufObject:(id)object completionHandler:(id)handler
 {
-  v8 = a4;
-  v7 = objc_msgSend_requestDidParseProtobufObject_(self, v6, a3);
-  if (v8)
+  handlerCopy = handler;
+  v7 = objc_msgSend_requestDidParseProtobufObject_(self, v6, object);
+  if (handlerCopy)
   {
-    v8[2](v8, v7);
+    handlerCopy[2](handlerCopy, v7);
   }
 }
 
-- (void)requestDidParseJSONObject:(id)a3
+- (void)requestDidParseJSONObject:(id)object
 {
-  v5 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], a2, *MEMORY[0x277CBC120], 1005, @"Received a json payload that we weren't expecting: %@", a3);
+  v5 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], a2, *MEMORY[0x277CBC120], 1005, @"Received a json payload that we weren't expecting: %@", object);
   objc_msgSend_finishWithError_(self, v4, v5);
 }
 
-- (void)requestDidParsePlistObject:(id)a3
+- (void)requestDidParsePlistObject:(id)object
 {
-  v6 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3);
+  v6 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, object);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v5, a2, self, @"CKDURLRequest.m", 1252, @"To be overridden by subclass");
 }
 
-- (void)requestDidParsePlaintextObject:(id)a3
+- (void)requestDidParsePlaintextObject:(id)object
 {
   v4 = MEMORY[0x277CBC560];
   v5 = *MEMORY[0x277CBC120];
   v6 = MEMORY[0x277CCACA8];
-  v7 = a3;
+  objectCopy = object;
   v8 = [v6 alloc];
-  v13 = objc_msgSend_initWithData_encoding_(v8, v9, v7, 4);
+  v13 = objc_msgSend_initWithData_encoding_(v8, v9, objectCopy, 4);
 
   v11 = objc_msgSend_errorWithDomain_code_format_(v4, v10, v5, 1005, @"Received a plaintext response that we weren't expecting: %@", v13);
   objc_msgSend__finishOnLifecycleQueueWithError_(self, v12, v11);
 }
 
-- (void)requestDidParse509CertObject:(id)a3
+- (void)requestDidParse509CertObject:(id)object
 {
-  v5 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], a2, *MEMORY[0x277CBC120], 1005, @"Received a 509 cert response that we weren't expecting: %@", a3);
+  v5 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], a2, *MEMORY[0x277CBC120], 1005, @"Received a 509 cert response that we weren't expecting: %@", object);
   objc_msgSend__finishOnLifecycleQueueWithError_(self, v4, v5);
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v40 = a3;
-  v6 = objc_msgSend_result(v40, v4, v5);
+  failureCopy = failure;
+  v6 = objc_msgSend_result(failureCopy, v4, v5);
   v9 = objc_msgSend_error(v6, v7, v8);
   if (objc_msgSend_hasExtensionError(v9, v10, v11))
   {
-    v14 = objc_msgSend_result(v40, v12, v13);
+    v14 = objc_msgSend_result(failureCopy, v12, v13);
     v17 = objc_msgSend_error(v14, v15, v16);
     v20 = objc_msgSend_extensionError(v17, v18, v19);
     hasTypeCode = objc_msgSend_hasTypeCode(v20, v21, v22);
@@ -4133,7 +4133,7 @@ LABEL_21:
     {
       v26 = MEMORY[0x277CBC560];
       v27 = *MEMORY[0x277CBC120];
-      v28 = objc_msgSend_result(v40, v24, v25);
+      v28 = objc_msgSend_result(failureCopy, v24, v25);
       v29 = sub_225395734(self, v28);
       v31 = objc_msgSend_errorWithDomain_code_userInfo_format_(v26, v30, v27, 6000, v29, @"Plugin-Specific Error");
       goto LABEL_6;
@@ -4146,9 +4146,9 @@ LABEL_21:
 
   v32 = MEMORY[0x277CCA9B8];
   v33 = *MEMORY[0x277CBC120];
-  v28 = objc_msgSend_result(v40, v24, v25);
+  v28 = objc_msgSend_result(failureCopy, v24, v25);
   v34 = sub_2253962A4(v28);
-  v29 = objc_msgSend_result(v40, v35, v36);
+  v29 = objc_msgSend_result(failureCopy, v35, v36);
   v37 = sub_225395734(self, v29);
   v31 = objc_msgSend_errorWithDomain_code_userInfo_(v32, v38, v33, v34, v37);
 
@@ -4176,32 +4176,32 @@ LABEL_6:
   return v7;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v7, v6, @"super.className");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v7, v6, @"super.className");
 
   v8 = MEMORY[0x277CCABB0];
   v11 = objc_msgSend_databaseScope(self, v9, v10);
   v13 = objc_msgSend_numberWithInteger_(v8, v12, v11);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"super.databaseScope");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"super.databaseScope");
 
   v17 = objc_msgSend_container(self, v15, v16);
   v20 = objc_msgSend_containerScopedUserID(v17, v18, v19);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v21, v20, @"super.csuid");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v21, v20, @"super.csuid");
 
   v28 = objc_msgSend_container(self, v22, v23);
   v26 = objc_msgSend_containerID(v28, v24, v25);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v27, v26, @"super.containerID");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v27, v26, @"super.containerID");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v8 = a3;
+  propertiesCopy = properties;
   v6 = objc_msgSend_databaseScope(self, v4, v5);
-  objc_msgSend_setDatabaseScope_(v8, v7, v6);
+  objc_msgSend_setDatabaseScope_(propertiesCopy, v7, v6);
 }
 
 - (NSString)authPromptReason
@@ -4242,28 +4242,28 @@ LABEL_6:
   objc_msgSend_performASyncOnLifecycleQueueIfNotFinished_(self, a2, v2);
 }
 
-- (void)setRequestOptions:(id)a3
+- (void)setRequestOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   obj = self;
   objc_sync_enter(obj);
   requestOptions = obj->_requestOptions;
-  obj->_requestOptions = v4;
+  obj->_requestOptions = optionsCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)_loadRequest:(id)a3
+- (void)_loadRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2253F1758;
   v8[3] = &unk_278545E20;
-  v9 = v5;
+  v9 = requestCopy;
   v10 = a2;
   v8[4] = self;
-  v6 = v5;
+  v6 = requestCopy;
   objc_msgSend_performASyncOnLifecycleQueueIfNotFinished_(self, v7, v8);
 }
 
@@ -4278,12 +4278,12 @@ LABEL_6:
   dispatch_async(v4, block);
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (objc_msgSend__onLifecycleQueue(self, v5, v6))
   {
-    objc_msgSend__finishOnLifecycleQueueWithError_(self, v7, v4);
+    objc_msgSend__finishOnLifecycleQueueWithError_(self, v7, errorCopy);
   }
 
   else
@@ -4294,23 +4294,23 @@ LABEL_6:
     v10[2] = sub_2253F21D4;
     v10[3] = &unk_278545898;
     v10[4] = self;
-    v11 = v4;
+    v11 = errorCopy;
     dispatch_sync(v9, v10);
   }
 }
 
-- (id)_wrapErrorIfNecessary:(id)a3
+- (id)_wrapErrorIfNecessary:(id)necessary
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  necessaryCopy = necessary;
+  v4 = necessaryCopy;
+  if (!necessaryCopy)
   {
     v5 = 0;
     goto LABEL_9;
   }
 
-  v5 = v3;
+  v5 = necessaryCopy;
   v8 = objc_msgSend_domain(v5, v6, v7);
   if (!objc_msgSend_isEqualToString_(v8, v9, *MEMORY[0x277CCA5B8]))
   {
@@ -4351,14 +4351,14 @@ LABEL_9:
   return v5;
 }
 
-- (void)_finishOnLifecycleQueueWithError:(id)a3
+- (void)_finishOnLifecycleQueueWithError:(id)error
 {
   v154 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v7 = objc_msgSend_lifecycleQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
-  v9 = objc_msgSend__wrapErrorIfNecessary_(self, v8, v4);
+  v9 = objc_msgSend__wrapErrorIfNecessary_(self, v8, errorCopy);
 
   v10 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
@@ -4439,17 +4439,17 @@ LABEL_9:
     objc_msgSend_finishRequestLogWithRequestUUID_completionHandler_(v48, v52, v51, &unk_28385E7E0);
 
     objc_msgSend_setError_(self, v53, v9);
-    v54 = self;
-    v57 = objc_msgSend_operation(v54, v55, v56);
-    v60 = objc_msgSend_dateRequestWentOut(v54, v58, v59);
+    selfCopy = self;
+    v57 = objc_msgSend_operation(selfCopy, v55, v56);
+    v60 = objc_msgSend_dateRequestWentOut(selfCopy, v58, v59);
 
     if (v60)
     {
-      v63 = objc_msgSend_metrics(v54, v61, v62);
-      v66 = objc_msgSend_metrics(v54, v64, v65);
-      v69 = objc_msgSend_dateRequestWentOut(v54, v67, v68);
+      v63 = objc_msgSend_metrics(selfCopy, v61, v62);
+      v66 = objc_msgSend_metrics(selfCopy, v64, v65);
+      v69 = objc_msgSend_dateRequestWentOut(selfCopy, v67, v68);
       v72 = objc_msgSend_date(MEMORY[0x277CBEAA8], v70, v71);
-      v75 = objc_msgSend_dateRequestWentOut(v54, v73, v74);
+      v75 = objc_msgSend_dateRequestWentOut(selfCopy, v73, v74);
       objc_msgSend_timeIntervalSinceDate_(v72, v76, v75);
       started = objc_msgSend_newRangeWithOperationState_startDate_duration_(v66, v77, 1, v69);
       objc_msgSend_addRange_(v63, v79, started);
@@ -4458,24 +4458,24 @@ LABEL_9:
     }
 
     v80 = objc_msgSend_date(MEMORY[0x277CBEAA8], v61, v62);
-    v83 = objc_msgSend_metrics(v54, v81, v82);
+    v83 = objc_msgSend_metrics(selfCopy, v81, v82);
     v86 = objc_msgSend_startDate(v83, v84, v85);
     objc_msgSend_timeIntervalSinceDate_(v80, v87, v86);
     v89 = v88;
-    v92 = objc_msgSend_metrics(v54, v90, v91);
+    v92 = objc_msgSend_metrics(selfCopy, v90, v91);
     objc_msgSend_setDuration_(v92, v93, v94, v89);
 
-    v97 = objc_msgSend_metrics(v54, v95, v96);
-    v100 = objc_msgSend_timingData(v54, v98, v99);
-    objc_msgSend_request_didFinishWithMetrics_w3cNavigationTiming_(v57, v101, v54, v97, v100);
+    v97 = objc_msgSend_metrics(selfCopy, v95, v96);
+    v100 = objc_msgSend_timingData(selfCopy, v98, v99);
+    objc_msgSend_request_didFinishWithMetrics_w3cNavigationTiming_(v57, v101, selfCopy, v97, v100);
 
-    objc_msgSend_invokeCompletionBlock(v54, v102, v103);
-    objc_msgSend_setRequestProgressBlock_(v54, v104, 0);
-    objc_msgSend_setResponseProgressBlock_(v54, v105, 0);
-    v108 = objc_msgSend_dateRequestWentOut(v54, v106, v107);
+    objc_msgSend_invokeCompletionBlock(selfCopy, v102, v103);
+    objc_msgSend_setRequestProgressBlock_(selfCopy, v104, 0);
+    objc_msgSend_setResponseProgressBlock_(selfCopy, v105, 0);
+    v108 = objc_msgSend_dateRequestWentOut(selfCopy, v106, v107);
     if (v108)
     {
-      v109 = !v54->_didFinishLoading;
+      v109 = !selfCopy->_didFinishLoading;
     }
 
     else
@@ -4483,8 +4483,8 @@ LABEL_9:
       v109 = 0;
     }
 
-    objc_msgSend_tearDownResourcesAndReleaseTheZoneLocks_(v54, v118, v109);
-    objc_msgSend_setDateRequestWentOut_(v54, v119, 0);
+    objc_msgSend_tearDownResourcesAndReleaseTheZoneLocks_(selfCopy, v118, v109);
+    objc_msgSend_setDateRequestWentOut_(selfCopy, v119, 0);
     if (*v10 != -1)
     {
       dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -4494,24 +4494,24 @@ LABEL_9:
     if (os_log_type_enabled(*v11, OS_LOG_TYPE_INFO))
     {
       v123 = v120;
-      v126 = objc_msgSend_requestUUID(v54, v124, v125);
+      v126 = objc_msgSend_requestUUID(selfCopy, v124, v125);
       *buf = 138543874;
       v149 = v126;
       v150 = 2112;
-      v151 = v54;
+      v151 = selfCopy;
       v152 = 2112;
       v153 = v9;
       _os_log_impl(&dword_22506F000, v123, OS_LOG_TYPE_INFO, "req: %{public}@, Did finish request %@ with error %@", buf, 0x20u);
     }
 
-    v127 = objc_msgSend_signpost(v54, v121, v122);
+    v127 = objc_msgSend_signpost(selfCopy, v121, v122);
 
     if (v127)
     {
-      v130 = objc_msgSend_signpost(v54, v128, v129);
+      v130 = objc_msgSend_signpost(selfCopy, v128, v129);
       v133 = objc_msgSend_log(v130, v131, v132);
 
-      v136 = objc_msgSend_signpost(v54, v134, v135);
+      v136 = objc_msgSend_signpost(selfCopy, v134, v135);
       v139 = objc_msgSend_identifier(v136, v137, v138);
 
       if (v139 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v133))
@@ -4547,10 +4547,10 @@ LABEL_9:
   v140 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_triggerAutoBugCaptureWithErrorPayload:(id)a3
+- (void)_triggerAutoBugCaptureWithErrorPayload:(id)payload
 {
   v80 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   v7 = objc_msgSend_container(self, v5, v6);
   v10 = objc_msgSend_containerID(v7, v8, v9);
   v13 = objc_msgSend_containerIdentifier(v10, v11, v12);
@@ -4577,7 +4577,7 @@ LABEL_9:
       v76 = 2114;
       v77 = v13;
       v78 = 2114;
-      v79 = v4;
+      v79 = payloadCopy;
       _os_log_error_impl(&dword_22506F000, v21, OS_LOG_TYPE_ERROR, "Too many server triggered ABCs. Logging locally: %{public}@. proc: %{public}@. containerID: %{public}@. error: %{public}@.", buf, 0x2Au);
     }
 
@@ -4660,9 +4660,9 @@ LABEL_9:
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)performOnLifecycleQueueIfNotFinished:(id)a3
+- (BOOL)performOnLifecycleQueueIfNotFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -4677,9 +4677,9 @@ LABEL_9:
   v13[2] = sub_2253F3300;
   v13[3] = &unk_27854DAA8;
   objc_copyWeak(&v16, &location);
-  v14 = v4;
+  v14 = finishedCopy;
   v15 = &v18;
-  v11 = v4;
+  v11 = finishedCopy;
   dispatch_sync(v10, v13);
 
   LOBYTE(v10) = *(v19 + 24);
@@ -4689,10 +4689,10 @@ LABEL_9:
   return v10;
 }
 
-- (void)performASyncOnLifecycleQueueIfNotFinished:(id)a3 fallbackBlock:(id)a4
+- (void)performASyncOnLifecycleQueueIfNotFinished:(id)finished fallbackBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  finishedCopy = finished;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v10 = objc_msgSend_lifecycleQueue(self, v8, v9);
   v13[0] = MEMORY[0x277D85DD0];
@@ -4700,22 +4700,22 @@ LABEL_9:
   v13[2] = sub_2253F35C8;
   v13[3] = &unk_27854DAD0;
   objc_copyWeak(&v16, &location);
-  v14 = v7;
-  v15 = v6;
-  v11 = v6;
-  v12 = v7;
+  v14 = blockCopy;
+  v15 = finishedCopy;
+  v11 = finishedCopy;
+  v12 = blockCopy;
   dispatch_async(v10, v13);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
   v17 = objc_msgSend_signpost(self, v15, v16);
 
   if (v17)
@@ -4737,53 +4737,53 @@ LABEL_9:
   v35[1] = 3221225472;
   v35[2] = sub_2253F395C;
   v35[3] = &unk_27854DAF8;
-  v36 = v11;
-  v37 = self;
-  v30 = v14;
+  v36 = taskCopy;
+  selfCopy = self;
+  v30 = handlerCopy;
   v40 = v30;
-  v38 = v12;
-  v31 = v13;
+  v38 = redirectionCopy;
+  v31 = requestCopy;
   v39 = v31;
-  v32 = v12;
-  v33 = v11;
+  v32 = redirectionCopy;
+  v33 = taskCopy;
   if ((objc_msgSend_performOnLifecycleQueueIfNotFinished_(self, v34, v35) & 1) == 0)
   {
     (*(v30 + 2))(v30, v31);
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_2253F40AC;
   v20[3] = &unk_2785488E0;
-  v21 = v10;
-  v22 = self;
-  v23 = v9;
-  v24 = v11;
+  v21 = responseCopy;
+  selfCopy = self;
+  v23 = taskCopy;
+  v24 = handlerCopy;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_2253F4A60;
   v16[3] = &unk_278546C30;
   v17 = v21;
-  v18 = self;
+  selfCopy2 = self;
   v19 = v24;
   v12 = v24;
   v13 = v21;
-  v14 = v9;
+  v14 = taskCopy;
   objc_msgSend_performASyncOnLifecycleQueueIfNotFinished_fallbackBlock_(self, v15, v20, v16);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -4797,7 +4797,7 @@ LABEL_9:
     *buf = 138543618;
     v32 = v15;
     v33 = 2048;
-    v34 = objc_msgSend_length(v10, v16, v17);
+    v34 = objc_msgSend_length(dataCopy, v16, v17);
     _os_log_impl(&dword_22506F000, v12, OS_LOG_TYPE_DEFAULT, "req: %{public}@, URLSession:dataTask:didReceiveData: %ld bytes", buf, 0x16u);
   }
 
@@ -4809,7 +4809,7 @@ LABEL_9:
   v29[3] = &unk_278545A00;
   v30 = v18;
   v19 = v18;
-  objc_msgSend_URLSession_dataTask__didReceiveData_completionHandler_(self, v20, v8, v9, v10, v29);
+  objc_msgSend_URLSession_dataTask__didReceiveData_completionHandler_(self, v20, sessionCopy, taskCopy, dataCopy, v29);
   objc_msgSend_timeoutIntervalForResource(self, v21, v22);
   v24 = v23 * 1000000000.0;
   v25 = v23 <= 0.0;
@@ -4825,38 +4825,38 @@ LABEL_9:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 _didReceiveData:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task _didReceiveData:(id)data completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  taskCopy = task;
+  dataCopy = data;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_2253F4E8C;
   v16[3] = &unk_2785488E0;
   v16[4] = self;
-  v17 = v10;
-  v18 = v9;
-  v19 = v11;
-  v12 = v11;
-  v13 = v9;
-  v14 = v10;
+  v17 = dataCopy;
+  v18 = taskCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = taskCopy;
+  v14 = dataCopy;
   objc_msgSend_performASyncOnLifecycleQueueIfNotFinished_fallbackBlock_(self, v15, v16, v12);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  streamCopy = stream;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_2253F56AC;
   v18[3] = &unk_278546C30;
   v18[4] = self;
-  v9 = v7;
+  v9 = taskCopy;
   v19 = v9;
-  v10 = v8;
+  v10 = streamCopy;
   v20 = v10;
   if ((objc_msgSend_performOnLifecycleQueueIfNotFinished_(self, v11, v18) & 1) == 0)
   {
@@ -4881,51 +4881,51 @@ LABEL_9:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
-  v11 = a4;
+  taskCopy = task;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_2253F5AAC;
   v14[3] = &unk_27854DB48;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  dataCopy = data;
+  sentCopy = sent;
+  sendCopy = send;
   v14[4] = self;
-  v15 = v11;
-  v12 = v11;
+  v15 = taskCopy;
+  v12 = taskCopy;
   objc_msgSend_performOnLifecycleQueueIfNotFinished_(self, v13, v14);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_2253F5EDC;
   v12[3] = &unk_278546990;
   v12[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v9 = v7;
-  v10 = v8;
+  v13 = errorCopy;
+  v14 = taskCopy;
+  v9 = taskCopy;
+  v10 = errorCopy;
   objc_msgSend_performOnLifecycleQueueIfNotFinished_(self, v11, v12);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a6;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_2253F7280;
   v19[3] = &unk_278546C30;
   v19[4] = self;
-  v10 = v8;
+  v10 = connectionCopy;
   v20 = v10;
-  v11 = v9;
+  v11 = handlerCopy;
   v21 = v11;
   if ((objc_msgSend_performOnLifecycleQueueIfNotFinished_(self, v12, v19) & 1) == 0)
   {
@@ -4950,41 +4950,41 @@ LABEL_9:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 _taskIsWaitingForConnection:(id)a4
+- (void)URLSession:(id)session _taskIsWaitingForConnection:(id)connection
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2253F7878;
   v4[3] = &unk_278545A00;
   v4[4] = self;
-  objc_msgSend_performOnLifecycleQueueIfNotFinished_(self, a2, v4, a4);
+  objc_msgSend_performOnLifecycleQueueIfNotFinished_(self, a2, v4, connection);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _conditionalRequirementsChanged:(BOOL)a5
+- (void)URLSession:(id)session task:(id)task _conditionalRequirementsChanged:(BOOL)changed
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_2253F7A8C;
   v5[3] = &unk_278547970;
-  v6 = a5;
+  changedCopy = changed;
   v5[4] = self;
-  objc_msgSend_performOnLifecycleQueueIfNotFinished_(self, a2, v5, a4);
+  objc_msgSend_performOnLifecycleQueueIfNotFinished_(self, a2, v5, task);
 }
 
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2253F7D70;
   v9[3] = &unk_278545898;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
+  v10 = errorCopy;
+  v7 = errorCopy;
   objc_msgSend_performOnLifecycleQueueIfNotFinished_(self, v8, v9);
 }
 
-- (id)statusReportWithIndent:(unint64_t)a3
+- (id)statusReportWithIndent:(unint64_t)indent
 {
   v4 = MEMORY[0x277CCAB68];
   v5 = CKTabIndentAtDepth();
@@ -5027,14 +5027,14 @@ LABEL_9:
   return v12;
 }
 
-- (id)createAssetAuthorizeGetRequestOptionsHeaderInfoWithKey:(id)a3 value:(id)a4
+- (id)createAssetAuthorizeGetRequestOptionsHeaderInfoWithKey:(id)key value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
+  valueCopy = value;
+  keyCopy = key;
   v7 = objc_opt_new();
-  objc_msgSend_setHeaderKey_(v7, v8, v6);
+  objc_msgSend_setHeaderKey_(v7, v8, keyCopy);
 
-  objc_msgSend_setHeaderValue_(v7, v9, v5);
+  objc_msgSend_setHeaderValue_(v7, v9, valueCopy);
 
   return v7;
 }

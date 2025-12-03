@@ -1,15 +1,15 @@
 @interface ImageCaptioner
-+ (id)_memeStringForTag:(id)a3;
++ (id)_memeStringForTag:(id)tag;
 + (id)_metricsClientIdentifier;
-- (BOOL)imageContainsPotentiallyUnsafeContent:(CGImage *)a3;
+- (BOOL)imageContainsPotentiallyUnsafeContent:(CGImage *)content;
 - (CVNLPCaptionHandler)_createCaptionHandlerIfNeeded;
 - (ImageCaptioner)init;
-- (id)CVNLPCaptionForImage:(CGImage *)a3 modelURL:(id)a4 minimumConfidenceForCVNLPCaption:(double)a5;
+- (id)CVNLPCaptionForImage:(CGImage *)image modelURL:(id)l minimumConfidenceForCVNLPCaption:(double)caption;
 - (id)_foodRecognitionRequest;
 - (id)_newJunkRequest;
 - (id)_newMemeRequest;
 - (id)_newSceneNetV5Request;
-- (id)topMemeCaptionForImage:(CGImage *)a3;
+- (id)topMemeCaptionForImage:(CGImage *)image;
 @end
 
 @implementation ImageCaptioner
@@ -178,10 +178,10 @@
   return captionHandlerRef;
 }
 
-- (id)CVNLPCaptionForImage:(CGImage *)a3 modelURL:(id)a4 minimumConfidenceForCVNLPCaption:(double)a5
+- (id)CVNLPCaptionForImage:(CGImage *)image modelURL:(id)l minimumConfidenceForCVNLPCaption:(double)caption
 {
-  v8 = a4;
-  objc_storeStrong(&self->_modelURL, a4);
+  lCopy = l;
+  objc_storeStrong(&self->_modelURL, l);
   captionHandlerRef = self->_captionHandlerRef;
   if (!captionHandlerRef)
   {
@@ -201,11 +201,11 @@
     v10 = CVNLPCaptionCopyForImage();
     v11 = v10;
     v15 = [v10 objectForKeyedSubscript:@"CVNLPCaptions"];
-    v16 = [v15 firstObject];
-    v17 = [v16 objectForKeyedSubscript:@"CVNLPGeneratedCaption"];
+    firstObject = [v15 firstObject];
+    v17 = [firstObject objectForKeyedSubscript:@"CVNLPGeneratedCaption"];
 
-    v18 = [v15 firstObject];
-    v19 = [v18 objectForKeyedSubscript:@"CVNLPGeneratedCaptionScore"];
+    firstObject2 = [v15 firstObject];
+    v19 = [firstObject2 objectForKeyedSubscript:@"CVNLPGeneratedCaptionScore"];
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -219,19 +219,19 @@
       *buf = 138412802;
       v27 = v17;
       v28 = 2112;
-      v29 = *&v19;
+      captionCopy2 = *&v19;
       v30 = 2048;
-      v31 = a5;
+      captionCopy = caption;
       _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "--- “%@”, confidence: %@, threshold: %f", buf, 0x20u);
     }
 
     [v19 doubleValue];
-    if (v20 >= a5)
+    if (v20 >= caption)
     {
       metricsLogger = self->_metricsLogger;
-      v24 = [objc_opt_class() _metricsClientIdentifier];
+      _metricsClientIdentifier = [objc_opt_class() _metricsClientIdentifier];
       [v19 floatValue];
-      [(MetricsLogger *)metricsLogger recordImageCaptioningResultWithClientIdentifier:v24 success:1 failureType:0 confidence:?];
+      [(MetricsLogger *)metricsLogger recordImageCaptioningResultWithClientIdentifier:_metricsClientIdentifier success:1 failureType:0 confidence:?];
 
       v14 = v17;
     }
@@ -243,14 +243,14 @@
         *buf = 138412546;
         v27 = v19;
         v28 = 2048;
-        v29 = a5;
+        captionCopy2 = caption;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Image caption not returned since confidence %@ < threshold %f", buf, 0x16u);
       }
 
       v21 = self->_metricsLogger;
-      v22 = [objc_opt_class() _metricsClientIdentifier];
+      _metricsClientIdentifier2 = [objc_opt_class() _metricsClientIdentifier];
       [v19 floatValue];
-      [(MetricsLogger *)v21 recordImageCaptioningResultWithClientIdentifier:v22 success:0 failureType:4 confidence:?];
+      [(MetricsLogger *)v21 recordImageCaptioningResultWithClientIdentifier:_metricsClientIdentifier2 success:0 failureType:4 confidence:?];
 
       v14 = 0;
     }
@@ -265,8 +265,8 @@
     }
 
     v12 = self->_metricsLogger;
-    v13 = [objc_opt_class() _metricsClientIdentifier];
-    [(MetricsLogger *)v12 recordImageCaptioningResultWithClientIdentifier:v13 success:0 failureType:1 confidence:0.0];
+    _metricsClientIdentifier3 = [objc_opt_class() _metricsClientIdentifier];
+    [(MetricsLogger *)v12 recordImageCaptioningResultWithClientIdentifier:_metricsClientIdentifier3 success:0 failureType:1 confidence:0.0];
 
     v14 = 0;
   }
@@ -274,14 +274,14 @@
   return v14;
 }
 
-- (BOOL)imageContainsPotentiallyUnsafeContent:(CGImage *)a3
+- (BOOL)imageContainsPotentiallyUnsafeContent:(CGImage *)content
 {
   v92 = SCMLUseAnyAvailableDevice;
   v93 = &off_1000145F8;
   v5 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1];
   v6 = [[SCMLHandler alloc] initWithOptions:v5 error:0];
   v82 = 0;
-  v7 = [v6 classifyImage:a3 error:&v82];
+  v7 = [v6 classifyImage:content error:&v82];
   v8 = COERCE_DOUBLE(v82);
   if (v8 != 0.0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -299,8 +299,8 @@
     }
 
     metricsLogger = self->_metricsLogger;
-    v10 = [objc_opt_class() _metricsClientIdentifier];
-    [(MetricsLogger *)metricsLogger recordImageCaptioningResultWithClientIdentifier:v10 success:0 failureType:3 confidence:0.0];
+    _metricsClientIdentifier = [objc_opt_class() _metricsClientIdentifier];
+    [(MetricsLogger *)metricsLogger recordImageCaptioningResultWithClientIdentifier:_metricsClientIdentifier success:0 failureType:3 confidence:0.0];
     v11 = 1;
   }
 
@@ -312,25 +312,25 @@
     v12 = objc_alloc_init(VN6Mb1ME89lyW3HpahkEygIG);
     [v12 setRevision:2];
     v13 = objc_alloc_init(VNVYvzEtX1JlUdu8xx5qhDI);
-    v64 = self;
-    v14 = [(ImageCaptioner *)self _newJunkRequest];
-    v15 = [[VNImageRequestHandler alloc] initWithCGImage:a3 orientation:1 options:&__NSDictionary0__struct];
+    selfCopy = self;
+    _newJunkRequest = [(ImageCaptioner *)self _newJunkRequest];
+    v15 = [[VNImageRequestHandler alloc] initWithCGImage:content orientation:1 options:&__NSDictionary0__struct];
     v91[0] = v12;
     v91[1] = v13;
-    v71 = v14;
-    v91[2] = v14;
+    v71 = _newJunkRequest;
+    v91[2] = _newJunkRequest;
     v16 = [NSArray arrayWithObjects:v91 count:3];
     v65 = v15;
     [v15 performRequests:v16 error:0];
 
     v17 = +[NSMutableArray array];
     v67 = v12;
-    v18 = [v12 results];
-    [v17 addObjectsFromArray:v18];
+    results = [v12 results];
+    [v17 addObjectsFromArray:results];
 
     v66 = v13;
-    v19 = [v13 results];
-    [v17 addObjectsFromArray:v19];
+    results2 = [v13 results];
+    [v17 addObjectsFromArray:results2];
 
     v89[0] = VN3FNQUJVIs2puI1uPc9mxh7;
     LODWORD(v20) = 1018444120;
@@ -370,7 +370,7 @@
     v90[8] = v36;
     v37 = [NSDictionary dictionaryWithObjects:v90 forKeys:v89 count:9];
 
-    v38 = [v37 allKeys];
+    allKeys = [v37 allKeys];
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
@@ -391,14 +391,14 @@
           }
 
           v44 = *(*(&v78 + 1) + 8 * i);
-          v45 = [v44 identifier];
+          identifier = [v44 identifier];
           [v44 confidence];
           v47 = v46;
-          v48 = [v37 objectForKeyedSubscript:v45];
+          v48 = [v37 objectForKeyedSubscript:identifier];
           [v48 floatValue];
           v50 = v49;
 
-          if ([v38 containsObject:v45])
+          if ([allKeys containsObject:identifier])
           {
             v51 = v47 <= v50;
           }
@@ -422,9 +422,9 @@
             v60 = 3;
             obj = v39;
 LABEL_35:
-            v61 = v64->_metricsLogger;
-            v62 = [objc_opt_class() _metricsClientIdentifier];
-            [(MetricsLogger *)v61 recordImageCaptioningResultWithClientIdentifier:v62 success:0 failureType:v60 confidence:0.0];
+            v61 = selfCopy->_metricsLogger;
+            _metricsClientIdentifier2 = [objc_opt_class() _metricsClientIdentifier];
+            [(MetricsLogger *)v61 recordImageCaptioningResultWithClientIdentifier:_metricsClientIdentifier2 success:0 failureType:v60 confidence:0.0];
 
             v11 = 1;
             goto LABEL_36;
@@ -461,10 +461,10 @@ LABEL_35:
           }
 
           v56 = *(*(&v74 + 1) + 8 * j);
-          v45 = [v56 identifier];
+          identifier = [v56 identifier];
           [v56 confidence];
           v58 = v57;
-          if ([&off_100014650 containsObject:v45] && v58 > 0.2)
+          if ([&off_100014650 containsObject:identifier] && v58 > 0.2)
           {
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
@@ -477,7 +477,7 @@ LABEL_35:
             goto LABEL_35;
           }
 
-          if ([&off_100014668 containsObject:v45] && v58 > 0.15)
+          if ([&off_100014668 containsObject:identifier] && v58 > 0.15)
           {
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
@@ -505,34 +505,34 @@ LABEL_36:
 
     v6 = v69;
     v5 = v70;
-    v10 = v67;
+    _metricsClientIdentifier = v67;
     v8 = v68;
   }
 
   return v11;
 }
 
-- (id)topMemeCaptionForImage:(CGImage *)a3
+- (id)topMemeCaptionForImage:(CGImage *)image
 {
-  v5 = [(ImageCaptioner *)self _newMemeRequest];
-  v37 = self;
-  v6 = [(ImageCaptioner *)self _newJunkRequest];
-  v7 = [[VNImageRequestHandler alloc] initWithCGImage:a3 orientation:1 options:&__NSDictionary0__struct];
-  v58[0] = v5;
-  v58[1] = v6;
+  _newMemeRequest = [(ImageCaptioner *)self _newMemeRequest];
+  selfCopy = self;
+  _newJunkRequest = [(ImageCaptioner *)self _newJunkRequest];
+  v7 = [[VNImageRequestHandler alloc] initWithCGImage:image orientation:1 options:&__NSDictionary0__struct];
+  v58[0] = _newMemeRequest;
+  v58[1] = _newJunkRequest;
   v8 = [NSArray arrayWithObjects:v58 count:2];
   v38 = v7;
   [v7 performRequests:v8 error:0];
 
-  v40 = v5;
-  v9 = [v5 results];
-  v39 = v6;
-  v41 = [v6 results];
+  v40 = _newMemeRequest;
+  results = [_newMemeRequest results];
+  v39 = _newJunkRequest;
+  results2 = [_newJunkRequest results];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v9;
+  obj = results;
   v10 = [obj countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v10)
   {
@@ -548,10 +548,10 @@ LABEL_36:
         }
 
         v14 = *(*(&v47 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        if (v15)
+        identifier = [v14 identifier];
+        if (identifier)
         {
-          v16 = v15;
+          identifier2 = identifier;
           [v14 confidence];
           v18 = v17;
           v56[0] = @"document_receipt";
@@ -564,20 +564,20 @@ LABEL_36:
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v52 = v16;
+            v52 = identifier2;
             _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Observed a meme tag: %@", buf, 0xCu);
           }
 
-          if (v18 > 0.99 && ([v19 containsObject:v16] & 1) != 0)
+          if (v18 > 0.99 && ([v19 containsObject:identifier2] & 1) != 0)
           {
-            v29 = [objc_opt_class() _memeStringForTag:v16];
-            metricsLogger = v37->_metricsLogger;
-            v31 = [objc_opt_class() _metricsClientIdentifier];
+            v29 = [objc_opt_class() _memeStringForTag:identifier2];
+            metricsLogger = selfCopy->_metricsLogger;
+            _metricsClientIdentifier = [objc_opt_class() _metricsClientIdentifier];
             *&v32 = v18;
-            [(MetricsLogger *)metricsLogger recordImageCaptioningResultWithClientIdentifier:v31 success:1 failureType:0 confidence:v32];
+            [(MetricsLogger *)metricsLogger recordImageCaptioningResultWithClientIdentifier:_metricsClientIdentifier success:1 failureType:0 confidence:v32];
 
             v20 = obj;
-            v24 = v5;
+            v24 = _newMemeRequest;
 LABEL_28:
 
             goto LABEL_29;
@@ -599,7 +599,7 @@ LABEL_28:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v20 = v41;
+  v20 = results2;
   v21 = [v20 countByEnumeratingWithState:&v43 objects:v55 count:16];
   if (v21)
   {
@@ -616,24 +616,24 @@ LABEL_28:
         }
 
         v26 = *(*(&v43 + 1) + 8 * j);
-        v16 = [v26 identifier];
+        identifier2 = [v26 identifier];
         [v26 confidence];
         v28 = v27;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v52 = v16;
+          v52 = identifier2;
           v53 = 2048;
           v54 = v28;
           _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Observed a junk model tag: %@ with confidence: %f", buf, 0x16u);
         }
 
-        if ([v16 isEqualToString:@"screenshot"] && v28 > 0.95)
+        if ([identifier2 isEqualToString:@"screenshot"] && v28 > 0.95)
         {
-          v33 = v37->_metricsLogger;
-          v34 = [objc_opt_class() _metricsClientIdentifier];
+          v33 = selfCopy->_metricsLogger;
+          _metricsClientIdentifier2 = [objc_opt_class() _metricsClientIdentifier];
           *&v35 = v28;
-          [(MetricsLogger *)v33 recordImageCaptioningResultWithClientIdentifier:v34 success:1 failureType:0 confidence:v35];
+          [(MetricsLogger *)v33 recordImageCaptioningResultWithClientIdentifier:_metricsClientIdentifier2 success:1 failureType:0 confidence:v35];
 
           v19 = +[NSBundle mainBundle];
           v29 = [v19 localizedStringForKey:@"SCREENSHOT" value:&stru_1000141C0 table:0];
@@ -656,7 +656,7 @@ LABEL_28:
   else
   {
     v29 = 0;
-    v24 = v5;
+    v24 = _newMemeRequest;
   }
 
 LABEL_29:
@@ -681,11 +681,11 @@ LABEL_29:
   return v2;
 }
 
-+ (id)_memeStringForTag:(id)a3
++ (id)_memeStringForTag:(id)tag
 {
-  v3 = a3;
+  tagCopy = tag;
   v4 = +[NSBundle mainBundle];
-  if ([v3 isEqualToString:@"document_receipt"])
+  if ([tagCopy isEqualToString:@"document_receipt"])
   {
     v5 = @"RECEIPT";
 LABEL_13:
@@ -693,31 +693,31 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"document_boarding_pass"])
+  if ([tagCopy isEqualToString:@"document_boarding_pass"])
   {
     v5 = @"BOARDING_PASS";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"document_office_badge"])
+  if ([tagCopy isEqualToString:@"document_office_badge"])
   {
     v5 = @"OFFICE_BADGE";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"document_passport"])
+  if ([tagCopy isEqualToString:@"document_passport"])
   {
     v5 = @"PASSPORT";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"document_driving_license"])
+  if ([tagCopy isEqualToString:@"document_driving_license"])
   {
     v5 = @"DRIVERS_LICENSE";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"curation_meme"])
+  if ([tagCopy isEqualToString:@"curation_meme"])
   {
     v5 = @"MEME";
     goto LABEL_13;
@@ -732,9 +732,9 @@ LABEL_14:
 + (id)_metricsClientIdentifier
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

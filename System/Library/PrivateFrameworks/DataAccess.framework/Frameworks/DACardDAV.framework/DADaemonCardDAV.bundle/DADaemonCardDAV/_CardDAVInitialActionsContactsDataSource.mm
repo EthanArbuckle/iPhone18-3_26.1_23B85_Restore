@@ -1,8 +1,8 @@
 @interface _CardDAVInitialActionsContactsDataSource
 + (OS_os_log)os_log;
-- (_CardDAVInitialActionsContactsDataSource)initWithContactStore:(id)a3;
-- (id)actionsForContacts:(id)a3 isPrimaryAppleAccount:(BOOL)a4 isU18Account:(BOOL)a5 databaseHelper:(id)a6 inFolderWithURL:(id)a7 blacklistedUUIDs:(id)a8 blacklistedURLs:(id)a9 maxImageSize:(int64_t)a10 maxResourceSize:(int64_t)a11 containerIsRestricted:(BOOL)a12 outTouchedDB:(BOOL *)a13;
-- (id)actionsForGroups:(id)a3 isPrimaryAppleAccount:(BOOL)a4 isU18Account:(BOOL)a5 inFolderWithURL:(id)a6 databaseHelper:(id)a7 blacklistedUUIDs:(id)a8 blacklistedURLs:(id)a9 maxImageSize:(int64_t)a10 maxResourceSize:(int64_t)a11 outTouchedDB:(BOOL *)a12;
+- (_CardDAVInitialActionsContactsDataSource)initWithContactStore:(id)store;
+- (id)actionsForContacts:(id)contacts isPrimaryAppleAccount:(BOOL)account isU18Account:(BOOL)u18Account databaseHelper:(id)helper inFolderWithURL:(id)l blacklistedUUIDs:(id)ds blacklistedURLs:(id)ls maxImageSize:(int64_t)self0 maxResourceSize:(int64_t)self1 containerIsRestricted:(BOOL)self2 outTouchedDB:(BOOL *)self3;
+- (id)actionsForGroups:(id)groups isPrimaryAppleAccount:(BOOL)account isU18Account:(BOOL)u18Account inFolderWithURL:(id)l databaseHelper:(id)helper blacklistedUUIDs:(id)ds blacklistedURLs:(id)ls maxImageSize:(int64_t)self0 maxResourceSize:(int64_t)self1 outTouchedDB:(BOOL *)self2;
 @end
 
 @implementation _CardDAVInitialActionsContactsDataSource
@@ -19,43 +19,43 @@
   return v3;
 }
 
-- (_CardDAVInitialActionsContactsDataSource)initWithContactStore:(id)a3
+- (_CardDAVInitialActionsContactsDataSource)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _CardDAVInitialActionsContactsDataSource;
   v6 = [(_CardDAVInitialActionsContactsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;
 }
 
-- (id)actionsForContacts:(id)a3 isPrimaryAppleAccount:(BOOL)a4 isU18Account:(BOOL)a5 databaseHelper:(id)a6 inFolderWithURL:(id)a7 blacklistedUUIDs:(id)a8 blacklistedURLs:(id)a9 maxImageSize:(int64_t)a10 maxResourceSize:(int64_t)a11 containerIsRestricted:(BOOL)a12 outTouchedDB:(BOOL *)a13
+- (id)actionsForContacts:(id)contacts isPrimaryAppleAccount:(BOOL)account isU18Account:(BOOL)u18Account databaseHelper:(id)helper inFolderWithURL:(id)l blacklistedUUIDs:(id)ds blacklistedURLs:(id)ls maxImageSize:(int64_t)self0 maxResourceSize:(int64_t)self1 containerIsRestricted:(BOOL)self2 outTouchedDB:(BOOL *)self3
 {
-  v42 = a13;
-  v16 = a3;
-  v43 = a6;
-  v17 = a7;
-  v51 = a8;
-  v47 = a9;
+  bCopy = b;
+  contactsCopy = contacts;
+  helperCopy = helper;
+  lCopy = l;
+  dsCopy = ds;
+  lsCopy = ls;
   v45 = +[NSMutableArray array];
   v46 = objc_alloc_init(CNSaveRequest);
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v16;
+  obj = contactsCopy;
   v18 = [obj countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v18)
   {
     v19 = v18;
     v49 = 0;
     v20 = *v53;
-    v44 = v17;
+    v44 = lCopy;
     do
     {
       for (i = 0; i != v19; i = i + 1)
@@ -66,9 +66,9 @@
         }
 
         v22 = *(*(&v52 + 1) + 8 * i);
-        v23 = [v22 externalUUID];
+        externalUUID = [v22 externalUUID];
 
-        if (!v23)
+        if (!externalUUID)
         {
           v24 = +[NSString da_newGUID];
           [v22 setExternalUUID:v24];
@@ -77,12 +77,12 @@
           v49 = 1;
         }
 
-        v25 = [v22 externalUUID];
-        v26 = [v22 externalIdentifier];
-        v27 = v26;
-        if (v26)
+        externalUUID2 = [v22 externalUUID];
+        externalIdentifier = [v22 externalIdentifier];
+        v27 = externalIdentifier;
+        if (externalIdentifier)
         {
-          v28 = [v26 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v17];
+          v28 = [externalIdentifier da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:lCopy];
         }
 
         else
@@ -90,29 +90,29 @@
           v28 = 0;
         }
 
-        if (([v51 containsObject:v25] & 1) != 0 || objc_msgSend(v47, "containsObject:", v28))
+        if (([dsCopy containsObject:externalUUID2] & 1) != 0 || objc_msgSend(lsCopy, "containsObject:", v28))
         {
-          v29 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+          os_log = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v57 = v25;
+            v57 = externalUUID2;
             v58 = 2112;
             v59 = v28;
-            _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "Not pushing person with uuid %@ href %@ because the server rejected it", buf, 0x16u);
+            _os_log_impl(&dword_0, os_log, OS_LOG_TYPE_DEFAULT, "Not pushing person with uuid %@ href %@ because the server rejected it", buf, 0x16u);
           }
         }
 
         else
         {
-          v29 = [v22 eTag];
-          if (!v29)
+          os_log = [v22 eTag];
+          if (!os_log)
           {
             buf[0] = 0;
-            v30 = [(_CardDAVInitialActionsContactsDataSource *)self contactStore];
-            v31 = v17;
-            v32 = v30;
-            v33 = [CardDAVVCardItem itemWithDACardDAVRecord:v22 contactStore:v30 outNeedsDBSave:buf maxImageSize:a10 maxResourceSize:a11 inContainerWithURL:v31];
+            contactStore = [(_CardDAVInitialActionsContactsDataSource *)self contactStore];
+            v31 = lCopy;
+            v32 = contactStore;
+            v33 = [CardDAVVCardItem itemWithDACardDAVRecord:v22 contactStore:contactStore outNeedsDBSave:buf maxImageSize:size maxResourceSize:resourceSize inContainerWithURL:v31];
 
             v49 = (buf[0] | v49) != 0;
             v34 = [DAAction alloc];
@@ -130,14 +130,14 @@
               v35 = [v34 initWithItemChangeType:0 changedItem:v33 serverId:0];
               v36 = [DACardDAVActionResult alloc];
               v37 = v35;
-              v38 = v25;
+              v38 = externalUUID2;
               v39 = 0;
             }
 
             v40 = [(DACardDAVActionResult *)v36 initWithAction:v37 externalUUID:v38 externalURL:v39];
             [v45 addObject:v40];
 
-            v17 = v44;
+            lCopy = v44;
           }
         }
       }
@@ -153,37 +153,37 @@
     v49 = 0;
   }
 
-  [v43 addSaveRequest:v46];
-  *v42 |= v49;
+  [helperCopy addSaveRequest:v46];
+  *bCopy |= v49;
 
   return v45;
 }
 
-- (id)actionsForGroups:(id)a3 isPrimaryAppleAccount:(BOOL)a4 isU18Account:(BOOL)a5 inFolderWithURL:(id)a6 databaseHelper:(id)a7 blacklistedUUIDs:(id)a8 blacklistedURLs:(id)a9 maxImageSize:(int64_t)a10 maxResourceSize:(int64_t)a11 outTouchedDB:(BOOL *)a12
+- (id)actionsForGroups:(id)groups isPrimaryAppleAccount:(BOOL)account isU18Account:(BOOL)u18Account inFolderWithURL:(id)l databaseHelper:(id)helper blacklistedUUIDs:(id)ds blacklistedURLs:(id)ls maxImageSize:(int64_t)self0 maxResourceSize:(int64_t)self1 outTouchedDB:(BOOL *)self2
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v50 = a8;
-  v47 = a9;
+  groupsCopy = groups;
+  lCopy = l;
+  helperCopy = helper;
+  dsCopy = ds;
+  lsCopy = ls;
   v45 = +[NSMutableArray array];
-  *a12 = 0;
-  if ([v15 count])
+  *b = 0;
+  if ([groupsCopy count])
   {
-    v42 = v17;
+    v42 = helperCopy;
     v46 = objc_alloc_init(CNSaveRequest);
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v43 = v15;
-    obj = v15;
+    v43 = groupsCopy;
+    obj = groupsCopy;
     v18 = [obj countByEnumeratingWithState:&v51 objects:v59 count:16];
     if (v18)
     {
       v19 = v18;
       v20 = *v52;
-      v44 = v16;
+      v44 = lCopy;
       do
       {
         for (i = 0; i != v19; i = i + 1)
@@ -194,23 +194,23 @@
           }
 
           v22 = *(*(&v51 + 1) + 8 * i);
-          v23 = [v22 externalUUID];
+          externalUUID = [v22 externalUUID];
 
-          if (!v23)
+          if (!externalUUID)
           {
             v24 = +[NSString da_newGUID];
             [v22 setExternalUUID:v24];
 
             [v22 updateSaveRequest:v46];
-            *a12 = 1;
+            *b = 1;
           }
 
-          v25 = [v22 externalUUID];
-          v26 = [v22 externalIdentifier];
-          v27 = v26;
-          if (v26)
+          externalUUID2 = [v22 externalUUID];
+          externalIdentifier = [v22 externalIdentifier];
+          v27 = externalIdentifier;
+          if (externalIdentifier)
           {
-            v28 = [v26 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v16];
+            v28 = [externalIdentifier da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:lCopy];
           }
 
           else
@@ -218,33 +218,33 @@
             v28 = 0;
           }
 
-          if (([v50 containsObject:v25] & 1) != 0 || objc_msgSend(v47, "containsObject:", v28))
+          if (([dsCopy containsObject:externalUUID2] & 1) != 0 || objc_msgSend(lsCopy, "containsObject:", v28))
           {
-            v29 = [objc_opt_class() os_log];
-            if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+            os_log = [objc_opt_class() os_log];
+            if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v56 = v25;
+              v56 = externalUUID2;
               v57 = 2112;
               v58 = v28;
-              _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "Not pushing group with uuid %@ href %@ because the server rejected it", buf, 0x16u);
+              _os_log_impl(&dword_0, os_log, OS_LOG_TYPE_DEFAULT, "Not pushing group with uuid %@ href %@ because the server rejected it", buf, 0x16u);
             }
           }
 
           else
           {
-            v29 = [v22 eTag];
-            if (!v29)
+            os_log = [v22 eTag];
+            if (!os_log)
             {
               buf[0] = 0;
-              v30 = [(_CardDAVInitialActionsContactsDataSource *)self contactStore];
-              v31 = v16;
-              v32 = v30;
-              v33 = [CardDAVVCardItem itemWithDACardDAVRecord:v22 contactStore:v30 outNeedsDBSave:buf maxImageSize:a10 maxResourceSize:a11 inContainerWithURL:v31];
+              contactStore = [(_CardDAVInitialActionsContactsDataSource *)self contactStore];
+              v31 = lCopy;
+              v32 = contactStore;
+              v33 = [CardDAVVCardItem itemWithDACardDAVRecord:v22 contactStore:contactStore outNeedsDBSave:buf maxImageSize:size maxResourceSize:resourceSize inContainerWithURL:v31];
 
               if (buf[0] == 1)
               {
-                *a12 = 1;
+                *b = 1;
               }
 
               v34 = [DAAction alloc];
@@ -262,14 +262,14 @@
                 v35 = [v34 initWithItemChangeType:0 changedItem:v33 serverId:0];
                 v36 = [DACardDAVActionResult alloc];
                 v37 = v35;
-                v38 = v25;
+                v38 = externalUUID2;
                 v39 = 0;
               }
 
               v40 = [(DACardDAVActionResult *)v36 initWithAction:v37 externalUUID:v38 externalURL:v39];
               [v45 addObject:v40];
 
-              v16 = v44;
+              lCopy = v44;
             }
           }
         }
@@ -280,10 +280,10 @@
       while (v19);
     }
 
-    v17 = v42;
+    helperCopy = v42;
     [v42 addSaveRequest:v46];
 
-    v15 = v43;
+    groupsCopy = v43;
   }
 
   return v45;

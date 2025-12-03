@@ -9,23 +9,23 @@
 - (uint64_t)pr_variantWeight
 {
   v28 = *MEMORY[0x1E69E9840];
-  v2 = [a1 pr_cachedVariantWeight];
+  pr_cachedVariantWeight = [self pr_cachedVariantWeight];
 
-  if (v2)
+  if (pr_cachedVariantWeight)
   {
-    v3 = [a1 pr_cachedVariantWeight];
-    v4 = [v3 unsignedIntegerValue];
+    pr_cachedVariantWeight2 = [self pr_cachedVariantWeight];
+    unsignedIntegerValue = [pr_cachedVariantWeight2 unsignedIntegerValue];
 
-    return v4;
+    return unsignedIntegerValue;
   }
 
   else
   {
-    v6 = CTFontCopyVariation(a1);
+    v6 = CTFontCopyVariation(self);
     if (v6 && ([MEMORY[0x1E696AD98] numberWithDouble:2003265650.0], v7 = objc_claimAutoreleasedReturnValue(), -[__CFDictionary objectForKeyedSubscript:](v6, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
     {
-      [a1 pr_setCachedVariantWeight:v8];
-      v9 = [v8 unsignedIntegerValue];
+      [self pr_setCachedVariantWeight:v8];
+      unsignedIntegerValue2 = [v8 unsignedIntegerValue];
     }
 
     else
@@ -63,8 +63,8 @@
                 if (v20)
                 {
                   v21 = v20;
-                  [a1 pr_setCachedVariantWeight:v20];
-                  v9 = [v21 unsignedIntegerValue];
+                  [self pr_setCachedVariantWeight:v20];
+                  unsignedIntegerValue2 = [v21 unsignedIntegerValue];
 
                   goto LABEL_18;
                 }
@@ -82,32 +82,32 @@
         }
       }
 
-      [a1 pr_setCachedVariantWeight:&unk_1F1C6B908];
-      v9 = 0x7FFFFFFFFFFFFFFFLL;
+      [self pr_setCachedVariantWeight:&unk_1F1C6B908];
+      unsignedIntegerValue2 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_18:
 
       v6 = v22;
     }
 
-    return v9;
+    return unsignedIntegerValue2;
   }
 }
 
 - (uint64_t)pr_variantWeightRange
 {
   v28 = *MEMORY[0x1E69E9840];
-  v2 = [a1 pr_minimumAllowedFontWeightFont];
-  v3 = [a1 pr_maximumAllowedFontWeightFont];
-  v4 = v3;
-  if (v2 && v3)
+  pr_minimumAllowedFontWeightFont = [self pr_minimumAllowedFontWeightFont];
+  pr_maximumAllowedFontWeightFont = [self pr_maximumAllowedFontWeightFont];
+  v4 = pr_maximumAllowedFontWeightFont;
+  if (pr_minimumAllowedFontWeightFont && pr_maximumAllowedFontWeightFont)
   {
-    v5 = [v2 pr_variantWeight];
+    pr_variantWeight = [pr_minimumAllowedFontWeightFont pr_variantWeight];
     [v4 pr_variantWeight];
   }
 
   else
   {
-    v21 = v3;
+    v21 = pr_maximumAllowedFontWeightFont;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -150,7 +150,7 @@ LABEL_18:
 
             if (!v19)
             {
-              v5 = [v16 unsignedIntValue];
+              pr_variantWeight = [v16 unsignedIntValue];
               [v18 unsignedIntValue];
 
               goto LABEL_20;
@@ -164,12 +164,12 @@ LABEL_18:
       while (v8);
     }
 
-    v5 = 0;
+    pr_variantWeight = 0;
 LABEL_20:
     v4 = v21;
   }
 
-  return v5;
+  return pr_variantWeight;
 }
 
 - (id)pr_fontWithVariantWeight:()PRAdditions forRole:
@@ -187,8 +187,8 @@ LABEL_20:
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
   v12 = CTFontDescriptorCreateWithAttributes(v11);
-  [a1 pointSize];
-  CopyWithAttributes = CTFontCreateCopyWithAttributes(a1, v13, 0, v12);
+  [self pointSize];
+  CopyWithAttributes = CTFontCreateCopyWithAttributes(self, v13, 0, v12);
   CFRelease(v12);
   v15 = [(__CTFont *)CopyWithAttributes pr_fontWithDefaultFallbacksForRole:v7];
 

@@ -8,17 +8,17 @@
 - (id)accessibilityLabel
 {
   v2 = [(PKPaymentTransactionTableCellAccessibility *)self safeUIViewForKey:@"_transactionView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(PKPaymentTransactionTableCellAccessibility *)self safeUIViewForKey:@"_transactionView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

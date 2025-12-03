@@ -1,30 +1,30 @@
 @interface CBColorFilter
-+ ($1AB5FA073B851C12C2339EC22442E995)calculateTristimulusForChromaticity:(id)a3 andLux:(double)a4;
-+ (double)calculateCCTForChromaticity:(id)a3;
-+ (double)calculateCCTForTristimulus:(id)a3;
-- (BOOL)ALSServiceConformsToPolicy:(id)a3;
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3;
++ ($1AB5FA073B851C12C2339EC22442E995)calculateTristimulusForChromaticity:(id)chromaticity andLux:(double)lux;
++ (double)calculateCCTForChromaticity:(id)chromaticity;
++ (double)calculateCCTForTristimulus:(id)tristimulus;
+- (BOOL)ALSServiceConformsToPolicy:(id)policy;
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client;
 - (BOOL)allValidALSEventsArrived;
 - (BOOL)forceSampleUpdate;
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4;
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from;
 - (BOOL)hasExtFrontSensor;
 - (BOOL)hasExtRearSensor;
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (CBColorFilter)initWithIdentifier:(id)a3;
-- (id)copyHumanReadablePolicyRepresentation:(unint64_t)a3;
-- (id)filterEvent:(id)a3;
-- (id)humanReadableModeRepresentation:(unint64_t)a3;
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client;
+- (CBColorFilter)initWithIdentifier:(id)identifier;
+- (id)copyHumanReadablePolicyRepresentation:(unint64_t)representation;
+- (id)filterEvent:(id)event;
+- (id)humanReadableModeRepresentation:(unint64_t)representation;
 - (id)newColorSampleConditionWeighted;
-- (id)newColorSampleLinearWeightedForSamples:(id)a3;
-- (id)newColorSampleLinearWeightedForServices:(id)a3;
+- (id)newColorSampleLinearWeightedForSamples:(id)samples;
+- (id)newColorSampleLinearWeightedForServices:(id)services;
 - (id)newColorSampleLogWeighted;
-- (id)newColorSampleLogWeightedForSamples:(id)a3;
+- (id)newColorSampleLogWeightedForSamples:(id)samples;
 - (id)newColorSampleWinnerTakesAll;
 - (void)dealloc;
 - (void)reportSampleUpdate;
 - (void)resetEvents;
-- (void)setMode:(unint64_t)a3;
-- (void)setSensorPolicy:(unint64_t)a3;
+- (void)setMode:(unint64_t)mode;
+- (void)setSensorPolicy:(unint64_t)policy;
 - (void)updateSample;
 - (void)updateValidServices;
 @end
@@ -34,21 +34,21 @@
 - (void)updateSample
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = 0;
-  v5 = [(CBColorFilter *)self evaluatedFilterMode];
-  switch(v5)
+  newColorSampleLogWeighted = 0;
+  evaluatedFilterMode = [(CBColorFilter *)self evaluatedFilterMode];
+  switch(evaluatedFilterMode)
   {
     case 3:
-      v6 = [(CBColorFilter *)self newColorSampleLinearWeightedForServices:self->_validServices];
+      newColorSampleLogWeighted = [(CBColorFilter *)self newColorSampleLinearWeightedForServices:self->_validServices];
       break;
     case 4:
-      v6 = [(CBColorFilter *)self newColorSampleLogWeighted];
+      newColorSampleLogWeighted = [(CBColorFilter *)self newColorSampleLogWeighted];
       break;
     case 2:
-      v6 = [(CBColorFilter *)self newColorSampleWinnerTakesAll];
+      newColorSampleLogWeighted = [(CBColorFilter *)self newColorSampleWinnerTakesAll];
       break;
     case 6:
-      v6 = [(CBColorFilter *)self newColorSampleConditionWeighted];
+      newColorSampleLogWeighted = [(CBColorFilter *)self newColorSampleConditionWeighted];
       break;
     default:
       if (self->super._logHandle)
@@ -73,18 +73,18 @@
 
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_0_1_8_0(v8, v5);
+        __os_log_helper_16_0_1_8_0(v8, evaluatedFilterMode);
         _os_log_error_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_ERROR, "ERROR: unsupported mode %lu", v8, 0xCu);
       }
 
       break;
   }
 
-  if (v6)
+  if (newColorSampleLogWeighted)
   {
     *&v2 = MEMORY[0x1E69E5920](self->_sample).n128_u64[0];
-    self->_sample = v6;
-    [(CBColorSample *)self->_sample setMode:v5, v2];
+    self->_sample = newColorSampleLogWeighted;
+    [(CBColorSample *)self->_sample setMode:evaluatedFilterMode, v2];
   }
 
   [(CBColorFilter *)self reportSampleUpdate];
@@ -94,7 +94,7 @@
 - (id)newColorSampleWinnerTakesAll
 {
   v28 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
   v20 = 0;
   v21 = &v20;
@@ -116,7 +116,7 @@
   v14 = 0;
   if (self->super._logHandle)
   {
-    logHandle = v26->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -136,11 +136,11 @@
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_1_8_64(v27, v26->_validServices);
+    __os_log_helper_16_2_1_8_64(v27, selfCopy->_validServices);
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "ALS services: %@", v27, 0xCu);
   }
 
-  [(NSMutableArray *)v26->_validServices enumerateObjectsUsingBlock:?];
+  [(NSMutableArray *)selfCopy->_validServices enumerateObjectsUsingBlock:?];
   v4 = [CBColorSample alloc];
   v3 = [(CBColorSample *)v4 initWithTristimulus:v8[4] illuminance:v8[5] andTempterature:v8[6], v21[3], v16[3]];
   _Block_object_dispose(&v7, 8);
@@ -240,13 +240,13 @@ double __45__CBColorFilter_newColorSampleWinnerTakesAll__block_invoke(void *a1, 
     }
 
     MEMORY[0x1E69E5920](v21);
-    v18 = [(CBColorSample *)self->_sample copyDataInDictionary];
-    if (v18)
+    copyDataInDictionary = [(CBColorSample *)self->_sample copyDataInDictionary];
+    if (copyDataInDictionary)
     {
-      [v22 setObject:v18 forKey:@"sample"];
+      [v22 setObject:copyDataInDictionary forKey:@"sample"];
     }
 
-    [(NSMutableArray *)self->_validServices enumerateObjectsUsingBlock:MEMORY[0x1E69E5920](v18).n128_f64[0]];
+    [(NSMutableArray *)self->_validServices enumerateObjectsUsingBlock:MEMORY[0x1E69E5920](copyDataInDictionary).n128_f64[0]];
     [(CBFilter *)self sendNotificationForKey:@"ColorSample" andValue:v22];
   }
 
@@ -272,42 +272,42 @@ double __35__CBColorFilter_reportSampleUpdate__block_invoke(uint64_t a1, void *a
   return result;
 }
 
-- (CBColorFilter)initWithIdentifier:(id)a3
+- (CBColorFilter)initWithIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x1E69E9840];
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = CBColorFilter;
-  v25 = [(CBColorFilter *)&v22 init];
-  if (v25)
+  selfCopy = [(CBColorFilter *)&v22 init];
+  if (selfCopy)
   {
-    if (v23)
+    if (identifierCopy)
     {
       v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v21 = [v15 initWithFormat:@"%s.%s.%s", "com.apple.CoreBrightness", "CBColorFilter", objc_msgSend(v23, "UTF8String")];
+      v21 = [v15 initWithFormat:@"%s.%s.%s", "com.apple.CoreBrightness", "CBColorFilter", objc_msgSend(identifierCopy, "UTF8String")];
       v3 = os_log_create([v21 cStringUsingEncoding:1], "default");
-      v25->super._logHandle = v3;
+      selfCopy->super._logHandle = v3;
       MEMORY[0x1E69E5920](v21);
     }
 
     else
     {
       v4 = os_log_create("com.apple.CoreBrightness.CBColorFilter", "default");
-      v25->super._logHandle = v4;
+      selfCopy->super._logHandle = v4;
     }
 
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v25->_services = v5;
+    selfCopy->_services = v5;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v25->_validServices = v6;
-    v25->_mode = 6;
-    v25->_sensorPolicy = 255;
+    selfCopy->_validServices = v6;
+    selfCopy->_mode = 6;
+    selfCopy->_sensorPolicy = 255;
     context = objc_autoreleasePoolPush();
-    if (v25->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v25->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -329,8 +329,8 @@ double __35__CBColorFilter_reportSampleUpdate__block_invoke(uint64_t a1, void *a
     v19 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(CBColorFilter *)v25 humanReadableModeRepresentation:v25->_mode];
-      __os_log_helper_16_2_2_8_64_8_64(v26, v11, [(CBColorFilter *)v25 copyHumanReadablePolicyRepresentation:v25->_sensorPolicy]);
+      v11 = [(CBColorFilter *)selfCopy humanReadableModeRepresentation:selfCopy->_mode];
+      __os_log_helper_16_2_2_8_64_8_64(v26, v11, [(CBColorFilter *)selfCopy copyHumanReadablePolicyRepresentation:selfCopy->_sensorPolicy]);
       _os_log_debug_impl(&dword_1DE8E5000, v20, v19, "initialised color filter with mode: %@, policy: %@", v26, 0x16u);
     }
 
@@ -361,36 +361,36 @@ double __35__CBColorFilter_reportSampleUpdate__block_invoke(uint64_t a1, void *a
   }
 
   *MEMORY[0x1E69E9840];
-  return v25;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->super._logHandle)
   {
-    MEMORY[0x1E69E5920](v5->super._logHandle);
-    v5->super._logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->super._logHandle);
+    selfCopy->super._logHandle = 0;
   }
 
-  MEMORY[0x1E69E5920](v5->_services);
-  MEMORY[0x1E69E5920](v5->_validServices);
-  *&v2 = MEMORY[0x1E69E5920](v5->_sample).n128_u64[0];
-  if (v5->super._notificationBlock)
+  MEMORY[0x1E69E5920](selfCopy->_services);
+  MEMORY[0x1E69E5920](selfCopy->_validServices);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_sample).n128_u64[0];
+  if (selfCopy->super._notificationBlock)
   {
-    _Block_release(v5->super._notificationBlock);
+    _Block_release(selfCopy->super._notificationBlock);
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBColorFilter;
   [(CBColorFilter *)&v3 dealloc];
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3 == 1 || a3 == 5)
+  if (mode == 1 || mode == 5)
   {
     if (self->super._logHandle)
     {
@@ -414,12 +414,12 @@ double __35__CBColorFilter_reportSampleUpdate__block_invoke(uint64_t a1, void *a
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_0_1_8_0(v10, a3);
+      __os_log_helper_16_0_1_8_0(v10, mode);
       _os_log_error_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_ERROR, "invalid mode update (%lu)", v10, 0xCu);
     }
   }
 
-  else if (self->_mode != a3)
+  else if (self->_mode != mode)
   {
     if (self->super._logHandle)
     {
@@ -443,20 +443,20 @@ double __35__CBColorFilter_reportSampleUpdate__block_invoke(uint64_t a1, void *a
 
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v9, [(CBColorFilter *)self humanReadableModeRepresentation:self->_mode], [(CBColorFilter *)self humanReadableModeRepresentation:a3]);
+      __os_log_helper_16_2_2_8_64_8_64(v9, [(CBColorFilter *)self humanReadableModeRepresentation:self->_mode], [(CBColorFilter *)self humanReadableModeRepresentation:mode]);
       _os_log_impl(&dword_1DE8E5000, v4, OS_LOG_TYPE_DEFAULT, "Color filter mode changed; old mode: %@ new mode: %@", v9, 0x16u);
     }
 
-    self->_mode = a3;
+    self->_mode = mode;
     [(CBColorFilter *)self updateSample];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (id)humanReadableModeRepresentation:(unint64_t)a3
+- (id)humanReadableModeRepresentation:(unint64_t)representation
 {
-  switch(a3)
+  switch(representation)
   {
     case 0uLL:
       return @"unspecified";
@@ -473,26 +473,26 @@ double __35__CBColorFilter_reportSampleUpdate__block_invoke(uint64_t a1, void *a
   return @"invalid";
 }
 
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  clientCopy = client;
   v12 = 0;
-  v11 = [[CBALSService alloc] initWithHIDALSServiceClient:a3];
+  v11 = [[CBALSService alloc] initWithHIDALSServiceClient:client];
   if (v11)
   {
-    [(NSMutableArray *)v15->_services addObject:v11];
-    [(CBColorFilter *)v15 updateValidServices];
+    [(NSMutableArray *)selfCopy->_services addObject:v11];
+    [(CBColorFilter *)selfCopy updateValidServices];
     MEMORY[0x1E69E5920](v11);
     v12 = 1;
   }
 
   else
   {
-    if (v15->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v15->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -536,7 +536,7 @@ uint64_t __42__CBColorFilter_acknowledgeHIDEvent_from___block_invoke(uint64_t a1
   return result;
 }
 
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from
 {
   [(NSMutableArray *)self->_services enumerateObjectsUsingBlock:?];
   [(CBColorFilter *)self updateSample];
@@ -555,16 +555,16 @@ uint64_t __37__CBColorFilter_handleHIDEvent_from___block_invoke(uint64_t a1, voi
   return result;
 }
 
-- (id)filterEvent:(id)a3
+- (id)filterEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  eventCopy = event;
+  if (event && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     memset(__b, 0, sizeof(__b));
-    obj = v17->_services;
+    obj = selfCopy->_services;
     v11 = [(NSMutableArray *)obj countByEnumeratingWithState:__b objects:v19 count:16];
     if (!v11)
     {
@@ -584,7 +584,7 @@ uint64_t __37__CBColorFilter_handleHIDEvent_from___block_invoke(uint64_t a1, voi
 
       v14 = 0;
       v14 = *(__b[1] + 8 * v8);
-      if ([v14 conformsToHIDService:{objc_msgSend(v15, "service")}])
+      if ([v14 conformsToHIDService:{objc_msgSend(eventCopy, "service")}])
       {
         break;
       }
@@ -601,12 +601,12 @@ uint64_t __37__CBColorFilter_handleHIDEvent_from___block_invoke(uint64_t a1, voi
       }
     }
 
-    [v14 setEvent:{objc_msgSend(v15, "event")}];
-    if (([(NSMutableArray *)v17->_validServices containsObject:v14]& 1) != 0)
+    [v14 setEvent:{objc_msgSend(eventCopy, "event")}];
+    if (([(NSMutableArray *)selfCopy->_validServices containsObject:v14]& 1) != 0)
     {
-      [(CBColorFilter *)v17 updateSample];
-      v4 = v15;
-      sample = v17->_sample;
+      [(CBColorFilter *)selfCopy updateSample];
+      v4 = eventCopy;
+      sample = selfCopy->_sample;
       if (sample)
       {
         [(CBColorSample *)sample colorSample];
@@ -618,7 +618,7 @@ uint64_t __37__CBColorFilter_handleHIDEvent_from___block_invoke(uint64_t a1, voi
       }
 
       [v4 setColorSample:v12];
-      v18 = v15;
+      v18 = eventCopy;
     }
 
     else
@@ -630,18 +630,18 @@ LABEL_17:
 
   else
   {
-    v18 = v15;
+    v18 = eventCopy;
   }
 
   *MEMORY[0x1E69E9840];
   return v18;
 }
 
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  clientCopy = client;
   v7 = 0;
   v8 = &v7;
   v9 = 1375731712;
@@ -653,20 +653,20 @@ LABEL_17:
   if (v8[5])
   {
     MEMORY[0x1E69E5928](v8[5]);
-    [(NSMutableArray *)v16->_validServices removeObject:v8[5]];
-    [(NSMutableArray *)v16->_services removeObject:v8[5]];
+    [(NSMutableArray *)selfCopy->_validServices removeObject:v8[5]];
+    [(NSMutableArray *)selfCopy->_services removeObject:v8[5]];
     if (([v8[5] builtIn] & 1) == 0)
     {
-      v6 = [(CBColorFilter *)v16 hasExtRearSensor];
-      v5 = [(CBColorFilter *)v16 hasExtFrontSensor];
+      hasExtRearSensor = [(CBColorFilter *)selfCopy hasExtRearSensor];
+      hasExtFrontSensor = [(CBColorFilter *)selfCopy hasExtFrontSensor];
       v4 = 1;
-      if (!v6)
+      if (!hasExtRearSensor)
       {
-        v4 = v5;
+        v4 = hasExtFrontSensor;
         [CBAnalyticsExtDisplayManager stopReporting:2];
       }
 
-      if ((v5 & 1) == 0)
+      if ((hasExtFrontSensor & 1) == 0)
       {
         [CBAnalyticsExtDisplayManager stopReporting:1];
       }
@@ -696,13 +696,13 @@ uint64_t __40__CBColorFilter_removeHIDServiceClient___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (void)setSensorPolicy:(unint64_t)a3
+- (void)setSensorPolicy:(unint64_t)policy
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_sensorPolicy != a3)
+  if (self->_sensorPolicy != policy)
   {
     sensorPolicy = self->_sensorPolicy;
-    self->_sensorPolicy = a3;
+    self->_sensorPolicy = policy;
     [(CBColorFilter *)self updateValidServices];
     context = objc_autoreleasePoolPush();
     if (self->super._logHandle)
@@ -727,7 +727,7 @@ uint64_t __40__CBColorFilter_removeHIDServiceClient___block_invoke(uint64_t a1, 
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_3_8_64_8_64_8_66(v9, [(CBColorFilter *)self copyHumanReadablePolicyRepresentation:sensorPolicy], [(CBColorFilter *)self copyHumanReadablePolicyRepresentation:a3], self->_validServices);
+      __os_log_helper_16_2_3_8_64_8_64_8_66(v9, [(CBColorFilter *)self copyHumanReadablePolicyRepresentation:sensorPolicy], [(CBColorFilter *)self copyHumanReadablePolicyRepresentation:policy], self->_validServices);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Color filter sensor policy changed; old policy: %@ new policy: %@ valid services: %{public}@", v9, 0x20u);
     }
 
@@ -737,30 +737,30 @@ uint64_t __40__CBColorFilter_removeHIDServiceClient___block_invoke(uint64_t a1, 
   *MEMORY[0x1E69E9840];
 }
 
-- (id)copyHumanReadablePolicyRepresentation:(unint64_t)a3
+- (id)copyHumanReadablePolicyRepresentation:(unint64_t)representation
 {
   v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:&stru_1F599E370];
-  if (!a3)
+  if (!representation)
   {
     [v4 appendString:{@"none, "}];
   }
 
-  if (a3)
+  if (representation)
   {
     [v4 appendString:{@"front, "}];
   }
 
-  if ((a3 & 2) != 0)
+  if ((representation & 2) != 0)
   {
     [v4 appendString:{@"back, "}];
   }
 
-  if ((a3 & 4) != 0)
+  if ((representation & 4) != 0)
   {
     [v4 appendString:{@"external, "}];
   }
 
-  if ((a3 & 8) != 0)
+  if ((representation & 8) != 0)
   {
     [v4 appendString:{@"internal, "}];
   }
@@ -768,12 +768,12 @@ uint64_t __40__CBColorFilter_removeHIDServiceClient___block_invoke(uint64_t a1, 
   return v4;
 }
 
-- (id)newColorSampleLinearWeightedForServices:(id)a3
+- (id)newColorSampleLinearWeightedForServices:(id)services
 {
   v43 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   v39 = a2;
-  v38 = a3;
+  servicesCopy = services;
   v33 = 0;
   v34 = &v33;
   v35 = 0x20000000;
@@ -794,7 +794,7 @@ uint64_t __40__CBColorFilter_removeHIDServiceClient___block_invoke(uint64_t a1, 
   v26 = 0;
   if (self->super._logHandle)
   {
-    logHandle = v40->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -816,13 +816,13 @@ uint64_t __40__CBColorFilter_removeHIDServiceClient___block_invoke(uint64_t a1, 
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_1_8_64(v42, v38);
+    __os_log_helper_16_2_1_8_64(v42, servicesCopy);
     _os_log_debug_impl(&dword_1DE8E5000, oslog, type, "ALS services: %@", v42, 0xCu);
   }
 
   memset(__b, 0, sizeof(__b));
-  obj = v38;
-  v13 = [v38 countByEnumeratingWithState:__b objects:v41 count:16];
+  obj = servicesCopy;
+  v13 = [servicesCopy countByEnumeratingWithState:__b objects:v41 count:16];
   if (v13)
   {
     v9 = *__b[2];
@@ -859,7 +859,7 @@ uint64_t __40__CBColorFilter_removeHIDServiceClient___block_invoke(uint64_t a1, 
 
   if (v28[3] != 0.0)
   {
-    [v38 enumerateObjectsUsingBlock:?];
+    [servicesCopy enumerateObjectsUsingBlock:?];
     [CBColorFilter calculateCCTForChromaticity:v21[4], v21[5]];
     v32 = v4;
   }
@@ -921,12 +921,12 @@ void __57__CBColorFilter_newColorSampleLinearWeightedForServices___block_invoke(
   *MEMORY[0x1E69E9840];
 }
 
-- (id)newColorSampleLinearWeightedForSamples:(id)a3
+- (id)newColorSampleLinearWeightedForSamples:(id)samples
 {
   v38 = *MEMORY[0x1E69E9840];
-  v36 = self;
+  selfCopy = self;
   v35 = a2;
-  v34 = a3;
+  samplesCopy = samples;
   v29 = 0;
   v30 = &v29;
   v31 = 0x20000000;
@@ -946,8 +946,8 @@ void __57__CBColorFilter_newColorSampleLinearWeightedForServices___block_invoke(
   v21 = 0;
   v22 = 0;
   memset(__b, 0, sizeof(__b));
-  obj = v34;
-  v13 = [v34 countByEnumeratingWithState:__b objects:v37 count:16];
+  obj = samplesCopy;
+  v13 = [samplesCopy countByEnumeratingWithState:__b objects:v37 count:16];
   if (v13)
   {
     v9 = *__b[2];
@@ -980,7 +980,7 @@ void __57__CBColorFilter_newColorSampleLinearWeightedForServices___block_invoke(
 
   if (v24[3] != 0.0)
   {
-    [v34 enumerateObjectsUsingBlock:?];
+    [samplesCopy enumerateObjectsUsingBlock:?];
     [CBColorFilter calculateCCTForChromaticity:v17[4], v17[5]];
     v28 = v4;
   }
@@ -1038,12 +1038,12 @@ void __56__CBColorFilter_newColorSampleLinearWeightedForSamples___block_invoke(v
   *MEMORY[0x1E69E9840];
 }
 
-- (id)newColorSampleLogWeightedForSamples:(id)a3
+- (id)newColorSampleLogWeightedForSamples:(id)samples
 {
   v39 = *MEMORY[0x1E69E9840];
-  v37 = self;
+  selfCopy = self;
   v36 = a2;
-  v35 = a3;
+  samplesCopy = samples;
   v30 = 0;
   v31 = &v30;
   v32 = 0x20000000;
@@ -1063,8 +1063,8 @@ void __56__CBColorFilter_newColorSampleLinearWeightedForSamples___block_invoke(v
   v22 = 0;
   v23 = 0;
   memset(__b, 0, sizeof(__b));
-  obj = v35;
-  v14 = [v35 countByEnumeratingWithState:__b objects:v38 count:16];
+  obj = samplesCopy;
+  v14 = [samplesCopy countByEnumeratingWithState:__b objects:v38 count:16];
   if (v14)
   {
     v10 = *__b[2];
@@ -1098,7 +1098,7 @@ void __56__CBColorFilter_newColorSampleLinearWeightedForSamples___block_invoke(v
 
   if (v25[3] != 0.0)
   {
-    [v35 enumerateObjectsUsingBlock:?];
+    [samplesCopy enumerateObjectsUsingBlock:?];
     [CBColorFilter calculateCCTForChromaticity:v18[4], v18[5]];
     v29 = v5;
   }
@@ -1159,7 +1159,7 @@ void __53__CBColorFilter_newColorSampleLogWeightedForSamples___block_invoke(void
 - (id)newColorSampleLogWeighted
 {
   v42 = *MEMORY[0x1E69E9840];
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
   v33 = 0;
   v34 = &v33;
@@ -1181,7 +1181,7 @@ void __53__CBColorFilter_newColorSampleLogWeightedForSamples___block_invoke(void
   v26 = 0;
   if (self->super._logHandle)
   {
-    logHandle = v39->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -1203,12 +1203,12 @@ void __53__CBColorFilter_newColorSampleLogWeightedForSamples___block_invoke(void
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_1_8_64(v41, v39->_validServices);
+    __os_log_helper_16_2_1_8_64(v41, selfCopy->_validServices);
     _os_log_debug_impl(&dword_1DE8E5000, oslog, type, "ALS services: %@", v41, 0xCu);
   }
 
   memset(__b, 0, sizeof(__b));
-  obj = v39->_validServices;
+  obj = selfCopy->_validServices;
   v13 = [(NSMutableArray *)obj countByEnumeratingWithState:__b objects:v40 count:16];
   if (v13)
   {
@@ -1247,7 +1247,7 @@ void __53__CBColorFilter_newColorSampleLogWeightedForSamples___block_invoke(void
 
   if (v28[3] != 0.0)
   {
-    [(NSMutableArray *)v39->_validServices enumerateObjectsUsingBlock:?];
+    [(NSMutableArray *)selfCopy->_validServices enumerateObjectsUsingBlock:?];
     [CBColorFilter calculateCCTForChromaticity:v21[4], v21[5]];
     v32 = v4;
   }
@@ -1312,7 +1312,7 @@ void __42__CBColorFilter_newColorSampleLogWeighted__block_invoke(void *a1, void 
 - (id)newColorSampleConditionWeighted
 {
   v104 = *MEMORY[0x1E69E9840];
-  v97 = self;
+  selfCopy = self;
   v96 = a2;
   v95 = 0;
   v88 = 0;
@@ -1331,7 +1331,7 @@ void __42__CBColorFilter_newColorSampleLogWeighted__block_invoke(void *a1, void 
   v87 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v80 = 0;
   v79 = 0;
-  validServices = v97->_validServices;
+  validServices = selfCopy->_validServices;
   v72 = MEMORY[0x1E69E9820];
   v73 = -1073741824;
   v74 = 0;
@@ -1340,9 +1340,9 @@ void __42__CBColorFilter_newColorSampleLogWeighted__block_invoke(void *a1, void 
   v77 = &v81;
   v78 = &v88;
   [(NSMutableArray *)validServices enumerateObjectsUsingBlock:?];
-  if (v97->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v97->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -1368,9 +1368,9 @@ void __42__CBColorFilter_newColorSampleLogWeighted__block_invoke(void *a1, void 
     _os_log_debug_impl(&dword_1DE8E5000, oslog, type, "rear sensors: %@", v103, 0xCu);
   }
 
-  if (v97->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    v49 = v97->super._logHandle;
+    v49 = selfCopy->super._logHandle;
   }
 
   else
@@ -1398,16 +1398,16 @@ void __42__CBColorFilter_newColorSampleLogWeighted__block_invoke(void *a1, void 
 
   if ([v89[5] count])
   {
-    v80 = [(CBColorFilter *)v97 newColorSampleLinearWeightedForServices:v89[5]];
-    if ([(CBColorFilter *)v97 hasExtRearSensor])
+    v80 = [(CBColorFilter *)selfCopy newColorSampleLinearWeightedForServices:v89[5]];
+    if ([(CBColorFilter *)selfCopy hasExtRearSensor])
     {
       [v80 setType:2];
       [CBAnalyticsExtDisplayManager handleColorSample:v80];
     }
 
-    if (v97->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v47 = v97->super._logHandle;
+      v47 = selfCopy->super._logHandle;
     }
 
     else
@@ -1447,16 +1447,16 @@ void __42__CBColorFilter_newColorSampleLogWeighted__block_invoke(void *a1, void 
 
   if ([v82[5] count])
   {
-    v79 = [(CBColorFilter *)v97 newColorSampleLinearWeightedForServices:v82[5]];
-    if ([(CBColorFilter *)v97 hasExtFrontSensor])
+    v79 = [(CBColorFilter *)selfCopy newColorSampleLinearWeightedForServices:v82[5]];
+    if ([(CBColorFilter *)selfCopy hasExtFrontSensor])
     {
       [v79 setType:1];
       [CBAnalyticsExtDisplayManager handleColorSample:v79];
     }
 
-    if (v97->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v42 = v97->super._logHandle;
+      v42 = selfCopy->super._logHandle;
     }
 
     else
@@ -1510,20 +1510,20 @@ void __42__CBColorFilter_newColorSampleLogWeighted__block_invoke(void *a1, void 
           [v79 lux];
           if (v37 <= v18)
           {
-            v95 = [(CBColorFilter *)v97 newColorSampleLogWeightedForSamples:v55, v37];
+            v95 = [(CBColorFilter *)selfCopy newColorSampleLogWeightedForSamples:v55, v37];
           }
 
           else
           {
-            v95 = [(CBColorFilter *)v97 newColorSampleLinearWeightedForSamples:v55, v37];
+            v95 = [(CBColorFilter *)selfCopy newColorSampleLinearWeightedForSamples:v55, v37];
           }
         }
 
         else
         {
-          if (v97->super._logHandle)
+          if (selfCopy->super._logHandle)
           {
-            v36 = v97->super._logHandle;
+            v36 = selfCopy->super._logHandle;
           }
 
           else
@@ -1582,9 +1582,9 @@ LABEL_58:
     goto LABEL_62;
   }
 
-  if (v97->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    v32 = v97->super._logHandle;
+    v32 = selfCopy->super._logHandle;
   }
 
   else
@@ -1609,7 +1609,7 @@ LABEL_58:
   }
 
 LABEL_71:
-  if ([(CBColorFilter *)v97 hasExtFrontSensor]|| [(CBColorFilter *)v97 hasExtRearSensor])
+  if ([(CBColorFilter *)selfCopy hasExtFrontSensor]|| [(CBColorFilter *)selfCopy hasExtRearSensor])
   {
     [v95 setType:3];
     [CBAnalyticsExtDisplayManager handleColorSample:v95];
@@ -1619,9 +1619,9 @@ LABEL_71:
   MEMORY[0x1E69E5920](v79);
   MEMORY[0x1E69E5920](v89[5]);
   MEMORY[0x1E69E5920](v82[5]);
-  if (v97->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    v30 = v97->super._logHandle;
+    v30 = selfCopy->super._logHandle;
   }
 
   else
@@ -1702,37 +1702,37 @@ uint64_t __48__CBColorFilter_newColorSampleConditionWeighted__block_invoke(uint6
   return result;
 }
 
-- (BOOL)ALSServiceConformsToPolicy:(id)a3
+- (BOOL)ALSServiceConformsToPolicy:(id)policy
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 1;
-  if ([a3 builtIn])
+  if ([policy builtIn])
   {
     v10 = (self->_sensorPolicy & 8) != 0;
   }
 
-  if (([a3 builtIn] & 1) == 0 && (self->_sensorPolicy & 4) == 0)
+  if (([policy builtIn] & 1) == 0 && (self->_sensorPolicy & 4) == 0)
   {
     v10 = 0;
   }
 
   v9 = 1;
-  if ([a3 location] != 257)
+  if ([policy location] != 257)
   {
-    v9 = [a3 placement] == 1;
+    v9 = [policy placement] == 1;
   }
 
   v8 = 1;
-  if ([a3 location] != 258)
+  if ([policy location] != 258)
   {
-    v8 = [a3 placement] == 2;
+    v8 = [policy placement] == 2;
   }
 
   v7 = 1;
   if (!v9)
   {
     v6 = 0;
-    if ([a3 builtIn])
+    if ([policy builtIn])
     {
       v6 = !v8;
     }
@@ -1772,7 +1772,7 @@ uint64_t __48__CBColorFilter_newColorSampleConditionWeighted__block_invoke(uint6
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_5_8_0_4_0_8_0_8_0_4_0(v13, [a3 registryID], objc_msgSend(a3, "builtIn"), objc_msgSend(a3, "location"), self->_sensorPolicy, v10);
+    __os_log_helper_16_0_5_8_0_4_0_8_0_8_0_4_0(v13, [policy registryID], objc_msgSend(policy, "builtIn"), objc_msgSend(policy, "location"), self->_sensorPolicy, v10);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "ID=0x%lX internal=%d location=0x%lX | policy=0x%lX | OK=%d", v13, 0x2Cu);
   }
 
@@ -1801,11 +1801,11 @@ uint64_t __36__CBColorFilter_updateValidServices__block_invoke(uint64_t a1, uint
 - (BOOL)allValidALSEventsArrived
 {
   v15 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11 = 1;
   memset(__b, 0, sizeof(__b));
-  obj = v13->_validServices;
+  obj = selfCopy->_validServices;
   v8 = [(NSMutableArray *)obj countByEnumeratingWithState:__b objects:v14 count:16];
   if (v8)
   {
@@ -1850,10 +1850,10 @@ LABEL_9:
 - (void)resetEvents
 {
   v13 = *MEMORY[0x1E69E9840];
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = v11->_services;
+  obj = selfCopy->_services;
   v7 = [(NSMutableArray *)obj countByEnumeratingWithState:__b objects:v12 count:16];
   if (v7)
   {
@@ -1887,40 +1887,40 @@ LABEL_9:
   *MEMORY[0x1E69E9840];
 }
 
-+ (double)calculateCCTForChromaticity:(id)a3
++ (double)calculateCCTForChromaticity:(id)chromaticity
 {
-  __x = (a3.var0 - 0.332) / (a3.var1 - 0.1858);
+  __x = (chromaticity.var0 - 0.332) / (chromaticity.var1 - 0.1858);
   v4 = pow(__x, 3.0);
   return 3525.0 * pow(__x, 2.0) + -449.0 * v4 + -6823.3 * __x + 5520.33;
 }
 
-+ (double)calculateCCTForTristimulus:(id)a3
++ (double)calculateCCTForTristimulus:(id)tristimulus
 {
   v6 = -1.0;
-  v5 = a3.var0 + a3.var1 + a3.var2;
+  v5 = tristimulus.var0 + tristimulus.var1 + tristimulus.var2;
   if (v5 != 0.0)
   {
-    [CBColorFilter calculateCCTForChromaticity:a3.var0 / v5, a3.var1 / v5];
+    [CBColorFilter calculateCCTForChromaticity:tristimulus.var0 / v5, tristimulus.var1 / v5];
     return v3;
   }
 
   return v6;
 }
 
-+ ($1AB5FA073B851C12C2339EC22442E995)calculateTristimulusForChromaticity:(id)a3 andLux:(double)a4
++ ($1AB5FA073B851C12C2339EC22442E995)calculateTristimulusForChromaticity:(id)chromaticity andLux:(double)lux
 {
   v7 = 0.0;
-  v8 = 0.0;
+  luxCopy = 0.0;
   v9 = 0.0;
-  if (a3.var1 > 0.0 && a4 > 0.0)
+  if (chromaticity.var1 > 0.0 && lux > 0.0)
   {
-    v7 = a3.var0 / a3.var1 * a4;
-    v8 = a4;
-    v9 = (1.0 - a3.var0 - a3.var1) / a3.var1 * a4;
+    v7 = chromaticity.var0 / chromaticity.var1 * lux;
+    luxCopy = lux;
+    v9 = (1.0 - chromaticity.var0 - chromaticity.var1) / chromaticity.var1 * lux;
   }
 
   v4 = v7;
-  v5 = v8;
+  v5 = luxCopy;
   v6 = v9;
   result.var2 = v6;
   result.var1 = v5;
@@ -1930,7 +1930,7 @@ LABEL_9:
 
 - (BOOL)forceSampleUpdate
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v4 = 0;
   v5 = &v4;
@@ -1940,7 +1940,7 @@ LABEL_9:
   [(NSMutableArray *)self->_validServices enumerateObjectsUsingBlock:?];
   if (v5[3])
   {
-    [(CBColorFilter *)v10 updateSample];
+    [(CBColorFilter *)selfCopy updateSample];
   }
 
   v3 = *(v5 + 24);
@@ -1961,7 +1961,7 @@ uint64_t __34__CBColorFilter_forceSampleUpdate__block_invoke(uint64_t a1, void *
 
 - (BOOL)hasExtRearSensor
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v4 = 0;
   v5 = &v4;
@@ -1996,7 +1996,7 @@ uint64_t __33__CBColorFilter_hasExtRearSensor__block_invoke(uint64_t a1, void *a
 
 - (BOOL)hasExtFrontSensor
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v4 = 0;
   v5 = &v4;

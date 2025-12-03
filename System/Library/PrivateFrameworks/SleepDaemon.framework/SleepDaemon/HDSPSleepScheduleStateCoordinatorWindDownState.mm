@@ -17,13 +17,13 @@
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] it's time for bed", buf, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__HDSPSleepScheduleStateCoordinatorWindDownState_bedtimeReached__block_invoke;
   v9[3] = &unk_279C7B108;
-  v10 = v5;
-  v6 = v5;
+  v10 = stateMachine;
+  v6 = stateMachine;
   v7 = [HDSPSleepScheduleStateCoordinatorStateMachineContext contextWithReason:1];
   [v6 perform:v9 withContext:v7];
 
@@ -39,13 +39,13 @@ void __64__HDSPSleepScheduleStateCoordinatorWindDownState_bedtimeReached__block_
 
 - (id)expirationDate
 {
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  v4 = [v3 sleepScheduleModel];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
   v5 = *MEMORY[0x277D621B8];
-  v6 = [v3 currentDate];
-  v7 = [v4 nextEventWithIdentifier:v5 dueAfterDate:v6];
+  currentDate = [infoProvider currentDate];
+  v7 = [sleepScheduleModel nextEventWithIdentifier:v5 dueAfterDate:currentDate];
 
   v8 = [v7 dateByAddingTimeInterval:60.0];
 

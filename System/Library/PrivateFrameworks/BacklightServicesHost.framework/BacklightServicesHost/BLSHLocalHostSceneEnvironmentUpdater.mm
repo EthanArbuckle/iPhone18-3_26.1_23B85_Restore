@@ -1,35 +1,35 @@
 @interface BLSHLocalHostSceneEnvironmentUpdater
-- (BLSHLocalHostSceneEnvironmentUpdater)initWithSessionProvider:(id)a3 localHostEnvironment:(id)a4 osTimerProvider:(id)a5;
-- (BOOL)_lock_update1HzFromPresentation:(id)a3;
+- (BLSHLocalHostSceneEnvironmentUpdater)initWithSessionProvider:(id)provider localHostEnvironment:(id)environment osTimerProvider:(id)timerProvider;
+- (BOOL)_lock_update1HzFromPresentation:(id)presentation;
 - (BOOL)ensureAlwaysOnSessionCreated;
 - (NSString)description;
 - (id)subHostedHostEnvironments;
-- (void)aggregateDesiredFidelityForBacklightState:(int64_t)a3 withCompletion:(id)a4;
+- (void)aggregateDesiredFidelityForBacklightState:(int64_t)state withCompletion:(id)completion;
 - (void)dealloc;
 - (void)destroyInactiveEnvSession;
-- (void)environmentStateMachine:(id)a3 didBeginUpdateToState:(int64_t)a4;
-- (void)environmentStateMachine:(id)a3 didCompleteUpdateToState:(int64_t)a4;
-- (void)environmentStateMachine:(id)a3 didUpdateToPresentation:(id)a4;
-- (void)environmentStateMachine:(id)a3 didUpdateToSpecifier:(id)a4;
-- (void)hostEnvironment:(id)a3 invalidateContentForReason:(id)a4;
-- (void)inactiveEnvironmentSession:(id)a3 updateToPresentation:(id)a4;
+- (void)environmentStateMachine:(id)machine didBeginUpdateToState:(int64_t)state;
+- (void)environmentStateMachine:(id)machine didCompleteUpdateToState:(int64_t)state;
+- (void)environmentStateMachine:(id)machine didUpdateToPresentation:(id)presentation;
+- (void)environmentStateMachine:(id)machine didUpdateToSpecifier:(id)specifier;
+- (void)hostEnvironment:(id)environment invalidateContentForReason:(id)reason;
+- (void)inactiveEnvironmentSession:(id)session updateToPresentation:(id)presentation;
 - (void)onMain_ensureInactiveEnvSessionCreated;
-- (void)performBlockWithSubhostedEnvironments:(id)a3;
-- (void)performDesiredFidelityRequest:(id)a3;
-- (void)performFrameSpecifiersRequest:(id)a3;
-- (void)performWithSubhostedEnvironmentsFromPresentationEntries:(id)a3 block:(id)a4;
-- (void)timelinesForDateInterval:(id)a3 previousPresentationDate:(id)a4 localHostEnvironment:(id)a5 shouldReset:(BOOL)a6 completion:(id)a7;
-- (void)updatedEnvironmentWithDelta:(id)a3 backlightSceneUpdate:(id)a4;
+- (void)performBlockWithSubhostedEnvironments:(id)environments;
+- (void)performDesiredFidelityRequest:(id)request;
+- (void)performFrameSpecifiersRequest:(id)request;
+- (void)performWithSubhostedEnvironmentsFromPresentationEntries:(id)entries block:(id)block;
+- (void)timelinesForDateInterval:(id)interval previousPresentationDate:(id)date localHostEnvironment:(id)environment shouldReset:(BOOL)reset completion:(id)completion;
+- (void)updatedEnvironmentWithDelta:(id)delta backlightSceneUpdate:(id)update;
 @end
 
 @implementation BLSHLocalHostSceneEnvironmentUpdater
 
-- (BLSHLocalHostSceneEnvironmentUpdater)initWithSessionProvider:(id)a3 localHostEnvironment:(id)a4 osTimerProvider:(id)a5
+- (BLSHLocalHostSceneEnvironmentUpdater)initWithSessionProvider:(id)provider localHostEnvironment:(id)environment osTimerProvider:(id)timerProvider
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  environmentCopy = environment;
+  timerProviderCopy = timerProvider;
   v34.receiver = self;
   v34.super_class = BLSHLocalHostSceneEnvironmentUpdater;
   v12 = [(BLSHLocalHostSceneEnvironmentUpdater *)&v34 init];
@@ -38,9 +38,9 @@
   {
     v12->_lock._os_unfair_lock_opaque = 0;
     v12->_lock_nextEventID = 0x8000000000000000;
-    objc_storeStrong(&v12->_sessionProvider, a3);
-    objc_storeStrong(&v13->_osTimerProvider, a5);
-    objc_storeStrong(&v13->_localHostEnvironment, a4);
+    objc_storeStrong(&v12->_sessionProvider, provider);
+    objc_storeStrong(&v13->_osTimerProvider, timerProvider);
+    objc_storeStrong(&v13->_localHostEnvironment, environment);
     v14 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.BacklightServices"];
     v35 = @"disableClientInvalidationBudget";
     v36[0] = MEMORY[0x277CBEC28];
@@ -79,7 +79,7 @@
     objc_copyWeak(&v31, &buf);
     v32 = v16;
     v13->_stateHandler = os_state_add_handler();
-    v21 = [v10 visualState];
+    visualState = [environmentCopy visualState];
     v22 = BLSBacklightStateForVisuaState() == 1;
 
     if (v22)
@@ -90,9 +90,9 @@
     if (os_variant_has_internal_diagnostics())
     {
       v23 = MEMORY[0x277CCACA8];
-      v24 = [MEMORY[0x277CCAC38] processInfo];
-      v25 = [v24 processName];
-      v26 = [v23 stringWithFormat:@"com.apple.BacklightServices.BLSHBacklightSceneEnvironmentHosting.%@.criticalasserttest", v25];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      processName = [processInfo processName];
+      v26 = [v23 stringWithFormat:@"com.apple.BacklightServices.BLSHBacklightSceneEnvironmentHosting.%@.criticalasserttest", processName];
 
       v27 = [[BLSHCriticalAssertTester alloc] initWithNotificationName:v26];
       criticalAssertTester = v13->_criticalAssertTester;
@@ -132,13 +132,13 @@ uint64_t __101__BLSHLocalHostSceneEnvironmentUpdater_initWithSessionProvider_loc
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   sessionProvider = self->_sessionProvider;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@: %p>", objc_opt_class(), sessionProvider];
-  [v3 appendString:v5 withName:@"sessionProvider"];
+  sessionProvider = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@: %p>", objc_opt_class(), sessionProvider];
+  [v3 appendString:sessionProvider withName:@"sessionProvider"];
 
   v6 = [v3 appendObject:self->_localHostEnvironment withName:@"localHostEnvironment"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (void)dealloc
@@ -157,13 +157,13 @@ uint64_t __101__BLSHLocalHostSceneEnvironmentUpdater_initWithSessionProvider_loc
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = *a2;
-  v6 = [*(a1 + 64) presentation];
+  presentation = [*(self + 64) presentation];
   v8 = 134218498;
-  v9 = a1;
+  selfCopy = self;
   v10 = 2048;
   v11 = v5;
   v12 = 2114;
-  v13 = v6;
+  v13 = presentation;
   _os_log_debug_impl(&dword_21FD11000, a3, OS_LOG_TYPE_DEBUG, "%p (localHostUpdater) destroy session:%p with current presentation:%{public}@", &v8, 0x20u);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -174,36 +174,36 @@ uint64_t __101__BLSHLocalHostSceneEnvironmentUpdater_initWithSessionProvider_loc
   v16 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   os_unfair_lock_lock(&self->_lock);
-  v3 = self->_lock_inactiveEnvSession;
-  v4 = [(BLSHBacklightInactiveEnvironmentSession *)v3 presentation];
-  [(BLSHLocalHostSceneEnvironmentUpdater *)self _lock_update1HzFromPresentation:v4];
+  createInactiveEnvironmentSession = self->_lock_inactiveEnvSession;
+  presentation = [(BLSHBacklightInactiveEnvironmentSession *)createInactiveEnvironmentSession presentation];
+  [(BLSHLocalHostSceneEnvironmentUpdater *)self _lock_update1HzFromPresentation:presentation];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (!v3)
+  if (!createInactiveEnvironmentSession)
   {
-    v3 = [(BLSHBacklightEnvironmentSessionProviding *)self->_sessionProvider createInactiveEnvironmentSession];
+    createInactiveEnvironmentSession = [(BLSHBacklightEnvironmentSessionProviding *)self->_sessionProvider createInactiveEnvironmentSession];
     os_unfair_lock_lock(&self->_lock);
-    objc_storeStrong(&self->_lock_inactiveEnvSession, v3);
-    [(BLSHBacklightInactiveEnvironmentSession *)v3 setUpdater:self];
-    v5 = [(BLSHBacklightInactiveEnvironmentSession *)v3 presentation];
+    objc_storeStrong(&self->_lock_inactiveEnvSession, createInactiveEnvironmentSession);
+    [(BLSHBacklightInactiveEnvironmentSession *)createInactiveEnvironmentSession setUpdater:self];
+    presentation2 = [(BLSHBacklightInactiveEnvironmentSession *)createInactiveEnvironmentSession presentation];
     v6 = bls_backlight_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v10 = 134218498;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
-      v13 = v3;
+      v13 = createInactiveEnvironmentSession;
       v14 = 2114;
-      v15 = v5;
+      v15 = presentation2;
       _os_log_debug_impl(&dword_21FD11000, v6, OS_LOG_TYPE_DEBUG, "%p (localHostUpdater) createdSession:%p with presentation:%{public}@", &v10, 0x20u);
     }
 
-    v7 = [[BLSHBacklightEnvironmentStateMachine alloc] initWithPresentation:v5 backlightState:self->_backlightState delegate:self inactiveBudgetPolicy:self->_inactiveBudgetPolicy osTimerProvider:self->_osTimerProvider platformProvider:0];
+    v7 = [[BLSHBacklightEnvironmentStateMachine alloc] initWithPresentation:presentation2 backlightState:self->_backlightState delegate:self inactiveBudgetPolicy:self->_inactiveBudgetPolicy osTimerProvider:self->_osTimerProvider platformProvider:0];
     environmentStateMachine = self->_environmentStateMachine;
     self->_environmentStateMachine = v7;
 
     os_unfair_lock_unlock(&self->_lock);
-    [(BLSHBacklightInactiveEnvironmentSession *)v3 addEnvironmentsObserver:self];
+    [(BLSHBacklightInactiveEnvironmentSession *)createInactiveEnvironmentSession addEnvironmentsObserver:self];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -212,15 +212,15 @@ uint64_t __101__BLSHLocalHostSceneEnvironmentUpdater_initWithSessionProvider_loc
 - (BOOL)ensureAlwaysOnSessionCreated
 {
   v2 = self->_localHostEnvironment;
-  v3 = [(BLSBacklightSceneEnvironment_Private *)v2 alwaysOnSession];
-  v4 = v3;
-  if (!v3)
+  alwaysOnSession = [(BLSBacklightSceneEnvironment_Private *)v2 alwaysOnSession];
+  v4 = alwaysOnSession;
+  if (!alwaysOnSession)
   {
     v4 = [objc_alloc(MEMORY[0x277CF0850]) initWithEnvironment:v2];
     [(BLSBacklightSceneEnvironment_Private *)v2 setAlwaysOnSession:v4];
   }
 
-  return v3 == 0;
+  return alwaysOnSession == 0;
 }
 
 void __134__BLSHLocalHostSceneEnvironmentUpdater_timelinesForDateInterval_previousPresentationDate_localHostEnvironment_shouldReset_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -237,12 +237,12 @@ void __134__BLSHLocalHostSceneEnvironmentUpdater_timelinesForDateInterval_previo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)aggregateDesiredFidelityForBacklightState:(int64_t)a3 withCompletion:(id)a4
+- (void)aggregateDesiredFidelityForBacklightState:(int64_t)state withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(BLSHBacklightInactiveEnvironmentSession *)self->_lock_inactiveEnvSession presentation];
-  v8 = [v7 presentationEntries];
+  presentation = [(BLSHBacklightInactiveEnvironmentSession *)self->_lock_inactiveEnvSession presentation];
+  presentationEntries = [presentation presentationEntries];
 
   os_unfair_lock_unlock(&self->_lock);
   v34[0] = 0;
@@ -253,7 +253,7 @@ void __134__BLSHLocalHostSceneEnvironmentUpdater_timelinesForDateInterval_previo
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x2020000000;
-  v33[3] = [v8 count];
+  v33[3] = [presentationEntries count];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x2020000000;
@@ -265,7 +265,7 @@ void __134__BLSHLocalHostSceneEnvironmentUpdater_timelinesForDateInterval_previo
   v29 = v34;
   v30 = v32;
   v31 = v33;
-  v9 = v6;
+  v9 = completionCopy;
   v28 = v9;
   v10 = MEMORY[0x223D70730](v27);
   v11 = self->_localHostEnvironment;
@@ -273,7 +273,7 @@ void __134__BLSHLocalHostSceneEnvironmentUpdater_timelinesForDateInterval_previo
   v13 = [(BLSHOSTimerProviding *)self->_osTimerProvider now];
   v14 = [v12 initWithStartDate:v13 duration:60.0];
 
-  v15 = [(BLSBacklightSceneEnvironment_Private *)v11 delegate];
+  delegate = [(BLSBacklightSceneEnvironment_Private *)v11 delegate];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __97__BLSHLocalHostSceneEnvironmentUpdater_aggregateDesiredFidelityForBacklightState_withCompletion___block_invoke_2;
@@ -284,16 +284,16 @@ void __134__BLSHLocalHostSceneEnvironmentUpdater_timelinesForDateInterval_previo
   v25 = v17;
   v18 = v10;
   v26 = v18;
-  [v15 environment:v16 timelinesForDateInterval:v17 previousSpecifier:0 completion:v23];
+  [delegate environment:v16 timelinesForDateInterval:v17 previousSpecifier:0 completion:v23];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __97__BLSHLocalHostSceneEnvironmentUpdater_aggregateDesiredFidelityForBacklightState_withCompletion___block_invoke_3;
   v20[3] = &unk_278420658;
-  v22 = a3;
+  stateCopy = state;
   v19 = v18;
   v21 = v19;
-  [(BLSHLocalHostSceneEnvironmentUpdater *)self performWithSubhostedEnvironmentsFromPresentationEntries:v8 block:v20];
+  [(BLSHLocalHostSceneEnvironmentUpdater *)self performWithSubhostedEnvironmentsFromPresentationEntries:presentationEntries block:v20];
 
   _Block_object_dispose(v32, 8);
   _Block_object_dispose(v33, 8);
@@ -330,30 +330,30 @@ void __97__BLSHLocalHostSceneEnvironmentUpdater_aggregateDesiredFidelityForBackl
   [v5 desiredFidelityForDateInterval:a1[5] timelines:v4 withCompletion:a1[6]];
 }
 
-- (void)performBlockWithSubhostedEnvironments:(id)a3
+- (void)performBlockWithSubhostedEnvironments:(id)environments
 {
-  v4 = a3;
+  environmentsCopy = environments;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BLSHBacklightInactiveEnvironmentSession *)self->_lock_inactiveEnvSession presentation];
-  v6 = [v5 presentationEntries];
+  presentation = [(BLSHBacklightInactiveEnvironmentSession *)self->_lock_inactiveEnvSession presentation];
+  presentationEntries = [presentation presentationEntries];
 
   os_unfair_lock_unlock(&self->_lock);
-  [(BLSHLocalHostSceneEnvironmentUpdater *)self performWithSubhostedEnvironmentsFromPresentationEntries:v6 block:v4];
+  [(BLSHLocalHostSceneEnvironmentUpdater *)self performWithSubhostedEnvironmentsFromPresentationEntries:presentationEntries block:environmentsCopy];
 }
 
-- (void)performWithSubhostedEnvironmentsFromPresentationEntries:(id)a3 block:(id)a4
+- (void)performWithSubhostedEnvironmentsFromPresentationEntries:(id)entries block:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment identifier];
+  identifier = [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment identifier];
   os_unfair_lock_unlock(&self->_lock);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = entriesCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -369,13 +369,13 @@ void __97__BLSHLocalHostSceneEnvironmentUpdater_aggregateDesiredFidelityForBackl
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * v13) environment];
-        v15 = [v14 identifier];
-        v16 = [v15 isEqualToString:v8];
+        environment = [*(*(&v18 + 1) + 8 * v13) environment];
+        identifier2 = [environment identifier];
+        v16 = [identifier2 isEqualToString:identifier];
 
         if ((v16 & 1) == 0)
         {
-          v7[2](v7, v14);
+          blockCopy[2](blockCopy, environment);
         }
 
         ++v13;
@@ -394,18 +394,18 @@ void __97__BLSHLocalHostSceneEnvironmentUpdater_aggregateDesiredFidelityForBackl
 - (id)subHostedHostEnvironments
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment identifier];
-  v4 = [(BLSHBacklightInactiveEnvironmentSession *)self->_lock_inactiveEnvSession presentation];
-  v5 = [v4 presentationEntries];
+  identifier = [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment identifier];
+  presentation = [(BLSHBacklightInactiveEnvironmentSession *)self->_lock_inactiveEnvSession presentation];
+  presentationEntries = [presentation presentationEntries];
 
   os_unfair_lock_unlock(&self->_lock);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__BLSHLocalHostSceneEnvironmentUpdater_subHostedHostEnvironments__block_invoke;
   v9[3] = &unk_27841F630;
-  v10 = v3;
-  v6 = v3;
-  v7 = [v5 bs_compactMap:v9];
+  v10 = identifier;
+  v6 = identifier;
+  v7 = [presentationEntries bs_compactMap:v9];
 
   return v7;
 }
@@ -429,15 +429,15 @@ id __65__BLSHLocalHostSceneEnvironmentUpdater_subHostedHostEnvironments__block_i
   return v5;
 }
 
-- (void)updatedEnvironmentWithDelta:(id)a3 backlightSceneUpdate:(id)a4
+- (void)updatedEnvironmentWithDelta:(id)delta backlightSceneUpdate:(id)update
 {
-  v4 = a3;
+  deltaCopy = delta;
   v102 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  updateCopy = update;
   v7 = self->_localHostEnvironment;
-  if (v6)
+  if (updateCopy)
   {
-    v74 = [v6 isUpdateToDateSpecifier] ^ 1;
+    v74 = [updateCopy isUpdateToDateSpecifier] ^ 1;
   }
 
   else
@@ -446,18 +446,18 @@ id __65__BLSHLocalHostSceneEnvironmentUpdater_subHostedHostEnvironments__block_i
   }
 
   v75 = v7;
-  v76 = [(BLSBacklightSceneEnvironment_Private *)v7 alwaysOnSession];
-  if ((v4 & 4) == 0)
+  alwaysOnSession = [(BLSBacklightSceneEnvironment_Private *)v7 alwaysOnSession];
+  if ((deltaCopy & 4) == 0)
   {
-    if (!v6)
+    if (!updateCopy)
     {
 LABEL_56:
-      v21 = bls_environment_log();
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+      context = bls_environment_log();
+      if (os_log_type_enabled(context, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v97 = self;
-        _os_log_impl(&dword_21FD11000, v21, OS_LOG_TYPE_INFO, "%p (localHostUpdater) updatedEnvironmentWithDelta: backlightSceneUpdate=nil", buf, 0xCu);
+        selfCopy8 = self;
+        _os_log_impl(&dword_21FD11000, context, OS_LOG_TYPE_INFO, "%p (localHostUpdater) updatedEnvironmentWithDelta: backlightSceneUpdate=nil", buf, 0xCu);
       }
 
       goto LABEL_58;
@@ -466,10 +466,10 @@ LABEL_56:
     goto LABEL_26;
   }
 
-  v8 = [(BLSBacklightSceneEnvironment_Private *)v7 visualState];
-  v9 = [v8 updateFidelity];
-  v10 = [v8 adjustedLuminance];
-  if (v10 == 2)
+  visualState = [(BLSBacklightSceneEnvironment_Private *)v7 visualState];
+  updateFidelity = [visualState updateFidelity];
+  adjustedLuminance = [visualState adjustedLuminance];
+  if (adjustedLuminance == 2)
   {
     v11 = v74;
   }
@@ -479,9 +479,9 @@ LABEL_56:
     v11 = 0;
   }
 
-  if (v10 != 1 && (v11 & 1) == 0 && (v9 - 1) > 1)
+  if (adjustedLuminance != 1 && (v11 & 1) == 0 && (updateFidelity - 1) > 1)
   {
-    if (v76)
+    if (alwaysOnSession)
     {
       v12 = BLSDeviceSupports1HzFlipbook();
       v13 = bls_environment_log();
@@ -490,20 +490,20 @@ LABEL_56:
       {
         if (v14)
         {
-          v15 = [(BLSBacklightSceneEnvironment_Private *)v75 identifier];
+          identifier = [(BLSBacklightSceneEnvironment_Private *)v75 identifier];
           v16 = BLSBacklightFBSSceneEnvironmentDeltaDescription();
           *buf = 134218754;
-          v97 = self;
+          selfCopy8 = self;
           v98 = 2114;
-          *v99 = v76;
+          *v99 = alwaysOnSession;
           *&v99[8] = 2112;
-          *&v99[10] = v15;
+          *&v99[10] = identifier;
           *&v99[18] = 2112;
           *&v99[20] = v16;
           _os_log_impl(&dword_21FD11000, v13, OS_LOG_TYPE_INFO, "%p (localHostUpdater) (rdar://133418257)  keeping alwaysOnSession:%{public}@ for updatedEnvironment:%@ withDelta:%@", buf, 0x2Au);
         }
 
-        if (!v6)
+        if (!updateCopy)
         {
           goto LABEL_56;
         }
@@ -513,24 +513,24 @@ LABEL_56:
       {
         if (v14)
         {
-          v47 = [(BLSBacklightSceneEnvironment_Private *)v75 identifier];
+          identifier2 = [(BLSBacklightSceneEnvironment_Private *)v75 identifier];
           v48 = BLSBacklightFBSSceneEnvironmentDeltaDescription();
           *buf = 134218754;
-          v97 = self;
+          selfCopy8 = self;
           v98 = 2114;
-          *v99 = v76;
+          *v99 = alwaysOnSession;
           *&v99[8] = 2114;
-          *&v99[10] = v47;
+          *&v99[10] = identifier2;
           *&v99[18] = 2114;
           *&v99[20] = v48;
           _os_log_impl(&dword_21FD11000, v13, OS_LOG_TYPE_INFO, "%p (localHostUpdater) destroying alwaysOnSession:%{public}@ for updatedEnvironment:%{public}@ withDelta:%{public}@", buf, 0x2Au);
         }
 
-        [v76 invalidate];
+        [alwaysOnSession invalidate];
         [(BLSBacklightSceneEnvironment_Private *)v75 setAlwaysOnSession:0];
 
-        v76 = 0;
-        if (!v6)
+        alwaysOnSession = 0;
+        if (!updateCopy)
         {
           goto LABEL_56;
         }
@@ -540,8 +540,8 @@ LABEL_56:
     else
     {
 
-      v76 = 0;
-      if (!v6)
+      alwaysOnSession = 0;
+      if (!updateCopy)
       {
         goto LABEL_56;
       }
@@ -554,41 +554,41 @@ LABEL_26:
 
   if ([(BLSHLocalHostSceneEnvironmentUpdater *)self ensureAlwaysOnSessionCreated])
   {
-    v17 = [(BLSBacklightSceneEnvironment_Private *)v75 alwaysOnSession];
+    alwaysOnSession2 = [(BLSBacklightSceneEnvironment_Private *)v75 alwaysOnSession];
 
     v18 = bls_environment_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [(BLSBacklightSceneEnvironment_Private *)v75 identifier];
+      identifier3 = [(BLSBacklightSceneEnvironment_Private *)v75 identifier];
       v20 = BLSBacklightFBSSceneEnvironmentDeltaDescription();
       *buf = 134218754;
-      v97 = self;
+      selfCopy8 = self;
       v98 = 2114;
-      *v99 = v17;
+      *v99 = alwaysOnSession2;
       *&v99[8] = 2114;
-      *&v99[10] = v19;
+      *&v99[10] = identifier3;
       *&v99[18] = 2114;
       *&v99[20] = v20;
       _os_log_impl(&dword_21FD11000, v18, OS_LOG_TYPE_INFO, "%p (localHostUpdater) created alwaysOnSession:%{public}@ for updatedEnvironment:%{public}@ withDelta:%{public}@", buf, 0x2Au);
     }
 
-    v76 = v17;
+    alwaysOnSession = alwaysOnSession2;
   }
 
   [(BLSHLocalHostSceneEnvironmentUpdater *)self ensureInactiveEnvSessionCreated];
-  if (!v6)
+  if (!updateCopy)
   {
     goto LABEL_56;
   }
 
 LABEL_27:
-  v21 = [v6 context];
-  v22 = [v21 triggerEvent];
-  v23 = [v21 frameSpecifier];
+  context = [updateCopy context];
+  triggerEvent = [context triggerEvent];
+  frameSpecifier = [context frameSpecifier];
   os_unfair_lock_lock(&self->_lock);
-  v24 = [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment identifier];
+  identifier4 = [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment identifier];
   v71 = self->_lock_inactiveEnvSession;
-  v73 = [(BLSHBacklightInactiveEnvironmentSession *)self->_lock_inactiveEnvSession presentation];
+  presentation = [(BLSHBacklightInactiveEnvironmentSession *)self->_lock_inactiveEnvSession presentation];
   os_unfair_lock_unlock(&self->_lock);
   v92 = 0;
   v93 = &v92;
@@ -600,47 +600,47 @@ LABEL_27:
   v89 = __Block_byref_object_copy__10;
   v90 = __Block_byref_object_dispose__10;
   v91 = 0;
-  v25 = [v73 presentationEntries];
+  presentationEntries = [presentation presentationEntries];
   v80[0] = MEMORY[0x277D85DD0];
   v80[1] = 3221225472;
   v80[2] = __89__BLSHLocalHostSceneEnvironmentUpdater_updatedEnvironmentWithDelta_backlightSceneUpdate___block_invoke;
   v80[3] = &unk_278420680;
-  v67 = v24;
+  v67 = identifier4;
   v81 = v67;
   v84 = &v92;
   v85 = &v86;
-  v26 = v23;
+  v26 = frameSpecifier;
   v82 = v26;
-  v70 = v6;
+  v70 = updateCopy;
   v83 = v70;
-  v68 = v25;
-  v72 = [v25 bs_map:v80];
+  v68 = presentationEntries;
+  v72 = [presentationEntries bs_map:v80];
   v27 = bls_environment_log();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
-    v28 = [v73 bls_shortLoggingString];
+    bls_shortLoggingString = [presentation bls_shortLoggingString];
     v29 = *(v93 + 24);
     if (v29 == 1)
     {
-      v30 = [v87[5] bls_shortLoggingString];
+      bls_shortLoggingString2 = [v87[5] bls_shortLoggingString];
     }
 
     else
     {
-      v30 = @"(n/a)";
+      bls_shortLoggingString2 = @"(n/a)";
     }
 
     v31 = [v26 description];
     *buf = 134219266;
-    v97 = self;
+    selfCopy8 = self;
     v98 = 1024;
     *v99 = v74;
     *&v99[4] = 2048;
     *&v99[6] = v71;
     *&v99[14] = 2114;
-    *&v99[16] = v28;
+    *&v99[16] = bls_shortLoggingString;
     *&v99[24] = 2114;
-    *&v99[26] = v30;
+    *&v99[26] = bls_shortLoggingString2;
     v100 = 2114;
     v101 = v31;
     _os_log_impl(&dword_21FD11000, v27, OS_LOG_TYPE_INFO, "%p (localHostUpdater) updatedEnvironmentWithDelta: doPerformEvent:%{BOOL}u inactiveEnvSession:%p presentation:%{public}@ %{public}@ -> %{public}@", buf, 0x3Au);
@@ -649,32 +649,32 @@ LABEL_27:
     }
   }
 
-  v32 = [v26 presentationInterval];
-  v33 = [v32 startDate];
-  v34 = [BLSHPresentationDateSpecifier specifierWithPresentationDate:v33 specifiers:v72];
+  presentationInterval = [v26 presentationInterval];
+  startDate = [presentationInterval startDate];
+  v34 = [BLSHPresentationDateSpecifier specifierWithPresentationDate:startDate specifiers:v72];
 
   os_unfair_lock_lock(&self->_lock);
   if (v74)
   {
-    if (!v22)
+    if (!triggerEvent)
     {
       lock_nextEventID = self->_lock_nextEventID;
       self->_lock_nextEventID = lock_nextEventID + 1;
-      v36 = [v21 visualState];
+      visualState2 = [context visualState];
       v37 = BLSBacklightStateForVisuaState();
 
       v38 = BLSBacklightActivityStateForBLSBacklightState();
       v39 = objc_alloc(MEMORY[0x277CF0888]);
       v40 = [objc_alloc(MEMORY[0x277CF0890]) initWithRequestedActivityState:v38 explanation:@"createdLocalEvent — just added to presentation?" timestamp:mach_continuous_time() sourceEvent:10 sourceEventMetadata:0];
-      v22 = [v39 initWithEventID:lock_nextEventID state:v37 previousState:v37 changeRequest:v40];
+      triggerEvent = [v39 initWithEventID:lock_nextEventID state:v37 previousState:v37 changeRequest:v40];
 
       v41 = bls_backlight_log();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
       {
         *buf = 134218498;
-        v97 = self;
+        selfCopy8 = self;
         v98 = 2114;
-        *v99 = v22;
+        *v99 = triggerEvent;
         *&v99[8] = 2114;
         *&v99[10] = v70;
         _os_log_impl(&dword_21FD11000, v41, OS_LOG_TYPE_INFO, "%p (localHostUpdater) created new triggerEvent:%{public}@ sceneUpdate:%{public}@", buf, 0x20u);
@@ -682,17 +682,17 @@ LABEL_27:
     }
 
     v42 = self->_lock_sceneUpdateForPerformingEvent;
-    objc_storeStrong(&self->_lock_localTriggerEventForPerformingEvent, v22);
-    objc_storeStrong(&self->_lock_sceneUpdateForPerformingEvent, a4);
+    objc_storeStrong(&self->_lock_localTriggerEventForPerformingEvent, triggerEvent);
+    objc_storeStrong(&self->_lock_sceneUpdateForPerformingEvent, update);
     v43 = self->_environmentStateMachine;
     os_unfair_lock_unlock(&self->_lock);
     v44 = bls_environment_log();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218498;
-      v97 = self;
+      selfCopy8 = self;
       v98 = 2114;
-      *v99 = v22;
+      *v99 = triggerEvent;
       *&v99[8] = 2114;
       *&v99[10] = v34;
       _os_log_debug_impl(&dword_21FD11000, v44, OS_LOG_TYPE_DEBUG, "%p (localHostUpdater) calling [environmentStateMachine performEvent:withInitialSpecifier:performBacklightRamp:], event:%{public}@, dateSpecifier:%{public}@", buf, 0x20u);
@@ -705,7 +705,7 @@ LABEL_27:
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
         *buf = 134218498;
-        v97 = self;
+        selfCopy8 = self;
         v98 = 2114;
         *v99 = v42;
         *&v99[8] = 2114;
@@ -734,7 +734,7 @@ LABEL_27:
         v62 = objc_opt_class();
         v63 = NSStringFromClass(v62);
         *buf = 138544642;
-        v97 = v61;
+        selfCopy8 = v61;
         v98 = 2114;
         *v99 = v63;
         *&v99[8] = 2048;
@@ -759,10 +759,10 @@ LABEL_27:
     v77[2] = __89__BLSHLocalHostSceneEnvironmentUpdater_updatedEnvironmentWithDelta_backlightSceneUpdate___block_invoke_217;
     v77[3] = &unk_27841EAA0;
     v77[4] = self;
-    v22 = v22;
-    v78 = v22;
+    triggerEvent = triggerEvent;
+    v78 = triggerEvent;
     v79 = v70;
-    [(BLSHBacklightEnvironmentStateMachine *)v43 performEvent:v22 withInitialSpecifier:v34 performBacklightRamp:v77];
+    [(BLSHBacklightEnvironmentStateMachine *)v43 performEvent:triggerEvent withInitialSpecifier:v34 performBacklightRamp:v77];
   }
 
   else
@@ -786,7 +786,7 @@ LABEL_27:
         v54 = objc_opt_class();
         v55 = NSStringFromClass(v54);
         *buf = 138544642;
-        v97 = v53;
+        selfCopy8 = v53;
         v98 = 2114;
         *v99 = v55;
         *&v99[8] = 2048;
@@ -866,104 +866,104 @@ uint64_t __89__BLSHLocalHostSceneEnvironmentUpdater_updatedEnvironmentWithDelta_
   return [*(a1 + 48) performBacklightRampWithDuration:a2];
 }
 
-- (void)performDesiredFidelityRequest:(id)a3
+- (void)performDesiredFidelityRequest:(id)request
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   [(BLSHLocalHostSceneEnvironmentUpdater *)self ensureInactiveEnvSessionCreated];
-  v5 = [(BLSHLocalHostSceneEnvironmentUpdater *)self ensureAlwaysOnSessionCreated];
+  ensureAlwaysOnSessionCreated = [(BLSHLocalHostSceneEnvironmentUpdater *)self ensureAlwaysOnSessionCreated];
   v6 = self->_localHostEnvironment;
-  v7 = [(BLSBacklightSceneEnvironment_Private *)v6 alwaysOnSession];
+  alwaysOnSession = [(BLSBacklightSceneEnvironment_Private *)v6 alwaysOnSession];
   v8 = bls_environment_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(BLSBacklightSceneEnvironment_Private *)v6 identifier];
+    identifier = [(BLSBacklightSceneEnvironment_Private *)v6 identifier];
     *buf = 134219266;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v4;
+    v17 = requestCopy;
     v18 = 2114;
-    v19 = v7;
+    v19 = alwaysOnSession;
     v20 = 2048;
     v21 = v6;
     v22 = 2114;
-    v23 = v9;
+    v23 = identifier;
     v24 = 1024;
-    v25 = v5;
+    v25 = ensureAlwaysOnSessionCreated;
     _os_log_impl(&dword_21FD11000, v8, OS_LOG_TYPE_INFO, "%p (localHostUpdater) performDesiredFidelityRequest:%{public}@ alwaysOnSession:%{public}@ environment:<%p %{public}@>, createdSession=%{BOOL}u", buf, 0x3Au);
   }
 
-  v10 = [(BLSBacklightSceneEnvironment_Private *)v6 delegate];
+  delegate = [(BLSBacklightSceneEnvironment_Private *)v6 delegate];
 
-  if (v10)
+  if (delegate)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __70__BLSHLocalHostSceneEnvironmentUpdater_performDesiredFidelityRequest___block_invoke;
     v12[3] = &unk_2784206A8;
-    v13 = v4;
+    v13 = requestCopy;
     [(BLSHLocalHostSceneEnvironmentUpdater *)self aggregateDesiredFidelityForBacklightState:1 withCompletion:v12];
   }
 
   else
   {
-    [v4 completeWithDesiredFidelity:1];
+    [requestCopy completeWithDesiredFidelity:1];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performFrameSpecifiersRequest:(id)a3
+- (void)performFrameSpecifiersRequest:(id)request
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   [(BLSHLocalHostSceneEnvironmentUpdater *)self ensureInactiveEnvSessionCreated];
   v5 = self->_localHostEnvironment;
-  v6 = [(BLSBacklightSceneEnvironment_Private *)v5 alwaysOnSession];
+  alwaysOnSession = [(BLSBacklightSceneEnvironment_Private *)v5 alwaysOnSession];
   v7 = bls_environment_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 model];
-    v9 = [v8 specifierCount];
-    v10 = [(BLSBacklightSceneEnvironment_Private *)v5 identifier];
+    model = [alwaysOnSession model];
+    specifierCount = [model specifierCount];
+    identifier = [(BLSBacklightSceneEnvironment_Private *)v5 identifier];
     *buf = 134219010;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
-    v22 = v4;
+    v22 = requestCopy;
     v23 = 1024;
-    v24 = v9;
+    v24 = specifierCount;
     v25 = 2048;
     v26 = v5;
     v27 = 2114;
-    v28 = v10;
+    v28 = identifier;
     _os_log_impl(&dword_21FD11000, v7, OS_LOG_TYPE_INFO, "%p (localHostUpdater) performFrameSpecifiersRequest:%{public}@ session-model:%d environment:<%p %{public}@>", buf, 0x30u);
   }
 
-  v11 = [(BLSBacklightSceneEnvironment_Private *)v5 delegate];
+  delegate = [(BLSBacklightSceneEnvironment_Private *)v5 delegate];
 
-  if (v11 && v6)
+  if (delegate && alwaysOnSession)
   {
-    v12 = [v4 dateInterval];
-    v13 = [v4 previousPresentationDate];
-    v14 = [v4 shouldReset];
+    dateInterval = [requestCopy dateInterval];
+    previousPresentationDate = [requestCopy previousPresentationDate];
+    shouldReset = [requestCopy shouldReset];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __70__BLSHLocalHostSceneEnvironmentUpdater_performFrameSpecifiersRequest___block_invoke;
     v16[3] = &unk_2784206D0;
-    v17 = v6;
-    v18 = v4;
-    [(BLSHLocalHostSceneEnvironmentUpdater *)self timelinesForDateInterval:v12 previousPresentationDate:v13 localHostEnvironment:v5 shouldReset:v14 completion:v16];
+    v17 = alwaysOnSession;
+    v18 = requestCopy;
+    [(BLSHLocalHostSceneEnvironmentUpdater *)self timelinesForDateInterval:dateInterval previousPresentationDate:previousPresentationDate localHostEnvironment:v5 shouldReset:shouldReset completion:v16];
   }
 
   else
   {
-    [v4 completeWithDateSpecifiers:MEMORY[0x277CBEBF8]];
+    [requestCopy completeWithDateSpecifiers:MEMORY[0x277CBEBF8]];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentStateMachine:(id)a3 didBeginUpdateToState:(int64_t)a4
+- (void)environmentStateMachine:(id)machine didBeginUpdateToState:(int64_t)state
 {
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -971,7 +971,7 @@ uint64_t __89__BLSHLocalHostSceneEnvironmentUpdater_updatedEnvironmentWithDelta_
   v7 = v6;
   if (self->_lock_sceneUpdateForPerformingEvent)
   {
-    v8 = [(BLSBacklightChangeEvent *)v6 state]== a4;
+    v8 = [(BLSBacklightChangeEvent *)v6 state]== state;
   }
 
   else
@@ -984,7 +984,7 @@ uint64_t __89__BLSHLocalHostSceneEnvironmentUpdater_updatedEnvironmentWithDelta_
   {
     v12 = NSStringFromBLSBacklightState();
     *buf = 134218754;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = v12;
     v17 = 1024;
@@ -1014,7 +1014,7 @@ void __86__BLSHLocalHostSceneEnvironmentUpdater_environmentStateMachine_didBegin
   [v3 updaterDidBeginUpdateToBacklightState:*(a1 + 40)];
 }
 
-- (void)environmentStateMachine:(id)a3 didCompleteUpdateToState:(int64_t)a4
+- (void)environmentStateMachine:(id)machine didCompleteUpdateToState:(int64_t)state
 {
   v28 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -1022,7 +1022,7 @@ void __86__BLSHLocalHostSceneEnvironmentUpdater_environmentStateMachine_didBegin
   v7 = v6;
   if (self->_lock_sceneUpdateForPerformingEvent)
   {
-    v8 = [(BLSBacklightChangeEvent *)v6 state]== a4;
+    v8 = [(BLSBacklightChangeEvent *)v6 state]== state;
   }
 
   else
@@ -1035,7 +1035,7 @@ void __86__BLSHLocalHostSceneEnvironmentUpdater_environmentStateMachine_didBegin
   {
     v19 = NSStringFromBLSBacklightState();
     v20 = 134218754;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = v19;
     v24 = 1024;
@@ -1055,16 +1055,16 @@ void __86__BLSHLocalHostSceneEnvironmentUpdater_environmentStateMachine_didBegin
     self->_lock_sceneUpdateForPerformingEvent = 0;
 
     os_unfair_lock_unlock(&self->_lock);
-    v13 = [(BLSBacklightSceneUpdate *)v10 context];
-    v14 = [v13 isAnimated];
+    context = [(BLSBacklightSceneUpdate *)v10 context];
+    isAnimated = [context isAnimated];
 
-    if (v14)
+    if (isAnimated)
     {
       [(BLSBacklightSceneUpdate *)v10 sceneContentsAnimationDidComplete];
     }
 
-    v15 = [(BLSBacklightSceneUpdate *)v10 context];
-    v16 = [v15 visualState];
+    context2 = [(BLSBacklightSceneUpdate *)v10 context];
+    visualState = [context2 visualState];
     BLSBacklightStateForVisuaState();
     IsActive = BLSBacklightStateIsActive();
 
@@ -1082,12 +1082,12 @@ void __86__BLSHLocalHostSceneEnvironmentUpdater_environmentStateMachine_didBegin
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentStateMachine:(id)a3 didUpdateToPresentation:(id)a4
+- (void)environmentStateMachine:(id)machine didUpdateToPresentation:(id)presentation
 {
-  v5 = a4;
+  presentationCopy = presentation;
   os_unfair_lock_lock(&self->_lock);
   v6 = self->_lock_inactiveEnvSession;
-  v7 = [(BLSHBacklightEnvironmentPresentation *)self->_lock_updatingToPresentation isEqual:v5];
+  v7 = [(BLSHBacklightEnvironmentPresentation *)self->_lock_updatingToPresentation isEqual:presentationCopy];
   lock_updatingToPresentation = self->_lock_updatingToPresentation;
   self->_lock_updatingToPresentation = 0;
 
@@ -1095,16 +1095,16 @@ void __86__BLSHLocalHostSceneEnvironmentUpdater_environmentStateMachine_didBegin
   if (v7)
   {
     v9 = v6;
-    v10 = v5;
+    v10 = presentationCopy;
     BSDispatchMain();
   }
 }
 
-- (void)environmentStateMachine:(id)a3 didUpdateToSpecifier:(id)a4
+- (void)environmentStateMachine:(id)machine didUpdateToSpecifier:(id)specifier
 {
-  v14 = a3;
-  v7 = a4;
-  if (!v7)
+  machineCopy = machine;
+  specifierCopy = specifier;
+  if (!specifierCopy)
   {
 LABEL_6:
 
@@ -1112,28 +1112,28 @@ LABEL_6:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v8 = [v7 specifiers];
-  v9 = [v8 firstObject];
-  v10 = [v9 userObject];
+  specifiers = [specifierCopy specifiers];
+  firstObject = [specifiers firstObject];
+  userObject = [firstObject userObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     os_unfair_lock_unlock(&self->_lock);
-    v11 = [v10 context];
-    v12 = [v11 isAnimated];
+    context = [userObject context];
+    isAnimated = [context isAnimated];
 
-    if (v12)
+    if (isAnimated)
     {
-      [v10 sceneContentsAnimationDidComplete];
+      [userObject sceneContentsAnimationDidComplete];
     }
 
-    [v10 sceneContentsDidUpdate];
+    [userObject sceneContentsDidUpdate];
 
     goto LABEL_6;
   }
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p (localHostSceneEnvironmentUpdater) didUpdateToSpecifier: specifier %@ userObject %@ isn't a BLSBacklightSceneUpdate", self, v7, v10];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p (localHostSceneEnvironmentUpdater) didUpdateToSpecifier: specifier %@ userObject %@ isn't a BLSBacklightSceneUpdate", self, specifierCopy, userObject];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [BLSHLocalHostSceneEnvironmentUpdater environmentStateMachine:a2 didUpdateToSpecifier:?];
@@ -1144,21 +1144,21 @@ LABEL_6:
   __break(0);
 }
 
-- (void)inactiveEnvironmentSession:(id)a3 updateToPresentation:(id)a4
+- (void)inactiveEnvironmentSession:(id)session updateToPresentation:(id)presentation
 {
-  v15 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  presentationCopy = presentation;
   os_unfair_lock_lock(&self->_lock);
   lock_inactiveEnvSession = self->_lock_inactiveEnvSession;
-  if (lock_inactiveEnvSession != v15)
+  if (lock_inactiveEnvSession != sessionCopy)
   {
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"session:%@ does not match _session:%@", v15, lock_inactiveEnvSession];
+    lock_inactiveEnvSession = [MEMORY[0x277CCACA8] stringWithFormat:@"session:%@ does not match _session:%@", sessionCopy, lock_inactiveEnvSession];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [BLSHLocalHostSceneEnvironmentUpdater inactiveEnvironmentSession:a2 updateToPresentation:?];
     }
 
-    [v14 UTF8String];
+    [lock_inactiveEnvSession UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x21FD65144);
@@ -1166,33 +1166,33 @@ LABEL_6:
 
   if (!self->_environmentStateMachine)
   {
-    [(BLSHLocalHostSceneEnvironmentUpdater *)v15 inactiveEnvironmentSession:a2 updateToPresentation:self];
+    [(BLSHLocalHostSceneEnvironmentUpdater *)sessionCopy inactiveEnvironmentSession:a2 updateToPresentation:self];
   }
 
-  objc_storeStrong(&self->_lock_updatingToPresentation, a4);
+  objc_storeStrong(&self->_lock_updatingToPresentation, presentation);
   v9 = self->_lock_sceneUpdateForPerformingEvent;
-  v10 = [(BLSBacklightSceneUpdate *)v9 context];
-  v11 = [v10 visualState];
-  if (v11)
+  context = [(BLSBacklightSceneUpdate *)v9 context];
+  visualState = [context visualState];
+  if (visualState)
   {
     v12 = BLSBacklightStateForVisuaState();
   }
 
   else
   {
-    v13 = [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment visualState];
+    visualState2 = [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment visualState];
     v12 = BLSBacklightStateForVisuaState();
   }
 
-  [(BLSHLocalHostSceneEnvironmentUpdater *)self _lock_update1HzFromPresentation:v7];
+  [(BLSHLocalHostSceneEnvironmentUpdater *)self _lock_update1HzFromPresentation:presentationCopy];
   os_unfair_lock_unlock(&self->_lock);
-  [(BLSHBacklightEnvironmentStateMachine *)self->_environmentStateMachine setPresentation:v7 withTargetBacklightState:v12];
+  [(BLSHBacklightEnvironmentStateMachine *)self->_environmentStateMachine setPresentation:presentationCopy withTargetBacklightState:v12];
 }
 
-- (void)hostEnvironment:(id)a3 invalidateContentForReason:(id)a4
+- (void)hostEnvironment:(id)environment invalidateContentForReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  reasonCopy = reason;
   inactiveBudgetPolicy = self->_inactiveBudgetPolicy;
   v9 = [(BLSHOSTimerProviding *)self->_osTimerProvider now];
   v12[0] = MEMORY[0x277D85DD0];
@@ -1200,10 +1200,10 @@ LABEL_6:
   v12[2] = __83__BLSHLocalHostSceneEnvironmentUpdater_hostEnvironment_invalidateContentForReason___block_invoke;
   v12[3] = &unk_27841EAF0;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
+  v13 = reasonCopy;
+  v14 = environmentCopy;
+  v10 = environmentCopy;
+  v11 = reasonCopy;
   [(BLSHInactiveBudgetPolicing_Private *)inactiveBudgetPolicy invalidateAtRequestDate:v9 forEnvironment:v10 invalidationBlock:v12];
 }
 
@@ -1217,17 +1217,17 @@ void __83__BLSHLocalHostSceneEnvironmentUpdater_hostEnvironment_invalidateConten
   [v2 invalidateAllTimelinesForReason:v4];
 }
 
-- (BOOL)_lock_update1HzFromPresentation:(id)a3
+- (BOOL)_lock_update1HzFromPresentation:(id)presentation
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment alwaysOnContentIs1hz];
+  presentationCopy = presentation;
+  alwaysOnContentIs1hz = [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment alwaysOnContentIs1hz];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [v4 presentationEntries];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v35 count:16];
+  presentationEntries = [presentationCopy presentationEntries];
+  v7 = [presentationEntries countByEnumeratingWithState:&v21 objects:v35 count:16];
   if (v7)
   {
     v8 = *v22;
@@ -1237,14 +1237,14 @@ void __83__BLSHLocalHostSceneEnvironmentUpdater_hostEnvironment_invalidateConten
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(presentationEntries);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 environment];
-        v12 = [v11 clientAlwaysOnContentIs1hz];
+        environment = [v10 environment];
+        clientAlwaysOnContentIs1hz = [environment clientAlwaysOnContentIs1hz];
 
-        if (v12)
+        if (clientAlwaysOnContentIs1hz)
         {
           v7 = v10;
           v13 = 1;
@@ -1252,7 +1252,7 @@ void __83__BLSHLocalHostSceneEnvironmentUpdater_hostEnvironment_invalidateConten
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v21 objects:v35 count:16];
+      v7 = [presentationEntries countByEnumeratingWithState:&v21 objects:v35 count:16];
       if (v7)
       {
         continue;
@@ -1268,23 +1268,23 @@ LABEL_11:
   v14 = bls_flipbook_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [v7 environment];
-    v19 = [v18 identifier];
-    v20 = [v4 bls_shortLoggingString];
+    environment2 = [v7 environment];
+    identifier = [environment2 identifier];
+    bls_shortLoggingString = [presentationCopy bls_shortLoggingString];
     *buf = 134219010;
-    v26 = self;
+    selfCopy = self;
     v27 = 1024;
     v28 = v13;
     v29 = 1024;
-    v30 = v5;
+    v30 = alwaysOnContentIs1hz;
     v31 = 2114;
-    v32 = v19;
+    v32 = identifier;
     v33 = 2114;
-    v34 = v20;
+    v34 = bls_shortLoggingString;
     _os_log_debug_impl(&dword_21FD11000, v14, OS_LOG_TYPE_DEBUG, "%p:update1HzFromPresentation new1HzFlipbook:%{BOOL}u old1HzFlipbook:%{BOOL}u environment:%{public}@ presentation::%{public}@", buf, 0x2Cu);
   }
 
-  v15 = v5 ^ v13;
+  v15 = alwaysOnContentIs1hz ^ v13;
   if (v15 == 1)
   {
     [(BLSBacklightSceneEnvironment_Private *)self->_localHostEnvironment setAlwaysOnContentIs1hz:v13];
@@ -1294,15 +1294,15 @@ LABEL_11:
   return v15;
 }
 
-- (void)timelinesForDateInterval:(id)a3 previousPresentationDate:(id)a4 localHostEnvironment:(id)a5 shouldReset:(BOOL)a6 completion:(id)a7
+- (void)timelinesForDateInterval:(id)interval previousPresentationDate:(id)date localHostEnvironment:(id)environment shouldReset:(BOOL)reset completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  intervalCopy = interval;
+  dateCopy = date;
+  environmentCopy = environment;
+  completionCopy = completion;
   v16 = [BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator alloc];
-  v17 = [(BLSHLocalHostSceneEnvironmentUpdater *)self subHostedHostEnvironments];
-  v18 = [(BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator *)&v16->super.isa initWithDateInterval:v12 previousPresentationDate:v13 localHostEnvironment:v14 subHostedHostEnvironments:v17 shouldReset:a6 osTimerProvider:self->_osTimerProvider];
+  subHostedHostEnvironments = [(BLSHLocalHostSceneEnvironmentUpdater *)self subHostedHostEnvironments];
+  v18 = [(BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator *)&v16->super.isa initWithDateInterval:intervalCopy previousPresentationDate:dateCopy localHostEnvironment:environmentCopy subHostedHostEnvironments:subHostedHostEnvironments shouldReset:reset osTimerProvider:self->_osTimerProvider];
 
   os_unfair_lock_lock(&self->_lock);
   lock_timelinesCalculators = self->_lock_timelinesCalculators;
@@ -1324,7 +1324,7 @@ LABEL_11:
   v23[3] = &unk_2784205E0;
   objc_copyWeak(&v25, &location);
   v23[4] = self;
-  v22 = v15;
+  v22 = completionCopy;
   v24 = v22;
   [v18 calculateWithCompletion:v23];
 

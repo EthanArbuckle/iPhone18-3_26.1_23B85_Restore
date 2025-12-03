@@ -1,24 +1,24 @@
 @interface TSCEFunction_op_Colon
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
-+ (id)evaluateWithContext:(id)a3 relativeTractRef:(id)a4;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
++ (id)evaluateWithContext:(id)context relativeTractRef:(id)ref;
 @end
 
 @implementation TSCEFunction_op_Colon
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
-  v9 = *(*a5 + 8);
+  v8 = **arguments;
+  v9 = *(*arguments + 8);
   v61 = 0;
-  v11 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v9, v10, a3, a4, 1, &v61);
+  v11 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v9, v10, context, spec, 1, &v61);
   v12 = v61;
   v60 = v12;
-  v14 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v8, v13, a3, a4, 0, &v60);
+  v14 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v8, v13, context, spec, 0, &v60);
   v15 = v60;
 
   if (v15)
   {
-    isOutputOfAFunction = objc_msgSend_raiseErrorOrConvert_(a3, v16, v15, v18, v19);
+    isOutputOfAFunction = objc_msgSend_raiseErrorOrConvert_(context, v16, v15, v18, v19);
   }
 
   else
@@ -31,7 +31,7 @@
     if (v59)
     {
       v33 = objc_msgSend_invalidReferenceError(TSCEError, v29, v30, v31, v32);
-      isOutputOfAFunction = objc_msgSend_raiseErrorOrConvert_(a3, v34, v33, v35, v36);
+      isOutputOfAFunction = objc_msgSend_raiseErrorOrConvert_(context, v34, v33, v35, v36);
     }
 
     else
@@ -39,7 +39,7 @@
       v37 = objc_msgSend_preserveFlags(v14, v29, v30, v31, v32);
       v58 = objc_msgSend_preserveFlags(v11, v38, v39, v40, v41) & 0xC | v37 & 3;
       v42 = [TSCEReferenceValue alloc];
-      v47 = objc_msgSend_containingCell(a3, v43, v44, v45, v46);
+      v47 = objc_msgSend_containingCell(context, v43, v44, v45, v46);
       isOutputOfAFunction = objc_msgSend_initWithEvalRef_hostCell_preserveFlags_permitsAccessInsideMergeRegions_isOutputOfAFunction_(v42, v48, v28, v47, &v58, 0, 0);
       if ((objc_msgSend_isOutputOfAFunction(v14, v49, v50, v51, v52) & 1) != 0 || objc_msgSend_isOutputOfAFunction(v11, v53, v54, v55, v56))
       {
@@ -51,23 +51,23 @@
   return isOutputOfAFunction;
 }
 
-+ (id)evaluateWithContext:(id)a3 relativeTractRef:(id)a4
++ (id)evaluateWithContext:(id)context relativeTractRef:(id)ref
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  refCopy = ref;
   v63 = 0;
-  v11 = objc_msgSend_containingCell(v5, v7, v8, v9, v10);
-  v14 = objc_msgSend_absoluteCellTractRefForHostCell_offTable_(v6, v12, v11, &v63, v13);
+  v11 = objc_msgSend_containingCell(contextCopy, v7, v8, v9, v10);
+  v14 = objc_msgSend_absoluteCellTractRefForHostCell_offTable_(refCopy, v12, v11, &v63, v13);
   v62 = 0uLL;
-  if (objc_msgSend_hasTableUID(v6, v15, v16, v17, v18))
+  if (objc_msgSend_hasTableUID(refCopy, v15, v16, v17, v18))
   {
-    *&v62 = objc_msgSend_tableUID(v6, v19, v20, v21, v22);
+    *&v62 = objc_msgSend_tableUID(refCopy, v19, v20, v21, v22);
     *(&v62 + 1) = v23;
   }
 
   else
   {
-    v62 = *objc_msgSend_containingTable(v5, v19, v20, v21, v22);
+    v62 = *objc_msgSend_containingTable(contextCopy, v19, v20, v21, v22);
   }
 
   if (v63)
@@ -75,7 +75,7 @@
     goto LABEL_5;
   }
 
-  v32 = objc_msgSend_calcEngine(v5, v23, v24, v25, v26);
+  v32 = objc_msgSend_calcEngine(contextCopy, v23, v24, v25, v26);
   v36 = objc_msgSend_tableResolverWrapperForTableUID_(v32, v33, &v62, v34, v35);
 
   if (v36)
@@ -98,7 +98,7 @@
     TSUIndexSet::~TSUIndexSet(&v59);
     TSUIndexSet::~TSUIndexSet(&v58);
     v45 = [TSCEReferenceValue alloc];
-    v50 = objc_msgSend_containingCell(v5, v46, v47, v48, v49);
+    v50 = objc_msgSend_containingCell(contextCopy, v46, v47, v48, v49);
     *&v58 = objc_msgSend_preserveFlags(v14, v51, v52, v53, v54);
     isOutputOfAFunction = objc_msgSend_initWithEvalRef_hostCell_preserveFlags_permitsAccessInsideMergeRegions_isOutputOfAFunction_(v45, v55, v27, v50, &v58, 0, 0);
     goto LABEL_13;

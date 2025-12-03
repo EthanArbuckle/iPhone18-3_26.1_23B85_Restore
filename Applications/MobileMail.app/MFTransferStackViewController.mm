@@ -1,41 +1,41 @@
 @interface MFTransferStackViewController
 + (id)log;
-- (BOOL)stackController:(id)a3 isDataLoadedForItem:(id)a4 inView:(id)a5;
+- (BOOL)stackController:(id)controller isDataLoadedForItem:(id)item inView:(id)view;
 - (CGRect)_stackItemRect;
 - (CNContactStore)contactStore;
 - (ConversationViewController)conversationViewController;
 - (MFTransferStackControllerDataSource)dataSource;
-- (MFTransferStackViewController)initWithScene:(id)a3;
+- (MFTransferStackViewController)initWithScene:(id)scene;
 - (MailSplitViewController)mailSplitViewController;
 - (MessageDisplayCapable)scene;
-- (UIEdgeInsets)stackContainerViewEdgeInsetsForStackController:(id)a3;
-- (id)_titleForTransferOptions:(unint64_t)a3;
+- (UIEdgeInsets)stackContainerViewEdgeInsetsForStackController:(id)controller;
+- (id)_titleForTransferOptions:(unint64_t)options;
 - (id)splitViewController;
-- (id)stackController:(id)a3 viewForItem:(id)a4;
-- (void)_messageContentRepresentationRequestForItemWithItemID:(id)a3 completionHandler:(id)a4;
-- (void)_splitViewStateChanged:(id)a3;
+- (id)stackController:(id)controller viewForItem:(id)item;
+- (void)_messageContentRepresentationRequestForItemWithItemID:(id)d completionHandler:(id)handler;
+- (void)_splitViewStateChanged:(id)changed;
 - (void)_updateBackgroundColor;
-- (void)_updateDisplayModeButtonItemForDisplayMode:(int64_t)a3 isCollapsed:(BOOL)a4 isShowingTitle:(BOOL)a5;
+- (void)_updateDisplayModeButtonItemForDisplayMode:(int64_t)mode isCollapsed:(BOOL)collapsed isShowingTitle:(BOOL)title;
 - (void)_updateStackController;
-- (void)_updateTitleAnimated:(BOOL)a3;
-- (void)_updateTitleForDisplayMode:(int64_t)a3 animated:(BOOL)a4;
-- (void)addStackedItemsWithItemIDs:(id)a3;
+- (void)_updateTitleAnimated:(BOOL)animated;
+- (void)_updateTitleForDisplayMode:(int64_t)mode animated:(BOOL)animated;
+- (void)addStackedItemsWithItemIDs:(id)ds;
 - (void)dealloc;
-- (void)displayStackedViewsForItemsWithIDs:(id)a3;
-- (void)removeStackedItemsWithItemIDs:(id)a3;
-- (void)removeStackedViewsAnimated:(BOOL)a3 completion:(id)a4;
-- (void)stackController:(id)a3 loadDataForItem:(id)a4 inView:(id)a5;
-- (void)stackController:(id)a3 willDisplayView:(id)a4 forItem:(id)a5;
-- (void)stackController:(id)a3 willRemoveViewForItem:(id)a4;
-- (void)stackControllerDidStopStackingViews:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateForDisplayMode:(int64_t)a3 isCollapsed:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)displayStackedViewsForItemsWithIDs:(id)ds;
+- (void)removeStackedItemsWithItemIDs:(id)ds;
+- (void)removeStackedViewsAnimated:(BOOL)animated completion:(id)completion;
+- (void)stackController:(id)controller loadDataForItem:(id)item inView:(id)view;
+- (void)stackController:(id)controller willDisplayView:(id)view forItem:(id)item;
+- (void)stackController:(id)controller willRemoveViewForItem:(id)item;
+- (void)stackControllerDidStopStackingViews:(id)views;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateForDisplayMode:(int64_t)mode isCollapsed:(BOOL)collapsed;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MFTransferStackViewController
@@ -47,12 +47,12 @@
   [(MFTransferStackViewController *)&v23 viewDidLoad];
   v3 = objc_alloc_init(UINavigationBarAppearance);
   [v3 configureWithDefaultBackground];
-  v4 = [(MFTransferStackViewController *)self navigationItem];
-  [v4 setScrollEdgeAppearance:v3];
+  navigationItem = [(MFTransferStackViewController *)self navigationItem];
+  [navigationItem setScrollEdgeAppearance:v3];
 
   v5 = [_MFStackContainerView alloc];
-  v6 = [(MFTransferStackViewController *)self view];
-  [v6 bounds];
+  view = [(MFTransferStackViewController *)self view];
+  [view bounds];
   v7 = [(_MFStackContainerView *)v5 initWithFrame:?];
   stackContainerView = self->_stackContainerView;
   self->_stackContainerView = v7;
@@ -61,32 +61,32 @@
   [(_MFStackContainerView *)self->_stackContainerView setBackgroundColor:v9];
 
   [(_MFStackContainerView *)self->_stackContainerView setDelegate:self];
-  v10 = [(MFTransferStackViewController *)self view];
-  [v10 addSubview:self->_stackContainerView];
+  view2 = [(MFTransferStackViewController *)self view];
+  [view2 addSubview:self->_stackContainerView];
 
   [(_MFStackContainerView *)self->_stackContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(MFTransferStackViewController *)self view];
+  view3 = [(MFTransferStackViewController *)self view];
   v12 = self->_stackContainerView;
   v26 = @"_container";
   v27 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   v14 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_container]|" options:0 metrics:0 views:v13];
-  [v11 addConstraints:v14];
+  [view3 addConstraints:v14];
 
-  v15 = [(MFTransferStackViewController *)self view];
+  view4 = [(MFTransferStackViewController *)self view];
   v16 = self->_stackContainerView;
   v24 = @"_container";
   v25 = v16;
   v17 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
   v18 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_container]|" options:0 metrics:0 views:v17];
-  [v15 addConstraints:v18];
+  [view4 addConstraints:v18];
 
   v19 = +[UIColor _dimmingViewColor];
-  v20 = [(MFTransferStackViewController *)self view];
-  [v20 setBackgroundColor:v19];
+  view5 = [(MFTransferStackViewController *)self view];
+  [view5 setBackgroundColor:v19];
 
-  v21 = [(MFTransferStackViewController *)self view];
-  [v21 setUserInteractionEnabled:0];
+  view6 = [(MFTransferStackViewController *)self view];
+  [view6 setUserInteractionEnabled:0];
 
   v22 = +[NSNotificationCenter defaultCenter];
   [v22 addObserver:self selector:"_splitViewStateChanged:" name:@"MailSplitViewControllerViewStateChangedNotification" object:0];
@@ -98,7 +98,7 @@
   block[1] = 3221225472;
   block[2] = sub_100228E18;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD6F0 != -1)
   {
     dispatch_once(&qword_1006DD6F0, block);
@@ -109,16 +109,16 @@
   return v2;
 }
 
-- (MFTransferStackViewController)initWithScene:(id)a3
+- (MFTransferStackViewController)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v16.receiver = self;
   v16.super_class = MFTransferStackViewController;
   v5 = [(MFTransferStackViewController *)&v16 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
     v7 = objc_alloc_init(StackController);
     stackController = v6->_stackController;
     v6->_stackController = v7;
@@ -141,11 +141,11 @@
   return v6;
 }
 
-- (void)displayStackedViewsForItemsWithIDs:(id)a3
+- (void)displayStackedViewsForItemsWithIDs:(id)ds
 {
-  v13 = a3;
+  dsCopy = ds;
   v12 = [(NSMutableOrderedSet *)self->_stackedItemIDs mutableCopy];
-  [v12 removeObjectsInArray:v13];
+  [v12 removeObjectsInArray:dsCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -176,7 +176,7 @@
     while (v5);
   }
 
-  v10 = [[NSMutableOrderedSet alloc] initWithArray:v13];
+  v10 = [[NSMutableOrderedSet alloc] initWithArray:dsCopy];
   stackedItemIDs = self->_stackedItemIDs;
   self->_stackedItemIDs = v10;
 
@@ -184,14 +184,14 @@
   [(MFTransferStackViewController *)self _updateBackgroundColor];
 }
 
-- (void)removeStackedViewsAnimated:(BOOL)a3 completion:(id)a4
+- (void)removeStackedViewsAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(StackController *)self->_stackController hasStackedItems])
   {
-    if (v6)
+    if (completionCopy)
     {
-      v7 = [v6 copy];
+      v7 = [completionCopy copy];
       removeStackedViewsAnimationCompletionBlock = self->_removeStackedViewsAnimationCompletionBlock;
       self->_removeStackedViewsAnimationCompletionBlock = v7;
     }
@@ -201,32 +201,32 @@
     v9[2] = sub_1002292D8;
     v9[3] = &unk_10064D9D8;
     v9[4] = self;
-    v10 = a3;
+    animatedCopy = animated;
     [UIView animateWithDuration:v9 animations:0.3];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)addStackedItemsWithItemIDs:(id)a3
+- (void)addStackedItemsWithItemIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   [(NSMutableOrderedSet *)self->_stackedItemIDs addObjectsFromArray:?];
   [(MFTransferStackViewController *)self _updateStackController];
   [(MFTransferStackViewController *)self _updateBackgroundColor];
 }
 
-- (void)removeStackedItemsWithItemIDs:(id)a3
+- (void)removeStackedItemsWithItemIDs:(id)ds
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dsCopy = ds;
+  v5 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -236,7 +236,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -250,7 +250,7 @@
         [(NSMutableOrderedSet *)self->_stackedItemIDs removeObject:v8];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -264,9 +264,9 @@
 {
   if ([(MFTransferStackViewController *)self isStackControllerVisible])
   {
-    v3 = [(MFTransferStackViewController *)self dataSource];
-    v4 = [(NSMutableOrderedSet *)self->_stackedItemIDs array];
-    v5 = [v3 transferStackViewController:self itemIDsToDisplayFromItemIDs:v4];
+    dataSource = [(MFTransferStackViewController *)self dataSource];
+    array = [(NSMutableOrderedSet *)self->_stackedItemIDs array];
+    v5 = [dataSource transferStackViewController:self itemIDsToDisplayFromItemIDs:array];
 
     [(StackController *)self->_stackController displayStackedViewsForItems:v5 animated:1];
   }
@@ -277,9 +277,9 @@
   WeakRetained = objc_loadWeakRetained(&self->_conversationViewController);
   if (!WeakRetained)
   {
-    v4 = [(MFTransferStackViewController *)self mailSplitViewController];
-    v5 = [v4 messageDetailNavController];
-    WeakRetained = [v5 conversationViewController];
+    mailSplitViewController = [(MFTransferStackViewController *)self mailSplitViewController];
+    messageDetailNavController = [mailSplitViewController messageDetailNavController];
+    WeakRetained = [messageDetailNavController conversationViewController];
 
     objc_storeWeak(&self->_conversationViewController, WeakRetained);
   }
@@ -287,12 +287,12 @@
   return WeakRetained;
 }
 
-- (id)_titleForTransferOptions:(unint64_t)a3
+- (id)_titleForTransferOptions:(unint64_t)options
 {
-  v3 = a3;
-  if ((a3 & 2) != 0)
+  optionsCopy = options;
+  if ((options & 2) != 0)
   {
-    if ((a3 & 1) == 0)
+    if ((options & 1) == 0)
     {
       v7 = [(NSMutableDictionary *)self->_contentRequests count];
       v8 = +[NSBundle mainBundle];
@@ -316,11 +316,11 @@
 
   else
   {
-    if ((a3 & 0x10) == 0)
+    if ((options & 0x10) == 0)
     {
       v4 = +[NSBundle mainBundle];
       v5 = v4;
-      if ((v3 & 0x20) != 0)
+      if ((optionsCopy & 0x20) != 0)
       {
         [v4 localizedStringForKey:@"MESSAGE_SELECTION_TRASH_TITLE" value:&stru_100662A88 table:@"Main"];
       }
@@ -344,19 +344,19 @@ LABEL_13:
   return v9;
 }
 
-- (void)_updateTitleAnimated:(BOOL)a3
+- (void)_updateTitleAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MFTransferStackViewController *)self splitViewController];
-  -[MFTransferStackViewController _updateTitleForDisplayMode:animated:](self, "_updateTitleForDisplayMode:animated:", [v5 displayMode], v3);
+  animatedCopy = animated;
+  splitViewController = [(MFTransferStackViewController *)self splitViewController];
+  -[MFTransferStackViewController _updateTitleForDisplayMode:animated:](self, "_updateTitleForDisplayMode:animated:", [splitViewController displayMode], animatedCopy);
 }
 
-- (void)_updateTitleForDisplayMode:(int64_t)a3 animated:(BOOL)a4
+- (void)_updateTitleForDisplayMode:(int64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(MFTransferStackViewController *)self splitViewController];
-  v8 = [(MFTransferStackViewController *)self traitCollection];
-  v9 = [UINavigationBar mf_shouldUseDesktopClassNavigationBarForTraitCollection:v8];
+  animatedCopy = animated;
+  splitViewController = [(MFTransferStackViewController *)self splitViewController];
+  traitCollection = [(MFTransferStackViewController *)self traitCollection];
+  v9 = [UINavigationBar mf_shouldUseDesktopClassNavigationBarForTraitCollection:traitCollection];
 
   if (v9)
   {
@@ -367,17 +367,17 @@ LABEL_13:
   {
     v10 = [(MFTransferStackViewController *)self _titleForTransferOptions:[(MFTransferStackViewController *)self transferOptions]];
     v11 = v10;
-    if (a3 == 5 || a3 == 3)
+    if (mode == 5 || mode == 3)
     {
       v12 = [[BarLabelItem alloc] initWithTitle:v10 style:1];
-      v13 = [(MFTransferStackViewController *)self view];
-      [v13 frame];
+      view = [(MFTransferStackViewController *)self view];
+      [view frame];
       v15 = v14;
-      [v7 primaryColumnWidth];
+      [splitViewController primaryColumnWidth];
       v17 = v16;
 
-      v18 = [(BarLabelItem *)v12 customView];
-      [v18 frame];
+      customView = [(BarLabelItem *)v12 customView];
+      [customView frame];
       v20 = v19;
 
       v21 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:6 target:0 action:0];
@@ -396,14 +396,14 @@ LABEL_13:
     }
 
     [(MFTransferStackViewController *)self setTitle:v23];
-    v24 = [(MFTransferStackViewController *)self navigationItem];
-    [v24 setRightBarButtonItems:v22 animated:v4];
+    navigationItem = [(MFTransferStackViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItems:v22 animated:animatedCopy];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = MFTransferStackViewController;
   [(MFTransferStackViewController *)&v6 viewWillAppear:?];
@@ -412,30 +412,30 @@ LABEL_13:
   [(_MFStackContainerView *)self->_stackContainerView setLayoutInsets:?];
   [(_MFStackContainerView *)self->_stackContainerView setNeedsLayout];
   [(MFTransferStackViewController *)self _updateStackController];
-  [(MFTransferStackViewController *)self _updateTitleAnimated:v3];
-  v5 = [(MFTransferStackViewController *)self splitViewController];
-  -[MFTransferStackViewController _updateDisplayModeButtonItemForDisplayMode:isCollapsed:](self, "_updateDisplayModeButtonItemForDisplayMode:isCollapsed:", [v5 displayMode], objc_msgSend(v5, "isCollapsed"));
+  [(MFTransferStackViewController *)self _updateTitleAnimated:appearCopy];
+  splitViewController = [(MFTransferStackViewController *)self splitViewController];
+  -[MFTransferStackViewController _updateDisplayModeButtonItemForDisplayMode:isCollapsed:](self, "_updateDisplayModeButtonItemForDisplayMode:isCollapsed:", [splitViewController displayMode], objc_msgSend(splitViewController, "isCollapsed"));
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MFTransferStackViewController;
-  [(MFTransferStackViewController *)&v5 viewDidAppear:a3];
-  v4 = [(MFTransferStackViewController *)self stackController];
-  [v4 updateStackedViewsFrame];
+  [(MFTransferStackViewController *)&v5 viewDidAppear:appear];
+  stackController = [(MFTransferStackViewController *)self stackController];
+  [stackController updateStackedViewsFrame];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MFTransferStackViewController;
-  [(MFTransferStackViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(MFTransferStackViewController *)self conversationViewController];
-  v5 = [v4 barItemsManager];
-  [v5 setShowSupplementaryButtonItem:0];
+  [(MFTransferStackViewController *)&v6 viewDidDisappear:disappear];
+  conversationViewController = [(MFTransferStackViewController *)self conversationViewController];
+  barItemsManager = [conversationViewController barItemsManager];
+  [barItemsManager setShowSupplementaryButtonItem:0];
 
-  [v4 _updateBarButtonsAnimated:0 force:1];
+  [conversationViewController _updateBarButtonsAnimated:0 force:1];
   [(MFTransferStackViewController *)self setIsStackControllerVisible:0];
 }
 
@@ -446,32 +446,32 @@ LABEL_13:
   [(MFTransferStackViewController *)&v4 viewDidLayoutSubviews];
   if ([(MFTransferStackViewController *)self isStackControllerVisible])
   {
-    v3 = [(MFTransferStackViewController *)self stackController];
-    [v3 updateStackedViewsFrame];
+    stackController = [(MFTransferStackViewController *)self stackController];
+    [stackController updateStackedViewsFrame];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8.receiver = self;
   v8.super_class = MFTransferStackViewController;
-  [(MFTransferStackViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  -[MFTransferStackViewController _updateTitleAnimated:](self, "_updateTitleAnimated:", [v7 isAnimated]);
+  [(MFTransferStackViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  -[MFTransferStackViewController _updateTitleAnimated:](self, "_updateTitleAnimated:", [coordinatorCopy isAnimated]);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v7.receiver = self;
   v7.super_class = MFTransferStackViewController;
-  [(MFTransferStackViewController *)&v7 traitCollectionDidChange:v4];
-  v5 = [(MFTransferStackViewController *)self traitCollection];
-  v6 = [v5 horizontalSizeClass];
+  [(MFTransferStackViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [(MFTransferStackViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v6 == 2)
+  if (horizontalSizeClass == 2)
   {
     [(MFTransferStackViewController *)self _updateStackController];
   }
@@ -489,15 +489,15 @@ LABEL_13:
     +[UIColor _dimmingViewColor];
   }
   v4 = ;
-  v3 = [(MFTransferStackViewController *)self view];
-  [v3 setBackgroundColor:v4];
+  view = [(MFTransferStackViewController *)self view];
+  [view setBackgroundColor:v4];
 }
 
-- (void)updateForDisplayMode:(int64_t)a3 isCollapsed:(BOOL)a4
+- (void)updateForDisplayMode:(int64_t)mode isCollapsed:(BOOL)collapsed
 {
-  [(MFTransferStackViewController *)self _updateDisplayModeButtonItemForDisplayMode:a3 isCollapsed:a4 isShowingTitle:0];
+  [(MFTransferStackViewController *)self _updateDisplayModeButtonItemForDisplayMode:mode isCollapsed:collapsed isShowingTitle:0];
 
-  [(MFTransferStackViewController *)self _updateTitleForDisplayMode:a3 animated:1];
+  [(MFTransferStackViewController *)self _updateTitleForDisplayMode:mode animated:1];
 }
 
 - (void)dealloc
@@ -529,33 +529,33 @@ LABEL_13:
 {
   v8.receiver = self;
   v8.super_class = MFTransferStackViewController;
-  v3 = [(MFTransferStackViewController *)&v8 splitViewController];
-  v4 = v3;
-  if (v3)
+  splitViewController = [(MFTransferStackViewController *)&v8 splitViewController];
+  v4 = splitViewController;
+  if (splitViewController)
   {
-    v5 = v3;
+    splitViewController2 = splitViewController;
   }
 
   else
   {
-    v6 = [(MFTransferStackViewController *)self presentingViewController];
-    v5 = [v6 splitViewController];
+    presentingViewController = [(MFTransferStackViewController *)self presentingViewController];
+    splitViewController2 = [presentingViewController splitViewController];
   }
 
-  return v5;
+  return splitViewController2;
 }
 
-- (void)_splitViewStateChanged:(id)a3
+- (void)_splitViewStateChanged:(id)changed
 {
-  v13 = a3;
-  v5 = [v13 object];
-  v6 = [(MFTransferStackViewController *)self splitViewController];
+  changedCopy = changed;
+  object = [changedCopy object];
+  splitViewController = [(MFTransferStackViewController *)self splitViewController];
 
-  if (v5 == v6)
+  if (object == splitViewController)
   {
-    v7 = [v13 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"MailSplitViewControllerNewDisplayModeKey"];
-    v9 = [v7 objectForKeyedSubscript:@"MailSplitViewControllerIsCollapsedKey"];
+    userInfo = [changedCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"MailSplitViewControllerNewDisplayModeKey"];
+    v9 = [userInfo objectForKeyedSubscript:@"MailSplitViewControllerIsCollapsedKey"];
     v10 = v9;
     if (v8)
     {
@@ -579,11 +579,11 @@ LABEL_13:
 
 - (MailSplitViewController)mailSplitViewController
 {
-  v2 = [(MFTransferStackViewController *)self splitViewController];
+  splitViewController = [(MFTransferStackViewController *)self splitViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = splitViewController;
   }
 
   else
@@ -596,15 +596,15 @@ LABEL_13:
   return v3;
 }
 
-- (void)_updateDisplayModeButtonItemForDisplayMode:(int64_t)a3 isCollapsed:(BOOL)a4 isShowingTitle:(BOOL)a5
+- (void)_updateDisplayModeButtonItemForDisplayMode:(int64_t)mode isCollapsed:(BOOL)collapsed isShowingTitle:(BOOL)title
 {
-  v5 = a5;
-  v6 = a4;
-  v17 = [(MFTransferStackViewController *)self mailSplitViewController];
+  titleCopy = title;
+  collapsedCopy = collapsed;
+  mailSplitViewController = [(MFTransferStackViewController *)self mailSplitViewController];
   if (+[UINavigationBar mf_canUseDesktopClassNavigationBar])
   {
-    v9 = a3 == 1 || v6;
-    if (v17)
+    v9 = mode == 1 || collapsedCopy;
+    if (mailSplitViewController)
     {
       v10 = v9;
     }
@@ -614,46 +614,46 @@ LABEL_13:
       v10 = 0;
     }
 
-    v11 = [(MFTransferStackViewController *)self conversationViewController];
-    v12 = [v11 barItemsManager];
-    [v12 setShowSupplementaryButtonItem:v10];
+    conversationViewController = [(MFTransferStackViewController *)self conversationViewController];
+    barItemsManager = [conversationViewController barItemsManager];
+    [barItemsManager setShowSupplementaryButtonItem:v10];
 
-    v13 = [(MFTransferStackViewController *)self traitCollection];
-    v14 = [UINavigationBar mf_shouldUseDesktopClassNavigationBarForTraitCollection:v13];
+    traitCollection = [(MFTransferStackViewController *)self traitCollection];
+    v14 = [UINavigationBar mf_shouldUseDesktopClassNavigationBarForTraitCollection:traitCollection];
 
     if (v14)
     {
-      [v11 _updateBarButtonsAnimated:1 withDisplayMode:a3 isCollapsed:v6 isShowingTitle:v5];
+      [conversationViewController _updateBarButtonsAnimated:1 withDisplayMode:mode isCollapsed:collapsedCopy isShowingTitle:titleCopy];
     }
   }
 
   else
   {
-    v15 = !v6;
-    if (a3 == 1)
+    v15 = !collapsedCopy;
+    if (mode == 1)
     {
       v15 = 0;
     }
 
-    if (v15 || !v17)
+    if (v15 || !mailSplitViewController)
     {
-      v11 = [(MFTransferStackViewController *)self navigationItem];
-      [v11 setLeftBarButtonItem:0];
+      conversationViewController = [(MFTransferStackViewController *)self navigationItem];
+      [conversationViewController setLeftBarButtonItem:0];
     }
 
     else
     {
-      v11 = [v17 supplementaryButtonItem];
-      v16 = [(MFTransferStackViewController *)self navigationItem];
-      [v16 setLeftBarButtonItem:v11];
+      conversationViewController = [mailSplitViewController supplementaryButtonItem];
+      navigationItem = [(MFTransferStackViewController *)self navigationItem];
+      [navigationItem setLeftBarButtonItem:conversationViewController];
     }
   }
 }
 
 - (CGRect)_stackItemRect
 {
-  v3 = [(MFTransferStackViewController *)self view];
-  [v3 bounds];
+  view = [(MFTransferStackViewController *)self view];
+  [view bounds];
 
   [(MFTransferStackViewController *)self stackContainerViewEdgeInsetsForStackController:self->_stackController];
 
@@ -665,16 +665,16 @@ LABEL_13:
   return result;
 }
 
-- (UIEdgeInsets)stackContainerViewEdgeInsetsForStackController:(id)a3
+- (UIEdgeInsets)stackContainerViewEdgeInsetsForStackController:(id)controller
 {
-  v4 = [(MFTransferStackViewController *)self scene];
-  v5 = [v4 statusBarManager];
-  [v5 statusBarFrame];
+  scene = [(MFTransferStackViewController *)self scene];
+  statusBarManager = [scene statusBarManager];
+  [statusBarManager statusBarFrame];
   Height = CGRectGetHeight(v15);
 
-  v7 = [(MFTransferStackViewController *)self navigationController];
-  v8 = [v7 navigationBar];
-  [v8 frame];
+  navigationController = [(MFTransferStackViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v10 = v9;
 
   v11 = Height + v10;
@@ -688,9 +688,9 @@ LABEL_13:
   return result;
 }
 
-- (id)stackController:(id)a3 viewForItem:(id)a4
+- (id)stackController:(id)controller viewForItem:(id)item
 {
-  v5 = [(MFTransferStackViewController *)self scene:a3];
+  v5 = [(MFTransferStackViewController *)self scene:controller];
   v6 = [_MFStackWrapperView alloc];
   [(MFTransferStackViewController *)self _stackItemRect];
   v7 = [(_MFStackWrapperView *)v6 initWithFrame:?];
@@ -700,39 +700,39 @@ LABEL_13:
   [v9 setMessageBlockingReason:4];
   [v9 setShowsBanners:0];
   v10 = +[UIApplication sharedApplication];
-  v11 = [v10 mailboxProvider];
-  [v9 setMailboxProvider:v11];
+  mailboxProvider = [v10 mailboxProvider];
+  [v9 setMailboxProvider:mailboxProvider];
 
-  v12 = [v5 daemonInterface];
-  [v9 setDaemonInterface:v12];
+  daemonInterface = [v5 daemonInterface];
+  [v9 setDaemonInterface:daemonInterface];
 
   v13 = [MFConversationItemHeaderBlock alloc];
-  v14 = [(MFTransferStackViewController *)self contactStore];
+  contactStore = [(MFTransferStackViewController *)self contactStore];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v18 = [(MFConversationItemHeaderBlock *)v13 initWithFrame:v14 contactStore:CGRectZero.origin.x, y, width, height];
+  height = [(MFConversationItemHeaderBlock *)v13 initWithFrame:contactStore contactStore:CGRectZero.origin.x, y, width, height];
 
-  [(MFConversationItemHeaderBlock *)v18 setDisplayOptions:2];
-  v19 = [v9 headerView];
-  [v19 addHeaderBlock:v18 animated:0];
+  [(MFConversationItemHeaderBlock *)height setDisplayOptions:2];
+  headerView = [v9 headerView];
+  [headerView addHeaderBlock:height animated:0];
 
-  v20 = [[MessageHeaderSubjectBlock alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  v21 = [v9 headerView];
-  [v21 addHeaderBlock:v20 animated:0];
+  height2 = [[MessageHeaderSubjectBlock alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  headerView2 = [v9 headerView];
+  [headerView2 addHeaderBlock:height2 animated:0];
 
   [(_MFStackWrapperView *)v7 addWrappedView:v9];
-  v22 = [(MFTransferStackViewController *)self traitCollection];
-  v23 = [(MFTransferStackViewController *)self view];
-  [v23 layoutMargins];
+  traitCollection = [(MFTransferStackViewController *)self traitCollection];
+  view = [(MFTransferStackViewController *)self view];
+  [view layoutMargins];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
-  v32 = [(MFTransferStackViewController *)self view];
-  [v32 safeAreaInsets];
-  v37 = +[MFMessageDisplayMetrics displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:](MFMessageDisplayMetrics, "displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:", v22, [v5 interfaceOrientation], v25, v27, v29, v31, v33, v34, v35, v36);
+  view2 = [(MFTransferStackViewController *)self view];
+  [view2 safeAreaInsets];
+  v37 = +[MFMessageDisplayMetrics displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:](MFMessageDisplayMetrics, "displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:", traitCollection, [v5 interfaceOrientation], v25, v27, v29, v31, v33, v34, v35, v36);
 
   [v9 setLayoutMargins:{v25, v27, v29, v31}];
   [v9 setDisplayMetrics:v37];
@@ -740,16 +740,16 @@ LABEL_13:
   return v7;
 }
 
-- (void)_messageContentRepresentationRequestForItemWithItemID:(id)a3 completionHandler:(id)a4
+- (void)_messageContentRepresentationRequestForItemWithItemID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_contentRequests objectForKeyedSubscript:v6];
+  dCopy = d;
+  handlerCopy = handler;
+  v8 = [(NSMutableDictionary *)self->_contentRequests objectForKeyedSubscript:dCopy];
 
   if (v8)
   {
-    v9 = [(NSMutableDictionary *)self->_contentRequests objectForKeyedSubscript:v6];
-    v7[2](v7, v9);
+    v9 = [(NSMutableDictionary *)self->_contentRequests objectForKeyedSubscript:dCopy];
+    handlerCopy[2](handlerCopy, v9);
   }
 
   else
@@ -758,18 +758,18 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = v6;
+      v23 = dCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Request display message for message: %{public}@", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v11 = [(MFTransferStackViewController *)self dataSource];
-    v12 = [v11 transferStackViewController:self displayMessageForMessageListItemWithItemID:v6];
+    dataSource = [(MFTransferStackViewController *)self dataSource];
+    v12 = [dataSource transferStackViewController:self displayMessageForMessageListItemWithItemID:dCopy];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10022B048;
     v20[3] = &unk_100655E70;
-    v13 = v6;
+    v13 = dCopy;
     v21 = v13;
     v14 = [v12 map:v20];
     v15 = +[EFScheduler mainThreadScheduler];
@@ -779,7 +779,7 @@ LABEL_13:
     v16[3] = &unk_100655E98;
     objc_copyWeak(&v19, buf);
     v17 = v13;
-    v18 = v7;
+    v18 = handlerCopy;
     [v14 onScheduler:v15 addSuccessBlock:v16];
 
     objc_destroyWeak(&v19);
@@ -787,37 +787,37 @@ LABEL_13:
   }
 }
 
-- (BOOL)stackController:(id)a3 isDataLoadedForItem:(id)a4 inView:(id)a5
+- (BOOL)stackController:(id)controller isDataLoadedForItem:(id)item inView:(id)view
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(NSMutableDictionary *)self->_contentRequests objectForKeyedSubscript:v7];
-    v10 = [v9 message];
-    v11 = [v10 isAvailableLocally];
+    v9 = [(NSMutableDictionary *)self->_contentRequests objectForKeyedSubscript:itemCopy];
+    message = [v9 message];
+    isAvailableLocally = [message isAvailableLocally];
   }
 
   else
   {
-    v11 = 0;
+    isAvailableLocally = 0;
   }
 
-  return v11;
+  return isAvailableLocally;
 }
 
-- (void)stackController:(id)a3 loadDataForItem:(id)a4 inView:(id)a5
+- (void)stackController:(id)controller loadDataForItem:(id)item inView:(id)view
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    if ([v7 conformsToProtocol:&OBJC_PROTOCOL___EMCollectionItemID])
+    v9 = viewCopy;
+    if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___EMCollectionItemID])
     {
-      v10 = v7;
+      v10 = itemCopy;
       v11 = +[MFTransferStackViewController log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -849,30 +849,30 @@ LABEL_13:
   }
 }
 
-- (void)stackControllerDidStopStackingViews:(id)a3
+- (void)stackControllerDidStopStackingViews:(id)views
 {
   removeStackedViewsAnimationCompletionBlock = self->_removeStackedViewsAnimationCompletionBlock;
   if (removeStackedViewsAnimationCompletionBlock)
   {
-    removeStackedViewsAnimationCompletionBlock[2](removeStackedViewsAnimationCompletionBlock, a2, a3);
+    removeStackedViewsAnimationCompletionBlock[2](removeStackedViewsAnimationCompletionBlock, a2, views);
     v5 = self->_removeStackedViewsAnimationCompletionBlock;
     self->_removeStackedViewsAnimationCompletionBlock = 0;
   }
 }
 
-- (void)stackController:(id)a3 willDisplayView:(id)a4 forItem:(id)a5
+- (void)stackController:(id)controller willDisplayView:(id)view forItem:(id)item
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  controllerCopy = controller;
+  viewCopy = view;
+  itemCopy = item;
+  if (itemCopy)
   {
     [(MFTransferStackViewController *)self _stackItemRect];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [v8 frame];
+    [viewCopy frame];
     v26.origin.x = v18;
     v26.origin.y = v19;
     v26.size.width = v20;
@@ -883,19 +883,19 @@ LABEL_13:
     v25.size.height = v17;
     if (!CGRectEqualToRect(v25, v26))
     {
-      v22 = [(MFTransferStackViewController *)self stackController];
-      [v22 updateStackedViewFrameForItem:v9];
+      stackController = [(MFTransferStackViewController *)self stackController];
+      [stackController updateStackedViewFrameForItem:itemCopy];
     }
   }
 }
 
-- (void)stackController:(id)a3 willRemoveViewForItem:(id)a4
+- (void)stackController:(id)controller willRemoveViewForItem:(id)item
 {
-  v5 = a4;
-  if (v5)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v8 = v5;
-    v6 = [(NSMutableDictionary *)self->_contentRequests objectForKeyedSubscript:v5];
+    v8 = itemCopy;
+    v6 = [(NSMutableDictionary *)self->_contentRequests objectForKeyedSubscript:itemCopy];
     v7 = v6;
     if (v6)
     {
@@ -904,7 +904,7 @@ LABEL_13:
 
     [(NSMutableDictionary *)self->_contentRequests removeObjectForKey:v8];
 
-    v5 = v8;
+    itemCopy = v8;
   }
 }
 

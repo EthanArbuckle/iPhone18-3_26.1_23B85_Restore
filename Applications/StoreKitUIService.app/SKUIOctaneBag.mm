@@ -1,10 +1,10 @@
 @interface SKUIOctaneBag
 + (id)shared;
 - (SKUIOctaneBag)init;
-- (id)_bagValueForKey:(id)a3 ofType:(unint64_t)a4;
+- (id)_bagValueForKey:(id)key ofType:(unint64_t)type;
 - (int64_t)_activePort;
 - (void)_fetchBag;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (void)createSnapshotWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001FEA8;
   block[3] = &unk_1000517F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100069590 != -1)
   {
     dispatch_once(&qword_100069590, block);
@@ -54,9 +54,9 @@
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
   [v5 setData:self->_dictionary];
   v6 = +[NSDate distantFuture];
@@ -70,7 +70,7 @@
   v10 = 0;
   v8 = [v5 buildWithError:&v10];
   v9 = v10;
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
 - (int64_t)_activePort
@@ -116,9 +116,9 @@
   return v9;
 }
 
-- (id)_bagValueForKey:(id)a3 ofType:(unint64_t)a4
+- (id)_bagValueForKey:(id)key ofType:(unint64_t)type
 {
-  v6 = a3;
+  keyCopy = key;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -130,29 +130,29 @@
   v12 = 3221225472;
   v13 = sub_1000204C4;
   v14 = &unk_100051D40;
-  v15 = self;
+  selfCopy = self;
   v17 = &v19;
-  v8 = v6;
+  v8 = keyCopy;
   v16 = v8;
-  v18 = a4;
+  typeCopy = type;
   dispatch_sync(dispatchQueue, &v11);
-  v9 = [AMSBagValue frozenBagValueWithKey:v8 value:v20[5] valueType:a4, v11, v12, v13, v14, v15];
+  selfCopy = [AMSBagValue frozenBagValueWithKey:v8 value:v20[5] valueType:type, v11, v12, v13, v14, selfCopy];
 
   _Block_object_dispose(&v19, 8);
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)_fetchBag
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v3 = [(SKUIOctaneBag *)self _activePort];
-  v4 = v3;
-  if (!self->_dictionary || v3 != self->_port)
+  _activePort = [(SKUIOctaneBag *)self _activePort];
+  v4 = _activePort;
+  if (!self->_dictionary || _activePort != self->_port)
   {
-    if (v3)
+    if (_activePort)
     {
-      self->_port = v3;
+      self->_port = _activePort;
       v5 = dispatch_semaphore_create(0);
       v6 = [NSString stringWithFormat:@"http://localhost:%ld/WebObjects/MZInit.woa/wa/initiateSession", v4];
       v7 = [NSURL URLWithString:v6];

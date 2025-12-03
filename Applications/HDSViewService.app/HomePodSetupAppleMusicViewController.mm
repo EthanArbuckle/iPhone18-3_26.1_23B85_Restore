@@ -1,35 +1,35 @@
 @interface HomePodSetupAppleMusicViewController
-- (_TtC14HDSViewService36HomePodSetupAppleMusicViewController)initWithContentView:(id)a3;
-- (void)cloudServiceSetupViewControllerDidDismiss:(id)a3;
+- (_TtC14HDSViewService36HomePodSetupAppleMusicViewController)initWithContentView:(id)view;
+- (void)cloudServiceSetupViewControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HomePodSetupAppleMusicViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000669E0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100066DE0(a3);
+  selfCopy = self;
+  sub_100066DE0(appear);
 }
 
-- (_TtC14HDSViewService36HomePodSetupAppleMusicViewController)initWithContentView:(id)a3
+- (_TtC14HDSViewService36HomePodSetupAppleMusicViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)cloudServiceSetupViewControllerDidDismiss:(id)a3
+- (void)cloudServiceSetupViewControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_1000681DC();
 }
 

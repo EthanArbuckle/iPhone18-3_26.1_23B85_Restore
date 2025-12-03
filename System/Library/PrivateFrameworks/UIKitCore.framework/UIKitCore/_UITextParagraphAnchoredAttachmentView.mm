@@ -1,10 +1,10 @@
 @interface _UITextParagraphAnchoredAttachmentView
 - (NSTextLayoutFragment)textLayoutFragment;
 - (NSTextParagraphAnchoredAttachment)anchoredAttachment;
-- (_UITextParagraphAnchoredAttachmentView)initWithTextLayoutCanvasView:(id)a3 anchoredAttachment:(id)a4;
-- (void)drawRect:(CGRect)a3;
+- (_UITextParagraphAnchoredAttachmentView)initWithTextLayoutCanvasView:(id)view anchoredAttachment:(id)attachment;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setTextLayoutFragment:(id)a3;
+- (void)setTextLayoutFragment:(id)fragment;
 @end
 
 @implementation _UITextParagraphAnchoredAttachmentView
@@ -16,9 +16,9 @@
   return WeakRetained;
 }
 
-- (void)setTextLayoutFragment:(id)a3
+- (void)setTextLayoutFragment:(id)fragment
 {
-  obj = a3;
+  obj = fragment;
   WeakRetained = objc_loadWeakRetained(&self->_textLayoutFragment);
 
   v5 = obj;
@@ -31,19 +31,19 @@
   }
 }
 
-- (_UITextParagraphAnchoredAttachmentView)initWithTextLayoutCanvasView:(id)a3 anchoredAttachment:(id)a4
+- (_UITextParagraphAnchoredAttachmentView)initWithTextLayoutCanvasView:(id)view anchoredAttachment:(id)attachment
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 bounds];
+  viewCopy = view;
+  attachmentCopy = attachment;
+  [viewCopy bounds];
   v11.receiver = self;
   v11.super_class = _UITextParagraphAnchoredAttachmentView;
   v8 = [(UIView *)&v11 initWithFrame:?];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_textLayoutCanvasView, v6);
-    objc_storeWeak(&v9->_anchoredAttachment, v7);
+    objc_storeWeak(&v8->_textLayoutCanvasView, viewCopy);
+    objc_storeWeak(&v9->_anchoredAttachment, attachmentCopy);
     [(UIView *)v9 setOpaque:0];
     [(UIView *)v9 setClipsToBounds:1];
     [(UIView *)v9 _setHostsLayoutEngine:1];
@@ -70,13 +70,13 @@
     attachmentViewProvider = self->_attachmentViewProvider;
     if (attachmentViewProvider || (v8 = objc_loadWeakRetained(&self->_textLayoutFragment), v9 = objc_loadWeakRetained(&self->_anchoredAttachment), [v8 textAttachmentViewProviderForTextParagraphAnchoredAttachment:v9], v10 = objc_claimAutoreleasedReturnValue(), v11 = self->_attachmentViewProvider, self->_attachmentViewProvider = v10, v11, v9, v8, (attachmentViewProvider = self->_attachmentViewProvider) != 0))
     {
-      v12 = [(NSTextAttachmentViewProvider *)attachmentViewProvider view];
-      v13 = v12;
-      if (v12)
+      view = [(NSTextAttachmentViewProvider *)attachmentViewProvider view];
+      v13 = view;
+      if (view)
       {
-        v14 = [v12 superview];
+        superview = [view superview];
 
-        if (v14 != self)
+        if (superview != self)
         {
           [(UIView *)self addSubview:v13];
         }
@@ -98,7 +98,7 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   WeakRetained = objc_loadWeakRetained(&self->_textLayoutFragment);
   v4 = objc_loadWeakRetained(&self->_anchoredAttachment);

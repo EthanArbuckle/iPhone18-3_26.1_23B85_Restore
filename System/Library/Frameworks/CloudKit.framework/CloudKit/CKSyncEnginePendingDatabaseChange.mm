@@ -1,12 +1,12 @@
 @interface CKSyncEnginePendingDatabaseChange
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (CKSyncEnginePendingDatabaseChange)initWithCoder:(id)a3;
-- (CKSyncEnginePendingDatabaseChange)initWithZoneID:(id)a3 type:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (CKSyncEnginePendingDatabaseChange)initWithCoder:(id)coder;
+- (CKSyncEnginePendingDatabaseChange)initWithZoneID:(id)d type:(int64_t)type;
 - (id)oppositeTypeChange;
 - (unint64_t)hash;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKSyncEnginePendingDatabaseChange
@@ -18,47 +18,47 @@
   v7[0] = objc_opt_class();
   v7[1] = objc_opt_class();
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v4, v7, 2);
-  sub_1886CEE50(a1, v3, v5, 0, 1);
+  sub_1886CEE50(self, v3, v5, 0, 1);
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (CKSyncEnginePendingDatabaseChange)initWithZoneID:(id)a3 type:(int64_t)a4
+- (CKSyncEnginePendingDatabaseChange)initWithZoneID:(id)d type:(int64_t)type
 {
-  v6 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = CKSyncEnginePendingDatabaseChange;
   v9 = [(CKSyncEnginePendingDatabaseChange *)&v13 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v6, v7, v8);
+    v10 = objc_msgSend_copy(dCopy, v7, v8);
     zoneID = v9->_zoneID;
     v9->_zoneID = v10;
 
-    v9->_type = a4;
+    v9->_type = type;
   }
 
   return v9;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v7 = a3;
+  usingCopy = using;
   if (objc_msgSend_type(self, v4, v5))
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v7, v6, @"type", @"Delete", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v6, @"type", @"Delete", 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v7, v6, @"type", @"Save", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v6, @"type", @"Save", 0);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -68,7 +68,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_type(self, v6, v7);
       if (v8 == objc_msgSend_type(v5, v9, v10))
       {
@@ -109,32 +109,32 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_type);
-  objc_msgSend_encodeInteger_forKey_(v5, v7, type, v6);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v7, type, v6);
 
   zoneID = self->_zoneID;
   v10 = NSStringFromSelector(sel_zoneID);
-  objc_msgSend_encodeObject_forKey_(v5, v9, zoneID, v10);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, zoneID, v10);
 }
 
-- (CKSyncEnginePendingDatabaseChange)initWithCoder:(id)a3
+- (CKSyncEnginePendingDatabaseChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CKSyncEnginePendingDatabaseChange;
   v5 = [(CKSyncEnginePendingDatabaseChange *)&v14 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_type);
-    v5->_type = objc_msgSend_decodeIntegerForKey_(v4, v7, v6);
+    v5->_type = objc_msgSend_decodeIntegerForKey_(coderCopy, v7, v6);
 
     v8 = objc_opt_class();
     v9 = NSStringFromSelector(sel_zoneID);
-    v11 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v10, v8, v9);
+    v11 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v10, v8, v9);
     zoneID = v5->_zoneID;
     v5->_zoneID = v11;
   }

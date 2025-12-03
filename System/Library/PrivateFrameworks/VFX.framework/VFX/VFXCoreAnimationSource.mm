@@ -2,7 +2,7 @@
 - (BOOL)isOpaque;
 - (id)textureSource;
 - (void)dealloc;
-- (void)setLayer:(id)a3;
+- (void)setLayer:(id)layer;
 @end
 
 @implementation VFXCoreAnimationSource
@@ -29,13 +29,13 @@
   [(VFXCoreAnimationSource *)&v3 dealloc];
 }
 
-- (void)setLayer:(id)a3
+- (void)setLayer:(id)layer
 {
   layer = self->_layer;
-  if (layer != a3)
+  if (layer != layer)
   {
 
-    self->_layer = a3;
+    self->_layer = layer;
   }
 }
 

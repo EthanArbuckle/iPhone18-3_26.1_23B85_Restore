@@ -1,17 +1,17 @@
 @interface OBPrivacySplashListViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (OBPrivacySplashListViewAccessibility)initWithContentList:(id)a3 dataDetectorTypes:(unint64_t)a4 scrollView:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (OBPrivacySplashListViewAccessibility)initWithContentList:(id)list dataDetectorTypes:(unint64_t)types scrollView:(id)view;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axSetupTextViewForSwitchControl:(id)a3;
+- (void)_axSetupTextViewForSwitchControl:(id)control;
 @end
 
 @implementation OBPrivacySplashListViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"OBPrivacySplashListView" hasInstanceVariable:@"_textViews" withType:"NSMutableArray"];
-  [v3 validateClass:@"OBPrivacySplashListView" hasInstanceMethod:@"initWithContentList:dataDetectorTypes:scrollView:" withFullSignature:{"@", "Q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"OBPrivacySplashListView" hasInstanceVariable:@"_textViews" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"OBPrivacySplashListView" hasInstanceMethod:@"initWithContentList:dataDetectorTypes:scrollView:" withFullSignature:{"@", "Q", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,11 +22,11 @@
   [(OBPrivacySplashListViewAccessibility *)&v34 _accessibilityLoadAccessibilityInformation];
   v33 = 0;
   objc_opt_class();
-  v27 = self;
+  selfCopy = self;
   v3 = [(OBPrivacySplashListViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_1 startWithSelf:0];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 delegate];
+  delegate = [v4 delegate];
   NSClassFromString(&cfstr_Obprivacysplas_1.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -42,7 +42,7 @@
 
   v33 = 0;
   objc_opt_class();
-  v11 = [(OBPrivacySplashListViewAccessibility *)v27 safeValueForKey:@"_textViews"];
+  v11 = [(OBPrivacySplashListViewAccessibility *)selfCopy safeValueForKey:@"_textViews"];
   v12 = __UIAccessibilityCastAsClass();
 
   if (v12)
@@ -81,16 +81,16 @@
         }
 
         v19 = v18;
-        v20 = [v18 text];
-        if ([v20 length])
+        text = [v18 text];
+        if ([text length])
         {
         }
 
         else
         {
-          v21 = [v19 attributedText];
-          v22 = [v21 string];
-          v23 = [v22 length];
+          attributedText = [v19 attributedText];
+          string = [attributedText string];
+          v23 = [string length];
 
           if (!v23)
           {
@@ -102,7 +102,7 @@
         [v19 _accessibilitySetTextViewShouldBreakUpParagraphs:{1, v25, v26}];
         if (v10)
         {
-          [(OBPrivacySplashListViewAccessibility *)v27 _axSetupTextViewForSwitchControl:v19];
+          [(OBPrivacySplashListViewAccessibility *)selfCopy _axSetupTextViewForSwitchControl:v19];
         }
 
 LABEL_21:
@@ -132,28 +132,28 @@ uint64_t __82__OBPrivacySplashListViewAccessibility__accessibilityLoadAccessibil
   return isKindOfClass & 1;
 }
 
-- (OBPrivacySplashListViewAccessibility)initWithContentList:(id)a3 dataDetectorTypes:(unint64_t)a4 scrollView:(id)a5
+- (OBPrivacySplashListViewAccessibility)initWithContentList:(id)list dataDetectorTypes:(unint64_t)types scrollView:(id)view
 {
   v7.receiver = self;
   v7.super_class = OBPrivacySplashListViewAccessibility;
-  v5 = [(OBPrivacySplashListViewAccessibility *)&v7 initWithContentList:a3 dataDetectorTypes:a4 scrollView:a5];
+  v5 = [(OBPrivacySplashListViewAccessibility *)&v7 initWithContentList:list dataDetectorTypes:types scrollView:view];
   [(OBPrivacySplashListViewAccessibility *)v5 _accessibilityLoadAccessibilityInformation];
 
   return v5;
 }
 
-- (void)_axSetupTextViewForSwitchControl:(id)a3
+- (void)_axSetupTextViewForSwitchControl:(id)control
 {
   v16 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [v3 accessibilityElements];
-  if ([v4 count])
+  controlCopy = control;
+  accessibilityElements = [controlCopy accessibilityElements];
+  if ([accessibilityElements count])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v4;
+    v5 = accessibilityElements;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -182,8 +182,8 @@ uint64_t __82__OBPrivacySplashListViewAccessibility__accessibilityLoadAccessibil
 
   else
   {
-    [v3 setIsAccessibilityElement:1];
-    [v3 setAccessibilityRespondsToUserInteraction:1];
+    [controlCopy setIsAccessibilityElement:1];
+    [controlCopy setAccessibilityRespondsToUserInteraction:1];
   }
 
   v10 = *MEMORY[0x29EDCA608];

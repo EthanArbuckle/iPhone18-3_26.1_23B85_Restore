@@ -1,19 +1,19 @@
 @interface SUUIItemContentRating
-- (SUUIItemContentRating)initWithContentRatingDictionary:(id)a3 systemName:(id)a4;
+- (SUUIItemContentRating)initWithContentRatingDictionary:(id)dictionary systemName:(id)name;
 @end
 
 @implementation SUUIItemContentRating
 
-- (SUUIItemContentRating)initWithContentRatingDictionary:(id)a3 systemName:(id)a4
+- (SUUIItemContentRating)initWithContentRatingDictionary:(id)dictionary systemName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = SUUIItemContentRating;
   v8 = [(SUUIItemContentRating *)&v23 init];
   if (v8)
   {
-    v9 = [v6 objectForKey:*MEMORY[0x277D6A2E8]];
+    v9 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A2E8]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -22,7 +22,7 @@
       v8->_contentRatingAdvisories = v10;
     }
 
-    v12 = [v6 objectForKey:*MEMORY[0x277D6A318]];
+    v12 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A318]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -32,17 +32,17 @@
       v8->_contentRatingName = v13;
     }
 
-    v15 = [v6 objectForKey:@"rank"];
+    v15 = [dictionaryCopy objectForKey:@"rank"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v15 stringValue];
+      stringValue = [v15 stringValue];
       contentRank = v8->_contentRank;
-      v8->_contentRank = v16;
+      v8->_contentRank = stringValue;
     }
 
-    v18 = [v6 objectForKey:@"system"];
+    v18 = [dictionaryCopy objectForKey:@"system"];
 
     if (v18)
     {
@@ -51,7 +51,7 @@
 
     else
     {
-      v19 = v7;
+      v19 = nameCopy;
     }
 
     v20 = [v19 copy];

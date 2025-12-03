@@ -4,7 +4,7 @@
 - (BOOL)_shouldHideSidebar;
 - (BOOL)_sidebarVisible;
 - (BOOL)canDeleteStop;
-- (BOOL)mapViewShouldHandleTapToDeselect:(id)a3;
+- (BOOL)mapViewShouldHandleTapToDeselect:(id)deselect;
 - (HomeActionDelegate)sidebarHomeActionDelegate;
 - (ToolbarController)toolbarController;
 - (UIEdgeInsets)labelEdgeInsets;
@@ -14,104 +14,104 @@
 - (id)_macBaseActionCoordinator;
 - (id)_mapAndWeatherAttribution;
 - (id)allComponents;
-- (id)checkForInternetError:(id)a3;
+- (id)checkForInternetError:(id)error;
 - (id)currentCollectionShareItemSource;
-- (id)homeActionDelegateForSelector:(SEL)a3;
-- (id)mapItemFromWaypoint:(id)a3;
+- (id)homeActionDelegateForSelector:(SEL)selector;
+- (id)mapItemFromWaypoint:(id)waypoint;
 - (id)preferredFocusEnvironments;
-- (id)searchDataSourceDelegateForSelector:(SEL)a3;
+- (id)searchDataSourceDelegateForSelector:(SEL)selector;
 - (id)searchDataSourceLogDelegate;
 - (id)topSidebarController_forTests;
-- (id)urlForRoute:(id)a3;
+- (id)urlForRoute:(id)route;
 - (unint64_t)viewportEdgesRespectingSafeAreaInsets;
-- (void)_locationManagerApprovalDidChange:(id)a3;
-- (void)_setSidebarContentControllers:(id)a3 forContext:(id)a4;
+- (void)_locationManagerApprovalDidChange:(id)change;
+- (void)_setSidebarContentControllers:(id)controllers forContext:(id)context;
 - (void)_showLocationServicesAlertIfNeeded;
 - (void)_updateFullScreen;
 - (void)_updateShareButton;
 - (void)_updateSidebarConstraints;
-- (void)_updateSidebarHiddenUserDefault:(BOOL)a3;
-- (void)_updateSidebarWithAnimation:(id)a3;
-- (void)chromeDelegateProxy:(id)a3 willInvoke:(id)a4 onTarget:(id)a5;
-- (void)contextStackDidUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5;
-- (void)contextStackWillUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5;
+- (void)_updateSidebarHiddenUserDefault:(BOOL)default;
+- (void)_updateSidebarWithAnimation:(id)animation;
+- (void)chromeDelegateProxy:(id)proxy willInvoke:(id)invoke onTarget:(id)target;
+- (void)contextStackDidUpdateFrom:(id)from to:(id)to withAnimation:(id)animation;
+- (void)contextStackWillUpdateFrom:(id)from to:(id)to withAnimation:(id)animation;
 - (void)deleteStop;
-- (void)find:(id)a3;
-- (void)floatingControlsOverlayDidTapDirections:(id)a3;
-- (void)hideSideBar:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)hideSideBar:(BOOL)a3 animation:(id)a4 completion:(id)a5;
-- (void)mapView:(id)a3 canEnter3DModeDidChange:(BOOL)a4;
-- (void)mapView:(id)a3 didChangeLookAroundAvailability:(int64_t)a4;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5;
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4;
-- (void)mapViewDidFailLoadingMap:(id)a3 withError:(id)a4;
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4;
-- (void)mapViewDidStartUserInteraction:(id)a3;
-- (void)mapViewWillStartRenderingMap:(id)a3;
-- (void)newSceneInTab:(BOOL)a3;
-- (void)notifySideBarVisibilityChanged:(BOOL)a3;
-- (void)notifyToolbarOfRoutePlanningState:(id)a3;
-- (void)orderFrontStandardAboutPanel:(id)a3;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
+- (void)find:(id)find;
+- (void)floatingControlsOverlayDidTapDirections:(id)directions;
+- (void)hideSideBar:(BOOL)bar animated:(BOOL)animated completion:(id)completion;
+- (void)hideSideBar:(BOOL)bar animation:(id)animation completion:(id)completion;
+- (void)mapView:(id)view canEnter3DModeDidChange:(BOOL)change;
+- (void)mapView:(id)view didChangeLookAroundAvailability:(int64_t)availability;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated;
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker;
+- (void)mapViewDidFailLoadingMap:(id)map withError:(id)error;
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered;
+- (void)mapViewDidStartUserInteraction:(id)interaction;
+- (void)mapViewWillStartRenderingMap:(id)map;
+- (void)newSceneInTab:(BOOL)tab;
+- (void)notifySideBarVisibilityChanged:(BOOL)changed;
+- (void)notifyToolbarOfRoutePlanningState:(id)state;
+- (void)orderFrontStandardAboutPanel:(id)panel;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
 - (void)popSidebarViewController;
 - (void)prepareMapViewForFirstUse;
 - (void)presentAddNewCollection;
-- (void)presentAddToCollection:(id)a3;
+- (void)presentAddToCollection:(id)collection;
 - (void)presentAddToFavorites;
-- (void)pushSidebarViewController:(id)a3;
+- (void)pushSidebarViewController:(id)controller;
 - (void)select3dMode;
-- (void)setAppCoordinator:(id)a3;
-- (void)setSidebarViewControllers:(id)a3;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
-- (void)tapDirectionButton:(id)a3;
-- (void)tapLocateMe:(id)a3;
-- (void)tapShareButton:(id)a3;
-- (void)tapUserProfileButton:(id)a3;
+- (void)setAppCoordinator:(id)coordinator;
+- (void)setSidebarViewControllers:(id)controllers;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
+- (void)tapDirectionButton:(id)button;
+- (void)tapLocateMe:(id)me;
+- (void)tapShareButton:(id)button;
+- (void)tapUserProfileButton:(id)button;
 - (void)toggleMapScale;
-- (void)toggleSidebar:(id)a3;
-- (void)updateComponent:(id)a3 forTiming:(unint64_t)a4 withAnimation:(id)a5;
+- (void)toggleSidebar:(id)sidebar;
+- (void)updateComponent:(id)component forTiming:(unint64_t)timing withAnimation:(id)animation;
 - (void)updateMapViewDisplayOptions;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation MacChromeViewController
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v8 = a4;
-  v7 = a5;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 unregisterObserver:self];
+    [sessionCopy unregisterObserver:self];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 registerObserver:self];
+    [toSessionCopy registerObserver:self];
   }
 
   [(MacChromeViewController *)self _updateShareButton];
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
-  v6 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  [v6 updateMapEdgeInsets];
+  _currentContainerViewController = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  [_currentContainerViewController updateMapEdgeInsets];
 
-  [(MacChromeViewController *)self notifySideBarVisibilityChanged:a4 == 2];
+  [(MacChromeViewController *)self notifySideBarVisibilityChanged:mode == 2];
 }
 
-- (void)chromeDelegateProxy:(id)a3 willInvoke:(id)a4 onTarget:(id)a5
+- (void)chromeDelegateProxy:(id)proxy willInvoke:(id)invoke onTarget:(id)target
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ChromeViewController *)self contexts];
-  v12 = [v11 count];
+  proxyCopy = proxy;
+  invokeCopy = invoke;
+  targetCopy = target;
+  contexts = [(ChromeViewController *)self contexts];
+  v12 = [contexts count];
 
   if (v12 >= 2)
   {
@@ -124,22 +124,22 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v14 = self;
-    if (!v14)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v19 = @"<nil>";
+      selfCopy = @"<nil>";
 LABEL_11:
 
-      v35 = v19;
-      v20 = v8;
+      v35 = selfCopy;
+      v20 = proxyCopy;
       if (!v20)
       {
         v25 = @"<nil>";
 LABEL_19:
 
         v26 = v25;
-        v27 = NSStringFromSelector([v9 selector]);
-        v28 = v10;
+        v27 = NSStringFromSelector([invokeCopy selector]);
+        v28 = targetCopy;
         if (!v28)
         {
           v33 = @"<nil>";
@@ -204,17 +204,17 @@ LABEL_17:
     v16 = NSStringFromClass(v15);
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(MacChromeViewController *)v14 performSelector:"accessibilityIdentifier"];
+      v17 = [(MacChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v18 = v17;
       if (v17 && ![v17 isEqualToString:v16])
       {
-        v19 = [NSString stringWithFormat:@"%@<%p, %@>", v16, v14, v18];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v16, selfCopy, v18];
 
         goto LABEL_9;
       }
     }
 
-    v19 = [NSString stringWithFormat:@"%@<%p>", v16, v14];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v16, selfCopy];
 LABEL_9:
 
     goto LABEL_11;
@@ -225,17 +225,17 @@ LABEL_29:
 
 - (id)searchDataSourceLogDelegate
 {
-  v3 = [(ChromeViewController *)self pendingContexts];
-  v4 = v3;
-  if (!v3)
+  pendingContexts = [(ChromeViewController *)self pendingContexts];
+  contexts = pendingContexts;
+  if (!pendingContexts)
   {
-    v4 = [(ChromeViewController *)self contexts];
+    contexts = [(ChromeViewController *)self contexts];
   }
 
-  v5 = [v4 reverseObjectEnumerator];
-  v6 = [v5 allObjects];
+  reverseObjectEnumerator = [contexts reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  if (!v3)
+  if (!pendingContexts)
   {
   }
 
@@ -243,7 +243,7 @@ LABEL_29:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -284,20 +284,20 @@ LABEL_29:
             objc_setAssociatedObject(v11, off_10192F4C8, v16, 1);
           }
 
-          v17 = [v16 BOOLValue];
+          bOOLValue = [v16 BOOLValue];
 
-          if (v17)
+          if (bOOLValue)
           {
-            v18 = v11;
+            searchDataSourceLogContextDelegate = v11;
             goto LABEL_25;
           }
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v18 = [v11 searchDataSourceLogContextDelegate];
+          searchDataSourceLogContextDelegate = [v11 searchDataSourceLogContextDelegate];
 LABEL_25:
-          v8 = v18;
+          v8 = searchDataSourceLogContextDelegate;
           goto LABEL_26;
         }
       }
@@ -317,19 +317,19 @@ LABEL_26:
   return v8;
 }
 
-- (id)searchDataSourceDelegateForSelector:(SEL)a3
+- (id)searchDataSourceDelegateForSelector:(SEL)selector
 {
-  v4 = [(ChromeViewController *)self pendingContexts];
-  v5 = v4;
-  if (!v4)
+  pendingContexts = [(ChromeViewController *)self pendingContexts];
+  contexts = pendingContexts;
+  if (!pendingContexts)
   {
-    v5 = [(ChromeViewController *)self contexts];
+    contexts = [(ChromeViewController *)self contexts];
   }
 
-  v6 = [v5 reverseObjectEnumerator];
-  v7 = [v6 allObjects];
+  reverseObjectEnumerator = [contexts reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  if (!v4)
+  if (!pendingContexts)
   {
   }
 
@@ -337,7 +337,7 @@ LABEL_26:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v7;
+  v8 = allObjects;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v9)
   {
@@ -359,15 +359,15 @@ LABEL_26:
       v13 = *(*(&v17 + 1) + 8 * i);
       if (objc_opt_respondsToSelector())
       {
-        v15 = v13;
+        searchDataSourceDelegate = v13;
 LABEL_18:
-        v14 = v15;
+        v14 = searchDataSourceDelegate;
         goto LABEL_19;
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v15 = [v13 searchDataSourceDelegate];
+        searchDataSourceDelegate = [v13 searchDataSourceDelegate];
         goto LABEL_18;
       }
     }
@@ -403,19 +403,19 @@ LABEL_19:
   return sidebarSearchDataSourceDelegate;
 }
 
-- (id)homeActionDelegateForSelector:(SEL)a3
+- (id)homeActionDelegateForSelector:(SEL)selector
 {
-  v4 = [(ChromeViewController *)self pendingContexts];
-  v5 = v4;
-  if (!v4)
+  pendingContexts = [(ChromeViewController *)self pendingContexts];
+  contexts = pendingContexts;
+  if (!pendingContexts)
   {
-    v5 = [(ChromeViewController *)self contexts];
+    contexts = [(ChromeViewController *)self contexts];
   }
 
-  v6 = [v5 reverseObjectEnumerator];
-  v7 = [v6 allObjects];
+  reverseObjectEnumerator = [contexts reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  if (!v4)
+  if (!pendingContexts)
   {
   }
 
@@ -423,7 +423,7 @@ LABEL_19:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v7;
+  v8 = allObjects;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v9)
   {
@@ -445,15 +445,15 @@ LABEL_19:
       v13 = *(*(&v17 + 1) + 8 * i);
       if (objc_opt_respondsToSelector())
       {
-        v15 = v13;
+        homeActionDelegate = v13;
 LABEL_18:
-        v14 = v15;
+        v14 = homeActionDelegate;
         goto LABEL_19;
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v15 = [v13 homeActionDelegate];
+        homeActionDelegate = [v13 homeActionDelegate];
         goto LABEL_18;
       }
     }
@@ -489,10 +489,10 @@ LABEL_19:
   return sidebarHomeActionDelegate;
 }
 
-- (void)_setSidebarContentControllers:(id)a3 forContext:(id)a4
+- (void)_setSidebarContentControllers:(id)controllers forContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  controllersCopy = controllers;
+  contextCopy = context;
   if (GEOConfigGetBOOL())
   {
     if (!self->_sidebarControllersForContext)
@@ -502,17 +502,17 @@ LABEL_19:
       self->_sidebarControllersForContext = v8;
     }
 
-    v10 = [v6 count];
+    v10 = [controllersCopy count];
     v11 = self->_sidebarControllersForContext;
     if (v10)
     {
-      v12 = [v6 copy];
-      [(NSMapTable *)v11 setObject:v12 forKey:v7];
+      v12 = [controllersCopy copy];
+      [(NSMapTable *)v11 setObject:v12 forKey:contextCopy];
     }
 
     else
     {
-      [(NSMapTable *)v11 setObject:0 forKey:v7];
+      [(NSMapTable *)v11 setObject:0 forKey:contextCopy];
     }
 
     [(ChromeViewController *)self setNeedsUpdateComponent:@"sidebar" animated:1];
@@ -549,40 +549,40 @@ LABEL_19:
   }
 }
 
-- (void)_updateSidebarWithAnimation:(id)a3
+- (void)_updateSidebarWithAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   if (GEOConfigGetBOOL())
   {
-    objc_initWeak(&location, v4);
+    objc_initWeak(&location, animationCopy);
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1009DE4AC;
     v5[3] = &unk_101661340;
     v5[4] = self;
     objc_copyWeak(&v6, &location);
-    [v4 addPreparation:v5];
+    [animationCopy addPreparation:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_updateSidebarHiddenUserDefault:(BOOL)a3
+- (void)_updateSidebarHiddenUserDefault:(BOOL)default
 {
-  v3 = a3;
+  defaultCopy = default;
   if (GEOConfigGetBOOL())
   {
-    v6 = +[NSUserDefaults standardUserDefaults];
-    [v6 setBool:v3 forKey:@"MapsDefaultHideSidebar"];
+    topContext = +[NSUserDefaults standardUserDefaults];
+    [topContext setBool:defaultCopy forKey:@"MapsDefaultHideSidebar"];
   }
 
   else
   {
-    v6 = [(ChromeViewController *)self topContext];
-    if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    topContext = [(ChromeViewController *)self topContext];
+    if (!topContext || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v5 = +[NSUserDefaults standardUserDefaults];
-      [v5 setBool:v3 forKey:@"MapsDefaultHideSidebar"];
+      [v5 setBool:defaultCopy forKey:@"MapsDefaultHideSidebar"];
     }
   }
 }
@@ -591,14 +591,14 @@ LABEL_19:
 {
   if (GEOConfigGetBOOL())
   {
-    v3 = +[NSUserDefaults standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"MapsDefaultHideSidebar"];
+    topContext = +[NSUserDefaults standardUserDefaults];
+    v4 = [topContext BOOLForKey:@"MapsDefaultHideSidebar"];
   }
 
   else
   {
-    v3 = [(ChromeViewController *)self topContext];
-    if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    topContext = [(ChromeViewController *)self topContext];
+    if (topContext && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v4 = 1;
     }
@@ -613,17 +613,17 @@ LABEL_19:
   return v4;
 }
 
-- (id)checkForInternetError:(id)a3
+- (id)checkForInternetError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if ([v5 isEqualToString:NSURLErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:NSURLErrorDomain])
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
 
-    if (v6 == -1009)
+    if (code == -1009)
     {
-      v7 = v4;
+      v7 = errorCopy;
       goto LABEL_26;
     }
   }
@@ -632,14 +632,14 @@ LABEL_19:
   {
   }
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKey:@"UnderlyingErrors"];
+  userInfo = [errorCopy userInfo];
+  v9 = [userInfo objectForKey:@"UnderlyingErrors"];
   v10 = [v9 count];
 
   if (v10)
   {
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKey:@"UnderlyingErrors"];
+    userInfo2 = [errorCopy userInfo];
+    v12 = [userInfo2 objectForKey:@"UnderlyingErrors"];
 
     v34 = 0u;
     v35 = 0u;
@@ -680,8 +680,8 @@ LABEL_8:
     }
   }
 
-  v19 = [v4 userInfo];
-  v20 = [v19 objectForKey:@"SimpleTileRequesterUnderlyingErrors"];
+  userInfo3 = [errorCopy userInfo];
+  v20 = [userInfo3 objectForKey:@"SimpleTileRequesterUnderlyingErrors"];
   v7 = [v20 count];
 
   if (!v7)
@@ -689,8 +689,8 @@ LABEL_8:
     goto LABEL_26;
   }
 
-  v21 = [v4 userInfo];
-  v22 = [v21 objectForKey:@"SimpleTileRequesterUnderlyingErrors"];
+  userInfo4 = [errorCopy userInfo];
+  v22 = [userInfo4 objectForKey:@"SimpleTileRequesterUnderlyingErrors"];
 
   v30 = 0u;
   v31 = 0u;
@@ -745,19 +745,19 @@ LABEL_26:
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(ChromeViewController *)self mapView];
-  v4 = [(MacChromeViewController *)self masterViewController];
-  v8[1] = v4;
-  v5 = [(MacChromeViewController *)self detailViewController];
-  v8[2] = v5;
+  mapView = [(ChromeViewController *)self mapView];
+  masterViewController = [(MacChromeViewController *)self masterViewController];
+  v8[1] = masterViewController;
+  detailViewController = [(MacChromeViewController *)self detailViewController];
+  v8[2] = detailViewController;
   v6 = [NSArray arrayWithObjects:v8 count:3];
 
   return v6;
 }
 
-- (BOOL)mapViewShouldHandleTapToDeselect:(id)a3
+- (BOOL)mapViewShouldHandleTapToDeselect:(id)deselect
 {
-  v4 = a3;
+  deselectCopy = deselect;
   if ([(MacChromeViewController *)self isCurrentInteractionDidDeselect])
   {
     LOBYTE(v5) = 0;
@@ -765,24 +765,24 @@ LABEL_26:
 
   else
   {
-    v6 = [(ChromeViewController *)self mapView];
-    v7 = [v6 _mapLayer];
-    v8 = [v7 selectedLabelMarker];
+    mapView = [(ChromeViewController *)self mapView];
+    _mapLayer = [mapView _mapLayer];
+    selectedLabelMarker = [_mapLayer selectedLabelMarker];
 
-    if (!v8)
+    if (!selectedLabelMarker)
     {
-      v9 = [(ChromeViewController *)self mapView];
-      v10 = [v9 _mapLayer];
-      [v10 clearPreviouslySelectedLabelMarker];
+      mapView2 = [(ChromeViewController *)self mapView];
+      _mapLayer2 = [mapView2 _mapLayer];
+      [_mapLayer2 clearPreviouslySelectedLabelMarker];
     }
 
     v13.receiver = self;
     v13.super_class = MacChromeViewController;
-    v5 = [(IOSBasedChromeViewController *)&v13 mapViewShouldHandleTapToDeselect:v4];
+    v5 = [(IOSBasedChromeViewController *)&v13 mapViewShouldHandleTapToDeselect:deselectCopy];
     if (v5)
     {
-      v11 = [(MacChromeViewController *)self _macBaseActionCoordinator];
-      [v11 handleMapViewTapToDeselect];
+      _macBaseActionCoordinator = [(MacChromeViewController *)self _macBaseActionCoordinator];
+      [_macBaseActionCoordinator handleMapViewTapToDeselect];
     }
 
     [(MacChromeViewController *)self setCurrentInteractionDidDeselect:1];
@@ -791,103 +791,103 @@ LABEL_26:
   return v5;
 }
 
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker
 {
-  v6 = a4;
-  v7 = a3;
+  markerCopy = marker;
+  viewCopy = view;
   [(MacChromeViewController *)self setCurrentInteractionDidDeselect:1];
   v8.receiver = self;
   v8.super_class = MacChromeViewController;
-  [(IOSBasedChromeViewController *)&v8 mapView:v7 didDeselectLabelMarker:v6];
+  [(IOSBasedChromeViewController *)&v8 mapView:viewCopy didDeselectLabelMarker:markerCopy];
 }
 
-- (void)mapViewDidStartUserInteraction:(id)a3
+- (void)mapViewDidStartUserInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   [(MacChromeViewController *)self setCurrentInteractionDidDeselect:0];
-  v5 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ChromeViewController *)self topContext];
-    [v7 mapViewDidStartUserInteraction:v4];
+    topContext2 = [(ChromeViewController *)self topContext];
+    [topContext2 mapViewDidStartUserInteraction:interactionCopy];
   }
 
   v8.receiver = self;
   v8.super_class = MacChromeViewController;
-  [(MacChromeViewController *)&v8 mapViewDidStartUserInteraction:v4];
+  [(MacChromeViewController *)&v8 mapViewDidStartUserInteraction:interactionCopy];
 }
 
-- (void)mapView:(id)a3 canEnter3DModeDidChange:(BOOL)a4
+- (void)mapView:(id)view canEnter3DModeDidChange:(BOOL)change
 {
   v7.receiver = self;
   v7.super_class = MacChromeViewController;
-  [(IOSBasedChromeViewController *)&v7 mapView:a3 canEnter3DModeDidChange:a4];
-  v5 = [(IOSBasedChromeViewController *)self canEnter3dMode];
-  v6 = [(MacChromeViewController *)self toolbarController];
-  [v6 setThirdDimensionButtonEnabled:v5];
+  [(IOSBasedChromeViewController *)&v7 mapView:view canEnter3DModeDidChange:change];
+  canEnter3dMode = [(IOSBasedChromeViewController *)self canEnter3dMode];
+  toolbarController = [(MacChromeViewController *)self toolbarController];
+  [toolbarController setThirdDimensionButtonEnabled:canEnter3dMode];
 }
 
-- (void)mapView:(id)a3 didChangeLookAroundAvailability:(int64_t)a4
+- (void)mapView:(id)view didChangeLookAroundAvailability:(int64_t)availability
 {
   v7.receiver = self;
   v7.super_class = MacChromeViewController;
-  [(IOSBasedChromeViewController *)&v7 mapView:a3 didChangeLookAroundAvailability:?];
-  v6 = [(MacChromeViewController *)self toolbarController];
-  [v6 setLookAroundEnabled:a4 == 2];
+  [(IOSBasedChromeViewController *)&v7 mapView:view didChangeLookAroundAvailability:?];
+  toolbarController = [(MacChromeViewController *)self toolbarController];
+  [toolbarController setLookAroundEnabled:availability == 2];
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated
 {
   v8.receiver = self;
   v8.super_class = MacChromeViewController;
-  [(MacChromeViewController *)&v8 mapView:a3 didChangeUserTrackingMode:a4 animated:a5];
-  v7 = [(MacChromeViewController *)self toolbarController];
-  [v7 setLocationButtonActive:a4 == 1];
+  [(MacChromeViewController *)&v8 mapView:view didChangeUserTrackingMode:mode animated:animated];
+  toolbarController = [(MacChromeViewController *)self toolbarController];
+  [toolbarController setLocationButtonActive:mode == 1];
 }
 
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered
 {
   v7.receiver = self;
   v7.super_class = MacChromeViewController;
-  [(MacChromeViewController *)&v7 mapViewDidFinishRenderingMap:a3 fullyRendered:a4];
+  [(MacChromeViewController *)&v7 mapViewDidFinishRenderingMap:map fullyRendered:rendered];
   if (self->_mapLoadedWithoutError)
   {
-    v5 = [(IOSBasedChromeViewController *)self errorString];
+    errorString = [(IOSBasedChromeViewController *)self errorString];
 
-    if (v5)
+    if (errorString)
     {
       [(IOSBasedChromeViewController *)self setErrorString:0];
-      v6 = [(MacChromeViewController *)self _maps_mapsSceneDelegate];
-      [v6 refreshTitle];
+      _maps_mapsSceneDelegate = [(MacChromeViewController *)self _maps_mapsSceneDelegate];
+      [_maps_mapsSceneDelegate refreshTitle];
     }
   }
 }
 
-- (void)mapViewDidFailLoadingMap:(id)a3 withError:(id)a4
+- (void)mapViewDidFailLoadingMap:(id)map withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v21.receiver = self;
   v21.super_class = MacChromeViewController;
-  [(IOSBasedChromeViewController *)&v21 mapViewDidFailLoadingMap:a3 withError:v6];
+  [(IOSBasedChromeViewController *)&v21 mapViewDidFailLoadingMap:map withError:errorCopy];
   self->_mapLoadedWithoutError = 0;
-  v7 = [(MacChromeViewController *)self checkForInternetError:v6];
+  v7 = [(MacChromeViewController *)self checkForInternetError:errorCopy];
   v8 = v7;
   if (v7)
   {
     v9 = v7;
 
-    v6 = v9;
+    errorCopy = v9;
   }
 
-  v10 = [v6 domain];
-  v11 = [v6 code];
-  if ([v10 isEqualToString:NSURLErrorDomain])
+  domain = [errorCopy domain];
+  code = [errorCopy code];
+  if ([domain isEqualToString:NSURLErrorDomain])
   {
     v12 = +[NSBundle mainBundle];
     v13 = v12;
-    if (v11 == -1009)
+    if (code == -1009)
     {
       v14 = @"No Internet Connection";
     }
@@ -901,10 +901,10 @@ LABEL_26:
   else
   {
     v15 = GEOErrorDomain();
-    v16 = [v10 isEqualToString:v15];
+    v16 = [domain isEqualToString:v15];
 
     v17 = 0;
-    if (!v16 || v11 != -9)
+    if (!v16 || code != -9)
     {
       goto LABEL_13;
     }
@@ -918,37 +918,37 @@ LABEL_26:
 
   if (v17)
   {
-    v18 = [(IOSBasedChromeViewController *)self errorString];
-    v19 = [v18 isEqualToString:v17];
+    errorString = [(IOSBasedChromeViewController *)self errorString];
+    v19 = [errorString isEqualToString:v17];
 
     if ((v19 & 1) == 0)
     {
       [(IOSBasedChromeViewController *)self setErrorString:v17];
-      v20 = [(MacChromeViewController *)self _maps_mapsSceneDelegate];
-      [v20 refreshTitle];
+      _maps_mapsSceneDelegate = [(MacChromeViewController *)self _maps_mapsSceneDelegate];
+      [_maps_mapsSceneDelegate refreshTitle];
     }
   }
 
 LABEL_13:
 }
 
-- (void)mapViewWillStartRenderingMap:(id)a3
+- (void)mapViewWillStartRenderingMap:(id)map
 {
   v4.receiver = self;
   v4.super_class = MacChromeViewController;
-  [(MacChromeViewController *)&v4 mapViewWillStartRenderingMap:a3];
+  [(MacChromeViewController *)&v4 mapViewWillStartRenderingMap:map];
   self->_mapLoadedWithoutError = 1;
 }
 
 - (id)_macBaseActionCoordinator
 {
-  v2 = [(IOSBasedChromeViewController *)self appCoordinator];
-  v3 = [v2 baseActionCoordinator];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = baseActionCoordinator;
   }
 
   else
@@ -963,26 +963,26 @@ LABEL_13:
 
 - (void)_updateShareButton
 {
-  v3 = [(MacChromeViewController *)self _sharingEnabled];
-  v4 = [(MacChromeViewController *)self toolbarController];
-  [v4 setShareButtonEnabled:v3];
+  _sharingEnabled = [(MacChromeViewController *)self _sharingEnabled];
+  toolbarController = [(MacChromeViewController *)self toolbarController];
+  [toolbarController setShareButtonEnabled:_sharingEnabled];
 }
 
 - (BOOL)_sharingEnabled
 {
-  v3 = [(IOSBasedChromeViewController *)self appCoordinator];
-  v4 = [v3 platformController];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  platformController = [appCoordinator platformController];
 
-  v5 = [v4 currentSession];
+  currentSession = [platformController currentSession];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 currentRouteCollection];
-    v7 = [v6 currentRoute];
-    if ([v7 isMultipointRoute])
+    currentRouteCollection = [currentSession currentRouteCollection];
+    currentRoute = [currentRouteCollection currentRoute];
+    if ([currentRoute isMultipointRoute])
     {
-      v8 = [(IOSBasedChromeViewController *)self currentShareItemSource];
-      v9 = v8 != 0;
+      currentShareItemSource = [(IOSBasedChromeViewController *)self currentShareItemSource];
+      v9 = currentShareItemSource != 0;
     }
 
     else
@@ -999,19 +999,19 @@ LABEL_13:
   return v9;
 }
 
-- (void)notifyToolbarOfRoutePlanningState:(id)a3
+- (void)notifyToolbarOfRoutePlanningState:(id)state
 {
-  v4 = [a3 object];
-  v5 = [(IOSBasedChromeViewController *)self appCoordinator];
-  v6 = [v5 baseActionCoordinator];
+  object = [state object];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
-  if (v4 == v6)
+  if (object == baseActionCoordinator)
   {
-    v10 = [(IOSBasedChromeViewController *)self appCoordinator];
-    v7 = [v10 baseActionCoordinator];
-    v8 = [v7 isRoutePlanningPresented];
-    v9 = [(MacChromeViewController *)self toolbarController];
-    [v9 setRoutePlanningButtonActive:v8];
+    appCoordinator2 = [(IOSBasedChromeViewController *)self appCoordinator];
+    baseActionCoordinator2 = [appCoordinator2 baseActionCoordinator];
+    isRoutePlanningPresented = [baseActionCoordinator2 isRoutePlanningPresented];
+    toolbarController = [(MacChromeViewController *)self toolbarController];
+    [toolbarController setRoutePlanningButtonActive:isRoutePlanningPresented];
   }
 }
 
@@ -1019,20 +1019,20 @@ LABEL_13:
 {
   v9.receiver = self;
   v9.super_class = MacChromeViewController;
-  v3 = [(IOSBasedChromeViewController *)&v9 currentCollectionShareItemSource];
-  v4 = v3;
-  if (v3)
+  currentCollectionShareItemSource = [(IOSBasedChromeViewController *)&v9 currentCollectionShareItemSource];
+  v4 = currentCollectionShareItemSource;
+  if (currentCollectionShareItemSource)
   {
-    v5 = v3;
+    v5 = currentCollectionShareItemSource;
   }
 
   else
   {
-    v6 = [(MacChromeViewController *)self _macBaseActionCoordinator];
-    v7 = [v6 injectedCollection];
-    if (v7)
+    _macBaseActionCoordinator = [(MacChromeViewController *)self _macBaseActionCoordinator];
+    injectedCollection = [_macBaseActionCoordinator injectedCollection];
+    if (injectedCollection)
     {
-      v5 = [[PersonalCollectionShareItemSource alloc] initWithCollectionHandlerInfo:v7];
+      v5 = [[PersonalCollectionShareItemSource alloc] initWithCollectionHandlerInfo:injectedCollection];
     }
 
     else
@@ -1058,22 +1058,22 @@ LABEL_13:
   v12[2] = v3;
   v6 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
 
-  v7 = [(ChromeViewController *)self mapView];
-  v8 = [v7 mapAttributionWithStringAttributes:v6 underlineText:1 linkAttribution:1];
+  mapView = [(ChromeViewController *)self mapView];
+  v8 = [mapView mapAttributionWithStringAttributes:v6 underlineText:1 linkAttribution:1];
 
-  v9 = [v8 string];
+  string = [v8 string];
 
-  return v9;
+  return string;
 }
 
-- (void)orderFrontStandardAboutPanel:(id)a3
+- (void)orderFrontStandardAboutPanel:(id)panel
 {
-  v3 = [(MacChromeViewController *)self _mapAndWeatherAttribution];
-  v4 = v3;
-  if (v3)
+  _mapAndWeatherAttribution = [(MacChromeViewController *)self _mapAndWeatherAttribution];
+  v4 = _mapAndWeatherAttribution;
+  if (_mapAndWeatherAttribution)
   {
     v7 = @"Credits";
-    v8 = v3;
+    v8 = _mapAndWeatherAttribution;
     v5 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   }
 
@@ -1093,12 +1093,12 @@ LABEL_13:
   [(IOSBasedChromeViewController *)&v2 select3dMode];
 }
 
-- (void)newSceneInTab:(BOOL)a3
+- (void)newSceneInTab:(BOOL)tab
 {
-  v16 = [(MacChromeViewController *)self _maps_mapsSceneDelegate];
-  v4 = [v16 entryPointsCoordinator];
-  v5 = [v4 launchAlertsManager];
-  if ([v5 currentlyShowingAlert])
+  _maps_mapsSceneDelegate = [(MacChromeViewController *)self _maps_mapsSceneDelegate];
+  entryPointsCoordinator = [_maps_mapsSceneDelegate entryPointsCoordinator];
+  launchAlertsManager = [entryPointsCoordinator launchAlertsManager];
+  if ([launchAlertsManager currentlyShowingAlert])
   {
   }
 
@@ -1110,23 +1110,23 @@ LABEL_13:
     {
       v7 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.Maps.NewWindow"];
       [v7 setEligibleForHandoff:0];
-      v8 = [(MacChromeViewController *)self _maps_mapsSceneDelegate];
-      v9 = [v8 mapsActivityWithFidelity:2];
+      _maps_mapsSceneDelegate2 = [(MacChromeViewController *)self _maps_mapsSceneDelegate];
+      v9 = [_maps_mapsSceneDelegate2 mapsActivityWithFidelity:2];
 
-      v10 = [v9 data];
-      v11 = [v10 bzip2CompressedData];
+      data = [v9 data];
+      bzip2CompressedData = [data bzip2CompressedData];
 
-      if (v11)
+      if (bzip2CompressedData)
       {
         v17 = @"bs";
-        v18 = v11;
+        v18 = bzip2CompressedData;
         v12 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
         [v7 setUserInfo:v12];
       }
 
       v13 = objc_alloc_init(UISceneActivationRequestOptions);
-      v14 = [(MacChromeViewController *)self _maps_uiScene];
-      [v13 setRequestingScene:v14];
+      _maps_uiScene = [(MacChromeViewController *)self _maps_uiScene];
+      [v13 setRequestingScene:_maps_uiScene];
 
       v15 = +[UIApplication sharedApplication];
       [v15 requestSceneSessionActivation:0 userActivity:v7 options:v13 errorHandler:0];
@@ -1136,23 +1136,23 @@ LABEL_13:
 
 - (void)presentAddToFavorites
 {
-  v5 = [(IOSBasedChromeViewController *)self appCoordinator];
-  v3 = [v5 baseActionCoordinator];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
   v4 = +[ShortcutEditSession addSession];
-  [v3 viewController:self showAddShortcut:v4];
+  [baseActionCoordinator viewController:self showAddShortcut:v4];
 }
 
-- (void)presentAddToCollection:(id)a3
+- (void)presentAddToCollection:(id)collection
 {
-  v4 = [a3 propertyList];
+  propertyList = [collection propertyList];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v5 = +[CollectionManager sharedManager];
-  v6 = [v5 currentCollections];
+  currentCollections = [v5 currentCollections];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [currentCollections countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1163,12 +1163,12 @@ LABEL_3:
     {
       if (*v19 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(currentCollections);
       }
 
       v11 = *(*(&v18 + 1) + 8 * v10);
-      v12 = [v11 identifier];
-      v13 = [v12 isEqualToString:v4];
+      identifier = [v11 identifier];
+      v13 = [identifier isEqualToString:propertyList];
 
       if (v13)
       {
@@ -1177,7 +1177,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [currentCollections countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -1195,11 +1195,11 @@ LABEL_3:
     }
 
     v15 = [(CollectionEditSession *)[CollectionSaveSession alloc] initWithCollection:v14];
-    v16 = [(IOSBasedChromeViewController *)self appCoordinator];
-    v17 = [v16 baseActionCoordinator];
-    [v17 viewController:self addItemsFromACToCollection:v15];
+    appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+    baseActionCoordinator = [appCoordinator baseActionCoordinator];
+    [baseActionCoordinator viewController:self addItemsFromACToCollection:v15];
 
-    v6 = v14;
+    currentCollections = v14;
   }
 
 LABEL_12:
@@ -1209,29 +1209,29 @@ LABEL_13:
 
 - (void)presentAddNewCollection
 {
-  v3 = [(IOSBasedChromeViewController *)self appCoordinator];
-  v4 = [v3 baseActionCoordinator];
-  [v4 viewController:self createNewCollectionWithSession:0];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
+  [baseActionCoordinator viewController:self createNewCollectionWithSession:0];
 
   [GEOAPPortal captureUserAction:2072 target:0 value:0];
 }
 
-- (id)urlForRoute:(id)a3
+- (id)urlForRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = objc_alloc_init(MKURLSerializer);
-  if ([v4 transportType] == 1)
+  if ([routeCopy transportType] == 1)
   {
-    v6 = [v4 routeAttributes];
-    v7 = [v6 hasTimepoint];
+    routeAttributes = [routeCopy routeAttributes];
+    hasTimepoint = [routeAttributes hasTimepoint];
 
-    if (v7)
+    if (hasTimepoint)
     {
-      v8 = [v4 routeAttributes];
-      v9 = v8;
-      if (v8)
+      routeAttributes2 = [routeCopy routeAttributes];
+      v9 = routeAttributes2;
+      if (routeAttributes2)
       {
-        [v8 timepoint];
+        [routeAttributes2 timepoint];
       }
 
       else
@@ -1241,24 +1241,24 @@ LABEL_13:
     }
   }
 
-  v10 = [v4 origin];
-  v11 = [(MacChromeViewController *)self mapItemFromWaypoint:v10];
+  origin = [routeCopy origin];
+  v11 = [(MacChromeViewController *)self mapItemFromWaypoint:origin];
 
-  v12 = [v4 destination];
-  v13 = [(MacChromeViewController *)self mapItemFromWaypoint:v12];
+  destination = [routeCopy destination];
+  v13 = [(MacChromeViewController *)self mapItemFromWaypoint:destination];
 
   v14 = 0;
   if (v11 && v13)
   {
-    v15 = [v4 transportType];
-    if (v15 > 5)
+    transportType = [routeCopy transportType];
+    if (transportType > 5)
     {
       v16 = 1;
     }
 
     else
     {
-      v16 = qword_1012160D0[v15];
+      v16 = qword_1012160D0[transportType];
     }
 
     v14 = [v5 urlForDirectionsFromMapItem:v11 toMapItem:v13 transportType:v16 options:0];
@@ -1267,19 +1267,19 @@ LABEL_13:
   return v14;
 }
 
-- (id)mapItemFromWaypoint:(id)a3
+- (id)mapItemFromWaypoint:(id)waypoint
 {
-  v3 = a3;
-  v4 = [v3 geoMapItem];
-  if (v4)
+  waypointCopy = waypoint;
+  geoMapItem = [waypointCopy geoMapItem];
+  if (geoMapItem)
   {
-    v5 = [[MKMapItem alloc] initWithGeoMapItem:v4 isPlaceHolderPlace:0];
+    v5 = [[MKMapItem alloc] initWithGeoMapItem:geoMapItem isPlaceHolderPlace:0];
   }
 
   else
   {
-    v6 = [v3 location];
-    [v6 coordinate];
+    location = [waypointCopy location];
+    [location coordinate];
     v8 = v7;
     v10 = v9;
 
@@ -1290,9 +1290,9 @@ LABEL_13:
   return v5;
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
-  v4 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1310,13 +1310,13 @@ LABEL_13:
 
 - (id)_currentRouteSearchViewController
 {
-  v2 = [(IOSBasedChromeViewController *)self appCoordinator];
-  v3 = [v2 baseActionCoordinator];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = baseActionCoordinator;
   }
 
   else
@@ -1326,14 +1326,14 @@ LABEL_13:
 
   v5 = v4;
 
-  v6 = [v5 containerViewController];
+  containerViewController = [v5 containerViewController];
 
-  v7 = [v6 currentViewController];
+  currentViewController = [containerViewController currentViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = currentViewController;
   }
 
   else
@@ -1343,32 +1343,32 @@ LABEL_13:
 
   v9 = v8;
 
-  v10 = [v9 routeSearchViewController];
+  routeSearchViewController = [v9 routeSearchViewController];
 
-  return v10;
+  return routeSearchViewController;
 }
 
 - (void)deleteStop
 {
-  v2 = [(MacChromeViewController *)self _currentRouteSearchViewController];
-  [v2 deleteCurrentFieldIndex];
+  _currentRouteSearchViewController = [(MacChromeViewController *)self _currentRouteSearchViewController];
+  [_currentRouteSearchViewController deleteCurrentFieldIndex];
 }
 
 - (BOOL)canDeleteStop
 {
-  v3 = [(IOSBasedChromeViewController *)self appCoordinator];
-  if ([v3 isRoutePlanningPresented])
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  if ([appCoordinator isRoutePlanningPresented])
   {
-    v4 = [(MacChromeViewController *)self _currentRouteSearchViewController];
-    v5 = [v4 canDeleteCurrentFieldIndex];
+    _currentRouteSearchViewController = [(MacChromeViewController *)self _currentRouteSearchViewController];
+    canDeleteCurrentFieldIndex = [_currentRouteSearchViewController canDeleteCurrentFieldIndex];
   }
 
   else
   {
-    v5 = 0;
+    canDeleteCurrentFieldIndex = 0;
   }
 
-  return v5;
+  return canDeleteCurrentFieldIndex;
 }
 
 - (void)toggleMapScale
@@ -1378,16 +1378,16 @@ LABEL_13:
   [MapsSettings setAlwaysShowScale:v2];
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = [v4 action];
-  if (v5 == "toggleSidebar:")
+  commandCopy = command;
+  action = [commandCopy action];
+  if (action == "toggleSidebar:")
   {
-    v7 = [(MacChromeViewController *)self _sidebarVisible];
+    _sidebarVisible = [(MacChromeViewController *)self _sidebarVisible];
     v8 = +[NSBundle mainBundle];
-    v9 = v8;
-    if (v7)
+    appCoordinator = v8;
+    if (_sidebarVisible)
     {
       v10 = @"[Menu] Hide Sidebar";
     }
@@ -1400,23 +1400,23 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v6 = v5;
-  if (v5 == "toggleDirections")
+  v6 = action;
+  if (action == "toggleDirections")
   {
-    v9 = [(IOSBasedChromeViewController *)self appCoordinator];
-    [v4 _maps_setUseDisableFeatureTitle:{objc_msgSend(v9, "isRoutePlanningPresented")}];
+    appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+    [commandCopy _maps_setUseDisableFeatureTitle:{objc_msgSend(appCoordinator, "isRoutePlanningPresented")}];
 LABEL_16:
 
     goto LABEL_19;
   }
 
-  if (v5 == "toggleMapScale")
+  if (action == "toggleMapScale")
   {
-    [v4 _maps_setUseDisableFeatureTitle:{+[MapsSettings alwaysShowScale](MapsSettings, "alwaysShowScale")}];
+    [commandCopy _maps_setUseDisableFeatureTitle:{+[MapsSettings alwaysShowScale](MapsSettings, "alwaysShowScale")}];
     goto LABEL_19;
   }
 
-  if (v5 == "deleteStop" && ![(MacChromeViewController *)self canDeleteStop]|| v6 == "delete:" || v6 == "pasteAndMatchStyle:")
+  if (action == "deleteStop" && ![(MacChromeViewController *)self canDeleteStop]|| v6 == "delete:" || v6 == "pasteAndMatchStyle:")
   {
     goto LABEL_17;
   }
@@ -1424,11 +1424,11 @@ LABEL_16:
   if (v6 == "copy:")
   {
     v8 = +[NSBundle mainBundle];
-    v9 = v8;
+    appCoordinator = v8;
     v10 = @"Copy Link";
 LABEL_15:
     v11 = [v8 localizedStringForKey:v10 value:@"localized string not found" table:0];
-    [v4 setTitle:v11];
+    [commandCopy setTitle:v11];
 
     goto LABEL_16;
   }
@@ -1436,13 +1436,13 @@ LABEL_15:
   if (v6 == "redo:")
   {
 LABEL_17:
-    [v4 setAttributes:4];
+    [commandCopy setAttributes:4];
     goto LABEL_19;
   }
 
   v12.receiver = self;
   v12.super_class = MacChromeViewController;
-  [(IOSBasedChromeViewController *)&v12 validateCommand:v4];
+  [(IOSBasedChromeViewController *)&v12 validateCommand:commandCopy];
 LABEL_19:
 }
 
@@ -1451,19 +1451,19 @@ LABEL_19:
   v3 = 0.0;
   if ([(MacChromeViewController *)self _sidebarVisible])
   {
-    v4 = [(MacChromeViewController *)self splitViewController];
-    [v4 primaryColumnWidth];
+    splitViewController = [(MacChromeViewController *)self splitViewController];
+    [splitViewController primaryColumnWidth];
     v3 = v5;
   }
 
-  v6 = [(MacChromeViewController *)self view];
-  v7 = [v6 effectiveUserInterfaceLayoutDirection];
+  view = [(MacChromeViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  v8 = [(MacChromeViewController *)self view];
-  [v8 safeAreaInsets];
+  view2 = [(MacChromeViewController *)self view];
+  [view2 safeAreaInsets];
   v10 = v9;
 
-  if (v7 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v11 = 0.0;
   }
@@ -1473,7 +1473,7 @@ LABEL_19:
     v11 = v3;
   }
 
-  if (v7 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v12 = v3;
   }
@@ -1507,31 +1507,31 @@ LABEL_19:
 
 - (BOOL)_sidebarVisible
 {
-  v2 = [(MacChromeViewController *)self splitViewController];
-  v3 = [v2 displayMode] == 2;
+  splitViewController = [(MacChromeViewController *)self splitViewController];
+  v3 = [splitViewController displayMode] == 2;
 
   return v3;
 }
 
-- (void)tapUserProfileButton:(id)a3
+- (void)tapUserProfileButton:(id)button
 {
-  v3 = [(IOSBasedChromeViewController *)self appCoordinator];
-  [v3 openUserProfile];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  [appCoordinator openUserProfile];
 }
 
-- (void)tapShareButton:(id)a3
+- (void)tapShareButton:(id)button
 {
-  v14 = [(MacChromeViewController *)self view];
-  [v14 bounds];
+  view = [(MacChromeViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v16);
-  [v14 bounds];
+  [view bounds];
   MinY = CGRectGetMinY(v17);
-  v6 = [(MacChromeViewController *)self view];
-  v7 = [v6 effectiveUserInterfaceLayoutDirection];
+  view2 = [(MacChromeViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view2 effectiveUserInterfaceLayoutDirection];
 
-  if (v7 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
-    [v14 bounds];
+    [view bounds];
     MinY = CGRectGetMinY(v18);
     v8 = 50.0;
   }
@@ -1541,38 +1541,38 @@ LABEL_19:
     v8 = Width + -50.0;
   }
 
-  v9 = [(IOSBasedChromeViewController *)self currentShareItemSource];
-  v10 = [[MapsActivityViewController alloc] initWithShareItem:v9];
-  v11 = [(MapsActivityViewController *)v10 popoverPresentationController];
-  [v11 setSourceView:v14];
+  currentShareItemSource = [(IOSBasedChromeViewController *)self currentShareItemSource];
+  v10 = [[MapsActivityViewController alloc] initWithShareItem:currentShareItemSource];
+  popoverPresentationController = [(MapsActivityViewController *)v10 popoverPresentationController];
+  [popoverPresentationController setSourceView:view];
 
-  v12 = [(MapsActivityViewController *)v10 popoverPresentationController];
-  [v12 setSourceRect:{v8, MinY + 33.0, 1.0, 1.0}];
+  popoverPresentationController2 = [(MapsActivityViewController *)v10 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v8, MinY + 33.0, 1.0, 1.0}];
 
-  v13 = [(MapsActivityViewController *)v10 popoverPresentationController];
-  [v13 setPermittedArrowDirections:1];
+  popoverPresentationController3 = [(MapsActivityViewController *)v10 popoverPresentationController];
+  [popoverPresentationController3 setPermittedArrowDirections:1];
 
   [(MacChromeViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)tapDirectionButton:(id)a3
+- (void)tapDirectionButton:(id)button
 {
-  v3 = [(IOSBasedChromeViewController *)self appCoordinator];
-  [v3 toggleRoutePlanning];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  [appCoordinator toggleRoutePlanning];
 }
 
-- (void)toggleSidebar:(id)a3
+- (void)toggleSidebar:(id)sidebar
 {
-  v4 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(MacChromeViewController *)self _sidebarVisible];
-    [(MacChromeViewController *)self hideSideBar:v6 animated:1 completion:0];
+    _sidebarVisible = [(MacChromeViewController *)self _sidebarVisible];
+    [(MacChromeViewController *)self hideSideBar:_sidebarVisible animated:1 completion:0];
 
-    [(MacChromeViewController *)self _updateSidebarHiddenUserDefault:v6];
+    [(MacChromeViewController *)self _updateSidebarHiddenUserDefault:_sidebarVisible];
   }
 }
 
@@ -1596,8 +1596,8 @@ LABEL_19:
 
   if ((v4 & 1) == 0)
   {
-    v6 = [v5 domain];
-    v7 = [v6 isEqualToString:MKLocationErrorDomain];
+    domain = [v5 domain];
+    v7 = [domain isEqualToString:MKLocationErrorDomain];
 
     if (v7)
     {
@@ -1607,30 +1607,30 @@ LABEL_19:
   }
 }
 
-- (void)tapLocateMe:(id)a3
+- (void)tapLocateMe:(id)me
 {
   IsEnabled_SearchAndDiscovery = MapsFeature_IsEnabled_SearchAndDiscovery();
-  v5 = [(ChromeViewController *)self mapView];
-  v6 = v5;
+  mapView = [(ChromeViewController *)self mapView];
+  v6 = mapView;
   if (IsEnabled_SearchAndDiscovery)
   {
-    [v5 _setUserTrackingMode:1 animated:1 fromTrackingButton:1];
+    [mapView _setUserTrackingMode:1 animated:1 fromTrackingButton:1];
   }
 
   else
   {
-    [v5 setUserTrackingMode:1 animated:1];
+    [mapView setUserTrackingMode:1 animated:1];
   }
 
   [(MacChromeViewController *)self _showLocationServicesAlertIfNeeded];
 }
 
-- (void)hideSideBar:(BOOL)a3 animation:(id)a4 completion:(id)a5
+- (void)hideSideBar:(BOOL)bar animation:(id)animation completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  barCopy = bar;
+  animationCopy = animation;
+  completionCopy = completion;
+  if (barCopy)
   {
     v10 = 1;
   }
@@ -1640,14 +1640,14 @@ LABEL_19:
     v10 = 2;
   }
 
-  v11 = [(MacChromeViewController *)self splitViewController];
-  v12 = [v11 displayMode];
+  splitViewController = [(MacChromeViewController *)self splitViewController];
+  displayMode = [splitViewController displayMode];
 
-  if (v12 == v10)
+  if (displayMode == v10)
   {
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -1657,39 +1657,39 @@ LABEL_19:
     v13[1] = 3221225472;
     v13[2] = sub_1009E0DB8;
     v13[3] = &unk_101631598;
-    v16 = [v8 isAnimated];
+    isAnimated = [animationCopy isAnimated];
     v13[4] = self;
     v15 = v10;
-    v17 = v6;
-    v14 = v9;
-    [v8 addAnimations:v13];
+    v17 = barCopy;
+    v14 = completionCopy;
+    [animationCopy addAnimations:v13];
   }
 }
 
-- (void)hideSideBar:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)hideSideBar:(BOOL)bar animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [GroupAnimation animationForAnimatedFlag:v5];
+  animatedCopy = animated;
+  barCopy = bar;
+  completionCopy = completion;
+  v9 = [GroupAnimation animationForAnimatedFlag:animatedCopy];
   v11 = v9;
   v10 = 0.200000003;
-  if (!v5)
+  if (!animatedCopy)
   {
     v10 = 0.0;
   }
 
   [v9 setDuration:v10];
-  [(MacChromeViewController *)self hideSideBar:v6 animation:v11 completion:v8];
+  [(MacChromeViewController *)self hideSideBar:barCopy animation:v11 completion:completionCopy];
 
   [v11 runWithDefaultOptions];
 }
 
-- (void)notifySideBarVisibilityChanged:(BOOL)a3
+- (void)notifySideBarVisibilityChanged:(BOOL)changed
 {
-  v3 = a3;
-  v4 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  [v4 sidebarVisibilityDidChange:v3];
+  changedCopy = changed;
+  _currentContainerViewController = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  [_currentContainerViewController sidebarVisibilityDidChange:changedCopy];
 }
 
 - (ToolbarController)toolbarController
@@ -1705,8 +1705,8 @@ LABEL_19:
     if (!toolbarController)
     {
       v5 = [ToolbarController alloc];
-      v6 = [(IOSBasedChromeViewController *)self settingsController];
-      v7 = [(ToolbarController *)v5 initWithSettingsController:v6];
+      settingsController = [(IOSBasedChromeViewController *)self settingsController];
+      v7 = [(ToolbarController *)v5 initWithSettingsController:settingsController];
       v8 = self->_toolbarController;
       self->_toolbarController = v7;
 
@@ -1719,31 +1719,31 @@ LABEL_19:
   return v3;
 }
 
-- (void)floatingControlsOverlayDidTapDirections:(id)a3
+- (void)floatingControlsOverlayDidTapDirections:(id)directions
 {
-  v3 = [(IOSBasedChromeViewController *)self appCoordinator];
-  [v3 toggleRoutePlanning];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  [appCoordinator toggleRoutePlanning];
 }
 
 - (id)topSidebarController_forTests
 {
-  v2 = [(MacChromeViewController *)self masterViewController];
-  v3 = [v2 topContainee_forTests];
+  masterViewController = [(MacChromeViewController *)self masterViewController];
+  topContainee_forTests = [masterViewController topContainee_forTests];
 
-  return v3;
+  return topContainee_forTests;
 }
 
-- (void)setSidebarViewControllers:(id)a3
+- (void)setSidebarViewControllers:(id)controllers
 {
-  v4 = a3;
+  controllersCopy = controllers;
   objc_initWeak(&location, self);
-  v5 = [(MacChromeViewController *)self masterViewController];
+  masterViewController = [(MacChromeViewController *)self masterViewController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1009E12DC;
   v6[3] = &unk_1016619A8;
   objc_copyWeak(&v7, &location);
-  [v5 setContainees:v4 animated:1 completion:v6];
+  [masterViewController setContainees:controllersCopy animated:1 completion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1753,82 +1753,82 @@ LABEL_19:
 {
   if (GEOConfigGetBOOL())
   {
-    v5 = [(ChromeViewController *)self topContext];
+    topContext = [(ChromeViewController *)self topContext];
     v3 = [(NSMapTable *)self->_sidebarControllersForContext objectForKey:?];
     v4 = [v3 mutableCopy];
 
     if ([v4 count])
     {
       [v4 removeLastObject];
-      [(MacChromeViewController *)self _setSidebarContentControllers:v4 forContext:v5];
+      [(MacChromeViewController *)self _setSidebarContentControllers:v4 forContext:topContext];
     }
   }
 
   else
   {
-    v5 = [(MacChromeViewController *)self masterViewController];
-    [v5 popContainee:1 completion:0];
+    topContext = [(MacChromeViewController *)self masterViewController];
+    [topContext popContainee:1 completion:0];
   }
 }
 
-- (void)pushSidebarViewController:(id)a3
+- (void)pushSidebarViewController:(id)controller
 {
-  v11 = a3;
+  controllerCopy = controller;
   if (GEOConfigGetBOOL())
   {
-    v4 = [(ChromeViewController *)self nextTopContext];
-    v5 = v4;
-    if (v4)
+    nextTopContext = [(ChromeViewController *)self nextTopContext];
+    v5 = nextTopContext;
+    if (nextTopContext)
     {
-      v6 = v4;
+      topContext = nextTopContext;
     }
 
     else
     {
-      v6 = [(ChromeViewController *)self topContext];
+      topContext = [(ChromeViewController *)self topContext];
     }
 
-    v7 = v6;
+    masterViewController = topContext;
 
-    v8 = [(NSMapTable *)self->_sidebarControllersForContext objectForKey:v7];
+    v8 = [(NSMapTable *)self->_sidebarControllersForContext objectForKey:masterViewController];
     v9 = [NSMutableArray arrayWithArray:v8];
 
-    v10 = [v9 lastObject];
+    lastObject = [v9 lastObject];
 
-    if (v10 != v11)
+    if (lastObject != controllerCopy)
     {
-      [v9 addObject:v11];
-      [(MacChromeViewController *)self _setSidebarContentControllers:v9 forContext:v7];
+      [v9 addObject:controllerCopy];
+      [(MacChromeViewController *)self _setSidebarContentControllers:v9 forContext:masterViewController];
     }
   }
 
   else
   {
-    v7 = [(MacChromeViewController *)self masterViewController];
-    [v7 pushContainee:v11 animated:1 completion:0];
+    masterViewController = [(MacChromeViewController *)self masterViewController];
+    [masterViewController pushContainee:controllerCopy animated:1 completion:0];
   }
 }
 
-- (void)updateComponent:(id)a3 forTiming:(unint64_t)a4 withAnimation:(id)a5
+- (void)updateComponent:(id)component forTiming:(unint64_t)timing withAnimation:(id)animation
 {
-  v8 = a3;
-  v9 = a5;
+  componentCopy = component;
+  animationCopy = animation;
   v11.receiver = self;
   v11.super_class = MacChromeViewController;
-  [(IOSBasedChromeViewController *)&v11 updateComponent:v8 forTiming:a4 withAnimation:v9];
-  if (v8 == @"sidebar")
+  [(IOSBasedChromeViewController *)&v11 updateComponent:componentCopy forTiming:timing withAnimation:animationCopy];
+  if (componentCopy == @"sidebar")
   {
-    [(MacChromeViewController *)self _updateSidebarWithAnimation:v9];
+    [(MacChromeViewController *)self _updateSidebarWithAnimation:animationCopy];
   }
 
-  else if (v8 == @"mapInsets")
+  else if (componentCopy == @"mapInsets")
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1009E1654;
     v10[3] = &unk_101661B18;
     v10[4] = self;
-    [v9 addAnimations:v10];
+    [animationCopy addAnimations:v10];
   }
 }
 
@@ -1836,18 +1836,18 @@ LABEL_19:
 {
   v5.receiver = self;
   v5.super_class = MacChromeViewController;
-  v2 = [(IOSBasedChromeViewController *)&v5 allComponents];
-  v3 = [v2 arrayByAddingObject:@"sidebar"];
+  allComponents = [(IOSBasedChromeViewController *)&v5 allComponents];
+  v3 = [allComponents arrayByAddingObject:@"sidebar"];
 
   return v3;
 }
 
 - (unint64_t)viewportEdgesRespectingSafeAreaInsets
 {
-  v2 = [(MacChromeViewController *)self view];
-  v3 = [v2 isWindowFullScreen];
+  view = [(MacChromeViewController *)self view];
+  isWindowFullScreen = [view isWindowFullScreen];
 
-  if (v3)
+  if (isWindowFullScreen)
   {
     return 15;
   }
@@ -1864,25 +1864,25 @@ LABEL_19:
   v6.super_class = MacChromeViewController;
   [(IOSBasedChromeViewController *)&v6 prepareMapViewForFirstUse];
   v3 = +[UIColor systemBlueColor];
-  v4 = [(ChromeViewController *)self mapView];
-  [v4 setTintColor:v3];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView setTintColor:v3];
 
-  v5 = [(ChromeViewController *)self mapView];
-  [v5 _setAutomaticallySnapsToNorth:1];
+  mapView2 = [(ChromeViewController *)self mapView];
+  [mapView2 _setAutomaticallySnapsToNorth:1];
 }
 
-- (void)contextStackDidUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5
+- (void)contextStackDidUpdateFrom:(id)from to:(id)to withAnimation:(id)animation
 {
-  v8 = a4;
-  v9 = a5;
+  toCopy = to;
+  animationCopy = animation;
   v21.receiver = self;
   v21.super_class = MacChromeViewController;
-  [(IOSBasedChromeViewController *)&v21 contextStackDidUpdateFrom:a3 to:v8 withAnimation:v9];
-  v10 = [v8 lastObject];
+  [(IOSBasedChromeViewController *)&v21 contextStackDidUpdateFrom:from to:toCopy withAnimation:animationCopy];
+  lastObject = [toCopy lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v12 = [v8 lastObject];
+  lastObject2 = [toCopy lastObject];
   objc_opt_class();
   v13 = objc_opt_isKindOfClass();
 
@@ -1893,21 +1893,21 @@ LABEL_19:
   v18[4] = self;
   v19 = isKindOfClass & 1;
   v20 = v13 & 1;
-  [v9 addPreparation:v18];
+  [animationCopy addPreparation:v18];
   if ((isKindOfClass & 1) != 0 && (GEOConfigGetBOOL() & 1) == 0)
   {
-    -[MacChromeViewController hideSideBar:animated:completion:](self, "hideSideBar:animated:completion:", -[MacChromeViewController _shouldHideSidebar](self, "_shouldHideSidebar"), [v9 isAnimated], 0);
+    -[MacChromeViewController hideSideBar:animated:completion:](self, "hideSideBar:animated:completion:", -[MacChromeViewController _shouldHideSidebar](self, "_shouldHideSidebar"), [animationCopy isAnimated], 0);
   }
 
   if (v13)
   {
-    [v8 lastObject];
+    [toCopy lastObject];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1009E1CA0;
     v17 = v16[3] = &unk_101661738;
     v14 = v17;
-    [v9 addCompletion:v16];
+    [animationCopy addCompletion:v16];
   }
 
   v15[0] = _NSConcreteStackBlock;
@@ -1915,32 +1915,32 @@ LABEL_19:
   v15[2] = sub_1009E1CA8;
   v15[3] = &unk_101661B18;
   v15[4] = self;
-  [v9 addAnimations:v15];
+  [animationCopy addAnimations:v15];
 }
 
-- (void)contextStackWillUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5
+- (void)contextStackWillUpdateFrom:(id)from to:(id)to withAnimation:(id)animation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fromCopy = from;
+  toCopy = to;
+  animationCopy = animation;
   v20.receiver = self;
   v20.super_class = MacChromeViewController;
-  [(IOSBasedChromeViewController *)&v20 contextStackWillUpdateFrom:v8 to:v9 withAnimation:v10];
-  v11 = [v8 lastObject];
-  v12 = [v9 lastObject];
+  [(IOSBasedChromeViewController *)&v20 contextStackWillUpdateFrom:fromCopy to:toCopy withAnimation:animationCopy];
+  lastObject = [fromCopy lastObject];
+  lastObject2 = [toCopy lastObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (GEOConfigGetBOOL())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v8 lastObject];
+      [fromCopy lastObject];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_1009E1F8C;
       v17 = v16[3] = &unk_101661B18;
       v13 = v17;
-      [v10 addPreparation:v16 animations:0 completion:0];
+      [animationCopy addPreparation:v16 animations:0 completion:0];
     }
   }
 
@@ -1951,8 +1951,8 @@ LABEL_19:
     v18[2] = sub_1009E1F70;
     v18[3] = &unk_101661AE0;
     v18[4] = self;
-    v19 = [v10 isAnimated];
-    [v10 addPreparation:v18 animations:0 completion:0];
+    isAnimated = [animationCopy isAnimated];
+    [animationCopy addPreparation:v18 animations:0 completion:0];
   }
 
   if (GEOConfigGetBOOL())
@@ -1962,19 +1962,19 @@ LABEL_19:
     v14[2] = sub_1009E1F9C;
     v14[3] = &unk_101661570;
     v14[4] = self;
-    v15 = v9;
-    [v10 addCompletion:v14];
+    v15 = toCopy;
+    [animationCopy addCompletion:v14];
   }
 }
 
 - (double)currentSidebarWidth
 {
-  v3 = [(MacChromeViewController *)self splitViewController];
+  splitViewController = [(MacChromeViewController *)self splitViewController];
   v4 = 0.0;
-  if ([v3 displayMode] != 1)
+  if ([splitViewController displayMode] != 1)
   {
-    v5 = [(MacChromeViewController *)self splitViewController];
-    [v5 primaryColumnWidth];
+    splitViewController2 = [(MacChromeViewController *)self splitViewController];
+    [splitViewController2 primaryColumnWidth];
     v4 = v6;
   }
 
@@ -1985,20 +1985,20 @@ LABEL_19:
 {
   [(MacChromeViewController *)self currentSidebarWidth];
   v4 = sub_100019A44() + v3;
-  v5 = [(MacChromeViewController *)self viewportSideBarWidthConstraint];
-  [v5 constant];
+  viewportSideBarWidthConstraint = [(MacChromeViewController *)self viewportSideBarWidthConstraint];
+  [viewportSideBarWidthConstraint constant];
   v7 = v6;
 
   if (v7 != v4)
   {
-    v8 = [(MacChromeViewController *)self viewportSideBarWidthConstraint];
-    [v8 setConstant:v4];
+    viewportSideBarWidthConstraint2 = [(MacChromeViewController *)self viewportSideBarWidthConstraint];
+    [viewportSideBarWidthConstraint2 setConstant:v4];
 
-    v9 = [(MacChromeViewController *)self mapViewInsetsSideBarWidthConstraint];
-    [v9 setConstant:v4];
+    mapViewInsetsSideBarWidthConstraint = [(MacChromeViewController *)self mapViewInsetsSideBarWidthConstraint];
+    [mapViewInsetsSideBarWidthConstraint setConstant:v4];
 
-    v10 = [(MacChromeViewController *)self view];
-    [v10 layoutIfNeeded];
+    view = [(MacChromeViewController *)self view];
+    [view layoutIfNeeded];
 
     [(ChromeViewController *)self setNeedsUpdateComponent:@"mapInsets" animated:0];
 
@@ -2006,42 +2006,42 @@ LABEL_19:
   }
 }
 
-- (void)_locationManagerApprovalDidChange:(id)a3
+- (void)_locationManagerApprovalDidChange:(id)change
 {
   v6 = +[MKLocationManager sharedLocationManager];
   if ([v6 isLocationServicesEnabled])
   {
-    v4 = [v6 isLocationServicesApproved];
+    isLocationServicesApproved = [v6 isLocationServicesApproved];
   }
 
   else
   {
-    v4 = 0;
+    isLocationServicesApproved = 0;
   }
 
-  v5 = [(MacChromeViewController *)self toolbarController];
-  [v5 setLocationServicesEnabled:v4];
+  toolbarController = [(MacChromeViewController *)self toolbarController];
+  [toolbarController setLocationServicesEnabled:isLocationServicesApproved];
 }
 
 - (void)_updateFullScreen
 {
-  v3 = [(MacChromeViewController *)self view];
-  v4 = [v3 isWindowFullScreen];
-  v5 = [(MacChromeViewController *)self masterViewController];
-  [v5 setTopSafeAreaInsetConstraining:v4];
+  view = [(MacChromeViewController *)self view];
+  isWindowFullScreen = [view isWindowFullScreen];
+  masterViewController = [(MacChromeViewController *)self masterViewController];
+  [masterViewController setTopSafeAreaInsetConstraining:isWindowFullScreen];
 
   [(ChromeViewController *)self updateViewportConstraints];
 
   [(ChromeViewController *)self updateOverlayContentConstraints];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MacChromeViewController;
-  [(IOSBasedChromeViewController *)&v5 viewDidAppear:a3];
-  v4 = [(ChromeViewController *)self mapView];
-  [v4 becomeFirstResponder];
+  [(IOSBasedChromeViewController *)&v5 viewDidAppear:appear];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView becomeFirstResponder];
 
   [(MacChromeViewController *)self _updateFullScreen];
 }
@@ -2054,53 +2054,53 @@ LABEL_19:
   v3 = [[SupplementalStackViewController alloc] initWithTopSafeAreaInsetConstraining:0];
   [(MacChromeViewController *)self setMasterViewController:v3];
 
-  v4 = [(MacChromeViewController *)self masterViewController];
-  v5 = [v4 view];
-  [v5 setClipsToBounds:1];
+  masterViewController = [(MacChromeViewController *)self masterViewController];
+  view = [masterViewController view];
+  [view setClipsToBounds:1];
 
   v6 = objc_alloc_init(PassThroughViewController);
   [(PassThroughViewController *)v6 setDelegate:self];
-  v7 = [(PassThroughViewController *)v6 view];
-  [v7 setAccessibilityIdentifier:@"MacChromePassthroughView"];
+  view2 = [(PassThroughViewController *)v6 view];
+  [view2 setAccessibilityIdentifier:@"MacChromePassthroughView"];
 
   v71 = v6;
   [(MacChromeViewController *)self setDetailViewController:v6];
   v8 = [[BlurInWindowSplitViewController alloc] initWithStyle:1];
   [(MacChromeViewController *)self setSplitViewController:v8];
 
-  v9 = [(MacChromeViewController *)self masterViewController];
-  v74[0] = v9;
-  v10 = [(MacChromeViewController *)self detailViewController];
-  v74[1] = v10;
+  masterViewController2 = [(MacChromeViewController *)self masterViewController];
+  v74[0] = masterViewController2;
+  detailViewController = [(MacChromeViewController *)self detailViewController];
+  v74[1] = detailViewController;
   v11 = [NSArray arrayWithObjects:v74 count:2];
-  v12 = [(MacChromeViewController *)self splitViewController];
-  [v12 setViewControllers:v11];
+  splitViewController = [(MacChromeViewController *)self splitViewController];
+  [splitViewController setViewControllers:v11];
 
-  v13 = [(MacChromeViewController *)self splitViewController];
-  [v13 setPreferredPrimaryColumnWidthFraction:0.150000006];
+  splitViewController2 = [(MacChromeViewController *)self splitViewController];
+  [splitViewController2 setPreferredPrimaryColumnWidthFraction:0.150000006];
 
-  v14 = [(MacChromeViewController *)self splitViewController];
-  [v14 setPresentsWithGesture:0];
+  splitViewController3 = [(MacChromeViewController *)self splitViewController];
+  [splitViewController3 setPresentsWithGesture:0];
 
-  v15 = [(MacChromeViewController *)self splitViewController];
-  [v15 setDisplayModeButtonVisibility:2];
+  splitViewController4 = [(MacChromeViewController *)self splitViewController];
+  [splitViewController4 setDisplayModeButtonVisibility:2];
 
-  v16 = [(MacChromeViewController *)self splitViewController];
-  [v16 setMinimumPrimaryColumnWidth:200.0];
+  splitViewController5 = [(MacChromeViewController *)self splitViewController];
+  [splitViewController5 setMinimumPrimaryColumnWidth:200.0];
 
-  v17 = [(MacChromeViewController *)self splitViewController];
-  [v17 setMaximumPrimaryColumnWidth:UISplitViewControllerAutomaticDimension];
+  splitViewController6 = [(MacChromeViewController *)self splitViewController];
+  [splitViewController6 setMaximumPrimaryColumnWidth:UISplitViewControllerAutomaticDimension];
 
   v18 = +[UIColor clearColor];
-  v19 = [(MacChromeViewController *)self splitViewController];
-  v20 = [v19 view];
-  [v20 setBackgroundColor:v18];
+  splitViewController7 = [(MacChromeViewController *)self splitViewController];
+  view3 = [splitViewController7 view];
+  [view3 setBackgroundColor:v18];
 
-  v21 = [(MacChromeViewController *)self splitViewController];
-  [v21 setGutterWidth:0.0];
+  splitViewController8 = [(MacChromeViewController *)self splitViewController];
+  [splitViewController8 setGutterWidth:0.0];
 
-  v22 = [(MacChromeViewController *)self splitViewController];
-  [v22 setPrimaryBackgroundStyle:1];
+  splitViewController9 = [(MacChromeViewController *)self splitViewController];
+  [splitViewController9 setPrimaryBackgroundStyle:1];
 
   if ([(MacChromeViewController *)self _shouldHideSidebar])
   {
@@ -2112,86 +2112,86 @@ LABEL_19:
     v23 = 2;
   }
 
-  v24 = [(MacChromeViewController *)self splitViewController];
-  [v24 setPreferredDisplayMode:v23];
+  splitViewController10 = [(MacChromeViewController *)self splitViewController];
+  [splitViewController10 setPreferredDisplayMode:v23];
 
-  v25 = [(MacChromeViewController *)self splitViewController];
-  [v25 setDelegate:self];
+  splitViewController11 = [(MacChromeViewController *)self splitViewController];
+  [splitViewController11 setDelegate:self];
 
-  v26 = [(MacChromeViewController *)self splitViewController];
-  [(MacChromeViewController *)self addChildViewController:v26];
+  splitViewController12 = [(MacChromeViewController *)self splitViewController];
+  [(MacChromeViewController *)self addChildViewController:splitViewController12];
 
-  v27 = [(MacChromeViewController *)self view];
-  v28 = [(MacChromeViewController *)self splitViewController];
-  v29 = [v28 view];
-  v30 = [(ChromeViewController *)self mapView];
-  [v27 insertSubview:v29 aboveSubview:v30];
+  view4 = [(MacChromeViewController *)self view];
+  splitViewController13 = [(MacChromeViewController *)self splitViewController];
+  view5 = [splitViewController13 view];
+  mapView = [(ChromeViewController *)self mapView];
+  [view4 insertSubview:view5 aboveSubview:mapView];
 
-  v31 = [(MacChromeViewController *)self splitViewController];
-  [v31 didMoveToParentViewController:self];
+  splitViewController14 = [(MacChromeViewController *)self splitViewController];
+  [splitViewController14 didMoveToParentViewController:self];
 
-  v70 = [(MacChromeViewController *)self splitViewController];
-  v32 = [v70 view];
-  v33 = [(MacChromeViewController *)self view];
-  v34 = v32;
+  splitViewController15 = [(MacChromeViewController *)self splitViewController];
+  view6 = [splitViewController15 view];
+  view7 = [(MacChromeViewController *)self view];
+  v34 = view6;
   [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v69 = [v34 topAnchor];
-  v68 = [v33 topAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  topAnchor = [v34 topAnchor];
+  topAnchor2 = [view7 topAnchor];
+  v67 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v75[0] = v67;
-  v66 = [v34 leadingAnchor];
-  v65 = [v33 leadingAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  leadingAnchor = [v34 leadingAnchor];
+  leadingAnchor2 = [view7 leadingAnchor];
+  v64 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v75[1] = v64;
-  v35 = [v34 bottomAnchor];
-  v36 = [v33 bottomAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  bottomAnchor = [v34 bottomAnchor];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v75[2] = v37;
-  v38 = [v34 widthAnchor];
+  widthAnchor = [v34 widthAnchor];
 
-  v39 = [v33 widthAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  widthAnchor2 = [view7 widthAnchor];
+  v40 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v75[3] = v40;
   v41 = [NSArray arrayWithObjects:v75 count:4];
   [NSLayoutConstraint activateConstraints:v41];
 
-  v42 = [(ChromeViewController *)self viewportLayoutGuide];
-  v43 = [v42 leadingAnchor];
-  v44 = [(MacChromeViewController *)self view];
-  v45 = [v44 safeAreaLayoutGuide];
-  v46 = [v45 leadingAnchor];
-  v47 = [v43 constraintGreaterThanOrEqualToAnchor:v46 constant:0.0];
+  viewportLayoutGuide = [(ChromeViewController *)self viewportLayoutGuide];
+  leadingAnchor3 = [viewportLayoutGuide leadingAnchor];
+  view8 = [(MacChromeViewController *)self view];
+  safeAreaLayoutGuide = [view8 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+  v47 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:0.0];
   [(MacChromeViewController *)self setViewportSideBarWidthConstraint:v47];
 
   v48 = objc_alloc_init(NSMutableArray);
   v49 = sub_100019A44();
-  v50 = [(MacChromeViewController *)self viewportSideBarWidthConstraint];
-  v73[0] = v50;
-  v51 = [(ChromeViewController *)self mapInsetsLayoutGuide];
-  v52 = [v51 topAnchor];
-  v53 = [(MacChromeViewController *)self mapInsetEdgesRespectingSafeAreaInsets];
-  v54 = [(MacChromeViewController *)self view];
-  v55 = v54;
-  if (v53)
+  viewportSideBarWidthConstraint = [(MacChromeViewController *)self viewportSideBarWidthConstraint];
+  v73[0] = viewportSideBarWidthConstraint;
+  mapInsetsLayoutGuide = [(ChromeViewController *)self mapInsetsLayoutGuide];
+  topAnchor3 = [mapInsetsLayoutGuide topAnchor];
+  mapInsetEdgesRespectingSafeAreaInsets = [(MacChromeViewController *)self mapInsetEdgesRespectingSafeAreaInsets];
+  view9 = [(MacChromeViewController *)self view];
+  v55 = view9;
+  if (mapInsetEdgesRespectingSafeAreaInsets)
   {
-    v70 = [v54 safeAreaLayoutGuide];
-    [v70 topAnchor];
+    splitViewController15 = [view9 safeAreaLayoutGuide];
+    [splitViewController15 topAnchor];
   }
 
   else
   {
-    [v54 topAnchor];
+    [view9 topAnchor];
   }
   v56 = ;
-  v57 = [v52 constraintGreaterThanOrEqualToAnchor:v56 constant:v49];
+  v57 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:v56 constant:v49];
   v73[1] = v57;
   v58 = [NSArray arrayWithObjects:v73 count:2];
   [v48 addObjectsFromArray:v58];
 
-  if (v53)
+  if (mapInsetEdgesRespectingSafeAreaInsets)
   {
 
-    v56 = v70;
+    v56 = splitViewController15;
   }
 
   [NSLayoutConstraint activateConstraints:v48];
@@ -2205,19 +2205,19 @@ LABEL_19:
   v62 = +[NSNotificationCenter defaultCenter];
   [v62 addObserver:self selector:"notifyToolbarOfRoutePlanningState:" name:@"RoutePlanningPresentedDidChangeNotification" object:0];
 
-  v63 = [(ChromeViewController *)self mapView];
-  [v63 _forceFrame];
+  mapView2 = [(ChromeViewController *)self mapView];
+  [mapView2 _forceFrame];
 }
 
-- (void)setAppCoordinator:(id)a3
+- (void)setAppCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = MacChromeViewController;
-  v4 = a3;
-  [(IOSBasedChromeViewController *)&v6 setAppCoordinator:v4];
-  v5 = [v4 platformController];
+  coordinatorCopy = coordinator;
+  [(IOSBasedChromeViewController *)&v6 setAppCoordinator:coordinatorCopy];
+  platformController = [coordinatorCopy platformController];
 
-  [v5 registerObserver:self];
+  [platformController registerObserver:self];
 }
 
 @end

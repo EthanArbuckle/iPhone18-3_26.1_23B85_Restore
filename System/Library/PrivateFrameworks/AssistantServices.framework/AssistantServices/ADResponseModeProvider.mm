@@ -13,13 +13,13 @@
 - (id)_computeModeForiOS;
 - (id)_computeModeFortvOS;
 - (id)fetchCurrentMode;
-- (id)internalModeOverride:(id)a3;
+- (id)internalModeOverride:(id)override;
 - (int64_t)_isVoiceOverEnabled;
 - (int64_t)_voiceFeedbackSetting;
 - (void)_computeMode;
-- (void)_connectedOutputDevicesDidChange:(id)a3;
+- (void)_connectedOutputDevicesDidChange:(id)change;
 - (void)_fetchConnectedAudioAccessoryState;
-- (void)updateModesConfiguration:(id)a3;
+- (void)updateModesConfiguration:(id)configuration;
 @end
 
 @implementation ADResponseModeProvider
@@ -37,9 +37,9 @@
   {
     currentModesConfiguration = self->_currentModesConfiguration;
     v6 = v3;
-    v7 = [(AFModesConfiguration *)currentModesConfiguration isSiriAutoPrompt];
+    isSiriAutoPrompt = [(AFModesConfiguration *)currentModesConfiguration isSiriAutoPrompt];
     v8 = @"FlexibleFollowup";
-    if (v7)
+    if (isSiriAutoPrompt)
     {
       v8 = @"SiriAutoPrompt";
     }
@@ -68,12 +68,12 @@
 
 - (id)_computeModeForiOS
 {
-  v3 = [(ADResponseModeProvider *)self _updateStickiness];
+  _updateStickiness = [(ADResponseModeProvider *)self _updateStickiness];
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v5 = @"Not Sticky";
-    if (v3)
+    if (_updateStickiness)
     {
       v5 = @"Sticky";
     }
@@ -85,8 +85,8 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s #modes Stickiness is %@", &v28, 0x16u);
   }
 
-  v6 = [(AFModesConfiguration *)self->_currentModesConfiguration modeOverrideValue];
-  v7 = [(ADResponseModeProvider *)self internalModeOverride:v6];
+  modeOverrideValue = [(AFModesConfiguration *)self->_currentModesConfiguration modeOverrideValue];
+  v7 = [(ADResponseModeProvider *)self internalModeOverride:modeOverrideValue];
 
   if (v7 == @"None")
   {
@@ -351,10 +351,10 @@ LABEL_24:
 - (int64_t)_isVoiceOverEnabled
 {
   v2 = +[AFAccessibilityObserver sharedObserver];
-  v3 = [v2 state];
-  v4 = [v3 isVoiceOverTouchEnabled];
+  state = [v2 state];
+  isVoiceOverTouchEnabled = [state isVoiceOverTouchEnabled];
 
-  return v4;
+  return isVoiceOverTouchEnabled;
 }
 
 - (id)fetchCurrentMode
@@ -393,7 +393,7 @@ LABEL_24:
   objc_destroyWeak(&location);
 }
 
-- (void)_connectedOutputDevicesDidChange:(id)a3
+- (void)_connectedOutputDevicesDidChange:(id)change
 {
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -406,10 +406,10 @@ LABEL_24:
   [(ADResponseModeProvider *)self _fetchConnectedAudioAccessoryState];
 }
 
-- (id)internalModeOverride:(id)a3
+- (id)internalModeOverride:(id)override
 {
-  v3 = [a3 lowercaseString];
-  if (([v3 isEqualToString:@"silent"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"displayonly"))
+  lowercaseString = [override lowercaseString];
+  if (([lowercaseString isEqualToString:@"silent"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"displayonly"))
   {
     v4 = &SAUIResponseModeDisplayOnlyValue;
 LABEL_4:
@@ -417,25 +417,25 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (([v3 isEqualToString:@"mixed"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"displayforward"))
+  if (([lowercaseString isEqualToString:@"mixed"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"displayforward"))
   {
     v4 = &SAUIResponseModeDisplayForwardValue;
     goto LABEL_4;
   }
 
-  if (([v3 isEqualToString:@"voice"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"voiceonly"))
+  if (([lowercaseString isEqualToString:@"voice"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"voiceonly"))
   {
     v4 = &SAUIResponseModeVoiceOnlyValue;
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:@"voiceforward"])
+  if ([lowercaseString isEqualToString:@"voiceforward"])
   {
     v4 = &SAUIResponseModeVoiceForwardValue;
     goto LABEL_4;
   }
 
-  if (v3)
+  if (lowercaseString)
   {
     v7 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -443,7 +443,7 @@ LABEL_4:
       v8 = 136315394;
       v9 = "[ADResponseModeProvider internalModeOverride:]";
       v10 = 2112;
-      v11 = v3;
+      v11 = lowercaseString;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s #modes Invalid mode override value: %@", &v8, 0x16u);
     }
   }
@@ -456,8 +456,8 @@ LABEL_5:
 
 - (id)_computeModeFortvOS
 {
-  v3 = [(AFModesConfiguration *)self->_currentModesConfiguration modeOverrideValue];
-  v4 = [(ADResponseModeProvider *)self internalModeOverride:v3];
+  modeOverrideValue = [(AFModesConfiguration *)self->_currentModesConfiguration modeOverrideValue];
+  v4 = [(ADResponseModeProvider *)self internalModeOverride:modeOverrideValue];
 
   if (v4 == @"None")
   {
@@ -525,12 +525,12 @@ LABEL_5:
 
 - (id)_computeModeForMacOS
 {
-  v3 = [(ADResponseModeProvider *)self _updateStickiness];
+  _updateStickiness = [(ADResponseModeProvider *)self _updateStickiness];
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v5 = @"Not Sticky";
-    if (v3)
+    if (_updateStickiness)
     {
       v5 = @"Sticky";
     }
@@ -543,22 +543,22 @@ LABEL_5:
   }
 
   previousIsVoiceTriggerRequest = [(AFModesConfiguration *)self->_currentModesConfiguration isVoiceTriggerRequest];
-  v7 = v3 ^ 1;
+  v7 = _updateStickiness ^ 1;
   if ((previousIsVoiceTriggerRequest & 1) == 0 && (v7 & 1) == 0)
   {
     previousIsVoiceTriggerRequest = self->_previousIsVoiceTriggerRequest;
   }
 
   self->_previousIsVoiceTriggerRequest = previousIsVoiceTriggerRequest & 1;
-  v8 = [(AFModesConfiguration *)self->_currentModesConfiguration isAudioAccessoryButtonActivation];
-  if (((v8 | v7) & 1) == 0)
+  isAudioAccessoryButtonActivation = [(AFModesConfiguration *)self->_currentModesConfiguration isAudioAccessoryButtonActivation];
+  if (((isAudioAccessoryButtonActivation | v7) & 1) == 0)
   {
-    LOBYTE(v8) = self->_previousIsAudioAccessoryButtonActivation;
+    LOBYTE(isAudioAccessoryButtonActivation) = self->_previousIsAudioAccessoryButtonActivation;
   }
 
-  self->_previousIsAudioAccessoryButtonActivation = v8 & 1;
-  v9 = [(AFModesConfiguration *)self->_currentModesConfiguration modeOverrideValue];
-  v10 = [(ADResponseModeProvider *)self internalModeOverride:v9];
+  self->_previousIsAudioAccessoryButtonActivation = isAudioAccessoryButtonActivation & 1;
+  modeOverrideValue = [(AFModesConfiguration *)self->_currentModesConfiguration modeOverrideValue];
+  v10 = [(ADResponseModeProvider *)self internalModeOverride:modeOverrideValue];
 
   if (v10 != @"None")
   {
@@ -635,10 +635,10 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s #modes VoiceOver is enabled? No", &v21, 0xCu);
   }
 
-  v18 = [(ADResponseModeProvider *)self _isDeviceUnlocked];
+  _isDeviceUnlocked = [(ADResponseModeProvider *)self _isDeviceUnlocked];
   v19 = AFSiriLogContextConnection;
   v20 = os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO);
-  if (v18)
+  if (_isDeviceUnlocked)
   {
     if (v20)
     {
@@ -726,8 +726,8 @@ LABEL_24:
 
 - (id)_computeModeForWatchOS
 {
-  v3 = [(AFModesConfiguration *)self->_currentModesConfiguration modeOverrideValue];
-  v4 = [(ADResponseModeProvider *)self internalModeOverride:v3];
+  modeOverrideValue = [(AFModesConfiguration *)self->_currentModesConfiguration modeOverrideValue];
+  v4 = [(ADResponseModeProvider *)self internalModeOverride:modeOverrideValue];
 
   if (v4 == @"None")
   {
@@ -788,9 +788,9 @@ LABEL_18:
         if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
         {
           v15 = v14;
-          v16 = [(ADResponseModeProvider *)self _isDeviceSilent];
+          _isDeviceSilent = [(ADResponseModeProvider *)self _isDeviceSilent];
           v17 = @"OFF";
-          if (v16)
+          if (_isDeviceSilent)
           {
             v17 = @"ON";
           }
@@ -802,9 +802,9 @@ LABEL_18:
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s #modes Control with Ringer Switch - Device silent mode = %@", &v21, 0x16u);
         }
 
-        v18 = [(ADResponseModeProvider *)self _isDeviceSilent];
+        _isDeviceSilent2 = [(ADResponseModeProvider *)self _isDeviceSilent];
         v9 = &SAUIResponseModeDisplayOnlyValue;
-        if (!v18)
+        if (!_isDeviceSilent2)
         {
           v9 = &SAUIResponseModeDisplayForwardValue;
         }
@@ -812,10 +812,10 @@ LABEL_18:
         goto LABEL_12;
       }
 
-      v19 = [(ADResponseModeProvider *)self _voiceFeedbackSetting];
+      _voiceFeedbackSetting = [(ADResponseModeProvider *)self _voiceFeedbackSetting];
       v12 = AFSiriLogContextConnection;
       v20 = os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO);
-      if (v19 == 1)
+      if (_voiceFeedbackSetting == 1)
       {
         if (v20)
         {
@@ -862,8 +862,8 @@ LABEL_13:
 
 - (id)_computeModeForVisionOS
 {
-  v3 = [(AFModesConfiguration *)self->_currentModesConfiguration modeOverrideValue];
-  v4 = [(ADResponseModeProvider *)self internalModeOverride:v3];
+  modeOverrideValue = [(AFModesConfiguration *)self->_currentModesConfiguration modeOverrideValue];
+  v4 = [(ADResponseModeProvider *)self internalModeOverride:modeOverrideValue];
 
   if (v4 == @"None")
   {
@@ -882,10 +882,10 @@ LABEL_13:
 
     else
     {
-      v9 = [(ADResponseModeProvider *)self _voiceFeedbackSetting];
+      _voiceFeedbackSetting = [(ADResponseModeProvider *)self _voiceFeedbackSetting];
       v10 = AFSiriLogContextConnection;
       v11 = os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO);
-      if (v9 == 3)
+      if (_voiceFeedbackSetting == 3)
       {
         if (v11)
         {
@@ -935,12 +935,12 @@ LABEL_13:
 
 - (BOOL)_isDeviceUnlocked
 {
-  v2 = [(AFModesConfiguration *)self->_currentModesConfiguration isDeviceUnlocked];
+  isDeviceUnlocked = [(AFModesConfiguration *)self->_currentModesConfiguration isDeviceUnlocked];
   v3 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v4 = @"LOCKED";
-    if (v2)
+    if (isDeviceUnlocked)
     {
       v4 = @"UNLOCKED";
     }
@@ -952,21 +952,21 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s #modes Unlocked/Lock State: %@", &v6, 0x16u);
   }
 
-  return v2;
+  return isDeviceUnlocked;
 }
 
 - (int64_t)_voiceFeedbackSetting
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 useDeviceSpeakerForTTS];
-  if (v3 > 3)
+  useDeviceSpeakerForTTS = [v2 useDeviceSpeakerForTTS];
+  if (useDeviceSpeakerForTTS > 3)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = qword_1003F0360[v3];
+    v4 = qword_1003F0360[useDeviceSpeakerForTTS];
   }
 
   return v4;
@@ -975,13 +975,13 @@ LABEL_13:
 - (BOOL)_deviceUnlockSignalEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 deviceUnlockSignalEnabled];
+  deviceUnlockSignalEnabled = [v2 deviceUnlockSignalEnabled];
 
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (deviceUnlockSignalEnabled)
     {
       v5 = @"YES";
     }
@@ -993,19 +993,19 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s #modes Turn on Unlock Signal: %@", &v7, 0x16u);
   }
 
-  return v3;
+  return deviceUnlockSignalEnabled;
 }
 
 - (BOOL)_overrideModeWhenInAmbient
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 overrideModeWhileInAmbient];
+  overrideModeWhileInAmbient = [v2 overrideModeWhileInAmbient];
 
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v5 = @"NO";
-    if (v3)
+    if (overrideModeWhileInAmbient)
     {
       v5 = @"YES";
     }
@@ -1017,7 +1017,7 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s #modes Override Mode When In Ambient: %@", &v7, 0x16u);
   }
 
-  return v3;
+  return overrideModeWhileInAmbient;
 }
 
 - (BOOL)_isAudioAccessoryConnected
@@ -1074,24 +1074,24 @@ LABEL_13:
     v7 = 136315394;
     v8 = "[ADResponseModeProvider _isDeviceSilent]";
     v9 = 2048;
-    v10 = [(AFNotifyObserver *)ringerStateObserver state];
+    state = [(AFNotifyObserver *)ringerStateObserver state];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s #modes Device RingerSwitchState : %ld", &v7, 0x16u);
   }
 
   return [(AFNotifyObserver *)self->_ringerStateObserver state]== 0;
 }
 
-- (void)updateModesConfiguration:(id)a3
+- (void)updateModesConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   queue = self->_queue;
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_10007AADC;
   v10 = &unk_10051E010;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(queue, &v7);
   [(ADResponseModeProvider *)self _computeMode:v7];
 }

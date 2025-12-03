@@ -1,5 +1,5 @@
 @interface JavaLangRefReference
-- (JavaLangRefReference)initWithId:(id)a3 withJavaLangRefReferenceQueue:(id)a4;
+- (JavaLangRefReference)initWithId:(id)id withJavaLangRefReferenceQueue:(id)queue;
 - (uint64_t)enqueue;
 - (void)__javaClone;
 - (void)dealloc;
@@ -7,23 +7,23 @@
 
 @implementation JavaLangRefReference
 
-- (JavaLangRefReference)initWithId:(id)a3 withJavaLangRefReferenceQueue:(id)a4
+- (JavaLangRefReference)initWithId:(id)id withJavaLangRefReferenceQueue:(id)queue
 {
-  atomic_store(a3, &self->referent_);
-  atomic_store(a4, &self->queue_);
+  atomic_store(id, &self->referent_);
+  atomic_store(queue, &self->queue_);
   [IOSReference initReferent:self];
   return self;
 }
 
 - (uint64_t)enqueue
 {
-  objc_sync_enter(a1);
-  v2 = atomic_load(a1 + 2);
-  if (v2 && (v3 = atomic_load(a1 + 3)) == 0)
+  objc_sync_enter(self);
+  v2 = atomic_load(self + 2);
+  if (v2 && (v3 = atomic_load(self + 3)) == 0)
   {
-    v5 = atomic_load(a1 + 2);
-    [v5 enqueueWithJavaLangRefReference:a1];
-    atomic_store(0, a1 + 2);
+    v5 = atomic_load(self + 2);
+    [v5 enqueueWithJavaLangRefReference:self];
+    atomic_store(0, self + 2);
     v4 = 1;
   }
 
@@ -32,7 +32,7 @@
     v4 = 0;
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return v4;
 }
 

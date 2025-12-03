@@ -1,21 +1,21 @@
 @interface NetworkPerformanceFeed
-- (BOOL)_rollFlowMetricsValuesFromDict:(id)a3 toDict:(id)a4 forKey:(id)a5 andRequest:(id)a6;
-- (BOOL)_rollRouteMetricsValuesFromDict:(id)a3 toDict:(id)a4 forKey:(id)a5;
-- (BOOL)getPreferCellOverWiFiWithOptions:(id)a3 reply:(id)a4;
-- (BOOL)predictWaitUntilKnownGoodNetworkFor:(int)a3 matchSignature:(BOOL)a4 reply:(id)a5;
-- (BOOL)resetDataForKeys:(id)a3 reply:(id)a4;
-- (BOOL)setPreferCellOverWiFiWithOptions:(id)a3 reply:(id)a4;
-- (BOOL)setReferencePoint:(int)a3 reply:(id)a4;
-- (BOOL)usageConsultOn:(int)a3 onlyRelativeToReferencePoint:(id)a4 reply:(id)a5;
-- (BOOL)watchpointOn:(int)a3 forIdentifier:(id)a4 andKey:(id)a5 onThreshold:(double)a6 withOptions:(id)a7 uponHit:(id)a8;
-- (NetworkPerformanceFeed)initWithWorkspace:(id)a3;
-- (id)_flowMetricsPresentationFromRoll:(id)a3 source:(flow_stats_stuct *)a4;
-- (id)_formatInstantRouteMetrics:(id)a3;
-- (id)_formatWatchpointHit:(id)a3;
-- (id)_normalizedOpts:(id)a3 toNetwork:(int)a4;
-- (id)_routeMetricsPresentationFromRoll:(id)a3 source:(route_stats_stuct *)a4 since:(id)a5 isKnownGood:(id)a6 isLowInternetDL:(id)a7 isLowInternetUL:(id)a8 isHotSpot:(id)a9 rpmAverage:(id)a10 rpmCount:(id)a11 rpmVariance:(id)a12 rpmExitAverage:(id)a13 rpmExitCount:(id)a14 rpmExitVariance:(id)a15;
+- (BOOL)_rollFlowMetricsValuesFromDict:(id)dict toDict:(id)toDict forKey:(id)key andRequest:(id)request;
+- (BOOL)_rollRouteMetricsValuesFromDict:(id)dict toDict:(id)toDict forKey:(id)key;
+- (BOOL)getPreferCellOverWiFiWithOptions:(id)options reply:(id)reply;
+- (BOOL)predictWaitUntilKnownGoodNetworkFor:(int)for matchSignature:(BOOL)signature reply:(id)reply;
+- (BOOL)resetDataForKeys:(id)keys reply:(id)reply;
+- (BOOL)setPreferCellOverWiFiWithOptions:(id)options reply:(id)reply;
+- (BOOL)setReferencePoint:(int)point reply:(id)reply;
+- (BOOL)usageConsultOn:(int)on onlyRelativeToReferencePoint:(id)point reply:(id)reply;
+- (BOOL)watchpointOn:(int)on forIdentifier:(id)identifier andKey:(id)key onThreshold:(double)threshold withOptions:(id)options uponHit:(id)hit;
+- (NetworkPerformanceFeed)initWithWorkspace:(id)workspace;
+- (id)_flowMetricsPresentationFromRoll:(id)roll source:(flow_stats_stuct *)source;
+- (id)_formatInstantRouteMetrics:(id)metrics;
+- (id)_formatWatchpointHit:(id)hit;
+- (id)_normalizedOpts:(id)opts toNetwork:(int)network;
+- (id)_routeMetricsPresentationFromRoll:(id)roll source:(route_stats_stuct *)source since:(id)since isKnownGood:(id)good isLowInternetDL:(id)l isLowInternetUL:(id)uL isHotSpot:(id)spot rpmAverage:(id)self0 rpmCount:(id)self1 rpmVariance:(id)self2 rpmExitAverage:(id)self3 rpmExitCount:(id)self4 rpmExitVariance:(id)self5;
 - (void)dealloc;
-- (void)setQueue:(id)a3;
+- (void)setQueue:(id)queue;
 @end
 
 @implementation NetworkPerformanceFeed
@@ -27,7 +27,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C85F9000, v3, OS_LOG_TYPE_DEBUG, "> dealloc %p", buf, 0xCu);
   }
 
@@ -38,19 +38,19 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (NetworkPerformanceFeed)initWithWorkspace:(id)a3
+- (NetworkPerformanceFeed)initWithWorkspace:(id)workspace
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  workspaceCopy = workspace;
   v6 = networkperfLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = workspaceCopy;
     _os_log_impl(&dword_1C85F9000, v6, OS_LOG_TYPE_DEBUG, "> initWithWorkspace:%@", buf, 0xCu);
   }
 
-  if (v5)
+  if (workspaceCopy)
   {
     v14.receiver = self;
     v14.super_class = NetworkPerformanceFeed;
@@ -58,70 +58,70 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->workspace, a3);
+      objc_storeStrong(&v7->workspace, workspace);
       v9 = dispatch_queue_create("com.apple.Symptoms.SymptomsPresentationFeed.internalQueue", 0);
       internalQueue = v8->internalQueue;
       v8->internalQueue = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   v5 = networkperfLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = queueCopy;
     _os_log_impl(&dword_1C85F9000, v5, OS_LOG_TYPE_DEBUG, "> setQueue:%@", &v8, 0xCu);
   }
 
   callerQueue = self->callerQueue;
-  self->callerQueue = v4;
+  self->callerQueue = queueCopy;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setReferencePoint:(int)a3 reply:(id)a4
+- (BOOL)setReferencePoint:(int)point reply:(id)reply
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v7 = networkperfLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = MEMORY[0x1CCA78840](v6);
+    v8 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 67109376;
-    *v26 = a3;
+    *v26 = point;
     *&v26[4] = 2048;
     *&v26[6] = v8;
     _os_log_impl(&dword_1C85F9000, v7, OS_LOG_TYPE_DEBUG, "> setReferencePoint:%d reply:%p", buf, 0x12u);
   }
 
-  if ((a3 - 1) <= 2 && (v9 = **(&unk_1E8318E08 + (a3 - 1))) != 0)
+  if ((point - 1) <= 2 && (v9 = **(&unk_1E8318E08 + (point - 1))) != 0)
   {
     v10 = v9;
-    v11 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __50__NetworkPerformanceFeed_setReferencePoint_reply___block_invoke;
     v23[3] = &unk_1E8318A28;
     v23[4] = self;
-    v12 = v6;
+    v12 = replyCopy;
     v24 = v12;
-    v13 = [v11 remoteObjectProxyWithErrorHandler:v23];
+    v13 = [connection remoteObjectProxyWithErrorHandler:v23];
 
     v14 = v13 != 0;
     if (v13)
@@ -138,14 +138,14 @@
         _os_log_impl(&dword_1C85F9000, v17, OS_LOG_TYPE_DEBUG, "setReferencePoint:reply: createSnapshotFor:SFNetworkAttachment pred:%@ act:%@", buf, 0x16u);
       }
 
-      v18 = [MEMORY[0x1E69D5190] entityName];
+      entityName = [MEMORY[0x1E69D5190] entityName];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __50__NetworkPerformanceFeed_setReferencePoint_reply___block_invoke_23;
       v21[3] = &unk_1E8318A78;
       v21[4] = self;
       v22 = v12;
-      [v13 createSnapshotFor:v18 pred:v15 actions:v16 reply:v21];
+      [v13 createSnapshotFor:entityName pred:v15 actions:v16 reply:v21];
     }
   }
 
@@ -236,31 +236,31 @@ void __50__NetworkPerformanceFeed_setReferencePoint_reply___block_invoke_23(uint
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)usageConsultOn:(int)a3 onlyRelativeToReferencePoint:(id)a4 reply:(id)a5
+- (BOOL)usageConsultOn:(int)on onlyRelativeToReferencePoint:(id)point reply:(id)reply
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  pointCopy = point;
+  replyCopy = reply;
   v10 = networkperfLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = MEMORY[0x1CCA78840](v9);
+    v11 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 67109634;
-    *v36 = a3;
+    *v36 = on;
     *&v36[4] = 2112;
-    *&v36[6] = v8;
+    *&v36[6] = pointCopy;
     *&v36[14] = 2048;
     *&v36[16] = v11;
     _os_log_impl(&dword_1C85F9000, v10, OS_LOG_TYPE_DEBUG, "> usageConsultOn:%d onlyRelativeToReferencePoint:%@ reply:%p", buf, 0x1Cu);
   }
 
-  if ((a3 - 1) <= 2)
+  if ((on - 1) <= 2)
   {
-    v12 = **(&unk_1E8318E08 + (a3 - 1));
+    v12 = **(&unk_1E8318E08 + (on - 1));
     if (v12)
     {
       v13 = v12;
-      v14 = v8;
+      v14 = pointCopy;
       if (v14)
       {
         v15 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v14];
@@ -278,15 +278,15 @@ LABEL_20:
         v15 = 0;
       }
 
-      v17 = [(AnalyticsWorkspace *)self->workspace connection];
+      connection = [(AnalyticsWorkspace *)self->workspace connection];
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __76__NetworkPerformanceFeed_usageConsultOn_onlyRelativeToReferencePoint_reply___block_invoke;
       v33[3] = &unk_1E8318A28;
       v33[4] = self;
-      v18 = v9;
+      v18 = replyCopy;
       v34 = v18;
-      v19 = [v17 remoteObjectProxyWithErrorHandler:v33];
+      v19 = [connection remoteObjectProxyWithErrorHandler:v33];
 
       v16 = v19 != 0;
       if (v19)
@@ -297,17 +297,17 @@ LABEL_20:
         v20 = MEMORY[0x1E695DF20];
         if (v15)
         {
-          v21 = [v15 UUIDString];
-          v22 = *MEMORY[0x1E69D53A0];
+          uUIDString = [v15 UUIDString];
+          null = *MEMORY[0x1E69D53A0];
         }
 
         else
         {
-          v21 = [MEMORY[0x1E695DFB0] null];
-          v22 = [MEMORY[0x1E695DFB0] null];
+          uUIDString = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
         }
 
-        v23 = [v20 dictionaryWithObjectsAndKeys:{v21, v22, *MEMORY[0x1E69D5390], *MEMORY[0x1E69D5390], *MEMORY[0x1E69D5398], *MEMORY[0x1E69D5398], 0}];
+        v23 = [v20 dictionaryWithObjectsAndKeys:{uUIDString, null, *MEMORY[0x1E69D5390], *MEMORY[0x1E69D5390], *MEMORY[0x1E69D5398], *MEMORY[0x1E69D5398], 0}];
         if (!v15)
         {
         }
@@ -322,14 +322,14 @@ LABEL_20:
           _os_log_impl(&dword_1C85F9000, v24, OS_LOG_TYPE_DEBUG, "usageConsultOn:onlyRelativeToReferencePoint:reply: query SFNetworkAttachment with pred:%@ sort:nil actions:%@", buf, 0x16u);
         }
 
-        v25 = [MEMORY[0x1E69D5190] entityName];
+        entityName = [MEMORY[0x1E69D5190] entityName];
         v31[0] = MEMORY[0x1E69E9820];
         v31[1] = 3221225472;
         v31[2] = __76__NetworkPerformanceFeed_usageConsultOn_onlyRelativeToReferencePoint_reply___block_invoke_28;
         v31[3] = &unk_1E8318AC8;
         v31[4] = self;
         v32 = v28;
-        [v19 performQueryOnEntity:v25 pred:v29 sort:0 actions:v23 reply:v31];
+        [v19 performQueryOnEntity:entityName pred:v29 sort:0 actions:v23 reply:v31];
 
         v14 = v30;
       }
@@ -453,19 +453,19 @@ void __76__NetworkPerformanceFeed_usageConsultOn_onlyRelativeToReferencePoint_re
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)predictWaitUntilKnownGoodNetworkFor:(int)a3 matchSignature:(BOOL)a4 reply:(id)a5
+- (BOOL)predictWaitUntilKnownGoodNetworkFor:(int)for matchSignature:(BOOL)signature reply:(id)reply
 {
-  v5 = a4;
+  signatureCopy = signature;
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  replyCopy = reply;
   v8 = networkperfLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     v12[0] = 67109632;
-    v12[1] = a3;
+    v12[1] = for;
     v13 = 1024;
-    v14 = v5;
+    v14 = signatureCopy;
     v15 = 2048;
     v16 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> predictWaitUntilKnownGoodNetworkFor:%d matchSignature:%{BOOL}d reply:%p", v12, 0x18u);
@@ -475,26 +475,26 @@ void __76__NetworkPerformanceFeed_usageConsultOn_onlyRelativeToReferencePoint_re
   return 0;
 }
 
-- (BOOL)_rollFlowMetricsValuesFromDict:(id)a3 toDict:(id)a4 forKey:(id)a5 andRequest:(id)a6
+- (BOOL)_rollFlowMetricsValuesFromDict:(id)dict toDict:(id)toDict forKey:(id)key andRequest:(id)request
 {
   v57 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [a6 objectForKeyedSubscript:*MEMORY[0x1E69D52C0]];
+  dictCopy = dict;
+  toDictCopy = toDict;
+  keyCopy = key;
+  v12 = [request objectForKeyedSubscript:*MEMORY[0x1E69D52C0]];
 
-  v13 = [v10 objectForKey:{v11, 0, 0, 0, 0, 0, 0, 0, 0}];
+  v13 = [toDictCopy objectForKey:{keyCopy, 0, 0, 0, 0, 0, 0, 0, 0}];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 bytes];
+    bytes = [v13 bytes];
     v16 = networkperfLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v54 = v11;
+      v54 = keyCopy;
       v55 = 2112;
-      v56 = v9;
+      v56 = dictCopy;
       _os_log_impl(&dword_1C85F9000, v16, OS_LOG_TYPE_DEBUG, "rolling up for flow entry %@ data: %@", buf, 0x16u);
     }
   }
@@ -505,139 +505,139 @@ void __76__NetworkPerformanceFeed_usageConsultOn_onlyRelativeToReferencePoint_re
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v54 = v11;
+      v54 = keyCopy;
       v55 = 2112;
-      v56 = v9;
+      v56 = dictCopy;
       _os_log_impl(&dword_1C85F9000, v16, OS_LOG_TYPE_DEBUG, "creating flow entry %@ data: %@", buf, 0x16u);
     }
 
-    v15 = &v52;
+    bytes = &v52;
   }
 
   if (v12)
   {
-    v17 = [v9 objectForKeyedSubscript:@"kind"];
-    v18 = [v17 shortValue];
+    v17 = [dictCopy objectForKeyedSubscript:@"kind"];
+    shortValue = [v17 shortValue];
 
-    if (v18)
+    if (shortValue)
     {
-      v15[3] = v15[3] + 1.0;
-      v19 = [v9 objectForKeyedSubscript:@"txPackets"];
+      bytes[3] = bytes[3] + 1.0;
+      v19 = [dictCopy objectForKeyedSubscript:@"txPackets"];
       [v19 doubleValue];
-      *(v15 + 4) = v20;
+      *(bytes + 4) = v20;
 
-      v21 = [v9 objectForKeyedSubscript:@"txReTxPackets"];
+      v21 = [dictCopy objectForKeyedSubscript:@"txReTxPackets"];
       [v21 doubleValue];
-      *(v15 + 5) = v22;
+      *(bytes + 5) = v22;
 
-      v23 = [v9 objectForKeyedSubscript:@"txFailPackets"];
-      [v23 doubleValue];
-      *(v15 + 6) = v24;
+      date = [dictCopy objectForKeyedSubscript:@"txFailPackets"];
+      [date doubleValue];
+      *(bytes + 6) = v24;
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DF00] date];
-      v40 = [v9 objectForKeyedSubscript:@"connSuccesses"];
+      date = [MEMORY[0x1E695DF00] date];
+      v40 = [dictCopy objectForKeyedSubscript:@"connSuccesses"];
       [v40 doubleValue];
-      v15[1] = v41 + v15[1];
+      bytes[1] = v41 + bytes[1];
 
-      v42 = [v9 objectForKeyedSubscript:@"connAttempts"];
+      v42 = [dictCopy objectForKeyedSubscript:@"connAttempts"];
       [v42 doubleValue];
-      v15[2] = v43 + v15[2];
+      bytes[2] = v43 + bytes[2];
 
-      v44 = [v9 objectForKeyedSubscript:@"timeStamp"];
+      v44 = [dictCopy objectForKeyedSubscript:@"timeStamp"];
 
       if (v44)
       {
-        v45 = [v9 objectForKeyedSubscript:@"timeStamp"];
-        [v23 timeIntervalSinceDate:v45];
-        *v15 = v46 + *v15;
+        v45 = [dictCopy objectForKeyedSubscript:@"timeStamp"];
+        [date timeIntervalSinceDate:v45];
+        *bytes = v46 + *bytes;
       }
 
-      v47 = [v9 objectForKeyedSubscript:@"usecsEstabTime"];
+      v47 = [dictCopy objectForKeyedSubscript:@"usecsEstabTime"];
       [v47 doubleValue];
-      v15[7] = v48 + v15[7];
+      bytes[7] = v48 + bytes[7];
     }
   }
 
   else
   {
-    v25 = [v9 objectForKeyedSubscript:@"connSuccesses"];
+    v25 = [dictCopy objectForKeyedSubscript:@"connSuccesses"];
     [v25 doubleValue];
-    v15[1] = v26 + v15[1];
+    bytes[1] = v26 + bytes[1];
 
-    v27 = [v9 objectForKeyedSubscript:@"connAttempts"];
+    v27 = [dictCopy objectForKeyedSubscript:@"connAttempts"];
     [v27 doubleValue];
-    v15[2] = v28 + v15[2];
+    bytes[2] = v28 + bytes[2];
 
-    v29 = [v9 objectForKeyedSubscript:@"timesThresholded"];
+    v29 = [dictCopy objectForKeyedSubscript:@"timesThresholded"];
     [v29 doubleValue];
-    v15[3] = v30 + v15[3];
+    bytes[3] = v30 + bytes[3];
 
-    v31 = [v9 objectForKeyedSubscript:@"overallTime"];
+    v31 = [dictCopy objectForKeyedSubscript:@"overallTime"];
     [v31 doubleValue];
-    *v15 = v32 + *v15;
+    *bytes = v32 + *bytes;
 
-    v33 = [v9 objectForKeyedSubscript:@"txPackets"];
+    v33 = [dictCopy objectForKeyedSubscript:@"txPackets"];
     [v33 doubleValue];
-    v15[4] = v34 + v15[4];
+    bytes[4] = v34 + bytes[4];
 
-    v35 = [v9 objectForKeyedSubscript:@"txReTxPackets"];
+    v35 = [dictCopy objectForKeyedSubscript:@"txReTxPackets"];
     [v35 doubleValue];
-    v15[5] = v36 + v15[5];
+    bytes[5] = v36 + bytes[5];
 
-    v37 = [v9 objectForKeyedSubscript:@"txFailPackets"];
+    v37 = [dictCopy objectForKeyedSubscript:@"txFailPackets"];
     [v37 doubleValue];
-    v15[6] = v38 + v15[6];
+    bytes[6] = v38 + bytes[6];
 
-    v23 = [v9 objectForKeyedSubscript:@"usecsEstabTime"];
-    [v23 doubleValue];
-    v15[7] = v39 + v15[7];
+    date = [dictCopy objectForKeyedSubscript:@"usecsEstabTime"];
+    [date doubleValue];
+    bytes[7] = v39 + bytes[7];
   }
 
   if (!v14)
   {
     v49 = [MEMORY[0x1E695DEF0] dataWithBytes:&v52 length:64];
-    [v10 setObject:v49 forKey:v11];
+    [toDictCopy setObject:v49 forKey:keyCopy];
   }
 
   v50 = *MEMORY[0x1E69E9840];
   return v14 == 0;
 }
 
-- (id)_flowMetricsPresentationFromRoll:(id)a3 source:(flow_stats_stuct *)a4
+- (id)_flowMetricsPresentationFromRoll:(id)roll source:(flow_stats_stuct *)source
 {
-  var1 = a4->var1;
+  var1 = source->var1;
   if (var1 > 1.0)
   {
-    a4->var7 = a4->var7 / var1;
+    source->var7 = source->var7 / var1;
   }
 
   v19 = MEMORY[0x1E695DF20];
   v6 = MEMORY[0x1E696AD98];
-  var0 = a4->var0;
-  v18 = a3;
+  var0 = source->var0;
+  rollCopy = roll;
   v17 = [v6 numberWithDouble:var0];
-  v16 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var1];
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var2];
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var3];
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var4];
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var5];
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var6];
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var7];
-  v13 = [v19 dictionaryWithObjectsAndKeys:{v18, @"remoteID", v17, @"overallTime", v16, @"connSuccesses", v15, @"connAttempts", v8, @"timesThresholded", v9, @"txPackets", v10, @"txReTxPackets", v11, @"txFailPackets", v12, @"usecsEstabTime", 0}];
+  v16 = [MEMORY[0x1E696AD98] numberWithDouble:source->var1];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:source->var2];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:source->var3];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:source->var4];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:source->var5];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:source->var6];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:source->var7];
+  v13 = [v19 dictionaryWithObjectsAndKeys:{rollCopy, @"remoteID", v17, @"overallTime", v16, @"connSuccesses", v15, @"connAttempts", v8, @"timesThresholded", v9, @"txPackets", v10, @"txReTxPackets", v11, @"txFailPackets", v12, @"usecsEstabTime", 0}];
 
   return v13;
 }
 
-- (BOOL)_rollRouteMetricsValuesFromDict:(id)a3 toDict:(id)a4 forKey:(id)a5
+- (BOOL)_rollRouteMetricsValuesFromDict:(id)dict toDict:(id)toDict forKey:(id)key
 {
   v95 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectForKeyedSubscript:@"overallStay"];
+  dictCopy = dict;
+  toDictCopy = toDict;
+  keyCopy = key;
+  v10 = [dictCopy objectForKeyedSubscript:@"overallStay"];
   [v10 doubleValue];
   v12 = v11;
 
@@ -653,20 +653,20 @@ void __76__NetworkPerformanceFeed_usageConsultOn_onlyRelativeToReferencePoint_re
     v87 = 0u;
     v88 = 0u;
     memset(v86, 0, sizeof(v86));
-    v14 = [v8 objectForKey:v9];
+    v14 = [toDictCopy objectForKey:keyCopy];
     v15 = v14;
     v84 = v14 == 0;
-    v85 = v8;
+    v85 = toDictCopy;
     if (v14)
     {
-      v16 = [v14 bytes];
+      bytes = [v14 bytes];
       v17 = networkperfLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v92 = v9;
+        v92 = keyCopy;
         v93 = 2112;
-        v94 = v7;
+        v94 = dictCopy;
         _os_log_impl(&dword_1C85F9000, v17, OS_LOG_TYPE_DEBUG, "rolling up for route entry %@ data: %@", buf, 0x16u);
       }
     }
@@ -678,175 +678,175 @@ void __76__NetworkPerformanceFeed_usageConsultOn_onlyRelativeToReferencePoint_re
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v92 = v9;
+        v92 = keyCopy;
         v93 = 2112;
-        v94 = v7;
+        v94 = dictCopy;
         _os_log_impl(&dword_1C85F9000, v17, OS_LOG_TYPE_DEBUG, "creating route entry %@ data: %@", buf, 0x16u);
       }
 
-      v16 = v86;
+      bytes = v86;
     }
 
-    v18 = [v7 objectForKeyedSubscript:@"epochs"];
+    v18 = [dictCopy objectForKeyedSubscript:@"epochs"];
     [v18 doubleValue];
-    *v16 = v19 + *v16;
+    *bytes = v19 + *bytes;
 
-    v20 = [v7 objectForKeyedSubscript:@"faultyStay"];
+    v20 = [dictCopy objectForKeyedSubscript:@"faultyStay"];
     [v20 doubleValue];
-    v16[1] = v21 + v16[1];
+    bytes[1] = v21 + bytes[1];
 
-    v22 = [v7 objectForKeyedSubscript:@"lowqStay"];
+    v22 = [dictCopy objectForKeyedSubscript:@"lowqStay"];
     [v22 doubleValue];
-    v16[3] = v23 + v16[3];
+    bytes[3] = v23 + bytes[3];
 
-    v24 = [v7 objectForKeyedSubscript:@"overallStay"];
+    v24 = [dictCopy objectForKeyedSubscript:@"overallStay"];
     [v24 doubleValue];
-    v16[6] = v25 + v16[6];
+    bytes[6] = v25 + bytes[6];
 
-    v26 = [v7 objectForKeyedSubscript:@"packetsIn"];
+    v26 = [dictCopy objectForKeyedSubscript:@"packetsIn"];
     [v26 doubleValue];
-    v16[7] = v27 + v16[7];
+    bytes[7] = v27 + bytes[7];
 
-    v28 = [v7 objectForKeyedSubscript:@"packetsOut"];
+    v28 = [dictCopy objectForKeyedSubscript:@"packetsOut"];
     [v28 doubleValue];
-    v16[8] = v29 + v16[8];
+    bytes[8] = v29 + bytes[8];
 
-    v30 = [v7 objectForKeyedSubscript:@"bytesIn"];
+    v30 = [dictCopy objectForKeyedSubscript:@"bytesIn"];
     [v30 doubleValue];
-    v16[9] = v31 + v16[9];
+    bytes[9] = v31 + bytes[9];
 
-    v32 = [v7 objectForKeyedSubscript:@"bytesOut"];
+    v32 = [dictCopy objectForKeyedSubscript:@"bytesOut"];
     [v32 doubleValue];
-    v16[10] = v33 + v16[10];
+    bytes[10] = v33 + bytes[10];
 
-    v34 = [v7 objectForKeyedSubscript:@"rxDupeBytes"];
+    v34 = [dictCopy objectForKeyedSubscript:@"rxDupeBytes"];
     [v34 doubleValue];
-    v16[11] = v35 + v16[11];
+    bytes[11] = v35 + bytes[11];
 
-    v36 = [v7 objectForKeyedSubscript:@"rxOOOBytes"];
+    v36 = [dictCopy objectForKeyedSubscript:@"rxOOOBytes"];
     [v36 doubleValue];
-    v16[12] = v37 + v16[12];
+    bytes[12] = v37 + bytes[12];
 
-    v38 = [v7 objectForKeyedSubscript:@"reTxBytes"];
+    v38 = [dictCopy objectForKeyedSubscript:@"reTxBytes"];
     [v38 doubleValue];
-    v16[13] = v39 + v16[13];
+    bytes[13] = v39 + bytes[13];
 
-    v40 = [v7 objectForKeyedSubscript:@"connSuccesses"];
+    v40 = [dictCopy objectForKeyedSubscript:@"connSuccesses"];
     [v40 doubleValue];
-    v16[15] = v41 + v16[15];
+    bytes[15] = v41 + bytes[15];
 
-    v42 = [v7 objectForKeyedSubscript:@"connAttempts"];
+    v42 = [dictCopy objectForKeyedSubscript:@"connAttempts"];
     [v42 doubleValue];
-    v16[14] = v43 + v16[14];
+    bytes[14] = v43 + bytes[14];
 
-    v44 = [v7 objectForKeyedSubscript:@"rttMin"];
+    v44 = [dictCopy objectForKeyedSubscript:@"rttMin"];
     [v44 doubleValue];
     if (v45 == 0.0)
     {
-      v48 = v16[16];
+      v48 = bytes[16];
     }
 
     else
     {
-      v46 = [v7 objectForKeyedSubscript:@"rttMin"];
+      v46 = [dictCopy objectForKeyedSubscript:@"rttMin"];
       [v46 doubleValue];
       v48 = v47;
     }
 
-    v49 = v16[16];
+    v49 = bytes[16];
     if (v48 < v49)
     {
       v49 = v48;
     }
 
-    v16[16] = v49;
-    v50 = [v7 objectForKeyedSubscript:@"topDownloadRate"];
+    bytes[16] = v49;
+    v50 = [dictCopy objectForKeyedSubscript:@"topDownloadRate"];
     [v50 doubleValue];
     v52 = v51;
 
-    v53 = v16[19];
+    v53 = bytes[19];
     if (v52 >= v53)
     {
       v53 = v52;
     }
 
-    v16[19] = v53;
-    v54 = [v7 objectForKeyedSubscript:@"dataStalls"];
-    v55 = [MEMORY[0x1E695DFB0] null];
+    bytes[19] = v53;
+    v54 = [dictCopy objectForKeyedSubscript:@"dataStalls"];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v54 != v55)
+    if (v54 != null)
     {
       [v54 doubleValue];
-      v16[20] = v56 + v16[20];
+      bytes[20] = v56 + bytes[20];
     }
 
-    v57 = [v7 objectForKeyedSubscript:@"certErrors"];
-    v58 = [MEMORY[0x1E695DFB0] null];
+    v57 = [dictCopy objectForKeyedSubscript:@"certErrors"];
+    null2 = [MEMORY[0x1E695DFB0] null];
 
-    if (v57 != v58)
+    if (v57 != null2)
     {
       [v57 doubleValue];
-      v16[23] = v59 + v16[23];
+      bytes[23] = v59 + bytes[23];
     }
 
-    v60 = [v7 objectForKeyedSubscript:@"adminDisables"];
-    v61 = [MEMORY[0x1E695DFB0] null];
+    v60 = [dictCopy objectForKeyedSubscript:@"adminDisables"];
+    null3 = [MEMORY[0x1E695DFB0] null];
 
-    if (v60 != v61)
+    if (v60 != null3)
     {
       [v60 doubleValue];
-      v16[21] = v62 + v16[21];
+      bytes[21] = v62 + bytes[21];
     }
 
     v83 = v15;
-    v63 = [v7 objectForKeyedSubscript:@"passiveCaptivity"];
-    v64 = [MEMORY[0x1E695DFB0] null];
+    v63 = [dictCopy objectForKeyedSubscript:@"passiveCaptivity"];
+    null4 = [MEMORY[0x1E695DFB0] null];
 
-    if (v63 != v64)
+    if (v63 != null4)
     {
       [v63 doubleValue];
-      v16[22] = v65 + v16[22];
+      bytes[22] = v65 + bytes[22];
     }
 
     v82 = v63;
-    v66 = [v7 objectForKeyedSubscript:@"lowLqmStay"];
-    v67 = [MEMORY[0x1E695DFB0] null];
-    v68 = v67;
-    if (v66 == v67)
+    v66 = [dictCopy objectForKeyedSubscript:@"lowLqmStay"];
+    null5 = [MEMORY[0x1E695DFB0] null];
+    v68 = null5;
+    if (v66 == null5)
     {
     }
 
     else
     {
-      [v7 objectForKeyedSubscript:?];
+      [dictCopy objectForKeyedSubscript:?];
       v69 = v60;
       v70 = v57;
       v72 = v71 = v54;
-      v73 = [MEMORY[0x1E695DFB0] null];
+      null6 = [MEMORY[0x1E695DFB0] null];
 
-      v74 = v72 == v73;
+      v74 = v72 == null6;
       v54 = v71;
       v57 = v70;
       v60 = v69;
       if (!v74)
       {
-        v75 = [v7 objectForKeyedSubscript:@"lowLqmStay"];
+        v75 = [dictCopy objectForKeyedSubscript:@"lowLqmStay"];
         [v75 doubleValue];
-        v16[2] = v76 + v16[2];
+        bytes[2] = v76 + bytes[2];
 
-        v77 = [v7 objectForKeyedSubscript:@"lqmTransitionCount"];
+        v77 = [dictCopy objectForKeyedSubscript:@"lqmTransitionCount"];
         [v77 doubleValue];
-        v16[4] = v78 + v16[4];
+        bytes[4] = v78 + bytes[4];
 
-        v16[5] = v16[4] * 100.0 / v16[6];
+        bytes[5] = bytes[4] * 100.0 / bytes[6];
       }
     }
 
-    v8 = v85;
+    toDictCopy = v85;
     if (!v83)
     {
       v79 = [MEMORY[0x1E695DEF0] dataWithBytes:v86 length:192];
-      [v85 setObject:v79 forKey:v9];
+      [v85 setObject:v79 forKey:keyCopy];
     }
 
     v13 = v84;
@@ -856,56 +856,56 @@ void __76__NetworkPerformanceFeed_usageConsultOn_onlyRelativeToReferencePoint_re
   return v13;
 }
 
-- (id)_routeMetricsPresentationFromRoll:(id)a3 source:(route_stats_stuct *)a4 since:(id)a5 isKnownGood:(id)a6 isLowInternetDL:(id)a7 isLowInternetUL:(id)a8 isHotSpot:(id)a9 rpmAverage:(id)a10 rpmCount:(id)a11 rpmVariance:(id)a12 rpmExitAverage:(id)a13 rpmExitCount:(id)a14 rpmExitVariance:(id)a15
+- (id)_routeMetricsPresentationFromRoll:(id)roll source:(route_stats_stuct *)source since:(id)since isKnownGood:(id)good isLowInternetDL:(id)l isLowInternetUL:(id)uL isHotSpot:(id)spot rpmAverage:(id)self0 rpmCount:(id)self1 rpmVariance:(id)self2 rpmExitAverage:(id)self3 rpmExitCount:(id)self4 rpmExitVariance:(id)self5
 {
   v32 = MEMORY[0x1E695DF20];
   v52 = MEMORY[0x1E696AD98];
-  var0 = a4->var0;
-  v30 = a15;
-  v19 = a14;
-  v29 = a13;
-  v28 = a12;
-  v26 = a11;
-  v20 = a10;
-  v21 = a9;
-  v27 = a8;
-  v41 = a7;
-  v48 = a6;
-  v49 = a5;
-  v31 = a3;
+  var0 = source->var0;
+  exitVarianceCopy = exitVariance;
+  exitCountCopy = exitCount;
+  exitAverageCopy = exitAverage;
+  varianceCopy = variance;
+  countCopy = count;
+  averageCopy = average;
+  spotCopy = spot;
+  uLCopy = uL;
+  lCopy = l;
+  goodCopy = good;
+  sinceCopy = since;
+  rollCopy = roll;
   v59 = [v52 numberWithDouble:var0];
-  v57 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var1];
-  v55 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var2];
-  v53 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var3];
-  v51 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var4];
-  v50 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var5];
-  v47 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var6];
-  v46 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var7];
-  v45 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var8];
-  v44 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var9];
-  v43 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var10];
-  v42 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var11];
-  v40 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var12];
-  v39 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var13];
-  v38 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var15];
-  v37 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var14];
-  v36 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var16];
-  v35 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var19];
-  v34 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var20];
-  v25 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var21];
-  v22 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var22];
-  v24 = [MEMORY[0x1E696AD98] numberWithDouble:a4->var23];
-  v33 = [v32 dictionaryWithObjectsAndKeys:{v31, @"identifier", v59, @"epochs", v57, @"faultyStay", v55, @"lowLqmStay", v53, @"lowqStay", v51, @"lqmTransitionCount", v50, @"lqmTransitionRate", v47, @"overallStay", v46, @"packetsIn", v45, @"packetsOut", v44, @"bytesIn", v43, @"bytesOut", v42, @"rxDupeBytes", v40, @"rxOOOBytes", v39, @"reTxBytes", v38, @"connSuccesses", v37, @"connAttempts", v36, @"rttMin", v35, @"topDownloadRate", v34, @"dataStalls", v25, @"adminDisables", v22, @"passiveCaptivity", v24, @"certErrors", v49, @"sinceTime", v48, @"isKnownGood", v41, @"isLowInternetDL", v27, @"isLowInternetUL", v21, @"isHotSpot", v20, @"rpmAvg", v26, @"rpmCount", v28}];
+  v57 = [MEMORY[0x1E696AD98] numberWithDouble:source->var1];
+  v55 = [MEMORY[0x1E696AD98] numberWithDouble:source->var2];
+  v53 = [MEMORY[0x1E696AD98] numberWithDouble:source->var3];
+  v51 = [MEMORY[0x1E696AD98] numberWithDouble:source->var4];
+  v50 = [MEMORY[0x1E696AD98] numberWithDouble:source->var5];
+  v47 = [MEMORY[0x1E696AD98] numberWithDouble:source->var6];
+  v46 = [MEMORY[0x1E696AD98] numberWithDouble:source->var7];
+  v45 = [MEMORY[0x1E696AD98] numberWithDouble:source->var8];
+  v44 = [MEMORY[0x1E696AD98] numberWithDouble:source->var9];
+  v43 = [MEMORY[0x1E696AD98] numberWithDouble:source->var10];
+  v42 = [MEMORY[0x1E696AD98] numberWithDouble:source->var11];
+  v40 = [MEMORY[0x1E696AD98] numberWithDouble:source->var12];
+  v39 = [MEMORY[0x1E696AD98] numberWithDouble:source->var13];
+  v38 = [MEMORY[0x1E696AD98] numberWithDouble:source->var15];
+  v37 = [MEMORY[0x1E696AD98] numberWithDouble:source->var14];
+  v36 = [MEMORY[0x1E696AD98] numberWithDouble:source->var16];
+  v35 = [MEMORY[0x1E696AD98] numberWithDouble:source->var19];
+  v34 = [MEMORY[0x1E696AD98] numberWithDouble:source->var20];
+  v25 = [MEMORY[0x1E696AD98] numberWithDouble:source->var21];
+  v22 = [MEMORY[0x1E696AD98] numberWithDouble:source->var22];
+  v24 = [MEMORY[0x1E696AD98] numberWithDouble:source->var23];
+  v33 = [v32 dictionaryWithObjectsAndKeys:{rollCopy, @"identifier", v59, @"epochs", v57, @"faultyStay", v55, @"lowLqmStay", v53, @"lowqStay", v51, @"lqmTransitionCount", v50, @"lqmTransitionRate", v47, @"overallStay", v46, @"packetsIn", v45, @"packetsOut", v44, @"bytesIn", v43, @"bytesOut", v42, @"rxDupeBytes", v40, @"rxOOOBytes", v39, @"reTxBytes", v38, @"connSuccesses", v37, @"connAttempts", v36, @"rttMin", v35, @"topDownloadRate", v34, @"dataStalls", v25, @"adminDisables", v22, @"passiveCaptivity", v24, @"certErrors", sinceCopy, @"sinceTime", goodCopy, @"isKnownGood", lCopy, @"isLowInternetDL", uLCopy, @"isLowInternetUL", spotCopy, @"isHotSpot", averageCopy, @"rpmAvg", countCopy, @"rpmCount", varianceCopy}];
 
   return v33;
 }
 
-- (id)_formatInstantRouteMetrics:(id)a3
+- (id)_formatInstantRouteMetrics:(id)metrics
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  metricsCopy = metrics;
+  if ([metricsCopy count] == 1)
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [metricsCopy objectAtIndexedSubscript:0];
     v5 = [v4 mutableCopy];
 
     v6 = [v5 objectForKeyedSubscript:@"timeStamp"];
@@ -926,14 +926,14 @@ void __76__NetworkPerformanceFeed_usageConsultOn_onlyRelativeToReferencePoint_re
   return v5;
 }
 
-- (id)_normalizedOpts:(id)a3 toNetwork:(int)a4
+- (id)_normalizedOpts:(id)opts toNetwork:(int)network
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ((a4 - 1) <= 2 && (v6 = **(&unk_1E8318E08 + (a4 - 1))) != 0)
+  optsCopy = opts;
+  if ((network - 1) <= 2 && (v6 = **(&unk_1E8318E08 + (network - 1))) != 0)
   {
     v7 = v6;
-    v8 = [v5 mutableCopy];
+    v8 = [optsCopy mutableCopy];
     v9 = [v8 allKeysForObject:*MEMORY[0x1E69D52B0]];
     v26 = 0u;
     v27 = 0u;
@@ -2356,11 +2356,11 @@ void __57__NetworkPerformanceFeed_fullScorecardFor_options_reply___block_invoke_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_formatWatchpointHit:(id)a3
+- (id)_formatWatchpointHit:(id)hit
 {
-  v3 = [a3 lastObject];
-  v4 = v3;
-  if (v3 && ([v3 objectForKeyedSubscript:@"kind"], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "shortValue"), v5, v6 == 1))
+  lastObject = [hit lastObject];
+  v4 = lastObject;
+  if (lastObject && ([lastObject objectForKeyedSubscript:@"kind"], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "shortValue"), v5, v6 == 1))
   {
     v7 = MEMORY[0x1E695DF20];
     v8 = [v4 objectForKeyedSubscript:@"txPackets"];
@@ -2378,51 +2378,51 @@ void __57__NetworkPerformanceFeed_fullScorecardFor_options_reply___block_invoke_
   return v12;
 }
 
-- (BOOL)watchpointOn:(int)a3 forIdentifier:(id)a4 andKey:(id)a5 onThreshold:(double)a6 withOptions:(id)a7 uponHit:(id)a8
+- (BOOL)watchpointOn:(int)on forIdentifier:(id)identifier andKey:(id)key onThreshold:(double)threshold withOptions:(id)options uponHit:(id)hit
 {
   v60 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  identifierCopy = identifier;
+  keyCopy = key;
+  optionsCopy = options;
+  hitCopy = hit;
   v18 = networkperfLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v19 = MEMORY[0x1CCA78840](v17);
+    v19 = MEMORY[0x1CCA78840](hitCopy);
     *buf = 67110402;
-    *v53 = a3;
+    *v53 = on;
     *&v53[4] = 2112;
-    *&v53[6] = v14;
+    *&v53[6] = identifierCopy;
     *&v53[14] = 2112;
-    *&v53[16] = v15;
+    *&v53[16] = keyCopy;
     v54 = 2048;
-    v55 = a6;
+    thresholdCopy = threshold;
     v56 = 2112;
-    v57 = v16;
+    v57 = optionsCopy;
     v58 = 2048;
     v59 = v19;
     _os_log_impl(&dword_1C85F9000, v18, OS_LOG_TYPE_DEBUG, "> watchpointOn:%d forIdentifier:%@ andKey:%@ onThreshold:%.2lf withOptions:%@ uponHit:%p", buf, 0x3Au);
   }
 
   v20 = 0;
-  if (v14 && a6 != 0.0)
+  if (identifierCopy && threshold != 0.0)
   {
-    v21 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
 
-    if (v21)
+    if (connection)
     {
       v22 = *MEMORY[0x1E69D52C8];
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{*MEMORY[0x1E69D52D0], *MEMORY[0x1E69D52C8], 0}];
-      if (v16 && ([v16 isEqualToDictionary:v23] & 1) != 0)
+      if (optionsCopy && ([optionsCopy isEqualToDictionary:v23] & 1) != 0)
       {
-        v24 = [(AnalyticsWorkspace *)self->workspace connection];
+        connection2 = [(AnalyticsWorkspace *)self->workspace connection];
         v47[0] = MEMORY[0x1E69E9820];
         v47[1] = 3221225472;
         v47[2] = __92__NetworkPerformanceFeed_watchpointOn_forIdentifier_andKey_onThreshold_withOptions_uponHit___block_invoke_2;
         v47[3] = &unk_1E8318D20;
-        v42 = v17;
+        v42 = hitCopy;
         v48 = v42;
-        v25 = [v24 remoteObjectProxyWithErrorHandler:v47];
+        v25 = [connection2 remoteObjectProxyWithErrorHandler:v47];
 
         v20 = v25 != 0;
         if (v25)
@@ -2430,12 +2430,12 @@ void __57__NetworkPerformanceFeed_fullScorecardFor_options_reply___block_invoke_
           v40 = v25;
           v41 = v23;
           v38 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
-          v39 = [v16 objectForKeyedSubscript:v22];
-          v37 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ AND %K == %@", @"tmpID", v14, v22, v39];
+          v39 = [optionsCopy objectForKeyedSubscript:v22];
+          v37 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ AND %K == %@", @"tmpID", identifierCopy, v22, v39];
           v26 = MEMORY[0x1E695DF20];
           v27 = *MEMORY[0x1E69D53D0];
-          v28 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-          v29 = [v26 dictionaryWithObjectsAndKeys:{v14, v27, v28, *MEMORY[0x1E69D53D8], v15, *MEMORY[0x1E69D53C8], *MEMORY[0x1E69D52C0], *MEMORY[0x1E69D52C0], 0}];
+          v28 = [MEMORY[0x1E696AD98] numberWithDouble:threshold];
+          v29 = [v26 dictionaryWithObjectsAndKeys:{identifierCopy, v27, v28, *MEMORY[0x1E69D53D8], keyCopy, *MEMORY[0x1E69D53C8], *MEMORY[0x1E69D52C0], *MEMORY[0x1E69D52C0], 0}];
 
           v30 = networkperfLogHandle();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -2447,17 +2447,17 @@ void __57__NetworkPerformanceFeed_fullScorecardFor_options_reply___block_invoke_
             _os_log_impl(&dword_1C85F9000, v30, OS_LOG_TYPE_DEBUG, "performQueryOnEntity:SFLiveFlowPerf pred:%@ sort:nil actions:%@", buf, 0x16u);
           }
 
-          v31 = [MEMORY[0x1E69D5180] entityName];
+          entityName = [MEMORY[0x1E69D5180] entityName];
           v43[0] = MEMORY[0x1E69E9820];
           v43[1] = 3221225472;
           v43[2] = __92__NetworkPerformanceFeed_watchpointOn_forIdentifier_andKey_onThreshold_withOptions_uponHit___block_invoke_207;
           v43[3] = &unk_1E8318D48;
           v43[4] = self;
           v44 = v38;
-          v45 = v14;
+          v45 = identifierCopy;
           v46 = v42;
           v32 = v38;
-          [v40 performQueryOnEntity:v31 pred:v37 sort:0 actions:v29 reply:v43];
+          [v40 performQueryOnEntity:entityName pred:v37 sort:0 actions:v29 reply:v43];
 
           v25 = v40;
           v23 = v41;
@@ -2476,7 +2476,7 @@ void __57__NetworkPerformanceFeed_fullScorecardFor_options_reply___block_invoke_
           block[1] = 3221225472;
           block[2] = __92__NetworkPerformanceFeed_watchpointOn_forIdentifier_andKey_onThreshold_withOptions_uponHit___block_invoke;
           block[3] = &unk_1E8318A00;
-          v51 = v17;
+          v51 = hitCopy;
           v33 = v33;
           v50 = v33;
           dispatch_async(callerQueue, block);
@@ -2484,7 +2484,7 @@ void __57__NetworkPerformanceFeed_fullScorecardFor_options_reply___block_invoke_
 
         else
         {
-          (*(v17 + 2))(v17, 0, v33);
+          (*(hitCopy + 2))(hitCopy, 0, v33);
         }
 
         v20 = 1;
@@ -2599,40 +2599,40 @@ uint64_t __92__NetworkPerformanceFeed_watchpointOn_forIdentifier_andKey_onThresh
   return (*(v2 + 16))(v2, v3);
 }
 
-- (BOOL)resetDataForKeys:(id)a3 reply:(id)a4
+- (BOOL)resetDataForKeys:(id)keys reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  replyCopy = reply;
   v8 = networkperfLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v23 = v6;
+    v23 = keysCopy;
     v24 = 2048;
     v25 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> resetDataForKeys:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(AnalyticsWorkspace *)self->workspace connection];
+  connection = [(AnalyticsWorkspace *)self->workspace connection];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __49__NetworkPerformanceFeed_resetDataForKeys_reply___block_invoke;
   v20[3] = &unk_1E8318D20;
-  v11 = v7;
+  v11 = replyCopy;
   v21 = v11;
-  v12 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v20];
+  v12 = [connection synchronousRemoteObjectProxyWithErrorHandler:v20];
 
   if (v12)
   {
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{*MEMORY[0x1E69D5380], 0}];
-    v14 = [v6 allObjects];
+    allObjects = [keysCopy allObjects];
     v15 = networkperfLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v23 = v14;
+      v23 = allObjects;
       v24 = 2112;
       v25 = v13;
       _os_log_impl(&dword_1C85F9000, v15, OS_LOG_TYPE_DEBUG, "resetDataFor:%@ nameKind:nil inScopes:%@", buf, 0x16u);
@@ -2643,7 +2643,7 @@ uint64_t __92__NetworkPerformanceFeed_watchpointOn_forIdentifier_andKey_onThresh
     v18[2] = __49__NetworkPerformanceFeed_resetDataForKeys_reply___block_invoke_209;
     v18[3] = &unk_1E8318D70;
     v19 = v11;
-    [v12 resetDataFor:v14 nameKind:0 inScopes:v13 reply:v18];
+    [v12 resetDataFor:allObjects nameKind:0 inScopes:v13 reply:v18];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -2682,32 +2682,32 @@ uint64_t __49__NetworkPerformanceFeed_resetDataForKeys_reply___block_invoke_209(
   return result;
 }
 
-- (BOOL)getPreferCellOverWiFiWithOptions:(id)a3 reply:(id)a4
+- (BOOL)getPreferCellOverWiFiWithOptions:(id)options reply:(id)reply
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   v8 = networkperfLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v21 = v6;
+    v21 = optionsCopy;
     v22 = 2048;
     v23 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> getPreferCellOverWiFiWithOptions:%@ reply:%p", buf, 0x16u);
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    v10 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __65__NetworkPerformanceFeed_getPreferCellOverWiFiWithOptions_reply___block_invoke;
     v18[3] = &unk_1E8318D20;
-    v11 = v7;
+    v11 = replyCopy;
     v19 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v18];
+    v12 = [connection remoteObjectProxyWithErrorHandler:v18];
 
     if (v12)
     {
@@ -2715,7 +2715,7 @@ uint64_t __49__NetworkPerformanceFeed_resetDataForKeys_reply___block_invoke_209(
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v21 = v6;
+        v21 = optionsCopy;
         _os_log_impl(&dword_1C85F9000, v13, OS_LOG_TYPE_DEBUG, "getPreferCellOverWiFiWithOptions:%@", buf, 0xCu);
       }
 
@@ -2724,12 +2724,12 @@ uint64_t __49__NetworkPerformanceFeed_resetDataForKeys_reply___block_invoke_209(
       v16[2] = __65__NetworkPerformanceFeed_getPreferCellOverWiFiWithOptions_reply___block_invoke_211;
       v16[3] = &unk_1E8318D98;
       v17 = v11;
-      [v12 getPreferCellOverWiFiWithOptions:v6 reply:v16];
+      [v12 getPreferCellOverWiFiWithOptions:optionsCopy reply:v16];
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v7 != 0;
+  return replyCopy != 0;
 }
 
 void __65__NetworkPerformanceFeed_getPreferCellOverWiFiWithOptions_reply___block_invoke(uint64_t a1, void *a2)
@@ -2767,32 +2767,32 @@ void __65__NetworkPerformanceFeed_getPreferCellOverWiFiWithOptions_reply___block
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setPreferCellOverWiFiWithOptions:(id)a3 reply:(id)a4
+- (BOOL)setPreferCellOverWiFiWithOptions:(id)options reply:(id)reply
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   v8 = networkperfLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v21 = v6;
+    v21 = optionsCopy;
     v22 = 2048;
     v23 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> setPreferCellOverWiFiWithOptions:%@ reply:%p", buf, 0x16u);
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    v10 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __65__NetworkPerformanceFeed_setPreferCellOverWiFiWithOptions_reply___block_invoke;
     v18[3] = &unk_1E8318D20;
-    v11 = v7;
+    v11 = replyCopy;
     v19 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v18];
+    v12 = [connection remoteObjectProxyWithErrorHandler:v18];
 
     if (v12)
     {
@@ -2800,7 +2800,7 @@ void __65__NetworkPerformanceFeed_getPreferCellOverWiFiWithOptions_reply___block
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v21 = v6;
+        v21 = optionsCopy;
         _os_log_impl(&dword_1C85F9000, v13, OS_LOG_TYPE_DEBUG, "setPreferCellOverWiFiWithOptions:%@", buf, 0xCu);
       }
 
@@ -2809,12 +2809,12 @@ void __65__NetworkPerformanceFeed_getPreferCellOverWiFiWithOptions_reply___block
       v16[2] = __65__NetworkPerformanceFeed_setPreferCellOverWiFiWithOptions_reply___block_invoke_213;
       v16[3] = &unk_1E8318D98;
       v17 = v11;
-      [v12 setPreferCellOverWiFiWithOptions:v6 reply:v16];
+      [v12 setPreferCellOverWiFiWithOptions:optionsCopy reply:v16];
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v7 != 0;
+  return replyCopy != 0;
 }
 
 void __65__NetworkPerformanceFeed_setPreferCellOverWiFiWithOptions_reply___block_invoke(uint64_t a1, void *a2)

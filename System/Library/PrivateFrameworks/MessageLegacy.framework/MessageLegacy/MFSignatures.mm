@@ -1,23 +1,23 @@
 @interface MFSignatures
 + (id)sharedInstance;
-+ (id)signatureMarkupFormat:(id)a3;
-+ (id)signaturePlainTextFormat:(id)a3;
-+ (id)stripSignatureMarkup:(id)a3;
++ (id)signatureMarkupFormat:(id)format;
++ (id)signaturePlainTextFormat:(id)format;
++ (id)stripSignatureMarkup:(id)markup;
 - (BOOL)useAccountSignatures;
 - (MFSignatures)init;
-- (id)_getValue:(id)a3;
-- (id)_modelSpecificLocalizedStringKeyForKey:(id)a3;
+- (id)_getValue:(id)value;
+- (id)_modelSpecificLocalizedStringKeyForKey:(id)key;
 - (id)defaultSignature;
 - (id)signature;
-- (id)signatureForAccount:(id)a3;
-- (id)signatureForSendingEmailAddress:(id)a3;
-- (id)signatureMarkupForSendingEmailAddress:(id)a3;
-- (id)signaturePlainTextForSendingEmailAddress:(id)a3;
-- (void)_setValue:(id)a3 value:(void *)a4;
+- (id)signatureForAccount:(id)account;
+- (id)signatureForSendingEmailAddress:(id)address;
+- (id)signatureMarkupForSendingEmailAddress:(id)address;
+- (id)signaturePlainTextForSendingEmailAddress:(id)address;
+- (void)_setValue:(id)value value:(void *)a4;
 - (void)dealloc;
-- (void)setSignature:(id)a3;
-- (void)setSignature:(id)a3 forAccount:(id)a4;
-- (void)setSignature:(id)a3 forEmailAddress:(id)a4;
+- (void)setSignature:(id)signature;
+- (void)setSignature:(id)signature forAccount:(id)account;
+- (void)setSignature:(id)signature forEmailAddress:(id)address;
 @end
 
 @implementation MFSignatures
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __30__MFSignatures_sharedInstance__block_invoke;
   block[3] = &unk_2798B61C0;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -58,7 +58,7 @@ id __30__MFSignatures_sharedInstance__block_invoke(uint64_t a1)
   [(MFSignatures *)&v2 dealloc];
 }
 
-- (id)_modelSpecificLocalizedStringKeyForKey:(id)a3
+- (id)_modelSpecificLocalizedStringKeyForKey:(id)key
 {
   v4 = [objc_msgSend(MGCopyAnswer() "uppercaseString")];
   if ([v4 hasSuffix:@"_SIMULATOR"])
@@ -66,7 +66,7 @@ id __30__MFSignatures_sharedInstance__block_invoke(uint64_t a1)
     v4 = [v4 substringToIndex:{objc_msgSend(v4, "rangeOfString:", @"_SIMULATOR"}];
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", a3, v4];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", key, v4];
 }
 
 - (id)defaultSignature
@@ -90,7 +90,7 @@ id __30__MFSignatures_sharedInstance__block_invoke(uint64_t a1)
   return MFLookupLocalizedString(@"DEFAULT_SIGNATURE_IPHONE", @"Sent from my iPhone", 0);
 }
 
-- (id)_getValue:(id)a3
+- (id)_getValue:(id)value
 {
   MFMobileMailPreferenceDomain();
   v3 = *MEMORY[0x277CBF040];
@@ -101,7 +101,7 @@ id __30__MFSignatures_sharedInstance__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)_setValue:(id)a3 value:(void *)a4
+- (void)_setValue:(id)value value:(void *)a4
 {
   MFMobileMailPreferenceDomain();
   v5 = *MEMORY[0x277CBF040];
@@ -113,7 +113,7 @@ id __30__MFSignatures_sharedInstance__block_invoke(uint64_t a1)
   {
     v7 = *MEMORY[0x277D28668];
 
-    MEMORY[0x282167578](v7, a3);
+    MEMORY[0x282167578](v7, value);
   }
 }
 
@@ -129,17 +129,17 @@ id __30__MFSignatures_sharedInstance__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setSignature:(id)a3
+- (void)setSignature:(id)signature
 {
-  v3 = a3;
-  if ([a3 isEqualToString:{-[MFSignatures defaultSignature](self, "defaultSignature")}])
+  signatureCopy = signature;
+  if ([signature isEqualToString:{-[MFSignatures defaultSignature](self, "defaultSignature")}])
   {
-    v3 = 0;
+    signatureCopy = 0;
   }
 
-  if (([v3 isEqualToString:{-[MFSignatures signature](self, "signature")}] & 1) == 0)
+  if (([signatureCopy isEqualToString:{-[MFSignatures signature](self, "signature")}] & 1) == 0)
   {
-    [(MFSignatures *)self _setValue:@"SignatureKey" value:v3];
+    [(MFSignatures *)self _setValue:@"SignatureKey" value:signatureCopy];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mail.MailAccountSignaturesChanged", 0, 0, 0);
@@ -153,11 +153,11 @@ id __30__MFSignatures_sharedInstance__block_invoke(uint64_t a1)
   return [v2 BOOLValue];
 }
 
-- (id)signatureForAccount:(id)a3
+- (id)signatureForAccount:(id)account
 {
-  if (a3)
+  if (account)
   {
-    return [a3 customSignature];
+    return [account customSignature];
   }
 
   else
@@ -166,38 +166,38 @@ id __30__MFSignatures_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSignature:(id)a3 forAccount:(id)a4
+- (void)setSignature:(id)signature forAccount:(id)account
 {
-  v5 = a3;
-  if ([a3 isEqualToString:{-[MFSignatures defaultSignature](self, "defaultSignature")}])
+  signatureCopy = signature;
+  if ([signature isEqualToString:{-[MFSignatures defaultSignature](self, "defaultSignature")}])
   {
-    v5 = 0;
+    signatureCopy = 0;
   }
 
-  if (a4 && ([v5 isEqualToString:{-[MFSignatures signatureForAccount:](self, "signatureForAccount:", a4)}] & 1) == 0)
+  if (account && ([signatureCopy isEqualToString:{-[MFSignatures signatureForAccount:](self, "signatureForAccount:", account)}] & 1) == 0)
   {
-    [a4 setCustomSignature:v5];
+    [account setCustomSignature:signatureCopy];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mail.MailAccountSignaturesChanged", 0, 0, 0);
   }
 }
 
-- (id)signatureForSendingEmailAddress:(id)a3
+- (id)signatureForSendingEmailAddress:(id)address
 {
-  if (![a3 length] || (v5 = +[MailAccount accountContainingEmailAddress:](MailAccount, "accountContainingEmailAddress:", a3)) == 0)
+  if (![address length] || (v5 = +[MailAccount accountContainingEmailAddress:](MailAccount, "accountContainingEmailAddress:", address)) == 0)
   {
     v5 = +[MailAccount defaultMailAccountForDelivery];
   }
 
-  if (![(MFSignatures *)self useAccountSignatures]|| (v6 = [(MFSignatures *)self signatureForAccount:v5]) == 0)
+  if (![(MFSignatures *)self useAccountSignatures]|| (signature = [(MFSignatures *)self signatureForAccount:v5]) == 0)
   {
-    v6 = [(MFSignatures *)self signature];
+    signature = [(MFSignatures *)self signature];
   }
 
-  if ([objc_msgSend(MEMORY[0x277D24F18] plainTextFromHTMLSnippet:{v6), "length"}])
+  if ([objc_msgSend(MEMORY[0x277D24F18] plainTextFromHTMLSnippet:{signature), "length"}])
   {
-    return v6;
+    return signature;
   }
 
   else
@@ -206,68 +206,68 @@ id __30__MFSignatures_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSignature:(id)a3 forEmailAddress:(id)a4
+- (void)setSignature:(id)signature forEmailAddress:(id)address
 {
-  if (![a4 length] || (v7 = +[MailAccount accountContainingEmailAddress:](MailAccount, "accountContainingEmailAddress:", a4)) == 0)
+  if (![address length] || (v7 = +[MailAccount accountContainingEmailAddress:](MailAccount, "accountContainingEmailAddress:", address)) == 0)
   {
     v7 = +[MailAccount defaultMailAccountForDelivery];
   }
 
-  [(MFSignatures *)self setSignature:a3 forAccount:v7];
+  [(MFSignatures *)self setSignature:signature forAccount:v7];
 }
 
-- (id)signatureMarkupForSendingEmailAddress:(id)a3
+- (id)signatureMarkupForSendingEmailAddress:(id)address
 {
-  v3 = [(MFSignatures *)self signatureForSendingEmailAddress:a3];
+  v3 = [(MFSignatures *)self signatureForSendingEmailAddress:address];
 
   return [MFSignatures signatureMarkupFormat:v3];
 }
 
-- (id)signaturePlainTextForSendingEmailAddress:(id)a3
+- (id)signaturePlainTextForSendingEmailAddress:(id)address
 {
-  v3 = [(MFSignatures *)self signatureForSendingEmailAddress:a3];
+  v3 = [(MFSignatures *)self signatureForSendingEmailAddress:address];
 
   return [MFSignatures signaturePlainTextFormat:v3];
 }
 
-+ (id)signatureMarkupFormat:(id)a3
++ (id)signatureMarkupFormat:(id)format
 {
-  result = [a3 length];
+  result = [format length];
   if (result)
   {
-    result = [@"<br/><br/>" stringByAppendingString:a3];
+    result = [@"<br/><br/>" stringByAppendingString:format];
   }
 
   if (!result)
   {
-    return a3;
+    return format;
   }
 
   return result;
 }
 
-+ (id)signaturePlainTextFormat:(id)a3
++ (id)signaturePlainTextFormat:(id)format
 {
-  result = [a3 length];
+  result = [format length];
   if (result)
   {
-    v5 = [MEMORY[0x277D24F18] plainTextFromHTMLSnippet:a3];
+    v5 = [MEMORY[0x277D24F18] plainTextFromHTMLSnippet:format];
     result = [@"\n\n" stringByAppendingString:{objc_msgSend(v5, "stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x277CCA900], "whitespaceAndNewlineCharacterSet"))}];
   }
 
   if (!result)
   {
-    return a3;
+    return format;
   }
 
   return result;
 }
 
-+ (id)stripSignatureMarkup:(id)a3
++ (id)stripSignatureMarkup:(id)markup
 {
-  if ([a3 length])
+  if ([markup length])
   {
-    v4 = [a3 mutableCopy];
+    v4 = [markup mutableCopy];
     v9 = 0;
     v5 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"(?:<br[/]?>){2}" options:1 error:&v9];
     if (v5)
@@ -292,7 +292,7 @@ id __30__MFSignatures_sharedInstance__block_invoke(uint64_t a1)
 
   else
   {
-    return a3;
+    return markup;
   }
 }
 

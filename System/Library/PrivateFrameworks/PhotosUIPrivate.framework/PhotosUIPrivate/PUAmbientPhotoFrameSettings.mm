@@ -2,7 +2,7 @@
 + (PUAmbientPhotoFrameSettings)sharedInstance;
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
-- (void)wallpaperShuffleConfigurationViewController:(id)a3 didFinishWithPosterConfiguration:(id)a4;
+- (void)wallpaperShuffleConfigurationViewController:(id)controller didFinishWithPosterConfiguration:(id)configuration;
 @end
 
 @implementation PUAmbientPhotoFrameSettings
@@ -33,34 +33,34 @@
   [(PUAmbientPhotoFrameSettings *)self setWatchTimeConfig:1];
 }
 
-- (void)wallpaperShuffleConfigurationViewController:(id)a3 didFinishWithPosterConfiguration:(id)a4
+- (void)wallpaperShuffleConfigurationViewController:(id)controller didFinishWithPosterConfiguration:(id)configuration
 {
-  v6 = a3;
-  v10 = [a4 shuffleConfiguration];
-  v7 = [v10 shuffleSmartAlbums];
-  [(PUAmbientPhotoFrameSettings *)self setShowPeopleCuratedAssets:v7 & 1];
-  [(PUAmbientPhotoFrameSettings *)self setShowPetsCuratedAssets:(v7 >> 1) & 1];
-  [(PUAmbientPhotoFrameSettings *)self setShowCitiesCuratedAssets:(v7 >> 3) & 1];
-  [(PUAmbientPhotoFrameSettings *)self setShowNatureCuratedAssets:(v7 >> 2) & 1];
-  [(PUAmbientPhotoFrameSettings *)self setShowFeaturedCuratedAssets:(v7 >> 4) & 1];
-  v8 = [v10 personLocalIdentifiers];
-  v9 = [v8 allObjects];
-  [(PUAmbientPhotoFrameSettings *)self setPersonLocalIdentifiers:v9];
+  controllerCopy = controller;
+  shuffleConfiguration = [configuration shuffleConfiguration];
+  shuffleSmartAlbums = [shuffleConfiguration shuffleSmartAlbums];
+  [(PUAmbientPhotoFrameSettings *)self setShowPeopleCuratedAssets:shuffleSmartAlbums & 1];
+  [(PUAmbientPhotoFrameSettings *)self setShowPetsCuratedAssets:(shuffleSmartAlbums >> 1) & 1];
+  [(PUAmbientPhotoFrameSettings *)self setShowCitiesCuratedAssets:(shuffleSmartAlbums >> 3) & 1];
+  [(PUAmbientPhotoFrameSettings *)self setShowNatureCuratedAssets:(shuffleSmartAlbums >> 2) & 1];
+  [(PUAmbientPhotoFrameSettings *)self setShowFeaturedCuratedAssets:(shuffleSmartAlbums >> 4) & 1];
+  personLocalIdentifiers = [shuffleConfiguration personLocalIdentifiers];
+  allObjects = [personLocalIdentifiers allObjects];
+  [(PUAmbientPhotoFrameSettings *)self setPersonLocalIdentifiers:allObjects];
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 + (id)settingsControllerModule
 {
   v117[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
+  px_systemPhotoLibrary = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
   v3 = MEMORY[0x1E69C6638];
   v4 = MEMORY[0x1E69C65E8];
   v106[0] = MEMORY[0x1E69E9820];
   v106[1] = 3221225472;
   v106[2] = __59__PUAmbientPhotoFrameSettings_UI__settingsControllerModule__block_invoke;
   v106[3] = &unk_1E7B7E3F0;
-  v92 = v2;
+  v92 = px_systemPhotoLibrary;
   v107 = v92;
   v5 = [v4 pu_rowWithTitle:@"Play (Long Press then Lift finger To Dismiss)" action:v106];
   v117[0] = v5;
@@ -125,8 +125,8 @@
   v43 = v92;
   v105 = v43;
   v44 = [v42 pu_rowWithTitle:@"Configure Curated Categories" action:v104];
-  v45 = [a1 _enabledCurationCategoriesPredicate];
-  v46 = [v44 condition:v45];
+  _enabledCurationCategoriesPredicate = [self _enabledCurationCategoriesPredicate];
+  v46 = [v44 condition:_enabledCurationCategoriesPredicate];
   v113[2] = v46;
   v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v113 count:3];
   v95 = [v35 sectionWithRows:v47 title:@"Asset Sources"];

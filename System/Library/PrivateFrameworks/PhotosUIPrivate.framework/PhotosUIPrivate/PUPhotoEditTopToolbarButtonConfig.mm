@@ -1,18 +1,18 @@
 @interface PUPhotoEditTopToolbarButtonConfig
-+ (id)imageConfigurationForSelectedState:(BOOL)a3;
++ (id)imageConfigurationForSelectedState:(BOOL)state;
 @end
 
 @implementation PUPhotoEditTopToolbarButtonConfig
 
-+ (id)imageConfigurationForSelectedState:(BOOL)a3
++ (id)imageConfigurationForSelectedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v18[1] = *MEMORY[0x1E69E9840];
   v4 = +[PUInterfaceManager currentTheme];
   v5 = MEMORY[0x1E69DCAD8];
   [v4 topToolbarToolButtonGlyphSize];
   v6 = [v5 configurationWithPointSize:?];
-  if (v3)
+  if (stateCopy)
   {
     v7 = 5;
   }
@@ -24,17 +24,17 @@
 
   v8 = [MEMORY[0x1E69DCAD8] configurationWithWeight:v7];
   v9 = MEMORY[0x1E69DCAD8];
-  if (v3)
+  if (stateCopy)
   {
-    v10 = [v4 photoEditingToolbarButtonSelectedColor];
-    v18[0] = v10;
+    photoEditingToolbarButtonSelectedColor = [v4 photoEditingToolbarButtonSelectedColor];
+    v18[0] = photoEditingToolbarButtonSelectedColor;
     v11 = v18;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v17 = v10;
+    photoEditingToolbarButtonSelectedColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v17 = photoEditingToolbarButtonSelectedColor;
     v11 = &v17;
   }
 

@@ -1,27 +1,27 @@
 @interface MOTemplateStore
-- (MOTemplateStore)initWithPersistenceManager:(id)a3;
-- (MOTemplateStore)initWithPersistenceManager:(id)a3 configurationManager:(id)a4;
-- (id)_createPredicateForBundleContent:(id)a3;
-- (id)_createPredicateForBundleContent:(id)a3 withMoreMetaData:(id)a4;
-- (id)_createPredicateForBundleContentWithLessMetaData:(id)a3;
-- (id)_createPredicateForDefaultValueWithMetaDataName:(id)a3;
-- (id)_createPredicateWithMetaDataName:(id)a3 bundleContent:(id)a4;
-- (id)_createPredicatesWithBundleContent:(id)a3 combination:(id)a4;
-- (id)_generateCombinationsFromMetaData:(id)a3;
-- (void)checkTemplateStoreIsEmptyWithHandler:(id)a3;
-- (void)fetchTemplatesWithBundleContent:(id)a3 handler:(id)a4;
-- (void)loadNewTemplatesFromFileWithHandler:(id)a3;
-- (void)removeAllTemplatesWithHandler:(id)a3;
+- (MOTemplateStore)initWithPersistenceManager:(id)manager;
+- (MOTemplateStore)initWithPersistenceManager:(id)manager configurationManager:(id)configurationManager;
+- (id)_createPredicateForBundleContent:(id)content;
+- (id)_createPredicateForBundleContent:(id)content withMoreMetaData:(id)data;
+- (id)_createPredicateForBundleContentWithLessMetaData:(id)data;
+- (id)_createPredicateForDefaultValueWithMetaDataName:(id)name;
+- (id)_createPredicateWithMetaDataName:(id)name bundleContent:(id)content;
+- (id)_createPredicatesWithBundleContent:(id)content combination:(id)combination;
+- (id)_generateCombinationsFromMetaData:(id)data;
+- (void)checkTemplateStoreIsEmptyWithHandler:(id)handler;
+- (void)fetchTemplatesWithBundleContent:(id)content handler:(id)handler;
+- (void)loadNewTemplatesFromFileWithHandler:(id)handler;
+- (void)removeAllTemplatesWithHandler:(id)handler;
 - (void)reset;
-- (void)storeTemplates:(id)a3 handler:(id)a4;
+- (void)storeTemplates:(id)templates handler:(id)handler;
 @end
 
 @implementation MOTemplateStore
 
-- (MOTemplateStore)initWithPersistenceManager:(id)a3
+- (MOTemplateStore)initWithPersistenceManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v13.receiver = self;
     v13.super_class = MOTemplateStore;
@@ -29,7 +29,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_persistenceManager, a3);
+      objc_storeStrong(&v6->_persistenceManager, manager);
       v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v9 = dispatch_queue_create("MOTemplateStore", v8);
       queue = v7->_queue;
@@ -37,24 +37,24 @@
     }
 
     self = v7;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (MOTemplateStore)initWithPersistenceManager:(id)a3 configurationManager:(id)a4
+- (MOTemplateStore)initWithPersistenceManager:(id)manager configurationManager:(id)configurationManager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  managerCopy = manager;
+  configurationManagerCopy = configurationManager;
+  v9 = configurationManagerCopy;
+  selfCopy = 0;
+  if (managerCopy && configurationManagerCopy)
   {
     v17.receiver = self;
     v17.super_class = MOTemplateStore;
@@ -62,8 +62,8 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_persistenceManager, a3);
-      objc_storeStrong(&v12->_configurationManager, a4);
+      objc_storeStrong(&v11->_persistenceManager, manager);
+      objc_storeStrong(&v12->_configurationManager, configurationManager);
       v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v14 = dispatch_queue_create("MOTemplateStore", v13);
       queue = v12->_queue;
@@ -71,25 +71,25 @@
     }
 
     self = v12;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)reset
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MOTemplateStore *)self persistenceManager];
-  [v4 performBlockAndWait:&__block_literal_global_3];
+  persistenceManager = [(MOTemplateStore *)self persistenceManager];
+  [persistenceManager performBlockAndWait:&__block_literal_global_3];
 
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)fetchTemplatesWithBundleContent:(id)a3 handler:(id)a4
+- (void)fetchTemplatesWithBundleContent:(id)content handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  contentCopy = content;
+  handlerCopy = handler;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -102,18 +102,18 @@
   v21 = __Block_byref_object_copy__1;
   v22 = __Block_byref_object_dispose__1;
   v23 = objc_opt_new();
-  v9 = [(MOTemplateStore *)self persistenceManager];
+  persistenceManager = [(MOTemplateStore *)self persistenceManager];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invoke;
   v13[3] = &unk_1000B4F18;
   v13[4] = self;
-  v10 = v7;
+  v10 = contentCopy;
   v14 = v10;
   v15 = &v24;
   v16 = &v18;
   v17 = a2;
-  [v9 performBlockAndWait:v13];
+  [persistenceManager performBlockAndWait:v13];
 
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityTemplateStore);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -124,9 +124,9 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "retrieved templates %@", buf, 0xCu);
   }
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8, v19[5], v25[5]);
+    handlerCopy[2](handlerCopy, v19[5], v25[5]);
   }
 
   _Block_object_dispose(&v18, 8);
@@ -215,32 +215,32 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
   [v3 reset];
 }
 
-- (id)_createPredicateForBundleContentWithLessMetaData:(id)a3
+- (id)_createPredicateForBundleContentWithLessMetaData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[NSMutableArray array];
-  v5 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"patternType == %d", [v3 patternType]);
+  v5 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"patternType == %d", [dataCopy patternType]);
   [v4 addObject:v5];
 
-  v6 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"activityType == %d", [v3 activityType]);
+  v6 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"activityType == %d", [dataCopy activityType]);
   [v4 addObject:v6];
 
-  v7 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"placeType == %d", [v3 placeType]);
+  v7 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"placeType == %d", [dataCopy placeType]);
   [v4 addObject:v7];
 
-  v8 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"time == %d", [v3 time]);
+  v8 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"time == %d", [dataCopy time]);
   [v4 addObject:v8];
 
-  v9 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"bundleType == %d", [v3 bundleType]);
+  v9 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"bundleType == %d", [dataCopy bundleType]);
   [v4 addObject:v9];
 
-  v10 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"peopleClassification == %d", [v3 peopleClassification]);
+  v10 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"peopleClassification == %d", [dataCopy peopleClassification]);
   [v4 addObject:v10];
 
-  v11 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"photoTrait == %d", [v3 photoTrait]);
+  v11 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"photoTrait == %d", [dataCopy photoTrait]);
   [v4 addObject:v11];
 
-  if ([v3 hasPersonName])
+  if ([dataCopy hasPersonName])
   {
     v12 = @"hasPersonName == 1";
   }
@@ -253,7 +253,7 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
   v13 = [NSPredicate predicateWithFormat:v12];
   [v4 addObject:v13];
 
-  if ([v3 hasPlaceName])
+  if ([dataCopy hasPlaceName])
   {
     v14 = @"hasPlaceName == 1";
   }
@@ -266,7 +266,7 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
   v15 = [NSPredicate predicateWithFormat:v14];
   [v4 addObject:v15];
 
-  if ([v3 hasCityName])
+  if ([dataCopy hasCityName])
   {
     v16 = @"hasCityName == 1";
   }
@@ -279,7 +279,7 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
   v17 = [NSPredicate predicateWithFormat:v16];
   [v4 addObject:v17];
 
-  if ([v3 hasTimeReference])
+  if ([dataCopy hasTimeReference])
   {
     v18 = @"hasTimeReference == 1";
   }
@@ -312,12 +312,12 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
   return v20;
 }
 
-- (id)_createPredicateForBundleContent:(id)a3 withMoreMetaData:(id)a4
+- (id)_createPredicateForBundleContent:(id)content withMoreMetaData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  dataCopy = data;
   v8 = objc_opt_new();
-  v9 = [(MOTemplateStore *)self _generateCombinationsFromMetaData:v7];
+  v9 = [(MOTemplateStore *)self _generateCombinationsFromMetaData:dataCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -336,7 +336,7 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(MOTemplateStore *)self _createPredicatesWithBundleContent:v6 combination:*(*(&v17 + 1) + 8 * i)];
+        v14 = [(MOTemplateStore *)self _createPredicatesWithBundleContent:contentCopy combination:*(*(&v17 + 1) + 8 * i)];
         if (v14)
         {
           [v8 addObject:v14];
@@ -362,11 +362,11 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
   return v15;
 }
 
-- (id)_createPredicateForBundleContent:(id)a3
+- (id)_createPredicateForBundleContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = objc_opt_new();
-  if ([v4 patternType])
+  if ([contentCopy patternType])
   {
     [v5 addObject:@"patternType"];
     v6 = 1;
@@ -377,61 +377,61 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
     v6 = 0;
   }
 
-  if ([v4 placeType])
+  if ([contentCopy placeType])
   {
     [v5 addObject:@"placeType"];
     ++v6;
   }
 
-  if ([v4 activityType])
+  if ([contentCopy activityType])
   {
     [v5 addObject:@"activityType"];
     ++v6;
   }
 
-  if ([v4 time])
+  if ([contentCopy time])
   {
     [v5 addObject:@"time"];
     ++v6;
   }
 
-  if ([v4 bundleType])
+  if ([contentCopy bundleType])
   {
     [v5 addObject:@"bundleType"];
     ++v6;
   }
 
-  if ([v4 peopleClassification])
+  if ([contentCopy peopleClassification])
   {
     [v5 addObject:@"peopleClassification"];
     ++v6;
   }
 
-  if ([v4 hasPersonName])
+  if ([contentCopy hasPersonName])
   {
     [v5 addObject:@"hasPersonName"];
     ++v6;
   }
 
-  if ([v4 hasPlaceName])
+  if ([contentCopy hasPlaceName])
   {
     [v5 addObject:@"hasPlaceName"];
     ++v6;
   }
 
-  if ([v4 hasCityName])
+  if ([contentCopy hasCityName])
   {
     [v5 addObject:@"hasCityName"];
     ++v6;
   }
 
-  if ([v4 hasTimeReference])
+  if ([contentCopy hasTimeReference])
   {
     [v5 addObject:@"hasTimeReference"];
     ++v6;
   }
 
-  if ([v4 photoTrait])
+  if ([contentCopy photoTrait])
   {
     [v5 addObject:@"photoTrait"];
     ++v6;
@@ -447,28 +447,28 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
 
   if (v6 > 1)
   {
-    [(MOTemplateStore *)self _createPredicateForBundleContent:v4 withMoreMetaData:v5];
+    [(MOTemplateStore *)self _createPredicateForBundleContent:contentCopy withMoreMetaData:v5];
   }
 
   else
   {
-    [(MOTemplateStore *)self _createPredicateForBundleContentWithLessMetaData:v4];
+    [(MOTemplateStore *)self _createPredicateForBundleContentWithLessMetaData:contentCopy];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)_createPredicatesWithBundleContent:(id)a3 combination:(id)a4
+- (id)_createPredicatesWithBundleContent:(id)content combination:(id)combination
 {
-  v30 = a3;
-  v6 = a4;
+  contentCopy = content;
+  combinationCopy = combination;
   v7 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v8 = v6;
+  v8 = combinationCopy;
   v9 = [v8 countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (v9)
   {
@@ -486,7 +486,7 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
         }
 
         v14 = *(*(&v35 + 1) + 8 * i);
-        v15 = [(MOTemplateStore *)self _createPredicateWithMetaDataName:v14 bundleContent:v30, v28];
+        v15 = [(MOTemplateStore *)self _createPredicateWithMetaDataName:v14 bundleContent:contentCopy, v28];
         v16 = _mo_log_facility_get_os_log(&MOLogFacilityTemplateStore);
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
@@ -570,81 +570,81 @@ void __59__MOTemplateStore_fetchTemplatesWithBundleContent_handler___block_invok
   return v26;
 }
 
-- (id)_createPredicateWithMetaDataName:(id)a3 bundleContent:(id)a4
+- (id)_createPredicateWithMetaDataName:(id)name bundleContent:(id)content
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"patternType"])
+  nameCopy = name;
+  contentCopy = content;
+  if ([nameCopy isEqualToString:@"patternType"])
   {
-    v10 = [v6 patternType];
+    patternType = [contentCopy patternType];
     v7 = @"patternType == %d";
 LABEL_13:
-    v8 = [NSPredicate predicateWithFormat:v7, v10];
+    v8 = [NSPredicate predicateWithFormat:v7, patternType];
     goto LABEL_14;
   }
 
-  if ([v5 isEqualToString:@"placeType"])
+  if ([nameCopy isEqualToString:@"placeType"])
   {
-    v10 = [v6 placeType];
+    patternType = [contentCopy placeType];
     v7 = @"placeType == %d";
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"activityType"])
+  if ([nameCopy isEqualToString:@"activityType"])
   {
-    v10 = [v6 activityType];
+    patternType = [contentCopy activityType];
     v7 = @"activityType == %d";
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"time"])
+  if ([nameCopy isEqualToString:@"time"])
   {
-    v10 = [v6 time];
+    patternType = [contentCopy time];
     v7 = @"time == %d";
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"bundleType"])
+  if ([nameCopy isEqualToString:@"bundleType"])
   {
-    v10 = [v6 bundleType];
+    patternType = [contentCopy bundleType];
     v7 = @"bundleType == %d";
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"peopleClassification"])
+  if ([nameCopy isEqualToString:@"peopleClassification"])
   {
-    v10 = [v6 peopleClassification];
+    patternType = [contentCopy peopleClassification];
     v7 = @"peopleClassification == %d";
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"hasPersonName"])
+  if ([nameCopy isEqualToString:@"hasPersonName"])
   {
     v7 = @"hasPersonName == 1";
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"hasPlaceName"])
+  if ([nameCopy isEqualToString:@"hasPlaceName"])
   {
     v7 = @"hasPlaceName == 1";
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"hasCityName"])
+  if ([nameCopy isEqualToString:@"hasCityName"])
   {
     v7 = @"hasCityName == 1";
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"hasTimeReference"])
+  if ([nameCopy isEqualToString:@"hasTimeReference"])
   {
     v7 = @"hasTimeReference == 1";
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"photoTrait"])
+  if ([nameCopy isEqualToString:@"photoTrait"])
   {
-    v10 = [v6 photoTrait];
+    patternType = [contentCopy photoTrait];
     v7 = @"photoTrait == %d";
     goto LABEL_13;
   }
@@ -655,47 +655,47 @@ LABEL_14:
   return v8;
 }
 
-- (id)_createPredicateForDefaultValueWithMetaDataName:(id)a3
+- (id)_createPredicateForDefaultValueWithMetaDataName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"patternType"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"patternType"])
   {
     [NSPredicate predicateWithFormat:@"patternType == %d", 0];
     v5 = LABEL_24:;
     goto LABEL_25;
   }
 
-  if ([v3 isEqualToString:@"placeType"])
+  if ([nameCopy isEqualToString:@"placeType"])
   {
     [NSPredicate predicateWithFormat:@"placeType == %d", 0];
     goto LABEL_24;
   }
 
-  if ([v3 isEqualToString:@"activityType"])
+  if ([nameCopy isEqualToString:@"activityType"])
   {
     [NSPredicate predicateWithFormat:@"activityType == %d", 0];
     goto LABEL_24;
   }
 
-  if ([v3 isEqualToString:@"time"])
+  if ([nameCopy isEqualToString:@"time"])
   {
     [NSPredicate predicateWithFormat:@"time == %d", 0];
     goto LABEL_24;
   }
 
-  if ([v3 isEqualToString:@"bundleType"])
+  if ([nameCopy isEqualToString:@"bundleType"])
   {
     [NSPredicate predicateWithFormat:@"bundleType == %d", 0];
     goto LABEL_24;
   }
 
-  if ([v3 isEqualToString:@"peopleClassification"])
+  if ([nameCopy isEqualToString:@"peopleClassification"])
   {
     [NSPredicate predicateWithFormat:@"peopleClassification == %d", 0];
     goto LABEL_24;
   }
 
-  if ([v3 isEqualToString:@"hasPersonName"])
+  if ([nameCopy isEqualToString:@"hasPersonName"])
   {
     v4 = @"hasPersonName == 0";
 LABEL_23:
@@ -703,25 +703,25 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ([v3 isEqualToString:@"hasPlaceName"])
+  if ([nameCopy isEqualToString:@"hasPlaceName"])
   {
     v4 = @"hasPlaceName == 0";
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"hasCityName"])
+  if ([nameCopy isEqualToString:@"hasCityName"])
   {
     v4 = @"hasCityName == 0";
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"hasTimeReference"])
+  if ([nameCopy isEqualToString:@"hasTimeReference"])
   {
     v4 = @"hasTimeReference == 0";
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"photoTrait"])
+  if ([nameCopy isEqualToString:@"photoTrait"])
   {
     v7 = 0;
     v4 = @"photoTrait == %d";
@@ -734,19 +734,19 @@ LABEL_25:
   return v5;
 }
 
-- (id)_generateCombinationsFromMetaData:(id)a3
+- (id)_generateCombinationsFromMetaData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityTemplateStore);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v3;
+    v19 = dataCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "generateCombinationsFromMetaData, input meta data, %@", buf, 0xCu);
   }
 
   v5 = +[NSMutableArray array];
-  v6 = [v3 count];
+  v6 = [dataCopy count];
   v7 = exp2(v6);
   if (v7 >= 2)
   {
@@ -761,7 +761,7 @@ LABEL_25:
         {
           if ((i & (1 << j)) != 0)
           {
-            v12 = [v3 objectAtIndexedSubscript:j];
+            v12 = [dataCopy objectAtIndexedSubscript:j];
             [v10 addObject:v12];
           }
         }
@@ -787,26 +787,26 @@ LABEL_25:
   return v15;
 }
 
-- (void)storeTemplates:(id)a3 handler:(id)a4
+- (void)storeTemplates:(id)templates handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  templatesCopy = templates;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__1;
   v18 = __Block_byref_object_dispose__1;
   v19 = 0;
-  if ([v6 count])
+  if ([templatesCopy count])
   {
-    v8 = [(MOTemplateStore *)self persistenceManager];
+    persistenceManager = [(MOTemplateStore *)self persistenceManager];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = __42__MOTemplateStore_storeTemplates_handler___block_invoke;
     v11[3] = &unk_1000B4E58;
-    v12 = v6;
+    v12 = templatesCopy;
     v13 = &v14;
-    [v8 performBlockAndWait:v11];
+    [persistenceManager performBlockAndWait:v11];
 
     [(MOTemplateStore *)self reset];
     v9 = v12;
@@ -822,9 +822,9 @@ LABEL_25:
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v15[5]);
+    handlerCopy[2](handlerCopy, v15[5]);
   }
 
   _Block_object_dispose(&v14, 8);
@@ -963,9 +963,9 @@ LABEL_19:
   }
 }
 
-- (void)removeAllTemplatesWithHandler:(id)a3
+- (void)removeAllTemplatesWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -974,20 +974,20 @@ LABEL_19:
   v14 = 0;
   [(MOTemplateStore *)self reset];
   v6 = objc_autoreleasePoolPush();
-  v7 = [(MOTemplateStore *)self persistenceManager];
+  persistenceManager = [(MOTemplateStore *)self persistenceManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __49__MOTemplateStore_removeAllTemplatesWithHandler___block_invoke;
   v8[3] = &unk_1000B4EA8;
   v8[4] = &v9;
   v8[5] = a2;
-  [v7 performBlockAndWait:v8];
+  [persistenceManager performBlockAndWait:v8];
 
   objc_autoreleasePoolPop(v6);
   [(MOTemplateStore *)self reset];
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, v10[5]);
+    handlerCopy[2](handlerCopy, v10[5]);
   }
 
   _Block_object_dispose(&v9, 8);
@@ -1032,16 +1032,16 @@ void __49__MOTemplateStore_removeAllTemplatesWithHandler___block_invoke(uint64_t
   }
 }
 
-- (void)loadNewTemplatesFromFileWithHandler:(id)a3
+- (void)loadNewTemplatesFromFileWithHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __55__MOTemplateStore_loadNewTemplatesFromFileWithHandler___block_invoke;
   v4[3] = &unk_1000B4F68;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(MOTemplateStore *)v5 removeAllTemplatesWithHandler:v4];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(MOTemplateStore *)selfCopy removeAllTemplatesWithHandler:v4];
 }
 
 void __55__MOTemplateStore_loadNewTemplatesFromFileWithHandler___block_invoke(uint64_t a1, void *a2)
@@ -1256,9 +1256,9 @@ void __55__MOTemplateStore_loadNewTemplatesFromFileWithHandler___block_invoke_10
   }
 }
 
-- (void)checkTemplateStoreIsEmptyWithHandler:(id)a3
+- (void)checkTemplateStoreIsEmptyWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1269,7 +1269,7 @@ void __55__MOTemplateStore_loadNewTemplatesFromFileWithHandler___block_invoke_10
   v10[3] = __Block_byref_object_copy__1;
   v10[4] = __Block_byref_object_dispose__1;
   v11 = 0;
-  v6 = [(MOTemplateStore *)self persistenceManager];
+  persistenceManager = [(MOTemplateStore *)self persistenceManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __56__MOTemplateStore_checkTemplateStoreIsEmptyWithHandler___block_invoke;
@@ -1277,7 +1277,7 @@ void __55__MOTemplateStore_loadNewTemplatesFromFileWithHandler___block_invoke_10
   v9[5] = &v12;
   v9[6] = a2;
   v9[4] = v10;
-  [v6 performBlockAndWait:v9];
+  [persistenceManager performBlockAndWait:v9];
 
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityTemplateStore);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1288,9 +1288,9 @@ void __55__MOTemplateStore_loadNewTemplatesFromFileWithHandler___block_invoke_10
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "checkTemplateStoreIsEmpty,  %d", buf, 8u);
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, *(v13 + 24));
+    handlerCopy[2](handlerCopy, *(v13 + 24));
   }
 
   _Block_object_dispose(v10, 8);

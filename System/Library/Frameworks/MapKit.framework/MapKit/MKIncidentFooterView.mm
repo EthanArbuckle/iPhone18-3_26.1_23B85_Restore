@@ -1,6 +1,6 @@
 @interface MKIncidentFooterView
-- (MKIncidentFooterView)initWithCoder:(id)a3;
-- (MKIncidentFooterView)initWithReuseIdentifier:(id)a3;
+- (MKIncidentFooterView)initWithCoder:(id)coder;
+- (MKIncidentFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)_commonInit;
 @end
 
@@ -9,8 +9,8 @@
 - (void)_commonInit
 {
   v3 = [MKViewWithHairline alloc];
-  v4 = [(MKIncidentFooterView *)self contentView];
-  [v4 bounds];
+  contentView = [(MKIncidentFooterView *)self contentView];
+  [contentView bounds];
   v5 = [(MKViewWithHairline *)v3 initWithFrame:0.0, 0.0];
   hairlineView = self->_hairlineView;
   self->_hairlineView = v5;
@@ -19,15 +19,15 @@
   [(MKViewWithHairline *)self->_hairlineView setBackgroundColor:v7];
 
   [(MKViewWithHairline *)self->_hairlineView setAutoresizingMask:2];
-  v8 = [(MKIncidentFooterView *)self contentView];
-  [v8 addSubview:self->_hairlineView];
+  contentView2 = [(MKIncidentFooterView *)self contentView];
+  [contentView2 addSubview:self->_hairlineView];
 }
 
-- (MKIncidentFooterView)initWithCoder:(id)a3
+- (MKIncidentFooterView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MKIncidentFooterView;
-  v3 = [(MKIncidentFooterView *)&v6 initWithCoder:a3];
+  v3 = [(MKIncidentFooterView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -37,11 +37,11 @@
   return v4;
 }
 
-- (MKIncidentFooterView)initWithReuseIdentifier:(id)a3
+- (MKIncidentFooterView)initWithReuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = MKIncidentFooterView;
-  v3 = [(MKIncidentFooterView *)&v6 initWithReuseIdentifier:a3];
+  v3 = [(MKIncidentFooterView *)&v6 initWithReuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {

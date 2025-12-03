@@ -1,41 +1,41 @@
 @interface TSDCurvedShadow
-+ (id)curvedShadowWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CGImage)newShadowImageForRep:(id)a3 withSize:(CGSize)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6;
-- (CGRect)boundsForRep:(id)a3;
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3;
-- (CGRect)expandedBoundsForRect:(CGRect)a3;
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
-- (TSDCurvedShadow)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSDCurvedShadow)initWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9;
++ (id)curvedShadowWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
+- (CGImage)newShadowImageForRep:(id)rep withSize:(CGSize)size drawSelector:(SEL)selector unflipped:(BOOL)unflipped;
+- (CGRect)boundsForRep:(id)rep;
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep;
+- (CGRect)expandedBoundsForRect:(CGRect)rect;
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform;
+- (TSDCurvedShadow)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSDCurvedShadow)initWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
 - (TSDCurvedShadow)shadowWithClampedValues;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newShadowClampedForSwatches;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDCurvedShadow
 
-+ (id)curvedShadowWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9
++ (id)curvedShadowWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
-  v9 = a9;
-  v16 = a8;
-  v17 = [a1 alloc];
-  v19 = objc_msgSend_initWithOffset_angle_radius_curve_opacity_color_enabled_(v17, v18, v16, v9, a3, a4, a5, a6, a7);
+  enabledCopy = enabled;
+  colorCopy = color;
+  v17 = [self alloc];
+  v19 = objc_msgSend_initWithOffset_angle_radius_curve_opacity_color_enabled_(v17, v18, colorCopy, enabledCopy, offset, angle, radius, curve, opacity);
 
   return v19;
 }
 
-- (TSDCurvedShadow)initWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9
+- (TSDCurvedShadow)initWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
-  v9 = a9;
-  v17 = a8;
-  if (!v17)
+  enabledCopy = enabled;
+  colorCopy = color;
+  if (!colorCopy)
   {
     v18 = MEMORY[0x277D81150];
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSDCurvedShadow initWithOffset:angle:radius:curve:opacity:color:enabled:]");
@@ -47,11 +47,11 @@
 
   v28.receiver = self;
   v28.super_class = TSDCurvedShadow;
-  v25 = [(TSDShadow *)&v28 i_initWithOpacity:v17 color:v9 angle:a7 offset:a4 radius:a3 enabled:a5];
+  v25 = [(TSDShadow *)&v28 i_initWithOpacity:colorCopy color:enabledCopy angle:opacity offset:angle radius:offset enabled:radius];
   v26 = v25;
   if (v25)
   {
-    v25[7] = a6;
+    v25[7] = curve;
   }
 
   return v26;
@@ -107,13 +107,13 @@
   return v38;
 }
 
-- (CGRect)expandedBoundsForRect:(CGRect)a3
+- (CGRect)expandedBoundsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  objc_msgSend_paddingForCurveWithSize_(self, a2, v3, a3.size.width, a3.size.height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  objc_msgSend_paddingForCurveWithSize_(self, a2, v3, rect.size.width, rect.size.height);
   v10 = v9;
   objc_msgSend_paddingForBlur(self, v11, v12);
   v14 = -v13;
@@ -126,7 +126,7 @@
   return CGRectInset(*&v16, v14, v15);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMutableCurvedShadow alloc];
   objc_msgSend_offset(self, v5, v6);
@@ -168,14 +168,14 @@
   return v30;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -202,18 +202,18 @@
   return [(TSDShadow *)&v3 hash];
 }
 
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (objc_msgSend_isEnabled(self, a2, a4))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (objc_msgSend_isEnabled(self, a2, transform))
   {
-    v10 = *&a4->c;
-    *&v35.a = *&a4->a;
+    v10 = *&transform->c;
+    *&v35.a = *&transform->a;
     *&v35.c = v10;
-    *&v35.tx = *&a4->tx;
+    *&v35.tx = *&transform->tx;
     CGAffineTransformInvert(&v36, &v35);
     v37.origin.x = x;
     v37.origin.y = y;
@@ -235,10 +235,10 @@
     v39.size.width = v18;
     v39.size.height = v20;
     v40 = CGRectOffset(v39, v24, v28);
-    v29 = *&a4->c;
-    *&v36.a = *&a4->a;
+    v29 = *&transform->c;
+    *&v36.a = *&transform->a;
     *&v36.c = v29;
-    *&v36.tx = *&a4->tx;
+    *&v36.tx = *&transform->tx;
     v44 = CGRectApplyAffineTransform(v40, &v36);
     v41.origin.x = x;
     v41.origin.y = y;
@@ -262,9 +262,9 @@
   return result;
 }
 
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep
 {
-  v4 = objc_msgSend_styledLayout(a3, a2, a3);
+  v4 = objc_msgSend_styledLayout(rep, a2, rep);
   v7 = objc_msgSend_geometryInRoot(v4, v5, v6);
   objc_msgSend_frame(v7, v8, v9);
   TSURectWithSize();
@@ -281,9 +281,9 @@
   return result;
 }
 
-- (CGRect)boundsForRep:(id)a3
+- (CGRect)boundsForRep:(id)rep
 {
-  v4 = objc_msgSend_styledLayout(a3, a2, a3);
+  v4 = objc_msgSend_styledLayout(rep, a2, rep);
   v7 = objc_msgSend_geometryInRoot(v4, v5, v6);
   objc_msgSend_frame(v7, v8, v9);
   v11 = v10;
@@ -299,9 +299,9 @@
   return result;
 }
 
-- (CGImage)newShadowImageForRep:(id)a3 withSize:(CGSize)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6
+- (CGImage)newShadowImageForRep:(id)rep withSize:(CGSize)size drawSelector:(SEL)selector unflipped:(BOOL)unflipped
 {
-  v7 = objc_msgSend_color(self, a2, a3, a5, a6, a4.width, a4.height);
+  v7 = objc_msgSend_color(self, a2, rep, selector, unflipped, size.width, size.height);
   v10 = objc_msgSend_sharedDelegate(MEMORY[0x277D80610], v8, v9);
   if (objc_msgSend_shouldRenderCurvedShadow(v10, v11, v12))
   {
@@ -316,9 +316,9 @@
   return v20;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -365,58 +365,58 @@
   return v34;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = self;
-  v7 = a4;
+  selfCopy = self;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
-  if (objc_msgSend_isEnabled(v6, v9, v10) & 1) != 0 || (objc_msgSend_isEnabled(v8, v11, v12))
+  if (objc_msgSend_isEnabled(selfCopy, v9, v10) & 1) != 0 || (objc_msgSend_isEnabled(v8, v11, v12))
   {
-    if ((objc_msgSend_isEnabled(v6, v11, v12) & 1) == 0 && v8)
+    if ((objc_msgSend_isEnabled(selfCopy, v11, v12) & 1) == 0 && v8)
     {
       v15 = v8;
 
-      v6 = v15;
+      selfCopy = v15;
     }
 
     if ((objc_msgSend_isEnabled(v8, v13, v14) & 1) == 0)
     {
-      v18 = v6;
+      v18 = selfCopy;
 
       v8 = v18;
     }
 
-    objc_msgSend_offset(v6, v16, v17);
+    objc_msgSend_offset(selfCopy, v16, v17);
     objc_msgSend_offset(v8, v19, v20);
     TSUMix();
     v22 = v21;
-    objc_msgSend_angle(v6, v23, v24);
+    objc_msgSend_angle(selfCopy, v23, v24);
     objc_msgSend_angle(v8, v25, v26);
     TSUMix();
     v28 = v27;
-    objc_msgSend_radius(v6, v29, v30);
+    objc_msgSend_radius(selfCopy, v29, v30);
     objc_msgSend_radius(v8, v31, v32);
     TSUMix();
     v34 = v33;
-    objc_msgSend_curve(v6, v35, v36);
+    objc_msgSend_curve(selfCopy, v35, v36);
     objc_msgSend_curve(v8, v37, v38);
     TSUMix();
     v40 = v39;
-    objc_msgSend_opacity(v6, v41, v42);
+    objc_msgSend_opacity(selfCopy, v41, v42);
     objc_msgSend_opacity(v8, v43, v44);
     TSUMix();
     v46 = v45;
-    v49 = objc_msgSend_color(v6, v47, v48);
+    v49 = objc_msgSend_color(selfCopy, v47, v48);
     v52 = objc_msgSend_color(v8, v50, v51);
     isEqual = objc_msgSend_isEqual_(v49, v53, v52);
 
-    v59 = objc_msgSend_color(v6, v55, v56);
+    v59 = objc_msgSend_color(selfCopy, v55, v56);
     if ((isEqual & 1) == 0)
     {
       v60 = objc_msgSend_color(v8, v57, v58);
-      v62 = objc_msgSend_blendedColorWithFraction_ofColor_(v59, v61, v60, a3);
+      v62 = objc_msgSend_blendedColorWithFraction_ofColor_(v59, v61, v60, fraction);
 
       v59 = v62;
     }
@@ -427,20 +427,20 @@
 
   else
   {
-    v6 = v6;
-    v65 = v6;
+    selfCopy = selfCopy;
+    v65 = selfCopy;
   }
 
   return v65;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
-  if (TSD::ShadowArchive::ByteSizeLong(a3))
+  unarchiverCopy = unarchiver;
+  if (TSD::ShadowArchive::ByteSizeLong(archive))
   {
     v8 = [TSDCurvedShadow alloc];
-    v10 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, a3, v5);
+    v10 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, archive, unarchiverCopy);
   }
 
   else
@@ -453,15 +453,15 @@
   return v11;
 }
 
-- (TSDCurvedShadow)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDCurvedShadow)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v11.receiver = self;
   v11.super_class = TSDCurvedShadow;
-  v5 = [(TSDShadow *)&v11 initWithArchive:a3 unarchiver:a4];
+  v5 = [(TSDShadow *)&v11 initWithArchive:archive unarchiver:unarchiver];
   v8 = v5;
   if (v5)
   {
-    v9 = *(a3 + 6);
+    v9 = *(archive + 6);
     if (!v9)
     {
       v9 = &TSD::_CurvedShadowArchive_default_instance_;
@@ -473,24 +473,24 @@
   return v8;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v12.receiver = self;
   v12.super_class = TSDCurvedShadow;
-  [(TSDShadow *)&v12 saveToArchive:a3 archiver:v6];
-  *(a3 + 4) |= 8u;
-  v9 = *(a3 + 6);
+  [(TSDShadow *)&v12 saveToArchive:archive archiver:archiverCopy];
+  *(archive + 4) |= 8u;
+  v9 = *(archive + 6);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = google::protobuf::Arena::CreateMaybeMessage<TSD::CurvedShadowArchive>(v10);
-    *(a3 + 6) = v9;
+    *(archive + 6) = v9;
   }
 
   objc_msgSend_curve(self, v7, v8);

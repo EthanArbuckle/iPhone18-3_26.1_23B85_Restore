@@ -1,14 +1,14 @@
 @interface MFSMIMEControl
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
 - (MFSMIMEControlDelegate)delegate;
 - (id)_goToSettingsAction;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)menuWithOptions:(unint64_t)a3;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)menuWithOptions:(unint64_t)options;
 @end
 
 @implementation MFSMIMEControl
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   objc_initWeak(&location, self);
   v4 = MEMORY[0x1E69DC8D8];
@@ -35,19 +35,19 @@ id __72__MFSMIMEControl_contextMenuInteraction_configurationForMenuAtLocation___
   return v4;
 }
 
-- (id)menuWithOptions:(unint64_t)a3
+- (id)menuWithOptions:(unint64_t)options
 {
-  if (a3 == 1)
+  if (options == 1)
   {
     v3 = 0;
     goto LABEL_25;
   }
 
-  v4 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(MFSMIMEControl *)self delegate];
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
+  delegate = [(MFSMIMEControl *)self delegate];
   v8 = MEMORY[0x1E69DC628];
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v15 = _EFLocalizedString();
     v16 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"lock.slash.fill"];
@@ -55,16 +55,16 @@ id __72__MFSMIMEControl_contextMenuInteraction_configurationForMenuAtLocation___
     v28[1] = 3221225472;
     v28[2] = __34__MFSMIMEControl_menuWithOptions___block_invoke;
     v28[3] = &unk_1E806D8C8;
-    v17 = v7;
+    v17 = delegate;
     v29[0] = v17;
     v29[1] = self;
     v12 = [v8 actionWithTitle:v15 image:v16 identifier:0 handler:v28];
 
-    [v6 addObject:v12];
+    [array addObject:v12];
     v13 = v29;
-    if ((v4 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
-      if ((v4 & 0x10) == 0 || (v4 & 0x20) != 0)
+      if ((optionsCopy & 0x10) == 0 || (optionsCopy & 0x20) != 0)
       {
         v24 = _EFLocalizedString();
       }
@@ -75,29 +75,29 @@ id __72__MFSMIMEControl_contextMenuInteraction_configurationForMenuAtLocation___
       }
 
       v18 = v24;
-      v19 = [(MFSMIMEControl *)self _goToSettingsAction];
-      [v6 addObject:v19];
+      _goToSettingsAction = [(MFSMIMEControl *)self _goToSettingsAction];
+      [array addObject:_goToSettingsAction];
       goto LABEL_23;
     }
 
-    if ((v4 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       v14 = _EFLocalizedString();
       goto LABEL_9;
     }
 
-    if ((v4 & 0x20) != 0)
+    if ((optionsCopy & 0x20) != 0)
     {
       v18 = _EFLocalizedString();
-      v19 = [(MFSMIMEControl *)self _goToSettingsAction];
-      [v6 addObject:v19];
+      _goToSettingsAction = [(MFSMIMEControl *)self _goToSettingsAction];
+      [array addObject:_goToSettingsAction];
       goto LABEL_23;
     }
 
-    v19 = [v17 sendingAddressForControl:self];
+    _goToSettingsAction = [v17 sendingAddressForControl:self];
     v23 = MEMORY[0x1E696AEC0];
     v21 = _EFLocalizedString();
-    v22 = [v23 stringWithFormat:v21, v19];
+    v22 = [v23 stringWithFormat:v21, _goToSettingsAction];
     goto LABEL_16;
   }
 
@@ -107,27 +107,27 @@ id __72__MFSMIMEControl_contextMenuInteraction_configurationForMenuAtLocation___
   v26[1] = 3221225472;
   v26[2] = __34__MFSMIMEControl_menuWithOptions___block_invoke_2;
   v26[3] = &unk_1E806D8C8;
-  v11 = v7;
+  v11 = delegate;
   v27[0] = v11;
   v27[1] = self;
   v12 = [v8 actionWithTitle:v9 image:v10 identifier:0 handler:v26];
 
-  [v6 addObject:v12];
+  [array addObject:v12];
   v13 = v27;
-  if ((v4 & 0x10) != 0)
+  if ((optionsCopy & 0x10) != 0)
   {
-    if ((v4 & 0x20) != 0)
+    if ((optionsCopy & 0x20) != 0)
     {
       v18 = _EFLocalizedString();
-      v19 = [(MFSMIMEControl *)self _goToSettingsAction];
-      [v6 addObject:v19];
+      _goToSettingsAction = [(MFSMIMEControl *)self _goToSettingsAction];
+      [array addObject:_goToSettingsAction];
       goto LABEL_23;
     }
 
-    v19 = [v11 sendingAddressForControl:self];
+    _goToSettingsAction = [v11 sendingAddressForControl:self];
     v20 = MEMORY[0x1E696AEC0];
     v21 = _EFLocalizedString();
-    v22 = [v20 stringWithFormat:v21, v19];
+    v22 = [v20 stringWithFormat:v21, _goToSettingsAction];
 LABEL_16:
     v18 = v22;
 
@@ -140,14 +140,14 @@ LABEL_9:
   v18 = v14;
 LABEL_24:
 
-  v3 = [MEMORY[0x1E69DCC60] menuWithTitle:v18 children:v6];
+  v3 = [MEMORY[0x1E69DCC60] menuWithTitle:v18 children:array];
 
 LABEL_25:
 
   return v3;
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
   [(MFSMIMEControl *)self bounds];
   x = v11.origin.x;

@@ -1,12 +1,12 @@
 @interface TRIVersionedNamespace
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToVersionedNamespace:(id)a3;
-- (TRIVersionedNamespace)initWithCoder:(id)a3;
-- (TRIVersionedNamespace)initWithName:(id)a3 compatibilityVersion:(unsigned int)a4;
-- (id)copyWithReplacementName:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToVersionedNamespace:(id)namespace;
+- (TRIVersionedNamespace)initWithCoder:(id)coder;
+- (TRIVersionedNamespace)initWithName:(id)name compatibilityVersion:(unsigned int)version;
+- (id)copyWithReplacementName:(id)name;
 - (id)description;
 - (id)userFacingString;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIVersionedNamespace
@@ -14,19 +14,19 @@
 - (id)userFacingString
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(TRIVersionedNamespace *)self name];
-  v5 = [v3 initWithFormat:@"%@.%u", v4, -[TRIVersionedNamespace compatibilityVersion](self, "compatibilityVersion")];
+  name = [(TRIVersionedNamespace *)self name];
+  v5 = [v3 initWithFormat:@"%@.%u", name, -[TRIVersionedNamespace compatibilityVersion](self, "compatibilityVersion")];
 
   return v5;
 }
 
-- (TRIVersionedNamespace)initWithName:(id)a3 compatibilityVersion:(unsigned int)a4
+- (TRIVersionedNamespace)initWithName:(id)name compatibilityVersion:(unsigned int)version
 {
-  v8 = a3;
-  if (!v8)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIVersionedNamespace.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIVersionedNamespace.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
   }
 
   v13.receiver = self;
@@ -35,33 +35,33 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    v10->_compatibilityVersion = a4;
+    objc_storeStrong(&v9->_name, name);
+    v10->_compatibilityVersion = version;
   }
 
   return v10;
 }
 
-- (id)copyWithReplacementName:(id)a3
+- (id)copyWithReplacementName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithName:v4 compatibilityVersion:self->_compatibilityVersion];
+  nameCopy = name;
+  v5 = [objc_alloc(objc_opt_class()) initWithName:nameCopy compatibilityVersion:self->_compatibilityVersion];
 
   return v5;
 }
 
-- (BOOL)isEqualToVersionedNamespace:(id)a3
+- (BOOL)isEqualToVersionedNamespace:(id)namespace
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  namespaceCopy = namespace;
+  v5 = namespaceCopy;
+  if (!namespaceCopy)
   {
     goto LABEL_6;
   }
 
   v6 = self->_name == 0;
-  v7 = [v4 name];
-  v8 = v7 != 0;
+  name = [namespaceCopy name];
+  v8 = name != 0;
 
   if (v6 == v8 || (name = self->_name) != 0 && ([v5 name], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NSString isEqual:](name, "isEqual:", v10), v10, !v11))
   {
@@ -78,33 +78,33 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIVersionedNamespace *)self isEqualToVersionedNamespace:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIVersionedNamespace *)self isEqualToVersionedNamespace:v5];
   }
 
   return v6;
 }
 
-- (TRIVersionedNamespace)initWithCoder:(id)a3
+- (TRIVersionedNamespace)initWithCoder:(id)coder
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   if (!v5)
   {
-    v8 = [v4 error];
+    error = [coderCopy error];
 
-    if (!v8)
+    if (!error)
     {
       v18 = *MEMORY[0x277CCA450];
       v19[0] = @"Retrieved nil serialized value for nonnull TRIVersionedNamespace.name";
@@ -113,22 +113,22 @@ LABEL_6:
       v11 = 2;
 LABEL_9:
       v13 = [v10 initWithDomain:@"TRIVersionedNamespaceOCNTErrorDomain" code:v11 userInfo:v9];
-      [v4 failWithError:v13];
+      [coderCopy failWithError:v13];
     }
 
 LABEL_10:
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  v6 = [v4 decodeInt64ForKey:@"compatibilityVersion"];
+  v6 = [coderCopy decodeInt64ForKey:@"compatibilityVersion"];
   if (!v6)
   {
-    v12 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (!v12)
+    if (!error2)
     {
-      if ([v4 containsValueForKey:@"compatibilityVersion"])
+      if ([coderCopy containsValueForKey:@"compatibilityVersion"])
       {
         goto LABEL_3;
       }
@@ -146,25 +146,25 @@ LABEL_10:
 
 LABEL_3:
   self = [(TRIVersionedNamespace *)self initWithName:v5 compatibilityVersion:v6];
-  v7 = self;
+  selfCopy = self;
 LABEL_11:
 
   v14 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   name = self->_name;
-  v6 = v4;
+  v6 = coderCopy;
   if (name)
   {
-    [v4 encodeObject:name forKey:@"name"];
-    v4 = v6;
+    [coderCopy encodeObject:name forKey:@"name"];
+    coderCopy = v6;
   }
 
-  [v4 encodeInt64:self->_compatibilityVersion forKey:@"compatibilityVersion"];
+  [coderCopy encodeInt64:self->_compatibilityVersion forKey:@"compatibilityVersion"];
 }
 
 - (id)description

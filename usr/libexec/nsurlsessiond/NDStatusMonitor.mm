@@ -3,9 +3,9 @@
 - (NDStatusMonitor)init;
 - (void)dealloc;
 - (void)handleBetterNetworkEvent;
-- (void)performCallbackAfterNetworkChangedEvent:(id)a3 identifier:(unint64_t)a4 delay:(int64_t)a5;
-- (void)performCallbackAfterNetworkChangedEvent:(id)a3 identifier:(unint64_t)a4 numberOfPreviousRetries:(unint64_t)a5;
-- (void)simulateNetworkChangedEvent:(id)a3 identifier:(unint64_t)a4;
+- (void)performCallbackAfterNetworkChangedEvent:(id)event identifier:(unint64_t)identifier delay:(int64_t)delay;
+- (void)performCallbackAfterNetworkChangedEvent:(id)event identifier:(unint64_t)identifier numberOfPreviousRetries:(unint64_t)retries;
+- (void)simulateNetworkChangedEvent:(id)event identifier:(unint64_t)identifier;
 - (void)start;
 - (void)startMonitoringDynamicStore;
 - (void)stop;
@@ -164,8 +164,8 @@ LABEL_10:
           [v12 voucher];
           objc_claimAutoreleasedReturnValue();
 
-          v13 = [v12 client];
-          [v13 statusMonitor:self callbackForIdentifier:objc_msgSend(v12 networkChanged:{"identifier"), 1}];
+          client = [v12 client];
+          [client statusMonitor:self callbackForIdentifier:objc_msgSend(v12 networkChanged:{"identifier"), 1}];
         }
 
         v9 = [(NSMutableSet *)v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
@@ -179,42 +179,42 @@ LABEL_10:
   }
 }
 
-- (void)simulateNetworkChangedEvent:(id)a3 identifier:(unint64_t)a4
+- (void)simulateNetworkChangedEvent:(id)event identifier:(unint64_t)identifier
 {
-  v6 = a3;
+  eventCopy = event;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000403B0;
   block[3] = &unk_1000D6448;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  identifierCopy = identifier;
+  v10 = eventCopy;
+  v8 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)performCallbackAfterNetworkChangedEvent:(id)a3 identifier:(unint64_t)a4 delay:(int64_t)a5
+- (void)performCallbackAfterNetworkChangedEvent:(id)event identifier:(unint64_t)identifier delay:(int64_t)delay
 {
-  v8 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100040560;
   v11[3] = &unk_1000D54F8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = eventCopy;
+  identifierCopy = identifier;
+  delayCopy = delay;
+  v10 = eventCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)performCallbackAfterNetworkChangedEvent:(id)a3 identifier:(unint64_t)a4 numberOfPreviousRetries:(unint64_t)a5
+- (void)performCallbackAfterNetworkChangedEvent:(id)event identifier:(unint64_t)identifier numberOfPreviousRetries:(unint64_t)retries
 {
-  v8 = exp2(a5);
+  v8 = exp2(retries);
 
-  [(NDStatusMonitor *)self performCallbackAfterNetworkChangedEvent:a3 identifier:a4 delay:(v8 * 900.0)];
+  [(NDStatusMonitor *)self performCallbackAfterNetworkChangedEvent:event identifier:identifier delay:(v8 * 900.0)];
 }
 
 - (void)dealloc

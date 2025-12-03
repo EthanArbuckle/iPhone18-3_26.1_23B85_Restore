@@ -1,9 +1,9 @@
 @interface BTStateWatcher
-+ (id)monitorBuddyStateWithAction:(id)a3;
-+ (id)monitorFirstUnlockWithAction:(id)a3;
-+ (id)monitorURL:(id)a3 action:(id)a4;
++ (id)monitorBuddyStateWithAction:(id)action;
++ (id)monitorFirstUnlockWithAction:(id)action;
++ (id)monitorURL:(id)l action:(id)action;
 - (BOOL)start;
-- (BTStateWatcher)initWithURL:(id)a3 action:(id)a4;
+- (BTStateWatcher)initWithURL:(id)l action:(id)action;
 - (void)cancel;
 - (void)dealloc;
 - (void)directoryChanged;
@@ -12,18 +12,18 @@
 
 @implementation BTStateWatcher
 
-- (BTStateWatcher)initWithURL:(id)a3 action:(id)a4
+- (BTStateWatcher)initWithURL:(id)l action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  actionCopy = action;
   v19.receiver = self;
   v19.super_class = BTStateWatcher;
   v8 = [(BTStateWatcher *)&v19 init];
   if (v8)
   {
     v9 = v8;
-    v10 = [v6 standardizedURL];
-    v11 = CFURLCopyPath(v10);
+    standardizedURL = [lCopy standardizedURL];
+    v11 = CFURLCopyPath(standardizedURL);
     v12 = [(__CFString *)v11 hasSuffix:@"/"];
     CFRelease(v11);
     v18.receiver = v9;
@@ -32,20 +32,20 @@
     v14 = v13;
     if (v12)
     {
-      [(BTStateWatcher *)v13 setDirectoryURL:v10];
+      [(BTStateWatcher *)v13 setDirectoryURL:standardizedURL];
       [(BTStateWatcher *)v14 setTargetFilename:0];
     }
 
     else
     {
-      v15 = [(__CFURL *)v10 URLByDeletingLastPathComponent];
-      [(BTStateWatcher *)v14 setDirectoryURL:v15];
+      uRLByDeletingLastPathComponent = [(__CFURL *)standardizedURL URLByDeletingLastPathComponent];
+      [(BTStateWatcher *)v14 setDirectoryURL:uRLByDeletingLastPathComponent];
 
-      v16 = [(__CFURL *)v10 lastPathComponent];
-      [(BTStateWatcher *)v14 setTargetFilename:v16];
+      lastPathComponent = [(__CFURL *)standardizedURL lastPathComponent];
+      [(BTStateWatcher *)v14 setTargetFilename:lastPathComponent];
     }
 
-    [(BTStateWatcher *)v14 setBlock:v7];
+    [(BTStateWatcher *)v14 setBlock:actionCopy];
   }
 
   else
@@ -66,9 +66,9 @@
 
 - (BOOL)start
 {
-  v3 = [(BTStateWatcher *)self block];
+  block = [(BTStateWatcher *)self block];
 
-  if (v3)
+  if (block)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -85,15 +85,15 @@
     v5 = qword_100300AE8;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(BTStateWatcher *)self directoryURL];
-      v7 = [(BTStateWatcher *)self targetFilename];
-      sub_1001F4038(v6, v7, buf, v5);
+      directoryURL = [(BTStateWatcher *)self directoryURL];
+      targetFilename = [(BTStateWatcher *)self targetFilename];
+      sub_1001F4038(directoryURL, targetFilename, buf, v5);
     }
 
-    v8 = [(BTStateWatcher *)self directoryURL];
-    v9 = [v8 path];
-    v10 = v9;
-    -[BTStateWatcher setFd:](self, "setFd:", open([v9 fileSystemRepresentation], 0x8000));
+    directoryURL2 = [(BTStateWatcher *)self directoryURL];
+    path = [directoryURL2 path];
+    v10 = path;
+    -[BTStateWatcher setFd:](self, "setFd:", open([path fileSystemRepresentation], 0x8000));
 
     v11 = [(BTStateWatcher *)self fd];
     v4 = v11 > 0;
@@ -102,8 +102,8 @@
       v26 = qword_100300AE8;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v27 = [(BTStateWatcher *)self directoryURL];
-        sub_1001F40A8(v27, v40, v26);
+        directoryURL3 = [(BTStateWatcher *)self directoryURL];
+        sub_1001F40A8(directoryURL3, v40, v26);
       }
     }
 
@@ -114,37 +114,37 @@
       v14 = dispatch_source_create(&_dispatch_source_type_vnode, v12, 2uLL, v13);
       [(BTStateWatcher *)self setDispatchSourceChange:v14];
 
-      v15 = [(BTStateWatcher *)self dispatchSourceChange];
+      dispatchSourceChange = [(BTStateWatcher *)self dispatchSourceChange];
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = sub_1000A4300;
       handler[3] = &unk_1002B8218;
       handler[4] = self;
       objc_copyWeak(&v36, &location);
-      dispatch_source_set_event_handler(v15, handler);
+      dispatch_source_set_event_handler(dispatchSourceChange, handler);
 
-      v16 = [(BTStateWatcher *)self dispatchSourceChange];
-      dispatch_resume(v16);
+      dispatchSourceChange2 = [(BTStateWatcher *)self dispatchSourceChange];
+      dispatch_resume(dispatchSourceChange2);
 
       v17 = qword_100300AE8;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [(BTStateWatcher *)self directoryURL];
-        v19 = [v18 path];
-        sub_1001F4100(v19, v40, v17, v18);
+        directoryURL4 = [(BTStateWatcher *)self directoryURL];
+        path2 = [directoryURL4 path];
+        sub_1001F4100(path2, v40, v17, directoryURL4);
       }
 
       v20 = dispatch_source_create(&_dispatch_source_type_vnode, [(BTStateWatcher *)self fd], 0x61uLL, v13);
       [(BTStateWatcher *)self setDispatchSourceAbort:v20];
 
-      v21 = [(BTStateWatcher *)self dispatchSourceAbort];
+      dispatchSourceAbort = [(BTStateWatcher *)self dispatchSourceAbort];
       v29 = _NSConcreteStackBlock;
       v30 = 3221225472;
       v31 = sub_1000A4360;
       v32 = &unk_1002B8218;
-      v33 = self;
+      selfCopy = self;
       objc_copyWeak(&v34, &location);
-      dispatch_source_set_event_handler(v21, &v29);
+      dispatch_source_set_event_handler(dispatchSourceAbort, &v29);
 
       v22 = [(BTStateWatcher *)self dispatchSourceAbort:v29];
       dispatch_resume(v22);
@@ -152,9 +152,9 @@
       v23 = qword_100300AE8;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        v24 = [(BTStateWatcher *)self directoryURL];
-        v25 = [v24 path];
-        sub_1001F4160(v25, v39, v23, v24);
+        directoryURL5 = [(BTStateWatcher *)self directoryURL];
+        path3 = [directoryURL5 path];
+        sub_1001F4160(path3, v39, v23, directoryURL5);
       }
 
       objc_destroyWeak(&v34);
@@ -167,15 +167,15 @@
   return v4;
 }
 
-+ (id)monitorURL:(id)a3 action:(id)a4
++ (id)monitorURL:(id)l action:(id)action
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BTStateWatcher alloc] initWithURL:v6 action:v5];
+  actionCopy = action;
+  lCopy = l;
+  v7 = [[BTStateWatcher alloc] initWithURL:lCopy action:actionCopy];
 
-  v8 = [(BTStateWatcher *)v7 targetFilename];
+  targetFilename = [(BTStateWatcher *)v7 targetFilename];
 
-  if (v8)
+  if (targetFilename)
   {
     v9 = qword_100300AE8;
     if (os_log_type_enabled(qword_100300AE8, OS_LOG_TYPE_DEBUG))
@@ -196,12 +196,12 @@
   return v7;
 }
 
-+ (id)monitorBuddyStateWithAction:(id)a3
++ (id)monitorBuddyStateWithAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = objc_opt_new();
   [v4 setIsWatchingBuddy:1];
-  [v4 setBlock:v3];
+  [v4 setBlock:actionCopy];
 
   out_token = -1;
   v9 = _NSConcreteStackBlock;
@@ -227,11 +227,11 @@
   return v7;
 }
 
-+ (id)monitorFirstUnlockWithAction:(id)a3
++ (id)monitorFirstUnlockWithAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = objc_opt_new();
-  [v4 setBlock:v3];
+  [v4 setBlock:actionCopy];
 
   out_token = -1;
   v9 = _NSConcreteStackBlock;
@@ -259,14 +259,14 @@
 
 - (void)directoryChanged
 {
-  v3 = [(BTStateWatcher *)self targetFilename];
+  targetFilename = [(BTStateWatcher *)self targetFilename];
 
-  if (v3)
+  if (targetFilename)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [(BTStateWatcher *)self directoryURL];
+    directoryURL = [(BTStateWatcher *)self directoryURL];
     v23 = 0;
-    v6 = [v4 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:0 options:0 error:&v23];
+    v6 = [v4 contentsOfDirectoryAtURL:directoryURL includingPropertiesForKeys:0 options:0 error:&v23];
     v7 = v23;
 
     if (v7)
@@ -303,9 +303,9 @@
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v19 + 1) + 8 * v13) lastPathComponent];
-            v15 = [(BTStateWatcher *)self targetFilename];
-            v16 = [v14 isEqualToString:v15];
+            lastPathComponent = [*(*(&v19 + 1) + 8 * v13) lastPathComponent];
+            targetFilename2 = [(BTStateWatcher *)self targetFilename];
+            v16 = [lastPathComponent isEqualToString:targetFilename2];
 
             if (v16)
             {
@@ -377,22 +377,22 @@ LABEL_18:
     sub_1001F4530(v3);
   }
 
-  v4 = [(BTStateWatcher *)self dispatchSourceChange];
+  dispatchSourceChange = [(BTStateWatcher *)self dispatchSourceChange];
 
-  if (v4)
+  if (dispatchSourceChange)
   {
-    v5 = [(BTStateWatcher *)self dispatchSourceChange];
-    dispatch_source_cancel(v5);
+    dispatchSourceChange2 = [(BTStateWatcher *)self dispatchSourceChange];
+    dispatch_source_cancel(dispatchSourceChange2);
 
     [(BTStateWatcher *)self setDispatchSourceChange:0];
   }
 
-  v6 = [(BTStateWatcher *)self dispatchSourceAbort];
+  dispatchSourceAbort = [(BTStateWatcher *)self dispatchSourceAbort];
 
-  if (v6)
+  if (dispatchSourceAbort)
   {
-    v7 = [(BTStateWatcher *)self dispatchSourceAbort];
-    dispatch_source_cancel(v7);
+    dispatchSourceAbort2 = [(BTStateWatcher *)self dispatchSourceAbort];
+    dispatch_source_cancel(dispatchSourceAbort2);
 
     [(BTStateWatcher *)self setDispatchSourceAbort:0];
   }

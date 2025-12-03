@@ -2,10 +2,10 @@
 + (BOOL)supportsMenu;
 - (NSString)itemIdentifier;
 - (UIMenu)menu;
-- (_TtC18Feedback_Assistant21FBAAddAttachmentsCell)initWithCoder:(id)a3;
-- (_TtC18Feedback_Assistant21FBAAddAttachmentsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setItemIdentifier:(id)a3;
-- (void)setMenu:(id)a3;
+- (_TtC18Feedback_Assistant21FBAAddAttachmentsCell)initWithCoder:(id)coder;
+- (_TtC18Feedback_Assistant21FBAAddAttachmentsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setItemIdentifier:(id)identifier;
+- (void)setMenu:(id)menu;
 @end
 
 @implementation FBAAddAttachmentsCell
@@ -30,7 +30,7 @@
   return v4;
 }
 
-- (void)setItemIdentifier:(id)a3
+- (void)setItemIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC18Feedback_Assistant21FBAAddAttachmentsCell_itemIdentifier);
@@ -44,9 +44,9 @@
   result = *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAAddAttachmentsCell_button);
   if (result)
   {
-    v3 = [(UIMenu *)result menu];
+    menu = [(UIMenu *)result menu];
 
-    return v3;
+    return menu;
   }
 
   else
@@ -57,12 +57,12 @@
   return result;
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
   v3 = *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAAddAttachmentsCell_button);
   if (v3)
   {
-    [v3 setMenu:a3];
+    [v3 setMenu:menu];
   }
 
   else
@@ -71,7 +71,7 @@
   }
 }
 
-- (_TtC18Feedback_Assistant21FBAAddAttachmentsCell)initWithCoder:(id)a3
+- (_TtC18Feedback_Assistant21FBAAddAttachmentsCell)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC18Feedback_Assistant21FBAAddAttachmentsCell_itemIdentifier);
   *v4 = 0;
@@ -79,8 +79,8 @@
   *(self + OBJC_IVAR____TtC18Feedback_Assistant21FBAAddAttachmentsCell_button) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for FBAAddAttachmentsCell();
-  v5 = a3;
-  v6 = [(FBAAddAttachmentsCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(FBAAddAttachmentsCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {
@@ -89,11 +89,11 @@
   return v6;
 }
 
-- (_TtC18Feedback_Assistant21FBAAddAttachmentsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18Feedback_Assistant21FBAAddAttachmentsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -102,7 +102,7 @@
     v6 = 0;
   }
 
-  return sub_10005A93C(a3, a4, v6);
+  return sub_10005A93C(style, identifier, v6);
 }
 
 @end

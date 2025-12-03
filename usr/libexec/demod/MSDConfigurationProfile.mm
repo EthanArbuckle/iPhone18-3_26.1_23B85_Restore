@@ -1,31 +1,31 @@
 @interface MSDConfigurationProfile
 - (MSDConfigurationProfile)initWithDefaultProfile;
 - (MSDConfigurationProfile)initWithDemoModeProfile;
-- (MSDConfigurationProfile)initWithFile:(id)a3 andIdentifier:(id)a4;
+- (MSDConfigurationProfile)initWithFile:(id)file andIdentifier:(id)identifier;
 - (id)getProfileData;
 - (id)getSupervisedRestrictions;
 @end
 
 @implementation MSDConfigurationProfile
 
-- (MSDConfigurationProfile)initWithFile:(id)a3 andIdentifier:(id)a4
+- (MSDConfigurationProfile)initWithFile:(id)file andIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MSDConfigurationProfile;
   v8 = [(MSDConfigurationProfile *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MSDConfigurationProfile *)v8 setProfilePath:v6];
-    if ([(__CFString *)v7 isEqualToString:@"com.apple.mobilestoredemo.demoBundleProfile"])
+    [(MSDConfigurationProfile *)v8 setProfilePath:fileCopy];
+    if ([(__CFString *)identifierCopy isEqualToString:@"com.apple.mobilestoredemo.demoBundleProfile"])
     {
 
-      v7 = @"com.apple.mobilestoredemo.demoProfile.standardPreferences";
+      identifierCopy = @"com.apple.mobilestoredemo.demoProfile.standardPreferences";
     }
 
-    [(MSDConfigurationProfile *)v9 setProfileIdentifier:v7];
+    [(MSDConfigurationProfile *)v9 setProfileIdentifier:identifierCopy];
   }
 
   return v9;
@@ -63,8 +63,8 @@
 
 - (id)getProfileData
 {
-  v3 = [(MSDConfigurationProfile *)self profileIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.mobilestoredemo.defaultProfile"];
+  profileIdentifier = [(MSDConfigurationProfile *)self profileIdentifier];
+  v4 = [profileIdentifier isEqualToString:@"com.apple.mobilestoredemo.defaultProfile"];
 
   if (v4)
   {
@@ -75,8 +75,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [(MSDConfigurationProfile *)self profileIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.mobilestoredemo.demoMode"];
+  profileIdentifier2 = [(MSDConfigurationProfile *)self profileIdentifier];
+  v8 = [profileIdentifier2 isEqualToString:@"com.apple.mobilestoredemo.demoMode"];
 
   if (v8)
   {
@@ -85,19 +85,19 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v11 = [(MSDConfigurationProfile *)self profileIdentifier];
-  if ([v11 isEqualToString:@"com.apple.mobilestoredemo.demoProfile.standardPreferences"])
+  profileIdentifier3 = [(MSDConfigurationProfile *)self profileIdentifier];
+  if ([profileIdentifier3 isEqualToString:@"com.apple.mobilestoredemo.demoProfile.standardPreferences"])
   {
 
 LABEL_12:
-    v14 = [(MSDConfigurationProfile *)self profilePath];
-    v9 = [NSData dataWithContentsOfFile:v14];
+    profilePath = [(MSDConfigurationProfile *)self profilePath];
+    v9 = [NSData dataWithContentsOfFile:profilePath];
 
     goto LABEL_6;
   }
 
-  v12 = [(MSDConfigurationProfile *)self profileIdentifier];
-  v13 = [v12 isEqualToString:@"com.apple.mobilestoredemo.mdmProfile.dockLayout"];
+  profileIdentifier4 = [(MSDConfigurationProfile *)self profileIdentifier];
+  v13 = [profileIdentifier4 isEqualToString:@"com.apple.mobilestoredemo.mdmProfile.dockLayout"];
 
   if (v13)
   {
@@ -107,9 +107,9 @@ LABEL_12:
   v15 = sub_100063A54();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(MSDConfigurationProfile *)self profileIdentifier];
+    profileIdentifier5 = [(MSDConfigurationProfile *)self profileIdentifier];
     v17 = 138543362;
-    v18 = v16;
+    v18 = profileIdentifier5;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "getProfileData called for unknown profile type: %{public}@", &v17, 0xCu);
   }
 
@@ -122,13 +122,13 @@ LABEL_6:
 - (id)getSupervisedRestrictions
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(MSDConfigurationProfile *)self profileIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.mobilestoredemo.demoProfile.supervisedRestrictions"];
+  profileIdentifier = [(MSDConfigurationProfile *)self profileIdentifier];
+  v5 = [profileIdentifier isEqualToString:@"com.apple.mobilestoredemo.demoProfile.supervisedRestrictions"];
 
   if (v5)
   {
-    v6 = [(MSDConfigurationProfile *)self profilePath];
-    v7 = [NSDictionary dictionaryWithContentsOfFile:v6];
+    profilePath = [(MSDConfigurationProfile *)self profilePath];
+    v7 = [NSDictionary dictionaryWithContentsOfFile:profilePath];
     v8 = [v7 objectForKey:@"PayloadContent"];
 
     v30 = 0u;

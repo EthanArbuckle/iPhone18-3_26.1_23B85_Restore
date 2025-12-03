@@ -1,14 +1,14 @@
 @interface BluetoothChecker
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)isBluetoothOff:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)isBluetoothOff:(id)off;
 @end
 
 @implementation BluetoothChecker
 
-- (void)isBluetoothOff:(id)a3
+- (void)isBluetoothOff:(id)off
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 copy];
+  v4 = [off copy];
   completion = self->_completion;
   self->_completion = v4;
 
@@ -23,11 +23,11 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   if (self->_completion)
   {
-    [a3 state];
+    [state state];
     (*(self->_completion + 2))();
     completion = self->_completion;
     self->_completion = 0;

@@ -1,7 +1,7 @@
 @interface GKTurnBasedParticipantInternal
 + (id)secureCodedPropertyKeys;
 - (BOOL)isAutomatchParticipant;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)playerID;
 - (id)serverRepresentation;
 @end
@@ -48,15 +48,15 @@ void __57__GKTurnBasedParticipantInternal_secureCodedPropertyKeys__block_invoke(
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (slot = self->_slot, slot == [v4 slot]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (slot = self->_slot, slot == [equalCopy slot]))
   {
     sessionID = self->_sessionID;
-    v7 = [v4 sessionID];
-    if (sessionID == v7)
+    sessionID = [equalCopy sessionID];
+    if (sessionID == sessionID)
     {
       v10 = 1;
     }
@@ -64,8 +64,8 @@ void __57__GKTurnBasedParticipantInternal_secureCodedPropertyKeys__block_invoke(
     else
     {
       v8 = self->_sessionID;
-      v9 = [v4 sessionID];
-      v10 = [(NSString *)v8 isEqualToString:v9];
+      sessionID2 = [equalCopy sessionID];
+      v10 = [(NSString *)v8 isEqualToString:sessionID2];
     }
   }
 
@@ -79,68 +79,68 @@ void __57__GKTurnBasedParticipantInternal_secureCodedPropertyKeys__block_invoke(
 
 - (id)serverRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(GKTurnBasedParticipantInternal *)self status];
-  [v3 setObject:v4 forKeyedSubscript:@"player-status"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  status = [(GKTurnBasedParticipantInternal *)self status];
+  [dictionary setObject:status forKeyedSubscript:@"player-status"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKTurnBasedParticipantInternal matchOutcome](self, "matchOutcome")}];
-  [v3 setObject:v5 forKeyedSubscript:@"player-status-code"];
+  [dictionary setObject:v5 forKeyedSubscript:@"player-status-code"];
 
-  v6 = [(GKTurnBasedParticipantInternal *)self player];
-  v7 = [v6 playerID];
-  v8 = [v7 length];
+  player = [(GKTurnBasedParticipantInternal *)self player];
+  playerID = [player playerID];
+  v8 = [playerID length];
 
   if (v8)
   {
-    v9 = [(GKTurnBasedParticipantInternal *)self player];
+    player2 = [(GKTurnBasedParticipantInternal *)self player];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v11 = [(GKTurnBasedParticipantInternal *)self player];
-    v12 = v11;
+    player3 = [(GKTurnBasedParticipantInternal *)self player];
+    v12 = player3;
     if (isKindOfClass)
     {
-      v13 = [v11 guestIdentifier];
-      [v3 setObject:v13 forKeyedSubscript:@"guest-id"];
+      guestIdentifier = [player3 guestIdentifier];
+      [dictionary setObject:guestIdentifier forKeyedSubscript:@"guest-id"];
 
-      v14 = [v12 hostPlayerInternal];
-      v15 = [v14 playerID];
-      [v3 setObject:v15 forKeyedSubscript:@"player-id"];
+      hostPlayerInternal = [v12 hostPlayerInternal];
+      playerID2 = [hostPlayerInternal playerID];
+      [dictionary setObject:playerID2 forKeyedSubscript:@"player-id"];
     }
 
     else
     {
-      v14 = [v11 playerID];
-      [v3 setObject:v14 forKeyedSubscript:@"player-id"];
+      hostPlayerInternal = [player3 playerID];
+      [dictionary setObject:hostPlayerInternal forKeyedSubscript:@"player-id"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (BOOL)isAutomatchParticipant
 {
-  v3 = [(GKTurnBasedParticipantInternal *)self player];
-  v4 = [v3 isLocalPlayer];
+  player = [(GKTurnBasedParticipantInternal *)self player];
+  isLocalPlayer = [player isLocalPlayer];
 
-  if (v4)
+  if (isLocalPlayer)
   {
     return 0;
   }
 
-  v6 = [(GKTurnBasedParticipantInternal *)self player];
-  v7 = [v6 playerID];
-  v5 = [v7 length] == 0;
+  player2 = [(GKTurnBasedParticipantInternal *)self player];
+  playerID = [player2 playerID];
+  v5 = [playerID length] == 0;
 
   return v5;
 }
 
 - (NSString)playerID
 {
-  v2 = [(GKTurnBasedParticipantInternal *)self player];
-  v3 = [v2 playerID];
+  player = [(GKTurnBasedParticipantInternal *)self player];
+  playerID = [player playerID];
 
-  return v3;
+  return playerID;
 }
 
 @end

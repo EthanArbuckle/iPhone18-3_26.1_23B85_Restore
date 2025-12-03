@@ -1,21 +1,21 @@
 @interface SUICProgressIndicatorView
 - (BOOL)isDarkened;
-- (SUICProgressIndicatorView)initWithFrame:(CGRect)a3;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (SUICProgressIndicatorView)initWithFrame:(CGRect)frame;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
-- (void)setArrowVisible:(BOOL)a3 delay:(double)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)setCheckmarkVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setDarkened:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setSpinning:(BOOL)a3;
+- (void)setArrowVisible:(BOOL)visible delay:(double)delay animated:(BOOL)animated completion:(id)completion;
+- (void)setCheckmarkVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
+- (void)setDarkened:(BOOL)darkened animated:(BOOL)animated completion:(id)completion;
+- (void)setSpinning:(BOOL)spinning;
 @end
 
 @implementation SUICProgressIndicatorView
 
-- (SUICProgressIndicatorView)initWithFrame:(CGRect)a3
+- (SUICProgressIndicatorView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = SUICProgressIndicatorView;
-  v3 = [(SUICProgressIndicatorView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUICProgressIndicatorView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(_SUICRingLayer);
@@ -23,8 +23,8 @@
     v3->_shadowRingLayer = v4;
 
     v6 = v3->_shadowRingLayer;
-    v7 = [(SUICProgressIndicatorView *)v3 traitCollection];
-    if ([v7 userInterfaceStyle] == 2)
+    traitCollection = [(SUICProgressIndicatorView *)v3 traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       [MEMORY[0x1E69DC888] darkGrayColor];
     }
@@ -41,13 +41,13 @@
     v3->_progressRingLayer = v9;
 
     v11 = v3->_progressRingLayer;
-    v12 = [MEMORY[0x1E69DC888] blackColor];
-    [(_SUICRingLayer *)v11 setRingColor:v12];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(_SUICRingLayer *)v11 setRingColor:blackColor];
 
     v13 = [MEMORY[0x1E69DCAD8] configurationWithWeight:7];
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.right" withConfiguration:v13];
-    v15 = [MEMORY[0x1E69DC888] blackColor];
-    v16 = [v14 imageWithTintColor:v15 renderingMode:1];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    v16 = [v14 imageWithTintColor:blackColor2 renderingMode:1];
 
     v17 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v16];
     actionArrowImageView = v3->_actionArrowImageView;
@@ -59,17 +59,17 @@
     v3->_checkmarkLayer = v19;
 
     v21 = v3->_checkmarkLayer;
-    v22 = [MEMORY[0x1E69DC888] whiteColor];
-    [(LAUICheckmarkLayer *)v21 setPrimaryColor:v22 animated:0];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(LAUICheckmarkLayer *)v21 setPrimaryColor:whiteColor animated:0];
 
-    v23 = [(SUICProgressIndicatorView *)v3 layer];
-    [v23 addSublayer:v3->_shadowRingLayer];
+    layer = [(SUICProgressIndicatorView *)v3 layer];
+    [layer addSublayer:v3->_shadowRingLayer];
 
-    v24 = [(SUICProgressIndicatorView *)v3 layer];
-    [v24 addSublayer:v3->_progressRingLayer];
+    layer2 = [(SUICProgressIndicatorView *)v3 layer];
+    [layer2 addSublayer:v3->_progressRingLayer];
 
-    v25 = [(SUICProgressIndicatorView *)v3 layer];
-    [v25 addSublayer:v3->_checkmarkLayer];
+    layer3 = [(SUICProgressIndicatorView *)v3 layer];
+    [layer3 addSublayer:v3->_checkmarkLayer];
 
     [(SUICProgressIndicatorView *)v3 addSubview:v3->_actionArrowImageView];
     [(SUICProgressIndicatorView *)v3 setArrowVisible:1];
@@ -95,13 +95,13 @@
   [(UIImageView *)actionArrowImageView setFrame:?];
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v18.receiver = self;
   v18.super_class = SUICProgressIndicatorView;
-  v4 = a3;
-  [(SUICProgressIndicatorView *)&v18 layoutSublayersOfLayer:v4];
-  [v4 bounds];
+  layerCopy = layer;
+  [(SUICProgressIndicatorView *)&v18 layoutSublayersOfLayer:layerCopy];
+  [layerCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -132,15 +132,15 @@
   [(_SUICRingLayer *)shadowRingLayer setFrame:?];
 }
 
-- (void)setArrowVisible:(BOOL)a3 delay:(double)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)setArrowVisible:(BOOL)visible delay:(double)delay animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v8 = a3;
-  v10 = a6;
-  if ([(SUICProgressIndicatorView *)self isArrowVisible]!= v8)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  completionCopy = completion;
+  if ([(SUICProgressIndicatorView *)self isArrowVisible]!= visibleCopy)
   {
     objc_initWeak(&location, self->_actionArrowImageView);
-    if (v6)
+    if (animatedCopy)
     {
       v11 = MEMORY[0x1E69DD250];
       v18[0] = MEMORY[0x1E69E9820];
@@ -149,32 +149,32 @@
       v18[3] = &unk_1E81E8080;
       v12 = &v19;
       objc_copyWeak(&v19, &location);
-      v20 = v8;
-      [v11 animateWithDuration:0 delay:v18 usingSpringWithDamping:v10 initialSpringVelocity:0.35 options:a4 animations:400.0 completion:1.0];
+      v20 = visibleCopy;
+      [v11 animateWithDuration:0 delay:v18 usingSpringWithDamping:completionCopy initialSpringVelocity:0.35 options:delay animations:400.0 completion:1.0];
     }
 
     else
     {
-      if (a4 == 0.0)
+      if (delay == 0.0)
       {
-        [(UIImageView *)self->_actionArrowImageView setAlpha:v8];
-        if (v10)
+        [(UIImageView *)self->_actionArrowImageView setAlpha:visibleCopy];
+        if (completionCopy)
         {
-          v10[2](v10, 1);
+          completionCopy[2](completionCopy, 1);
         }
 
         goto LABEL_11;
       }
 
-      v13 = dispatch_time(0, (a4 * 1000000000.0));
+      v13 = dispatch_time(0, (delay * 1000000000.0));
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __71__SUICProgressIndicatorView_setArrowVisible_delay_animated_completion___block_invoke_2;
       v14[3] = &unk_1E81E80A8;
       v12 = &v16;
       objc_copyWeak(&v16, &location);
-      v17 = v8;
-      v15 = v10;
+      v17 = visibleCopy;
+      v15 = completionCopy;
       dispatch_after(v13, MEMORY[0x1E69E96A0], v14);
     }
 
@@ -184,9 +184,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
 LABEL_12:
@@ -212,61 +212,61 @@ void __71__SUICProgressIndicatorView_setArrowVisible_delay_animated_completion__
   }
 }
 
-- (void)setSpinning:(BOOL)a3
+- (void)setSpinning:(BOOL)spinning
 {
-  v3 = a3;
-  if ([(_SUICProgressRingLayer *)self->_progressRingLayer spinning]!= a3)
+  spinningCopy = spinning;
+  if ([(_SUICProgressRingLayer *)self->_progressRingLayer spinning]!= spinning)
   {
     progressRingLayer = self->_progressRingLayer;
 
-    [(_SUICProgressRingLayer *)progressRingLayer setSpinning:v3];
+    [(_SUICProgressRingLayer *)progressRingLayer setSpinning:spinningCopy];
   }
 }
 
-- (void)setCheckmarkVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setCheckmarkVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if ([(SUICProgressIndicatorView *)self isCheckmarkVisible]== v6)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  completionCopy = completion;
+  if ([(SUICProgressIndicatorView *)self isCheckmarkVisible]== visibleCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    [(LAUICheckmarkLayer *)self->_checkmarkLayer setRevealed:v6 animated:v5 withCompletion:v8];
+    [(LAUICheckmarkLayer *)self->_checkmarkLayer setRevealed:visibleCopy animated:animatedCopy withCompletion:completionCopy];
   }
 }
 
 - (BOOL)isDarkened
 {
-  v3 = [MEMORY[0x1E69DC888] blackColor];
-  v4 = [v3 CGColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  cGColor = [blackColor CGColor];
 
-  v5 = [(_SUICProgressRingLayer *)self->_progressRingLayer fillColor];
+  fillColor = [(_SUICProgressRingLayer *)self->_progressRingLayer fillColor];
 
-  return CGColorEqualToColor(v5, v4);
+  return CGColorEqualToColor(fillColor, cGColor);
 }
 
-- (void)setDarkened:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setDarkened:(BOOL)darkened animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a3;
-  v7 = a5;
-  if ([(SUICProgressIndicatorView *)self isDarkened]== v5)
+  darkenedCopy = darkened;
+  completionCopy = completion;
+  if ([(SUICProgressIndicatorView *)self isDarkened]== darkenedCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    if (v5)
+    if (darkenedCopy)
     {
       [MEMORY[0x1E69DC888] blackColor];
     }
@@ -276,7 +276,7 @@ void __71__SUICProgressIndicatorView_setArrowVisible_delay_animated_completion__
       [MEMORY[0x1E69DC888] clearColor];
     }
     v8 = ;
-    v9 = [v8 CGColor];
+    cGColor = [v8 CGColor];
 
     objc_initWeak(&location, self);
     v10 = MEMORY[0x1E69DD250];
@@ -285,8 +285,8 @@ void __71__SUICProgressIndicatorView_setArrowVisible_delay_animated_completion__
     v11[2] = __61__SUICProgressIndicatorView_setDarkened_animated_completion___block_invoke;
     v11[3] = &unk_1E81E8038;
     objc_copyWeak(v12, &location);
-    v12[1] = v9;
-    [v10 animateWithDuration:0 delay:v11 usingSpringWithDamping:v7 initialSpringVelocity:0.35 options:0.0 animations:400.0 completion:1.0];
+    v12[1] = cGColor;
+    [v10 animateWithDuration:0 delay:v11 usingSpringWithDamping:completionCopy initialSpringVelocity:0.35 options:0.0 animations:400.0 completion:1.0];
     objc_destroyWeak(v12);
     objc_destroyWeak(&location);
   }

@@ -6,8 +6,8 @@
 
 - (__CFString)propertyForKeyPath
 {
-  v4 = [a1 keyPath];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CCC668]];
+  keyPath = [self keyPath];
+  v5 = [keyPath isEqualToString:*MEMORY[0x277CCC668]];
 
   if (v5)
   {
@@ -17,8 +17,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [a1 keyPath];
-  v8 = [v7 isEqualToString:*MEMORY[0x277CCC670]];
+  keyPath2 = [self keyPath];
+  v8 = [keyPath2 isEqualToString:*MEMORY[0x277CCC670]];
 
   if (v8)
   {
@@ -26,8 +26,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [a1 keyPath];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CCC678]];
+  keyPath3 = [self keyPath];
+  v10 = [keyPath3 isEqualToString:*MEMORY[0x277CCC678]];
 
   if (v10)
   {
@@ -35,8 +35,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v11 = [a1 keyPath];
-  v12 = [v11 isEqualToString:*MEMORY[0x277CCC680]];
+  keyPath4 = [self keyPath];
+  v12 = [keyPath4 isEqualToString:*MEMORY[0x277CCC680]];
 
   if (v12)
   {
@@ -44,8 +44,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"_HKCDADocumentSampleComparisonFilter+HealthDaemon.m" lineNumber:37 description:@"Unreachable code has been executed"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_HKCDADocumentSampleComparisonFilter+HealthDaemon.m" lineNumber:37 description:@"Unreachable code has been executed"];
 
   v13 = &stru_283BF39C8;
 LABEL_10:

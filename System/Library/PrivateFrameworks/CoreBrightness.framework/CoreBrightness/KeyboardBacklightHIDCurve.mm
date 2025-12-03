@@ -1,58 +1,58 @@
 @interface KeyboardBacklightHIDCurve
-- (BOOL)KBBrightnessCurvePropertyHandler:(id)a3;
-- (BOOL)KBBrightnessLuxHysteresisPropertyHandler:(id)a3;
-- (BOOL)isBrightnessCurveValid:(id)a3;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (KeyboardBacklightHIDCurve)initWithQueue:(id)a3 device:(id)a4;
+- (BOOL)KBBrightnessCurvePropertyHandler:(id)handler;
+- (BOOL)KBBrightnessLuxHysteresisPropertyHandler:(id)handler;
+- (BOOL)isBrightnessCurveValid:(id)valid;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (KeyboardBacklightHIDCurve)initWithQueue:(id)queue device:(id)device;
 - (NSDictionary)brightnessCurve;
 - (float)brightness;
-- (float)convertNitsToLevelPercentage:(float)a3;
-- (float)convertPWMPercentageToNits:(float)a3;
+- (float)convertNitsToLevelPercentage:(float)percentage;
+- (float)convertPWMPercentageToNits:(float)nits;
 - (float)currentLuxToAmbient;
 - (float)currentLuxToNits;
 - (float)level;
 - (float)maxCurveNits;
 - (float)maxLevelPercentage;
 - (float)maxUserLevel;
-- (float)perceptualBrightnessForLevel:(float)a3;
-- (id)copyPropertyForKey:(id)a3;
+- (float)perceptualBrightnessForLevel:(float)level;
+- (id)copyPropertyForKey:(id)key;
 - (id)defaultBrightnessCurve;
 - (id)description;
-- (void)calculateLevelPercentageAtAmbient:(float)a3;
+- (void)calculateLevelPercentageAtAmbient:(float)ambient;
 - (void)dealloc;
 - (void)getKeyboardBacklightPreferences;
-- (void)reconfigureSettingsForColor:(int)a3;
-- (void)setBacklightLevel:(float)a3;
-- (void)setBrightness:(float)a3;
-- (void)setBrightness:(float)a3 withFadeSpeed:(int)a4 commit:(BOOL)a5;
-- (void)setColor:(int)a3;
+- (void)reconfigureSettingsForColor:(int)color;
+- (void)setBacklightLevel:(float)level;
+- (void)setBrightness:(float)brightness;
+- (void)setBrightness:(float)brightness withFadeSpeed:(int)speed commit:(BOOL)commit;
+- (void)setColor:(int)color;
 - (void)storeKeyboardBacklightCurveToPreferences;
 - (void)storeKeyboardBacklightPreferences;
-- (void)updateBrightnessCurve:(id)a3;
-- (void)updateDefaultBrightnessCurve:(id)a3;
-- (void)updateDefaultCurveForColor:(int)a3;
+- (void)updateBrightnessCurve:(id)curve;
+- (void)updateDefaultBrightnessCurve:(id)curve;
+- (void)updateDefaultCurveForColor:(int)color;
 - (void)updateLuxToNitsCurve;
 @end
 
 @implementation KeyboardBacklightHIDCurve
 
-- (KeyboardBacklightHIDCurve)initWithQueue:(id)a3 device:(id)a4
+- (KeyboardBacklightHIDCurve)initWithQueue:(id)queue device:(id)device
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
-  v18 = a4;
+  queueCopy = queue;
+  deviceCopy = device;
   v17 = 0;
   v16.receiver = self;
   v16.super_class = KeyboardBacklightHIDCurve;
-  v21 = [(KeyboardBacklight *)&v16 initWithQueue:a3 device:a4 ambientOffset:?];
-  if (v21)
+  selfCopy = [(KeyboardBacklight *)&v16 initWithQueue:queue device:device ambientOffset:?];
+  if (selfCopy)
   {
-    if ([(KeyboardBacklight *)v21 supportsAuthentication])
+    if ([(KeyboardBacklight *)selfCopy supportsAuthentication])
     {
-      if (v21->super.super._logHandle)
+      if (selfCopy->super.super._logHandle)
       {
-        logHandle = v21->super.super._logHandle;
+        logHandle = selfCopy->super.super._logHandle;
       }
 
       else
@@ -81,13 +81,13 @@
       }
     }
 
-    v21->_chicletCurveCoefficient = 0.053369;
-    v21->_chicletCurvePower = 2.5271;
-    v21->_color = 48;
-    v21->_curveVersion = 1.0;
-    v21->_luxHysteresis = 40.0;
-    [(KeyboardBacklight *)v21 setHysteresisOn:1];
-    if ([(KeyboardBacklight *)v21 levelUnit]== 16777441)
+    selfCopy->_chicletCurveCoefficient = 0.053369;
+    selfCopy->_chicletCurvePower = 2.5271;
+    selfCopy->_color = 48;
+    selfCopy->_curveVersion = 1.0;
+    selfCopy->_luxHysteresis = 40.0;
+    [(KeyboardBacklight *)selfCopy setHysteresisOn:1];
+    if ([(KeyboardBacklight *)selfCopy levelUnit]== 16777441)
     {
       luxToNitsCurve = 0;
       defaultLuxToNitsCurve = 0;
@@ -97,27 +97,27 @@
       dword_1ECDDDB98 = 1126170624;
       dword_1ECDDDB80 = 1133903872;
       dword_1ECDDDBA0 = 1133903872;
-      [(KeyboardBacklight *)v21 levelMax];
+      [(KeyboardBacklight *)selfCopy levelMax];
       *&dword_1ECDDDB6C = 0.25 * v4;
       *&dword_1ECDDDB8C = 0.25 * v4;
-      [(KeyboardBacklight *)v21 levelMax];
+      [(KeyboardBacklight *)selfCopy levelMax];
       *&dword_1ECDDDB74 = 0.69375 * v5;
       *&dword_1ECDDDB94 = 0.69375 * v5;
-      [(KeyboardBacklight *)v21 levelMax];
+      [(KeyboardBacklight *)selfCopy levelMax];
       *&dword_1ECDDDB7C = 0.69375 * v6;
       *&dword_1ECDDDB9C = 0.69375 * v6;
-      [(KeyboardBacklight *)v21 levelMax];
+      [(KeyboardBacklight *)selfCopy levelMax];
       *&dword_1ECDDDB84 = 0.01 * v7;
       *&dword_1ECDDDBA4 = 0.01 * v7;
     }
   }
 
-  return v21;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = KeyboardBacklightHIDCurve;
@@ -126,70 +126,70 @@
 
 - (id)description
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v5 = MEMORY[0x1E696AEC0];
   v6.receiver = self;
   v6.super_class = KeyboardBacklightHIDCurve;
   v4 = [(KeyboardBacklight *)&v6 description];
-  [(KeyboardBacklightHIDCurve *)v8 maxCurveNits];
+  [(KeyboardBacklightHIDCurve *)selfCopy maxCurveNits];
   return [v5 stringWithFormat:@"%@ maxCurveNits %f luxToNitsCurve [%f, %f], [%f, %f], [%f, %f], [%f, %f]", v4, v2, *&luxToNitsCurve, *&dword_1ECDDDB6C, *&dword_1ECDDDB70, *&dword_1ECDDDB74, *&dword_1ECDDDB78, *&dword_1ECDDDB7C, *&dword_1ECDDDB80, *&dword_1ECDDDB84];
 }
 
-- (id)copyPropertyForKey:(id)a3
+- (id)copyPropertyForKey:(id)key
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  keyCopy = key;
   v6 = 0;
-  if ([a3 isEqualToString:@"KeyboardBacklightLuxHysteresis"])
+  if ([key isEqualToString:@"KeyboardBacklightLuxHysteresis"])
   {
     v4 = objc_alloc(MEMORY[0x1E696AD98]);
-    [(KeyboardBacklightHIDCurve *)v9 luxHysteresis];
+    [(KeyboardBacklightHIDCurve *)selfCopy luxHysteresis];
     return [v4 initWithFloat:?];
   }
 
-  else if ([v7 isEqualToString:@"KeyboardBacklightCurve"])
+  else if ([keyCopy isEqualToString:@"KeyboardBacklightCurve"])
   {
-    return [(NSDictionary *)[(KeyboardBacklightHIDCurve *)v9 brightnessCurve] copy];
+    return [(NSDictionary *)[(KeyboardBacklightHIDCurve *)selfCopy brightnessCurve] copy];
   }
 
   else
   {
-    v5.receiver = v9;
+    v5.receiver = selfCopy;
     v5.super_class = KeyboardBacklightHIDCurve;
-    return [(KeyboardBacklight *)&v5 copyPropertyForKey:v7];
+    return [(KeyboardBacklight *)&v5 copyPropertyForKey:keyCopy];
   }
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v6 = 0;
-  if ([a4 isEqualToString:@"KeyboardBacklightCurve"])
+  if ([key isEqualToString:@"KeyboardBacklightCurve"])
   {
-    v6 = [(KeyboardBacklightHIDCurve *)v10 KBBrightnessCurvePropertyHandler:v8];
+    v6 = [(KeyboardBacklightHIDCurve *)selfCopy KBBrightnessCurvePropertyHandler:propertyCopy];
   }
 
-  else if ([v7 isEqualToString:@"KeyboardBacklightLuxHysteresis"])
+  else if ([keyCopy isEqualToString:@"KeyboardBacklightLuxHysteresis"])
   {
-    v6 = [(KeyboardBacklightHIDCurve *)v10 KBBrightnessLuxHysteresisPropertyHandler:v8];
+    v6 = [(KeyboardBacklightHIDCurve *)selfCopy KBBrightnessLuxHysteresisPropertyHandler:propertyCopy];
   }
 
   if ((v6 & 1) == 0)
   {
-    v5.receiver = v10;
+    v5.receiver = selfCopy;
     v5.super_class = KeyboardBacklightHIDCurve;
-    v6 = [(KeyboardBacklight *)&v5 setProperty:v8 forKey:v7];
+    v6 = [(KeyboardBacklight *)&v5 setProperty:propertyCopy forKey:keyCopy];
   }
 
   return v6 & 1;
 }
 
-- (BOOL)KBBrightnessCurvePropertyHandler:(id)a3
+- (BOOL)KBBrightnessCurvePropertyHandler:(id)handler
 {
   v9 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -217,12 +217,12 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_64(v8, a3);
+      __os_log_helper_16_2_1_8_64(v8, handler);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Update brightness curve to %@", v8, 0xCu);
     }
 
-    [(KeyboardBacklightHIDCurve *)self updateDefaultBrightnessCurve:a3];
-    [(KeyboardBacklightHIDCurve *)self updateBrightnessCurve:a3];
+    [(KeyboardBacklightHIDCurve *)self updateDefaultBrightnessCurve:handler];
+    [(KeyboardBacklightHIDCurve *)self updateBrightnessCurve:handler];
     [(KeyboardBacklightHIDCurve *)self storeKeyboardBacklightCurveToPreferences];
     [(KeyboardBacklight *)self currentLux];
     [(KeyboardBacklightHIDCurve *)self handleLuxUpdate:?];
@@ -232,13 +232,13 @@
   return 1;
 }
 
-- (BOOL)KBBrightnessLuxHysteresisPropertyHandler:(id)a3
+- (BOOL)KBBrightnessLuxHysteresisPropertyHandler:(id)handler
 {
   v10 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 floatValue];
+    [handler floatValue];
     [(KeyboardBacklightHIDCurve *)self setLuxHysteresis:?];
     if (self->super.super._logHandle)
     {
@@ -272,61 +272,61 @@
   return 1;
 }
 
-- (void)updateDefaultBrightnessCurve:(id)a3
+- (void)updateDefaultBrightnessCurve:(id)curve
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (curve)
   {
-    v15 = [a3 objectForKey:@"KeyboardCurveY1"];
+    v15 = [curve objectForKey:@"KeyboardCurveY1"];
     if (v15)
     {
       [v15 floatValue];
       dword_1ECDDDB8C = v3;
     }
 
-    v16 = [a3 objectForKey:@"KeyboardCurveY2"];
+    v16 = [curve objectForKey:@"KeyboardCurveY2"];
     if (v16)
     {
       [v16 floatValue];
       dword_1ECDDDB94 = v4;
     }
 
-    v17 = [a3 objectForKey:@"KeyboardCurveY3"];
+    v17 = [curve objectForKey:@"KeyboardCurveY3"];
     if (v17)
     {
       [v17 floatValue];
       dword_1ECDDDB9C = v5;
     }
 
-    v18 = [a3 objectForKey:@"KeyboardCurveY4"];
+    v18 = [curve objectForKey:@"KeyboardCurveY4"];
     if (v18)
     {
       [v18 floatValue];
       dword_1ECDDDBA4 = v6;
     }
 
-    v19 = [a3 objectForKey:@"KeyboardCurveX1"];
+    v19 = [curve objectForKey:@"KeyboardCurveX1"];
     if (v19)
     {
       [v19 floatValue];
       defaultLuxToNitsCurve = v7;
     }
 
-    v20 = [a3 objectForKey:@"KeyboardCurveX2"];
+    v20 = [curve objectForKey:@"KeyboardCurveX2"];
     if (v20)
     {
       [v20 floatValue];
       dword_1ECDDDB90 = v8;
     }
 
-    v21 = [a3 objectForKey:@"KeyboardCurveX3"];
+    v21 = [curve objectForKey:@"KeyboardCurveX3"];
     if (v21)
     {
       [v21 floatValue];
       dword_1ECDDDB98 = v9;
     }
 
-    v22 = [a3 objectForKey:@"KeyboardCurveX4"];
+    v22 = [curve objectForKey:@"KeyboardCurveX4"];
     if (v22)
     {
       [v22 floatValue];
@@ -394,53 +394,53 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)updateBrightnessCurve:(id)a3
+- (void)updateBrightnessCurve:(id)curve
 {
   v46 = *MEMORY[0x1E69E9840];
-  v44 = self;
+  selfCopy = self;
   v43 = a2;
-  v42 = a3;
-  if ([(KeyboardBacklightHIDCurve *)self isBrightnessCurveValid:a3])
+  curveCopy = curve;
+  if ([(KeyboardBacklightHIDCurve *)self isBrightnessCurveValid:curve])
   {
-    [objc_msgSend(v42 objectForKeyedSubscript:{@"KeyboardCurveY1", "floatValue"}];
+    [objc_msgSend(curveCopy objectForKeyedSubscript:{@"KeyboardCurveY1", "floatValue"}];
     dword_1ECDDDB6C = v3;
-    [objc_msgSend(v42 objectForKeyedSubscript:{@"KeyboardCurveY2", "floatValue"}];
+    [objc_msgSend(curveCopy objectForKeyedSubscript:{@"KeyboardCurveY2", "floatValue"}];
     dword_1ECDDDB74 = v4;
-    [objc_msgSend(v42 objectForKeyedSubscript:{@"KeyboardCurveY3", "floatValue"}];
+    [objc_msgSend(curveCopy objectForKeyedSubscript:{@"KeyboardCurveY3", "floatValue"}];
     dword_1ECDDDB7C = v5;
-    [objc_msgSend(v42 objectForKeyedSubscript:{@"KeyboardCurveY4", "floatValue"}];
+    [objc_msgSend(curveCopy objectForKeyedSubscript:{@"KeyboardCurveY4", "floatValue"}];
     dword_1ECDDDB84 = v6;
-    v41 = [v42 objectForKey:@"KeyboardCurveX1"];
+    v41 = [curveCopy objectForKey:@"KeyboardCurveX1"];
     if (v41)
     {
       [v41 floatValue];
       luxToNitsCurve = v7;
     }
 
-    v40 = [v42 objectForKey:@"KeyboardCurveX2"];
+    v40 = [curveCopy objectForKey:@"KeyboardCurveX2"];
     if (v40)
     {
       [v40 floatValue];
       dword_1ECDDDB70 = v8;
     }
 
-    v39 = [v42 objectForKey:@"KeyboardCurveX3"];
+    v39 = [curveCopy objectForKey:@"KeyboardCurveX3"];
     if (v39)
     {
       [v39 floatValue];
       dword_1ECDDDB78 = v9;
     }
 
-    v38 = [v42 objectForKey:@"KeyboardCurveX4"];
+    v38 = [curveCopy objectForKey:@"KeyboardCurveX4"];
     if (v38)
     {
       [v38 floatValue];
       dword_1ECDDDB80 = v10;
       [v38 floatValue];
-      v44[86] = v11 * 0.13;
-      if (*(v44 + 82) == 70)
+      selfCopy[86] = v11 * 0.13;
+      if (*(selfCopy + 82) == 70)
       {
-        v37 = v44[86];
+        v37 = selfCopy[86];
         v36 = 5.0;
         if (v37 >= 5.0)
         {
@@ -453,12 +453,12 @@
         }
 
         v35 = v28;
-        v44[86] = v28;
+        selfCopy[86] = v28;
       }
 
       else
       {
-        v34 = v44[86];
+        v34 = selfCopy[86];
         v33 = 10.0;
         if (v34 >= 10.0)
         {
@@ -471,16 +471,16 @@
         }
 
         v32 = v27;
-        v44[86] = v27;
+        selfCopy[86] = v27;
       }
     }
   }
 
   else
   {
-    if (*(v44 + 2))
+    if (*(selfCopy + 2))
     {
-      v26 = *(v44 + 2);
+      v26 = *(selfCopy + 2);
     }
 
     else
@@ -518,9 +518,9 @@
     dword_1ECDDDB84 = dword_1ECDDDBA4;
   }
 
-  if (*(v44 + 2))
+  if (*(selfCopy + 2))
   {
-    v22 = *(v44 + 2);
+    v22 = *(selfCopy + 2);
   }
 
   else
@@ -548,7 +548,7 @@
     *&v19 = *&dword_1ECDDDB7C;
     *&v20 = *&dword_1ECDDDB80;
     *&v13 = *&dword_1ECDDDB84;
-    [v44 luxHysteresis];
+    [selfCopy luxHysteresis];
     __os_log_helper_16_0_9_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_0(v45, v14, v15, v16, v17, v18, v19, v20, v13, COERCE__INT64(v12));
     _os_log_impl(&dword_1DE8E5000, v22, OS_LOG_TYPE_DEFAULT, "Updated lux to nits curve to [%f, %f], [%f, %f], [%f, %f], [%f, %f] (Hysteresis = %f)", v45, 0x5Cu);
   }
@@ -556,38 +556,38 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isBrightnessCurveValid:(id)a3
+- (BOOL)isBrightnessCurveValid:(id)valid
 {
   v21 = 1;
   v20 = ((*&dword_1ECDDDB94 - *&dword_1ECDDDB8C) / (*&dword_1ECDDDB90 - *&defaultLuxToNitsCurve)) * 1.5;
   v19 = *&luxToNitsCurve;
   v18 = *&dword_1ECDDDB70;
-  v16 = [a3 objectForKey:@"KeyboardCurveX1"];
+  v16 = [valid objectForKey:@"KeyboardCurveX1"];
   if (v16)
   {
     [v16 floatValue];
     v19 = v3;
   }
 
-  v17 = [a3 objectForKey:@"KeyboardCurveX2"];
+  v17 = [valid objectForKey:@"KeyboardCurveX2"];
   if (v17)
   {
     [v17 floatValue];
     v18 = v4;
   }
 
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"KeyboardCurveY2", "floatValue"}];
+  [objc_msgSend(valid objectForKeyedSubscript:{@"KeyboardCurveY2", "floatValue"}];
   v15 = v5;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"KeyboardCurveY1", "floatValue"}];
+  [objc_msgSend(valid objectForKeyedSubscript:{@"KeyboardCurveY1", "floatValue"}];
   *&v6 = (v15 - *&v6) / (v18 - v19);
   if (*&v6 > v20)
   {
     return 0;
   }
 
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"KeyboardCurveY2", v6), "floatValue"}];
+  [objc_msgSend(valid objectForKeyedSubscript:{@"KeyboardCurveY2", v6), "floatValue"}];
   v14 = v7;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"KeyboardCurveY1", "floatValue"}];
+  [objc_msgSend(valid objectForKeyedSubscript:{@"KeyboardCurveY1", "floatValue"}];
   v8 = *&v9;
   *&v9 = v14;
   if (v14 < v8)
@@ -595,9 +595,9 @@
     return 0;
   }
 
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"KeyboardCurveY3", v9), "floatValue"}];
+  [objc_msgSend(valid objectForKeyedSubscript:{@"KeyboardCurveY3", v9), "floatValue"}];
   v13 = v10;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"KeyboardCurveY4", "floatValue"}];
+  [objc_msgSend(valid objectForKeyedSubscript:{@"KeyboardCurveY4", "floatValue"}];
   if (v13 < v11)
   {
     return 0;
@@ -708,7 +708,7 @@
 - (void)getKeyboardBacklightPreferences
 {
   v41 = *MEMORY[0x1E69E9840];
-  v38 = self;
+  selfCopy = self;
   v37 = a2;
   v36 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:{-[KeyboardBacklight keyboardID](self, "keyboardID")}];
   v35 = +[CBKeyboardPreferencesManager copyPreferenceForKey:](CBKeyboardPreferencesManager, "copyPreferenceForKey:", [v36 stringValue]);
@@ -724,7 +724,7 @@
       if (objc_opt_isKindOfClass())
       {
         [v31 floatValue];
-        v38->_curveVersion = v2;
+        selfCopy->_curveVersion = v2;
       }
     }
 
@@ -734,12 +734,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([v30 intValue] == 53 && v38->_curveVersion < 2.03 || objc_msgSend(v30, "intValue") == 70 && v38->_curveVersion < 3.0 || objc_msgSend(v30, "intValue") == 71 && v38->_curveVersion < 2.0)
+        if ([v30 intValue] == 53 && selfCopy->_curveVersion < 2.03 || objc_msgSend(v30, "intValue") == 70 && selfCopy->_curveVersion < 3.0 || objc_msgSend(v30, "intValue") == 71 && selfCopy->_curveVersion < 2.0)
         {
           v32 = 0;
         }
 
-        -[KeyboardBacklightHIDCurve setColor:](v38, "setColor:", [v30 intValue]);
+        -[KeyboardBacklightHIDCurve setColor:](selfCopy, "setColor:", [v30 intValue]);
       }
     }
 
@@ -752,12 +752,12 @@
         {
           [v34 floatValue];
           v18 = (v3 * 1000.0);
-          [(KeyboardBacklightHIDCurve *)v38 maxUserLevel];
+          [(KeyboardBacklightHIDCurve *)selfCopy maxUserLevel];
           if (v18 == (v4 * 1000.0))
           {
-            if (v38->super.super._logHandle)
+            if (selfCopy->super.super._logHandle)
             {
-              logHandle = v38->super.super._logHandle;
+              logHandle = selfCopy->super.super._logHandle;
             }
 
             else
@@ -785,7 +785,7 @@
               _os_log_impl(&dword_1DE8E5000, log, type, "Pref curve present and max user level matched -> update the curve", v27, 2u);
             }
 
-            [(KeyboardBacklightHIDCurve *)v38 updateBrightnessCurve:v33];
+            [(KeyboardBacklightHIDCurve *)selfCopy updateBrightnessCurve:v33];
           }
         }
       }
@@ -794,9 +794,9 @@
 
   else
   {
-    if (v38->super.super._logHandle)
+    if (selfCopy->super.super._logHandle)
     {
-      v13 = v38->super.super._logHandle;
+      v13 = selfCopy->super.super._logHandle;
     }
 
     else
@@ -825,9 +825,9 @@
     }
   }
 
-  if (v38->super.super._logHandle)
+  if (selfCopy->super.super._logHandle)
   {
-    v9 = v38->super.super._logHandle;
+    v9 = selfCopy->super.super._logHandle;
   }
 
   else
@@ -849,13 +849,13 @@
   v22 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_66(v40, [(KeyboardBacklightHIDCurve *)v38 defaultBrightnessCurve]);
+    __os_log_helper_16_2_1_8_66(v40, [(KeyboardBacklightHIDCurve *)selfCopy defaultBrightnessCurve]);
     _os_log_impl(&dword_1DE8E5000, v23, v22, "Default curve = %{public}@", v40, 0xCu);
   }
 
-  if (v38->super.super._logHandle)
+  if (selfCopy->super.super._logHandle)
   {
-    v7 = v38->super.super._logHandle;
+    v7 = selfCopy->super.super._logHandle;
   }
 
   else
@@ -877,13 +877,13 @@
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_66(v39, [(KeyboardBacklightHIDCurve *)v38 brightnessCurve]);
+    __os_log_helper_16_2_1_8_66(v39, [(KeyboardBacklightHIDCurve *)selfCopy brightnessCurve]);
     _os_log_impl(&dword_1DE8E5000, v21, v20, "Current curve = %{public}@", v39, 0xCu);
   }
 
   MEMORY[0x1E69E5920](v35);
   *&v5 = MEMORY[0x1E69E5920](v36).n128_u64[0];
-  v19.receiver = v38;
+  v19.receiver = selfCopy;
   v19.super_class = KeyboardBacklightHIDCurve;
   [(KeyboardBacklight *)&v19 getKeyboardBacklightPreferences];
   *MEMORY[0x1E69E9840];
@@ -891,12 +891,12 @@
 
 - (void)storeKeyboardBacklightPreferences
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = KeyboardBacklightHIDCurve;
   [(KeyboardBacklight *)&v2 storeKeyboardBacklightPreferences];
-  [(KeyboardBacklightHIDCurve *)v4 storeKeyboardBacklightCurveToPreferences];
+  [(KeyboardBacklightHIDCurve *)selfCopy storeKeyboardBacklightCurveToPreferences];
 }
 
 - (void)storeKeyboardBacklightCurveToPreferences
@@ -946,7 +946,7 @@
 
 - (void)updateLuxToNitsCurve
 {
-  v57 = self;
+  selfCopy = self;
   v56 = a2;
   if (![(KeyboardBacklight *)self autoAdjust])
   {
@@ -962,8 +962,8 @@
     }
   }
 
-  [(KeyboardBacklight *)v57 currentLux];
-  if (v2 < *&luxToNitsCurve || ([(KeyboardBacklight *)v57 currentLux], v3 > *&dword_1ECDDDB80))
+  [(KeyboardBacklight *)selfCopy currentLux];
+  if (v2 < *&luxToNitsCurve || ([(KeyboardBacklight *)selfCopy currentLux], v3 > *&dword_1ECDDDB80))
   {
     v38 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
     v52 = v38;
@@ -977,8 +977,8 @@
     }
   }
 
-  [(KeyboardBacklight *)v57 levelPercentage];
-  if (v4 < 0.0 || ([(KeyboardBacklight *)v57 levelPercentage], v5 > 1.0))
+  [(KeyboardBacklight *)selfCopy levelPercentage];
+  if (v4 < 0.0 || ([(KeyboardBacklight *)selfCopy levelPercentage], v5 > 1.0))
   {
     v35 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
     v49 = v35;
@@ -994,11 +994,11 @@
 
   v46 = (*&dword_1ECDDDB94 - *&dword_1ECDDDB8C) / (*&dword_1ECDDDB90 - *&defaultLuxToNitsCurve);
   v45 = v46 * 1.5;
-  [(KeyboardBacklight *)v57 levelPercentage];
+  [(KeyboardBacklight *)selfCopy levelPercentage];
   v32 = v6;
-  [(KeyboardBacklightHIDCurve *)v57 maxCapableNits];
+  [(KeyboardBacklightHIDCurve *)selfCopy maxCapableNits];
   v44 = v32 * v7;
-  [(KeyboardBacklight *)v57 currentLux];
+  [(KeyboardBacklight *)selfCopy currentLux];
   if (v8 == *&defaultLuxToNitsCurve)
   {
     dword_1ECDDDB6C = LODWORD(v44);
@@ -1007,30 +1007,30 @@
 
   else
   {
-    [(KeyboardBacklight *)v57 currentLux];
-    if (v9 <= *&defaultLuxToNitsCurve || ([(KeyboardBacklight *)v57 currentLux], v10 > *&dword_1ECDDDB90))
+    [(KeyboardBacklight *)selfCopy currentLux];
+    if (v9 <= *&defaultLuxToNitsCurve || ([(KeyboardBacklight *)selfCopy currentLux], v10 > *&dword_1ECDDDB90))
     {
-      [(KeyboardBacklight *)v57 currentLux];
-      if (v17 <= *&dword_1ECDDDB90 || ([(KeyboardBacklight *)v57 currentLux], v18 > *&dword_1ECDDDB98))
+      [(KeyboardBacklight *)selfCopy currentLux];
+      if (v17 <= *&dword_1ECDDDB90 || ([(KeyboardBacklight *)selfCopy currentLux], v18 > *&dword_1ECDDDB98))
       {
-        [(KeyboardBacklight *)v57 currentLux];
+        [(KeyboardBacklight *)selfCopy currentLux];
         if (v20 > *&dword_1ECDDDB98)
         {
-          [(KeyboardBacklight *)v57 currentLux];
+          [(KeyboardBacklight *)selfCopy currentLux];
           if (v21 < *&dword_1ECDDDBA0)
           {
             v27 = *&dword_1ECDDDBA4 - v44;
             v26 = *&dword_1ECDDDBA0;
-            [(KeyboardBacklight *)v57 currentLux];
+            [(KeyboardBacklight *)selfCopy currentLux];
             *&dword_1ECDDDB7C = *&dword_1ECDDDBA4 - ((v27 / (v26 - v22)) * (*&dword_1ECDDDBA0 - *&dword_1ECDDDB98));
             *&dword_1ECDDDB74 = *&dword_1ECDDDB94 + (*&dword_1ECDDDB7C - *&dword_1ECDDDB9C);
             v28 = *&dword_1ECDDDB94 + (*&dword_1ECDDDB7C - *&dword_1ECDDDB9C);
-            [(KeyboardBacklightHIDCurve *)v57 maxCurveNits];
+            [(KeyboardBacklightHIDCurve *)selfCopy maxCurveNits];
             v23 = *&v24;
             *&v24 = v28;
             if (v28 > v23)
             {
-              [(KeyboardBacklightHIDCurve *)v57 maxCurveNits];
+              [(KeyboardBacklightHIDCurve *)selfCopy maxCurveNits];
               dword_1ECDDDB74 = v25;
             }
 
@@ -1049,7 +1049,7 @@
 
       else
       {
-        [(KeyboardBacklight *)v57 currentLux];
+        [(KeyboardBacklight *)selfCopy currentLux];
         v42 = v44 - (*&dword_1ECDDDB94 + (((v19 - *&dword_1ECDDDB90) / (*&dword_1ECDDDB98 - *&dword_1ECDDDB90)) * (*&dword_1ECDDDB9C - *&dword_1ECDDDB94)));
         *&dword_1ECDDDB74 = *&dword_1ECDDDB94 + v42;
         *&dword_1ECDDDB7C = *&dword_1ECDDDB9C + v42;
@@ -1068,37 +1068,37 @@
     else
     {
       v31 = v44 - *&dword_1ECDDDB8C;
-      [(KeyboardBacklight *)v57 currentLux];
+      [(KeyboardBacklight *)selfCopy currentLux];
       v43 = v31 / (v11 - *&defaultLuxToNitsCurve);
       if (v43 <= v45)
       {
         v30 = fmaxf(v43, v46);
-        [(KeyboardBacklight *)v57 currentLux];
+        [(KeyboardBacklight *)selfCopy currentLux];
         *&dword_1ECDDDB74 = (v44 - (v30 * (v13 - *&defaultLuxToNitsCurve))) + (*&dword_1ECDDDB90 * v30);
         *&dword_1ECDDDB6C = v44 - (v30 * (v13 - *&defaultLuxToNitsCurve));
       }
 
       else
       {
-        [(KeyboardBacklight *)v57 currentLux];
+        [(KeyboardBacklight *)selfCopy currentLux];
         *&dword_1ECDDDB74 = (v44 - (v45 * (v12 - *&defaultLuxToNitsCurve))) + (*&dword_1ECDDDB90 * v45);
         *&dword_1ECDDDB6C = v44 - (v45 * (v12 - *&defaultLuxToNitsCurve));
       }
 
       *&dword_1ECDDDB7C = *&dword_1ECDDDB9C + (*&dword_1ECDDDB74 - *&dword_1ECDDDB94);
       v29 = *&dword_1ECDDDB9C + (*&dword_1ECDDDB74 - *&dword_1ECDDDB94);
-      [(KeyboardBacklightHIDCurve *)v57 maxCurveNits];
+      [(KeyboardBacklightHIDCurve *)selfCopy maxCurveNits];
       v14 = *&v15;
       *&v15 = v29;
       if (v29 > v14)
       {
-        [(KeyboardBacklightHIDCurve *)v57 maxCurveNits];
+        [(KeyboardBacklightHIDCurve *)selfCopy maxCurveNits];
         dword_1ECDDDB7C = v16;
       }
     }
   }
 
-  [(KeyboardBacklightHIDCurve *)v57 storeKeyboardBacklightCurveToPreferences];
+  [(KeyboardBacklightHIDCurve *)selfCopy storeKeyboardBacklightCurveToPreferences];
 }
 
 - (float)level
@@ -1161,7 +1161,7 @@
   return v10;
 }
 
-- (void)setBrightness:(float)a3
+- (void)setBrightness:(float)brightness
 {
   v24 = *MEMORY[0x1E69E9840];
   if (self->super.super._logHandle)
@@ -1186,31 +1186,31 @@
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_0_2_8_0_4_0(v23, COERCE__INT64(a3), [(KeyboardBacklight *)self manualAdjust]);
+    __os_log_helper_16_0_2_8_0_4_0(v23, COERCE__INT64(brightness), [(KeyboardBacklight *)self manualAdjust]);
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "requested brightness %f manualAdjust %d", v23, 0x12u);
   }
 
   if ([(KeyboardBacklight *)self manualAdjust])
   {
-    *&v3 = LODWORD(a3);
-    if (a3 <= 0.0)
+    *&v3 = LODWORD(brightness);
+    if (brightness <= 0.0)
     {
-      v16 = 0.0;
+      brightnessCopy = 0.0;
     }
 
     else
     {
-      v16 = a3;
+      brightnessCopy = brightness;
     }
 
-    if (v16 >= 1.0)
+    if (brightnessCopy >= 1.0)
     {
       v15 = 1.0;
     }
 
     else
     {
-      v15 = v16;
+      v15 = brightnessCopy;
     }
 
     *&v3 = v15;
@@ -1301,17 +1301,17 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setBrightness:(float)a3 withFadeSpeed:(int)a4 commit:(BOOL)a5
+- (void)setBrightness:(float)brightness withFadeSpeed:(int)speed commit:(BOOL)commit
 {
   v42 = *MEMORY[0x1E69E9840];
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
-  v37 = a3;
-  v36 = a4;
-  v35 = a5;
+  brightnessCopy = brightness;
+  speedCopy = speed;
+  commitCopy = commit;
   if (self->super.super._logHandle)
   {
-    logHandle = v39->super.super._logHandle;
+    logHandle = selfCopy->super.super._logHandle;
   }
 
   else
@@ -1333,16 +1333,16 @@
   v33 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_0_4_8_0_4_0_4_0_4_0(v41, COERCE__INT64(v37), [(KeyboardBacklight *)v39 manualAdjust], v36, v35);
+    __os_log_helper_16_0_4_8_0_4_0_4_0_4_0(v41, COERCE__INT64(brightnessCopy), [(KeyboardBacklight *)selfCopy manualAdjust], speedCopy, commitCopy);
     _os_log_debug_impl(&dword_1DE8E5000, v34, v33, "Requested keyboard brightness %f, manualAdjust %d, fade speed %d, commit %d", v41, 0x1Eu);
   }
 
-  if ([(KeyboardBacklight *)v39 manualAdjust])
+  if ([(KeyboardBacklight *)selfCopy manualAdjust])
   {
     v31 = 0.0;
-    *&v5 = LODWORD(v37);
-    v30 = v37;
-    if (v37 <= 0.0)
+    *&v5 = LODWORD(brightnessCopy);
+    v30 = brightnessCopy;
+    if (brightnessCopy <= 0.0)
     {
       v19 = v31;
     }
@@ -1366,7 +1366,7 @@
     }
 
     v27 = v18;
-    v37 = v18;
+    brightnessCopy = v18;
     *&v5 = v18;
     if (v18 == 0.0)
     {
@@ -1376,28 +1376,28 @@
 
     else
     {
-      [(KeyboardBacklightHIDCurve *)v39 chicletCurveCoefficient];
+      [(KeyboardBacklightHIDCurve *)selfCopy chicletCurveCoefficient];
       v16 = v7;
-      [(KeyboardBacklightHIDCurve *)v39 chicletCurvePower];
-      v17 = v16 * expf(v8 * v37);
+      [(KeyboardBacklightHIDCurve *)selfCopy chicletCurvePower];
+      v17 = v16 * expf(v8 * brightnessCopy);
     }
 
     *&v6 = v17;
-    [(KeyboardBacklight *)v39 setLevelPercentage:v6];
-    [(KeyboardBacklight *)v39 setSaturated:0];
-    [(KeyboardBacklight *)v39 levelPercentage];
-    [(KeyboardBacklight *)v39 setMuted:v9 == 0.0];
-    if ([(KeyboardBacklight *)v39 autoAdjust])
+    [(KeyboardBacklight *)selfCopy setLevelPercentage:v6];
+    [(KeyboardBacklight *)selfCopy setSaturated:0];
+    [(KeyboardBacklight *)selfCopy levelPercentage];
+    [(KeyboardBacklight *)selfCopy setMuted:v9 == 0.0];
+    if ([(KeyboardBacklight *)selfCopy autoAdjust])
     {
-      [(KeyboardBacklightHIDCurve *)v39 updateLuxToNitsCurve];
+      [(KeyboardBacklightHIDCurve *)selfCopy updateLuxToNitsCurve];
     }
 
-    [(KeyboardBacklight *)v39 levelPercentage];
+    [(KeyboardBacklight *)selfCopy levelPercentage];
     [CBKeyboardPreferencesManager setFloatPreference:@"KeyboardBacklightManualBrightness" forKey:?];
-    [(KeyboardBacklight *)v39 updateBacklightDeviceWithFadeSpeed:v36 commit:v35 reason:1];
-    if (v39->super.super._logHandle)
+    [(KeyboardBacklight *)selfCopy updateBacklightDeviceWithFadeSpeed:speedCopy commit:commitCopy reason:1];
+    if (selfCopy->super.super._logHandle)
     {
-      v15 = v39->super.super._logHandle;
+      v15 = selfCopy->super.super._logHandle;
     }
 
     else
@@ -1419,16 +1419,16 @@
     v25 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v40, v39);
+      __os_log_helper_16_2_1_8_64(v40, selfCopy);
       _os_log_debug_impl(&dword_1DE8E5000, v26, v25, "%@", v40, 0xCu);
     }
   }
 
   else
   {
-    if (v39->super.super._logHandle)
+    if (selfCopy->super.super._logHandle)
     {
-      v13 = v39->super.super._logHandle;
+      v13 = selfCopy->super.super._logHandle;
     }
 
     else
@@ -1460,7 +1460,7 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setBacklightLevel:(float)a3
+- (void)setBacklightLevel:(float)level
 {
   v12 = *MEMORY[0x1E69E9840];
   if (self->super.super._logHandle)
@@ -1485,11 +1485,11 @@
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_8_0(v11, COERCE__INT64(a3));
+    __os_log_helper_16_0_1_8_0(v11, COERCE__INT64(level));
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Set backlight level = %f", v11, 0xCu);
   }
 
-  *&v3 = a3;
+  *&v3 = level;
   [(KeyboardBacklightHIDCurve *)self convertNitsToLevelPercentage:v3];
   if (v4 >= 0.0)
   {
@@ -1517,27 +1517,27 @@
 
 - (float)currentLuxToNits
 {
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
   v32 = 4;
   v31 = 0.0;
   [(KeyboardBacklight *)self currentLux];
   if (v2 >= *luxToNitsCurve)
   {
-    [(KeyboardBacklight *)v34 currentLux];
+    [(KeyboardBacklight *)selfCopy currentLux];
     if (v3 < *&dword_1ECDDDB80)
     {
       for (i = 0; i < 3; ++i)
       {
-        [(KeyboardBacklight *)v34 currentLux];
+        [(KeyboardBacklight *)selfCopy currentLux];
         if (v4 >= *&luxToNitsCurve[2 * i])
         {
-          [(KeyboardBacklight *)v34 currentLux];
+          [(KeyboardBacklight *)selfCopy currentLux];
           if (v5 < *&luxToNitsCurve[2 * i + 2])
           {
             v6 = fabs((*&luxToNitsCurve[2 * i + 2] - *&luxToNitsCurve[2 * i]));
             v29 = v6;
-            [(KeyboardBacklight *)v34 currentLux];
+            [(KeyboardBacklight *)selfCopy currentLux];
             v8 = fabs((v7 - *&luxToNitsCurve[2 * i]));
             v28 = v8;
             if (v29 <= 0.0)
@@ -1593,7 +1593,7 @@
   }
 
   v20 = v31;
-  [(KeyboardBacklightHIDCurve *)v34 maxCurveNits];
+  [(KeyboardBacklightHIDCurve *)selfCopy maxCurveNits];
   if (v20 >= v9)
   {
     v13 = v9;
@@ -1604,7 +1604,7 @@
     v13 = v20;
   }
 
-  [(KeyboardBacklightHIDCurve *)v34 minCapableNits];
+  [(KeyboardBacklightHIDCurve *)selfCopy minCapableNits];
   if (v13 >= v10)
   {
     return v13;
@@ -1616,24 +1616,24 @@
   }
 }
 
-- (float)convertNitsToLevelPercentage:(float)a3
+- (float)convertNitsToLevelPercentage:(float)percentage
 {
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
-  v28 = a3;
+  percentageCopy = percentage;
   v27 = 0.0;
   v26 = 17;
-  if (a3 >= 0.0)
+  if (percentage >= 0.0)
   {
-    if (v28 < 30.0)
+    if (percentageCopy < 30.0)
     {
       for (i = 0; i < 16; ++i)
       {
-        if (v28 >= *&nitsToPWMPercentage[2 * i] && v28 < *&nitsToPWMPercentage[2 * i + 2])
+        if (percentageCopy >= *&nitsToPWMPercentage[2 * i] && percentageCopy < *&nitsToPWMPercentage[2 * i + 2])
         {
           v3 = fabs((*&nitsToPWMPercentage[2 * i + 2] - *&nitsToPWMPercentage[2 * i]));
           v24 = v3;
-          v4 = fabs((v28 - *&nitsToPWMPercentage[2 * i]));
+          v4 = fabs((percentageCopy - *&nitsToPWMPercentage[2 * i]));
           v23 = v4;
           if (v24 <= 0.0)
           {
@@ -1687,7 +1687,7 @@
   }
 
   v15 = v27;
-  [(KeyboardBacklightHIDCurve *)v30 maxLevelPercentage];
+  [(KeyboardBacklightHIDCurve *)selfCopy maxLevelPercentage];
   if (v15 >= v5)
   {
     v8 = v5;
@@ -1709,25 +1709,25 @@
   }
 }
 
-- (float)convertPWMPercentageToNits:(float)a3
+- (float)convertPWMPercentageToNits:(float)nits
 {
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
-  v29 = a3;
+  nitsCopy = nits;
   v28 = 0.0;
   v27 = 17;
-  if (a3 >= 0.0)
+  if (nits >= 0.0)
   {
-    if (v29 < 1.0)
+    if (nitsCopy < 1.0)
     {
       for (i = 0; i < 16; ++i)
       {
-        if (v29 >= *&nitsToPWMPercentage[2 * i + 1] && v29 < *&nitsToPWMPercentage[2 * i + 3])
+        if (nitsCopy >= *&nitsToPWMPercentage[2 * i + 1] && nitsCopy < *&nitsToPWMPercentage[2 * i + 3])
         {
           v25 = 0.0;
           v3 = fabs((*&nitsToPWMPercentage[2 * i + 3] - *&nitsToPWMPercentage[2 * i + 1]));
           v24 = v3;
-          v4 = fabs((v29 - *&nitsToPWMPercentage[2 * i + 1]));
+          v4 = fabs((nitsCopy - *&nitsToPWMPercentage[2 * i + 1]));
           v23 = v4;
           if (v24 <= 0.0)
           {
@@ -1782,7 +1782,7 @@
   if (v28 > 0.0)
   {
     v16 = v28;
-    [(KeyboardBacklightHIDCurve *)v31 maxCurveNits];
+    [(KeyboardBacklightHIDCurve *)selfCopy maxCurveNits];
     if (v16 >= v5)
     {
       v9 = v5;
@@ -1793,7 +1793,7 @@
       v9 = v16;
     }
 
-    [(KeyboardBacklightHIDCurve *)v31 minCapableNits];
+    [(KeyboardBacklightHIDCurve *)selfCopy minCapableNits];
     if (v9 >= v6)
     {
       return v9;
@@ -1815,12 +1815,12 @@
   return result;
 }
 
-- (void)calculateLevelPercentageAtAmbient:(float)a3
+- (void)calculateLevelPercentageAtAmbient:(float)ambient
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
-  if (a3 < 0.0)
+  ambientCopy = ambient;
+  if (ambient < 0.0)
   {
     v15 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
     v23 = v15;
@@ -1834,7 +1834,7 @@
     }
   }
 
-  if (v24 > 1.0)
+  if (ambientCopy > 1.0)
   {
     v12 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
     v20 = v12;
@@ -1849,31 +1849,31 @@
   }
 
   v17 = 0.001;
-  [(KeyboardBacklight *)v26 levelMin];
+  [(KeyboardBacklight *)selfCopy levelMin];
   if (v3 == 0.0)
   {
     v17 = 0.015;
   }
 
-  if (v24 >= 0.0 && v24 <= 1.0)
+  if (ambientCopy >= 0.0 && ambientCopy <= 1.0)
   {
-    v4 = v24;
-    if (v24 == 0.0)
+    v4 = ambientCopy;
+    if (ambientCopy == 0.0)
     {
       v9 = v17;
     }
 
     else
     {
-      [(KeyboardBacklight *)v26 ambientSlope];
-      v9 = *&v4 * v24;
+      [(KeyboardBacklight *)selfCopy ambientSlope];
+      v9 = *&v4 * ambientCopy;
     }
 
     *&v4 = v9;
-    [(KeyboardBacklight *)v26 setLevelPercentage:v4];
-    [(KeyboardBacklight *)v26 levelPercentage];
+    [(KeyboardBacklight *)selfCopy setLevelPercentage:v4];
+    [(KeyboardBacklight *)selfCopy levelPercentage];
     v16 = v5;
-    [(KeyboardBacklightHIDCurve *)v26 maxLevelPercentage];
+    [(KeyboardBacklightHIDCurve *)selfCopy maxLevelPercentage];
     if (v16 >= *&v6)
     {
       v8 = *&v6;
@@ -1895,14 +1895,14 @@
     }
 
     *&v6 = v7;
-    [(KeyboardBacklight *)v26 setLevelPercentage:v6];
+    [(KeyboardBacklight *)selfCopy setLevelPercentage:v6];
   }
 }
 
-- (float)perceptualBrightnessForLevel:(float)a3
+- (float)perceptualBrightnessForLevel:(float)level
 {
   v9 = 0.0;
-  if (a3 > 0.0)
+  if (level > 0.0)
   {
     [(KeyboardBacklightHIDCurve *)self maxCapableNits];
     v7 = v3;
@@ -1911,17 +1911,17 @@
     if (v8 != 0.0)
     {
       [(KeyboardBacklightHIDCurve *)self maxCapableNits];
-      return (logf(a3 / v5) / v8) + 1.0;
+      return (logf(level / v5) / v8) + 1.0;
     }
   }
 
   return v9;
 }
 
-- (void)setColor:(int)a3
+- (void)setColor:(int)color
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 != self->_color)
+  if (color != self->_color)
   {
     if (self->super.super._logHandle)
     {
@@ -1945,24 +1945,24 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v7, a3);
+      __os_log_helper_16_0_1_4_0(v7, color);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Set color to %d", v7, 8u);
     }
 
-    self->_color = a3;
-    [(KeyboardBacklightHIDCurve *)self reconfigureSettingsForColor:a3];
+    self->_color = color;
+    [(KeyboardBacklightHIDCurve *)self reconfigureSettingsForColor:color];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)reconfigureSettingsForColor:(int)a3
+- (void)reconfigureSettingsForColor:(int)color
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ((a3 == 53 || a3 == 70 || a3 == 71) && [(KeyboardBacklight *)self levelUnit]== 16777441)
+  if ((color == 53 || color == 70 || color == 71) && [(KeyboardBacklight *)self levelUnit]== 16777441)
   {
     v11 = [CBKeyboardPreferencesManager copyPreferenceForKey:@"KeyboardCurveVersion" keyboardID:[(KeyboardBacklight *)self keyboardID]];
-    if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (a3 == 53 && ([v11 floatValue], v3 >= 2.03) || a3 == 70 && (objc_msgSend(v11, "floatValue"), v4 >= 3.0) || a3 == 71 && (objc_msgSend(v11, "floatValue"), v5 >= 2.0)))
+    if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (color == 53 && ([v11 floatValue], v3 >= 2.03) || color == 70 && (objc_msgSend(v11, "floatValue"), v4 >= 3.0) || color == 71 && (objc_msgSend(v11, "floatValue"), v5 >= 2.0)))
     {
       if (self->super.super._logHandle)
       {
@@ -1991,7 +1991,7 @@
         _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Found up to date curve version %f in preferences.", v15, 0xCu);
       }
 
-      [(KeyboardBacklightHIDCurve *)self updateDefaultCurveForColor:a3];
+      [(KeyboardBacklightHIDCurve *)self updateDefaultCurveForColor:color];
     }
 
     else
@@ -2018,11 +2018,11 @@
 
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_0_1_4_0(v14, a3);
+        __os_log_helper_16_0_1_4_0(v14, color);
         _os_log_impl(&dword_1DE8E5000, v8, OS_LOG_TYPE_DEFAULT, "Update curve and version for color %d", v14, 8u);
       }
 
-      [(KeyboardBacklightHIDCurve *)self updateDefaultCurveForColor:a3];
+      [(KeyboardBacklightHIDCurve *)self updateDefaultCurveForColor:color];
       luxToNitsCurve[0] = defaultLuxToNitsCurve;
       dword_1ECDDDB70 = dword_1ECDDDB90;
       dword_1ECDDDB78 = dword_1ECDDDB98;
@@ -2031,7 +2031,7 @@
       dword_1ECDDDB74 = dword_1ECDDDB94;
       dword_1ECDDDB7C = dword_1ECDDDB9C;
       dword_1ECDDDB84 = dword_1ECDDDBA4;
-      switch(a3)
+      switch(color)
       {
         case '5':
           self->_curveVersion = 2.03;
@@ -2058,20 +2058,20 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)updateDefaultCurveForColor:(int)a3
+- (void)updateDefaultCurveForColor:(int)color
 {
   v19 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(color)
   {
     case '5':
       v14 = [(HIDDevice *)[(KeyboardBacklight *)self device] propertyForKey:@"ProductID"];
-      v13 = -1;
+      intValue = -1;
       if (v14)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v14 intValue];
+          intValue = [v14 intValue];
         }
       }
 
@@ -2118,7 +2118,7 @@
 
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_4_8_0_4_0_4_0_8_66(v18, COERCE__INT64(self->_luxHysteresis), [(KeyboardBacklightHIDCurve *)self color], v13, [(KeyboardBacklightHIDCurve *)self defaultBrightnessCurve]);
+        __os_log_helper_16_2_4_8_0_4_0_4_0_8_66(v18, COERCE__INT64(self->_luxHysteresis), [(KeyboardBacklightHIDCurve *)self color], intValue, [(KeyboardBacklightHIDCurve *)self defaultBrightnessCurve]);
         _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Hysteresis = %f Color = %d PID = %d Default curve = %{public}@", v18, 0x22u);
       }
 

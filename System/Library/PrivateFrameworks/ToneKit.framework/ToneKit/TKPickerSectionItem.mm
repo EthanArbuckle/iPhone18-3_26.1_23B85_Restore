@@ -1,20 +1,20 @@
 @interface TKPickerSectionItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)_appendDescriptionOfAttributesToString:(id)a3;
+- (void)_appendDescriptionOfAttributesToString:(id)string;
 @end
 
 @implementation TKPickerSectionItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v6 = [v5 supportsReflectionRemixes];
+  equalCopy = equal;
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v6)
+  if (supportsReflectionRemixes)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       LOBYTE(v12) = 1;
     }
@@ -24,7 +24,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v4;
+        v7 = equalCopy;
         v17.receiver = self;
         v17.super_class = TKPickerSectionItem;
         if (![(TKPickerItem *)&v17 isEqual:v7])
@@ -105,7 +105,7 @@ LABEL_22:
   {
     v18.receiver = self;
     v18.super_class = TKPickerSectionItem;
-    LOBYTE(v12) = [(TKPickerItem *)&v18 isEqual:v4];
+    LOBYTE(v12) = [(TKPickerItem *)&v18 isEqual:equalCopy];
   }
 
 LABEL_24:
@@ -115,10 +115,10 @@ LABEL_24:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v4 = [v3 supportsReflectionRemixes];
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v4)
+  if (supportsReflectionRemixes)
   {
     v8.receiver = self;
     v8.super_class = TKPickerSectionItem;
@@ -135,17 +135,17 @@ LABEL_24:
   }
 }
 
-- (void)_appendDescriptionOfAttributesToString:(id)a3
+- (void)_appendDescriptionOfAttributesToString:(id)string
 {
   v7.receiver = self;
   v7.super_class = TKPickerSectionItem;
-  v4 = a3;
-  [(TKPickerItem *)&v7 _appendDescriptionOfAttributesToString:v4];
+  stringCopy = string;
+  [(TKPickerItem *)&v7 _appendDescriptionOfAttributesToString:stringCopy];
   v5 = [(TKPickerSectionItem *)self text:v7.receiver];
-  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"text" withStringValue:v5 toString:v4];
+  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"text" withStringValue:v5 toString:stringCopy];
 
-  v6 = [(TKPickerSectionItem *)self footerText];
-  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"footerText" withStringValue:v6 toString:v4];
+  footerText = [(TKPickerSectionItem *)self footerText];
+  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"footerText" withStringValue:footerText toString:stringCopy];
 }
 
 @end

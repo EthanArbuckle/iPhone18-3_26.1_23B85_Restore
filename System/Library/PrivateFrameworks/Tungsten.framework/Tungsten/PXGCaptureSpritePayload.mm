@@ -1,20 +1,20 @@
 @interface PXGCaptureSpritePayload
-- (PXGCaptureSpritePayload)initWithBehavior:(unint64_t)a3 renderSnapshot:(id)a4;
+- (PXGCaptureSpritePayload)initWithBehavior:(unint64_t)behavior renderSnapshot:(id)snapshot;
 @end
 
 @implementation PXGCaptureSpritePayload
 
-- (PXGCaptureSpritePayload)initWithBehavior:(unint64_t)a3 renderSnapshot:(id)a4
+- (PXGCaptureSpritePayload)initWithBehavior:(unint64_t)behavior renderSnapshot:(id)snapshot
 {
-  v7 = a4;
+  snapshotCopy = snapshot;
   v11.receiver = self;
   v11.super_class = PXGCaptureSpritePayload;
   v8 = [(PXGCaptureSpritePayload *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_behavior = a3;
-    objc_storeStrong(&v8->_renderSnapshot, a4);
+    v8->_behavior = behavior;
+    objc_storeStrong(&v8->_renderSnapshot, snapshot);
   }
 
   return v9;

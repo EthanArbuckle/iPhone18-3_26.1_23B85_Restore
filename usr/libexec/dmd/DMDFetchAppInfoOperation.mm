@@ -1,6 +1,6 @@
 @interface DMDFetchAppInfoOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,20 +20,20 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v4 = objc_alloc_init(DMFFetchAppInfoResultObject);
   v5 = +[DMDAppController sharedController];
-  v6 = [v5 allManagementInformation];
+  allManagementInformation = [v5 allManagementInformation];
 
-  if (v6)
+  if (allManagementInformation)
   {
-    v15 = self;
+    selfCopy = self;
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v6;
+    v7 = allManagementInformation;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -60,7 +60,7 @@
       while (v9);
     }
 
-    self = v15;
+    self = selfCopy;
   }
 
   [(DMDFetchAppInfoOperation *)self endOperationWithResultObject:v4];

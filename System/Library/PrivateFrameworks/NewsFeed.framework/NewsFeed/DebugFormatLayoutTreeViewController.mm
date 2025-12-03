@@ -1,6 +1,6 @@
 @interface DebugFormatLayoutTreeViewController
-- (_TtC8NewsFeed35DebugFormatLayoutTreeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapOnOverlay:(id)a3;
+- (_TtC8NewsFeed35DebugFormatLayoutTreeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapOnOverlay:(id)overlay;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -9,7 +9,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6B5D408();
 }
 
@@ -20,21 +20,21 @@
   v2 = v15.receiver;
   [(DebugFormatLayoutTreeViewController *)&v15 viewWillLayoutSubviews];
   v3 = sub_1D6B5BC18();
-  v4 = [v3 view];
+  view = [v3 view];
 
-  if (v4)
+  if (view)
   {
-    v5 = [v2 view];
-    if (v5)
+    view2 = [v2 view];
+    if (view2)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view2;
+      [view2 bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
 
-      [v4 setFrame_];
+      [view setFrame_];
       return;
     }
   }
@@ -47,14 +47,14 @@
   __break(1u);
 }
 
-- (void)didTapOnOverlay:(id)a3
+- (void)didTapOnOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D6B5DC3C(v4);
+  overlayCopy = overlay;
+  selfCopy = self;
+  sub_1D6B5DC3C(overlayCopy);
 }
 
-- (_TtC8NewsFeed35DebugFormatLayoutTreeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed35DebugFormatLayoutTreeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

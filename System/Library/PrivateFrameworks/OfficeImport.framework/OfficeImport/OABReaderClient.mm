@@ -1,26 +1,26 @@
 @interface OABReaderClient
-+ (BOOL)sourceDrawableIsTopLevel:(id)a3;
++ (BOOL)sourceDrawableIsTopLevel:(id)level;
 @end
 
 @implementation OABReaderClient
 
-+ (BOOL)sourceDrawableIsTopLevel:(id)a3
++ (BOOL)sourceDrawableIsTopLevel:(id)level
 {
-  v3 = a3;
-  v4 = [v3 eshObject];
-  v5 = v3;
-  if ((*(*v4 + 16))(v4) == 6)
+  levelCopy = level;
+  eshObject = [levelCopy eshObject];
+  parent = levelCopy;
+  if ((*(*eshObject + 16))(eshObject) == 6)
   {
-    v5 = [v3 parent];
+    parent = [levelCopy parent];
   }
 
-  v6 = [v5 parent];
-  v7 = [v6 parent];
-  v8 = [v7 eshObject];
+  v5Parent = [parent parent];
+  v6Parent = [v5Parent parent];
+  eshObject2 = [v6Parent eshObject];
 
-  if (v8)
+  if (eshObject2)
   {
-    v9 = (*(*v8 + 16))(v8) == 61442;
+    v9 = (*(*eshObject2 + 16))(eshObject2) == 61442;
   }
 
   else

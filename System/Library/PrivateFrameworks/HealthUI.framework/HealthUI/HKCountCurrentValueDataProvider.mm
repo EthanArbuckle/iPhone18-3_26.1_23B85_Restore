@@ -1,58 +1,58 @@
 @interface HKCountCurrentValueDataProvider
-- (HKCountCurrentValueDataProvider)initWithHealthStore:(id)a3 updateController:(id)a4 dateCache:(id)a5 displayType:(id)a6 countStyle:(int64_t)a7;
-- (id)_countAllSamplesQueryWithCompletion:(id)a3;
-- (id)_dataProviderValueForCount:(id)a3 sampleDate:(id)a4;
-- (id)_mostRecentValueQueryWithCompletion:(id)a3;
-- (id)fetchOperationWithCompletion:(id)a3;
-- (void)_countFromDate:(id)a3 toDate:(id)a4 completion:(id)a5;
-- (void)_dataProviderValueFromMostRecentSample:(id)a3 completion:(id)a4;
+- (HKCountCurrentValueDataProvider)initWithHealthStore:(id)store updateController:(id)controller dateCache:(id)cache displayType:(id)type countStyle:(int64_t)style;
+- (id)_countAllSamplesQueryWithCompletion:(id)completion;
+- (id)_dataProviderValueForCount:(id)count sampleDate:(id)date;
+- (id)_mostRecentValueQueryWithCompletion:(id)completion;
+- (id)fetchOperationWithCompletion:(id)completion;
+- (void)_countFromDate:(id)date toDate:(id)toDate completion:(id)completion;
+- (void)_dataProviderValueFromMostRecentSample:(id)sample completion:(id)completion;
 @end
 
 @implementation HKCountCurrentValueDataProvider
 
-- (HKCountCurrentValueDataProvider)initWithHealthStore:(id)a3 updateController:(id)a4 dateCache:(id)a5 displayType:(id)a6 countStyle:(int64_t)a7
+- (HKCountCurrentValueDataProvider)initWithHealthStore:(id)store updateController:(id)controller dateCache:(id)cache displayType:(id)type countStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = HKCountCurrentValueDataProvider;
-  result = [(HKValueDataProvider *)&v9 initWithHealthStore:a3 updateController:a4 dateCache:a5 displayType:a6];
+  result = [(HKValueDataProvider *)&v9 initWithHealthStore:store updateController:controller dateCache:cache displayType:type];
   if (result)
   {
-    result->_countStyle = a7;
+    result->_countStyle = style;
   }
 
   return result;
 }
 
-- (id)fetchOperationWithCompletion:(id)a3
+- (id)fetchOperationWithCompletion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKValueDataProvider *)self healthStore];
+  completionCopy = completion;
+  healthStore = [(HKValueDataProvider *)self healthStore];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(HKValueDataProvider *)self displayType];
-  v8 = [v7 localization];
-  v9 = [v8 displayName];
-  v10 = [v6 stringWithFormat:@"CurrentValueCount(%@)", v9];
+  displayType = [(HKValueDataProvider *)self displayType];
+  localization = [displayType localization];
+  displayName = [localization displayName];
+  v10 = [v6 stringWithFormat:@"CurrentValueCount(%@)", displayName];
 
-  v11 = [[HKHealthQueryFetchOperation alloc] initWithHealthStore:v5 operationDescription:v10 completion:v4];
+  v11 = [[HKHealthQueryFetchOperation alloc] initWithHealthStore:healthStore operationDescription:v10 completion:completionCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__HKCountCurrentValueDataProvider_fetchOperationWithCompletion___block_invoke;
   aBlock[3] = &unk_1E81B7C58;
-  v23 = v4;
+  v23 = completionCopy;
   v12 = v11;
   v22 = v12;
-  v13 = v4;
+  v13 = completionCopy;
   v14 = _Block_copy(aBlock);
-  v15 = [(HKCountCurrentValueDataProvider *)self countStyle];
-  if (v15 == 1)
+  countStyle = [(HKCountCurrentValueDataProvider *)self countStyle];
+  if (countStyle == 1)
   {
     v16 = [(HKCountCurrentValueDataProvider *)self _countAllSamplesQueryWithCompletion:v14];
   }
 
   else
   {
-    if (v15)
+    if (countStyle)
     {
       v17 = 0;
       goto LABEL_7;
@@ -82,11 +82,11 @@ void __64__HKCountCurrentValueDataProvider_fetchOperationWithCompletion___block_
   [*(a1 + 32) completedWithResults:v9 error:v8];
 }
 
-- (id)_mostRecentValueQueryWithCompletion:(id)a3
+- (id)_mostRecentValueQueryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKValueDataProvider *)self displayType];
-  v6 = [v5 sampleType];
+  completionCopy = completion;
+  displayType = [(HKValueDataProvider *)self displayType];
+  sampleType = [displayType sampleType];
 
   v7 = MEMORY[0x1E696C1C0];
   v11[0] = MEMORY[0x1E69E9820];
@@ -94,9 +94,9 @@ void __64__HKCountCurrentValueDataProvider_fetchOperationWithCompletion___block_
   v11[2] = __71__HKCountCurrentValueDataProvider__mostRecentValueQueryWithCompletion___block_invoke;
   v11[3] = &unk_1E81B7C80;
   v11[4] = self;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 queryForMostRecentSampleOfType:v6 predicate:0 completion:v11];
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = [v7 queryForMostRecentSampleOfType:sampleType predicate:0 completion:v11];
 
   return v9;
 }
@@ -114,31 +114,31 @@ uint64_t __71__HKCountCurrentValueDataProvider__mostRecentValueQueryWithCompleti
   }
 }
 
-- (void)_dataProviderValueFromMostRecentSample:(id)a3 completion:(id)a4
+- (void)_dataProviderValueFromMostRecentSample:(id)sample completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (sample)
   {
-    v7 = [a3 endDate];
+    endDate = [sample endDate];
     v8 = HKCalendarDateTransformNone();
-    v9 = HKStartOfRollingDayForDate(v7, v8);
+    v9 = HKStartOfRollingDayForDate(endDate, v8);
 
     v10 = HKEndOfRollingDayWithStart(v9);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __85__HKCountCurrentValueDataProvider__dataProviderValueFromMostRecentSample_completion___block_invoke;
     v12[3] = &unk_1E81B7CA8;
-    v13 = v7;
-    v14 = v6;
+    v13 = endDate;
+    v14 = completionCopy;
     v12[4] = self;
-    v11 = v7;
+    v11 = endDate;
     [(HKCountCurrentValueDataProvider *)self _countFromDate:v9 toDate:v10 completion:v12];
   }
 
   else
   {
     v9 = objc_alloc_init(HKDataProviderNoDataCurrentValue);
-    (*(v6 + 2))(v6, v9, 0);
+    (*(completionCopy + 2))(completionCopy, v9, 0);
   }
 }
 
@@ -152,14 +152,14 @@ void __85__HKCountCurrentValueDataProvider__dataProviderValueFromMostRecentSampl
   (*(v4 + 16))(v4, v8, v7);
 }
 
-- (id)_dataProviderValueForCount:(id)a3 sampleDate:(id)a4
+- (id)_dataProviderValueForCount:(id)count sampleDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  countCopy = count;
+  dateCopy = date;
+  if (countCopy)
   {
-    v7 = [[HKGenericDataProviderCurrentValue alloc] initWithValue:v5];
-    [(HKGenericDataProviderCurrentValue *)v7 setDate:v6];
+    v7 = [[HKGenericDataProviderCurrentValue alloc] initWithValue:countCopy];
+    [(HKGenericDataProviderCurrentValue *)v7 setDate:dateCopy];
   }
 
   else
@@ -170,30 +170,30 @@ void __85__HKCountCurrentValueDataProvider__dataProviderValueFromMostRecentSampl
   return v7;
 }
 
-- (void)_countFromDate:(id)a3 toDate:(id)a4 completion:(id)a5
+- (void)_countFromDate:(id)date toDate:(id)toDate completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HKValueDataProvider *)self displayType];
-  v12 = [v11 defaultValuePredicate];
+  completionCopy = completion;
+  toDateCopy = toDate;
+  dateCopy = date;
+  displayType = [(HKValueDataProvider *)self displayType];
+  defaultValuePredicate = [displayType defaultValuePredicate];
 
-  v13 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:v10 endDate:v9 options:0];
+  v13 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:dateCopy endDate:toDateCopy options:0];
 
   v14 = objc_alloc(MEMORY[0x1E696C3C8]);
-  v15 = [(HKValueDataProvider *)self displayType];
-  v16 = [v15 sampleType];
-  v17 = HKUIPredicateMatchingPredicates(v12, v13);
+  displayType2 = [(HKValueDataProvider *)self displayType];
+  sampleType = [displayType2 sampleType];
+  v17 = HKUIPredicateMatchingPredicates(defaultValuePredicate, v13);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __68__HKCountCurrentValueDataProvider__countFromDate_toDate_completion___block_invoke;
   v21[3] = &unk_1E81B7CD0;
-  v22 = v8;
-  v18 = v8;
-  v19 = [v14 initWithSampleType:v16 predicate:v17 limit:0 sortDescriptors:0 resultsHandler:v21];
+  v22 = completionCopy;
+  v18 = completionCopy;
+  v19 = [v14 initWithSampleType:sampleType predicate:v17 limit:0 sortDescriptors:0 resultsHandler:v21];
 
-  v20 = [(HKValueDataProvider *)self healthStore];
-  [v20 executeQuery:v19];
+  healthStore = [(HKValueDataProvider *)self healthStore];
+  [healthStore executeQuery:v19];
 }
 
 void __68__HKCountCurrentValueDataProvider__countFromDate_toDate_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -215,26 +215,26 @@ void __68__HKCountCurrentValueDataProvider__countFromDate_toDate_completion___bl
   }
 }
 
-- (id)_countAllSamplesQueryWithCompletion:(id)a3
+- (id)_countAllSamplesQueryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKValueDataProvider *)self displayType];
-  v6 = [v5 defaultValuePredicate];
+  completionCopy = completion;
+  displayType = [(HKValueDataProvider *)self displayType];
+  defaultValuePredicate = [displayType defaultValuePredicate];
 
-  v7 = [(HKValueDataProvider *)self displayType];
-  v8 = [v7 sampleType];
+  displayType2 = [(HKValueDataProvider *)self displayType];
+  sampleType = [displayType2 sampleType];
 
   v9 = objc_alloc(MEMORY[0x1E696C3B0]);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__HKCountCurrentValueDataProvider__countAllSamplesQueryWithCompletion___block_invoke;
   v14[3] = &unk_1E81B7CF8;
-  v15 = v8;
-  v16 = self;
-  v17 = v4;
-  v10 = v4;
-  v11 = v8;
-  v12 = [v9 initWithSampleType:v11 predicate:v6 resultsHandler:v14];
+  v15 = sampleType;
+  selfCopy = self;
+  v17 = completionCopy;
+  v10 = completionCopy;
+  v11 = sampleType;
+  v12 = [v9 initWithSampleType:v11 predicate:defaultValuePredicate resultsHandler:v14];
 
   return v12;
 }

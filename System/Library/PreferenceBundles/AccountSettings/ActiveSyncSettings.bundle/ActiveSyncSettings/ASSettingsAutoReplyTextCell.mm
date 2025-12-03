@@ -1,36 +1,36 @@
 @interface ASSettingsAutoReplyTextCell
-- (ASSettingsAutoReplyTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)_updateTextColorForTextView:(id)a3;
+- (ASSettingsAutoReplyTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)_updateTextColorForTextView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation ASSettingsAutoReplyTextCell
 
-- (ASSettingsAutoReplyTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (ASSettingsAutoReplyTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v17.receiver = self;
   v17.super_class = ASSettingsAutoReplyTextCell;
-  v9 = [(ASSettingsAutoReplyTextCell *)&v17 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(ASSettingsAutoReplyTextCell *)&v17 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(ASSettingsAutoReplyTextCell *)v9 textView];
+    textView = [(ASSettingsAutoReplyTextCell *)v9 textView];
     v12 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    [v11 setFont:v12];
+    [textView setFont:v12];
 
     v13 = +[UIColor clearColor];
-    [v11 setBackgroundColor:v13];
+    [textView setBackgroundColor:v13];
 
-    [v11 setTextLoupeVisibility:2];
-    v14 = [(ASSettingsAutoReplyTextCell *)v10 textView];
-    [(ASSettingsAutoReplyTextCell *)v10 _updateTextColorForTextView:v14];
+    [textView setTextLoupeVisibility:2];
+    textView2 = [(ASSettingsAutoReplyTextCell *)v10 textView];
+    [(ASSettingsAutoReplyTextCell *)v10 _updateTextColorForTextView:textView2];
 
-    v15 = [v8 propertyForKey:@"kPSOofTextViewdelegate"];
+    v15 = [specifierCopy propertyForKey:@"kPSOofTextViewdelegate"];
     NSClassFromString(@"ASSettingsOofUIController");
     if (objc_opt_isKindOfClass())
     {
-      [v11 setDelegate:v15];
+      [textView setDelegate:v15];
     }
   }
 
@@ -42,17 +42,17 @@
   v4.receiver = self;
   v4.super_class = ASSettingsAutoReplyTextCell;
   [(ASSettingsAutoReplyTextCell *)&v4 layoutSubviews];
-  v3 = [(ASSettingsAutoReplyTextCell *)self textView];
-  [(ASSettingsAutoReplyTextCell *)self _updateTextColorForTextView:v3];
+  textView = [(ASSettingsAutoReplyTextCell *)self textView];
+  [(ASSettingsAutoReplyTextCell *)self _updateTextColorForTextView:textView];
 }
 
-- (void)_updateTextColorForTextView:(id)a3
+- (void)_updateTextColorForTextView:(id)view
 {
-  v4 = a3;
-  v5 = [(ASSettingsAutoReplyTextCell *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  viewCopy = view;
+  traitCollection = [(ASSettingsAutoReplyTextCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v6 == &dword_0 + 2)
+  if (userInterfaceStyle == &dword_0 + 2)
   {
     +[UIColor whiteColor];
   }
@@ -62,7 +62,7 @@
     +[UIColor blackColor];
   }
   v7 = ;
-  [v4 setTextColor:v7];
+  [viewCopy setTextColor:v7];
 }
 
 @end

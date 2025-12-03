@@ -1,23 +1,23 @@
 @interface EDDefaultSendLaterUpdateControllerAlarmDateProvider
 - (NSDate)nextDate;
-- (void)setNextDate:(id)a3;
+- (void)setNextDate:(id)date;
 @end
 
 @implementation EDDefaultSendLaterUpdateControllerAlarmDateProvider
 
 - (NSDate)nextDate
 {
-  v2 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [v2 objectForKey:@"EDSendLaterUpdateControllerNextAlarmDate"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v3 = [em_userDefaults objectForKey:@"EDSendLaterUpdateControllerNextAlarmDate"];
 
   return v3;
 }
 
-- (void)setNextDate:(id)a3
+- (void)setNextDate:(id)date
 {
-  v4 = a3;
-  v3 = [MEMORY[0x1E695E000] em_userDefaults];
-  [v3 setObject:v4 forKey:@"EDSendLaterUpdateControllerNextAlarmDate"];
+  dateCopy = date;
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  [em_userDefaults setObject:dateCopy forKey:@"EDSendLaterUpdateControllerNextAlarmDate"];
 }
 
 @end

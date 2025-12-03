@@ -1,40 +1,40 @@
 @interface MCNewRestrictionsPayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (BOOL)isInstalled;
-- (void)didInstallOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4;
-- (void)didRemoveOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4;
+- (void)didInstallOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions;
+- (void)didRemoveOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions;
 @end
 
 @implementation MCNewRestrictionsPayloadHandler
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v8 = a4;
-  v9 = [(MCNewPayloadHandler *)self payload];
-  v10 = [v8 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-  v11 = [v10 BOOLValue];
+  optionsCopy = options;
+  payload = [(MCNewPayloadHandler *)self payload];
+  v10 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [v9 restrictions];
-  if (v11)
+  restrictions = [payload restrictions];
+  if (bOOLValue)
   {
     goto LABEL_2;
   }
 
-  if ([MCRestrictionManager restrictedBoolForFeature:MCFeatureManagedWriteUnmanagedContactsAllowed withRestrictionsDictionary:v12]== 1)
+  if ([MCRestrictionManager restrictedBoolForFeature:MCFeatureManagedWriteUnmanagedContactsAllowed withRestrictionsDictionary:restrictions]== 1)
   {
 LABEL_12:
-    v22 = +[MCInstaller notInstalledByMDMError];
+    mCCopyAsPrimaryError = +[MCInstaller notInstalledByMDMError];
     goto LABEL_37;
   }
 
-  v23 = [MCRestrictionManager intersectedValuesForFeature:MCFeatureAllowedExternalIntelligenceWorkspaceIDs withRestrictionsDictionary:v12];
-  if (v23 || [MCRestrictionManager restrictedBoolForFeature:MCFeatureUnmanagedReadManagedContactsAllowed withRestrictionsDictionary:v12]== 1 || ([MCRestrictionManager intersectedValuesForFeature:MCFeatureAllowedCameraRestrictionBundleIDs withRestrictionsDictionary:v12], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+  v23 = [MCRestrictionManager intersectedValuesForFeature:MCFeatureAllowedExternalIntelligenceWorkspaceIDs withRestrictionsDictionary:restrictions];
+  if (v23 || [MCRestrictionManager restrictedBoolForFeature:MCFeatureUnmanagedReadManagedContactsAllowed withRestrictionsDictionary:restrictions]== 1 || ([MCRestrictionManager intersectedValuesForFeature:MCFeatureAllowedCameraRestrictionBundleIDs withRestrictionsDictionary:restrictions], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
     goto LABEL_12;
   }
 
-  v56 = [MCRestrictionManager intersectedValuesForFeature:MCFeatureAppsRatingExemptedBundleIDs withRestrictionsDictionary:v12];
+  v56 = [MCRestrictionManager intersectedValuesForFeature:MCFeatureAppsRatingExemptedBundleIDs withRestrictionsDictionary:restrictions];
 
   if (v56)
   {
@@ -45,45 +45,45 @@ LABEL_2:
   v13 = MCEffectiveSingleAppModeBundleID();
   if (v13)
   {
-    v14 = [MCRestrictionManager intersectedValuesForFeature:MCFeatureAppLockBundleIDs withRestrictionsDictionary:v12];
+    v14 = [MCRestrictionManager intersectedValuesForFeature:MCFeatureAppLockBundleIDs withRestrictionsDictionary:restrictions];
     v15 = v14;
     if (v14 && ([v14 containsObject:v13] & 1) == 0)
     {
       v30 = MCRestrictionsErrorDomain;
       MCErrorArray();
       v62 = v15;
-      v32 = v31 = a6;
+      v32 = v31 = error;
       v33 = [NSError MCErrorWithDomain:v30 code:3002 descriptionArray:v32 errorType:MCErrorTypeFatal, v13, 0];
-      v22 = [v33 MCCopyAsPrimaryError];
+      mCCopyAsPrimaryError = [v33 MCCopyAsPrimaryError];
 
-      a6 = v31;
+      error = v31;
       v15 = v62;
     }
 
     else
     {
-      v16 = [MCRestrictionManager unionValuesForFeature:MCFeatureBlacklistedAppBundleIDs withRestrictionsDictionary:v12];
+      v16 = [MCRestrictionManager unionValuesForFeature:MCFeatureBlacklistedAppBundleIDs withRestrictionsDictionary:restrictions];
       v65 = v16;
       if ([v16 containsObject:v13])
       {
         v17 = MCRestrictionsErrorDomain;
         MCErrorArray();
-        v61 = self;
+        selfCopy = self;
         v18 = v15;
-        v20 = v19 = a6;
+        v20 = v19 = error;
         v21 = [NSError MCErrorWithDomain:v17 code:3003 descriptionArray:v20 errorType:MCErrorTypeFatal, v13, 0];
-        v22 = [v21 MCCopyAsPrimaryError];
+        mCCopyAsPrimaryError = [v21 MCCopyAsPrimaryError];
 
         v16 = v65;
-        a6 = v19;
+        error = v19;
         v15 = v18;
-        self = v61;
+        self = selfCopy;
       }
 
       else
       {
-        v60 = a6;
-        v24 = [MCRestrictionManager unionValuesForFeature:MCFeatureBlockedAppBundleIDs withRestrictionsDictionary:v12];
+        errorCopy = error;
+        v24 = [MCRestrictionManager unionValuesForFeature:MCFeatureBlockedAppBundleIDs withRestrictionsDictionary:restrictions];
         if ([v24 containsObject:v13])
         {
           v25 = v24;
@@ -92,7 +92,7 @@ LABEL_2:
           v28 = v26;
           v24 = v25;
           v29 = [NSError MCErrorWithDomain:v28 code:3003 descriptionArray:v27 errorType:MCErrorTypeFatal, v13, 0];
-          v22 = [v29 MCCopyAsPrimaryError];
+          mCCopyAsPrimaryError = [v29 MCCopyAsPrimaryError];
 
           v16 = v65;
         }
@@ -104,16 +104,16 @@ LABEL_2:
           v67 = 0u;
           v68 = 0u;
           v27 = v69 = 0u;
-          v22 = [v27 countByEnumeratingWithState:&v66 objects:v74 count:16];
-          if (v22)
+          mCCopyAsPrimaryError = [v27 countByEnumeratingWithState:&v66 objects:v74 count:16];
+          if (mCCopyAsPrimaryError)
           {
-            v57 = v8;
+            v57 = optionsCopy;
             v58 = v24;
             v63 = v15;
             v34 = *v67;
             while (2)
             {
-              for (i = 0; i != v22; i = i + 1)
+              for (i = 0; i != mCCopyAsPrimaryError; i = i + 1)
               {
                 if (*v67 != v34)
                 {
@@ -122,19 +122,19 @@ LABEL_2:
 
                 v36 = *(*(&v66 + 1) + 8 * i);
                 v37 = [v27 objectForKeyedSubscript:v36];
-                if ([v37 containsObject:v13] && +[MCRestrictionManager restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManager, "restrictedBoolForFeature:withRestrictionsDictionary:", v36, v12) == 2)
+                if ([v37 containsObject:v13] && +[MCRestrictionManager restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManager, "restrictedBoolForFeature:withRestrictionsDictionary:", v36, restrictions) == 2)
                 {
                   v38 = MCRestrictionsErrorDomain;
                   v39 = MCErrorArray();
                   v40 = [NSError MCErrorWithDomain:v38 code:3004 descriptionArray:v39 errorType:MCErrorTypeFatal, v13, 0];
-                  v22 = [v40 MCCopyAsPrimaryError];
+                  mCCopyAsPrimaryError = [v40 MCCopyAsPrimaryError];
 
                   goto LABEL_28;
                 }
               }
 
-              v22 = [v27 countByEnumeratingWithState:&v66 objects:v74 count:16];
-              if (v22)
+              mCCopyAsPrimaryError = [v27 countByEnumeratingWithState:&v66 objects:v74 count:16];
+              if (mCCopyAsPrimaryError)
               {
                 continue;
               }
@@ -143,97 +143,97 @@ LABEL_2:
             }
 
 LABEL_28:
-            v8 = v57;
+            optionsCopy = v57;
             v24 = v58;
             v15 = v63;
             v16 = v65;
           }
 
-          if ([v13 isEqualToString:MCFindMyBundleIdentifier] && +[MCRestrictionManager restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManager, "restrictedBoolForFeature:withRestrictionsDictionary:", MCFeatureFindMyDeviceAllowed, v12) == 2 && +[MCRestrictionManager restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManager, "restrictedBoolForFeature:withRestrictionsDictionary:", MCFeatureFindMyFriendsAllowed, v12) == 2)
+          if ([v13 isEqualToString:MCFindMyBundleIdentifier] && +[MCRestrictionManager restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManager, "restrictedBoolForFeature:withRestrictionsDictionary:", MCFeatureFindMyDeviceAllowed, restrictions) == 2 && +[MCRestrictionManager restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManager, "restrictedBoolForFeature:withRestrictionsDictionary:", MCFeatureFindMyFriendsAllowed, restrictions) == 2)
           {
             v59 = v24;
             v41 = MCRestrictionsErrorDomain;
             v42 = MCErrorArray();
             v43 = [NSError MCErrorWithDomain:v41 code:3004 descriptionArray:v42 errorType:MCErrorTypeFatal, v13, 0];
-            v64 = [v43 MCCopyAsPrimaryError];
+            mCCopyAsPrimaryError2 = [v43 MCCopyAsPrimaryError];
 
             v24 = v59;
-            v22 = v64;
+            mCCopyAsPrimaryError = mCCopyAsPrimaryError2;
             v16 = v65;
           }
         }
 
-        a6 = v60;
+        error = errorCopy;
       }
     }
   }
 
   else
   {
-    v22 = 0;
+    mCCopyAsPrimaryError = 0;
   }
 
 LABEL_37:
-  if (v22)
+  if (mCCopyAsPrimaryError)
   {
     v44 = MCInstallationErrorDomain;
-    v45 = [(MCNewPayloadHandler *)self payload];
-    v46 = [v45 friendlyName];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    friendlyName = [payload2 friendlyName];
     v47 = MCErrorArray();
-    v48 = [NSError MCErrorWithDomain:v44 code:4001 descriptionArray:v47 underlyingError:v22 errorType:MCErrorTypeFatal, v46, 0];
+    v48 = [NSError MCErrorWithDomain:v44 code:4001 descriptionArray:v47 underlyingError:mCCopyAsPrimaryError errorType:MCErrorTypeFatal, friendlyName, 0];
 
-    if (a6)
+    if (error)
     {
       v49 = v48;
-      *a6 = v48;
+      *error = v48;
     }
 
     v50 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v51 = v50;
-      v52 = [(MCNewPayloadHandler *)self payload];
-      v53 = [v52 friendlyName];
-      v54 = [v48 MCVerboseDescription];
+      payload3 = [(MCNewPayloadHandler *)self payload];
+      friendlyName2 = [payload3 friendlyName];
+      mCVerboseDescription = [v48 MCVerboseDescription];
       *buf = 138543618;
-      v71 = v53;
+      v71 = friendlyName2;
       v72 = 2114;
-      v73 = v54;
+      v73 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_ERROR, "Cannot install restrictions payload “%{public}@”. Error: %{public}@", buf, 0x16u);
     }
   }
 
-  return v22 == 0;
+  return mCCopyAsPrimaryError == 0;
 }
 
 - (BOOL)isInstalled
 {
   v8 = 0;
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 restrictions];
+  payload = [(MCNewPayloadHandler *)self payload];
+  restrictions = [payload restrictions];
   v4 = +[MCRestrictionManagerWriter sharedManager];
-  v5 = [v4 currentRestrictions];
-  v6 = [MCRestrictionManagerWriter restrictionsAfterApplyingRestrictionsDictionary:v3 toRestrictionsDictionary:v5 outChangeDetected:&v8 outError:0];
+  currentRestrictions = [v4 currentRestrictions];
+  v6 = [MCRestrictionManagerWriter restrictionsAfterApplyingRestrictionsDictionary:restrictions toRestrictionsDictionary:currentRestrictions outChangeDetected:&v8 outError:0];
 
   return (v8 & 1) == 0;
 }
 
-- (void)didInstallOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4
+- (void)didInstallOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions
 {
   v18.receiver = self;
   v18.super_class = MCNewRestrictionsPayloadHandler;
-  v5 = a4;
-  v6 = a3;
-  [(MCNewPayloadHandler *)&v18 didInstallOldGlobalRestrictions:v6 newGlobalRestrictions:v5];
+  globalRestrictionsCopy = globalRestrictions;
+  restrictionsCopy = restrictions;
+  [(MCNewPayloadHandler *)&v18 didInstallOldGlobalRestrictions:restrictionsCopy newGlobalRestrictions:globalRestrictionsCopy];
   v7 = MCRestrictedBoolKey;
-  v8 = [v6 objectForKey:{MCRestrictedBoolKey, v18.receiver, v18.super_class}];
+  v8 = [restrictionsCopy objectForKey:{MCRestrictedBoolKey, v18.receiver, v18.super_class}];
 
   v9 = MCFeaturePredictiveKeyboardAllowed;
   v10 = [v8 objectForKey:MCFeaturePredictiveKeyboardAllowed];
 
   v11 = MCRestrictedBoolValueKey;
   v12 = [v10 objectForKey:MCRestrictedBoolValueKey];
-  v13 = [v5 objectForKey:v7];
+  v13 = [globalRestrictionsCopy objectForKey:v7];
 
   v14 = [v13 objectForKey:v9];
 
@@ -271,22 +271,22 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)didRemoveOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4
+- (void)didRemoveOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions
 {
   v16.receiver = self;
   v16.super_class = MCNewRestrictionsPayloadHandler;
-  v5 = a4;
-  v6 = a3;
-  [(MCNewPayloadHandler *)&v16 didRemoveOldGlobalRestrictions:v6 newGlobalRestrictions:v5];
+  globalRestrictionsCopy = globalRestrictions;
+  restrictionsCopy = restrictions;
+  [(MCNewPayloadHandler *)&v16 didRemoveOldGlobalRestrictions:restrictionsCopy newGlobalRestrictions:globalRestrictionsCopy];
   v7 = MCRestrictedBoolKey;
-  v8 = [v6 objectForKey:{MCRestrictedBoolKey, v16.receiver, v16.super_class}];
+  v8 = [restrictionsCopy objectForKey:{MCRestrictedBoolKey, v16.receiver, v16.super_class}];
 
   v9 = MCFeaturePredictiveKeyboardAllowed;
   v10 = [v8 objectForKey:MCFeaturePredictiveKeyboardAllowed];
 
   v11 = MCRestrictedBoolValueKey;
   v12 = [v10 objectForKey:MCRestrictedBoolValueKey];
-  v13 = [v5 objectForKey:v7];
+  v13 = [globalRestrictionsCopy objectForKey:v7];
 
   v14 = [v13 objectForKey:v9];
 

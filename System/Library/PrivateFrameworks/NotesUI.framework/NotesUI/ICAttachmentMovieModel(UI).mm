@@ -6,9 +6,9 @@
 
 - (void)drawPreviewInRect:()UI
 {
-  v9 = [a1 attachment];
-  v10 = [v9 image];
-  [v10 drawInRect:{a2, a3, a4, a5}];
+  attachment = [self attachment];
+  image = [attachment image];
+  [image drawInRect:{a2, a3, a4, a5}];
 
   v20 = [MEMORY[0x1E69DCAB8] imageNamed:@"attachment_video_play"];
   v22.origin.x = a2;

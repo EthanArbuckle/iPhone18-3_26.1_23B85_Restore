@@ -1,14 +1,14 @@
 @interface POWSTrustProcess
 - (POWSTrustProcess)init;
-- (id)createWSTrust13Request:(id)a3;
-- (id)createWSTrust13Response:(id)a3;
-- (id)createWSTrust2005Request:(id)a3;
-- (id)createWSTrust2005Response:(id)a3;
-- (id)createWSTrustFault:(id)a3;
-- (id)parseMexResponse:(id)a3 namespaces:(id)a4 policyXPath:(id)a5 action:(id)a6;
-- (id)parseWSTrustMexResponse:(id)a3 version:(unint64_t)a4;
-- (id)parseWSTrustRequest:(id)a3 version:(unint64_t)a4;
-- (id)parseWSTrustResponse:(id)a3 version:(unint64_t)a4;
+- (id)createWSTrust13Request:(id)request;
+- (id)createWSTrust13Response:(id)response;
+- (id)createWSTrust2005Request:(id)request;
+- (id)createWSTrust2005Response:(id)response;
+- (id)createWSTrustFault:(id)fault;
+- (id)parseMexResponse:(id)response namespaces:(id)namespaces policyXPath:(id)path action:(id)action;
+- (id)parseWSTrustMexResponse:(id)response version:(unint64_t)version;
+- (id)parseWSTrustRequest:(id)request version:(unint64_t)version;
+- (id)parseWSTrustResponse:(id)response version:(unint64_t)version;
 @end
 
 @implementation POWSTrustProcess
@@ -26,14 +26,14 @@
   return result;
 }
 
-- (id)createWSTrust13Request:(id)a3
+- (id)createWSTrust13Request:(id)request
 {
   v35[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_opt_new();
-  v5 = [v3 endpointURN];
+  endpointURN = [requestCopy endpointURN];
   v33 = v4;
-  [v4 setAddress:v5];
+  [v4 setAddress:endpointURN];
 
   v32 = objc_opt_new();
   [v32 setEndpointReference:v4];
@@ -45,32 +45,32 @@
   [v7 setStringValue:@"http://docs.oasis-open.org/ws-sx/ws-trust/200512/RST/Issue"];
   [v7 setMustUnderstand:@"1"];
   v31 = objc_opt_new();
-  v8 = [v3 nonce];
-  [v31 setStringValue:v8];
+  nonce = [requestCopy nonce];
+  [v31 setStringValue:nonce];
 
   v9 = objc_opt_new();
   [v9 setAddress:@"http://www.w3.org/2005/08/addressing/anonymous"];
   v10 = objc_opt_new();
   [v10 setMustUnderstand:@"1"];
-  v11 = [v3 to];
+  v11 = [requestCopy to];
   [v10 setStringValue:v11];
 
   v12 = objc_opt_new();
   v13 = MEMORY[0x277CCACA8];
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v15 = [v14 UUIDString];
-  v16 = [v13 stringWithFormat:@"uuid-%@", v15];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v16 = [v13 stringWithFormat:@"uuid-%@", uUIDString];
   [v12 setId:v16];
 
-  v17 = [v3 userName];
-  [v12 setUsername:v17];
+  userName = [requestCopy userName];
+  [v12 setUsername:userName];
 
   v18 = SecCFAllocatorZeroize();
-  v19 = [v3 password];
-  v20 = [v19 mutableBytes];
-  v21 = [v3 password];
+  password = [requestCopy password];
+  mutableBytes = [password mutableBytes];
+  password2 = [requestCopy password];
 
-  v22 = CFStringCreateWithBytes(v18, v20, [v21 length], 0x8000100u, 0);
+  v22 = CFStringCreateWithBytes(v18, mutableBytes, [password2 length], 0x8000100u, 0);
   [v12 setPassword:v22];
 
   v23 = objc_opt_new();
@@ -98,14 +98,14 @@
   return v28;
 }
 
-- (id)createWSTrust2005Request:(id)a3
+- (id)createWSTrust2005Request:(id)request
 {
   v35[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_opt_new();
-  v5 = [v3 endpointURN];
+  endpointURN = [requestCopy endpointURN];
   v33 = v4;
-  [v4 setAddress:v5];
+  [v4 setAddress:endpointURN];
 
   v32 = objc_opt_new();
   [v32 setEndpointReference:v4];
@@ -117,32 +117,32 @@
   [v7 setStringValue:@"http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Issue"];
   [v7 setMustUnderstand:@"1"];
   v31 = objc_opt_new();
-  v8 = [v3 nonce];
-  [v31 setStringValue:v8];
+  nonce = [requestCopy nonce];
+  [v31 setStringValue:nonce];
 
   v9 = objc_opt_new();
   [v9 setAddress:@"http://www.w3.org/2005/08/addressing/anonymous"];
   v10 = objc_opt_new();
   [v10 setMustUnderstand:@"1"];
-  v11 = [v3 to];
+  v11 = [requestCopy to];
   [v10 setStringValue:v11];
 
   v12 = objc_opt_new();
   v13 = MEMORY[0x277CCACA8];
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v15 = [v14 UUIDString];
-  v16 = [v13 stringWithFormat:@"uuid-%@", v15];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v16 = [v13 stringWithFormat:@"uuid-%@", uUIDString];
   [v12 setId:v16];
 
-  v17 = [v3 userName];
-  [v12 setUsername:v17];
+  userName = [requestCopy userName];
+  [v12 setUsername:userName];
 
   v18 = SecCFAllocatorZeroize();
-  v19 = [v3 password];
-  v20 = [v19 mutableBytes];
-  v21 = [v3 password];
+  password = [requestCopy password];
+  mutableBytes = [password mutableBytes];
+  password2 = [requestCopy password];
 
-  v22 = CFStringCreateWithBytes(v18, v20, [v21 length], 0x8000100u, 0);
+  v22 = CFStringCreateWithBytes(v18, mutableBytes, [password2 length], 0x8000100u, 0);
   [v12 setPassword:v22];
 
   v23 = objc_opt_new();
@@ -170,20 +170,20 @@
   return v28;
 }
 
-- (id)parseWSTrustRequest:(id)a3 version:(unint64_t)a4
+- (id)parseWSTrustRequest:(id)request version:(unint64_t)version
 {
-  if (a4)
+  if (version)
   {
-    v5 = a3;
+    requestCopy = request;
     v6 = objc_alloc_init(POWSTrustRequest);
-    v7 = [POXMLHelper loadXMLDocument:v5];
+    v7 = [POXMLHelper loadXMLDocument:requestCopy];
 
     if (v7)
     {
       v8 = [[POXMLXPathContext alloc] initWithXMLContext:v7];
       [(POXMLXPathContext *)v8 registerNamespaces:@"s=http://www.w3.org/2003/05/soap-envelope a=http://www.w3.org/2005/08/addressing u=http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd o=http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd  wsu=http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd wsp=http://schemas.xmlsoap.org/ws/2004/09/policy saml=urn:oasis:names:tc:SAML:1.0:assertion"];
       v9 = @"http://schemas.xmlsoap.org/ws/2005/02/trust";
-      if (a4 == 1)
+      if (version == 1)
       {
         v9 = @"http://docs.oasis-open.org/ws-sx/ws-trust/200512";
       }
@@ -192,41 +192,41 @@
       [(POXMLXPathContext *)v8 registerNamespaces:v10];
 
       v38 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Header/a:Action"];
-      v11 = [v38 nodes];
-      v12 = [v11 firstObject];
-      v13 = [v12 content];
-      [(POWSTrustRequest *)v6 setAction:v13];
+      nodes = [v38 nodes];
+      firstObject = [nodes firstObject];
+      content = [firstObject content];
+      [(POWSTrustRequest *)v6 setAction:content];
 
       v37 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Header/a:To"];
-      v14 = [v37 nodes];
-      v15 = [v14 firstObject];
-      v16 = [v15 content];
-      [(POWSTrustRequest *)v6 setTo:v16];
+      nodes2 = [v37 nodes];
+      firstObject2 = [nodes2 firstObject];
+      content2 = [firstObject2 content];
+      [(POWSTrustRequest *)v6 setTo:content2];
 
       v17 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Header/a:MessageID"];
-      v18 = [v17 nodes];
-      v19 = [v18 firstObject];
-      v20 = [v19 content];
-      [(POWSTrustRequest *)v6 setNonce:v20];
+      nodes3 = [v17 nodes];
+      firstObject3 = [nodes3 firstObject];
+      content3 = [firstObject3 content];
+      [(POWSTrustRequest *)v6 setNonce:content3];
 
       v21 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Body/trust:RequestSecurityToken/wsp:AppliesTo/a:EndpointReference/a:Address"];
-      v22 = [v21 nodes];
-      v23 = [v22 firstObject];
-      v24 = [v23 content];
-      [(POWSTrustRequest *)v6 setEndpointURN:v24];
+      nodes4 = [v21 nodes];
+      firstObject4 = [nodes4 firstObject];
+      content4 = [firstObject4 content];
+      [(POWSTrustRequest *)v6 setEndpointURN:content4];
 
       v25 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Header/o:Security/o:UsernameToken/o:Username"];
-      v26 = [v25 nodes];
-      v27 = [v26 firstObject];
-      v28 = [v27 content];
-      [(POWSTrustRequest *)v6 setUserName:v28];
+      nodes5 = [v25 nodes];
+      firstObject5 = [nodes5 firstObject];
+      content5 = [firstObject5 content];
+      [(POWSTrustRequest *)v6 setUserName:content5];
 
       v29 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Header/o:Security/o:UsernameToken/o:Password"];
-      v30 = [v29 nodes];
-      v31 = [v30 firstObject];
-      v32 = [v31 content];
+      nodes6 = [v29 nodes];
+      firstObject6 = [nodes6 firstObject];
+      content6 = [firstObject6 content];
 
-      v33 = [v32 dataUsingEncoding:4];
+      v33 = [content6 dataUsingEncoding:4];
       v34 = [v33 mutableCopy];
       [(POWSTrustRequest *)v6 setPassword:v34];
 
@@ -247,10 +247,10 @@
   return v35;
 }
 
-- (id)createWSTrust13Response:(id)a3
+- (id)createWSTrust13Response:(id)response
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_alloc(MEMORY[0x277CBEA80]);
   v5 = [v4 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
   v6 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"UTC"];
@@ -262,17 +262,17 @@
   v56 = v7;
   [v7 setMustUnderstand:@"1"];
   v8 = objc_opt_new();
-  v9 = [v3 nonce];
+  nonce = [responseCopy nonce];
   v55 = v8;
-  [v8 setStringValue:v9];
+  [v8 setStringValue:nonce];
 
   v10 = objc_opt_new();
   [v10 setId:@"_0"];
-  v11 = [v3 created];
-  [v10 setCreated:v11];
+  created = [responseCopy created];
+  [v10 setCreated:created];
 
-  v12 = [v3 expires];
-  [v10 setExpires:v12];
+  expires = [responseCopy expires];
+  [v10 setExpires:expires];
 
   v13 = objc_opt_new();
   [v13 setMustUnderstand:@"1"];
@@ -280,41 +280,41 @@
   v54 = v10;
   [v13 setTimestamp:v10];
   v14 = objc_opt_new();
-  v15 = [v3 created];
-  [v14 setCreated:v15];
+  created2 = [responseCopy created];
+  [v14 setCreated:created2];
 
-  v16 = [v3 tokenExpires];
-  [v14 setExpires:v16];
+  tokenExpires = [responseCopy tokenExpires];
+  [v14 setExpires:tokenExpires];
 
   v17 = objc_opt_new();
-  v18 = [v3 endpointURN];
-  [v17 setAddress:v18];
+  endpointURN = [responseCopy endpointURN];
+  [v17 setAddress:endpointURN];
 
   v19 = objc_opt_new();
   v52 = v17;
   [v19 setEndpointReference:v17];
   v20 = objc_opt_new();
-  v21 = [v3 assertion];
-  [v20 setStringValue:v21];
+  assertion = [responseCopy assertion];
+  [v20 setStringValue:assertion];
 
   v22 = objc_opt_new();
-  v23 = [v3 keyIdentifier];
-  [v22 setStringValue:v23];
+  keyIdentifier = [responseCopy keyIdentifier];
+  [v22 setStringValue:keyIdentifier];
 
   [v22 setValueType:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.0#SAMLAssertionID"];
   v24 = objc_opt_new();
   v51 = v22;
   [v24 setKeyIdentifier:v22];
-  v25 = [v3 tokenType];
-  LODWORD(v22) = [v25 isEqualToString:@"urn:oasis:names:tc:SAML:1.0:assertion"];
+  tokenType = [responseCopy tokenType];
+  LODWORD(v22) = [tokenType isEqualToString:@"urn:oasis:names:tc:SAML:1.0:assertion"];
 
   if (v22)
   {
     [v24 setTokenType:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1"];
   }
 
-  v26 = [v3 tokenType];
-  v27 = [v26 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"];
+  tokenType2 = [responseCopy tokenType];
+  v27 = [tokenType2 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"];
 
   if (v27)
   {
@@ -324,23 +324,23 @@
   v28 = objc_opt_new();
   [v28 setSecurityTokenReference:v24];
   v29 = objc_opt_new();
-  v30 = [v3 keyIdentifier];
-  [v29 setStringValue:v30];
+  keyIdentifier2 = [responseCopy keyIdentifier];
+  [v29 setStringValue:keyIdentifier2];
 
   [v29 setValueType:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.0#SAMLAssertionID"];
   v31 = objc_opt_new();
   v50 = v29;
   [v31 setKeyIdentifier:v29];
-  v32 = [v3 tokenType];
-  LODWORD(v29) = [v32 isEqualToString:@"urn:oasis:names:tc:SAML:1.0:assertion"];
+  tokenType3 = [responseCopy tokenType];
+  LODWORD(v29) = [tokenType3 isEqualToString:@"urn:oasis:names:tc:SAML:1.0:assertion"];
 
   if (v29)
   {
     [v31 setTokenType:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1"];
   }
 
-  v33 = [v3 tokenType];
-  v34 = [v33 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"];
+  tokenType4 = [responseCopy tokenType];
+  v34 = [tokenType4 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"];
 
   if (v34)
   {
@@ -357,8 +357,8 @@
   v48 = v28;
   [v36 setRequestedAttachedReference:v28];
   [v36 setRequestedUnattachedReference:v35];
-  v37 = [v3 tokenType];
-  [v36 setTokenType:v37];
+  tokenType5 = [responseCopy tokenType];
+  [v36 setTokenType:tokenType5];
 
   [v36 setKeyType:@"http://docs.oasis-open.org/ws-sx/ws-trust/200512/Bearer"];
   [v36 setRequestType:@"http://docs.oasis-open.org/ws-sx/ws-trust/200512/Issue"];
@@ -388,10 +388,10 @@
   return v44;
 }
 
-- (id)createWSTrust2005Response:(id)a3
+- (id)createWSTrust2005Response:(id)response
 {
   v62[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_alloc(MEMORY[0x277CBEA80]);
   v5 = [v4 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
   v6 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"UTC"];
@@ -403,17 +403,17 @@
   v58 = v7;
   [v7 setMustUnderstand:@"1"];
   v8 = objc_opt_new();
-  v9 = [v3 nonce];
+  nonce = [responseCopy nonce];
   v57 = v8;
-  [v8 setStringValue:v9];
+  [v8 setStringValue:nonce];
 
   v10 = objc_opt_new();
   [v10 setId:@"_0"];
-  v11 = [v3 created];
-  [v10 setCreated:v11];
+  created = [responseCopy created];
+  [v10 setCreated:created];
 
-  v12 = [v3 expires];
-  [v10 setExpires:v12];
+  expires = [responseCopy expires];
+  [v10 setExpires:expires];
 
   v13 = objc_opt_new();
   [v13 setMustUnderstand:@"1"];
@@ -421,41 +421,41 @@
   v56 = v10;
   [v13 setTimestamp:v10];
   v14 = objc_opt_new();
-  v15 = [v3 created];
-  [v14 setCreated:v15];
+  created2 = [responseCopy created];
+  [v14 setCreated:created2];
 
-  v16 = [v3 tokenExpires];
-  [v14 setExpires:v16];
+  tokenExpires = [responseCopy tokenExpires];
+  [v14 setExpires:tokenExpires];
 
   v17 = objc_opt_new();
-  v18 = [v3 endpointURN];
-  [v17 setAddress:v18];
+  endpointURN = [responseCopy endpointURN];
+  [v17 setAddress:endpointURN];
 
   v19 = objc_opt_new();
   v54 = v17;
   [v19 setEndpointReference:v17];
   v20 = objc_opt_new();
-  v21 = [v3 assertion];
+  assertion = [responseCopy assertion];
   v60 = v20;
-  [v20 setStringValue:v21];
+  [v20 setStringValue:assertion];
 
   v22 = objc_opt_new();
-  v23 = [v3 keyIdentifier];
-  [v22 setStringValue:v23];
+  keyIdentifier = [responseCopy keyIdentifier];
+  [v22 setStringValue:keyIdentifier];
 
   [v22 setValueType:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.0#SAMLAssertionID"];
   v24 = objc_opt_new();
   v53 = v22;
   [v24 setKeyIdentifier:v22];
-  v25 = [v3 tokenType];
-  if ([v25 isEqualToString:@"urn:oasis:names:tc:SAML:1.0:assertion"])
+  tokenType = [responseCopy tokenType];
+  if ([tokenType isEqualToString:@"urn:oasis:names:tc:SAML:1.0:assertion"])
   {
   }
 
   else
   {
-    v26 = [v3 tokenType];
-    v27 = [v26 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1"];
+    tokenType2 = [responseCopy tokenType];
+    v27 = [tokenType2 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1"];
 
     if (!v27)
     {
@@ -465,15 +465,15 @@
 
   [v24 setTokenType:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1"];
 LABEL_5:
-  v28 = [v3 tokenType];
-  if ([v28 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"])
+  tokenType3 = [responseCopy tokenType];
+  if ([tokenType3 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"])
   {
   }
 
   else
   {
-    v29 = [v3 tokenType];
-    v30 = [v29 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0"];
+    tokenType4 = [responseCopy tokenType];
+    v30 = [tokenType4 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0"];
 
     if (!v30)
     {
@@ -486,22 +486,22 @@ LABEL_9:
   v31 = objc_opt_new();
   [v31 setSecurityTokenReference:v24];
   v32 = objc_opt_new();
-  v33 = [v3 keyIdentifier];
-  [v32 setStringValue:v33];
+  keyIdentifier2 = [responseCopy keyIdentifier];
+  [v32 setStringValue:keyIdentifier2];
 
   [v32 setValueType:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.0#SAMLAssertionID"];
   v34 = objc_opt_new();
   v51 = v32;
   [v34 setKeyIdentifier:v32];
-  v35 = [v3 tokenType];
-  if ([v35 isEqualToString:@"urn:oasis:names:tc:SAML:1.0:assertion"])
+  tokenType5 = [responseCopy tokenType];
+  if ([tokenType5 isEqualToString:@"urn:oasis:names:tc:SAML:1.0:assertion"])
   {
   }
 
   else
   {
-    v36 = [v3 tokenType];
-    v37 = [v36 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1"];
+    tokenType6 = [responseCopy tokenType];
+    v37 = [tokenType6 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1"];
 
     if (!v37)
     {
@@ -511,16 +511,16 @@ LABEL_9:
 
   [v34 setTokenType:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1"];
 LABEL_13:
-  v38 = [v3 tokenType];
+  tokenType7 = [responseCopy tokenType];
   v52 = v24;
-  if ([v38 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"])
+  if ([tokenType7 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"])
   {
   }
 
   else
   {
-    v39 = [v3 tokenType];
-    v40 = [v39 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0"];
+    tokenType8 = [responseCopy tokenType];
+    v40 = [tokenType8 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0"];
 
     if (!v40)
     {
@@ -538,8 +538,8 @@ LABEL_17:
   [v42 setRequestedSecurityToken:v60];
   [v42 setRequestedAttachedReference:v31];
   [v42 setRequestedUnattachedReference:v41];
-  v43 = [v3 tokenType];
-  [v42 setTokenType:v43];
+  tokenType9 = [responseCopy tokenType];
+  [v42 setTokenType:tokenType9];
 
   [v42 setKeyType:@"http://schemas.xmlsoap.org/ws/2005/05/identity/NoProofKey"];
   [v42 setRequestType:@"http://schemas.xmlsoap.org/ws/2005/02/trust/Issue"];
@@ -563,10 +563,10 @@ LABEL_17:
   return v48;
 }
 
-- (id)createWSTrustFault:(id)a3
+- (id)createWSTrustFault:(id)fault
 {
   v46[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  faultCopy = fault;
   v4 = objc_alloc(MEMORY[0x277CBEA80]);
   v5 = [v4 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
   v6 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"UTC"];
@@ -577,21 +577,21 @@ LABEL_17:
   [v7 setStringValue:@"http://docs.oasis-open.org/ws-sx/ws-trust/200512/RSTRC/IssueFinal"];
   [v7 setMustUnderstand:@"1"];
   v8 = objc_opt_new();
-  v9 = [v3 nonce];
-  [v8 setStringValue:v9];
+  nonce = [faultCopy nonce];
+  [v8 setStringValue:nonce];
 
-  v10 = [v3 created];
-  if (v10)
+  created = [faultCopy created];
+  if (created)
   {
 
 LABEL_4:
     v12 = objc_opt_new();
     [v12 setId:@"_0"];
-    v13 = [v3 created];
-    [v12 setCreated:v13];
+    created2 = [faultCopy created];
+    [v12 setCreated:created2];
 
-    v14 = [v3 expires];
-    [v12 setExpires:v14];
+    expires = [faultCopy expires];
+    [v12 setExpires:expires];
 
     v15 = objc_opt_new();
     [v15 setMustUnderstand:@"1"];
@@ -600,9 +600,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v11 = [v3 expires];
+  expires2 = [faultCopy expires];
 
-  if (v11)
+  if (expires2)
   {
     goto LABEL_4;
   }
@@ -610,33 +610,33 @@ LABEL_4:
   v15 = 0;
 LABEL_5:
   v16 = objc_opt_new();
-  v17 = [v3 created];
-  [v16 setCreated:v17];
+  created3 = [faultCopy created];
+  [v16 setCreated:created3];
 
-  v18 = [v3 tokenExpires];
+  tokenExpires = [faultCopy tokenExpires];
   v42 = v16;
-  [v16 setExpires:v18];
+  [v16 setExpires:tokenExpires];
 
   v19 = objc_opt_new();
-  v20 = [v3 endpointURN];
-  [v19 setAddress:v20];
+  endpointURN = [faultCopy endpointURN];
+  [v19 setAddress:endpointURN];
 
   v40 = objc_opt_new();
   v41 = v19;
   [v40 setEndpointReference:v19];
   v21 = objc_opt_new();
-  v22 = [v3 faultSubCodeValue];
-  [v21 setValue:v22];
+  faultSubCodeValue = [faultCopy faultSubCodeValue];
+  [v21 setValue:faultSubCodeValue];
 
   v23 = objc_opt_new();
-  v24 = [v3 faultCodeValue];
-  [v23 setValue:v24];
+  faultCodeValue = [faultCopy faultCodeValue];
+  [v23 setValue:faultCodeValue];
 
   v39 = v21;
   [v23 setSubcode:v21];
   v25 = objc_opt_new();
-  v26 = [v3 faultReason];
-  [v25 setStringValue:v26];
+  faultReason = [faultCopy faultReason];
+  [v25 setStringValue:faultReason];
 
   v27 = objc_opt_new();
   [v27 setText:v25];
@@ -653,8 +653,8 @@ LABEL_5:
   v31 = v15;
   if (v15)
   {
-    v32 = [v29 Header];
-    v33 = [v32 arrayByAddingObject:v15];
+    header = [v29 Header];
+    v33 = [header arrayByAddingObject:v15];
     [v29 setHeader:v33];
   }
 
@@ -671,23 +671,23 @@ LABEL_5:
   return v36;
 }
 
-- (id)parseWSTrustResponse:(id)a3 version:(unint64_t)a4
+- (id)parseWSTrustResponse:(id)response version:(unint64_t)version
 {
-  if (!a4)
+  if (!version)
   {
     v6 = 0;
     goto LABEL_22;
   }
 
-  v5 = a3;
+  responseCopy = response;
   v6 = objc_alloc_init(POWSTrustResponse);
-  v7 = [POXMLHelper loadXMLDocument:v5];
+  v7 = [POXMLHelper loadXMLDocument:responseCopy];
 
   v64 = v7;
   v8 = [[POXMLXPathContext alloc] initWithXMLContext:v7];
   [(POXMLXPathContext *)v8 registerNamespaces:@"s=http://www.w3.org/2003/05/soap-envelope a=http://www.w3.org/2005/08/addressing u=http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd o=http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd  wsu=http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd saml=urn:oasis:names:tc:SAML:1.0:assertion saml2=urn:oasis:names:tc:SAML:2.0:assertion"];
   v9 = @"http://schemas.xmlsoap.org/ws/2005/02/trust";
-  if (a4 == 1)
+  if (version == 1)
   {
     v9 = @"http://docs.oasis-open.org/ws-sx/ws-trust/200512";
   }
@@ -696,21 +696,21 @@ LABEL_5:
   [(POXMLXPathContext *)v8 registerNamespaces:v10];
 
   v63 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Header/a:RelatesTo"];
-  v11 = [v63 nodes];
-  v12 = [v11 firstObject];
-  v13 = [v12 content];
-  [(POWSTrustResponse *)v6 setNonce:v13];
+  nodes = [v63 nodes];
+  firstObject = [nodes firstObject];
+  content = [firstObject content];
+  [(POWSTrustResponse *)v6 setNonce:content];
 
   v14 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v14 setFormatOptions:3955];
   v15 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v15 setFormatOptions:1907];
   v62 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Header/o:Security/u:Timestamp/u:Created"];
-  v16 = [v62 nodes];
-  v17 = [v16 firstObject];
-  v18 = [v17 content];
+  nodes2 = [v62 nodes];
+  firstObject2 = [nodes2 firstObject];
+  content2 = [firstObject2 content];
 
-  v19 = [v14 dateFromString:v18];
+  v19 = [v14 dateFromString:content2];
   if (v19)
   {
     [(POWSTrustResponse *)v6 setCreated:v19];
@@ -718,16 +718,16 @@ LABEL_5:
 
   else
   {
-    v20 = [v15 dateFromString:v18];
+    v20 = [v15 dateFromString:content2];
     [(POWSTrustResponse *)v6 setCreated:v20];
   }
 
   v60 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Header/o:Security/u:Timestamp/u:Expires"];
-  v21 = [v60 nodes];
-  v22 = [v21 firstObject];
-  v23 = [v22 content];
+  nodes3 = [v60 nodes];
+  firstObject3 = [nodes3 firstObject];
+  content3 = [firstObject3 content];
 
-  v24 = [v14 dateFromString:v23];
+  v24 = [v14 dateFromString:content3];
   if (v24)
   {
     [(POWSTrustResponse *)v6 setExpires:v24];
@@ -735,27 +735,27 @@ LABEL_5:
 
   else
   {
-    v25 = [v15 dateFromString:v23];
+    v25 = [v15 dateFromString:content3];
     [(POWSTrustResponse *)v6 setExpires:v25];
   }
 
   v26 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Body/s:Fault"];
   -[POWSTrustResponse setFault:](v6, "setFault:", [v26 nodeCount] > 0);
-  v61 = v18;
-  v59 = v23;
+  v61 = content2;
+  v59 = content3;
   if (![(POWSTrustResponse *)v6 isFault])
   {
-    if (a4 == 1)
+    if (version == 1)
     {
       v41 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Body/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:TokenType"];
-      v45 = [v41 nodes];
-      v46 = [v45 firstObject];
-      v47 = [v46 content];
+      nodes4 = [v41 nodes];
+      firstObject4 = [nodes4 firstObject];
+      content4 = [firstObject4 content];
 
       v48 = @"//s:Envelope/s:Body/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml2:Assertion";
-      if (([v47 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"] & 1) == 0)
+      if (([content4 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"] & 1) == 0)
       {
-        v49 = [v47 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0"];
+        v49 = [content4 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0"];
         v50 = @"//s:Envelope/s:Body/trust:RequestSecurityTokenResponseCollection/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion";
         goto LABEL_18;
       }
@@ -764,14 +764,14 @@ LABEL_5:
     else
     {
       v41 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Body/trust:RequestSecurityTokenResponse/trust:TokenType"];
-      v51 = [v41 nodes];
-      v52 = [v51 firstObject];
-      v47 = [v52 content];
+      nodes5 = [v41 nodes];
+      firstObject5 = [nodes5 firstObject];
+      content4 = [firstObject5 content];
 
       v48 = @"//s:Envelope/s:Body/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml2:Assertion";
-      if (([v47 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"] & 1) == 0)
+      if (([content4 isEqualToString:@"urn:oasis:names:tc:SAML:2.0:assertion"] & 1) == 0)
       {
-        v49 = [v47 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0"];
+        v49 = [content4 isEqualToString:@"http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0"];
         v50 = @"//s:Envelope/s:Body/trust:RequestSecurityTokenResponse/trust:RequestedSecurityToken/saml:Assertion";
 LABEL_18:
         if (!v49)
@@ -783,36 +783,36 @@ LABEL_18:
 
     v42 = [(POXMLXPathContext *)v8 evaluateXPath:v48];
 
-    v53 = [v42 nodes];
-    v54 = [v53 firstObject];
-    v55 = [v54 rawXMLString];
-    [(POWSTrustResponse *)v6 setAssertion:v55];
+    nodes6 = [v42 nodes];
+    firstObject6 = [nodes6 firstObject];
+    rawXMLString = [firstObject6 rawXMLString];
+    [(POWSTrustResponse *)v6 setAssertion:rawXMLString];
 
-    v34 = [v41 nodes];
-    v44 = [v34 firstObject];
-    v56 = [v44 content];
-    [(POWSTrustResponse *)v6 setTokenType:v56];
+    nodes7 = [v41 nodes];
+    firstObject7 = [nodes7 firstObject];
+    content5 = [firstObject7 content];
+    [(POWSTrustResponse *)v6 setTokenType:content5];
 
     v43 = v64;
     goto LABEL_21;
   }
 
   v58 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Body/s:Fault/s:Reason/s:Text"];
-  v27 = [v58 nodes];
-  v28 = [v27 firstObject];
-  v29 = [v28 content];
-  [(POWSTrustResponse *)v6 setFaultReason:v29];
+  nodes8 = [v58 nodes];
+  firstObject8 = [nodes8 firstObject];
+  content6 = [firstObject8 content];
+  [(POWSTrustResponse *)v6 setFaultReason:content6];
 
   v30 = [(POXMLXPathContext *)v8 evaluateXPath:@"//s:Envelope/s:Body/s:Fault/s:Code/s:Value"];
-  v31 = [v30 nodes];
-  v32 = [v31 firstObject];
-  v33 = [v32 content];
-  [(POWSTrustResponse *)v6 setFaultCodeValue:v33];
+  nodes9 = [v30 nodes];
+  firstObject9 = [nodes9 firstObject];
+  content7 = [firstObject9 content];
+  [(POWSTrustResponse *)v6 setFaultCodeValue:content7];
 
-  v34 = [(POXMLXPathContext *)v8 evaluateXPath:@"/s:Envelope/s:Body/s:Fault/s:Code/s:Subcode/s:Value"];
-  v35 = [v34 nodes];
-  v36 = [v35 firstObject];
-  [v36 content];
+  nodes7 = [(POXMLXPathContext *)v8 evaluateXPath:@"/s:Envelope/s:Body/s:Fault/s:Code/s:Subcode/s:Value"];
+  v34Nodes = [nodes7 nodes];
+  firstObject10 = [v34Nodes firstObject];
+  [firstObject10 content];
   v37 = v14;
   v38 = v26;
   v40 = v39 = v15;
@@ -825,8 +825,8 @@ LABEL_18:
   v42 = v58;
 
   v43 = v64;
-  v44 = [v64 nameSpacePrefixForHref:@"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"];
-  [(POWSTrustResponse *)v6 setSecurityExtensionPrefix:v44];
+  firstObject7 = [v64 nameSpacePrefixForHref:@"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"];
+  [(POWSTrustResponse *)v6 setSecurityExtensionPrefix:firstObject7];
 LABEL_21:
 
 LABEL_22:
@@ -834,13 +834,13 @@ LABEL_22:
   return v6;
 }
 
-- (id)parseWSTrustMexResponse:(id)a3 version:(unint64_t)a4
+- (id)parseWSTrustMexResponse:(id)response version:(unint64_t)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  responseCopy = response;
+  if (version == 2)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@=%@", @"wsdl=http://schemas.xmlsoap.org/wsdl/ wsp=http://schemas.xmlsoap.org/ws/2004/09/policy soap12=http://schemas.xmlsoap.org/wsdl/soap12/ wsa10=http://www.w3.org/2005/08/addressing", @"sp", @"http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"];
-    v8 = [(POWSTrustProcess *)self parseMexResponse:v6 namespaces:v7 policyXPath:@"sp:SignedSupportingTokens/wsp:Policy/sp:UsernameToken/wsp:Policy/sp:WssUsernameToken10" action:@"http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Issue"];
+    v8 = [(POWSTrustProcess *)self parseMexResponse:responseCopy namespaces:v7 policyXPath:@"sp:SignedSupportingTokens/wsp:Policy/sp:UsernameToken/wsp:Policy/sp:WssUsernameToken10" action:@"http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Issue"];
     if (-[POWSTrustProcess parseWSTrust2005](self, "parseWSTrust2005") && v8 && [v8 version] == 2)
     {
       v9 = PO_LOG_POWSTrustProcess();
@@ -867,10 +867,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a4 == 1)
+  if (version == 1)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@=%@", @"wsdl=http://schemas.xmlsoap.org/wsdl/ wsp=http://schemas.xmlsoap.org/ws/2004/09/policy soap12=http://schemas.xmlsoap.org/wsdl/soap12/ wsa10=http://www.w3.org/2005/08/addressing", @"sp", @"http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"];
-    v8 = [(POWSTrustProcess *)self parseMexResponse:v6 namespaces:v7 policyXPath:@"sp:SignedEncryptedSupportingTokens/wsp:Policy/sp:UsernameToken/wsp:Policy/sp:WssUsernameToken10" action:@"http://docs.oasis-open.org/ws-sx/ws-trust/200512/RST/Issue"];
+    v8 = [(POWSTrustProcess *)self parseMexResponse:responseCopy namespaces:v7 policyXPath:@"sp:SignedEncryptedSupportingTokens/wsp:Policy/sp:UsernameToken/wsp:Policy/sp:WssUsernameToken10" action:@"http://docs.oasis-open.org/ws-sx/ws-trust/200512/RST/Issue"];
     if (-[POWSTrustProcess parseWSTrust13](self, "parseWSTrust13") && v8 && [v8 version] == 1)
     {
       v9 = PO_LOG_POWSTrustProcess();
@@ -896,16 +896,16 @@ LABEL_18:
   return v12;
 }
 
-- (id)parseMexResponse:(id)a3 namespaces:(id)a4 policyXPath:(id)a5 action:(id)a6
+- (id)parseMexResponse:(id)response namespaces:(id)namespaces policyXPath:(id)path action:(id)action
 {
   v119 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v96 = a5;
-  v93 = a6;
+  responseCopy = response;
+  namespacesCopy = namespaces;
+  pathCopy = path;
+  actionCopy = action;
   v11 = objc_alloc_init(POWSTrustMexResponse);
-  v78 = v9;
-  v12 = [POXMLHelper loadXMLDocument:v9];
+  v78 = responseCopy;
+  v12 = [POXMLHelper loadXMLDocument:responseCopy];
   if (!v12)
   {
     v73 = __67__POWSTrustProcess_parseMexResponse_namespaces_policyXPath_action___block_invoke();
@@ -916,8 +916,8 @@ LABEL_18:
   v79 = v11;
   v81 = v12;
   v13 = [[POXMLXPathContext alloc] initWithXMLContext:v12];
-  v77 = v10;
-  [(POXMLXPathContext *)v13 registerNamespaces:v10];
+  v77 = namespacesCopy;
+  [(POXMLXPathContext *)v13 registerNamespaces:namespacesCopy];
   v88 = v13;
   v14 = [(POXMLXPathContext *)v13 evaluateXPath:@"//wsdl:definitions/wsp:Policy/wsp:ExactlyOne/wsp:All"];
   v92 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -926,8 +926,8 @@ LABEL_18:
   v111 = 0u;
   v112 = 0u;
   v76 = v14;
-  v15 = [v14 nodes];
-  v16 = [v15 countByEnumeratingWithState:&v109 objects:v118 count:16];
+  nodes = [v14 nodes];
+  v16 = [nodes countByEnumeratingWithState:&v109 objects:v118 count:16];
   if (v16)
   {
     v17 = v16;
@@ -938,22 +938,22 @@ LABEL_18:
       {
         if (*v110 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(nodes);
         }
 
         v20 = *(*(&v109 + 1) + 8 * i);
-        v21 = [v20 parent];
-        v22 = [v21 parent];
-        v23 = [v22 valueForProperty:@"Id"];
+        parent = [v20 parent];
+        v21Parent = [parent parent];
+        v23 = [v21Parent valueForProperty:@"Id"];
 
-        v24 = [v20 evaluateXPath:v96];
+        v24 = [v20 evaluateXPath:pathCopy];
         if ([v24 nodeCount] >= 1)
         {
           [v92 addObject:v23];
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v109 objects:v118 count:16];
+      v17 = [nodes countByEnumeratingWithState:&v109 objects:v118 count:16];
     }
 
     while (v17);
@@ -962,7 +962,7 @@ LABEL_18:
   if (![v92 count])
   {
     v72 = PO_LOG_POWSTrustProcess();
-    v10 = v77;
+    namespacesCopy = v77;
     v11 = v79;
     v12 = v81;
     if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
@@ -1023,8 +1023,8 @@ LABEL_18:
       v103 = 0u;
       v104 = 0u;
       v89 = v30;
-      v31 = [v30 nodes];
-      v32 = [v31 countByEnumeratingWithState:&v101 objects:v114 count:16];
+      nodes2 = [v30 nodes];
+      v32 = [nodes2 countByEnumeratingWithState:&v101 objects:v114 count:16];
       if (!v32)
       {
 
@@ -1044,7 +1044,7 @@ LABEL_57:
       }
 
       v33 = v32;
-      v94 = v31;
+      v94 = nodes2;
       v91 = v27;
       v86 = v29;
       v87 = j;
@@ -1062,11 +1062,11 @@ LABEL_57:
           }
 
           v38 = *(*(&v101 + 1) + 8 * v36);
-          v39 = [v38 parent];
-          v34 = [v39 valueForProperty:@"name"];
+          parent2 = [v38 parent];
+          v34 = [parent2 valueForProperty:@"name"];
 
-          v40 = [v38 parent];
-          v41 = [v40 evaluateXPath:@"soap12:binding"];
+          parent3 = [v38 parent];
+          v41 = [parent3 evaluateXPath:@"soap12:binding"];
 
           if ([v41 nodeCount] < 1)
           {
@@ -1075,13 +1075,13 @@ LABEL_57:
 
           else
           {
-            v42 = [v41 nodes];
-            v43 = [v42 firstObject];
-            v44 = [v43 valueForProperty:@"transport"];
+            nodes3 = [v41 nodes];
+            firstObject = [nodes3 firstObject];
+            v44 = [firstObject valueForProperty:@"transport"];
           }
 
-          v45 = [v38 parent];
-          v46 = [v45 evaluateXPath:@"wsdl:operation/soap12:operation"];
+          parent4 = [v38 parent];
+          v46 = [parent4 evaluateXPath:@"wsdl:operation/soap12:operation"];
 
           if ([v46 nodeCount] < 1)
           {
@@ -1090,14 +1090,14 @@ LABEL_57:
 
           else
           {
-            v47 = [v46 nodes];
-            v48 = [v47 firstObject];
-            v49 = [v48 valueForProperty:@"soapAction"];
+            nodes4 = [v46 nodes];
+            firstObject2 = [nodes4 firstObject];
+            v49 = [firstObject2 valueForProperty:@"soapAction"];
           }
 
           if ([v44 isEqualToString:@"http://schemas.xmlsoap.org/soap/http"])
           {
-            if ([v49 isEqualToString:v93])
+            if ([v49 isEqualToString:actionCopy])
             {
 
               goto LABEL_43;
@@ -1142,8 +1142,8 @@ LABEL_43:
       v99 = 0u;
       v100 = 0u;
       v83 = v51;
-      v90 = [v51 nodes];
-      v52 = [v90 countByEnumeratingWithState:&v97 objects:v113 count:16];
+      nodes5 = [v51 nodes];
+      v52 = [nodes5 countByEnumeratingWithState:&v97 objects:v113 count:16];
       if (v52)
       {
         v53 = v52;
@@ -1155,7 +1155,7 @@ LABEL_43:
           {
             if (*v98 != v95)
             {
-              objc_enumerationMutation(v90);
+              objc_enumerationMutation(nodes5);
             }
 
             v56 = *(*(&v97 + 1) + 8 * k);
@@ -1170,11 +1170,11 @@ LABEL_43:
               v61 = [v56 evaluateXPath:@"wsa10:EndpointReference/wsa10:Address"];
               if ([v61 nodeCount] > 0)
               {
-                v64 = [v61 nodes];
-                v65 = [v64 firstObject];
-                v66 = [v65 content];
+                nodes6 = [v61 nodes];
+                firstObject3 = [nodes6 firstObject];
+                content = [firstObject3 content];
 
-                v62 = v66;
+                v62 = content;
                 goto LABEL_62;
               }
 
@@ -1182,7 +1182,7 @@ LABEL_43:
             }
           }
 
-          v53 = [v90 countByEnumeratingWithState:&v97 objects:v113 count:16];
+          v53 = [nodes5 countByEnumeratingWithState:&v97 objects:v113 count:16];
           if (v53)
           {
             continue;
@@ -1203,8 +1203,8 @@ LABEL_43:
 
 LABEL_62:
 
-      v67 = [v62 lowercaseString];
-      v68 = [v67 hasPrefix:@"https://"];
+      lowercaseString = [v62 lowercaseString];
+      v68 = [lowercaseString hasPrefix:@"https://"];
 
       v12 = v81;
       if (v68)
@@ -1258,7 +1258,7 @@ LABEL_75:
 
       if (v63 != 5 && v63)
       {
-        v10 = v77;
+        namespacesCopy = v77;
         v11 = v79;
         v72 = obj;
         v71 = v82;
@@ -1277,7 +1277,7 @@ LABEL_75:
 
 LABEL_79:
   v71 = 0;
-  v10 = v77;
+  namespacesCopy = v77;
   v11 = v79;
   v72 = obj;
 LABEL_85:

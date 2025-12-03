@@ -4,35 +4,35 @@
 - (CGRect)clipRect;
 - (CGRect)layerFrameInScaledCanvas;
 - (CGRect)p_clipRect;
-- (CGRect)p_convertBaseToNaturalRect:(CGRect)a3;
-- (TSDPartitionedPartialRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (CGRect)p_convertBaseToNaturalRect:(CGRect)rect;
+- (TSDPartitionedPartialRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (UIEdgeInsets)p_edgeInsetsForClipping;
 - (id)i_queueForTileProvider;
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4;
-- (void)didUpdateLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context;
+- (void)didUpdateLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 - (void)resetCachedPartitionedRendering;
 - (void)willBeRemoved;
 @end
 
 @implementation TSDPartitionedPartialRep
 
-- (TSDPartitionedPartialRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSDPartitionedPartialRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  if (!a3)
+  if (!layout)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDPartitionedPartialRep initWithLayout:canvas:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPartitionedPartialRep.m"), 39, @"invalid nil value for '%s'", "layout"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPartitionedPartialRep.m"), 39, @"invalid nil value for '%s'", "layout"}];
   }
 
   v12.receiver = self;
   v12.super_class = TSDPartitionedPartialRep;
-  v9 = [(TSDRep *)&v12 initWithLayout:a3 canvas:a4];
+  v9 = [(TSDRep *)&v12 initWithLayout:layout canvas:canvas];
   if (v9)
   {
     objc_opt_class();
-    [a3 partitioner];
+    [layout partitioner];
     v10 = TSUDynamicCast();
     if (v10)
     {
@@ -85,9 +85,9 @@
 
 - (void)willBeRemoved
 {
-  v3 = [(TSDRep *)self layout];
+  layout = [(TSDRep *)self layout];
   objc_opt_class();
-  [(TSDLayout *)v3 partitioner];
+  [(TSDLayout *)layout partitioner];
   v4 = TSUDynamicCast();
   if (v4)
   {
@@ -99,44 +99,44 @@
   [(TSDRep *)&v5 willBeRemoved];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v5 = [(TSDRep *)self layout];
-  [objc_msgSend(objc_msgSend(-[TSDLayout partitioner](v5 "partitioner")];
-  CGContextTranslateCTM(a3, -v6, -v7);
-  [(TSDLayout *)v5 bounds];
+  layout = [(TSDRep *)self layout];
+  [objc_msgSend(objc_msgSend(-[TSDLayout partitioner](layout "partitioner")];
+  CGContextTranslateCTM(context, -v6, -v7);
+  [(TSDLayout *)layout bounds];
   memset(&v11, 0, sizeof(v11));
   CGAffineTransformMakeTranslation(&v11, -v8, -v9);
   v10 = v11;
-  CGContextConcatCTM(a3, &v10);
-  [objc_msgSend(-[TSDLayout partitioner](v5 "partitioner")];
+  CGContextConcatCTM(context, &v10);
+  [objc_msgSend(-[TSDLayout partitioner](layout "partitioner")];
 }
 
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context
 {
   v6 = [-[TSDLayout partitioner](-[TSDRep layout](self "layout")];
 
-  [v6 recursivelyPerformSelector:sel_addBitmapsToRenderingQualityInfo_inContext_ withObject:a3 withObject:a4];
+  [v6 recursivelyPerformSelector:sel_addBitmapsToRenderingQualityInfo_inContext_ withObject:info withObject:context];
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v27.receiver = self;
   v27.super_class = TSDPartitionedPartialRep;
   [(TSDRep *)&v27 didUpdateLayer:?];
   if ([(TSDPartitionedPartialRep *)self directlyManagesLayerContent])
   {
-    v5 = [(TSDRep *)self layout];
-    v6 = [-[TSDLayout partitioner](v5 "partitioner")];
-    if (!v6)
+    layout = [(TSDRep *)self layout];
+    p_newImageForCachingBaseRep = [-[TSDLayout partitioner](layout "partitioner")];
+    if (!p_newImageForCachingBaseRep)
     {
-      v6 = [(TSDPartitionedPartialRep *)self p_newImageForCachingBaseRep];
-      [-[TSDLayout partitioner](v5 "partitioner")];
-      CFRelease(v6);
+      p_newImageForCachingBaseRep = [(TSDPartitionedPartialRep *)self p_newImageForCachingBaseRep];
+      [-[TSDLayout partitioner](layout "partitioner")];
+      CFRelease(p_newImageForCachingBaseRep);
     }
 
-    [a3 setContents:v6];
-    [(TSDLayout *)v5 bounds];
+    [layer setContents:p_newImageForCachingBaseRep];
+    [(TSDLayout *)layout bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -147,19 +147,19 @@
     v20 = v12 - (v15 + v19);
     v22 = v14 - (v17 + v21);
     [(TSDPartitionedPartialRep *)self p_clipRect];
-    [a3 setContentsRect:{(v16 - v23) / v24, (v18 - v25) / v26, v20 / v24, v22 / v26}];
+    [layer setContentsRect:{(v16 - v23) / v24, (v18 - v25) / v26, v20 / v24, v22 / v26}];
   }
 }
 
 - (void)resetCachedPartitionedRendering
 {
-  v3 = [(TSDRep *)self layout];
-  [(TSDLayout *)v3 invalidate];
+  layout = [(TSDRep *)self layout];
+  [(TSDLayout *)layout invalidate];
   [(TSDRep *)self setNeedsDisplay];
-  v4 = [(TSDLayout *)v3 partitioner];
-  v5 = [(TSDRep *)self canvas];
+  partitioner = [(TSDLayout *)layout partitioner];
+  canvas = [(TSDRep *)self canvas];
 
-  [v4 i_removeCachedImageForCanvas:v5];
+  [partitioner i_removeCachedImageForCanvas:canvas];
 }
 
 - (id)i_queueForTileProvider
@@ -171,14 +171,14 @@
 
 - (UIEdgeInsets)p_edgeInsetsForClipping
 {
-  v3 = [(TSDRep *)self layout];
-  [(TSDLayout *)v3 bounds];
+  layout = [(TSDRep *)self layout];
+  [(TSDLayout *)layout bounds];
   v50 = v5;
   v51 = v4;
   v7 = v6;
   v44 = v8;
-  v9 = [-[TSDLayout partitioner](v3 "partitioner")];
-  v10 = [-[TSDLayout partitioner](v3 "partitioner")];
+  v9 = [-[TSDLayout partitioner](layout "partitioner")];
+  v10 = [-[TSDLayout partitioner](layout "partitioner")];
   [objc_msgSend(v9 "geometry")];
   v54 = v12;
   v55 = v11;
@@ -337,8 +337,8 @@
 
 - (CGImage)p_newImageForCachingBaseRep
 {
-  v3 = [(TSDRep *)self layout];
-  v4 = [-[TSDLayout partitioner](v3 "partitioner")];
+  layout = [(TSDRep *)self layout];
+  v4 = [-[TSDLayout partitioner](layout "partitioner")];
   [(TSDPartitionedPartialRep *)self p_clipRect];
   v6 = v5;
   v8 = v7;
@@ -361,7 +361,7 @@
   CGContextScaleCTM(v18, v21, v22);
   [v4 naturalBounds];
   CGContextTranslateCTM(v18, v23 - v6, v24 - v8);
-  [objc_msgSend(objc_msgSend(-[TSDLayout partitioner](v3 "partitioner")];
+  [objc_msgSend(objc_msgSend(-[TSDLayout partitioner](layout "partitioner")];
   CGContextTranslateCTM(v18, -v25, -v26);
   [v4 recursivelyDrawInContext:v18];
   Image = CGBitmapContextCreateImage(v18);
@@ -369,12 +369,12 @@
   return Image;
 }
 
-- (CGRect)p_convertBaseToNaturalRect:(CGRect)a3
+- (CGRect)p_convertBaseToNaturalRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = [objc_msgSend(-[TSDLayout partitioner](-[TSDRep layout](self "layout")];
   v8 = v7;
   if (v7)

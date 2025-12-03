@@ -1,7 +1,7 @@
 @interface CoreDAVPrincipalSearchPropertySetItem
 + (id)copyParseRules;
 - (id)description;
-- (void)addPrincipalSearchProperty:(id)a3;
+- (void)addPrincipalSearchProperty:(id)property;
 @end
 
 @implementation CoreDAVPrincipalSearchPropertySetItem
@@ -14,8 +14,8 @@
   v4 = [(CoreDAVItem *)&v7 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVPrincipalSearchPropertySetItem *)self principalSearchProperties];
-  [v3 appendFormat:@"\n  Number of principal search properties: [%lu]", objc_msgSend(v5, "count")];
+  principalSearchProperties = [(CoreDAVPrincipalSearchPropertySetItem *)self principalSearchProperties];
+  [v3 appendFormat:@"\n  Number of principal search properties: [%lu]", objc_msgSend(principalSearchProperties, "count")];
 
   return v3;
 }
@@ -23,7 +23,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -34,26 +34,26 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, 0}];
 
     v9 = +[CoreDAVItem parseRuleCache];
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v5 forKey:v10];
   }
 
   return v5;
 }
 
-- (void)addPrincipalSearchProperty:(id)a3
+- (void)addPrincipalSearchProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(CoreDAVPrincipalSearchPropertySetItem *)self principalSearchProperties];
+  propertyCopy = property;
+  principalSearchProperties = [(CoreDAVPrincipalSearchPropertySetItem *)self principalSearchProperties];
 
-  if (!v5)
+  if (!principalSearchProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     [(CoreDAVPrincipalSearchPropertySetItem *)self setPrincipalSearchProperties:v6];
   }
 
-  v7 = [(CoreDAVPrincipalSearchPropertySetItem *)self principalSearchProperties];
-  [v7 addObject:v4];
+  principalSearchProperties2 = [(CoreDAVPrincipalSearchPropertySetItem *)self principalSearchProperties];
+  [principalSearchProperties2 addObject:propertyCopy];
 }
 
 @end

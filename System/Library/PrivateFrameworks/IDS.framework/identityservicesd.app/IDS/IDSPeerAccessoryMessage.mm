@@ -1,18 +1,18 @@
 @interface IDSPeerAccessoryMessage
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 @end
 
 @implementation IDSPeerAccessoryMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = IDSPeerAccessoryMessage;
-  v4 = [(IDSPeerMessage *)&v7 copyWithZone:a3];
-  v5 = [(IDSPeerAccessoryMessage *)self accessToken];
-  [v4 setAccessToken:v5];
+  v4 = [(IDSPeerMessage *)&v7 copyWithZone:zone];
+  accessToken = [(IDSPeerAccessoryMessage *)self accessToken];
+  [v4 setAccessToken:accessToken];
 
   return v4;
 }
@@ -30,18 +30,18 @@
 {
   v7.receiver = self;
   v7.super_class = IDSPeerAccessoryMessage;
-  v3 = [(IDSPeerMessage *)&v7 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSPeerMessage *)&v7 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSPeerAccessoryMessage *)self accessToken];
-  if (v5)
+  accessToken = [(IDSPeerAccessoryMessage *)self accessToken];
+  if (accessToken)
   {
-    CFDictionarySetValue(Mutable, @"hT", v5);
+    CFDictionarySetValue(Mutable, @"hT", accessToken);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))

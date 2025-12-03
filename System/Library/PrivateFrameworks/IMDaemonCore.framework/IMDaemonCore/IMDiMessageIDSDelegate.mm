@@ -1,20 +1,20 @@
 @interface IMDiMessageIDSDelegate
-+ (BOOL)isDefaultPairedDevice:(id)a3 withAccount:(id)a4;
++ (BOOL)isDefaultPairedDevice:(id)device withAccount:(id)account;
 + (id)commandHandlerRegistry;
-+ (void)_postReceivedMessageMetricsForInput:(id)a3 withMessageContext:(id)a4 toIDSService:(id)a5;
-+ (void)addLockdownCommandHandlersToRegistry:(id)a3;
-+ (void)addStandardCommandHandlersToRegistry:(id)a3;
-- (BOOL)_containsHandlesForTrustedData:(id)a3;
-- (BOOL)_shouldDropIncomingMessageOnService:(id)a3 guid:(id)a4 trustedData:(id)a5;
-- (BOOL)_shouldPassthroughIncomingMessageOnService:(id)a3 command:(int64_t)a4 message:(id)a5;
-- (BOOL)blockCommandForTrustedData:(id)a3;
++ (void)_postReceivedMessageMetricsForInput:(id)input withMessageContext:(id)context toIDSService:(id)service;
++ (void)addLockdownCommandHandlersToRegistry:(id)registry;
++ (void)addStandardCommandHandlersToRegistry:(id)registry;
+- (BOOL)_containsHandlesForTrustedData:(id)data;
+- (BOOL)_shouldDropIncomingMessageOnService:(id)service guid:(id)guid trustedData:(id)data;
+- (BOOL)_shouldPassthroughIncomingMessageOnService:(id)service command:(int64_t)command message:(id)message;
+- (BOOL)blockCommandForTrustedData:(id)data;
 - (IMDiMessageIDSDelegate)init;
-- (IMDiMessageIDSDelegate)initWithiMessageService:(id)a3 bizChatService:(id)a4 incomingMessageHandler:(id)a5 messageStore:(id)a6 chatRegistry:(id)a7 accountController:(id)a8 storageController:(id)a9 recentsController:(id)a10 attachmentStore:(id)a11;
+- (IMDiMessageIDSDelegate)initWithiMessageService:(id)service bizChatService:(id)chatService incomingMessageHandler:(id)handler messageStore:(id)store chatRegistry:(id)registry accountController:(id)controller storageController:(id)storageController recentsController:(id)self0 attachmentStore:(id)self1;
 - (id)broadcaster;
-- (id)makeTopLevelMessageDictionaryFrom:(id)a3 batchContext:(id)a4;
-- (void)service:(id)a3 account:(id)a4 fromID:(id)a5 message:(id)a6 messageContext:(id)a7 trustedData:(id)a8 powerAssertion:(id)a9;
-- (void)service:(id)a3 account:(id)a4 incomingBatchMessage:(id)a5;
-- (void)service:(id)a3 account:(id)a4 incomingTopLevelMessage:(id)a5 fromID:(id)a6 messageContext:(id)a7;
+- (id)makeTopLevelMessageDictionaryFrom:(id)from batchContext:(id)context;
+- (void)service:(id)service account:(id)account fromID:(id)d message:(id)message messageContext:(id)context trustedData:(id)data powerAssertion:(id)assertion;
+- (void)service:(id)service account:(id)account incomingBatchMessage:(id)message;
+- (void)service:(id)service account:(id)account incomingTopLevelMessage:(id)message fromID:(id)d messageContext:(id)context;
 @end
 
 @implementation IMDiMessageIDSDelegate
@@ -25,24 +25,24 @@
   block[1] = 3221225472;
   block[2] = sub_22B5AAEAC;
   block[3] = &unk_278702AF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_281421358 != -1)
   {
     dispatch_once(&qword_281421358, block);
   }
 
-  v2 = [qword_281421350 handlers];
+  handlers = [qword_281421350 handlers];
 
-  return v2;
+  return handlers;
 }
 
 - (IMDiMessageIDSDelegate)init
 {
   v24 = *MEMORY[0x277D85DE8];
-  v21 = [objc_opt_class() commandHandlerRegistry];
+  commandHandlerRegistry = [objc_opt_class() commandHandlerRegistry];
   v3 = MEMORY[0x277CBEB98];
-  v4 = [v21 allKeys];
-  v5 = [v3 setWithArray:v4];
+  allKeys = [commandHandlerRegistry allKeys];
+  v5 = [v3 setWithArray:allKeys];
 
   v6 = objc_alloc(MEMORY[0x277D18778]);
   v20 = [v6 initWithService:*MEMORY[0x277D186B0] commands:v5 manuallyAckMessages:1];
@@ -72,48 +72,48 @@
   return v17;
 }
 
-- (IMDiMessageIDSDelegate)initWithiMessageService:(id)a3 bizChatService:(id)a4 incomingMessageHandler:(id)a5 messageStore:(id)a6 chatRegistry:(id)a7 accountController:(id)a8 storageController:(id)a9 recentsController:(id)a10 attachmentStore:(id)a11
+- (IMDiMessageIDSDelegate)initWithiMessageService:(id)service bizChatService:(id)chatService incomingMessageHandler:(id)handler messageStore:(id)store chatRegistry:(id)registry accountController:(id)controller storageController:(id)storageController recentsController:(id)self0 attachmentStore:(id)self1
 {
   v40 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v27 = a4;
-  v28 = a5;
-  v29 = a6;
-  v30 = a7;
-  v31 = a8;
-  v32 = a9;
-  v33 = a10;
-  v34 = a11;
+  serviceCopy = service;
+  chatServiceCopy = chatService;
+  handlerCopy = handler;
+  storeCopy = store;
+  registryCopy = registry;
+  controllerCopy = controller;
+  storageControllerCopy = storageController;
+  recentsControllerCopy = recentsController;
+  attachmentStoreCopy = attachmentStore;
   v35.receiver = self;
   v35.super_class = IMDiMessageIDSDelegate;
   v18 = [(IMDiMessageIDSDelegate *)&v35 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_idsService, a3);
+    objc_storeStrong(&v18->_idsService, service);
     [(IDSService *)v19->_idsService addDelegate:v19 queue:MEMORY[0x277D85CD0]];
-    objc_storeStrong(&v19->_bizChatService, a4);
+    objc_storeStrong(&v19->_bizChatService, chatService);
     [(IDSService *)v19->_bizChatService addDelegate:v19 queue:MEMORY[0x277D85CD0]];
 
-    objc_storeStrong(&v19->_handler, a5);
-    objc_storeStrong(&v19->_messageStore, a6);
-    objc_storeStrong(&v19->_accountController, a8);
-    objc_storeStrong(&v19->_messageFromStorageController, a9);
-    objc_storeStrong(&v19->_recentsController, a10);
-    objc_storeStrong(&v19->_chatRegistry, a7);
-    objc_storeStrong(&v19->_attachmentStore, a11);
-    v20 = [objc_opt_class() commandHandlerRegistry];
+    objc_storeStrong(&v19->_handler, handler);
+    objc_storeStrong(&v19->_messageStore, store);
+    objc_storeStrong(&v19->_accountController, controller);
+    objc_storeStrong(&v19->_messageFromStorageController, storageController);
+    objc_storeStrong(&v19->_recentsController, recentsController);
+    objc_storeStrong(&v19->_chatRegistry, registry);
+    objc_storeStrong(&v19->_attachmentStore, attachmentStore);
+    commandHandlerRegistry = [objc_opt_class() commandHandlerRegistry];
     if (IMOSLoggingEnabled())
     {
       v21 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         idsService = v19->_idsService;
-        v23 = [v20 allKeys];
+        allKeys = [commandHandlerRegistry allKeys];
         *buf = 138412546;
         v37 = idsService;
         v38 = 2112;
-        v39 = v23;
+        v39 = allKeys;
         _os_log_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_INFO, "IDS Delegate Loaded service: %@ handling commands %@", buf, 0x16u);
       }
     }
@@ -126,23 +126,23 @@
 - (id)broadcaster
 {
   v2 = +[IMDBroadcastController sharedProvider];
-  v3 = [v2 broadcasterForChatListeners];
+  broadcasterForChatListeners = [v2 broadcasterForChatListeners];
 
-  return v3;
+  return broadcasterForChatListeners;
 }
 
-+ (BOOL)isDefaultPairedDevice:(id)a3 withAccount:(id)a4
++ (BOOL)isDefaultPairedDevice:(id)device withAccount:(id)account
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 idsAccount];
-  v7 = [v6 devices];
+  deviceCopy = device;
+  idsAccount = [account idsAccount];
+  devices = [idsAccount devices];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v7;
+  v8 = devices;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -159,8 +159,8 @@
         v12 = *(*(&v17 + 1) + 8 * i);
         if ([v12 isDefaultPairedDevice])
         {
-          v13 = [v12 pushToken];
-          v14 = [v13 isEqualToData:v5];
+          pushToken = [v12 pushToken];
+          v14 = [pushToken isEqualToData:deviceCopy];
 
           if (v14)
           {
@@ -186,21 +186,21 @@ LABEL_12:
   return v9;
 }
 
-+ (void)_postReceivedMessageMetricsForInput:(id)a3 withMessageContext:(id)a4 toIDSService:(id)a5
++ (void)_postReceivedMessageMetricsForInput:(id)input withMessageContext:(id)context toIDSService:(id)service
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v23 = v7;
+  inputCopy = input;
+  contextCopy = context;
+  serviceCopy = service;
+  v23 = inputCopy;
   if (objc_opt_respondsToSelector())
   {
-    v24 = v9;
+    v24 = serviceCopy;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = [v7 messageItems];
+    obj = [inputCopy messageItems];
     v10 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v10)
     {
@@ -220,18 +220,18 @@ LABEL_12:
           {
             v14 = v13;
             [v14 addTelemetryMetricForKey:7];
-            v15 = [v8 incomingMessageMetrics];
-            if (v15)
+            incomingMessageMetrics = [contextCopy incomingMessageMetrics];
+            if (incomingMessageMetrics)
             {
-              [v14 addTelemetryMetricsFromDictionary:v15];
+              [v14 addTelemetryMetricsFromDictionary:incomingMessageMetrics];
             }
 
-            v16 = [v8 im_samplingUUID];
-            if (v16)
+            im_samplingUUID = [contextCopy im_samplingUUID];
+            if (im_samplingUUID)
             {
               v17 = objc_alloc(MEMORY[0x277D18A28]);
-              v18 = [v14 telemetryMetrics];
-              v19 = [v17 initWithTimestampDictionary:v18 identifier:v16];
+              telemetryMetrics = [v14 telemetryMetrics];
+              v19 = [v17 initWithTimestampDictionary:telemetryMetrics identifier:im_samplingUUID];
 
               [v24 noteMetricOfType:1 context:v19];
               if (IMOSLoggingEnabled())
@@ -239,11 +239,11 @@ LABEL_12:
                 v20 = OSLogHandleForIMFoundationCategory();
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
                 {
-                  v21 = [v14 guid];
+                  guid = [v14 guid];
                   *buf = 138412546;
-                  v31 = v21;
+                  v31 = guid;
                   v32 = 2112;
-                  v33 = v16;
+                  v33 = im_samplingUUID;
                   _os_log_impl(&dword_22B4CC000, v20, OS_LOG_TYPE_INFO, "Post received telemetry metrics for message guid: %@, samplingUUID: %@", buf, 0x16u);
                 }
               }
@@ -257,21 +257,21 @@ LABEL_12:
       while (v10);
     }
 
-    v9 = v24;
+    serviceCopy = v24;
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)addStandardCommandHandlersToRegistry:(id)a3
++ (void)addStandardCommandHandlersToRegistry:(id)registry
 {
   v88 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  registryCopy = registry;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_22B5AC1FC;
   aBlock[3] = &unk_278705948;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   v6 = IMLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -285,18 +285,18 @@ LABEL_12:
 
   v66 = v5;
   v7 = _Block_copy(v5);
-  [v4 setStandardHandler:v7 forCommand:&unk_283F4E768];
+  [registryCopy setStandardHandler:v7 forCommand:&unk_283F4E768];
 
-  v8 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v9 = [v8 isTranscriptSharingEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isTranscriptSharingEnabled = [mEMORY[0x277D1A9B8] isTranscriptSharingEnabled];
 
-  if (v9)
+  if (isTranscriptSharingEnabled)
   {
     v82[0] = MEMORY[0x277D85DD0];
     v82[1] = 3221225472;
     v82[2] = sub_22B5ACB5C;
     v82[3] = &unk_278705948;
-    v82[4] = a1;
+    v82[4] = self;
     v10 = _Block_copy(v82);
     v11 = IMLogHandleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -309,14 +309,14 @@ LABEL_12:
     }
 
     v12 = _Block_copy(v10);
-    [v4 setStandardHandler:v12 forCommand:&unk_283F4E780];
+    [registryCopy setStandardHandler:v12 forCommand:&unk_283F4E780];
   }
 
   v81[0] = MEMORY[0x277D85DD0];
   v81[1] = 3221225472;
   v81[2] = sub_22B5AD3C8;
   v81[3] = &unk_278705948;
-  v81[4] = a1;
+  v81[4] = self;
   v13 = _Block_copy(v81);
   v14 = IMLogHandleForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -329,13 +329,13 @@ LABEL_12:
   }
 
   v15 = _Block_copy(v13);
-  [v4 setStandardHandler:v15 forCommand:&unk_283F4E798];
+  [registryCopy setStandardHandler:v15 forCommand:&unk_283F4E798];
 
   v80[0] = MEMORY[0x277D85DD0];
   v80[1] = 3221225472;
   v80[2] = sub_22B5ADD00;
   v80[3] = &unk_278705948;
-  v80[4] = a1;
+  v80[4] = self;
   v16 = _Block_copy(v80);
   v17 = IMLogHandleForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -348,13 +348,13 @@ LABEL_12:
   }
 
   v18 = _Block_copy(v16);
-  [v4 setStandardHandler:v18 forCommand:&unk_283F4E7B0];
+  [registryCopy setStandardHandler:v18 forCommand:&unk_283F4E7B0];
 
   v79[0] = MEMORY[0x277D85DD0];
   v79[1] = 3221225472;
   v79[2] = sub_22B5AE4E8;
   v79[3] = &unk_2787059B8;
-  v79[4] = a1;
+  v79[4] = self;
   v19 = _Block_copy(v79);
   v20 = IMLogHandleForCategory();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -367,13 +367,13 @@ LABEL_12:
   }
 
   v21 = _Block_copy(v19);
-  [v4 setStandardHandler:v21 forCommand:&unk_283F4E7C8];
+  [registryCopy setStandardHandler:v21 forCommand:&unk_283F4E7C8];
 
   v78[0] = MEMORY[0x277D85DD0];
   v78[1] = 3221225472;
   v78[2] = sub_22B5AECC0;
   v78[3] = &unk_2787059B8;
-  v78[4] = a1;
+  v78[4] = self;
   v68 = _Block_copy(v78);
   v22 = IMLogHandleForCategory();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -386,13 +386,13 @@ LABEL_12:
   }
 
   v23 = _Block_copy(v68);
-  [v4 setStandardHandler:v23 forCommand:&unk_283F4E7E0];
+  [registryCopy setStandardHandler:v23 forCommand:&unk_283F4E7E0];
 
   v77[0] = MEMORY[0x277D85DD0];
   v77[1] = 3221225472;
   v77[2] = sub_22B5AF450;
   v77[3] = &unk_2787059B8;
-  v77[4] = a1;
+  v77[4] = self;
   v67 = _Block_copy(v77);
   v24 = IMLogHandleForCategory();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -405,13 +405,13 @@ LABEL_12:
   }
 
   v25 = _Block_copy(v67);
-  [v4 setStandardHandler:v25 forCommand:&unk_283F4E7F8];
+  [registryCopy setStandardHandler:v25 forCommand:&unk_283F4E7F8];
 
   v76[0] = MEMORY[0x277D85DD0];
   v76[1] = 3221225472;
   v76[2] = sub_22B5AFBE0;
   v76[3] = &unk_278705948;
-  v76[4] = a1;
+  v76[4] = self;
   v26 = _Block_copy(v76);
   v27 = IMLogHandleForCategory();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
@@ -426,7 +426,7 @@ LABEL_12:
   v63 = v19;
 
   v28 = _Block_copy(v26);
-  [v4 setStandardHandler:v28 forCommand:&unk_283F4E810];
+  [registryCopy setStandardHandler:v28 forCommand:&unk_283F4E810];
 
   v29 = IMLogHandleForCategory();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -440,12 +440,12 @@ LABEL_12:
 
   v65 = v13;
 
-  [v4 setStandardHandler:&unk_283F1A068 forCommand:&unk_283F4E828];
+  [registryCopy setStandardHandler:&unk_283F1A068 forCommand:&unk_283F4E828];
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
   v75[2] = sub_22B5B1B6C;
   v75[3] = &unk_2787059B8;
-  v75[4] = a1;
+  v75[4] = self;
   v30 = _Block_copy(v75);
   v31 = IMLogHandleForCategory();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
@@ -460,13 +460,13 @@ LABEL_12:
   v61 = v26;
 
   v32 = _Block_copy(v30);
-  [v4 setStandardHandler:v32 forCommand:&unk_283F4E840];
+  [registryCopy setStandardHandler:v32 forCommand:&unk_283F4E840];
 
   v74[0] = MEMORY[0x277D85DD0];
   v74[1] = 3221225472;
   v74[2] = sub_22B5B22FC;
   v74[3] = &unk_2787059B8;
-  v74[4] = a1;
+  v74[4] = self;
   v33 = _Block_copy(v74);
   v34 = IMLogHandleForCategory();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
@@ -479,13 +479,13 @@ LABEL_12:
   }
 
   v35 = _Block_copy(v33);
-  [v4 setStandardHandler:v35 forCommand:&unk_283F4E858];
+  [registryCopy setStandardHandler:v35 forCommand:&unk_283F4E858];
 
   v73[0] = MEMORY[0x277D85DD0];
   v73[1] = 3221225472;
   v73[2] = sub_22B5B2A8C;
   v73[3] = &unk_2787059B8;
-  v73[4] = a1;
+  v73[4] = self;
   v36 = _Block_copy(v73);
   v37 = IMLogHandleForCategory();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
@@ -500,7 +500,7 @@ LABEL_12:
   v64 = v16;
 
   v38 = _Block_copy(v36);
-  [v4 setStandardHandler:v38 forCommand:&unk_283F4E870];
+  [registryCopy setStandardHandler:v38 forCommand:&unk_283F4E870];
 
   v39 = IMLogHandleForCategory();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
@@ -512,12 +512,12 @@ LABEL_12:
     _os_log_impl(&dword_22B4CC000, v39, OS_LOG_TYPE_INFO, "Adding Handler for command: %s (%@)", buf, 0x16u);
   }
 
-  [v4 setStandardHandler:&unk_283F1A088 forCommand:&unk_283F4E888];
+  [registryCopy setStandardHandler:&unk_283F1A088 forCommand:&unk_283F4E888];
   v72[0] = MEMORY[0x277D85DD0];
   v72[1] = 3221225472;
   v72[2] = sub_22B5B3850;
   v72[3] = &unk_2787059B8;
-  v72[4] = a1;
+  v72[4] = self;
   v40 = _Block_copy(v72);
   v41 = IMLogHandleForCategory();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
@@ -530,12 +530,12 @@ LABEL_12:
   }
 
   v42 = _Block_copy(v40);
-  [v4 setStandardHandler:v42 forCommand:&unk_283F4E8A0];
+  [registryCopy setStandardHandler:v42 forCommand:&unk_283F4E8A0];
 
-  v43 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v44 = [v43 isTranscriptBackgroundsEnabled];
+  mEMORY[0x277D1A9B8]2 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isTranscriptBackgroundsEnabled = [mEMORY[0x277D1A9B8]2 isTranscriptBackgroundsEnabled];
 
-  if (v44)
+  if (isTranscriptBackgroundsEnabled)
   {
     v45 = IMLogHandleForCategory();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
@@ -547,19 +547,19 @@ LABEL_12:
       _os_log_impl(&dword_22B4CC000, v45, OS_LOG_TYPE_INFO, "Adding Handler for command: %s (%@)", buf, 0x16u);
     }
 
-    [v4 setStandardHandler:&unk_283F1A0A8 forCommand:{&unk_283F4E8B8, v61, v63, v64, v65, v66}];
+    [registryCopy setStandardHandler:&unk_283F1A0A8 forCommand:{&unk_283F4E8B8, v61, v63, v64, v65, v66}];
   }
 
-  v46 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v47 = [v46 isIntroductionsEnabled];
+  mEMORY[0x277D1A9B8]3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x277D1A9B8]3 isIntroductionsEnabled];
 
-  if (v47)
+  if (isIntroductionsEnabled)
   {
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
     v71[2] = sub_22B5B46B4;
     v71[3] = &unk_2787059B8;
-    v71[4] = a1;
+    v71[4] = self;
     v48 = _Block_copy(v71);
     v49 = IMLogHandleForCategory();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
@@ -572,19 +572,19 @@ LABEL_12:
     }
 
     v50 = _Block_copy(v48);
-    [v4 setStandardHandler:v50 forCommand:&unk_283F4E8D0];
+    [registryCopy setStandardHandler:v50 forCommand:&unk_283F4E8D0];
   }
 
-  v51 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v52 = [v51 isIntroductionsEnabled];
+  mEMORY[0x277D1A9B8]4 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled2 = [mEMORY[0x277D1A9B8]4 isIntroductionsEnabled];
 
-  if (v52)
+  if (isIntroductionsEnabled2)
   {
     v70[0] = MEMORY[0x277D85DD0];
     v70[1] = 3221225472;
     v70[2] = sub_22B5B4E44;
     v70[3] = &unk_2787059B8;
-    v70[4] = a1;
+    v70[4] = self;
     v53 = _Block_copy(v70);
     v54 = IMLogHandleForCategory();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
@@ -597,17 +597,17 @@ LABEL_12:
     }
 
     v55 = _Block_copy(v53);
-    [v4 setStandardHandler:v55 forCommand:&unk_283F4E8E8];
+    [registryCopy setStandardHandler:v55 forCommand:&unk_283F4E8E8];
   }
 
-  v56 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  [v56 isPriorityMessagesEnabled];
+  mEMORY[0x277D1A9B8]5 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  [mEMORY[0x277D1A9B8]5 isPriorityMessagesEnabled];
 
   v69[0] = MEMORY[0x277D85DD0];
   v69[1] = 3221225472;
   v69[2] = sub_22B5B55D4;
   v69[3] = &unk_2787059B8;
-  v69[4] = a1;
+  v69[4] = self;
   v57 = _Block_copy(v69);
   v58 = IMLogHandleForCategory();
   if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
@@ -620,51 +620,51 @@ LABEL_12:
   }
 
   v59 = _Block_copy(v57);
-  [v4 setStandardHandler:v59 forCommand:&unk_283F4E900];
+  [registryCopy setStandardHandler:v59 forCommand:&unk_283F4E900];
 
   v60 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)addLockdownCommandHandlersToRegistry:(id)a3
++ (void)addLockdownCommandHandlersToRegistry:(id)registry
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_22B5B5E34;
   aBlock[3] = &unk_278705948;
-  aBlock[4] = a1;
-  v3 = a3;
+  aBlock[4] = self;
+  registryCopy = registry;
   v4 = _Block_copy(aBlock);
   v5 = _Block_copy(v4);
-  [v3 setLockdownHandler:v5 forCommand:&unk_283F4E810];
+  [registryCopy setLockdownHandler:v5 forCommand:&unk_283F4E810];
 
-  [v3 setPassThroughLockdownHandlerForCommand:&unk_283F4E768];
-  [v3 setPassThroughLockdownHandlerForCommand:&unk_283F4E798];
+  [registryCopy setPassThroughLockdownHandlerForCommand:&unk_283F4E768];
+  [registryCopy setPassThroughLockdownHandlerForCommand:&unk_283F4E798];
 }
 
-- (BOOL)_containsHandlesForTrustedData:(id)a3
+- (BOOL)_containsHandlesForTrustedData:(id)data
 {
-  v3 = [a3 fromIdentifier];
-  v4 = [v3 _stripFZIDPrefix];
+  fromIdentifier = [data fromIdentifier];
+  _stripFZIDPrefix = [fromIdentifier _stripFZIDPrefix];
 
-  v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@ || %K == %@", *MEMORY[0x277D19F00], v4, *MEMORY[0x277D19F08], v4];
-  v6 = [MEMORY[0x277D18EB0] synchronousDatabase];
-  v7 = [v6 handleRecordsFilteredByPredicate:v5];
+  v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@ || %K == %@", *MEMORY[0x277D19F00], _stripFZIDPrefix, *MEMORY[0x277D19F08], _stripFZIDPrefix];
+  synchronousDatabase = [MEMORY[0x277D18EB0] synchronousDatabase];
+  v7 = [synchronousDatabase handleRecordsFilteredByPredicate:v5];
 
-  LOBYTE(v6) = [v7 count] != 0;
-  return v6;
+  LOBYTE(synchronousDatabase) = [v7 count] != 0;
+  return synchronousDatabase;
 }
 
-- (BOOL)blockCommandForTrustedData:(id)a3
+- (BOOL)blockCommandForTrustedData:(id)data
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isFromMe])
+  dataCopy = data;
+  if ([dataCopy isFromMe])
   {
     goto LABEL_2;
   }
 
   LOBYTE(v5) = 0;
-  v6 = [v4 command] - 102;
+  v6 = [dataCopy command] - 102;
   if (v6 > 0x19)
   {
     goto LABEL_13;
@@ -672,7 +672,7 @@ LABEL_12:
 
   if (((1 << v6) & 0x3C24200) != 0)
   {
-    if ([v4 isFromMe])
+    if ([dataCopy isFromMe])
     {
 LABEL_2:
       LOBYTE(v5) = 0;
@@ -685,7 +685,7 @@ LABEL_2:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v10 = 138412290;
-        v11 = v4;
+        v11 = dataCopy;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Received message that should only be from me (trustedData: %@)", &v10, 0xCu);
       }
     }
@@ -695,7 +695,7 @@ LABEL_2:
 
   else if (((1 << v6) & 0x110C09) != 0)
   {
-    v5 = ![(IMDiMessageIDSDelegate *)self _containsHandlesForTrustedData:v4];
+    v5 = ![(IMDiMessageIDSDelegate *)self _containsHandlesForTrustedData:dataCopy];
   }
 
 LABEL_13:
@@ -704,20 +704,20 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)_shouldPassthroughIncomingMessageOnService:(id)a3 command:(int64_t)a4 message:(id)a5
+- (BOOL)_shouldPassthroughIncomingMessageOnService:(id)service command:(int64_t)command message:(id)message
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IMDiMessageIDSDelegate *)self bizChatService];
+  serviceCopy = service;
+  messageCopy = message;
+  bizChatService = [(IMDiMessageIDSDelegate *)self bizChatService];
 
-  v11 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v12 = [v11 isBizChatBlastDoorEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isBizChatBlastDoorEnabled = [mEMORY[0x277D1A9B8] isBizChatBlastDoorEnabled];
 
-  v13 = a4 == 100 && v10 == v8;
+  v13 = command == 100 && bizChatService == serviceCopy;
   v14 = v13;
   if (v13)
   {
-    v15 = v12 ^ 1;
+    v15 = isBizChatBlastDoorEnabled ^ 1;
   }
 
   else
@@ -725,10 +725,10 @@ LABEL_13:
     v15 = 0;
   }
 
-  if (((v12 ^ 1) & 1) == 0 && v14)
+  if (((isBizChatBlastDoorEnabled ^ 1) & 1) == 0 && v14)
   {
-    v16 = [v9 objectForKey:*MEMORY[0x277D187F8]];
-    v17 = [v16 _FTOptionallyDecompressData];
+    v16 = [messageCopy objectForKey:*MEMORY[0x277D187F8]];
+    _FTOptionallyDecompressData = [v16 _FTOptionallyDecompressData];
     v18 = JWDecodeDictionary();
 
     v23 = 0;
@@ -748,19 +748,19 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)_shouldDropIncomingMessageOnService:(id)a3 guid:(id)a4 trustedData:(id)a5
+- (BOOL)_shouldDropIncomingMessageOnService:(id)service guid:(id)guid trustedData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IMDiMessageIDSDelegate *)self bizChatService];
-  v12 = v11;
-  if (v11 == v8)
+  serviceCopy = service;
+  guidCopy = guid;
+  dataCopy = data;
+  bizChatService = [(IMDiMessageIDSDelegate *)self bizChatService];
+  v12 = bizChatService;
+  if (bizChatService == serviceCopy)
   {
-    v13 = [MEMORY[0x277D1A9A0] supportsBusinessChat];
+    supportsBusinessChat = [MEMORY[0x277D1A9A0] supportsBusinessChat];
 
-    if ((v13 & 1) == 0)
+    if ((supportsBusinessChat & 1) == 0)
     {
       if (IMOSLoggingEnabled())
       {
@@ -768,7 +768,7 @@ LABEL_13:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v18 = 138412290;
-          v19 = v9;
+          v19 = guidCopy;
           _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Drop incoming business chat message because it is not supported. (guid: %@)", &v18, 0xCu);
         }
 
@@ -785,7 +785,7 @@ LABEL_15:
   {
   }
 
-  if (![v10 command] || !+[IMBlastdoor _commandReadyForBlastdoor:](IMBlastdoor, "_commandReadyForBlastdoor:", objc_msgSend(v10, "command")))
+  if (![dataCopy command] || !+[IMBlastdoor _commandReadyForBlastdoor:](IMBlastdoor, "_commandReadyForBlastdoor:", objc_msgSend(dataCopy, "command")))
   {
     if (IMOSLoggingEnabled())
     {
@@ -793,7 +793,7 @@ LABEL_15:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         v18 = 138412290;
-        v19 = v10;
+        v19 = dataCopy;
         _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Rejecting BlastDoor processing for trustedData %@", &v18, 0xCu);
       }
 
@@ -812,29 +812,29 @@ LABEL_16:
   return v14;
 }
 
-- (id)makeTopLevelMessageDictionaryFrom:(id)a3 batchContext:(id)a4
+- (id)makeTopLevelMessageDictionaryFrom:(id)from batchContext:(id)context
 {
   v60[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  contextCopy = context;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [v5 messageContext];
+  messageContext = [fromCopy messageContext];
   v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v59[0] = *MEMORY[0x277D18980];
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v9, "wantsCheckpointing")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(messageContext, "wantsCheckpointing")}];
   v60[0] = v11;
   v59[1] = *MEMORY[0x277D18968];
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "serverTimestampInNanoseconds")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(messageContext, "serverTimestampInNanoseconds")}];
   v60[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
   [v10 addEntriesFromDictionary:v13];
 
-  v14 = [v9 originalGUID];
+  originalGUID = [messageContext originalGUID];
 
-  if (v14)
+  if (originalGUID)
   {
-    v15 = [v9 originalGUID];
+    originalGUID2 = [messageContext originalGUID];
     v16 = IDSGetUUIDData();
     [v10 setObject:v16 forKey:*MEMORY[0x277D18978]];
   }
@@ -844,12 +844,12 @@ LABEL_16:
     [v7 addObject:*MEMORY[0x277D18978]];
   }
 
-  v17 = [v9 originalCommand];
+  originalCommand = [messageContext originalCommand];
 
-  if (v17)
+  if (originalCommand)
   {
-    v18 = [v9 originalCommand];
-    [v10 setObject:v18 forKey:*MEMORY[0x277D187D8]];
+    originalCommand2 = [messageContext originalCommand];
+    [v10 setObject:originalCommand2 forKey:*MEMORY[0x277D187D8]];
   }
 
   else
@@ -857,28 +857,28 @@ LABEL_16:
     [v7 addObject:*MEMORY[0x277D187D8]];
   }
 
-  v19 = [v9 originalTimestamp];
+  originalTimestamp = [messageContext originalTimestamp];
 
-  if (v19)
+  if (originalTimestamp)
   {
-    v20 = [v9 originalTimestamp];
-    [v10 setObject:v20 forKey:*MEMORY[0x277D18850]];
+    originalTimestamp2 = [messageContext originalTimestamp];
+    [v10 setObject:originalTimestamp2 forKey:*MEMORY[0x277D18850]];
   }
 
-  v21 = [v9 im_incomingOC];
+  im_incomingOC = [messageContext im_incomingOC];
 
-  if (v21)
+  if (im_incomingOC)
   {
-    v22 = [v9 im_incomingOC];
-    [v10 setObject:v22 forKey:*MEMORY[0x277D18848]];
+    im_incomingOC2 = [messageContext im_incomingOC];
+    [v10 setObject:im_incomingOC2 forKey:*MEMORY[0x277D18848]];
   }
 
-  v23 = [v9 fromID];
+  fromID = [messageContext fromID];
 
-  if (v23)
+  if (fromID)
   {
-    v24 = [v9 fromID];
-    [v10 setObject:v24 forKey:*MEMORY[0x277D18928]];
+    fromID2 = [messageContext fromID];
+    [v10 setObject:fromID2 forKey:*MEMORY[0x277D18928]];
   }
 
   else
@@ -886,12 +886,12 @@ LABEL_16:
     [v7 addObject:*MEMORY[0x277D18928]];
   }
 
-  v25 = [v9 toID];
+  toID = [messageContext toID];
 
-  if (v25)
+  if (toID)
   {
-    v26 = [v9 toID];
-    [v10 setObject:v26 forKey:*MEMORY[0x277D18858]];
+    toID2 = [messageContext toID];
+    [v10 setObject:toID2 forKey:*MEMORY[0x277D18858]];
   }
 
   else
@@ -899,12 +899,12 @@ LABEL_16:
     [v7 addObject:*MEMORY[0x277D18858]];
   }
 
-  v27 = [v9 senderPushToken];
+  senderPushToken = [messageContext senderPushToken];
 
-  if (v27)
+  if (senderPushToken)
   {
-    v28 = [v9 senderPushToken];
-    [v10 setObject:v28 forKey:*MEMORY[0x277D18970]];
+    senderPushToken2 = [messageContext senderPushToken];
+    [v10 setObject:senderPushToken2 forKey:*MEMORY[0x277D18970]];
   }
 
   else
@@ -912,12 +912,12 @@ LABEL_16:
     [v7 addObject:*MEMORY[0x277D18970]];
   }
 
-  v29 = [v9 storageContext];
+  storageContext = [messageContext storageContext];
 
-  if (v29)
+  if (storageContext)
   {
-    v30 = [v9 storageContext];
-    [v10 setObject:v30 forKey:*MEMORY[0x277D18960]];
+    storageContext2 = [messageContext storageContext];
+    [v10 setObject:storageContext2 forKey:*MEMORY[0x277D18960]];
   }
 
   else
@@ -925,13 +925,13 @@ LABEL_16:
     [v7 addObject:*MEMORY[0x277D18960]];
   }
 
-  v31 = [v9 deliveryStatusContext];
+  deliveryStatusContext = [messageContext deliveryStatusContext];
 
-  if (v31)
+  if (deliveryStatusContext)
   {
-    v32 = [v5 messageContext];
-    v33 = [v32 deliveryStatusContext];
-    [v10 setObject:v33 forKey:*MEMORY[0x277D187F0]];
+    messageContext2 = [fromCopy messageContext];
+    deliveryStatusContext2 = [messageContext2 deliveryStatusContext];
+    [v10 setObject:deliveryStatusContext2 forKey:*MEMORY[0x277D187F0]];
   }
 
   v34 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -941,20 +941,20 @@ LABEL_16:
   v57[0] = v35;
   v57[1] = v36;
   v37 = MEMORY[0x277CCABB0];
-  v38 = [v5 messageContext];
-  v39 = [v37 numberWithBool:{objc_msgSend(v38, "shouldShowPeerErrors")}];
+  messageContext3 = [fromCopy messageContext];
+  v39 = [v37 numberWithBool:{objc_msgSend(messageContext3, "shouldShowPeerErrors")}];
   v58[1] = v39;
   v57[2] = *MEMORY[0x277D19F38];
-  v58[2] = v6;
+  v58[2] = contextCopy;
   v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:3];
   [v34 addEntriesFromDictionary:v40];
 
-  v41 = [v5 decryptedData];
+  decryptedData = [fromCopy decryptedData];
 
-  if (v41)
+  if (decryptedData)
   {
-    v42 = [v5 decryptedData];
-    [v34 setObject:v42 forKey:*MEMORY[0x277D187F8]];
+    decryptedData2 = [fromCopy decryptedData];
+    [v34 setObject:decryptedData2 forKey:*MEMORY[0x277D187F8]];
   }
 
   else
@@ -962,12 +962,12 @@ LABEL_16:
     [v8 addObject:*MEMORY[0x277D187F8]];
   }
 
-  v43 = [v9 certifiedDeliveryContext];
+  certifiedDeliveryContext = [messageContext certifiedDeliveryContext];
 
-  if (v43)
+  if (certifiedDeliveryContext)
   {
-    v44 = [v9 certifiedDeliveryContext];
-    [v44 originalEncryptionType];
+    certifiedDeliveryContext2 = [messageContext certifiedDeliveryContext];
+    [certifiedDeliveryContext2 originalEncryptionType];
     v45 = IDSEncryptionTypeStringFromEncryptionType();
     [v34 setObject:v45 forKey:*MEMORY[0x277D18808]];
   }
@@ -977,14 +977,14 @@ LABEL_16:
     [v8 addObject:*MEMORY[0x277D18808]];
   }
 
-  v46 = [v5 messageContext];
-  v47 = [v46 engramGroupID];
+  messageContext4 = [fromCopy messageContext];
+  engramGroupID = [messageContext4 engramGroupID];
 
-  if (v47)
+  if (engramGroupID)
   {
-    v48 = [v5 messageContext];
-    v49 = [v48 engramGroupID];
-    [v34 setObject:v49 forKey:*MEMORY[0x277D18800]];
+    messageContext5 = [fromCopy messageContext];
+    engramGroupID2 = [messageContext5 engramGroupID];
+    [v34 setObject:engramGroupID2 forKey:*MEMORY[0x277D18800]];
   }
 
   else
@@ -1010,33 +1010,33 @@ LABEL_16:
   return v34;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingBatchMessage:(id)a5
+- (void)service:(id)service account:(id)account incomingBatchMessage:(id)message
 {
   v59 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v38 = a4;
-  v36 = a5;
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v36 messages];
-      v9 = [v8 count];
-      v10 = [v38 uniqueID];
-      v11 = [v38 loginID];
+      messages = [messageCopy messages];
+      v9 = [messages count];
+      uniqueID = [accountCopy uniqueID];
+      loginID = [accountCopy loginID];
       *buf = 134219266;
-      v48 = self;
+      selfCopy = self;
       v49 = 2048;
-      v50 = v36;
+      v50 = messageCopy;
       v51 = 2048;
       v52 = v9;
       v53 = 2112;
-      v54 = v35;
+      v54 = serviceCopy;
       v55 = 2112;
-      v56 = v10;
+      v56 = uniqueID;
       v57 = 2112;
-      v58 = v11;
+      v58 = loginID;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "<IMDiMessageIDSDelegate %p> Received incoming batch Message %p size %ld for service %@ account %@ %@", buf, 0x3Eu);
     }
   }
@@ -1046,21 +1046,21 @@ LABEL_16:
   v31 = _os_activity_create(&dword_22B4CC000, "com.apple.messages.iMessageReceivedBatchPush", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v31, &state);
   v34 = [objc_alloc(MEMORY[0x277D19290]) initWithIdentifier:@"IncomingPipelineMessagePowerAssertion" timeout:10.0];
-  v12 = [(IMDiMessageIDSDelegate *)self messageFromStorageController];
-  v13 = [(IMDiMessageIDSDelegate *)self idsService];
-  [v12 noteBatchMessage:v36 fromAccount:v38 usingService:v13];
+  messageFromStorageController = [(IMDiMessageIDSDelegate *)self messageFromStorageController];
+  idsService = [(IMDiMessageIDSDelegate *)self idsService];
+  [messageFromStorageController noteBatchMessage:messageCopy fromAccount:accountCopy usingService:idsService];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v14 = [v36 messages];
-  v15 = [v14 countByEnumeratingWithState:&v39 objects:v46 count:16];
+  messages2 = [messageCopy messages];
+  v15 = [messages2 countByEnumeratingWithState:&v39 objects:v46 count:16];
   if (v15)
   {
     v16 = 0;
     v33 = *v40;
-    obj = v14;
+    obj = messages2;
     do
     {
       for (i = 0; i != v15; ++i)
@@ -1071,16 +1071,16 @@ LABEL_16:
         }
 
         v18 = *(*(&v39 + 1) + 8 * i);
-        v19 = [v18 messageContext];
-        v20 = [v19 fromID];
+        messageContext = [v18 messageContext];
+        fromID = [messageContext fromID];
 
         v44[0] = *MEMORY[0x277D19F30];
-        v21 = [v38 uniqueID];
-        v45[0] = v21;
+        uniqueID2 = [accountCopy uniqueID];
+        v45[0] = uniqueID2;
         v44[1] = *MEMORY[0x277D19F40];
-        v22 = [v36 context];
-        v23 = [v22 batchIdentifier];
-        v45[1] = v23;
+        context = [messageCopy context];
+        batchIdentifier = [context batchIdentifier];
+        v45[1] = batchIdentifier;
         v44[2] = *MEMORY[0x277D19F48];
         v24 = [MEMORY[0x277CCABB0] numberWithLongLong:v16];
         v45[2] = v24;
@@ -1094,20 +1094,20 @@ LABEL_16:
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v48 = v25;
+            selfCopy = v25;
             v49 = 2112;
             v50 = v27;
             _os_log_impl(&dword_22B4CC000, v28, OS_LOG_TYPE_INFO, "Generated TLM for %@: %@", buf, 0x16u);
           }
         }
 
-        v29 = [v18 messageContext];
-        [(IMDiMessageIDSDelegate *)self service:v35 account:v38 fromID:v20 message:v27 messageContext:v29 trustedData:v26 powerAssertion:v34, v31];
+        messageContext2 = [v18 messageContext];
+        [(IMDiMessageIDSDelegate *)self service:serviceCopy account:accountCopy fromID:fromID message:v27 messageContext:messageContext2 trustedData:v26 powerAssertion:v34, v31];
 
         ++v16;
       }
 
-      v14 = obj;
+      messages2 = obj;
       v15 = [obj countByEnumeratingWithState:&v39 objects:v46 count:16];
     }
 
@@ -1118,22 +1118,22 @@ LABEL_16:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingTopLevelMessage:(id)a5 fromID:(id)a6 messageContext:(id)a7
+- (void)service:(id)service account:(id)account incomingTopLevelMessage:(id)message fromID:(id)d messageContext:(id)context
 {
   v50 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v34 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v29 = _os_activity_create(&dword_22B4CC000, "com.apple.messages.iMessageReceivedPush", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v29, &state);
   v30 = [objc_alloc(MEMORY[0x277D19290]) initWithIdentifier:@"IncomingPipelineMessagePowerAssertion" timeout:10.0];
-  v14 = [[IMDiMessageIDSTrustedData alloc] initWithTopLevelMessage:v11 fromPushID:v12 messageContext:v13];
-  v32 = v13;
-  v15 = [v11 objectForKey:*MEMORY[0x277D18810]];
+  v14 = [[IMDiMessageIDSTrustedData alloc] initWithTopLevelMessage:messageCopy fromPushID:dCopy messageContext:contextCopy];
+  v32 = contextCopy;
+  v15 = [messageCopy objectForKey:*MEMORY[0x277D18810]];
   v16 = [v15 objectForKey:@"U"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -1171,7 +1171,7 @@ LABEL_7:
   if ([v23 length])
   {
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld-%@.data", -[IMDiMessageIDSTrustedData command](v14, "command"), v23, v29];
-    [MEMORY[0x277D1AA18] writeMessagePayloadToDisk:v11 fileName:v24];
+    [MEMORY[0x277D1AA18] writeMessagePayloadToDisk:messageCopy fileName:v24];
   }
 
   if (IMOSLoggingEnabled())
@@ -1179,67 +1179,67 @@ LABEL_7:
     v25 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
-      v26 = [v34 uniqueID];
-      v27 = [(IMDiMessageIDSTrustedData *)v14 command];
+      uniqueID = [accountCopy uniqueID];
+      command = [(IMDiMessageIDSTrustedData *)v14 command];
       *buf = 134219522;
-      v37 = self;
+      selfCopy = self;
       v38 = 2048;
-      v39 = v11;
+      v39 = messageCopy;
       v40 = 2112;
-      v41 = v33;
+      v41 = serviceCopy;
       v42 = 2112;
-      v43 = v26;
+      v43 = uniqueID;
       v44 = 2112;
-      v45 = v12;
+      v45 = dCopy;
       v46 = 2048;
-      v47 = v27;
+      v47 = command;
       v48 = 2112;
       v49 = v23;
       _os_log_impl(&dword_22B4CC000, v25, OS_LOG_TYPE_INFO, "<IMDiMessageIDSDelegate %p> Received incoming iMessage %p for service %@ account %@ fromID: %@ command: %ld, guid: %@", buf, 0x48u);
     }
   }
 
-  [(IMDiMessageIDSDelegate *)self service:v33 account:v34 fromID:v12 message:v11 messageContext:v32 trustedData:v14 powerAssertion:v30];
+  [(IMDiMessageIDSDelegate *)self service:serviceCopy account:accountCopy fromID:dCopy message:messageCopy messageContext:v32 trustedData:v14 powerAssertion:v30];
 
   os_activity_scope_leave(&state);
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 fromID:(id)a5 message:(id)a6 messageContext:(id)a7 trustedData:(id)a8 powerAssertion:(id)a9
+- (void)service:(id)service account:(id)account fromID:(id)d message:(id)message messageContext:(id)context trustedData:(id)data powerAssertion:(id)assertion
 {
   v111 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v89 = a4;
-  v87 = a5;
-  v92 = a6;
-  v16 = a7;
-  v94 = a8;
-  v88 = a9;
-  v90 = v16;
-  v93 = [v16 originalGUID];
-  v91 = [v92 objectForKey:*MEMORY[0x277D18810]];
+  serviceCopy = service;
+  accountCopy = account;
+  dCopy = d;
+  messageCopy = message;
+  contextCopy = context;
+  dataCopy = data;
+  assertionCopy = assertion;
+  v90 = contextCopy;
+  originalGUID = [contextCopy originalGUID];
+  v91 = [messageCopy objectForKey:*MEMORY[0x277D18810]];
   v17 = objc_opt_class();
   v18 = sub_22B5B8EF8(v17, v91, @"mc");
-  v19 = [v18 BOOLValue];
+  bOOLValue = [v18 BOOLValue];
 
-  if (v19)
+  if (bOOLValue)
   {
     v20 = +[IMMessagesToTrack sharedInstance];
-    [v20 addMessagesID:v93];
+    [v20 addMessagesID:originalGUID];
   }
 
-  v21 = v94;
-  if ([(IMDiMessageIDSDelegate *)self _shouldDropIncomingMessageOnService:v15 guid:v93 trustedData:v94])
+  v21 = dataCopy;
+  if ([(IMDiMessageIDSDelegate *)self _shouldDropIncomingMessageOnService:serviceCopy guid:originalGUID trustedData:dataCopy])
   {
-    [v15 sendAckForMessageWithContext:v90];
-    v22 = [(IMDiMessageIDSDelegate *)self messageFromStorageController];
-    v23 = [v94 batchContext];
-    [v22 noteItemProcessed:0 batchContext:v23 usingService:v15];
+    [serviceCopy sendAckForMessageWithContext:v90];
+    messageFromStorageController = [(IMDiMessageIDSDelegate *)self messageFromStorageController];
+    batchContext = [dataCopy batchContext];
+    [messageFromStorageController noteItemProcessed:0 batchContext:batchContext usingService:serviceCopy];
 
     goto LABEL_56;
   }
 
-  v24 = -[IMDiMessageIDSDelegate _shouldPassthroughIncomingMessageOnService:command:message:](self, "_shouldPassthroughIncomingMessageOnService:command:message:", v15, [v94 command], v92);
+  v24 = -[IMDiMessageIDSDelegate _shouldPassthroughIncomingMessageOnService:command:message:](self, "_shouldPassthroughIncomingMessageOnService:command:message:", serviceCopy, [dataCopy command], messageCopy);
   v25 = IMOSLoggingEnabled();
   if (v24)
   {
@@ -1249,21 +1249,21 @@ LABEL_7:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v106 = v93;
+        v106 = originalGUID;
         _os_log_impl(&dword_22B4CC000, v26, OS_LOG_TYPE_INFO, "Passing biz chat through legacy path (guid: %@)", buf, 0xCu);
       }
     }
 
     accountController = self->_accountController;
-    v28 = [v89 uniqueID];
-    v29 = [(IMDAccountController *)accountController accountForIDSAccountUniqueID:v28];
+    uniqueID = [accountCopy uniqueID];
+    v29 = [(IMDAccountController *)accountController accountForIDSAccountUniqueID:uniqueID];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = [v29 session];
-      v31 = [v29 idsAccount];
-      v32 = [v30 _pushHandlerForIDSAccount:v31];
+      session = [v29 session];
+      idsAccount = [v29 idsAccount];
+      v32 = [session _pushHandlerForIDSAccount:idsAccount];
 
       if (v32 && (objc_opt_respondsToSelector() & 1) != 0)
       {
@@ -1273,15 +1273,15 @@ LABEL_7:
           if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v106 = v30;
+            v106 = session;
             v107 = 2112;
             v108 = v32;
             _os_log_impl(&dword_22B4CC000, v33, OS_LOG_TYPE_INFO, "Found service session for biz chat, passing along (%@), push handler (%@)", buf, 0x16u);
           }
         }
 
-        v81 = [v92 objectForKey:*MEMORY[0x277D187F8]];
-        v82 = [v92 objectForKey:*MEMORY[0x277D18808]];
+        v81 = [messageCopy objectForKey:*MEMORY[0x277D187F8]];
+        v82 = [messageCopy objectForKey:*MEMORY[0x277D18808]];
         v34 = objc_opt_class();
         v80 = sub_22B5B8EF8(v34, v91, *MEMORY[0x277D18858]);
         v35 = objc_opt_class();
@@ -1322,15 +1322,15 @@ LABEL_50:
         v75 = sub_22B5B8EF8(v64, v91, v63);
         v65 = objc_opt_class();
         v66 = sub_22B5B8EF8(v65, v91, *MEMORY[0x277D18960]);
-        v67 = [v94 batchContext];
-        v68 = [v92 objectForKey:@"mid"];
+        batchContext2 = [dataCopy batchContext];
+        v68 = [messageCopy objectForKey:@"mid"];
         v69 = objc_opt_class();
         v70 = sub_22B5B8EF8(v69, v91, *MEMORY[0x277D18980]);
-        v71 = [v70 BOOLValue];
-        BYTE1(v74) = [v92 BOOLValueForKey:@"stu" withDefault:1];
-        LOBYTE(v74) = v71;
+        bOOLValue2 = [v70 BOOLValue];
+        BYTE1(v74) = [messageCopy BOOLValueForKey:@"stu" withDefault:1];
+        LOBYTE(v74) = bOOLValue2;
         LOBYTE(v73) = 0;
-        [v30 handler:v32 incomingMessage:v81 originalEncryptionType:v82 messageID:v93 toIdentifier:v80 fromIdentifier:v79 fromToken:v78 timeStamp:v77 fromIDSID:v87 incomingEngroup:0 needsDeliveryReceipt:v76 deliveryContext:v75 storageContext:v66 batchContext:v67 messageContext:v90 isBeingReplayed:v73 mergeID:v68 wantsCheckpointing:v74 isSnapTrustedUser:?];
+        [session handler:v32 incomingMessage:v81 originalEncryptionType:v82 messageID:originalGUID toIdentifier:v80 fromIdentifier:v79 fromToken:v78 timeStamp:v77 fromIDSID:dCopy incomingEngroup:0 needsDeliveryReceipt:v76 deliveryContext:v75 storageContext:v66 batchContext:batchContext2 messageContext:v90 isBeingReplayed:v73 mergeID:v68 wantsCheckpointing:v74 isSnapTrustedUser:?];
 
         if (v60)
         {
@@ -1341,7 +1341,7 @@ LABEL_50:
         }
 
 LABEL_55:
-        [v15 sendAckForMessageWithContext:v90];
+        [serviceCopy sendAckForMessageWithContext:v90];
 
         goto LABEL_56;
       }
@@ -1349,7 +1349,7 @@ LABEL_55:
 
     else
     {
-      v30 = 0;
+      session = 0;
       v32 = 0;
     }
 
@@ -1359,11 +1359,11 @@ LABEL_55:
       if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v106 = v30;
+        v106 = session;
         v107 = 2112;
         v108 = v32;
         v109 = 2112;
-        v110 = v93;
+        v110 = originalGUID;
         _os_log_impl(&dword_22B4CC000, v54, OS_LOG_TYPE_INFO, "Failed to process incoming biz chat message because we couldn't find a session (%@) or push handler (%@) (guid: %@)", buf, 0x20u);
       }
     }
@@ -1377,11 +1377,11 @@ LABEL_55:
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v106 = v93;
+      v106 = originalGUID;
       _os_log_impl(&dword_22B4CC000, v38, OS_LOG_TYPE_INFO, "BlastDoor processing GUID (%@)", buf, 0xCu);
     }
 
-    v21 = v94;
+    v21 = dataCopy;
   }
 
   if ([v21 command] == 100)
@@ -1390,8 +1390,8 @@ LABEL_55:
   }
 
   v39 = self->_accountController;
-  v40 = [v89 uniqueID];
-  v86 = [(IMDAccountController *)v39 accountForIDSAccountUniqueID:v40];
+  uniqueID2 = [accountCopy uniqueID];
+  v86 = [(IMDAccountController *)v39 accountForIDSAccountUniqueID:uniqueID2];
 
   if (!v86)
   {
@@ -1402,7 +1402,7 @@ LABEL_55:
       {
         v42 = self->_accountController;
         *buf = 138412546;
-        v106 = v89;
+        v106 = accountCopy;
         v107 = 2112;
         v108 = v42;
         _os_log_impl(&dword_22B4CC000, v41, OS_LOG_TYPE_INFO, "<Warning> Couldn't find IMDAccount for IDSAccount (%@) using accountController: %@", buf, 0x16u);
@@ -1414,42 +1414,42 @@ LABEL_55:
       v43 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
-        v44 = [(IMDAccountController *)self->_accountController accounts];
+        accounts = [(IMDAccountController *)self->_accountController accounts];
         *buf = 138412290;
-        v106 = v44;
+        v106 = accounts;
         _os_log_impl(&dword_22B4CC000, v43, OS_LOG_TYPE_INFO, "  AllAccounts: %@", buf, 0xCu);
       }
     }
   }
 
   v45 = [IMDiMessagePipelineResources alloc];
-  v46 = [(IMDiMessageIDSDelegate *)self messageStore];
-  v47 = [(IMDiMessageIDSDelegate *)self messageFromStorageController];
-  v48 = [(IMDiMessageIDSDelegate *)self broadcaster];
-  v49 = [(IMDiMessageIDSDelegate *)self recentsController];
-  v50 = [(IMDiMessageIDSDelegate *)self chatRegistry];
-  v51 = [(IMDiMessageIDSDelegate *)self attachmentStore];
-  v52 = [(IMDiMessagePipelineResources *)v45 initWithIMDAccount:v86 service:v15 messageStore:v46 storageController:v47 broadcaster:v48 recentsController:v49 chatRegistry:v50 attachmentStore:v51];
+  messageStore = [(IMDiMessageIDSDelegate *)self messageStore];
+  messageFromStorageController2 = [(IMDiMessageIDSDelegate *)self messageFromStorageController];
+  broadcaster = [(IMDiMessageIDSDelegate *)self broadcaster];
+  recentsController = [(IMDiMessageIDSDelegate *)self recentsController];
+  chatRegistry = [(IMDiMessageIDSDelegate *)self chatRegistry];
+  attachmentStore = [(IMDiMessageIDSDelegate *)self attachmentStore];
+  v52 = [(IMDiMessagePipelineResources *)v45 initWithIMDAccount:v86 service:serviceCopy messageStore:messageStore storageController:messageFromStorageController2 broadcaster:broadcaster recentsController:recentsController chatRegistry:chatRegistry attachmentStore:attachmentStore];
 
-  if ([v94 isFromMe])
+  if ([dataCopy isFromMe])
   {
     v53 = 1;
   }
 
   else
   {
-    v55 = [(IMDiMessagePipelineResources *)v52 chatRegistry];
-    v56 = [v94 fromIdentifier];
-    v53 = [v55 hasKnownSenderChatWithChatIdentifier:v56];
+    chatRegistry2 = [(IMDiMessagePipelineResources *)v52 chatRegistry];
+    fromIdentifier = [dataCopy fromIdentifier];
+    v53 = [chatRegistry2 hasKnownSenderChatWithChatIdentifier:fromIdentifier];
   }
 
   v57 = MEMORY[0x277D1AB80];
-  v58 = [v15 serviceIdentifier];
-  v59 = [v57 contextWithKnownSender:v53 serviceName:v58];
+  serviceIdentifier = [serviceCopy serviceIdentifier];
+  v59 = [v57 contextWithKnownSender:v53 serviceName:serviceIdentifier];
 
-  if ([(IMDiMessageIDSDelegate *)self blockCommandForTrustedData:v94])
+  if ([(IMDiMessageIDSDelegate *)self blockCommandForTrustedData:dataCopy])
   {
-    [v15 sendAckForMessageWithContext:v90];
+    [serviceCopy sendAckForMessageWithContext:v90];
   }
 
   else
@@ -1458,15 +1458,15 @@ LABEL_55:
     v95[1] = 3221225472;
     v95[2] = sub_22B5B8FB4;
     v95[3] = &unk_278705AC8;
-    v96 = v94;
-    v97 = v15;
-    v104 = v19;
-    v98 = v93;
-    v99 = self;
+    v96 = dataCopy;
+    v97 = serviceCopy;
+    v104 = bOOLValue;
+    v98 = originalGUID;
+    selfCopy = self;
     v100 = v52;
     v101 = v90;
-    v102 = v88;
-    v103 = v92;
+    v102 = assertionCopy;
+    v103 = messageCopy;
     [IMBlastdoor sendDictionary:v103 senderContext:v59 withCompletionBlock:v95];
   }
 

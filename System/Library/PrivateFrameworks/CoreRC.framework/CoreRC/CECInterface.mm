@@ -1,13 +1,13 @@
 @interface CECInterface
-- (BOOL)deallocateCECAddress:(unsigned __int8)a3 error:(id *)a4;
-- (BOOL)pingTo:(unsigned __int8)a3 acknowledged:(BOOL *)a4 error:(id *)a5;
-- (BOOL)sendFrame:(CECFrame *)a3 error:(id *)a4;
-- (BOOL)setSnoopingMode:(BOOL)a3 error:(id *)a4;
+- (BOOL)deallocateCECAddress:(unsigned __int8)address error:(id *)error;
+- (BOOL)pingTo:(unsigned __int8)to acknowledged:(BOOL *)acknowledged error:(id *)error;
+- (BOOL)sendFrame:(CECFrame *)frame error:(id *)error;
+- (BOOL)setSnoopingMode:(BOOL)mode error:(id *)error;
 - (CECInterface)init;
 - (NSDictionary)properties;
 - (void)didChangeProperties;
-- (void)receivedFrame:(CECFrame *)a3;
-- (void)setLastReceivedFrame:(CECFrame *)a3;
+- (void)receivedFrame:(CECFrame *)frame;
+- (void)setLastReceivedFrame:(CECFrame *)frame;
 @end
 
 @implementation CECInterface
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (BOOL)setSnoopingMode:(BOOL)a3 error:(id *)a4
+- (BOOL)setSnoopingMode:(BOOL)mode error:(id *)error
 {
-  self->_snoopingMode = a3;
+  self->_snoopingMode = mode;
   if (gLogCategory_CoreRCInterface <= 90)
   {
     if (gLogCategory_CoreRCInterface == -1)
@@ -46,16 +46,16 @@
   return 1;
 }
 
-- (BOOL)sendFrame:(CECFrame *)a3 error:(id *)a4
+- (BOOL)sendFrame:(CECFrame *)frame error:(id *)error
 {
   v7 = *MEMORY[0x277D85DE8];
-  v6 = *a3;
-  result = [(CECInterface *)self sendFrame:&v6 withRetryCount:2 error:a4];
+  v6 = *frame;
+  result = [(CECInterface *)self sendFrame:&v6 withRetryCount:2 error:error];
   v5 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)receivedFrame:(CECFrame *)a3
+- (void)receivedFrame:(CECFrame *)frame
 {
   v6 = *MEMORY[0x277D85DE8];
   v4[0] = MEMORY[0x277D85DD0];
@@ -63,7 +63,7 @@
   v4[2] = __30__CECInterface_receivedFrame___block_invoke;
   v4[3] = &unk_278EA33C0;
   v4[4] = self;
-  v5 = *a3;
+  v5 = *frame;
   [(CoreRCInterface *)self dispatchAsyncHighPriority:v4];
   v3 = *MEMORY[0x277D85DE8];
 }
@@ -124,32 +124,32 @@ LABEL_7:
 
 - (void)didChangeProperties
 {
-  v3 = [(CECInterface *)self delegate];
+  delegate = [(CECInterface *)self delegate];
 
-  [(CECInterfaceDelegate *)v3 interfacePropertiesChanged:self];
+  [(CECInterfaceDelegate *)delegate interfacePropertiesChanged:self];
 }
 
-- (BOOL)pingTo:(unsigned __int8)a3 acknowledged:(BOOL *)a4 error:(id *)a5
+- (BOOL)pingTo:(unsigned __int8)to acknowledged:(BOOL *)acknowledged error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
   v12 = 0;
-  if (a4)
+  if (acknowledged)
   {
-    v13[0] = a3 | (16 * a3);
+    v13[0] = to | (16 * to);
     memset(&v13[1], 0, 15);
     v8 = 1;
     v13[16] = 1;
     v14 = 0;
     v15 = 0;
     v9 = [(CECInterface *)self sendFrame:v13 withRetryCount:2 error:&v12];
-    *a4 = v9;
+    *acknowledged = v9;
     if (v9)
     {
       goto LABEL_6;
     }
 
     v8 = [(CECInterface *)self errorIsNack:v12];
-    if (!a5)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -159,7 +159,7 @@ LABEL_7:
   {
     [CoreIRBusProvider addDeviceWithType:? matching:? learningSession:? error:?];
     v8 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -168,7 +168,7 @@ LABEL_7:
   if (!v8)
   {
     v8 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_6:
@@ -176,33 +176,33 @@ LABEL_6:
   return v8;
 }
 
-- (void)setLastReceivedFrame:(CECFrame *)a3
+- (void)setLastReceivedFrame:(CECFrame *)frame
 {
-  v3 = *(a3 + 4);
-  *self->_lastReceivedFrame.blocks = *a3->blocks;
+  v3 = *(frame + 4);
+  *self->_lastReceivedFrame.blocks = *frame->blocks;
   *(&self->_lastReceivedFrame + 4) = v3;
 }
 
-- (BOOL)deallocateCECAddress:(unsigned __int8)a3 error:(id *)a4
+- (BOOL)deallocateCECAddress:(unsigned __int8)address error:(id *)error
 {
-  v5 = a3;
+  addressCopy = address;
   v11 = 0;
-  v7 = [(CECInterface *)self addressMask];
-  if (v5 == 15 || ((1 << v5) & v7) == 0)
+  addressMask = [(CECInterface *)self addressMask];
+  if (addressCopy == 15 || ((1 << addressCopy) & addressMask) == 0)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6705 userInfo:0];
     LOBYTE(v8) = 0;
     v11 = v9;
-    if (a4)
+    if (error)
     {
 LABEL_10:
-      *a4 = v11;
+      *error = v11;
     }
   }
 
   else
   {
-    v8 = [(CECInterface *)self setAddressMask:v7 & ~(1 << v5) error:&v11];
+    v8 = [(CECInterface *)self setAddressMask:addressMask & ~(1 << addressCopy) error:&v11];
     if (v8)
     {
       if (gLogCategory_CoreRCInterface <= 10 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
@@ -213,7 +213,7 @@ LABEL_10:
       LOBYTE(v8) = 1;
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_10;
     }

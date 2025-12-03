@@ -1,14 +1,14 @@
 @interface NSSQLDefaultConnectionManager
-- (BOOL)handleStoreRequest:(id)a3;
-- (NSSQLDefaultConnectionManager)initWithSQLCore:(id)a3 priority:(unint64_t)a4 seedConnection:(id)a5;
+- (BOOL)handleStoreRequest:(id)request;
+- (NSSQLDefaultConnectionManager)initWithSQLCore:(id)core priority:(unint64_t)priority seedConnection:(id)connection;
 - (intptr_t)_checkinConnection:(intptr_t)result;
-- (void)_checkoutConnectionOfType:(uint64_t)a1;
+- (void)_checkoutConnectionOfType:(uint64_t)type;
 - (void)dealloc;
 - (void)disconnectAllConnections;
-- (void)enumerateAvailableConnectionsWithBlock:(id)a3;
-- (void)scheduleBarrierBlock:(id)a3;
-- (void)scheduleConnectionsBarrier:(id)a3;
-- (void)setExclusiveLockingMode:(BOOL)a3;
+- (void)enumerateAvailableConnectionsWithBlock:(id)block;
+- (void)scheduleBarrierBlock:(id)block;
+- (void)scheduleConnectionsBarrier:(id)barrier;
+- (void)setExclusiveLockingMode:(BOOL)mode;
 @end
 
 @implementation NSSQLDefaultConnectionManager
@@ -304,7 +304,7 @@ uint64_t __40__NSSQLDefaultConnectionManager_dealloc__block_invoke(uint64_t a1)
   return result;
 }
 
-- (NSSQLDefaultConnectionManager)initWithSQLCore:(id)a3 priority:(unint64_t)a4 seedConnection:(id)a5
+- (NSSQLDefaultConnectionManager)initWithSQLCore:(id)core priority:(unint64_t)priority seedConnection:(id)connection
 {
   v36 = *MEMORY[0x1E69E9840];
   v31.receiver = self;
@@ -315,21 +315,21 @@ uint64_t __40__NSSQLDefaultConnectionManager_dealloc__block_invoke(uint64_t a1)
     goto LABEL_35;
   }
 
-  v10 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"SQLQueue: %@ : %p", objc_msgSend(objc_msgSend(a3, "_persistentStoreCoordinator"), "name"), v9), "cStringUsingEncoding:", 1];
-  if (a4 == 1)
+  v10 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"SQLQueue: %@ : %p", objc_msgSend(objc_msgSend(core, "_persistentStoreCoordinator"), "name"), v9), "cStringUsingEncoding:", 1];
+  if (priority == 1)
   {
     v11 = QOS_CLASS_USER_INITIATED;
   }
 
   else
   {
-    v12 = [a3 _persistentStoreCoordinator];
-    if (!v12)
+    _persistentStoreCoordinator = [core _persistentStoreCoordinator];
+    if (!_persistentStoreCoordinator)
     {
       goto LABEL_13;
     }
 
-    v13 = *(v12 + 24);
+    v13 = *(_persistentStoreCoordinator + 24);
     v11 = (v13 >> 2);
     if (!(v13 >> 2))
     {
@@ -389,21 +389,21 @@ LABEL_13:
 
   if (v20)
   {
-    v22 = [v20 integerValue];
-    if (v22 <= 1)
+    integerValue = [v20 integerValue];
+    if (integerValue <= 1)
     {
       v21 = 1;
     }
 
     else
     {
-      v21 = v22;
+      v21 = integerValue;
     }
   }
 
-  v23 = [(NSSQLConnectionManager *)v9 sqlCore];
-  v24 = v21 - (a5 != 0);
-  if (v23 && (*(v23 + 200) & 0x1C) == 8 || (v25 = [(NSSQLConnectionManager *)v9 sqlCore]) != 0 && (*(v25 + 200) & 0x1C) == 4)
+  sqlCore = [(NSSQLConnectionManager *)v9 sqlCore];
+  v24 = v21 - (connection != 0);
+  if (sqlCore && (*(sqlCore + 200) & 0x1C) == 8 || (v25 = [(NSSQLConnectionManager *)v9 sqlCore]) != 0 && (*(v25 + 200) & 0x1C) == 4)
   {
     v24 -= v24 > 2;
     v26 = 1;
@@ -429,17 +429,17 @@ LABEL_13:
     }
   }
 
-  if (a5)
+  if (connection)
   {
-    [(NSMutableArray *)v9->_availableConnections addObject:a5];
+    [(NSMutableArray *)v9->_availableConnections addObject:connection];
     if (v26)
     {
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __64__NSSQLDefaultConnectionManager__initializeConnectionsWithSeed___block_invoke_2;
       v32[3] = &unk_1E6EC16F0;
-      v32[4] = a5;
-      [(NSSQLiteConnection *)a5 performAndWait:v32];
+      v32[4] = connection;
+      [(NSSQLiteConnection *)connection performAndWait:v32];
     }
   }
 
@@ -450,24 +450,24 @@ LABEL_35:
   return v9;
 }
 
-- (void)setExclusiveLockingMode:(BOOL)a3
+- (void)setExclusiveLockingMode:(BOOL)mode
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__NSSQLDefaultConnectionManager_setExclusiveLockingMode___block_invoke;
   v3[3] = &__block_descriptor_33_e28_v16__0__NSSQLiteConnection_8l;
-  v4 = a3;
+  modeCopy = mode;
   [(NSSQLDefaultConnectionManager *)self scheduleConnectionsBarrier:v3];
 }
 
-- (void)_checkoutConnectionOfType:(uint64_t)a1
+- (void)_checkoutConnectionOfType:(uint64_t)type
 {
-  if (!a1)
+  if (!type)
   {
     return 0;
   }
 
-  v2 = *(a1 + 40);
+  v2 = *(type + 40);
   v3 = dispatch_time(0, 120000000000);
   if (dispatch_semaphore_wait(v2, v3))
   {
@@ -475,13 +475,13 @@ LABEL_35:
   }
 
   os_unfair_lock_lock_with_options();
-  v5 = [*(a1 + 24) lastObject];
-  v6 = v5;
-  if (v5)
+  lastObject = [*(type + 24) lastObject];
+  v6 = lastObject;
+  if (lastObject)
   {
-    v7 = v5;
+    v7 = lastObject;
     v4 = v6;
-    [*(a1 + 24) removeLastObject];
+    [*(type + 24) removeLastObject];
   }
 
   else
@@ -489,7 +489,7 @@ LABEL_35:
     v4 = 0;
   }
 
-  os_unfair_lock_unlock((a1 + 48));
+  os_unfair_lock_unlock((type + 48));
   return v4;
 }
 
@@ -509,16 +509,16 @@ LABEL_35:
   return result;
 }
 
-- (BOOL)handleStoreRequest:(id)a3
+- (BOOL)handleStoreRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
-    [*(a3 + 2) requestType];
+    [*(request + 2) requestType];
     v5 = [NSSQLDefaultConnectionManager _checkoutConnectionOfType:?];
     if (v5)
     {
       v6 = v5;
-      [(NSSQLStoreRequestContext *)a3 setConnection:v5];
+      [(NSSQLStoreRequestContext *)request setConnection:v5];
       v17 = 0;
       v18 = &v17;
       v19 = 0x2020000000;
@@ -534,7 +534,7 @@ LABEL_35:
       v10[2] = __52__NSSQLDefaultConnectionManager_handleStoreRequest___block_invoke;
       v10[3] = &unk_1E6EC2988;
       v10[4] = v6;
-      v10[5] = a3;
+      v10[5] = request;
       v10[7] = &v17;
       v10[8] = &v11;
       v10[6] = self;
@@ -579,7 +579,7 @@ uint64_t __52__NSSQLDefaultConnectionManager_handleStoreRequest___block_invoke(u
   return result;
 }
 
-- (void)scheduleBarrierBlock:(id)a3
+- (void)scheduleBarrierBlock:(id)block
 {
   v6 = 0;
   v7 = &v6;
@@ -593,7 +593,7 @@ uint64_t __52__NSSQLDefaultConnectionManager_handleStoreRequest___block_invoke(u
   block[2] = __54__NSSQLDefaultConnectionManager_scheduleBarrierBlock___block_invoke;
   block[3] = &unk_1E6EC29B0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = block;
   block[6] = &v6;
   dispatch_barrier_sync(processingQueue, block);
   v4 = v7[5];
@@ -693,7 +693,7 @@ uint64_t __54__NSSQLDefaultConnectionManager_scheduleBarrierBlock___block_invoke
   return result;
 }
 
-- (void)scheduleConnectionsBarrier:(id)a3
+- (void)scheduleConnectionsBarrier:(id)barrier
 {
   v6 = 0;
   v7 = &v6;
@@ -707,7 +707,7 @@ uint64_t __54__NSSQLDefaultConnectionManager_scheduleBarrierBlock___block_invoke
   block[2] = __60__NSSQLDefaultConnectionManager_scheduleConnectionsBarrier___block_invoke;
   block[3] = &unk_1E6EC29B0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = barrier;
   block[6] = &v6;
   dispatch_barrier_sync(processingQueue, block);
   v4 = v7[5];
@@ -814,7 +814,7 @@ uint64_t __60__NSSQLDefaultConnectionManager_scheduleConnectionsBarrier___block_
   return result;
 }
 
-- (void)enumerateAvailableConnectionsWithBlock:(id)a3
+- (void)enumerateAvailableConnectionsWithBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
   v11 = objc_alloc_init(MEMORY[0x1E696AAC8]);
@@ -843,7 +843,7 @@ uint64_t __60__NSSQLDefaultConnectionManager_scheduleConnectionsBarrier___block_
         v12[2] = __72__NSSQLDefaultConnectionManager_enumerateAvailableConnectionsWithBlock___block_invoke;
         v12[3] = &unk_1E6EC29D8;
         v12[4] = v9;
-        v12[5] = a3;
+        v12[5] = block;
         [(NSSQLiteConnection *)v9 performAndWait:v12];
       }
 

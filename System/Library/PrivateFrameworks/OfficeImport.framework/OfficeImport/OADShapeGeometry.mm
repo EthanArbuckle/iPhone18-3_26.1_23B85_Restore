@@ -1,11 +1,11 @@
 @interface OADShapeGeometry
-- (BOOL)hasAdjustValueAtIndex:(unsigned int)a3;
+- (BOOL)hasAdjustValueAtIndex:(unsigned int)index;
 - (OADShapeGeometry)init;
 - (id)description;
 - (id)equivalentCustomGeometry;
-- (int)adjustValueAtIndex:(unsigned int)a3;
+- (int)adjustValueAtIndex:(unsigned int)index;
 - (int)type;
-- (void)setAdjustValue:(int)a3 atIndex:(unsigned int)a4;
+- (void)setAdjustValue:(int)value atIndex:(unsigned int)index;
 @end
 
 @implementation OADShapeGeometry
@@ -65,34 +65,34 @@
   objc_exception_throw(v11);
 }
 
-- (void)setAdjustValue:(int)a3 atIndex:(unsigned int)a4
+- (void)setAdjustValue:(int)value atIndex:(unsigned int)index
 {
-  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*&a4];
-  v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLong:a3];
+  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*&index];
+  v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLong:value];
   [(NSMutableDictionary *)self->mAdjustValues setObject:v6 forKey:v7];
 }
 
-- (int)adjustValueAtIndex:(unsigned int)a3
+- (int)adjustValueAtIndex:(unsigned int)index
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*&a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*&index];
   v5 = [(NSMutableDictionary *)self->mAdjustValues objectForKey:v4];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 longValue];
+    longValue = [v5 longValue];
   }
 
   else
   {
-    v7 = 0;
+    longValue = 0;
   }
 
-  return v7;
+  return longValue;
 }
 
-- (BOOL)hasAdjustValueAtIndex:(unsigned int)a3
+- (BOOL)hasAdjustValueAtIndex:(unsigned int)index
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*&a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*&index];
   v5 = [(NSMutableDictionary *)self->mAdjustValues objectForKey:v4];
   LOBYTE(self) = v5 != 0;
 

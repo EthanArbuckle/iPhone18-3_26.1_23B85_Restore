@@ -1,14 +1,14 @@
 @interface HKRemoteFeatureAvailabilityIOSVersionGreaterThanRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
-- (void)setTargetVersion:(id *)a3;
+- (void)processUserInfo:(id)info;
+- (void)setTargetVersion:(id *)version;
 @end
 
 @implementation HKRemoteFeatureAvailabilityIOSVersionGreaterThanRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:@"OperatingSystemVersion"];
+  v4 = [info objectForKeyedSubscript:@"OperatingSystemVersion"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -29,11 +29,11 @@
 
 - (BOOL)evaluate
 {
-  v3 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    [v3 iOSVersion];
+    [dataSource iOSVersion];
   }
 
   else
@@ -55,11 +55,11 @@ LABEL_12:
   if (!IsUnknown)
   {
     [(HKRemoteFeatureAvailabilityIOSVersionGreaterThanRule *)self targetVersion];
-    v7 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-    v4 = v7;
-    if (v7)
+    dataSource2 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+    v4 = dataSource2;
+    if (dataSource2)
     {
-      [v7 iOSVersion];
+      [dataSource2 iOSVersion];
     }
 
     else
@@ -74,10 +74,10 @@ LABEL_12:
   return 0;
 }
 
-- (void)setTargetVersion:(id *)a3
+- (void)setTargetVersion:(id *)version
 {
-  var2 = a3->var2;
-  *&self->_targetVersion.majorVersion = *&a3->var0;
+  var2 = version->var2;
+  *&self->_targetVersion.majorVersion = *&version->var0;
   self->_targetVersion.patchVersion = var2;
 }
 

@@ -1,7 +1,7 @@
 @interface SASCallRouteObserver
 - (SASCallRouteObserver)init;
-- (void)_updateCallAudioRouteAllowedForRoute:(id)a3;
-- (void)routesChangedForRouteController:(id)a3;
+- (void)_updateCallAudioRouteAllowedForRoute:(id)route;
+- (void)routesChangedForRouteController:(id)controller;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -23,14 +23,14 @@
   if ([MEMORY[0x1E698D148] isBlushingPhantomEnabled])
   {
     objc_initWeak(buf, self);
-    v5 = [MEMORY[0x1E69D8A50] sharedInstance];
-    v6 = [v5 queue];
+    mEMORY[0x1E69D8A50] = [MEMORY[0x1E69D8A50] sharedInstance];
+    queue = [mEMORY[0x1E69D8A50] queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38__SASCallRouteObserver_startObserving__block_invoke;
     block[3] = &unk_1E82F36D0;
     objc_copyWeak(&v10, buf);
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
@@ -64,14 +64,14 @@
   if ([MEMORY[0x1E698D148] isBlushingPhantomEnabled])
   {
     objc_initWeak(buf, self);
-    v4 = [MEMORY[0x1E69D8A50] sharedInstance];
-    v5 = [v4 queue];
+    mEMORY[0x1E69D8A50] = [MEMORY[0x1E69D8A50] sharedInstance];
+    queue = [mEMORY[0x1E69D8A50] queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __37__SASCallRouteObserver_stopObserving__block_invoke;
     block[3] = &unk_1E82F36D0;
     objc_copyWeak(&v8, buf);
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(buf);
@@ -130,22 +130,22 @@ void __37__SASCallRouteObserver_stopObserving__block_invoke(uint64_t a1)
   }
 }
 
-- (void)routesChangedForRouteController:(id)a3
+- (void)routesChangedForRouteController:(id)controller
 {
   v4 = MEMORY[0x1E69D8A50];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v6 queue];
-  dispatch_assert_queue_V2(v7);
+  controllerCopy = controller;
+  sharedInstance = [v4 sharedInstance];
+  queue = [sharedInstance queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [v5 pickedRoute];
+  pickedRoute = [controllerCopy pickedRoute];
 
-  [(SASCallRouteObserver *)self _updateCallAudioRouteAllowedForRoute:v8];
+  [(SASCallRouteObserver *)self _updateCallAudioRouteAllowedForRoute:pickedRoute];
 }
 
-- (void)_updateCallAudioRouteAllowedForRoute:(id)a3
+- (void)_updateCallAudioRouteAllowedForRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -153,8 +153,8 @@ void __37__SASCallRouteObserver_stopObserving__block_invoke(uint64_t a1)
   block[2] = __61__SASCallRouteObserver__updateCallAudioRouteAllowedForRoute___block_invoke;
   block[3] = &unk_1E82F37D0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = routeCopy;
+  v6 = routeCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);

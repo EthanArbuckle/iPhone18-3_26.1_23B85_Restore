@@ -6,21 +6,21 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_application;
   objc_opt_self();
   v4 = +[BagService appstoredService];
-  v5 = [v4 amsBag];
+  amsBag = [v4 amsBag];
 
-  v6 = [[AMSURLRequestEncoder alloc] initWithBag:v5];
+  v6 = [[AMSURLRequestEncoder alloc] initWithBag:amsBag];
   v7 = +[ACAccountStore ams_sharedAccountStore];
-  v8 = [v7 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v7 ams_activeiTunesAccount];
 
-  if (v8)
+  if (ams_activeiTunesAccount)
   {
     v9 = +[ACAccountStore ams_sharedAccountStore];
-    v10 = [v9 ams_activeiTunesAccount];
-    [v6 setAccount:v10];
+    ams_activeiTunesAccount2 = [v9 ams_activeiTunesAccount];
+    [v6 setAccount:ams_activeiTunesAccount2];
   }
 
   v11 = v3;
@@ -119,13 +119,13 @@ LABEL_22:
   {
     if (v27)
     {
-      v36 = 0;
+      object = 0;
     }
 
     else
     {
       v28 = ASDErrorWithDescription();
-      v36 = 0;
+      object = 0;
       if (!v28)
       {
         goto LABEL_32;
@@ -137,9 +137,9 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v55 = v2;
-  v54 = v5;
-  v29 = [v5 URLForKey:@"onDemandResources"];
+  v55 = selfCopy;
+  v54 = amsBag;
+  v29 = [amsBag URLForKey:@"onDemandResources"];
   v30 = [v6 requestWithMethod:4 bagURL:v29 parameters:v15];
   *buf = v28;
   v31 = [v30 resultWithError:buf];
@@ -152,17 +152,17 @@ LABEL_31:
   v35 = [v34 resultWithError:&v58];
   v28 = v58;
 
-  v36 = [v35 object];
+  object = [v35 object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v37 = [v36 objectForKeyedSubscript:@"error"];
-    v38 = [v36 objectForKeyedSubscript:@"message"];
+    v37 = [object objectForKeyedSubscript:@"error"];
+    v38 = [object objectForKeyedSubscript:@"message"];
     v39 = v38;
     if (v37 && v38)
     {
-      v40 = [v35 responseCorrelationId];
-      v41 = [NSString stringWithFormat:@"Error message: %@, Correlation ID: %@", v39, v40];
+      responseCorrelationId = [v35 responseCorrelationId];
+      v41 = [NSString stringWithFormat:@"Error message: %@, Correlation ID: %@", v39, responseCorrelationId];
 
       [v37 integerValue];
       v42 = ASDErrorWithDescription();
@@ -173,13 +173,13 @@ LABEL_31:
 
   else
   {
-    v37 = [NSString stringWithFormat:@"Error fetching manifest, invalid response received: %@", v36];
+    v37 = [NSString stringWithFormat:@"Error fetching manifest, invalid response received: %@", object];
     ASDErrorWithDescription();
     v28 = v39 = v28;
   }
 
-  v2 = v55;
-  v5 = v54;
+  selfCopy = v55;
+  amsBag = v54;
   if (v28)
   {
     goto LABEL_31;
@@ -189,7 +189,7 @@ LABEL_32:
 
   v44 = v28;
   v45 = v44;
-  if (!v36)
+  if (!object)
   {
     if (!v44)
     {
@@ -201,16 +201,16 @@ LABEL_32:
     }
 
 LABEL_39:
-    [(Task *)v2 completeWithError:v45];
+    [(Task *)selfCopy completeWithError:v45];
 
     goto LABEL_40;
   }
 
   v46 = [ODRManifest alloc];
-  v47 = sub_10039A6A0(v2->_application);
-  v48 = sub_1002806CC(v46, v36, v47, 1);
-  manifest = v2->_manifest;
-  v2->_manifest = v48;
+  v47 = sub_10039A6A0(selfCopy->_application);
+  v48 = sub_1002806CC(v46, object, v47, 1);
+  manifest = selfCopy->_manifest;
+  selfCopy->_manifest = v48;
 
   if (v45)
   {
@@ -221,9 +221,9 @@ LABEL_34:
   v50 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
   {
-    v51 = sub_100280E78(&v2->_manifest->super.super.isa);
+    v51 = sub_100280E78(&selfCopy->_manifest->super.super.isa);
     v52 = [v51 count];
-    application = v2->_application;
+    application = selfCopy->_application;
     *buf = 134218242;
     *&buf[4] = v52;
     v60 = 2114;
@@ -231,7 +231,7 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "Successfully fetched a manifest with %lu asset packs for %{public}@", buf, 0x16u);
   }
 
-  [(Task *)v2 completeWithSuccess];
+  [(Task *)selfCopy completeWithSuccess];
 LABEL_40:
 }
 

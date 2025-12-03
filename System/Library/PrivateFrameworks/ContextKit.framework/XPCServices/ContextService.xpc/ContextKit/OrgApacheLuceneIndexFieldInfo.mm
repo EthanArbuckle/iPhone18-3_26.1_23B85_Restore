@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneIndexFieldInfo
 - (BOOL)checkConsistency;
 - (BOOL)hasNorms;
-- (id)getAttributeWithNSString:(id)a3;
-- (id)putAttributeWithNSString:(id)a3 withNSString:(id)a4;
+- (id)getAttributeWithNSString:(id)string;
+- (id)putAttributeWithNSString:(id)string withNSString:(id)sString;
 - (void)dealloc;
-- (void)setDocValuesTypeWithOrgApacheLuceneIndexDocValuesTypeEnum:(id)a3;
-- (void)setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:(id)a3;
+- (void)setDocValuesTypeWithOrgApacheLuceneIndexDocValuesTypeEnum:(id)enum;
+- (void)setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:(id)enum;
 - (void)setOmitsNorms;
 - (void)setStorePayloads;
 @end
@@ -87,9 +87,9 @@ LABEL_13:
   return 1;
 }
 
-- (void)setDocValuesTypeWithOrgApacheLuceneIndexDocValuesTypeEnum:(id)a3
+- (void)setDocValuesTypeWithOrgApacheLuceneIndexDocValuesTypeEnum:(id)enum
 {
-  if (!a3)
+  if (!enum)
   {
     name = self->name_;
     v12 = JreStrcat("$$$", a2, 0, v3, v4, v5, v6, v7, @"DocValuesType cannot be null (field: ");
@@ -111,27 +111,27 @@ LABEL_13:
       sub_10001B990();
     }
 
-    if (OrgApacheLuceneIndexDocValuesTypeEnum_values_ != a3 && *p_docValuesType != a3)
+    if (OrgApacheLuceneIndexDocValuesTypeEnum_values_ != enum && *p_docValuesType != enum)
     {
       v17 = self->name_;
       v16 = *p_docValuesType;
-      v14 = JreStrcat("$@$@$$C", a2, a3, v3, v4, v5, v6, v7, @"cannot change DocValues type from ");
+      v14 = JreStrcat("$@$@$$C", a2, enum, v3, v4, v5, v6, v7, @"cannot change DocValues type from ");
       v13 = new_JavaLangIllegalArgumentException_initWithNSString_(v14);
 LABEL_14:
       objc_exception_throw(v13);
     }
   }
 
-  JreStrongAssign(&self->docValuesType_, a3);
+  JreStrongAssign(&self->docValuesType_, enum);
 }
 
-- (void)setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:(id)a3
+- (void)setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:(id)enum
 {
   p_indexOptions = &self->indexOptions_;
   indexOptions = self->indexOptions_;
-  if (indexOptions != a3)
+  if (indexOptions != enum)
   {
-    v6 = a3;
+    enumCopy = enum;
     if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
     {
       sub_100015608();
@@ -140,7 +140,7 @@ LABEL_14:
     if (indexOptions == OrgApacheLuceneIndexIndexOptionsEnum_values_[0])
     {
 LABEL_11:
-      JreStrongAssign(p_indexOptions, v6);
+      JreStrongAssign(p_indexOptions, enumCopy);
       goto LABEL_12;
     }
 
@@ -149,16 +149,16 @@ LABEL_11:
       sub_100015608();
     }
 
-    if (OrgApacheLuceneIndexIndexOptionsEnum_values_[0] != v6)
+    if (OrgApacheLuceneIndexIndexOptionsEnum_values_[0] != enumCopy)
     {
       if (!*p_indexOptions)
       {
         goto LABEL_21;
       }
 
-      if ([(JavaLangEnum *)*p_indexOptions compareToWithId:v6]< 0)
+      if ([(JavaLangEnum *)*p_indexOptions compareToWithId:enumCopy]< 0)
       {
-        v6 = *p_indexOptions;
+        enumCopy = *p_indexOptions;
       }
 
       goto LABEL_11;
@@ -252,7 +252,7 @@ LABEL_19:
   return indexOptions != OrgApacheLuceneIndexIndexOptionsEnum_values_[0] && !self->omitNorms_;
 }
 
-- (id)getAttributeWithNSString:(id)a3
+- (id)getAttributeWithNSString:(id)string
 {
   attributes = self->attributes_;
   if (!attributes)
@@ -260,10 +260,10 @@ LABEL_19:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)attributes getWithId:a3];
+  return [(JavaUtilMap *)attributes getWithId:string];
 }
 
-- (id)putAttributeWithNSString:(id)a3 withNSString:(id)a4
+- (id)putAttributeWithNSString:(id)string withNSString:(id)sString
 {
   attributes = self->attributes_;
   if (!attributes)
@@ -271,7 +271,7 @@ LABEL_19:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)attributes putWithId:a3 withId:a4];
+  return [(JavaUtilMap *)attributes putWithId:string withId:sString];
 }
 
 - (void)dealloc

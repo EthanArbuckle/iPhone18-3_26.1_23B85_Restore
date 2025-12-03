@@ -1,12 +1,12 @@
 @interface EKTravelEngine
 + (double)_periodicRefreshInterval;
 + (id)requestedDarwinNotifications;
-+ (id)travelEligibleEvents:(id)a3 fromStartDate:(id)a4 untilEndDate:(id)a5;
-+ (id)travelEligibleEventsInEventStore:(id)a3;
++ (id)travelEligibleEvents:(id)events fromStartDate:(id)date untilEndDate:(id)endDate;
++ (id)travelEligibleEventsInEventStore:(id)store;
 - (BOOL)_authorizedToAcquireLocation;
 - (BOOL)_isProtectedDataAvailable;
 - (BOOL)authorized;
-- (EKTravelEngine)initWithRouteHypothesizerProvider:(id)a3;
+- (EKTravelEngine)initWithRouteHypothesizerProvider:(id)provider;
 - (id)_eventStore;
 - (void)_calDatabaseChangedNotificationReceived;
 - (void)_calSyncClientBeginningMultiSaveNotificationReceived;
@@ -18,23 +18,23 @@
 - (void)_installSyncYieldTimer;
 - (void)_periodicRefreshTimerFired;
 - (void)_refreshIfNeeded;
-- (void)_sendFeedbackForPostingNotificationForEventWithExternalURL:(id)a3 feedback:(id)a4;
+- (void)_sendFeedbackForPostingNotificationForEventWithExternalURL:(id)l feedback:(id)feedback;
 - (void)_significantTimeChangeNotificationReceived;
 - (void)_stopInternal;
 - (void)_suggestEventLocationsSettingChanged;
-- (void)_trimAgendaEntriesBeforeDate:(id)a3 andAfterDate:(id)a4;
+- (void)_trimAgendaEntriesBeforeDate:(id)date andAfterDate:(id)afterDate;
 - (void)_uninstallLocationManager;
 - (void)_uninstallPeriodicRefreshTimer;
 - (void)_uninstallSyncYieldTimer;
 - (void)_unregisterAllAgendaEntries;
 - (void)_updateDatabaseEncryptionState;
-- (void)cancelHypothesisRefreshRequestForEventWithExternalURL:(id)a3;
-- (void)ceaseMonitoringForEventWithExternalURL:(id)a3;
+- (void)cancelHypothesisRefreshRequestForEventWithExternalURL:(id)l;
+- (void)ceaseMonitoringForEventWithExternalURL:(id)l;
 - (void)dealloc;
-- (void)handleDarwinNotification:(id)a3;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)receivedAlarmNamed:(id)a3;
-- (void)requestHypothesisRefreshAtDate:(id)a3 forEventWithExternalURL:(id)a4;
+- (void)handleDarwinNotification:(id)notification;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)receivedAlarmNamed:(id)named;
+- (void)requestHypothesisRefreshAtDate:(id)date forEventWithExternalURL:(id)l;
 - (void)start;
 - (void)stop;
 @end
@@ -44,9 +44,9 @@
 + (id)requestedDarwinNotifications
 {
   v7[9] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CC5A10] stateChangedNotificationName];
+  stateChangedNotificationName = [MEMORY[0x277CC5A10] stateChangedNotificationName];
   v3 = *MEMORY[0x277CF7130];
-  v7[7] = v2;
+  v7[7] = stateChangedNotificationName;
   v7[8] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:9];
 
@@ -55,32 +55,32 @@
   return v4;
 }
 
-- (EKTravelEngine)initWithRouteHypothesizerProvider:(id)a3
+- (EKTravelEngine)initWithRouteHypothesizerProvider:(id)provider
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providerCopy = provider;
   v22.receiver = self;
   v22.super_class = EKTravelEngine;
   v6 = [(EKTravelEngine *)&v22 init];
   if (v6)
   {
     EKTravelEngineLogInitialize();
-    objc_storeStrong(&v6->_routeHypothesizerProvider, a3);
+    objc_storeStrong(&v6->_routeHypothesizerProvider, provider);
     objc_opt_class();
     v7 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
 
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     workQueue = v6->_workQueue;
     v6->_workQueue = v10;
 
     objc_opt_class();
     v12 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v13 = [v12 UTF8String];
+    uTF8String2 = [v12 UTF8String];
 
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String2, v14);
     callbackQueue = v6->_callbackQueue;
     v6->_callbackQueue = v15;
 
@@ -237,21 +237,21 @@ LABEL_8:
   [(EKTravelEngine *)self _uninstallPeriodicRefreshTimer];
 }
 
-- (void)requestHypothesisRefreshAtDate:(id)a3 forEventWithExternalURL:(id)a4
+- (void)requestHypothesisRefreshAtDate:(id)date forEventWithExternalURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dateCopy = date;
+  lCopy = l;
+  if (lCopy)
   {
     workQueue = self->_workQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__EKTravelEngine_requestHypothesisRefreshAtDate_forEventWithExternalURL___block_invoke;
     block[3] = &unk_278D6F318;
-    v12 = v6;
-    v13 = v7;
-    v14 = self;
+    v12 = dateCopy;
+    v13 = lCopy;
+    selfCopy = self;
     dispatch_sync(workQueue, block);
   }
 
@@ -261,7 +261,7 @@ LABEL_8:
     if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v6;
+      v16 = dateCopy;
       _os_log_impl(&dword_242909000, v9, OS_LOG_TYPE_DEFAULT, "nil 'externalURL' given. Will not request hypothesis refresh at date: [%@] for any events.", buf, 0xCu);
     }
   }
@@ -310,19 +310,19 @@ void __73__EKTravelEngine_requestHypothesisRefreshAtDate_forEventWithExternalURL
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelHypothesisRefreshRequestForEventWithExternalURL:(id)a3
+- (void)cancelHypothesisRefreshRequestForEventWithExternalURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
     workQueue = self->_workQueue;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __72__EKTravelEngine_cancelHypothesisRefreshRequestForEventWithExternalURL___block_invoke;
     v8[3] = &unk_278D6F278;
-    v9 = v4;
-    v10 = self;
+    v9 = lCopy;
+    selfCopy = self;
     dispatch_sync(workQueue, v8);
   }
 
@@ -372,19 +372,19 @@ void __72__EKTravelEngine_cancelHypothesisRefreshRequestForEventWithExternalURL_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ceaseMonitoringForEventWithExternalURL:(id)a3
+- (void)ceaseMonitoringForEventWithExternalURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
     workQueue = self->_workQueue;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __57__EKTravelEngine_ceaseMonitoringForEventWithExternalURL___block_invoke;
     v8[3] = &unk_278D6F278;
-    v9 = v4;
-    v10 = self;
+    v9 = lCopy;
+    selfCopy = self;
     dispatch_sync(workQueue, v8);
   }
 
@@ -441,61 +441,61 @@ void __57__EKTravelEngine_ceaseMonitoringForEventWithExternalURL___block_invoke(
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDarwinNotification:(id)a3
+- (void)handleDarwinNotification:(id)notification
 {
-  v6 = a3;
-  if ([v6 isEqualToString:*MEMORY[0x277CF7560]])
+  notificationCopy = notification;
+  if ([notificationCopy isEqualToString:*MEMORY[0x277CF7560]])
   {
     [(EKTravelEngine *)self _calDatabaseChangedNotificationReceived];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CF7708]])
+  else if ([notificationCopy isEqualToString:*MEMORY[0x277CF7708]])
   {
     [(EKTravelEngine *)self _calSyncClientBeginningMultiSaveNotificationReceived];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CF7710]])
+  else if ([notificationCopy isEqualToString:*MEMORY[0x277CF7710]])
   {
     [(EKTravelEngine *)self _calSyncClientFinishedMultiSaveNotificationReceived];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CF7118]])
+  else if ([notificationCopy isEqualToString:*MEMORY[0x277CF7118]])
   {
     [(EKTravelEngine *)self _enableTravelAdvisoriesForAutomaticBehaviorNotificationReceived];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CF7908]])
+  else if ([notificationCopy isEqualToString:*MEMORY[0x277CF7908]])
   {
     [(EKTravelEngine *)self _significantTimeChangeNotificationReceived];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CC5968]])
+  else if ([notificationCopy isEqualToString:*MEMORY[0x277CC5968]])
   {
     [(EKTravelEngine *)self _eventKitFeatureSetChanged];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CC5A10] stateChangedNotificationName];
-    v5 = [v6 isEqualToString:v4];
+    stateChangedNotificationName = [MEMORY[0x277CC5A10] stateChangedNotificationName];
+    v5 = [notificationCopy isEqualToString:stateChangedNotificationName];
 
     if (v5)
     {
       [(EKTravelEngine *)self _updateDatabaseEncryptionState];
     }
 
-    else if ([v6 isEqualToString:*MEMORY[0x277CF7130]])
+    else if ([notificationCopy isEqualToString:*MEMORY[0x277CF7130]])
     {
       [(EKTravelEngine *)self _suggestEventLocationsSettingChanged];
     }
   }
 }
 
-- (void)receivedAlarmNamed:(id)a3
+- (void)receivedAlarmNamed:(id)named
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hasPrefix:@"com.apple.calaccessd.travelEngine."];
+  namedCopy = named;
+  v5 = [namedCopy hasPrefix:@"com.apple.calaccessd.travelEngine."];
   v6 = MEMORY[0x277CC5980];
   v7 = *MEMORY[0x277CC5980];
   v8 = os_log_type_enabled(*MEMORY[0x277CC5980], OS_LOG_TYPE_DEFAULT);
@@ -504,7 +504,7 @@ void __57__EKTravelEngine_ceaseMonitoringForEventWithExternalURL___block_invoke(
     if (v8)
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = namedCopy;
       _os_log_impl(&dword_242909000, v7, OS_LOG_TYPE_DEFAULT, "EKTravelEngine received alarm named: %{public}@", &buf, 0xCu);
     }
 
@@ -512,8 +512,8 @@ void __57__EKTravelEngine_ceaseMonitoringForEventWithExternalURL___block_invoke(
     v25 = &v24;
     v26 = 0x2020000000;
     v27 = 0;
-    v9 = [(EKTravelEngine *)self alarmName];
-    v10 = [v4 isEqualToString:v9];
+    alarmName = [(EKTravelEngine *)self alarmName];
+    v10 = [namedCopy isEqualToString:alarmName];
 
     if (v10)
     {
@@ -556,7 +556,7 @@ void __57__EKTravelEngine_ceaseMonitoringForEventWithExternalURL___block_invoke(
       v19[2] = __37__EKTravelEngine_receivedAlarmNamed___block_invoke_2;
       v19[3] = &unk_278D6F508;
       v21 = &v24;
-      v20 = v4;
+      v20 = namedCopy;
       [v14 enumerateObjectsUsingBlock:v19];
 
       _Block_object_dispose(&buf, 8);
@@ -571,8 +571,8 @@ void __57__EKTravelEngine_ceaseMonitoringForEventWithExternalURL___block_invoke(
         _os_log_impl(&dword_242909000, v15, OS_LOG_TYPE_DEFAULT, "Uninstalling unrecognized alarm for travel engine", &buf, 2u);
       }
 
-      v16 = v4;
-      [v4 UTF8String];
+      v16 = namedCopy;
+      [namedCopy UTF8String];
       v17 = *MEMORY[0x277CF7880];
       xpc_set_event();
     }
@@ -583,7 +583,7 @@ void __57__EKTravelEngine_ceaseMonitoringForEventWithExternalURL___block_invoke(
   else if (v8)
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = namedCopy;
     _os_log_impl(&dword_242909000, v7, OS_LOG_TYPE_DEFAULT, "EKTravelEngine skipping the alarm named: %{public}@. It may be an alarm from another place like EKAlarmEngine.", &buf, 0xCu);
   }
 
@@ -622,26 +622,26 @@ void __37__EKTravelEngine_receivedAlarmNamed___block_invoke_2(uint64_t a1, void 
   *(*(*(a1 + 40) + 8) + 24) |= [v6 receivedAlarmNamed:*(a1 + 32)];
 }
 
-+ (id)travelEligibleEventsInEventStore:(id)a3
++ (id)travelEligibleEventsInEventStore:(id)store
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 CalSimulatedDateForNow];
+  storeCopy = store;
+  calSimulatedDateForNow = [v4 CalSimulatedDateForNow];
   [objc_opt_class() _travelAgendaTimeWindowInterval];
-  v7 = [v6 dateByAddingTimeInterval:?];
-  v8 = [a1 travelEligibleEvents:v5 fromStartDate:v6 untilEndDate:v7];
+  v7 = [calSimulatedDateForNow dateByAddingTimeInterval:?];
+  v8 = [self travelEligibleEvents:storeCopy fromStartDate:calSimulatedDateForNow untilEndDate:v7];
 
   return v8;
 }
 
-+ (id)travelEligibleEvents:(id)a3 fromStartDate:(id)a4 untilEndDate:(id)a5
++ (id)travelEligibleEvents:(id)events fromStartDate:(id)date untilEndDate:(id)endDate
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v23 = a4;
-  v8 = a5;
-  v9 = [v7 calendarsForEntityType:0];
-  v10 = [MEMORY[0x277CBEB18] array];
+  eventsCopy = events;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v9 = [eventsCopy calendarsForEntityType:0];
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -664,12 +664,12 @@ void __37__EKTravelEngine_receivedAlarmNamed___block_invoke_2(uint64_t a1, void 
         v16 = *(*(&v24 + 1) + 8 * i);
         if (([v16 isIgnoringEventAlerts] & 1) == 0)
         {
-          v17 = [v16 source];
-          v18 = [v17 isDelegate];
+          source = [v16 source];
+          isDelegate = [source isDelegate];
 
-          if ((v18 & 1) == 0)
+          if ((isDelegate & 1) == 0)
           {
-            [v10 addObject:v16];
+            [array addObject:v16];
           }
         }
       }
@@ -684,15 +684,15 @@ void __37__EKTravelEngine_receivedAlarmNamed___block_invoke_2(uint64_t a1, void 
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v29 = v23;
+    v29 = dateCopy;
     v30 = 2112;
-    v31 = v8;
+    v31 = endDateCopy;
     v32 = 2112;
-    v33 = v10;
+    v33 = array;
     _os_log_impl(&dword_242909000, v19, OS_LOG_TYPE_DEFAULT, "Will search for travel agenda candidates between [%@] and [%@].  Calendars to search: [%@]", buf, 0x20u);
   }
 
-  v20 = [v7 travelEligibleEventsInCalendars:v10 startDate:v23 endDate:v8];
+  v20 = [eventsCopy travelEligibleEventsInCalendars:array startDate:dateCopy endDate:endDateCopy];
 
   v21 = *MEMORY[0x277D85DE8];
 
@@ -725,10 +725,10 @@ uint64_t __28__EKTravelEngine_authorized__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [a3 authorizationStatus];
+  authorizationStatus = [authorization authorizationStatus];
   dispatch_assert_queue_V2(self->_workQueue);
   v5 = MEMORY[0x277CC5978];
   v6 = *MEMORY[0x277CC5978];
@@ -736,22 +736,22 @@ uint64_t __28__EKTravelEngine_authorized__block_invoke(uint64_t a1)
   {
     v7 = MEMORY[0x277CC5B00];
     v8 = v6;
-    v9 = [v7 authorizationStatusAsString:v4];
+    v9 = [v7 authorizationStatusAsString:authorizationStatus];
     *buf = 138412290;
     v23 = v9;
     _os_log_impl(&dword_242909000, v8, OS_LOG_TYPE_DEFAULT, "Location authorization status changed to [%@]", buf, 0xCu);
   }
 
-  v10 = [(EKTravelEngine *)self isLocationManagerStatusAuthorized:v4];
+  v10 = [(EKTravelEngine *)self isLocationManagerStatusAuthorized:authorizationStatus];
   if (v10)
   {
     [(EKTravelEngine *)self _refreshIfNeeded];
   }
 
-  else if ((v4 - 1) <= 1)
+  else if ((authorizationStatus - 1) <= 1)
   {
-    v11 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v11 postNotificationName:@"com.apple.calendar.LocationAuthDenied" object:0 userInfo:0 deliverImmediately:1];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.calendar.LocationAuthDenied" object:0 userInfo:0 deliverImmediately:1];
 
     [(EKTravelEngine *)self _unregisterAllAgendaEntries];
     self->_needsRefresh = 1;
@@ -771,16 +771,16 @@ uint64_t __28__EKTravelEngine_authorized__block_invoke(uint64_t a1)
       _os_log_impl(&dword_242909000, v14, OS_LOG_TYPE_DEFAULT, "The location authorization state has changed.  self.authorizedInternal: [%@]", buf, 0xCu);
     }
 
-    v16 = [(EKTravelEngine *)self authorizationChangedBlock];
-    v17 = v16;
-    if (v16)
+    authorizationChangedBlock = [(EKTravelEngine *)self authorizationChangedBlock];
+    v17 = authorizationChangedBlock;
+    if (authorizationChangedBlock)
     {
       callbackQueue = self->_callbackQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __56__EKTravelEngine_locationManagerDidChangeAuthorization___block_invoke;
       block[3] = &unk_278D6F550;
-      v21 = v16;
+      v21 = authorizationChangedBlock;
       dispatch_async(callbackQueue, block);
     }
   }
@@ -1057,9 +1057,9 @@ _BYTE *__48__EKTravelEngine__updateDatabaseEncryptionState__block_invoke(uint64_
 - (BOOL)_isProtectedDataAvailable
 {
   v2 = objc_alloc_init(MEMORY[0x277CC5A10]);
-  v3 = [v2 dataIsAccessible];
+  dataIsAccessible = [v2 dataIsAccessible];
 
-  return v3;
+  return dataIsAccessible;
 }
 
 - (void)_installSyncYieldTimer
@@ -1070,7 +1070,7 @@ _BYTE *__48__EKTravelEngine__updateDatabaseEncryptionState__block_invoke(uint64_
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242909000, v4, OS_LOG_TYPE_DEFAULT, "Installing sync yield timer for travel engine: [%@].", buf, 0xCu);
   }
 
@@ -1091,9 +1091,9 @@ _BYTE *__48__EKTravelEngine__updateDatabaseEncryptionState__block_invoke(uint64_
   if (os_log_type_enabled(*v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v13 = 240;
+    selfCopy = 240;
     v14 = 2112;
-    v15 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_242909000, v9, OS_LOG_TYPE_DEFAULT, "Installed sync yield timer with [%ld] second length for travel engine: [%@].", buf, 0x16u);
   }
 
@@ -1123,7 +1123,7 @@ uint64_t __40__EKTravelEngine__installSyncYieldTimer__block_invoke(uint64_t a1)
     if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_242909000, v3, OS_LOG_TYPE_DEFAULT, "Uninstalling sync yield timer for travel engine: [%@].", &v6, 0xCu);
     }
 
@@ -1148,8 +1148,8 @@ uint64_t __40__EKTravelEngine__installSyncYieldTimer__block_invoke(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
   [objc_opt_class() _periodicRefreshInterval];
   v4 = v3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v5 dateByAddingTimeInterval:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [date dateByAddingTimeInterval:v4];
 
   v7 = *MEMORY[0x277CC5978];
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
@@ -1158,7 +1158,7 @@ uint64_t __40__EKTravelEngine__installSyncYieldTimer__block_invoke(uint64_t a1)
     v9 = v7;
     v10 = [v8 numberWithDouble:v4];
     v16 = 138412802;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v10;
     v20 = 2112;
@@ -1170,8 +1170,8 @@ uint64_t __40__EKTravelEngine__installSyncYieldTimer__block_invoke(uint64_t a1)
   v12 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_date(v12, *MEMORY[0x277CF7888], v11);
   v13 = *MEMORY[0x277CF7880];
-  v14 = [(EKTravelEngine *)self alarmName];
-  [v14 UTF8String];
+  alarmName = [(EKTravelEngine *)self alarmName];
+  [alarmName UTF8String];
   xpc_set_event();
 
   v15 = *MEMORY[0x277D85DE8];
@@ -1184,30 +1184,30 @@ uint64_t __40__EKTravelEngine__installSyncYieldTimer__block_invoke(uint64_t a1)
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242909000, v3, OS_LOG_TYPE_DEFAULT, "Uninstalling the periodic refresh timer for travel engine: [%@].", &v7, 0xCu);
   }
 
   v4 = *MEMORY[0x277CF7880];
-  v5 = [(EKTravelEngine *)self alarmName];
-  [v5 UTF8String];
+  alarmName = [(EKTravelEngine *)self alarmName];
+  [alarmName UTF8String];
   xpc_set_event();
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_trimAgendaEntriesBeforeDate:(id)a3 andAfterDate:(id)a4
+- (void)_trimAgendaEntriesBeforeDate:(id)date andAfterDate:(id)afterDate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  afterDateCopy = afterDate;
   v8 = *MEMORY[0x277CC5978];
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v6;
+    v20 = dateCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = afterDateCopy;
     _os_log_impl(&dword_242909000, v8, OS_LOG_TYPE_DEFAULT, "Trimming entries before [%@] and after [%@].", buf, 0x16u);
   }
 
@@ -1216,10 +1216,10 @@ uint64_t __40__EKTravelEngine__installSyncYieldTimer__block_invoke(uint64_t a1)
   v16[1] = 3221225472;
   v16[2] = __60__EKTravelEngine__trimAgendaEntriesBeforeDate_andAfterDate___block_invoke;
   v16[3] = &unk_278D6F578;
-  v17 = v6;
-  v18 = v7;
-  v10 = v7;
-  v11 = v6;
+  v17 = dateCopy;
+  v18 = afterDateCopy;
+  v10 = afterDateCopy;
+  v11 = dateCopy;
   v12 = [(NSMutableDictionary *)eventExternalURLsToAgendaEntries keysOfEntriesPassingTest:v16];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -1227,8 +1227,8 @@ uint64_t __40__EKTravelEngine__installSyncYieldTimer__block_invoke(uint64_t a1)
   v15[3] = &unk_278D6F5A0;
   v15[4] = self;
   [v12 enumerateObjectsUsingBlock:v15];
-  v13 = [v12 allObjects];
-  [(NSMutableDictionary *)self->_eventExternalURLsToAgendaEntries removeObjectsForKeys:v13];
+  allObjects = [v12 allObjects];
+  [(NSMutableDictionary *)self->_eventExternalURLsToAgendaEntries removeObjectsForKeys:allObjects];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1289,11 +1289,11 @@ void __60__EKTravelEngine__trimAgendaEntriesBeforeDate_andAfterDate___block_invo
 
 - (BOOL)_authorizedToAcquireLocation
 {
-  v2 = [MEMORY[0x277CF77F8] bundle];
-  v3 = [MEMORY[0x277CF77F0] authorizationStatusForBundle:v2];
+  bundle = [MEMORY[0x277CF77F8] bundle];
+  v3 = [MEMORY[0x277CF77F0] authorizationStatusForBundle:bundle];
   v4 = *MEMORY[0x277CF78A0];
   v5 = [MEMORY[0x277CF77F0] authorizationStatusForBundleIdentifier:*MEMORY[0x277CF78A0]];
-  v6 = [MEMORY[0x277CF77F0] preciseLocationAuthorizedForBundle:v2];
+  v6 = [MEMORY[0x277CF77F0] preciseLocationAuthorizedForBundle:bundle];
   v7 = [MEMORY[0x277CF77F0] preciseLocationAuthorizedForBundleIdentifier:v4];
   v9 = v3 == 3 && v5 > 2;
   v10 = v6 & v7;
@@ -1337,7 +1337,7 @@ id __29__EKTravelEngine__eventStore__block_invoke()
       if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v33 = self;
+        selfCopy5 = self;
         v4 = "Cannot access data. Will not refresh data for travel engine: [%@]";
 LABEL_10:
         _os_log_impl(&dword_242909000, v3, OS_LOG_TYPE_DEFAULT, v4, buf, 0xCu);
@@ -1350,7 +1350,7 @@ LABEL_10:
       if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v33 = self;
+        selfCopy5 = self;
         v4 = "Currently yielding to sync. Will not refresh data for travel engine: [%@]";
         goto LABEL_10;
       }
@@ -1358,22 +1358,22 @@ LABEL_10:
 
     else
     {
-      v6 = [(EKTravelEngine *)self _authorizedToAcquireLocation];
+      _authorizedToAcquireLocation = [(EKTravelEngine *)self _authorizedToAcquireLocation];
       v7 = MEMORY[0x277CC5978];
       v8 = *MEMORY[0x277CC5978];
       v9 = os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT);
-      if (v6)
+      if (_authorizedToAcquireLocation)
       {
         if (v9)
         {
           *buf = 138412290;
-          v33 = self;
+          selfCopy5 = self;
           _os_log_impl(&dword_242909000, v8, OS_LOG_TYPE_DEFAULT, "Refreshing data for travel engine: [%@]", buf, 0xCu);
         }
 
-        v10 = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
-        objc_storeStrong(&self->_lastRefreshDate, v10);
-        v11 = [(EKTravelEngine *)self _eventStore];
+        calSimulatedDateForNow = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
+        objc_storeStrong(&self->_lastRefreshDate, calSimulatedDateForNow);
+        _eventStore = [(EKTravelEngine *)self _eventStore];
         [objc_opt_class() _travelAgendaTimeWindowInterval];
         v13 = v12;
         v14 = *v7;
@@ -1383,13 +1383,13 @@ LABEL_10:
           v16 = v14;
           v17 = [v15 numberWithDouble:v13];
           *buf = 138412290;
-          v33 = v17;
+          selfCopy5 = v17;
           _os_log_impl(&dword_242909000, v16, OS_LOG_TYPE_DEFAULT, "The travel agenda time window interval is [%@] seconds.", buf, 0xCu);
         }
 
-        v18 = [v10 dateByAddingTimeInterval:v13];
-        [(EKTravelEngine *)self _trimAgendaEntriesBeforeDate:v10 andAfterDate:v18];
-        v19 = [EKTravelEngine travelEligibleEvents:v11 fromStartDate:v10 untilEndDate:v18];
+        v18 = [calSimulatedDateForNow dateByAddingTimeInterval:v13];
+        [(EKTravelEngine *)self _trimAgendaEntriesBeforeDate:calSimulatedDateForNow andAfterDate:v18];
+        v19 = [EKTravelEngine travelEligibleEvents:_eventStore fromStartDate:calSimulatedDateForNow untilEndDate:v18];
         v20 = objc_alloc_init(MEMORY[0x277CBEB58]);
         v21 = *v7;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1397,7 +1397,7 @@ LABEL_10:
           v22 = v21;
           v23 = [v19 count];
           *buf = 134217984;
-          v33 = v23;
+          selfCopy5 = v23;
           _os_log_impl(&dword_242909000, v22, OS_LOG_TYPE_DEFAULT, "Found [%lu] travel agenda candidates.", buf, 0xCu);
         }
 
@@ -1415,7 +1415,7 @@ LABEL_10:
         v27[2] = __34__EKTravelEngine__refreshIfNeeded__block_invoke_60;
         v27[3] = &unk_278D6F688;
         v28 = v24;
-        v29 = self;
+        selfCopy4 = self;
         v26 = v24;
         [v25 enumerateKeysAndObjectsUsingBlock:v27];
 
@@ -1441,7 +1441,7 @@ LABEL_10:
     if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = self;
+      selfCopy5 = self;
       v4 = "Data does not need to be refreshed.  Will not refresh data for travel engine: [%@]";
       goto LABEL_10;
     }
@@ -1847,8 +1847,8 @@ void __34__EKTravelEngine__refreshIfNeeded__block_invoke_60(uint64_t a1, void *a
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSMutableDictionary *)self->_eventExternalURLsToAgendaEntries allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_eventExternalURLsToAgendaEntries allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1860,14 +1860,14 @@ void __34__EKTravelEngine__refreshIfNeeded__block_invoke_60(uint64_t a1, void *a
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) reset];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);
@@ -1884,7 +1884,7 @@ void __34__EKTravelEngine__refreshIfNeeded__block_invoke_60(uint64_t a1, void *a
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242909000, v3, OS_LOG_TYPE_DEFAULT, "The periodic refresh timer fired for travel engine: [%@].", &v5, 0xCu);
   }
 
@@ -1907,10 +1907,10 @@ void __34__EKTravelEngine__refreshIfNeeded__block_invoke_60(uint64_t a1, void *a
     _os_log_impl(&dword_242909000, v4, OS_LOG_TYPE_DEFAULT, "Installation of location manager requested.", &v11, 2u);
   }
 
-  v5 = [MEMORY[0x277CF77F8] bundle];
+  bundle = [MEMORY[0x277CF77F8] bundle];
   v6 = objc_alloc(MEMORY[0x277CBFC10]);
-  v7 = [v5 bundlePath];
-  v8 = [v6 initWithEffectiveBundlePath:v7 delegate:self onQueue:self->_workQueue];
+  bundlePath = [bundle bundlePath];
+  v8 = [v6 initWithEffectiveBundlePath:bundlePath delegate:self onQueue:self->_workQueue];
 
   objc_storeStrong(&self->_locationManager, v8);
   v9 = *v3;
@@ -1947,12 +1947,12 @@ void __34__EKTravelEngine__refreshIfNeeded__block_invoke_60(uint64_t a1, void *a
   }
 }
 
-- (void)_sendFeedbackForPostingNotificationForEventWithExternalURL:(id)a3 feedback:(id)a4
+- (void)_sendFeedbackForPostingNotificationForEventWithExternalURL:(id)l feedback:(id)feedback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  feedbackCopy = feedback;
+  v8 = feedbackCopy;
+  if (!lCopy)
   {
     v10 = *MEMORY[0x277CC5978];
     if (!os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
@@ -1967,7 +1967,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!feedbackCopy)
   {
     v10 = *MEMORY[0x277CC5978];
     if (!os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
@@ -1986,7 +1986,7 @@ LABEL_8:
   block[2] = __86__EKTravelEngine__sendFeedbackForPostingNotificationForEventWithExternalURL_feedback___block_invoke;
   block[3] = &unk_278D6F6B0;
   block[4] = self;
-  v13 = v6;
+  v13 = lCopy;
   v14 = v8;
   dispatch_async(workQueue, block);
 

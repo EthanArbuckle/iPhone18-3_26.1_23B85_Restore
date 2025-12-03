@@ -7,7 +7,7 @@
 - (id)hmbDescription
 {
   v2 = [@"[" mutableCopy];
-  v3 = [a1 componentsJoinedByString:{@", "}];
+  v3 = [self componentsJoinedByString:{@", "}];
   [v2 appendString:v3];
 
   [v2 appendString:@"]"];

@@ -1,22 +1,22 @@
 @interface VNE5RTSegmentationMultiGenerator
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4;
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error;
 + (NSDictionary)requestKeyToRequestInfo;
-+ (id)requestInfoForRequest:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedOutputPixelFormatsForOptions:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (BOOL)imageCropAndScaleOption:(unint64_t *)a3 fromOptions:(id)a4 error:(id *)a5;
-- (__CVBuffer)renderCIImage:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 format:(unsigned int)a6 vnciContextManager:(id)a7 error:(id *)a8;
++ (id)requestInfoForRequest:(id)request;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedOutputPixelFormatsForOptions:(id)options error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (BOOL)imageCropAndScaleOption:(unint64_t *)option fromOptions:(id)options error:(id *)error;
+- (__CVBuffer)renderCIImage:(id)image width:(unint64_t)width height:(unint64_t)height format:(unsigned int)format vnciContextManager:(id)manager error:(id *)error;
 @end
 
 @implementation VNE5RTSegmentationMultiGenerator
 
-- (BOOL)imageCropAndScaleOption:(unint64_t *)a3 fromOptions:(id)a4 error:(id *)a5
+- (BOOL)imageCropAndScaleOption:(unint64_t *)option fromOptions:(id)options error:(id *)error
 {
-  v7 = a4;
-  [VNError VNAssert:a3 != 0 log:@"cropAndScaleOptionPointer cannot be NULL"];
+  optionsCopy = options;
+  [VNError VNAssert:option != 0 log:@"cropAndScaleOptionPointer cannot be NULL"];
   v11 = 0;
-  v8 = [VNValidationUtilities getBOOLValue:&v11 forKey:@"VNSegmentationGeneratorProcessOption_ImageRotated" inOptions:v7 error:a5];
+  v8 = [VNValidationUtilities getBOOLValue:&v11 forKey:@"VNSegmentationGeneratorProcessOption_ImageRotated" inOptions:optionsCopy error:error];
   if (v8)
   {
     v9 = 2;
@@ -25,31 +25,31 @@
       v9 = 258;
     }
 
-    *a3 = v9;
+    *option = v9;
   }
 
   return v8;
 }
 
-- (__CVBuffer)renderCIImage:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 format:(unsigned int)a6 vnciContextManager:(id)a7 error:(id *)a8
+- (__CVBuffer)renderCIImage:(id)image width:(unint64_t)width height:(unint64_t)height format:(unsigned int)format vnciContextManager:(id)manager error:(id *)error
 {
-  v10 = *&a6;
-  v14 = a3;
-  v15 = a7;
-  v16 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a8];
+  v10 = *&format;
+  imageCopy = image;
+  managerCopy = manager;
+  v16 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
   if (v16)
   {
-    v17 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:a4 height:a5 pixelFormatType:v10 error:a8];
+    v17 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:v10 error:error];
     if (v17)
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __95__VNE5RTSegmentationMultiGenerator_renderCIImage_width_height_format_vnciContextManager_error___block_invoke;
       v20[3] = &unk_1E77B4AC8;
-      v21 = v14;
+      v21 = imageCopy;
       v22 = v17;
       v18 = _Block_copy(v20);
-      if (([(VNCIContextManager *)v15 performBlock:v18 usingAvailableContextForComputeDevice:v16 error:a8]& 1) == 0)
+      if (([(VNCIContextManager *)managerCopy performBlock:v18 usingAvailableContextForComputeDevice:v16 error:error]& 1) == 0)
       {
         CVPixelBufferRelease(v17);
         v17 = 0;
@@ -83,27 +83,27 @@ uint64_t __95__VNE5RTSegmentationMultiGenerator_renderCIImage_width_height_forma
   return 1;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = a9;
-  v20 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v20 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v21 = v20;
   if (v20)
   {
-    v22 = [v20 width];
-    v23 = [v21 height];
-    v24 = [(VNE5RTBasedDetector *)self functionDescriptor];
-    v25 = [v24 onlyInputImage];
+    width = [v20 width];
+    height = [v21 height];
+    functionDescriptor = [(VNE5RTBasedDetector *)self functionDescriptor];
+    onlyInputImage = [functionDescriptor onlyInputImage];
 
-    v26 = [v25 pixelWidth];
-    v27 = v26 / [v25 pixelHeight];
-    v28 = width * v22 / (height * v23);
+    pixelWidth = [onlyInputImage pixelWidth];
+    v27 = pixelWidth / [onlyInputImage pixelHeight];
+    v28 = width * width / (height * height);
     if (v27 >= 1.0 || v28 < 1.0)
     {
       v31 = v28 < 1.0 && v27 >= 1.0;
@@ -115,26 +115,26 @@ uint64_t __95__VNE5RTSegmentationMultiGenerator_renderCIImage_width_height_forma
     }
 
     v32 = [MEMORY[0x1E696AD98] numberWithBool:v31];
-    [v17 setObject:v32 forKeyedSubscript:@"VNSegmentationGeneratorProcessOption_ImageRotated"];
+    [optionsCopy setObject:v32 forKeyedSubscript:@"VNSegmentationGeneratorProcessOption_ImageRotated"];
 
     v36.receiver = self;
     v36.super_class = VNE5RTSegmentationMultiGenerator;
-    v30 = [(VNE5RTBasedDetector *)&v36 createRegionOfInterestCrop:v17 options:a5 qosClass:v18 warningRecorder:a7 pixelBuffer:a8 error:v19 progressHandler:x, y, width, height];
+    height2 = [(VNE5RTBasedDetector *)&v36 createRegionOfInterestCrop:optionsCopy options:class qosClass:recorderCopy warningRecorder:buffer pixelBuffer:error error:handlerCopy progressHandler:x, y, width, height];
   }
 
   else
   {
-    v30 = 0;
+    height2 = 0;
   }
 
-  return v30;
+  return height2;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -186,17 +186,17 @@ void __59__VNE5RTSegmentationMultiGenerator_requestKeyToRequestInfo__block_invok
   +[VNE5RTSegmentationMultiGenerator requestKeyToRequestInfo]::requestKeyToRequestInfo = v15;
 }
 
-+ (id)requestInfoForRequest:(id)a3
++ (id)requestInfoForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [a1 requestKeyToRequestInfo];
-  v6 = [VNMultiDetectorOriginalRequestInfo requestKeyFromRequest:v4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  requestCopy = request;
+  requestKeyToRequestInfo = [self requestKeyToRequestInfo];
+  v6 = [VNMultiDetectorOriginalRequestInfo requestKeyFromRequest:requestCopy];
+  v7 = [requestKeyToRequestInfo objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-+ (id)supportedOutputPixelFormatsForOptions:(id)a3 error:(id *)a4
++ (id)supportedOutputPixelFormatsForOptions:(id)options error:(id *)error
 {
   if (+[VNE5RTSegmentationMultiGenerator supportedOutputPixelFormatsForOptions:error:]::onceToken != -1)
   {
@@ -214,23 +214,23 @@ void __80__VNE5RTSegmentationMultiGenerator_supportedOutputPixelFormatsForOption
   +[VNE5RTSegmentationMultiGenerator supportedOutputPixelFormatsForOptions:error:]::outputPixelFormats = &unk_1F19C20B0;
 }
 
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:v5 error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   v7 = v6;
   if (!v6)
   {
     goto LABEL_53;
   }
 
-  v8 = [v6 requestRevision];
+  requestRevision = [v6 requestRevision];
   if (![v7 specifiesRequestClass:objc_opt_class()])
   {
     if ([v7 specifiesRequestClass:objc_opt_class()])
     {
       v17 = -1;
-      if (![VNValidationUtilities getNSUIntegerValue:&v17 forKey:@"VNSegmentationGeneratorProcessOption_QualityLevel" inOptions:v5 error:a4])
+      if (![VNValidationUtilities getNSUIntegerValue:&v17 forKey:@"VNSegmentationGeneratorProcessOption_QualityLevel" inOptions:optionsCopy error:error])
       {
         goto LABEL_53;
       }
@@ -242,7 +242,7 @@ void __80__VNE5RTSegmentationMultiGenerator_supportedOutputPixelFormatsForOption
           if (!v17)
           {
             v16 = 0;
-            if ([VNValidationUtilities getBOOLValue:&v16 forKey:@"VNSegmentationGeneratorProcessOption_UseTiling" inOptions:v5 error:a4])
+            if ([VNValidationUtilities getBOOLValue:&v16 forKey:@"VNSegmentationGeneratorProcessOption_UseTiling" inOptions:optionsCopy error:error])
             {
               v9 = objc_opt_class();
               goto LABEL_71;
@@ -251,23 +251,23 @@ void __80__VNE5RTSegmentationMultiGenerator_supportedOutputPixelFormatsForOption
             goto LABEL_53;
           }
 
-          if (!a4)
+          if (!error)
           {
             goto LABEL_70;
           }
 
 LABEL_69:
           v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-          *a4 = [VNError errorForInvalidOption:v14 named:@"qualityLevel"];
+          *error = [VNError errorForInvalidOption:v14 named:@"qualityLevel"];
 
           goto LABEL_70;
         }
 
-        if (v8 != 3737841665)
+        if (requestRevision != 3737841665)
         {
-          if (v8 == 3737841664)
+          if (requestRevision == 3737841664)
           {
-            v9 = [VNGenerateSemanticSegmentationCompoundRequest detectorForPersonInstanceRequestAndReturnError:a4];
+            v9 = [VNGenerateSemanticSegmentationCompoundRequest detectorForPersonInstanceRequestAndReturnError:error];
 LABEL_22:
             if (v9)
             {
@@ -277,19 +277,19 @@ LABEL_22:
             goto LABEL_53;
           }
 
-          if (v8 == 1)
+          if (requestRevision == 1)
           {
-            v9 = [VNGenerateSemanticSegmentationCompoundRequest detectorForSemanticSegmentationRequestAndReturnError:a4];
+            v9 = [VNGenerateSemanticSegmentationCompoundRequest detectorForSemanticSegmentationRequestAndReturnError:error];
             goto LABEL_22;
           }
 
-          if (!a4)
+          if (!error)
           {
             goto LABEL_70;
           }
 
 LABEL_79:
-          v10 = [VNError errorForUnsupportedRevision:v8 ofRequestClass:objc_opt_class()];
+          v10 = [VNError errorForUnsupportedRevision:requestRevision ofRequestClass:objc_opt_class()];
           goto LABEL_26;
         }
       }
@@ -298,14 +298,14 @@ LABEL_79:
     else if ([v7 specifiesRequestClass:objc_opt_class()])
     {
       v17 = -1;
-      if (![VNValidationUtilities getNSUIntegerValue:&v17 forKey:@"VNSegmentationGeneratorProcessOption_QualityLevel" inOptions:v5 error:a4])
+      if (![VNValidationUtilities getNSUIntegerValue:&v17 forKey:@"VNSegmentationGeneratorProcessOption_QualityLevel" inOptions:optionsCopy error:error])
       {
         goto LABEL_53;
       }
 
       if (v17 != 1)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_70;
         }
@@ -313,9 +313,9 @@ LABEL_79:
         goto LABEL_69;
       }
 
-      if (v8 != 1 && v8 != 3737841664)
+      if (requestRevision != 1 && requestRevision != 3737841664)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_70;
         }
@@ -327,14 +327,14 @@ LABEL_79:
     else if ([v7 specifiesRequestClass:objc_opt_class()])
     {
       v17 = -1;
-      if (![VNValidationUtilities getNSUIntegerValue:&v17 forKey:@"VNSegmentationGeneratorProcessOption_QualityLevel" inOptions:v5 error:a4])
+      if (![VNValidationUtilities getNSUIntegerValue:&v17 forKey:@"VNSegmentationGeneratorProcessOption_QualityLevel" inOptions:optionsCopy error:error])
       {
         goto LABEL_53;
       }
 
       if (v17 != 1)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_70;
         }
@@ -342,9 +342,9 @@ LABEL_79:
         goto LABEL_69;
       }
 
-      if (v8 != 1 && v8 != 3737841664)
+      if (requestRevision != 1 && requestRevision != 3737841664)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_70;
         }
@@ -356,14 +356,14 @@ LABEL_79:
     else if ([v7 specifiesRequestClass:objc_opt_class()])
     {
       v17 = -1;
-      if (![VNValidationUtilities getNSUIntegerValue:&v17 forKey:@"VNSegmentationGeneratorProcessOption_QualityLevel" inOptions:v5 error:a4])
+      if (![VNValidationUtilities getNSUIntegerValue:&v17 forKey:@"VNSegmentationGeneratorProcessOption_QualityLevel" inOptions:optionsCopy error:error])
       {
         goto LABEL_53;
       }
 
       if (v17 != 1)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_70;
         }
@@ -371,9 +371,9 @@ LABEL_79:
         goto LABEL_69;
       }
 
-      if (v8 != 1 && v8 != 3737841664)
+      if (requestRevision != 1 && requestRevision != 3737841664)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_70;
         }
@@ -390,7 +390,7 @@ LABEL_79:
       }
 
       v17 = -1;
-      if (![VNValidationUtilities getNSUIntegerValue:&v17 forKey:@"VNSegmentationGeneratorProcessOption_QualityLevel" inOptions:v5 error:a4])
+      if (![VNValidationUtilities getNSUIntegerValue:&v17 forKey:@"VNSegmentationGeneratorProcessOption_QualityLevel" inOptions:optionsCopy error:error])
       {
 LABEL_53:
         v13 = 0;
@@ -399,7 +399,7 @@ LABEL_53:
 
       if (v17 != 1)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_70;
         }
@@ -407,9 +407,9 @@ LABEL_53:
         goto LABEL_69;
       }
 
-      if (v8 != 1)
+      if (requestRevision != 1)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_70;
         }
@@ -422,28 +422,28 @@ LABEL_53:
     goto LABEL_71;
   }
 
-  if (v8 == 1)
+  if (requestRevision == 1)
   {
-    v9 = [VNGenerateSemanticSegmentationCompoundRequest detectorForSemanticSegmentationRequestAndReturnError:a4];
+    v9 = [VNGenerateSemanticSegmentationCompoundRequest detectorForSemanticSegmentationRequestAndReturnError:error];
     goto LABEL_22;
   }
 
-  if (v8 == 2)
+  if (requestRevision == 2)
   {
-    v9 = [VNGenerateSemanticSegmentationCompoundRequest detectorForPersonInstanceRequestAndReturnError:a4];
+    v9 = [VNGenerateSemanticSegmentationCompoundRequest detectorForPersonInstanceRequestAndReturnError:error];
     goto LABEL_22;
   }
 
-  if (v8 != 3)
+  if (requestRevision != 3)
   {
-    if (a4)
+    if (error)
     {
-      v10 = [VNError errorForUnsupportedRevision:v8 ofRequestClass:objc_opt_class()];
+      v10 = [VNError errorForUnsupportedRevision:requestRevision ofRequestClass:objc_opt_class()];
 LABEL_26:
       v11 = v10;
       v12 = v10;
       v9 = 0;
-      *a4 = v11;
+      *error = v11;
       goto LABEL_71;
     }
 

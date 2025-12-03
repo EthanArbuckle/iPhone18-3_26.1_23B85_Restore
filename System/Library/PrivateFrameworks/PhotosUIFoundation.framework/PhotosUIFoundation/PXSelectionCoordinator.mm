@@ -1,24 +1,24 @@
 @interface PXSelectionCoordinator
-- (BOOL)modifySelectionWithRemovedOIDs:(id)a3 insertedOIDs:(id)a4;
+- (BOOL)modifySelectionWithRemovedOIDs:(id)ds insertedOIDs:(id)iDs;
 - (BOOL)test_validateInternalState;
 - (NSOrderedSet)selectedObjectIDs;
-- (PXSelectionCoordinator)initWithSelectedOIDs:(id)a3;
+- (PXSelectionCoordinator)initWithSelectedOIDs:(id)ds;
 - (PXSelectionCoordinatorDelegate)delegate;
-- (id)checkOutSelectionManagerForDataSourceManager:(id)a3;
-- (id)selectionManager:(id)a3 validateSnapshot:(id)a4;
-- (void)_handleDataSourceChangeToSelectionManager:(id)a3 state:(id)a4;
-- (void)_handleSelectionChangeToSelectionManager:(id)a3 state:(id)a4;
-- (void)_modifySelectionWithRemovedOIDs:(id)a3 insertedOIDs:(id)a4 originatingSelectionManager:(id)a5;
-- (void)_performChangesToCoordinatedSelectionManagersWithRemovedOIDs:(id)a3 insertedOIDs:(id)a4 originatingSelectionManager:(id)a5;
-- (void)_startMutatingSelectionManager:(id)a3;
-- (void)_stopMutatingSelectionManager:(id)a3;
+- (id)checkOutSelectionManagerForDataSourceManager:(id)manager;
+- (id)selectionManager:(id)manager validateSnapshot:(id)snapshot;
+- (void)_handleDataSourceChangeToSelectionManager:(id)manager state:(id)state;
+- (void)_handleSelectionChangeToSelectionManager:(id)manager state:(id)state;
+- (void)_modifySelectionWithRemovedOIDs:(id)ds insertedOIDs:(id)iDs originatingSelectionManager:(id)manager;
+- (void)_performChangesToCoordinatedSelectionManagersWithRemovedOIDs:(id)ds insertedOIDs:(id)iDs originatingSelectionManager:(id)manager;
+- (void)_startMutatingSelectionManager:(id)manager;
+- (void)_stopMutatingSelectionManager:(id)manager;
 - (void)_updateSelectionLimitReached;
-- (void)_updateSelectionManagerToGlobalState:(id)a3 managerState:(id)a4;
-- (void)checkInSelectionManager:(id)a3;
-- (void)modifySelectionWithOrder:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDelegate:(id)a3;
-- (void)setSelectionCountLimit:(id)a3;
+- (void)_updateSelectionManagerToGlobalState:(id)state managerState:(id)managerState;
+- (void)checkInSelectionManager:(id)manager;
+- (void)modifySelectionWithOrder:(id)order;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDelegate:(id)delegate;
+- (void)setSelectionCountLimit:(id)limit;
 @end
 
 @implementation PXSelectionCoordinator
@@ -37,10 +37,10 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(PXSelectionCoordinator *)self stateByManager];
-  v4 = [v3 keyEnumerator];
+  stateByManager = [(PXSelectionCoordinator *)self stateByManager];
+  keyEnumerator = [stateByManager keyEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -51,24 +51,24 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [(PXSelectionCoordinator *)self stateByManager];
-        v11 = [v10 objectForKey:v9];
+        stateByManager2 = [(PXSelectionCoordinator *)self stateByManager];
+        v11 = [stateByManager2 objectForKey:v9];
 
-        v12 = [v11 selectionSnapshot];
-        v13 = [v9 selectionSnapshot];
+        selectionSnapshot = [v11 selectionSnapshot];
+        selectionSnapshot2 = [v9 selectionSnapshot];
 
-        if (v12 != v13)
+        if (selectionSnapshot != selectionSnapshot2)
         {
           v14 = 0;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -84,23 +84,23 @@ LABEL_11:
   return v14;
 }
 
-- (id)selectionManager:(id)a3 validateSnapshot:(id)a4
+- (id)selectionManager:(id)manager validateSnapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXSelectionCoordinator *)self selectionCountLimit];
-  v9 = v8;
-  if (!v8 || self->_currentlyMutatingSelectionManager == v6 || (v10 = [v8 integerValue], -[PXSelectionCoordinator mutableSelectedObjectIDs](self, "mutableSelectedObjectIDs"), v11 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v11, "count"), v11, objc_msgSend(v7, "selectedIndexPaths"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), -[PXSectionedSelectionManager selectionSnapshot](v6, "selectionSnapshot"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "selectedIndexPaths"), v15 = objc_claimAutoreleasedReturnValue(), v16 = v13 - objc_msgSend(v15, "count"), v15, v14, v12, v16 < 1) || v16 + v28 <= v10 || (objc_msgSend(v7, "dataSource"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "selectedIndexPaths"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "objectIDsForIndexPathSet:", v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "set"), v20 = objc_claimAutoreleasedReturnValue(), v19, v18, v17, -[PXSelectionCoordinator mutableSelectedObjectIDs](self, "mutableSelectedObjectIDs"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "set"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "setByAddingObjectsFromSet:", v20), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "count"), v23, v22, v21, v20, v24 <= v10) || v24 <= v28)
+  managerCopy = manager;
+  snapshotCopy = snapshot;
+  selectionCountLimit = [(PXSelectionCoordinator *)self selectionCountLimit];
+  v9 = selectionCountLimit;
+  if (!selectionCountLimit || self->_currentlyMutatingSelectionManager == managerCopy || (v10 = [selectionCountLimit integerValue], -[PXSelectionCoordinator mutableSelectedObjectIDs](self, "mutableSelectedObjectIDs"), v11 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v11, "count"), v11, objc_msgSend(snapshotCopy, "selectedIndexPaths"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), -[PXSectionedSelectionManager selectionSnapshot](managerCopy, "selectionSnapshot"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "selectedIndexPaths"), v15 = objc_claimAutoreleasedReturnValue(), v16 = v13 - objc_msgSend(v15, "count"), v15, v14, v12, v16 < 1) || v16 + v28 <= v10 || (objc_msgSend(snapshotCopy, "dataSource"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(snapshotCopy, "selectedIndexPaths"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "objectIDsForIndexPathSet:", v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "set"), v20 = objc_claimAutoreleasedReturnValue(), v19, v18, v17, -[PXSelectionCoordinator mutableSelectedObjectIDs](self, "mutableSelectedObjectIDs"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "set"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "setByAddingObjectsFromSet:", v20), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "count"), v23, v22, v21, v20, v24 <= v10) || v24 <= v28)
   {
-    v26 = v7;
+    v26 = snapshotCopy;
   }
 
   else
   {
     if (self->_delegateRespondsTo.rejectedCountLimitViolation)
     {
-      v25 = [(PXSelectionCoordinator *)self delegate];
-      [v25 selectionCoordinator:self rejectedCountLimitViolationForSelectionManager:v6];
+      delegate = [(PXSelectionCoordinator *)self delegate];
+      [delegate selectionCoordinator:self rejectedCountLimitViolationForSelectionManager:managerCopy];
     }
 
     v26 = 0;
@@ -109,21 +109,21 @@ LABEL_11:
   return v26;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (CoordinatedSelectionManagerContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (CoordinatedSelectionManagerContext != context)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:331 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:331 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v17 = v9;
-  v10 = [(PXSelectionCoordinator *)self stateByManager];
-  v11 = [v10 objectForKey:v17];
+  v17 = observableCopy;
+  stateByManager = [(PXSelectionCoordinator *)self stateByManager];
+  v11 = [stateByManager objectForKey:v17];
 
   if (v11)
   {
@@ -132,8 +132,8 @@ LABEL_11:
     {
       if (self->_currentlyMutatingObservationCount)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v15 handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:315 description:@"A coordinated selection manager was changed while the coordinator was updating it"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:315 description:@"A coordinated selection manager was changed while the coordinator was updating it"];
 
         v12 = v17;
         v13 = self->_currentlyMutatingObservationCount + 1;
@@ -145,37 +145,37 @@ LABEL_11:
       }
 
       self->_currentlyMutatingObservationCount = v13;
-      v14 = [(PXSectionedSelectionManager *)v12 selectionSnapshot];
-      [v11 setSelectionSnapshot:v14];
+      selectionSnapshot = [(PXSectionedSelectionManager *)v12 selectionSnapshot];
+      [v11 setSelectionSnapshot:selectionSnapshot];
     }
 
-    else if ((v6 & 2) != 0)
+    else if ((changeCopy & 2) != 0)
     {
       [(PXSelectionCoordinator *)self _handleDataSourceChangeToSelectionManager:v17 state:v11];
     }
 
-    else if (v6)
+    else if (changeCopy)
     {
       [(PXSelectionCoordinator *)self _handleSelectionChangeToSelectionManager:v17 state:v11];
     }
   }
 }
 
-- (void)_performChangesToCoordinatedSelectionManagersWithRemovedOIDs:(id)a3 insertedOIDs:(id)a4 originatingSelectionManager:(id)a5
+- (void)_performChangesToCoordinatedSelectionManagersWithRemovedOIDs:(id)ds insertedOIDs:(id)iDs originatingSelectionManager:(id)manager
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v33 = a5;
-  v31 = v8;
-  if ([v8 count])
+  dsCopy = ds;
+  iDsCopy = iDs;
+  managerCopy = manager;
+  v31 = dsCopy;
+  if ([dsCopy count])
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = [v9 count] != 0;
+    v10 = [iDsCopy count] != 0;
   }
 
   v34 = v10;
@@ -183,11 +183,11 @@ LABEL_11:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v11 = [(PXSelectionCoordinator *)self stateByManager];
-  v12 = [v11 keyEnumerator];
+  stateByManager = [(PXSelectionCoordinator *)self stateByManager];
+  keyEnumerator = [stateByManager keyEnumerator];
 
-  obj = v12;
-  v13 = [v12 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  obj = keyEnumerator;
+  v13 = [keyEnumerator countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v13)
   {
     v14 = v13;
@@ -202,21 +202,21 @@ LABEL_11:
         }
 
         v16 = *(*(&v45 + 1) + 8 * i);
-        v17 = [(PXSelectionCoordinator *)self selectionLimitReached];
-        v18 = [v16 selectionSnapshot];
-        v19 = v18;
-        if (v16 == v33)
+        selectionLimitReached = [(PXSelectionCoordinator *)self selectionLimitReached];
+        selectionSnapshot = [v16 selectionSnapshot];
+        v19 = selectionSnapshot;
+        if (v16 == managerCopy)
         {
-          v28 = [v18 isSelectionLimitReached];
+          isSelectionLimitReached = [selectionSnapshot isSelectionLimitReached];
 
-          if (v17 != v28 || v34)
+          if (selectionLimitReached != isSelectionLimitReached || v34)
           {
             [(PXSelectionCoordinator *)self _startMutatingSelectionManager:v16];
             v42[0] = MEMORY[0x1E69E9820];
             v42[1] = 3221225472;
             v42[2] = __128__PXSelectionCoordinator__performChangesToCoordinatedSelectionManagersWithRemovedOIDs_insertedOIDs_originatingSelectionManager___block_invoke;
             v42[3] = &unk_1E7BB63C8;
-            v43 = v17;
+            v43 = selectionLimitReached;
             v44 = v34;
             v42[4] = v16;
             v42[5] = self;
@@ -227,14 +227,14 @@ LABEL_11:
 
         else
         {
-          v20 = [v18 dataSource];
+          dataSource = [selectionSnapshot dataSource];
 
           v21 = [v31 set];
-          v22 = [v20 indexPathSetForObjectIDs:v21];
+          v22 = [dataSource indexPathSetForObjectIDs:v21];
 
-          v23 = [v9 set];
-          [v20 indexPathSetForObjectIDs:v23];
-          v25 = v24 = v9;
+          v23 = [iDsCopy set];
+          [dataSource indexPathSetForObjectIDs:v23];
+          v25 = v24 = iDsCopy;
 
           [(PXSelectionCoordinator *)self _startMutatingSelectionManager:v16];
           v35[0] = MEMORY[0x1E69E9820];
@@ -243,16 +243,16 @@ LABEL_11:
           v35[3] = &unk_1E7BB63F0;
           v36 = v22;
           v37 = v25;
-          v40 = v17;
+          v40 = selectionLimitReached;
           v41 = v34;
           v38 = v16;
-          v39 = self;
+          selfCopy = self;
           v26 = v25;
           v27 = v22;
           [v16 performChanges:v35];
           [(PXSelectionCoordinator *)self _stopMutatingSelectionManager:v16];
 
-          v9 = v24;
+          iDsCopy = v24;
         }
       }
 
@@ -290,15 +290,15 @@ void __128__PXSelectionCoordinator__performChangesToCoordinatedSelectionManagers
   }
 }
 
-- (void)_modifySelectionWithRemovedOIDs:(id)a3 insertedOIDs:(id)a4 originatingSelectionManager:(id)a5
+- (void)_modifySelectionWithRemovedOIDs:(id)ds insertedOIDs:(id)iDs originatingSelectionManager:(id)manager
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v20 count])
+  dsCopy = ds;
+  iDsCopy = iDs;
+  managerCopy = manager;
+  if ([dsCopy count])
   {
-    v10 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
-    v11 = [v10 intersectsOrderedSet:v20];
+    mutableSelectedObjectIDs = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
+    v11 = [mutableSelectedObjectIDs intersectsOrderedSet:dsCopy];
   }
 
   else
@@ -306,10 +306,10 @@ void __128__PXSelectionCoordinator__performChangesToCoordinatedSelectionManagers
     v11 = 0;
   }
 
-  if ([v8 count])
+  if ([iDsCopy count])
   {
-    v12 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
-    v13 = [v8 isSubsetOfOrderedSet:v12] ^ 1;
+    mutableSelectedObjectIDs2 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
+    v13 = [iDsCopy isSubsetOfOrderedSet:mutableSelectedObjectIDs2] ^ 1;
   }
 
   else
@@ -317,76 +317,76 @@ void __128__PXSelectionCoordinator__performChangesToCoordinatedSelectionManagers
     v13 = 0;
   }
 
-  v14 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
-  [v14 minusOrderedSet:v20];
+  mutableSelectedObjectIDs3 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
+  [mutableSelectedObjectIDs3 minusOrderedSet:dsCopy];
 
-  v15 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
-  [v15 unionOrderedSet:v8];
+  mutableSelectedObjectIDs4 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
+  [mutableSelectedObjectIDs4 unionOrderedSet:iDsCopy];
 
-  v16 = [(PXSelectionCoordinator *)self selectionLimitReached];
+  selectionLimitReached = [(PXSelectionCoordinator *)self selectionLimitReached];
   [(PXSelectionCoordinator *)self _updateSelectionLimitReached];
-  v17 = [(PXSelectionCoordinator *)self selectionLimitReached];
-  [(PXSelectionCoordinator *)self _performChangesToCoordinatedSelectionManagersWithRemovedOIDs:v20 insertedOIDs:v8 originatingSelectionManager:v9];
+  selectionLimitReached2 = [(PXSelectionCoordinator *)self selectionLimitReached];
+  [(PXSelectionCoordinator *)self _performChangesToCoordinatedSelectionManagersWithRemovedOIDs:dsCopy insertedOIDs:iDsCopy originatingSelectionManager:managerCopy];
 
   if (((v11 | v13) & 1) != 0 && self->_delegateRespondsTo.didUpdateSelectedObjects)
   {
-    v18 = [(PXSelectionCoordinator *)self delegate];
-    [v18 selectionCoordinator:self didUpdateSelectedObjectsWithRemovedOIDs:v20 insertedOIDs:v8];
+    delegate = [(PXSelectionCoordinator *)self delegate];
+    [delegate selectionCoordinator:self didUpdateSelectedObjectsWithRemovedOIDs:dsCopy insertedOIDs:iDsCopy];
   }
 
-  if (v16 != v17 && self->_delegateRespondsTo.selectionLimitStatusChanged)
+  if (selectionLimitReached != selectionLimitReached2 && self->_delegateRespondsTo.selectionLimitStatusChanged)
   {
-    v19 = [(PXSelectionCoordinator *)self delegate];
-    [v19 selectionLimitStatusChangedForSelectionCoordinator:self];
+    delegate2 = [(PXSelectionCoordinator *)self delegate];
+    [delegate2 selectionLimitStatusChangedForSelectionCoordinator:self];
   }
 }
 
-- (void)_handleSelectionChangeToSelectionManager:(id)a3 state:(id)a4
+- (void)_handleSelectionChangeToSelectionManager:(id)manager state:(id)state
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [v6 selectionSnapshot];
-  v8 = [v20 selectionSnapshot];
-  v9 = [v7 selectedIndexPaths];
-  v10 = [v9 mutableCopy];
+  managerCopy = manager;
+  stateCopy = state;
+  selectionSnapshot = [stateCopy selectionSnapshot];
+  selectionSnapshot2 = [managerCopy selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v10 = [selectedIndexPaths mutableCopy];
 
-  v11 = [v8 selectedIndexPaths];
-  [v10 minusIndexPathSet:v11];
+  selectedIndexPaths2 = [selectionSnapshot2 selectedIndexPaths];
+  [v10 minusIndexPathSet:selectedIndexPaths2];
 
-  v12 = [v8 selectedIndexPaths];
-  v13 = [v12 mutableCopy];
+  selectedIndexPaths3 = [selectionSnapshot2 selectedIndexPaths];
+  v13 = [selectedIndexPaths3 mutableCopy];
 
-  v14 = [v7 selectedIndexPaths];
-  [v13 minusIndexPathSet:v14];
+  selectedIndexPaths4 = [selectionSnapshot selectedIndexPaths];
+  [v13 minusIndexPathSet:selectedIndexPaths4];
 
   if (self->_delegateRespondsTo.willUpdateSelectedObjects)
   {
-    v15 = [(PXSelectionCoordinator *)self delegate];
-    [v15 selectionCoordinator:self willUpdateSelectedObjectsForSnapshot:v8 withRemovedIndexes:v10 insertedIndexes:v13];
+    delegate = [(PXSelectionCoordinator *)self delegate];
+    [delegate selectionCoordinator:self willUpdateSelectedObjectsForSnapshot:selectionSnapshot2 withRemovedIndexes:v10 insertedIndexes:v13];
   }
 
-  v16 = [v7 dataSource];
-  v17 = [v16 objectIDsForIndexPathSet:v10];
+  dataSource = [selectionSnapshot dataSource];
+  v17 = [dataSource objectIDsForIndexPathSet:v10];
 
-  v18 = [v8 dataSource];
-  v19 = [v18 objectIDsForIndexPathSet:v13];
+  dataSource2 = [selectionSnapshot2 dataSource];
+  v19 = [dataSource2 objectIDsForIndexPathSet:v13];
 
-  [v6 setSelectionSnapshot:v8];
-  [(PXSelectionCoordinator *)self _modifySelectionWithRemovedOIDs:v17 insertedOIDs:v19 originatingSelectionManager:v20];
+  [stateCopy setSelectionSnapshot:selectionSnapshot2];
+  [(PXSelectionCoordinator *)self _modifySelectionWithRemovedOIDs:v17 insertedOIDs:v19 originatingSelectionManager:managerCopy];
 }
 
-- (void)_handleDataSourceChangeToSelectionManager:(id)a3 state:(id)a4
+- (void)_handleDataSourceChangeToSelectionManager:(id)manager state:(id)state
 {
-  v19 = self;
+  selfCopy = self;
   v37 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v20 = a4;
-  v21 = [v20 selectionSnapshot];
-  v23 = [v24 selectionSnapshot];
-  v22 = [v24 dataSourceManager];
-  v5 = [v21 dataSource];
-  v6 = [v23 dataSource];
-  v7 = [v22 allChangeDetailsFromDataSource:v5 toDataSource:v6];
+  managerCopy = manager;
+  stateCopy = state;
+  selectionSnapshot = [stateCopy selectionSnapshot];
+  selectionSnapshot2 = [managerCopy selectionSnapshot];
+  dataSourceManager = [managerCopy dataSourceManager];
+  dataSource = [selectionSnapshot dataSource];
+  dataSource2 = [selectionSnapshot2 dataSource];
+  v7 = [dataSourceManager allChangeDetailsFromDataSource:dataSource toDataSource:dataSource2];
 
   v30 = 0;
   v31 = &v30;
@@ -411,8 +411,8 @@ void __128__PXSelectionCoordinator__performChangesToCoordinatedSelectionManagers
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 sectionChanges];
-        if (([v13 hasIncrementalChanges] & 1) == 0)
+        sectionChanges = [v12 sectionChanges];
+        if (([sectionChanges hasIncrementalChanges] & 1) == 0)
         {
 
 LABEL_13:
@@ -420,23 +420,23 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v14 = [v12 sectionChanges];
-        v15 = [v14 insertedIndexes];
-        v16 = [v15 count] == 0;
+        sectionChanges2 = [v12 sectionChanges];
+        insertedIndexes = [sectionChanges2 insertedIndexes];
+        v16 = [insertedIndexes count] == 0;
 
         if (!v16)
         {
           goto LABEL_13;
         }
 
-        v17 = [v12 sectionsWithItemChanges];
+        sectionsWithItemChanges = [v12 sectionsWithItemChanges];
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __74__PXSelectionCoordinator__handleDataSourceChangeToSelectionManager_state___block_invoke;
         v25[3] = &unk_1E7BB84F0;
         v25[4] = v12;
         v25[5] = &v30;
-        [v17 enumerateIndexesUsingBlock:v25];
+        [sectionsWithItemChanges enumerateIndexesUsingBlock:v25];
 
         if (v31[3])
         {
@@ -467,16 +467,16 @@ LABEL_14:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v22;
+      v35 = dataSourceManager;
       _os_log_impl(&dword_1B3F73000, v18, OS_LOG_TYPE_DEFAULT, "Reloading selection state for data source manager %@", buf, 0xCu);
     }
 
-    [(PXSelectionCoordinator *)v19 _updateSelectionManagerToGlobalState:v24 managerState:v20];
+    [(PXSelectionCoordinator *)selfCopy _updateSelectionManagerToGlobalState:managerCopy managerState:stateCopy];
   }
 
   else
   {
-    [v20 setSelectionSnapshot:v23];
+    [stateCopy setSelectionSnapshot:selectionSnapshot2];
   }
 
   _Block_object_dispose(&v30, 8);
@@ -492,32 +492,32 @@ void __74__PXSelectionCoordinator__handleDataSourceChangeToSelectionManager_stat
   }
 }
 
-- (void)_updateSelectionManagerToGlobalState:(id)a3 managerState:(id)a4
+- (void)_updateSelectionManagerToGlobalState:(id)state managerState:(id)managerState
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dataSourceManager];
-  v9 = [v8 dataSource];
+  stateCopy = state;
+  managerStateCopy = managerState;
+  dataSourceManager = [stateCopy dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  v10 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
-  v11 = [v10 set];
-  v12 = [v9 indexPathSetForObjectIDs:v11];
+  mutableSelectedObjectIDs = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
+  v11 = [mutableSelectedObjectIDs set];
+  v12 = [dataSource indexPathSetForObjectIDs:v11];
 
-  LOBYTE(v10) = [(PXSelectionCoordinator *)self selectionLimitReached];
-  [(PXSelectionCoordinator *)self _startMutatingSelectionManager:v6];
+  LOBYTE(mutableSelectedObjectIDs) = [(PXSelectionCoordinator *)self selectionLimitReached];
+  [(PXSelectionCoordinator *)self _startMutatingSelectionManager:stateCopy];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __76__PXSelectionCoordinator__updateSelectionManagerToGlobalState_managerState___block_invoke;
   v19 = &unk_1E7BB63A0;
-  v23 = v10;
+  v23 = mutableSelectedObjectIDs;
   v20 = v12;
-  v21 = v6;
-  v22 = self;
-  v13 = v6;
+  v21 = stateCopy;
+  selfCopy = self;
+  v13 = stateCopy;
   v14 = v12;
   [v13 performChanges:&v16];
-  v15 = [v13 selectionSnapshot];
-  [v7 setSelectionSnapshot:v15];
+  selectionSnapshot = [v13 selectionSnapshot];
+  [managerStateCopy setSelectionSnapshot:selectionSnapshot];
 
   [(PXSelectionCoordinator *)self _stopMutatingSelectionManager:v13];
 }
@@ -534,48 +534,48 @@ void __76__PXSelectionCoordinator__updateSelectionManagerToGlobalState_managerSt
   [v5 setOverallSelectionOrder:v6];
 }
 
-- (void)modifySelectionWithOrder:(id)a3
+- (void)modifySelectionWithOrder:(id)order
 {
-  v10 = a3;
-  v5 = [(PXSelectionCoordinator *)self selectedObjectIDs];
-  if (!v10 || (v6 = [v10 count], v7 = objc_msgSend(v5, "count"), v8 = v10, v6 != v7))
+  orderCopy = order;
+  selectedObjectIDs = [(PXSelectionCoordinator *)self selectedObjectIDs];
+  if (!orderCopy || (v6 = [orderCopy count], v7 = objc_msgSend(selectedObjectIDs, "count"), v8 = orderCopy, v6 != v7))
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"updatedSelectionOrder && updatedSelectionOrder.count == currentSelectionOrder.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"updatedSelectionOrder && updatedSelectionOrder.count == currentSelectionOrder.count"}];
 
-    v8 = v10;
+    v8 = orderCopy;
   }
 
-  [(PXSelectionCoordinator *)self _modifySelectionWithRemovedOIDs:v5 insertedOIDs:v8 originatingSelectionManager:0];
+  [(PXSelectionCoordinator *)self _modifySelectionWithRemovedOIDs:selectedObjectIDs insertedOIDs:v8 originatingSelectionManager:0];
 }
 
-- (BOOL)modifySelectionWithRemovedOIDs:(id)a3 insertedOIDs:(id)a4
+- (BOOL)modifySelectionWithRemovedOIDs:(id)ds insertedOIDs:(id)iDs
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || !v8)
+  dsCopy = ds;
+  iDsCopy = iDs;
+  v9 = iDsCopy;
+  if (!dsCopy || !iDsCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"removedOIDs && insertedOIDs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"removedOIDs && insertedOIDs"}];
   }
 
-  v10 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
-  v11 = [v10 mutableCopy];
+  mutableSelectedObjectIDs = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
+  v11 = [mutableSelectedObjectIDs mutableCopy];
 
-  v12 = [v7 mutableCopy];
+  v12 = [dsCopy mutableCopy];
   [v12 intersectOrderedSet:v11];
   [v11 minusOrderedSet:v12];
   v13 = [v9 mutableCopy];
   [v13 minusOrderedSet:v11];
   [v11 unionOrderedSet:v13];
-  v14 = [(PXSelectionCoordinator *)self selectionCountLimit];
-  v15 = v14;
-  if (v14 && (v16 = [v14 integerValue], v16 < objc_msgSend(v11, "count")))
+  selectionCountLimit = [(PXSelectionCoordinator *)self selectionCountLimit];
+  v15 = selectionCountLimit;
+  if (selectionCountLimit && (v16 = [selectionCountLimit integerValue], v16 < objc_msgSend(v11, "count")))
   {
     v17 = [v11 count];
-    v18 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
-    v19 = v17 <= [v18 count];
+    mutableSelectedObjectIDs2 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
+    v19 = v17 <= [mutableSelectedObjectIDs2 count];
   }
 
   else
@@ -611,25 +611,25 @@ LABEL_13:
   return v19 || v20;
 }
 
-- (void)checkInSelectionManager:(id)a3
+- (void)checkInSelectionManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(PXSelectionCoordinator *)self stateByManager];
-  [v5 removeObjectForKey:v4];
+  managerCopy = manager;
+  stateByManager = [(PXSelectionCoordinator *)self stateByManager];
+  [stateByManager removeObjectForKey:managerCopy];
 }
 
-- (id)checkOutSelectionManagerForDataSourceManager:(id)a3
+- (id)checkOutSelectionManagerForDataSourceManager:(id)manager
 {
-  v4 = a3;
-  v5 = [[PXSectionedSelectionManager alloc] initWithDataSourceManager:v4];
+  managerCopy = manager;
+  v5 = [[PXSectionedSelectionManager alloc] initWithDataSourceManager:managerCopy];
 
   [(PXSectionedSelectionManager *)v5 setSnapshotValidator:self];
   v6 = [_PXSelectionCoordinatorState alloc];
-  v7 = [(PXSectionedSelectionManager *)v5 selectionSnapshot];
-  v8 = [(_PXSelectionCoordinatorState *)v6 initWithSelectionSnapshot:v7];
+  selectionSnapshot = [(PXSectionedSelectionManager *)v5 selectionSnapshot];
+  v8 = [(_PXSelectionCoordinatorState *)v6 initWithSelectionSnapshot:selectionSnapshot];
 
-  v9 = [(PXSelectionCoordinator *)self stateByManager];
-  [v9 setObject:v8 forKey:v5];
+  stateByManager = [(PXSelectionCoordinator *)self stateByManager];
+  [stateByManager setObject:v8 forKey:v5];
 
   [(PXObservable *)v5 registerChangeObserver:self context:CoordinatedSelectionManagerContext];
   [(PXSelectionCoordinator *)self _updateSelectionManagerToGlobalState:v5 managerState:v8];
@@ -637,13 +637,13 @@ LABEL_13:
   return v5;
 }
 
-- (void)_stopMutatingSelectionManager:(id)a3
+- (void)_stopMutatingSelectionManager:(id)manager
 {
   currentlyMutatingSelectionManager = self->_currentlyMutatingSelectionManager;
-  if (currentlyMutatingSelectionManager != a3)
+  if (currentlyMutatingSelectionManager != manager)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"_currentlyMutatingSelectionManager == selectionManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"_currentlyMutatingSelectionManager == selectionManager"}];
 
     currentlyMutatingSelectionManager = self->_currentlyMutatingSelectionManager;
   }
@@ -651,26 +651,26 @@ LABEL_13:
   self->_currentlyMutatingSelectionManager = 0;
 }
 
-- (void)_startMutatingSelectionManager:(id)a3
+- (void)_startMutatingSelectionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   currentlyMutatingSelectionManager = self->_currentlyMutatingSelectionManager;
   if (currentlyMutatingSelectionManager)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"_currentlyMutatingSelectionManager == nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"_currentlyMutatingSelectionManager == nil"}];
 
     currentlyMutatingSelectionManager = self->_currentlyMutatingSelectionManager;
   }
 
-  self->_currentlyMutatingSelectionManager = v5;
+  self->_currentlyMutatingSelectionManager = managerCopy;
 
   self->_currentlyMutatingObservationCount = 0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -685,13 +685,13 @@ LABEL_13:
 
 - (void)_updateSelectionLimitReached
 {
-  v6 = [(PXSelectionCoordinator *)self selectionCountLimit];
-  v3 = [(PXSelectionCoordinator *)self selectedObjectIDs];
-  v4 = [v3 count];
+  selectionCountLimit = [(PXSelectionCoordinator *)self selectionCountLimit];
+  selectedObjectIDs = [(PXSelectionCoordinator *)self selectedObjectIDs];
+  v4 = [selectedObjectIDs count];
 
-  if (v6)
+  if (selectionCountLimit)
   {
-    v5 = v4 >= [v6 integerValue];
+    v5 = v4 >= [selectionCountLimit integerValue];
   }
 
   else
@@ -704,69 +704,69 @@ LABEL_13:
 
 - (NSOrderedSet)selectedObjectIDs
 {
-  v2 = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
-  v3 = [v2 copy];
+  mutableSelectedObjectIDs = [(PXSelectionCoordinator *)self mutableSelectedObjectIDs];
+  v3 = [mutableSelectedObjectIDs copy];
 
   return v3;
 }
 
-- (void)setSelectionCountLimit:(id)a3
+- (void)setSelectionCountLimit:(id)limit
 {
-  v13 = a3;
+  limitCopy = limit;
   v6 = self->_selectionCountLimit;
-  v7 = v6;
-  if (v6 != v13)
+  orderedSet = v6;
+  if (v6 != limitCopy)
   {
-    v8 = [(NSNumber *)v6 isEqual:v13];
+    v8 = [(NSNumber *)v6 isEqual:limitCopy];
 
-    v10 = v13;
+    v10 = limitCopy;
     if (v8)
     {
       goto LABEL_8;
     }
 
-    if (v13 && [(NSNumber *)v13 integerValue]< 0)
+    if (limitCopy && [(NSNumber *)limitCopy integerValue]< 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:65 description:@"Negative count limits are invalid"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSelectionCoordinator.m" lineNumber:65 description:@"Negative count limits are invalid"];
     }
 
-    objc_storeStrong(&self->_selectionCountLimit, a3);
-    v7 = [MEMORY[0x1E695DFB8] orderedSet];
-    v11 = [MEMORY[0x1E695DFB8] orderedSet];
-    [(PXSelectionCoordinator *)self _modifySelectionWithRemovedOIDs:v7 insertedOIDs:v11 originatingSelectionManager:0];
+    objc_storeStrong(&self->_selectionCountLimit, limit);
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet2 = [MEMORY[0x1E695DFB8] orderedSet];
+    [(PXSelectionCoordinator *)self _modifySelectionWithRemovedOIDs:orderedSet insertedOIDs:orderedSet2 originatingSelectionManager:0];
   }
 
-  v10 = v13;
+  v10 = limitCopy;
 LABEL_8:
 
   MEMORY[0x1EEE66BB8](v9, v10);
 }
 
-- (PXSelectionCoordinator)initWithSelectedOIDs:(id)a3
+- (PXSelectionCoordinator)initWithSelectedOIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v11.receiver = self;
   v11.super_class = PXSelectionCoordinator;
   v5 = [(PXSelectionCoordinator *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (dsCopy)
     {
-      v6 = [v4 mutableCopy];
+      orderedSet = [dsCopy mutableCopy];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     }
 
     mutableSelectedObjectIDs = v5->_mutableSelectedObjectIDs;
-    v5->_mutableSelectedObjectIDs = v6;
+    v5->_mutableSelectedObjectIDs = orderedSet;
 
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     stateByManager = v5->_stateByManager;
-    v5->_stateByManager = v8;
+    v5->_stateByManager = weakToStrongObjectsMapTable;
   }
 
   return v5;

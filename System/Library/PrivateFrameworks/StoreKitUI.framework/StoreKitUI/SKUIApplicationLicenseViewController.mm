@@ -1,17 +1,17 @@
 @interface SKUIApplicationLicenseViewController
-- (SKUIApplicationLicenseViewController)initWithLicenseAgreementPage:(id)a3;
-- (SKUIApplicationLicenseViewController)initWithLicenseAgreementURL:(id)a3;
-- (void)_displayPage:(id)a3 error:(id)a4;
+- (SKUIApplicationLicenseViewController)initWithLicenseAgreementPage:(id)page;
+- (SKUIApplicationLicenseViewController)initWithLicenseAgreementURL:(id)l;
+- (void)_displayPage:(id)page error:(id)error;
 - (void)loadView;
 - (void)reloadData;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUIApplicationLicenseViewController
 
-- (SKUIApplicationLicenseViewController)initWithLicenseAgreementPage:(id)a3
+- (SKUIApplicationLicenseViewController)initWithLicenseAgreementPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIApplicationLicenseViewController initWithLicenseAgreementPage:];
@@ -22,7 +22,7 @@
   v5 = [(SKUIApplicationLicenseViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pageCopy copy];
     licensePage = v5->_licensePage;
     v5->_licensePage = v6;
   }
@@ -30,9 +30,9 @@
   return v5;
 }
 
-- (SKUIApplicationLicenseViewController)initWithLicenseAgreementURL:(id)a3
+- (SKUIApplicationLicenseViewController)initWithLicenseAgreementURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIApplicationLicenseViewController initWithLicenseAgreementURL:];
@@ -43,7 +43,7 @@
   v5 = [(SKUIApplicationLicenseViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
   }
@@ -66,8 +66,8 @@
       [(SSVLoadURLOperation *)v5 setDataConsumer:v6];
 
       v7 = self->_loadOperation;
-      v8 = [(SKUIViewController *)self clientContext];
-      v9 = [v8 valueForConfigurationKey:@"sfsuffix"];
+      clientContext = [(SKUIViewController *)self clientContext];
+      v9 = [clientContext valueForConfigurationKey:@"sfsuffix"];
       [(SSVLoadURLOperation *)v7 setStoreFrontSuffix:v9];
 
       objc_initWeak(&location, self);
@@ -121,19 +121,19 @@ void __50__SKUIApplicationLicenseViewController_reloadData__block_invoke_2(uint6
     self->_webView = v4;
 
     v6 = self->_webView;
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(WKWebView *)v6 setBackgroundColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(WKWebView *)v6 setBackgroundColor:whiteColor];
 
-    v8 = [(WKWebView *)self->_webView scrollView];
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [v8 setBackgroundColor:v9];
+    scrollView = [(WKWebView *)self->_webView scrollView];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [scrollView setBackgroundColor:whiteColor2];
 
     licensePage = self->_licensePage;
     webView = self->_webView;
     if (licensePage)
     {
-      v11 = [(SKUIApplicationLicensePage *)licensePage licenseAgreementHTML];
-      v12 = [(WKWebView *)webView loadHTMLString:v11 baseURL:0];
+      licenseAgreementHTML = [(SKUIApplicationLicensePage *)licensePage licenseAgreementHTML];
+      v12 = [(WKWebView *)webView loadHTMLString:licenseAgreementHTML baseURL:0];
 
       webView = self->_webView;
     }
@@ -144,40 +144,40 @@ void __50__SKUIApplicationLicenseViewController_reloadData__block_invoke_2(uint6
   [(SKUIViewController *)self showDefaultNavigationItems];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SKUIApplicationLicenseViewController *)self reloadData];
   v5.receiver = self;
   v5.super_class = SKUIApplicationLicenseViewController;
-  [(SKUIViewController *)&v5 viewWillAppear:v3];
+  [(SKUIViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)_displayPage:(id)a3 error:(id)a4
+- (void)_displayPage:(id)page error:(id)error
 {
-  v13 = a3;
-  v7 = a4;
+  pageCopy = page;
+  errorCopy = error;
   [(SSVLoadURLOperation *)self->_loadOperation setOutputBlock:0];
   loadOperation = self->_loadOperation;
   self->_loadOperation = 0;
 
-  if (v7)
+  if (errorCopy)
   {
-    [(SKUIViewController *)self showError:v7];
+    [(SKUIViewController *)self showError:errorCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_licensePage, a3);
+    objc_storeStrong(&self->_licensePage, page);
     webView = self->_webView;
     if (webView)
     {
-      v10 = [(SKUIApplicationLicensePage *)self->_licensePage licenseAgreementHTML];
-      v11 = [(WKWebView *)webView loadHTMLString:v10 baseURL:0];
+      licenseAgreementHTML = [(SKUIApplicationLicensePage *)self->_licensePage licenseAgreementHTML];
+      v11 = [(WKWebView *)webView loadHTMLString:licenseAgreementHTML baseURL:0];
     }
 
-    v12 = [(SKUIApplicationLicensePage *)self->_licensePage title];
-    [(SKUIApplicationLicenseViewController *)self setTitle:v12];
+    title = [(SKUIApplicationLicensePage *)self->_licensePage title];
+    [(SKUIApplicationLicenseViewController *)self setTitle:title];
   }
 }
 

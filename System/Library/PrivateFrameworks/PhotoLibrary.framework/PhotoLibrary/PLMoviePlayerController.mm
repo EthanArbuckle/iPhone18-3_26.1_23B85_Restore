@@ -1,34 +1,34 @@
 @interface PLMoviePlayerController
-+ (BOOL)_isNetworkSupportedPath:(id)a3;
-+ (BOOL)_isStreamableAsset:(id)a3;
++ (BOOL)_isNetworkSupportedPath:(id)path;
++ (BOOL)_isStreamableAsset:(id)asset;
 - (BOOL)_allowsExternalPlayback;
 - (BOOL)isExternalPlayback;
 - (PLMoviePlayerController)init;
 - (double)currentTime;
 - (double)duration;
-- (void)_didEnterBackgroundNotification:(id)a3;
-- (void)_didLoadValueOfKey:(id)a3 forAsset:(id)a4;
-- (void)_dispatchOnMainThreadWithBlock:(id)a3;
+- (void)_didEnterBackgroundNotification:(id)notification;
+- (void)_didLoadValueOfKey:(id)key forAsset:(id)asset;
+- (void)_dispatchOnMainThreadWithBlock:(id)block;
 - (void)_displayVideoView;
-- (void)_exitPlayer:(int)a3;
-- (void)_loadAsset:(id)a3;
+- (void)_exitPlayer:(int)player;
+- (void)_loadAsset:(id)asset;
 - (void)_pausePlaybackForNotification;
-- (void)_playbackFailedWithError:(id)a3;
-- (void)_playerItemFailedToPlayToEnd:(id)a3;
-- (void)_playerItemFailedToPlayToEndNotification:(id)a3;
-- (void)_playerRateDidChange:(id)a3;
+- (void)_playbackFailedWithError:(id)error;
+- (void)_playerItemFailedToPlayToEnd:(id)end;
+- (void)_playerItemFailedToPlayToEndNotification:(id)notification;
+- (void)_playerRateDidChange:(id)change;
 - (void)_registerForNotifications;
 - (void)_restoreTVOutVideoIfNecessary;
-- (void)_screenDidConnect:(id)a3;
-- (void)_screenDidDisconnect:(id)a3;
-- (void)_serverConnectionDidDie:(id)a3;
-- (void)_setBufferingState:(unint64_t)a3;
-- (void)_setForceDisableTVOut:(BOOL)a3;
-- (void)_setPlaybackState:(unint64_t)a3;
-- (void)_setPlayerItem:(id)a3;
+- (void)_screenDidConnect:(id)connect;
+- (void)_screenDidDisconnect:(id)disconnect;
+- (void)_serverConnectionDidDie:(id)die;
+- (void)_setBufferingState:(unint64_t)state;
+- (void)_setForceDisableTVOut:(BOOL)out;
+- (void)_setPlaybackState:(unint64_t)state;
+- (void)_setPlayerItem:(id)item;
 - (void)_setupPlayer;
 - (void)_setupTVOutWindow;
-- (void)_simpleRemoteNotification:(id)a3;
+- (void)_simpleRemoteNotification:(id)notification;
 - (void)_tearDownPlayer;
 - (void)_tearDownTVOutWindow;
 - (void)_unregisterForNotifications;
@@ -36,11 +36,11 @@
 - (void)_updateDisableAirPlayMirroringDuringPlayback;
 - (void)_updateFromPendingTime;
 - (void)_updateTVOutEnabled;
-- (void)_willEnterForegroundNotification:(id)a3;
-- (void)_willSuspendNotification:(id)a3;
+- (void)_willEnterForegroundNotification:(id)notification;
+- (void)_willSuspendNotification:(id)notification;
 - (void)dealloc;
 - (void)didBecomeActiveController;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)pauseDueToInsufficientData;
 - (void)play;
@@ -49,18 +49,18 @@
 - (void)requestToBecomeActiveController;
 - (void)requestToResignAsActiveController;
 - (void)resetPlayer;
-- (void)setCurrentTime:(double)a3 timeSnapOption:(unint64_t)a4 forceUpdate:(BOOL)a5;
-- (void)setDelegate:(id)a3;
-- (void)setPlayerItem:(id)a3 startTime:(double)a4;
+- (void)setCurrentTime:(double)time timeSnapOption:(unint64_t)option forceUpdate:(BOOL)update;
+- (void)setDelegate:(id)delegate;
+- (void)setPlayerItem:(id)item startTime:(double)time;
 - (void)stop;
 - (void)willResignAsActiveController;
 @end
 
 @implementation PLMoviePlayerController
 
-- (void)_serverConnectionDidDie:(id)a3
+- (void)_serverConnectionDidDie:(id)die
 {
-  v4 = [(AVPlayer *)self->_player error];
+  error = [(AVPlayer *)self->_player error];
   player = self->_player;
   if (player)
   {
@@ -73,19 +73,19 @@
   }
 
   Seconds = CMTimeGetSeconds(&time);
-  NSLog(&cfstr_Serverconnecti.isa, v4, player, *&Seconds);
+  NSLog(&cfstr_Serverconnecti.isa, error, player, *&Seconds);
   [(PLMoviePlayerController *)self _exitPlayer:3];
 }
 
-- (void)_exitPlayer:(int)a3
+- (void)_exitPlayer:(int)player
 {
   if (!self->_exited)
   {
-    self->_exited = [(PLMoviePlayerControllerDelegate *)self->_delegate moviePlayerExitRequest:self exitReason:*&a3];
+    self->_exited = [(PLMoviePlayerControllerDelegate *)self->_delegate moviePlayerExitRequest:self exitReason:*&player];
   }
 }
 
-- (void)_playbackFailedWithError:(id)a3
+- (void)_playbackFailedWithError:(id)error
 {
   if (self->_playbackState)
   {
@@ -98,10 +98,10 @@
   }
 
   [(PLMoviePlayerController *)self _setPlaybackState:3];
-  if ([a3 code] != -11819)
+  if ([error code] != -11819)
   {
-    v6 = [a3 domain];
-    if ([v6 isEqualToString:*MEMORY[0x277CCA738]] && objc_msgSend(a3, "code") == -1013)
+    domain = [error domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA738]] && objc_msgSend(error, "code") == -1013)
     {
       delegate = self->_delegate;
 
@@ -122,11 +122,11 @@
 
       else
       {
-        v9 = [a3 localizedDescription];
-        if ([v9 length])
+        localizedDescription = [error localizedDescription];
+        if ([localizedDescription length])
         {
           PLLocalizedFrameworkString();
-          v13 = v9;
+          v13 = localizedDescription;
           v10 = PFStringWithValidatedFormat();
         }
 
@@ -137,17 +137,17 @@
 
         v11 = [MEMORY[0x277D75110] alertControllerWithTitle:v10 message:0 preferredStyle:{1, v13}];
         [v11 addAction:{objc_msgSend(MEMORY[0x277D750F8], "actionWithTitle:style:handler:", PLLocalizedFrameworkString(), 0, 0)}];
-        v12 = [(PLMoviePlayerView *)[(PLMoviePlayerController *)self view] window];
+        window = [(PLMoviePlayerView *)[(PLMoviePlayerController *)self view] window];
 
-        [v12 pl_presentViewController:v11 animated:1];
+        [window pl_presentViewController:v11 animated:1];
       }
     }
   }
 }
 
-- (void)_playerItemFailedToPlayToEnd:(id)a3
+- (void)_playerItemFailedToPlayToEnd:(id)end
 {
-  v4 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x277CE60C8]), "userInfo"}];
+  v4 = [objc_msgSend(end objectForKey:{*MEMORY[0x277CE60C8]), "userInfo"}];
   if ([objc_msgSend(v4 objectForKey:{*MEMORY[0x277CCA7E8]), "code"}] == -12926)
   {
 
@@ -156,17 +156,17 @@
 
   else
   {
-    v5 = [(AVPlayerItem *)self->_playerItem error];
+    error = [(AVPlayerItem *)self->_playerItem error];
 
-    [(PLMoviePlayerController *)self _playbackFailedWithError:v5];
+    [(PLMoviePlayerController *)self _playbackFailedWithError:error];
   }
 }
 
-- (void)_playerItemFailedToPlayToEndNotification:(id)a3
+- (void)_playerItemFailedToPlayToEndNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
 
-  [(PLMoviePlayerController *)self _playerItemFailedToPlayToEnd:v4];
+  [(PLMoviePlayerController *)self _playerItemFailedToPlayToEnd:userInfo];
 }
 
 - (void)willResignAsActiveController
@@ -204,14 +204,14 @@
 
 - (void)_updateBackgroundViewInformation
 {
-  v3 = [(PLMoviePlayerController *)self _allowsExternalPlayback];
-  v4 = [(PLMoviePlayerController *)self isExternalPlayback]&& v3;
+  _allowsExternalPlayback = [(PLMoviePlayerController *)self _allowsExternalPlayback];
+  v4 = [(PLMoviePlayerController *)self isExternalPlayback]&& _allowsExternalPlayback;
   if (self->_isExternalPlayback != v4)
   {
     self->_isExternalPlayback = v4;
   }
 
-  if (v3 && [(AVPlayer *)self->_player externalPlaybackType]== 1)
+  if (_allowsExternalPlayback && [(AVPlayer *)self->_player externalPlaybackType]== 1)
   {
     v5 = 1;
   }
@@ -254,23 +254,23 @@
 
 - (BOOL)_allowsExternalPlayback
 {
-  v3 = [(PLMoviePlayerController *)self isActiveController];
-  if (v3)
+  isActiveController = [(PLMoviePlayerController *)self isActiveController];
+  if (isActiveController)
   {
     if (objc_opt_respondsToSelector())
     {
       delegate = self->_delegate;
 
-      LOBYTE(v3) = [(PLMoviePlayerControllerDelegate *)delegate moviePlayerControllerShouldAllowExternalPlayback:self];
+      LOBYTE(isActiveController) = [(PLMoviePlayerControllerDelegate *)delegate moviePlayerControllerShouldAllowExternalPlayback:self];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isActiveController) = 1;
     }
   }
 
-  return v3;
+  return isActiveController;
 }
 
 - (void)_tearDownTVOutWindow
@@ -333,11 +333,11 @@
 
 - (void)_restoreTVOutVideoIfNecessary
 {
-  v3 = [(PLMoviePlayerView *)self->_view videoView];
-  if (v3)
+  videoView = [(PLMoviePlayerView *)self->_view videoView];
+  if (videoView)
   {
-    v4 = v3;
-    if (![(UIView *)v3 superview]|| ![(UIView *)v4 window]|| self->_TVOutEnabled && [(UIView *)v4 window]!= self->_tvOutWindow)
+    v4 = videoView;
+    if (![(UIView *)videoView superview]|| ![(UIView *)v4 window]|| self->_TVOutEnabled && [(UIView *)v4 window]!= self->_tvOutWindow)
     {
 
       [(PLMoviePlayerController *)self _displayVideoView];
@@ -366,16 +366,16 @@
   }
 }
 
-- (void)_setForceDisableTVOut:(BOOL)a3
+- (void)_setForceDisableTVOut:(BOOL)out
 {
-  if (self->_forceDisableTVOut != a3)
+  if (self->_forceDisableTVOut != out)
   {
-    self->_forceDisableTVOut = a3;
+    self->_forceDisableTVOut = out;
     [(PLMoviePlayerController *)self _updateTVOutEnabled];
   }
 }
 
-- (void)_screenDidDisconnect:(id)a3
+- (void)_screenDidDisconnect:(id)disconnect
 {
   [(PLMoviePlayerController *)self _updateTVOutEnabled];
   [(PLMoviePlayerController *)self _displayVideoView];
@@ -384,7 +384,7 @@
   [(PLMoviePlayerController *)self _updateBackgroundViewInformation];
 }
 
-- (void)_screenDidConnect:(id)a3
+- (void)_screenDidConnect:(id)connect
 {
   [(PLMoviePlayerController *)self _updateTVOutEnabled];
   [(PLMoviePlayerController *)self _displayVideoView];
@@ -393,14 +393,14 @@
   [(PLMoviePlayerController *)self _updateBackgroundViewInformation];
 }
 
-- (void)_willEnterForegroundNotification:(id)a3
+- (void)_willEnterForegroundNotification:(id)notification
 {
   [(PLMoviePlayerController *)self _displayVideoView];
 
   [(PLMoviePlayerController *)self _setForceDisableTVOut:0];
 }
 
-- (void)_didEnterBackgroundNotification:(id)a3
+- (void)_didEnterBackgroundNotification:(id)notification
 {
   if (([*MEMORY[0x277D76620] isSuspendedUnderLock] & 1) == 0)
   {
@@ -409,7 +409,7 @@
   }
 }
 
-- (void)_willSuspendNotification:(id)a3
+- (void)_willSuspendNotification:(id)notification
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__tearDownTVOutWindow object:0];
   [(PLMoviePlayerController *)self performSelector:sel__tearDownTVOutWindow withObject:0 afterDelay:0.0];
@@ -434,10 +434,10 @@
   }
 }
 
-- (void)_simpleRemoteNotification:(id)a3
+- (void)_simpleRemoteNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [objc_msgSend(v4 objectForKey:{*MEMORY[0x277D76700]), "unsignedIntValue"}];
+  userInfo = [notification userInfo];
+  v5 = [objc_msgSend(userInfo objectForKey:{*MEMORY[0x277D76700]), "unsignedIntValue"}];
   if (v5 > 4)
   {
     switch(v5)
@@ -482,24 +482,24 @@
   }
 }
 
-- (void)_setPlaybackState:(unint64_t)a3
+- (void)_setPlaybackState:(unint64_t)state
 {
   playbackState = self->_playbackState;
-  if (a3 == 1 || playbackState)
+  if (state == 1 || playbackState)
   {
-    if (playbackState != a3)
+    if (playbackState != state)
     {
-      self->_playbackState = a3;
-      if (a3 == 1)
+      self->_playbackState = state;
+      if (state == 1)
       {
         [(PLMoviePlayerController *)self _setBufferingState:self->_bufferingState & 0xFFFFFFFFFFFFFFFBLL];
       }
 
       [(PLMoviePlayerControllerDelegate *)self->_delegate moviePlayerPlaybackStateDidChange:self fromPlaybackState:playbackState];
-      a3 = self->_playbackState;
+      state = self->_playbackState;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
 
       [(PLMoviePlayerController *)self _restoreTVOutVideoIfNecessary];
@@ -507,41 +507,41 @@
   }
 }
 
-- (void)_setBufferingState:(unint64_t)a3
+- (void)_setBufferingState:(unint64_t)state
 {
   v12 = *MEMORY[0x277D85DE8];
   Log = PLPhotoSharingGetLog();
   if (os_log_type_enabled(Log, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_21ACCD000, Log, OS_LOG_TYPE_DEFAULT, "(video-playback) setting buffering state to %lu", &v8, 0xCu);
   }
 
-  if ((a3 & 4) != 0)
+  if ((state & 4) != 0)
   {
-    a3 &= 0xFFFFFFFFFFFFFFF5;
+    state &= 0xFFFFFFFFFFFFFFF5;
   }
 
-  else if ((a3 & 1) != 0 && ![objc_opt_class() _isStreamableAsset:{-[PLMoviePlayerController _asset](self, "_asset")}])
+  else if ((state & 1) != 0 && ![objc_opt_class() _isStreamableAsset:{-[PLMoviePlayerController _asset](self, "_asset")}])
   {
-    a3 |= 0xAuLL;
+    state |= 0xAuLL;
   }
 
-  if (self->_bufferingState != a3)
+  if (self->_bufferingState != state)
   {
     v6 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       bufferingState = self->_bufferingState;
       v8 = 134218240;
-      v9 = bufferingState;
+      stateCopy = bufferingState;
       v10 = 2048;
-      v11 = a3;
+      stateCopy2 = state;
       _os_log_impl(&dword_21ACCD000, v6, OS_LOG_TYPE_DEFAULT, "(video-playback) buffering state changed from %lu to %lu", &v8, 0x16u);
     }
 
-    self->_bufferingState = a3;
+    self->_bufferingState = state;
     [(PLMoviePlayerControllerDelegate *)self->_delegate moviePlayerBufferingStateDidChange:self];
   }
 }
@@ -564,10 +564,10 @@
 
 - (double)duration
 {
-  v2 = [(PLMoviePlayerController *)self _asset];
-  if (v2)
+  _asset = [(PLMoviePlayerController *)self _asset];
+  if (_asset)
   {
-    [v2 duration];
+    [_asset duration];
   }
 
   else
@@ -651,12 +651,12 @@ uint64_t __49__PLMoviePlayerController__updateFromPendingTime__block_invoke(uint
   return result;
 }
 
-- (void)setCurrentTime:(double)a3 timeSnapOption:(unint64_t)a4 forceUpdate:(BOOL)a5
+- (void)setCurrentTime:(double)time timeSnapOption:(unint64_t)option forceUpdate:(BOOL)update
 {
   self->_hasPendingTime = 1;
-  self->_pendingTime = a3;
-  self->_pendingTimeSnapOption = a4;
-  if (a5)
+  self->_pendingTime = time;
+  self->_pendingTimeSnapOption = option;
+  if (update)
   {
     self->_forceUpdateCurrentTime = 1;
   }
@@ -756,10 +756,10 @@ uint64_t __49__PLMoviePlayerController__updateFromPendingTime__block_invoke(uint
   }
 }
 
-- (void)_playerRateDidChange:(id)a3
+- (void)_playerRateDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKey:*MEMORY[0x277CCA300]];
+  v5 = [change objectForKey:*MEMORY[0x277CCA300]];
   v6 = 0.0;
   v7 = 0.0;
   if (v5 != [MEMORY[0x277CBEB68] null])
@@ -768,7 +768,7 @@ uint64_t __49__PLMoviePlayerController__updateFromPendingTime__block_invoke(uint
     v7 = v8;
   }
 
-  v9 = [a3 objectForKey:*MEMORY[0x277CCA2F0]];
+  v9 = [change objectForKey:*MEMORY[0x277CCA2F0]];
   if (v9 != [MEMORY[0x277CBEB68] null])
   {
     [v9 floatValue];
@@ -785,7 +785,7 @@ uint64_t __49__PLMoviePlayerController__updateFromPendingTime__block_invoke(uint
   if (os_log_type_enabled(Log, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_21ACCD000, Log, OS_LOG_TYPE_DEFAULT, "(video-playback) _playerRateDidChange %@", &v13, 0xCu);
   }
 
@@ -795,15 +795,15 @@ uint64_t __49__PLMoviePlayerController__updateFromPendingTime__block_invoke(uint
   }
 }
 
-- (void)_dispatchOnMainThreadWithBlock:(id)a3
+- (void)_dispatchOnMainThreadWithBlock:(id)block
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (a3)
+    if (block)
     {
-      v4 = *(a3 + 2);
+      v4 = *(block + 2);
 
-      v4(a3);
+      v4(block);
     }
   }
 
@@ -814,7 +814,7 @@ uint64_t __49__PLMoviePlayerController__updateFromPendingTime__block_invoke(uint
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v22 = *MEMORY[0x277D85DE8];
   Log = PLPhotoSharingGetLog();
@@ -823,45 +823,45 @@ uint64_t __49__PLMoviePlayerController__updateFromPendingTime__block_invoke(uint
     *buf = 138412802;
     v17 = objc_opt_class();
     v18 = 2112;
-    v19 = a3;
+    pathCopy = path;
     v20 = 2112;
-    v21 = a5;
+    changeCopy = change;
     _os_log_impl(&dword_21ACCD000, Log, OS_LOG_TYPE_DEFAULT, "(video-playback) %@ observeValueForKeyPath %@ %@", buf, 0x20u);
   }
 
-  if (a6 == &ItemKeyContext)
+  if (context == &ItemKeyContext)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_context___block_invoke;
     v15[3] = &unk_2782A1A38;
     v15[4] = self;
-    v15[5] = a4;
-    v15[6] = a3;
-    v15[7] = a5;
+    v15[5] = object;
+    v15[6] = path;
+    v15[7] = change;
     v12 = v15;
 LABEL_9:
     [(PLMoviePlayerController *)self _dispatchOnMainThreadWithBlock:v12];
     return;
   }
 
-  if (a6 == &PlayerKeyContext)
+  if (context == &PlayerKeyContext)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
     v14[3] = &unk_2782A1A38;
     v14[4] = self;
-    v14[5] = a4;
-    v14[6] = a3;
-    v14[7] = a5;
+    v14[5] = object;
+    v14[6] = path;
+    v14[7] = change;
     v12 = v14;
     goto LABEL_9;
   }
 
-  if (a6 == &ViewerKeyContext)
+  if (context == &ViewerKeyContext)
   {
-    if ([a3 isEqualToString:@"readyForDisplay"])
+    if ([path isEqualToString:@"readyForDisplay"])
     {
       [(PLMoviePlayerControllerDelegate *)self->_delegate moviePlayerReadyToDisplay:self];
     }
@@ -871,7 +871,7 @@ LABEL_9:
   {
     v13.receiver = self;
     v13.super_class = PLMoviePlayerController;
-    [(PLMoviePlayerController *)&v13 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+    [(PLMoviePlayerController *)&v13 observeValueForKeyPath:path ofObject:object change:change context:context];
   }
 }
 
@@ -990,16 +990,16 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
   return result;
 }
 
-- (void)_didLoadValueOfKey:(id)a3 forAsset:(id)a4
+- (void)_didLoadValueOfKey:(id)key forAsset:(id)asset
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if ([(PLMoviePlayerController *)self _asset]== a4)
+    if ([(PLMoviePlayerController *)self _asset]== asset)
     {
       v7[0] = 0;
-      if ([a4 statusOfValueForKey:a3 error:v7] == 2)
+      if ([asset statusOfValueForKey:key error:v7] == 2)
       {
-        if ([a3 isEqualToString:@"duration"])
+        if ([key isEqualToString:@"duration"])
         {
           [(PLMoviePlayerControllerDelegate *)self->_delegate moviePlayerDurationAvailable:self];
         }
@@ -1007,7 +1007,7 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
 
       else
       {
-        NSLog(&cfstr_CouldNotLoadVa.isa, a3, [v7[0] localizedDescription]);
+        NSLog(&cfstr_CouldNotLoadVa.isa, key, [v7[0] localizedDescription]);
       }
     }
   }
@@ -1019,13 +1019,13 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
     v7[3] = __55__PLMoviePlayerController__didLoadValueOfKey_forAsset___block_invoke;
     v7[4] = &unk_2782A20C0;
     v7[5] = self;
-    v7[6] = a3;
-    v7[7] = a4;
+    v7[6] = key;
+    v7[7] = asset;
     pl_dispatch_async();
   }
 }
 
-- (void)_loadAsset:(id)a3
+- (void)_loadAsset:(id)asset
 {
   v19 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -1049,9 +1049,9 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
 
         v9 = *(*(&v13 + 1) + 8 * v8);
         v12 = 0;
-        if ([a3 statusOfValueForKey:v9 error:&v12] == 2)
+        if ([asset statusOfValueForKey:v9 error:&v12] == 2)
         {
-          [(PLMoviePlayerController *)self _didLoadValueOfKey:v9 forAsset:a3];
+          [(PLMoviePlayerController *)self _didLoadValueOfKey:v9 forAsset:asset];
         }
 
         else
@@ -1064,8 +1064,8 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
           v11[3] = &unk_2782A20C0;
           v11[4] = self;
           v11[5] = v9;
-          v11[6] = a3;
-          [a3 loadValuesAsynchronouslyForKeys:v10 completionHandler:v11];
+          v11[6] = asset;
+          [asset loadValuesAsynchronouslyForKeys:v10 completionHandler:v11];
         }
 
         ++v8;
@@ -1079,11 +1079,11 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
   }
 }
 
-- (void)_setPlayerItem:(id)a3
+- (void)_setPlayerItem:(id)item
 {
   v28 = *MEMORY[0x277D85DE8];
   playerItem = self->_playerItem;
-  if (playerItem != a3)
+  if (playerItem != item)
   {
     v6 = MEMORY[0x277CE60C0];
     v7 = MEMORY[0x277CE60D0];
@@ -1123,9 +1123,9 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
       playerItem = self->_playerItem;
     }
 
-    v12 = a3;
-    self->_playerItem = v12;
-    if (v12)
+    itemCopy = item;
+    self->_playerItem = itemCopy;
+    if (itemCopy)
     {
       v20 = 0u;
       v21 = 0u;
@@ -1171,9 +1171,9 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
   }
 }
 
-- (void)setPlayerItem:(id)a3 startTime:(double)a4
+- (void)setPlayerItem:(id)item startTime:(double)time
 {
-  if (self->_playerItem != a3)
+  if (self->_playerItem != item)
   {
     v18 = v7;
     v19 = v6;
@@ -1187,14 +1187,14 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
     }
 
     [(PLMoviePlayerController *)self _setBufferingState:0];
-    [(PLMoviePlayerController *)self _setPlayerItem:a3];
-    if (a3)
+    [(PLMoviePlayerController *)self _setPlayerItem:item];
+    if (item)
     {
       [(PLMoviePlayerController *)self _loadAsset:[(PLMoviePlayerController *)self _asset]];
-      if (a4 != 0.0)
+      if (time != 0.0)
       {
         memset(&v17, 0, sizeof(v17));
-        CMTimeMakeWithSeconds(&v17, a4, 600);
+        CMTimeMakeWithSeconds(&v17, time, 600);
         player = self->_player;
         v16 = v17;
         v14 = *MEMORY[0x277CC08F0];
@@ -1207,11 +1207,11 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
     [(PLMoviePlayerController *)self _updateDisableAirPlayMirroringDuringPlayback];
 
     [(PLMoviePlayerController *)self _updateTVOutEnabled];
@@ -1226,8 +1226,8 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(PLMoviePlayerController *)self _playerKeysToObserve];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _playerKeysToObserve = [(PLMoviePlayerController *)self _playerKeysToObserve];
+  v4 = [_playerKeysToObserve countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1239,14 +1239,14 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_playerKeysToObserve);
         }
 
         [(AVPlayer *)self->_player removeObserver:self forKeyPath:*(*(&v8 + 1) + 8 * v7++) context:&PlayerKeyContext];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_playerKeysToObserve countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -1261,17 +1261,17 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
 {
   v14 = *MEMORY[0x277D85DE8];
   self->_player = objc_alloc_init(MEMORY[0x277CE6598]);
-  v3 = [MEMORY[0x277CB83F8] auxiliarySession];
-  [v3 setCategory:*MEMORY[0x277CB8030] error:0];
-  [(AVPlayer *)self->_player setAudioSession:v3];
+  auxiliarySession = [MEMORY[0x277CB83F8] auxiliarySession];
+  [auxiliarySession setCategory:*MEMORY[0x277CB8030] error:0];
+  [(AVPlayer *)self->_player setAudioSession:auxiliarySession];
   [(AVPlayer *)self->_player setExternalPlaybackVideoGravity:*MEMORY[0x277CE5DD0]];
   [(AVPlayer *)self->_player setActionAtItemEnd:1];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(PLMoviePlayerController *)self _playerKeysToObserve];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _playerKeysToObserve = [(PLMoviePlayerController *)self _playerKeysToObserve];
+  v5 = [_playerKeysToObserve countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1283,14 +1283,14 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_playerKeysToObserve);
         }
 
         [(AVPlayer *)self->_player addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:3 context:&PlayerKeyContext];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_playerKeysToObserve countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -1306,22 +1306,22 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
 - (void)_unregisterForNotifications
 {
   [*MEMORY[0x277D76620] endReceivingRemoteControlEvents];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v3 removeObserver:self];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)_registerForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__simpleRemoteNotification_ name:*MEMORY[0x277D766F8] object:0];
-  [v3 addObserver:self selector:sel__willSuspendNotification_ name:*MEMORY[0x277D76730] object:0];
-  [v3 addObserver:self selector:sel__willBeginSuspendAnimationNotification_ name:*MEMORY[0x277D77338] object:0];
-  [v3 addObserver:self selector:sel__willResignNotification_ name:*MEMORY[0x277D76768] object:0];
-  [v3 addObserver:self selector:sel__screenDidConnect_ name:*MEMORY[0x277D76E98] object:0];
-  [v3 addObserver:self selector:sel__screenDidDisconnect_ name:*MEMORY[0x277D76EA0] object:0];
-  [v3 addObserver:self selector:sel__willEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
-  [v3 addObserver:self selector:sel__didEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__simpleRemoteNotification_ name:*MEMORY[0x277D766F8] object:0];
+  [defaultCenter addObserver:self selector:sel__willSuspendNotification_ name:*MEMORY[0x277D76730] object:0];
+  [defaultCenter addObserver:self selector:sel__willBeginSuspendAnimationNotification_ name:*MEMORY[0x277D77338] object:0];
+  [defaultCenter addObserver:self selector:sel__willResignNotification_ name:*MEMORY[0x277D76768] object:0];
+  [defaultCenter addObserver:self selector:sel__screenDidConnect_ name:*MEMORY[0x277D76E98] object:0];
+  [defaultCenter addObserver:self selector:sel__screenDidDisconnect_ name:*MEMORY[0x277D76EA0] object:0];
+  [defaultCenter addObserver:self selector:sel__willEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter addObserver:self selector:sel__didEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
   v4 = *MEMORY[0x277D76620];
 
   [v4 beginReceivingRemoteControlEvents];
@@ -1362,18 +1362,18 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
   return v2;
 }
 
-+ (BOOL)_isNetworkSupportedPath:(id)a3
++ (BOOL)_isNetworkSupportedPath:(id)path
 {
   v4 = 1;
-  if ([a3 compare:@"https://" options:1 range:{0, objc_msgSend(@"https://", "length")}])
+  if ([path compare:@"https://" options:1 range:{0, objc_msgSend(@"https://", "length")}])
   {
-    return ![a3 compare:@"http://" options:1 range:{0, objc_msgSend(@"http://", "length")}] || objc_msgSend(a3, "compare:options:range:", @"home-sharing://", 1, 0, objc_msgSend(@"home-sharing://", "length")) == 0;
+    return ![path compare:@"http://" options:1 range:{0, objc_msgSend(@"http://", "length")}] || objc_msgSend(path, "compare:options:range:", @"home-sharing://", 1, 0, objc_msgSend(@"home-sharing://", "length")) == 0;
   }
 
   return v4;
 }
 
-+ (BOOL)_isStreamableAsset:(id)a3
++ (BOOL)_isStreamableAsset:(id)asset
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1381,9 +1381,9 @@ uint64_t __74__PLMoviePlayerController_observeValueForKeyPath_ofObject_change_co
     return 0;
   }
 
-  v5 = [objc_msgSend(a3 "URL")];
+  v5 = [objc_msgSend(asset "URL")];
 
-  return [a1 _isNetworkSupportedPath:v5];
+  return [self _isNetworkSupportedPath:v5];
 }
 
 @end

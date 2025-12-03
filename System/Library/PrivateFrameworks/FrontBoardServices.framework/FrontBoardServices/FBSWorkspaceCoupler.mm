@@ -3,8 +3,8 @@
 - (BOOL)_isSharedInstance;
 - (FBSWorkspaceCoupler)init;
 - (id)_workspace;
-- (void)_enqueueClientConnectionBlock:(id)a3;
-- (void)_setWorkspace:(uint64_t)a1;
+- (void)_enqueueClientConnectionBlock:(id)block;
+- (void)_setWorkspace:(uint64_t)workspace;
 - (void)_workspace;
 - (void)dealloc;
 - (void)invalidate;
@@ -63,7 +63,7 @@ uint64_t __38__FBSWorkspaceCoupler__sharedInstance__block_invoke()
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must invalidate before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -81,7 +81,7 @@ uint64_t __38__FBSWorkspaceCoupler__sharedInstance__block_invoke()
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"this instance may not invalidate"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -107,16 +107,16 @@ uint64_t __38__FBSWorkspaceCoupler__sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)_enqueueClientConnectionBlock:(id)a3
+- (void)_enqueueClientConnectionBlock:(id)block
 {
-  v11 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   lock_workspace = self->_lock_workspace;
   if (lock_workspace || self->_lock_invalidated)
   {
     v5 = lock_workspace;
     os_unfair_lock_unlock(&self->_lock);
-    v11[2](v11, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   else
@@ -124,7 +124,7 @@ uint64_t __38__FBSWorkspaceCoupler__sharedInstance__block_invoke()
     lock_clientConnectionBlocks = self->_lock_clientConnectionBlocks;
     if (lock_clientConnectionBlocks)
     {
-      v7 = [v11 copy];
+      v7 = [blockCopy copy];
       v8 = MEMORY[0x1A58E80F0]();
       [(NSMutableArray *)lock_clientConnectionBlocks addObject:v8];
     }
@@ -132,7 +132,7 @@ uint64_t __38__FBSWorkspaceCoupler__sharedInstance__block_invoke()
     else
     {
       v9 = MEMORY[0x1E695DF70];
-      v7 = [v11 copy];
+      v7 = [blockCopy copy];
       v10 = [v9 arrayWithObject:v7];
       v8 = self->_lock_clientConnectionBlocks;
       self->_lock_clientConnectionBlocks = v10;
@@ -142,17 +142,17 @@ uint64_t __38__FBSWorkspaceCoupler__sharedInstance__block_invoke()
   }
 }
 
-- (void)_setWorkspace:(uint64_t)a1
+- (void)_setWorkspace:(uint64_t)workspace
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (workspace)
   {
-    os_unfair_lock_lock((a1 + 24));
-    if (*(a1 + 28) == 1)
+    os_unfair_lock_lock((workspace + 24));
+    if (*(workspace + 28) == 1)
     {
-      os_unfair_lock_unlock((a1 + 24));
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot set workspace on invalid coupler : coupler=%@ workspace=%p", a1, v4];
+      os_unfair_lock_unlock((workspace + 24));
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot set workspace on invalid coupler : coupler=%@ workspace=%p", workspace, v4];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         [FBSWorkspaceCoupler _setWorkspace:];
@@ -162,12 +162,12 @@ uint64_t __38__FBSWorkspaceCoupler__sharedInstance__block_invoke()
       _bs_set_crash_log_message();
     }
 
-    v5 = *(a1 + 8);
+    v5 = *(workspace + 8);
     if (v5)
     {
       v14 = v5;
-      os_unfair_lock_unlock((a1 + 24));
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"workspace already set on coupler : coupler=%@ existing=%p new=%p", a1, v14, v4];
+      os_unfair_lock_unlock((workspace + 24));
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"workspace already set on coupler : coupler=%@ existing=%p new=%p", workspace, v14, v4];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         [FBSWorkspaceCoupler _setWorkspace:];
@@ -177,12 +177,12 @@ uint64_t __38__FBSWorkspaceCoupler__sharedInstance__block_invoke()
       _bs_set_crash_log_message();
     }
 
-    objc_storeStrong((a1 + 8), a2);
-    v6 = *(a1 + 16);
-    v7 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    objc_storeStrong((workspace + 8), a2);
+    v6 = *(workspace + 16);
+    v7 = *(workspace + 16);
+    *(workspace + 16) = 0;
 
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_unlock((workspace + 24));
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -218,7 +218,7 @@ uint64_t __38__FBSWorkspaceCoupler__sharedInstance__block_invoke()
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to access _workspace on coupler before the workspace has checked in"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);

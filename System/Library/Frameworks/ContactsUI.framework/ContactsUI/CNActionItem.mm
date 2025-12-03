@@ -1,5 +1,5 @@
 @interface CNActionItem
-- (CNActionItem)initWithImage:(id)a3 type:(id)a4;
+- (CNActionItem)initWithImage:(id)image type:(id)type;
 - (id)description;
 @end
 
@@ -8,30 +8,30 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNActionItem *)self title];
-  v5 = [v3 appendName:@"title" object:v4];
+  title = [(CNActionItem *)self title];
+  v5 = [v3 appendName:@"title" object:title];
 
-  v6 = [(CNActionItem *)self type];
-  v7 = [v3 appendName:@"type" object:v6];
+  type = [(CNActionItem *)self type];
+  v7 = [v3 appendName:@"type" object:type];
 
   v8 = [v3 appendName:@"disabled" BOOLValue:{-[CNActionItem disabled](self, "disabled")}];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (CNActionItem)initWithImage:(id)a3 type:(id)a4
+- (CNActionItem)initWithImage:(id)image type:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  imageCopy = image;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = CNActionItem;
   v9 = [(CNActionItem *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_image, a3);
-    objc_storeStrong(&v10->_type, a4);
+    objc_storeStrong(&v9->_image, image);
+    objc_storeStrong(&v10->_type, type);
     v11 = v10;
   }
 

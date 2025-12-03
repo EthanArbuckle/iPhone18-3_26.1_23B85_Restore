@@ -1,14 +1,14 @@
 @interface NCDefaultNotificationViewController
 + (void)initialize;
 - (CGRect)mediaPlayPauseButtonFrame;
-- (CGSize)_preferredContentSizeWithContainerWidth:(double)a3;
-- (NCDefaultNotificationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CGSize)_preferredContentSizeWithContainerWidth:(double)width;
+- (NCDefaultNotificationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_primaryAttachment;
 - (void)_performDefaultAction;
 - (void)_rewind;
 - (void)_setupView;
-- (void)didReceiveNotification:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)didReceiveNotification:(id)notification;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation NCDefaultNotificationViewController
@@ -21,49 +21,49 @@
   }
 }
 
-- (NCDefaultNotificationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NCDefaultNotificationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = NCDefaultNotificationViewController;
-  return [(NCDefaultNotificationViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(NCDefaultNotificationViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  width = a3.width;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = NCDefaultNotificationViewController;
-  [(NCDefaultNotificationViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(NCDefaultNotificationViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(NCDefaultNotificationViewController *)self _preferredContentSizeWithContainerWidth:width];
   [(NCDefaultNotificationViewController *)self setPreferredContentSize:?];
 }
 
-- (CGSize)_preferredContentSizeWithContainerWidth:(double)a3
+- (CGSize)_preferredContentSizeWithContainerWidth:(double)width
 {
-  v4 = [(NCDefaultNotificationViewController *)self _primaryAttachment];
-  v5 = [v4 _nc_safeUTI];
-  if (!UTTypeConformsTo(v5, kUTTypeAudio))
+  _primaryAttachment = [(NCDefaultNotificationViewController *)self _primaryAttachment];
+  _nc_safeUTI = [_primaryAttachment _nc_safeUTI];
+  if (!UTTypeConformsTo(_nc_safeUTI, kUTTypeAudio))
   {
-    if (UTTypeConformsTo(v5, kUTTypeGIF))
+    if (UTTypeConformsTo(_nc_safeUTI, kUTTypeGIF))
     {
-      v6 = [(ISAnimatedImagePlayer *)self->_animatedImagePlayer animatedImage];
-      [v6 pixelSize];
+      animatedImage = [(ISAnimatedImagePlayer *)self->_animatedImagePlayer animatedImage];
+      [animatedImage pixelSize];
     }
 
-    else if (UTTypeConformsTo(v5, kUTTypeImage))
+    else if (UTTypeConformsTo(_nc_safeUTI, kUTTypeImage))
     {
-      v7 = [(UIView *)self->_attachmentView image];
-      [v7 size];
+      image = [(UIView *)self->_attachmentView image];
+      [image size];
     }
 
-    else if (UTTypeConformsTo(v5, kUTTypeMovie))
+    else if (UTTypeConformsTo(_nc_safeUTI, kUTTypeMovie))
     {
-      v8 = [(AVPlayer *)self->_moviePlayer currentItem];
-      v9 = [v8 asset];
-      v10 = [v9 tracksWithMediaType:AVMediaTypeVideo];
-      v11 = [v10 firstObject];
+      currentItem = [(AVPlayer *)self->_moviePlayer currentItem];
+      asset = [currentItem asset];
+      v10 = [asset tracksWithMediaType:AVMediaTypeVideo];
+      firstObject = [v10 firstObject];
 
-      [v11 naturalSize];
+      [firstObject naturalSize];
     }
   }
 
@@ -80,10 +80,10 @@
 
 - (id)_primaryAttachment
 {
-  v2 = [(UNNotification *)self->_notification request];
-  v3 = [v2 content];
-  v4 = [v3 attachments];
-  v5 = [v4 bs_firstObjectPassingTest:&stru_10000C4B0];
+  request = [(UNNotification *)self->_notification request];
+  content = [request content];
+  attachments = [content attachments];
+  v5 = [attachments bs_firstObjectPassingTest:&stru_10000C4B0];
 
   return v5;
 }
@@ -94,13 +94,13 @@
   attachmentView = self->_attachmentView;
   self->_attachmentView = 0;
 
-  v4 = [(NCDefaultNotificationViewController *)self _primaryAttachment];
-  v5 = [v4 URL];
+  _primaryAttachment = [(NCDefaultNotificationViewController *)self _primaryAttachment];
+  v5 = [_primaryAttachment URL];
   [v5 startAccessingSecurityScopedResource];
-  v6 = [v4 _nc_safeUTI];
-  if (!UTTypeConformsTo(v6, kUTTypeAudio))
+  _nc_safeUTI = [_primaryAttachment _nc_safeUTI];
+  if (!UTTypeConformsTo(_nc_safeUTI, kUTTypeAudio))
   {
-    if (UTTypeConformsTo(v6, kUTTypeGIF))
+    if (UTTypeConformsTo(_nc_safeUTI, kUTTypeGIF))
     {
       v25 = [[PFAnimatedImage alloc] initWithURL:v5];
       v26 = [[ISAnimatedImagePlayer alloc] initWithAnimatedImage:v25];
@@ -114,10 +114,10 @@
       [v25 pixelSize];
     }
 
-    else if (UTTypeConformsTo(v6, kUTTypeImage))
+    else if (UTTypeConformsTo(_nc_safeUTI, kUTTypeImage))
     {
-      v42 = [(NCDefaultNotificationViewController *)self view];
-      [v42 bounds];
+      view = [(NCDefaultNotificationViewController *)self view];
+      [view bounds];
       Width = CGRectGetWidth(v73);
 
       v44 = +[UIScreen mainScreen];
@@ -161,7 +161,7 @@
 
     else
     {
-      if (!UTTypeConformsTo(v6, kUTTypeMovie))
+      if (!UTTypeConformsTo(_nc_safeUTI, kUTTypeMovie))
       {
         goto LABEL_6;
       }
@@ -176,8 +176,8 @@
       [v58 setAllowsPictureInPicturePlayback:0];
       [v58 setShowsPlaybackControls:0];
       [v58 setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-      v59 = [v58 view];
-      [v59 setUserInteractionEnabled:0];
+      view2 = [v58 view];
+      [view2 setUserInteractionEnabled:0];
 
       v60 = [AVPlayerItem playerItemWithAsset:v57];
       v61 = [[AVPlayer alloc] initWithPlayerItem:v60];
@@ -189,36 +189,36 @@
       [v63 addObserver:self selector:"handlePlayerItemDidPlayToEndTimeNotification:" name:AVPlayerItemDidPlayToEndTimeNotification object:0];
       [v63 addObserver:self selector:"handlePlayerItemFailedToPlayToEndTimeNotification:" name:AVPlayerItemFailedToPlayToEndTimeNotification object:0];
       [(NCDefaultNotificationViewController *)self addChildViewController:v58];
-      v64 = [v58 view];
+      view3 = [v58 view];
       v65 = self->_attachmentView;
-      self->_attachmentView = v64;
+      self->_attachmentView = view3;
     }
 
 LABEL_6:
     v7 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_performDefaultAction"];
     [(UIView *)self->_attachmentView addGestureRecognizer:v7];
     [(UIView *)self->_attachmentView setUserInteractionEnabled:1];
-    v10 = [(NCDefaultNotificationViewController *)self view];
-    [v10 addSubview:self->_attachmentView];
+    view4 = [(NCDefaultNotificationViewController *)self view];
+    [view4 addSubview:self->_attachmentView];
     [(UIView *)self->_attachmentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v30 = [(UIView *)self->_attachmentView leadingAnchor];
-    v31 = [v10 leadingAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    leadingAnchor = [(UIView *)self->_attachmentView leadingAnchor];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v32 setActive:1];
 
-    v33 = [(UIView *)self->_attachmentView trailingAnchor];
-    v34 = [v10 trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    trailingAnchor = [(UIView *)self->_attachmentView trailingAnchor];
+    trailingAnchor2 = [view4 trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v35 setActive:1];
 
-    v36 = [(UIView *)self->_attachmentView topAnchor];
-    v37 = [v10 topAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    topAnchor = [(UIView *)self->_attachmentView topAnchor];
+    topAnchor2 = [view4 topAnchor];
+    v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v38 setActive:1];
 
-    v23 = [(UIView *)self->_attachmentView bottomAnchor];
-    v24 = [v10 bottomAnchor];
-    v39 = [v23 constraintEqualToAnchor:v24];
+    bottomAnchor = [(UIView *)self->_attachmentView bottomAnchor];
+    bottomAnchor2 = [view4 bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v39 setActive:1];
 
     goto LABEL_7;
@@ -227,60 +227,60 @@ LABEL_6:
   v7 = objc_alloc_init(NCAudioPlayerControlsViewController);
   [(NCAudioPlayerControlsViewController *)v7 setURL:v5];
   [(NCDefaultNotificationViewController *)self addChildViewController:v7];
-  v8 = [(NCAudioPlayerControlsViewController *)v7 view];
+  view5 = [(NCAudioPlayerControlsViewController *)v7 view];
   v9 = self->_attachmentView;
-  self->_attachmentView = v8;
+  self->_attachmentView = view5;
 
-  v10 = [(NCDefaultNotificationViewController *)self view];
-  [v10 addSubview:self->_attachmentView];
+  view4 = [(NCDefaultNotificationViewController *)self view];
+  [view4 addSubview:self->_attachmentView];
   [(UIView *)self->_attachmentView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(UIView *)self->_attachmentView leadingAnchor];
-  v12 = [v10 leadingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:20.0];
+  leadingAnchor3 = [(UIView *)self->_attachmentView leadingAnchor];
+  leadingAnchor4 = [view4 leadingAnchor];
+  v13 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:20.0];
   [v13 setActive:1];
 
-  v14 = [(UIView *)self->_attachmentView trailingAnchor];
-  v15 = [v10 trailingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:-16.0];
+  trailingAnchor3 = [(UIView *)self->_attachmentView trailingAnchor];
+  trailingAnchor4 = [view4 trailingAnchor];
+  v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   [v16 setActive:1];
 
-  v17 = [(UIView *)self->_attachmentView topAnchor];
-  v18 = [v10 topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:20.0];
+  topAnchor3 = [(UIView *)self->_attachmentView topAnchor];
+  topAnchor4 = [view4 topAnchor];
+  v19 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:20.0];
   [v19 setActive:1];
 
-  v20 = [(UIView *)self->_attachmentView bottomAnchor];
-  v21 = [v10 bottomAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:-24.0];
+  bottomAnchor3 = [(UIView *)self->_attachmentView bottomAnchor];
+  bottomAnchor4 = [view4 bottomAnchor];
+  v22 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-24.0];
   [v22 setActive:1];
 
-  v23 = [(UIView *)self->_attachmentView heightAnchor];
-  v24 = [v23 constraintEqualToConstant:38.0];
-  [v24 setActive:1];
+  bottomAnchor = [(UIView *)self->_attachmentView heightAnchor];
+  bottomAnchor2 = [bottomAnchor constraintEqualToConstant:38.0];
+  [bottomAnchor2 setActive:1];
 LABEL_7:
 
-  v40 = [(NCDefaultNotificationViewController *)self view];
-  [v40 bounds];
+  view6 = [(NCDefaultNotificationViewController *)self view];
+  [view6 bounds];
   v41 = CGRectGetWidth(v72);
 
   [(NCDefaultNotificationViewController *)self _preferredContentSizeWithContainerWidth:v41];
   [(NCDefaultNotificationViewController *)self setPreferredContentSize:?];
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   notification = self->_notification;
   if (!notification)
   {
     goto LABEL_3;
   }
 
-  v7 = [(UNNotification *)notification request];
-  v8 = [v7 identifier];
-  v9 = [v5 request];
-  v10 = [v9 identifier];
-  v11 = [v8 isEqualToString:v10];
+  request = [(UNNotification *)notification request];
+  identifier = [request identifier];
+  request2 = [notificationCopy request];
+  identifier2 = [request2 identifier];
+  v11 = [identifier isEqualToString:identifier2];
 
   if (v11)
   {
@@ -289,15 +289,15 @@ LABEL_3:
     if (os_log_type_enabled(qword_1000115F0, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [v5 request];
-      v15 = [v14 identifier];
-      v16 = [v15 un_logDigest];
+      request3 = [notificationCopy request];
+      identifier3 = [request3 identifier];
+      un_logDigest = [identifier3 un_logDigest];
       v17 = 138412290;
-      v18 = v16;
+      v18 = un_logDigest;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Default extension did receive notification %@{public}", &v17, 0xCu);
     }
 
-    objc_storeStrong(&self->_notification, a3);
+    objc_storeStrong(&self->_notification, notification);
     [(NCDefaultNotificationViewController *)self _setupView];
     [(ISAnimatedImagePlayer *)self->_animatedImagePlayer setPlaying:1];
   }
@@ -305,8 +305,8 @@ LABEL_3:
 
 - (CGRect)mediaPlayPauseButtonFrame
 {
-  v2 = [(NCDefaultNotificationViewController *)self view];
-  [v2 bounds];
+  view = [(NCDefaultNotificationViewController *)self view];
+  [view bounds];
   UIRectCenteredIntegralRectScale();
   v4 = v3;
   v6 = v5;
@@ -331,14 +331,14 @@ LABEL_3:
   v5 = *&kCMTimeZero.value;
   epoch = kCMTimeZero.epoch;
   [(AVPlayer *)moviePlayer seekToTime:&v5];
-  v4 = [(NCDefaultNotificationViewController *)self extensionContext];
-  [v4 mediaPlayingPaused];
+  extensionContext = [(NCDefaultNotificationViewController *)self extensionContext];
+  [extensionContext mediaPlayingPaused];
 }
 
 - (void)_performDefaultAction
 {
-  v2 = [(NCDefaultNotificationViewController *)self extensionContext];
-  [v2 performNotificationDefaultAction];
+  extensionContext = [(NCDefaultNotificationViewController *)self extensionContext];
+  [extensionContext performNotificationDefaultAction];
 }
 
 @end

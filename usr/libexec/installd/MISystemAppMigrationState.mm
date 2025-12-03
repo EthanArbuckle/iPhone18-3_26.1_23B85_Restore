@@ -2,8 +2,8 @@
 + (id)defaultManager;
 - (BOOL)systemAppMigrationComplete;
 - (MISystemAppMigrationState)init;
-- (void)setSystemAppMigrationComplete:(BOOL)a3;
-- (void)waitForSystemAppMigrationToComplete:(id)a3;
+- (void)setSystemAppMigrationComplete:(BOOL)complete;
+- (void)waitForSystemAppMigrationToComplete:(id)complete;
 @end
 
 @implementation MISystemAppMigrationState
@@ -30,7 +30,7 @@
   if (!&_DMIsMigrationNeeded || (DMIsMigrationNeeded() & 1) == 0)
   {
     v5 = +[MIDaemonConfiguration sharedInstance];
-    v6 = [v5 migrationPlistURL];
+    migrationPlistURL = [v5 migrationPlistURL];
     MIRecordCurrentBuildVersion();
 
 LABEL_9:
@@ -65,51 +65,51 @@ LABEL_11:
   return v3;
 }
 
-- (void)setSystemAppMigrationComplete:(BOOL)a3
+- (void)setSystemAppMigrationComplete:(BOOL)complete
 {
-  v5 = [(MISystemAppMigrationState *)self systemAppMigrationStateQueue];
+  systemAppMigrationStateQueue = [(MISystemAppMigrationState *)self systemAppMigrationStateQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10002CB68;
   v6[3] = &unk_1000915A8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  completeCopy = complete;
+  dispatch_sync(systemAppMigrationStateQueue, v6);
 }
 
 - (BOOL)systemAppMigrationComplete
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MISystemAppMigrationState *)self systemAppMigrationStateQueue];
+  systemAppMigrationStateQueue = [(MISystemAppMigrationState *)self systemAppMigrationStateQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10002CDD8;
   v5[3] = &unk_1000915D0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(systemAppMigrationStateQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)waitForSystemAppMigrationToComplete:(id)a3
+- (void)waitForSystemAppMigrationToComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(MISystemAppMigrationState *)self systemAppMigrationStateQueue];
+  completeCopy = complete;
+  systemAppMigrationStateQueue = [(MISystemAppMigrationState *)self systemAppMigrationStateQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002CEA0;
   v7[3] = &unk_100090FA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = completeCopy;
+  v6 = completeCopy;
+  dispatch_sync(systemAppMigrationStateQueue, v7);
 }
 
 @end

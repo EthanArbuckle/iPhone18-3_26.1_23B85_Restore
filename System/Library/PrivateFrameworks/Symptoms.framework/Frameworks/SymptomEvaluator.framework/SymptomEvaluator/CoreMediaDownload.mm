@@ -1,20 +1,20 @@
 @interface CoreMediaDownload
-- (id)coreMediaDownloadStateToString:(unsigned int)a3;
+- (id)coreMediaDownloadStateToString:(unsigned int)string;
 - (id)description;
 @end
 
 @implementation CoreMediaDownload
 
-- (id)coreMediaDownloadStateToString:(unsigned int)a3
+- (id)coreMediaDownloadStateToString:(unsigned int)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_27898F408[a3];
+    return off_27898F408[string];
   }
 }
 

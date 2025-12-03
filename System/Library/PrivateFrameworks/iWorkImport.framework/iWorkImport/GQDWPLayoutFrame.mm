@@ -1,6 +1,6 @@
 @interface GQDWPLayoutFrame
 - (BOOL)isBlank;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 - (void)dealloc;
 - (void)resolveStyleRef;
 @end
@@ -22,12 +22,12 @@
 
 - (BOOL)isBlank
 {
-  v2 = [(GQDWPLayoutStorage *)self->mStorage body];
-  if (!v2 || (v3 = v2, Count = CFArrayGetCount(v2), (v5 = Count) == 0))
+  body = [(GQDWPLayoutStorage *)self->mStorage body];
+  if (!body || (v3 = body, Count = CFArrayGetCount(body), (v5 = Count) == 0))
   {
 LABEL_10:
-    LOBYTE(v8) = 1;
-    return v8;
+    LOBYTE(isBlank) = 1;
+    return isBlank;
   }
 
   v6 = 0;
@@ -55,21 +55,21 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [ValueAtIndex isBlank];
-    if (!v8)
+    isBlank = [ValueAtIndex isBlank];
+    if (!isBlank)
     {
-      return v8;
+      return isBlank;
     }
 
     goto LABEL_9;
   }
 
 LABEL_12:
-  LOBYTE(v8) = 0;
-  return v8;
+  LOBYTE(isBlank) = 0;
+  return isBlank;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
   mStyleRef = self->mStyleRef;
   if (mStyleRef)
@@ -77,8 +77,8 @@ LABEL_12:
     free(mStyleRef);
   }
 
-  self->mStyleRef = xmlTextReaderGetAttributeNs(a3, "layoutstyle", *(qword_A35E8 + 16));
-  self->mTextScale = sub_42468(a3, qword_A35E8, "tscale", 0);
+  self->mStyleRef = xmlTextReaderGetAttributeNs(reader, "layoutstyle", *(qword_A35E8 + 16));
+  self->mTextScale = sub_42468(reader, qword_A35E8, "tscale", 0);
   return 1;
 }
 
@@ -86,12 +86,12 @@ LABEL_12:
 {
   if (self->mStyleRef)
   {
-    v3 = [(GQDWPStorage *)self->mStorage stylesheet];
-    v4 = [v3 styleWithIdentifier:self->mStyleRef];
+    stylesheet = [(GQDWPStorage *)self->mStorage stylesheet];
+    v4 = [stylesheet styleWithIdentifier:self->mStyleRef];
     self->mStyle = v4;
     if (!v4)
     {
-      v4 = [v3 styleWithXmlUid:self->mStyleRef];
+      v4 = [stylesheet styleWithXmlUid:self->mStyleRef];
       self->mStyle = v4;
     }
 

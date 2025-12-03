@@ -1,14 +1,14 @@
 @interface DNDSRemoteAppConfigurationServiceProvider
-- (DNDSRemoteAppConfigurationServiceProvider)initWithClientDetailsProvider:(id)a3;
+- (DNDSRemoteAppConfigurationServiceProvider)initWithClientDetailsProvider:(id)provider;
 - (DNDSRemoteAppConfigurationServiceProviderDelegate)delegate;
-- (void)_addConnection:(id)a3;
-- (void)_handleClientConnectionInterrupted:(id)a3;
-- (void)_handleClientConnectionInvalidated:(id)a3;
-- (void)_removeConnection:(id)a3;
+- (void)_addConnection:(id)connection;
+- (void)_handleClientConnectionInterrupted:(id)interrupted;
+- (void)_handleClientConnectionInvalidated:(id)invalidated;
+- (void)_removeConnection:(id)connection;
 - (void)dealloc;
-- (void)getCurrentAppConfigurationForActionIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)invalidateAppContextForActionIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)getCurrentAppConfigurationForActionIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)invalidateAppContextForActionIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation DNDSRemoteAppConfigurationServiceProvider
@@ -20,9 +20,9 @@
   return WeakRetained;
 }
 
-- (DNDSRemoteAppConfigurationServiceProvider)initWithClientDetailsProvider:(id)a3
+- (DNDSRemoteAppConfigurationServiceProvider)initWithClientDetailsProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = DNDSRemoteAppConfigurationServiceProvider;
   v6 = [(DNDSRemoteAppConfigurationServiceProvider *)&v17 init];
@@ -45,7 +45,7 @@
     requestListener = v11->_requestListener;
     v11->_requestListener = v12;
 
-    objc_storeStrong(&v11->_clientDetailsProvider, a3);
+    objc_storeStrong(&v11->_clientDetailsProvider, provider);
   }
 
   return v7;
@@ -70,14 +70,14 @@ void __75__DNDSRemoteAppConfigurationServiceProvider_initWithClientDetailsProvid
   [(DNDSRemoteAppConfigurationServiceProvider *)&v3 dealloc];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   objc_initWeak(&location, self);
-  if (self->_requestListener == v8)
+  if (self->_requestListener == listenerCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -85,22 +85,22 @@ void __75__DNDSRemoteAppConfigurationServiceProvider_initWithClientDetailsProvid
     v13[3] = &unk_278F8A348;
     v13[4] = self;
     objc_copyWeak(&v14, &location);
-    [v9 configureConnection:v13];
+    [connectionCopy configureConnection:v13];
     objc_destroyWeak(&v14);
-    [(DNDSRemoteAppConfigurationServiceProvider *)self _addConnection:v9];
-    [v9 activate];
+    [(DNDSRemoteAppConfigurationServiceProvider *)self _addConnection:connectionCopy];
+    [connectionCopy activate];
     v11 = DNDSLogAppConfigurationServiceProvider;
     if (os_log_type_enabled(DNDSLogAppConfigurationServiceProvider, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v9;
+      v17 = connectionCopy;
       _os_log_impl(&dword_24912E000, v11, OS_LOG_TYPE_DEFAULT, "XPC connection successfully accepted: connection=%{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    [v9 invalidate];
+    [connectionCopy invalidate];
   }
 
   objc_destroyWeak(&location);
@@ -148,26 +148,26 @@ void __87__DNDSRemoteAppConfigurationServiceProvider_listener_didReceiveConnecti
   [WeakRetained _handleClientConnectionInvalidated:v3];
 }
 
-- (void)getCurrentAppConfigurationForActionIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getCurrentAppConfigurationForActionIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCACA8];
-  v9 = a5;
-  v10 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v11 = NSStringFromSelector(a2);
   v12 = [v8 stringWithFormat:@"com.apple.donotdisturbd.%@", v11];
   [v12 UTF8String];
   v13 = os_transaction_create();
 
-  v14 = [MEMORY[0x277CF3280] currentContext];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
   v29 = 0u;
   v30 = 0u;
-  v15 = [v14 remoteProcess];
-  v16 = [v15 auditToken];
-  v17 = v16;
-  if (v16)
+  remoteProcess = [currentContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  v17 = auditToken;
+  if (auditToken)
   {
-    [v16 realToken];
+    [auditToken realToken];
   }
 
   else
@@ -176,8 +176,8 @@ void __87__DNDSRemoteAppConfigurationServiceProvider_listener_didReceiveConnecti
     v30 = 0u;
   }
 
-  v18 = [v14 remoteProcess];
-  v19 = [v18 bundleIdentifier];
+  remoteProcess2 = [currentContext remoteProcess];
+  bundleIdentifier = [remoteProcess2 bundleIdentifier];
 
   *buf = v29;
   v32 = v30;
@@ -185,12 +185,12 @@ void __87__DNDSRemoteAppConfigurationServiceProvider_listener_didReceiveConnecti
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = [v20 bundleIdentifier];
+    bundleIdentifier2 = [v20 bundleIdentifier];
 
-    v19 = v21;
+    bundleIdentifier = bundleIdentifier2;
   }
 
-  v22 = _DNDSPrimaryBundleIdentifier(v19);
+  v22 = _DNDSPrimaryBundleIdentifier(bundleIdentifier);
 
   v23 = DNDSLogAppConfigurationServiceProvider;
   if (os_log_type_enabled(DNDSLogAppConfigurationServiceProvider, OS_LOG_TYPE_DEFAULT))
@@ -200,36 +200,36 @@ void __87__DNDSRemoteAppConfigurationServiceProvider_listener_didReceiveConnecti
     _os_log_impl(&dword_24912E000, v23, OS_LOG_TYPE_DEFAULT, "Client request to get current app configuration: bundleIdentifier=%{public}@", buf, 0xCu);
   }
 
-  v24 = [(DNDSRemoteAppConfigurationServiceProvider *)self delegate];
+  delegate = [(DNDSRemoteAppConfigurationServiceProvider *)self delegate];
   v28 = 0;
-  v25 = [v24 remoteAppConfigurationServiceProvider:self getCurrentAppConfigurationForActionIdentifier:v10 bundleIdentifier:v22 withError:&v28];
+  v25 = [delegate remoteAppConfigurationServiceProvider:self getCurrentAppConfigurationForActionIdentifier:identifierCopy bundleIdentifier:v22 withError:&v28];
 
   v26 = v28;
-  v9[2](v9, v25, v26);
+  handlerCopy[2](handlerCopy, v25, v26);
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateAppContextForActionIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)invalidateAppContextForActionIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCACA8];
-  v9 = a5;
-  v10 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v11 = NSStringFromSelector(a2);
   v12 = [v8 stringWithFormat:@"com.apple.donotdisturbd.%@", v11];
   [v12 UTF8String];
   v13 = os_transaction_create();
 
-  v14 = [MEMORY[0x277CF3280] currentContext];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
   v29 = 0u;
   v30 = 0u;
-  v15 = [v14 remoteProcess];
-  v16 = [v15 auditToken];
-  v17 = v16;
-  if (v16)
+  remoteProcess = [currentContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  v17 = auditToken;
+  if (auditToken)
   {
-    [v16 realToken];
+    [auditToken realToken];
   }
 
   else
@@ -238,8 +238,8 @@ void __87__DNDSRemoteAppConfigurationServiceProvider_listener_didReceiveConnecti
     v30 = 0u;
   }
 
-  v18 = [v14 remoteProcess];
-  v19 = [v18 bundleIdentifier];
+  remoteProcess2 = [currentContext remoteProcess];
+  bundleIdentifier = [remoteProcess2 bundleIdentifier];
 
   *buf = v29;
   v32 = v30;
@@ -247,82 +247,82 @@ void __87__DNDSRemoteAppConfigurationServiceProvider_listener_didReceiveConnecti
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = [v20 containingBundleRecord];
-    v22 = [v21 bundleIdentifier];
+    containingBundleRecord = [v20 containingBundleRecord];
+    bundleIdentifier2 = [containingBundleRecord bundleIdentifier];
 
-    v20 = v21;
-    v19 = v22;
+    v20 = containingBundleRecord;
+    bundleIdentifier = bundleIdentifier2;
   }
 
   v23 = DNDSLogAppConfigurationServiceProvider;
   if (os_log_type_enabled(DNDSLogAppConfigurationServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v19;
+    *&buf[4] = bundleIdentifier;
     _os_log_impl(&dword_24912E000, v23, OS_LOG_TYPE_DEFAULT, "Client request to invalidate app context: bundleIdentifier=%{public}@", buf, 0xCu);
   }
 
-  v24 = [(DNDSRemoteAppConfigurationServiceProvider *)self delegate];
+  delegate = [(DNDSRemoteAppConfigurationServiceProvider *)self delegate];
   v28 = 0;
-  [v24 remoteAppConfigurationServiceProvider:self invalidateAppContextForActionIdentifier:v10 bundleIdentifier:v19 withError:&v28];
+  [delegate remoteAppConfigurationServiceProvider:self invalidateAppContextForActionIdentifier:identifierCopy bundleIdentifier:bundleIdentifier withError:&v28];
 
   v25 = v28;
   v26 = [MEMORY[0x277CCABB0] numberWithInt:v25 == 0];
-  v9[2](v9, v26, v25);
+  handlerCopy[2](handlerCopy, v26, v25);
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleClientConnectionInterrupted:(id)a3
+- (void)_handleClientConnectionInterrupted:(id)interrupted
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptedCopy = interrupted;
   v5 = DNDSLogAppConfigurationServiceProvider;
   if (os_log_type_enabled(DNDSLogAppConfigurationServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = interruptedCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Client XPC connection was interrupted: connection=%{public}@", &v7, 0xCu);
   }
 
-  [(DNDSRemoteAppConfigurationServiceProvider *)self _removeConnection:v4];
+  [(DNDSRemoteAppConfigurationServiceProvider *)self _removeConnection:interruptedCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleClientConnectionInvalidated:(id)a3
+- (void)_handleClientConnectionInvalidated:(id)invalidated
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = DNDSLogAppConfigurationServiceProvider;
   if (os_log_type_enabled(DNDSLogAppConfigurationServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = invalidatedCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Client XPC connection was invalidated: connection=%{public}@", &v7, 0xCu);
   }
 
-  [(DNDSRemoteAppConfigurationServiceProvider *)self _removeConnection:v4];
+  [(DNDSRemoteAppConfigurationServiceProvider *)self _removeConnection:invalidatedCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMutableSet *)self->_connections addObject:v4];
+  [(NSMutableSet *)self->_connections addObject:connectionCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMutableSet *)self->_connections removeObject:v4];
+  [(NSMutableSet *)self->_connections removeObject:connectionCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }

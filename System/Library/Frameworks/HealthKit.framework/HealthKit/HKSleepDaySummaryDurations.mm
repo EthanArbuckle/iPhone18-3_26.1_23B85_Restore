@@ -1,61 +1,61 @@
 @interface HKSleepDaySummaryDurations
-- (HKSleepDaySummaryDurations)initWithInBedDuration:(double)a3 sleepDuration:(double)a4 unspecifiedSleepDuration:(double)a5 coreSleepDuration:(double)a6 deepSleepDuration:(double)a7 remSleepDuration:(double)a8 awakeDuration:(double)a9;
+- (HKSleepDaySummaryDurations)initWithInBedDuration:(double)duration sleepDuration:(double)sleepDuration unspecifiedSleepDuration:(double)unspecifiedSleepDuration coreSleepDuration:(double)coreSleepDuration deepSleepDuration:(double)deepSleepDuration remSleepDuration:(double)remSleepDuration awakeDuration:(double)awakeDuration;
 - (double)maxDuration;
-- (id)durationsByAdding:(id)a3;
+- (id)durationsByAdding:(id)adding;
 @end
 
 @implementation HKSleepDaySummaryDurations
 
-- (HKSleepDaySummaryDurations)initWithInBedDuration:(double)a3 sleepDuration:(double)a4 unspecifiedSleepDuration:(double)a5 coreSleepDuration:(double)a6 deepSleepDuration:(double)a7 remSleepDuration:(double)a8 awakeDuration:(double)a9
+- (HKSleepDaySummaryDurations)initWithInBedDuration:(double)duration sleepDuration:(double)sleepDuration unspecifiedSleepDuration:(double)unspecifiedSleepDuration coreSleepDuration:(double)coreSleepDuration deepSleepDuration:(double)deepSleepDuration remSleepDuration:(double)remSleepDuration awakeDuration:(double)awakeDuration
 {
   v17.receiver = self;
   v17.super_class = HKSleepDaySummaryDurations;
   result = [(HKSleepDaySummaryDurations *)&v17 init];
   if (result)
   {
-    result->_inBedDuration = a3;
-    result->_sleepDuration = a4;
-    result->_unspecifiedSleepDuration = a5;
-    result->_coreSleepDuration = a6;
-    result->_deepSleepDuration = a7;
-    result->_remSleepDuration = a8;
-    result->_awakeDuration = a9;
+    result->_inBedDuration = duration;
+    result->_sleepDuration = sleepDuration;
+    result->_unspecifiedSleepDuration = unspecifiedSleepDuration;
+    result->_coreSleepDuration = coreSleepDuration;
+    result->_deepSleepDuration = deepSleepDuration;
+    result->_remSleepDuration = remSleepDuration;
+    result->_awakeDuration = awakeDuration;
   }
 
   return result;
 }
 
-- (id)durationsByAdding:(id)a3
+- (id)durationsByAdding:(id)adding
 {
-  v4 = a3;
+  addingCopy = adding;
   v5 = [HKSleepDaySummaryDurations alloc];
   [(HKSleepDaySummaryDurations *)self inBedDuration];
   v7 = v6;
-  [v4 inBedDuration];
+  [addingCopy inBedDuration];
   v9 = v7 + v8;
   [(HKSleepDaySummaryDurations *)self sleepDuration];
   v11 = v10;
-  [v4 sleepDuration];
+  [addingCopy sleepDuration];
   v13 = v11 + v12;
   [(HKSleepDaySummaryDurations *)self unspecifiedSleepDuration];
   v15 = v14;
-  [v4 unspecifiedSleepDuration];
+  [addingCopy unspecifiedSleepDuration];
   v17 = v15 + v16;
   [(HKSleepDaySummaryDurations *)self coreSleepDuration];
   v19 = v18;
-  [v4 coreSleepDuration];
+  [addingCopy coreSleepDuration];
   v21 = v19 + v20;
   [(HKSleepDaySummaryDurations *)self deepSleepDuration];
   v23 = v22;
-  [v4 deepSleepDuration];
+  [addingCopy deepSleepDuration];
   v25 = v23 + v24;
   [(HKSleepDaySummaryDurations *)self remSleepDuration];
   v27 = v26;
-  [v4 remSleepDuration];
+  [addingCopy remSleepDuration];
   v29 = v27 + v28;
   [(HKSleepDaySummaryDurations *)self awakeDuration];
   v31 = v30;
-  [v4 awakeDuration];
+  [addingCopy awakeDuration];
   v33 = v32;
 
   v34 = [(HKSleepDaySummaryDurations *)v5 initWithInBedDuration:v9 sleepDuration:v13 unspecifiedSleepDuration:v17 coreSleepDuration:v21 deepSleepDuration:v25 remSleepDuration:v29 awakeDuration:v31 + v33];

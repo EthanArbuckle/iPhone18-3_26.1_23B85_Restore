@@ -1,19 +1,19 @@
 @interface NPTMetadataEventTypeConverter
-+ (id)getTypeAsString:(int)a3;
++ (id)getTypeAsString:(int)string;
 @end
 
 @implementation NPTMetadataEventTypeConverter
 
-+ (id)getTypeAsString:(int)a3
++ (id)getTypeAsString:(int)string
 {
-  if (a3 > 0x1B)
+  if (string > 0x1B)
   {
     return 0;
   }
 
   else
   {
-    return off_2789D4238[a3];
+    return off_2789D4238[string];
   }
 }
 

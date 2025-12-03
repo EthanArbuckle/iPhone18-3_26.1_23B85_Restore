@@ -21,7 +21,7 @@
   sub_1000012FC(&qword_100010928, &qword_100009218);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_100008E20;
-  v3 = [objc_opt_self() registeredIdentifier];
+  registeredIdentifier = [objc_opt_self() registeredIdentifier];
   v4 = sub_10000843C();
   v6 = v5;
 

@@ -1,28 +1,28 @@
 @interface VKRouteLine
-- (BOOL)buildRouteLine:(id)a3 matchToRoads:(BOOL)a4 shouldGenerateSnapPath:(BOOL)a5 viewUnitsPerPoint:(double)a6 force:(BOOL)a7 boundsInflation:(float)a8 isGradientTraffic:(BOOL)a9 currentLegIndex:(unsigned int)a10 elevationSource:(void *)a11 elevationSourceContext:(void *)a12;
+- (BOOL)buildRouteLine:(id)line matchToRoads:(BOOL)roads shouldGenerateSnapPath:(BOOL)path viewUnitsPerPoint:(double)point force:(BOOL)force boundsInflation:(float)inflation isGradientTraffic:(BOOL)traffic currentLegIndex:(unsigned int)self0 elevationSource:(void *)self1 elevationSourceContext:(void *)self2;
 - (BOOL)isTrafficUpToDate;
-- (BOOL)needsUpdateForViewingScale:(double)a3;
+- (BOOL)needsUpdateForViewingScale:(double)scale;
 - (Box<double,)bounds;
 - (Matrix<double,)inverseManeuverTransform;
 - (Matrix<double,)maneuverTransform;
 - (NSArray)matchedSegments;
-- (VKRouteLine)initWithPolylineOverlay:(id)a3;
+- (VKRouteLine)initWithPolylineOverlay:(id)overlay;
 - (VKRouteLineObserverProtocol)observer;
-- (double)_findSimplifiedOffsetFor:(const PolylineCoordinate *)a3 betweenA:(const PolylineCoordinate *)a4 andB:(const PolylineCoordinate *)a5;
+- (double)_findSimplifiedOffsetFor:(const PolylineCoordinate *)for betweenA:(const PolylineCoordinate *)a andB:(const PolylineCoordinate *)b;
 - (id).cxx_construct;
-- (optional<VKRouteLineSnapResult>)snapRouteMatch:(SEL)a3;
-- (optional<std::pair<const)_getSnappedSegment:()fast_shared_ptr<md:(mdm:(const PolylineCoordinate *)a4 :allocator>)a3 :RouteLineSection coord:;
+- (optional<VKRouteLineSnapResult>)snapRouteMatch:(SEL)match;
+- (optional<std::pair<const)_getSnappedSegment:()fast_shared_ptr<md:(mdm:(const PolylineCoordinate *)md :allocator>)a3 :RouteLineSection coord:;
 - (vector<geo::fast_shared_ptr<md::RouteLineSection,)sections;
 - (vector<gm::Matrix<float,)maneuverPoints;
-- (void)_addMatchedSegments:(id)a3;
+- (void)_addMatchedSegments:(id)segments;
 - (void)_clearMatchedSegments;
-- (void)_updateBounds:(id)a3 boundsInflation:(float)a4;
-- (void)_updateTilesCovered:(id)a3;
-- (void)createMeshIfNecessary:(int64_t)a3;
+- (void)_updateBounds:(id)bounds boundsInflation:(float)inflation;
+- (void)_updateTilesCovered:(id)covered;
+- (void)createMeshIfNecessary:(int64_t)necessary;
 - (void)dealloc;
-- (void)forEachSection:(id)a3;
-- (void)generateArrowsForManeuverDisplayMode:(int)a3 routeLineWidth:(double)a4 collideTrafficFeatures:(const void *)a5;
-- (void)splitRouteLineAtAnnotation:(id)a3 puckOffset:(PolylineCoordinate)a4;
+- (void)forEachSection:(id)section;
+- (void)generateArrowsForManeuverDisplayMode:(int)mode routeLineWidth:(double)width collideTrafficFeatures:(const void *)features;
+- (void)splitRouteLineAtAnnotation:(id)annotation puckOffset:(PolylineCoordinate)offset;
 @end
 
 @implementation VKRouteLine
@@ -153,18 +153,18 @@
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
-  v33 = [*(self + 24) composedRoute];
-  std::vector<gm::Matrix<float,2,1>>::reserve(retstr, [v33 stepsCount]);
+  composedRoute = [*(self + 24) composedRoute];
+  std::vector<gm::Matrix<float,2,1>>::reserve(retstr, [composedRoute stepsCount]);
   v5 = 0;
   __asm { FMOV            V0.2D, #0.5 }
 
   v30 = _Q0;
   v31 = xmmword_1B33B0700;
   v29 = xmmword_1B33B0740;
-  while (v5 < [v33 stepsCount])
+  while (v5 < [composedRoute stepsCount])
   {
-    v11 = [v33 stepAtIndex:v5];
-    [v33 pointAtRouteCoordinate:{objc_msgSend(v11, "endRouteCoordinate")}];
+    v11 = [composedRoute stepAtIndex:v5];
+    [composedRoute pointAtRouteCoordinate:{objc_msgSend(v11, "endRouteCoordinate")}];
     v32 = v12;
     v14 = tan(v13 * 0.00872664626 + 0.785398163);
     v15 = log(v14);
@@ -236,7 +236,7 @@
   return result;
 }
 
-- (void)_updateBounds:(id)a3 boundsInflation:(float)a4
+- (void)_updateBounds:(id)bounds boundsInflation:(float)inflation
 {
   *(self + 1) = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
   *(self + 2) = xmmword_1B33B0520;
@@ -282,7 +282,7 @@
   v30[4] = self;
   v30[5] = v45;
   v30[10] = &v31;
-  forEachNodeInSortedPaths(a3, v30);
+  forEachNodeInSortedPaths(bounds, v30);
   v6 = v40;
   v40[3] = *(self + 5) - *(self + 2);
   v7 = *(self + 6) - *(self + 3);
@@ -307,7 +307,7 @@
   v13 = exp((v9 + (v11 - v9) * 0.5) * 6.28318531 + -3.14159265);
   v14 = atan(v13);
   v15 = geo::WGS84::unitsPerMeterAtLatitude<geo::Degrees,double>(v14 * 114.591559 + -90.0);
-  v16 = v15 * (a4 * v32[6]);
+  v16 = v15 * (inflation * v32[6]);
   v6[3] = v12 - v10;
   v17 = v16 + (v12 - v10) * 0.005;
   v18 = *(self + 3);
@@ -428,10 +428,10 @@ void __45__VKRouteLine__updateBounds_boundsInflation___block_invoke(void *a1, fl
   *(*(a1[10] + 8) + 24) = fmaxf(*(*(a1[10] + 8) + 24), a3);
 }
 
-- (void)forEachSection:(id)a3
+- (void)forEachSection:(id)section
 {
-  v4 = a3;
-  if (v4)
+  sectionCopy = section;
+  if (sectionCopy)
   {
     v6 = *(self + 35);
     for (i = *(self + 36); v6 != i; ++v6)
@@ -444,19 +444,19 @@ void __45__VKRouteLine__updateBounds_boundsInflation___block_invoke(void *a1, fl
       }
 
       v8 = v7;
-      v4[2](v4, &v8);
+      sectionCopy[2](sectionCopy, &v8);
       geo::fast_shared_ptr<md::RouteLineSection,mdm::allocator>::~fast_shared_ptr(&v8);
       geo::fast_shared_ptr<md::RouteLineSection,mdm::allocator>::~fast_shared_ptr(&v9);
     }
   }
 }
 
-- (void)splitRouteLineAtAnnotation:(id)a3 puckOffset:(PolylineCoordinate)a4
+- (void)splitRouteLineAtAnnotation:(id)annotation puckOffset:(PolylineCoordinate)offset
 {
-  v6 = a3;
-  v7 = [v6 routeMatch];
-  v8 = v7;
-  if (!v7 || ([v7 route], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "uniqueRouteID"), v10 = objc_claimAutoreleasedReturnValue(), -[VKRouteLine overlay](self, "overlay"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "composedRoute"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "uniqueRouteID"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v10, "isEqual:", v13), v13, v12, v11, v10, v9, (v14 & 1) == 0))
+  annotationCopy = annotation;
+  routeMatch = [annotationCopy routeMatch];
+  v8 = routeMatch;
+  if (!routeMatch || ([routeMatch route], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "uniqueRouteID"), v10 = objc_claimAutoreleasedReturnValue(), -[VKRouteLine overlay](self, "overlay"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "composedRoute"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "uniqueRouteID"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v10, "isEqual:", v13), v13, v12, v11, v10, v9, (v14 & 1) == 0))
   {
     *(self + 39) = 0xBF80000000000000;
     v50 = *(self + 35);
@@ -482,12 +482,12 @@ void __45__VKRouteLine__updateBounds_boundsInflation___block_invoke(void *a1, fl
     goto LABEL_38;
   }
 
-  [v6 presentationCoordinate];
+  [annotationCopy presentationCoordinate];
   v16 = v15;
-  [v6 presentationCoordinate];
+  [annotationCopy presentationCoordinate];
   v59 = v17;
-  v18 = HIDWORD(*&a4);
-  offset = a4.offset;
+  v18 = HIDWORD(*&offset);
+  offset = offset.offset;
   v20 = tan(v16 * 0.00872664626 + 0.785398163);
   v21 = log(v20);
   *&v22.f64[0] = v59;
@@ -498,22 +498,22 @@ void __45__VKRouteLine__updateBounds_boundsInflation___block_invoke(void *a1, fl
   v74[1] = xmmword_1B33B0740;
   v28 = gm::operator*<double,4,4,1>(self + 8, v74);
   v30 = v29;
-  if (*MEMORY[0x1E69A1918] == a4.index && vabds_f32(a4.offset, *(MEMORY[0x1E69A1918] + 4)) < 0.00000011921)
+  if (*MEMORY[0x1E69A1918] == offset.index && vabds_f32(offset.offset, *(MEMORY[0x1E69A1918] + 4)) < 0.00000011921)
   {
-    v31 = [v8 routeCoordinate];
-    v18 = HIDWORD(v31);
-    offset = *(&v31 + 1);
-    a4.index = v31;
+    routeCoordinate = [v8 routeCoordinate];
+    v18 = HIDWORD(routeCoordinate);
+    offset = *(&routeCoordinate + 1);
+    offset.index = routeCoordinate;
   }
 
   v32 = *MEMORY[0x1E69A1920];
   v33 = *(MEMORY[0x1E69A1920] + 4);
   index = *(MEMORY[0x1E69A1920] + 8);
   v35 = *(MEMORY[0x1E69A1920] + 12);
-  v36 = [*(self + 24) splitSections];
-  v37 = *v36;
-  v38 = v36[1];
-  if (*v36 == v38)
+  splitSections = [*(self + 24) splitSections];
+  v37 = *splitSections;
+  v38 = splitSections[1];
+  if (*splitSections == v38)
   {
     v42 = v35;
     v41 = index;
@@ -532,21 +532,21 @@ void __45__VKRouteLine__updateBounds_boundsInflation___block_invoke(void *a1, fl
     v44 = v37[1];
     v45 = *(v37 + 2);
     v46 = v37[3];
-    if (*v37 >= a4.index && (LODWORD(v43) != a4.index || v44 > offset))
+    if (*v37 >= offset.index && (LODWORD(v43) != offset.index || v44 > offset))
     {
       goto LABEL_20;
     }
 
-    if (v45 > a4.index)
+    if (v45 > offset.index)
     {
       break;
     }
 
-    if (v45 == a4.index && v46 >= offset)
+    if (v45 == offset.index && v46 >= offset)
     {
       v32 = *v37;
       v33 = v37[1];
-      index = a4.index;
+      index = offset.index;
       goto LABEL_30;
     }
 
@@ -603,7 +603,7 @@ LABEL_36:
     v60[1] = 3221225472;
     v60[2] = __53__VKRouteLine_splitRouteLineAtAnnotation_puckOffset___block_invoke;
     v60[3] = &unk_1E7B38CE8;
-    v62 = a4.index;
+    v62 = offset.index;
     v63 = v18;
     v60[4] = self;
     v64 = v53;
@@ -863,7 +863,7 @@ LABEL_60:
   }
 }
 
-- (optional<VKRouteLineSnapResult>)snapRouteMatch:(SEL)a3
+- (optional<VKRouteLineSnapResult>)snapRouteMatch:(SEL)match
 {
   v119 = *MEMORY[0x1E69E9840];
   v6 = a4;
@@ -877,8 +877,8 @@ LABEL_60:
 
   [v7 locationCoordinate3D];
   [v7 locationCoordinate3D];
-  v15 = [v7 routeCoordinate];
-  v81 = v15;
+  routeCoordinate = [v7 routeCoordinate];
+  v81 = routeCoordinate;
   v17 = *(self + 35);
   v16 = *(self + 36);
   if (v17 == v16)
@@ -924,10 +924,10 @@ LABEL_19:
     }
 
     v23 = *(v22 + 88);
-    if (v23 <= v15 && (v23 != v15 || *(v22 + 92) <= *(&v15 + 1)))
+    if (v23 <= routeCoordinate && (v23 != routeCoordinate || *(v22 + 92) <= *(&routeCoordinate + 1)))
     {
       v24 = *(v22 + 96);
-      if (v24 >= v15 && (v24 != v15 || *(v22 + 100) >= *(&v15 + 1)))
+      if (v24 >= routeCoordinate && (v24 != routeCoordinate || *(v22 + 100) >= *(&routeCoordinate + 1)))
       {
         break;
       }
@@ -967,7 +967,7 @@ LABEL_21:
       v29 = v27 >> 1;
       v30 = &v28[6 * (v27 >> 1)];
       v31 = v30[1].u32[1];
-      if (v31 < v15 || v31 == v15 && v30[2].f32[0] < *(&v15 + 1))
+      if (v31 < routeCoordinate || v31 == routeCoordinate && v30[2].f32[0] < *(&routeCoordinate + 1))
       {
         v28 = v30 + 6;
         v29 = v27 + ~v29;
@@ -1101,7 +1101,7 @@ LABEL_42:
   return result;
 }
 
-- (BOOL)needsUpdateForViewingScale:(double)a3
+- (BOOL)needsUpdateForViewingScale:(double)scale
 {
   v4 = *(self + 53);
   if (v4 == 0.0)
@@ -1111,9 +1111,9 @@ LABEL_42:
 
   else
   {
-    v5 = (v4 - a3) / v4;
+    v5 = (v4 - scale) / v4;
     v6 = fabsf(v5);
-    if (v4 >= a3)
+    if (v4 >= scale)
     {
       v7 = v6 > 0.45;
     }
@@ -1126,9 +1126,9 @@ LABEL_42:
 
   if ([(VKRouteLine *)self isTrafficUpToDate]&& ![(VKRouteLine *)self hasNewRoadMatches])
   {
-    v9 = [(VKRouteLine *)self composedRoute];
-    v10 = [v9 revisionIdentifier];
-    v12 = v10;
+    composedRoute = [(VKRouteLine *)self composedRoute];
+    revisionIdentifier = [composedRoute revisionIdentifier];
+    v12 = revisionIdentifier;
     v8 = geo::_retain_ptr<NSUUID * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::operator==(*(self + 42), &v12) ^ 1 | v7;
   }
 
@@ -1140,14 +1140,14 @@ LABEL_42:
   return v8 & 1;
 }
 
-- (void)createMeshIfNecessary:(int64_t)a3
+- (void)createMeshIfNecessary:(int64_t)necessary
 {
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __37__VKRouteLine_createMeshIfNecessary___block_invoke;
   v21[3] = &unk_1E7B38CC0;
   v21[4] = self;
-  v21[5] = a3;
+  v21[5] = necessary;
   [(VKRouteLine *)self forEachSection:v21];
   v4 = *(self + 44);
   v5 = *(self + 45);
@@ -1328,18 +1328,18 @@ LABEL_20:
   }
 }
 
-- (void)generateArrowsForManeuverDisplayMode:(int)a3 routeLineWidth:(double)a4 collideTrafficFeatures:(const void *)a5
+- (void)generateArrowsForManeuverDisplayMode:(int)mode routeLineWidth:(double)width collideTrafficFeatures:(const void *)features
 {
   v174[16] = *MEMORY[0x1E69E9840];
   *(self + 45) = *(self + 44);
-  v6 = [*(self + 24) composedRoute];
-  v161 = [v6 currentDisplayStep];
+  composedRoute = [*(self + 24) composedRoute];
+  currentDisplayStep = [composedRoute currentDisplayStep];
 
-  v7 = [*(self + 24) composedRoute];
-  v8 = [v7 maneuverDisplayEnabled];
+  composedRoute2 = [*(self + 24) composedRoute];
+  maneuverDisplayEnabled = [composedRoute2 maneuverDisplayEnabled];
 
-  v9 = v8 ^ 1;
-  if (!a3)
+  v9 = maneuverDisplayEnabled ^ 1;
+  if (!mode)
   {
     v9 = 1;
   }
@@ -1349,19 +1349,19 @@ LABEL_20:
     return;
   }
 
-  v10 = [*(self + 24) composedRoute];
+  composedRoute3 = [*(self + 24) composedRoute];
   v11 = *(self + 26);
-  v12 = a4;
-  v13 = (v12 * v11) * 0.56406;
-  v163 = v12 * v11;
-  v14 = (v12 * v11) * 0.7125;
-  v15 = v10;
+  widthCopy = width;
+  v13 = (widthCopy * v11) * 0.56406;
+  v163 = widthCopy * v11;
+  v14 = (widthCopy * v11) * 0.7125;
+  v15 = composedRoute3;
   v16 = v15;
   v166 = v15;
   if (v15)
   {
-    v17 = [v15 maneuverDisplaySteps];
-    v18 = [v17 count];
+    maneuverDisplaySteps = [v15 maneuverDisplaySteps];
+    v18 = [maneuverDisplaySteps count];
 
     if (v18)
     {
@@ -1370,8 +1370,8 @@ LABEL_20:
       v171 = 0u;
       v172 = 0u;
       v173 = 0u;
-      v19 = [v16 maneuverDisplaySteps];
-      v20 = [v19 countByEnumeratingWithState:&v170 objects:v174 count:16];
+      maneuverDisplaySteps2 = [v16 maneuverDisplaySteps];
+      v20 = [maneuverDisplaySteps2 countByEnumeratingWithState:&v170 objects:v174 count:16];
       if (!v20)
       {
         goto LABEL_42;
@@ -1379,7 +1379,7 @@ LABEL_20:
 
       v165 = *v171;
       v21 = (v11 * 10.0);
-      v164 = v19;
+      v164 = maneuverDisplaySteps2;
       while (1)
       {
         v167 = v20;
@@ -1387,13 +1387,13 @@ LABEL_20:
         {
           if (*v171 != v165)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(maneuverDisplaySteps2);
           }
 
           v23 = *(*(&v170 + 1) + 8 * i);
-          v24 = [v23 stepIndex];
-          v25 = v24 == v161;
-          if (v24 == v161)
+          stepIndex = [v23 stepIndex];
+          v25 = stepIndex == currentDisplayStep;
+          if (stepIndex == currentDisplayStep)
           {
             v26 = v14;
           }
@@ -1423,7 +1423,7 @@ LABEL_20:
           }
 
           v32 = [v166 coordinateAtOffset:v28 | (v29 << 32) fromRouteCoordinate:v26];
-          v33 = [v166 pointCount];
+          pointCount = [v166 pointCount];
           v34 = v166;
           v35 = v34;
           if (!v32 || [v34 pointCount] - 1 <= v32)
@@ -1445,7 +1445,7 @@ LABEL_20:
           v45 = v28 != v32;
           v48 = ((v46 - v41) * (v37 - v41) + (v47 - v43) * (v39 - v43)) / sqrt(((v37 - v41) * (v37 - v41) + (v39 - v43) * (v39 - v43)) * ((v46 - v41) * (v46 - v41) + (v47 - v43) * (v47 - v43))) > -0.866025405;
 
-          v49 = v28 < v33 - 1 && v45;
+          v49 = v28 < pointCount - 1 && v45;
           if (v49 && v48)
           {
             v28 = [v35 coordinateAtOffset:v44 fromRoutePoint:(v163 * 0.5)];
@@ -1532,7 +1532,7 @@ LABEL_26:
             *(v51 + 17) = v25;
           }
 
-          v19 = v164;
+          maneuverDisplaySteps2 = v164;
           *(self + 51) = v53;
         }
 
@@ -1648,8 +1648,8 @@ LABEL_121:
   v69 = *(self + 51);
   if (v68 != v69)
   {
-    v70 = *a5;
-    v71 = *(a5 + 1);
+    v70 = *features;
+    v71 = *(features + 1);
     do
     {
       if (v70 != v71)
@@ -1686,7 +1686,7 @@ LABEL_64:
     while (v68 != v69);
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v101 = *(self + 50);
     if (*(self + 51) == v101)
@@ -1694,7 +1694,7 @@ LABEL_64:
       return;
     }
 
-    v102 = (v101 + 20 * v161);
+    v102 = (v101 + 20 * currentDisplayStep);
     if ((v102[4] & 1) == 0 || (v103 = *(self + 35), *(self + 36) == v103))
     {
       v104 = 0;
@@ -1775,7 +1775,7 @@ LABEL_64:
         }
 
         v145 = 44 * v141;
-        *v145 = v161;
+        *v145 = currentDisplayStep;
         *(v145 + 4) = -1;
         *(v145 + 12) = v105;
         *(v145 + 16) = v106;
@@ -1799,7 +1799,7 @@ LABEL_64:
 
       else
       {
-        *v137 = v161;
+        *v137 = currentDisplayStep;
         *(v137 + 4) = -1;
         *(v137 + 12) = v105;
         *(v137 + 16) = v106;
@@ -1814,7 +1814,7 @@ LABEL_64:
     }
 
 LABEL_124:
-    v123 = v161 + 1;
+    v123 = currentDisplayStep + 1;
     v124 = *(self + 50);
     if (0xCCCCCCCCCCCCCCCDLL * ((*(self + 51) - v124) >> 2) <= v123)
     {
@@ -1928,7 +1928,7 @@ LABEL_169:
     std::__throw_bad_array_new_length[abi:nn200100]();
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v77 = *(self + 51) - *(self + 50);
     if (v77)
@@ -2028,31 +2028,31 @@ LABEL_169:
   }
 }
 
-- (BOOL)buildRouteLine:(id)a3 matchToRoads:(BOOL)a4 shouldGenerateSnapPath:(BOOL)a5 viewUnitsPerPoint:(double)a6 force:(BOOL)a7 boundsInflation:(float)a8 isGradientTraffic:(BOOL)a9 currentLegIndex:(unsigned int)a10 elevationSource:(void *)a11 elevationSourceContext:(void *)a12
+- (BOOL)buildRouteLine:(id)line matchToRoads:(BOOL)roads shouldGenerateSnapPath:(BOOL)path viewUnitsPerPoint:(double)point force:(BOOL)force boundsInflation:(float)inflation isGradientTraffic:(BOOL)traffic currentLegIndex:(unsigned int)self0 elevationSource:(void *)self1 elevationSourceContext:(void *)self2
 {
-  v13 = a9;
-  v17 = a5;
-  v18 = a4;
-  v52 = a3;
+  trafficCopy = traffic;
+  pathCopy = path;
+  roadsCopy = roads;
+  lineCopy = line;
   if ((*(self + 8) & 1) == 0)
   {
-    v21 = [*(self + 24) composedRoute];
-    [v21 clearSnappedPathsForObserver:self];
+    composedRoute = [*(self + 24) composedRoute];
+    [composedRoute clearSnappedPathsForObserver:self];
   }
 
-  v22 = [(VKRouteLine *)self composedRoute];
-  v23 = [v22 revisionIdentifier];
-  v85 = v23;
+  composedRoute2 = [(VKRouteLine *)self composedRoute];
+  revisionIdentifier = [composedRoute2 revisionIdentifier];
+  v85 = revisionIdentifier;
   v24 = geo::_retain_ptr<NSUUID * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::operator==(*(self + 42), &v85);
 
   if ((v24 & 1) == 0)
   {
-    v25 = [(VKRouteLine *)self composedRoute];
-    v26 = [v25 revisionIdentifier];
-    v27 = v26;
-    if (v26)
+    composedRoute3 = [(VKRouteLine *)self composedRoute];
+    revisionIdentifier2 = [composedRoute3 revisionIdentifier];
+    v27 = revisionIdentifier2;
+    if (revisionIdentifier2)
     {
-      v28 = v26;
+      v28 = revisionIdentifier2;
     }
 
     else
@@ -2064,19 +2064,19 @@ LABEL_169:
     v30 = *(self + 42);
     *(self + 42) = v27;
 
-    a7 = 1;
+    force = 1;
   }
 
   v31 = *(self + 49);
-  objc_storeStrong(self + 49, a3);
-  if (!a7 && *(self + 8) == v18 && ([v31 isEquivalentToNewRegion:*(self + 49)] & 1) != 0)
+  objc_storeStrong(self + 49, line);
+  if (!force && *(self + 8) == roadsCopy && ([v31 isEquivalentToNewRegion:*(self + 49)] & 1) != 0)
   {
     i = 0;
   }
 
   else
   {
-    *(self + 8) = v18;
+    *(self + 8) = roadsCopy;
     v33 = *(self + 38);
     if (v33)
     {
@@ -2109,16 +2109,16 @@ LABEL_169:
       v41 = 0;
     }
 
-    v42 = [*(self + 24) getPathsForRenderRegion:*(self + 49) shouldSnapToRoads:*(self + 8) shouldGenerateSnapPath:v17 verifySnapping:v41 isGradientTraffic:v13 observer:self elevationSource:a11 elevationSourceContext:{a12, v52}];
+    v42 = [*(self + 24) getPathsForRenderRegion:*(self + 49) shouldSnapToRoads:*(self + 8) shouldGenerateSnapPath:pathCopy verifySnapping:v41 isGradientTraffic:trafficCopy observer:self elevationSource:source elevationSourceContext:{context, lineCopy}];
     if ([v42 count])
     {
-      *&v43 = a8;
+      *&v43 = inflation;
       [(VKRouteLine *)self _updateBounds:v42 boundsInflation:v43];
       [(VKRouteLine *)self _updateTilesCovered:v42];
       v44 = exp((*(self + 6) + *(self + 3)) * 3.14159265 + -3.14159265);
       v45 = atan(v44);
-      *(self + 26) = a6 / geo::WGS84::unitsPerMeterAtLatitude<geo::Degrees,double>(v45 * 114.591559 + -90.0);
-      *(self + 33) = a6 / (*(self + 5) - *(self + 2));
+      *(self + 26) = point / geo::WGS84::unitsPerMeterAtLatitude<geo::Degrees,double>(v45 * 114.591559 + -90.0);
+      *(self + 33) = point / (*(self + 5) - *(self + 2));
       v76 = 0;
       v77 = &v76;
       v78 = 0x4812000000;
@@ -2189,17 +2189,17 @@ LABEL_169:
       v53[3] = &unk_1E7B38C98;
       v53[4] = self;
       v53[5] = &v69;
-      v54 = a10;
+      indexCopy = index;
       v53[6] = v57;
       v53[7] = &v59;
-      v55 = v13;
+      v55 = trafficCopy;
       v53[8] = v56;
       v53[9] = v58;
       v53[10] = v66;
       forEachNodeInSortedPaths(v42, v53);
       if (v60[6])
       {
-        v47 = [v70[5] routeEnd];
+        routeEnd = [v70[5] routeEnd];
         v48 = v60[6];
         if (v48)
         {
@@ -2211,12 +2211,12 @@ LABEL_169:
           v49 = 0;
         }
 
-        *(v49 + 96) = v47;
+        *(v49 + 96) = routeEnd;
       }
 
       [*(self + 24) trafficTimeStamp];
       *(self + 47) = v50;
-      *(self + 53) = a6;
+      *(self + 53) = point;
       _Block_object_dispose(v56, 8);
       _Block_object_dispose(v57, 8);
       _Block_object_dispose(v58, 8);
@@ -3116,7 +3116,7 @@ LABEL_148:
   while (v184 != 3);
 }
 
-- (optional<std::pair<const)_getSnappedSegment:()fast_shared_ptr<md:(mdm:(const PolylineCoordinate *)a4 :allocator>)a3 :RouteLineSection coord:
+- (optional<std::pair<const)_getSnappedSegment:()fast_shared_ptr<md:(mdm:(const PolylineCoordinate *)md :allocator>)a3 :RouteLineSection coord:
 {
   if (*a3._control)
   {
@@ -3142,7 +3142,7 @@ LABEL_148:
       v9 = v7 >> 1;
       v10 = (*(*(*a3._control + 8) + 48))(*a3._control + 8, v8 + (v7 >> 1));
       v11 = *(v10 + 12);
-      if (v11 < a4->index || v11 == a4->index && *(v10 + 16) < a4->offset)
+      if (v11 < md->index || v11 == md->index && *(v10 + 16) < md->offset)
       {
         v9 = v7 + ~v9;
         v8 += (v7 >> 1) + 1;
@@ -3188,51 +3188,51 @@ LABEL_148:
   return result;
 }
 
-- (double)_findSimplifiedOffsetFor:(const PolylineCoordinate *)a3 betweenA:(const PolylineCoordinate *)a4 andB:(const PolylineCoordinate *)a5
+- (double)_findSimplifiedOffsetFor:(const PolylineCoordinate *)for betweenA:(const PolylineCoordinate *)a andB:(const PolylineCoordinate *)b
 {
-  v9 = [*(self + 24) composedRoute];
-  v10 = v9;
-  index = a4->index;
-  offset = a4->offset;
+  composedRoute = [*(self + 24) composedRoute];
+  v10 = composedRoute;
+  index = a->index;
+  offset = a->offset;
   if (offset >= 1.0)
   {
     index += vcvtms_u32_f32(offset);
     offset = offset - floorf(offset);
   }
 
-  v13 = a5->index;
-  v14 = a5->offset;
+  v13 = b->index;
+  v14 = b->offset;
   if (v14 >= 1.0)
   {
     v13 += vcvtms_u32_f32(v14);
     v14 = v14 - floorf(v14);
   }
 
-  [v9 distanceBetweenRouteCoordinate:index | (LODWORD(offset) << 32) andRouteCoordinate:v13 | (LODWORD(v14) << 32)];
+  [composedRoute distanceBetweenRouteCoordinate:index | (LODWORD(offset) << 32) andRouteCoordinate:v13 | (LODWORD(v14) << 32)];
   v16 = v15;
 
   result = 0.0;
   if (v16 >= 1.0e-10)
   {
-    v18 = [*(self + 24) composedRoute];
-    v19 = v18;
-    v20 = a4->index;
-    v21 = a4->offset;
+    composedRoute2 = [*(self + 24) composedRoute];
+    v19 = composedRoute2;
+    v20 = a->index;
+    v21 = a->offset;
     if (v21 >= 1.0)
     {
       v20 += vcvtms_u32_f32(v21);
       v21 = v21 - floorf(v21);
     }
 
-    v22 = a3->index;
-    v23 = a3->offset;
+    v22 = for->index;
+    v23 = for->offset;
     if (v23 >= 1.0)
     {
       v22 += vcvtms_u32_f32(v23);
       v23 = v23 - floorf(v23);
     }
 
-    [v18 distanceBetweenRouteCoordinate:v20 | (LODWORD(v21) << 32) andRouteCoordinate:v22 | (LODWORD(v23) << 32)];
+    [composedRoute2 distanceBetweenRouteCoordinate:v20 | (LODWORD(v21) << 32) andRouteCoordinate:v22 | (LODWORD(v23) << 32)];
     v25 = v24;
 
     return v25 / v16;
@@ -3241,10 +3241,10 @@ LABEL_148:
   return result;
 }
 
-- (void)_updateTilesCovered:(id)a3
+- (void)_updateTilesCovered:(id)covered
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coveredCopy = covered;
   if (*(self + 8) == 1)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -3252,7 +3252,7 @@ LABEL_148:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v4;
+    v6 = coveredCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
@@ -3267,10 +3267,10 @@ LABEL_148:
             objc_enumerationMutation(v6);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * v9) matchedPathSegments];
-          if (v10)
+          matchedPathSegments = [*(*(&v12 + 1) + 8 * v9) matchedPathSegments];
+          if (matchedPathSegments)
           {
-            [v5 addObject:v10];
+            [v5 addObject:matchedPathSegments];
           }
 
           ++v9;
@@ -3303,37 +3303,37 @@ LABEL_148:
   [v3 removeAllObjects];
 }
 
-- (void)_addMatchedSegments:(id)a3
+- (void)_addMatchedSegments:(id)segments
 {
-  v4 = a3;
+  segmentsCopy = segments;
   std::mutex::lock((self + 440));
-  [*(self + 54) addObjectsFromArray:v4];
+  [*(self + 54) addObjectsFromArray:segmentsCopy];
   std::mutex::unlock((self + 440));
 }
 
 - (void)dealloc
 {
-  v3 = [*(self + 24) composedRoute];
-  [v3 clearSnappedPathsForObserver:self];
+  composedRoute = [*(self + 24) composedRoute];
+  [composedRoute clearSnappedPathsForObserver:self];
 
   v4.receiver = self;
   v4.super_class = VKRouteLine;
   [(VKRouteLine *)&v4 dealloc];
 }
 
-- (VKRouteLine)initWithPolylineOverlay:(id)a3
+- (VKRouteLine)initWithPolylineOverlay:(id)overlay
 {
-  v5 = a3;
+  overlayCopy = overlay;
   v17.receiver = self;
   v17.super_class = VKRouteLine;
   v6 = [(VKRouteLine *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 24, a3);
+    objc_storeStrong(v6 + 24, overlay);
     v8 = objc_alloc(MEMORY[0x1E69A2330]);
-    v9 = [v7[24] composedRoute];
-    v10 = [v8 initWithRoute:v9 auditToken:0];
+    composedRoute = [v7[24] composedRoute];
+    v10 = [v8 initWithRoute:composedRoute auditToken:0];
     v11 = v7[27];
     v7[27] = v10;
 

@@ -1,23 +1,23 @@
 @interface TFLogConfiguration
 + (id)defaultConfiguration;
 - (OS_os_log)generatedLogger;
-- (TFLogConfiguration)initWithSubsystem:(id)a3 category:(id)a4;
+- (TFLogConfiguration)initWithSubsystem:(id)subsystem category:(id)category;
 @end
 
 @implementation TFLogConfiguration
 
-- (TFLogConfiguration)initWithSubsystem:(id)a3 category:(id)a4
+- (TFLogConfiguration)initWithSubsystem:(id)subsystem category:(id)category
 {
-  v7 = a3;
-  v8 = a4;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   v15.receiver = self;
   v15.super_class = TFLogConfiguration;
   v9 = [(TFLogConfiguration *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_subsystem, a3);
-    objc_storeStrong(&v10->_category, a4);
+    objc_storeStrong(&v9->_subsystem, subsystem);
+    objc_storeStrong(&v10->_category, category);
     internalLogger = v10->_internalLogger;
     v10->_internalLogger = 0;
 
@@ -56,26 +56,26 @@ uint64_t __42__TFLogConfiguration_defaultConfiguration__block_invoke()
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
   v15 = 0;
-  v3 = [(TFLogConfiguration *)self internalLoggerAccessQueue];
+  internalLoggerAccessQueue = [(TFLogConfiguration *)self internalLoggerAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__TFLogConfiguration_generatedLogger__block_invoke;
   block[3] = &unk_279D98220;
   block[4] = self;
   block[5] = &v10;
-  dispatch_sync(v3, block);
+  dispatch_sync(internalLoggerAccessQueue, block);
 
   v4 = v11[5];
   if (!v4)
   {
-    v5 = [(TFLogConfiguration *)self internalLoggerAccessQueue];
+    internalLoggerAccessQueue2 = [(TFLogConfiguration *)self internalLoggerAccessQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __37__TFLogConfiguration_generatedLogger__block_invoke_2;
     v8[3] = &unk_279D98220;
     v8[4] = self;
     v8[5] = &v10;
-    dispatch_barrier_sync(v5, v8);
+    dispatch_barrier_sync(internalLoggerAccessQueue2, v8);
 
     v4 = v11[5];
   }

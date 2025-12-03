@@ -1,10 +1,10 @@
 @interface CMDeviceImpactManager
 - (CMDeviceImpactManager)init;
-- (void)clearDeviceImpactCacheWithCompletion:(id)a3;
+- (void)clearDeviceImpactCacheWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)queryDeviceImpactsWithCompletion:(id)a3;
-- (void)simulateHighAccelDeviceImpactWithTimeOffset:(double)a3 peakAcceleration:(double)a4 completion:(id)a5;
-- (void)startDeviceImpactUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)queryDeviceImpactsWithCompletion:(id)completion;
+- (void)simulateHighAccelDeviceImpactWithTimeOffset:(double)offset peakAcceleration:(double)acceleration completion:(id)completion;
+- (void)startDeviceImpactUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)stopDeviceImpactUpdates;
 @end
 
@@ -40,16 +40,16 @@
   [(CMDeviceImpactManager *)&v4 dealloc];
 }
 
-- (void)queryDeviceImpactsWithCompletion:(id)a3
+- (void)queryDeviceImpactsWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!completion)
   {
     v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMDeviceImpactManager.mm", 89, @"Invalid parameter not satisfying: %@", @"completion");
   }
 
-  if ((objc_msgSend_isDeviceImpactAvailable(self, a2, a3) & 1) == 0)
+  if ((objc_msgSend_isDeviceImpactAvailable(self, a2, completion) & 1) == 0)
   {
     if (qword_1EAFE2AF8 != -1)
     {
@@ -115,17 +115,17 @@
   block[2] = sub_19B6F1C60;
   block[3] = &unk_1E7532B68;
   block[4] = self;
-  block[5] = a3;
+  block[5] = completion;
   dispatch_async(queue, block);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startDeviceImpactUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startDeviceImpactUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (queue)
   {
-    if (a4)
+    if (handler)
     {
       goto LABEL_3;
     }
@@ -135,16 +135,16 @@
   {
     v10 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CMDeviceImpactManager.mm", 111, @"Invalid parameter not satisfying: %@", @"queue");
-    if (a4)
+    if (handler)
     {
       goto LABEL_3;
     }
   }
 
-  v12 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+  v12 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, queue);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CMDeviceImpactManager.mm", 112, @"Invalid parameter not satisfying: %@", @"handler");
 LABEL_3:
-  if ((objc_msgSend_isDeviceImpactAvailable(self, a2, a3) & 1) == 0)
+  if ((objc_msgSend_isDeviceImpactAvailable(self, a2, queue) & 1) == 0)
   {
     if (qword_1EAFE2AF8 != -1)
     {
@@ -209,8 +209,8 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = sub_19B6F249C;
   block[3] = &unk_1E7532C80;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = queue;
+  block[6] = handler;
   block[4] = self;
   dispatch_async(queue, block);
   v9 = *MEMORY[0x1E69E9840];
@@ -289,10 +289,10 @@ LABEL_3:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearDeviceImpactCacheWithCompletion:(id)a3
+- (void)clearDeviceImpactCacheWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  if ((objc_msgSend_isDeviceImpactAvailable(self, a2, a3) & 1) == 0)
+  if ((objc_msgSend_isDeviceImpactAvailable(self, a2, completion) & 1) == 0)
   {
     if (qword_1EAFE2AF8 != -1)
     {
@@ -358,15 +358,15 @@ LABEL_3:
   block[2] = sub_19B6F2CB4;
   block[3] = &unk_1E7532B68;
   block[4] = self;
-  block[5] = a3;
+  block[5] = completion;
   dispatch_async(queue, block);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)simulateHighAccelDeviceImpactWithTimeOffset:(double)a3 peakAcceleration:(double)a4 completion:(id)a5
+- (void)simulateHighAccelDeviceImpactWithTimeOffset:(double)offset peakAcceleration:(double)acceleration completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  if ((objc_msgSend_isDeviceImpactAvailable(self, a2, a5) & 1) == 0)
+  if ((objc_msgSend_isDeviceImpactAvailable(self, a2, completion) & 1) == 0)
   {
     if (qword_1EAFE2AF8 != -1)
     {
@@ -431,10 +431,10 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = sub_19B6F30A0;
   block[3] = &unk_1E7535118;
-  *&block[6] = a4;
-  *&block[7] = a3;
+  *&block[6] = acceleration;
+  *&block[7] = offset;
   block[4] = self;
-  block[5] = a5;
+  block[5] = completion;
   dispatch_async(queue, block);
   v10 = *MEMORY[0x1E69E9840];
 }

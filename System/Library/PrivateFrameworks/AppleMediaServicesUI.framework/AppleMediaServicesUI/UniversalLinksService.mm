@@ -1,15 +1,15 @@
 @interface UniversalLinksService
-- (void)updateWithCompletion:(id)a3;
+- (void)updateWithCompletion:(id)completion;
 @end
 
 @implementation UniversalLinksService
 
-- (void)updateWithCompletion:(id)a3
+- (void)updateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1001CB188(v5, v4);
+  selfCopy = self;
+  sub_1001CB188(selfCopy, v4);
   _Block_release(v4);
 }
 

@@ -1,26 +1,26 @@
 @interface ATXFaceSuggestionScorer
-- (ATXFaceSuggestionScorer)initWithParameters:(id)a3 descriptors:(id)a4;
+- (ATXFaceSuggestionScorer)initWithParameters:(id)parameters descriptors:(id)descriptors;
 - (NSSet)signals;
-- (double)featuredScoreForDescriptor:(id)a3;
-- (id)_mockScoreForDescriptor:(id)a3;
+- (double)featuredScoreForDescriptor:(id)descriptor;
+- (id)_mockScoreForDescriptor:(id)descriptor;
 - (void)_loadAppLaunchData;
 - (void)_loadSignals;
 @end
 
 @implementation ATXFaceSuggestionScorer
 
-- (ATXFaceSuggestionScorer)initWithParameters:(id)a3 descriptors:(id)a4
+- (ATXFaceSuggestionScorer)initWithParameters:(id)parameters descriptors:(id)descriptors
 {
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  descriptorsCopy = descriptors;
   v12.receiver = self;
   v12.super_class = ATXFaceSuggestionScorer;
   v9 = [(ATXFaceSuggestionScorer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parameters, a3);
-    objc_storeStrong(&v10->_descriptors, a4);
+    objc_storeStrong(&v9->_parameters, parameters);
+    objc_storeStrong(&v10->_descriptors, descriptors);
     [(ATXFaceSuggestionScorer *)v10 _loadSignals];
   }
 
@@ -34,10 +34,10 @@
   return v2;
 }
 
-- (double)featuredScoreForDescriptor:(id)a3
+- (double)featuredScoreForDescriptor:(id)descriptor
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = COERCE_DOUBLE(a3);
+  v4 = COERCE_DOUBLE(descriptor);
   v5 = __atxlog_handle_lock_screen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -186,18 +186,18 @@
   self->_appLaunchDictionary = v4;
 }
 
-- (id)_mockScoreForDescriptor:(id)a3
+- (id)_mockScoreForDescriptor:(id)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   v4 = objc_alloc(MEMORY[0x277CBEBD0]);
   v5 = [v4 initWithSuiteName:*MEMORY[0x277CEBD00]];
   v6 = [v5 dictionaryForKey:*MEMORY[0x277CEBDC0]];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = [v3 extensionBundleIdentifier];
-    v9 = [v3 identifier];
-    v10 = [v7 initWithFormat:@"%@-%@", v8, v9];
+    extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+    identifier = [descriptorCopy identifier];
+    v10 = [v7 initWithFormat:@"%@-%@", extensionBundleIdentifier, identifier];
 
     v11 = [v6 objectForKeyedSubscript:v10];
     objc_opt_class();

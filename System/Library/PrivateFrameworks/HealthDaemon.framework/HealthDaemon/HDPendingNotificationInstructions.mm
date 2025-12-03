@@ -1,22 +1,22 @@
 @interface HDPendingNotificationInstructions
-- (BOOL)isEqual:(id)a3;
-- (HDPendingNotificationInstructions)initWithAction:(int64_t)a3 instructions:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HDPendingNotificationInstructions)initWithAction:(int64_t)action instructions:(id)instructions;
 - (id)description;
 @end
 
 @implementation HDPendingNotificationInstructions
 
-- (HDPendingNotificationInstructions)initWithAction:(int64_t)a3 instructions:(id)a4
+- (HDPendingNotificationInstructions)initWithAction:(int64_t)action instructions:(id)instructions
 {
-  v6 = a4;
+  instructionsCopy = instructions;
   v12.receiver = self;
   v12.super_class = HDPendingNotificationInstructions;
   v7 = [(HDPendingNotificationInstructions *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_action = a3;
-    v9 = [v6 copy];
+    v7->_action = action;
+    v9 = [instructionsCopy copy];
     instructions = v8->_instructions;
     v8->_instructions = v9;
   }
@@ -30,17 +30,17 @@
   v4 = objc_opt_class();
   action = self->_action;
   v6 = NSStringFromHKNotificationInstructionAction();
-  v7 = [(HDPendingNotificationInstructions *)self messageIdentifiers];
-  v8 = [(HDPendingNotificationInstructions *)self categoryIdentifiers];
-  v9 = [v3 stringWithFormat:@"<%@:%@ mIDs:%@, cIDs:%@>", v4, v6, v7, v8];
+  messageIdentifiers = [(HDPendingNotificationInstructions *)self messageIdentifiers];
+  categoryIdentifiers = [(HDPendingNotificationInstructions *)self categoryIdentifiers];
+  v9 = [v3 stringWithFormat:@"<%@:%@ mIDs:%@, cIDs:%@>", v4, v6, messageIdentifiers, categoryIdentifiers];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -50,7 +50,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_action != v5->_action)
       {
         goto LABEL_9;

@@ -1,24 +1,24 @@
 @interface AADeviceProvisioningRequest
-- (AADeviceProvisioningRequest)initWithDSID:(id)a3 URLString:(id)a4 requestData:(id)a5;
+- (AADeviceProvisioningRequest)initWithDSID:(id)d URLString:(id)string requestData:(id)data;
 - (id)urlRequest;
 @end
 
 @implementation AADeviceProvisioningRequest
 
-- (AADeviceProvisioningRequest)initWithDSID:(id)a3 URLString:(id)a4 requestData:(id)a5
+- (AADeviceProvisioningRequest)initWithDSID:(id)d URLString:(id)string requestData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  stringCopy = string;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = AADeviceProvisioningRequest;
   v12 = [(AADeviceProvisioningRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dsid, a3);
-    objc_storeStrong(&v13->_url, a4);
-    objc_storeStrong(&v13->_data, a5);
+    objc_storeStrong(&v12->_dsid, d);
+    objc_storeStrong(&v13->_url, string);
+    objc_storeStrong(&v13->_data, data);
   }
 
   return v13;
@@ -29,8 +29,8 @@
   v23[2] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = AADeviceProvisioningRequest;
-  v3 = [(AARequest *)&v19 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v19 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
   v5 = [(NSData *)self->_data base64EncodedStringWithOptions:0];
@@ -53,9 +53,9 @@
     v10 = _AALogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 138412290;
-      v21 = v11;
+      v21 = localizedDescription;
       _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
   }

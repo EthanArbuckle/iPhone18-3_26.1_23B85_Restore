@@ -1,46 +1,46 @@
 @interface PDPersonRoleLocation
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 - (PDDatabaseValue)identityValue;
-- (PDPersonRoleLocation)initWithDatabaseRow:(id)a3;
+- (PDPersonRoleLocation)initWithDatabaseRow:(id)row;
 - (id)dictionaryRepresentation;
-- (void)bindTo:(id)a3;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDPersonRoleLocation
 
-- (PDPersonRoleLocation)initWithDatabaseRow:(id)a3
+- (PDPersonRoleLocation)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = sub_10016D778(v4, @"personID");
-  v6 = sub_10016D778(v4, @"roleID");
-  v7 = sub_10016D778(v4, @"locationID");
-  v8 = sub_10016D778(v4, @"roleType");
+  rowCopy = row;
+  v5 = sub_10016D778(rowCopy, @"personID");
+  v6 = sub_10016D778(rowCopy, @"roleID");
+  v7 = sub_10016D778(rowCopy, @"locationID");
+  v8 = sub_10016D778(rowCopy, @"roleType");
 
   v9 = sub_1000C8F24(self, v5, v6, v7, [v8 integerValue]);
   return v9;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PDPersonRoleLocation *)self identityValue];
-  sub_1000982FC(v8, v4, @"identity");
+  toCopy = to;
+  identityValue = [(PDPersonRoleLocation *)self identityValue];
+  sub_1000982FC(toCopy, identityValue, @"identity");
 
   if (self)
   {
-    sub_1000982FC(v8, self->_personID, @"personID");
-    sub_1000982FC(v8, self->_roleID, @"roleID");
+    sub_1000982FC(toCopy, self->_personID, @"personID");
+    sub_1000982FC(toCopy, self->_roleID, @"roleID");
     locationID = self->_locationID;
   }
 
   else
   {
-    sub_1000982FC(v8, 0, @"personID");
-    sub_1000982FC(v8, 0, @"roleID");
+    sub_1000982FC(toCopy, 0, @"personID");
+    sub_1000982FC(toCopy, 0, @"roleID");
     locationID = 0;
   }
 
-  sub_1000982FC(v8, locationID, @"locationID");
+  sub_1000982FC(toCopy, locationID, @"locationID");
   if (self)
   {
     roleType = self->_roleType;
@@ -52,25 +52,25 @@
   }
 
   v7 = [NSNumber numberWithInteger:roleType];
-  sub_1000982FC(v8, v7, @"roleType");
+  sub_1000982FC(toCopy, v7, @"roleType");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table PDPersonRoleLocation(   identity text not null,    personID text not null,    roleID text not null,    locationID text not null,    foreign key (personID) references CLSPerson(objectID) on delete cascade on update cascade,    foreign key (roleID) references CLSRole(objectID) on delete cascade on update cascade,    foreign key (locationID) references CLSLocation(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDPersonRoleLocation_identity on PDPersonRoleLocation (identity)", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDPersonRoleLocation_personID on PDPersonRoleLocation (personID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDPersonRoleLocation_roleID on PDPersonRoleLocation (roleID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDPersonRoleLocation_locationID on PDPersonRoleLocation (locationID)", 0, 0, 0) || !sub_1000B9298(v8, @"alter table PDPersonRoleLocation add column roleType integer", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDPersonRoleLocation_roleType on PDPersonRoleLocation (roleType)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table PDPersonRoleLocation(   identity text not null,    personID text not null,    roleID text not null,    locationID text not null,    foreign key (personID) references CLSPerson(objectID) on delete cascade on update cascade,    foreign key (roleID) references CLSRole(objectID) on delete cascade on update cascade,    foreign key (locationID) references CLSLocation(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDPersonRoleLocation_identity on PDPersonRoleLocation (identity)", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDPersonRoleLocation_personID on PDPersonRoleLocation (personID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDPersonRoleLocation_roleID on PDPersonRoleLocation (roleID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDPersonRoleLocation_locationID on PDPersonRoleLocation (locationID)", 0, 0, 0) || !sub_1000B9298(v8, @"alter table PDPersonRoleLocation add column roleType integer", 0, 0, 0) || !sub_1000B9298(v8, @"create index PDPersonRoleLocation_roleType on PDPersonRoleLocation (roleType)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_12;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_12:
 
@@ -93,10 +93,10 @@ LABEL_12:
     locationID = 0;
   }
 
-  v6 = [NSString stringWithFormat:@"%@/%@/%@", v3, v4, locationID];
-  v7 = [v6 sha224];
+  locationID = [NSString stringWithFormat:@"%@/%@/%@", v3, v4, locationID];
+  sha224 = [locationID sha224];
 
-  return v7;
+  return sha224;
 }
 
 - (id)dictionaryRepresentation
@@ -110,8 +110,8 @@ LABEL_12:
     locationID = self->_locationID;
   }
 
-  v3 = [CLSRole stringForRoleType:self->_roleType, v6, v7, @"locationID", @"roleType", *&v8, locationID];
-  v9 = v3;
+  locationID = [CLSRole stringForRoleType:self->_roleType, v6, v7, @"locationID", @"roleType", *&v8, locationID];
+  v9 = locationID;
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v6 count:4];
 
   return v4;

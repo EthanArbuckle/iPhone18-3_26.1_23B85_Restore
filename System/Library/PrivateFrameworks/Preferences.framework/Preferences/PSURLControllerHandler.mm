@@ -1,29 +1,29 @@
 @interface PSURLControllerHandler
 - (PSURLControllerHandlerDelegate)delegate;
-- (void)_performCompletionAfterActiveTransitionCompletes:(id)a3;
-- (void)_performScrollingAndHighlightingOperationsOnController:(id)a3 withOffset:(id)a4 scrollTargetIdentifier:(id)a5;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (void)_performCompletionAfterActiveTransitionCompletes:(id)completes;
+- (void)_performScrollingAndHighlightingOperationsOnController:(id)controller withOffset:(id)offset scrollTargetIdentifier:(id)identifier;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 @end
 
 @implementation PSURLControllerHandler
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
   v140 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = PKLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(PSURLControllerHandler *)self delegate];
+    delegate = [(PSURLControllerHandler *)self delegate];
     *buf = 136446978;
     v130 = "[PSURLControllerHandler handleURL:withCompletion:]";
     v131 = 2160;
     v132 = 1752392040;
     v133 = 2112;
-    v134 = v6;
+    v134 = lCopy;
     v135 = 2112;
-    *v136 = v9;
+    *v136 = delegate;
     _os_log_impl(&dword_18B008000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s: resourceDictionary: %{mask.hash}@, delegate: %@", buf, 0x2Au);
   }
 
@@ -39,7 +39,7 @@
 
 LABEL_12:
 
-    v15 = [(PSURLControllerHandler *)self delegate];
+    delegate2 = [(PSURLControllerHandler *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
@@ -47,51 +47,51 @@ LABEL_12:
       v17 = PKLogForCategory(5);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(PSURLControllerHandler *)self delegate];
+        delegate3 = [(PSURLControllerHandler *)self delegate];
         v19 = NSStringFromSelector(sel_handleURL_);
         *buf = 136446978;
         v130 = "[PSURLControllerHandler handleURL:withCompletion:]";
         v131 = 2160;
         v132 = 1752392040;
         v133 = 2112;
-        v134 = v18;
+        v134 = delegate3;
         v135 = 2114;
         *v136 = v19;
         _os_log_impl(&dword_18B008000, v17, OS_LOG_TYPE_DEFAULT, "%{public}s: Delegate '%{mask.hash}@' implements %{public}@.", buf, 0x2Au);
       }
 
-      v20 = [(PSURLControllerHandler *)self delegate];
-      [v20 handleURL:v6];
+      delegate4 = [(PSURLControllerHandler *)self delegate];
+      [delegate4 handleURL:lCopy];
     }
 
-    v11 = [v6 objectForKey:@"path"];
+    v11 = [lCopy objectForKey:@"path"];
     v21 = MEMORY[0x1E695DF70];
-    v22 = [v11 pathComponents];
-    v23 = [v21 arrayWithArray:v22];
+    pathComponents = [v11 pathComponents];
+    v23 = [v21 arrayWithArray:pathComponents];
 
     if (![v23 count])
     {
       v67 = PKLogForCategory(5);
       if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
       {
-        v68 = [(PSURLControllerHandler *)self delegate];
+        delegate5 = [(PSURLControllerHandler *)self delegate];
         *buf = 136446722;
         v130 = "[PSURLControllerHandler handleURL:withCompletion:]";
         v131 = 2160;
         v132 = 1752392040;
         v133 = 2112;
-        v134 = v68;
+        v134 = delegate5;
         _os_log_impl(&dword_18B008000, v67, OS_LOG_TYPE_DEFAULT, "%{public}s: Delegate '%{mask.hash}@' no path components to process calling completion if set and bailing.", buf, 0x20u);
       }
 
-      [(PSURLControllerHandler *)self _performCompletionAfterActiveTransitionCompletes:v7];
-      v69 = [v6 objectForKeyedSubscript:@"pptTestName"];
+      [(PSURLControllerHandler *)self _performCompletionAfterActiveTransitionCompletes:completionCopy];
+      v69 = [lCopy objectForKeyedSubscript:@"pptTestName"];
       if (!v69)
       {
         goto LABEL_117;
       }
 
-      v70 = [(PSURLControllerHandler *)self delegate];
+      delegate6 = [(PSURLControllerHandler *)self delegate];
       v71 = objc_opt_respondsToSelector();
 
       if ((v71 & 1) == 0)
@@ -99,8 +99,8 @@ LABEL_12:
         goto LABEL_117;
       }
 
-      v72 = [(PSURLControllerHandler *)self delegate];
-      [v72 handleScrollPPTTestName:v69];
+      delegate7 = [(PSURLControllerHandler *)self delegate];
+      [delegate7 handleScrollPPTTestName:v69];
 LABEL_116:
 
 LABEL_117:
@@ -129,12 +129,12 @@ LABEL_117:
 
     v123 = v28;
     v127 = [v28 objectForKey:@"offsetItem"];
-    v33 = [(PSURLControllerHandler *)self delegate];
+    delegate8 = [(PSURLControllerHandler *)self delegate];
     v122 = v29;
-    v34 = [v33 specifierForID:v29];
+    v34 = [delegate8 specifierForID:v29];
 
-    v35 = [v6 objectForKeyedSubscript:@"animate"];
-    v121 = [v35 BOOLValue];
+    v35 = [lCopy objectForKeyedSubscript:@"animate"];
+    bOOLValue = [v35 BOOLValue];
 
     if (!v34 || ([v34 propertyForKey:@"enabled"], (v36 = objc_claimAutoreleasedReturnValue()) != 0) && (v37 = v36, objc_msgSend(v34, "propertyForKey:", @"enabled"), v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "BOOLValue"), v38, v37, !v39))
     {
@@ -151,10 +151,10 @@ LABEL_117:
       }
 
       objc_opt_class();
-      v74 = [(PSURLControllerHandler *)self delegate];
+      delegate9 = [(PSURLControllerHandler *)self delegate];
       if (objc_opt_isKindOfClass())
       {
-        v75 = v74;
+        v75 = delegate9;
       }
 
       else
@@ -198,7 +198,7 @@ LABEL_117:
         }
       }
 
-      [(PSURLControllerHandler *)self _performCompletionAfterActiveTransitionCompletes:v7];
+      [(PSURLControllerHandler *)self _performCompletionAfterActiveTransitionCompletes:completionCopy];
       goto LABEL_115;
     }
 
@@ -228,20 +228,20 @@ LABEL_117:
       [v45 load];
     }
 
-    v46 = [(PSURLControllerHandler *)self delegate];
-    v47 = [v46 selectSpecifier:v34];
+    delegate10 = [(PSURLControllerHandler *)self delegate];
+    v47 = [delegate10 selectSpecifier:v34];
 
     [v47 loadViewIfNeeded];
     v48 = PKLogForCategory(5);
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
     {
-      v49 = [(PSURLControllerHandler *)self delegate];
+      delegate11 = [(PSURLControllerHandler *)self delegate];
       *buf = 136447746;
       v130 = "[PSURLControllerHandler handleURL:withCompletion:]";
       v131 = 2160;
       v132 = 1752392040;
       v133 = 2112;
-      v134 = v49;
+      v134 = delegate11;
       v135 = 2160;
       *v136 = 1752392040;
       *&v136[8] = 2112;
@@ -254,10 +254,10 @@ LABEL_117:
     }
 
     objc_opt_class();
-    v50 = [(PSURLControllerHandler *)self delegate];
+    delegate12 = [(PSURLControllerHandler *)self delegate];
     if (objc_opt_isKindOfClass())
     {
-      v51 = v50;
+      v51 = delegate12;
     }
 
     else
@@ -273,14 +273,14 @@ LABEL_117:
       v53 = PKLogForCategory(5);
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
       {
-        v112 = [(PSURLControllerHandler *)self delegate];
+        delegate13 = [(PSURLControllerHandler *)self delegate];
         v117 = NSStringFromSelector(sel_isURLHandlingDeferredForViewControllerContainment);
         *buf = 136447490;
         v130 = "[PSURLControllerHandler handleURL:withCompletion:]";
         v131 = 2160;
         v132 = 1752392040;
         v133 = 2112;
-        v134 = v112;
+        v134 = delegate13;
         v135 = 2114;
         *v136 = v117;
         *&v136[8] = 2160;
@@ -295,7 +295,7 @@ LABEL_117:
 
     if (v47 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      [v34 setProperty:v6 forKey:@"URLDictionary"];
+      [v34 setProperty:lCopy forKey:@"URLDictionary"];
       objc_opt_class();
       v118 = objc_opt_isKindOfClass();
       if ((v118 & 1) == 0)
@@ -304,8 +304,8 @@ LABEL_117:
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
           v55 = objc_opt_class();
-          v113 = [(PSURLControllerHandler *)self delegate];
-          v56 = [v113 rootController];
+          delegate14 = [(PSURLControllerHandler *)self delegate];
+          rootController = [delegate14 rootController];
           *buf = 136447490;
           v130 = "[PSURLControllerHandler handleURL:withCompletion:]";
           v131 = 2160;
@@ -317,16 +317,16 @@ LABEL_117:
           *&v136[8] = 2160;
           *&v136[10] = 1752392040;
           *&v136[18] = 2112;
-          *&v136[20] = v56;
+          *&v136[20] = rootController;
           _os_log_impl(&dword_18B008000, v54, OS_LOG_TYPE_DEFAULT, "%{public}s: Target controller %{mask.hash}@ is not a %{public}@, setting rootController to %{mask.hash}@.", buf, 0x3Eu);
         }
 
-        v57 = [(PSURLControllerHandler *)self delegate];
-        v58 = [v57 rootController];
-        [v47 setRootController:v58];
+        delegate15 = [(PSURLControllerHandler *)self delegate];
+        rootController2 = [delegate15 rootController];
+        [v47 setRootController:rootController2];
       }
 
-      v59 = [(PSURLControllerHandler *)self delegate];
+      delegate16 = [(PSURLControllerHandler *)self delegate];
       v60 = objc_opt_respondsToSelector();
 
       if (v60)
@@ -335,7 +335,7 @@ LABEL_117:
         if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
         {
           v114 = NSStringFromSelector(sel_isShowingSetupController);
-          v62 = [(PSURLControllerHandler *)self delegate];
+          delegate17 = [(PSURLControllerHandler *)self delegate];
           *buf = 136447234;
           v130 = "[PSURLControllerHandler handleURL:withCompletion:]";
           v131 = 2114;
@@ -343,27 +343,27 @@ LABEL_117:
           v133 = 2160;
           v134 = 1752392040;
           v135 = 2112;
-          *v136 = v62;
-          v63 = v62;
+          *v136 = delegate17;
+          v63 = delegate17;
           *&v136[8] = 1024;
           *&v136[10] = v118 & 1;
           _os_log_impl(&dword_18B008000, v61, OS_LOG_TYPE_DEFAULT, "%{public}s: Setting %{public}@ on delegate %{mask.hash}@ to %{BOOL}d.", buf, 0x30u);
         }
 
-        v64 = [(PSURLControllerHandler *)self delegate];
-        [v64 setShowingSetupController:v118 & 1];
+        delegate18 = [(PSURLControllerHandler *)self delegate];
+        [delegate18 setShowingSetupController:v118 & 1];
       }
 
-      v65 = [v6 objectForKeyedSubscript:@"fromSearch"];
+      v65 = [lCopy objectForKeyedSubscript:@"fromSearch"];
       if ([v65 BOOLValue])
       {
 
         goto LABEL_76;
       }
 
-      v83 = [v47 canBeShownFromSuspendedState];
+      canBeShownFromSuspendedState = [v47 canBeShownFromSuspendedState];
 
-      if (v83)
+      if (canBeShownFromSuspendedState)
       {
 LABEL_76:
         if (v32 == 0.0)
@@ -398,12 +398,12 @@ LABEL_76:
           [(PSURLControllerHandler *)self _performScrollingAndHighlightingOperationsOnController:v47 withOffset:v84 scrollTargetIdentifier:v85];
         }
 
-        v87 = [(PSURLControllerHandler *)self delegate];
+        delegate19 = [(PSURLControllerHandler *)self delegate];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v88 = [(PSURLControllerHandler *)self delegate];
-          v89 = [v88 conformsToProtocol:&unk_1EFE6C730];
+          delegate20 = [(PSURLControllerHandler *)self delegate];
+          v89 = [delegate20 conformsToProtocol:&unk_1EFE6C730];
 
           if (!v89)
           {
@@ -413,13 +413,13 @@ LABEL_76:
           v90 = PKLogForCategory(5);
           if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
           {
-            v91 = [(PSURLControllerHandler *)self delegate];
+            delegate21 = [(PSURLControllerHandler *)self delegate];
             *buf = 136447234;
             v130 = "[PSURLControllerHandler handleURL:withCompletion:]";
             v131 = 2160;
             v132 = 1752392040;
             v133 = 2112;
-            v134 = v91;
+            v134 = delegate21;
             v135 = 2160;
             *v136 = 1752392040;
             *&v136[8] = 2112;
@@ -427,15 +427,15 @@ LABEL_76:
             _os_log_impl(&dword_18B008000, v90, OS_LOG_TYPE_DEFAULT, "%{public}s: Setting delegate %{mask.hash}@ as parentController for target controller %{mask.hash}@.", buf, 0x34u);
           }
 
-          v87 = [(PSURLControllerHandler *)self delegate];
-          [v47 setParentController:v87];
+          delegate19 = [(PSURLControllerHandler *)self delegate];
+          [v47 setParentController:delegate19];
         }
 
 LABEL_91:
         [v47 setSpecifier:v34];
         v92 = [MEMORY[0x1E696AEC0] pathWithComponents:v23];
 
-        v119 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v6];
+        v119 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:lCopy];
         [v119 setObject:v92 forKey:@"path"];
         v128 = 0;
         if ([v23 count] && (objc_opt_respondsToSelector() & 1) != 0)
@@ -462,7 +462,7 @@ LABEL_91:
           {
             v115 = v95;
             v97 = v96;
-            v98 = [v47 prepareHandlingURLForSpecifierID:v96 resourceDictionary:v119 animatePush:&v128 withCompletion:v7] ^ 1;
+            v98 = [v47 prepareHandlingURLForSpecifierID:v96 resourceDictionary:v119 animatePush:&v128 withCompletion:completionCopy] ^ 1;
             v99 = PKLogForCategory(5);
             if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
             {
@@ -509,7 +509,7 @@ LABEL_91:
           v76 = v127;
         }
 
-        if ((v102 & 1) == 0 && ((v121 ^ 1) & 1) == 0)
+        if ((v102 & 1) == 0 && ((bOOLValue ^ 1) & 1) == 0)
         {
           v102 = [v23 count] == 0;
         }
@@ -539,7 +539,7 @@ LABEL_91:
           *&v136[30] = 1024;
           *&v136[32] = v116;
           *&v136[36] = 1024;
-          v137 = v121;
+          v137 = bOOLValue;
           v138 = 1024;
           v139 = v105 == 0;
           _os_log_impl(&dword_18B008000, v103, OS_LOG_TYPE_DEFAULT, "%{public}s: Requesting delegate %{mask.hash}@ show target controller %{mask.hash}@ with animation resolved to %{BOOL}d ((controllerWantsAnimation: %{BOOL}d && deferHandleURL: %{BOOL}d) || (animate: %{BOOL}d && pathComponents.count == 0: %{BOOL}d))", buf, 0x52u);
@@ -547,8 +547,8 @@ LABEL_91:
           v92 = v111;
         }
 
-        v106 = [(PSURLControllerHandler *)self delegate];
-        [v106 showController:v47 animate:v102 & 1];
+        delegate22 = [(PSURLControllerHandler *)self delegate];
+        [delegate22 showController:v47 animate:v102 & 1];
 
         if ((v116 & 1) == 0)
         {
@@ -571,7 +571,7 @@ LABEL_91:
             _os_log_impl(&dword_18B008000, v107, OS_LOG_TYPE_DEFAULT, "%{public}s: Calling %{public}@ on target controller %{mask.hash}@ with new resource dictionary %{mask.hash}@", buf, 0x3Eu);
           }
 
-          [v47 handleURL:v119 withCompletion:v7];
+          [v47 handleURL:v119 withCompletion:completionCopy];
         }
 
         v11 = v92;
@@ -596,13 +596,13 @@ LABEL_91:
       v81 = PKLogForCategory(5);
       if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
       {
-        v82 = [(PSURLControllerHandler *)self delegate];
+        delegate23 = [(PSURLControllerHandler *)self delegate];
         *buf = 136447746;
         v130 = "[PSURLControllerHandler handleURL:withCompletion:]";
         v131 = 2160;
         v132 = 1752392040;
         v133 = 2112;
-        v134 = v82;
+        v134 = delegate23;
         v135 = 2160;
         *v136 = 1752392040;
         *&v136[8] = 2112;
@@ -615,20 +615,20 @@ LABEL_91:
       }
     }
 
-    [(PSURLControllerHandler *)self _performCompletionAfterActiveTransitionCompletes:v7];
+    [(PSURLControllerHandler *)self _performCompletionAfterActiveTransitionCompletes:completionCopy];
     v76 = v127;
 LABEL_114:
 
 LABEL_115:
     v69 = v124;
-    v72 = v125;
+    delegate7 = v125;
     goto LABEL_116;
   }
 
   v10 = MEMORY[0x1E695E0F8];
-  if (v6)
+  if (lCopy)
   {
-    v10 = v6;
+    v10 = lCopy;
   }
 
   v11 = v10;
@@ -648,7 +648,7 @@ LABEL_115:
       v135 = 2160;
       *v136 = 1752392040;
       *&v136[8] = 2112;
-      *&v136[10] = v6;
+      *&v136[10] = lCopy;
       _os_log_impl(&dword_18B008000, v14, OS_LOG_TYPE_INFO, "%{public}s: State provider '%{mask.hash}@' has indicated URL routing should continue for URL resource dictionary %{mask.hash}@.", buf, 0x34u);
     }
 
@@ -666,23 +666,23 @@ LABEL_115:
     v135 = 2160;
     *v136 = 1752392040;
     *&v136[8] = 2112;
-    *&v136[10] = v6;
+    *&v136[10] = lCopy;
     _os_log_impl(&dword_18B008000, v14, OS_LOG_TYPE_DEFAULT, "%{public}s: State provider '%{mask.hash}@' has indicated URL routing should stop for URL resource dictionary %{mask.hash}@. Calling completion handler if set and bailing.", buf, 0x34u);
   }
 
-  [(PSURLControllerHandler *)self _performCompletionAfterActiveTransitionCompletes:v7];
+  [(PSURLControllerHandler *)self _performCompletionAfterActiveTransitionCompletes:completionCopy];
 LABEL_118:
 }
 
-- (void)_performCompletionAfterActiveTransitionCompletes:(id)a3
+- (void)_performCompletionAfterActiveTransitionCompletes:(id)completes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completesCopy = completes;
   objc_opt_class();
-  v5 = [(PSURLControllerHandler *)self delegate];
+  delegate = [(PSURLControllerHandler *)self delegate];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = delegate;
   }
 
   else
@@ -696,22 +696,22 @@ LABEL_118:
   aBlock[1] = 3221225472;
   aBlock[2] = __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCompletes___block_invoke;
   aBlock[3] = &unk_1E71DC0D8;
-  v8 = v4;
+  v8 = completesCopy;
   v17 = v8;
   v9 = _Block_copy(aBlock);
   if (v7)
   {
-    v10 = [v7 navigationController];
-    v11 = [v10 transitionCoordinator];
+    navigationController = [v7 navigationController];
+    transitionCoordinator = [navigationController transitionCoordinator];
 
-    if (v11)
+    if (transitionCoordinator)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCompletes___block_invoke_3;
       v14[3] = &unk_1E71DECA0;
       v15 = v9;
-      [v11 animateAlongsideTransition:&__block_literal_global_33 completion:v14];
+      [transitionCoordinator animateAlongsideTransition:&__block_literal_global_33 completion:v14];
     }
 
     else
@@ -767,16 +767,16 @@ uint64_t __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCom
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)_performScrollingAndHighlightingOperationsOnController:(id)a3 withOffset:(id)a4 scrollTargetIdentifier:(id)a5
+- (void)_performScrollingAndHighlightingOperationsOnController:(id)controller withOffset:(id)offset scrollTargetIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  offsetCopy = offset;
+  identifierCopy = identifier;
   v10 = &unk_1EFE6EBF8;
-  if ([v7 conformsToProtocol:v10])
+  if ([controllerCopy conformsToProtocol:v10])
   {
-    v11 = v7;
+    v11 = controllerCopy;
   }
 
   else
@@ -788,7 +788,7 @@ uint64_t __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCom
 
   if (v12)
   {
-    if (v8)
+    if (offsetCopy)
     {
       v13 = PKLogForCategory(5);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -796,7 +796,7 @@ uint64_t __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCom
         v20 = 136446978;
         v21 = "[PSURLControllerHandler _performScrollingAndHighlightingOperationsOnController:withOffset:scrollTargetIdentifier:]";
         v22 = 2114;
-        v23 = v8;
+        v23 = offsetCopy;
         v24 = 2160;
         v25 = 1752392040;
         v26 = 2112;
@@ -804,13 +804,13 @@ uint64_t __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCom
         _os_log_impl(&dword_18B008000, v13, OS_LOG_TYPE_DEFAULT, "%{public}s: Setting scrollOffset to %{public}@ on Target controller %{mask.hash}@.", &v20, 0x2Au);
       }
 
-      [v8 floatValue];
+      [offsetCopy floatValue];
       [v12 setDesiredVerticalContentOffset:?];
     }
 
     else
     {
-      v14 = [v9 length];
+      v14 = [identifierCopy length];
       v15 = PKLogForCategory(5);
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
       if (v14)
@@ -822,7 +822,7 @@ uint64_t __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCom
           v22 = 2160;
           v23 = 1752392040;
           v24 = 2112;
-          v25 = v9;
+          v25 = identifierCopy;
           v26 = 2160;
           v27 = 1752392040;
           v28 = 2112;
@@ -830,7 +830,7 @@ uint64_t __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCom
           _os_log_impl(&dword_18B008000, v15, OS_LOG_TYPE_DEFAULT, "%{public}s: Setting scrollTarget to %{mask.hash}@ on Target controller %{mask.hash}@.", &v20, 0x34u);
         }
 
-        [v12 setDesiredVerticalContentOffsetItemNamed:v9];
+        [v12 setDesiredVerticalContentOffsetItemNamed:identifierCopy];
       }
 
       else
@@ -851,7 +851,7 @@ uint64_t __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCom
 
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v9 length];
+    v17 = [identifierCopy length];
     v18 = PKLogForCategory(5);
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
     if (v17)
@@ -863,15 +863,15 @@ uint64_t __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCom
         v22 = 2160;
         v23 = 1752392040;
         v24 = 2112;
-        v25 = v9;
+        v25 = identifierCopy;
         v26 = 2160;
         v27 = 1752392040;
         v28 = 2112;
-        v29 = v7;
+        v29 = controllerCopy;
         _os_log_impl(&dword_18B008000, v18, OS_LOG_TYPE_DEFAULT, "%{public}s: Setting highlight target to %{mask.hash}@ on Target controller %{mask.hash}@.", &v20, 0x34u);
       }
 
-      [v7 highlightSpecifierWithID:v9];
+      [controllerCopy highlightSpecifierWithID:identifierCopy];
     }
 
     else
@@ -883,7 +883,7 @@ uint64_t __75__PSURLControllerHandler__performCompletionAfterActiveTransitionCom
         v22 = 2160;
         v23 = 1752392040;
         v24 = 2112;
-        v25 = v7;
+        v25 = controllerCopy;
         _os_log_impl(&dword_18B008000, v18, OS_LOG_TYPE_DEFAULT, "%{public}s: No highlight target to set on Target controller %{mask.hash}@.", &v20, 0x20u);
       }
     }

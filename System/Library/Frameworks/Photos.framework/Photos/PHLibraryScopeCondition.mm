@@ -1,16 +1,16 @@
 @interface PHLibraryScopeCondition
 + (Class)_mappedPLConditionClass;
 - (PHLibraryScopeCondition)init;
-- (PHLibraryScopeCondition)initWithProxyObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PHLibraryScopeCondition)initWithProxyObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PHLibraryScopeCondition
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(PLLibraryScopeCondition *)self->_proxyObject copyWithZone:a3];
+  v6 = [(PLLibraryScopeCondition *)self->_proxyObject copyWithZone:zone];
   v7 = [v5 initWithProxyObject:v6];
 
   return v7;
@@ -24,16 +24,16 @@
   return v4;
 }
 
-- (PHLibraryScopeCondition)initWithProxyObject:(id)a3
+- (PHLibraryScopeCondition)initWithProxyObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = PHLibraryScopeCondition;
   v6 = [(PHLibraryScopeCondition *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_proxyObject, a3);
+    objc_storeStrong(&v6->_proxyObject, object);
   }
 
   return v7;

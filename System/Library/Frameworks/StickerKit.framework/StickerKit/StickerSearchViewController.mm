@@ -1,9 +1,9 @@
 @interface StickerSearchViewController
-- (_TtC10StickerKit27StickerSearchViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC10StickerKit27StickerSearchViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -11,37 +11,37 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6B33A0();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = self;
+  selfCopy = self;
   sub_19A6B9234();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_19A6B4614(a3);
+  selfCopy = self;
+  sub_19A6B4614(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_19A6B4D2C(a3);
+  selfCopy = self;
+  sub_19A6B4D2C(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6B5FC0();
 }
 
-- (_TtC10StickerKit27StickerSearchViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10StickerKit27StickerSearchViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_19A7AB014();
     v7 = v6;
@@ -53,8 +53,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return StickerSearchViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return StickerSearchViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

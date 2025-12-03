@@ -1,8 +1,8 @@
 @interface UAFMinVersionConfiguration
-+ (BOOL)isValid:(id)a3 error:(id *)a4;
-+ (id)fromContentsOfURL:(id)a3 error:(id *)a4;
++ (BOOL)isValid:(id)valid error:(id *)error;
++ (id)fromContentsOfURL:(id)l error:(id *)error;
 + (id)supportedFileVersions;
-- (UAFMinVersionConfiguration)initWithDictionary:(id)a3;
+- (UAFMinVersionConfiguration)initWithDictionary:(id)dictionary;
 @end
 
 @implementation UAFMinVersionConfiguration
@@ -17,20 +17,20 @@
   return v2;
 }
 
-+ (BOOL)isValid:(id)a3 error:(id *)a4
++ (BOOL)isValid:(id)valid error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  validCopy = valid;
   v6 = +[UAFMinVersionConfiguration supportedFileVersions];
-  v7 = [UAFConfiguration isValid:v5 fileType:@"MinVersion" fileVersions:v6 error:a4];
+  v7 = [UAFConfiguration isValid:validCopy fileType:@"MinVersion" fileVersions:v6 error:error];
 
-  if (v7 && [UAFConfiguration isValidValue:v5 key:@"AssetSetName" kind:objc_opt_class() required:1 error:a4]&& [UAFConfiguration isValidValue:v5 key:@"Assets" kind:objc_opt_class() required:0 error:a4])
+  if (v7 && [UAFConfiguration isValidValue:validCopy key:@"AssetSetName" kind:objc_opt_class() required:1 error:error]&& [UAFConfiguration isValidValue:validCopy key:@"Assets" kind:objc_opt_class() required:0 error:error])
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = [v5 objectForKeyedSubscript:@"Assets"];
+    obj = [validCopy objectForKeyedSubscript:@"Assets"];
     v8 = [obj countByEnumeratingWithState:&v42 objects:v58 count:16];
     if (v8)
     {
@@ -49,17 +49,17 @@
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
               v18 = MEMORY[0x1E696ABC0];
               v19 = *MEMORY[0x1E696A578];
-              if (*a4)
+              if (*error)
               {
                 v56[0] = *MEMORY[0x1E696A578];
                 v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Asset is not expected kind %@", objc_opt_class()];
                 v56[1] = *MEMORY[0x1E696AA08];
                 v57[0] = v20;
-                v57[1] = *a4;
+                v57[1] = *error;
                 v21 = MEMORY[0x1E695DF20];
                 v22 = v57;
                 v23 = v56;
@@ -78,7 +78,7 @@
               }
 
               v34 = [v21 dictionaryWithObjects:v22 forKeys:v23 count:v24];
-              *a4 = [v18 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v34];
+              *error = [v18 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v34];
             }
 
             v35 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -101,7 +101,7 @@ LABEL_35:
             goto LABEL_36;
           }
 
-          if (![UAFConfiguration isValidValue:v12 key:@"AssetName" kind:objc_opt_class() required:1 error:a4]|| ![UAFConfiguration isValidValue:v12 key:@"MinVersion" kind:objc_opt_class() required:1 error:a4])
+          if (![UAFConfiguration isValidValue:v12 key:@"AssetName" kind:objc_opt_class() required:1 error:error]|| ![UAFConfiguration isValidValue:v12 key:@"MinVersion" kind:objc_opt_class() required:1 error:error])
           {
             goto LABEL_35;
           }
@@ -111,11 +111,11 @@ LABEL_35:
 
           if (!v14)
           {
-            if (a4)
+            if (error)
             {
               v25 = MEMORY[0x1E696ABC0];
               v26 = *MEMORY[0x1E696A578];
-              if (*a4)
+              if (*error)
               {
                 v48[0] = *MEMORY[0x1E696A578];
                 v27 = MEMORY[0x1E696AEC0];
@@ -123,7 +123,7 @@ LABEL_35:
                 v29 = [v27 stringWithFormat:@"MinVersion %@ is not a valid version", v28];
                 v48[1] = *MEMORY[0x1E696AA08];
                 v49[0] = v29;
-                v49[1] = *a4;
+                v49[1] = *error;
                 v30 = MEMORY[0x1E695DF20];
                 v31 = v49;
                 v32 = v48;
@@ -144,7 +144,7 @@ LABEL_35:
               }
 
               v40 = [v30 dictionaryWithObjects:v31 forKeys:v32 count:v33];
-              *a4 = [v25 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v40];
+              *error = [v25 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v40];
             }
 
             v35 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -192,23 +192,23 @@ LABEL_36:
   return v15;
 }
 
-+ (id)fromContentsOfURL:(id)a3 error:(id *)a4
++ (id)fromContentsOfURL:(id)l error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4)
+  lCopy = l;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v18 = 0;
-  v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v5 error:&v18];
+  v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:lCopy error:&v18];
   v7 = v18;
   v8 = v7;
-  if (a4)
+  if (error)
   {
     v9 = v7;
-    *a4 = v8;
+    *error = v8;
   }
 
   if (v6)
@@ -223,7 +223,7 @@ LABEL_36:
 
   if (v10)
   {
-    if ([UAFMinVersionConfiguration isValid:v6 error:a4])
+    if ([UAFMinVersionConfiguration isValid:v6 error:error])
     {
       v15 = [[UAFMinVersionConfiguration alloc] initWithDictionary:v6];
       goto LABEL_15;
@@ -235,7 +235,7 @@ LABEL_36:
       *buf = 136315394;
       v20 = "+[UAFMinVersionConfiguration fromContentsOfURL:error:]";
       v21 = 2112;
-      v22 = v5;
+      v22 = lCopy;
       v12 = "%s Failed to validate UAFMinVersionConfiguration dictionary from %@";
       v13 = v11;
       v14 = 22;
@@ -251,7 +251,7 @@ LABEL_36:
       *buf = 136315650;
       v20 = "+[UAFMinVersionConfiguration fromContentsOfURL:error:]";
       v21 = 2112;
-      v22 = v5;
+      v22 = lCopy;
       v23 = 2112;
       v24 = v8;
       v12 = "%s Failed to load UAFMinVersionConfiguration dictionary from %@: %@";
@@ -270,16 +270,16 @@ LABEL_15:
   return v15;
 }
 
-- (UAFMinVersionConfiguration)initWithDictionary:(id)a3
+- (UAFMinVersionConfiguration)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = UAFMinVersionConfiguration;
   v5 = [(UAFMinVersionConfiguration *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AssetSetName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"AssetSetName"];
     assetSetName = v5->_assetSetName;
     v5->_assetSetName = v6;
 
@@ -288,8 +288,8 @@ LABEL_15:
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v4;
-    v9 = [v4 objectForKeyedSubscript:@"Assets"];
+    v21 = dictionaryCopy;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"Assets"];
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v10)
     {
@@ -320,7 +320,7 @@ LABEL_15:
     v5->_minVersions = v8;
 
     v18 = v5;
-    v4 = v21;
+    dictionaryCopy = v21;
   }
 
   v19 = *MEMORY[0x1E69E9840];

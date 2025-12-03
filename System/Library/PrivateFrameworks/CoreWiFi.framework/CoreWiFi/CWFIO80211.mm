@@ -2,8 +2,8 @@
 - (BOOL)isMonitoringEvents;
 - (CWFIO80211)init;
 - (id)IO80211ControllerInfo;
-- (id)IO80211InterfaceInfo:(id)a3 error:(id *)a4;
-- (id)__IO80211InfoMatchingService:(unsigned int)a3;
+- (id)IO80211InterfaceInfo:(id)info error:(id *)error;
+- (id)__IO80211InfoMatchingService:(unsigned int)service;
 - (void)dealloc;
 - (void)startEventMonitoring;
 - (void)stopEventMonitoring;
@@ -156,18 +156,18 @@
     goto LABEL_79;
   }
 
-  v14 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   publishIO80211VirtualInterfaceMap = v2->_publishIO80211VirtualInterfaceMap;
-  v2->_publishIO80211VirtualInterfaceMap = v14;
+  v2->_publishIO80211VirtualInterfaceMap = dictionary;
 
   if (!v2->_publishIO80211VirtualInterfaceMap)
   {
     goto LABEL_79;
   }
 
-  v16 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   terminatedIO80211VirtualInterfaceMap = v2->_terminatedIO80211VirtualInterfaceMap;
-  v2->_terminatedIO80211VirtualInterfaceMap = v16;
+  v2->_terminatedIO80211VirtualInterfaceMap = dictionary2;
 
   if (!v2->_terminatedIO80211VirtualInterfaceMap)
   {
@@ -557,8 +557,8 @@ LABEL_21:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(NSMutableDictionary *)self->_publishIO80211VirtualInterfaceMap allValues];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  allValues = [(NSMutableDictionary *)self->_publishIO80211VirtualInterfaceMap allValues];
+  v6 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -569,7 +569,7 @@ LABEL_21:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
@@ -579,7 +579,7 @@ LABEL_21:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v7);
@@ -589,8 +589,8 @@ LABEL_21:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [(NSMutableDictionary *)self->_terminatedIO80211VirtualInterfaceMap allValues];
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_terminatedIO80211VirtualInterfaceMap allValues];
+  v12 = [allValues2 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
@@ -601,7 +601,7 @@ LABEL_21:
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues2);
         }
 
         v16 = *(*(&v20 + 1) + 8 * j);
@@ -611,7 +611,7 @@ LABEL_21:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v13 = [allValues2 countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v13);
@@ -670,13 +670,13 @@ LABEL_21:
   return v3;
 }
 
-- (id)__IO80211InfoMatchingService:(unsigned int)a3
+- (id)__IO80211InfoMatchingService:(unsigned int)service
 {
   properties = 0;
-  if (a3)
+  if (service)
   {
-    IORegistryEntryCreateCFProperties(a3, &properties, *MEMORY[0x1E695E480], 0);
-    IOObjectRelease(a3);
+    IORegistryEntryCreateCFProperties(service, &properties, *MEMORY[0x1E695E480], 0);
+    IOObjectRelease(service);
     v4 = properties;
   }
 
@@ -833,15 +833,15 @@ LABEL_26:
   return v10;
 }
 
-- (id)IO80211InterfaceInfo:(id)a3 error:(id *)a4
+- (id)IO80211InterfaceInfo:(id)info error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  infoCopy = info;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   if (Mutable)
   {
     v7 = Mutable;
-    CFDictionarySetValue(Mutable, @"IOInterfaceName", v5);
+    CFDictionarySetValue(Mutable, @"IOInterfaceName", infoCopy);
     v8 = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
     if (v8)
     {

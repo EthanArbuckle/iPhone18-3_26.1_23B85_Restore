@@ -1,5 +1,5 @@
 @interface DBEnvironmentConfiguration
-+ (id)_stringForStatusBarEdge:(unint64_t)a3;
++ (id)_stringForStatusBarEdge:(unint64_t)edge;
 - (BOOL)_prefersDarkMapsAppearance;
 - (BOOL)currentViewAreaSupportsUIOutsideSafeArea;
 - (BOOL)hasDualStatusBar;
@@ -7,9 +7,9 @@
 - (BOOL)hasTopStatusBar;
 - (BOOL)isAmbientBrightnessNighttime;
 - (BOOL)showsInstruments;
-- (CGRect)_safeAreaFrameForViewArea:(id)a3;
-- (CGRect)_unadjustedSafeAreaFrameForViewArea:(id)a3;
-- (CGRect)_viewAreaFrameForViewArea:(id)a3;
+- (CGRect)_safeAreaFrameForViewArea:(id)area;
+- (CGRect)_unadjustedSafeAreaFrameForViewArea:(id)area;
+- (CGRect)_viewAreaFrameForViewArea:(id)area;
 - (CGRect)currentSafeViewAreaFrame;
 - (CGRect)currentStatusBarInsetSafeViewAreaFrame;
 - (CGRect)currentUnadjustedSafeViewAreaFrame;
@@ -17,10 +17,10 @@
 - (CRHomeScreenStyleData)homeScreenStyleData;
 - (DBAnalytics)analytics;
 - (DBAnalyticsProvider)analyticsProvider;
-- (DBEnvironmentConfiguration)initWithDisplayConfiguration:(id)a3 layoutPublisher:(id)a4 iconBadgeController:(id)a5 session:(id)a6 supportedFeatures:(unint64_t)a7 processMonitor:(id)a8 thermalMonitor:(id)a9 vehicle:(id)a10 themeController:(id)a11 navigationStateProvider:(id)a12 analyticsProvider:(id)a13;
+- (DBEnvironmentConfiguration)initWithDisplayConfiguration:(id)configuration layoutPublisher:(id)publisher iconBadgeController:(id)controller session:(id)session supportedFeatures:(unint64_t)features processMonitor:(id)monitor thermalMonitor:(id)thermalMonitor vehicle:(id)self0 themeController:(id)self1 navigationStateProvider:(id)self2 analyticsProvider:(id)self3;
 - (DBUISyncSessionEventDelegate)uisyncSessionEventDelegate;
 - (SBHIconImageAppearance)iconImageAppearance;
-- (UIEdgeInsets)_safeAreaInsetsForViewArea:(id)a3;
+- (UIEdgeInsets)_safeAreaInsetsForViewArea:(id)area;
 - (UIEdgeInsets)currentViewAreaSafeAreaInsets;
 - (id)_screenInfo;
 - (id)statusBarInsetViewAreas;
@@ -29,41 +29,41 @@
 - (int64_t)effectiveVehicleAppearancePreference;
 - (int64_t)nightModeUserInterfaceStyle;
 - (int64_t)resolvedUserInterfaceStyle;
-- (unint64_t)_statusBarEdgeForViewArea:(id)a3;
+- (unint64_t)_statusBarEdgeForViewArea:(id)area;
 - (unint64_t)iconColumnCount;
 - (unint64_t)iconRowCount;
-- (void)_computeStatusBarEdgesForViewAreas:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_computeStatusBarEdgesForViewAreas:(id)areas;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)effectiveVehicleAppearancePreference;
-- (void)fetchEnhancedIntegrationStatusWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)fetchEnhancedIntegrationStatusWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
 - (void)resolvedUserInterfaceStyle;
-- (void)session:(id)a3 didSetViewArea:(id)a4 forScreenID:(id)a5 withDuration:(double)a6 transitionControlType:(unint64_t)a7;
-- (void)session:(id)a3 didUpdateAppearanceStyle:(int64_t)a4 forScreenUUID:(id)a5;
-- (void)session:(id)a3 didUpdateMapAppearanceStyle:(int64_t)a4 forScreenUUID:(id)a5;
-- (void)session:(id)a3 didUpdateNightMode:(BOOL)a4;
-- (void)sessionController:(id)a3 didUpdateVehicle:(id)a4;
-- (void)sessionDidUpdateCarCapabilities:(id)a3;
-- (void)updateDisplayScaleIfNeeded:(id)a3;
+- (void)session:(id)session didSetViewArea:(id)area forScreenID:(id)d withDuration:(double)duration transitionControlType:(unint64_t)type;
+- (void)session:(id)session didUpdateAppearanceStyle:(int64_t)style forScreenUUID:(id)d;
+- (void)session:(id)session didUpdateMapAppearanceStyle:(int64_t)style forScreenUUID:(id)d;
+- (void)session:(id)session didUpdateNightMode:(BOOL)mode;
+- (void)sessionController:(id)controller didUpdateVehicle:(id)vehicle;
+- (void)sessionDidUpdateCarCapabilities:(id)capabilities;
+- (void)updateDisplayScaleIfNeeded:(id)needed;
 @end
 
 @implementation DBEnvironmentConfiguration
 
 - (BOOL)currentViewAreaSupportsUIOutsideSafeArea
 {
-  v2 = self;
-  v3 = [(DBEnvironmentConfiguration *)self systemUILayout];
+  selfCopy = self;
+  systemUILayout = [(DBEnvironmentConfiguration *)self systemUILayout];
 
-  if (v3)
+  if (systemUILayout)
   {
-    v4 = [(DBEnvironmentConfiguration *)v2 systemUILayout];
-    [v4 primaryContentFrame];
+    systemUILayout2 = [(DBEnvironmentConfiguration *)selfCopy systemUILayout];
+    [systemUILayout2 primaryContentFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [(DBEnvironmentConfiguration *)v2 currentViewAreaFrame];
+    [(DBEnvironmentConfiguration *)selfCopy currentViewAreaFrame];
     v20.origin.x = v13;
     v20.origin.y = v14;
     v20.size.width = v15;
@@ -72,30 +72,30 @@
     v19.origin.y = v8;
     v19.size.width = v10;
     v19.size.height = v12;
-    LODWORD(v2) = !CGRectEqualToRect(v19, v20);
+    LODWORD(selfCopy) = !CGRectEqualToRect(v19, v20);
   }
 
   else
   {
-    v4 = [(DBEnvironmentConfiguration *)v2 _screenInfo];
-    v17 = [v4 currentViewArea];
-    LOBYTE(v2) = [v17 supportsUIOutsideSafeArea];
+    systemUILayout2 = [(DBEnvironmentConfiguration *)selfCopy _screenInfo];
+    currentViewArea = [systemUILayout2 currentViewArea];
+    LOBYTE(selfCopy) = [currentViewArea supportsUIOutsideSafeArea];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_screenInfo
 {
-  v3 = [(DBEnvironmentConfiguration *)self session];
-  v4 = [v3 configuration];
-  v5 = [v4 screens];
+  session = [(DBEnvironmentConfiguration *)self session];
+  configuration = [session configuration];
+  screens = [configuration screens];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__DBEnvironmentConfiguration__screenInfo__block_invoke;
   v8[3] = &unk_278F01870;
   v8[4] = self;
-  v6 = [v5 bs_firstObjectPassingTest:v8];
+  v6 = [screens bs_firstObjectPassingTest:v8];
 
   return v6;
 }
@@ -125,50 +125,50 @@ uint64_t __41__DBEnvironmentConfiguration__screenInfo__block_invoke(uint64_t a1,
 
 - (BOOL)hasDualStatusBar
 {
-  v3 = [(DBEnvironmentConfiguration *)self systemUILayout];
+  systemUILayout = [(DBEnvironmentConfiguration *)self systemUILayout];
 
-  if (!v3)
+  if (!systemUILayout)
   {
     return 0;
   }
 
-  v4 = [(DBEnvironmentConfiguration *)self systemUILayout];
-  v5 = [v4 hasDualStatusBar];
+  systemUILayout2 = [(DBEnvironmentConfiguration *)self systemUILayout];
+  hasDualStatusBar = [systemUILayout2 hasDualStatusBar];
 
-  return v5;
+  return hasDualStatusBar;
 }
 
 - (BOOL)hasTopStatusBar
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"ForceSplitStatusBar"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"ForceSplitStatusBar"];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [(DBEnvironmentConfiguration *)self systemUILayout];
+  systemUILayout = [(DBEnvironmentConfiguration *)self systemUILayout];
 
-  if (!v6)
+  if (!systemUILayout)
   {
     return 0;
   }
 
-  v7 = [(DBEnvironmentConfiguration *)self systemUILayout];
-  v8 = [v7 hasTopStatusBar];
+  systemUILayout2 = [(DBEnvironmentConfiguration *)self systemUILayout];
+  hasTopStatusBar = [systemUILayout2 hasTopStatusBar];
 
-  return v8;
+  return hasTopStatusBar;
 }
 
 - (CGRect)currentSafeViewAreaFrame
 {
-  v3 = [(DBEnvironmentConfiguration *)self systemUILayout];
+  systemUILayout = [(DBEnvironmentConfiguration *)self systemUILayout];
 
-  if (v3)
+  if (systemUILayout)
   {
-    v4 = [(DBEnvironmentConfiguration *)self systemUILayout];
-    [v4 primaryContentFrame];
+    systemUILayout2 = [(DBEnvironmentConfiguration *)self systemUILayout];
+    [systemUILayout2 primaryContentFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -216,16 +216,16 @@ uint64_t __41__DBEnvironmentConfiguration__screenInfo__block_invoke(uint64_t a1,
 - (DBAnalytics)analytics
 {
   WeakRetained = objc_loadWeakRetained(&self->_analyticsProvider);
-  v3 = [WeakRetained currentAnalytics];
+  currentAnalytics = [WeakRetained currentAnalytics];
 
-  return v3;
+  return currentAnalytics;
 }
 
 - (int64_t)carUserInterfaceStyle
 {
   session = self->_session;
-  v3 = [(FBSDisplayConfiguration *)self->_displayConfiguration hardwareIdentifier];
-  v4 = [(CARSession *)session userInterfaceStyleForScreenUUID:v3];
+  hardwareIdentifier = [(FBSDisplayConfiguration *)self->_displayConfiguration hardwareIdentifier];
+  v4 = [(CARSession *)session userInterfaceStyleForScreenUUID:hardwareIdentifier];
 
   return v4;
 }
@@ -233,20 +233,20 @@ uint64_t __41__DBEnvironmentConfiguration__screenInfo__block_invoke(uint64_t a1,
 - (BOOL)_prefersDarkMapsAppearance
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(DBEnvironmentConfiguration *)self vehicle];
-  v3 = v2;
-  if (v2)
+  vehicle = [(DBEnvironmentConfiguration *)self vehicle];
+  v3 = vehicle;
+  if (vehicle)
   {
-    v4 = [v2 mapsAppearancePreference];
+    mapsAppearancePreference = [vehicle mapsAppearancePreference];
     v5 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134349056;
-      v17 = v4;
+      v17 = mapsAppearancePreference;
       _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Vehicle map style preference: %{public}ld", &v16, 0xCu);
     }
 
-    v6 = v4 == 2;
+    v6 = mapsAppearancePreference == 2;
   }
 
   else
@@ -266,14 +266,14 @@ uint64_t __41__DBEnvironmentConfiguration__screenInfo__block_invoke(uint64_t a1,
 - (int64_t)resolvedUserInterfaceStyle
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(DBEnvironmentConfiguration *)self _screenInfo];
-  v4 = [(DBEnvironmentConfiguration *)self session];
-  v5 = [v4 configuration];
-  v6 = [v5 db_displayInfoForScreenInfo:v3];
+  _screenInfo = [(DBEnvironmentConfiguration *)self _screenInfo];
+  session = [(DBEnvironmentConfiguration *)self session];
+  configuration = [session configuration];
+  v6 = [configuration db_displayInfoForScreenInfo:_screenInfo];
 
-  v7 = [v6 identifier];
-  v8 = [(DBEnvironmentConfiguration *)self vehicle];
-  if (!v8)
+  identifier = [v6 identifier];
+  vehicle = [(DBEnvironmentConfiguration *)self vehicle];
+  if (!vehicle)
   {
     v9 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -282,31 +282,31 @@ uint64_t __41__DBEnvironmentConfiguration__screenInfo__block_invoke(uint64_t a1,
     }
   }
 
-  v17 = [v8 appearanceModePreference];
-  if (v17 == -1)
+  appearanceModePreference = [vehicle appearanceModePreference];
+  if (appearanceModePreference == -1)
   {
-    v18 = [(DBEnvironmentConfiguration *)self session];
-    v19 = [v18 configuration];
-    v17 = [v19 userInterfaceStyle];
+    session2 = [(DBEnvironmentConfiguration *)self session];
+    configuration2 = [session2 configuration];
+    appearanceModePreference = [configuration2 userInterfaceStyle];
 
     v20 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [(DBEnvironmentConfiguration *)v17 resolvedUserInterfaceStyle];
+      [(DBEnvironmentConfiguration *)appearanceModePreference resolvedUserInterfaceStyle];
     }
   }
 
   v21 = DBLogForCategory(0x13uLL);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [MEMORY[0x277CF89F0] descriptionForUserInterfaceStyle:v17];
+    v22 = [MEMORY[0x277CF89F0] descriptionForUserInterfaceStyle:appearanceModePreference];
     v30 = 138412290;
     v31 = v22;
     _os_log_impl(&dword_248146000, v21, OS_LOG_TYPE_DEFAULT, "InterfaceStylePreference is: %@", &v30, 0xCu);
   }
 
-  v23 = [(DBEnvironmentConfiguration *)self themeController];
-  v24 = [v23 requiresDarkAppearanceForDisplayID:v7];
+  themeController = [(DBEnvironmentConfiguration *)self themeController];
+  v24 = [themeController requiresDarkAppearanceForDisplayID:identifier];
 
   if (v24)
   {
@@ -316,7 +316,7 @@ uint64_t __41__DBEnvironmentConfiguration__screenInfo__block_invoke(uint64_t a1,
       LOWORD(v30) = 0;
       v26 = "Theme controller requires dark appearance";
 LABEL_17:
-      v27 = 2;
+      carUserInterfaceStyle = 2;
       _os_log_impl(&dword_248146000, v25, OS_LOG_TYPE_DEFAULT, v26, &v30, 2u);
       goto LABEL_21;
     }
@@ -324,7 +324,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v17 == 2)
+  if (appearanceModePreference == 2)
   {
     v25 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -335,11 +335,11 @@ LABEL_17:
     }
 
 LABEL_18:
-    v27 = 2;
+    carUserInterfaceStyle = 2;
     goto LABEL_21;
   }
 
-  v27 = [(DBEnvironmentConfiguration *)self carUserInterfaceStyle];
+  carUserInterfaceStyle = [(DBEnvironmentConfiguration *)self carUserInterfaceStyle];
   v25 = DBLogForCategory(0x13uLL);
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -351,14 +351,14 @@ LABEL_18:
 
 LABEL_21:
 
-  return v27;
+  return carUserInterfaceStyle;
 }
 
 - (int64_t)effectiveMapsUserInterfaceStyle
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(DBEnvironmentConfiguration *)self effectiveVehicleAppearancePreference];
-  v4 = [(DBEnvironmentConfiguration *)self _prefersDarkMapsAppearance];
+  effectiveVehicleAppearancePreference = [(DBEnvironmentConfiguration *)self effectiveVehicleAppearancePreference];
+  _prefersDarkMapsAppearance = [(DBEnvironmentConfiguration *)self _prefersDarkMapsAppearance];
   v5 = DBLogForCategory(0x13uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -371,25 +371,25 @@ LABEL_21:
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Determining effective map style. Always dark appearance: %{public}@, prefers dark maps: %{public}@", &v12, 0x16u);
   }
 
-  if (v3 == 2 && v4)
+  if (effectiveVehicleAppearancePreference == 2 && _prefersDarkMapsAppearance)
   {
     v8 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v12) = 0;
-      v9 = 2;
+      mapsUserInterfaceStyle = 2;
       _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "Using map style dark", &v12, 2u);
     }
 
     else
     {
-      v9 = 2;
+      mapsUserInterfaceStyle = 2;
     }
   }
 
   else
   {
-    v9 = [(DBEnvironmentConfiguration *)self mapsUserInterfaceStyle];
+    mapsUserInterfaceStyle = [(DBEnvironmentConfiguration *)self mapsUserInterfaceStyle];
     v8 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -400,13 +400,13 @@ LABEL_21:
     }
   }
 
-  return v9;
+  return mapsUserInterfaceStyle;
 }
 
 - (int64_t)effectiveVehicleAppearancePreference
 {
-  v3 = [(DBEnvironmentConfiguration *)self vehicle];
-  if (!v3)
+  vehicle = [(DBEnvironmentConfiguration *)self vehicle];
+  if (!vehicle)
   {
     v4 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -415,80 +415,80 @@ LABEL_21:
     }
   }
 
-  v12 = [v3 appearanceModePreference];
-  if (v12 == -1)
+  appearanceModePreference = [vehicle appearanceModePreference];
+  if (appearanceModePreference == -1)
   {
-    v13 = [(DBEnvironmentConfiguration *)self session];
-    v14 = [v13 configuration];
-    v12 = [v14 userInterfaceStyle];
+    session = [(DBEnvironmentConfiguration *)self session];
+    configuration = [session configuration];
+    appearanceModePreference = [configuration userInterfaceStyle];
 
     v15 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(DBEnvironmentConfiguration *)v12 effectiveVehicleAppearancePreference];
+      [(DBEnvironmentConfiguration *)appearanceModePreference effectiveVehicleAppearancePreference];
     }
   }
 
-  return v12;
+  return appearanceModePreference;
 }
 
-- (DBEnvironmentConfiguration)initWithDisplayConfiguration:(id)a3 layoutPublisher:(id)a4 iconBadgeController:(id)a5 session:(id)a6 supportedFeatures:(unint64_t)a7 processMonitor:(id)a8 thermalMonitor:(id)a9 vehicle:(id)a10 themeController:(id)a11 navigationStateProvider:(id)a12 analyticsProvider:(id)a13
+- (DBEnvironmentConfiguration)initWithDisplayConfiguration:(id)configuration layoutPublisher:(id)publisher iconBadgeController:(id)controller session:(id)session supportedFeatures:(unint64_t)features processMonitor:(id)monitor thermalMonitor:(id)thermalMonitor vehicle:(id)self0 themeController:(id)self1 navigationStateProvider:(id)self2 analyticsProvider:(id)self3
 {
   v130 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v105 = a4;
-  v18 = a4;
-  v19 = a8;
-  v113 = v18;
-  v112 = a5;
-  v115 = a6;
-  v111 = a8;
-  v110 = a9;
-  v109 = a10;
-  v114 = a11;
-  v108 = a12;
-  v20 = a13;
+  configurationCopy = configuration;
+  publisherCopy = publisher;
+  publisherCopy2 = publisher;
+  monitorCopy = monitor;
+  v113 = publisherCopy2;
+  controllerCopy = controller;
+  sessionCopy = session;
+  monitorCopy2 = monitor;
+  thermalMonitorCopy = thermalMonitor;
+  vehicleCopy = vehicle;
+  themeControllerCopy = themeController;
+  providerCopy = provider;
+  analyticsProviderCopy = analyticsProvider;
   v123.receiver = self;
   v123.super_class = DBEnvironmentConfiguration;
   v21 = [(DBEnvironmentConfiguration *)&v123 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_iconBadgeController, a5);
-    objc_storeStrong(&v22->_session, a6);
-    v22->_supportedFeatures = a7;
-    objc_storeStrong(&v22->_processMonitor, v19);
-    objc_storeStrong(&v22->_thermalMonitor, a9);
-    objc_storeStrong(&v22->_navigationStateProvider, a12);
-    objc_storeWeak(&v22->_analyticsProvider, v20);
-    v23 = [(CARSession *)v22->_session configuration];
-    v24 = [v23 liveActivitiesMode];
+    objc_storeStrong(&v21->_iconBadgeController, controller);
+    objc_storeStrong(&v22->_session, session);
+    v22->_supportedFeatures = features;
+    objc_storeStrong(&v22->_processMonitor, monitorCopy);
+    objc_storeStrong(&v22->_thermalMonitor, thermalMonitor);
+    objc_storeStrong(&v22->_navigationStateProvider, provider);
+    objc_storeWeak(&v22->_analyticsProvider, analyticsProviderCopy);
+    configuration = [(CARSession *)v22->_session configuration];
+    liveActivitiesMode = [configuration liveActivitiesMode];
 
-    if ([v17 isCarDisplay] && _os_feature_enabled_impl() && v24 != 1)
+    if ([configurationCopy isCarDisplay] && _os_feature_enabled_impl() && liveActivitiesMode != 1)
     {
       v25 = objc_alloc_init(_TtC9DashBoard21DBLiveActivityMonitor);
       liveActivityMonitor = v22->_liveActivityMonitor;
       v22->_liveActivityMonitor = v25;
     }
 
-    v27 = [MEMORY[0x277CF89D0] useSceneInterfaceStyle];
-    [v27 setState:1];
+    useSceneInterfaceStyle = [MEMORY[0x277CF89D0] useSceneInterfaceStyle];
+    [useSceneInterfaceStyle setState:1];
 
-    v28 = [MEMORY[0x277D759A0] screens];
+    screens = [MEMORY[0x277D759A0] screens];
     v121[0] = MEMORY[0x277D85DD0];
     v121[1] = 3221225472;
     v121[2] = __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublisher_iconBadgeController_session_supportedFeatures_processMonitor_thermalMonitor_vehicle_themeController_navigationStateProvider_analyticsProvider___block_invoke;
     v121[3] = &unk_278F01730;
-    v107 = v17;
-    v29 = v17;
+    v107 = configurationCopy;
+    v29 = configurationCopy;
     v122 = v29;
-    v30 = [v28 db_firstObjectPassingTest:v121];
+    v30 = [screens db_firstObjectPassingTest:v121];
 
-    v31 = [v115 configuration];
-    v32 = [v31 rightHandDrive];
-    v22->_rightHandDrive = v32;
-    v22->_layoutJustification = v32;
-    objc_storeStrong(&v22->_displayConfiguration, a3);
+    configuration2 = [sessionCopy configuration];
+    rightHandDrive = [configuration2 rightHandDrive];
+    v22->_rightHandDrive = rightHandDrive;
+    v22->_layoutJustification = rightHandDrive;
+    objc_storeStrong(&v22->_displayConfiguration, configuration);
     objc_storeStrong(&v22->_screen, v30);
     if (_os_feature_enabled_impl())
     {
@@ -519,8 +519,8 @@ LABEL_21:
 
     [v29 pointScale];
     v22->_pointScale = v39;
-    v40 = [v30 traitCollection];
-    v41 = [v40 copy];
+    traitCollection = [v30 traitCollection];
+    v41 = [traitCollection copy];
     traitCollection = v22->_traitCollection;
     v22->_traitCollection = v41;
 
@@ -529,18 +529,18 @@ LABEL_21:
     v45 = v44;
     if (v44)
     {
-      v46 = [v44 integerValue];
-      v47 = (v46 >> 1) & 1;
-      if (v46)
+      integerValue = [v44 integerValue];
+      v47 = (integerValue >> 1) & 1;
+      if (integerValue)
       {
         v48 = [(UIScreen *)v43 _capabilityForKey:*MEMORY[0x277D77540]];
-        v49 = [v48 integerValue];
-        if (v49 == 1)
+        integerValue2 = [v48 integerValue];
+        if (integerValue2 == 1)
         {
           v47 |= 2uLL;
         }
 
-        else if (!v49)
+        else if (!integerValue2)
         {
           v47 |= 4uLL;
         }
@@ -554,14 +554,14 @@ LABEL_21:
 
     v22->_interactionAffordances = v47;
     v22->_screenSupportsFocus = [(UIScreen *)v22->_screen supportsFocus];
-    objc_storeStrong(&v22->_displayLayoutPublisher, v105);
+    objc_storeStrong(&v22->_displayLayoutPublisher, publisherCopy);
     [(FBSDisplayLayoutPublisher *)v22->_displayLayoutPublisher setDisplayConfiguration:v29];
     [(FBSDisplayLayoutPublisher *)v22->_displayLayoutPublisher setInterfaceOrientation:1];
-    v22->_connectedWirelessly = [v31 transportType] == 3;
-    v22->_acBackSupported = [v31 supportsACBack];
+    v22->_connectedWirelessly = [configuration2 transportType] == 3;
+    v22->_acBackSupported = [configuration2 supportsACBack];
     v50 = +[DBApplicationController sharedInstance];
-    v51 = [v50 _appPolicyEvaluator];
-    v22->_geoSupported = [v51 isGeoSupported];
+    _appPolicyEvaluator = [v50 _appPolicyEvaluator];
+    v22->_geoSupported = [_appPolicyEvaluator isGeoSupported];
 
     v52 = objc_alloc_init(DBAppHistory);
     appHistory = v22->_appHistory;
@@ -572,39 +572,39 @@ LABEL_21:
     observers = v22->_observers;
     v22->_observers = v55;
 
-    v57 = [v31 displays];
+    displays = [configuration2 displays];
     v119[0] = MEMORY[0x277D85DD0];
     v119[1] = 3221225472;
     v119[2] = __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublisher_iconBadgeController_session_supportedFeatures_processMonitor_thermalMonitor_vehicle_themeController_navigationStateProvider_analyticsProvider___block_invoke_273;
     v119[3] = &unk_278F01780;
     v58 = v29;
     v120 = v58;
-    v59 = [v57 bs_firstObjectPassingTest:v119];
+    v59 = [displays bs_firstObjectPassingTest:v119];
 
-    v22->_OEMIconVisible = [v31 manufacturerIconVisible];
-    objc_storeStrong(&v22->_themeController, a11);
+    v22->_OEMIconVisible = [configuration2 manufacturerIconVisible];
+    objc_storeStrong(&v22->_themeController, themeController);
     v60 = DBLogForCategory(0);
     v61 = os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT);
-    v102 = v20;
-    if (v114)
+    v102 = analyticsProviderCopy;
+    if (themeControllerCopy)
     {
-      v62 = v115;
+      v62 = sessionCopy;
       if (v61)
       {
         *buf = 138412290;
-        v125 = v114;
+        v125 = themeControllerCopy;
         _os_log_impl(&dword_248146000, v60, OS_LOG_TYPE_DEFAULT, "Theme Controller found: %@", buf, 0xCu);
       }
 
       v63 = [_TtC9DashBoard28DBAssetWallpaperDataProvider alloc];
-      v64 = [v114 themeAssetDocument];
-      v65 = [v59 identifier];
-      v66 = [(DBAssetWallpaperDataProvider *)v63 initWithThemeAssetDocument:v64 displayID:v65];
+      themeAssetDocument = [themeControllerCopy themeAssetDocument];
+      identifier = [v59 identifier];
+      v66 = [(DBAssetWallpaperDataProvider *)v63 initWithThemeAssetDocument:themeAssetDocument displayID:identifier];
 
-      if ([v31 manufacturerIconVisible])
+      if ([configuration2 manufacturerIconVisible])
       {
-        v67 = [v59 identifier];
-        v22->_OEMIconVisible = [v114 allowsOEMIconForDisplayID:v67];
+        identifier2 = [v59 identifier];
+        v22->_OEMIconVisible = [themeControllerCopy allowsOEMIconForDisplayID:identifier2];
       }
 
       else
@@ -615,7 +615,7 @@ LABEL_21:
 
     else
     {
-      v62 = v115;
+      v62 = sessionCopy;
       if (v61)
       {
         *buf = 0;
@@ -629,24 +629,24 @@ LABEL_21:
     wallpaperPreferences = v22->_wallpaperPreferences;
     v22->_wallpaperPreferences = v68;
 
-    objc_storeStrong(&v22->_vehicle, a10);
+    objc_storeStrong(&v22->_vehicle, vehicle);
     vehicle = v22->_vehicle;
     if (vehicle)
     {
-      v71 = [(CRVehicle *)vehicle pairingStatus];
+      pairingStatus = [(CRVehicle *)vehicle pairingStatus];
       v72 = DBLogForCategory(0);
       if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v125 = v71;
+        v125 = pairingStatus;
         _os_log_impl(&dword_248146000, v72, OS_LOG_TYPE_DEFAULT, "Vehicle pairing status: %ld", buf, 0xCu);
       }
 
-      [(DBEnvironmentConfiguration *)v22 setKnownVehicle:v71 != 0];
-      [(DBEnvironmentConfiguration *)v22 setPairedVehicle:v71 == 2];
-      v73 = [(CRVehicle *)v22->_vehicle identifier];
-      v74 = [v73 UUIDString];
-      [(DBEnvironmentConfiguration *)v22 setVehicleID:v74];
+      [(DBEnvironmentConfiguration *)v22 setKnownVehicle:pairingStatus != 0];
+      [(DBEnvironmentConfiguration *)v22 setPairedVehicle:pairingStatus == 2];
+      identifier3 = [(CRVehicle *)v22->_vehicle identifier];
+      uUIDString = [identifier3 UUIDString];
+      [(DBEnvironmentConfiguration *)v22 setVehicleID:uUIDString];
 
       v75 = DBLogForCategory(0);
       if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
@@ -661,12 +661,12 @@ LABEL_21:
     }
 
     [v62 addObserver:v22];
-    v77 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     viewAreaToStatusBarEdgeMap = v22->_viewAreaToStatusBarEdgeMap;
-    v22->_viewAreaToStatusBarEdgeMap = v77;
+    v22->_viewAreaToStatusBarEdgeMap = strongToStrongObjectsMapTable;
 
-    v79 = [v31 manufacturerIconLabel];
-    v80 = [v79 copy];
+    manufacturerIconLabel = [configuration2 manufacturerIconLabel];
+    v80 = [manufacturerIconLabel copy];
     OEMIconLabel = v22->_OEMIconLabel;
     v22->_OEMIconLabel = v80;
 
@@ -674,14 +674,14 @@ LABEL_21:
     if (v22->_themeController)
     {
       v82 = [DBSystemUILayout alloc];
-      v83 = [(DBThemeController *)v22->_themeController themeAssetDocument];
-      v84 = [v59 identifier];
-      v85 = [(DBSystemUILayout *)v82 initWithThemeAssetDocument:v83 displayID:v84 environmentConfiguration:v22];
+      themeAssetDocument2 = [(DBThemeController *)v22->_themeController themeAssetDocument];
+      identifier4 = [v59 identifier];
+      v85 = [(DBSystemUILayout *)v82 initWithThemeAssetDocument:themeAssetDocument2 displayID:identifier4 environmentConfiguration:v22];
       systemUILayout = v22->_systemUILayout;
       v22->_systemUILayout = v85;
     }
 
-    v87 = [v31 screens];
+    screens2 = [configuration2 screens];
     v116[0] = MEMORY[0x277D85DD0];
     v116[1] = 3221225472;
     v116[2] = __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublisher_iconBadgeController_session_supportedFeatures_processMonitor_thermalMonitor_vehicle_themeController_navigationStateProvider_analyticsProvider___block_invoke_281;
@@ -690,15 +690,15 @@ LABEL_21:
     v117 = v88;
     v89 = v22;
     v118 = v89;
-    [v87 enumerateObjectsUsingBlock:v116];
+    [screens2 enumerateObjectsUsingBlock:v116];
 
-    v90 = [v88 hardwareIdentifier];
-    v89->_mapsUserInterfaceStyle = [v62 mapInterfaceStyleForScreenUUID:v90];
+    hardwareIdentifier = [v88 hardwareIdentifier];
+    v89->_mapsUserInterfaceStyle = [v62 mapInterfaceStyleForScreenUUID:hardwareIdentifier];
 
     if (([(DBEnvironmentConfiguration *)v89 supportedFeatures]& 0x10) != 0)
     {
-      v91 = [v62 configuration];
-      v89->_vehicleDataSession = [v91 supportsVehicleData];
+      configuration3 = [v62 configuration];
+      v89->_vehicleDataSession = [configuration3 supportsVehicleData];
     }
 
     else
@@ -709,19 +709,19 @@ LABEL_21:
     v92 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
     {
-      v93 = [(DBEnvironmentConfiguration *)v89 vehicle];
-      v94 = [v93 appearanceModePreference];
+      vehicle = [(DBEnvironmentConfiguration *)v89 vehicle];
+      appearanceModePreference = [vehicle appearanceModePreference];
       *buf = 134217984;
-      v125 = v94;
+      v125 = appearanceModePreference;
       _os_log_impl(&dword_248146000, v92, OS_LOG_TYPE_DEFAULT, "Env vehicle appearance mode preference: %lu", buf, 0xCu);
     }
 
     v95 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v95, OS_LOG_TYPE_DEFAULT))
     {
-      v96 = [(DBEnvironmentConfiguration *)v89 carUserInterfaceStyle];
+      carUserInterfaceStyle = [(DBEnvironmentConfiguration *)v89 carUserInterfaceStyle];
       *buf = 134217984;
-      v125 = v96;
+      v125 = carUserInterfaceStyle;
       _os_log_impl(&dword_248146000, v95, OS_LOG_TYPE_DEFAULT, "Env ui style is: %ld", buf, 0xCu);
     }
 
@@ -734,12 +734,12 @@ LABEL_21:
       _os_log_impl(&dword_248146000, v97, OS_LOG_TYPE_DEFAULT, "Env map style is: %ld", buf, 0xCu);
     }
 
-    v99 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
     effectiveSceneBackgroundColor = v89->_effectiveSceneBackgroundColor;
-    v89->_effectiveSceneBackgroundColor = v99;
+    v89->_effectiveSceneBackgroundColor = clearColor;
 
-    v17 = v107;
-    v20 = v102;
+    configurationCopy = v107;
+    analyticsProviderCopy = v102;
   }
 
   return v22;
@@ -834,8 +834,8 @@ void __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublis
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DBEnvironmentConfiguration;
@@ -844,33 +844,33 @@ void __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublis
 
 - (BOOL)isAmbientBrightnessNighttime
 {
-  v2 = [(CARSession *)self->_session nightMode];
-  v3 = [v2 BOOLValue];
+  nightMode = [(CARSession *)self->_session nightMode];
+  bOOLValue = [nightMode BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBEnvironmentConfiguration *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBEnvironmentConfiguration *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = DBLogForCategory(0x13uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = observerCopy;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Removing observer: %@", &v7, 0xCu);
   }
 
-  v6 = [(DBEnvironmentConfiguration *)self observers];
-  [v6 removeObserver:v4];
+  observers = [(DBEnvironmentConfiguration *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (CGRect)currentStatusBarInsetSafeViewAreaFrame
@@ -893,21 +893,21 @@ void __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublis
   return result;
 }
 
-- (void)fetchEnhancedIntegrationStatusWithCompletion:(id)a3
+- (void)fetchEnhancedIntegrationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DBEnvironmentConfiguration *)self session];
-  v6 = [v5 MFiCertificateSerialNumber];
+  completionCopy = completion;
+  session = [(DBEnvironmentConfiguration *)self session];
+  mFiCertificateSerialNumber = [session MFiCertificateSerialNumber];
 
   CRIsEnhancedIntegrationEnabledWithCertificateSerialNumber();
 }
 
-- (CGRect)_viewAreaFrameForViewArea:(id)a3
+- (CGRect)_viewAreaFrameForViewArea:(id)area
 {
-  v4 = a3;
+  areaCopy = area;
   [(DBEnvironmentConfiguration *)self screenScale];
   v6 = v5;
-  [v4 visibleFrame];
+  [areaCopy visibleFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -921,12 +921,12 @@ void __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublis
   return CGRectApplyAffineTransform(v16, &v15);
 }
 
-- (CGRect)_safeAreaFrameForViewArea:(id)a3
+- (CGRect)_safeAreaFrameForViewArea:(id)area
 {
-  v4 = a3;
+  areaCopy = area;
   [(DBEnvironmentConfiguration *)self screenScale];
   v6 = v5;
-  [v4 safeFrame];
+  [areaCopy safeFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -940,17 +940,17 @@ void __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublis
   return CGRectApplyAffineTransform(v16, &v15);
 }
 
-- (UIEdgeInsets)_safeAreaInsetsForViewArea:(id)a3
+- (UIEdgeInsets)_safeAreaInsetsForViewArea:(id)area
 {
-  v4 = a3;
+  areaCopy = area;
   [(DBEnvironmentConfiguration *)self screenScale];
   v6 = v5;
-  [(DBEnvironmentConfiguration *)self _viewAreaFrameForViewArea:v4];
+  [(DBEnvironmentConfiguration *)self _viewAreaFrameForViewArea:areaCopy];
   v8 = v7;
   v10 = v9;
   v28 = v11;
   v13 = v12;
-  [v4 safeFrame];
+  [areaCopy safeFrame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -975,12 +975,12 @@ void __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublis
   return result;
 }
 
-- (CGRect)_unadjustedSafeAreaFrameForViewArea:(id)a3
+- (CGRect)_unadjustedSafeAreaFrameForViewArea:(id)area
 {
-  v4 = a3;
+  areaCopy = area;
   [(DBEnvironmentConfiguration *)self screenScale];
   v6 = v5;
-  [v4 unadjustedSafeFrame];
+  [areaCopy unadjustedSafeFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1002,10 +1002,10 @@ void __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublis
   [_TtC9DashBoard11DBIconImage iconImageInfoForScale:?];
   v5 = v4;
   v7 = v6;
-  v8 = [(DBEnvironmentConfiguration *)self currentStatusBarEdge];
-  v9 = [(DBEnvironmentConfiguration *)self interactionAffordances];
+  currentStatusBarEdge = [(DBEnvironmentConfiguration *)self currentStatusBarEdge];
+  interactionAffordances = [(DBEnvironmentConfiguration *)self interactionAffordances];
 
-  return [DBIconListView iconRowsForScreenHeight:v8 iconImageSize:v9 statusBarEdge:Height interactionAffordances:v5, v7];
+  return [DBIconListView iconRowsForScreenHeight:currentStatusBarEdge iconImageSize:interactionAffordances statusBarEdge:Height interactionAffordances:v5, v7];
 }
 
 - (unint64_t)iconColumnCount
@@ -1016,15 +1016,15 @@ void __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublis
   [_TtC9DashBoard11DBIconImage iconImageInfoForScale:?];
   v5 = v4;
   v7 = v6;
-  v8 = [(DBEnvironmentConfiguration *)self currentStatusBarEdge];
+  currentStatusBarEdge = [(DBEnvironmentConfiguration *)self currentStatusBarEdge];
 
-  return [DBIconListView iconColumnsForScreenWidth:v8 iconImageSize:Width statusBarEdge:v5, v7];
+  return [DBIconListView iconColumnsForScreenWidth:currentStatusBarEdge iconImageSize:Width statusBarEdge:v5, v7];
 }
 
 - (CRHomeScreenStyleData)homeScreenStyleData
 {
-  v2 = [(DBEnvironmentConfiguration *)self vehicle];
-  v3 = [v2 homeScreenStyleDataForDisplayWithID:0];
+  vehicle = [(DBEnvironmentConfiguration *)self vehicle];
+  v3 = [vehicle homeScreenStyleDataForDisplayWithID:0];
   v4 = v3;
   if (v3)
   {
@@ -1043,39 +1043,39 @@ void __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublis
 
 - (SBHIconImageAppearance)iconImageAppearance
 {
-  v3 = [(DBEnvironmentConfiguration *)self homeScreenStyleData];
-  v4 = [(DBEnvironmentConfiguration *)self resolvedUserInterfaceStyle];
-  v5 = [objc_alloc(MEMORY[0x277D661C8]) initWithHomeScreenStyleData:v3 userInterfaceStyle:v4];
+  homeScreenStyleData = [(DBEnvironmentConfiguration *)self homeScreenStyleData];
+  resolvedUserInterfaceStyle = [(DBEnvironmentConfiguration *)self resolvedUserInterfaceStyle];
+  v5 = [objc_alloc(MEMORY[0x277D661C8]) initWithHomeScreenStyleData:homeScreenStyleData userInterfaceStyle:resolvedUserInterfaceStyle];
 
   return v5;
 }
 
 - (BOOL)hasPhysicalControlBars
 {
-  v3 = [(DBEnvironmentConfiguration *)self systemUILayout];
+  systemUILayout = [(DBEnvironmentConfiguration *)self systemUILayout];
 
-  if (!v3)
+  if (!systemUILayout)
   {
     return 0;
   }
 
-  v4 = [(DBEnvironmentConfiguration *)self systemUILayout];
-  v5 = [v4 hasPhysicalControlBars];
+  systemUILayout2 = [(DBEnvironmentConfiguration *)self systemUILayout];
+  hasPhysicalControlBars = [systemUILayout2 hasPhysicalControlBars];
 
-  return v5;
+  return hasPhysicalControlBars;
 }
 
 - (BOOL)showsInstruments
 {
-  v3 = [(DBEnvironmentConfiguration *)self vehicle];
-  v4 = [v3 displayThemeData];
-  if (v4)
+  vehicle = [(DBEnvironmentConfiguration *)self vehicle];
+  displayThemeData = [vehicle displayThemeData];
+  if (displayThemeData)
   {
-    v5 = v4;
-    v6 = [(DBEnvironmentConfiguration *)self _screenInfo];
-    v7 = [v6 physicalDisplay];
-    v8 = [v7 identifier];
-    v9 = [v8 isEqualToString:@"Cluster_Display"];
+    v5 = displayThemeData;
+    _screenInfo = [(DBEnvironmentConfiguration *)self _screenInfo];
+    physicalDisplay = [_screenInfo physicalDisplay];
+    identifier = [physicalDisplay identifier];
+    v9 = [identifier isEqualToString:@"Cluster_Display"];
 
     if (v9)
     {
@@ -1087,28 +1087,28 @@ void __217__DBEnvironmentConfiguration_initWithDisplayConfiguration_layoutPublis
   {
   }
 
-  v11 = [(DBEnvironmentConfiguration *)self _screenInfo];
-  v12 = [v11 physicalDisplay];
-  v13 = [v12 showsInstruments];
+  _screenInfo2 = [(DBEnvironmentConfiguration *)self _screenInfo];
+  physicalDisplay2 = [_screenInfo2 physicalDisplay];
+  showsInstruments = [physicalDisplay2 showsInstruments];
 
-  return v13;
+  return showsInstruments;
 }
 
-- (void)session:(id)a3 didSetViewArea:(id)a4 forScreenID:(id)a5 withDuration:(double)a6 transitionControlType:(unint64_t)a7
+- (void)session:(id)session didSetViewArea:(id)area forScreenID:(id)d withDuration:(double)duration transitionControlType:(unint64_t)type
 {
-  v11 = a4;
-  v12 = a5;
+  areaCopy = area;
+  dCopy = d;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __100__DBEnvironmentConfiguration_session_didSetViewArea_forScreenID_withDuration_transitionControlType___block_invoke;
   block[3] = &unk_278F017D0;
   block[4] = self;
-  v16 = v12;
-  v17 = v11;
-  v18 = a7;
-  v19 = a6;
-  v13 = v11;
-  v14 = v12;
+  v16 = dCopy;
+  v17 = areaCopy;
+  typeCopy = type;
+  durationCopy = duration;
+  v13 = areaCopy;
+  v14 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1171,14 +1171,14 @@ void __100__DBEnvironmentConfiguration_session_didSetViewArea_forScreenID_withDu
   }
 }
 
-- (void)session:(id)a3 didUpdateNightMode:(BOOL)a4
+- (void)session:(id)session didUpdateNightMode:(BOOL)mode
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __57__DBEnvironmentConfiguration_session_didUpdateNightMode___block_invoke;
   v4[3] = &unk_278F017F8;
   v4[4] = self;
-  v5 = a4;
+  modeCopy = mode;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
@@ -1188,17 +1188,17 @@ void __57__DBEnvironmentConfiguration_session_didUpdateNightMode___block_invoke(
   [v2 environmentConfiguration:*(a1 + 32) nightModeDidChange:*(a1 + 40)];
 }
 
-- (void)session:(id)a3 didUpdateAppearanceStyle:(int64_t)a4 forScreenUUID:(id)a5
+- (void)session:(id)session didUpdateAppearanceStyle:(int64_t)style forScreenUUID:(id)d
 {
-  v7 = a5;
+  dCopy = d;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__DBEnvironmentConfiguration_session_didUpdateAppearanceStyle_forScreenUUID___block_invoke;
   block[3] = &unk_278F01820;
-  v11 = self;
-  v12 = a4;
-  v10 = v7;
-  v8 = v7;
+  selfCopy = self;
+  styleCopy = style;
+  v10 = dCopy;
+  v8 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1217,17 +1217,17 @@ void __77__DBEnvironmentConfiguration_session_didUpdateAppearanceStyle_forScreen
   }
 }
 
-- (void)session:(id)a3 didUpdateMapAppearanceStyle:(int64_t)a4 forScreenUUID:(id)a5
+- (void)session:(id)session didUpdateMapAppearanceStyle:(int64_t)style forScreenUUID:(id)d
 {
-  v7 = a5;
+  dCopy = d;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__DBEnvironmentConfiguration_session_didUpdateMapAppearanceStyle_forScreenUUID___block_invoke;
   block[3] = &unk_278F01820;
-  v11 = self;
-  v12 = a4;
-  v10 = v7;
-  v8 = v7;
+  selfCopy = self;
+  styleCopy = style;
+  v10 = dCopy;
+  v8 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1247,7 +1247,7 @@ void __80__DBEnvironmentConfiguration_session_didUpdateMapAppearanceStyle_forScr
   }
 }
 
-- (void)sessionDidUpdateCarCapabilities:(id)a3
+- (void)sessionDidUpdateCarCapabilities:(id)capabilities
 {
   v4 = DBLogForCategory(0x13uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1256,40 +1256,40 @@ void __80__DBEnvironmentConfiguration_session_didUpdateMapAppearanceStyle_forScr
     _os_log_impl(&dword_248146000, v4, OS_LOG_TYPE_DEFAULT, "CarCapabilities updated, kicking off a style update", v7, 2u);
   }
 
-  v5 = [(DBEnvironmentConfiguration *)self observers];
-  [v5 environmentConfiguration:self appearanceStyleDidChange:{-[DBEnvironmentConfiguration carUserInterfaceStyle](self, "carUserInterfaceStyle")}];
+  observers = [(DBEnvironmentConfiguration *)self observers];
+  [observers environmentConfiguration:self appearanceStyleDidChange:{-[DBEnvironmentConfiguration carUserInterfaceStyle](self, "carUserInterfaceStyle")}];
 
-  v6 = [(DBEnvironmentConfiguration *)self observers];
-  [v6 environmentConfiguration:self mapsAppearanceStyleDidChange:{-[DBEnvironmentConfiguration effectiveMapsUserInterfaceStyle](self, "effectiveMapsUserInterfaceStyle")}];
+  observers2 = [(DBEnvironmentConfiguration *)self observers];
+  [observers2 environmentConfiguration:self mapsAppearanceStyleDidChange:{-[DBEnvironmentConfiguration effectiveMapsUserInterfaceStyle](self, "effectiveMapsUserInterfaceStyle")}];
 }
 
-- (void)sessionController:(id)a3 didUpdateVehicle:(id)a4
+- (void)sessionController:(id)controller didUpdateVehicle:(id)vehicle
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  controllerCopy = controller;
+  vehicleCopy = vehicle;
+  v8 = vehicleCopy;
+  if (vehicleCopy)
   {
-    v9 = [v7 pairingStatus];
+    pairingStatus = [vehicleCopy pairingStatus];
     v10 = DBLogForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 134217984;
-      v22 = v9;
+      v22 = pairingStatus;
       _os_log_impl(&dword_248146000, v10, OS_LOG_TYPE_DEFAULT, "Vehicle pairing status: %ld", &v21, 0xCu);
     }
 
-    [(DBEnvironmentConfiguration *)self setKnownVehicle:v9 != 0];
-    [(DBEnvironmentConfiguration *)self setPairedVehicle:v9 == 2];
-    v11 = [v8 identifier];
-    v12 = [v11 UUIDString];
-    [(DBEnvironmentConfiguration *)self setVehicleID:v12];
+    [(DBEnvironmentConfiguration *)self setKnownVehicle:pairingStatus != 0];
+    [(DBEnvironmentConfiguration *)self setPairedVehicle:pairingStatus == 2];
+    identifier = [v8 identifier];
+    uUIDString = [identifier UUIDString];
+    [(DBEnvironmentConfiguration *)self setVehicleID:uUIDString];
 
     [(DBEnvironmentConfiguration *)self updateDisplayScaleIfNeeded:v8];
   }
 
-  objc_storeStrong(&self->_vehicle, a4);
+  objc_storeStrong(&self->_vehicle, vehicle);
   v13 = DBLogForCategory(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -1298,62 +1298,62 @@ void __80__DBEnvironmentConfiguration_session_didUpdateMapAppearanceStyle_forScr
     _os_log_impl(&dword_248146000, v13, OS_LOG_TYPE_DEFAULT, "Assigning vehicle to wallpaper preferences: %@", &v21, 0xCu);
   }
 
-  v14 = [(DBEnvironmentConfiguration *)self wallpaperPreferences];
-  [v14 setVehicle:v8];
+  wallpaperPreferences = [(DBEnvironmentConfiguration *)self wallpaperPreferences];
+  [wallpaperPreferences setVehicle:v8];
 
-  v15 = [(DBEnvironmentConfiguration *)self observers];
-  [v15 environmentConfiguration:self appearancePreferenceDidChange:{objc_msgSend(v8, "appearanceModePreference")}];
+  observers = [(DBEnvironmentConfiguration *)self observers];
+  [observers environmentConfiguration:self appearancePreferenceDidChange:{objc_msgSend(v8, "appearanceModePreference")}];
 
-  v16 = [(DBEnvironmentConfiguration *)self observers];
-  [v16 environmentConfiguration:self appearanceStyleDidChange:{-[DBEnvironmentConfiguration carUserInterfaceStyle](self, "carUserInterfaceStyle")}];
+  observers2 = [(DBEnvironmentConfiguration *)self observers];
+  [observers2 environmentConfiguration:self appearanceStyleDidChange:{-[DBEnvironmentConfiguration carUserInterfaceStyle](self, "carUserInterfaceStyle")}];
 
-  v17 = [(DBEnvironmentConfiguration *)self observers];
-  [v17 environmentConfiguration:self mapsAppearanceStyleDidChange:{-[DBEnvironmentConfiguration effectiveMapsUserInterfaceStyle](self, "effectiveMapsUserInterfaceStyle")}];
+  observers3 = [(DBEnvironmentConfiguration *)self observers];
+  [observers3 environmentConfiguration:self mapsAppearanceStyleDidChange:{-[DBEnvironmentConfiguration effectiveMapsUserInterfaceStyle](self, "effectiveMapsUserInterfaceStyle")}];
 
-  v18 = [(DBEnvironmentConfiguration *)self observers];
-  [v18 environmentConfigurationPairedVehiclesDidChange:self];
+  observers4 = [(DBEnvironmentConfiguration *)self observers];
+  [observers4 environmentConfigurationPairedVehiclesDidChange:self];
 
-  v19 = [(DBEnvironmentConfiguration *)self observers];
+  observers5 = [(DBEnvironmentConfiguration *)self observers];
   v20 = [v8 homeScreenStyleDataForDisplayWithID:0];
-  [v19 environmentConfiguration:self homeScreenStyleDidChange:v20];
+  [observers5 environmentConfiguration:self homeScreenStyleDidChange:v20];
 }
 
-- (void)updateDisplayScaleIfNeeded:(id)a3
+- (void)updateDisplayScaleIfNeeded:(id)needed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   if (_os_feature_enabled_impl())
   {
-    v5 = [v4 displayScaleMode];
-    v6 = [(DBEnvironmentConfiguration *)self vehicle];
-    v7 = [v6 displayScaleMode];
+    displayScaleMode = [neededCopy displayScaleMode];
+    vehicle = [(DBEnvironmentConfiguration *)self vehicle];
+    displayScaleMode2 = [vehicle displayScaleMode];
 
-    if (v5 != v7)
+    if (displayScaleMode != displayScaleMode2)
     {
-      v8 = [(DBEnvironmentConfiguration *)self _screenInfo];
-      [v8 canvasPixelSizeForDisplayScaleMode:{objc_msgSend(v4, "displayScaleMode")}];
+      _screenInfo = [(DBEnvironmentConfiguration *)self _screenInfo];
+      [_screenInfo canvasPixelSizeForDisplayScaleMode:{objc_msgSend(neededCopy, "displayScaleMode")}];
       v10 = v9;
       v12 = v11;
 
-      v13 = [(DBEnvironmentConfiguration *)self _screenInfo];
-      v14 = [(DBEnvironmentConfiguration *)self displayConfiguration];
-      [v14 bounds];
-      v17 = [v13 displayScaleModesForCanvasPixelSize:{v15, v16}];
+      _screenInfo2 = [(DBEnvironmentConfiguration *)self _screenInfo];
+      displayConfiguration = [(DBEnvironmentConfiguration *)self displayConfiguration];
+      [displayConfiguration bounds];
+      v17 = [_screenInfo2 displayScaleModesForCanvasPixelSize:{v15, v16}];
 
-      v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "displayScaleMode")}];
-      LODWORD(v14) = [v17 containsObject:v18];
+      v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(neededCopy, "displayScaleMode")}];
+      LODWORD(displayConfiguration) = [v17 containsObject:v18];
 
-      if (v14)
+      if (displayConfiguration)
       {
         v19 = DBLogForCategory(0x1BuLL);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v20 = [(DBEnvironmentConfiguration *)self displayConfiguration];
+          displayConfiguration2 = [(DBEnvironmentConfiguration *)self displayConfiguration];
           v28.width = v10;
           v28.height = v12;
           v21 = NSStringFromCGSize(v28);
           *buf = 138543618;
-          v24 = v20;
+          v24 = displayConfiguration2;
           v25 = 2114;
           v26 = v21;
           _os_log_impl(&dword_248146000, v19, OS_LOG_TYPE_INFO, "Display scaled correctly, ignoring change request. Config: %{public}@; New size: %{public}@", buf, 0x16u);
@@ -1381,30 +1381,30 @@ void __57__DBEnvironmentConfiguration_updateDisplayScaleIfNeeded___block_invoke(
   [v2 environmentConfiguration:*(a1 + 32) canvasOverrideSizeDidChange:{*(a1 + 40), *(a1 + 48)}];
 }
 
-- (unint64_t)_statusBarEdgeForViewArea:(id)a3
+- (unint64_t)_statusBarEdgeForViewArea:(id)area
 {
-  v4 = a3;
+  areaCopy = area;
   if (_os_feature_enabled_impl() && [(DBEnvironmentConfiguration *)self hasDualStatusBar])
   {
-    v5 = 2;
+    integerValue = 2;
   }
 
   else
   {
-    v6 = [(DBEnvironmentConfiguration *)self viewAreaToStatusBarEdgeMap];
-    v7 = [v6 objectForKey:v4];
+    viewAreaToStatusBarEdgeMap = [(DBEnvironmentConfiguration *)self viewAreaToStatusBarEdgeMap];
+    v7 = [viewAreaToStatusBarEdgeMap objectForKey:areaCopy];
 
-    v5 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)_computeStatusBarEdgesForViewAreas:(id)a3
+- (void)_computeStatusBarEdgesForViewAreas:(id)areas
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF89D0] statusBarEdgeOverride];
-  v6 = [v5 internalSettingsValue];
+  areasCopy = areas;
+  statusBarEdgeOverride = [MEMORY[0x277CF89D0] statusBarEdgeOverride];
+  internalSettingsValue = [statusBarEdgeOverride internalSettingsValue];
 
   v27 = 0;
   v28 = &v27;
@@ -1422,13 +1422,13 @@ void __57__DBEnvironmentConfiguration_updateDisplayScaleIfNeeded___block_invoke(
   v13[1] = 3221225472;
   v13[2] = __65__DBEnvironmentConfiguration__computeStatusBarEdgesForViewAreas___block_invoke;
   v13[3] = &unk_278F01898;
-  v7 = v6;
+  v7 = internalSettingsValue;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v16 = &v27;
   v17 = &v23;
   v18 = &v19;
-  [v4 bs_each:v13];
+  [areasCopy bs_each:v13];
   if ((v28[3] & 1) == 0 && *(v24 + 24) == 1 && *(v20 + 24) == 1)
   {
     v8 = DBLogForCategory(6uLL);
@@ -1443,7 +1443,7 @@ void __57__DBEnvironmentConfiguration_updateDisplayScaleIfNeeded___block_invoke(
     v11[2] = __65__DBEnvironmentConfiguration__computeStatusBarEdgesForViewAreas___block_invoke_304;
     v11[3] = &unk_278F018C0;
     v11[4] = self;
-    [v4 bs_each:v11];
+    [areasCopy bs_each:v11];
   }
 
   if ([(DBEnvironmentConfiguration *)self supportsGaugeCluster]&& [(DBEnvironmentConfiguration *)self supportsDisplayPlugin]&& *(v20 + 24) == 1)
@@ -1460,7 +1460,7 @@ void __57__DBEnvironmentConfiguration_updateDisplayScaleIfNeeded___block_invoke(
     v10[2] = __65__DBEnvironmentConfiguration__computeStatusBarEdgesForViewAreas___block_invoke_306;
     v10[3] = &unk_278F018C0;
     v10[4] = self;
-    [v4 bs_each:v10];
+    [areasCopy bs_each:v10];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -1630,13 +1630,13 @@ void __65__DBEnvironmentConfiguration__computeStatusBarEdgesForViewAreas___block
 
 - (id)statusBarInsetViewAreas
 {
-  v3 = [(DBEnvironmentConfiguration *)self session];
-  v4 = [v3 configuration];
+  session = [(DBEnvironmentConfiguration *)self session];
+  configuration = [session configuration];
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(DBEnvironmentConfiguration *)self systemUILayout];
+  systemUILayout = [(DBEnvironmentConfiguration *)self systemUILayout];
 
-  if (v6)
+  if (systemUILayout)
   {
     [(DBEnvironmentConfiguration *)self currentSafeViewAreaFrame];
     [DBDashboardLayoutEngine insetsForViewArea:[(DBEnvironmentConfiguration *)self currentStatusBarEdge] statusBarEdge:self environmentConfiguration:v7, v8, v9, v10];
@@ -1644,8 +1644,8 @@ void __65__DBEnvironmentConfiguration__computeStatusBarEdgesForViewAreas___block
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(DBEnvironmentConfiguration *)self systemUILayout];
-    [v19 primaryContentFrame];
+    systemUILayout2 = [(DBEnvironmentConfiguration *)self systemUILayout];
+    [systemUILayout2 primaryContentFrame];
     v21 = v14 + v20;
     v23 = v12 + v22;
     v25 = v24 - (v14 + v18);
@@ -1657,14 +1657,14 @@ void __65__DBEnvironmentConfiguration__computeStatusBarEdgesForViewAreas___block
 
   else
   {
-    v29 = [v4 screens];
+    screens = [configuration screens];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __53__DBEnvironmentConfiguration_statusBarInsetViewAreas__block_invoke;
     v31[3] = &unk_278F017A8;
     v31[4] = self;
     v32 = v5;
-    [v29 enumerateObjectsUsingBlock:v31];
+    [screens enumerateObjectsUsingBlock:v31];
   }
 
   return v5;
@@ -1704,16 +1704,16 @@ void __53__DBEnvironmentConfiguration_statusBarInsetViewAreas__block_invoke_2(ui
   [*(a1 + 40) addObject:v18];
 }
 
-+ (id)_stringForStatusBarEdge:(unint64_t)a3
++ (id)_stringForStatusBarEdge:(unint64_t)edge
 {
-  if (a3 > 3)
+  if (edge > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_278F01908[a3];
+    return off_278F01908[edge];
   }
 }
 
@@ -1748,7 +1748,7 @@ void __53__DBEnvironmentConfiguration_statusBarInsetViewAreas__block_invoke_2(ui
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CF89F0] descriptionForUserInterfaceStyle:-1];
-  v5 = [MEMORY[0x277CF89F0] descriptionForUserInterfaceStyle:a1];
+  v5 = [MEMORY[0x277CF89F0] descriptionForUserInterfaceStyle:self];
   v6 = 138412546;
   v7 = v4;
   v8 = 2112;
@@ -1762,7 +1762,7 @@ void __53__DBEnvironmentConfiguration_statusBarInsetViewAreas__block_invoke_2(ui
   v2 = 134218240;
   v3 = -1;
   v4 = 2048;
-  v5 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_248146000, a2, OS_LOG_TYPE_ERROR, "Vehicle preference is invalid: %ld, using car capabilities value: %ld", &v2, 0x16u);
 }
 

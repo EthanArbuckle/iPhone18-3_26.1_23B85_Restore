@@ -1,18 +1,18 @@
 @interface MRUActivityArtworkView
 - (MRUActivityArtworkView)init;
 - (void)layoutSubviews;
-- (void)setAdjustsImageWhenHighlighted:(BOOL)a3;
-- (void)setAdjustsImageWhenLoading:(BOOL)a3;
-- (void)setArtworkImage:(id)a3;
-- (void)setCurrentImage:(id)a3 animated:(BOOL)a4;
-- (void)setEmpty:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setItemIdentifier:(id)a3;
-- (void)setLoading:(BOOL)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)transitionToImage:(id)a3;
-- (void)updatePackageAlphaAnimated:(BOOL)a3;
+- (void)setAdjustsImageWhenHighlighted:(BOOL)highlighted;
+- (void)setAdjustsImageWhenLoading:(BOOL)loading;
+- (void)setArtworkImage:(id)image;
+- (void)setCurrentImage:(id)image animated:(BOOL)animated;
+- (void)setEmpty:(BOOL)empty;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setItemIdentifier:(id)identifier;
+- (void)setLoading:(BOOL)loading;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setPlaying:(BOOL)playing;
+- (void)transitionToImage:(id)image;
+- (void)updatePackageAlphaAnimated:(BOOL)animated;
 - (void)updatePackageState;
 @end
 
@@ -42,14 +42,14 @@
     v3->_emptyImage = v7;
 
     [(MRUActivityArtworkView *)v3 setCurrentImage:0 animated:0];
-    v9 = [(MRUArtworkView *)v3 artworkImageView];
-    [v9 removeFromSuperview];
+    artworkImageView = [(MRUArtworkView *)v3 artworkImageView];
+    [artworkImageView removeFromSuperview];
 
-    v10 = [(MRUArtworkView *)v3 placeholderBackground];
-    [v10 removeFromSuperview];
+    placeholderBackground = [(MRUArtworkView *)v3 placeholderBackground];
+    [placeholderBackground removeFromSuperview];
 
-    v11 = [(MRUArtworkView *)v3 placeholderImageView];
-    [v11 removeFromSuperview];
+    placeholderImageView = [(MRUArtworkView *)v3 placeholderImageView];
+    [placeholderImageView removeFromSuperview];
 
     [(MRUActivityArtworkView *)v3 addSubview:v3->_packageView];
     [(MRUActivityArtworkView *)v3 updatePackageAlphaAnimated:0];
@@ -84,20 +84,20 @@
   [(CCUICAPackageView *)self->_packageView setScale:v7 / 20.0];
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    v3 = a3;
-    self->_onScreen = a3;
+    screenCopy = screen;
+    self->_onScreen = screen;
     v5 = MCLogCategoryDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = screenCopy;
       _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_INFO, "%{public}@ - set onScreen to: %{BOOL}u", &v6, 0x12u);
     }
 
@@ -105,20 +105,20 @@
   }
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    v3 = a3;
-    self->_playing = a3;
+    playingCopy = playing;
+    self->_playing = playing;
     v5 = MCLogCategoryDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = playingCopy;
       _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_INFO, "%{public}@ - set playing to: %{BOOL}u", &v6, 0x12u);
     }
 
@@ -126,20 +126,20 @@
   }
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
-    v3 = a3;
-    self->_loading = a3;
+    loadingCopy = loading;
+    self->_loading = loading;
     v5 = MCLogCategoryDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = loadingCopy;
       _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_INFO, "%{public}@ - set loading to: %{BOOL}u", &v6, 0x12u);
     }
 
@@ -147,38 +147,38 @@
   }
 }
 
-- (void)setAdjustsImageWhenLoading:(BOOL)a3
+- (void)setAdjustsImageWhenLoading:(BOOL)loading
 {
-  if (self->_adjustsImageWhenLoading != a3)
+  if (self->_adjustsImageWhenLoading != loading)
   {
-    self->_adjustsImageWhenLoading = a3;
+    self->_adjustsImageWhenLoading = loading;
     [(MRUActivityArtworkView *)self updatePackageAlphaAnimated:self->_onScreen];
   }
 }
 
-- (void)setAdjustsImageWhenHighlighted:(BOOL)a3
+- (void)setAdjustsImageWhenHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = MRUActivityArtworkView;
-  [(MRUArtworkView *)&v4 setAdjustsImageWhenHighlighted:a3];
+  [(MRUArtworkView *)&v4 setAdjustsImageWhenHighlighted:highlighted];
   [(MRUActivityArtworkView *)self updatePackageAlphaAnimated:self->_onScreen];
 }
 
-- (void)setArtworkImage:(id)a3
+- (void)setArtworkImage:(id)image
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imageCopy = image;
   if ([(MRUArtworkView *)self style]== 10)
   {
-    v5 = [(MRUArtworkView *)self artworkImage];
-    if (v4)
+    artworkImage = [(MRUArtworkView *)self artworkImage];
+    if (imageCopy)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = v5 == 0;
+      v6 = artworkImage == 0;
     }
 
     v7 = !v6;
@@ -193,21 +193,21 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v23 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_INFO, "%{public}@ - Artwork will change to nil. Marking needsTransition", buf, 0xCu);
   }
 
   v21.receiver = self;
   v21.super_class = MRUActivityArtworkView;
-  [(MRUArtworkView *)&v21 setArtworkImage:v4];
+  [(MRUArtworkView *)&v21 setArtworkImage:imageCopy];
   loading = self->_loading;
-  [(MRUActivityArtworkView *)self setLoading:v4 == 0];
+  [(MRUActivityArtworkView *)self setLoading:imageCopy == 0];
   v10 = self->_artworkIdentifier;
-  v11 = [(MRUArtworkView *)self imageLoader];
-  v12 = [v11 lastVendedArtworkIdentifier];
-  v13 = [v12 stringRepresentation];
+  imageLoader = [(MRUArtworkView *)self imageLoader];
+  lastVendedArtworkIdentifier = [imageLoader lastVendedArtworkIdentifier];
+  stringRepresentation = [lastVendedArtworkIdentifier stringRepresentation];
   artworkIdentifier = self->_artworkIdentifier;
-  self->_artworkIdentifier = v13;
+  self->_artworkIdentifier = stringRepresentation;
 
   v15 = self->_artworkIdentifier;
   v16 = v10;
@@ -228,13 +228,13 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2114;
-      v25 = v4;
+      v25 = imageCopy;
       _os_log_impl(&dword_1A20FC000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ - Transitioning to new image: %{public}@", buf, 0x16u);
     }
 
-    [(MRUActivityArtworkView *)self transitionToImage:v4];
+    [(MRUActivityArtworkView *)self transitionToImage:imageCopy];
   }
 
   else
@@ -244,30 +244,30 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2114;
-      v25 = v4;
+      v25 = imageCopy;
       v26 = 1024;
       v27 = !loading;
       _os_log_impl(&dword_1A20FC000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ - Changing image: %{public}@, animated=%{BOOL}u", buf, 0x1Cu);
     }
 
-    [(MRUActivityArtworkView *)self setCurrentImage:v4 animated:!loading];
+    [(MRUActivityArtworkView *)self setCurrentImage:imageCopy animated:!loading];
   }
 }
 
-- (void)setItemIdentifier:(id)a3
+- (void)setItemIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_itemIdentifier != v4 && ([(NSString *)v4 isEqual:?]& 1) == 0)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (self->_itemIdentifier != identifierCopy && ([(NSString *)identifierCopy isEqual:?]& 1) == 0)
   {
     v6 = MCLogCategoryDefault();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v9 = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
       v12 = v5;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_INFO, "%{public}@ - Item identifier changed to: %{public}@. Marking needsTransition", &v9, 0x16u);
@@ -281,30 +281,30 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v6.receiver = self;
   v6.super_class = MRUActivityArtworkView;
   [(MRUArtworkView *)&v6 setHighlighted:?];
-  v5 = !a3 && self->_onScreen;
+  v5 = !highlighted && self->_onScreen;
   [(MRUActivityArtworkView *)self updatePackageAlphaAnimated:v5];
 }
 
-- (void)setEmpty:(BOOL)a3
+- (void)setEmpty:(BOOL)empty
 {
-  if (self->_empty != a3)
+  if (self->_empty != empty)
   {
-    self->_empty = a3;
+    self->_empty = empty;
     [(MRUActivityArtworkView *)self setCurrentImage:0 animated:1];
 
     [(MRUActivityArtworkView *)self updatePackageState];
   }
 }
 
-- (void)setCurrentImage:(id)a3 animated:(BOOL)a4
+- (void)setCurrentImage:(id)image animated:(BOOL)animated
 {
-  v6 = a3;
-  if (v6)
+  imageCopy = image;
+  if (imageCopy)
   {
     [(MRUActivityArtworkView *)self setEmpty:0];
     [(NSTimer *)self->_emptyTimer invalidate];
@@ -333,7 +333,7 @@
   {
     v11 = self->_emptyImage;
 
-    v6 = v11;
+    imageCopy = v11;
   }
 
   if (self->_currentState)
@@ -348,27 +348,27 @@
 
   packageView = self->_packageView;
   v14 = v12;
-  v15 = [(CCUICAPackageView *)packageView package];
-  v16 = [v15 publishedObjectWithName:v14];
+  package = [(CCUICAPackageView *)packageView package];
+  v16 = [package publishedObjectWithName:v14];
 
-  v17 = [v16 superlayer];
-  v18 = [v17 superlayer];
-  [v18 bounds];
+  superlayer = [v16 superlayer];
+  v17Superlayer = [superlayer superlayer];
+  [v17Superlayer bounds];
 
-  [(UIImage *)v6 size];
+  [(UIImage *)imageCopy size];
   [MRUArtworkView artworkFrameForSize:"artworkFrameForSize:availableBounds:" availableBounds:?];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(MRUArtworkView *)self style];
-  [(UIImage *)v6 size];
-  v30 = MRUArtworkCornerRadius(v27, v28, v29);
+  style = [(MRUArtworkView *)self style];
+  [(UIImage *)imageCopy size];
+  v30 = MRUArtworkCornerRadius(style, v28, v29);
   v36 = MEMORY[0x1E69E9820];
   v37 = 3221225472;
   v38 = __51__MRUActivityArtworkView_setCurrentImage_animated___block_invoke_2;
   v39 = &unk_1E7663CB8;
-  v31 = v17;
+  v31 = superlayer;
   v40 = v31;
   v43 = v20;
   v44 = v22;
@@ -377,11 +377,11 @@
   v47 = v30;
   v32 = v16;
   v41 = v32;
-  v33 = v6;
+  v33 = imageCopy;
   v42 = v33;
   v34 = _Block_copy(&v36);
   v35 = v34;
-  if (a4)
+  if (animated)
   {
     v34[2](v34);
   }
@@ -424,11 +424,11 @@ void __51__MRUActivityArtworkView_setCurrentImage_animated___block_invoke_2(uint
   }
 }
 
-- (void)transitionToImage:(id)a3
+- (void)transitionToImage:(id)image
 {
   self->_currentItemHasChangedSinceArtworkLastSet = 0;
   self->_currentState = self->_currentState == 0;
-  [(MRUActivityArtworkView *)self setCurrentImage:a3 animated:0];
+  [(MRUActivityArtworkView *)self setCurrentImage:image animated:0];
 
   [(MRUActivityArtworkView *)self updatePackageState];
 }
@@ -498,7 +498,7 @@ void __51__MRUActivityArtworkView_setCurrentImage_animated___block_invoke_2(uint
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
       v12 = v7;
       _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_INFO, "%{public}@ - Changing package state to: %{public}@", buf, 0x16u);
@@ -506,27 +506,27 @@ void __51__MRUActivityArtworkView_setCurrentImage_animated___block_invoke_2(uint
   }
 }
 
-- (void)updatePackageAlphaAnimated:(BOOL)a3
+- (void)updatePackageAlphaAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v24 = *MEMORY[0x1E69E9840];
   if ([(MRUArtworkView *)self adjustsImageWhenHighlighted])
   {
-    v5 = [(MRUActivityArtworkView *)self isHighlighted];
+    isHighlighted = [(MRUActivityArtworkView *)self isHighlighted];
   }
 
   else
   {
-    v5 = 0;
+    isHighlighted = 0;
   }
 
-  v6 = [(MRUActivityArtworkView *)self adjustsImageWhenLoading];
-  if (v6)
+  adjustsImageWhenLoading = [(MRUActivityArtworkView *)self adjustsImageWhenLoading];
+  if (adjustsImageWhenLoading)
   {
-    LOBYTE(v6) = [(MRUActivityArtworkView *)self isLoading];
+    LOBYTE(adjustsImageWhenLoading) = [(MRUActivityArtworkView *)self isLoading];
   }
 
-  if ((v5 | v6))
+  if ((isHighlighted | adjustsImageWhenLoading))
   {
     v7 = 0.2;
   }
@@ -536,8 +536,8 @@ void __51__MRUActivityArtworkView_setCurrentImage_animated___block_invoke_2(uint
     v7 = 1.0;
   }
 
-  v8 = [(MRUActivityArtworkView *)self packageView];
-  [v8 alpha];
+  packageView = [(MRUActivityArtworkView *)self packageView];
+  [packageView alpha];
   v10 = vabdd_f64(v9, v7);
 
   if (v10 > 2.22044605e-16)
@@ -546,19 +546,19 @@ void __51__MRUActivityArtworkView_setCurrentImage_animated___block_invoke_2(uint
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138544386;
-      v15 = self;
+      selfCopy = self;
       v16 = 2048;
       v17 = v7;
       v18 = 1024;
-      v19 = v3;
+      v19 = animatedCopy;
       v20 = 1024;
-      v21 = [(MRUActivityArtworkView *)self isLoading];
+      isLoading = [(MRUActivityArtworkView *)self isLoading];
       v22 = 1024;
-      v23 = [(MRUActivityArtworkView *)self isHighlighted];
+      isHighlighted2 = [(MRUActivityArtworkView *)self isHighlighted];
       _os_log_impl(&dword_1A20FC000, v11, OS_LOG_TYPE_INFO, "%{public}@ - Changing package alpha to: %f animated:%{BOOL}u. highlighted:%{BOOL}u loading:%{BOOL}u", buf, 0x28u);
     }
 
-    if (v3)
+    if (animatedCopy)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -571,8 +571,8 @@ void __51__MRUActivityArtworkView_setCurrentImage_animated___block_invoke_2(uint
 
     else
     {
-      v12 = [(MRUActivityArtworkView *)self packageView];
-      [v12 setAlpha:v7];
+      packageView2 = [(MRUActivityArtworkView *)self packageView];
+      [packageView2 setAlpha:v7];
     }
   }
 }

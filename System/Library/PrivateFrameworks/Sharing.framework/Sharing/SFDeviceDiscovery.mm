@@ -1,40 +1,40 @@
 @interface SFDeviceDiscovery
 - (SFDeviceDiscovery)init;
-- (SFDeviceDiscovery)initWithCoder:(id)a3;
+- (SFDeviceDiscovery)initWithCoder:(id)coder;
 - (id)description;
 - (int)_ensureXPCStarted;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_invokeBlockActivateSafe:(id)a3;
+- (void)_invokeBlockActivateSafe:(id)safe;
 - (void)_retryConsole;
 - (void)_startTimeoutIfNeeded;
 - (void)_timeoutTimerFired;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deviceDiscoveryFoundDevice:(id)a3;
-- (void)deviceDiscoveryLostDevice:(id)a3;
-- (void)deviceDiscoveryScanStateChanged:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)fastScanCancel:(id)a3;
-- (void)fastScanTrigger:(id)a3;
+- (void)deviceDiscoveryFoundDevice:(id)device;
+- (void)deviceDiscoveryLostDevice:(id)device;
+- (void)deviceDiscoveryScanStateChanged:(int64_t)changed;
+- (void)encodeWithCoder:(id)coder;
+- (void)fastScanCancel:(id)cancel;
+- (void)fastScanTrigger:(id)trigger;
 - (void)invalidate;
-- (void)setChangeFlags:(unsigned int)a3;
-- (void)setDeviceFilter:(id)a3;
-- (void)setDiscoveryFlags:(unint64_t)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setFastScanMode:(int64_t)a3;
-- (void)setOverrideScreenOff:(BOOL)a3;
-- (void)setOverrideScreenOffRescanInterval:(int64_t)a3;
-- (void)setRssiChangeDetection:(BOOL)a3;
-- (void)setRssiThreshold:(int64_t)a3;
-- (void)setScanCache:(BOOL)a3;
-- (void)setScanRate:(int64_t)a3;
-- (void)setTimeout:(double)a3;
-- (void)setTrackPeers:(BOOL)a3;
-- (void)setUseCases:(id)a3;
-- (void)triggerEnhancedDiscovery:(id)a3;
-- (void)triggerEnhancedDiscovery:(id)a3 useCase:(unsigned int)a4 completion:(id)a5;
+- (void)setChangeFlags:(unsigned int)flags;
+- (void)setDeviceFilter:(id)filter;
+- (void)setDiscoveryFlags:(unint64_t)flags;
+- (void)setDispatchQueue:(id)queue;
+- (void)setFastScanMode:(int64_t)mode;
+- (void)setOverrideScreenOff:(BOOL)off;
+- (void)setOverrideScreenOffRescanInterval:(int64_t)interval;
+- (void)setRssiChangeDetection:(BOOL)detection;
+- (void)setRssiThreshold:(int64_t)threshold;
+- (void)setScanCache:(BOOL)cache;
+- (void)setScanRate:(int64_t)rate;
+- (void)setTimeout:(double)timeout;
+- (void)setTrackPeers:(BOOL)peers;
+- (void)setUseCases:(id)cases;
+- (void)triggerEnhancedDiscovery:(id)discovery;
+- (void)triggerEnhancedDiscovery:(id)discovery useCase:(unsigned int)case completion:(id)completion;
 @end
 
 @implementation SFDeviceDiscovery
@@ -538,73 +538,73 @@ void __31__SFDeviceDiscovery_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  [v13 encodeInteger:self->_changeFlags forKey:@"changeFlags"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_changeFlags forKey:@"changeFlags"];
   deviceFilter = self->_deviceFilter;
   if (deviceFilter)
   {
-    [v13 encodeObject:deviceFilter forKey:@"deviceFilter"];
+    [coderCopy encodeObject:deviceFilter forKey:@"deviceFilter"];
   }
 
-  [v13 encodeInteger:self->_discoveryFlags forKey:@"discoveryFlags"];
+  [coderCopy encodeInteger:self->_discoveryFlags forKey:@"discoveryFlags"];
   fastScanMode = self->_fastScanMode;
   if (fastScanMode)
   {
-    [v13 encodeInteger:fastScanMode forKey:@"fastScanMode"];
+    [coderCopy encodeInteger:fastScanMode forKey:@"fastScanMode"];
   }
 
   if (self->_legacy)
   {
-    [v13 encodeBool:1 forKey:@"legacy"];
+    [coderCopy encodeBool:1 forKey:@"legacy"];
   }
 
-  v6 = v13;
+  v6 = coderCopy;
   if (self->_overrideScreenOff)
   {
-    [v13 encodeBool:1 forKey:@"overrideScreenOff"];
-    v6 = v13;
+    [coderCopy encodeBool:1 forKey:@"overrideScreenOff"];
+    v6 = coderCopy;
   }
 
   overrideScreenOffRescanInterval = self->_overrideScreenOffRescanInterval;
   if (overrideScreenOffRescanInterval)
   {
-    [v13 encodeInteger:overrideScreenOffRescanInterval forKey:@"osoitvl"];
-    v6 = v13;
+    [coderCopy encodeInteger:overrideScreenOffRescanInterval forKey:@"osoitvl"];
+    v6 = coderCopy;
   }
 
   purpose = self->_purpose;
   if (purpose)
   {
-    [v13 encodeObject:purpose forKey:@"purpose"];
-    v6 = v13;
+    [coderCopy encodeObject:purpose forKey:@"purpose"];
+    v6 = coderCopy;
   }
 
   if (self->_rssiChangeDetection)
   {
-    [v13 encodeBool:1 forKey:@"rssiChangeDetection"];
-    v6 = v13;
+    [coderCopy encodeBool:1 forKey:@"rssiChangeDetection"];
+    v6 = coderCopy;
   }
 
   rssiThreshold = self->_rssiThreshold;
   if (rssiThreshold)
   {
-    [v13 encodeInteger:rssiThreshold forKey:@"rssiThreshold"];
-    v6 = v13;
+    [coderCopy encodeInteger:rssiThreshold forKey:@"rssiThreshold"];
+    v6 = coderCopy;
   }
 
   if (self->_scanCache)
   {
-    [v13 encodeBool:1 forKey:@"scanCache"];
-    v6 = v13;
+    [coderCopy encodeBool:1 forKey:@"scanCache"];
+    v6 = coderCopy;
   }
 
   useCases = self->_useCases;
   if (useCases)
   {
-    [v13 encodeObject:useCases forKey:@"useCases"];
-    v6 = v13;
+    [coderCopy encodeObject:useCases forKey:@"useCases"];
+    v6 = coderCopy;
   }
 
   scanRate = self->_scanRate;
@@ -650,24 +650,24 @@ LABEL_28:
   }
 
 LABEL_32:
-  [v13 encodeInteger:v12 forKey:@"scanRate"];
-  v6 = v13;
+  [coderCopy encodeInteger:v12 forKey:@"scanRate"];
+  v6 = coderCopy;
 LABEL_33:
   if (self->_trackPeers)
   {
-    [v13 encodeBool:1 forKey:@"trackPeers"];
-    v6 = v13;
+    [coderCopy encodeBool:1 forKey:@"trackPeers"];
+    v6 = coderCopy;
   }
 }
 
-- (void)setChangeFlags:(unsigned int)a3
+- (void)setChangeFlags:(unsigned int)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __36__SFDeviceDiscovery_setChangeFlags___block_invoke;
   v3[3] = &unk_1E788D970;
   v3[4] = self;
-  v4 = a3;
+  flagsCopy = flags;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
@@ -678,9 +678,9 @@ uint64_t __36__SFDeviceDiscovery_setChangeFlags___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setDeviceFilter:(id)a3
+- (void)setDeviceFilter:(id)filter
 {
-  v4 = [a3 copy];
+  v4 = [filter copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__SFDeviceDiscovery_setDeviceFilter___block_invoke;
@@ -752,36 +752,36 @@ void __37__SFDeviceDiscovery_setDeviceFilter___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDiscoveryFlags:(unint64_t)a3
+- (void)setDiscoveryFlags:(unint64_t)flags
 {
-  v3 = a3 & 0xFFFFFFEC | 0x10;
-  if ((a3 & 0xE47FFC0) == 0)
+  flagsCopy = flags & 0xFFFFFFEC | 0x10;
+  if ((flags & 0xE47FFC0) == 0)
   {
-    v3 = a3;
+    flagsCopy = flags;
   }
 
-  if ((v3 & 0x400000) != 0)
+  if ((flagsCopy & 0x400000) != 0)
   {
-    v3 |= 0x60uLL;
+    flagsCopy |= 0x60uLL;
   }
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __39__SFDeviceDiscovery_setDiscoveryFlags___block_invoke;
   v4[3] = &unk_1E788B260;
-  if ((v3 & 0x40000) != 0)
+  if ((flagsCopy & 0x40000) != 0)
   {
-    v3 |= 0x20060uLL;
+    flagsCopy |= 0x20060uLL;
   }
 
   v4[4] = self;
-  v4[5] = v3;
+  v4[5] = flagsCopy;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v4];
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -793,97 +793,97 @@ void __37__SFDeviceDiscovery_setDeviceFilter___block_invoke(uint64_t a1)
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
 }
 
-- (void)setFastScanMode:(int64_t)a3
+- (void)setFastScanMode:(int64_t)mode
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __37__SFDeviceDiscovery_setFastScanMode___block_invoke;
   v3[3] = &unk_1E788B260;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = mode;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)setOverrideScreenOff:(BOOL)a3
+- (void)setOverrideScreenOff:(BOOL)off
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__SFDeviceDiscovery_setOverrideScreenOff___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  offCopy = off;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)setOverrideScreenOffRescanInterval:(int64_t)a3
+- (void)setOverrideScreenOffRescanInterval:(int64_t)interval
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__SFDeviceDiscovery_setOverrideScreenOffRescanInterval___block_invoke;
   v3[3] = &unk_1E788B260;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = interval;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)setRssiChangeDetection:(BOOL)a3
+- (void)setRssiChangeDetection:(BOOL)detection
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__SFDeviceDiscovery_setRssiChangeDetection___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  detectionCopy = detection;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)setRssiThreshold:(int64_t)a3
+- (void)setRssiThreshold:(int64_t)threshold
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __38__SFDeviceDiscovery_setRssiThreshold___block_invoke;
   v3[3] = &unk_1E788B260;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = threshold;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)setScanCache:(BOOL)a3
+- (void)setScanCache:(BOOL)cache
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __34__SFDeviceDiscovery_setScanCache___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  cacheCopy = cache;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)setScanRate:(int64_t)a3
+- (void)setScanRate:(int64_t)rate
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __33__SFDeviceDiscovery_setScanRate___block_invoke;
   v3[3] = &unk_1E788B260;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = rate;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)setTimeout:(double)a3
+- (void)setTimeout:(double)timeout
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __32__SFDeviceDiscovery_setTimeout___block_invoke;
   v3[3] = &unk_1E788B260;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = timeout;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
@@ -904,53 +904,53 @@ double __32__SFDeviceDiscovery_setTimeout___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setTrackPeers:(BOOL)a3
+- (void)setTrackPeers:(BOOL)peers
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__SFDeviceDiscovery_setTrackPeers___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  peersCopy = peers;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)setUseCases:(id)a3
+- (void)setUseCases:(id)cases
 {
-  v4 = a3;
+  casesCopy = cases;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __33__SFDeviceDiscovery_setUseCases___block_invoke;
   v6[3] = &unk_1E788A658;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = casesCopy;
+  v5 = casesCopy;
   [(SFDeviceDiscovery *)self _invokeBlockActivateSafe:v6];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__SFDeviceDiscovery_activateWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFDeviceDiscovery <= 30 && (gLogCategory_SFDeviceDiscovery != -1 || _LogCategory_Initialize()))
   {
@@ -959,7 +959,7 @@ double __32__SFDeviceDiscovery_setTimeout___block_invoke(uint64_t a1)
 
   if (self->_invalidateCalled)
   {
-    [(SFDeviceDiscovery *)v4 _activateWithCompletion:v19];
+    [(SFDeviceDiscovery *)completionCopy _activateWithCompletion:v19];
   }
 
   else
@@ -983,9 +983,9 @@ double __32__SFDeviceDiscovery_setTimeout___block_invoke(uint64_t a1)
         [SFDeviceDiscovery _activateWithCompletion:];
       }
 
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -1000,7 +1000,7 @@ double __32__SFDeviceDiscovery_setTimeout___block_invoke(uint64_t a1)
       v15[1] = 3221225472;
       v15[2] = __45__SFDeviceDiscovery__activateWithCompletion___block_invoke;
       v15[3] = &unk_1E788B6D8;
-      v10 = v4;
+      v10 = completionCopy;
       v16 = v10;
       v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v15];
       v13[0] = MEMORY[0x1E69E9820];
@@ -1039,9 +1039,9 @@ uint64_t __45__SFDeviceDiscovery__activateWithCompletion___block_invoke_2(uint64
   return result;
 }
 
-- (void)fastScanTrigger:(id)a3
+- (void)fastScanTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFDeviceDiscovery/deviceDiscoveryFastScanTrigger", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1051,9 +1051,9 @@ uint64_t __45__SFDeviceDiscovery__activateWithCompletion___block_invoke_2(uint64
   v8[1] = 3221225472;
   v8[2] = __37__SFDeviceDiscovery_fastScanTrigger___block_invoke;
   v8[3] = &unk_1E788A658;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = triggerCopy;
+  selfCopy = self;
+  v7 = triggerCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -1070,9 +1070,9 @@ void __37__SFDeviceDiscovery_fastScanTrigger___block_invoke(uint64_t a1)
   [v2 deviceDiscoveryFastScanTrigger:*(a1 + 32)];
 }
 
-- (void)fastScanCancel:(id)a3
+- (void)fastScanCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFDeviceDiscovery/deviceDiscoveryFastScanCancel", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1082,9 +1082,9 @@ void __37__SFDeviceDiscovery_fastScanTrigger___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __36__SFDeviceDiscovery_fastScanCancel___block_invoke;
   v8[3] = &unk_1E788A658;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = cancelCopy;
+  selfCopy = self;
+  v7 = cancelCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -1102,9 +1102,9 @@ void __36__SFDeviceDiscovery_fastScanCancel___block_invoke(uint64_t a1)
   [v2 deviceDiscoveryFastScanCancel:*(a1 + 32)];
 }
 
-- (void)triggerEnhancedDiscovery:(id)a3
+- (void)triggerEnhancedDiscovery:(id)discovery
 {
-  v4 = a3;
+  discoveryCopy = discovery;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFDeviceDiscovery/deviceDiscoveryTrigggerEnhancedDiscovery", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1114,9 +1114,9 @@ void __36__SFDeviceDiscovery_fastScanCancel___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __46__SFDeviceDiscovery_triggerEnhancedDiscovery___block_invoke;
   v8[3] = &unk_1E788A658;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = discoveryCopy;
+  selfCopy = self;
+  v7 = discoveryCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -1133,10 +1133,10 @@ void __46__SFDeviceDiscovery_triggerEnhancedDiscovery___block_invoke(uint64_t a1
   [v2 deviceDiscoveryTriggerEnhancedDiscovery:*(a1 + 32)];
 }
 
-- (void)triggerEnhancedDiscovery:(id)a3 useCase:(unsigned int)a4 completion:(id)a5
+- (void)triggerEnhancedDiscovery:(id)discovery useCase:(unsigned int)case completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  discoveryCopy = discovery;
+  completionCopy = completion;
   v10 = _os_activity_create(&dword_1A9662000, "Sharing/SFDeviceDiscovery/deviceDiscoveryTrigggerEnhancedDiscovery", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1146,12 +1146,12 @@ void __46__SFDeviceDiscovery_triggerEnhancedDiscovery___block_invoke(uint64_t a1
   v14[1] = 3221225472;
   v14[2] = __65__SFDeviceDiscovery_triggerEnhancedDiscovery_useCase_completion___block_invoke;
   v14[3] = &unk_1E788EAB8;
-  v18 = a4;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
+  caseCopy = case;
+  v15 = discoveryCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = discoveryCopy;
   dispatch_async(dispatchQueue, v14);
 
   os_activity_scope_leave(&state);
@@ -1240,8 +1240,8 @@ void __65__SFDeviceDiscovery_triggerEnhancedDiscovery_useCase_completion___block
         LogPrintF();
       }
 
-      v6 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-      [v6 deviceDiscoveryActivate:self completion:&__block_literal_global_41];
+      remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+      [remoteObjectProxy deviceDiscoveryActivate:self completion:&__block_literal_global_41];
 
       os_activity_scope_leave(&v7);
     }
@@ -1263,24 +1263,24 @@ void __33__SFDeviceDiscovery__interrupted__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_invokeBlockActivateSafe:(id)a3
+- (void)_invokeBlockActivateSafe:(id)safe
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_activateCalled)
+  safeCopy = safe;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
     v6 = _os_activity_create(&dword_1A9662000, "Sharing/SFDeviceDiscovery/deviceDiscoveryUpdate", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v6, &state);
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __46__SFDeviceDiscovery__invokeBlockActivateSafe___block_invoke;
     v8[3] = &unk_1E788B318;
-    v8[4] = v5;
-    v9 = v4;
+    v8[4] = selfCopy;
+    v9 = safeCopy;
     dispatch_async(dispatchQueue, v8);
 
     os_activity_scope_leave(&state);
@@ -1288,10 +1288,10 @@ void __33__SFDeviceDiscovery__interrupted__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v4[2](v4);
+    safeCopy[2](safeCopy);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __46__SFDeviceDiscovery__invokeBlockActivateSafe___block_invoke(uint64_t a1)
@@ -1335,8 +1335,8 @@ uint64_t __46__SFDeviceDiscovery__invokeBlockActivateSafe___block_invoke(uint64_
       LogPrintF();
     }
 
-    v7 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v7 deviceDiscoveryActivate:self completion:&__block_literal_global_311];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy deviceDiscoveryActivate:self completion:&__block_literal_global_311];
 
     os_activity_scope_leave(&v8);
   }
@@ -1385,22 +1385,22 @@ void __34__SFDeviceDiscovery__retryConsole__block_invoke(uint64_t a1, void *a2)
   self->_timeoutHandler = 0;
 }
 
-- (void)deviceDiscoveryScanStateChanged:(int64_t)a3
+- (void)deviceDiscoveryScanStateChanged:(int64_t)changed
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  self->_scanState = a3;
+  self->_scanState = changed;
   scanStateChangedHandler = self->_scanStateChangedHandler;
   if (scanStateChangedHandler)
   {
-    scanStateChangedHandler[2](scanStateChangedHandler, a3);
+    scanStateChangedHandler[2](scanStateChangedHandler, changed);
   }
 
   [(SFDeviceDiscovery *)self _startTimeoutIfNeeded];
 }
 
-- (SFDeviceDiscovery)initWithCoder:(id)a3
+- (SFDeviceDiscovery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = SFDeviceDiscovery;
   v5 = [(SFDeviceDiscovery *)&v32 init];
@@ -1412,19 +1412,19 @@ void __34__SFDeviceDiscovery__retryConsole__block_invoke(uint64_t a1, void *a2)
     v6->_dispatchQueue = v7;
 
     *&v6->_rssiThreshold = xmmword_1A998F650;
-    if ([v4 containsValueForKey:@"changeFlags"])
+    if ([coderCopy containsValueForKey:@"changeFlags"])
     {
-      v6->_changeFlags = [v4 decodeIntegerForKey:@"changeFlags"];
+      v6->_changeFlags = [coderCopy decodeIntegerForKey:@"changeFlags"];
     }
 
-    v9 = [v4 containsValueForKey:@"deviceFilter"];
+    v9 = [coderCopy containsValueForKey:@"deviceFilter"];
     v10 = MEMORY[0x1E695D940];
     if (v9)
     {
       v11 = MEMORY[0x1E695DFD8];
       v12 = objc_opt_class();
       v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-      v14 = [v4 decodeObjectOfClasses:v13 forKey:@"deviceFilter"];
+      v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"deviceFilter"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1440,12 +1440,12 @@ void __34__SFDeviceDiscovery__retryConsole__block_invoke(uint64_t a1, void *a2)
       v6->_deviceFilter = v14;
     }
 
-    if ([v4 containsValueForKey:@"discoveryFlags"])
+    if ([coderCopy containsValueForKey:@"discoveryFlags"])
     {
-      v6->_discoveryFlags = [v4 decodeIntegerForKey:@"discoveryFlags"];
+      v6->_discoveryFlags = [coderCopy decodeIntegerForKey:@"discoveryFlags"];
     }
 
-    v19 = v4;
+    v19 = coderCopy;
     if ([v19 containsValueForKey:@"fastScanMode"])
     {
       v6->_fastScanMode = [v19 decodeIntegerForKey:@"fastScanMode"];
@@ -1521,25 +1521,25 @@ void __34__SFDeviceDiscovery__retryConsole__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (void)deviceDiscoveryFoundDevice:(id)a3
+- (void)deviceDiscoveryFoundDevice:(id)device
 {
-  v14 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFDeviceDiscovery <= 9 && (gLogCategory_SFDeviceDiscovery != -1 || _LogCategory_Initialize()))
   {
-    v13 = v14;
+    v13 = deviceCopy;
     LogPrintF();
   }
 
-  v4 = [v14 identifier];
-  if (v4)
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
 
     devices = self->_devices;
     if (v5)
     {
-      [(NSMutableDictionary *)devices setObject:v14 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)devices setObject:deviceCopy forKeyedSubscript:identifier];
       v7 = _Block_copy(self->_deviceChangedHandler);
       if (!v7)
       {
@@ -1551,18 +1551,18 @@ LABEL_13:
 
     else
     {
-      v8 = v14;
+      v8 = deviceCopy;
       if (!devices)
       {
         v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v10 = self->_devices;
         self->_devices = v9;
 
-        v8 = v14;
+        v8 = deviceCopy;
         devices = self->_devices;
       }
 
-      [(NSMutableDictionary *)devices setObject:v8 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)devices setObject:v8 forKeyedSubscript:identifier];
       v7 = _Block_copy(self->_deviceFoundHandler);
       if (!v7)
       {
@@ -1578,24 +1578,24 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)deviceDiscoveryLostDevice:(id)a3
+- (void)deviceDiscoveryLostDevice:(id)device
 {
-  v8 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFDeviceDiscovery <= 9 && (gLogCategory_SFDeviceDiscovery != -1 || _LogCategory_Initialize()))
   {
-    v7 = v8;
+    v7 = deviceCopy;
     LogPrintF();
   }
 
-  v4 = [v8 identifier];
-  if (v4)
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
     if (v5)
     {
-      [(NSMutableDictionary *)self->_devices removeObjectForKey:v4];
-      [v5 setIsBLEDeviceReplaced:{objc_msgSend(v8, "isBLEDeviceReplaced")}];
+      [(NSMutableDictionary *)self->_devices removeObjectForKey:identifier];
+      [v5 setIsBLEDeviceReplaced:{objc_msgSend(deviceCopy, "isBLEDeviceReplaced")}];
       deviceLostHandler = self->_deviceLostHandler;
       if (deviceLostHandler)
       {

@@ -1,8 +1,8 @@
 @interface _DASSmartPowerNapPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASSmartPowerNapPolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASSmartPowerNapPolicy
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_100075FDC;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B4B8 != -1)
   {
     dispatch_once(&qword_10020B4B8, block);
@@ -43,88 +43,88 @@
   return v3;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 useStatisticalModelForTriggersRestart])
+  activityCopy = activity;
+  if ([activityCopy useStatisticalModelForTriggersRestart])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 fastPass];
-    if (v5 || ([v3 requestsImmediateRuntime] & 1) != 0)
+    fastPass = [activityCopy fastPass];
+    if (fastPass || ([activityCopy requestsImmediateRuntime] & 1) != 0)
     {
       v4 = 0;
     }
 
     else
     {
-      v7 = [v3 schedulingPriority];
-      v4 = v7 < _DASSchedulingPriorityUserInitiated;
+      schedulingPriority = [activityCopy schedulingPriority];
+      v4 = schedulingPriority < _DASSchedulingPriorityUserInitiated;
     }
   }
 
   return v4;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v8 = +[_DASDaemon sharedInstance];
   v9 = [_DASSmartPowerNapMonitor sharedMonitorWithDaemon:v8];
 
-  v10 = [v9 inSmartPowerNap];
+  inSmartPowerNap = [v9 inSmartPowerNap];
   v11 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  if (![v6 requiresSignificantUserInactivity])
+  if (![activityCopy requiresSignificantUserInactivity])
   {
-    if (!v10)
+    if (!inSmartPowerNap)
     {
       goto LABEL_13;
     }
 
-    v13 = [v6 launchReason];
-    if ([v13 isEqualToString:_DASLaunchReasonBackgroundRefresh])
+    launchReason = [activityCopy launchReason];
+    if ([launchReason isEqualToString:_DASLaunchReasonBackgroundRefresh])
     {
     }
 
     else
     {
-      v14 = [v6 launchReason];
-      v15 = [v14 isEqualToString:_DASLaunchReasonBackgroundFetch];
+      launchReason2 = [activityCopy launchReason];
+      v15 = [launchReason2 isEqualToString:_DASLaunchReasonBackgroundFetch];
 
       if ((v15 & 1) == 0)
       {
-        v18 = [v6 widgetID];
-        if (v18)
+        widgetID = [activityCopy widgetID];
+        if (widgetID)
         {
-          v19 = v18;
-          v20 = [v6 targetDevice];
+          v19 = widgetID;
+          targetDevice = [activityCopy targetDevice];
 
-          if (!v20)
+          if (!targetDevice)
           {
             v12 = @"smartPowerNap == YES AND LocalWidget == YES";
             goto LABEL_9;
           }
         }
 
-        v21 = [v7 objectForKeyedSubscript:self->_pluginStatusKeyPath];
-        v22 = [v21 BOOLValue];
+        v21 = [stateCopy objectForKeyedSubscript:self->_pluginStatusKeyPath];
+        bOOLValue = [v21 BOOLValue];
 
-        if ((v22 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
-          v25 = [v6 startBefore];
-          v26 = [v6 startAfter];
-          [v25 timeIntervalSinceDate:v26];
+          startBefore = [activityCopy startBefore];
+          startAfter = [activityCopy startAfter];
+          [startBefore timeIntervalSinceDate:startAfter];
           v28 = v27;
 
-          v29 = [v6 startAfter];
-          [v29 timeIntervalSinceNow];
+          startAfter2 = [activityCopy startAfter];
+          [startAfter2 timeIntervalSinceNow];
           v31 = v30;
 
-          if ([v6 budgeted])
+          if ([activityCopy budgeted])
           {
             v12 = @"smartPowerNap == YES";
             goto LABEL_9;
@@ -135,9 +135,9 @@
             v28 = 1.0;
           }
 
-          v32 = [v6 schedulingPriority];
+          schedulingPriority = [activityCopy schedulingPriority];
           v12 = @"smartPowerNap == YES";
-          if (v32 < _DASSchedulingPriorityUtility || -v31 / v28 < 0.9)
+          if (schedulingPriority < _DASSchedulingPriorityUtility || -v31 / v28 < 0.9)
           {
             goto LABEL_9;
           }
@@ -151,7 +151,7 @@
     goto LABEL_9;
   }
 
-  if ((v10 & 1) == 0)
+  if ((inSmartPowerNap & 1) == 0)
   {
     v12 = @"smartPowerNap == NO";
 LABEL_9:

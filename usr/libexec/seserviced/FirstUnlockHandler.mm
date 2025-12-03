@@ -1,6 +1,6 @@
 @interface FirstUnlockHandler
 - (FirstUnlockHandler)init;
-- (void)onDarwinNotification:(uint64_t)a1;
+- (void)onDarwinNotification:(uint64_t)notification;
 @end
 
 @implementation FirstUnlockHandler
@@ -32,18 +32,18 @@
   return v3;
 }
 
-- (void)onDarwinNotification:(uint64_t)a1
+- (void)onDarwinNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
-    os_unfair_lock_lock((a1 + 8));
-    if ((*(a1 + 12) & 1) == 0)
+    os_unfair_lock_lock((notification + 8));
+    if ((*(notification + 12) & 1) == 0)
     {
-      *(a1 + 12) = 1;
+      *(notification + 12) = 1;
       sub_100037690();
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((notification + 8));
   }
 }
 

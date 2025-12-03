@@ -1,6 +1,6 @@
 @interface IntentHandler
 - (IntentHandler)init;
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 @end
 
 @implementation IntentHandler
@@ -20,17 +20,17 @@
   return v2;
 }
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = MTCreateAlarmIntentHandler;
 LABEL_9:
     v6 = [v5 alloc];
-    v7 = [(IntentHandler *)self alarmManager];
-    v8 = [v6 initWithAlarmManager:v7];
+    alarmManager = [(IntentHandler *)self alarmManager];
+    v8 = [v6 initWithAlarmManager:alarmManager];
 
     goto LABEL_10;
   }

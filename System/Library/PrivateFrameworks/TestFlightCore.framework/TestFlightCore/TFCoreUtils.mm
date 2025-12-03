@@ -9,10 +9,10 @@
 + (id)tf_screenshotInstructionImageDict
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = [a1 tf_deviceHasFaceID];
+  tf_deviceHasFaceID = [self tf_deviceHasFaceID];
   if ([MEMORY[0x277CEE470] deviceIsiPad])
   {
-    if (v3)
+    if (tf_deviceHasFaceID)
     {
       v17 = @"TFScreenshotInstructionDeviceImageKey";
       v18[0] = @"ipad-face-id";
@@ -31,7 +31,7 @@
     }
   }
 
-  else if ([a1 tf_deviceHasTopPowerButton])
+  else if ([self tf_deviceHasTopPowerButton])
   {
     v13 = @"TFScreenshotInstructionDeviceImageKey";
     v14 = @"iphone-touch-id-top-power";
@@ -40,7 +40,7 @@
     v6 = &v13;
   }
 
-  else if (v3)
+  else if (tf_deviceHasFaceID)
   {
     v11 = @"TFScreenshotInstructionDeviceImageKey";
     v12 = @"iphone-face-id";
@@ -82,9 +82,9 @@ uint64_t __33__TFCoreUtils_tf_deviceHasFaceID__block_invoke()
 
 + (BOOL)tf_deviceHasTopPowerButton
 {
-  v2 = [MEMORY[0x277CEE470] productType];
-  v3 = [v2 containsString:{@"iPhone8, 4"}];
-  v4 = v3 | [v2 containsString:@"iPod"];
+  productType = [MEMORY[0x277CEE470] productType];
+  v3 = [productType containsString:{@"iPhone8, 4"}];
+  v4 = v3 | [productType containsString:@"iPod"];
 
   return v4 & 1;
 }

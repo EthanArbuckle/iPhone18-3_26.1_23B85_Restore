@@ -1,21 +1,21 @@
 @interface NWPHHandler
-- (NWPHHandler)initWithHandlerFunction:(void *)a3 allowedEntitlementGroup:(id)a4;
+- (NWPHHandler)initWithHandlerFunction:(void *)function allowedEntitlementGroup:(id)group;
 @end
 
 @implementation NWPHHandler
 
-- (NWPHHandler)initWithHandlerFunction:(void *)a3 allowedEntitlementGroup:(id)a4
+- (NWPHHandler)initWithHandlerFunction:(void *)function allowedEntitlementGroup:(id)group
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  groupCopy = group;
   v20.receiver = self;
   v20.super_class = NWPHHandler;
   v7 = [(NWPHHandler *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    [(NWPHHandler *)v7 setHandlerFunction:a3];
-    [(NWPHHandler *)v8 setAllowedEntitlementGroup:v6];
+    [(NWPHHandler *)v7 setHandlerFunction:function];
+    [(NWPHHandler *)v8 setAllowedEntitlementGroup:groupCopy];
     v9 = v8;
     goto LABEL_3;
   }

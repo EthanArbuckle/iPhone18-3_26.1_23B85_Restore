@@ -1,6 +1,6 @@
 @interface SYDManagedKeyValue
 - (id)value;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 - (void)value;
 @end
 
@@ -8,14 +8,14 @@
 
 - (id)value
 {
-  v3 = [(SYDManagedKeyValue *)self plistDataValue];
+  plistDataValue = [(SYDManagedKeyValue *)self plistDataValue];
 
-  if (v3)
+  if (plistDataValue)
   {
     v4 = MEMORY[0x277CCAC58];
-    v5 = [(SYDManagedKeyValue *)self plistDataValue];
+    plistDataValue2 = [(SYDManagedKeyValue *)self plistDataValue];
     v10 = 0;
-    v6 = [v4 propertyListWithData:v5 options:0 format:0 error:&v10];
+    v6 = [v4 propertyListWithData:plistDataValue2 options:0 format:0 error:&v10];
     v7 = v10;
 
     if (v7)
@@ -36,12 +36,12 @@
   return v6;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v9 = 0;
-    v4 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:&v9];
+    v4 = [MEMORY[0x277CCAC58] dataWithPropertyList:value format:200 options:0 error:&v9];
     v5 = v9;
     v6 = v5;
     if (v4)
@@ -80,7 +80,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_26C384000, a2, OS_LOG_TYPE_ERROR, "Error decoding plist value data: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

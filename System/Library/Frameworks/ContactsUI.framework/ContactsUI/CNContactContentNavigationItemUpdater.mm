@@ -1,26 +1,26 @@
 @interface CNContactContentNavigationItemUpdater
-- (id)customEditItemTitleForIsUpdatingContact:(BOOL)a3;
-- (id)updateDisplayNavigationItemsForController:(id)a3 mode:(int64_t)a4 actionTarget:(id)a5 allowsEditing:(BOOL)a6 editButtonEnabled:(BOOL)a7 isInSheet:(BOOL)a8 isShowingNavBar:(BOOL)a9 shouldShowBackButton:(BOOL)a10 shouldUsePlatterStyle:(BOOL)a11 platterBackBarButtonItem:(id)a12 animated:(BOOL)a13;
-- (id)updateEditDoneButtonForController:(id)a3 customEditButtonTitle:(id)a4 hasChanges:(BOOL)a5;
-- (id)updateEditDoneButtonForController:(id)a3 isUpdatingContact:(BOOL)a4 hasChanges:(BOOL)a5;
-- (id)updateEditingNavigationItemForController:(id)a3 actionTarget:(id)a4 isInSheet:(BOOL)a5 isShowingNavBar:(BOOL)a6 shouldUsePlatterStyle:(BOOL)a7 customEditButtonTitle:(id)a8 hasChanges:(BOOL)a9 animated:(BOOL)a10;
-- (id)updateEditingNavigationItemForController:(id)a3 actionTarget:(id)a4 isInSheet:(BOOL)a5 isShowingNavBar:(BOOL)a6 shouldUsePlatterStyle:(BOOL)a7 isUpdatingContact:(BOOL)a8 hasChanges:(BOOL)a9 animated:(BOOL)a10;
-- (void)applyPlatterStyleToBarButtonItems:(id)a3 navItemController:(id)a4 isEditing:(BOOL)a5;
-- (void)updateBackButtonForPlatterStyleForController:(id)a3 mode:(int64_t)a4 platterBackBarButtonItem:(id)a5 animated:(BOOL)a6;
-- (void)updateDisplayDoneButtonForController:(id)a3 allowsEditing:(BOOL)a4 viewMode:(int64_t)a5 editButtonEnabled:(BOOL)a6;
+- (id)customEditItemTitleForIsUpdatingContact:(BOOL)contact;
+- (id)updateDisplayNavigationItemsForController:(id)controller mode:(int64_t)mode actionTarget:(id)target allowsEditing:(BOOL)editing editButtonEnabled:(BOOL)enabled isInSheet:(BOOL)sheet isShowingNavBar:(BOOL)bar shouldShowBackButton:(BOOL)self0 shouldUsePlatterStyle:(BOOL)self1 platterBackBarButtonItem:(id)self2 animated:(BOOL)self3;
+- (id)updateEditDoneButtonForController:(id)controller customEditButtonTitle:(id)title hasChanges:(BOOL)changes;
+- (id)updateEditDoneButtonForController:(id)controller isUpdatingContact:(BOOL)contact hasChanges:(BOOL)changes;
+- (id)updateEditingNavigationItemForController:(id)controller actionTarget:(id)target isInSheet:(BOOL)sheet isShowingNavBar:(BOOL)bar shouldUsePlatterStyle:(BOOL)style customEditButtonTitle:(id)title hasChanges:(BOOL)changes animated:(BOOL)self0;
+- (id)updateEditingNavigationItemForController:(id)controller actionTarget:(id)target isInSheet:(BOOL)sheet isShowingNavBar:(BOOL)bar shouldUsePlatterStyle:(BOOL)style isUpdatingContact:(BOOL)contact hasChanges:(BOOL)changes animated:(BOOL)self0;
+- (void)applyPlatterStyleToBarButtonItems:(id)items navItemController:(id)controller isEditing:(BOOL)editing;
+- (void)updateBackButtonForPlatterStyleForController:(id)controller mode:(int64_t)mode platterBackBarButtonItem:(id)item animated:(BOOL)animated;
+- (void)updateDisplayDoneButtonForController:(id)controller allowsEditing:(BOOL)editing viewMode:(int64_t)mode editButtonEnabled:(BOOL)enabled;
 @end
 
 @implementation CNContactContentNavigationItemUpdater
 
-- (void)applyPlatterStyleToBarButtonItems:(id)a3 navItemController:(id)a4 isEditing:(BOOL)a5
+- (void)applyPlatterStyleToBarButtonItems:(id)items navItemController:(id)controller isEditing:(BOOL)editing
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  itemsCopy = items;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -31,11 +31,11 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if (a5)
+        if (editing)
         {
           [(CNContactContentNavigationItemUpdater *)self transparentPlatterImage];
         }
@@ -48,85 +48,85 @@
         [v12 setBackgroundImage:v13 forState:0 barMetrics:0];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)updateDisplayDoneButtonForController:(id)a3 allowsEditing:(BOOL)a4 viewMode:(int64_t)a5 editButtonEnabled:(BOOL)a6
+- (void)updateDisplayDoneButtonForController:(id)controller allowsEditing:(BOOL)editing viewMode:(int64_t)mode editButtonEnabled:(BOOL)enabled
 {
-  v6 = a6;
-  v8 = a4;
-  v9 = a3;
-  if (v8)
+  enabledCopy = enabled;
+  editingCopy = editing;
+  controllerCopy = controller;
+  if (editingCopy)
   {
-    v15 = v9;
-    v10 = [v9 editButtonItem];
-    [v10 setEnabled:v6];
+    v15 = controllerCopy;
+    editButtonItem = [controllerCopy editButtonItem];
+    [editButtonItem setEnabled:enabledCopy];
   }
 
   else
   {
-    if (a5 != 5)
+    if (mode != 5)
     {
       goto LABEL_6;
     }
 
-    v15 = v9;
+    v15 = controllerCopy;
     v11 = CNContactsUIBundle();
     v12 = [v11 localizedStringForKey:@"UPDATE" value:&stru_1F0CE7398 table:@"Localized"];
-    v13 = [v15 editButtonItem];
-    [v13 setTitle:v12];
+    editButtonItem2 = [v15 editButtonItem];
+    [editButtonItem2 setTitle:v12];
 
-    v10 = CNContactsUIBundle();
-    v14 = [v10 localizedStringForKey:@"REVIEW" value:&stru_1F0CE7398 table:@"Localized"];
+    editButtonItem = CNContactsUIBundle();
+    v14 = [editButtonItem localizedStringForKey:@"REVIEW" value:&stru_1F0CE7398 table:@"Localized"];
     [v15 setTitle:v14];
   }
 
-  v9 = v15;
+  controllerCopy = v15;
 LABEL_6:
 }
 
-- (void)updateBackButtonForPlatterStyleForController:(id)a3 mode:(int64_t)a4 platterBackBarButtonItem:(id)a5 animated:(BOOL)a6
+- (void)updateBackButtonForPlatterStyleForController:(id)controller mode:(int64_t)mode platterBackBarButtonItem:(id)item animated:(BOOL)animated
 {
-  v6 = a6;
+  animatedCopy = animated;
   v13[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = [a3 navigationItem];
-  v11 = [v10 backBarButtonItem];
+  itemCopy = item;
+  navigationItem = [controller navigationItem];
+  backBarButtonItem = [navigationItem backBarButtonItem];
 
-  if (a4 != 5 && !v11)
+  if (mode != 5 && !backBarButtonItem)
   {
-    v13[0] = v9;
+    v13[0] = itemCopy;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    [v10 setLeftBarButtonItems:v12 animated:v6];
+    [navigationItem setLeftBarButtonItems:v12 animated:animatedCopy];
   }
 }
 
-- (id)updateDisplayNavigationItemsForController:(id)a3 mode:(int64_t)a4 actionTarget:(id)a5 allowsEditing:(BOOL)a6 editButtonEnabled:(BOOL)a7 isInSheet:(BOOL)a8 isShowingNavBar:(BOOL)a9 shouldShowBackButton:(BOOL)a10 shouldUsePlatterStyle:(BOOL)a11 platterBackBarButtonItem:(id)a12 animated:(BOOL)a13
+- (id)updateDisplayNavigationItemsForController:(id)controller mode:(int64_t)mode actionTarget:(id)target allowsEditing:(BOOL)editing editButtonEnabled:(BOOL)enabled isInSheet:(BOOL)sheet isShowingNavBar:(BOOL)bar shouldShowBackButton:(BOOL)self0 shouldUsePlatterStyle:(BOOL)self1 platterBackBarButtonItem:(id)self2 animated:(BOOL)self3
 {
-  v72 = a8;
-  v13 = a7;
-  v14 = a6;
+  sheetCopy = sheet;
+  enabledCopy = enabled;
+  editingCopy = editing;
   v81[1] = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a5;
-  v20 = a12;
+  controllerCopy = controller;
+  targetCopy = target;
+  itemCopy = item;
   v74 = objc_alloc_init(CNContactContentNavigationItemUpdaterResult);
-  v21 = v18;
-  v22 = [v21 navigationItem];
-  v23 = v22;
-  v73 = v20;
-  if (v14)
+  v21 = controllerCopy;
+  navigationItem = [v21 navigationItem];
+  v23 = navigationItem;
+  v73 = itemCopy;
+  if (editingCopy)
   {
-    v24 = [v22 backBarButtonItem];
+    backBarButtonItem = [navigationItem backBarButtonItem];
 
-    if (v24)
+    if (backBarButtonItem)
     {
-      v25 = [v23 backBarButtonItem];
-      v81[0] = v25;
+      backBarButtonItem2 = [v23 backBarButtonItem];
+      v81[0] = backBarButtonItem2;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:1];
 LABEL_4:
       v27 = v26;
@@ -134,91 +134,91 @@ LABEL_4:
       goto LABEL_19;
     }
 
-    if (v20 && a11 && a10)
+    if (itemCopy && style && button)
     {
-      v80 = v20;
-      v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v80 count:1];
+      v80 = itemCopy;
+      preEditLeftBarButtonItems2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v80 count:1];
     }
 
     else
     {
-      v47 = [(CNContactContentNavigationItemUpdater *)self preEditLeftBarButtonItems];
+      preEditLeftBarButtonItems = [(CNContactContentNavigationItemUpdater *)self preEditLeftBarButtonItems];
 
-      if (!v47)
+      if (!preEditLeftBarButtonItems)
       {
         v27 = 0;
-        if (a11 && !a10)
+        if (style && !button)
         {
-          v25 = [v23 leftBarButtonItems];
-          v26 = [v25 _cn_filter:&__block_literal_global_31];
+          backBarButtonItem2 = [v23 leftBarButtonItems];
+          v26 = [backBarButtonItem2 _cn_filter:&__block_literal_global_31];
           goto LABEL_4;
         }
 
 LABEL_19:
         [(CNContactContentNavigationItemUpdater *)self setPreEditLeftBarButtonItems:0];
-        v48 = [v21 editButtonItem];
-        [v48 setEnabled:v13];
+        editButtonItem = [v21 editButtonItem];
+        [editButtonItem setEnabled:enabledCopy];
 
-        [(CNContactContentNavigationItemUpdaterResult *)v74 setEnableEditShortcut:v13];
+        [(CNContactContentNavigationItemUpdaterResult *)v74 setEnableEditShortcut:enabledCopy];
         if ([v21 isEditing])
         {
           [v21 setEditing:0];
         }
 
-        v49 = [v21 editButtonItem];
-        [v49 setTarget:v19];
+        editButtonItem2 = [v21 editButtonItem];
+        [editButtonItem2 setTarget:targetCopy];
 
-        v50 = [v21 editButtonItem];
-        [v50 setAction:sel_toggleEditing_];
+        editButtonItem3 = [v21 editButtonItem];
+        [editButtonItem3 setAction:sel_toggleEditing_];
 
-        v36 = [v21 editButtonItem];
+        editButtonItem4 = [v21 editButtonItem];
 
-        if (v36)
+        if (editButtonItem4)
         {
-          v39 = [v21 editButtonItem];
-          v79 = v39;
-          v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v79 count:1];
+          editButtonItem5 = [v21 editButtonItem];
+          v79 = editButtonItem5;
+          editButtonItem4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v79 count:1];
           goto LABEL_23;
         }
 
         goto LABEL_24;
       }
 
-      v46 = [(CNContactContentNavigationItemUpdater *)self preEditLeftBarButtonItems];
+      preEditLeftBarButtonItems2 = [(CNContactContentNavigationItemUpdater *)self preEditLeftBarButtonItems];
     }
 
-    v27 = v46;
+    v27 = preEditLeftBarButtonItems2;
     goto LABEL_19;
   }
 
-  if (a4 == 5)
+  if (mode == 5)
   {
-    v28 = [v21 editButtonItem];
-    [v28 setStyle:2];
+    editButtonItem6 = [v21 editButtonItem];
+    [editButtonItem6 setStyle:2];
 
-    v29 = [v21 editButtonItem];
-    [v29 setTarget:v19];
+    editButtonItem7 = [v21 editButtonItem];
+    [editButtonItem7 setTarget:targetCopy];
 
-    v30 = [v21 editButtonItem];
-    [v30 setAction:sel_updateContact_];
+    editButtonItem8 = [v21 editButtonItem];
+    [editButtonItem8 setAction:sel_updateContact_];
 
     v31 = CNContactsUIBundle();
     v32 = [v31 localizedStringForKey:@"UPDATE" value:&stru_1F0CE7398 table:@"Localized"];
     [v21 editButtonItem];
-    v34 = v33 = v19;
+    v34 = v33 = targetCopy;
     [v34 setTitle:v32];
 
-    v35 = [v21 editButtonItem];
-    v78 = v35;
-    v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v78 count:1];
+    editButtonItem9 = [v21 editButtonItem];
+    v78 = editButtonItem9;
+    editButtonItem4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v78 count:1];
 
     v37 = CNContactsUIBundle();
     v38 = [v37 localizedStringForKey:@"REVIEW" value:&stru_1F0CE7398 table:@"Localized"];
     [v21 setTitle:v38];
 
-    v19 = v33;
-    v39 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v33 action:sel_editCancel_];
-    v77 = v39;
+    targetCopy = v33;
+    editButtonItem5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v33 action:sel_editCancel_];
+    v77 = editButtonItem5;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v77 count:1];
     [(CNContactContentNavigationItemUpdaterResult *)v74 setEnableCancelShortcut:1];
     [(CNContactContentNavigationItemUpdaterResult *)v74 setEnableEditShortcut:1];
@@ -227,85 +227,85 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v40 = v19;
-  v41 = [v22 rightBarButtonItems];
-  v42 = [v41 firstObject];
-  v43 = [v21 editButtonItem];
+  v40 = targetCopy;
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
+  firstObject = [rightBarButtonItems firstObject];
+  editButtonItem10 = [v21 editButtonItem];
 
-  if (v42 == v43)
+  if (firstObject == editButtonItem10)
   {
-    v36 = MEMORY[0x1E695E0F0];
+    editButtonItem4 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v36 = 0;
+    editButtonItem4 = 0;
   }
 
   [(CNContactContentNavigationItemUpdaterResult *)v74 setEnableCancelShortcut:0];
   [(CNContactContentNavigationItemUpdaterResult *)v74 setEnableEditShortcut:0];
-  v44 = [v23 backBarButtonItem];
+  backBarButtonItem3 = [v23 backBarButtonItem];
 
-  if (v44)
+  if (backBarButtonItem3)
   {
-    v45 = [v23 backBarButtonItem];
-    v76 = v45;
+    backBarButtonItem4 = [v23 backBarButtonItem];
+    v76 = backBarButtonItem4;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v76 count:1];
 
-    v19 = v40;
+    targetCopy = v40;
     goto LABEL_24;
   }
 
-  v19 = v40;
-  if (v20 && a11 && a10)
+  targetCopy = v40;
+  if (itemCopy && style && button)
   {
-    v75 = v20;
+    v75 = itemCopy;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v75 count:1];
   }
 
   else
   {
     v27 = 0;
-    if (a11 && !a10)
+    if (style && !button)
     {
-      v39 = [v23 leftBarButtonItems];
-      v27 = [v39 _cn_filter:&__block_literal_global_38];
+      editButtonItem5 = [v23 leftBarButtonItems];
+      v27 = [editButtonItem5 _cn_filter:&__block_literal_global_38];
       goto LABEL_23;
     }
   }
 
 LABEL_24:
-  if (!v72)
+  if (!sheetCopy)
   {
     goto LABEL_48;
   }
 
-  v51 = v19;
-  v52 = [v23 rightBarButtonItems];
-  v53 = [v23 leftBarButtonItems];
-  v54 = [(CNContactContentNavigationItemUpdater *)self extraRightBarButtonItems];
+  v51 = targetCopy;
+  rightBarButtonItems2 = [v23 rightBarButtonItems];
+  leftBarButtonItems = [v23 leftBarButtonItems];
+  extraRightBarButtonItems = [(CNContactContentNavigationItemUpdater *)self extraRightBarButtonItems];
 
-  if (!v54)
+  if (!extraRightBarButtonItems)
   {
-    if ([v52 count])
+    if ([rightBarButtonItems2 count])
     {
-      v55 = self;
-      v56 = v52;
+      selfCopy2 = self;
+      v56 = rightBarButtonItems2;
     }
 
     else
     {
       v56 = MEMORY[0x1E695E0F0];
-      v55 = self;
+      selfCopy2 = self;
     }
 
-    [(CNContactContentNavigationItemUpdater *)v55 setExtraRightBarButtonItems:v56];
+    [(CNContactContentNavigationItemUpdater *)selfCopy2 setExtraRightBarButtonItems:v56];
   }
 
-  v57 = [(CNContactContentNavigationItemUpdater *)self extraRightBarButtonItems];
-  if ([v57 count])
+  extraRightBarButtonItems2 = [(CNContactContentNavigationItemUpdater *)self extraRightBarButtonItems];
+  if ([extraRightBarButtonItems2 count])
   {
-    v58 = [v36 count];
+    v58 = [editButtonItem4 count];
 
     if (v58)
     {
@@ -313,31 +313,31 @@ LABEL_24:
     }
 
     [(CNContactContentNavigationItemUpdater *)self extraRightBarButtonItems];
-    v36 = v57 = v36;
+    editButtonItem4 = extraRightBarButtonItems2 = editButtonItem4;
   }
 
 LABEL_38:
-  v59 = [(CNContactContentNavigationItemUpdater *)self extraLeftBarButtonItems];
+  extraLeftBarButtonItems = [(CNContactContentNavigationItemUpdater *)self extraLeftBarButtonItems];
 
-  if (!v59)
+  if (!extraLeftBarButtonItems)
   {
-    if ([v53 count])
+    if ([leftBarButtonItems count])
     {
-      v60 = self;
-      v61 = v53;
+      selfCopy4 = self;
+      v61 = leftBarButtonItems;
     }
 
     else
     {
       v61 = MEMORY[0x1E695E0F0];
-      v60 = self;
+      selfCopy4 = self;
     }
 
-    [(CNContactContentNavigationItemUpdater *)v60 setExtraLeftBarButtonItems:v61];
+    [(CNContactContentNavigationItemUpdater *)selfCopy4 setExtraLeftBarButtonItems:v61];
   }
 
-  v62 = [(CNContactContentNavigationItemUpdater *)self extraLeftBarButtonItems];
-  if (![v62 count])
+  extraLeftBarButtonItems2 = [(CNContactContentNavigationItemUpdater *)self extraLeftBarButtonItems];
+  if (![extraLeftBarButtonItems2 count])
   {
     goto LABEL_46;
   }
@@ -347,46 +347,46 @@ LABEL_38:
   if (!v63)
   {
     [(CNContactContentNavigationItemUpdater *)self extraLeftBarButtonItems];
-    v27 = v62 = v27;
+    v27 = extraLeftBarButtonItems2 = v27;
 LABEL_46:
   }
 
-  v19 = v51;
+  targetCopy = v51;
 LABEL_48:
   if (v27)
   {
-    [v23 setLeftBarButtonItems:v27 animated:a13];
+    [v23 setLeftBarButtonItems:v27 animated:animated];
   }
 
   v64 = MEMORY[0x1E6996530];
-  if (a11)
+  if (style)
   {
     v65 = *MEMORY[0x1E6996530];
-    v66 = [v23 leftBarButtonItems];
-    LOBYTE(v65) = (*(v65 + 16))(v65, v66);
+    leftBarButtonItems2 = [v23 leftBarButtonItems];
+    LOBYTE(v65) = (*(v65 + 16))(v65, leftBarButtonItems2);
 
     if ((v65 & 1) == 0)
     {
-      v67 = [v23 leftBarButtonItems];
-      [(CNContactContentNavigationItemUpdater *)self applyPlatterStyleToBarButtonItems:v67 navItemController:v21 isEditing:0];
+      leftBarButtonItems3 = [v23 leftBarButtonItems];
+      [(CNContactContentNavigationItemUpdater *)self applyPlatterStyleToBarButtonItems:leftBarButtonItems3 navItemController:v21 isEditing:0];
     }
   }
 
-  if (v36)
+  if (editButtonItem4)
   {
-    [v23 setRightBarButtonItems:v36 animated:a13];
+    [v23 setRightBarButtonItems:editButtonItem4 animated:animated];
   }
 
-  if (a11)
+  if (style)
   {
     v68 = *v64;
-    v69 = [v23 rightBarButtonItems];
-    LOBYTE(v68) = (*(v68 + 16))(v68, v69);
+    rightBarButtonItems3 = [v23 rightBarButtonItems];
+    LOBYTE(v68) = (*(v68 + 16))(v68, rightBarButtonItems3);
 
     if ((v68 & 1) == 0)
     {
-      v70 = [v23 rightBarButtonItems];
-      [(CNContactContentNavigationItemUpdater *)self applyPlatterStyleToBarButtonItems:v70 navItemController:v21 isEditing:0];
+      rightBarButtonItems4 = [v23 rightBarButtonItems];
+      [(CNContactContentNavigationItemUpdater *)self applyPlatterStyleToBarButtonItems:rightBarButtonItems4 navItemController:v21 isEditing:0];
     }
   }
 
@@ -411,9 +411,9 @@ BOOL __236__CNContactContentNavigationItemUpdater_updateDisplayNavigationItemsFo
   return (isKindOfClass & 1) == 0;
 }
 
-- (id)customEditItemTitleForIsUpdatingContact:(BOOL)a3
+- (id)customEditItemTitleForIsUpdatingContact:(BOOL)contact
 {
-  if (a3)
+  if (contact)
   {
     v3 = CNContactsUIBundle();
     v4 = [v3 localizedStringForKey:@"UPDATE" value:&stru_1F0CE7398 table:@"Localized"];
@@ -427,52 +427,52 @@ BOOL __236__CNContactContentNavigationItemUpdater_updateDisplayNavigationItemsFo
   return v4;
 }
 
-- (id)updateEditDoneButtonForController:(id)a3 customEditButtonTitle:(id)a4 hasChanges:(BOOL)a5
+- (id)updateEditDoneButtonForController:(id)controller customEditButtonTitle:(id)title hasChanges:(BOOL)changes
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  changesCopy = changes;
+  titleCopy = title;
+  controllerCopy = controller;
   v9 = objc_alloc_init(CNContactContentNavigationItemUpdaterResult);
-  v10 = [v8 editButtonItem];
+  editButtonItem = [controllerCopy editButtonItem];
 
-  [v10 setEnabled:v5];
-  if (v7)
+  [editButtonItem setEnabled:changesCopy];
+  if (titleCopy)
   {
-    [v10 setTitle:v7];
+    [editButtonItem setTitle:titleCopy];
   }
 
-  [(CNContactContentNavigationItemUpdaterResult *)v9 setEnableSaveShortcut:v5];
+  [(CNContactContentNavigationItemUpdaterResult *)v9 setEnableSaveShortcut:changesCopy];
 
   return v9;
 }
 
-- (id)updateEditDoneButtonForController:(id)a3 isUpdatingContact:(BOOL)a4 hasChanges:(BOOL)a5
+- (id)updateEditDoneButtonForController:(id)controller isUpdatingContact:(BOOL)contact hasChanges:(BOOL)changes
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [(CNContactContentNavigationItemUpdater *)self customEditItemTitleForIsUpdatingContact:v6];
-  v10 = [(CNContactContentNavigationItemUpdater *)self updateEditDoneButtonForController:v8 customEditButtonTitle:v9 hasChanges:v5];
+  changesCopy = changes;
+  contactCopy = contact;
+  controllerCopy = controller;
+  v9 = [(CNContactContentNavigationItemUpdater *)self customEditItemTitleForIsUpdatingContact:contactCopy];
+  v10 = [(CNContactContentNavigationItemUpdater *)self updateEditDoneButtonForController:controllerCopy customEditButtonTitle:v9 hasChanges:changesCopy];
 
   return v10;
 }
 
-- (id)updateEditingNavigationItemForController:(id)a3 actionTarget:(id)a4 isInSheet:(BOOL)a5 isShowingNavBar:(BOOL)a6 shouldUsePlatterStyle:(BOOL)a7 customEditButtonTitle:(id)a8 hasChanges:(BOOL)a9 animated:(BOOL)a10
+- (id)updateEditingNavigationItemForController:(id)controller actionTarget:(id)target isInSheet:(BOOL)sheet isShowingNavBar:(BOOL)bar shouldUsePlatterStyle:(BOOL)style customEditButtonTitle:(id)title hasChanges:(BOOL)changes animated:(BOOL)self0
 {
-  v51 = a7;
-  v11 = a5;
+  styleCopy = style;
+  sheetCopy = sheet;
   v53[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  v17 = [v14 navigationItem];
+  controllerCopy = controller;
+  targetCopy = target;
+  titleCopy = title;
+  navigationItem = [controllerCopy navigationItem];
   v18 = objc_alloc_init(CNContactContentNavigationItemUpdaterResult);
-  v19 = [(CNContactContentNavigationItemUpdater *)self preEditLeftBarButtonItems];
+  preEditLeftBarButtonItems = [(CNContactContentNavigationItemUpdater *)self preEditLeftBarButtonItems];
 
-  if (!v19)
+  if (!preEditLeftBarButtonItems)
   {
-    v20 = [v17 leftBarButtonItems];
-    v21 = [v20 _cn_filter:&__block_literal_global_6768];
+    leftBarButtonItems = [navigationItem leftBarButtonItems];
+    v21 = [leftBarButtonItems _cn_filter:&__block_literal_global_6768];
 
     if (v21)
     {
@@ -487,54 +487,54 @@ BOOL __236__CNContactContentNavigationItemUpdater_updateDisplayNavigationItemsFo
     [(CNContactContentNavigationItemUpdater *)self setPreEditLeftBarButtonItems:v22];
   }
 
-  v50 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v15 action:sel_editCancel_];
+  v50 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:targetCopy action:sel_editCancel_];
   v53[0] = v50;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:1];
   [(CNContactContentNavigationItemUpdaterResult *)v18 setEnableCancelShortcut:1];
-  v24 = [(CNContactContentNavigationItemUpdater *)self updateEditDoneButtonForController:v14 customEditButtonTitle:v16 hasChanges:a9];
+  v24 = [(CNContactContentNavigationItemUpdater *)self updateEditDoneButtonForController:controllerCopy customEditButtonTitle:titleCopy hasChanges:changes];
 
   v49 = v24;
   -[CNContactContentNavigationItemUpdaterResult setEnableSaveShortcut:](v18, "setEnableSaveShortcut:", [v24 enableSaveShortcut]);
-  v25 = [v14 editButtonItem];
-  if (([v14 isEditing] & 1) == 0)
+  editButtonItem = [controllerCopy editButtonItem];
+  if (([controllerCopy isEditing] & 1) == 0)
   {
-    [v14 setEditing:1];
+    [controllerCopy setEditing:1];
   }
 
-  [v25 setTarget:v15];
-  [v25 setAction:sel_toggleEditing_];
-  if (!v25)
+  [editButtonItem setTarget:targetCopy];
+  [editButtonItem setAction:sel_toggleEditing_];
+  if (!editButtonItem)
   {
     v26 = 0;
-    if (!v11)
+    if (!sheetCopy)
     {
       goto LABEL_31;
     }
 
 LABEL_12:
-    v27 = [v17 rightBarButtonItems];
-    v47 = [v17 leftBarButtonItems];
-    v28 = [(CNContactContentNavigationItemUpdater *)self extraRightBarButtonItems];
+    rightBarButtonItems = [navigationItem rightBarButtonItems];
+    leftBarButtonItems2 = [navigationItem leftBarButtonItems];
+    extraRightBarButtonItems = [(CNContactContentNavigationItemUpdater *)self extraRightBarButtonItems];
 
-    if (!v28)
+    if (!extraRightBarButtonItems)
     {
-      if ([v27 count])
+      if ([rightBarButtonItems count])
       {
-        v29 = self;
-        v30 = v27;
+        selfCopy2 = self;
+        v30 = rightBarButtonItems;
       }
 
       else
       {
         v30 = MEMORY[0x1E695E0F0];
-        v29 = self;
+        selfCopy2 = self;
       }
 
-      [(CNContactContentNavigationItemUpdater *)v29 setExtraRightBarButtonItems:v30];
+      [(CNContactContentNavigationItemUpdater *)selfCopy2 setExtraRightBarButtonItems:v30];
     }
 
-    v31 = [(CNContactContentNavigationItemUpdater *)self extraRightBarButtonItems];
-    if ([v31 count])
+    extraRightBarButtonItems2 = [(CNContactContentNavigationItemUpdater *)self extraRightBarButtonItems];
+    if ([extraRightBarButtonItems2 count])
     {
       v32 = [v26 count];
 
@@ -544,31 +544,31 @@ LABEL_12:
       }
 
       [(CNContactContentNavigationItemUpdater *)self extraRightBarButtonItems];
-      v26 = v31 = v26;
+      v26 = extraRightBarButtonItems2 = v26;
     }
 
 LABEL_21:
-    v33 = [(CNContactContentNavigationItemUpdater *)self extraLeftBarButtonItems];
+    extraLeftBarButtonItems = [(CNContactContentNavigationItemUpdater *)self extraLeftBarButtonItems];
 
-    if (!v33)
+    if (!extraLeftBarButtonItems)
     {
-      if ([v47 count])
+      if ([leftBarButtonItems2 count])
       {
-        v34 = self;
-        v35 = v47;
+        selfCopy4 = self;
+        v35 = leftBarButtonItems2;
       }
 
       else
       {
         v35 = MEMORY[0x1E695E0F0];
-        v34 = self;
+        selfCopy4 = self;
       }
 
-      [(CNContactContentNavigationItemUpdater *)v34 setExtraLeftBarButtonItems:v35];
+      [(CNContactContentNavigationItemUpdater *)selfCopy4 setExtraLeftBarButtonItems:v35];
     }
 
-    v36 = [(CNContactContentNavigationItemUpdater *)self extraLeftBarButtonItems];
-    if ([v36 count])
+    extraLeftBarButtonItems2 = [(CNContactContentNavigationItemUpdater *)self extraLeftBarButtonItems];
+    if ([extraLeftBarButtonItems2 count])
     {
       v37 = [v23 count];
 
@@ -580,15 +580,15 @@ LABEL_30:
       }
 
       [(CNContactContentNavigationItemUpdater *)self extraLeftBarButtonItems];
-      v23 = v36 = v23;
+      v23 = extraLeftBarButtonItems2 = v23;
     }
 
     goto LABEL_30;
   }
 
-  v52 = v25;
+  v52 = editButtonItem;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
-  if (v11)
+  if (sheetCopy)
   {
     goto LABEL_12;
   }
@@ -597,38 +597,38 @@ LABEL_31:
   v48 = v18;
   if (v23)
   {
-    [v17 setLeftBarButtonItems:v23 animated:a10];
+    [navigationItem setLeftBarButtonItems:v23 animated:animated];
   }
 
   v38 = MEMORY[0x1E6996530];
-  if (v51)
+  if (styleCopy)
   {
     v39 = *MEMORY[0x1E6996530];
-    v40 = [v17 leftBarButtonItems];
-    LOBYTE(v39) = (*(v39 + 16))(v39, v40);
+    leftBarButtonItems3 = [navigationItem leftBarButtonItems];
+    LOBYTE(v39) = (*(v39 + 16))(v39, leftBarButtonItems3);
 
     if ((v39 & 1) == 0)
     {
-      v41 = [v17 leftBarButtonItems];
-      [(CNContactContentNavigationItemUpdater *)self applyPlatterStyleToBarButtonItems:v41 navItemController:v14 isEditing:1];
+      leftBarButtonItems4 = [navigationItem leftBarButtonItems];
+      [(CNContactContentNavigationItemUpdater *)self applyPlatterStyleToBarButtonItems:leftBarButtonItems4 navItemController:controllerCopy isEditing:1];
     }
   }
 
   if (v26)
   {
-    [v17 setRightBarButtonItems:v26 animated:a10];
+    [navigationItem setRightBarButtonItems:v26 animated:animated];
   }
 
-  if (v51)
+  if (styleCopy)
   {
     v42 = *v38;
-    v43 = [v17 rightBarButtonItems];
-    LOBYTE(v42) = (*(v42 + 16))(v42, v43);
+    rightBarButtonItems2 = [navigationItem rightBarButtonItems];
+    LOBYTE(v42) = (*(v42 + 16))(v42, rightBarButtonItems2);
 
     if ((v42 & 1) == 0)
     {
-      v44 = [v17 rightBarButtonItems];
-      [(CNContactContentNavigationItemUpdater *)self applyPlatterStyleToBarButtonItems:v44 navItemController:v14 isEditing:1];
+      rightBarButtonItems3 = [navigationItem rightBarButtonItems];
+      [(CNContactContentNavigationItemUpdater *)self applyPlatterStyleToBarButtonItems:rightBarButtonItems3 navItemController:controllerCopy isEditing:1];
     }
   }
 
@@ -644,17 +644,17 @@ BOOL __185__CNContactContentNavigationItemUpdater_updateEditingNavigationItemFor
   return (isKindOfClass & 1) == 0;
 }
 
-- (id)updateEditingNavigationItemForController:(id)a3 actionTarget:(id)a4 isInSheet:(BOOL)a5 isShowingNavBar:(BOOL)a6 shouldUsePlatterStyle:(BOOL)a7 isUpdatingContact:(BOOL)a8 hasChanges:(BOOL)a9 animated:(BOOL)a10
+- (id)updateEditingNavigationItemForController:(id)controller actionTarget:(id)target isInSheet:(BOOL)sheet isShowingNavBar:(BOOL)bar shouldUsePlatterStyle:(BOOL)style isUpdatingContact:(BOOL)contact hasChanges:(BOOL)changes animated:(BOOL)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(CNContactContentNavigationItemUpdater *)self customEditItemTitleForIsUpdatingContact:v10];
-  LOWORD(v21) = __PAIR16__(a10, a9);
-  v19 = [(CNContactContentNavigationItemUpdater *)self updateEditingNavigationItemForController:v17 actionTarget:v16 isInSheet:v13 isShowingNavBar:v12 shouldUsePlatterStyle:v11 customEditButtonTitle:v18 hasChanges:v21 animated:?];
+  contactCopy = contact;
+  styleCopy = style;
+  barCopy = bar;
+  sheetCopy = sheet;
+  targetCopy = target;
+  controllerCopy = controller;
+  v18 = [(CNContactContentNavigationItemUpdater *)self customEditItemTitleForIsUpdatingContact:contactCopy];
+  LOWORD(v21) = __PAIR16__(animated, changes);
+  v19 = [(CNContactContentNavigationItemUpdater *)self updateEditingNavigationItemForController:controllerCopy actionTarget:targetCopy isInSheet:sheetCopy isShowingNavBar:barCopy shouldUsePlatterStyle:styleCopy customEditButtonTitle:v18 hasChanges:v21 animated:?];
 
   return v19;
 }

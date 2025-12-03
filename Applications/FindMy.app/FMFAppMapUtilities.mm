@@ -1,20 +1,20 @@
 @interface FMFAppMapUtilities
 + (unint64_t)storedMapType;
-+ (unint64_t)transformedMapTypeForType:(unint64_t)a3;
++ (unint64_t)transformedMapTypeForType:(unint64_t)type;
 @end
 
 @implementation FMFAppMapUtilities
 
-+ (unint64_t)transformedMapTypeForType:(unint64_t)a3
++ (unint64_t)transformedMapTypeForType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 3;
   }
 
   else
   {
-    return 4 * (a3 == 1);
+    return 4 * (type == 1);
   }
 }
 

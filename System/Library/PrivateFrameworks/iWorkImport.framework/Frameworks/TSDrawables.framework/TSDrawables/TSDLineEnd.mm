@@ -3,31 +3,31 @@
 + (id)filledCircle;
 + (id)filledDiamond;
 + (id)filledSquare;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 + (id)invertedArrow;
 + (id)line;
-+ (id)lineEndWithIdentifier:(id)a3;
-+ (id)lineEndWithPath:(CGPath *)a3 endPoint:(CGPoint)a4 isFilled:(BOOL)a5 identifier:(id)a6;
-+ (id)lineEndWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7;
-+ (id)lineEndWithType:(int)a3;
++ (id)lineEndWithIdentifier:(id)identifier;
++ (id)lineEndWithPath:(CGPath *)path endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier;
++ (id)lineEndWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier;
++ (id)lineEndWithType:(int)type;
 + (id)openArrow;
 + (id)openCircle;
 + (id)openSquare;
 + (id)simpleArrow;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNone;
-- (CGImage)newLineEndImageOnRight:(BOOL)a3 forContentsScale:(double)a4 withSize:(CGSize)a5;
+- (CGImage)newLineEndImageOnRight:(BOOL)right forContentsScale:(double)scale withSize:(CGSize)size;
 - (CGPoint)endPoint;
-- (TSDLineEnd)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSDLineEnd)initWithBezierPath:(id)a3 wrapPath:(id)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8;
-- (TSDLineEnd)initWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8;
+- (TSDLineEnd)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSDLineEnd)initWithBezierPath:(id)path wrapPath:(id)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join;
+- (TSDLineEnd)initWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join;
 - (TSUBezierPath)wrapPath;
 - (double)scaleForStrokeWidth:(double)result;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDLineEnd
@@ -228,25 +228,25 @@
   return v4;
 }
 
-+ (id)lineEndWithType:(int)a3
++ (id)lineEndWithType:(int)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 > 8)
+    if (type > 8)
     {
-      if (a3 == 9)
+      if (type == 9)
       {
-        a1 = objc_msgSend_line(TSDLineEnd, a2, *&a3);
+        self = objc_msgSend_line(TSDLineEnd, a2, *&type);
         goto LABEL_27;
       }
 
-      if (a3 == 10)
+      if (type == 10)
       {
-        a1 = objc_msgSend_none(TSDLineEnd, a2, *&a3);
+        self = objc_msgSend_none(TSDLineEnd, a2, *&type);
         goto LABEL_27;
       }
 
-      if (a3 != 11)
+      if (type != 11)
       {
         goto LABEL_27;
       }
@@ -258,72 +258,72 @@
 
       objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v8, v9);
 LABEL_19:
-      a1 = objc_msgSend_simpleArrow(TSDLineEnd, a2, *&a3);
+      self = objc_msgSend_simpleArrow(TSDLineEnd, a2, *&type);
       goto LABEL_27;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
-      a1 = objc_msgSend_openSquare(TSDLineEnd, a2, *&a3);
+      self = objc_msgSend_openSquare(TSDLineEnd, a2, *&type);
       goto LABEL_27;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
-      objc_msgSend_openCircle(TSDLineEnd, a2, *&a3);
+      objc_msgSend_openCircle(TSDLineEnd, a2, *&type);
     }
 
     else
     {
-      objc_msgSend_invertedArrow(TSDLineEnd, a2, *&a3);
+      objc_msgSend_invertedArrow(TSDLineEnd, a2, *&type);
     }
 
-    a1 = LABEL_11:;
+    self = LABEL_11:;
     goto LABEL_27;
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      a1 = objc_msgSend_openArrow(TSDLineEnd, a2, *&a3);
+      self = objc_msgSend_openArrow(TSDLineEnd, a2, *&type);
       goto LABEL_27;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
-      objc_msgSend_filledArrow(TSDLineEnd, a2, *&a3);
+      objc_msgSend_filledArrow(TSDLineEnd, a2, *&type);
     }
 
     else
     {
-      objc_msgSend_filledSquare(TSDLineEnd, a2, *&a3);
+      objc_msgSend_filledSquare(TSDLineEnd, a2, *&type);
     }
 
     goto LABEL_11;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0:
       goto LABEL_19;
     case 1:
-      a1 = objc_msgSend_filledCircle(TSDLineEnd, a2, *&a3);
+      self = objc_msgSend_filledCircle(TSDLineEnd, a2, *&type);
       break;
     case 2:
-      a1 = objc_msgSend_filledDiamond(TSDLineEnd, a2, *&a3);
+      self = objc_msgSend_filledDiamond(TSDLineEnd, a2, *&type);
       break;
   }
 
 LABEL_27:
 
-  return a1;
+  return self;
 }
 
-+ (id)lineEndWithIdentifier:(id)a3
++ (id)lineEndWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"simple arrow"))
+  identifierCopy = identifier;
+  if (objc_msgSend_isEqualToString_(identifierCopy, v4, @"simple arrow"))
   {
     v7 = objc_msgSend_simpleArrow(TSDLineEnd, v5, v6);
 LABEL_23:
@@ -331,61 +331,61 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v5, @"filled circle"))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v5, @"filled circle"))
   {
     v7 = objc_msgSend_filledCircle(TSDLineEnd, v8, v9);
     goto LABEL_23;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v8, @"filled diamond"))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v8, @"filled diamond"))
   {
     v7 = objc_msgSend_filledDiamond(TSDLineEnd, v10, v11);
     goto LABEL_23;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v10, @"open arrow"))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v10, @"open arrow"))
   {
     v7 = objc_msgSend_openArrow(TSDLineEnd, v12, v13);
     goto LABEL_23;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v12, @"filled arrow"))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v12, @"filled arrow"))
   {
     v7 = objc_msgSend_filledArrow(TSDLineEnd, v14, v15);
     goto LABEL_23;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v14, @"filled square"))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v14, @"filled square"))
   {
     v7 = objc_msgSend_filledSquare(TSDLineEnd, v16, v17);
     goto LABEL_23;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v16, @"open square"))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v16, @"open square"))
   {
     v7 = objc_msgSend_openSquare(TSDLineEnd, v18, v19);
     goto LABEL_23;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v18, @"open circle"))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v18, @"open circle"))
   {
     v7 = objc_msgSend_openCircle(TSDLineEnd, v20, v21);
     goto LABEL_23;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v20, @"inverted arrow"))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v20, @"inverted arrow"))
   {
     v7 = objc_msgSend_invertedArrow(TSDLineEnd, v22, v23);
     goto LABEL_23;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v22, @"line"))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v22, @"line"))
   {
     v7 = objc_msgSend_line(TSDLineEnd, v24, v25);
     goto LABEL_23;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v24, @"none"))
+  if (objc_msgSend_isEqualToString_(identifierCopy, v24, @"none"))
   {
     v7 = objc_msgSend_none(TSDLineEnd, v26, v27);
     goto LABEL_23;
@@ -397,89 +397,89 @@ LABEL_24:
   return v28;
 }
 
-+ (id)lineEndWithPath:(CGPath *)a3 endPoint:(CGPoint)a4 isFilled:(BOOL)a5 identifier:(id)a6
++ (id)lineEndWithPath:(CGPath *)path endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier
 {
-  v6 = a5;
-  y = a4.y;
-  x = a4.x;
-  v10 = a6;
+  filledCopy = filled;
+  y = point.y;
+  x = point.x;
+  identifierCopy = identifier;
   v11 = objc_alloc(objc_opt_class());
-  isFilled_identifier = objc_msgSend_initWithPath_endPoint_isFilled_identifier_(v11, v12, a3, v6, v10, x, y);
+  isFilled_identifier = objc_msgSend_initWithPath_endPoint_isFilled_identifier_(v11, v12, path, filledCopy, identifierCopy, x, y);
 
   return isFilled_identifier;
 }
 
-+ (id)lineEndWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7
++ (id)lineEndWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier
 {
-  v7 = a6;
-  y = a5.y;
-  x = a5.x;
-  v12 = a7;
+  filledCopy = filled;
+  y = point.y;
+  x = point.x;
+  identifierCopy = identifier;
   v13 = objc_alloc(objc_opt_class());
-  isFilled_identifier_lineJoin = objc_msgSend_initWithPath_wrapPath_endPoint_isFilled_identifier_lineJoin_(v13, v14, a3, a4, v7, v12, 0, x, y);
+  isFilled_identifier_lineJoin = objc_msgSend_initWithPath_wrapPath_endPoint_isFilled_identifier_lineJoin_(v13, v14, path, wrapPath, filledCopy, identifierCopy, 0, x, y);
 
   return isFilled_identifier_lineJoin;
 }
 
-- (TSDLineEnd)initWithBezierPath:(id)a3 wrapPath:(id)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8
+- (TSDLineEnd)initWithBezierPath:(id)path wrapPath:(id)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join
 {
-  y = a5.y;
-  x = a5.x;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  wrapPathCopy = wrapPath;
+  identifierCopy = identifier;
   v32.receiver = self;
   v32.super_class = TSDLineEnd;
   v20 = [(TSDLineEnd *)&v32 init];
   if (v20)
   {
-    v21 = objc_msgSend_copy(v17, v18, v19);
+    v21 = objc_msgSend_copy(identifierCopy, v18, v19);
     identifier = v20->_identifier;
     v20->_identifier = v21;
 
-    v20->_lineJoin = a8;
-    v25 = objc_msgSend_copy(v15, v23, v24);
+    v20->_lineJoin = join;
+    v25 = objc_msgSend_copy(pathCopy, v23, v24);
     path = v20->_path;
     v20->_path = v25;
 
-    v29 = objc_msgSend_copy(v16, v27, v28);
+    v29 = objc_msgSend_copy(wrapPathCopy, v27, v28);
     wrapPath = v20->_wrapPath;
     v20->_wrapPath = v29;
 
     v20->_endPoint.x = x;
     v20->_endPoint.y = y;
-    v20->_isFilled = a6;
+    v20->_isFilled = filled;
   }
 
   return v20;
 }
 
-- (TSDLineEnd)initWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8
+- (TSDLineEnd)initWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join
 {
-  v8 = *&a8;
-  v9 = a6;
-  y = a5.y;
-  x = a5.x;
-  v16 = a7;
-  if (a3)
+  v8 = *&join;
+  filledCopy = filled;
+  y = point.y;
+  x = point.x;
+  identifierCopy = identifier;
+  if (path)
   {
-    a3 = objc_msgSend_bezierPathWithCGPath_(MEMORY[0x277D81160], v15, a3);
+    path = objc_msgSend_bezierPathWithCGPath_(MEMORY[0x277D81160], v15, path);
   }
 
-  if (a4)
+  if (wrapPath)
   {
-    a4 = objc_msgSend_bezierPathWithCGPath_(MEMORY[0x277D81160], v15, a4);
+    wrapPath = objc_msgSend_bezierPathWithCGPath_(MEMORY[0x277D81160], v15, wrapPath);
   }
 
-  isFilled_identifier_lineJoin = objc_msgSend_initWithBezierPath_wrapPath_endPoint_isFilled_identifier_lineJoin_(self, v15, a3, a4, v9, v16, v8, x, y);
+  isFilled_identifier_lineJoin = objc_msgSend_initWithBezierPath_wrapPath_endPoint_isFilled_identifier_lineJoin_(self, v15, path, wrapPath, filledCopy, identifierCopy, v8, x, y);
 
   return isFilled_identifier_lineJoin;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 0;
 LABEL_10:
@@ -488,14 +488,14 @@ LABEL_10:
   }
 
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     isEqual = 0;
     v7 = 0;
     goto LABEL_16;
   }
 
-  v7 = v4;
+  v7 = equalCopy;
   if (objc_msgSend_isEqualToString_(self->_identifier, v8, @"none"))
   {
     v11 = objc_msgSend_identifier(v7, v9, v10);
@@ -543,7 +543,7 @@ LABEL_16:
   return isEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   path = self->_path;
@@ -557,13 +557,13 @@ LABEL_16:
   return objc_msgSend_initWithBezierPath_wrapPath_endPoint_isFilled_identifier_lineJoin_(v4, v5, path, wrapPath, isFilled, identifier, lineJoin, x, y);
 }
 
-- (CGImage)newLineEndImageOnRight:(BOOL)a3 forContentsScale:(double)a4 withSize:(CGSize)a5
+- (CGImage)newLineEndImageOnRight:(BOOL)right forContentsScale:(double)scale withSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
-  v10 = TSDBitmapContextCreate(0xB, a5.width * a4, a5.height * a4);
-  CGContextScaleCTM(v10, a4, a4);
+  height = size.height;
+  width = size.width;
+  rightCopy = right;
+  v10 = TSDBitmapContextCreate(0xB, size.width * scale, size.height * scale);
+  CGContextScaleCTM(v10, scale, scale);
   CGContextSetRGBFillColor(v10, 0.0, 0.0, 0.0, 1.0);
   CGContextSetRGBStrokeColor(v10, 0.0, 0.0, 0.0, 1.0);
   v11 = *MEMORY[0x277CBF2C0];
@@ -573,7 +573,7 @@ LABEL_16:
   v13 = *(MEMORY[0x277CBF2C0] + 32);
   *&v53.tx = v13;
   v14 = -width;
-  if (v8)
+  if (rightCopy)
   {
     *&transform.a = v11;
     *&transform.c = v12;
@@ -702,9 +702,9 @@ LABEL_16:
   return v10;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -735,9 +735,9 @@ LABEL_16:
   return v22;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v4 = objc_msgSend_identifier(self, a2, a4, a3);
+  v4 = objc_msgSend_identifier(self, a2, object, fraction);
   v6 = objc_msgSend_lineEndWithIdentifier_(TSDLineEnd, v5, v4);
 
   return v6;
@@ -762,13 +762,13 @@ LABEL_16:
   return result;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
-  if (TSD::LineEndArchive::ByteSizeLong(a3))
+  unarchiverCopy = unarchiver;
+  if (TSD::LineEndArchive::ByteSizeLong(archive))
   {
     v8 = [TSDLineEnd alloc];
-    v10 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, a3, v5);
+    v10 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, archive, unarchiverCopy);
   }
 
   else
@@ -781,12 +781,12 @@ LABEL_16:
   return v11;
 }
 
-- (TSDLineEnd)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDLineEnd)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 4))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 4))
   {
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   else
@@ -795,13 +795,13 @@ LABEL_16:
   }
 
   v9 = TSPCGPathCreateFromMessage(v7);
-  v10 = *(a3 + 4);
+  v10 = *(archive + 4);
   if ((v10 & 4) != 0)
   {
-    TSPCGPointFromMessage(*(a3 + 5));
+    TSPCGPointFromMessage(*(archive + 5));
     v11 = v13;
     v12 = v14;
-    v10 = *(a3 + 4);
+    v10 = *(archive + 4);
   }
 
   else
@@ -810,11 +810,11 @@ LABEL_16:
     v12 = *(MEMORY[0x277CBF348] + 8);
   }
 
-  v15 = *(a3 + 52);
+  v15 = *(archive + 52);
   if (v10)
   {
     v30 = objc_alloc(MEMORY[0x277CCACA8]);
-    v28 = objc_msgSend_tsp_initWithProtobufString_(v30, v31, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v28 = objc_msgSend_tsp_initWithProtobufString_(v30, v31, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
   }
 
   else
@@ -833,7 +833,7 @@ LABEL_16:
   v33 = isFilled_identifier;
   if (isFilled_identifier)
   {
-    v34 = *(a3 + 12);
+    v34 = *(archive + 12);
     if (v34 <= 2)
     {
       *(isFilled_identifier + 56) = v34;
@@ -848,48 +848,48 @@ LABEL_16:
   return v33;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v20 = a4;
+  archiverCopy = archiver;
   v8 = objc_msgSend_CGPath(self->_path, v6, v7);
-  *(a3 + 4) |= 2u;
-  v9 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v9 = *(archive + 4);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = MEMORY[0x277C9BAC0](v10);
-    *(a3 + 4) = v9;
+    *(archive + 4) = v9;
   }
 
   TSPCGPathCopyToMessage(v8, v9);
   lineJoin = self->_lineJoin;
   if (lineJoin < 3)
   {
-    *(a3 + 4) |= 8u;
-    *(a3 + 12) = lineJoin;
+    *(archive + 4) |= 8u;
+    *(archive + 12) = lineJoin;
   }
 
   x = self->_endPoint.x;
   y = self->_endPoint.y;
   if (x != 0.0 || y != 0.0)
   {
-    *(a3 + 4) |= 4u;
-    v16 = *(a3 + 5);
+    *(archive + 4) |= 4u;
+    v16 = *(archive + 5);
     if (!v16)
     {
-      v17 = *(a3 + 1);
+      v17 = *(archive + 1);
       if (v17)
       {
         v17 = *(v17 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v16 = MEMORY[0x277C9BB00](v17);
-      *(a3 + 5) = v16;
+      *(archive + 5) = v16;
     }
 
     v22.x = x;
@@ -899,15 +899,15 @@ LABEL_16:
 
   if (self->_isFilled)
   {
-    *(a3 + 4) |= 0x10u;
-    *(a3 + 52) = 1;
+    *(archive + 4) |= 0x10u;
+    *(archive + 52) = 1;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     v19 = objc_msgSend_tsp_protobufString(identifier, v11, v12);
-    sub_2766926CC(a3, v19);
+    sub_2766926CC(archive, v19);
   }
 }
 

@@ -1,5 +1,5 @@
 @interface FKTextFeature
-+ (id)featureFromConcompIndex:(int)a3 session:(FKSession *)a4 scaling:(id *)a5 type:(int64_t)a6 createDiacriticFeatures:(BOOL)a7 featureID:(int64_t *)a8;
++ (id)featureFromConcompIndex:(int)index session:(FKSession *)session scaling:(id *)scaling type:(int64_t)type createDiacriticFeatures:(BOOL)features featureID:(int64_t *)d;
 - (CGRect)boundingBox;
 - (NSArray)candidates;
 - (void)dealloc;
@@ -14,22 +14,22 @@
   [(FKTextFeature *)&v3 dealloc];
 }
 
-+ (id)featureFromConcompIndex:(int)a3 session:(FKSession *)a4 scaling:(id *)a5 type:(int64_t)a6 createDiacriticFeatures:(BOOL)a7 featureID:(int64_t *)a8
++ (id)featureFromConcompIndex:(int)index session:(FKSession *)session scaling:(id *)scaling type:(int64_t)type createDiacriticFeatures:(BOOL)features featureID:(int64_t *)d
 {
-  v11 = a6;
+  typeCopy = type;
   v15 = 0;
-  var2 = a5->var2;
+  var2 = scaling->var2;
   v17 = 0.5;
   if (!var2)
   {
     v17 = 0.0;
   }
 
-  v18 = a4->var22 + 100 * a3;
+  v18 = session->var22 + 100 * index;
   v19 = (1 << var2);
   LOWORD(v8) = *(v18 + 40);
-  x = a5->var1.x;
-  y = a5->var1.y;
+  x = scaling->var1.x;
+  y = scaling->var1.y;
   v22 = x + v19 * (v8 - v17);
   LOWORD(v9) = *(v18 + 41);
   *&v23 = v17 + v9;
@@ -38,8 +38,8 @@
   v25 = y + v19 * (v23 - v17);
   LOWORD(v10) = *(v18 + 43);
   v26 = y + v19 * (v17 + v10);
-  width = a5->var0.width;
-  height = a5->var0.height;
+  width = scaling->var0.width;
+  height = scaling->var0.height;
   v29 = v22 / width;
   v30 = v25 / height;
   v31 = (v24 - v22 + 1.0) / width;
@@ -48,8 +48,8 @@
   v51 = v25 / height;
   v52 = v31;
   v53 = v32;
-  v33 = (*a8)++;
-  if (a6 == 1 && a7)
+  v33 = (*d)++;
+  if (type == 1 && features)
   {
     v35 = *(v18 + 16);
     v34 = v18 + 64;
@@ -72,7 +72,7 @@
         }
 
         v40 = v38;
-        v41 = [FKTextFeature featureFromConcompIndex:v39 session:a4 scaling:a5 type:2 createDiacriticFeatures:0 featureID:a8];
+        v41 = [FKTextFeature featureFromConcompIndex:v39 session:session scaling:scaling type:2 createDiacriticFeatures:0 featureID:d];
         [v15 addObject:v41];
         [v41 boundingBox];
         v56.origin.x = v42;
@@ -97,13 +97,13 @@
       v51 = v30;
       v52 = v31;
       v53 = v32;
-      v11 = 1;
+      typeCopy = 1;
     }
   }
 
   v46 = [FKTextFeature alloc];
-  LODWORD(v49) = a5->var2;
-  v47 = [(FKTextFeature *)v46 initWithType:v11 boundingBox:&v50 corners:0 featureID:v33 session:a4 backingIndex:a3 scale:v49];
+  LODWORD(v49) = scaling->var2;
+  v47 = [(FKTextFeature *)v46 initWithType:typeCopy boundingBox:&v50 corners:0 featureID:v33 session:session backingIndex:index scale:v49];
   [(FKTextFeature *)v47 setSubFeatures:v15];
   return v47;
 }

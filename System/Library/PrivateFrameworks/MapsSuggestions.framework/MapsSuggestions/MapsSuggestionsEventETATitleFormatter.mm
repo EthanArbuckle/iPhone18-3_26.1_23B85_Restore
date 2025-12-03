@@ -1,17 +1,17 @@
 @interface MapsSuggestionsEventETATitleFormatter
-- (BOOL)_etaDuration:(double)a3 meetsThresholdForEntry:;
-- (BOOL)shouldDecorateEntry:(id)a3 withETA:(id)a4;
+- (BOOL)_etaDuration:(double)duration meetsThresholdForEntry:;
+- (BOOL)shouldDecorateEntry:(id)entry withETA:(id)a;
 @end
 
 @implementation MapsSuggestionsEventETATitleFormatter
 
-- (BOOL)shouldDecorateEntry:(id)a3 withETA:(id)a4
+- (BOOL)shouldDecorateEntry:(id)entry withETA:(id)a
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  entryCopy = entry;
+  aCopy = a;
+  v8 = aCopy;
+  if (!entryCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -34,7 +34,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!aCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -54,24 +54,24 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if ([v6 BOOLeanForKey:@"MapsSuggestionsAlreadyThereKey" is:1])
+  if ([entryCopy BOOLeanForKey:@"MapsSuggestionsAlreadyThereKey" is:1])
   {
     goto LABEL_14;
   }
 
   LOBYTE(v9) = 1;
-  if (([v6 BOOLeanForKey:@"MapsSuggestionsWithinImminentTimeWindowKey" is:1] & 1) == 0)
+  if (([entryCopy BOOLeanForKey:@"MapsSuggestionsWithinImminentTimeWindowKey" is:1] & 1) == 0)
   {
-    v9 = [v6 dateForKey:@"MapsSuggestionsScheduledTimeKey"];
+    v9 = [entryCopy dateForKey:@"MapsSuggestionsScheduledTimeKey"];
     if (v9)
     {
       [v8 seconds];
-      v11 = [(MapsSuggestionsEventETATitleFormatter *)self _etaDuration:v6 meetsThresholdForEntry:v10];
+      v11 = [(MapsSuggestionsEventETATitleFormatter *)self _etaDuration:entryCopy meetsThresholdForEntry:v10];
 
       if (v11)
       {
         LOBYTE(v9) = 1;
-        [v6 setBoolean:1 forKey:@"MapsSuggestionsWithinImminentTimeWindowKey"];
+        [entryCopy setBoolean:1 forKey:@"MapsSuggestionsWithinImminentTimeWindowKey"];
         goto LABEL_15;
       }
 
@@ -85,12 +85,12 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)_etaDuration:(double)a3 meetsThresholdForEntry:
+- (BOOL)_etaDuration:(double)duration meetsThresholdForEntry:
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     v15 = 0;
     goto LABEL_16;
@@ -107,7 +107,7 @@ LABEL_15:
 
       [v6 type];
       GEOConfigGetDouble();
-      v12 = v11 * a3;
+      v12 = v11 * duration;
       GEOConfigGetDouble();
       v14 = fmax(v12, v13);
       v15 = v10 <= v14;
@@ -118,7 +118,7 @@ LABEL_15:
         v22 = 2048;
         v20 = 134218754;
         v21 = v10 / 60.0;
-        *v23 = a3 / 60.0;
+        *v23 = duration / 60.0;
         if (v10 <= v14)
         {
           v17 = @"Yes";

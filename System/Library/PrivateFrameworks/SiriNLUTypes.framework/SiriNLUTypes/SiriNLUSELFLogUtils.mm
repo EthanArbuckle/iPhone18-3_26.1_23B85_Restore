@@ -1,110 +1,110 @@
 @interface SiriNLUSELFLogUtils
-+ (BOOL)isLegacyNlContextPresent:(id)a3;
-+ (BOOL)isNlContextPresent:(id)a3;
-+ (id)convertAccepted:(id)a3;
-+ (id)convertAcknowledged:(id)a3;
-+ (id)convertCancelled:(id)a3;
-+ (id)convertCorrectionOutcome:(id)a3;
-+ (id)convertDelegated:(id)a3;
-+ (id)convertGaveOptions:(id)a3;
-+ (id)convertInformed:(id)a3;
-+ (id)convertInternalSpanData:(id)a3;
-+ (id)convertLegacyNLContext:(id)a3;
-+ (id)convertLvcResult:(id)a3;
-+ (id)convertMatchInfo:(id)a3;
-+ (id)convertMatchingSpan:(id)a3;
-+ (id)convertMatchingSpanTier1:(id)a3;
-+ (id)convertMentionDetectorSpanData:(id)a3;
-+ (id)convertMentionResolverSpanData:(id)a3;
-+ (id)convertNLContext:(id)a3;
-+ (id)convertNonTier1UsoGraph:(id)a3;
-+ (id)convertNonTier1UsoGraph:(id)a3 identifiers:(id)a4 entitySpans:(id)a5;
-+ (id)convertOffered:(id)a3;
-+ (id)convertPLUMSpanData:(id)a3;
-+ (id)convertParser:(id)a3;
-+ (id)convertPrompted:(id)a3;
-+ (id)convertReformedTurnInputBundle:(id)a3;
-+ (id)convertRejected:(id)a3;
-+ (id)convertRepetitionResult:(id)a3;
-+ (id)convertReportedFailure:(id)a3;
-+ (id)convertReportedSuccess:(id)a3;
-+ (id)convertSiriVocabularySpanData:(id)a3;
-+ (id)convertSystemDialogAct:(id)a3;
-+ (id)convertTask:(id)a3;
-+ (id)convertToken:(id)a3;
-+ (id)convertTokenChain:(id)a3;
-+ (id)convertTurnContext:(id)a3;
-+ (id)convertTurnInput:(id)a3;
-+ (id)convertUUID:(id)a3;
-+ (id)convertUserDialogAct:(id)a3;
-+ (id)convertUserParse:(id)a3;
-+ (id)convertUserStatedTask:(id)a3;
-+ (id)convertUsoEdge:(id)a3;
-+ (id)convertUsoEntityIdentifier:(id)a3;
-+ (id)convertUsoEntityIdentifier:(id)a3 index:(int64_t)a4;
-+ (id)convertUsoEntityIdentifierTier1:(id)a3 index:(int64_t)a4;
-+ (id)convertUsoEntitySpan:(id)a3;
-+ (id)convertUsoEntitySpan:(id)a3 index:(int64_t)a4;
-+ (id)convertUsoEntitySpanTier1:(id)a3 index:(int64_t)a4;
-+ (id)convertUsoGraph:(id)a3;
-+ (id)convertUsoNode:(id)a3;
-+ (id)convertUsoNodeDataTier1:(id)a3 index:(int64_t)a4;
-+ (id)convertUtteranceAlignment:(id)a3;
-+ (id)convertUtteranceSpan:(id)a3;
-+ (id)convertVersion:(id)a3;
-+ (id)convertWantedToPause:(id)a3;
-+ (id)convertWantedToProceed:(id)a3;
-+ (id)convertWantedToRepeat:(id)a3;
-+ (id)convertWantedToUndo:(id)a3;
++ (BOOL)isLegacyNlContextPresent:(id)present;
++ (BOOL)isNlContextPresent:(id)present;
++ (id)convertAccepted:(id)accepted;
++ (id)convertAcknowledged:(id)acknowledged;
++ (id)convertCancelled:(id)cancelled;
++ (id)convertCorrectionOutcome:(id)outcome;
++ (id)convertDelegated:(id)delegated;
++ (id)convertGaveOptions:(id)options;
++ (id)convertInformed:(id)informed;
++ (id)convertInternalSpanData:(id)data;
++ (id)convertLegacyNLContext:(id)context;
++ (id)convertLvcResult:(id)result;
++ (id)convertMatchInfo:(id)info;
++ (id)convertMatchingSpan:(id)span;
++ (id)convertMatchingSpanTier1:(id)tier1;
++ (id)convertMentionDetectorSpanData:(id)data;
++ (id)convertMentionResolverSpanData:(id)data;
++ (id)convertNLContext:(id)context;
++ (id)convertNonTier1UsoGraph:(id)graph;
++ (id)convertNonTier1UsoGraph:(id)graph identifiers:(id)identifiers entitySpans:(id)spans;
++ (id)convertOffered:(id)offered;
++ (id)convertPLUMSpanData:(id)data;
++ (id)convertParser:(id)parser;
++ (id)convertPrompted:(id)prompted;
++ (id)convertReformedTurnInputBundle:(id)bundle;
++ (id)convertRejected:(id)rejected;
++ (id)convertRepetitionResult:(id)result;
++ (id)convertReportedFailure:(id)failure;
++ (id)convertReportedSuccess:(id)success;
++ (id)convertSiriVocabularySpanData:(id)data;
++ (id)convertSystemDialogAct:(id)act;
++ (id)convertTask:(id)task;
++ (id)convertToken:(id)token;
++ (id)convertTokenChain:(id)chain;
++ (id)convertTurnContext:(id)context;
++ (id)convertTurnInput:(id)input;
++ (id)convertUUID:(id)d;
++ (id)convertUserDialogAct:(id)act;
++ (id)convertUserParse:(id)parse;
++ (id)convertUserStatedTask:(id)task;
++ (id)convertUsoEdge:(id)edge;
++ (id)convertUsoEntityIdentifier:(id)identifier;
++ (id)convertUsoEntityIdentifier:(id)identifier index:(int64_t)index;
++ (id)convertUsoEntityIdentifierTier1:(id)tier1 index:(int64_t)index;
++ (id)convertUsoEntitySpan:(id)span;
++ (id)convertUsoEntitySpan:(id)span index:(int64_t)index;
++ (id)convertUsoEntitySpanTier1:(id)tier1 index:(int64_t)index;
++ (id)convertUsoGraph:(id)graph;
++ (id)convertUsoNode:(id)node;
++ (id)convertUsoNodeDataTier1:(id)tier1 index:(int64_t)index;
++ (id)convertUtteranceAlignment:(id)alignment;
++ (id)convertUtteranceSpan:(id)span;
++ (id)convertVersion:(id)version;
++ (id)convertWantedToPause:(id)pause;
++ (id)convertWantedToProceed:(id)proceed;
++ (id)convertWantedToRepeat:(id)repeat;
++ (id)convertWantedToUndo:(id)undo;
 + (id)createAllZeroUUID;
-+ (id)createCDMAllServicesSetupEndedLog:(id)a3;
-+ (id)createCDMAllServicesSetupFailedLog:(id)a3;
-+ (id)createCDMAllServicesSetupStartedLog:(id)a3;
-+ (id)createCDMAllServicesWarmupEndedLog:(id)a3;
-+ (id)createCDMAllServicesWarmupFailedLog:(id)a3;
-+ (id)createCDMAllServicesWarmupStartedLog:(id)a3;
-+ (id)createCDMAssetSetupEndedLog:(id)a3 metadata:(id)a4;
-+ (id)createCDMAssetSetupStartedLog:(id)a3 serviceTypes:(id)a4 metadata:(id)a5;
-+ (id)createCDMAssetsReportedLog:(id)a3 metadata:(id)a4;
-+ (id)createCDMClientSetupEndedLog:(id)a3;
-+ (id)createCDMClientWarmupEndedLog:(id)a3;
-+ (id)createCDMRequestEndedLog:(id)a3 metadata:(id)a4;
-+ (id)createCDMSetupMissingAssetsDetectedLog:(id)a3 services:(id)a4 metadata:(id)a5;
-+ (id)createCdmXpcEventProcessingEndedLog:(id)a3 metadata:(id)a4;
-+ (id)createContextUpdateEndedLog:(id)a3 contextUpdateResponse:(id)a4 metadata:(id)a5;
-+ (id)createDelegatedUserDialogActTier1Event:(id)a3 withLinkId:(id)a4;
-+ (id)createMatchingSpanEndedLog:(id)a3 spanMatchResponse:(id)a4 metadata:(id)a5;
-+ (id)createNLXClientEventMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithRequestId:(id)a5 andWithSubRequestId:(id)a6 andWithResultCandidateId:(id)a7 andWithRequester:(int *)a8;
-+ (id)createNLXClientEventMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithResultCandidateId:(id)a5 andWithRequester:(int *)a6;
-+ (id)createNLXCurareContext:(id)a3 metadata:(id)a4;
-+ (id)createNLXLegacyNLContextTier1Event:(id)a3 withLinkId:(id)a4;
-+ (id)createSystemDialogActTier1Event:(id)a3 withLinkId:(id)a4;
-+ (id)createTokenizationEndedLog:(id)a3 tokenizationResponse:(id)a4 metadata:(id)a5;
-+ (id)extractRequestLinkData:(id)a3;
++ (id)createCDMAllServicesSetupEndedLog:(id)log;
++ (id)createCDMAllServicesSetupFailedLog:(id)log;
++ (id)createCDMAllServicesSetupStartedLog:(id)log;
++ (id)createCDMAllServicesWarmupEndedLog:(id)log;
++ (id)createCDMAllServicesWarmupFailedLog:(id)log;
++ (id)createCDMAllServicesWarmupStartedLog:(id)log;
++ (id)createCDMAssetSetupEndedLog:(id)log metadata:(id)metadata;
++ (id)createCDMAssetSetupStartedLog:(id)log serviceTypes:(id)types metadata:(id)metadata;
++ (id)createCDMAssetsReportedLog:(id)log metadata:(id)metadata;
++ (id)createCDMClientSetupEndedLog:(id)log;
++ (id)createCDMClientWarmupEndedLog:(id)log;
++ (id)createCDMRequestEndedLog:(id)log metadata:(id)metadata;
++ (id)createCDMSetupMissingAssetsDetectedLog:(id)log services:(id)services metadata:(id)metadata;
++ (id)createCdmXpcEventProcessingEndedLog:(id)log metadata:(id)metadata;
++ (id)createContextUpdateEndedLog:(id)log contextUpdateResponse:(id)response metadata:(id)metadata;
++ (id)createDelegatedUserDialogActTier1Event:(id)event withLinkId:(id)id;
++ (id)createMatchingSpanEndedLog:(id)log spanMatchResponse:(id)response metadata:(id)metadata;
++ (id)createNLXClientEventMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithRequestId:(id)requestId andWithSubRequestId:(id)subRequestId andWithResultCandidateId:(id)candidateId andWithRequester:(int *)requester;
++ (id)createNLXClientEventMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithResultCandidateId:(id)candidateId andWithRequester:(int *)requester;
++ (id)createNLXCurareContext:(id)context metadata:(id)metadata;
++ (id)createNLXLegacyNLContextTier1Event:(id)event withLinkId:(id)id;
++ (id)createSystemDialogActTier1Event:(id)event withLinkId:(id)id;
++ (id)createTokenizationEndedLog:(id)log tokenizationResponse:(id)response metadata:(id)metadata;
++ (id)extractRequestLinkData:(id)data;
 + (id)getAppBundleTypeEnumsMapping;
 + (id)getErrorDomainMapping;
-+ (id)getObjCUsoGraphFromOntologyUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)a3 :ontology::UsoGraph;
-+ (id)getReferenceFromAccepted:(id)a3;
-+ (id)getReferenceFromAcknowledged:(id)a3;
-+ (id)getReferenceFromCancelled:(id)a3;
-+ (id)getReferenceFromRejected:(id)a3;
-+ (id)getReferenceFromWantedToPause:(id)a3;
-+ (id)getReferenceFromWantedToProceed:(id)a3;
-+ (id)getReferenceFromWantedToRepeat:(id)a3;
-+ (id)getTaskFromUserStatedTask:(id)a3;
-+ (int)convertCDMMatcherName:(int)a3;
-+ (int)convertCDMParserAlgorithmType:(int)a3;
-+ (int)convertCDMReformType:(int)a3;
-+ (int)convertCDMRepetitionType:(int)a3;
-+ (int)convertCDMRewriteType:(int)a3;
-+ (int)convertComponentInvocationSource:(int)a3;
-+ (int)convertLegacyContextSource:(int)a3;
-+ (int)convertMatchInfoAliasType:(int)a3;
-+ (int)convertUSOEntityIdentifierNluComponent:(int)a3;
-+ (int)convertUSOEntitySpanNluComponent:(int)a3;
-+ (int)convertUsoBackingAppBundleType:(id)a3;
-+ (int)getErrorDomain:(id)a3;
-+ (void)populateEventsWithMetadata:(id)a3 metadata:(id)a4;
++ (id)getObjCUsoGraphFromOntologyUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)siri :ontology::UsoGraph;
++ (id)getReferenceFromAccepted:(id)accepted;
++ (id)getReferenceFromAcknowledged:(id)acknowledged;
++ (id)getReferenceFromCancelled:(id)cancelled;
++ (id)getReferenceFromRejected:(id)rejected;
++ (id)getReferenceFromWantedToPause:(id)pause;
++ (id)getReferenceFromWantedToProceed:(id)proceed;
++ (id)getReferenceFromWantedToRepeat:(id)repeat;
++ (id)getTaskFromUserStatedTask:(id)task;
++ (int)convertCDMMatcherName:(int)name;
++ (int)convertCDMParserAlgorithmType:(int)type;
++ (int)convertCDMReformType:(int)type;
++ (int)convertCDMRepetitionType:(int)type;
++ (int)convertCDMRewriteType:(int)type;
++ (int)convertComponentInvocationSource:(int)source;
++ (int)convertLegacyContextSource:(int)source;
++ (int)convertMatchInfoAliasType:(int)type;
++ (int)convertUSOEntityIdentifierNluComponent:(int)component;
++ (int)convertUSOEntitySpanNluComponent:(int)component;
++ (int)convertUsoBackingAppBundleType:(id)type;
++ (int)getErrorDomain:(id)domain;
++ (void)populateEventsWithMetadata:(id)metadata metadata:(id)a4;
 @end
 
 @implementation SiriNLUSELFLogUtils
@@ -222,40 +222,40 @@ void __51__SiriNLUSELFLogUtils_getAppBundleTypeEnumsMapping__block_invoke()
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (int)getErrorDomain:(id)a3
++ (int)getErrorDomain:(id)domain
 {
-  v3 = a3;
-  if (v3)
+  domainCopy = domain;
+  if (domainCopy)
   {
     v4 = +[SiriNLUSELFLogUtils getErrorDomainMapping];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 objectForKey:v3];
+      v6 = [v4 objectForKey:domainCopy];
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 intValue];
+        intValue = [v6 intValue];
       }
 
       else
       {
-        v8 = 0;
+        intValue = 0;
       }
     }
 
     else
     {
-      v8 = 0;
+      intValue = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    intValue = 0;
   }
 
-  return v8;
+  return intValue;
 }
 
 + (id)getErrorDomainMapping
@@ -346,21 +346,21 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)extractRequestLinkData:(id)a3
++ (id)extractRequestLinkData:(id)data
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(SiriNLUSELFRequestLinkData);
-  if (v3)
+  if (dataCopy)
   {
     v5 = @"No ResultCandidateId";
-    v6 = [v3 connectionId];
-    v7 = [v3 idA];
-    v32 = v6;
+    connectionId = [dataCopy connectionId];
+    v7 = [dataCopy idA];
+    v32 = connectionId;
 
     if (v7)
     {
-      v8 = [v3 idA];
+      v8 = [dataCopy idA];
       v9 = [v8 componentsSeparatedByString:@":"];
 
       if (v9 && [v9 count])
@@ -393,11 +393,11 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
           v17 = loggerContext(0);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
-            v30 = [v15 UUIDString];
+            uUIDString = [v15 UUIDString];
             *buf = 136315394;
             v34 = "+[SiriNLUSELFLogUtils extractRequestLinkData:]";
             v35 = 2112;
-            v36 = v30;
+            v36 = uUIDString;
             _os_log_debug_impl(&dword_1C8774000, v17, OS_LOG_TYPE_DEBUG, "%s SELF RequestLink: NL ID: %@", buf, 0x16u);
           }
         }
@@ -452,7 +452,7 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
         v16 = 0;
       }
 
-      if (![v3 hasTrpId] || (objc_msgSend(v3, "trpId"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "length") == 0, v21, v22))
+      if (![dataCopy hasTrpId] || (objc_msgSend(dataCopy, "trpId"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "length") == 0, v21, v22))
       {
         v25 = loggerContext(0);
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -468,8 +468,8 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
       else
       {
         v23 = objc_alloc(MEMORY[0x1E696AFB0]);
-        v24 = [v3 trpId];
-        v25 = [v23 initWithUUIDString:v24];
+        trpId = [dataCopy trpId];
+        v25 = [v23 initWithUUIDString:trpId];
 
         if (v25)
         {
@@ -477,12 +477,12 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
           v26 = loggerContext(0);
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
-            v27 = [v25 UUIDString];
+            uUIDString2 = [v25 UUIDString];
             *buf = 136315394;
             v34 = "+[SiriNLUSELFLogUtils extractRequestLinkData:]";
             v35 = 2112;
-            v36 = v27;
-            v31 = v27;
+            v36 = uUIDString2;
+            v31 = uUIDString2;
             _os_log_debug_impl(&dword_1C8774000, v26, OS_LOG_TYPE_DEBUG, "%s SELF TRP ID: %@", buf, 0x16u);
           }
         }
@@ -543,50 +543,37 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (int)convertLegacyContextSource:(int)a3
++ (int)convertLegacyContextSource:(int)source
 {
-  if ((a3 - 1) > 2)
+  if ((source - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return dword_1C8C16584[a3 - 1];
+    return dword_1C8C16584[source - 1];
   }
 }
 
-+ (int)convertComponentInvocationSource:(int)a3
++ (int)convertComponentInvocationSource:(int)source
 {
-  if ((a3 - 1) >= 5)
+  if ((source - 1) >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return source;
   }
 }
 
-+ (int)convertCDMParserAlgorithmType:(int)a3
++ (int)convertCDMParserAlgorithmType:(int)type
 {
-  if (a3 < 3)
+  if (type < 3)
   {
-    return a3 + 1;
-  }
-
-  else
-  {
-    return 0;
-  }
-}
-
-+ (int)convertCDMReformType:(int)a3
-{
-  if (a3 < 4)
-  {
-    return a3 + 1;
+    return type + 1;
   }
 
   else
@@ -595,11 +582,11 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   }
 }
 
-+ (int)convertCDMRewriteType:(int)a3
++ (int)convertCDMReformType:(int)type
 {
-  if (a3 < 4)
+  if (type < 4)
   {
-    return a3 + 1;
+    return type + 1;
   }
 
   else
@@ -608,24 +595,11 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   }
 }
 
-+ (int)convertCDMRepetitionType:(int)a3
++ (int)convertCDMRewriteType:(int)type
 {
-  if (a3 > 3)
+  if (type < 4)
   {
-    return 0;
-  }
-
-  else
-  {
-    return dword_1C8C15D60[a3];
-  }
-}
-
-+ (int)convertCDMMatcherName:(int)a3
-{
-  if (a3 < 9)
-  {
-    return a3 + 1;
+    return type + 1;
   }
 
   else
@@ -634,11 +608,24 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   }
 }
 
-+ (int)convertMatchInfoAliasType:(int)a3
++ (int)convertCDMRepetitionType:(int)type
 {
-  if (a3 < 8)
+  if (type > 3)
   {
-    return a3 + 1;
+    return 0;
+  }
+
+  else
+  {
+    return dword_1C8C15D60[type];
+  }
+}
+
++ (int)convertCDMMatcherName:(int)name
+{
+  if (name < 9)
+  {
+    return name + 1;
   }
 
   else
@@ -647,49 +634,62 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   }
 }
 
-+ (int)convertUSOEntitySpanNluComponent:(int)a3
++ (int)convertMatchInfoAliasType:(int)type
 {
-  if (a3 > 6)
+  if (type < 8)
+  {
+    return type + 1;
+  }
+
+  else
+  {
+    return 0;
+  }
+}
+
++ (int)convertUSOEntitySpanNluComponent:(int)component
+{
+  if (component > 6)
   {
     return 0;
   }
 
   else
   {
-    return dword_1C8C16568[a3];
+    return dword_1C8C16568[component];
   }
 }
 
-+ (int)convertUSOEntityIdentifierNluComponent:(int)a3
++ (int)convertUSOEntityIdentifierNluComponent:(int)component
 {
-  if (a3 > 6)
+  if (component > 6)
   {
     return 0;
   }
 
   else
   {
-    return dword_1C8C16568[a3];
+    return dword_1C8C16568[component];
   }
 }
 
-+ (id)convertLvcResult:(id)a3
++ (id)convertLvcResult:(id)result
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  resultCopy = result;
+  if (resultCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF0F0]);
-    v5 = [v3 multilingualVariants];
+    multilingualVariants = [resultCopy multilingualVariants];
 
-    if (v5)
+    if (multilingualVariants)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v6 = [v3 multilingualVariants];
-      v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      multilingualVariants2 = [resultCopy multilingualVariants];
+      v7 = [multilingualVariants2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v7)
       {
         v8 = *v20;
@@ -699,33 +699,33 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
           {
             if (*v20 != v8)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(multilingualVariants2);
             }
 
             v10 = *(*(&v19 + 1) + 8 * i);
             v11 = objc_alloc_init(MEMORY[0x1E69CF118]);
-            v12 = [v10 languageVariantName];
-            [v11 setLanguageVariantName:v12];
+            languageVariantName = [v10 languageVariantName];
+            [v11 setLanguageVariantName:languageVariantName];
 
             [v10 languageVariantScore];
             [v11 setLanguageVariantConfidenceScore:?];
             [v4 addMultilingualVariants:v11];
           }
 
-          v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v7 = [multilingualVariants2 countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v7);
       }
     }
 
-    v13 = [v3 parser];
-    v14 = v13 == 0;
+    parser = [resultCopy parser];
+    v14 = parser == 0;
 
     if (!v14)
     {
-      v15 = [v3 parser];
-      v16 = [SiriNLUSELFLogUtils convertParser:v15];
+      parser2 = [resultCopy parser];
+      v16 = [SiriNLUSELFLogUtils convertParser:parser2];
       [v4 setCdmParser:v16];
     }
   }
@@ -740,29 +740,29 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertReformedTurnInputBundle:(id)a3
++ (id)convertReformedTurnInputBundle:(id)bundle
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF130]);
-    [v4 setType:{+[SiriNLUSELFLogUtils convertCDMReformType:](SiriNLUSELFLogUtils, "convertCDMReformType:", objc_msgSend(v3, "type"))}];
+    [v4 setType:{+[SiriNLUSELFLogUtils convertCDMReformType:](SiriNLUSELFLogUtils, "convertCDMReformType:", objc_msgSend(bundleCopy, "type"))}];
     v5 = objc_alloc_init(SiriInstrumentationObjectContainer);
-    v6 = [v3 currentTurn];
-    v7 = [SiriNLUSELFLogUtils convertTurnInput:v6];
+    currentTurn = [bundleCopy currentTurn];
+    v7 = [SiriNLUSELFLogUtils convertTurnInput:currentTurn];
 
     if (v7)
     {
-      v8 = [v7 mainItem];
-      [v4 setCurrentTurn:v8];
+      mainItem = [v7 mainItem];
+      [v4 setCurrentTurn:mainItem];
 
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v9 = [v7 tier1Events];
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      tier1Events = [v7 tier1Events];
+      v10 = [tier1Events countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
         v11 = *v16;
@@ -772,13 +772,13 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(tier1Events);
             }
 
             [(SiriInstrumentationObjectContainer *)v5 addTier1Event:*(*(&v15 + 1) + 8 * i)];
           }
 
-          v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [tier1Events countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v10);
@@ -798,30 +798,30 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v5;
 }
 
-+ (id)convertToken:(id)a3
++ (id)convertToken:(id)token
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF1E8]);
-    v5 = [v3 value];
-    [v4 setValue:v5];
+    value = [tokenCopy value];
+    [v4 setValue:value];
 
-    [v4 setBegin:{objc_msgSend(v3, "begin")}];
-    [v4 setEnd:{objc_msgSend(v3, "end")}];
-    [v4 setIsSignificant:{objc_msgSend(v3, "isSignificant")}];
-    [v4 setIsWhitespace:{objc_msgSend(v3, "isWhitespace")}];
-    [v4 setNonWhitespaceTokenIndex:{objc_msgSend(v3, "nonWhitespaceTokenIndex")}];
-    v6 = [v3 cleanValue];
-    [v4 setCleanValue:v6];
+    [v4 setBegin:{objc_msgSend(tokenCopy, "begin")}];
+    [v4 setEnd:{objc_msgSend(tokenCopy, "end")}];
+    [v4 setIsSignificant:{objc_msgSend(tokenCopy, "isSignificant")}];
+    [v4 setIsWhitespace:{objc_msgSend(tokenCopy, "isWhitespace")}];
+    [v4 setNonWhitespaceTokenIndex:{objc_msgSend(tokenCopy, "nonWhitespaceTokenIndex")}];
+    cleanValue = [tokenCopy cleanValue];
+    [v4 setCleanValue:cleanValue];
 
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [v3 normalizedValues];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    normalizedValues = [tokenCopy normalizedValues];
+    v8 = [normalizedValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = *v14;
@@ -831,19 +831,19 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(normalizedValues);
           }
 
           [v4 addNormalizedValues:*(*(&v13 + 1) + 8 * i)];
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [normalizedValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
     }
 
-    [v4 setTokenIndex:{objc_msgSend(v3, "tokenIndex")}];
+    [v4 setTokenIndex:{objc_msgSend(tokenCopy, "tokenIndex")}];
   }
 
   else
@@ -856,19 +856,19 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertTokenChain:(id)a3
++ (id)convertTokenChain:(id)chain
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  chainCopy = chain;
+  if (chainCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF1F0]);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v3 tokens];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    tokens = [chainCopy tokens];
+    v6 = [tokens countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = *v13;
@@ -878,14 +878,14 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(tokens);
           }
 
           v9 = [SiriNLUSELFLogUtils convertToken:*(*(&v12 + 1) + 8 * i)];
           [v4 addTokens:v9];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [tokens countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -902,15 +902,15 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertMentionResolverSpanData:(id)a3
++ (id)convertMentionResolverSpanData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF298]);
-    [v3 modelScore];
+    [dataCopy modelScore];
     [v4 setModelScore:?];
-    [v3 jointScore];
+    [dataCopy jointScore];
     [v4 setJointScore:?];
   }
 
@@ -922,13 +922,13 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertMentionDetectorSpanData:(id)a3
++ (id)convertMentionDetectorSpanData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF290]);
-    [v3 score];
+    [dataCopy score];
     [v4 setScore:?];
   }
 
@@ -940,13 +940,13 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertPLUMSpanData:(id)a3
++ (id)convertPLUMSpanData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF2C8]);
-    [v3 score];
+    [dataCopy score];
     [v4 setScore:?];
   }
 
@@ -958,9 +958,9 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertSiriVocabularySpanData:(id)a3
++ (id)convertSiriVocabularySpanData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF198]);
   }
@@ -973,26 +973,26 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertInternalSpanData:(id)a3
++ (id)convertInternalSpanData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF0E8]);
-    v5 = [v3 siriVocabularySpanData];
-    v6 = [SiriNLUSELFLogUtils convertSiriVocabularySpanData:v5];
+    siriVocabularySpanData = [dataCopy siriVocabularySpanData];
+    v6 = [SiriNLUSELFLogUtils convertSiriVocabularySpanData:siriVocabularySpanData];
     [v4 setSiriVocabularySpanData:v6];
 
-    v7 = [v3 plumSpanData];
-    v8 = [SiriNLUSELFLogUtils convertPLUMSpanData:v7];
+    plumSpanData = [dataCopy plumSpanData];
+    v8 = [SiriNLUSELFLogUtils convertPLUMSpanData:plumSpanData];
     [v4 setPlumSpanData:v8];
 
-    v9 = [v3 mentionDetectorSpanData];
-    v10 = [SiriNLUSELFLogUtils convertMentionDetectorSpanData:v9];
+    mentionDetectorSpanData = [dataCopy mentionDetectorSpanData];
+    v10 = [SiriNLUSELFLogUtils convertMentionDetectorSpanData:mentionDetectorSpanData];
     [v4 setMentionDetectorSpanData:v10];
 
-    v11 = [v3 mentionResolverSpanData];
-    v12 = [SiriNLUSELFLogUtils convertMentionResolverSpanData:v11];
+    mentionResolverSpanData = [dataCopy mentionResolverSpanData];
+    v12 = [SiriNLUSELFLogUtils convertMentionResolverSpanData:mentionResolverSpanData];
     [v4 setMentionResolverSpanData:v12];
   }
 
@@ -1004,17 +1004,17 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertMatchingSpanTier1:(id)a3
++ (id)convertMatchingSpanTier1:(id)tier1
 {
-  v3 = a3;
-  if (v3)
+  tier1Copy = tier1;
+  if (tier1Copy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF110]);
-    v5 = [v3 input];
-    [v4 setInput:v5];
+    input = [tier1Copy input];
+    [v4 setInput:input];
 
-    v6 = [v3 semanticValue];
-    [v4 setSemanticValue:v6];
+    semanticValue = [tier1Copy semanticValue];
+    [v4 setSemanticValue:semanticValue];
   }
 
   else
@@ -1025,39 +1025,39 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertMatchingSpan:(id)a3
++ (id)convertMatchingSpan:(id)span
 {
   v39 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  if (v27)
+  spanCopy = span;
+  if (spanCopy)
   {
     v26 = objc_alloc_init(MEMORY[0x1E69CF0F8]);
-    v3 = [v27 label];
-    [v26 setLabel:v3];
+    label = [spanCopy label];
+    [v26 setLabel:label];
 
-    [v26 setStartTokenIndex:{objc_msgSend(v27, "startTokenIndex")}];
-    [v26 setEndTokenIndex:{objc_msgSend(v27, "endTokenIndex")}];
-    v4 = [v27 internalSpanData];
-    v5 = [SiriNLUSELFLogUtils convertInternalSpanData:v4];
+    [v26 setStartTokenIndex:{objc_msgSend(spanCopy, "startTokenIndex")}];
+    [v26 setEndTokenIndex:{objc_msgSend(spanCopy, "endTokenIndex")}];
+    internalSpanData = [spanCopy internalSpanData];
+    v5 = [SiriNLUSELFLogUtils convertInternalSpanData:internalSpanData];
     [v26 setInternalSpanData:v5];
 
     v6 = 0;
     v7 = 0;
-    while ([v27 matcherNamesCount] > v6)
+    while ([spanCopy matcherNamesCount] > v6)
     {
-      [v26 addMatcherNames:{+[SiriNLUSELFLogUtils convertCDMMatcherName:](SiriNLUSELFLogUtils, "convertCDMMatcherName:", objc_msgSend(v27, "matcherNamesAtIndex:", v6))}];
-      v7 |= [v27 matcherNamesAtIndex:v6++] == 2;
+      [v26 addMatcherNames:{+[SiriNLUSELFLogUtils convertCDMMatcherName:](SiriNLUSELFLogUtils, "convertCDMMatcherName:", objc_msgSend(spanCopy, "matcherNamesAtIndex:", v6))}];
+      v7 |= [spanCopy matcherNamesAtIndex:v6++] == 2;
     }
 
     v8 = objc_alloc_init(SiriInstrumentationObjectContainer);
-    v9 = [v27 usoGraph];
-    v10 = [SiriNLUSELFLogUtils convertUsoGraph:v9];
+    usoGraph = [spanCopy usoGraph];
+    v10 = [SiriNLUSELFLogUtils convertUsoGraph:usoGraph];
 
     v24 = v10;
     if (v10)
     {
-      v11 = [v10 mainItem];
-      [v26 setUsoGraph:v11];
+      mainItem = [v10 mainItem];
+      [v26 setUsoGraph:mainItem];
 
       v35 = 0u;
       v36 = 0u;
@@ -1084,11 +1084,11 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
               v32 = 0u;
               v29 = 0u;
               v30 = 0u;
-              v16 = [v15 cdmUsoGraphTier1];
-              v17 = [v16 usoGraphTier1];
-              v18 = [v17 linkedUsoGraphNodeDatas];
+              cdmUsoGraphTier1 = [v15 cdmUsoGraphTier1];
+              usoGraphTier1 = [cdmUsoGraphTier1 usoGraphTier1];
+              linkedUsoGraphNodeDatas = [usoGraphTier1 linkedUsoGraphNodeDatas];
 
-              v19 = [v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
+              v19 = [linkedUsoGraphNodeDatas countByEnumeratingWithState:&v29 objects:v37 count:16];
               if (v19)
               {
                 v20 = *v30;
@@ -1098,13 +1098,13 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
                   {
                     if (*v30 != v20)
                     {
-                      objc_enumerationMutation(v18);
+                      objc_enumerationMutation(linkedUsoGraphNodeDatas);
                     }
 
                     [*(*(&v29 + 1) + 8 * j) setLinkedUsoNodeData:{0, v24}];
                   }
 
-                  v19 = [v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
+                  v19 = [linkedUsoGraphNodeDatas countByEnumeratingWithState:&v29 objects:v37 count:16];
                 }
 
                 while (v19);
@@ -1134,14 +1134,14 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v8;
 }
 
-+ (id)getTaskFromUserStatedTask:(id)a3
++ (id)getTaskFromUserStatedTask:(id)task
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  taskCopy = task;
+  v4 = taskCopy;
+  if (taskCopy)
   {
-    v5 = [v3 task];
-    v6 = [SiriNLUSELFLogUtils convertUsoGraph:v5];
+    task = [taskCopy task];
+    v6 = [SiriNLUSELFLogUtils convertUsoGraph:task];
   }
 
   else
@@ -1152,14 +1152,14 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v6;
 }
 
-+ (id)getReferenceFromWantedToPause:(id)a3
++ (id)getReferenceFromWantedToPause:(id)pause
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pauseCopy = pause;
+  v4 = pauseCopy;
+  if (pauseCopy)
   {
-    v5 = [v3 reference];
-    v6 = [SiriNLUSELFLogUtils convertUsoGraph:v5];
+    reference = [pauseCopy reference];
+    v6 = [SiriNLUSELFLogUtils convertUsoGraph:reference];
   }
 
   else
@@ -1170,14 +1170,14 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v6;
 }
 
-+ (id)getReferenceFromWantedToProceed:(id)a3
++ (id)getReferenceFromWantedToProceed:(id)proceed
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  proceedCopy = proceed;
+  v4 = proceedCopy;
+  if (proceedCopy)
   {
-    v5 = [v3 reference];
-    v6 = [SiriNLUSELFLogUtils convertUsoGraph:v5];
+    reference = [proceedCopy reference];
+    v6 = [SiriNLUSELFLogUtils convertUsoGraph:reference];
   }
 
   else
@@ -1188,14 +1188,14 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v6;
 }
 
-+ (id)getReferenceFromAcknowledged:(id)a3
++ (id)getReferenceFromAcknowledged:(id)acknowledged
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  acknowledgedCopy = acknowledged;
+  v4 = acknowledgedCopy;
+  if (acknowledgedCopy)
   {
-    v5 = [v3 reference];
-    v6 = [SiriNLUSELFLogUtils convertUsoGraph:v5];
+    reference = [acknowledgedCopy reference];
+    v6 = [SiriNLUSELFLogUtils convertUsoGraph:reference];
   }
 
   else
@@ -1206,14 +1206,14 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v6;
 }
 
-+ (id)getReferenceFromWantedToRepeat:(id)a3
++ (id)getReferenceFromWantedToRepeat:(id)repeat
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  repeatCopy = repeat;
+  v4 = repeatCopy;
+  if (repeatCopy)
   {
-    v5 = [v3 reference];
-    v6 = [SiriNLUSELFLogUtils convertUsoGraph:v5];
+    reference = [repeatCopy reference];
+    v6 = [SiriNLUSELFLogUtils convertUsoGraph:reference];
   }
 
   else
@@ -1224,14 +1224,14 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v6;
 }
 
-+ (id)getReferenceFromCancelled:(id)a3
++ (id)getReferenceFromCancelled:(id)cancelled
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  cancelledCopy = cancelled;
+  v4 = cancelledCopy;
+  if (cancelledCopy)
   {
-    v5 = [v3 reference];
-    v6 = [SiriNLUSELFLogUtils convertUsoGraph:v5];
+    reference = [cancelledCopy reference];
+    v6 = [SiriNLUSELFLogUtils convertUsoGraph:reference];
   }
 
   else
@@ -1242,14 +1242,14 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v6;
 }
 
-+ (id)getReferenceFromRejected:(id)a3
++ (id)getReferenceFromRejected:(id)rejected
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  rejectedCopy = rejected;
+  v4 = rejectedCopy;
+  if (rejectedCopy)
   {
-    v5 = [v3 reference];
-    v6 = [SiriNLUSELFLogUtils convertUsoGraph:v5];
+    reference = [rejectedCopy reference];
+    v6 = [SiriNLUSELFLogUtils convertUsoGraph:reference];
   }
 
   else
@@ -1260,14 +1260,14 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v6;
 }
 
-+ (id)getReferenceFromAccepted:(id)a3
++ (id)getReferenceFromAccepted:(id)accepted
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  acceptedCopy = accepted;
+  v4 = acceptedCopy;
+  if (acceptedCopy)
   {
-    v5 = [v3 reference];
-    v6 = [SiriNLUSELFLogUtils convertUsoGraph:v5];
+    reference = [acceptedCopy reference];
+    v6 = [SiriNLUSELFLogUtils convertUsoGraph:reference];
   }
 
   else
@@ -1278,9 +1278,9 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v6;
 }
 
-+ (id)convertUserStatedTask:(id)a3
++ (id)convertUserStatedTask:(id)task
 {
-  if (a3)
+  if (task)
   {
     v3 = objc_alloc_init(MEMORY[0x1E69CF240]);
     [v3 setExists:1];
@@ -1294,27 +1294,27 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v3;
 }
 
-+ (id)convertDelegated:(id)a3
++ (id)convertDelegated:(id)delegated
 {
   v31 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  if (v25)
+  delegatedCopy = delegated;
+  if (delegatedCopy)
   {
     v23 = objc_alloc_init(MEMORY[0x1E69CF0D8]);
-    [v23 setAsrHypothesisIndex:{objc_msgSend(v25, "asrHypothesisIndex")}];
-    v3 = [v25 externalParserId];
-    [v23 setExternalParserId:v3];
+    [v23 setAsrHypothesisIndex:{objc_msgSend(delegatedCopy, "asrHypothesisIndex")}];
+    externalParserId = [delegatedCopy externalParserId];
+    [v23 setExternalParserId:externalParserId];
 
     v24 = objc_alloc_init(SiriInstrumentationObjectContainer);
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v4 = [v25 matchingSpans];
+    matchingSpans = [delegatedCopy matchingSpans];
     v5 = 0;
     v6 = 0;
     v7 = 0;
-    v8 = [v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v8 = [matchingSpans countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v8)
     {
       v9 = *v27;
@@ -1324,7 +1324,7 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
         {
           if (*v27 != v9)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(matchingSpans);
           }
 
           v11 = 0;
@@ -1367,7 +1367,7 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
           }
         }
 
-        v8 = [v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v8 = [matchingSpans countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v8);
@@ -1377,17 +1377,17 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
     [v23 setSiriVocabularySpanCount:v5];
     [v23 setMentionResolverSpanCount:v6];
     [v23 setContextMatcherSpanCount:v7];
-    if ([v25 hasRewrite])
+    if ([delegatedCopy hasRewrite])
     {
-      v16 = [v25 rewrite];
-      [v23 setRewriteType:{+[SiriNLUSELFLogUtils convertCDMRewriteType:](SiriNLUSELFLogUtils, "convertCDMRewriteType:", objc_msgSend(v16, "rewriteType"))}];
+      rewrite = [delegatedCopy rewrite];
+      [v23 setRewriteType:{+[SiriNLUSELFLogUtils convertCDMRewriteType:](SiriNLUSELFLogUtils, "convertCDMRewriteType:", objc_msgSend(rewrite, "rewriteType"))}];
 
       v17 = objc_alloc(MEMORY[0x1E69CF640]);
       v18 = objc_alloc_init(MEMORY[0x1E696AFB0]);
       v19 = [v17 initWithNSUUID:v18];
 
       [v23 setLinkId:v19];
-      v20 = [SiriNLUSELFLogUtils createDelegatedUserDialogActTier1Event:v25 withLinkId:v19];
+      v20 = [SiriNLUSELFLogUtils createDelegatedUserDialogActTier1Event:delegatedCopy withLinkId:v19];
       [(SiriInstrumentationObjectContainer *)v24 addTier1Event:v20];
 
       v15 = v23;
@@ -1406,9 +1406,9 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v24;
 }
 
-+ (id)convertWantedToUndo:(id)a3
++ (id)convertWantedToUndo:(id)undo
 {
-  if (a3)
+  if (undo)
   {
     v3 = objc_alloc_init(MEMORY[0x1E69CF260]);
     [v3 setExists:1];
@@ -1422,25 +1422,25 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v3;
 }
 
-+ (id)convertWantedToPause:(id)a3
++ (id)convertWantedToPause:(id)pause
 {
-  v3 = a3;
-  if (v3)
+  pauseCopy = pause;
+  if (pauseCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF248]);
-    v5 = [v3 taskId];
+    taskId = [pauseCopy taskId];
 
-    if (v5)
+    if (taskId)
     {
-      v6 = [v3 taskId];
-      v7 = [SiriNLUSELFLogUtils convertUUID:v6];
+      taskId2 = [pauseCopy taskId];
+      v7 = [SiriNLUSELFLogUtils convertUUID:taskId2];
       [v4 setTaskId:v7];
     }
 
     else
     {
-      v6 = +[SiriNLUSELFLogUtils createAllZeroUUID];
-      [v4 setTaskId:v6];
+      taskId2 = +[SiriNLUSELFLogUtils createAllZeroUUID];
+      [v4 setTaskId:taskId2];
     }
   }
 
@@ -1452,25 +1452,25 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertWantedToProceed:(id)a3
++ (id)convertWantedToProceed:(id)proceed
 {
-  v3 = a3;
-  if (v3)
+  proceedCopy = proceed;
+  if (proceedCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF250]);
-    v5 = [v3 taskId];
+    taskId = [proceedCopy taskId];
 
-    if (v5)
+    if (taskId)
     {
-      v6 = [v3 taskId];
-      v7 = [SiriNLUSELFLogUtils convertUUID:v6];
+      taskId2 = [proceedCopy taskId];
+      v7 = [SiriNLUSELFLogUtils convertUUID:taskId2];
       [v4 setTaskId:v7];
     }
 
     else
     {
-      v6 = +[SiriNLUSELFLogUtils createAllZeroUUID];
-      [v4 setTaskId:v6];
+      taskId2 = +[SiriNLUSELFLogUtils createAllZeroUUID];
+      [v4 setTaskId:taskId2];
     }
   }
 
@@ -1482,25 +1482,25 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertAcknowledged:(id)a3
++ (id)convertAcknowledged:(id)acknowledged
 {
-  v3 = a3;
-  if (v3)
+  acknowledgedCopy = acknowledged;
+  if (acknowledgedCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF218]);
-    v5 = [v3 systemDialogActId];
+    systemDialogActId = [acknowledgedCopy systemDialogActId];
 
-    if (v5)
+    if (systemDialogActId)
     {
-      v6 = [v3 systemDialogActId];
-      v7 = [SiriNLUSELFLogUtils convertUUID:v6];
+      systemDialogActId2 = [acknowledgedCopy systemDialogActId];
+      v7 = [SiriNLUSELFLogUtils convertUUID:systemDialogActId2];
       [v4 setSystemDialogActId:v7];
     }
 
     else
     {
-      v6 = +[SiriNLUSELFLogUtils createAllZeroUUID];
-      [v4 setSystemDialogActId:v6];
+      systemDialogActId2 = +[SiriNLUSELFLogUtils createAllZeroUUID];
+      [v4 setSystemDialogActId:systemDialogActId2];
     }
   }
 
@@ -1512,25 +1512,25 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertWantedToRepeat:(id)a3
++ (id)convertWantedToRepeat:(id)repeat
 {
-  v3 = a3;
-  if (v3)
+  repeatCopy = repeat;
+  if (repeatCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF258]);
-    v5 = [v3 systemDialogActId];
+    systemDialogActId = [repeatCopy systemDialogActId];
 
-    if (v5)
+    if (systemDialogActId)
     {
-      v6 = [v3 systemDialogActId];
-      v7 = [SiriNLUSELFLogUtils convertUUID:v6];
+      systemDialogActId2 = [repeatCopy systemDialogActId];
+      v7 = [SiriNLUSELFLogUtils convertUUID:systemDialogActId2];
       [v4 setSystemDialogActId:v7];
     }
 
     else
     {
-      v6 = +[SiriNLUSELFLogUtils createAllZeroUUID];
-      [v4 setSystemDialogActId:v6];
+      systemDialogActId2 = +[SiriNLUSELFLogUtils createAllZeroUUID];
+      [v4 setSystemDialogActId:systemDialogActId2];
     }
   }
 
@@ -1542,25 +1542,25 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertCancelled:(id)a3
++ (id)convertCancelled:(id)cancelled
 {
-  v3 = a3;
-  if (v3)
+  cancelledCopy = cancelled;
+  if (cancelledCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF220]);
-    v5 = [v3 taskId];
+    taskId = [cancelledCopy taskId];
 
-    if (v5)
+    if (taskId)
     {
-      v6 = [v3 taskId];
-      v7 = [SiriNLUSELFLogUtils convertUUID:v6];
+      taskId2 = [cancelledCopy taskId];
+      v7 = [SiriNLUSELFLogUtils convertUUID:taskId2];
       [v4 setTaskId:v7];
     }
 
     else
     {
-      v6 = +[SiriNLUSELFLogUtils createAllZeroUUID];
-      [v4 setTaskId:v6];
+      taskId2 = +[SiriNLUSELFLogUtils createAllZeroUUID];
+      [v4 setTaskId:taskId2];
     }
   }
 
@@ -1572,25 +1572,25 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertRejected:(id)a3
++ (id)convertRejected:(id)rejected
 {
-  v3 = a3;
-  if (v3)
+  rejectedCopy = rejected;
+  if (rejectedCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF238]);
-    v5 = [v3 offerId];
+    offerId = [rejectedCopy offerId];
 
-    if (v5)
+    if (offerId)
     {
-      v6 = [v3 offerId];
-      v7 = [SiriNLUSELFLogUtils convertUUID:v6];
+      offerId2 = [rejectedCopy offerId];
+      v7 = [SiriNLUSELFLogUtils convertUUID:offerId2];
       [v4 setOfferId:v7];
     }
 
     else
     {
-      v6 = +[SiriNLUSELFLogUtils createAllZeroUUID];
-      [v4 setOfferId:v6];
+      offerId2 = +[SiriNLUSELFLogUtils createAllZeroUUID];
+      [v4 setOfferId:offerId2];
     }
   }
 
@@ -1602,25 +1602,25 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertAccepted:(id)a3
++ (id)convertAccepted:(id)accepted
 {
-  v3 = a3;
-  if (v3)
+  acceptedCopy = accepted;
+  if (acceptedCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF210]);
-    v5 = [v3 offerId];
+    offerId = [acceptedCopy offerId];
 
-    if (v5)
+    if (offerId)
     {
-      v6 = [v3 offerId];
-      v7 = [SiriNLUSELFLogUtils convertUUID:v6];
+      offerId2 = [acceptedCopy offerId];
+      v7 = [SiriNLUSELFLogUtils convertUUID:offerId2];
       [v4 setOfferId:v7];
     }
 
     else
     {
-      v6 = +[SiriNLUSELFLogUtils createAllZeroUUID];
-      [v4 setOfferId:v6];
+      offerId2 = +[SiriNLUSELFLogUtils createAllZeroUUID];
+      [v4 setOfferId:offerId2];
     }
   }
 
@@ -1632,122 +1632,122 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)convertUserDialogAct:(id)a3
++ (id)convertUserDialogAct:(id)act
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  actCopy = act;
+  if (!actCopy)
   {
     v7 = 0;
     goto LABEL_27;
   }
 
   v4 = objc_alloc_init(MEMORY[0x1E69CF228]);
-  v5 = [v3 alignment];
-  v6 = [SiriNLUSELFLogUtils convertUtteranceAlignment:v5];
+  alignment = [actCopy alignment];
+  v6 = [SiriNLUSELFLogUtils convertUtteranceAlignment:alignment];
   [v4 setAlignment:v6];
 
   v7 = objc_alloc_init(SiriInstrumentationObjectContainer);
-  if ([v3 hasAccepted])
+  if ([actCopy hasAccepted])
   {
-    v8 = [v3 accepted];
-    v9 = [SiriNLUSELFLogUtils convertAccepted:v8];
+    accepted = [actCopy accepted];
+    v9 = [SiriNLUSELFLogUtils convertAccepted:accepted];
     [v4 setAccepted:v9];
 
-    v10 = [v3 accepted];
-    v11 = [SiriNLUSELFLogUtils getReferenceFromAccepted:v10];
+    accepted2 = [actCopy accepted];
+    v11 = [SiriNLUSELFLogUtils getReferenceFromAccepted:accepted2];
     goto LABEL_17;
   }
 
-  if ([v3 hasRejected])
+  if ([actCopy hasRejected])
   {
-    v12 = [v3 rejected];
-    v13 = [SiriNLUSELFLogUtils convertRejected:v12];
+    rejected = [actCopy rejected];
+    v13 = [SiriNLUSELFLogUtils convertRejected:rejected];
     [v4 setRejected:v13];
 
-    v10 = [v3 rejected];
-    v11 = [SiriNLUSELFLogUtils getReferenceFromRejected:v10];
+    accepted2 = [actCopy rejected];
+    v11 = [SiriNLUSELFLogUtils getReferenceFromRejected:accepted2];
     goto LABEL_17;
   }
 
-  if ([v3 hasCancelled])
+  if ([actCopy hasCancelled])
   {
-    v14 = [v3 cancelled];
-    v15 = [SiriNLUSELFLogUtils convertCancelled:v14];
+    cancelled = [actCopy cancelled];
+    v15 = [SiriNLUSELFLogUtils convertCancelled:cancelled];
     [v4 setCancelled:v15];
 
-    v10 = [v3 cancelled];
-    v11 = [SiriNLUSELFLogUtils getReferenceFromCancelled:v10];
+    accepted2 = [actCopy cancelled];
+    v11 = [SiriNLUSELFLogUtils getReferenceFromCancelled:accepted2];
     goto LABEL_17;
   }
 
-  if ([v3 hasWantedToRepeat])
+  if ([actCopy hasWantedToRepeat])
   {
-    v16 = [v3 wantedToRepeat];
-    v17 = [SiriNLUSELFLogUtils convertWantedToRepeat:v16];
+    wantedToRepeat = [actCopy wantedToRepeat];
+    v17 = [SiriNLUSELFLogUtils convertWantedToRepeat:wantedToRepeat];
     [v4 setWantedToRepeat:v17];
 
-    v10 = [v3 wantedToRepeat];
-    v11 = [SiriNLUSELFLogUtils getReferenceFromWantedToRepeat:v10];
+    accepted2 = [actCopy wantedToRepeat];
+    v11 = [SiriNLUSELFLogUtils getReferenceFromWantedToRepeat:accepted2];
     goto LABEL_17;
   }
 
-  if ([v3 hasAcknowledged])
+  if ([actCopy hasAcknowledged])
   {
-    v18 = [v3 acknowledged];
-    v19 = [SiriNLUSELFLogUtils convertAcknowledged:v18];
+    acknowledged = [actCopy acknowledged];
+    v19 = [SiriNLUSELFLogUtils convertAcknowledged:acknowledged];
     [v4 setAcknowledged:v19];
 
-    v10 = [v3 acknowledged];
-    v11 = [SiriNLUSELFLogUtils getReferenceFromAcknowledged:v10];
+    accepted2 = [actCopy acknowledged];
+    v11 = [SiriNLUSELFLogUtils getReferenceFromAcknowledged:accepted2];
     goto LABEL_17;
   }
 
-  if ([v3 hasWantedToProceed])
+  if ([actCopy hasWantedToProceed])
   {
-    v20 = [v3 wantedToProceed];
-    v21 = [SiriNLUSELFLogUtils convertWantedToProceed:v20];
+    wantedToProceed = [actCopy wantedToProceed];
+    v21 = [SiriNLUSELFLogUtils convertWantedToProceed:wantedToProceed];
     [v4 setWantedToProceed:v21];
 
-    v10 = [v3 wantedToProceed];
-    v11 = [SiriNLUSELFLogUtils getReferenceFromWantedToProceed:v10];
+    accepted2 = [actCopy wantedToProceed];
+    v11 = [SiriNLUSELFLogUtils getReferenceFromWantedToProceed:accepted2];
     goto LABEL_17;
   }
 
-  if ([v3 hasWantedToPause])
+  if ([actCopy hasWantedToPause])
   {
-    v22 = [v3 wantedToPause];
-    v23 = [SiriNLUSELFLogUtils convertWantedToPause:v22];
+    wantedToPause = [actCopy wantedToPause];
+    v23 = [SiriNLUSELFLogUtils convertWantedToPause:wantedToPause];
     [v4 setWantedToPause:v23];
 
-    v10 = [v3 wantedToPause];
-    v11 = [SiriNLUSELFLogUtils getReferenceFromWantedToPause:v10];
+    accepted2 = [actCopy wantedToPause];
+    v11 = [SiriNLUSELFLogUtils getReferenceFromWantedToPause:accepted2];
     goto LABEL_17;
   }
 
-  if ([v3 hasWantedToUndo])
+  if ([actCopy hasWantedToUndo])
   {
-    v32 = [v3 wantedToUndo];
-    v33 = [SiriNLUSELFLogUtils convertWantedToUndo:v32];
+    wantedToUndo = [actCopy wantedToUndo];
+    v33 = [SiriNLUSELFLogUtils convertWantedToUndo:wantedToUndo];
     [v4 setWantedToUndo:v33];
   }
 
-  else if ([v3 hasDelegated])
+  else if ([actCopy hasDelegated])
   {
-    v34 = [v3 delegated];
-    v35 = [SiriNLUSELFLogUtils convertDelegated:v34];
+    delegated = [actCopy delegated];
+    v35 = [SiriNLUSELFLogUtils convertDelegated:delegated];
 
     if (v35)
     {
-      v36 = [v35 mainItem];
-      [v4 setDelegated:v36];
+      mainItem = [v35 mainItem];
+      [v4 setDelegated:mainItem];
 
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v37 = [v35 tier1Events];
-      v38 = [v37 countByEnumeratingWithState:&v47 objects:v52 count:16];
+      tier1Events = [v35 tier1Events];
+      v38 = [tier1Events countByEnumeratingWithState:&v47 objects:v52 count:16];
       if (v38)
       {
         v39 = *v48;
@@ -1757,13 +1757,13 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
           {
             if (*v48 != v39)
             {
-              objc_enumerationMutation(v37);
+              objc_enumerationMutation(tier1Events);
             }
 
             [(SiriInstrumentationObjectContainer *)v7 addTier1Event:*(*(&v47 + 1) + 8 * i)];
           }
 
-          v38 = [v37 countByEnumeratingWithState:&v47 objects:v52 count:16];
+          v38 = [tier1Events countByEnumeratingWithState:&v47 objects:v52 count:16];
         }
 
         while (v38);
@@ -1771,28 +1771,28 @@ void __44__SiriNLUSELFLogUtils_getErrorDomainMapping__block_invoke()
     }
   }
 
-  else if ([v3 hasUserStatedTask])
+  else if ([actCopy hasUserStatedTask])
   {
-    v41 = [v3 userStatedTask];
-    v42 = [SiriNLUSELFLogUtils convertUserStatedTask:v41];
+    userStatedTask = [actCopy userStatedTask];
+    v42 = [SiriNLUSELFLogUtils convertUserStatedTask:userStatedTask];
     [v4 setUserStatedTask:v42];
 
-    v10 = [v3 userStatedTask];
-    v11 = [SiriNLUSELFLogUtils getTaskFromUserStatedTask:v10];
+    accepted2 = [actCopy userStatedTask];
+    v11 = [SiriNLUSELFLogUtils getTaskFromUserStatedTask:accepted2];
 LABEL_17:
     v24 = v11;
 
     if (v24)
     {
-      v25 = [v24 mainItem];
-      [v4 setReference:v25];
+      mainItem2 = [v24 mainItem];
+      [v4 setReference:mainItem2];
 
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v26 = [v24 tier1Events];
-      v27 = [v26 countByEnumeratingWithState:&v43 objects:v51 count:16];
+      tier1Events2 = [v24 tier1Events];
+      v27 = [tier1Events2 countByEnumeratingWithState:&v43 objects:v51 count:16];
       if (v27)
       {
         v28 = *v44;
@@ -1802,13 +1802,13 @@ LABEL_17:
           {
             if (*v44 != v28)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(tier1Events2);
             }
 
             [(SiriInstrumentationObjectContainer *)v7 addTier1Event:*(*(&v43 + 1) + 8 * j)];
           }
 
-          v27 = [v26 countByEnumeratingWithState:&v43 objects:v51 count:16];
+          v27 = [tier1Events2 countByEnumeratingWithState:&v43 objects:v51 count:16];
         }
 
         while (v27);
@@ -1828,14 +1828,14 @@ LABEL_27:
   return v7;
 }
 
-+ (id)convertParser:(id)a3
++ (id)convertParser:(id)parser
 {
-  v3 = a3;
-  if (v3)
+  parserCopy = parser;
+  if (parserCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF128]);
-    [v4 setAlgorithm:{+[SiriNLUSELFLogUtils convertCDMParserAlgorithmType:](SiriNLUSELFLogUtils, "convertCDMParserAlgorithmType:", objc_msgSend(v3, "algorithm"))}];
-    [v4 setParserId:{objc_msgSend(v3, "parserId")}];
+    [v4 setAlgorithm:{+[SiriNLUSELFLogUtils convertCDMParserAlgorithmType:](SiriNLUSELFLogUtils, "convertCDMParserAlgorithmType:", objc_msgSend(parserCopy, "algorithm"))}];
+    [v4 setParserId:{objc_msgSend(parserCopy, "parserId")}];
   }
 
   else
@@ -1846,14 +1846,14 @@ LABEL_27:
   return v4;
 }
 
-+ (id)convertRepetitionResult:(id)a3
++ (id)convertRepetitionResult:(id)result
 {
-  v3 = a3;
-  if (v3)
+  resultCopy = result;
+  if (resultCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF138]);
-    [v4 setAsrHypothesisIndex:{objc_msgSend(v3, "asrHypothesisIndex")}];
-    [v4 setRepetitionType:{+[SiriNLUSELFLogUtils convertCDMRepetitionType:](SiriNLUSELFLogUtils, "convertCDMRepetitionType:", objc_msgSend(v3, "repetitionType"))}];
+    [v4 setAsrHypothesisIndex:{objc_msgSend(resultCopy, "asrHypothesisIndex")}];
+    [v4 setRepetitionType:{+[SiriNLUSELFLogUtils convertCDMRepetitionType:](SiriNLUSELFLogUtils, "convertCDMRepetitionType:", objc_msgSend(resultCopy, "repetitionType"))}];
   }
 
   else
@@ -1864,13 +1864,13 @@ LABEL_27:
   return v4;
 }
 
-+ (id)convertCorrectionOutcome:(id)a3
++ (id)convertCorrectionOutcome:(id)outcome
 {
-  v3 = a3;
-  if (v3)
+  outcomeCopy = outcome;
+  if (outcomeCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF0D0]);
-    [v4 setCorrectionType:{+[SiriNLUSELFLogUtils convertCDMCorrectionType:](SiriNLUSELFLogUtils, "convertCDMCorrectionType:", objc_msgSend(v3, "type"))}];
+    [v4 setCorrectionType:{+[SiriNLUSELFLogUtils convertCDMCorrectionType:](SiriNLUSELFLogUtils, "convertCDMCorrectionType:", objc_msgSend(outcomeCopy, "type"))}];
   }
 
   else
@@ -1881,14 +1881,14 @@ LABEL_27:
   return v4;
 }
 
-+ (id)convertUserParse:(id)a3
++ (id)convertUserParse:(id)parse
 {
   v37 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  if (v25)
+  parseCopy = parse;
+  if (parseCopy)
   {
     v26 = objc_alloc_init(MEMORY[0x1E69CF230]);
-    v3 = [v25 idA];
+    v3 = [parseCopy idA];
     v4 = [SiriNLUSELFLogUtils convertUUID:v3];
     [v26 setId:v4];
 
@@ -1897,8 +1897,8 @@ LABEL_27:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = [v25 userDialogActs];
-    v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    userDialogActs = [parseCopy userDialogActs];
+    v7 = [userDialogActs countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v7)
     {
       v8 = *v32;
@@ -1908,22 +1908,22 @@ LABEL_27:
         {
           if (*v32 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(userDialogActs);
           }
 
-          v10 = [SiriNLUSELFLogUtils convertUserDialogAct:*(*(&v31 + 1) + 8 * i), v25];
-          v11 = v10;
-          if (v10)
+          parseCopy = [SiriNLUSELFLogUtils convertUserDialogAct:*(*(&v31 + 1) + 8 * i), parseCopy];
+          v11 = parseCopy;
+          if (parseCopy)
           {
-            v12 = [v10 mainItem];
-            [v26 addUserDialogActs:v12];
+            mainItem = [parseCopy mainItem];
+            [v26 addUserDialogActs:mainItem];
 
             v29 = 0u;
             v30 = 0u;
             v27 = 0u;
             v28 = 0u;
-            v13 = [v11 tier1Events];
-            v14 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            tier1Events = [v11 tier1Events];
+            v14 = [tier1Events countByEnumeratingWithState:&v27 objects:v35 count:16];
             if (v14)
             {
               v15 = *v28;
@@ -1933,13 +1933,13 @@ LABEL_27:
                 {
                   if (*v28 != v15)
                   {
-                    objc_enumerationMutation(v13);
+                    objc_enumerationMutation(tier1Events);
                   }
 
                   [(SiriInstrumentationObjectContainer *)v5 addTier1Event:*(*(&v27 + 1) + 8 * j)];
                 }
 
-                v14 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+                v14 = [tier1Events countByEnumeratingWithState:&v27 objects:v35 count:16];
               }
 
               while (v14);
@@ -1947,26 +1947,26 @@ LABEL_27:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v7 = [userDialogActs countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v7);
     }
 
-    [v25 probability];
+    [parseCopy probability];
     [v26 setProbability:?];
-    v17 = [v25 repetitionResult];
-    v18 = [SiriNLUSELFLogUtils convertRepetitionResult:v17];
+    repetitionResult = [parseCopy repetitionResult];
+    v18 = [SiriNLUSELFLogUtils convertRepetitionResult:repetitionResult];
     [v26 setRepetitionResult:v18];
 
-    v19 = [v25 parser];
-    v20 = [SiriNLUSELFLogUtils convertParser:v19];
+    parser = [parseCopy parser];
+    v20 = [SiriNLUSELFLogUtils convertParser:parser];
     [v26 setParser:v20];
 
-    [v25 comparableProbability];
+    [parseCopy comparableProbability];
     [v26 setComparableProbability:?];
-    v21 = [v25 correctionOutcome];
-    v22 = [SiriNLUSELFLogUtils convertCorrectionOutcome:v21];
+    correctionOutcome = [parseCopy correctionOutcome];
+    v22 = [SiriNLUSELFLogUtils convertCorrectionOutcome:correctionOutcome];
     [v26 setCorrectionOutcome:v22];
 
     [(SiriInstrumentationObjectContainer *)v5 setMainItem:v26];
@@ -1982,32 +1982,32 @@ LABEL_27:
   return v5;
 }
 
-+ (id)convertReportedFailure:(id)a3
++ (id)convertReportedFailure:(id)failure
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  failureCopy = failure;
+  if (failureCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF1D0]);
-    v5 = [v3 taskId];
-    v6 = [SiriNLUSELFLogUtils convertUUID:v5];
+    taskId = [failureCopy taskId];
+    v6 = [SiriNLUSELFLogUtils convertUUID:taskId];
     [v4 setTaskId:v6];
 
     v7 = objc_alloc_init(SiriInstrumentationObjectContainer);
-    v8 = [v3 reason];
-    v9 = [SiriNLUSELFLogUtils convertUsoGraph:v8];
+    reason = [failureCopy reason];
+    v9 = [SiriNLUSELFLogUtils convertUsoGraph:reason];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setReason:v10];
+      mainItem = [v9 mainItem];
+      [v4 setReason:mainItem];
 
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v11 = [v9 tier1Events];
-      v12 = [v11 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      tier1Events = [v9 tier1Events];
+      v12 = [tier1Events countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v12)
       {
         v13 = *v29;
@@ -2017,33 +2017,33 @@ LABEL_27:
           {
             if (*v29 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(tier1Events);
             }
 
             [(SiriInstrumentationObjectContainer *)v7 addTier1Event:*(*(&v28 + 1) + 8 * i)];
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v28 objects:v33 count:16];
+          v12 = [tier1Events countByEnumeratingWithState:&v28 objects:v33 count:16];
         }
 
         while (v12);
       }
     }
 
-    v15 = [v3 task];
-    v16 = [SiriNLUSELFLogUtils convertUsoGraph:v15];
+    task = [failureCopy task];
+    v16 = [SiriNLUSELFLogUtils convertUsoGraph:task];
 
     if (v16)
     {
-      v17 = [v16 mainItem];
-      [v4 setTask:v17];
+      mainItem2 = [v16 mainItem];
+      [v4 setTask:mainItem2];
 
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v18 = [v16 tier1Events];
-      v19 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      tier1Events2 = [v16 tier1Events];
+      v19 = [tier1Events2 countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v19)
       {
         v20 = *v25;
@@ -2053,13 +2053,13 @@ LABEL_27:
           {
             if (*v25 != v20)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(tier1Events2);
             }
 
             [(SiriInstrumentationObjectContainer *)v7 addTier1Event:*(*(&v24 + 1) + 8 * j)];
           }
 
-          v19 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          v19 = [tier1Events2 countByEnumeratingWithState:&v24 objects:v32 count:16];
         }
 
         while (v19);
@@ -2079,32 +2079,32 @@ LABEL_27:
   return v7;
 }
 
-+ (id)convertReportedSuccess:(id)a3
++ (id)convertReportedSuccess:(id)success
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  successCopy = success;
+  if (successCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF1D8]);
-    v5 = [v3 taskId];
-    v6 = [SiriNLUSELFLogUtils convertUUID:v5];
+    taskId = [successCopy taskId];
+    v6 = [SiriNLUSELFLogUtils convertUUID:taskId];
     [v4 setTaskId:v6];
 
     v7 = objc_alloc_init(SiriInstrumentationObjectContainer);
-    v8 = [v3 task];
-    v9 = [SiriNLUSELFLogUtils convertUsoGraph:v8];
+    task = [successCopy task];
+    v9 = [SiriNLUSELFLogUtils convertUsoGraph:task];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setTask:v10];
+      mainItem = [v9 mainItem];
+      [v4 setTask:mainItem];
 
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v11 = [v9 tier1Events];
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      tier1Events = [v9 tier1Events];
+      v12 = [tier1Events countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         v13 = *v18;
@@ -2114,13 +2114,13 @@ LABEL_27:
           {
             if (*v18 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(tier1Events);
             }
 
             [(SiriInstrumentationObjectContainer *)v7 addTier1Event:*(*(&v17 + 1) + 8 * i)];
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v12 = [tier1Events countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v12);
@@ -2140,15 +2140,15 @@ LABEL_27:
   return v7;
 }
 
-+ (id)convertInformed:(id)a3
++ (id)convertInformed:(id)informed
 {
   v33 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  if (v21)
+  informedCopy = informed;
+  if (informedCopy)
   {
     v22 = objc_alloc_init(MEMORY[0x1E69CF1B8]);
-    v3 = [v21 taskId];
-    v4 = [SiriNLUSELFLogUtils convertUUID:v3];
+    taskId = [informedCopy taskId];
+    v4 = [SiriNLUSELFLogUtils convertUUID:taskId];
     [v22 setTaskId:v4];
 
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2156,9 +2156,9 @@ LABEL_27:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v6 = [v21 entities];
-    v7 = v6;
-    v8 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    entities = [informedCopy entities];
+    v7 = entities;
+    v8 = [entities countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v8)
     {
       v9 = *v28;
@@ -2171,19 +2171,19 @@ LABEL_27:
             objc_enumerationMutation(v7);
           }
 
-          v11 = [SiriNLUSELFLogUtils convertUsoGraph:*(*(&v27 + 1) + 8 * i), v21];
-          v12 = v11;
-          if (v11)
+          informedCopy = [SiriNLUSELFLogUtils convertUsoGraph:*(*(&v27 + 1) + 8 * i), informedCopy];
+          v12 = informedCopy;
+          if (informedCopy)
           {
-            v13 = [v11 mainItem];
-            [v22 addEntities:v13];
+            mainItem = [informedCopy mainItem];
+            [v22 addEntities:mainItem];
 
             v25 = 0u;
             v26 = 0u;
             v23 = 0u;
             v24 = 0u;
-            v14 = [v12 tier1Events];
-            v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            tier1Events = [v12 tier1Events];
+            v15 = [tier1Events countByEnumeratingWithState:&v23 objects:v31 count:16];
             if (v15)
             {
               v16 = *v24;
@@ -2193,13 +2193,13 @@ LABEL_27:
                 {
                   if (*v24 != v16)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(tier1Events);
                   }
 
                   [v5 addObject:*(*(&v23 + 1) + 8 * j)];
                 }
 
-                v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+                v15 = [tier1Events countByEnumeratingWithState:&v23 objects:v31 count:16];
               }
 
               while (v15);
@@ -2207,7 +2207,7 @@ LABEL_27:
           }
         }
 
-        v6 = v7;
+        entities = v7;
         v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
@@ -2229,11 +2229,11 @@ LABEL_27:
   return v18;
 }
 
-+ (id)convertGaveOptions:(id)a3
++ (id)convertGaveOptions:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (v17)
+  optionsCopy = options;
+  if (optionsCopy)
   {
     v19 = objc_alloc_init(MEMORY[0x1E69CF1B0]);
     v3 = objc_alloc_init(SiriInstrumentationObjectContainer);
@@ -2241,9 +2241,9 @@ LABEL_27:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = [v17 choices];
-    obj = v4;
-    v5 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    choices = [optionsCopy choices];
+    obj = choices;
+    v5 = [choices countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v5)
     {
       v6 = *v25;
@@ -2260,15 +2260,15 @@ LABEL_27:
           v9 = v8;
           if (v8)
           {
-            v10 = [v8 mainItem];
-            [v19 addChoices:v10];
+            mainItem = [v8 mainItem];
+            [v19 addChoices:mainItem];
 
             v22 = 0u;
             v23 = 0u;
             v20 = 0u;
             v21 = 0u;
-            v11 = [v9 tier1Events];
-            v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            tier1Events = [v9 tier1Events];
+            v12 = [tier1Events countByEnumeratingWithState:&v20 objects:v28 count:16];
             if (v12)
             {
               v13 = *v21;
@@ -2278,13 +2278,13 @@ LABEL_27:
                 {
                   if (*v21 != v13)
                   {
-                    objc_enumerationMutation(v11);
+                    objc_enumerationMutation(tier1Events);
                   }
 
                   [(SiriInstrumentationObjectContainer *)v3 addTier1Event:*(*(&v20 + 1) + 8 * j)];
                 }
 
-                v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+                v12 = [tier1Events countByEnumeratingWithState:&v20 objects:v28 count:16];
               }
 
               while (v12);
@@ -2292,7 +2292,7 @@ LABEL_27:
           }
         }
 
-        v4 = obj;
+        choices = obj;
         v5 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
@@ -2312,28 +2312,28 @@ LABEL_27:
   return v3;
 }
 
-+ (id)convertOffered:(id)a3
++ (id)convertOffered:(id)offered
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  offeredCopy = offered;
+  if (offeredCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF1C0]);
     v5 = objc_alloc_init(SiriInstrumentationObjectContainer);
-    v6 = [v3 offeredAct];
-    v7 = [SiriNLUSELFLogUtils convertUserDialogAct:v6];
+    offeredAct = [offeredCopy offeredAct];
+    v7 = [SiriNLUSELFLogUtils convertUserDialogAct:offeredAct];
 
     if (v7)
     {
-      v8 = [v7 mainItem];
-      [v4 setOfferedAct:v8];
+      mainItem = [v7 mainItem];
+      [v4 setOfferedAct:mainItem];
 
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v9 = [v7 tier1Events];
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      tier1Events = [v7 tier1Events];
+      v10 = [tier1Events countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
         v11 = *v16;
@@ -2343,13 +2343,13 @@ LABEL_27:
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(tier1Events);
             }
 
             [(SiriInstrumentationObjectContainer *)v5 addTier1Event:*(*(&v15 + 1) + 8 * i)];
           }
 
-          v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [tier1Events countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v10);
@@ -2369,32 +2369,32 @@ LABEL_27:
   return v5;
 }
 
-+ (id)convertPrompted:(id)a3
++ (id)convertPrompted:(id)prompted
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  promptedCopy = prompted;
+  if (promptedCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF1C8]);
-    v5 = [v3 taskId];
-    v6 = [SiriNLUSELFLogUtils convertUUID:v5];
+    taskId = [promptedCopy taskId];
+    v6 = [SiriNLUSELFLogUtils convertUUID:taskId];
     [v4 setTaskId:v6];
 
     v7 = objc_alloc_init(SiriInstrumentationObjectContainer);
-    v8 = [v3 target];
-    v9 = [SiriNLUSELFLogUtils convertUsoGraph:v8];
+    target = [promptedCopy target];
+    v9 = [SiriNLUSELFLogUtils convertUsoGraph:target];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setTarget:v10];
+      mainItem = [v9 mainItem];
+      [v4 setTarget:mainItem];
 
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v11 = [v9 tier1Events];
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      tier1Events = [v9 tier1Events];
+      v12 = [tier1Events countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         v13 = *v18;
@@ -2404,13 +2404,13 @@ LABEL_27:
           {
             if (*v18 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(tier1Events);
             }
 
             [(SiriInstrumentationObjectContainer *)v7 addTier1Event:*(*(&v17 + 1) + 8 * i)];
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v12 = [tier1Events countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v12);
@@ -2430,11 +2430,11 @@ LABEL_27:
   return v7;
 }
 
-+ (id)convertSystemDialogAct:(id)a3
++ (id)convertSystemDialogAct:(id)act
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  actCopy = act;
+  if (!actCopy)
   {
     v5 = 0;
     goto LABEL_32;
@@ -2442,27 +2442,27 @@ LABEL_27:
 
   v4 = objc_alloc_init(MEMORY[0x1E69CF1A0]);
   v5 = objc_alloc_init(SiriInstrumentationObjectContainer);
-  v6 = [v3 idA];
+  v6 = [actCopy idA];
   v7 = [SiriNLUSELFLogUtils convertUUID:v6];
   [v4 setId:v7];
 
-  if ([v3 hasPrompted])
+  if ([actCopy hasPrompted])
   {
-    v8 = [v3 prompted];
-    v9 = [SiriNLUSELFLogUtils convertPrompted:v8];
+    prompted = [actCopy prompted];
+    v9 = [SiriNLUSELFLogUtils convertPrompted:prompted];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setPrompted:v10];
+      mainItem = [v9 mainItem];
+      [v4 setPrompted:mainItem];
 LABEL_21:
 
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v16 = [v9 tier1Events];
-      v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      tier1Events = [v9 tier1Events];
+      v17 = [tier1Events countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v17)
       {
         v18 = *v27;
@@ -2472,13 +2472,13 @@ LABEL_21:
           {
             if (*v27 != v18)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(tier1Events);
             }
 
             [(SiriInstrumentationObjectContainer *)v5 addTier1Event:*(*(&v26 + 1) + 8 * i)];
           }
 
-          v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v17 = [tier1Events countByEnumeratingWithState:&v26 objects:v30 count:16];
         }
 
         while (v17);
@@ -2486,67 +2486,67 @@ LABEL_21:
     }
   }
 
-  else if ([v3 hasOffered])
+  else if ([actCopy hasOffered])
   {
-    v11 = [v3 offered];
-    v9 = [SiriNLUSELFLogUtils convertOffered:v11];
+    offered = [actCopy offered];
+    v9 = [SiriNLUSELFLogUtils convertOffered:offered];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setOffered:v10];
+      mainItem = [v9 mainItem];
+      [v4 setOffered:mainItem];
       goto LABEL_21;
     }
   }
 
-  else if ([v3 hasGaveOptions])
+  else if ([actCopy hasGaveOptions])
   {
-    v12 = [v3 gaveOptions];
-    v9 = [SiriNLUSELFLogUtils convertGaveOptions:v12];
+    gaveOptions = [actCopy gaveOptions];
+    v9 = [SiriNLUSELFLogUtils convertGaveOptions:gaveOptions];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setGaveOptions:v10];
+      mainItem = [v9 mainItem];
+      [v4 setGaveOptions:mainItem];
       goto LABEL_21;
     }
   }
 
-  else if ([v3 hasInformed])
+  else if ([actCopy hasInformed])
   {
-    v13 = [v3 informed];
-    v9 = [SiriNLUSELFLogUtils convertInformed:v13];
+    informed = [actCopy informed];
+    v9 = [SiriNLUSELFLogUtils convertInformed:informed];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setInformed:v10];
+      mainItem = [v9 mainItem];
+      [v4 setInformed:mainItem];
       goto LABEL_21;
     }
   }
 
-  else if ([v3 hasReportedSuccess])
+  else if ([actCopy hasReportedSuccess])
   {
-    v14 = [v3 reportedSuccess];
-    v9 = [SiriNLUSELFLogUtils convertReportedSuccess:v14];
+    reportedSuccess = [actCopy reportedSuccess];
+    v9 = [SiriNLUSELFLogUtils convertReportedSuccess:reportedSuccess];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setReportedSuccess:v10];
+      mainItem = [v9 mainItem];
+      [v4 setReportedSuccess:mainItem];
       goto LABEL_21;
     }
   }
 
-  else if ([v3 hasReportedFailure])
+  else if ([actCopy hasReportedFailure])
   {
-    v15 = [v3 reportedFailure];
-    v9 = [SiriNLUSELFLogUtils convertReportedFailure:v15];
+    reportedFailure = [actCopy reportedFailure];
+    v9 = [SiriNLUSELFLogUtils convertReportedFailure:reportedFailure];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setReportedFailure:v10];
+      mainItem = [v9 mainItem];
+      [v4 setReportedFailure:mainItem];
       goto LABEL_21;
     }
   }
@@ -2556,14 +2556,14 @@ LABEL_21:
     v9 = 0;
   }
 
-  if ([v3 hasRenderedText])
+  if ([actCopy hasRenderedText])
   {
     v20 = objc_alloc(MEMORY[0x1E69CF640]);
     v21 = objc_alloc_init(MEMORY[0x1E696AFB0]);
     v22 = [v20 initWithNSUUID:v21];
 
     [v4 setLinkId:v22];
-    v23 = [SiriNLUSELFLogUtils createSystemDialogActTier1Event:v3 withLinkId:v22];
+    v23 = [SiriNLUSELFLogUtils createSystemDialogActTier1Event:actCopy withLinkId:v22];
     [(SiriInstrumentationObjectContainer *)v5 addTier1Event:v23];
   }
 
@@ -2575,19 +2575,19 @@ LABEL_32:
   return v5;
 }
 
-+ (id)convertLegacyNLContext:(id)a3
++ (id)convertLegacyNLContext:(id)context
 {
-  v3 = a3;
-  if (v3)
+  contextCopy = context;
+  if (contextCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF2B8]);
-    [v4 setIsDictationPrompt:{objc_msgSend(v3, "dictationPrompt")}];
-    [v4 setIsStrictPrompt:{objc_msgSend(v3, "strictPrompt")}];
-    v5 = [v3 previousDomainName];
-    [v4 setPreviousDomainName:v5];
+    [v4 setIsDictationPrompt:{objc_msgSend(contextCopy, "dictationPrompt")}];
+    [v4 setIsStrictPrompt:{objc_msgSend(contextCopy, "strictPrompt")}];
+    previousDomainName = [contextCopy previousDomainName];
+    [v4 setPreviousDomainName:previousDomainName];
 
-    [v4 setIsListenAfterSpeaking:{objc_msgSend(v3, "listenAfterSpeaking")}];
-    [v4 setLegacyContextSource:{+[SiriNLUSELFLogUtils convertLegacyContextSource:](SiriNLUSELFLogUtils, "convertLegacyContextSource:", objc_msgSend(v3, "legacyContextSource"))}];
+    [v4 setIsListenAfterSpeaking:{objc_msgSend(contextCopy, "listenAfterSpeaking")}];
+    [v4 setLegacyContextSource:{+[SiriNLUSELFLogUtils convertLegacyContextSource:](SiriNLUSELFLogUtils, "convertLegacyContextSource:", objc_msgSend(contextCopy, "legacyContextSource"))}];
     v6 = objc_alloc(MEMORY[0x1E69CF640]);
     v7 = objc_alloc_init(MEMORY[0x1E696AFB0]);
     v8 = [v6 initWithNSUUID:v7];
@@ -2595,7 +2595,7 @@ LABEL_32:
     [v4 setLinkId:v8];
     v9 = objc_alloc_init(SiriInstrumentationObjectContainer);
     [(SiriInstrumentationObjectContainer *)v9 setMainItem:v4];
-    v10 = [SiriNLUSELFLogUtils createNLXLegacyNLContextTier1Event:v3 withLinkId:v8];
+    v10 = [SiriNLUSELFLogUtils createNLXLegacyNLContextTier1Event:contextCopy withLinkId:v8];
     [(SiriInstrumentationObjectContainer *)v9 addTier1Event:v10];
   }
 
@@ -2607,32 +2607,32 @@ LABEL_32:
   return v9;
 }
 
-+ (id)convertTask:(id)a3
++ (id)convertTask:(id)task
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  taskCopy = task;
+  if (taskCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF1E0]);
-    v5 = [v3 taskId];
-    v6 = [SiriNLUSELFLogUtils convertUUID:v5];
+    taskId = [taskCopy taskId];
+    v6 = [SiriNLUSELFLogUtils convertUUID:taskId];
     [v4 setTaskId:v6];
 
     v7 = objc_alloc_init(SiriInstrumentationObjectContainer);
-    v8 = [v3 task];
-    v9 = [SiriNLUSELFLogUtils convertUsoGraph:v8];
+    task = [taskCopy task];
+    v9 = [SiriNLUSELFLogUtils convertUsoGraph:task];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setTask:v10];
+      mainItem = [v9 mainItem];
+      [v4 setTask:mainItem];
 
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v11 = [v9 tier1Events];
-      v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      tier1Events = [v9 tier1Events];
+      v12 = [tier1Events countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v12)
       {
         v13 = *v19;
@@ -2642,23 +2642,23 @@ LABEL_32:
           {
             if (*v19 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(tier1Events);
             }
 
             [(SiriInstrumentationObjectContainer *)v7 addTier1Event:*(*(&v18 + 1) + 8 * i)];
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v12 = [tier1Events countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v12);
       }
     }
 
-    if ([v3 hasScore])
+    if ([taskCopy hasScore])
     {
-      v15 = [v3 score];
-      [v15 value];
+      score = [taskCopy score];
+      [score value];
       [v4 setScore:?];
     }
 
@@ -2675,14 +2675,14 @@ LABEL_32:
   return v7;
 }
 
-+ (id)convertNLContext:(id)a3
++ (id)convertNLContext:(id)context
 {
   v75 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  contextCopy = context;
+  v4 = contextCopy;
+  if (contextCopy)
   {
-    v40 = v3;
+    v40 = contextCopy;
     v5 = objc_alloc_init(SiriInstrumentationObjectContainer);
     v44 = objc_alloc_init(MEMORY[0x1E69CF120]);
     v67 = 0u;
@@ -2707,15 +2707,15 @@ LABEL_32:
           v10 = v9;
           if (v9)
           {
-            v11 = [v9 mainItem];
-            [v44 addActiveTasks:v11];
+            mainItem = [v9 mainItem];
+            [v44 addActiveTasks:mainItem];
 
             v63 = 0u;
             v64 = 0u;
             v61 = 0u;
             v62 = 0u;
-            v12 = [v10 tier1Events];
-            v13 = [v12 countByEnumeratingWithState:&v61 objects:v73 count:16];
+            tier1Events = [v10 tier1Events];
+            v13 = [tier1Events countByEnumeratingWithState:&v61 objects:v73 count:16];
             if (v13)
             {
               v14 = *v62;
@@ -2725,13 +2725,13 @@ LABEL_32:
                 {
                   if (*v62 != v14)
                   {
-                    objc_enumerationMutation(v12);
+                    objc_enumerationMutation(tier1Events);
                   }
 
                   [(SiriInstrumentationObjectContainer *)v5 addTier1Event:*(*(&v61 + 1) + 8 * j)];
                 }
 
-                v13 = [v12 countByEnumeratingWithState:&v61 objects:v73 count:16];
+                v13 = [tier1Events countByEnumeratingWithState:&v61 objects:v73 count:16];
               }
 
               while (v13);
@@ -2749,9 +2749,9 @@ LABEL_32:
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v16 = [v40 executedTasks];
-    obja = v16;
-    v17 = [v16 countByEnumeratingWithState:&v57 objects:v72 count:16];
+    executedTasks = [v40 executedTasks];
+    obja = executedTasks;
+    v17 = [executedTasks countByEnumeratingWithState:&v57 objects:v72 count:16];
     if (v17)
     {
       v18 = *v58;
@@ -2768,15 +2768,15 @@ LABEL_32:
           v21 = v20;
           if (v20)
           {
-            v22 = [v20 mainItem];
-            [v44 addExecutedTasks:v22];
+            mainItem2 = [v20 mainItem];
+            [v44 addExecutedTasks:mainItem2];
 
             v55 = 0u;
             v56 = 0u;
             v53 = 0u;
             v54 = 0u;
-            v23 = [v21 tier1Events];
-            v24 = [v23 countByEnumeratingWithState:&v53 objects:v71 count:16];
+            tier1Events2 = [v21 tier1Events];
+            v24 = [tier1Events2 countByEnumeratingWithState:&v53 objects:v71 count:16];
             if (v24)
             {
               v25 = *v54;
@@ -2786,13 +2786,13 @@ LABEL_32:
                 {
                   if (*v54 != v25)
                   {
-                    objc_enumerationMutation(v23);
+                    objc_enumerationMutation(tier1Events2);
                   }
 
                   [(SiriInstrumentationObjectContainer *)v5 addTier1Event:*(*(&v53 + 1) + 8 * m)];
                 }
 
-                v24 = [v23 countByEnumeratingWithState:&v53 objects:v71 count:16];
+                v24 = [tier1Events2 countByEnumeratingWithState:&v53 objects:v71 count:16];
               }
 
               while (v24);
@@ -2800,7 +2800,7 @@ LABEL_32:
           }
         }
 
-        v16 = obja;
+        executedTasks = obja;
         v17 = [obja countByEnumeratingWithState:&v57 objects:v72 count:16];
       }
 
@@ -2811,9 +2811,9 @@ LABEL_32:
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v27 = [v40 systemDialogActs];
-    objb = v27;
-    v28 = [v27 countByEnumeratingWithState:&v49 objects:v70 count:16];
+    systemDialogActs = [v40 systemDialogActs];
+    objb = systemDialogActs;
+    v28 = [systemDialogActs countByEnumeratingWithState:&v49 objects:v70 count:16];
     if (v28)
     {
       v29 = *v50;
@@ -2830,15 +2830,15 @@ LABEL_32:
           v32 = v31;
           if (v31)
           {
-            v33 = [v31 mainItem];
-            [v44 addSystemDialogActs:v33];
+            mainItem3 = [v31 mainItem];
+            [v44 addSystemDialogActs:mainItem3];
 
             v47 = 0u;
             v48 = 0u;
             v45 = 0u;
             v46 = 0u;
-            v34 = [v32 tier1Events];
-            v35 = [v34 countByEnumeratingWithState:&v45 objects:v69 count:16];
+            tier1Events3 = [v32 tier1Events];
+            v35 = [tier1Events3 countByEnumeratingWithState:&v45 objects:v69 count:16];
             if (v35)
             {
               v36 = *v46;
@@ -2848,13 +2848,13 @@ LABEL_32:
                 {
                   if (*v46 != v36)
                   {
-                    objc_enumerationMutation(v34);
+                    objc_enumerationMutation(tier1Events3);
                   }
 
                   [(SiriInstrumentationObjectContainer *)v5 addTier1Event:*(*(&v45 + 1) + 8 * ii)];
                 }
 
-                v35 = [v34 countByEnumeratingWithState:&v45 objects:v69 count:16];
+                v35 = [tier1Events3 countByEnumeratingWithState:&v45 objects:v69 count:16];
               }
 
               while (v35);
@@ -2862,7 +2862,7 @@ LABEL_32:
           }
         }
 
-        v27 = objb;
+        systemDialogActs = objb;
         v28 = [objb countByEnumeratingWithState:&v49 objects:v70 count:16];
       }
 
@@ -2883,27 +2883,27 @@ LABEL_32:
   return v5;
 }
 
-+ (BOOL)isLegacyNlContextPresent:(id)a3
++ (BOOL)isLegacyNlContextPresent:(id)present
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  presentCopy = present;
+  v5 = presentCopy;
+  if (presentCopy)
   {
-    if (([v4 dictationPrompt] & 1) == 0 && (objc_msgSend(v5, "strictPrompt") & 1) == 0 && (objc_msgSend(v5, "listenAfterSpeaking") & 1) == 0)
+    if (([presentCopy dictationPrompt] & 1) == 0 && (objc_msgSend(v5, "strictPrompt") & 1) == 0 && (objc_msgSend(v5, "listenAfterSpeaking") & 1) == 0)
     {
-      v6 = [v5 hasPreviousDomainName];
-      if (v6 && ([v5 previousDomainName], v3 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v3, "isEqualToString:", &stru_1F487A568) & 1) == 0))
+      hasPreviousDomainName = [v5 hasPreviousDomainName];
+      if (hasPreviousDomainName && ([v5 previousDomainName], v3 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v3, "isEqualToString:", &stru_1F487A568) & 1) == 0))
       {
       }
 
       else
       {
-        v7 = [v5 renderedTextsCount];
-        if (v6)
+        renderedTextsCount = [v5 renderedTextsCount];
+        if (hasPreviousDomainName)
         {
         }
 
-        if (!v7)
+        if (!renderedTextsCount)
         {
           goto LABEL_10;
         }
@@ -2921,20 +2921,20 @@ LABEL_13:
   return v8;
 }
 
-+ (BOOL)isNlContextPresent:(id)a3
++ (BOOL)isNlContextPresent:(id)present
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && ([v3 activeTasksCount] || objc_msgSend(v4, "executedTasksCount") || objc_msgSend(v4, "systemDialogActsCount"));
+  presentCopy = present;
+  v4 = presentCopy;
+  v5 = presentCopy && ([presentCopy activeTasksCount] || objc_msgSend(v4, "executedTasksCount") || objc_msgSend(v4, "systemDialogActsCount"));
 
   return v5;
 }
 
-+ (id)convertTurnContext:(id)a3
++ (id)convertTurnContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v5 = 0;
     goto LABEL_21;
@@ -2942,26 +2942,26 @@ LABEL_13:
 
   v4 = objc_alloc_init(MEMORY[0x1E69CF200]);
   v5 = objc_alloc_init(SiriInstrumentationObjectContainer);
-  v6 = [v3 nlContext];
-  v7 = [SiriNLUSELFLogUtils isNlContextPresent:v6];
+  nlContext = [contextCopy nlContext];
+  v7 = [SiriNLUSELFLogUtils isNlContextPresent:nlContext];
 
   if (v7)
   {
-    v8 = [v3 nlContext];
-    v9 = [SiriNLUSELFLogUtils convertNLContext:v8];
+    nlContext2 = [contextCopy nlContext];
+    v9 = [SiriNLUSELFLogUtils convertNLContext:nlContext2];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setNlContext:v10];
+      mainItem = [v9 mainItem];
+      [v4 setNlContext:mainItem];
 LABEL_9:
     }
   }
 
   else
   {
-    v11 = [v3 legacyNlContext];
-    v12 = [SiriNLUSELFLogUtils isLegacyNlContextPresent:v11];
+    legacyNlContext = [contextCopy legacyNlContext];
+    v12 = [SiriNLUSELFLogUtils isLegacyNlContextPresent:legacyNlContext];
 
     if (!v12)
     {
@@ -2969,13 +2969,13 @@ LABEL_9:
       goto LABEL_11;
     }
 
-    v13 = [v3 legacyNlContext];
-    v9 = [SiriNLUSELFLogUtils convertLegacyNLContext:v13];
+    legacyNlContext2 = [contextCopy legacyNlContext];
+    v9 = [SiriNLUSELFLogUtils convertLegacyNLContext:legacyNlContext2];
 
     if (v9)
     {
-      v10 = [v9 mainItem];
-      [v4 setLegacyNlContext:v10];
+      mainItem = [v9 mainItem];
+      [v4 setLegacyNlContext:mainItem];
       goto LABEL_9;
     }
   }
@@ -2988,8 +2988,8 @@ LABEL_11:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = [v9 tier1Events];
-    v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    tier1Events = [v9 tier1Events];
+    v15 = [tier1Events countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v15)
     {
       v16 = *v21;
@@ -2999,13 +2999,13 @@ LABEL_11:
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(tier1Events);
           }
 
           [(SiriInstrumentationObjectContainer *)v5 addTier1Event:*(*(&v20 + 1) + 8 * i)];
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v15 = [tier1Events countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v15);
@@ -3018,19 +3018,19 @@ LABEL_21:
   return v5;
 }
 
-+ (id)convertTurnInput:(id)a3
++ (id)convertTurnInput:(id)input
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  inputCopy = input;
+  if (inputCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF208]);
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = [v3 asrOutputs];
-    v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    asrOutputs = [inputCopy asrOutputs];
+    v6 = [asrOutputs countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v6)
     {
       v7 = *v27;
@@ -3040,7 +3040,7 @@ LABEL_21:
         {
           if (*v27 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(asrOutputs);
           }
 
           v9 = *(*(&v26 + 1) + 8 * i);
@@ -3052,28 +3052,28 @@ LABEL_21:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v6 = [asrOutputs countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v6);
     }
 
-    [v4 setIsTapToEdit:{objc_msgSend(v3, "tapToEdit")}];
+    [v4 setIsTapToEdit:{objc_msgSend(inputCopy, "tapToEdit")}];
     v12 = objc_alloc_init(SiriInstrumentationObjectContainer);
-    v13 = [v3 turnContext];
-    v14 = [SiriNLUSELFLogUtils convertTurnContext:v13];
+    turnContext = [inputCopy turnContext];
+    v14 = [SiriNLUSELFLogUtils convertTurnContext:turnContext];
 
     if (v14)
     {
-      v15 = [v14 mainItem];
-      [v4 setTurnContext:v15];
+      mainItem = [v14 mainItem];
+      [v4 setTurnContext:mainItem];
 
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v16 = [v14 tier1Events];
-      v17 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      tier1Events = [v14 tier1Events];
+      v17 = [tier1Events countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v17)
       {
         v18 = *v23;
@@ -3083,13 +3083,13 @@ LABEL_21:
           {
             if (*v23 != v18)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(tier1Events);
             }
 
             [(SiriInstrumentationObjectContainer *)v12 addTier1Event:*(*(&v22 + 1) + 8 * j)];
           }
 
-          v17 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v17 = [tier1Events countByEnumeratingWithState:&v22 objects:v30 count:16];
         }
 
         while (v17);
@@ -3109,10 +3109,10 @@ LABEL_21:
   return v12;
 }
 
-+ (id)getObjCUsoGraphFromOntologyUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)a3 :ontology::UsoGraph
++ (id)getObjCUsoGraphFromOntologyUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)siri :ontology::UsoGraph
 {
-  v3 = *a3.var0;
-  if (*a3.var0)
+  v3 = *siri.var0;
+  if (*siri.var0)
   {
     v5 = &unk_1F4879278;
     v6 = 0u;
@@ -3123,34 +3123,34 @@ LABEL_21:
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    siri::ontology::UsoGraphProtoWriter::toProtobuf(v3, &v5, a3.var0);
+    siri::ontology::UsoGraphProtoWriter::toProtobuf(v3, &v5, siri.var0);
     operator new();
   }
 
   return 0;
 }
 
-+ (id)convertUsoEntitySpanTier1:(id)a3 index:(int64_t)a4
++ (id)convertUsoEntitySpanTier1:(id)tier1 index:(int64_t)index
 {
   v42 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  if (v31)
+  tier1Copy = tier1;
+  if (tier1Copy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69CF830]);
-    [v5 setIndex:a4];
-    if ([v31 hasOriginAppId])
+    [v5 setIndex:index];
+    if ([tier1Copy hasOriginAppId])
     {
-      v6 = [v31 originAppId];
-      v7 = [v6 value];
-      [v5 setOriginAppId:v7];
+      originAppId = [tier1Copy originAppId];
+      value = [originAppId value];
+      [v5 setOriginAppId:value];
     }
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v8 = [v31 properties];
-    v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    properties = [tier1Copy properties];
+    v9 = [properties countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v9)
     {
       v10 = *v37;
@@ -3160,7 +3160,7 @@ LABEL_21:
         {
           if (*v37 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(properties);
           }
 
           v12 = *(*(&v36 + 1) + 8 * i);
@@ -3170,28 +3170,28 @@ LABEL_21:
 
           if ([v12 hasValueString])
           {
-            v15 = [v12 valueString];
-            v16 = [v15 value];
-            [v13 setValueString:v16];
+            valueString = [v12 valueString];
+            value2 = [valueString value];
+            [v13 setValueString:value2];
           }
 
           if ([v12 hasValueInt])
           {
-            v17 = [v12 valueInt];
-            [v13 setValueInt:{objc_msgSend(v17, "value")}];
+            valueInt = [v12 valueInt];
+            [v13 setValueInt:{objc_msgSend(valueInt, "value")}];
           }
 
           if ([v12 hasValueFloat])
           {
-            v18 = [v12 valueFloat];
-            [v18 value];
+            valueFloat = [v12 valueFloat];
+            [valueFloat value];
             [v13 setValueFloat:?];
           }
 
           [v5 addProperties:v13];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v9 = [properties countByEnumeratingWithState:&v36 objects:v41 count:16];
       }
 
       while (v9);
@@ -3201,8 +3201,8 @@ LABEL_21:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v19 = [v31 alternatives];
-    v20 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    alternatives = [tier1Copy alternatives];
+    v20 = [alternatives countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v20)
     {
       v21 = *v33;
@@ -3212,35 +3212,35 @@ LABEL_21:
         {
           if (*v33 != v21)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(alternatives);
           }
 
           v23 = *(*(&v32 + 1) + 8 * j);
           v24 = objc_alloc_init(MEMORY[0x1E69CF800]);
-          v25 = [v23 alternative];
-          [v24 setAlternative:v25];
+          alternative = [v23 alternative];
+          [v24 setAlternative:alternative];
 
           if ([v23 hasProbability])
           {
-            v26 = [v23 probability];
-            [v26 value];
+            probability = [v23 probability];
+            [probability value];
             [v24 setProbability:?];
           }
 
           [v5 addAlternatives:v24];
         }
 
-        v20 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v20 = [alternatives countByEnumeratingWithState:&v32 objects:v40 count:16];
       }
 
       while (v20);
     }
 
-    if ([v31 hasOriginEntityId])
+    if ([tier1Copy hasOriginEntityId])
     {
-      v27 = [v31 originEntityId];
-      v28 = [v27 value];
-      [v5 setOriginEntityId:v28];
+      originEntityId = [tier1Copy originEntityId];
+      value3 = [originEntityId value];
+      [v5 setOriginEntityId:value3];
     }
   }
 
@@ -3254,15 +3254,15 @@ LABEL_21:
   return v5;
 }
 
-+ (id)convertUsoEntityIdentifierTier1:(id)a3 index:(int64_t)a4
++ (id)convertUsoEntityIdentifierTier1:(id)tier1 index:(int64_t)index
 {
-  v5 = a3;
-  if (v5)
+  tier1Copy = tier1;
+  if (tier1Copy)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69CF820]);
-    [v6 setIndex:a4];
-    v7 = [v5 value];
-    [v6 setValue:v7];
+    [v6 setIndex:index];
+    value = [tier1Copy value];
+    [v6 setValue:value];
   }
 
   else
@@ -3273,33 +3273,33 @@ LABEL_21:
   return v6;
 }
 
-+ (id)convertUsoNodeDataTier1:(id)a3 index:(int64_t)a4
++ (id)convertUsoNodeDataTier1:(id)tier1 index:(int64_t)index
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  tier1Copy = tier1;
+  if (tier1Copy)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69CF870]);
-    [v6 setIndex:a4];
-    if ([v5 hasStringPayload])
+    [v6 setIndex:index];
+    if ([tier1Copy hasStringPayload])
     {
-      v7 = [v5 stringPayload];
-      v8 = [v7 value];
-      [v6 setStringPayload:v8];
+      stringPayload = [tier1Copy stringPayload];
+      value = [stringPayload value];
+      [v6 setStringPayload:value];
     }
 
-    if ([v5 hasIntegerPayload])
+    if ([tier1Copy hasIntegerPayload])
     {
-      v9 = [v5 integerPayload];
-      [v6 setIntegerPayload:{objc_msgSend(v9, "value")}];
+      integerPayload = [tier1Copy integerPayload];
+      [v6 setIntegerPayload:{objc_msgSend(integerPayload, "value")}];
     }
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [v5 normalizedStringPayloads];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    normalizedStringPayloads = [tier1Copy normalizedStringPayloads];
+    v11 = [normalizedStringPayloads countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = *v17;
@@ -3309,13 +3309,13 @@ LABEL_21:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(normalizedStringPayloads);
           }
 
           [v6 addNormalizedStringPayloads:*(*(&v16 + 1) + 8 * i)];
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [normalizedStringPayloads countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
@@ -3332,40 +3332,40 @@ LABEL_21:
   return v6;
 }
 
-+ (id)convertUtteranceSpan:(id)a3
++ (id)convertUtteranceSpan:(id)span
 {
-  v3 = a3;
-  if (v3)
+  spanCopy = span;
+  if (spanCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF888]);
-    if ([v3 hasStartIndex])
+    if ([spanCopy hasStartIndex])
     {
-      [v4 setStartIndex:{objc_msgSend(v3, "startIndex")}];
+      [v4 setStartIndex:{objc_msgSend(spanCopy, "startIndex")}];
     }
 
-    if ([v3 hasEndIndex])
+    if ([spanCopy hasEndIndex])
     {
-      [v4 setEndIndex:{objc_msgSend(v3, "endIndex")}];
+      [v4 setEndIndex:{objc_msgSend(spanCopy, "endIndex")}];
     }
 
-    if ([v3 hasStartUnicodeScalarIndex])
+    if ([spanCopy hasStartUnicodeScalarIndex])
     {
-      [v4 setStartUnicodeScalarIndex:{objc_msgSend(v3, "startUnicodeScalarIndex")}];
+      [v4 setStartUnicodeScalarIndex:{objc_msgSend(spanCopy, "startUnicodeScalarIndex")}];
     }
 
-    if ([v3 hasEndUnicodeScalarIndex])
+    if ([spanCopy hasEndUnicodeScalarIndex])
     {
-      [v4 setEndUnicodeScalarIndex:{objc_msgSend(v3, "endUnicodeScalarIndex")}];
+      [v4 setEndUnicodeScalarIndex:{objc_msgSend(spanCopy, "endUnicodeScalarIndex")}];
     }
 
-    if ([v3 hasStartMilliSeconds])
+    if ([spanCopy hasStartMilliSeconds])
     {
-      [v4 setStartMilliseconds:{objc_msgSend(v3, "startMilliSeconds")}];
+      [v4 setStartMilliseconds:{objc_msgSend(spanCopy, "startMilliSeconds")}];
     }
 
-    if ([v3 hasEndMilliSeconds])
+    if ([spanCopy hasEndMilliSeconds])
     {
-      [v4 setEndMilliseconds:{objc_msgSend(v3, "endMilliSeconds")}];
+      [v4 setEndMilliseconds:{objc_msgSend(spanCopy, "endMilliSeconds")}];
     }
   }
 
@@ -3377,29 +3377,29 @@ LABEL_21:
   return v4;
 }
 
-+ (id)convertUtteranceAlignment:(id)a3
++ (id)convertUtteranceAlignment:(id)alignment
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  alignmentCopy = alignment;
+  if (alignmentCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF880]);
-    if ([v3 hasAsrHypothesisIndex])
+    if ([alignmentCopy hasAsrHypothesisIndex])
     {
-      [v4 setAsrHypothesisIndex:{objc_msgSend(v3, "asrHypothesisIndex")}];
+      [v4 setAsrHypothesisIndex:{objc_msgSend(alignmentCopy, "asrHypothesisIndex")}];
     }
 
-    if ([v3 hasNodeIndex])
+    if ([alignmentCopy hasNodeIndex])
     {
-      [v4 setNodeIndex:{objc_msgSend(v3, "nodeIndex")}];
+      [v4 setNodeIndex:{objc_msgSend(alignmentCopy, "nodeIndex")}];
     }
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v3 spans];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    spans = [alignmentCopy spans];
+    v6 = [spans countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = *v13;
@@ -3409,14 +3409,14 @@ LABEL_21:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(spans);
           }
 
           v9 = [SiriNLUSELFLogUtils convertUtteranceSpan:*(*(&v12 + 1) + 8 * i)];
           [v4 addSpans:v9];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [spans countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -3433,57 +3433,57 @@ LABEL_21:
   return v4;
 }
 
-+ (int)convertUsoBackingAppBundleType:(id)a3
++ (int)convertUsoBackingAppBundleType:(id)type
 {
-  v3 = a3;
-  if (v3)
+  typeCopy = type;
+  if (typeCopy)
   {
     v4 = +[SiriNLUSELFLogUtils getAppBundleTypeEnumsMapping];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 objectForKey:v3];
+      v6 = [v4 objectForKey:typeCopy];
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 intValue];
+        intValue = [v6 intValue];
       }
 
       else
       {
-        v8 = 0;
+        intValue = 0;
       }
     }
 
     else
     {
-      v8 = 0;
+      intValue = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    intValue = 0;
   }
 
-  return v8;
+  return intValue;
 }
 
-+ (id)convertUsoEntitySpan:(id)a3 index:(int64_t)a4
++ (id)convertUsoEntitySpan:(id)span index:(int64_t)index
 {
-  v5 = a3;
-  if (v5)
+  spanCopy = span;
+  if (spanCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69CF828]);
-    if (a4 == -1)
+    if (index == -1)
     {
-      a4 = [v5 nodeIndex];
+      index = [spanCopy nodeIndex];
     }
 
-    [v6 setNodeIndex:a4];
-    if ([v5 hasSourceComponent])
+    [v6 setNodeIndex:index];
+    if ([spanCopy hasSourceComponent])
     {
-      v7 = +[SiriNLUSELFLogUtils convertUSOEntitySpanNluComponent:](SiriNLUSELFLogUtils, "convertUSOEntitySpanNluComponent:", [v5 sourceComponent]);
+      v7 = +[SiriNLUSELFLogUtils convertUSOEntitySpanNluComponent:](SiriNLUSELFLogUtils, "convertUSOEntitySpanNluComponent:", [spanCopy sourceComponent]);
     }
 
     else
@@ -3492,37 +3492,37 @@ LABEL_21:
     }
 
     [v6 setSourceComponent:v7];
-    if ([v5 hasLabel])
+    if ([spanCopy hasLabel])
     {
-      v8 = [v5 label];
-      v9 = [v8 value];
-      [v6 setLabel:v9];
+      label = [spanCopy label];
+      value = [label value];
+      [v6 setLabel:value];
     }
 
-    if ([v5 hasMatchInfo])
+    if ([spanCopy hasMatchInfo])
     {
-      v10 = [v5 matchInfo];
-      v11 = [SiriNLUSELFLogUtils convertMatchInfo:v10];
+      matchInfo = [spanCopy matchInfo];
+      v11 = [SiriNLUSELFLogUtils convertMatchInfo:matchInfo];
       [v6 setMatchInfo:v11];
     }
 
-    if ([v5 hasStartIndex])
+    if ([spanCopy hasStartIndex])
     {
-      v12 = [v5 startIndex];
-      [v6 setStartIndex:{objc_msgSend(v12, "value")}];
+      startIndex = [spanCopy startIndex];
+      [v6 setStartIndex:{objc_msgSend(startIndex, "value")}];
     }
 
-    if ([v5 hasEndIndex])
+    if ([spanCopy hasEndIndex])
     {
-      v13 = [v5 endIndex];
-      [v6 setEndIndex:{objc_msgSend(v13, "value")}];
+      endIndex = [spanCopy endIndex];
+      [v6 setEndIndex:{objc_msgSend(endIndex, "value")}];
     }
 
-    if ([v5 hasOriginAppId])
+    if ([spanCopy hasOriginAppId])
     {
-      v14 = [v5 originAppId];
-      v15 = [v14 value];
-      [v6 setOriginAppBundleIdType:{+[SiriNLUSELFLogUtils convertUsoBackingAppBundleType:](SiriNLUSELFLogUtils, "convertUsoBackingAppBundleType:", v15)}];
+      originAppId = [spanCopy originAppId];
+      value2 = [originAppId value];
+      [v6 setOriginAppBundleIdType:{+[SiriNLUSELFLogUtils convertUsoBackingAppBundleType:](SiriNLUSELFLogUtils, "convertUsoBackingAppBundleType:", value2)}];
     }
 
     else
@@ -3539,76 +3539,76 @@ LABEL_21:
   return v6;
 }
 
-+ (id)convertUsoEntitySpan:(id)a3
++ (id)convertUsoEntitySpan:(id)span
 {
-  v3 = [SiriNLUSELFLogUtils convertUsoEntitySpan:a3 index:-1];
+  v3 = [SiriNLUSELFLogUtils convertUsoEntitySpan:span index:-1];
 
   return v3;
 }
 
-+ (id)convertMatchInfo:(id)a3
++ (id)convertMatchInfo:(id)info
 {
-  v3 = a3;
-  if (v3)
+  infoCopy = info;
+  if (infoCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF860]);
-    if ([v3 hasMatchSignalBitset])
+    if ([infoCopy hasMatchSignalBitset])
     {
-      [v4 setMatchSignalBitset:{objc_msgSend(v3, "matchSignalBitset")}];
+      [v4 setMatchSignalBitset:{objc_msgSend(infoCopy, "matchSignalBitset")}];
     }
 
-    if ([v3 hasMatchScore])
+    if ([infoCopy hasMatchScore])
     {
-      v5 = [v3 matchScore];
-      [v5 value];
+      matchScore = [infoCopy matchScore];
+      [matchScore value];
       [v4 setMatchScore:?];
     }
 
-    if ([v3 hasMaxTokenCount])
+    if ([infoCopy hasMaxTokenCount])
     {
-      v6 = [v3 maxTokenCount];
-      [v4 setMaxTokenCount:{objc_msgSend(v6, "value")}];
+      maxTokenCount = [infoCopy maxTokenCount];
+      [v4 setMaxTokenCount:{objc_msgSend(maxTokenCount, "value")}];
     }
 
-    if ([v3 hasMatchedTokenCount])
+    if ([infoCopy hasMatchedTokenCount])
     {
-      v7 = [v3 matchedTokenCount];
-      [v4 setMatchedTokenCount:{objc_msgSend(v7, "value")}];
+      matchedTokenCount = [infoCopy matchedTokenCount];
+      [v4 setMatchedTokenCount:{objc_msgSend(matchedTokenCount, "value")}];
     }
 
-    if ([v3 hasMaxStopWordCount])
+    if ([infoCopy hasMaxStopWordCount])
     {
-      v8 = [v3 maxStopWordCount];
-      [v4 setMaxStopWordCount:{objc_msgSend(v8, "value")}];
+      maxStopWordCount = [infoCopy maxStopWordCount];
+      [v4 setMaxStopWordCount:{objc_msgSend(maxStopWordCount, "value")}];
     }
 
-    if ([v3 hasMatchedStopWordCount])
+    if ([infoCopy hasMatchedStopWordCount])
     {
-      v9 = [v3 matchedStopWordCount];
-      [v4 setMatchedStopWordCount:{objc_msgSend(v9, "value")}];
+      matchedStopWordCount = [infoCopy matchedStopWordCount];
+      [v4 setMatchedStopWordCount:{objc_msgSend(matchedStopWordCount, "value")}];
     }
 
-    if ([v3 hasEditDistance])
+    if ([infoCopy hasEditDistance])
     {
-      v10 = [v3 editDistance];
-      [v4 setEditDistance:{objc_msgSend(v10, "value")}];
+      editDistance = [infoCopy editDistance];
+      [v4 setEditDistance:{objc_msgSend(editDistance, "value")}];
     }
 
-    if ([v3 hasMaxAliasCount])
+    if ([infoCopy hasMaxAliasCount])
     {
-      v11 = [v3 maxAliasCount];
-      [v4 setMaxAliasCount:{objc_msgSend(v11, "value")}];
+      maxAliasCount = [infoCopy maxAliasCount];
+      [v4 setMaxAliasCount:{objc_msgSend(maxAliasCount, "value")}];
     }
 
-    if ([v3 hasMatchedAliasCount])
+    if ([infoCopy hasMatchedAliasCount])
     {
-      v12 = [v3 matchedAliasCount];
-      [v4 setMatchedAliasCount:{objc_msgSend(v12, "value")}];
+      matchedAliasCount = [infoCopy matchedAliasCount];
+      [v4 setMatchedAliasCount:{objc_msgSend(matchedAliasCount, "value")}];
     }
 
-    for (i = 0; [v3 matchedAliasTypesCount] > i; ++i)
+    for (i = 0; [infoCopy matchedAliasTypesCount] > i; ++i)
     {
-      [v4 addMatchedAliasTypes:{+[SiriNLUSELFLogUtils convertMatchInfoAliasType:](SiriNLUSELFLogUtils, "convertMatchInfoAliasType:", objc_msgSend(v3, "matchedAliasTypesAtIndex:", i))}];
+      [v4 addMatchedAliasTypes:{+[SiriNLUSELFLogUtils convertMatchInfoAliasType:](SiriNLUSELFLogUtils, "convertMatchInfoAliasType:", objc_msgSend(infoCopy, "matchedAliasTypesAtIndex:", i))}];
     }
   }
 
@@ -3620,35 +3620,35 @@ LABEL_21:
   return v4;
 }
 
-+ (id)convertUsoEntityIdentifier:(id)a3 index:(int64_t)a4
++ (id)convertUsoEntityIdentifier:(id)identifier index:(int64_t)index
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69CF818]);
-    if (a4 == -1)
+    if (index == -1)
     {
-      a4 = [v5 nodeIndex];
+      index = [identifierCopy nodeIndex];
     }
 
-    [v6 setNodeIndex:a4];
-    if ([v5 hasProbability])
+    [v6 setNodeIndex:index];
+    if ([identifierCopy hasProbability])
     {
-      v7 = [v5 probability];
-      [v7 value];
+      probability = [identifierCopy probability];
+      [probability value];
       [v6 setProbability:?];
     }
 
-    if ([v5 hasNamespaceA])
+    if ([identifierCopy hasNamespaceA])
     {
-      v8 = [v5 namespaceA];
-      v9 = [v8 value];
-      [v6 setIdentifierNamespace:v9];
+      namespaceA = [identifierCopy namespaceA];
+      value = [namespaceA value];
+      [v6 setIdentifierNamespace:value];
     }
 
-    if ([v5 hasSourceComponent])
+    if ([identifierCopy hasSourceComponent])
     {
-      v10 = +[SiriNLUSELFLogUtils convertUSOEntityIdentifierNluComponent:](SiriNLUSELFLogUtils, "convertUSOEntityIdentifierNluComponent:", [v5 sourceComponent]);
+      v10 = +[SiriNLUSELFLogUtils convertUSOEntityIdentifierNluComponent:](SiriNLUSELFLogUtils, "convertUSOEntityIdentifierNluComponent:", [identifierCopy sourceComponent]);
     }
 
     else
@@ -3657,10 +3657,10 @@ LABEL_21:
     }
 
     [v6 setSourceNluComponent:v10];
-    if ([v5 hasBackingAppBundleId])
+    if ([identifierCopy hasBackingAppBundleId])
     {
-      v11 = [v5 backingAppBundleId];
-      [v6 setBackingAppBundleType:{+[SiriNLUSELFLogUtils convertUsoBackingAppBundleType:](SiriNLUSELFLogUtils, "convertUsoBackingAppBundleType:", v11)}];
+      backingAppBundleId = [identifierCopy backingAppBundleId];
+      [v6 setBackingAppBundleType:{+[SiriNLUSELFLogUtils convertUsoBackingAppBundleType:](SiriNLUSELFLogUtils, "convertUsoBackingAppBundleType:", backingAppBundleId)}];
     }
 
     else
@@ -3668,14 +3668,14 @@ LABEL_21:
       [v6 setBackingAppBundleType:0];
     }
 
-    if ([v5 hasGroupIndex])
+    if ([identifierCopy hasGroupIndex])
     {
-      [v6 setGroupIndex:{objc_msgSend(v5, "groupIndex")}];
+      [v6 setGroupIndex:{objc_msgSend(identifierCopy, "groupIndex")}];
     }
 
-    if ([v5 hasInterpretationGroup])
+    if ([identifierCopy hasInterpretationGroup])
     {
-      [v6 setInterpretationGroup:{objc_msgSend(v5, "interpretationGroup")}];
+      [v6 setInterpretationGroup:{objc_msgSend(identifierCopy, "interpretationGroup")}];
     }
   }
 
@@ -3687,40 +3687,40 @@ LABEL_21:
   return v6;
 }
 
-+ (id)convertUsoEntityIdentifier:(id)a3
++ (id)convertUsoEntityIdentifier:(id)identifier
 {
-  v3 = [SiriNLUSELFLogUtils convertUsoEntityIdentifier:a3 index:-1];
+  v3 = [SiriNLUSELFLogUtils convertUsoEntityIdentifier:identifier index:-1];
 
   return v3;
 }
 
-+ (id)convertUsoEdge:(id)a3
++ (id)convertUsoEdge:(id)edge
 {
-  v3 = a3;
-  if (v3)
+  edgeCopy = edge;
+  if (edgeCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF808]);
-    [v4 setFromIndex:{objc_msgSend(v3, "fromIndex")}];
-    [v4 setToIndex:{objc_msgSend(v3, "toIndex")}];
-    if ([v3 hasLabel])
+    [v4 setFromIndex:{objc_msgSend(edgeCopy, "fromIndex")}];
+    [v4 setToIndex:{objc_msgSend(edgeCopy, "toIndex")}];
+    if ([edgeCopy hasLabel])
     {
       v5 = objc_alloc_init(MEMORY[0x1E69CF810]);
-      v6 = [v3 label];
-      [v5 setUsoElementId:{objc_msgSend(v6, "usoElementId")}];
+      label = [edgeCopy label];
+      [v5 setUsoElementId:{objc_msgSend(label, "usoElementId")}];
 
-      v7 = [v3 label];
-      [v5 setEnumeration:{objc_msgSend(v7, "enumeration")}];
+      label2 = [edgeCopy label];
+      [v5 setEnumeration:{objc_msgSend(label2, "enumeration")}];
 
-      v8 = [v3 label];
-      v9 = [v8 hasBaseEdgeLabel];
+      label3 = [edgeCopy label];
+      hasBaseEdgeLabel = [label3 hasBaseEdgeLabel];
 
-      if (v9)
+      if (hasBaseEdgeLabel)
       {
         v10 = objc_alloc_init(MEMORY[0x1E69CF858]);
-        v11 = [v3 label];
-        v12 = [v11 baseEdgeLabel];
-        v13 = [v12 value];
-        [v10 setValue:v13];
+        label4 = [edgeCopy label];
+        baseEdgeLabel = [label4 baseEdgeLabel];
+        value = [baseEdgeLabel value];
+        [v10 setValue:value];
 
         [v5 setBaseEdgeLabel:v10];
       }
@@ -3737,33 +3737,33 @@ LABEL_21:
   return v4;
 }
 
-+ (id)convertUsoNode:(id)a3
++ (id)convertUsoNode:(id)node
 {
-  v3 = a3;
-  if (v3)
+  nodeCopy = node;
+  if (nodeCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF868]);
-    if ([v3 hasUsoElementId])
+    if ([nodeCopy hasUsoElementId])
     {
-      [v4 setUsoElementId:{objc_msgSend(v3, "usoElementId")}];
+      [v4 setUsoElementId:{objc_msgSend(nodeCopy, "usoElementId")}];
     }
 
-    if ([v3 hasUsoVerbElementId])
+    if ([nodeCopy hasUsoVerbElementId])
     {
-      v5 = [v3 usoVerbElementId];
-      [v4 setUsoVerbElementId:{objc_msgSend(v5, "value")}];
+      usoVerbElementId = [nodeCopy usoVerbElementId];
+      [v4 setUsoVerbElementId:{objc_msgSend(usoVerbElementId, "value")}];
     }
 
-    if ([v3 hasEntityLabel])
+    if ([nodeCopy hasEntityLabel])
     {
-      v6 = [v3 entityLabel];
-      [v4 setEntityLabel:v6];
+      entityLabel = [nodeCopy entityLabel];
+      [v4 setEntityLabel:entityLabel];
     }
 
-    if ([v3 hasVerbLabel])
+    if ([nodeCopy hasVerbLabel])
     {
-      v7 = [v3 verbLabel];
-      [v4 setVerbLabel:v7];
+      verbLabel = [nodeCopy verbLabel];
+      [v4 setVerbLabel:verbLabel];
     }
   }
 
@@ -3775,25 +3775,25 @@ LABEL_21:
   return v4;
 }
 
-+ (id)convertNonTier1UsoGraph:(id)a3 identifiers:(id)a4 entitySpans:(id)a5
++ (id)convertNonTier1UsoGraph:(id)graph identifiers:(id)identifiers entitySpans:(id)spans
 {
   v83 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  graphCopy = graph;
+  identifiersCopy = identifiers;
+  spansCopy = spans;
+  if (graphCopy)
   {
     v10 = objc_alloc_init(MEMORY[0x1E69CF840]);
-    v11 = [v7 version];
-    v12 = [SiriNLUSELFLogUtils convertVersion:v11];
+    version = [graphCopy version];
+    v12 = [SiriNLUSELFLogUtils convertVersion:version];
     [v10 setVersion:v12];
 
     v74 = 0u;
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v13 = [v7 nodes];
-    v14 = [v13 countByEnumeratingWithState:&v72 objects:v82 count:16];
+    nodes = [graphCopy nodes];
+    v14 = [nodes countByEnumeratingWithState:&v72 objects:v82 count:16];
     if (v14)
     {
       v15 = *v73;
@@ -3803,14 +3803,14 @@ LABEL_21:
         {
           if (*v73 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(nodes);
           }
 
           v17 = [SiriNLUSELFLogUtils convertUsoNode:*(*(&v72 + 1) + 8 * i)];
           [v10 addNodes:v17];
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v72 objects:v82 count:16];
+        v14 = [nodes countByEnumeratingWithState:&v72 objects:v82 count:16];
       }
 
       while (v14);
@@ -3820,8 +3820,8 @@ LABEL_21:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v18 = [v7 edges];
-    v19 = [v18 countByEnumeratingWithState:&v68 objects:v81 count:16];
+    edges = [graphCopy edges];
+    v19 = [edges countByEnumeratingWithState:&v68 objects:v81 count:16];
     if (v19)
     {
       v20 = *v69;
@@ -3831,14 +3831,14 @@ LABEL_21:
         {
           if (*v69 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(edges);
           }
 
           v22 = [SiriNLUSELFLogUtils convertUsoEdge:*(*(&v68 + 1) + 8 * j)];
           [v10 addEdges:v22];
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v68 objects:v81 count:16];
+        v19 = [edges countByEnumeratingWithState:&v68 objects:v81 count:16];
       }
 
       while (v19);
@@ -3848,8 +3848,8 @@ LABEL_21:
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v23 = [v7 alignments];
-    v24 = [v23 countByEnumeratingWithState:&v64 objects:v80 count:16];
+    alignments = [graphCopy alignments];
+    v24 = [alignments countByEnumeratingWithState:&v64 objects:v80 count:16];
     if (v24)
     {
       v25 = *v65;
@@ -3859,14 +3859,14 @@ LABEL_21:
         {
           if (*v65 != v25)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(alignments);
           }
 
           v27 = [SiriNLUSELFLogUtils convertUtteranceAlignment:*(*(&v64 + 1) + 8 * k)];
           [v10 addAlignments:v27];
         }
 
-        v24 = [v23 countByEnumeratingWithState:&v64 objects:v80 count:16];
+        v24 = [alignments countByEnumeratingWithState:&v64 objects:v80 count:16];
       }
 
       while (v24);
@@ -3876,8 +3876,8 @@ LABEL_21:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v28 = [v7 identifiers];
-    v29 = [v28 countByEnumeratingWithState:&v60 objects:v79 count:16];
+    identifiers = [graphCopy identifiers];
+    v29 = [identifiers countByEnumeratingWithState:&v60 objects:v79 count:16];
     if (v29)
     {
       v30 = *v61;
@@ -3887,14 +3887,14 @@ LABEL_21:
         {
           if (*v61 != v30)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(identifiers);
           }
 
           v32 = [SiriNLUSELFLogUtils convertUsoEntityIdentifier:*(*(&v60 + 1) + 8 * m)];
           [v10 addIdentifiers:v32];
         }
 
-        v29 = [v28 countByEnumeratingWithState:&v60 objects:v79 count:16];
+        v29 = [identifiers countByEnumeratingWithState:&v60 objects:v79 count:16];
       }
 
       while (v29);
@@ -3904,8 +3904,8 @@ LABEL_21:
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v33 = [v7 spans];
-    v34 = [v33 countByEnumeratingWithState:&v56 objects:v78 count:16];
+    spans = [graphCopy spans];
+    v34 = [spans countByEnumeratingWithState:&v56 objects:v78 count:16];
     if (v34)
     {
       v35 = *v57;
@@ -3915,26 +3915,26 @@ LABEL_21:
         {
           if (*v57 != v35)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(spans);
           }
 
           v37 = [SiriNLUSELFLogUtils convertUsoEntitySpan:*(*(&v56 + 1) + 8 * n)];
           [v10 addSpans:v37];
         }
 
-        v34 = [v33 countByEnumeratingWithState:&v56 objects:v78 count:16];
+        v34 = [spans countByEnumeratingWithState:&v56 objects:v78 count:16];
       }
 
       while (v34);
     }
 
-    if (v8)
+    if (identifiersCopy)
     {
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v38 = v8;
+      v38 = identifiersCopy;
       v39 = [v38 countByEnumeratingWithState:&v52 objects:v77 count:16];
       if (v39)
       {
@@ -3958,13 +3958,13 @@ LABEL_21:
       }
     }
 
-    if (v9)
+    if (spansCopy)
     {
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v42 = v9;
+      v42 = spansCopy;
       v43 = [v42 countByEnumeratingWithState:&v48 objects:v76 count:16];
       if (v43)
       {
@@ -3999,21 +3999,21 @@ LABEL_21:
   return v10;
 }
 
-+ (id)convertNonTier1UsoGraph:(id)a3
++ (id)convertNonTier1UsoGraph:(id)graph
 {
-  v3 = [SiriNLUSELFLogUtils convertNonTier1UsoGraph:a3 identifiers:0 entitySpans:0];
+  v3 = [SiriNLUSELFLogUtils convertNonTier1UsoGraph:graph identifiers:0 entitySpans:0];
 
   return v3;
 }
 
-+ (id)convertUsoGraph:(id)a3
++ (id)convertUsoGraph:(id)graph
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v10 = v3;
-  if (v3)
+  graphCopy = graph;
+  v10 = graphCopy;
+  if (graphCopy)
   {
-    SharedUsoVocabManager = siri::ontology::getSharedUsoVocabManager(v3);
+    SharedUsoVocabManager = siri::ontology::getSharedUsoVocabManager(graphCopy);
     v6 = *SharedUsoVocabManager;
     v5 = SharedUsoVocabManager[1];
     if (v5)
@@ -4046,15 +4046,15 @@ LABEL_21:
   return 0;
 }
 
-+ (id)convertVersion:(id)a3
++ (id)convertVersion:(id)version
 {
-  v3 = a3;
-  if (v3)
+  versionCopy = version;
+  if (versionCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CF648]);
-    [v4 setMajor:{objc_msgSend(v3, "majorVersion")}];
-    [v4 setMinor:{objc_msgSend(v3, "minorVersion")}];
-    [v4 setPatch:{objc_msgSend(v3, "patchVersion")}];
+    [v4 setMajor:{objc_msgSend(versionCopy, "majorVersion")}];
+    [v4 setMinor:{objc_msgSend(versionCopy, "minorVersion")}];
+    [v4 setPatch:{objc_msgSend(versionCopy, "patchVersion")}];
   }
 
   else
@@ -4065,13 +4065,13 @@ LABEL_21:
   return v4;
 }
 
-+ (id)convertUUID:(id)a3
++ (id)convertUUID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy)
   {
-    v8[1] = [v3 highInt];
+    v8[1] = [dCopy highInt];
     v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v8];
     v6 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:v5];
   }
@@ -4084,24 +4084,24 @@ LABEL_21:
   return v6;
 }
 
-+ (id)createDelegatedUserDialogActTier1Event:(id)a3 withLinkId:(id)a4
++ (id)createDelegatedUserDialogActTier1Event:(id)event withLinkId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  eventCopy = event;
+  idCopy = id;
+  if (eventCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E69CF0E0]);
-    [v7 setLinkId:v6];
-    if ([v5 hasRewrite])
+    [v7 setLinkId:idCopy];
+    if ([eventCopy hasRewrite])
     {
-      v8 = [v5 rewrite];
-      v9 = [v8 rewriteType];
+      rewrite = [eventCopy rewrite];
+      rewriteType = [rewrite rewriteType];
 
-      if (v9 != 3)
+      if (rewriteType != 3)
       {
-        v10 = [v5 rewrite];
-        v11 = [v10 rewrittenUtterance];
-        [v7 setRewrittenUtterance:v11];
+        rewrite2 = [eventCopy rewrite];
+        rewrittenUtterance = [rewrite2 rewrittenUtterance];
+        [v7 setRewrittenUtterance:rewrittenUtterance];
       }
     }
 
@@ -4117,19 +4117,19 @@ LABEL_21:
   return v12;
 }
 
-+ (id)createSystemDialogActTier1Event:(id)a3 withLinkId:(id)a4
++ (id)createSystemDialogActTier1Event:(id)event withLinkId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  eventCopy = event;
+  idCopy = id;
+  if (eventCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E69CF1A8]);
-    [v7 setLinkId:v6];
-    if ([v5 hasRenderedText])
+    [v7 setLinkId:idCopy];
+    if ([eventCopy hasRenderedText])
     {
-      v8 = [v5 renderedText];
-      v9 = [v8 value];
-      [v7 setRenderedText:v9];
+      renderedText = [eventCopy renderedText];
+      value = [renderedText value];
+      [v7 setRenderedText:value];
     }
 
     v10 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
@@ -4144,21 +4144,21 @@ LABEL_21:
   return v10;
 }
 
-+ (id)createNLXLegacyNLContextTier1Event:(id)a3 withLinkId:(id)a4
++ (id)createNLXLegacyNLContextTier1Event:(id)event withLinkId:(id)id
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  eventCopy = event;
+  idCopy = id;
+  if (eventCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E69CF2C0]);
-    [v7 setLinkId:v6];
+    [v7 setLinkId:idCopy];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v5 renderedTexts];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    renderedTexts = [eventCopy renderedTexts];
+    v9 = [renderedTexts countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = *v18;
@@ -4168,18 +4168,18 @@ LABEL_21:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(renderedTexts);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
           if (v12 && [*(*(&v17 + 1) + 8 * i) hasValue])
           {
-            v13 = [v12 value];
-            [v7 addRenderedTexts:v13];
+            value = [v12 value];
+            [v7 addRenderedTexts:value];
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [renderedTexts countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
@@ -4199,22 +4199,22 @@ LABEL_21:
   return v14;
 }
 
-+ (id)createCdmXpcEventProcessingEndedLog:(id)a3 metadata:(id)a4
++ (id)createCdmXpcEventProcessingEndedLog:(id)log metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
+  logCopy = log;
+  metadataCopy = metadata;
   v7 = objc_alloc_init(MEMORY[0x1E69CF278]);
   [v7 setExists:1];
   v8 = objc_alloc_init(MEMORY[0x1E69CF270]);
   [v8 setEnded:v7];
-  if (v5)
+  if (logCopy)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:v5];
+    v9 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:logCopy];
     [v8 setContextId:v9];
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v10 setEventMetadata:v6];
+  [v10 setEventMetadata:metadataCopy];
   [v10 setCdmXpcEventProcessingContext:v8];
   v11 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v11 setMainEvent:v10];
@@ -4222,38 +4222,38 @@ LABEL_21:
   return v11;
 }
 
-+ (id)createContextUpdateEndedLog:(id)a3 contextUpdateResponse:(id)a4 metadata:(id)a5
++ (id)createContextUpdateEndedLog:(id)log contextUpdateResponse:(id)response metadata:(id)metadata
 {
   v32 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v7 = a4;
-  v26 = a5;
-  if (v7)
+  logCopy = log;
+  responseCopy = response;
+  metadataCopy = metadata;
+  if (responseCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69CF0C8]);
-    if (v25)
+    if (logCopy)
     {
-      v9 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:v25];
+      v9 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:logCopy];
       [v8 setContextId:v9];
     }
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    for (i = 0; [v7 reformedTurnInputBundlesCount] > i; ++i)
+    for (i = 0; [responseCopy reformedTurnInputBundlesCount] > i; ++i)
     {
-      v12 = [v7 reformedTurnInputBundlesAtIndex:i];
+      v12 = [responseCopy reformedTurnInputBundlesAtIndex:i];
       v13 = [SiriNLUSELFLogUtils convertReformedTurnInputBundle:v12];
 
       if (v13)
       {
-        v14 = [v13 mainItem];
-        [v8 addReformedTurnInputBundles:v14];
+        mainItem = [v13 mainItem];
+        [v8 addReformedTurnInputBundles:mainItem];
 
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v15 = [v13 tier1Events];
-        v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        tier1Events = [v13 tier1Events];
+        v16 = [tier1Events countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v16)
         {
           v17 = *v28;
@@ -4263,13 +4263,13 @@ LABEL_21:
             {
               if (*v28 != v17)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(tier1Events);
               }
 
               [v10 addObject:*(*(&v27 + 1) + 8 * j)];
             }
 
-            v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
+            v16 = [tier1Events countByEnumeratingWithState:&v27 objects:v31 count:16];
           }
 
           while (v16);
@@ -4278,15 +4278,15 @@ LABEL_21:
     }
 
     v19 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-    [v19 setEventMetadata:v26];
+    [v19 setEventMetadata:metadataCopy];
     [v19 setCdmContextUpdateEnded:v8];
     v20 = objc_alloc_init(SiriInstrumentationEventContainer);
     [(SiriInstrumentationEventContainer *)v20 setMainEvent:v19];
     v21 = [v10 copy];
     [(SiriInstrumentationEventContainer *)v20 setTier1Events:v21];
 
-    v22 = [(SiriInstrumentationEventContainer *)v20 tier1Events];
-    [SiriNLUSELFLogUtils populateEventsWithMetadata:v22 metadata:v26];
+    tier1Events2 = [(SiriInstrumentationEventContainer *)v20 tier1Events];
+    [SiriNLUSELFLogUtils populateEventsWithMetadata:tier1Events2 metadata:metadataCopy];
   }
 
   else
@@ -4299,25 +4299,25 @@ LABEL_21:
   return v20;
 }
 
-+ (id)createTokenizationEndedLog:(id)a3 tokenizationResponse:(id)a4 metadata:(id)a5
++ (id)createTokenizationEndedLog:(id)log tokenizationResponse:(id)response metadata:(id)metadata
 {
-  v5 = [SiriNLUSELFLogUtils createTokenizationEndedLog:a3 tokenizationResponse:a4 tokenizationInputType:0 metadata:a5];
+  v5 = [SiriNLUSELFLogUtils createTokenizationEndedLog:log tokenizationResponse:response tokenizationInputType:0 metadata:metadata];
 
   return v5;
 }
 
-+ (id)createMatchingSpanEndedLog:(id)a3 spanMatchResponse:(id)a4 metadata:(id)a5
++ (id)createMatchingSpanEndedLog:(id)log spanMatchResponse:(id)response metadata:(id)metadata
 {
   v40 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v7 = a4;
-  v33 = a5;
-  if (v7)
+  logCopy = log;
+  responseCopy = response;
+  metadataCopy = metadata;
+  if (responseCopy)
   {
     v34 = objc_alloc_init(MEMORY[0x1E69CF100]);
-    if (v32)
+    if (logCopy)
     {
-      v8 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:v32];
+      v8 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:logCopy];
       [v34 setContextId:v8];
     }
 
@@ -4330,22 +4330,22 @@ LABEL_21:
     v31 = v13;
     [v34 setLinkId:v13];
     [v10 setLinkId:v13];
-    for (i = 0; [v7 matchingSpansCount] > i; ++i)
+    for (i = 0; [responseCopy matchingSpansCount] > i; ++i)
     {
-      v15 = [v7 matchingSpansAtIndex:i];
+      v15 = [responseCopy matchingSpansAtIndex:i];
       v16 = [SiriNLUSELFLogUtils convertMatchingSpan:v15];
 
       if (v16)
       {
-        v17 = [v16 mainItem];
-        [v34 addMatchingSpans:v17];
+        mainItem = [v16 mainItem];
+        [v34 addMatchingSpans:mainItem];
 
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v18 = [v16 tier1Events];
-        v19 = [v18 countByEnumeratingWithState:&v35 objects:v39 count:16];
+        tier1Events = [v16 tier1Events];
+        v19 = [tier1Events countByEnumeratingWithState:&v35 objects:v39 count:16];
         if (v19)
         {
           v20 = *v36;
@@ -4355,39 +4355,39 @@ LABEL_21:
             {
               if (*v36 != v20)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(tier1Events);
               }
 
               [v9 addObject:*(*(&v35 + 1) + 8 * j)];
             }
 
-            v19 = [v18 countByEnumeratingWithState:&v35 objects:v39 count:16];
+            v19 = [tier1Events countByEnumeratingWithState:&v35 objects:v39 count:16];
           }
 
           while (v19);
         }
       }
 
-      v22 = [v7 matchingSpansAtIndex:i];
+      v22 = [responseCopy matchingSpansAtIndex:i];
       v23 = [SiriNLUSELFLogUtils convertMatchingSpanTier1:v22];
 
       [v10 addMatchingSpans:v23];
     }
 
     v24 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-    [v24 setEventMetadata:v33];
+    [v24 setEventMetadata:metadataCopy];
     [v24 setCdmMatchingSpanEndedTier1:v10];
     [v9 addObject:v24];
     v25 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-    [v25 setEventMetadata:v33];
+    [v25 setEventMetadata:metadataCopy];
     [v25 setCdmMatchingSpanEnded:v34];
     v26 = objc_alloc_init(SiriInstrumentationEventContainer);
     [(SiriInstrumentationEventContainer *)v26 setMainEvent:v25];
     v27 = [v9 copy];
     [(SiriInstrumentationEventContainer *)v26 setTier1Events:v27];
 
-    v28 = [(SiriInstrumentationEventContainer *)v26 tier1Events];
-    [SiriNLUSELFLogUtils populateEventsWithMetadata:v28 metadata:v33];
+    tier1Events2 = [(SiriInstrumentationEventContainer *)v26 tier1Events];
+    [SiriNLUSELFLogUtils populateEventsWithMetadata:tier1Events2 metadata:metadataCopy];
   }
 
   else
@@ -4400,14 +4400,14 @@ LABEL_21:
   return v26;
 }
 
-+ (id)createCDMAssetsReportedLog:(id)a3 metadata:(id)a4
++ (id)createCDMAssetsReportedLog:(id)log metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
+  logCopy = log;
+  metadataCopy = metadata;
   v7 = objc_alloc_init(MEMORY[0x1E69CF080]);
-  [v7 setAssets:v5];
+  [v7 setAssets:logCopy];
   v8 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v8 setEventMetadata:v6];
+  [v8 setEventMetadata:metadataCopy];
   [v8 setCdmAssetsReported:v7];
   v9 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v9 setMainEvent:v8];
@@ -4415,21 +4415,21 @@ LABEL_21:
   return v9;
 }
 
-+ (id)createCDMSetupMissingAssetsDetectedLog:(id)a3 services:(id)a4 metadata:(id)a5
++ (id)createCDMSetupMissingAssetsDetectedLog:(id)log services:(id)services metadata:(id)metadata
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  logCopy = log;
+  servicesCopy = services;
+  metadataCopy = metadata;
   v10 = objc_alloc_init(MEMORY[0x1E69CF188]);
-  v11 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:v7];
+  v11 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:logCopy];
   [v10 setContextId:v11];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = v8;
+  v12 = servicesCopy;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
@@ -4453,7 +4453,7 @@ LABEL_21:
   }
 
   v16 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v16 setEventMetadata:v9];
+  [v16 setEventMetadata:metadataCopy];
   [v16 setCdmSetupMissingAssetsDetected:v10];
   v17 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v17 setMainEvent:v16];
@@ -4463,19 +4463,19 @@ LABEL_21:
   return v17;
 }
 
-+ (id)createCDMAssetSetupEndedLog:(id)a3 metadata:(id)a4
++ (id)createCDMAssetSetupEndedLog:(id)log metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
+  logCopy = log;
+  metadataCopy = metadata;
   v7 = objc_alloc_init(MEMORY[0x1E69CF068]);
   [v7 setExists:1];
   v8 = objc_alloc_init(MEMORY[0x1E69CF060]);
   [v8 setEnded:v7];
-  v9 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:v5];
+  v9 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:logCopy];
   [v8 setContextId:v9];
 
   v10 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v10 setEventMetadata:v6];
+  [v10 setEventMetadata:metadataCopy];
   [v10 setCdmAssetSetupContext:v8];
   v11 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v11 setMainEvent:v10];
@@ -4483,18 +4483,18 @@ LABEL_21:
   return v11;
 }
 
-+ (id)createCDMAssetSetupStartedLog:(id)a3 serviceTypes:(id)a4 metadata:(id)a5
++ (id)createCDMAssetSetupStartedLog:(id)log serviceTypes:(id)types metadata:(id)metadata
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  logCopy = log;
+  typesCopy = types;
+  metadataCopy = metadata;
   v10 = objc_alloc_init(MEMORY[0x1E69CF078]);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v8;
+  v11 = typesCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -4519,11 +4519,11 @@ LABEL_21:
 
   v15 = objc_alloc_init(MEMORY[0x1E69CF060]);
   [v15 setStartedOrChanged:v10];
-  v16 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:v7];
+  v16 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:logCopy];
   [v15 setContextId:v16];
 
   v17 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v17 setEventMetadata:v9];
+  [v17 setEventMetadata:metadataCopy];
   [v17 setCdmAssetSetupContext:v15];
   v18 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v18 setMainEvent:v17];
@@ -4533,15 +4533,15 @@ LABEL_21:
   return v18;
 }
 
-+ (id)createCDMAllServicesWarmupFailedLog:(id)a3
++ (id)createCDMAllServicesWarmupFailedLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = objc_alloc_init(MEMORY[0x1E69CF050]);
   [v4 setExists:1];
   v5 = objc_alloc_init(MEMORY[0x1E69CF040]);
   [v5 setFailed:v4];
   v6 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v6 setEventMetadata:v3];
+  [v6 setEventMetadata:logCopy];
   [v6 setCdmAllServicesWarmupContext:v5];
   v7 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v7 setMainEvent:v6];
@@ -4549,15 +4549,15 @@ LABEL_21:
   return v7;
 }
 
-+ (id)createCDMAllServicesWarmupEndedLog:(id)a3
++ (id)createCDMAllServicesWarmupEndedLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = objc_alloc_init(MEMORY[0x1E69CF048]);
   [v4 setExists:1];
   v5 = objc_alloc_init(MEMORY[0x1E69CF040]);
   [v5 setEnded:v4];
   v6 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v6 setEventMetadata:v3];
+  [v6 setEventMetadata:logCopy];
   [v6 setCdmAllServicesWarmupContext:v5];
   v7 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v7 setMainEvent:v6];
@@ -4565,15 +4565,15 @@ LABEL_21:
   return v7;
 }
 
-+ (id)createCDMAllServicesWarmupStartedLog:(id)a3
++ (id)createCDMAllServicesWarmupStartedLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = objc_alloc_init(MEMORY[0x1E69CF058]);
   [v4 setExists:1];
   v5 = objc_alloc_init(MEMORY[0x1E69CF040]);
   [v5 setStartedOrChanged:v4];
   v6 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v6 setEventMetadata:v3];
+  [v6 setEventMetadata:logCopy];
   [v6 setCdmAllServicesWarmupContext:v5];
   v7 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v7 setMainEvent:v6];
@@ -4581,15 +4581,15 @@ LABEL_21:
   return v7;
 }
 
-+ (id)createCDMClientWarmupEndedLog:(id)a3
++ (id)createCDMClientWarmupEndedLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = objc_alloc_init(MEMORY[0x1E69CF0B0]);
   [v4 setExists:1];
   v5 = objc_alloc_init(MEMORY[0x1E69CF0A8]);
   [v5 setEnded:v4];
   v6 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v6 setEventMetadata:v3];
+  [v6 setEventMetadata:logCopy];
   [v6 setCdmClientWarmupContext:v5];
   v7 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v7 setMainEvent:v6];
@@ -4597,15 +4597,15 @@ LABEL_21:
   return v7;
 }
 
-+ (id)createCDMAllServicesSetupFailedLog:(id)a3
++ (id)createCDMAllServicesSetupFailedLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = objc_alloc_init(MEMORY[0x1E69CF030]);
   [v4 setExists:1];
   v5 = objc_alloc_init(MEMORY[0x1E69CF020]);
   [v5 setFailed:v4];
   v6 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v6 setEventMetadata:v3];
+  [v6 setEventMetadata:logCopy];
   [v6 setCdmAllServicesSetupContext:v5];
   v7 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v7 setMainEvent:v6];
@@ -4613,15 +4613,15 @@ LABEL_21:
   return v7;
 }
 
-+ (id)createCDMAllServicesSetupEndedLog:(id)a3
++ (id)createCDMAllServicesSetupEndedLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = objc_alloc_init(MEMORY[0x1E69CF028]);
   [v4 setExists:1];
   v5 = objc_alloc_init(MEMORY[0x1E69CF020]);
   [v5 setEnded:v4];
   v6 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v6 setEventMetadata:v3];
+  [v6 setEventMetadata:logCopy];
   [v6 setCdmAllServicesSetupContext:v5];
   v7 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v7 setMainEvent:v6];
@@ -4629,15 +4629,15 @@ LABEL_21:
   return v7;
 }
 
-+ (id)createCDMAllServicesSetupStartedLog:(id)a3
++ (id)createCDMAllServicesSetupStartedLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = objc_alloc_init(MEMORY[0x1E69CF038]);
   [v4 setExists:1];
   v5 = objc_alloc_init(MEMORY[0x1E69CF020]);
   [v5 setStartedOrChanged:v4];
   v6 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v6 setEventMetadata:v3];
+  [v6 setEventMetadata:logCopy];
   [v6 setCdmAllServicesSetupContext:v5];
   v7 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v7 setMainEvent:v6];
@@ -4645,15 +4645,15 @@ LABEL_21:
   return v7;
 }
 
-+ (id)createCDMClientSetupEndedLog:(id)a3
++ (id)createCDMClientSetupEndedLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = objc_alloc_init(MEMORY[0x1E69CF090]);
   [v4 setExists:1];
   v5 = objc_alloc_init(MEMORY[0x1E69CF088]);
   [v5 setEnded:v4];
   v6 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v6 setEventMetadata:v3];
+  [v6 setEventMetadata:logCopy];
   [v6 setCdmClientSetupContext:v5];
   v7 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v7 setMainEvent:v6];
@@ -4661,21 +4661,21 @@ LABEL_21:
   return v7;
 }
 
-+ (id)createCDMRequestEndedLog:(id)a3 metadata:(id)a4
++ (id)createCDMRequestEndedLog:(id)log metadata:(id)metadata
 {
   v41 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v28 = a4;
+  logCopy = log;
+  metadataCopy = metadata;
   v30 = objc_alloc_init(MEMORY[0x1E69CF148]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v29)
+  if (logCopy)
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v6 = [v29 parses];
-    v7 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    parses = [logCopy parses];
+    v7 = [parses countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v7)
     {
       v8 = *v36;
@@ -4685,22 +4685,22 @@ LABEL_21:
         {
           if (*v36 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(parses);
           }
 
           v10 = [SiriNLUSELFLogUtils convertUserParse:*(*(&v35 + 1) + 8 * i)];
           v11 = v10;
           if (v10)
           {
-            v12 = [v10 mainItem];
-            [v30 addParses:v12];
+            mainItem = [v10 mainItem];
+            [v30 addParses:mainItem];
 
             v33 = 0u;
             v34 = 0u;
             v31 = 0u;
             v32 = 0u;
-            v13 = [v11 tier1Events];
-            v14 = [v13 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            tier1Events = [v11 tier1Events];
+            v14 = [tier1Events countByEnumeratingWithState:&v31 objects:v39 count:16];
             if (v14)
             {
               v15 = *v32;
@@ -4710,13 +4710,13 @@ LABEL_21:
                 {
                   if (*v32 != v15)
                   {
-                    objc_enumerationMutation(v13);
+                    objc_enumerationMutation(tier1Events);
                   }
 
                   [v5 addObject:*(*(&v31 + 1) + 8 * j)];
                 }
 
-                v14 = [v13 countByEnumeratingWithState:&v31 objects:v39 count:16];
+                v14 = [tier1Events countByEnumeratingWithState:&v31 objects:v39 count:16];
               }
 
               while (v14);
@@ -4724,19 +4724,19 @@ LABEL_21:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v7 = [parses countByEnumeratingWithState:&v35 objects:v40 count:16];
       }
 
       while (v7);
     }
 
-    v17 = [v29 languageVariantResult];
-    v18 = v17 == 0;
+    languageVariantResult = [logCopy languageVariantResult];
+    v18 = languageVariantResult == 0;
 
     if (!v18)
     {
-      v19 = [v29 languageVariantResult];
-      v20 = [SiriNLUSELFLogUtils convertLvcResult:v19];
+      languageVariantResult2 = [logCopy languageVariantResult];
+      v20 = [SiriNLUSELFLogUtils convertLvcResult:languageVariantResult2];
       [v30 setLanguageVariantClassifierResult:v20];
     }
   }
@@ -4744,83 +4744,83 @@ LABEL_21:
   v21 = objc_alloc_init(MEMORY[0x1E69CF140]);
   [v21 setEnded:v30];
   v22 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
-  [v22 setEventMetadata:v28];
+  [v22 setEventMetadata:metadataCopy];
   [v22 setCdmRequestContext:v21];
   v23 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v23 setMainEvent:v22];
   v24 = [v5 copy];
   [(SiriInstrumentationEventContainer *)v23 setTier1Events:v24];
 
-  v25 = [(SiriInstrumentationEventContainer *)v23 tier1Events];
-  [SiriNLUSELFLogUtils populateEventsWithMetadata:v25 metadata:v28];
+  tier1Events2 = [(SiriInstrumentationEventContainer *)v23 tier1Events];
+  [SiriNLUSELFLogUtils populateEventsWithMetadata:tier1Events2 metadata:metadataCopy];
 
   v26 = *MEMORY[0x1E69E9840];
 
   return v23;
 }
 
-+ (id)createNLXCurareContext:(id)a3 metadata:(id)a4
++ (id)createNLXCurareContext:(id)context metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  metadataCopy = metadata;
   v7 = objc_alloc_init(MEMORY[0x1E69CF2B0]);
-  v8 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:v5];
+  v8 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:contextCopy];
   [v7 setCurareId:v8];
 
   v9 = objc_alloc_init(MEMORY[0x1E69CF2A0]);
   [v9 setNlxCurareContext:v7];
-  [v9 setEventMetadata:v6];
+  [v9 setEventMetadata:metadataCopy];
   v10 = objc_alloc_init(SiriInstrumentationEventContainer);
   [(SiriInstrumentationEventContainer *)v10 setMainEvent:v9];
 
   return v10;
 }
 
-+ (id)createNLXClientEventMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithRequestId:(id)a5 andWithSubRequestId:(id)a6 andWithResultCandidateId:(id)a7 andWithRequester:(int *)a8
++ (id)createNLXClientEventMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithRequestId:(id)requestId andWithSubRequestId:(id)subRequestId andWithResultCandidateId:(id)candidateId andWithRequester:(int *)requester
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  idCopy = id;
+  trpIdCopy = trpId;
+  requestIdCopy = requestId;
+  subRequestIdCopy = subRequestId;
+  candidateIdCopy = candidateId;
   v18 = objc_alloc_init(MEMORY[0x1E69CF2A8]);
-  v19 = [SiriNLUSELFLogUtils convertUUID:v13];
+  v19 = [SiriNLUSELFLogUtils convertUUID:idCopy];
   [v18 setNlId:v19];
 
-  v20 = [SiriNLUSELFLogUtils convertUUID:v14];
+  v20 = [SiriNLUSELFLogUtils convertUUID:trpIdCopy];
   [v18 setTrpId:v20];
 
-  v21 = [SiriNLUSELFLogUtils convertUUID:v15];
+  v21 = [SiriNLUSELFLogUtils convertUUID:requestIdCopy];
   [v18 setRequestId:v21];
 
-  v22 = [SiriNLUSELFLogUtils convertUUID:v16];
+  v22 = [SiriNLUSELFLogUtils convertUUID:subRequestIdCopy];
   [v18 setSubRequestId:v22];
 
-  [v18 setResultCandidateId:v17];
-  [v18 setComponentInvocationSource:{+[SiriNLUSELFLogUtils convertComponentInvocationSource:](SiriNLUSELFLogUtils, "convertComponentInvocationSource:", *a8)}];
+  [v18 setResultCandidateId:candidateIdCopy];
+  [v18 setComponentInvocationSource:{+[SiriNLUSELFLogUtils convertComponentInvocationSource:](SiriNLUSELFLogUtils, "convertComponentInvocationSource:", *requester)}];
 
   return v18;
 }
 
-+ (id)createNLXClientEventMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithResultCandidateId:(id)a5 andWithRequester:(int *)a6
++ (id)createNLXClientEventMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithResultCandidateId:(id)candidateId andWithRequester:(int *)requester
 {
-  v6 = [a1 createNLXClientEventMetadataWithNlId:a3 andWithTrpId:a4 andWithRequestId:0 andWithSubRequestId:0 andWithResultCandidateId:a5 andWithRequester:a6];
+  v6 = [self createNLXClientEventMetadataWithNlId:id andWithTrpId:trpId andWithRequestId:0 andWithSubRequestId:0 andWithResultCandidateId:candidateId andWithRequester:requester];
 
   return v6;
 }
 
-+ (void)populateEventsWithMetadata:(id)a3 metadata:(id)a4
++ (void)populateEventsWithMetadata:(id)metadata metadata:(id)a4
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  metadataCopy = metadata;
   v6 = a4;
-  if (v5)
+  if (metadataCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = v5;
+    v7 = metadataCopy;
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {

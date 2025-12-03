@@ -1,22 +1,22 @@
 @interface _UITextCursorTrailingGlowView
-- (CGPath)pathForRect:(CGRect)a3;
+- (CGPath)pathForRect:(CGRect)rect;
 - (CGRect)estimatedCurrentFrame;
-- (_UITextCursorTrailingGlowView)initWithFrame:(CGRect)a3;
+- (_UITextCursorTrailingGlowView)initWithFrame:(CGRect)frame;
 - (void)_animate;
 - (void)_updateShapeAndAnimate;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)cursorDidMoveToFrame:(CGRect)a3 fromPreviousFrame:(CGRect)a4 isNewLine:(BOOL)a5;
-- (void)setTintColor:(id)a3;
-- (void)setTrailingAnimationEnabled:(BOOL)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)cursorDidMoveToFrame:(CGRect)frame fromPreviousFrame:(CGRect)previousFrame isNewLine:(BOOL)line;
+- (void)setTintColor:(id)color;
+- (void)setTrailingAnimationEnabled:(BOOL)enabled;
 @end
 
 @implementation _UITextCursorTrailingGlowView
 
-- (_UITextCursorTrailingGlowView)initWithFrame:(CGRect)a3
+- (_UITextCursorTrailingGlowView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = _UITextCursorTrailingGlowView;
-  v3 = [(UIView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,25 +39,25 @@
     [v11 trailingGlowAlpha];
     [(UIView *)v4 setAlpha:?];
 
-    v12 = [(UIView *)v4 tintColor];
+    tintColor = [(UIView *)v4 tintColor];
     [(UIView *)v4 alpha];
-    v13 = [v12 colorWithAlphaComponent:?];
+    v13 = [tintColor colorWithAlphaComponent:?];
     [(UIDictationGlowEffect *)v4->_dictationGlowEffect setTintColor:v13];
   }
 
   return v4;
 }
 
-- (void)setTrailingAnimationEnabled:(BOOL)a3
+- (void)setTrailingAnimationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = +[_UIDictationSettingsDomain rootSettings];
-  v6 = [v5 trailAnimationEnabled];
+  trailAnimationEnabled = [v5 trailAnimationEnabled];
 
-  if (v6)
+  if (trailAnimationEnabled)
   {
-    self->_trailingAnimationEnabled = v3;
-    if (v3)
+    self->_trailingAnimationEnabled = enabledCopy;
+    if (enabledCopy)
     {
       if ([(UIView *)self isHidden])
       {
@@ -69,9 +69,9 @@
 
     else if (self->_animation)
     {
-      v7 = [(UIView *)self->_shapeView layer];
-      v8 = [v7 mask];
-      [v8 removeAnimationForKey:@"mask animation"];
+      layer = [(UIView *)self->_shapeView layer];
+      mask = [layer mask];
+      [mask removeAnimationForKey:@"mask animation"];
 
       animation = self->_animation;
       self->_animation = 0;
@@ -92,10 +92,10 @@
     v5 = v4;
     [(UIView *)self bounds];
     [(UIView *)self->_shapeView setFrame:0.0, 0.0, v5];
-    v6 = [(UIView *)self tintColor];
-    v7 = [v6 CGColor];
-    v8 = [(_UIShapeView *)self->_shapeView shapeLayer];
-    [v8 setFillColor:v7];
+    tintColor = [(UIView *)self tintColor];
+    cGColor = [tintColor CGColor];
+    shapeLayer = [(_UIShapeView *)self->_shapeView shapeLayer];
+    [shapeLayer setFillColor:cGColor];
 
     [(_UITextCursorTrailingGlowView *)self _animate];
   }
@@ -132,19 +132,19 @@
   v19 = CAFrameRateRangeMake(30.0, *&y, v16);
   [(CABasicAnimation *)self->_animation setPreferredFrameRateRange:*&v19.minimum, *&v19.maximum, *&v19.preferred];
 
-  v17 = [(_UIShapeView *)self->_shapeView shapeLayer];
-  [v17 addAnimation:self->_animation forKey:@"mask animation"];
+  shapeLayer = [(_UIShapeView *)self->_shapeView shapeLayer];
+  [shapeLayer addAnimation:self->_animation forKey:@"mask animation"];
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   self->_animationStartTime = v18;
 }
 
-- (CGPath)pathForRect:(CGRect)a3
+- (CGPath)pathForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = +[UIBezierPath bezierPath];
   v8 = +[_UIDictationSettingsDomain rootSettings];
   [v8 headHeight];
@@ -195,35 +195,35 @@
   v27.size.height = height;
   [v7 addLineToPoint:{v17, (1.0 - v10) * CGRectGetMaxY(v27)}];
   [v7 closePath];
-  v18 = [v7 CGPath];
+  cGPath = [v7 CGPath];
 
-  return v18;
+  return cGPath;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = _UITextCursorTrailingGlowView;
-  v4 = a3;
-  [(UIView *)&v7 setTintColor:v4];
+  colorCopy = color;
+  [(UIView *)&v7 setTintColor:colorCopy];
   v5 = [_UIDictationSettingsDomain rootSettings:v7.receiver];
   [v5 trailingGlowAlpha];
-  v6 = [v4 colorWithAlphaComponent:?];
+  v6 = [colorCopy colorWithAlphaComponent:?];
 
   [(UIDictationGlowEffect *)self->_dictationGlowEffect setTintColor:v6];
 }
 
-- (void)cursorDidMoveToFrame:(CGRect)a3 fromPreviousFrame:(CGRect)a4 isNewLine:(BOOL)a5
+- (void)cursorDidMoveToFrame:(CGRect)frame fromPreviousFrame:(CGRect)previousFrame isNewLine:(BOOL)line
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  if (a5 && self->_animation)
+  height = previousFrame.size.height;
+  width = previousFrame.size.width;
+  y = previousFrame.origin.y;
+  x = previousFrame.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
+  if (line && self->_animation)
   {
     [(_UITextCursorTrailingGlowView *)self setTrailingAnimationEnabled:0];
   }
@@ -275,9 +275,9 @@
   v12 = v11;
   [(CABasicAnimation *)self->_animation duration];
   v14 = fmax(fmin((v12 - self->_animationStartTime) / v13, 1.0), 0.0);
-  v15 = [(CABasicAnimation *)self->_animation timingFunction];
+  timingFunction = [(CABasicAnimation *)self->_animation timingFunction];
   *&v16 = v14;
-  [v15 _solveForInput:v16];
+  [timingFunction _solveForInput:v16];
   v18 = v17;
 
   v24.origin.x = v4;
@@ -300,20 +300,20 @@
   return result;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
     animation = self->_animation;
     self->_animation = 0;
 
     [(UIView *)self setHidden:1];
-    v6 = [(_UITextCursorTrailingGlowView *)self transitionBlock];
+    transitionBlock = [(_UITextCursorTrailingGlowView *)self transitionBlock];
 
-    if (v6)
+    if (transitionBlock)
     {
-      v7 = [(_UITextCursorTrailingGlowView *)self transitionBlock];
-      v7[2]();
+      transitionBlock2 = [(_UITextCursorTrailingGlowView *)self transitionBlock];
+      transitionBlock2[2]();
     }
   }
 }

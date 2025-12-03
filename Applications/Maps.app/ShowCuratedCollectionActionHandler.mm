@@ -1,24 +1,24 @@
 @interface ShowCuratedCollectionActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation ShowCuratedCollectionActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v12 = a3;
-  v5 = a4;
+  actionCopy = action;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v12;
+    v6 = actionCopy;
     v7 = [MKMapItemIdentifier alloc];
-    v8 = [v6 curatedCollectionMUID];
-    v9 = [v6 resultProviderID];
+    curatedCollectionMUID = [v6 curatedCollectionMUID];
+    resultProviderID = [v6 resultProviderID];
 
-    v10 = [v7 initWithMUID:v8 resultProviderID:v9 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
-    v11 = [v5 appCoordinator];
-    [v11 openCuratedCollectionWithIdentifier:v10];
+    v10 = [v7 initWithMUID:curatedCollectionMUID resultProviderID:resultProviderID coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
+    appCoordinator = [contextCopy appCoordinator];
+    [appCoordinator openCuratedCollectionWithIdentifier:v10];
   }
 }
 

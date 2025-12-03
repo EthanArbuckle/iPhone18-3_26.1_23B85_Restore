@@ -1,15 +1,15 @@
 @interface PGMemoryDebugConvenience
-+ (id)memoryDebugInformationWithMomentNodes:(id)a3 meaningLabels:(id)a4 serviceManager:(id)a5;
++ (id)memoryDebugInformationWithMomentNodes:(id)nodes meaningLabels:(id)labels serviceManager:(id)manager;
 @end
 
 @implementation PGMemoryDebugConvenience
 
-+ (id)memoryDebugInformationWithMomentNodes:(id)a3 meaningLabels:(id)a4 serviceManager:(id)a5
++ (id)memoryDebugInformationWithMomentNodes:(id)nodes meaningLabels:(id)labels serviceManager:(id)manager
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v32 = a4;
-  v8 = a5;
+  nodesCopy = nodes;
+  labelsCopy = labels;
+  managerCopy = manager;
   v29 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = [MEMORY[0x277CBEB58] set];
@@ -17,7 +17,7 @@
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v7;
+  obj = nodesCopy;
   v10 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v10)
   {
@@ -33,7 +33,7 @@
         }
 
         v14 = *(*(&v39 + 1) + 8 * i);
-        v15 = [v14 debugDictionaryWithServiceManager:{v8, v29}];
+        v15 = [v14 debugDictionaryWithServiceManager:{managerCopy, v29}];
         [v31 addObject:v15];
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
@@ -51,7 +51,7 @@
 
   v16 = v29;
   [v29 setObject:v31 forKeyedSubscript:@"backingMoments"];
-  if ([v32 count])
+  if ([labelsCopy count])
   {
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v33 = 0u;
@@ -74,10 +74,10 @@
           }
 
           v23 = *(*(&v33 + 1) + 8 * j);
-          if (v32)
+          if (labelsCopy)
           {
-            v24 = [*(*(&v33 + 1) + 8 * j) meaningLabels];
-            v25 = [v24 intersectsSet:v32];
+            meaningLabels = [*(*(&v33 + 1) + 8 * j) meaningLabels];
+            v25 = [meaningLabels intersectsSet:labelsCopy];
 
             if (!v25)
             {
@@ -85,7 +85,7 @@
             }
           }
 
-          v26 = [v23 debugDictionaryWithServiceManager:{v8, v29}];
+          v26 = [v23 debugDictionaryWithServiceManager:{managerCopy, v29}];
           [v17 addObject:v26];
         }
 

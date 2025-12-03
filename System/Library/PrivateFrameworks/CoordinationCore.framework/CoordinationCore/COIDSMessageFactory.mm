@@ -1,9 +1,9 @@
 @interface COIDSMessageFactory
 - (COIDSMessageFactory)init;
-- (id)decodeDictionary:(id)a3 error:(id *)a4;
-- (id)encodeError:(id)a3;
-- (id)encodeRequest:(id)a3 withIDSIdentifier:(BOOL)a4;
-- (id)encodeResponse:(id)a3;
+- (id)decodeDictionary:(id)dictionary error:(id *)error;
+- (id)encodeError:(id)error;
+- (id)encodeRequest:(id)request withIDSIdentifier:(BOOL)identifier;
+- (id)encodeResponse:(id)response;
 @end
 
 @implementation COIDSMessageFactory
@@ -23,14 +23,14 @@
   return v2;
 }
 
-- (id)encodeRequest:(id)a3 withIDSIdentifier:(BOOL)a4
+- (id)encodeRequest:(id)request withIDSIdentifier:(BOOL)identifier
 {
-  v4 = a4;
+  identifierCopy = identifier;
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [[COIDSMessage alloc] initWithRequest:v6];
+  requestCopy = request;
+  v7 = [[COIDSMessage alloc] initWithRequest:requestCopy];
 
-  if (v4)
+  if (identifierCopy)
   {
     idsIdentifier = self->_idsIdentifier;
     v12 = @"IDMK";
@@ -44,26 +44,26 @@
   return v7;
 }
 
-- (id)encodeResponse:(id)a3
+- (id)encodeResponse:(id)response
 {
-  v3 = a3;
-  v4 = [[COIDSMessage alloc] initWithResponse:v3];
+  responseCopy = response;
+  v4 = [[COIDSMessage alloc] initWithResponse:responseCopy];
 
   return v4;
 }
 
-- (id)encodeError:(id)a3
+- (id)encodeError:(id)error
 {
-  v3 = a3;
-  v4 = [[COIDSMessage alloc] initWithError:v3];
+  errorCopy = error;
+  v4 = [[COIDSMessage alloc] initWithError:errorCopy];
 
   return v4;
 }
 
-- (id)decodeDictionary:(id)a3 error:(id *)a4
+- (id)decodeDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
-  v6 = [[COIDSMessage alloc] initWithDictionary:v5 error:a4];
+  dictionaryCopy = dictionary;
+  v6 = [[COIDSMessage alloc] initWithDictionary:dictionaryCopy error:error];
 
   return v6;
 }

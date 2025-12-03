@@ -1,32 +1,32 @@
 @interface BaseTrack
-- (BaseTrack)initWithObservation:(id)a3 identifier:(int64_t)a4 type:(int64_t)a5 atTime:(id *)a6;
+- (BaseTrack)initWithObservation:(id)observation identifier:(int64_t)identifier type:(int64_t)type atTime:(id *)time;
 - (BaseTrack)pairTrack;
 - (CGRect)lastObservationBounds;
-- (void)addObservation:(id)a3 atTime:(id *)a4;
+- (void)addObservation:(id)observation atTime:(id *)time;
 - (void)dealloc;
 @end
 
 @implementation BaseTrack
 
-- (BaseTrack)initWithObservation:(id)a3 identifier:(int64_t)a4 type:(int64_t)a5 atTime:(id *)a6
+- (BaseTrack)initWithObservation:(id)observation identifier:(int64_t)identifier type:(int64_t)type atTime:(id *)time
 {
-  v11 = a3;
+  observationCopy = observation;
   v18.receiver = self;
   v18.super_class = BaseTrack;
   v12 = [(BaseTrack *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_firstObservation, a3);
-    v14 = *&a6->var0;
-    v13->_firstTimestamp.epoch = a6->var3;
+    objc_storeStrong(&v12->_firstObservation, observation);
+    v14 = *&time->var0;
+    v13->_firstTimestamp.epoch = time->var3;
     *&v13->_firstTimestamp.value = v14;
-    objc_storeStrong(&v13->_lastObservation, a3);
-    var3 = a6->var3;
-    *&v13->_lastTimestamp.value = *&a6->var0;
+    objc_storeStrong(&v13->_lastObservation, observation);
+    var3 = time->var3;
+    *&v13->_lastTimestamp.value = *&time->var0;
     v13->_lastTimestamp.epoch = var3;
-    v13->_identifier = a4;
-    v13->_type = a5;
+    v13->_identifier = identifier;
+    v13->_type = type;
     v16 = v13;
   }
 
@@ -40,11 +40,11 @@
   [(BaseTrack *)&v2 dealloc];
 }
 
-- (void)addObservation:(id)a3 atTime:(id *)a4
+- (void)addObservation:(id)observation atTime:(id *)time
 {
-  objc_storeStrong(&self->_lastObservation, a3);
-  v6 = *&a4->var0;
-  self->_lastTimestamp.epoch = a4->var3;
+  objc_storeStrong(&self->_lastObservation, observation);
+  v6 = *&time->var0;
+  self->_lastTimestamp.epoch = time->var3;
   *&self->_lastTimestamp.value = v6;
 }
 

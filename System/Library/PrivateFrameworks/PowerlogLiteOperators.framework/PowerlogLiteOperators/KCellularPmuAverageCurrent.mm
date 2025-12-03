@@ -1,39 +1,39 @@
 @interface KCellularPmuAverageCurrent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRegulatorCurrent:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRegulatorCurrent:(id)current;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularPmuAverageCurrent
 
-- (void)addRegulatorCurrent:(id)a3
+- (void)addRegulatorCurrent:(id)current
 {
-  v4 = a3;
+  currentCopy = current;
   regulatorCurrents = self->_regulatorCurrents;
-  v8 = v4;
+  v8 = currentCopy;
   if (!regulatorCurrents)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_regulatorCurrents;
     self->_regulatorCurrents = v6;
 
-    v4 = v8;
+    currentCopy = v8;
     regulatorCurrents = self->_regulatorCurrents;
   }
 
-  [(NSMutableArray *)regulatorCurrents addObject:v4];
+  [(NSMutableArray *)regulatorCurrents addObject:currentCopy];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -52,8 +52,8 @@
   v8.receiver = self;
   v8.super_class = KCellularPmuAverageCurrent;
   v4 = [(KCellularPmuAverageCurrent *)&v8 description];
-  v5 = [(KCellularPmuAverageCurrent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularPmuAverageCurrent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -61,11 +61,11 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   if ([(NSMutableArray *)self->_regulatorCurrents count])
@@ -90,8 +90,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -100,24 +100,24 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"regulator_current"];
+    [dictionary setObject:v5 forKey:@"regulator_current"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_version];
-    [v3 setObject:v12 forKey:@"version"];
+    [dictionary setObject:v12 forKey:@"version"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -165,23 +165,23 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 28) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(KCellularPmuAverageCurrent *)self regulatorCurrentsCount])
   {
     [v9 clearRegulatorCurrents];
-    v5 = [(KCellularPmuAverageCurrent *)self regulatorCurrentsCount];
-    if (v5)
+    regulatorCurrentsCount = [(KCellularPmuAverageCurrent *)self regulatorCurrentsCount];
+    if (regulatorCurrentsCount)
     {
-      v6 = v5;
+      v6 = regulatorCurrentsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(KCellularPmuAverageCurrent *)self regulatorCurrentAtIndex:i];
@@ -197,10 +197,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -228,7 +228,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{a3, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{zone, v15}];
         [v6 addRegulatorCurrent:v12];
 
         ++v11;
@@ -251,31 +251,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if (has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_14;
   }
 
   regulatorCurrents = self->_regulatorCurrents;
-  if (regulatorCurrents | *(v4 + 2))
+  if (regulatorCurrents | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)regulatorCurrents isEqual:?])
     {
@@ -285,13 +285,13 @@ LABEL_14:
     }
 
     has = self->_has;
-    v6 = *(v4 + 28);
+    v6 = *(equalCopy + 28);
   }
 
   v8 = (v6 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_version != *(v4 + 6))
+    if ((v6 & 2) == 0 || self->_version != *(equalCopy + 6))
     {
       goto LABEL_14;
     }
@@ -330,14 +330,14 @@ LABEL_15:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 28))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 28))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -345,7 +345,7 @@ LABEL_15:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

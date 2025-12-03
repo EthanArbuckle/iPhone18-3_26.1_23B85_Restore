@@ -1,7 +1,7 @@
 @interface MXIComponentsDescriptor
 - ($340E233F617FB3D5D9EFCE5A6F22D754)destination;
 - (MXIComponentsDescriptor)init;
-- (void)setDestination:(id *)a3;
+- (void)setDestination:(id *)destination;
 @end
 
 @implementation MXIComponentsDescriptor
@@ -31,10 +31,10 @@
   return self;
 }
 
-- (void)setDestination:(id *)a3
+- (void)setDestination:(id *)destination
 {
-  v3 = *&a3->var0;
-  *&self->_destination.b = *&a3->var2;
+  v3 = *&destination->var0;
+  *&self->_destination.b = *&destination->var2;
   *&self->_destination.r = v3;
 }
 

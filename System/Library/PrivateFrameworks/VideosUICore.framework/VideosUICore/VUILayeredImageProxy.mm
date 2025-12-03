@@ -1,42 +1,42 @@
 @interface VUILayeredImageProxy
 + (id)_loadingQueue;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isImageAvailable;
-- (VUILayeredImageProxy)initWithURL:(id)a3 groupType:(int64_t)a4 assetKey:(id)a5;
-- (id)_assetPathWithAssetKey:(id)a3;
+- (VUILayeredImageProxy)initWithURL:(id)l groupType:(int64_t)type assetKey:(id)key;
+- (id)_assetPathWithAssetKey:(id)key;
 - (id)description;
 - (unint64_t)hash;
 - (void)cancel;
 - (void)dealloc;
-- (void)loadWithCompletion:(id)a3;
+- (void)loadWithCompletion:(id)completion;
 @end
 
 @implementation VUILayeredImageProxy
 
-- (VUILayeredImageProxy)initWithURL:(id)a3 groupType:(int64_t)a4 assetKey:(id)a5
+- (VUILayeredImageProxy)initWithURL:(id)l groupType:(int64_t)type assetKey:(id)key
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  keyCopy = key;
   v21.receiver = self;
   v21.super_class = VUILayeredImageProxy;
   v10 = [(VUILayeredImageProxy *)&v21 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [lCopy copy];
     url = v10->_url;
     v10->_url = v11;
 
-    v10->_groupType = a4;
-    v13 = [v9 copy];
+    v10->_groupType = type;
+    v13 = [keyCopy copy];
     assetKey = v10->_assetKey;
     v10->_assetKey = v13;
 
     if (!v10->_assetKey)
     {
-      v15 = [(NSURL *)v10->_url absoluteString];
-      v16 = [v15 vui_SHA256String];
+      absoluteString = [(NSURL *)v10->_url absoluteString];
+      vui_SHA256String = [absoluteString vui_SHA256String];
       v17 = v10->_assetKey;
-      v10->_assetKey = v16;
+      v10->_assetKey = vui_SHA256String;
     }
 
     v18 = [[_TVURLSessionDownloadTaskWrapper alloc] initWithURL:v10->_url];
@@ -77,14 +77,14 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 url];
+    v5 = [equalCopy url];
     v6 = [(VUILayeredImageProxy *)self url];
     if (v5 == v6)
     {
@@ -93,7 +93,7 @@
 
     else
     {
-      v7 = [v4 url];
+      v7 = [equalCopy url];
       v8 = [(VUILayeredImageProxy *)self url];
       v9 = [v7 isEqual:v8];
     }
@@ -119,16 +119,16 @@
 
 - (BOOL)isImageAvailable
 {
-  v3 = [(VUILayeredImageProxy *)self assetKey];
-  v4 = [(VUILayeredImageProxy *)self _assetPathWithAssetKey:v3];
+  assetKey = [(VUILayeredImageProxy *)self assetKey];
+  v4 = [(VUILayeredImageProxy *)self _assetPathWithAssetKey:assetKey];
   v5 = [v4 length] != 0;
 
   return v5;
 }
 
-- (void)loadWithCompletion:(id)a3
+- (void)loadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(VUILayeredImageProxy *)self isLoading])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"-loadWithCompletion: called on an already loading VUILayeredImageProxy"];
@@ -144,11 +144,11 @@
     v24[3] = &unk_279E21F38;
     objc_copyWeak(&v26, &location);
     v24[4] = self;
-    v25 = v4;
+    v25 = completionCopy;
     v5 = MEMORY[0x2743B7C30](v24);
     [VUIPagePerformanceController postNotificationForImageProxy:self withLoadingStatus:1 withError:0];
-    v6 = [(VUILayeredImageProxy *)self assetKey];
-    v7 = [(VUILayeredImageProxy *)self _assetPathWithAssetKey:v6];
+    assetKey = [(VUILayeredImageProxy *)self assetKey];
+    v7 = [(VUILayeredImageProxy *)self _assetPathWithAssetKey:assetKey];
     if (v7 && ([MEMORY[0x277CCAA00] defaultManager], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "fileExistsAtPath:", v7), v8, v9))
     {
       (v5)[2](v5, v7, 0);
@@ -162,18 +162,18 @@
       v18 = __43__VUILayeredImageProxy_loadWithCompletion___block_invoke_3;
       v19 = &unk_279E21F60;
       objc_copyWeak(&v22, &from);
-      v20 = v6;
+      v20 = assetKey;
       v21 = v5;
       v10 = MEMORY[0x2743B7C30](&v16);
       v11 = [VUICoreConfiguration sharedInstance:v16];
-      v12 = [v11 minimalSessionImageLoading];
+      minimalSessionImageLoading = [v11 minimalSessionImageLoading];
 
       downloadTaskWrapper = self->_downloadTaskWrapper;
-      if (v12)
+      if (minimalSessionImageLoading)
       {
         v14 = +[VUIURLImageLoader sharedInstance];
-        v15 = [v14 sharedAMSUrlSession];
-        [(_TVURLSessionDownloadTaskWrapper *)downloadTaskWrapper resumeWithCompletionHandler:v10 session:v15];
+        sharedAMSUrlSession = [v14 sharedAMSUrlSession];
+        [(_TVURLSessionDownloadTaskWrapper *)downloadTaskWrapper resumeWithCompletionHandler:v10 session:sharedAMSUrlSession];
       }
 
       else
@@ -297,13 +297,13 @@ void __37__VUILayeredImageProxy__loadingQueue__block_invoke()
   dispatch_set_target_queue(v2, v3);
 }
 
-- (id)_assetPathWithAssetKey:(id)a3
+- (id)_assetPathWithAssetKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = a3;
+    keyCopy = key;
     v5 = +[VUIAssetLibrary sharedInstance];
-    v6 = [v5 assetPathForKey:v4 inGroupOfType:self->_groupType];
+    v6 = [v5 assetPathForKey:keyCopy inGroupOfType:self->_groupType];
   }
 
   else

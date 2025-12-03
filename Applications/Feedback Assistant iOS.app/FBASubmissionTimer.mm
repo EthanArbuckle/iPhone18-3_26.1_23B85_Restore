@@ -1,17 +1,17 @@
 @interface FBASubmissionTimer
-- (FBASubmissionTimer)initWithDelegate:(id)a3 forTask:(id)a4 initialTimeout:(double)a5;
+- (FBASubmissionTimer)initWithDelegate:(id)delegate forTask:(id)task initialTimeout:(double)timeout;
 - (FBASubmissionTimerDelegate)delegate;
 - (void)dealloc;
-- (void)resetTimerWithInterval:(double)a3;
+- (void)resetTimerWithInterval:(double)interval;
 - (void)timerDidTick;
 @end
 
 @implementation FBASubmissionTimer
 
-- (FBASubmissionTimer)initWithDelegate:(id)a3 forTask:(id)a4 initialTimeout:(double)a5
+- (FBASubmissionTimer)initWithDelegate:(id)delegate forTask:(id)task initialTimeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  taskCopy = task;
   v15.receiver = self;
   v15.super_class = FBASubmissionTimer;
   v10 = [(FBASubmissionTimer *)&v15 init];
@@ -20,19 +20,19 @@
     v11 = +[FBALog appHandle];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v9 taskIdentifier];
-      v13 = [v12 intValue];
+      taskIdentifier = [taskCopy taskIdentifier];
+      intValue = [taskIdentifier intValue];
       *buf = 67109376;
-      v17 = v13;
+      v17 = intValue;
       v18 = 2048;
-      v19 = a5;
+      timeoutCopy = timeout;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "starting submission timer for [%i] with timeout [%f]", buf, 0x12u);
     }
 
-    [(FBASubmissionTimer *)v10 setGivenInterval:a5];
-    [(FBASubmissionTimer *)v10 resetTimerWithInterval:a5];
-    [(FBASubmissionTimer *)v10 setDelegate:v8];
-    [(FBASubmissionTimer *)v10 setTask:v9];
+    [(FBASubmissionTimer *)v10 setGivenInterval:timeout];
+    [(FBASubmissionTimer *)v10 resetTimerWithInterval:timeout];
+    [(FBASubmissionTimer *)v10 setDelegate:delegateCopy];
+    [(FBASubmissionTimer *)v10 setTask:taskCopy];
   }
 
   return v10;
@@ -40,8 +40,8 @@
 
 - (void)dealloc
 {
-  v3 = [(FBASubmissionTimer *)self timer];
-  [v3 invalidate];
+  timer = [(FBASubmissionTimer *)self timer];
+  [timer invalidate];
 
   [(FBASubmissionTimer *)self setTimer:0];
   v4.receiver = self;
@@ -51,26 +51,26 @@
 
 - (void)timerDidTick
 {
-  v3 = [(FBASubmissionTimer *)self timer];
-  [v3 invalidate];
+  timer = [(FBASubmissionTimer *)self timer];
+  [timer invalidate];
 
   [(FBASubmissionTimer *)self setTimer:0];
-  v5 = [(FBASubmissionTimer *)self delegate];
-  v4 = [(FBASubmissionTimer *)self task];
-  [v5 timer:self didTimeoutForTask:v4];
+  delegate = [(FBASubmissionTimer *)self delegate];
+  task = [(FBASubmissionTimer *)self task];
+  [delegate timer:self didTimeoutForTask:task];
 }
 
-- (void)resetTimerWithInterval:(double)a3
+- (void)resetTimerWithInterval:(double)interval
 {
-  v5 = [(FBASubmissionTimer *)self timer];
-  [v5 invalidate];
+  timer = [(FBASubmissionTimer *)self timer];
+  [timer invalidate];
 
-  v6 = [NSTimer timerWithTimeInterval:self target:"timerDidTick" selector:0 userInfo:1 repeats:a3];
+  v6 = [NSTimer timerWithTimeInterval:self target:"timerDidTick" selector:0 userInfo:1 repeats:interval];
   [(FBASubmissionTimer *)self setTimer:v6];
 
   v8 = +[NSRunLoop currentRunLoop];
-  v7 = [(FBASubmissionTimer *)self timer];
-  [v8 addTimer:v7 forMode:NSRunLoopCommonModes];
+  timer2 = [(FBASubmissionTimer *)self timer];
+  [v8 addTimer:timer2 forMode:NSRunLoopCommonModes];
 }
 
 - (FBASubmissionTimerDelegate)delegate

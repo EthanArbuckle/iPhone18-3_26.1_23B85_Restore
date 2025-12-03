@@ -2,11 +2,11 @@
 + (id)sharedMonitor;
 - (BOOL)isNetworkReachable;
 - (COSReachabilityMonitor)init;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
 - (void)startMonitoring;
 - (void)stopMonitoring;
-- (void)updateRadioStateWithCompletion:(id)a3;
+- (void)updateRadioStateWithCompletion:(id)completion;
 - (void)updateReachabilityRadioState;
 @end
 
@@ -180,9 +180,9 @@ LABEL_20:
   self->_monitorStarted = 0;
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  self->_isBluetoothAvailable = [a3 state] == 5;
+  self->_isBluetoothAvailable = [state state] == 5;
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -193,9 +193,9 @@ LABEL_20:
   }
 }
 
-- (void)updateRadioStateWithCompletion:(id)a3
+- (void)updateRadioStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(COSReachabilityMonitor *)self updateReachabilityRadioState];
   v15[0] = 0;
   v15[1] = v15;
@@ -225,7 +225,7 @@ LABEL_20:
     v10[3] = &unk_10026BA60;
     objc_copyWeak(&v13, buf);
     v12 = v15;
-    v11 = v4;
+    v11 = completionCopy;
     v8 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:v10 block:1.0];
     v9 = self->_radioStateTimer;
     self->_radioStateTimer = v8;
@@ -236,7 +236,7 @@ LABEL_20:
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   _Block_object_dispose(v15, 8);
@@ -256,7 +256,7 @@ LABEL_20:
   }
 
   v5 = +[COSReachabilityMonitor sharedMonitor];
-  v6 = [v5 isNetworkReachable];
+  isNetworkReachable = [v5 isNetworkReachable];
 
   self->_radioState = 0;
   if (v3)
@@ -283,7 +283,7 @@ LABEL_20:
     }
   }
 
-  if ((v6 & 1) == 0)
+  if ((isNetworkReachable & 1) == 0)
   {
     v9 = pbb_setupflow_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))

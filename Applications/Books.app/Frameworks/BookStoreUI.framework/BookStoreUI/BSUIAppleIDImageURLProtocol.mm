@@ -1,39 +1,39 @@
 @interface BSUIAppleIDImageURLProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
++ (BOOL)canInitWithRequest:(id)request;
 - (void)startLoading;
 @end
 
 @implementation BSUIAppleIDImageURLProtocol
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v3 = [a3 URL];
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"x-apple-identity-image"];
+  v3 = [request URL];
+  scheme = [v3 scheme];
+  v5 = [scheme isEqualToString:@"x-apple-identity-image"];
 
   return v5;
 }
 
 - (void)startLoading
 {
-  v3 = [(BSUIAppleIDImageURLProtocol *)self request];
-  v8 = [v3 URL];
+  request = [(BSUIAppleIDImageURLProtocol *)self request];
+  v8 = [request URL];
 
   v4 = BSUIGetFamilyMemberImage(v8);
-  v5 = [(BSUIAppleIDImageURLProtocol *)self client];
+  client = [(BSUIAppleIDImageURLProtocol *)self client];
   if (v4)
   {
     v6 = UIImagePNGRepresentation(v4);
     v7 = [[NSURLResponse alloc] initWithURL:v8 MIMEType:@"image/png" expectedContentLength:objc_msgSend(v6 textEncodingName:{"length"), 0}];
-    [v5 URLProtocol:self didReceiveResponse:v7 cacheStoragePolicy:1];
-    [v5 URLProtocol:self didLoadData:v6];
-    [v5 URLProtocolDidFinishLoading:self];
+    [client URLProtocol:self didReceiveResponse:v7 cacheStoragePolicy:1];
+    [client URLProtocol:self didLoadData:v6];
+    [client URLProtocolDidFinishLoading:self];
   }
 
   else
   {
     v6 = [NSError errorWithDomain:@"kBSUIAppleIDImageURLProtocolErrorDomain" code:0 userInfo:0];
-    [v5 URLProtocol:self didFailWithError:v6];
+    [client URLProtocol:self didFailWithError:v6];
   }
 }
 

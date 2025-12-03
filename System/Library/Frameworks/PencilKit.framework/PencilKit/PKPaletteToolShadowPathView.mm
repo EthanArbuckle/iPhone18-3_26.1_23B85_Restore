@@ -1,20 +1,20 @@
 @interface PKPaletteToolShadowPathView
 - (CGSize)intrinsicContentSize;
-- (PKPaletteToolShadowPathView)initWithToolConfiguration:(id)a3;
-- (void)_applyLargeShadowToLayer:(id)a3;
-- (void)_applySmallShadowToLayer:(id)a3;
+- (PKPaletteToolShadowPathView)initWithToolConfiguration:(id)configuration;
+- (void)_applyLargeShadowToLayer:(id)layer;
+- (void)_applySmallShadowToLayer:(id)layer;
 - (void)_updateUI;
-- (void)applyShadowToLayer:(id)a3;
+- (void)applyShadowToLayer:(id)layer;
 - (void)layoutSubviews;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setScalingFactor:(double)a3;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setScalingFactor:(double)factor;
 @end
 
 @implementation PKPaletteToolShadowPathView
 
-- (PKPaletteToolShadowPathView)initWithToolConfiguration:(id)a3
+- (PKPaletteToolShadowPathView)initWithToolConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = PKPaletteToolShadowPathView;
   v5 = [(PKPaletteToolShadowPathView *)&v21 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -22,30 +22,30 @@
   if (v5)
   {
     [(PKPaletteToolShadowPathView *)v5 setUserInteractionEnabled:0];
-    v7 = [(PKPaletteToolShadowPathView *)v6 layer];
-    [v7 setMasksToBounds:0];
+    layer = [(PKPaletteToolShadowPathView *)v6 layer];
+    [layer setMasksToBounds:0];
 
-    v8 = [v4 shadowPath];
-    v9 = [v8 CGPath];
+    shadowPath = [configurationCopy shadowPath];
+    cGPath = [shadowPath CGPath];
 
     v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
     largeShadow = v6->_largeShadow;
     v6->_largeShadow = v10;
 
     [(UIView *)v6->_largeShadow setUserInteractionEnabled:0];
-    v12 = [(UIView *)v6->_largeShadow layer];
-    [v12 setShadowPath:v9];
+    layer2 = [(UIView *)v6->_largeShadow layer];
+    [layer2 setShadowPath:cGPath];
 
-    v13 = [(UIView *)v6->_largeShadow layer];
-    [(PKPaletteToolShadowPathView *)v6 _applyLargeShadowToLayer:v13];
+    layer3 = [(UIView *)v6->_largeShadow layer];
+    [(PKPaletteToolShadowPathView *)v6 _applyLargeShadowToLayer:layer3];
 
     [(PKPaletteToolShadowPathView *)v6 addSubview:v6->_largeShadow];
-    v14 = [v4 shadowPathIncludingTip];
-    v15 = [v14 CGPath];
+    shadowPathIncludingTip = [configurationCopy shadowPathIncludingTip];
+    cGPath2 = [shadowPathIncludingTip CGPath];
 
-    if (v15)
+    if (cGPath2)
     {
-      v9 = v15;
+      cGPath = cGPath2;
     }
 
     v16 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -53,11 +53,11 @@
     v6->_smallShadow = v16;
 
     [(UIView *)v6->_smallShadow setUserInteractionEnabled:0];
-    v18 = [(UIView *)v6->_smallShadow layer];
-    [v18 setShadowPath:v9];
+    layer4 = [(UIView *)v6->_smallShadow layer];
+    [layer4 setShadowPath:cGPath];
 
-    v19 = [(UIView *)v6->_smallShadow layer];
-    [(PKPaletteToolShadowPathView *)v6 _applySmallShadowToLayer:v19];
+    layer5 = [(UIView *)v6->_smallShadow layer];
+    [(PKPaletteToolShadowPathView *)v6 _applySmallShadowToLayer:layer5];
 
     [(PKPaletteToolShadowPathView *)v6 addSubview:v6->_smallShadow];
     [(PKPaletteToolShadowPathView *)v6 _updateUI];
@@ -66,27 +66,27 @@
   return v6;
 }
 
-- (void)applyShadowToLayer:(id)a3
+- (void)applyShadowToLayer:(id)layer
 {
-  v20 = a3;
-  [(PKPaletteToolShadowPathView *)self _applyLargeShadowToLayer:v20];
-  [v20 shadowRadius];
+  layerCopy = layer;
+  [(PKPaletteToolShadowPathView *)self _applyLargeShadowToLayer:layerCopy];
+  [layerCopy shadowRadius];
   v5 = v4;
   [(PKPaletteToolShadowPathView *)self scalingFactor];
-  [v20 setShadowRadius:v5 * v6];
-  [v20 shadowOffset];
+  [layerCopy setShadowRadius:v5 * v6];
+  [layerCopy shadowOffset];
   v8 = v7;
   [(PKPaletteToolShadowPathView *)self scalingFactor];
   v10 = v8 * v9;
-  [v20 shadowOffset];
+  [layerCopy shadowOffset];
   v12 = v11;
   [(PKPaletteToolShadowPathView *)self scalingFactor];
-  [v20 setShadowOffset:{v10, v12 * v13}];
+  [layerCopy setShadowOffset:{v10, v12 * v13}];
   if ([(PKPaletteToolShadowPathView *)self edgeLocation]== 2)
   {
-    [v20 shadowOffset];
+    [layerCopy shadowOffset];
     v15 = -v14;
-    [v20 shadowOffset];
+    [layerCopy shadowOffset];
     v17 = v16;
   }
 
@@ -97,40 +97,40 @@
       goto LABEL_6;
     }
 
-    [v20 shadowOffset];
+    [layerCopy shadowOffset];
     v15 = v18;
-    [v20 shadowOffset];
+    [layerCopy shadowOffset];
     v17 = -v19;
   }
 
-  [v20 setShadowOffset:{v15, v17}];
+  [layerCopy setShadowOffset:{v15, v17}];
 LABEL_6:
 }
 
-- (void)_applyLargeShadowToLayer:(id)a3
+- (void)_applyLargeShadowToLayer:(id)layer
 {
   v3 = MEMORY[0x1E69DC888];
-  v6 = a3;
-  v4 = [v3 blackColor];
-  [v6 setShadowColor:{objc_msgSend(v4, "CGColor")}];
+  layerCopy = layer;
+  blackColor = [v3 blackColor];
+  [layerCopy setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  [v6 setShadowRadius:8.0];
+  [layerCopy setShadowRadius:8.0];
   LODWORD(v5) = 1036831949;
-  [v6 setShadowOpacity:v5];
-  [v6 setShadowOffset:{0.0, 3.0}];
+  [layerCopy setShadowOpacity:v5];
+  [layerCopy setShadowOffset:{0.0, 3.0}];
 }
 
-- (void)_applySmallShadowToLayer:(id)a3
+- (void)_applySmallShadowToLayer:(id)layer
 {
   v3 = MEMORY[0x1E69DC888];
-  v6 = a3;
-  v4 = [v3 blackColor];
-  [v6 setShadowColor:{objc_msgSend(v4, "CGColor")}];
+  layerCopy = layer;
+  blackColor = [v3 blackColor];
+  [layerCopy setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  [v6 setShadowRadius:1.0];
+  [layerCopy setShadowRadius:1.0];
   LODWORD(v5) = 1041865114;
-  [v6 setShadowOpacity:v5];
-  [v6 setShadowOffset:{0.0, 3.0}];
+  [layerCopy setShadowOpacity:v5];
+  [layerCopy setShadowOffset:{0.0, 3.0}];
 }
 
 - (void)layoutSubviews
@@ -144,23 +144,23 @@ LABEL_6:
   [(UIView *)self->_smallShadow setFrame:?];
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
-  if (self->_edgeLocation != a3)
+  if (self->_edgeLocation != location)
   {
-    self->_edgeLocation = a3;
+    self->_edgeLocation = location;
     [(PKPaletteToolShadowPathView *)self _updateUI];
 
     [(PKPaletteToolShadowPathView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   scalingFactor = self->_scalingFactor;
-  if (scalingFactor != a3 && vabdd_f64(scalingFactor, a3) >= fabs(a3 * 0.000000999999997))
+  if (scalingFactor != factor && vabdd_f64(scalingFactor, factor) >= fabs(factor * 0.000000999999997))
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKPaletteToolShadowPathView *)self _updateUI];
 
     [(PKPaletteToolShadowPathView *)self invalidateIntrinsicContentSize];
@@ -203,10 +203,10 @@ LABEL_6:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PKPaletteToolShadowPathView *)self edgeLocation];
+  edgeLocation = [(PKPaletteToolShadowPathView *)self edgeLocation];
   v4 = 46.0;
   v5 = 106.0;
-  if (v3 != 2 && v3 != 8)
+  if (edgeLocation != 2 && edgeLocation != 8)
   {
     v4 = 106.0;
     v5 = 46.0;

@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneUtilSparseFixedBitSet
 + (void)initialize;
-- (BOOL)getWithInt:(int)a3;
+- (BOOL)getWithInt:(int)int;
 - (NSString)description;
-- (OrgApacheLuceneUtilSparseFixedBitSet)setWithInt:(int)a3;
+- (OrgApacheLuceneUtilSparseFixedBitSet)setWithInt:(int)int;
 - (int)approximateCardinality;
 - (int)cardinality;
-- (int)nextSetBitWithInt:(int)a3;
-- (int)prevSetBitWithInt:(int)a3;
-- (void)and__WithOrgApacheLuceneSearchDocIdSetIterator:(id)a3;
-- (void)clearWithInt:(int)a3 withInt:(int)a4;
+- (int)nextSetBitWithInt:(int)int;
+- (int)prevSetBitWithInt:(int)int;
+- (void)and__WithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
+- (void)clearWithInt:(int)int withInt:(int)withInt;
 - (void)dealloc;
-- (void)or__WithOrgApacheLuceneSearchDocIdSetIterator:(id)a3;
+- (void)or__WithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
 @end
 
 @implementation OrgApacheLuceneUtilSparseFixedBitSet
@@ -60,7 +60,7 @@
   return JavaLangMath_minWithLong_withLong_(self->length_, v6);
 }
 
-- (BOOL)getWithInt:(int)a3
+- (BOOL)getWithInt:(int)int
 {
   indices = self->indices_;
   if (!indices)
@@ -68,16 +68,16 @@
     goto LABEL_11;
   }
 
-  v4 = a3;
-  v6 = a3 >> 12;
+  intCopy = int;
+  v6 = int >> 12;
   size = indices->super.size_;
-  if ((a3 >> 12) >= size)
+  if ((int >> 12) >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 12);
+    IOSArray_throwOutOfBoundsWithMsg(size, int >> 12);
   }
 
   v8 = indices->buffer_[v6];
-  v9 = 1 << (a3 >> 6);
+  v9 = 1 << (int >> 6);
   if ((v8 & v9) == 0)
   {
     LOBYTE(v15) = 0;
@@ -93,7 +93,7 @@
   v11 = bits->super.size_;
   if (v6 >= v11)
   {
-    IOSArray_throwOutOfBoundsWithMsg(v11, a3 >> 12);
+    IOSArray_throwOutOfBoundsWithMsg(v11, int >> 12);
   }
 
   v12 = (&bits->elementType_)[v6];
@@ -110,10 +110,10 @@ LABEL_11:
     IOSArray_throwOutOfBoundsWithMsg(isa_low, v13);
   }
 
-  return (v12[v13 + 2].super.isa >> v4) & 1;
+  return (v12[v13 + 2].super.isa >> intCopy) & 1;
 }
 
-- (OrgApacheLuceneUtilSparseFixedBitSet)setWithInt:(int)a3
+- (OrgApacheLuceneUtilSparseFixedBitSet)setWithInt:(int)int
 {
   indices = self->indices_;
   if (!indices)
@@ -121,16 +121,16 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  v4 = a3;
-  v6 = a3 >> 12;
+  intCopy = int;
+  v6 = int >> 12;
   size = indices->super.size_;
   if (v6 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 12);
+    IOSArray_throwOutOfBoundsWithMsg(size, int >> 12);
   }
 
   v8 = indices->buffer_[v6];
-  v9 = a3 >> 6;
+  v9 = int >> 6;
   if ((v8 & (1 << v9)) != 0)
   {
     bits = self->bits_;
@@ -152,7 +152,7 @@ LABEL_11:
           IOSArray_throwOutOfBoundsWithMsg(result, v13);
         }
 
-        v12[v13 + 2].super.isa = (v12[v13 + 2].super.isa | (1 << v4));
+        v12[v13 + 2].super.isa = (v12[v13 + 2].super.isa | (1 << intCopy));
         return result;
       }
     }
@@ -164,26 +164,26 @@ LABEL_17:
   if (v8)
   {
 
-    return sub_100099FF4(self, v6, v9, v4, v8);
+    return sub_100099FF4(self, v6, v9, intCopy, v8);
   }
 
   else
   {
 
-    return sub_100099EC0(self, v6, v9, v4);
+    return sub_100099EC0(self, v6, v9, intCopy);
   }
 }
 
-- (void)clearWithInt:(int)a3 withInt:(int)a4
+- (void)clearWithInt:(int)int withInt:(int)withInt
 {
-  if (a3 < a4)
+  if (int < withInt)
   {
-    v4 = self;
-    v5 = a3 >> 12;
-    v6 = a4 - 1;
-    if (v5 == (a4 - 1) >> 12)
+    selfCopy = self;
+    v5 = int >> 12;
+    v6 = withInt - 1;
+    if (v5 == (withInt - 1) >> 12)
     {
-      v7 = a3 & 0xFFF;
+      v7 = int & 0xFFF;
       v8 = v6 & 0xFFF;
       v9 = v5;
     }
@@ -191,13 +191,13 @@ LABEL_17:
     else
     {
       v10 = v6 >> 12;
-      sub_10009A7DC(self, v5, a3 & 0xFFF, 0xFFFu);
+      sub_10009A7DC(self, v5, int & 0xFFF, 0xFFFu);
       v11 = (v5 + 1);
       if (v11 < v10)
       {
         do
         {
-          indices = v4->indices_;
+          indices = selfCopy->indices_;
           if (!indices)
           {
             goto LABEL_18;
@@ -209,8 +209,8 @@ LABEL_17:
             IOSArray_throwOutOfBoundsWithMsg(size, v11);
           }
 
-          v4->nonZeroLongCount_ -= JavaLangLong_bitCountWithLong_(indices->buffer_[v11]);
-          v14 = v4->indices_;
+          selfCopy->nonZeroLongCount_ -= JavaLangLong_bitCountWithLong_(indices->buffer_[v11]);
+          v14 = selfCopy->indices_;
           v15 = v14->super.size_;
           if (v11 >= v15)
           {
@@ -218,7 +218,7 @@ LABEL_17:
           }
 
           v14->buffer_[v11] = 0;
-          bits = v4->bits_;
+          bits = selfCopy->bits_;
           if (!bits)
           {
 LABEL_18:
@@ -232,7 +232,7 @@ LABEL_18:
       }
 
       v8 = v6 & 0xFFF;
-      self = v4;
+      self = selfCopy;
       v9 = v6 >> 12;
       v7 = 0;
     }
@@ -241,7 +241,7 @@ LABEL_18:
   }
 }
 
-- (int)nextSetBitWithInt:(int)a3
+- (int)nextSetBitWithInt:(int)int
 {
   indices = self->indices_;
   if (!indices)
@@ -249,11 +249,11 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  v6 = a3 >> 12;
+  v6 = int >> 12;
   size = indices->super.size_;
-  if ((a3 >> 12) >= size)
+  if ((int >> 12) >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 12);
+    IOSArray_throwOutOfBoundsWithMsg(size, int >> 12);
   }
 
   bits = self->bits_;
@@ -266,12 +266,12 @@ LABEL_18:
   v10 = bits->super.size_;
   if (v6 >= v10)
   {
-    IOSArray_throwOutOfBoundsWithMsg(v10, a3 >> 12);
+    IOSArray_throwOutOfBoundsWithMsg(v10, int >> 12);
   }
 
   v11 = (&bits->elementType_)[v6];
-  v12 = a3 >> 6;
-  v13 = 1 << (a3 >> 6);
+  v12 = int >> 6;
+  v13 = 1 << (int >> 6);
   v14 = JavaLangLong_bitCountWithLong_(v9 & (v13 - 1));
   if ((v9 & v13) != 0)
   {
@@ -286,16 +286,16 @@ LABEL_18:
       IOSArray_throwOutOfBoundsWithMsg(isa_low, v14);
     }
 
-    v16 = v11[v14 + 2].super.isa >> a3;
+    v16 = v11[v14 + 2].super.isa >> int;
     if (v16)
     {
-      return JavaLangLong_numberOfTrailingZerosWithLong_(v16) + a3;
+      return JavaLangLong_numberOfTrailingZerosWithLong_(v16) + int;
     }
 
     v14 = (v14 + 1);
   }
 
-  v18 = v9 >> ((a3 >> 6) & 0x3F);
+  v18 = v9 >> ((int >> 6) & 0x3F);
   if (v18 <= 1)
   {
 
@@ -319,7 +319,7 @@ LABEL_21:
   return JavaLangLong_numberOfTrailingZerosWithLong_(v11[v14 + 2].super.isa) | (v20 << 6);
 }
 
-- (int)prevSetBitWithInt:(int)a3
+- (int)prevSetBitWithInt:(int)int
 {
   indices = self->indices_;
   if (!indices)
@@ -327,11 +327,11 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  v6 = a3 >> 12;
+  v6 = int >> 12;
   size = indices->super.size_;
-  if ((a3 >> 12) >= size)
+  if ((int >> 12) >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 12);
+    IOSArray_throwOutOfBoundsWithMsg(size, int >> 12);
   }
 
   bits = self->bits_;
@@ -344,11 +344,11 @@ LABEL_21:
   v10 = bits->super.size_;
   if (v6 >= v10)
   {
-    IOSArray_throwOutOfBoundsWithMsg(v10, a3 >> 12);
+    IOSArray_throwOutOfBoundsWithMsg(v10, int >> 12);
   }
 
   v11 = (&bits->elementType_)[v6];
-  v12 = 1 << (a3 >> 6);
+  v12 = 1 << (int >> 6);
   v13 = JavaLangLong_bitCountWithLong_(v9 & (v12 - 1));
   if ((v9 & v12) != 0)
   {
@@ -363,10 +363,10 @@ LABEL_21:
       IOSArray_throwOutOfBoundsWithMsg(isa_low, v13);
     }
 
-    v15 = v11[v13 + 2].super.isa & ((2 << a3) - 1);
+    v15 = v11[v13 + 2].super.isa & ((2 << int) - 1);
     if (v15)
     {
-      return (63 - JavaLangLong_numberOfLeadingZerosWithLong_(v15)) | a3 & 0xFFFFFFC0;
+      return (63 - JavaLangLong_numberOfLeadingZerosWithLong_(v15)) | int & 0xFFFFFFC0;
     }
   }
 
@@ -383,7 +383,7 @@ LABEL_21:
         IOSArray_throwOutOfBoundsWithMsg(v19, v20);
       }
 
-      return (4032 - (v18 << 6)) | a3 & 0xFFFFF000 | (63 - JavaLangLong_numberOfLeadingZerosWithLong_(v11[v20 + 2].super.isa));
+      return (4032 - (v18 << 6)) | int & 0xFFFFF000 | (63 - JavaLangLong_numberOfLeadingZerosWithLong_(v11[v20 + 2].super.isa));
     }
 
 LABEL_19:
@@ -393,20 +393,20 @@ LABEL_19:
   return sub_10009AC00(self, v6 - 1);
 }
 
-- (void)or__WithOrgApacheLuceneSearchDocIdSetIterator:(id)a3
+- (void)or__WithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
-  SparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator = OrgApacheLuceneUtilBitSetIterator_getSparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator_(a3);
+  SparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator = OrgApacheLuceneUtilBitSetIterator_getSparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator_(iterator);
   if (SparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator)
   {
     v6 = SparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator;
-    [(OrgApacheLuceneUtilBitSet *)self assertUnpositionedWithOrgApacheLuceneSearchDocIdSetIterator:a3];
+    [(OrgApacheLuceneUtilBitSet *)self assertUnpositionedWithOrgApacheLuceneSearchDocIdSetIterator:iterator];
 
     sub_10009B354(self, v6);
   }
 
   else
   {
-    if (!a3 || (v7 = [a3 cost], (indices = self->indices_) == 0))
+    if (!iterator || (v7 = [iterator cost], (indices = self->indices_) == 0))
     {
       JreThrowNullPointerException();
     }
@@ -414,21 +414,21 @@ LABEL_19:
     if (v7 >= indices->super.size_)
     {
 
-      sub_10009B45C(self, a3);
+      sub_10009B45C(self, iterator);
     }
 
     else
     {
       v9.receiver = self;
       v9.super_class = OrgApacheLuceneUtilSparseFixedBitSet;
-      [(OrgApacheLuceneUtilBitSet *)&v9 or__WithOrgApacheLuceneSearchDocIdSetIterator:a3];
+      [(OrgApacheLuceneUtilBitSet *)&v9 or__WithOrgApacheLuceneSearchDocIdSetIterator:iterator];
     }
   }
 }
 
-- (void)and__WithOrgApacheLuceneSearchDocIdSetIterator:(id)a3
+- (void)and__WithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
-  SparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator = OrgApacheLuceneUtilBitSetIterator_getSparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator_(a3);
+  SparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator = OrgApacheLuceneUtilBitSetIterator_getSparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator_(iterator);
   if (SparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator)
   {
     indices = self->indices_;
@@ -497,7 +497,7 @@ LABEL_19:
 
   v21.receiver = self;
   v21.super_class = OrgApacheLuceneUtilSparseFixedBitSet;
-  [(OrgApacheLuceneUtilBitSet *)&v21 and__WithOrgApacheLuceneSearchDocIdSetIterator:a3];
+  [(OrgApacheLuceneUtilBitSet *)&v21 and__WithOrgApacheLuceneSearchDocIdSetIterator:iterator];
 }
 
 - (NSString)description
@@ -516,7 +516,7 @@ LABEL_19:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilSparseFixedBitSet_class_();
     qword_100554270 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

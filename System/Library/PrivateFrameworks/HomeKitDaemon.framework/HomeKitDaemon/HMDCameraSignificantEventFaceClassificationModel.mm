@@ -46,21 +46,21 @@ void __65__HMDCameraSignificantEventFaceClassificationModel_hmbProperties__block
 - (id)createFaceClassification
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraSignificantEventFaceClassificationModel *)self personManagerUUID];
-  if (v3)
+  personManagerUUID = [(HMDCameraSignificantEventFaceClassificationModel *)self personManagerUUID];
+  if (personManagerUUID)
   {
     v4 = [HMDMutableCameraSignificantEventFaceClassification alloc];
-    v5 = [(HMBModel *)self hmbModelID];
-    v6 = [(HMDCameraSignificantEventFaceClassification *)v4 initWithUUID:v5 personManagerUUID:v3];
+    hmbModelID = [(HMBModel *)self hmbModelID];
+    v6 = [(HMDCameraSignificantEventFaceClassification *)v4 initWithUUID:hmbModelID personManagerUUID:personManagerUUID];
 
-    v7 = [(HMDCameraSignificantEventFaceClassificationModel *)self personUUID];
-    [(HMDCameraSignificantEventFaceClassification *)v6 setPersonUUID:v7];
+    personUUID = [(HMDCameraSignificantEventFaceClassificationModel *)self personUUID];
+    [(HMDCameraSignificantEventFaceClassification *)v6 setPersonUUID:personUUID];
 
-    v8 = [(HMDCameraSignificantEventFaceClassificationModel *)self personName];
-    [(HMDCameraSignificantEventFaceClassification *)v6 setPersonName:v8];
+    personName = [(HMDCameraSignificantEventFaceClassificationModel *)self personName];
+    [(HMDCameraSignificantEventFaceClassification *)v6 setPersonName:personName];
 
-    v9 = [(HMDCameraSignificantEventFaceClassificationModel *)self unassociatedFaceCropUUID];
-    [(HMDCameraSignificantEventFaceClassification *)v6 setUnassociatedFaceCropUUID:v9];
+    unassociatedFaceCropUUID = [(HMDCameraSignificantEventFaceClassificationModel *)self unassociatedFaceCropUUID];
+    [(HMDCameraSignificantEventFaceClassification *)v6 setUnassociatedFaceCropUUID:unassociatedFaceCropUUID];
 
     v10 = [(HMDMutableCameraSignificantEventFaceClassification *)v6 copy];
   }
@@ -68,12 +68,12 @@ void __65__HMDCameraSignificantEventFaceClassificationModel_hmbProperties__block
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HMBModel *)v12 debugDescription];
+      v15 = [(HMBModel *)selfCopy debugDescription];
       v18 = 138543618;
       v19 = v14;
       v20 = 2112;

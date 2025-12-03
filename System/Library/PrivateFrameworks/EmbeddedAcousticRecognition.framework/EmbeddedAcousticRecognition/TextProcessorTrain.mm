@@ -1,16 +1,16 @@
 @interface TextProcessorTrain
-- (TextProcessorTrain)initWithVocab:(id)a3;
-- (void)addText:(id)a3;
-- (void)addText:(id)a3 length:(unint64_t)a4;
-- (void)addTokenizedText:(id)a3 length:(unint64_t)a4;
+- (TextProcessorTrain)initWithVocab:(id)vocab;
+- (void)addText:(id)text;
+- (void)addText:(id)text length:(unint64_t)length;
+- (void)addTokenizedText:(id)text length:(unint64_t)length;
 - (void)shuffleSamples;
 @end
 
 @implementation TextProcessorTrain
 
-- (TextProcessorTrain)initWithVocab:(id)a3
+- (TextProcessorTrain)initWithVocab:(id)vocab
 {
-  v5 = a3;
+  vocabCopy = vocab;
   v10.receiver = self;
   v10.super_class = TextProcessorTrain;
   v6 = [(TextProcessorTrain *)&v10 init];
@@ -20,22 +20,22 @@
     text = v6->_text;
     v6->_text = v7;
 
-    objc_storeStrong(&v6->_vocab, a3);
+    objc_storeStrong(&v6->_vocab, vocab);
     v6->_numValidTokens = 0;
   }
 
   return v6;
 }
 
-- (void)addText:(id)a3
+- (void)addText:(id)text
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  textCopy = text;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v6 = [textCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   v7 = objc_alloc_init(TextSequenceTrain);
-  v8 = [(_EARLMTKaldiVocab *)self->_vocab endOfSentenceIndex];
+  endOfSentenceIndex = [(_EARLMTKaldiVocab *)self->_vocab endOfSentenceIndex];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -68,32 +68,32 @@
     while (v11);
   }
 
-  [(TextSequenceTrain *)v7 addWordWithInputId:v8];
+  [(TextSequenceTrain *)v7 addWordWithInputId:endOfSentenceIndex];
   [(NSMutableArray *)self->_text addObject:v7];
 }
 
-- (void)addText:(id)a3 length:(unint64_t)a4
+- (void)addText:(id)text length:(unint64_t)length
 {
-  v24 = a3;
-  v6 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v7 = [v24 componentsSeparatedByCharactersInSet:v6];
+  textCopy = text;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v7 = [textCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
-  v8 = [(_EARLMTKaldiVocab *)self->_vocab endOfSentenceIndex];
-  v9 = [(_EARLMTKaldiVocab *)self->_vocab beginOfSentenceIndex];
+  endOfSentenceIndex = [(_EARLMTKaldiVocab *)self->_vocab endOfSentenceIndex];
+  beginOfSentenceIndex = [(_EARLMTKaldiVocab *)self->_vocab beginOfSentenceIndex];
   v10 = [v7 count];
-  if (a4 && v10)
+  if (length && v10)
   {
     text = self->_text;
-    v12 = [[TextSequenceTrain alloc] initWithLength:a4];
+    v12 = [[TextSequenceTrain alloc] initWithLength:length];
     [(NSMutableArray *)text addObject:v12];
 
     v13 = [(NSMutableArray *)self->_text objectAtIndexedSubscript:[(NSMutableArray *)self->_text count]- 1];
-    [v13 addWordWithInputId:v9];
+    [v13 addWordWithInputId:beginOfSentenceIndex];
 
     if ([v7 count])
     {
       v14 = 0;
-      v15 = 1;
+      lengthCopy = 1;
       do
       {
         vocab = self->_vocab;
@@ -104,16 +104,16 @@
         [v19 addWordWithInputId:v18];
 
         ++self->_numValidTokens;
-        if (++v15 == a4)
+        if (++lengthCopy == length)
         {
-          v15 = a4;
+          lengthCopy = length;
           if (v14 != [v7 count] - 1)
           {
             v20 = self->_text;
-            v21 = [[TextSequenceTrain alloc] initWithLength:a4];
+            v21 = [[TextSequenceTrain alloc] initWithLength:length];
             [(NSMutableArray *)v20 addObject:v21];
 
-            v15 = 0;
+            lengthCopy = 0;
           }
         }
 
@@ -125,16 +125,16 @@
 
     else
     {
-      v15 = 1;
+      lengthCopy = 1;
     }
 
-    v22 = a4 - v15;
-    if (a4 > v15)
+    v22 = length - lengthCopy;
+    if (length > lengthCopy)
     {
       do
       {
         v23 = [(NSMutableArray *)self->_text objectAtIndexedSubscript:[(NSMutableArray *)self->_text count]- 1];
-        [v23 addWordWithInputId:v8];
+        [v23 addWordWithInputId:endOfSentenceIndex];
 
         --v22;
       }
@@ -144,41 +144,41 @@
   }
 }
 
-- (void)addTokenizedText:(id)a3 length:(unint64_t)a4
+- (void)addTokenizedText:(id)text length:(unint64_t)length
 {
-  v28 = a3;
-  v6 = [v28 count];
-  if (a4 && v6)
+  textCopy = text;
+  v6 = [textCopy count];
+  if (length && v6)
   {
-    v7 = [(_EARLMTKaldiVocab *)self->_vocab endOfSentenceIndex];
-    v8 = [(_EARLMTKaldiVocab *)self->_vocab beginOfSentenceIndex];
+    endOfSentenceIndex = [(_EARLMTKaldiVocab *)self->_vocab endOfSentenceIndex];
+    beginOfSentenceIndex = [(_EARLMTKaldiVocab *)self->_vocab beginOfSentenceIndex];
     text = self->_text;
-    v10 = [[TextSequenceTrain alloc] initWithLength:a4];
+    v10 = [[TextSequenceTrain alloc] initWithLength:length];
     [(NSMutableArray *)text addObject:v10];
 
     vocab = self->_vocab;
-    v12 = [v28 objectAtIndexedSubscript:0];
+    v12 = [textCopy objectAtIndexedSubscript:0];
     v13 = [(_EARLMTKaldiVocab *)vocab indexForWord:v12];
 
     v14 = [(NSMutableArray *)self->_text objectAtIndexedSubscript:[(NSMutableArray *)self->_text count]- 1];
-    v15 = 1;
-    [v14 addWordWithInputId:v8 target:v13 mask:1];
+    lengthCopy = 1;
+    [v14 addWordWithInputId:beginOfSentenceIndex target:v13 mask:1];
 
-    if ([v28 count])
+    if ([textCopy count])
     {
       v16 = 0;
-      v15 = 1;
+      lengthCopy = 1;
       do
       {
         v17 = self->_vocab;
-        v18 = [v28 objectAtIndexedSubscript:v16];
+        v18 = [textCopy objectAtIndexedSubscript:v16];
         v19 = [(_EARLMTKaldiVocab *)v17 indexForWord:v18];
 
-        v20 = v7;
-        if (v16 < [v28 count] - 1)
+        v20 = endOfSentenceIndex;
+        if (v16 < [textCopy count] - 1)
         {
           v21 = self->_vocab;
-          v22 = [v28 objectAtIndexedSubscript:v16 + 1];
+          v22 = [textCopy objectAtIndexedSubscript:v16 + 1];
           v20 = [(_EARLMTKaldiVocab *)v21 indexForWord:v22];
         }
 
@@ -186,32 +186,32 @@
         [v23 addWordWithInputId:v19 target:v20 mask:1];
 
         ++self->_numValidTokens;
-        if (++v15 == a4)
+        if (++lengthCopy == length)
         {
-          v15 = a4;
-          if (v16 != [v28 count] - 1)
+          lengthCopy = length;
+          if (v16 != [textCopy count] - 1)
           {
             v24 = self->_text;
-            v25 = [[TextSequenceTrain alloc] initWithLength:a4];
+            v25 = [[TextSequenceTrain alloc] initWithLength:length];
             [(NSMutableArray *)v24 addObject:v25];
 
-            v15 = 0;
+            lengthCopy = 0;
           }
         }
 
         ++v16;
       }
 
-      while (v16 < [v28 count]);
+      while (v16 < [textCopy count]);
     }
 
-    v26 = a4 - v15;
-    if (a4 > v15)
+    v26 = length - lengthCopy;
+    if (length > lengthCopy)
     {
       do
       {
         v27 = [(NSMutableArray *)self->_text objectAtIndexedSubscript:[(NSMutableArray *)self->_text count]- 1];
-        [v27 addWordWithInputId:v7 target:v7 mask:0];
+        [v27 addWordWithInputId:endOfSentenceIndex target:endOfSentenceIndex mask:0];
 
         --v26;
       }

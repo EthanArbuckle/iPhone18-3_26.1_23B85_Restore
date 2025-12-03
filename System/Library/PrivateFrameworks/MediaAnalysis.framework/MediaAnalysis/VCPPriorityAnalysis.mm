@@ -2,9 +2,9 @@
 + (id)priorityAnalysis;
 - (VCPPriorityAnalysis)init;
 - (id).cxx_construct;
-- (int)addKeypointsToNSArray:(CGPoint *)a3 keypointConfidence:(float)a4[21] handBox:(id)a5 keypointsArray:(id)a6;
-- (int)calculatePriorityScore:(float *)a3 ofPixelBuffer:(__CVBuffer *)a4 withMetadata:(id)a5;
-- (int)fastSignLanguageDetection:(float *)a3 ofPixelBuffer:(__CVBuffer *)a4 withMetadata:(id)a5;
+- (int)addKeypointsToNSArray:(CGPoint *)array keypointConfidence:(float)confidence[21] handBox:(id)box keypointsArray:(id)keypointsArray;
+- (int)calculatePriorityScore:(float *)score ofPixelBuffer:(__CVBuffer *)buffer withMetadata:(id)metadata;
+- (int)fastSignLanguageDetection:(float *)detection ofPixelBuffer:(__CVBuffer *)buffer withMetadata:(id)metadata;
 - (void)dealloc;
 @end
 
@@ -29,17 +29,17 @@
     v2->_handDetectedInPreviousFrame = 0;
     *buf = 0;
     std::vector<int>::__assign_with_size[abi:ne200100]<int const*,int const*>(&v2->_handChiralityCounter.__begin_, buf, &v22, 2uLL);
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     prevFrameHandKeypoint = v2->_prevFrameHandKeypoint;
-    v2->_prevFrameHandKeypoint = v3;
+    v2->_prevFrameHandKeypoint = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     leftHandKeypointTracker = v2->_leftHandKeypointTracker;
-    v2->_leftHandKeypointTracker = v5;
+    v2->_leftHandKeypointTracker = array2;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     rightHandKeypointTracker = v2->_rightHandKeypointTracker;
-    v2->_rightHandKeypointTracker = v7;
+    v2->_rightHandKeypointTracker = array3;
 
     v9 = [VCPCNNHandsDetector detector:2 forceCPU:0 sharedModel:1 inputConfig:@"res_192x192" revision:2];
     handsDetector = v2->_handsDetector;
@@ -71,13 +71,13 @@
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPPriorityAnalysis - Finished initializing gesture recognizer", buf, 2u);
     }
 
-    v15 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     frameStartTimeStamp = v2->_frameStartTimeStamp;
-    v2->_frameStartTimeStamp = v15;
+    v2->_frameStartTimeStamp = date;
 
-    v17 = [MEMORY[0x1E695DF00] date];
+    date2 = [MEMORY[0x1E695DF00] date];
     frameEndTimeStamp = v2->_frameEndTimeStamp;
-    v2->_frameEndTimeStamp = v17;
+    v2->_frameEndTimeStamp = date2;
   }
 
   return v2;
@@ -105,42 +105,42 @@
   return v2;
 }
 
-- (int)addKeypointsToNSArray:(CGPoint *)a3 keypointConfidence:(float)a4[21] handBox:(id)a5 keypointsArray:(id)a6
+- (int)addKeypointsToNSArray:(CGPoint *)array keypointConfidence:(float)confidence[21] handBox:(id)box keypointsArray:(id)keypointsArray
 {
   v39[3] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a6;
-  [v9 maxX];
+  boxCopy = box;
+  keypointsArrayCopy = keypointsArray;
+  [boxCopy maxX];
   v12 = v11;
-  [v9 minX];
+  [boxCopy minX];
   v14 = v13;
-  [v9 maxY];
+  [boxCopy maxY];
   v16 = v15;
-  [v9 minY];
+  [boxCopy minY];
   v17 = 0;
   v19 = v16 - v18;
   v20 = (v12 - v14);
   v21 = v19;
-  p_y = &a3->y;
+  p_y = &array->y;
   do
   {
     if (*(p_y - 1) == 0.0 && (v23 = *p_y, *p_y == 0.0))
     {
       v38[0] = &unk_1F49BB258;
       v38[1] = &unk_1F49BB258;
-      *&v23 = a4[v17];
+      *&v23 = confidence[v17];
       v31 = [MEMORY[0x1E696AD98] numberWithFloat:v23];
       v38[2] = v31;
       v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:3];
-      [v10 replaceObjectAtIndex:v17 withObject:v33];
+      [keypointsArrayCopy replaceObjectAtIndex:v17 withObject:v33];
     }
 
     else
     {
-      [v9 minX];
+      [boxCopy minX];
       v25 = v24;
       v26 = *(p_y - 1);
-      [v9 minY];
+      [boxCopy minY];
       v28 = v27;
       v29 = v25 + v26 / 255.0 * v20;
       *&v29 = v29;
@@ -152,11 +152,11 @@
       *&v32 = 1.0 - *&v32;
       v33 = [MEMORY[0x1E696AD98] numberWithFloat:v32];
       v39[1] = v33;
-      *&v34 = a4[v17];
+      *&v34 = confidence[v17];
       v35 = [MEMORY[0x1E696AD98] numberWithFloat:v34];
       v39[2] = v35;
       v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:3];
-      [v10 replaceObjectAtIndex:v17 withObject:v36];
+      [keypointsArrayCopy replaceObjectAtIndex:v17 withObject:v36];
     }
 
     ++v17;
@@ -168,7 +168,7 @@
   return 0;
 }
 
-- (int)fastSignLanguageDetection:(float *)a3 ofPixelBuffer:(__CVBuffer *)a4 withMetadata:(id)a5
+- (int)fastSignLanguageDetection:(float *)detection ofPixelBuffer:(__CVBuffer *)buffer withMetadata:(id)metadata
 {
   v82 = *MEMORY[0x1E69E9840];
   cf = 0;
@@ -177,23 +177,23 @@
   v71 = 0;
   v80 = 0;
   memset(v79, 0, sizeof(v79));
-  v63 = a5;
-  v7 = [v63 objectForKeyedSubscript:@"faceMetadataArray"];
+  metadataCopy = metadata;
+  v7 = [metadataCopy objectForKeyedSubscript:@"faceMetadataArray"];
   v8 = [v7 objectAtIndexedSubscript:0];
   v9 = [v8 objectForKeyedSubscript:@"realtimeFaceRoll"];
-  v10 = [v9 intValue];
+  intValue = [v9 intValue];
 
-  v65 = [MEMORY[0x1E695DF70] array];
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [MEMORY[0x1E695DF70] array];
-  v64 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   if (!self->_inputWidth || !self->_inputHeight)
   {
-    self->_inputWidth = CVPixelBufferGetWidth(a4);
-    self->_inputHeight = CVPixelBufferGetHeight(a4);
+    self->_inputWidth = CVPixelBufferGetWidth(buffer);
+    self->_inputHeight = CVPixelBufferGetHeight(buffer);
   }
 
-  if (v10 - 226 < 0x5A)
+  if (intValue - 226 < 0x5A)
   {
     v13 = 90;
 LABEL_6:
@@ -202,18 +202,18 @@ LABEL_6:
   }
 
   v13 = 0;
-  if (v10 < 0x2E || v10 - 316 < 0x2D)
+  if (intValue < 0x2E || intValue - 316 < 0x2D)
   {
     goto LABEL_6;
   }
 
-  if (v10 - 136 < 0x5A)
+  if (intValue - 136 < 0x5A)
   {
     v13 = 180;
     goto LABEL_6;
   }
 
-  if (v10 - 46 <= 0x59)
+  if (intValue - 46 <= 0x59)
   {
     v13 = 270;
     goto LABEL_6;
@@ -234,7 +234,7 @@ LABEL_10:
     operator new();
   }
 
-  v15 = ma::Rotator::Rotate(rotator, a4, &cf);
+  v15 = ma::Rotator::Rotate(rotator, buffer, &cf);
   if (v15)
   {
     goto LABEL_14;
@@ -247,7 +247,7 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v15 = [(VCPCNNHandsDetector *)self->_handsDetector handsDetection:v74 handsRegions:v65 cancel:0];
+  v15 = [(VCPCNNHandsDetector *)self->_handsDetector handsDetection:v74 handsRegions:array cancel:0];
   if (v15)
   {
     goto LABEL_14;
@@ -255,7 +255,7 @@ LABEL_10:
 
   if (MediaAnalysisLogLevel() > 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v19 = [v65 count];
+    v19 = [array count];
     *buf = 134217984;
     *v76 = v19;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPPriorityAnalysis - Number of hand detected %lu", buf, 0xCu);
@@ -264,20 +264,20 @@ LABEL_10:
   v20 = 21;
   do
   {
-    [v11 addObject:&unk_1F49BF148];
-    [v12 addObject:&unk_1F49BF160];
+    [array2 addObject:&unk_1F49BF148];
+    [array3 addObject:&unk_1F49BF160];
     --v20;
   }
 
   while (v20);
-  if ([v65 count])
+  if ([array count])
   {
     self->_handDetectedInPreviousFrame = 1;
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    obj = v65;
+    obj = array;
     v21 = [obj countByEnumeratingWithState:&v67 objects:v78 count:16];
     if (v21)
     {
@@ -394,9 +394,9 @@ LABEL_103:
             {
               if ((*(&v71 + v25) & 1) == 0)
               {
-                v39 = [v24 classIndex];
-                v40 = v11;
-                if (v39 == -1 || (v41 = [v24 classIndex], v40 = v12, v41 == 1))
+                classIndex = [v24 classIndex];
+                v40 = array2;
+                if (classIndex == -1 || (v41 = [v24 classIndex], v40 = array3, v41 == 1))
                 {
                   [(VCPPriorityAnalysis *)self addKeypointsToNSArray:v81 keypointConfidence:v79 handBox:v24 keypointsArray:v40];
                 }
@@ -417,9 +417,9 @@ LABEL_103:
       }
     }
 
-    v42 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     frameEndTimeStamp = self->_frameEndTimeStamp;
-    self->_frameEndTimeStamp = v42;
+    self->_frameEndTimeStamp = date;
 
     [(NSDate *)self->_frameEndTimeStamp timeIntervalSinceDate:self->_frameStartTimeStamp];
     self->_singleFrameExecutionTime = v44;
@@ -432,9 +432,9 @@ LABEL_103:
     }
 
     objc_storeStrong(&self->_frameStartTimeStamp, self->_frameEndTimeStamp);
-    v46 = [MEMORY[0x1E695DF00] date];
+    date2 = [MEMORY[0x1E695DF00] date];
     prevTimeStampHandDetected = self->_prevTimeStampHandDetected;
-    self->_prevTimeStampHandDetected = v46;
+    self->_prevTimeStampHandDetected = date2;
   }
 
   else
@@ -452,7 +452,7 @@ LABEL_103:
     [(NSMutableArray *)self->_rightHandKeypointTracker removeObjectAtIndex:0];
   }
 
-  if (([(NSMutableArray *)self->_leftHandKeypointTracker addObject:v11], [(NSMutableArray *)self->_rightHandKeypointTracker addObject:v12], [(NSMutableArray *)self->_leftHandKeypointTracker count]== 6) && v71 == 1 && (v15 = [(VCPCNNFastGestureRecognition *)self->_fastGestureDetector gestureDetection:self->_leftHandKeypointTracker score:&v72 + 4]) != 0 || [(NSMutableArray *)self->_rightHandKeypointTracker count]== 6 && HIBYTE(v71) == 1 && (v15 = [(VCPCNNFastGestureRecognition *)self->_fastGestureDetector gestureDetection:self->_rightHandKeypointTracker score:&v72]) != 0)
+  if (([(NSMutableArray *)self->_leftHandKeypointTracker addObject:array2], [(NSMutableArray *)self->_rightHandKeypointTracker addObject:array3], [(NSMutableArray *)self->_leftHandKeypointTracker count]== 6) && v71 == 1 && (v15 = [(VCPCNNFastGestureRecognition *)self->_fastGestureDetector gestureDetection:self->_leftHandKeypointTracker score:&v72 + 4]) != 0 || [(NSMutableArray *)self->_rightHandKeypointTracker count]== 6 && HIBYTE(v71) == 1 && (v15 = [(VCPCNNFastGestureRecognition *)self->_fastGestureDetector gestureDetection:self->_rightHandKeypointTracker score:&v72]) != 0)
   {
 LABEL_14:
     v17 = 0;
@@ -485,16 +485,16 @@ LABEL_14:
       v49 = 1.0;
     }
 
-    *a3 = v49;
+    *detection = v49;
     if (v48 > 0.99)
     {
-      v50 = [MEMORY[0x1E695DF00] date];
+      date3 = [MEMORY[0x1E695DF00] date];
       prevTimeSignLanguageDetected = self->_prevTimeSignLanguageDetected;
-      self->_prevTimeSignLanguageDetected = v50;
+      self->_prevTimeSignLanguageDetected = date3;
     }
 
-    v52 = [MEMORY[0x1E695DF00] date];
-    [v52 timeIntervalSinceDate:self->_prevTimeSignLanguageDetected];
+    date4 = [MEMORY[0x1E695DF00] date];
+    [date4 timeIntervalSinceDate:self->_prevTimeSignLanguageDetected];
     v34 = v53 > 1.0;
     v54 = 0.0;
     if (!v34)
@@ -503,14 +503,14 @@ LABEL_14:
     }
 
     v55 = v54;
-    *a3 = v55;
-    v56 = [MEMORY[0x1E695DEC8] arrayWithArray:v64];
+    *detection = v55;
+    v56 = [MEMORY[0x1E695DEC8] arrayWithArray:array4];
     prevFrameHandKeypoint = self->_prevFrameHandKeypoint;
     self->_prevFrameHandKeypoint = v56;
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v58 = *a3;
+      v58 = *detection;
       *buf = 134218240;
       *v76 = v48;
       *&v76[8] = 2048;
@@ -519,7 +519,7 @@ LABEL_14:
     }
 
     v15 = 0;
-    v17 = v52;
+    v17 = date4;
   }
 
 LABEL_15:
@@ -538,10 +538,10 @@ LABEL_15:
   return v15;
 }
 
-- (int)calculatePriorityScore:(float *)a3 ofPixelBuffer:(__CVBuffer *)a4 withMetadata:(id)a5
+- (int)calculatePriorityScore:(float *)score ofPixelBuffer:(__CVBuffer *)buffer withMetadata:(id)metadata
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  metadataCopy = metadata;
   if (self->_handDetectedInPreviousFrame)
   {
     v9 = 3;
@@ -561,20 +561,20 @@ LABEL_15:
 
   v10 = (self->_frameCounter + 1) % v9;
   self->_frameCounter = v10;
-  if (!v8 || v10)
+  if (!metadataCopy || v10)
   {
     prevComputedScore = self->_prevComputedScore;
-    if (!v8)
+    if (!metadataCopy)
     {
       prevComputedScore = 0.0;
     }
 
-    *a3 = prevComputedScore;
+    *score = prevComputedScore;
   }
 
   else
   {
-    v11 = [v8 objectForKey:@"faceMetadataArray"];
+    v11 = [metadataCopy objectForKey:@"faceMetadataArray"];
     if ([v11 count])
     {
       v12 = [v11 objectAtIndexedSubscript:0];
@@ -584,13 +584,13 @@ LABEL_15:
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v15 = [v14 intValue];
+          intValue = [v14 intValue];
           v21 = 67109120;
-          LODWORD(v22) = v15;
+          LODWORD(v22) = intValue;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPPriorityAnalysis - Face yaw: %d", &v21, 8u);
         }
 
-        v16 = [(VCPPriorityAnalysis *)self fastSignLanguageDetection:a3 ofPixelBuffer:a4 withMetadata:v8];
+        v16 = [(VCPPriorityAnalysis *)self fastSignLanguageDetection:score ofPixelBuffer:buffer withMetadata:metadataCopy];
         if (v16)
         {
 
@@ -600,15 +600,15 @@ LABEL_15:
 
       else
       {
-        *a3 = 0.0;
+        *score = 0.0;
       }
 
-      v18 = *a3;
+      v18 = *score;
     }
 
     else
     {
-      *a3 = 0.0;
+      *score = 0.0;
       v18 = 0.0;
     }
 
@@ -617,7 +617,7 @@ LABEL_15:
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v19 = *a3;
+    v19 = *score;
     v21 = 134217984;
     v22 = v19;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPPriorityAnalysis - output priority score = %f", &v21, 0xCu);

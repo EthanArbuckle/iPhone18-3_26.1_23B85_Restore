@@ -1,18 +1,18 @@
 @interface OSBatteryPredictorService
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (OSBatteryPredictorService)init;
-- (void)batteryLifeMitigationWithHandler:(id)a3;
-- (void)client:(id)a3 setIBLMNotificationsState:(int64_t)a4 withHandler:(id)a5;
-- (void)client:(id)a3 setIBLMState:(int64_t)a4 withHandler:(id)a5;
+- (void)batteryLifeMitigationWithHandler:(id)handler;
+- (void)client:(id)client setIBLMNotificationsState:(int64_t)state withHandler:(id)handler;
+- (void)client:(id)client setIBLMState:(int64_t)state withHandler:(id)handler;
 - (void)dealloc;
-- (void)highDayDrainAroundCurrentDateWithHandler:(id)a3;
-- (void)overrideAllMitigations:(int64_t)a3 withHandler:(id)a4;
-- (void)overrideCLPCMitigations:(int64_t)a3 withHandler:(id)a4;
-- (void)predictLowSOCWithHandler:(id)a3;
-- (void)predictedTimeTillDischargeWithHandler:(id)a3;
-- (void)recommendsAutoLPMWithHandler:(id)a3;
-- (void)typicalBatteryLevelWithReferenceDays:(unint64_t)a3 aggregatedOverTimeWidth:(unint64_t)a4 withHandler:(id)a5;
+- (void)highDayDrainAroundCurrentDateWithHandler:(id)handler;
+- (void)overrideAllMitigations:(int64_t)mitigations withHandler:(id)handler;
+- (void)overrideCLPCMitigations:(int64_t)mitigations withHandler:(id)handler;
+- (void)predictLowSOCWithHandler:(id)handler;
+- (void)predictedTimeTillDischargeWithHandler:(id)handler;
+- (void)recommendsAutoLPMWithHandler:(id)handler;
+- (void)typicalBatteryLevelWithReferenceDays:(unint64_t)days aggregatedOverTimeWidth:(unint64_t)width withHandler:(id)handler;
 @end
 
 @implementation OSBatteryPredictorService
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001151C;
   block[3] = &unk_100094818;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000B69D8 != -1)
   {
     dispatch_once(&qword_1000B69D8, block);
@@ -82,9 +82,9 @@
   [(OSBatteryPredictorService *)&v4 dealloc];
 }
 
-- (void)predictLowSOCWithHandler:(id)a3
+- (void)predictLowSOCWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -113,25 +113,25 @@
     sub_10005B378(v8);
   }
 
-  v4[2](v4, v6, 0);
+  handlerCopy[2](handlerCopy, v6, 0);
 }
 
-- (void)typicalBatteryLevelWithReferenceDays:(unint64_t)a3 aggregatedOverTimeWidth:(unint64_t)a4 withHandler:(id)a5
+- (void)typicalBatteryLevelWithReferenceDays:(unint64_t)days aggregatedOverTimeWidth:(unint64_t)width withHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v15 = a3;
+    daysCopy = days;
     v16 = 2048;
-    v17 = a4;
+    widthCopy = width;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Request for typical battery levels for reference days %lu, with time width %lu", buf, 0x16u);
   }
 
   v10 = +[_OSBatteryData sharedInstance];
   v13 = 0;
-  v11 = [v10 typicalBatteryLevelWithReferenceDays:a3 aggregatedOverTimeWidth:a4 withError:&v13];
+  v11 = [v10 typicalBatteryLevelWithReferenceDays:days aggregatedOverTimeWidth:width withError:&v13];
   v12 = v13;
 
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
@@ -139,12 +139,12 @@
     sub_10005B3BC();
   }
 
-  v8[2](v8, v11, v12);
+  handlerCopy[2](handlerCopy, v11, v12);
 }
 
-- (void)predictedTimeTillDischargeWithHandler:(id)a3
+- (void)predictedTimeTillDischargeWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -162,12 +162,12 @@
     sub_10005B3BC();
   }
 
-  v4[2](v4, v7, v8);
+  handlerCopy[2](handlerCopy, v7, v8);
 }
 
-- (void)highDayDrainAroundCurrentDateWithHandler:(id)a3
+- (void)highDayDrainAroundCurrentDateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -185,12 +185,12 @@
     sub_10005B3BC();
   }
 
-  v4[2](v4, v7, v8);
+  handlerCopy[2](handlerCopy, v7, v8);
 }
 
-- (void)batteryLifeMitigationWithHandler:(id)a3
+- (void)batteryLifeMitigationWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[_OSIBLManager sharedInstance];
   v9 = 0;
   v6 = [v5 currentMitigationWithError:&v9];
@@ -208,60 +208,60 @@
     sub_10005B3BC();
   }
 
-  v4[2](v4, v6, v7);
+  handlerCopy[2](handlerCopy, v6, v7);
 }
 
-- (void)overrideAllMitigations:(int64_t)a3 withHandler:(id)a4
+- (void)overrideAllMitigations:(int64_t)mitigations withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v5 = +[_OSIBLManager sharedInstance];
-  [v5 overrideAllMitigations:a3];
+  [v5 overrideAllMitigations:mitigations];
 
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)overrideCLPCMitigations:(int64_t)a3 withHandler:(id)a4
+- (void)overrideCLPCMitigations:(int64_t)mitigations withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v5 = +[_OSIBLManager sharedInstance];
-  [v5 overrideCLPCMitigations:a3];
+  [v5 overrideCLPCMitigations:mitigations];
 
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)client:(id)a3 setIBLMState:(int64_t)a4 withHandler:(id)a5
+- (void)client:(id)client setIBLMState:(int64_t)state withHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = +[_OSIBLManager sharedInstance];
   v10 = 0;
-  v8 = [v7 updateFeatureState:a4 withError:&v10];
+  v8 = [v7 updateFeatureState:state withError:&v10];
   v9 = v10;
 
-  v6[2](v6, v8, v9);
+  handlerCopy[2](handlerCopy, v8, v9);
 }
 
-- (void)client:(id)a3 setIBLMNotificationsState:(int64_t)a4 withHandler:(id)a5
+- (void)client:(id)client setIBLMNotificationsState:(int64_t)state withHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = +[_OSIBLManager sharedInstance];
   v10 = 0;
-  v8 = [v7 updateNotificationsState:a4 withError:&v10];
+  v8 = [v7 updateNotificationsState:state withError:&v10];
   v9 = v10;
 
-  v6[2](v6, v8, v9);
+  handlerCopy[2](handlerCopy, v8, v9);
 }
 
-- (void)recommendsAutoLPMWithHandler:(id)a3
+- (void)recommendsAutoLPMWithHandler:(id)handler
 {
   autoLPMHandler = self->_autoLPMHandler;
-  v4 = a3;
-  v4[2](v4, [(_OSIAutoLPMHandler *)autoLPMHandler recommendsAutoLPM], 0);
+  handlerCopy = handler;
+  handlerCopy[2](handlerCopy, [(_OSIAutoLPMHandler *)autoLPMHandler recommendsAutoLPM], 0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -269,16 +269,16 @@
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Listener received connection!", v15, 2u);
   }
 
-  v9 = [v7 valueForEntitlement:@"com.apple.osintelligence.battery"];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.osintelligence.battery"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v9 BOOLValue] & 1) != 0)
   {
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____OSBatteryPredictorProtocol];
-    [v7 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
     v11 = [[OSBatteryPredictorServiceXPCProxy alloc] initWithObserver:self];
-    [v7 setExportedObject:v11];
+    [connectionCopy setExportedObject:v11];
 
-    [v7 resume];
+    [connectionCopy resume];
     v12 = 1;
   }
 

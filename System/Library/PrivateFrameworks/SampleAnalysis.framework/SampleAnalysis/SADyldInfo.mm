@@ -1,18 +1,18 @@
 @interface SADyldInfo
 - (id)debugDescription;
-- (id)initWithTask:(void *)a1;
+- (id)initWithTask:(void *)task;
 @end
 
 @implementation SADyldInfo
 
-- (id)initWithTask:(void *)a1
+- (id)initWithTask:(void *)task
 {
-  if (!a1)
+  if (!task)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = task;
   v6.super_class = SADyldInfo;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;

@@ -1,18 +1,18 @@
 @interface ASDRequestOptions
-- (ASDRequestOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ASDRequestOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASDRequestOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [ASDRequestOptions allocWithZone:a3];
+  v3 = [ASDRequestOptions allocWithZone:zone];
 
   return [(ASDRequestOptions *)v3 init];
 }
 
-- (ASDRequestOptions)initWithCoder:(id)a3
+- (ASDRequestOptions)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ASDRequestOptions;

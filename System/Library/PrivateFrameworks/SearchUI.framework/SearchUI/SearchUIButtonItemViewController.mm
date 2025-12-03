@@ -1,5 +1,5 @@
 @interface SearchUIButtonItemViewController
-+ (id)buttonItemViewControllerForButtonItem:(id)a3;
++ (id)buttonItemViewControllerForButtonItem:(id)item;
 - (BOOL)supportsContextMenuConfiguration;
 - (SearchUIButtonItemView)buttonItemView;
 - (SearchUIButtonItemViewController)init;
@@ -9,18 +9,18 @@
 - (id)customPreviewMenu;
 - (id)previewCommandHandler;
 - (void)buttonPressed;
-- (void)setIsCompact:(BOOL)a3;
-- (void)setbuttonItemViewStyle:(unint64_t)a3;
-- (void)stateDidChangeForButtonItem:(id)a3;
-- (void)updateImageForStatusUpdate:(BOOL)a3;
-- (void)updateWithButtonItem:(id)a3 buttonItemViewType:(unint64_t)a4 isStatusUpdate:(BOOL)a5;
+- (void)setIsCompact:(BOOL)compact;
+- (void)setbuttonItemViewStyle:(unint64_t)style;
+- (void)stateDidChangeForButtonItem:(id)item;
+- (void)updateImageForStatusUpdate:(BOOL)update;
+- (void)updateWithButtonItem:(id)item buttonItemViewType:(unint64_t)type isStatusUpdate:(BOOL)update;
 @end
 
 @implementation SearchUIButtonItemViewController
 
-+ (id)buttonItemViewControllerForButtonItem:(id)a3
++ (id)buttonItemViewControllerForButtonItem:(id)item
 {
-  [a3 searchUI_viewControllerClass];
+  [item searchUI_viewControllerClass];
   v3 = objc_opt_new();
 
   return v3;
@@ -57,10 +57,10 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(SearchUIButtonItemViewController *)self view];
-  v5 = [v4 arrangedSubviews];
+  view = [(SearchUIButtonItemViewController *)self view];
+  arrangedSubviews = [view arrangedSubviews];
 
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [arrangedSubviews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v6)
   {
 
@@ -70,8 +70,8 @@ LABEL_17:
 
     [v15 setDelegate:self];
     [v15 addTarget:self action:sel_buttonPressed];
-    v16 = [(SearchUIButtonItemViewController *)self view];
-    [v16 addArrangedSubview:v15];
+    view2 = [(SearchUIButtonItemViewController *)self view];
+    [view2 addArrangedSubview:v15];
 
     v8 = v15;
     goto LABEL_18;
@@ -86,7 +86,7 @@ LABEL_17:
     {
       if (*v19 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(arrangedSubviews);
       }
 
       v11 = *(*(&v18 + 1) + 8 * i);
@@ -101,7 +101,7 @@ LABEL_17:
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v7 = [arrangedSubviews countByEnumeratingWithState:&v18 objects:v22 count:16];
   }
 
   while (v7);
@@ -117,14 +117,14 @@ LABEL_18:
   return v8;
 }
 
-- (void)updateWithButtonItem:(id)a3 buttonItemViewType:(unint64_t)a4 isStatusUpdate:(BOOL)a5
+- (void)updateWithButtonItem:(id)item buttonItemViewType:(unint64_t)type isStatusUpdate:(BOOL)update
 {
-  v9 = a3;
-  v10 = [(SearchUIButtonItemViewController *)self buttonItem];
-  if ([v9 isEqual:v10] && -[SearchUIButtonItemViewController buttonItemViewStyle](self, "buttonItemViewStyle") == a4)
+  itemCopy = item;
+  buttonItem = [(SearchUIButtonItemViewController *)self buttonItem];
+  if ([itemCopy isEqual:buttonItem] && -[SearchUIButtonItemViewController buttonItemViewStyle](self, "buttonItemViewStyle") == type)
   {
 
-    if (!a5)
+    if (!update)
     {
       goto LABEL_7;
     }
@@ -134,17 +134,17 @@ LABEL_18:
   {
   }
 
-  objc_storeStrong(&self->_buttonItem, a3);
-  self->_buttonItemViewStyle = a4;
-  [v9 setDelegate:self];
+  objc_storeStrong(&self->_buttonItem, item);
+  self->_buttonItemViewStyle = type;
+  [itemCopy setDelegate:self];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __91__SearchUIButtonItemViewController_updateWithButtonItem_buttonItemViewType_isStatusUpdate___block_invoke;
   v11[3] = &unk_1E85B31E0;
   v11[4] = self;
-  v12 = v9;
-  v13 = a4;
-  v14 = a5;
+  v12 = itemCopy;
+  typeCopy = type;
+  updateCopy = update;
   [SearchUIUtilities dispatchMainIfNecessary:v11];
 
 LABEL_7:
@@ -250,47 +250,47 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)updateImageForStatusUpdate:(BOOL)a3
+- (void)updateImageForStatusUpdate:(BOOL)update
 {
-  v3 = a3;
-  v18 = [(SearchUIButtonItemViewController *)self buttonItem];
-  v5 = [(SearchUIButtonItemViewController *)self buttonItemView];
-  if (-[SearchUIButtonItemViewController buttonItemViewStyle](self, "buttonItemViewStyle") == 3 && -[SearchUIButtonItemViewController isCompact](self, "isCompact") && ![v18 isMemberOfClass:objc_opt_class()])
+  updateCopy = update;
+  buttonItem = [(SearchUIButtonItemViewController *)self buttonItem];
+  buttonItemView = [(SearchUIButtonItemViewController *)self buttonItemView];
+  if (-[SearchUIButtonItemViewController buttonItemViewStyle](self, "buttonItemViewStyle") == 3 && -[SearchUIButtonItemViewController isCompact](self, "isCompact") && ![buttonItem isMemberOfClass:objc_opt_class()])
   {
-    v7 = 1;
+    preferNoFallbackImage = 1;
   }
 
   else
   {
-    v6 = [v18 buttonAppearance];
-    v7 = [v6 preferNoFallbackImage];
+    buttonAppearance = [buttonItem buttonAppearance];
+    preferNoFallbackImage = [buttonAppearance preferNoFallbackImage];
   }
 
-  v8 = [v18 image];
-  if (!v8)
+  image = [buttonItem image];
+  if (!image)
   {
-    if ([v5 drawsBackgroundPlatter])
+    if ([buttonItemView drawsBackgroundPlatter])
     {
-      if ((v7 & 1) == 0)
+      if ((preferNoFallbackImage & 1) == 0)
       {
 LABEL_8:
-        v8 = [v18 fallbackImage];
+        image = [buttonItem fallbackImage];
         goto LABEL_11;
       }
     }
 
-    else if (!(v7 & 1 | (([v5 drawsIconBackgroundPlatter] & 1) == 0)))
+    else if (!(preferNoFallbackImage & 1 | (([buttonItemView drawsIconBackgroundPlatter] & 1) == 0)))
     {
       goto LABEL_8;
     }
 
-    v8 = 0;
+    image = 0;
   }
 
 LABEL_11:
-  v9 = [SearchUIImage imageWithSFImage:v8];
-  v10 = [v5 sfImage];
-  v11 = [v10 isEqual:v8];
+  v9 = [SearchUIImage imageWithSFImage:image];
+  sfImage = [buttonItemView sfImage];
+  v11 = [sfImage isEqual:image];
 
   if (v11)
   {
@@ -301,25 +301,25 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [SearchUIImage imageWithSFImage:v8];
-    v13 = [(SearchUIButtonItemViewController *)self buttonItem];
-    v14 = [v13 useDefaultSymbolFillStyle];
+    v12 = [SearchUIImage imageWithSFImage:image];
+    buttonItem2 = [(SearchUIButtonItemViewController *)self buttonItem];
+    useDefaultSymbolFillStyle = [buttonItem2 useDefaultSymbolFillStyle];
 
-    if (v14)
+    if (useDefaultSymbolFillStyle)
     {
       [v12 setPreferredFill:1];
     }
 
-    if (!v3)
+    if (!updateCopy)
     {
       goto LABEL_17;
     }
 
 LABEL_19:
-    v16 = [v5 buttonTitle];
-    if ([v16 length])
+    buttonTitle = [buttonItemView buttonTitle];
+    if ([buttonTitle length])
     {
-      v15 = [v5 drawsTitle] ^ 1;
+      v15 = [buttonItemView drawsTitle] ^ 1;
     }
 
     else
@@ -331,7 +331,7 @@ LABEL_19:
   }
 
   v12 = v9;
-  if (v3)
+  if (updateCopy)
   {
     goto LABEL_19;
   }
@@ -339,26 +339,26 @@ LABEL_19:
 LABEL_17:
   v15 = 0;
 LABEL_24:
-  v17 = [v18 stateSymbolTransition];
-  [v5 setSfImage:v12 animateTransition:v15 symbolTransition:v17];
+  stateSymbolTransition = [buttonItem stateSymbolTransition];
+  [buttonItemView setSfImage:v12 animateTransition:v15 symbolTransition:stateSymbolTransition];
 
 LABEL_25:
 }
 
-- (void)setbuttonItemViewStyle:(unint64_t)a3
+- (void)setbuttonItemViewStyle:(unint64_t)style
 {
-  v5 = [(SearchUIButtonItemViewController *)self buttonItem];
-  [(SearchUIButtonItemViewController *)self updateWithButtonItem:v5 buttonItemViewType:a3];
+  buttonItem = [(SearchUIButtonItemViewController *)self buttonItem];
+  [(SearchUIButtonItemViewController *)self updateWithButtonItem:buttonItem buttonItemViewType:style];
 }
 
-- (void)setIsCompact:(BOOL)a3
+- (void)setIsCompact:(BOOL)compact
 {
-  if (self->_isCompact != a3)
+  if (self->_isCompact != compact)
   {
-    v4 = a3;
-    self->_isCompact = a3;
-    v6 = [(SearchUIButtonItemViewController *)self buttonItemView];
-    [v6 setIsCompact:v4];
+    compactCopy = compact;
+    self->_isCompact = compact;
+    buttonItemView = [(SearchUIButtonItemViewController *)self buttonItemView];
+    [buttonItemView setIsCompact:compactCopy];
 
     [(SearchUIButtonItemViewController *)self updateImageForStatusUpdate:0];
   }
@@ -366,11 +366,11 @@ LABEL_25:
 
 - (void)buttonPressed
 {
-  v3 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
-  v13 = [SearchUIUtilities environmentForDelegate:v3];
+  feedbackDelegate = [(SearchUIButtonItemViewController *)self feedbackDelegate];
+  v13 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
 
-  v4 = [(SearchUIButtonItemViewController *)self view];
-  [v13 setSourceView:v4];
+  view = [(SearchUIButtonItemViewController *)self view];
+  [v13 setSourceView:view];
 
   if ([MEMORY[0x1E69D9240] isMacOS])
   {
@@ -382,90 +382,90 @@ LABEL_25:
     v5 = 2;
   }
 
-  v6 = [(SearchUIButtonItemViewController *)self buttonItem];
-  v7 = [(SearchUIButtonItemViewController *)self rowModel];
-  v8 = [SearchUICommandHandler handlerForButton:v6 rowModel:v7 environment:v13];
+  buttonItem = [(SearchUIButtonItemViewController *)self buttonItem];
+  rowModel = [(SearchUIButtonItemViewController *)self rowModel];
+  v8 = [SearchUICommandHandler handlerForButton:buttonItem rowModel:rowModel environment:v13];
 
   [v8 executeWithTriggerEvent:v5];
-  v9 = [(SearchUIButtonItemViewController *)self buttonDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  buttonDelegate = [(SearchUIButtonItemViewController *)self buttonDelegate];
+  LOBYTE(buttonItem) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (buttonItem)
   {
-    v10 = [(SearchUIButtonItemViewController *)self buttonDelegate];
-    v11 = [(SearchUIButtonItemViewController *)self buttonItem];
-    [v10 buttonItemPressed:v11];
+    buttonDelegate2 = [(SearchUIButtonItemViewController *)self buttonDelegate];
+    buttonItem2 = [(SearchUIButtonItemViewController *)self buttonItem];
+    [buttonDelegate2 buttonItemPressed:buttonItem2];
   }
 
-  v12 = [(SearchUIButtonItemViewController *)self buttonItem];
-  [v12 buttonPressed];
+  buttonItem3 = [(SearchUIButtonItemViewController *)self buttonItem];
+  [buttonItem3 buttonPressed];
 }
 
 - (id)previewCommandHandler
 {
-  v3 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
-  v4 = [SearchUIUtilities environmentForDelegate:v3];
+  feedbackDelegate = [(SearchUIButtonItemViewController *)self feedbackDelegate];
+  v4 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
 
-  v5 = [(SearchUIButtonItemViewController *)self buttonItem];
-  v6 = [(SearchUIButtonItemViewController *)self rowModel];
-  v7 = [SearchUICommandHandler handlerForButton:v5 rowModel:v6 environment:v4];
+  buttonItem = [(SearchUIButtonItemViewController *)self buttonItem];
+  rowModel = [(SearchUIButtonItemViewController *)self rowModel];
+  v7 = [SearchUICommandHandler handlerForButton:buttonItem rowModel:rowModel environment:v4];
 
   return v7;
 }
 
 - (id)customPreviewMenu
 {
-  v2 = [(SearchUIButtonItemViewController *)self buttonItem];
-  v3 = [v2 previewMenu];
+  buttonItem = [(SearchUIButtonItemViewController *)self buttonItem];
+  previewMenu = [buttonItem previewMenu];
 
-  return v3;
+  return previewMenu;
 }
 
-- (void)stateDidChangeForButtonItem:(id)a3
+- (void)stateDidChangeForButtonItem:(id)item
 {
-  v9 = a3;
-  v4 = [(SearchUIButtonItemViewController *)self buttonItem];
-  v5 = [v9 isEqual:v4];
+  itemCopy = item;
+  buttonItem = [(SearchUIButtonItemViewController *)self buttonItem];
+  v5 = [itemCopy isEqual:buttonItem];
 
   if (v5)
   {
-    v6 = [(SearchUIButtonItemViewController *)self buttonDelegate];
+    buttonDelegate = [(SearchUIButtonItemViewController *)self buttonDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(SearchUIButtonItemViewController *)self buttonDelegate];
-      [v8 stateDidChangeForButtonItem:v9];
+      buttonDelegate2 = [(SearchUIButtonItemViewController *)self buttonDelegate];
+      [buttonDelegate2 stateDidChangeForButtonItem:itemCopy];
     }
 
-    [(SearchUIButtonItemViewController *)self updateWithButtonItem:v9 buttonItemViewType:[(SearchUIButtonItemViewController *)self buttonItemViewStyle] isStatusUpdate:1];
+    [(SearchUIButtonItemViewController *)self updateWithButtonItem:itemCopy buttonItemViewType:[(SearchUIButtonItemViewController *)self buttonItemViewStyle] isStatusUpdate:1];
   }
 }
 
 - (BOOL)supportsContextMenuConfiguration
 {
-  v3 = [(SearchUIButtonItemViewController *)self buttonItem];
+  buttonItem = [(SearchUIButtonItemViewController *)self buttonItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(SearchUIButtonItemViewController *)self buttonItemView];
-    v5 = [v4 drawsTitle];
+    buttonItemView = [(SearchUIButtonItemViewController *)self buttonItemView];
+    drawsTitle = [buttonItemView drawsTitle];
   }
 
   else
   {
-    v5 = 0;
+    drawsTitle = 0;
   }
 
-  v6 = [(SearchUIButtonItemViewController *)self buttonItem];
-  if ([v6 allowsContextMenu])
+  buttonItem2 = [(SearchUIButtonItemViewController *)self buttonItem];
+  if ([buttonItem2 allowsContextMenu])
   {
-    v7 = [(SearchUIButtonItemViewController *)self view];
-    v8 = [SearchUIUtilities deviceIsAuthenticatedForView:v7];
-    if ((v8 & v5) == 1)
+    view = [(SearchUIButtonItemViewController *)self view];
+    v8 = [SearchUIUtilities deviceIsAuthenticatedForView:view];
+    if ((v8 & drawsTitle) == 1)
     {
-      v9 = [(SearchUIButtonItemViewController *)self buttonItemView];
-      LOBYTE(v8) = [v9 showsMenuAsPrimaryAction];
+      buttonItemView2 = [(SearchUIButtonItemViewController *)self buttonItemView];
+      LOBYTE(v8) = [buttonItemView2 showsMenuAsPrimaryAction];
     }
   }
 

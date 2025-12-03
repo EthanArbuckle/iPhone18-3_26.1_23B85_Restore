@@ -1,15 +1,15 @@
 @interface VFXCameraEffectLensBlur
 + (id)lensBlur;
-- (VFXCameraEffectLensBlur)initWithCoder:(id)a3;
+- (VFXCameraEffectLensBlur)initWithCoder:(id)coder;
 - (float)radius;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)filterQuality;
 - (uint64_t)createCFXObject;
 - (void)_updateModelFromPresentation;
 - (void)_updatePresentationFromModel;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFilterQuality:(int64_t)a3;
-- (void)setRadius:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFilterQuality:(int64_t)quality;
+- (void)setRadius:(float)radius;
 @end
 
 @implementation VFXCameraEffectLensBlur
@@ -52,19 +52,19 @@
   return v11;
 }
 
-- (void)setRadius:(float)a3
+- (void)setRadius:(float)radius
 {
-  if (self->super._isPresentationObject || *(&self->super._enabled + 1) != a3)
+  if (self->super._isPresentationObject || *(&self->super._enabled + 1) != radius)
   {
     v7 = v3;
     v8 = v4;
-    *(&self->super._enabled + 1) = a3;
+    *(&self->super._enabled + 1) = radius;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2B3A68;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"radius", v5);
   }
 }
@@ -93,19 +93,19 @@
   return v11;
 }
 
-- (void)setFilterQuality:(int64_t)a3
+- (void)setFilterQuality:(int64_t)quality
 {
-  if (self->super._isPresentationObject || *&self->_radius != a3)
+  if (self->super._isPresentationObject || *&self->_radius != quality)
   {
     v5[6] = v3;
     v5[7] = v4;
-    *&self->_radius = a3;
+    *&self->_radius = quality;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2B3BC0;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = quality;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"filterQuality", v5);
   }
 }
@@ -117,11 +117,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = VFXCameraEffectLensBlur;
-  v4 = [(VFXCameraEffect *)&v12 copyWithZone:a3];
+  v4 = [(VFXCameraEffect *)&v12 copyWithZone:zone];
   LODWORD(v5) = *(&self->super._enabled + 1);
   objc_msgSend_setRadius_(v4, v6, v7, v8, v5);
   objc_msgSend_setFilterQuality_(v4, v9, *&self->_radius, v10);
@@ -147,18 +147,18 @@
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = VFXCameraEffectLensBlur;
   [(VFXCameraEffect *)&v11 encodeWithCoder:?];
   LODWORD(v5) = *(&self->super._enabled + 1);
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"radius", v7, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"radius", v7, v5);
   *&v8 = *&self->_radius;
-  objc_msgSend_encodeFloat_forKey_(a3, v9, @"filterQuality", v10, v8);
+  objc_msgSend_encodeFloat_forKey_(coder, v9, @"filterQuality", v10, v8);
 }
 
-- (VFXCameraEffectLensBlur)initWithCoder:(id)a3
+- (VFXCameraEffectLensBlur)initWithCoder:(id)coder
 {
   v24.receiver = self;
   v24.super_class = VFXCameraEffectLensBlur;
@@ -167,9 +167,9 @@
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    objc_msgSend_decodeFloatForKey_(a3, v11, @"radius", v12);
+    objc_msgSend_decodeFloatForKey_(coder, v11, @"radius", v12);
     objc_msgSend_setRadius_(v7, v13, v14, v15);
-    objc_msgSend_decodeFloatForKey_(a3, v16, @"filterQuality", v17);
+    objc_msgSend_decodeFloatForKey_(coder, v16, @"filterQuality", v17);
     objc_msgSend_setFilterQuality_(v7, v19, v18, v20);
     objc_msgSend_setImmediateMode_(VFXTransaction, v21, v8, v22);
   }

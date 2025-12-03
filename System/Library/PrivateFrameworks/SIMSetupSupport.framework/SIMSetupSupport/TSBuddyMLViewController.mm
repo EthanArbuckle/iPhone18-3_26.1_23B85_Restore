@@ -1,37 +1,37 @@
 @interface TSBuddyMLViewController
-- (BOOL)_isActionDismissToCancelFlow:(id)a3;
-- (TSBuddyMLViewController)initWithCTPlan:(id)a3 inBuddy:(BOOL)a4;
-- (TSBuddyMLViewController)initWithCTPlan:(id)a3 websheetURL:(id)a4 postdata:(id)a5;
+- (BOOL)_isActionDismissToCancelFlow:(id)flow;
+- (TSBuddyMLViewController)initWithCTPlan:(id)plan inBuddy:(BOOL)buddy;
+- (TSBuddyMLViewController)initWithCTPlan:(id)plan websheetURL:(id)l postdata:(id)postdata;
 - (TSSIMSetupFlowDelegate)delegate;
 - (void)_configureRUIController;
-- (void)_handlePlanAddition:(id)a3;
-- (void)_requestCipherText:(id)a3 completion:(id)a4;
+- (void)_handlePlanAddition:(id)addition;
+- (void)_requestCipherText:(id)text completion:(id)completion;
 - (void)_setUserInPurchaseFlow;
 - (void)dealloc;
-- (void)prepare:(id)a3;
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
-- (void)remoteUIController:(id)a3 didRemoveObjectModel:(id)a4;
-- (void)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5 withCompletionHandler:(id)a6;
+- (void)prepare:(id)prepare;
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
+- (void)remoteUIController:(id)controller didRemoveObjectModel:(id)model;
+- (void)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response withCompletionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
 @implementation TSBuddyMLViewController
 
-- (TSBuddyMLViewController)initWithCTPlan:(id)a3 websheetURL:(id)a4 postdata:(id)a5
+- (TSBuddyMLViewController)initWithCTPlan:(id)plan websheetURL:(id)l postdata:(id)postdata
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  planCopy = plan;
+  lCopy = l;
+  postdataCopy = postdata;
   v20.receiver = self;
   v20.super_class = TSBuddyMLViewController;
   v12 = [(TSBuddyMLViewController *)&v20 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_plan, a3);
-    objc_storeStrong(&v13->_buddyMLURL, a4);
-    objc_storeStrong(&v13->_postdata, a5);
+    objc_storeStrong(&v12->_plan, plan);
+    objc_storeStrong(&v13->_buddyMLURL, l);
+    objc_storeStrong(&v13->_postdata, postdata);
     v13->_initialRequest = 1;
     v13->_isBootstrapAsserted = 0;
   }
@@ -49,17 +49,17 @@
   return v13;
 }
 
-- (TSBuddyMLViewController)initWithCTPlan:(id)a3 inBuddy:(BOOL)a4
+- (TSBuddyMLViewController)initWithCTPlan:(id)plan inBuddy:(BOOL)buddy
 {
-  v7 = a3;
+  planCopy = plan;
   v16.receiver = self;
   v16.super_class = TSBuddyMLViewController;
   v8 = [(TSBuddyMLViewController *)&v16 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_plan, a3);
-    v9->_inBuddy = a4;
+    objc_storeStrong(&v8->_plan, plan);
+    v9->_inBuddy = buddy;
     v9->_initialRequest = 1;
     v9->_isBootstrapAsserted = 0;
   }
@@ -100,11 +100,11 @@
   v7 = 3221225472;
   v8 = __38__TSBuddyMLViewController_viewDidLoad__block_invoke;
   v9 = &unk_279B44490;
-  v10 = self;
+  selfCopy = self;
   v11 = v4;
   v5 = v4;
   dispatch_async(MEMORY[0x277D85CD0], &v6);
-  [(TSBuddyMLViewController *)self setModalInPresentation:1, v6, v7, v8, v9, v10];
+  [(TSBuddyMLViewController *)self setModalInPresentation:1, v6, v7, v8, v9, selfCopy];
 }
 
 void __38__TSBuddyMLViewController_viewDidLoad__block_invoke(uint64_t a1)
@@ -138,12 +138,12 @@ void __38__TSBuddyMLViewController_viewDidLoad__block_invoke_2(uint64_t a1, uint
   *(*(a1 + 32) + 1049) = 0;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v4 = a3;
+  prepareCopy = prepare;
   if ([(NSString *)self->_buddyMLURL length])
   {
-    v4[2](v4, 1);
+    prepareCopy[2](prepareCopy, 1);
   }
 
   else
@@ -157,7 +157,7 @@ void __38__TSBuddyMLViewController_viewDidLoad__block_invoke_2(uint64_t a1, uint
     v8[2] = __35__TSBuddyMLViewController_prepare___block_invoke;
     v8[3] = &unk_279B45310;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = prepareCopy;
     [v5 getWebsheetInfoForPlan:plan inBuddy:inBuddy completion:v8];
 
     objc_destroyWeak(&v10);
@@ -192,18 +192,18 @@ void __35__TSBuddyMLViewController_prepare___block_invoke(uint64_t a1, void *a2,
   v10();
 }
 
-- (void)remoteUIController:(id)a3 didRemoveObjectModel:(id)a4
+- (void)remoteUIController:(id)controller didRemoveObjectModel:(id)model
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(NSMutableArray *)self->_objectModels indexOfObject:v5];
+  modelCopy = model;
+  v6 = [(NSMutableArray *)self->_objectModels indexOfObject:modelCopy];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = _TSLogDomain();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = v5;
+      v10 = modelCopy;
       v11 = 2080;
       v12 = "[TSBuddyMLViewController remoteUIController:didRemoveObjectModel:]";
       _os_log_impl(&dword_262AA8000, v7, OS_LOG_TYPE_DEFAULT, "RemoteUI removed an object model that is not on stack: %@ @%s", &v9, 0x16u);
@@ -218,15 +218,15 @@ void __35__TSBuddyMLViewController_prepare___block_invoke(uint64_t a1, void *a2,
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
   v64 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v8 = a4;
-  if (a5)
+  controllerCopy = controller;
+  modelCopy = model;
+  if (signal)
   {
-    v9 = *a5;
-    if (*a5 == 1)
+    v9 = *signal;
+    if (*signal == 1)
     {
       v10 = _TSLogDomain();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -236,16 +236,16 @@ void __35__TSBuddyMLViewController_prepare___block_invoke(uint64_t a1, void *a2,
         _os_log_impl(&dword_262AA8000, v10, OS_LOG_TYPE_DEFAULT, "ActionSignalDismiss!!! @%s", buf, 0xCu);
       }
 
-      v11 = [v8 clientInfo];
-      v12 = [(TSBuddyMLViewController *)self _isActionDismissToCancelFlow:v11];
+      clientInfo = [modelCopy clientInfo];
+      v12 = [(TSBuddyMLViewController *)self _isActionDismissToCancelFlow:clientInfo];
 
       if (v12)
       {
-        v13 = [(TSBuddyMLViewController *)self delegate];
-        [v13 userDidTapCancel];
+        delegate = [(TSBuddyMLViewController *)self delegate];
+        [delegate userDidTapCancel];
       }
 
-      v9 = *a5;
+      v9 = *signal;
     }
 
     if (v9 == 2)
@@ -259,12 +259,12 @@ void __35__TSBuddyMLViewController_prepare___block_invoke(uint64_t a1, void *a2,
       }
     }
 
-    v15 = [(RemoteUIController *)self->_remoteUIController displayedPages];
-    v16 = [v15 count];
+    displayedPages = [(RemoteUIController *)self->_remoteUIController displayedPages];
+    v16 = [displayedPages count];
 
     if (!v16)
     {
-      if (*a5 == 4)
+      if (*signal == 4)
       {
         v17 = _TSLogDomain();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -277,7 +277,7 @@ void __35__TSBuddyMLViewController_prepare___block_invoke(uint64_t a1, void *a2,
 
       else
       {
-        if (*a5 != 3)
+        if (*signal != 3)
         {
           goto LABEL_22;
         }
@@ -291,7 +291,7 @@ void __35__TSBuddyMLViewController_prepare___block_invoke(uint64_t a1, void *a2,
         v18 = 2;
       }
 
-      *a5 = v18;
+      *signal = v18;
     }
   }
 
@@ -300,7 +300,7 @@ LABEL_22:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = [v8 allPages];
+  obj = [modelCopy allPages];
   v40 = [obj countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v40)
   {
@@ -316,14 +316,14 @@ LABEL_22:
         }
 
         v42 = v19;
-        v20 = [*(*(&v55 + 1) + 8 * v19) tableViewOM];
+        tableViewOM = [*(*(&v55 + 1) + 8 * v19) tableViewOM];
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
         v54 = 0u;
-        v41 = v20;
-        v43 = [v20 sections];
-        v45 = [v43 countByEnumeratingWithState:&v51 objects:v60 count:16];
+        v41 = tableViewOM;
+        sections = [tableViewOM sections];
+        v45 = [sections countByEnumeratingWithState:&v51 objects:v60 count:16];
         if (v45)
         {
           v44 = *v52;
@@ -334,7 +334,7 @@ LABEL_22:
             {
               if (*v52 != v44)
               {
-                objc_enumerationMutation(v43);
+                objc_enumerationMutation(sections);
               }
 
               v46 = v21;
@@ -343,8 +343,8 @@ LABEL_22:
               v48 = 0u;
               v49 = 0u;
               v50 = 0u;
-              v23 = [v22 rows];
-              v24 = [v23 countByEnumeratingWithState:&v47 objects:v59 count:16];
+              rows = [v22 rows];
+              v24 = [rows countByEnumeratingWithState:&v47 objects:v59 count:16];
               if (v24)
               {
                 v25 = v24;
@@ -355,24 +355,24 @@ LABEL_22:
                   {
                     if (*v48 != v26)
                     {
-                      objc_enumerationMutation(v23);
+                      objc_enumerationMutation(rows);
                     }
 
                     v28 = *(*(&v47 + 1) + 8 * i);
-                    v29 = [v28 attributes];
-                    v30 = [v29 objectForKeyedSubscript:@"secure"];
-                    v31 = [v30 BOOLValue];
+                    attributes = [v28 attributes];
+                    v30 = [attributes objectForKeyedSubscript:@"secure"];
+                    bOOLValue = [v30 BOOLValue];
 
-                    if (v31)
+                    if (bOOLValue)
                     {
-                      v32 = [v28 attributes];
-                      v33 = [v32 objectForKey:@"id"];
+                      attributes2 = [v28 attributes];
+                      v33 = [attributes2 objectForKey:@"id"];
                       idNeedsEncryption = self->_idNeedsEncryption;
                       self->_idNeedsEncryption = v33;
                     }
                   }
 
-                  v25 = [v23 countByEnumeratingWithState:&v47 objects:v59 count:16];
+                  v25 = [rows countByEnumeratingWithState:&v47 objects:v59 count:16];
                 }
 
                 while (v25);
@@ -382,7 +382,7 @@ LABEL_22:
             }
 
             while (v46 + 1 != v45);
-            v45 = [v43 countByEnumeratingWithState:&v51 objects:v60 count:16];
+            v45 = [sections countByEnumeratingWithState:&v51 objects:v60 count:16];
           }
 
           while (v45);
@@ -398,24 +398,24 @@ LABEL_22:
     while (v40);
   }
 
-  v35 = [v8 clientInfo];
-  [(TSBuddyMLViewController *)self _handlePlanAddition:v35];
+  clientInfo2 = [modelCopy clientInfo];
+  [(TSBuddyMLViewController *)self _handlePlanAddition:clientInfo2];
 
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5 withCompletionHandler:(id)a6
+- (void)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response withCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NSMutableArray *)self->_objectModels lastObject];
+  controllerCopy = controller;
+  requestCopy = request;
+  responseCopy = response;
+  handlerCopy = handler;
+  lastObject = [(NSMutableArray *)self->_objectModels lastObject];
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [v14 populatePostbackDictionary:v15];
+  [lastObject populatePostbackDictionary:v15];
   v16 = [v15 objectForKey:self->_idNeedsEncryption];
-  [v11 setValue:@"iOS Device Activation" forHTTPHeaderField:@"User-Agent"];
+  [requestCopy setValue:@"iOS Device Activation" forHTTPHeaderField:@"User-Agent"];
   if (self->_initialRequest)
   {
     v17 = _TSLogDomain();
@@ -426,8 +426,8 @@ LABEL_22:
       _os_log_impl(&dword_262AA8000, v17, OS_LOG_TYPE_DEFAULT, "Set type as json for initial request @%s", buf, 0xCu);
     }
 
-    [v11 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    v13[2](v13, 1, 0);
+    [requestCopy setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else if (v16)
@@ -438,9 +438,9 @@ LABEL_22:
     v20[2] = __103__TSBuddyMLViewController_remoteUIController_shouldLoadRequest_redirectResponse_withCompletionHandler___block_invoke;
     v20[3] = &unk_279B45798;
     objc_copyWeak(&v24, buf);
-    v23 = v13;
+    v23 = handlerCopy;
     v21 = v15;
-    v22 = v11;
+    v22 = requestCopy;
     [(TSBuddyMLViewController *)self _requestCipherText:v16 completion:v20];
 
     objc_destroyWeak(&v24);
@@ -457,7 +457,7 @@ LABEL_22:
       _os_log_impl(&dword_262AA8000, v18, OS_LOG_TYPE_DEFAULT, "No encryption needed @%s", buf, 0xCu);
     }
 
-    v13[2](v13, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -501,25 +501,25 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  controllerCopy = controller;
+  errorCopy = error;
+  requestCopy = request;
+  if (errorCopy)
   {
     v11 = _TSLogDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v25 = v9;
+      v25 = errorCopy;
       v26 = 2080;
       v27 = "[TSBuddyMLViewController remoteUIController:didFinishLoadWithError:forRequest:]";
       _os_log_impl(&dword_262AA8000, v11, OS_LOG_TYPE_DEFAULT, "RemoteUI didFinishLoadWithError: %{public}@ @%s", buf, 0x16u);
     }
 
-    if ([v9 code] == -1001)
+    if ([errorCopy code] == -1001)
     {
       v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v21 = [v12 localizedStringForKey:@"ERROR_TRANSFER_ITEM_TITLE" value:&stru_28753DF48 table:@"Localizable"];
@@ -578,12 +578,12 @@ void __80__TSBuddyMLViewController_remoteUIController_didFinishLoadWithError_for
 
     [(RemoteUIController *)self->_remoteUIController setDelegate:self];
     v5 = self->_remoteUIController;
-    v6 = [MEMORY[0x277D46210] setupAssistantStyle];
-    [(RemoteUIController *)v5 setStyle:v6];
+    setupAssistantStyle = [MEMORY[0x277D46210] setupAssistantStyle];
+    [(RemoteUIController *)v5 setStyle:setupAssistantStyle];
 
-    v7 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-    [v7 set_sourceApplicationSecondaryIdentifier:@"com.apple.CommCenter.CellularPlanProvisioning"];
-    [(RemoteUIController *)self->_remoteUIController setSessionConfiguration:v7];
+    ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+    [ephemeralSessionConfiguration set_sourceApplicationSecondaryIdentifier:@"com.apple.CommCenter.CellularPlanProvisioning"];
+    [(RemoteUIController *)self->_remoteUIController setSessionConfiguration:ephemeralSessionConfiguration];
     objc_initWeak(&location, self);
     v8 = self->_remoteUIController;
     v9[0] = MEMORY[0x277D85DD0];
@@ -615,26 +615,26 @@ void __50__TSBuddyMLViewController__configureRUIController__block_invoke(uint64_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePlanAddition:(id)a3
+- (void)_handlePlanAddition:(id)addition
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"eid"];
-  v34 = [v4 objectForKeyedSubscript:@"iccid"];
-  v33 = [v4 objectForKeyedSubscript:@"phoneNumber"];
-  v6 = [v4 objectForKeyedSubscript:@"mcc"];
+  additionCopy = addition;
+  v5 = [additionCopy objectForKeyedSubscript:@"eid"];
+  v34 = [additionCopy objectForKeyedSubscript:@"iccid"];
+  v33 = [additionCopy objectForKeyedSubscript:@"phoneNumber"];
+  v6 = [additionCopy objectForKeyedSubscript:@"mcc"];
   mcc = self->_mcc;
   self->_mcc = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"mnc"];
+  v8 = [additionCopy objectForKeyedSubscript:@"mnc"];
   mnc = self->_mnc;
   self->_mnc = v8;
 
-  v10 = [v4 objectForKeyedSubscript:@"gid1"];
+  v10 = [additionCopy objectForKeyedSubscript:@"gid1"];
   gid1 = self->_gid1;
   self->_gid1 = v10;
 
-  v12 = [v4 objectForKeyedSubscript:@"gid2"];
+  v12 = [additionCopy objectForKeyedSubscript:@"gid2"];
   gid2 = self->_gid2;
   self->_gid2 = v12;
 
@@ -642,20 +642,20 @@ void __50__TSBuddyMLViewController__configureRUIController__block_invoke(uint64_
   if (v5 && v34 && v33)
   {
     v28 = objc_alloc(MEMORY[0x277CC3640]);
-    v30 = [v4 objectForKeyedSubscript:@"sourceIccid"];
-    v29 = [v4 objectForKeyedSubscript:@"UnusableIccid"];
-    v27 = [v4 objectForKeyedSubscript:@"mcc"];
-    v31 = [v4 objectForKeyedSubscript:@"mnc"];
-    v14 = [v4 objectForKeyedSubscript:@"gid1"];
-    v26 = [v4 objectForKeyedSubscript:@"gid2"];
-    v25 = [v4 objectForKeyedSubscript:@"smdpAddress"];
-    v15 = [v4 objectForKeyedSubscript:@"useDS"];
-    v16 = [v15 BOOLValue];
-    v17 = [v4 objectForKeyedSubscript:@"isESim"];
-    v18 = [v17 BOOLValue];
-    v19 = [v4 objectForKeyedSubscript:@"flowType"];
-    BYTE1(v24) = v18;
-    LOBYTE(v24) = v16;
+    v30 = [additionCopy objectForKeyedSubscript:@"sourceIccid"];
+    v29 = [additionCopy objectForKeyedSubscript:@"UnusableIccid"];
+    v27 = [additionCopy objectForKeyedSubscript:@"mcc"];
+    v31 = [additionCopy objectForKeyedSubscript:@"mnc"];
+    v14 = [additionCopy objectForKeyedSubscript:@"gid1"];
+    v26 = [additionCopy objectForKeyedSubscript:@"gid2"];
+    v25 = [additionCopy objectForKeyedSubscript:@"smdpAddress"];
+    v15 = [additionCopy objectForKeyedSubscript:@"useDS"];
+    bOOLValue = [v15 BOOLValue];
+    v17 = [additionCopy objectForKeyedSubscript:@"isESim"];
+    bOOLValue2 = [v17 BOOLValue];
+    v19 = [additionCopy objectForKeyedSubscript:@"flowType"];
+    BYTE1(v24) = bOOLValue2;
+    LOBYTE(v24) = bOOLValue;
     v20 = [v28 initWithDetails:v5 installIccid:v34 sourceIccid:v30 unusableIccid:v29 phoneNumber:v33 mcc:v27 mnc:v31 gid1:v14 gid2:v26 smdp:v25 useDS:v24 esim:v19 flowType:?];
 
     if (v20)
@@ -669,8 +669,8 @@ void __50__TSBuddyMLViewController__configureRUIController__block_invoke(uint64_
       }
 
       [(CoreTelephonyClient *)self->_coreTelephonyClient addPlanWith:v20 completionHandler:&__block_literal_global_22];
-      v22 = [(TSBuddyMLViewController *)self delegate];
-      [v22 viewControllerDidComplete:self];
+      delegate = [(TSBuddyMLViewController *)self delegate];
+      [delegate viewControllerDidComplete:self];
     }
   }
 
@@ -699,10 +699,10 @@ void __47__TSBuddyMLViewController__handlePlanAddition___block_invoke(uint64_t a
   }
 }
 
-- (void)_requestCipherText:(id)a3 completion:(id)a4
+- (void)_requestCipherText:(id)text completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  completionCopy = completion;
   v8 = _TSLogDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -720,9 +720,9 @@ void __47__TSBuddyMLViewController__handlePlanAddition___block_invoke(uint64_t a
   v15[2] = __57__TSBuddyMLViewController__requestCipherText_completion___block_invoke;
   v15[3] = &unk_279B44E08;
   objc_copyWeak(&v17, &location);
-  v14 = v7;
+  v14 = completionCopy;
   v16 = v14;
-  [(CoreTelephonyClient *)coreTelephonyClient encryptDataWithCarrierIdentifiers:mcc mnc:mnc gid1:gid1 gid2:gid2 data:v6 completion:v15];
+  [(CoreTelephonyClient *)coreTelephonyClient encryptDataWithCarrierIdentifiers:mcc mnc:mnc gid1:gid1 gid2:gid2 data:textCopy completion:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -755,9 +755,9 @@ void __57__TSBuddyMLViewController__requestCipherText_completion___block_invoke(
   v9();
 }
 
-- (BOOL)_isActionDismissToCancelFlow:(id)a3
+- (BOOL)_isActionDismissToCancelFlow:(id)flow
 {
-  v3 = [a3 objectForKeyedSubscript:@"eid"];
+  v3 = [flow objectForKeyedSubscript:@"eid"];
   v4 = v3 == 0;
 
   return v4;

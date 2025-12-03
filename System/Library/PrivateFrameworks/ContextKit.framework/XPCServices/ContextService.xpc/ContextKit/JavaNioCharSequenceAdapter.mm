@@ -1,6 +1,6 @@
 @interface JavaNioCharSequenceAdapter
 - (id)slice;
-- (id)subSequenceFrom:(int)a3 to:(int)a4;
+- (id)subSequenceFrom:(int)from to:(int)to;
 - (unsigned)get;
 - (void)dealloc;
 @end
@@ -41,7 +41,7 @@
   return v3;
 }
 
-- (id)subSequenceFrom:(int)a3 to:(int)a4
+- (id)subSequenceFrom:(int)from to:(int)to
 {
   [JavaNioBuffer checkStartEndRemainingWithInt:"checkStartEndRemainingWithInt:withInt:" withInt:?];
   result = JavaNioCharSequenceAdapter_copy__WithJavaNioCharSequenceAdapter_(self);
@@ -50,8 +50,8 @@
     JreThrowNullPointerException();
   }
 
-  *(result + 5) = self->super.super.position_ + a3;
-  *(result + 3) = self->super.super.position_ + a4;
+  *(result + 5) = self->super.super.position_ + from;
+  *(result + 3) = self->super.super.position_ + to;
   return result;
 }
 

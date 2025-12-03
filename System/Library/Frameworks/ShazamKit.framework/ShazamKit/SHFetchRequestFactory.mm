@@ -1,10 +1,10 @@
 @interface SHFetchRequestFactory
-+ (id)groupsFetchRequestWithContext:(id)a3;
++ (id)groupsFetchRequestWithContext:(id)context;
 @end
 
 @implementation SHFetchRequestFactory
 
-+ (id)groupsFetchRequestWithContext:(id)a3
++ (id)groupsFetchRequestWithContext:(id)context
 {
   v3 = +[SHGroupMO fetchRequest];
   [v3 setSortDescriptors:&__NSArray0__struct];

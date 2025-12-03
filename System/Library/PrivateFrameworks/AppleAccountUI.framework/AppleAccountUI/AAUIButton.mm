@@ -7,8 +7,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(AAUIButton *)self titleLabel];
-  [v2 intrinsicContentSize];
+  titleLabel = [(AAUIButton *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -23,8 +23,8 @@
 {
   [(AAUIButton *)self bounds];
   Width = CGRectGetWidth(v6);
-  v4 = [(AAUIButton *)self titleLabel];
-  [v4 setPreferredMaxLayoutWidth:Width];
+  titleLabel = [(AAUIButton *)self titleLabel];
+  [titleLabel setPreferredMaxLayoutWidth:Width];
 
   v5.receiver = self;
   v5.super_class = AAUIButton;

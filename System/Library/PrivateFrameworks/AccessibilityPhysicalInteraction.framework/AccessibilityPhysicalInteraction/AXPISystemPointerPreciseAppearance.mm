@@ -25,7 +25,7 @@
 
 - (id)circularProgressFillColor
 {
-  v2 = [(AXPISystemPointerPreciseAppearance *)self deselectedStrokeColor];
+  deselectedStrokeColor = [(AXPISystemPointerPreciseAppearance *)self deselectedStrokeColor];
   v3 = AXSlightlyDarkerColorForColor();
 
   return v3;
@@ -33,9 +33,9 @@
 
 - (double)fingerInnerCircleInnerRadius
 {
-  v2 = [(AXPISystemPointerPreciseAppearance *)self showInnerCircle];
+  showInnerCircle = [(AXPISystemPointerPreciseAppearance *)self showInnerCircle];
   result = 0.0;
-  if (v2)
+  if (showInnerCircle)
   {
     return 4.75;
   }

@@ -1,20 +1,20 @@
 @interface SBIconFocusEffectPlatterView
-- (SBIconFocusEffectPlatterView)initWithFrame:(CGRect)a3;
+- (SBIconFocusEffectPlatterView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SBIconFocusEffectPlatterView
 
-- (SBIconFocusEffectPlatterView)initWithFrame:(CGRect)a3
+- (SBIconFocusEffectPlatterView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = SBIconFocusEffectPlatterView;
-  v3 = [(SBIconFocusEffectPlatterView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBIconFocusEffectPlatterView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SBIconFocusEffectPlatterView *)v3 layer];
-    [v5 setAllowsGroupOpacity:1];
+    layer = [(SBIconFocusEffectPlatterView *)v3 layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(SBIconFocusEffectPlatterView *)v4 setClipsToBounds:1];
     v6 = [MEMORY[0x1E69AE158] materialViewWithRecipe:MTMaterialRecipeForUIBlurEffectStyle()];

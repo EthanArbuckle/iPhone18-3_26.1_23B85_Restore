@@ -1,29 +1,29 @@
 @interface SFStartPageSingleSectionDataSource
-- (SFStartPageSingleSectionDataSource)initWithReloadHandler:(id)a3 navigationItemHandler:(id)a4;
-- (id)sectionsForStartPageCollectionViewController:(id)a3;
+- (SFStartPageSingleSectionDataSource)initWithReloadHandler:(id)handler navigationItemHandler:(id)itemHandler;
+- (id)sectionsForStartPageCollectionViewController:(id)controller;
 - (void)_reloadSection;
-- (void)connectToViewController:(id)a3;
-- (void)reloadDataAnimatingDifferences:(BOOL)a3;
-- (void)reloadNavigationItemAnimated:(BOOL)a3;
-- (void)startPageCollectionViewControllerWillUpdateNavigationBar:(id)a3;
+- (void)connectToViewController:(id)controller;
+- (void)reloadDataAnimatingDifferences:(BOOL)differences;
+- (void)reloadNavigationItemAnimated:(BOOL)animated;
+- (void)startPageCollectionViewControllerWillUpdateNavigationBar:(id)bar;
 @end
 
 @implementation SFStartPageSingleSectionDataSource
 
-- (SFStartPageSingleSectionDataSource)initWithReloadHandler:(id)a3 navigationItemHandler:(id)a4
+- (SFStartPageSingleSectionDataSource)initWithReloadHandler:(id)handler navigationItemHandler:(id)itemHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  itemHandlerCopy = itemHandler;
   v15.receiver = self;
   v15.super_class = SFStartPageSingleSectionDataSource;
   v8 = [(SFStartPageSingleSectionDataSource *)&v15 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(handlerCopy);
     reloadHandler = v8->_reloadHandler;
     v8->_reloadHandler = v9;
 
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(itemHandlerCopy);
     navigationItemHandler = v8->_navigationItemHandler;
     v8->_navigationItemHandler = v11;
 
@@ -33,17 +33,17 @@
   return v8;
 }
 
-- (void)connectToViewController:(id)a3
+- (void)connectToViewController:(id)controller
 {
-  v4 = a3;
-  obj = v4;
+  controllerCopy = controller;
+  obj = controllerCopy;
   if (!self->_section)
   {
     [(SFStartPageSingleSectionDataSource *)self _reloadSection];
-    v4 = obj;
+    controllerCopy = obj;
   }
 
-  [v4 setDisplaysSectionHeaders:0];
+  [controllerCopy setDisplaysSectionHeaders:0];
   [obj setStrongDataSource:self];
   objc_storeWeak(&self->_collectionViewController, obj);
 }
@@ -55,22 +55,22 @@
   self->_section = v3;
 }
 
-- (void)reloadDataAnimatingDifferences:(BOOL)a3
+- (void)reloadDataAnimatingDifferences:(BOOL)differences
 {
-  v3 = a3;
+  differencesCopy = differences;
   [(SFStartPageSingleSectionDataSource *)self _reloadSection];
   WeakRetained = objc_loadWeakRetained(&self->_collectionViewController);
-  [WeakRetained reloadDataAnimatingDifferences:v3];
+  [WeakRetained reloadDataAnimatingDifferences:differencesCopy];
 }
 
-- (void)reloadNavigationItemAnimated:(BOOL)a3
+- (void)reloadNavigationItemAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_collectionViewController);
-  [WeakRetained reloadNavigationItemAnimated:v3];
+  [WeakRetained reloadNavigationItemAnimated:animatedCopy];
 }
 
-- (id)sectionsForStartPageCollectionViewController:(id)a3
+- (id)sectionsForStartPageCollectionViewController:(id)controller
 {
   v5[1] = *MEMORY[0x1E69E9840];
   if (self->_section)
@@ -87,12 +87,12 @@
   return v3;
 }
 
-- (void)startPageCollectionViewControllerWillUpdateNavigationBar:(id)a3
+- (void)startPageCollectionViewControllerWillUpdateNavigationBar:(id)bar
 {
-  v5 = [a3 navigationItem];
+  navigationItem = [bar navigationItem];
   (*(self->_navigationItemHandler + 2))();
-  v4 = [(WBSStartPageSection *)self->_section title];
-  [v5 setTitle:v4];
+  title = [(WBSStartPageSection *)self->_section title];
+  [navigationItem setTitle:title];
 }
 
 @end

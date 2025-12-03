@@ -1,26 +1,26 @@
 @interface WFActionWillRunLNActionTestingEvent
-- (WFActionWillRunLNActionTestingEvent)initWithAction:(id)a3 lnAction:(id)a4;
+- (WFActionWillRunLNActionTestingEvent)initWithAction:(id)action lnAction:(id)lnAction;
 @end
 
 @implementation WFActionWillRunLNActionTestingEvent
 
-- (WFActionWillRunLNActionTestingEvent)initWithAction:(id)a3 lnAction:(id)a4
+- (WFActionWillRunLNActionTestingEvent)initWithAction:(id)action lnAction:(id)lnAction
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  actionCopy = action;
+  lnActionCopy = lnAction;
+  if (!lnActionCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFActionWillRunLNActionTestingEvent.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"lnAction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionWillRunLNActionTestingEvent.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"lnAction"}];
   }
 
   v14.receiver = self;
   v14.super_class = WFActionWillRunLNActionTestingEvent;
-  v9 = [(WFActionTestingEvent *)&v14 initWithAction:v7];
+  v9 = [(WFActionTestingEvent *)&v14 initWithAction:actionCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lnAction, a4);
+    objc_storeStrong(&v9->_lnAction, lnAction);
     v11 = v10;
   }
 

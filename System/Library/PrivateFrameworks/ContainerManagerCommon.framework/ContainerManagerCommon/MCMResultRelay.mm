@@ -1,6 +1,6 @@
 @interface MCMResultRelay
-- (BOOL)encodeResultOntoReply:(id)a3;
-- (MCMResultRelay)initWithXPCReplyFromRelay:(id)a3;
+- (BOOL)encodeResultOntoReply:(id)reply;
+- (MCMResultRelay)initWithXPCReplyFromRelay:(id)relay;
 - (OS_xpc_object)xpcReplyFromRelay;
 @end
 
@@ -14,26 +14,26 @@
   return result;
 }
 
-- (BOOL)encodeResultOntoReply:(id)a3
+- (BOOL)encodeResultOntoReply:(id)reply
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v12.receiver = self;
   v12.super_class = MCMResultRelay;
-  v5 = [(MCMResultBase *)&v12 encodeResultOntoReply:v4];
+  v5 = [(MCMResultBase *)&v12 encodeResultOntoReply:replyCopy];
   if (v5)
   {
-    v6 = [(MCMResultBase *)self error];
+    error = [(MCMResultBase *)self error];
 
-    if (!v6)
+    if (!error)
     {
-      v7 = [(MCMResultRelay *)self xpcReplyFromRelay];
+      xpcReplyFromRelay = [(MCMResultRelay *)self xpcReplyFromRelay];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __40__MCMResultRelay_encodeResultOntoReply___block_invoke;
       v10[3] = &unk_1E86B0F18;
-      v11 = v4;
-      xpc_dictionary_apply(v7, v10);
+      v11 = replyCopy;
+      xpc_dictionary_apply(xpcReplyFromRelay, v10);
     }
   }
 
@@ -49,17 +49,17 @@ uint64_t __40__MCMResultRelay_encodeResultOntoReply___block_invoke(uint64_t a1, 
   return 1;
 }
 
-- (MCMResultRelay)initWithXPCReplyFromRelay:(id)a3
+- (MCMResultRelay)initWithXPCReplyFromRelay:(id)relay
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  relayCopy = relay;
   v10.receiver = self;
   v10.super_class = MCMResultRelay;
   v6 = [(MCMResultBase *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpcReplyFromRelay, a3);
+    objc_storeStrong(&v6->_xpcReplyFromRelay, relay);
   }
 
   v8 = *MEMORY[0x1E69E9840];

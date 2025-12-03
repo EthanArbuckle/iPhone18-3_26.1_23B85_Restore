@@ -1,8 +1,8 @@
 @interface TUIElementVBox
 + (id)containerAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)configureChildBox:(id)a3 withChildNode:(id)a4 attributes:(id)a5 builder:(id)a6 context:(id)a7;
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)configureChildBox:(id)box withChildNode:(id)node attributes:(id)attributes builder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementVBox
@@ -19,46 +19,46 @@
   return v3;
 }
 
-+ (void)configureChildBox:(id)a3 withChildNode:(id)a4 attributes:(id)a5 builder:(id)a6 context:(id)a7
++ (void)configureChildBox:(id)box withChildNode:(id)node attributes:(id)attributes builder:(id)builder context:(id)context
 {
-  v16 = a3;
-  v10 = a5;
-  v11 = a6;
-  var0 = a4.var0;
-  v13 = [v10 stringForAttribute:221 node:a4.var0];
+  boxCopy = box;
+  attributesCopy = attributes;
+  builderCopy = builder;
+  var0 = node.var0;
+  v13 = [attributesCopy stringForAttribute:221 node:node.var0];
   if ([v13 isEqualToString:@"baseline"])
   {
-    [v11 setPivotChild:v16];
+    [builderCopy setPivotChild:boxCopy];
   }
 
-  v14 = [v10 stringForAttribute:219 node:var0];
-  [v16 setVcompressed:{+[TUIBox compressedFromString:](TUIBox, "compressedFromString:", v14)}];
+  v14 = [attributesCopy stringForAttribute:219 node:var0];
+  [boxCopy setVcompressed:{+[TUIBox compressedFromString:](TUIBox, "compressedFromString:", v14)}];
 
-  v15 = [v16 dynamicArrayWindowingBox];
-  if (v15)
+  dynamicArrayWindowingBox = [boxCopy dynamicArrayWindowingBox];
+  if (dynamicArrayWindowingBox)
   {
-    [v10 floatForAttribute:79 node:var0];
-    [v15 setEstimatedWidth:?];
-    [v10 floatForAttribute:77 node:var0];
-    [v15 setEstimatedHeight:?];
+    [attributesCopy floatForAttribute:79 node:var0];
+    [dynamicArrayWindowingBox setEstimatedWidth:?];
+    [attributesCopy floatForAttribute:77 node:var0];
+    [dynamicArrayWindowingBox setEstimatedHeight:?];
   }
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a3;
-  [v8 setGrouped:{objc_msgSend(a5, "BOOLForAttribute:node:", 93, var0)}];
+  var0 = node.var0;
+  boxCopy = box;
+  [boxCopy setGrouped:{objc_msgSend(attributes, "BOOLForAttribute:node:", 93, var0)}];
 }
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 finalizeModelsWithParent:v8 box:v8 context:a5];
-  v10 = [v7 pivotChild];
+  builderCopy = builder;
+  objectCopy = object;
+  v9 = [builderCopy finalizeModelsWithParent:objectCopy box:objectCopy context:context];
+  pivotChild = [builderCopy pivotChild];
 
-  [v8 setPivotChild:v10];
+  [objectCopy setPivotChild:pivotChild];
 }
 
 @end

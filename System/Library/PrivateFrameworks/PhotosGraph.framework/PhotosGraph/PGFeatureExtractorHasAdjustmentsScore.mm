@@ -1,18 +1,18 @@
 @interface PGFeatureExtractorHasAdjustmentsScore
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorHasAdjustmentsScore
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = [a3 hasAdjustments];
+  hasAdjustments = [entity hasAdjustments];
   v6 = MEMORY[0x277D22C40];
-  v7 = [(PGFeatureExtractorHasAdjustmentsScore *)self featureLength];
-  *&v8 = v5;
+  featureLength = [(PGFeatureExtractorHasAdjustmentsScore *)self featureLength];
+  *&v8 = hasAdjustments;
 
-  return [v6 vectorRepeatingFloat:v7 count:v8];
+  return [v6 vectorRepeatingFloat:featureLength count:v8];
 }
 
 - (id)featureNames

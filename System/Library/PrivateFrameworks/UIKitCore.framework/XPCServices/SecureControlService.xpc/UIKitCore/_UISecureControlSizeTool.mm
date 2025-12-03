@@ -1,8 +1,8 @@
 @interface _UISecureControlSizeTool
 - (_UISecureControlSizeTool)init;
-- (id)_drawingPlanForSizeSpec:(id)a3;
-- (id)drawingWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5;
-- (void)getIntrinsicContentSizeForSpec:(id)a3 reply:(id)a4;
+- (id)_drawingPlanForSizeSpec:(id)spec;
+- (id)drawingWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote;
+- (void)getIntrinsicContentSizeForSpec:(id)spec reply:(id)reply;
 @end
 
 @implementation _UISecureControlSizeTool
@@ -28,25 +28,25 @@
   return v3;
 }
 
-- (id)_drawingPlanForSizeSpec:(id)a3
+- (id)_drawingPlanForSizeSpec:(id)spec
 {
-  v4 = a3;
+  specCopy = spec;
   os_unfair_lock_lock(&self->_sizeSpecDrawingPlansLock);
-  v5 = [(NSMutableDictionary *)self->_sizeSpecDrawingPlans objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_sizeSpecDrawingPlans objectForKeyedSubscript:specCopy];
   os_unfair_lock_unlock(&self->_sizeSpecDrawingPlansLock);
   if (!v5)
   {
-    v6 = [v4 category];
+    category = [specCopy category];
     v7 = [_UISecureControlDrawingPlan alloc];
-    v8 = [v4 style];
-    v9 = [v4 arrangeVertically];
-    v10 = [v6 secureNameForDrawing];
-    v11 = [v6 iconGlyph];
-    v5 = [(_UISecureControlDrawingPlan *)v7 initWithSlotStyle:v8 arrangeVertically:v9 secureName:v10 iconGlyph:v11];
+    style = [specCopy style];
+    arrangeVertically = [specCopy arrangeVertically];
+    secureNameForDrawing = [category secureNameForDrawing];
+    iconGlyph = [category iconGlyph];
+    v5 = [(_UISecureControlDrawingPlan *)v7 initWithSlotStyle:style arrangeVertically:arrangeVertically secureName:secureNameForDrawing iconGlyph:iconGlyph];
 
     os_unfair_lock_lock(&self->_sizeSpecDrawingPlansLock);
-    [(NSMutableDictionary *)self->_sizeSpecDrawingPlans setObject:v5 forKeyedSubscript:v4];
-    v12 = [(UISLRUCache *)self->_sizeSpecLRUCache evictedObjectForUsedObject:v4];
+    [(NSMutableDictionary *)self->_sizeSpecDrawingPlans setObject:v5 forKeyedSubscript:specCopy];
+    v12 = [(UISLRUCache *)self->_sizeSpecLRUCache evictedObjectForUsedObject:specCopy];
     if (v12)
     {
       [(NSMutableDictionary *)self->_sizeSpecDrawingPlans removeObjectForKey:v12];
@@ -58,14 +58,14 @@
   return v5;
 }
 
-- (id)drawingWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5
+- (id)drawingWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [_UISSecureControlSizeSpec specWithStyle:v7 tag:v8];
+  styleCopy = style;
+  tagCopy = tag;
+  v9 = [_UISSecureControlSizeSpec specWithStyle:styleCopy tag:tagCopy];
   v10 = [(_UISecureControlSizeTool *)self _drawingPlanForSizeSpec:v9];
 
-  [v8 size];
+  [tagCopy size];
   v12 = v11;
   v14 = v13;
   [v10 minimumContentSize];
@@ -76,17 +76,17 @@
 
   else
   {
-    v19 = [v8 baseForegroundColor];
-    ConstantColor = v19;
-    if (!v19)
+    baseForegroundColor = [tagCopy baseForegroundColor];
+    ConstantColor = baseForegroundColor;
+    if (!baseForegroundColor)
     {
       ConstantColor = CGColorGetConstantColor(kCGColorWhite);
     }
 
-    v21 = [v8 baseBackgroundColor];
-    if (!v21)
+    baseBackgroundColor = [tagCopy baseBackgroundColor];
+    if (!baseBackgroundColor)
     {
-      v21 = [v7 tintColor];
+      baseBackgroundColor = [styleCopy tintColor];
     }
 
     UISColorLuminance();
@@ -107,7 +107,7 @@
     if ((v24 + 0.05) / (v26 + 0.05) >= 3.0)
     {
       CopyWithAlpha = CGColorCreateCopyWithAlpha(ConstantColor, 1.0);
-      v27 = CGColorCreateCopyWithAlpha(v21, 1.0);
+      v27 = CGColorCreateCopyWithAlpha(baseBackgroundColor, 1.0);
     }
 
     else
@@ -131,9 +131,9 @@
     }
 
     v30 = [_UISecureControlDrawing alloc];
-    v31 = [v8 cornerStyle];
-    [v8 cornerRadius];
-    v18 = -[_UISecureControlDrawing initWithDrawingPlan:cornerStyle:cornerRadius:foregroundColor:backgroundColor:imagePlacement:leftToRight:size:](v30, "initWithDrawingPlan:cornerStyle:cornerRadius:foregroundColor:backgroundColor:imagePlacement:leftToRight:size:", v10, v31, CopyWithAlpha, v27, [v8 imagePlacement], objc_msgSend(v7, "layoutDirection") == 0, v32, v12, v14);
+    cornerStyle = [tagCopy cornerStyle];
+    [tagCopy cornerRadius];
+    v18 = -[_UISecureControlDrawing initWithDrawingPlan:cornerStyle:cornerRadius:foregroundColor:backgroundColor:imagePlacement:leftToRight:size:](v30, "initWithDrawingPlan:cornerStyle:cornerRadius:foregroundColor:backgroundColor:imagePlacement:leftToRight:size:", v10, cornerStyle, CopyWithAlpha, v27, [tagCopy imagePlacement], objc_msgSend(styleCopy, "layoutDirection") == 0, v32, v12, v14);
     CGColorRelease(CopyWithAlpha);
     CGColorRelease(v27);
   }
@@ -141,23 +141,23 @@
   return v18;
 }
 
-- (void)getIntrinsicContentSizeForSpec:(id)a3 reply:(id)a4
+- (void)getIntrinsicContentSizeForSpec:(id)spec reply:(id)reply
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 category];
-  v8 = [v7 isValid];
+  specCopy = spec;
+  replyCopy = reply;
+  category = [specCopy category];
+  isValid = [category isValid];
 
-  if (v8)
+  if (isValid)
   {
-    v9 = [(_UISecureControlSizeTool *)self _drawingPlanForSizeSpec:v10];
+    v9 = [(_UISecureControlSizeTool *)self _drawingPlanForSizeSpec:specCopy];
     [v9 intrinsicContentSize];
-    v6[2](v6);
+    replyCopy[2](replyCopy);
   }
 
   else
   {
-    (v6[2])(v6, CGSizeZero.width, CGSizeZero.height);
+    (replyCopy[2])(replyCopy, CGSizeZero.width, CGSizeZero.height);
   }
 }
 

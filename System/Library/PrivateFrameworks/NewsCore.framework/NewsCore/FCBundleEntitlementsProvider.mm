@@ -1,41 +1,41 @@
 @interface FCBundleEntitlementsProvider
-- (FCBundleEntitlementsProvider)initWithConfigurationManager:(id)a3 entitlementService:(id)a4;
-- (void)fetchEntitlementsWithIgnoreCache:(BOOL)a3 completion:(id)a4;
+- (FCBundleEntitlementsProvider)initWithConfigurationManager:(id)manager entitlementService:(id)service;
+- (void)fetchEntitlementsWithIgnoreCache:(BOOL)cache completion:(id)completion;
 @end
 
 @implementation FCBundleEntitlementsProvider
 
-- (FCBundleEntitlementsProvider)initWithConfigurationManager:(id)a3 entitlementService:(id)a4
+- (FCBundleEntitlementsProvider)initWithConfigurationManager:(id)manager entitlementService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = FCBundleEntitlementsProvider;
   v9 = [(FCBundleEntitlementsProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configurationManager, a3);
-    objc_storeStrong(&v10->_entitlementService, a4);
+    objc_storeStrong(&v9->_configurationManager, manager);
+    objc_storeStrong(&v10->_entitlementService, service);
   }
 
   return v10;
 }
 
-- (void)fetchEntitlementsWithIgnoreCache:(BOOL)a3 completion:(id)a4
+- (void)fetchEntitlementsWithIgnoreCache:(BOOL)cache completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v7 = [(FCBundleEntitlementsProvider *)self configurationManager];
+  configurationManager = [(FCBundleEntitlementsProvider *)self configurationManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__FCBundleEntitlementsProvider_fetchEntitlementsWithIgnoreCache_completion___block_invoke;
   v9[3] = &unk_1E7C43698;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = completionCopy;
   v10 = v8;
-  v12 = a3;
-  FCCoreConfigurationFetch(v7, v9);
+  cacheCopy = cache;
+  FCCoreConfigurationFetch(configurationManager, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

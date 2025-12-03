@@ -1,19 +1,19 @@
 @interface ComAppleContextkitCategoriesConstellation_$2
-- (void)acceptWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5;
+- (void)acceptWithInt:(int)int withInt:(int)withInt withInt:(int)a5;
 - (void)dealloc;
 @end
 
 @implementation ComAppleContextkitCategoriesConstellation_$2
 
-- (void)acceptWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5
+- (void)acceptWithInt:(int)int withInt:(int)withInt withInt:(int)a5
 {
   v5 = self->val$idsAndHeight_;
-  if (!v5 || (v9 = [(JavaUtilMap *)v5 getWithId:JavaLangInteger_valueOfWithInt_(a3)]) == 0)
+  if (!v5 || (v9 = [(JavaUtilMap *)v5 getWithId:JavaLangInteger_valueOfWithInt_(int)]) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  v10 = a4 + [v9 intValue];
+  v10 = withInt + [v9 intValue];
   if ((v10 + 1) < 8)
   {
     v11 = v10 + 1;

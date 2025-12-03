@@ -1,18 +1,18 @@
 @interface TUIElementTextStrInstantiator
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementTextStrInstantiator
 
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 stringForAttribute:102 node:a4.var0];
-  v13 = sub_5E5B8(v12, [v9 options]);
+  builderCopy = builder;
+  attributesCopy = attributes;
+  contextCopy = context;
+  v12 = [attributesCopy stringForAttribute:102 node:node.var0];
+  v13 = sub_5E5B8(v12, [builderCopy options]);
 
-  v14 = [v10 stringForAttribute:217 node:a4.var0];
+  v14 = [attributesCopy stringForAttribute:217 node:node.var0];
   v15 = v14;
   if (!v14)
   {
@@ -101,7 +101,7 @@ LABEL_18:
           objc_enumerationMutation(v26);
         }
 
-        [*(*(&v32 + 1) + 8 * i) appendToBuilder:v9 context:v11];
+        [*(*(&v32 + 1) + 8 * i) appendToBuilder:builderCopy context:contextCopy];
       }
 
       v28 = [v26 countByEnumeratingWithState:&v32 objects:v36 count:16];

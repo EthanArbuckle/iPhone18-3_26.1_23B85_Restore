@@ -1,11 +1,11 @@
 @interface TSCHStyleOwnerUUIDEncoder
 + (id)UUIDEncoder;
-+ (id)UUIDEncoderWithStyleOwnerPathType:(unsigned __int8)a3;
++ (id)UUIDEncoderWithStyleOwnerPathType:(unsigned __int8)type;
 + (id)styleOwnerBaseUUID;
 - (TSCHStyleOwnerUUIDEncoder)init;
 - (id)encodedUUID;
-- (void)encodeByte:(unsigned __int8)a3;
-- (void)encodeUInt64:(unint64_t)a3;
+- (void)encodeByte:(unsigned __int8)byte;
+- (void)encodeUInt64:(unint64_t)int64;
 @end
 
 @implementation TSCHStyleOwnerUUIDEncoder
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_2762E6A50;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A47A20 != -1)
   {
     dispatch_once(&qword_280A47A20, block);
@@ -27,10 +27,10 @@
   return v2;
 }
 
-+ (id)UUIDEncoderWithStyleOwnerPathType:(unsigned __int8)a3
++ (id)UUIDEncoderWithStyleOwnerPathType:(unsigned __int8)type
 {
-  v6 = a3;
-  if (!a3)
+  typeCopy = type;
+  if (!type)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCHStyleOwnerUUIDEncoder UUIDEncoderWithStyleOwnerPathType:]");
@@ -41,14 +41,14 @@
   }
 
   v22 = objc_msgSend_UUIDEncoder(TSCHStyleOwnerUUIDEncoder, a2, v3, v4, v5);
-  objc_msgSend_encodeByte_(v22, v23, v24, v25, v26, v6);
+  objc_msgSend_encodeByte_(v22, v23, v24, v25, v26, typeCopy);
 
   return v22;
 }
 
 + (id)UUIDEncoder
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -68,12 +68,12 @@
   return v2;
 }
 
-- (void)encodeByte:(unsigned __int8)a3
+- (void)encodeByte:(unsigned __int8)byte
 {
-  v6 = a3;
+  byteCopy = byte;
   if (objc_msgSend_hasSpaceToEncodeNumberOfBytes_(self, a2, v3, v4, v5, 1))
   {
-    self->_UUID[self->_index++] = v6;
+    self->_UUID[self->_index++] = byteCopy;
   }
 
   else
@@ -81,7 +81,7 @@
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "[TSCHStyleOwnerUUIDEncoder encodeByte:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHStyleOwningImplementation.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 767, 0, "Run out of bytes to encode byte %lu from index %lu", v6, self->_index);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 767, 0, "Run out of bytes to encode byte %lu from index %lu", byteCopy, self->_index);
 
     v27 = MEMORY[0x277D81150];
 
@@ -89,7 +89,7 @@
   }
 }
 
-- (void)encodeUInt64:(unint64_t)a3
+- (void)encodeUInt64:(unint64_t)int64
 {
   if (objc_msgSend_hasSpaceToEncodeNumberOfBytes_(self, a2, v3, v4, v5, 8))
   {
@@ -97,8 +97,8 @@
     v13 = 8;
     do
     {
-      UUID[self->_index] = a3;
-      a3 >>= 8;
+      UUID[self->_index] = int64;
+      int64 >>= 8;
       ++UUID;
       --v13;
     }
@@ -112,7 +112,7 @@
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "[TSCHStyleOwnerUUIDEncoder encodeUInt64:]");
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v17, v18, v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHStyleOwningImplementation.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v21, v22, v23, v24, v15, v20, 782, 0, "Run out of bytes to encode uint64 %lu from index %lu", a3, self->_index);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v21, v22, v23, v24, v15, v20, 782, 0, "Run out of bytes to encode uint64 %lu from index %lu", int64, self->_index);
 
     v29 = MEMORY[0x277D81150];
 

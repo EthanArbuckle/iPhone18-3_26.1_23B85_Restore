@@ -3,13 +3,13 @@
 - (NSString)targetPlatformName;
 - (NSString)targetProductVersion;
 - (_WKInspectorDebuggableInfo)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)debuggableType;
 - (void)dealloc;
-- (void)setDebuggableType:(int64_t)a3;
-- (void)setTargetBuildVersion:(id)a3;
-- (void)setTargetPlatformName:(id)a3;
-- (void)setTargetProductVersion:(id)a3;
+- (void)setDebuggableType:(int64_t)type;
+- (void)setTargetBuildVersion:(id)version;
+- (void)setTargetPlatformName:(id)name;
+- (void)setTargetProductVersion:(id)version;
 @end
 
 @implementation _WKInspectorDebuggableInfo
@@ -23,16 +23,16 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(_WKInspectorDebuggableInfo *)v3 _apiObject];
+    _apiObject = [(_WKInspectorDebuggableInfo *)v3 _apiObject];
     v11 = v3;
-    v12 = v5;
+    v12 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v12, &v11, v10);
-    v6 = [(_WKInspectorDebuggableInfo *)v3 _apiObject];
-    *v6 = 0u;
-    *(v6 + 16) = 0u;
-    *(v6 + 32) = 0u;
-    *(v6 + 48) = 0;
-    v7 = API::Object::Object(v6);
+    _apiObject2 = [(_WKInspectorDebuggableInfo *)v3 _apiObject];
+    *_apiObject2 = 0u;
+    *(_apiObject2 + 16) = 0u;
+    *(_apiObject2 + 32) = 0u;
+    *(_apiObject2 + 48) = 0;
+    v7 = API::Object::Object(_apiObject2);
     *v7 = &unk_1F111B070;
     *(v7 + 4) = 0;
     *(v7 + 5) = 0;
@@ -57,10 +57,10 @@
   }
 }
 
-- (void)setDebuggableType:(int64_t)a3
+- (void)setDebuggableType:(int64_t)type
 {
-  v3 = 0x402030100uLL >> (8 * a3);
-  if (a3 >= 5)
+  v3 = 0x402030100uLL >> (8 * type);
+  if (type >= 5)
   {
     LOBYTE(v3) = 1;
   }
@@ -104,9 +104,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setTargetPlatformName:(id)a3
+- (void)setTargetPlatformName:(id)name
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, name);
   v5 = v8;
   if (v8)
   {
@@ -167,9 +167,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setTargetBuildVersion:(id)a3
+- (void)setTargetBuildVersion:(id)version
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, version);
   v5 = v8;
   if (v8)
   {
@@ -230,9 +230,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setTargetProductVersion:(id)a3
+- (void)setTargetProductVersion:(id)version
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, version);
   v5 = v8;
   if (v8)
   {
@@ -269,9 +269,9 @@ LABEL_7:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setDebuggableType:{-[_WKInspectorDebuggableInfo debuggableType](self, "debuggableType")}];
   [v4 setTargetPlatformName:{-[_WKInspectorDebuggableInfo targetPlatformName](self, "targetPlatformName")}];
   [v4 setTargetBuildVersion:{-[_WKInspectorDebuggableInfo targetBuildVersion](self, "targetBuildVersion")}];

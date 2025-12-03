@@ -1,10 +1,10 @@
 @interface CLKUITexture
-+ (CLKUITexture)textureWithProviderDelegate:(id)a3 uuid:(id)a4;
-+ (CLKUITexture)textureWithProviderDelegate:(id)a3 uuid:(id)a4 rect:;
-+ (CLKUITexture)textureWithProviderDelegate:(id)a3 uuid:(id)a4 rect:(id)a5 nullTexture:;
++ (CLKUITexture)textureWithProviderDelegate:(id)delegate uuid:(id)uuid;
++ (CLKUITexture)textureWithProviderDelegate:(id)delegate uuid:(id)uuid rect:;
++ (CLKUITexture)textureWithProviderDelegate:(id)delegate uuid:(id)uuid rect:(id)rect nullTexture:;
 + (id)nullTexture2D;
 + (id)nullTextureCube;
-- (CLKUITexture)initWithAtlas:(id)a3 rect:;
+- (CLKUITexture)initWithAtlas:(id)atlas rect:;
 - (void)dealloc;
 @end
 
@@ -58,52 +58,52 @@ void __31__CLKUITexture_nullTextureCube__block_invoke()
   __nullTextureCube = v3;
 }
 
-+ (CLKUITexture)textureWithProviderDelegate:(id)a3 uuid:(id)a4
++ (CLKUITexture)textureWithProviderDelegate:(id)delegate uuid:(id)uuid
 {
-  v6 = a4;
-  v7 = a3;
+  uuidCopy = uuid;
+  delegateCopy = delegate;
   v8 = +[CLKUITexture nullTexture2D];
-  v9 = [a1 textureWithProviderDelegate:v7 uuid:v6 rect:v8 nullTexture:0.0];
+  v9 = [self textureWithProviderDelegate:delegateCopy uuid:uuidCopy rect:v8 nullTexture:0.0];
 
   return v9;
 }
 
-+ (CLKUITexture)textureWithProviderDelegate:(id)a3 uuid:(id)a4 rect:
++ (CLKUITexture)textureWithProviderDelegate:(id)delegate uuid:(id)uuid rect:
 {
   v12 = v4;
-  v7 = a4;
-  v8 = a3;
+  uuidCopy = uuid;
+  delegateCopy = delegate;
   v9 = +[CLKUITexture nullTexture2D];
-  v10 = [a1 textureWithProviderDelegate:v8 uuid:v7 rect:v9 nullTexture:v12];
+  v10 = [self textureWithProviderDelegate:delegateCopy uuid:uuidCopy rect:v9 nullTexture:v12];
 
   return v10;
 }
 
-+ (CLKUITexture)textureWithProviderDelegate:(id)a3 uuid:(id)a4 rect:(id)a5 nullTexture:
++ (CLKUITexture)textureWithProviderDelegate:(id)delegate uuid:(id)uuid rect:(id)rect nullTexture:
 {
   v14 = v5;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  rectCopy = rect;
+  uuidCopy = uuid;
+  delegateCopy = delegate;
   v11 = +[CLKUIResourceManager sharedInstance];
-  v12 = [v11 textureForUuid:v9 delegate:v10 rect:v8 nullTexture:v14];
+  v12 = [v11 textureForUuid:uuidCopy delegate:delegateCopy rect:rectCopy nullTexture:v14];
 
   return v12;
 }
 
-- (CLKUITexture)initWithAtlas:(id)a3 rect:
+- (CLKUITexture)initWithAtlas:(id)atlas rect:
 {
   v10 = v3;
-  v6 = a3;
+  atlasCopy = atlas;
   v11.receiver = self;
   v11.super_class = CLKUITexture;
   v7 = [(CLKUITexture *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_atlas, a3);
+    objc_storeStrong(&v7->_atlas, atlas);
     *v8->_rect = v10;
-    [v6 incrementInstanceCount];
+    [atlasCopy incrementInstanceCount];
     v8->_null = v8->_atlas == 0;
   }
 

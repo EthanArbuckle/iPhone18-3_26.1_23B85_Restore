@@ -1,9 +1,9 @@
 @interface HMDStructuredReader
-+ (HMDTokenBasedStructuredReader)readerWithError:(uint64_t)a1;
-+ (id)extendedTypeReaderWithReader:(id)a3;
-+ (id)readerFromOPACKData:(id)a3;
-+ (id)readerFromObject:(id)a3;
-+ (id)readerFromObjectWithExtendedTypes:(id)a3;
++ (HMDTokenBasedStructuredReader)readerWithError:(uint64_t)error;
++ (id)extendedTypeReaderWithReader:(id)reader;
++ (id)readerFromOPACKData:(id)data;
++ (id)readerFromObject:(id)object;
++ (id)readerFromObjectWithExtendedTypes:(id)types;
 - (BOOL)readBoolean;
 - (_HMDStructuredDataToken)readToken;
 - (id)readData;
@@ -16,8 +16,8 @@
 - (int64_t)tokenType;
 - (unint64_t)beginArray;
 - (unint64_t)beginDictionary;
-- (void)_processLogicalValueWithBlock:(void *)a1;
-- (void)copyLogicalValueToWriter:(id)a3;
+- (void)_processLogicalValueWithBlock:(void *)block;
+- (void)copyLogicalValueToWriter:(id)writer;
 - (void)endArray;
 - (void)endDictionary;
 - (void)readNull;
@@ -27,33 +27,33 @@
 
 @implementation HMDStructuredReader
 
-+ (id)extendedTypeReaderWithReader:(id)a3
++ (id)extendedTypeReaderWithReader:(id)reader
 {
-  v3 = a3;
-  v4 = [[HMDExtendedTypeReader alloc] initWithReader:v3];
+  readerCopy = reader;
+  v4 = [[HMDExtendedTypeReader alloc] initWithReader:readerCopy];
 
   return v4;
 }
 
-+ (id)readerFromOPACKData:(id)a3
++ (id)readerFromOPACKData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = OPACKDecodeData();
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:? userInfo:?];
-    v6 = [(HMDStructuredReader *)a1 readerWithError:v5];
+    v6 = [(HMDStructuredReader *)self readerWithError:v5];
   }
 
   else
   {
     v4 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
-    v6 = [(HMDStructuredReader *)a1 readerWithError:v4];
+    v6 = [(HMDStructuredReader *)self readerWithError:v4];
   }
 
   return v6;
 }
 
-+ (HMDTokenBasedStructuredReader)readerWithError:(uint64_t)a1
++ (HMDTokenBasedStructuredReader)readerWithError:(uint64_t)error
 {
   v2 = a2;
   objc_opt_self();
@@ -65,27 +65,27 @@
 
 - (id)readLogicalValueAsObject
 {
-  v3 = [(HMDStructuredReader *)self tokenType];
-  if (v3 > 8)
+  tokenType = [(HMDStructuredReader *)self tokenType];
+  if (tokenType > 8)
   {
-    if (v3 > 10)
+    if (tokenType > 10)
     {
-      if (v3 == 11)
+      if (tokenType == 11)
       {
-        v4 = [(HMDStructuredReader *)self readDate];
+        readDate = [(HMDStructuredReader *)self readDate];
         goto LABEL_19;
       }
 
-      if (v3 == 12)
+      if (tokenType == 12)
       {
-        v4 = [(HMDStructuredReader *)self readUUID];
+        readDate = [(HMDStructuredReader *)self readUUID];
         goto LABEL_19;
       }
 
       goto LABEL_23;
     }
 
-    if (v3 == 9)
+    if (tokenType == 9)
     {
       [(HMDStructuredReader *)self readNumber];
     }
@@ -95,13 +95,13 @@
       [(HMDStructuredReader *)self readData];
     }
 
-    v4 = LABEL_9:;
+    readDate = LABEL_9:;
     goto LABEL_19;
   }
 
-  if (v3 > 6)
+  if (tokenType > 6)
   {
-    if (v3 == 7)
+    if (tokenType == 7)
     {
       [MEMORY[0x277CCABB0] numberWithBool:{-[HMDStructuredReader readBoolean](self, "readBoolean")}];
     }
@@ -114,18 +114,18 @@
     goto LABEL_9;
   }
 
-  if (v3 == -2)
+  if (tokenType == -2)
   {
     v5 = 0;
     goto LABEL_20;
   }
 
-  if (v3 == 6)
+  if (tokenType == 6)
   {
     [(HMDStructuredReader *)self readNull];
-    v4 = [MEMORY[0x277CBEB68] null];
+    readDate = [MEMORY[0x277CBEB68] null];
 LABEL_19:
-    v5 = v4;
+    v5 = readDate;
     goto LABEL_20;
   }
 
@@ -133,9 +133,9 @@ LABEL_23:
   v10 = 0;
   v7 = [[HMDStructuredDataFoundationOutputPointerWriter alloc] initWithOutput:?];
   [(HMDStructuredReader *)self copyLogicalValueToWriter:v7];
-  v8 = [(HMDStructuredDataStream *)self error];
+  error = [(HMDStructuredDataStream *)self error];
   v9 = v10;
-  if (v8)
+  if (error)
   {
     v9 = 0;
   }
@@ -147,21 +147,21 @@ LABEL_20:
   return v5;
 }
 
-+ (id)readerFromObjectWithExtendedTypes:(id)a3
++ (id)readerFromObjectWithExtendedTypes:(id)types
 {
-  v3 = [a1 readerFromObject:a3];
+  v3 = [self readerFromObject:types];
   v4 = [HMDStructuredReader extendedTypeReaderWithReader:v3];
 
   return v4;
 }
 
-+ (id)readerFromObject:(id)a3
++ (id)readerFromObject:(id)object
 {
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v4 = v3;
-    v5 = [[HMDStructuredDataFoundationReader alloc] initWithInput:v3];
+    v4 = objectCopy;
+    v5 = [[HMDStructuredDataFoundationReader alloc] initWithInput:objectCopy];
 
     return v5;
   }
@@ -175,9 +175,9 @@ LABEL_20:
   return result;
 }
 
-- (void)copyLogicalValueToWriter:(id)a3
+- (void)copyLogicalValueToWriter:(id)writer
 {
-  v4 = a3;
+  writerCopy = writer;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -187,9 +187,9 @@ LABEL_20:
   v6[2] = __48__HMDStructuredReader_copyLogicalValueToWriter___block_invoke;
   v6[3] = &unk_27868A4D8;
   v9 = v10;
-  v5 = v4;
+  v5 = writerCopy;
   v7 = v5;
-  v8 = self;
+  selfCopy = self;
   [(HMDStructuredReader *)self _processLogicalValueWithBlock:v6];
 
   _Block_object_dispose(v10, 8);
@@ -222,18 +222,18 @@ void __48__HMDStructuredReader_copyLogicalValueToWriter___block_invoke(uint64_t 
   }
 }
 
-- (void)_processLogicalValueWithBlock:(void *)a1
+- (void)_processLogicalValueWithBlock:(void *)block
 {
   v6 = a2;
-  if (a1)
+  if (block)
   {
     v3 = 0;
     do
     {
       while (1)
       {
-        v4 = [a1 tokenType];
-        if (v4 != 5)
+        tokenType = [block tokenType];
+        if (tokenType != 5)
         {
           break;
         }
@@ -241,9 +241,9 @@ void __48__HMDStructuredReader_copyLogicalValueToWriter___block_invoke(uint64_t 
         v6[2]();
       }
 
-      if (v4 > 1)
+      if (tokenType > 1)
       {
-        if (v4 == 2 || v4 == 4)
+        if (tokenType == 2 || tokenType == 4)
         {
           if (!v3)
           {
@@ -253,7 +253,7 @@ void __48__HMDStructuredReader_copyLogicalValueToWriter___block_invoke(uint64_t 
           --v3;
         }
 
-        else if (v4 == 3)
+        else if (tokenType == 3)
         {
           goto LABEL_13;
         }
@@ -261,14 +261,14 @@ void __48__HMDStructuredReader_copyLogicalValueToWriter___block_invoke(uint64_t 
 
       else
       {
-        switch(v4)
+        switch(tokenType)
         {
           case -2:
             goto LABEL_19;
           case -1:
 LABEL_18:
-            v5 = HMDStructuredDataTokenTypeAsString(v4);
-            [a1 failWithReason:{@"Unexpected <%@>", v5}];
+            v5 = HMDStructuredDataTokenTypeAsString(tokenType);
+            [block failWithReason:{@"Unexpected <%@>", v5}];
 
             goto LABEL_19;
           case 1:
@@ -304,45 +304,45 @@ LABEL_19:
 
 - (_HMDStructuredDataToken)readToken
 {
-  v3 = [(HMDStructuredReader *)self tokenType];
-  v4 = 0;
+  tokenType = [(HMDStructuredReader *)self tokenType];
+  error = 0;
   v5 = -1;
-  switch(v3)
+  switch(tokenType)
   {
     case -2:
-      v4 = [(HMDStructuredDataStream *)self error];
+      error = [(HMDStructuredDataStream *)self error];
       v5 = -2;
       break;
     case -1:
       break;
     case 1:
-      v8 = [(HMDStructuredReader *)self beginArray];
-      if (v8 != -1)
+      beginArray = [(HMDStructuredReader *)self beginArray];
+      if (beginArray != -1)
       {
-        v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
+        error = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:beginArray];
         v5 = 1;
         goto LABEL_14;
       }
 
-      v4 = 0;
+      error = 0;
       v5 = 1;
       break;
     case 2:
       [(HMDStructuredReader *)self endArray];
-      v4 = 0;
+      error = 0;
       v5 = 2;
       break;
     case 3:
-      v7 = [(HMDStructuredReader *)self beginDictionary];
-      if (v7 == -1)
+      beginDictionary = [(HMDStructuredReader *)self beginDictionary];
+      if (beginDictionary == -1)
       {
-        v4 = 0;
+        error = 0;
         v5 = 3;
       }
 
       else
       {
-        v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+        error = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:beginDictionary];
         v5 = 3;
 LABEL_14:
       }
@@ -350,47 +350,47 @@ LABEL_14:
       break;
     case 4:
       [(HMDStructuredReader *)self endDictionary];
-      v4 = 0;
+      error = 0;
       v5 = 4;
       break;
     case 5:
-      v4 = [(HMDStructuredReader *)self readDictionaryKey];
+      error = [(HMDStructuredReader *)self readDictionaryKey];
       v5 = 5;
       break;
     case 6:
       [(HMDStructuredReader *)self readNull];
-      v4 = 0;
+      error = 0;
       v5 = 6;
       break;
     case 7:
-      v6 = [(HMDStructuredReader *)self readBoolean];
-      v4 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+      readBoolean = [(HMDStructuredReader *)self readBoolean];
+      error = [MEMORY[0x277CCABB0] numberWithBool:readBoolean];
       v5 = 7;
       break;
     case 8:
-      v4 = [(HMDStructuredReader *)self readString];
+      error = [(HMDStructuredReader *)self readString];
       v5 = 8;
       break;
     case 9:
-      v4 = [(HMDStructuredReader *)self readNumber];
+      error = [(HMDStructuredReader *)self readNumber];
       v5 = 9;
       break;
     case 10:
-      v4 = [(HMDStructuredReader *)self readData];
+      error = [(HMDStructuredReader *)self readData];
       v5 = 10;
       break;
     case 11:
-      v4 = [(HMDStructuredReader *)self readDate];
+      error = [(HMDStructuredReader *)self readDate];
       v5 = 11;
       break;
     case 12:
-      v4 = [(HMDStructuredReader *)self readUUID];
+      error = [(HMDStructuredReader *)self readUUID];
       v5 = 12;
       break;
     default:
       v11 = MEMORY[0x277CBEAD8];
       v12 = *MEMORY[0x277CBE658];
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid token type (%zd)", v3];
+      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid token type (%zd)", tokenType];
       v14 = [v11 exceptionWithName:v12 reason:v13 userInfo:0];
       v15 = v14;
 
@@ -398,7 +398,7 @@ LABEL_14:
   }
 
   v9 = v5;
-  v10 = v4;
+  v10 = error;
   result.value = v10;
   result.type = v9;
   return result;

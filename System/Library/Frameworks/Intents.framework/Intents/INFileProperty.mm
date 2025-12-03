@@ -1,11 +1,11 @@
 @interface INFileProperty
-- (BOOL)isEqual:(id)a3;
-- (INFileProperty)initWithCoder:(id)a3;
-- (INFileProperty)initWithName:(id)a3 qualifier:(id)a4 type:(id)a5 dateComponentsRange:(id)a6 person:(id)a7 value:(id)a8 quantity:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (INFileProperty)initWithCoder:(id)coder;
+- (INFileProperty)initWithName:(id)name qualifier:(id)qualifier type:(id)type dateComponentsRange:(id)range person:(id)person value:(id)value quantity:(id)quantity;
 - (id)_dictionaryRepresentation;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INFileProperty
@@ -25,61 +25,61 @@
   v25[0] = name;
   v24[1] = @"qualifier";
   qualifier = self->_qualifier;
-  v5 = qualifier;
+  null = qualifier;
   if (!qualifier)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v5;
-  v25[1] = v5;
+  v21 = null;
+  v25[1] = null;
   v24[2] = @"type";
   type = self->_type;
-  v7 = type;
+  null2 = type;
   if (!type)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v7;
-  v25[2] = v7;
+  v20 = null2;
+  v25[2] = null2;
   v24[3] = @"dateComponentsRange";
   dateComponentsRange = self->_dateComponentsRange;
-  v9 = dateComponentsRange;
+  null3 = dateComponentsRange;
   if (!dateComponentsRange)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v9;
-  v25[3] = v9;
+  v19 = null3;
+  v25[3] = null3;
   v24[4] = @"person";
   person = self->_person;
-  v11 = person;
+  null4 = person;
   if (!person)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[4] = v11;
+  v25[4] = null4;
   v24[5] = @"value";
   value = self->_value;
-  v13 = value;
+  null5 = value;
   if (!value)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[5] = v13;
+  v25[5] = null5;
   v24[6] = @"quantity";
   quantity = self->_quantity;
-  v15 = quantity;
+  null6 = quantity;
   if (!quantity)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[6] = v15;
+  v25[6] = null6;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:7];
   if (quantity)
   {
@@ -160,54 +160,54 @@ LABEL_21:
   return v16;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INFileProperty;
   v6 = [(INFileProperty *)&v11 description];
-  v7 = [(INFileProperty *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INFileProperty *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (INFileProperty)initWithCoder:(id)a3
+- (INFileProperty)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"qualifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateComponentsRange"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"person"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quantity"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"qualifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateComponentsRange"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"person"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quantity"];
 
   v12 = [(INFileProperty *)self initWithName:v5 qualifier:v6 type:v7 dateComponentsRange:v8 person:v9 value:v10 quantity:v11];
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_qualifier forKey:@"qualifier"];
-  [v5 encodeObject:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_dateComponentsRange forKey:@"dateComponentsRange"];
-  [v5 encodeObject:self->_person forKey:@"person"];
-  [v5 encodeObject:self->_value forKey:@"value"];
-  [v5 encodeObject:self->_quantity forKey:@"quantity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_qualifier forKey:@"qualifier"];
+  [coderCopy encodeObject:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_dateComponentsRange forKey:@"dateComponentsRange"];
+  [coderCopy encodeObject:self->_person forKey:@"person"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
+  [coderCopy encodeObject:self->_quantity forKey:@"quantity"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     name = self->_name;
     v13 = 0;
     if (name == v5[1] || [(NSString *)name isEqual:?])
@@ -259,45 +259,45 @@ LABEL_21:
   return v6 ^ v8 ^ [(NSNumber *)self->_quantity hash];
 }
 
-- (INFileProperty)initWithName:(id)a3 qualifier:(id)a4 type:(id)a5 dateComponentsRange:(id)a6 person:(id)a7 value:(id)a8 quantity:(id)a9
+- (INFileProperty)initWithName:(id)name qualifier:(id)qualifier type:(id)type dateComponentsRange:(id)range person:(id)person value:(id)value quantity:(id)quantity
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  nameCopy = name;
+  qualifierCopy = qualifier;
+  typeCopy = type;
+  rangeCopy = range;
+  personCopy = person;
+  valueCopy = value;
+  quantityCopy = quantity;
   v38.receiver = self;
   v38.super_class = INFileProperty;
   v22 = [(INFileProperty *)&v38 init];
   if (v22)
   {
-    v23 = [v15 copy];
+    v23 = [nameCopy copy];
     name = v22->_name;
     v22->_name = v23;
 
-    v25 = [v16 copy];
+    v25 = [qualifierCopy copy];
     qualifier = v22->_qualifier;
     v22->_qualifier = v25;
 
-    v27 = [v17 copy];
+    v27 = [typeCopy copy];
     type = v22->_type;
     v22->_type = v27;
 
-    v29 = [v18 copy];
+    v29 = [rangeCopy copy];
     dateComponentsRange = v22->_dateComponentsRange;
     v22->_dateComponentsRange = v29;
 
-    v31 = [v19 copy];
+    v31 = [personCopy copy];
     person = v22->_person;
     v22->_person = v31;
 
-    v33 = [v20 copy];
+    v33 = [valueCopy copy];
     value = v22->_value;
     v22->_value = v33;
 
-    v35 = [v21 copy];
+    v35 = [quantityCopy copy];
     quantity = v22->_quantity;
     v22->_quantity = v35;
   }

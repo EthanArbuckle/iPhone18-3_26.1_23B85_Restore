@@ -1,5 +1,5 @@
 @interface CalSignalSensor
-- (CalSignalSensor)initWithSignal:(int)a3;
+- (CalSignalSensor)initWithSignal:(int)signal;
 - (id)description;
 - (void)_shutDownSource;
 - (void)dealloc;
@@ -9,14 +9,14 @@
 
 @implementation CalSignalSensor
 
-- (CalSignalSensor)initWithSignal:(int)a3
+- (CalSignalSensor)initWithSignal:(int)signal
 {
   v5.receiver = self;
   v5.super_class = CalSignalSensor;
   result = [(CalSignalSensor *)&v5 init];
   if (result)
   {
-    result->_signal = a3;
+    result->_signal = signal;
   }
 
   return result;
@@ -38,15 +38,15 @@
   v4 = [(CalSignalSensor *)&v9 description];
   v5 = [(CalDescriptionBuilder *)v3 initWithSuperclassDescription:v4];
 
-  v6 = self;
-  objc_sync_enter(v6);
-  [(CalDescriptionBuilder *)v5 setKey:@"signal" withInt:[(CalSignalSensor *)v6 signal]];
-  [(CalDescriptionBuilder *)v5 setKey:@"source" withPointerAddress:v6->_signalSource];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CalDescriptionBuilder *)v5 setKey:@"signal" withInt:[(CalSignalSensor *)selfCopy signal]];
+  [(CalDescriptionBuilder *)v5 setKey:@"source" withPointerAddress:selfCopy->_signalSource];
+  objc_sync_exit(selfCopy);
 
-  v7 = [(CalDescriptionBuilder *)v5 build];
+  build = [(CalDescriptionBuilder *)v5 build];
 
-  return v7;
+  return build;
 }
 
 - (void)startSensor

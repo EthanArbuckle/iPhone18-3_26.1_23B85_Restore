@@ -1,18 +1,18 @@
 @interface SURoundedCornersButton
-- (SURoundedCornersButton)initWithFrame:(CGRect)a3;
+- (SURoundedCornersButton)initWithFrame:(CGRect)frame;
 - (id)_highlightedBackgroundView;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SURoundedCornersButton
 
-- (SURoundedCornersButton)initWithFrame:(CGRect)a3
+- (SURoundedCornersButton)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SURoundedCornersButton;
-  v3 = [(SURoundedCornersButton *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SURoundedCornersButton *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     -[SURoundedCornersButton setBackgroundColor:](v3, "setBackgroundColor:", [MEMORY[0x1E69DC888] clearColor]);
@@ -30,12 +30,12 @@
   [(SUSubtitledButton *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(SURoundedCornersButton *)self bounds];
   v12 = v8;
   v13 = v9;
@@ -65,10 +65,10 @@
 
   if (([(SURoundedCornersButton *)self isHighlighted]& 1) != 0 || ([(SURoundedCornersButton *)self isSelected]& 1) != 0)
   {
-    v17 = [(SURoundedCornersButton *)self _highlightedBackgroundView];
-    [v17 setFrame:{v12, v13, v14, v15}];
+    _highlightedBackgroundView = [(SURoundedCornersButton *)self _highlightedBackgroundView];
+    [_highlightedBackgroundView setFrame:{v12, v13, v14, v15}];
     [(UIBezierPath *)self->_bezierPath clip];
-    [v17 drawRect:{x, y, width, height}];
+    [_highlightedBackgroundView drawRect:{x, y, width, height}];
   }
 
   else
@@ -85,12 +85,12 @@
   [(UIBezierPath *)bezierPath stroke];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SURoundedCornersButton *)self frame];
   v9 = v8;
   v11 = v10;

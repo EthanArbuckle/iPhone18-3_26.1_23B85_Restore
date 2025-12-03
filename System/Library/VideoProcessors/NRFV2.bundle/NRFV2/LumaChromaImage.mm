@@ -1,37 +1,37 @@
 @interface LumaChromaImage
-+ (int)bindYCbCrMetalTextureWithMetalContext:(id)a3 pixelBuffer:(__CVBuffer *)a4 pixelFormat:(unint64_t)a5 textureToBind:(id *)a6 alignmentFactor:(unint64_t)a7;
-+ (unint64_t)getMetalChromaFormat:(__CVBuffer *)a3;
-+ (unint64_t)getMetalLumaFormat:(__CVBuffer *)a3;
-+ (unint64_t)getMetalYCbCrFormat:(__CVBuffer *)a3;
-- (LumaChromaImage)initWithContext:(id)a3 pixelBuffer:(__CVBuffer *)a4 lumaAlignmentFactor:(unint64_t)a5 chromaAlignmentFactor:(unint64_t)a6;
-- (int)bindYCbCrTexture:(id)a3 alignmentFactor:(unint64_t)a4;
++ (int)bindYCbCrMetalTextureWithMetalContext:(id)context pixelBuffer:(__CVBuffer *)buffer pixelFormat:(unint64_t)format textureToBind:(id *)bind alignmentFactor:(unint64_t)factor;
++ (unint64_t)getMetalChromaFormat:(__CVBuffer *)format;
++ (unint64_t)getMetalLumaFormat:(__CVBuffer *)format;
++ (unint64_t)getMetalYCbCrFormat:(__CVBuffer *)format;
+- (LumaChromaImage)initWithContext:(id)context pixelBuffer:(__CVBuffer *)buffer lumaAlignmentFactor:(unint64_t)factor chromaAlignmentFactor:(unint64_t)alignmentFactor;
+- (int)bindYCbCrTexture:(id)texture alignmentFactor:(unint64_t)factor;
 @end
 
 @implementation LumaChromaImage
 
-- (LumaChromaImage)initWithContext:(id)a3 pixelBuffer:(__CVBuffer *)a4 lumaAlignmentFactor:(unint64_t)a5 chromaAlignmentFactor:(unint64_t)a6
+- (LumaChromaImage)initWithContext:(id)context pixelBuffer:(__CVBuffer *)buffer lumaAlignmentFactor:(unint64_t)factor chromaAlignmentFactor:(unint64_t)alignmentFactor
 {
-  v10 = a3;
+  contextCopy = context;
   v27.receiver = self;
   v27.super_class = LumaChromaImage;
   v13 = [(LumaChromaImage *)&v27 init];
   if (v13)
   {
-    MetalLumaFormat = objc_msgSend_getMetalLumaFormat_(LumaChromaImage, v11, a4, v12);
-    MetalChromaFormat = objc_msgSend_getMetalChromaFormat_(LumaChromaImage, v15, a4, v16);
-    v19 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_alignmentFactor_(v10, v18, a4, MetalLumaFormat, 7, 0, a5);
+    MetalLumaFormat = objc_msgSend_getMetalLumaFormat_(LumaChromaImage, v11, buffer, v12);
+    MetalChromaFormat = objc_msgSend_getMetalChromaFormat_(LumaChromaImage, v15, buffer, v16);
+    v19 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_alignmentFactor_(contextCopy, v18, buffer, MetalLumaFormat, 7, 0, factor);
     lumaTex = v13->lumaTex;
     v13->lumaTex = v19;
 
     if (v13->lumaTex)
     {
-      v22 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_alignmentFactor_(v10, v21, a4, MetalChromaFormat, 7, 1, a6);
+      v22 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_alignmentFactor_(contextCopy, v21, buffer, MetalChromaFormat, 7, 1, alignmentFactor);
       chromaTex = v13->chromaTex;
       v13->chromaTex = v22;
 
       if (v13->chromaTex)
       {
-        v13->pixelBuffer = a4;
+        v13->pixelBuffer = buffer;
         goto LABEL_5;
       }
 
@@ -63,10 +63,10 @@ LABEL_6:
   return v25;
 }
 
-+ (int)bindYCbCrMetalTextureWithMetalContext:(id)a3 pixelBuffer:(__CVBuffer *)a4 pixelFormat:(unint64_t)a5 textureToBind:(id *)a6 alignmentFactor:(unint64_t)a7
++ (int)bindYCbCrMetalTextureWithMetalContext:(id)context pixelBuffer:(__CVBuffer *)buffer pixelFormat:(unint64_t)format textureToBind:(id *)bind alignmentFactor:(unint64_t)factor
 {
-  v11 = a3;
-  if (!a5)
+  contextCopy = context;
+  if (!format)
   {
     sub_2958CD404(v18);
 LABEL_12:
@@ -76,7 +76,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (!CVPixelBufferGetIOSurface(a4))
+  if (!CVPixelBufferGetIOSurface(buffer))
   {
     sub_2958CD37C(v18);
     goto LABEL_12;
@@ -112,7 +112,7 @@ LABEL_14:
   HIBYTE(v19) = 1;
   *(&v19 + 13) = 771;
   IOSurfaceSetBulkAttachments2();
-  v14 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_alignmentFactor_(v11, v13, a4, a5, 1, 0, a7);
+  v14 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_alignmentFactor_(contextCopy, v13, buffer, format, 1, 0, factor);
   if (!v14)
   {
     sub_2958CD2F4(v18);
@@ -120,11 +120,11 @@ LABEL_14:
   }
 
   IOSurfaceSetBulkAttachments2();
-  if (a6)
+  if (bind)
   {
     v15 = v14;
     v16 = 0;
-    *a6 = v14;
+    *bind = v14;
   }
 
   else
@@ -137,9 +137,9 @@ LABEL_8:
   return v16;
 }
 
-- (int)bindYCbCrTexture:(id)a3 alignmentFactor:(unint64_t)a4
+- (int)bindYCbCrTexture:(id)texture alignmentFactor:(unint64_t)factor
 {
-  v8 = a3;
+  textureCopy = texture;
   pixelBuffer = self->pixelBuffer;
   if (!pixelBuffer)
   {
@@ -153,7 +153,7 @@ LABEL_9:
   MetalYCbCrFormat = objc_msgSend_getMetalYCbCrFormat_(LumaChromaImage, v6, pixelBuffer, v7);
   v11 = self->pixelBuffer;
   v17 = 0;
-  v13 = objc_msgSend_bindYCbCrMetalTextureWithMetalContext_pixelBuffer_pixelFormat_textureToBind_alignmentFactor_(LumaChromaImage, v12, v8, v11, MetalYCbCrFormat, &v17, a4);
+  v13 = objc_msgSend_bindYCbCrMetalTextureWithMetalContext_pixelBuffer_pixelFormat_textureToBind_alignmentFactor_(LumaChromaImage, v12, textureCopy, v11, MetalYCbCrFormat, &v17, factor);
   v14 = v17;
   v15 = v17;
   if (v13)
@@ -175,9 +175,9 @@ LABEL_5:
   return v13;
 }
 
-+ (unint64_t)getMetalYCbCrFormat:(__CVBuffer *)a3
++ (unint64_t)getMetalYCbCrFormat:(__CVBuffer *)format
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(format);
   if (PixelFormatType > 1885745711)
   {
     if (PixelFormatType != 2088265264)
@@ -205,9 +205,9 @@ LABEL_8:
   return 594;
 }
 
-+ (unint64_t)getMetalLumaFormat:(__CVBuffer *)a3
++ (unint64_t)getMetalLumaFormat:(__CVBuffer *)format
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(format);
   if (PixelFormatType > 796419631)
   {
     if (PixelFormatType > 1885745711)
@@ -317,9 +317,9 @@ LABEL_17:
   return 588;
 }
 
-+ (unint64_t)getMetalChromaFormat:(__CVBuffer *)a3
++ (unint64_t)getMetalChromaFormat:(__CVBuffer *)format
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(format);
   if (PixelFormatType > 796419631)
   {
     if (PixelFormatType > 1885745711)

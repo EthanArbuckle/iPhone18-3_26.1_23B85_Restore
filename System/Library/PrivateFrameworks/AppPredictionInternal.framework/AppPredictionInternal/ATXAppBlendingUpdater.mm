@@ -1,17 +1,17 @@
 @interface ATXAppBlendingUpdater
-+ (id)clientModelForAppPredictionsForClientModelId:(id)a3;
-+ (id)clientModelIdForConsumerSubType:(unsigned __int8)a3;
-+ (id)clientModelSpecForAppPredictionsForClientModelId:(id)a3;
++ (id)clientModelForAppPredictionsForClientModelId:(id)id;
++ (id)clientModelIdForConsumerSubType:(unsigned __int8)type;
++ (id)clientModelSpecForAppPredictionsForClientModelId:(id)id;
 @end
 
 @implementation ATXAppBlendingUpdater
 
-+ (id)clientModelIdForConsumerSubType:(unsigned __int8)a3
++ (id)clientModelIdForConsumerSubType:(unsigned __int8)type
 {
   v5 = 0;
-  if (a3 <= 0x25u)
+  if (type <= 0x25u)
   {
-    if (((1 << a3) & 0x39E) != 0)
+    if (((1 << type) & 0x39E) != 0)
     {
       v6 = 15;
 LABEL_4:
@@ -19,13 +19,13 @@ LABEL_4:
       goto LABEL_5;
     }
 
-    if (a3 == 35)
+    if (type == 35)
     {
       v6 = 17;
       goto LABEL_4;
     }
 
-    if (a3 == 37)
+    if (type == 37)
     {
       v6 = 16;
       goto LABEL_4;
@@ -37,24 +37,24 @@ LABEL_5:
   return v5;
 }
 
-+ (id)clientModelSpecForAppPredictionsForClientModelId:(id)a3
++ (id)clientModelSpecForAppPredictionsForClientModelId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = +[_ATXGlobals sharedInstance];
-  v5 = [v4 appPredictionBlendingModelVersion];
+  appPredictionBlendingModelVersion = [v4 appPredictionBlendingModelVersion];
 
-  v6 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v3 clientModelVersion:v5 engagementResetPolicy:0];
+  v6 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:idCopy clientModelVersion:appPredictionBlendingModelVersion engagementResetPolicy:0];
 
   return v6;
 }
 
-+ (id)clientModelForAppPredictionsForClientModelId:(id)a3
++ (id)clientModelForAppPredictionsForClientModelId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_alloc(MEMORY[0x277D42070]);
   v5 = +[ATXClientModelSuggestionReceiver sharedInstance];
-  v6 = [v5 blendingLayerServer];
-  v7 = [v4 initWithClientModelId:v3 blendingLayerServer:v6];
+  blendingLayerServer = [v5 blendingLayerServer];
+  v7 = [v4 initWithClientModelId:idCopy blendingLayerServer:blendingLayerServer];
 
   return v7;
 }

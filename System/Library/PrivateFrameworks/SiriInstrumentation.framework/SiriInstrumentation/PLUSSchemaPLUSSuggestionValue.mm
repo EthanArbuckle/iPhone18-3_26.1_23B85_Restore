@@ -1,31 +1,31 @@
 @interface PLUSSchemaPLUSSuggestionValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (PLUSSchemaPLUSMediaSuggestion)mediaSuggestion;
-- (PLUSSchemaPLUSSuggestionValue)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSSuggestionValue)initWithJSON:(id)a3;
+- (PLUSSchemaPLUSSuggestionValue)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSSuggestionValue)initWithJSON:(id)n;
 - (PLUSSchemaPLUSUniversalSuggestion)universalSuggestion;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteMediaSuggestion;
 - (void)deleteUniversalSuggestion;
-- (void)setMediaSuggestion:(id)a3;
-- (void)setUniversalSuggestion:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setMediaSuggestion:(id)suggestion;
+- (void)setUniversalSuggestion:(id)suggestion;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSSuggestionValue
 
-- (PLUSSchemaPLUSSuggestionValue)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSSuggestionValue)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PLUSSchemaPLUSSuggestionValue;
   v5 = [(PLUSSchemaPLUSSuggestionValue *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"universalSuggestion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"universalSuggestion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(PLUSSchemaPLUSSuggestionValue *)v5 setUniversalSuggestion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"mediaSuggestion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"mediaSuggestion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSSuggestionValue)initWithJSON:(id)a3
+- (PLUSSchemaPLUSSuggestionValue)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSSuggestionValue *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSSuggestionValue *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSSuggestionValue *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -83,72 +83,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_mediaSuggestion)
   {
-    v4 = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    mediaSuggestion = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
+    dictionaryRepresentation = [mediaSuggestion dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"mediaSuggestion"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"mediaSuggestion"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"mediaSuggestion"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"mediaSuggestion"];
     }
   }
 
   if (self->_universalSuggestion)
   {
-    v7 = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    universalSuggestion = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
+    dictionaryRepresentation2 = [universalSuggestion dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"universalSuggestion"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"universalSuggestion"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"universalSuggestion"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"universalSuggestion"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichSuggestion = self->_whichSuggestion;
-  if (whichSuggestion != [v4 whichSuggestion])
+  if (whichSuggestion != [equalCopy whichSuggestion])
   {
     goto LABEL_13;
   }
 
-  v6 = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
-  v7 = [v4 universalSuggestion];
-  if ((v6 != 0) == (v7 == 0))
+  universalSuggestion = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
+  universalSuggestion2 = [equalCopy universalSuggestion];
+  if ((universalSuggestion != 0) == (universalSuggestion2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
-  if (v8)
+  universalSuggestion3 = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
+  if (universalSuggestion3)
   {
-    v9 = v8;
-    v10 = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
-    v11 = [v4 universalSuggestion];
-    v12 = [v10 isEqual:v11];
+    v9 = universalSuggestion3;
+    universalSuggestion4 = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
+    universalSuggestion5 = [equalCopy universalSuggestion];
+    v12 = [universalSuggestion4 isEqual:universalSuggestion5];
 
     if (!v12)
     {
@@ -160,12 +160,12 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
-  v7 = [v4 mediaSuggestion];
-  if ((v6 != 0) != (v7 == 0))
+  universalSuggestion = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
+  universalSuggestion2 = [equalCopy mediaSuggestion];
+  if ((universalSuggestion != 0) != (universalSuggestion2 == 0))
   {
-    v13 = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
-    if (!v13)
+    mediaSuggestion = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
+    if (!mediaSuggestion)
     {
 
 LABEL_16:
@@ -173,10 +173,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
-    v16 = [v4 mediaSuggestion];
-    v17 = [v15 isEqual:v16];
+    v14 = mediaSuggestion;
+    mediaSuggestion2 = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
+    mediaSuggestion3 = [equalCopy mediaSuggestion];
+    v17 = [mediaSuggestion2 isEqual:mediaSuggestion3];
 
     if (v17)
     {
@@ -196,22 +196,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
+  toCopy = to;
+  universalSuggestion = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
 
-  if (v4)
+  if (universalSuggestion)
   {
-    v5 = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
+    universalSuggestion2 = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
+  mediaSuggestion = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
 
-  if (v6)
+  if (mediaSuggestion)
   {
-    v7 = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
+    mediaSuggestion2 = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -241,21 +241,21 @@ LABEL_14:
   return v3;
 }
 
-- (void)setMediaSuggestion:(id)a3
+- (void)setMediaSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   universalSuggestion = self->_universalSuggestion;
   self->_universalSuggestion = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!suggestionCopy)
   {
     v6 = 0;
   }
 
   self->_whichSuggestion = v6;
   mediaSuggestion = self->_mediaSuggestion;
-  self->_mediaSuggestion = v4;
+  self->_mediaSuggestion = suggestionCopy;
 }
 
 - (void)deleteUniversalSuggestion
@@ -283,43 +283,43 @@ LABEL_14:
   return v3;
 }
 
-- (void)setUniversalSuggestion:(id)a3
+- (void)setUniversalSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   mediaSuggestion = self->_mediaSuggestion;
   self->_mediaSuggestion = 0;
 
   v6 = 100;
-  if (!v4)
+  if (!suggestionCopy)
   {
     v6 = 0;
   }
 
   self->_whichSuggestion = v6;
   universalSuggestion = self->_universalSuggestion;
-  self->_universalSuggestion = v4;
+  self->_universalSuggestion = suggestionCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = PLUSSchemaPLUSSuggestionValue;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  universalSuggestion = [(PLUSSchemaPLUSSuggestionValue *)self universalSuggestion];
+  v7 = [universalSuggestion applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSSuggestionValue *)self deleteUniversalSuggestion];
   }
 
-  v9 = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  mediaSuggestion = [(PLUSSchemaPLUSSuggestionValue *)self mediaSuggestion];
+  v10 = [mediaSuggestion applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PLUSSchemaPLUSSuggestionValue *)self deleteMediaSuggestion];
   }

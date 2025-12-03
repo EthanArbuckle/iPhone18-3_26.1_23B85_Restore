@@ -1,39 +1,39 @@
 @interface MCMSQLiteDB
-+ (BOOL)moveDBWithURL:(id)a3 toURL:(id)a4 queue:(id)a5 error:(id *)a6;
-+ (sqlite3)openDBWithURL:(id)a3 queue:(id)a4 error:(id *)a5;
-- (BOOL)_deleteCodeSigningWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_insertChildIdentifier:(id)a3 forParentIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)_insertCodeSigningData:(id)a3 forIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)_insertCodeSigningInfo:(id)a3 forIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)_performInsertOrUpdateQuery:(const char *)a3 withCodeSigningEntry:(id)a4 forIdentifier:(id)a5 isUpdate:(BOOL)a6 error:(id *)a7;
-- (BOOL)_performSingleParameterQuery:(const char *)a3 withTextInput:(id)a4 error:(id *)a5;
-- (BOOL)_performTwoParameterQuery:(const char *)a3 withTextInputOne:(id)a4 andTextInputTwo:(id)a5 expectedChanges:(int)a6 error:(id *)a7;
-- (BOOL)_sqliteExec:(id)a3 error:(id *)a4;
-- (BOOL)addCodeSigningEntry:(id)a3 withIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)deleteAllAdvanceCopiesOfCodeSigningEntriesWithError:(id *)a3;
-- (BOOL)deleteAllInvalidPluginCodeSigningEntriesWithNumChanges:(int *)a3 error:(id *)a4;
-- (BOOL)deleteCodeSigningEntryWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)invalidateCodeSigningForIdentifierAndAllChildren:(id)a3 error:(id *)a4;
-- (BOOL)invalidateCodeSigningWithIdentifier:(id)a3 error:(id *)a4;
-- (MCMSQLiteDB)initWithURL:(id)a3 queue:(id)a4 error:(id *)a5;
++ (BOOL)moveDBWithURL:(id)l toURL:(id)rL queue:(id)queue error:(id *)error;
++ (sqlite3)openDBWithURL:(id)l queue:(id)queue error:(id *)error;
+- (BOOL)_deleteCodeSigningWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_insertChildIdentifier:(id)identifier forParentIdentifier:(id)parentIdentifier error:(id *)error;
+- (BOOL)_insertCodeSigningData:(id)data forIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_insertCodeSigningInfo:(id)info forIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_performInsertOrUpdateQuery:(const char *)query withCodeSigningEntry:(id)entry forIdentifier:(id)identifier isUpdate:(BOOL)update error:(id *)error;
+- (BOOL)_performSingleParameterQuery:(const char *)query withTextInput:(id)input error:(id *)error;
+- (BOOL)_performTwoParameterQuery:(const char *)query withTextInputOne:(id)one andTextInputTwo:(id)two expectedChanges:(int)changes error:(id *)error;
+- (BOOL)_sqliteExec:(id)exec error:(id *)error;
+- (BOOL)addCodeSigningEntry:(id)entry withIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deleteAllAdvanceCopiesOfCodeSigningEntriesWithError:(id *)error;
+- (BOOL)deleteAllInvalidPluginCodeSigningEntriesWithNumChanges:(int *)changes error:(id *)error;
+- (BOOL)deleteCodeSigningEntryWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)invalidateCodeSigningForIdentifierAndAllChildren:(id)children error:(id *)error;
+- (BOOL)invalidateCodeSigningWithIdentifier:(id)identifier error:(id *)error;
+- (MCMSQLiteDB)initWithURL:(id)l queue:(id)queue error:(id *)error;
 - (MCMSQLiteDBCodeSigningPeerageDelegate)peerageDelegate;
 - (NSURL)url;
 - (OS_dispatch_queue)queue;
-- (id)_codeSigningEntryFromStatementRow:(sqlite3_stmt *)a3 error:(id *)a4;
-- (id)_selectCodeSigningEntryWithIdentifier:(id)a3 error:(id *)a4;
-- (id)childIdentifiersForParentIdentifier:(id)a3 error:(id *)a4;
-- (id)childParentMapWithError:(id *)a3;
-- (id)codeSigningEntryWithIdentifier:(id)a3 error:(id *)a4;
-- (id)enumerateIdentifiersAndCodeSigningInfoUsingBlock:(id)a3;
-- (id)identifiersWithError:(id *)a3;
-- (id)parentIdentifierForChildIdentifier:(id)a3 error:(id *)a4;
+- (id)_codeSigningEntryFromStatementRow:(sqlite3_stmt *)row error:(id *)error;
+- (id)_selectCodeSigningEntryWithIdentifier:(id)identifier error:(id *)error;
+- (id)childIdentifiersForParentIdentifier:(id)identifier error:(id *)error;
+- (id)childParentMapWithError:(id *)error;
+- (id)codeSigningEntryWithIdentifier:(id)identifier error:(id *)error;
+- (id)enumerateIdentifiersAndCodeSigningInfoUsingBlock:(id)block;
+- (id)identifiersWithError:(id *)error;
+- (id)parentIdentifierForChildIdentifier:(id)identifier error:(id *)error;
 - (sqlite3)db;
 - (void)closeDB;
 - (void)dealloc;
-- (void)setDb:(sqlite3 *)a3;
-- (void)setPeerageDelegate:(id)a3;
-- (void)setQueue:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)setDb:(sqlite3 *)db;
+- (void)setPeerageDelegate:(id)delegate;
+- (void)setQueue:(id)queue;
+- (void)setUrl:(id)url;
 @end
 
 @implementation MCMSQLiteDB
@@ -46,13 +46,13 @@
   return result;
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_queue = &self->_queue;
 
-  objc_storeStrong(p_queue, a3);
+  objc_storeStrong(p_queue, queue);
 }
 
 - (OS_dispatch_queue)queue
@@ -63,13 +63,13 @@
   return result;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_url = &self->_url;
 
-  objc_storeStrong(p_url, a3);
+  objc_storeStrong(p_url, url);
 }
 
 - (NSURL)url
@@ -80,20 +80,20 @@
   return result;
 }
 
-- (void)setDb:(sqlite3 *)a3
+- (void)setDb:(sqlite3 *)db
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_db = a3;
+  self->_db = db;
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPeerageDelegate:(id)a3
+- (void)setPeerageDelegate:(id)delegate
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_peerageDelegate = &self->_peerageDelegate;
 
-  objc_storeWeak(p_peerageDelegate, a3);
+  objc_storeWeak(p_peerageDelegate, delegate);
 }
 
 - (MCMSQLiteDBCodeSigningPeerageDelegate)peerageDelegate
@@ -105,7 +105,7 @@
   return WeakRetained;
 }
 
-- (BOOL)deleteAllInvalidPluginCodeSigningEntriesWithNumChanges:(int *)a3 error:(id *)a4
+- (BOOL)deleteAllInvalidPluginCodeSigningEntriesWithNumChanges:(int *)changes error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
   ppStmt = 0;
@@ -171,10 +171,10 @@ LABEL_13:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v19 = [(MCMSQLiteDB *)self url];
-      v20 = [v19 path];
+      path = [v19 path];
       v21 = sqlite3_errmsg(v7);
       *buf = 138412546;
-      v27 = v20;
+      v27 = path;
       v28 = 2080;
       v29 = v21;
       _os_log_error_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %s", buf, 0x16u);
@@ -182,17 +182,17 @@ LABEL_13:
   }
 
   v14 = !v12;
-  if (!a3)
+  if (!changes)
   {
     v14 = 1;
   }
 
   if ((v14 & 1) == 0)
   {
-    *a3 = v9;
+    *changes = v9;
   }
 
-  if (a4)
+  if (error)
   {
     v15 = v12;
   }
@@ -205,7 +205,7 @@ LABEL_13:
   if ((v15 & 1) == 0)
   {
     v16 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -311,7 +311,7 @@ id __76__MCMSQLiteDB_deleteAllInvalidPluginCodeSigningEntriesWithNumChanges_erro
   return v10;
 }
 
-- (id)childParentMapWithError:(id *)a3
+- (id)childParentMapWithError:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -410,20 +410,20 @@ LABEL_4:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v22 = [(MCMSQLiteDB *)self url];
-      v23 = [v22 path];
+      path = [v22 path];
       v24 = sqlite3_extended_errcode(v6);
       *buf = 138412546;
-      v31 = v23;
+      v31 = path;
       v32 = 1024;
       v33 = v24;
       _os_log_error_impl(&dword_1DF2C3000, v9, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %d", buf, 0x12u);
     }
   }
 
-  if (a3 && !v5)
+  if (error && !v5)
   {
     v10 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
   v11 = [v5 copy];
@@ -557,7 +557,7 @@ id __39__MCMSQLiteDB_childParentMapWithError___block_invoke_358(uint64_t a1)
   return v6;
 }
 
-- (BOOL)deleteAllAdvanceCopiesOfCodeSigningEntriesWithError:(id *)a3
+- (BOOL)deleteAllAdvanceCopiesOfCodeSigningEntriesWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -624,17 +624,17 @@ LABEL_13:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v17 = [(MCMSQLiteDB *)self url];
-      v18 = [v17 path];
+      path = [v17 path];
       v19 = sqlite3_extended_errcode(v5);
       *buf = 138412546;
-      v25 = v18;
+      v25 = path;
       v26 = 1024;
       v27 = v19;
       _os_log_error_impl(&dword_1DF2C3000, v12, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %d", buf, 0x12u);
     }
   }
 
-  if (a3)
+  if (error)
   {
     v13 = v11;
   }
@@ -647,7 +647,7 @@ LABEL_13:
   if ((v13 & 1) == 0)
   {
     v14 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -753,10 +753,10 @@ id __67__MCMSQLiteDB_deleteAllAdvanceCopiesOfCodeSigningEntriesWithError___block
   return v10;
 }
 
-- (id)parentIdentifierForChildIdentifier:(id)a3 error:(id *)a4
+- (id)parentIdentifierForChildIdentifier:(id)identifier error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   ppStmt = 0;
   v7 = [(MCMSQLiteDB *)self db];
@@ -774,14 +774,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (sqlite3_bind_text(ppStmt, 1, [v6 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
+  if (sqlite3_bind_text(ppStmt, 1, [identifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
   {
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __56__MCMSQLiteDB_parentIdentifierForChildIdentifier_error___block_invoke_309;
     v26[3] = &unk_1E86B0B20;
-    v27 = v6;
-    v28 = self;
+    v27 = identifierCopy;
+    selfCopy = self;
     v29 = v7;
     v8 = __56__MCMSQLiteDB_parentIdentifierForChildIdentifier_error___block_invoke_309(v26);
 
@@ -839,10 +839,10 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v19 = [(MCMSQLiteDB *)self url];
-      v20 = [v19 path];
+      path = [v19 path];
       v21 = sqlite3_extended_errcode(v7);
       *buf = 138412546;
-      v33 = v20;
+      v33 = path;
       v34 = 1024;
       v35 = v21;
       _os_log_error_impl(&dword_1DF2C3000, v10, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %d", buf, 0x12u);
@@ -861,16 +861,16 @@ LABEL_6:
     v22[1] = 3221225472;
     v22[2] = __56__MCMSQLiteDB_parentIdentifierForChildIdentifier_error___block_invoke_324;
     v22[3] = &unk_1E86B0B98;
-    v23 = v6;
+    v23 = identifierCopy;
     v8 = __56__MCMSQLiteDB_parentIdentifierForChildIdentifier_error___block_invoke_324(v22);
     v9 = v23;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v8;
     v9 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -1035,10 +1035,10 @@ id __56__MCMSQLiteDB_parentIdentifierForChildIdentifier_error___block_invoke_324
   return v5;
 }
 
-- (id)childIdentifiersForParentIdentifier:(id)a3 error:(id *)a4
+- (id)childIdentifiersForParentIdentifier:(id)identifier error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   ppStmt = 0;
   v7 = [(MCMSQLiteDB *)self db];
@@ -1056,14 +1056,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (sqlite3_bind_text(ppStmt, 1, [v6 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
+  if (sqlite3_bind_text(ppStmt, 1, [identifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
   {
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __57__MCMSQLiteDB_childIdentifiersForParentIdentifier_error___block_invoke_280;
     v30[3] = &unk_1E86B0B20;
-    v31 = v6;
-    v32 = self;
+    v31 = identifierCopy;
+    selfCopy = self;
     v33 = v7;
     v8 = __57__MCMSQLiteDB_childIdentifiersForParentIdentifier_error___block_invoke_280(v30);
 
@@ -1134,10 +1134,10 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v19 = [(MCMSQLiteDB *)self url];
-      v20 = [v19 path];
+      path = [v19 path];
       v21 = sqlite3_extended_errcode(v7);
       *buf = 138412546;
-      v37 = v20;
+      v37 = path;
       v38 = 1024;
       v39 = v21;
       _os_log_error_impl(&dword_1DF2C3000, v10, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %d", buf, 0x12u);
@@ -1156,16 +1156,16 @@ LABEL_6:
     v24 = 3221225472;
     v25 = __57__MCMSQLiteDB_childIdentifiersForParentIdentifier_error___block_invoke_300;
     v26 = &unk_1E86B0B98;
-    v27 = v6;
+    v27 = identifierCopy;
     v8 = __57__MCMSQLiteDB_childIdentifiersForParentIdentifier_error___block_invoke_300(&v23);
     v9 = v27;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v8;
     v9 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -1360,7 +1360,7 @@ id __57__MCMSQLiteDB_childIdentifiersForParentIdentifier_error___block_invoke_30
   return v5;
 }
 
-- (id)identifiersWithError:(id *)a3
+- (id)identifiersWithError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -1438,10 +1438,10 @@ LABEL_4:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v20 = [(MCMSQLiteDB *)self url];
-      v21 = [v20 path];
+      path = [v20 path];
       v22 = sqlite3_extended_errcode(v5);
       *buf = 138412546;
-      v28 = v21;
+      v28 = path;
       v29 = 1024;
       v30 = v22;
       _os_log_error_impl(&dword_1DF2C3000, v9, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %d", buf, 0x12u);
@@ -1449,12 +1449,12 @@ LABEL_4:
   }
 
   v10 = [v6 count];
-  if (a3 && !v10)
+  if (error && !v10)
   {
 
     v11 = v8;
     v6 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   v12 = [v6 copy];
@@ -1559,14 +1559,14 @@ id __36__MCMSQLiteDB_identifiersWithError___block_invoke_274(uint64_t a1)
   return v6;
 }
 
-- (id)enumerateIdentifiersAndCodeSigningInfoUsingBlock:(id)a3
+- (id)enumerateIdentifiersAndCodeSigningInfoUsingBlock:(id)block
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_queue);
   ppStmt = 0;
   v5 = [(MCMSQLiteDB *)self db];
-  v36 = v4;
+  v36 = blockCopy;
   db = v5;
   if (!sqlite3_prepare_v2(v5, "SELECT code_signing_data.data, code_signing_info.invalid, code_signing_info.placeholder, code_signing_info.registered_by_caller, code_signing_info.data_container_class, code_signing_info.code_signing_id_text FROM code_signing_info, code_signing_data WHERE code_signing_info.id = code_signing_data.cs_info_id;", -1, &ppStmt, 0))
   {
@@ -1683,12 +1683,12 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v27 = [v21 domain];
-    if ([v27 isEqualToString:@"MCMErrorDomain"])
+    domain = [v21 domain];
+    if ([domain isEqualToString:@"MCMErrorDomain"])
     {
-      v28 = [v21 code];
+      code = [v21 code];
 
-      if (v28 == 67)
+      if (code == 67)
       {
 
         v21 = 0;
@@ -1726,10 +1726,10 @@ LABEL_3:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v30 = [(MCMSQLiteDB *)self url];
-      v31 = [v30 path];
+      path = [v30 path];
       v32 = sqlite3_extended_errcode(db);
       *v48 = 138412546;
-      *&v48[4] = v31;
+      *&v48[4] = path;
       *&v48[12] = 1024;
       *&v48[14] = v32;
       _os_log_error_impl(&dword_1DF2C3000, v8, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %d", v48, 0x12u);
@@ -1903,15 +1903,15 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)invalidateCodeSigningForIdentifierAndAllChildren:(id)a3 error:(id *)a4
+- (BOOL)invalidateCodeSigningForIdentifierAndAllChildren:(id)children error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  childrenCopy = children;
   dispatch_assert_queue_V2(self->_queue);
   v33 = objc_opt_new();
   v45 = 0;
-  v34 = v5;
-  v6 = [(MCMSQLiteDB *)self childIdentifiersForParentIdentifier:v5 error:&v45];
+  v34 = childrenCopy;
+  v6 = [(MCMSQLiteDB *)self childIdentifiersForParentIdentifier:childrenCopy error:&v45];
   v7 = v45;
   v8 = v7;
   v32 = v6;
@@ -1920,8 +1920,8 @@ LABEL_7:
     goto LABEL_2;
   }
 
-  v23 = [v7 domain];
-  if (![v23 isEqualToString:@"MCMErrorDomain"])
+  domain = [v7 domain];
+  if (![domain isEqualToString:@"MCMErrorDomain"])
   {
 
     goto LABEL_27;
@@ -2053,10 +2053,10 @@ LABEL_2:
   v26 = &v40;
 LABEL_28:
 
-  if (a4)
+  if (error)
   {
     v28 = v21;
-    *a4 = v21;
+    *error = v21;
   }
 
   v22 = 0;
@@ -2367,13 +2367,13 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)invalidateCodeSigningWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)invalidateCodeSigningWithIdentifier:(id)identifier error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   v16[0] = 0;
-  v7 = [(MCMSQLiteDB *)self _performSingleParameterQuery:"UPDATE code_signing_info SET invalid=1 WHERE code_signing_id_text = ?;" withTextInput:v6 error:v16];
+  v7 = [(MCMSQLiteDB *)self _performSingleParameterQuery:"UPDATE code_signing_info SET invalid=1 WHERE code_signing_id_text = ?;" withTextInput:identifierCopy error:v16];
   v8 = v16[0];
   if (!v7)
   {
@@ -2381,15 +2381,15 @@ LABEL_7:
     v13[1] = 3221225472;
     v13[2] = __57__MCMSQLiteDB_invalidateCodeSigningWithIdentifier_error___block_invoke;
     v13[3] = &unk_1E86B0BE8;
-    v14 = v6;
+    v14 = identifierCopy;
     v15 = v8;
     v9 = v8;
     v8 = __57__MCMSQLiteDB_invalidateCodeSigningWithIdentifier_error___block_invoke(v13);
 
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -2464,19 +2464,19 @@ LABEL_7:
   return v13;
 }
 
-- (id)codeSigningEntryWithIdentifier:(id)a3 error:(id *)a4
+- (id)codeSigningEntryWithIdentifier:(id)identifier error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   v21 = 0;
-  v7 = [(MCMSQLiteDB *)self _selectCodeSigningEntryWithIdentifier:v6 error:&v21];
+  v7 = [(MCMSQLiteDB *)self _selectCodeSigningEntryWithIdentifier:identifierCopy error:&v21];
   v8 = v21;
   v9 = v8;
   if (v7)
   {
     v18 = v8;
-    v10 = [(MCMSQLiteDB *)self childIdentifiersForParentIdentifier:v6 error:&v18];
+    v10 = [(MCMSQLiteDB *)self childIdentifiersForParentIdentifier:identifierCopy error:&v18];
     v11 = v18;
 
     if (v10)
@@ -2486,12 +2486,12 @@ LABEL_3:
       goto LABEL_19;
     }
 
-    v12 = [v11 domain];
-    if ([v12 isEqualToString:@"MCMErrorDomain"])
+    domain = [v11 domain];
+    if ([domain isEqualToString:@"MCMErrorDomain"])
     {
-      v13 = [v11 code];
+      code = [v11 code];
 
-      if (v13 == 67)
+      if (code == 67)
       {
 
         v11 = 0;
@@ -2531,17 +2531,17 @@ LABEL_3:
     v19[1] = 3221225472;
     v19[2] = __52__MCMSQLiteDB_codeSigningEntryWithIdentifier_error___block_invoke;
     v19[3] = &unk_1E86B0B98;
-    v20 = v6;
+    v20 = identifierCopy;
     v11 = __52__MCMSQLiteDB_codeSigningEntryWithIdentifier_error___block_invoke(v19);
     v7 = v20;
   }
 
-  if (a4)
+  if (error)
   {
     v15 = v11;
     v10 = 0;
     v7 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -2578,16 +2578,16 @@ id __52__MCMSQLiteDB_codeSigningEntryWithIdentifier_error___block_invoke(uint64_
   return v5;
 }
 
-- (BOOL)deleteCodeSigningEntryWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteCodeSigningEntryWithIdentifier:(id)identifier error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  if (v6)
+  if (identifierCopy)
   {
-    v7 = [(MCMSQLiteDB *)self _deleteCodeSigningWithIdentifier:v6 error:a4];
+    v7 = [(MCMSQLiteDB *)self _deleteCodeSigningWithIdentifier:identifierCopy error:error];
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2603,7 +2603,7 @@ id __52__MCMSQLiteDB_codeSigningEntryWithIdentifier_error___block_invoke(uint64_
     v8 = __58__MCMSQLiteDB_deleteCodeSigningEntryWithIdentifier_error___block_invoke(v12);
 
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2612,7 +2612,7 @@ id __52__MCMSQLiteDB_codeSigningEntryWithIdentifier_error___block_invoke(uint64_
   if (!v7)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_7:
@@ -2650,20 +2650,20 @@ id __58__MCMSQLiteDB_deleteCodeSigningEntryWithIdentifier_error___block_invoke(u
   return v6;
 }
 
-- (BOOL)addCodeSigningEntry:(id)a3 withIdentifier:(id)a4 error:(id *)a5
+- (BOOL)addCodeSigningEntry:(id)entry withIdentifier:(id)identifier error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  entryCopy = entry;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v8 || !v9)
+  if (!entryCopy || !identifierCopy)
   {
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __56__MCMSQLiteDB_addCodeSigningEntry_withIdentifier_error___block_invoke;
     v36[3] = &unk_1E86B0BE8;
-    v37 = v8;
-    v38 = v9;
+    v37 = entryCopy;
+    v38 = identifierCopy;
     v19 = __56__MCMSQLiteDB_addCodeSigningEntry_withIdentifier_error___block_invoke(v36);
     v21 = &v37;
     v22 = v38;
@@ -2689,18 +2689,18 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if ([(MCMSQLiteDB *)self _insertCodeSigningInfo:v8 forIdentifier:v9 error:a5]&& [(MCMSQLiteDB *)self _insertCodeSigningData:v8 forIdentifier:v9 error:a5])
+  if ([(MCMSQLiteDB *)self _insertCodeSigningInfo:entryCopy forIdentifier:identifierCopy error:error]&& [(MCMSQLiteDB *)self _insertCodeSigningData:entryCopy forIdentifier:identifierCopy error:error])
   {
-    v13 = [v8 childBundleIdentifiers];
+    childBundleIdentifiers = [entryCopy childBundleIdentifiers];
 
-    if (v13)
+    if (childBundleIdentifiers)
     {
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v14 = [v8 childBundleIdentifiers];
-      v15 = [v14 countByEnumeratingWithState:&v40 objects:v39 count:16];
+      childBundleIdentifiers2 = [entryCopy childBundleIdentifiers];
+      v15 = [childBundleIdentifiers2 countByEnumeratingWithState:&v40 objects:v39 count:16];
       if (v15)
       {
         v16 = *v41;
@@ -2710,13 +2710,13 @@ LABEL_22:
           {
             if (*v41 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(childBundleIdentifiers2);
             }
 
-            [(MCMSQLiteDB *)self _insertChildIdentifier:*(*(&v40 + 1) + 8 * i) forParentIdentifier:v9 error:0];
+            [(MCMSQLiteDB *)self _insertChildIdentifier:*(*(&v40 + 1) + 8 * i) forParentIdentifier:identifierCopy error:0];
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v40 objects:v39 count:16];
+          v15 = [childBundleIdentifiers2 countByEnumeratingWithState:&v40 objects:v39 count:16];
         }
 
         while (v15);
@@ -2759,10 +2759,10 @@ LABEL_22:
   }
 
 LABEL_23:
-  if (a5)
+  if (error)
   {
     v24 = v19;
-    *a5 = v19;
+    *error = v19;
   }
 
   v20 = 0;
@@ -3035,10 +3035,10 @@ LABEL_7:
   return v13;
 }
 
-- (id)_selectCodeSigningEntryWithIdentifier:(id)a3 error:(id *)a4
+- (id)_selectCodeSigningEntryWithIdentifier:(id)identifier error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   ppStmt = 0;
   v7 = [(MCMSQLiteDB *)self db];
   if (sqlite3_prepare_v2(v7, "SELECT code_signing_data.data, code_signing_info.invalid, code_signing_info.placeholder, code_signing_info.registered_by_caller, code_signing_info.data_container_class FROM code_signing_info, code_signing_data WHERE code_signing_info.id = code_signing_data.cs_info_id AND code_signing_info.code_signing_id_text = ?;", -1, &ppStmt, 0))
@@ -3055,14 +3055,14 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  if (sqlite3_bind_text(ppStmt, 1, [v6 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
+  if (sqlite3_bind_text(ppStmt, 1, [identifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __59__MCMSQLiteDB__selectCodeSigningEntryWithIdentifier_error___block_invoke_163;
     v21[3] = &unk_1E86B0B20;
-    v22 = v6;
-    v23 = self;
+    v22 = identifierCopy;
+    selfCopy = self;
     v24 = v7;
     v9 = __59__MCMSQLiteDB__selectCodeSigningEntryWithIdentifier_error___block_invoke_163(v21);
 
@@ -3100,20 +3100,20 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v16 = [(MCMSQLiteDB *)self url];
-      v17 = [v16 path];
+      path = [v16 path];
       v18 = sqlite3_extended_errcode(v7);
       *buf = 138412546;
-      v28 = v17;
+      v28 = path;
       v29 = 1024;
       v30 = v18;
       _os_log_error_impl(&dword_1DF2C3000, v11, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %d", buf, 0x12u);
     }
   }
 
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -3221,13 +3221,13 @@ id __59__MCMSQLiteDB__selectCodeSigningEntryWithIdentifier_error___block_invoke_
   return v10;
 }
 
-- (id)_codeSigningEntryFromStatementRow:(sqlite3_stmt *)a3 error:(id *)a4
+- (id)_codeSigningEntryFromStatementRow:(sqlite3_stmt *)row error:(id *)error
 {
   v33[3] = *MEMORY[0x1E69E9840];
-  v6 = sqlite3_column_blob(a3, 0);
+  v6 = sqlite3_column_blob(row, 0);
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v6 length:sqlite3_column_bytes(a3 freeWhenDone:{0), 0}];
+    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v6 length:sqlite3_column_bytes(row freeWhenDone:{0), 0}];
     v29 = 0;
     v8 = [MEMORY[0x1E696AE40] propertyListWithData:v7 options:0 format:0 error:&v29];
     v9 = v29;
@@ -3245,13 +3245,13 @@ id __59__MCMSQLiteDB__selectCodeSigningEntryWithIdentifier_error___block_invoke_
       if (v12)
       {
         v13 = v12;
-        [(MCMCodeSigningEntry *)v12 setInvalid:sqlite3_column_int(a3, 1) != 0];
-        v14 = sqlite3_column_int(a3, 2);
+        [(MCMCodeSigningEntry *)v12 setInvalid:sqlite3_column_int(row, 1) != 0];
+        v14 = sqlite3_column_int(row, 2);
         [(MCMCodeSigningEntry *)v13 setPlaceholder:v14 & 1];
         [(MCMCodeSigningEntry *)v13 setAdvanceCopy:(v14 >> 1) & 1];
         [(MCMCodeSigningEntry *)v13 setRegisteredByKernel:(v14 >> 2) & 1];
-        [(MCMCodeSigningEntry *)v13 setRegisteredByCaller:sqlite3_column_int(a3, 3) != 0];
-        [(MCMCodeSigningEntry *)v13 setDataContainerClass:sqlite3_column_int(a3, 4)];
+        [(MCMCodeSigningEntry *)v13 setRegisteredByCaller:sqlite3_column_int(row, 3) != 0];
+        [(MCMCodeSigningEntry *)v13 setDataContainerClass:sqlite3_column_int(row, 4)];
 
         goto LABEL_16;
       }
@@ -3305,11 +3305,11 @@ id __59__MCMSQLiteDB__selectCodeSigningEntryWithIdentifier_error___block_invoke_
     v7 = v26;
   }
 
-  if (a4)
+  if (error)
   {
     v22 = v9;
     v13 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -3458,18 +3458,18 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)_deleteCodeSigningWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_deleteCodeSigningWithIdentifier:(id)identifier error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v17[0] = 0;
-  v7 = [(MCMSQLiteDB *)self _performSingleParameterQuery:"DELETE FROM code_signing_info WHERE code_signing_id_text=?;" withTextInput:v6 expectedChanges:1 error:v17];
+  v7 = [(MCMSQLiteDB *)self _performSingleParameterQuery:"DELETE FROM code_signing_info WHERE code_signing_id_text=?;" withTextInput:identifierCopy expectedChanges:1 error:v17];
   v8 = v17[0];
   v9 = v8;
   if (v7)
   {
-    v10 = [(MCMSQLiteDB *)self peerageDelegate];
-    [v10 codeSigningDB:self removeParentIdentifier:v6];
+    peerageDelegate = [(MCMSQLiteDB *)self peerageDelegate];
+    [peerageDelegate codeSigningDB:self removeParentIdentifier:identifierCopy];
   }
 
   else
@@ -3482,10 +3482,10 @@ LABEL_7:
     v11 = v8;
     v9 = __54__MCMSQLiteDB__deleteCodeSigningWithIdentifier_error___block_invoke(v15);
 
-    if (a4)
+    if (error)
     {
       v12 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -3560,19 +3560,19 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)_insertCodeSigningData:(id)a3 forIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_insertCodeSigningData:(id)data forIdentifier:(id)identifier error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   ppStmt = 0;
   v10 = [(MCMSQLiteDB *)self db];
   if (!sqlite3_prepare_v2(v10, "INSERT OR REPLACE INTO code_signing_data (cs_info_id, data) SELECT id, ? FROM code_signing_info WHERE code_signing_id_text = ?;", -1, &ppStmt, 0))
   {
     v14 = MEMORY[0x1E696AE40];
-    v15 = [v8 codeSigningInfo];
+    codeSigningInfo = [dataCopy codeSigningInfo];
     v36 = 0;
-    v12 = [v14 dataWithPropertyList:v15 format:200 options:0 error:&v36];
+    v12 = [v14 dataWithPropertyList:codeSigningInfo format:200 options:0 error:&v36];
     v11 = v36;
 
     if (!v12)
@@ -3581,7 +3581,7 @@ LABEL_7:
       v33[1] = 3221225472;
       v33[2] = __58__MCMSQLiteDB__insertCodeSigningData_forIdentifier_error___block_invoke_111;
       v33[3] = &unk_1E86B0BE8;
-      v34 = v8;
+      v34 = dataCopy;
       v35 = v11;
       v18 = v11;
       v11 = __58__MCMSQLiteDB__insertCodeSigningData_forIdentifier_error___block_invoke_111(v33);
@@ -3602,14 +3602,14 @@ LABEL_7:
 
     else
     {
-      if (sqlite3_bind_text(ppStmt, 2, [v9 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
+      if (sqlite3_bind_text(ppStmt, 2, [identifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
       {
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __58__MCMSQLiteDB__insertCodeSigningData_forIdentifier_error___block_invoke_123;
         v28[3] = &unk_1E86B0B20;
-        v29 = v9;
-        v30 = self;
+        v29 = identifierCopy;
+        selfCopy = self;
         v31 = v10;
         v17 = __58__MCMSQLiteDB__insertCodeSigningData_forIdentifier_error___block_invoke_123(v28);
 
@@ -3656,17 +3656,17 @@ LABEL_12:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v24 = [(MCMSQLiteDB *)self url];
-      v25 = [v24 path];
+      path = [v24 path];
       v26 = sqlite3_extended_errcode(v10);
       *buf = 138412546;
-      v40 = v25;
+      v40 = path;
       v41 = 1024;
       v42 = v26;
       _os_log_error_impl(&dword_1DF2C3000, v19, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %d", buf, 0x12u);
     }
   }
 
-  if (a5)
+  if (error)
   {
     v20 = v13;
   }
@@ -3679,7 +3679,7 @@ LABEL_12:
   if ((v20 & 1) == 0)
   {
     v21 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -3889,14 +3889,14 @@ id __58__MCMSQLiteDB__insertCodeSigningData_forIdentifier_error___block_invoke_1
   return v10;
 }
 
-- (BOOL)_insertCodeSigningInfo:(id)a3 forIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_insertCodeSigningInfo:(id)info forIdentifier:(id)identifier error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  identifierCopy = identifier;
   v28[0] = 0;
   v10 = 1;
-  v11 = [(MCMSQLiteDB *)self _performInsertOrUpdateQuery:"UPDATE code_signing_info SET invalid=? withCodeSigningEntry:placeholder=? forIdentifier:registered_by_caller=? isUpdate:data_container_class=? WHERE code_signing_id_text=?;" error:v8, v9, 1, v28];
+  v11 = [(MCMSQLiteDB *)self _performInsertOrUpdateQuery:"UPDATE code_signing_info SET invalid=? withCodeSigningEntry:placeholder=? forIdentifier:registered_by_caller=? isUpdate:data_container_class=? WHERE code_signing_id_text=?;" error:infoCopy, identifierCopy, 1, v28];
   v12 = v28[0];
   v13 = v12;
   if (v11)
@@ -3904,16 +3904,16 @@ id __58__MCMSQLiteDB__insertCodeSigningData_forIdentifier_error___block_invoke_1
     goto LABEL_12;
   }
 
-  v14 = [v12 domain];
-  if ([v14 isEqualToString:@"MCMErrorDomain"])
+  domain = [v12 domain];
+  if ([domain isEqualToString:@"MCMErrorDomain"])
   {
-    v15 = [v13 code];
+    code = [v13 code];
 
-    if (v15 == 68)
+    if (code == 68)
     {
 
       v25 = 0;
-      v16 = [(MCMSQLiteDB *)self _performInsertOrUpdateQuery:"INSERT INTO code_signing_info (invalid withCodeSigningEntry:placeholder forIdentifier:registered_by_caller isUpdate:data_container_class error:code_signing_id_text) VALUES (?, ?, ?, ?, ?);", v8, v9, 0, &v25];
+      v16 = [(MCMSQLiteDB *)self _performInsertOrUpdateQuery:"INSERT INTO code_signing_info (invalid withCodeSigningEntry:placeholder forIdentifier:registered_by_caller isUpdate:data_container_class error:code_signing_id_text) VALUES (?, ?, ?, ?, ?);", infoCopy, identifierCopy, 0, &v25];
       v13 = v25;
       if (v16)
       {
@@ -3926,7 +3926,7 @@ id __58__MCMSQLiteDB__insertCodeSigningData_forIdentifier_error___block_invoke_1
       v23[2] = __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke_101;
       v23[3] = &unk_1E86B0B98;
       v17 = &v24;
-      v24 = v9;
+      v24 = identifierCopy;
       v18 = __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke_101(v23);
       goto LABEL_8;
     }
@@ -3941,16 +3941,16 @@ id __58__MCMSQLiteDB__insertCodeSigningData_forIdentifier_error___block_invoke_1
   v26[2] = __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke;
   v26[3] = &unk_1E86B0B98;
   v17 = &v27;
-  v27 = v9;
+  v27 = identifierCopy;
   v18 = __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke(v26);
 LABEL_8:
   v19 = v18;
 
-  if (a5)
+  if (error)
   {
     v20 = v19;
     v10 = 0;
-    *a5 = v19;
+    *error = v19;
   }
 
   else
@@ -4023,24 +4023,24 @@ id __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke_1
   return v6;
 }
 
-- (BOOL)_performInsertOrUpdateQuery:(const char *)a3 withCodeSigningEntry:(id)a4 forIdentifier:(id)a5 isUpdate:(BOOL)a6 error:(id *)a7
+- (BOOL)_performInsertOrUpdateQuery:(const char *)query withCodeSigningEntry:(id)entry forIdentifier:(id)identifier isUpdate:(BOOL)update error:(id *)error
 {
-  v8 = a6;
+  updateCopy = update;
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
+  entryCopy = entry;
+  identifierCopy = identifier;
   ppStmt = 0;
   v14 = [(MCMSQLiteDB *)self db];
-  if (!sqlite3_prepare_v2(v14, a3, -1, &ppStmt, 0))
+  if (!sqlite3_prepare_v2(v14, query, -1, &ppStmt, 0))
   {
-    if (sqlite3_bind_int(ppStmt, 1, [v12 isInvalid]))
+    if (sqlite3_bind_int(ppStmt, 1, [entryCopy isInvalid]))
     {
       v53[0] = MEMORY[0x1E69E9820];
       v53[1] = 3221225472;
       v53[2] = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_55;
       v53[3] = &unk_1E86B0B20;
-      v54 = v12;
-      v55 = self;
+      v54 = entryCopy;
+      selfCopy = self;
       v56 = v14;
       v16 = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_55(v53);
       v17 = v54;
@@ -4048,8 +4048,8 @@ id __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke_1
 
     else
     {
-      v18 = [v12 isPlaceholder];
-      if ([v12 isAdvanceCopy])
+      isPlaceholder = [entryCopy isPlaceholder];
+      if ([entryCopy isAdvanceCopy])
       {
         v19 = 2;
       }
@@ -4059,8 +4059,8 @@ id __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke_1
         v19 = 0;
       }
 
-      v20 = v19 | v18;
-      if ([v12 isRegisteredByKernel])
+      v20 = v19 | isPlaceholder;
+      if ([entryCopy isRegisteredByKernel])
       {
         v21 = 4;
       }
@@ -4078,34 +4078,34 @@ id __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke_1
         v48[2] = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_61;
         v48[3] = &unk_1E86B0BC0;
         v52 = v22;
-        v49 = v12;
-        v50 = self;
+        v49 = entryCopy;
+        selfCopy2 = self;
         v51 = v14;
         v16 = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_61(v48);
         v17 = v49;
       }
 
-      else if (sqlite3_bind_int(ppStmt, 3, [v12 isRegisteredByCaller]))
+      else if (sqlite3_bind_int(ppStmt, 3, [entryCopy isRegisteredByCaller]))
       {
         v44[0] = MEMORY[0x1E69E9820];
         v44[1] = 3221225472;
         v44[2] = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_67;
         v44[3] = &unk_1E86B0B20;
-        v45 = v12;
-        v46 = self;
+        v45 = entryCopy;
+        selfCopy3 = self;
         v47 = v14;
         v16 = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_67(v44);
         v17 = v45;
       }
 
-      else if (sqlite3_bind_int(ppStmt, 4, [v12 dataContainerClass]))
+      else if (sqlite3_bind_int(ppStmt, 4, [entryCopy dataContainerClass]))
       {
         v40[0] = MEMORY[0x1E69E9820];
         v40[1] = 3221225472;
         v40[2] = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_73;
         v40[3] = &unk_1E86B0B20;
-        v41 = v12;
-        v42 = self;
+        v41 = entryCopy;
+        selfCopy4 = self;
         v43 = v14;
         v16 = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_73(v40);
         v17 = v41;
@@ -4113,11 +4113,11 @@ id __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke_1
 
       else
       {
-        if (!sqlite3_bind_text(ppStmt, 5, [v13 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
+        if (!sqlite3_bind_text(ppStmt, 5, [identifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
         {
           if (sqlite3_step(ppStmt) == 101)
           {
-            if (!v8 || (v32 = sqlite3_changes(v14), v32 == 1))
+            if (!updateCopy || (v32 = sqlite3_changes(v14), v32 == 1))
             {
               v16 = 0;
               v23 = 1;
@@ -4129,7 +4129,7 @@ id __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke_1
             v33[2] = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_88;
             v33[3] = &unk_1E86B0AF8;
             v33[4] = self;
-            v33[5] = a3;
+            v33[5] = query;
             v34 = v32;
             v15 = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_88(v33);
           }
@@ -4152,8 +4152,8 @@ id __58__MCMSQLiteDB__insertCodeSigningInfo_forIdentifier_error___block_invoke_1
         v36[1] = 3221225472;
         v36[2] = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_79;
         v36[3] = &unk_1E86B0B20;
-        v37 = v13;
-        v38 = self;
+        v37 = identifierCopy;
+        selfCopy5 = self;
         v39 = v14;
         v16 = __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentifier_isUpdate_error___block_invoke_79(v36);
         v17 = v37;
@@ -4181,17 +4181,17 @@ LABEL_22:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v29 = [(MCMSQLiteDB *)self url];
-      v30 = [v29 path];
+      path = [v29 path];
       v31 = sqlite3_extended_errcode(v14);
       *buf = 138412546;
-      v60 = v30;
+      v60 = path;
       v61 = 1024;
       v62 = v31;
       _os_log_error_impl(&dword_1DF2C3000, v24, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %d", buf, 0x12u);
     }
   }
 
-  if (a7)
+  if (error)
   {
     v25 = v23;
   }
@@ -4204,7 +4204,7 @@ LABEL_22:
   if ((v25 & 1) == 0)
   {
     v26 = v16;
-    *a7 = v16;
+    *error = v16;
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -4475,18 +4475,18 @@ id __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentif
   return v10;
 }
 
-- (BOOL)_insertChildIdentifier:(id)a3 forParentIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_insertChildIdentifier:(id)identifier forParentIdentifier:(id)parentIdentifier error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  parentIdentifierCopy = parentIdentifier;
   v19[0] = 0;
-  v10 = [(MCMSQLiteDB *)self _performTwoParameterQuery:"INSERT OR REPLACE INTO child_bundles (parent_id withTextInputOne:child_code_signing_id_text) SELECT id andTextInputTwo:? FROM code_signing_info WHERE code_signing_id_text = ?;" expectedChanges:v8 error:v9, 0xFFFFFFFFLL, v19];
+  v10 = [(MCMSQLiteDB *)self _performTwoParameterQuery:"INSERT OR REPLACE INTO child_bundles (parent_id withTextInputOne:child_code_signing_id_text) SELECT id andTextInputTwo:? FROM code_signing_info WHERE code_signing_id_text = ?;" expectedChanges:identifierCopy error:parentIdentifierCopy, 0xFFFFFFFFLL, v19];
   v11 = v19[0];
   if (v10)
   {
-    v12 = [(MCMSQLiteDB *)self peerageDelegate];
-    [v12 codeSigningDB:self addChildIdentifier:v8 forParentIdentifier:v9];
+    peerageDelegate = [(MCMSQLiteDB *)self peerageDelegate];
+    [peerageDelegate codeSigningDB:self addChildIdentifier:identifierCopy forParentIdentifier:parentIdentifierCopy];
   }
 
   else
@@ -4495,13 +4495,13 @@ id __93__MCMSQLiteDB__performInsertOrUpdateQuery_withCodeSigningEntry_forIdentif
     v17[1] = 3221225472;
     v17[2] = __64__MCMSQLiteDB__insertChildIdentifier_forParentIdentifier_error___block_invoke;
     v17[3] = &unk_1E86B0B98;
-    v18 = v8;
+    v18 = identifierCopy;
     v13 = __64__MCMSQLiteDB__insertChildIdentifier_forParentIdentifier_error___block_invoke(v17);
 
-    if (a5)
+    if (error)
     {
       v14 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     v11 = v13;
@@ -4540,31 +4540,31 @@ id __64__MCMSQLiteDB__insertChildIdentifier_forParentIdentifier_error___block_in
   return v6;
 }
 
-- (BOOL)_performSingleParameterQuery:(const char *)a3 withTextInput:(id)a4 error:(id *)a5
+- (BOOL)_performSingleParameterQuery:(const char *)query withTextInput:(id)input error:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMSQLiteDB *)self _performSingleParameterQuery:a3 withTextInput:a4 expectedChanges:0xFFFFFFFFLL error:a5];
+  return [(MCMSQLiteDB *)self _performSingleParameterQuery:query withTextInput:input expectedChanges:0xFFFFFFFFLL error:error];
 }
 
-- (BOOL)_performTwoParameterQuery:(const char *)a3 withTextInputOne:(id)a4 andTextInputTwo:(id)a5 expectedChanges:(int)a6 error:(id *)a7
+- (BOOL)_performTwoParameterQuery:(const char *)query withTextInputOne:(id)one andTextInputTwo:(id)two expectedChanges:(int)changes error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
+  oneCopy = one;
+  twoCopy = two;
   ppStmt = 0;
   v14 = [(MCMSQLiteDB *)self db];
-  if (!sqlite3_prepare_v2(v14, a3, -1, &ppStmt, 0))
+  if (!sqlite3_prepare_v2(v14, query, -1, &ppStmt, 0))
   {
-    if (sqlite3_bind_text(ppStmt, 1, [v12 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
+    if (sqlite3_bind_text(ppStmt, 1, [oneCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
     {
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __96__MCMSQLiteDB__performTwoParameterQuery_withTextInputOne_andTextInputTwo_expectedChanges_error___block_invoke_26;
       v36[3] = &unk_1E86B0B20;
-      v37 = v12;
-      v38 = self;
+      v37 = oneCopy;
+      selfCopy = self;
       v39 = v14;
       v16 = __96__MCMSQLiteDB__performTwoParameterQuery_withTextInputOne_andTextInputTwo_expectedChanges_error___block_invoke_26(v36);
       v17 = v37;
@@ -4572,11 +4572,11 @@ id __64__MCMSQLiteDB__insertChildIdentifier_forParentIdentifier_error___block_in
 
     else
     {
-      if (!v13 || !sqlite3_bind_text(ppStmt, 2, [v13 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
+      if (!twoCopy || !sqlite3_bind_text(ppStmt, 2, [twoCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL))
       {
         if (sqlite3_step(ppStmt) == 101)
         {
-          if (a6 == -1 || (v24 = sqlite3_changes(v14), v24 == a6))
+          if (changes == -1 || (v24 = sqlite3_changes(v14), v24 == changes))
           {
             v16 = 0;
             v18 = 1;
@@ -4588,9 +4588,9 @@ id __64__MCMSQLiteDB__insertChildIdentifier_forParentIdentifier_error___block_in
           v28[2] = __96__MCMSQLiteDB__performTwoParameterQuery_withTextInputOne_andTextInputTwo_expectedChanges_error___block_invoke_41;
           v28[3] = &unk_1E86B0B70;
           v28[4] = self;
-          v28[5] = a3;
+          v28[5] = query;
           v29 = v24;
-          v30 = a6;
+          changesCopy = changes;
           v15 = __96__MCMSQLiteDB__performTwoParameterQuery_withTextInputOne_andTextInputTwo_expectedChanges_error___block_invoke_41(v28);
         }
 
@@ -4612,8 +4612,8 @@ id __64__MCMSQLiteDB__insertChildIdentifier_forParentIdentifier_error___block_in
       v32[1] = 3221225472;
       v32[2] = __96__MCMSQLiteDB__performTwoParameterQuery_withTextInputOne_andTextInputTwo_expectedChanges_error___block_invoke_32;
       v32[3] = &unk_1E86B0B20;
-      v33 = v13;
-      v34 = self;
+      v33 = twoCopy;
+      selfCopy2 = self;
       v35 = v14;
       v16 = __96__MCMSQLiteDB__performTwoParameterQuery_withTextInputOne_andTextInputTwo_expectedChanges_error___block_invoke_32(v32);
       v17 = v33;
@@ -4640,17 +4640,17 @@ LABEL_8:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v25 = [(MCMSQLiteDB *)self url];
-      v26 = [v25 path];
+      path = [v25 path];
       v27 = sqlite3_extended_errcode(v14);
       *buf = 138412546;
-      v43 = v26;
+      v43 = path;
       v44 = 1024;
       v45 = v27;
       _os_log_error_impl(&dword_1DF2C3000, v19, OS_LOG_TYPE_ERROR, "sqlite3_finalize for %@ failed: %d", buf, 0x12u);
     }
   }
 
-  if (a7)
+  if (error)
   {
     v20 = v18;
   }
@@ -4663,7 +4663,7 @@ LABEL_8:
   if ((v20 & 1) == 0)
   {
     v21 = v16;
-    *a7 = v16;
+    *error = v16;
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -4838,9 +4838,9 @@ id __96__MCMSQLiteDB__performTwoParameterQuery_withTextInputOne_andTextInputTwo_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v8 = [(MCMSQLiteDB *)self url];
-    v9 = [v8 path];
+    path = [v8 path];
     v12 = 138412290;
-    v13 = v9;
+    v13 = path;
     _os_log_debug_impl(&dword_1DF2C3000, v3, OS_LOG_TYPE_DEBUG, "closing %@", &v12, 0xCu);
   }
 
@@ -4852,9 +4852,9 @@ id __96__MCMSQLiteDB__performTwoParameterQuery_withTextInputOne_andTextInputTwo_
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v10 = [(MCMSQLiteDB *)self url];
-      v11 = [v10 path];
+      path2 = [v10 path];
       v12 = 138412546;
-      v13 = v11;
+      v13 = path2;
       v14 = 1024;
       v15 = v5;
       _os_log_error_impl(&dword_1DF2C3000, v6, OS_LOG_TYPE_ERROR, "sqlite3_close for %@ failed: %d", &v12, 0x12u);
@@ -4865,28 +4865,28 @@ id __96__MCMSQLiteDB__performTwoParameterQuery_withTextInputOne_andTextInputTwo_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_sqliteExec:(id)a3 error:(id *)a4
+- (BOOL)_sqliteExec:(id)exec error:(id *)error
 {
   errmsg[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  execCopy = exec;
   errmsg[0] = 0;
-  v7 = sqlite3_exec(-[MCMSQLiteDB db](self, "db"), [v6 UTF8String], 0, 0, errmsg);
+  v7 = sqlite3_exec(-[MCMSQLiteDB db](self, "db"), [execCopy UTF8String], 0, 0, errmsg);
   if (v7)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __33__MCMSQLiteDB__sqliteExec_error___block_invoke;
     v12[3] = &unk_1E86B0B20;
-    v13 = v6;
-    v14 = self;
+    v13 = execCopy;
+    selfCopy = self;
     v15 = errmsg[0];
     v8 = __33__MCMSQLiteDB__sqliteExec_error___block_invoke(v12);
     sqlite3_free(errmsg[0]);
 
-    if (a4)
+    if (error)
     {
       v9 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -4942,17 +4942,17 @@ id __33__MCMSQLiteDB__sqliteExec_error___block_invoke(uint64_t a1)
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (MCMSQLiteDB)initWithURL:(id)a3 queue:(id)a4 error:(id *)a5
+- (MCMSQLiteDB)initWithURL:(id)l queue:(id)queue error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  dispatch_assert_queue_V2(v10);
+  lCopy = l;
+  queueCopy = queue;
+  dispatch_assert_queue_V2(queueCopy);
   v18.receiver = self;
   v18.super_class = MCMSQLiteDB;
   v11 = [(MCMSQLiteDB *)&v18 init];
   v12 = v11;
-  if (v11 && ((objc_storeStrong(&v11->_queue, a4), objc_storeStrong(&v12->_url, a3), !v12->_url) || ((v13 = [objc_opt_class() openDBWithURL:v12->_url queue:v10 error:a5], v12->_db = v13, v12->_url) ? (v14 = v13 == 0) : (v14 = 1), v14)))
+  if (v11 && ((objc_storeStrong(&v11->_queue, queue), objc_storeStrong(&v12->_url, l), !v12->_url) || ((v13 = [objc_opt_class() openDBWithURL:v12->_url queue:queueCopy error:error], v12->_db = v13, v12->_url) ? (v14 = v13 == 0) : (v14 = 1), v14)))
   {
     v15 = 0;
   }
@@ -4966,30 +4966,30 @@ id __33__MCMSQLiteDB__sqliteExec_error___block_invoke(uint64_t a1)
   return v15;
 }
 
-+ (sqlite3)openDBWithURL:(id)a3 queue:(id)a4 error:(id *)a5
++ (sqlite3)openDBWithURL:(id)l queue:(id)queue error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  dispatch_assert_queue_V2(v8);
+  lCopy = l;
+  queueCopy = queue;
+  dispatch_assert_queue_V2(queueCopy);
   ppDb = 0;
   v9 = container_log_handle_for_category();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [v7 path];
+    path = [lCopy path];
     *buf = 138412290;
-    *&buf[4] = v19;
+    *&buf[4] = path;
     _os_log_debug_impl(&dword_1DF2C3000, v9, OS_LOG_TYPE_DEBUG, "Opening [%@]", buf, 0xCu);
   }
 
-  if (sqlite3_open_v2([v7 fileSystemRepresentation], &ppDb, 4194310, 0))
+  if (sqlite3_open_v2([lCopy fileSystemRepresentation], &ppDb, 4194310, 0))
   {
     v10 = sqlite3_extended_errcode(ppDb);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __41__MCMSQLiteDB_openDBWithURL_queue_error___block_invoke;
     v26[3] = &unk_1E86B0AF8;
-    v11 = v7;
+    v11 = lCopy;
     v29 = v10;
     v27 = v11;
     v28 = ppDb;
@@ -4997,9 +4997,9 @@ id __33__MCMSQLiteDB__sqliteExec_error___block_invoke(uint64_t a1)
     v13 = container_log_handle_for_category();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v11 path];
+      path2 = [v11 path];
       *buf = 138412546;
-      *&buf[4] = v20;
+      *&buf[4] = path2;
       *&buf[12] = 1024;
       *&buf[14] = v10;
       _os_log_error_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_ERROR, "opening %@ failed: xerr = %d", buf, 0x12u);
@@ -5016,12 +5016,12 @@ id __33__MCMSQLiteDB__sqliteExec_error___block_invoke(uint64_t a1)
   {
 LABEL_8:
     v15 = ppDb;
-    if (a5)
+    if (error)
     {
       if (!ppDb)
       {
         v16 = v12;
-        *a5 = v12;
+        *error = v12;
         v15 = ppDb;
       }
     }
@@ -5035,9 +5035,9 @@ LABEL_8:
   v23 = container_log_handle_for_category();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    v24 = [v7 path];
+    path3 = [lCopy path];
     *buf = 138412546;
-    *&buf[4] = v24;
+    *&buf[4] = path3;
     *&buf[12] = 2080;
     *&buf[14] = errmsg;
     _os_log_error_impl(&dword_1DF2C3000, v23, OS_LOG_TYPE_ERROR, "table create for %@ failed: %s", buf, 0x16u);
@@ -5081,21 +5081,21 @@ id __41__MCMSQLiteDB_openDBWithURL_queue_error___block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (BOOL)moveDBWithURL:(id)a3 toURL:(id)a4 queue:(id)a5 error:(id *)a6
++ (BOOL)moveDBWithURL:(id)l toURL:(id)rL queue:(id)queue error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  dispatch_assert_queue_V2(a5);
+  lCopy = l;
+  rLCopy = rL;
+  dispatch_assert_queue_V2(queue);
   ppDb = 0;
-  if (sqlite3_open_v2([v9 fileSystemRepresentation], &ppDb, 1, 0))
+  if (sqlite3_open_v2([lCopy fileSystemRepresentation], &ppDb, 1, 0))
   {
     v11 = sqlite3_extended_errcode(ppDb);
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __47__MCMSQLiteDB_moveDBWithURL_toURL_queue_error___block_invoke;
     v33[3] = &unk_1E86B0AF8;
-    v12 = v9;
+    v12 = lCopy;
     v36 = v11;
     v34 = v12;
     v35 = ppDb;
@@ -5103,9 +5103,9 @@ id __41__MCMSQLiteDB_openDBWithURL_queue_error___block_invoke(uint64_t a1)
     v14 = container_log_handle_for_category();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v12 path];
+      path = [v12 path];
       *buf = 138412546;
-      v39 = v24;
+      v39 = path;
       v40 = 1024;
       LODWORD(v41) = v11;
       _os_log_error_impl(&dword_1DF2C3000, v14, OS_LOG_TYPE_ERROR, "opening %@ failed: xerr = %d", buf, 0x12u);
@@ -5117,7 +5117,7 @@ id __41__MCMSQLiteDB_openDBWithURL_queue_error___block_invoke(uint64_t a1)
 
   else
   {
-    [v10 fileSystemRepresentation];
+    [rLCopy fileSystemRepresentation];
     if (_sqlite3_db_copy_compact())
     {
       v17 = sqlite3_extended_errcode(ppDb);
@@ -5125,7 +5125,7 @@ id __41__MCMSQLiteDB_openDBWithURL_queue_error___block_invoke(uint64_t a1)
       v29[1] = 3221225472;
       v29[2] = __47__MCMSQLiteDB_moveDBWithURL_toURL_queue_error___block_invoke_5;
       v29[3] = &unk_1E86B0AF8;
-      v18 = v9;
+      v18 = lCopy;
       v32 = v17;
       v30 = v18;
       v31 = ppDb;
@@ -5133,12 +5133,12 @@ id __41__MCMSQLiteDB_openDBWithURL_queue_error___block_invoke(uint64_t a1)
       v19 = container_log_handle_for_category();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v18 path];
-        v26 = [v10 path];
+        path2 = [v18 path];
+        path3 = [rLCopy path];
         *buf = 138412802;
-        v39 = v25;
+        v39 = path2;
         v40 = 2112;
-        v41 = v26;
+        v41 = path3;
         v42 = 1024;
         v43 = v17;
         _os_log_error_impl(&dword_1DF2C3000, v19, OS_LOG_TYPE_ERROR, "copying [%@] to [%@] failed: xerr = %d", buf, 0x1Cu);
@@ -5153,12 +5153,12 @@ id __41__MCMSQLiteDB_openDBWithURL_queue_error___block_invoke(uint64_t a1)
       v16 = container_log_handle_for_category();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v9 path];
-        v28 = [v10 path];
+        path4 = [lCopy path];
+        path5 = [rLCopy path];
         *buf = 138412546;
-        v39 = v27;
+        v39 = path4;
         v40 = 2112;
-        v41 = v28;
+        v41 = path5;
         _os_log_debug_impl(&dword_1DF2C3000, v16, OS_LOG_TYPE_DEBUG, "Moved [%@] to [%@]", buf, 0x16u);
       }
 
@@ -5172,7 +5172,7 @@ id __41__MCMSQLiteDB_openDBWithURL_queue_error___block_invoke(uint64_t a1)
     sqlite3_close(ppDb);
   }
 
-  if (a6)
+  if (error)
   {
     v20 = v15;
   }
@@ -5185,7 +5185,7 @@ id __41__MCMSQLiteDB_openDBWithURL_queue_error___block_invoke(uint64_t a1)
   if ((v20 & 1) == 0)
   {
     v21 = v13;
-    *a6 = v13;
+    *error = v13;
   }
 
   v22 = *MEMORY[0x1E69E9840];

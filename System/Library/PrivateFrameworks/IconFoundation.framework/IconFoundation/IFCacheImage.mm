@@ -1,18 +1,18 @@
 @interface IFCacheImage
-- (IFCacheImage)initWithCoder:(id)a3;
-- (IFCacheImage)initWithData:(id)a3 uuid:(id)a4 validationToken:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (IFCacheImage)initWithCoder:(id)coder;
+- (IFCacheImage)initWithData:(id)data uuid:(id)uuid validationToken:(id)token;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IFCacheImage
 
-- (IFCacheImage)initWithData:(id)a3 uuid:(id)a4 validationToken:(id)a5
+- (IFCacheImage)initWithData:(id)data uuid:(id)uuid validationToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 __IS_imageHeader];
-  if (!v11)
+  dataCopy = data;
+  uuidCopy = uuid;
+  tokenCopy = token;
+  __IS_imageHeader = [dataCopy __IS_imageHeader];
+  if (!__IS_imageHeader)
   {
     v12 = IFDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -21,7 +21,7 @@
     }
   }
 
-  v13 = [IFImage createCGImageWithIFImageData:v8];
+  v13 = [IFImage createCGImageWithIFImageData:dataCopy];
   if (!v13)
   {
     v22 = IFDefaultLog();
@@ -30,7 +30,7 @@
       [IFCacheImage initWithData:uuid:validationToken:];
     }
 
-    if (v11)
+    if (__IS_imageHeader)
     {
       goto LABEL_7;
     }
@@ -45,19 +45,19 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  if (!v11)
+  if (!__IS_imageHeader)
   {
     goto LABEL_12;
   }
 
 LABEL_7:
-  v15 = *(v11 + 24);
-  v16 = *(v11 + 28);
-  LODWORD(v14) = *(v11 + 12);
-  v17 = *(v11 + 16);
-  v18 = *(v11 + 20);
+  v15 = *(__IS_imageHeader + 24);
+  v16 = *(__IS_imageHeader + 28);
+  LODWORD(v14) = *(__IS_imageHeader + 12);
+  v17 = *(__IS_imageHeader + 16);
+  v18 = *(__IS_imageHeader + 20);
   v19 = v14;
-  v20 = [IFImage _layerDataFromIFImageData:v8];
+  v20 = [IFImage _layerDataFromIFImageData:dataCopy];
   if (v20)
   {
     v21 = v20;
@@ -65,8 +65,8 @@ LABEL_7:
 
   else
   {
-    v24 = *(v11 + 8);
-    v23 = (v11 + 8);
+    v24 = *(__IS_imageHeader + 8);
+    v23 = (__IS_imageHeader + 8);
     if (v24)
     {
       v25 = IFDefaultLog();
@@ -84,8 +84,8 @@ LABEL_18:
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_uuid, a4);
-    objc_storeStrong(&v27->_validationToken, a5);
+    objc_storeStrong(&v26->_uuid, uuid);
+    objc_storeStrong(&v27->_validationToken, token);
     [(IFConcreteImage *)v27 setMinimumSize:v15, v16];
     [(IFConcreteImage *)v27 setIconSize:v17, v18];
   }
@@ -98,55 +98,55 @@ LABEL_18:
   return v27;
 }
 
-- (IFCacheImage)initWithCoder:(id)a3
+- (IFCacheImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = IFCacheImage;
-  v5 = [(IFImage *)&v17 initWithCoder:v4];
+  v5 = [(IFImage *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 _IF_decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy _IF_decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 _IF_decodeObjectOfClass:objc_opt_class() forKey:@"validationToken"];
+    v8 = [coderCopy _IF_decodeObjectOfClass:objc_opt_class() forKey:@"validationToken"];
     validationToken = v5->_validationToken;
     v5->_validationToken = v8;
 
-    [v4 decodeFloatForKey:@"minimumSize.width"];
+    [coderCopy decodeFloatForKey:@"minimumSize.width"];
     v11 = v10;
-    [v4 decodeFloatForKey:@"minimumSize.height"];
+    [coderCopy decodeFloatForKey:@"minimumSize.height"];
     [(IFConcreteImage *)v5 setMinimumSize:v11, v12];
-    [v4 decodeFloatForKey:@"iconSize.width"];
+    [coderCopy decodeFloatForKey:@"iconSize.width"];
     v14 = v13;
-    [v4 decodeFloatForKey:@"iconSize.height"];
+    [coderCopy decodeFloatForKey:@"iconSize.height"];
     [(IFConcreteImage *)v5 setIconSize:v14, v15];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = IFCacheImage;
-  v4 = a3;
-  [(IFImage *)&v11 encodeWithCoder:v4];
-  [v4 encodeObject:self->_uuid forKey:{@"uuid", v11.receiver, v11.super_class}];
-  [v4 encodeObject:self->_validationToken forKey:@"validationToken"];
+  coderCopy = coder;
+  [(IFImage *)&v11 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_uuid forKey:{@"uuid", v11.receiver, v11.super_class}];
+  [coderCopy encodeObject:self->_validationToken forKey:@"validationToken"];
   [(IFConcreteImage *)self minimumSize];
   *&v5 = v5;
-  [v4 encodeFloat:@"minimumSize.width" forKey:v5];
+  [coderCopy encodeFloat:@"minimumSize.width" forKey:v5];
   [(IFConcreteImage *)self minimumSize];
   *&v7 = v6;
-  [v4 encodeFloat:@"minimumSize.height" forKey:v7];
+  [coderCopy encodeFloat:@"minimumSize.height" forKey:v7];
   [(IFConcreteImage *)self iconSize];
   *&v8 = v8;
-  [v4 encodeFloat:@"iconSize.width" forKey:v8];
+  [coderCopy encodeFloat:@"iconSize.width" forKey:v8];
   [(IFConcreteImage *)self iconSize];
   *&v10 = v9;
-  [v4 encodeFloat:@"iconSize.height" forKey:v10];
+  [coderCopy encodeFloat:@"iconSize.height" forKey:v10];
 }
 
 - (void)initWithData:(_DWORD *)a1 uuid:(NSObject *)a2 validationToken:.cold.3(_DWORD *a1, NSObject *a2)

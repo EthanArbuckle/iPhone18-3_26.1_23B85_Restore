@@ -1,48 +1,48 @@
 @interface SHRange
 + (SHRange)rangeWithLowerBound:(double)lowerBound upperBound:(double)upperBound;
-- (BOOL)contains:(double)a3;
-- (BOOL)isEqualToRange:(id)a3 withTolerance:(double)a4;
-- (SHRange)initWithCoder:(id)a3;
+- (BOOL)contains:(double)contains;
+- (BOOL)isEqualToRange:(id)range withTolerance:(double)tolerance;
+- (SHRange)initWithCoder:(id)coder;
 - (SHRange)initWithLowerBound:(double)lowerBound upperBound:(double)upperBound;
-- (SHRange)initWithSerializedRepresentation:(id)a3;
+- (SHRange)initWithSerializedRepresentation:(id)representation;
 - (double)duration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)serializedRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHRange
 
-- (SHRange)initWithCoder:(id)a3
+- (SHRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SHRange;
   v5 = [(SHRange *)&v9 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"lowerBound"];
+    [coderCopy decodeDoubleForKey:@"lowerBound"];
     v5->_lowerBound = v6;
-    [v4 decodeDoubleForKey:@"upperBound"];
+    [coderCopy decodeDoubleForKey:@"upperBound"];
     v5->_upperBound = v7;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(SHRange *)self lowerBound];
-  [v4 encodeDouble:@"lowerBound" forKey:?];
+  [coderCopy encodeDouble:@"lowerBound" forKey:?];
   [(SHRange *)self upperBound];
-  [v4 encodeDouble:@"upperBound" forKey:?];
+  [coderCopy encodeDouble:@"upperBound" forKey:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(SHRange *)self lowerBound];
   v6 = v5;
   [(SHRange *)self upperBound];
@@ -52,7 +52,7 @@
 
 + (SHRange)rangeWithLowerBound:(double)lowerBound upperBound:(double)upperBound
 {
-  v4 = [[a1 alloc] initWithLowerBound:lowerBound upperBound:upperBound];
+  v4 = [[self alloc] initWithLowerBound:lowerBound upperBound:upperBound];
 
   return v4;
 }
@@ -82,18 +82,18 @@
   return result;
 }
 
-- (SHRange)initWithSerializedRepresentation:(id)a3
+- (SHRange)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 count];
+  representationCopy = representation;
+  v5 = [representationCopy count];
   v6 = MEMORY[0x277CBE660];
   if (v5 != 2)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"A range must have a start and end not %@", v4}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"A range must have a start and end not %@", representationCopy}];
   }
 
-  v7 = [v4 objectAtIndexedSubscript:0];
-  v8 = [v4 objectAtIndexedSubscript:1];
+  v7 = [representationCopy objectAtIndexedSubscript:0];
+  v8 = [representationCopy objectAtIndexedSubscript:1];
   v9 = v8;
   if (!v7 || !v8)
   {
@@ -108,13 +108,13 @@
   return v13;
 }
 
-- (BOOL)isEqualToRange:(id)a3 withTolerance:(double)a4
+- (BOOL)isEqualToRange:(id)range withTolerance:(double)tolerance
 {
-  v6 = a3;
+  rangeCopy = range;
   [(SHRange *)self lowerBound];
   v8 = v7;
-  [v6 lowerBound];
-  if (vabdd_f64(v8, v9) >= a4)
+  [rangeCopy lowerBound];
+  if (vabdd_f64(v8, v9) >= tolerance)
   {
     v13 = 0;
   }
@@ -123,8 +123,8 @@
   {
     [(SHRange *)self upperBound];
     v11 = v10;
-    [v6 upperBound];
-    v13 = vabdd_f64(v11, v12) < a4;
+    [rangeCopy upperBound];
+    v13 = vabdd_f64(v11, v12) < tolerance;
   }
 
   return v13;
@@ -148,16 +148,16 @@
   return v7;
 }
 
-- (BOOL)contains:(double)a3
+- (BOOL)contains:(double)contains
 {
   [(SHRange *)self lowerBound];
-  if (v5 > a3)
+  if (v5 > contains)
   {
     return 0;
   }
 
   [(SHRange *)self upperBound];
-  return v7 > a3;
+  return v7 > contains;
 }
 
 - (double)duration

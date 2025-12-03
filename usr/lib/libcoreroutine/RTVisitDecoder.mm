@@ -1,43 +1,43 @@
 @interface RTVisitDecoder
-- (RTVisitDecoder)initWithHyperParameter:(id)a3;
-- (id)createSuccessor:(id)a3 probabilities:(const float *)a4 firstTimeStepDate:(id)a5 currentDate:(id)a6;
-- (id)decodeWithProbabilities:(const float *)a3 batchSize:(unint64_t)a4 firstTimeStepDate:(id)a5;
-- (void)updateSuccessor:(id)a3 newNode:(id)a4;
+- (RTVisitDecoder)initWithHyperParameter:(id)parameter;
+- (id)createSuccessor:(id)successor probabilities:(const float *)probabilities firstTimeStepDate:(id)date currentDate:(id)currentDate;
+- (id)decodeWithProbabilities:(const float *)probabilities batchSize:(unint64_t)size firstTimeStepDate:(id)date;
+- (void)updateSuccessor:(id)successor newNode:(id)node;
 @end
 
 @implementation RTVisitDecoder
 
-- (RTVisitDecoder)initWithHyperParameter:(id)a3
+- (RTVisitDecoder)initWithHyperParameter:(id)parameter
 {
-  v5 = a3;
+  parameterCopy = parameter;
   v9.receiver = self;
   v9.super_class = RTVisitDecoder;
   v6 = [(RTVisitDecoder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_hyperParameter, a3);
+    objc_storeStrong(&v6->_hyperParameter, parameter);
   }
 
   return v7;
 }
 
-- (void)updateSuccessor:(id)a3 newNode:(id)a4
+- (void)updateSuccessor:(id)successor newNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  successorCopy = successor;
+  nodeCopy = node;
+  v7 = nodeCopy;
+  if (successorCopy)
   {
-    v8 = [v6 outputType];
-    if (v8)
+    outputType = [nodeCopy outputType];
+    if (outputType)
     {
-      v9 = v8;
-      v10 = [v5 objectForKeyedSubscript:v8];
+      v9 = outputType;
+      v10 = [successorCopy objectForKeyedSubscript:outputType];
       v11 = v10;
       if (!v10 || ([v10 logProbability], v13 = v12, objc_msgSend(v7, "logProbability"), v13 < v14))
       {
-        [v5 setObject:v7 forKeyedSubscript:v9];
+        [successorCopy setObject:v7 forKeyedSubscript:v9];
       }
     }
 
@@ -65,14 +65,14 @@
   }
 }
 
-- (id)createSuccessor:(id)a3 probabilities:(const float *)a4 firstTimeStepDate:(id)a5 currentDate:(id)a6
+- (id)createSuccessor:(id)successor probabilities:(const float *)probabilities firstTimeStepDate:(id)date currentDate:(id)currentDate
 {
   v62 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  successorCopy = successor;
+  dateCopy = date;
+  currentDateCopy = currentDate;
   v13 = objc_opt_new();
-  if (!v10)
+  if (!successorCopy)
   {
     obj = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@
     goto LABEL_35;
   }
 
-  if (!a4)
+  if (!probabilities)
   {
     obj = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
@@ -98,13 +98,13 @@
     goto LABEL_35;
   }
 
-  if (v11)
+  if (dateCopy)
   {
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    obj = v10;
+    obj = successorCopy;
     v14 = [obj countByEnumeratingWithState:&v56 objects:v61 count:16];
     if (!v14)
     {
@@ -112,8 +112,8 @@
     }
 
     v15 = v14;
-    v52 = v10;
-    v53 = v12;
+    v52 = successorCopy;
+    v53 = currentDateCopy;
     v55 = *v57;
     while (1)
     {
@@ -125,11 +125,11 @@
         }
 
         v17 = *(*(&v56 + 1) + 8 * i);
-        v18 = *a4;
-        v19 = (a4[1] + a4[2]);
-        v20 = a4[3];
-        v21 = [v17 entryDate];
-        v22 = [v21 isBeforeDate:v11];
+        v18 = *probabilities;
+        v19 = (probabilities[1] + probabilities[2]);
+        v20 = probabilities[3];
+        entryDate = [v17 entryDate];
+        v22 = [entryDate isBeforeDate:dateCopy];
 
         if (v22)
         {
@@ -154,7 +154,7 @@
             [v17 logProbability];
             v30 = log(v19) + v29;
             [(RTVisitHyperParameter *)self->_hyperParameter decoderEntryCost];
-            v32 = [(RTVisitDecoded *)v28 initWithEntryDate:v12 exitDate:0 logProbability:(v30 - v31)];
+            v32 = [(RTVisitDecoded *)v28 initWithEntryDate:currentDateCopy exitDate:0 logProbability:(v30 - v31)];
             goto LABEL_25;
           }
         }
@@ -165,9 +165,9 @@
           if (v33 <= v19)
           {
             v34 = [RTVisitDecoded alloc];
-            v35 = [v17 entryDate];
+            entryDate2 = [v17 entryDate];
             [v17 logProbability];
-            v37 = [(RTVisitDecoded *)v34 initWithEntryDate:v35 exitDate:0 logProbability:(log(v19) + v36)];
+            v37 = [(RTVisitDecoded *)v34 initWithEntryDate:entryDate2 exitDate:0 logProbability:(log(v19) + v36)];
 
             [(RTVisitDecoder *)self updateSuccessor:v13 newNode:v37];
           }
@@ -176,11 +176,11 @@
           if (v20 >= v38)
           {
             v39 = [RTVisitDecoded alloc];
-            v40 = [v17 entryDate];
+            entryDate3 = [v17 entryDate];
             [v17 logProbability];
             v42 = log(v20) + v41;
             [(RTVisitHyperParameter *)self->_hyperParameter decoderExitCost];
-            v32 = [(RTVisitDecoded *)v39 initWithEntryDate:v40 exitDate:v12 logProbability:(v42 - v43)];
+            v32 = [(RTVisitDecoded *)v39 initWithEntryDate:entryDate3 exitDate:currentDateCopy logProbability:(v42 - v43)];
             goto LABEL_24;
           }
         }
@@ -191,16 +191,16 @@
           if (v20 >= v44)
           {
             v45 = [RTVisitDecoded alloc];
-            v40 = [v17 entryDate];
+            entryDate3 = [v17 entryDate];
             [v17 exitDate];
-            v46 = v11;
+            v46 = dateCopy;
             v48 = v47 = v13;
             [v17 logProbability];
-            v32 = [(RTVisitDecoded *)v45 initWithEntryDate:v40 exitDate:v48 logProbability:(log(v20) + v49)];
+            v32 = [(RTVisitDecoded *)v45 initWithEntryDate:entryDate3 exitDate:v48 logProbability:(log(v20) + v49)];
 
             v13 = v47;
-            v11 = v46;
-            v12 = v53;
+            dateCopy = v46;
+            currentDateCopy = v53;
 LABEL_24:
 
 LABEL_25:
@@ -214,7 +214,7 @@ LABEL_25:
       v15 = [obj countByEnumeratingWithState:&v56 objects:v61 count:16];
       if (!v15)
       {
-        v10 = v52;
+        successorCopy = v52;
         goto LABEL_36;
       }
     }
@@ -234,12 +234,12 @@ LABEL_36:
   return v13;
 }
 
-- (id)decodeWithProbabilities:(const float *)a3 batchSize:(unint64_t)a4 firstTimeStepDate:(id)a5
+- (id)decodeWithProbabilities:(const float *)probabilities batchSize:(unint64_t)size firstTimeStepDate:(id)date
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v9 = v7;
-  if (!a3)
+  dateCopy = date;
+  v9 = dateCopy;
+  if (!probabilities)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -258,7 +258,7 @@ LABEL_37:
     goto LABEL_30;
   }
 
-  if (!v7)
+  if (!dateCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -280,7 +280,7 @@ LABEL_37:
     self->_beam = v11;
   }
 
-  if (!a4)
+  if (!size)
   {
     goto LABEL_31;
   }
@@ -293,12 +293,12 @@ LABEL_37:
   while (1)
   {
     v36 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v9 sinceDate:{(-[RTVisitHyperParameter visitInferenceResolution](self->_hyperParameter, "visitInferenceResolution", v33) * v13 * -[RTVisitHyperParameter timeStepInterval](self->_hyperParameter, "timeStepInterval"))}];
-    v15 = [(RTVisitDecoder *)self createSuccessor:self->_beam probabilities:a3 firstTimeStepDate:v9 currentDate:?];
+    v15 = [(RTVisitDecoder *)self createSuccessor:self->_beam probabilities:probabilities firstTimeStepDate:v9 currentDate:?];
     if ([v15 count])
     {
-      v16 = [v15 allValues];
+      allValues = [v15 allValues];
       p_super = &self->_beam->super;
-      self->_beam = v16;
+      self->_beam = allValues;
     }
 
     else
@@ -364,16 +364,16 @@ LABEL_37:
       v14 = 0;
     }
 
-    v28 = [v14 completeVisit];
-    if (v28)
+    completeVisit = [v14 completeVisit];
+    if (completeVisit)
     {
       break;
     }
 
-    a3 += 4;
+    probabilities += 4;
     ++v13;
     v9 = v34;
-    if (v13 == a4)
+    if (v13 == size)
     {
       goto LABEL_32;
     }

@@ -7,87 +7,87 @@
 - (id)sb_resolvedImage
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 iconType];
+  iconType = [self iconType];
 
-  if (v2)
+  if (iconType)
   {
     v3 = objc_alloc(MEMORY[0x277D1B1A8]);
-    v4 = [a1 iconType];
-    v5 = [v3 initWithType:v4];
+    iconType2 = [self iconType];
+    v5 = [v3 initWithType:iconType2];
   }
 
   else
   {
-    v6 = [a1 iconBundleIdentifier];
+    iconBundleIdentifier = [self iconBundleIdentifier];
 
-    if (!v6)
+    if (!iconBundleIdentifier)
     {
       goto LABEL_6;
     }
 
     v7 = objc_alloc(MEMORY[0x277D1B1A8]);
-    v4 = [a1 iconBundleIdentifier];
-    v5 = [v7 initWithBundleIdentifier:v4];
+    iconType2 = [self iconBundleIdentifier];
+    v5 = [v7 initWithBundleIdentifier:iconType2];
   }
 
-  v6 = v5;
+  iconBundleIdentifier = v5;
 
 LABEL_6:
-  v8 = [a1 iconDecorationType];
+  iconDecorationType = [self iconDecorationType];
 
-  if (v8)
+  if (iconDecorationType)
   {
     v9 = objc_alloc(MEMORY[0x277D1B1B8]);
-    v10 = [a1 iconDecorationType];
-    v11 = [v9 initWithType:v10];
+    iconDecorationType2 = [self iconDecorationType];
+    v11 = [v9 initWithType:iconDecorationType2];
   }
 
   else
   {
-    v12 = [a1 iconDecorationBundleIdentifier];
+    iconDecorationBundleIdentifier = [self iconDecorationBundleIdentifier];
 
-    if (!v12)
+    if (!iconDecorationBundleIdentifier)
     {
       goto LABEL_15;
     }
 
     v13 = objc_alloc(MEMORY[0x277D1B1B8]);
-    v10 = [a1 iconDecorationBundleIdentifier];
-    v11 = [v13 initWithBundleIdentifier:v10];
+    iconDecorationType2 = [self iconDecorationBundleIdentifier];
+    v11 = [v13 initWithBundleIdentifier:iconDecorationType2];
   }
 
-  v12 = v11;
+  iconDecorationBundleIdentifier = v11;
 
-  if (v12)
+  if (iconDecorationBundleIdentifier)
   {
-    v14 = [a1 iconDecorationPosition];
+    iconDecorationPosition = [self iconDecorationPosition];
 
-    if (v14)
+    if (iconDecorationPosition)
     {
-      v15 = [a1 iconDecorationPosition];
-      v16 = [v15 integerValue];
+      iconDecorationPosition2 = [self iconDecorationPosition];
+      integerValue = [iconDecorationPosition2 integerValue];
     }
 
     else
     {
-      v16 = 0;
+      integerValue = 0;
     }
 
-    [v12 setPosition:v16];
-    v26[0] = v12;
+    [iconDecorationBundleIdentifier setPosition:integerValue];
+    v26[0] = iconDecorationBundleIdentifier;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-    v18 = [v6 iconWithDecorations:v17];
+    v18 = [iconBundleIdentifier iconWithDecorations:v17];
 
-    v6 = v18;
+    iconBundleIdentifier = v18;
   }
 
 LABEL_15:
-  v19 = [MEMORY[0x277D759A0] mainScreen];
-  [v19 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v21 = v20;
 
   v22 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:60.0 scale:{60.0, v21}];
-  v23 = [v6 prepareImageForDescriptor:v22];
+  v23 = [iconBundleIdentifier prepareImageForDescriptor:v22];
   v24 = [MEMORY[0x277D755B8] imageWithCGImage:objc_msgSend(v23 scale:"CGImage") orientation:{0, v21}];
 
   return v24;

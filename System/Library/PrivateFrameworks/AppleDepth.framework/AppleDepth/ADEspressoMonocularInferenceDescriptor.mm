@@ -1,25 +1,25 @@
 @interface ADEspressoMonocularInferenceDescriptor
-- (ADEspressoMonocularInferenceDescriptor)initWithNetworkProvider:(id)a3;
+- (ADEspressoMonocularInferenceDescriptor)initWithNetworkProvider:(id)provider;
 @end
 
 @implementation ADEspressoMonocularInferenceDescriptor
 
-- (ADEspressoMonocularInferenceDescriptor)initWithNetworkProvider:(id)a3
+- (ADEspressoMonocularInferenceDescriptor)initWithNetworkProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 url];
-  v6 = [v4 layoutNamesDict];
+  providerCopy = provider;
+  v5 = [providerCopy url];
+  layoutNamesDict = [providerCopy layoutNamesDict];
   v13.receiver = self;
   v13.super_class = ADEspressoMonocularInferenceDescriptor;
-  v7 = [(ADEspressoInferenceDescriptor *)&v13 initWithUrl:v5 layoutNames:v6];
+  v7 = [(ADEspressoInferenceDescriptor *)&v13 initWithUrl:v5 layoutNames:layoutNamesDict];
 
   if (v7)
   {
-    v8 = [v4 descriptorForBuffer:@"image" isInput:1 pixelFormat:1111970369];
+    v8 = [providerCopy descriptorForBuffer:@"image" isInput:1 pixelFormat:1111970369];
     colorInput = v7->_colorInput;
     v7->_colorInput = v8;
 
-    v10 = [v4 descriptorForBuffer:@"prediction" isInput:0 pixelFormat:1717855600];
+    v10 = [providerCopy descriptorForBuffer:@"prediction" isInput:0 pixelFormat:1717855600];
     depthOutput = v7->_depthOutput;
     v7->_depthOutput = v10;
   }

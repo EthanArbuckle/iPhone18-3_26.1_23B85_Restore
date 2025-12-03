@@ -1,44 +1,44 @@
 @interface AMSDNFCAccessory
-- (id)_addCampaignToken:(id)a3 andGroup:(id)a4 toURL:(id)a5;
+- (id)_addCampaignToken:(id)token andGroup:(id)group toURL:(id)l;
 - (id)_bag;
-- (id)_hasArcadeSubscription:(id)a3;
+- (id)_hasArcadeSubscription:(id)subscription;
 - (id)_hasFitnessPlusSubscription;
 - (id)_hasMusicSubscription;
 - (id)_hasTVSubscription;
-- (void)handleInboundURL:(id)a3;
+- (void)handleInboundURL:(id)l;
 @end
 
 @implementation AMSDNFCAccessory
 
-- (void)handleInboundURL:(id)a3
+- (void)handleInboundURL:(id)l
 {
-  v159 = a3;
+  lCopy = l;
   v4 = [NSURLComponents componentsWithURL:"componentsWithURL:resolvingAgainstBaseURL:" resolvingAgainstBaseURL:?];
   [v4 setQuery:0];
   v5 = [v4 URL];
-  v161 = self;
-  v6 = [(AMSDNFCAccessory *)self _bag];
-  v7 = [v6 URLForKey:@"nfc-accessories/music/tag-url"];
+  selfCopy = self;
+  _bag = [(AMSDNFCAccessory *)self _bag];
+  v7 = [_bag URLForKey:@"nfc-accessories/music/tag-url"];
   v189 = 0;
   v8 = [v7 valueWithError:&v189];
   v9 = v189;
 
-  v10 = [v6 URLForKey:@"nfc-accessories/tv/tag-url"];
+  v10 = [_bag URLForKey:@"nfc-accessories/tv/tag-url"];
   v188 = v9;
   v160 = [v10 valueWithError:&v188];
   v11 = v188;
 
-  v12 = [v6 URLForKey:@"nfc-accessories/arcade/tag-url"];
+  v12 = [_bag URLForKey:@"nfc-accessories/arcade/tag-url"];
   v187 = v11;
   v13 = [v12 valueWithError:&v187];
   v14 = v187;
 
-  v15 = [v6 URLForKey:@"nfc-accessories/appstore/tag-url"];
+  v15 = [_bag URLForKey:@"nfc-accessories/appstore/tag-url"];
   v186 = v14;
   v157 = [v15 valueWithError:&v186];
   v16 = v186;
 
-  v17 = [v6 URLForKey:@"nfc-accessories/fitness/tag-url"];
+  v17 = [_bag URLForKey:@"nfc-accessories/fitness/tag-url"];
   v185 = v16;
   v18 = [v17 valueWithError:&v185];
   v19 = v185;
@@ -48,15 +48,15 @@
   {
     v154 = v18;
     v20 = v8;
-    v21 = v6;
+    v21 = _bag;
     v22 = +[AMSLogConfig sharedAccountsDaemonConfig];
     if (!v22)
     {
       v22 = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v24 = objc_opt_class();
       v25 = AMSLogKey();
@@ -66,12 +66,12 @@
       v196 = v25;
       v197 = 2114;
       v198 = v5;
-      _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Music URL detected. URL = %{public}@", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Music URL detected. URL = %{public}@", buf, 0x20u);
     }
 
-    v26 = [(AMSDNFCAccessory *)v161 _hasMusicSubscription];
+    _hasMusicSubscription = [(AMSDNFCAccessory *)selfCopy _hasMusicSubscription];
     v184 = v19;
-    v27 = [v26 resultWithError:&v184];
+    v27 = [_hasMusicSubscription resultWithError:&v184];
     v28 = v184;
 
     v29 = +[AMSLogConfig sharedAccountsDaemonConfig];
@@ -80,8 +80,8 @@
       v29 = +[AMSLogConfig sharedConfig];
     }
 
-    v30 = [v29 OSLogObject];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v29 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v31 = objc_opt_class();
       AMSLogKey();
@@ -90,12 +90,12 @@
       v194 = v31;
       v195 = 2114;
       v196 = v33;
-      _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Constructing music payload.", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Constructing music payload.", buf, 0x16u);
 
       v4 = v32;
     }
 
-    v6 = v21;
+    _bag = v21;
     if (v27)
     {
       v34 = [v21 dictionaryForKey:@"nfc-accessories/music/payloads/subscribed"];
@@ -130,8 +130,8 @@
         v37 = +[AMSLogConfig sharedConfig];
       }
 
-      v38 = [v37 OSLogObject];
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v37 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v39 = objc_opt_class();
         v40 = AMSLogKey();
@@ -141,17 +141,17 @@
         v196 = v40;
         v197 = 2114;
         v198 = v5;
-        _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] TV URL detected. URL = %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] TV URL detected. URL = %{public}@", buf, 0x20u);
       }
 
-      v41 = [(AMSDNFCAccessory *)v161 _hasTVSubscription];
+      _hasTVSubscription = [(AMSDNFCAccessory *)selfCopy _hasTVSubscription];
       v181 = v19;
-      v42 = [v41 resultWithError:&v181];
+      v42 = [_hasTVSubscription resultWithError:&v181];
       v43 = v181;
 
       if (v42)
       {
-        v34 = [v6 dictionaryForKey:@"nfc-accessories/tv/payloads/subscribed"];
+        v34 = [_bag dictionaryForKey:@"nfc-accessories/tv/payloads/subscribed"];
         v180 = v43;
         v35 = [v34 valueWithError:&v180];
         v44 = v180;
@@ -159,7 +159,7 @@
 
       else
       {
-        v34 = [v6 dictionaryForKey:@"nfc-accessories/tv/payloads/unsubscribed"];
+        v34 = [_bag dictionaryForKey:@"nfc-accessories/tv/payloads/unsubscribed"];
         v179 = v43;
         v35 = [v34 valueWithError:&v179];
         v44 = v179;
@@ -182,8 +182,8 @@
         }
 
         v146 = v8;
-        v46 = [v45 OSLogObject];
-        if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
+        oSLogObject4 = [v45 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
         {
           v47 = objc_opt_class();
           v48 = AMSLogKey();
@@ -193,16 +193,16 @@
           v196 = v48;
           v197 = 2114;
           v198 = v5;
-          _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Arcade URL detected. URL = %{public}@", buf, 0x20u);
+          _os_log_impl(&_mh_execute_header, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Arcade URL detected. URL = %{public}@", buf, 0x20u);
         }
 
-        v49 = v6;
-        v50 = [v6 stringForKey:@"arcade-iap-family-id"];
+        v49 = _bag;
+        v50 = [_bag stringForKey:@"arcade-iap-family-id"];
         v178 = v19;
         v34 = [v50 valueWithError:&v178];
         v51 = v178;
 
-        v52 = [(AMSDNFCAccessory *)v161 _hasArcadeSubscription:v34];
+        v52 = [(AMSDNFCAccessory *)selfCopy _hasArcadeSubscription:v34];
         v177 = v51;
         v53 = [v52 resultWithError:&v177];
         v54 = v177;
@@ -215,8 +215,8 @@
             v55 = +[AMSLogConfig sharedConfig];
           }
 
-          v56 = [v55 OSLogObject];
-          if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
+          oSLogObject5 = [v55 OSLogObject];
+          if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
           {
             v57 = objc_opt_class();
             v58 = AMSLogKey();
@@ -226,11 +226,11 @@
             v196 = v58;
             v197 = 2114;
             v198 = v54;
-            _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Timed out getting Arcade subscription status. Error = %{public}@", buf, 0x20u);
+            _os_log_impl(&_mh_execute_header, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Timed out getting Arcade subscription status. Error = %{public}@", buf, 0x20u);
           }
         }
 
-        v6 = v49;
+        _bag = v49;
         if (v53)
         {
           v59 = [v49 dictionaryForKey:@"nfc-accessories/arcade/payloads/subscribed"];
@@ -267,8 +267,8 @@
           v62 = +[AMSLogConfig sharedConfig];
         }
 
-        v63 = [v62 OSLogObject];
-        if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
+        oSLogObject6 = [v62 OSLogObject];
+        if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
         {
           v64 = objc_opt_class();
           v65 = AMSLogKey();
@@ -278,10 +278,10 @@
           v196 = v65;
           v197 = 2114;
           v198 = v5;
-          _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] App Store URL detected. URL = %{public}@", buf, 0x20u);
+          _os_log_impl(&_mh_execute_header, oSLogObject6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] App Store URL detected. URL = %{public}@", buf, 0x20u);
         }
 
-        v34 = [v6 dictionaryForKey:@"nfc-accessories/appstore/payloads/unsubscribed"];
+        v34 = [_bag dictionaryForKey:@"nfc-accessories/appstore/payloads/unsubscribed"];
         v174 = v19;
         v35 = [v34 valueWithError:&v174];
         v66 = v174;
@@ -296,15 +296,15 @@
       }
 
       v154 = v18;
-      v141 = v6;
+      v141 = _bag;
       v67 = +[AMSLogConfig sharedAccountsDaemonConfig];
       if (!v67)
       {
         v67 = +[AMSLogConfig sharedConfig];
       }
 
-      v68 = [v67 OSLogObject];
-      if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
+      oSLogObject7 = [v67 OSLogObject];
+      if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_DEFAULT))
       {
         v69 = objc_opt_class();
         v70 = AMSLogKey();
@@ -314,12 +314,12 @@
         v196 = v70;
         v197 = 2114;
         v198 = v5;
-        _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fitness URL detected. URL = %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fitness URL detected. URL = %{public}@", buf, 0x20u);
       }
 
-      v71 = [(AMSDNFCAccessory *)v161 _hasFitnessPlusSubscription];
+      _hasFitnessPlusSubscription = [(AMSDNFCAccessory *)selfCopy _hasFitnessPlusSubscription];
       v173 = v19;
-      v72 = [v71 resultWithError:&v173];
+      v72 = [_hasFitnessPlusSubscription resultWithError:&v173];
       v43 = v173;
 
       if (v43 && [v43 code] == 1)
@@ -330,8 +330,8 @@
           v73 = +[AMSLogConfig sharedConfig];
         }
 
-        v74 = [v73 OSLogObject];
-        if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
+        oSLogObject8 = [v73 OSLogObject];
+        if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_ERROR))
         {
           v75 = objc_opt_class();
           AMSLogKey();
@@ -342,13 +342,13 @@
           v196 = v77;
           v197 = 2114;
           v198 = v43;
-          _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Timed out getting Fitness+ subscription status. Error = %{public}@", buf, 0x20u);
+          _os_log_impl(&_mh_execute_header, oSLogObject8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Timed out getting Fitness+ subscription status. Error = %{public}@", buf, 0x20u);
 
           v4 = v76;
         }
       }
 
-      v6 = v141;
+      _bag = v141;
       if (v72)
       {
         v34 = [v141 dictionaryForKey:@"nfc-accessories/fitness/payloads/subscribed"];
@@ -395,19 +395,19 @@ LABEL_68:
       v147 = v8;
       v149 = v4;
       v86 = +[ACAccountStore ams_sharedAccountStore];
-      v87 = [v86 ams_activeiTunesAccount];
+      ams_activeiTunesAccount = [v86 ams_activeiTunesAccount];
       v145 = v85;
-      [v85 setAccount:v87];
+      [v85 setAccount:ams_activeiTunesAccount];
 
-      v88 = [NSURLComponents componentsWithURL:v159 resolvingAgainstBaseURL:1];
-      v89 = objc_alloc_init(NSMutableDictionary);
+      v88 = [NSURLComponents componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+      oSLogObject9 = objc_alloc_init(NSMutableDictionary);
       v167 = 0u;
       v168 = 0u;
       v169 = 0u;
       v170 = 0u;
       v150 = v88;
-      v90 = [v88 queryItems];
-      v91 = [v90 countByEnumeratingWithState:&v167 objects:v191 count:16];
+      queryItems = [v88 queryItems];
+      v91 = [queryItems countByEnumeratingWithState:&v167 objects:v191 count:16];
       if (v91)
       {
         v92 = v91;
@@ -418,41 +418,41 @@ LABEL_68:
           {
             if (*v168 != v93)
             {
-              objc_enumerationMutation(v90);
+              objc_enumerationMutation(queryItems);
             }
 
             v95 = *(*(&v167 + 1) + 8 * i);
-            v96 = [v95 name];
-            if (v96)
+            name = [v95 name];
+            if (name)
             {
-              v97 = v96;
-              v98 = [v95 value];
+              v97 = name;
+              value = [v95 value];
 
-              if (v98)
+              if (value)
               {
-                v99 = [v95 value];
-                v100 = [v95 name];
-                [v89 setObject:v99 forKey:v100];
+                value2 = [v95 value];
+                name2 = [v95 name];
+                [oSLogObject9 setObject:value2 forKey:name2];
               }
             }
           }
 
-          v92 = [v90 countByEnumeratingWithState:&v167 objects:v191 count:16];
+          v92 = [queryItems countByEnumeratingWithState:&v167 objects:v191 count:16];
         }
 
         while (v92);
       }
 
       v85 = v145;
-      v101 = [v145 metricsEvent];
-      v102 = [v101 mutableCopy];
+      metricsEvent = [v145 metricsEvent];
+      v102 = [metricsEvent mutableCopy];
 
-      v103 = [v159 absoluteString];
-      [v102 setObject:v103 forKeyedSubscript:@"tagURL"];
+      absoluteString = [lCopy absoluteString];
+      [v102 setObject:absoluteString forKeyedSubscript:@"tagURL"];
 
-      if ([v89 count])
+      if ([oSLogObject9 count])
       {
-        v104 = [v89 copy];
+        v104 = [oSLogObject9 copy];
         [v102 setObject:v104 forKeyedSubscript:@"tagParameters"];
       }
 
@@ -460,26 +460,26 @@ LABEL_68:
       [v145 setMetricsEvent:v105];
 
       [v145 setCategoryIdentifier:v152];
-      v106 = [v89 objectForKeyedSubscript:@"itscg"];
-      v107 = [v89 objectForKeyedSubscript:@"itsct"];
+      v106 = [oSLogObject9 objectForKeyedSubscript:@"itscg"];
+      v107 = [oSLogObject9 objectForKeyedSubscript:@"itsct"];
       if (v106 | v107)
       {
         v153 = v102;
-        v142 = v6;
-        v108 = [v145 defaultAction];
-        v109 = [v108 defaultURL];
-        v110 = [(AMSDNFCAccessory *)v161 _addCampaignToken:v107 andGroup:v106 toURL:v109];
+        v142 = _bag;
+        defaultAction = [v145 defaultAction];
+        defaultURL = [defaultAction defaultURL];
+        v110 = [(AMSDNFCAccessory *)selfCopy _addCampaignToken:v107 andGroup:v106 toURL:defaultURL];
 
-        v111 = [v145 defaultAction];
+        defaultAction2 = [v145 defaultAction];
         v140 = v110;
-        [v111 setDefaultURL:v110];
+        [defaultAction2 setDefaultURL:v110];
 
         v165 = 0u;
         v166 = 0u;
         v163 = 0u;
         v164 = 0u;
-        v112 = [v145 buttonActions];
-        v113 = [v112 countByEnumeratingWithState:&v163 objects:v190 count:16];
+        buttonActions = [v145 buttonActions];
+        v113 = [buttonActions countByEnumeratingWithState:&v163 objects:v190 count:16];
         if (v113)
         {
           v114 = v113;
@@ -490,35 +490,35 @@ LABEL_68:
             {
               if (*v164 != v115)
               {
-                objc_enumerationMutation(v112);
+                objc_enumerationMutation(buttonActions);
               }
 
               v117 = *(*(&v163 + 1) + 8 * j);
-              v118 = [v117 defaultURL];
-              v119 = [(AMSDNFCAccessory *)v161 _addCampaignToken:v107 andGroup:v106 toURL:v118];
+              defaultURL2 = [v117 defaultURL];
+              v119 = [(AMSDNFCAccessory *)selfCopy _addCampaignToken:v107 andGroup:v106 toURL:defaultURL2];
 
               [v117 setDefaultURL:v119];
             }
 
-            v114 = [v112 countByEnumeratingWithState:&v163 objects:v190 count:16];
+            v114 = [buttonActions countByEnumeratingWithState:&v163 objects:v190 count:16];
           }
 
           while (v114);
         }
 
-        v6 = v142;
+        _bag = v142;
         v85 = v145;
         v102 = v153;
       }
 
-      v120 = [v158 clientIdentifier];
-      v121 = [AMSUserNotificationCenter postNotification:v85 bag:v6 centerBundleId:v120];
+      clientIdentifier = [v158 clientIdentifier];
+      v121 = [AMSUserNotificationCenter postNotification:v85 bag:_bag centerBundleId:clientIdentifier];
 
       v162[0] = _NSConcreteStackBlock;
       v162[1] = 3221225472;
       v162[2] = sub_1000719CC;
       v162[3] = &unk_100243F98;
-      v162[4] = v161;
+      v162[4] = selfCopy;
       [v121 addFinishBlock:v162];
 
       v8 = v147;
@@ -538,9 +538,9 @@ LABEL_68:
       }
 
       v150 = v133;
-      v89 = [v133 OSLogObject];
+      oSLogObject9 = [v133 OSLogObject];
       v13 = v156;
-      if (os_log_type_enabled(v89, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oSLogObject9, OS_LOG_TYPE_ERROR))
       {
         v134 = objc_opt_class();
         AMSLogKey();
@@ -554,7 +554,7 @@ LABEL_68:
         v196 = v139;
         v197 = 2114;
         v198 = v151;
-        _os_log_impl(&_mh_execute_header, v89, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There was a problem parsing the payload dictionary. Payload = %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There was a problem parsing the payload dictionary. Payload = %{public}@", buf, 0x20u);
 
         v66 = v138;
         v5 = v137;
@@ -577,7 +577,7 @@ LABEL_104:
 
   v18 = v154;
 LABEL_93:
-  v123 = v6;
+  v123 = _bag;
   v124 = +[AMSLogConfig sharedAccountsDaemonConfig];
   if (!v124)
   {
@@ -585,9 +585,9 @@ LABEL_93:
   }
 
   v158 = v124;
-  v125 = [v124 OSLogObject];
-  v155 = v125;
-  if (os_log_type_enabled(v125, OS_LOG_TYPE_ERROR))
+  oSLogObject10 = [v124 OSLogObject];
+  v155 = oSLogObject10;
+  if (os_log_type_enabled(oSLogObject10, OS_LOG_TYPE_ERROR))
   {
     v126 = objc_opt_class();
     AMSLogKey();
@@ -600,10 +600,10 @@ LABEL_93:
     v195 = 2114;
     v196 = v131;
     v197 = 2114;
-    v198 = v159;
+    v198 = lCopy;
     v199 = 2114;
     v200 = v66;
-    _os_log_impl(&_mh_execute_header, v125, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No payload was found for the incoming NFC URL. TagURL = %{public}@, Error = %{public}@", buf, 0x2Au);
+    _os_log_impl(&_mh_execute_header, oSLogObject10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No payload was found for the incoming NFC URL. TagURL = %{public}@, Error = %{public}@", buf, 0x2Au);
 
     v18 = v130;
     v5 = v129;
@@ -613,7 +613,7 @@ LABEL_93:
 
   v132 = 0;
   v122 = v157;
-  v6 = v123;
+  _bag = v123;
 LABEL_105:
 }
 
@@ -648,17 +648,17 @@ LABEL_105:
   return v7;
 }
 
-- (id)_addCampaignToken:(id)a3 andGroup:(id)a4 toURL:(id)a5
+- (id)_addCampaignToken:(id)token andGroup:(id)group toURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7 | v8)
+  tokenCopy = token;
+  groupCopy = group;
+  lCopy = l;
+  v10 = lCopy;
+  if (tokenCopy | groupCopy)
   {
-    v11 = [NSURLComponents componentsWithURL:v9 resolvingAgainstBaseURL:1];
-    v12 = [v11 queryItems];
-    v13 = [v12 mutableCopy];
+    v11 = [NSURLComponents componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    queryItems = [v11 queryItems];
+    v13 = [queryItems mutableCopy];
     v14 = v13;
     if (v13)
     {
@@ -672,15 +672,15 @@ LABEL_105:
 
     v17 = v15;
 
-    if (v8)
+    if (groupCopy)
     {
-      v18 = [NSURLQueryItem queryItemWithName:@"itscg" value:v8];
+      v18 = [NSURLQueryItem queryItemWithName:@"itscg" value:groupCopy];
       [v17 addObject:v18];
     }
 
-    if (v7)
+    if (tokenCopy)
     {
-      v19 = [NSURLQueryItem queryItemWithName:@"itsct" value:v7];
+      v19 = [NSURLQueryItem queryItemWithName:@"itsct" value:tokenCopy];
       [v17 addObject:v19];
     }
 
@@ -690,15 +690,15 @@ LABEL_105:
 
   else
   {
-    v16 = v9;
+    v16 = lCopy;
   }
 
   return v16;
 }
 
-- (id)_hasArcadeSubscription:(id)a3
+- (id)_hasArcadeSubscription:(id)subscription
 {
-  v4 = a3;
+  subscriptionCopy = subscription;
   v5 = [[AMSPromise alloc] initWithTimeout:2.0];
   v6 = +[AMSLogConfig sharedAccountsDaemonConfig];
   if (!v6)
@@ -706,8 +706,8 @@ LABEL_105:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -715,23 +715,23 @@ LABEL_105:
     v20 = v8;
     v21 = 2114;
     v22 = v9;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking Arcade subscription status", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking Arcade subscription status", buf, 0x16u);
   }
 
-  v10 = [sub_100072030() sharedInstance];
+  sharedInstance = [sub_100072030() sharedInstance];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100072110;
   v15[3] = &unk_100243FE8;
-  v16 = v4;
-  v17 = self;
+  v16 = subscriptionCopy;
+  selfCopy = self;
   v18 = v5;
   v11 = v5;
-  v12 = v4;
-  [v10 getSubscriptionEntitlementsForSegment:1 ignoreCaches:0 withResultHandler:v15];
-  v13 = [v11 binaryPromiseAdapter];
+  v12 = subscriptionCopy;
+  [sharedInstance getSubscriptionEntitlementsForSegment:1 ignoreCaches:0 withResultHandler:v15];
+  binaryPromiseAdapter = [v11 binaryPromiseAdapter];
 
-  return v13;
+  return binaryPromiseAdapter;
 }
 
 - (id)_hasFitnessPlusSubscription
@@ -743,8 +743,8 @@ LABEL_105:
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -752,21 +752,21 @@ LABEL_105:
     v19 = v6;
     v20 = 2114;
     v21 = v7;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking Fitness+ subscription status", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking Fitness+ subscription status", buf, 0x16u);
   }
 
-  v8 = [sub_100072030() sharedInstance];
+  sharedInstance = [sub_100072030() sharedInstance];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100072608;
   v15 = &unk_100244050;
-  v16 = self;
+  selfCopy = self;
   v17 = v3;
   v9 = v3;
-  [v8 getSubscriptionEntitlementsForSegment:2 ignoreCaches:0 withResultHandler:&v12];
-  v10 = [v9 binaryPromiseAdapter];
+  [sharedInstance getSubscriptionEntitlementsForSegment:2 ignoreCaches:0 withResultHandler:&v12];
+  binaryPromiseAdapter = [v9 binaryPromiseAdapter];
 
-  return v10;
+  return binaryPromiseAdapter;
 }
 
 - (id)_hasMusicSubscription
@@ -778,8 +778,8 @@ LABEL_105:
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -787,7 +787,7 @@ LABEL_105:
     *&buf[4] = v6;
     *&buf[12] = 2114;
     *&buf[14] = v7;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking Music subscription status", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking Music subscription status", buf, 0x16u);
   }
 
   v20 = 0;
@@ -808,18 +808,18 @@ LABEL_105:
 
   v9 = v8;
   _Block_object_dispose(&v20, 8);
-  v10 = [v8 sharedStatusController];
+  sharedStatusController = [v8 sharedStatusController];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100072B10;
   v17 = &unk_100244078;
-  v18 = self;
+  selfCopy = self;
   v19 = v3;
   v11 = v3;
-  [v10 getSubscriptionStatusWithCompletionHandler:&v14];
-  v12 = [v11 binaryPromiseAdapter];
+  [sharedStatusController getSubscriptionStatusWithCompletionHandler:&v14];
+  binaryPromiseAdapter = [v11 binaryPromiseAdapter];
 
-  return v12;
+  return binaryPromiseAdapter;
 }
 
 - (id)_hasTVSubscription
@@ -831,8 +831,8 @@ LABEL_105:
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -840,7 +840,7 @@ LABEL_105:
     *&buf[4] = v6;
     *&buf[12] = 2114;
     *&buf[14] = v7;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking TV subscription status", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking TV subscription status", buf, 0x16u);
   }
 
   v20 = 0;
@@ -866,13 +866,13 @@ LABEL_105:
   v15 = 3221225472;
   v16 = sub_100072FF0;
   v17 = &unk_1002440A0;
-  v18 = self;
+  selfCopy = self;
   v19 = v3;
   v11 = v3;
   [v10 fetchSubscriptionData:1 completion:&v14];
-  v12 = [v11 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v11 binaryPromiseAdapter];
 
-  return v12;
+  return binaryPromiseAdapter;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface BRDarwinNotifyReceiver
-- (id)initForEventName:(id)a3 withQueue:(id)a4 handler:(id)a5;
+- (id)initForEventName:(id)name withQueue:(id)queue handler:(id)handler;
 - (unint64_t)lastState;
 - (void)dealloc;
 - (void)invalidate;
@@ -7,14 +7,14 @@
 
 @implementation BRDarwinNotifyReceiver
 
-- (id)initForEventName:(id)a3 withQueue:(id)a4 handler:(id)a5
+- (id)initForEventName:(id)name withQueue:(id)queue handler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 length];
-  if (v11 && v10 && v12)
+  nameCopy = name;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v12 = [nameCopy length];
+  if (handlerCopy && queueCopy && v12)
   {
     v45.receiver = self;
     v45.super_class = BRDarwinNotifyReceiver;
@@ -26,44 +26,44 @@
     }
 
     v13->_token = -1;
-    objc_storeStrong(&v13->_eventName, a3);
-    objc_storeStrong(&v14->_queue, a4);
+    objc_storeStrong(&v13->_eventName, name);
+    objc_storeStrong(&v14->_queue, queue);
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __61__BRDarwinNotifyReceiver_initForEventName_withQueue_handler___block_invoke;
     v41[3] = &unk_1E7A14B68;
     v15 = v14;
     v42 = v15;
-    v34 = v9;
-    v16 = v9;
+    v34 = nameCopy;
+    v16 = nameCopy;
     v43 = v16;
-    v44 = v11;
+    v44 = handlerCopy;
     v17 = MEMORY[0x1B26FEA90](v41);
-    v18 = [v16 UTF8String];
+    uTF8String = [v16 UTF8String];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __61__BRDarwinNotifyReceiver_initForEventName_withQueue_handler___block_invoke_2;
     v38[3] = &unk_1E7A14B90;
     self = v15;
-    v39 = self;
+    selfCopy = self;
     v19 = v17;
     v40 = v19;
     v20 = v38;
     v21 = MEMORY[0x1E69DF068];
-    v35 = v10;
-    v22 = v10;
-    v23 = [v21 sharedManager];
-    v24 = [v23 br_currentPersonaID];
+    v35 = queueCopy;
+    v22 = queueCopy;
+    sharedManager = [v21 sharedManager];
+    br_currentPersonaID = [sharedManager br_currentPersonaID];
 
     handler = MEMORY[0x1E69E9820];
     *&v47 = 3221225472;
     *(&v47 + 1) = __br_notify_register_dispatch_block_invoke_0;
     v48 = &unk_1E7A14940;
     v50 = v20;
-    v51 = v18;
-    v49 = v24;
-    v25 = v24;
-    v26 = notify_register_dispatch(v18, &v14->_token, v22, &handler);
+    v51 = uTF8String;
+    v49 = br_currentPersonaID;
+    v25 = br_currentPersonaID;
+    v26 = notify_register_dispatch(uTF8String, &v14->_token, v22, &handler);
 
     if (v26)
     {
@@ -90,14 +90,14 @@
       v27 = v37;
     }
 
-    v10 = v35;
+    queueCopy = v35;
 
-    v9 = v34;
+    nameCopy = v34;
     if (!v26)
     {
 LABEL_15:
       self = v14;
-      v31 = self;
+      selfCopy2 = self;
       goto LABEL_16;
     }
   }
@@ -112,11 +112,11 @@ LABEL_15:
     }
   }
 
-  v31 = 0;
+  selfCopy2 = 0;
 LABEL_16:
 
   v32 = *MEMORY[0x1E69E9840];
-  return v31;
+  return selfCopy2;
 }
 
 uint64_t __61__BRDarwinNotifyReceiver_initForEventName_withQueue_handler___block_invoke(uint64_t a1)
@@ -179,10 +179,10 @@ uint64_t __36__BRDarwinNotifyReceiver_invalidate__block_invoke(uint64_t a1)
 
 - (unint64_t)lastState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lastState = v2->_lastState;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastState = selfCopy->_lastState;
+  objc_sync_exit(selfCopy);
 
   return lastState;
 }

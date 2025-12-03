@@ -1,27 +1,27 @@
 @interface AMSConnectionDelegateProxy
-+ (id)proxyWithDelegate:(id)a3;
++ (id)proxyWithDelegate:(id)delegate;
 - (id)delegate;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation AMSConnectionDelegateProxy
 
-+ (id)proxyWithDelegate:(id)a3
++ (id)proxyWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = objc_alloc_init(AMSConnectionDelegateProxy);
-  [(AMSConnectionDelegateProxy *)v4 setDelegate:v3];
+  [(AMSConnectionDelegateProxy *)v4 setDelegate:delegateCopy];
 
   return v4;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [(AMSConnectionDelegateProxy *)self delegate];
+  delegate = [(AMSConnectionDelegateProxy *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 methodSignatureForSelector:a3];
+    v5 = [delegate methodSignatureForSelector:selector];
   }
 
   else
@@ -32,14 +32,14 @@
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = a3;
-  v4 = [(AMSConnectionDelegateProxy *)self delegate];
-  [v5 selector];
+  invocationCopy = invocation;
+  delegate = [(AMSConnectionDelegateProxy *)self delegate];
+  [invocationCopy selector];
   if (objc_opt_respondsToSelector())
   {
-    [v5 invokeWithTarget:v4];
+    [invocationCopy invokeWithTarget:delegate];
   }
 }
 

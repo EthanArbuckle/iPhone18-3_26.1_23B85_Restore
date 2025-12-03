@@ -1,8 +1,8 @@
 @interface KeyboardListenerWrapperView.KeyboardListenerView
 - (BOOL)resignFirstResponder;
 - (NSArray)keyCommands;
-- (_TtCV7ChatKit27KeyboardListenerWrapperViewP33_5345905B395817E069A47C024E09EBB320KeyboardListenerView)initWithCoder:(id)a3;
-- (_TtCV7ChatKit27KeyboardListenerWrapperViewP33_5345905B395817E069A47C024E09EBB320KeyboardListenerView)initWithFrame:(CGRect)a3;
+- (_TtCV7ChatKit27KeyboardListenerWrapperViewP33_5345905B395817E069A47C024E09EBB320KeyboardListenerView)initWithCoder:(id)coder;
+- (_TtCV7ChatKit27KeyboardListenerWrapperViewP33_5345905B395817E069A47C024E09EBB320KeyboardListenerView)initWithFrame:(CGRect)frame;
 - (void)downArrowPressed;
 - (void)leftArrowPressed;
 - (void)rightArrowPressed;
@@ -26,7 +26,7 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for KeyboardListenerWrapperView.KeyboardListenerView();
   v2 = v7.receiver;
-  v3 = [(KeyboardListenerWrapperView.KeyboardListenerView *)&v7 resignFirstResponder];
+  resignFirstResponder = [(KeyboardListenerWrapperView.KeyboardListenerView *)&v7 resignFirstResponder];
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -34,7 +34,7 @@
     swift_unknownObjectRelease();
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (void)spaceBarPressed
@@ -43,7 +43,7 @@
   if (Strong)
   {
     v4 = *(Strong + 16);
-    v5 = self;
+    selfCopy = self;
     v4();
     swift_unknownObjectRelease();
   }
@@ -55,7 +55,7 @@
   if (Strong)
   {
     v4 = *(Strong + 64);
-    v5 = self;
+    selfCopy = self;
     v4();
     swift_unknownObjectRelease();
   }
@@ -67,7 +67,7 @@
   if (Strong)
   {
     v4 = *(Strong + 80);
-    v5 = self;
+    selfCopy = self;
     v4();
     swift_unknownObjectRelease();
   }
@@ -79,7 +79,7 @@
   if (Strong)
   {
     v4 = *(Strong + 32);
-    v5 = self;
+    selfCopy = self;
     v4();
     swift_unknownObjectRelease();
   }
@@ -91,18 +91,18 @@
   if (Strong)
   {
     v4 = *(Strong + 48);
-    v5 = self;
+    selfCopy = self;
     v4();
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtCV7ChatKit27KeyboardListenerWrapperViewP33_5345905B395817E069A47C024E09EBB320KeyboardListenerView)initWithFrame:(CGRect)a3
+- (_TtCV7ChatKit27KeyboardListenerWrapperViewP33_5345905B395817E069A47C024E09EBB320KeyboardListenerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super._responderFlags + OBJC_IVAR____TtCV7ChatKit27KeyboardListenerWrapperViewP33_5345905B395817E069A47C024E09EBB320KeyboardListenerView_keyboardListenerDelegate) = 0;
   swift_unknownObjectWeakInit();
   v9.receiver = self;
@@ -110,14 +110,14 @@
   return [(KeyboardListenerWrapperView.KeyboardListenerView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtCV7ChatKit27KeyboardListenerWrapperViewP33_5345905B395817E069A47C024E09EBB320KeyboardListenerView)initWithCoder:(id)a3
+- (_TtCV7ChatKit27KeyboardListenerWrapperViewP33_5345905B395817E069A47C024E09EBB320KeyboardListenerView)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtCV7ChatKit27KeyboardListenerWrapperViewP33_5345905B395817E069A47C024E09EBB320KeyboardListenerView_keyboardListenerDelegate) = 0;
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for KeyboardListenerWrapperView.KeyboardListenerView();
-  v5 = a3;
-  v6 = [(KeyboardListenerWrapperView.KeyboardListenerView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(KeyboardListenerWrapperView.KeyboardListenerView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

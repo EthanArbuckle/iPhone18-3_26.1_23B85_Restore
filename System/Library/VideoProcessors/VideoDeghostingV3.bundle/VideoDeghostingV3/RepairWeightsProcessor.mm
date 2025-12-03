@@ -1,11 +1,11 @@
 @interface RepairWeightsProcessor
 - (RepairWeightsProcessor)init;
 - (uint64_t)init;
-- (void)_temporalFilterMetaContainerAtIndex:(int64_t)a3 ofQueue:(id)a4 lookaheadBufferLen:(int)a5;
+- (void)_temporalFilterMetaContainerAtIndex:(int64_t)index ofQueue:(id)queue lookaheadBufferLen:(int)len;
 - (void)reset;
-- (void)setWeightsForROIAtIndex:(RepairWeightsProcessor *)self ofMetaContainer:(SEL)a2 ROIMotion:(int64_t)a3 ROIMotionLongRange:(id *)a4 isLowLight:(float)a5;
-- (void)temporalFilterBlendingWeights:(id)a3 lookaheadMetaBufs:(id)a4 metaBuf_HW:(id)a5 lookaheadMetaBufs_HW:(id)a6 hwMode:(BOOL)a7;
-- (void)temporalFilterMetaContainerAtIndex_PA_L:(int64_t)a3 ofQueue:(id)a4 ofQueue_HW:(id)a5 lookaheadBufferLen:(int)a6;
+- (void)setWeightsForROIAtIndex:(RepairWeightsProcessor *)self ofMetaContainer:(SEL)container ROIMotion:(int64_t)motion ROIMotionLongRange:(id *)range isLowLight:(float)light;
+- (void)temporalFilterBlendingWeights:(id)weights lookaheadMetaBufs:(id)bufs metaBuf_HW:(id)w lookaheadMetaBufs_HW:(id)hW hwMode:(BOOL)mode;
+- (void)temporalFilterMetaContainerAtIndex_PA_L:(int64_t)l ofQueue:(id)queue ofQueue_HW:(id)w lookaheadBufferLen:(int)len;
 @end
 
 @implementation RepairWeightsProcessor
@@ -43,52 +43,52 @@
   self->_frameIdx = 0;
 }
 
-- (void)temporalFilterMetaContainerAtIndex_PA_L:(int64_t)a3 ofQueue:(id)a4 ofQueue_HW:(id)a5 lookaheadBufferLen:(int)a6
+- (void)temporalFilterMetaContainerAtIndex_PA_L:(int64_t)l ofQueue:(id)queue ofQueue_HW:(id)w lookaheadBufferLen:(int)len
 {
-  v98 = a4;
-  v9 = a5;
-  if (a6)
+  queueCopy = queue;
+  wCopy = w;
+  if (len)
   {
-    v10 = [v98 objectAtIndex:a3];
-    v11 = [v10 mutableBytes];
+    v10 = [queueCopy objectAtIndex:l];
+    mutableBytes = [v10 mutableBytes];
 
-    v12 = [v9 objectAtIndex:a3];
-    v81 = [v12 mutableBytes];
+    v12 = [wCopy objectAtIndex:l];
+    mutableBytes2 = [v12 mutableBytes];
 
-    v86 = v11;
-    if (v11->i16[0] < 1)
+    v86 = mutableBytes;
+    if (mutableBytes->i16[0] < 1)
     {
       goto LABEL_62;
     }
 
     v13 = 0;
-    if (a6 >= 15)
+    if (len >= 15)
     {
-      v14 = 15;
+      lenCopy = 15;
     }
 
     else
     {
-      v14 = a6;
+      lenCopy = len;
     }
 
-    v15 = a6;
-    v16 = a6;
-    v88 = v14;
-    v85 = a6;
-    v84 = v81 + 2436;
-    v17 = v81 + 2308;
+    lenCopy2 = len;
+    lenCopy3 = len;
+    v88 = lenCopy;
+    lenCopy4 = len;
+    v84 = mutableBytes2 + 2436;
+    v17 = mutableBytes2 + 2308;
     v83 = vdupq_n_s32(0x3E99999Au);
-    v93 = a6;
-    v89 = a6;
-    v82 = v81 + 2308;
+    lenCopy5 = len;
+    lenCopy6 = len;
+    v82 = mutableBytes2 + 2308;
     while (1)
     {
       v18 = v86[133].i32[v13 + 1];
       v19 = &v86[4 * v13 + 5];
       v20 = *(v19 + 24);
       v91 = *(v19 + 16);
-      if (![v98 count])
+      if (![queueCopy count])
       {
         v63 = -1;
         v64 = -1;
@@ -124,45 +124,45 @@
       v92 = 0.0;
       do
       {
-        if ((v21 - a3) >= 0)
+        if ((v21 - l) >= 0)
         {
-          v33 = v21 - a3;
+          v33 = v21 - l;
         }
 
         else
         {
-          v33 = a3 - v21;
+          v33 = l - v21;
         }
 
-        v34 = v98;
-        if (v33 < v15)
+        v34 = queueCopy;
+        if (v33 < lenCopy2)
         {
           v97 = v33;
-          v35 = [v98 objectAtIndex:v21];
-          v36 = [v35 mutableBytes];
+          v35 = [queueCopy objectAtIndex:v21];
+          mutableBytes3 = [v35 mutableBytes];
 
-          v37 = v9;
-          v38 = [v9 objectAtIndex:v21];
-          v39 = [v38 mutableBytes];
+          v37 = wCopy;
+          v38 = [wCopy objectAtIndex:v21];
+          mutableBytes4 = [v38 mutableBytes];
 
-          v40 = v36->i16[0];
+          v40 = mutableBytes3->i16[0];
           if (v40 < 1)
           {
-            v9 = v37;
-            v15 = v93;
+            wCopy = v37;
+            lenCopy2 = lenCopy5;
             v55 = v97;
           }
 
           else
           {
             v41 = 0;
-            v42 = 1.0 - fmin(fmax((fabsf((v21 - a3)) / v89), 0.0), 1.0);
-            v43 = &v36[133] + 2;
-            v44 = (v39 + 2436);
-            v45 = v36 + 8;
+            v42 = 1.0 - fmin(fmax((fabsf((v21 - l)) / lenCopy6), 0.0), 1.0);
+            v43 = &mutableBytes3[133] + 2;
+            v44 = (mutableBytes4 + 2436);
+            v45 = mutableBytes3 + 8;
             v46 = 0.0;
-            v9 = v37;
-            v15 = v93;
+            wCopy = v37;
+            lenCopy2 = lenCopy5;
             v48 = v95;
             v47 = v96;
             do
@@ -197,7 +197,7 @@
                 v24 = v24 + v42;
                 v25 = v25 + v51;
                 v26 = v26 + v53;
-                if (v21 < a3)
+                if (v21 < l)
                 {
                   v47 = v47 + (v42 * *(v43 + 115));
                   v48 = v48 + v42;
@@ -220,7 +220,7 @@
             {
               v92 = v92 + 1.0;
               v56 = v90;
-              if (v21 != a3)
+              if (v21 != l)
               {
                 v56 = v90 + v46;
               }
@@ -232,15 +232,15 @@
             if (v41)
             {
 LABEL_40:
-              v34 = v98;
+              v34 = queueCopy;
               goto LABEL_41;
             }
           }
 
-          v57 = v94 - a3;
+          v57 = v94 - l;
           if (v57 < 0)
           {
-            v57 = a3 - v94;
+            v57 = l - v94;
           }
 
           if (v55 >= v57)
@@ -277,7 +277,7 @@ LABEL_41:
 
       v62 = v27;
       v63 = v32;
-      v16 = v89;
+      lenCopy3 = lenCopy6;
       v64 = v94;
       if (v95 > 0.0)
       {
@@ -288,11 +288,11 @@ LABEL_41:
       v17 = v82;
 LABEL_48:
       v86[191].f32[v13] = v59;
-      v65 = fmax((v60 - v59) * 5.0, v60) * v85;
-      v66 = fabsf((v62 - a3));
-      if (v62 >= a3)
+      v65 = fmax((v60 - v59) * 5.0, v60) * lenCopy4;
+      v66 = fabsf((v62 - l));
+      if (v62 >= l)
       {
-        v67 = v16;
+        v67 = lenCopy3;
       }
 
       else
@@ -302,10 +302,10 @@ LABEL_48:
 
       v68 = v60 - fmin(fmax((v66 / v67), 0.0), v60);
       v69 = v30 * v68;
-      v70 = fabsf((v63 - a3));
-      if (v63 >= a3)
+      v70 = fabsf((v63 - l));
+      if (v63 >= l)
       {
-        v65 = v16;
+        v65 = lenCopy3;
       }
 
       v71 = v60 - fmin(fmax((v70 / v65), 0.0), v60);
@@ -334,7 +334,7 @@ LABEL_48:
 
       if ((v64 & 0x80000000) == 0)
       {
-        v78 = v60 - fmin(fmax((fabsf((v64 - a3)) / v16), 0.0), v60);
+        v78 = v60 - fmin(fmax((fabsf((v64 - l)) / lenCopy3), 0.0), v60);
         v79 = v60 - v77;
         v80 = v78;
         if (v79 < v80)
@@ -349,16 +349,16 @@ LABEL_48:
       if (v13 >= v86->i16[0])
       {
 LABEL_62:
-        syncWeightsSpatial(v86, v81);
+        syncWeightsSpatial(v86, mutableBytes2);
         break;
       }
     }
   }
 }
 
-- (void)setWeightsForROIAtIndex:(RepairWeightsProcessor *)self ofMetaContainer:(SEL)a2 ROIMotion:(int64_t)a3 ROIMotionLongRange:(id *)a4 isLowLight:(float)a5
+- (void)setWeightsForROIAtIndex:(RepairWeightsProcessor *)self ofMetaContainer:(SEL)container ROIMotion:(int64_t)motion ROIMotionLongRange:(id *)range isLowLight:(float)light
 {
-  v5 = &a4->var0 + 2 * a3;
+  v5 = &range->var0 + 2 * motion;
   v6.i32[0] = *(v5 + 1674);
   v6.i32[1] = *(v5 + 1546);
   __asm { FMOV            V1.2S, #1.0 }
@@ -372,33 +372,33 @@ LABEL_62:
   *(v5 + 1386) = v12.i32[0];
 }
 
-- (void)_temporalFilterMetaContainerAtIndex:(int64_t)a3 ofQueue:(id)a4 lookaheadBufferLen:(int)a5
+- (void)_temporalFilterMetaContainerAtIndex:(int64_t)index ofQueue:(id)queue lookaheadBufferLen:(int)len
 {
-  v7 = a4;
-  v167 = v7;
-  if (a5 <= 0)
+  queueCopy = queue;
+  v167 = queueCopy;
+  if (len <= 0)
   {
     [RepairWeightsProcessor _temporalFilterMetaContainerAtIndex:ofQueue:lookaheadBufferLen:];
     goto LABEL_108;
   }
 
-  v8 = [v7 objectAtIndex:a3];
-  v9 = [v8 mutableBytes];
+  v8 = [queueCopy objectAtIndex:index];
+  mutableBytes = [v8 mutableBytes];
 
-  v156 = a3;
+  indexCopy = index;
   if ([v167 count])
   {
     v10 = 0;
-    v11 = -a3;
+    v11 = -index;
     v12 = 0.0;
     v13 = 0.0;
     do
     {
       v14 = [v167 objectAtIndex:v10];
-      v15 = [v14 mutableBytes];
+      mutableBytes2 = [v14 mutableBytes];
 
-      v16 = 1.0 - fminf(fmaxf(fabsf(v11) / a5, 0.0), 1.0);
-      v12 = v12 + (v16 * v15[315]);
+      v16 = 1.0 - fminf(fmaxf(fabsf(v11) / len, 0.0), 1.0);
+      v12 = v12 + (v16 * mutableBytes2[315]);
       v13 = v13 + v16;
       ++v10;
       ++v11;
@@ -406,7 +406,7 @@ LABEL_62:
 
     while ([v167 count] > v10);
     v17 = v12 / v13;
-    a3 = v156;
+    index = indexCopy;
   }
 
   else
@@ -414,52 +414,52 @@ LABEL_62:
     v17 = NAN;
   }
 
-  v9[157].f32[1] = v17;
-  v9[158].f32[1] = 1.0 / v17;
-  if (v9->i16[0] < 1)
+  mutableBytes[157].f32[1] = v17;
+  mutableBytes[158].f32[1] = 1.0 / v17;
+  if (mutableBytes->i16[0] < 1)
   {
     goto LABEL_104;
   }
 
   v18 = 0;
-  if (a5 >= 2)
+  if (len >= 2)
   {
-    v19 = 2;
+    lenCopy = 2;
   }
 
   else
   {
-    v19 = a5;
+    lenCopy = len;
   }
 
-  if (a5 >= 15)
+  if (len >= 15)
   {
-    v20 = 15;
+    lenCopy2 = 15;
   }
 
   else
   {
-    v20 = a5;
+    lenCopy2 = len;
   }
 
-  v145 = v9 + 5;
-  v146 = &v9[133] + 4;
-  v154 = a5;
-  v148 = v20;
-  v149 = v20;
-  v144 = v9 + 207;
-  v143 = a5;
-  v21 = v9 + 1141;
-  v141 = v9 + 757;
-  v142 = v9 + 159;
-  v140 = v9 + 821;
-  v139 = v9 + 789;
-  v138 = v9 + 853;
-  v22 = a5;
-  v136 = v9 + 1141;
-  v137 = v9;
-  v150 = v19;
-  v155 = a5;
+  v145 = mutableBytes + 5;
+  v146 = &mutableBytes[133] + 4;
+  lenCopy3 = len;
+  v148 = lenCopy2;
+  v149 = lenCopy2;
+  v144 = mutableBytes + 207;
+  lenCopy4 = len;
+  v21 = mutableBytes + 1141;
+  v141 = mutableBytes + 757;
+  v142 = mutableBytes + 159;
+  v140 = mutableBytes + 821;
+  v139 = mutableBytes + 789;
+  v138 = mutableBytes + 853;
+  lenCopy5 = len;
+  v136 = mutableBytes + 1141;
+  v137 = mutableBytes;
+  v150 = lenCopy;
+  lenCopy6 = len;
   do
   {
     v152 = *&v146[4 * v18];
@@ -528,28 +528,28 @@ LABEL_62:
     v38 = sqrtf(vaddv_f32(vmul_f32(v24, v24)));
     do
     {
-      v39 = v27 - a3;
-      if ((v27 - a3) >= 0)
+      v39 = v27 - index;
+      if ((v27 - index) >= 0)
       {
-        v40 = v27 - a3;
+        v40 = v27 - index;
       }
 
       else
       {
-        v40 = a3 - v27;
+        v40 = index - v27;
       }
 
       v41 = v167;
-      if (v40 < v22)
+      if (v40 < lenCopy5)
       {
         v42 = [v167 objectAtIndex:v27];
-        v43 = [v42 mutableBytes];
+        mutableBytes3 = [v42 mutableBytes];
 
-        v45 = v43->i16[0];
+        v45 = mutableBytes3->i16[0];
         if (v45 < 1)
         {
-          v22 = v155;
-          a3 = v156;
+          lenCopy5 = lenCopy6;
+          index = indexCopy;
           v53 = v166;
           v54 = v165;
           v55 = v164;
@@ -564,13 +564,13 @@ LABEL_62:
 
         v46 = 0;
         v47 = fabsf(v39);
-        *v44.i32 = 1.0 - fminf(fmaxf(v47 / v154, 0.0), 1.0);
+        *v44.i32 = 1.0 - fminf(fmaxf(v47 / lenCopy3, 0.0), 1.0);
         v48 = 1.0 - fminf(fmaxf(v47 / v149, 0.0), 1.0);
         v49 = vdup_lane_s32(v44, 0);
-        v50 = v43 + 8;
+        v50 = mutableBytes3 + 8;
         v51 = INFINITY;
-        v52 = v43;
-        a3 = v156;
+        v52 = mutableBytes3;
+        index = indexCopy;
         v53 = v166;
         v54 = v165;
         v55 = v164;
@@ -591,14 +591,14 @@ LABEL_62:
             v51 = v65;
           }
 
-          if (v152 == v43[133].i32[1])
+          if (v152 == mutableBytes3[133].i32[1])
           {
             if ((v46 & 1) == 0)
             {
               v46 = 1;
             }
 
-            v66 = v43[757].f32[0];
+            v66 = mutableBytes3[757].f32[0];
             v67 = fminf(fmaxf(v66, 0.0), 0.125);
             v68 = (*v44.i32 * v67) <= v36;
             if ((*v44.i32 * v67) > v36)
@@ -618,7 +618,7 @@ LABEL_62:
               v32 = v27;
             }
 
-            v70 = v43[789].f32[0];
+            v70 = mutableBytes3[789].f32[0];
             v71 = fminf(fmaxf(v70, 0.0), 0.125);
             v72 = (*v44.i32 * v71) <= v34;
             if ((*v44.i32 * v71) > v34)
@@ -638,7 +638,7 @@ LABEL_62:
               v31 = v27;
             }
 
-            v74 = v43[821].f32[0];
+            v74 = mutableBytes3[821].f32[0];
             v75 = fminf(fmaxf(v74, 0.0), 0.1);
             v76 = (*v44.i32 * v75) <= v35;
             if ((*v44.i32 * v75) > v35)
@@ -658,7 +658,7 @@ LABEL_62:
               v30 = v27;
             }
 
-            v78 = v43[853].f32[0];
+            v78 = mutableBytes3[853].f32[0];
             v79 = fminf(fmaxf(v78, 0.0), 0.1);
             if ((*v44.i32 * v79) > v33)
             {
@@ -667,11 +667,11 @@ LABEL_62:
               v29 = v27;
             }
 
-            v80 = v43[1141].f32[0];
+            v80 = mutableBytes3[1141].f32[0];
             if ((*v44.i32 * v80) > v37)
             {
               v37 = *v44.i32 * v80;
-              v61 = v43[1141].f32[0];
+              v61 = mutableBytes3[1141].f32[0];
               v28 = v27;
             }
 
@@ -699,7 +699,7 @@ LABEL_62:
             v169 = v48 + v169;
           }
 
-          v43 = (v43 + 4);
+          mutableBytes3 = (mutableBytes3 + 4);
           ++v52;
           v50 += 4;
           --v45;
@@ -708,7 +708,7 @@ LABEL_62:
         while (v45);
         if (v40 < 5 || (v46 & 1) == 0 || v40 > v148)
         {
-          v22 = v155;
+          lenCopy5 = lenCopy6;
           if (v46)
           {
             v158 = v61;
@@ -742,10 +742,10 @@ LABEL_65:
 
           else
           {
-            v89 = v157 - a3;
+            v89 = v157 - index;
             if (v89 < 0)
             {
-              v89 = a3 - v157;
+              v89 = index - v157;
             }
 
             if (v40 >= v89)
@@ -776,14 +776,14 @@ LABEL_65:
         v153 = v153 + 1.0;
         v87 = v151;
         v88 = v151 + v51;
-        if (v27 != v156)
+        if (v27 != indexCopy)
         {
           v87 = v88;
         }
 
         v151 = v87;
         v41 = v167;
-        v22 = v155;
+        lenCopy5 = lenCopy6;
       }
 
 LABEL_74:
@@ -799,7 +799,7 @@ LABEL_74:
     v96 = 1.0;
     if (v153 <= 1.0)
     {
-      v9 = v137;
+      mutableBytes = v137;
       v97 = 1.0;
     }
 
@@ -807,7 +807,7 @@ LABEL_74:
     {
       v97 = 1.0;
       v96 = fminf(fmaxf(v151 / (v153 + -1.0), 0.0), 1.0);
-      v9 = v137;
+      mutableBytes = v137;
     }
 
     v18 = v147;
@@ -841,11 +841,11 @@ LABEL_80:
     }
 
     v144->f32[v18] = v96;
-    v115 = fmax((1.0 - v96) * 2.5, 0.5) * v143;
-    v116 = fabsf((v91 - a3));
-    if (v91 >= a3)
+    v115 = fmax((1.0 - v96) * 2.5, 0.5) * lenCopy4;
+    v116 = fabsf((v91 - index));
+    if (v91 >= index)
     {
-      v117 = v154;
+      v117 = lenCopy3;
     }
 
     else
@@ -854,10 +854,10 @@ LABEL_80:
     }
 
     v118 = v107 * (v97 - fminf(fmaxf(v116 / v117, 0.0), v97));
-    v119 = fabsf((v92 - a3));
-    if (v92 >= a3)
+    v119 = fabsf((v92 - index));
+    if (v92 >= index)
     {
-      v120 = v154;
+      v120 = lenCopy3;
     }
 
     else
@@ -866,10 +866,10 @@ LABEL_80:
     }
 
     v121 = v105 * (v97 - fminf(fmaxf(v119 / v120, 0.0), v97));
-    v122 = fabsf((v93 - a3));
-    if (v93 >= a3)
+    v122 = fabsf((v93 - index));
+    if (v93 >= index)
     {
-      v123 = v154;
+      v123 = lenCopy3;
     }
 
     else
@@ -878,10 +878,10 @@ LABEL_80:
     }
 
     v124 = v106 * (v97 - fminf(fmaxf(v122 / v123, 0.0), v97));
-    v125 = fabsf((v94 - a3));
-    if (v94 >= a3)
+    v125 = fabsf((v94 - index));
+    if (v94 >= index)
     {
-      v126 = v154;
+      v126 = lenCopy3;
     }
 
     else
@@ -890,10 +890,10 @@ LABEL_80:
     }
 
     v127 = v104 * (v97 - fminf(fmaxf(v125 / v126, 0.0), v97));
-    v128 = fabsf((v95 - a3));
-    if (v95 >= a3)
+    v128 = fabsf((v95 - index));
+    if (v95 >= index)
     {
-      v115 = v154;
+      v115 = lenCopy3;
     }
 
     v129 = fminf(fmaxf(v128 / v115, 0.0), v97);
@@ -903,9 +903,9 @@ LABEL_80:
     v140->f32[v18] = (v124 + (v96 * ((v109 / v100) - v124))) + ((v124 - (v124 + (v96 * ((v109 / v100) - v124)))) * 0.3);
     v139->f32[v18] = (v121 + (v96 * ((v110 / v100) - v121))) + ((v121 - (v121 + (v96 * ((v110 / v100) - v121)))) * 0.3);
     v138->f32[v18] = (v127 + (v96 * ((v108 / v100) - v127))) + ((v127 - (v127 + (v96 * ((v108 / v100) - v127)))) * 0.3);
-    if ((v99 & 0x80000000) == 0 && (v9[133].i8[0] & 1) == 0)
+    if ((v99 & 0x80000000) == 0 && (mutableBytes[133].i8[0] & 1) == 0)
     {
-      v130 = v97 - fminf(fmaxf(fabsf((v99 - a3)) / v154, 0.0), v97);
+      v130 = v97 - fminf(fmaxf(fabsf((v99 - index)) / lenCopy3, 0.0), v97);
       if (v21->f32[v18] >= v130)
       {
         v130 = v21->f32[v18];
@@ -917,37 +917,37 @@ LABEL_80:
     ++v18;
   }
 
-  while (v18 < v9->i16[0]);
+  while (v18 < mutableBytes->i16[0]);
 LABEL_104:
-  syncRoiMotions(v9);
-  if (v9->i16[0] >= 1)
+  syncRoiMotions(mutableBytes);
+  if (mutableBytes->i16[0] >= 1)
   {
     v131 = 0;
     v132 = 1514;
     do
     {
-      v133 = (v9 + v132 * 4);
-      v134 = v9[207].f32[v131];
-      v133[32] = v9->f32[v132] + (v134 * (v9[32].f32[v132] - v9->f32[v132]));
-      v133[160] = v9[64].f32[v132] + (v134 * (v9[96].f32[v132] - v9[64].f32[v132]));
-      [(RepairWeightsProcessor *)self setWeightsForROIAtIndex:v131++ ofMetaContainer:v9 ROIMotion:v9[133].u8[0] ROIMotionLongRange:0.0 isLowLight:0.0];
+      v133 = (mutableBytes + v132 * 4);
+      v134 = mutableBytes[207].f32[v131];
+      v133[32] = mutableBytes->f32[v132] + (v134 * (mutableBytes[32].f32[v132] - mutableBytes->f32[v132]));
+      v133[160] = mutableBytes[64].f32[v132] + (v134 * (mutableBytes[96].f32[v132] - mutableBytes[64].f32[v132]));
+      [(RepairWeightsProcessor *)self setWeightsForROIAtIndex:v131++ ofMetaContainer:mutableBytes ROIMotion:mutableBytes[133].u8[0] ROIMotionLongRange:0.0 isLowLight:0.0];
       ++v132;
     }
 
-    while (v131 < v9->i16[0]);
+    while (v131 < mutableBytes->i16[0]);
   }
 
-  syncWeightsSpatialForSWWeights(v9);
+  syncWeightsSpatialForSWWeights(mutableBytes);
 LABEL_108:
 }
 
-- (void)temporalFilterBlendingWeights:(id)a3 lookaheadMetaBufs:(id)a4 metaBuf_HW:(id)a5 lookaheadMetaBufs_HW:(id)a6 hwMode:(BOOL)a7
+- (void)temporalFilterBlendingWeights:(id)weights lookaheadMetaBufs:(id)bufs metaBuf_HW:(id)w lookaheadMetaBufs_HW:(id)hW hwMode:(BOOL)mode
 {
-  v7 = a7;
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  modeCopy = mode;
+  weightsCopy = weights;
+  bufsCopy = bufs;
+  wCopy = w;
+  hWCopy = hW;
   kdebug_trace();
   v15 = objc_alloc_init(NSMutableArray);
   v16 = objc_alloc_init(NSMutableArray);
@@ -956,10 +956,10 @@ LABEL_108:
     [v15 addObjectsFromArray:self->_lookbackMetaBufs];
   }
 
-  [v15 addObject:v19];
-  if ([v12 count])
+  [v15 addObject:weightsCopy];
+  if ([bufsCopy count])
   {
-    [v15 addObjectsFromArray:v12];
+    [v15 addObjectsFromArray:bufsCopy];
   }
 
   lookbackMetaBufs = self->_lookbackMetaBufs;
@@ -981,17 +981,17 @@ LABEL_108:
   else
   {
     [(RepairWeightsProcessor *)self _temporalFilterMetaContainerAtIndex:v18 ofQueue:v15 lookaheadBufferLen:15];
-    if (v7)
+    if (modeCopy)
     {
       if ([(NSMutableArray *)self->_lookbackMetaBufs_HW count])
       {
         [v16 addObjectsFromArray:self->_lookbackMetaBufs_HW];
       }
 
-      [v16 addObject:v13];
-      if ([v14 count])
+      [v16 addObject:wCopy];
+      if ([hWCopy count])
       {
-        [v16 addObjectsFromArray:v14];
+        [v16 addObjectsFromArray:hWCopy];
       }
 
       [(RepairWeightsProcessor *)self temporalFilterMetaContainerAtIndex_PA_L:v18 ofQueue:v15 ofQueue_HW:v16 lookaheadBufferLen:15];
@@ -1003,15 +1003,15 @@ LABEL_108:
     [(NSMutableArray *)self->_lookbackMetaBufs removeObjectAtIndex:0];
   }
 
-  [(NSMutableArray *)self->_lookbackMetaBufs addObject:v19];
-  if (v7)
+  [(NSMutableArray *)self->_lookbackMetaBufs addObject:weightsCopy];
+  if (modeCopy)
   {
     if ([(NSMutableArray *)self->_lookbackMetaBufs_HW count]== &dword_C + 3)
     {
       [(NSMutableArray *)self->_lookbackMetaBufs_HW removeObjectAtIndex:0];
     }
 
-    [(NSMutableArray *)self->_lookbackMetaBufs_HW addObject:v13];
+    [(NSMutableArray *)self->_lookbackMetaBufs_HW addObject:wCopy];
   }
 
   ++self->_frameIdx;

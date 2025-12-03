@@ -1,6 +1,6 @@
 @interface SASetRequestOrigin
 - (id)ad_deferredMetricsContext;
-- (void)setPropertiesWithCLLocation:(id)a3;
+- (void)setPropertiesWithCLLocation:(id)location;
 @end
 
 @implementation SASetRequestOrigin
@@ -9,38 +9,38 @@
 {
   v7.receiver = self;
   v7.super_class = SASetRequestOrigin;
-  v3 = [(SASetRequestOrigin *)&v7 ad_deferredMetricsContext];
+  ad_deferredMetricsContext = [(SASetRequestOrigin *)&v7 ad_deferredMetricsContext];
   [(SASetRequestOrigin *)self latitude];
   v4 = [NSNumber numberWithDouble:?];
-  [v3 setObject:v4 forKey:SASetRequestOriginLatitudePListKey];
+  [ad_deferredMetricsContext setObject:v4 forKey:SASetRequestOriginLatitudePListKey];
 
   [(SASetRequestOrigin *)self longitude];
   v5 = [NSNumber numberWithDouble:?];
-  [v3 setObject:v5 forKey:SASetRequestOriginLongitudePListKey];
+  [ad_deferredMetricsContext setObject:v5 forKey:SASetRequestOriginLongitudePListKey];
 
-  return v3;
+  return ad_deferredMetricsContext;
 }
 
-- (void)setPropertiesWithCLLocation:(id)a3
+- (void)setPropertiesWithCLLocation:(id)location
 {
-  v4 = a3;
-  [v4 horizontalAccuracy];
+  locationCopy = location;
+  [locationCopy horizontalAccuracy];
   [(SASetRequestOrigin *)self setHorizontalAccuracy:?];
-  [v4 verticalAccuracy];
+  [locationCopy verticalAccuracy];
   [(SASetRequestOrigin *)self setVerticalAccuracy:?];
-  [v4 coordinate];
+  [locationCopy coordinate];
   [(SASetRequestOrigin *)self setLatitude:?];
-  [v4 coordinate];
+  [locationCopy coordinate];
   [(SASetRequestOrigin *)self setLongitude:v5];
-  [v4 altitude];
+  [locationCopy altitude];
   [(SASetRequestOrigin *)self setAltitude:?];
-  [v4 course];
+  [locationCopy course];
   [(SASetRequestOrigin *)self setDirection:?];
-  [v4 speed];
+  [locationCopy speed];
   [(SASetRequestOrigin *)self setSpeed:?];
-  v6 = [v4 _af_age];
+  _af_age = [locationCopy _af_age];
 
-  [(SASetRequestOrigin *)self setAge:v6];
+  [(SASetRequestOrigin *)self setAge:_af_age];
 }
 
 @end

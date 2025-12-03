@@ -1,7 +1,7 @@
 @interface FBProcessWatchdog
-- (FBProcessWatchdog)initWithProcess:(id)a3 context:(id)a4 policy:(id)a5;
+- (FBProcessWatchdog)initWithProcess:(id)process context:(id)context policy:(id)policy;
 - (id)_policyDesc;
-- (void)_getPolicyWallTime:(double *)a3 cpuTime:(double *)a4;
+- (void)_getPolicyWallTime:(double *)time cpuTime:(double *)cpuTime;
 - (void)activate;
 - (void)deactivate;
 @end
@@ -30,8 +30,8 @@
     v25 = 0.0;
     [(FBProcessWatchdog *)self _getPolicyWallTime:&v25 cpuTime:0];
     v5 = [(RBSProcessHandle *)self->_handle pid];
-    v6 = [(FBSProcessWatchdog *)self process];
-    v7 = [(FBProcess *)v6 logProem];
+    process = [(FBSProcessWatchdog *)self process];
+    logProem = [(FBProcess *)process logProem];
     v8 = objc_opt_new();
     unblockSignal = self->_unblockSignal;
     self->_unblockSignal = v8;
@@ -56,15 +56,15 @@
     block[2] = __29__FBProcessWatchdog_activate__block_invoke_2;
     block[3] = &unk_1E783B8A8;
     v19 = v10;
-    v20 = v7;
+    v20 = logProem;
     v22[1] = event;
     v22[2] = *&v11;
     v23 = v5;
-    v15 = v7;
+    v15 = logProem;
     v16 = v10;
     objc_copyWeak(v22, &location);
-    v21 = v6;
-    v17 = v6;
+    v21 = process;
+    v17 = process;
     dispatch_after(v13, v14, block);
 
     objc_destroyWeak(v22);
@@ -191,24 +191,24 @@ void __29__FBProcessWatchdog_activate__block_invoke_2(uint64_t a1)
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (FBProcessWatchdog)initWithProcess:(id)a3 context:(id)a4 policy:(id)a5
+- (FBProcessWatchdog)initWithProcess:(id)process context:(id)context policy:(id)policy
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 event];
-  v12 = NSStringFromProcessWatchdogEvent(v11);
+  processCopy = process;
+  contextCopy = context;
+  policyCopy = policy;
+  event = [contextCopy event];
+  v12 = NSStringFromProcessWatchdogEvent(event);
   v17.receiver = self;
   v17.super_class = FBProcessWatchdog;
-  v13 = [(FBSProcessWatchdog *)&v17 initWithName:v12 process:v8 policy:v10];
+  v13 = [(FBSProcessWatchdog *)&v17 initWithName:v12 process:processCopy policy:policyCopy];
 
   if (v13)
   {
-    v13->_event = v11;
-    objc_storeStrong(&v13->_eventContext, a4);
-    v14 = [v8 rbsHandle];
+    v13->_event = event;
+    objc_storeStrong(&v13->_eventContext, context);
+    rbsHandle = [processCopy rbsHandle];
     handle = v13->_handle;
-    v13->_handle = v14;
+    v13->_handle = rbsHandle;
   }
 
   return v13;
@@ -344,17 +344,17 @@ void __29__FBProcessWatchdog_activate__block_invoke_9(uint64_t a1, void *a2)
   [v4 setFailureReason:{@"%@ is stuck (%@)", v6, v5}];
 }
 
-- (void)_getPolicyWallTime:(double *)a3 cpuTime:(double *)a4
+- (void)_getPolicyWallTime:(double *)time cpuTime:(double *)cpuTime
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(FBSProcessWatchdog *)self policy];
-  v7 = [v6 provisions];
+  policy = [(FBSProcessWatchdog *)self policy];
+  provisions = [policy provisions];
 
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [provisions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -367,11 +367,11 @@ void __29__FBProcessWatchdog_activate__block_invoke_9(uint64_t a1, void *a2)
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(provisions);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 type];
+        type = [v14 type];
         if (v14)
         {
           [v14 allowance];
@@ -379,18 +379,18 @@ void __29__FBProcessWatchdog_activate__block_invoke_9(uint64_t a1, void *a2)
 
         FBSProcessResourceAllowanceGetValue();
         FBSProcessResourceTimeIntervalForValue();
-        if (v15 == 2)
+        if (type == 2)
         {
           v11 = v11 + v16;
         }
 
-        else if (v15 == 1)
+        else if (type == 1)
         {
           v12 = v12 + v16;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [provisions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -402,14 +402,14 @@ void __29__FBProcessWatchdog_activate__block_invoke_9(uint64_t a1, void *a2)
     v12 = 0.0;
   }
 
-  if (a3)
+  if (time)
   {
-    *a3 = v12;
+    *time = v12;
   }
 
-  if (a4)
+  if (cpuTime)
   {
-    *a4 = v11;
+    *cpuTime = v11;
   }
 
   v17 = *MEMORY[0x1E69E9840];

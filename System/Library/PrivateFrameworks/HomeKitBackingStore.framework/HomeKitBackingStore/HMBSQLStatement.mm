@@ -1,10 +1,10 @@
 @interface HMBSQLStatement
 + (id)logCategory;
-+ (id)queryPlansForContext:(id)a3 statement:(id)a4;
-+ (sqlite3_stmt)sqlStatementForContext:(id)a3 statement:(id)a4;
++ (id)queryPlansForContext:(id)context statement:(id)statement;
++ (sqlite3_stmt)sqlStatementForContext:(id)context statement:(id)statement;
 - (HMBSQLContext)context;
-- (HMBSQLStatement)initWithContext:(id)a3 statement:(id)a4;
-- (HMBSQLStatement)initWithContext:(id)a3 statement:(sqlite3_stmt *)a4 queryPlans:(id)a5;
+- (HMBSQLStatement)initWithContext:(id)context statement:(id)statement;
+- (HMBSQLStatement)initWithContext:(id)context statement:(sqlite3_stmt *)statement queryPlans:(id)plans;
 - (id)logIdentifier;
 - (void)dealloc;
 - (void)finalize;
@@ -21,17 +21,17 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMBSQLStatement *)self context];
-  v3 = [v2 logIdentifier];
+  context = [(HMBSQLStatement *)self context];
+  logIdentifier = [context logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
 - (void)finalize
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -39,38 +39,38 @@
     v15 = 138543618;
     v16 = v6;
     v17 = 2048;
-    v18 = [(HMBSQLStatement *)v4 statement];
+    statement = [(HMBSQLStatement *)selfCopy statement];
     _os_log_impl(&dword_22AD27000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@Finalizing statement: %p", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  if ([(HMBSQLStatement *)v4 isFinalized])
+  if ([(HMBSQLStatement *)selfCopy isFinalized])
   {
     _HMFPreconditionFailure();
   }
 
-  v7 = [(HMBSQLStatement *)v4 context];
-  v8 = v7;
-  if (v7)
+  context = [(HMBSQLStatement *)selfCopy context];
+  v8 = context;
+  if (context)
   {
-    os_unfair_lock_assert_owner(v7 + 2);
-    sqlite3_finalize([(HMBSQLStatement *)v4 statement]);
-    [(HMBSQLStatement *)v4 setFinalized:1];
+    os_unfair_lock_assert_owner(context + 2);
+    sqlite3_finalize([(HMBSQLStatement *)selfCopy statement]);
+    [(HMBSQLStatement *)selfCopy setFinalized:1];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = v4;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HMBSQLStatement *)v10 statement];
+      statement2 = [(HMBSQLStatement *)v10 statement];
       v15 = 138543618;
       v16 = v12;
       v17 = 2048;
-      v18 = v13;
+      statement = statement2;
       _os_log_impl(&dword_22AD27000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Can't finalize statement because context is nil: %p", &v15, 0x16u);
     }
 
@@ -85,18 +85,18 @@
   v14 = *MEMORY[0x277D85DE8];
   if (![(HMBSQLStatement *)self isFinalized])
   {
-    v3 = [(HMBSQLStatement *)self context];
-    if (v3)
+    context = [(HMBSQLStatement *)self context];
+    if (context)
     {
       os_unfair_lock_lock_with_options();
       [(HMBSQLStatement *)self finalize];
-      os_unfair_lock_unlock(v3 + 2);
+      os_unfair_lock_unlock(context + 2);
     }
 
     else
     {
       v4 = objc_autoreleasePoolPush();
-      v5 = self;
+      selfCopy = self;
       v6 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
@@ -104,7 +104,7 @@
         *buf = 138543618;
         v11 = v7;
         v12 = 2048;
-        v13 = [(HMBSQLStatement *)v5 statement];
+        statement = [(HMBSQLStatement *)selfCopy statement];
         _os_log_impl(&dword_22AD27000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@Can't finalize statement in dealloc because context is nil: %p", buf, 0x16u);
       }
 
@@ -118,35 +118,35 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMBSQLStatement)initWithContext:(id)a3 statement:(id)a4
+- (HMBSQLStatement)initWithContext:(id)context statement:(id)statement
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() sqlStatementForContext:v6 statement:v7];
-  if (v8)
+  contextCopy = context;
+  statementCopy = statement;
+  selfCopy = [objc_opt_class() sqlStatementForContext:contextCopy statement:statementCopy];
+  if (selfCopy)
   {
-    v9 = [objc_opt_class() queryPlansForContext:v6 statement:v7];
-    self = [(HMBSQLStatement *)self initWithContext:v6 statement:v8 queryPlans:v9];
+    v9 = [objc_opt_class() queryPlansForContext:contextCopy statement:statementCopy];
+    self = [(HMBSQLStatement *)self initWithContext:contextCopy statement:selfCopy queryPlans:v9];
 
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (HMBSQLStatement)initWithContext:(id)a3 statement:(sqlite3_stmt *)a4 queryPlans:(id)a5
+- (HMBSQLStatement)initWithContext:(id)context statement:(sqlite3_stmt *)statement queryPlans:(id)plans
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  plansCopy = plans;
   v13.receiver = self;
   v13.super_class = HMBSQLStatement;
   v10 = [(HMBSQLStatement *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_context, v8);
-    v11->_statement = a4;
-    objc_storeStrong(&v11->_queryPlans, a5);
+    objc_storeWeak(&v10->_context, contextCopy);
+    v11->_statement = statement;
+    objc_storeStrong(&v11->_queryPlans, plans);
   }
 
   return v11;
@@ -174,18 +174,18 @@ uint64_t __30__HMBSQLStatement_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)queryPlansForContext:(id)a3 statement:(id)a4
++ (id)queryPlansForContext:(id)context statement:(id)statement
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([a1 explainStatements])
+  contextCopy = context;
+  statementCopy = statement;
+  if ([self explainStatements])
   {
-    v8 = [v6 connection];
-    v9 = [@"EXPLAIN QUERY PLAN " stringByAppendingString:v7];
-    v10 = [v9 UTF8String];
+    connection = [contextCopy connection];
+    v9 = [@"EXPLAIN QUERY PLAN " stringByAppendingString:statementCopy];
+    uTF8String = [v9 UTF8String];
     v20 = 0;
-    v11 = selectSQLite3(v8, v10, MEMORY[0x277CBEC10], &v20);
+    v11 = selectSQLite3(connection, uTF8String, MEMORY[0x277CBEC10], &v20);
     v12 = v20;
 
     if (v11)
@@ -196,7 +196,7 @@ uint64_t __30__HMBSQLStatement_logCategory__block_invoke()
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = a1;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -204,7 +204,7 @@ uint64_t __30__HMBSQLStatement_logCategory__block_invoke()
         *buf = 138543874;
         v22 = v17;
         v23 = 2112;
-        v24 = v7;
+        v24 = statementCopy;
         v25 = 2112;
         v26 = v12;
         _os_log_impl(&dword_22AD27000, v16, OS_LOG_TYPE_ERROR, "%{public}@Unable to explain statement '%@': %@", buf, 0x20u);
@@ -233,16 +233,16 @@ HMBSQLStatementQueryPlanTuple *__50__HMBSQLStatement_queryPlansForContext_statem
   return v3;
 }
 
-+ (sqlite3_stmt)sqlStatementForContext:(id)a3 statement:(id)a4
++ (sqlite3_stmt)sqlStatementForContext:(id)context statement:(id)statement
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  statementCopy = statement;
   v22 = 0;
-  v8 = prepareSQLite3([v6 connection], objc_msgSend(v7, "UTF8String"), &v22);
+  v8 = prepareSQLite3([contextCopy connection], objc_msgSend(statementCopy, "UTF8String"), &v22);
   v9 = v22;
   v10 = objc_autoreleasePoolPush();
-  v11 = a1;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   v13 = v12;
   if (v8)
@@ -270,7 +270,7 @@ LABEL_6:
     *buf = 138543874;
     v24 = v14;
     v25 = 2112;
-    v26 = v7;
+    v26 = statementCopy;
     v27 = 2112;
     v28 = v9;
     v16 = "%{public}@Unable to prepare SQL statement '%@': %@";

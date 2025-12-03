@@ -1,20 +1,20 @@
 @interface MFArrowControlsView
-- (MFArrowControlsView)initWithFrame:(CGRect)a3;
+- (MFArrowControlsView)initWithFrame:(CGRect)frame;
 - (MFArrowControlsViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_arrowButtonWasTapped:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_arrowButtonWasTapped:(id)tapped;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation MFArrowControlsView
 
-- (MFArrowControlsView)initWithFrame:(CGRect)a3
+- (MFArrowControlsView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = MFArrowControlsView;
-  v3 = [(MFArrowControlsView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFArrowControlsView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIButton buttonWithType:1];
@@ -58,13 +58,13 @@
   return v3;
 }
 
-- (void)_arrowButtonWasTapped:(id)a3
+- (void)_arrowButtonWasTapped:(id)tapped
 {
-  v6 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    if (self->_upButton == v6)
+    if (self->_upButton == tappedCopy)
     {
       v5 = 0xFFFFFFFFLL;
     }
@@ -78,34 +78,34 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(UIButton *)self->_upButton frame:a3.origin.x];
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(UIButton *)self->_upButton frame:frame.origin.x];
   v7 = v6;
   v9 = v8;
-  v10 = [(UIButton *)self->_upButton imageView];
-  v11 = [v10 image];
-  [v11 size];
+  imageView = [(UIButton *)self->_upButton imageView];
+  image = [imageView image];
+  [image size];
   v13 = v12;
 
-  v14 = [(UIButton *)self->_upButton imageView];
-  v15 = [v14 image];
-  [v15 size];
+  imageView2 = [(UIButton *)self->_upButton imageView];
+  image2 = [imageView2 image];
+  [image2 size];
   v17 = v16 + 24.0;
 
   [(UIButton *)self->_upButton setFrame:v7, v9, v13 + 16.0, v17];
   [(UIButton *)self->_downButton frame];
   v19 = v18;
-  v20 = [(UIButton *)self->_downButton imageView];
-  v21 = [v20 image];
-  [v21 size];
+  imageView3 = [(UIButton *)self->_downButton imageView];
+  image3 = [imageView3 image];
+  [image3 size];
   v23 = v22;
 
-  v24 = [(UIButton *)self->_downButton imageView];
-  v25 = [v24 image];
-  [v25 size];
+  imageView4 = [(UIButton *)self->_downButton imageView];
+  image4 = [imageView4 image];
+  [image4 size];
   v26 = v23 + 16.0;
   v28 = v27 + 24.0;
 
@@ -150,10 +150,10 @@
   [(MFArrowControlsView *)&v40 setFrame:x, y, v36, v39];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(UIButton *)self->_downButton frame];
   v8 = v7;
   v10 = v9;
@@ -191,14 +191,14 @@
   return v18;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a5;
-  v7 = [a3 view];
+  regionCopy = region;
+  view = [interaction view];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isEnabled])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [view isEnabled])
   {
-    v8 = v6;
+    v8 = regionCopy;
   }
 
   else
@@ -209,12 +209,12 @@
   return v8;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v5 = [UITargetedPreview alloc];
-  v6 = [v4 view];
-  v7 = [v5 initWithView:v6];
+  view = [interactionCopy view];
+  v7 = [v5 initWithView:view];
   v8 = [UIPointerEffect effectWithPreview:v7];
 
   v9 = [UIPointerStyle styleWithEffect:v8 shape:0];

@@ -1,9 +1,9 @@
 @interface _HDQuantitySampleSeriesEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (BOOL)generateCodableRepresentationsForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 maxBytesPerRepresentation:(int64_t)a5 error:(id *)a6 handler:(id)a7;
-- (id)_codableQuantitySampleForPersistentID:(uint64_t)a3 row:(uint64_t)a4 error:;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (BOOL)generateCodableRepresentationsForPersistentID:(int64_t)d row:(HDSQLiteRow *)row maxBytesPerRepresentation:(int64_t)representation error:(id *)error handler:(id)handler;
+- (id)_codableQuantitySampleForPersistentID:(uint64_t)d row:(uint64_t)row error:;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 - (id)orderedProperties;
 @end
 
@@ -21,19 +21,19 @@
   v9[6] = @"most_recent_date";
   v9[7] = @"most_recent_duration";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:8];
-  v4 = [(HDEntityEncoder *)self superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v9 = HDSQLiteColumnWithName();
-  if (MEMORY[0x22AAC6CD0](a4, v9))
+  if (MEMORY[0x22AAC6CD0](row, v9))
   {
     v10 = 0;
   }
@@ -44,7 +44,7 @@
   }
 
   v11 = [objc_alloc(objc_msgSend(v10 "dataObjectClass"))];
-  if ([(_HDQuantitySampleSeriesEntityEncoder *)self applyPropertiesToObject:v11 persistentID:a3 row:a4 error:a5])
+  if ([(_HDQuantitySampleSeriesEntityEncoder *)self applyPropertiesToObject:v11 persistentID:d row:row error:error])
   {
     v12 = v11;
   }
@@ -57,47 +57,47 @@
   return v12;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if ((v12 & 1) != 0 && (HDSQLiteColumnWithNameIsNull() & 1) == 0)
   {
-    [v10 _setCount:HDSQLiteColumnWithNameAsInt64()];
-    [v10 _setFrozen:HDSQLiteColumnWithNameIsNull()];
+    [objectCopy _setCount:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy _setFrozen:HDSQLiteColumnWithNameIsNull()];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v10;
-      v14 = [v13 quantity];
-      v15 = [v14 _unit];
+      v13 = objectCopy;
+      quantity = [v13 quantity];
+      _unit = [quantity _unit];
 
       v16 = HDSQLiteColumnWithName();
-      if ((MEMORY[0x22AAC6CD0](a5, v16) & 1) == 0)
+      if ((MEMORY[0x22AAC6CD0](row, v16) & 1) == 0)
       {
         v17 = MEMORY[0x277CCD7E8];
-        MEMORY[0x22AAC6C50](a5, v16);
-        v18 = [v17 quantityWithUnit:v15 doubleValue:?];
+        MEMORY[0x22AAC6C50](row, v16);
+        v18 = [v17 quantityWithUnit:_unit doubleValue:?];
         [v13 _setMinimumQuantity:v18];
       }
 
       v19 = HDSQLiteColumnWithName();
-      if ((MEMORY[0x22AAC6CD0](a5, v19) & 1) == 0)
+      if ((MEMORY[0x22AAC6CD0](row, v19) & 1) == 0)
       {
         v20 = MEMORY[0x277CCD7E8];
-        MEMORY[0x22AAC6C50](a5, v19);
-        v21 = [v20 quantityWithUnit:v15 doubleValue:?];
+        MEMORY[0x22AAC6C50](row, v19);
+        v21 = [v20 quantityWithUnit:_unit doubleValue:?];
         [v13 _setMaximumQuantity:v21];
       }
 
       v22 = HDSQLiteColumnWithName();
-      if ((MEMORY[0x22AAC6CD0](a5, v22) & 1) == 0)
+      if ((MEMORY[0x22AAC6CD0](row, v22) & 1) == 0)
       {
         v23 = MEMORY[0x277CCD7E8];
-        MEMORY[0x22AAC6C50](a5, v22);
-        v24 = [v23 quantityWithUnit:v15 doubleValue:?];
+        MEMORY[0x22AAC6C50](row, v22);
+        v24 = [v23 quantityWithUnit:_unit doubleValue:?];
         [v13 _setMostRecentQuantity:v24];
       }
 
@@ -106,9 +106,9 @@
       {
         v26 = HDSQLiteColumnWithName();
         v27 = 0.0;
-        if ((MEMORY[0x22AAC6CD0](a5, v26) & 1) == 0)
+        if ((MEMORY[0x22AAC6CD0](row, v26) & 1) == 0)
         {
-          v27 = MEMORY[0x22AAC6C50](a5, v26);
+          v27 = MEMORY[0x22AAC6C50](row, v26);
         }
 
         v28 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v25 duration:v27];
@@ -120,30 +120,30 @@
   return v12;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v9 = HDSQLiteColumnWithNameAsNumber();
   if (v9)
   {
-    v10 = [(_HDQuantitySampleSeriesEntityEncoder *)self _codableQuantitySampleForPersistentID:a3 row:a4 error:a5];
-    v11 = [v9 longLongValue];
+    v10 = [(_HDQuantitySampleSeriesEntityEncoder *)self _codableQuantitySampleForPersistentID:d row:row error:error];
+    longLongValue = [v9 longLongValue];
     v12 = v10;
-    v13 = v12;
+    superclassEncoder = v12;
     if (self)
     {
       v27 = 0;
       v28 = &v27;
       v29 = 0x2020000000;
       v30 = 0;
-      v14 = [(HDEntityEncoder *)self transaction];
+      transaction = [(HDEntityEncoder *)self transaction];
       v21 = MEMORY[0x277D85DD0];
       v22 = 3221225472;
       v23 = __78___HDQuantitySampleSeriesEntityEncoder_addSeriesDataForHFDKey_toSample_error___block_invoke;
       v24 = &unk_278624978;
       v26 = &v27;
-      v15 = v13;
+      v15 = superclassEncoder;
       v25 = v15;
-      v16 = [HDQuantitySeriesDataEntity enumerateSeries:v11 transaction:v14 error:a5 handler:&v21];
+      v16 = [HDQuantitySeriesDataEntity enumerateSeries:longLongValue transaction:transaction error:error handler:&v21];
 
       if (v16)
       {
@@ -171,8 +171,8 @@
 
   else
   {
-    v13 = [(HDEntityEncoder *)self superclassEncoder];
-    v18 = [v13 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+    superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+    v18 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
   }
 
   v19 = v18;
@@ -180,48 +180,48 @@
   return v19;
 }
 
-- (id)_codableQuantitySampleForPersistentID:(uint64_t)a3 row:(uint64_t)a4 error:
+- (id)_codableQuantitySampleForPersistentID:(uint64_t)d row:(uint64_t)row error:
 {
-  if (a1)
+  if (self)
   {
-    v7 = [a1 superclassEncoder];
-    v8 = [v7 codableRepresentationForPersistentID:a2 row:a3 error:a4];
+    superclassEncoder = [self superclassEncoder];
+    v8 = [superclassEncoder codableRepresentationForPersistentID:a2 row:d error:row];
 
     if (v8)
     {
       [v8 setFrozen:HDSQLiteColumnWithNameIsNull()];
       v9 = HDSQLiteColumnWithName();
-      if ((MEMORY[0x22AAC6CD0](a3, v9) & 1) == 0)
+      if ((MEMORY[0x22AAC6CD0](d, v9) & 1) == 0)
       {
-        MEMORY[0x22AAC6C50](a3, v9);
+        MEMORY[0x22AAC6C50](d, v9);
         [v8 setMin:?];
       }
 
       v10 = HDSQLiteColumnWithName();
-      if ((MEMORY[0x22AAC6CD0](a3, v10) & 1) == 0)
+      if ((MEMORY[0x22AAC6CD0](d, v10) & 1) == 0)
       {
-        MEMORY[0x22AAC6C50](a3, v10);
+        MEMORY[0x22AAC6C50](d, v10);
         [v8 setMax:?];
       }
 
       v11 = HDSQLiteColumnWithName();
-      if ((MEMORY[0x22AAC6CD0](a3, v11) & 1) == 0)
+      if ((MEMORY[0x22AAC6CD0](d, v11) & 1) == 0)
       {
-        MEMORY[0x22AAC6C50](a3, v11);
+        MEMORY[0x22AAC6C50](d, v11);
         [v8 setMostRecent:?];
       }
 
       v12 = HDSQLiteColumnWithName();
-      if ((MEMORY[0x22AAC6CD0](a3, v12) & 1) == 0)
+      if ((MEMORY[0x22AAC6CD0](d, v12) & 1) == 0)
       {
-        MEMORY[0x22AAC6C50](a3, v12);
+        MEMORY[0x22AAC6C50](d, v12);
         [v8 setMostRecentDate:?];
       }
 
       v13 = HDSQLiteColumnWithName();
-      if ((MEMORY[0x22AAC6CD0](a3, v13) & 1) == 0)
+      if ((MEMORY[0x22AAC6CD0](d, v13) & 1) == 0)
       {
-        MEMORY[0x22AAC6C50](a3, v13);
+        MEMORY[0x22AAC6C50](d, v13);
         [v8 setMostRecentDuration:?];
       }
 
@@ -237,36 +237,36 @@
   return v8;
 }
 
-- (BOOL)generateCodableRepresentationsForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 maxBytesPerRepresentation:(int64_t)a5 error:(id *)a6 handler:(id)a7
+- (BOOL)generateCodableRepresentationsForPersistentID:(int64_t)d row:(HDSQLiteRow *)row maxBytesPerRepresentation:(int64_t)representation error:(id *)error handler:(id)handler
 {
-  v12 = a7;
+  handlerCopy = handler;
   v13 = HDSQLiteColumnWithNameAsNumber();
   if (v13)
   {
     v39 = v13;
-    v38 = [(_HDQuantitySampleSeriesEntityEncoder *)self _codableQuantitySampleForPersistentID:a3 row:a4 error:a6];
-    v14 = [v13 longLongValue];
-    v15 = v38;
-    v41 = v12;
+    v38 = [(_HDQuantitySampleSeriesEntityEncoder *)self _codableQuantitySampleForPersistentID:d row:row error:error];
+    longLongValue = [v13 longLongValue];
+    superclassEncoder = v38;
+    v41 = handlerCopy;
     if (!self)
     {
       v32 = 0;
       goto LABEL_24;
     }
 
-    v40 = v15;
-    v16 = [v15 data];
-    v17 = [v16 length];
+    v40 = superclassEncoder;
+    data = [superclassEncoder data];
+    v17 = [data length];
 
-    v18 = [(HDEntityEncoder *)self transaction];
+    transaction = [(HDEntityEncoder *)self transaction];
     v78[0] = 0;
     v76[0] = MEMORY[0x277D85DD0];
     v76[1] = 3221225472;
     v76[2] = __127___HDQuantitySampleSeriesEntityEncoder_generateCodableRepresentationsForHFDKey_sample_maxBytesPerRepresentation_error_handler___block_invoke;
     v76[3] = &unk_2786249A0;
-    v19 = v15;
+    v19 = superclassEncoder;
     v77 = v19;
-    v20 = [HDQuantitySeriesDataEntity getRangeAndCountForSeriesIdentifier:v14 transaction:v18 error:v78 handler:v76];
+    v20 = [HDQuantitySeriesDataEntity getRangeAndCountForSeriesIdentifier:longLongValue transaction:transaction error:v78 handler:v76];
     v21 = v78[0];
 
     if (!v20)
@@ -274,13 +274,13 @@
       v33 = v21;
       v25 = v33;
       v13 = v39;
-      v15 = v40;
+      superclassEncoder = v40;
       if (v33)
       {
-        if (a6)
+        if (error)
         {
           v34 = v33;
-          *a6 = v25;
+          *error = v25;
         }
 
         else
@@ -317,7 +317,7 @@
     v57 = __Block_byref_object_copy__123;
     v58 = __Block_byref_object_dispose__123;
     v59 = 0;
-    v22 = [(HDEntityEncoder *)self transaction];
+    transaction2 = [(HDEntityEncoder *)self transaction];
     v53 = v21;
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
@@ -325,7 +325,7 @@
     v43[3] = &unk_2786249C8;
     v46 = &v66;
     v47 = &v70;
-    v51 = a5;
+    representationCopy = representation;
     v48 = v60;
     v23 = v41;
     v45 = v23;
@@ -333,10 +333,10 @@
     v50 = &v62;
     v44 = v19;
     v52 = v17;
-    v24 = [HDQuantitySeriesDataEntity enumerateSeries:v14 transaction:v22 error:&v53 handler:v43];
+    v24 = [HDQuantitySeriesDataEntity enumerateSeries:longLongValue transaction:transaction2 error:&v53 handler:v43];
     v25 = v53;
 
-    v15 = v40;
+    superclassEncoder = v40;
     if (v24)
     {
       v13 = v39;
@@ -357,7 +357,7 @@
         objc_storeStrong(v29, obj);
         v31 = v30 == 2;
         *(v63 + 24) = v30 != 2;
-        v15 = v40;
+        superclassEncoder = v40;
         if (!v31)
         {
 LABEL_8:
@@ -380,7 +380,7 @@ LABEL_24:
       v35 = v55[5];
       if (v35)
       {
-        if (!a6)
+        if (!error)
         {
           _HKLogDroppedError();
           goto LABEL_19;
@@ -396,11 +396,11 @@ LABEL_24:
       v13 = v39;
       if (v35)
       {
-        if (a6)
+        if (error)
         {
 LABEL_18:
           v36 = v35;
-          *a6 = v35;
+          *error = v35;
           goto LABEL_19;
         }
 
@@ -414,8 +414,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v15 = [(HDEntityEncoder *)self superclassEncoder];
-  v32 = [v15 generateCodableRepresentationsForPersistentID:a3 row:a4 maxBytesPerRepresentation:a5 error:a6 handler:v12];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v32 = [superclassEncoder generateCodableRepresentationsForPersistentID:d row:row maxBytesPerRepresentation:representation error:error handler:handlerCopy];
 LABEL_25:
 
   return v32;

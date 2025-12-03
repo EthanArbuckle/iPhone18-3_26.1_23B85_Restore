@@ -2,12 +2,12 @@
 - (CGRect)logicalBounds;
 - (NSString)description;
 - (OADGroup)init;
-- (void)addChild:(id)a3;
-- (void)addChildren:(id)a3;
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3;
-- (void)removeChild:(id)a3;
+- (void)addChild:(id)child;
+- (void)addChildren:(id)children;
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values;
+- (void)removeChild:(id)child;
 - (void)removeUnnecessaryOverrides;
-- (void)replaceChild:(id)a3 with:(id)a4;
+- (void)replaceChild:(id)child with:(id)with;
 @end
 
 @implementation OADGroup
@@ -49,60 +49,60 @@
   return result;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v4 = a3;
-  if (v4)
+  childCopy = child;
+  if (childCopy)
   {
-    [(NSMutableArray *)self->mChildren addObject:v4];
-    [v4 setParent:self];
+    [(NSMutableArray *)self->mChildren addObject:childCopy];
+    [childCopy setParent:self];
   }
 }
 
-- (void)addChildren:(id)a3
+- (void)addChildren:(id)children
 {
-  v7 = a3;
-  v4 = [v7 count];
+  childrenCopy = children;
+  v4 = [childrenCopy count];
   if (v4)
   {
     for (i = 0; i != v4; ++i)
     {
-      v6 = [v7 objectAtIndex:i];
+      v6 = [childrenCopy objectAtIndex:i];
       [v6 setParent:self];
     }
   }
 
-  [(NSMutableArray *)self->mChildren addObjectsFromArray:v7];
+  [(NSMutableArray *)self->mChildren addObjectsFromArray:childrenCopy];
 }
 
-- (void)replaceChild:(id)a3 with:(id)a4
+- (void)replaceChild:(id)child with:(id)with
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->mChildren indexOfObjectIdenticalTo:v8];
+  childCopy = child;
+  withCopy = with;
+  v7 = [(NSMutableArray *)self->mChildren indexOfObjectIdenticalTo:childCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v8 setParent:0];
-    [(NSMutableArray *)self->mChildren replaceObjectAtIndex:v7 withObject:v6];
-    [v6 setParent:self];
+    [childCopy setParent:0];
+    [(NSMutableArray *)self->mChildren replaceObjectAtIndex:v7 withObject:withCopy];
+    [withCopy setParent:self];
   }
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
-  v5 = a3;
+  childCopy = child;
   v4 = [(NSMutableArray *)self->mChildren indexOfObjectIdenticalTo:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v5 setParent:0];
+    [childCopy setParent:0];
     [(NSMutableArray *)self->mChildren removeObjectAtIndex:v4];
   }
 }
 
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -122,7 +122,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) changeParentTextListStylePreservingEffectiveValues:{v4, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) changeParentTextListStylePreservingEffectiveValues:{valuesCopy, v9}];
       }
 
       while (v6 != v8);

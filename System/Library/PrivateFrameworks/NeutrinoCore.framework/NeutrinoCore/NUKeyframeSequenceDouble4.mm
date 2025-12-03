@@ -1,12 +1,12 @@
 @interface NUKeyframeSequenceDouble4
-- (CMTime)tangentOfKeyframeAtIndex:(float64x2_t *)a3@<X8>;
-- (NUKeyframeSequenceDouble4)initWithInterpolation:(int64_t)a3 count:(unint64_t)a4 times:(id *)a5 values:;
-- (NUKeyframeSequenceDouble4)initWithKeyframeSequence:(id)a3 values:;
-- (float64x2_t)valueOfKeyframeAtIndex:(float64x2_t *)a3@<X8>;
+- (CMTime)tangentOfKeyframeAtIndex:(float64x2_t *)index@<X8>;
+- (NUKeyframeSequenceDouble4)initWithInterpolation:(int64_t)interpolation count:(unint64_t)count times:(id *)times values:;
+- (NUKeyframeSequenceDouble4)initWithKeyframeSequence:(id)sequence values:;
+- (float64x2_t)valueOfKeyframeAtIndex:(float64x2_t *)index@<X8>;
 - (id)debugQuickLookObject;
 - (id)sparseSequence;
-- (uint64_t)sampleAtTime:(float64x2_t *)a3@<X8>;
-- (void)_compressAndStoreValues:(NUKeyframeSequenceDouble4 *)self count:(SEL)a2;
+- (uint64_t)sampleAtTime:(float64x2_t *)time@<X8>;
+- (void)_compressAndStoreValues:(NUKeyframeSequenceDouble4 *)self count:(SEL)count;
 - (void)dealloc;
 @end
 
@@ -231,7 +231,7 @@
       v78 = v75;
       v79 = v76;
       v34 = objc_alloc(objc_opt_class());
-      v3 = [v34 initWithInterpolation:-[NUKeyframeSequence interpolation](self count:"interpolation") times:1 values:{&v80, &v78}];
+      selfCopy2 = [v34 initWithInterpolation:-[NUKeyframeSequence interpolation](self count:"interpolation") times:1 values:{&v80, &v78}];
     }
 
     else
@@ -329,19 +329,19 @@
                 objc_enumerationMutation(obja);
               }
 
-              v26 = [*(*(&v61 + 1) + 8 * v25) intValue];
-              if (v22 >= v26)
+              intValue = [*(*(&v61 + 1) + 8 * v25) intValue];
+              if (v22 >= intValue)
               {
                 v27 = v22;
               }
 
               else
               {
-                v27 = v26;
+                v27 = intValue;
                 v28 = v23;
                 v22 = v22;
                 v29 = &v50[24 * v23];
-                v30 = v26;
+                v30 = intValue;
                 do
                 {
                   v31 = v28;
@@ -405,7 +405,7 @@
         }
 
         v39 = objc_alloc(objc_opt_class());
-        v3 = [v39 initWithInterpolation:-[NUKeyframeSequence interpolation](self count:"interpolation") times:v48 values:{v50, v19}];
+        selfCopy2 = [v39 initWithInterpolation:-[NUKeyframeSequence interpolation](self count:"interpolation") times:v48 values:{v50, v19}];
 
         free(v50);
         free(v19);
@@ -413,60 +413,60 @@
 
       else
       {
-        v3 = self;
+        selfCopy2 = self;
       }
     }
   }
 
   else
   {
-    v3 = self;
+    selfCopy2 = self;
   }
 
-  return v3;
+  return selfCopy2;
 }
 
-- (uint64_t)sampleAtTime:(float64x2_t *)a3@<X8>
+- (uint64_t)sampleAtTime:(float64x2_t *)time@<X8>
 {
   if ((*(a2 + 12) & 1) == 0)
   {
-    result = [a1 valueOfKeyframeAtIndex:0];
+    result = [self valueOfKeyframeAtIndex:0];
     v7 = v29;
     v6 = v30;
 LABEL_3:
-    *a3 = v7;
-    a3[1] = v6;
+    *time = v7;
+    time[1] = v6;
     return result;
   }
 
   v27 = *a2;
   v28 = *(a2 + 2);
-  v9 = [a1 indexOfKeyframeAtOrBeforeTime:&v27];
-  result = [a1 interpolation];
+  v9 = [self indexOfKeyframeAtOrBeforeTime:&v27];
+  result = [self interpolation];
   switch(result)
   {
     case 2:
-      [a1 valueOfKeyframeAtIndex:v9];
-      [a1 valueOfKeyframeAtIndex:v9 + 1];
-      [a1 tangentOfKeyframeAtIndex:v9];
-      [a1 tangentOfKeyframeAtIndex:v9 + 1];
+      [self valueOfKeyframeAtIndex:v9];
+      [self valueOfKeyframeAtIndex:v9 + 1];
+      [self tangentOfKeyframeAtIndex:v9];
+      [self tangentOfKeyframeAtIndex:v9 + 1];
       v27 = *a2;
       v28 = *(a2 + 2);
-      result = [a1 interpolantAtTime:&v27];
+      result = [self interpolantAtTime:&v27];
       v6 = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_n_f64(vmulq_laneq_f64(v15, v10, 1), v19, v10.f64[0]), v17, v11.f64[0]), v13, v11, 1);
       v7 = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_n_f64(vmulq_laneq_f64(v14, v10, 1), v18, v10.f64[0]), v16, v11.f64[0]), v12, v11, 1);
       goto LABEL_3;
     case 1:
-      [a1 valueOfKeyframeAtIndex:v9];
-      [a1 valueOfKeyframeAtIndex:v9 + 1];
+      [self valueOfKeyframeAtIndex:v9];
+      [self valueOfKeyframeAtIndex:v9 + 1];
       v27 = *a2;
       v28 = *(a2 + 2);
-      result = [a1 interpolantAtTime:&v27];
+      result = [self interpolantAtTime:&v27];
       v6 = vmlaq_n_f64(vmulq_laneq_f64(v22, v20, 1), v24, v20.f64[0]);
       v7 = vmlaq_n_f64(vmulq_laneq_f64(v21, v20, 1), v23, v20.f64[0]);
       goto LABEL_3;
     case 0:
-      result = [a1 valueOfKeyframeAtIndex:v9];
+      result = [self valueOfKeyframeAtIndex:v9];
       v7 = v25;
       v6 = v26;
       goto LABEL_3;
@@ -475,13 +475,13 @@ LABEL_3:
   return result;
 }
 
-- (CMTime)tangentOfKeyframeAtIndex:(float64x2_t *)a3@<X8>
+- (CMTime)tangentOfKeyframeAtIndex:(float64x2_t *)index@<X8>
 {
   v4 = a2 - 1;
   if (a2 < 1 || (v6 = result, result = [(CMTime *)result count], &result[-1].epoch + 7 <= a2))
   {
-    *a3 = 0u;
-    a3[1] = 0u;
+    *index = 0u;
+    index[1] = 0u;
   }
 
   else
@@ -513,14 +513,14 @@ LABEL_3:
       v9 = vdivq_f64(vsubq_f64(v10, v12), v7);
     }
 
-    *a3 = v9;
-    a3[1] = v8;
+    *index = v9;
+    index[1] = v8;
   }
 
   return result;
 }
 
-- (float64x2_t)valueOfKeyframeAtIndex:(float64x2_t *)a3@<X8>
+- (float64x2_t)valueOfKeyframeAtIndex:(float64x2_t *)index@<X8>
 {
   if (*&result[7].f64[0])
   {
@@ -548,8 +548,8 @@ LABEL_3:
     v10 = 0uLL;
   }
 
-  *a3 = v11;
-  a3[1] = v10;
+  *index = v11;
+  index[1] = v10;
   return result;
 }
 
@@ -566,12 +566,12 @@ LABEL_3:
   [(NUKeyframeSequence *)&v4 dealloc];
 }
 
-- (NUKeyframeSequenceDouble4)initWithKeyframeSequence:(id)a3 values:
+- (NUKeyframeSequenceDouble4)initWithKeyframeSequence:(id)sequence values:
 {
   v4 = v3;
   v7.receiver = self;
   v7.super_class = NUKeyframeSequenceDouble4;
-  v5 = [(NUKeyframeSequence *)&v7 initWithKeyframeSequence:a3];
+  v5 = [(NUKeyframeSequence *)&v7 initWithKeyframeSequence:sequence];
   if ([(NUKeyframeSequence *)v5 count])
   {
     [(NUKeyframeSequenceDouble4 *)v5 _compressAndStoreValues:v4 count:[(NUKeyframeSequence *)v5 count]];
@@ -580,22 +580,22 @@ LABEL_3:
   return v5;
 }
 
-- (NUKeyframeSequenceDouble4)initWithInterpolation:(int64_t)a3 count:(unint64_t)a4 times:(id *)a5 values:
+- (NUKeyframeSequenceDouble4)initWithInterpolation:(int64_t)interpolation count:(unint64_t)count times:(id *)times values:
 {
   v6 = v5;
   v11.receiver = self;
   v11.super_class = NUKeyframeSequenceDouble4;
-  v8 = [(NUKeyframeSequence *)&v11 initWithInterpolation:a3 count:a4 times:a5];
+  v8 = [(NUKeyframeSequence *)&v11 initWithInterpolation:interpolation count:count times:times];
   v9 = v8;
-  if (a4)
+  if (count)
   {
-    [(NUKeyframeSequenceDouble4 *)v8 _compressAndStoreValues:v6 count:a4];
+    [(NUKeyframeSequenceDouble4 *)v8 _compressAndStoreValues:v6 count:count];
   }
 
   return v9;
 }
 
-- (void)_compressAndStoreValues:(NUKeyframeSequenceDouble4 *)self count:(SEL)a2
+- (void)_compressAndStoreValues:(NUKeyframeSequenceDouble4 *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;

@@ -14,7 +14,7 @@
 
 - (double)hueComponent
 {
-  if (![a1 cgColor])
+  if (![self cgColor])
   {
     return 0.0;
   }
@@ -23,7 +23,7 @@
   v18 = 0.0;
   v15 = 0;
   v16 = 0.0;
-  [a1 getRed:&v18 green:&v17 blue:&v16 alpha:&v15];
+  [self getRed:&v18 green:&v17 blue:&v16 alpha:&v15];
   if (v18 < v17 || v18 < v16)
   {
     if (v17 < v18 || v17 < v16)
@@ -119,7 +119,7 @@
   v10 = 0.0;
   v11 = 0.0;
   v9 = 0;
-  [a1 getRed:&v12 green:&v11 blue:&v10 alpha:&v9];
+  [self getRed:&v12 green:&v11 blue:&v10 alpha:&v9];
   if (v12 >= v11)
   {
     v1 = v12;
@@ -192,7 +192,7 @@
   v3 = 0.0;
   v4 = 0.0;
   v2 = 0;
-  [a1 getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
+  [self getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
   result = v5;
   if (v5 < v4)
   {
@@ -213,7 +213,7 @@
   v3 = 0;
   v4 = 0;
   v2 = 0;
-  [a1 getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
+  [self getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
   return v5;
 }
 
@@ -223,7 +223,7 @@
   v3 = 0;
   v4 = 0.0;
   v2 = 0;
-  [a1 getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
+  [self getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
   return v4;
 }
 
@@ -233,7 +233,7 @@
   v3 = 0.0;
   v4 = 0;
   v2 = 0;
-  [a1 getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
+  [self getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
   return v3;
 }
 
@@ -244,7 +244,7 @@
   v10 = 0;
   v11 = 0.0;
   v4 = a3;
-  [a1 getRed:&v13 green:&v12 blue:&v11 alpha:&v10];
+  [self getRed:&v13 green:&v12 blue:&v11 alpha:&v10];
   v8 = 0.0;
   v9 = 0.0;
   v6 = 0;
@@ -256,7 +256,7 @@
 
 - (BOOL)isGreenOrYellow
 {
-  [a1 hueComponent];
+  [self hueComponent];
   if (v1 >= 0.13 && v1 <= 0.18)
   {
     return 1;
@@ -277,7 +277,7 @@
   v14 = 0;
   v15 = 0.0;
   v4 = a3;
-  [a1 getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
+  [self getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
   v12 = 0.0;
   v13 = 0.0;
   v10 = 0;

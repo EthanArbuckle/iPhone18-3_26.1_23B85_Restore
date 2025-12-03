@@ -1,24 +1,24 @@
 @interface ATXAppClipUsageDuetContextUpdateListener
-- (void)startListeningWithCallback:(id)a3 clientId:(id)a4;
-- (void)startListeningWithClientId:(id)a3;
+- (void)startListeningWithCallback:(id)callback clientId:(id)id;
+- (void)startListeningWithClientId:(id)id;
 @end
 
 @implementation ATXAppClipUsageDuetContextUpdateListener
 
-- (void)startListeningWithCallback:(id)a3 clientId:(id)a4
+- (void)startListeningWithCallback:(id)callback clientId:(id)id
 {
-  v8 = a4;
-  v6 = _Block_copy(a3);
+  idCopy = id;
+  v6 = _Block_copy(callback);
   appClipUsageHandler = self->_appClipUsageHandler;
   self->_appClipUsageHandler = v6;
 
-  [(ATXAppClipUsageDuetContextUpdateListener *)self startListeningWithClientId:v8];
+  [(ATXAppClipUsageDuetContextUpdateListener *)self startListeningWithClientId:idCopy];
 }
 
-- (void)startListeningWithClientId:(id)a3
+- (void)startListeningWithClientId:(id)id
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CFE318] userContext];
+  idCopy = id;
+  userContext = [MEMORY[0x277CFE318] userContext];
   objc_initWeak(&location, self);
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
@@ -26,14 +26,14 @@
   v15 = &unk_27859B260;
   objc_copyWeak(&v16, &location);
   v6 = _Block_copy(&v12);
-  v7 = [@"com.apple.duetexpertd.ATXAppClipUsageDuetContextUpdateListener" stringByAppendingString:{v4, v12, v13, v14, v15}];
+  v7 = [@"com.apple.duetexpertd.ATXAppClipUsageDuetContextUpdateListener" stringByAppendingString:{idCopy, v12, v13, v14, v15}];
   v8 = MEMORY[0x277CFE360];
-  v9 = [MEMORY[0x277CFE338] keyPathForAppClipLaunch];
-  v10 = [v8 predicateForChangeAtKeyPath:v9];
+  keyPathForAppClipLaunch = [MEMORY[0x277CFE338] keyPathForAppClipLaunch];
+  v10 = [v8 predicateForChangeAtKeyPath:keyPathForAppClipLaunch];
 
   [v10 setEvaluateOnEveryKeyPathUpdate:1];
   v11 = [MEMORY[0x277CFE350] localWakingRegistrationWithIdentifier:v7 contextualPredicate:v10 clientIdentifier:@"com.apple.duetexpertd.app-prediction" callback:v6];
-  [v5 registerCallback:v11];
+  [userContext registerCallback:v11];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);

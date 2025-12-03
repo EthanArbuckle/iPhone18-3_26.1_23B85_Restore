@@ -1,11 +1,11 @@
 @interface TUIAnimationGroupCollection
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)generateAllGroupRenderModelsFromSource:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)generateAllGroupRenderModelsFromSource:(id)source;
 @end
 
 @implementation TUIAnimationGroupCollection
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TUIAnimationGroupCollection allocWithZone:?]];
   if (v4)
@@ -18,16 +18,16 @@
   return v4;
 }
 
-- (id)generateAllGroupRenderModelsFromSource:(id)a3
+- (id)generateAllGroupRenderModelsFromSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v17 = objc_alloc_init(NSMutableDictionary);
-  v5 = [(TUIAnimationGroupCollection *)self groups];
+  groups = [(TUIAnimationGroupCollection *)self groups];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [groups countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -38,14 +38,14 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groups);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v5 objectForKeyedSubscript:v10];
-        v12 = [v11 generateAnimationRenderModelsForAllPhasesFromSource:v4];
-        v13 = [v12 phaseRenderModels];
-        v14 = [v13 count];
+        v11 = [groups objectForKeyedSubscript:v10];
+        v12 = [v11 generateAnimationRenderModelsForAllPhasesFromSource:sourceCopy];
+        phaseRenderModels = [v12 phaseRenderModels];
+        v14 = [phaseRenderModels count];
 
         if (v14)
         {
@@ -53,7 +53,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [groups countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);

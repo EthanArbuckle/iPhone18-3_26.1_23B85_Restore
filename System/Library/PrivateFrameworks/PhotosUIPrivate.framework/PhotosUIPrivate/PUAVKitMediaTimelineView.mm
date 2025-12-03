@@ -1,27 +1,27 @@
 @interface PUAVKitMediaTimelineView
-+ (id)_stringFromTimeInterval:(double)a3;
++ (id)_stringFromTimeInterval:(double)interval;
 - (CGSize)intrinsicContentSize;
-- (CGSize)timeRangeMark:(id)a3 sizeInFrame:(CGRect)a4;
-- (PUAVKitMediaTimelineView)initWithFrame:(CGRect)a3;
+- (CGSize)timeRangeMark:(id)mark sizeInFrame:(CGRect)frame;
+- (PUAVKitMediaTimelineView)initWithFrame:(CGRect)frame;
 - (PUMediaTimelineViewDelegate)delegate;
-- (id)uiProxyForTimeRangeMark:(id)a3 withSource:(id)a4;
+- (id)uiProxyForTimeRangeMark:(id)mark withSource:(id)source;
 - (void)_updateCurrentValueText;
 - (void)_updateMaxValueText;
 - (void)_updateTimeRangeMarks;
 - (void)_updateTimelineConfiguration;
 - (void)dealloc;
 - (void)invalidateIntrinsicContentSize;
-- (void)mediaTimelineControl:(id)a3 didChangeValue:(float)a4;
-- (void)mediaTimelineControlDidEndChanging:(id)a3;
-- (void)mediaTimelineControlWillBeginChanging:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCurrentValue:(float)a3;
-- (void)setHighlightedTimeRanges:(id)a3;
-- (void)setLabelColor:(id)a3;
-- (void)setLabelFont:(id)a3;
-- (void)setMaxValue:(float)a3;
-- (void)setShowsTimeLabels:(BOOL)a3;
-- (void)setWhiteValue:(double)a3;
+- (void)mediaTimelineControl:(id)control didChangeValue:(float)value;
+- (void)mediaTimelineControlDidEndChanging:(id)changing;
+- (void)mediaTimelineControlWillBeginChanging:(id)changing;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCurrentValue:(float)value;
+- (void)setHighlightedTimeRanges:(id)ranges;
+- (void)setLabelColor:(id)color;
+- (void)setLabelFont:(id)font;
+- (void)setMaxValue:(float)value;
+- (void)setShowsTimeLabels:(BOOL)labels;
+- (void)setWhiteValue:(double)value;
 @end
 
 @implementation PUAVKitMediaTimelineView
@@ -33,23 +33,23 @@
   return WeakRetained;
 }
 
-- (void)mediaTimelineControlDidEndChanging:(id)a3
+- (void)mediaTimelineControlDidEndChanging:(id)changing
 {
-  v4 = [(PUAVKitMediaTimelineView *)self delegate];
-  [v4 mediaTimelineControlViewDidEndChanging:self];
+  delegate = [(PUAVKitMediaTimelineView *)self delegate];
+  [delegate mediaTimelineControlViewDidEndChanging:self];
 }
 
-- (void)mediaTimelineControlWillBeginChanging:(id)a3
+- (void)mediaTimelineControlWillBeginChanging:(id)changing
 {
-  v4 = [(PUAVKitMediaTimelineView *)self delegate];
-  [v4 mediaTimelineControlViewWillBeginChanging:self];
+  delegate = [(PUAVKitMediaTimelineView *)self delegate];
+  [delegate mediaTimelineControlViewWillBeginChanging:self];
 }
 
-- (void)mediaTimelineControl:(id)a3 didChangeValue:(float)a4
+- (void)mediaTimelineControl:(id)control didChangeValue:(float)value
 {
-  [(PUAVKitMediaTimelineView *)self setCurrentValue:a3];
-  v5 = [(PUAVKitMediaTimelineView *)self delegate];
-  [v5 mediaTimelineControlViewDidChangeValue:self];
+  [(PUAVKitMediaTimelineView *)self setCurrentValue:control];
+  delegate = [(PUAVKitMediaTimelineView *)self delegate];
+  [delegate mediaTimelineControlViewDidChangeValue:self];
 }
 
 - (void)invalidateIntrinsicContentSize
@@ -57,13 +57,13 @@
   v4.receiver = self;
   v4.super_class = PUAVKitMediaTimelineView;
   [(PUAVKitMediaTimelineView *)&v4 invalidateIntrinsicContentSize];
-  v3 = [(PUAVKitMediaTimelineView *)self delegate];
-  [v3 mediaTimelineControlIntrinsicContentSizeDidChange:self];
+  delegate = [(PUAVKitMediaTimelineView *)self delegate];
+  [delegate mediaTimelineControlIntrinsicContentSizeDidChange:self];
 }
 
 - (void)_updateTimelineConfiguration
 {
-  v12 = [MEMORY[0x1E69585E8] defaultConfiguration];
+  defaultConfiguration = [MEMORY[0x1E69585E8] defaultConfiguration];
   if (objc_opt_respondsToSelector())
   {
     v3 = MEMORY[0x1E69DC730];
@@ -71,23 +71,23 @@
     [(PUAVKitMediaTimelineView *)self whiteValue];
     v5 = [v4 colorWithWhite:? alpha:?];
     v6 = [v3 _effectWithTintColor:v5];
-    [v12 setCurrentValueVisualEffect:v6];
+    [defaultConfiguration setCurrentValueVisualEffect:v6];
   }
 
   if (objc_opt_respondsToSelector())
   {
     v7 = [MEMORY[0x1E69DC730] effectWithStyle:20];
-    [v12 setMaxValueVisualEffect:v7];
+    [defaultConfiguration setMaxValueVisualEffect:v7];
   }
 
-  v8 = [MEMORY[0x1E69585F0] belowConfiguration];
-  v9 = [(PUAVKitMediaTimelineView *)self labelColor];
-  [v8 setTextColor:v9];
+  belowConfiguration = [MEMORY[0x1E69585F0] belowConfiguration];
+  labelColor = [(PUAVKitMediaTimelineView *)self labelColor];
+  [belowConfiguration setTextColor:labelColor];
 
-  v10 = [(PUAVKitMediaTimelineView *)self labelFont];
-  [v8 setTextFont:v10];
+  labelFont = [(PUAVKitMediaTimelineView *)self labelFont];
+  [belowConfiguration setTextFont:labelFont];
 
-  [v12 setLabelsConfiguration:v8];
+  [defaultConfiguration setLabelsConfiguration:belowConfiguration];
   if ([(PUAVKitMediaTimelineView *)self showsTimeLabels])
   {
     v11 = 1;
@@ -98,8 +98,8 @@
     v11 = 2;
   }
 
-  [v8 setLabelsStyle:v11];
-  [(AVMediaTimelineControl *)self->_timelineControl setConfiguration:v12];
+  [belowConfiguration setLabelsStyle:v11];
+  [(AVMediaTimelineControl *)self->_timelineControl setConfiguration:defaultConfiguration];
   [(PUAVKitMediaTimelineView *)self invalidateIntrinsicContentSize];
 }
 
@@ -125,12 +125,12 @@
 
 - (void)_updateTimeRangeMarks
 {
-  v3 = [(PUAVKitMediaTimelineView *)self highlightedTimeRanges];
-  v4 = [v3 count];
+  highlightedTimeRanges = [(PUAVKitMediaTimelineView *)self highlightedTimeRanges];
+  v4 = [highlightedTimeRanges count];
 
   if (v4)
   {
-    v5 = [(PUAVKitMediaTimelineView *)self highlightedTimeRanges];
+    highlightedTimeRanges2 = [(PUAVKitMediaTimelineView *)self highlightedTimeRanges];
     v6 = PXMap();
     [(PUAVKitMediaTimelineView *)self setTimeRangeMarks:v6];
   }
@@ -165,22 +165,22 @@ id __49__PUAVKitMediaTimelineView__updateTimeRangeMarks__block_invoke(uint64_t a
   return v7;
 }
 
-- (id)uiProxyForTimeRangeMark:(id)a3 withSource:(id)a4
+- (id)uiProxyForTimeRangeMark:(id)mark withSource:(id)source
 {
   v4 = MEMORY[0x1E6958628];
-  v5 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v6 = [v5 colorWithAlphaComponent:0.85];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v6 = [systemBlueColor colorWithAlphaComponent:0.85];
   LODWORD(v7) = 4.0;
   v8 = [v4 timeRangeMarkUIProxyWithBackgroundColor:v6 cornerRadius:v7];
 
   return v8;
 }
 
-- (CGSize)timeRangeMark:(id)a3 sizeInFrame:(CGRect)a4
+- (CGSize)timeRangeMark:(id)mark sizeInFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v7 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  markCopy = mark;
   [(PUAVKitMediaTimelineView *)self maxValue];
   if (v8 == 0.0)
   {
@@ -191,9 +191,9 @@ id __49__PUAVKitMediaTimelineView__updateTimeRangeMarks__block_invoke(uint64_t a
   else
   {
     v10 = v8;
-    [v7 endValue];
+    [markCopy endValue];
     v12 = v11;
-    [v7 startValue];
+    [markCopy startValue];
     v9 = width * (v12 - v13) / v10;
   }
 
@@ -204,11 +204,11 @@ id __49__PUAVKitMediaTimelineView__updateTimeRangeMarks__block_invoke(uint64_t a
   return result;
 }
 
-- (void)setHighlightedTimeRanges:(id)a3
+- (void)setHighlightedTimeRanges:(id)ranges
 {
-  if (self->_highlightedTimeRanges != a3)
+  if (self->_highlightedTimeRanges != ranges)
   {
-    v4 = [a3 copy];
+    v4 = [ranges copy];
     highlightedTimeRanges = self->_highlightedTimeRanges;
     self->_highlightedTimeRanges = v4;
 
@@ -216,31 +216,31 @@ id __49__PUAVKitMediaTimelineView__updateTimeRangeMarks__block_invoke(uint64_t a
   }
 }
 
-- (void)setWhiteValue:(double)a3
+- (void)setWhiteValue:(double)value
 {
-  if (self->_whiteValue != a3)
+  if (self->_whiteValue != value)
   {
-    self->_whiteValue = a3;
+    self->_whiteValue = value;
     [(PUAVKitMediaTimelineView *)self _updateTimelineConfiguration];
   }
 }
 
-- (void)setShowsTimeLabels:(BOOL)a3
+- (void)setShowsTimeLabels:(BOOL)labels
 {
-  if (self->_showsTimeLabels != a3)
+  if (self->_showsTimeLabels != labels)
   {
-    self->_showsTimeLabels = a3;
+    self->_showsTimeLabels = labels;
     [(PUAVKitMediaTimelineView *)self _updateTimelineConfiguration];
 
     [(PUAVKitMediaTimelineView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setMaxValue:(float)a3
+- (void)setMaxValue:(float)value
 {
-  if (self->_maxValue != a3)
+  if (self->_maxValue != value)
   {
-    self->_maxValue = a3;
+    self->_maxValue = value;
     [(PUAVKitMediaTimelineView *)self _updateMaxValueText];
     timelineControl = self->_timelineControl;
 
@@ -248,58 +248,58 @@ id __49__PUAVKitMediaTimelineView__updateTimeRangeMarks__block_invoke(uint64_t a
   }
 }
 
-- (void)setCurrentValue:(float)a3
+- (void)setCurrentValue:(float)value
 {
-  if (self->_currentValue != a3)
+  if (self->_currentValue != value)
   {
-    self->_currentValue = a3;
+    self->_currentValue = value;
     [(PUAVKitMediaTimelineView *)self _updateCurrentValueText];
   }
 }
 
-- (void)setLabelFont:(id)a3
+- (void)setLabelFont:(id)font
 {
-  v5 = a3;
-  if (self->_labelFont != v5)
+  fontCopy = font;
+  if (self->_labelFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_labelFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_labelFont, font);
     [(PUAVKitMediaTimelineView *)self _updateTimelineConfiguration];
     [(PUAVKitMediaTimelineView *)self invalidateIntrinsicContentSize];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setLabelColor:(id)a3
+- (void)setLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_labelColor != v5)
+  colorCopy = color;
+  if (self->_labelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_labelColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_labelColor, color);
     [(PUAVKitMediaTimelineView *)self _updateTimelineConfiguration];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (self->_timelineControl != v10)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_timelineControl != objectCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUAVKitMediaTimelineView.m" lineNumber:91 description:{@"Unexpected observed object %@", v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAVKitMediaTimelineView.m" lineNumber:91 description:{@"Unexpected observed object %@", objectCopy}];
   }
 
   v12 = NSStringFromSelector(sel_intrinsicContentSize);
-  v13 = [v16 isEqualToString:v12];
+  v13 = [pathCopy isEqualToString:v12];
 
   if ((v13 & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUAVKitMediaTimelineView.m" lineNumber:92 description:{@"Unexpected observed key path %@", v16}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUAVKitMediaTimelineView.m" lineNumber:92 description:{@"Unexpected observed key path %@", pathCopy}];
   }
 
   [(PUAVKitMediaTimelineView *)self invalidateIntrinsicContentSize];
@@ -324,18 +324,18 @@ id __49__PUAVKitMediaTimelineView__updateTimeRangeMarks__block_invoke(uint64_t a
   [(PUAVKitMediaTimelineView *)&v5 dealloc];
 }
 
-- (PUAVKitMediaTimelineView)initWithFrame:(CGRect)a3
+- (PUAVKitMediaTimelineView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = PUAVKitMediaTimelineView;
-  v3 = [(PUAVKitMediaTimelineView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUAVKitMediaTimelineView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_whiteValue = 1.0;
-    v5 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     labelColor = v4->_labelColor;
-    v4->_labelColor = v5;
+    v4->_labelColor = labelColor;
 
     v7 = [objc_alloc(MEMORY[0x1E69585E0]) initWithSource:v4];
     timelineControl = v4->_timelineControl;
@@ -346,17 +346,17 @@ id __49__PUAVKitMediaTimelineView__updateTimeRangeMarks__block_invoke(uint64_t a
     [(AVMediaTimelineControl *)v4->_timelineControl setDelegate:v4];
     [(AVMediaTimelineControl *)v4->_timelineControl setEnabled:1];
     [(AVMediaTimelineControl *)v4->_timelineControl setAutoresizingMask:18];
-    v9 = [MEMORY[0x1E69DC888] blackColor];
-    v10 = [v9 CGColor];
-    v11 = [(AVMediaTimelineControl *)v4->_timelineControl layer];
-    [v11 setShadowColor:v10];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    layer = [(AVMediaTimelineControl *)v4->_timelineControl layer];
+    [layer setShadowColor:cGColor];
 
-    v12 = [(AVMediaTimelineControl *)v4->_timelineControl layer];
+    layer2 = [(AVMediaTimelineControl *)v4->_timelineControl layer];
     LODWORD(v13) = 1050253722;
-    [v12 setShadowOpacity:v13];
+    [layer2 setShadowOpacity:v13];
 
-    v14 = [(AVMediaTimelineControl *)v4->_timelineControl layer];
-    [v14 setShadowRadius:5.0];
+    layer3 = [(AVMediaTimelineControl *)v4->_timelineControl layer];
+    [layer3 setShadowRadius:5.0];
 
     [(PUAVKitMediaTimelineView *)v4 _updateTimelineConfiguration];
     [(PUAVKitMediaTimelineView *)v4 addSubview:v4->_timelineControl];
@@ -376,7 +376,7 @@ id __49__PUAVKitMediaTimelineView__updateTimeRangeMarks__block_invoke(uint64_t a
   return v4;
 }
 
-+ (id)_stringFromTimeInterval:(double)a3
++ (id)_stringFromTimeInterval:(double)interval
 {
   if (_stringFromTimeInterval__onceToken != -1)
   {
@@ -384,14 +384,14 @@ id __49__PUAVKitMediaTimelineView__updateTimeRangeMarks__block_invoke(uint64_t a
   }
 
   v4 = &_stringFromTimeInterval__hourMinuteSecondFormatter;
-  if (a3 < 3600.0)
+  if (interval < 3600.0)
   {
     v4 = &_stringFromTimeInterval__minuteSecondFormatter;
   }
 
   v5 = *v4;
 
-  return [v5 stringFromTimeInterval:a3];
+  return [v5 stringFromTimeInterval:interval];
 }
 
 uint64_t __52__PUAVKitMediaTimelineView__stringFromTimeInterval___block_invoke()

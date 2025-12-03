@@ -1,30 +1,30 @@
 @interface TUILinkEntityController
 - (TUILinkEntityActionHandling)actionHandler;
-- (TUILinkEntityController)initWithFeedId:(id)a3 queue:(id)a4 viewResolver:(id)a5;
-- (void)addLinkEntityObserver:(id)a3;
-- (void)attachToTracker:(id)a3;
+- (TUILinkEntityController)initWithFeedId:(id)id queue:(id)queue viewResolver:(id)resolver;
+- (void)addLinkEntityObserver:(id)observer;
+- (void)attachToTracker:(id)tracker;
 - (void)detachFromTracker;
-- (void)invokeAction:(id)a3 forLinkEntityReference:(id)a4 withParameters:(id)a5 completion:(id)a6;
-- (void)removeLinkEntityObserver:(id)a3;
-- (void)visibleContentsChanged:(id)a3;
-- (void)visibleLinkEntityReferencesWithFilter:(id)a3 completion:(id)a4;
+- (void)invokeAction:(id)action forLinkEntityReference:(id)reference withParameters:(id)parameters completion:(id)completion;
+- (void)removeLinkEntityObserver:(id)observer;
+- (void)visibleContentsChanged:(id)changed;
+- (void)visibleLinkEntityReferencesWithFilter:(id)filter completion:(id)completion;
 @end
 
 @implementation TUILinkEntityController
 
-- (TUILinkEntityController)initWithFeedId:(id)a3 queue:(id)a4 viewResolver:(id)a5
+- (TUILinkEntityController)initWithFeedId:(id)id queue:(id)queue viewResolver:(id)resolver
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  resolverCopy = resolver;
   v16.receiver = self;
   v16.super_class = TUILinkEntityController;
   v11 = [(TUILinkEntityController *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_feedId.uniqueIdentifier = a3.var0;
-    objc_storeStrong(&v11->_queue, a4);
-    objc_storeWeak(&v12->_viewResolver, v10);
+    v11->_feedId.uniqueIdentifier = id.var0;
+    objc_storeStrong(&v11->_queue, queue);
+    objc_storeWeak(&v12->_viewResolver, resolverCopy);
     v13 = [NSHashTable hashTableWithOptions:517];
     q_observers = v12->_q_observers;
     v12->_q_observers = v13;
@@ -33,11 +33,11 @@
   return v12;
 }
 
-- (void)attachToTracker:(id)a3
+- (void)attachToTracker:(id)tracker
 {
-  objc_storeStrong(&self->_tracker, a3);
-  v5 = a3;
-  [v5 addVisibilityObserver:self];
+  objc_storeStrong(&self->_tracker, tracker);
+  trackerCopy = tracker;
+  [trackerCopy addVisibilityObserver:self];
 }
 
 - (void)detachFromTracker
@@ -54,18 +54,18 @@
   self->_tracker = 0;
 }
 
-- (void)visibleContentsChanged:(id)a3
+- (void)visibleContentsChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 rootNode];
+  changedCopy = changed;
+  rootNode = [changedCopy rootNode];
   q_visibleNode = self->_q_visibleNode;
-  self->_q_visibleNode = v5;
+  self->_q_visibleNode = rootNode;
 
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v17 = v4;
-  v9 = [v4 rootNode];
-  sub_B52A8(v7, v8, v9, 0);
+  v17 = changedCopy;
+  rootNode2 = [changedCopy rootNode];
+  sub_B52A8(v7, v8, rootNode2, 0);
 
   v20 = 0u;
   v21 = 0u;
@@ -91,7 +91,7 @@
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           *buf = 134218498;
-          v23 = self;
+          selfCopy = self;
           v24 = 2112;
           v25 = v7;
           v26 = 2112;
@@ -109,39 +109,39 @@
   }
 }
 
-- (void)addLinkEntityObserver:(id)a3
+- (void)addLinkEntityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_B5618;
   v7[3] = &unk_25DCA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeLinkEntityObserver:(id)a3
+- (void)removeLinkEntityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_B59A0;
   v7[3] = &unk_25DCA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)visibleLinkEntityReferencesWithFilter:(id)a3 completion:(id)a4
+- (void)visibleLinkEntityReferencesWithFilter:(id)filter completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  filterCopy = filter;
+  completionCopy = completion;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -149,21 +149,21 @@
     block[2] = sub_B5B6C;
     block[3] = &unk_260E70;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = filterCopy;
+    v11 = completionCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)invokeAction:(id)a3 forLinkEntityReference:(id)a4 withParameters:(id)a5 completion:(id)a6
+- (void)invokeAction:(id)action forLinkEntityReference:(id)reference withParameters:(id)parameters completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 resolvePath];
+  actionCopy = action;
+  referenceCopy = reference;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  resolvePath = [referenceCopy resolvePath];
   WeakRetained = objc_loadWeakRetained(&self->_viewResolver);
-  v16 = [WeakRetained resolveViewWithPath:v14];
+  v16 = [WeakRetained resolveViewWithPath:resolvePath];
 
   v17 = v16;
   v18 = TUILinkEntityActionLog();
@@ -173,51 +173,51 @@
     *buf = 134218754;
     v57 = uniqueIdentifier;
     v58 = 2112;
-    v59 = v10;
+    v59 = actionCopy;
     v60 = 2112;
-    v61 = v11;
+    v61 = referenceCopy;
     v62 = 2112;
-    v63 = v12;
+    v63 = parametersCopy;
     _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "[fid:%lu] performAction:%@ linkEntity:%@ params:%@", buf, 0x2Au);
   }
 
   if (v17)
   {
-    v20 = [v17 layoutAttributes];
-    v21 = [v20 renderModel];
-    v22 = TUIProtocolCast(&OBJC_PROTOCOL___TUIRenderModelActionContaining, v21);
-    v55 = [v22 actionHandler];
+    layoutAttributes = [v17 layoutAttributes];
+    renderModel = [layoutAttributes renderModel];
+    v22 = TUIProtocolCast(&OBJC_PROTOCOL___TUIRenderModelActionContaining, renderModel);
+    actionHandler = [v22 actionHandler];
 
-    v23 = [v11 model];
-    v24 = [v23 actionsMap];
-    v25 = [v24 objectForKeyedSubscript:v10];
+    model = [referenceCopy model];
+    actionsMap = [model actionsMap];
+    v25 = [actionsMap objectForKeyedSubscript:actionCopy];
 
     if (!v25)
     {
       v32 = TUILinkEntityActionLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        sub_19AA08(self, v10, v32);
+        sub_19AA08(self, actionCopy, v32);
       }
 
-      if (v13)
+      if (completionCopy)
       {
-        v13[2](v13, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       v29 = v17;
       goto LABEL_33;
     }
 
-    v52 = v23;
-    v26 = [v25 refId];
+    v52 = model;
+    refId = [v25 refId];
 
-    v53 = v14;
-    v54 = v10;
-    if (v26)
+    v53 = resolvePath;
+    v54 = actionCopy;
+    if (refId)
     {
-      v27 = [v25 refId];
-      v28 = [v17 descendentViewWithRefId:v27];
+      refId2 = [v25 refId];
+      v28 = [v17 descendentViewWithRefId:refId2];
 
       v51 = v28 == 0;
       if (v28)
@@ -232,19 +232,19 @@
         if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
         {
           v44 = self->_feedId.uniqueIdentifier;
-          v47 = [v25 refId];
-          v49 = [v17 layoutAttributes];
-          v48 = [v49 renderModel];
-          v46 = [v48 identifier];
-          v45 = [v46 tui_identifierToString];
+          refId3 = [v25 refId];
+          layoutAttributes2 = [v17 layoutAttributes];
+          renderModel2 = [layoutAttributes2 renderModel];
+          identifier = [renderModel2 identifier];
+          tui_identifierToString = [identifier tui_identifierToString];
           *buf = 134218754;
           v57 = v44;
           v58 = 2112;
-          v59 = v47;
+          v59 = refId3;
           v60 = 2112;
           v61 = v17;
           v62 = 2112;
-          v63 = v45;
+          v63 = tui_identifierToString;
           _os_log_error_impl(&dword_0, log, OS_LOG_TYPE_ERROR, "[fid:%lu] failed to lookup refId:%@ descendentOfView:%@ (%@); falling back on view", buf, 0x2Au);
 
           v30 = log;
@@ -265,9 +265,9 @@
       v29 = v17;
     }
 
-    if (v12)
+    if (parametersCopy)
     {
-      v33 = v12;
+      v33 = parametersCopy;
     }
 
     else
@@ -280,15 +280,15 @@
     [v34 addEntriesFromDictionary:v35];
 
     v36 = [v34 copy];
-    v37 = [v25 trigger];
-    if (v37 && (v38 = v37, [v25 trigger], v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v55, "hasActionForTrigger:", v39), v39, v38, v40))
+    trigger = [v25 trigger];
+    if (trigger && (v38 = trigger, [v25 trigger], v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(actionHandler, "hasActionForTrigger:", v39), v39, v38, v40))
     {
-      v41 = [v25 trigger];
-      [v55 invoke:v41 view:v29 allowRefId:v51 arguments:v36];
+      trigger2 = [v25 trigger];
+      [actionHandler invoke:trigger2 view:v29 allowRefId:v51 arguments:v36];
 
-      if (v13)
+      if (completionCopy)
       {
-        v13[2](v13, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
 
@@ -299,35 +299,35 @@
       if (v42)
       {
         v43 = objc_loadWeakRetained(&self->_actionHandler);
-        [v43 handleAction:v54 forLinkEntity:v11 withParameters:v36 sourceView:v29 completion:v13];
+        [v43 handleAction:v54 forLinkEntity:referenceCopy withParameters:v36 sourceView:v29 completion:completionCopy];
 
-        v10 = v54;
-        v12 = v36;
+        actionCopy = v54;
+        parametersCopy = v36;
 LABEL_32:
-        v23 = v52;
-        v14 = v53;
+        model = v52;
+        resolvePath = v53;
 LABEL_33:
 
         goto LABEL_34;
       }
 
-      v13[2](v13, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
-    v12 = v36;
-    v10 = v54;
+    parametersCopy = v36;
+    actionCopy = v54;
     goto LABEL_32;
   }
 
   v31 = TUILinkEntityActionLog();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
-    sub_19AA94(self, v14, v31);
+    sub_19AA94(self, resolvePath, v31);
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v13[2](v13, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_34:

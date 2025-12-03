@@ -1,16 +1,16 @@
 @interface CAMSmartStyleCategoryInstructionLabel
-- (CAMSmartStyleCategoryInstructionLabel)initWithFrame:(CGRect)a3;
+- (CAMSmartStyleCategoryInstructionLabel)initWithFrame:(CGRect)frame;
 - (void)_updateText;
-- (void)setPresetType:(int64_t)a3;
+- (void)setPresetType:(int64_t)type;
 @end
 
 @implementation CAMSmartStyleCategoryInstructionLabel
 
-- (CAMSmartStyleCategoryInstructionLabel)initWithFrame:(CGRect)a3
+- (CAMSmartStyleCategoryInstructionLabel)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CAMSmartStyleCategoryInstructionLabel;
-  v3 = [(CAMInstructionLabel *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMInstructionLabel *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E695DFD8]);
@@ -29,9 +29,9 @@
 
 - (void)_updateText
 {
-  v3 = [(CAMSmartStyleCategoryInstructionLabel *)self _systemStylePresetTypes];
+  _systemStylePresetTypes = [(CAMSmartStyleCategoryInstructionLabel *)self _systemStylePresetTypes];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMSmartStyleCategoryInstructionLabel presetType](self, "presetType")}];
-  v5 = [v3 containsObject:v4];
+  v5 = [_systemStylePresetTypes containsObject:v4];
 
   if (v5)
   {
@@ -47,11 +47,11 @@
   [(CAMInstructionLabel *)self setText:v7];
 }
 
-- (void)setPresetType:(int64_t)a3
+- (void)setPresetType:(int64_t)type
 {
-  if (self->_presetType != a3)
+  if (self->_presetType != type)
   {
-    self->_presetType = a3;
+    self->_presetType = type;
     [(CAMSmartStyleCategoryInstructionLabel *)self _updateText];
   }
 }

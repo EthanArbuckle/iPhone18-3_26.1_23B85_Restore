@@ -1,13 +1,13 @@
 @interface HMExecuteTurnOffRequest
-+ (id)executeRequestWithActionSet:(id)a3;
++ (id)executeRequestWithActionSet:(id)set;
 @end
 
 @implementation HMExecuteTurnOffRequest
 
-+ (id)executeRequestWithActionSet:(id)a3
++ (id)executeRequestWithActionSet:(id)set
 {
-  v3 = a3;
-  v4 = [(HMExecuteRequest *)[HMExecuteTurnOffRequest alloc] initWithActionSet:v3];
+  setCopy = set;
+  v4 = [(HMExecuteRequest *)[HMExecuteTurnOffRequest alloc] initWithActionSet:setCopy];
 
   return v4;
 }

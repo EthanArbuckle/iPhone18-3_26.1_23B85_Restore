@@ -1,17 +1,17 @@
 @interface ICCertificateCacheEntry
 - (BOOL)isExpired;
-- (ICCertificateCacheEntry)initWithData:(id)a3 expirationDate:(id)a4;
+- (ICCertificateCacheEntry)initWithData:(id)data expirationDate:(id)date;
 @end
 
 @implementation ICCertificateCacheEntry
 
 - (BOOL)isExpired
 {
-  v3 = [(ICCertificateCacheEntry *)self expirationDate];
-  if (v3)
+  expirationDate = [(ICCertificateCacheEntry *)self expirationDate];
+  if (expirationDate)
   {
-    v4 = [(ICCertificateCacheEntry *)self expirationDate];
-    [v4 timeIntervalSinceNow];
+    expirationDate2 = [(ICCertificateCacheEntry *)self expirationDate];
+    [expirationDate2 timeIntervalSinceNow];
     v6 = v5 < 0.0;
   }
 
@@ -23,18 +23,18 @@
   return v6;
 }
 
-- (ICCertificateCacheEntry)initWithData:(id)a3 expirationDate:(id)a4
+- (ICCertificateCacheEntry)initWithData:(id)data expirationDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = ICCertificateCacheEntry;
   v9 = [(ICCertificateCacheEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_expirationDate, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_expirationDate, date);
   }
 
   return v10;

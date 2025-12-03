@@ -1,19 +1,19 @@
 @interface MRTransitionOrigamiFlip
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (MRTransitionOrigamiFlip)initWithTransitionID:(id)a3;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (MRTransitionOrigamiFlip)initWithTransitionID:(id)d;
 - (void)_cleanupSwingTimings;
 - (void)cleanup;
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)setAttributes:(id)a3;
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)setAttributes:(id)attributes;
 @end
 
 @implementation MRTransitionOrigamiFlip
 
-- (MRTransitionOrigamiFlip)initWithTransitionID:(id)a3
+- (MRTransitionOrigamiFlip)initWithTransitionID:(id)d
 {
   v6.receiver = self;
   v6.super_class = MRTransitionOrigamiFlip;
-  v3 = [(MRTransition *)&v6 initWithTransitionID:a3];
+  v3 = [(MRTransition *)&v6 initWithTransitionID:d];
   v4 = v3;
   if (v3)
   {
@@ -41,24 +41,24 @@
   self->mSideSwing = 0;
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = MRTransitionOrigamiFlip;
-  [(MRTransition *)&v4 setAttributes:a3];
+  [(MRTransition *)&v4 setAttributes:attributes];
   self->super._direction = 0;
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   v6.receiver = self;
   v6.super_class = MRTransitionOrigamiFlip;
-  return [(MRTransition *)&v6 prerenderForTime:a4 inContext:a5 withArguments:a3];
+  return [(MRTransition *)&v6 prerenderForTime:context inContext:arguments withArguments:time];
 }
 
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
-  [a4 localAspectRatio];
+  [context localAspectRatio];
   v10 = 1.0 / v9;
   if ((1.0 / v9) <= 0.0)
   {
@@ -80,10 +80,10 @@
   v14 = v12;
   mSourceLayer = self->super.mSourceLayer;
   [(MRLayerClock *)[(MRLayer *)mSourceLayer clock] externalTime];
-  v16 = [(MRLayer *)mSourceLayer patchworkAtTime:a4 inContext:a5 withArguments:?];
+  v16 = [(MRLayer *)mSourceLayer patchworkAtTime:context inContext:arguments withArguments:?];
   mTargetLayer = self->super.mTargetLayer;
   [(MRLayerClock *)[(MRLayer *)mTargetLayer clock] externalTime];
-  v18 = [(MRLayer *)mTargetLayer patchworkAtTime:a4 inContext:a5 withArguments:?];
+  v18 = [(MRLayer *)mTargetLayer patchworkAtTime:context inContext:arguments withArguments:?];
   v20 = v11 & 1;
   v21 = &OBJC_IVAR___MRTransitionOrigamiFlip_mSideSwing;
   if (v11)
@@ -102,7 +102,7 @@
   }
 
   v23 = *(&self->super.super.isa + *v21);
-  v43 = a3;
+  timeCopy = time;
   if (v11)
   {
     v24 = 1;
@@ -113,7 +113,7 @@
     v24 = 2;
   }
 
-  *&v19 = a3;
+  *&v19 = time;
   [v23 valueAtTime:v19];
   if (v11 >= 2)
   {
@@ -138,7 +138,7 @@
   }
 
   v29 = __sincosf_stret(v28);
-  [a4 cull:v24];
+  [context cull:v24];
   v30 = -v29.__cosval;
   sinval = v29.__sinval;
   if (v13 <= 0.0)
@@ -173,7 +173,7 @@ LABEL_26:
     if (v11 >= 2)
     {
       [v23 timeFirstAtRestValue];
-      if (v40 <= v43)
+      if (v40 <= timeCopy)
       {
         goto LABEL_32;
       }
@@ -192,10 +192,10 @@ LABEL_26:
     v55 = v44;
     *v56 = v45;
     memset(&v56[4], 0, 116);
-    RenderPatchworkWithMesh(v16, &v46, a4);
+    RenderPatchworkWithMesh(v16, &v46, context);
   }
 
-  if (v11 > 1 || ([v23 timeFirstAtRestValue], v41 > v43))
+  if (v11 > 1 || ([v23 timeFirstAtRestValue], v41 > timeCopy))
   {
 LABEL_32:
     v42.f64[0] = v14 + (v14 + 1.0) * v30;
@@ -212,7 +212,7 @@ LABEL_32:
     v54 = v22;
     v55 = v22;
     memset(v56, 0, sizeof(v56));
-    RenderPatchworkWithMesh(v26, &v46, a4);
+    RenderPatchworkWithMesh(v26, &v46, context);
   }
 
   if (v39 < v38)
@@ -230,10 +230,10 @@ LABEL_32:
     v55 = v44;
     *v56 = v45;
     memset(&v56[4], 0, 116);
-    RenderPatchworkWithMesh(v16, &v46, a4);
+    RenderPatchworkWithMesh(v16, &v46, context);
   }
 
-  [a4 cull:0];
+  [context cull:0];
   [v16 removeImages];
   [v26 removeImages];
 }

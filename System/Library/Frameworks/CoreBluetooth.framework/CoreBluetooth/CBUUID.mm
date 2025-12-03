@@ -3,11 +3,11 @@
 + (CBUUID)UUIDWithData:(NSData *)theData;
 + (CBUUID)UUIDWithNSUUID:(NSUUID *)theUUID;
 + (CBUUID)UUIDWithString:(NSString *)theString;
-- (BOOL)isEqual:(id)a3;
-- (CBUUID)initWithCFUUID:(__CFUUID *)a3;
-- (CBUUID)initWithData:(id)a3;
-- (CBUUID)initWithNSUUID:(id)a3;
-- (CBUUID)initWithString:(id)a3 safe:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (CBUUID)initWithCFUUID:(__CFUUID *)d;
+- (CBUUID)initWithData:(id)data;
+- (CBUUID)initWithNSUUID:(id)d;
+- (CBUUID)initWithString:(id)string safe:(BOOL)safe;
 - (NSData)data;
 - (NSString)UUIDString;
 - (id)description;
@@ -31,9 +31,9 @@
   return v5;
 }
 
-- (CBUUID)initWithString:(id)a3 safe:(BOOL)a4
+- (CBUUID)initWithString:(id)string safe:(BOOL)safe
 {
-  v7 = a3;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = CBUUID;
   v8 = [(CBUUID *)&v17 init];
@@ -42,9 +42,9 @@
     goto LABEL_19;
   }
 
-  if ([v7 compare:@"0x" options:1 range:{0, 2}])
+  if ([stringCopy compare:@"0x" options:1 range:{0, 2}])
   {
-    v9 = v7;
+    v9 = stringCopy;
     v10 = [v9 length];
     if (v10 != 36)
     {
@@ -53,8 +53,8 @@
 
 LABEL_9:
     v8->_type = 2;
-    v12 = [v9 UTF8String];
-    if (!v12)
+    uTF8String = [v9 UTF8String];
+    if (!uTF8String)
     {
       goto LABEL_15;
     }
@@ -62,7 +62,7 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v9 = [v7 substringFromIndex:2];
+  v9 = [stringCopy substringFromIndex:2];
   v10 = [v9 length];
   if (v10 == 36)
   {
@@ -76,8 +76,8 @@ LABEL_4:
 
     v8->_type = 1;
     v9 = v13;
-    v12 = [v13 UTF8String];
-    if (!v12)
+    uTF8String = [v13 UTF8String];
+    if (!uTF8String)
     {
       goto LABEL_15;
     }
@@ -89,8 +89,8 @@ LABEL_4:
 
     v8->_type = 0;
     v9 = v11;
-    v12 = [v11 UTF8String];
-    if (!v12)
+    uTF8String = [v11 UTF8String];
+    if (!uTF8String)
     {
       goto LABEL_15;
     }
@@ -100,15 +100,15 @@ LABEL_4:
   {
 
     v9 = 0;
-    v12 = [0 UTF8String];
-    if (!v12)
+    uTF8String = [0 UTF8String];
+    if (!uTF8String)
     {
       goto LABEL_15;
     }
   }
 
 LABEL_14:
-  if (!uuid_parse(v12, v8->_bytes))
+  if (!uuid_parse(uTF8String, v8->_bytes))
   {
 LABEL_18:
 
@@ -118,10 +118,10 @@ LABEL_19:
   }
 
 LABEL_15:
-  if (!a4)
+  if (!safe)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:v8 file:@"CBUUID.m" lineNumber:370 description:{@"String %@ does not represent a valid UUID", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v8 file:@"CBUUID.m" lineNumber:370 description:{@"String %@ does not represent a valid UUID", stringCopy}];
 
     goto LABEL_18;
   }
@@ -132,34 +132,34 @@ LABEL_20:
   return v14;
 }
 
-- (CBUUID)initWithData:(id)a3
+- (CBUUID)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = CBUUID;
   v6 = [(CBUUID *)&v10 init];
   if (v6)
   {
-    v7 = [v5 length];
+    v7 = [dataCopy length];
     switch(v7)
     {
       case 16:
-        [v5 getBytes:v6 + 8 length:16];
+        [dataCopy getBytes:v6 + 8 length:16];
         v6[24] = 2;
         break;
       case 4:
         *(v6 + 8) = CBBluetoothBaseUUIDData;
-        [v5 getBytes:v6 + 8 length:4];
+        [dataCopy getBytes:v6 + 8 length:4];
         v6[24] = 1;
         break;
       case 2:
         *(v6 + 8) = CBBluetoothBaseUUIDData;
-        [v5 getBytes:v6 + 10 length:2];
+        [dataCopy getBytes:v6 + 10 length:2];
         v6[24] = 0;
         break;
       default:
-        v8 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v8 handleFailureInMethod:a2 object:v6 file:@"CBUUID.m" lineNumber:397 description:{@"Data %@ does not represent a valid UUID", v5}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v6 file:@"CBUUID.m" lineNumber:397 description:{@"Data %@ does not represent a valid UUID", dataCopy}];
 
         break;
     }
@@ -168,7 +168,7 @@ LABEL_20:
   return v6;
 }
 
-- (CBUUID)initWithCFUUID:(__CFUUID *)a3
+- (CBUUID)initWithCFUUID:(__CFUUID *)d
 {
   v7.receiver = self;
   v7.super_class = CBUUID;
@@ -176,7 +176,7 @@ LABEL_20:
   if (result)
   {
     v5 = result;
-    v6 = CFUUIDGetUUIDBytes(a3);
+    v6 = CFUUIDGetUUIDBytes(d);
     result = v5;
     *v5->_bytes = v6;
     v5->_type = 2;
@@ -185,16 +185,16 @@ LABEL_20:
   return result;
 }
 
-- (CBUUID)initWithNSUUID:(id)a3
+- (CBUUID)initWithNSUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = CBUUID;
   v5 = [(CBUUID *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [v4 getUUIDBytes:v5->_bytes];
+    [dCopy getUUIDBytes:v5->_bytes];
     v6->_type = 2;
   }
 
@@ -267,13 +267,13 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = *self->_bytes == v4[1] && *&self->_bytes[8] == v4[2];
+    v6 = *self->_bytes == equalCopy[1] && *&self->_bytes[8] == equalCopy[2];
 
     return v6;
   }
@@ -289,13 +289,13 @@ LABEL_9:
 {
   if (qword_1ED7C1FC0 != -1)
   {
-    v8 = self;
+    selfCopy = self;
     [CBUUID description];
-    self = v8;
+    self = selfCopy;
   }
 
-  v2 = [(CBUUID *)self UUIDString];
-  v3 = [_MergedGlobals_1 objectForKeyedSubscript:v2];
+  uUIDString = [(CBUUID *)self UUIDString];
+  v3 = [_MergedGlobals_1 objectForKeyedSubscript:uUIDString];
   v4 = v3;
   if (v3)
   {
@@ -304,7 +304,7 @@ LABEL_9:
 
   else
   {
-    v5 = v2;
+    v5 = uUIDString;
   }
 
   v6 = v5;

@@ -1,29 +1,29 @@
 @interface PXRemoveAssetsFromAssetCollectionAction
-- (PXRemoveAssetsFromAssetCollectionAction)initWithAssets:(id)a3 assetCollection:(id)a4;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXRemoveAssetsFromAssetCollectionAction)initWithAssets:(id)assets assetCollection:(id)collection;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXRemoveAssetsFromAssetCollectionAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   removedAssetIdentifiers = self->_removedAssetIdentifiers;
-  v5 = a3;
-  v6 = [(NSDictionary *)removedAssetIdentifiers allKeys];
-  v7 = [(PXPhotosAction *)self standardFetchOptions];
-  v8 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithLocalIdentifiers:v6 options:v7];
+  undoCopy = undo;
+  allKeys = [(NSDictionary *)removedAssetIdentifiers allKeys];
+  standardFetchOptions = [(PXPhotosAction *)self standardFetchOptions];
+  v8 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithLocalIdentifiers:allKeys options:standardFetchOptions];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__PXRemoveAssetsFromAssetCollectionAction_performUndo___block_invoke_2;
   v11[3] = &unk_1E774BDB0;
   v12 = v8;
-  v13 = self;
-  v14 = v7;
+  selfCopy = self;
+  v14 = standardFetchOptions;
   v15 = &__block_literal_global_40;
-  v9 = v7;
+  v9 = standardFetchOptions;
   v10 = v8;
-  [(PXPhotosAction *)self performChanges:v11 completionHandler:v5];
+  [(PXPhotosAction *)self performChanges:v11 completionHandler:undoCopy];
 }
 
 void __55__PXRemoveAssetsFromAssetCollectionAction_performUndo___block_invoke_2(uint64_t a1)
@@ -99,9 +99,9 @@ id __55__PXRemoveAssetsFromAssetCollectionAction_performUndo___block_invoke(uint
   return v9;
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v14[0] = MEMORY[0x1E69E9820];
@@ -118,8 +118,8 @@ id __55__PXRemoveAssetsFromAssetCollectionAction_performUndo___block_invoke(uint
   v10[4] = self;
   v11 = v15;
   v12 = v16;
-  v13 = v4;
-  v7 = v4;
+  v13 = actionCopy;
+  v7 = actionCopy;
   v8 = v16;
   v9 = v15;
   [(PXPhotosAction *)self performChanges:v14 completionHandler:v10];
@@ -173,36 +173,36 @@ void __57__PXRemoveAssetsFromAssetCollectionAction_performAction___block_invoke_
   PXMap();
 }
 
-- (PXRemoveAssetsFromAssetCollectionAction)initWithAssets:(id)a3 assetCollection:(id)a4
+- (PXRemoveAssetsFromAssetCollectionAction)initWithAssets:(id)assets assetCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstObject];
-  v9 = v8;
-  if (v8)
+  assetsCopy = assets;
+  collectionCopy = collection;
+  firstObject = [assetsCopy firstObject];
+  v9 = firstObject;
+  if (firstObject)
   {
-    v10 = [v8 photoLibrary];
-    v11 = [(PXPhotosAction *)self initWithPhotoLibrary:v10];
+    photoLibrary = [firstObject photoLibrary];
+    v11 = [(PXPhotosAction *)self initWithPhotoLibrary:photoLibrary];
 
     if (v11)
     {
-      v12 = [v6 copy];
+      v12 = [assetsCopy copy];
       assetsInput = v11->_assetsInput;
       v11->_assetsInput = v12;
 
-      objc_storeStrong(&v11->_collectionInput, a4);
+      objc_storeStrong(&v11->_collectionInput, collection);
     }
 
     self = v11;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 @end

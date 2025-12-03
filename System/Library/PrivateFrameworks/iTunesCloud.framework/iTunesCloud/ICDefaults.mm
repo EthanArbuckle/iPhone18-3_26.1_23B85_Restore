@@ -65,22 +65,22 @@
 - (NSString)productVersionOverride;
 - (double)lastAuthenticationDialogResponseTime;
 - (id)_musicUserDefaults;
-- (void)_setOrRemoveInternalDefaultsObject:(id)a3 forKey:(id)a4;
-- (void)_setOrRemoveObject:(id)a3 forKey:(id)a4;
-- (void)addDebugConfiguration:(id)a3;
+- (void)_setOrRemoveInternalDefaultsObject:(id)object forKey:(id)key;
+- (void)_setOrRemoveObject:(id)object forKey:(id)key;
+- (void)addDebugConfiguration:(id)configuration;
 - (void)clearAllPresets;
 - (void)clearShouldForceServerToUseDAAPDebugFeatures;
 - (void)deleteAutomaticDownloadsKey;
-- (void)setAgeVerificationExpirationDate:(id)a3;
-- (void)setAutomaticDownloadsEnabled:(BOOL)a3;
-- (void)setExplicitContentAllowedForCurrentYear:(BOOL)a3;
-- (void)setExplicitContentAllowedForExpirationYear:(BOOL)a3;
-- (void)setIgnoreExtendedCertificateValidation:(BOOL)a3;
-- (void)setLastAuthenticationDialogResponseTime:(double)a3;
-- (void)setPrefetchKeyIdentifiers:(id)a3;
-- (void)setShouldForcePrivacyAcknowledgementRequiredForMusic:(BOOL)a3;
-- (void)setShouldRunAgeVerification:(BOOL)a3;
-- (void)setSocialProfileSupported:(BOOL)a3;
+- (void)setAgeVerificationExpirationDate:(id)date;
+- (void)setAutomaticDownloadsEnabled:(BOOL)enabled;
+- (void)setExplicitContentAllowedForCurrentYear:(BOOL)year;
+- (void)setExplicitContentAllowedForExpirationYear:(BOOL)year;
+- (void)setIgnoreExtendedCertificateValidation:(BOOL)validation;
+- (void)setLastAuthenticationDialogResponseTime:(double)time;
+- (void)setPrefetchKeyIdentifiers:(id)identifiers;
+- (void)setShouldForcePrivacyAcknowledgementRequiredForMusic:(BOOL)music;
+- (void)setShouldRunAgeVerification:(BOOL)verification;
+- (void)setSocialProfileSupported:(BOOL)supported;
 - (void)synchronize;
 @end
 
@@ -119,9 +119,9 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
     v3->_userDefaults = v4;
 
     v6 = +[ICDeviceInfo currentDeviceInfo];
-    v7 = [v6 isInternalBuild];
+    isInternalBuild = [v6 isInternalBuild];
 
-    if (v7)
+    if (isInternalBuild)
     {
       v8 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.itunescloud.internal"];
       internalDefaults = v3->_internalDefaults;
@@ -136,8 +136,8 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
 
 - (NSNumber)chargingStateOverride
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 objectForKey:@"ICDefaultsKeyChargingStateOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults objectForKey:@"ICDefaultsKeyChargingStateOverride"];
 
   if (_NSIsNSNumber())
   {
@@ -154,8 +154,8 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
 
 - (NSNumber)batteryLevelOverride
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 objectForKey:@"ICDefaultsKeyBatteryLevelOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults objectForKey:@"ICDefaultsKeyBatteryLevelOverride"];
 
   if (_NSIsNSNumber())
   {
@@ -172,8 +172,8 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
 
 - (NSNumber)networkTypeOverride
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 objectForKey:@"ICDefaultsKeyNetworkTypeOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults objectForKey:@"ICDefaultsKeyNetworkTypeOverride"];
 
   if (_NSIsNSNumber())
   {
@@ -206,8 +206,8 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
 
 - (NSNumber)networkLinkQualityOverride
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 objectForKey:@"ICDefaultsKeyNetworkLinkQualityOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults objectForKey:@"ICDefaultsKeyNetworkLinkQualityOverride"];
 
   if (_NSIsNSNumber())
   {
@@ -240,23 +240,23 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
 
 - (BOOL)_shouldSpoofIPhoneRequestProperties
 {
-  v3 = [(ICDefaults *)self internalDefaults];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
 
-  if (!v3)
+  if (!internalDefaults)
   {
     return 0;
   }
 
-  v4 = [(ICDefaults *)self internalDefaults];
-  v5 = [v4 BOOLForKey:@"ICDefaultsKeySpoofIPhone"];
+  internalDefaults2 = [(ICDefaults *)self internalDefaults];
+  v5 = [internalDefaults2 BOOLForKey:@"ICDefaultsKeySpoofIPhone"];
 
   return v5;
 }
 
 - (NSString)productPlatformOverride
 {
-  v3 = [(ICDefaults *)self internalDefaults];
-  v4 = [v3 objectForKey:@"ICDefaultsKeyProductPlatformOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v4 = [internalDefaults objectForKey:@"ICDefaultsKeyProductPlatformOverride"];
 
   if (_NSIsNSString())
   {
@@ -277,23 +277,23 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
 
 - (BOOL)_shouldSpoofIPadRequestProperties
 {
-  v3 = [(ICDefaults *)self internalDefaults];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
 
-  if (!v3)
+  if (!internalDefaults)
   {
     return 0;
   }
 
-  v4 = [(ICDefaults *)self internalDefaults];
-  v5 = [v4 BOOLForKey:@"ICDefaultsKeySpoofIPad"];
+  internalDefaults2 = [(ICDefaults *)self internalDefaults];
+  v5 = [internalDefaults2 BOOLForKey:@"ICDefaultsKeySpoofIPad"];
 
   return v5;
 }
 
 - (BOOL)shouldBypassURLBagCache
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICInternalDefaultsKeyShouldBypassURLBagCache"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICInternalDefaultsKeyShouldBypassURLBagCache"];
 
   return v3;
 }
@@ -301,8 +301,8 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
 - (void)synchronize
 {
   [(NSUserDefaults *)self->_userDefaults synchronize];
-  v3 = [(ICDefaults *)self internalDefaults];
-  [v3 synchronize];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  [internalDefaults synchronize];
 }
 
 - (NSDictionary)cachedSubscriptionStatus
@@ -325,8 +325,8 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
 
 - (BOOL)isPrivacyAcknowledgementDisabledForMusic
 {
-  v2 = [(ICDefaults *)self _musicUserDefaults];
-  v3 = [v2 BOOLForKey:@"suppressPrivacyWelcomeScreen"];
+  _musicUserDefaults = [(ICDefaults *)self _musicUserDefaults];
+  v3 = [_musicUserDefaults BOOLForKey:@"suppressPrivacyWelcomeScreen"];
 
   return v3;
 }
@@ -336,22 +336,22 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
   os_unfair_lock_lock(&self->_lock);
   if (!self->_musicUserDefaults)
   {
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    v5 = [v4 isEqualToString:@"com.apple.Music"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:@"com.apple.Music"];
 
     if (v5)
     {
-      v6 = [MEMORY[0x1E695E000] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     }
 
     else
     {
-      v6 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.Music"];
+      standardUserDefaults = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.Music"];
     }
 
     musicUserDefaults = self->_musicUserDefaults;
-    self->_musicUserDefaults = v6;
+    self->_musicUserDefaults = standardUserDefaults;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -362,35 +362,35 @@ uint64_t __30__ICDefaults_standardDefaults__block_invoke()
 
 - (BOOL)shouldForcePrivacyAcknowledgementRequiredForMusic
 {
-  v3 = [(ICDefaults *)self internalDefaults];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
 
-  if (!v3)
+  if (!internalDefaults)
   {
     return 0;
   }
 
-  v4 = [(ICDefaults *)self internalDefaults];
-  v5 = [v4 BOOLForKey:@"ICInternalDefaultsKeyShouldForcePrivacyAcknowledgementRequiredForMusic"];
+  internalDefaults2 = [(ICDefaults *)self internalDefaults];
+  v5 = [internalDefaults2 BOOLForKey:@"ICInternalDefaultsKeyShouldForcePrivacyAcknowledgementRequiredForMusic"];
 
   return v5;
 }
 
 - (NSString)productVersionOverride
 {
-  v3 = [(ICDefaults *)self internalDefaults];
-  v4 = [v3 objectForKey:@"ICDefaultsKeyProductVersionOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v4 = [internalDefaults objectForKey:@"ICDefaultsKeyProductVersionOverride"];
 
   if (_NSIsNSString())
   {
-    v5 = v4;
+    productVersion = v4;
 LABEL_6:
-    v6 = v5;
+    v6 = productVersion;
     goto LABEL_7;
   }
 
   if ([(ICDefaults *)self _shouldSpoofIPhoneRequestProperties]|| [(ICDefaults *)self _shouldSpoofIPadRequestProperties])
   {
-    v5 = [MEMORY[0x1E698C8A8] productVersion];
+    productVersion = [MEMORY[0x1E698C8A8] productVersion];
     goto LABEL_6;
   }
 
@@ -402,8 +402,8 @@ LABEL_7:
 
 - (NSString)deviceModelOverride
 {
-  v3 = [(ICDefaults *)self internalDefaults];
-  v4 = [v3 objectForKey:@"ICDefaultsKeyDeviceModelOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v4 = [internalDefaults objectForKey:@"ICDefaultsKeyDeviceModelOverride"];
 
   if (_NSIsNSString())
   {
@@ -437,8 +437,8 @@ LABEL_9:
 
 - (NSString)hardwarePlatformOverride
 {
-  v3 = [(ICDefaults *)self internalDefaults];
-  v4 = [v3 objectForKey:@"ICDefaultsKeyHardwarePlatformOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v4 = [internalDefaults objectForKey:@"ICDefaultsKeyHardwarePlatformOverride"];
 
   if (_NSIsNSString())
   {
@@ -465,8 +465,8 @@ LABEL_9:
 
 - (NSNumber)deviceClassOverride
 {
-  v3 = [(ICDefaults *)self internalDefaults];
-  v4 = [v3 objectForKey:@"ICDefaultsKeyDeviceClassOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v4 = [internalDefaults objectForKey:@"ICDefaultsKeyDeviceClassOverride"];
 
   if (_NSIsNSNumber())
   {
@@ -493,8 +493,8 @@ LABEL_9:
 
 - (NSNumber)fairPlayDeviceTypeOverride
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 objectForKey:@"ICDefaultsKeyFairPlayDeviceTypeOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults objectForKey:@"ICDefaultsKeyFairPlayDeviceTypeOverride"];
 
   if (_NSIsNSNumber())
   {
@@ -511,28 +511,28 @@ LABEL_9:
 
 - (void)clearShouldForceServerToUseDAAPDebugFeatures
 {
-  v3 = [(ICDefaults *)self internalDefaults];
-  [v3 removeObjectForKey:@"ICInternalDefaultsKeyForceResetSyncRequiredResponseFromCloudLibrary"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  [internalDefaults removeObjectForKey:@"ICInternalDefaultsKeyForceResetSyncRequiredResponseFromCloudLibrary"];
 
-  v4 = [(ICDefaults *)self internalDefaults];
-  [v4 removeObjectForKey:@"ICInternalDefaultsKeyForceBackoffResponseFromCloudLibrary"];
+  internalDefaults2 = [(ICDefaults *)self internalDefaults];
+  [internalDefaults2 removeObjectForKey:@"ICInternalDefaultsKeyForceBackoffResponseFromCloudLibrary"];
 }
 
 - (BOOL)isLegacyStoreCacheBusterEnabled
 {
   v2 = +[ICDeviceInfo currentDeviceInfo];
-  v3 = [v2 isInternalBuild];
+  isInternalBuild = [v2 isInternalBuild];
 
-  return v3 && CFPreferencesGetAppBooleanValue(@"ISCacheBuster", @"com.apple.itunesstored", 0) != 0;
+  return isInternalBuild && CFPreferencesGetAppBooleanValue(@"ISCacheBuster", @"com.apple.itunesstored", 0) != 0;
 }
 
 - (NSNumber)requestTimeoutOverride
 {
-  v3 = [(ICDefaults *)self internalDefaults];
-  if (v3)
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  if (internalDefaults)
   {
-    v4 = [(ICDefaults *)self internalDefaults];
-    v5 = [v4 objectForKey:@"ICInternalDefaultsKeyRequestTimeoutOverrideValue"];
+    internalDefaults2 = [(ICDefaults *)self internalDefaults];
+    v5 = [internalDefaults2 objectForKey:@"ICInternalDefaultsKeyRequestTimeoutOverrideValue"];
   }
 
   else
@@ -555,12 +555,12 @@ LABEL_9:
 
 - (BOOL)presetsFound
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(NSUserDefaults *)self->_internalDefaults objectForKey:@"ICDefaultsKeyDebugFetchConfiguration"];
-  v4 = [(NSUserDefaults *)v2->_internalDefaults objectForKey:@"ICDefaultsKeyDebugRefreshConfiguration"];
-  LOBYTE(v2) = (v3 | v4) != 0;
+  v4 = [(NSUserDefaults *)selfCopy->_internalDefaults objectForKey:@"ICDefaultsKeyDebugRefreshConfiguration"];
+  LOBYTE(selfCopy) = (v3 | v4) != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)clearAllPresets
@@ -572,18 +572,18 @@ LABEL_9:
   [(NSUserDefaults *)internalDefaults synchronize];
 }
 
-- (void)addDebugConfiguration:(id)a3
+- (void)addDebugConfiguration:(id)configuration
 {
   v4 = MEMORY[0x1E696ACC8];
   v9 = 0;
-  v5 = a3;
-  v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v9];
+  configurationCopy = configuration;
+  v6 = [v4 archivedDataWithRootObject:configurationCopy requiringSecureCoding:1 error:&v9];
   v7 = v9;
-  [v5 commandOption];
+  [configurationCopy commandOption];
   [(NSUserDefaults *)self->_internalDefaults setObject:v6 forKey:@"ICDefaultsKeyDebugFetchConfiguration"];
-  v8 = [v5 commandOption];
+  commandOption = [configurationCopy commandOption];
 
-  if ((v8 & 2) != 0)
+  if ((commandOption & 2) != 0)
   {
     [(NSUserDefaults *)self->_internalDefaults setObject:v6 forKey:@"ICDefaultsKeyDebugRefreshConfiguration"];
   }
@@ -609,64 +609,64 @@ LABEL_9:
   return v3;
 }
 
-- (void)_setOrRemoveInternalDefaultsObject:(id)a3 forKey:(id)a4
+- (void)_setOrRemoveInternalDefaultsObject:(id)object forKey:(id)key
 {
   internalDefaults = self->_internalDefaults;
-  if (a3)
+  if (object)
   {
-    [(NSUserDefaults *)internalDefaults setObject:a3 forKey:a4];
+    [(NSUserDefaults *)internalDefaults setObject:object forKey:key];
   }
 
   else
   {
-    [(NSUserDefaults *)internalDefaults removeObjectForKey:a4];
+    [(NSUserDefaults *)internalDefaults removeObjectForKey:key];
   }
 }
 
-- (void)_setOrRemoveObject:(id)a3 forKey:(id)a4
+- (void)_setOrRemoveObject:(id)object forKey:(id)key
 {
   userDefaults = self->_userDefaults;
-  if (a3)
+  if (object)
   {
-    [(NSUserDefaults *)userDefaults setObject:a3 forKey:a4];
+    [(NSUserDefaults *)userDefaults setObject:object forKey:key];
   }
 
   else
   {
-    [(NSUserDefaults *)userDefaults removeObjectForKey:a4];
+    [(NSUserDefaults *)userDefaults removeObjectForKey:key];
   }
 }
 
 - (BOOL)shouldAllowUntrustedHosts
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICDefaultsKeyAllowUntrustedHosts"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICDefaultsKeyAllowUntrustedHosts"];
 
   return v3;
 }
 
 - (BOOL)shouldForceSilentAuthentications
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICDefaultsKeyForceSilentAuthentications"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICDefaultsKeyForceSilentAuthentications"];
 
   return v3;
 }
 
 - (BOOL)shouldForceWatchInitialSyncCompletion
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICInternalDefaultsKeyForceWatchInitialSyncCompletion"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICInternalDefaultsKeyForceWatchInitialSyncCompletion"];
 
   return v3;
 }
 
-- (void)setPrefetchKeyIdentifiers:(id)a3
+- (void)setPrefetchKeyIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   if (_NSIsNSArray())
   {
-    v4 = v5;
+    v4 = identifiersCopy;
   }
 
   else
@@ -677,10 +677,10 @@ LABEL_9:
   [(NSUserDefaults *)self->_userDefaults setValue:v4 forKey:@"ICDefaultsKeyPrefetchKeyIdentifiers"];
 }
 
-- (void)setSocialProfileSupported:(BOOL)a3
+- (void)setSocialProfileSupported:(BOOL)supported
 {
   userDefaults = self->_userDefaults;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:supported];
   [(NSUserDefaults *)userDefaults setValue:v4 forKey:@"ICDefaultsKeySocialProfileSupported"];
 }
 
@@ -690,117 +690,117 @@ LABEL_9:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)enableMultipathTCP
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICEnableMultipathTCP"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICEnableMultipathTCP"];
 
   return v3;
 }
 
 - (NSNumber)secureKeyRenewalTimeOverride
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 objectForKey:@"ICInternalDefaultsKeySecureKeyRenewalTimeOverride"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults objectForKey:@"ICInternalDefaultsKeySecureKeyRenewalTimeOverride"];
 
   return v3;
 }
 
 - (BOOL)allowLowAffinityRecommendations
 {
-  v2 = [(ICDefaults *)self _musicUserDefaults];
-  v3 = [v2 BOOLForKey:@"allowLowAffinityRecommendations"];
+  _musicUserDefaults = [(ICDefaults *)self _musicUserDefaults];
+  v3 = [_musicUserDefaults BOOLForKey:@"allowLowAffinityRecommendations"];
 
   return v3;
 }
 
 - (void)deleteAutomaticDownloadsKey
 {
-  v3 = [(ICDefaults *)self _musicUserDefaults];
-  v4 = [v3 valueForKey:@"DownloadOnAddToLibrary"];
+  _musicUserDefaults = [(ICDefaults *)self _musicUserDefaults];
+  v4 = [_musicUserDefaults valueForKey:@"DownloadOnAddToLibrary"];
 
   if (v4)
   {
-    v5 = [(ICDefaults *)self _musicUserDefaults];
-    [v5 removeObjectForKey:@"DownloadOnAddToLibrary"];
+    _musicUserDefaults2 = [(ICDefaults *)self _musicUserDefaults];
+    [_musicUserDefaults2 removeObjectForKey:@"DownloadOnAddToLibrary"];
 
-    v6 = [(ICDefaults *)self _musicUserDefaults];
-    [v6 synchronize];
+    _musicUserDefaults3 = [(ICDefaults *)self _musicUserDefaults];
+    [_musicUserDefaults3 synchronize];
   }
 }
 
-- (void)setAutomaticDownloadsEnabled:(BOOL)a3
+- (void)setAutomaticDownloadsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(ICDefaults *)self _musicUserDefaults];
-  [v5 setBool:v3 forKey:@"DownloadOnAddToLibrary"];
+  enabledCopy = enabled;
+  _musicUserDefaults = [(ICDefaults *)self _musicUserDefaults];
+  [_musicUserDefaults setBool:enabledCopy forKey:@"DownloadOnAddToLibrary"];
 
   [(ICDefaults *)self synchronize];
 }
 
 - (BOOL)automaticDownloadsEnabled
 {
-  v2 = [(ICDefaults *)self _musicUserDefaults];
-  v3 = [v2 BOOLForKey:@"DownloadOnAddToLibrary"];
+  _musicUserDefaults = [(ICDefaults *)self _musicUserDefaults];
+  v3 = [_musicUserDefaults BOOLForKey:@"DownloadOnAddToLibrary"];
 
   return v3;
 }
 
 - (BOOL)shouldTreatInitialSagaImportAsFailed
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICInternalDefaultsKeyTreatInitialSagaImportAsFailed"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICInternalDefaultsKeyTreatInitialSagaImportAsFailed"];
 
   return v3;
 }
 
 - (BOOL)shouldTreatSagaAddComputerCallAsFailed
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICInternalDefaultsKeyTreatSagaAddComputerCallAsFailed"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICInternalDefaultsKeyTreatSagaAddComputerCallAsFailed"];
 
   return v3;
 }
 
 - (BOOL)shouldForceServerToUseDAAPDebugFeatureAlwaysBackoff
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICInternalDefaultsKeyForceBackoffResponseFromCloudLibrary"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICInternalDefaultsKeyForceBackoffResponseFromCloudLibrary"];
 
   return v3;
 }
 
 - (BOOL)shouldForceServerToUseDAAPDebugFeatureAlwaysPerformResetSync
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICInternalDefaultsKeyForceResetSyncRequiredResponseFromCloudLibrary"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICInternalDefaultsKeyForceResetSyncRequiredResponseFromCloudLibrary"];
 
   return v3;
 }
 
 - (BOOL)shouldForceServerToUseDAAPDebugFeature
 {
-  v3 = [(ICDefaults *)self internalDefaults];
-  if ([v3 BOOLForKey:@"ICInternalDefaultsKeyForceResetSyncRequiredResponseFromCloudLibrary"])
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  if ([internalDefaults BOOLForKey:@"ICInternalDefaultsKeyForceResetSyncRequiredResponseFromCloudLibrary"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(ICDefaults *)self internalDefaults];
-    v4 = [v5 BOOLForKey:@"ICInternalDefaultsKeyForceBackoffResponseFromCloudLibrary"];
+    internalDefaults2 = [(ICDefaults *)self internalDefaults];
+    v4 = [internalDefaults2 BOOLForKey:@"ICInternalDefaultsKeyForceBackoffResponseFromCloudLibrary"];
   }
 
   return v4;
@@ -808,49 +808,49 @@ LABEL_9:
 
 - (BOOL)shouldTreatFavoritingEntityRequestAsFailed
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICInternalDefaultsKeyTreatFavoriteEntityRequestAsFailed"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICInternalDefaultsKeyTreatFavoriteEntityRequestAsFailed"];
 
   return v3;
 }
 
 - (BOOL)shouldTreatSubscriptionStatusCheckAsIncomplete
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICInternalDefaultsKeyTreatSubscriptionStatusAsIncomplete"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICInternalDefaultsKeyTreatSubscriptionStatusAsIncomplete"];
 
   return v3;
 }
 
 - (BOOL)shouldTreatSubscriptionStatusAsExpired
 {
-  v2 = [(ICDefaults *)self internalDefaults];
-  v3 = [v2 BOOLForKey:@"ICInternalDefaultsKeyTreatSubscriptionStatusAsExpired"];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v3 = [internalDefaults BOOLForKey:@"ICInternalDefaultsKeyTreatSubscriptionStatusAsExpired"];
 
   return v3;
 }
 
 - (BOOL)shouldReduceLibraryRecommendationsXPCInterval
 {
-  v2 = [(ICDefaults *)self _musicUserDefaults];
-  v3 = [v2 BOOLForKey:@"reduceLibraryRecommendationsXPCInterval"];
+  _musicUserDefaults = [(ICDefaults *)self _musicUserDefaults];
+  v3 = [_musicUserDefaults BOOLForKey:@"reduceLibraryRecommendationsXPCInterval"];
 
   return v3;
 }
 
 - (BOOL)shouldForceLibraryRecommendationAnalysis
 {
-  v2 = [(ICDefaults *)self _musicUserDefaults];
-  v3 = [v2 BOOLForKey:@"forceLibraryRecommendations"];
+  _musicUserDefaults = [(ICDefaults *)self _musicUserDefaults];
+  v3 = [_musicUserDefaults BOOLForKey:@"forceLibraryRecommendations"];
 
   return v3;
 }
 
-- (void)setShouldForcePrivacyAcknowledgementRequiredForMusic:(BOOL)a3
+- (void)setShouldForcePrivacyAcknowledgementRequiredForMusic:(BOOL)music
 {
-  v3 = a3;
-  v4 = [(ICDefaults *)self internalDefaults];
-  [v4 setBool:v3 forKey:@"ICInternalDefaultsKeyShouldForcePrivacyAcknowledgementRequiredForMusic"];
+  musicCopy = music;
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  [internalDefaults setBool:musicCopy forKey:@"ICInternalDefaultsKeyShouldForcePrivacyAcknowledgementRequiredForMusic"];
 }
 
 - (BOOL)isGrazingPathEnabled
@@ -867,123 +867,123 @@ LABEL_9:
   return [(NSUserDefaults *)userDefaults BOOLForKey:@"ICDefaultsKeyGrazingPathEnabled"];
 }
 
-- (void)setExplicitContentAllowedForExpirationYear:(BOOL)a3
+- (void)setExplicitContentAllowedForExpirationYear:(BOOL)year
 {
-  v3 = a3;
-  v4 = [(ICDefaults *)self internalDefaults];
-  [v4 setBool:v3 forKey:@"ICDefaultsKeyExplicitContentAllowedForExpirationYear"];
+  yearCopy = year;
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  [internalDefaults setBool:yearCopy forKey:@"ICDefaultsKeyExplicitContentAllowedForExpirationYear"];
 }
 
 - (BOOL)isExplicitContentAllowedForExpirationYear
 {
-  v3 = [(ICDefaults *)self internalDefaults];
-  if (!v3)
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  if (!internalDefaults)
   {
     return 1;
   }
 
-  v4 = v3;
-  v5 = [(ICDefaults *)self internalDefaults];
-  v6 = [v5 valueForKey:@"ICDefaultsKeyExplicitContentAllowedForExpirationYear"];
+  v4 = internalDefaults;
+  internalDefaults2 = [(ICDefaults *)self internalDefaults];
+  v6 = [internalDefaults2 valueForKey:@"ICDefaultsKeyExplicitContentAllowedForExpirationYear"];
 
   if (!v6)
   {
     return 1;
   }
 
-  v7 = [(ICDefaults *)self internalDefaults];
-  v8 = [v7 BOOLForKey:@"ICDefaultsKeyExplicitContentAllowedForExpirationYear"];
+  internalDefaults3 = [(ICDefaults *)self internalDefaults];
+  v8 = [internalDefaults3 BOOLForKey:@"ICDefaultsKeyExplicitContentAllowedForExpirationYear"];
 
   return v8;
 }
 
-- (void)setExplicitContentAllowedForCurrentYear:(BOOL)a3
+- (void)setExplicitContentAllowedForCurrentYear:(BOOL)year
 {
-  v3 = a3;
-  v4 = [(ICDefaults *)self internalDefaults];
-  [v4 setBool:v3 forKey:@"ICDefaultsKeyExplicitContentAllowedForCurrentYear"];
+  yearCopy = year;
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  [internalDefaults setBool:yearCopy forKey:@"ICDefaultsKeyExplicitContentAllowedForCurrentYear"];
 }
 
 - (BOOL)isExplicitContentAllowedForCurrentYear
 {
-  v3 = [(ICDefaults *)self internalDefaults];
-  if (!v3)
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  if (!internalDefaults)
   {
     return 1;
   }
 
-  v4 = v3;
-  v5 = [(ICDefaults *)self internalDefaults];
-  v6 = [v5 valueForKey:@"ICDefaultsKeyExplicitContentAllowedForCurrentYear"];
+  v4 = internalDefaults;
+  internalDefaults2 = [(ICDefaults *)self internalDefaults];
+  v6 = [internalDefaults2 valueForKey:@"ICDefaultsKeyExplicitContentAllowedForCurrentYear"];
 
   if (!v6)
   {
     return 1;
   }
 
-  v7 = [(ICDefaults *)self internalDefaults];
-  v8 = [v7 BOOLForKey:@"ICDefaultsKeyExplicitContentAllowedForCurrentYear"];
+  internalDefaults3 = [(ICDefaults *)self internalDefaults];
+  v8 = [internalDefaults3 BOOLForKey:@"ICDefaultsKeyExplicitContentAllowedForCurrentYear"];
 
   return v8;
 }
 
-- (void)setAgeVerificationExpirationDate:(id)a3
+- (void)setAgeVerificationExpirationDate:(id)date
 {
-  v6 = a3;
-  v4 = [(ICDefaults *)self internalDefaults];
-  v5 = v4;
-  if (v6)
+  dateCopy = date;
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  v5 = internalDefaults;
+  if (dateCopy)
   {
-    [v4 setObject:v6 forKey:@"ICDefaultsKeyAgeVerificationExpirationDate"];
+    [internalDefaults setObject:dateCopy forKey:@"ICDefaultsKeyAgeVerificationExpirationDate"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"ICDefaultsKeyAgeVerificationExpirationDate"];
+    [internalDefaults removeObjectForKey:@"ICDefaultsKeyAgeVerificationExpirationDate"];
   }
 }
 
 - (NSDate)ageVerificationExpirationDate
 {
-  v3 = [(ICDefaults *)self internalDefaults];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
 
-  if (v3)
+  if (internalDefaults)
   {
-    v4 = [(ICDefaults *)self internalDefaults];
-    v5 = [v4 objectForKey:@"ICDefaultsKeyAgeVerificationExpirationDate"];
+    internalDefaults2 = [(ICDefaults *)self internalDefaults];
+    v5 = [internalDefaults2 objectForKey:@"ICDefaultsKeyAgeVerificationExpirationDate"];
 
     if (_NSIsNSDate())
     {
-      v3 = v5;
+      internalDefaults = v5;
     }
 
     else
     {
-      v3 = 0;
+      internalDefaults = 0;
     }
   }
 
-  return v3;
+  return internalDefaults;
 }
 
-- (void)setShouldRunAgeVerification:(BOOL)a3
+- (void)setShouldRunAgeVerification:(BOOL)verification
 {
-  v3 = a3;
-  v4 = [(ICDefaults *)self internalDefaults];
-  [v4 setBool:v3 forKey:@"ICDefaultsKeyShouldRunAgeVerification"];
+  verificationCopy = verification;
+  internalDefaults = [(ICDefaults *)self internalDefaults];
+  [internalDefaults setBool:verificationCopy forKey:@"ICDefaultsKeyShouldRunAgeVerification"];
 }
 
 - (BOOL)shouldRunAgeVerification
 {
-  v3 = [(ICDefaults *)self internalDefaults];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
 
-  if (!v3)
+  if (!internalDefaults)
   {
     return 0;
   }
 
-  v4 = [(ICDefaults *)self internalDefaults];
-  v5 = [v4 BOOLForKey:@"ICDefaultsKeyShouldRunAgeVerification"];
+  internalDefaults2 = [(ICDefaults *)self internalDefaults];
+  v5 = [internalDefaults2 BOOLForKey:@"ICDefaultsKeyShouldRunAgeVerification"];
 
   return v5;
 }
@@ -1000,22 +1000,22 @@ LABEL_9:
 
 - (BOOL)bypassBagSanityChecks
 {
-  v3 = [(ICDefaults *)self internalDefaults];
+  internalDefaults = [(ICDefaults *)self internalDefaults];
 
-  if (!v3)
+  if (!internalDefaults)
   {
     return 0;
   }
 
-  v4 = [(ICDefaults *)self internalDefaults];
-  v5 = [v4 BOOLForKey:@"ICDefaultsKeyBypassBagSanityChecks"];
+  internalDefaults2 = [(ICDefaults *)self internalDefaults];
+  v5 = [internalDefaults2 BOOLForKey:@"ICDefaultsKeyBypassBagSanityChecks"];
 
   return v5;
 }
 
-- (void)setIgnoreExtendedCertificateValidation:(BOOL)a3
+- (void)setIgnoreExtendedCertificateValidation:(BOOL)validation
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:validation];
 
   CFPreferencesSetAppValue(@"ISIgnoreExtendedValidation", v3, @"com.apple.itunesstored");
 }
@@ -1106,9 +1106,9 @@ LABEL_9:
   return v3;
 }
 
-- (void)setLastAuthenticationDialogResponseTime:(double)a3
+- (void)setLastAuthenticationDialogResponseTime:(double)time
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:time];
   [(ICDefaults *)self _setOrRemoveObject:v4 forKey:@"ICDefaultsKeyLastAuthenticationDialogResponseTime"];
 }
 
@@ -1320,10 +1320,10 @@ void __76__ICDefaults_mediaLibraryAccessApplicationIdentifiersWithTCCAcceptanceD
 - (NSString)defaultStoreFront
 {
   v2 = +[ICUserIdentityStore defaultIdentityStore];
-  v3 = [v2 localStoreAccountProperties];
-  v4 = [v3 storefrontIdentifier];
+  localStoreAccountProperties = [v2 localStoreAccountProperties];
+  storefrontIdentifier = [localStoreAccountProperties storefrontIdentifier];
 
-  return v4;
+  return storefrontIdentifier;
 }
 
 @end

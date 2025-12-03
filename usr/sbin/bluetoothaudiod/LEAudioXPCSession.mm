@@ -1,47 +1,47 @@
 @interface LEAudioXPCSession
-- (LEAudioXPCSession)initWithConnection:(id)a3;
-- (void)_handlekCBMsgChangeSessionMicrophoneGainMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgChangeSessionMicrophoneMuteStateMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgChangeSessionVolumeMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgChangeSessionVolumeMuteStateMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgChangeSessionVolumeOffsetMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgLEAudioRegisterMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgReadPresetsMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgSetActivePresetMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgSetMicrophoneMuteMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgSetVolumeMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgSetVolumeMuteMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgSetVolumeOffSetMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgWriteMicrophoneAudioInputMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgWritePresetNameMsg:(id)a3 reply:(id)a4;
-- (void)_handlekCBMsgWriteVolumeAudioInputMsg:(id)a3 reply:(id)a4;
-- (void)activePresetUpdated:(id)a3 withIndex:(unsigned __int8)a4;
-- (void)handleMsg:(id)a3;
-- (void)microphoneInputGainUpdated:(id)a3 withGain:(char)a4;
-- (void)microphoneMuteUpdated:(id)a3 withMute:(unsigned __int8)a4;
-- (void)presetNameUpdated:(id)a3 withIndex:(unsigned __int8)a4;
-- (void)presetsUpdated:(id)a3;
-- (void)sendLEAudioMsg:(const char *)a3 withArgs:(id)a4;
-- (void)sessionCompleted:(id)a3;
-- (void)sessionMicrophoneGainUpdated:(id)a3 withMicrophoneGain:(char)a4;
-- (void)sessionMicrophoneMuteUpdated:(id)a3 withMicrophoneMute:(unsigned __int8)a4;
-- (void)sessionVolumeMuteUpdated:(id)a3 withVolumeMute:(unsigned __int8)a4;
-- (void)sessionVolumeOffsetUpdated:(id)a3 withVolumeOffset:(char)a4;
-- (void)sessionVolumeUpdated:(id)a3 withVolume:(unsigned __int8)a4;
-- (void)supportedFeaturesUpdated:(id)a3;
-- (void)volumeInputGainUpdated:(id)a3 withGain:(char)a4;
-- (void)volumeMuteUpdated:(id)a3 withMute:(unsigned __int8)a4;
-- (void)volumeOffsetUpdated:(id)a3 withOffset:(char)a4;
-- (void)volumeUpdated:(id)a3 withVolume:(unsigned __int8)a4;
+- (LEAudioXPCSession)initWithConnection:(id)connection;
+- (void)_handlekCBMsgChangeSessionMicrophoneGainMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgChangeSessionMicrophoneMuteStateMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgChangeSessionVolumeMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgChangeSessionVolumeMuteStateMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgChangeSessionVolumeOffsetMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgLEAudioRegisterMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgReadPresetsMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgSetActivePresetMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgSetMicrophoneMuteMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgSetVolumeMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgSetVolumeMuteMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgSetVolumeOffSetMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgWriteMicrophoneAudioInputMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgWritePresetNameMsg:(id)msg reply:(id)reply;
+- (void)_handlekCBMsgWriteVolumeAudioInputMsg:(id)msg reply:(id)reply;
+- (void)activePresetUpdated:(id)updated withIndex:(unsigned __int8)index;
+- (void)handleMsg:(id)msg;
+- (void)microphoneInputGainUpdated:(id)updated withGain:(char)gain;
+- (void)microphoneMuteUpdated:(id)updated withMute:(unsigned __int8)mute;
+- (void)presetNameUpdated:(id)updated withIndex:(unsigned __int8)index;
+- (void)presetsUpdated:(id)updated;
+- (void)sendLEAudioMsg:(const char *)msg withArgs:(id)args;
+- (void)sessionCompleted:(id)completed;
+- (void)sessionMicrophoneGainUpdated:(id)updated withMicrophoneGain:(char)gain;
+- (void)sessionMicrophoneMuteUpdated:(id)updated withMicrophoneMute:(unsigned __int8)mute;
+- (void)sessionVolumeMuteUpdated:(id)updated withVolumeMute:(unsigned __int8)mute;
+- (void)sessionVolumeOffsetUpdated:(id)updated withVolumeOffset:(char)offset;
+- (void)sessionVolumeUpdated:(id)updated withVolume:(unsigned __int8)volume;
+- (void)supportedFeaturesUpdated:(id)updated;
+- (void)volumeInputGainUpdated:(id)updated withGain:(char)gain;
+- (void)volumeMuteUpdated:(id)updated withMute:(unsigned __int8)mute;
+- (void)volumeOffsetUpdated:(id)updated withOffset:(char)offset;
+- (void)volumeUpdated:(id)updated withVolume:(unsigned __int8)volume;
 @end
 
 @implementation LEAudioXPCSession
 
-- (LEAudioXPCSession)initWithConnection:(id)a3
+- (LEAudioXPCSession)initWithConnection:(id)connection
 {
   v8.receiver = self;
   v8.super_class = LEAudioXPCSession;
-  v3 = [(LEAudioXpcConnection *)&v8 initWithConnection:a3];
+  v3 = [(LEAudioXpcConnection *)&v8 initWithConnection:connection];
   v4 = qword_1000A9FE8;
   qword_1000A9FE8 = v3;
 
@@ -52,12 +52,12 @@
   return v3;
 }
 
-- (void)sendLEAudioMsg:(const char *)a3 withArgs:(id)a4
+- (void)sendLEAudioMsg:(const char *)msg withArgs:(id)args
 {
-  v6 = a4;
+  argsCopy = args;
   *keys = *&off_1000955D0;
-  v10[0] = xpc_string_create(a3);
-  v7 = v6;
+  v10[0] = xpc_string_create(msg);
+  v7 = argsCopy;
   v10[1] = v7;
   v8 = xpc_dictionary_create(keys, v10, 2uLL);
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
@@ -72,12 +72,12 @@
   }
 }
 
-- (void)handleMsg:(id)a3
+- (void)handleMsg:(id)msg
 {
-  v4 = a3;
-  v5 = [(LEAudioXpcConnection *)self stringForKey:"kCBMsgId" optional:0 dict:v4];
-  v6 = [(LEAudioXpcConnection *)self xpcDictForKey:"kCBMsgArgs" optional:1 dict:v4];
-  reply = xpc_dictionary_create_reply(v4);
+  msgCopy = msg;
+  v5 = [(LEAudioXpcConnection *)self stringForKey:"kCBMsgId" optional:0 dict:msgCopy];
+  v6 = [(LEAudioXpcConnection *)self xpcDictForKey:"kCBMsgArgs" optional:1 dict:msgCopy];
+  reply = xpc_dictionary_create_reply(msgCopy);
 
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
@@ -98,33 +98,33 @@
   }
 }
 
-- (void)_handlekCBMsgLEAudioRegisterMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgLEAudioRegisterMsg:(id)msg reply:(id)reply
 {
-  v4 = [(LEAudioXpcConnection *)self stringForKey:"kCBMsgArgLEAudioClient" optional:0 dict:a3];
+  v4 = [(LEAudioXpcConnection *)self stringForKey:"kCBMsgArgLEAudioClient" optional:0 dict:msg];
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005CC64();
   }
 }
 
-- (void)_handlekCBMsgSetVolumeMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgSetVolumeMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  xuuid = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioDeviceUUID");
+  msgCopy = msg;
+  xuuid = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioDeviceUUID");
   v6 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(xuuid)];
-  v7 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolume" optional:0 dict:v5];
+  v7 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolume" optional:0 dict:msgCopy];
 
   [qword_1000A9FF0 changeVolume:v6 withVolume:{objc_msgSend(v7, "unsignedCharValue")}];
 }
 
-- (void)_handlekCBMsgSetVolumeOffSetMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgSetVolumeOffSetMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioDeviceUUID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioDeviceUUID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioChangeCounter" optional:0 dict:v5];
-  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioLocation" optional:0 dict:v5];
-  v10 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolumeOffset" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioChangeCounter" optional:0 dict:msgCopy];
+  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioLocation" optional:0 dict:msgCopy];
+  v10 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolumeOffset" optional:0 dict:msgCopy];
 
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
@@ -141,12 +141,12 @@
   [qword_1000A9FF0 changeVolumeOffset:v7 withOffset:objc_msgSend(v10 forAudioLocation:{"shortValue"), objc_msgSend(v9, "unsignedIntValue")}];
 }
 
-- (void)_handlekCBMsgSetVolumeMuteMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgSetVolumeMuteMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioDeviceUUID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioDeviceUUID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolumeMuteState" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolumeMuteState" optional:0 dict:msgCopy];
 
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
@@ -156,14 +156,14 @@
   [qword_1000A9FF0 changeVolumeMute:v7 withMute:{objc_msgSend(v8, "unsignedCharValue")}];
 }
 
-- (void)_handlekCBMsgWriteVolumeAudioInputMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgWriteVolumeAudioInputMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioDeviceUUID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioDeviceUUID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioAudioInputOpcode" optional:0 dict:v5];
-  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioAudioInputType" optional:0 dict:v5];
-  v10 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolumeGain" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioAudioInputOpcode" optional:0 dict:msgCopy];
+  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioAudioInputType" optional:0 dict:msgCopy];
+  v10 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolumeGain" optional:0 dict:msgCopy];
 
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
@@ -180,12 +180,12 @@
   [qword_1000A9FF0 changeVolumeAudioInputGainSetting:v7 withGainSetting:objc_msgSend(v10 forInputType:{"charValue"), objc_msgSend(v9, "unsignedCharValue")}];
 }
 
-- (void)_handlekCBMsgSetMicrophoneMuteMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgSetMicrophoneMuteMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioDeviceUUID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioDeviceUUID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioMicrophoneMuteState" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioMicrophoneMuteState" optional:0 dict:msgCopy];
 
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
@@ -195,14 +195,14 @@
   [qword_1000A9FF0 changeMirophoneMute:v7 withMute:{objc_msgSend(v8, "unsignedCharValue")}];
 }
 
-- (void)_handlekCBMsgWriteMicrophoneAudioInputMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgWriteMicrophoneAudioInputMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioDeviceUUID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioDeviceUUID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioAudioInputOpcode" optional:0 dict:v5];
-  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioAudioInputType" optional:0 dict:v5];
-  v10 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioMicrophoneGain" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioAudioInputOpcode" optional:0 dict:msgCopy];
+  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioAudioInputType" optional:0 dict:msgCopy];
+  v10 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioMicrophoneGain" optional:0 dict:msgCopy];
 
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
@@ -219,9 +219,9 @@
   [qword_1000A9FF0 changeMicrophoneGainSetting:v7 withGainSetting:objc_msgSend(v10 forInputType:{"charValue"), objc_msgSend(v9, "unsignedCharValue")}];
 }
 
-- (void)_handlekCBMsgReadPresetsMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgReadPresetsMsg:(id)msg reply:(id)reply
 {
-  v4 = xpc_dictionary_get_value(a3, "kCBMsgArgLEAudioDeviceUUID");
+  v4 = xpc_dictionary_get_value(msg, "kCBMsgArgLEAudioDeviceUUID");
   v5 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v4)];
   v6 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
@@ -232,13 +232,13 @@
   [qword_1000A9FF0 readPresets:v5 withStartIndex:1 withNumPresets:255];
 }
 
-- (void)_handlekCBMsgSetActivePresetMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgSetActivePresetMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioDeviceUUID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioDeviceUUID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioPresetType" optional:0 dict:v5];
-  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioPresetIndex" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioPresetType" optional:0 dict:msgCopy];
+  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioPresetIndex" optional:0 dict:msgCopy];
 
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
@@ -248,13 +248,13 @@
   [qword_1000A9FF0 setActivePreset:v7 withType:objc_msgSend(v8 withIndex:{"unsignedCharValue"), objc_msgSend(v9, "unsignedCharValue")}];
 }
 
-- (void)_handlekCBMsgWritePresetNameMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgWritePresetNameMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioDeviceUUID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioDeviceUUID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioPresetIndex" optional:0 dict:v5];
-  v9 = [(LEAudioXpcConnection *)self stringForKey:"kCBMsgArgLEAudioPresetName" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioPresetIndex" optional:0 dict:msgCopy];
+  v9 = [(LEAudioXpcConnection *)self stringForKey:"kCBMsgArgLEAudioPresetName" optional:0 dict:msgCopy];
 
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
@@ -264,20 +264,20 @@
   [qword_1000A9FF0 writePresetName:v7 withName:v9 forIndex:{objc_msgSend(v8, "unsignedCharValue")}];
 }
 
-- (void)volumeUpdated:(id)a3 withVolume:(unsigned __int8)a4
+- (void)volumeUpdated:(id)updated withVolume:(unsigned __int8)volume
 {
-  v4 = a4;
+  volumeCopy = volume;
   *uuid = 0;
   v11 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = [v6 peripheral];
+  peripheral = [updatedCopy peripheral];
 
-  v9 = [v8 identifier];
-  [v9 getUUIDBytes:uuid];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioDeviceUUID", uuid);
-  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioVolume", v4);
+  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioVolume", volumeCopy);
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005CEC8();
@@ -286,20 +286,20 @@
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioVolumeUpdated" withArgs:v7];
 }
 
-- (void)volumeOffsetUpdated:(id)a3 withOffset:(char)a4
+- (void)volumeOffsetUpdated:(id)updated withOffset:(char)offset
 {
-  v4 = a4;
+  offsetCopy = offset;
   *uuid = 0;
   v11 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = [v6 peripheral];
+  peripheral = [updatedCopy peripheral];
 
-  v9 = [v8 identifier];
-  [v9 getUUIDBytes:uuid];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioDeviceUUID", uuid);
-  xpc_dictionary_set_int64(v7, "kCBMsgArgLEAudioVolumeOffset", v4);
+  xpc_dictionary_set_int64(v7, "kCBMsgArgLEAudioVolumeOffset", offsetCopy);
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005CEC8();
@@ -308,20 +308,20 @@
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioVolumeOffsetUpdated" withArgs:v7];
 }
 
-- (void)volumeMuteUpdated:(id)a3 withMute:(unsigned __int8)a4
+- (void)volumeMuteUpdated:(id)updated withMute:(unsigned __int8)mute
 {
-  v4 = a4;
+  muteCopy = mute;
   *uuid = 0;
   v11 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = [v6 peripheral];
+  peripheral = [updatedCopy peripheral];
 
-  v9 = [v8 identifier];
-  [v9 getUUIDBytes:uuid];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioDeviceUUID", uuid);
-  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioVolumeMuteState", v4);
+  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioVolumeMuteState", muteCopy);
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005CEC8();
@@ -330,20 +330,20 @@
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioVolumeMuteUpdated" withArgs:v7];
 }
 
-- (void)volumeInputGainUpdated:(id)a3 withGain:(char)a4
+- (void)volumeInputGainUpdated:(id)updated withGain:(char)gain
 {
-  v4 = a4;
+  gainCopy = gain;
   *uuid = 0;
   v11 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = [v6 peripheral];
+  peripheral = [updatedCopy peripheral];
 
-  v9 = [v8 identifier];
-  [v9 getUUIDBytes:uuid];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioDeviceUUID", uuid);
-  xpc_dictionary_set_int64(v7, "kCBMsgArgLEAudioVolumeGain", v4);
+  xpc_dictionary_set_int64(v7, "kCBMsgArgLEAudioVolumeGain", gainCopy);
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005CEC8();
@@ -352,20 +352,20 @@
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioVolumeInputGainUpdated" withArgs:v7];
 }
 
-- (void)microphoneMuteUpdated:(id)a3 withMute:(unsigned __int8)a4
+- (void)microphoneMuteUpdated:(id)updated withMute:(unsigned __int8)mute
 {
-  v4 = a4;
+  muteCopy = mute;
   *uuid = 0;
   v11 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = [v6 peripheral];
+  peripheral = [updatedCopy peripheral];
 
-  v9 = [v8 identifier];
-  [v9 getUUIDBytes:uuid];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioDeviceUUID", uuid);
-  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioMicrophoneMuteState", v4);
+  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioMicrophoneMuteState", muteCopy);
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005CEC8();
@@ -374,20 +374,20 @@
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioMicrophoneMuteUpdated" withArgs:v7];
 }
 
-- (void)microphoneInputGainUpdated:(id)a3 withGain:(char)a4
+- (void)microphoneInputGainUpdated:(id)updated withGain:(char)gain
 {
-  v4 = a4;
+  gainCopy = gain;
   *uuid = 0;
   v11 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = [v6 peripheral];
+  peripheral = [updatedCopy peripheral];
 
-  v9 = [v8 identifier];
-  [v9 getUUIDBytes:uuid];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioDeviceUUID", uuid);
-  xpc_dictionary_set_int64(v7, "kCBMsgArgLEAudioMicrophoneGain", v4);
+  xpc_dictionary_set_int64(v7, "kCBMsgArgLEAudioMicrophoneGain", gainCopy);
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005CEC8();
@@ -396,9 +396,9 @@
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioMicrophoneGainUpdated" withArgs:v7];
 }
 
-- (void)presetsUpdated:(id)a3
+- (void)presetsUpdated:(id)updated
 {
-  v3 = a3;
+  updatedCopy = updated;
   xdict = xpc_dictionary_create(0, 0, 0);
   v4 = xpc_array_create(0, 0);
   v5 = xpc_array_create(0, 0);
@@ -407,11 +407,11 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v3 hasInterface];
-  v8 = [v7 presets];
+  hasInterface = [updatedCopy hasInterface];
+  presets = [hasInterface presets];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  obj = presets;
+  v9 = [presets countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -426,14 +426,14 @@
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v3 hasInterface];
-        v15 = [v14 presets];
-        v16 = [v15 objectForKey:v13];
+        hasInterface2 = [updatedCopy hasInterface];
+        presets2 = [hasInterface2 presets];
+        v16 = [presets2 objectForKey:v13];
 
         xpc_array_set_uint64(v4, 0xFFFFFFFFFFFFFFFFLL, [v16 index]);
         xpc_array_set_uint64(v5, 0xFFFFFFFFFFFFFFFFLL, [v16 isAvailable] | objc_msgSend(v16, "writable"));
-        v17 = [v16 name];
-        xpc_array_set_string(v6, 0xFFFFFFFFFFFFFFFFLL, [v17 UTF8String]);
+        name = [v16 name];
+        xpc_array_set_string(v6, 0xFFFFFFFFFFFFFFFFLL, [name UTF8String]);
       }
 
       v10 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
@@ -444,9 +444,9 @@
 
   *uuid = 0;
   v28 = 0;
-  v18 = [v3 peripheral];
-  v19 = [v18 identifier];
-  [v19 getUUIDBytes:uuid];
+  peripheral = [updatedCopy peripheral];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(xdict, "kCBMsgArgLEAudioDeviceUUID", uuid);
   xpc_dictionary_set_value(xdict, "kCBMsgArgLEAudioDevicePresetIndexes", v4);
@@ -460,72 +460,72 @@
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioReadPresetUpdated" withArgs:xdict];
 }
 
-- (void)activePresetUpdated:(id)a3 withIndex:(unsigned __int8)a4
+- (void)activePresetUpdated:(id)updated withIndex:(unsigned __int8)index
 {
-  v4 = a4;
+  indexCopy = index;
   *uuid = 0;
   v11 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = [v6 peripheral];
+  peripheral = [updatedCopy peripheral];
 
-  v9 = [v8 identifier];
-  [v9 getUUIDBytes:uuid];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioDeviceUUID", uuid);
-  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioPresetIndex", v4);
+  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioPresetIndex", indexCopy);
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioActivePresetUpdated" withArgs:v7];
 }
 
-- (void)presetNameUpdated:(id)a3 withIndex:(unsigned __int8)a4
+- (void)presetNameUpdated:(id)updated withIndex:(unsigned __int8)index
 {
-  v4 = a4;
+  indexCopy = index;
   *uuid = 0;
   v11 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = [v6 peripheral];
+  peripheral = [updatedCopy peripheral];
 
-  v9 = [v8 identifier];
-  [v9 getUUIDBytes:uuid];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioDeviceUUID", uuid);
-  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioPresetIndex", v4);
+  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioPresetIndex", indexCopy);
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioPresetNameUpdated" withArgs:v7];
 }
 
-- (void)supportedFeaturesUpdated:(id)a3
+- (void)supportedFeaturesUpdated:(id)updated
 {
   *uuid = 0;
   v15 = 0;
-  v4 = a3;
+  updatedCopy = updated;
   v5 = xpc_dictionary_create(0, 0, 0);
-  v6 = [v4 hasInterface];
-  v7 = [v6 getHearingAidType];
+  hasInterface = [updatedCopy hasInterface];
+  getHearingAidType = [hasInterface getHearingAidType];
 
-  v8 = [v4 hasInterface];
-  LOBYTE(v6) = [v8 presetSyncSupported];
+  hasInterface2 = [updatedCopy hasInterface];
+  LOBYTE(hasInterface) = [hasInterface2 presetSyncSupported];
 
-  v9 = [v4 hasInterface];
-  LOBYTE(v8) = [v9 independentPresets];
+  hasInterface3 = [updatedCopy hasInterface];
+  LOBYTE(hasInterface2) = [hasInterface3 independentPresets];
 
-  v10 = [v4 hasInterface];
-  LOBYTE(v9) = [v10 dynamicPresents];
+  hasInterface4 = [updatedCopy hasInterface];
+  LOBYTE(hasInterface3) = [hasInterface4 dynamicPresents];
 
-  v11 = [v4 hasInterface];
-  LOBYTE(v10) = [v11 writablePresentsSupported];
+  hasInterface5 = [updatedCopy hasInterface];
+  LOBYTE(hasInterface4) = [hasInterface5 writablePresentsSupported];
 
-  v12 = [v4 peripheral];
+  peripheral = [updatedCopy peripheral];
 
-  v13 = [v12 identifier];
-  [v13 getUUIDBytes:uuid];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v5, "kCBMsgArgLEAudioDeviceUUID", uuid);
-  xpc_dictionary_set_uint64(v5, "kCBMsgArgLEAudioHearingAidType", v7);
-  xpc_dictionary_set_BOOL(v5, "kCBMsgArgLEAudioHearingAidSyncSupported", v6);
-  xpc_dictionary_set_BOOL(v5, "kCBMsgArgLEAudioHearingAidIndependent", v8);
-  xpc_dictionary_set_BOOL(v5, "kCBMsgArgLEAudioHearingAidDynamic", v9);
-  xpc_dictionary_set_BOOL(v5, "kCBMsgArgLEAudioHearingAidWritable", v10);
+  xpc_dictionary_set_uint64(v5, "kCBMsgArgLEAudioHearingAidType", getHearingAidType);
+  xpc_dictionary_set_BOOL(v5, "kCBMsgArgLEAudioHearingAidSyncSupported", hasInterface);
+  xpc_dictionary_set_BOOL(v5, "kCBMsgArgLEAudioHearingAidIndependent", hasInterface2);
+  xpc_dictionary_set_BOOL(v5, "kCBMsgArgLEAudioHearingAidDynamic", hasInterface3);
+  xpc_dictionary_set_BOOL(v5, "kCBMsgArgLEAudioHearingAidWritable", hasInterface4);
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005CEC8();
@@ -534,19 +534,19 @@
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioHearingAidFeaturesUpdated" withArgs:v5];
 }
 
-- (void)_handlekCBMsgChangeSessionVolumeMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgChangeSessionVolumeMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioSessionID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioSessionID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolume" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolume" optional:0 dict:msgCopy];
   v9 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     v11 = v9;
     [v8 floatValue];
     v13 = 138412802;
-    v14 = v5;
+    v14 = msgCopy;
     v15 = 2112;
     v16 = v7;
     v17 = 2048;
@@ -559,25 +559,25 @@
   [v10 updateVolumeForSession:v7 withVolume:?];
 }
 
-- (void)_handlekCBMsgChangeSessionVolumeOffsetMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgChangeSessionVolumeOffsetMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioSessionID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioSessionID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioLocation" optional:0 dict:v5];
-  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolumeOffset" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioLocation" optional:0 dict:msgCopy];
+  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolumeOffset" optional:0 dict:msgCopy];
   v10 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     v12 = v10;
     v13 = 138413058;
-    v14 = v5;
+    v14 = msgCopy;
     v15 = 2112;
     v16 = v7;
     v17 = 1024;
-    v18 = [v8 unsignedCharValue];
+    unsignedCharValue = [v8 unsignedCharValue];
     v19 = 1024;
-    v20 = [v9 shortValue];
+    shortValue = [v9 shortValue];
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "_handleChangeSessionVolumeOffsetMsg: %@, id:%@, location: %d, offset: %d", &v13, 0x22u);
   }
 
@@ -585,22 +585,22 @@
   [v11 updateVolumeOffsetForSession:v7 withOffset:objc_msgSend(v9 forAudioLocation:{"shortValue"), objc_msgSend(v8, "unsignedIntValue")}];
 }
 
-- (void)_handlekCBMsgChangeSessionVolumeMuteStateMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgChangeSessionVolumeMuteStateMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioSessionID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioSessionID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolumeMuteState" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioVolumeMuteState" optional:0 dict:msgCopy];
   v9 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     v11 = v9;
     v12 = 138412802;
-    v13 = v5;
+    v13 = msgCopy;
     v14 = 2112;
     v15 = v7;
     v16 = 1024;
-    v17 = [v8 unsignedCharValue];
+    unsignedCharValue = [v8 unsignedCharValue];
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "_handleChangeSessionVolumeMuteStateMsg: %@, id:%@, value: %d", &v12, 0x1Cu);
   }
 
@@ -608,22 +608,22 @@
   [v10 updateVolumeMuteForSession:v7 withMute:{objc_msgSend(v8, "unsignedCharValue")}];
 }
 
-- (void)_handlekCBMsgChangeSessionMicrophoneMuteStateMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgChangeSessionMicrophoneMuteStateMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioSessionID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioSessionID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioMicrophoneMuteState" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioMicrophoneMuteState" optional:0 dict:msgCopy];
   v9 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     v11 = v9;
     v12 = 138412802;
-    v13 = v5;
+    v13 = msgCopy;
     v14 = 2112;
     v15 = v7;
     v16 = 1024;
-    v17 = [v8 unsignedCharValue];
+    unsignedCharValue = [v8 unsignedCharValue];
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "_handleChangeSessionMicrophoneMuteStateMsg: %@, id:%@,  value: %d", &v12, 0x1Cu);
   }
 
@@ -631,25 +631,25 @@
   [v10 updateMicrophoneForSession:v7 withMute:{objc_msgSend(v8, "unsignedCharValue")}];
 }
 
-- (void)_handlekCBMsgChangeSessionMicrophoneGainMsg:(id)a3 reply:(id)a4
+- (void)_handlekCBMsgChangeSessionMicrophoneGainMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v6 = xpc_dictionary_get_value(v5, "kCBMsgArgLEAudioSessionID");
+  msgCopy = msg;
+  v6 = xpc_dictionary_get_value(msgCopy, "kCBMsgArgLEAudioSessionID");
   v7 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v6)];
-  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioMicrophoneGain" optional:0 dict:v5];
-  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioAudioInputType" optional:0 dict:v5];
+  v8 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioMicrophoneGain" optional:0 dict:msgCopy];
+  v9 = [(LEAudioXpcConnection *)self numberForKey:"kCBMsgArgLEAudioAudioInputType" optional:0 dict:msgCopy];
   v10 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     v12 = v10;
     v13 = 138413058;
-    v14 = v5;
+    v14 = msgCopy;
     v15 = 2112;
     v16 = v7;
     v17 = 1024;
-    v18 = [v8 charValue];
+    charValue = [v8 charValue];
     v19 = 1024;
-    v20 = [v9 charValue];
+    charValue2 = [v9 charValue];
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "_handleChangeSessionMicrophoneMuteGainnMsg: %@, id:%@, gain: %d, type: %d", &v13, 0x22u);
   }
 
@@ -657,24 +657,24 @@
   [v11 updateMicrophoneGainForSession:v7 withGainSetting:objc_msgSend(v8 forInputType:{"charValue"), objc_msgSend(v9, "unsignedCharValue")}];
 }
 
-- (void)sessionCompleted:(id)a3
+- (void)sessionCompleted:(id)completed
 {
-  v3 = a3;
+  completedCopy = completed;
   v4 = xpc_dictionary_create(0, 0, 0);
   v5 = xpc_array_create(0, 0);
   *v28 = 0;
   v29 = 0;
   *v26 = 0;
   v27 = 0;
-  v6 = [v3 objectForKeyedSubscript:@"kCBMsgArgLEAudioSessionID"];
-  v7 = [v3 objectForKeyedSubscript:@"kCBMsgArgLEAudioDeviceUUID"];
+  v6 = [completedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioSessionID"];
+  v7 = [completedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioDeviceUUID"];
   v17 = v6;
   [v6 getUUIDBytes:v28];
   v16 = v7;
   [v7 getUUIDBytes:v26];
-  v8 = [v3 objectForKeyedSubscript:@"kCoordinatedSetSize"];
-  v9 = [v3 objectForKeyedSubscript:@"kSinkAudioLocations"];
-  v10 = [v3 objectForKeyedSubscript:@"kCBMsgArgLEAudioCoordinatedSetIds"];
+  v8 = [completedCopy objectForKeyedSubscript:@"kCoordinatedSetSize"];
+  v9 = [completedCopy objectForKeyedSubscript:@"kSinkAudioLocations"];
+  v10 = [completedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioCoordinatedSetIds"];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -694,10 +694,10 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v19 + 1) + 8 * v14) identifier];
+        identifier = [*(*(&v19 + 1) + 8 * v14) identifier];
         *uuid = 0;
         v24 = 0;
-        [v15 getUUIDBytes:uuid];
+        [identifier getUUIDBytes:uuid];
         xpc_array_set_uuid(v5, 0xFFFFFFFFFFFFFFFFLL, uuid);
 
         v14 = v14 + 1;
@@ -718,73 +718,73 @@
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioSessionCompleted" withArgs:v4];
 }
 
-- (void)sessionVolumeUpdated:(id)a3 withVolume:(unsigned __int8)a4
+- (void)sessionVolumeUpdated:(id)updated withVolume:(unsigned __int8)volume
 {
-  v4 = a4;
+  volumeCopy = volume;
   *uuid = 0;
   v9 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  [v6 getUUIDBytes:uuid];
+  [updatedCopy getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioSessionID", uuid);
-  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioVolume", v4);
+  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioVolume", volumeCopy);
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioSessionVolumeUpdated" withArgs:v7];
 }
 
-- (void)sessionVolumeOffsetUpdated:(id)a3 withVolumeOffset:(char)a4
+- (void)sessionVolumeOffsetUpdated:(id)updated withVolumeOffset:(char)offset
 {
-  v4 = a4;
+  offsetCopy = offset;
   *uuid = 0;
   v9 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  [v6 getUUIDBytes:uuid];
+  [updatedCopy getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioSessionID", uuid);
-  xpc_dictionary_set_int64(v7, "kCBMsgArgLEAudioVolumeOffset", v4);
+  xpc_dictionary_set_int64(v7, "kCBMsgArgLEAudioVolumeOffset", offsetCopy);
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioSessionVolumeOffsetUpdated" withArgs:v7];
 }
 
-- (void)sessionVolumeMuteUpdated:(id)a3 withVolumeMute:(unsigned __int8)a4
+- (void)sessionVolumeMuteUpdated:(id)updated withVolumeMute:(unsigned __int8)mute
 {
-  v4 = a4;
+  muteCopy = mute;
   *uuid = 0;
   v9 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  [v6 getUUIDBytes:uuid];
+  [updatedCopy getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioSessionID", uuid);
-  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioVolumeMuteState", v4);
+  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioVolumeMuteState", muteCopy);
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioSessionVolumeMuteUpdated" withArgs:v7];
 }
 
-- (void)sessionMicrophoneMuteUpdated:(id)a3 withMicrophoneMute:(unsigned __int8)a4
+- (void)sessionMicrophoneMuteUpdated:(id)updated withMicrophoneMute:(unsigned __int8)mute
 {
-  v4 = a4;
+  muteCopy = mute;
   *uuid = 0;
   v9 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  [v6 getUUIDBytes:uuid];
+  [updatedCopy getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioSessionID", uuid);
-  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioMicrophoneMuteState", v4);
+  xpc_dictionary_set_uint64(v7, "kCBMsgArgLEAudioMicrophoneMuteState", muteCopy);
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioSessionMicrophoneMuteUpdated" withArgs:v7];
 }
 
-- (void)sessionMicrophoneGainUpdated:(id)a3 withMicrophoneGain:(char)a4
+- (void)sessionMicrophoneGainUpdated:(id)updated withMicrophoneGain:(char)gain
 {
-  v4 = a4;
+  gainCopy = gain;
   *uuid = 0;
   v9 = 0;
-  v6 = a3;
+  updatedCopy = updated;
   v7 = xpc_dictionary_create(0, 0, 0);
-  [v6 getUUIDBytes:uuid];
+  [updatedCopy getUUIDBytes:uuid];
 
   xpc_dictionary_set_uuid(v7, "kCBMsgArgLEAudioSessionID", uuid);
-  xpc_dictionary_set_int64(v7, "kCBMsgArgLEAudioMicrophoneGain", v4);
+  xpc_dictionary_set_int64(v7, "kCBMsgArgLEAudioMicrophoneGain", gainCopy);
   [(LEAudioXPCSession *)self sendLEAudioMsg:"kCBMsgLEAudioSessionMicrophoneGainUpdated" withArgs:v7];
 }
 

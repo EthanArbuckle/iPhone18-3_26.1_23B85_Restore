@@ -1,7 +1,7 @@
 @interface PUEditActionActivity
 - (BOOL)_isDisabled;
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (PUEditActionActivity)initWithActionName:(id)a3 activityType:(id)a4 systemImageName:(id)a5;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (PUEditActionActivity)initWithActionName:(id)name activityType:(id)type systemImageName:(id)imageName;
 - (void)performActivity;
 @end
 
@@ -9,12 +9,12 @@
 
 - (void)performActivity
 {
-  v3 = [(PUEditActionActivity *)self performActivityActionHandler];
+  performActivityActionHandler = [(PUEditActionActivity *)self performActivityActionHandler];
 
-  if (v3)
+  if (performActivityActionHandler)
   {
-    v4 = [(PUEditActionActivity *)self performActivityActionHandler];
-    (v4)[2](v4, self);
+    performActivityActionHandler2 = [(PUEditActionActivity *)self performActivityActionHandler];
+    (performActivityActionHandler2)[2](performActivityActionHandler2, self);
   }
 
   [(UIActivity *)self activityDidFinish:1];
@@ -24,8 +24,8 @@
 {
   if ([(PUEditActionActivity *)self disablesInsteadOfHides])
   {
-    v3 = [(PUEditActionActivity *)self canPerformActivityActionHandler];
-    v4 = (v3)[2](v3, MEMORY[0x1E695E0F0], self) ^ 1;
+    canPerformActivityActionHandler = [(PUEditActionActivity *)self canPerformActivityActionHandler];
+    v4 = (canPerformActivityActionHandler)[2](canPerformActivityActionHandler, MEMORY[0x1E695E0F0], self) ^ 1;
   }
 
   else
@@ -36,12 +36,12 @@
   return v4;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = a3;
-  v5 = [(PUEditActionActivity *)self canPerformActivityActionHandler];
+  itemsCopy = items;
+  canPerformActivityActionHandler = [(PUEditActionActivity *)self canPerformActivityActionHandler];
 
-  if (v5)
+  if (canPerformActivityActionHandler)
   {
     if ([(PUEditActionActivity *)self disablesInsteadOfHides])
     {
@@ -50,8 +50,8 @@
 
     else
     {
-      v7 = [(PUEditActionActivity *)self canPerformActivityActionHandler];
-      v6 = (v7)[2](v7, v4, self);
+      canPerformActivityActionHandler2 = [(PUEditActionActivity *)self canPerformActivityActionHandler];
+      v6 = (canPerformActivityActionHandler2)[2](canPerformActivityActionHandler2, itemsCopy, self);
     }
   }
 
@@ -63,25 +63,25 @@
   return v6;
 }
 
-- (PUEditActionActivity)initWithActionName:(id)a3 activityType:(id)a4 systemImageName:(id)a5
+- (PUEditActionActivity)initWithActionName:(id)name activityType:(id)type systemImageName:(id)imageName
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  typeCopy = type;
+  imageNameCopy = imageName;
   v17.receiver = self;
   v17.super_class = PUEditActionActivity;
   v11 = [(UIActivity *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     actionName = v11->_actionName;
     v11->_actionName = v12;
 
-    v14 = [v10 copy];
+    v14 = [imageNameCopy copy];
     systemImageName = v11->_systemImageName;
     v11->_systemImageName = v14;
 
-    objc_storeStrong(&v11->_internalActivityType, a4);
+    objc_storeStrong(&v11->_internalActivityType, type);
   }
 
   return v11;

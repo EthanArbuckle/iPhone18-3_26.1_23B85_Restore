@@ -1,12 +1,12 @@
 @interface TTRIListDetailViewController
-- (_TtC9Reminders28TTRIListDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapCancel:(id)a3;
-- (void)didTapDone:(id)a3;
+- (_TtC9Reminders28TTRIListDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapCancel:(id)cancel;
+- (void)didTapDone:(id)done;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TTRIListDetailViewController
@@ -14,36 +14,36 @@
 - (void)loadView
 {
   v3 = objc_allocWithZone(UITableView);
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 initWithFrame:2 style:{0.0, 0.0, 0.0, 0.0}];
-  [(TTRIListDetailViewController *)v5 setView:v4];
+  [(TTRIListDetailViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002D7B70();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1002D8308(a3);
+  selfCopy = self;
+  sub_1002D8308(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1002D848C(a3);
+  selfCopy = self;
+  sub_1002D848C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(TTRIListDetailViewController *)&v6 viewWillDisappear:v3];
+  [(TTRIListDetailViewController *)&v6 viewWillDisappear:disappearCopy];
   if (qword_100767158 != -1)
   {
     swift_once();
@@ -57,14 +57,14 @@
   TTRKeyboardAvoidance<>.stopAvoidingKeyboard()();
 }
 
-- (void)didTapCancel:(id)a3
+- (void)didTapCancel:(id)cancel
 {
   v4 = type metadata accessor for TTRIPopoverAnchor();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v13[-((v6 + 15) & 0xFFFFFFFFFFFFFFF0)];
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   UIViewController.endFirstResponderEditing()();
@@ -72,7 +72,7 @@
   if (Strong)
   {
     v10 = Strong;
-    v11 = *&v8->presenter[OBJC_IVAR____TtC9Reminders28TTRIListDetailViewController_presenter];
+    v11 = *&selfCopy->presenter[OBJC_IVAR____TtC9Reminders28TTRIListDetailViewController_presenter];
     ObjectType = swift_getObjectType();
     static TTRIPopoverAnchor.barButtonItem(_:permittedArrowDirections:)();
     (*(v11 + 56))(v7, ObjectType, v11);
@@ -88,20 +88,20 @@
   }
 }
 
-- (void)didTapDone:(id)a3
+- (void)didTapDone:(id)done
 {
   v4 = sub_100058000(&qword_10076BE10);
   __chkstk_darwin(v4 - 8);
   v6 = &v12[-v5];
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   UIViewController.endFirstResponderEditing()();
   v8 = type metadata accessor for TaskPriority();
   (*(*(v8 - 8) + 56))(v6, 1, 1, v8);
   type metadata accessor for MainActor();
-  v9 = v7;
+  v9 = selfCopy;
   v10 = static MainActor.shared.getter();
   v11 = swift_allocObject();
   v11[2] = v10;
@@ -112,7 +112,7 @@
   sub_100004758(v12);
 }
 
-- (_TtC9Reminders28TTRIListDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders28TTRIListDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

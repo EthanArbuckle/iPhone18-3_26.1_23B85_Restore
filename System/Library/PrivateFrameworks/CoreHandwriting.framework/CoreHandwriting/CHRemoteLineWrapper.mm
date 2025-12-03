@@ -1,20 +1,20 @@
 @interface CHRemoteLineWrapper
-- (BOOL)isEqual:(id)a3;
-- (CHRemoteLineWrapper)initWithEnableCachingIfAvailable:(BOOL)a3;
-- (id)lineWrappingResultForGroups:(id)a3 options:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (CHRemoteLineWrapper)initWithEnableCachingIfAvailable:(BOOL)available;
+- (id)lineWrappingResultForGroups:(id)groups options:(id)options error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CHRemoteLineWrapper
 
-- (CHRemoteLineWrapper)initWithEnableCachingIfAvailable:(BOOL)a3
+- (CHRemoteLineWrapper)initWithEnableCachingIfAvailable:(BOOL)available
 {
   v5.receiver = self;
   v5.super_class = CHRemoteLineWrapper;
   result = [(CHRemoteLineWrapper *)&v5 init];
   if (result)
   {
-    result->_enableCachingIfAvailable = a3;
+    result->_enableCachingIfAvailable = available;
   }
 
   return result;
@@ -34,12 +34,12 @@
   [(CHRemoteLineWrapper *)&v8 dealloc];
 }
 
-- (id)lineWrappingResultForGroups:(id)a3 options:(id)a4 error:(id *)a5
+- (id)lineWrappingResultForGroups:(id)groups options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  groupsCopy = groups;
+  optionsCopy = options;
   v10 = [CHRemoteLineWrappingRequest alloc];
-  v14 = objc_msgSend_initWithLineWrappableGroups_options_(v10, v11, v8, v9, v12, v13);
+  v14 = objc_msgSend_initWithLineWrappableGroups_options_(v10, v11, groupsCopy, optionsCopy, v12, v13);
   v19 = v14;
   if (self)
   {
@@ -148,7 +148,7 @@ LABEL_13:
 
       _Block_object_dispose(buf, 8);
       v72 = v70;
-      if (a5)
+      if (error)
       {
         goto LABEL_16;
       }
@@ -185,11 +185,11 @@ LABEL_12:
   }
 
   v72 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_16:
     v72 = v72;
-    *a5 = v72;
+    *error = v72;
   }
 
 LABEL_17:
@@ -197,13 +197,13 @@ LABEL_17:
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToRemoteLineWrapper = objc_msgSend_isEqualToRemoteLineWrapper_(self, v5, v4, v6, v7, v8);
+    isEqualToRemoteLineWrapper = objc_msgSend_isEqualToRemoteLineWrapper_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToRemoteLineWrapper;
   }

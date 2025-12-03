@@ -1,11 +1,11 @@
 @interface RCBuiltinRecordingsFolder
 + (NSArray)allBuiltInFolders;
-+ (id)builtInFolderWithType:(int64_t)a3;
-- (BOOL)containsRecording:(id)a3;
++ (id)builtInFolderWithType:(int64_t)type;
+- (BOOL)containsRecording:(id)recording;
 - (NSString)description;
 - (NSString)name;
 - (NSString)uuid;
-- (RCBuiltinRecordingsFolder)initWithType:(int64_t)a3;
+- (RCBuiltinRecordingsFolder)initWithType:(int64_t)type;
 @end
 
 @implementation RCBuiltinRecordingsFolder
@@ -53,35 +53,35 @@ void __46__RCBuiltinRecordingsFolder_allBuiltInFolders__block_invoke()
 - (NSString)uuid
 {
   v2 = [MEMORY[0x277CCABB0] numberWithInteger:self->_folderType];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
-+ (id)builtInFolderWithType:(int64_t)a3
++ (id)builtInFolderWithType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [a1 allBuiltInFolders];
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    allBuiltInFolders = [self allBuiltInFolders];
+    v5 = [allBuiltInFolders objectAtIndexedSubscript:type];
   }
 
   return v5;
 }
 
-- (RCBuiltinRecordingsFolder)initWithType:(int64_t)a3
+- (RCBuiltinRecordingsFolder)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = RCBuiltinRecordingsFolder;
   result = [(RCBuiltinRecordingsFolder *)&v5 init];
   if (result)
   {
-    result->_folderType = a3;
+    result->_folderType = type;
   }
 
   return result;
@@ -91,8 +91,8 @@ void __46__RCBuiltinRecordingsFolder_allBuiltInFolders__block_invoke()
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(RCBuiltinRecordingsFolder *)self name];
-  v6 = [v3 stringWithFormat:@"<%@: %p> name = %@", v4, self, v5];
+  name = [(RCBuiltinRecordingsFolder *)self name];
+  v6 = [v3 stringWithFormat:@"<%@: %p> name = %@", v4, self, name];
 
   return v6;
 }
@@ -111,10 +111,10 @@ void __46__RCBuiltinRecordingsFolder_allBuiltInFolders__block_invoke()
   }
 }
 
-- (BOOL)containsRecording:(id)a3
+- (BOOL)containsRecording:(id)recording
 {
-  v4 = a3;
-  v5 = v4;
+  recordingCopy = recording;
+  v5 = recordingCopy;
   folderType = self->_folderType;
   v7 = 1;
   if (folderType > 2)
@@ -126,8 +126,8 @@ void __46__RCBuiltinRecordingsFolder_allBuiltInFolders__block_invoke()
 
     else if (folderType == 3)
     {
-      v9 = [v4 deletionDate];
-      v7 = v9 != 0;
+      deletionDate = [recordingCopy deletionDate];
+      v7 = deletionDate != 0;
     }
   }
 
@@ -135,15 +135,15 @@ void __46__RCBuiltinRecordingsFolder_allBuiltInFolders__block_invoke()
   {
     if (folderType == 1)
     {
-      v8 = [v4 favorite];
+      favorite = [recordingCopy favorite];
       goto LABEL_10;
     }
 
-    if (folderType == 2 && ([v4 recordedOnWatch] & 1) == 0)
+    if (folderType == 2 && ([recordingCopy recordedOnWatch] & 1) == 0)
     {
-      v8 = [v5 watchOS];
+      favorite = [v5 watchOS];
 LABEL_10:
-      v7 = v8;
+      v7 = favorite;
     }
   }
 

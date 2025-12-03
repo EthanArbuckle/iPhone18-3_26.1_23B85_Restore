@@ -1,6 +1,6 @@
 @interface IMAcceptedContactsChangeNotifier
-+ (id)notifierWithBlock:(id)a3;
-- (IMAcceptedContactsChangeNotifier)initWithNotification:(__CFString *)a3 block:(id)a4;
++ (id)notifierWithBlock:(id)block;
+- (IMAcceptedContactsChangeNotifier)initWithNotification:(__CFString *)notification block:(id)block;
 - (void)_notifyObserver;
 - (void)dealloc;
 - (void)startObserving;
@@ -9,9 +9,9 @@
 
 @implementation IMAcceptedContactsChangeNotifier
 
-+ (id)notifierWithBlock:(id)a3
++ (id)notifierWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -37,22 +37,22 @@
     _Unwind_Resume(v8);
   }
 
-  v5 = [[IMAcceptedContactsChangeNotifier alloc] initWithNotification:*v4 block:v3];
+  v5 = [[IMAcceptedContactsChangeNotifier alloc] initWithNotification:*v4 block:blockCopy];
 
   return v5;
 }
 
-- (IMAcceptedContactsChangeNotifier)initWithNotification:(__CFString *)a3 block:(id)a4
+- (IMAcceptedContactsChangeNotifier)initWithNotification:(__CFString *)notification block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = IMAcceptedContactsChangeNotifier;
   v7 = [(IMAcceptedContactsChangeNotifier *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_notification = a3;
-    v9 = [v6 copy];
+    v7->_notification = notification;
+    v9 = [blockCopy copy];
     notifyBlock = v8->_notifyBlock;
     v8->_notifyBlock = v9;
   }
@@ -63,23 +63,23 @@
 - (void)startObserving
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  v4 = [(IMAcceptedContactsChangeNotifier *)self notification];
+  notification = [(IMAcceptedContactsChangeNotifier *)self notification];
 
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, sub_1A867A360, v4, 0, 1026);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, sub_1A867A360, notification, 0, 1026);
 }
 
 - (void)stopObserving
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  v4 = [(IMAcceptedContactsChangeNotifier *)self notification];
+  notification = [(IMAcceptedContactsChangeNotifier *)self notification];
 
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, v4, 0);
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, notification, 0);
 }
 
 - (void)_notifyObserver
 {
-  v2 = [(IMAcceptedContactsChangeNotifier *)self notifyBlock];
-  v2[2]();
+  notifyBlock = [(IMAcceptedContactsChangeNotifier *)self notifyBlock];
+  notifyBlock[2]();
 }
 
 - (void)dealloc

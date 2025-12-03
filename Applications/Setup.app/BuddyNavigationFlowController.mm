@@ -1,185 +1,185 @@
 @interface BuddyNavigationFlowController
 - (BFFFlowItem)topFlowItem;
-- (BOOL)_doesTapFreeSetUpAffectsClass:(Class)a3;
+- (BOOL)_doesTapFreeSetUpAffectsClass:(Class)class;
 - (BOOL)_hasWiFiControllerInNavigationStack;
-- (BOOL)_isFlowItemAllowed:(id)a3;
+- (BOOL)_isFlowItemAllowed:(id)allowed;
 - (BOOL)_shouldAutoProceedPostUserSpaceReboot;
-- (BOOL)_shouldTapFreeSetUpSkipControllerClass:(Class)a3;
+- (BOOL)_shouldTapFreeSetUpSkipControllerClass:(Class)class;
 - (BOOL)_stackHasOnlyCloudConfigurationItems;
-- (BOOL)controllerNeedsToRunForClass:(Class)a3;
+- (BOOL)controllerNeedsToRunForClass:(Class)class;
 - (BOOL)currentlyShowingActivationFlow;
-- (BOOL)isFlowItem:(id)a3 responsibleForViewController:(id)a4;
-- (BOOL)isFlowItemOnTop:(id)a3;
+- (BOOL)isFlowItem:(id)item responsibleForViewController:(id)controller;
+- (BOOL)isFlowItemOnTop:(id)top;
 - (BOOL)isStartOverAllowed;
 - (BuddyFlowCloudConfigDelegate)flowCloudConfigurationDelegate;
 - (BuddyFlowDelegate)flowDelegate;
 - (BuddyFlowProducer)flowProducer;
 - (BuddyLifecycleDelegate)lifecycleDelegate;
-- (BuddyNavigationFlowController)initWithNavigationController:(id)a3 usingRestoreProvider:(id)a4 usingFlowDiverter:(id)a5 environment:(id)a6;
-- (BuddyNavigationFlowController)initWithNavigator:(id)a3 usingRestoreProvider:(id)a4 usingFlowDiverter:(id)a5 environment:(id)a6;
+- (BuddyNavigationFlowController)initWithNavigationController:(id)controller usingRestoreProvider:(id)provider usingFlowDiverter:(id)diverter environment:(id)environment;
+- (BuddyNavigationFlowController)initWithNavigator:(id)navigator usingRestoreProvider:(id)provider usingFlowDiverter:(id)diverter environment:(id)environment;
 - (BuddyRestoreProvider)restoreProvider;
 - (UIResponder)lastUIResponder;
-- (id)_createConditionalFlowItemForClass:(Class)a3;
-- (id)_createFlowItemForClass:(Class)a3;
-- (id)_ensureDeviceProximitySetupControllerWithCompletion:(id)a3;
-- (id)_ensureDeviceRestoreChoiceControllerWithCompletion:(id)a3;
-- (id)_flowForFlowItem:(id)a3;
-- (id)_flowItemFollowingClass:(Class)a3;
-- (id)_injectedFlowForClass:(Class)a3;
-- (id)_lastNonFlowFlowItemRelativeToFlowItem:(id)a3;
-- (id)_popToBuddyControllerWithClass:(Class)a3 withOffset:(unint64_t)a4 animated:(BOOL)a5;
-- (id)_savedItemForClass:(Class)a3;
+- (id)_createConditionalFlowItemForClass:(Class)class;
+- (id)_createFlowItemForClass:(Class)class;
+- (id)_ensureDeviceProximitySetupControllerWithCompletion:(id)completion;
+- (id)_ensureDeviceRestoreChoiceControllerWithCompletion:(id)completion;
+- (id)_flowForFlowItem:(id)item;
+- (id)_flowItemFollowingClass:(Class)class;
+- (id)_injectedFlowForClass:(Class)class;
+- (id)_lastNonFlowFlowItemRelativeToFlowItem:(id)item;
+- (id)_popToBuddyControllerWithClass:(Class)class withOffset:(unint64_t)offset animated:(BOOL)animated;
+- (id)_savedItemForClass:(Class)class;
 - (id)_shieldColorForNewTopFlowItemPush;
-- (id)_titleForViewController:(id)a3;
-- (id)_viewControllerForBuddyController:(id)a3;
+- (id)_titleForViewController:(id)controller;
+- (id)_viewControllerForBuddyController:(id)controller;
 - (id)environmentInjector;
-- (id)popToBuddyControllerWithClass:(Class)a3 withOffset:(unint64_t)a4 animated:(BOOL)a5;
+- (id)popToBuddyControllerWithClass:(Class)class withOffset:(unint64_t)offset animated:(BOOL)animated;
 - (void)_beginEventForNavigationDuration;
-- (void)_endEventForNavigationDurationFromFlowItem:(id)a3 toFlowItem:(id)a4;
-- (void)_ensureControllerExistsWithTarget:(id)a3 viewControllerInsertionIndexGenerator:(id)a4 buddyControllerInsertionIndexGenerator:(id)a5 withCompletion:(id)a6;
-- (void)_flowItemDone:(id)a3 flow:(id)a4 nextItemClass:(Class)a5 nextItem:(id)a6;
-- (void)_hideBackButtonIfNecessaryOnFlowItem:(id)a3 withViewController:(id)a4;
-- (void)_injectDependencies:(id)a3 withEnvironment:(id)a4;
+- (void)_endEventForNavigationDurationFromFlowItem:(id)item toFlowItem:(id)flowItem;
+- (void)_ensureControllerExistsWithTarget:(id)target viewControllerInsertionIndexGenerator:(id)generator buddyControllerInsertionIndexGenerator:(id)indexGenerator withCompletion:(id)completion;
+- (void)_flowItemDone:(id)done flow:(id)flow nextItemClass:(Class)class nextItem:(id)item;
+- (void)_hideBackButtonIfNecessaryOnFlowItem:(id)item withViewController:(id)controller;
+- (void)_injectDependencies:(id)dependencies withEnvironment:(id)environment;
 - (void)_insertWiFiControllerAsFirstPane;
-- (void)_performExtendedInitializationForFlowItem:(id)a3 willBegin:(id)a4 withCompletion:(id)a5;
-- (void)_presentViewControllerForBuddyController:(id)a3 animated:(BOOL)a4 willPresentViewController:(id)a5 completion:(id)a6;
-- (void)_pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6 willPushFlowItem:(id)a7;
+- (void)_performExtendedInitializationForFlowItem:(id)item willBegin:(id)begin withCompletion:(id)completion;
+- (void)_presentViewControllerForBuddyController:(id)controller animated:(BOOL)animated willPresentViewController:(id)viewController completion:(id)completion;
+- (void)_pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated willPushFlowItem:(id)flowItem;
 - (void)_resumeNavigationQueue;
-- (void)_setupInitialFlowFromInitialFlowItem:(id)a3 debutFlowItemClass:(Class)a4 completion:(id)a5;
+- (void)_setupInitialFlowFromInitialFlowItem:(id)item debutFlowItemClass:(Class)class completion:(id)completion;
 - (void)_startDisablingInteractionForExtendedInitialization;
 - (void)_stopDisablingInteractionForExtendedInitialization;
-- (void)_unmarkFlowItemAsFinished:(id)a3;
-- (void)_updateNavigationBackButtonTitleForViewController:(id)a3;
+- (void)_unmarkFlowItemAsFinished:(id)finished;
+- (void)_updateNavigationBackButtonTitleForViewController:(id)controller;
 - (void)beginTapFreeSetUp;
-- (void)flow:(id)a3 finishedWithLastItem:(id)a4 nextItem:(id)a5;
-- (void)flowItemCancelled:(id)a3;
-- (void)flowItemDone:(id)a3;
-- (void)flowItemDone:(id)a3 nextItem:(id)a4;
-- (void)flowItemDone:(id)a3 nextItemClass:(Class)a4;
+- (void)flow:(id)flow finishedWithLastItem:(id)item nextItem:(id)nextItem;
+- (void)flowItemCancelled:(id)cancelled;
+- (void)flowItemDone:(id)done;
+- (void)flowItemDone:(id)done nextItem:(id)item;
+- (void)flowItemDone:(id)done nextItemClass:(Class)class;
 - (void)handleDebugGesture;
-- (void)markFlowItemDone:(id)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6;
-- (void)presentWiFiPaneForFlow:(id)a3;
-- (void)presentWiFiPaneForFlowItem:(id)a3;
+- (void)markFlowItemDone:(id)done;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated;
+- (void)presentWiFiPaneForFlow:(id)flow;
+- (void)presentWiFiPaneForFlowItem:(id)item;
 - (void)proceedPastAppearancePane;
 - (void)proceedPastLanguageLocalePane;
-- (void)pushFlowItem:(id)a3 animated:(BOOL)a4;
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 animated:(BOOL)a5;
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6;
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6 willPushFlowItem:(id)a7;
-- (void)removeViewControllerFromNavHierarchy:(id)a3;
-- (void)removeViewControllersOnNextPush:(id)a3;
+- (void)pushFlowItem:(id)item animated:(BOOL)animated;
+- (void)pushFlowItem:(id)item inFlow:(id)flow animated:(BOOL)animated;
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated;
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated willPushFlowItem:(id)flowItem;
+- (void)removeViewControllerFromNavHierarchy:(id)hierarchy;
+- (void)removeViewControllersOnNextPush:(id)push;
 - (void)restartFlow;
 - (void)setUpByComputer;
-- (void)setupInitialFlowWithCompletion:(id)a3;
+- (void)setupInitialFlowWithCompletion:(id)completion;
 @end
 
 @implementation BuddyNavigationFlowController
 
-- (BuddyNavigationFlowController)initWithNavigator:(id)a3 usingRestoreProvider:(id)a4 usingFlowDiverter:(id)a5 environment:(id)a6
+- (BuddyNavigationFlowController)initWithNavigator:(id)navigator usingRestoreProvider:(id)provider usingFlowDiverter:(id)diverter environment:(id)environment
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, navigator);
   obj = 0;
-  objc_storeStrong(&obj, a4);
+  objc_storeStrong(&obj, provider);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, diverter);
   v25 = 0;
-  objc_storeStrong(&v25, a6);
-  v9 = v29;
-  v29 = 0;
+  objc_storeStrong(&v25, environment);
+  v9 = selfCopy;
+  selfCopy = 0;
   v24.receiver = v9;
   v24.super_class = BuddyNavigationFlowController;
   v10 = [(BuddyNavigationFlowController *)&v24 init];
-  v29 = v10;
-  objc_storeStrong(&v29, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
-    objc_storeStrong(v29 + 10, location[0]);
-    [*(v29 + 10) addDelegateObserver:v29];
+    objc_storeStrong(selfCopy + 10, location[0]);
+    [*(selfCopy + 10) addDelegateObserver:selfCopy];
     v11 = objc_alloc_init(BuddyNavigationBarUpdater);
-    v12 = *(v29 + 12);
-    *(v29 + 12) = v11;
+    v12 = *(selfCopy + 12);
+    *(selfCopy + 12) = v11;
 
-    [location[0] addDelegateObserver:*(v29 + 12)];
-    objc_storeWeak(v29 + 11, obj);
+    [location[0] addDelegateObserver:*(selfCopy + 12)];
+    objc_storeWeak(selfCopy + 11, obj);
     v13 = [BFFFlowStarter alloc];
     v14 = [v13 initWithFlowDiverter:v26];
-    v15 = *(v29 + 13);
-    *(v29 + 13) = v14;
+    v15 = *(selfCopy + 13);
+    *(selfCopy + 13) = v14;
 
     v16 = objc_alloc_init(NSMutableArray);
-    v17 = *(v29 + 14);
-    *(v29 + 14) = v16;
+    v17 = *(selfCopy + 14);
+    *(selfCopy + 14) = v16;
 
     v18 = objc_alloc_init(NSMutableArray);
-    v19 = *(v29 + 20);
-    *(v29 + 20) = v18;
+    v19 = *(selfCopy + 20);
+    *(selfCopy + 20) = v18;
 
-    objc_storeStrong(v29 + 19, v25);
+    objc_storeStrong(selfCopy + 19, v25);
     v20 = dispatch_queue_create("Navigation Queue", 0);
-    v21 = *(v29 + 23);
-    *(v29 + 23) = v20;
+    v21 = *(selfCopy + 23);
+    *(selfCopy + 23) = v20;
 
-    dispatch_suspend(*(v29 + 23));
+    dispatch_suspend(*(selfCopy + 23));
   }
 
-  v22 = v29;
+  v22 = selfCopy;
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v29, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v22;
 }
 
-- (BuddyNavigationFlowController)initWithNavigationController:(id)a3 usingRestoreProvider:(id)a4 usingFlowDiverter:(id)a5 environment:(id)a6
+- (BuddyNavigationFlowController)initWithNavigationController:(id)controller usingRestoreProvider:(id)provider usingFlowDiverter:(id)diverter environment:(id)environment
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, provider);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, diverter);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
+  objc_storeStrong(&v14, environment);
   v9 = [BuddyNavigationFlowNavigator alloc];
   v13 = [(BuddyNavigationFlowNavigator *)v9 initWithNavigationController:location[0]];
-  v10 = v18;
-  v18 = 0;
-  v18 = [v10 initWithNavigator:v13 usingRestoreProvider:v16 usingFlowDiverter:v15 environment:v14];
-  v11 = v18;
+  v10 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [v10 initWithNavigator:v13 usingRestoreProvider:v16 usingFlowDiverter:v15 environment:v14];
+  v11 = selfCopy;
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (void)setupInitialFlowWithCompletion:(id)a3
+- (void)setupInitialFlowWithCompletion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = objc_alloc_init(BuddyWiFiController);
-  [(BuddyNavigationFlowController *)v23 setWifiController:v3];
+  [(BuddyNavigationFlowController *)selfCopy setWifiController:v3];
 
-  v4 = v23;
-  v5 = [(BuddyNavigationFlowController *)v23 wifiController];
-  [(BuddyWiFiController *)v5 setDelegate:v4];
+  v4 = selfCopy;
+  wifiController = [(BuddyNavigationFlowController *)selfCopy wifiController];
+  [(BuddyWiFiController *)wifiController setDelegate:v4];
 
-  v6 = v23;
-  v7 = [(BuddyNavigationFlowController *)v23 wifiController];
-  v8 = [(BuddyNavigationFlowController *)v23 environment];
-  [(BuddyNavigationFlowController *)v6 _injectDependencies:v7 withEnvironment:v8];
+  v6 = selfCopy;
+  wifiController2 = [(BuddyNavigationFlowController *)selfCopy wifiController];
+  environment = [(BuddyNavigationFlowController *)selfCopy environment];
+  [(BuddyNavigationFlowController *)v6 _injectDependencies:wifiController2 withEnvironment:environment];
 
   oslog = _BYLoggingFacility();
   v20 = OS_LOG_TYPE_DEFAULT;
@@ -192,15 +192,15 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v11 = [(BuddyNavigationFlowController *)v23 flowStarter];
+  flowStarter = [(BuddyNavigationFlowController *)selfCopy flowStarter];
   v12 = _NSConcreteStackBlock;
   v13 = -1073741824;
   v14 = 0;
   v15 = sub_1000A1E4C;
   v16 = &unk_10032AFD0;
-  v17 = v23;
+  v17 = selfCopy;
   v18 = location[0];
-  [(BFFFlowStarter *)v11 prepareWithCompletion:&v12];
+  [(BFFFlowStarter *)flowStarter prepareWithCompletion:&v12];
 
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v17, 0);
@@ -209,86 +209,86 @@
 
 - (void)beginTapFreeSetUp
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v2 = [(BuddyNavigationFlowController *)self navigationQueue];
+  navigationQueue = [(BuddyNavigationFlowController *)self navigationQueue];
   block = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000A24B0;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
-  dispatch_async(v2, &block);
+  v8[0] = selfCopy;
+  dispatch_async(navigationQueue, &block);
 
   objc_storeStrong(v8, 0);
 }
 
 - (void)proceedPastLanguageLocalePane
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v2 = [(BuddyNavigationFlowController *)self navigationQueue];
+  navigationQueue = [(BuddyNavigationFlowController *)self navigationQueue];
   block = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000A289C;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
-  dispatch_async(v2, &block);
+  v8[0] = selfCopy;
+  dispatch_async(navigationQueue, &block);
 
   objc_storeStrong(v8, 0);
 }
 
 - (void)proceedPastAppearancePane
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v2 = [(BuddyNavigationFlowController *)self navigationQueue];
+  navigationQueue = [(BuddyNavigationFlowController *)self navigationQueue];
   block = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000A2B44;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
-  dispatch_async(v2, &block);
+  v8[0] = selfCopy;
+  dispatch_async(navigationQueue, &block);
 
   objc_storeStrong(v8, 0);
 }
 
 - (void)setUpByComputer
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v2 = [(BuddyNavigationFlowController *)self navigationQueue];
+  navigationQueue = [(BuddyNavigationFlowController *)self navigationQueue];
   block = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000A2DEC;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
-  dispatch_async(v2, &block);
+  v8[0] = selfCopy;
+  dispatch_async(navigationQueue, &block);
 
   objc_storeStrong(v8, 0);
 }
 
 - (void)handleDebugGesture
 {
-  v2 = [(BuddyNavigationFlowController *)self buddyControllers];
-  v3 = [(NSMutableArray *)v2 lastObject];
+  buddyControllers = [(BuddyNavigationFlowController *)self buddyControllers];
+  lastObject = [(NSMutableArray *)buddyControllers lastObject];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(BuddyNavigationFlowController *)self buddyControllers];
-    v6 = [(NSMutableArray *)v5 lastObject];
-    [v6 handleDebugGesture];
+    buddyControllers2 = [(BuddyNavigationFlowController *)self buddyControllers];
+    lastObject2 = [(NSMutableArray *)buddyControllers2 lastObject];
+    [lastObject2 handleDebugGesture];
   }
 }
 
 - (BOOL)currentlyShowingActivationFlow
 {
   v2 = [(BuddyNavigationFlowController *)self buddyControllers:a2];
-  v3 = [(NSMutableArray *)v2 lastObject];
+  lastObject = [(NSMutableArray *)v2 lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -297,15 +297,15 @@
 
 - (BOOL)isStartOverAllowed
 {
-  v18 = self;
+  selfCopy = self;
   v17[1] = a2;
-  v2 = [(BuddyNavigationFlowController *)self buddyControllers];
-  v17[0] = [(NSMutableArray *)v2 lastObject];
+  buddyControllers = [(BuddyNavigationFlowController *)self buddyControllers];
+  v17[0] = [(NSMutableArray *)buddyControllers lastObject];
 
   if (objc_opt_respondsToSelector() & 1) == 0 || ([v17[0] shouldAllowStartOver])
   {
-    v5 = [(BuddyNavigationFlowController *)v18 navigator];
-    location = [(BuddyNavigationFlowNavigator *)v5 topViewController];
+    navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+    location = [(BuddyNavigationFlowNavigator *)navigator topViewController];
 
     if (objc_opt_respondsToSelector() & 1) == 0 || ([location shouldAllowStartOver])
     {
@@ -357,9 +357,9 @@
 - (BFFFlowItem)topFlowItem
 {
   v2 = [(BuddyNavigationFlowController *)self buddyControllers:a2];
-  v3 = [(NSMutableArray *)v2 lastObject];
+  lastObject = [(NSMutableArray *)v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (BOOL)_shouldAutoProceedPostUserSpaceReboot
@@ -369,25 +369,25 @@
   return v3 & 1;
 }
 
-- (id)_flowItemFollowingClass:(Class)a3
+- (id)_flowItemFollowingClass:(Class)class
 {
-  v42 = self;
+  selfCopy = self;
   v41 = a2;
-  v40 = a3;
-  v3 = [(BuddyNavigationFlowController *)self flowProducer];
-  v39 = [(BuddyFlowProducer *)v3 potentialNextFlowItemClassFollowingFlowItemClass:v40];
+  classCopy = class;
+  flowProducer = [(BuddyNavigationFlowController *)self flowProducer];
+  v39 = [(BuddyFlowProducer *)flowProducer potentialNextFlowItemClassFollowingFlowItemClass:classCopy];
 
   if ([v39 conformsToProtocol:&OBJC_PROTOCOL___BFFFlowItem])
   {
-    v38 = [(BuddyNavigationFlowController *)v42 _shouldTapFreeSetUpSkipControllerClass:v39];
-    if (v38 || ((location = [(BuddyNavigationFlowController *)v42 _createConditionalFlowItemForClass:v39]) == 0 ? (v36 = 0) : (v43 = location, v36 = 1), objc_storeStrong(&location, 0), !v36))
+    v38 = [(BuddyNavigationFlowController *)selfCopy _shouldTapFreeSetUpSkipControllerClass:v39];
+    if (v38 || ((location = [(BuddyNavigationFlowController *)selfCopy _createConditionalFlowItemForClass:v39]) == 0 ? (v36 = 0) : (v43 = location, v36 = 1), objc_storeStrong(&location, 0), !v36))
     {
       v34 = 0;
       v4 = 0;
       if (objc_opt_respondsToSelector())
       {
         v5 = v39;
-        v35 = [(BuddyNavigationFlowController *)v42 environment];
+        environment = [(BuddyNavigationFlowController *)selfCopy environment];
         v34 = 1;
         v4 = [v5 isTrailingWithEnvironment:?];
       }
@@ -398,9 +398,9 @@
 
       if (v4)
       {
-        v33 = [(BuddyNavigationFlowController *)v42 _savedItemForClass:v39];
-        v6 = [(BuddyNavigationFlowController *)v42 trailingControllers];
-        [(NSMutableArray *)v6 addObject:v33];
+        v33 = [(BuddyNavigationFlowController *)selfCopy _savedItemForClass:v39];
+        trailingControllers = [(BuddyNavigationFlowController *)selfCopy trailingControllers];
+        [(NSMutableArray *)trailingControllers addObject:v33];
 
         objc_storeStrong(&v33, 0);
       }
@@ -408,14 +408,14 @@
       if ([v39 isEqual:objc_opt_class()])
       {
         v7 = +[NSPointerArray weakObjectsPointerArray];
-        [(BuddyNavigationFlowController *)v42 setWeakBuddyControllersPrecedingDeviceRestoreChoiceController:v7];
+        [(BuddyNavigationFlowController *)selfCopy setWeakBuddyControllersPrecedingDeviceRestoreChoiceController:v7];
 
         v8 = +[NSPointerArray weakObjectsPointerArray];
-        [(BuddyNavigationFlowController *)v42 setWeakViewControllersPrecedingDeviceRestoreChoiceController:v8];
+        [(BuddyNavigationFlowController *)selfCopy setWeakViewControllersPrecedingDeviceRestoreChoiceController:v8];
 
         memset(__b, 0, sizeof(__b));
-        v9 = [(BuddyNavigationFlowController *)v42 buddyControllers];
-        v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:__b objects:v48 count:16];
+        buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+        v10 = [(NSMutableArray *)buddyControllers countByEnumeratingWithState:__b objects:v48 count:16];
         if (v10)
         {
           v11 = *__b[2];
@@ -425,25 +425,25 @@
             {
               if (*__b[2] != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(buddyControllers);
               }
 
               v32 = *(__b[1] + 8 * i);
-              v13 = [(BuddyNavigationFlowController *)v42 weakBuddyControllersPrecedingDeviceRestoreChoiceController];
-              [(NSPointerArray *)v13 addPointer:v32];
+              weakBuddyControllersPrecedingDeviceRestoreChoiceController = [(BuddyNavigationFlowController *)selfCopy weakBuddyControllersPrecedingDeviceRestoreChoiceController];
+              [(NSPointerArray *)weakBuddyControllersPrecedingDeviceRestoreChoiceController addPointer:v32];
             }
 
-            v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:__b objects:v48 count:16];
+            v10 = [(NSMutableArray *)buddyControllers countByEnumeratingWithState:__b objects:v48 count:16];
           }
 
           while (v10);
         }
 
         memset(v29, 0, sizeof(v29));
-        v14 = [(BuddyNavigationFlowController *)v42 navigator];
-        v15 = [(BuddyNavigationFlowNavigator *)v14 viewControllers];
+        navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+        viewControllers = [(BuddyNavigationFlowNavigator *)navigator viewControllers];
 
-        v16 = [v15 countByEnumeratingWithState:v29 objects:v47 count:16];
+        v16 = [viewControllers countByEnumeratingWithState:v29 objects:v47 count:16];
         if (v16)
         {
           v17 = *v29[2];
@@ -453,15 +453,15 @@
             {
               if (*v29[2] != v17)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(viewControllers);
               }
 
               v30 = *(v29[1] + 8 * j);
-              v19 = [(BuddyNavigationFlowController *)v42 weakViewControllersPrecedingDeviceRestoreChoiceController];
-              [(NSPointerArray *)v19 addPointer:v30];
+              weakViewControllersPrecedingDeviceRestoreChoiceController = [(BuddyNavigationFlowController *)selfCopy weakViewControllersPrecedingDeviceRestoreChoiceController];
+              [(NSPointerArray *)weakViewControllersPrecedingDeviceRestoreChoiceController addPointer:v30];
             }
 
-            v16 = [v15 countByEnumeratingWithState:v29 objects:v47 count:16];
+            v16 = [viewControllers countByEnumeratingWithState:v29 objects:v47 count:16];
           }
 
           while (v16);
@@ -471,8 +471,8 @@
         v27 = OS_LOG_TYPE_DEBUG;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
         {
-          v20 = [(BuddyNavigationFlowController *)v42 weakBuddyControllersPrecedingDeviceRestoreChoiceController];
-          sub_10006AE18(buf, v20);
+          weakBuddyControllersPrecedingDeviceRestoreChoiceController2 = [(BuddyNavigationFlowController *)selfCopy weakBuddyControllersPrecedingDeviceRestoreChoiceController];
+          sub_10006AE18(buf, weakBuddyControllersPrecedingDeviceRestoreChoiceController2);
           _os_log_debug_impl(&_mh_execute_header, oslog, v27, "Skipping DeviceRestoreChoiceController but remembering buddy controllers preceding it: %@", buf, 0xCu);
         }
 
@@ -481,15 +481,15 @@
         v25 = OS_LOG_TYPE_DEBUG;
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [(BuddyNavigationFlowController *)v42 weakViewControllersPrecedingDeviceRestoreChoiceController];
-          sub_10006AE18(v45, v21);
+          weakViewControllersPrecedingDeviceRestoreChoiceController2 = [(BuddyNavigationFlowController *)selfCopy weakViewControllersPrecedingDeviceRestoreChoiceController];
+          sub_10006AE18(v45, weakViewControllersPrecedingDeviceRestoreChoiceController2);
           _os_log_debug_impl(&_mh_execute_header, v26, v25, "...and view controllers preceding it: %@", v45, 0xCu);
         }
 
         objc_storeStrong(&v26, 0);
       }
 
-      v43 = [(BuddyNavigationFlowController *)v42 _flowItemFollowingClass:v39];
+      v43 = [(BuddyNavigationFlowController *)selfCopy _flowItemFollowingClass:v39];
     }
   }
 
@@ -515,28 +515,28 @@
   return v22;
 }
 
-- (id)_createConditionalFlowItemForClass:(Class)a3
+- (id)_createConditionalFlowItemForClass:(Class)class
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  if ([(BuddyNavigationFlowController *)self _shouldTapFreeSetUpSkipControllerClass:a3])
+  classCopy = class;
+  if ([(BuddyNavigationFlowController *)self _shouldTapFreeSetUpSkipControllerClass:class])
   {
     goto LABEL_9;
   }
 
-  v3 = [(BuddyNavigationFlowController *)v14 flowStarter];
-  v4 = [(BFFFlowStarter *)v3 controllerNeedsToRunForClass:v12];
+  flowStarter = [(BuddyNavigationFlowController *)selfCopy flowStarter];
+  v4 = [(BFFFlowStarter *)flowStarter controllerNeedsToRunForClass:classCopy];
 
   if ((v4 & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  location = [(BuddyNavigationFlowController *)v14 _createFlowItemForClass:v12];
-  [location setDelegate:v14];
-  v5 = [(BuddyNavigationFlowController *)v14 flowStarter];
-  v6 = [(BFFFlowStarter *)v5 controllerNeedsToRunForFlowItem:location];
+  location = [(BuddyNavigationFlowController *)selfCopy _createFlowItemForClass:classCopy];
+  [location setDelegate:selfCopy];
+  flowStarter2 = [(BuddyNavigationFlowController *)selfCopy flowStarter];
+  v6 = [(BFFFlowStarter *)flowStarter2 controllerNeedsToRunForFlowItem:location];
 
   if (v6)
   {
@@ -566,12 +566,12 @@ LABEL_9:
   return v7;
 }
 
-- (id)_createFlowItemForClass:(Class)a3
+- (id)_createFlowItemForClass:(Class)class
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  location = [(BuddyNavigationFlowController *)self _savedItemForClass:a3];
+  classCopy = class;
+  location = [(BuddyNavigationFlowController *)self _savedItemForClass:class];
   if (location)
   {
     v20 = location;
@@ -580,32 +580,32 @@ LABEL_9:
 
   else
   {
-    if (([(objc_class *)v17 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+    if (([(objc_class *)classCopy isSubclassOfClass:objc_opt_class()]& 1) != 0)
     {
-      v3 = [v17 alloc];
-      v4 = [(BuddyNavigationFlowController *)v19 navigator];
-      v5 = [(BuddyNavigationFlowNavigator *)v4 navigationController];
-      v6 = [(BuddyNavigationFlowController *)v19 flowStarter];
-      v7 = [(BuddyNavigationFlowController *)v19 environmentInjector];
-      obj = [v3 initWithNavigationController:v5 flowDelegate:v19 flowStarter:v6 dependencyInjector:v7];
+      v3 = [classCopy alloc];
+      navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+      navigationController = [(BuddyNavigationFlowNavigator *)navigator navigationController];
+      flowStarter = [(BuddyNavigationFlowController *)selfCopy flowStarter];
+      environmentInjector = [(BuddyNavigationFlowController *)selfCopy environmentInjector];
+      obj = [v3 initWithNavigationController:navigationController flowDelegate:selfCopy flowStarter:flowStarter dependencyInjector:environmentInjector];
 
-      [obj setFlowItemDelegate:v19];
+      [obj setFlowItemDelegate:selfCopy];
       objc_storeStrong(&location, obj);
       objc_storeStrong(&obj, 0);
     }
 
     else
     {
-      v8 = objc_alloc_init(v17);
+      v8 = objc_alloc_init(classCopy);
       v9 = location;
       location = v8;
     }
 
-    v10 = [(BuddyNavigationFlowController *)v19 flowProducer];
-    [(BuddyFlowProducer *)v10 configureFlowItem:location];
+    flowProducer = [(BuddyNavigationFlowController *)selfCopy flowProducer];
+    [(BuddyFlowProducer *)flowProducer configureFlowItem:location];
 
-    v11 = [(BuddyNavigationFlowController *)v19 environmentInjector];
-    v20 = v11[2](v11, location);
+    environmentInjector2 = [(BuddyNavigationFlowController *)selfCopy environmentInjector];
+    v20 = environmentInjector2[2](environmentInjector2, location);
 
     v15 = 1;
   }
@@ -616,92 +616,92 @@ LABEL_9:
   return v12;
 }
 
-- (id)_savedItemForClass:(Class)a3
+- (id)_savedItemForClass:(Class)class
 {
-  v3 = [(BuddyNavigationFlowController *)self savedItemForClassBlock];
+  savedItemForClassBlock = [(BuddyNavigationFlowController *)self savedItemForClassBlock];
 
-  if (v3)
+  if (savedItemForClassBlock)
   {
-    v4 = [(BuddyNavigationFlowController *)self savedItemForClassBlock];
-    v8 = v4[2](v4, a3);
+    savedItemForClassBlock2 = [(BuddyNavigationFlowController *)self savedItemForClassBlock];
+    wifiController = savedItemForClassBlock2[2](savedItemForClassBlock2, class);
   }
 
-  else if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
-    v8 = [(BuddyNavigationFlowController *)self wifiController];
+    wifiController = [(BuddyNavigationFlowController *)self wifiController];
   }
 
   else
   {
-    v8 = 0;
+    wifiController = 0;
   }
 
-  return v8;
+  return wifiController;
 }
 
-- (BOOL)_doesTapFreeSetUpAffectsClass:(Class)a3
+- (BOOL)_doesTapFreeSetUpAffectsClass:(Class)class
 {
   v3 = objc_opt_respondsToSelector();
-  v4 = 0;
+  controllerAffectedByTapFreeSetup = 0;
   if (v3)
   {
-    v4 = [(objc_class *)a3 controllerAffectedByTapFreeSetup];
+    controllerAffectedByTapFreeSetup = [(objc_class *)class controllerAffectedByTapFreeSetup];
+  }
+
+  return controllerAffectedByTapFreeSetup & 1;
+}
+
+- (BOOL)_shouldTapFreeSetUpSkipControllerClass:(Class)class
+{
+  isTapFreeSetUp = [(BuddyNavigationFlowController *)self isTapFreeSetUp];
+  v4 = 0;
+  if (isTapFreeSetUp)
+  {
+    v4 = [(BuddyNavigationFlowController *)self _doesTapFreeSetUpAffectsClass:class];
   }
 
   return v4 & 1;
 }
 
-- (BOOL)_shouldTapFreeSetUpSkipControllerClass:(Class)a3
+- (void)_flowItemDone:(id)done flow:(id)flow nextItemClass:(Class)class nextItem:(id)item
 {
-  v3 = [(BuddyNavigationFlowController *)self isTapFreeSetUp];
-  v4 = 0;
-  if (v3)
-  {
-    v4 = [(BuddyNavigationFlowController *)self _doesTapFreeSetUpAffectsClass:a3];
-  }
-
-  return v4 & 1;
-}
-
-- (void)_flowItemDone:(id)a3 flow:(id)a4 nextItemClass:(Class)a5 nextItem:(id)a6
-{
-  v53 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   v51 = 0;
-  objc_storeStrong(&v51, a4);
-  v50 = a5;
+  objc_storeStrong(&v51, flow);
+  classCopy = class;
   v49 = 0;
-  objc_storeStrong(&v49, a6);
+  objc_storeStrong(&v49, item);
   v48 = 1;
-  [(BuddyNavigationFlowController *)v53 markFlowItemDone:location[0]];
-  [(BuddyNavigationFlowController *)v53 markFlowItemDone:v51];
-  [(BuddyNavigationFlowController *)v53 setLastUIResponder:0];
+  [(BuddyNavigationFlowController *)selfCopy markFlowItemDone:location[0]];
+  [(BuddyNavigationFlowController *)selfCopy markFlowItemDone:v51];
+  [(BuddyNavigationFlowController *)selfCopy setLastUIResponder:0];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || v49 || v50)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || v49 || classCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [(BuddyNavigationFlowController *)v53 flowCloudConfigurationDelegate];
-      [(BuddyFlowCloudConfigDelegate *)v13 setNeedsConfigurationUpdate];
+      flowCloudConfigurationDelegate = [(BuddyNavigationFlowController *)selfCopy flowCloudConfigurationDelegate];
+      [(BuddyFlowCloudConfigDelegate *)flowCloudConfigurationDelegate setNeedsConfigurationUpdate];
     }
   }
 
   else
   {
-    v9 = [(BuddyNavigationFlowController *)v53 lifecycleDelegate];
-    v10 = [(BuddyLifecycleDelegate *)v9 shouldEndLifecycleForCause:0];
+    lifecycleDelegate = [(BuddyNavigationFlowController *)selfCopy lifecycleDelegate];
+    v10 = [(BuddyLifecycleDelegate *)lifecycleDelegate shouldEndLifecycleForCause:0];
 
     if (v10)
     {
       v48 = 0;
-      v11 = [(BuddyNavigationFlowController *)v53 lifecycleDelegate];
-      [(BuddyLifecycleDelegate *)v11 willEndLifecycleDueToCause:0 allowDismissal:1];
+      lifecycleDelegate2 = [(BuddyNavigationFlowController *)selfCopy lifecycleDelegate];
+      [(BuddyLifecycleDelegate *)lifecycleDelegate2 willEndLifecycleDueToCause:0 allowDismissal:1];
 
-      v12 = [(BuddyNavigationFlowController *)v53 lifecycleDelegate];
-      [(BuddyLifecycleDelegate *)v12 endLifecycleDueToCause:0];
+      lifecycleDelegate3 = [(BuddyNavigationFlowController *)selfCopy lifecycleDelegate];
+      [(BuddyLifecycleDelegate *)lifecycleDelegate3 endLifecycleDueToCause:0];
     }
 
     else
@@ -710,7 +710,7 @@ LABEL_9:
       if (objc_opt_isKindOfClass() & 1) != 0 && ([location[0] cdmaSelectionActivation])
       {
         v48 = 0;
-        [(BuddyNavigationFlowController *)v53 restartFlow];
+        [(BuddyNavigationFlowController *)selfCopy restartFlow];
       }
     }
   }
@@ -718,8 +718,8 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [(BuddyNavigationFlowController *)v53 proximitySetupController];
-    [(ProximitySetupController *)v14 endAdvertisingProximitySetup];
+    proximitySetupController = [(BuddyNavigationFlowController *)selfCopy proximitySetupController];
+    [(ProximitySetupController *)proximitySetupController endAdvertisingProximitySetup];
   }
 
   if (v48)
@@ -727,21 +727,21 @@ LABEL_9:
     v47 = v49;
     if (!v47)
     {
-      if (v50)
+      if (classCopy)
       {
-        v15 = objc_alloc_init(v50);
+        v15 = objc_alloc_init(classCopy);
         v16 = v47;
         v47 = v15;
 
         if (objc_opt_respondsToSelector())
         {
-          [v47 setDelegate:v53];
+          [v47 setDelegate:selfCopy];
         }
       }
 
       else
       {
-        v17 = v53;
+        v17 = selfCopy;
         v18 = objc_opt_class();
         if (!v18)
         {
@@ -754,17 +754,17 @@ LABEL_9:
       }
     }
 
-    v21 = v53;
-    v22 = [(BuddyNavigationFlowController *)v53 environment];
-    [(BuddyNavigationFlowController *)v21 _injectDependencies:v47 withEnvironment:v22];
+    v21 = selfCopy;
+    environment = [(BuddyNavigationFlowController *)selfCopy environment];
+    [(BuddyNavigationFlowController *)v21 _injectDependencies:v47 withEnvironment:environment];
 
     v45 = 0;
     v23 = 0;
     if (!v47)
     {
-      v46 = [(BuddyNavigationFlowController *)v53 lifecycleDelegate];
+      lifecycleDelegate4 = [(BuddyNavigationFlowController *)selfCopy lifecycleDelegate];
       v45 = 1;
-      v23 = [v46 shouldEndLifecycleForCause:1];
+      v23 = [lifecycleDelegate4 shouldEndLifecycleForCause:1];
     }
 
     if (v45)
@@ -794,22 +794,22 @@ LABEL_9:
         if (v44)
         {
           v42 = ([v51 allowedTerminationSources] & 1) == 1;
-          v28 = [(BuddyNavigationFlowController *)v53 lifecycleDelegate];
-          [(BuddyLifecycleDelegate *)v28 willEndLifecycleDueToCause:1 allowDismissal:v42];
+          lifecycleDelegate5 = [(BuddyNavigationFlowController *)selfCopy lifecycleDelegate];
+          [(BuddyLifecycleDelegate *)lifecycleDelegate5 willEndLifecycleDueToCause:1 allowDismissal:v42];
         }
 
         else
         {
-          v28 = [(BuddyNavigationFlowController *)v53 lifecycleDelegate];
-          [(BuddyLifecycleDelegate *)v28 willEndLifecycleDueToCause:1 allowDismissal:1];
+          lifecycleDelegate5 = [(BuddyNavigationFlowController *)selfCopy lifecycleDelegate];
+          [(BuddyLifecycleDelegate *)lifecycleDelegate5 willEndLifecycleDueToCause:1 allowDismissal:1];
         }
       }
 
-      v29 = [(BuddyNavigationFlowController *)v53 lifecycleDelegate];
-      [(BuddyLifecycleDelegate *)v29 endLifecycleDueToCause:1];
+      lifecycleDelegate6 = [(BuddyNavigationFlowController *)selfCopy lifecycleDelegate];
+      [(BuddyLifecycleDelegate *)lifecycleDelegate6 endLifecycleDueToCause:1];
     }
 
-    if (![(BuddyNavigationFlowController *)v53 _hasWiFiControllerInNavigationStack]&& [(BuddyNavigationFlowController *)v53 _stackHasOnlyCloudConfigurationItems])
+    if (![(BuddyNavigationFlowController *)selfCopy _hasWiFiControllerInNavigationStack]&& [(BuddyNavigationFlowController *)selfCopy _stackHasOnlyCloudConfigurationItems])
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -841,8 +841,8 @@ LABEL_9:
       v41 = v31 & 1;
       if (v31)
       {
-        [(BuddyNavigationFlowController *)v53 setDidInsertWiFiPaneForCloudConfigurationFlow:1];
-        [(BuddyNavigationFlowController *)v53 _insertWiFiControllerAsFirstPane];
+        [(BuddyNavigationFlowController *)selfCopy setDidInsertWiFiPaneForCloudConfigurationFlow:1];
+        [(BuddyNavigationFlowController *)selfCopy _insertWiFiControllerAsFirstPane];
       }
     }
 
@@ -859,17 +859,17 @@ LABEL_9:
     }
 
     objc_storeStrong(&oslog, 0);
-    v35 = [(BuddyNavigationFlowController *)v53 navigationStartDate];
-    v36 = v35 == 0;
+    navigationStartDate = [(BuddyNavigationFlowController *)selfCopy navigationStartDate];
+    v36 = navigationStartDate == 0;
 
     if (v36)
     {
-      [(BuddyNavigationFlowController *)v53 _beginEventForNavigationDuration];
+      [(BuddyNavigationFlowController *)selfCopy _beginEventForNavigationDuration];
     }
 
     if (v47)
     {
-      [(BuddyNavigationFlowController *)v53 pushFlowItem:v47 inFlow:0 animated:1];
+      [(BuddyNavigationFlowController *)selfCopy pushFlowItem:v47 inFlow:0 animated:1];
     }
 
     objc_storeStrong(&v47, 0);
@@ -882,17 +882,17 @@ LABEL_9:
 
 - (void)_startDisablingInteractionForExtendedInitialization
 {
-  v49 = self;
+  selfCopy = self;
   v48 = a2;
-  v2 = [(BuddyNavigationFlowController *)self navigator];
-  v3 = [(BuddyNavigationFlowNavigator *)v2 viewControllers];
+  navigator = [(BuddyNavigationFlowController *)self navigator];
+  viewControllers = [(BuddyNavigationFlowNavigator *)navigator viewControllers];
   v46 = 0;
   v4 = 0;
-  if (![v3 count])
+  if (![viewControllers count])
   {
-    v47 = [(BuddyNavigationFlowController *)v49 buddyControllers];
+    buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
     v46 = 1;
-    v4 = [v47 count] == 0;
+    v4 = [buddyControllers count] == 0;
   }
 
   if (v46)
@@ -913,39 +913,39 @@ LABEL_9:
 
     objc_storeStrong(&oslog, 0);
     location = [[BFFSpinnerController alloc] initWithSpinnerText:&stru_10032F900];
-    v7 = [(BuddyNavigationFlowController *)v49 buddyControllers];
-    [(NSMutableArray *)v7 addObject:location];
+    buddyControllers2 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    [(NSMutableArray *)buddyControllers2 addObject:location];
 
-    v8 = [(BuddyNavigationFlowController *)v49 navigator];
-    [(BuddyNavigationFlowNavigator *)v8 pushViewController:location animated:0];
+    navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    [(BuddyNavigationFlowNavigator *)navigator2 pushViewController:location animated:0];
 
     objc_storeStrong(&location, 0);
   }
 
   v41 = 0;
   v40 = 0;
-  v9 = [(BuddyNavigationFlowController *)v49 buddyControllers];
-  v10 = [(NSMutableArray *)v9 lastObject];
+  buddyControllers3 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+  lastObject = [(NSMutableArray *)buddyControllers3 lastObject];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(BuddyNavigationFlowController *)v49 buddyControllers];
-    v13 = [(NSMutableArray *)v12 lastObject];
-    v41 = [v13 shouldSuppressExtendedInitializationActivityIndicator] & 1;
+    buddyControllers4 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    lastObject2 = [(NSMutableArray *)buddyControllers4 lastObject];
+    v41 = [lastObject2 shouldSuppressExtendedInitializationActivityIndicator] & 1;
   }
 
-  v14 = [(BuddyNavigationFlowController *)v49 navigator];
-  v15 = [(BuddyNavigationFlowNavigator *)v14 viewControllers];
-  v16 = [v15 lastObject];
+  navigator3 = [(BuddyNavigationFlowController *)selfCopy navigator];
+  viewControllers2 = [(BuddyNavigationFlowNavigator *)navigator3 viewControllers];
+  lastObject3 = [viewControllers2 lastObject];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(BuddyNavigationFlowController *)v49 navigator];
-    v19 = [(BuddyNavigationFlowNavigator *)v18 viewControllers];
-    v20 = [v19 lastObject];
-    v40 = [v20 shouldSuppressExtendedInitializationActivityIndicator] & 1;
+    navigator4 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    viewControllers3 = [(BuddyNavigationFlowNavigator *)navigator4 viewControllers];
+    lastObject4 = [viewControllers3 lastObject];
+    v40 = [lastObject4 shouldSuppressExtendedInitializationActivityIndicator] & 1;
   }
 
   v21 = 1;
@@ -961,12 +961,12 @@ LABEL_9:
     v37 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(BuddyNavigationFlowController *)v49 buddyControllers];
-      v36 = [(NSMutableArray *)v22 lastObject];
-      sub_100071CBC(v52, v36);
+      buddyControllers5 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      lastObject5 = [(NSMutableArray *)buddyControllers5 lastObject];
+      sub_100071CBC(v52, lastObject5);
       _os_log_impl(&_mh_execute_header, v38, v37, "Will suppress spinner over %{public}@", v52, 0xCu);
 
-      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&lastObject5, 0);
     }
 
     objc_storeStrong(&v38, 0);
@@ -978,12 +978,12 @@ LABEL_9:
     v34 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(BuddyNavigationFlowController *)v49 buddyControllers];
-      v33 = [(NSMutableArray *)v23 lastObject];
-      sub_100071CBC(v51, v33);
+      buddyControllers6 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      lastObject6 = [(NSMutableArray *)buddyControllers6 lastObject];
+      sub_100071CBC(v51, lastObject6);
       _os_log_impl(&_mh_execute_header, v35, v34, "Will NOT suppress spinner over %{public}@", v51, 0xCu);
 
-      objc_storeStrong(&v33, 0);
+      objc_storeStrong(&lastObject6, 0);
     }
 
     objc_storeStrong(&v35, 0);
@@ -991,60 +991,60 @@ LABEL_9:
 
   if ((v39 & 1) == 0)
   {
-    v24 = [(BuddyNavigationFlowController *)v49 navigator];
-    v25 = [(BuddyNavigationFlowNavigator *)v24 topViewController];
-    [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v25 identifier:@"BuddyNavigationFlowController"];
+    navigator5 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    topViewController = [(BuddyNavigationFlowNavigator *)navigator5 topViewController];
+    [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:topViewController identifier:@"BuddyNavigationFlowController"];
   }
 
   v32 = _BYLoggingFacility();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
   {
-    v26 = [(BuddyNavigationFlowController *)v49 navigator];
-    v27 = [(BuddyNavigationFlowNavigator *)v26 view];
-    v28 = [v27 window];
-    sub_1000A4DC0(v50, "[BuddyNavigationFlowController _startDisablingInteractionForExtendedInitialization]", v28);
+    navigator6 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    view = [(BuddyNavigationFlowNavigator *)navigator6 view];
+    window = [view window];
+    sub_1000A4DC0(v50, "[BuddyNavigationFlowController _startDisablingInteractionForExtendedInitialization]", window);
     _os_log_debug_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "%s setUserInteractionEnabled NO %p", v50, 0x16u);
   }
 
   objc_storeStrong(&v32, 0);
-  v29 = [(BuddyNavigationFlowController *)v49 navigator];
-  v30 = [(BuddyNavigationFlowNavigator *)v29 view];
-  v31 = [v30 window];
-  [v31 setUserInteractionEnabled:0];
+  navigator7 = [(BuddyNavigationFlowController *)selfCopy navigator];
+  view2 = [(BuddyNavigationFlowNavigator *)navigator7 view];
+  window2 = [view2 window];
+  [window2 setUserInteractionEnabled:0];
 }
 
 - (void)_stopDisablingInteractionForExtendedInitialization
 {
-  v9 = self;
+  selfCopy = self;
   oslog[1] = a2;
   [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"BuddyNavigationFlowController"];
   oslog[0] = _BYLoggingFacility();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEBUG))
   {
-    v2 = [(BuddyNavigationFlowController *)v9 navigator];
-    v3 = [(BuddyNavigationFlowNavigator *)v2 view];
-    v4 = [v3 window];
-    sub_1000A4DC0(buf, "[BuddyNavigationFlowController _stopDisablingInteractionForExtendedInitialization]", v4);
+    navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+    view = [(BuddyNavigationFlowNavigator *)navigator view];
+    window = [view window];
+    sub_1000A4DC0(buf, "[BuddyNavigationFlowController _stopDisablingInteractionForExtendedInitialization]", window);
     _os_log_debug_impl(&_mh_execute_header, oslog[0], OS_LOG_TYPE_DEBUG, "%s setUserInteractionEnabled YES %p", buf, 0x16u);
   }
 
   objc_storeStrong(oslog, 0);
-  v5 = [(BuddyNavigationFlowController *)v9 navigator];
-  v6 = [(BuddyNavigationFlowNavigator *)v5 view];
-  v7 = [v6 window];
-  [v7 setUserInteractionEnabled:1];
+  navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
+  view2 = [(BuddyNavigationFlowNavigator *)navigator2 view];
+  window2 = [view2 window];
+  [window2 setUserInteractionEnabled:1];
 }
 
-- (void)_performExtendedInitializationForFlowItem:(id)a3 willBegin:(id)a4 withCompletion:(id)a5
+- (void)_performExtendedInitializationForFlowItem:(id)item willBegin:(id)begin withCompletion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, begin);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, completion);
   if (objc_opt_respondsToSelector())
   {
     if (v27)
@@ -1078,7 +1078,7 @@ LABEL_9:
     v16[1] = v17;
     v13 = location[0];
     v14 = v21;
-    v15 = v29;
+    v15 = selfCopy;
     v16[0] = v26;
     [v7 performExtendedInitializationWithCompletion:&v8];
     objc_storeStrong(v16, 0);
@@ -1105,26 +1105,26 @@ LABEL_9:
   objc_storeStrong(location, 0);
 }
 
-- (void)_pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6 willPushFlowItem:(id)a7
+- (void)_pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated willPushFlowItem:(id)flowItem
 {
-  v92 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v90 = 0;
-  objc_storeStrong(&v90, a4);
-  v89 = a5;
-  v88 = a6;
+  objc_storeStrong(&v90, flow);
+  initializationCopy = initialization;
+  animatedCopy = animated;
   v87 = 0;
-  objc_storeStrong(&v87, a7);
-  if (location[0] && ![(BuddyNavigationFlowController *)v92 _isFlowItemAllowed:location[0]])
+  objc_storeStrong(&v87, flowItem);
+  if (location[0] && ![(BuddyNavigationFlowController *)selfCopy _isFlowItemAllowed:location[0]])
   {
-    v11 = [(BuddyNavigationFlowController *)v92 flowProducer];
-    v86 = [objc_opt_class() allowedFlowItems];
+    flowProducer = [(BuddyNavigationFlowController *)selfCopy flowProducer];
+    allowedFlowItems = [objc_opt_class() allowedFlowItems];
 
     v12 = location[0];
-    v13 = [(BuddyNavigationFlowController *)v92 flowProducer];
-    v85 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", @"Attempted to push disallowed flow item (%@) from producer (%@) with %ld allowed flow items: %@", v12, v13, [v86 count], v86);
+    flowProducer2 = [(BuddyNavigationFlowController *)selfCopy flowProducer];
+    v85 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", @"Attempted to push disallowed flow item (%@) from producer (%@) with %ld allowed flow items: %@", v12, flowProducer2, [allowedFlowItems count], allowedFlowItems);
 
     v84 = _BYLoggingFacility();
     v83 = OS_LOG_TYPE_FAULT;
@@ -1136,45 +1136,45 @@ LABEL_9:
 
     objc_storeStrong(&v84, 0);
     objc_storeStrong(&v85, 0);
-    objc_storeStrong(&v86, 0);
+    objc_storeStrong(&allowedFlowItems, 0);
   }
 
-  v14 = [(BuddyNavigationFlowController *)v92 navigationStartDate];
-  v15 = v14 == 0;
+  navigationStartDate = [(BuddyNavigationFlowController *)selfCopy navigationStartDate];
+  v15 = navigationStartDate == 0;
 
   if (v15)
   {
-    [(BuddyNavigationFlowController *)v92 _beginEventForNavigationDuration];
+    [(BuddyNavigationFlowController *)selfCopy _beginEventForNavigationDuration];
   }
 
-  v16 = v92;
-  v17 = [(BuddyNavigationFlowController *)v92 buddyControllers];
-  v18 = [(NSMutableArray *)v17 lastObject];
-  v82 = [(BuddyNavigationFlowController *)v16 _lastNonFlowFlowItemRelativeToFlowItem:v18];
+  v16 = selfCopy;
+  buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+  lastObject = [(NSMutableArray *)buddyControllers lastObject];
+  v82 = [(BuddyNavigationFlowController *)v16 _lastNonFlowFlowItemRelativeToFlowItem:lastObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v81 = location[0];
-    if (v89)
+    if (initializationCopy)
     {
-      v19 = v92;
+      v19 = selfCopy;
       v20 = location[0];
       v75 = _NSConcreteStackBlock;
       v76 = -1073741824;
       v77 = 0;
       v78 = sub_1000A61E4;
       v79 = &unk_10032B0D0;
-      v80 = v92;
+      v80 = selfCopy;
       v64 = _NSConcreteStackBlock;
       v65 = -1073741824;
       v66 = 0;
       v67 = sub_1000A6210;
       v68 = &unk_10032BC00;
       v73 = v87;
-      v69 = v92;
+      v69 = selfCopy;
       v70 = v81;
-      v74 = v88;
+      v74 = animatedCopy;
       v71 = v90;
       v72 = location[0];
       [(BuddyNavigationFlowController *)v19 _performExtendedInitializationForFlowItem:v20 willBegin:&v75 withCompletion:&v64];
@@ -1193,36 +1193,36 @@ LABEL_9:
         (*(v87 + 2))(v87, 1);
       }
 
-      [(BuddyNavigationFlowController *)v92 _endEventForNavigationDurationFromFlowItem:v82 toFlowItem:v81];
-      v21 = [(BuddyNavigationFlowController *)v92 buddyControllers];
-      [(NSMutableArray *)v21 addObject:v81];
+      [(BuddyNavigationFlowController *)selfCopy _endEventForNavigationDurationFromFlowItem:v82 toFlowItem:v81];
+      buddyControllers2 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      [(NSMutableArray *)buddyControllers2 addObject:v81];
 
-      [v81 startFlowAnimated:v88];
+      [v81 startFlowAnimated:animatedCopy];
     }
 
     objc_storeStrong(&v81, 0);
   }
 
-  else if (v89)
+  else if (initializationCopy)
   {
-    v22 = v92;
+    v22 = selfCopy;
     v23 = location[0];
     v58 = _NSConcreteStackBlock;
     v59 = -1073741824;
     v60 = 0;
     v61 = sub_1000A62D0;
     v62 = &unk_10032B0D0;
-    v63 = v92;
+    v63 = selfCopy;
     v48 = _NSConcreteStackBlock;
     v49 = -1073741824;
     v50 = 0;
     v51 = sub_1000A62FC;
     v52 = &unk_10032BC28;
     v56 = v87;
-    v53 = v92;
+    v53 = selfCopy;
     v54 = location[0];
     v55 = v90;
-    v57 = v88;
+    v57 = animatedCopy;
     [(BuddyNavigationFlowController *)v22 _performExtendedInitializationForFlowItem:v23 willBegin:&v58 withCompletion:&v48];
     objc_storeStrong(&v55, 0);
     objc_storeStrong(&v54, 0);
@@ -1242,22 +1242,22 @@ LABEL_9:
     if (objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_respondsToSelector())
     {
       v24 = location[0];
-      v25 = [(BuddyNavigationFlowController *)v92 navigator];
-      v26 = [(BuddyNavigationFlowNavigator *)v25 navigationController];
-      [v24 setNavigationController:v26];
+      navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+      navigationController = [(BuddyNavigationFlowNavigator *)navigator navigationController];
+      [v24 setNavigationController:navigationController];
     }
 
-    [(BuddyNavigationFlowController *)v92 _stopDisablingInteractionForExtendedInitialization];
-    objc_initWeak(&from, v92);
-    v27 = v92;
+    [(BuddyNavigationFlowController *)selfCopy _stopDisablingInteractionForExtendedInitialization];
+    objc_initWeak(&from, selfCopy);
+    v27 = selfCopy;
     v28 = location[0];
-    v29 = v88;
+    v29 = animatedCopy;
     v39 = _NSConcreteStackBlock;
     v40 = -1073741824;
     v41 = 0;
     v42 = sub_1000A63A0;
     v43 = &unk_10032BB10;
-    v44 = v92;
+    v44 = selfCopy;
     v45 = v82;
     v46 = location[0];
     v30 = _NSConcreteStackBlock;
@@ -1267,7 +1267,7 @@ LABEL_9:
     v34 = &unk_10032BC50;
     objc_copyWeak(&v37, &from);
     v35 = location[0];
-    v38 = v88;
+    v38 = animatedCopy;
     v36 = v90;
     [(BuddyNavigationFlowController *)v27 _presentViewControllerForBuddyController:v28 animated:v29 willPresentViewController:&v39 completion:&v30];
     objc_storeStrong(&v36, 0);
@@ -1285,32 +1285,32 @@ LABEL_9:
   objc_storeStrong(location, 0);
 }
 
-- (void)_presentViewControllerForBuddyController:(id)a3 animated:(BOOL)a4 willPresentViewController:(id)a5 completion:(id)a6
+- (void)_presentViewControllerForBuddyController:(id)controller animated:(BOOL)animated willPresentViewController:(id)viewController completion:(id)completion
 {
-  v116 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v114 = a4;
+  objc_storeStrong(location, controller);
+  animatedCopy = animated;
   v113 = 0;
-  objc_storeStrong(&v113, a5);
+  objc_storeStrong(&v113, viewController);
   v112 = 0;
-  objc_storeStrong(&v112, a6);
-  v111 = [(BuddyNavigationFlowController *)v116 _viewControllerForBuddyController:location[0]];
-  v9 = [(BuddyNavigationFlowController *)v116 navigator];
-  v10 = [(BuddyNavigationFlowNavigator *)v9 topViewController];
-  v110 = [v10 firstResponder];
+  objc_storeStrong(&v112, completion);
+  v111 = [(BuddyNavigationFlowController *)selfCopy _viewControllerForBuddyController:location[0]];
+  navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+  topViewController = [(BuddyNavigationFlowNavigator *)navigator topViewController];
+  firstResponder = [topViewController firstResponder];
 
   if (v111)
   {
-    [(BuddyNavigationFlowController *)v116 _hideBackButtonIfNecessaryOnFlowItem:location[0] withViewController:v111];
+    [(BuddyNavigationFlowController *)selfCopy _hideBackButtonIfNecessaryOnFlowItem:location[0] withViewController:v111];
     if (v113)
     {
       (*(v113 + 2))();
     }
 
-    v11 = [(BuddyNavigationFlowController *)v116 buddyControllers];
-    [(NSMutableArray *)v11 addObject:location[0]];
+    buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    [(NSMutableArray *)buddyControllers addObject:location[0]];
 
     v109 = 0;
     if (objc_opt_respondsToSelector())
@@ -1330,28 +1330,28 @@ LABEL_9:
       v14 = +[BFFStyle sharedStyle];
       [v14 applyThemeToNavigationController:v108];
 
-      v15 = v116;
-      v16 = [(BuddyNavigationFlowController *)v116 navigator];
-      v17 = [(BuddyNavigationFlowNavigator *)v16 navigationController];
-      [(BuddyNavigationFlowController *)v15 navigationController:v17 willShowViewController:v111 operation:1 animated:1];
+      v15 = selfCopy;
+      navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      navigationController = [(BuddyNavigationFlowNavigator *)navigator2 navigationController];
+      [(BuddyNavigationFlowController *)v15 navigationController:navigationController willShowViewController:v111 operation:1 animated:1];
 
-      if (v110)
+      if (firstResponder)
       {
-        [(BuddyNavigationFlowController *)v116 setLastUIResponder:v110];
-        [v110 resignFirstResponder];
+        [(BuddyNavigationFlowController *)selfCopy setLastUIResponder:firstResponder];
+        [firstResponder resignFirstResponder];
       }
 
-      v18 = [(BuddyNavigationFlowController *)v116 navigator];
-      v19 = v114;
+      navigator3 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      v19 = animatedCopy;
       v98 = _NSConcreteStackBlock;
       v99 = -1073741824;
       v100 = 0;
       v101 = sub_1000A7498;
       v102 = &unk_10032BC78;
-      v103 = v116;
+      v103 = selfCopy;
       v104 = v111;
       v105 = v112;
-      [(BuddyNavigationFlowNavigator *)v18 presentViewController:v108 animated:v19 completion:&v98];
+      [(BuddyNavigationFlowNavigator *)navigator3 presentViewController:v108 animated:v19 completion:&v98];
 
       objc_storeStrong(&v105, 0);
       objc_storeStrong(&v104, 0);
@@ -1359,11 +1359,11 @@ LABEL_9:
       objc_storeStrong(&v108, 0);
     }
 
-    else if (v114)
+    else if (animatedCopy)
     {
-      v97 = [(BuddyNavigationFlowController *)v116 _shieldColorForNewTopFlowItemPush];
-      v20 = [(BuddyNavigationFlowController *)v116 navigator];
-      if (v97)
+      _shieldColorForNewTopFlowItemPush = [(BuddyNavigationFlowController *)selfCopy _shieldColorForNewTopFlowItemPush];
+      navigator4 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      if (_shieldColorForNewTopFlowItemPush)
       {
         v90 = _NSConcreteStackBlock;
         v91 = -1073741824;
@@ -1372,7 +1372,7 @@ LABEL_9:
         v94 = &unk_10032BCA0;
         v96 = v112;
         v95 = v111;
-        [(BuddyNavigationFlowNavigator *)v20 pushViewController:v111 usingShieldColor:v97 completion:&v90];
+        [(BuddyNavigationFlowNavigator *)navigator4 pushViewController:v111 usingShieldColor:_shieldColorForNewTopFlowItemPush completion:&v90];
 
         objc_storeStrong(&v95, 0);
         objc_storeStrong(&v96, 0);
@@ -1387,19 +1387,19 @@ LABEL_9:
         v87 = &unk_10032BCA0;
         v89 = v112;
         v88 = v111;
-        [(BuddyNavigationFlowNavigator *)v20 pushViewController:v111 completion:&v83];
+        [(BuddyNavigationFlowNavigator *)navigator4 pushViewController:v111 completion:&v83];
 
         objc_storeStrong(&v88, 0);
         objc_storeStrong(&v89, 0);
       }
 
-      objc_storeStrong(&v97, 0);
+      objc_storeStrong(&_shieldColorForNewTopFlowItemPush, 0);
     }
 
     else
     {
-      v21 = [(BuddyNavigationFlowController *)v116 navigator];
-      [(BuddyNavigationFlowNavigator *)v21 pushViewController:v111 animated:0];
+      navigator5 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      [(BuddyNavigationFlowNavigator *)navigator5 pushViewController:v111 animated:0];
 
       if (v112)
       {
@@ -1411,24 +1411,24 @@ LABEL_9:
   else if (objc_opt_respondsToSelector())
   {
     v82 = 0;
-    v22 = [(BuddyNavigationFlowController *)v116 buddyControllers];
-    v23 = [(NSMutableArray *)v22 lastObject];
+    buddyControllers2 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    lastObject = [(NSMutableArray *)buddyControllers2 lastObject];
     v24 = objc_opt_respondsToSelector();
 
     if (v24)
     {
-      v25 = [(BuddyNavigationFlowController *)v116 buddyControllers];
-      v26 = [(NSMutableArray *)v25 lastObject];
-      v82 = [v26 shouldSuppressExtendedInitializationActivityIndicator] & 1;
+      buddyControllers3 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      lastObject2 = [(NSMutableArray *)buddyControllers3 lastObject];
+      v82 = [lastObject2 shouldSuppressExtendedInitializationActivityIndicator] & 1;
     }
 
     oslog = _BYLoggingFacility();
     v80 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(BuddyNavigationFlowController *)v116 buddyControllers];
-      v28 = [(NSMutableArray *)v27 lastObject];
-      v79 = v28;
+      buddyControllers4 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      lastObject3 = [(NSMutableArray *)buddyControllers4 lastObject];
+      v79 = lastObject3;
       if (v82)
       {
         v29 = @"YEP";
@@ -1439,7 +1439,7 @@ LABEL_9:
         v29 = @"NERP";
       }
 
-      sub_100073058(buf, v28, v29);
+      sub_100073058(buf, lastObject3, v29);
       _os_log_impl(&_mh_execute_header, oslog, v80, "Should suppress spinner over %{public}@: %{public}@", buf, 0x16u);
 
       objc_storeStrong(&v79, 0);
@@ -1448,27 +1448,27 @@ LABEL_9:
     objc_storeStrong(&oslog, 0);
     if ((v82 & 1) == 0)
     {
-      v30 = [(BuddyNavigationFlowController *)v116 navigator];
-      v31 = [(BuddyNavigationFlowNavigator *)v30 topViewController];
-      [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v31 identifier:@"BuddyNavigationFlowController"];
+      navigator6 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      topViewController2 = [(BuddyNavigationFlowNavigator *)navigator6 topViewController];
+      [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:topViewController2 identifier:@"BuddyNavigationFlowController"];
     }
 
     v78 = _BYLoggingFacility();
     v77 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v78, OS_LOG_TYPE_DEBUG))
     {
-      v32 = [(BuddyNavigationFlowController *)v116 navigator];
-      v33 = [(BuddyNavigationFlowNavigator *)v32 view];
-      v34 = [v33 window];
-      sub_1000A4DC0(v118, "[BuddyNavigationFlowController _presentViewControllerForBuddyController:animated:willPresentViewController:completion:]", v34);
+      navigator7 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      view = [(BuddyNavigationFlowNavigator *)navigator7 view];
+      window = [view window];
+      sub_1000A4DC0(v118, "[BuddyNavigationFlowController _presentViewControllerForBuddyController:animated:willPresentViewController:completion:]", window);
       _os_log_debug_impl(&_mh_execute_header, v78, v77, "%s setUserInteractionEnabled NO %p", v118, 0x16u);
     }
 
     objc_storeStrong(&v78, 0);
-    v35 = [(BuddyNavigationFlowController *)v116 navigator];
-    v36 = [(BuddyNavigationFlowNavigator *)v35 view];
-    v37 = [v36 window];
-    [v37 setUserInteractionEnabled:0];
+    navigator8 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    view2 = [(BuddyNavigationFlowNavigator *)navigator8 view];
+    window2 = [view2 window];
+    [window2 setUserInteractionEnabled:0];
 
     v73[0] = 0;
     v73[1] = v73;
@@ -1494,23 +1494,23 @@ LABEL_9:
     v65 = dispatch_semaphore_create(0);
     v64 = +[NSDate date];
     v38 = location[0];
-    v39 = [(BuddyNavigationFlowController *)v116 navigator];
-    v40 = [(BuddyNavigationFlowNavigator *)v39 navigationController];
+    navigator9 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    navigationController2 = [(BuddyNavigationFlowNavigator *)navigator9 navigationController];
     v52 = _NSConcreteStackBlock;
     v53 = -1073741824;
     v54 = 0;
     v55 = sub_1000A75CC;
     v56 = &unk_10032BCC8;
-    v57 = v116;
+    v57 = selfCopy;
     v63[1] = v73;
     v63[2] = v69;
     v58 = v65;
     v59 = location[0];
     v60 = v64;
     v62 = v113;
-    v61 = v110;
+    v61 = firstResponder;
     v63[0] = v112;
-    [v38 presentHostedViewControllerOnNavigationController:v40 completion:&v52];
+    [v38 presentHostedViewControllerOnNavigationController:navigationController2 completion:&v52];
 
     if (objc_opt_respondsToSelector())
     {
@@ -1523,7 +1523,7 @@ LABEL_9:
       v47 = v65;
       v48 = location[0];
       v51[1] = v69;
-      v49 = v116;
+      v49 = selfCopy;
       v51[2] = v73;
       v51[0] = v112;
       v50 = v111;
@@ -1554,7 +1554,7 @@ LABEL_9:
     (*(v112 + 2))(v112, 0);
   }
 
-  objc_storeStrong(&v110, 0);
+  objc_storeStrong(&firstResponder, 0);
   objc_storeStrong(&v111, 0);
   objc_storeStrong(&v112, 0);
   objc_storeStrong(&v113, 0);
@@ -1565,17 +1565,17 @@ LABEL_9:
 {
   location[2] = self;
   location[1] = a2;
-  v2 = [(BuddyNavigationFlowController *)self buddyControllers];
-  location[0] = [(NSMutableArray *)v2 lastObject];
+  buddyControllers = [(BuddyNavigationFlowController *)self buddyControllers];
+  location[0] = [(NSMutableArray *)buddyControllers lastObject];
 
   v3 = objc_opt_respondsToSelector();
-  v4 = 0;
+  hasBlackBackground = 0;
   if (v3)
   {
-    v4 = [location[0] hasBlackBackground];
+    hasBlackBackground = [location[0] hasBlackBackground];
   }
 
-  if (v4)
+  if (hasBlackBackground)
   {
     v8 = +[UIColor blackColor];
   }
@@ -1591,18 +1591,18 @@ LABEL_9:
   return v5;
 }
 
-- (id)_viewControllerForBuddyController:(id)a3
+- (id)_viewControllerForBuddyController:(id)controller
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v7 = 0;
   if (objc_opt_respondsToSelector())
   {
-    v3 = [location[0] viewController];
+    viewController = [location[0] viewController];
     v4 = v7;
-    v7 = v3;
+    v7 = viewController;
   }
 
   else
@@ -1620,20 +1620,20 @@ LABEL_9:
   return v5;
 }
 
-- (void)_hideBackButtonIfNecessaryOnFlowItem:(id)a3 withViewController:(id)a4
+- (void)_hideBackButtonIfNecessaryOnFlowItem:(id)item withViewController:(id)controller
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, controller);
   v25 = 0;
   memset(__b, 0, sizeof(__b));
-  v5 = [(BuddyNavigationFlowController *)v28 buddyControllers];
-  v6 = [(NSMutableArray *)v5 reverseObjectEnumerator];
+  buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+  reverseObjectEnumerator = [(NSMutableArray *)buddyControllers reverseObjectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:__b objects:v30 count:16];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:__b objects:v30 count:16];
   if (v7)
   {
     v8 = *__b[2];
@@ -1643,26 +1643,26 @@ LABEL_3:
     {
       if (*__b[2] != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       obj = *(__b[1] + 8 * v9);
-      v22 = [(BuddyNavigationFlowController *)v28 _viewControllerForBuddyController:obj];
+      v22 = [(BuddyNavigationFlowController *)selfCopy _viewControllerForBuddyController:obj];
       v10 = objc_opt_respondsToSelector();
-      v11 = 0;
+      isEphemeral = 0;
       if (v10)
       {
-        v11 = [obj isEphemeral];
+        isEphemeral = [obj isEphemeral];
       }
 
-      v21 = v11 & 1;
+      v21 = isEphemeral & 1;
       v18 = 0;
       v12 = 0;
       if (v22)
       {
-        v19 = [(BuddyNavigationFlowController *)v28 viewControllersToRemoveOnPush];
+        viewControllersToRemoveOnPush = [(BuddyNavigationFlowController *)selfCopy viewControllersToRemoveOnPush];
         v18 = 1;
-        v12 = [v19 containsObject:v22];
+        v12 = [viewControllersToRemoveOnPush containsObject:v22];
       }
 
       if (v18)
@@ -1689,7 +1689,7 @@ LABEL_3:
 
       if (++v9 >= v7)
       {
-        v7 = [v6 countByEnumeratingWithState:__b objects:v30 count:16];
+        v7 = [reverseObjectEnumerator countByEnumeratingWithState:__b objects:v30 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1719,8 +1719,8 @@ LABEL_20:
   objc_storeStrong(&oslog, 0);
   if (v25 && (objc_opt_respondsToSelector() & 1) != 0 && ([v25 controllerAllowsNavigatingBack] & 1) == 0)
   {
-    v13 = [v26 navigationItem];
-    [v13 setHidesBackButton:1];
+    navigationItem = [v26 navigationItem];
+    [navigationItem setHidesBackButton:1];
   }
 
   objc_storeStrong(&v25, 0);
@@ -1728,71 +1728,71 @@ LABEL_20:
   objc_storeStrong(location, 0);
 }
 
-- (void)removeViewControllerFromNavHierarchy:(id)a3
+- (void)removeViewControllerFromNavHierarchy:(id)hierarchy
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyNavigationFlowController *)v8 navigator];
-  v4 = [(BuddyNavigationFlowNavigator *)v3 viewControllers];
-  v6 = [v4 mutableCopy];
+  objc_storeStrong(location, hierarchy);
+  navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+  viewControllers = [(BuddyNavigationFlowNavigator *)navigator viewControllers];
+  v6 = [viewControllers mutableCopy];
 
   [v6 removeObject:location[0]];
-  v5 = [(BuddyNavigationFlowController *)v8 navigator];
-  [(BuddyNavigationFlowNavigator *)v5 setViewControllers:v6 animated:0];
+  navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
+  [(BuddyNavigationFlowNavigator *)navigator2 setViewControllers:v6 animated:0];
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateNavigationBackButtonTitleForViewController:(id)a3
+- (void)_updateNavigationBackButtonTitleForViewController:(id)controller
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] navigationItem];
-  [v3 setBackButtonDisplayMode:1];
+  objc_storeStrong(location, controller);
+  navigationItem = [location[0] navigationItem];
+  [navigationItem setBackButtonDisplayMode:1];
 
-  v4 = [location[0] navigationItem];
-  v5 = [v4 backButtonTitle];
+  navigationItem2 = [location[0] navigationItem];
+  backButtonTitle = [navigationItem2 backButtonTitle];
 
-  if (v5)
+  if (backButtonTitle)
   {
 LABEL_13:
     v18 = 0;
     goto LABEL_14;
   }
 
-  v6 = v21;
-  v7 = [(BuddyNavigationFlowController *)v21 buddyControllers];
-  v8 = [(NSMutableArray *)v7 lastObject];
-  v9 = [(BuddyNavigationFlowController *)v6 _viewControllerForBuddyController:v8];
+  v6 = selfCopy;
+  buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+  lastObject = [(NSMutableArray *)buddyControllers lastObject];
+  v9 = [(BuddyNavigationFlowController *)v6 _viewControllerForBuddyController:lastObject];
   v10 = location[0];
 
-  if (v9 != v10 || ((v11 = -[BuddyNavigationFlowController buddyControllers](v21, "buddyControllers"), v19 = -[NSMutableArray lastObject](v11, "lastObject"), v11, (objc_opt_respondsToSelector() & 1) == 0) || ([v19 isEphemeral] & 1) == 0 ? (v18 = 0) : (v18 = 1), objc_storeStrong(&v19, 0), !v18))
+  if (v9 != v10 || ((v11 = -[BuddyNavigationFlowController buddyControllers](selfCopy, "buddyControllers"), v19 = -[NSMutableArray lastObject](v11, "lastObject"), v11, (objc_opt_respondsToSelector() & 1) == 0) || ([v19 isEphemeral] & 1) == 0 ? (v18 = 0) : (v18 = 1), objc_storeStrong(&v19, 0), !v18))
   {
-    v17 = [(BuddyNavigationFlowController *)v21 _titleForViewController:location[0]];
+    v17 = [(BuddyNavigationFlowController *)selfCopy _titleForViewController:location[0]];
     if (!v17)
     {
       oslog = _BYLoggingFacility();
       v15 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        v14 = [location[0] customDescription];
-        sub_10006AE18(buf, v14);
+        customDescription = [location[0] customDescription];
+        sub_10006AE18(buf, customDescription);
         _os_log_error_impl(&_mh_execute_header, oslog, v15, "Unable to determine title for view controller %@", buf, 0xCu);
 
-        objc_storeStrong(&v14, 0);
+        objc_storeStrong(&customDescription, 0);
       }
 
       objc_storeStrong(&oslog, 0);
     }
 
     v12 = v17;
-    v13 = [location[0] navigationItem];
-    [v13 setBackButtonTitle:v12];
+    navigationItem3 = [location[0] navigationItem];
+    [navigationItem3 setBackButtonTitle:v12];
 
     objc_storeStrong(&v17, 0);
     goto LABEL_13;
@@ -1802,17 +1802,17 @@ LABEL_14:
   objc_storeStrong(location, 0);
 }
 
-- (id)_titleForViewController:(id)a3
+- (id)_titleForViewController:(id)controller
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] title];
+  objc_storeStrong(location, controller);
+  title = [location[0] title];
 
-  if (v3)
+  if (title)
   {
-    v11 = [location[0] title];
+    title2 = [location[0] title];
     v9 = 1;
   }
 
@@ -1822,8 +1822,8 @@ LABEL_14:
     if (objc_opt_isKindOfClass())
     {
       v8 = location[0];
-      v4 = [v8 headerView];
-      v11 = [v4 title];
+      headerView = [v8 headerView];
+      title2 = [headerView title];
 
       v9 = 1;
       objc_storeStrong(&v8, 0);
@@ -1835,36 +1835,36 @@ LABEL_14:
       if (objc_opt_isKindOfClass())
       {
         v7 = location[0];
-        v11 = [v7 navTitle];
+        title2 = [v7 navTitle];
         v9 = 1;
         objc_storeStrong(&v7, 0);
       }
 
       else
       {
-        v11 = 0;
+        title2 = 0;
         v9 = 1;
       }
     }
   }
 
   objc_storeStrong(location, 0);
-  v5 = v11;
+  v5 = title2;
 
   return v5;
 }
 
-- (id)_flowForFlowItem:(id)a3
+- (id)_flowForFlowItem:(id)item
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   memset(__b, 0, sizeof(__b));
-  v3 = [(BuddyNavigationFlowController *)v17 buddyControllers];
-  v4 = [(NSMutableArray *)v3 reverseObjectEnumerator];
+  buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+  reverseObjectEnumerator = [(NSMutableArray *)buddyControllers reverseObjectEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:__b objects:v19 count:16];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:__b objects:v19 count:16];
   if (v5)
   {
     v6 = *__b[2];
@@ -1874,7 +1874,7 @@ LABEL_3:
     {
       if (*__b[2] != v6)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v15 = *(__b[1] + 8 * v7);
@@ -1882,8 +1882,8 @@ LABEL_3:
       if (objc_opt_isKindOfClass())
       {
         v13 = v15;
-        v8 = [v13 controllers];
-        v9 = [v8 containsObject:location[0]];
+        controllers = [v13 controllers];
+        v9 = [controllers containsObject:location[0]];
 
         if (v9)
         {
@@ -1905,7 +1905,7 @@ LABEL_3:
 
       if (++v7 >= v5)
       {
-        v5 = [v4 countByEnumeratingWithState:__b objects:v19 count:16];
+        v5 = [reverseObjectEnumerator countByEnumeratingWithState:__b objects:v19 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -1933,29 +1933,29 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)_isFlowItemAllowed:(id)a3
+- (BOOL)_isFlowItemAllowed:(id)allowed
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyNavigationFlowController *)v7 flowProducer];
-  v5 = [objc_opt_class() allowedFlowItems];
+  objc_storeStrong(location, allowed);
+  flowProducer = [(BuddyNavigationFlowController *)selfCopy flowProducer];
+  allowedFlowItems = [objc_opt_class() allowedFlowItems];
 
-  LOBYTE(v3) = [v5 containsObject:objc_opt_class()];
-  objc_storeStrong(&v5, 0);
+  LOBYTE(flowProducer) = [allowedFlowItems containsObject:objc_opt_class()];
+  objc_storeStrong(&allowedFlowItems, 0);
   objc_storeStrong(location, 0);
-  return v3 & 1;
+  return flowProducer & 1;
 }
 
-- (id)_lastNonFlowFlowItemRelativeToFlowItem:(id)a3
+- (id)_lastNonFlowFlowItemRelativeToFlowItem:(id)item
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyNavigationFlowController *)v15 buddyControllers];
-  v13 = [(NSMutableArray *)v3 lastObject];
+  objc_storeStrong(location, item);
+  buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+  lastObject = [(NSMutableArray *)buddyControllers lastObject];
 
   while (1)
   {
@@ -1965,26 +1965,26 @@ LABEL_13:
       break;
     }
 
-    v4 = [(BuddyNavigationFlowController *)v15 buddyControllers];
-    v5 = [(NSMutableArray *)v4 firstObject];
+    buddyControllers2 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    firstObject = [(NSMutableArray *)buddyControllers2 firstObject];
 
-    if (v13 == v5)
+    if (lastObject == firstObject)
     {
-      objc_storeStrong(&v13, 0);
+      objc_storeStrong(&lastObject, 0);
       break;
     }
 
-    v6 = [(BuddyNavigationFlowController *)v15 buddyControllers];
-    v7 = [(NSMutableArray *)v6 indexOfObject:v13]- 1;
+    buddyControllers3 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    v7 = [(NSMutableArray *)buddyControllers3 indexOfObject:lastObject]- 1;
 
-    v8 = [(BuddyNavigationFlowController *)v15 buddyControllers];
-    v9 = [(NSMutableArray *)v8 objectAtIndex:v7];
-    v10 = v13;
-    v13 = v9;
+    buddyControllers4 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    v9 = [(NSMutableArray *)buddyControllers4 objectAtIndex:v7];
+    v10 = lastObject;
+    lastObject = v9;
   }
 
-  v11 = v13;
-  objc_storeStrong(&v13, 0);
+  v11 = lastObject;
+  objc_storeStrong(&lastObject, 0);
   objc_storeStrong(location, 0);
   return v11;
 }
@@ -1995,18 +1995,18 @@ LABEL_13:
   [(BuddyNavigationFlowController *)self setNavigationStartDate:v2];
 }
 
-- (void)_endEventForNavigationDurationFromFlowItem:(id)a3 toFlowItem:(id)a4
+- (void)_endEventForNavigationDurationFromFlowItem:(id)item toFlowItem:(id)flowItem
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v5 = [(BuddyNavigationFlowController *)v17 navigationStartDate];
-  LOBYTE(a4) = v5 == 0;
+  objc_storeStrong(&v15, flowItem);
+  navigationStartDate = [(BuddyNavigationFlowController *)selfCopy navigationStartDate];
+  LOBYTE(flowItem) = navigationStartDate == 0;
 
-  if (a4)
+  if (flowItem)
   {
     objc_exception_throw([NSException exceptionWithName:@"Attempted to add event for navigation duration without navigation start date" reason:0 userInfo:0]);
   }
@@ -2018,7 +2018,7 @@ LABEL_13:
     objc_storeStrong(&v14, @"(null)");
   }
 
-  v7 = [(BuddyNavigationFlowController *)v17 analyticsManager];
+  analyticsManager = [(BuddyNavigationFlowController *)selfCopy analyticsManager];
   v18[0] = @"startClass";
   v19[0] = v14;
   v18[1] = @"endClass";
@@ -2026,14 +2026,14 @@ LABEL_13:
   v9 = NSStringFromClass(v8);
   v19[1] = v9;
   v18[2] = @"duration";
-  v10 = [(BuddyNavigationFlowController *)v17 navigationStartDate];
-  [(NSDate *)v10 timeIntervalSinceNow];
+  navigationStartDate2 = [(BuddyNavigationFlowController *)selfCopy navigationStartDate];
+  [(NSDate *)navigationStartDate2 timeIntervalSinceNow];
   v12 = [NSNumber numberWithDouble:-v11];
   v19[2] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
-  [(BYAnalyticsManager *)v7 addEvent:@"com.apple.setupassistant.ios.navigation.duration" withPayload:v13 persist:1];
+  [(BYAnalyticsManager *)analyticsManager addEvent:@"com.apple.setupassistant.ios.navigation.duration" withPayload:v13 persist:1];
 
-  [(BuddyNavigationFlowController *)v17 setNavigationStartDate:0];
+  [(BuddyNavigationFlowController *)selfCopy setNavigationStartDate:0];
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
@@ -2045,18 +2045,18 @@ LABEL_13:
   dispatch_resume(v2);
 }
 
-- (void)_setupInitialFlowFromInitialFlowItem:(id)a3 debutFlowItemClass:(Class)a4 completion:(id)a5
+- (void)_setupInitialFlowFromInitialFlowItem:(id)item debutFlowItemClass:(Class)class completion:(id)completion
 {
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v50 = a4;
+  objc_storeStrong(location, item);
+  classCopy = class;
   v49 = 0;
-  objc_storeStrong(&v49, a5);
+  objc_storeStrong(&v49, completion);
   v48 = objc_alloc_init(NSMutableArray);
   [v48 addObject:location[0]];
-  v7 = [v48 lastObject];
+  lastObject = [v48 lastObject];
   v47 = objc_opt_class();
 
   objc_opt_class();
@@ -2064,36 +2064,36 @@ LABEL_13:
   {
     v46 = location[0];
     [v46 startFlowWithAllFlowItems];
-    v8 = [v46 controllers];
-    [v48 addObjectsFromArray:v8];
+    controllers = [v46 controllers];
+    [v48 addObjectsFromArray:controllers];
 
     objc_storeStrong(&v46, 0);
   }
 
-  v45 = objc_opt_class() == v50;
+  v45 = objc_opt_class() == classCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v9 = v50;
+  v9 = classCopy;
   if (v9 != objc_opt_class())
   {
     goto LABEL_9;
   }
 
-  v44 = [(BuddyNavigationFlowController *)v52 _createConditionalFlowItemForClass:v50];
+  v44 = [(BuddyNavigationFlowController *)selfCopy _createConditionalFlowItemForClass:classCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v48 addObject:v44];
-    v43 = [(BuddyNavigationFlowController *)v52 _viewControllerForBuddyController:location[0]];
-    [(BuddyNavigationFlowController *)v52 setBuddyControllers:v48];
-    v10 = [(BuddyNavigationFlowController *)v52 navigator];
+    v43 = [(BuddyNavigationFlowController *)selfCopy _viewControllerForBuddyController:location[0]];
+    [(BuddyNavigationFlowController *)selfCopy setBuddyControllers:v48];
+    navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
     v55 = v43;
     v11 = [NSArray arrayWithObjects:&v55 count:1];
-    [(BuddyNavigationFlowNavigator *)v10 setViewControllers:v11 animated:0];
+    [(BuddyNavigationFlowNavigator *)navigator setViewControllers:v11 animated:0];
 
     [v44 startFlowAnimated:0];
     (*(v49 + 2))();
@@ -2112,23 +2112,23 @@ LABEL_13:
 LABEL_9:
     while (!v45)
     {
-      v12 = [(BuddyNavigationFlowController *)v52 flowProducer];
-      v41 = [(BuddyFlowProducer *)v12 potentialNextFlowItemClassFollowingFlowItemClass:v47];
+      flowProducer = [(BuddyNavigationFlowController *)selfCopy flowProducer];
+      v41 = [(BuddyFlowProducer *)flowProducer potentialNextFlowItemClassFollowingFlowItemClass:v47];
 
       if (!v41)
       {
-        v40 = [NSString stringWithFormat:@"failedToFindDebutFlowItem.%@.%@", objc_opt_class(), v50];
-        v39 = [NSString stringWithFormat:@"Unable to find debut flow item (%@)", v50];
-        v38 = [NSException exceptionWithName:v39 reason:0 userInfo:0];
-        v13 = [(BYEnvironment *)v52->_environment diagnosticsThreadDecorator];
-        [v13 addDiagnostics:v40 thenThrowException:v38];
+        classCopy = [NSString stringWithFormat:@"failedToFindDebutFlowItem.%@.%@", objc_opt_class(), classCopy];
+        classCopy2 = [NSString stringWithFormat:@"Unable to find debut flow item (%@)", classCopy];
+        v38 = [NSException exceptionWithName:classCopy2 reason:0 userInfo:0];
+        diagnosticsThreadDecorator = [(BYEnvironment *)selfCopy->_environment diagnosticsThreadDecorator];
+        [diagnosticsThreadDecorator addDiagnostics:classCopy thenThrowException:v38];
 
         objc_storeStrong(&v38, 0);
-        objc_storeStrong(&v39, 0);
-        objc_storeStrong(&v40, 0);
+        objc_storeStrong(&classCopy2, 0);
+        objc_storeStrong(&classCopy, 0);
       }
 
-      v37 = [(BuddyNavigationFlowController *)v52 _createConditionalFlowItemForClass:v41];
+      v37 = [(BuddyNavigationFlowController *)selfCopy _createConditionalFlowItemForClass:v41];
       if (v37)
       {
         [v48 addObject:v37];
@@ -2138,30 +2138,30 @@ LABEL_9:
           v33 = v37;
           [v33 startFlowWithAllFlowItems];
           v15 = v48;
-          v16 = [v33 controllers];
-          [v15 addObjectsFromArray:v16];
+          controllers2 = [v33 controllers];
+          [v15 addObjectsFromArray:controllers2];
 
           objc_storeStrong(&v33, 0);
         }
 
         v47 = v41;
-        v45 = v41 == v50;
+        v45 = v41 == classCopy;
         v42 = 0;
       }
 
       else
       {
-        if (v50 == v41)
+        if (classCopy == v41)
         {
-          v36 = [NSString stringWithFormat:@"debutFlowItemCreationFailed.%@.%@", objc_opt_class(), v50];
-          v35 = [NSString stringWithFormat:@"Debut flow item (%@) could not be created", v50];
-          v34 = [NSException exceptionWithName:v35 reason:0 userInfo:0];
-          v14 = [(BYEnvironment *)v52->_environment diagnosticsThreadDecorator];
-          [v14 addDiagnostics:v36 thenThrowException:v34];
+          classCopy3 = [NSString stringWithFormat:@"debutFlowItemCreationFailed.%@.%@", objc_opt_class(), classCopy];
+          classCopy4 = [NSString stringWithFormat:@"Debut flow item (%@) could not be created", classCopy];
+          v34 = [NSException exceptionWithName:classCopy4 reason:0 userInfo:0];
+          diagnosticsThreadDecorator2 = [(BYEnvironment *)selfCopy->_environment diagnosticsThreadDecorator];
+          [diagnosticsThreadDecorator2 addDiagnostics:classCopy3 thenThrowException:v34];
 
           objc_storeStrong(&v34, 0);
-          objc_storeStrong(&v35, 0);
-          objc_storeStrong(&v36, 0);
+          objc_storeStrong(&classCopy4, 0);
+          objc_storeStrong(&classCopy3, 0);
         }
 
         v47 = v41;
@@ -2188,13 +2188,13 @@ LABEL_9:
           }
 
           v31 = *(__b[1] + 8 * i);
-          v21 = [(BuddyNavigationFlowController *)v52 buddyControllers];
-          [(NSMutableArray *)v21 addObject:v31];
+          buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+          [(NSMutableArray *)buddyControllers addObject:v31];
 
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v29 = [(BuddyNavigationFlowController *)v52 _viewControllerForBuddyController:v31];
+            v29 = [(BuddyNavigationFlowController *)selfCopy _viewControllerForBuddyController:v31];
             if (v29)
             {
               [v32 addObject:v29];
@@ -2203,11 +2203,11 @@ LABEL_9:
             else
             {
               v22 = objc_opt_class();
-              v28 = [NSString stringWithFormat:@"noViewControllerForDebut.%@.%@.%@", v22, v50, objc_opt_class()];
+              v28 = [NSString stringWithFormat:@"noViewControllerForDebut.%@.%@.%@", v22, classCopy, objc_opt_class()];
               v27 = [NSString stringWithFormat:@"No view controller found for flow item (%@) while making our debut", v31];
               v26 = [NSException exceptionWithName:v27 reason:0 userInfo:0];
-              v23 = [(BYEnvironment *)v52->_environment diagnosticsThreadDecorator];
-              [v23 addDiagnostics:v28 thenThrowException:v26];
+              diagnosticsThreadDecorator3 = [(BYEnvironment *)selfCopy->_environment diagnosticsThreadDecorator];
+              [diagnosticsThreadDecorator3 addDiagnostics:v28 thenThrowException:v26];
 
               objc_storeStrong(&v26, 0);
               objc_storeStrong(&v27, 0);
@@ -2227,14 +2227,14 @@ LABEL_9:
     oslog = _BYLoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_100078180(buf, v50, v48);
+      sub_100078180(buf, classCopy, v48);
       _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Making debut to %@ with the flow items: %@", buf, 0x16u);
     }
 
     objc_storeStrong(&oslog, 0);
-    [(BuddyNavigationFlowController *)v52 setBuddyControllers:v48];
-    v24 = [(BuddyNavigationFlowController *)v52 navigator];
-    [(BuddyNavigationFlowNavigator *)v24 setViewControllers:v32 animated:0];
+    [(BuddyNavigationFlowController *)selfCopy setBuddyControllers:v48];
+    navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    [(BuddyNavigationFlowNavigator *)navigator2 setViewControllers:v32 animated:0];
 
     if (v49)
     {
@@ -2252,43 +2252,43 @@ LABEL_9:
 
 - (void)_insertWiFiControllerAsFirstPane
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyNavigationFlowController *)self navigator];
-  v3 = [(BuddyNavigationFlowNavigator *)v2 viewControllers];
-  location[0] = [v3 mutableCopy];
+  navigator = [(BuddyNavigationFlowController *)self navigator];
+  viewControllers = [(BuddyNavigationFlowNavigator *)navigator viewControllers];
+  location[0] = [viewControllers mutableCopy];
 
-  v4 = [(BuddyNavigationFlowController *)v14 wifiController];
-  v5 = [(BuddyWiFiController *)v4 viewController];
-  [location[0] insertObject:v5 atIndex:0];
+  wifiController = [(BuddyNavigationFlowController *)selfCopy wifiController];
+  viewController = [(BuddyWiFiController *)wifiController viewController];
+  [location[0] insertObject:viewController atIndex:0];
 
-  v6 = [(BuddyNavigationFlowController *)v14 wifiController];
-  [(BuddyWiFiController *)v6 updateNextButton];
+  wifiController2 = [(BuddyNavigationFlowController *)selfCopy wifiController];
+  [(BuddyWiFiController *)wifiController2 updateNextButton];
 
-  v7 = [(BuddyNavigationFlowController *)v14 wifiController];
-  v8 = [(BuddyNavigationFlowController *)v14 navigator];
-  v9 = [(BuddyNavigationFlowNavigator *)v8 navigationController];
-  [(BuddyWiFiController *)v7 setNavigationController:v9];
+  wifiController3 = [(BuddyNavigationFlowController *)selfCopy wifiController];
+  navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
+  navigationController = [(BuddyNavigationFlowNavigator *)navigator2 navigationController];
+  [(BuddyWiFiController *)wifiController3 setNavigationController:navigationController];
 
-  v10 = [(BuddyNavigationFlowController *)v14 buddyControllers];
-  v11 = [(BuddyNavigationFlowController *)v14 wifiController];
-  [(NSMutableArray *)v10 insertObject:v11 atIndex:0];
+  buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+  wifiController4 = [(BuddyNavigationFlowController *)selfCopy wifiController];
+  [(NSMutableArray *)buddyControllers insertObject:wifiController4 atIndex:0];
 
-  v12 = [(BuddyNavigationFlowController *)v14 navigator];
-  [(BuddyNavigationFlowNavigator *)v12 setViewControllers:location[0] animated:0];
+  navigator3 = [(BuddyNavigationFlowController *)selfCopy navigator];
+  [(BuddyNavigationFlowNavigator *)navigator3 setViewControllers:location[0] animated:0];
 
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)_hasWiFiControllerInNavigationStack
 {
-  v10 = self;
+  selfCopy = self;
   __b[9] = a2;
   memset(__b, 0, 0x40uLL);
-  v2 = [(BuddyNavigationFlowController *)v10 navigator];
-  v3 = [(BuddyNavigationFlowNavigator *)v2 viewControllers];
+  navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+  viewControllers = [(BuddyNavigationFlowNavigator *)navigator viewControllers];
 
-  v4 = [v3 countByEnumeratingWithState:__b objects:v12 count:16];
+  v4 = [viewControllers countByEnumeratingWithState:__b objects:v12 count:16];
   if (v4)
   {
     v5 = *__b[2];
@@ -2298,7 +2298,7 @@ LABEL_9:
       {
         if (*__b[2] != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewControllers);
         }
 
         __b[8] = *(__b[1] + 8 * i);
@@ -2311,7 +2311,7 @@ LABEL_9:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:__b objects:v12 count:16];
+      v4 = [viewControllers countByEnumeratingWithState:__b objects:v12 count:16];
     }
 
     while (v4);
@@ -2330,19 +2330,19 @@ LABEL_11:
 
 - (void)restartFlow
 {
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
-  v2 = [(BuddyNavigationFlowController *)self flowDelegate];
-  v3 = [(BuddyNavigationFlowController *)v46 navigator];
-  v4 = [(BuddyNavigationFlowNavigator *)v3 viewControllers];
-  v5 = [v4 firstObject];
-  v6 = [(BuddyFlowDelegate *)v2 willRestartFlowToViewController:v5]& 1;
+  flowDelegate = [(BuddyNavigationFlowController *)self flowDelegate];
+  navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+  viewControllers = [(BuddyNavigationFlowNavigator *)navigator viewControllers];
+  firstObject = [viewControllers firstObject];
+  v6 = [(BuddyFlowDelegate *)flowDelegate willRestartFlowToViewController:firstObject]& 1;
 
   if (v6)
   {
     memset(__b, 0, sizeof(__b));
-    v7 = [(BuddyNavigationFlowController *)v46 buddyControllers];
-    v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:__b objects:v59 count:16];
+    buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    v8 = [(NSMutableArray *)buddyControllers countByEnumeratingWithState:__b objects:v59 count:16];
     if (v8)
     {
       v9 = *__b[2];
@@ -2352,7 +2352,7 @@ LABEL_11:
         {
           if (*__b[2] != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(buddyControllers);
           }
 
           v44 = *(__b[1] + 8 * i);
@@ -2362,66 +2362,66 @@ LABEL_11:
           }
         }
 
-        v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:__b objects:v59 count:16];
+        v8 = [(NSMutableArray *)buddyControllers countByEnumeratingWithState:__b objects:v59 count:16];
       }
 
       while (v8);
     }
 
-    v11 = [(BuddyNavigationFlowController *)v46 navigator];
-    v12 = [(BuddyNavigationFlowNavigator *)v11 presentedViewController];
+    navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    presentedViewController = [(BuddyNavigationFlowNavigator *)navigator2 presentedViewController];
 
-    if (v12)
+    if (presentedViewController)
     {
-      v13 = [(BuddyNavigationFlowController *)v46 navigator];
-      [(BuddyNavigationFlowNavigator *)v13 dismissViewControllerAnimated:0 completion:0];
+      navigator3 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      [(BuddyNavigationFlowNavigator *)navigator3 dismissViewControllerAnimated:0 completion:0];
     }
 
     else
     {
-      v14 = [(BuddyNavigationFlowController *)v46 navigator];
-      v15 = [(BuddyNavigationFlowNavigator *)v14 viewControllers];
-      v16 = [v15 count];
+      navigator4 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      viewControllers2 = [(BuddyNavigationFlowNavigator *)navigator4 viewControllers];
+      v16 = [viewControllers2 count];
 
       if (v16 > 1)
       {
-        v17 = [(BuddyNavigationFlowController *)v46 buddyPreferences];
-        [(BYPreferencesController *)v17 reset];
+        buddyPreferences = [(BuddyNavigationFlowController *)selfCopy buddyPreferences];
+        [(BYPreferencesController *)buddyPreferences reset];
       }
     }
 
-    v18 = [(BuddyNavigationFlowController *)v46 navigator];
-    v19 = [(BuddyNavigationFlowNavigator *)v18 popToRootViewControllerAnimated:1];
+    navigator5 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    v19 = [(BuddyNavigationFlowNavigator *)navigator5 popToRootViewControllerAnimated:1];
 
-    v20 = [(BuddyNavigationFlowController *)v46 buddyControllers];
-    v42 = [(NSMutableArray *)v20 objectAtIndexedSubscript:0];
+    buddyControllers2 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    v42 = [(NSMutableArray *)buddyControllers2 objectAtIndexedSubscript:0];
 
-    [v42 setDelegate:v46];
+    [v42 setDelegate:selfCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [(BuddyNavigationFlowController *)v46 buddyControllers];
-      v41 = [(NSMutableArray *)v21 objectAtIndexedSubscript:0];
+      buddyControllers3 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      v41 = [(NSMutableArray *)buddyControllers3 objectAtIndexedSubscript:0];
 
-      v22 = [(BuddyNavigationFlowController *)v46 buddyControllers];
-      location = [(NSMutableArray *)v22 objectAtIndexedSubscript:1];
+      buddyControllers4 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      location = [(NSMutableArray *)buddyControllers4 objectAtIndexedSubscript:1];
 
-      v23 = [v41 controllers];
-      v24 = [v23 containsObject:location];
+      controllers = [v41 controllers];
+      v24 = [controllers containsObject:location];
 
       if (v24)
       {
         [location setDelegate:v41];
-        v25 = [(BuddyNavigationFlowController *)v46 buddyControllers];
-        v26 = [(BuddyNavigationFlowController *)v46 buddyControllers];
+        buddyControllers5 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+        buddyControllers6 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
         v56 = 0;
         v55 = 2;
         v57 = 0;
         v58 = 2;
         oslog[2] = 2;
         oslog[1] = 0;
-        v27 = [(NSMutableArray *)v26 subarrayWithRange:0, 2];
-        [(NSMutableArray *)v25 setArray:v27];
+        v27 = [(NSMutableArray *)buddyControllers6 subarrayWithRange:0, 2];
+        [(NSMutableArray *)buddyControllers5 setArray:v27];
       }
 
       else
@@ -2437,14 +2437,14 @@ LABEL_11:
         }
 
         objc_storeStrong(oslog, 0);
-        v30 = [(BuddyNavigationFlowController *)v46 buddyControllers];
-        v31 = [(BuddyNavigationFlowController *)v46 buddyControllers];
+        buddyControllers7 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+        buddyControllers8 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
         v52 = 0;
         v51 = 1;
         v53 = 0;
         v54 = 1;
-        v32 = [(NSMutableArray *)v31 subarrayWithRange:0, 1];
-        [(NSMutableArray *)v30 setArray:v32];
+        v32 = [(NSMutableArray *)buddyControllers8 subarrayWithRange:0, 1];
+        [(NSMutableArray *)buddyControllers7 setArray:v32];
       }
 
       objc_storeStrong(&location, 0);
@@ -2453,18 +2453,18 @@ LABEL_11:
 
     else
     {
-      v33 = [(BuddyNavigationFlowController *)v46 buddyControllers];
-      v34 = [(BuddyNavigationFlowController *)v46 buddyControllers];
+      buddyControllers9 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      buddyControllers10 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
       v48 = 0;
       v47 = 1;
       v49 = 0;
       v50 = 1;
-      v35 = [(NSMutableArray *)v34 subarrayWithRange:0, 1, 0, 1];
-      [(NSMutableArray *)v33 setArray:v35];
+      v35 = [(NSMutableArray *)buddyControllers10 subarrayWithRange:0, 1, 0, 1];
+      [(NSMutableArray *)buddyControllers9 setArray:v35];
     }
 
-    v36 = [(BuddyNavigationFlowController *)v46 flowDelegate];
-    [(BuddyFlowDelegate *)v36 didRestartFlow];
+    flowDelegate2 = [(BuddyNavigationFlowController *)selfCopy flowDelegate];
+    [(BuddyFlowDelegate *)flowDelegate2 didRestartFlow];
 
     objc_storeStrong(&v42, 0);
   }
@@ -2472,7 +2472,7 @@ LABEL_11:
 
 - (BOOL)_stackHasOnlyCloudConfigurationItems
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
@@ -2483,10 +2483,10 @@ LABEL_11:
   v14[6] = objc_opt_class();
   location[0] = [NSArray arrayWithObjects:v14 count:7];
   memset(__b, 0, 0x40uLL);
-  v2 = [(BuddyNavigationFlowController *)v11 navigator];
-  v3 = [(BuddyNavigationFlowNavigator *)v2 viewControllers];
+  navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+  viewControllers = [(BuddyNavigationFlowNavigator *)navigator viewControllers];
 
-  v4 = [v3 countByEnumeratingWithState:__b objects:v13 count:16];
+  v4 = [viewControllers countByEnumeratingWithState:__b objects:v13 count:16];
   if (v4)
   {
     v5 = *__b[2];
@@ -2496,7 +2496,7 @@ LABEL_11:
       {
         if (*__b[2] != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewControllers);
         }
 
         __b[8] = *(__b[1] + 8 * i);
@@ -2508,7 +2508,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:__b objects:v13 count:16];
+      v4 = [viewControllers countByEnumeratingWithState:__b objects:v13 count:16];
     }
 
     while (v4);
@@ -2526,20 +2526,20 @@ LABEL_11:
   return v12 & 1;
 }
 
-- (BOOL)controllerNeedsToRunForClass:(Class)a3
+- (BOOL)controllerNeedsToRunForClass:(Class)class
 {
-  v3 = [(BuddyNavigationFlowController *)self flowStarter];
-  v4 = [(BFFFlowStarter *)v3 controllerNeedsToRunForClass:a3];
+  flowStarter = [(BuddyNavigationFlowController *)self flowStarter];
+  v4 = [(BFFFlowStarter *)flowStarter controllerNeedsToRunForClass:class];
 
   return v4 & 1;
 }
 
-- (void)markFlowItemDone:(id)a3
+- (void)markFlowItemDone:(id)done
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -2555,12 +2555,12 @@ LABEL_11:
   objc_storeStrong(location, 0);
 }
 
-- (void)_unmarkFlowItemAsFinished:(id)a3
+- (void)_unmarkFlowItemAsFinished:(id)finished
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, finished);
   oslog = _BYLoggingFacility();
   v6 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -2570,15 +2570,15 @@ LABEL_11:
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = [(BuddyNavigationFlowController *)v9 _flowForFlowItem:location[0]];
+  v5 = [(BuddyNavigationFlowController *)selfCopy _flowForFlowItem:location[0]];
   if (v5)
   {
-    v3 = [v5 delegate];
+    delegate = [v5 delegate];
     v4 = +[BuddyNavigationPit shared];
 
-    if (v3 == v4)
+    if (delegate == v4)
     {
-      [(BuddyNavigationFlowController *)v9 _unmarkFlowItemAsFinished:v5];
+      [(BuddyNavigationFlowController *)selfCopy _unmarkFlowItemAsFinished:v5];
     }
 
     [location[0] setDelegate:{v5, v5}];
@@ -2586,174 +2586,174 @@ LABEL_11:
 
   else
   {
-    [location[0] setDelegate:v9];
+    [location[0] setDelegate:selfCopy];
   }
 
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)isFlowItemOnTop:(id)a3
+- (BOOL)isFlowItemOnTop:(id)top
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyNavigationFlowController *)v8 buddyControllers];
-  v4 = [(NSMutableArray *)v3 lastObject];
-  v5 = v4 == location[0];
+  objc_storeStrong(location, top);
+  buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+  lastObject = [(NSMutableArray *)buddyControllers lastObject];
+  v5 = lastObject == location[0];
 
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (void)pushFlowItem:(id)a3 animated:(BOOL)a4
+- (void)pushFlowItem:(id)item animated:(BOOL)animated
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyNavigationFlowController *)v5 pushFlowItem:location[0] inFlow:0 animated:1];
+  objc_storeStrong(location, item);
+  [(BuddyNavigationFlowController *)selfCopy pushFlowItem:location[0] inFlow:0 animated:1];
   objc_storeStrong(location, 0);
 }
 
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 animated:(BOOL)a5
+- (void)pushFlowItem:(id)item inFlow:(id)flow animated:(BOOL)animated
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  [(BuddyNavigationFlowController *)v9 pushFlowItem:location[0] inFlow:v7 withExtendedInitialization:1 animated:a5];
+  objc_storeStrong(&v7, flow);
+  [(BuddyNavigationFlowController *)selfCopy pushFlowItem:location[0] inFlow:v7 withExtendedInitialization:1 animated:animated];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  [(BuddyNavigationFlowController *)v11 pushFlowItem:location[0] inFlow:v9 withExtendedInitialization:a5 animated:a6 willPushFlowItem:0];
+  objc_storeStrong(&v9, flow);
+  [(BuddyNavigationFlowController *)selfCopy pushFlowItem:location[0] inFlow:v9 withExtendedInitialization:initialization animated:animated willPushFlowItem:0];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6 willPushFlowItem:(id)a7
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated willPushFlowItem:(id)flowItem
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v13 = a5;
-  v12 = a6;
+  objc_storeStrong(&v14, flow);
+  initializationCopy = initialization;
+  animatedCopy = animated;
   v11 = 0;
-  objc_storeStrong(&v11, a7);
-  [(BuddyNavigationFlowController *)v16 _pushFlowItem:location[0] inFlow:v14 withExtendedInitialization:v13 animated:v12 willPushFlowItem:v11];
+  objc_storeStrong(&v11, flowItem);
+  [(BuddyNavigationFlowController *)selfCopy _pushFlowItem:location[0] inFlow:v14 withExtendedInitialization:initializationCopy animated:animatedCopy willPushFlowItem:v11];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)removeViewControllersOnNextPush:(id)a3
+- (void)removeViewControllersOnNextPush:(id)push
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyNavigationFlowController *)v10 viewControllersToRemoveOnPush];
-  v4 = [(NSArray *)v3 count];
+  objc_storeStrong(location, push);
+  viewControllersToRemoveOnPush = [(BuddyNavigationFlowController *)selfCopy viewControllersToRemoveOnPush];
+  v4 = [(NSArray *)viewControllersToRemoveOnPush count];
 
   if (v4)
   {
-    v5 = [(BuddyNavigationFlowController *)v10 viewControllersToRemoveOnPush];
-    v6 = [(NSArray *)v5 arrayByAddingObjectsFromArray:location[0]];
-    [(BuddyNavigationFlowController *)v10 setViewControllersToRemoveOnPush:v6];
+    viewControllersToRemoveOnPush2 = [(BuddyNavigationFlowController *)selfCopy viewControllersToRemoveOnPush];
+    v6 = [(NSArray *)viewControllersToRemoveOnPush2 arrayByAddingObjectsFromArray:location[0]];
+    [(BuddyNavigationFlowController *)selfCopy setViewControllersToRemoveOnPush:v6];
   }
 
   else
   {
-    [(BuddyNavigationFlowController *)v10 setViewControllersToRemoveOnPush:location[0]];
+    [(BuddyNavigationFlowController *)selfCopy setViewControllersToRemoveOnPush:location[0]];
   }
 
-  v7 = [(BuddyNavigationFlowController *)v10 navigator];
-  v8 = [(BuddyNavigationFlowNavigator *)v7 topViewController];
-  [(BuddyNavigationFlowController *)v10 setTopViewControllerForRemoving:v8];
+  navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+  topViewController = [(BuddyNavigationFlowNavigator *)navigator topViewController];
+  [(BuddyNavigationFlowController *)selfCopy setTopViewControllerForRemoving:topViewController];
 
   objc_storeStrong(location, 0);
 }
 
-- (id)popToBuddyControllerWithClass:(Class)a3 withOffset:(unint64_t)a4 animated:(BOOL)a5
+- (id)popToBuddyControllerWithClass:(Class)class withOffset:(unint64_t)offset animated:(BOOL)animated
 {
-  v48 = self;
+  selfCopy = self;
   v47 = a2;
-  v46 = a3;
-  v45 = a4;
-  v44 = a5;
+  classCopy = class;
+  offsetCopy = offset;
+  animatedCopy = animated;
   v37 = _NSConcreteStackBlock;
   v38 = -1073741824;
   v39 = 0;
   v40 = sub_1000AB1BC;
   v41 = &unk_10032BD40;
-  v42 = self;
+  selfCopy2 = self;
   v43 = objc_retainBlock(&v37);
-  if (v45 || ([(objc_class *)v46 isEqual:objc_opt_class()]& 1) == 0 || (v5 = v43, v6 = objc_opt_class(), (v36 = v5[2](v5, v6) & 1) != 0))
+  if (offsetCopy || ([(objc_class *)classCopy isEqual:objc_opt_class()]& 1) == 0 || (v5 = v43, v6 = objc_opt_class(), (v36 = v5[2](v5, v6) & 1) != 0))
   {
-    if (v45 || ([(objc_class *)v46 isEqual:objc_opt_class()]& 1) == 0 || ((v8 = v43, v9 = objc_opt_class(), v27 = v8[2](v8, v9) & 1, v20 = _NSConcreteStackBlock, v21 = -1073741824, v22 = 0, v23 = sub_1000AB444, v24 = &unk_10032B0D0, v25 = v48, location = objc_retainBlock(&v20), (v27 & 1) != 0) ? ((*(location + 2))(), v28 = 0) : (v10 = v48, v13 = _NSConcreteStackBlock, v14 = 3221225472, v15 = sub_1000AB4DC, v16 = &unk_10032BD90, v18[0] = location, v17 = v48, v18[1] = v46, v18[2] = v45, v19 = v44, v49 = [(BuddyNavigationFlowController *)v10 _ensureDeviceProximitySetupControllerWithCompletion:&v13], objc_storeStrong(&v17, 0), objc_storeStrong(v18, 0), v28 = 1), objc_storeStrong(&location, 0), objc_storeStrong(&v25, 0), !v28))
+    if (offsetCopy || ([(objc_class *)classCopy isEqual:objc_opt_class()]& 1) == 0 || ((v8 = v43, v9 = objc_opt_class(), v27 = v8[2](v8, v9) & 1, v20 = _NSConcreteStackBlock, v21 = -1073741824, v22 = 0, v23 = sub_1000AB444, v24 = &unk_10032B0D0, v25 = selfCopy, location = objc_retainBlock(&v20), (v27 & 1) != 0) ? ((*(location + 2))(), v28 = 0) : (v10 = selfCopy, v13 = _NSConcreteStackBlock, v14 = 3221225472, v15 = sub_1000AB4DC, v16 = &unk_10032BD90, v18[0] = location, v17 = selfCopy, v18[1] = classCopy, v18[2] = offsetCopy, v19 = animatedCopy, v49 = [(BuddyNavigationFlowController *)v10 _ensureDeviceProximitySetupControllerWithCompletion:&v13], objc_storeStrong(&v17, 0), objc_storeStrong(v18, 0), v28 = 1), objc_storeStrong(&location, 0), objc_storeStrong(&v25, 0), !v28))
     {
-      v49 = [(BuddyNavigationFlowController *)v48 _popToBuddyControllerWithClass:v46 withOffset:v45 animated:v44, v13, v14, v15, v16];
+      v49 = [(BuddyNavigationFlowController *)selfCopy _popToBuddyControllerWithClass:classCopy withOffset:offsetCopy animated:animatedCopy, v13, v14, v15, v16];
       v28 = 1;
     }
   }
 
   else
   {
-    v7 = v48;
+    v7 = selfCopy;
     v29 = _NSConcreteStackBlock;
     v30 = -1073741824;
     v31 = 0;
     v32 = sub_1000AB3F0;
     v33 = &unk_10032BD68;
-    v34[0] = v48;
-    v34[1] = v46;
-    v34[2] = v45;
-    v35 = v44;
+    v34[0] = selfCopy;
+    v34[1] = classCopy;
+    v34[2] = offsetCopy;
+    v35 = animatedCopy;
     v49 = [(BuddyNavigationFlowController *)v7 _ensureDeviceRestoreChoiceControllerWithCompletion:&v29];
     objc_storeStrong(v34, 0);
     v28 = 1;
   }
 
   objc_storeStrong(&v43, 0);
-  objc_storeStrong(&v42, 0);
+  objc_storeStrong(&selfCopy2, 0);
   v11 = v49;
 
   return v11;
 }
 
-- (id)_popToBuddyControllerWithClass:(Class)a3 withOffset:(unint64_t)a4 animated:(BOOL)a5
+- (id)_popToBuddyControllerWithClass:(Class)class withOffset:(unint64_t)offset animated:(BOOL)animated
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  v16 = a4;
-  v15 = a5;
-  v5 = [(BuddyNavigationFlowController *)self navigator];
-  v14 = [(BuddyNavigationFlowNavigator *)v5 viewControllers];
+  classCopy = class;
+  offsetCopy = offset;
+  animatedCopy = animated;
+  navigator = [(BuddyNavigationFlowController *)self navigator];
+  viewControllers = [(BuddyNavigationFlowNavigator *)navigator viewControllers];
 
-  for (i = [v14 count] - 1; (i & 0x8000000000000000) == 0; --i)
+  for (i = [viewControllers count] - 1; (i & 0x8000000000000000) == 0; --i)
   {
-    v12 = [v14 objectAtIndexedSubscript:i];
+    v12 = [viewControllers objectAtIndexedSubscript:i];
     if (objc_opt_isKindOfClass())
     {
-      location = [v14 objectAtIndexedSubscript:i + v16];
-      v6 = [(BuddyNavigationFlowController *)v19 navigator];
-      v7 = [(BuddyNavigationFlowNavigator *)v6 popToViewController:location animated:v15];
+      location = [viewControllers objectAtIndexedSubscript:i + offsetCopy];
+      navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      v7 = [(BuddyNavigationFlowNavigator *)navigator2 popToViewController:location animated:animatedCopy];
 
       v20 = location;
       v10 = 1;
@@ -2774,19 +2774,19 @@ LABEL_11:
 
   v20 = 0;
 LABEL_9:
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&viewControllers, 0);
   v8 = v20;
 
   return v8;
 }
 
-- (id)_ensureDeviceRestoreChoiceControllerWithCompletion:(id)a3
+- (id)_ensureDeviceRestoreChoiceControllerWithCompletion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v28->_weakViewControllersPrecedingDeviceRestoreChoiceController || !v28->_weakBuddyControllersPrecedingDeviceRestoreChoiceController)
+  objc_storeStrong(location, completion);
+  if (!selfCopy->_weakViewControllersPrecedingDeviceRestoreChoiceController || !selfCopy->_weakBuddyControllersPrecedingDeviceRestoreChoiceController)
   {
     v26 = _BYLoggingFacility();
     v25 = OS_LOG_TYPE_ERROR;
@@ -2814,21 +2814,21 @@ LABEL_9:
   }
 
   objc_storeStrong(&oslog, 0);
-  v20 = [(BuddyNavigationFlowController *)v28 _createFlowItemForClass:objc_opt_class()];
-  [v20 setDelegate:v28];
-  v5 = v28;
+  v20 = [(BuddyNavigationFlowController *)selfCopy _createFlowItemForClass:objc_opt_class()];
+  [v20 setDelegate:selfCopy];
+  v5 = selfCopy;
   v14 = _NSConcreteStackBlock;
   v15 = -1073741824;
   v16 = 0;
   v17 = sub_1000AB9D4;
   v18 = &unk_10032BDB8;
-  v19 = v28;
+  v19 = selfCopy;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1000ABBCC;
   v12 = &unk_10032BDB8;
-  v13 = v28;
+  v13 = selfCopy;
   [(BuddyNavigationFlowController *)v5 _ensureControllerExistsWithTarget:v20 viewControllerInsertionIndexGenerator:&v14 buddyControllerInsertionIndexGenerator:&v8 withCompletion:location[0]];
   v6 = v20;
   objc_storeStrong(&v13, 0);
@@ -2838,12 +2838,12 @@ LABEL_9:
   return v6;
 }
 
-- (id)_ensureDeviceProximitySetupControllerWithCompletion:(id)a3
+- (id)_ensureDeviceProximitySetupControllerWithCompletion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v23 = _BYLoggingFacility();
   v22 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -2855,20 +2855,20 @@ LABEL_9:
   }
 
   objc_storeStrong(&v23, 0);
-  v20 = [(BuddyNavigationFlowController *)v25 _createFlowItemForClass:objc_opt_class()];
-  v5 = v25;
+  v20 = [(BuddyNavigationFlowController *)selfCopy _createFlowItemForClass:objc_opt_class()];
+  v5 = selfCopy;
   v14 = _NSConcreteStackBlock;
   v15 = -1073741824;
   v16 = 0;
   v17 = sub_1000ABF90;
   v18 = &unk_10032BDB8;
-  v19 = v25;
+  v19 = selfCopy;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1000AC0AC;
   v12 = &unk_10032BDB8;
-  v13 = v25;
+  v13 = selfCopy;
   [(BuddyNavigationFlowController *)v5 _ensureControllerExistsWithTarget:v20 viewControllerInsertionIndexGenerator:&v14 buddyControllerInsertionIndexGenerator:&v8 withCompletion:location[0]];
   v6 = v20;
   objc_storeStrong(&v13, 0);
@@ -2878,34 +2878,34 @@ LABEL_9:
   return v6;
 }
 
-- (void)_ensureControllerExistsWithTarget:(id)a3 viewControllerInsertionIndexGenerator:(id)a4 buddyControllerInsertionIndexGenerator:(id)a5 withCompletion:(id)a6
+- (void)_ensureControllerExistsWithTarget:(id)target viewControllerInsertionIndexGenerator:(id)generator buddyControllerInsertionIndexGenerator:(id)indexGenerator withCompletion:(id)completion
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, target);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, generator);
   v30 = 0;
-  objc_storeStrong(&v30, a5);
+  objc_storeStrong(&v30, indexGenerator);
   v29 = 0;
-  objc_storeStrong(&v29, a6);
-  [location[0] setDelegate:v33];
+  objc_storeStrong(&v29, completion);
+  [location[0] setDelegate:selfCopy];
   v28 = objc_retainBlock(&stru_10032BE78);
-  v9 = v33;
+  v9 = selfCopy;
   v10 = location[0];
   v22 = _NSConcreteStackBlock;
   v23 = -1073741824;
   v24 = 0;
   v25 = sub_1000AC604;
   v26 = &unk_10032B0D0;
-  v27 = v33;
+  v27 = selfCopy;
   v11 = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
   v14 = sub_1000AC630;
   v15 = &unk_10032BEA0;
-  v16 = v33;
+  v16 = selfCopy;
   v17 = location[0];
   v18 = v31;
   v19 = v28;
@@ -2926,16 +2926,16 @@ LABEL_9:
   objc_storeStrong(location, 0);
 }
 
-- (void)flow:(id)a3 finishedWithLastItem:(id)a4 nextItem:(id)a5
+- (void)flow:(id)flow finishedWithLastItem:(id)item nextItem:(id)nextItem
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, flow);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, item);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
+  objc_storeStrong(&v8, nextItem);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -2944,30 +2944,30 @@ LABEL_9:
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyNavigationFlowController *)v11 _flowItemDone:v9 flow:location[0] nextItemClass:0 nextItem:v8];
+  [(BuddyNavigationFlowController *)selfCopy _flowItemDone:v9 flow:location[0] nextItemClass:0 nextItem:v8];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentWiFiPaneForFlow:(id)a3
+- (void)presentWiFiPaneForFlow:(id)flow
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyNavigationFlowController *)v5 flowDelegate];
-  [(BuddyFlowDelegate *)v3 presentWiFiSettingsModally];
+  objc_storeStrong(location, flow);
+  flowDelegate = [(BuddyNavigationFlowController *)selfCopy flowDelegate];
+  [(BuddyFlowDelegate *)flowDelegate presentWiFiSettingsModally];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemCancelled:(id)a3
+- (void)flowItemCancelled:(id)cancelled
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cancelled);
   oslog = _BYLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -2977,20 +2977,20 @@ LABEL_9:
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyNavigationFlowController *)v15 markFlowItemDone:location[0]];
-  v3 = [(BuddyNavigationFlowController *)v15 navigator];
-  v4 = [(BuddyNavigationFlowNavigator *)v3 presentedViewController];
+  [(BuddyNavigationFlowController *)selfCopy markFlowItemDone:location[0]];
+  navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+  presentedViewController = [(BuddyNavigationFlowNavigator *)navigator presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
-    v5 = [(BuddyNavigationFlowController *)v15 navigator];
+    navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_1000ACC34;
     v10 = &unk_10032B0D0;
-    v11 = v15;
-    [(BuddyNavigationFlowNavigator *)v5 dismissViewControllerAnimated:1 completion:&v6];
+    v11 = selfCopy;
+    [(BuddyNavigationFlowNavigator *)navigator2 dismissViewControllerAnimated:1 completion:&v6];
 
     objc_storeStrong(&v11, 0);
   }
@@ -2998,53 +2998,53 @@ LABEL_9:
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3
+- (void)flowItemDone:(id)done
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyNavigationFlowController *)v4 _flowItemDone:location[0] flow:0 nextItemClass:0 nextItem:0];
+  objc_storeStrong(location, done);
+  [(BuddyNavigationFlowController *)selfCopy _flowItemDone:location[0] flow:0 nextItemClass:0 nextItem:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3 nextItem:(id)a4
+- (void)flowItemDone:(id)done nextItem:(id)item
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(BuddyNavigationFlowController *)v7 _flowItemDone:location[0] flow:0 nextItemClass:0 nextItem:v5];
+  objc_storeStrong(&v5, item);
+  [(BuddyNavigationFlowController *)selfCopy _flowItemDone:location[0] flow:0 nextItemClass:0 nextItem:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3 nextItemClass:(Class)a4
+- (void)flowItemDone:(id)done nextItemClass:(Class)class
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyNavigationFlowController *)v6 _flowItemDone:location[0] flow:0 nextItemClass:a4 nextItem:0, a4];
+  objc_storeStrong(location, done);
+  [(BuddyNavigationFlowController *)selfCopy _flowItemDone:location[0] flow:0 nextItemClass:class nextItem:0, class];
   objc_storeStrong(location, 0);
 }
 
-- (void)presentWiFiPaneForFlowItem:(id)a3
+- (void)presentWiFiPaneForFlowItem:(id)item
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
+  objc_storeStrong(location, item);
+  v3 = selfCopy;
   sub_1000A9C6C();
   v4 = [(BuddyNavigationFlowController *)v3 popToBuddyControllerWithClass:objc_opt_class() animated:1];
 
   if (!v4)
   {
-    [(BuddyNavigationFlowController *)v8 _insertWiFiControllerAsFirstPane];
-    v5 = v8;
+    [(BuddyNavigationFlowController *)selfCopy _insertWiFiControllerAsFirstPane];
+    v5 = selfCopy;
     sub_1000A9C6C();
     v6 = [(BuddyNavigationFlowController *)v5 popToBuddyControllerWithClass:objc_opt_class() animated:1];
   }
@@ -3052,27 +3052,27 @@ LABEL_9:
   objc_storeStrong(location, 0);
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6
+- (void)navigationController:(id)controller willShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
-  v39 = a5;
-  v38 = a6;
-  if (a5 == 1)
+  objc_storeStrong(&v40, viewController);
+  operationCopy = operation;
+  animatedCopy = animated;
+  if (operation == 1)
   {
     oslog = _BYLoggingFacility();
     v36 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [v40 customDescription];
-      sub_100071CBC(buf, v35);
+      customDescription = [v40 customDescription];
+      sub_100071CBC(buf, customDescription);
       _os_log_impl(&_mh_execute_header, oslog, v36, "Pushing to %{public}@", buf, 0xCu);
 
-      objc_storeStrong(&v35, 0);
+      objc_storeStrong(&customDescription, 0);
     }
 
     objc_storeStrong(&oslog, 0);
@@ -3080,49 +3080,49 @@ LABEL_9:
     v33 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(BuddyNavigationFlowController *)v42 navigator];
-      v10 = [(BuddyNavigationFlowNavigator *)v9 view];
-      v11 = [v10 window];
-      sub_1000A4DC0(v45, "[BuddyNavigationFlowController navigationController:willShowViewController:operation:animated:]", v11);
+      navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+      view = [(BuddyNavigationFlowNavigator *)navigator view];
+      window = [view window];
+      sub_1000A4DC0(v45, "[BuddyNavigationFlowController navigationController:willShowViewController:operation:animated:]", window);
       _os_log_debug_impl(&_mh_execute_header, v34, v33, "%s setUserInteractionEnabled NO %p", v45, 0x16u);
     }
 
     objc_storeStrong(&v34, 0);
-    v12 = [(BuddyNavigationFlowController *)v42 navigator];
-    v13 = [(BuddyNavigationFlowNavigator *)v12 navigationController];
-    v14 = [(BFFNavigationController *)v13 view];
-    [v14 setUserInteractionEnabled:0];
+    navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    navigationController = [(BuddyNavigationFlowNavigator *)navigator2 navigationController];
+    view2 = [(BFFNavigationController *)navigationController view];
+    [view2 setUserInteractionEnabled:0];
   }
 
-  else if (v39 == 2)
+  else if (operationCopy == 2)
   {
     v32 = _BYLoggingFacility();
     v31 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [v40 customDescription];
-      sub_100071CBC(v44, v30);
+      customDescription2 = [v40 customDescription];
+      sub_100071CBC(v44, customDescription2);
       _os_log_impl(&_mh_execute_header, v32, v31, "Popping to %{public}@", v44, 0xCu);
 
-      objc_storeStrong(&v30, 0);
+      objc_storeStrong(&customDescription2, 0);
     }
 
     objc_storeStrong(&v32, 0);
     if ([location[0] _builtinTransitionStyle] == 1)
     {
-      v15 = [(BuddyNavigationFlowController *)v42 navigator];
-      v16 = [(BuddyNavigationFlowNavigator *)v15 navigationController];
-      v17 = [(BFFNavigationController *)v16 view];
-      [v17 setUserInteractionEnabled:0];
+      navigator3 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      navigationController2 = [(BuddyNavigationFlowNavigator *)navigator3 navigationController];
+      view3 = [(BFFNavigationController *)navigationController2 view];
+      [view3 setUserInteractionEnabled:0];
     }
 
-    v18 = [(BuddyNavigationFlowController *)v42 lastUIResponder];
+    lastUIResponder = [(BuddyNavigationFlowController *)selfCopy lastUIResponder];
 
-    if (v18)
+    if (lastUIResponder)
     {
       v19 = v40;
-      v20 = [(BuddyNavigationFlowController *)v42 lastUIResponder];
-      LOBYTE(v19) = [v19 _containsResponder:v20];
+      lastUIResponder2 = [(BuddyNavigationFlowController *)selfCopy lastUIResponder];
+      LOBYTE(v19) = [v19 _containsResponder:lastUIResponder2];
 
       if (v19)
       {
@@ -3137,8 +3137,8 @@ LABEL_9:
         }
 
         objc_storeStrong(&v29, 0);
-        v23 = [(BuddyNavigationFlowController *)v42 lastUIResponder];
-        [(UIResponder *)v23 becomeFirstResponder];
+        lastUIResponder3 = [(BuddyNavigationFlowController *)selfCopy lastUIResponder];
+        [(UIResponder *)lastUIResponder3 becomeFirstResponder];
       }
     }
   }
@@ -3149,11 +3149,11 @@ LABEL_9:
     v25 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v40 customDescription];
-      sub_1000A57DC(v43, v24, v39);
+      customDescription3 = [v40 customDescription];
+      sub_1000A57DC(v43, customDescription3, operationCopy);
       _os_log_impl(&_mh_execute_header, v26, v25, "Moving to %{public}@ via operation %i", v43, 0x12u);
 
-      objc_storeStrong(&v24, 0);
+      objc_storeStrong(&customDescription3, 0);
     }
 
     objc_storeStrong(&v26, 0);
@@ -3163,17 +3163,17 @@ LABEL_9:
   objc_storeStrong(location, 0);
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6
+- (void)navigationController:(id)controller didShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated
 {
-  v210 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v208 = 0;
-  objc_storeStrong(&v208, a4);
-  v207 = a5;
-  v206 = a6;
-  v9 = [(BuddyNavigationFlowController *)v210 wifiController];
+  objc_storeStrong(&v208, viewController);
+  operationCopy = operation;
+  animatedCopy = animated;
+  wifiController = [(BuddyNavigationFlowController *)selfCopy wifiController];
   v203 = 0;
   v201 = 0;
   v199 = 0;
@@ -3182,29 +3182,29 @@ LABEL_9:
   v193 = 0;
   v191 = 0;
   v10 = 0;
-  if (v9)
+  if (wifiController)
   {
-    v204 = [(BuddyNavigationFlowController *)v210 wifiController];
+    wifiController2 = [(BuddyNavigationFlowController *)selfCopy wifiController];
     v203 = 1;
     v10 = 0;
     if (objc_opt_respondsToSelector())
     {
-      v202 = [(BuddyNavigationFlowController *)v210 navigator];
+      navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
       v201 = 1;
-      v200 = [(BuddyNavigationFlowNavigator *)v202 topViewController];
+      topViewController = [(BuddyNavigationFlowNavigator *)navigator topViewController];
       v199 = 1;
-      v198 = [(BuddyNavigationFlowController *)v210 wifiController];
+      wifiController3 = [(BuddyNavigationFlowController *)selfCopy wifiController];
       v197 = 1;
-      v196 = [(BuddyWiFiController *)v198 viewController];
+      viewController = [(BuddyWiFiController *)wifiController3 viewController];
       v195 = 1;
       v10 = 0;
-      if (v200 == v196)
+      if (topViewController == viewController)
       {
-        v194 = [(BuddyNavigationFlowController *)v210 navigator];
+        navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
         v193 = 1;
-        v192 = [(BuddyNavigationFlowNavigator *)v194 presentedViewController];
+        presentedViewController = [(BuddyNavigationFlowNavigator *)navigator2 presentedViewController];
         v191 = 1;
-        v10 = v192 == 0;
+        v10 = presentedViewController == 0;
       }
     }
   }
@@ -3238,10 +3238,10 @@ LABEL_9:
   }
 
   v205 = v10;
-  if ([(BuddyNavigationFlowController *)v210 _hasWiFiControllerInNavigationStack]&& ![(BuddyNavigationFlowController *)v210 didInsertWiFiPaneForCloudConfigurationFlow]&& !v205)
+  if ([(BuddyNavigationFlowController *)selfCopy _hasWiFiControllerInNavigationStack]&& ![(BuddyNavigationFlowController *)selfCopy didInsertWiFiPaneForCloudConfigurationFlow]&& !v205)
   {
-    v11 = [(BuddyNavigationFlowController *)v210 flowDelegate];
-    [(BuddyFlowDelegate *)v11 disableTapFreeSetUp];
+    flowDelegate = [(BuddyNavigationFlowController *)selfCopy flowDelegate];
+    [(BuddyFlowDelegate *)flowDelegate disableTapFreeSetUp];
   }
 
   objc_opt_class();
@@ -3251,13 +3251,13 @@ LABEL_9:
     v189 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v190, OS_LOG_TYPE_DEFAULT))
     {
-      v188 = [v208 pageID];
-      v187 = [v208 navTitle];
-      sub_1000AF00C(buf, v188, v187, v208, v207);
+      pageID = [v208 pageID];
+      navTitle = [v208 navTitle];
+      sub_1000AF00C(buf, pageID, navTitle, v208, operationCopy);
       _os_log_impl(&_mh_execute_header, v190, v189, "Setup showing RUIPage %{public}@ %@ (%p) via operation %i", buf, 0x26u);
 
-      objc_storeStrong(&v187, 0);
-      objc_storeStrong(&v188, 0);
+      objc_storeStrong(&navTitle, 0);
+      objc_storeStrong(&pageID, 0);
     }
 
     objc_storeStrong(&v190, 0);
@@ -3269,28 +3269,28 @@ LABEL_9:
     v185 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v186, OS_LOG_TYPE_DEFAULT))
     {
-      v184 = [v208 customDescription];
-      sub_1000AF044(v219, v184, v208, v207);
+      customDescription = [v208 customDescription];
+      sub_1000AF044(v219, customDescription, v208, operationCopy);
       _os_log_impl(&_mh_execute_header, v186, v185, "Setup showing controller %{public}@ (%p) via operation %i", v219, 0x1Cu);
 
-      objc_storeStrong(&v184, 0);
+      objc_storeStrong(&customDescription, 0);
     }
 
     objc_storeStrong(&v186, 0);
   }
 
-  [(BuddyNavigationFlowController *)v210 _updateNavigationBackButtonTitleForViewController:v208];
+  [(BuddyNavigationFlowController *)selfCopy _updateNavigationBackButtonTitleForViewController:v208];
   v183 = 0x7FFFFFFFFFFFFFFFLL;
   for (i = 0; ; ++i)
   {
     v12 = i;
-    if (v12 >= [(NSMutableArray *)v210->_buddyControllers count])
+    if (v12 >= [(NSMutableArray *)selfCopy->_buddyControllers count])
     {
       break;
     }
 
-    v181 = [(NSMutableArray *)v210->_buddyControllers objectAtIndexedSubscript:i];
-    v180 = [(BuddyNavigationFlowController *)v210 _viewControllerForBuddyController:v181];
+    v181 = [(NSMutableArray *)selfCopy->_buddyControllers objectAtIndexedSubscript:i];
+    v180 = [(BuddyNavigationFlowController *)selfCopy _viewControllerForBuddyController:v181];
     if (v208 == v180)
     {
       v183 = i;
@@ -3315,12 +3315,12 @@ LABEL_9:
     for (j = 0; ; ++j)
     {
       v13 = j;
-      if (v13 >= [(NSMutableArray *)v210->_buddyControllers count])
+      if (v13 >= [(NSMutableArray *)selfCopy->_buddyControllers count])
       {
         break;
       }
 
-      v177 = [(NSMutableArray *)v210->_buddyControllers objectAtIndexedSubscript:j];
+      v177 = [(NSMutableArray *)selfCopy->_buddyControllers objectAtIndexedSubscript:j];
       if (objc_opt_respondsToSelector() & 1) != 0 && ([v177 responsibleForViewController:v208])
       {
         v183 = j;
@@ -3331,9 +3331,9 @@ LABEL_9:
           v14 = v176;
           v15 = v175;
           v16 = v177;
-          v17 = [v208 customDescription];
-          v174 = v17;
-          sub_1000AF070(v218, v16, v17, v208);
+          customDescription2 = [v208 customDescription];
+          v174 = customDescription2;
+          sub_1000AF070(v218, v16, customDescription2, v208);
           _os_log_impl(&_mh_execute_header, v14, v15, "%@ claimed responsibility for %{public}@ (%p)", v218, 0x20u);
 
           objc_storeStrong(&v174, 0);
@@ -3363,22 +3363,22 @@ LABEL_184:
     }
   }
 
-  if (v207 == 2)
+  if (operationCopy == 2)
   {
     if (v183 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v18 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-      v19 = [(NSMutableArray *)v18 count]- 1;
+      buddyControllers = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      v19 = [(NSMutableArray *)buddyControllers count]- 1;
 
       for (k = v19; (k & 0x8000000000000000) == 0; --k)
       {
-        v20 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-        v172 = [(NSMutableArray *)v20 objectAtIndexedSubscript:k];
+        buddyControllers2 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+        v172 = [(NSMutableArray *)buddyControllers2 objectAtIndexedSubscript:k];
 
-        v171 = [(BuddyNavigationFlowController *)v210 _viewControllerForBuddyController:v172];
-        v21 = [(BuddyNavigationFlowController *)v210 navigator];
-        v22 = [(BuddyNavigationFlowNavigator *)v21 viewControllers];
-        v23 = [v22 containsObject:v171] ^ 1;
+        v171 = [(BuddyNavigationFlowController *)selfCopy _viewControllerForBuddyController:v172];
+        navigator3 = [(BuddyNavigationFlowController *)selfCopy navigator];
+        viewControllers = [(BuddyNavigationFlowNavigator *)navigator3 viewControllers];
+        v23 = [viewControllers containsObject:v171] ^ 1;
 
         if (v23)
         {
@@ -3387,8 +3387,8 @@ LABEL_184:
             [v172 controllerWasPopped];
           }
 
-          v24 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-          [(NSMutableArray *)v24 removeObjectAtIndex:k];
+          buddyControllers3 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+          [(NSMutableArray *)buddyControllers3 removeObjectAtIndex:k];
 
           v179 = 0;
         }
@@ -3414,48 +3414,48 @@ LABEL_184:
 
     else
     {
-      v25 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-      v26 = [(NSMutableArray *)v25 count]- 1;
+      buddyControllers4 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      v26 = [(NSMutableArray *)buddyControllers4 count]- 1;
 
       for (m = v26; m > v183; --m)
       {
-        v27 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-        v169 = [(NSMutableArray *)v27 lastObject];
+        buddyControllers5 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+        lastObject = [(NSMutableArray *)buddyControllers5 lastObject];
 
         if (objc_opt_respondsToSelector())
         {
-          [v169 controllerWasPopped];
+          [lastObject controllerWasPopped];
         }
 
-        v28 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-        [(NSMutableArray *)v28 removeLastObject];
+        buddyControllers6 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+        [(NSMutableArray *)buddyControllers6 removeLastObject];
 
-        objc_storeStrong(&v169, 0);
+        objc_storeStrong(&lastObject, 0);
       }
     }
   }
 
-  if (v207 == 1)
+  if (operationCopy == 1)
   {
-    v29 = [(BuddyNavigationFlowController *)v210 navigator];
-    v30 = [(BuddyNavigationFlowNavigator *)v29 viewControllers];
-    v168 = [v30 mutableCopy];
+    navigator4 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    viewControllers2 = [(BuddyNavigationFlowNavigator *)navigator4 viewControllers];
+    v168 = [viewControllers2 mutableCopy];
 
     v167 = objc_opt_new();
-    v31 = [(BuddyNavigationFlowController *)v210 viewControllersToRemoveOnPush];
+    viewControllersToRemoveOnPush = [(BuddyNavigationFlowController *)selfCopy viewControllersToRemoveOnPush];
     v165 = 0;
     v163 = 0;
     v161 = 0;
     v32 = 0;
-    if ([(NSArray *)v31 count])
+    if ([(NSArray *)viewControllersToRemoveOnPush count])
     {
-      v166 = [(BuddyNavigationFlowController *)v210 navigator];
+      navigator5 = [(BuddyNavigationFlowController *)selfCopy navigator];
       v165 = 1;
-      v164 = [(BuddyNavigationFlowNavigator *)v166 viewControllers];
+      viewControllers3 = [(BuddyNavigationFlowNavigator *)navigator5 viewControllers];
       v163 = 1;
-      v162 = [(BuddyNavigationFlowController *)v210 topViewControllerForRemoving];
+      topViewControllerForRemoving = [(BuddyNavigationFlowController *)selfCopy topViewControllerForRemoving];
       v161 = 1;
-      v32 = [v164 containsObject:?];
+      v32 = [viewControllers3 containsObject:?];
     }
 
     if (v161)
@@ -3472,48 +3472,48 @@ LABEL_184:
 
     if (v32)
     {
-      v33 = [(BuddyNavigationFlowController *)v210 viewControllersToRemoveOnPush];
-      v34 = [(BuddyNavigationFlowController *)v210 navigator];
-      v35 = [(BuddyNavigationFlowNavigator *)v34 topViewController];
-      v36 = [(NSArray *)v33 containsObject:v35];
+      viewControllersToRemoveOnPush2 = [(BuddyNavigationFlowController *)selfCopy viewControllersToRemoveOnPush];
+      navigator6 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      topViewController2 = [(BuddyNavigationFlowNavigator *)navigator6 topViewController];
+      v36 = [(NSArray *)viewControllersToRemoveOnPush2 containsObject:topViewController2];
 
       v160 = v36 & 1;
       v159 = 0;
-      v37 = [(BuddyNavigationFlowController *)v210 navigator];
-      v38 = [(BuddyNavigationFlowNavigator *)v37 presentedViewController];
+      navigator7 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      presentedViewController2 = [(BuddyNavigationFlowNavigator *)navigator7 presentedViewController];
       objc_opt_class();
-      LOBYTE(v35) = objc_opt_isKindOfClass();
+      LOBYTE(topViewController2) = objc_opt_isKindOfClass();
 
-      if (v35)
+      if (topViewController2)
       {
-        v39 = [(BuddyNavigationFlowController *)v210 navigator];
-        v158 = [(BuddyNavigationFlowNavigator *)v39 presentedViewController];
+        navigator8 = [(BuddyNavigationFlowController *)selfCopy navigator];
+        presentedViewController3 = [(BuddyNavigationFlowNavigator *)navigator8 presentedViewController];
 
-        v40 = [v158 viewControllers];
-        v41 = [v40 firstObject];
-        v42 = v210;
-        v43 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-        v44 = [(NSMutableArray *)v43 lastObject];
-        v45 = [(BuddyNavigationFlowController *)v42 _viewControllerForBuddyController:v44];
-        v159 = v41 == v45;
+        viewControllers4 = [presentedViewController3 viewControllers];
+        firstObject = [viewControllers4 firstObject];
+        v42 = selfCopy;
+        buddyControllers7 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+        lastObject2 = [(NSMutableArray *)buddyControllers7 lastObject];
+        v45 = [(BuddyNavigationFlowController *)v42 _viewControllerForBuddyController:lastObject2];
+        v159 = firstObject == v45;
 
-        objc_storeStrong(&v158, 0);
+        objc_storeStrong(&presentedViewController3, 0);
       }
 
       if ((v160 & 1) == 0 || v159)
       {
         v46 = v167;
-        v47 = [(BuddyNavigationFlowController *)v210 viewControllersToRemoveOnPush];
-        [v46 addObjectsFromArray:v47];
+        viewControllersToRemoveOnPush3 = [(BuddyNavigationFlowController *)selfCopy viewControllersToRemoveOnPush];
+        [v46 addObjectsFromArray:viewControllersToRemoveOnPush3];
 
-        [(BuddyNavigationFlowController *)v210 setViewControllersToRemoveOnPush:0];
+        [(BuddyNavigationFlowController *)selfCopy setViewControllersToRemoveOnPush:0];
       }
     }
 
     else
     {
-      [(BuddyNavigationFlowController *)v210 setViewControllersToRemoveOnPush:0];
-      [(BuddyNavigationFlowController *)v210 setTopViewControllerForRemoving:0];
+      [(BuddyNavigationFlowController *)selfCopy setViewControllersToRemoveOnPush:0];
+      [(BuddyNavigationFlowController *)selfCopy setTopViewControllerForRemoving:0];
     }
 
     memset(__b, 0, sizeof(__b));
@@ -3533,24 +3533,24 @@ LABEL_184:
 
           v157 = *(__b[1] + 8 * n);
           v52 = objc_opt_respondsToSelector();
-          v53 = 0;
+          isEphemeral = 0;
           if (v52)
           {
-            v53 = [v157 isEphemeral];
+            isEphemeral = [v157 isEphemeral];
           }
 
-          v155 = v53 & 1;
+          v155 = isEphemeral & 1;
           v153 = 0;
           v54 = 0;
-          if (v53)
+          if (isEphemeral)
           {
             v54 = 0;
             if (v157 != v208)
             {
               v55 = v157;
-              v154 = [v168 lastObject];
+              lastObject3 = [v168 lastObject];
               v153 = 1;
-              v56 = v55 == v154;
+              v56 = v55 == lastObject3;
               v54 = 0;
               if (!v56)
               {
@@ -3579,15 +3579,15 @@ LABEL_184:
     {
       v152 = [v168 mutableCopy];
       [v152 removeObjectsInArray:v167];
-      v57 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-      v58 = [(NSMutableArray *)v57 count]- 1;
+      buddyControllers8 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      v58 = [(NSMutableArray *)buddyControllers8 count]- 1;
 
       for (ii = v58; (ii & 0x8000000000000000) == 0; --ii)
       {
-        v59 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-        v150 = [(NSMutableArray *)v59 objectAtIndexedSubscript:ii];
+        buddyControllers9 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+        v150 = [(NSMutableArray *)buddyControllers9 objectAtIndexedSubscript:ii];
 
-        v149 = [(BuddyNavigationFlowController *)v210 _viewControllerForBuddyController:v150];
+        v149 = [(BuddyNavigationFlowController *)selfCopy _viewControllerForBuddyController:v150];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         v61 = 1;
@@ -3597,7 +3597,7 @@ LABEL_184:
         }
 
         v148 = v61 & 1;
-        [(BuddyNavigationFlowController *)v210 _unmarkFlowItemAsFinished:v150];
+        [(BuddyNavigationFlowController *)selfCopy _unmarkFlowItemAsFinished:v150];
         if (v148)
         {
           v147 = 1;
@@ -3652,15 +3652,15 @@ LABEL_120:
             if (os_log_type_enabled(v144, OS_LOG_TYPE_DEFAULT))
             {
               v66 = v144;
-              v67 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-              v68 = [(NSMutableArray *)v67 objectAtIndexedSubscript:ii];
+              buddyControllers10 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+              v68 = [(NSMutableArray *)buddyControllers10 objectAtIndexedSubscript:ii];
               sub_10006AE18(v215, v68);
               _os_log_impl(&_mh_execute_header, v66, v143, "Removing %@ from the controllers list; it is not responsible for any existing view controllers", v215, 0xCu);
             }
 
             objc_storeStrong(&v144, 0);
-            v69 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-            [(NSMutableArray *)v69 removeObjectAtIndex:ii];
+            buddyControllers11 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+            [(NSMutableArray *)buddyControllers11 removeObjectAtIndex:ii];
           }
         }
 
@@ -3668,31 +3668,31 @@ LABEL_120:
         objc_storeStrong(&v150, 0);
       }
 
-      v70 = [(BuddyNavigationFlowController *)v210 navigator];
-      [(BuddyNavigationFlowNavigator *)v70 setViewControllers:v152 animated:0];
+      navigator9 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      [(BuddyNavigationFlowNavigator *)navigator9 setViewControllers:v152 animated:0];
 
       objc_storeStrong(&v152, 0);
     }
 
     v71 = v208;
-    v72 = v210;
-    v73 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-    v74 = [(NSMutableArray *)v73 lastObject];
-    v75 = [(BuddyNavigationFlowController *)v72 _viewControllerForBuddyController:v74];
+    v72 = selfCopy;
+    buddyControllers12 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    lastObject4 = [(NSMutableArray *)buddyControllers12 lastObject];
+    v75 = [(BuddyNavigationFlowController *)v72 _viewControllerForBuddyController:lastObject4];
 
     if (v71 == v75)
     {
-      v76 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-      v142 = [(NSMutableArray *)v76 lastObject];
+      buddyControllers13 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      lastObject5 = [(NSMutableArray *)buddyControllers13 lastObject];
 
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [v142 allowedTerminationSources])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [lastObject5 allowedTerminationSources])
       {
-        v141 = ([v142 allowedTerminationSources] & 1) == 1;
-        v77 = [(BuddyNavigationFlowController *)v210 lifecycleDelegate];
-        [(BuddyLifecycleDelegate *)v77 willEndLifecycleDueToCause:1 allowDismissal:v141];
+        v141 = ([lastObject5 allowedTerminationSources] & 1) == 1;
+        lifecycleDelegate = [(BuddyNavigationFlowController *)selfCopy lifecycleDelegate];
+        [(BuddyLifecycleDelegate *)lifecycleDelegate willEndLifecycleDueToCause:1 allowDismissal:v141];
       }
 
-      objc_storeStrong(&v142, 0);
+      objc_storeStrong(&lastObject5, 0);
     }
 
     objc_storeStrong(&v167, 0);
@@ -3701,26 +3701,26 @@ LABEL_120:
 
   sub_1000A9C6C();
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && !v210->_wifiController)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && !selfCopy->_wifiController)
   {
-    v140 = [(NSMutableArray *)v210->_buddyControllers indexOfObjectPassingTest:&stru_10032BEE0];
+    v140 = [(NSMutableArray *)selfCopy->_buddyControllers indexOfObjectPassingTest:&stru_10032BEE0];
     if (v140 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v78 = [(NSMutableArray *)v210->_buddyControllers objectAtIndexedSubscript:v140];
-      wifiController = v210->_wifiController;
-      v210->_wifiController = v78;
+      v78 = [(NSMutableArray *)selfCopy->_buddyControllers objectAtIndexedSubscript:v140];
+      wifiController = selfCopy->_wifiController;
+      selfCopy->_wifiController = v78;
     }
   }
 
-  v80 = [(BuddyNavigationFlowController *)v210 trailingControllers];
-  v81 = [(NSMutableArray *)v80 count];
+  trailingControllers = [(BuddyNavigationFlowController *)selfCopy trailingControllers];
+  v81 = [(NSMutableArray *)trailingControllers count];
 
   if (v81)
   {
     v139 = objc_alloc_init(NSMutableArray);
     memset(v137, 0, sizeof(v137));
-    v82 = [(NSMutableArray *)v210->_buddyControllers reverseObjectEnumerator];
-    v83 = [v82 countByEnumeratingWithState:v137 objects:v214 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)selfCopy->_buddyControllers reverseObjectEnumerator];
+    v83 = [reverseObjectEnumerator countByEnumeratingWithState:v137 objects:v214 count:16];
     if (v83)
     {
       v84 = *v137[2];
@@ -3730,7 +3730,7 @@ LABEL_120:
         {
           if (*v137[2] != v84)
           {
-            objc_enumerationMutation(v82);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v138 = *(v137[1] + 8 * kk);
@@ -3749,7 +3749,7 @@ LABEL_120:
           [v139 addObject:v138];
         }
 
-        v83 = [v82 countByEnumeratingWithState:v137 objects:v214 count:16];
+        v83 = [reverseObjectEnumerator countByEnumeratingWithState:v137 objects:v214 count:16];
         if (v83)
         {
           continue;
@@ -3762,41 +3762,41 @@ LABEL_120:
     v179 = 0;
 LABEL_151:
 
-    v86 = [(BuddyNavigationFlowController *)v210 trailingControllers];
-    v87 = [(NSMutableArray *)v86 count]- 1;
+    trailingControllers2 = [(BuddyNavigationFlowController *)selfCopy trailingControllers];
+    v87 = [(NSMutableArray *)trailingControllers2 count]- 1;
 
     for (mm = v87; (mm & 0x80000000) == 0; --mm)
     {
-      v88 = [(BuddyNavigationFlowController *)v210 trailingControllers];
-      v135 = [(NSMutableArray *)v88 objectAtIndexedSubscript:mm];
+      trailingControllers3 = [(BuddyNavigationFlowController *)selfCopy trailingControllers];
+      v135 = [(NSMutableArray *)trailingControllers3 objectAtIndexedSubscript:mm];
 
-      if (v135 && ([(NSMutableArray *)v210->_buddyControllers containsObject:v135]& 1) != 0)
+      if (v135 && ([(NSMutableArray *)selfCopy->_buddyControllers containsObject:v135]& 1) != 0)
       {
-        v89 = [(BuddyNavigationFlowController *)v210 trailingControllers];
-        [(NSMutableArray *)v89 removeObjectAtIndex:mm];
+        trailingControllers4 = [(BuddyNavigationFlowController *)selfCopy trailingControllers];
+        [(NSMutableArray *)trailingControllers4 removeObjectAtIndex:mm];
       }
 
       objc_storeStrong(&v135, 0);
     }
 
-    [(NSMutableArray *)v210->_buddyControllers removeObjectsInArray:v139];
-    buddyControllers = v210->_buddyControllers;
-    v91 = [(BuddyNavigationFlowController *)v210 trailingControllers];
-    [(NSMutableArray *)buddyControllers addObjectsFromArray:v91];
+    [(NSMutableArray *)selfCopy->_buddyControllers removeObjectsInArray:v139];
+    buddyControllers = selfCopy->_buddyControllers;
+    trailingControllers5 = [(BuddyNavigationFlowController *)selfCopy trailingControllers];
+    [(NSMutableArray *)buddyControllers addObjectsFromArray:trailingControllers5];
 
-    [(NSMutableArray *)v210->_buddyControllers addObjectsFromArray:v139];
-    v92 = [(BuddyNavigationFlowController *)v210 navigator];
-    v93 = [(BuddyNavigationFlowNavigator *)v92 viewControllers];
-    v134 = [v93 mutableCopy];
+    [(NSMutableArray *)selfCopy->_buddyControllers addObjectsFromArray:v139];
+    navigator10 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    viewControllers5 = [(BuddyNavigationFlowNavigator *)navigator10 viewControllers];
+    v134 = [viewControllers5 mutableCopy];
 
-    v94 = [(BuddyNavigationFlowController *)v210 navigator];
-    v95 = [(BuddyNavigationFlowNavigator *)v94 viewControllers];
-    v133 = [v95 lastObject];
+    navigator11 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    viewControllers6 = [(BuddyNavigationFlowNavigator *)navigator11 viewControllers];
+    lastObject6 = [viewControllers6 lastObject];
 
     [v134 removeLastObject];
     memset(v131, 0, sizeof(v131));
-    v96 = [(BuddyNavigationFlowController *)v210 trailingControllers];
-    v97 = [(NSMutableArray *)v96 countByEnumeratingWithState:v131 objects:v213 count:16];
+    trailingControllers6 = [(BuddyNavigationFlowController *)selfCopy trailingControllers];
+    v97 = [(NSMutableArray *)trailingControllers6 countByEnumeratingWithState:v131 objects:v213 count:16];
     if (v97)
     {
       v98 = *v131[2];
@@ -3806,123 +3806,123 @@ LABEL_151:
         {
           if (*v131[2] != v98)
           {
-            objc_enumerationMutation(v96);
+            objc_enumerationMutation(trailingControllers6);
           }
 
           v132 = *(v131[1] + 8 * nn);
-          v130 = [(BuddyNavigationFlowController *)v210 _viewControllerForBuddyController:v132];
+          v130 = [(BuddyNavigationFlowController *)selfCopy _viewControllerForBuddyController:v132];
           if (v130 && (objc_opt_respondsToSelector() & 1) != 0)
           {
             v100 = v132;
-            v101 = [(BuddyNavigationFlowController *)v210 navigator];
-            v102 = [(BuddyNavigationFlowNavigator *)v101 navigationController];
-            [v100 setNavigationController:v102];
+            navigator12 = [(BuddyNavigationFlowController *)selfCopy navigator];
+            navigationController = [(BuddyNavigationFlowNavigator *)navigator12 navigationController];
+            [v100 setNavigationController:navigationController];
           }
 
           [v134 addObject:v130];
           objc_storeStrong(&v130, 0);
         }
 
-        v97 = [(NSMutableArray *)v96 countByEnumeratingWithState:v131 objects:v213 count:16];
+        v97 = [(NSMutableArray *)trailingControllers6 countByEnumeratingWithState:v131 objects:v213 count:16];
       }
 
       while (v97);
     }
 
-    [v134 addObject:v133];
-    v103 = [(BuddyNavigationFlowController *)v210 navigator];
-    [(BuddyNavigationFlowNavigator *)v103 setViewControllers:v134 animated:0];
+    [v134 addObject:lastObject6];
+    navigator13 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    [(BuddyNavigationFlowNavigator *)navigator13 setViewControllers:v134 animated:0];
 
     oslog = _BYLoggingFacility();
     v128 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v104 = [(BuddyNavigationFlowController *)v210 trailingControllers];
-      v105 = [(NSMutableArray *)v104 count];
-      v106 = v133;
-      v107 = [(BuddyNavigationFlowController *)v210 trailingControllers];
-      sub_10008FCD8(v212, v105, v106, v107);
+      trailingControllers7 = [(BuddyNavigationFlowController *)selfCopy trailingControllers];
+      v105 = [(NSMutableArray *)trailingControllers7 count];
+      v106 = lastObject6;
+      trailingControllers8 = [(BuddyNavigationFlowController *)selfCopy trailingControllers];
+      sub_10008FCD8(v212, v105, v106, trailingControllers8);
       _os_log_impl(&_mh_execute_header, oslog, v128, "Inserting %ld controller(s) before %@: %@", v212, 0x20u);
     }
 
     objc_storeStrong(&oslog, 0);
-    v108 = [(BuddyNavigationFlowController *)v210 trailingControllers];
-    [(NSMutableArray *)v108 removeAllObjects];
+    trailingControllers9 = [(BuddyNavigationFlowController *)selfCopy trailingControllers];
+    [(NSMutableArray *)trailingControllers9 removeAllObjects];
 
-    objc_storeStrong(&v133, 0);
+    objc_storeStrong(&lastObject6, 0);
     objc_storeStrong(&v134, 0);
     objc_storeStrong(&v139, 0);
   }
 
-  v109 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-  v110 = [(NSMutableArray *)v109 count];
+  buddyControllers14 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+  v110 = [(NSMutableArray *)buddyControllers14 count];
 
   if (v110)
   {
-    v111 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-    v127 = [(NSMutableArray *)v111 lastObject];
+    buddyControllers15 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+    lastObject7 = [(NSMutableArray *)buddyControllers15 lastObject];
 
-    v112 = [(BuddyNavigationFlowController *)v210 _viewControllerForBuddyController:v127];
+    v112 = [(BuddyNavigationFlowController *)selfCopy _viewControllerForBuddyController:lastObject7];
     v113 = v208;
 
     if (v112 == v113)
     {
-      v114 = [(BuddyNavigationFlowController *)v210 buddyControllers];
-      v126 = [(NSMutableArray *)v114 lastObject];
+      buddyControllers16 = [(BuddyNavigationFlowController *)selfCopy buddyControllers];
+      lastObject8 = [(NSMutableArray *)buddyControllers16 lastObject];
 
-      [(BuddyNavigationFlowController *)v210 _unmarkFlowItemAsFinished:v126];
+      [(BuddyNavigationFlowController *)selfCopy _unmarkFlowItemAsFinished:lastObject8];
       if (objc_opt_respondsToSelector())
       {
-        [v126 flowItemDidAppear:v206];
+        [lastObject8 flowItemDidAppear:animatedCopy];
       }
 
-      objc_storeStrong(&v126, 0);
+      objc_storeStrong(&lastObject8, 0);
     }
 
-    else if (v207 == 2 && [(BuddyNavigationFlowController *)v210 isFlowItem:v127 responsibleForViewController:v208])
+    else if (operationCopy == 2 && [(BuddyNavigationFlowController *)selfCopy isFlowItem:lastObject7 responsibleForViewController:v208])
     {
-      [(BuddyNavigationFlowController *)v210 _unmarkFlowItemAsFinished:v127];
+      [(BuddyNavigationFlowController *)selfCopy _unmarkFlowItemAsFinished:lastObject7];
     }
 
-    objc_storeStrong(&v127, 0);
+    objc_storeStrong(&lastObject7, 0);
   }
 
-  v115 = [(BuddyNavigationFlowController *)v210 navigator];
-  v116 = [(BuddyNavigationFlowNavigator *)v115 navigationController];
-  v117 = [(BFFNavigationController *)v116 view];
-  v118 = [v117 isUserInteractionEnabled] ^ 1;
+  navigator14 = [(BuddyNavigationFlowController *)selfCopy navigator];
+  navigationController2 = [(BuddyNavigationFlowNavigator *)navigator14 navigationController];
+  view = [(BFFNavigationController *)navigationController2 view];
+  v118 = [view isUserInteractionEnabled] ^ 1;
 
   if (v118)
   {
     v125 = _BYLoggingFacility();
     if (os_log_type_enabled(v125, OS_LOG_TYPE_DEBUG))
     {
-      v119 = [(BuddyNavigationFlowController *)v210 navigator];
-      v120 = [(BuddyNavigationFlowNavigator *)v119 view];
-      v121 = [v120 window];
-      sub_1000A4DC0(v211, "[BuddyNavigationFlowController navigationController:didShowViewController:operation:animated:]", v121);
+      navigator15 = [(BuddyNavigationFlowController *)selfCopy navigator];
+      view2 = [(BuddyNavigationFlowNavigator *)navigator15 view];
+      window = [view2 window];
+      sub_1000A4DC0(v211, "[BuddyNavigationFlowController navigationController:didShowViewController:operation:animated:]", window);
       _os_log_debug_impl(&_mh_execute_header, v125, OS_LOG_TYPE_DEBUG, "%s setUserInteractionEnabled YES %p", v211, 0x16u);
     }
 
     objc_storeStrong(&v125, 0);
-    v122 = [(BuddyNavigationFlowController *)v210 navigator];
-    v123 = [(BuddyNavigationFlowNavigator *)v122 navigationController];
-    v124 = [(BFFNavigationController *)v123 view];
-    [v124 setUserInteractionEnabled:1];
+    navigator16 = [(BuddyNavigationFlowController *)selfCopy navigator];
+    navigationController3 = [(BuddyNavigationFlowNavigator *)navigator16 navigationController];
+    view3 = [(BFFNavigationController *)navigationController3 view];
+    [view3 setUserInteractionEnabled:1];
   }
 
   objc_storeStrong(&v208, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)isFlowItem:(id)a3 responsibleForViewController:(id)a4
+- (BOOL)isFlowItem:(id)item responsibleForViewController:(id)controller
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, controller);
   v5 = 0;
   if (objc_opt_respondsToSelector())
   {
@@ -3934,14 +3934,14 @@ LABEL_151:
   return v5 & 1;
 }
 
-- (void)_injectDependencies:(id)a3 withEnvironment:(id)a4
+- (void)_injectDependencies:(id)dependencies withEnvironment:(id)environment
 {
-  v74 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dependencies);
   v72 = 0;
-  objc_storeStrong(&v72, a4);
+  objc_storeStrong(&v72, environment);
   if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___BYEnvironmentDependencyReceiver])
   {
     objc_opt_class();
@@ -3951,11 +3951,11 @@ LABEL_151:
       v70 = OS_LOG_TYPE_FAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
       {
-        v69 = [location[0] customDescription];
-        sub_10006AE18(buf, v69);
+        customDescription = [location[0] customDescription];
+        sub_10006AE18(buf, customDescription);
         _os_log_fault_impl(&_mh_execute_header, oslog, v70, "Precondition failed item cannot be injected as item:(%@)'s loadView has been called", buf, 0xCu);
 
-        objc_storeStrong(&v69, 0);
+        objc_storeStrong(&customDescription, 0);
       }
 
       objc_storeStrong(&oslog, 0);
@@ -3964,364 +3964,364 @@ LABEL_151:
     v68 = location[0];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v72 deviceProvider];
-      [v68 setDeviceProvider:v5];
+      deviceProvider = [v72 deviceProvider];
+      [v68 setDeviceProvider:deviceProvider];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v72 suspendTask];
-      [v68 setSuspendTask:v6];
+      suspendTask = [v72 suspendTask];
+      [v68 setSuspendTask:suspendTask];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v72 pendingRestoreState];
-      [v68 setPendingRestoreState:v7];
+      pendingRestoreState = [v72 pendingRestoreState];
+      [v68 setPendingRestoreState:pendingRestoreState];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v72 chronicle];
-      [v68 setChronicle:v8];
+      chronicle = [v72 chronicle];
+      [v68 setChronicle:chronicle];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v72 miscState];
-      [v68 setMiscState:v9];
+      miscState = [v72 miscState];
+      [v68 setMiscState:miscState];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v72 proximitySetupController];
-      [v68 setProximitySetupController:v10];
+      proximitySetupController = [v72 proximitySetupController];
+      [v68 setProximitySetupController:proximitySetupController];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v72 proximityAutomatedDeviceEnrollmentController];
-      [v68 setProximityAutomatedDeviceEnrollmentController:v11];
+      proximityAutomatedDeviceEnrollmentController = [v72 proximityAutomatedDeviceEnrollmentController];
+      [v68 setProximityAutomatedDeviceEnrollmentController:proximityAutomatedDeviceEnrollmentController];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v72 backupDeviceController];
-      [v68 setBackupDeviceController:v12];
+      backupDeviceController = [v72 backupDeviceController];
+      [v68 setBackupDeviceController:backupDeviceController];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v72 systemTimeUpdateManager];
-      [v68 setSystemTimeUpdateManager:v13];
+      systemTimeUpdateManager = [v72 systemTimeUpdateManager];
+      [v68 setSystemTimeUpdateManager:systemTimeUpdateManager];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v72 enrollmentCoordinator];
-      [v68 setEnrollmentCoordinator:v14];
+      enrollmentCoordinator = [v72 enrollmentCoordinator];
+      [v68 setEnrollmentCoordinator:enrollmentCoordinator];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v72 menuButtonPressedBlock];
-      [v68 setMenuButtonPressedBlock:v15];
+      menuButtonPressedBlock = [v72 menuButtonPressedBlock];
+      [v68 setMenuButtonPressedBlock:menuButtonPressedBlock];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v72 showModalWiFiSettingsBlock];
-      [v68 setShowModalWiFiSettingsBlock:v16];
+      showModalWiFiSettingsBlock = [v72 showModalWiFiSettingsBlock];
+      [v68 setShowModalWiFiSettingsBlock:showModalWiFiSettingsBlock];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v72 writeGreenInformedDefaultPlistIfNecessaryBlock];
-      [v68 setWriteGreenInformedDefaultPlistIfNecessaryBlock:v17];
+      writeGreenInformedDefaultPlistIfNecessaryBlock = [v72 writeGreenInformedDefaultPlistIfNecessaryBlock];
+      [v68 setWriteGreenInformedDefaultPlistIfNecessaryBlock:writeGreenInformedDefaultPlistIfNecessaryBlock];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v72 doesRestartFlowCauseEraseBlock];
-      [v68 setDoesRestartFlowCauseEraseBlock:v18];
+      doesRestartFlowCauseEraseBlock = [v72 doesRestartFlowCauseEraseBlock];
+      [v68 setDoesRestartFlowCauseEraseBlock:doesRestartFlowCauseEraseBlock];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v72 prepareForCloudRestoreRebootBlock];
-      [v68 setPrepareForCloudRestoreRebootBlock:v19];
+      prepareForCloudRestoreRebootBlock = [v72 prepareForCloudRestoreRebootBlock];
+      [v68 setPrepareForCloudRestoreRebootBlock:prepareForCloudRestoreRebootBlock];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v20 = [v72 exitBuddyForDemoSetUpBlock];
-      [v68 setExitBuddyForDemoSetUpBlock:v20];
+      exitBuddyForDemoSetUpBlock = [v72 exitBuddyForDemoSetUpBlock];
+      [v68 setExitBuddyForDemoSetUpBlock:exitBuddyForDemoSetUpBlock];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v21 = [v72 prepareForDeviceMigrationBlock];
-      [v68 setPrepareForDeviceMigrationBlock:v21];
+      prepareForDeviceMigrationBlock = [v72 prepareForDeviceMigrationBlock];
+      [v68 setPrepareForDeviceMigrationBlock:prepareForDeviceMigrationBlock];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v22 = [v72 startDeviceMigrationBlock];
-      [v68 setStartDeviceMigrationBlock:v22];
+      startDeviceMigrationBlock = [v72 startDeviceMigrationBlock];
+      [v68 setStartDeviceMigrationBlock:startDeviceMigrationBlock];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v23 = [v72 existingSettings];
-      [v68 setExistingSettings:v23];
+      existingSettings = [v72 existingSettings];
+      [v68 setExistingSettings:existingSettings];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v24 = [v72 displayZoomExecutor];
-      [v68 setDisplayZoomExecutor:v24];
+      displayZoomExecutor = [v72 displayZoomExecutor];
+      [v68 setDisplayZoomExecutor:displayZoomExecutor];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v25 = [v72 seedProgramManager];
-      [v68 setSeedProgramManager:v25];
+      seedProgramManager = [v72 seedProgramManager];
+      [v68 setSeedProgramManager:seedProgramManager];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v72 networkProvider];
-      [v68 setNetworkProvider:v26];
+      networkProvider = [v72 networkProvider];
+      [v68 setNetworkProvider:networkProvider];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v27 = [v72 buddyPreferences];
-      [v68 setBuddyPreferences:v27];
+      buddyPreferences = [v72 buddyPreferences];
+      [v68 setBuddyPreferences:buddyPreferences];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v28 = [v72 buddyPreferencesExcludedFromBackup];
-      [v68 setBuddyPreferencesExcludedFromBackup:v28];
+      buddyPreferencesExcludedFromBackup = [v72 buddyPreferencesExcludedFromBackup];
+      [v68 setBuddyPreferencesExcludedFromBackup:buddyPreferencesExcludedFromBackup];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v29 = [v72 setupMethod];
-      [v68 setSetupMethod:v29];
+      setupMethod = [v72 setupMethod];
+      [v68 setSetupMethod:setupMethod];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v30 = [v72 willPerformSoftwareUpdateBlock];
-      [v68 setWillPerformSoftwareUpdateBlock:v30];
+      willPerformSoftwareUpdateBlock = [v72 willPerformSoftwareUpdateBlock];
+      [v68 setWillPerformSoftwareUpdateBlock:willPerformSoftwareUpdateBlock];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v31 = [v72 betaEnrollmentStateManager];
-      [v68 setBetaEnrollmentStateManager:v31];
+      betaEnrollmentStateManager = [v72 betaEnrollmentStateManager];
+      [v68 setBetaEnrollmentStateManager:betaEnrollmentStateManager];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v32 = [v72 capabilities];
-      [v68 setCapabilities:v32];
+      capabilities = [v72 capabilities];
+      [v68 setCapabilities:capabilities];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v33 = [v72 softwareUpdateCache];
-      [v68 setSoftwareUpdateCache:v33];
+      softwareUpdateCache = [v72 softwareUpdateCache];
+      [v68 setSoftwareUpdateCache:softwareUpdateCache];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v34 = [v72 settingsManager];
-      [v68 setSettingsManager:v34];
+      settingsManager = [v72 settingsManager];
+      [v68 setSettingsManager:settingsManager];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v35 = [v72 passcodeCacheManager];
-      [v68 setPasscodeCacheManager:v35];
+      passcodeCacheManager = [v72 passcodeCacheManager];
+      [v68 setPasscodeCacheManager:passcodeCacheManager];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v36 = [v72 runState];
-      [v68 setRunState:v36];
+      runState = [v72 runState];
+      [v68 setRunState:runState];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v37 = [v72 analyticsManager];
-      [v68 setAnalyticsManager:v37];
+      analyticsManager = [v72 analyticsManager];
+      [v68 setAnalyticsManager:analyticsManager];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v38 = [v72 paneFeatureAnalyticsManager];
-      [v68 setPaneFeatureAnalyticsManager:v38];
+      paneFeatureAnalyticsManager = [v72 paneFeatureAnalyticsManager];
+      [v68 setPaneFeatureAnalyticsManager:paneFeatureAnalyticsManager];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v39 = [v72 managedConfiguration];
-      [v68 setManagedConfiguration:v39];
+      managedConfiguration = [v72 managedConfiguration];
+      [v68 setManagedConfiguration:managedConfiguration];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v40 = [v72 activationRecord];
-      [v68 setActivationRecord:v40];
+      activationRecord = [v72 activationRecord];
+      [v68 setActivationRecord:activationRecord];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v41 = [v72 combinedTermsProvider];
-      [v68 setCombinedTermsProvider:v41];
+      combinedTermsProvider = [v72 combinedTermsProvider];
+      [v68 setCombinedTermsProvider:combinedTermsProvider];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v42 = [v72 featureFlags];
-      [v68 setFeatureFlags:v42];
+      featureFlags = [v72 featureFlags];
+      [v68 setFeatureFlags:featureFlags];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v43 = [v72 buttonMonitor];
-      [v68 setButtonMonitor:v43];
+      buttonMonitor = [v72 buttonMonitor];
+      [v68 setButtonMonitor:buttonMonitor];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v44 = [v72 emergencyExecutor];
-      [v68 setEmergencyExecutor:v44];
+      emergencyExecutor = [v72 emergencyExecutor];
+      [v68 setEmergencyExecutor:emergencyExecutor];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v45 = [v72 activationState];
-      [v68 setActivationState:v45];
+      activationState = [v72 activationState];
+      [v68 setActivationState:activationState];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v46 = [v72 flowSkipController];
-      [v68 setFlowSkipController:v46];
+      flowSkipController = [v72 flowSkipController];
+      [v68 setFlowSkipController:flowSkipController];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v47 = [v72 appearanceModeProvider];
-      [v68 setAppearanceModeProvider:v47];
+      appearanceModeProvider = [v72 appearanceModeProvider];
+      [v68 setAppearanceModeProvider:appearanceModeProvider];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v48 = [v72 userDispositionProvider];
-      [v68 setUserDispositionProvider:v48];
+      userDispositionProvider = [v72 userDispositionProvider];
+      [v68 setUserDispositionProvider:userDispositionProvider];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v49 = [v72 deviceConfiguration];
-      [v68 setDeviceConfiguration:v49];
+      deviceConfiguration = [v72 deviceConfiguration];
+      [v68 setDeviceConfiguration:deviceConfiguration];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v50 = [v72 flowItemDispositionProvider];
-      [v68 setFlowItemDispositionProvider:v50];
+      flowItemDispositionProvider = [v72 flowItemDispositionProvider];
+      [v68 setFlowItemDispositionProvider:flowItemDispositionProvider];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v51 = [v72 lockdownModeProvider];
-      [v68 setLockdownModeProvider:v51];
+      lockdownModeProvider = [v72 lockdownModeProvider];
+      [v68 setLockdownModeProvider:lockdownModeProvider];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v52 = [v72 analyticsEventAppearance];
-      [v68 setAnalyticsEventAppearance:v52];
+      analyticsEventAppearance = [v72 analyticsEventAppearance];
+      [v68 setAnalyticsEventAppearance:analyticsEventAppearance];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v53 = [v72 childSetupPresenter];
-      [v68 setChildSetupPresenter:v53];
+      childSetupPresenter = [v72 childSetupPresenter];
+      [v68 setChildSetupPresenter:childSetupPresenter];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v54 = [v72 buddyBackgroundViewController];
-      [v68 setBuddyBackgroundViewController:v54];
+      buddyBackgroundViewController = [v72 buddyBackgroundViewController];
+      [v68 setBuddyBackgroundViewController:buddyBackgroundViewController];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v55 = [v72 intelligenceProvider];
-      [v68 setIntelligenceProvider:v55];
+      intelligenceProvider = [v72 intelligenceProvider];
+      [v68 setIntelligenceProvider:intelligenceProvider];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v56 = [v72 multilingualFlowManager];
-      [v68 setMultilingualFlowManager:v56];
+      multilingualFlowManager = [v72 multilingualFlowManager];
+      [v68 setMultilingualFlowManager:multilingualFlowManager];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v57 = [v72 expressSettingsCache];
-      [v68 setExpressSettingsCache:v57];
+      expressSettingsCache = [v72 expressSettingsCache];
+      [v68 setExpressSettingsCache:expressSettingsCache];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v58 = [v72 diagnosticsThreadDecorator];
-      [v68 setDiagnosticsThreadDecorator:v58];
+      diagnosticsThreadDecorator = [v72 diagnosticsThreadDecorator];
+      [v68 setDiagnosticsThreadDecorator:diagnosticsThreadDecorator];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v59 = [v72 safetyAndHandlingManager];
-      [v68 setSafetyAndHandlingManager:v59];
+      safetyAndHandlingManager = [v72 safetyAndHandlingManager];
+      [v68 setSafetyAndHandlingManager:safetyAndHandlingManager];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v60 = [v72 threatNotificationProvider];
-      [v68 setThreatNotificationProvider:v60];
+      threatNotificationProvider = [v72 threatNotificationProvider];
+      [v68 setThreatNotificationProvider:threatNotificationProvider];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v61 = [v72 iPadMultitaskingModeManager];
-      [v68 setIPadMultitaskingModeManager:v61];
+      iPadMultitaskingModeManager = [v72 iPadMultitaskingModeManager];
+      [v68 setIPadMultitaskingModeManager:iPadMultitaskingModeManager];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v62 = [v72 safetySettingsUIProvider];
-      [v68 setSafetySettingsUIProvider:v62];
+      safetySettingsUIProvider = [v72 safetySettingsUIProvider];
+      [v68 setSafetySettingsUIProvider:safetySettingsUIProvider];
     }
 
     if ([v68 conformsToProtocol:&OBJC_PROTOCOL___BFFFlowItem])
     {
       v67 = v68;
-      v63 = [(BuddyNavigationFlowController *)v74 navigator];
-      v64 = [(BuddyNavigationFlowNavigator *)v63 navigationController];
-      [(BFFNavigationController *)v64 setCustomAnimatorProviderBlock:0];
+      navigator = [(BuddyNavigationFlowController *)selfCopy navigator];
+      navigationController = [(BuddyNavigationFlowNavigator *)navigator navigationController];
+      [(BFFNavigationController *)navigationController setCustomAnimatorProviderBlock:0];
 
       if (objc_opt_respondsToSelector())
       {
-        v65 = [(BuddyNavigationFlowController *)v74 navigator];
-        v66 = [(BuddyNavigationFlowNavigator *)v65 navigationController];
-        [v67 setNavigationController:v66];
+        navigator2 = [(BuddyNavigationFlowController *)selfCopy navigator];
+        navigationController2 = [(BuddyNavigationFlowNavigator *)navigator2 navigationController];
+        [v67 setNavigationController:navigationController2];
       }
 
       objc_storeStrong(&v67, 0);
@@ -4334,16 +4334,16 @@ LABEL_151:
   objc_storeStrong(location, 0);
 }
 
-- (id)_injectedFlowForClass:(Class)a3
+- (id)_injectedFlowForClass:(Class)class
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  classCopy = class;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
-    location = [(BuddyNavigationFlowController *)v9 _createFlowItemForClass:v7];
-    v3 = [(BuddyNavigationFlowController *)v9 environment];
-    [(BuddyNavigationFlowController *)v9 _injectDependencies:location withEnvironment:v3];
+    location = [(BuddyNavigationFlowController *)selfCopy _createFlowItemForClass:classCopy];
+    environment = [(BuddyNavigationFlowController *)selfCopy environment];
+    [(BuddyNavigationFlowController *)selfCopy _injectDependencies:location withEnvironment:environment];
 
     v10 = location;
     objc_storeStrong(&location, 0);

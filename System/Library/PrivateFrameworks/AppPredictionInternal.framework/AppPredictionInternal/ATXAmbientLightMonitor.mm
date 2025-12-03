@@ -1,10 +1,10 @@
 @interface ATXAmbientLightMonitor
 + (ATXAmbientLightMonitor)sharedInstance;
-+ (int)getAmbientLightTypeForXValue:(double)a3 YValue:(double)a4 ZValue:(double)a5;
++ (int)getAmbientLightTypeForXValue:(double)value YValue:(double)yValue ZValue:(double)zValue;
 - (ATXAmbientLightMonitor)init;
 - (ATXAmbientLightMonitor)initWithoutMonitoring;
 - (int)getCurrentAmbientLightType;
-- (void)addSampleWithXValue:(id)a3 YValue:(id)a4 ZValue:(id)a5;
+- (void)addSampleWithXValue:(id)value YValue:(id)yValue ZValue:(id)zValue;
 - (void)dealloc;
 - (void)start;
 @end
@@ -138,7 +138,7 @@ void __40__ATXAmbientLightMonitor_sharedInstance__block_invoke()
     dispatch_async(queue, block);
     if ([MEMORY[0x277D425A0] waitForSemaphore:v5 timeoutSeconds:1.0])
     {
-      v6 = 7;
+      intValue = 7;
     }
 
     else
@@ -173,8 +173,8 @@ void __40__ATXAmbientLightMonitor_sharedInstance__block_invoke()
                 continue;
               }
 
-              v17 = [v13 integerValue];
-              if (v17 >= [v11 integerValue])
+              integerValue = [v13 integerValue];
+              if (integerValue >= [v11 integerValue])
               {
                 continue;
               }
@@ -197,7 +197,7 @@ void __40__ATXAmbientLightMonitor_sharedInstance__block_invoke()
         v11 = &unk_283A57128;
       }
 
-      v6 = [v11 intValue];
+      intValue = [v11 intValue];
     }
 
     _Block_object_dispose(&v27, 8);
@@ -206,11 +206,11 @@ void __40__ATXAmbientLightMonitor_sharedInstance__block_invoke()
   else
   {
     [(ATXAmbientLightMonitor *)self start];
-    v6 = 7;
+    intValue = 7;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v6;
+  return intValue;
 }
 
 intptr_t __52__ATXAmbientLightMonitor_getCurrentAmbientLightType__block_invoke(uint64_t a1)
@@ -265,18 +265,18 @@ intptr_t __52__ATXAmbientLightMonitor_getCurrentAmbientLightType__block_invoke(u
   return result;
 }
 
-- (void)addSampleWithXValue:(id)a3 YValue:(id)a4 ZValue:(id)a5
+- (void)addSampleWithXValue:(id)value YValue:(id)yValue ZValue:(id)zValue
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  yValueCopy = yValue;
+  zValueCopy = zValue;
   v11 = objc_autoreleasePoolPush();
   if ([(NSMutableArray *)self->_sampledAmbientLightValues count]> 4)
   {
-    v15[0] = v8;
-    v15[1] = v9;
-    v15[2] = v10;
+    v15[0] = valueCopy;
+    v15[1] = yValueCopy;
+    v15[2] = zValueCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
     [(NSMutableArray *)self->_sampledAmbientLightValues setObject:v13 atIndexedSubscript:self->_sampledAmbientLightValuesCurrentIndex];
   }
@@ -284,9 +284,9 @@ intptr_t __52__ATXAmbientLightMonitor_getCurrentAmbientLightType__block_invoke(u
   else
   {
     sampledAmbientLightValues = self->_sampledAmbientLightValues;
-    v16[0] = v8;
-    v16[1] = v9;
-    v16[2] = v10;
+    v16[0] = valueCopy;
+    v16[1] = yValueCopy;
+    v16[2] = zValueCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
     [(NSMutableArray *)sampledAmbientLightValues addObject:v13];
   }
@@ -297,28 +297,28 @@ intptr_t __52__ATXAmbientLightMonitor_getCurrentAmbientLightType__block_invoke(u
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (int)getAmbientLightTypeForXValue:(double)a3 YValue:(double)a4 ZValue:(double)a5
++ (int)getAmbientLightTypeForXValue:(double)value YValue:(double)yValue ZValue:(double)zValue
 {
-  if (a4 < 4.0)
+  if (yValue < 4.0)
   {
     return 0;
   }
 
-  if (a5 < a4 && a4 < 100.0 && a5 < a3)
+  if (zValue < yValue && yValue < 100.0 && zValue < value)
   {
     return 1;
   }
 
-  v8 = a3 * 0.8;
-  if (a4 < 200.0 && v8 <= a5)
+  v8 = value * 0.8;
+  if (yValue < 200.0 && v8 <= zValue)
   {
     return 2;
   }
 
-  if (a4 < 1000.0)
+  if (yValue < 1000.0)
   {
-    v9 = v8 == a5;
-    v10 = v8 < a5;
+    v9 = v8 == zValue;
+    v10 = v8 < zValue;
   }
 
   else
@@ -332,10 +332,10 @@ intptr_t __52__ATXAmbientLightMonitor_getCurrentAmbientLightType__block_invoke(u
     return 3;
   }
 
-  if (a4 < 30000.0)
+  if (yValue < 30000.0)
   {
-    v11 = v8 == a5;
-    v12 = v8 < a5;
+    v11 = v8 == zValue;
+    v12 = v8 < zValue;
   }
 
   else
@@ -349,7 +349,7 @@ intptr_t __52__ATXAmbientLightMonitor_getCurrentAmbientLightType__block_invoke(u
     return 4;
   }
 
-  if (a4 >= 10000.0)
+  if (yValue >= 10000.0)
   {
     return 6;
   }

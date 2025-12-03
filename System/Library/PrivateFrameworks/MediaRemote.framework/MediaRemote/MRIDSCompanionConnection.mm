@@ -1,25 +1,25 @@
 @interface MRIDSCompanionConnection
 + (id)sharedManager;
-- (BOOL)_sendMessage:(id)a3 type:(id)a4 destination:(id)a5 session:(id)a6 options:(id)a7 priority:(int64_t)a8 replyID:(id)a9 response:(id)a10;
+- (BOOL)_sendMessage:(id)message type:(id)type destination:(id)destination session:(id)session options:(id)options priority:(int64_t)priority replyID:(id)d response:(id)self0;
 - (BOOL)isConnected;
 - (IDSDevice)device;
 - (MRDeviceInfo)deviceInfo;
 - (MRIDSCompanionConnection)init;
 - (NSString)description;
-- (id)_configurationFromDestination:(id)a3 session:(id)a4;
+- (id)_configurationFromDestination:(id)destination session:(id)session;
 - (id)deviceDebugName;
 - (id)name;
 - (unint64_t)_generateMessageID;
 - (void)_maybeDeviceConnectionStatusChanged;
 - (void)handleDidReceiveResetConnectionRequest;
 - (void)initializeService;
-- (void)removeMessageHandlerForType:(id)a3;
-- (void)removeMessageHandlerForType:(id)a3 destination:(id)a4 session:(id)a5;
+- (void)removeMessageHandlerForType:(id)type;
+- (void)removeMessageHandlerForType:(id)type destination:(id)destination session:(id)session;
 - (void)resetConnection;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)setDevice:(id)a3;
-- (void)setMessageHandler:(id)a3 forType:(id)a4;
-- (void)setMessageHandler:(id)a3 forType:(id)a4 destination:(id)a5 session:(id)a6;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)setDevice:(id)device;
+- (void)setMessageHandler:(id)handler forType:(id)type;
+- (void)setMessageHandler:(id)handler forType:(id)type destination:(id)destination session:(id)session;
 @end
 
 @implementation MRIDSCompanionConnection
@@ -38,43 +38,43 @@
 
 - (BOOL)isConnected
 {
-  v2 = [(MRIDSCompanionConnection *)self deviceInfo];
-  v3 = v2 != 0;
+  deviceInfo = [(MRIDSCompanionConnection *)self deviceInfo];
+  v3 = deviceInfo != 0;
 
   return v3;
 }
 
 - (MRDeviceInfo)deviceInfo
 {
-  v3 = [(MRIDSCompanionConnection *)self device];
-  v4 = [v3 uniqueIDOverride];
-  v5 = v4;
-  if (v4)
+  device = [(MRIDSCompanionConnection *)self device];
+  uniqueIDOverride = [device uniqueIDOverride];
+  v5 = uniqueIDOverride;
+  if (uniqueIDOverride)
   {
-    v6 = v4;
+    uniqueID = uniqueIDOverride;
   }
 
   else
   {
-    v6 = [v3 uniqueID];
+    uniqueID = [device uniqueID];
   }
 
-  v7 = v6;
+  v7 = uniqueID;
 
-  v8 = [v3 name];
-  v9 = [v3 productName];
-  v10 = self;
-  objc_sync_enter(v10);
-  deviceInfo = v10->_deviceInfo;
-  if (v3 && !deviceInfo)
+  name = [device name];
+  productName = [device productName];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceInfo = selfCopy->_deviceInfo;
+  if (device && !deviceInfo)
   {
     v12 = objc_alloc_init(MRDeviceInfo);
-    v13 = v10->_deviceInfo;
-    v10->_deviceInfo = v12;
+    v13 = selfCopy->_deviceInfo;
+    selfCopy->_deviceInfo = v12;
 
-    [(MRDeviceInfo *)v10->_deviceInfo setDeviceUID:v7];
-    [(MRDeviceInfo *)v10->_deviceInfo setName:v8];
-    if ([v9 containsString:@"Watch"])
+    [(MRDeviceInfo *)selfCopy->_deviceInfo setDeviceUID:v7];
+    [(MRDeviceInfo *)selfCopy->_deviceInfo setName:name];
+    if ([productName containsString:@"Watch"])
     {
       v14 = 6;
     }
@@ -84,33 +84,33 @@
       v14 = 1;
     }
 
-    [(MRDeviceInfo *)v10->_deviceInfo setDeviceClass:v14];
-    deviceInfo = v10->_deviceInfo;
+    [(MRDeviceInfo *)selfCopy->_deviceInfo setDeviceClass:v14];
+    deviceInfo = selfCopy->_deviceInfo;
   }
 
   v15 = deviceInfo;
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }
 
 - (IDSDevice)device
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_device;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_device;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (unint64_t)_generateMessageID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_totalOutgoingMessageCount + 1;
-  v2->_totalOutgoingMessageCount = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_totalOutgoingMessageCount + 1;
+  selfCopy->_totalOutgoingMessageCount = v3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -184,9 +184,9 @@ void __41__MRIDSCompanionConnection_sharedManager__block_invoke()
     _Block_object_dispose(&v27, 8);
     if (!v12)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"int soft_MKBDeviceUnlockedSinceBoot(void)"];
-      [v17 handleFailureInFunction:v18 file:@"MRIDSCompanionConnection.m" lineNumber:29 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v18 file:@"MRIDSCompanionConnection.m" lineNumber:29 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -240,9 +240,9 @@ void __32__MRIDSCompanionConnection_init__block_invoke_2(uint64_t a1)
 - (void)initializeService
 {
   dispatch_assert_queue_V2(self->_idsQueue);
-  v3 = [MEMORY[0x1E69A48A8] mr_sharedIDSCompanionService];
+  mr_sharedIDSCompanionService = [MEMORY[0x1E69A48A8] mr_sharedIDSCompanionService];
   service = self->_service;
-  self->_service = v3;
+  self->_service = mr_sharedIDSCompanionService;
 
   [(IDSService *)self->_service addDelegate:self queue:self->_idsQueue];
   [(MRIDSCompanionConnection *)self _maybeDeviceConnectionStatusChanged];
@@ -262,23 +262,23 @@ void __32__MRIDSCompanionConnection_init__block_invoke_2(uint64_t a1)
   v4 = [(MRIDSCompanionConnection *)&v9 description];
   v5 = [v3 initWithFormat:@"%@", v4];
 
-  v6 = [(MRIDSCompanionConnection *)self deviceInfo];
-  [v5 appendFormat:@"deviceInfo=%@", v6];
+  deviceInfo = [(MRIDSCompanionConnection *)self deviceInfo];
+  [v5 appendFormat:@"deviceInfo=%@", deviceInfo];
 
-  v7 = [(IDSService *)self->_service devices];
-  [v5 appendFormat:@"IDSDevices=%@", v7];
+  devices = [(IDSService *)self->_service devices];
+  [v5 appendFormat:@"IDSDevices=%@", devices];
 
   return v5;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   obj = self;
   objc_sync_enter(obj);
   device = obj->_device;
-  obj->_device = v4;
-  v6 = v4;
+  obj->_device = deviceCopy;
+  v6 = deviceCopy;
 
   deviceInfo = obj->_deviceInfo;
   obj->_deviceInfo = 0;
@@ -288,22 +288,22 @@ void __32__MRIDSCompanionConnection_init__block_invoke_2(uint64_t a1)
 
 - (id)name
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(IDSDevice *)v2->_device name];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  name = [(IDSDevice *)selfCopy->_device name];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return name;
 }
 
 - (id)deviceDebugName
 {
-  v2 = [(MRIDSCompanionConnection *)self device];
+  device = [(MRIDSCompanionConnection *)self device];
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [v2 uniqueID];
-  v5 = [v2 name];
-  v6 = [v2 productName];
-  v7 = [v3 initWithFormat:@"%@-%@ (%@)", v4, v5, v6];
+  uniqueID = [device uniqueID];
+  name = [device name];
+  productName = [device productName];
+  v7 = [v3 initWithFormat:@"%@-%@ (%@)", uniqueID, name, productName];
 
   return v7;
 }
@@ -317,44 +317,44 @@ void __32__MRIDSCompanionConnection_init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)_sendMessage:(id)a3 type:(id)a4 destination:(id)a5 session:(id)a6 options:(id)a7 priority:(int64_t)a8 replyID:(id)a9 response:(id)a10
+- (BOOL)_sendMessage:(id)message type:(id)type destination:(id)destination session:(id)session options:(id)options priority:(int64_t)priority replyID:(id)d response:(id)self0
 {
   v62 = *MEMORY[0x1E69E9840];
-  v47 = a3;
-  v48 = a4;
-  v49 = a5;
-  v15 = a6;
-  v45 = a7;
-  v46 = a9;
-  v16 = a10;
+  messageCopy = message;
+  typeCopy = type;
+  destinationCopy = destination;
+  sessionCopy = session;
+  optionsCopy = options;
+  dCopy = d;
+  responseCopy = response;
   v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v18 = [(MRIDSCompanionConnection *)self _generateMessageID];
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v18];
+  _generateMessageID = [(MRIDSCompanionConnection *)self _generateMessageID];
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:_generateMessageID];
   [v17 setObject:v19 forKeyedSubscript:@"messageid"];
 
-  [v17 setObject:v49 forKeyedSubscript:@"destination"];
-  [v17 setObject:v15 forKeyedSubscript:@"session"];
-  [v17 setObject:v47 forKeyedSubscript:@"data"];
-  [v17 setObject:v48 forKeyedSubscript:@"type"];
-  [v17 setObject:v46 forKeyedSubscript:@"replyid"];
+  [v17 setObject:destinationCopy forKeyedSubscript:@"destination"];
+  [v17 setObject:sessionCopy forKeyedSubscript:@"session"];
+  [v17 setObject:messageCopy forKeyedSubscript:@"data"];
+  [v17 setObject:typeCopy forKeyedSubscript:@"type"];
+  [v17 setObject:dCopy forKeyedSubscript:@"replyid"];
   v20 = _MRLogForCategory(9uLL);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    StringRepresentation = MRDataCreateStringRepresentation(v47);
+    StringRepresentation = MRDataCreateStringRepresentation(messageCopy);
     *buf = 134219010;
-    v53 = v18;
+    v53 = _generateMessageID;
     v54 = 2112;
     v55 = StringRepresentation;
     v56 = 2112;
-    v57 = v48;
+    v57 = typeCopy;
     v58 = 2112;
-    v59 = v49;
+    v59 = destinationCopy;
     v60 = 2112;
-    v61 = v15;
+    v61 = sessionCopy;
     _os_log_impl(&dword_1A2860000, v20, OS_LOG_TYPE_DEFAULT, "[MRIDSCompanionConnection] Message Sent<%lu>: data=%@ type=%@ destination=%@ session=%@", buf, 0x34u);
   }
 
-  v22 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v45];
+  v22 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:optionsCopy];
   v23 = *MEMORY[0x1E69A47A0];
   v24 = [v22 objectForKeyedSubscript:*MEMORY[0x1E69A47A0]];
   v25 = v24 == 0;
@@ -366,7 +366,7 @@ void __32__MRIDSCompanionConnection_init__block_invoke_2(uint64_t a1)
     [v22 setObject:v26 forKeyedSubscript:*MEMORY[0x1E69A47D8]];
   }
 
-  [v22 setObject:MEMORY[0x1E695E118] forKeyedSubscript:{*MEMORY[0x1E69A47A8], a8}];
+  [v22 setObject:MEMORY[0x1E695E118] forKeyedSubscript:{*MEMORY[0x1E69A47A8], priority}];
   if (!self->_service)
   {
     v27 = _MRLogForCategory(9uLL);
@@ -376,24 +376,24 @@ void __32__MRIDSCompanionConnection_init__block_invoke_2(uint64_t a1)
     }
   }
 
-  if (v16)
+  if (responseCopy)
   {
-    v28 = self;
-    objc_sync_enter(v28);
-    if (!v28->_responseHandlers)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_responseHandlers)
     {
       v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      responseHandlers = v28->_responseHandlers;
-      v28->_responseHandlers = v29;
+      responseHandlers = selfCopy->_responseHandlers;
+      selfCopy->_responseHandlers = v29;
     }
 
-    v31 = [v16 copy];
+    v31 = [responseCopy copy];
     v32 = MEMORY[0x1A58E3570]();
-    v33 = v28->_responseHandlers;
-    v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v18];
+    v33 = selfCopy->_responseHandlers;
+    v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:_generateMessageID];
     [(NSMutableDictionary *)v33 setObject:v32 forKeyedSubscript:v34];
 
-    objc_sync_exit(v28);
+    objc_sync_exit(selfCopy);
   }
 
   service = self->_service;
@@ -417,136 +417,136 @@ void __32__MRIDSCompanionConnection_init__block_invoke_2(uint64_t a1)
   return v37;
 }
 
-- (void)setMessageHandler:(id)a3 forType:(id)a4
+- (void)setMessageHandler:(id)handler forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  p_messageHandlers = &v8->_messageHandlers;
-  if (!v8->_messageHandlers)
+  handlerCopy = handler;
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_messageHandlers = &selfCopy->_messageHandlers;
+  if (!selfCopy->_messageHandlers)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v11 = *p_messageHandlers;
     *p_messageHandlers = v10;
   }
 
-  v12 = [v6 copy];
+  v12 = [handlerCopy copy];
   v13 = MEMORY[0x1A58E3570]();
-  [*p_messageHandlers setObject:v13 forKeyedSubscript:v7];
+  [*p_messageHandlers setObject:v13 forKeyedSubscript:typeCopy];
 
   v14 = _MRLogForCategory(9uLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [MRIDSCompanionConnection setMessageHandler:v7 forType:&v8->_messageHandlers];
+    [MRIDSCompanionConnection setMessageHandler:typeCopy forType:&selfCopy->_messageHandlers];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setMessageHandler:(id)a3 forType:(id)a4 destination:(id)a5 session:(id)a6
+- (void)setMessageHandler:(id)handler forType:(id)type destination:(id)destination session:(id)session
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  objc_sync_enter(v14);
-  destinationMessageHandlers = v14->_destinationMessageHandlers;
+  handlerCopy = handler;
+  typeCopy = type;
+  destinationCopy = destination;
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  destinationMessageHandlers = selfCopy->_destinationMessageHandlers;
   if (!destinationMessageHandlers)
   {
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v17 = v14->_destinationMessageHandlers;
-    v14->_destinationMessageHandlers = v16;
+    v17 = selfCopy->_destinationMessageHandlers;
+    selfCopy->_destinationMessageHandlers = v16;
 
-    destinationMessageHandlers = v14->_destinationMessageHandlers;
+    destinationMessageHandlers = selfCopy->_destinationMessageHandlers;
   }
 
-  v18 = [(NSMutableDictionary *)destinationMessageHandlers objectForKeyedSubscript:v11];
+  v18 = [(NSMutableDictionary *)destinationMessageHandlers objectForKeyedSubscript:typeCopy];
   if (!v18)
   {
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)v14->_destinationMessageHandlers setObject:v18 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)selfCopy->_destinationMessageHandlers setObject:v18 forKeyedSubscript:typeCopy];
   }
 
-  v19 = [v10 copy];
-  v20 = [(MRIDSCompanionConnection *)v14 _configurationFromDestination:v12 session:v13];
+  v19 = [handlerCopy copy];
+  v20 = [(MRIDSCompanionConnection *)selfCopy _configurationFromDestination:destinationCopy session:sessionCopy];
   [v18 setObject:v19 forKeyedSubscript:v20];
 
   v21 = _MRLogForCategory(9uLL);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v23 = v14->_destinationMessageHandlers;
+    v23 = selfCopy->_destinationMessageHandlers;
     v24 = 138413058;
-    v25 = v11;
+    v25 = typeCopy;
     v26 = 2112;
-    v27 = v12;
+    v27 = destinationCopy;
     v28 = 2112;
-    v29 = v13;
+    v29 = sessionCopy;
     v30 = 2112;
     v31 = v23;
     _os_log_debug_impl(&dword_1A2860000, v21, OS_LOG_TYPE_DEBUG, "[MRIDSCompanionConnection] Added destination handler for type=%@, destination=%@, session=%@, %@", &v24, 0x2Au);
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeMessageHandlerForType:(id)a3
+- (void)removeMessageHandlerForType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_messageHandlers objectForKeyedSubscript:v4];
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_messageHandlers objectForKeyedSubscript:typeCopy];
 
   if (v6)
   {
-    [(NSMutableDictionary *)v5->_messageHandlers setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)selfCopy->_messageHandlers setObject:0 forKeyedSubscript:typeCopy];
     v7 = _MRLogForCategory(9uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(MRIDSCompanionConnection *)v4 removeMessageHandlerForType:?];
+      [(MRIDSCompanionConnection *)typeCopy removeMessageHandlerForType:?];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeMessageHandlerForType:(id)a3 destination:(id)a4 session:(id)a5
+- (void)removeMessageHandlerForType:(id)type destination:(id)destination session:(id)session
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(MRIDSCompanionConnection *)v11 _configurationFromDestination:v9 session:v10];
-  v13 = [(NSMutableDictionary *)v11->_destinationMessageHandlers objectForKeyedSubscript:v8];
+  typeCopy = type;
+  destinationCopy = destination;
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = [(MRIDSCompanionConnection *)selfCopy _configurationFromDestination:destinationCopy session:sessionCopy];
+  v13 = [(NSMutableDictionary *)selfCopy->_destinationMessageHandlers objectForKeyedSubscript:typeCopy];
   v14 = [v13 objectForKeyedSubscript:v12];
 
   if (v14)
   {
-    v15 = [(NSMutableDictionary *)v11->_destinationMessageHandlers objectForKeyedSubscript:v8];
+    v15 = [(NSMutableDictionary *)selfCopy->_destinationMessageHandlers objectForKeyedSubscript:typeCopy];
     [v15 setObject:0 forKeyedSubscript:v12];
 
     v16 = _MRLogForCategory(9uLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      destinationMessageHandlers = v11->_destinationMessageHandlers;
+      destinationMessageHandlers = selfCopy->_destinationMessageHandlers;
       v19 = 138413058;
-      v20 = v8;
+      v20 = typeCopy;
       v21 = 2112;
-      v22 = v9;
+      v22 = destinationCopy;
       v23 = 2112;
-      v24 = v10;
+      v24 = sessionCopy;
       v25 = 2112;
       v26 = destinationMessageHandlers;
       _os_log_debug_impl(&dword_1A2860000, v16, OS_LOG_TYPE_DEBUG, "[MRIDSCompanionConnection] Remove destination handler for type=%@, destination=%@, session=%@, %@", &v19, 0x2Au);
     }
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x1E69E9840];
 }
 
@@ -573,20 +573,20 @@ void __66__MRIDSCompanionConnection_handleDidReceiveResetConnectionRequest__bloc
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v66 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v38 = [v14 objectForKeyedSubscript:@"type"];
-  v40 = [v14 objectForKeyedSubscript:@"destination"];
-  v39 = [v14 objectForKeyedSubscript:@"session"];
-  v42 = [v14 objectForKeyedSubscript:@"data"];
-  v41 = [v14 objectForKeyedSubscript:@"messageid"];
-  v17 = [v14 objectForKeyedSubscript:@"replyid"];
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  v38 = [messageCopy objectForKeyedSubscript:@"type"];
+  v40 = [messageCopy objectForKeyedSubscript:@"destination"];
+  v39 = [messageCopy objectForKeyedSubscript:@"session"];
+  v42 = [messageCopy objectForKeyedSubscript:@"data"];
+  v41 = [messageCopy objectForKeyedSubscript:@"messageid"];
+  v17 = [messageCopy objectForKeyedSubscript:@"replyid"];
   v37 = [[MRIDSCompanionMessage alloc] initWithID:v41 data:v42];
   v18 = _MRLogForCategory(9uLL);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -609,17 +609,17 @@ void __66__MRIDSCompanionConnection_handleDidReceiveResetConnectionRequest__bloc
 
   if (([(IDSDevice *)self->_device isConnected]& 1) != 0)
   {
-    v20 = self;
-    objc_sync_enter(v20);
-    v21 = [(NSMutableDictionary *)v20->_messageHandlers objectForKeyedSubscript:v38];
-    v22 = [(NSMutableDictionary *)v20->_destinationMessageHandlers objectForKeyedSubscript:v38];
-    v23 = [(MRIDSCompanionConnection *)v20 _configurationFromDestination:v40 session:v39];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v21 = [(NSMutableDictionary *)selfCopy->_messageHandlers objectForKeyedSubscript:v38];
+    v22 = [(NSMutableDictionary *)selfCopy->_destinationMessageHandlers objectForKeyedSubscript:v38];
+    v23 = [(MRIDSCompanionConnection *)selfCopy _configurationFromDestination:v40 session:v39];
     v36 = [v22 objectForKeyedSubscript:v23];
 
     if (v17)
     {
-      v24 = [(NSMutableDictionary *)v20->_responseHandlers objectForKeyedSubscript:v17];
-      [(NSMutableDictionary *)v20->_responseHandlers setObject:0 forKeyedSubscript:v17];
+      v24 = [(NSMutableDictionary *)selfCopy->_responseHandlers objectForKeyedSubscript:v17];
+      [(NSMutableDictionary *)selfCopy->_responseHandlers setObject:0 forKeyedSubscript:v17];
     }
 
     else
@@ -627,15 +627,15 @@ void __66__MRIDSCompanionConnection_handleDidReceiveResetConnectionRequest__bloc
       v24 = 0;
     }
 
-    objc_sync_exit(v20);
+    objc_sync_exit(selfCopy);
     if (v24)
     {
       queue = v17;
-      v25 = v16;
-      v26 = v15;
-      v27 = v13;
-      v28 = v12;
-      calloutQueue = v20->_calloutQueue;
+      v25 = contextCopy;
+      v26 = dCopy;
+      v27 = accountCopy;
+      v28 = serviceCopy;
+      calloutQueue = selfCopy->_calloutQueue;
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
       v51[2] = __75__MRIDSCompanionConnection_service_account_incomingMessage_fromID_context___block_invoke;
@@ -651,7 +651,7 @@ void __66__MRIDSCompanionConnection_handleDidReceiveResetConnectionRequest__bloc
     {
       if (v21)
       {
-        queuea = v20->_calloutQueue;
+        queuea = selfCopy->_calloutQueue;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __75__MRIDSCompanionConnection_service_account_incomingMessage_fromID_context___block_invoke_2;
@@ -669,11 +669,11 @@ void __66__MRIDSCompanionConnection_handleDidReceiveResetConnectionRequest__bloc
       }
 
       queue = v17;
-      v25 = v16;
-      v26 = v15;
-      v27 = v13;
-      v28 = v12;
-      calloutQueue = v20->_calloutQueue;
+      v25 = contextCopy;
+      v26 = dCopy;
+      v27 = accountCopy;
+      v28 = serviceCopy;
+      calloutQueue = selfCopy->_calloutQueue;
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __75__MRIDSCompanionConnection_service_account_incomingMessage_fromID_context___block_invoke_3;
@@ -687,10 +687,10 @@ void __66__MRIDSCompanionConnection_handleDidReceiveResetConnectionRequest__bloc
 
     dispatch_async(calloutQueue, v32);
 
-    v12 = v28;
-    v13 = v27;
-    v15 = v26;
-    v16 = v25;
+    serviceCopy = v28;
+    accountCopy = v27;
+    dCopy = v26;
+    contextCopy = v25;
     v17 = queue;
 
 LABEL_16:
@@ -712,12 +712,12 @@ LABEL_17:
 {
   v38 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_idsQueue);
-  v3 = [(IDSService *)self->_service devices];
+  devices = [(IDSService *)self->_service devices];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v25 objects:v37 count:16];
+  v4 = [devices countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v4)
   {
     v5 = v4;
@@ -729,7 +729,7 @@ LABEL_17:
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
@@ -741,7 +741,7 @@ LABEL_17:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v25 objects:v37 count:16];
+      v5 = [devices countByEnumeratingWithState:&v25 objects:v37 count:16];
     }
 
     while (v5);
@@ -752,27 +752,27 @@ LABEL_17:
     v6 = 0;
   }
 
-  v11 = [(MRIDSCompanionConnection *)self device];
-  if (v6 != v11 && ([v6 isEqual:v11] & 1) == 0)
+  device = [(MRIDSCompanionConnection *)self device];
+  if (v6 != device && ([v6 isEqual:device] & 1) == 0)
   {
-    v12 = [v11 name];
+    name = [device name];
 
     v13 = _MRLogForCategory(9uLL);
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    if (name)
     {
       if (v14)
       {
-        v15 = [v11 name];
-        v16 = [v6 name];
+        name2 = [device name];
+        name3 = [v6 name];
         *buf = 138544130;
         v30 = @"MRIDSCompanionConnection";
         v31 = 2114;
         v32 = @"active paired device";
         v33 = 2112;
-        v34 = v15;
+        v34 = name2;
         v35 = 2112;
-        v36 = v16;
+        v36 = name3;
         _os_log_impl(&dword_1A2860000, v13, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ from <%@> to <%@>", buf, 0x2Au);
 
 LABEL_20:
@@ -781,13 +781,13 @@ LABEL_20:
 
     else if (v14)
     {
-      v15 = [v6 name];
+      name2 = [v6 name];
       *buf = 138543874;
       v30 = @"MRIDSCompanionConnection";
       v31 = 2114;
       v32 = @"active paired device";
       v33 = 2112;
-      v34 = v15;
+      v34 = name2;
       _os_log_impl(&dword_1A2860000, v13, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", buf, 0x20u);
       goto LABEL_20;
     }
@@ -806,7 +806,7 @@ LABEL_20:
     v22[2] = __63__MRIDSCompanionConnection__maybeDeviceConnectionStatusChanged__block_invoke;
     v22[3] = &unk_1E769A4A0;
     v23 = v18;
-    v24 = self;
+    selfCopy = self;
     v20 = v18;
     dispatch_async(calloutQueue, v22);
   }
@@ -820,16 +820,16 @@ void __63__MRIDSCompanionConnection__maybeDeviceConnectionStatusChanged__block_i
   [v2 postNotificationName:*(a1 + 32) object:*(a1 + 40)];
 }
 
-- (id)_configurationFromDestination:(id)a3 session:(id)a4
+- (id)_configurationFromDestination:(id)destination session:(id)session
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
+  sessionCopy = session;
+  destinationCopy = destination;
   v8 = [v5 alloc];
   v9 = @"default";
-  if (v7)
+  if (destinationCopy)
   {
-    v10 = v7;
+    v10 = destinationCopy;
   }
 
   else
@@ -837,9 +837,9 @@ void __63__MRIDSCompanionConnection__maybeDeviceConnectionStatusChanged__block_i
     v10 = @"default";
   }
 
-  if (v6)
+  if (sessionCopy)
   {
-    v9 = v6;
+    v9 = sessionCopy;
   }
 
   v11 = [v8 initWithFormat:@"%@-%@", v10, v9];

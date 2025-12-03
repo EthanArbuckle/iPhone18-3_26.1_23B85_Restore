@@ -1,23 +1,23 @@
 @interface SSSpringBoardUtility
-+ (BOOL)_getProcessID:(int *)a3 forApplicationIdentifier:(id)a4;
-+ (BOOL)launchApplicationWithIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
++ (BOOL)_getProcessID:(int *)d forApplicationIdentifier:(id)identifier;
++ (BOOL)launchApplicationWithIdentifier:(id)identifier options:(id)options error:(id *)error;
 + (id)_applicationStateMonitor;
 + (id)_dispatchQueue;
 + (id)_dispatchQueueNotifications;
 + (id)_dispatchQueueSpringBoard;
-+ (id)_getApplicationInfoForIdentifier:(id)a3 key:(id)a4;
++ (id)_getApplicationInfoForIdentifier:(id)identifier key:(id)key;
 + (id)_stateCache;
-+ (void)_setApplicationState:(unsigned int)a3 forClientID:(id)a4;
-+ (void)wakeAppUsingRequest:(id)a3;
++ (void)_setApplicationState:(unsigned int)state forClientID:(id)d;
++ (void)wakeAppUsingRequest:(id)request;
 @end
 
 @implementation SSSpringBoardUtility
 
-+ (BOOL)launchApplicationWithIdentifier:(id)a3 options:(id)a4 error:(id *)a5
++ (BOOL)launchApplicationWithIdentifier:(id)identifier options:(id)options error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -34,7 +34,7 @@
   v41 = &v42;
   v12 = v9;
   v40 = v12;
-  [v11 openApplication:v7 options:v8 withResult:&v36];
+  [v11 openApplication:identifierCopy options:optionsCopy withResult:&v36];
 
   v13 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(v12, v13))
@@ -45,27 +45,27 @@
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
-    v16 = [v14 shouldLogToDisk];
-    v17 = [v14 OSLogObject];
-    v18 = v17;
-    if (v16)
+    shouldLog = [v14 shouldLog];
+    shouldLogToDisk = [v14 shouldLogToDisk];
+    oSLogObject = [v14 OSLogObject];
+    v18 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v15 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v15 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v15)
+    if (shouldLog)
     {
       v19 = objc_opt_class();
       v48 = 138543618;
       v49 = v19;
       v50 = 2114;
-      v51 = v7;
+      v51 = identifierCopy;
       v20 = v19;
       LODWORD(v35) = 22;
       v21 = _os_log_send_and_compose_impl();
@@ -88,19 +88,19 @@ LABEL_12:
 LABEL_13:
   v28 = SSVFrontBoardServicesFramework();
   v29 = SSVWeakLinkedStringConstantForString("FBSOpenApplicationErrorDomain", v28);
-  v30 = [v43[5] domain];
-  v31 = [v30 isEqualToString:v29];
+  domain = [v43[5] domain];
+  v31 = [domain isEqualToString:v29];
 
-  v32 = v43[5];
+  code = v43[5];
   if (v31)
   {
-    v32 = [v32 code];
+    code = [code code];
   }
 
-  v33 = v32 == 0;
-  if (a5 && v32)
+  v33 = code == 0;
+  if (error && code)
   {
-    *a5 = v43[5];
+    *error = v43[5];
   }
 
   _Block_object_dispose(&v42, 8);
@@ -114,18 +114,18 @@ void __70__SSSpringBoardUtility_launchApplicationWithIdentifier_options_error___
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)wakeAppUsingRequest:(id)a3
++ (void)wakeAppUsingRequest:(id)request
 {
-  v4 = a3;
-  v5 = [a1 _dispatchQueueSpringBoard];
+  requestCopy = request;
+  _dispatchQueueSpringBoard = [self _dispatchQueueSpringBoard];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__SSSpringBoardUtility_wakeAppUsingRequest___block_invoke;
   v7[3] = &unk_1E84ADDB8;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
+  dispatch_async(_dispatchQueueSpringBoard, v7);
 }
 
 void __44__SSSpringBoardUtility_wakeAppUsingRequest___block_invoke(uint64_t a1)
@@ -474,14 +474,14 @@ LABEL_11:
 
 + (id)_applicationStateMonitor
 {
-  v3 = [a1 _dispatchQueueSpringBoard];
-  dispatch_assert_queue_V2(v3);
+  _dispatchQueueSpringBoard = [self _dispatchQueueSpringBoard];
+  dispatch_assert_queue_V2(_dispatchQueueSpringBoard);
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__SSSpringBoardUtility__applicationStateMonitor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_applicationStateMonitor_onceToken != -1)
   {
     dispatch_once(&_applicationStateMonitor_onceToken, block);
@@ -578,13 +578,13 @@ void __49__SSSpringBoardUtility__dispatchQueueSpringBoard__block_invoke()
   _dispatchQueueSpringBoard_sDispatchQueueSpringBoard = v0;
 }
 
-+ (id)_getApplicationInfoForIdentifier:(id)a3 key:(id)a4
++ (id)_getApplicationInfoForIdentifier:(id)identifier key:(id)key
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _dispatchQueueSpringBoard];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  keyCopy = key;
+  _dispatchQueueSpringBoard = [self _dispatchQueueSpringBoard];
+  dispatch_assert_queue_V2(_dispatchQueueSpringBoard);
 
   v35 = 0;
   v36 = &v35;
@@ -592,18 +592,18 @@ void __49__SSSpringBoardUtility__dispatchQueueSpringBoard__block_invoke()
   v38 = __Block_byref_object_copy__17;
   v39 = __Block_byref_object_dispose__17;
   v40 = 0;
-  v9 = [a1 _applicationStateMonitor];
+  _applicationStateMonitor = [self _applicationStateMonitor];
   v10 = dispatch_semaphore_create(0);
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __61__SSSpringBoardUtility__getApplicationInfoForIdentifier_key___block_invoke;
   v31[3] = &unk_1E84AE590;
   v34 = &v35;
-  v11 = v7;
+  v11 = keyCopy;
   v32 = v11;
   v12 = v10;
   v33 = v12;
-  [v9 applicationInfoForApplication:v6 completion:v31];
+  [_applicationStateMonitor applicationInfoForApplication:identifierCopy completion:v31];
   v13 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(v12, v13))
   {
@@ -613,27 +613,27 @@ void __49__SSSpringBoardUtility__dispatchQueueSpringBoard__block_invoke()
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
-    v16 = [v14 shouldLogToDisk];
-    v17 = [v14 OSLogObject];
-    v18 = v17;
-    if (v16)
+    shouldLog = [v14 shouldLog];
+    shouldLogToDisk = [v14 shouldLogToDisk];
+    oSLogObject = [v14 OSLogObject];
+    v18 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v15 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v15 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v15)
+    if (shouldLog)
     {
       v19 = objc_opt_class();
       v41 = 138412802;
       v42 = v19;
       v43 = 2114;
-      v44 = v6;
+      v44 = identifierCopy;
       v45 = 2114;
       v46 = v11;
       v20 = v19;
@@ -678,40 +678,40 @@ void __61__SSSpringBoardUtility__getApplicationInfoForIdentifier_key___block_inv
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-+ (BOOL)_getProcessID:(int *)a3 forApplicationIdentifier:(id)a4
++ (BOOL)_getProcessID:(int *)d forApplicationIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a1 _dispatchQueueSpringBoard];
-  dispatch_assert_queue_V2(v7);
+  identifierCopy = identifier;
+  _dispatchQueueSpringBoard = [self _dispatchQueueSpringBoard];
+  dispatch_assert_queue_V2(_dispatchQueueSpringBoard);
 
-  v8 = [a1 _getApplicationInfoForIdentifier:v6 key:*MEMORY[0x1E698D018]];
+  v8 = [self _getApplicationInfoForIdentifier:identifierCopy key:*MEMORY[0x1E698D018]];
 
   v9 = objc_opt_respondsToSelector();
   v10 = v9;
-  if (a3 && (v9 & 1) != 0)
+  if (d && (v9 & 1) != 0)
   {
-    *a3 = [v8 intValue];
+    *d = [v8 intValue];
   }
 
   return v10 & 1;
 }
 
-+ (void)_setApplicationState:(unsigned int)a3 forClientID:(id)a4
++ (void)_setApplicationState:(unsigned int)state forClientID:(id)d
 {
-  v6 = a4;
-  v7 = [a1 _dispatchQueueSpringBoard];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  _dispatchQueueSpringBoard = [self _dispatchQueueSpringBoard];
+  dispatch_assert_queue_V2(_dispatchQueueSpringBoard);
 
-  v8 = [a1 _dispatchQueue];
+  _dispatchQueue = [self _dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__SSSpringBoardUtility__setApplicationState_forClientID___block_invoke;
   block[3] = &unk_1E84AE5B8;
-  v13 = a3;
-  v11 = v6;
-  v12 = a1;
-  v9 = v6;
-  dispatch_async(v8, block);
+  stateCopy = state;
+  v11 = dCopy;
+  selfCopy = self;
+  v9 = dCopy;
+  dispatch_async(_dispatchQueue, block);
 }
 
 void __57__SSSpringBoardUtility__setApplicationState_forClientID___block_invoke(uint64_t a1)

@@ -7,13 +7,13 @@
 
 - (id)sbh_appDragLocalContext
 {
-  v2 = [a1 localObject];
+  localObject = [self localObject];
   v3 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = v2;
+    v5 = localObject;
     if (v5)
     {
       goto LABEL_11;
@@ -22,7 +22,7 @@
 
   else
   {
-    v6 = objc_getAssociatedObject(a1, "com.apple.springboard.appDragLocalContext");
+    v6 = objc_getAssociatedObject(self, "com.apple.springboard.appDragLocalContext");
     v7 = objc_opt_self();
     v8 = objc_opt_isKindOfClass();
 
@@ -42,10 +42,10 @@
     }
   }
 
-  v5 = [SBIconView dragContextForDragItem:a1];
-  if (v5 && !v2)
+  v5 = [SBIconView dragContextForDragItem:self];
+  if (v5 && !localObject)
   {
-    [a1 sbh_setAppDragLocalContext:v5];
+    [self sbh_setAppDragLocalContext:v5];
   }
 
 LABEL_11:
@@ -56,8 +56,8 @@ LABEL_11:
 - (void)sbh_setAppDragLocalContext:()SBHIconDragUtilities
 {
   value = a3;
-  [a1 setLocalObject:value];
-  objc_setAssociatedObject(a1, "com.apple.springboard.appDragLocalContext", value, 1);
+  [self setLocalObject:value];
+  objc_setAssociatedObject(self, "com.apple.springboard.appDragLocalContext", value, 1);
 }
 
 @end

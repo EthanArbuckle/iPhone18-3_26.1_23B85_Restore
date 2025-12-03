@@ -1,8 +1,8 @@
 @interface T1TPDUBlock
-+ (BOOL)checkRedundacyCode:(id)a3 redundacyCode:(char)a4;
++ (BOOL)checkRedundacyCode:(id)code redundacyCode:(char)redundacyCode;
 - (NSData)informationField;
 - (NSNumber)redundancyCode;
-- (T1TPDUBlock)initWithData:(id)a3 needAck:(BOOL)a4;
+- (T1TPDUBlock)initWithData:(id)data needAck:(BOOL)ack;
 - (char)blockType;
 - (char)redundancyCodeType;
 - (id)blockSequenceStr;
@@ -15,17 +15,17 @@
 
 @implementation T1TPDUBlock
 
-- (T1TPDUBlock)initWithData:(id)a3 needAck:(BOOL)a4
+- (T1TPDUBlock)initWithData:(id)data needAck:(BOOL)ack
 {
-  v7 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = T1TPDUBlock;
   v8 = [(T1TPDUBlock *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_data, a3);
-    v9->_needAck = a4;
+    objc_storeStrong(&v8->_data, data);
+    v9->_needAck = ack;
   }
 
   return v9;
@@ -33,14 +33,14 @@
 
 - (id)blockTypeStr
 {
-  v2 = [(T1TPDUBlock *)self blockType];
+  blockType = [(T1TPDUBlock *)self blockType];
   v3 = @"I-Block";
-  if (v2 == 1)
+  if (blockType == 1)
   {
     v3 = @"R-Block";
   }
 
-  if (v2 == 2)
+  if (blockType == 2)
   {
     return @"S-Block";
   }
@@ -53,14 +53,14 @@
 
 - (id)blockSequenceStr
 {
-  v2 = [(T1TPDUBlock *)self sequence];
+  sequence = [(T1TPDUBlock *)self sequence];
   v3 = @"Even";
-  if (v2 == 1)
+  if (sequence == 1)
   {
     v3 = @"Odd";
   }
 
-  if (v2 == 2)
+  if (sequence == 2)
   {
     return @"None";
   }
@@ -79,47 +79,47 @@
   [v3 appendFormat:@"len: 0x%.2x ", -[T1TPDUBlock lengthByte](self, "lengthByte")];
   if ([(T1TPDUBlock *)self lengthByte])
   {
-    v4 = [(T1TPDUBlock *)self informationField];
-    [v3 appendFormat:@"infField: %@ ", v4];
+    informationField = [(T1TPDUBlock *)self informationField];
+    [v3 appendFormat:@"infField: %@ ", informationField];
   }
 
-  v5 = [(T1TPDUBlock *)self redundancyCodeType];
-  v6 = [(T1TPDUBlock *)self redundancyCode];
-  v7 = v6;
-  if (v5)
+  redundancyCodeType = [(T1TPDUBlock *)self redundancyCodeType];
+  redundancyCode = [(T1TPDUBlock *)self redundancyCode];
+  v7 = redundancyCode;
+  if (redundancyCodeType)
   {
-    [v3 appendFormat:@"crc: 0x%.4x ", objc_msgSend(v6, "unsignedShortValue")];
+    [v3 appendFormat:@"crc: 0x%.4x ", objc_msgSend(redundancyCode, "unsignedShortValue")];
   }
 
   else
   {
-    [v3 appendFormat:@"lrc: 0x%.2x ", objc_msgSend(v6, "unsignedCharValue")];
+    [v3 appendFormat:@"lrc: 0x%.2x ", objc_msgSend(redundancyCode, "unsignedCharValue")];
   }
 
-  v8 = [(T1TPDUBlock *)self blockTypeStr];
-  [v3 appendFormat:@"blockType: %@ ", v8];
+  blockTypeStr = [(T1TPDUBlock *)self blockTypeStr];
+  [v3 appendFormat:@"blockType: %@ ", blockTypeStr];
 
-  v9 = [(T1TPDUBlock *)self blockSequenceStr];
-  [v3 appendFormat:@"seq: %@ ", v9];
+  blockSequenceStr = [(T1TPDUBlock *)self blockSequenceStr];
+  [v3 appendFormat:@"seq: %@ ", blockSequenceStr];
 
   return v3;
 }
 
-+ (BOOL)checkRedundacyCode:(id)a3 redundacyCode:(char)a4
++ (BOOL)checkRedundacyCode:(id)code redundacyCode:(char)redundacyCode
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  redundacyCodeCopy = redundacyCode;
+  codeCopy = code;
+  v6 = codeCopy;
+  if (redundacyCodeCopy)
   {
     v15 = 0;
-    [v5 getBytes:&v15 range:{objc_msgSend(v5, "length") - 1, 1}];
+    [codeCopy getBytes:&v15 range:{objc_msgSend(codeCopy, "length") - 1, 1}];
     v7 = v15;
     v8 = [v6 subdataWithRange:{0, objc_msgSend(v6, "length") - 1}];
     v9 = [RedundancyCheck crc16:v8]== v7;
   }
 
-  else if ([v5 length])
+  else if ([codeCopy length])
   {
     v10 = 0;
     v11 = 0;
@@ -145,24 +145,24 @@
 
 - (unsigned)nodeAddressByte
 {
-  v2 = [(T1TPDUBlock *)self data];
-  v3 = *[v2 bytes];
+  data = [(T1TPDUBlock *)self data];
+  v3 = *[data bytes];
 
   return v3;
 }
 
 - (unsigned)protocolControlByte
 {
-  v2 = [(T1TPDUBlock *)self data];
-  v3 = *([v2 bytes] + 1);
+  data = [(T1TPDUBlock *)self data];
+  v3 = *([data bytes] + 1);
 
   return v3;
 }
 
 - (unsigned)lengthByte
 {
-  v2 = [(T1TPDUBlock *)self data];
-  v3 = *([v2 bytes] + 2);
+  data = [(T1TPDUBlock *)self data];
+  v3 = *([data bytes] + 2);
 
   return v3;
 }
@@ -176,8 +176,8 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v3 = [(T1TPDUBlock *)self data];
-  v4 = [v3 length];
+  data = [(T1TPDUBlock *)self data];
+  v4 = [data length];
   v5 = [(T1TPDUBlock *)self lengthByte]+ 3;
 
   if (v4 < v5)
@@ -191,8 +191,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v8 = [(T1TPDUBlock *)self data];
-  v7 = [v8 subdataWithRange:{3, -[T1TPDUBlock lengthByte](self, "lengthByte")}];
+  data2 = [(T1TPDUBlock *)self data];
+  v7 = [data2 subdataWithRange:{3, -[T1TPDUBlock lengthByte](self, "lengthByte")}];
 
 LABEL_8:
 
@@ -201,16 +201,16 @@ LABEL_8:
 
 - (NSNumber)redundancyCode
 {
-  v3 = [(T1TPDUBlock *)self data];
-  v4 = [v3 length];
+  data = [(T1TPDUBlock *)self data];
+  v4 = [data length];
   v5 = &v4[[(T1TPDUBlock *)self]];
 
   if (v5 == 4)
   {
-    v6 = [(T1TPDUBlock *)self data];
-    v7 = [v6 bytes];
-    v8 = [(T1TPDUBlock *)self data];
-    v9 = *([v8 length] + v7 - 1);
+    data2 = [(T1TPDUBlock *)self data];
+    bytes = [data2 bytes];
+    data3 = [(T1TPDUBlock *)self data];
+    v9 = *([data3 length] + bytes - 1);
 
     v10 = [NSNumber numberWithUnsignedChar:v9];
   }
@@ -218,9 +218,9 @@ LABEL_8:
   else
   {
     v14 = 0;
-    v11 = [(T1TPDUBlock *)self data];
-    v12 = [(T1TPDUBlock *)self data];
-    [v11 getBytes:&v14 range:{objc_msgSend(v12, "length") - 2, 2}];
+    data4 = [(T1TPDUBlock *)self data];
+    data5 = [(T1TPDUBlock *)self data];
+    [data4 getBytes:&v14 range:{objc_msgSend(data5, "length") - 2, 2}];
 
     v10 = [NSNumber numberWithUnsignedShort:v14];
   }
@@ -245,12 +245,12 @@ LABEL_8:
 
 - (char)redundancyCodeType
 {
-  v2 = self;
-  v3 = [(T1TPDUBlock *)self data];
-  v4 = [v3 length];
-  LOBYTE(v2) = &v4[[(T1TPDUBlock *)v2]] != 4;
+  selfCopy = self;
+  data = [(T1TPDUBlock *)self data];
+  v4 = [data length];
+  LOBYTE(selfCopy) = &v4[[(T1TPDUBlock *)selfCopy]] != 4;
 
-  return v2;
+  return selfCopy;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface OrgApacheLuceneIndexStandardDirectoryReader
 - (BOOL)isCurrent;
 - (id)description;
-- (id)doOpenIfChangedWithOrgApacheLuceneIndexIndexCommit:(id)a3;
-- (id)doOpenIfChangedWithOrgApacheLuceneIndexSegmentInfos:(id)a3;
+- (id)doOpenIfChangedWithOrgApacheLuceneIndexIndexCommit:(id)commit;
+- (id)doOpenIfChangedWithOrgApacheLuceneIndexSegmentInfos:(id)infos;
 - (id)getIndexCommit;
 - (int64_t)getVersion;
 - (void)dealloc;
@@ -22,10 +22,10 @@
     goto LABEL_17;
   }
 
-  v5 = [(OrgApacheLuceneIndexSegmentInfos *)segmentInfos getSegmentsFileName];
-  if (v5)
+  getSegmentsFileName = [(OrgApacheLuceneIndexSegmentInfos *)segmentInfos getSegmentsFileName];
+  if (getSegmentsFileName)
   {
-    v6 = [(JavaLangStringBuilder *)v3 appendWithNSString:v5];
+    v6 = [(JavaLangStringBuilder *)v3 appendWithNSString:getSegmentsFileName];
     if (!v6)
     {
       goto LABEL_17;
@@ -49,15 +49,15 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(OrgApacheLuceneIndexBaseCompositeReader *)self getSequentialSubReaders];
-  if (!v8)
+  getSequentialSubReaders = [(OrgApacheLuceneIndexBaseCompositeReader *)self getSequentialSubReaders];
+  if (!getSequentialSubReaders)
   {
 LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v9 = v8;
-  v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v9 = getSequentialSubReaders;
+  v10 = [getSequentialSubReaders countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -89,37 +89,37 @@ LABEL_17:
   return [(JavaLangStringBuilder *)v3 description];
 }
 
-- (id)doOpenIfChangedWithOrgApacheLuceneIndexIndexCommit:(id)a3
+- (id)doOpenIfChangedWithOrgApacheLuceneIndexIndexCommit:(id)commit
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   if (self->writer_)
   {
 
-    return sub_10010FF54(self, a3);
+    return sub_10010FF54(self, commit);
   }
 
   else
   {
 
-    return sub_10011001C(self, a3);
+    return sub_10011001C(self, commit);
   }
 }
 
-- (id)doOpenIfChangedWithOrgApacheLuceneIndexSegmentInfos:(id)a3
+- (id)doOpenIfChangedWithOrgApacheLuceneIndexSegmentInfos:(id)infos
 {
   directory = self->super.directory_;
-  v5 = [(OrgApacheLuceneIndexBaseCompositeReader *)self getSequentialSubReaders];
+  getSequentialSubReaders = [(OrgApacheLuceneIndexBaseCompositeReader *)self getSequentialSubReaders];
   v6 = new_JavaUtilHashMap_init();
-  if (v5)
+  if (getSequentialSubReaders)
   {
-    v7 = [v5 size];
+    v7 = [getSequentialSubReaders size];
     if (v7 >= 1)
     {
       v8 = v7;
       v9 = 0;
       while (1)
       {
-        v10 = [v5 getWithInt:v9];
+        v10 = [getSequentialSubReaders getWithInt:v9];
         objc_opt_class();
         if (!v10)
         {
@@ -146,19 +146,19 @@ LABEL_46:
   }
 
 LABEL_7:
-  if (!a3)
+  if (!infos)
   {
     goto LABEL_46;
   }
 
-  v47 = +[IOSObjectArray arrayWithLength:type:](IOSObjectArray, "arrayWithLength:type:", [a3 size], OrgApacheLuceneIndexSegmentReader_class_());
-  v11 = [a3 size];
+  v47 = +[IOSObjectArray arrayWithLength:type:](IOSObjectArray, "arrayWithLength:type:", [infos size], OrgApacheLuceneIndexSegmentReader_class_());
+  v11 = [infos size];
   v12 = v11 - 1;
   if ((v11 - 1) >= 0)
   {
     do
     {
-      v13 = [a3 infoWithInt:v12];
+      v13 = [infos infoWithInt:v12];
       if (!v13)
       {
         goto LABEL_46;
@@ -177,12 +177,12 @@ LABEL_7:
         goto LABEL_17;
       }
 
-      if (!v5)
+      if (!getSequentialSubReaders)
       {
         goto LABEL_46;
       }
 
-      v17 = [v5 getWithInt:{objc_msgSend(v16, "intValue")}];
+      v17 = [getSequentialSubReaders getWithInt:{objc_msgSend(v16, "intValue")}];
       objc_opt_class();
       if (!v17)
       {
@@ -194,36 +194,36 @@ LABEL_7:
         goto LABEL_47;
       }
 
-      v18 = [v14[1] getUseCompoundFile];
-      v19 = [v17 getSegmentInfo];
-      if (!v19)
+      getUseCompoundFile = [v14[1] getUseCompoundFile];
+      getSegmentInfo = [v17 getSegmentInfo];
+      if (!getSegmentInfo)
       {
 LABEL_48:
         JreThrowNullPointerException();
       }
 
-      if (v18 == [v19[1] getUseCompoundFile])
+      if (getUseCompoundFile == [getSegmentInfo[1] getUseCompoundFile])
       {
-        v22 = [v17 getSegmentInfo];
-        if (!v22)
+        getSegmentInfo2 = [v17 getSegmentInfo];
+        if (!getSegmentInfo2)
         {
           goto LABEL_48;
         }
 
-        v23 = [v22 getDelGen];
-        if (v23 != [v14 getDelGen])
+        getDelGen = [getSegmentInfo2 getDelGen];
+        if (getDelGen != [v14 getDelGen])
         {
           goto LABEL_28;
         }
 
-        v24 = [v17 getSegmentInfo];
-        if (!v24)
+        getSegmentInfo3 = [v17 getSegmentInfo];
+        if (!getSegmentInfo3)
         {
           goto LABEL_48;
         }
 
-        v25 = [v24 getFieldInfosGen];
-        if (v25 == [v14 getFieldInfosGen])
+        getFieldInfosGen = [getSegmentInfo3 getFieldInfosGen];
+        if (getFieldInfosGen == [v14 getFieldInfosGen])
         {
           [v17 incRef];
           IOSObjectArray_Set(v47, v12, v17);
@@ -232,14 +232,14 @@ LABEL_48:
         else
         {
 LABEL_28:
-          v26 = [v14[1] maxDoc];
-          v27 = [v17 getSegmentInfo];
-          if (!v27)
+          maxDoc = [v14[1] maxDoc];
+          getSegmentInfo4 = [v17 getSegmentInfo];
+          if (!getSegmentInfo4)
           {
             JreThrowNullPointerException();
           }
 
-          v28 = [v27[1] maxDoc];
+          maxDoc2 = [getSegmentInfo4[1] maxDoc];
           if ([v14 hasDeletions])
           {
             LOBYTE(v29) = 0;
@@ -252,13 +252,13 @@ LABEL_28:
 
           if ([v14 getDelGen] == -1)
           {
-            v38 = [v17 getSegmentInfo];
-            if (!v38)
+            getSegmentInfo5 = [v17 getSegmentInfo];
+            if (!getSegmentInfo5)
             {
               goto LABEL_49;
             }
 
-            v37 = [v38 getDelGen] != -1;
+            v37 = [getSegmentInfo5 getDelGen] != -1;
           }
 
           else
@@ -266,7 +266,7 @@ LABEL_28:
             v37 = 0;
           }
 
-          if ((v26 != v28) | v29 & 1 || v37)
+          if ((maxDoc != maxDoc2) | v29 & 1 || v37)
           {
             v46 = *(v14[1] + 1);
             v44 = JreStrcat("$$$", v30, v31, v32, v33, v34, v35, v36, @"same segment ");
@@ -274,15 +274,15 @@ LABEL_28:
             objc_exception_throw(v45);
           }
 
-          v39 = [v17 getSegmentInfo];
-          if (!v39)
+          getSegmentInfo6 = [v17 getSegmentInfo];
+          if (!getSegmentInfo6)
           {
 LABEL_49:
             JreThrowNullPointerException();
           }
 
-          v40 = [v39 getDelGen];
-          if (v40 == [v14 getDelGen])
+          getDelGen2 = [getSegmentInfo6 getDelGen];
+          if (getDelGen2 == [v14 getDelGen])
           {
             v41 = new_OrgApacheLuceneIndexSegmentReader_initWithOrgApacheLuceneIndexSegmentCommitInfo_withOrgApacheLuceneIndexSegmentReader_withOrgApacheLuceneUtilBits_withInt_(v14, v17, [v17 getLiveDocs], objc_msgSend(v17, "numDocs"));
           }
@@ -313,7 +313,7 @@ LABEL_17:
   }
 
   v42 = [OrgApacheLuceneIndexStandardDirectoryReader alloc];
-  OrgApacheLuceneIndexStandardDirectoryReader_initWithOrgApacheLuceneStoreDirectory_withOrgApacheLuceneIndexLeafReaderArray_withOrgApacheLuceneIndexIndexWriter_withOrgApacheLuceneIndexSegmentInfos_withBoolean_(v42, directory, v47, 0, a3, 0);
+  OrgApacheLuceneIndexStandardDirectoryReader_initWithOrgApacheLuceneStoreDirectory_withOrgApacheLuceneIndexLeafReaderArray_withOrgApacheLuceneIndexIndexWriter_withOrgApacheLuceneIndexSegmentInfos_withBoolean_(v42, directory, v47, 0, infos, 0);
 
   return v42;
 }
@@ -360,14 +360,14 @@ LABEL_17:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(OrgApacheLuceneIndexBaseCompositeReader *)self getSequentialSubReaders];
-  if (!v3)
+  getSequentialSubReaders = [(OrgApacheLuceneIndexBaseCompositeReader *)self getSequentialSubReaders];
+  if (!getSequentialSubReaders)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = v3;
-  v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = getSequentialSubReaders;
+  v5 = [getSequentialSubReaders countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;

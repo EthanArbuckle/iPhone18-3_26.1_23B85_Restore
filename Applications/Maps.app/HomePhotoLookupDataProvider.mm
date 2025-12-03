@@ -1,14 +1,14 @@
 @interface HomePhotoLookupDataProvider
 - (GEOObserverHashTable)observers;
-- (HomePhotoLookupDataProvider)initWithSuggestionsDataProvider:(id)a3;
-- (id)_lookupKeyForEntry:(id)a3;
-- (int64_t)resultForSuggestionsEntry:(id)a3;
+- (HomePhotoLookupDataProvider)initWithSuggestionsDataProvider:(id)provider;
+- (id)_lookupKeyForEntry:(id)entry;
+- (int64_t)resultForSuggestionsEntry:(id)entry;
 - (void)_performLookups;
 - (void)_pruneOldResults;
-- (void)_setResult:(id)a3 forEntry:(id)a4;
-- (void)_startLookupForEntry:(id)a3;
-- (void)_updateResults:(id)a3 notifyObservers:(BOOL)a4;
-- (void)setActive:(BOOL)a3;
+- (void)_setResult:(id)result forEntry:(id)entry;
+- (void)_startLookupForEntry:(id)entry;
+- (void)_updateResults:(id)results notifyObservers:(BOOL)observers;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation HomePhotoLookupDataProvider
@@ -17,13 +17,13 @@
 {
   if (self->_active)
   {
-    v3 = [(SuggestionsDataProvider *)self->_suggestionsDataProvider suggestions];
+    suggestions = [(SuggestionsDataProvider *)self->_suggestionsDataProvider suggestions];
     v4 = +[NSMutableDictionary dictionary];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = v3;
+    v5 = suggestions;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
@@ -52,11 +52,11 @@
       while (v7);
     }
 
-    v12 = [(NSDictionary *)self->_ratingRequestSuggestions allKeys];
-    v13 = [NSSet setWithArray:v12];
+    allKeys = [(NSDictionary *)self->_ratingRequestSuggestions allKeys];
+    v13 = [NSSet setWithArray:allKeys];
 
-    v14 = [v4 allKeys];
-    v15 = [NSSet setWithArray:v14];
+    allKeys2 = [v4 allKeys];
+    v15 = [NSSet setWithArray:allKeys2];
 
     if (v13 != v15 && ([v13 isEqual:v15] & 1) == 0)
     {
@@ -90,15 +90,15 @@
   return observers;
 }
 
-- (void)_updateResults:(id)a3 notifyObservers:(BOOL)a4
+- (void)_updateResults:(id)results notifyObservers:(BOOL)observers
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (self->_results != v6)
+  observersCopy = observers;
+  resultsCopy = results;
+  v7 = resultsCopy;
+  if (self->_results != resultsCopy)
   {
-    v11 = v6;
-    v8 = [(NSDictionary *)v6 isEqual:?];
+    v11 = resultsCopy;
+    v8 = [(NSDictionary *)resultsCopy isEqual:?];
     v7 = v11;
     if ((v8 & 1) == 0)
     {
@@ -107,7 +107,7 @@
       self->_results = v9;
 
       v7 = v11;
-      if (self->_active && v4)
+      if (self->_active && observersCopy)
       {
         [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
         v7 = v11;
@@ -118,11 +118,11 @@
 
 - (void)_pruneOldResults
 {
-  v3 = [(NSDictionary *)self->_results allKeys];
-  v4 = [NSMutableSet setWithArray:v3];
+  allKeys = [(NSDictionary *)self->_results allKeys];
+  v4 = [NSMutableSet setWithArray:allKeys];
 
-  v5 = [(NSDictionary *)self->_ratingRequestSuggestions allKeys];
-  v6 = [NSSet setWithArray:v5];
+  allKeys2 = [(NSDictionary *)self->_ratingRequestSuggestions allKeys];
+  v6 = [NSSet setWithArray:allKeys2];
   [v4 minusSet:v6];
 
   if ([v4 count])
@@ -165,10 +165,10 @@
   }
 }
 
-- (void)_setResult:(id)a3 forEntry:(id)a4
+- (void)_setResult:(id)result forEntry:(id)entry
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  entryCopy = entry;
   v9 = sub_1000410AC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -180,13 +180,13 @@
     v19 = 2112;
     v20 = v12;
     v21 = 2112;
-    v22 = v7;
+    v22 = resultCopy;
     v23 = 2112;
-    v24 = v8;
+    v24 = entryCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ %@, result = %@, entry = %@", &v17, 0x2Au);
   }
 
-  v13 = [(HomePhotoLookupDataProvider *)self _lookupKeyForEntry:v8];
+  v13 = [(HomePhotoLookupDataProvider *)self _lookupKeyForEntry:entryCopy];
   if (v13)
   {
     if ([(NSMutableSet *)self->_inProgressLookups containsObject:v13])
@@ -201,7 +201,7 @@
         if (v15)
         {
           v16 = [NSMutableDictionary dictionaryWithDictionary:self->_results];
-          [v16 setObject:v7 forKeyedSubscript:v13];
+          [v16 setObject:resultCopy forKeyedSubscript:v13];
           [(HomePhotoLookupDataProvider *)self _updateResults:v16 notifyObservers:1];
         }
       }
@@ -209,9 +209,9 @@
   }
 }
 
-- (void)_startLookupForEntry:(id)a3
+- (void)_startLookupForEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -223,11 +223,11 @@
     v29 = 2112;
     v30 = v9;
     v31 = 2112;
-    v32 = v5;
+    v32 = entryCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ %@%@", buf, 0x20u);
   }
 
-  v10 = [(HomePhotoLookupDataProvider *)self _lookupKeyForEntry:v5];
+  v10 = [(HomePhotoLookupDataProvider *)self _lookupKeyForEntry:entryCopy];
   if (v10)
   {
     if (([(NSMutableSet *)self->_inProgressLookups containsObject:v10]& 1) == 0)
@@ -244,22 +244,22 @@
         v24[2] = sub_1008D1860;
         v24[3] = &unk_10162DA80;
         objc_copyWeak(&v26, buf);
-        v13 = v5;
+        v13 = entryCopy;
         v25 = v13;
         v14 = objc_retainBlock(v24);
-        v15 = [v13 MKMapItem];
-        if (v15)
+        mKMapItem = [v13 MKMapItem];
+        if (mKMapItem)
         {
           v16 = MapsSuggestionsResourceDepotForMapsProcess();
-          v17 = [v16 oneUser];
-          v18 = [v15 _geoMapItem];
+          oneUser = [v16 oneUser];
+          _geoMapItem = [mKMapItem _geoMapItem];
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = sub_1008D192C;
           v21[3] = &unk_10162DAA8;
           v23 = v14;
-          v22 = v15;
-          [v17 hasVisitedMapItem:v18 handler:v21];
+          v22 = mKMapItem;
+          [oneUser hasVisitedMapItem:_geoMapItem handler:v21];
 
           v19 = v23;
         }
@@ -278,35 +278,35 @@
   }
 }
 
-- (id)_lookupKeyForEntry:(id)a3
+- (id)_lookupKeyForEntry:(id)entry
 {
-  v3 = a3;
-  if (+[RatingRequestHomeAvailability shouldShowRatingRequestSuggestionsOnProactiveTray](RatingRequestHomeAvailability, "shouldShowRatingRequestSuggestionsOnProactiveTray") && ([v3 type] == 21 || GEOConfigGetBOOL()))
+  entryCopy = entry;
+  if (+[RatingRequestHomeAvailability shouldShowRatingRequestSuggestionsOnProactiveTray](RatingRequestHomeAvailability, "shouldShowRatingRequestSuggestionsOnProactiveTray") && ([entryCopy type] == 21 || GEOConfigGetBOOL()))
   {
-    v4 = [v3 MKMapItem];
-    if (v4 && [MKPOIEnrichmentAvailibility shouldShowPhotosCallToActionForMapItem:v4])
+    mKMapItem = [entryCopy MKMapItem];
+    if (mKMapItem && [MKPOIEnrichmentAvailibility shouldShowPhotosCallToActionForMapItem:mKMapItem])
     {
-      v5 = [v3 uniqueIdentifier];
+      uniqueIdentifier = [entryCopy uniqueIdentifier];
     }
 
     else
     {
-      v5 = 0;
+      uniqueIdentifier = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    uniqueIdentifier = 0;
   }
 
-  return v5;
+  return uniqueIdentifier;
 }
 
-- (int64_t)resultForSuggestionsEntry:(id)a3
+- (int64_t)resultForSuggestionsEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(HomePhotoLookupDataProvider *)self _lookupKeyForEntry:v4];
+  entryCopy = entry;
+  v5 = [(HomePhotoLookupDataProvider *)self _lookupKeyForEntry:entryCopy];
   if (v5)
   {
     if (([(NSMutableSet *)self->_inProgressLookups containsObject:v5]& 1) != 0)
@@ -354,30 +354,30 @@
   return v6;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       [(HomePhotoLookupDataProvider *)self _performLookups];
     }
   }
 }
 
-- (HomePhotoLookupDataProvider)initWithSuggestionsDataProvider:(id)a3
+- (HomePhotoLookupDataProvider)initWithSuggestionsDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = HomePhotoLookupDataProvider;
   v6 = [(HomePhotoLookupDataProvider *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggestionsDataProvider, a3);
-    v8 = [(SuggestionsDataProvider *)v7->_suggestionsDataProvider observers];
-    [v8 registerObserver:v7];
+    objc_storeStrong(&v6->_suggestionsDataProvider, provider);
+    observers = [(SuggestionsDataProvider *)v7->_suggestionsDataProvider observers];
+    [observers registerObserver:v7];
 
     ratingRequestSuggestions = v7->_ratingRequestSuggestions;
     v7->_ratingRequestSuggestions = &__NSDictionary0__struct;

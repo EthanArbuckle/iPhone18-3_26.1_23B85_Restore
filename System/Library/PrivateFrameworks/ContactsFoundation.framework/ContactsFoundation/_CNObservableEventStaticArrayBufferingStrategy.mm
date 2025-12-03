@@ -1,18 +1,18 @@
 @interface _CNObservableEventStaticArrayBufferingStrategy
-- (_CNObservableEventStaticArrayBufferingStrategy)initWithEvents:(id)a3;
+- (_CNObservableEventStaticArrayBufferingStrategy)initWithEvents:(id)events;
 @end
 
 @implementation _CNObservableEventStaticArrayBufferingStrategy
 
-- (_CNObservableEventStaticArrayBufferingStrategy)initWithEvents:(id)a3
+- (_CNObservableEventStaticArrayBufferingStrategy)initWithEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v10.receiver = self;
   v10.super_class = _CNObservableEventStaticArrayBufferingStrategy;
   v5 = [(_CNObservableEventStaticArrayBufferingStrategy *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [eventsCopy copy];
     events = v5->_events;
     v5->_events = v6;
 

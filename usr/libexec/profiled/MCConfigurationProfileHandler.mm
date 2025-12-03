@@ -1,45 +1,45 @@
 @interface MCConfigurationProfileHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
-- (MCConfigurationProfileHandler)initWithProfile:(id)a3;
-- (void)didInstallOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4;
-- (void)removeWithInstaller:(id)a3 options:(id)a4;
-- (void)setAsideWithInstaller:(id)a3;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
+- (MCConfigurationProfileHandler)initWithProfile:(id)profile;
+- (void)didInstallOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions;
+- (void)removeWithInstaller:(id)installer options:(id)options;
+- (void)setAsideWithInstaller:(id)installer;
 - (void)unsetAside;
 @end
 
 @implementation MCConfigurationProfileHandler
 
-- (MCConfigurationProfileHandler)initWithProfile:(id)a3
+- (MCConfigurationProfileHandler)initWithProfile:(id)profile
 {
   v11.receiver = self;
   v11.super_class = MCConfigurationProfileHandler;
-  v3 = [(MCProfileHandler *)&v11 initWithProfile:a3];
+  v3 = [(MCProfileHandler *)&v11 initWithProfile:profile];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MCProfileHandler *)v3 profile];
-    v6 = [v5 OTAProfile];
-    v7 = v6;
-    if (v6)
+    profile = [(MCProfileHandler *)v3 profile];
+    oTAProfile = [profile OTAProfile];
+    v7 = oTAProfile;
+    if (oTAProfile)
     {
-      v8 = [v6 createHandler];
+      createHandler = [oTAProfile createHandler];
       OTAHandler = v4->_OTAHandler;
-      v4->_OTAHandler = v8;
+      v4->_OTAHandler = createHandler;
     }
   }
 
   return v4;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  installerCopy = installer;
+  optionsCopy = options;
+  clientCopy = client;
   v17.receiver = self;
   v17.super_class = MCConfigurationProfileHandler;
   v18 = 0;
-  [(MCProfileHandler *)&v17 installWithInstaller:v10 options:v11 interactionClient:v12 outError:&v18];
+  [(MCProfileHandler *)&v17 installWithInstaller:installerCopy options:optionsCopy interactionClient:clientCopy outError:&v18];
   OTAHandler = v18;
   if (!OTAHandler)
   {
@@ -51,16 +51,16 @@
     }
 
     v16 = 0;
-    [(MCProfileServiceProfileHandler *)OTAHandler installWithInstaller:v10 options:v11 interactionClient:v12 outError:&v16];
+    [(MCProfileServiceProfileHandler *)OTAHandler installWithInstaller:installerCopy options:optionsCopy interactionClient:clientCopy outError:&v16];
     OTAHandler = v16;
   }
 
   v14 = OTAHandler == 0;
-  if (a6 && OTAHandler)
+  if (error && OTAHandler)
   {
     OTAHandler = OTAHandler;
     v14 = 0;
-    *a6 = OTAHandler;
+    *error = OTAHandler;
   }
 
 LABEL_8:
@@ -68,26 +68,26 @@ LABEL_8:
   return v14;
 }
 
-- (void)didInstallOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4
+- (void)didInstallOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions
 {
   v8.receiver = self;
   v8.super_class = MCConfigurationProfileHandler;
-  v6 = a4;
-  v7 = a3;
-  [(MCProfileHandler *)&v8 didInstallOldGlobalRestrictions:v7 newGlobalRestrictions:v6];
-  [(MCProfileServiceProfileHandler *)self->_OTAHandler didInstallOldGlobalRestrictions:v7 newGlobalRestrictions:v6, v8.receiver, v8.super_class];
+  globalRestrictionsCopy = globalRestrictions;
+  restrictionsCopy = restrictions;
+  [(MCProfileHandler *)&v8 didInstallOldGlobalRestrictions:restrictionsCopy newGlobalRestrictions:globalRestrictionsCopy];
+  [(MCProfileServiceProfileHandler *)self->_OTAHandler didInstallOldGlobalRestrictions:restrictionsCopy newGlobalRestrictions:globalRestrictionsCopy, v8.receiver, v8.super_class];
 }
 
-- (void)setAsideWithInstaller:(id)a3
+- (void)setAsideWithInstaller:(id)installer
 {
-  v4 = a3;
+  installerCopy = installer;
   v6.receiver = self;
   v6.super_class = MCConfigurationProfileHandler;
-  [(MCProfileHandler *)&v6 setAsideWithInstaller:v4];
+  [(MCProfileHandler *)&v6 setAsideWithInstaller:installerCopy];
   OTAHandler = self->_OTAHandler;
   if (OTAHandler)
   {
-    [(MCProfileServiceProfileHandler *)OTAHandler setAsideWithInstaller:v4];
+    [(MCProfileServiceProfileHandler *)OTAHandler setAsideWithInstaller:installerCopy];
   }
 }
 
@@ -103,17 +103,17 @@ LABEL_8:
   }
 }
 
-- (void)removeWithInstaller:(id)a3 options:(id)a4
+- (void)removeWithInstaller:(id)installer options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  installerCopy = installer;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = MCConfigurationProfileHandler;
-  [(MCProfileHandler *)&v9 removeWithInstaller:v6 options:v7];
+  [(MCProfileHandler *)&v9 removeWithInstaller:installerCopy options:optionsCopy];
   OTAHandler = self->_OTAHandler;
   if (OTAHandler)
   {
-    [(MCProfileServiceProfileHandler *)OTAHandler removeWithInstaller:v6 options:v7];
+    [(MCProfileServiceProfileHandler *)OTAHandler removeWithInstaller:installerCopy options:optionsCopy];
   }
 }
 

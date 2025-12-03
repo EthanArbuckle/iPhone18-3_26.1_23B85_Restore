@@ -2,7 +2,7 @@
 - (CGSize)size;
 - (SEL)didEndSelector;
 - (void)dealloc;
-- (void)setDidEndSelector:(SEL)a3;
+- (void)setDidEndSelector:(SEL)selector;
 @end
 
 @implementation _VFXExportOperation
@@ -27,19 +27,19 @@
   }
 }
 
-- (void)setDidEndSelector:(SEL)a3
+- (void)setDidEndSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_didEndSelector = v3;
+  self->_didEndSelector = selectorCopy;
 }
 
 - (CGSize)size

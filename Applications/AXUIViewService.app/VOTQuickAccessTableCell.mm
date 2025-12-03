@@ -28,39 +28,39 @@
 {
   v7.receiver = self;
   v7.super_class = VOTQuickAccessTableCell;
-  v3 = [(VOTQuickAccessTableCell *)&v7 accessibilityTraits];
-  v4 = [(VOTQuickAccessTableCell *)self cellAccessibility];
-  v5 = [v4 accessibilityTraits];
+  accessibilityTraits = [(VOTQuickAccessTableCell *)&v7 accessibilityTraits];
+  cellAccessibility = [(VOTQuickAccessTableCell *)self cellAccessibility];
+  accessibilityTraits2 = [cellAccessibility accessibilityTraits];
 
-  return v5 | v3;
+  return accessibilityTraits2 | accessibilityTraits;
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = [(VOTQuickAccessTableCell *)self cellAccessibility];
-  [v2 accessibilityDecrement];
+  cellAccessibility = [(VOTQuickAccessTableCell *)self cellAccessibility];
+  [cellAccessibility accessibilityDecrement];
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = [(VOTQuickAccessTableCell *)self cellAccessibility];
-  [v2 accessibilityIncrement];
+  cellAccessibility = [(VOTQuickAccessTableCell *)self cellAccessibility];
+  [cellAccessibility accessibilityIncrement];
 }
 
 - (BOOL)_accessibilityShouldClearChildren
 {
-  v2 = [(VOTQuickAccessTableCell *)self cellAccessibility];
-  v3 = [v2 _accessibilityShouldClearChildren];
+  cellAccessibility = [(VOTQuickAccessTableCell *)self cellAccessibility];
+  _accessibilityShouldClearChildren = [cellAccessibility _accessibilityShouldClearChildren];
 
-  return v3;
+  return _accessibilityShouldClearChildren;
 }
 
 - (id)accessibilityCustomActions
 {
-  v2 = [(VOTQuickAccessTableCell *)self cellAccessibility];
-  v3 = [v2 accessibilityCustomActions];
+  cellAccessibility = [(VOTQuickAccessTableCell *)self cellAccessibility];
+  accessibilityCustomActions = [cellAccessibility accessibilityCustomActions];
 
-  return v3;
+  return accessibilityCustomActions;
 }
 
 @end

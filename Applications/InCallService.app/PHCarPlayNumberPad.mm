@@ -1,11 +1,11 @@
 @interface PHCarPlayNumberPad
-- (PHCarPlayNumberPad)initWithUserInterfaceStyle:(int64_t)a3;
+- (PHCarPlayNumberPad)initWithUserInterfaceStyle:(int64_t)style;
 - (id)_linearFocusMovementSequences;
 @end
 
 @implementation PHCarPlayNumberPad
 
-- (PHCarPlayNumberPad)initWithUserInterfaceStyle:(int64_t)a3
+- (PHCarPlayNumberPad)initWithUserInterfaceStyle:(int64_t)style
 {
   v4 = +[TPDialerNumberPad dialerNumberPadFullCharacters];
   v9[0] = _NSConcreteStackBlock;
@@ -24,8 +24,8 @@
 
 - (id)_linearFocusMovementSequences
 {
-  v2 = [(PHCarPlayNumberPad *)self buttons];
-  v3 = [_UIFocusLinearMovementSequence sequenceWithItems:v2 loops:0];
+  buttons = [(PHCarPlayNumberPad *)self buttons];
+  v3 = [_UIFocusLinearMovementSequence sequenceWithItems:buttons loops:0];
   v6 = v3;
   v4 = [NSArray arrayWithObjects:&v6 count:1];
 

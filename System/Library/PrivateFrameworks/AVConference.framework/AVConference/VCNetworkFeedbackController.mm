@@ -1,5 +1,5 @@
 @interface VCNetworkFeedbackController
-- (VCNetworkFeedbackController)initWithDelegate:(id)a3 connectionManager:(id)a4 experimentManager:(id)a5;
+- (VCNetworkFeedbackController)initWithDelegate:(id)delegate connectionManager:(id)manager experimentManager:(id)experimentManager;
 - (unsigned)recommendedTargetBitrateCap;
 - (void)cleanupWCMClient;
 - (void)cleanupWRMClient;
@@ -7,31 +7,31 @@
 - (void)configureFeatures;
 - (void)dealloc;
 - (void)initializeWRMInfo;
-- (void)reportImmediateWRMMetric:(int)a3 value:(unint64_t)a4;
-- (void)reportWRMMetrics:(id *)a3;
+- (void)reportImmediateWRMMetric:(int)metric value:(unint64_t)value;
+- (void)reportWRMMetrics:(id *)metrics;
 - (void)requestWRMNotification;
-- (void)sendFeedbackControllerReport:(id *)a3;
-- (void)sendStatusUpdate:(id *)a3;
-- (void)setDownlinkTargetCellBitrateCap:(unsigned int)a3;
-- (void)setIsLocalCellular:(BOOL)a3;
-- (void)setIsVideoPaused:(BOOL)a3;
-- (void)setPreWarmState:(BOOL)a3;
-- (void)setRSSIThresholdEnabled:(BOOL)a3;
-- (void)setWRMCoexMetrics:(id)a3;
-- (void)setWRMMetricConfig:(id *)a3;
-- (void)setWRMNotification:(id *)a3;
+- (void)sendFeedbackControllerReport:(id *)report;
+- (void)sendStatusUpdate:(id *)update;
+- (void)setDownlinkTargetCellBitrateCap:(unsigned int)cap;
+- (void)setIsLocalCellular:(BOOL)cellular;
+- (void)setIsVideoPaused:(BOOL)paused;
+- (void)setPreWarmState:(BOOL)state;
+- (void)setRSSIThresholdEnabled:(BOOL)enabled;
+- (void)setWRMCoexMetrics:(id)metrics;
+- (void)setWRMMetricConfig:(id *)config;
+- (void)setWRMNotification:(id *)notification;
 - (void)setupWCMClient;
-- (void)setupWRMClientWithMetricsConfig:(id)a3;
-- (void)startWithMetricsConfig:(id)a3;
+- (void)setupWRMClientWithMetricsConfig:(id)config;
+- (void)startWithMetricsConfig:(id)config;
 - (void)stop;
-- (void)updateMetricsConfig:(id)a3;
-- (void)wcmGetCallConfig:(unsigned int *)a3 targetBitrate:(unsigned int *)a4;
-- (void)wcmSetCallConfig:(unsigned int)a3 interferenceLevel:(unsigned int)a4;
+- (void)updateMetricsConfig:(id)config;
+- (void)wcmGetCallConfig:(unsigned int *)config targetBitrate:(unsigned int *)bitrate;
+- (void)wcmSetCallConfig:(unsigned int)config interferenceLevel:(unsigned int)level;
 @end
 
 @implementation VCNetworkFeedbackController
 
-- (VCNetworkFeedbackController)initWithDelegate:(id)a3 connectionManager:(id)a4 experimentManager:(id)a5
+- (VCNetworkFeedbackController)initWithDelegate:(id)delegate connectionManager:(id)manager experimentManager:(id)experimentManager
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -40,9 +40,9 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_weakDelegate, a3);
-    v9->_connectionManager = a4;
-    v9->_experimentManager = a5;
+    objc_storeWeak(&v8->_weakDelegate, delegate);
+    v9->_connectionManager = manager;
+    v9->_experimentManager = experimentManager;
     [(VCNetworkFeedbackController *)v9 configureFeatures];
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
     v9->_wrmClientQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.vcNetworkFeedbackController.serialQueue", 0, CustomRootQueue);
@@ -78,7 +78,7 @@
   OUTLINED_FUNCTION_2_1(&dword_1DB56E000, v0, v1, " [%s] %s:%d Failed to allocate memory for WRM info", v2, v3, v4, v5, v6);
 }
 
-- (void)startWithMetricsConfig:(id)a3
+- (void)startWithMetricsConfig:(id)config
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->_isStarted)
@@ -110,7 +110,7 @@
     v8[2] = __54__VCNetworkFeedbackController_startWithMetricsConfig___block_invoke;
     v8[3] = &unk_1E85F38B8;
     v8[4] = self;
-    v9 = a3;
+    configCopy = config;
     dispatch_async(wrmClientQueue, v8);
   }
 }
@@ -153,12 +153,12 @@
 - (unsigned)recommendedTargetBitrateCap
 {
   objc_sync_enter(self);
-  v3 = [(VCRecommendedNetworkSettings *)self->_recommendedSettings targetBitrateCap];
+  targetBitrateCap = [(VCRecommendedNetworkSettings *)self->_recommendedSettings targetBitrateCap];
   objc_sync_exit(self);
-  return v3;
+  return targetBitrateCap;
 }
 
-- (void)updateMetricsConfig:(id)a3
+- (void)updateMetricsConfig:(id)config
 {
   v6 = *MEMORY[0x1E69E9840];
   wrmClientQueue = self->_wrmClientQueue;
@@ -167,11 +167,11 @@
   block[2] = __51__VCNetworkFeedbackController_updateMetricsConfig___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  configCopy = config;
   dispatch_async(wrmClientQueue, block);
 }
 
-- (void)setRSSIThresholdEnabled:(BOOL)a3
+- (void)setRSSIThresholdEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   wrmClientQueue = self->_wrmClientQueue;
@@ -180,7 +180,7 @@
   block[2] = __55__VCNetworkFeedbackController_setRSSIThresholdEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(wrmClientQueue, block);
 }
 
@@ -201,7 +201,7 @@
   }
 }
 
-- (void)sendFeedbackControllerReport:(id *)a3
+- (void)sendFeedbackControllerReport:(id *)report
 {
   v37 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -218,14 +218,14 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  var6 = a3->var6;
-  v4 = a3->var5 / 0x3E8uLL;
-  var8 = a3->var8;
-  v6 = a3->var7 / 0x3E8uLL;
-  var0 = a3->var0;
-  v8 = a3->var1 / 0x3E8uLL;
-  var2 = a3->var2;
-  v10 = a3->var3 / 0x3E8uLL;
+  var6 = report->var6;
+  v4 = report->var5 / 0x3E8uLL;
+  var8 = report->var8;
+  v6 = report->var7 / 0x3E8uLL;
+  var0 = report->var0;
+  v8 = report->var1 / 0x3E8uLL;
+  var2 = report->var2;
+  v10 = report->var3 / 0x3E8uLL;
   wrmClientQueue = self->_wrmClientQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -245,10 +245,10 @@
   dispatch_async(wrmClientQueue, v12);
 }
 
-- (void)sendStatusUpdate:(id *)a3
+- (void)sendStatusUpdate:(id *)update
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (update)
   {
     wrmClientQueue = self->_wrmClientQueue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -256,7 +256,7 @@
     v4[2] = __48__VCNetworkFeedbackController_sendStatusUpdate___block_invoke;
     v4[3] = &unk_1E85F4090;
     v4[4] = self;
-    v5 = *a3;
+    v5 = *update;
     dispatch_async(wrmClientQueue, v4);
   }
 
@@ -304,7 +304,7 @@ uint64_t __53__VCNetworkFeedbackController_requestWRMNotification__block_invoke(
   return [*(*(a1 + 32) + 24) requestNotificationFaceTimeCalling];
 }
 
-- (void)reportImmediateWRMMetric:(int)a3 value:(unint64_t)a4
+- (void)reportImmediateWRMMetric:(int)metric value:(unint64_t)value
 {
   v7 = *MEMORY[0x1E69E9840];
   wrmClientQueue = self->_wrmClientQueue;
@@ -312,9 +312,9 @@ uint64_t __53__VCNetworkFeedbackController_requestWRMNotification__block_invoke(
   v5[1] = 3221225472;
   v5[2] = __62__VCNetworkFeedbackController_reportImmediateWRMMetric_value___block_invoke;
   v5[3] = &unk_1E85F3908;
-  v6 = a3;
+  metricCopy = metric;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = value;
   dispatch_async(wrmClientQueue, v5);
 }
 
@@ -338,12 +338,12 @@ uint64_t __62__VCNetworkFeedbackController_reportImmediateWRMMetric_value___bloc
   return result;
 }
 
-- (void)reportWRMMetrics:(id *)a3
+- (void)reportWRMMetrics:(id *)metrics
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (metrics)
   {
-    memcpy(v6, a3, sizeof(v6));
+    memcpy(v6, metrics, sizeof(v6));
     wrmClientQueue = self->_wrmClientQueue;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -377,7 +377,7 @@ uint64_t __48__VCNetworkFeedbackController_reportWRMMetrics___block_invoke(uint6
 - (void)configureFeatures
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -405,7 +405,7 @@ LABEL_12:
 
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 performSelector:sel_logPrefix];
+    v2 = [self performSelector:sel_logPrefix];
   }
 
   else
@@ -426,7 +426,7 @@ LABEL_12:
       v13 = 2112;
       v14 = v2;
       v15 = 2048;
-      v16 = a1;
+      selfCopy = self;
       v5 = " [%s] %s:%d %@(%p) experiment manager must not be nil";
       v6 = v9;
       v7 = 48;
@@ -435,9 +435,9 @@ LABEL_12:
   }
 }
 
-- (void)setWRMMetricConfig:(id *)a3
+- (void)setWRMMetricConfig:(id *)config
 {
-  self->_wrmReportingInterval = a3->var0 / 50.0;
+  self->_wrmReportingInterval = config->var0 / 50.0;
   v4 = MEMORY[0x1E1289F20](&self->_weakDelegate, a2);
   [v4 reportingIntervalChanged:self->_wrmReportingInterval];
   if (v4)
@@ -447,7 +447,7 @@ LABEL_12:
   }
 }
 
-- (void)setWRMNotification:(id *)a3
+- (void)setWRMNotification:(id *)notification
 {
   v30 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -456,11 +456,11 @@ LABEL_12:
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a3->var0;
-      var1 = a3->var1;
-      var2 = a3->var2;
-      var4 = a3->var4;
-      var5 = a3->var5;
+      var0 = notification->var0;
+      var1 = notification->var1;
+      var2 = notification->var2;
+      var4 = notification->var4;
+      var5 = notification->var5;
       v12 = 136317186;
       v13 = v5;
       v14 = 2080;
@@ -474,7 +474,7 @@ LABEL_12:
       v22 = 2048;
       v23 = var2;
       v24 = 2080;
-      var3 = a3->var3;
+      var3 = notification->var3;
       v26 = 2048;
       v27 = var5;
       v28 = 2048;
@@ -483,10 +483,10 @@ LABEL_12:
     }
   }
 
-  VCConnectionManager_SetWRMNotification(self->_connectionManager, &a3->var0);
+  VCConnectionManager_SetWRMNotification(self->_connectionManager, &notification->var0);
 }
 
-- (void)setWRMCoexMetrics:(id)a3
+- (void)setWRMCoexMetrics:(id)metrics
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -502,19 +502,19 @@ LABEL_12:
       v11 = 1024;
       v12 = 283;
       v13 = 2080;
-      v14 = [objc_msgSend(a3 "description")];
+      v14 = [objc_msgSend(metrics "description")];
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d WRM: Get iRAT Coex Metrics %s", &v7, 0x26u);
     }
   }
 
-  [(VCConnectionManager *)self->_connectionManager processWRMCoexMetrics:a3];
+  [(VCConnectionManager *)self->_connectionManager processWRMCoexMetrics:metrics];
 }
 
-- (void)setPreWarmState:(BOOL)a3
+- (void)setPreWarmState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = MEMORY[0x1E1289F20](&self->_weakDelegate, a2);
-  [v4 preWarmStateChanged:v3];
+  [v4 preWarmStateChanged:stateCopy];
   if (v4)
   {
 
@@ -522,9 +522,9 @@ LABEL_12:
   }
 }
 
-- (void)wcmSetCallConfig:(unsigned int)a3 interferenceLevel:(unsigned int)a4
+- (void)wcmSetCallConfig:(unsigned int)config interferenceLevel:(unsigned int)level
 {
-  v4 = *&a3;
+  v4 = *&config;
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -555,7 +555,7 @@ LABEL_12:
   objc_sync_exit(self);
 }
 
-- (void)wcmGetCallConfig:(unsigned int *)a3 targetBitrate:(unsigned int *)a4
+- (void)wcmGetCallConfig:(unsigned int *)config targetBitrate:(unsigned int *)bitrate
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -575,8 +575,8 @@ LABEL_12:
   }
 
   objc_sync_enter(self);
-  *a3 = [(VCNetworkFeedbackController *)self clientTargetBitrateCap];
-  *a4 = [(VCNetworkFeedbackController *)self clientTargetBitrate];
+  *config = [(VCNetworkFeedbackController *)self clientTargetBitrateCap];
+  *bitrate = [(VCNetworkFeedbackController *)self clientTargetBitrate];
   objc_sync_exit(self);
 }
 
@@ -672,7 +672,7 @@ LABEL_11:
   }
 }
 
-- (void)setupWRMClientWithMetricsConfig:(id)a3
+- (void)setupWRMClientWithMetricsConfig:(id)config
 {
   v14 = *MEMORY[0x1E69E9840];
   if (!self->_WRMClient)
@@ -696,7 +696,7 @@ LABEL_11:
     [(VCConnectionManager *)self->_connectionManager setWRMUpdateCallback:VCCMWRMStatusUpdateCallback requestNotificationCallback:VCCMWRMRequestNotificationCallback withContext:self completionHandler:0];
     v7 = [[WRMClient alloc] initWithDelegate:self];
     self->_WRMClient = v7;
-    [(WRMClient *)v7 startWRMClientWithMode:1 metricsConfig:*&a3.var0 & 0xFFFFFFLL | (!self->_isFastLQMReportingEnabled << 24)];
+    [(WRMClient *)v7 startWRMClientWithMode:1 metricsConfig:*&config.var0 & 0xFFFFFFLL | (!self->_isFastLQMReportingEnabled << 24)];
   }
 }
 
@@ -748,10 +748,10 @@ void __47__VCNetworkFeedbackController_cleanupWRMClient__block_invoke_2(uint64_t
   v2 = *(a1 + 32);
 }
 
-- (void)setDownlinkTargetCellBitrateCap:(unsigned int)a3
+- (void)setDownlinkTargetCellBitrateCap:(unsigned int)cap
 {
   v14 = *MEMORY[0x1E69E9840];
-  self->_downlinkTargetCellBitrateCap = a3;
+  self->_downlinkTargetCellBitrateCap = cap;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -765,29 +765,29 @@ void __47__VCNetworkFeedbackController_cleanupWRMClient__block_invoke_2(uint64_t
       v10 = 1024;
       v11 = 386;
       v12 = 1024;
-      v13 = a3;
+      capCopy = cap;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: Update cellBitrateCap for pending iRAT notification purpose: %d", &v6, 0x22u);
     }
   }
 }
 
-- (void)setIsLocalCellular:(BOOL)a3
+- (void)setIsLocalCellular:(BOOL)cellular
 {
-  self->_isLocalCellular = a3;
+  self->_isLocalCellular = cellular;
   wrmInfo = self->_wrmInfo;
   if (wrmInfo)
   {
-    wrmInfo->isLocalCellular = a3;
+    wrmInfo->isLocalCellular = cellular;
   }
 }
 
-- (void)setIsVideoPaused:(BOOL)a3
+- (void)setIsVideoPaused:(BOOL)paused
 {
-  self->_isVideoPaused = a3;
+  self->_isVideoPaused = paused;
   wrmInfo = self->_wrmInfo;
   if (wrmInfo)
   {
-    wrmInfo->isVideoPaused = a3;
+    wrmInfo->isVideoPaused = paused;
   }
 }
 

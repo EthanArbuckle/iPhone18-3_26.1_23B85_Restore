@@ -1,30 +1,30 @@
 @interface VLFSessionAnalyticsTracker
 - (VLFSessionAnalyticsTracker)init;
-- (void)VLFSessionDidStopNotification:(id)a3;
+- (void)VLFSessionDidStopNotification:(id)notification;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation VLFSessionAnalyticsTracker
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[VLFSessionUsageTracker sharedInstance];
 
-  if (v13 == v11)
+  if (v13 == objectCopy)
   {
-    if ([v10 isEqualToString:@"numberOfCalloutDismissals"])
+    if ([pathCopy isEqualToString:@"numberOfCalloutDismissals"])
     {
-      v14 = [v12 objectForKey:NSKeyValueChangeOldKey];
-      v15 = [v14 unsignedIntegerValue];
+      v14 = [changeCopy objectForKey:NSKeyValueChangeOldKey];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-      v16 = [v12 objectForKey:NSKeyValueChangeNewKey];
-      v17 = [v16 unsignedIntegerValue];
+      v16 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
+      unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-      if (v17 >= v15)
+      if (unsignedIntegerValue2 >= unsignedIntegerValue)
       {
         [GEOAPPortal captureUserAction:2158 target:669 value:0];
       }
@@ -32,24 +32,24 @@
 
     else
     {
-      [(VLFSessionAnalyticsTracker *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6, v18.receiver, v18.super_class, self, VLFSessionAnalyticsTracker];
+      [(VLFSessionAnalyticsTracker *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context, v18.receiver, v18.super_class, self, VLFSessionAnalyticsTracker];
     }
   }
 
   else
   {
-    [(VLFSessionAnalyticsTracker *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6, self, VLFSessionAnalyticsTracker, v19.receiver, v19.super_class];
+    [(VLFSessionAnalyticsTracker *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context, self, VLFSessionAnalyticsTracker, v19.receiver, v19.super_class];
   }
 }
 
-- (void)VLFSessionDidStopNotification:(id)a3
+- (void)VLFSessionDidStopNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -121,9 +121,9 @@
     v16 = sub_100CFBB1C();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v4 object];
+      object2 = [notificationCopy object];
       *buf = 138412290;
-      v21 = v17;
+      v21 = object2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "VLFSessionDidStopNotification object was not a VLFSession: %@", buf, 0xCu);
     }
   }

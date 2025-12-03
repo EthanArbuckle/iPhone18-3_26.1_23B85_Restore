@@ -1,16 +1,16 @@
 @interface Protocol
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (const)name;
-- (objc_method_description)descriptionForClassMethod:(SEL)a3;
-- (objc_method_description)descriptionForInstanceMethod:(SEL)a3;
+- (objc_method_description)descriptionForClassMethod:(SEL)method;
+- (objc_method_description)descriptionForInstanceMethod:(SEL)method;
 @end
 
 @implementation Protocol
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = look_up_class("Protocol");
-  Class = object_getClass(a3);
+  Class = object_getClass(equal);
   v7 = Class == 0;
   if (Class)
   {
@@ -38,7 +38,7 @@
     return 0;
   }
 
-  return protocol_isEqual(self, a3);
+  return protocol_isEqual(self, equal);
 }
 
 - (const)name
@@ -54,16 +54,16 @@
   }
 }
 
-- (objc_method_description)descriptionForClassMethod:(SEL)a3
+- (objc_method_description)descriptionForClassMethod:(SEL)method
 {
-  Method = protocol_getMethod(self, a3, 1, 0, v3, v4);
+  Method = protocol_getMethod(self, method, 1, 0, v3, v4);
 
   return method_getDescription(Method);
 }
 
-- (objc_method_description)descriptionForInstanceMethod:(SEL)a3
+- (objc_method_description)descriptionForInstanceMethod:(SEL)method
 {
-  Method = protocol_getMethod(self, a3, 1, 1, v3, v4);
+  Method = protocol_getMethod(self, method, 1, 1, v3, v4);
 
   return method_getDescription(Method);
 }

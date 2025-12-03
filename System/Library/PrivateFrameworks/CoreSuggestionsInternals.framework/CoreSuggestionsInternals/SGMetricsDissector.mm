@@ -1,52 +1,52 @@
 @interface SGMetricsDissector
 - (BOOL)_shouldSampleMessage;
-- (SGMetricsDissector)initWithEntityStore:(id)a3;
-- (void)dissectMailMessage:(id)a3 entity:(id)a4 context:(id)a5;
-- (void)dissectTextMessage:(id)a3 entity:(id)a4 context:(id)a5;
+- (SGMetricsDissector)initWithEntityStore:(id)store;
+- (void)dissectMailMessage:(id)message entity:(id)entity context:(id)context;
+- (void)dissectTextMessage:(id)message entity:(id)entity context:(id)context;
 @end
 
 @implementation SGMetricsDissector
 
-- (void)dissectTextMessage:(id)a3 entity:(id)a4 context:(id)a5
+- (void)dissectTextMessage:(id)message entity:(id)entity context:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v31 = self;
+  messageCopy = message;
+  entityCopy = entity;
+  contextCopy = context;
+  selfCopy = self;
   if ([(SGMetricsDissector *)self _shouldSampleMessage])
   {
-    v11 = [v8 sender];
-    v12 = [v11 handles];
-    if (![v12 count])
+    sender = [messageCopy sender];
+    handles = [sender handles];
+    if (![handles count])
     {
 
 LABEL_16:
       goto LABEL_17;
     }
 
-    v13 = [v8 recipients];
+    recipients = [messageCopy recipients];
 
-    if (v13)
+    if (recipients)
     {
-      v14 = [v9 duplicateKey];
-      v11 = [v14 bundleId];
+      duplicateKey = [entityCopy duplicateKey];
+      sender = [duplicateKey bundleId];
 
-      if (v11)
+      if (sender)
       {
-        v15 = [v8 isSent];
+        isSent = [messageCopy isSent];
         v16 = objc_autoreleasePoolPush();
         v17 = v16;
-        if (v15)
+        if (isSent)
         {
           context = v16;
-          v30 = v10;
+          v30 = contextCopy;
           v34 = 0u;
           v35 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v18 = [v8 recipients];
-          v19 = [v18 countByEnumeratingWithState:&v32 objects:v36 count:16];
+          recipients2 = [messageCopy recipients];
+          v19 = [recipients2 countByEnumeratingWithState:&v32 objects:v36 count:16];
           if (v19)
           {
             v20 = v19;
@@ -57,30 +57,30 @@ LABEL_16:
               {
                 if (*v33 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(recipients2);
                 }
 
-                v23 = [*(*(&v32 + 1) + 8 * i) handles];
-                v24 = [v23 objectAtIndexedSubscript:0];
-                [SGMetricsHelper recordConversationTurnWithDetail:v24 received:0 throughApp:v11 withStore:v31->_store];
+                handles2 = [*(*(&v32 + 1) + 8 * i) handles];
+                v24 = [handles2 objectAtIndexedSubscript:0];
+                [SGMetricsHelper recordConversationTurnWithDetail:v24 received:0 throughApp:sender withStore:selfCopy->_store];
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v32 objects:v36 count:16];
+              v20 = [recipients2 countByEnumeratingWithState:&v32 objects:v36 count:16];
             }
 
             while (v20);
           }
 
           objc_autoreleasePoolPop(context);
-          v10 = v30;
+          contextCopy = v30;
         }
 
         else
         {
-          v25 = [v8 sender];
-          v26 = [v25 handles];
-          v27 = [v26 objectAtIndexedSubscript:0];
-          [SGMetricsHelper recordConversationTurnWithDetail:v27 received:1 throughApp:v11 withStore:v31->_store];
+          sender2 = [messageCopy sender];
+          handles3 = [sender2 handles];
+          v27 = [handles3 objectAtIndexedSubscript:0];
+          [SGMetricsHelper recordConversationTurnWithDetail:v27 received:1 throughApp:sender withStore:selfCopy->_store];
 
           objc_autoreleasePoolPop(v17);
         }
@@ -95,36 +95,36 @@ LABEL_17:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dissectMailMessage:(id)a3 entity:(id)a4 context:(id)a5
+- (void)dissectMailMessage:(id)message entity:(id)entity context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  messageCopy = message;
+  entityCopy = entity;
+  contextCopy = context;
+  selfCopy = self;
   if ([(SGMetricsDissector *)self _shouldSampleMessage])
   {
-    v12 = [v8 from];
-    if (v12)
+    from = [messageCopy from];
+    if (from)
     {
-      v13 = v12;
-      v14 = [v8 to];
+      v13 = from;
+      v14 = [messageCopy to];
 
       if (v14)
       {
-        v15 = [v9 duplicateKey];
-        v16 = [v15 bundleId];
+        duplicateKey = [entityCopy duplicateKey];
+        bundleId = [duplicateKey bundleId];
 
-        if (v16)
+        if (bundleId)
         {
-          if ([v8 isSent])
+          if ([messageCopy isSent])
           {
-            v28 = v10;
+            v28 = contextCopy;
             v32 = 0u;
             v33 = 0u;
             v30 = 0u;
             v31 = 0u;
-            obj = [v8 to];
+            obj = [messageCopy to];
             v17 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
             if (v17)
             {
@@ -141,8 +141,8 @@ LABEL_17:
 
                   v21 = *(*(&v30 + 1) + 8 * i);
                   v22 = objc_autoreleasePoolPush();
-                  v23 = [v21 emailAddress];
-                  [SGMetricsHelper recordConversationTurnWithDetail:v23 received:0 throughApp:v16 withStore:v11->_store];
+                  emailAddress = [v21 emailAddress];
+                  [SGMetricsHelper recordConversationTurnWithDetail:emailAddress received:0 throughApp:bundleId withStore:selfCopy->_store];
 
                   objc_autoreleasePoolPop(v22);
                 }
@@ -153,15 +153,15 @@ LABEL_17:
               while (v18);
             }
 
-            v10 = v28;
+            contextCopy = v28;
           }
 
           else
           {
             v24 = objc_autoreleasePoolPush();
-            v25 = [v8 from];
-            v26 = [v25 emailAddress];
-            [SGMetricsHelper recordConversationTurnWithDetail:v26 received:1 throughApp:v16 withStore:v11->_store];
+            from2 = [messageCopy from];
+            emailAddress2 = [from2 emailAddress];
+            [SGMetricsHelper recordConversationTurnWithDetail:emailAddress2 received:1 throughApp:bundleId withStore:selfCopy->_store];
 
             objc_autoreleasePoolPop(v24);
           }
@@ -181,16 +181,16 @@ LABEL_17:
   return v3;
 }
 
-- (SGMetricsDissector)initWithEntityStore:(id)a3
+- (SGMetricsDissector)initWithEntityStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = SGMetricsDissector;
   v6 = [(SGMetricsDissector *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;

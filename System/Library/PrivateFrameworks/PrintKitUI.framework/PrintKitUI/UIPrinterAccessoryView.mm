@@ -1,19 +1,19 @@
 @interface UIPrinterAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UIPrinterAccessoryView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UIPrinterAccessoryView)initWithFrame:(CGRect)frame;
 - (UIPrinterAccessoryViewDelegate)delegate;
-- (void)infoButtonPressed:(id)a3;
+- (void)infoButtonPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)setPrinterState:(int)a3;
+- (void)setPrinterState:(int)state;
 @end
 
 @implementation UIPrinterAccessoryView
 
-- (UIPrinterAccessoryView)initWithFrame:(CGRect)a3
+- (UIPrinterAccessoryView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIPrinterAccessoryView;
-  v3 = [(UIPrinterAccessoryView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIPrinterAccessoryView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75220] buttonWithType:3];
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (void)infoButtonPressed:(id)a3
+- (void)infoButtonPressed:(id)pressed
 {
-  v4 = [(UIPrinterAccessoryView *)self delegate];
-  if (v4)
+  delegate = [(UIPrinterAccessoryView *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 printerAccessoryViewInfoButtonPressed:self];
@@ -43,20 +43,20 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)setPrinterState:(int)a3
+- (void)setPrinterState:(int)state
 {
-  if (self->_printerState == a3)
+  if (self->_printerState == state)
   {
     return;
   }
 
-  self->_printerState = a3;
-  v4 = [(UIPrinterAccessoryView *)self statusView];
+  self->_printerState = state;
+  statusView = [(UIPrinterAccessoryView *)self statusView];
 
-  if (v4)
+  if (statusView)
   {
-    v5 = [(UIPrinterAccessoryView *)self statusView];
-    [v5 removeFromSuperview];
+    statusView2 = [(UIPrinterAccessoryView *)self statusView];
+    [statusView2 removeFromSuperview];
 
     [(UIPrinterAccessoryView *)self setStatusView:0];
   }
@@ -87,12 +87,12 @@ LABEL_11:
       break;
   }
 
-  v12 = [(UIPrinterAccessoryView *)self statusView];
+  statusView3 = [(UIPrinterAccessoryView *)self statusView];
 
-  if (v12)
+  if (statusView3)
   {
-    v13 = [(UIPrinterAccessoryView *)self statusView];
-    [(UIPrinterAccessoryView *)self addSubview:v13];
+    statusView4 = [(UIPrinterAccessoryView *)self statusView];
+    [(UIPrinterAccessoryView *)self addSubview:statusView4];
   }
 
   [(UIPrinterAccessoryView *)self setNeedsLayout];
@@ -100,40 +100,40 @@ LABEL_11:
 
 - (void)layoutSubviews
 {
-  v3 = [(UIPrinterAccessoryView *)self infoButton];
-  if (!v3 || (v4 = v3, [(UIPrinterAccessoryView *)self statusView], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
+  infoButton = [(UIPrinterAccessoryView *)self infoButton];
+  if (!infoButton || (v4 = infoButton, [(UIPrinterAccessoryView *)self statusView], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
-    v8 = [(UIPrinterAccessoryView *)self infoButton];
-    [v8 bounds];
+    infoButton2 = [(UIPrinterAccessoryView *)self infoButton];
+    [infoButton2 bounds];
     v10 = v9;
     v12 = v11;
 
-    v24 = [(UIPrinterAccessoryView *)self infoButton];
-    [v24 setFrame:{0.0, 0.0, v10, v12}];
+    infoButton3 = [(UIPrinterAccessoryView *)self infoButton];
+    [infoButton3 setFrame:{0.0, 0.0, v10, v12}];
     goto LABEL_15;
   }
 
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v7 = [v6 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-  if (v7)
+  if (userInterfaceLayoutDirection)
   {
-    v24 = [(UIPrinterAccessoryView *)self infoButton];
+    infoButton3 = [(UIPrinterAccessoryView *)self infoButton];
     [(UIPrinterAccessoryView *)self statusView];
   }
 
   else
   {
-    v24 = [(UIPrinterAccessoryView *)self statusView];
+    infoButton3 = [(UIPrinterAccessoryView *)self statusView];
     [(UIPrinterAccessoryView *)self infoButton];
   }
   v13 = ;
-  if (!v24 || !v13)
+  if (!infoButton3 || !v13)
   {
     [UIPrinterAccessoryView layoutSubviews];
   }
 
-  [v24 frame];
+  [infoButton3 frame];
   v15 = v14;
   v17 = v16;
   [v13 frame];
@@ -155,21 +155,21 @@ LABEL_13:
 
   v23 = (v18 - v17) * 0.5;
 LABEL_14:
-  [v24 setFrame:{0.0, v23, v15, v17}];
+  [infoButton3 setFrame:{0.0, v23, v15, v17}];
   [v13 setFrame:{v15 + 10.0, v22, v20, v21}];
 
 LABEL_15:
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(UIPrinterAccessoryView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  subviews = [(UIPrinterAccessoryView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -184,7 +184,7 @@ LABEL_15:
         v20 = v7;
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v21 + 1) + 8 * i) frame];
@@ -220,7 +220,7 @@ LABEL_15:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v5);

@@ -1,27 +1,27 @@
 @interface ADCalendarTransformer
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5;
-- (void)getSiriRequestForClientBoundAceCommand:(id)a3 completionHandler:(id)a4;
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command;
+- (void)getSiriRequestForClientBoundAceCommand:(id)command completionHandler:(id)handler;
 @end
 
 @implementation ADCalendarTransformer
 
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  responseCopy = response;
+  errorCopy = error;
+  commandCopy = command;
+  if (errorCopy)
   {
-    v10 = [v8 domain];
-    if ([v10 isEqualToString:@"com.apple.siri.calendar.Error"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"com.apple.siri.calendar.Error"])
     {
-      v11 = [v8 code];
+      code = [errorCopy code];
 
-      if (v11 == 100)
+      if (code == 100)
       {
         v12 = objc_alloc_init(SACommandFailed);
-        v13 = [v9 aceId];
-        [v12 setRefId:v13];
+        aceId = [commandCopy aceId];
+        [v12 setRefId:aceId];
 
         [v12 setErrorCode:SACalendarNoEventsFoundErrorCode];
         [v12 setReason:@"No matching event was found"];
@@ -33,24 +33,24 @@
     {
     }
 
-    v14 = [v9 ad_aceResponseCommandGenericErrorRepresentation];
+    ad_aceResponseCommandGenericErrorRepresentation = [commandCopy ad_aceResponseCommandGenericErrorRepresentation];
   }
 
   else
   {
-    v14 = objc_alloc_init(SACommandSucceeded);
+    ad_aceResponseCommandGenericErrorRepresentation = objc_alloc_init(SACommandSucceeded);
   }
 
-  v12 = v14;
+  v12 = ad_aceResponseCommandGenericErrorRepresentation;
 LABEL_9:
 
   return v12;
 }
 
-- (void)getSiriRequestForClientBoundAceCommand:(id)a3 completionHandler:(id)a4
+- (void)getSiriRequestForClientBoundAceCommand:(id)command completionHandler:(id)handler
 {
-  v8 = a4;
-  v5 = a3;
+  handlerCopy = handler;
+  commandCopy = command;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -64,7 +64,7 @@ LABEL_9:
     v7 = 0;
   }
 
-  v8[2](v8, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
 @end

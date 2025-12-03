@@ -1,21 +1,21 @@
 @interface PKAccountViewInterfaceHelper
-+ (id)initialAccountViewControllerWithConfiguration:(id)a3;
++ (id)initialAccountViewControllerWithConfiguration:(id)configuration;
 @end
 
 @implementation PKAccountViewInterfaceHelper
 
-+ (id)initialAccountViewControllerWithConfiguration:(id)a3
++ (id)initialAccountViewControllerWithConfiguration:(id)configuration
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 account];
-  v5 = [v4 accountIdentifier];
+  configurationCopy = configuration;
+  account = [configurationCopy account];
+  accountIdentifier = [account accountIdentifier];
 
-  if (v5)
+  if (accountIdentifier)
   {
     v6 = PKSavingsLastInterstitialAuthDate();
-    v7 = [v3 account];
-    if ([v7 FDICBehaviorHideAuthenticationInterstitial])
+    account2 = [configurationCopy account];
+    if ([account2 FDICBehaviorHideAuthenticationInterstitial])
     {
       v8 = 0;
     }
@@ -31,27 +31,27 @@
 
       else
       {
-        v8 = [v3 isNewAccount] ^ 1;
+        v8 = [configurationCopy isNewAccount] ^ 1;
       }
     }
 
     else
     {
-      v8 = [v3 isNewAccount] ^ 1;
+      v8 = [configurationCopy isNewAccount] ^ 1;
     }
 
-    v11 = [v3 viewStyle];
-    if (!v11)
+    viewStyle = [configurationCopy viewStyle];
+    if (!viewStyle)
     {
       v12 = PKSavingsAccountViewController;
       goto LABEL_16;
     }
 
-    if (v11 == 1)
+    if (viewStyle == 1)
     {
       v12 = PKSavingsAccountDetailsViewController;
 LABEL_16:
-      v13 = [[v12 alloc] initWithConfiguration:v3 showInterstitial:v8];
+      v13 = [[v12 alloc] initWithConfiguration:configurationCopy showInterstitial:v8];
       goto LABEL_21;
     }
 
@@ -59,7 +59,7 @@ LABEL_16:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134217984;
-      v17 = [v3 viewStyle];
+      viewStyle2 = [configurationCopy viewStyle];
       _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "PKAccountViewInterfaceHelper: Unhandled viewStyle (%ld)", &v16, 0xCu);
     }
   }

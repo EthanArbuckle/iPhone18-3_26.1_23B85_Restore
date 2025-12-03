@@ -1,30 +1,30 @@
 @interface _GCControllerComponentDescription
-- (BOOL)update:(id)a3 withContext:(id)a4;
+- (BOOL)update:(id)update withContext:(id)context;
 - (NSString)debugDescription;
 - (NSString)description;
 - (_GCControllerComponentDescription)init;
-- (_GCControllerComponentDescription)initWithCoder:(id)a3;
-- (_GCControllerComponentDescription)initWithComponent:(id)a3 bindings:(id)a4;
-- (id)materializeWithContext:(id)a3;
+- (_GCControllerComponentDescription)initWithCoder:(id)coder;
+- (_GCControllerComponentDescription)initWithComponent:(id)component bindings:(id)bindings;
+- (id)materializeWithContext:(id)context;
 - (id)redactedDescription;
-- (void)_applyBinding:(id)a3 toComponent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_applyBinding:(id)binding toComponent:(id)component;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _GCControllerComponentDescription
 
-- (_GCControllerComponentDescription)initWithComponent:(id)a3 bindings:(id)a4
+- (_GCControllerComponentDescription)initWithComponent:(id)component bindings:(id)bindings
 {
-  v7 = a3;
-  v8 = a4;
+  componentCopy = component;
+  bindingsCopy = bindings;
   v14.receiver = self;
   v14.super_class = _GCControllerComponentDescription;
   v9 = [(_GCControllerComponentDescription *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_component, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_component, component);
+    v11 = [bindingsCopy copy];
     bindingDescriptions = v10->_bindingDescriptions;
     v10->_bindingDescriptions = v11;
   }
@@ -39,9 +39,9 @@
   return 0;
 }
 
-- (_GCControllerComponentDescription)initWithCoder:(id)a3
+- (_GCControllerComponentDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _GCControllerComponentDescription;
   v5 = [(_GCControllerComponentDescription *)&v13 init];
@@ -54,11 +54,11 @@
 
     v6 = GCControllerComponent_Classes();
     v7 = [v6 setByAddingObject:objc_opt_class()];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"component"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"component"];
     component = v5->_component;
     v5->_component = v8;
 
-    v10 = [v4 decodeObjectOfClasses:initWithCoder__BindingClasses forKey:@"bindings"];
+    v10 = [coderCopy decodeObjectOfClasses:initWithCoder__BindingClasses forKey:@"bindings"];
     bindingDescriptions = v5->_bindingDescriptions;
     v5->_bindingDescriptions = v10;
   }
@@ -66,12 +66,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bindingDescriptions = self->_bindingDescriptions;
-  v5 = a3;
-  [v5 encodeObject:bindingDescriptions forKey:@"bindings"];
-  [v5 encodeObject:self->_component forKey:@"component"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bindingDescriptions forKey:@"bindings"];
+  [coderCopy encodeObject:self->_component forKey:@"component"];
 }
 
 - (NSString)description
@@ -79,8 +79,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_GCControllerComponentDescription *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@ '%@'>", v5, v6];
+  identifier = [(_GCControllerComponentDescription *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@ '%@'>", v5, identifier];
 
   return v7;
 }
@@ -90,8 +90,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_GCControllerComponentDescription *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@ '#%llx'>", v5, objc_msgSend(v6, "hash")];
+  identifier = [(_GCControllerComponentDescription *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@ '#%llx'>", v5, objc_msgSend(identifier, "hash")];
 
   return v7;
 }
@@ -101,18 +101,18 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_GCControllerComponentDescription *)self identifier];
+  identifier = [(_GCControllerComponentDescription *)self identifier];
   v7 = [(GCControllerComponent *)self->_component debugDescription];
   v8 = [(NSArray *)self->_bindingDescriptions debugDescription];
-  v9 = [v3 stringWithFormat:@"<%@ %p '%@'> {\n\tcomponent: %@\n\tbindings: %@\n}", v5, self, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@ %p '%@'> {\n\tcomponent: %@\n\tbindings: %@\n}", v5, self, identifier, v7, v8];
 
   return v9;
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   materializedComponent = self->_materializedComponent;
   if (materializedComponent)
   {
@@ -139,7 +139,7 @@ LABEL_4:
         objc_enumerationMutation(v7);
       }
 
-      v12 = [*(*(&v18 + 1) + 8 * v11) materializeWithContext:{v4, v18}];
+      v12 = [*(*(&v18 + 1) + 8 * v11) materializeWithContext:{contextCopy, v18}];
       if (!v12)
       {
         break;
@@ -181,14 +181,14 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)update:(id)a3 withContext:(id)a4
+- (BOOL)update:(id)update withContext:(id)context
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identifier];
-  v10 = [(_GCControllerComponentDescription *)self identifier];
-  v11 = [v9 isEqual:v10];
+  updateCopy = update;
+  contextCopy = context;
+  identifier = [updateCopy identifier];
+  identifier2 = [(_GCControllerComponentDescription *)self identifier];
+  v11 = [identifier isEqual:identifier2];
 
   if ((v11 & 1) == 0)
   {
@@ -215,7 +215,7 @@ LABEL_5:
         objc_enumerationMutation(v13);
       }
 
-      v18 = [*(*(&v24 + 1) + 8 * v17) materializeWithContext:{v8, v24}];
+      v18 = [*(*(&v24 + 1) + 8 * v17) materializeWithContext:{contextCopy, v24}];
       if (!v18)
       {
         break;
@@ -241,26 +241,26 @@ LABEL_5:
   v21 = [(NSArray *)self->_bindingDescriptions count];
   if (v20 == v21)
   {
-    [(_GCControllerComponentDescription *)self _applyBinding:v12 toComponent:v7];
+    [(_GCControllerComponentDescription *)self _applyBinding:v12 toComponent:updateCopy];
   }
 
   v22 = *MEMORY[0x1E69E9840];
   return v20 == v21;
 }
 
-- (void)_applyBinding:(id)a3 toComponent:(id)a4
+- (void)_applyBinding:(id)binding toComponent:(id)component
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 conformsToProtocol:&unk_1F4EB3468])
+  bindingCopy = binding;
+  componentCopy = component;
+  if ([componentCopy conformsToProtocol:&unk_1F4EB3468])
   {
     [(GCControllerComponent *)self->_component setHIDEventSource:0];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v8 = v6;
+    v8 = bindingCopy;
     v9 = [v8 countByEnumeratingWithState:&v45 objects:v52 count:16];
     if (v9)
     {
@@ -289,14 +289,14 @@ LABEL_5:
     }
   }
 
-  if ([v7 conformsToProtocol:&unk_1F4E94BA0])
+  if ([componentCopy conformsToProtocol:&unk_1F4E94BA0])
   {
     [(GCControllerComponent *)self->_component setGamepadEventSource:0];
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v14 = v6;
+    v14 = bindingCopy;
     v15 = [v14 countByEnumeratingWithState:&v41 objects:v51 count:16];
     if (v15)
     {
@@ -325,14 +325,14 @@ LABEL_5:
     }
   }
 
-  if ([v7 conformsToProtocol:&unk_1F4EA7458])
+  if ([componentCopy conformsToProtocol:&unk_1F4EA7458])
   {
     [(GCControllerComponent *)self->_component setKeyboardEventSource:0];
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v20 = v6;
+    v20 = bindingCopy;
     v21 = [v20 countByEnumeratingWithState:&v37 objects:v50 count:16];
     if (v21)
     {
@@ -361,14 +361,14 @@ LABEL_5:
     }
   }
 
-  if ([v7 conformsToProtocol:&unk_1F4E9D470])
+  if ([componentCopy conformsToProtocol:&unk_1F4E9D470])
   {
     [(GCControllerComponent *)self->_component setMotionEventSource:0];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v26 = v6;
+    v26 = bindingCopy;
     v27 = [v26 countByEnumeratingWithState:&v33 objects:v49 count:16];
     if (v27)
     {

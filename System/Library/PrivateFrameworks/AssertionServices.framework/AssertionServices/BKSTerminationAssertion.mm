@@ -1,60 +1,60 @@
 @interface BKSTerminationAssertion
-- (BKSTerminationAssertion)initWithBundleIdentifier:(id)a3 efficacy:(unint64_t)a4 name:(id)a5 context:(id)a6 withHandler:(id)a7;
-- (BKSTerminationAssertion)initWithBundleIdentifier:(id)a3 efficacy:(unint64_t)a4 name:(id)a5 withHandler:(id)a6;
+- (BKSTerminationAssertion)initWithBundleIdentifier:(id)identifier efficacy:(unint64_t)efficacy name:(id)name context:(id)context withHandler:(id)handler;
+- (BKSTerminationAssertion)initWithBundleIdentifier:(id)identifier efficacy:(unint64_t)efficacy name:(id)name withHandler:(id)handler;
 - (BOOL)acquire;
-- (unint64_t)_bksErrorForRBSRequestError:(unint64_t)a3;
+- (unint64_t)_bksErrorForRBSRequestError:(unint64_t)error;
 @end
 
 @implementation BKSTerminationAssertion
 
-- (unint64_t)_bksErrorForRBSRequestError:(unint64_t)a3
+- (unint64_t)_bksErrorForRBSRequestError:(unint64_t)error
 {
-  if (a3 - 1 > 8)
+  if (error - 1 > 8)
   {
     return 0;
   }
 
   else
   {
-    return qword_22EEBF118[a3 - 1];
+    return qword_22EEBF118[error - 1];
   }
 }
 
-- (BKSTerminationAssertion)initWithBundleIdentifier:(id)a3 efficacy:(unint64_t)a4 name:(id)a5 withHandler:(id)a6
+- (BKSTerminationAssertion)initWithBundleIdentifier:(id)identifier efficacy:(unint64_t)efficacy name:(id)name withHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  handlerCopy = handler;
+  nameCopy = name;
+  identifierCopy = identifier;
   v13 = +[BKSTerminationContext terminationAssertionContext];
-  v14 = [(BKSTerminationAssertion *)self initWithBundleIdentifier:v12 efficacy:a4 name:v11 context:v13 withHandler:v10];
+  v14 = [(BKSTerminationAssertion *)self initWithBundleIdentifier:identifierCopy efficacy:efficacy name:nameCopy context:v13 withHandler:handlerCopy];
 
   return v14;
 }
 
-- (BKSTerminationAssertion)initWithBundleIdentifier:(id)a3 efficacy:(unint64_t)a4 name:(id)a5 context:(id)a6 withHandler:(id)a7
+- (BKSTerminationAssertion)initWithBundleIdentifier:(id)identifier efficacy:(unint64_t)efficacy name:(id)name context:(id)context withHandler:(id)handler
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = BKSTerminationAssertion;
-  v14 = [(BKSAssertion *)&v26 _initWithName:a5 handler:a7];
+  v14 = [(BKSAssertion *)&v26 _initWithName:name handler:handler];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [identifierCopy copy];
     bundleIdentifier = v14->_bundleIdentifier;
     v14->_bundleIdentifier = v15;
 
-    v14->_efficacy = a4;
-    v17 = [v13 copy];
+    v14->_efficacy = efficacy;
+    v17 = [contextCopy copy];
     context = v14->_context;
     v14->_context = v17;
 
-    v19 = [MEMORY[0x277D47008] systemTarget];
-    [(BKSAssertion *)v14 _setTarget:v19];
+    systemTarget = [MEMORY[0x277D47008] systemTarget];
+    [(BKSAssertion *)v14 _setTarget:systemTarget];
 
     v20 = MEMORY[0x277D46F00];
-    v21 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:v12];
+    v21 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:identifierCopy];
     v22 = [v20 limitationWithPredicate:v21];
     v27[0] = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];

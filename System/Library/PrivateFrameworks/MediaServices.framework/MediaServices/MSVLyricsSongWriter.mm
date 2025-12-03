@@ -9,9 +9,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MSVLyricsSongWriter *)self name];
-  v6 = [(MSVLyricsSongWriter *)self artistID];
-  v7 = [v3 stringWithFormat:@"<%@ %p> name: %@, artistID: %@", v4, self, v5, v6];
+  name = [(MSVLyricsSongWriter *)self name];
+  artistID = [(MSVLyricsSongWriter *)self artistID];
+  v7 = [v3 stringWithFormat:@"<%@ %p> name: %@, artistID: %@", v4, self, name, artistID];
 
   return v7;
 }
@@ -23,8 +23,8 @@
   v2 = [(MSVLyricsSongWriter *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD60] string];
-    [(MSVLyricsXMLElement *)v2 setMutableText:v3];
+    string = [MEMORY[0x1E696AD60] string];
+    [(MSVLyricsXMLElement *)v2 setMutableText:string];
   }
 
   return v2;

@@ -1,10 +1,10 @@
 @interface NWConcrete_nw_endpoint_proxy
-- (BOOL)applyWithHandler:(id)a3 toChildren:(id)a4;
+- (BOOL)applyWithHandler:(id)handler toChildren:(id)children;
 - (NWConcrete_nw_endpoint_proxy)init;
-- (void)cancelWithHandler:(id)a3 forced:(BOOL)a4;
+- (void)cancelWithHandler:(id)handler forced:(BOOL)forced;
 - (void)dealloc;
-- (void)startWithHandler:(id)a3;
-- (void)updatePathWithHandler:(id)a3;
+- (void)startWithHandler:(id)handler;
+- (void)updatePathWithHandler:(id)handler;
 @end
 
 @implementation NWConcrete_nw_endpoint_proxy
@@ -103,12 +103,12 @@ LABEL_3:
   [(NWConcrete_nw_endpoint_proxy *)&v2 dealloc];
 }
 
-- (BOOL)applyWithHandler:(id)a3 toChildren:(id)a4
+- (BOOL)applyWithHandler:(id)handler toChildren:(id)children
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  handlerCopy = handler;
+  childrenCopy = children;
+  if (!handlerCopy)
   {
     v27 = __nwlog_obj();
     *buf = 136446210;
@@ -181,7 +181,7 @@ LABEL_66:
     goto LABEL_40;
   }
 
-  v8 = v6;
+  v8 = handlerCopy;
   v9 = v8[29];
 
   if (v9 != 3)
@@ -347,7 +347,7 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (!v7)
+  if (!childrenCopy)
   {
     v29 = __nwlog_obj();
     *buf = 136446210;
@@ -424,7 +424,7 @@ LABEL_39:
   aBlock[1] = 3221225472;
   aBlock[2] = __60__NWConcrete_nw_endpoint_proxy_applyWithHandler_toChildren___block_invoke;
   aBlock[3] = &unk_1E6A3CD30;
-  v11 = v7;
+  v11 = childrenCopy;
   v39 = v11;
   if (child_endpoint_handlers)
   {
@@ -441,12 +441,12 @@ LABEL_43:
   return v12;
 }
 
-- (void)updatePathWithHandler:(id)a3
+- (void)updatePathWithHandler:(id)handler
 {
   v126 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (!handlerCopy)
   {
     v79 = __nwlog_obj();
     *buf = 136446210;
@@ -518,7 +518,7 @@ LABEL_94:
     goto LABEL_95;
   }
 
-  v6 = v4;
+  v6 = handlerCopy;
   v7 = v6[29];
 
   if (v7 != 3)
@@ -1127,12 +1127,12 @@ LABEL_91:
 LABEL_97:
 }
 
-- (void)cancelWithHandler:(id)a3 forced:(BOOL)a4
+- (void)cancelWithHandler:(id)handler forced:(BOOL)forced
 {
   v79 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (!handlerCopy)
   {
     v52 = __nwlog_obj();
     *buf = 136446210;
@@ -1210,7 +1210,7 @@ LABEL_72:
     goto LABEL_73;
   }
 
-  v8 = v6;
+  v8 = handlerCopy;
   v9 = v8[29];
 
   if (v9 == 3)
@@ -1226,7 +1226,7 @@ LABEL_54:
       aBlock[1] = 3221225472;
       aBlock[2] = __57__NWConcrete_nw_endpoint_proxy_cancelWithHandler_forced___block_invoke;
       aBlock[3] = &__block_descriptor_33_e35_B24__0Q8__NSObject_OS_nw_object__16l;
-      v62 = a4;
+      forcedCopy = forced;
       if (child_endpoint_handlers)
       {
         _nw_array_apply(child_endpoint_handlers, aBlock);
@@ -1544,12 +1544,12 @@ LABEL_70:
 LABEL_73:
 }
 
-- (void)startWithHandler:(id)a3
+- (void)startWithHandler:(id)handler
 {
   v299 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (!handlerCopy)
   {
     v213 = __nwlog_obj();
     *buf = 136446210;
@@ -1624,7 +1624,7 @@ LABEL_307:
     goto LABEL_277;
   }
 
-  v6 = v4;
+  v6 = handlerCopy;
   v7 = v6[29];
 
   if (v7 != 3)

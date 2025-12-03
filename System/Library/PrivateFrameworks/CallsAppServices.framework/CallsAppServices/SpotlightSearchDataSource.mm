@@ -1,20 +1,20 @@
 @interface SpotlightSearchDataSource
 - (_TtC16CallsAppServices25SpotlightSearchDataSource)init;
-- (void)providersChangedForProviderManager:(id)a3;
-- (void)searchSuggestionsWithText:(NSString *)a3 completion:(id)a4;
+- (void)providersChangedForProviderManager:(id)manager;
+- (void)searchSuggestionsWithText:(NSString *)text completion:(id)completion;
 @end
 
 @implementation SpotlightSearchDataSource
 
-- (void)searchSuggestionsWithText:(NSString *)a3 completion:(id)a4
+- (void)searchSuggestionsWithText:(NSString *)text completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC7610E0, &qword_1D33E16C0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = text;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1D33DE9B4();
@@ -29,15 +29,15 @@
   v15[3] = 0;
   v15[4] = &unk_1D33E2E08;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  textCopy = text;
+  selfCopy = self;
   sub_1D337CB4C(0, 0, v10, &unk_1D33E2E18, v15);
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_1D337D018();
 }
 

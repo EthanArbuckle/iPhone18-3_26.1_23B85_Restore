@@ -3,88 +3,88 @@
 - (BOOL)_isApplicationStatusBarHidden;
 - (BOOL)_shouldSuppressHomeGrabber;
 - (BOOL)_statusBarHasMatchMoveAnimation;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)overlayViewProviderIsHostedInNonrotatingWindow:(id)a3;
-- (BOOL)overlayViewProviderIsHostedInSecureWindow:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)overlayViewProviderIsHostedInNonrotatingWindow:(id)window;
+- (BOOL)overlayViewProviderIsHostedInSecureWindow:(id)window;
 - (BOOL)sceneResizesHostedContext;
 - (SBApplicationSceneBackgroundView)backgroundView;
-- (SBDeviceApplicationSceneViewController)initWithSceneHandle:(id)a3;
+- (SBDeviceApplicationSceneViewController)initWithSceneHandle:(id)handle;
 - (SBDeviceApplicationSceneViewControllerDelegate)delegate;
 - (SBHomeGrabberView)homeGrabberView;
-- (id)animationFactoryForImplicitTransitionFromMode:(int64_t)a3 toMode:(int64_t)a4 defaultFactory:(id)a5;
+- (id)animationFactoryForImplicitTransitionFromMode:(int64_t)mode toMode:(int64_t)toMode defaultFactory:(id)factory;
 - (id)backgroundActivitiesToSuppress;
 - (id)currentStatusBarStyleAttributes;
-- (id)hostWindowForOverlayViewProvider:(id)a3;
-- (id)initialTraitsParticipantForOverlayViewProvider:(id)a3;
+- (id)hostWindowForOverlayViewProvider:(id)provider;
+- (id)initialTraitsParticipantForOverlayViewProvider:(id)provider;
 - (id)prepareForContentRotation;
-- (id)statusBar:(id)a3 effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:(id)a4;
-- (id)statusBarAssertionWithStatusBarHidden:(BOOL)a3 atLevel:(unint64_t)a4;
-- (id)statusBarAssertionWithStatusBarSettings:(id)a3 atLevel:(unint64_t)a4;
-- (id)windowSceneForOverlayViewProvider:(id)a3;
+- (id)statusBar:(id)bar effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:(id)identifiers;
+- (id)statusBarAssertionWithStatusBarHidden:(BOOL)hidden atLevel:(unint64_t)level;
+- (id)statusBarAssertionWithStatusBarSettings:(id)settings atLevel:(unint64_t)level;
+- (id)windowSceneForOverlayViewProvider:(id)provider;
 - (int64_t)_currentStatusBarStyle;
-- (int64_t)_currentStatusBarStyleForPartWithIdentifier:(id)a3;
-- (int64_t)_effectiveStyleForPartIdentifier:(id)a3;
-- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)a3;
+- (int64_t)_currentStatusBarStyleForPartWithIdentifier:(id)identifier;
+- (int64_t)_effectiveStyleForPartIdentifier:(id)identifier;
+- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)orientation;
 - (int64_t)leadingStatusBarStyle;
-- (int64_t)overriddenRequestedStyleFromStyle:(int64_t)a3;
+- (int64_t)overriddenRequestedStyleFromStyle:(int64_t)style;
 - (int64_t)trailingStatusBarStyle;
-- (unint64_t)statusBar:(id)a3 effectiveStyleOverridesForRequestedStyle:(int64_t)a4 overrides:(unint64_t)a5;
-- (void)_addStatusBarMatchMoveAnimationForView:(id)a3;
-- (void)_applyBackgroundActivitiesToSuppress:(id)a3 toSceneWithIdentifier:(id)a4;
+- (unint64_t)statusBar:(id)bar effectiveStyleOverridesForRequestedStyle:(int64_t)style overrides:(unint64_t)overrides;
+- (void)_addStatusBarMatchMoveAnimationForView:(id)view;
+- (void)_applyBackgroundActivitiesToSuppress:(id)suppress toSceneWithIdentifier:(id)identifier;
 - (void)_configureForCurrentSecureDisplayState;
-- (void)_configureForSecureDisplay:(BOOL)a3;
+- (void)_configureForSecureDisplay:(BOOL)display;
 - (void)_configureStatusBarWithCurrentStyleRequest;
 - (void)_createSceneOverlayViewProvidersIfNecessary;
 - (void)_createStatusBar;
-- (void)_deactivateOverlay:(id)a3 forViewProvider:(id)a4;
+- (void)_deactivateOverlay:(id)overlay forViewProvider:(id)provider;
 - (void)_destroySceneOverlayViewProviders;
 - (void)_layoutStatusBar;
 - (void)_recalculateResignActiveAssertionForActiveOverlays;
 - (void)_relinquishResignActiveAssertion;
 - (void)_removeStatusBar;
 - (void)_removeStatusBarMatchMoveAnimation;
-- (void)_setRealStatusBarStyleDelegate:(id)a3;
-- (void)_setStatusBarAssertions:(id)a3;
-- (void)_setStatusBarStyle:(int64_t)a3;
-- (void)_setStatusBarStyle:(int64_t)a3 forPartWithIdentifier:(id)a4;
-- (void)_setupStatusBarStylesFromSceneHandle:(id)a3;
-- (void)_statusBarDoubleTapTop:(id)a3;
-- (void)_statusBarTapped:(id)a3 type:(int64_t)a4;
-- (void)_updateSceneFullyOccludedState:(id)a3 fullyOccluded:(BOOL)a4;
-- (void)_updateStatusBarAppearanceForOverlayProvider:(id)a3;
+- (void)_setRealStatusBarStyleDelegate:(id)delegate;
+- (void)_setStatusBarAssertions:(id)assertions;
+- (void)_setStatusBarStyle:(int64_t)style;
+- (void)_setStatusBarStyle:(int64_t)style forPartWithIdentifier:(id)identifier;
+- (void)_setupStatusBarStylesFromSceneHandle:(id)handle;
+- (void)_statusBarDoubleTapTop:(id)top;
+- (void)_statusBarTapped:(id)tapped type:(int64_t)type;
+- (void)_updateSceneFullyOccludedState:(id)state fullyOccluded:(BOOL)occluded;
+- (void)_updateStatusBarAppearanceForOverlayProvider:(id)provider;
 - (void)_updateStatusBarState;
 - (void)_updateWindowControlsAdaptiveStyle;
-- (void)activateOverlayForViewProvider:(id)a3;
-- (void)beginMaskingForReason:(int64_t)a3 continuation:(id)a4 scene:(id)a5;
-- (void)containerDidUpdateTraitsParticipant:(id)a3;
-- (void)deactivateOverlayForViewProvider:(id)a3;
+- (void)activateOverlayForViewProvider:(id)provider;
+- (void)beginMaskingForReason:(int64_t)reason continuation:(id)continuation scene:(id)scene;
+- (void)containerDidUpdateTraitsParticipant:(id)participant;
+- (void)deactivateOverlayForViewProvider:(id)provider;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation;
 - (void)invalidate;
-- (void)invalidateMasking:(id)a3;
-- (void)overlayViewProviderNeedsStatusBarAppearanceUpdate:(id)a3;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 didMoveFromSceneManager:(id)a4;
-- (void)sceneView:(id)a3 changedPreferredStatusBarStyleTo:(int64_t)a4;
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarHiddenTo:(BOOL)a4 withAnimation:(int64_t)a5;
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarStyleTo:(int64_t)a4;
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarStyleTo:(int64_t)a4 forPartWithIdentifier:(id)a5;
-- (void)setBackgroundView:(id)a3;
-- (void)setDisplayMode:(int64_t)a3 animationFactory:(id)a4 completion:(id)a5;
-- (void)setHomeGrabberDisplayMode:(int64_t)a3;
-- (void)setRendersWhileLocked:(BOOL)a3;
-- (void)setSceneFlattenMode:(id)a3;
-- (void)setSceneFullyOccluded:(BOOL)a3;
-- (void)setSceneMinificationFilter:(id)a3;
-- (void)setSceneRendersAsynchronously:(BOOL)a3;
-- (void)setSceneResizesHostedContext:(BOOL)a3;
-- (void)statusBarAssertionDidInvalidate:(id)a3;
+- (void)invalidateMasking:(id)masking;
+- (void)overlayViewProviderNeedsStatusBarAppearanceUpdate:(id)update;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle didMoveFromSceneManager:(id)manager;
+- (void)sceneView:(id)view changedPreferredStatusBarStyleTo:(int64_t)to;
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarHiddenTo:(BOOL)to withAnimation:(int64_t)animation;
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarStyleTo:(int64_t)to;
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarStyleTo:(int64_t)to forPartWithIdentifier:(id)withIdentifier;
+- (void)setBackgroundView:(id)view;
+- (void)setDisplayMode:(int64_t)mode animationFactory:(id)factory completion:(id)completion;
+- (void)setHomeGrabberDisplayMode:(int64_t)mode;
+- (void)setRendersWhileLocked:(BOOL)locked;
+- (void)setSceneFlattenMode:(id)mode;
+- (void)setSceneFullyOccluded:(BOOL)occluded;
+- (void)setSceneMinificationFilter:(id)filter;
+- (void)setSceneRendersAsynchronously:(BOOL)asynchronously;
+- (void)setSceneResizesHostedContext:(BOOL)context;
+- (void)statusBarAssertionDidInvalidate:(id)invalidate;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willPerformNonAnimatedTransitionToInterfaceOrientation:(int64_t)a3;
-- (void)willRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4 alongsideContainerView:(id)a5 animated:(BOOL)a6;
+- (void)willPerformNonAnimatedTransitionToInterfaceOrientation:(int64_t)orientation;
+- (void)willRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation alongsideContainerView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation SBDeviceApplicationSceneViewController
@@ -94,9 +94,9 @@
   homeGrabberDisplayMode = self->_homeGrabberDisplayMode;
   if (!homeGrabberDisplayMode)
   {
-    v3 = [(SBFHomeGrabberSettings *)self->_homeGrabberSettings isEnabled];
+    isEnabled = [(SBFHomeGrabberSettings *)self->_homeGrabberSettings isEnabled];
     homeGrabberDisplayMode = 1;
-    if (v3)
+    if (isEnabled)
     {
       homeGrabberDisplayMode = 2;
     }
@@ -107,10 +107,10 @@
 
 - (SBApplicationSceneBackgroundView)backgroundView
 {
-  v2 = [(SBSceneViewController *)self _sceneView];
-  v3 = [v2 backgroundView];
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  backgroundView = [_sceneView backgroundView];
 
-  return v3;
+  return backgroundView;
 }
 
 - (void)viewDidLoad
@@ -119,16 +119,16 @@
   v7.super_class = SBDeviceApplicationSceneViewController;
   [(SBSceneViewController *)&v7 viewDidLoad];
   [(SBDeviceApplicationSceneViewController *)self _configureForCurrentSecureDisplayState];
-  v3 = [(SBSceneViewController *)self _sceneView];
-  [v3 setDelegate:self];
-  v4 = [(SBDeviceApplicationSceneViewController *)self sceneMinificationFilter];
-  [v3 setMinificationFilter:v4];
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  [_sceneView setDelegate:self];
+  sceneMinificationFilter = [(SBDeviceApplicationSceneViewController *)self sceneMinificationFilter];
+  [_sceneView setMinificationFilter:sceneMinificationFilter];
 
-  [v3 setRendersAsynchronously:{-[SBDeviceApplicationSceneViewController sceneRendersAsynchronously](self, "sceneRendersAsynchronously")}];
-  [v3 setAsynchronousOpaque:1];
-  [(SBDeviceApplicationSceneViewController *)self _updateSceneFullyOccludedState:v3 fullyOccluded:[(SBDeviceApplicationSceneViewController *)self sceneFullyOccluded]];
-  v5 = [(SBDeviceApplicationSceneViewController *)self sceneFlattenMode];
-  [v3 setFlattenMode:v5];
+  [_sceneView setRendersAsynchronously:{-[SBDeviceApplicationSceneViewController sceneRendersAsynchronously](self, "sceneRendersAsynchronously")}];
+  [_sceneView setAsynchronousOpaque:1];
+  [(SBDeviceApplicationSceneViewController *)self _updateSceneFullyOccludedState:_sceneView fullyOccluded:[(SBDeviceApplicationSceneViewController *)self sceneFullyOccluded]];
+  sceneFlattenMode = [(SBDeviceApplicationSceneViewController *)self sceneFlattenMode];
+  [_sceneView setFlattenMode:sceneFlattenMode];
 
   if (self->_statusBarAssertions || self->_shouldDrawStatusBarInsideSceneView)
   {
@@ -137,42 +137,42 @@
 
   if (![(SBDeviceApplicationSceneViewController *)self _shouldSuppressHomeGrabber])
   {
-    v6 = [(SBDeviceApplicationSceneViewController *)self homeGrabberPillSettings];
-    [v3 createHomeGrabberViewIfNecessaryWithSettings:v6];
+    homeGrabberPillSettings = [(SBDeviceApplicationSceneViewController *)self homeGrabberPillSettings];
+    [_sceneView createHomeGrabberViewIfNecessaryWithSettings:homeGrabberPillSettings];
   }
 }
 
 - (void)_createStatusBar
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [(SBSceneViewController *)self sceneHandle];
-  v4 = [v3 _windowScene];
-  v5 = [v3 sceneIdentifier];
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  _windowScene = [sceneHandle _windowScene];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v48 = v5;
-  v9 = [v6 stringWithFormat:@"%@ - %@", v8, v5];
+  v48 = sceneIdentifier;
+  v9 = [v6 stringWithFormat:@"%@ - %@", v8, sceneIdentifier];
 
-  v49 = v4;
-  v10 = [v4 statusBarManager];
-  v11 = [v10 reusePool];
+  v49 = _windowScene;
+  statusBarManager = [_windowScene statusBarManager];
+  reusePool = [statusBarManager reusePool];
 
-  objc_storeWeak(&self->_statusBarReusePool, v11);
-  v47 = v11;
-  v12 = [v11 getReusableStatusBarWithReason:v9];
+  objc_storeWeak(&self->_statusBarReusePool, reusePool);
+  v47 = reusePool;
+  v12 = [reusePool getReusableStatusBarWithReason:v9];
   statusBar = self->_statusBar;
   self->_statusBar = v12;
 
-  v14 = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
-  if (v14)
+  _underlyingStatusBarViewIfAvailable = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
+  if (_underlyingStatusBarViewIfAvailable)
   {
-    v15 = [(SBSceneViewController *)self sceneHandle];
-    v16 = [v15 breadcrumbProvider];
+    sceneHandle2 = [(SBSceneViewController *)self sceneHandle];
+    breadcrumbProvider = [sceneHandle2 breadcrumbProvider];
 
-    if ([v16 hasAssistantBreadcrumb])
+    if ([breadcrumbProvider hasAssistantBreadcrumb])
     {
-      v17 = [v14 actionGestureRecognizer];
+      actionGestureRecognizer = [_underlyingStatusBarViewIfAvailable actionGestureRecognizer];
       v18 = SBLogSiri();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -180,51 +180,51 @@
         *buf = 138543618;
         v51 = v19;
         v52 = 2114;
-        v53 = v17;
+        v53 = actionGestureRecognizer;
         _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ - Creating status bar with Assistant breadcrumb; breadcrumb gesture recognizer=%{public}@", buf, 0x16u);
       }
 
       v20 = +[SBAssistantController sharedInstance];
-      [v20 statusBarActionGestureRecognizerDidChange:v17];
+      [v20 statusBarActionGestureRecognizerDidChange:actionGestureRecognizer];
     }
   }
 
-  v21 = [v14 actionGestureRecognizer];
+  actionGestureRecognizer2 = [_underlyingStatusBarViewIfAvailable actionGestureRecognizer];
   v22 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__statusBarDoubleTapTop_];
   doubleTapTopGestureRecognizer = self->_doubleTapTopGestureRecognizer;
   self->_doubleTapTopGestureRecognizer = v22;
 
   [(UITapGestureRecognizer *)self->_doubleTapTopGestureRecognizer setNumberOfTapsRequired:2];
-  [(UITapGestureRecognizer *)self->_doubleTapTopGestureRecognizer requireGestureRecognizerToFail:v21];
+  [(UITapGestureRecognizer *)self->_doubleTapTopGestureRecognizer requireGestureRecognizerToFail:actionGestureRecognizer2];
   [(UITapGestureRecognizer *)self->_doubleTapTopGestureRecognizer setDelegate:self];
   [(UITapGestureRecognizer *)self->_doubleTapTopGestureRecognizer setDelaysTouchesBegan:0];
   [(UITapGestureRecognizer *)self->_doubleTapTopGestureRecognizer setDelaysTouchesEnded:0];
-  [v14 addGestureRecognizer:self->_doubleTapTopGestureRecognizer];
+  [_underlyingStatusBarViewIfAvailable addGestureRecognizer:self->_doubleTapTopGestureRecognizer];
   v24 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__statusBarScrollToTop_];
   scrollToTopGestureRecognizer = self->_scrollToTopGestureRecognizer;
   self->_scrollToTopGestureRecognizer = v24;
 
-  [(UITapGestureRecognizer *)self->_scrollToTopGestureRecognizer requireGestureRecognizerToFail:v21];
+  [(UITapGestureRecognizer *)self->_scrollToTopGestureRecognizer requireGestureRecognizerToFail:actionGestureRecognizer2];
   [(UITapGestureRecognizer *)self->_scrollToTopGestureRecognizer setDelegate:self];
-  [v14 addGestureRecognizer:self->_scrollToTopGestureRecognizer];
+  [_underlyingStatusBarViewIfAvailable addGestureRecognizer:self->_scrollToTopGestureRecognizer];
   v26 = +[SBPlatformController sharedInstance];
-  v27 = [v26 isInternalInstall];
+  isInternalInstall = [v26 isInternalInstall];
 
-  if (v27)
+  if (isInternalInstall)
   {
     v28 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__statusBarShowDebug_];
     showDebugGestureRecognizer = self->_showDebugGestureRecognizer;
     self->_showDebugGestureRecognizer = v28;
 
     [(UITapGestureRecognizer *)self->_showDebugGestureRecognizer setNumberOfTouchesRequired:2];
-    [(UITapGestureRecognizer *)self->_showDebugGestureRecognizer requireGestureRecognizerToFail:v21];
-    [v14 addGestureRecognizer:self->_showDebugGestureRecognizer];
+    [(UITapGestureRecognizer *)self->_showDebugGestureRecognizer requireGestureRecognizerToFail:actionGestureRecognizer2];
+    [_underlyingStatusBarViewIfAvailable addGestureRecognizer:self->_showDebugGestureRecognizer];
   }
 
-  v30 = [(UIStatusBar *)self->_statusBar layer];
-  [v30 setHitTestsAsOpaque:1];
+  layer = [(UIStatusBar *)self->_statusBar layer];
+  [layer setHitTestsAsOpaque:1];
 
-  [(SBDeviceApplicationSceneViewController *)self _setupStatusBarStylesFromSceneHandle:v3];
+  [(SBDeviceApplicationSceneViewController *)self _setupStatusBarStylesFromSceneHandle:sceneHandle];
   [(UIStatusBar *)self->_statusBar requestResolvedStyle:0];
   [(UIStatusBar *)self->_statusBar setStyleDelegate:self];
   [(UIStatusBar *)self->_statusBar setLegibilityStyle:0];
@@ -233,32 +233,32 @@
   if ([v31 statusBarDebugBackgroundColorsEnabled])
   {
     v32 = self->_statusBar;
-    v33 = [MEMORY[0x277D75348] cyanColor];
-    v34 = [v33 colorWithAlphaComponent:0.4];
+    cyanColor = [MEMORY[0x277D75348] cyanColor];
+    v34 = [cyanColor colorWithAlphaComponent:0.4];
     [(UIStatusBar *)v32 setBackgroundColor:v34];
   }
 
-  v35 = [v3 statusBarStateProvider];
-  [v35 addStatusBarObserver:self];
+  statusBarStateProvider = [sceneHandle statusBarStateProvider];
+  [statusBarStateProvider addStatusBarObserver:self];
 
-  v36 = [v3 breadcrumbProvider];
-  [v36 addObserver:self];
+  breadcrumbProvider2 = [sceneHandle breadcrumbProvider];
+  [breadcrumbProvider2 addObserver:self];
 
-  v37 = [v3 statusBarStateProvider];
-  v38 = [v37 backgroundActivitiesToSuppress];
+  statusBarStateProvider2 = [sceneHandle statusBarStateProvider];
+  backgroundActivitiesToSuppress = [statusBarStateProvider2 backgroundActivitiesToSuppress];
 
-  v39 = [v3 sceneIdentifier];
-  [(SBDeviceApplicationSceneViewController *)self _applyBackgroundActivitiesToSuppress:v38 toSceneWithIdentifier:v39];
+  sceneIdentifier2 = [sceneHandle sceneIdentifier];
+  [(SBDeviceApplicationSceneViewController *)self _applyBackgroundActivitiesToSuppress:backgroundActivitiesToSuppress toSceneWithIdentifier:sceneIdentifier2];
 
-  v40 = [(SBDeviceApplicationSceneViewController *)self view];
+  view = [(SBDeviceApplicationSceneViewController *)self view];
   v41 = objc_alloc(MEMORY[0x277D65F80]);
-  [v40 bounds];
+  [view bounds];
   v42 = [v41 initWithFrame:?];
   statusBarWrapperView = self->_statusBarWrapperView;
   self->_statusBarWrapperView = v42;
 
   v44 = objc_alloc(MEMORY[0x277CF0D78]);
-  [v40 bounds];
+  [view bounds];
   v45 = [v44 initWithFrame:?];
   statusBarTransformView = self->_statusBarTransformView;
   self->_statusBarTransformView = v45;
@@ -266,47 +266,47 @@
   [(BSUIOrientationTransformWrapperView *)self->_statusBarTransformView setAutoresizingMask:18];
   [(UIView *)self->_statusBarWrapperView addSubview:self->_statusBar];
   [(BSUIOrientationTransformWrapperView *)self->_statusBarTransformView addContentView:self->_statusBarWrapperView];
-  [v40 addSubview:self->_statusBarTransformView];
+  [view addSubview:self->_statusBarTransformView];
 }
 
 - (BOOL)_isApplicationStatusBarHidden
 {
-  v2 = [(SBSceneViewController *)self sceneHandle];
-  v3 = [v2 statusBarStateProvider];
-  v4 = [v3 statusBarHidden];
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  statusBarStateProvider = [sceneHandle statusBarStateProvider];
+  statusBarHidden = [statusBarStateProvider statusBarHidden];
 
-  return v4;
+  return statusBarHidden;
 }
 
 - (void)_layoutStatusBar
 {
   if (self->_statusBar)
   {
-    v3 = [(SBDeviceApplicationSceneViewController *)self view];
-    v4 = [(SBSceneViewController *)self sceneHandle];
-    v5 = [v4 application];
-    v6 = [(UIStatusBar *)self->_statusBar styleRequest];
-    v46 = v3;
-    [v3 bounds];
+    view = [(SBDeviceApplicationSceneViewController *)self view];
+    sceneHandle = [(SBSceneViewController *)self sceneHandle];
+    application = [sceneHandle application];
+    styleRequest = [(UIStatusBar *)self->_statusBar styleRequest];
+    v46 = view;
+    [view bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [v4 statusBarOrientation];
-    v16 = v15;
-    if (([v5 isMedusaCapable] & 1) == 0)
+    statusBarOrientation = [sceneHandle statusBarOrientation];
+    statusBarOrientation2 = statusBarOrientation;
+    if (([application isMedusaCapable] & 1) == 0)
     {
-      v17 = [v4 statusBarStateProvider];
-      v16 = [v17 statusBarOrientation];
+      statusBarStateProvider = [sceneHandle statusBarStateProvider];
+      statusBarOrientation2 = [statusBarStateProvider statusBarOrientation];
     }
 
-    if (([v4 isEffectivelyForeground] & 1) == 0)
+    if (([sceneHandle isEffectivelyForeground] & 1) == 0)
     {
-      v18 = [(SBSceneViewController *)self _sceneView];
-      v15 = [v18 orientation];
+      _sceneView = [(SBSceneViewController *)self _sceneView];
+      statusBarOrientation = [_sceneView orientation];
     }
 
-    if ((v16 - 3) < 2 != (v15 - 3) < 2)
+    if ((statusBarOrientation2 - 3) < 2 != (statusBarOrientation - 3) < 2)
     {
       v19 = v14;
     }
@@ -316,22 +316,22 @@
       v19 = v12;
     }
 
-    [MEMORY[0x277D75A78] heightForStyle:objc_msgSend(v6 orientation:{"style"), v16}];
+    [MEMORY[0x277D75A78] heightForStyle:objc_msgSend(styleRequest orientation:{"style"), statusBarOrientation2}];
     v21 = v20;
-    v22 = [v4 displayIdentity];
-    v47 = [v22 currentConfiguration];
-    v23 = [v5 classicAppNonFullScreenWithHomeAffordance];
-    v44 = v22;
-    if ([v22 isMainRootDisplay])
+    displayIdentity = [sceneHandle displayIdentity];
+    currentConfiguration = [displayIdentity currentConfiguration];
+    classicAppNonFullScreenWithHomeAffordance = [application classicAppNonFullScreenWithHomeAffordance];
+    v44 = displayIdentity;
+    if ([displayIdentity isMainRootDisplay])
     {
-      if (v23)
+      if (classicAppNonFullScreenWithHomeAffordance)
       {
-        v24 = [MEMORY[0x277D75418] currentDevice];
-        v25 = [v24 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if ((v25 & 0xFFFFFFFFFFFFFFFBLL) == 1 && ([v5 classicAppPhoneAppRunningOnPad] & 1) == 0)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && ([application classicAppPhoneAppRunningOnPad] & 1) == 0)
         {
-          [SBUIController statusBarFrameForDeviceApplicationSceneHandle:v4 displayConfiguration:v47 interfaceOrientation:v16 statusBarStyleRequest:v6 withinBounds:0 inReferenceSpace:v8, v10, v12, v14];
+          [SBUIController statusBarFrameForDeviceApplicationSceneHandle:sceneHandle displayConfiguration:currentConfiguration interfaceOrientation:statusBarOrientation2 statusBarStyleRequest:styleRequest withinBounds:0 inReferenceSpace:v8, v10, v12, v14];
           v8 = v26;
           v10 = v27;
           v19 = v28;
@@ -340,11 +340,11 @@
       }
     }
 
-    v30 = v16;
+    v30 = statusBarOrientation2;
     v43 = +[SBMedusaDomain rootSettings];
-    v45 = v15;
-    v31 = v6;
-    v32 = v5;
+    v45 = statusBarOrientation;
+    v31 = styleRequest;
+    v32 = application;
     if ([v43 statusBarDebugOffsettingEnabled])
     {
       v49.origin.x = v8;
@@ -354,12 +354,12 @@
       CGRectGetHeight(v49);
     }
 
-    v33 = [v4 _windowScene];
-    v34 = [v33 switcherController];
-    v35 = [v34 windowManagementContext];
-    v36 = [v35 isFlexibleWindowingEnabled];
+    _windowScene = [sceneHandle _windowScene];
+    switcherController = [_windowScene switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
+    isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-    if (v36)
+    if (isFlexibleWindowingEnabled)
     {
       memset(&v48, 0, 32);
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -375,7 +375,7 @@
         memset(&v48, 0, 32);
       }
 
-      if (*&v48.a == 3 && ([v4 statusBarParts] & 3) != 0)
+      if (*&v48.a == 3 && ([sceneHandle statusBarParts] & 3) != 0)
       {
         [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
       }
@@ -408,10 +408,10 @@
 
 - (void)_configureForCurrentSecureDisplayState
 {
-  v5 = [(SBSceneViewController *)self sceneHandle];
-  v3 = [v5 _windowScene];
-  v4 = [v3 secureDisplayStateProvider];
-  -[SBDeviceApplicationSceneViewController _configureForSecureDisplay:](self, "_configureForSecureDisplay:", [v4 isInSecureDisplayMode]);
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  _windowScene = [sceneHandle _windowScene];
+  secureDisplayStateProvider = [_windowScene secureDisplayStateProvider];
+  -[SBDeviceApplicationSceneViewController _configureForSecureDisplay:](self, "_configureForSecureDisplay:", [secureDisplayStateProvider isInSecureDisplayMode]);
 }
 
 - (void)_updateStatusBarState
@@ -421,8 +421,8 @@
   {
     if ([(NSHashTable *)self->_statusBarAssertions count]|| self->_shouldDrawStatusBarInsideSceneView)
     {
-      v3 = [(NSHashTable *)self->_statusBarAssertions allObjects];
-      v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_144];
+      allObjects = [(NSHashTable *)self->_statusBarAssertions allObjects];
+      v4 = [allObjects sortedArrayUsingComparator:&__block_literal_global_144];
 
       v29 = 0u;
       v30 = 0u;
@@ -445,20 +445,20 @@
             }
 
             v11 = *(*(&v27 + 1) + 8 * i);
-            v12 = [v11 settings];
+            settings = [v11 settings];
 
-            if (v12)
+            if (settings)
             {
-              v13 = [v11 settings];
-              v14 = v13;
+              settings2 = [v11 settings];
+              v14 = settings2;
               if (v8)
               {
-                [v8 applySettings:v13];
+                [v8 applySettings:settings2];
               }
 
               else
               {
-                v8 = [v13 mutableCopy];
+                v8 = [settings2 mutableCopy];
               }
             }
           }
@@ -487,30 +487,30 @@
 
       if (v8)
       {
-        v15 = [v8 alpha];
-        if (!v15)
+        alpha = [v8 alpha];
+        if (!alpha)
         {
           v18 = 1.0;
           goto LABEL_30;
         }
 
-        v16 = [v8 alpha];
-        [v16 floatValue];
+        alpha2 = [v8 alpha];
+        [alpha2 floatValue];
         v18 = v17;
       }
 
       else
       {
-        v15 = [(SBSceneViewController *)self sceneHandle];
-        v16 = [v15 statusBarStateProvider];
-        [v16 statusBarAlpha];
+        alpha = [(SBSceneViewController *)self sceneHandle];
+        alpha2 = [alpha statusBarStateProvider];
+        [alpha2 statusBarAlpha];
         v18 = v19;
       }
 
 LABEL_30:
-      v23 = [(SBDeviceApplicationSceneViewController *)self _isApplicationStatusBarHidden];
+      _isApplicationStatusBarHidden = [(SBDeviceApplicationSceneViewController *)self _isApplicationStatusBarHidden];
       v24 = 0.0;
-      if (!v23)
+      if (!_isApplicationStatusBarHidden)
       {
         v24 = v18;
       }
@@ -519,8 +519,8 @@ LABEL_30:
       [v8 setAlpha:&unk_283370BC8];
 LABEL_33:
       [(SBApplicationSceneViewController *)self _setOverrideStatusBarSettings:v8];
-      v25 = [(SBSceneViewController *)self _sceneView];
-      [v25 setForcesStatusBarHidden:1];
+      _sceneView = [(SBSceneViewController *)self _sceneView];
+      [_sceneView setForcesStatusBarHidden:1];
 
       [(SBDeviceApplicationSceneViewController *)self _updateWindowControlsAdaptiveStyle];
       return;
@@ -528,15 +528,15 @@ LABEL_33:
 
     [(SBDeviceApplicationSceneViewController *)self _removeStatusBar];
     [(SBApplicationSceneViewController *)self _setOverrideStatusBarSettings:0];
-    v20 = [(SBSceneViewController *)self _sceneView];
-    [v20 setForcesStatusBarHidden:0];
+    _sceneView2 = [(SBSceneViewController *)self _sceneView];
+    [_sceneView2 setForcesStatusBarHidden:0];
 
-    v26 = [(SBSceneViewController *)self sceneHandle];
-    v21 = [v26 statusBarStateProvider];
-    [v21 removeStatusBarObserver:self];
+    sceneHandle = [(SBSceneViewController *)self sceneHandle];
+    statusBarStateProvider = [sceneHandle statusBarStateProvider];
+    [statusBarStateProvider removeStatusBarObserver:self];
 
-    v22 = [v26 breadcrumbProvider];
-    [v22 removeObserver:self];
+    breadcrumbProvider = [sceneHandle breadcrumbProvider];
+    [breadcrumbProvider removeObserver:self];
   }
 }
 
@@ -544,42 +544,42 @@ LABEL_33:
 {
   if (self->_statusBar)
   {
-    v3 = [(SBSceneViewController *)self sceneHandle];
-    v4 = [(SBApplicationSceneViewController *)self overrideStatusBarStyle];
-    if (v4 == -1)
+    sceneHandle = [(SBSceneViewController *)self sceneHandle];
+    overrideStatusBarStyle = [(SBApplicationSceneViewController *)self overrideStatusBarStyle];
+    if (overrideStatusBarStyle == -1)
     {
-      [v3 currentEffectiveStatusBarStyleRequest];
+      [sceneHandle currentEffectiveStatusBarStyleRequest];
     }
 
     else
     {
-      [v3 statusBarEffectiveStyleRequestWithStyle:_SBStatusBarStyleFromLegacyStyle(v4)];
+      [sceneHandle statusBarEffectiveStyleRequestWithStyle:_SBStatusBarStyleFromLegacyStyle(overrideStatusBarStyle)];
     }
     v5 = ;
     [(UIStatusBar *)self->_statusBar setStyleRequest:v5];
     [(UIStatusBar *)self->_statusBar setHidden:[(SBDeviceApplicationSceneViewController *)self _isApplicationStatusBarHidden]];
-    v6 = [v3 statusBarParts];
-    [(UIStatusBar *)self->_statusBar sb_setEnabledStatusBarPartIdentifiersForStatusBarParts:v6];
+    statusBarParts = [sceneHandle statusBarParts];
+    [(UIStatusBar *)self->_statusBar sb_setEnabledStatusBarPartIdentifiersForStatusBarParts:statusBarParts];
     if (_UISolariumEnabled())
     {
-      [(UIStatusBar *)self->_statusBar bs_setHitTestingDisabled:v6 == 0];
+      [(UIStatusBar *)self->_statusBar bs_setHitTestingDisabled:statusBarParts == 0];
     }
 
-    v7 = [(UIViewController *)self _sbWindowScene];
-    v8 = [v7 statusBarManager];
-    [v3 statusBarAvoidanceFrame];
-    [v8 setAvoidanceFrame:@"SBDeviceApplicationSceneViewController" reason:self->_statusBar statusBar:0 animationSettings:?];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
+    [sceneHandle statusBarAvoidanceFrame];
+    [statusBarManager setAvoidanceFrame:@"SBDeviceApplicationSceneViewController" reason:self->_statusBar statusBar:0 animationSettings:?];
 
-    v9 = [v3 breadcrumbProvider];
+    breadcrumbProvider = [sceneHandle breadcrumbProvider];
     v10 = MEMORY[0x277D75D18];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __84__SBDeviceApplicationSceneViewController__configureStatusBarWithCurrentStyleRequest__block_invoke;
     v16[3] = &unk_2783A8ED8;
     v16[4] = self;
-    v11 = v9;
+    v11 = breadcrumbProvider;
     v17 = v11;
-    v12 = v3;
+    v12 = sceneHandle;
     v18 = v12;
     [v10 performWithoutAnimation:v16];
     if ([(_SBStatusBarChanges *)self->_statusBarChanges statusBarStyleChanged])
@@ -589,14 +589,14 @@ LABEL_33:
 
     if ([(_SBStatusBarChanges *)self->_statusBarChanges statusBarPartStyleChanged])
     {
-      v13 = [(_SBStatusBarChanges *)self->_statusBarChanges statusBarPartStyle];
-      v14 = [(_SBStatusBarChanges *)self->_statusBarChanges statusBarPartIdentifier];
-      [(SBDeviceApplicationSceneViewController *)self _setStatusBarStyle:v13 forPartWithIdentifier:v14];
+      statusBarPartStyle = [(_SBStatusBarChanges *)self->_statusBarChanges statusBarPartStyle];
+      statusBarPartIdentifier = [(_SBStatusBarChanges *)self->_statusBarChanges statusBarPartIdentifier];
+      [(SBDeviceApplicationSceneViewController *)self _setStatusBarStyle:statusBarPartStyle forPartWithIdentifier:statusBarPartIdentifier];
     }
 
     [(_SBStatusBarChanges *)self->_statusBarChanges invalidate];
-    v15 = [v7 recordingIndicatorManager];
-    [v15 updateRecordingIndicatorForStatusBarChanges];
+    recordingIndicatorManager = [_sbWindowScene recordingIndicatorManager];
+    [recordingIndicatorManager updateRecordingIndicatorForStatusBarChanges];
     [(SBDeviceApplicationSceneViewController *)self _layoutStatusBar];
   }
 }
@@ -639,18 +639,18 @@ void __84__SBDeviceApplicationSceneViewController__configureStatusBarWithCurrent
   overlayViewProviders = self->_overlayViewProviders;
   self->_overlayViewProviders = v3;
 
-  v5 = [(SBSceneViewController *)self sceneHandle];
-  v6 = [[SBDeviceApplicationScreenTimeLockoutViewProvider alloc] initWithSceneHandle:v5 delegate:self];
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  v6 = [[SBDeviceApplicationScreenTimeLockoutViewProvider alloc] initWithSceneHandle:sceneHandle delegate:self];
   [(NSMutableArray *)self->_overlayViewProviders addObject:v6];
-  v7 = [[SBDeviceApplicationRemoteTransientOverlayViewProvider alloc] initWithSceneHandle:v5 delegate:self handlesSceneBackedRemoteTransientOverlaysOnly:0];
+  v7 = [[SBDeviceApplicationRemoteTransientOverlayViewProvider alloc] initWithSceneHandle:sceneHandle delegate:self handlesSceneBackedRemoteTransientOverlaysOnly:0];
   [(NSMutableArray *)self->_overlayViewProviders addObject:v7];
-  v8 = [[SBDeviceApplicationRemoteTransientOverlayViewProvider alloc] initWithSceneHandle:v5 delegate:self handlesSceneBackedRemoteTransientOverlaysOnly:1];
+  v8 = [[SBDeviceApplicationRemoteTransientOverlayViewProvider alloc] initWithSceneHandle:sceneHandle delegate:self handlesSceneBackedRemoteTransientOverlaysOnly:1];
   [(NSMutableArray *)self->_overlayViewProviders addObject:v8];
-  v9 = [[SBDeviceApplicationAppClipOverlayViewProvider alloc] initWithSceneHandle:v5 delegate:self];
+  v9 = [[SBDeviceApplicationAppClipOverlayViewProvider alloc] initWithSceneHandle:sceneHandle delegate:self];
   [(NSMutableArray *)self->_overlayViewProviders addObject:v9];
-  v10 = [[SBDeviceApplicationAppProtectionSceneOverlayViewProvider alloc] initWithSceneHandle:v5 delegate:self];
+  v10 = [[SBDeviceApplicationAppProtectionSceneOverlayViewProvider alloc] initWithSceneHandle:sceneHandle delegate:self];
   [(NSMutableArray *)self->_overlayViewProviders addObject:v10];
-  v11 = [(SBDeviceApplicationSceneOverlayViewProvider *)[SBDeviceApplicationMomentsUIViewProvider alloc] initWithSceneHandle:v5 delegate:self];
+  v11 = [(SBDeviceApplicationSceneOverlayViewProvider *)[SBDeviceApplicationMomentsUIViewProvider alloc] initWithSceneHandle:sceneHandle delegate:self];
   [(NSMutableArray *)self->_overlayViewProviders addObject:v11];
   v21 = v7;
   v22 = v6;
@@ -665,17 +665,17 @@ void __84__SBDeviceApplicationSceneViewController__configureStatusBarWithCurrent
 LABEL_6:
     if ([MEMORY[0x277D75658] usesInputSystemUI])
     {
-      v14 = [(SBDeviceApplicationSceneOverlayViewProvider *)[SBDeviceApplicationInputUIViewProvider alloc] initWithSceneHandle:v5 delegate:self];
+      v14 = [(SBDeviceApplicationSceneOverlayViewProvider *)[SBDeviceApplicationInputUIViewProvider alloc] initWithSceneHandle:sceneHandle delegate:self];
       [(NSMutableArray *)self->_overlayViewProviders addObject:v14];
     }
 
     goto LABEL_8;
   }
 
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v13 != 1)
+  if (userInterfaceIdiom != 1)
   {
     goto LABEL_6;
   }
@@ -722,14 +722,14 @@ LABEL_8:
 
 - (void)_removeStatusBar
 {
-  v3 = [(UITapGestureRecognizer *)self->_scrollToTopGestureRecognizer view];
-  [v3 removeGestureRecognizer:self->_scrollToTopGestureRecognizer];
+  view = [(UITapGestureRecognizer *)self->_scrollToTopGestureRecognizer view];
+  [view removeGestureRecognizer:self->_scrollToTopGestureRecognizer];
 
   scrollToTopGestureRecognizer = self->_scrollToTopGestureRecognizer;
   self->_scrollToTopGestureRecognizer = 0;
 
-  v5 = [(UITapGestureRecognizer *)self->_showDebugGestureRecognizer view];
-  [v5 removeGestureRecognizer:self->_showDebugGestureRecognizer];
+  view2 = [(UITapGestureRecognizer *)self->_showDebugGestureRecognizer view];
+  [view2 removeGestureRecognizer:self->_showDebugGestureRecognizer];
 
   showDebugGestureRecognizer = self->_showDebugGestureRecognizer;
   self->_showDebugGestureRecognizer = 0;
@@ -752,51 +752,51 @@ LABEL_8:
 
 - (int64_t)_currentStatusBarStyle
 {
-  v2 = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
-  v3 = v2;
-  if (v2)
+  _underlyingStatusBarViewIfAvailable = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
+  v3 = _underlyingStatusBarViewIfAvailable;
+  if (_underlyingStatusBarViewIfAvailable)
   {
-    v4 = [v2 style];
+    style = [_underlyingStatusBarViewIfAvailable style];
   }
 
   else
   {
-    v4 = 0;
+    style = 0;
   }
 
-  return v4;
+  return style;
 }
 
-- (SBDeviceApplicationSceneViewController)initWithSceneHandle:(id)a3
+- (SBDeviceApplicationSceneViewController)initWithSceneHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(SBDeviceApplicationSceneViewController *)a2 initWithSceneHandle:v5];
+    [(SBDeviceApplicationSceneViewController *)a2 initWithSceneHandle:handleCopy];
   }
 
   v13.receiver = self;
   v13.super_class = SBDeviceApplicationSceneViewController;
-  v6 = [(SBApplicationSceneViewController *)&v13 initWithSceneHandle:v5];
+  v6 = [(SBApplicationSceneViewController *)&v13 initWithSceneHandle:handleCopy];
   if (v6)
   {
-    [v5 setShouldApplyAppProtectionSceneSettings:1];
-    v7 = [MEMORY[0x277D65E80] rootSettings];
+    [handleCopy setShouldApplyAppProtectionSceneSettings:1];
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
     homeGrabberSettings = v6->_homeGrabberSettings;
-    v6->_homeGrabberSettings = v7;
+    v6->_homeGrabberSettings = rootSettings;
 
     objc_storeStrong(&v6->_sceneFlattenMode, *MEMORY[0x277CDA9E8]);
-    v6->_sceneFullyOccluded = [v5 sceneFullyOccluded];
+    v6->_sceneFullyOccluded = [handleCopy sceneFullyOccluded];
     v9 = +[SBAppSwitcherDomain rootSettings];
     switcherSettings = v6->_switcherSettings;
     v6->_switcherSettings = v9;
 
-    [v5 addObserver:v6];
+    [handleCopy addObserver:v6];
     [(SBDeviceApplicationSceneViewController *)v6 _setRealStatusBarStyleDelegate:SBApp];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v6 selector:sel__willEnableSecureDisplay name:*MEMORY[0x277D66028] object:0];
-    [v11 addObserver:v6 selector:sel__didDisableSecureDisplay name:*MEMORY[0x277D66020] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__willEnableSecureDisplay name:*MEMORY[0x277D66028] object:0];
+    [defaultCenter addObserver:v6 selector:sel__didDisableSecureDisplay name:*MEMORY[0x277D66020] object:0];
   }
 
   return v6;
@@ -804,13 +804,13 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [(SBSceneViewController *)self sceneHandle];
-  [v3 removeObserver:self];
-  v4 = [v3 statusBarStateProvider];
-  [v4 removeStatusBarObserver:self];
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  [sceneHandle removeObserver:self];
+  statusBarStateProvider = [sceneHandle statusBarStateProvider];
+  [statusBarStateProvider removeStatusBarObserver:self];
 
-  v5 = [v3 breadcrumbProvider];
-  [v5 removeObserver:self];
+  breadcrumbProvider = [sceneHandle breadcrumbProvider];
+  [breadcrumbProvider removeObserver:self];
 
   [(SBDeviceApplicationSceneViewController *)self _removeStatusBar];
   [(SBDeviceApplicationSceneViewController *)self _relinquishResignActiveAssertion];
@@ -827,20 +827,20 @@ LABEL_8:
   v4.receiver = self;
   v4.super_class = SBDeviceApplicationSceneViewController;
   [(SBSceneViewController *)&v4 invalidate];
-  v3 = [(SBSceneViewController *)self sceneHandle];
-  [v3 removeObserver:self];
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  [sceneHandle removeObserver:self];
 
   [(SBDeviceApplicationSceneViewController *)self _relinquishResignActiveAssertion];
   [(SBDeviceApplicationSceneViewController *)self _destroySceneOverlayViewProviders];
   [(BSInvalidatable *)self->_liveContentDisableAssertion invalidate];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = SBDeviceApplicationSceneViewController;
   [(SBDeviceApplicationSceneViewController *)&v5 didMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
     [(SBDeviceApplicationSceneViewController *)self _createSceneOverlayViewProvidersIfNecessary];
   }
@@ -851,26 +851,26 @@ LABEL_8:
   }
 }
 
-- (void)setHomeGrabberDisplayMode:(int64_t)a3
+- (void)setHomeGrabberDisplayMode:(int64_t)mode
 {
-  if (self->_homeGrabberDisplayMode != a3)
+  if (self->_homeGrabberDisplayMode != mode)
   {
-    v5 = [(SBDeviceApplicationSceneViewController *)self _shouldSuppressHomeGrabber];
-    self->_homeGrabberDisplayMode = a3;
-    v6 = [(SBDeviceApplicationSceneViewController *)self _shouldSuppressHomeGrabber];
-    if (v5 != v6)
+    _shouldSuppressHomeGrabber = [(SBDeviceApplicationSceneViewController *)self _shouldSuppressHomeGrabber];
+    self->_homeGrabberDisplayMode = mode;
+    _shouldSuppressHomeGrabber2 = [(SBDeviceApplicationSceneViewController *)self _shouldSuppressHomeGrabber];
+    if (_shouldSuppressHomeGrabber != _shouldSuppressHomeGrabber2)
     {
-      v7 = v6;
-      v9 = [(SBSceneViewController *)self _sceneView];
+      v7 = _shouldSuppressHomeGrabber2;
+      _sceneView = [(SBSceneViewController *)self _sceneView];
       if (v7)
       {
-        [v9 tearDownHomeGrabberView];
+        [_sceneView tearDownHomeGrabberView];
       }
 
       else
       {
-        v8 = [(SBDeviceApplicationSceneViewController *)self homeGrabberPillSettings];
-        [v9 createHomeGrabberViewIfNecessaryWithSettings:v8];
+        homeGrabberPillSettings = [(SBDeviceApplicationSceneViewController *)self homeGrabberPillSettings];
+        [_sceneView createHomeGrabberViewIfNecessaryWithSettings:homeGrabberPillSettings];
       }
     }
   }
@@ -878,105 +878,105 @@ LABEL_8:
 
 - (SBHomeGrabberView)homeGrabberView
 {
-  v2 = [(SBSceneViewController *)self _sceneView];
-  v3 = [v2 homeGrabberView];
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  homeGrabberView = [_sceneView homeGrabberView];
 
-  return v3;
+  return homeGrabberView;
 }
 
-- (void)setRendersWhileLocked:(BOOL)a3
+- (void)setRendersWhileLocked:(BOOL)locked
 {
-  if (self->_rendersWhileLocked != a3)
+  if (self->_rendersWhileLocked != locked)
   {
-    self->_rendersWhileLocked = a3;
+    self->_rendersWhileLocked = locked;
     [(SBDeviceApplicationSceneViewController *)self _configureForCurrentSecureDisplayState];
   }
 }
 
-- (void)setSceneMinificationFilter:(id)a3
+- (void)setSceneMinificationFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   sceneMinificationFilter = self->_sceneMinificationFilter;
-  if (sceneMinificationFilter != v4)
+  if (sceneMinificationFilter != filterCopy)
   {
-    v11 = v4;
-    v6 = [(NSString *)sceneMinificationFilter isEqual:v4];
-    v4 = v11;
+    v11 = filterCopy;
+    v6 = [(NSString *)sceneMinificationFilter isEqual:filterCopy];
+    filterCopy = v11;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v11 copy];
       v8 = self->_sceneMinificationFilter;
       self->_sceneMinificationFilter = v7;
 
-      v9 = [(SBDeviceApplicationSceneViewController *)self isViewLoaded];
-      v4 = v11;
-      if (v9)
+      isViewLoaded = [(SBDeviceApplicationSceneViewController *)self isViewLoaded];
+      filterCopy = v11;
+      if (isViewLoaded)
       {
-        v10 = [(SBSceneViewController *)self _sceneView];
-        [v10 setMinificationFilter:self->_sceneMinificationFilter];
+        _sceneView = [(SBSceneViewController *)self _sceneView];
+        [_sceneView setMinificationFilter:self->_sceneMinificationFilter];
 
-        v4 = v11;
+        filterCopy = v11;
       }
     }
   }
 }
 
-- (void)setSceneRendersAsynchronously:(BOOL)a3
+- (void)setSceneRendersAsynchronously:(BOOL)asynchronously
 {
-  if (self->_sceneRendersAsynchronously != a3)
+  if (self->_sceneRendersAsynchronously != asynchronously)
   {
-    self->_sceneRendersAsynchronously = a3;
+    self->_sceneRendersAsynchronously = asynchronously;
     if ([(SBDeviceApplicationSceneViewController *)self isViewLoaded])
     {
-      v4 = [(SBSceneViewController *)self _sceneView];
-      [v4 setRendersAsynchronously:self->_sceneRendersAsynchronously];
+      _sceneView = [(SBSceneViewController *)self _sceneView];
+      [_sceneView setRendersAsynchronously:self->_sceneRendersAsynchronously];
     }
   }
 }
 
 - (BOOL)sceneResizesHostedContext
 {
-  v2 = [(SBSceneViewController *)self _sceneView];
-  v3 = [v2 resizesHostedContext];
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  resizesHostedContext = [_sceneView resizesHostedContext];
 
-  return v3;
+  return resizesHostedContext;
 }
 
-- (void)setSceneResizesHostedContext:(BOOL)a3
+- (void)setSceneResizesHostedContext:(BOOL)context
 {
-  v3 = a3;
-  v4 = [(SBSceneViewController *)self _sceneView];
-  [v4 setResizesHostedContext:v3];
+  contextCopy = context;
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  [_sceneView setResizesHostedContext:contextCopy];
 }
 
-- (void)setSceneFullyOccluded:(BOOL)a3
+- (void)setSceneFullyOccluded:(BOOL)occluded
 {
-  if (self->_sceneFullyOccluded != a3)
+  if (self->_sceneFullyOccluded != occluded)
   {
-    v3 = a3;
-    self->_sceneFullyOccluded = a3;
-    v5 = [(SBSceneViewController *)self sceneHandle];
-    [v5 setSceneFullyOccluded:v3];
+    occludedCopy = occluded;
+    self->_sceneFullyOccluded = occluded;
+    sceneHandle = [(SBSceneViewController *)self sceneHandle];
+    [sceneHandle setSceneFullyOccluded:occludedCopy];
 
     if ([(SBDeviceApplicationSceneViewController *)self isViewLoaded])
     {
-      v6 = [(SBSceneViewController *)self _sceneView];
-      [(SBDeviceApplicationSceneViewController *)self _updateSceneFullyOccludedState:v6 fullyOccluded:self->_sceneFullyOccluded];
+      _sceneView = [(SBSceneViewController *)self _sceneView];
+      [(SBDeviceApplicationSceneViewController *)self _updateSceneFullyOccludedState:_sceneView fullyOccluded:self->_sceneFullyOccluded];
     }
   }
 }
 
-- (void)setSceneFlattenMode:(id)a3
+- (void)setSceneFlattenMode:(id)mode
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  modeCopy = mode;
+  v9 = modeCopy;
+  if (!modeCopy)
   {
     [(SBDeviceApplicationSceneViewController *)a2 setSceneFlattenMode:?];
-    v5 = 0;
+    modeCopy = 0;
   }
 
-  if (![(NSString *)self->_sceneFlattenMode isEqualToString:v5])
+  if (![(NSString *)self->_sceneFlattenMode isEqualToString:modeCopy])
   {
     v6 = [v9 copy];
     sceneFlattenMode = self->_sceneFlattenMode;
@@ -984,42 +984,42 @@ LABEL_8:
 
     if ([(SBDeviceApplicationSceneViewController *)self isViewLoaded])
     {
-      v8 = [(SBSceneViewController *)self _sceneView];
-      [v8 setFlattenMode:self->_sceneFlattenMode];
+      _sceneView = [(SBSceneViewController *)self _sceneView];
+      [_sceneView setFlattenMode:self->_sceneFlattenMode];
     }
   }
 }
 
-- (void)_setStatusBarAssertions:(id)a3
+- (void)_setStatusBarAssertions:(id)assertions
 {
-  v5 = a3;
-  if (self->_statusBarAssertions != v5)
+  assertionsCopy = assertions;
+  if (self->_statusBarAssertions != assertionsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_statusBarAssertions, a3);
-    v6 = [(SBDeviceApplicationSceneViewController *)self isViewLoaded];
-    v5 = v7;
-    if (v6)
+    v7 = assertionsCopy;
+    objc_storeStrong(&self->_statusBarAssertions, assertions);
+    isViewLoaded = [(SBDeviceApplicationSceneViewController *)self isViewLoaded];
+    assertionsCopy = v7;
+    if (isViewLoaded)
     {
       [(SBDeviceApplicationSceneViewController *)self _updateStatusBarState];
-      v5 = v7;
+      assertionsCopy = v7;
     }
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBSceneViewController *)self _sceneView];
-  [v5 setBackgroundView:v4];
+  viewCopy = view;
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  [_sceneView setBackgroundView:viewCopy];
 }
 
-- (id)statusBarAssertionWithStatusBarHidden:(BOOL)a3 atLevel:(unint64_t)a4
+- (id)statusBarAssertionWithStatusBarHidden:(BOOL)hidden atLevel:(unint64_t)level
 {
-  v5 = a3;
+  hiddenCopy = hidden;
   v7 = objc_alloc_init(SBMutableStatusBarSettings);
   v8 = 1.0;
-  if (v5)
+  if (hiddenCopy)
   {
     v8 = 0.0;
   }
@@ -1027,22 +1027,22 @@ LABEL_8:
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
   [(SBMutableStatusBarSettings *)v7 setAlpha:v9];
 
-  v10 = [(SBDeviceApplicationSceneViewController *)self statusBarAssertionWithStatusBarSettings:v7 atLevel:a4];
+  v10 = [(SBDeviceApplicationSceneViewController *)self statusBarAssertionWithStatusBarSettings:v7 atLevel:level];
 
   return v10;
 }
 
-- (id)statusBarAssertionWithStatusBarSettings:(id)a3 atLevel:(unint64_t)a4
+- (id)statusBarAssertionWithStatusBarSettings:(id)settings atLevel:(unint64_t)level
 {
-  v6 = a3;
+  settingsCopy = settings;
   if (!self->_statusBarAssertions)
   {
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     statusBarAssertions = self->_statusBarAssertions;
-    self->_statusBarAssertions = v7;
+    self->_statusBarAssertions = weakObjectsHashTable;
   }
 
-  v9 = [[SBSceneViewStatusBarAssertion alloc] initWithStatusBarSettings:v6 nubViewHidden:0x7FFFFFFFFFFFFFFFLL atLevel:a4];
+  v9 = [[SBSceneViewStatusBarAssertion alloc] initWithStatusBarSettings:settingsCopy nubViewHidden:0x7FFFFFFFFFFFFFFFLL atLevel:level];
   [(SBSceneViewStatusBarAssertion *)v9 addObserver:self];
   [(NSHashTable *)self->_statusBarAssertions addObject:v9];
   [(SBDeviceApplicationSceneViewController *)self _updateStatusBarState];
@@ -1050,9 +1050,9 @@ LABEL_8:
   return v9;
 }
 
-- (void)statusBarAssertionDidInvalidate:(id)a3
+- (void)statusBarAssertionDidInvalidate:(id)invalidate
 {
-  [(NSHashTable *)self->_statusBarAssertions removeObject:a3];
+  [(NSHashTable *)self->_statusBarAssertions removeObject:invalidate];
 
   [(SBDeviceApplicationSceneViewController *)self _updateStatusBarState];
 }
@@ -1071,13 +1071,13 @@ uint64_t __63__SBDeviceApplicationSceneViewController__updateStatusBarState__blo
   return v10;
 }
 
-- (void)activateOverlayForViewProvider:(id)a3
+- (void)activateOverlayForViewProvider:(id)provider
 {
-  v13 = a3;
-  v4 = [v13 overlayViewController];
-  v5 = [v4 parentViewController];
+  providerCopy = provider;
+  overlayViewController = [providerCopy overlayViewController];
+  parentViewController = [overlayViewController parentViewController];
 
-  if (!v5)
+  if (!parentViewController)
   {
     activeOverlayViewProviders = self->_activeOverlayViewProviders;
     if (!activeOverlayViewProviders)
@@ -1089,69 +1089,69 @@ uint64_t __63__SBDeviceApplicationSceneViewController__updateStatusBarState__blo
       activeOverlayViewProviders = self->_activeOverlayViewProviders;
     }
 
-    [(NSMutableArray *)activeOverlayViewProviders addObject:v13];
-    v9 = [(SBSceneViewController *)self _sceneView];
-    v10 = [v4 overlayView];
-    v11 = [(NSMutableArray *)self->_overlayViewProviders containsObject:v13];
-    [v4 beginAppearanceTransition:1 animated:v11];
-    [(SBDeviceApplicationSceneViewController *)self addChildViewController:v4];
-    [v9 addOverlayView:v10 withPriority:{objc_msgSend(v13, "priority")}];
-    [v4 didMoveToParentViewController:self];
-    [v4 endAppearanceTransition];
-    [v13 showContentWithAnimation:v11 completionHandler:0];
-    [(SBDeviceApplicationSceneViewController *)self _updateStatusBarAppearanceForOverlayProvider:v13];
+    [(NSMutableArray *)activeOverlayViewProviders addObject:providerCopy];
+    _sceneView = [(SBSceneViewController *)self _sceneView];
+    overlayView = [overlayViewController overlayView];
+    v11 = [(NSMutableArray *)self->_overlayViewProviders containsObject:providerCopy];
+    [overlayViewController beginAppearanceTransition:1 animated:v11];
+    [(SBDeviceApplicationSceneViewController *)self addChildViewController:overlayViewController];
+    [_sceneView addOverlayView:overlayView withPriority:{objc_msgSend(providerCopy, "priority")}];
+    [overlayViewController didMoveToParentViewController:self];
+    [overlayViewController endAppearanceTransition];
+    [providerCopy showContentWithAnimation:v11 completionHandler:0];
+    [(SBDeviceApplicationSceneViewController *)self _updateStatusBarAppearanceForOverlayProvider:providerCopy];
     [(SBDeviceApplicationSceneViewController *)self _recalculateResignActiveAssertionForActiveOverlays];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained applicationSceneViewControllerDidUpdateHomeAffordanceSupportedOrientations:self];
   }
 }
 
-- (void)deactivateOverlayForViewProvider:(id)a3
+- (void)deactivateOverlayForViewProvider:(id)provider
 {
-  v4 = a3;
-  if ([(NSMutableArray *)self->_activeOverlayViewProviders containsObject:v4])
+  providerCopy = provider;
+  if ([(NSMutableArray *)self->_activeOverlayViewProviders containsObject:providerCopy])
   {
-    v5 = [v4 overlayViewController];
+    overlayViewController = [providerCopy overlayViewController];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __75__SBDeviceApplicationSceneViewController_deactivateOverlayForViewProvider___block_invoke;
     v7[3] = &unk_2783A8ED8;
     v7[4] = self;
-    v8 = v5;
-    v9 = v4;
-    v6 = v5;
+    v8 = overlayViewController;
+    v9 = providerCopy;
+    v6 = overlayViewController;
     [v9 hideContentWithAnimation:1 completionHandler:v7];
   }
 }
 
-- (void)_deactivateOverlay:(id)a3 forViewProvider:(id)a4
+- (void)_deactivateOverlay:(id)overlay forViewProvider:(id)provider
 {
   activeOverlayViewProviders = self->_activeOverlayViewProviders;
-  v7 = a4;
-  v8 = a3;
-  v16 = [(NSMutableArray *)activeOverlayViewProviders lastObject];
-  [v8 beginAppearanceTransition:0 animated:0];
-  [v8 willMoveToParentViewController:0];
-  v9 = [(SBSceneViewController *)self _sceneView];
-  v10 = [v8 overlayView];
-  [v9 removeOverlayView:v10 withPriority:{objc_msgSend(v7, "priority")}];
+  providerCopy = provider;
+  overlayCopy = overlay;
+  lastObject = [(NSMutableArray *)activeOverlayViewProviders lastObject];
+  [overlayCopy beginAppearanceTransition:0 animated:0];
+  [overlayCopy willMoveToParentViewController:0];
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  overlayView = [overlayCopy overlayView];
+  [_sceneView removeOverlayView:overlayView withPriority:{objc_msgSend(providerCopy, "priority")}];
 
-  [v8 removeFromParentViewController];
-  [v8 endAppearanceTransition];
+  [overlayCopy removeFromParentViewController];
+  [overlayCopy endAppearanceTransition];
 
-  [(NSMutableArray *)self->_activeOverlayViewProviders removeObject:v7];
+  [(NSMutableArray *)self->_activeOverlayViewProviders removeObject:providerCopy];
   if ([(NSMutableArray *)self->_activeOverlayViewProviders count])
   {
-    if (![v16 affectsStatusBarPresentation])
+    if (![lastObject affectsStatusBarPresentation])
     {
       goto LABEL_7;
     }
 
     v11 = objc_alloc_init(SBMutableStatusBarSettings);
-    v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v16, "prefersStatusBarHidden") ^ 1}];
+    v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(lastObject, "prefersStatusBarHidden") ^ 1}];
     [(SBMutableStatusBarSettings *)v11 setAlpha:v12];
 
-    -[SBMutableStatusBarSettings setStyle:](v11, "setStyle:", [v16 preferredStatusBarStyle]);
+    -[SBMutableStatusBarSettings setStyle:](v11, "setStyle:", [lastObject preferredStatusBarStyle]);
     [(SBSceneViewStatusBarAssertion *)self->_activeOverlayStatusBarAssertion setSettings:v11];
   }
 
@@ -1177,12 +1177,12 @@ LABEL_7:
   [WeakRetained applicationSceneViewControllerDidUpdateHomeAffordanceSupportedOrientations:self];
 }
 
-- (BOOL)overlayViewProviderIsHostedInNonrotatingWindow:(id)a3
+- (BOOL)overlayViewProviderIsHostedInNonrotatingWindow:(id)window
 {
-  v4 = [(SBDeviceApplicationSceneViewController *)self delegate];
+  delegate = [(SBDeviceApplicationSceneViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 applicationSceneViewControllerIsInNonrotatingWindow:self];
+    v5 = [delegate applicationSceneViewControllerIsInNonrotatingWindow:self];
   }
 
   else
@@ -1193,54 +1193,54 @@ LABEL_7:
   return v5;
 }
 
-- (id)windowSceneForOverlayViewProvider:(id)a3
+- (id)windowSceneForOverlayViewProvider:(id)provider
 {
-  v4 = [SBApp windowSceneManager];
-  v5 = [(SBSceneViewController *)self sceneHandle];
-  v6 = [v4 windowSceneForSceneHandle:v5];
+  windowSceneManager = [SBApp windowSceneManager];
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  v6 = [windowSceneManager windowSceneForSceneHandle:sceneHandle];
 
   return v6;
 }
 
-- (BOOL)overlayViewProviderIsHostedInSecureWindow:(id)a3
+- (BOOL)overlayViewProviderIsHostedInSecureWindow:(id)window
 {
-  v3 = [(SBDeviceApplicationSceneViewController *)self view];
-  v4 = [v3 window];
-  v5 = [objc_opt_class() _isSecure];
+  view = [(SBDeviceApplicationSceneViewController *)self view];
+  window = [view window];
+  _isSecure = [objc_opt_class() _isSecure];
 
-  return v5;
+  return _isSecure;
 }
 
-- (id)hostWindowForOverlayViewProvider:(id)a3
+- (id)hostWindowForOverlayViewProvider:(id)provider
 {
-  v3 = [(SBDeviceApplicationSceneViewController *)self view];
-  v4 = [v3 window];
+  view = [(SBDeviceApplicationSceneViewController *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
-- (id)initialTraitsParticipantForOverlayViewProvider:(id)a3
+- (id)initialTraitsParticipantForOverlayViewProvider:(id)provider
 {
   WeakRetained = objc_loadWeakRetained(&self->_traitsParticipantForOverlayContainer);
 
   return WeakRetained;
 }
 
-- (void)overlayViewProviderNeedsStatusBarAppearanceUpdate:(id)a3
+- (void)overlayViewProviderNeedsStatusBarAppearanceUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if ([(NSMutableArray *)self->_activeOverlayViewProviders containsObject:?])
   {
-    [(SBDeviceApplicationSceneViewController *)self _updateStatusBarAppearanceForOverlayProvider:v4];
+    [(SBDeviceApplicationSceneViewController *)self _updateStatusBarAppearanceForOverlayProvider:updateCopy];
   }
 }
 
-- (void)setDisplayMode:(int64_t)a3 animationFactory:(id)a4 completion:(id)a5
+- (void)setDisplayMode:(int64_t)mode animationFactory:(id)factory completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = SBDeviceApplicationSceneViewController;
-  [(SBSceneViewController *)&v16 setDisplayMode:a3 animationFactory:a4 completion:a5];
+  [(SBSceneViewController *)&v16 setDisplayMode:mode animationFactory:factory completion:completion];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -1261,7 +1261,7 @@ LABEL_7:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) noteDisplayModeChange:{a3, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) noteDisplayModeChange:{mode, v12}];
       }
 
       while (v9 != v11);
@@ -1272,27 +1272,27 @@ LABEL_7:
   }
 }
 
-- (id)animationFactoryForImplicitTransitionFromMode:(int64_t)a3 toMode:(int64_t)a4 defaultFactory:(id)a5
+- (id)animationFactoryForImplicitTransitionFromMode:(int64_t)mode toMode:(int64_t)toMode defaultFactory:(id)factory
 {
-  v7 = a5;
-  if (a4 == 4 && (-[SBSceneViewController sceneHandle](self, "sceneHandle"), v8 = objc_claimAutoreleasedReturnValue(), [v8 application], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "info"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "shouldSkipCrossfadeToLive"), v10, v9, v8, (v11 & 1) != 0))
+  factoryCopy = factory;
+  if (toMode == 4 && (-[SBSceneViewController sceneHandle](self, "sceneHandle"), v8 = objc_claimAutoreleasedReturnValue(), [v8 application], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "info"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "shouldSkipCrossfadeToLive"), v10, v9, v8, (v11 & 1) != 0))
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = v7;
+    v12 = factoryCopy;
   }
 
   return v12;
 }
 
-- (void)sceneView:(id)a3 changedPreferredStatusBarStyleTo:(int64_t)a4
+- (void)sceneView:(id)view changedPreferredStatusBarStyleTo:(int64_t)to
 {
-  v13 = a3;
+  viewCopy = view;
   placeholderStatusBarAssertion = self->_placeholderStatusBarAssertion;
-  if (a4 == -1)
+  if (to == -1)
   {
     [(SBSceneViewStatusBarAssertion *)placeholderStatusBarAssertion invalidate];
     v10 = self->_placeholderStatusBarAssertion;
@@ -1301,25 +1301,25 @@ LABEL_7:
 
   else if (placeholderStatusBarAssertion)
   {
-    v7 = [(SBSceneViewStatusBarAssertion *)placeholderStatusBarAssertion settings];
-    v8 = [v7 style];
+    settings = [(SBSceneViewStatusBarAssertion *)placeholderStatusBarAssertion settings];
+    style = [settings style];
 
-    if (v8 == a4)
+    if (style == to)
     {
       goto LABEL_8;
     }
 
-    v9 = [(SBSceneViewStatusBarAssertion *)self->_placeholderStatusBarAssertion settings];
-    v10 = [v9 mutableCopy];
+    settings2 = [(SBSceneViewStatusBarAssertion *)self->_placeholderStatusBarAssertion settings];
+    v10 = [settings2 mutableCopy];
 
-    [(SBMutableStatusBarSettings *)v10 setStyle:a4];
+    [(SBMutableStatusBarSettings *)v10 setStyle:to];
     [(SBSceneViewStatusBarAssertion *)self->_placeholderStatusBarAssertion setSettings:v10];
   }
 
   else
   {
     v10 = objc_alloc_init(SBMutableStatusBarSettings);
-    [(SBMutableStatusBarSettings *)v10 setStyle:a4];
+    [(SBMutableStatusBarSettings *)v10 setStyle:to];
     v11 = [(SBDeviceApplicationSceneViewController *)self statusBarAssertionWithStatusBarSettings:v10 atLevel:0];
     v12 = self->_placeholderStatusBarAssertion;
     self->_placeholderStatusBarAssertion = v11;
@@ -1328,31 +1328,31 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
-  v5 = a4;
+  sceneCopy = scene;
   [(SBDeviceApplicationSceneViewController *)self _updateStatusBarState];
-  [v5 _setSceneMaskingDelegate:self];
+  [sceneCopy _setSceneMaskingDelegate:self];
 }
 
-- (void)sceneHandle:(id)a3 didMoveFromSceneManager:(id)a4
+- (void)sceneHandle:(id)handle didMoveFromSceneManager:(id)manager
 {
-  [(SBDeviceApplicationSceneViewController *)self _configureStatusBarWithCurrentStyleRequest:a3];
+  [(SBDeviceApplicationSceneViewController *)self _configureStatusBarWithCurrentStyleRequest:handle];
 
   [(SBDeviceApplicationSceneViewController *)self _configureForCurrentSecureDisplayState];
 }
 
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarStyleTo:(int64_t)a4
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarStyleTo:(int64_t)to
 {
-  v6 = [(SBDeviceApplicationSceneViewController *)self _currentStatusBarStyle];
+  _currentStatusBarStyle = [(SBDeviceApplicationSceneViewController *)self _currentStatusBarStyle];
   activeOverlayStatusBarAssertion = self->_activeOverlayStatusBarAssertion;
   if (activeOverlayStatusBarAssertion)
   {
-    v8 = [(SBSceneViewStatusBarAssertion *)activeOverlayStatusBarAssertion settings];
-    a4 = _SBStatusBarStyleFromLegacyStyle([v8 style]);
+    settings = [(SBSceneViewStatusBarAssertion *)activeOverlayStatusBarAssertion settings];
+    to = _SBStatusBarStyleFromLegacyStyle([settings style]);
   }
 
-  if (v6 != a4)
+  if (_currentStatusBarStyle != to)
   {
     statusBarChanges = self->_statusBarChanges;
     if (!statusBarChanges)
@@ -1364,24 +1364,24 @@ LABEL_8:
       statusBarChanges = self->_statusBarChanges;
     }
 
-    [(_SBStatusBarChanges *)statusBarChanges setStatusBarStyle:a4];
+    [(_SBStatusBarChanges *)statusBarChanges setStatusBarStyle:to];
 
     [(SBDeviceApplicationSceneViewController *)self _updateStatusBarState];
   }
 }
 
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarStyleTo:(int64_t)a4 forPartWithIdentifier:(id)a5
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarStyleTo:(int64_t)to forPartWithIdentifier:(id)withIdentifier
 {
-  v13 = a5;
+  withIdentifierCopy = withIdentifier;
   v7 = [(SBDeviceApplicationSceneViewController *)self _currentStatusBarStyleForPartWithIdentifier:?];
   activeOverlayStatusBarAssertion = self->_activeOverlayStatusBarAssertion;
   if (activeOverlayStatusBarAssertion)
   {
-    v9 = [(SBSceneViewStatusBarAssertion *)activeOverlayStatusBarAssertion settings];
-    a4 = _SBStatusBarStyleFromLegacyStyle([v9 style]);
+    settings = [(SBSceneViewStatusBarAssertion *)activeOverlayStatusBarAssertion settings];
+    to = _SBStatusBarStyleFromLegacyStyle([settings style]);
   }
 
-  if (v7 != a4)
+  if (v7 != to)
   {
     statusBarChanges = self->_statusBarChanges;
     if (!statusBarChanges)
@@ -1393,34 +1393,34 @@ LABEL_8:
       statusBarChanges = self->_statusBarChanges;
     }
 
-    [(_SBStatusBarChanges *)statusBarChanges setStatusBarPartStyle:a4 forPartWithIdentifier:v13];
+    [(_SBStatusBarChanges *)statusBarChanges setStatusBarPartStyle:to forPartWithIdentifier:withIdentifierCopy];
     [(SBDeviceApplicationSceneViewController *)self _updateStatusBarState];
   }
 }
 
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarHiddenTo:(BOOL)a4 withAnimation:(int64_t)a5
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarHiddenTo:(BOOL)to withAnimation:(int64_t)animation
 {
-  v6 = a4;
+  toCopy = to;
   [(SBDeviceApplicationSceneViewController *)self _updateStatusBarState];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained applicationSceneViewController:self didUpdateStatusBarHidden:v6 withAnimation:a5];
+  [WeakRetained applicationSceneViewController:self didUpdateStatusBarHidden:toCopy withAnimation:animation];
 }
 
-- (void)beginMaskingForReason:(int64_t)a3 continuation:(id)a4 scene:(id)a5
+- (void)beginMaskingForReason:(int64_t)reason continuation:(id)continuation scene:(id)scene
 {
-  if (a3 == 1)
+  if (reason == 1)
   {
-    v7 = a4;
-    v8 = [(SBSceneViewController *)self _sceneView];
-    [v8 enableTransitionOverlay:1];
-    v7[2](v7, 0);
+    continuationCopy = continuation;
+    _sceneView = [(SBSceneViewController *)self _sceneView];
+    [_sceneView enableTransitionOverlay:1];
+    continuationCopy[2](continuationCopy, 0);
   }
 }
 
-- (void)invalidateMasking:(id)a3
+- (void)invalidateMasking:(id)masking
 {
-  v3 = [(SBSceneViewController *)self _sceneView];
-  [v3 enableTransitionOverlay:0];
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  [_sceneView enableTransitionOverlay:0];
 }
 
 - (int64_t)leadingStatusBarStyle
@@ -1439,52 +1439,52 @@ LABEL_8:
 
 - (id)backgroundActivitiesToSuppress
 {
-  v2 = [(SBSceneViewController *)self sceneHandle];
-  v3 = [v2 statusBarStateProvider];
-  v4 = [v3 backgroundActivitiesToSuppress];
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  statusBarStateProvider = [sceneHandle statusBarStateProvider];
+  backgroundActivitiesToSuppress = [statusBarStateProvider backgroundActivitiesToSuppress];
 
-  return v4;
+  return backgroundActivitiesToSuppress;
 }
 
 - (id)currentStatusBarStyleAttributes
 {
-  v2 = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
+  _underlyingStatusBarViewIfAvailable = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 styleAttributes];
+    styleAttributes = [_underlyingStatusBarViewIfAvailable styleAttributes];
   }
 
   else
   {
-    v3 = 0;
+    styleAttributes = 0;
   }
 
-  return v3;
+  return styleAttributes;
 }
 
-- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)a3
+- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)orientation
 {
   if ([(NSMutableArray *)self->_activeOverlayViewProviders count])
   {
-    v5 = [(NSMutableArray *)self->_activeOverlayViewProviders lastObject];
-    a3 = [v5 bestHomeAffordanceOrientationForOrientation:a3];
+    lastObject = [(NSMutableArray *)self->_activeOverlayViewProviders lastObject];
+    orientation = [lastObject bestHomeAffordanceOrientationForOrientation:orientation];
   }
 
-  return a3;
+  return orientation;
 }
 
-- (void)willRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4 alongsideContainerView:(id)a5 animated:(BOOL)a6
+- (void)willRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation alongsideContainerView:(id)view animated:(BOOL)animated
 {
-  v6 = a6;
+  animatedCopy = animated;
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = [(SBSceneViewController *)self sceneHandle];
-  if ([v11 wantsDeviceOrientationEventsEnabled] && !-[SBDeviceApplicationSceneViewController _statusBarHasMatchMoveAnimation](self, "_statusBarHasMatchMoveAnimation"))
+  viewCopy = view;
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  if ([sceneHandle wantsDeviceOrientationEventsEnabled] && !-[SBDeviceApplicationSceneViewController _statusBarHasMatchMoveAnimation](self, "_statusBarHasMatchMoveAnimation"))
   {
 
-    if (v6)
+    if (animatedCopy)
     {
-      [(SBDeviceApplicationSceneViewController *)self _addStatusBarMatchMoveAnimationForView:v10];
+      [(SBDeviceApplicationSceneViewController *)self _addStatusBarMatchMoveAnimationForView:viewCopy];
     }
   }
 
@@ -1492,19 +1492,19 @@ LABEL_8:
   {
   }
 
-  v12 = [(SBSceneViewController *)self _sceneView];
-  [v12 willRotateFromInterfaceOrientation:a3 toInterfaceOrientation:a4 alongsideContainerView:v10 animated:v6];
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  [_sceneView willRotateFromInterfaceOrientation:orientation toInterfaceOrientation:interfaceOrientation alongsideContainerView:viewCopy animated:animatedCopy];
 
-  v13 = [(SBSceneViewController *)self sceneHandle];
-  v14 = [v13 application];
-  if ([v14 classicAppPhoneAppRunningOnPad])
+  sceneHandle2 = [(SBSceneViewController *)self sceneHandle];
+  application = [sceneHandle2 application];
+  if ([application classicAppPhoneAppRunningOnPad])
   {
-    v15 = [(UIViewController *)self _sbWindowScene];
-    v16 = [v15 switcherController];
-    v17 = [v16 windowManagementContext];
-    v18 = [v17 isChamoisOrFlexibleWindowing];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    switcherController = [_sbWindowScene switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-    if (v18)
+    if (isChamoisOrFlexibleWindowing)
     {
       v26 = 0u;
       v27 = 0u;
@@ -1526,7 +1526,7 @@ LABEL_8:
               objc_enumerationMutation(v19);
             }
 
-            [*(*(&v24 + 1) + 8 * v23++) willDoBoundsPreservingRotationFromInterfaceOrientation:a3 toInterfaceOrientation:{a4, v24}];
+            [*(*(&v24 + 1) + 8 * v23++) willDoBoundsPreservingRotationFromInterfaceOrientation:orientation toInterfaceOrientation:{interfaceOrientation, v24}];
           }
 
           while (v21 != v23);
@@ -1545,20 +1545,20 @@ LABEL_8:
 
 - (id)prepareForContentRotation
 {
-  v2 = [(SBSceneViewController *)self _sceneView];
-  v3 = [v2 prepareForContentRotation];
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  prepareForContentRotation = [_sceneView prepareForContentRotation];
 
-  return v3;
+  return prepareForContentRotation;
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation
 {
-  v6 = [(SBSceneViewController *)self sceneHandle:a3];
+  v6 = [(SBSceneViewController *)self sceneHandle:orientation];
   if ([v6 wantsDeviceOrientationEventsEnabled])
   {
-    v5 = [(SBDeviceApplicationSceneViewController *)self _statusBarHasMatchMoveAnimation];
+    _statusBarHasMatchMoveAnimation = [(SBDeviceApplicationSceneViewController *)self _statusBarHasMatchMoveAnimation];
 
-    if (v5)
+    if (_statusBarHasMatchMoveAnimation)
     {
 
       [(SBDeviceApplicationSceneViewController *)self _removeStatusBarMatchMoveAnimation];
@@ -1570,17 +1570,17 @@ LABEL_8:
   }
 }
 
-- (void)willPerformNonAnimatedTransitionToInterfaceOrientation:(int64_t)a3
+- (void)willPerformNonAnimatedTransitionToInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [(SBSceneViewController *)self _sceneView];
-  [v4 willRotateFromInterfaceOrientation:a3 toInterfaceOrientation:a3 alongsideContainerView:0 animated:0];
+  _sceneView = [(SBSceneViewController *)self _sceneView];
+  [_sceneView willRotateFromInterfaceOrientation:orientation toInterfaceOrientation:orientation alongsideContainerView:0 animated:0];
 }
 
-- (void)containerDidUpdateTraitsParticipant:(id)a3
+- (void)containerDidUpdateTraitsParticipant:(id)participant
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_storeWeak(&self->_traitsParticipantForOverlayContainer, v4);
+  participantCopy = participant;
+  objc_storeWeak(&self->_traitsParticipantForOverlayContainer, participantCopy);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1601,7 +1601,7 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) containerDidUpdateTraitsParticipant:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) containerDidUpdateTraitsParticipant:{participantCopy, v10}];
       }
 
       while (v7 != v9);
@@ -1612,51 +1612,51 @@ LABEL_8:
   }
 }
 
-- (unint64_t)statusBar:(id)a3 effectiveStyleOverridesForRequestedStyle:(int64_t)a4 overrides:(unint64_t)a5
+- (unint64_t)statusBar:(id)bar effectiveStyleOverridesForRequestedStyle:(int64_t)style overrides:(unint64_t)overrides
 {
-  v5 = a5;
+  overridesCopy = overrides;
   if (*&self->_conformanceFlags)
   {
-    v5 = [(UIStatusBarStyleDelegate_SpringBoardOnly *)self->_realStatusBarStyleDelegate statusBar:a3 effectiveStyleOverridesForRequestedStyle:a4 overrides:a5];
+    overridesCopy = [(UIStatusBarStyleDelegate_SpringBoardOnly *)self->_realStatusBarStyleDelegate statusBar:bar effectiveStyleOverridesForRequestedStyle:style overrides:overrides];
   }
 
-  v7 = [(SBSceneViewController *)self sceneHandle:a3];
-  v8 = [v7 statusBarStateProvider];
-  v9 = [v8 backgroundActivitiesToSuppress];
+  v7 = [(SBSceneViewController *)self sceneHandle:bar];
+  statusBarStateProvider = [v7 statusBarStateProvider];
+  backgroundActivitiesToSuppress = [statusBarStateProvider backgroundActivitiesToSuppress];
 
   v10 = STUIStyleOverridesForBackgroundActivityIdentifiers();
-  return v5 & ~v10;
+  return overridesCopy & ~v10;
 }
 
-- (int64_t)overriddenRequestedStyleFromStyle:(int64_t)a3
+- (int64_t)overriddenRequestedStyleFromStyle:(int64_t)style
 {
   if ((*&self->_conformanceFlags & 4) != 0)
   {
-    return [(UIStatusBarStyleDelegate_SpringBoardOnly *)self->_realStatusBarStyleDelegate overriddenRequestedStyleFromStyle:a3];
+    return [(UIStatusBarStyleDelegate_SpringBoardOnly *)self->_realStatusBarStyleDelegate overriddenRequestedStyleFromStyle:style];
   }
 
   else
   {
-    return a3;
+    return style;
   }
 }
 
-- (id)statusBar:(id)a3 effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:(id)a4
+- (id)statusBar:(id)bar effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBSceneViewController *)self sceneHandle];
-  v9 = [v8 statusBarStateProvider];
-  v10 = [v9 backgroundActivitiesToSuppress];
+  barCopy = bar;
+  identifiersCopy = identifiers;
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  statusBarStateProvider = [sceneHandle statusBarStateProvider];
+  backgroundActivitiesToSuppress = [statusBarStateProvider backgroundActivitiesToSuppress];
 
-  v11 = v7;
+  v11 = identifiersCopy;
   if ((*&self->_conformanceFlags & 2) != 0)
   {
-    v11 = [(UIStatusBarStyleDelegate_SpringBoardOnly *)self->_realStatusBarStyleDelegate statusBar:v6 effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:v7];
+    v11 = [(UIStatusBarStyleDelegate_SpringBoardOnly *)self->_realStatusBarStyleDelegate statusBar:barCopy effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:identifiersCopy];
   }
 
   v12 = [v11 mutableCopy];
-  [v12 minusSet:v10];
+  [v12 minusSet:backgroundActivitiesToSuppress];
 
   return v12;
 }
@@ -1733,16 +1733,16 @@ LABEL_8:
   self->_overlayViewProviders = 0;
 }
 
-- (void)_updateStatusBarAppearanceForOverlayProvider:(id)a3
+- (void)_updateStatusBarAppearanceForOverlayProvider:(id)provider
 {
-  v9 = a3;
-  if ([v9 affectsStatusBarPresentation])
+  providerCopy = provider;
+  if ([providerCopy affectsStatusBarPresentation])
   {
     v4 = objc_alloc_init(SBMutableStatusBarSettings);
-    v5 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v9, "prefersStatusBarHidden") ^ 1}];
+    v5 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(providerCopy, "prefersStatusBarHidden") ^ 1}];
     [(SBMutableStatusBarSettings *)v4 setAlpha:v5];
 
-    -[SBMutableStatusBarSettings setStyle:](v4, "setStyle:", [v9 preferredStatusBarStyle]);
+    -[SBMutableStatusBarSettings setStyle:](v4, "setStyle:", [providerCopy preferredStatusBarStyle]);
     activeOverlayStatusBarAssertion = self->_activeOverlayStatusBarAssertion;
     if (activeOverlayStatusBarAssertion)
     {
@@ -1760,16 +1760,16 @@ LABEL_8:
 
 - (void)_recalculateResignActiveAssertionForActiveOverlays
 {
-  v3 = [(SBDeviceApplicationSceneViewController *)self _activeOverlaysWantResignActiveAssertion];
+  _activeOverlaysWantResignActiveAssertion = [(SBDeviceApplicationSceneViewController *)self _activeOverlaysWantResignActiveAssertion];
   resignActiveAssertion = self->_resignActiveAssertion;
-  if (v3)
+  if (_activeOverlaysWantResignActiveAssertion)
   {
     if (!resignActiveAssertion)
     {
       objc_initWeak(&location, self);
       v5 = +[SBSceneManagerCoordinator sharedInstance];
-      v6 = [v5 sceneDeactivationManager];
-      v7 = [v6 newAssertionWithReason:7];
+      sceneDeactivationManager = [v5 sceneDeactivationManager];
+      v7 = [sceneDeactivationManager newAssertionWithReason:7];
       v8 = self->_resignActiveAssertion;
       self->_resignActiveAssertion = v7;
 
@@ -1855,27 +1855,27 @@ LABEL_11:
   return v3;
 }
 
-- (void)_setupStatusBarStylesFromSceneHandle:(id)a3
+- (void)_setupStatusBarStylesFromSceneHandle:(id)handle
 {
-  v6 = a3;
-  v4 = [v6 sceneIfExists];
-  if (v4)
+  handleCopy = handle;
+  sceneIfExists = [handleCopy sceneIfExists];
+  if (sceneIfExists)
   {
-    v5 = [v6 statusBarStateProvider];
-    -[SBDeviceApplicationSceneViewController _setStatusBarStyle:](self, "_setStatusBarStyle:", [v5 statusBarStyle]);
-    -[SBDeviceApplicationSceneViewController _setStatusBarStyle:forPartWithIdentifier:](self, "_setStatusBarStyle:forPartWithIdentifier:", [v5 statusBarStyleForPartWithIdentifier:*MEMORY[0x277D775D0]], *MEMORY[0x277D775D0]);
-    -[SBDeviceApplicationSceneViewController _setStatusBarStyle:forPartWithIdentifier:](self, "_setStatusBarStyle:forPartWithIdentifier:", [v5 statusBarStyleForPartWithIdentifier:*MEMORY[0x277D775B0]], *MEMORY[0x277D775B0]);
-    -[SBDeviceApplicationSceneViewController _setStatusBarStyle:forPartWithIdentifier:](self, "_setStatusBarStyle:forPartWithIdentifier:", [v5 statusBarStyleForPartWithIdentifier:*MEMORY[0x277D775E0]], *MEMORY[0x277D775E0]);
+    statusBarStateProvider = [handleCopy statusBarStateProvider];
+    -[SBDeviceApplicationSceneViewController _setStatusBarStyle:](self, "_setStatusBarStyle:", [statusBarStateProvider statusBarStyle]);
+    -[SBDeviceApplicationSceneViewController _setStatusBarStyle:forPartWithIdentifier:](self, "_setStatusBarStyle:forPartWithIdentifier:", [statusBarStateProvider statusBarStyleForPartWithIdentifier:*MEMORY[0x277D775D0]], *MEMORY[0x277D775D0]);
+    -[SBDeviceApplicationSceneViewController _setStatusBarStyle:forPartWithIdentifier:](self, "_setStatusBarStyle:forPartWithIdentifier:", [statusBarStateProvider statusBarStyleForPartWithIdentifier:*MEMORY[0x277D775B0]], *MEMORY[0x277D775B0]);
+    -[SBDeviceApplicationSceneViewController _setStatusBarStyle:forPartWithIdentifier:](self, "_setStatusBarStyle:forPartWithIdentifier:", [statusBarStateProvider statusBarStyleForPartWithIdentifier:*MEMORY[0x277D775E0]], *MEMORY[0x277D775E0]);
   }
 }
 
-- (void)_setRealStatusBarStyleDelegate:(id)a3
+- (void)_setRealStatusBarStyleDelegate:(id)delegate
 {
-  v5 = a3;
-  if (self->_realStatusBarStyleDelegate != v5)
+  delegateCopy = delegate;
+  if (self->_realStatusBarStyleDelegate != delegateCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_realStatusBarStyleDelegate, a3);
+    v9 = delegateCopy;
+    objc_storeStrong(&self->_realStatusBarStyleDelegate, delegate);
     *&self->_conformanceFlags = *&self->_conformanceFlags & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -1889,7 +1889,7 @@ LABEL_11:
 
     *&self->_conformanceFlags = *&self->_conformanceFlags & 0xFB | v6;
     v7 = (objc_opt_respondsToSelector() & 1) == 0;
-    v5 = v9;
+    delegateCopy = v9;
     if (v7)
     {
       v8 = 0;
@@ -1904,63 +1904,63 @@ LABEL_11:
   }
 }
 
-- (void)_applyBackgroundActivitiesToSuppress:(id)a3 toSceneWithIdentifier:(id)a4
+- (void)_applyBackgroundActivitiesToSuppress:(id)suppress toSceneWithIdentifier:(id)identifier
 {
   statusBar = self->_statusBar;
   if (statusBar)
   {
-    v5 = [(UIStatusBar *)self->_statusBar currentResolvedStyle:a3];
+    v5 = [(UIStatusBar *)self->_statusBar currentResolvedStyle:suppress];
 
     [(UIStatusBar *)statusBar requestResolvedStyle:v5];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_doubleTapTopGestureRecognizer != a3)
+  if (self->_doubleTapTopGestureRecognizer != begin)
   {
     return 1;
   }
 
-  v4 = [(UIViewController *)self _sbWindowScene];
-  v5 = [v4 switcherController];
-  v6 = [v5 windowManagementContext];
-  v7 = [v6 isChamoisOrFlexibleWindowing];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  switcherController = [_sbWindowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  return v7;
+  return isChamoisOrFlexibleWindowing;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (*&self->_scrollToTopGestureRecognizer == __PAIR128__(v7, v6))
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (*&self->_scrollToTopGestureRecognizer == __PAIR128__(gestureRecognizerCopy, recognizerCopy))
   {
-    v9 = [(UIViewController *)self _sbWindowScene];
-    v10 = [v9 switcherController];
-    v11 = [v10 windowManagementContext];
-    v12 = [v11 isChamoisOrFlexibleWindowing];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    switcherController = [_sbWindowScene switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
   }
 
   else
   {
-    v12 = 0;
+    isChamoisOrFlexibleWindowing = 0;
   }
 
-  return v12;
+  return isChamoisOrFlexibleWindowing;
 }
 
-- (void)_statusBarDoubleTapTop:(id)a3
+- (void)_statusBarDoubleTapTop:(id)top
 {
-  v4 = a3;
+  topCopy = top;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained applicationSceneViewController:self statusBarDoubleTapped:v4];
+  [WeakRetained applicationSceneViewController:self statusBarDoubleTapped:topCopy];
 }
 
-- (void)_statusBarTapped:(id)a3 type:(int64_t)a4
+- (void)_statusBarTapped:(id)tapped type:(int64_t)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  tappedCopy = tapped;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1980,7 +1980,7 @@ LABEL_3:
         objc_enumerationMutation(WeakRetained);
       }
 
-      if ([*(*(&v12 + 1) + 8 * v11) handledStatusBarTap:v6 type:{a4, v12}])
+      if ([*(*(&v12 + 1) + 8 * v11) handledStatusBarTap:tappedCopy type:{type, v12}])
       {
         break;
       }
@@ -2003,24 +2003,24 @@ LABEL_3:
 LABEL_9:
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [(NSMutableArray *)WeakRetained applicationSceneViewController:self statusBarTapped:v6 tapActionType:a4];
+    [(NSMutableArray *)WeakRetained applicationSceneViewController:self statusBarTapped:tappedCopy tapActionType:type];
   }
 }
 
-- (void)_setStatusBarStyle:(int64_t)a3
+- (void)_setStatusBarStyle:(int64_t)style
 {
-  v4 = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
-  [v4 setStyle:a3];
+  _underlyingStatusBarViewIfAvailable = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
+  [_underlyingStatusBarViewIfAvailable setStyle:style];
 }
 
-- (int64_t)_currentStatusBarStyleForPartWithIdentifier:(id)a3
+- (int64_t)_currentStatusBarStyleForPartWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  _underlyingStatusBarViewIfAvailable = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
+  v6 = _underlyingStatusBarViewIfAvailable;
+  if (_underlyingStatusBarViewIfAvailable)
   {
-    v7 = [v5 styleForPartWithIdentifier:v4];
+    v7 = [_underlyingStatusBarViewIfAvailable styleForPartWithIdentifier:identifierCopy];
   }
 
   else
@@ -2031,38 +2031,38 @@ LABEL_9:
   return v7;
 }
 
-- (void)_setStatusBarStyle:(int64_t)a3 forPartWithIdentifier:(id)a4
+- (void)_setStatusBarStyle:(int64_t)style forPartWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
-  [v7 setStyle:a3 forPartWithIdentifier:v6];
+  identifierCopy = identifier;
+  _underlyingStatusBarViewIfAvailable = [(SBDeviceApplicationSceneViewController *)self _underlyingStatusBarViewIfAvailable];
+  [_underlyingStatusBarViewIfAvailable setStyle:style forPartWithIdentifier:identifierCopy];
 }
 
 - (BOOL)_statusBarHasMatchMoveAnimation
 {
-  v2 = [(BSUIOrientationTransformWrapperView *)self->_statusBarTransformView layer];
-  v3 = [v2 animationForKey:@"RotationMatchMoveAnimation"];
+  layer = [(BSUIOrientationTransformWrapperView *)self->_statusBarTransformView layer];
+  v3 = [layer animationForKey:@"RotationMatchMoveAnimation"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)_addStatusBarMatchMoveAnimationForView:(id)a3
+- (void)_addStatusBarMatchMoveAnimationForView:(id)view
 {
   v14[4] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CD9EE8];
-  v5 = a3;
-  v6 = [v4 animation];
-  v7 = [v5 layer];
+  viewCopy = view;
+  animation = [v4 animation];
+  layer = [viewCopy layer];
 
-  [v6 setSourceLayer:v7];
-  [v6 setDuration:INFINITY];
-  [v6 setFillMode:*MEMORY[0x277CDA230]];
-  [v6 setRemovedOnCompletion:0];
-  [v6 setAppliesX:0];
-  [v6 setAppliesY:0];
-  [v6 setAppliesScale:1];
-  [v6 setUsesNormalizedCoordinates:1];
+  [animation setSourceLayer:layer];
+  [animation setDuration:INFINITY];
+  [animation setFillMode:*MEMORY[0x277CDA230]];
+  [animation setRemovedOnCompletion:0];
+  [animation setAppliesX:0];
+  [animation setAppliesY:0];
+  [animation setAppliesScale:1];
+  [animation setUsesNormalizedCoordinates:1];
   v8 = [MEMORY[0x277CCAE60] valueWithCGPoint:{0.0, 0.0}];
   v14[0] = v8;
   v9 = [MEMORY[0x277CCAE60] valueWithCGPoint:{1.0, 0.0}];
@@ -2072,72 +2072,72 @@ LABEL_9:
   v11 = [MEMORY[0x277CCAE60] valueWithCGPoint:{0.0, 1.0}];
   v14[3] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:4];
-  [v6 setSourcePoints:v12];
+  [animation setSourcePoints:v12];
 
-  v13 = [(BSUIOrientationTransformWrapperView *)self->_statusBarTransformView layer];
-  [v13 addAnimation:v6 forKey:@"RotationMatchMoveAnimation"];
+  layer2 = [(BSUIOrientationTransformWrapperView *)self->_statusBarTransformView layer];
+  [layer2 addAnimation:animation forKey:@"RotationMatchMoveAnimation"];
 }
 
 - (void)_removeStatusBarMatchMoveAnimation
 {
-  v2 = [(BSUIOrientationTransformWrapperView *)self->_statusBarTransformView layer];
-  [v2 removeAnimationForKey:@"RotationMatchMoveAnimation"];
+  layer = [(BSUIOrientationTransformWrapperView *)self->_statusBarTransformView layer];
+  [layer removeAnimationForKey:@"RotationMatchMoveAnimation"];
 }
 
-- (int64_t)_effectiveStyleForPartIdentifier:(id)a3
+- (int64_t)_effectiveStyleForPartIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBSceneViewController *)self sceneHandle];
-  v6 = [v5 statusBarStateProvider];
+  identifierCopy = identifier;
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  statusBarStateProvider = [sceneHandle statusBarStateProvider];
 
-  v7 = [v6 statusBarStyle];
-  v8 = [v6 statusBarPartStyles];
-  v9 = [v8 objectForKey:v4];
+  statusBarStyle = [statusBarStateProvider statusBarStyle];
+  statusBarPartStyles = [statusBarStateProvider statusBarPartStyles];
+  v9 = [statusBarPartStyles objectForKey:identifierCopy];
 
   if (v9)
   {
-    v10 = [v9 integerValue];
-    if (v10 != 4)
+    integerValue = [v9 integerValue];
+    if (integerValue != 4)
     {
-      v7 = v10;
+      statusBarStyle = integerValue;
     }
   }
 
-  return v7;
+  return statusBarStyle;
 }
 
-- (void)_updateSceneFullyOccludedState:(id)a3 fullyOccluded:(BOOL)a4
+- (void)_updateSceneFullyOccludedState:(id)state fullyOccluded:(BOOL)occluded
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [(SBAppSwitcherSettings *)self->_switcherSettings windowingSettings];
-  v7 = [v6 updateWindowLayerFullOcclusion];
+  occludedCopy = occluded;
+  stateCopy = state;
+  windowingSettings = [(SBAppSwitcherSettings *)self->_switcherSettings windowingSettings];
+  updateWindowLayerFullOcclusion = [windowingSettings updateWindowLayerFullOcclusion];
 
-  if (v7)
+  if (updateWindowLayerFullOcclusion)
   {
-    [v8 setFullyOccluded:v4];
+    [stateCopy setFullyOccluded:occludedCopy];
   }
 }
 
 - (void)_updateWindowControlsAdaptiveStyle
 {
-  v3 = [(SBSceneViewController *)self sceneHandle];
-  v12 = [v3 statusBarStateProvider];
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  statusBarStateProvider = [sceneHandle statusBarStateProvider];
 
-  v4 = [v12 statusBarPartStyles];
-  v5 = [v4 objectForKey:@"trafficLightPartIdentifier"];
+  statusBarPartStyles = [statusBarStateProvider statusBarPartStyles];
+  v5 = [statusBarPartStyles objectForKey:@"trafficLightPartIdentifier"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
-    if (v7 == 1)
+    integerValue = [v5 integerValue];
+    if (integerValue == 1)
     {
       v8 = 0;
       v9 = 2;
       goto LABEL_19;
     }
 
-    if (v7 == 2)
+    if (integerValue == 2)
     {
       v8 = 0;
       v9 = 1;
@@ -2145,20 +2145,20 @@ LABEL_9:
     }
   }
 
-  v10 = [v12 statusBarStyle];
-  if (v10 > 3)
+  statusBarStyle = [statusBarStateProvider statusBarStyle];
+  if (statusBarStyle > 3)
   {
-    if (v10 != 4)
+    if (statusBarStyle != 4)
     {
-      v8 = v10 == 64 || v10 == 128;
-      if (v10 == 64)
+      v8 = statusBarStyle == 64 || statusBarStyle == 128;
+      if (statusBarStyle == 64)
       {
         v9 = 2;
       }
 
       else
       {
-        v9 = v10 == 128;
+        v9 = statusBarStyle == 128;
       }
 
       goto LABEL_19;
@@ -2167,7 +2167,7 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!statusBarStyle)
   {
 LABEL_18:
     v9 = 0;
@@ -2176,14 +2176,14 @@ LABEL_18:
   }
 
   v8 = 0;
-  if (v10 == 1)
+  if (statusBarStyle == 1)
   {
     v9 = 2;
   }
 
   else
   {
-    v9 = v10 == 2;
+    v9 = statusBarStyle == 2;
   }
 
 LABEL_19:
@@ -2191,16 +2191,16 @@ LABEL_19:
   [WeakRetained applicationSceneViewController:self didRequestWindowControlsAdaptiveStyle:v9 adaptive:v8];
 }
 
-- (void)_configureForSecureDisplay:(BOOL)a3
+- (void)_configureForSecureDisplay:(BOOL)display
 {
-  v3 = a3;
+  displayCopy = display;
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [(SBSceneViewController *)self sceneHandle];
-  v6 = [v5 _windowScene];
-  v7 = [v6 secureDisplayStateProvider];
-  v8 = [v7 supportsSecureDisplayMode];
+  sceneHandle = [(SBSceneViewController *)self sceneHandle];
+  _windowScene = [sceneHandle _windowScene];
+  secureDisplayStateProvider = [_windowScene secureDisplayStateProvider];
+  supportsSecureDisplayMode = [secureDisplayStateProvider supportsSecureDisplayMode];
 
-  v9 = v8 & v3;
+  v9 = supportsSecureDisplayMode & displayCopy;
   if (v9 != 1 || [(SBDeviceApplicationSceneViewController *)self rendersWhileLocked])
   {
     [(BSInvalidatable *)self->_liveContentDisableAssertion invalidate];
@@ -2224,8 +2224,8 @@ LABEL_4:
 LABEL_5:
   if (v9 != [(SBDeviceApplicationSceneViewController *)self rendersWhileLocked])
   {
-    v11 = [(SBSceneViewController *)self _sceneView];
-    v12 = [v11 effectiveDisplayMode];
+    _sceneView = [(SBSceneViewController *)self _sceneView];
+    effectiveDisplayMode = [_sceneView effectiveDisplayMode];
 
     v31 = 0u;
     v32 = 0u;
@@ -2247,7 +2247,7 @@ LABEL_5:
             objc_enumerationMutation(v13);
           }
 
-          [*(*(&v29 + 1) + 8 * v17++) noteDisplayModeChange:v12];
+          [*(*(&v29 + 1) + 8 * v17++) noteDisplayModeChange:effectiveDisplayMode];
         }
 
         while (v15 != v17);

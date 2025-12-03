@@ -1,12 +1,12 @@
 @interface TCMessageEntry
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (TCMessageEntry)initWithTag:(int)a3 affectedObject:(id)a4 text:(id)a5 parameters:(char *)a6;
+- (BOOL)isEqual:(id)equal;
+- (TCMessageEntry)initWithTag:(int)tag affectedObject:(id)object text:(id)text parameters:(char *)parameters;
 - (id)description;
-- (id)getParameter:(unsigned int)a3;
-- (int64_t)timeStampCompare:(id)a3;
-- (void)addAffectedObject:(id)a3;
-- (void)mergeEntries:(id)a3;
+- (id)getParameter:(unsigned int)parameter;
+- (int64_t)timeStampCompare:(id)compare;
+- (void)addAffectedObject:(id)object;
+- (void)mergeEntries:(id)entries;
 @end
 
 @implementation TCMessageEntry
@@ -25,54 +25,54 @@
   }
 }
 
-- (TCMessageEntry)initWithTag:(int)a3 affectedObject:(id)a4 text:(id)a5 parameters:(char *)a6
+- (TCMessageEntry)initWithTag:(int)tag affectedObject:(id)object text:(id)text parameters:(char *)parameters
 {
-  v10 = a4;
-  v11 = a5;
-  v25 = a6;
+  objectCopy = object;
+  textCopy = text;
+  parametersCopy = parameters;
   v12 = [(TCMessageEntry *)self init];
   v13 = v12;
   if (v12)
   {
-    v12->m_tag = a3;
+    v12->m_tag = tag;
     v12->m_count = 1;
-    [(TCMessageEntry *)v12 addAffectedObject:v10];
-    v24 = v25;
-    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v11 arguments:v25];
+    [(TCMessageEntry *)v12 addAffectedObject:objectCopy];
+    v24 = parametersCopy;
+    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:textCopy arguments:parametersCopy];
     m_text = v13->m_text;
     v13->m_text = v14;
 
-    [v11 length];
-    v16 = [v11 rangeOfCharacterFromSet:percent];
+    [textCopy length];
+    v16 = [textCopy rangeOfCharacterFromSet:percent];
     for (i = v17; v16 != 0x7FFFFFFFFFFFFFFFLL; i = v22)
     {
-      v19 = [v11 length];
+      v19 = [textCopy length];
       v20 = v16 + i;
-      v21 = [v11 characterAtIndex:v20];
+      v21 = [textCopy characterAtIndex:v20];
       if (v21 != 37 && v21 != 64)
       {
         break;
       }
 
-      v16 = [v11 rangeOfCharacterFromSet:percent options:0 range:{v20 + 1, v19 - (v20 + 1), v24}];
+      v16 = [textCopy rangeOfCharacterFromSet:percent options:0 range:{v20 + 1, v19 - (v20 + 1), v24}];
     }
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     if (self->m_tag == *(v7 + 4) && [(NSString *)self->m_text isEqualToString:*(v7 + 3)])
     {
-      v8 = [(TCMessageEntry *)self additionalText];
-      v9 = [v7 additionalText];
-      if ([v8 isEqualToString:v9])
+      additionalText = [(TCMessageEntry *)self additionalText];
+      additionalText2 = [v7 additionalText];
+      if ([additionalText isEqualToString:additionalText2])
       {
         m_parameters = self->m_parameters;
         if (m_parameters == *(v7 + 4))
@@ -106,25 +106,25 @@
   return v6;
 }
 
-- (id)getParameter:(unsigned int)a3
+- (id)getParameter:(unsigned int)parameter
 {
-  if ([(NSArray *)self->m_parameters count]<= a3)
+  if ([(NSArray *)self->m_parameters count]<= parameter)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->m_parameters objectAtIndex:a3];
+    v5 = [(NSArray *)self->m_parameters objectAtIndex:parameter];
   }
 
   return v5;
 }
 
-- (int64_t)timeStampCompare:(id)a3
+- (int64_t)timeStampCompare:(id)compare
 {
   m_timeStamp = self->m_timeStamp;
-  v4 = *(a3 + 1);
+  v4 = *(compare + 1);
   v5 = m_timeStamp >= v4;
   v6 = m_timeStamp > v4;
   if (v5)
@@ -143,23 +143,23 @@
   m_count = self->m_count;
   if (m_count == 1)
   {
-    v3 = self->m_text;
+    m_count = self->m_text;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ (%dx)", self->m_text, m_count];
+    m_count = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ (%dx)", self->m_text, m_count];
   }
 
-  return v3;
+  return m_count;
 }
 
-- (void)mergeEntries:(id)a3
+- (void)mergeEntries:(id)entries
 {
-  v8 = a3;
-  self->m_count += [v8 getCount];
-  v4 = [v8 affectedObjects];
-  if ([v4 count])
+  entriesCopy = entries;
+  self->m_count += [entriesCopy getCount];
+  affectedObjects = [entriesCopy affectedObjects];
+  if ([affectedObjects count])
   {
     m_affectedObjects = self->m_affectedObjects;
     if (!m_affectedObjects)
@@ -171,14 +171,14 @@
       m_affectedObjects = self->m_affectedObjects;
     }
 
-    [(NSMutableArray *)m_affectedObjects addObjectsFromArray:v4];
+    [(NSMutableArray *)m_affectedObjects addObjectsFromArray:affectedObjects];
   }
 }
 
-- (void)addAffectedObject:(id)a3
+- (void)addAffectedObject:(id)object
 {
-  v7 = a3;
-  if (v7)
+  objectCopy = object;
+  if (objectCopy)
   {
     m_affectedObjects = self->m_affectedObjects;
     if (!m_affectedObjects)
@@ -190,7 +190,7 @@
       m_affectedObjects = self->m_affectedObjects;
     }
 
-    [(NSMutableArray *)m_affectedObjects addObject:v7];
+    [(NSMutableArray *)m_affectedObjects addObject:objectCopy];
   }
 }
 

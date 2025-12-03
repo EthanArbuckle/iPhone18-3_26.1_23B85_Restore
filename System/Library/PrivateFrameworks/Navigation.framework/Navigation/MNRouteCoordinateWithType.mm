@@ -1,6 +1,6 @@
 @interface MNRouteCoordinateWithType
-+ (id)convergenceCoordinate:(PolylineCoordinate)a3;
-+ (id)divergenceCoordinate:(PolylineCoordinate)a3;
++ (id)convergenceCoordinate:(PolylineCoordinate)coordinate;
++ (id)divergenceCoordinate:(PolylineCoordinate)coordinate;
 - (id)description;
 @end
 
@@ -8,9 +8,9 @@
 
 - (id)description
 {
-  v3 = [(MNRouteCoordinateWithType *)self significanceType];
+  significanceType = [(MNRouteCoordinateWithType *)self significanceType];
   v4 = @"Divergence";
-  if (v3 == 1)
+  if (significanceType == 1)
   {
     v4 = @"Convergence";
   }
@@ -21,20 +21,20 @@
   return v6;
 }
 
-+ (id)convergenceCoordinate:(PolylineCoordinate)a3
++ (id)convergenceCoordinate:(PolylineCoordinate)coordinate
 {
   v4 = objc_alloc_init(MNRouteCoordinateWithType);
   [(MNRouteCoordinateWithType *)v4 setSignificanceType:1];
-  [(MNRouteCoordinateWithType *)v4 setRouteCoordinate:a3];
+  [(MNRouteCoordinateWithType *)v4 setRouteCoordinate:coordinate];
 
   return v4;
 }
 
-+ (id)divergenceCoordinate:(PolylineCoordinate)a3
++ (id)divergenceCoordinate:(PolylineCoordinate)coordinate
 {
   v4 = objc_alloc_init(MNRouteCoordinateWithType);
   [(MNRouteCoordinateWithType *)v4 setSignificanceType:0];
-  [(MNRouteCoordinateWithType *)v4 setRouteCoordinate:a3];
+  [(MNRouteCoordinateWithType *)v4 setRouteCoordinate:coordinate];
 
   return v4;
 }

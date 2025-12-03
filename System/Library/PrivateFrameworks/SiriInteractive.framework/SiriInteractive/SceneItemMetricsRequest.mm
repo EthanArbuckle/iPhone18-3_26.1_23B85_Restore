@@ -1,16 +1,16 @@
 @interface SceneItemMetricsRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)initialSize;
 - (CGSize)maximumSize;
 - (NSString)description;
 - (_TtC15SiriInteractive20SizeDimensionRequest)heightRequest;
 - (_TtC15SiriInteractive20SizeDimensionRequest)widthRequest;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setHeightRequest:(id)a3;
-- (void)setWidthRequest:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setHeightRequest:(id)request;
+- (void)setWidthRequest:(id)request;
 @end
 
 @implementation SceneItemMetricsRequest
@@ -22,11 +22,11 @@
   return v2;
 }
 
-- (void)setWidthRequest:(id)a3
+- (void)setWidthRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_267513BBC(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_267513BBC(requestCopy);
 }
 
 - (_TtC15SiriInteractive20SizeDimensionRequest)heightRequest
@@ -36,11 +36,11 @@
   return v2;
 }
 
-- (void)setHeightRequest:(id)a3
+- (void)setHeightRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_267513CFC(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_267513CFC(requestCopy);
 }
 
 - (CGSize)initialSize
@@ -61,17 +61,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2675143C0();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_267533C74();
     swift_unknownObjectRelease();
@@ -80,7 +80,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_2675144D4(v8);
@@ -91,7 +91,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_267514708();
 
   v3 = sub_2675339C4();
@@ -99,17 +99,17 @@
   return v3;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_2675147E4(a3);
+  selfCopy = self;
+  sub_2675147E4(dictionary);
   swift_unknownObjectRelease();
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_267514AD0(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -118,11 +118,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_267514BDC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_267514BDC(coderCopy);
 }
 
 @end

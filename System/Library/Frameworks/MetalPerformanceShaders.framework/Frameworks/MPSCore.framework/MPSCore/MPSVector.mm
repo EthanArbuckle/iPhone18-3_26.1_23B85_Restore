@@ -1,13 +1,13 @@
 @interface MPSVector
 - (MPSVector)init;
-- (MPSVector)initWithBuffer:(id)a3 length:(unint64_t)a4 dataType:(unsigned int)a5;
 - (MPSVector)initWithBuffer:(id)buffer descriptor:(MPSVectorDescriptor *)descriptor;
+- (MPSVector)initWithBuffer:(id)buffer length:(unint64_t)length dataType:(unsigned int)type;
 - (MPSVector)initWithBuffer:(id)buffer offset:(NSUInteger)offset descriptor:(MPSVectorDescriptor *)descriptor;
 - (MPSVector)initWithDevice:(id)device descriptor:(MPSVectorDescriptor *)descriptor;
 - (NSUInteger)resourceSize;
 - (id).cxx_construct;
 - (id)data;
-- (id)initPrivateWithDescriptor:(id)a3 device:(void *)a4;
+- (id)initPrivateWithDescriptor:(id)descriptor device:(void *)device;
 @end
 
 @implementation MPSVector
@@ -24,32 +24,32 @@
   return 0;
 }
 
-- (id)initPrivateWithDescriptor:(id)a3 device:(void *)a4
+- (id)initPrivateWithDescriptor:(id)descriptor device:(void *)device
 {
   v68.receiver = self;
   v68.super_class = MPSVector;
   v10 = [(MPSVector *)&v68 init];
   if (v10)
   {
-    if (a3)
+    if (descriptor)
     {
-      objc_msgSend_vectorBytes(a3, v6, v7, v8, v9);
-      objc_msgSend_length(a3, v11, v12, v13, v14);
-      objc_msgSend_dataType(a3, v15, v16, v17, v18);
-      v23 = objc_msgSend_vectorBytes(a3, v19, v20, v21, v22);
-      v28 = objc_msgSend_length(a3, v24, v25, v26, v27);
-      if (v23 >= v28 * (objc_msgSend_dataType(a3, v29, v30, v31, v32) >> 3))
+      objc_msgSend_vectorBytes(descriptor, v6, v7, v8, v9);
+      objc_msgSend_length(descriptor, v11, v12, v13, v14);
+      objc_msgSend_dataType(descriptor, v15, v16, v17, v18);
+      v23 = objc_msgSend_vectorBytes(descriptor, v19, v20, v21, v22);
+      v28 = objc_msgSend_length(descriptor, v24, v25, v26, v27);
+      if (v23 >= v28 * (objc_msgSend_dataType(descriptor, v29, v30, v31, v32) >> 3))
       {
-        objc_msgSend_vectorBytes(a3, v33, v34, v35, v36);
-        objc_msgSend_dataType(a3, v37, v38, v39, v40);
-        v45 = objc_msgSend_vectorBytes(a3, v41, v42, v43, v44);
-        if (!(v45 % (objc_msgSend_dataType(a3, v46, v47, v48, v49) >> 3)))
+        objc_msgSend_vectorBytes(descriptor, v33, v34, v35, v36);
+        objc_msgSend_dataType(descriptor, v37, v38, v39, v40);
+        v45 = objc_msgSend_vectorBytes(descriptor, v41, v42, v43, v44);
+        if (!(v45 % (objc_msgSend_dataType(descriptor, v46, v47, v48, v49) >> 3)))
         {
-          v10->_device = a4;
-          v10->_length = objc_msgSend_length(a3, v50, v51, v52, v53);
-          v10->_dataType = objc_msgSend_dataType(a3, v54, v55, v56, v57);
-          v10->_vectors = objc_msgSend_vectors(a3, v58, v59, v60, v61);
-          v10->_vectorBytes = objc_msgSend_vectorBytes(a3, v62, v63, v64, v65);
+          v10->_device = device;
+          v10->_length = objc_msgSend_length(descriptor, v50, v51, v52, v53);
+          v10->_dataType = objc_msgSend_dataType(descriptor, v54, v55, v56, v57);
+          v10->_vectors = objc_msgSend_vectors(descriptor, v58, v59, v60, v61);
+          v10->_vectorBytes = objc_msgSend_vectorBytes(descriptor, v62, v63, v64, v65);
           return v10;
         }
 
@@ -84,9 +84,9 @@ LABEL_12:
   return v10;
 }
 
-- (MPSVector)initWithBuffer:(id)a3 length:(unint64_t)a4 dataType:(unsigned int)a5
+- (MPSVector)initWithBuffer:(id)buffer length:(unint64_t)length dataType:(unsigned int)type
 {
-  if (!a3)
+  if (!buffer)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -98,7 +98,7 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v9 = objc_msgSend_device(a3, a2, a3, a4, *&a5);
+  v9 = objc_msgSend_device(buffer, a2, buffer, length, *&type);
   MPSDevice = MPSDevice::GetMPSDevice(v9);
   if (!MPSDevice)
   {
@@ -106,7 +106,7 @@ LABEL_12:
     {
       v22 = objc_opt_class();
       NSStringFromClass(v22);
-      v27 = objc_msgSend_device(a3, v23, v24, v25, v26);
+      v27 = objc_msgSend_device(buffer, v23, v24, v25, v26);
       objc_msgSend_name(v27, v28, v29, v30, v31);
 LABEL_8:
       MTLReportFailure();
@@ -125,15 +125,15 @@ LABEL_9:
   if (v12)
   {
     v12->_device = v11;
-    v12->_length = a4;
-    v12->_dataType = a5;
-    v17 = (a5 >> 3) * a4;
+    v12->_length = length;
+    v12->_dataType = type;
+    v17 = (type >> 3) * length;
     v12->_vectors = 1;
     v12->_vectorBytes = v17;
-    objc_msgSend_length(a3, v13, v14, v15, v16);
-    if (v17 <= objc_msgSend_length(a3, v18, v19, v20, v21))
+    objc_msgSend_length(buffer, v13, v14, v15, v16);
+    if (v17 <= objc_msgSend_length(buffer, v18, v19, v20, v21))
     {
-      MPSAutoBuffer::InitWithBuffer(&self->_buffer, a3);
+      MPSAutoBuffer::InitWithBuffer(&self->_buffer, buffer);
       self->_offset = 0;
       return self;
     }
@@ -142,7 +142,7 @@ LABEL_9:
     {
       v34 = objc_opt_class();
       NSStringFromClass(v34);
-      objc_msgSend_length(a3, v35, v36, v37, v38);
+      objc_msgSend_length(buffer, v35, v36, v37, v38);
       goto LABEL_8;
     }
 
@@ -355,12 +355,12 @@ LABEL_12:
     result = self->_buffer._device;
     if (result)
     {
-      v4 = self;
+      selfCopy = self;
       MPSDevice = MPSDevice::GetMPSDevice(result);
-      if (v4->_buffer._device)
+      if (selfCopy->_buffer._device)
       {
-        requestedSize = v4->_buffer._requestedSize;
-        v7 = v4;
+        requestedSize = selfCopy->_buffer._requestedSize;
+        v7 = selfCopy;
         v8 = MPSDevice;
         v9 = (*(*MPSDevice + 32))();
         v10 = (*(*v8 + 5))(v8);

@@ -1,11 +1,11 @@
 @interface AMSChildAccountStorefrontTask
 - (ACAccount)parentAccount;
 - (AMSBagProtocol)bag;
-- (AMSChildAccountStorefrontTask)initWithParentAccount:(id)a3 childDSID:(id)a4 bag:(id)a5;
+- (AMSChildAccountStorefrontTask)initWithParentAccount:(id)account childDSID:(id)d bag:(id)bag;
 - (AMSURLProtocolDelegate)delegate;
 - (NSNumber)childDSID;
 - (id)perform;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation AMSChildAccountStorefrontTask
@@ -38,24 +38,24 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_192C71C54();
 }
 
-- (AMSChildAccountStorefrontTask)initWithParentAccount:(id)a3 childDSID:(id)a4 bag:(id)a5
+- (AMSChildAccountStorefrontTask)initWithParentAccount:(id)account childDSID:(id)d bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  dCopy = d;
   swift_unknownObjectRetain();
-  return sub_192C71C9C(v7, v8, a5);
+  return sub_192C71C9C(accountCopy, dCopy, bag);
 }
 
 - (id)perform
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_192C71D84();
 
   return v3;

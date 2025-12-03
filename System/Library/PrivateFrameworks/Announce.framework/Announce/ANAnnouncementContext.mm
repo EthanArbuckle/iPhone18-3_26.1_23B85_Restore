@@ -1,26 +1,26 @@
 @interface ANAnnouncementContext
-+ (id)contextFromDictionary:(id)a3;
-+ (id)contextFromUserInfo:(id)a3;
-- (ANAnnouncementContext)initWithCoder:(id)a3;
-- (ANAnnouncementContext)initWithDictionary:(id)a3;
-- (BOOL)isEqualToContext:(id)a3;
++ (id)contextFromDictionary:(id)dictionary;
++ (id)contextFromUserInfo:(id)info;
+- (ANAnnouncementContext)initWithCoder:(id)coder;
+- (ANAnnouncementContext)initWithDictionary:(id)dictionary;
+- (BOOL)isEqualToContext:(id)context;
 - (NSDictionary)contextDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANAnnouncementContext
 
-- (ANAnnouncementContext)initWithDictionary:(id)a3
+- (ANAnnouncementContext)initWithDictionary:(id)dictionary
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v73.receiver = self;
   v73.super_class = ANAnnouncementContext;
   v5 = [(ANAnnouncementContext *)&v73 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AnnouncementID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"AnnouncementID"];
     v7 = v6;
     if (v6)
     {
@@ -34,7 +34,7 @@
 
     objc_storeStrong(&v5->_announcementID, v8);
 
-    v9 = [v4 objectForKeyedSubscript:@"GroupID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"GroupID"];
     v10 = v9;
     if (v9)
     {
@@ -48,7 +48,7 @@
 
     objc_storeStrong(&v5->_groupID, v11);
 
-    v12 = [v4 objectForKeyedSubscript:@"AnnouncerID"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"AnnouncerID"];
     v13 = v12;
     if (v12)
     {
@@ -62,7 +62,7 @@
 
     objc_storeStrong(&v5->_announcerID, v14);
 
-    v15 = [v4 objectForKeyedSubscript:@"AnnouncerName"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"AnnouncerName"];
     v16 = v15;
     if (v15)
     {
@@ -76,7 +76,7 @@
 
     objc_storeStrong(&v5->_announcerName, v17);
 
-    v18 = [v4 objectForKeyedSubscript:@"AnnouncerUserID"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"AnnouncerUserID"];
     v19 = v18;
     if (v18)
     {
@@ -90,7 +90,7 @@
 
     objc_storeStrong(&v5->_announcerUserID, v20);
 
-    v21 = [v4 objectForKeyedSubscript:@"AnnouncerUserUniqueID"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"AnnouncerUserUniqueID"];
     v22 = v21;
     if (v21)
     {
@@ -104,7 +104,7 @@
 
     objc_storeStrong(&v5->_announcerUserUniqueID, v23);
 
-    v24 = [v4 objectForKeyedSubscript:@"AnnouncerIsAccessory"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"AnnouncerIsAccessory"];
     v25 = v24;
     if (v24)
     {
@@ -112,7 +112,7 @@
     }
 
     v5->_announcerIsAccessory = v24;
-    v26 = [v4 objectForKeyedSubscript:@"HomeName"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"HomeName"];
     v27 = v26;
     if (v26)
     {
@@ -126,7 +126,7 @@
 
     objc_storeStrong(&v5->_homeName, v28);
 
-    v29 = [v4 objectForKeyedSubscript:@"HomeID"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"HomeID"];
     v30 = v29;
     if (v29)
     {
@@ -140,10 +140,10 @@
 
     objc_storeStrong(&v5->_homeID, v31);
 
-    v32 = [v4 objectForKeyedSubscript:@"ProductType"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"ProductType"];
     if (v32)
     {
-      v33 = [v4 objectForKeyedSubscript:@"ProductType"];
+      v33 = [dictionaryCopy objectForKeyedSubscript:@"ProductType"];
       *&v5->_productType = [v33 integerValue];
     }
 
@@ -152,10 +152,10 @@
       *&v5->_productType = -1;
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"ProductTypeOverride"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"ProductTypeOverride"];
     if (v34)
     {
-      v35 = [v4 objectForKeyedSubscript:@"ProductTypeOverride"];
+      v35 = [dictionaryCopy objectForKeyedSubscript:@"ProductTypeOverride"];
       v5->_productTypeOverride = [v35 unsignedIntegerValue];
     }
 
@@ -164,7 +164,7 @@
       v5->_productTypeOverride = 0;
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"ServiceType"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"ServiceType"];
     v37 = v36;
     if (v36)
     {
@@ -178,10 +178,10 @@
 
     objc_storeStrong(&v5->_serviceType, v38);
 
-    v39 = [v4 objectForKeyedSubscript:@"DeviceClass"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"DeviceClass"];
     if (v39)
     {
-      v40 = [v4 objectForKeyedSubscript:@"DeviceClass"];
+      v40 = [dictionaryCopy objectForKeyedSubscript:@"DeviceClass"];
       v5->_deviceClass = [v40 integerValue];
     }
 
@@ -190,7 +190,7 @@
       v5->_deviceClass = -1;
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"SystemImageName"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"SystemImageName"];
     v42 = v41;
     if (v41)
     {
@@ -204,7 +204,7 @@
 
     objc_storeStrong(&v5->_systemImage, v43);
 
-    v44 = [v4 objectForKeyedSubscript:@"Rooms"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"Rooms"];
     v45 = v44;
     v46 = MEMORY[0x277CBEC10];
     if (v44)
@@ -219,7 +219,7 @@
 
     objc_storeStrong(&v5->_rooms, v47);
 
-    v48 = [v4 objectForKeyedSubscript:@"Zones"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"Zones"];
     v49 = v48;
     if (v48)
     {
@@ -233,7 +233,7 @@
 
     objc_storeStrong(&v5->_zones, v50);
 
-    v51 = [v4 objectForKeyedSubscript:@"AudioFilePath"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"AudioFilePath"];
     v52 = v51;
     if (v51)
     {
@@ -257,7 +257,7 @@
     audioFileDuration = v5->_audioFileDuration;
     v5->_audioFileDuration = v57;
 
-    v59 = [v4 objectForKeyedSubscript:@"Subtitle"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"Subtitle"];
     v60 = v59;
     if (v59)
     {
@@ -271,7 +271,7 @@
 
     objc_storeStrong(&v5->_subtitle, v61);
 
-    v62 = [v4 objectForKeyedSubscript:@"TranscriptionText"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"TranscriptionText"];
     v63 = v62;
     if (v62)
     {
@@ -285,10 +285,10 @@
 
     objc_storeStrong(&v5->_transcriptionText, v64);
 
-    v65 = [v4 objectForKeyedSubscript:@"Played"];
+    v65 = [dictionaryCopy objectForKeyedSubscript:@"Played"];
     if (v65)
     {
-      v66 = [v4 objectForKeyedSubscript:@"Played"];
+      v66 = [dictionaryCopy objectForKeyedSubscript:@"Played"];
       v5->_played = [v66 BOOLValue];
     }
 
@@ -324,26 +324,26 @@
   return v5;
 }
 
-+ (id)contextFromDictionary:(id)a3
++ (id)contextFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[ANAnnouncementContext alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[ANAnnouncementContext alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }
 
-+ (id)contextFromUserInfo:(id)a3
++ (id)contextFromUserInfo:(id)info
 {
-  v3 = a3;
-  v4 = [[ANAnnouncementContext alloc] initWithUserInfo:v3];
+  infoCopy = info;
+  v4 = [[ANAnnouncementContext alloc] initWithUserInfo:infoCopy];
 
   return v4;
 }
 
 - (id)description
 {
-  v2 = [(ANAnnouncementContext *)self contextDictionary];
-  v3 = [v2 description];
+  contextDictionary = [(ANAnnouncementContext *)self contextDictionary];
+  v3 = [contextDictionary description];
 
   return v3;
 }
@@ -351,50 +351,50 @@
 - (NSDictionary)contextDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(ANAnnouncementContext *)self announcementID];
-  [v3 setObject:v4 forKeyedSubscript:@"AnnouncementID"];
+  announcementID = [(ANAnnouncementContext *)self announcementID];
+  [v3 setObject:announcementID forKeyedSubscript:@"AnnouncementID"];
 
-  v5 = [(ANAnnouncementContext *)self groupID];
-  [v3 setObject:v5 forKeyedSubscript:@"GroupID"];
+  groupID = [(ANAnnouncementContext *)self groupID];
+  [v3 setObject:groupID forKeyedSubscript:@"GroupID"];
 
-  v6 = [(ANAnnouncementContext *)self announcerID];
-  [v3 setObject:v6 forKeyedSubscript:@"AnnouncerID"];
+  announcerID = [(ANAnnouncementContext *)self announcerID];
+  [v3 setObject:announcerID forKeyedSubscript:@"AnnouncerID"];
 
-  v7 = [(ANAnnouncementContext *)self announcerUserUniqueID];
-  [v3 setObject:v7 forKeyedSubscript:@"AnnouncerUserUniqueID"];
+  announcerUserUniqueID = [(ANAnnouncementContext *)self announcerUserUniqueID];
+  [v3 setObject:announcerUserUniqueID forKeyedSubscript:@"AnnouncerUserUniqueID"];
 
-  v8 = [(ANAnnouncementContext *)self announcerName];
-  [v3 setObject:v8 forKeyedSubscript:@"AnnouncerName"];
+  announcerName = [(ANAnnouncementContext *)self announcerName];
+  [v3 setObject:announcerName forKeyedSubscript:@"AnnouncerName"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[ANAnnouncementContext announcerIsAccessory](self, "announcerIsAccessory")}];
   [v3 setObject:v9 forKeyedSubscript:@"AnnouncerIsAccessory"];
 
-  v10 = [(ANAnnouncementContext *)self homeName];
-  [v3 setObject:v10 forKeyedSubscript:@"HomeName"];
+  homeName = [(ANAnnouncementContext *)self homeName];
+  [v3 setObject:homeName forKeyedSubscript:@"HomeName"];
 
-  v11 = [(ANAnnouncementContext *)self homeID];
-  [v3 setObject:v11 forKeyedSubscript:@"HomeID"];
+  homeID = [(ANAnnouncementContext *)self homeID];
+  [v3 setObject:homeID forKeyedSubscript:@"HomeID"];
 
-  v12 = [(ANAnnouncementContext *)self rooms];
-  [v3 setObject:v12 forKeyedSubscript:@"Rooms"];
+  rooms = [(ANAnnouncementContext *)self rooms];
+  [v3 setObject:rooms forKeyedSubscript:@"Rooms"];
 
-  v13 = [(ANAnnouncementContext *)self zones];
-  [v3 setObject:v13 forKeyedSubscript:@"Zones"];
+  zones = [(ANAnnouncementContext *)self zones];
+  [v3 setObject:zones forKeyedSubscript:@"Zones"];
 
-  v14 = [(ANAnnouncementContext *)self announcementAudioPath];
-  [v3 setObject:v14 forKeyedSubscript:@"AudioFilePath"];
+  announcementAudioPath = [(ANAnnouncementContext *)self announcementAudioPath];
+  [v3 setObject:announcementAudioPath forKeyedSubscript:@"AudioFilePath"];
 
-  v15 = [(ANAnnouncementContext *)self announcementAudioURL];
-  [v3 setObject:v15 forKeyedSubscript:@"AudioFileURL"];
+  announcementAudioURL = [(ANAnnouncementContext *)self announcementAudioURL];
+  [v3 setObject:announcementAudioURL forKeyedSubscript:@"AudioFileURL"];
 
-  v16 = [(ANAnnouncementContext *)self audioFileDuration];
-  [v3 setObject:v16 forKeyedSubscript:@"AudioFileDuration"];
+  audioFileDuration = [(ANAnnouncementContext *)self audioFileDuration];
+  [v3 setObject:audioFileDuration forKeyedSubscript:@"AudioFileDuration"];
 
-  v17 = [(ANAnnouncementContext *)self announcerUserID];
-  [v3 setObject:v17 forKeyedSubscript:@"AnnouncerUserID"];
+  announcerUserID = [(ANAnnouncementContext *)self announcerUserID];
+  [v3 setObject:announcerUserID forKeyedSubscript:@"AnnouncerUserID"];
 
-  v18 = [(ANAnnouncementContext *)self subtitle];
-  [v3 setObject:v18 forKeyedSubscript:@"Subtitle"];
+  subtitle = [(ANAnnouncementContext *)self subtitle];
+  [v3 setObject:subtitle forKeyedSubscript:@"Subtitle"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithLong:{-[ANAnnouncementContext productType](self, "productType")}];
   [v3 setObject:v19 forKeyedSubscript:@"ProductType"];
@@ -402,17 +402,17 @@
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ANAnnouncementContext productTypeOverride](self, "productTypeOverride")}];
   [v3 setObject:v20 forKeyedSubscript:@"ProductTypeOverride"];
 
-  v21 = [(ANAnnouncementContext *)self serviceType];
-  [v3 setObject:v21 forKeyedSubscript:@"ServiceType"];
+  serviceType = [(ANAnnouncementContext *)self serviceType];
+  [v3 setObject:serviceType forKeyedSubscript:@"ServiceType"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithInt:{-[ANAnnouncementContext deviceClass](self, "deviceClass")}];
   [v3 setObject:v22 forKeyedSubscript:@"DeviceClass"];
 
-  v23 = [(ANAnnouncementContext *)self systemImage];
-  [v3 setObject:v23 forKeyedSubscript:@"SystemImageName"];
+  systemImage = [(ANAnnouncementContext *)self systemImage];
+  [v3 setObject:systemImage forKeyedSubscript:@"SystemImageName"];
 
-  v24 = [(ANAnnouncementContext *)self transcriptionText];
-  [v3 setObject:v24 forKeyedSubscript:@"TranscriptionText"];
+  transcriptionText = [(ANAnnouncementContext *)self transcriptionText];
+  [v3 setObject:transcriptionText forKeyedSubscript:@"TranscriptionText"];
 
   v25 = [MEMORY[0x277CCABB0] numberWithBool:{-[ANAnnouncementContext played](self, "played")}];
   [v3 setObject:v25 forKeyedSubscript:@"Played"];
@@ -422,100 +422,100 @@
   return v26;
 }
 
-- (BOOL)isEqualToContext:(id)a3
+- (BOOL)isEqualToContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementContext *)self announcementID];
-  v6 = [v4 announcementID];
-  if ([v5 isEqualToString:v6])
+  contextCopy = context;
+  announcementID = [(ANAnnouncementContext *)self announcementID];
+  announcementID2 = [contextCopy announcementID];
+  if ([announcementID isEqualToString:announcementID2])
   {
-    v7 = [(ANAnnouncementContext *)self groupID];
-    v8 = [v4 groupID];
-    if ([v7 isEqualToString:v8])
+    groupID = [(ANAnnouncementContext *)self groupID];
+    groupID2 = [contextCopy groupID];
+    if ([groupID isEqualToString:groupID2])
     {
-      v9 = [(ANAnnouncementContext *)self announcerID];
-      v10 = [v4 announcerID];
-      if ([v9 isEqualToString:v10])
+      announcerID = [(ANAnnouncementContext *)self announcerID];
+      announcerID2 = [contextCopy announcerID];
+      if ([announcerID isEqualToString:announcerID2])
       {
-        v11 = [(ANAnnouncementContext *)self announcerName];
-        v12 = [v4 announcerName];
-        if ([v11 isEqualToString:v12])
+        announcerName = [(ANAnnouncementContext *)self announcerName];
+        announcerName2 = [contextCopy announcerName];
+        if ([announcerName isEqualToString:announcerName2])
         {
-          v62 = v12;
-          v13 = [(ANAnnouncementContext *)self announcerUserID];
-          v60 = [v4 announcerUserID];
-          v61 = v13;
-          if ([v13 isEqualToString:?])
+          v62 = announcerName2;
+          announcerUserID = [(ANAnnouncementContext *)self announcerUserID];
+          announcerUserID2 = [contextCopy announcerUserID];
+          v61 = announcerUserID;
+          if ([announcerUserID isEqualToString:?])
           {
-            v14 = [(ANAnnouncementContext *)self announcerUserUniqueID];
-            v58 = [v4 announcerUserUniqueID];
-            v59 = v14;
-            v15 = [v14 isEqualToString:?];
-            v12 = v62;
+            announcerUserUniqueID = [(ANAnnouncementContext *)self announcerUserUniqueID];
+            announcerUserUniqueID2 = [contextCopy announcerUserUniqueID];
+            v59 = announcerUserUniqueID;
+            v15 = [announcerUserUniqueID isEqualToString:?];
+            announcerName2 = v62;
             if (v15)
             {
-              v57 = v11;
-              v16 = [(ANAnnouncementContext *)self announcerIsAccessory];
-              if (v16 == [v4 announcerIsAccessory])
+              v57 = announcerName;
+              announcerIsAccessory = [(ANAnnouncementContext *)self announcerIsAccessory];
+              if (announcerIsAccessory == [contextCopy announcerIsAccessory])
               {
-                v18 = [(ANAnnouncementContext *)self homeName];
-                [v4 homeName];
-                v55 = v56 = v18;
-                if ([v18 isEqualToString:?])
+                homeName = [(ANAnnouncementContext *)self homeName];
+                [contextCopy homeName];
+                v55 = v56 = homeName;
+                if ([homeName isEqualToString:?])
                 {
-                  v19 = [(ANAnnouncementContext *)self homeID];
-                  v53 = [v4 homeID];
-                  v54 = v19;
-                  if ([v19 isEqualToString:?] && (v20 = -[ANAnnouncementContext productType](self, "productType"), v20 == objc_msgSend(v4, "productType")) && (v21 = -[ANAnnouncementContext productTypeOverride](self, "productTypeOverride"), v21 == objc_msgSend(v4, "productTypeOverride")))
+                  homeID = [(ANAnnouncementContext *)self homeID];
+                  homeID2 = [contextCopy homeID];
+                  v54 = homeID;
+                  if ([homeID isEqualToString:?] && (v20 = -[ANAnnouncementContext productType](self, "productType"), v20 == objc_msgSend(contextCopy, "productType")) && (v21 = -[ANAnnouncementContext productTypeOverride](self, "productTypeOverride"), v21 == objc_msgSend(contextCopy, "productTypeOverride")))
                   {
-                    v22 = [(ANAnnouncementContext *)self serviceType];
-                    v51 = [v4 serviceType];
-                    v52 = v22;
-                    if ([v22 isEqualToString:?] && (v23 = -[ANAnnouncementContext deviceClass](self, "deviceClass"), v23 == objc_msgSend(v4, "deviceClass")))
+                    serviceType = [(ANAnnouncementContext *)self serviceType];
+                    serviceType2 = [contextCopy serviceType];
+                    v52 = serviceType;
+                    if ([serviceType isEqualToString:?] && (v23 = -[ANAnnouncementContext deviceClass](self, "deviceClass"), v23 == objc_msgSend(contextCopy, "deviceClass")))
                     {
-                      v24 = [(ANAnnouncementContext *)self systemImage];
-                      v49 = [v4 systemImage];
-                      v50 = v24;
-                      if ([v24 isEqualToString:?])
+                      systemImage = [(ANAnnouncementContext *)self systemImage];
+                      systemImage2 = [contextCopy systemImage];
+                      v50 = systemImage;
+                      if ([systemImage isEqualToString:?])
                       {
-                        v25 = [(ANAnnouncementContext *)self rooms];
-                        v48 = [v4 rooms];
-                        if ([v25 isEqualToDictionary:?])
+                        rooms = [(ANAnnouncementContext *)self rooms];
+                        rooms2 = [contextCopy rooms];
+                        if ([rooms isEqualToDictionary:?])
                         {
-                          v26 = [(ANAnnouncementContext *)self zones];
-                          v46 = [v4 zones];
-                          v47 = v26;
-                          if ([v26 isEqualToDictionary:?])
+                          zones = [(ANAnnouncementContext *)self zones];
+                          zones2 = [contextCopy zones];
+                          v47 = zones;
+                          if ([zones isEqualToDictionary:?])
                           {
-                            v27 = [(ANAnnouncementContext *)self announcementAudioURL];
-                            v44 = [v4 announcementAudioURL];
-                            v45 = v27;
-                            if ([v27 isEqual:?])
+                            announcementAudioURL = [(ANAnnouncementContext *)self announcementAudioURL];
+                            announcementAudioURL2 = [contextCopy announcementAudioURL];
+                            v45 = announcementAudioURL;
+                            if ([announcementAudioURL isEqual:?])
                             {
-                              v28 = [(ANAnnouncementContext *)self announcementAudioPath];
-                              v42 = [v4 announcementAudioPath];
-                              v43 = v28;
-                              if ([v28 isEqualToString:?])
+                              announcementAudioPath = [(ANAnnouncementContext *)self announcementAudioPath];
+                              announcementAudioPath2 = [contextCopy announcementAudioPath];
+                              v43 = announcementAudioPath;
+                              if ([announcementAudioPath isEqualToString:?])
                               {
-                                v29 = [(ANAnnouncementContext *)self audioFileDuration];
-                                v40 = [v4 audioFileDuration];
-                                v41 = v29;
-                                if ([v29 isEqualToNumber:?])
+                                audioFileDuration = [(ANAnnouncementContext *)self audioFileDuration];
+                                audioFileDuration2 = [contextCopy audioFileDuration];
+                                v41 = audioFileDuration;
+                                if ([audioFileDuration isEqualToNumber:?])
                                 {
-                                  v30 = [(ANAnnouncementContext *)self subtitle];
-                                  v38 = [v4 subtitle];
-                                  v39 = v30;
-                                  if ([v30 isEqualToString:?])
+                                  subtitle = [(ANAnnouncementContext *)self subtitle];
+                                  subtitle2 = [contextCopy subtitle];
+                                  v39 = subtitle;
+                                  if ([subtitle isEqualToString:?])
                                   {
-                                    v31 = [(ANAnnouncementContext *)self transcriptionText];
-                                    v32 = [v4 transcriptionText];
-                                    v37 = v31;
-                                    v33 = v31;
-                                    v34 = v32;
+                                    transcriptionText = [(ANAnnouncementContext *)self transcriptionText];
+                                    transcriptionText2 = [contextCopy transcriptionText];
+                                    v37 = transcriptionText;
+                                    v33 = transcriptionText;
+                                    v34 = transcriptionText2;
                                     if ([v33 isEqualToString:?])
                                     {
-                                      v35 = [(ANAnnouncementContext *)self played];
-                                      v17 = v35 ^ [v4 played] ^ 1;
+                                      played = [(ANAnnouncementContext *)self played];
+                                      v17 = played ^ [contextCopy played] ^ 1;
                                     }
 
                                     else
@@ -559,42 +559,42 @@
                           LOBYTE(v17) = 0;
                         }
 
-                        v11 = v57;
-                        v12 = v62;
+                        announcerName = v57;
+                        announcerName2 = v62;
                       }
 
                       else
                       {
                         LOBYTE(v17) = 0;
-                        v11 = v57;
+                        announcerName = v57;
                       }
                     }
 
                     else
                     {
                       LOBYTE(v17) = 0;
-                      v11 = v57;
+                      announcerName = v57;
                     }
                   }
 
                   else
                   {
                     LOBYTE(v17) = 0;
-                    v11 = v57;
+                    announcerName = v57;
                   }
                 }
 
                 else
                 {
                   LOBYTE(v17) = 0;
-                  v11 = v57;
+                  announcerName = v57;
                 }
               }
 
               else
               {
                 LOBYTE(v17) = 0;
-                v11 = v57;
+                announcerName = v57;
               }
             }
 
@@ -607,7 +607,7 @@
           else
           {
             LOBYTE(v17) = 0;
-            v12 = v62;
+            announcerName2 = v62;
           }
         }
 
@@ -637,164 +637,164 @@
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ANAnnouncementContext *)self announcementID];
-  [v4 encodeObject:v5 forKey:@"AnnouncementID"];
+  coderCopy = coder;
+  announcementID = [(ANAnnouncementContext *)self announcementID];
+  [coderCopy encodeObject:announcementID forKey:@"AnnouncementID"];
 
-  v6 = [(ANAnnouncementContext *)self groupID];
-  [v4 encodeObject:v6 forKey:@"GroupID"];
+  groupID = [(ANAnnouncementContext *)self groupID];
+  [coderCopy encodeObject:groupID forKey:@"GroupID"];
 
-  v7 = [(ANAnnouncementContext *)self announcerID];
-  [v4 encodeObject:v7 forKey:@"AnnouncerID"];
+  announcerID = [(ANAnnouncementContext *)self announcerID];
+  [coderCopy encodeObject:announcerID forKey:@"AnnouncerID"];
 
-  v8 = [(ANAnnouncementContext *)self announcerUserID];
-  [v4 encodeObject:v8 forKey:@"AnnouncerUserID"];
+  announcerUserID = [(ANAnnouncementContext *)self announcerUserID];
+  [coderCopy encodeObject:announcerUserID forKey:@"AnnouncerUserID"];
 
-  v9 = [(ANAnnouncementContext *)self announcerUserUniqueID];
-  [v4 encodeObject:v9 forKey:@"AnnouncerUserUniqueID"];
+  announcerUserUniqueID = [(ANAnnouncementContext *)self announcerUserUniqueID];
+  [coderCopy encodeObject:announcerUserUniqueID forKey:@"AnnouncerUserUniqueID"];
 
-  v10 = [(ANAnnouncementContext *)self announcerName];
-  [v4 encodeObject:v10 forKey:@"AnnouncerName"];
+  announcerName = [(ANAnnouncementContext *)self announcerName];
+  [coderCopy encodeObject:announcerName forKey:@"AnnouncerName"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[ANAnnouncementContext announcerIsAccessory](self, "announcerIsAccessory")}];
-  [v4 encodeObject:v11 forKey:@"AnnouncerIsAccessory"];
+  [coderCopy encodeObject:v11 forKey:@"AnnouncerIsAccessory"];
 
-  v12 = [(ANAnnouncementContext *)self homeName];
-  [v4 encodeObject:v12 forKey:@"HomeName"];
+  homeName = [(ANAnnouncementContext *)self homeName];
+  [coderCopy encodeObject:homeName forKey:@"HomeName"];
 
-  v13 = [(ANAnnouncementContext *)self homeID];
-  [v4 encodeObject:v13 forKey:@"HomeID"];
+  homeID = [(ANAnnouncementContext *)self homeID];
+  [coderCopy encodeObject:homeID forKey:@"HomeID"];
 
-  v14 = [(ANAnnouncementContext *)self rooms];
-  [v4 encodeObject:v14 forKey:@"Rooms"];
+  rooms = [(ANAnnouncementContext *)self rooms];
+  [coderCopy encodeObject:rooms forKey:@"Rooms"];
 
-  v15 = [(ANAnnouncementContext *)self zones];
-  [v4 encodeObject:v15 forKey:@"Zones"];
+  zones = [(ANAnnouncementContext *)self zones];
+  [coderCopy encodeObject:zones forKey:@"Zones"];
 
-  v16 = [(ANAnnouncementContext *)self announcementAudioURL];
-  [v4 encodeObject:v16 forKey:@"AudioFileURL"];
+  announcementAudioURL = [(ANAnnouncementContext *)self announcementAudioURL];
+  [coderCopy encodeObject:announcementAudioURL forKey:@"AudioFileURL"];
 
-  v17 = [(ANAnnouncementContext *)self announcementAudioPath];
-  [v4 encodeObject:v17 forKey:@"AudioFilePath"];
+  announcementAudioPath = [(ANAnnouncementContext *)self announcementAudioPath];
+  [coderCopy encodeObject:announcementAudioPath forKey:@"AudioFilePath"];
 
-  v18 = [(ANAnnouncementContext *)self audioFileDuration];
-  [v4 encodeObject:v18 forKey:@"AudioFileDuration"];
+  audioFileDuration = [(ANAnnouncementContext *)self audioFileDuration];
+  [coderCopy encodeObject:audioFileDuration forKey:@"AudioFileDuration"];
 
-  v19 = [(ANAnnouncementContext *)self subtitle];
-  [v4 encodeObject:v19 forKey:@"Subtitle"];
+  subtitle = [(ANAnnouncementContext *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"Subtitle"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithLong:{-[ANAnnouncementContext productType](self, "productType")}];
-  [v4 encodeObject:v20 forKey:@"ProductType"];
+  [coderCopy encodeObject:v20 forKey:@"ProductType"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ANAnnouncementContext productTypeOverride](self, "productTypeOverride")}];
-  [v4 encodeObject:v21 forKey:@"ProductTypeOverride"];
+  [coderCopy encodeObject:v21 forKey:@"ProductTypeOverride"];
 
-  v22 = [(ANAnnouncementContext *)self serviceType];
-  [v4 encodeObject:v22 forKey:@"ServiceType"];
+  serviceType = [(ANAnnouncementContext *)self serviceType];
+  [coderCopy encodeObject:serviceType forKey:@"ServiceType"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithInt:{-[ANAnnouncementContext deviceClass](self, "deviceClass")}];
-  [v4 encodeObject:v23 forKey:@"DeviceClass"];
+  [coderCopy encodeObject:v23 forKey:@"DeviceClass"];
 
-  v24 = [(ANAnnouncementContext *)self systemImage];
-  [v4 encodeObject:v24 forKey:@"SystemImageName"];
+  systemImage = [(ANAnnouncementContext *)self systemImage];
+  [coderCopy encodeObject:systemImage forKey:@"SystemImageName"];
 
-  v25 = [(ANAnnouncementContext *)self transcriptionText];
-  [v4 encodeObject:v25 forKey:@"TranscriptionText"];
+  transcriptionText = [(ANAnnouncementContext *)self transcriptionText];
+  [coderCopy encodeObject:transcriptionText forKey:@"TranscriptionText"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithBool:{-[ANAnnouncementContext played](self, "played")}];
-  [v4 encodeObject:v26 forKey:@"Played"];
+  [coderCopy encodeObject:v26 forKey:@"Played"];
 }
 
-- (ANAnnouncementContext)initWithCoder:(id)a3
+- (ANAnnouncementContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = ANAnnouncementContext;
   v5 = [(ANAnnouncementContext *)&v49 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncementID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncementID"];
     announcementID = v5->_announcementID;
     v5->_announcementID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GroupID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GroupID"];
     groupID = v5->_groupID;
     v5->_groupID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncerID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncerID"];
     announcerID = v5->_announcerID;
     v5->_announcerID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncerName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncerName"];
     announcerName = v5->_announcerName;
     v5->_announcerName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncerUserID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncerUserID"];
     announcerUserID = v5->_announcerUserID;
     v5->_announcerUserID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncerUserUniqueID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncerUserUniqueID"];
     announcerUserUniqueID = v5->_announcerUserUniqueID;
     v5->_announcerUserUniqueID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncerIsAccessory"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncerIsAccessory"];
     v5->_announcerIsAccessory = [v18 BOOLValue];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HomeName"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HomeName"];
     homeName = v5->_homeName;
     v5->_homeName = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HomeID"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HomeID"];
     homeID = v5->_homeID;
     v5->_homeID = v21;
 
     v23 = MEMORY[0x277CBEB98];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"Rooms"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"Rooms"];
     rooms = v5->_rooms;
     v5->_rooms = v26;
 
-    v28 = [v4 decodeObjectOfClasses:v25 forKey:@"Zones"];
+    v28 = [coderCopy decodeObjectOfClasses:v25 forKey:@"Zones"];
     zones = v5->_zones;
     v5->_zones = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AudioFileURL"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AudioFileURL"];
     announcementAudioURL = v5->_announcementAudioURL;
     v5->_announcementAudioURL = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AudioFilePath"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AudioFilePath"];
     announcementAudioPath = v5->_announcementAudioPath;
     v5->_announcementAudioPath = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AudioFileDuration"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AudioFileDuration"];
     audioFileDuration = v5->_audioFileDuration;
     v5->_audioFileDuration = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Subtitle"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductType"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductType"];
     *&v5->_productType = [v38 unsignedIntValue];
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductTypeOverride"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductTypeOverride"];
     v5->_productTypeOverride = [v39 unsignedIntegerValue];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ServiceType"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ServiceType"];
     serviceType = v5->_serviceType;
     v5->_serviceType = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceClass"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceClass"];
     v5->_deviceClass = [v42 integerValue];
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TranscriptionText"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TranscriptionText"];
     transcriptionText = v5->_transcriptionText;
     v5->_transcriptionText = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SystemImageName"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SystemImageName"];
     systemImage = v5->_systemImage;
     v5->_systemImage = v45;
 
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Played"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Played"];
     v5->_played = [v47 BOOLValue];
   }
 

@@ -1,19 +1,19 @@
 @interface _UIStatusBarTimeItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_UIStatusBarTimeItemAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _UIStatusBarTimeItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIStatusBarTimeItem";
   v4 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -25,18 +25,18 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = _UIStatusBarTimeItemAccessibility;
   [(_UIStatusBarTimeItemAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
-  v5 = [(_UIStatusBarTimeItemAccessibility *)v8 safeUIViewForKey:@"timeView"];
+  v5 = [(_UIStatusBarTimeItemAccessibility *)selfCopy safeUIViewForKey:@"timeView"];
   [v5 _accessibilitySetBoolValue:1 forKey:?];
-  v4 = [(_UIStatusBarTimeItemAccessibility *)v8 safeUIViewForKey:@"shortTimeView"];
+  v4 = [(_UIStatusBarTimeItemAccessibility *)selfCopy safeUIViewForKey:@"shortTimeView"];
   [v4 _accessibilitySetBoolValue:1 forKey:@"AccessibilityStatusBarStringIsTime"];
-  v3 = [(_UIStatusBarTimeItemAccessibility *)v8 safeUIViewForKey:@"pillTimeView"];
+  v3 = [(_UIStatusBarTimeItemAccessibility *)selfCopy safeUIViewForKey:@"pillTimeView"];
   [v3 _accessibilitySetBoolValue:1 forKey:@"AccessibilityStatusBarStringIsPillTime"];
-  v2 = [(_UIStatusBarTimeItemAccessibility *)v8 safeUIViewForKey:@"dateView"];
+  v2 = [(_UIStatusBarTimeItemAccessibility *)selfCopy safeUIViewForKey:@"dateView"];
   [v2 _accessibilitySetBoolValue:1 forKey:@"AccessibilityStatusBarStringIsDate"];
   objc_storeStrong(&v2, 0);
   objc_storeStrong(&v3, 0);

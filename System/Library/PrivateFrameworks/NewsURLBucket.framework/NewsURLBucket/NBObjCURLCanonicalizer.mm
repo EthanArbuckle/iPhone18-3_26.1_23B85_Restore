@@ -1,10 +1,10 @@
 @interface NBObjCURLCanonicalizer
-- (id)canonicalizedURLForURL:(id)a3;
+- (id)canonicalizedURLForURL:(id)l;
 @end
 
 @implementation NBObjCURLCanonicalizer
 
-- (id)canonicalizedURLForURL:(id)a3
+- (id)canonicalizedURLForURL:(id)l
 {
   v4 = sub_25C339C50();
   v5 = *(v4 - 8);
@@ -15,7 +15,7 @@
   v11 = &v17 - v10;
   sub_25C339BE0();
   v12 = *(&self->super.isa + OBJC_IVAR___NBObjCURLCanonicalizer_urlCanonicalizer);
-  v13 = self;
+  selfCopy = self;
   URLCanonicalizer.canonicalizedURL(for:)(v9, v11);
   v14 = *(v5 + 8);
   v14(v9, v4);

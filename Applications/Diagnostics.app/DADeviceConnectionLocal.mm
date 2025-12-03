@@ -1,61 +1,61 @@
 @interface DADeviceConnectionLocal
-- (BOOL)_shutdownForBatteryDisconnectWithUnsealCode:(unsigned int)a3;
+- (BOOL)_shutdownForBatteryDisconnectWithUnsealCode:(unsigned int)code;
 - (BOOL)_shutdownToShelfLifeMode;
 - (DADeviceConnectionDelegate)delegate;
-- (DADeviceConnectionLocal)initWithState:(id)a3;
-- (id)session:(id)a3 estimatedTimeRemainingForTest:(id)a4;
-- (id)session:(id)a3 progressForTest:(id)a4;
+- (DADeviceConnectionLocal)initWithState:(id)state;
+- (id)session:(id)session estimatedTimeRemainingForTest:(id)test;
+- (id)session:(id)session progressForTest:(id)test;
 - (int)mode;
-- (unsigned)_unsealCodeFromParameters:(id)a3;
-- (void)_session:(id)a3 didFinishSuiteWithName:(id)a4 skipped:(BOOL)a5;
-- (void)_sessionDidPowerOff:(id)a3 forReboot:(BOOL)a4 withParameters:(id)a5;
-- (void)_setNextBootForBootMode:(int64_t)a3;
-- (void)_shutDownDeviceForReboot:(BOOL)a3;
+- (unsigned)_unsealCodeFromParameters:(id)parameters;
+- (void)_session:(id)_session didFinishSuiteWithName:(id)name skipped:(BOOL)skipped;
+- (void)_sessionDidPowerOff:(id)off forReboot:(BOOL)reboot withParameters:(id)parameters;
+- (void)_setNextBootForBootMode:(int64_t)mode;
+- (void)_shutDownDeviceForReboot:(BOOL)reboot;
 - (void)archive;
 - (void)end;
 - (void)idle;
-- (void)requestAsset:(id)a3 completionHandler:(id)a4;
-- (void)requestSuiteStart:(id)a3 completionHandler:(id)a4;
-- (void)requestUploadAssets:(id)a3 completion:(id)a4;
-- (void)session:(id)a3 cancelTest:(id)a4;
-- (void)session:(id)a3 didCompleteTestSuite:(id)a4 description:(id)a5;
-- (void)session:(id)a3 didEndWithError:(id)a4;
-- (void)session:(id)a3 didFinishSendingResultForTest:(id)a4;
-- (void)session:(id)a3 didPauseSendingResultForTest:(id)a4 error:(id)a5;
-- (void)session:(id)a3 didPauseWithError:(id)a4;
-- (void)session:(id)a3 didRequestInstructionalPrompt:(id)a4 withConfirmation:(id)a5;
-- (void)session:(id)a3 didRequestSuiteRunWithDestinations:(id)a4 confirmation:(id)a5;
-- (void)session:(id)a3 didResumeSendingResultForTest:(id)a4;
-- (void)session:(id)a3 didStartTestSuite:(id)a4 description:(id)a5;
-- (void)session:(id)a3 didUpdateSettings:(id)a4 completionHandler:(id)a5;
-- (void)session:(id)a3 didUpdateTestSuiteImage:(id)a4;
-- (void)session:(id)a3 didUpdateTestSuiteProgress:(id)a4;
-- (void)session:(id)a3 generateAuthInfoWithNonce:(id)a4;
-- (void)session:(id)a3 performActions:(id)a4 sequentially:(BOOL)a5 stopOnError:(BOOL)a6;
-- (void)session:(id)a3 profile:(id)a4 filteredByComponents:(id)a5;
-- (void)session:(id)a3 signFile:(id)a4 completionHandler:(id)a5;
-- (void)session:(id)a3 signPayload:(id)a4 completionHandler:(id)a5;
-- (void)session:(id)a3 startTest:(id)a4 parameters:(id)a5 testResult:(id)a6;
-- (void)sessionDidCancelSuite:(id)a3;
-- (void)sessionDidReboot:(id)a3 withParameters:(id)a4;
-- (void)sessionDidResume:(id)a3;
-- (void)sessionDidShutDown:(id)a3 withParameters:(id)a4;
-- (void)sessionDidStart:(id)a3;
+- (void)requestAsset:(id)asset completionHandler:(id)handler;
+- (void)requestSuiteStart:(id)start completionHandler:(id)handler;
+- (void)requestUploadAssets:(id)assets completion:(id)completion;
+- (void)session:(id)session cancelTest:(id)test;
+- (void)session:(id)session didCompleteTestSuite:(id)suite description:(id)description;
+- (void)session:(id)session didEndWithError:(id)error;
+- (void)session:(id)session didFinishSendingResultForTest:(id)test;
+- (void)session:(id)session didPauseSendingResultForTest:(id)test error:(id)error;
+- (void)session:(id)session didPauseWithError:(id)error;
+- (void)session:(id)session didRequestInstructionalPrompt:(id)prompt withConfirmation:(id)confirmation;
+- (void)session:(id)session didRequestSuiteRunWithDestinations:(id)destinations confirmation:(id)confirmation;
+- (void)session:(id)session didResumeSendingResultForTest:(id)test;
+- (void)session:(id)session didStartTestSuite:(id)suite description:(id)description;
+- (void)session:(id)session didUpdateSettings:(id)settings completionHandler:(id)handler;
+- (void)session:(id)session didUpdateTestSuiteImage:(id)image;
+- (void)session:(id)session didUpdateTestSuiteProgress:(id)progress;
+- (void)session:(id)session generateAuthInfoWithNonce:(id)nonce;
+- (void)session:(id)session performActions:(id)actions sequentially:(BOOL)sequentially stopOnError:(BOOL)error;
+- (void)session:(id)session profile:(id)profile filteredByComponents:(id)components;
+- (void)session:(id)session signFile:(id)file completionHandler:(id)handler;
+- (void)session:(id)session signPayload:(id)payload completionHandler:(id)handler;
+- (void)session:(id)session startTest:(id)test parameters:(id)parameters testResult:(id)result;
+- (void)sessionDidCancelSuite:(id)suite;
+- (void)sessionDidReboot:(id)reboot withParameters:(id)parameters;
+- (void)sessionDidResume:(id)resume;
+- (void)sessionDidShutDown:(id)down withParameters:(id)parameters;
+- (void)sessionDidStart:(id)start;
 - (void)start;
 @end
 
 @implementation DADeviceConnectionLocal
 
-- (DADeviceConnectionLocal)initWithState:(id)a3
+- (DADeviceConnectionLocal)initWithState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v15.receiver = self;
   v15.super_class = DADeviceConnectionLocal;
   v6 = [(DADeviceConnectionLocal *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_state, a3);
+    objc_storeStrong(&v6->_state, state);
     v7->_disconnecting = 0;
     [(DADeviceState *)v7->_state setPhase:0];
     v8 = objc_alloc_init(DAAssetUploader);
@@ -76,17 +76,17 @@
 
 - (int)mode
 {
-  v3 = [(DADeviceConnectionLocal *)self configurator];
+  configurator = [(DADeviceConnectionLocal *)self configurator];
 
-  if (!v3)
+  if (!configurator)
   {
     return 0;
   }
 
-  v4 = [(DADeviceConnectionLocal *)self configurator];
-  v5 = [v4 mode];
+  configurator2 = [(DADeviceConnectionLocal *)self configurator];
+  mode = [configurator2 mode];
 
-  return v5;
+  return mode;
 }
 
 - (void)start
@@ -99,29 +99,29 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", buf, 0xCu);
   }
 
-  v4 = [(DADeviceConnectionLocal *)self state];
+  state = [(DADeviceConnectionLocal *)self state];
   v5 = [NSSet setWithObjects:&off_1001CC110, &off_1001CC128, &off_1001CC140, 0];
-  [v4 removeErrorCodes:v5];
+  [state removeErrorCodes:v5];
 
-  v6 = [(DADeviceConnectionLocal *)self state];
-  [v6 setPhase:2];
+  state2 = [(DADeviceConnectionLocal *)self state];
+  [state2 setPhase:2];
 
-  v7 = [(DADeviceConnectionLocal *)self session];
+  session = [(DADeviceConnectionLocal *)self session];
 
-  if (!v7)
+  if (!session)
   {
-    v8 = [(DADeviceConnectionLocal *)self state];
-    v9 = [v8 serialNumber];
-    v10 = [ASTIdentity identityWithSerialNumber:v9];
+    state3 = [(DADeviceConnectionLocal *)self state];
+    serialNumber = [state3 serialNumber];
+    v10 = [ASTIdentity identityWithSerialNumber:serialNumber];
     v11 = [ASTSession sessionWithIdentity:v10];
     [(DADeviceConnectionLocal *)self setSession:v11];
 
-    v12 = [(DADeviceConnectionLocal *)self session];
-    [v12 setDelegate:self];
+    session2 = [(DADeviceConnectionLocal *)self session];
+    [session2 setDelegate:self];
   }
 
-  v13 = [(DADeviceConnectionLocal *)self session];
-  [v13 startWithMode:{-[DADeviceConnectionLocal mode](self, "mode")}];
+  session3 = [(DADeviceConnectionLocal *)self session];
+  [session3 startWithMode:{-[DADeviceConnectionLocal mode](self, "mode")}];
 }
 
 - (void)idle
@@ -134,8 +134,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v5, 0xCu);
   }
 
-  v4 = [(DADeviceConnectionLocal *)self session];
-  [v4 idle];
+  session = [(DADeviceConnectionLocal *)self session];
+  [session idle];
 }
 
 - (void)end
@@ -149,25 +149,25 @@
   }
 
   [(DADeviceConnectionLocal *)self setDisconnecting:1];
-  v4 = [(DADeviceConnectionLocal *)self session];
+  session = [(DADeviceConnectionLocal *)self session];
 
-  if (v4)
+  if (session)
   {
-    v5 = [(DADeviceConnectionLocal *)self session];
-    [v5 end];
+    session2 = [(DADeviceConnectionLocal *)self session];
+    [session2 end];
   }
 
   else
   {
-    v5 = [(DADeviceConnectionLocal *)self state];
-    [v5 setPhase:1];
+    session2 = [(DADeviceConnectionLocal *)self state];
+    [session2 setPhase:1];
   }
 }
 
-- (void)requestAsset:(id)a3 completionHandler:(id)a4
+- (void)requestAsset:(id)asset completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  assetCopy = asset;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -176,20 +176,20 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", buf, 0xCu);
   }
 
-  v9 = [(DADeviceConnectionLocal *)self session];
+  session = [(DADeviceConnectionLocal *)self session];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100008D54;
   v11[3] = &unk_1001BC780;
-  v12 = v6;
-  v10 = v6;
-  [v9 requestAsset:v7 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [session requestAsset:assetCopy completionHandler:v11];
 }
 
-- (void)requestUploadAssets:(id)a3 completion:(id)a4
+- (void)requestUploadAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -198,27 +198,27 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v12, 0xCu);
   }
 
-  v9 = [(DADeviceConnectionLocal *)self assetUploader];
+  assetUploader = [(DADeviceConnectionLocal *)self assetUploader];
 
-  if (v9)
+  if (assetUploader)
   {
-    v10 = [(DADeviceConnectionLocal *)self assetUploader];
-    v11 = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
-    [v10 uploadAssets:v6 wtihDeviceIdentity:v11 completion:v7];
+    assetUploader2 = [(DADeviceConnectionLocal *)self assetUploader];
+    strongDeviceIdentity = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
+    [assetUploader2 uploadAssets:assetsCopy wtihDeviceIdentity:strongDeviceIdentity completion:completionCopy];
   }
 
   else
   {
-    v10 = +[NSArray array];
-    v11 = [NSError errorWithDomain:DKErrorDomain code:-1008 userInfo:0];
-    v7[2](v7, v10, v11);
+    assetUploader2 = +[NSArray array];
+    strongDeviceIdentity = [NSError errorWithDomain:DKErrorDomain code:-1008 userInfo:0];
+    completionCopy[2](completionCopy, assetUploader2, strongDeviceIdentity);
   }
 }
 
-- (void)requestSuiteStart:(id)a3 completionHandler:(id)a4
+- (void)requestSuiteStart:(id)start completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  startCopy = start;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -227,18 +227,18 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", buf, 0xCu);
   }
 
-  v9 = [(DADeviceConnectionLocal *)self session];
+  session = [(DADeviceConnectionLocal *)self session];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100009034;
   v11[3] = &unk_1001BC7A8;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 requestSuiteStart:v7 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [session requestSuiteStart:startCopy completionHandler:v11];
 }
 
-- (void)sessionDidStart:(id)a3
+- (void)sessionDidStart:(id)start
 {
   v4 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -250,16 +250,16 @@
 
   if (![(DADeviceConnectionLocal *)self isDisconnecting])
   {
-    v5 = [(DADeviceConnectionLocal *)self state];
-    [v5 setPhase:4];
+    state = [(DADeviceConnectionLocal *)self state];
+    [state setPhase:4];
   }
 }
 
-- (void)session:(id)a3 startTest:(id)a4 parameters:(id)a5 testResult:(id)a6
+- (void)session:(id)session startTest:(id)test parameters:(id)parameters testResult:(id)result
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  testCopy = test;
+  parametersCopy = parameters;
+  resultCopy = result;
   v12 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -268,8 +268,8 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", buf, 0xCu);
   }
 
-  [v11 setStatusCode:&off_1001CC158];
-  v13 = [v10 objectForKeyedSubscript:@"specifications"];
+  [resultCopy setStatusCode:&off_1001CC158];
+  v13 = [parametersCopy objectForKeyedSubscript:@"specifications"];
   if (v13)
   {
     objc_opt_class();
@@ -291,7 +291,7 @@
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Bad test specification value. Expected a number, got [%@]", buf, 0xCu);
           }
 
-          [v11 setStatusCode:&off_1001CC170];
+          [resultCopy setStatusCode:&off_1001CC170];
           v18 = 0;
           goto LABEL_15;
         }
@@ -303,7 +303,7 @@
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Setting cellular threshold to %@.", buf, 0xCu);
         }
 
-        [v11 setAllowCellularSizeThreshold:v14];
+        [resultCopy setAllowCellularSizeThreshold:v14];
       }
 
       v18 = 1;
@@ -315,11 +315,11 @@ LABEL_15:
 
   v18 = 1;
 LABEL_16:
-  v19 = [(DADeviceConnectionLocal *)self isDisconnecting];
-  if (!v18 || v19)
+  isDisconnecting = [(DADeviceConnectionLocal *)self isDisconnecting];
+  if (!v18 || isDisconnecting)
   {
-    v22 = [(DADeviceConnectionLocal *)self session];
-    [v22 sendTestResult:v11 error:0];
+    session = [(DADeviceConnectionLocal *)self session];
+    [session sendTestResult:resultCopy error:0];
   }
 
   else
@@ -329,28 +329,28 @@ LABEL_16:
     v28 = 3221225472;
     v29 = sub_100009578;
     v30 = &unk_1001BC7D0;
-    v31 = self;
-    v21 = v9;
+    selfCopy = self;
+    v21 = testCopy;
     v32 = v21;
-    v33 = v11;
+    v33 = resultCopy;
     v34 = v20;
-    v22 = v20;
+    session = v20;
     v23 = objc_retainBlock(&v27);
     v24 = objc_opt_new();
-    [v24 setTestID:{v21, v27, v28, v29, v30, v31}];
-    v25 = [DKDiagnosticParameters diagnosticParametersWithDictionary:v10];
+    [v24 setTestID:{v21, v27, v28, v29, v30, selfCopy}];
+    v25 = [DKDiagnosticParameters diagnosticParametersWithDictionary:parametersCopy];
     [v24 setParameters:v25];
 
     [v24 setCompletion:v23];
-    v26 = [(DADeviceConnectionLocal *)self delegate];
-    [v26 deviceConnection:self didRecieveCommand:v24];
+    delegate = [(DADeviceConnectionLocal *)self delegate];
+    [delegate deviceConnection:self didRecieveCommand:v24];
   }
 }
 
-- (void)session:(id)a3 didEndWithError:(id)a4
+- (void)session:(id)session didEndWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -359,26 +359,26 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", buf, 0xCu);
   }
 
-  v9 = [(DADeviceConnectionLocal *)self state];
+  state = [(DADeviceConnectionLocal *)self state];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100009A78;
   v12[3] = &unk_1001BC7F8;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
-  [v9 transactionWithBlock:v12];
+  v13 = errorCopy;
+  selfCopy = self;
+  v15 = sessionCopy;
+  v10 = sessionCopy;
+  v11 = errorCopy;
+  [state transactionWithBlock:v12];
 
   [(DADeviceConnectionLocal *)self setDisconnecting:0];
   [(DADeviceConnectionLocal *)self setStrongDeviceIdentity:0];
 }
 
-- (void)session:(id)a3 didStartTestSuite:(id)a4 description:(id)a5
+- (void)session:(id)session didStartTestSuite:(id)suite description:(id)description
 {
-  v7 = a4;
-  v8 = a5;
+  suiteCopy = suite;
+  descriptionCopy = description;
   v9 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -387,22 +387,22 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", buf, 0xCu);
   }
 
-  v10 = [(DADeviceConnectionLocal *)self state];
+  state = [(DADeviceConnectionLocal *)self state];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100009D58;
   v13[3] = &unk_1001BC820;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
-  [v10 transactionWithBlock:v13];
+  v14 = suiteCopy;
+  v15 = descriptionCopy;
+  v11 = descriptionCopy;
+  v12 = suiteCopy;
+  [state transactionWithBlock:v13];
 }
 
-- (void)session:(id)a3 didCompleteTestSuite:(id)a4 description:(id)a5
+- (void)session:(id)session didCompleteTestSuite:(id)suite description:(id)description
 {
-  v7 = a4;
-  v8 = a3;
+  suiteCopy = suite;
+  sessionCopy = session;
   v9 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -411,12 +411,12 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v10, 0xCu);
   }
 
-  [(DADeviceConnectionLocal *)self _session:v8 didFinishSuiteWithName:v7 skipped:0];
+  [(DADeviceConnectionLocal *)self _session:sessionCopy didFinishSuiteWithName:suiteCopy skipped:0];
 }
 
-- (void)sessionDidCancelSuite:(id)a3
+- (void)sessionDidCancelSuite:(id)suite
 {
-  v4 = a3;
+  suiteCopy = suite;
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -425,16 +425,16 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v8, 0xCu);
   }
 
-  v6 = [(DADeviceConnectionLocal *)self state];
-  v7 = [v6 suiteName];
-  [(DADeviceConnectionLocal *)self _session:v4 didFinishSuiteWithName:v7 skipped:1];
+  state = [(DADeviceConnectionLocal *)self state];
+  suiteName = [state suiteName];
+  [(DADeviceConnectionLocal *)self _session:suiteCopy didFinishSuiteWithName:suiteName skipped:1];
 }
 
-- (void)_session:(id)a3 didFinishSuiteWithName:(id)a4 skipped:(BOOL)a5
+- (void)_session:(id)_session didFinishSuiteWithName:(id)name skipped:(BOOL)skipped
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  skippedCopy = skipped;
+  _sessionCopy = _session;
+  nameCopy = name;
   v10 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -451,21 +451,21 @@ LABEL_16:
     v26[3] = &unk_1001BC870;
     v26[4] = self;
     v11 = objc_retainBlock(v26);
-    if ([v8 shouldShowResults] && (-[DADeviceConnectionLocal state](self, "state"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "diagnosticEventID"), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+    if ([_sessionCopy shouldShowResults] && (-[DADeviceConnectionLocal state](self, "state"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "diagnosticEventID"), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
     {
-      v14 = [(DADeviceConnectionLocal *)self session];
-      v15 = [(DADeviceConnectionLocal *)self state];
-      v16 = [v15 diagnosticEventID];
+      session = [(DADeviceConnectionLocal *)self session];
+      state = [(DADeviceConnectionLocal *)self state];
+      diagnosticEventID = [state diagnosticEventID];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_10000A468;
       v22[3] = &unk_1001BC898;
       v24 = v11;
-      v23 = v9;
-      v25 = v5;
-      [v14 requestSuiteSummary:v16 completionHandler:v22];
+      v23 = nameCopy;
+      v25 = skippedCopy;
+      [session requestSuiteSummary:diagnosticEventID completionHandler:v22];
 
-      v17 = v24;
+      state2 = v24;
     }
 
     else
@@ -478,17 +478,17 @@ LABEL_16:
       }
 
       v19 = [DAHistoryEntry alloc];
-      v17 = [(DADeviceConnectionLocal *)self state];
-      v20 = [v17 suiteName];
-      v21 = [(DAHistoryEntry *)v19 initWithTestSuiteName:v20 skipped:v5];
+      state2 = [(DADeviceConnectionLocal *)self state];
+      suiteName = [state2 suiteName];
+      v21 = [(DAHistoryEntry *)v19 initWithTestSuiteName:suiteName skipped:skippedCopy];
       (v11[2])(v11, v21, 0);
     }
   }
 }
 
-- (void)session:(id)a3 didUpdateTestSuiteProgress:(id)a4
+- (void)session:(id)session didUpdateTestSuiteProgress:(id)progress
 {
-  v5 = a4;
+  progressCopy = progress;
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -497,14 +497,14 @@ LABEL_16:
 
   if (![(DADeviceConnectionLocal *)self isDisconnecting])
   {
-    v14 = [(DADeviceConnectionLocal *)self state];
-    [v14 setProgress:v5];
+    state = [(DADeviceConnectionLocal *)self state];
+    [state setProgress:progressCopy];
   }
 }
 
-- (void)session:(id)a3 didUpdateTestSuiteImage:(id)a4
+- (void)session:(id)session didUpdateTestSuiteImage:(id)image
 {
-  v5 = a4;
+  imageCopy = image;
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -513,13 +513,13 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v8, 0xCu);
   }
 
-  v7 = [(DADeviceConnectionLocal *)self state];
-  [v7 setTestSuiteImageData:v5];
+  state = [(DADeviceConnectionLocal *)self state];
+  [state setTestSuiteImageData:imageCopy];
 }
 
-- (id)session:(id)a3 progressForTest:(id)a4
+- (id)session:(id)session progressForTest:(id)test
 {
-  v5 = a4;
+  testCopy = test;
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -528,13 +528,13 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v14, 0xCu);
   }
 
-  v7 = [(DADeviceConnectionLocal *)self progressForTest];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  progressForTest = [(DADeviceConnectionLocal *)self progressForTest];
+  v8 = [progressForTest objectForKeyedSubscript:testCopy];
 
   if (v8 && ([v8 isIndeterminate] & 1) == 0)
   {
-    v10 = [v8 fractionCompleted];
-    [v10 doubleValue];
+    fractionCompleted = [v8 fractionCompleted];
+    [fractionCompleted doubleValue];
     v9 = [NSNumber numberWithDouble:v11 * 100.0];
   }
 
@@ -556,9 +556,9 @@ LABEL_16:
   return v9;
 }
 
-- (id)session:(id)a3 estimatedTimeRemainingForTest:(id)a4
+- (id)session:(id)session estimatedTimeRemainingForTest:(id)test
 {
-  v5 = a4;
+  testCopy = test;
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -567,74 +567,74 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v11, 0xCu);
   }
 
-  v7 = [(DADeviceConnectionLocal *)self progressForTest];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  progressForTest = [(DADeviceConnectionLocal *)self progressForTest];
+  v8 = [progressForTest objectForKeyedSubscript:testCopy];
 
   if (v8)
   {
-    v9 = [v8 estimatedTimeRemaining];
+    estimatedTimeRemaining = [v8 estimatedTimeRemaining];
   }
 
   else
   {
-    v9 = 0;
+    estimatedTimeRemaining = 0;
   }
 
-  return v9;
+  return estimatedTimeRemaining;
 }
 
-- (void)session:(id)a3 didRequestSuiteRunWithDestinations:(id)a4 confirmation:(id)a5
+- (void)session:(id)session didRequestSuiteRunWithDestinations:(id)destinations confirmation:(id)confirmation
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(DADeviceConnectionLocal *)self delegate];
+  destinationsCopy = destinations;
+  confirmationCopy = confirmation;
+  delegate = [(DADeviceConnectionLocal *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(DADeviceConnectionLocal *)self delegate];
+    delegate2 = [(DADeviceConnectionLocal *)self delegate];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10000AABC;
     v13[3] = &unk_1001BC8E8;
-    v14 = v7;
-    v15 = self;
-    v16 = v8;
-    [v11 deviceConnection:self didRequestSuiteRunWithDestinations:v14 confirmation:v13];
+    v14 = destinationsCopy;
+    selfCopy = self;
+    v16 = confirmationCopy;
+    [delegate2 deviceConnection:self didRequestSuiteRunWithDestinations:v14 confirmation:v13];
   }
 
   else
   {
-    v12 = [(DADeviceConnectionLocal *)self state];
-    [v12 setSuitesAvailable:&__NSArray0__struct];
+    state = [(DADeviceConnectionLocal *)self state];
+    [state setSuitesAvailable:&__NSArray0__struct];
 
-    (*(v8 + 2))(v8, 0);
+    (*(confirmationCopy + 2))(confirmationCopy, 0);
   }
 }
 
-- (void)session:(id)a3 didRequestInstructionalPrompt:(id)a4 withConfirmation:(id)a5
+- (void)session:(id)session didRequestInstructionalPrompt:(id)prompt withConfirmation:(id)confirmation
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(DADeviceConnectionLocal *)self delegate];
+  promptCopy = prompt;
+  confirmationCopy = confirmation;
+  delegate = [(DADeviceConnectionLocal *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DADeviceConnectionLocal *)self delegate];
-    [v10 deviceConnection:self didRequestInstructionalPrompt:v11 withConfirmation:v7];
+    delegate2 = [(DADeviceConnectionLocal *)self delegate];
+    [delegate2 deviceConnection:self didRequestInstructionalPrompt:promptCopy withConfirmation:confirmationCopy];
   }
 
   else
   {
-    v10 = [v11 identifier];
-    v7[2](v7, v10, 0);
+    delegate2 = [promptCopy identifier];
+    confirmationCopy[2](confirmationCopy, delegate2, 0);
   }
 }
 
-- (void)session:(id)a3 performActions:(id)a4 sequentially:(BOOL)a5 stopOnError:(BOOL)a6
+- (void)session:(id)session performActions:(id)actions sequentially:(BOOL)sequentially stopOnError:(BOOL)error
 {
-  v6 = a4;
+  actionsCopy = actions;
   v7 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -645,7 +645,7 @@ LABEL_16:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = v6;
+  v15 = actionsCopy;
   v16 = [v15 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v16)
   {
@@ -665,14 +665,14 @@ LABEL_16:
         v21 = DiagnosticLogHandleForCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v20 action];
+          action = [v20 action];
           *buf = 138412290;
-          v34 = v22;
+          v34 = action;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Responding to action %@", buf, 0xCu);
         }
 
-        v23 = [v20 action];
-        v24 = [v23 isEqualToString:@"PresentCosmeticAssessmentTargetFlow"];
+        action2 = [v20 action];
+        v24 = [action2 isEqualToString:@"PresentCosmeticAssessmentTargetFlow"];
 
         if (v24)
         {
@@ -703,9 +703,9 @@ LABEL_16:
   }
 }
 
-- (void)session:(id)a3 cancelTest:(id)a4
+- (void)session:(id)session cancelTest:(id)test
 {
-  v5 = a4;
+  testCopy = test;
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -715,17 +715,17 @@ LABEL_16:
   }
 
   v7 = objc_opt_new();
-  [v7 setTestID:v5];
+  [v7 setTestID:testCopy];
 
-  v8 = [(DADeviceConnectionLocal *)self delegate];
-  [v8 deviceConnection:self didRecieveCommand:v7];
+  delegate = [(DADeviceConnectionLocal *)self delegate];
+  [delegate deviceConnection:self didRecieveCommand:v7];
 }
 
-- (void)session:(id)a3 profile:(id)a4 filteredByComponents:(id)a5
+- (void)session:(id)session profile:(id)profile filteredByComponents:(id)components
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  sessionCopy = session;
+  componentsCopy = components;
+  profileCopy = profile;
   v11 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -734,27 +734,27 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", buf, 0xCu);
   }
 
-  v12 = [(DADeviceConnectionLocal *)self state];
-  [v12 setPhase:3];
+  state = [(DADeviceConnectionLocal *)self state];
+  [state setPhase:3];
 
   v13 = objc_opt_new();
-  [v13 setComponents:v9];
+  [v13 setComponents:componentsCopy];
 
-  [v13 setProfile:v10];
+  [v13 setProfile:profileCopy];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10000B1BC;
   v16[3] = &unk_1001BC910;
-  v17 = v8;
-  v14 = v8;
+  v17 = sessionCopy;
+  v14 = sessionCopy;
   [v13 setCompletion:v16];
-  v15 = [(DADeviceConnectionLocal *)self delegate];
-  [v15 deviceConnection:self didRecieveCommand:v13];
+  delegate = [(DADeviceConnectionLocal *)self delegate];
+  [delegate deviceConnection:self didRecieveCommand:v13];
 }
 
-- (void)session:(id)a3 didPauseWithError:(id)a4
+- (void)session:(id)session didPauseWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -763,15 +763,15 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v9, 0xCu);
   }
 
-  if ([v5 code] == -1004)
+  if ([errorCopy code] == -1004)
   {
-    v7 = [(DADeviceConnectionLocal *)self state];
-    v8 = [v5 userInfo];
-    [v7 addErrorCode:3 userInfo:v8];
+    state = [(DADeviceConnectionLocal *)self state];
+    userInfo = [errorCopy userInfo];
+    [state addErrorCode:3 userInfo:userInfo];
   }
 }
 
-- (void)sessionDidResume:(id)a3
+- (void)sessionDidResume:(id)resume
 {
   v4 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -781,13 +781,13 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v6, 0xCu);
   }
 
-  v5 = [(DADeviceConnectionLocal *)self state];
-  [v5 removeErrorCode:3];
+  state = [(DADeviceConnectionLocal *)self state];
+  [state removeErrorCode:3];
 }
 
-- (void)session:(id)a3 didPauseSendingResultForTest:(id)a4 error:(id)a5
+- (void)session:(id)session didPauseSendingResultForTest:(id)test error:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -796,10 +796,10 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v12, 0xCu);
   }
 
-  v8 = [v6 code];
-  v9 = [(DADeviceConnectionLocal *)self state];
-  v10 = [v6 userInfo];
-  if (v8 == -1003)
+  code = [errorCopy code];
+  state = [(DADeviceConnectionLocal *)self state];
+  userInfo = [errorCopy userInfo];
+  if (code == -1003)
   {
     v11 = 2;
   }
@@ -809,10 +809,10 @@ LABEL_16:
     v11 = 3;
   }
 
-  [v9 addErrorCode:v11 userInfo:v10];
+  [state addErrorCode:v11 userInfo:userInfo];
 }
 
-- (void)session:(id)a3 didResumeSendingResultForTest:(id)a4
+- (void)session:(id)session didResumeSendingResultForTest:(id)test
 {
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -822,14 +822,14 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", buf, 0xCu);
   }
 
-  v6 = [(DADeviceConnectionLocal *)self state];
+  state = [(DADeviceConnectionLocal *)self state];
   v7 = [NSSet setWithObjects:&off_1001CC200, &off_1001CC218, 0];
-  [v6 removeErrorCodes:v7];
+  [state removeErrorCodes:v7];
 }
 
-- (void)session:(id)a3 didFinishSendingResultForTest:(id)a4
+- (void)session:(id)session didFinishSendingResultForTest:(id)test
 {
-  v5 = a4;
+  testCopy = test;
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -838,21 +838,21 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v10, 0xCu);
   }
 
-  v7 = [(DADeviceConnectionLocal *)self sandboxExtensionHandles];
-  v8 = [v7 objectForKey:v5];
+  sandboxExtensionHandles = [(DADeviceConnectionLocal *)self sandboxExtensionHandles];
+  v8 = [sandboxExtensionHandles objectForKey:testCopy];
 
   [DKSandboxExtension releaseSandboxExtensionsWithHandles:v8];
-  v9 = [(DADeviceConnectionLocal *)self sandboxExtensionHandles];
-  [v9 removeObjectForKey:v5];
+  sandboxExtensionHandles2 = [(DADeviceConnectionLocal *)self sandboxExtensionHandles];
+  [sandboxExtensionHandles2 removeObjectForKey:testCopy];
 
-  [(DADeviceConnectionLocal *)self didFinishSendingResultForTest:v5];
+  [(DADeviceConnectionLocal *)self didFinishSendingResultForTest:testCopy];
 }
 
-- (void)session:(id)a3 didUpdateSettings:(id)a4 completionHandler:(id)a5
+- (void)session:(id)session didUpdateSettings:(id)settings completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
+  settingsCopy = settings;
   v11 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -861,30 +861,30 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v20, 0xCu);
   }
 
-  v12 = [DASessionSettings sessionSettingsWithDictionary:v10];
+  v12 = [DASessionSettings sessionSettingsWithDictionary:settingsCopy];
 
-  v13 = [(DADeviceConnectionLocal *)self state];
-  v14 = [v13 sessionSettings];
-  v15 = [v14 isEqual:v12];
+  state = [(DADeviceConnectionLocal *)self state];
+  sessionSettings = [state sessionSettings];
+  v15 = [sessionSettings isEqual:v12];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [(DADeviceConnectionLocal *)self state];
-    [v16 setSessionSettings:v12];
+    state2 = [(DADeviceConnectionLocal *)self state];
+    [state2 setSessionSettings:v12];
 
-    [v8 setAllowCellularSizeThreshold:{objc_msgSend(v12, "allowCellularSizeThreshold")}];
+    [sessionCopy setAllowCellularSizeThreshold:{objc_msgSend(v12, "allowCellularSizeThreshold")}];
   }
 
-  v17 = [(DADeviceConnectionLocal *)self state];
-  v18 = [v17 sessionSettings];
-  v19 = [v18 dictionary];
-  v9[2](v9, v19, 0);
+  state3 = [(DADeviceConnectionLocal *)self state];
+  sessionSettings2 = [state3 sessionSettings];
+  dictionary = [sessionSettings2 dictionary];
+  handlerCopy[2](handlerCopy, dictionary, 0);
 }
 
-- (void)sessionDidReboot:(id)a3 withParameters:(id)a4
+- (void)sessionDidReboot:(id)reboot withParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
+  parametersCopy = parameters;
+  rebootCopy = reboot;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -893,13 +893,13 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v9, 0xCu);
   }
 
-  [(DADeviceConnectionLocal *)self _sessionDidPowerOff:v7 forReboot:1 withParameters:v6];
+  [(DADeviceConnectionLocal *)self _sessionDidPowerOff:rebootCopy forReboot:1 withParameters:parametersCopy];
 }
 
-- (void)sessionDidShutDown:(id)a3 withParameters:(id)a4
+- (void)sessionDidShutDown:(id)down withParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
+  parametersCopy = parameters;
+  downCopy = down;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -908,13 +908,13 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", &v9, 0xCu);
   }
 
-  [(DADeviceConnectionLocal *)self _sessionDidPowerOff:v7 forReboot:0 withParameters:v6];
+  [(DADeviceConnectionLocal *)self _sessionDidPowerOff:downCopy forReboot:0 withParameters:parametersCopy];
 }
 
-- (void)session:(id)a3 generateAuthInfoWithNonce:(id)a4
+- (void)session:(id)session generateAuthInfoWithNonce:(id)nonce
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  nonceCopy = nonce;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -935,7 +935,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Strong device identity is OFF.", buf, 2u);
     }
 
-    [v6 sendAuthInfoResult:0 error:0];
+    [sessionCopy sendAuthInfoResult:0 error:0];
   }
 
   else
@@ -950,34 +950,34 @@ LABEL_16:
     v12 = objc_opt_new();
     [(DADeviceConnectionLocal *)self setStrongDeviceIdentity:v12];
 
-    v13 = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
+    strongDeviceIdentity = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10000BCB4;
     v15[3] = &unk_1001BC938;
-    v16 = v6;
-    [v13 generateAuthInfoWithNonce:v7 completion:v15];
+    v16 = sessionCopy;
+    [strongDeviceIdentity generateAuthInfoWithNonce:nonceCopy completion:v15];
   }
 }
 
-- (void)session:(id)a3 signPayload:(id)a4 completionHandler:(id)a5
+- (void)session:(id)session signPayload:(id)payload completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  payloadCopy = payload;
+  handlerCopy = handler;
   v9 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     sub_10015826C(v9, v10, v11, v12, v13, v14, v15, v16);
   }
 
-  v17 = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
+  strongDeviceIdentity = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
 
-  if (v17)
+  if (strongDeviceIdentity)
   {
-    v18 = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
+    strongDeviceIdentity2 = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
     v20 = 0;
-    v19 = [v18 signPayload:v7 error:&v20];
-    v17 = v20;
+    v19 = [strongDeviceIdentity2 signPayload:payloadCopy error:&v20];
+    strongDeviceIdentity = v20;
   }
 
   else
@@ -985,13 +985,13 @@ LABEL_16:
     v19 = 0;
   }
 
-  v8[2](v8, v19, v17);
+  handlerCopy[2](handlerCopy, v19, strongDeviceIdentity);
 }
 
-- (void)session:(id)a3 signFile:(id)a4 completionHandler:(id)a5
+- (void)session:(id)session signFile:(id)file completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  fileCopy = file;
+  handlerCopy = handler;
   v9 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1000,14 +1000,14 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[DADeviceConnectionLocal] %s", buf, 0xCu);
   }
 
-  v10 = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
+  strongDeviceIdentity = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
 
-  if (v10)
+  if (strongDeviceIdentity)
   {
-    v11 = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
+    strongDeviceIdentity2 = [(DADeviceConnectionLocal *)self strongDeviceIdentity];
     v13 = 0;
-    v12 = [v11 signFile:v7 error:&v13];
-    v10 = v13;
+    v12 = [strongDeviceIdentity2 signFile:fileCopy error:&v13];
+    strongDeviceIdentity = v13;
   }
 
   else
@@ -1015,13 +1015,13 @@ LABEL_16:
     v12 = 0;
   }
 
-  v8[2](v8, v12, v10);
+  handlerCopy[2](handlerCopy, v12, strongDeviceIdentity);
 }
 
-- (void)_sessionDidPowerOff:(id)a3 forReboot:(BOOL)a4 withParameters:(id)a5
+- (void)_sessionDidPowerOff:(id)off forReboot:(BOOL)reboot withParameters:(id)parameters
 {
-  v5 = a4;
-  v7 = a5;
+  rebootCopy = reboot;
+  parametersCopy = parameters;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1032,22 +1032,22 @@ LABEL_16:
 
   if (+[CBSUtilities isCheckerBoardActive])
   {
-    v9 = [(DADeviceConnectionLocal *)self session];
-    [v9 archive];
+    session = [(DADeviceConnectionLocal *)self session];
+    [session archive];
   }
 
-  v10 = [v7 objectForKeyedSubscript:@"bootMode"];
+  v10 = [parametersCopy objectForKeyedSubscript:@"bootMode"];
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
   }
 
   else
   {
-    v11 = 2;
+    integerValue = 2;
   }
 
-  [(DADeviceConnectionLocal *)self _setNextBootForBootMode:v11];
+  [(DADeviceConnectionLocal *)self _setNextBootForBootMode:integerValue];
   if ([v10 integerValue] == 3)
   {
     v12 = DiagnosticLogHandleForCategory();
@@ -1057,7 +1057,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Starting battery disconnect shutdown sequence.", &v15, 2u);
     }
 
-    v13 = [(DADeviceConnectionLocal *)self _unsealCodeFromParameters:v7];
+    v13 = [(DADeviceConnectionLocal *)self _unsealCodeFromParameters:parametersCopy];
     [NSThread sleepForTimeInterval:5.0];
     if ([(DADeviceConnectionLocal *)self _shutdownForBatteryDisconnectWithUnsealCode:v13])
     {
@@ -1065,7 +1065,7 @@ LABEL_16:
     }
 
 LABEL_18:
-    [(DADeviceConnectionLocal *)self _shutDownDeviceForReboot:v5];
+    [(DADeviceConnectionLocal *)self _shutDownDeviceForReboot:rebootCopy];
     goto LABEL_19;
   }
 
@@ -1090,21 +1090,21 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_setNextBootForBootMode:(int64_t)a3
+- (void)_setNextBootForBootMode:(int64_t)mode
 {
   v4 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = a3;
+    modeCopy = mode;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Setting next boot to %ld", &v12, 0xCu);
   }
 
-  if (a3 > 2)
+  if (mode > 2)
   {
-    if ((a3 - 3) >= 2)
+    if ((mode - 3) >= 2)
     {
-      if (a3 == 5)
+      if (mode == 5)
       {
         v5 = +[DANvramUtil sharedInstance];
         [v5 setNextBootCheckerBoardPersistent];
@@ -1120,7 +1120,7 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  switch(a3)
+  switch(mode)
   {
     case 0:
       goto LABEL_9;
@@ -1138,15 +1138,15 @@ LABEL_12:
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_1001582E4(a3, v5, v6, v7, v8, v9, v10, v11);
+    sub_1001582E4(mode, v5, v6, v7, v8, v9, v10, v11);
   }
 
 LABEL_15:
 }
 
-- (void)_shutDownDeviceForReboot:(BOOL)a3
+- (void)_shutDownDeviceForReboot:(BOOL)reboot
 {
-  v3 = a3;
+  rebootCopy = reboot;
   v4 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1156,13 +1156,13 @@ LABEL_15:
 
   v5 = objc_alloc_init(FBSSystemService);
   v6 = [[FBSShutdownOptions alloc] initWithReason:@"Rebooting for Diagnostics"];
-  [v6 setRebootType:v3];
+  [v6 setRebootType:rebootCopy];
   [v5 shutdownWithOptions:v6];
 }
 
-- (unsigned)_unsealCodeFromParameters:(id)a3
+- (unsigned)_unsealCodeFromParameters:(id)parameters
 {
-  v4 = [a3 objectForKeyedSubscript:@"unsealCode"];
+  v4 = [parameters objectForKeyedSubscript:@"unsealCode"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1186,13 +1186,13 @@ LABEL_15:
   return v3;
 }
 
-- (BOOL)_shutdownForBatteryDisconnectWithUnsealCode:(unsigned int)a3
+- (BOOL)_shutdownForBatteryDisconnectWithUnsealCode:(unsigned int)code
 {
   v4 = objc_alloc_init(DSAppleSMCDevice);
   [v4 openAppleSMC:0];
-  v26 = HIWORD(a3);
-  v27 = a3;
-  v5 = [v4 writeDataFor:@"GCCM" value:&v27 size:2];
+  v26 = HIWORD(code);
+  codeCopy = code;
+  v5 = [v4 writeDataFor:@"GCCM" value:&codeCopy size:2];
   v6 = DiagnosticLogHandleForCategory();
   v7 = v6;
   if (!v5)
@@ -1400,9 +1400,9 @@ LABEL_48:
 
   [v3 readValueFor:@"BCSL"];
   v4 = [NSNumber numberWithDouble:?];
-  v5 = [v4 unsignedIntValue];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  if (v5 != 2)
+  if (unsignedIntValue != 2)
   {
     v7 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1426,8 +1426,8 @@ LABEL_9:
 
 - (void)archive
 {
-  v2 = [(DADeviceConnectionLocal *)self session];
-  [v2 archive];
+  session = [(DADeviceConnectionLocal *)self session];
+  [session archive];
 }
 
 - (DADeviceConnectionDelegate)delegate

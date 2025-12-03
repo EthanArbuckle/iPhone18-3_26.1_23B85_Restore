@@ -1,13 +1,13 @@
 @interface THUserDataManager
 + (id)managedObjectModel;
-- (THUserDataManager)initWithBookDescription:(id)a3;
-- (id)metadataObjectForKey:(id)a3;
+- (THUserDataManager)initWithBookDescription:(id)description;
+- (id)metadataObjectForKey:(id)key;
 - (id)newManagedObjectContext;
 - (void)dealloc;
-- (void)logError:(id)a3;
+- (void)logError:(id)error;
 - (void)p_cacheMetadataDictionary;
-- (void)save:(id)a3;
-- (void)setMetadataObject:(id)a3 forKey:(id)a4;
+- (void)save:(id)save;
+- (void)setMetadataObject:(id)object forKey:(id)key;
 @end
 
 @implementation THUserDataManager
@@ -29,24 +29,24 @@
   return v3;
 }
 
-- (void)logError:(id)a3
+- (void)logError:(id)error
 {
-  if (a3)
+  if (error)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 }
 
-- (THUserDataManager)initWithBookDescription:(id)a3
+- (THUserDataManager)initWithBookDescription:(id)description
 {
   v9.receiver = self;
   v9.super_class = THUserDataManager;
   v4 = [(THUserDataManager *)&v9 init];
   if (v4)
   {
-    +[THApplicationDelegate ensureContextDirectoryExists:](THApplicationDelegate, "ensureContextDirectoryExists:", [a3 asset]);
+    +[THApplicationDelegate ensureContextDirectoryExists:](THApplicationDelegate, "ensureContextDirectoryExists:", [description asset]);
     v4->mPSC = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:{objc_msgSend(objc_opt_class(), "managedObjectModel")}];
-    v5 = [a3 userDataPath];
+    userDataPath = [description userDataPath];
     mPSC = v4->mPSC;
     if (!mPSC)
     {
@@ -55,16 +55,16 @@
     }
 
     v8 = 0;
-    if (!-[NSPersistentStoreCoordinator addPersistentStoreWithType:configuration:URL:options:error:](mPSC, "addPersistentStoreWithType:configuration:URL:options:error:", NSSQLiteStoreType, 0, +[NSURL fileURLWithPath:isDirectory:](NSURL, "fileURLWithPath:isDirectory:", v5, 0), [objc_opt_class() persistentStoreCoordinatorOptions], &v8))
+    if (!-[NSPersistentStoreCoordinator addPersistentStoreWithType:configuration:URL:options:error:](mPSC, "addPersistentStoreWithType:configuration:URL:options:error:", NSSQLiteStoreType, 0, +[NSURL fileURLWithPath:isDirectory:](NSURL, "fileURLWithPath:isDirectory:", userDataPath, 0), [objc_opt_class() persistentStoreCoordinatorOptions], &v8))
     {
       if (v8)
       {
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
 
-      [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v5, 0];
+      [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:userDataPath, 0];
       v8 = 0;
-      if (!-[NSPersistentStoreCoordinator addPersistentStoreWithType:configuration:URL:options:error:](v4->mPSC, "addPersistentStoreWithType:configuration:URL:options:error:", NSSQLiteStoreType, 0, +[NSURL fileURLWithPath:isDirectory:](NSURL, "fileURLWithPath:isDirectory:", v5, 0), [objc_opt_class() persistentStoreCoordinatorOptions], &v8))
+      if (!-[NSPersistentStoreCoordinator addPersistentStoreWithType:configuration:URL:options:error:](v4->mPSC, "addPersistentStoreWithType:configuration:URL:options:error:", NSSQLiteStoreType, 0, +[NSURL fileURLWithPath:isDirectory:](NSURL, "fileURLWithPath:isDirectory:", userDataPath, 0), [objc_opt_class() persistentStoreCoordinatorOptions], &v8))
       {
         [(THUserDataManager *)v4 logError:v8];
         +[NSException raise:format:](NSException, "raise:format:", @"[THUserDataManager init]", @"Error adding Store to PSC: %@", [v8 localizedDescription]);
@@ -99,7 +99,7 @@
   return v3;
 }
 
-- (void)save:(id)a3
+- (void)save:(id)save
 {
   v9 = 0;
   p_mPSC = &self->mPSC;
@@ -112,7 +112,7 @@
   v8[4] = self;
   v8[5] = v6;
   [(NSPersistentStoreCoordinator *)mPSC performBlockAndWait:v8];
-  if (([a3 save:&v9] & 1) == 0)
+  if (([save save:&v9] & 1) == 0)
   {
     [(THUserDataManager *)self logError:v9];
   }
@@ -138,7 +138,7 @@
   }
 }
 
-- (void)setMetadataObject:(id)a3 forKey:(id)a4
+- (void)setMetadataObject:(id)object forKey:(id)key
 {
   if (self->mPersistentStore)
   {
@@ -148,13 +148,13 @@
     v5[2] = sub_925E8;
     v5[3] = &unk_45AF70;
     v5[4] = self;
-    v5[5] = a3;
-    v5[6] = a4;
+    v5[5] = object;
+    v5[6] = key;
     [(NSPersistentStoreCoordinator *)mPSC performBlockAndWait:v5];
   }
 }
 
-- (id)metadataObjectForKey:(id)a3
+- (id)metadataObjectForKey:(id)key
 {
   v8 = 0;
   v9 = &v8;
@@ -169,7 +169,7 @@
     v7[1] = 3221225472;
     v7[2] = sub_9275C;
     v7[3] = &unk_45C220;
-    v7[5] = a3;
+    v7[5] = key;
     v7[6] = &v8;
     v7[4] = self;
     [(NSPersistentStoreCoordinator *)mPSC performBlockAndWait:v7];

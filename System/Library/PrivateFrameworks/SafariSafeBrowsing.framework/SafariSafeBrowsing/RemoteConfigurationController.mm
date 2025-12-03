@@ -1,30 +1,30 @@
 @interface RemoteConfigurationController
 + (id)sharedController;
-- (BOOL)_shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:(id)a3;
+- (BOOL)_shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:(id)date;
 - (BOOL)forceLoadConfigurationFromDisk;
 - (BOOL)forceUpdateConfigurationFromServer;
 - (BOOL)isSafeBrowsingOff;
 - (RemoteConfigurationController)init;
 - (id)_dyldSourceVersionString;
 - (id)_lastConfigurationUpdateAttemptDate;
-- (id)_providerToTurnOffFromProviderDictionary:(id)a3;
+- (id)_providerToTurnOffFromProviderDictionary:(id)dictionary;
 - (id)_urlOfDownloadedConfiguration;
 - (unint64_t)_launchTimeBasedPercentile;
-- (void)_didReceiveConfigurationData:(id)a3;
-- (void)_downloadConfigurationWithCompletionHandler:(id)a3;
-- (void)_initializeProviderConfigurationsWithConfiguration:(id)a3;
+- (void)_didReceiveConfigurationData:(id)data;
+- (void)_downloadConfigurationWithCompletionHandler:(id)handler;
+- (void)_initializeProviderConfigurationsWithConfiguration:(id)configuration;
 - (void)_initializeToDefaultProviderConfigurations;
 - (void)_loadConfigurationFromDiskIfNecessary;
 - (void)_notifyProviderConfigurationsDidChangeIfNecessary;
 - (void)_scheduleConfigurationUpdateDaily;
-- (void)_setCurrentConfigurationOnInternalQueue:(id)a3;
+- (void)_setCurrentConfigurationOnInternalQueue:(id)queue;
 - (void)_setCurrentDateAsLastConfigurationUpdateAttemptDate;
 - (void)_simplifyProviderConfigurations;
 - (void)_updateConfigurationIfNecessary;
 - (void)_urlOfDownloadedConfiguration;
-- (void)_writeConfigurationToDisk:(id)a3;
+- (void)_writeConfigurationToDisk:(id)disk;
 - (void)dealloc;
-- (void)setCurrentConfiguration:(id)a3;
+- (void)setCurrentConfiguration:(id)configuration;
 @end
 
 @implementation RemoteConfigurationController
@@ -108,9 +108,9 @@ void __40__RemoteConfigurationController_dealloc__block_invoke(uint64_t a1)
   return [appleProviderConfiguration providerOff];
 }
 
-- (id)_providerToTurnOffFromProviderDictionary:(id)a3
+- (id)_providerToTurnOffFromProviderDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"Provider To Turn Off"];
+  v3 = [dictionary objectForKey:@"Provider To Turn Off"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -177,15 +177,15 @@ void __40__RemoteConfigurationController_dealloc__block_invoke(uint64_t a1)
   {
     if ([self->_googleProviderConfiguration socialEngineeringThreatTypeOff])
     {
-      v3 = [self->_googleProviderConfiguration malwareThreatTypeOff];
+      malwareThreatTypeOff = [self->_googleProviderConfiguration malwareThreatTypeOff];
     }
 
     else
     {
-      v3 = 0;
+      malwareThreatTypeOff = 0;
     }
 
-    [self->_googleProviderConfiguration setProviderOff:v3];
+    [self->_googleProviderConfiguration setProviderOff:malwareThreatTypeOff];
   }
 
   if (![self->_tencentProviderConfiguration providerOff])
@@ -195,10 +195,10 @@ void __40__RemoteConfigurationController_dealloc__block_invoke(uint64_t a1)
 
   if (![self->_appleProviderConfiguration providerOff])
   {
-    v4 = [self->_appleProviderConfiguration socialEngineeringThreatTypeOff];
+    socialEngineeringThreatTypeOff = [self->_appleProviderConfiguration socialEngineeringThreatTypeOff];
     appleProviderConfiguration = self->_appleProviderConfiguration;
 
-    [appleProviderConfiguration setProviderOff:v4];
+    [appleProviderConfiguration setProviderOff:socialEngineeringThreatTypeOff];
   }
 }
 
@@ -293,22 +293,22 @@ uint64_t __59__RemoteConfigurationController__launchTimeBasedPercentile__block_i
   return result;
 }
 
-- (void)_initializeProviderConfigurationsWithConfiguration:(id)a3
+- (void)_initializeProviderConfigurationsWithConfiguration:(id)configuration
 {
   v79 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  if (v46)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v47 = self;
-    v59 = [(RemoteConfigurationController *)self _dyldSourceVersionString];
-    if (v59)
+    selfCopy = self;
+    _dyldSourceVersionString = [(RemoteConfigurationController *)self _dyldSourceVersionString];
+    if (_dyldSourceVersionString)
     {
       v56 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v72 = 0u;
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      obj = [v46 ssb_arrayForKey:@"Configurations"];
+      obj = [configurationCopy ssb_arrayForKey:@"Configurations"];
       v50 = [obj countByEnumeratingWithState:&v70 objects:v78 count:16];
       if (!v50)
       {
@@ -394,25 +394,25 @@ LABEL_25:
                 continue;
               }
 
-              if ([v59 compare:v10 options:64] == -1)
+              if ([_dyldSourceVersionString compare:v10 options:64] == -1)
               {
                 goto LABEL_24;
               }
 
-              v12 = [v59 compare:v11 options:64] == 1;
+              v12 = [_dyldSourceVersionString compare:v11 options:64] == 1;
 
               if (!v12)
               {
 
                 v16 = [v4 objectForKey:@"Percentage To Apply To"];
                 v5 = v16;
-                if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v17 = [v5 unsignedIntegerValue], [(RemoteConfigurationController *)v47 _launchTimeBasedPercentile]< v17))
+                if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v17 = [v5 unsignedIntegerValue], [(RemoteConfigurationController *)selfCopy _launchTimeBasedPercentile]< v17))
                 {
                   v62 = 0u;
                   v63 = 0u;
                   v60 = 0u;
                   v61 = 0u;
-                  v51 = [v4 ssb_arrayForKey:{@"Providers", v46}];
+                  v51 = [v4 ssb_arrayForKey:{@"Providers", configurationCopy}];
                   v54 = [v51 countByEnumeratingWithState:&v60 objects:v74 count:16];
                   if (v54)
                   {
@@ -501,36 +501,36 @@ LABEL_47:
 LABEL_49:
 
           v32 = [v56 objectForKeyedSubscript:@"Google"];
-          v33 = [v47->_googleProviderConfiguration isEqualToConfiguration:v32];
-          v47->_googleConfigurationDidChange = !v33;
+          v33 = [selfCopy->_googleProviderConfiguration isEqualToConfiguration:v32];
+          selfCopy->_googleConfigurationDidChange = !v33;
           if (!v33)
           {
             v34 = [[ProviderConfiguration alloc] initWithConfiguration:v32];
-            googleProviderConfiguration = v47->_googleProviderConfiguration;
-            v47->_googleProviderConfiguration = v34;
+            googleProviderConfiguration = selfCopy->_googleProviderConfiguration;
+            selfCopy->_googleProviderConfiguration = v34;
           }
 
-          v36 = [v56 objectForKeyedSubscript:{@"Tencent", v46}];
-          v37 = [v47->_tencentProviderConfiguration isEqualToConfiguration:v36];
-          v47->_tencentConfigurationDidChange = !v37;
+          v36 = [v56 objectForKeyedSubscript:{@"Tencent", configurationCopy}];
+          v37 = [selfCopy->_tencentProviderConfiguration isEqualToConfiguration:v36];
+          selfCopy->_tencentConfigurationDidChange = !v37;
           if (!v37)
           {
             v38 = [[ProviderConfiguration alloc] initWithConfiguration:v36];
-            tencentProviderConfiguration = v47->_tencentProviderConfiguration;
-            v47->_tencentProviderConfiguration = v38;
+            tencentProviderConfiguration = selfCopy->_tencentProviderConfiguration;
+            selfCopy->_tencentProviderConfiguration = v38;
           }
 
           v40 = [v56 objectForKeyedSubscript:@"Apple"];
-          v41 = [v47->_googleProviderConfiguration isEqualToConfiguration:v40];
-          v47->_appleConfigurationDidChange = !v41;
+          v41 = [selfCopy->_googleProviderConfiguration isEqualToConfiguration:v40];
+          selfCopy->_appleConfigurationDidChange = !v41;
           if (!v41)
           {
             v42 = [[ProviderConfiguration alloc] initWithConfiguration:v40];
-            appleProviderConfiguration = v47->_appleProviderConfiguration;
-            v47->_appleProviderConfiguration = v42;
+            appleProviderConfiguration = selfCopy->_appleProviderConfiguration;
+            selfCopy->_appleProviderConfiguration = v42;
           }
 
-          [(RemoteConfigurationController *)v47 _simplifyProviderConfigurations];
+          [(RemoteConfigurationController *)selfCopy _simplifyProviderConfigurations];
 
           goto LABEL_60;
         }
@@ -573,10 +573,10 @@ LABEL_60:
     {
       v7 = [v5 URLByAppendingPathComponent:@"Library"];
       v8 = [v7 URLByAppendingPathComponent:@"SafariSafeBrowsing" isDirectory:1];
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [v8 path];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path = [v8 path];
       v19[0] = 0;
-      v11 = [v9 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:v19];
+      v11 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:v19];
       v12 = v19[0];
 
       if (v11)
@@ -670,23 +670,23 @@ void __70__RemoteConfigurationController__loadConfigurationFromDiskIfNecessary__
   }
 }
 
-- (void)_writeConfigurationToDisk:(id)a3
+- (void)_writeConfigurationToDisk:(id)disk
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RemoteConfigurationController *)self _urlOfDownloadedConfiguration];
-  if (v5)
+  diskCopy = disk;
+  _urlOfDownloadedConfiguration = [(RemoteConfigurationController *)self _urlOfDownloadedConfiguration];
+  if (_urlOfDownloadedConfiguration)
   {
-    if (v4)
+    if (diskCopy)
     {
-      [v4 writeToURL:v5 atomically:1];
+      [diskCopy writeToURL:_urlOfDownloadedConfiguration atomically:1];
     }
 
     else
     {
-      v6 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v11[0] = 0;
-      v7 = [v6 removeItemAtURL:v5 error:v11];
+      v7 = [defaultManager removeItemAtURL:_urlOfDownloadedConfiguration error:v11];
       v8 = v11[0];
 
       if ((v7 & 1) == 0)
@@ -705,28 +705,28 @@ void __70__RemoteConfigurationController__loadConfigurationFromDiskIfNecessary__
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentConfiguration:(id)a3
+- (void)setCurrentConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__RemoteConfigurationController_setCurrentConfiguration___block_invoke;
   v7[3] = &unk_278565080;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_sync(internalQueue, v7);
 }
 
-- (void)_setCurrentConfigurationOnInternalQueue:(id)a3
+- (void)_setCurrentConfigurationOnInternalQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   currentConfiguration = self->_currentConfiguration;
-  v7 = v5;
-  if (v5 | currentConfiguration && (!v5 || ![(NSDictionary *)currentConfiguration isEqualToDictionary:v5]))
+  v7 = queueCopy;
+  if (queueCopy | currentConfiguration && (!queueCopy || ![(NSDictionary *)currentConfiguration isEqualToDictionary:queueCopy]))
   {
-    objc_storeStrong(&self->_currentConfiguration, a3);
+    objc_storeStrong(&self->_currentConfiguration, queue);
     [(RemoteConfigurationController *)self _initializeProviderConfigurationsWithConfiguration:self->_currentConfiguration];
     [(RemoteConfigurationController *)self _writeConfigurationToDisk:self->_currentConfiguration];
     [(RemoteConfigurationController *)self _notifyProviderConfigurationsDidChangeIfNecessary];
@@ -735,30 +735,30 @@ void __70__RemoteConfigurationController__loadConfigurationFromDiskIfNecessary__
 
 - (void)_notifyProviderConfigurationsDidChangeIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   if (self->_googleConfigurationDidChange)
   {
     self = notify_post("com.apple.Safari.SafeBrowsing.GoogleRemoteConfigurationDidChange");
   }
 
   shouldConsultWithTencent = Backend::Google::SSBUtilities::shouldConsultWithTencent(self);
-  if (shouldConsultWithTencent && v2->_tencentConfigurationDidChange)
+  if (shouldConsultWithTencent && selfCopy->_tencentConfigurationDidChange)
   {
     shouldConsultWithTencent = notify_post("com.apple.Safari.SafeBrowsing.TencentRemoteConfigurationDidChange");
   }
 
-  if (Backend::Google::SSBUtilities::shouldConsultWithApple(shouldConsultWithTencent) && v2->_appleConfigurationDidChange)
+  if (Backend::Google::SSBUtilities::shouldConsultWithApple(shouldConsultWithTencent) && selfCopy->_appleConfigurationDidChange)
   {
     notify_post("com.apple.Safari.SafeBrowsing.AppleRemoteConfigurationDidChange");
   }
 
-  [(RemoteConfigurationController *)v2 _resetProviderConfigurationsDidChange];
+  [(RemoteConfigurationController *)selfCopy _resetProviderConfigurationsDidChange];
 }
 
-- (void)_downloadConfigurationWithCompletionHandler:(id)a3
+- (void)_downloadConfigurationWithCompletionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBABB8] sharedSession];
+  handlerCopy = handler;
+  mEMORY[0x277CBABB8] = [MEMORY[0x277CBABB8] sharedSession];
   v5 = configurationBaseURL();
   v6 = [@"SafeBrowsingRemoteConfiguration-1" stringByAppendingPathExtension:@"plist"];
   v7 = [v5 URLByAppendingPathComponent:v6];
@@ -766,9 +766,9 @@ void __70__RemoteConfigurationController__loadConfigurationFromDiskIfNecessary__
   v10[1] = 3221225472;
   v10[2] = __77__RemoteConfigurationController__downloadConfigurationWithCompletionHandler___block_invoke;
   v10[3] = &unk_2785650A8;
-  v8 = v3;
+  v8 = handlerCopy;
   v11 = v8;
-  v9 = [v4 dataTaskWithURL:v7 completionHandler:v10];
+  v9 = [mEMORY[0x277CBABB8] dataTaskWithURL:v7 completionHandler:v10];
   [v9 resume];
 }
 
@@ -797,8 +797,8 @@ void __77__RemoteConfigurationController__downloadConfigurationWithCompletionHan
 
 - (void)_updateConfigurationIfNecessary
 {
-  v3 = [(RemoteConfigurationController *)self _lastConfigurationUpdateAttemptDate];
-  v4 = [(RemoteConfigurationController *)self _shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:v3];
+  _lastConfigurationUpdateAttemptDate = [(RemoteConfigurationController *)self _lastConfigurationUpdateAttemptDate];
+  v4 = [(RemoteConfigurationController *)self _shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:_lastConfigurationUpdateAttemptDate];
 
   if (v4)
   {
@@ -840,11 +840,11 @@ void __64__RemoteConfigurationController__updateConfigurationIfNecessary__block_
   [WeakRetained _didReceiveConfigurationData:*(a1 + 32)];
 }
 
-- (void)_didReceiveConfigurationData:(id)a3
+- (void)_didReceiveConfigurationData:(id)data
 {
   v8[4] = *MEMORY[0x277D85DE8];
   v8[0] = 0;
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:v8];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:v8];
   v5 = v8[0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -866,13 +866,13 @@ void __64__RemoteConfigurationController__updateConfigurationIfNecessary__block_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:(id)a3
+- (BOOL)_shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dateCopy = date;
+  v4 = dateCopy;
+  if (dateCopy)
   {
-    if (Backend::Google::SSBUtilities::isInternalInstall(v3) && ([MEMORY[0x277CBEBD0] standardUserDefaults], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", @"DebugSafeBrowsingTestUpdateInterval"), v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
+    if (Backend::Google::SSBUtilities::isInternalInstall(dateCopy) && ([MEMORY[0x277CBEBD0] standardUserDefaults], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", @"DebugSafeBrowsingTestUpdateInterval"), v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
     {
       [(Backend::Google::SSBUtilities *)v4 timeIntervalSinceNow];
       v8 = v7;
@@ -897,8 +897,8 @@ void __64__RemoteConfigurationController__updateConfigurationIfNecessary__block_
 
 - (id)_lastConfigurationUpdateAttemptDate
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"SafeBrowsingRemoteConfigurationLastUpdateDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"SafeBrowsingRemoteConfigurationLastUpdateDate"];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -927,9 +927,9 @@ void __64__RemoteConfigurationController__updateConfigurationIfNecessary__block_
 
 - (void)_setCurrentDateAsLastConfigurationUpdateAttemptDate
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v2 = [MEMORY[0x277CBEAA8] date];
-  [v3 setObject:v2 forKey:@"SafeBrowsingRemoteConfigurationLastUpdateDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  date = [MEMORY[0x277CBEAA8] date];
+  [standardUserDefaults setObject:date forKey:@"SafeBrowsingRemoteConfigurationLastUpdateDate"];
 }
 
 - (void)_scheduleConfigurationUpdateDaily
@@ -1074,8 +1074,8 @@ void __63__RemoteConfigurationController_forceLoadConfigurationFromDisk__block_i
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
-  v4 = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
-  v5 = [MEMORY[0x277CBABB8] sessionWithConfiguration:v4];
+  ephemeralSessionConfiguration = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
+  v5 = [MEMORY[0x277CBABB8] sessionWithConfiguration:ephemeralSessionConfiguration];
   v6 = configurationBaseURL();
   v7 = [@"SafeBrowsingRemoteConfiguration-1" stringByAppendingPathExtension:@"plist"];
   v8 = [v6 URLByAppendingPathComponent:v7];
@@ -1086,7 +1086,7 @@ void __63__RemoteConfigurationController_forceLoadConfigurationFromDisk__block_i
   v17 = &v18;
   v9 = v3;
   v15 = v9;
-  v16 = self;
+  selfCopy = self;
   v10 = [v5 dataTaskWithURL:v8 completionHandler:v14];
   [v10 resume];
 

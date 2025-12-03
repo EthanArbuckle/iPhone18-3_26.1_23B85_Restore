@@ -1,10 +1,10 @@
 @interface OrgApacheLuceneSearchFieldValueHitQueue_MultiComparatorsFieldValueHitQueue
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
 @end
 
 @implementation OrgApacheLuceneSearchFieldValueHitQueue_MultiComparatorsFieldValueHitQueue
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
   comparators = self->super.comparators_;
   if (!comparators)
@@ -17,7 +17,7 @@ LABEL_18:
   if (size < 1)
   {
 LABEL_13:
-    v17 = *(a3 + 3) <= *(a4 + 3);
+    v17 = *(id + 3) <= *(withId + 3);
   }
 
   else
@@ -51,7 +51,7 @@ LABEL_13:
         goto LABEL_18;
       }
 
-      v16 = [(IOSClass *)v15 compareWithInt:*(a3 + 5) withInt:*(a4 + 5)]* v12;
+      v16 = [(IOSClass *)v15 compareWithInt:*(id + 5) withInt:*(withId + 5)]* v12;
       if (v16)
       {
         break;

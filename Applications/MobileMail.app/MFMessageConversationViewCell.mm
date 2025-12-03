@@ -1,23 +1,23 @@
 @interface MFMessageConversationViewCell
 + (double)defaultCornerRadius;
-- (MFMessageConversationViewCell)initWithFrame:(CGRect)a3;
+- (MFMessageConversationViewCell)initWithFrame:(CGRect)frame;
 - (id)description;
 - (void)_updateShadow;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setMessageFlags:(unint64_t)a3 conversationNotificationLevel:(int64_t)a4;
-- (void)setRoundedCorners:(int64_t)a3;
-- (void)setShouldAddShadow:(BOOL)a3;
+- (void)setMessageFlags:(unint64_t)flags conversationNotificationLevel:(int64_t)level;
+- (void)setRoundedCorners:(int64_t)corners;
+- (void)setShouldAddShadow:(BOOL)shadow;
 @end
 
 @implementation MFMessageConversationViewCell
 
-- (MFMessageConversationViewCell)initWithFrame:(CGRect)a3
+- (MFMessageConversationViewCell)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = MFMessageConversationViewCell;
-  v3 = [(MFConversationViewCell *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFConversationViewCell *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v3->_shouldAddShadow = MUISolariumFeatureEnabled() ^ 1;
@@ -28,57 +28,57 @@
 
 - (void)dealloc
 {
-  v3 = [(MFMessageConversationViewCell *)self predictedMailbox];
-  [v3 cancel];
+  predictedMailbox = [(MFMessageConversationViewCell *)self predictedMailbox];
+  [predictedMailbox cancel];
 
   v4.receiver = self;
   v4.super_class = MFMessageConversationViewCell;
   [(MFMessageConversationViewCell *)&v4 dealloc];
 }
 
-- (void)setMessageFlags:(unint64_t)a3 conversationNotificationLevel:(int64_t)a4
+- (void)setMessageFlags:(unint64_t)flags conversationNotificationLevel:(int64_t)level
 {
-  v7 = [(MFConversationViewCell *)self viewModel];
+  viewModel = [(MFConversationViewCell *)self viewModel];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001E7B24;
   v9[3] = &unk_1006549B0;
-  v9[4] = a3;
-  v9[5] = a4;
-  v8 = [v7 copyWithFlagsModelBuilder:v9];
+  v9[4] = flags;
+  v9[5] = level;
+  v8 = [viewModel copyWithFlagsModelBuilder:v9];
   [(MFConversationViewCell *)self setViewModel:v8];
 }
 
-- (void)setShouldAddShadow:(BOOL)a3
+- (void)setShouldAddShadow:(BOOL)shadow
 {
-  if (self->_shouldAddShadow != a3)
+  if (self->_shouldAddShadow != shadow)
   {
-    self->_shouldAddShadow = a3;
+    self->_shouldAddShadow = shadow;
     [(MFMessageConversationViewCell *)self _updateShadow];
   }
 }
 
-- (void)setRoundedCorners:(int64_t)a3
+- (void)setRoundedCorners:(int64_t)corners
 {
-  if (self->_roundedCorners == a3)
+  if (self->_roundedCorners == corners)
   {
     return;
   }
 
-  self->_roundedCorners = a3;
-  v4 = [(MFMessageConversationViewCell *)self contentView];
-  v8 = [v4 layer];
+  self->_roundedCorners = corners;
+  contentView = [(MFMessageConversationViewCell *)self contentView];
+  layer = [contentView layer];
 
-  [v8 setCornerCurve:kCACornerCurveContinuous];
-  if (a3 > 1)
+  [layer setCornerCurve:kCACornerCurveContinuous];
+  if (corners > 1)
   {
-    if (a3 == 2)
+    if (corners == 2)
     {
       v5 = 3;
       goto LABEL_11;
     }
 
-    if (a3 == 3)
+    if (corners == 3)
     {
       v5 = 12;
       goto LABEL_11;
@@ -90,13 +90,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a3)
+  if (corners)
   {
-    if (a3 == 1)
+    if (corners == 1)
     {
       v5 = 15;
 LABEL_11:
-      [v8 setMaskedCorners:v5];
+      [layer setMaskedCorners:v5];
       goto LABEL_12;
     }
 
@@ -104,9 +104,9 @@ LABEL_11:
   }
 
   v6 = 0.0;
-  [v8 setMaskedCorners:0];
+  [layer setMaskedCorners:0];
 LABEL_13:
-  [v8 setCornerRadius:v6];
+  [layer setCornerRadius:v6];
 }
 
 + (double)defaultCornerRadius
@@ -131,17 +131,17 @@ LABEL_13:
 
 - (void)_updateShadow
 {
-  v3 = [(MFMessageConversationViewCell *)self roundedCorners];
-  v5 = [(MFConversationViewCell *)self contentWrapperView];
-  v4 = [(MFMessageConversationViewCell *)self shouldAddShadow];
+  roundedCorners = [(MFMessageConversationViewCell *)self roundedCorners];
+  contentWrapperView = [(MFConversationViewCell *)self contentWrapperView];
+  shouldAddShadow = [(MFMessageConversationViewCell *)self shouldAddShadow];
   [objc_opt_class() defaultCornerRadius];
-  [v5 mf_applyingConversationMessageShadow:v4 shouldRoundCorners:v3 == 1 cornerRadius:?];
+  [contentWrapperView mf_applyingConversationMessageShadow:shouldAddShadow shouldRoundCorners:roundedCorners == 1 cornerRadius:?];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(MFMessageConversationViewCell *)self predictedMailbox];
-  [v3 cancel];
+  predictedMailbox = [(MFMessageConversationViewCell *)self predictedMailbox];
+  [predictedMailbox cancel];
 
   [(MFMessageConversationViewCell *)self setPredictedMailbox:0];
   v4.receiver = self;
@@ -157,52 +157,52 @@ LABEL_13:
   v4 = [v3 mutableCopy];
 
   [v4 replaceOccurrencesOfString:@"baseClass = ([^;]*); " withString:&stru_100662A88 options:1024 range:{0, objc_msgSend(v4, "length")}];
-  v5 = [(MFConversationViewCell *)self viewModel];
-  v6 = [v5 senderList];
-  v7 = [v6 firstObject];
+  viewModel = [(MFConversationViewCell *)self viewModel];
+  senderList = [viewModel senderList];
+  firstObject = [senderList firstObject];
 
-  v8 = v7;
-  v9 = [v8 emailAddressValue];
-  v10 = [v9 simpleAddress];
-  v11 = v10;
-  if (v10)
+  v8 = firstObject;
+  emailAddressValue = [v8 emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
+  v11 = simpleAddress;
+  if (simpleAddress)
   {
-    v12 = v10;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v12 = [v8 stringValue];
+    stringValue = [v8 stringValue];
   }
 
-  v13 = v12;
+  v13 = stringValue;
 
   v28 = v13;
   v14 = +[MFUIStateCaptor sharedCaptor];
   v15 = [v14 redactedStringForString:v13];
 
-  v16 = [(MFConversationViewCell *)self viewModel];
-  v17 = [v16 messageContentRequest];
-  v18 = [v17 message];
+  viewModel2 = [(MFConversationViewCell *)self viewModel];
+  messageContentRequest = [viewModel2 messageContentRequest];
+  message = [messageContentRequest message];
 
-  v19 = [(MFConversationViewCell *)self viewModel];
-  if (v18)
+  viewModel3 = [(MFConversationViewCell *)self viewModel];
+  if (message)
   {
-    [v19 messageContentRequest];
+    [viewModel3 messageContentRequest];
   }
 
   else
   {
-    [v19 messageLoadingContext];
+    [viewModel3 messageLoadingContext];
   }
   v20 = ;
-  v21 = [v20 message];
+  message2 = [v20 message];
 
   v22 = objc_opt_class();
-  v23 = [(MFConversationViewCell *)self viewModel];
-  v24 = [v23 date];
-  v25 = [NSDateFormatter ef_formatDate:v24 shortStyle:0];
-  v26 = [NSString stringWithFormat:@" message = <%@: %p; sender = %@ dateSent = %@>", v22, v21, v15, v25];;
+  viewModel4 = [(MFConversationViewCell *)self viewModel];
+  date = [viewModel4 date];
+  v25 = [NSDateFormatter ef_formatDate:date shortStyle:0];
+  v26 = [NSString stringWithFormat:@" message = <%@: %p; sender = %@ dateSent = %@>", v22, message2, v15, v25];;
 
   [v4 insertString:v26 atIndex:{objc_msgSend(v4, "length") - 1}];
 

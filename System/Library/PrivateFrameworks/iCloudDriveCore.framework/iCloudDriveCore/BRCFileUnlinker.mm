@@ -1,18 +1,18 @@
 @interface BRCFileUnlinker
-- (BOOL)renameAndUnlinkInBackgroundItemAt:(int)a3 path:(id)a4;
-- (BRCFileUnlinker)initWithCacheDirPath:(id)a3;
+- (BOOL)renameAndUnlinkInBackgroundItemAt:(int)at path:(id)path;
+- (BRCFileUnlinker)initWithCacheDirPath:(id)path;
 - (void)_purge;
 - (void)dealloc;
-- (void)forcePurgeWithCompletionBlock:(id)a3;
+- (void)forcePurgeWithCompletionBlock:(id)block;
 - (void)resume;
 - (void)suspend;
 @end
 
 @implementation BRCFileUnlinker
 
-- (BRCFileUnlinker)initWithCacheDirPath:(id)a3
+- (BRCFileUnlinker)initWithCacheDirPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v27.receiver = self;
   v27.super_class = BRCFileUnlinker;
   v5 = [(BRCFileUnlinker *)&v27 init];
@@ -20,7 +20,7 @@
   if (v5)
   {
     atomic_store(1u, &v5->_suspendCount);
-    v7 = [v4 stringByAppendingPathComponent:@"unlink"];
+    v7 = [pathCopy stringByAppendingPathComponent:@"unlink"];
     unlinkRootPath = v6->_unlinkRootPath;
     v6->_unlinkRootPath = v7;
 
@@ -80,19 +80,19 @@ void __40__BRCFileUnlinker_initWithCacheDirPath___block_invoke(uint64_t a1)
 - (void)dealloc
 {
   [(BRCFileUnlinker *)self suspend];
-  v3 = self;
-  objc_sync_enter(v3);
-  cachePurgeSource = v3->_cachePurgeSource;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachePurgeSource = selfCopy->_cachePurgeSource;
   if (cachePurgeSource)
   {
     dispatch_resume(cachePurgeSource);
-    v5 = v3->_cachePurgeSource;
-    v3->_cachePurgeSource = 0;
+    v5 = selfCopy->_cachePurgeSource;
+    selfCopy->_cachePurgeSource = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
-  v6.receiver = v3;
+  v6.receiver = selfCopy;
   v6.super_class = BRCFileUnlinker;
   [(BRCFileUnlinker *)&v6 dealloc];
 }
@@ -116,9 +116,9 @@ void __40__BRCFileUnlinker_initWithCacheDirPath___block_invoke(uint64_t a1)
 {
   v9 = *MEMORY[0x277D85DE8];
   v4[0] = 67109634;
-  v4[1] = a1;
+  v4[1] = self;
   v5 = 1024;
-  v6 = a1 + 1;
+  v6 = self + 1;
   v7 = 2112;
   v8 = a2;
   _os_log_debug_impl(&dword_223E7A000, log, OS_LOG_TYPE_DEBUG, "[DEBUG] suspending - suspendCount:%d->%d%@", v4, 0x18u);
@@ -129,20 +129,20 @@ void __40__BRCFileUnlinker_initWithCacheDirPath___block_invoke(uint64_t a1)
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
-- (void)forcePurgeWithCompletionBlock:(id)a3
+- (void)forcePurgeWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__BRCFileUnlinker_forcePurgeWithCompletionBlock___block_invoke;
   v8[3] = &unk_278500048;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = blockCopy;
+  v6 = blockCopy;
   v7 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v8);
   dispatch_async(queue, v7);
 }
@@ -161,25 +161,25 @@ uint64_t __49__BRCFileUnlinker_forcePurgeWithCompletionBlock___block_invoke(uint
   return result;
 }
 
-- (BOOL)renameAndUnlinkInBackgroundItemAt:(int)a3 path:(id)a4
+- (BOOL)renameAndUnlinkInBackgroundItemAt:(int)at path:(id)path
 {
   v81 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  pathCopy = path;
   memset(&v46, 0, sizeof(v46));
-  if ((fstatat(a3, [v6 fileSystemRepresentation], &v46, 32) & 0x80000000) == 0)
+  if ((fstatat(at, [pathCopy fileSystemRepresentation], &v46, 32) & 0x80000000) == 0)
   {
     v7 = self->_unlinkRootPath;
     if ((BRCMkdirAt(-1, v7, 511) & 0x80000000) != 0 && *__error() != 17)
     {
-      v8 = [MEMORY[0x277CCAA00] defaultManager];
-      [v8 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
     }
 
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
-    v11 = [(NSString *)v7 stringByAppendingPathComponent:v10];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v11 = [(NSString *)v7 stringByAppendingPathComponent:uUIDString];
 
-    if ((BRCRenameAt(a3, v6, -1, v11, 0) & 0x80000000) == 0)
+    if ((BRCRenameAt(at, pathCopy, -1, v11, 0) & 0x80000000) == 0)
     {
       v12 = brc_bread_crumbs();
       v13 = brc_default_log();
@@ -277,7 +277,7 @@ uint64_t __49__BRCFileUnlinker_forcePurgeWithCompletionBlock___block_invoke(uint
         }
 
         *buf = 138417922;
-        *v48 = v6;
+        *v48 = pathCopy;
         *&v48[8] = 2112;
         *&v48[10] = v11;
         *&v48[18] = 1024;
@@ -439,9 +439,9 @@ uint64_t __49__BRCFileUnlinker_forcePurgeWithCompletionBlock___block_invoke(uint
       }
 
       *buf = 67115266;
-      *v48 = a3;
+      *v48 = at;
       *&v48[4] = 2112;
-      *&v48[6] = v6;
+      *&v48[6] = pathCopy;
       *&v48[14] = 2112;
       *&v48[16] = v11;
       v49 = 1024;
@@ -508,7 +508,7 @@ LABEL_18:
   if (os_log_type_enabled(v20, 0x90u))
   {
     *buf = 138412802;
-    *v48 = v6;
+    *v48 = pathCopy;
     *&v48[8] = 1024;
     *&v48[10] = v18;
     *&v48[14] = 2112;

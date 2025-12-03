@@ -1,7 +1,7 @@
 @interface LabelSequenceView
 - (CGSize)requiredSize;
 - (LabelSequenceView)init;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation LabelSequenceView
@@ -14,8 +14,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(LabelSequenceView *)v2 layer];
-    [v4 setNeedsDisplayOnBoundsChange:0];
+    layer = [(LabelSequenceView *)v2 layer];
+    [layer setNeedsDisplayOnBoundsChange:0];
   }
 
   return v3;
@@ -71,11 +71,11 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v5 = [v4 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v5 = [defaultParagraphStyle mutableCopy];
 
   v28 = v5;
   [v5 setLineBreakMode:5];
@@ -107,21 +107,21 @@
         v16 = v15;
         v18 = v17;
         v19 = RoundToPixel(22.5);
-        v20 = [v14 font];
-        [v20 ascender];
+        font = [v14 font];
+        [font ascender];
         v22 = RoundToPixel(v19 - v21);
 
-        v23 = [v14 string];
+        string = [v14 string];
         v33[0] = v10;
-        v24 = [v14 font];
-        v34[0] = v24;
+        font2 = [v14 font];
+        v34[0] = font2;
         v34[1] = v28;
         v33[1] = v11;
         v33[2] = v12;
-        v25 = [v14 color];
-        v34[2] = v25;
+        color = [v14 color];
+        v34[2] = color;
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:3];
-        [v23 drawInRect:v26 withAttributes:{v8, v22, v16, v18}];
+        [string drawInRect:v26 withAttributes:{v8, v22, v16, v18}];
 
         v8 = v8 + v16 + 15.0;
       }

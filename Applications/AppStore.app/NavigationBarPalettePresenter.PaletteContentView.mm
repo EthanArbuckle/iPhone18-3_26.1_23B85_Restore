@@ -1,6 +1,6 @@
 @interface NavigationBarPalettePresenter.PaletteContentView
-- (_TtCC8AppStore29NavigationBarPalettePresenter18PaletteContentView)initWithCoder:(id)a3;
-- (_TtCC8AppStore29NavigationBarPalettePresenter18PaletteContentView)initWithFrame:(CGRect)a3;
+- (_TtCC8AppStore29NavigationBarPalettePresenter18PaletteContentView)initWithCoder:(id)coder;
+- (_TtCC8AppStore29NavigationBarPalettePresenter18PaletteContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -26,12 +26,12 @@
   }
 }
 
-- (_TtCC8AppStore29NavigationBarPalettePresenter18PaletteContentView)initWithFrame:(CGRect)a3
+- (_TtCC8AppStore29NavigationBarPalettePresenter18PaletteContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtCC8AppStore29NavigationBarPalettePresenter18PaletteContentView_didLayoutSubviews);
   v9 = _s18PaletteContentViewCMa();
   *v8 = 0;
@@ -41,15 +41,15 @@
   return [(NavigationBarPalettePresenter.PaletteContentView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtCC8AppStore29NavigationBarPalettePresenter18PaletteContentView)initWithCoder:(id)a3
+- (_TtCC8AppStore29NavigationBarPalettePresenter18PaletteContentView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtCC8AppStore29NavigationBarPalettePresenter18PaletteContentView_didLayoutSubviews);
   *v4 = 0;
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = _s18PaletteContentViewCMa();
-  v5 = a3;
-  v6 = [(NavigationBarPalettePresenter.PaletteContentView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(NavigationBarPalettePresenter.PaletteContentView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

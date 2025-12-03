@@ -1,14 +1,14 @@
 @interface SBNotificationBannerDestinationTestActionRunner
-- (void)executeAction:(id)a3 fromOrigin:(id)a4 endpoint:(id)a5 withParameters:(id)a6 completion:(id)a7;
+- (void)executeAction:(id)action fromOrigin:(id)origin endpoint:(id)endpoint withParameters:(id)parameters completion:(id)completion;
 @end
 
 @implementation SBNotificationBannerDestinationTestActionRunner
 
-- (void)executeAction:(id)a3 fromOrigin:(id)a4 endpoint:(id)a5 withParameters:(id)a6 completion:(id)a7
+- (void)executeAction:(id)action fromOrigin:(id)origin endpoint:(id)endpoint withParameters:(id)parameters completion:(id)completion
 {
-  if (a7)
+  if (completion)
   {
-    (*(a7 + 2))(a7, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 

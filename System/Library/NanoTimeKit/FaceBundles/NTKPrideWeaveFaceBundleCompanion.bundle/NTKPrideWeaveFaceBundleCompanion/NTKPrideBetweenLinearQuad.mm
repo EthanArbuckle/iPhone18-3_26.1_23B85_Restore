@@ -1,14 +1,14 @@
 @interface NTKPrideBetweenLinearQuad
 - ($8EF4127CF77ECA3DDB612FCF233DC3A8)noiseConfiguration;
-- (BOOL)preSemaphoreComputeForTime:(double)a3;
+- (BOOL)preSemaphoreComputeForTime:(double)time;
 - (id)getNTKPrideSplineDefinitionFiller;
-- (id)noiseSamplePositionForControlPoint:(uint64_t)a3 inSpline:(uint64_t)a4;
+- (id)noiseSamplePositionForControlPoint:(uint64_t)point inSpline:(uint64_t)spline;
 - (id)renderPipelineManager;
-- (int)splineDrawOrder:(int)a3;
+- (int)splineDrawOrder:(int)order;
 - (void)_generateSplineColors;
 - (void)_generateSplinePositions;
 - (void)_initializePerSplineData;
-- (void)applyTransitionFromBandedToFabricWithFraction:(double)a3;
+- (void)applyTransitionFromBandedToFabricWithFraction:(double)fraction;
 - (void)dealloc;
 @end
 
@@ -39,7 +39,7 @@
   return v3;
 }
 
-- (void)applyTransitionFromBandedToFabricWithFraction:(double)a3
+- (void)applyTransitionFromBandedToFabricWithFraction:(double)fraction
 {
   v3.receiver = self;
   v3.super_class = NTKPrideBetweenLinearQuad;
@@ -48,8 +48,8 @@
 
 - ($8EF4127CF77ECA3DDB612FCF233DC3A8)noiseConfiguration
 {
-  v2 = [(NTKPrideMetalQuad *)self clkDevice];
-  v3 = _NoiseConfiguration(v2, 3);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  v3 = _NoiseConfiguration(clkDevice, 3);
 
   return v3;
 }
@@ -59,8 +59,8 @@
   v12.receiver = self;
   v12.super_class = NTKPrideBetweenLinearQuad;
   [(NTKPrideLinearQuad *)&v12 _generateSplinePositions];
-  v3 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_1001C(v3, v3);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_1001C(clkDevice, clkDevice);
   v5 = v4;
 
   v6 = *(&self->super._currentStyle + 1);
@@ -84,22 +84,22 @@
   }
 }
 
-- (id)noiseSamplePositionForControlPoint:(uint64_t)a3 inSpline:(uint64_t)a4
+- (id)noiseSamplePositionForControlPoint:(uint64_t)point inSpline:(uint64_t)spline
 {
-  if (([a1 numSplines] - 1) <= a4)
+  if (([self numSplines] - 1) <= spline)
   {
-    return objc_msgSendSuper2(&v9, "noiseSamplePositionForControlPoint:inSpline:", a3, a4, a1, NTKPrideBetweenLinearQuad, v10.receiver, v10.super_class);
+    return objc_msgSendSuper2(&v9, "noiseSamplePositionForControlPoint:inSpline:", point, spline, self, NTKPrideBetweenLinearQuad, v10.receiver, v10.super_class);
   }
 
-  v7 = a4 + 1;
-  if (dword_1B1F0[a4] == dword_1B1F0[v7])
+  v7 = spline + 1;
+  if (dword_1B1F0[spline] == dword_1B1F0[v7])
   {
-    return objc_msgSendSuper2(&v9, "noiseSamplePositionForControlPoint:inSpline:", a3, a4, a1, NTKPrideBetweenLinearQuad, v10.receiver, v10.super_class);
+    return objc_msgSendSuper2(&v9, "noiseSamplePositionForControlPoint:inSpline:", point, spline, self, NTKPrideBetweenLinearQuad, v10.receiver, v10.super_class);
   }
 
   else
   {
-    return objc_msgSendSuper2(&v10, "noiseSamplePositionForControlPoint:inSpline:", a3, v7, v9.receiver, v9.super_class, a1, NTKPrideBetweenLinearQuad);
+    return objc_msgSendSuper2(&v10, "noiseSamplePositionForControlPoint:inSpline:", point, v7, v9.receiver, v9.super_class, self, NTKPrideBetweenLinearQuad);
   }
 }
 
@@ -112,9 +112,9 @@
     v10 = vdupq_n_s32(0x437F0000u);
     do
     {
-      v6 = [(NTKPrideLinearQuad *)self useXRsRGB];
+      useXRsRGB = [(NTKPrideLinearQuad *)self useXRsRGB];
       v7 = dword_1B1F0[v5];
-      if (v6)
+      if (useXRsRGB)
       {
         v8 = vmovl_s16(PRIDE_COLORS_2020_XR_SRGB[v7]);
         CLKUIConvertToRGBfFromXRSRGBf();
@@ -143,15 +143,15 @@
   *(&self->super._currentStyle + 1) = malloc_type_calloc([(NTKPrideBetweenLinearQuad *)self numSplines], 0x20uLL, 0x1000040DD0CCB3EuLL);
 }
 
-- (int)splineDrawOrder:(int)a3
+- (int)splineDrawOrder:(int)order
 {
-  v3 = a3;
+  orderCopy = order;
   if (LOBYTE(self->_amplitudeIsLarge[5]) == 1)
   {
-    return [(NTKPrideBetweenLinearQuad *)self numSplinesToDraw]+ ~a3;
+    return [(NTKPrideBetweenLinearQuad *)self numSplinesToDraw]+ ~order;
   }
 
-  return v3;
+  return orderCopy;
 }
 
 - (id)getNTKPrideSplineDefinitionFiller
@@ -171,7 +171,7 @@
   return v5;
 }
 
-- (BOOL)preSemaphoreComputeForTime:(double)a3
+- (BOOL)preSemaphoreComputeForTime:(double)time
 {
   v5 = 0;
   v6 = 0;
@@ -200,7 +200,7 @@
   v10 = v4;
   v8.receiver = self;
   v8.super_class = NTKPrideBetweenLinearQuad;
-  return [(NTKPrideLinearQuad *)&v8 preSemaphoreComputeForTime:a3];
+  return [(NTKPrideLinearQuad *)&v8 preSemaphoreComputeForTime:time];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface WBStyleSheet
-+ (void)initializeStyles:(id)a3 with:(void *)a4 reader:(id)a5;
-+ (void)readFrom:(id)a3 styleSheet:(id)a4;
++ (void)initializeStyles:(id)styles with:(void *)with reader:(id)reader;
++ (void)readFrom:(id)from styleSheet:(id)sheet;
 @end
 
 @implementation WBStyleSheet
 
-+ (void)readFrom:(id)a3 styleSheet:(id)a4
++ (void)readFrom:(id)from styleSheet:(id)sheet
 {
-  v15 = a3;
-  v6 = a4;
+  fromCopy = from;
+  sheetCopy = sheet;
   v7 = [WBObjectFactory create:57];
   if (v7)
   {
@@ -19,46 +19,46 @@
     v8 = 0;
   }
 
-  v9 = [v15 wrdReader];
-  (*(*v9 + 208))(v9, v8);
-  [a1 initializeStyles:v6 with:v8 reader:v15];
-  v10 = [v6 defaultCharacterProperties];
-  [v10 setResolveMode:0];
-  v11 = [v15 fontAtIndex:v8[4]];
-  [v10 setFont:v11];
-  v12 = [v15 fontAtIndex:v8[7]];
+  wrdReader = [fromCopy wrdReader];
+  (*(*wrdReader + 208))(wrdReader, v8);
+  [self initializeStyles:sheetCopy with:v8 reader:fromCopy];
+  defaultCharacterProperties = [sheetCopy defaultCharacterProperties];
+  [defaultCharacterProperties setResolveMode:0];
+  v11 = [fromCopy fontAtIndex:v8[4]];
+  [defaultCharacterProperties setFont:v11];
+  v12 = [fromCopy fontAtIndex:v8[7]];
 
-  [v10 setExtendedFont:v12];
-  v13 = [v15 fontAtIndex:v8[5]];
+  [defaultCharacterProperties setExtendedFont:v12];
+  v13 = [fromCopy fontAtIndex:v8[5]];
 
-  [v10 setFarEastFont:v13];
-  v14 = [v15 fontAtIndex:v8[6]];
+  [defaultCharacterProperties setFarEastFont:v13];
+  v14 = [fromCopy fontAtIndex:v8[6]];
 
-  [v10 setSymbolFont:v14];
+  [defaultCharacterProperties setSymbolFont:v14];
   (*(*v8 + 8))(v8);
 }
 
-+ (void)initializeStyles:(id)a3 with:(void *)a4 reader:(id)a5
++ (void)initializeStyles:(id)styles with:(void *)with reader:(id)reader
 {
-  v29 = a3;
-  v7 = a5;
-  v28 = ((*(a4 + 8) - *(a4 + 6)) >> 3);
-  if (((*(a4 + 8) - *(a4 + 6)) >> 3))
+  stylesCopy = styles;
+  readerCopy = reader;
+  v28 = ((*(with + 8) - *(with + 6)) >> 3);
+  if (((*(with + 8) - *(with + 6)) >> 3))
   {
     v8 = 0;
     v27 = @"Normal";
     do
     {
-      StyleReference = WrdStyleSheet::getStyleReference(a4, v8);
+      StyleReference = WrdStyleSheet::getStyleReference(with, v8);
       if (*(StyleReference + 24))
       {
         v10 = [MEMORY[0x277CCACA8] stringWithCsString:StyleReference + 8];
-        v11 = v29;
+        v11 = stylesCopy;
       }
 
       else
       {
-        v11 = v29;
+        v11 = stylesCopy;
         v10 = @"__WB_UNKNOWN_DEFAULT_STYLE_NAME__";
         switch(v8)
         {
@@ -107,7 +107,7 @@
             v12 = @"Document Map";
 LABEL_21:
             v13 = v12;
-            v11 = v29;
+            v11 = stylesCopy;
             v10 = v13;
             break;
           default:
@@ -117,13 +117,13 @@ LABEL_21:
       }
 
       v14 = [v11 styleNameToUniqueId:{v10, v27}];
-      v15 = [v29 styleWithId:v14];
+      v15 = [stylesCopy styleWithId:v14];
       v16 = *(StyleReference + 152);
       if (v15)
       {
-        v17 = [v29 styleNameToUniqueId:v14];
+        v17 = [stylesCopy styleNameToUniqueId:v14];
 
-        v18 = [v29 createStyleWithId:v17 type:v16];
+        v18 = [stylesCopy createStyleWithId:v17 type:v16];
 
         v19 = v18;
         v14 = v17;
@@ -132,7 +132,7 @@ LABEL_21:
 
       else
       {
-        v19 = [v29 createStyleWithId:v14 type:v16];
+        v19 = [stylesCopy createStyleWithId:v14 type:v16];
         [v19 setName:v10];
       }
 
@@ -140,26 +140,26 @@ LABEL_21:
       {
         if (v8 == 10 && v16 == 2)
         {
-          [v29 setDefaultCharacterStyle:v19];
+          [stylesCopy setDefaultCharacterStyle:v19];
         }
 
         else if (v8 == 11 && v16 == 3)
         {
-          [v29 setDefaultTableStyle:v19];
+          [stylesCopy setDefaultTableStyle:v19];
         }
 
         else if (v8 == 12 && v16 == 4)
         {
-          [v29 setDefaultListStyle:v19];
+          [stylesCopy setDefaultListStyle:v19];
         }
       }
 
       else
       {
-        [v29 setDefaultParagraphStyle:v19];
+        [stylesCopy setDefaultParagraphStyle:v19];
       }
 
-      [v7 addStyle:v19 index:v8];
+      [readerCopy addStyle:v19 index:v8];
 
       v8 = (v8 + 1);
     }
@@ -168,10 +168,10 @@ LABEL_21:
     v20 = 0;
     do
     {
-      v21 = [v7 styleAtIndex:v20];
-      [WBStyle readFrom:v7 wrdStyle:WrdStyleSheet::getStyleReference(a4 style:v20), v21];
-      v22 = [v21 name];
-      v23 = [v22 componentsSeparatedByString:{@", "}];
+      v21 = [readerCopy styleAtIndex:v20];
+      [WBStyle readFrom:readerCopy wrdStyle:WrdStyleSheet::getStyleReference(with style:v20), v21];
+      name = [v21 name];
+      v23 = [name componentsSeparatedByString:{@", "}];
       if ([v23 count] >= 2)
       {
         v24 = [v23 count];
@@ -182,7 +182,7 @@ LABEL_21:
             v26 = [v23 objectAtIndex:i];
             if ([v26 length])
             {
-              [v29 addStyle:v21 name:v26];
+              [stylesCopy addStyle:v21 name:v26];
             }
           }
         }

@@ -1,17 +1,17 @@
 @interface _UIScenefbsSceneBasedMetricsCalculator
 - (UIWindowScene)_scene;
-- (void)_updateMetricsOnWindows:(id)a3 animated:(BOOL)a4;
+- (void)_updateMetricsOnWindows:(id)windows animated:(BOOL)animated;
 @end
 
 @implementation _UIScenefbsSceneBasedMetricsCalculator
 
-- (void)_updateMetricsOnWindows:(id)a3 animated:(BOOL)a4
+- (void)_updateMetricsOnWindows:(id)windows animated:(BOOL)animated
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  windowsCopy = windows;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v7 = [WeakRetained _effectiveSettings];
-  v48 = [v7 interfaceOrientation];
+  _effectiveSettings = [WeakRetained _effectiveSettings];
+  interfaceOrientation = [_effectiveSettings interfaceOrientation];
 
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
@@ -20,10 +20,10 @@
   v55[4] = self;
   v8 = [_UISceneLifecycleMultiplexer mostActiveSceneIncludingInternal:1 withTest:v55];
   v9 = objc_loadWeakRetained(&self->_scene);
-  v10 = [v9 _affectsScreenOrientation];
+  _affectsScreenOrientation = [v9 _affectsScreenOrientation];
   v11 = [UIApp _viewServiceIgnoresSceneForLegacyInterfaceOrientation:v9];
 
-  if (v10 && (v11 & 1) == 0)
+  if (_affectsScreenOrientation && (v11 & 1) == 0)
   {
     v12 = objc_loadWeakRetained(&self->_scene);
     LODWORD(v13) = [v12 isEqual:v8];
@@ -35,34 +35,34 @@
       if (v13)
       {
         v14 = objc_loadWeakRetained(&self->_scene);
-        v15 = [v14 _hasLifecycle];
+        _hasLifecycle = [v14 _hasLifecycle];
 
         v16 = objc_loadWeakRetained(&self->_scene);
-        v17 = [v16 _isInternal];
+        _isInternal = [v16 _isInternal];
 
-        if (v17)
+        if (_isInternal)
         {
           v18 = objc_loadWeakRetained(&self->_scene);
-          v19 = [v18 _affectsAppLifecycleIfInternal];
+          _affectsAppLifecycleIfInternal = [v18 _affectsAppLifecycleIfInternal];
         }
 
         else
         {
-          v19 = 0;
+          _affectsAppLifecycleIfInternal = 0;
         }
 
         v20 = objc_loadWeakRetained(&self->_scene);
-        v21 = [v20 _isConnecting];
+        _isConnecting = [v20 _isConnecting];
 
-        LODWORD(v13) = v15 & v21 & (v17 ^ 1 | v19);
+        LODWORD(v13) = _hasLifecycle & _isConnecting & (_isInternal ^ 1 | _affectsAppLifecycleIfInternal);
       }
     }
 
     if (([UIApp isFrontBoard] & 1) == 0 && v13)
     {
       v22 = objc_loadWeakRetained(&self->_scene);
-      v23 = [v22 screen];
-      [v23 _setInterfaceOrientation:v48];
+      screen = [v22 screen];
+      [screen _setInterfaceOrientation:interfaceOrientation];
     }
   }
 
@@ -71,12 +71,12 @@
   v49 = [UIWindow _findWindowForControllingOverallAppearanceInWindowScene:v24];
 
   v25 = objc_loadWeakRetained(&self->_scene);
-  v50 = [v25 _sceneSessionRoleIsCarPlayOrNonInteractiveExternal];
+  _sceneSessionRoleIsCarPlayOrNonInteractiveExternal = [v25 _sceneSessionRoleIsCarPlayOrNonInteractiveExternal];
 
   v26 = objc_loadWeakRetained(&self->_scene);
-  v27 = [v26 _canDynamicallySpecifySupportedInterfaceOrientations];
+  _canDynamicallySpecifySupportedInterfaceOrientations = [v26 _canDynamicallySpecifySupportedInterfaceOrientations];
 
-  v46 = self;
+  selfCopy = self;
   v28 = objc_loadWeakRetained(&self->_scene);
   _UISceneMetricsCalculatorApplySceneCornerRadiiToScreenIfNecessary(v28);
 
@@ -84,9 +84,9 @@
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v29 = v5;
+  v29 = windowsCopy;
   v30 = [v29 countByEnumeratingWithState:&v51 objects:v56 count:16];
-  v31 = v48;
+  v31 = interfaceOrientation;
   if (v30)
   {
     v32 = v30;
@@ -104,7 +104,7 @@
         if ([v35 _isWindowServerHostingManaged])
         {
           v36 = v31;
-          if (!v27)
+          if (!_canDynamicallySpecifySupportedInterfaceOrientations)
           {
             goto LABEL_34;
           }
@@ -116,10 +116,10 @@
             goto LABEL_34;
           }
 
-          v38 = v49;
+          _viewControllerForSupportedInterfaceOrientations = v49;
           v39 = v35;
           v40 = v39;
-          if (v38 == v39)
+          if (_viewControllerForSupportedInterfaceOrientations == v39)
           {
           }
 
@@ -127,10 +127,10 @@
           {
             if (v39)
             {
-              v41 = [v38 isEqual:v39];
+              v41 = [_viewControllerForSupportedInterfaceOrientations isEqual:v39];
 
-              v31 = v48;
-              v36 = v48;
+              v31 = interfaceOrientation;
+              v36 = interfaceOrientation;
               if (v41)
               {
                 goto LABEL_34;
@@ -141,17 +141,17 @@
             {
             }
 
-            v42 = [v40 rootViewController];
-            v38 = [v42 _viewControllerForSupportedInterfaceOrientations];
+            rootViewController = [v40 rootViewController];
+            _viewControllerForSupportedInterfaceOrientations = [rootViewController _viewControllerForSupportedInterfaceOrientations];
 
-            if (v38)
+            if (_viewControllerForSupportedInterfaceOrientations)
             {
-              v36 = [v40 _interfaceOrientationForSupportedOrientations:objc_msgSend(v38 preferredOrientation:{"__supportedInterfaceOrientations"), objc_msgSend(v40, "_preferredInterfaceOrientationForRootViewController")}];
+              v36 = [v40 _interfaceOrientationForSupportedOrientations:objc_msgSend(_viewControllerForSupportedInterfaceOrientations preferredOrientation:{"__supportedInterfaceOrientations"), objc_msgSend(v40, "_preferredInterfaceOrientationForRootViewController")}];
 LABEL_33:
 
-              v31 = v48;
+              v31 = interfaceOrientation;
 LABEL_34:
-              if ((v50 & 1) != 0 || v36 == [v35 interfaceOrientation])
+              if ((_sceneSessionRoleIsCarPlayOrNonInteractiveExternal & 1) != 0 || v36 == [v35 interfaceOrientation])
               {
                 [(UIWindow *)v35 _invalidateDeferredOrientationUpdate];
                 if ([objc_opt_class() _transformLayerRotationsAreEnabled])
@@ -165,13 +165,13 @@ LABEL_34:
                 }
               }
 
-              else if (a4)
+              else if (animated)
               {
-                v43 = objc_loadWeakRetained(&v46->_scene);
-                v44 = [v43 screen];
-                [v35 _updateToInterfaceOrientation:v36 animated:{objc_msgSend(v44, "_isPerformingSystemSnapshot") ^ 1}];
+                v43 = objc_loadWeakRetained(&selfCopy->_scene);
+                screen2 = [v43 screen];
+                [v35 _updateToInterfaceOrientation:v36 animated:{objc_msgSend(screen2, "_isPerformingSystemSnapshot") ^ 1}];
 
-                v31 = v48;
+                v31 = interfaceOrientation;
               }
 
               else
@@ -183,7 +183,7 @@ LABEL_34:
             }
           }
 
-          v36 = v48;
+          v36 = interfaceOrientation;
           goto LABEL_33;
         }
       }

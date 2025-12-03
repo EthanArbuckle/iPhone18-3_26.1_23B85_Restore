@@ -1,16 +1,16 @@
 @interface CLGatheringSettings
 - (BOOL)evalScanForceScreenOffOnly;
-- (BOOL)getSettings:(id)a3 fallback:(BOOL)a4;
-- (CLGatheringSettings)initWithUniverse:(id)a3;
+- (BOOL)getSettings:(id)settings fallback:(BOOL)fallback;
+- (CLGatheringSettings)initWithUniverse:(id)universe;
 - (void)_setupSettings;
 - (void)dealloc;
-- (void)onUpdatedSettings:(id)a3;
-- (void)overrideWithConfiguration:(id)a3;
+- (void)onUpdatedSettings:(id)settings;
+- (void)overrideWithConfiguration:(id)configuration;
 @end
 
 @implementation CLGatheringSettings
 
-- (CLGatheringSettings)initWithUniverse:(id)a3
+- (CLGatheringSettings)initWithUniverse:(id)universe
 {
   v4.receiver = self;
   v4.super_class = CLGatheringSettings;
@@ -32,7 +32,7 @@
   [(CLGatheringSettings *)&v3 dealloc];
 }
 
-- (void)onUpdatedSettings:(id)a3
+- (void)onUpdatedSettings:(id)settings
 {
   if (qword_1025D4720 != -1)
   {
@@ -43,16 +43,16 @@
   if (os_log_type_enabled(qword_1025D4728, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = settings;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_INFO, "CLGatheringSettings Received OTA settings %{private}@", &buf, 0xCu);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_10189679C(a3);
+    sub_10189679C(settings);
   }
 
-  [(CLGatheringSettings *)self setOtaSettings:a3];
+  [(CLGatheringSettings *)self setOtaSettings:settings];
   if ([(NSDictionary *)self->_otaSettings objectForKeyedSubscript:@"ADPD"])
   {
     v6 = [(NSDictionary *)self->_otaSettings objectForKeyedSubscript:@"ADPD"];
@@ -232,11 +232,11 @@
   }
 }
 
-- (BOOL)getSettings:(id)a3 fallback:(BOOL)a4
+- (BOOL)getSettings:(id)settings fallback:(BOOL)fallback
 {
   v12 = 0;
   sub_10001CAF4(&v10);
-  v7 = sub_10001CB4C(v10, [a3 cStringUsingEncoding:1], &v12);
+  v7 = sub_10001CB4C(v10, [settings cStringUsingEncoding:1], &v12);
   if (v11)
   {
     sub_100008080(v11);
@@ -250,13 +250,13 @@
   else if ([(NSDictionary *)self->_otaSettings objectForKeyedSubscript:@"ADPD"])
   {
     v8 = [(NSDictionary *)self->_otaSettings objectForKeyedSubscript:@"ADPD"];
-    if ([v8 objectForKeyedSubscript:a3])
+    if ([v8 objectForKeyedSubscript:settings])
     {
-      return [objc_msgSend(v8 objectForKeyedSubscript:{a3), "BOOLValue"}];
+      return [objc_msgSend(v8 objectForKeyedSubscript:{settings), "BOOLValue"}];
     }
   }
 
-  return a4;
+  return fallback;
 }
 
 - (BOOL)evalScanForceScreenOffOnly
@@ -266,10 +266,10 @@
   return [(CLGatheringSettings *)self getSettings:v3 fallback:0];
 }
 
-- (void)overrideWithConfiguration:(id)a3
+- (void)overrideWithConfiguration:(id)configuration
 {
-  var1 = a3.var1;
-  if (a3.var0 == 1)
+  var1 = configuration.var1;
+  if (configuration.var0 == 1)
   {
     sub_10001CAF4(&v21);
     LOBYTE(v23) = 0;
@@ -294,7 +294,7 @@
 
   else
   {
-    if (a3.var0)
+    if (configuration.var0)
     {
       goto LABEL_11;
     }

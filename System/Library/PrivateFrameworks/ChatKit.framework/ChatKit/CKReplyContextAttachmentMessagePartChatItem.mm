@@ -1,6 +1,6 @@
 @interface CKReplyContextAttachmentMessagePartChatItem
 - (BOOL)replyIsFromMe;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (CKBalloonDescriptor_t)balloonDescriptor;
 - (Class)balloonViewClass;
 - (char)balloonStyle;
@@ -9,18 +9,18 @@
 
 @implementation CKReplyContextAttachmentMessagePartChatItem
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(CKAttachmentMessagePartChatItem *)self mediaObject];
-  v9 = [v8 mediaType];
+  height = fits.height;
+  width = fits.width;
+  mediaObject = [(CKAttachmentMessagePartChatItem *)self mediaObject];
+  mediaType = [mediaObject mediaType];
 
-  if ((v9 & 0xFFFFFFFE) == 2)
+  if ((mediaType & 0xFFFFFFFE) == 2)
   {
     v29.receiver = self;
     v29.super_class = CKReplyContextAttachmentMessagePartChatItem;
-    [(CKAttachmentMessagePartChatItem *)&v29 loadSizeThatFits:a4 textAlignmentInsets:width, height];
+    [(CKAttachmentMessagePartChatItem *)&v29 loadSizeThatFits:insets textAlignmentInsets:width, height];
     v11 = v10;
     v13 = v12;
     v14 = +[CKUIBehavior sharedBehaviors];
@@ -55,7 +55,7 @@
   {
     v28.receiver = self;
     v28.super_class = CKReplyContextAttachmentMessagePartChatItem;
-    [(CKAttachmentMessagePartChatItem *)&v28 loadSizeThatFits:a4 textAlignmentInsets:width, height];
+    [(CKAttachmentMessagePartChatItem *)&v28 loadSizeThatFits:insets textAlignmentInsets:width, height];
     v19 = v24;
     v16 = v25;
   }
@@ -69,35 +69,35 @@
 
 - (Class)balloonViewClass
 {
-  v2 = [(CKAttachmentMessagePartChatItem *)self mediaObject];
-  v3 = [v2 replyContextBalloonViewClass];
+  mediaObject = [(CKAttachmentMessagePartChatItem *)self mediaObject];
+  replyContextBalloonViewClass = [mediaObject replyContextBalloonViewClass];
 
-  return v3;
+  return replyContextBalloonViewClass;
 }
 
 - (char)color
 {
-  v3 = [(CKAttachmentMessagePartChatItem *)self mediaObject];
-  v4 = [v3 mediaType];
+  mediaObject = [(CKAttachmentMessagePartChatItem *)self mediaObject];
+  mediaType = [mediaObject mediaType];
 
-  if ((v4 - 7) < 4 || ![(CKMessagePartChatItem *)self isFromMe])
+  if ((mediaType - 7) < 4 || ![(CKMessagePartChatItem *)self isFromMe])
   {
     return 9;
   }
 
   v5 = MEMORY[0x1E69A5C90];
-  v6 = [(CKChatItem *)self IMChatItem];
-  v7 = [v6 serviceName];
-  v8 = [v5 serviceWithName:v7];
-  v9 = [v8 __ck_displayReplyColor];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  serviceName = [iMChatItem serviceName];
+  v8 = [v5 serviceWithName:serviceName];
+  __ck_displayReplyColor = [v8 __ck_displayReplyColor];
 
-  return v9;
+  return __ck_displayReplyColor;
 }
 
 - (char)balloonStyle
 {
-  v2 = [(CKReplyContextAttachmentMessagePartChatItem *)self balloonViewClass];
-  if (v2 == objc_opt_class())
+  balloonViewClass = [(CKReplyContextAttachmentMessagePartChatItem *)self balloonViewClass];
+  if (balloonViewClass == objc_opt_class())
   {
     return 0;
   }
@@ -127,8 +127,8 @@
   retstr->var3 = [(CKBalloonChatItem *)self balloonOrientation];
   retstr->var6 = [(CKReplyContextAttachmentMessagePartChatItem *)self color];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 theme];
-  v7 = [v6 unfilledBalloonColorForColorType:{-[CKReplyContextAttachmentMessagePartChatItem color](self, "color")}];
+  theme = [v5 theme];
+  v7 = [theme unfilledBalloonColorForColorType:{-[CKReplyContextAttachmentMessagePartChatItem color](self, "color")}];
   [v7 ck_imColorComponents];
   retstr->var8.red = v8;
   retstr->var8.green = v9;
@@ -141,10 +141,10 @@
 
 - (BOOL)replyIsFromMe
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 replyIsFromMe];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  replyIsFromMe = [iMChatItem replyIsFromMe];
 
-  return v3;
+  return replyIsFromMe;
 }
 
 @end

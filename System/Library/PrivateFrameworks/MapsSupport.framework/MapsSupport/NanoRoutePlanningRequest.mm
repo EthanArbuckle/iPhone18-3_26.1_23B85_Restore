@@ -1,60 +1,60 @@
 @interface NanoRoutePlanningRequest
-+ (id)requestForDirectionsToCustomRoute:(id)a3 currentLocation:(id)a4 companionRouteContext:(id)a5;
-+ (id)requestForDirectionsWithCompanionRouteDetails:(id)a3 companionRouteContext:(id)a4;
++ (id)requestForDirectionsToCustomRoute:(id)route currentLocation:(id)location companionRouteContext:(id)context;
++ (id)requestForDirectionsWithCompanionRouteDetails:(id)details companionRouteContext:(id)context;
 + (id)requestForPlaceholderDirections;
-+ (id)requestWithTraceAtPath:(id)a3;
++ (id)requestWithTraceAtPath:(id)path;
 - (NSArray)waypoints;
 - (NanoDirectionWaypoint)destinationWaypoint;
 - (NanoDirectionWaypoint)originWaypoint;
 - (NanoRoutePlanningRequest)init;
-- (NanoRoutePlanningRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NanoRoutePlanningRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)requestedCompanionRouteDetails;
 - (id)routeAttributes;
 - (id)snapshot;
 - (int)resolvedTransportType;
-- (void)_addTimepointIfNeededToRouteAttributes:(id)a3;
-- (void)_populateCopy:(id)a3;
-- (void)_populateRouteAttributes:(id)a3 forTransportType:(int)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addTimepointIfNeededToRouteAttributes:(id)attributes;
+- (void)_populateCopy:(id)copy;
+- (void)_populateRouteAttributes:(id)attributes forTransportType:(int)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NanoRoutePlanningRequest
 
 - (id)routeAttributes
 {
-  v3 = [(NanoRoutePlanningRequest *)self resolvedTransportType];
-  v4 = [GEORouteAttributes defaultRouteAttributesForTransportType:v3];
-  [(NanoRoutePlanningRequest *)self _populateRouteAttributes:v4 forTransportType:v3];
+  resolvedTransportType = [(NanoRoutePlanningRequest *)self resolvedTransportType];
+  v4 = [GEORouteAttributes defaultRouteAttributesForTransportType:resolvedTransportType];
+  [(NanoRoutePlanningRequest *)self _populateRouteAttributes:v4 forTransportType:resolvedTransportType];
 
   return v4;
 }
 
-- (void)_populateRouteAttributes:(id)a3 forTransportType:(int)a4
+- (void)_populateRouteAttributes:(id)attributes forTransportType:(int)type
 {
-  v8 = a3;
-  if (a4 > 2)
+  attributesCopy = attributes;
+  if (type > 2)
   {
-    if (a4 <= 4)
+    if (type <= 4)
     {
-      if (a4 != 3)
+      if (type != 3)
       {
         goto LABEL_11;
       }
 
-      v7 = [(NanoRoutePlanningRequest *)self cyclingOptions];
-      [v8 setCyclingOptions:v7];
+      cyclingOptions = [(NanoRoutePlanningRequest *)self cyclingOptions];
+      [attributesCopy setCyclingOptions:cyclingOptions];
 LABEL_14:
 
       goto LABEL_17;
     }
 
-    if (a4 != 5)
+    if (type != 5)
     {
-      if (a4 != 6)
+      if (type != 6)
       {
         goto LABEL_17;
       }
@@ -63,24 +63,24 @@ LABEL_14:
     }
 
 LABEL_12:
-    v7 = [(NanoRoutePlanningRequest *)self walkingOptions];
-    [v8 setWalkingOptions:v7];
+    cyclingOptions = [(NanoRoutePlanningRequest *)self walkingOptions];
+    [attributesCopy setWalkingOptions:cyclingOptions];
     goto LABEL_14;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 0:
 LABEL_11:
-      v6 = [(NanoRoutePlanningRequest *)self automobileOptions];
-      [v8 setAutomobileOptions:v6];
+      automobileOptions = [(NanoRoutePlanningRequest *)self automobileOptions];
+      [attributesCopy setAutomobileOptions:automobileOptions];
 LABEL_16:
 
-      [(NanoRoutePlanningRequest *)self _addTimepointIfNeededToRouteAttributes:v8];
+      [(NanoRoutePlanningRequest *)self _addTimepointIfNeededToRouteAttributes:attributesCopy];
       break;
     case 1:
-      v6 = [(NanoRoutePlanningRequest *)self transitOptions];
-      [v8 setTransitOptions:v6];
+      automobileOptions = [(NanoRoutePlanningRequest *)self transitOptions];
+      [attributesCopy setTransitOptions:automobileOptions];
       goto LABEL_16;
     case 2:
       goto LABEL_12;
@@ -89,17 +89,17 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)_addTimepointIfNeededToRouteAttributes:(id)a3
+- (void)_addTimepointIfNeededToRouteAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(NanoRoutePlanningRequest *)self departureDate];
+  attributesCopy = attributes;
+  departureDate = [(NanoRoutePlanningRequest *)self departureDate];
 
-  if (v5)
+  if (departureDate)
   {
     v18 = 0;
     v17 = 0;
-    v6 = [(NanoRoutePlanningRequest *)self departureDate];
-    [v6 timeIntervalSinceReferenceDate];
+    departureDate2 = [(NanoRoutePlanningRequest *)self departureDate];
+    [departureDate2 timeIntervalSinceReferenceDate];
     v8 = v7;
 
     v13 = 0;
@@ -107,18 +107,18 @@ LABEL_17:
     v15 = 0;
 LABEL_5:
     v16 = 6;
-    [v4 setTimepoint:&v13];
+    [attributesCopy setTimepoint:&v13];
     goto LABEL_6;
   }
 
-  v9 = [(NanoRoutePlanningRequest *)self arrivalDate];
+  arrivalDate = [(NanoRoutePlanningRequest *)self arrivalDate];
 
-  if (v9)
+  if (arrivalDate)
   {
     v18 = 0;
     v17 = 0;
-    v10 = [(NanoRoutePlanningRequest *)self arrivalDate];
-    [v10 timeIntervalSinceReferenceDate];
+    arrivalDate2 = [(NanoRoutePlanningRequest *)self arrivalDate];
+    [arrivalDate2 timeIntervalSinceReferenceDate];
     v12 = v11;
 
     v13 = 0;
@@ -159,54 +159,54 @@ LABEL_6:
 
     v2->_maximumNumberOfRoutes = v10;
     v11 = +[GEOMapService sharedService];
-    v12 = [v11 defaultTraits];
+    defaultTraits = [v11 defaultTraits];
     traits = v2->_traits;
-    v2->_traits = v12;
+    v2->_traits = defaultTraits;
   }
 
   return v2;
 }
 
-+ (id)requestForDirectionsToCustomRoute:(id)a3 currentLocation:(id)a4 companionRouteContext:(id)a5
++ (id)requestForDirectionsToCustomRoute:(id)route currentLocation:(id)location companionRouteContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[GEOLocation alloc] initWithCLLocation:v8];
+  contextCopy = context;
+  locationCopy = location;
+  routeCopy = route;
+  v10 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
 
   v11 = objc_opt_new();
   v12 = [NanoDirectionWaypoint directionWaypointForCurrentLocation:v10];
   v18[0] = v12;
-  v13 = [NanoDirectionWaypoint directionWaypointToCustomRoute:v9];
+  v13 = [NanoDirectionWaypoint directionWaypointToCustomRoute:routeCopy];
   v18[1] = v13;
   v14 = [NSArray arrayWithObjects:v18 count:2];
   [v11 setWaypoints:v14];
 
-  v15 = [v9 transportType];
-  [v11 setTransportType:v15];
-  [v11 setCompanionRouteContext:v7];
+  transportType = [routeCopy transportType];
+  [v11 setTransportType:transportType];
+  [v11 setCompanionRouteContext:contextCopy];
 
   v16 = [v11 copy];
 
   return v16;
 }
 
-+ (id)requestForDirectionsWithCompanionRouteDetails:(id)a3 companionRouteContext:(id)a4
++ (id)requestForDirectionsWithCompanionRouteDetails:(id)details companionRouteContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  detailsCopy = details;
   v7 = objc_alloc_init(NanoRoutePlanningMutableRequest);
-  v8 = [v6 waypoints];
-  v9 = sub_1000282B8(v8, &stru_100086108);
+  waypoints = [detailsCopy waypoints];
+  v9 = sub_1000282B8(waypoints, &stru_100086108);
 
   [(NanoRoutePlanningRequest *)v7 setWaypoints:v9];
-  v10 = [v6 destinationName];
-  v11 = [(NanoRoutePlanningRequest *)v7 destinationWaypoint];
-  [v11 setName:v10];
+  destinationName = [detailsCopy destinationName];
+  destinationWaypoint = [(NanoRoutePlanningRequest *)v7 destinationWaypoint];
+  [destinationWaypoint setName:destinationName];
 
-  v12 = [v6 transportType];
-  [(NanoRoutePlanningRequest *)v7 setTransportType:v12];
-  [(NanoRoutePlanningRequest *)v7 setCompanionRouteContext:v5];
+  transportType = [detailsCopy transportType];
+  [(NanoRoutePlanningRequest *)v7 setTransportType:transportType];
+  [(NanoRoutePlanningRequest *)v7 setCompanionRouteContext:contextCopy];
 
   v13 = [(NanoRoutePlanningMutableRequest *)v7 copy];
 
@@ -224,32 +224,32 @@ LABEL_6:
 
 - (id)requestedCompanionRouteDetails
 {
-  v3 = [(NanoRoutePlanningRequest *)self destinationWaypoint];
-  v4 = [v3 name];
+  destinationWaypoint = [(NanoRoutePlanningRequest *)self destinationWaypoint];
+  name = [destinationWaypoint name];
 
   transportType = self->_transportType;
-  v6 = [(NanoRoutePlanningRequest *)self waypoints];
-  v7 = sub_1000282B8(v6, &stru_100086148);
+  waypoints = [(NanoRoutePlanningRequest *)self waypoints];
+  v7 = sub_1000282B8(waypoints, &stru_100086148);
 
-  v8 = [GEOCompanionRouteDetails syntheticRouteDetailsWithWaypoints:v7 transportType:transportType destinationName:v4];
+  v8 = [GEOCompanionRouteDetails syntheticRouteDetailsWithWaypoints:v7 transportType:transportType destinationName:name];
 
   return v8;
 }
 
 - (NanoDirectionWaypoint)originWaypoint
 {
-  v2 = [(NanoRoutePlanningRequest *)self waypoints];
-  v3 = [v2 firstObject];
+  waypoints = [(NanoRoutePlanningRequest *)self waypoints];
+  firstObject = [waypoints firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NanoDirectionWaypoint)destinationWaypoint
 {
-  v2 = [(NanoRoutePlanningRequest *)self waypoints];
-  v3 = [v2 lastObject];
+  waypoints = [(NanoRoutePlanningRequest *)self waypoints];
+  lastObject = [waypoints lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (NSArray)waypoints
@@ -292,45 +292,45 @@ LABEL_6:
 {
   v3 = objc_alloc_init(NanoRoutePlanningRequestSnapshot);
   [(NanoRoutePlanningRequestSnapshot *)v3 setTransportType:[(NanoRoutePlanningRequest *)self transportType]];
-  v4 = [(NanoRoutePlanningRequest *)self waypoints];
-  [(NanoRoutePlanningRequestSnapshot *)v3 setWaypoints:v4];
+  waypoints = [(NanoRoutePlanningRequest *)self waypoints];
+  [(NanoRoutePlanningRequestSnapshot *)v3 setWaypoints:waypoints];
 
   return v3;
 }
 
-+ (id)requestWithTraceAtPath:(id)a3
++ (id)requestWithTraceAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_alloc_init(MNTraceLoader);
   v18 = 0;
-  v5 = [v4 loadTraceWithPath:v3 outError:&v18];
+  v5 = [v4 loadTraceWithPath:pathCopy outError:&v18];
   if (v5)
   {
     v6 = objc_alloc_init(NanoRoutePlanningMutableRequest);
     [(NanoRoutePlanningRequest *)v6 setPreferredMode:3];
-    [(NanoRoutePlanningRequest *)v6 setTracePath:v3];
-    v7 = [v5 directions];
-    v8 = [v7 firstObject];
+    [(NanoRoutePlanningRequest *)v6 setTracePath:pathCopy];
+    directions = [v5 directions];
+    firstObject = [directions firstObject];
 
-    v9 = [v8 waypoints];
-    v10 = sub_1000282B8(v9, &stru_100086188);
+    waypoints = [firstObject waypoints];
+    v10 = sub_1000282B8(waypoints, &stru_100086188);
     [(NanoRoutePlanningRequest *)v6 setWaypoints:v10];
 
-    v11 = [v8 request];
-    v12 = [v11 routeAttributes];
+    request = [firstObject request];
+    routeAttributes = [request routeAttributes];
 
-    -[NanoRoutePlanningRequest setTransportType:](v6, "setTransportType:", [v12 mainTransportType]);
-    v13 = [v12 automobileOptions];
-    [(NanoRoutePlanningRequest *)v6 setAutomobileOptions:v13];
+    -[NanoRoutePlanningRequest setTransportType:](v6, "setTransportType:", [routeAttributes mainTransportType]);
+    automobileOptions = [routeAttributes automobileOptions];
+    [(NanoRoutePlanningRequest *)v6 setAutomobileOptions:automobileOptions];
 
-    v14 = [v12 transitOptions];
-    [(NanoRoutePlanningRequest *)v6 setTransitOptions:v14];
+    transitOptions = [routeAttributes transitOptions];
+    [(NanoRoutePlanningRequest *)v6 setTransitOptions:transitOptions];
 
-    v15 = [v12 walkingOptions];
-    [(NanoRoutePlanningRequest *)v6 setWalkingOptions:v15];
+    walkingOptions = [routeAttributes walkingOptions];
+    [(NanoRoutePlanningRequest *)v6 setWalkingOptions:walkingOptions];
 
-    v16 = [v12 cyclingOptions];
-    [(NanoRoutePlanningRequest *)v6 setCyclingOptions:v16];
+    cyclingOptions = [routeAttributes cyclingOptions];
+    [(NanoRoutePlanningRequest *)v6 setCyclingOptions:cyclingOptions];
   }
 
   else
@@ -341,103 +341,103 @@ LABEL_6:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NanoRoutePlanningRequest);
   [(NanoRoutePlanningRequest *)self _populateCopy:v4];
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NanoRoutePlanningMutableRequest);
   [(NanoRoutePlanningRequest *)self _populateCopy:v4];
   return v4;
 }
 
-- (void)_populateCopy:(id)a3
+- (void)_populateCopy:(id)copy
 {
-  objc_storeStrong(a3 + 2, self->_auditToken);
-  v5 = a3;
-  objc_storeStrong(v5 + 3, self->_companionRouteContext);
-  v5[4] = self->_preferredMode;
-  objc_storeStrong(v5 + 5, self->_waypoints);
-  *(v5 + 3) = self->_transportType;
-  v5[6] = self->_maximumNumberOfRoutes;
-  objc_storeStrong(v5 + 7, self->_traits);
-  *(v5 + 8) = self->_startNavigationAutomatically;
-  objc_storeStrong(v5 + 8, self->_departureDate);
-  objc_storeStrong(v5 + 9, self->_arrivalDate);
-  objc_storeStrong(v5 + 10, self->_automobileOptions);
-  objc_storeStrong(v5 + 11, self->_transitOptions);
-  objc_storeStrong(v5 + 12, self->_walkingOptions);
-  objc_storeStrong(v5 + 13, self->_cyclingOptions);
-  objc_storeStrong(v5 + 14, self->_tracePath);
+  objc_storeStrong(copy + 2, self->_auditToken);
+  copyCopy = copy;
+  objc_storeStrong(copyCopy + 3, self->_companionRouteContext);
+  copyCopy[4] = self->_preferredMode;
+  objc_storeStrong(copyCopy + 5, self->_waypoints);
+  *(copyCopy + 3) = self->_transportType;
+  copyCopy[6] = self->_maximumNumberOfRoutes;
+  objc_storeStrong(copyCopy + 7, self->_traits);
+  *(copyCopy + 8) = self->_startNavigationAutomatically;
+  objc_storeStrong(copyCopy + 8, self->_departureDate);
+  objc_storeStrong(copyCopy + 9, self->_arrivalDate);
+  objc_storeStrong(copyCopy + 10, self->_automobileOptions);
+  objc_storeStrong(copyCopy + 11, self->_transitOptions);
+  objc_storeStrong(copyCopy + 12, self->_walkingOptions);
+  objc_storeStrong(copyCopy + 13, self->_cyclingOptions);
+  objc_storeStrong(copyCopy + 14, self->_tracePath);
 }
 
-- (NanoRoutePlanningRequest)initWithCoder:(id)a3
+- (NanoRoutePlanningRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = NanoRoutePlanningRequest;
   v5 = [(NanoRoutePlanningRequest *)&v35 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_auditToken"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_auditToken"];
     auditToken = v5->_auditToken;
     v5->_auditToken = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_companionRouteContext"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_companionRouteContext"];
     companionRouteContext = v5->_companionRouteContext;
     v5->_companionRouteContext = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_preferredMode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preferredMode"];
     v5->_preferredMode = [v10 unsignedIntegerValue];
 
     v11 = objc_opt_class();
     v12 = [NSSet setWithObjects:v11, objc_opt_class(), 0];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"_waypoints"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"_waypoints"];
     waypoints = v5->_waypoints;
     v5->_waypoints = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_transportType"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_transportType"];
     v5->_transportType = [v15 integerValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_maximumNumberOfRoutes"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_maximumNumberOfRoutes"];
     v5->_maximumNumberOfRoutes = [v16 unsignedIntegerValue];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_traits"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_traits"];
     traits = v5->_traits;
     v5->_traits = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_startNavigationAutomatically"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_startNavigationAutomatically"];
     v5->_startNavigationAutomatically = [v19 BOOLValue];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_departureDate"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_departureDate"];
     departureDate = v5->_departureDate;
     v5->_departureDate = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_arrivalDate"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_arrivalDate"];
     arrivalDate = v5->_arrivalDate;
     v5->_arrivalDate = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_automobileOptions"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_automobileOptions"];
     automobileOptions = v5->_automobileOptions;
     v5->_automobileOptions = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_transitOptions"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_transitOptions"];
     transitOptions = v5->_transitOptions;
     v5->_transitOptions = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_walkingOptions"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_walkingOptions"];
     walkingOptions = v5->_walkingOptions;
     v5->_walkingOptions = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cyclingOptions"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cyclingOptions"];
     cyclingOptions = v5->_cyclingOptions;
     v5->_cyclingOptions = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_tracePath"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_tracePath"];
     tracePath = v5->_tracePath;
     v5->_tracePath = v32;
   }
@@ -445,33 +445,33 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   auditToken = self->_auditToken;
-  v9 = a3;
-  [v9 encodeObject:auditToken forKey:@"_auditToken"];
-  [v9 encodeObject:self->_companionRouteContext forKey:@"_companionRouteContext"];
+  coderCopy = coder;
+  [coderCopy encodeObject:auditToken forKey:@"_auditToken"];
+  [coderCopy encodeObject:self->_companionRouteContext forKey:@"_companionRouteContext"];
   v5 = [NSNumber numberWithUnsignedInteger:self->_preferredMode];
-  [v9 encodeObject:v5 forKey:@"_preferredMode"];
+  [coderCopy encodeObject:v5 forKey:@"_preferredMode"];
 
-  [v9 encodeObject:self->_waypoints forKey:@"_waypoints"];
+  [coderCopy encodeObject:self->_waypoints forKey:@"_waypoints"];
   v6 = [NSNumber numberWithInt:self->_transportType];
-  [v9 encodeObject:v6 forKey:@"_transportType"];
+  [coderCopy encodeObject:v6 forKey:@"_transportType"];
 
   v7 = [NSNumber numberWithUnsignedInteger:self->_maximumNumberOfRoutes];
-  [v9 encodeObject:v7 forKey:@"_maximumNumberOfRoutes"];
+  [coderCopy encodeObject:v7 forKey:@"_maximumNumberOfRoutes"];
 
-  [v9 encodeObject:self->_traits forKey:@"_traits"];
+  [coderCopy encodeObject:self->_traits forKey:@"_traits"];
   v8 = [NSNumber numberWithBool:self->_startNavigationAutomatically];
-  [v9 encodeObject:v8 forKey:@"_startNavigationAutomatically"];
+  [coderCopy encodeObject:v8 forKey:@"_startNavigationAutomatically"];
 
-  [v9 encodeObject:self->_departureDate forKey:@"_departureDate"];
-  [v9 encodeObject:self->_arrivalDate forKey:@"_arrivalDate"];
-  [v9 encodeObject:self->_automobileOptions forKey:@"_automobileOptions"];
-  [v9 encodeObject:self->_transitOptions forKey:@"_transitOptions"];
-  [v9 encodeObject:self->_walkingOptions forKey:@"_walkingOptions"];
-  [v9 encodeObject:self->_cyclingOptions forKey:@"_cyclingOptions"];
-  [v9 encodeObject:self->_tracePath forKey:@"_tracePath"];
+  [coderCopy encodeObject:self->_departureDate forKey:@"_departureDate"];
+  [coderCopy encodeObject:self->_arrivalDate forKey:@"_arrivalDate"];
+  [coderCopy encodeObject:self->_automobileOptions forKey:@"_automobileOptions"];
+  [coderCopy encodeObject:self->_transitOptions forKey:@"_transitOptions"];
+  [coderCopy encodeObject:self->_walkingOptions forKey:@"_walkingOptions"];
+  [coderCopy encodeObject:self->_cyclingOptions forKey:@"_cyclingOptions"];
+  [coderCopy encodeObject:self->_tracePath forKey:@"_tracePath"];
 }
 
 - (id)description
@@ -479,19 +479,19 @@ LABEL_6:
   v9.receiver = self;
   v9.super_class = NanoRoutePlanningRequest;
   v3 = [(NanoRoutePlanningRequest *)&v9 description];
-  v4 = [(NanoRoutePlanningRequest *)self transportType];
-  if (v4 >= 7)
+  transportType = [(NanoRoutePlanningRequest *)self transportType];
+  if (transportType >= 7)
   {
-    v5 = [NSString stringWithFormat:@"(unknown: %i)", v4];
+    v5 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
   }
 
   else
   {
-    v5 = off_1000861A8[v4];
+    v5 = off_1000861A8[transportType];
   }
 
-  v6 = [(NanoRoutePlanningRequest *)self waypoints];
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (%@, %lu waypoints, auto-start: %d)", v3, v5, [v6 count], -[NanoRoutePlanningRequest startNavigationAutomatically](self, "startNavigationAutomatically"));
+  waypoints = [(NanoRoutePlanningRequest *)self waypoints];
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (%@, %lu waypoints, auto-start: %d)", v3, v5, [waypoints count], -[NanoRoutePlanningRequest startNavigationAutomatically](self, "startNavigationAutomatically"));
 
   return v7;
 }
@@ -502,28 +502,28 @@ LABEL_6:
   v38.receiver = self;
   v38.super_class = NanoRoutePlanningRequest;
   v4 = [(NanoRoutePlanningRequest *)&v38 debugDescription];
-  v5 = [(NanoRoutePlanningRequest *)self transportType];
-  if (v5 >= 7)
+  transportType = [(NanoRoutePlanningRequest *)self transportType];
+  if (transportType >= 7)
   {
-    v6 = [NSString stringWithFormat:@"(unknown: %i)", v5];
+    v6 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
   }
 
   else
   {
-    v6 = off_1000861A8[v5];
+    v6 = off_1000861A8[transportType];
   }
 
-  v7 = [(NanoRoutePlanningRequest *)self waypoints];
-  v8 = [v7 count];
-  v9 = [(NanoRoutePlanningRequest *)self startNavigationAutomatically];
-  v10 = [(NanoRoutePlanningRequest *)self waypoints];
-  v11 = v10;
-  if (v10)
+  waypoints = [(NanoRoutePlanningRequest *)self waypoints];
+  v8 = [waypoints count];
+  startNavigationAutomatically = [(NanoRoutePlanningRequest *)self startNavigationAutomatically];
+  waypoints2 = [(NanoRoutePlanningRequest *)self waypoints];
+  v11 = waypoints2;
+  if (waypoints2)
   {
-    if ([v10 count])
+    if ([waypoints2 count])
     {
-      v32 = v9;
-      v34 = v7;
+      v32 = startNavigationAutomatically;
+      v34 = waypoints;
       v35 = v6;
       v36 = v4;
       v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
@@ -605,10 +605,10 @@ LABEL_23:
           v29 = [v3[352] stringWithFormat:@"<%p> [%@]", v13, v28];
 
           v4 = v36;
-          v7 = v34;
+          waypoints = v34;
           v6 = v35;
           v11 = v33;
-          v9 = v32;
+          startNavigationAutomatically = v32;
           goto LABEL_26;
         }
       }
@@ -624,7 +624,7 @@ LABEL_23:
 
 LABEL_26:
 
-  v30 = [NSString stringWithFormat:@"%@ (%@, %lu waypoints, auto-start: %d)\n\t%@", v4, v6, v8, v9, v29];
+  v30 = [NSString stringWithFormat:@"%@ (%@, %lu waypoints, auto-start: %d)\n\t%@", v4, v6, v8, startNavigationAutomatically, v29];
 
   return v30;
 }

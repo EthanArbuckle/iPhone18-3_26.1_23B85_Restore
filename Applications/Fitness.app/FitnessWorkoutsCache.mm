@@ -1,15 +1,15 @@
 @interface FitnessWorkoutsCache
-- (BOOL)_queue_workoutsExistForCacheKey:(int64_t)a3;
-- (FitnessWorkoutsCache)initWithDataProvider:(id)a3;
-- (void)_queue_refreshCacheWithCompletion:(id)a3;
+- (BOOL)_queue_workoutsExistForCacheKey:(int64_t)key;
+- (FitnessWorkoutsCache)initWithDataProvider:(id)provider;
+- (void)_queue_refreshCacheWithCompletion:(id)completion;
 - (void)_refreshCache;
 @end
 
 @implementation FitnessWorkoutsCache
 
-- (FitnessWorkoutsCache)initWithDataProvider:(id)a3
+- (FitnessWorkoutsCache)initWithDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = FitnessWorkoutsCache;
   v6 = [(FitnessWorkoutsCache *)&v21 init];
@@ -23,7 +23,7 @@
     currentCalendar = v6->_currentCalendar;
     v6->_currentCalendar = v9;
 
-    objc_storeStrong(&v6->_dataProvider, a3);
+    objc_storeStrong(&v6->_dataProvider, provider);
     v11 = HKCreateSerialDispatchQueue();
     cacheQueue = v6->_cacheQueue;
     v6->_cacheQueue = v11;
@@ -59,21 +59,21 @@
   [(FitnessWorkoutsCache *)self _queue_refreshCacheWithCompletion:v2];
 }
 
-- (void)_queue_refreshCacheWithCompletion:(id)a3
+- (void)_queue_refreshCacheWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   cacheQueue = self->_cacheQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10013A438;
   v7[3] = &unk_10083C7F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(cacheQueue, v7);
 }
 
-- (BOOL)_queue_workoutsExistForCacheKey:(int64_t)a3
+- (BOOL)_queue_workoutsExistForCacheKey:(int64_t)key
 {
   v7 = 0;
   v8 = &v7;
@@ -86,7 +86,7 @@
   block[3] = &unk_10083C920;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = key;
   dispatch_sync(cacheQueue, block);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);

@@ -12,118 +12,118 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSDateComponents requires a keyed encoder" userInfo:0]);
   }
 
-  v5 = [a1 calendar];
-  if (v5)
+  calendar = [self calendar];
+  if (calendar)
   {
-    [a3 encodeObject:v5 forKey:@"NS.calendar"];
+    [a3 encodeObject:calendar forKey:@"NS.calendar"];
   }
 
-  v6 = [a1 timeZone];
-  if (v6)
+  timeZone = [self timeZone];
+  if (timeZone)
   {
-    [a3 encodeObject:v6 forKey:@"NS.timezone"];
+    [a3 encodeObject:timeZone forKey:@"NS.timezone"];
   }
 
-  v7 = [a1 era];
+  v7 = [self era];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [a3 encodeInteger:v7 forKey:@"NS.era"];
   }
 
-  v8 = [a1 year];
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+  year = [self year];
+  if (year != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v8 forKey:@"NS.year"];
+    [a3 encodeInteger:year forKey:@"NS.year"];
   }
 
-  v9 = [a1 month];
-  if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+  month = [self month];
+  if (month != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v9 forKey:@"NS.month"];
+    [a3 encodeInteger:month forKey:@"NS.month"];
   }
 
-  v10 = [a1 day];
+  v10 = [self day];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [a3 encodeInteger:v10 forKey:@"NS.day"];
   }
 
-  v11 = [a1 hour];
-  if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+  hour = [self hour];
+  if (hour != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v11 forKey:@"NS.hour"];
+    [a3 encodeInteger:hour forKey:@"NS.hour"];
   }
 
-  v12 = [a1 minute];
-  if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+  minute = [self minute];
+  if (minute != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v12 forKey:@"NS.minute"];
+    [a3 encodeInteger:minute forKey:@"NS.minute"];
   }
 
-  v13 = [a1 second];
-  if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+  second = [self second];
+  if (second != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v13 forKey:@"NS.second"];
+    [a3 encodeInteger:second forKey:@"NS.second"];
   }
 
-  v14 = [a1 week];
-  if (v14 != 0x7FFFFFFFFFFFFFFFLL)
+  week = [self week];
+  if (week != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v14 forKey:@"NS.week"];
+    [a3 encodeInteger:week forKey:@"NS.week"];
   }
 
-  v15 = [a1 weekday];
-  if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+  weekday = [self weekday];
+  if (weekday != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v15 forKey:@"NS.weekday"];
+    [a3 encodeInteger:weekday forKey:@"NS.weekday"];
   }
 
-  v16 = [a1 weekdayOrdinal];
-  if (v16 != 0x7FFFFFFFFFFFFFFFLL)
+  weekdayOrdinal = [self weekdayOrdinal];
+  if (weekdayOrdinal != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v16 forKey:@"NS.weekdayOrdinal"];
+    [a3 encodeInteger:weekdayOrdinal forKey:@"NS.weekdayOrdinal"];
   }
 
-  v17 = [a1 quarter];
-  if (v17 != 0x7FFFFFFFFFFFFFFFLL)
+  quarter = [self quarter];
+  if (quarter != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v17 forKey:@"NS.quarter"];
+    [a3 encodeInteger:quarter forKey:@"NS.quarter"];
   }
 
-  v18 = [a1 nanosecond];
-  if (v18 != 0x7FFFFFFFFFFFFFFFLL)
+  nanosecond = [self nanosecond];
+  if (nanosecond != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v18 forKey:@"NS.nanosec"];
+    [a3 encodeInteger:nanosecond forKey:@"NS.nanosec"];
   }
 
-  v19 = [a1 weekOfMonth];
-  if (v19 != 0x7FFFFFFFFFFFFFFFLL)
+  weekOfMonth = [self weekOfMonth];
+  if (weekOfMonth != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v19 forKey:@"NS.weekOfMonth"];
+    [a3 encodeInteger:weekOfMonth forKey:@"NS.weekOfMonth"];
   }
 
-  v20 = [a1 weekOfYear];
-  if (v20 != 0x7FFFFFFFFFFFFFFFLL)
+  weekOfYear = [self weekOfYear];
+  if (weekOfYear != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v20 forKey:@"NS.weekOfYear"];
+    [a3 encodeInteger:weekOfYear forKey:@"NS.weekOfYear"];
   }
 
-  v21 = [a1 yearForWeekOfYear];
-  if (v21 != 0x7FFFFFFFFFFFFFFFLL)
+  yearForWeekOfYear = [self yearForWeekOfYear];
+  if (yearForWeekOfYear != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v21 forKey:@"NS.yearForWOY"];
+    [a3 encodeInteger:yearForWeekOfYear forKey:@"NS.yearForWOY"];
   }
 
-  v22 = [a1 dayOfYear];
-  if (v22 != 0x7FFFFFFFFFFFFFFFLL)
+  dayOfYear = [self dayOfYear];
+  if (dayOfYear != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 encodeInteger:v22 forKey:@"NS.dayOfYear"];
+    [a3 encodeInteger:dayOfYear forKey:@"NS.dayOfYear"];
   }
 
-  [a3 encodeInteger:objc_msgSend(a1 forKey:{"isLeapMonth"), @"NS.leapMonth"}];
-  v23 = [a1 isRepeatedDay];
+  [a3 encodeInteger:objc_msgSend(self forKey:{"isLeapMonth"), @"NS.leapMonth"}];
+  isRepeatedDay = [self isRepeatedDay];
 
-  return [a3 encodeBool:v23 forKey:@"NS.repeatedDay"];
+  return [a3 encodeBool:isRepeatedDay forKey:@"NS.repeatedDay"];
 }
 
 - (void)initWithCoder:()_
@@ -357,7 +357,7 @@ LABEL_11:
     v18 = 0;
   }
 
-  v19 = [a1 init];
+  v19 = [self init];
   v12 = v19;
   if (v19)
   {

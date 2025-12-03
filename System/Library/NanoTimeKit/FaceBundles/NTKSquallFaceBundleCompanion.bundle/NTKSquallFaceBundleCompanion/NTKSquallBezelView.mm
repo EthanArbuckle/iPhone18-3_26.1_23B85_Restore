@@ -1,46 +1,46 @@
 @interface NTKSquallBezelView
 - (CGRect)_insetBounds;
-- (NTKSquallBezelView)initWithDevice:(id)a3 progressProvider:(id)a4;
-- (id)_compositeBezelImagesA:(id)a3 andB:(id)a4 dialFraction:(double)a5;
+- (NTKSquallBezelView)initWithDevice:(id)device progressProvider:(id)provider;
+- (id)_compositeBezelImagesA:(id)a andB:(id)b dialFraction:(double)fraction;
 - (id)_dimmedColor;
 - (id)_highlightColor;
-- (id)_renderBezelTemplateForSize:(CGSize)a3 highlighted:(BOOL)a4 tritium:(BOOL)a5;
+- (id)_renderBezelTemplateForSize:(CGSize)size highlighted:(BOOL)highlighted tritium:(BOOL)tritium;
 - (id)_tritiumDimmedColor;
 - (id)_tritiumHighlightColor;
-- (unint64_t)_calculateCrossingStrokeForDialFraction:(double)a3 bezelBounds:(CGRect)a4 screenSize:(CGSize)a5 cornerRadius:(double)a6 length:(double)a7 point1:(CGPoint *)a8 point2:(CGPoint *)a9 auxPoint:(CGPoint *)a10;
-- (void)_compositeBezelImageA:(id)a3 clippingPath:(id)a4 context:(CGContext *)a5;
-- (void)_compositeBezelImageB:(id)a3 clippingPath:(id)a4 context:(CGContext *)a5;
-- (void)_compositeBezelImagesA:(id)a3 andB:(id)a4 clippingPath:(id)a5 context:(CGContext *)a6;
+- (unint64_t)_calculateCrossingStrokeForDialFraction:(double)fraction bezelBounds:(CGRect)bounds screenSize:(CGSize)size cornerRadius:(double)radius length:(double)length point1:(CGPoint *)point1 point2:(CGPoint *)point2 auxPoint:(CGPoint *)self0;
+- (void)_compositeBezelImageA:(id)a clippingPath:(id)path context:(CGContext *)context;
+- (void)_compositeBezelImageB:(id)b clippingPath:(id)path context:(CGContext *)context;
+- (void)_compositeBezelImagesA:(id)a andB:(id)b clippingPath:(id)path context:(CGContext *)context;
 - (void)_refreshTemplateImages;
-- (void)_renderBezelTemplateForSize:(CGSize)a3 highlighted:(BOOL)a4 tritium:(BOOL)a5 rendererContext:(id)a6;
+- (void)_renderBezelTemplateForSize:(CGSize)size highlighted:(BOOL)highlighted tritium:(BOOL)tritium rendererContext:(id)context;
 - (void)_startBezelTimer;
 - (void)_stopBezelTimer;
 - (void)_updateImage;
 - (void)bezelProgressUpdated;
 - (void)layoutSubviews;
-- (void)setAnimating:(BOOL)a3;
-- (void)setBlurred:(BOOL)a3;
-- (void)setColorKeysDimmed:(id)a3 highlighted:(id)a4;
-- (void)setDimmedColorKey:(id)a3;
-- (void)setHighlightedColorKey:(id)a3;
-- (void)setProgress:(double)a3;
-- (void)setTritiumFraction:(double)a3;
+- (void)setAnimating:(BOOL)animating;
+- (void)setBlurred:(BOOL)blurred;
+- (void)setColorKeysDimmed:(id)dimmed highlighted:(id)highlighted;
+- (void)setDimmedColorKey:(id)key;
+- (void)setHighlightedColorKey:(id)key;
+- (void)setProgress:(double)progress;
+- (void)setTritiumFraction:(double)fraction;
 @end
 
 @implementation NTKSquallBezelView
 
-- (NTKSquallBezelView)initWithDevice:(id)a3 progressProvider:(id)a4
+- (NTKSquallBezelView)initWithDevice:(id)device progressProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = NTKSquallBezelView;
   v9 = [(NTKSquallBezelView *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_provider, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_provider, provider);
     v10->_dimmedColorKey = @"bezelDimmed";
     v10->_highlightedColorKey = @"bezelHighlighted";
     v11 = [UIImageView alloc];
@@ -110,17 +110,17 @@
   return result;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
-    if (a3)
+    self->_animating = animating;
+    if (animating)
     {
       [(NTKSquallBezelView *)self _startBezelTimer];
       self->_blurred = 0;
-      v4 = [(UIImageView *)self->_bezelImageView layer];
-      [v4 setFilters:0];
+      layer = [(UIImageView *)self->_bezelImageView layer];
+      [layer setFilters:0];
     }
 
     else
@@ -131,15 +131,15 @@
   }
 }
 
-- (void)setBlurred:(BOOL)a3
+- (void)setBlurred:(BOOL)blurred
 {
-  v3 = a3;
-  if ((!self->_animating || !a3) && self->_blurred != a3)
+  blurredCopy = blurred;
+  if ((!self->_animating || !blurred) && self->_blurred != blurred)
   {
-    self->_blurred = a3;
-    v4 = [(UIImageView *)self->_bezelImageView layer];
-    v7 = v4;
-    if (v3)
+    self->_blurred = blurred;
+    layer = [(UIImageView *)self->_bezelImageView layer];
+    v7 = layer;
+    if (blurredCopy)
     {
       v5 = [CAFilter filterWithType:kCAFilterGaussianBlur];
       [v5 setName:@"gaussianBlurSquallBezel"];
@@ -151,7 +151,7 @@
 
     else
     {
-      [v4 setFilters:0];
+      [layer setFilters:0];
     }
   }
 }
@@ -189,11 +189,11 @@
   }
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     [(NTKSquallBezelView *)self _updateImage];
   }
 }
@@ -254,34 +254,34 @@
   [(UIImageView *)tritiumImageView setImage:v14];
 }
 
-- (void)setDimmedColorKey:(id)a3
+- (void)setDimmedColorKey:(id)key
 {
   if ((NTKEqualStrings() & 1) == 0)
   {
-    self->_dimmedColorKey = a3;
+    self->_dimmedColorKey = key;
 
     [(NTKSquallBezelView *)self _refreshTemplateImages];
   }
 }
 
-- (void)setHighlightedColorKey:(id)a3
+- (void)setHighlightedColorKey:(id)key
 {
   if ((NTKEqualStrings() & 1) == 0)
   {
-    self->_highlightedColorKey = a3;
+    self->_highlightedColorKey = key;
 
     [(NTKSquallBezelView *)self _refreshTemplateImages];
   }
 }
 
-- (void)setColorKeysDimmed:(id)a3 highlighted:(id)a4
+- (void)setColorKeysDimmed:(id)dimmed highlighted:(id)highlighted
 {
-  v7 = a3;
-  v6 = a4;
+  dimmedCopy = dimmed;
+  highlightedCopy = highlighted;
   if (!NTKEqualStrings() || (NTKEqualStrings() & 1) == 0)
   {
-    self->_dimmedColorKey = v7;
-    self->_highlightedColorKey = v6;
+    self->_dimmedColorKey = dimmedCopy;
+    self->_highlightedColorKey = highlightedCopy;
     [(NTKSquallBezelView *)self _refreshTemplateImages];
   }
 }
@@ -324,8 +324,8 @@
   if (objc_opt_isKindOfClass())
   {
     v3 = self->_colorPalette;
-    v4 = [(NTKSquallColorPalette *)v3 tritiumPalette];
-    v5 = [v4 valueForKey:self->_highlightedColorKey];
+    tritiumPalette = [(NTKSquallColorPalette *)v3 tritiumPalette];
+    v5 = [tritiumPalette valueForKey:self->_highlightedColorKey];
   }
 
   else
@@ -342,8 +342,8 @@
   if (objc_opt_isKindOfClass())
   {
     v3 = self->_colorPalette;
-    v4 = [(NTKSquallColorPalette *)v3 tritiumPalette];
-    v5 = [v4 valueForKey:self->_dimmedColorKey];
+    tritiumPalette = [(NTKSquallColorPalette *)v3 tritiumPalette];
+    v5 = [tritiumPalette valueForKey:self->_dimmedColorKey];
   }
 
   else
@@ -354,22 +354,22 @@
   return v5;
 }
 
-- (void)setTritiumFraction:(double)a3
+- (void)setTritiumFraction:(double)fraction
 {
-  if (self->_tritiumFraction != a3)
+  if (self->_tritiumFraction != fraction)
   {
-    self->_tritiumFraction = a3;
-    [(UIImageView *)self->_tritiumImageView setAlpha:a3];
+    self->_tritiumFraction = fraction;
+    [(UIImageView *)self->_tritiumImageView setAlpha:fraction];
     bezelImageView = self->_bezelImageView;
 
-    [(UIImageView *)bezelImageView setAlpha:1.0 - a3];
+    [(UIImageView *)bezelImageView setAlpha:1.0 - fraction];
   }
 }
 
-- (id)_renderBezelTemplateForSize:(CGSize)a3 highlighted:(BOOL)a4 tritium:(BOOL)a5
+- (id)_renderBezelTemplateForSize:(CGSize)size highlighted:(BOOL)highlighted tritium:(BOOL)tritium
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10 = +[UIGraphicsImageRendererFormat preferredFormat];
   [v10 setOpaque:0];
   v11 = [[UIGraphicsImageRenderer alloc] initWithSize:v10 format:{width, height}];
@@ -380,25 +380,25 @@
   v14[4] = self;
   *&v14[5] = width;
   *&v14[6] = height;
-  v15 = a4;
-  v16 = a5;
+  highlightedCopy = highlighted;
+  tritiumCopy = tritium;
   v12 = [v11 imageWithActions:v14];
 
   return v12;
 }
 
-- (void)_renderBezelTemplateForSize:(CGSize)a3 highlighted:(BOOL)a4 tritium:(BOOL)a5 rendererContext:(id)a6
+- (void)_renderBezelTemplateForSize:(CGSize)size highlighted:(BOOL)highlighted tritium:(BOOL)tritium rendererContext:(id)context
 {
-  v6 = a5;
-  height = a3.height;
-  width = a3.width;
-  v11 = [a6 CGContext];
-  sub_62E4(v11, self->_device);
+  tritiumCopy = tritium;
+  height = size.height;
+  width = size.width;
+  cGContext = [context CGContext];
+  sub_62E4(cGContext, self->_device);
   v13 = v12;
-  CGContextSetBlendMode(v11, kCGBlendModeNormal);
-  if (v6)
+  CGContextSetBlendMode(cGContext, kCGBlendModeNormal);
+  if (tritiumCopy)
   {
-    if (a4)
+    if (highlighted)
     {
       [(NTKSquallBezelView *)self _tritiumHighlightColor];
     }
@@ -409,7 +409,7 @@
     }
   }
 
-  else if (a4)
+  else if (highlighted)
   {
     [(NTKSquallBezelView *)self _highlightColor];
   }
@@ -424,7 +424,7 @@
   v20.origin.y = 0.0;
   v20.size.width = width;
   v20.size.height = height;
-  CGContextClearRect(v11, v20);
+  CGContextClearRect(cGContext, v20);
   v15 = +[CAShapeLayer layer];
   [v15 setPath:{-[UIBezierPath CGPath](self->_bezelPath, "CGPath")}];
   [v15 setFillRule:kCAFillRuleEvenOdd];
@@ -435,23 +435,23 @@
   [v15 setFillColor:{objc_msgSend(v17, "CGColor")}];
 
   [v15 setBounds:{0.0, 0.0, width, height}];
-  [v15 renderInContext:v11];
+  [v15 renderInContext:cGContext];
 }
 
-- (id)_compositeBezelImagesA:(id)a3 andB:(id)a4 dialFraction:(double)a5
+- (id)_compositeBezelImagesA:(id)a andB:(id)b dialFraction:(double)fraction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = sub_62E4(v9, self->_device);
+  aCopy = a;
+  bCopy = b;
+  v10 = sub_62E4(bCopy, self->_device);
   v12 = v11;
   [(CLKDevice *)self->_device screenBounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [(NTKSquallBezelView *)self _adjustDialFraction:a5];
+  [(NTKSquallBezelView *)self _adjustDialFraction:fraction];
   v22 = v21;
-  if (a5 >= 1.0)
+  if (fraction >= 1.0)
   {
     v23 = 0;
     goto LABEL_12;
@@ -491,127 +491,127 @@ LABEL_10:
   _addToPath(v23, v14, v16, v18, v20, v39, v40, v42, v43, v41[0]);
   [v23 closePath];
 LABEL_12:
-  [v8 size];
+  [aCopy size];
   v29 = [[UIGraphicsImageRenderer alloc] initWithSize:{v27, v28}];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_5BE8;
   v35[3] = &unk_10518;
   v35[4] = self;
-  v36 = v8;
-  v37 = v9;
+  v36 = aCopy;
+  v37 = bCopy;
   v38 = v23;
   v30 = v23;
-  v31 = v9;
-  v32 = v8;
+  v31 = bCopy;
+  v32 = aCopy;
   v33 = [v29 imageWithActions:v35];
 
   return v33;
 }
 
-- (void)_compositeBezelImagesA:(id)a3 andB:(id)a4 clippingPath:(id)a5 context:(CGContext *)a6
+- (void)_compositeBezelImagesA:(id)a andB:(id)b clippingPath:(id)path context:(CGContext *)context
 {
-  v10 = a5;
-  v11 = a4;
-  [(NTKSquallBezelView *)self _compositeBezelImageA:a3 clippingPath:v10 context:a6];
-  [(NTKSquallBezelView *)self _compositeBezelImageB:v11 clippingPath:v10 context:a6];
+  pathCopy = path;
+  bCopy = b;
+  [(NTKSquallBezelView *)self _compositeBezelImageA:a clippingPath:pathCopy context:context];
+  [(NTKSquallBezelView *)self _compositeBezelImageB:bCopy clippingPath:pathCopy context:context];
 }
 
-- (void)_compositeBezelImageA:(id)a3 clippingPath:(id)a4 context:(CGContext *)a5
+- (void)_compositeBezelImageA:(id)a clippingPath:(id)path context:(CGContext *)context
 {
-  v6 = a3;
-  [v6 size];
+  aCopy = a;
+  [aCopy size];
   v8 = v7;
   v10 = v9;
-  CGContextSetBlendMode(a5, kCGBlendModeNormal);
-  CGContextSaveGState(a5);
+  CGContextSetBlendMode(context, kCGBlendModeNormal);
+  CGContextSaveGState(context);
   v12.b = 0.0;
   v12.c = 0.0;
   v12.a = 1.0;
   *&v12.d = xmmword_9A50;
   v12.ty = v10;
-  CGContextConcatCTM(a5, &v12);
-  v11 = [v6 CGImage];
+  CGContextConcatCTM(context, &v12);
+  cGImage = [aCopy CGImage];
 
   v13.origin.x = 0.0;
   v13.origin.y = 0.0;
   v13.size.width = v8;
   v13.size.height = v10;
-  CGContextDrawImage(a5, v13, v11);
-  CGContextRestoreGState(a5);
+  CGContextDrawImage(context, v13, cGImage);
+  CGContextRestoreGState(context);
 }
 
-- (void)_compositeBezelImageB:(id)a3 clippingPath:(id)a4 context:(CGContext *)a5
+- (void)_compositeBezelImageB:(id)b clippingPath:(id)path context:(CGContext *)context
 {
-  v8 = a4;
-  v9 = a3;
-  [v9 size];
+  pathCopy = path;
+  bCopy = b;
+  [bCopy size];
   v11 = v10;
   v13 = v12;
-  CGContextBeginPath(a5);
-  v14 = [v8 CGPath];
+  CGContextBeginPath(context);
+  cGPath = [pathCopy CGPath];
 
-  CGContextAddPath(a5, v14);
-  CGContextClosePath(a5);
-  CGContextClip(a5);
-  CGContextSetAlpha(a5, 1.0 - self->_tritiumFraction);
-  CGContextSaveGState(a5);
+  CGContextAddPath(context, cGPath);
+  CGContextClosePath(context);
+  CGContextClip(context);
+  CGContextSetAlpha(context, 1.0 - self->_tritiumFraction);
+  CGContextSaveGState(context);
   v16.b = 0.0;
   v16.c = 0.0;
   v16.a = 1.0;
   *&v16.d = xmmword_9A50;
   v16.ty = v13;
-  CGContextConcatCTM(a5, &v16);
-  v15 = [v9 CGImage];
+  CGContextConcatCTM(context, &v16);
+  cGImage = [bCopy CGImage];
 
   v17.origin.x = 0.0;
   v17.origin.y = 0.0;
   v17.size.width = v11;
   v17.size.height = v13;
-  CGContextDrawImage(a5, v17, v15);
-  CGContextRestoreGState(a5);
-  CGContextSetAlpha(a5, 1.0);
+  CGContextDrawImage(context, v17, cGImage);
+  CGContextRestoreGState(context);
+  CGContextSetAlpha(context, 1.0);
 }
 
-- (unint64_t)_calculateCrossingStrokeForDialFraction:(double)a3 bezelBounds:(CGRect)a4 screenSize:(CGSize)a5 cornerRadius:(double)a6 length:(double)a7 point1:(CGPoint *)a8 point2:(CGPoint *)a9 auxPoint:(CGPoint *)a10
+- (unint64_t)_calculateCrossingStrokeForDialFraction:(double)fraction bezelBounds:(CGRect)bounds screenSize:(CGSize)size cornerRadius:(double)radius length:(double)length point1:(CGPoint *)point1 point2:(CGPoint *)point2 auxPoint:(CGPoint *)self0
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v20 = 0;
-  if (a3 >= 0.25)
+  if (fraction >= 0.25)
   {
-    v21 = a3;
+    fractionCopy2 = fraction;
     do
     {
       v20 = (v20 + 1) & 3;
-      v21 = v21 + -0.25;
+      fractionCopy2 = fractionCopy2 + -0.25;
     }
 
-    while (v21 >= 0.25);
+    while (fractionCopy2 >= 0.25);
   }
 
   else
   {
-    v21 = a3;
+    fractionCopy2 = fraction;
   }
 
-  MidX = CGRectGetMidX(a4);
+  MidX = CGRectGetMidX(bounds);
   v40.origin.x = x;
   v40.origin.y = y;
   v40.size.width = width;
   v40.size.height = height;
   MinY = CGRectGetMinY(v40);
-  v24 = height * 0.5 - a6;
+  v24 = height * 0.5 - radius;
   if (v20)
   {
-    v25 = width * 0.5 - a6;
+    v25 = width * 0.5 - radius;
   }
 
   else
   {
-    v25 = height * 0.5 - a6;
+    v25 = height * 0.5 - radius;
   }
 
   if (v20)
@@ -621,28 +621,28 @@ LABEL_12:
 
   else
   {
-    v26 = width * 0.5 - a6;
+    v26 = width * 0.5 - radius;
   }
 
   v39 = 0uLL;
   v38 = 0uLL;
-  [(CLKUIBezierPathStepperProvider *)self->_pathStepper pointAtOffset:&v39 outPoint:&v38 outTangent:a3, *&a5.width, *&a5.height];
-  v27 = vmulq_n_f64(vmulq_f64(v38, xmmword_9A90), a7);
+  [(CLKUIBezierPathStepperProvider *)self->_pathStepper pointAtOffset:&v39 outPoint:&v38 outTangent:fraction, *&size.width, *&size.height];
+  v27 = vmulq_n_f64(vmulq_f64(v38, xmmword_9A90), length);
   v28 = vextq_s8(v27, v27, 8uLL);
   v29 = v39;
-  *a8 = vaddq_f64(v39, v28);
-  *a9 = vsubq_f64(v29, v28);
-  if (a10)
+  *point1 = vaddq_f64(v39, v28);
+  *point2 = vsubq_f64(v29, v28);
+  if (point)
   {
-    v30 = a6 * 1.57079633 + v26;
-    if (v21 * 4.0 >= v26 / (v25 + v30))
+    v30 = radius * 1.57079633 + v26;
+    if (fractionCopy2 * 4.0 >= v26 / (v25 + v30))
     {
       v33 = v30 / (v25 + v30);
-      v31 = v26 + MidX + a6 + a7 * 0.5;
+      v31 = v26 + MidX + radius + length * 0.5;
       v32 = 0.0;
-      if (v21 * 4.0 < v33)
+      if (fractionCopy2 * 4.0 < v33)
       {
-        v32 = MinY + a7 * -0.5;
+        v32 = MinY + length * -0.5;
       }
     }
 
@@ -652,8 +652,8 @@ LABEL_12:
       v32 = NAN;
     }
 
-    a10->x = _rotateToQuadrant(v20, v31, v32, v37);
-    a10->y = v34;
+    point->x = _rotateToQuadrant(v20, v31, v32, v37);
+    point->y = v34;
   }
 
   return v20;

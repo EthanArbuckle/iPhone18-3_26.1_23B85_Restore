@@ -1,19 +1,19 @@
 @interface HMMutableXPCMessageTransportConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableXPCMessageTransportConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMXPCMessageTransportConfiguration allocWithZone:a3];
-  v5 = [(HMXPCMessageTransportConfiguration *)self machServiceName];
-  v6 = [(HMXPCMessageTransportConfiguration *)v4 initWithMachServiceName:v5];
+  v4 = [HMXPCMessageTransportConfiguration allocWithZone:zone];
+  machServiceName = [(HMXPCMessageTransportConfiguration *)self machServiceName];
+  v6 = [(HMXPCMessageTransportConfiguration *)v4 initWithMachServiceName:machServiceName];
 
   [(HMXPCMessageTransportConfiguration *)v6 setRequiredEntitlements:[(HMXPCMessageTransportConfiguration *)self requiredEntitlements]];
   [(HMXPCMessageTransportConfiguration *)v6 setRequiresHomeDataAccess:[(HMXPCMessageTransportConfiguration *)self requiresHomeDataAccess]];
-  v7 = [(HMXPCMessageTransportConfiguration *)self queue];
-  [(HMXPCMessageTransportConfiguration *)v6 setQueue:v7];
+  queue = [(HMXPCMessageTransportConfiguration *)self queue];
+  [(HMXPCMessageTransportConfiguration *)v6 setQueue:queue];
 
   return v6;
 }

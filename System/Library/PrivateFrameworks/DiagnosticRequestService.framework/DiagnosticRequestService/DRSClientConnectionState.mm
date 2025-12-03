@@ -1,22 +1,22 @@
 @interface DRSClientConnectionState
-- (DRSClientConnectionState)initWithConnection:(id)a3 service:(id)a4;
+- (DRSClientConnectionState)initWithConnection:(id)connection service:(id)service;
 - (NSString)stateDescription;
 - (void)dealloc;
 @end
 
 @implementation DRSClientConnectionState
 
-- (DRSClientConnectionState)initWithConnection:(id)a3 service:(id)a4
+- (DRSClientConnectionState)initWithConnection:(id)connection service:(id)service
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  serviceCopy = service;
   v30.receiver = self;
   v30.super_class = DRSClientConnectionState;
   v8 = [(DRSClientConnectionState *)&v30 init];
   if (v8)
   {
-    pid = xpc_connection_get_pid(v6);
+    pid = xpc_connection_get_pid(connectionCopy);
     v8->_pid = pid;
     v10 = DRSPidToProcessName(pid);
     procName = v8->_procName;
@@ -33,16 +33,16 @@
     v14 = DPLogHandle_ServiceLifecycle();
     if (os_signpost_enabled(v14))
     {
-      v15 = [(DRSClientConnectionState *)v8 stateDescription];
-      v16 = [(DRSClientConnectionState *)v8 hasAdminEntitlement];
+      stateDescription = [(DRSClientConnectionState *)v8 stateDescription];
+      hasAdminEntitlement = [(DRSClientConnectionState *)v8 hasAdminEntitlement];
       v17 = @"does not have";
-      if (v16)
+      if (hasAdminEntitlement)
       {
         v17 = @"has";
       }
 
       *buf = 138543618;
-      v32 = v15;
+      v32 = stateDescription;
       v33 = 2114;
       v34 = v17;
       _os_signpost_emit_with_name_impl(&dword_232906000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ConnectionAdminEntitlementSetting", "%{public}@ connection %{public}@ the admin entitlement", buf, 0x16u);
@@ -53,21 +53,21 @@
     v26 = __55__DRSClientConnectionState_initWithConnection_service___block_invoke;
     v27 = &unk_27899EF48;
     v28 = v8;
-    v18 = v7;
+    v18 = serviceCopy;
     v29 = v18;
-    xpc_connection_set_event_handler(v6, &v24);
-    v19 = [v18 messageQueue];
-    xpc_connection_set_target_queue(v6, v19);
+    xpc_connection_set_event_handler(connectionCopy, &v24);
+    messageQueue = [v18 messageQueue];
+    xpc_connection_set_target_queue(connectionCopy, messageQueue);
 
-    xpc_connection_activate(v6);
+    xpc_connection_activate(connectionCopy);
   }
 
   v20 = DPLogHandle_ServiceLifecycle();
   if (os_signpost_enabled(v20))
   {
-    v21 = [(DRSClientConnectionState *)v8 stateDescription];
+    stateDescription2 = [(DRSClientConnectionState *)v8 stateDescription];
     *buf = 138543362;
-    v32 = v21;
+    v32 = stateDescription2;
     _os_signpost_emit_with_name_impl(&dword_232906000, v20, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "NewClientConnection", "Received client connection from %{public}@", buf, 0xCu);
   }
 
@@ -148,9 +148,9 @@ LABEL_14:
   v3 = DPLogHandle_ServiceLifecycle();
   if (os_signpost_enabled(v3))
   {
-    v4 = [(DRSClientConnectionState *)self stateDescription];
+    stateDescription = [(DRSClientConnectionState *)self stateDescription];
     *buf = 138543362;
-    v8 = v4;
+    v8 = stateDescription;
     _os_signpost_emit_with_name_impl(&dword_232906000, v3, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ConnectionStateDealloc", "Disconnecting from %{public}@", buf, 0xCu);
   }
 

@@ -1,15 +1,15 @@
 @interface NEHelperInterfaceManager
-- (NEHelperInterfaceManager)initWithFirstMessage:(id)a3;
+- (NEHelperInterfaceManager)initWithFirstMessage:(id)message;
 - (OS_dispatch_queue)handlerQueue;
-- (void)handleMessage:(id)a3;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperInterfaceManager
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v3 = a3;
-  uint64 = xpc_dictionary_get_uint64(v3, "interface-command");
+  messageCopy = message;
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "interface-command");
   if (uint64 > 4)
   {
     if (uint64 <= 6)
@@ -17,8 +17,8 @@
       if (uint64 == 5)
       {
         *&v88 = 0;
-        string = xpc_dictionary_get_string(v3, "interface-name");
-        data = xpc_dictionary_get_data(v3, "interface-address", &v88);
+        string = xpc_dictionary_get_string(messageCopy, "interface-name");
+        data = xpc_dictionary_get_data(messageCopy, "interface-address", &v88);
         if (!string)
         {
           goto LABEL_62;
@@ -110,9 +110,9 @@ LABEL_87:
         goto LABEL_60;
       }
 
-      v12 = xpc_dictionary_get_uint64(v3, "interface-type");
-      v13 = xpc_dictionary_get_string(v3, "interface-name");
-      v14 = xpc_dictionary_get_string(v3, "interface-delegate-name");
+      v12 = xpc_dictionary_get_uint64(messageCopy, "interface-type");
+      v13 = xpc_dictionary_get_string(messageCopy, "interface-name");
+      v14 = xpc_dictionary_get_string(messageCopy, "interface-delegate-name");
       if (v12 != 4 || !v13 || !v14)
       {
         goto LABEL_62;
@@ -156,7 +156,7 @@ LABEL_86:
 
     if (uint64 == 7)
     {
-      if (!xpc_dictionary_get_string(v3, "interface-name"))
+      if (!xpc_dictionary_get_string(messageCopy, "interface-name"))
       {
         goto LABEL_62;
       }
@@ -189,9 +189,9 @@ LABEL_86:
         goto LABEL_62;
       }
 
-      v27 = xpc_dictionary_get_uint64(v3, "interface-type");
-      v28 = xpc_dictionary_get_string(v3, "interface-name");
-      v29 = xpc_dictionary_get_string(v3, "interface-description");
+      v27 = xpc_dictionary_get_uint64(messageCopy, "interface-type");
+      v28 = xpc_dictionary_get_string(messageCopy, "interface-name");
+      v29 = xpc_dictionary_get_string(messageCopy, "interface-description");
       if (v27 != 4)
       {
         goto LABEL_62;
@@ -244,10 +244,10 @@ LABEL_85:
         length[0] = 0;
         *&v88 = 0;
         *&v69 = 0;
-        v5 = xpc_dictionary_get_string(v3, "interface-name");
-        v6 = xpc_dictionary_get_data(v3, "interface-address", length);
-        v7 = xpc_dictionary_get_data(v3, "interface-netmask", &v88);
-        v8 = xpc_dictionary_get_data(v3, "interface-lifetime", &v69);
+        v5 = xpc_dictionary_get_string(messageCopy, "interface-name");
+        v6 = xpc_dictionary_get_data(messageCopy, "interface-address", length);
+        v7 = xpc_dictionary_get_data(messageCopy, "interface-netmask", &v88);
+        v8 = xpc_dictionary_get_data(messageCopy, "interface-lifetime", &v69);
         if (v5)
         {
           v9 = v8;
@@ -260,12 +260,12 @@ LABEL_85:
               {
                 v11 = v10;
 LABEL_68:
-                v47 = v3;
+                v47 = messageCopy;
                 goto LABEL_77;
               }
 
 LABEL_76:
-              v47 = v3;
+              v47 = messageCopy;
               v11 = 0;
               goto LABEL_77;
             }
@@ -274,21 +274,21 @@ LABEL_76:
       }
 
 LABEL_62:
-      v47 = v3;
+      v47 = messageCopy;
       v11 = 22;
 LABEL_77:
       sub_10000BA0C(NEHelperServer, v47, v11, 0);
       goto LABEL_78;
     }
 
-    if (xpc_dictionary_get_uint64(v3, "interface-type") != 4)
+    if (xpc_dictionary_get_uint64(messageCopy, "interface-type") != 4)
     {
       goto LABEL_62;
     }
 
     v69 = 0uLL;
-    v33 = xpc_dictionary_get_uint64(v3, "interface-ftype");
-    xpc_dictionary_get_string(v3, "interface-name");
+    v33 = xpc_dictionary_get_uint64(messageCopy, "interface-ftype");
+    xpc_dictionary_get_string(messageCopy, "interface-name");
     v68 = 535847;
     v88 = 0u;
     v89 = 0u;
@@ -411,15 +411,15 @@ LABEL_93:
 LABEL_83:
     __strlcpy_chk();
     v59 = xpc_string_create(&v69);
-    sub_10000BA0C(NEHelperServer, v3, 0, v59);
+    sub_10000BA0C(NEHelperServer, messageCopy, 0, v59);
 
     goto LABEL_78;
   }
 
   if (uint64 == 3)
   {
-    v43 = xpc_dictionary_get_uint64(v3, "interface-mtu");
-    if (!xpc_dictionary_get_string(v3, "interface-name") || !v43)
+    v43 = xpc_dictionary_get_uint64(messageCopy, "interface-mtu");
+    if (!xpc_dictionary_get_string(messageCopy, "interface-name") || !v43)
     {
       goto LABEL_62;
     }
@@ -447,10 +447,10 @@ LABEL_83:
     goto LABEL_85;
   }
 
-  v20 = xpc_dictionary_dup_fd(v3, "interface-socket");
+  v20 = xpc_dictionary_dup_fd(messageCopy, "interface-socket");
   *&v88 = 0;
-  v21 = xpc_dictionary_get_data(v3, "interface-option-data", &v88);
-  v22 = xpc_dictionary_get_uint64(v3, "interface-option");
+  v21 = xpc_dictionary_get_data(messageCopy, "interface-option-data", &v88);
+  v22 = xpc_dictionary_get_uint64(messageCopy, "interface-option");
   if (v20 < 0)
   {
     goto LABEL_62;
@@ -482,13 +482,13 @@ LABEL_83:
   v25 = *__error();
   if (v25)
   {
-    v26 = v3;
+    v26 = messageCopy;
   }
 
   else
   {
 LABEL_63:
-    v26 = v3;
+    v26 = messageCopy;
     v25 = 0;
   }
 
@@ -508,9 +508,9 @@ LABEL_78:
   return self;
 }
 
-- (NEHelperInterfaceManager)initWithFirstMessage:(id)a3
+- (NEHelperInterfaceManager)initWithFirstMessage:(id)message
 {
-  v4 = xpc_dictionary_get_remote_connection(a3);
+  v4 = xpc_dictionary_get_remote_connection(message);
   if (sub_10000E080(NEHelperServer, v4))
   {
     v13.receiver = self;
@@ -525,7 +525,7 @@ LABEL_78:
     }
 
     self = v5;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -541,10 +541,10 @@ LABEL_78:
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Denying interface manager connection because %@ does not have the %s entitlement", buf, 0x16u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

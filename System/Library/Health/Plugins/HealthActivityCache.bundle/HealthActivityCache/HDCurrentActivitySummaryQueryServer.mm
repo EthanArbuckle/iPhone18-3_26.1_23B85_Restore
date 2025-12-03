@@ -1,25 +1,25 @@
 @interface HDCurrentActivitySummaryQueryServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (HDCurrentActivitySummaryQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (HDCurrentActivitySummaryQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 - (void)_queue_startDataCollection;
 - (void)_queue_stop;
 - (void)_queue_stopDataCollection;
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateTodayActivitySummary:(id)a4 changedFields:(unint64_t)a5;
+- (void)currentActivitySummaryHelper:(id)helper didUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields;
 @end
 
 @implementation HDCurrentActivitySummaryQueryServer
 
-- (HDCurrentActivitySummaryQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDCurrentActivitySummaryQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = HDCurrentActivitySummaryQueryServer;
-  v11 = [(HDCurrentActivitySummaryQueryServer *)&v16 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDCurrentActivitySummaryQueryServer *)&v16 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 collectionIntervals];
-    v13 = [v12 copy];
+    collectionIntervals = [configurationCopy collectionIntervals];
+    v13 = [collectionIntervals copy];
     collectionIntervals = v11->_collectionIntervals;
     v11->_collectionIntervals = v13;
   }
@@ -27,12 +27,12 @@
   return v11;
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  delegateCopy = delegate;
+  clientCopy = client;
+  configurationCopy = configuration;
+  dCopy = d;
   v14 = +[HDActivityDemoDataStore shouldShowActivityDemoData];
   v15 = off_34380;
   if (!v14)
@@ -40,7 +40,7 @@
     v15 = &off_34388;
   }
 
-  v16 = [objc_alloc(*v15) initWithUUID:v13 configuration:v12 client:v11 delegate:v10];
+  v16 = [objc_alloc(*v15) initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
 
   return v16;
 }
@@ -50,14 +50,14 @@
   v11.receiver = self;
   v11.super_class = HDCurrentActivitySummaryQueryServer;
   [(HDCurrentActivitySummaryQueryServer *)&v11 _queue_start];
-  v3 = [(HDCurrentActivitySummaryQueryServer *)self profile];
-  v4 = [v3 dataCollectionManager];
+  profile = [(HDCurrentActivitySummaryQueryServer *)self profile];
+  dataCollectionManager = [profile dataCollectionManager];
   v5 = +[NSDate date];
-  v6 = [(NSDictionary *)self->_collectionIntervals allKeys];
-  v7 = v6;
-  if (v6)
+  allKeys = [(NSDictionary *)self->_collectionIntervals allKeys];
+  v7 = allKeys;
+  if (allKeys)
   {
-    v8 = v6;
+    v8 = allKeys;
   }
 
   else
@@ -71,7 +71,7 @@
   v10[2] = sub_4264;
   v10[3] = &unk_34810;
   v10[4] = self;
-  [v4 requestAggregationThroughDate:v5 types:v9 mode:0 options:1 completion:v10];
+  [dataCollectionManager requestAggregationThroughDate:v5 types:v9 mode:0 options:1 completion:v10];
 }
 
 - (void)_queue_stop
@@ -79,33 +79,33 @@
   v5.receiver = self;
   v5.super_class = HDCurrentActivitySummaryQueryServer;
   [(HDCurrentActivitySummaryQueryServer *)&v5 _queue_stop];
-  v3 = [(HDCurrentActivitySummaryQueryServer *)self profile];
-  v4 = [v3 currentActivitySummaryHelper];
-  [v4 removeObserver:self];
+  profile = [(HDCurrentActivitySummaryQueryServer *)self profile];
+  currentActivitySummaryHelper = [profile currentActivitySummaryHelper];
+  [currentActivitySummaryHelper removeObserver:self];
 }
 
 - (void)_queue_startDataCollection
 {
-  v3 = [(HDCurrentActivitySummaryQueryServer *)self profile];
-  v4 = [v3 dataCollectionManager];
+  profile = [(HDCurrentActivitySummaryQueryServer *)self profile];
+  dataCollectionManager = [profile dataCollectionManager];
 
   collectionIntervals = self->_collectionIntervals;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_44C8;
   v15[3] = &unk_34838;
-  v16 = v4;
-  v17 = self;
-  v6 = v4;
+  v16 = dataCollectionManager;
+  selfCopy = self;
+  v6 = dataCollectionManager;
   [(NSDictionary *)collectionIntervals enumerateKeysAndObjectsUsingBlock:v15];
-  v7 = [(HDCurrentActivitySummaryQueryServer *)self profile];
-  v8 = [v7 dataCollectionManager];
+  profile2 = [(HDCurrentActivitySummaryQueryServer *)self profile];
+  dataCollectionManager2 = [profile2 dataCollectionManager];
   v9 = +[NSDate date];
-  v10 = [(NSDictionary *)self->_collectionIntervals allKeys];
-  v11 = v10;
-  if (v10)
+  allKeys = [(NSDictionary *)self->_collectionIntervals allKeys];
+  v11 = allKeys;
+  if (allKeys)
   {
-    v12 = v10;
+    v12 = allKeys;
   }
 
   else
@@ -114,7 +114,7 @@
   }
 
   v13 = [NSSet setWithArray:v12];
-  [v8 requestAggregationThroughDate:v9 types:v13 mode:1 options:1 completion:&stru_34878];
+  [dataCollectionManager2 requestAggregationThroughDate:v9 types:v13 mode:1 options:1 completion:&stru_34878];
 
   v14.receiver = self;
   v14.super_class = HDCurrentActivitySummaryQueryServer;
@@ -126,28 +126,28 @@
   v10.receiver = self;
   v10.super_class = HDCurrentActivitySummaryQueryServer;
   [(HDCurrentActivitySummaryQueryServer *)&v10 _queue_stopDataCollection];
-  v3 = [(HDCurrentActivitySummaryQueryServer *)self profile];
-  v4 = [v3 dataCollectionManager];
+  profile = [(HDCurrentActivitySummaryQueryServer *)self profile];
+  dataCollectionManager = [profile dataCollectionManager];
 
   collectionIntervals = self->_collectionIntervals;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4614;
   v7[3] = &unk_34838;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dataCollectionManager;
+  selfCopy = self;
+  v6 = dataCollectionManager;
   [(NSDictionary *)collectionIntervals enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateTodayActivitySummary:(id)a4 changedFields:(unint64_t)a5
+- (void)currentActivitySummaryHelper:(id)helper didUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  helperCopy = helper;
+  summaryCopy = summary;
+  v9 = summaryCopy;
+  if (summaryCopy)
   {
-    v19 = v8;
+    v19 = summaryCopy;
     v10 = [NSArray arrayWithObjects:&v19 count:1];
   }
 
@@ -156,8 +156,8 @@
     v10 = &__NSArray0__struct;
   }
 
-  v11 = [(HDCurrentActivitySummaryQueryServer *)self clientProxy];
-  if (v11 && ([(HKActivitySummary *)self->_lastActivitySummary _allFieldsAreEqual:v9]& 1) == 0)
+  clientProxy = [(HDCurrentActivitySummaryQueryServer *)self clientProxy];
+  if (clientProxy && ([(HKActivitySummary *)self->_lastActivitySummary _allFieldsAreEqual:v9]& 1) == 0)
   {
     _HKInitializeLogging();
     v13 = HKLogQuery;
@@ -166,8 +166,8 @@
       sub_1F040(v9, v13);
     }
 
-    v14 = [(HDCurrentActivitySummaryQueryServer *)self queryUUID];
-    [v11 client_deliverActivitySummaries:v10 queryUUID:v14];
+    queryUUID = [(HDCurrentActivitySummaryQueryServer *)self queryUUID];
+    [clientProxy client_deliverActivitySummaries:v10 queryUUID:queryUUID];
 
     v15 = [v9 copy];
     lastActivitySummary = self->_lastActivitySummary;

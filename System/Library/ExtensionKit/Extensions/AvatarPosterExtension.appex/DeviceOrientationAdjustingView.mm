@@ -1,12 +1,12 @@
 @interface DeviceOrientationAdjustingView
-- (_TtC21AvatarPosterExtension30DeviceOrientationAdjustingView)initWithCoder:(id)a3;
-- (_TtC21AvatarPosterExtension30DeviceOrientationAdjustingView)initWithFrame:(CGRect)a3;
+- (_TtC21AvatarPosterExtension30DeviceOrientationAdjustingView)initWithCoder:(id)coder;
+- (_TtC21AvatarPosterExtension30DeviceOrientationAdjustingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DeviceOrientationAdjustingView
 
-- (_TtC21AvatarPosterExtension30DeviceOrientationAdjustingView)initWithCoder:(id)a3
+- (_TtC21AvatarPosterExtension30DeviceOrientationAdjustingView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21AvatarPosterExtension30DeviceOrientationAdjustingView_deviceOrientation) = 1;
   result = sub_10001A6FC();
@@ -23,7 +23,7 @@
   sub_100016580(*&v2[OBJC_IVAR____TtC21AvatarPosterExtension30DeviceOrientationAdjustingView_deviceOrientation]);
 }
 
-- (_TtC21AvatarPosterExtension30DeviceOrientationAdjustingView)initWithFrame:(CGRect)a3
+- (_TtC21AvatarPosterExtension30DeviceOrientationAdjustingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -2,36 +2,36 @@
 + (AMSBagKeySet)bagKeySet;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-+ (id)_errorCheckWithAccount:(id)a3 bag:(id)a4;
++ (id)_errorCheckWithAccount:(id)account bag:(id)bag;
 + (id)createBagForSubProfile;
-- (AMSAgeVerificationTask)initWithAccount:(id)a3 bag:(id)a4 options:(id)a5 presentationDelegate:(id)a6;
-- (id)_performTaskForAccount:(id)a3 withBag:(id)a4;
+- (AMSAgeVerificationTask)initWithAccount:(id)account bag:(id)bag options:(id)options presentationDelegate:(id)delegate;
+- (id)_performTaskForAccount:(id)account withBag:(id)bag;
 - (id)isVerificationNeeded;
 - (id)performTask;
-- (void)_handleAccountStoreDidChangeNotification:(id)a3;
-- (void)_handleAccountStoreDidChangeNotification:(id)a3 at:(id)a4;
+- (void)_handleAccountStoreDidChangeNotification:(id)notification;
+- (void)_handleAccountStoreDidChangeNotification:(id)notification at:(id)at;
 - (void)_startObservingAccountStoreChanges;
 - (void)_stopObservingAccountStoreChanges;
 @end
 
 @implementation AMSAgeVerificationTask
 
-- (AMSAgeVerificationTask)initWithAccount:(id)a3 bag:(id)a4 options:(id)a5 presentationDelegate:(id)a6
+- (AMSAgeVerificationTask)initWithAccount:(id)account bag:(id)bag options:(id)options presentationDelegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accountCopy = account;
+  bagCopy = bag;
+  optionsCopy = options;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = AMSAgeVerificationTask;
   v15 = [(AMSTask *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_account, a3);
-    objc_storeStrong(&v16->_bag, a4);
-    objc_storeStrong(&v16->_options, a5);
-    objc_storeStrong(&v16->_presentationDelegate, a6);
+    objc_storeStrong(&v15->_account, account);
+    objc_storeStrong(&v16->_bag, bag);
+    objc_storeStrong(&v16->_options, options);
+    objc_storeStrong(&v16->_presentationDelegate, delegate);
   }
 
   return v16;
@@ -40,9 +40,9 @@
 - (id)isVerificationNeeded
 {
   v3 = objc_opt_class();
-  v4 = [(AMSAgeVerificationTask *)self account];
+  account = [(AMSAgeVerificationTask *)self account];
   v5 = [(AMSAgeVerificationTask *)self bag];
-  v6 = [v3 _errorCheckWithAccount:v4 bag:v5];
+  v6 = [v3 _errorCheckWithAccount:account bag:v5];
 
   if (v6)
   {
@@ -51,30 +51,30 @@
 
   else
   {
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [(AMSAgeVerificationTask *)self account];
-    v10 = [v9 ams_accountFlagValueForAccountFlag:AMSAccountFlagAgeVerificationExpiration];
+    date = [MEMORY[0x1E695DF00] date];
+    account2 = [(AMSAgeVerificationTask *)self account];
+    v10 = [account2 ams_accountFlagValueForAccountFlag:AMSAccountFlagAgeVerificationExpiration];
 
     v11 = [(AMSAgeVerificationTask *)self bag];
     v12 = [v11 BOOLForKey:@"isExplicitContentAgeVerificationRequired"];
-    v13 = [v12 valuePromise];
+    valuePromise = [v12 valuePromise];
 
     v14 = [(AMSAgeVerificationTask *)self bag];
     v15 = [v14 integerForKey:@"korAgeVerificationWarningThresholdDays"];
-    v16 = [v15 valuePromise];
+    valuePromise2 = [v15 valuePromise];
 
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __46__AMSAgeVerificationTask_isVerificationNeeded__block_invoke;
     v21[3] = &unk_1E73B3908;
-    v22 = v16;
+    v22 = valuePromise2;
     v23 = v10;
-    v24 = v8;
-    v25 = self;
-    v17 = v8;
+    v24 = date;
+    selfCopy = self;
+    v17 = date;
     v18 = v10;
-    v19 = v16;
-    v7 = [v13 thenWithBlock:v21];
+    v19 = valuePromise2;
+    v7 = [valuePromise thenWithBlock:v21];
   }
 
   return v7;
@@ -152,9 +152,9 @@ id __46__AMSAgeVerificationTask_isVerificationNeeded__block_invoke_2(uint64_t a1
 - (id)performTask
 {
   v3 = objc_opt_class();
-  v4 = [(AMSAgeVerificationTask *)self account];
+  account = [(AMSAgeVerificationTask *)self account];
   v5 = [(AMSAgeVerificationTask *)self bag];
-  v6 = [v3 _errorCheckWithAccount:v4 bag:v5];
+  v6 = [v3 _errorCheckWithAccount:account bag:v5];
 
   if (v6)
   {
@@ -163,22 +163,22 @@ id __46__AMSAgeVerificationTask_isVerificationNeeded__block_invoke_2(uint64_t a1
 
   else
   {
-    v8 = [(AMSAgeVerificationTask *)self account];
+    account2 = [(AMSAgeVerificationTask *)self account];
     v9 = [(AMSAgeVerificationTask *)self bag];
-    v7 = [(AMSAgeVerificationTask *)self _performTaskForAccount:v8 withBag:v9];
+    v7 = [(AMSAgeVerificationTask *)self _performTaskForAccount:account2 withBag:v9];
   }
 
   return v7;
 }
 
-+ (id)_errorCheckWithAccount:(id)a3 bag:(id)a4
++ (id)_errorCheckWithAccount:(id)account bag:(id)bag
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  accountCopy = account;
+  bagCopy = bag;
+  v7 = bagCopy;
+  if (accountCopy)
   {
-    if (v6)
+    if (bagCopy)
     {
       v8 = 0;
       goto LABEL_7;
@@ -198,7 +198,7 @@ LABEL_7:
   return v8;
 }
 
-- (id)_performTaskForAccount:(id)a3 withBag:(id)a4
+- (id)_performTaskForAccount:(id)account withBag:(id)bag
 {
   v4 = AMSCustomError(@"AMSErrorDomain", 12, @"Not available on this platform, try AMSUIAgeVerificationTask", 0, 0, 0);
   v5 = [AMSPromise promiseWithError:v4];
@@ -208,43 +208,43 @@ LABEL_7:
 
 - (void)_startObservingAccountStoreChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleAccountStoreDidChangeNotification_ name:*MEMORY[0x1E6959968] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleAccountStoreDidChangeNotification_ name:*MEMORY[0x1E6959968] object:0];
 }
 
 - (void)_stopObservingAccountStoreChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E6959968] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6959968] object:0];
 }
 
-- (void)_handleAccountStoreDidChangeNotification:(id)a3
+- (void)_handleAccountStoreDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  [(AMSAgeVerificationTask *)self _handleAccountStoreDidChangeNotification:v5 at:v6];
+  notificationCopy = notification;
+  date = [v4 date];
+  [(AMSAgeVerificationTask *)self _handleAccountStoreDidChangeNotification:notificationCopy at:date];
 }
 
-- (void)_handleAccountStoreDidChangeNotification:(id)a3 at:(id)a4
+- (void)_handleAccountStoreDidChangeNotification:(id)notification at:(id)at
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(AMSAgeVerificationTask *)self account];
-  v7 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v8 = [v7 ams_activeiTunesAccount];
+  atCopy = at;
+  account = [(AMSAgeVerificationTask *)self account];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-  v9 = [v8 ams_altDSID];
-  v10 = [v6 ams_altDSID];
-  if ([v9 isEqualToString:v10])
+  ams_altDSID = [ams_activeiTunesAccount ams_altDSID];
+  ams_altDSID2 = [account ams_altDSID];
+  if ([ams_altDSID isEqualToString:ams_altDSID2])
   {
   }
 
   else
   {
-    v11 = [v8 ams_DSID];
-    v12 = [v6 ams_DSID];
-    v13 = [v11 isEqual:v12];
+    ams_DSID = [ams_activeiTunesAccount ams_DSID];
+    ams_DSID2 = [account ams_DSID];
+    v13 = [ams_DSID isEqual:ams_DSID2];
 
     if (!v13)
     {
@@ -252,12 +252,12 @@ LABEL_7:
     }
   }
 
-  v14 = v8;
+  v14 = ams_activeiTunesAccount;
 
-  v6 = v14;
+  account = v14;
 LABEL_5:
-  v15 = [v6 ams_accountFlagValueForAccountFlag:AMSAccountFlagAgeVerificationExpiration];
-  v16 = [AMSAgeVerificationCore _isAgeVerificationNeededForExpiration:v15 at:v5];
+  v15 = [account ams_accountFlagValueForAccountFlag:AMSAccountFlagAgeVerificationExpiration];
+  v16 = [AMSAgeVerificationCore _isAgeVerificationNeededForExpiration:v15 at:atCopy];
 
   if (!v16)
   {
@@ -267,8 +267,8 @@ LABEL_5:
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 = objc_opt_class();
       v20 = AMSLogKey();
@@ -276,12 +276,12 @@ LABEL_5:
       v23 = v19;
       v24 = 2114;
       v25 = v20;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Dismissing System Alert Dialog", &v22, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Dismissing System Alert Dialog", &v22, 0x16u);
     }
 
     [(AMSAgeVerificationTask *)self _stopObservingAccountStoreChanges];
-    v21 = [(AMSAgeVerificationTask *)self task];
-    [v21 _dismiss];
+    task = [(AMSAgeVerificationTask *)self task];
+    [task _dismiss];
   }
 }
 
@@ -323,9 +323,9 @@ void __46__AMSAgeVerificationTask_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

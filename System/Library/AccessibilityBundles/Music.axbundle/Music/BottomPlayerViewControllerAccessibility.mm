@@ -1,34 +1,34 @@
 @interface BottomPlayerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)accessibilityUpdateMetadata;
-- (void)setArtworkView:(id)a3;
+- (void)setArtworkView:(id)view;
 - (void)viewDidLoad;
 @end
 
 @implementation BottomPlayerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasSwiftField:@"$__lazy_storage_$_nowPlayingItemStackView" withSwiftType:"Optional<TrackTitleStackView>"];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"routeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"skipButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"reverseButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"playPauseButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasSwiftField:@"contextMenuButton" withSwiftType:"Optional<HitMyRectButton>"];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasSwiftField:@"lyricsButton" withSwiftType:"Optional<HitMyRectButton>"];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasSwiftField:@"queueButton" withSwiftType:"Optional<HitMyRectButton>"];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"accessibilityUpdateMetadata" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"accessibilityNowPlayingResponse" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"tracklist" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"playingItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"setArtworkView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"Music.NowPlayingShuffleButton"];
-  [v3 validateClass:@"Music.NowPlayingRepeatButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasSwiftField:@"$__lazy_storage_$_nowPlayingItemStackView" withSwiftType:"Optional<TrackTitleStackView>"];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"routeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"skipButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"reverseButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"playPauseButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasSwiftField:@"contextMenuButton" withSwiftType:"Optional<HitMyRectButton>"];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasSwiftField:@"lyricsButton" withSwiftType:"Optional<HitMyRectButton>"];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasSwiftField:@"queueButton" withSwiftType:"Optional<HitMyRectButton>"];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"accessibilityUpdateMetadata" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"accessibilityNowPlayingResponse" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"tracklist" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"playingItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Music.BottomPlayerViewController" hasInstanceMethod:@"setArtworkView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"Music.NowPlayingShuffleButton"];
+  [validationsCopy validateClass:@"Music.NowPlayingRepeatButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -42,11 +42,11 @@
   v5 = [(BottomPlayerViewControllerAccessibility *)self safeValueForKey:@"routeLabel"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
   v8 = [(BottomPlayerViewControllerAccessibility *)self safeValueForKey:@"artworkView"];
   v9 = v8;
-  if (v7)
+  if (accessibilityLabel)
   {
     v10 = @"MiniPlayerArtworkVisible";
   }
@@ -85,7 +85,7 @@
   v47 = v14;
   [v14 setAccessibilityTraits:v11];
   v15 = [(BottomPlayerViewControllerAccessibility *)self safeValueForKey:@"playPauseButton"];
-  [v15 setIsAccessibilityElement:v7 != 0];
+  [v15 setIsAccessibilityElement:accessibilityLabel != 0];
   v66[0] = MEMORY[0x29EDCA5F8];
   v66[1] = 3221225472;
   v66[2] = __85__BottomPlayerViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
@@ -95,7 +95,7 @@
   [v15 _setAccessibilityLabelBlock:v66];
   [v15 setAccessibilityIdentifier:@"MiniPlayerPlayPauseButton"];
   v17 = [(BottomPlayerViewControllerAccessibility *)self safeValueForKey:@"skipButton"];
-  [v17 setIsAccessibilityElement:v7 != 0];
+  [v17 setIsAccessibilityElement:accessibilityLabel != 0];
   v46 = v15;
   if ([MEMORY[0x29EDC9738] accessibilityIsSeekEnabledInDirection:1 forResponse:v16])
   {
@@ -128,7 +128,7 @@
   }
 
   v43 = v19;
-  if (v7)
+  if (accessibilityLabel)
   {
     [v21 setAccessibilityContainerType:4];
     v22 = accessibilityMusicLocalizedString(@"titlesView.hint");
@@ -170,7 +170,7 @@
   v54 = v50;
   v55 = v51;
   v40 = v21;
-  v41 = self;
+  selfCopy = self;
   v31 = v24;
   v56 = v24;
   v57 = v47;
@@ -191,7 +191,7 @@
   v38 = v51;
   v39 = v50;
   [v40 _setAccessibilityElementsBlock:v53];
-  v52.receiver = v41;
+  v52.receiver = selfCopy;
   v52.super_class = BottomPlayerViewControllerAccessibility;
   [(BottomPlayerViewControllerAccessibility *)&v52 _accessibilityLoadAccessibilityInformation];
 }
@@ -238,10 +238,10 @@ id __85__BottomPlayerViewControllerAccessibility__accessibilityLoadAccessibility
   [(BottomPlayerViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setArtworkView:(id)a3
+- (void)setArtworkView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
     [(BottomPlayerViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
   }
@@ -258,7 +258,7 @@ id __85__BottomPlayerViewControllerAccessibility__accessibilityLoadAccessibility
 
   v7.receiver = self;
   v7.super_class = BottomPlayerViewControllerAccessibility;
-  [(BottomPlayerViewControllerAccessibility *)&v7 setArtworkView:v4];
+  [(BottomPlayerViewControllerAccessibility *)&v7 setArtworkView:viewCopy];
 }
 
 @end

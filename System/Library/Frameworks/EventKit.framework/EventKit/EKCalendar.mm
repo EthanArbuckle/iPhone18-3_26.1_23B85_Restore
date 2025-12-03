@@ -3,30 +3,30 @@
 + (id)EKObjectChangeSummarizer_multiValueDiffKeys;
 + (id)EKObjectChangeSummarizer_singleValueDiffKeys;
 + (id)_eventKitBundle;
-+ (id)calendarForEntityTypes:(unint64_t)a3 eventStore:(id)a4;
++ (id)calendarForEntityTypes:(unint64_t)types eventStore:(id)store;
 + (id)knownIdentityKeysForComparison;
 + (id)knownRelationshipMultiValueKeys;
 + (id)knownRelationshipSingleValueKeys;
 + (id)knownRelationshipWeakKeys;
 + (id)knownSingleValueKeysForComparison;
 + (id)orderSortDescriptors;
-+ (id)rowIDsForCalendars:(id)a3;
-+ (id)typeDescription:(int64_t)a3;
-- (BOOL)_anotherCalendarForDefaultSchedulingExistsWithAllKnownCalendars:(id)a3;
-- (BOOL)_anyCalendarExistsInSameSourceOfType:(unint64_t)a3 withAllKnownCalendars:(id)a4 passingTest:(id)a5;
++ (id)rowIDsForCalendars:(id)calendars;
++ (id)typeDescription:(int64_t)description;
+- (BOOL)_anotherCalendarForDefaultSchedulingExistsWithAllKnownCalendars:(id)calendars;
+- (BOOL)_anyCalendarExistsInSameSourceOfType:(unint64_t)type withAllKnownCalendars:(id)calendars passingTest:(id)test;
 - (BOOL)_reset;
-- (BOOL)_validateDeletableDueToAccessConsent:(id *)a3;
-- (BOOL)_validateDeletableHelperWithAllKnownCalendars:(id)a3 error:(id *)a4;
-- (BOOL)_validateDeletableWithAllKnownCalendars:(id)a3 error:(id *)a4;
+- (BOOL)_validateDeletableDueToAccessConsent:(id *)consent;
+- (BOOL)_validateDeletableHelperWithAllKnownCalendars:(id)calendars error:(id *)error;
+- (BOOL)_validateDeletableWithAllKnownCalendars:(id)calendars error:(id *)error;
 - (BOOL)allowsContentModifications;
 - (BOOL)allowsDeletionOrPropertyModifications;
 - (BOOL)allowsIgnoringSharedEventChangeNotifications;
 - (BOOL)automaticEventLocationGeocodingAllowed;
 - (BOOL)canBeShared;
-- (BOOL)canMergeWithCalendar:(id)a3;
+- (BOOL)canMergeWithCalendar:(id)calendar;
 - (BOOL)couldBeJunk;
 - (BOOL)eligibleForDefaultSchedulingCalendar;
-- (BOOL)getColorRed:(double *)a3 green:(double *)a4 blue:(double *)a5;
+- (BOOL)getColorRed:(double *)red green:(double *)green blue:(double *)blue;
 - (BOOL)hasEvents;
 - (BOOL)hasEventsWithRoomAsAttendee;
 - (BOOL)hasSharees;
@@ -41,13 +41,13 @@
 - (BOOL)isPublished;
 - (BOOL)isSyncing;
 - (BOOL)refresh;
-- (BOOL)remove:(id *)a3;
-- (BOOL)removeServerRefreshRelatedPropertiesForSelfAndAllEventsSaveAndCommitWithError:(id *)a3;
-- (BOOL)save:(id *)a3;
+- (BOOL)remove:(id *)remove;
+- (BOOL)removeServerRefreshRelatedPropertiesForSelfAndAllEventsSaveAndCommitWithError:(id *)error;
+- (BOOL)save:(id *)save;
 - (BOOL)supportsJunkReporting;
 - (BOOL)supportsMultipleAlarms;
-- (BOOL)validate:(id *)a3;
-- (CGColor)_newColorWithAdjustedColorSpaceFromColor:(CGColor *)a3;
+- (BOOL)validate:(id *)validate;
+- (CGColor)_newColorWithAdjustedColorSpaceFromColor:(CGColor *)color;
 - (CGColorRef)CGColor;
 - (EKCalendar)init;
 - (EKCalendarEventAvailabilityMask)supportedEventAvailabilities;
@@ -61,16 +61,16 @@
 - (id)colorString;
 - (id)constraints;
 - (id)description;
-- (id)exportDataWithOptions:(unint64_t)a3;
-- (id)externalInfoForKey:(id)a3;
+- (id)exportDataWithOptions:(unint64_t)options;
+- (id)externalInfoForKey:(id)key;
 - (id)externalURI;
-- (id)findOriginalAlarmStartingWith:(id)a3;
+- (id)findOriginalAlarmStartingWith:(id)with;
 - (id)lastSyncErrorUserInfo;
 - (id)ownerIdentityAddress;
 - (id)ownerIdentityDisplayName;
 - (id)ownerIdentityOrganizer;
 - (id)publishURL;
-- (id)reorderCalendars:(id)a3 betweenEarlier:(id)a4 later:(id)a5;
+- (id)reorderCalendars:(id)calendars betweenEarlier:(id)earlier later:(id)later;
 - (id)selectionSyncIdentifier;
 - (id)selfIdentityAddress;
 - (id)selfIdentityDisplayName;
@@ -94,45 +94,45 @@
 - (unint64_t)sharingInvitationResponse;
 - (unint64_t)sharingStatus;
 - (unsigned)flags;
-- (void)_setFlagValue:(BOOL)a3 withMask:(unsigned int)a4;
+- (void)_setFlagValue:(BOOL)value withMask:(unsigned int)mask;
 - (void)_updateToMaxDisplayOrder;
-- (void)addAlarms:(id)a3;
-- (void)addSharee:(id)a3;
+- (void)addAlarms:(id)alarms;
+- (void)addSharee:(id)sharee;
 - (void)assignColorForNewCalendarIfNeeded;
 - (void)calendarError;
 - (void)clearInvitationStatus;
-- (void)moveSubscribedCalendarToSource:(id)a3;
+- (void)moveSubscribedCalendarToSource:(id)source;
 - (void)removeAcknowledgedSnoozedAlarms;
-- (void)removeAlarms:(id)a3;
+- (void)removeAlarms:(id)alarms;
 - (void)removeAllSnoozedAlarms;
-- (void)removeSharee:(id)a3;
-- (void)reorderBetweenEarlier:(id)a3 later:(id)a4;
+- (void)removeSharee:(id)sharee;
+- (void)reorderBetweenEarlier:(id)earlier later:(id)later;
 - (void)reset;
 - (void)rollback;
-- (void)setAlarms:(id)a3;
-- (void)setAllowedEntityTypes:(unint64_t)a3;
+- (void)setAlarms:(id)alarms;
+- (void)setAllowedEntityTypes:(unint64_t)types;
 - (void)setCGColor:(CGColorRef)CGColor;
-- (void)setCachedExternalInfo:(id)a3;
-- (void)setColorString:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setInvitationStatus:(unint64_t)a3;
-- (void)setIsJunk:(BOOL)a3;
-- (void)setLastSyncError:(unint64_t)a3 userInfo:(id)a4;
-- (void)setMaxAttendees:(int64_t)a3;
-- (void)setOwnerIdentityAddress:(id)a3;
-- (void)setOwnerIdentityDisplayName:(id)a3;
-- (void)setPublishURL:(id)a3;
-- (void)setSelfIdentityAddress:(id)a3;
-- (void)setSharedOwnerAddress:(id)a3;
-- (void)setSharedOwnerURL:(id)a3;
-- (void)setSharees:(id)a3;
-- (void)setSharingInvitationResponse:(unint64_t)a3;
-- (void)setSharingStatus:(unint64_t)a3;
+- (void)setCachedExternalInfo:(id)info;
+- (void)setColorString:(id)string;
+- (void)setImage:(id)image;
+- (void)setInvitationStatus:(unint64_t)status;
+- (void)setIsJunk:(BOOL)junk;
+- (void)setLastSyncError:(unint64_t)error userInfo:(id)info;
+- (void)setMaxAttendees:(int64_t)attendees;
+- (void)setOwnerIdentityAddress:(id)address;
+- (void)setOwnerIdentityDisplayName:(id)name;
+- (void)setPublishURL:(id)l;
+- (void)setSelfIdentityAddress:(id)address;
+- (void)setSharedOwnerAddress:(id)address;
+- (void)setSharedOwnerURL:(id)l;
+- (void)setSharees:(id)sharees;
+- (void)setSharingInvitationResponse:(unint64_t)response;
+- (void)setSharingStatus:(unint64_t)status;
 - (void)setSource:(EKSource *)source;
-- (void)setSymbolicColorName:(id)a3;
-- (void)setSyncError:(id)a3;
-- (void)snoozeAlarm:(id)a3 withLocation:(id)a4 proximity:(int64_t)a5;
-- (void)snoozeAlarm:(id)a3 withTimeIntervalFromNow:(double)a4;
+- (void)setSymbolicColorName:(id)name;
+- (void)setSyncError:(id)error;
+- (void)snoozeAlarm:(id)alarm withLocation:(id)location proximity:(int64_t)proximity;
+- (void)snoozeAlarm:(id)alarm withTimeIntervalFromNow:(double)now;
 @end
 
 @implementation EKCalendar
@@ -140,21 +140,21 @@
 - (int)allowedEntities
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992718]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (EKEntityMask)allowedEntityTypes
 {
-  v2 = [(EKCalendar *)self allowedEntities];
+  allowedEntities = [(EKCalendar *)self allowedEntities];
   v3 = 2;
-  if (v2 != 8)
+  if (allowedEntities != 8)
   {
     v3 = 3;
   }
 
-  if (v2 == 4)
+  if (allowedEntities == 4)
   {
     return 1;
   }
@@ -178,9 +178,9 @@
 - (unsigned)flags
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992760]];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (EKCalendarType)type
@@ -190,25 +190,25 @@
     return 3;
   }
 
-  v4 = [(EKCalendar *)self source];
-  v5 = [v4 sourceType];
+  source = [(EKCalendar *)self source];
+  sourceType = [source sourceType];
 
-  if (v5 <= 3)
+  if (sourceType <= 3)
   {
-    if (v5 == 1)
+    if (sourceType == 1)
     {
       return 2;
     }
 
     else
     {
-      return (v5 == 2);
+      return (sourceType == 2);
     }
   }
 
   else
   {
-    switch(v5)
+    switch(sourceType)
     {
       case 4:
         return 3;
@@ -239,53 +239,53 @@
 - (id)selectionSyncIdentifier
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:100];
-  v4 = [(EKCalendar *)self source];
-  v5 = [v4 sourceIdentifier];
-  if (![v4 sourceType])
+  source = [(EKCalendar *)self source];
+  sourceIdentifier = [source sourceIdentifier];
+  if (![source sourceType])
   {
     v6 = @"LOCAL";
     goto LABEL_5;
   }
 
-  if ([v4 sourceType] == 5)
+  if ([source sourceType] == 5)
   {
     v6 = @"BIRTHDAYS";
 LABEL_5:
 
-    v5 = v6;
+    sourceIdentifier = v6;
 LABEL_9:
-    [v3 appendString:v5];
+    [v3 appendString:sourceIdentifier];
 
     goto LABEL_10;
   }
 
-  if ([v4 sourceType] == 6)
+  if ([source sourceType] == 6)
   {
-    v7 = [v4 externalID];
+    externalID = [source externalID];
 
-    v5 = v7;
+    sourceIdentifier = externalID;
   }
 
-  if (v5)
+  if (sourceIdentifier)
   {
     goto LABEL_9;
   }
 
 LABEL_10:
   [v3 appendString:@";"];
-  v8 = [(EKCalendar *)self externalID];
-  if (v8)
+  externalID2 = [(EKCalendar *)self externalID];
+  if (externalID2)
   {
-    [v3 appendString:v8];
+    [v3 appendString:externalID2];
   }
 
   else
   {
-    v9 = [(EKCalendar *)self title];
-    v10 = v9;
-    if (v9)
+    title = [(EKCalendar *)self title];
+    v10 = title;
+    if (title)
     {
-      v11 = v9;
+      v11 = title;
     }
 
     else
@@ -296,11 +296,11 @@ LABEL_10:
     [v3 appendString:v11];
 
     [v3 appendFormat:@";%d;", -[EKCalendar type](self, "type")];
-    v12 = [(EKCalendar *)self colorString];
-    v13 = v12;
-    if (v12)
+    colorString = [(EKCalendar *)self colorString];
+    v13 = colorString;
+    if (colorString)
     {
-      v14 = v12;
+      v14 = colorString;
     }
 
     else
@@ -319,12 +319,12 @@ LABEL_10:
 - (NSString)title
 {
   v3 = MEMORY[0x1E6992FD0];
-  v4 = [(EKCalendar *)self unlocalizedTitle];
-  v5 = [(EKCalendar *)self isSuggestedEventCalendar];
+  unlocalizedTitle = [(EKCalendar *)self unlocalizedTitle];
+  isSuggestedEventCalendar = [(EKCalendar *)self isSuggestedEventCalendar];
   v6 = [(EKCalendar *)self type]== EKCalendarTypeBirthday;
-  v7 = [(EKCalendar *)self allowReminders];
-  v8 = [(EKCalendar *)self source];
-  v9 = [v3 localizedTitleForTitle:v4 isSuggestedEventCalendar:v5 isBirthdayCalendar:v6 allowsReminders:v7 isIntegrationCalendar:{objc_msgSend(v8, "sourceType") == 6}];
+  allowReminders = [(EKCalendar *)self allowReminders];
+  source = [(EKCalendar *)self source];
+  v9 = [v3 localizedTitleForTitle:unlocalizedTitle isSuggestedEventCalendar:isSuggestedEventCalendar isBirthdayCalendar:v6 allowsReminders:allowReminders isIntegrationCalendar:{objc_msgSend(source, "sourceType") == 6}];
 
   if (v9)
   {
@@ -344,35 +344,35 @@ LABEL_10:
 - (id)syncHash
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendar *)self externalID];
-  v4 = v3;
-  if (v3)
+  externalID = [(EKCalendar *)self externalID];
+  v4 = externalID;
+  if (externalID)
   {
-    v5 = v3;
+    v5 = externalID;
   }
 
   else
   {
     memset(&c, 0, sizeof(c));
     CC_MD5_Init(&c);
-    v6 = [(EKCalendar *)self title];
-    v7 = [v6 UTF8String];
+    title = [(EKCalendar *)self title];
+    uTF8String = [title UTF8String];
 
-    if (v7)
+    if (uTF8String)
     {
-      v8 = strlen(v7);
-      CC_MD5_Update(&c, v7, v8);
+      v8 = strlen(uTF8String);
+      CC_MD5_Update(&c, uTF8String, v8);
     }
 
     data = [(EKCalendar *)self type];
     CC_MD5_Update(&c, &data, 1u);
-    v9 = [(EKCalendar *)self colorString];
-    v10 = [v9 UTF8String];
+    colorString = [(EKCalendar *)self colorString];
+    uTF8String2 = [colorString UTF8String];
 
-    if (v10)
+    if (uTF8String2)
     {
-      v11 = strlen(v10);
-      CC_MD5_Update(&c, v10, v11);
+      v11 = strlen(uTF8String2);
+      CC_MD5_Update(&c, uTF8String2, v11);
     }
 
     CC_MD5_Final(md, &c);
@@ -388,37 +388,37 @@ LABEL_10:
 - (id)colorString
 {
   v3 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992890]];
-  if (!v3 || ([EKSymbolicColorToRGBMapping() objectForKey:v3], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v3 || ([EKSymbolicColorToRGBMapping() objectForKey:v3], (colorStringRaw = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [(EKCalendar *)self colorStringRaw];
+    colorStringRaw = [(EKCalendar *)self colorStringRaw];
   }
 
-  return v4;
+  return colorStringRaw;
 }
 
 - (unint64_t)lastSyncError
 {
-  v2 = [(EKCalendar *)self syncError];
-  v3 = v2;
-  if (v2)
+  syncError = [(EKCalendar *)self syncError];
+  v3 = syncError;
+  if (syncError)
   {
-    if ([v2 errorType])
+    if ([syncError errorType])
     {
-      v4 = 1;
+      errorCode = 1;
     }
 
     else
     {
-      v4 = [v3 errorCode];
+      errorCode = [v3 errorCode];
     }
   }
 
   else
   {
-    v4 = 0;
+    errorCode = 0;
   }
 
-  return v4;
+  return errorCode;
 }
 
 - (CGColorRef)CGColor
@@ -429,9 +429,9 @@ LABEL_10:
   v5[3] = &unk_1E77FCF40;
   v5[4] = self;
   v2 = [(EKObject *)self cachedValueForKey:@"CGColor" populateBlock:v5];
-  v3 = [v2 color];
+  color = [v2 color];
 
-  return v3;
+  return color;
 }
 
 CGColorWrapper *__21__EKCalendar_CGColor__block_invoke(uint64_t a1)
@@ -526,18 +526,18 @@ void __83__EKCalendar_EKObjectChangeSummarizer__EKObjectChangeSummarizer_multiVa
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)rowIDsForCalendars:(id)a3
++ (id)rowIDsForCalendars:(id)calendars
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  calendarsCopy = calendars;
+  if (calendarsCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(calendarsCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = calendarsCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -553,8 +553,8 @@ void __83__EKCalendar_EKObjectChangeSummarizer__EKObjectChangeSummarizer_multiVa
           }
 
           v10 = MEMORY[0x1E696AD98];
-          v11 = [*(*(&v15 + 1) + 8 * i) objectID];
-          v12 = [v10 numberWithInt:{objc_msgSend(v11, "rowID")}];
+          objectID = [*(*(&v15 + 1) + 8 * i) objectID];
+          v12 = [v10 numberWithInt:{objc_msgSend(objectID, "rowID")}];
           [v4 addObject:v12];
         }
 
@@ -750,22 +750,22 @@ void __47__EKCalendar_knownSingleValueKeysForComparison__block_invoke()
   IsReminderBridgeEnabled = CalIsReminderBridgeEnabled();
   if (entityType && (IsReminderBridgeEnabled & 1) != 0)
   {
-    v8 = [(EKEventStore *)v6 reminderStore];
-    v9 = [v8 createNewReminderCalendar];
+    reminderStore = [(EKEventStore *)v6 reminderStore];
+    createNewReminderCalendar = [reminderStore createNewReminderCalendar];
   }
 
   else
   {
-    v9 = [a1 calendarForEntityTypes:1 << entityType eventStore:v6];
+    createNewReminderCalendar = [self calendarForEntityTypes:1 << entityType eventStore:v6];
   }
 
-  return v9;
+  return createNewReminderCalendar;
 }
 
-+ (id)calendarForEntityTypes:(unint64_t)a3 eventStore:(id)a4
++ (id)calendarForEntityTypes:(unint64_t)types eventStore:(id)store
 {
-  v6 = a4;
-  if (!v6)
+  storeCopy = store;
+  if (!storeCopy)
   {
     v7 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
@@ -775,13 +775,13 @@ void __47__EKCalendar_knownSingleValueKeysForComparison__block_invoke()
   }
 
   v8 = objc_alloc_init(EKPersistentCalendar);
-  [v6 _registerObject:v8];
-  v9 = [[a1 alloc] initWithPersistentObject:v8];
+  [storeCopy _registerObject:v8];
+  v9 = [[self alloc] initWithPersistentObject:v8];
   [v9 _updateToMaxDisplayOrder];
   v10 = EKUUIDString();
   [v9 setCalendarIdentifier:v10];
 
-  [v9 setAllowedEntityTypes:a3];
+  [v9 setAllowedEntityTypes:types];
 
   return v9;
 }
@@ -793,10 +793,10 @@ void __47__EKCalendar_knownSingleValueKeysForComparison__block_invoke()
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 _allCalendars];
+  eventStore = [(EKObject *)self eventStore];
+  _allCalendars = [eventStore _allCalendars];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [_allCalendars countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -808,21 +808,21 @@ void __47__EKCalendar_knownSingleValueKeysForComparison__block_invoke()
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allCalendars);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 displayOrder] != 0x7FFFFFFF)
         {
-          v11 = [v10 displayOrder];
-          if (v11 > v7)
+          displayOrder = [v10 displayOrder];
+          if (displayOrder > v7)
           {
-            v7 = v11;
+            v7 = displayOrder;
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [_allCalendars countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -838,73 +838,73 @@ void __47__EKCalendar_knownSingleValueKeysForComparison__block_invoke()
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reorderBetweenEarlier:(id)a3 later:(id)a4
+- (void)reorderBetweenEarlier:(id)earlier later:(id)later
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  earlierCopy = earlier;
+  laterCopy = later;
   v11[0] = self;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v9 = [(EKCalendar *)self reorderCalendars:v8 betweenEarlier:v6 later:v7];
+  v9 = [(EKCalendar *)self reorderCalendars:v8 betweenEarlier:earlierCopy later:laterCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)reorderCalendars:(id)a3 betweenEarlier:(id)a4 later:(id)a5
+- (id)reorderCalendars:(id)calendars betweenEarlier:(id)earlier later:(id)later
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!(v9 | v10))
+  calendarsCopy = calendars;
+  earlierCopy = earlier;
+  laterCopy = later;
+  if (!(earlierCopy | laterCopy))
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"earlier == nil && later == nil"];
   }
 
-  v11 = [v9 source];
-  v12 = v11;
-  if (v11)
+  source = [earlierCopy source];
+  v12 = source;
+  if (source)
   {
-    v13 = v11;
+    localSource = source;
   }
 
   else
   {
-    v14 = [v10 source];
-    v15 = v14;
-    if (v14)
+    source2 = [laterCopy source];
+    v15 = source2;
+    if (source2)
     {
-      v13 = v14;
+      localSource = source2;
     }
 
     else
     {
-      v16 = [(EKObject *)self eventStore];
-      v13 = [v16 localSource];
+      eventStore = [(EKObject *)self eventStore];
+      localSource = [eventStore localSource];
     }
   }
 
   v17 = MEMORY[0x1E695DF70];
-  v18 = [v13 allCalendars];
-  v19 = [objc_opt_class() orderSortDescriptors];
-  v20 = [v18 sortedArrayUsingDescriptors:v19];
+  allCalendars = [localSource allCalendars];
+  orderSortDescriptors = [objc_opt_class() orderSortDescriptors];
+  v20 = [allCalendars sortedArrayUsingDescriptors:orderSortDescriptors];
   v21 = [v17 arrayWithArray:v20];
 
   v22 = [v21 objectAtIndexedSubscript:0];
-  v23 = [v22 displayOrder];
+  displayOrder = [v22 displayOrder];
 
-  [v21 removeObjectsInArray:v8];
-  if (v9)
+  [v21 removeObjectsInArray:calendarsCopy];
+  if (earlierCopy)
   {
-    v24 = v9;
+    v24 = earlierCopy;
   }
 
   else
   {
-    v24 = v10;
+    v24 = laterCopy;
   }
 
   v25 = [v21 indexOfObject:v24];
-  if (v9)
+  if (earlierCopy)
   {
     v26 = v25 + 1;
   }
@@ -914,17 +914,17 @@ void __47__EKCalendar_knownSingleValueKeysForComparison__block_invoke()
     v26 = v25;
   }
 
-  v27 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v26, objc_msgSend(v8, "count")}];
-  [v21 insertObjects:v8 atIndexes:v27];
+  v27 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v26, objc_msgSend(calendarsCopy, "count")}];
+  [v21 insertObjects:calendarsCopy atIndexes:v27];
   v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __52__EKCalendar_reorderCalendars_betweenEarlier_later___block_invoke;
   v32[3] = &unk_1E77FFE58;
-  v35 = v23;
+  v35 = displayOrder;
   v29 = v28;
   v33 = v29;
-  v34 = self;
+  selfCopy = self;
   [v21 enumerateObjectsUsingBlock:v32];
   v30 = v29;
 
@@ -1001,8 +1001,8 @@ void __34__EKCalendar_orderSortDescriptors__block_invoke()
 {
   v7.receiver = self;
   v7.super_class = EKCalendar;
-  v3 = [(EKObject *)&v7 _reset];
-  if (v3)
+  _reset = [(EKObject *)&v7 _reset];
+  if (_reset)
   {
     v4 = objc_opt_class();
     v6[0] = MEMORY[0x1E69E9820];
@@ -1010,10 +1010,10 @@ void __34__EKCalendar_orderSortDescriptors__block_invoke()
     v6[2] = __20__EKCalendar__reset__block_invoke;
     v6[3] = &unk_1E77FE7D0;
     v6[4] = self;
-    LOBYTE(v3) = [(EKObject *)self _resetIfBackingObjectIsOfClass:v4 fetchResetFrozenObjectBlock:v6];
+    LOBYTE(_reset) = [(EKObject *)self _resetIfBackingObjectIsOfClass:v4 fetchResetFrozenObjectBlock:v6];
   }
 
-  return v3;
+  return _reset;
 }
 
 id __20__EKCalendar__reset__block_invoke(uint64_t a1)
@@ -1032,7 +1032,7 @@ id __20__EKCalendar__reset__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __29__EKCalendar__eventKitBundle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_eventKitBundle_onceToken != -1)
   {
     dispatch_once(&_eventKitBundle_onceToken, block);
@@ -1052,34 +1052,34 @@ uint64_t __29__EKCalendar__eventKitBundle__block_invoke(uint64_t a1)
 
 - (void)assignColorForNewCalendarIfNeeded
 {
-  v3 = [(EKCalendar *)self colorStringRaw];
+  colorStringRaw = [(EKCalendar *)self colorStringRaw];
 
-  if (!v3)
+  if (!colorStringRaw)
   {
-    v4 = [(EKObject *)self eventStore];
-    v6 = [v4 colorStringForNewCalendar];
+    eventStore = [(EKObject *)self eventStore];
+    colorStringForNewCalendar = [eventStore colorStringForNewCalendar];
 
-    v5 = v6;
-    if (v6)
+    v5 = colorStringForNewCalendar;
+    if (colorStringForNewCalendar)
     {
-      [(EKCalendar *)self setColorStringRaw:v6];
+      [(EKCalendar *)self setColorStringRaw:colorStringForNewCalendar];
       [(EKCalendar *)self setColorDisplayOnly:1];
-      v5 = v6;
+      v5 = colorStringForNewCalendar;
     }
   }
 }
 
-- (void)setSymbolicColorName:(id)a3
+- (void)setSymbolicColorName:(id)name
 {
-  v5 = a3;
-  [(EKObject *)self setSingleChangedValue:v5 forKey:*MEMORY[0x1E6992890]];
-  v4 = [EKSymbolicColorToRGBMapping() objectForKey:v5];
+  nameCopy = name;
+  [(EKObject *)self setSingleChangedValue:nameCopy forKey:*MEMORY[0x1E6992890]];
+  v4 = [EKSymbolicColorToRGBMapping() objectForKey:nameCopy];
   if (v4)
   {
     [(EKCalendar *)self setColorStringRaw:v4];
   }
 
-  if (v5 && ([v5 isEqualToString:*MEMORY[0x1E69E4048]] & 1) == 0)
+  if (nameCopy && ([nameCopy isEqualToString:*MEMORY[0x1E69E4048]] & 1) == 0)
   {
     [(EKCalendar *)self _clearCGColorCache];
   }
@@ -1088,63 +1088,63 @@ uint64_t __29__EKCalendar__eventKitBundle__block_invoke(uint64_t a1)
 - (BOOL)isColorDisplayOnly
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992728]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setColorString:(id)a3
+- (void)setColorString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (!stringCopy)
   {
     [(EKCalendar *)self _clearCGColorCache];
-    v4 = 0;
+    stringCopy = 0;
   }
 
-  [(EKCalendar *)self setColorStringRaw:v4];
+  [(EKCalendar *)self setColorStringRaw:stringCopy];
   [(EKCalendar *)self setColorDisplayOnly:0];
   [(EKObject *)self setSingleChangedValue:*MEMORY[0x1E69E4048] forKey:*MEMORY[0x1E6992890]];
 }
 
-- (BOOL)getColorRed:(double *)a3 green:(double *)a4 blue:(double *)a5
+- (BOOL)getColorRed:(double *)red green:(double *)green blue:(double *)blue
 {
-  v8 = [(EKCalendar *)self colorString];
-  v9 = v8;
-  if (v8)
+  colorString = [(EKCalendar *)self colorString];
+  v9 = colorString;
+  if (colorString)
   {
     v13 = 0;
     v11 = 0;
     v12 = 0;
-    sscanf([v8 UTF8String], "#%02X%02X%02X", &v13, &v12, &v11);
-    if (a3)
+    sscanf([colorString UTF8String], "#%02X%02X%02X", &v13, &v12, &v11);
+    if (red)
     {
-      *a3 = (v13 / 255.0);
+      *red = (v13 / 255.0);
     }
 
-    if (a4)
+    if (green)
     {
-      *a4 = (v12 / 255.0);
+      *green = (v12 / 255.0);
     }
 
-    if (a5)
+    if (blue)
     {
-      *a5 = (v11 / 255.0);
+      *blue = (v11 / 255.0);
     }
   }
 
   return v9 != 0;
 }
 
-- (CGColor)_newColorWithAdjustedColorSpaceFromColor:(CGColor *)a3
+- (CGColor)_newColorWithAdjustedColorSpaceFromColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
     return 0;
   }
 
-  ColorSpace = CGColorGetColorSpace(a3);
+  ColorSpace = CGColorGetColorSpace(color);
   if (!ColorSpace)
   {
     v6 = *MEMORY[0x1E695F1C0];
@@ -1160,7 +1160,7 @@ LABEL_9:
     if (v10)
     {
       v11 = v10;
-      CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v10, kCGRenderingIntentDefault, a3, 0);
+      CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v10, kCGRenderingIntentDefault, color, 0);
       CGColorSpaceRelease(v11);
       return CopyByMatchingToColorSpace;
     }
@@ -1168,13 +1168,13 @@ LABEL_9:
     return 0;
   }
 
-  return CGColorCreateCopy(a3);
+  return CGColorCreateCopy(color);
 }
 
 - (void)setCGColor:(CGColorRef)CGColor
 {
-  v5 = [(EKCalendar *)self CGColor];
-  if (v5 != CGColor && ((CGColor == 0) != (v5 == 0) || !CGColorEqualToColor(CGColor, v5)))
+  cGColor = [(EKCalendar *)self CGColor];
+  if (cGColor != CGColor && ((CGColor == 0) != (cGColor == 0) || !CGColorEqualToColor(CGColor, cGColor)))
   {
     v6 = [(EKCalendar *)self _newColorWithAdjustedColorSpaceFromColor:CGColor];
     if (CGColorGetNumberOfComponents(v6) < 3)
@@ -1208,18 +1208,18 @@ LABEL_9:
   }
 }
 
-- (void)_setFlagValue:(BOOL)a3 withMask:(unsigned int)a4
+- (void)_setFlagValue:(BOOL)value withMask:(unsigned int)mask
 {
-  v5 = a3;
-  v7 = [(EKCalendar *)self flags];
-  if (v5)
+  valueCopy = value;
+  flags = [(EKCalendar *)self flags];
+  if (valueCopy)
   {
-    v8 = v7 | a4;
+    v8 = flags | mask;
   }
 
   else
   {
-    v8 = v7 & ~a4;
+    v8 = flags & ~mask;
   }
 
   [(EKCalendar *)self setFlags:v8];
@@ -1227,20 +1227,20 @@ LABEL_9:
 
 - (BOOL)allowsContentModifications
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 skipModificationValidation];
+  eventStore = [(EKObject *)self eventStore];
+  skipModificationValidation = [eventStore skipModificationValidation];
 
-  if (v4 & 1) != 0 || ([MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement])
+  if (skipModificationValidation & 1) != 0 || ([MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement])
   {
     return 1;
   }
 
-  v7 = [(EKObject *)self eventStore];
-  if ([v7 allowsBirthdayModifications])
+  eventStore2 = [(EKObject *)self eventStore];
+  if ([eventStore2 allowsBirthdayModifications])
   {
-    v8 = [(EKCalendar *)self type];
+    type = [(EKCalendar *)self type];
 
-    if (v8 == EKCalendarTypeBirthday)
+    if (type == EKCalendarTypeBirthday)
     {
       return 1;
     }
@@ -1255,9 +1255,9 @@ LABEL_9:
     return 0;
   }
 
-  v9 = [(EKCalendar *)self source];
-  v10 = v9;
-  v5 = !v9 || [v9 isWritable];
+  source = [(EKCalendar *)self source];
+  v10 = source;
+  v5 = !source || [source isWritable];
 
   return v5;
 }
@@ -1265,27 +1265,27 @@ LABEL_9:
 - (int)displayOrder
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992740]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-+ (id)typeDescription:(int64_t)a3
++ (id)typeDescription:(int64_t)description
 {
-  if (a3 >= 7)
+  if (description >= 7)
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Encountered illegal value for EKCalendarType" userInfo:{0, v3, v4}];
     objc_exception_throw(v6);
   }
 
-  return off_1E77FFF50[a3];
+  return off_1E77FFF50[description];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKCalendar *)self title];
+  title = [(EKCalendar *)self title];
   v6 = [objc_opt_class() typeDescription:{-[EKCalendar type](self, "type")}];
   if ([(EKCalendar *)self allowsContentModifications])
   {
@@ -1297,8 +1297,8 @@ LABEL_9:
     v7 = @"NO";
   }
 
-  v8 = [(EKCalendar *)self colorString];
-  v9 = [v3 stringWithFormat:@"%@ <%p> {title = %@ type = %@; allowsModify = %@; color = %@;}", v4, self, v5, v6, v7, v8];;
+  colorString = [(EKCalendar *)self colorString];
+  v9 = [v3 stringWithFormat:@"%@ <%p> {title = %@ type = %@; allowsModify = %@; color = %@;}", v4, self, title, v6, v7, colorString];;
 
   return v9;
 }
@@ -1307,13 +1307,13 @@ LABEL_9:
 {
   v5.receiver = self;
   v5.super_class = EKCalendar;
-  v3 = [(EKObject *)&v5 refresh];
-  if (v3)
+  refresh = [(EKObject *)&v5 refresh];
+  if (refresh)
   {
     [(EKCalendar *)self _clearCGColorCache];
   }
 
-  return v3;
+  return refresh;
 }
 
 - (BOOL)allowsDeletionOrPropertyModifications
@@ -1333,10 +1333,10 @@ LABEL_9:
 {
   if ([(EKCalendar *)self type]== EKCalendarTypeBirthday)
   {
-    v3 = [(EKObject *)self eventStore];
-    v4 = [v3 allowsBirthdayModifications];
+    eventStore = [(EKObject *)self eventStore];
+    allowsBirthdayModifications = [eventStore allowsBirthdayModifications];
 
-    if (v4)
+    if (allowsBirthdayModifications)
     {
       return 0;
     }
@@ -1344,21 +1344,21 @@ LABEL_9:
 
   if ([(EKCalendar *)self type]== (EKCalendarTypeBirthday|EKCalendarTypeExchange))
   {
-    v5 = [(EKObject *)self eventStore];
-    v6 = [v5 allowsIntegrationModifications];
+    eventStore2 = [(EKObject *)self eventStore];
+    allowsIntegrationModifications = [eventStore2 allowsIntegrationModifications];
 
-    if (v6)
+    if (allowsIntegrationModifications)
     {
       return 0;
     }
   }
 
-  v7 = [(EKObject *)self eventStore];
-  if ([v7 eventAccessLevel] == 1)
+  eventStore3 = [(EKObject *)self eventStore];
+  if ([eventStore3 eventAccessLevel] == 1)
   {
-    v8 = [(EKCalendar *)self allowEvents];
+    allowEvents = [(EKCalendar *)self allowEvents];
 
-    if (v8)
+    if (allowEvents)
     {
       return 1;
     }
@@ -1376,19 +1376,19 @@ LABEL_9:
   return [(EKCalendar *)self _flagValueWithMask:4];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4 = *MEMORY[0x1E6992768];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:objc_opt_class()];
+  imageCopy = image;
+  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:imageCopy forKey:v4 frozenClass:objc_opt_class()];
 }
 
-- (BOOL)_validateDeletableWithAllKnownCalendars:(id)a3 error:(id *)a4
+- (BOOL)_validateDeletableWithAllKnownCalendars:(id)calendars error:(id *)error
 {
-  v6 = a3;
-  if ([(EKCalendar *)self _validateDeletableDueToAccessConsent:a4])
+  calendarsCopy = calendars;
+  if ([(EKCalendar *)self _validateDeletableDueToAccessConsent:error])
   {
-    v7 = [(EKCalendar *)self _validateDeletableHelperWithAllKnownCalendars:v6 error:a4];
+    v7 = [(EKCalendar *)self _validateDeletableHelperWithAllKnownCalendars:calendarsCopy error:error];
   }
 
   else
@@ -1399,14 +1399,14 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)_validateDeletableDueToAccessConsent:(id *)a3
+- (BOOL)_validateDeletableDueToAccessConsent:(id *)consent
 {
   if ([(EKCalendar *)self allowEvents])
   {
-    v5 = [(EKObject *)self eventStore];
-    v6 = [v5 eventAccessLevel];
+    eventStore = [(EKObject *)self eventStore];
+    eventAccessLevel = [eventStore eventAccessLevel];
 
-    if (v6 == 2)
+    if (eventAccessLevel == 2)
     {
       return 1;
     }
@@ -1414,10 +1414,10 @@ LABEL_9:
 
   if (![(EKCalendar *)self allowReminders]|| (v7 = 1, [EKEventStore realAuthorizationStatusForEntityType:1]!= 3))
   {
-    if (a3)
+    if (consent)
     {
       [MEMORY[0x1E696ABC0] errorWithEKErrorCode:29];
-      *a3 = v7 = 0;
+      *consent = v7 = 0;
     }
 
     else
@@ -1429,64 +1429,64 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)_validateDeletableHelperWithAllKnownCalendars:(id)a3 error:(id *)a4
+- (BOOL)_validateDeletableHelperWithAllKnownCalendars:(id)calendars error:(id *)error
 {
-  v6 = a3;
+  calendarsCopy = calendars;
   if ([(EKCalendar *)self isMarkedUndeletable])
   {
-    if (a4)
+    if (error)
     {
       v7 = MEMORY[0x1E696ABC0];
       v8 = 54;
 LABEL_4:
       [v7 errorWithEKErrorCode:v8];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
       goto LABEL_37;
     }
 
     goto LABEL_36;
   }
 
-  v10 = [(EKCalendar *)self type];
+  type = [(EKCalendar *)self type];
   v9 = 1;
-  if (v10 > EKCalendarTypeExchange)
+  if (type > EKCalendarTypeExchange)
   {
-    switch(v10)
+    switch(type)
     {
       case EKCalendarTypeSubscription:
         goto LABEL_37;
       case EKCalendarTypeBirthday:
-        v13 = [(EKObject *)self eventStore];
-        v14 = [v13 allowsBirthdayModifications];
+        eventStore = [(EKObject *)self eventStore];
+        allowsBirthdayModifications = [eventStore allowsBirthdayModifications];
         break;
       case EKCalendarTypeBirthday|EKCalendarTypeExchange:
-        v13 = [(EKObject *)self eventStore];
-        v14 = [v13 allowsIntegrationModifications];
+        eventStore = [(EKObject *)self eventStore];
+        allowsBirthdayModifications = [eventStore allowsIntegrationModifications];
         break;
       default:
         goto LABEL_27;
     }
 
-    v9 = v14;
+    v9 = allowsBirthdayModifications;
 
     goto LABEL_37;
   }
 
-  switch(v10)
+  switch(type)
   {
     case EKCalendarTypeLocal:
       goto LABEL_37;
     case EKCalendarTypeCalDAV:
-      v15 = [(EKCalendar *)self source];
-      if (v15)
+      source = [(EKCalendar *)self source];
+      if (source)
       {
-        v16 = v15;
-        v17 = [(EKCalendar *)self source];
-        v18 = [v17 isWritable];
+        v16 = source;
+        source2 = [(EKCalendar *)self source];
+        isWritable = [source2 isWritable];
 
-        if ((v18 & 1) == 0)
+        if ((isWritable & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v7 = MEMORY[0x1E696ABC0];
             v8 = 56;
@@ -1497,16 +1497,16 @@ LABEL_4:
         }
       }
 
-      v19 = [(EKCalendar *)self source];
-      if (v19)
+      source3 = [(EKCalendar *)self source];
+      if (source3)
       {
-        v20 = v19;
-        v21 = [(EKCalendar *)self source];
-        v22 = [v21 allowsCalendarAddDeleteModify];
+        v20 = source3;
+        source4 = [(EKCalendar *)self source];
+        allowsCalendarAddDeleteModify = [source4 allowsCalendarAddDeleteModify];
 
-        if ((v22 & 1) == 0)
+        if ((allowsCalendarAddDeleteModify & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v7 = MEMORY[0x1E696ABC0];
             v8 = 52;
@@ -1519,12 +1519,12 @@ LABEL_4:
 
       break;
     case EKCalendarTypeExchange:
-      v11 = [(EKCalendar *)self source];
-      v12 = [v11 isDelegate];
+      source5 = [(EKCalendar *)self source];
+      isDelegate = [source5 isDelegate];
 
-      if (v12)
+      if (isDelegate)
       {
-        if (a4)
+        if (error)
         {
           v7 = MEMORY[0x1E696ABC0];
           v8 = 55;
@@ -1538,7 +1538,7 @@ LABEL_36:
 
       if ([(EKCalendar *)self isDefaultSchedulingCalendar])
       {
-        if (a4)
+        if (error)
         {
           v7 = MEMORY[0x1E696ABC0];
           v8 = 53;
@@ -1564,7 +1564,7 @@ LABEL_27:
     goto LABEL_33;
   }
 
-  if ([(EKCalendar *)self _anotherCalendarForDefaultSchedulingExistsWithAllKnownCalendars:v6])
+  if ([(EKCalendar *)self _anotherCalendarForDefaultSchedulingExistsWithAllKnownCalendars:calendarsCopy])
   {
     v23 = 0;
 LABEL_33:
@@ -1572,10 +1572,10 @@ LABEL_33:
     goto LABEL_42;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithEKErrorCode:51];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -1592,12 +1592,12 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if (![(EKCalendar *)self _anotherCalendarForRemindersExistsWithAllKnownCalendars:v6])
+  if (![(EKCalendar *)self _anotherCalendarForRemindersExistsWithAllKnownCalendars:calendarsCopy])
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithEKErrorCode:57];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -1612,8 +1612,8 @@ LABEL_48:
 LABEL_49:
   if ([(EKCalendar *)self allowEvents])
   {
-    v26 = [(EKCalendar *)self allowReminders];
-    if ((v23 | v25) == 1 && v26 && os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
+    allowReminders = [(EKCalendar *)self allowReminders];
+    if ((v23 | v25) == 1 && allowReminders && os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
       [EKCalendar _validateDeletableHelperWithAllKnownCalendars:error:];
     }
@@ -1641,13 +1641,13 @@ LABEL_37:
     v3 |= 0x10uLL;
   }
 
-  v4 = [(EKCalendar *)self source];
-  if ([v4 sourceType])
+  source = [(EKCalendar *)self source];
+  if ([source sourceType])
   {
-    v5 = [(EKCalendar *)self source];
-    v6 = [v5 sourceType];
+    source2 = [(EKCalendar *)self source];
+    sourceType = [source2 sourceType];
 
-    if (v6 != 2)
+    if (sourceType != 2)
     {
       return v3;
     }
@@ -1657,8 +1657,8 @@ LABEL_37:
   {
   }
 
-  v7 = [(EKObject *)self eventStore];
-  v8 = [v7 futureScheduledEventsExistOnCalendar:self];
+  eventStore = [(EKObject *)self eventStore];
+  v8 = [eventStore futureScheduledEventsExistOnCalendar:self];
 
   if (v8)
   {
@@ -1670,8 +1670,8 @@ LABEL_37:
     v9 = v3;
   }
 
-  v10 = [(EKObject *)self eventStore];
-  v11 = [v10 eventsExistOnCalendar:self];
+  eventStore2 = [(EKObject *)self eventStore];
+  v11 = [eventStore2 eventsExistOnCalendar:self];
 
   if (v11)
   {
@@ -1685,8 +1685,8 @@ LABEL_37:
 
   if ([(EKCalendar *)self sharingStatus]!= 2)
   {
-    v12 = [(EKObject *)self eventStore];
-    v13 = [v12 eventsMarkedScheduleAgentClientExistOnCalendar:self];
+    eventStore3 = [(EKObject *)self eventStore];
+    v13 = [eventStore3 eventsMarkedScheduleAgentClientExistOnCalendar:self];
 
     if (v13)
     {
@@ -1697,31 +1697,31 @@ LABEL_37:
   return v3;
 }
 
-- (BOOL)canMergeWithCalendar:(id)a3
+- (BOOL)canMergeWithCalendar:(id)calendar
 {
-  v4 = a3;
-  if (self == v4 || (-[EKObject uniqueIdentifier](self, "uniqueIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), -[EKObject uniqueIdentifier](v4, "uniqueIdentifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqualToString:v6], v6, v5, v7))
+  calendarCopy = calendar;
+  if (self == calendarCopy || (-[EKObject uniqueIdentifier](self, "uniqueIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), -[EKObject uniqueIdentifier](calendarCopy, "uniqueIdentifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqualToString:v6], v6, v5, v7))
   {
     v8 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
     {
-      [(EKCalendar *)v8 canMergeWithCalendar:v4];
+      [(EKCalendar *)v8 canMergeWithCalendar:calendarCopy];
     }
   }
 
   else
   {
-    v11 = [(EKCalendar *)self source];
-    v12 = [v11 uniqueIdentifier];
-    v13 = [(EKCalendar *)v4 source];
-    v14 = [v13 uniqueIdentifier];
-    v15 = [v12 isEqualToString:v14];
+    source = [(EKCalendar *)self source];
+    uniqueIdentifier = [source uniqueIdentifier];
+    source2 = [(EKCalendar *)calendarCopy source];
+    uniqueIdentifier2 = [source2 uniqueIdentifier];
+    v15 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
 
     if (v15)
     {
       if ([(EKCalendar *)self allowsContentModifications])
       {
-        if ([(EKCalendar *)v4 allowsContentModifications])
+        if ([(EKCalendar *)calendarCopy allowsContentModifications])
         {
           if ([(EKCalendar *)self sharingStatus]== 2)
           {
@@ -1739,7 +1739,7 @@ LABEL_37:
             }
           }
 
-          else if ([(EKCalendar *)self allowsScheduling]|| ![(EKCalendar *)v4 sharingStatus]|| [(EKCalendar *)self sharingStatus])
+          else if ([(EKCalendar *)self allowsScheduling]|| ![(EKCalendar *)calendarCopy sharingStatus]|| [(EKCalendar *)self sharingStatus])
           {
             if ([(EKCalendar *)self isDeletable])
             {
@@ -1758,7 +1758,7 @@ LABEL_37:
             v17 = EKLogHandle;
             if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
             {
-              [(EKCalendar *)v17 canMergeWithCalendar:v4];
+              [(EKCalendar *)v17 canMergeWithCalendar:calendarCopy];
             }
           }
         }
@@ -1780,7 +1780,7 @@ LABEL_37:
       v16 = EKLogHandle;
       if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
       {
-        [(EKCalendar *)v16 canMergeWithCalendar:v4];
+        [(EKCalendar *)v16 canMergeWithCalendar:calendarCopy];
       }
     }
   }
@@ -1793,10 +1793,10 @@ LABEL_6:
 
 - (BOOL)eligibleForDefaultSchedulingCalendar
 {
-  v3 = [(EKCalendar *)self type];
-  if (v3 > EKCalendarTypeExchange)
+  type = [(EKCalendar *)self type];
+  if (type > EKCalendarTypeExchange)
   {
-    if ((v3 - 3) >= 2)
+    if ((type - 3) >= 2)
     {
       goto LABEL_13;
     }
@@ -1804,24 +1804,24 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (v3)
+  if (type)
   {
-    if (v3 != EKCalendarTypeCalDAV)
+    if (type != EKCalendarTypeCalDAV)
     {
-      if (v3 == EKCalendarTypeExchange)
+      if (type == EKCalendarTypeExchange)
       {
         goto LABEL_5;
       }
 
 LABEL_13:
-      LOBYTE(v4) = 1;
-      return v4;
+      LOBYTE(allowEvents) = 1;
+      return allowEvents;
     }
 
-    v4 = [(EKCalendar *)self allowEvents];
-    if (!v4)
+    allowEvents = [(EKCalendar *)self allowEvents];
+    if (!allowEvents)
     {
-      return v4;
+      return allowEvents;
     }
 
     if ([(EKCalendar *)self sharingStatus]!= 2)
@@ -1830,19 +1830,19 @@ LABEL_13:
     }
 
 LABEL_9:
-    LOBYTE(v4) = 0;
-    return v4;
+    LOBYTE(allowEvents) = 0;
+    return allowEvents;
   }
 
 LABEL_5:
 
-  LOBYTE(v4) = [(EKCalendar *)self allowsScheduling];
-  return v4;
+  LOBYTE(allowEvents) = [(EKCalendar *)self allowsScheduling];
+  return allowEvents;
 }
 
-- (BOOL)_anotherCalendarForDefaultSchedulingExistsWithAllKnownCalendars:(id)a3
+- (BOOL)_anotherCalendarForDefaultSchedulingExistsWithAllKnownCalendars:(id)calendars
 {
-  v4 = a3;
+  calendarsCopy = calendars;
   if ([(EKCalendar *)self isDefaultSchedulingCalendar])
   {
     v5 = &__block_literal_global_115;
@@ -1853,34 +1853,34 @@ LABEL_5:
     v5 = &__block_literal_global_117;
   }
 
-  v6 = [(EKCalendar *)self _anyCalendarExistsInSameSourceOfType:0 withAllKnownCalendars:v4 passingTest:v5];
+  v6 = [(EKCalendar *)self _anyCalendarExistsInSameSourceOfType:0 withAllKnownCalendars:calendarsCopy passingTest:v5];
 
   return v6;
 }
 
-- (BOOL)_anyCalendarExistsInSameSourceOfType:(unint64_t)a3 withAllKnownCalendars:(id)a4 passingTest:(id)a5
+- (BOOL)_anyCalendarExistsInSameSourceOfType:(unint64_t)type withAllKnownCalendars:(id)calendars passingTest:(id)test
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v23 = a5;
-  v9 = [(EKCalendar *)self source];
-  if (!v8)
+  calendarsCopy = calendars;
+  testCopy = test;
+  source = [(EKCalendar *)self source];
+  if (!calendarsCopy)
   {
-    v10 = [(EKObject *)self eventStore];
-    v8 = [v10 _allCalendars];
+    eventStore = [(EKObject *)self eventStore];
+    calendarsCopy = [eventStore _allCalendars];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = v8;
+  v11 = calendarsCopy;
   v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v25;
-    v22 = (v23 + 2);
+    v22 = (testCopy + 2);
 LABEL_5:
     v15 = 0;
     while (1)
@@ -1891,17 +1891,17 @@ LABEL_5:
       }
 
       v16 = *(*(&v24 + 1) + 8 * v15);
-      v17 = [v16 source];
-      v18 = [v17 isEqual:v9];
+      source2 = [v16 source];
+      v18 = [source2 isEqual:source];
 
       if (v18)
       {
-        if (a3)
+        if (type)
         {
-          if (a3 == 1 && ([v16 allowReminders] & 1) != 0)
+          if (type == 1 && ([v16 allowReminders] & 1) != 0)
           {
 LABEL_14:
-            if ([v16 isEqual:self] & 1) == 0 && (v23[2](v23, v16))
+            if ([v16 isEqual:self] & 1) == 0 && (testCopy[2](testCopy, v16))
             {
               v19 = 1;
               goto LABEL_20;
@@ -1938,63 +1938,63 @@ LABEL_20:
 - (unint64_t)sharingStatus
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992868]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)setSharingStatus:(unint64_t)a3
+- (void)setSharingStatus:(unint64_t)status
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:status];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E6992868]];
 }
 
 - (unint64_t)invitationStatus
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992770]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)setInvitationStatus:(unint64_t)a3
+- (void)setInvitationStatus:(unint64_t)status
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:status];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E6992770]];
 }
 
 - (void)clearInvitationStatus
 {
-  v2 = [(EKObject *)self persistentObject];
-  [v2 unloadPropertyForKey:*MEMORY[0x1E6992770]];
+  persistentObject = [(EKObject *)self persistentObject];
+  [persistentObject unloadPropertyForKey:*MEMORY[0x1E6992770]];
 }
 
-- (void)setSharingInvitationResponse:(unint64_t)a3
+- (void)setSharingInvitationResponse:(unint64_t)response
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:response];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E6992860]];
 }
 
 - (unint64_t)sharingInvitationResponse
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992860]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)setSharedOwnerURL:(id)a3
+- (void)setSharedOwnerURL:(id)l
 {
-  v4 = [a3 absoluteString];
-  [(EKCalendar *)self setSharedOwnerURLString:v4];
+  absoluteString = [l absoluteString];
+  [(EKCalendar *)self setSharedOwnerURLString:absoluteString];
 }
 
 - (id)sharedOwnerURL
 {
-  v2 = [(EKCalendar *)self sharedOwnerURLString];
-  if (v2)
+  sharedOwnerURLString = [(EKCalendar *)self sharedOwnerURLString];
+  if (sharedOwnerURLString)
   {
-    v3 = [MEMORY[0x1E695DFF8] URLWithString:v2];
+    v3 = [MEMORY[0x1E695DFF8] URLWithString:sharedOwnerURLString];
   }
 
   else
@@ -2005,34 +2005,34 @@ LABEL_20:
   return v3;
 }
 
-- (void)setSharedOwnerAddress:(id)a3
+- (void)setSharedOwnerAddress:(id)address
 {
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:a3];
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:address];
   [(EKCalendar *)self setSharedOwnerURL:v4];
 }
 
 - (id)sharedOwnerAddress
 {
-  v2 = [(EKCalendar *)self sharedOwnerURL];
-  v3 = [v2 absoluteString];
+  sharedOwnerURL = [(EKCalendar *)self sharedOwnerURL];
+  absoluteString = [sharedOwnerURL absoluteString];
 
-  return v3;
+  return absoluteString;
 }
 
 - (id)sharedOwnerEmail
 {
-  v2 = [(EKCalendar *)self sharedOwnerURL];
-  v3 = [v2 cal_emailAddressString];
+  sharedOwnerURL = [(EKCalendar *)self sharedOwnerURL];
+  cal_emailAddressString = [sharedOwnerURL cal_emailAddressString];
 
-  return v3;
+  return cal_emailAddressString;
 }
 
 - (id)sharedOwnerPhoneNumber
 {
-  v2 = [(EKCalendar *)self sharedOwnerURL];
-  v3 = [v2 cal_phoneNumberString];
+  sharedOwnerURL = [(EKCalendar *)self sharedOwnerURL];
+  cal_phoneNumberString = [sharedOwnerURL cal_phoneNumberString];
 
-  return v3;
+  return cal_phoneNumberString;
 }
 
 - (id)cachedExternalInfo
@@ -2091,17 +2091,17 @@ LABEL_12:
   return v4;
 }
 
-- (void)setCachedExternalInfo:(id)a3
+- (void)setCachedExternalInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v7 = 0;
     goto LABEL_5;
   }
 
   v8 = 0;
-  v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:200 options:0 error:&v8];
+  v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:infoCopy format:200 options:0 error:&v8];
   v6 = v8;
   v7 = v6;
   if (v5)
@@ -2109,7 +2109,7 @@ LABEL_12:
 
     v7 = v5;
 LABEL_5:
-    [(EKObject *)self setCachedValue:v4 forKey:@"cachedExternalInfoDictionary"];
+    [(EKObject *)self setCachedValue:infoCopy forKey:@"cachedExternalInfoDictionary"];
     [(EKCalendar *)self setCachedExternalInfoData:v7];
     goto LABEL_8;
   }
@@ -2122,14 +2122,14 @@ LABEL_5:
 LABEL_8:
 }
 
-- (id)externalInfoForKey:(id)a3
+- (id)externalInfoForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(EKCalendar *)self cachedExternalInfo];
-  v6 = v5;
-  if (v5)
+  keyCopy = key;
+  cachedExternalInfo = [(EKCalendar *)self cachedExternalInfo];
+  v6 = cachedExternalInfo;
+  if (cachedExternalInfo)
   {
-    v7 = [v5 objectForKeyedSubscript:v4];
+    v7 = [cachedExternalInfo objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -2143,15 +2143,15 @@ LABEL_8:
 - (id)sharedOwnerAddressesWithoutScheme
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(EKCalendar *)self sharedOwnerAddresses];
-  if (v2)
+  sharedOwnerAddresses = [(EKCalendar *)self sharedOwnerAddresses];
+  if (sharedOwnerAddresses)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = v2;
+    v4 = sharedOwnerAddresses;
     v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
@@ -2169,19 +2169,19 @@ LABEL_8:
           v9 = *(*(&v14 + 1) + 8 * i);
           if ([v9 hasMailto])
           {
-            v10 = [v9 stringRemovingMailto];
+            stringRemovingMailto = [v9 stringRemovingMailto];
 
-            v9 = v10;
+            v9 = stringRemovingMailto;
           }
 
           if ([v9 hasTel])
           {
-            v11 = [v9 stringRemovingTel];
+            stringRemovingTel = [v9 stringRemovingTel];
 
-            v9 = v11;
+            v9 = stringRemovingTel;
           }
 
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -2193,20 +2193,20 @@ LABEL_8:
 
   else
   {
-    v3 = 0;
+    array = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 - (id)publishURL
 {
-  v2 = [(EKCalendar *)self publishURLString];
-  if (v2)
+  publishURLString = [(EKCalendar *)self publishURLString];
+  if (publishURLString)
   {
-    v3 = [MEMORY[0x1E695DFF8] URLWithString:v2];
+    v3 = [MEMORY[0x1E695DFF8] URLWithString:publishURLString];
   }
 
   else
@@ -2217,18 +2217,18 @@ LABEL_8:
   return v3;
 }
 
-- (void)setPublishURL:(id)a3
+- (void)setPublishURL:(id)l
 {
-  v4 = [a3 absoluteString];
-  [(EKCalendar *)self setPublishURLString:v4];
+  absoluteString = [l absoluteString];
+  [(EKCalendar *)self setPublishURLString:absoluteString];
 }
 
 - (BOOL)isPublished
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992778]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)canBeShared
@@ -2236,10 +2236,10 @@ LABEL_8:
   v3 = [(EKCalendar *)self _flagValueWithMask:2048];
   if (v3)
   {
-    v4 = [(EKCalendar *)self source];
-    v5 = [v4 supportsSharedCalendars];
+    source = [(EKCalendar *)self source];
+    supportsSharedCalendars = [source supportsSharedCalendars];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = supportsSharedCalendars;
   }
 
   return v3;
@@ -2248,57 +2248,57 @@ LABEL_8:
 - (int64_t)maxAttendees
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E69927A0]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setMaxAttendees:(int64_t)a3
+- (void)setMaxAttendees:(int64_t)attendees
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:attendees];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E69927A0]];
 }
 
 - (BOOL)isMutableSuggestionsCalendar
 {
-  v3 = [(EKCalendar *)self isSuggestedEventCalendar];
-  if (v3)
+  isSuggestedEventCalendar = [(EKCalendar *)self isSuggestedEventCalendar];
+  if (isSuggestedEventCalendar)
   {
-    v4 = [(EKObject *)self eventStore];
-    v5 = [v4 canModifySuggestedEventCalendar];
+    eventStore = [(EKObject *)self eventStore];
+    canModifySuggestedEventCalendar = [eventStore canModifySuggestedEventCalendar];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isSuggestedEventCalendar) = canModifySuggestedEventCalendar;
   }
 
-  return v3;
+  return isSuggestedEventCalendar;
 }
 
 - (BOOL)isMutableNaturalLanguageSuggestionsCalendar
 {
-  v3 = [(EKCalendar *)self isNaturalLanguageSuggestedEventCalendar];
-  if (v3)
+  isNaturalLanguageSuggestedEventCalendar = [(EKCalendar *)self isNaturalLanguageSuggestedEventCalendar];
+  if (isNaturalLanguageSuggestedEventCalendar)
   {
-    v4 = [(EKObject *)self eventStore];
-    v5 = [v4 canModifySuggestedEventCalendar];
+    eventStore = [(EKObject *)self eventStore];
+    canModifySuggestedEventCalendar = [eventStore canModifySuggestedEventCalendar];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isNaturalLanguageSuggestedEventCalendar) = canModifySuggestedEventCalendar;
   }
 
-  return v3;
+  return isNaturalLanguageSuggestedEventCalendar;
 }
 
 - (BOOL)allowsIgnoringSharedEventChangeNotifications
 {
-  v2 = [(EKCalendar *)self sharees];
-  v3 = [v2 count] != 0;
+  sharees = [(EKCalendar *)self sharees];
+  v3 = [sharees count] != 0;
 
   return v3;
 }
 
 - (int)migrationVersion
 {
-  v2 = [(EKCalendar *)self externalRepresentation];
-  v3 = [MEMORY[0x1E6993078] dictionaryWithExternalRepresentationData:v2];
+  externalRepresentation = [(EKCalendar *)self externalRepresentation];
+  v3 = [MEMORY[0x1E6993078] dictionaryWithExternalRepresentationData:externalRepresentation];
   v4 = [MEMORY[0x1E6993078] migrationVersionFromDictionary:v3];
 
   return v4;
@@ -2306,15 +2306,15 @@ LABEL_8:
 
 - (id)externalURI
 {
-  v2 = [(EKCalendar *)self calendarIdentifier];
-  if (v2)
+  calendarIdentifier = [(EKCalendar *)self calendarIdentifier];
+  if (calendarIdentifier)
   {
     if (externalURI_onceToken_0 != -1)
     {
       [EKCalendar externalURI];
     }
 
-    v3 = [v2 stringByAddingPercentEncodingWithAllowedCharacters:externalURI_allowedCharacters_0];
+    v3 = [calendarIdentifier stringByAddingPercentEncodingWithAllowedCharacters:externalURI_allowedCharacters_0];
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"x-apple-calendar://%@", v3];
     v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
   }
@@ -2340,8 +2340,8 @@ void __25__EKCalendar_externalURI__block_invoke()
 
 - (id)constraints
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 cachedConstraintsForCalendar:self];
+  eventStore = [(EKObject *)self eventStore];
+  v4 = [eventStore cachedConstraintsForCalendar:self];
 
   return v4;
 }
@@ -2352,39 +2352,39 @@ void __25__EKCalendar_externalURI__block_invoke()
   v5 = source;
   [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:+[EKSource frozenClass]];
   [(EKCalendar *)self setCanBeShared:[(EKSource *)v5 supportsSharedCalendars]];
-  v6 = [(EKSource *)v5 supportsSharedCalendars];
+  supportsSharedCalendars = [(EKSource *)v5 supportsSharedCalendars];
 
-  [(EKCalendar *)self setCanBePublished:v6];
+  [(EKCalendar *)self setCanBePublished:supportsSharedCalendars];
   if (([(EKCalendar *)self allowedEntityTypes]& 2) != 0 && CalIsReminderBridgeEnabled())
   {
-    v12 = [(EKCalendar *)self source];
-    v7 = [v12 backingObject];
+    source = [(EKCalendar *)self source];
+    backingObject = [source backingObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
-      v9 = [(EKObject *)self eventStore];
-      v10 = [v9 reminderSourceForEventSource:v8];
+      v8 = backingObject;
+      eventStore = [(EKObject *)self eventStore];
+      v10 = [eventStore reminderSourceForEventSource:v8];
 
       if (v10)
       {
-        v11 = [v10 frozenObject];
-        [v8 setReminderSource:v11];
+        frozenObject = [v10 frozenObject];
+        [v8 setReminderSource:frozenObject];
       }
     }
   }
 }
 
-- (void)setAllowedEntityTypes:(unint64_t)a3
+- (void)setAllowedEntityTypes:(unint64_t)types
 {
-  if (a3 == 2)
+  if (types == 2)
   {
     v3 = 8;
   }
 
   else
   {
-    v3 = 4 * (a3 == 1);
+    v3 = 4 * (types == 1);
   }
 
   [(EKCalendar *)self setAllowedEntities:v3];
@@ -2396,20 +2396,20 @@ void __25__EKCalendar_externalURI__block_invoke()
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 connection];
-  v5 = [v4 CADOperationProxySync];
-  v6 = [(EKObject *)self CADObjectID];
+  eventStore = [(EKObject *)self eventStore];
+  connection = [eventStore connection];
+  cADOperationProxySync = [connection CADOperationProxySync];
+  cADObjectID = [(EKObject *)self CADObjectID];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __23__EKCalendar_hasEvents__block_invoke;
   v8[3] = &unk_1E77FFEA0;
   v8[4] = &v9;
-  [v5 CADCalendar:v6 hasEvents:v8];
+  [cADOperationProxySync CADCalendar:cADObjectID hasEvents:v8];
 
-  LOBYTE(v3) = *(v10 + 24);
+  LOBYTE(eventStore) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v3;
+  return eventStore;
 }
 
 void __23__EKCalendar_hasEvents__block_invoke(uint64_t a1, uint64_t a2, char a3)
@@ -2432,20 +2432,20 @@ void __23__EKCalendar_hasEvents__block_invoke(uint64_t a1, uint64_t a2, char a3)
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 connection];
-  v5 = [v4 CADOperationProxySync];
-  v6 = [(EKObject *)self CADObjectID];
+  eventStore = [(EKObject *)self eventStore];
+  connection = [eventStore connection];
+  cADOperationProxySync = [connection CADOperationProxySync];
+  cADObjectID = [(EKObject *)self CADObjectID];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__EKCalendar_hasEventsWithRoomAsAttendee__block_invoke;
   v8[3] = &unk_1E77FFEA0;
   v8[4] = &v9;
-  [v5 CADCalendar:v6 hasEventsWithRoomAsAttendee:v8];
+  [cADOperationProxySync CADCalendar:cADObjectID hasEventsWithRoomAsAttendee:v8];
 
-  LOBYTE(v3) = *(v10 + 24);
+  LOBYTE(eventStore) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v3;
+  return eventStore;
 }
 
 void __41__EKCalendar_hasEventsWithRoomAsAttendee__block_invoke(uint64_t a1, uint64_t a2, char a3)
@@ -2469,18 +2469,18 @@ void __41__EKCalendar_hasEventsWithRoomAsAttendee__block_invoke(uint64_t a1, uin
     return 0;
   }
 
-  v3 = [(EKCalendar *)self constraints];
-  v4 = [v3 canSetAvailability];
+  constraints = [(EKCalendar *)self constraints];
+  canSetAvailability = [constraints canSetAvailability];
 
-  if (!v4)
+  if (!canSetAvailability)
   {
     return 0;
   }
 
-  v5 = [(EKCalendar *)self constraints];
-  v6 = [v5 eventAvailabilityLimited];
+  constraints2 = [(EKCalendar *)self constraints];
+  eventAvailabilityLimited = [constraints2 eventAvailabilityLimited];
 
-  if (v6)
+  if (eventAvailabilityLimited)
   {
     return 3;
   }
@@ -2494,18 +2494,18 @@ void __41__EKCalendar_hasEventsWithRoomAsAttendee__block_invoke(uint64_t a1, uin
 - (int)refreshInterval
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992810]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)setLastSyncError:(unint64_t)a3 userInfo:(id)a4
+- (void)setLastSyncError:(unint64_t)error userInfo:(id)info
 {
-  v6 = a4;
-  v8 = v6;
-  if (a3 || v6)
+  infoCopy = info;
+  v8 = infoCopy;
+  if (error || infoCopy)
   {
-    v7 = [[EKSyncError alloc] initWithAccountError:a3 userInfo:v6];
+    v7 = [[EKSyncError alloc] initWithAccountError:error userInfo:infoCopy];
     [(EKCalendar *)self setSyncError:v7];
   }
 
@@ -2517,53 +2517,53 @@ void __41__EKCalendar_hasEventsWithRoomAsAttendee__block_invoke(uint64_t a1, uin
 
 - (id)lastSyncErrorUserInfo
 {
-  v2 = [(EKCalendar *)self syncError];
-  v3 = [v2 userInfo];
+  syncError = [(EKCalendar *)self syncError];
+  userInfo = [syncError userInfo];
 
-  return v3;
+  return userInfo;
 }
 
-- (void)setSyncError:(id)a3
+- (void)setSyncError:(id)error
 {
   v4 = *MEMORY[0x1E6992898];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:+[EKSyncError frozenClass]];
+  errorCopy = error;
+  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:errorCopy forKey:v4 frozenClass:+[EKSyncError frozenClass]];
 }
 
 - (id)calendarError
 {
-  v3 = [(EKCalendar *)self syncError];
-  v4 = v3;
-  if (v3)
+  syncError = [(EKCalendar *)self syncError];
+  v4 = syncError;
+  if (syncError)
   {
-    v5 = [v3 errorType];
-    v6 = [v4 errorCode];
-    v7 = v6;
-    if (v5 == 2)
+    errorType = [syncError errorType];
+    errorCode = [v4 errorCode];
+    v7 = errorCode;
+    if (errorType == 2)
     {
-      if (v6)
+      if (errorCode)
       {
         v8 = kEKCalendarErrorDomain;
         goto LABEL_8;
       }
     }
 
-    else if (v5)
+    else if (errorType)
     {
       v13 = EKLogHandle;
       if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
       {
-        [(EKCalendar *)v5 calendarError];
+        [(EKCalendar *)errorType calendarError];
       }
     }
 
-    else if (v6)
+    else if (errorCode)
     {
       v8 = kEKAccountErrorDomain;
 LABEL_8:
       v9 = *v8;
-      v10 = [v4 userInfo];
-      v11 = [EKSyncError augmentSyncErrorUserInfo:v10 for:self];
+      userInfo = [v4 userInfo];
+      v11 = [EKSyncError augmentSyncErrorUserInfo:userInfo for:self];
 
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:v9 code:v7 userInfo:v11];
 
@@ -2579,21 +2579,21 @@ LABEL_12:
 
 - (BOOL)isSyncing
 {
-  v3 = [(EKCalendar *)self lastSyncStartDate];
-  v4 = [(EKCalendar *)self lastSyncEndDate];
-  v5 = v4;
-  if (v3)
+  lastSyncStartDate = [(EKCalendar *)self lastSyncStartDate];
+  lastSyncEndDate = [(EKCalendar *)self lastSyncEndDate];
+  v5 = lastSyncEndDate;
+  if (lastSyncStartDate)
   {
-    if (!v4)
+    if (!lastSyncEndDate)
     {
       v6 = 1;
       goto LABEL_7;
     }
 
-    if (([v3 isEqualToDate:v4] & 1) == 0)
+    if (([lastSyncStartDate isEqualToDate:lastSyncEndDate] & 1) == 0)
     {
-      v7 = [v3 laterDate:v5];
-      v6 = [v7 isEqualToDate:v3];
+      v7 = [lastSyncStartDate laterDate:v5];
+      v6 = [v7 isEqualToDate:lastSyncStartDate];
 
       goto LABEL_7;
     }
@@ -2605,28 +2605,28 @@ LABEL_7:
   return v6;
 }
 
-- (void)moveSubscribedCalendarToSource:(id)a3
+- (void)moveSubscribedCalendarToSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__20;
   v21 = __Block_byref_object_dispose__20;
   v22 = 0;
-  v5 = [(EKObject *)self eventStore];
-  v6 = [v5 connection];
-  v7 = [v6 CADOperationProxySync];
-  v8 = [(EKObject *)self CADObjectID];
-  v9 = [v4 CADObjectID];
+  eventStore = [(EKObject *)self eventStore];
+  connection = [eventStore connection];
+  cADOperationProxySync = [connection CADOperationProxySync];
+  cADObjectID = [(EKObject *)self CADObjectID];
+  cADObjectID2 = [sourceCopy CADObjectID];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __45__EKCalendar_moveSubscribedCalendarToSource___block_invoke;
   v14 = &unk_1E77FFEC8;
   v16 = &v17;
-  v10 = v5;
+  v10 = eventStore;
   v15 = v10;
-  [v7 CADDatabaseMigrateSubscribedCalendar:v8 toSource:v9 reply:&v11];
+  [cADOperationProxySync CADDatabaseMigrateSubscribedCalendar:cADObjectID toSource:cADObjectID2 reply:&v11];
 
   if (v18[5])
   {
@@ -2660,15 +2660,15 @@ void __45__EKCalendar_moveSubscribedCalendarToSource___block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)removeServerRefreshRelatedPropertiesForSelfAndAllEventsSaveAndCommitWithError:(id *)a3
+- (BOOL)removeServerRefreshRelatedPropertiesForSelfAndAllEventsSaveAndCommitWithError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   [(EKCalendar *)self setExternalModificationTag:0];
   [(EKCalendar *)self setDigest:0];
   [(EKCalendar *)self setRefreshDate:0];
-  v5 = [(EKObject *)self eventStore];
-  v6 = [v5 predicateForCalendarItemsOfType:1 inCalendar:self];
-  [v5 eventsMatchingPredicate:v6];
+  eventStore = [(EKObject *)self eventStore];
+  v6 = [eventStore predicateForCalendarItemsOfType:1 inCalendar:self];
+  [eventStore eventsMatchingPredicate:v6];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -2677,7 +2677,7 @@ void __45__EKCalendar_moveSubscribedCalendarToSource___block_invoke(uint64_t a1,
   if (v8)
   {
     v9 = v8;
-    v23 = a3;
+    errorCopy = error;
     v10 = 0;
     v11 = *v28;
     while (2)
@@ -2694,7 +2694,7 @@ void __45__EKCalendar_moveSubscribedCalendarToSource___block_invoke(uint64_t a1,
         v14 = *(*(&v27 + 1) + 8 * v12);
         [v14 removeServerRefreshRelatedProperties];
         v26 = v13;
-        v15 = [v5 saveEvent:v14 span:3 commit:0 error:&v26];
+        v15 = [eventStore saveEvent:v14 span:3 commit:0 error:&v26];
         v10 = v26;
 
         if ((v15 & 1) == 0)
@@ -2723,12 +2723,12 @@ void __45__EKCalendar_moveSubscribedCalendarToSource___block_invoke(uint64_t a1,
 
 LABEL_12:
 
-    a3 = v23;
+    error = errorCopy;
     if (v10)
     {
 LABEL_20:
-      [v5 rollback];
-      if (!a3)
+      [eventStore rollback];
+      if (!error)
       {
 LABEL_24:
         v19 = 0;
@@ -2738,7 +2738,7 @@ LABEL_24:
 LABEL_21:
       v20 = v10;
       v19 = 0;
-      *a3 = v10;
+      *error = v10;
       goto LABEL_25;
     }
   }
@@ -2748,7 +2748,7 @@ LABEL_21:
   }
 
   v25 = 0;
-  v16 = [v5 saveCalendar:self commit:0 error:&v25];
+  v16 = [eventStore saveCalendar:self commit:0 error:&v25];
   v17 = v25;
   v10 = v17;
   if ((v16 & 1) == 0)
@@ -2762,20 +2762,20 @@ LABEL_21:
   }
 
   v24 = 0;
-  v18 = [v5 commitWithRollback:&v24];
+  v18 = [eventStore commitWithRollback:&v24];
   v10 = v24;
   if ((v18 & 1) == 0)
   {
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
       [EKCalendar removeServerRefreshRelatedPropertiesForSelfAndAllEventsSaveAndCommitWithError:];
-      if (!a3)
+      if (!error)
       {
         goto LABEL_24;
       }
     }
 
-    else if (!a3)
+    else if (!error)
     {
       goto LABEL_24;
     }
@@ -2806,29 +2806,29 @@ LABEL_25:
   return v3;
 }
 
-- (void)setSharees:(id)a3
+- (void)setSharees:(id)sharees
 {
   v4 = *MEMORY[0x1E6992858];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedMultiRelationObjects:v5 forKey:v4];
+  shareesCopy = sharees;
+  [(EKObject *)self updateMeltedAndCachedMultiRelationObjects:shareesCopy forKey:v4];
   v6 = MEMORY[0x1E696AD98];
-  v7 = [v5 count];
+  v7 = [shareesCopy count];
 
   v8 = [v6 numberWithInt:v7 != 0];
   [(EKObject *)self setCachedValue:v8 forKey:v4];
 }
 
-- (void)addSharee:(id)a3
+- (void)addSharee:(id)sharee
 {
-  [(EKObject *)self addCachedMeltedObject:a3 forMultiValueKey:*MEMORY[0x1E6992858]];
+  [(EKObject *)self addCachedMeltedObject:sharee forMultiValueKey:*MEMORY[0x1E6992858]];
   v4 = MEMORY[0x1E695E118];
 
   [(EKObject *)self setCachedValue:v4 forKey:@"hasSharees"];
 }
 
-- (void)removeSharee:(id)a3
+- (void)removeSharee:(id)sharee
 {
-  [(EKObject *)self removeCachedMeltedObject:a3 forMultiValueKey:*MEMORY[0x1E6992858]];
+  [(EKObject *)self removeCachedMeltedObject:sharee forMultiValueKey:*MEMORY[0x1E6992858]];
 
   [(EKObject *)self clearCachedValueForKey:@"hasSharees"];
 }
@@ -2841,9 +2841,9 @@ LABEL_25:
   v5[3] = &unk_1E77FCF40;
   v5[4] = self;
   v2 = [(EKObject *)self cachedValueForKey:@"hasSharees" populateBlock:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
@@ -2859,13 +2859,13 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
 - (id)shareesAndOwner
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendar *)self sharees];
-  v4 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v3, "count") + 1}];
+  sharees = [(EKCalendar *)self sharees];
+  v4 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(sharees, "count") + 1}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = sharees;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -2905,11 +2905,11 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
 
 - (id)alarms
 {
-  v2 = [(EKCalendar *)self allAlarms];
-  if (v2)
+  allAlarms = [(EKCalendar *)self allAlarms];
+  if (allAlarms)
   {
     v3 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_174];
-    v4 = [v2 filteredSetUsingPredicate:v3];
+    v4 = [allAlarms filteredSetUsingPredicate:v3];
   }
 
   else
@@ -2920,16 +2920,16 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setAlarms:(id)a3
+- (void)setAlarms:(id)alarms
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+  alarmsCopy = alarms;
+  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(alarmsCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = v4;
+  v6 = alarmsCopy;
   v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v7)
   {
@@ -2981,8 +2981,8 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v18 = [v17 snoozedAlarms];
-        v19 = [v18 countByEnumeratingWithState:&v24 objects:v36 count:16];
+        snoozedAlarms = [v17 snoozedAlarms];
+        v19 = [snoozedAlarms countByEnumeratingWithState:&v24 objects:v36 count:16];
         if (v19)
         {
           v20 = v19;
@@ -2993,13 +2993,13 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
             {
               if (*v25 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(snoozedAlarms);
               }
 
               [v5 addObject:*(*(&v24 + 1) + 8 * k)];
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v24 objects:v36 count:16];
+            v20 = [snoozedAlarms countByEnumeratingWithState:&v24 objects:v36 count:16];
           }
 
           while (v20);
@@ -3032,9 +3032,9 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)addAlarms:(id)a3
+- (void)addAlarms:(id)alarms
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithSet:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithSet:alarms];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __24__EKCalendar_addAlarms___block_invoke;
@@ -3043,9 +3043,9 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
   [v4 enumerateObjectsUsingBlock:v5];
 }
 
-- (void)removeAlarms:(id)a3
+- (void)removeAlarms:(id)alarms
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithSet:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithSet:alarms];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __27__EKCalendar_removeAlarms___block_invoke;
@@ -3054,41 +3054,41 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
   [v4 enumerateObjectsUsingBlock:v5];
 }
 
-- (void)snoozeAlarm:(id)a3 withTimeIntervalFromNow:(double)a4
+- (void)snoozeAlarm:(id)alarm withTimeIntervalFromNow:(double)now
 {
   v6 = MEMORY[0x1E695DF00];
-  v7 = a3;
-  v12 = [v6 date];
-  [v7 setAcknowledgedDate:v12];
-  v8 = [v7 duplicate];
-  v9 = [v12 dateByAddingTimeInterval:a4];
-  [v8 setAbsoluteDate:v9];
+  alarmCopy = alarm;
+  date = [v6 date];
+  [alarmCopy setAcknowledgedDate:date];
+  duplicate = [alarmCopy duplicate];
+  v9 = [date dateByAddingTimeInterval:now];
+  [duplicate setAbsoluteDate:v9];
 
-  v10 = [(EKCalendar *)self findOriginalAlarmStartingWith:v7];
+  v10 = [(EKCalendar *)self findOriginalAlarmStartingWith:alarmCopy];
 
-  [v8 setOriginalAlarm:v10];
-  v11 = [MEMORY[0x1E695DFD8] setWithObject:v8];
+  [duplicate setOriginalAlarm:v10];
+  v11 = [MEMORY[0x1E695DFD8] setWithObject:duplicate];
   [(EKCalendar *)self addAlarms:v11];
 }
 
-- (void)snoozeAlarm:(id)a3 withLocation:(id)a4 proximity:(int64_t)a5
+- (void)snoozeAlarm:(id)alarm withLocation:(id)location proximity:(int64_t)proximity
 {
-  v14 = a3;
-  v9 = a4;
-  if (!a5)
+  alarmCopy = alarm;
+  locationCopy = location;
+  if (!proximity)
   {
     [EKCalendar snoozeAlarm:a2 withLocation:self proximity:?];
   }
 
-  v10 = [MEMORY[0x1E695DF00] date];
-  [v14 setAcknowledgedDate:v10];
+  date = [MEMORY[0x1E695DF00] date];
+  [alarmCopy setAcknowledgedDate:date];
 
-  v11 = [v14 duplicate];
-  [v11 setStructuredLocation:v9];
-  [v11 setProximity:a5];
-  v12 = [(EKCalendar *)self findOriginalAlarmStartingWith:v14];
-  [v11 setOriginalAlarm:v12];
-  v13 = [MEMORY[0x1E695DFD8] setWithObject:v11];
+  duplicate = [alarmCopy duplicate];
+  [duplicate setStructuredLocation:locationCopy];
+  [duplicate setProximity:proximity];
+  v12 = [(EKCalendar *)self findOriginalAlarmStartingWith:alarmCopy];
+  [duplicate setOriginalAlarm:v12];
+  v13 = [MEMORY[0x1E695DFD8] setWithObject:duplicate];
   [(EKCalendar *)self addAlarms:v13];
 }
 
@@ -3101,8 +3101,8 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(EKCalendar *)self allAlarms];
-    v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allAlarms = [(EKCalendar *)self allAlarms];
+    v4 = [allAlarms countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
       v5 = v4;
@@ -3114,7 +3114,7 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allAlarms);
           }
 
           if ([*(*(&v12 + 1) + 8 * i) _hasChangesForKey:v7])
@@ -3124,7 +3124,7 @@ uint64_t __24__EKCalendar_hasSharees__block_invoke(uint64_t a1)
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [allAlarms countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           continue;
@@ -3150,13 +3150,13 @@ LABEL_13:
 - (void)removeAcknowledgedSnoozedAlarms
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(EKCalendar *)self allAlarms];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allAlarms = [(EKCalendar *)self allAlarms];
+  v5 = [allAlarms countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3167,28 +3167,28 @@ LABEL_13:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allAlarms);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 isSnoozed])
         {
-          v10 = [v9 acknowledgedDate];
+          acknowledgedDate = [v9 acknowledgedDate];
 
-          if (v10)
+          if (acknowledgedDate)
           {
-            [v3 addObject:v9];
+            [array addObject:v9];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allAlarms countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [MEMORY[0x1E695DFD8] setWithArray:v3];
+  v11 = [MEMORY[0x1E695DFD8] setWithArray:array];
   [(EKCalendar *)self removeAlarms:v11];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -3197,13 +3197,13 @@ LABEL_13:
 - (void)removeAllSnoozedAlarms
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(EKCalendar *)self allAlarms];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allAlarms = [(EKCalendar *)self allAlarms];
+  v5 = [allAlarms countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3214,74 +3214,74 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allAlarms);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 isSnoozed])
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allAlarms countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [MEMORY[0x1E695DFD8] setWithArray:v3];
+  v10 = [MEMORY[0x1E695DFD8] setWithArray:array];
   [(EKCalendar *)self removeAlarms:v10];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)findOriginalAlarmStartingWith:(id)a3
+- (id)findOriginalAlarmStartingWith:(id)with
 {
-  v3 = a3;
-  v4 = [v3 originalAlarm];
-  if (v4)
+  withCopy = with;
+  originalAlarm = [withCopy originalAlarm];
+  if (originalAlarm)
   {
-    v5 = [v3 originalAlarm];
+    originalAlarm2 = [withCopy originalAlarm];
   }
 
   else
   {
-    v5 = v3;
+    originalAlarm2 = withCopy;
   }
 
-  v6 = v5;
+  v6 = originalAlarm2;
 
-  v7 = [v6 originalAlarm];
-  if (v7)
+  originalAlarm3 = [v6 originalAlarm];
+  if (originalAlarm3)
   {
-    v8 = v7;
+    v12OriginalAlarm = originalAlarm3;
     while (1)
     {
-      v9 = [v6 externalID];
-      v10 = [v3 externalID];
-      v11 = [v9 isEqualToString:v10];
+      externalID = [v6 externalID];
+      externalID2 = [withCopy externalID];
+      v11 = [externalID isEqualToString:externalID2];
 
       if (v11)
       {
         break;
       }
 
-      v12 = [v6 originalAlarm];
+      originalAlarm4 = [v6 originalAlarm];
 
-      v8 = [v12 originalAlarm];
-      v6 = v12;
-      if (!v8)
+      v12OriginalAlarm = [originalAlarm4 originalAlarm];
+      v6 = originalAlarm4;
+      if (!v12OriginalAlarm)
       {
         goto LABEL_10;
       }
     }
   }
 
-  v12 = v6;
+  originalAlarm4 = v6;
 LABEL_10:
 
-  return v12;
+  return originalAlarm4;
 }
 
 - (id)selfIdentityDisplayName
@@ -3289,8 +3289,8 @@ LABEL_10:
   v3 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992820]];
   if (!v3)
   {
-    v4 = [(EKCalendar *)self selfIdentityFirstName];
-    v5 = [(EKCalendar *)self selfIdentityLastName];
+    selfIdentityFirstName = [(EKCalendar *)self selfIdentityFirstName];
+    selfIdentityLastName = [(EKCalendar *)self selfIdentityLastName];
     v3 = DisplayNameStringForIdentityWithProperties();
   }
 
@@ -3299,10 +3299,10 @@ LABEL_10:
 
 - (id)selfIdentityAddress
 {
-  v2 = [(EKCalendar *)self selfIdentityAddressString];
-  if (v2)
+  selfIdentityAddressString = [(EKCalendar *)self selfIdentityAddressString];
+  if (selfIdentityAddressString)
   {
-    v3 = [MEMORY[0x1E695DFF8] URLWithString:v2];
+    v3 = [MEMORY[0x1E695DFF8] URLWithString:selfIdentityAddressString];
   }
 
   else
@@ -3313,10 +3313,10 @@ LABEL_10:
   return v3;
 }
 
-- (void)setSelfIdentityAddress:(id)a3
+- (void)setSelfIdentityAddress:(id)address
 {
-  v4 = [a3 absoluteString];
-  [(EKCalendar *)self setSelfIdentityAddressString:v4];
+  absoluteString = [address absoluteString];
+  [(EKCalendar *)self setSelfIdentityAddressString:absoluteString];
 }
 
 - (id)ownerIdentityDisplayName
@@ -3324,35 +3324,35 @@ LABEL_10:
   v3 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E69927C0]];
   if (!v3)
   {
-    v4 = [(EKCalendar *)self ownerIdentityFirstName];
-    v5 = [(EKCalendar *)self ownerIdentityLastName];
+    ownerIdentityFirstName = [(EKCalendar *)self ownerIdentityFirstName];
+    ownerIdentityLastName = [(EKCalendar *)self ownerIdentityLastName];
     v3 = DisplayNameStringForIdentityWithProperties();
   }
 
   return v3;
 }
 
-- (void)setOwnerIdentityDisplayName:(id)a3
+- (void)setOwnerIdentityDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [(EKCalendar *)self setOwnerIdentityId:0xFFFFFFFFLL];
-  [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E69927C0]];
+  [(EKObject *)self setSingleChangedValue:nameCopy forKey:*MEMORY[0x1E69927C0]];
 }
 
 - (int)ownerIdentityId
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E69927D8]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (id)ownerIdentityAddress
 {
-  v2 = [(EKCalendar *)self ownerIdentityAddressString];
-  if (v2)
+  ownerIdentityAddressString = [(EKCalendar *)self ownerIdentityAddressString];
+  if (ownerIdentityAddressString)
   {
-    v3 = [MEMORY[0x1E695DFF8] URLWithString:v2];
+    v3 = [MEMORY[0x1E695DFF8] URLWithString:ownerIdentityAddressString];
   }
 
   else
@@ -3363,42 +3363,42 @@ LABEL_10:
   return v3;
 }
 
-- (void)setOwnerIdentityAddress:(id)a3
+- (void)setOwnerIdentityAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   [(EKCalendar *)self setOwnerIdentityId:0xFFFFFFFFLL];
-  v5 = [v4 absoluteString];
+  absoluteString = [addressCopy absoluteString];
 
-  [(EKCalendar *)self setOwnerIdentityAddressString:v5];
+  [(EKCalendar *)self setOwnerIdentityAddressString:absoluteString];
 }
 
 - (id)ownerIdentityOrganizer
 {
-  v3 = [(EKCalendar *)self ownerIdentityEmail];
-  if (v3)
+  ownerIdentityEmail = [(EKCalendar *)self ownerIdentityEmail];
+  if (ownerIdentityEmail)
   {
 
 LABEL_4:
-    v5 = [MEMORY[0x1E6992F50] defaultProvider];
-    v6 = [(EKCalendar *)self ownerIdentityEmail];
-    if ([v5 matchesOneOfMyEmails:v6])
+    defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
+    ownerIdentityEmail2 = [(EKCalendar *)self ownerIdentityEmail];
+    if ([defaultProvider matchesOneOfMyEmails:ownerIdentityEmail2])
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E6992F50] defaultProvider];
-      v9 = [(EKCalendar *)self ownerIdentityAddress];
-      v7 = [v8 urlMatchesOneOfMyEmails:v9];
+      defaultProvider2 = [MEMORY[0x1E6992F50] defaultProvider];
+      ownerIdentityAddress = [(EKCalendar *)self ownerIdentityAddress];
+      v7 = [defaultProvider2 urlMatchesOneOfMyEmails:ownerIdentityAddress];
     }
 
     goto LABEL_8;
   }
 
-  v4 = [(EKCalendar *)self ownerIdentityAddress];
+  ownerIdentityAddress2 = [(EKCalendar *)self ownerIdentityAddress];
 
-  if (v4)
+  if (ownerIdentityAddress2)
   {
     goto LABEL_4;
   }
@@ -3406,21 +3406,21 @@ LABEL_4:
   v7 = 1;
 LABEL_8:
   v10 = [EKOrganizer alloc];
-  v11 = [(EKCalendar *)self ownerIdentityDisplayName];
-  v12 = [(EKCalendar *)self ownerIdentityEmail];
-  v13 = [(EKCalendar *)self ownerIdentityPhoneNumber];
-  v14 = [(EKCalendar *)self ownerIdentityAddress];
-  v15 = [(EKOrganizer *)v10 initWithName:v11 emailAddress:v12 phoneNumber:v13 address:v14 isCurrentUser:v7];
+  ownerIdentityDisplayName = [(EKCalendar *)self ownerIdentityDisplayName];
+  ownerIdentityEmail3 = [(EKCalendar *)self ownerIdentityEmail];
+  ownerIdentityPhoneNumber = [(EKCalendar *)self ownerIdentityPhoneNumber];
+  ownerIdentityAddress3 = [(EKCalendar *)self ownerIdentityAddress];
+  v15 = [(EKOrganizer *)v10 initWithName:ownerIdentityDisplayName emailAddress:ownerIdentityEmail3 phoneNumber:ownerIdentityPhoneNumber address:ownerIdentityAddress3 isCurrentUser:v7];
 
   return v15;
 }
 
 - (BOOL)supportsMultipleAlarms
 {
-  v2 = [(EKCalendar *)self constraints];
-  v3 = [v2 maxAlarmsAllowed];
+  constraints = [(EKCalendar *)self constraints];
+  maxAlarmsAllowed = [constraints maxAlarmsAllowed];
 
-  return v3 > 1;
+  return maxAlarmsAllowed > 1;
 }
 
 - (BOOL)automaticEventLocationGeocodingAllowed
@@ -3433,9 +3433,9 @@ LABEL_8:
   return +[EKFeatureSet automaticGeocodingEnabled];
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
-  v5 = self;
+  selfCopy = self;
   v63 = *MEMORY[0x1E69E9840];
   v61.receiver = self;
   v61.super_class = EKCalendar;
@@ -3444,16 +3444,16 @@ LABEL_8:
     goto LABEL_83;
   }
 
-  if (a3)
+  if (validate)
   {
-    *a3 = 0;
+    *validate = 0;
   }
 
-  v6 = [(EKCalendar *)v5 source];
+  source = [(EKCalendar *)selfCopy source];
 
-  if (!v6)
+  if (!source)
   {
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_83;
     }
@@ -3462,18 +3462,18 @@ LABEL_8:
     v20 = 14;
 LABEL_63:
     [v19 errorWithEKErrorCode:v20];
-    *a3 = v45 = 0;
+    *validate = eligibleForDefaultSchedulingCalendar = 0;
     goto LABEL_84;
   }
 
-  if (([(EKCalendar *)v5 allowedEntityTypes]& 2) != 0)
+  if (([(EKCalendar *)selfCopy allowedEntityTypes]& 2) != 0)
   {
-    v7 = [(EKCalendar *)v5 source];
-    v8 = [v7 allowsTasks];
+    source2 = [(EKCalendar *)selfCopy source];
+    allowsTasks = [source2 allowsTasks];
 
-    if ((v8 & 1) == 0)
+    if ((allowsTasks & 1) == 0)
     {
-      if (!a3)
+      if (!validate)
       {
         goto LABEL_83;
       }
@@ -3484,14 +3484,14 @@ LABEL_63:
     }
   }
 
-  if (([(EKCalendar *)v5 allowedEntityTypes]& 1) != 0)
+  if (([(EKCalendar *)selfCopy allowedEntityTypes]& 1) != 0)
   {
-    v9 = [(EKCalendar *)v5 source];
-    v10 = [v9 allowsEvents];
+    source3 = [(EKCalendar *)selfCopy source];
+    allowsEvents = [source3 allowsEvents];
 
-    if ((v10 & 1) == 0)
+    if ((allowsEvents & 1) == 0)
     {
-      if (!a3)
+      if (!validate)
       {
         goto LABEL_83;
       }
@@ -3502,38 +3502,38 @@ LABEL_63:
     }
   }
 
-  v11 = [(EKCalendar *)v5 isImmutable];
+  isImmutable = [(EKCalendar *)selfCopy isImmutable];
   v12 = MEMORY[0x1E6992760];
-  if (v11)
+  if (isImmutable)
   {
     v13 = *MEMORY[0x1E6992760];
-    v14 = [(EKObject *)v5 _previousValueForKey:*MEMORY[0x1E6992760]];
-    v15 = [v14 unsignedIntValue];
+    v14 = [(EKObject *)selfCopy _previousValueForKey:*MEMORY[0x1E6992760]];
+    unsignedIntValue = [v14 unsignedIntValue];
 
-    if ((v15 & 4) != 0)
+    if ((unsignedIntValue & 4) != 0)
     {
       if (validate__onceToken != -1)
       {
         [EKCalendar validate:];
       }
 
-      v21 = [(EKObject *)v5 changeSet];
-      v3 = [v21 changedKeys];
+      changeSet = [(EKObject *)selfCopy changeSet];
+      changedKeys = [changeSet changedKeys];
 
-      v22 = [v3 count];
+      v22 = [changedKeys count];
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v23 = v3;
+      v23 = changedKeys;
       v24 = [v23 countByEnumeratingWithState:&v57 objects:v62 count:16];
       if (v24)
       {
-        v3 = v24;
+        changedKeys = v24;
         v25 = *v58;
         do
         {
-          for (i = 0; i != v3; i = i + 1)
+          for (i = 0; i != changedKeys; i = i + 1)
           {
             if (*v58 != v25)
             {
@@ -3548,34 +3548,34 @@ LABEL_63:
 
             else if ([v27 isEqualToString:v13])
             {
-              v56 = [(EKCalendar *)v5 flags];
-              [(EKObject *)v5 _previousValueForKey:v13];
+              flags = [(EKCalendar *)selfCopy flags];
+              [(EKObject *)selfCopy _previousValueForKey:v13];
               v28 = v13;
               v29 = v23;
-              v31 = v30 = v5;
-              v32 = v3;
+              v31 = v30 = selfCopy;
+              v32 = changedKeys;
               v33 = v22;
               v34 = v25;
-              v35 = [v31 unsignedIntValue];
+              unsignedIntValue2 = [v31 unsignedIntValue];
 
-              v5 = v30;
+              selfCopy = v30;
               v23 = v29;
               v13 = v28;
-              v36 = v35 ^ v56;
+              v36 = unsignedIntValue2 ^ flags;
               v25 = v34;
               v37 = v33;
-              v3 = v32;
+              changedKeys = v32;
               v22 = v37 - ((v36 & 0xFFFEFFFF) == 0);
             }
           }
 
-          v3 = [v23 countByEnumeratingWithState:&v57 objects:v62 count:16];
+          changedKeys = [v23 countByEnumeratingWithState:&v57 objects:v62 count:16];
         }
 
-        while (v3);
+        while (changedKeys);
       }
 
-      a3 = v55;
+      validate = v55;
       if (v55 && v22 >= 1)
       {
         *v55 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:16];
@@ -3591,28 +3591,28 @@ LABEL_63:
     }
   }
 
-  v16 = [(EKObject *)v5 isNew];
+  isNew = [(EKObject *)selfCopy isNew];
   v17 = *MEMORY[0x1E6992870];
-  if (!v16 && [(EKObject *)v5 _hasChangesForKey:*MEMORY[0x1E6992870]])
+  if (!isNew && [(EKObject *)selfCopy _hasChangesForKey:*MEMORY[0x1E6992870]])
   {
-    v18 = [(EKObject *)v5 eventStore];
-    if ([v18 skipModificationValidation])
+    eventStore = [(EKObject *)selfCopy eventStore];
+    if ([eventStore skipModificationValidation])
     {
     }
 
     else
     {
-      v38 = [MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement];
+      currentProcessHasSyncClientEntitlement = [MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement];
 
-      if ((v38 & 1) == 0)
+      if ((currentProcessHasSyncClientEntitlement & 1) == 0)
       {
         if (![MEMORY[0x1E6992FA0] currentProcessIsFirstPartyCalendarApp])
         {
           goto LABEL_61;
         }
 
-        v46 = [(EKObject *)v5 committedValueForKey:v17];
-        v47 = [(EKCalendar *)v5 source];
+        v46 = [(EKObject *)selfCopy committedValueForKey:v17];
+        source4 = [(EKCalendar *)selfCopy source];
         if ([v46 sourceType])
         {
           v48 = 0;
@@ -3620,10 +3620,10 @@ LABEL_63:
 
         else
         {
-          v48 = [v47 sourceType] == 0;
+          v48 = [source4 sourceType] == 0;
         }
 
-        if (a3 && !v48)
+        if (validate && !v48)
         {
           goto LABEL_62;
         }
@@ -3631,27 +3631,27 @@ LABEL_63:
         if (!v48)
         {
 LABEL_83:
-          v45 = 0;
+          eligibleForDefaultSchedulingCalendar = 0;
           goto LABEL_84;
         }
       }
     }
   }
 
-  if (![(EKObject *)v5 _hasChangesForKey:v17])
+  if (![(EKObject *)selfCopy _hasChangesForKey:v17])
   {
     goto LABEL_50;
   }
 
-  v39 = [(EKObject *)v5 eventStore];
-  if ([v39 eventAccessLevel] == 1)
+  eventStore2 = [(EKObject *)selfCopy eventStore];
+  if ([eventStore2 eventAccessLevel] == 1)
   {
-    v40 = [(EKCalendar *)v5 allowEvents];
+    allowEvents = [(EKCalendar *)selfCopy allowEvents];
 
-    if (v40)
+    if (allowEvents)
     {
 LABEL_61:
-      if (a3)
+      if (validate)
       {
 LABEL_62:
         v19 = MEMORY[0x1E696ABC0];
@@ -3667,14 +3667,14 @@ LABEL_62:
   {
   }
 
-  v41 = [(EKObject *)v5 eventStore];
-  if ([v41 skipModificationValidation])
+  eventStore3 = [(EKObject *)selfCopy eventStore];
+  if ([eventStore3 skipModificationValidation])
   {
     goto LABEL_49;
   }
 
-  v42 = [(EKCalendar *)v5 source];
-  if ([v42 supportsCalendarCreation] & 1) != 0 || (objc_msgSend(MEMORY[0x1E6992FA0], "currentProcessHasSyncClientEntitlement"))
+  source5 = [(EKCalendar *)selfCopy source];
+  if ([source5 supportsCalendarCreation] & 1) != 0 || (objc_msgSend(MEMORY[0x1E6992FA0], "currentProcessHasSyncClientEntitlement"))
   {
 LABEL_48:
 
@@ -3682,10 +3682,10 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  v49 = [(EKCalendar *)v5 type];
-  if (v49 != 4)
+  type = [(EKCalendar *)selfCopy type];
+  if (type != 4)
   {
-    if ([(EKCalendar *)v5 type]== (EKCalendarTypeBirthday|EKCalendarTypeExchange))
+    if ([(EKCalendar *)selfCopy type]== (EKCalendarTypeBirthday|EKCalendarTypeExchange))
     {
       goto LABEL_75;
     }
@@ -3695,33 +3695,33 @@ LABEL_80:
     goto LABEL_81;
   }
 
-  v3 = [(EKObject *)v5 eventStore];
-  if ([v3 allowsBirthdayModifications])
+  changedKeys = [(EKObject *)selfCopy eventStore];
+  if ([changedKeys allowsBirthdayModifications])
   {
 
     goto LABEL_48;
   }
 
-  if ([(EKCalendar *)v5 type]!= (EKCalendarTypeBirthday|EKCalendarTypeExchange))
+  if ([(EKCalendar *)selfCopy type]!= (EKCalendarTypeBirthday|EKCalendarTypeExchange))
   {
 
     goto LABEL_80;
   }
 
 LABEL_75:
-  v50 = v5;
-  v51 = [(EKObject *)v5 eventStore];
-  v52 = [v51 allowsIntegrationModifications];
+  v50 = selfCopy;
+  eventStore4 = [(EKObject *)selfCopy eventStore];
+  allowsIntegrationModifications = [eventStore4 allowsIntegrationModifications];
 
-  if (v49 == 4)
+  if (type == 4)
   {
   }
 
-  v5 = v50;
-  if ((v52 & 1) == 0)
+  selfCopy = v50;
+  if ((allowsIntegrationModifications & 1) == 0)
   {
 LABEL_81:
-    if (a3)
+    if (validate)
     {
       v19 = MEMORY[0x1E696ABC0];
       v20 = 17;
@@ -3733,23 +3733,23 @@ LABEL_81:
 
 LABEL_50:
   v43 = *v12;
-  if (![(EKObject *)v5 _hasChangesForKey:*v12]|| ![(EKCalendar *)v5 isDefaultSchedulingCalendar])
+  if (![(EKObject *)selfCopy _hasChangesForKey:*v12]|| ![(EKCalendar *)selfCopy isDefaultSchedulingCalendar])
   {
     goto LABEL_57;
   }
 
-  v44 = [(EKObject *)v5 _previousValueForKey:v43];
+  v44 = [(EKObject *)selfCopy _previousValueForKey:v43];
   if (([v44 unsignedIntValue] & 0x400) != 0)
   {
 
 LABEL_57:
-    v45 = 1;
+    eligibleForDefaultSchedulingCalendar = 1;
     goto LABEL_84;
   }
 
-  v45 = [(EKCalendar *)v5 eligibleForDefaultSchedulingCalendar];
+  eligibleForDefaultSchedulingCalendar = [(EKCalendar *)selfCopy eligibleForDefaultSchedulingCalendar];
 
-  if (a3 && (v45 & 1) == 0)
+  if (validate && (eligibleForDefaultSchedulingCalendar & 1) == 0)
   {
     v19 = MEMORY[0x1E696ABC0];
     v20 = 70;
@@ -3758,7 +3758,7 @@ LABEL_57:
 
 LABEL_84:
   v53 = *MEMORY[0x1E69E9840];
-  return v45;
+  return eligibleForDefaultSchedulingCalendar;
 }
 
 uint64_t __23__EKCalendar_validate___block_invoke()
@@ -3769,11 +3769,11 @@ uint64_t __23__EKCalendar_validate___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
-  if (a3)
+  if (save)
   {
-    *a3 = 0;
+    *save = 0;
   }
 
   [(EKObject *)self insertPersistentObjectIfNeeded];
@@ -3785,28 +3785,28 @@ uint64_t __23__EKCalendar_validate___block_invoke()
   [(EKCalendar *)self assignColorForNewCalendarIfNeeded];
   if ([(EKObject *)self _hasChangesForKey:*MEMORY[0x1E6992768]])
   {
-    v4 = [(EKCalendar *)self image];
-    [v4 saveInCalendar:self];
+    image = [(EKCalendar *)self image];
+    [image saveInCalendar:self];
 
-    v5 = [(EKObject *)self changeSet];
-    v6 = [(EKCalendar *)self image];
-    v7 = [v6 backingObject];
-    [v5 forceChangeValue:v7 forKey:*MEMORY[0x1E6992980]];
+    changeSet = [(EKObject *)self changeSet];
+    image2 = [(EKCalendar *)self image];
+    backingObject = [image2 backingObject];
+    [changeSet forceChangeValue:backingObject forKey:*MEMORY[0x1E6992980]];
   }
 
   [(EKObject *)self updatePersistentObject];
   return 1;
 }
 
-- (BOOL)remove:(id *)a3
+- (BOOL)remove:(id *)remove
 {
-  if (a3)
+  if (remove)
   {
-    *a3 = 0;
+    *remove = 0;
   }
 
-  v5 = [(EKObject *)self eventStore];
-  if ([v5 skipModificationValidation])
+  eventStore = [(EKObject *)self eventStore];
+  if ([eventStore skipModificationValidation])
   {
 
 LABEL_6:
@@ -3814,16 +3814,16 @@ LABEL_6:
     return 1;
   }
 
-  v6 = [MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement];
+  currentProcessHasSyncClientEntitlement = [MEMORY[0x1E6992FA0] currentProcessHasSyncClientEntitlement];
 
-  if (v6)
+  if (currentProcessHasSyncClientEntitlement)
   {
     goto LABEL_6;
   }
 
   if (![(EKCalendar *)self isImmutable])
   {
-    if ([(EKCalendar *)self _validateDeletable:a3])
+    if ([(EKCalendar *)self _validateDeletable:remove])
     {
       goto LABEL_6;
     }
@@ -3831,15 +3831,15 @@ LABEL_6:
     return 0;
   }
 
-  if (!a3)
+  if (!remove)
   {
     return 0;
   }
 
-  v8 = [(EKCalendar *)self constraints];
-  v9 = [v8 allowsCalendarAddDeleteModify];
+  constraints = [(EKCalendar *)self constraints];
+  allowsCalendarAddDeleteModify = [constraints allowsCalendarAddDeleteModify];
 
-  if (v9)
+  if (allowsCalendarAddDeleteModify)
   {
     v10 = 16;
   }
@@ -3852,15 +3852,15 @@ LABEL_6:
   v11 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:v10];
   v12 = v11;
   result = 0;
-  *a3 = v11;
+  *remove = v11;
   return result;
 }
 
 - (BOOL)isManaged
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [(EKCalendar *)self source];
-  v5 = [v3 isSourceManaged:v4];
+  eventStore = [(EKObject *)self eventStore];
+  source = [(EKCalendar *)self source];
+  v5 = [eventStore isSourceManaged:source];
 
   return v5;
 }
@@ -3873,9 +3873,9 @@ LABEL_6:
   v5[3] = &unk_1E77FD0B8;
   v5[4] = self;
   v2 = [(EKObject *)self cachedValueForKey:@"isInferredWorkCalendar" populateBlock:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 uint64_t __36__EKCalendar_isInferredWorkCalendar__block_invoke(uint64_t a1)
@@ -3913,7 +3913,7 @@ uint64_t __36__EKCalendar_isInferredWorkCalendar__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)exportDataWithOptions:(unint64_t)a3
+- (id)exportDataWithOptions:(unint64_t)options
 {
   v12 = 0;
   v13 = &v12;
@@ -3921,16 +3921,16 @@ uint64_t __36__EKCalendar_isInferredWorkCalendar__block_invoke(uint64_t a1)
   v15 = __Block_byref_object_copy__20;
   v16 = __Block_byref_object_dispose__20;
   v17 = 0;
-  v5 = [(EKObject *)self eventStore];
-  v6 = [v5 connection];
-  v7 = [v6 CADOperationProxySync];
-  v8 = [(EKObject *)self CADObjectID];
+  eventStore = [(EKObject *)self eventStore];
+  connection = [eventStore connection];
+  cADOperationProxySync = [connection CADOperationProxySync];
+  cADObjectID = [(EKObject *)self CADObjectID];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __36__EKCalendar_exportDataWithOptions___block_invoke;
   v11[3] = &unk_1E77FDD00;
   v11[4] = &v12;
-  [v7 CADDatabaseExportICSDataForCalendar:v8 options:a3 reply:v11];
+  [cADOperationProxySync CADDatabaseExportICSDataForCalendar:cADObjectID options:options reply:v11];
 
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -3958,22 +3958,22 @@ void __36__EKCalendar_exportDataWithOptions___block_invoke(uint64_t a1, uint64_t
 
 - (BOOL)supportsJunkReporting
 {
-  v2 = [(EKCalendar *)self constraints];
-  v3 = [v2 supportsJunkReporting];
+  constraints = [(EKCalendar *)self constraints];
+  supportsJunkReporting = [constraints supportsJunkReporting];
 
-  return v3;
+  return supportsJunkReporting;
 }
 
-- (void)setIsJunk:(BOOL)a3
+- (void)setIsJunk:(BOOL)junk
 {
-  if (a3)
+  if (junk)
   {
     [(EKCalendar *)self setCachedJunkStatus:1];
-    v4 = [MEMORY[0x1E69998A8] sharedConnection];
-    v5 = [(EKCalendar *)self calendarIdentifier];
-    v6 = [(EKCalendar *)self source];
-    v7 = [v6 externalID];
-    [v4 reportSharedCalendarInviteAsJunkForCalendarWithID:v5 accountID:v7 queue:MEMORY[0x1E69E96A0] completionBlock:&__block_literal_global_212];
+    mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+    calendarIdentifier = [(EKCalendar *)self calendarIdentifier];
+    source = [(EKCalendar *)self source];
+    externalID = [source externalID];
+    [mEMORY[0x1E69998A8] reportSharedCalendarInviteAsJunkForCalendarWithID:calendarIdentifier accountID:externalID queue:MEMORY[0x1E69E96A0] completionBlock:&__block_literal_global_212];
 
     [(EKCalendar *)self setCachedJunkStatus:1];
   }
@@ -3981,10 +3981,10 @@ void __36__EKCalendar_exportDataWithOptions___block_invoke(uint64_t a1, uint64_t
   else
   {
     [(EKCalendar *)self setCachedJunkStatus:2];
-    v10 = [(EKCalendar *)self sharedOwnerName];
-    v8 = [(EKCalendar *)self sharedOwnerEmail];
-    v9 = [(EKCalendar *)self sharedOwnerPhoneNumber];
-    [EKRecents recordRecentForContactWithName:v10 emailAddress:v8 phoneNumber:v9];
+    sharedOwnerName = [(EKCalendar *)self sharedOwnerName];
+    sharedOwnerEmail = [(EKCalendar *)self sharedOwnerEmail];
+    sharedOwnerPhoneNumber = [(EKCalendar *)self sharedOwnerPhoneNumber];
+    [EKRecents recordRecentForContactWithName:sharedOwnerName emailAddress:sharedOwnerEmail phoneNumber:sharedOwnerPhoneNumber];
   }
 }
 
@@ -4175,7 +4175,7 @@ void __32__EKCalendar_cachedExternalInfo__block_invoke_cold_2()
 {
   v7 = *MEMORY[0x1E69E9840];
   v4[0] = 67109378;
-  v4[1] = a1;
+  v4[1] = self;
   v5 = 2112;
   v6 = a2;
   _os_log_error_impl(&dword_1A805E000, log, OS_LOG_TYPE_ERROR, "Unexpected error type (%d) in calendar error on calendar %@", v4, 0x12u);

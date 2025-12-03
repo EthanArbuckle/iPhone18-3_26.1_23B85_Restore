@@ -1,92 +1,92 @@
 @interface PXDebugValueList
 - (PXDebugValueList)init;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)addValueWithLabel:(id)a3;
-- (void)addValueWithLabel:(id)a3 BOOLValue:(BOOL)a4 positiveValue:(BOOL)a5 positiveHighlighted:(BOOL)a6 negativeHighlighted:(BOOL)a7;
-- (void)addValueWithLabel:(id)a3 doubleValue:(double)a4;
-- (void)addValueWithLabel:(id)a3 highlightedScore:(double)a4;
-- (void)addValueWithLabel:(id)a3 integerValue:(int64_t)a4;
-- (void)addValueWithLabel:(id)a3 stringValue:(id)a4;
-- (void)addValueWithLabel:(id)a3 stringValue:(id)a4 highlightStyle:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)addValueWithLabel:(id)label;
+- (void)addValueWithLabel:(id)label BOOLValue:(BOOL)value positiveValue:(BOOL)positiveValue positiveHighlighted:(BOOL)highlighted negativeHighlighted:(BOOL)negativeHighlighted;
+- (void)addValueWithLabel:(id)label doubleValue:(double)value;
+- (void)addValueWithLabel:(id)label highlightedScore:(double)score;
+- (void)addValueWithLabel:(id)label integerValue:(int64_t)value;
+- (void)addValueWithLabel:(id)label stringValue:(id)value;
+- (void)addValueWithLabel:(id)label stringValue:(id)value highlightStyle:(unint64_t)style;
 @end
 
 @implementation PXDebugValueList
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(PXDebugValueList *)self debugValues];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  debugValues = [(PXDebugValueList *)self debugValues];
+  v9 = [debugValues countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
 
-- (void)addValueWithLabel:(id)a3 highlightedScore:(double)a4
+- (void)addValueWithLabel:(id)label highlightedScore:(double)score
 {
-  v6 = a3;
-  v8 = [(PXDebugValueList *)self debugValues];
-  v7 = [[PXDebugStringValue alloc] initWithLabel:v6 highlightedScore:a4];
+  labelCopy = label;
+  debugValues = [(PXDebugValueList *)self debugValues];
+  v7 = [[PXDebugStringValue alloc] initWithLabel:labelCopy highlightedScore:score];
 
-  [v8 addObject:v7];
+  [debugValues addObject:v7];
 }
 
-- (void)addValueWithLabel:(id)a3 stringValue:(id)a4
+- (void)addValueWithLabel:(id)label stringValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(PXDebugValueList *)self debugValues];
-  v8 = [[PXDebugStringValue alloc] initWithLabel:v7 string:v6 highlightStyle:0];
+  valueCopy = value;
+  labelCopy = label;
+  debugValues = [(PXDebugValueList *)self debugValues];
+  v8 = [[PXDebugStringValue alloc] initWithLabel:labelCopy string:valueCopy highlightStyle:0];
 
-  [v9 addObject:v8];
+  [debugValues addObject:v8];
 }
 
-- (void)addValueWithLabel:(id)a3 stringValue:(id)a4 highlightStyle:(unint64_t)a5
+- (void)addValueWithLabel:(id)label stringValue:(id)value highlightStyle:(unint64_t)style
 {
-  v8 = a4;
-  v9 = a3;
-  v11 = [(PXDebugValueList *)self debugValues];
-  v10 = [[PXDebugStringValue alloc] initWithLabel:v9 string:v8 highlightStyle:a5];
+  valueCopy = value;
+  labelCopy = label;
+  debugValues = [(PXDebugValueList *)self debugValues];
+  v10 = [[PXDebugStringValue alloc] initWithLabel:labelCopy string:valueCopy highlightStyle:style];
 
-  [v11 addObject:v10];
+  [debugValues addObject:v10];
 }
 
-- (void)addValueWithLabel:(id)a3 integerValue:(int64_t)a4
+- (void)addValueWithLabel:(id)label integerValue:(int64_t)value
 {
-  v6 = a3;
-  v8 = [(PXDebugValueList *)self debugValues];
-  v7 = [[PXDebugStringValue alloc] initWithLabel:v6 integerValue:a4];
+  labelCopy = label;
+  debugValues = [(PXDebugValueList *)self debugValues];
+  v7 = [[PXDebugStringValue alloc] initWithLabel:labelCopy integerValue:value];
 
-  [v8 addObject:v7];
+  [debugValues addObject:v7];
 }
 
-- (void)addValueWithLabel:(id)a3 doubleValue:(double)a4
+- (void)addValueWithLabel:(id)label doubleValue:(double)value
 {
-  v6 = a3;
-  v8 = [(PXDebugValueList *)self debugValues];
-  v7 = [[PXDebugStringValue alloc] initWithLabel:v6 doubleValue:a4];
+  labelCopy = label;
+  debugValues = [(PXDebugValueList *)self debugValues];
+  v7 = [[PXDebugStringValue alloc] initWithLabel:labelCopy doubleValue:value];
 
-  [v8 addObject:v7];
+  [debugValues addObject:v7];
 }
 
-- (void)addValueWithLabel:(id)a3 BOOLValue:(BOOL)a4 positiveValue:(BOOL)a5 positiveHighlighted:(BOOL)a6 negativeHighlighted:(BOOL)a7
+- (void)addValueWithLabel:(id)label BOOLValue:(BOOL)value positiveValue:(BOOL)positiveValue positiveHighlighted:(BOOL)highlighted negativeHighlighted:(BOOL)negativeHighlighted
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v14 = [(PXDebugValueList *)self debugValues];
-  v13 = [[PXDebugStringValue alloc] initWithLabel:v12 BOOLValue:v10 positiveValue:v9 positiveHighlighted:v8 negativeHighlighted:v7];
+  negativeHighlightedCopy = negativeHighlighted;
+  highlightedCopy = highlighted;
+  positiveValueCopy = positiveValue;
+  valueCopy = value;
+  labelCopy = label;
+  debugValues = [(PXDebugValueList *)self debugValues];
+  v13 = [[PXDebugStringValue alloc] initWithLabel:labelCopy BOOLValue:valueCopy positiveValue:positiveValueCopy positiveHighlighted:highlightedCopy negativeHighlighted:negativeHighlightedCopy];
 
-  [v14 addObject:v13];
+  [debugValues addObject:v13];
 }
 
-- (void)addValueWithLabel:(id)a3
+- (void)addValueWithLabel:(id)label
 {
-  v4 = a3;
-  v6 = [(PXDebugValueList *)self debugValues];
-  v5 = [[PXDebugValue alloc] initWithLabel:v4];
+  labelCopy = label;
+  debugValues = [(PXDebugValueList *)self debugValues];
+  v5 = [[PXDebugValue alloc] initWithLabel:labelCopy];
 
-  [v6 addObject:v5];
+  [debugValues addObject:v5];
 }
 
 - (PXDebugValueList)init

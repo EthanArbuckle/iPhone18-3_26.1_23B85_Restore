@@ -1,19 +1,19 @@
 @interface VGMLFloatsToFloatsModel
 - (const)outputData;
-- (void)inferInput:(id)a3 toOutput:(id)a4;
+- (void)inferInput:(id)input toOutput:(id)output;
 @end
 
 @implementation VGMLFloatsToFloatsModel
 
-- (void)inferInput:(id)a3 toOutput:(id)a4
+- (void)inferInput:(id)input toOutput:(id)output
 {
-  v9 = a3;
-  v6 = a4;
+  inputCopy = input;
+  outputCopy = output;
   v7 = [(NSMutableArray *)self->super._inputBuffers objectAtIndexedSubscript:0];
-  [v7 bindTensor:v9];
+  [v7 bindTensor:inputCopy];
 
   v8 = [(NSMutableArray *)self->super._outputBuffers objectAtIndexedSubscript:0];
-  [v8 bindTensor:v6];
+  [v8 bindTensor:outputCopy];
 
   [(VGMLEspressoModel *)self inferModel];
 }
@@ -21,9 +21,9 @@
 - (const)outputData
 {
   v2 = [(NSMutableArray *)self->super._outputBuffers objectAtIndexedSubscript:0];
-  v3 = [v2 getData];
+  getData = [v2 getData];
 
-  return v3;
+  return getData;
 }
 
 @end

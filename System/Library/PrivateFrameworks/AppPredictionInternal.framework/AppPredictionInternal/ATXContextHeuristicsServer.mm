@@ -1,14 +1,14 @@
 @interface ATXContextHeuristicsServer
 + (id)sharedInstance;
-- (ATXContextHeuristicsServer)initWithHeuristics:(id)a3;
-- (id)_cachedContextsFromSuggestions:(id)a3;
+- (ATXContextHeuristicsServer)initWithHeuristics:(id)heuristics;
+- (id)_cachedContextsFromSuggestions:(id)suggestions;
 - (id)_contextHeuristicsClientModel;
 - (id)_retrieveOldContextHeuristicsSuggestions;
-- (void)_updateBlendingLayerWithSuggestionsFromContextHeuristics:(id)a3;
-- (void)_updateBlendingLayerWithSuggestionsFromSpotlightRecents:(id)a3;
-- (void)_updateContextHeuristicsBiomeStreamWithNewSuggestions:(id)a3 oldSuggestions:(id)a4;
-- (void)contextHeuristics:(id)a3 didUpdateSpotlightRecents:(id)a4;
-- (void)contextHeuristics:(id)a3 didUpdateSuggestions:(id)a4;
+- (void)_updateBlendingLayerWithSuggestionsFromContextHeuristics:(id)heuristics;
+- (void)_updateBlendingLayerWithSuggestionsFromSpotlightRecents:(id)recents;
+- (void)_updateContextHeuristicsBiomeStreamWithNewSuggestions:(id)suggestions oldSuggestions:(id)oldSuggestions;
+- (void)contextHeuristics:(id)heuristics didUpdateSpotlightRecents:(id)recents;
+- (void)contextHeuristics:(id)heuristics didUpdateSuggestions:(id)suggestions;
 @end
 
 @implementation ATXContextHeuristicsServer
@@ -46,9 +46,9 @@ void __44__ATXContextHeuristicsServer_sharedInstance__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (ATXContextHeuristicsServer)initWithHeuristics:(id)a3
+- (ATXContextHeuristicsServer)initWithHeuristics:(id)heuristics
 {
-  v5 = a3;
+  heuristicsCopy = heuristics;
   v17.receiver = self;
   v17.super_class = ATXContextHeuristicsServer;
   v6 = [(ATXContextHeuristicsServer *)&v17 init];
@@ -60,7 +60,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v6->_heuristics, a3);
+  objc_storeStrong(&v6->_heuristics, heuristics);
   [p_isa[1] setDelegate:p_isa];
   v8 = [[ATXContextHeuristicsScheduler alloc] initWithContextHeuristics:p_isa[1]];
   v9 = p_isa[2];
@@ -69,10 +69,10 @@ LABEL_13:
   if (![MEMORY[0x277D42598] isClassCLocked])
   {
     [p_isa[1] refreshResultsForAllHeuristicsPendingRefreshWithCompletionHandler:&__block_literal_global_17_1];
-    v12 = [MEMORY[0x277CEBC58] isSportsEnabled];
+    isSportsEnabled = [MEMORY[0x277CEBC58] isSportsEnabled];
     v13 = __atxlog_handle_context_heuristic();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    if (isSportsEnabled)
     {
       if (v14)
       {
@@ -119,20 +119,20 @@ void __49__ATXContextHeuristicsServer_initWithHeuristics___block_invoke(uint64_t
   }
 }
 
-- (void)_updateBlendingLayerWithSuggestionsFromContextHeuristics:(id)a3
+- (void)_updateBlendingLayerWithSuggestionsFromContextHeuristics:(id)heuristics
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXContextHeuristicsServer *)self _contextHeuristicsClientModel];
+  heuristicsCopy = heuristics;
+  _contextHeuristicsClientModel = [(ATXContextHeuristicsServer *)self _contextHeuristicsClientModel];
   v6 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = [v4 count];
+    v9 = [heuristicsCopy count];
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "ATXContextHeuristicsServer: updateBlendingLayer context heuristics total: %lu", &v8, 0xCu);
   }
 
-  [v5 updateSuggestions:v4 completionHandler:&__block_literal_global_21_6];
+  [_contextHeuristicsClientModel updateSuggestions:heuristicsCopy completionHandler:&__block_literal_global_21_6];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -149,25 +149,25 @@ void __87__ATXContextHeuristicsServer__updateBlendingLayerWithSuggestionsFromCon
   }
 }
 
-- (void)_updateBlendingLayerWithSuggestionsFromSpotlightRecents:(id)a3
+- (void)_updateBlendingLayerWithSuggestionsFromSpotlightRecents:(id)recents
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recentsCopy = recents;
   v4 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:46];
   v5 = objc_alloc(MEMORY[0x277D42070]);
   v6 = +[ATXClientModelSuggestionReceiver sharedInstance];
-  v7 = [v6 blendingLayerServer];
-  v8 = [v5 initWithClientModelId:v4 blendingLayerServer:v7];
+  blendingLayerServer = [v6 blendingLayerServer];
+  v8 = [v5 initWithClientModelId:v4 blendingLayerServer:blendingLayerServer];
 
   v9 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = [v3 count];
+    v12 = [recentsCopy count];
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "ATXContextHeuristicsServer: updateBlendingLayer spotlight recents total: %lu", &v11, 0xCu);
   }
 
-  [v8 updateSuggestions:v3 completionHandler:&__block_literal_global_25_9];
+  [v8 updateSuggestions:recentsCopy completionHandler:&__block_literal_global_25_9];
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -184,44 +184,44 @@ void __86__ATXContextHeuristicsServer__updateBlendingLayerWithSuggestionsFromSpo
   }
 }
 
-- (void)contextHeuristics:(id)a3 didUpdateSuggestions:(id)a4
+- (void)contextHeuristics:(id)heuristics didUpdateSuggestions:(id)suggestions
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  suggestionsCopy = suggestions;
   v6 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = suggestionsCopy;
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "ATXContextHeuristicsServer: updateBlendingLayer Context heuristics %@", &v9, 0xCu);
   }
 
-  v7 = [(ATXContextHeuristicsServer *)self _retrieveOldContextHeuristicsSuggestions];
-  [(ATXContextHeuristicsServer *)self _updateBlendingLayerWithSuggestionsFromContextHeuristics:v5];
-  [(ATXContextHeuristicsServer *)self _updateContextHeuristicsBiomeStreamWithNewSuggestions:v5 oldSuggestions:v7];
+  _retrieveOldContextHeuristicsSuggestions = [(ATXContextHeuristicsServer *)self _retrieveOldContextHeuristicsSuggestions];
+  [(ATXContextHeuristicsServer *)self _updateBlendingLayerWithSuggestionsFromContextHeuristics:suggestionsCopy];
+  [(ATXContextHeuristicsServer *)self _updateContextHeuristicsBiomeStreamWithNewSuggestions:suggestionsCopy oldSuggestions:_retrieveOldContextHeuristicsSuggestions];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contextHeuristics:(id)a3 didUpdateSpotlightRecents:(id)a4
+- (void)contextHeuristics:(id)heuristics didUpdateSpotlightRecents:(id)recents
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  recentsCopy = recents;
   v6 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = recentsCopy;
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "ATXContextHeuristicsServer: updateBlendingLayer Spotlight recents %@", &v8, 0xCu);
   }
 
-  [(ATXContextHeuristicsServer *)self _updateBlendingLayerWithSuggestionsFromSpotlightRecents:v5];
+  [(ATXContextHeuristicsServer *)self _updateBlendingLayerWithSuggestionsFromSpotlightRecents:recentsCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
 - (id)_retrieveOldContextHeuristicsSuggestions
 {
-  v2 = [(ATXContextHeuristicsServer *)self _contextHeuristicsClientModel];
+  _contextHeuristicsClientModel = [(ATXContextHeuristicsServer *)self _contextHeuristicsClientModel];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -236,7 +236,7 @@ void __86__ATXContextHeuristicsServer__updateBlendingLayerWithSuggestionsFromSpo
   v12 = &v13;
   v4 = v3;
   v11 = v4;
-  [v2 retrieveCurrentSuggestionsWithReply:&v7];
+  [_contextHeuristicsClientModel retrieveCurrentSuggestionsWithReply:&v7];
   [MEMORY[0x277D425A0] waitForSemaphore:v4 timeoutSeconds:{1.0, v7, v8, v9, v10}];
   v5 = v14[5];
 
@@ -252,13 +252,13 @@ void __70__ATXContextHeuristicsServer__retrieveOldContextHeuristicsSuggestions__
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_updateContextHeuristicsBiomeStreamWithNewSuggestions:(id)a3 oldSuggestions:(id)a4
+- (void)_updateContextHeuristicsBiomeStreamWithNewSuggestions:(id)suggestions oldSuggestions:(id)oldSuggestions
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ATXContextHeuristicsServer *)self _cachedContextsFromSuggestions:a4];
-  v27 = v6;
-  v8 = [(ATXContextHeuristicsServer *)self _cachedContextsFromSuggestions:v6];
+  suggestionsCopy = suggestions;
+  v7 = [(ATXContextHeuristicsServer *)self _cachedContextsFromSuggestions:oldSuggestions];
+  v27 = suggestionsCopy;
+  v8 = [(ATXContextHeuristicsServer *)self _cachedContextsFromSuggestions:suggestionsCopy];
   v9 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
@@ -283,8 +283,8 @@ void __70__ATXContextHeuristicsServer__retrieveOldContextHeuristicsSuggestions__
         if (([v8 containsObject:v15] & 1) == 0)
         {
           v16 = [[ATXContextHeuristicsEvent alloc] initWithContextName:&stru_2839A6058 contextType:v15 isStart:0];
-          v17 = [v9 source];
-          [v17 sendEvent:v16];
+          source = [v9 source];
+          [source sendEvent:v16];
         }
       }
 
@@ -317,8 +317,8 @@ void __70__ATXContextHeuristicsServer__retrieveOldContextHeuristicsSuggestions__
         if (([v10 containsObject:v23] & 1) == 0)
         {
           v24 = [[ATXContextHeuristicsEvent alloc] initWithContextName:&stru_2839A6058 contextType:v23 isStart:1];
-          v25 = [v9 source];
-          [v25 sendEvent:v24];
+          source2 = [v9 source];
+          [source2 sendEvent:v24];
         }
       }
 
@@ -336,22 +336,22 @@ void __70__ATXContextHeuristicsServer__retrieveOldContextHeuristicsSuggestions__
   v2 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:44];
   v3 = objc_alloc(MEMORY[0x277D42070]);
   v4 = +[ATXClientModelSuggestionReceiver sharedInstance];
-  v5 = [v4 blendingLayerServer];
-  v6 = [v3 initWithClientModelId:v2 blendingLayerServer:v5];
+  blendingLayerServer = [v4 blendingLayerServer];
+  v6 = [v3 initWithClientModelId:v2 blendingLayerServer:blendingLayerServer];
 
   return v6;
 }
 
-- (id)_cachedContextsFromSuggestions:(id)a3
+- (id)_cachedContextsFromSuggestions:(id)suggestions
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v4 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = suggestionsCopy;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -372,13 +372,13 @@ void __70__ATXContextHeuristicsServer__retrieveOldContextHeuristicsSuggestions__
         v19 = __Block_byref_object_copy__104;
         v20 = __Block_byref_object_dispose__104;
         v21 = objc_opt_new();
-        v9 = [v8 uiSpecification];
-        v10 = [v9 predictionReasons];
+        uiSpecification = [v8 uiSpecification];
+        predictionReasons = [uiSpecification predictionReasons];
 
-        if (v10)
+        if (predictionReasons)
         {
-          v11 = [v8 uiSpecification];
-          [v11 predictionReasons];
+          uiSpecification2 = [v8 uiSpecification];
+          [uiSpecification2 predictionReasons];
           ATXSuggestionPredictionReasonEnumerateReasonCodes();
         }
 

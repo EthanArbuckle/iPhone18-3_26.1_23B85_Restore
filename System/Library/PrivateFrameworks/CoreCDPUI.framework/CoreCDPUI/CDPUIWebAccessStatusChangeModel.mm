@@ -1,37 +1,37 @@
 @interface CDPUIWebAccessStatusChangeModel
-- (CDPUIWebAccessStatusChangeModel)initWithTargetStatus:(unint64_t)a3 statusProvider:(id)a4 statusUpdater:(id)a5 walrusStatusProvider:(id)a6;
+- (CDPUIWebAccessStatusChangeModel)initWithTargetStatus:(unint64_t)status statusProvider:(id)provider statusUpdater:(id)updater walrusStatusProvider:(id)statusProvider;
 - (NSString)cancelButtonText;
 - (NSString)messageText;
 - (NSString)primaryButtonText;
 - (NSString)titleText;
-- (void)_checkCurrentStatus:(id)a3;
+- (void)_checkCurrentStatus:(id)status;
 @end
 
 @implementation CDPUIWebAccessStatusChangeModel
 
-- (CDPUIWebAccessStatusChangeModel)initWithTargetStatus:(unint64_t)a3 statusProvider:(id)a4 statusUpdater:(id)a5 walrusStatusProvider:(id)a6
+- (CDPUIWebAccessStatusChangeModel)initWithTargetStatus:(unint64_t)status statusProvider:(id)provider statusUpdater:(id)updater walrusStatusProvider:(id)statusProvider
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  providerCopy = provider;
+  updaterCopy = updater;
+  statusProviderCopy = statusProvider;
   v17.receiver = self;
   v17.super_class = CDPUIWebAccessStatusChangeModel;
   v14 = [(CDPUIWebAccessStatusChangeModel *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_targetStatus = a3;
-    objc_storeStrong(&v14->_webAccessStatusProvider, a4);
-    objc_storeStrong(&v15->_webAccessStatusUpdater, a5);
-    objc_storeStrong(&v15->_walrusStatusProvider, a6);
+    v14->_targetStatus = status;
+    objc_storeStrong(&v14->_webAccessStatusProvider, provider);
+    objc_storeStrong(&v15->_webAccessStatusUpdater, updater);
+    objc_storeStrong(&v15->_walrusStatusProvider, statusProvider);
   }
 
   return v15;
 }
 
-- (void)_checkCurrentStatus:(id)a3
+- (void)_checkCurrentStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   if (self->_targetStatus)
   {
     v5 = dispatch_group_create();
@@ -69,7 +69,7 @@
     v11[3] = &unk_278E2BD48;
     v11[4] = self;
     v13 = v22;
-    v12 = v4;
+    v12 = statusCopy;
     v14 = v18;
     dispatch_group_notify(v9, MEMORY[0x277D85CD0], v11);
 
@@ -85,7 +85,7 @@
       [(CDPUIWebAccessStatusChangeModel *)self _checkCurrentStatus:v10];
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(statusCopy + 2))(statusCopy, 0);
   }
 }
 
@@ -111,15 +111,15 @@ void *__55__CDPUIWebAccessStatusChangeModel__checkCurrentStatus___block_invoke_3
   if (self->_targetStatus == 1)
   {
     v2 = [MEMORY[0x277CFD508] builderForKey:@"ENABLE_WEB_ACCESS_PROMPT_TITLE" inTable:@"Localizable-Walrus"];
-    v3 = [v2 localizedString];
+    localizedString = [v2 localizedString];
   }
 
   else
   {
-    v3 = 0;
+    localizedString = 0;
   }
 
-  return v3;
+  return localizedString;
 }
 
 - (NSString)messageText
@@ -127,15 +127,15 @@ void *__55__CDPUIWebAccessStatusChangeModel__checkCurrentStatus___block_invoke_3
   if (self->_targetStatus == 1)
   {
     v2 = [MEMORY[0x277CFD508] builderForKey:@"ENABLE_WEB_ACCESS_PROMPT_MESSAGE" inTable:@"Localizable-Walrus"];
-    v3 = [v2 localizedString];
+    localizedString = [v2 localizedString];
   }
 
   else
   {
-    v3 = 0;
+    localizedString = 0;
   }
 
-  return v3;
+  return localizedString;
 }
 
 - (NSString)primaryButtonText
@@ -143,23 +143,23 @@ void *__55__CDPUIWebAccessStatusChangeModel__checkCurrentStatus___block_invoke_3
   if (self->_targetStatus == 1)
   {
     v2 = [MEMORY[0x277CFD508] builderForKey:@"ENABLE_WEB_ACCESS_PROMPT_PRIMARY_BUTTON" inTable:@"Localizable-Walrus"];
-    v3 = [v2 localizedString];
+    localizedString = [v2 localizedString];
   }
 
   else
   {
-    v3 = 0;
+    localizedString = 0;
   }
 
-  return v3;
+  return localizedString;
 }
 
 - (NSString)cancelButtonText
 {
   v2 = [MEMORY[0x277CFD508] builderForKey:@"GENERIC_CANCEL_BUTTON"];
-  v3 = [v2 localizedString];
+  localizedString = [v2 localizedString];
 
-  return v3;
+  return localizedString;
 }
 
 - (void)_checkCurrentStatus:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

@@ -1,20 +1,20 @@
 @interface VLFSessionMapsHomeMonitor
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
-- (VLFSessionMapsHomeMonitor)initWithObserver:(id)a3 platformController:(id)a4;
+- (VLFSessionMapsHomeMonitor)initWithObserver:(id)observer platformController:(id)controller;
 - (id)debugDescription;
-- (void)searchTextFieldDidBeginEditingNotification:(id)a3;
-- (void)searchTextFieldDidEndEditingNotification:(id)a3;
-- (void)searchWillBecomeCurrentNotification:(id)a3;
-- (void)searchWillResignCurrentNotification:(id)a3;
-- (void)settingsViewControllerDidDisappearNotification:(id)a3;
-- (void)settingsViewControllerWillAppearNotification:(id)a3;
+- (void)searchTextFieldDidBeginEditingNotification:(id)notification;
+- (void)searchTextFieldDidEndEditingNotification:(id)notification;
+- (void)searchWillBecomeCurrentNotification:(id)notification;
+- (void)searchWillResignCurrentNotification:(id)notification;
+- (void)settingsViewControllerDidDisappearNotification:(id)notification;
+- (void)settingsViewControllerWillAppearNotification:(id)notification;
 - (void)updateState;
 @end
 
 @implementation VLFSessionMapsHomeMonitor
 
-- (void)settingsViewControllerDidDisappearNotification:(id)a3
+- (void)settingsViewControllerDidDisappearNotification:(id)notification
 {
   [(VLFSessionMapsHomeMonitor *)self setSettingsIsPresent:0];
   v4 = sub_100F2CFF4();
@@ -27,7 +27,7 @@
   [(VLFSessionMapsHomeMonitor *)self updateState];
 }
 
-- (void)settingsViewControllerWillAppearNotification:(id)a3
+- (void)settingsViewControllerWillAppearNotification:(id)notification
 {
   [(VLFSessionMapsHomeMonitor *)self setSettingsIsPresent:1];
   v4 = sub_100F2CFF4();
@@ -40,7 +40,7 @@
   [(VLFSessionMapsHomeMonitor *)self updateState];
 }
 
-- (void)searchTextFieldDidEndEditingNotification:(id)a3
+- (void)searchTextFieldDidEndEditingNotification:(id)notification
 {
   v4 = sub_100F2CFF4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -53,7 +53,7 @@
   [(VLFSessionMapsHomeMonitor *)self updateState];
 }
 
-- (void)searchTextFieldDidBeginEditingNotification:(id)a3
+- (void)searchTextFieldDidBeginEditingNotification:(id)notification
 {
   v4 = sub_100F2CFF4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -66,7 +66,7 @@
   [(VLFSessionMapsHomeMonitor *)self updateState];
 }
 
-- (void)searchWillResignCurrentNotification:(id)a3
+- (void)searchWillResignCurrentNotification:(id)notification
 {
   [(VLFSessionMapsHomeMonitor *)self setSearchIsCurrent:0];
   v4 = sub_100F2CFF4();
@@ -79,7 +79,7 @@
   [(VLFSessionMapsHomeMonitor *)self updateState];
 }
 
-- (void)searchWillBecomeCurrentNotification:(id)a3
+- (void)searchWillBecomeCurrentNotification:(id)notification
 {
   [(VLFSessionMapsHomeMonitor *)self setSearchIsCurrent:1];
   v4 = sub_100F2CFF4();
@@ -129,14 +129,14 @@
   }
 
   v10 = v9;
-  v11 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v12 = @"Hide";
-  if (v11 == 1)
+  if (state == 1)
   {
     v12 = @"EnablePuck";
   }
 
-  if (v11 == 2)
+  if (state == 2)
   {
     v13 = @"EnablePuckAndBanner";
   }
@@ -215,10 +215,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [(VLFSessionMapsHomeMonitor *)self isUserSearching];
+  isUserSearching = [(VLFSessionMapsHomeMonitor *)self isUserSearching];
   v3 = sub_100F2CFF4();
   v7 = os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (isUserSearching)
   {
     if (v7)
     {
@@ -250,11 +250,11 @@ LABEL_12:
   [(VLFSessionMonitor *)self setState:v8];
 }
 
-- (VLFSessionMapsHomeMonitor)initWithObserver:(id)a3 platformController:(id)a4
+- (VLFSessionMapsHomeMonitor)initWithObserver:(id)observer platformController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  observerCopy = observer;
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v27 = sub_10006D178();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -285,7 +285,7 @@ LABEL_12:
 
   v30.receiver = self;
   v30.super_class = VLFSessionMapsHomeMonitor;
-  v8 = [(VLFSessionMonitor *)&v30 initWithObserver:v6];
+  v8 = [(VLFSessionMonitor *)&v30 initWithObserver:observerCopy];
   if (v8)
   {
     v9 = +[NSNotificationCenter defaultCenter];
@@ -306,28 +306,28 @@ LABEL_12:
     v14 = +[NSNotificationCenter defaultCenter];
     [v14 addObserver:v8 selector:"settingsViewControllerDidDisappearNotification:" name:@"SettingsViewControllerDidDisappearNotification" object:0];
 
-    v15 = [v7 chromeViewController];
-    v16 = [v15 _maps_mapsSceneDelegate];
-    v17 = [v16 topMostPresentedViewController];
+    chromeViewController = [controllerCopy chromeViewController];
+    _maps_mapsSceneDelegate = [chromeViewController _maps_mapsSceneDelegate];
+    topMostPresentedViewController = [_maps_mapsSceneDelegate topMostPresentedViewController];
 
     objc_opt_class();
-    LOBYTE(v15) = objc_opt_isKindOfClass();
+    LOBYTE(chromeViewController) = objc_opt_isKindOfClass();
 
-    if ((v15 & 1) != 0 && v17)
+    if ((chromeViewController & 1) != 0 && topMostPresentedViewController)
     {
       [(VLFSessionMapsHomeMonitor *)v8 setSettingsIsPresent:1];
     }
 
-    v18 = [v7 chromeViewController];
-    v19 = [v18 topContext];
+    chromeViewController2 = [controllerCopy chromeViewController];
+    topContext = [chromeViewController2 topContext];
 
     if (objc_opt_respondsToSelector())
     {
-      v20 = [v19 fullscreenViewController];
+      fullscreenViewController = [topContext fullscreenViewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = v20;
+        v21 = fullscreenViewController;
       }
 
       else
@@ -337,12 +337,12 @@ LABEL_12:
 
       v22 = v21;
 
-      v23 = [v22 currentViewController];
+      currentViewController = [v22 currentViewController];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = v23;
+        v24 = currentViewController;
       }
 
       else

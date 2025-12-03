@@ -1,21 +1,21 @@
 @interface PXImportAssetsDataSource
 - (BOOL)hasAlreadyImportedSection;
 - (PXImportAssetsDataSource)init;
-- (PXImportAssetsDataSource)initWithAssetCollections:(id)a3 assetsMap:(id)a4 startsAtEnd:(BOOL)a5;
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3;
-- (PXSimpleIndexPath)itemIndexPathForItem:(SEL)a3;
+- (PXImportAssetsDataSource)initWithAssetCollections:(id)collections assetsMap:(id)map startsAtEnd:(BOOL)end;
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference;
+- (PXSimpleIndexPath)itemIndexPathForItem:(SEL)item;
 - (id)allItems;
 - (id)allItemsUnsorted;
 - (id)allSelectableItems;
 - (id)alreadyImportedCollection;
 - (id)alreadyImportedItems;
-- (id)assetCollectionForIdentifier:(id)a3;
-- (id)assetCollectionForSection:(unint64_t)a3;
-- (id)itemForImportAssetUuid:(id)a3;
+- (id)assetCollectionForIdentifier:(id)identifier;
+- (id)assetCollectionForSection:(unint64_t)section;
+- (id)itemForImportAssetUuid:(id)uuid;
 - (id)notYetImportedItems;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
-- (int64_t)sectionForAssetCollection:(id)a3;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
+- (int64_t)sectionForAssetCollection:(id)collection;
 - (unint64_t)numberOfAlreadyImportedItems;
 - (unint64_t)numberOfItems;
 - (unint64_t)numberOfNotYetImportedItems;
@@ -24,11 +24,11 @@
 
 @implementation PXImportAssetsDataSource
 
-- (id)itemForImportAssetUuid:(id)a3
+- (id)itemForImportAssetUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [(PXImportAssetsDataSource *)self assetsMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  uuidCopy = uuid;
+  assetsMap = [(PXImportAssetsDataSource *)self assetsMap];
+  v6 = [assetsMap objectForKeyedSubscript:uuidCopy];
 
   return v6;
 }
@@ -41,8 +41,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PXImportAssetsDataSource *)self assetCollections];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+  v5 = [assetCollections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -53,7 +53,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetCollections);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -65,7 +65,7 @@
         [v9 arrangedObjects:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [assetCollections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -92,8 +92,8 @@ void __48__PXImportAssetsDataSource_alreadyImportedItems__block_invoke(uint64_t 
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PXImportAssetsDataSource *)self assetCollections];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+  v5 = [assetCollections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -104,7 +104,7 @@ void __48__PXImportAssetsDataSource_alreadyImportedItems__block_invoke(uint64_t 
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetCollections);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -116,7 +116,7 @@ void __48__PXImportAssetsDataSource_alreadyImportedItems__block_invoke(uint64_t 
         [v9 arrangedObjects:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [assetCollections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -143,8 +143,8 @@ void __47__PXImportAssetsDataSource_notYetImportedItems__block_invoke(uint64_t a
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(PXImportAssetsDataSource *)self assetCollections];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+  v5 = [assetCollections countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -155,14 +155,14 @@ void __47__PXImportAssetsDataSource_notYetImportedItems__block_invoke(uint64_t a
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetCollections);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) unsortedObjects];
-        [v3 addObjectsFromArray:v9];
+        unsortedObjects = [*(*(&v11 + 1) + 8 * i) unsortedObjects];
+        [v3 addObjectsFromArray:unsortedObjects];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [assetCollections countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -179,8 +179,8 @@ void __47__PXImportAssetsDataSource_notYetImportedItems__block_invoke(uint64_t a
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PXImportAssetsDataSource *)self assetCollections];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+  v5 = [assetCollections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -191,20 +191,20 @@ void __47__PXImportAssetsDataSource_notYetImportedItems__block_invoke(uint64_t a
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetCollections);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) unsortedObjects];
-        v10 = [v9 firstObject];
-        v11 = [v10 isSelectable];
+        unsortedObjects = [*(*(&v13 + 1) + 8 * i) unsortedObjects];
+        firstObject = [unsortedObjects firstObject];
+        isSelectable = [firstObject isSelectable];
 
-        if (v11)
+        if (isSelectable)
         {
-          [v3 addObjectsFromArray:v9];
+          [v3 addObjectsFromArray:unsortedObjects];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [assetCollections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -221,8 +221,8 @@ void __47__PXImportAssetsDataSource_notYetImportedItems__block_invoke(uint64_t a
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PXImportAssetsDataSource *)self assetCollections];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+  v5 = [assetCollections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -233,7 +233,7 @@ void __47__PXImportAssetsDataSource_notYetImportedItems__block_invoke(uint64_t a
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetCollections);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -245,7 +245,7 @@ void __47__PXImportAssetsDataSource_notYetImportedItems__block_invoke(uint64_t a
         [v9 arrangedObjects:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [assetCollections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -266,16 +266,16 @@ void __36__PXImportAssetsDataSource_allItems__block_invoke(uint64_t a1, void *a2
 - (id)alreadyImportedCollection
 {
   v3 = +[PXImportItemViewModel alreadyImportedGroupIdentifier];
-  v4 = [(PXImportAssetsDataSource *)self assetCollectionsById];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  assetCollectionsById = [(PXImportAssetsDataSource *)self assetCollectionsById];
+  v5 = [assetCollectionsById objectForKeyedSubscript:v3];
 
   return v5;
 }
 
 - (BOOL)hasAlreadyImportedSection
 {
-  v2 = [(PXImportAssetsDataSource *)self alreadyImportedCollection];
-  v3 = v2 != 0;
+  alreadyImportedCollection = [(PXImportAssetsDataSource *)self alreadyImportedCollection];
+  v3 = alreadyImportedCollection != 0;
 
   return v3;
 }
@@ -287,8 +287,8 @@ void __36__PXImportAssetsDataSource_allItems__block_invoke(uint64_t a1, void *a2
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(PXImportAssetsDataSource *)self assetCollections];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+  v3 = [assetCollections countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -300,13 +300,13 @@ void __36__PXImportAssetsDataSource_allItems__block_invoke(uint64_t a1, void *a2
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assetCollections);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) numberOfItems];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [assetCollections countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -331,8 +331,8 @@ void __36__PXImportAssetsDataSource_allItems__block_invoke(uint64_t a1, void *a2
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PXImportAssetsDataSource *)self assetCollections];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v18 count:16];
+  assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+  v3 = [assetCollections countByEnumeratingWithState:&v10 objects:v18 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -343,7 +343,7 @@ void __36__PXImportAssetsDataSource_allItems__block_invoke(uint64_t a1, void *a2
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assetCollections);
         }
 
         v6 = *(*(&v10 + 1) + 8 * v5);
@@ -357,7 +357,7 @@ void __36__PXImportAssetsDataSource_allItems__block_invoke(uint64_t a1, void *a2
       }
 
       while (v3 != v5);
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v18 count:16];
+      v3 = [assetCollections countByEnumeratingWithState:&v10 objects:v18 count:16];
     }
 
     while (v3);
@@ -389,8 +389,8 @@ void __51__PXImportAssetsDataSource_numberOfSelectableItems__block_invoke(uint64
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PXImportAssetsDataSource *)self assetCollections];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v18 count:16];
+  assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+  v3 = [assetCollections countByEnumeratingWithState:&v10 objects:v18 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -401,7 +401,7 @@ void __51__PXImportAssetsDataSource_numberOfSelectableItems__block_invoke(uint64
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assetCollections);
         }
 
         v6 = *(*(&v10 + 1) + 8 * v5);
@@ -415,7 +415,7 @@ void __51__PXImportAssetsDataSource_numberOfSelectableItems__block_invoke(uint64
       }
 
       while (v3 != v5);
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v18 count:16];
+      v3 = [assetCollections countByEnumeratingWithState:&v10 objects:v18 count:16];
     }
 
     while (v3);
@@ -464,8 +464,8 @@ BOOL __56__PXImportAssetsDataSource_numberOfAlreadyImportedItems__block_invoke_2
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PXImportAssetsDataSource *)self assetCollections];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v18 count:16];
+  assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+  v3 = [assetCollections countByEnumeratingWithState:&v10 objects:v18 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -476,7 +476,7 @@ BOOL __56__PXImportAssetsDataSource_numberOfAlreadyImportedItems__block_invoke_2
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assetCollections);
         }
 
         v6 = *(*(&v10 + 1) + 8 * v5);
@@ -490,7 +490,7 @@ BOOL __56__PXImportAssetsDataSource_numberOfAlreadyImportedItems__block_invoke_2
       }
 
       while (v3 != v5);
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v18 count:16];
+      v3 = [assetCollections countByEnumeratingWithState:&v10 objects:v18 count:16];
     }
 
     while (v3);
@@ -511,7 +511,7 @@ void __55__PXImportAssetsDataSource_numberOfNotYetImportedItems__block_invoke(ui
   *(*(*(a1 + 32) + 8) + 24) += [v6 count];
 }
 
-- (PXSimpleIndexPath)itemIndexPathForItem:(SEL)a3
+- (PXSimpleIndexPath)itemIndexPathForItem:(SEL)item
 {
   v12 = a4;
   v6 = *(off_1E7722228 + 1);
@@ -547,17 +547,17 @@ LABEL_7:
   return result;
 }
 
-- (int64_t)sectionForAssetCollection:(id)a3
+- (int64_t)sectionForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(PXImportAssetsDataSource *)self assetCollectionsById];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  collectionCopy = collection;
+  identifier = [collectionCopy identifier];
+  assetCollectionsById = [(PXImportAssetsDataSource *)self assetCollectionsById];
+  v7 = [assetCollectionsById objectForKeyedSubscript:identifier];
 
   if (v7)
   {
-    v8 = [(PXImportAssetsDataSource *)self assetCollections];
-    v9 = [v8 indexOfObject:v4];
+    assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+    v9 = [assetCollections indexOfObject:collectionCopy];
   }
 
   else
@@ -568,13 +568,13 @@ LABEL_7:
   return v9;
 }
 
-- (id)assetCollectionForIdentifier:(id)a3
+- (id)assetCollectionForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(PXImportAssetsDataSource *)self assetCollectionsById];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    identifierCopy = identifier;
+    assetCollectionsById = [(PXImportAssetsDataSource *)self assetCollectionsById];
+    v6 = [assetCollectionsById objectForKeyedSubscript:identifierCopy];
   }
 
   else
@@ -585,26 +585,26 @@ LABEL_7:
   return v6;
 }
 
-- (id)assetCollectionForSection:(unint64_t)a3
+- (id)assetCollectionForSection:(unint64_t)section
 {
-  v5 = [(PXImportAssetsDataSource *)self assetCollections];
-  v6 = [v5 count];
+  assetCollections = [(PXImportAssetsDataSource *)self assetCollections];
+  v6 = [assetCollections count];
 
-  if (v6 <= a3)
+  if (v6 <= section)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(PXImportAssetsDataSource *)self assetCollections];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    assetCollections2 = [(PXImportAssetsDataSource *)self assetCollections];
+    v8 = [assetCollections2 objectAtIndexedSubscript:section];
   }
 
   return v8;
 }
 
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference
 {
   v7 = a4;
   v23 = 0;
@@ -614,13 +614,13 @@ LABEL_7:
   v8 = *(off_1E7722228 + 1);
   v27 = *off_1E7722228;
   v28 = v8;
-  v9 = [v7 itemObject];
-  if (!v9)
+  itemObject = [v7 itemObject];
+  if (!itemObject)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 handleFailureInMethod:a3 object:self file:@"PXImportAssetsDataSource.m" lineNumber:100 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"objectReference.itemObject", v16}];
+    [currentHandler handleFailureInMethod:reference object:self file:@"PXImportAssetsDataSource.m" lineNumber:100 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"objectReference.itemObject", v16}];
 LABEL_6:
 
     goto LABEL_3;
@@ -629,11 +629,11 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = objc_opt_class();
     v16 = NSStringFromClass(v17);
-    v18 = [v9 px_descriptionForAssertionMessage];
-    [v14 handleFailureInMethod:a3 object:self file:@"PXImportAssetsDataSource.m" lineNumber:100 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"objectReference.itemObject", v16, v18}];
+    px_descriptionForAssertionMessage = [itemObject px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:reference object:self file:@"PXImportAssetsDataSource.m" lineNumber:100 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"objectReference.itemObject", v16, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
@@ -644,8 +644,8 @@ LABEL_3:
   v19[1] = 3221225472;
   v19[2] = __56__PXImportAssetsDataSource_indexPathForObjectReference___block_invoke;
   v19[3] = &unk_1E772CAE0;
-  v11 = v9;
-  v21 = self;
+  v11 = itemObject;
+  selfCopy = self;
   v22 = &v23;
   v20 = v11;
   [(NSArray *)assetCollections enumerateObjectsUsingBlock:v19];
@@ -675,21 +675,21 @@ uint64_t __56__PXImportAssetsDataSource_indexPathForObjectReference___block_invo
   return result;
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
   v5 = *off_1E7721F68;
-  if (a3->dataSourceIdentifier != *off_1E7721F68 && a3->subitem != 0x7FFFFFFFFFFFFFFFLL)
+  if (path->dataSourceIdentifier != *off_1E7721F68 && path->subitem != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXImportAssetsDataSource.m" lineNumber:85 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportAssetsDataSource.m" lineNumber:85 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v6 = [(NSArray *)self->_assetCollections objectAtIndexedSubscript:a3->section];
+  v6 = [(NSArray *)self->_assetCollections objectAtIndexedSubscript:path->section];
   v7 = v6;
-  item = a3->item;
-  if (a3->dataSourceIdentifier != v5 && a3->section != 0x7FFFFFFFFFFFFFFFLL && item == 0x7FFFFFFFFFFFFFFFLL)
+  item = path->item;
+  if (path->dataSourceIdentifier != v5 && path->section != 0x7FFFFFFFFFFFFFFFLL && item == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v6;
   }
@@ -704,35 +704,35 @@ uint64_t __56__PXImportAssetsDataSource_indexPathForObjectReference___block_invo
   return v12;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  if ([(NSArray *)self->_assetCollections count]<= a3)
+  if ([(NSArray *)self->_assetCollections count]<= section)
   {
     return 0;
   }
 
-  v5 = [(NSArray *)self->_assetCollections objectAtIndexedSubscript:a3];
-  v6 = [v5 numberOfItems];
+  v5 = [(NSArray *)self->_assetCollections objectAtIndexedSubscript:section];
+  numberOfItems = [v5 numberOfItems];
 
-  return v6;
+  return numberOfItems;
 }
 
-- (PXImportAssetsDataSource)initWithAssetCollections:(id)a3 assetsMap:(id)a4 startsAtEnd:(BOOL)a5
+- (PXImportAssetsDataSource)initWithAssetCollections:(id)collections assetsMap:(id)map startsAtEnd:(BOOL)end
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  collectionsCopy = collections;
+  mapCopy = map;
   v31.receiver = self;
   v31.super_class = PXImportAssetsDataSource;
   v10 = [(PXImportAssetsDataSource *)&v31 init];
   if (v10)
   {
-    v26 = a5;
-    v11 = [v8 copy];
+    endCopy = end;
+    v11 = [collectionsCopy copy];
     assetCollections = v10->_assetCollections;
     v10->_assetCollections = v11;
 
-    v13 = [v9 copy];
+    v13 = [mapCopy copy];
     assetsMap = v10->_assetsMap;
     v10->_assetsMap = v13;
 
@@ -757,8 +757,8 @@ uint64_t __56__PXImportAssetsDataSource_indexPathForObjectReference___block_invo
           }
 
           v21 = *(*(&v27 + 1) + 8 * i);
-          v22 = [v21 identifier];
-          [v15 setObject:v21 forKeyedSubscript:v22];
+          identifier = [v21 identifier];
+          [v15 setObject:v21 forKeyedSubscript:identifier];
         }
 
         v18 = [(NSArray *)v16 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -771,7 +771,7 @@ uint64_t __56__PXImportAssetsDataSource_indexPathForObjectReference___block_invo
     assetCollectionsById = v10->_assetCollectionsById;
     v10->_assetCollectionsById = v23;
 
-    v10->_startsAtEnd = v26;
+    v10->_startsAtEnd = endCopy;
   }
 
   return v10;
@@ -779,8 +779,8 @@ uint64_t __56__PXImportAssetsDataSource_indexPathForObjectReference___block_invo
 
 - (PXImportAssetsDataSource)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXImportAssetsDataSource.m" lineNumber:28 description:{@"%s is not available as initializer", "-[PXImportAssetsDataSource init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportAssetsDataSource.m" lineNumber:28 description:{@"%s is not available as initializer", "-[PXImportAssetsDataSource init]"}];
 
   abort();
 }

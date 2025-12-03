@@ -1,10 +1,10 @@
 @interface RBEntitlements
-+ (id)_entitlementsForOption:(uint64_t)a1;
-+ (id)_entitlementsForOptions:(uint64_t)a1;
-- (BOOL)rb_hasEntitlementDomain:(unint64_t)a3;
++ (id)_entitlementsForOption:(uint64_t)option;
++ (id)_entitlementsForOptions:(uint64_t)options;
+- (BOOL)rb_hasEntitlementDomain:(unint64_t)domain;
 - (NSString)description;
 - (RBEntitlements)init;
-- (id)_initWithEntitlements:(id)a3;
+- (id)_initWithEntitlements:(id)entitlements;
 @end
 
 @implementation RBEntitlements
@@ -13,8 +13,8 @@
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = [objc_opt_class() description];
-  v5 = [(NSSet *)self->_entitlements allObjects];
-  v6 = [v5 componentsJoinedByString:{@", \n\t\t\t"}];
+  allObjects = [(NSSet *)self->_entitlements allObjects];
+  v6 = [allObjects componentsJoinedByString:{@", \n\t\t\t"}];
   v7 = [v3 initWithFormat:@"<%@| [\n\t\t\t%@\n\t\t\t]>", v4, v6];
 
   return v7;
@@ -22,13 +22,13 @@
 
 - (RBEntitlements)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBEntitlements.m" lineNumber:80 description:@"-init is not allowed on RBEntitlements"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBEntitlements.m" lineNumber:80 description:@"-init is not allowed on RBEntitlements"];
 
   return 0;
 }
 
-- (BOOL)rb_hasEntitlementDomain:(unint64_t)a3
+- (BOOL)rb_hasEntitlementDomain:(unint64_t)domain
 {
   v15 = 0;
   v16 = &v15;
@@ -38,19 +38,19 @@
   v10[1] = 3221225472;
   v11 = __42__RBEntitlements_rb_hasEntitlementDomain___block_invoke;
   v12 = &unk_279B32B30;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v4 = v10;
-  if (a3)
+  if (domain)
   {
     v5 = 0;
     v19 = 0;
-    v6 = vcnt_s8(a3);
+    v6 = vcnt_s8(domain);
     v6.i16[0] = vaddlv_u8(v6);
     v7 = v6.i32[0];
     do
     {
-      if (((1 << v5) & a3) != 0)
+      if (((1 << v5) & domain) != 0)
       {
         v11(v4);
         if (v19)
@@ -95,7 +95,7 @@ uint64_t __42__RBEntitlements_rb_hasEntitlementDomain___block_invoke(uint64_t a1
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)_entitlementsForOption:(uint64_t)a1
++ (id)_entitlementsForOption:(uint64_t)option
 {
   v20[3] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_self();
@@ -193,15 +193,15 @@ LABEL_22:
   return v5;
 }
 
-- (id)_initWithEntitlements:(id)a3
+- (id)_initWithEntitlements:(id)entitlements
 {
-  v4 = a3;
+  entitlementsCopy = entitlements;
   v9.receiver = self;
   v9.super_class = RBEntitlements;
   v5 = [(RBEntitlements *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [entitlementsCopy copy];
     entitlements = v5->_entitlements;
     v5->_entitlements = v6;
   }
@@ -209,7 +209,7 @@ LABEL_22:
   return v5;
 }
 
-+ (id)_entitlementsForOptions:(uint64_t)a1
++ (id)_entitlementsForOptions:(uint64_t)options
 {
   v3 = objc_opt_self();
   v4 = [MEMORY[0x277CBEB58] set];

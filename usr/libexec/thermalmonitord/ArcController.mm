@@ -1,15 +1,15 @@
 @interface ArcController
-- (ArcController)initWithParams:(id)a3 product:(id)a4;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
-- (void)overrideParam:(id)a3 value:(int)originalThresholdModuleTemperature;
+- (ArcController)initWithParams:(id)params product:(id)product;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
+- (void)overrideParam:(id)param value:(int)originalThresholdModuleTemperature;
 - (void)update;
 - (void)updateInternal;
 @end
 
 @implementation ArcController
 
-- (ArcController)initWithParams:(id)a3 product:(id)a4
+- (ArcController)initWithParams:(id)params product:(id)product
 {
   v33.receiver = self;
   v33.super_class = ArcController;
@@ -17,7 +17,7 @@
   v7 = v6;
   if (v6)
   {
-    v6->_product = a4;
+    v6->_product = product;
     v8 = dispatch_queue_create("com.apple.ThermalMonitor.arc", 0);
     v7->_arcQueue = v8;
     v7->_mitigationsActive = -1;
@@ -30,14 +30,14 @@
       }
     }
 
-    sub_100002A20(a3, @"thresholdModule", kCFNumberIntType, &v7->_thresholdModuleTemperature);
-    sub_100002A20(a3, @"thresholdModuleHysteresis", kCFNumberIntType, &v7->_thresholdModuleTemperatureHysteresis);
-    sub_100002A20(a3, @"thresholdVirtual", kCFNumberIntType, &v7->_thresholdVirtualTemperature);
-    sub_100002A20(a3, @"thresholdVirtualHysteresis", kCFNumberIntType, &v7->_thresholdVirtualTemperatureHysteresis);
+    sub_100002A20(params, @"thresholdModule", kCFNumberIntType, &v7->_thresholdModuleTemperature);
+    sub_100002A20(params, @"thresholdModuleHysteresis", kCFNumberIntType, &v7->_thresholdModuleTemperatureHysteresis);
+    sub_100002A20(params, @"thresholdVirtual", kCFNumberIntType, &v7->_thresholdVirtualTemperature);
+    sub_100002A20(params, @"thresholdVirtualHysteresis", kCFNumberIntType, &v7->_thresholdVirtualTemperatureHysteresis);
     p_gainMitigated = &v7->_gainMitigated;
-    sub_100002A20(a3, @"gainMitigated", kCFNumberFloatType, &v7->_gainMitigated);
+    sub_100002A20(params, @"gainMitigated", kCFNumberFloatType, &v7->_gainMitigated);
     p_gainUnmitigated = &v7->_gainUnmitigated;
-    sub_100002A20(a3, @"gainUnmitigated", kCFNumberFloatType, &v7->_gainUnmitigated);
+    sub_100002A20(params, @"gainUnmitigated", kCFNumberFloatType, &v7->_gainUnmitigated);
     thresholdModuleTemperature = v7->_thresholdModuleTemperature;
     if (thresholdModuleTemperature <= 0)
     {
@@ -121,8 +121,8 @@ LABEL_23:
   if (product)
   {
     self->_latestModuleTemperature = [(CommonProduct *)product arcModuleTemperature];
-    v4 = [(CommonProduct *)self->_product arcVirtualTemperature];
-    self->_latestVirtualTemperature = v4;
+    arcVirtualTemperature = [(CommonProduct *)self->_product arcVirtualTemperature];
+    self->_latestVirtualTemperature = arcVirtualTemperature;
     thresholdVirtualTemperature = self->_thresholdVirtualTemperature;
     mitigationsActive = self->_mitigationsActive;
     thresholdModuleTemperature = self->_thresholdModuleTemperature;
@@ -132,7 +132,7 @@ LABEL_23:
       thresholdVirtualTemperature -= self->_thresholdVirtualTemperatureHysteresis;
     }
 
-    v8 = self->_latestModuleTemperature <= thresholdModuleTemperature && v4 <= thresholdVirtualTemperature;
+    v8 = self->_latestModuleTemperature <= thresholdModuleTemperature && arcVirtualTemperature <= thresholdVirtualTemperature;
     v9 = 44;
     if (v8)
     {
@@ -179,19 +179,19 @@ LABEL_23:
   }
 }
 
-- (void)overrideParam:(id)a3 value:(int)originalThresholdModuleTemperature
+- (void)overrideParam:(id)param value:(int)originalThresholdModuleTemperature
 {
   v7 = qword_1000AB718;
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = a3;
+    paramCopy = param;
     v18 = 1024;
     v19 = originalThresholdModuleTemperature;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<Notice> Arc control: override (%@, %d)", &v16, 0x12u);
   }
 
-  if ([a3 isEqualToString:@"ArcModuleThresholdKey"])
+  if ([param isEqualToString:@"ArcModuleThresholdKey"])
   {
     if (originalThresholdModuleTemperature == -1)
     {
@@ -201,7 +201,7 @@ LABEL_23:
     self->_thresholdModuleTemperature = originalThresholdModuleTemperature;
   }
 
-  else if ([a3 isEqualToString:@"ArcVirtualThresholdKey"])
+  else if ([param isEqualToString:@"ArcVirtualThresholdKey"])
   {
     if (originalThresholdModuleTemperature == -1)
     {
@@ -221,9 +221,9 @@ LABEL_23:
   }
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (a3)
+  if (index)
   {
     return 0;
   }
@@ -234,9 +234,9 @@ LABEL_23:
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (a3)
+  if (index)
   {
     return 0;
   }

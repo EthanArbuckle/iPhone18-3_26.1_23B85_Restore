@@ -1,22 +1,22 @@
 @interface MailActionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation MailActionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MailActionCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"MailActionCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailActionCell" hasInstanceMethod:@"cardAction" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailActionsViewController"];
-  [v3 validateClass:@"MailActionsViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailActionsViewController" hasInstanceMethod:@"collectionViewDataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFCardAction" hasInstanceMethod:@"handlerEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MFCardAction" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MailActionCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"MailActionCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailActionCell" hasInstanceMethod:@"cardAction" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailActionsViewController"];
+  [validationsCopy validateClass:@"MailActionsViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailActionsViewController" hasInstanceMethod:@"collectionViewDataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFCardAction" hasInstanceMethod:@"handlerEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MFCardAction" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -42,14 +42,14 @@
 - (unint64_t)accessibilityTraits
 {
   v3 = [(MailActionCellAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_6 startWithSelf:1];
-  v4 = [v3 _accessibilityViewController];
+  _accessibilityViewController = [v3 _accessibilityViewController];
 
   objc_opt_class();
-  v5 = [v4 safeValueForKey:@"collectionViewDataSource"];
+  v5 = [_accessibilityViewController safeValueForKey:@"collectionViewDataSource"];
   v6 = __UIAccessibilityCastAsClass();
 
   objc_opt_class();
-  v7 = [v4 safeValueForKey:@"collectionView"];
+  v7 = [_accessibilityViewController safeValueForKey:@"collectionView"];
   v8 = __UIAccessibilityCastAsClass();
 
   objc_opt_class();
@@ -77,17 +77,17 @@
   _Block_object_dispose(&v26, 8);
   v18.receiver = self;
   v18.super_class = MailActionCellAccessibility;
-  v14 = [(MailActionCellAccessibility *)&v18 accessibilityTraits];
+  accessibilityTraits = [(MailActionCellAccessibility *)&v18 accessibilityTraits];
   v15 = [v13 safeBoolForKey:@"handlerEnabled"];
 
   if (v15)
   {
-    v16 = *MEMORY[0x29EDC7F70] | v14;
+    v16 = *MEMORY[0x29EDC7F70] | accessibilityTraits;
   }
 
   else
   {
-    v16 = v14 & ~*MEMORY[0x29EDC7FC0];
+    v16 = accessibilityTraits & ~*MEMORY[0x29EDC7FC0];
   }
 
   return v16;

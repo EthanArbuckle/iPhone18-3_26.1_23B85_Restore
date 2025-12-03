@@ -1,24 +1,24 @@
 @interface CRTTMergeableStringSelection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id).cxx_construct;
 - (id)description;
 - (unint64_t)hash;
-- (void)updateTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4;
+- (void)updateTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d;
 @end
 
 @implementation CRTTMergeableStringSelection
 
-- (void)updateTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4
+- (void)updateTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d
 {
   v12 = *MEMORY[0x1E69E9840];
   begin = self->_selectionRanges.__begin_;
   for (i = self->_selectionRanges.__end_; begin != i; begin += 6)
   {
-    Coherence_namespace::updateTopoID(begin, &a3->charID, a4, &v10);
+    Coherence_namespace::updateTopoID(begin, &range->charID, d, &v10);
     v8 = v10;
     begin[2] = v11;
     *begin = v8;
-    Coherence_namespace::updateTopoID((begin + 3), &a3->charID, a4, &v10);
+    Coherence_namespace::updateTopoID((begin + 3), &range->charID, d, &v10);
     *(begin + 3) = v10;
     begin[5] = v11;
   }
@@ -26,23 +26,23 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 selectionRanges];
+    v5 = equalCopy;
+    selectionRanges = [v5 selectionRanges];
     begin = self->_selectionRanges.__begin_;
     end = self->_selectionRanges.__end_;
-    if (v6[1] - *v6 == end - begin)
+    if (selectionRanges[1] - *selectionRanges == end - begin)
     {
       if (end == begin)
       {
 LABEL_14:
-        v17 = [(CRTTMergeableStringSelection *)self selectionAffinity];
-        v18 = v17 == [v5 selectionAffinity];
+        selectionAffinity = [(CRTTMergeableStringSelection *)self selectionAffinity];
+        v18 = selectionAffinity == [v5 selectionAffinity];
 LABEL_17:
 
         goto LABEL_18;
@@ -61,8 +61,8 @@ LABEL_17:
 
       while (1)
       {
-        v11 = *v6;
-        v12 = *v6 + v9;
+        v11 = *selectionRanges;
+        v12 = *selectionRanges + v9;
         v13 = self->_selectionRanges.__begin_;
         v14 = &v13[v9];
         if (*(v12 + 20) != *&v13[v9 + 20])
@@ -151,12 +151,12 @@ LABEL_18:
     do
     {
       v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v6 - 24];
-      v8 = [v7 Coherence_shortDescription];
-      [v3 appendFormat:@" %@.%d:%d", v8, *(v6 - 2), *(v6 - 1)];
+      coherence_shortDescription = [v7 Coherence_shortDescription];
+      [v3 appendFormat:@" %@.%d:%d", coherence_shortDescription, *(v6 - 2), *(v6 - 1)];
 
       v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v6];
-      v10 = [MEMORY[0x1E696AFB0] Coherence_zero];
-      if ([v9 isEqual:v10])
+      coherence_zero = [MEMORY[0x1E696AFB0] Coherence_zero];
+      if ([v9 isEqual:coherence_zero])
       {
         v11 = *(v6 + 5);
 
@@ -171,8 +171,8 @@ LABEL_18:
       }
 
       v12 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v6];
-      v13 = [v12 Coherence_shortDescription];
-      [v3 appendFormat:@"-%@.%d:%d", v13, *(v6 + 4), *(v6 + 5)];
+      coherence_shortDescription2 = [v12 Coherence_shortDescription];
+      [v3 appendFormat:@"-%@.%d:%d", coherence_shortDescription2, *(v6 + 4), *(v6 + 5)];
 
 LABEL_8:
       v14 = v6 + 24;

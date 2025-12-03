@@ -4,13 +4,13 @@
 - (UIActivityIndicatorView)indicatorView;
 - (UIView)sourceViewForQuickLook;
 - (WFCompactContentPreviewViewControllerDelegate)delegate;
-- (double)contentHeightForWidth:(double)a3;
-- (id)_fileThumbnailViewControllerForContentItem:(id)a3;
-- (void)_getTypeSpecificThumbnailViewControllerForContentItem:(id)a3 completionHandler:(id)a4;
-- (void)getThumbnailViewControllerForContentItem:(id)a3 completionHandler:(id)a4;
+- (double)contentHeightForWidth:(double)width;
+- (id)_fileThumbnailViewControllerForContentItem:(id)item;
+- (void)_getTypeSpecificThumbnailViewControllerForContentItem:(id)item completionHandler:(id)handler;
+- (void)getThumbnailViewControllerForContentItem:(id)item completionHandler:(id)handler;
 - (void)invalidateContentSize;
 - (void)loadView;
-- (void)setContentItem:(id)a3 completionHandler:(id)a4;
+- (void)setContentItem:(id)item completionHandler:(id)handler;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -32,7 +32,7 @@
 
 - (BOOL)containsImageOrMediaThumbnail
 {
-  v3 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
+  thumbnailViewController = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -41,7 +41,7 @@
 
   else
   {
-    v5 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
+    thumbnailViewController2 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -49,26 +49,26 @@
   return isKindOfClass & 1;
 }
 
-- (void)_getTypeSpecificThumbnailViewControllerForContentItem:(id)a3 completionHandler:(id)a4
+- (void)_getTypeSpecificThumbnailViewControllerForContentItem:(id)item completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (![MEMORY[0x277CBEBD0] universalPreviewsEnabled] || !objc_msgSend(v6, "conformsToContentItemPreviewProviding"))
+  itemCopy = item;
+  handlerCopy = handler;
+  if (![MEMORY[0x277CBEBD0] universalPreviewsEnabled] || !objc_msgSend(itemCopy, "conformsToContentItemPreviewProviding"))
   {
-    if ([v6 isMemberOfClass:objc_opt_class()])
+    if ([itemCopy isMemberOfClass:objc_opt_class()])
     {
-      v8 = [(WFCompactContentPreviewViewController *)self _fileThumbnailViewControllerForContentItem:v6];
+      v8 = [(WFCompactContentPreviewViewController *)self _fileThumbnailViewControllerForContentItem:itemCopy];
       goto LABEL_6;
     }
 
-    if ([v6 preferredDisplayStyle] == 1)
+    if ([itemCopy preferredDisplayStyle] == 1)
     {
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __113__WFCompactContentPreviewViewController__getTypeSpecificThumbnailViewControllerForContentItem_completionHandler___block_invoke;
       v33[3] = &unk_279EE7CD0;
-      v34 = v6;
-      v35 = v7;
+      v34 = itemCopy;
+      v35 = handlerCopy;
       [v34 getObjectRepresentation:v33 forClass:objc_opt_class()];
 
       v10 = v34;
@@ -76,8 +76,8 @@
 
     else
     {
-      v11 = [v6 preferredObjectType];
-      v12 = [v11 isEqualToClass:getPHAssetClass()];
+      preferredObjectType = [itemCopy preferredObjectType];
+      v12 = [preferredObjectType isEqualToClass:getPHAssetClass()];
 
       if (v12)
       {
@@ -85,8 +85,8 @@
         v30[1] = 3221225472;
         v30[2] = __113__WFCompactContentPreviewViewController__getTypeSpecificThumbnailViewControllerForContentItem_completionHandler___block_invoke_193;
         v30[3] = &unk_279EE7D70;
-        v31 = v6;
-        v32 = v7;
+        v31 = itemCopy;
+        v32 = handlerCopy;
         [v31 getObjectRepresentation:v30 forClass:getPHAssetClass()];
 
         v10 = v31;
@@ -94,21 +94,21 @@
 
       else
       {
-        v13 = [v6 preferredObjectType];
-        if ([v13 isEqualToClass:objc_opt_class()])
+        preferredObjectType2 = [itemCopy preferredObjectType];
+        if ([preferredObjectType2 isEqualToClass:objc_opt_class()])
         {
         }
 
         else
         {
-          v14 = [v6 preferredFileType];
-          v15 = [MEMORY[0x277CFC208] ownedTypes];
-          v16 = [v14 conformsToTypes:v15];
+          preferredFileType = [itemCopy preferredFileType];
+          ownedTypes = [MEMORY[0x277CFC208] ownedTypes];
+          v16 = [preferredFileType conformsToTypes:ownedTypes];
 
           if (!v16)
           {
-            v17 = [v6 preferredFileType];
-            v18 = [v17 conformsToUTType:*MEMORY[0x277CE1DB0]];
+            preferredFileType2 = [itemCopy preferredFileType];
+            v18 = [preferredFileType2 conformsToUTType:*MEMORY[0x277CE1DB0]];
 
             if (v18)
             {
@@ -116,8 +116,8 @@
               v24[1] = 3221225472;
               v24[2] = __113__WFCompactContentPreviewViewController__getTypeSpecificThumbnailViewControllerForContentItem_completionHandler___block_invoke_206;
               v24[3] = &unk_279EE7DE8;
-              v25 = v6;
-              v26 = v7;
+              v25 = itemCopy;
+              v26 = handlerCopy;
               [v25 getFileRepresentation:v24 forType:0];
 
               v10 = v25;
@@ -125,12 +125,12 @@
 
             else
             {
-              v19 = [v6 preferredFileType];
-              v20 = [v19 conformsToUTType:*MEMORY[0x277CE1E20]];
+              preferredFileType3 = [itemCopy preferredFileType];
+              v20 = [preferredFileType3 conformsToUTType:*MEMORY[0x277CE1E20]];
 
               if (!v20)
               {
-                (*(v7 + 2))(v7, 0);
+                (*(handlerCopy + 2))(handlerCopy, 0);
                 goto LABEL_16;
               }
 
@@ -138,8 +138,8 @@
               v21[1] = 3221225472;
               v21[2] = __113__WFCompactContentPreviewViewController__getTypeSpecificThumbnailViewControllerForContentItem_completionHandler___block_invoke_3_211;
               v21[3] = &unk_279EE7E10;
-              v22 = v6;
-              v23 = v7;
+              v22 = itemCopy;
+              v23 = handlerCopy;
               [v22 getObjectRepresentation:v21 forClass:objc_opt_class()];
 
               v10 = v22;
@@ -153,8 +153,8 @@
         v27[1] = 3221225472;
         v27[2] = __113__WFCompactContentPreviewViewController__getTypeSpecificThumbnailViewControllerForContentItem_completionHandler___block_invoke_204;
         v27[3] = &unk_279EE7D98;
-        v28 = v6;
-        v29 = v7;
+        v28 = itemCopy;
+        v29 = handlerCopy;
         [v28 getObjectRepresentation:v27 forClass:objc_opt_class()];
 
         v10 = v28;
@@ -166,10 +166,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v8 = [[WFCompactPreviewThumbnailViewController alloc] initWithContentItem:v6];
+  v8 = [[WFCompactPreviewThumbnailViewController alloc] initWithContentItem:itemCopy];
 LABEL_6:
   v9 = v8;
-  (*(v7 + 2))(v7, v8);
+  (*(handlerCopy + 2))(handlerCopy, v8);
 
 LABEL_16:
 }
@@ -511,41 +511,41 @@ void __113__WFCompactContentPreviewViewController__getTypeSpecificThumbnailViewC
   (*(v2 + 16))(v2, v3);
 }
 
-- (id)_fileThumbnailViewControllerForContentItem:(id)a3
+- (id)_fileThumbnailViewControllerForContentItem:(id)item
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   v4 = getWFDialogLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[WFCompactContentPreviewViewController _fileThumbnailViewControllerForContentItem:]";
     v12 = 2114;
-    v13 = v3;
+    v13 = itemCopy;
     _os_log_impl(&dword_274719000, v4, OS_LOG_TYPE_DEFAULT, "%s Showing content with a file thumbnail: %{public}@", &v10, 0x16u);
   }
 
   v5 = [WFCompactFileThumbnailViewController alloc];
-  v6 = [v3 preferredFileType];
-  v7 = [v3 name];
-  v8 = [(WFCompactFileThumbnailViewController *)v5 initWithFileType:v6 filename:v7];
+  preferredFileType = [itemCopy preferredFileType];
+  name = [itemCopy name];
+  v8 = [(WFCompactFileThumbnailViewController *)v5 initWithFileType:preferredFileType filename:name];
 
   return v8;
 }
 
-- (void)getThumbnailViewControllerForContentItem:(id)a3 completionHandler:(id)a4
+- (void)getThumbnailViewControllerForContentItem:(id)item completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __100__WFCompactContentPreviewViewController_getThumbnailViewControllerForContentItem_completionHandler___block_invoke;
   v10[3] = &unk_279EE7CA8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = itemCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = itemCopy;
   [(WFCompactContentPreviewViewController *)self _getTypeSpecificThumbnailViewControllerForContentItem:v9 completionHandler:v10];
 }
 
@@ -563,11 +563,11 @@ void __100__WFCompactContentPreviewViewController_getThumbnailViewControllerForC
 
 - (BOOL)contentAllowsScrolling
 {
-  v3 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
-  if (v3)
+  thumbnailViewController = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
+  if (thumbnailViewController)
   {
-    v4 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
-    v5 = [v4 preferredContentMode] == 1;
+    thumbnailViewController2 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
+    v5 = [thumbnailViewController2 preferredContentMode] == 1;
   }
 
   else
@@ -580,34 +580,34 @@ void __100__WFCompactContentPreviewViewController_getThumbnailViewControllerForC
 
 - (UIView)sourceViewForQuickLook
 {
-  v2 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
-  v3 = [v2 view];
+  thumbnailViewController = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
+  view = [thumbnailViewController view];
 
-  return v3;
+  return view;
 }
 
-- (void)setContentItem:(id)a3 completionHandler:(id)a4
+- (void)setContentItem:(id)item completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (!itemCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFCompactContentPreviewViewController.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"contentItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCompactContentPreviewViewController.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"contentItem"}];
   }
 
   [(WFCompactContentPreviewViewController *)self loadViewIfNeeded];
   [(WFCompactThumbnailViewController *)self->_thumbnailViewController willMoveToParentViewController:0];
-  v10 = [(WFCompactThumbnailViewController *)self->_thumbnailViewController view];
-  [v10 removeFromSuperview];
+  view = [(WFCompactThumbnailViewController *)self->_thumbnailViewController view];
+  [view removeFromSuperview];
 
   [(WFCompactThumbnailViewController *)self->_thumbnailViewController removeFromParentViewController];
   thumbnailViewController = self->_thumbnailViewController;
   self->_thumbnailViewController = 0;
 
-  objc_storeStrong(&self->_contentItem, a3);
-  v12 = [(WFCompactContentPreviewViewController *)self indicatorView];
-  [v12 startAnimating];
+  objc_storeStrong(&self->_contentItem, item);
+  indicatorView = [(WFCompactContentPreviewViewController *)self indicatorView];
+  [indicatorView startAnimating];
 
   [(WFCompactContentPreviewViewController *)self invalidateContentSize];
   objc_initWeak(&location, self);
@@ -616,9 +616,9 @@ void __100__WFCompactContentPreviewViewController_getThumbnailViewControllerForC
   v16[2] = __74__WFCompactContentPreviewViewController_setContentItem_completionHandler___block_invoke;
   v16[3] = &unk_279EE7C80;
   objc_copyWeak(&v19, &location);
-  v13 = v8;
+  v13 = itemCopy;
   v17 = v13;
-  v14 = v9;
+  v14 = handlerCopy;
   v18 = v14;
   [(WFCompactContentPreviewViewController *)self getThumbnailViewControllerForContentItem:v13 completionHandler:v16];
 
@@ -707,21 +707,21 @@ void __74__WFCompactContentPreviewViewController_setContentItem_completionHandle
 
 - (void)invalidateContentSize
 {
-  v3 = [(WFCompactContentPreviewViewController *)self delegate];
-  [v3 previewViewControllerDidInvalidateSize:self];
+  delegate = [(WFCompactContentPreviewViewController *)self delegate];
+  [delegate previewViewControllerDidInvalidateSize:self];
 }
 
-- (double)contentHeightForWidth:(double)a3
+- (double)contentHeightForWidth:(double)width
 {
-  v5 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
+  thumbnailViewController = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
 
-  if (!v5)
+  if (!thumbnailViewController)
   {
     return 150.0;
   }
 
-  v6 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
-  [v6 contentHeightForWidth:a3];
+  thumbnailViewController2 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
+  [thumbnailViewController2 contentHeightForWidth:width];
   v8 = v7;
 
   return v8;
@@ -732,15 +732,15 @@ void __74__WFCompactContentPreviewViewController_setContentItem_completionHandle
   v14.receiver = self;
   v14.super_class = WFCompactContentPreviewViewController;
   [(WFCompactContentPreviewViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [(WFCompactContentPreviewViewController *)self view];
-  [v3 bounds];
+  view = [(WFCompactContentPreviewViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  thumbnailViewController = [(WFCompactContentPreviewViewController *)self thumbnailViewController];
+  view2 = [thumbnailViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)loadView
@@ -751,21 +751,21 @@ void __74__WFCompactContentPreviewViewController_setContentItem_completionHandle
   [(WFCompactContentPreviewViewController *)&v15 loadView];
   v3 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(WFCompactContentPreviewViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(WFCompactContentPreviewViewController *)self view];
+  [view addSubview:v3];
 
   [(WFCompactContentPreviewViewController *)self setIndicatorView:v3];
   [v3 startAnimating];
   v14 = MEMORY[0x277CCAAD0];
-  v5 = [v3 centerXAnchor];
-  v6 = [(WFCompactContentPreviewViewController *)self view];
-  v7 = [v6 centerXAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  centerXAnchor = [v3 centerXAnchor];
+  view2 = [(WFCompactContentPreviewViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v16[0] = v8;
-  v9 = [v3 centerYAnchor];
-  v10 = [(WFCompactContentPreviewViewController *)self view];
-  v11 = [v10 centerYAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  centerYAnchor = [v3 centerYAnchor];
+  view3 = [(WFCompactContentPreviewViewController *)self view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v16[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   [v14 activateConstraints:v13];

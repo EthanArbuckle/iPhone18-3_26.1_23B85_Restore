@@ -1,17 +1,17 @@
 @interface PISegmentationGatingRanges
-+ (id)loadFromURL:(id)a3;
-- (PISegmentationGatingRanges)initWithRanges:(id)a3;
++ (id)loadFromURL:(id)l;
+- (PISegmentationGatingRanges)initWithRanges:(id)ranges;
 @end
 
 @implementation PISegmentationGatingRanges
 
-- (PISegmentationGatingRanges)initWithRanges:(id)a3
+- (PISegmentationGatingRanges)initWithRanges:(id)ranges
 {
   v8.receiver = self;
   v8.super_class = PISegmentationGatingRanges;
-  v3 = a3;
+  rangesCopy = ranges;
   v4 = [(PISegmentationGatingRanges *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [rangesCopy copy];
 
   ranges = v4->_ranges;
   v4->_ranges = v5;
@@ -19,12 +19,12 @@
   return v4;
 }
 
-+ (id)loadFromURL:(id)a3
++ (id)loadFromURL:(id)l
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v19 = 0;
-  v4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v3 error:&v19];
+  v4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:lCopy error:&v19];
   v5 = v19;
   if (v4)
   {
@@ -51,9 +51,9 @@
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
     {
       v12 = v10;
-      v13 = [v3 path];
+      path = [lCopy path];
       *buf = 138543618;
-      v21 = v13;
+      v21 = path;
       v22 = 2114;
       v23 = v5;
       _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Unable to load scoring ranges dictionary from %{public}@, error: %{public}@", buf, 0x16u);

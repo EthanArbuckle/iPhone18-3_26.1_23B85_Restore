@@ -1,45 +1,45 @@
 @interface TILexiconEntry
-+ (id)entryWithDocumentText:(id)a3 userInput:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (TILexiconEntry)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)entryWithDocumentText:(id)text userInput:(id)input;
+- (BOOL)isEqual:(id)equal;
+- (TILexiconEntry)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TILexiconEntry
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   userInput = self->_userInput;
-  v7 = v4;
+  v7 = coderCopy;
   if (userInput)
   {
-    [v4 encodeObject:userInput forKey:@"userInput"];
-    v4 = v7;
+    [coderCopy encodeObject:userInput forKey:@"userInput"];
+    coderCopy = v7;
   }
 
   documentText = self->_documentText;
   if (documentText)
   {
     [v7 encodeObject:documentText forKey:@"documentText"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (TILexiconEntry)initWithCoder:(id)a3
+- (TILexiconEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TILexiconEntry;
   v5 = [(TILexiconEntry *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userInput"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userInput"];
     userInput = v5->_userInput;
     v5->_userInput = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentText"];
     documentText = v5->_documentText;
     v5->_documentText = v8;
   }
@@ -47,24 +47,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(TILexiconEntry *)self userInput];
-    v7 = [v5 userInput];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    userInput = [(TILexiconEntry *)self userInput];
+    userInput2 = [v5 userInput];
+    v8 = userInput2;
+    if (userInput == userInput2)
     {
     }
 
     else
     {
-      v9 = [(TILexiconEntry *)self userInput];
-      v10 = [v5 userInput];
-      v11 = [v9 isEqual:v10];
+      userInput3 = [(TILexiconEntry *)self userInput];
+      userInput4 = [v5 userInput];
+      v11 = [userInput3 isEqual:userInput4];
 
       if (!v11)
       {
@@ -75,18 +75,18 @@ LABEL_11:
       }
     }
 
-    v13 = [(TILexiconEntry *)self documentText];
-    v14 = [v5 documentText];
-    if (v13 == v14)
+    documentText = [(TILexiconEntry *)self documentText];
+    documentText2 = [v5 documentText];
+    if (documentText == documentText2)
     {
       v12 = 1;
     }
 
     else
     {
-      v15 = [(TILexiconEntry *)self documentText];
-      v16 = [v5 documentText];
-      v12 = [v15 isEqual:v16];
+      documentText3 = [(TILexiconEntry *)self documentText];
+      documentText4 = [v5 documentText];
+      v12 = [documentText3 isEqual:documentText4];
     }
 
     goto LABEL_11;
@@ -98,7 +98,7 @@ LABEL_12:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TILexiconEntry);
   v5 = [(NSString *)self->_userInput copy];
@@ -112,17 +112,17 @@ LABEL_12:
   return v4;
 }
 
-+ (id)entryWithDocumentText:(id)a3 userInput:(id)a4
++ (id)entryWithDocumentText:(id)text userInput:(id)input
 {
-  v5 = a4;
-  v6 = a3;
+  inputCopy = input;
+  textCopy = text;
   v7 = objc_alloc_init(TILexiconEntry);
-  v8 = [v6 copy];
+  v8 = [textCopy copy];
 
   documentText = v7->_documentText;
   v7->_documentText = v8;
 
-  v10 = [v5 copy];
+  v10 = [inputCopy copy];
   userInput = v7->_userInput;
   v7->_userInput = v10;
 

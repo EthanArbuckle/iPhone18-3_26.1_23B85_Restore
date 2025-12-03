@@ -3,7 +3,7 @@
 - (void)_flipFromPreviewProgressView;
 - (void)_flipToPreviewProgressView;
 - (void)dealloc;
-- (void)setPreviewStatus:(id)a3 animated:(BOOL)a4;
+- (void)setPreviewStatus:(id)status animated:(BOOL)animated;
 @end
 
 @implementation MSTableCell
@@ -15,31 +15,31 @@
   [(SUTableCell *)&v3 dealloc];
 }
 
-- (void)setPreviewStatus:(id)a3 animated:(BOOL)a4
+- (void)setPreviewStatus:(id)status animated:(BOOL)animated
 {
   previewStatus = self->_previewStatus;
-  if (previewStatus != a3)
+  if (previewStatus != status)
   {
-    v5 = a4;
+    animatedCopy = animated;
 
-    v8 = a3;
-    self->_previewStatus = v8;
-    if (v8)
+    statusCopy = status;
+    self->_previewStatus = statusCopy;
+    if (statusCopy)
     {
       if (self->_previewContainerView)
       {
-        v9 = v8;
+        v9 = statusCopy;
       }
 
       else
       {
-        v10 = [(MSTableCell *)self contentView];
+        contentView = [(MSTableCell *)self contentView];
         v11 = [MEMORY[0x277D755B8] imageNamed:@"PreviewFlipBackground" inBundle:{objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class())}];
-        [v10 frame];
+        [contentView frame];
         v13 = v12;
         v15 = v14;
         [v11 size];
-        v18 = [v10 newSnapshotWithRect:{v13, v15, v16, v17}];
+        v18 = [contentView newSnapshotWithRect:{v13, v15, v16, v17}];
         [(UIImageView *)self->_backsideSnapshotView removeFromSuperview];
 
         self->_backsideSnapshotView = 0;
@@ -51,10 +51,10 @@
         }
 
         self->_previewContainerView = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v11];
-        v20 = [(SUTableCell *)self clippingPath];
-        if (v20)
+        clippingPath = [(SUTableCell *)self clippingPath];
+        if (clippingPath)
         {
-          v21 = v20;
+          v21 = clippingPath;
           [(UIView *)self->_previewContainerView bounds];
           v23 = v22;
           v25 = v24;
@@ -75,13 +75,13 @@
           UIGraphicsEndImageContext();
         }
 
-        [v10 addSubview:self->_previewContainerView];
+        [contentView addSubview:self->_previewContainerView];
         v30 = [MSAudioProgressView alloc];
         [(UIView *)self->_previewContainerView bounds];
         v31 = [(MSAudioProgressView *)v30 initWithFrame:?];
         self->_previewProgressView = v31;
         [(MSAudioProgressView *)v31 setBackgroundColor:[(MSTableCell *)self backgroundColor]];
-        if (v5)
+        if (animatedCopy)
         {
           [(MSTableCell *)self _flipToPreviewProgressView];
         }
@@ -100,7 +100,7 @@
       [(MSAudioProgressView *)previewProgressView setPlayerStatus:v9];
     }
 
-    else if (v5)
+    else if (animatedCopy)
     {
 
       [(MSTableCell *)self _flipFromPreviewProgressView];

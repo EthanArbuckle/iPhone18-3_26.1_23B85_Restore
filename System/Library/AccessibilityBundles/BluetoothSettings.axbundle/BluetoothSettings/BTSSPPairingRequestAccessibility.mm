@@ -1,15 +1,15 @@
 @interface BTSSPPairingRequestAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)show;
 @end
 
 @implementation BTSSPPairingRequestAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BTSSPPairingRequest" hasInstanceVariable:@"_alert" withType:"UIAlertController"];
-  [v3 validateClass:@"BTSSPPairingRequest" hasInstanceMethod:@"show" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BTSSPPairingRequest" hasInstanceVariable:@"_alert" withType:"UIAlertController"];
+  [validationsCopy validateClass:@"BTSSPPairingRequest" hasInstanceMethod:@"show" withFullSignature:{"v", 0}];
 }
 
 - (void)show

@@ -1,6 +1,6 @@
 @interface OKDocumentImportOperation
 - (OKDocumentImportOperation)init;
-- (OKDocumentImportOperation)initWithDocument:(id)a3 resourceURL:(id)a4 importedResourceURL:(id)a5 opaque:(BOOL)a6;
+- (OKDocumentImportOperation)initWithDocument:(id)document resourceURL:(id)l importedResourceURL:(id)rL opaque:(BOOL)opaque;
 - (unint64_t)launchOperation;
 - (void)cancelOperation;
 - (void)cleanupOperation;
@@ -29,15 +29,15 @@
   return result;
 }
 
-- (OKDocumentImportOperation)initWithDocument:(id)a3 resourceURL:(id)a4 importedResourceURL:(id)a5 opaque:(BOOL)a6
+- (OKDocumentImportOperation)initWithDocument:(id)document resourceURL:(id)l importedResourceURL:(id)rL opaque:(BOOL)opaque
 {
   v10 = [(OKDocumentImportOperation *)self init];
   if (v10)
   {
-    v10->_document = a3;
-    v10->_resourceURL = [a4 copy];
-    v10->_importedResourceURL = [a5 copy];
-    v10->_opaque = a6;
+    v10->_document = document;
+    v10->_resourceURL = [l copy];
+    v10->_importedResourceURL = [rL copy];
+    v10->_opaque = opaque;
   }
 
   return v10;
@@ -111,7 +111,7 @@ LABEL_23:
   }
 
   v4 = v3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v81 = 0;
   v82 = &v81;
   v83 = 0x3052000000;
@@ -122,33 +122,33 @@ LABEL_23:
   v80[1] = 3221225472;
   v80[2] = __44__OKDocumentImportOperation_launchOperation__block_invoke;
   v80[3] = &unk_279C8EBE0;
-  v80[4] = v5;
+  v80[4] = dictionary;
   v80[5] = &v81;
   v6 = [v4 metadataWithCompletionHandler:v80 force:0 cache:0];
   if (![(OFNSOperation *)self performSubOperationSynchronously:v6 progressBlock:0 timeout:-1]|| !v82[5])
   {
     if ([v6 error])
     {
-      v15 = [v6 error];
+      error = [v6 error];
     }
 
     else
     {
-      v15 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
+      error = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
     }
 
-    [(OFNSOperation *)self setError:v15];
+    [(OFNSOperation *)self setError:error];
     goto LABEL_22;
   }
 
-  v7 = [objc_msgSend(v5 valueForKey:{@"Media Type", "intValue"}];
+  v7 = [objc_msgSend(dictionary valueForKey:{@"Media Type", "intValue"}];
   if (v7 == 2 && ([v82[5] hasRegionsOfInterest] & 1) == 0 && (objc_msgSend(v82[5], "regionsOfInterestDetected") & 1) == 0)
   {
     v79[0] = MEMORY[0x277D85DD0];
     v79[1] = 3221225472;
     v79[2] = __44__OKDocumentImportOperation_launchOperation__block_invoke_2;
     v79[3] = &unk_279C8EC08;
-    v79[4] = v5;
+    v79[4] = dictionary;
     v8 = [v4 detectRegionsOfInterestWithCompletionHandler:v79 force:0 cache:0 colorSpace:0];
     if (![(OFNSOperation *)self performSubOperationSynchronously:v8 progressBlock:0 timeout:-1])
     {
@@ -161,15 +161,15 @@ LABEL_23:
 
       if ([v8 error])
       {
-        v27 = [v8 error];
+        error2 = [v8 error];
       }
 
       else
       {
-        v27 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
+        error2 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
       }
 
-      [(OFNSOperation *)self setError:v27];
+      [(OFNSOperation *)self setError:error2];
       goto LABEL_22;
     }
   }
@@ -190,7 +190,7 @@ LABEL_22:
 
   LODWORD(v10) = 1045220557;
   [(OFNSOperation *)self setProgress:v10];
-  [v5 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_opaque), @"Opaque"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_opaque), @"Opaque"}];
   v75 = 0;
   v76 = &v75;
   v77 = 0x2020000000;
@@ -215,9 +215,9 @@ LABEL_22:
 
       if ([v12 error])
       {
-        v19 = [v12 error];
+        error3 = [v12 error];
 LABEL_67:
-        [(OFNSOperation *)self setError:v19];
+        [(OFNSOperation *)self setError:error3];
         goto LABEL_73;
       }
 
@@ -236,7 +236,7 @@ LABEL_67:
 
     v17 = @"Media thumbnail does not exist";
 LABEL_66:
-    v19 = [MEMORY[0x277CCA9B8] errorWithDescription:v17];
+    error3 = [MEMORY[0x277CCA9B8] errorWithDescription:v17];
     goto LABEL_67;
   }
 
@@ -307,15 +307,15 @@ LABEL_36:
 
           if ([v36 error])
           {
-            v54 = [v36 error];
+            error4 = [v36 error];
           }
 
           else
           {
-            v54 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
+            error4 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
           }
 
-          [(OFNSOperation *)self setError:v54];
+          [(OFNSOperation *)self setError:error4];
           goto LABEL_72;
         }
 
@@ -346,15 +346,15 @@ LABEL_36:
         {
           if ([v49 error])
           {
-            v56 = [v49 error];
+            error5 = [v49 error];
           }
 
           else
           {
-            v56 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
+            error5 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
           }
 
-          [(OFNSOperation *)self setError:v56];
+          [(OFNSOperation *)self setError:error5];
           goto LABEL_72;
         }
 
@@ -413,15 +413,15 @@ LABEL_36:
 
           if ([v28 error])
           {
-            v53 = [v28 error];
+            error6 = [v28 error];
           }
 
           else
           {
-            v53 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
+            error6 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
           }
 
-          [(OFNSOperation *)self setError:v53];
+          [(OFNSOperation *)self setError:error6];
           goto LABEL_72;
         }
 
@@ -452,15 +452,15 @@ LABEL_36:
         {
           if ([v47 error])
           {
-            v55 = [v47 error];
+            error7 = [v47 error];
           }
 
           else
           {
-            v55 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
+            error7 = [MEMORY[0x277CCA9B8] errorWithDescription:@"Internal Error"];
           }
 
-          [(OFNSOperation *)self setError:v55];
+          [(OFNSOperation *)self setError:error7];
           goto LABEL_72;
         }
 
@@ -516,9 +516,9 @@ LABEL_36:
 
     if ([v23 error])
     {
-      v35 = [v23 error];
+      error8 = [v23 error];
 LABEL_71:
-      [(OFNSOperation *)self setError:v35];
+      [(OFNSOperation *)self setError:error8];
 LABEL_72:
       _Block_object_dispose(&v66, 8);
       goto LABEL_73;
@@ -526,7 +526,7 @@ LABEL_72:
 
     v42 = @"Internal Error";
 LABEL_70:
-    v35 = [MEMORY[0x277CCA9B8] errorWithDescription:v42];
+    error8 = [MEMORY[0x277CCA9B8] errorWithDescription:v42];
     goto LABEL_71;
   }
 
@@ -582,7 +582,7 @@ LABEL_88:
   v57[3] = &unk_279C8ED20;
   v57[4] = self;
   v57[5] = v51;
-  v57[6] = v5;
+  v57[6] = dictionary;
   v57[7] = v43;
   v57[8] = v20;
   [(UIDocument *)document performAsynchronousFileAccessUsingBlock:v57];

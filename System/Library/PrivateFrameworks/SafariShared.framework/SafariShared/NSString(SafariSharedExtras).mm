@@ -45,7 +45,7 @@
 - (id)safari_md5Hash
 {
   v5 = *MEMORY[0x1E69E9840];
-  v1 = [a1 dataUsingEncoding:4];
+  v1 = [self dataUsingEncoding:4];
   CC_MD5([v1 bytes], objc_msgSend(v1, "length"), md);
   v2 = [objc_opt_class() safari_stringAsHexWithBuffer:md length:16];
 
@@ -75,8 +75,8 @@
 - (id)safari_bestLanguageTag
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 safari_stringByTrimmingWhitespace];
-  if ([v1 length])
+  safari_stringByTrimmingWhitespace = [self safari_stringByTrimmingWhitespace];
+  if ([safari_stringByTrimmingWhitespace length])
   {
     v2 = objc_alloc(MEMORY[0x1E696AD00]);
     v26[0] = *MEMORY[0x1E696A528];
@@ -84,10 +84,10 @@
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     v5 = [v2 initWithTagSchemes:v4 options:0x20000000];
 
-    [v5 setString:v1];
+    [v5 setString:safari_stringByTrimmingWhitespace];
     v6 = objc_alloc_init(MEMORY[0x1E696AB50]);
-    v7 = [v5 string];
-    v8 = [v7 length];
+    string = [v5 string];
+    v8 = [string length];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __54__NSString_SafariSharedExtras__safari_bestLanguageTag__block_invoke;
@@ -131,9 +131,9 @@
 
 - (__CFString)safari_bestKnownLanguageTag
 {
-  v1 = [a1 safari_bestLanguageTag];
-  v2 = v1;
-  if (!v1 || [(__CFString *)v1 isEqualToString:@"und"])
+  safari_bestLanguageTag = [self safari_bestLanguageTag];
+  v2 = safari_bestLanguageTag;
+  if (!safari_bestLanguageTag || [(__CFString *)safari_bestLanguageTag isEqualToString:@"und"])
   {
 
     v2 = @"en";
@@ -144,12 +144,12 @@
 
 - (__CFString)safari_bestURLStringForUserTypedString
 {
-  v1 = [a1 safari_bestURLForUserTypedString];
-  v2 = [v1 safari_originalDataAsString];
+  safari_bestURLForUserTypedString = [self safari_bestURLForUserTypedString];
+  safari_originalDataAsString = [safari_bestURLForUserTypedString safari_originalDataAsString];
 
-  if (v2)
+  if (safari_originalDataAsString)
   {
-    v3 = v2;
+    v3 = safari_originalDataAsString;
   }
 
   else
@@ -162,40 +162,40 @@
 
 - (id)safari_userVisibleURL
 {
-  if (WTF::isUserVisibleURL(a1, a2))
+  if (WTF::isUserVisibleURL(self, a2))
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFF8] safari_URLWithDataAsString:a1];
+    v4 = [MEMORY[0x1E695DFF8] safari_URLWithDataAsString:self];
     v6 = v4;
     if (v4)
     {
-      v3 = WTF::userVisibleString(v4, v5);
+      selfCopy = WTF::userVisibleString(v4, v5);
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)safari_looksLikeAbsoluteURLString
 {
-  v1 = [a1 safari_stringByTrimmingWhitespace];
-  v2 = [v1 safari_rangeOfURLScheme] != 0x7FFFFFFFFFFFFFFFLL;
+  safari_stringByTrimmingWhitespace = [self safari_stringByTrimmingWhitespace];
+  v2 = [safari_stringByTrimmingWhitespace safari_rangeOfURLScheme] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v2;
 }
 
 - (__CFString)safari_stringByFoldingWideCharactersAndNormalizing
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   CFStringFold(v1, 0x100uLL, 0);
   CFStringNormalize(v1, kCFStringNormalizationFormC);
 
@@ -204,7 +204,7 @@
 
 - (id)safari_stringByReplacingMarkupCharactersWithHTMLEntities
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:{0, objc_msgSend(v1, "length")}];
@@ -217,27 +217,27 @@
 
 - (id)safari_stringByReplacingLastOccurrenceOfWhitespaceWithANonBreakingSpace
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 rangeOfCharacterFromSet:v2 options:4];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet options:4];
   v5 = v4;
 
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [a1 stringByReplacingCharactersInRange:v3 withString:{v5, @"&nbsp"}];;
+    selfCopy = [self stringByReplacingCharactersInRange:v3 withString:{v5, @"&nbsp"}];;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)safari_stringEncodedAsURLQueryParameter
 {
   v2 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"ABCDEFGHIJLKMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.!~*'()"];
-  v3 = [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  v3 = [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"%20" withString:@"+"];
 
   return v4;
@@ -245,31 +245,31 @@
 
 - (id)safari_stringDecodedFromURLQueryParameter
 {
-  v1 = [a1 stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-  v2 = [v1 stringByRemovingPercentEncoding];
+  v1 = [self stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+  stringByRemovingPercentEncoding = [v1 stringByRemovingPercentEncoding];
 
-  return v2;
+  return stringByRemovingPercentEncoding;
 }
 
 - (id)safari_stringByRemovingDirectionalPrefix
 {
-  if ([a1 safari_hasDirectionalPrefix])
+  if ([self safari_hasDirectionalPrefix])
   {
-    v2 = [a1 substringFromIndex:1];
+    selfCopy = [self substringFromIndex:1];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)safari_hasDirectionalPrefix
 {
-  v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 8206];
-  v3 = [a1 hasPrefix:v2];
+  8206 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 8206];
+  v3 = [self hasPrefix:8206];
 
   return v3;
 }
@@ -283,14 +283,14 @@
 
 - (id)safari_stringBySubstitutingAmpersandAndAngleBracketsForHTMLEntities
 {
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   v3 = [v2 replaceOccurrencesOfString:@"&lt;" withString:@"<" options:0 range:{0, objc_msgSend(v2, "length")}];
   v4 = [v2 replaceOccurrencesOfString:@"&gt;" withString:@">" options:0 range:{0, objc_msgSend(v2, "length")}];
   if (!(v4 + v3 + [v2 replaceOccurrencesOfString:@"&amp;" withString:@"&" options:0 range:{0, objc_msgSend(v2, "length")}]))
   {
-    v5 = a1;
+    selfCopy = self;
 
-    v2 = v5;
+    v2 = selfCopy;
   }
 
   return v2;
@@ -298,14 +298,14 @@
 
 - (id)safari_stringBySubstitutingHTMLEntitiesForAmpersandAndAngleBrackets
 {
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   v3 = [v2 replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:{0, objc_msgSend(v2, "length")}];
   v4 = [v2 replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:{0, objc_msgSend(v2, "length")}];
   if (!(v4 + v3 + [v2 replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:{0, objc_msgSend(v2, "length")}]))
   {
-    v5 = a1;
+    selfCopy = self;
 
-    v2 = v5;
+    v2 = selfCopy;
   }
 
   return v2;
@@ -321,30 +321,30 @@
 
 - (id)safari_scriptIfJavaScriptURLString
 {
-  if ([a1 safari_isJavaScriptURLString])
+  if ([self safari_isJavaScriptURLString])
   {
-    v2 = [a1 substringFromIndex:11];
-    v3 = [v2 stringByRemovingPercentEncoding];
+    v2 = [self substringFromIndex:11];
+    stringByRemovingPercentEncoding = [v2 stringByRemovingPercentEncoding];
   }
 
   else
   {
-    v3 = 0;
+    stringByRemovingPercentEncoding = 0;
   }
 
-  return v3;
+  return stringByRemovingPercentEncoding;
 }
 
 - (void)safari_enumerateSubdomainRangesInHostUsingBlock:()SafariSharedExtras
 {
   v4 = a3;
   v12 = 0;
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = 0;
   v7 = v5;
   while (1)
   {
-    v8 = [a1 rangeOfString:@"." options:0 range:{v6, v7}];
+    v8 = [self rangeOfString:@"." options:0 range:{v6, v7}];
     v10 = v9;
     if (!v9)
     {
@@ -368,8 +368,8 @@ LABEL_6:
 - (id)safari_canonicalURLForFrequentlyVisitedSites
 {
   v1 = MEMORY[0x1E695DFF8];
-  v2 = [a1 safari_canonicalURLStringForFrequentlyVisitedSites];
-  v3 = [v1 safari_URLWithDataAsString:v2];
+  safari_canonicalURLStringForFrequentlyVisitedSites = [self safari_canonicalURLStringForFrequentlyVisitedSites];
+  v3 = [v1 safari_URLWithDataAsString:safari_canonicalURLStringForFrequentlyVisitedSites];
 
   return v3;
 }
@@ -379,10 +379,10 @@ LABEL_6:
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 lowercaseString];
-    v6 = canonicalize(v5);
-    v7 = [v4 lowercaseString];
-    v8 = canonicalize(v7);
+    lowercaseString = [self lowercaseString];
+    v6 = canonicalize(lowercaseString);
+    lowercaseString2 = [v4 lowercaseString];
+    v8 = canonicalize(lowercaseString2);
     v9 = [v6 isEqualToString:v8];
   }
 
@@ -404,7 +404,7 @@ LABEL_6:
 - (id)safari_sha256Hash
 {
   v5 = *MEMORY[0x1E69E9840];
-  v1 = [a1 dataUsingEncoding:4];
+  v1 = [self dataUsingEncoding:4];
   CC_SHA256([v1 bytes], objc_msgSend(v1, "length"), md);
   v2 = [objc_opt_class() safari_stringAsHexWithBuffer:md length:32];
 
@@ -423,16 +423,16 @@ LABEL_6:
 
 - (__CFString)safari_urlHashesOfComponents
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithString:a1];
+  v1 = [MEMORY[0x1E696AF20] componentsWithString:self];
   if (v1)
   {
-    v2 = [MEMORY[0x1E695DF70] array];
-    v3 = [v1 host];
-    v4 = [v3 safari_maskedWordHashForUseWithURLHashesOfComponents];
-    v5 = v4;
-    if (v4)
+    array = [MEMORY[0x1E695DF70] array];
+    host = [v1 host];
+    safari_maskedWordHashForUseWithURLHashesOfComponents = [host safari_maskedWordHashForUseWithURLHashesOfComponents];
+    v5 = safari_maskedWordHashForUseWithURLHashesOfComponents;
+    if (safari_maskedWordHashForUseWithURLHashesOfComponents)
     {
-      v6 = v4;
+      v6 = safari_maskedWordHashForUseWithURLHashesOfComponents;
     }
 
     else
@@ -440,14 +440,14 @@ LABEL_6:
       v6 = @"00";
     }
 
-    [v2 addObject:v6];
+    [array addObject:v6];
 
-    v7 = [v1 path];
-    v8 = [v7 safari_maskedWordHashForUseWithURLHashesOfComponents];
-    v9 = v8;
-    if (v8)
+    path = [v1 path];
+    safari_maskedWordHashForUseWithURLHashesOfComponents2 = [path safari_maskedWordHashForUseWithURLHashesOfComponents];
+    v9 = safari_maskedWordHashForUseWithURLHashesOfComponents2;
+    if (safari_maskedWordHashForUseWithURLHashesOfComponents2)
     {
-      v10 = v8;
+      v10 = safari_maskedWordHashForUseWithURLHashesOfComponents2;
     }
 
     else
@@ -455,14 +455,14 @@ LABEL_6:
       v10 = @"00";
     }
 
-    [v2 addObject:v10];
+    [array addObject:v10];
 
-    v11 = [v1 query];
-    v12 = [v11 safari_maskedWordHashForUseWithURLHashesOfComponents];
-    v13 = v12;
-    if (v12)
+    query = [v1 query];
+    safari_maskedWordHashForUseWithURLHashesOfComponents3 = [query safari_maskedWordHashForUseWithURLHashesOfComponents];
+    v13 = safari_maskedWordHashForUseWithURLHashesOfComponents3;
+    if (safari_maskedWordHashForUseWithURLHashesOfComponents3)
     {
-      v14 = v12;
+      v14 = safari_maskedWordHashForUseWithURLHashesOfComponents3;
     }
 
     else
@@ -470,9 +470,9 @@ LABEL_6:
       v14 = @"00";
     }
 
-    [v2 addObject:v14];
+    [array addObject:v14];
 
-    v15 = [v2 componentsJoinedByString:@"|"];
+    v15 = [array componentsJoinedByString:@"|"];
   }
 
   else
@@ -485,10 +485,10 @@ LABEL_6:
 
 - (__CFString)safari_maskedWordHashForUseWithURLHashesOfComponents
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 safari_saltForURLHashesOfComponents];
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2X", (objc_msgSend(a1, "hash") + v2)];
+    safari_saltForURLHashesOfComponents = [self safari_saltForURLHashesOfComponents];
+    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2X", (objc_msgSend(self, "hash") + safari_saltForURLHashesOfComponents)];
   }
 
   else
@@ -501,26 +501,26 @@ LABEL_6:
 
 - (uint64_t)safari_isPDFMIMEType
 {
-  if ([a1 safari_isCaseInsensitiveEqualToString:@"application/pdf"] & 1) != 0 || (objc_msgSend(a1, "safari_isCaseInsensitiveEqualToString:", @"application/postscript"))
+  if ([self safari_isCaseInsensitiveEqualToString:@"application/pdf"] & 1) != 0 || (objc_msgSend(self, "safari_isCaseInsensitiveEqualToString:", @"application/postscript"))
   {
     return 1;
   }
 
-  return [a1 safari_isCaseInsensitiveEqualToString:@"text/pdf"];
+  return [self safari_isCaseInsensitiveEqualToString:@"text/pdf"];
 }
 
 - (id)safari_lastPathComponentWithoutZipExtension
 {
-  v1 = [a1 lastPathComponent];
-  v2 = [v1 pathExtension];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 isEqualToString:@"zip"];
+  lastPathComponent = [self lastPathComponent];
+  pathExtension = [lastPathComponent pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v4 = [lowercaseString isEqualToString:@"zip"];
 
   if (v4)
   {
-    v5 = [v1 stringByDeletingPathExtension];
-    v6 = [v5 pathExtension];
-    v7 = [v6 isEqualToString:&stru_1F3A5E418];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    pathExtension2 = [stringByDeletingPathExtension pathExtension];
+    v7 = [pathExtension2 isEqualToString:&stru_1F3A5E418];
     if (v7)
     {
       v8 = 0;
@@ -528,12 +528,12 @@ LABEL_6:
 
     else
     {
-      v8 = v1;
+      v8 = lastPathComponent;
     }
 
     if (v7)
     {
-      v9 = v5;
+      v9 = stringByDeletingPathExtension;
     }
 
     else
@@ -543,45 +543,45 @@ LABEL_6:
 
     if (!v7)
     {
-      v1 = v5;
+      lastPathComponent = stringByDeletingPathExtension;
     }
   }
 
-  return v1;
+  return lastPathComponent;
 }
 
 - (id)safari_ensurePathExtension:()SafariSharedExtras
 {
   v4 = a3;
-  if ([v4 length] && objc_msgSend(a1, "length"))
+  if ([v4 length] && objc_msgSend(self, "length"))
   {
-    v5 = [a1 pathExtension];
-    v6 = v5;
-    if (v5 && ![v5 compare:v4 options:1])
+    pathExtension = [self pathExtension];
+    v6 = pathExtension;
+    if (pathExtension && ![pathExtension compare:v4 options:1])
     {
-      v7 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = [a1 stringByAppendingPathExtension:v4];
+      selfCopy = [self stringByAppendingPathExtension:v4];
     }
 
-    v8 = v7;
+    selfCopy2 = selfCopy;
   }
 
   else
   {
-    v8 = a1;
+    selfCopy2 = self;
   }
 
-  return v8;
+  return selfCopy2;
 }
 
 - (id)safari_containedURLs
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 componentsSeparatedByCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v4 = [v3 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_108];
 
@@ -591,7 +591,7 @@ LABEL_6:
 - (uint64_t)safari_looksLikeObscuredPassword
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
@@ -600,8 +600,8 @@ LABEL_6:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [MEMORY[0x1E696AB08] safari_obscuredPasswordCharacterSets];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  safari_obscuredPasswordCharacterSets = [MEMORY[0x1E696AB08] safari_obscuredPasswordCharacterSets];
+  v3 = [safari_obscuredPasswordCharacterSets countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -612,10 +612,10 @@ LABEL_6:
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(safari_obscuredPasswordCharacterSets);
         }
 
-        v6 = [a1 stringByTrimmingCharactersInSet:*(*(&v10 + 1) + 8 * v5)];
+        v6 = [self stringByTrimmingCharactersInSet:*(*(&v10 + 1) + 8 * v5)];
         v7 = [v6 length] == 0;
 
         if (v7)
@@ -628,7 +628,7 @@ LABEL_6:
       }
 
       while (v3 != v5);
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [safari_obscuredPasswordCharacterSets countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v3)
       {
         continue;
@@ -646,31 +646,31 @@ LABEL_12:
 
 - (id)safari_stringByRemovingParenthesizedDomain
 {
-  if (([a1 hasSuffix:@""]) & 1) != 0 && (v2 = objc_msgSend(a1, "rangeOfString:options:", @"("), 4, v2 != 0x7FFFFFFFFFFFFFFFLL))
+  if (([self hasSuffix:@""]) & 1) != 0 && (v2 = objc_msgSend(self, "rangeOfString:options:", @"("), 4, v2 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v4 = [a1 substringToIndex:v2];
-    v5 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v3 = [v4 stringByTrimmingCharactersInSet:v5];
+    v4 = [self substringToIndex:v2];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    selfCopy = [v4 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)safari_userVisibleTitleIgnoringFullURLString
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v3 length])
   {
     v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
-    v5 = [v4 scheme];
-    v6 = [v5 length];
+    scheme = [v4 scheme];
+    v6 = [scheme length];
 
     if (v6)
     {
@@ -698,7 +698,7 @@ LABEL_12:
 
 - (uint64_t)safari_rangeOfURLScheme
 {
-  v2 = [a1 rangeOfString:@":"];
+  v2 = [self rangeOfString:@":"];
   if (v2)
   {
     v3 = v2 == 0x7FFFFFFFFFFFFFFFLL;
@@ -720,7 +720,7 @@ LABEL_12:
     [NSString(SafariSharedExtras) safari_rangeOfURLScheme]::inverseSchemeCharacterSet = [v6 invertedSet];
   }
 
-  if ([a1 rangeOfCharacterFromSet:-[NSString(SafariSharedExtras) safari_rangeOfURLScheme]::inverseSchemeCharacterSet options:0 range:{0, v5}] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfCharacterFromSet:-[NSString(SafariSharedExtras) safari_rangeOfURLScheme]::inverseSchemeCharacterSet options:0 range:{0, v5}] != 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -790,7 +790,7 @@ LABEL_12:
   v33 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v24 = a4;
-  v7 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -810,19 +810,19 @@ LABEL_12:
         }
 
         v12 = *(*(&v28 + 1) + 8 * i);
-        v13 = [a1 length];
+        v13 = [self length];
         v14 = 0;
         do
         {
-          v16 = [a1 rangeOfString:v12 options:385 range:{v14, v13}];
+          v16 = [self rangeOfString:v12 options:385 range:{v14, v13}];
           if (v16 == 0x7FFFFFFFFFFFFFFFLL)
           {
             break;
           }
 
           v17 = v15;
-          [v7 addIndexesInRange:{v16, v15}];
-          v18 = [a1 length];
+          [indexSet addIndexesInRange:{v16, v15}];
+          v18 = [self length];
           v14 = v16 + v17;
           v13 = v18 - (v16 + v17);
         }
@@ -836,7 +836,7 @@ LABEL_12:
     while (v9);
   }
 
-  v19 = [a1 mutableCopy];
+  v19 = [self mutableCopy];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __80__NSString_SafariSharedExtras__safari_stringByRedactingStrings_withReplacement___block_invoke;
@@ -845,7 +845,7 @@ LABEL_12:
   v26 = v20;
   v21 = v24;
   v27 = v21;
-  [v7 enumerateRangesWithOptions:2 usingBlock:v25];
+  [indexSet enumerateRangesWithOptions:2 usingBlock:v25];
   v22 = [v20 copy];
 
   return v22;
@@ -857,13 +857,13 @@ LABEL_12:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [a1 length];
+  v2 = [self length];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__NSString_SafariSharedExtras__safari_wordCount__block_invoke;
   v5[3] = &unk_1E7FC8778;
   v5[4] = &v6;
-  [a1 enumerateSubstringsInRange:0 options:v2 usingBlock:{3, v5}];
+  [self enumerateSubstringsInRange:0 options:v2 usingBlock:{3, v5}];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;

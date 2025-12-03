@@ -1,24 +1,24 @@
 @interface OITSUIntegerKeyDictionaryKeyEnumerator
-- (OITSUIntegerKeyDictionaryKeyEnumerator)initWithIntegerKeyDictionary:(id)a3;
+- (OITSUIntegerKeyDictionaryKeyEnumerator)initWithIntegerKeyDictionary:(id)dictionary;
 - (int64_t)nextKey;
 - (void)dealloc;
 @end
 
 @implementation OITSUIntegerKeyDictionaryKeyEnumerator
 
-- (OITSUIntegerKeyDictionaryKeyEnumerator)initWithIntegerKeyDictionary:(id)a3
+- (OITSUIntegerKeyDictionaryKeyEnumerator)initWithIntegerKeyDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = OITSUIntegerKeyDictionaryKeyEnumerator;
   v4 = [(OITSUIntegerKeyDictionaryKeyEnumerator *)&v7 init];
   if (v4)
   {
-    v5 = [a3 count];
+    v5 = [dictionary count];
     v4->_count = v5;
     if (v5)
     {
       v4->_keys = malloc_type_calloc(v5, 8uLL, 0x10040436913F5uLL);
-      CFDictionaryGetKeysAndValues([a3 p_cfDictionary], v4->_keys, 0);
+      CFDictionaryGetKeysAndValues([dictionary p_cfDictionary], v4->_keys, 0);
     }
   }
 

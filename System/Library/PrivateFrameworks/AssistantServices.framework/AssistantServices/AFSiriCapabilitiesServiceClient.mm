@@ -4,24 +4,24 @@
 - (BOOL)siriWithAppIntentsEnabledSync;
 - (NSXPCConnection)connection;
 - (id)service;
-- (id)serviceWithErrorHandler:(id)a3;
-- (id)syncServiceWithErrorHandler:(id)a3;
+- (id)serviceWithErrorHandler:(id)handler;
+- (id)syncServiceWithErrorHandler:(id)handler;
 - (void)dealloc;
-- (void)shouldDownloadAssetsForSiriSystemAssistantExperience:(id)a3;
-- (void)siriSystemAssistantExperienceEnabled:(id)a3;
-- (void)siriWithAppIntentsEnabled:(id)a3;
+- (void)shouldDownloadAssetsForSiriSystemAssistantExperience:(id)experience;
+- (void)siriSystemAssistantExperienceEnabled:(id)enabled;
+- (void)siriWithAppIntentsEnabled:(id)enabled;
 @end
 
 @implementation AFSiriCapabilitiesServiceClient
 
-- (void)siriWithAppIntentsEnabled:(id)a3
+- (void)siriWithAppIntentsEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__AFSiriCapabilitiesServiceClient_siriWithAppIntentsEnabled___block_invoke;
   v13[3] = &unk_1E7348AA8;
-  v5 = v4;
+  v5 = enabledCopy;
   v14 = v5;
   v6 = [(AFSiriCapabilitiesServiceClient *)self serviceWithErrorHandler:v13];
   v11[0] = 0;
@@ -29,7 +29,7 @@
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__26193;
   v11[4] = __Block_byref_object_dispose__26194;
-  v12 = self;
+  selfCopy = self;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__AFSiriCapabilitiesServiceClient_siriWithAppIntentsEnabled___block_invoke_2;
@@ -104,14 +104,14 @@ void __61__AFSiriCapabilitiesServiceClient_siriWithAppIntentsEnabled___block_inv
   return v3 & 1;
 }
 
-- (void)siriSystemAssistantExperienceEnabled:(id)a3
+- (void)siriSystemAssistantExperienceEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__AFSiriCapabilitiesServiceClient_siriSystemAssistantExperienceEnabled___block_invoke;
   v13[3] = &unk_1E7348AA8;
-  v5 = v4;
+  v5 = enabledCopy;
   v14 = v5;
   v6 = [(AFSiriCapabilitiesServiceClient *)self serviceWithErrorHandler:v13];
   v11[0] = 0;
@@ -119,7 +119,7 @@ void __61__AFSiriCapabilitiesServiceClient_siriWithAppIntentsEnabled___block_inv
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__26193;
   v11[4] = __Block_byref_object_dispose__26194;
-  v12 = self;
+  selfCopy = self;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__AFSiriCapabilitiesServiceClient_siriSystemAssistantExperienceEnabled___block_invoke_2;
@@ -194,14 +194,14 @@ void __72__AFSiriCapabilitiesServiceClient_siriSystemAssistantExperienceEnabled_
   return v3 & 1;
 }
 
-- (void)shouldDownloadAssetsForSiriSystemAssistantExperience:(id)a3
+- (void)shouldDownloadAssetsForSiriSystemAssistantExperience:(id)experience
 {
-  v4 = a3;
+  experienceCopy = experience;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__AFSiriCapabilitiesServiceClient_shouldDownloadAssetsForSiriSystemAssistantExperience___block_invoke;
   v13[3] = &unk_1E7348AA8;
-  v5 = v4;
+  v5 = experienceCopy;
   v14 = v5;
   v6 = [(AFSiriCapabilitiesServiceClient *)self serviceWithErrorHandler:v13];
   v11[0] = 0;
@@ -209,7 +209,7 @@ void __72__AFSiriCapabilitiesServiceClient_siriSystemAssistantExperienceEnabled_
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__26193;
   v11[4] = __Block_byref_object_dispose__26194;
-  v12 = self;
+  selfCopy = self;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __88__AFSiriCapabilitiesServiceClient_shouldDownloadAssetsForSiriSystemAssistantExperience___block_invoke_2;
@@ -284,30 +284,30 @@ void __88__AFSiriCapabilitiesServiceClient_shouldDownloadAssetsForSiriSystemAssi
   return v3 & 1;
 }
 
-- (id)syncServiceWithErrorHandler:(id)a3
+- (id)syncServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AFSiriCapabilitiesServiceClient *)self connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(AFSiriCapabilitiesServiceClient *)self connection];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)serviceWithErrorHandler:(id)a3
+- (id)serviceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AFSiriCapabilitiesServiceClient *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(AFSiriCapabilitiesServiceClient *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (id)service
 {
-  v2 = [(AFSiriCapabilitiesServiceClient *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(AFSiriCapabilitiesServiceClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (NSXPCConnection)connection

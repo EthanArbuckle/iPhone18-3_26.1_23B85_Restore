@@ -1,20 +1,20 @@
 @interface ADNormals
-+ (int64_t)normalsFromDepth:(__CVBuffer *)a3 focalLength:(float)a4 principalPoint:(CGPoint)a5 normalsOutput:(__CVBuffer *)a6 withHelperBuffer:(id)a7;
++ (int64_t)normalsFromDepth:(__CVBuffer *)depth focalLength:(float)length principalPoint:(CGPoint)point normalsOutput:(__CVBuffer *)output withHelperBuffer:(id)buffer;
 @end
 
 @implementation ADNormals
 
-+ (int64_t)normalsFromDepth:(__CVBuffer *)a3 focalLength:(float)a4 principalPoint:(CGPoint)a5 normalsOutput:(__CVBuffer *)a6 withHelperBuffer:(id)a7
++ (int64_t)normalsFromDepth:(__CVBuffer *)depth focalLength:(float)length principalPoint:(CGPoint)point normalsOutput:(__CVBuffer *)output withHelperBuffer:(id)buffer
 {
-  y = a5.y;
-  x = a5.x;
-  v402 = *&a4;
-  v11 = a7;
+  y = point.y;
+  x = point.x;
+  v402 = *&length;
+  bufferCopy = buffer;
   v12 = -22953;
-  if (a3 && a6)
+  if (depth && output)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-    v14 = CVPixelBufferGetPixelFormatType(a6);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(depth);
+    v14 = CVPixelBufferGetPixelFormatType(output);
     if (v14 == 1380411457)
     {
       v12 = -22956;
@@ -22,11 +22,11 @@
       {
         if (PixelFormatType == 1751411059)
         {
-          v61 = v11;
-          Width = CVPixelBufferGetWidth(a3);
-          Height = CVPixelBufferGetHeight(a3);
-          v64 = CVPixelBufferGetWidth(a6);
-          v65 = CVPixelBufferGetHeight(a6);
+          v61 = bufferCopy;
+          Width = CVPixelBufferGetWidth(depth);
+          Height = CVPixelBufferGetHeight(depth);
+          v64 = CVPixelBufferGetWidth(output);
+          v65 = CVPixelBufferGetHeight(output);
           v12 = -22953;
           if (Width != v64 || Height != v65)
           {
@@ -54,13 +54,13 @@
             _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE8__appendEm(v67, Height * Width - v166);
           }
 
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
-          CVPixelBufferLockBaseAddress(a6, 0);
-          BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-          v401 = CVPixelBufferGetBytesPerRow(a6);
-          BaseAddress = CVPixelBufferGetBaseAddress(a3);
-          v169 = CVPixelBufferGetBaseAddress(a6);
-          DataSize = CVPixelBufferGetDataSize(a6);
+          CVPixelBufferLockBaseAddress(depth, 1uLL);
+          CVPixelBufferLockBaseAddress(output, 0);
+          BytesPerRow = CVPixelBufferGetBytesPerRow(depth);
+          v401 = CVPixelBufferGetBytesPerRow(output);
+          BaseAddress = CVPixelBufferGetBaseAddress(depth);
+          v169 = CVPixelBufferGetBaseAddress(output);
+          DataSize = CVPixelBufferGetDataSize(output);
           bzero(v169, DataSize);
           if (Height)
           {
@@ -174,11 +174,11 @@
 
         if (PixelFormatType == 1751410032)
         {
-          v395 = v11;
-          v35 = CVPixelBufferGetWidth(a3);
-          v36 = CVPixelBufferGetHeight(a3);
-          v37 = CVPixelBufferGetWidth(a6);
-          v38 = CVPixelBufferGetHeight(a6);
+          v395 = bufferCopy;
+          v35 = CVPixelBufferGetWidth(depth);
+          v36 = CVPixelBufferGetHeight(depth);
+          v37 = CVPixelBufferGetWidth(output);
+          v38 = CVPixelBufferGetHeight(output);
           v12 = -22953;
           if (v35 != v37 || v36 != v38)
           {
@@ -206,13 +206,13 @@
             _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE8__appendEm(v40, v36 * v35 - v138);
           }
 
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
-          CVPixelBufferLockBaseAddress(a6, 0);
-          v139 = CVPixelBufferGetBytesPerRow(a3);
-          v140 = CVPixelBufferGetBytesPerRow(a6);
-          v141 = CVPixelBufferGetBaseAddress(a3);
-          v142 = CVPixelBufferGetBaseAddress(a6);
-          v143 = CVPixelBufferGetDataSize(a6);
+          CVPixelBufferLockBaseAddress(depth, 1uLL);
+          CVPixelBufferLockBaseAddress(output, 0);
+          v139 = CVPixelBufferGetBytesPerRow(depth);
+          v140 = CVPixelBufferGetBytesPerRow(output);
+          v141 = CVPixelBufferGetBaseAddress(depth);
+          v142 = CVPixelBufferGetBaseAddress(output);
+          v143 = CVPixelBufferGetDataSize(output);
           bzero(v142, v143);
           if (v36)
           {
@@ -328,11 +328,11 @@
       {
         if (PixelFormatType == 1717855600)
         {
-          v396 = v11;
-          v55 = CVPixelBufferGetWidth(a3);
-          v56 = CVPixelBufferGetHeight(a3);
-          v57 = CVPixelBufferGetWidth(a6);
-          v58 = CVPixelBufferGetHeight(a6);
+          v396 = bufferCopy;
+          v55 = CVPixelBufferGetWidth(depth);
+          v56 = CVPixelBufferGetHeight(depth);
+          v57 = CVPixelBufferGetWidth(output);
+          v58 = CVPixelBufferGetHeight(output);
           v12 = -22953;
           if (v55 != v57 || v56 != v58)
           {
@@ -360,13 +360,13 @@
             _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE8__appendEm(v60, v56 * v55 - v153);
           }
 
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
-          CVPixelBufferLockBaseAddress(a6, 0);
-          v154 = CVPixelBufferGetBytesPerRow(a3);
-          v155 = CVPixelBufferGetBytesPerRow(a6);
-          v156 = CVPixelBufferGetBaseAddress(a3);
-          v157 = CVPixelBufferGetBaseAddress(a6);
-          v158 = CVPixelBufferGetDataSize(a6);
+          CVPixelBufferLockBaseAddress(depth, 1uLL);
+          CVPixelBufferLockBaseAddress(output, 0);
+          v154 = CVPixelBufferGetBytesPerRow(depth);
+          v155 = CVPixelBufferGetBytesPerRow(output);
+          v156 = CVPixelBufferGetBaseAddress(depth);
+          v157 = CVPixelBufferGetBaseAddress(output);
+          v158 = CVPixelBufferGetDataSize(output);
           bzero(v157, v158);
           if (v56)
           {
@@ -476,11 +476,11 @@
 
         if (PixelFormatType == 1717856627)
         {
-          v394 = v11;
-          v22 = CVPixelBufferGetWidth(a3);
-          v23 = CVPixelBufferGetHeight(a3);
-          v24 = CVPixelBufferGetWidth(a6);
-          v25 = CVPixelBufferGetHeight(a6);
+          v394 = bufferCopy;
+          v22 = CVPixelBufferGetWidth(depth);
+          v23 = CVPixelBufferGetHeight(depth);
+          v24 = CVPixelBufferGetWidth(output);
+          v25 = CVPixelBufferGetHeight(output);
           v12 = -22953;
           if (v22 != v24 || v23 != v25)
           {
@@ -508,13 +508,13 @@
             _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE8__appendEm(v27, v23 * v22 - v125);
           }
 
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
-          CVPixelBufferLockBaseAddress(a6, 0);
-          v126 = CVPixelBufferGetBytesPerRow(a3);
-          v127 = CVPixelBufferGetBytesPerRow(a6);
-          v128 = CVPixelBufferGetBaseAddress(a3);
-          v129 = CVPixelBufferGetBaseAddress(a6);
-          v130 = CVPixelBufferGetDataSize(a6);
+          CVPixelBufferLockBaseAddress(depth, 1uLL);
+          CVPixelBufferLockBaseAddress(output, 0);
+          v126 = CVPixelBufferGetBytesPerRow(depth);
+          v127 = CVPixelBufferGetBytesPerRow(output);
+          v128 = CVPixelBufferGetBaseAddress(depth);
+          v129 = CVPixelBufferGetBaseAddress(output);
+          v130 = CVPixelBufferGetDataSize(output);
           bzero(v129, v130);
           if (v23)
           {
@@ -633,11 +633,11 @@
         {
           if (PixelFormatType == 1751410032)
           {
-            v48 = v11;
-            v49 = CVPixelBufferGetWidth(a3);
-            v50 = CVPixelBufferGetHeight(a3);
-            v51 = CVPixelBufferGetWidth(a6);
-            v52 = CVPixelBufferGetHeight(a6);
+            v48 = bufferCopy;
+            v49 = CVPixelBufferGetWidth(depth);
+            v50 = CVPixelBufferGetHeight(depth);
+            v51 = CVPixelBufferGetWidth(output);
+            v52 = CVPixelBufferGetHeight(output);
             v12 = -22953;
             if (v49 != v51 || v50 != v52)
             {
@@ -665,13 +665,13 @@
               _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE8__appendEm(v54, v50 * v49 - v111);
             }
 
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
-            CVPixelBufferLockBaseAddress(a6, 0);
-            v112 = CVPixelBufferGetBytesPerRow(a3);
-            v400 = CVPixelBufferGetBytesPerRow(a6);
-            v113 = CVPixelBufferGetBaseAddress(a3);
-            v114 = CVPixelBufferGetBaseAddress(a6);
-            v115 = CVPixelBufferGetDataSize(a6);
+            CVPixelBufferLockBaseAddress(depth, 1uLL);
+            CVPixelBufferLockBaseAddress(output, 0);
+            v112 = CVPixelBufferGetBytesPerRow(depth);
+            v400 = CVPixelBufferGetBytesPerRow(output);
+            v113 = CVPixelBufferGetBaseAddress(depth);
+            v114 = CVPixelBufferGetBaseAddress(output);
+            v115 = CVPixelBufferGetDataSize(output);
             bzero(v114, v115);
             if (v50)
             {
@@ -779,11 +779,11 @@
 
           if (PixelFormatType == 1751411059)
           {
-            v28 = v11;
-            v29 = CVPixelBufferGetWidth(a3);
-            v30 = CVPixelBufferGetHeight(a3);
-            v31 = CVPixelBufferGetWidth(a6);
-            v32 = CVPixelBufferGetHeight(a6);
+            v28 = bufferCopy;
+            v29 = CVPixelBufferGetWidth(depth);
+            v30 = CVPixelBufferGetHeight(depth);
+            v31 = CVPixelBufferGetWidth(output);
+            v32 = CVPixelBufferGetHeight(output);
             v12 = -22953;
             if (v29 != v31 || v30 != v32)
             {
@@ -811,13 +811,13 @@
               _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE8__appendEm(v34, v30 * v29 - v80);
             }
 
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
-            CVPixelBufferLockBaseAddress(a6, 0);
-            v81 = CVPixelBufferGetBytesPerRow(a3);
-            v398 = CVPixelBufferGetBytesPerRow(a6);
-            v82 = CVPixelBufferGetBaseAddress(a3);
-            v83 = CVPixelBufferGetBaseAddress(a6);
-            v84 = CVPixelBufferGetDataSize(a6);
+            CVPixelBufferLockBaseAddress(depth, 1uLL);
+            CVPixelBufferLockBaseAddress(output, 0);
+            v81 = CVPixelBufferGetBytesPerRow(depth);
+            v398 = CVPixelBufferGetBytesPerRow(output);
+            v82 = CVPixelBufferGetBaseAddress(depth);
+            v83 = CVPixelBufferGetBaseAddress(output);
+            v84 = CVPixelBufferGetDataSize(output);
             bzero(v83, v84);
             if (v30)
             {
@@ -929,11 +929,11 @@
         {
           if (PixelFormatType == 1717855600)
           {
-            v41 = v11;
-            v42 = CVPixelBufferGetWidth(a3);
-            v43 = CVPixelBufferGetHeight(a3);
-            v44 = CVPixelBufferGetWidth(a6);
-            v45 = CVPixelBufferGetHeight(a6);
+            v41 = bufferCopy;
+            v42 = CVPixelBufferGetWidth(depth);
+            v43 = CVPixelBufferGetHeight(depth);
+            v44 = CVPixelBufferGetWidth(output);
+            v45 = CVPixelBufferGetHeight(output);
             v12 = -22953;
             if (v42 != v44 || v43 != v45)
             {
@@ -961,13 +961,13 @@
               _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE8__appendEm(v47, v43 * v42 - v99);
             }
 
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
-            CVPixelBufferLockBaseAddress(a6, 0);
-            v100 = CVPixelBufferGetBytesPerRow(a3);
-            v399 = CVPixelBufferGetBytesPerRow(a6);
-            v101 = CVPixelBufferGetBaseAddress(a3);
-            v102 = CVPixelBufferGetBaseAddress(a6);
-            v103 = CVPixelBufferGetDataSize(a6);
+            CVPixelBufferLockBaseAddress(depth, 1uLL);
+            CVPixelBufferLockBaseAddress(output, 0);
+            v100 = CVPixelBufferGetBytesPerRow(depth);
+            v399 = CVPixelBufferGetBytesPerRow(output);
+            v101 = CVPixelBufferGetBaseAddress(depth);
+            v102 = CVPixelBufferGetBaseAddress(output);
+            v103 = CVPixelBufferGetDataSize(output);
             bzero(v102, v103);
             if (v43)
             {
@@ -1072,11 +1072,11 @@
 
           if (PixelFormatType == 1717856627)
           {
-            v15 = v11;
-            v16 = CVPixelBufferGetWidth(a3);
-            v17 = CVPixelBufferGetHeight(a3);
-            v18 = CVPixelBufferGetWidth(a6);
-            v19 = CVPixelBufferGetHeight(a6);
+            v15 = bufferCopy;
+            v16 = CVPixelBufferGetWidth(depth);
+            v17 = CVPixelBufferGetHeight(depth);
+            v18 = CVPixelBufferGetWidth(output);
+            v19 = CVPixelBufferGetHeight(output);
             v12 = -22953;
             if (v16 != v18 || v17 != v19)
             {
@@ -1104,13 +1104,13 @@
               _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE8__appendEm(v21, v17 * v16 - v68);
             }
 
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
-            CVPixelBufferLockBaseAddress(a6, 0);
-            v69 = CVPixelBufferGetBytesPerRow(a3);
-            v397 = CVPixelBufferGetBytesPerRow(a6);
-            v70 = CVPixelBufferGetBaseAddress(a3);
-            v71 = CVPixelBufferGetBaseAddress(a6);
-            v72 = CVPixelBufferGetDataSize(a6);
+            CVPixelBufferLockBaseAddress(depth, 1uLL);
+            CVPixelBufferLockBaseAddress(output, 0);
+            v69 = CVPixelBufferGetBytesPerRow(depth);
+            v397 = CVPixelBufferGetBytesPerRow(output);
+            v70 = CVPixelBufferGetBaseAddress(depth);
+            v71 = CVPixelBufferGetBaseAddress(output);
+            v72 = CVPixelBufferGetDataSize(output);
             bzero(v71, v72);
             if (v17)
             {
@@ -1211,8 +1211,8 @@
             }
 
 LABEL_206:
-            CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-            CVPixelBufferUnlockBaseAddress(a6, 0);
+            CVPixelBufferUnlockBaseAddress(depth, 1uLL);
+            CVPixelBufferUnlockBaseAddress(output, 0);
             v12 = 0;
 LABEL_207:
           }

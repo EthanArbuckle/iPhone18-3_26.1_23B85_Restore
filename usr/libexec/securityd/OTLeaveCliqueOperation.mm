@@ -1,5 +1,5 @@
 @interface OTLeaveCliqueOperation
-- (OTLeaveCliqueOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5;
+- (OTLeaveCliqueOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState;
 - (void)groupStart;
 @end
 
@@ -17,39 +17,39 @@
   v4 = objc_alloc_init(NSOperation);
   [(OTLeaveCliqueOperation *)self setFinishedOp:v4];
 
-  v5 = [(OTLeaveCliqueOperation *)self finishedOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v5];
+  finishedOp = [(OTLeaveCliqueOperation *)self finishedOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
   objc_initWeak(buf, self);
-  v6 = [(OTLeaveCliqueOperation *)self deps];
-  v7 = [v6 cuttlefishXPCWrapper];
-  v8 = [(OTLeaveCliqueOperation *)self deps];
-  v9 = [v8 activeAccount];
+  deps = [(OTLeaveCliqueOperation *)self deps];
+  cuttlefishXPCWrapper = [deps cuttlefishXPCWrapper];
+  deps2 = [(OTLeaveCliqueOperation *)self deps];
+  activeAccount = [deps2 activeAccount];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001722BC;
   v10[3] = &unk_100344DA0;
   objc_copyWeak(&v11, buf);
-  [v7 departByDistrustingSelfWithSpecificUser:v9 reply:v10];
+  [cuttlefishXPCWrapper departByDistrustingSelfWithSpecificUser:activeAccount reply:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
 }
 
-- (OTLeaveCliqueOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5
+- (OTLeaveCliqueOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v15.receiver = self;
   v15.super_class = OTLeaveCliqueOperation;
   v12 = [(CKKSGroupOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_deps, a3);
-    objc_storeStrong(&v13->_intendedState, a4);
-    objc_storeStrong(&v13->_nextState, a5);
+    objc_storeStrong(&v12->_deps, dependencies);
+    objc_storeStrong(&v13->_intendedState, state);
+    objc_storeStrong(&v13->_nextState, errorState);
   }
 
   return v13;

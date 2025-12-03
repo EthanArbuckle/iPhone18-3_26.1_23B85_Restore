@@ -1,15 +1,15 @@
 @interface ICLocalization
-+ (id)localizedFrameworkStringForKey:(id)a3 value:(id)a4 table:(id)a5 allowSiri:(BOOL)a6;
++ (id)localizedFrameworkStringForKey:(id)key value:(id)value table:(id)table allowSiri:(BOOL)siri;
 @end
 
 @implementation ICLocalization
 
-+ (id)localizedFrameworkStringForKey:(id)a3 value:(id)a4 table:(id)a5 allowSiri:(BOOL)a6
++ (id)localizedFrameworkStringForKey:(id)key value:(id)value table:(id)table allowSiri:(BOOL)siri
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  siriCopy = siri;
+  keyCopy = key;
+  valueCopy = value;
+  tableCopy = table;
   if (localizedFrameworkStringForKey_value_table_allowSiri__onceToken != -1)
   {
     +[ICLocalization localizedFrameworkStringForKey:value:table:allowSiri:];
@@ -20,14 +20,14 @@
   v14 = ICSharedFrameworkBundleIdentifier();
   v15 = [v13 bundleWithIdentifier:v14];
   v16 = v15;
-  if (v12 == 1 && v6)
+  if (v12 == 1 && siriCopy)
   {
-    v17 = [v15 siriUILocalizedStringForKey:v9 value:v10 table:v11];
+    v17 = [v15 siriUILocalizedStringForKey:keyCopy value:valueCopy table:tableCopy];
   }
 
   else
   {
-    v17 = [v15 localizedStringForKey:v9 value:v10 table:v11];
+    v17 = [v15 localizedStringForKey:keyCopy value:valueCopy table:tableCopy];
   }
 
   v18 = v17;

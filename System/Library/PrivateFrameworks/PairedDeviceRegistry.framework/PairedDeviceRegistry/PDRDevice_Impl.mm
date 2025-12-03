@@ -1,19 +1,19 @@
 @interface PDRDevice_Impl
-- (BOOL)supportsCapabilityRaw:(unsigned int)a3;
+- (BOOL)supportsCapabilityRaw:(unsigned int)raw;
 - (NSString)description;
 - (NSUUID)pairingID;
 - (PDRDevice_Impl)init;
 - (id)propertyNames;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 @end
 
 @implementation PDRDevice_Impl
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v4 = a3;
-  v5 = self;
-  Device_Impl.valueFor(property:)(v4, v14);
+  propertyCopy = property;
+  selfCopy = self;
+  Device_Impl.valueFor(property:)(propertyCopy, v14);
 
   v6 = v15;
   if (v15)
@@ -51,17 +51,17 @@
   return v8.super.isa;
 }
 
-- (BOOL)supportsCapabilityRaw:(unsigned int)a3
+- (BOOL)supportsCapabilityRaw:(unsigned int)raw
 {
-  v4 = self;
-  LOBYTE(a3) = Device_Impl.supportsCapabilityRaw(_:)(a3);
+  selfCopy = self;
+  LOBYTE(raw) = Device_Impl.supportsCapabilityRaw(_:)(raw);
 
-  return a3 & 1;
+  return raw & 1;
 }
 
 - (id)propertyNames
 {
-  v2 = self;
+  selfCopy = self;
   Device_Impl.propertyNames()();
 
   type metadata accessor for PDRDevicePropertyKey(0);
@@ -72,7 +72,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = Device_Impl.description.getter();
   v5 = v4;
 

@@ -1,56 +1,56 @@
 @interface PUIDPointerShapeView
-- (BOOL)_shouldShowAxCenterPointForPointerShape:(id)a3;
-- (BOOL)_shouldShowAxColorStrokeForPointerShape:(id)a3 color:(id *)a4;
-- (CGRect)_colorStrokeShapeBoundsForPointerShape:(id)a3;
-- (CGRect)_shapeMorphingBackdropFrameForShape:(id)a3;
-- (CGRect)expectedShapeBoundsForPointerShape:(id)a3;
-- (PUIDPointerShapeView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldShowAxCenterPointForPointerShape:(id)shape;
+- (BOOL)_shouldShowAxColorStrokeForPointerShape:(id)shape color:(id *)color;
+- (CGRect)_colorStrokeShapeBoundsForPointerShape:(id)shape;
+- (CGRect)_shapeMorphingBackdropFrameForShape:(id)shape;
+- (CGRect)expectedShapeBoundsForPointerShape:(id)shape;
+- (PUIDPointerShapeView)initWithFrame:(CGRect)frame;
 - (PUIDPointerShapeViewDelegate)delegate;
-- (double)_axColorStrokeWidthForPointerShape:(id)a3;
+- (double)_axColorStrokeWidthForPointerShape:(id)shape;
 - (double)_axPointerZoomScaleFactor;
-- (double)_cornerRadiusForPointerShape:(id)a3;
+- (double)_cornerRadiusForPointerShape:(id)shape;
 - (double)_pointerSizeMultiplier;
 - (double)presentationIntensity;
-- (id)_colorMatrixForTraitCollection:(id)a3;
-- (id)_cornerCurveForPointerShape:(id)a3;
+- (id)_colorMatrixForTraitCollection:(id)collection;
+- (id)_cornerCurveForPointerShape:(id)shape;
 - (id)_currentPointerViewBezierPath;
-- (id)_debug_Material_descForStyle:(unint64_t)a3 intensity:(double)a4;
-- (id)_debug_Material_nameForMaterialStyle:(unint64_t)a3;
-- (void)_applyAXPointerStyleForPointerShape:(id)a3;
+- (id)_debug_Material_descForStyle:(unint64_t)style intensity:(double)intensity;
+- (id)_debug_Material_nameForMaterialStyle:(unint64_t)style;
+- (void)_applyAXPointerStyleForPointerShape:(id)shape;
 - (void)_axRegisterForZoomUpdatesIfNecessary;
-- (void)_axUpdateDoubleInvertFilterOnView:(id)a3;
+- (void)_axUpdateDoubleInvertFilterOnView:(id)view;
 - (void)_axUpdateInvertColorsFilters;
-- (void)_beginRequiringShapeMorphingViewForReason:(id)a3;
-- (void)_didUpdateToOrientation:(int64_t)a3 duration:(double)a4 rotationDirection:(int64_t)a5;
-- (void)_endRequiringShapeMorphingViewForReason:(id)a3;
+- (void)_beginRequiringShapeMorphingViewForReason:(id)reason;
+- (void)_didUpdateToOrientation:(int64_t)orientation duration:(double)duration rotationDirection:(int64_t)direction;
+- (void)_endRequiringShapeMorphingViewForReason:(id)reason;
 - (void)_handleAccessibilityPointerPreferencesDidChange;
 - (void)_performShakeToFindScalingAnimation;
-- (void)_setShapeMorphingViewPath:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_setupAndUnhidePointerViewForPointerShape:(id)a3;
+- (void)_setShapeMorphingViewPath:(id)path animated:(BOOL)animated completion:(id)completion;
+- (void)_setupAndUnhidePointerViewForPointerShape:(id)shape;
 - (void)_updatePointerMaterial;
 - (void)_updatePointerViewCornerCurve;
 - (void)dealloc;
 - (void)didMoveToSuperview;
-- (void)setBlurRadius:(double)a3;
-- (void)setFeather:(double)a3;
-- (void)setIntensity:(double)a3;
-- (void)setMaskPath:(CGPath *)a3;
-- (void)setMaterialStyle:(unint64_t)a3;
-- (void)setPointerShape:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setShakeToFindPointerSizeMultiplier:(double)a3;
-- (void)setShapeMaterialReplacementColor:(id)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBlurRadius:(double)radius;
+- (void)setFeather:(double)feather;
+- (void)setIntensity:(double)intensity;
+- (void)setMaskPath:(CGPath *)path;
+- (void)setMaterialStyle:(unint64_t)style;
+- (void)setPointerShape:(id)shape animated:(BOOL)animated completion:(id)completion;
+- (void)setShakeToFindPointerSizeMultiplier:(double)multiplier;
+- (void)setShapeMaterialReplacementColor:(id)color;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PUIDPointerShapeView
 
-- (PUIDPointerShapeView)initWithFrame:(CGRect)a3
+- (PUIDPointerShapeView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v49.receiver = self;
   v49.super_class = PUIDPointerShapeView;
   v7 = [(PUIDPointerShapeView *)&v49 initWithFrame:?];
@@ -69,28 +69,28 @@
     v8->_pointerMaterialContainerView = v11;
 
     [(PUIDPointerShapeView *)v8 addSubview:v8->_pointerMaterialContainerView];
-    v13 = [[PUIDPointerView alloc] initWithFrame:x, y, width, height];
+    height = [[PUIDPointerView alloc] initWithFrame:x, y, width, height];
     pointerView = v8->_pointerView;
-    v8->_pointerView = v13;
+    v8->_pointerView = height;
 
-    v15 = [(PUIDPointerShapeBackdropView *)v8->_pointerView backdropLayer];
-    [v15 setAllowsInPlaceFiltering:1];
+    backdropLayer = [(PUIDPointerShapeBackdropView *)v8->_pointerView backdropLayer];
+    [backdropLayer setAllowsInPlaceFiltering:1];
 
     [(UIView *)v8->_pointerMaterialContainerView addSubview:v8->_pointerView];
     v16 = [CAFilter filterWithType:kCAFilterGaussianBlur];
     [v16 setValue:&off_10004C5C8 forKey:kCAFilterInputRadius];
     [v16 setName:@"gaussianBlur"];
-    v17 = [(PUIDPointerShapeView *)v8 layer];
+    layer = [(PUIDPointerShapeView *)v8 layer];
     v53 = v16;
     v18 = [NSArray arrayWithObjects:&v53 count:1];
-    [v17 setFilters:v18];
+    [layer setFilters:v18];
 
     v19 = [CAFilter filterWithType:kCAFilterColorMatrix];
     [v19 setName:@"colorMatrix"];
-    v20 = [(PUIDPointerView *)v8->_pointerView layer];
+    layer2 = [(PUIDPointerView *)v8->_pointerView layer];
     v52 = v19;
     v21 = [NSArray arrayWithObjects:&v52 count:1];
-    [v20 setFilters:v21];
+    [layer2 setFilters:v21];
 
     v22 = objc_alloc_init(UIViewFloatAnimatableProperty);
     cornerCurveAnimatableProperty = v8->_cornerCurveAnimatableProperty;
@@ -186,8 +186,8 @@
 
   if (self->_zoomRegistrationIdentifier)
   {
-    v4 = [sub_100006040() sharedInstance];
-    [v4 removeZoomAttributesChangedHandler:self->_zoomRegistrationIdentifier];
+    sharedInstance = [sub_100006040() sharedInstance];
+    [sharedInstance removeZoomAttributesChangedHandler:self->_zoomRegistrationIdentifier];
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -207,17 +207,17 @@
   [(PUIDPointerShapeView *)&v10 dealloc];
 }
 
-- (CGRect)expectedShapeBoundsForPointerShape:(id)a3
+- (CGRect)expectedShapeBoundsForPointerShape:(id)shape
 {
-  v4 = a3;
-  [v4 bounds];
+  shapeCopy = shape;
+  [shapeCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if ([v4 shapeType] == 1)
+  if ([shapeCopy shapeType] == 1)
   {
-    v13 = v4;
+    v13 = shapeCopy;
     if (_UIPlasmaEnabled() && [v13 shapeType] == 1)
     {
 
@@ -304,51 +304,51 @@
 
 - (double)presentationIntensity
 {
-  v3 = [(PUIDPointerShapeView *)self layer];
-  v4 = [v3 presentationLayer];
-  v5 = v4;
-  if (v4)
+  layer = [(PUIDPointerShapeView *)self layer];
+  presentationLayer = [layer presentationLayer];
+  v5 = presentationLayer;
+  if (presentationLayer)
   {
-    [v4 opacity];
+    [presentationLayer opacity];
     v7 = v6;
   }
 
   else
   {
-    v8 = [(PUIDPointerShapeView *)self layer];
-    [v8 opacity];
+    layer2 = [(PUIDPointerShapeView *)self layer];
+    [layer2 opacity];
     v7 = v9;
   }
 
   return v7;
 }
 
-- (id)_debug_Material_nameForMaterialStyle:(unint64_t)a3
+- (id)_debug_Material_nameForMaterialStyle:(unint64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     return @"Undefined";
   }
 
   else
   {
-    return *(&off_100048CB8 + a3);
+    return *(&off_100048CB8 + style);
   }
 }
 
-- (id)_debug_Material_descForStyle:(unint64_t)a3 intensity:(double)a4
+- (id)_debug_Material_descForStyle:(unint64_t)style intensity:(double)intensity
 {
-  v5 = [(PUIDPointerShapeView *)self _debug_Material_nameForMaterialStyle:a3];
-  v6 = [NSString stringWithFormat:@"(%@ @ %f)", v5, *&a4];
+  v5 = [(PUIDPointerShapeView *)self _debug_Material_nameForMaterialStyle:style];
+  v6 = [NSString stringWithFormat:@"(%@ @ %f)", v5, *&intensity];
 
   return v6;
 }
 
-- (void)setIntensity:(double)a3
+- (void)setIntensity:(double)intensity
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    v5 = [(PUIDPointerShapeView *)self _debug_Material_descForStyle:self->_materialStyle intensity:a3];
+    v5 = [(PUIDPointerShapeView *)self _debug_Material_descForStyle:self->_materialStyle intensity:intensity];
     v6 = PSLogMaterial();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -356,19 +356,19 @@
     }
 
     intensity = self->_intensity;
-    if (a3 == 0.0 && intensity > 0.0)
+    if (intensity == 0.0 && intensity > 0.0)
     {
-      self->_intensity = a3;
-      [(UIViewFloatAnimatableProperty *)self->_intensityAnimatableProperty setValue:a3];
+      self->_intensity = intensity;
+      [(UIViewFloatAnimatableProperty *)self->_intensityAnimatableProperty setValue:intensity];
       [(PUIDPointerShapeView *)self _updatePointerMaterial];
     }
 
     else
     {
-      self->_intensity = a3;
-      [(UIViewFloatAnimatableProperty *)self->_intensityAnimatableProperty setValue:a3];
+      self->_intensity = intensity;
+      [(UIViewFloatAnimatableProperty *)self->_intensityAnimatableProperty setValue:intensity];
       [(PUIDPointerShapeView *)self _updatePointerMaterial];
-      if (a3 <= 0.0 || intensity != 0.0)
+      if (intensity <= 0.0 || intensity != 0.0)
       {
         goto LABEL_10;
       }
@@ -379,30 +379,30 @@ LABEL_10:
   }
 }
 
-- (void)setFeather:(double)a3
+- (void)setFeather:(double)feather
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_feather = a3;
+    self->_feather = feather;
     featherAnimatableProperty = self->_featherAnimatableProperty;
 
-    [(UIViewFloatAnimatableProperty *)featherAnimatableProperty setValue:a3];
+    [(UIViewFloatAnimatableProperty *)featherAnimatableProperty setValue:feather];
   }
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_blurRadius = a3;
-    v5 = [NSNumber numberWithDouble:a3];
+    self->_blurRadius = radius;
+    v5 = [NSNumber numberWithDouble:radius];
     [(PUIDPointerShapeView *)self setValue:v5 forKeyPath:@"layer.filters.gaussianBlur.inputRadius"];
   }
 }
 
-- (void)setMaterialStyle:(unint64_t)a3
+- (void)setMaterialStyle:(unint64_t)style
 {
-  if (self->_materialStyle != a3)
+  if (self->_materialStyle != style)
   {
     v5 = [(PUIDPointerShapeView *)self _debug_Material_descForStyle:self->_intensity intensity:?];
     v6 = PSLogMaterial();
@@ -411,31 +411,31 @@ LABEL_10:
       sub_100026B98(v5, v6);
     }
 
-    self->_materialStyle = a3;
+    self->_materialStyle = style;
     [(PUIDPointerShapeView *)self _updatePointerMaterial];
   }
 }
 
-- (void)setShakeToFindPointerSizeMultiplier:(double)a3
+- (void)setShakeToFindPointerSizeMultiplier:(double)multiplier
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_shakeToFindPointerSizeMultiplier = a3;
+    self->_shakeToFindPointerSizeMultiplier = multiplier;
   }
 }
 
-- (void)setPointerShape:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPointerShape:(id)shape animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  shapeCopy = shape;
+  completionCopy = completion;
   lastShakeToFindPointerSizeMultiplier = self->_lastShakeToFindPointerSizeMultiplier;
   shakeToFindPointerSizeMultiplier = self->_shakeToFindPointerSizeMultiplier;
   v13 = lastShakeToFindPointerSizeMultiplier != shakeToFindPointerSizeMultiplier;
-  if (lastShakeToFindPointerSizeMultiplier == shakeToFindPointerSizeMultiplier && !self->_axVisualSettingsDidChange && !self->_activeInterfaceOrientationDidChange && ((pointerShape = self->_pointerShape, pointerShape == v9) || ([(PSPointerShape *)pointerShape isEqual:v9]& 1) != 0))
+  if (lastShakeToFindPointerSizeMultiplier == shakeToFindPointerSizeMultiplier && !self->_axVisualSettingsDidChange && !self->_activeInterfaceOrientationDidChange && ((pointerShape = self->_pointerShape, pointerShape == shapeCopy) || ([(PSPointerShape *)pointerShape isEqual:shapeCopy]& 1) != 0))
   {
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
@@ -448,7 +448,7 @@ LABEL_10:
     v17 = self->_pointerShape;
     v18 = _UIPlasmaEnabled() && [(PSPointerShape *)v17 shapeType]== 1;
 
-    objc_storeStrong(&self->_pointerShape, a3);
+    objc_storeStrong(&self->_pointerShape, shape);
     self->_axVisualSettingsDidChange = 0;
     self->_activeInterfaceOrientationDidChange = 0;
     v21[0] = _NSConcreteStackBlock;
@@ -457,26 +457,26 @@ LABEL_10:
     v21[3] = &unk_100048AC8;
     v23 = v13;
     v21[4] = self;
-    v22 = v9;
+    v22 = shapeCopy;
     v24 = v18;
-    v25 = a4;
+    animatedCopy = animated;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100002EF0;
     v19[3] = &unk_100048AF0;
-    v20 = v10;
+    v20 = completionCopy;
     [SBC2GroupCompletion perform:v21 finalCompletion:v19];
   }
 }
 
-- (void)setShapeMaterialReplacementColor:(id)a3
+- (void)setShapeMaterialReplacementColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   shapeMaterialReplacementColor = self->_shapeMaterialReplacementColor;
-  if (shapeMaterialReplacementColor != v4)
+  if (shapeMaterialReplacementColor != colorCopy)
   {
-    v8 = v4;
-    if (([(UIColor *)shapeMaterialReplacementColor isEqual:v4]& 1) == 0)
+    v8 = colorCopy;
+    if (([(UIColor *)shapeMaterialReplacementColor isEqual:colorCopy]& 1) == 0)
     {
       v6 = [(UIColor *)v8 copy];
       v7 = self->_shapeMaterialReplacementColor;
@@ -489,41 +489,41 @@ LABEL_10:
   _objc_release_x1();
 }
 
-- (void)setMaskPath:(CGPath *)a3
+- (void)setMaskPath:(CGPath *)path
 {
-  if (!CGPathEqualToPath(a3, self->_maskPath))
+  if (!CGPathEqualToPath(path, self->_maskPath))
   {
     CGPathRelease(self->_maskPath);
-    self->_maskPath = a3;
+    self->_maskPath = path;
 
-    CGPathRetain(a3);
+    CGPathRetain(path);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PUIDPointerShapeView;
-  v4 = a3;
-  [(PUIDPointerShapeView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PUIDPointerShapeView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PUIDPointerShapeView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PUIDPointerShapeView *)self _updatePointerMaterial];
   }
 }
 
-- (void)_beginRequiringShapeMorphingViewForReason:(id)a3
+- (void)_beginRequiringShapeMorphingViewForReason:(id)reason
 {
-  v5 = a3;
-  v37 = v5;
-  if (!v5)
+  reasonCopy = reason;
+  v37 = reasonCopy;
+  if (!reasonCopy)
   {
     sub_100026C24(a2, self);
-    v5 = 0;
+    reasonCopy = 0;
   }
 
   shapeMorphingViewRequiringReasons = self->_shapeMorphingViewRequiringReasons;
@@ -533,11 +533,11 @@ LABEL_10:
     v8 = self->_shapeMorphingViewRequiringReasons;
     self->_shapeMorphingViewRequiringReasons = v7;
 
-    v5 = v37;
+    reasonCopy = v37;
     shapeMorphingViewRequiringReasons = self->_shapeMorphingViewRequiringReasons;
   }
 
-  [(NSMutableSet *)shapeMorphingViewRequiringReasons addObject:v5];
+  [(NSMutableSet *)shapeMorphingViewRequiringReasons addObject:reasonCopy];
   if (self->_shapeMorphingView)
   {
     [(PUIDPointerShapeView *)self _shapeMorphingBackdropFrameForShape:self->_pointerShape];
@@ -574,19 +574,19 @@ LABEL_10:
     shapeMorphingView = self->_shapeMorphingView;
     self->_shapeMorphingView = v29;
 
-    v31 = [(PUIDPointerShapeMorphingView *)self->_shapeMorphingView layer];
-    [v31 setName:@"pointer custom shape layer"];
+    layer = [(PUIDPointerShapeMorphingView *)self->_shapeMorphingView layer];
+    [layer setName:@"pointer custom shape layer"];
 
-    v32 = [(PUIDPointerShapeView *)self _currentPointerViewBezierPath];
-    [(PUIDPointerShapeMorphingView *)self->_shapeMorphingView setPath:v32 animated:0 completion:0];
-    BoundingBox = CGPathGetBoundingBox([v32 CGPath]);
+    _currentPointerViewBezierPath = [(PUIDPointerShapeView *)self _currentPointerViewBezierPath];
+    [(PUIDPointerShapeMorphingView *)self->_shapeMorphingView setPath:_currentPointerViewBezierPath animated:0 completion:0];
+    BoundingBox = CGPathGetBoundingBox([_currentPointerViewBezierPath CGPath]);
     v33 = [[PUIDPointerShapeFilterBackgroundView alloc] initWithShapeFrame:BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height];
     shapeBackgroundView = self->_shapeBackgroundView;
     self->_shapeBackgroundView = v33;
 
-    v35 = [(PUIDPointerShapeFilterBackgroundView *)self->_shapeBackgroundView layer];
-    v36 = [(PUIDPointerShapeMorphingView *)self->_shapeMorphingView layer];
-    [v35 setMask:v36];
+    layer2 = [(PUIDPointerShapeFilterBackgroundView *)self->_shapeBackgroundView layer];
+    layer3 = [(PUIDPointerShapeMorphingView *)self->_shapeMorphingView layer];
+    [layer2 setMask:layer3];
 
     [(UIView *)self->_pointerMaterialContainerView addSubview:self->_shapeBackgroundView];
     [(PUIDPointerShapeView *)self _updatePointerMaterial];
@@ -596,17 +596,17 @@ LABEL_10:
   }
 }
 
-- (void)_setupAndUnhidePointerViewForPointerShape:(id)a3
+- (void)_setupAndUnhidePointerViewForPointerShape:(id)shape
 {
-  v4 = a3;
-  [(PUIDPointerShapeView *)self expectedShapeBoundsForPointerShape:v4];
+  shapeCopy = shape;
+  [(PUIDPointerShapeView *)self expectedShapeBoundsForPointerShape:shapeCopy];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [(PUIDPointerShapeView *)self _cornerRadiusForPointerShape:v4];
+  [(PUIDPointerShapeView *)self _cornerRadiusForPointerShape:shapeCopy];
   v14 = v13;
-  v15 = v4;
+  v15 = shapeCopy;
   if (_UIPlasmaEnabled() && [v15 shapeType] == 1)
   {
 
@@ -642,22 +642,22 @@ LABEL_10:
   }
 
   [(PUIDPointerView *)self->_pointerView setFrame:v6, v8, v10, v12];
-  v22 = [(PUIDPointerView *)self->_pointerView layer];
-  [v22 setCornerRadius:v14];
+  layer = [(PUIDPointerView *)self->_pointerView layer];
+  [layer setCornerRadius:v14];
 
-  v23 = [(PUIDPointerView *)self->_pointerView layer];
-  v24 = v23;
+  layer2 = [(PUIDPointerView *)self->_pointerView layer];
+  v24 = layer2;
   if (v21)
   {
-    v25 = [(PUIDPointerView *)self->_pointerView layer];
-    v26 = [v25 mask];
-    v27 = sub_100003600(v26, v21, self->_pointerView);
+    layer3 = [(PUIDPointerView *)self->_pointerView layer];
+    mask = [layer3 mask];
+    v27 = sub_100003600(mask, v21, self->_pointerView);
     [v24 setMask:v27];
   }
 
   else
   {
-    [v23 setMask:0];
+    [layer2 setMask:0];
   }
 
   CGPathRelease(v21);
@@ -673,31 +673,31 @@ LABEL_10:
   self->_shapeBackgroundView = 0;
 }
 
-- (void)_endRequiringShapeMorphingViewForReason:(id)a3
+- (void)_endRequiringShapeMorphingViewForReason:(id)reason
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  reasonCopy = reason;
+  v6 = reasonCopy;
+  if (!reasonCopy)
   {
     sub_100026CA0(a2, self);
-    v5 = 0;
+    reasonCopy = 0;
   }
 
-  [(NSMutableSet *)self->_shapeMorphingViewRequiringReasons removeObject:v5];
+  [(NSMutableSet *)self->_shapeMorphingViewRequiringReasons removeObject:reasonCopy];
   if (![(NSMutableSet *)self->_shapeMorphingViewRequiringReasons count]&& self->_shapeMorphingView)
   {
     [(PUIDPointerShapeView *)self _setupAndUnhidePointerViewForPointerShape:self->_pointerShape];
   }
 }
 
-- (void)_setShapeMorphingViewPath:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setShapeMorphingViewPath:(id)path animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  pathCopy = path;
+  completionCopy = completion;
   v10 = +[NSUUID UUID];
-  v11 = [v10 UUIDString];
-  v12 = [@"Animations" stringByAppendingFormat:@"-%@", v11];
+  uUIDString = [v10 UUIDString];
+  v12 = [@"Animations" stringByAppendingFormat:@"-%@", uUIDString];
 
   [(PUIDPointerShapeView *)self _beginRequiringShapeMorphingViewForReason:v12];
   [(PUIDPointerShapeView *)self _applyAXPointerStyleForPointerShape:self->_pointerShape];
@@ -710,9 +710,9 @@ LABEL_10:
   objc_copyWeak(&v19, &location);
   v14 = v12;
   v17 = v14;
-  v15 = v9;
+  v15 = completionCopy;
   v18 = v15;
-  [(PUIDPointerShapeMorphingView *)shapeMorphingView setPath:v8 animated:v6 completion:v16];
+  [(PUIDPointerShapeMorphingView *)shapeMorphingView setPath:pathCopy animated:animatedCopy completion:v16];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -774,8 +774,8 @@ LABEL_10:
     [(PUIDPointerShapeView *)self _cornerRadiusForPointerShape:v3];
     v24 = v23;
     [(PUIDPointerView *)self->_pointerView setFrame:x, y, width, height];
-    v25 = [(PUIDPointerView *)self->_pointerView layer];
-    [v25 setCornerRadius:v24];
+    layer = [(PUIDPointerView *)self->_pointerView layer];
+    [layer setCornerRadius:v24];
 
     [(UIViewFloatAnimatableProperty *)self->_shakeToFindScalingProperty value];
     if (v26 != self->_shakeToFindPointerSizeMultiplier)
@@ -804,17 +804,17 @@ LABEL_10:
   }
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  if (self->_settings == a3)
+  if (self->_settings == settings)
   {
     [(PUIDPointerShapeView *)self _updatePointerMaterial];
   }
 }
 
-- (id)_colorMatrixForTraitCollection:(id)a3
+- (id)_colorMatrixForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   shapeMaterialReplacementColor = self->_shapeMaterialReplacementColor;
   if (shapeMaterialReplacementColor)
   {
@@ -848,7 +848,7 @@ LABEL_10:
   {
     if (!self->_materialStyle)
     {
-      [v4 userInterfaceStyle];
+      [collectionCopy userInterfaceStyle];
     }
 
     _UIPlasmaEnabled();
@@ -862,8 +862,8 @@ LABEL_10:
 
 - (void)_updatePointerMaterial
 {
-  v3 = [(PUIDPointerShapeView *)self traitCollection];
-  v6 = [(PUIDPointerShapeView *)self _colorMatrixForTraitCollection:v3];
+  traitCollection = [(PUIDPointerShapeView *)self traitCollection];
+  v6 = [(PUIDPointerShapeView *)self _colorMatrixForTraitCollection:traitCollection];
 
   [(PUIDPointerView *)self->_pointerView setValue:v6 forKeyPath:@"layer.filters.colorMatrix.inputColorMatrix"];
   [(PUIDPointerShapeFilterBackgroundView *)self->_shapeBackgroundView updateFilter:v6];
@@ -893,15 +893,15 @@ LABEL_10:
   return v5 * v4 * self->_lastShakeToFindPointerSizeMultiplier;
 }
 
-- (void)_didUpdateToOrientation:(int64_t)a3 duration:(double)a4 rotationDirection:(int64_t)a5
+- (void)_didUpdateToOrientation:(int64_t)orientation duration:(double)duration rotationDirection:(int64_t)direction
 {
-  v8 = [(PUIDPointerShapeView *)self window:a3];
-  v9 = [v8 screen];
-  v12 = [v9 displayIdentity];
+  v8 = [(PUIDPointerShapeView *)self window:orientation];
+  screen = [v8 screen];
+  displayIdentity = [screen displayIdentity];
 
-  if (([v12 isExternal] & 1) == 0)
+  if (([displayIdentity isExternal] & 1) == 0)
   {
-    self->_activeInterfaceOrientation = a3;
+    self->_activeInterfaceOrientation = orientation;
     self->_activeInterfaceOrientationDidChange = 1;
     [(UIView *)self->_pointerMaterialContainerView alpha];
     if (v10 > 0.00000011920929)
@@ -909,7 +909,7 @@ LABEL_10:
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
       {
-        [WeakRetained pointerShapeViewInterfaceOrientationDidChange:self duration:a4];
+        [WeakRetained pointerShapeViewInterfaceOrientationDidChange:self duration:duration];
       }
     }
   }
@@ -930,9 +930,9 @@ LABEL_10:
   }
 }
 
-- (CGRect)_shapeMorphingBackdropFrameForShape:(id)a3
+- (CGRect)_shapeMorphingBackdropFrameForShape:(id)shape
 {
-  [(PUIDPointerShapeView *)self expectedShapeBoundsForPointerShape:a3];
+  [(PUIDPointerShapeView *)self expectedShapeBoundsForPointerShape:shape];
 
   return CGRectInset(*&v3, -1.0, -1.0);
 }
@@ -944,29 +944,29 @@ LABEL_10:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PUIDPointerView *)self->_pointerView layer];
-  [v11 cornerRadius];
+  layer = [(PUIDPointerView *)self->_pointerView layer];
+  [layer cornerRadius];
   v13 = v12;
 
   if (self->_pointerViewAnimationCount)
   {
-    v14 = [(PUIDPointerView *)self->_pointerView layer];
-    v15 = [v14 presentationLayer];
+    layer2 = [(PUIDPointerView *)self->_pointerView layer];
+    presentationLayer = [layer2 presentationLayer];
 
-    [v15 frame];
+    [presentationLayer frame];
     v4 = v16;
     v6 = v17;
     v8 = v18;
     v10 = v19;
-    [v15 cornerRadius];
+    [presentationLayer cornerRadius];
     v13 = v20;
   }
 
   v21 = [(PUIDPointerShapeView *)self _bezierPathWithRoundedRect:v4 cornerRadius:v6, v8, v10, v13];
-  v22 = [(PUIDPointerView *)self->_pointerView layer];
-  v23 = [v22 mask];
+  layer3 = [(PUIDPointerView *)self->_pointerView layer];
+  mask = [layer3 mask];
 
-  if (v23)
+  if (mask)
   {
     if (qword_100059C90 != -1)
     {
@@ -1006,15 +1006,15 @@ LABEL_10:
   return v21;
 }
 
-- (double)_cornerRadiusForPointerShape:(id)a3
+- (double)_cornerRadiusForPointerShape:(id)shape
 {
-  v4 = a3;
-  [v4 cornerRadius];
+  shapeCopy = shape;
+  [shapeCopy cornerRadius];
   v6 = v5;
-  v7 = [v4 shapeType];
-  if (v7 == 2)
+  shapeType = [shapeCopy shapeType];
+  if (shapeType == 2)
   {
-    [v4 bounds];
+    [shapeCopy bounds];
     if (v9 >= v10)
     {
       v11 = v9;
@@ -1028,9 +1028,9 @@ LABEL_10:
     v6 = v11 * 0.5;
   }
 
-  else if (v7 == 1)
+  else if (shapeType == 1)
   {
-    v8 = v4;
+    v8 = shapeCopy;
     if (_UIPlasmaEnabled() && [v8 shapeType] == 1)
     {
 
@@ -1048,15 +1048,15 @@ LABEL_10:
   return v6;
 }
 
-- (id)_cornerCurveForPointerShape:(id)a3
+- (id)_cornerCurveForPointerShape:(id)shape
 {
-  v3 = a3;
+  shapeCopy = shape;
   v4 = kCACornerCurveCircular;
-  if ([v3 shapeType] == 3)
+  if ([shapeCopy shapeType] == 3)
   {
-    v5 = [v3 cornerCurve];
+    cornerCurve = [shapeCopy cornerCurve];
 
-    v4 = v5;
+    v4 = cornerCurve;
   }
 
   return v4;
@@ -1069,7 +1069,7 @@ LABEL_10:
     sub_100026D1C();
   }
 
-  v14 = [(PUIDPointerView *)self->_pointerView layer];
+  layer = [(PUIDPointerView *)self->_pointerView layer];
   v3 = [(PUIDPointerShapeView *)self _cornerCurveForPointerShape:self->_pointerShape];
   if ([v3 isEqualToString:kCACornerCurveCircular] && -[NSString isEqualToString:](self->_previousPointerShapeCornerCurve, "isEqualToString:", kCACornerCurveCircular))
   {
@@ -1078,10 +1078,10 @@ LABEL_10:
 
   else
   {
-    v5 = [v14 presentationLayer];
-    [v5 cornerRadius];
+    presentationLayer = [layer presentationLayer];
+    [presentationLayer cornerRadius];
     v7 = v6;
-    [v5 bounds];
+    [presentationLayer bounds];
     if (v8 >= v9)
     {
       v10 = v9;
@@ -1101,12 +1101,12 @@ LABEL_10:
     v4 = v11;
   }
 
-  v12 = [v14 cornerCurve];
-  v13 = [v12 isEqualToString:v4];
+  cornerCurve = [layer cornerCurve];
+  v13 = [cornerCurve isEqualToString:v4];
 
   if ((v13 & 1) == 0)
   {
-    [v14 setCornerCurve:v4];
+    [layer setCornerCurve:v4];
   }
 }
 
@@ -1122,19 +1122,19 @@ LABEL_10:
     return 1.0;
   }
 
-  v3 = [sub_100006040() sharedInstance];
-  v4 = [(PUIDPointerShapeView *)self window];
-  v5 = [v4 screen];
-  v6 = [v5 displayIdentity];
-  v7 = [v3 inStandbyModeOnDisplay:{objc_msgSend(v6, "displayID")}];
+  sharedInstance = [sub_100006040() sharedInstance];
+  window = [(PUIDPointerShapeView *)self window];
+  screen = [window screen];
+  displayIdentity = [screen displayIdentity];
+  v7 = [sharedInstance inStandbyModeOnDisplay:{objc_msgSend(displayIdentity, "displayID")}];
 
   if (v7)
   {
     return 1.0;
   }
 
-  v9 = [sub_100006040() sharedInstance];
-  [v9 zoomLevel];
+  sharedInstance2 = [sub_100006040() sharedInstance];
+  [sharedInstance2 zoomLevel];
   v11 = v10;
 
   if (self->_inDockedZoomMode || v11 <= 0.00000011920929)
@@ -1148,23 +1148,23 @@ LABEL_10:
   }
 }
 
-- (void)_applyAXPointerStyleForPointerShape:(id)a3
+- (void)_applyAXPointerStyleForPointerShape:(id)shape
 {
-  v4 = a3;
+  shapeCopy = shape;
   intensity = self->_intensity;
   v63 = 0;
-  v6 = [(PUIDPointerShapeView *)self _shouldShowAxColorStrokeForPointerShape:v4 color:&v63];
+  v6 = [(PUIDPointerShapeView *)self _shouldShowAxColorStrokeForPointerShape:shapeCopy color:&v63];
   v7 = v63;
   if (v6 && intensity > 0.0)
   {
-    [(PUIDPointerShapeView *)self _colorStrokeShapeBoundsForPointerShape:v4];
+    [(PUIDPointerShapeView *)self _colorStrokeShapeBoundsForPointerShape:shapeCopy];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    [(PUIDPointerShapeView *)self _axColorStrokeWidthForPointerShape:v4];
+    [(PUIDPointerShapeView *)self _axColorStrokeWidthForPointerShape:shapeCopy];
     v17 = v16;
-    [(PUIDPointerShapeView *)self _cornerRadiusForPointerShape:v4];
+    [(PUIDPointerShapeView *)self _cornerRadiusForPointerShape:shapeCopy];
     v19 = v17 + v18;
     axColorStroke = self->_axColorStroke;
     if (!axColorStroke)
@@ -1197,15 +1197,15 @@ LABEL_10:
     }
 
     [(UIView *)axColorStroke setFrame:v9, v11, v13, v15];
-    v30 = [(UIView *)self->_axColorStroke layer];
-    [v30 setCornerRadius:v19];
+    layer = [(UIView *)self->_axColorStroke layer];
+    [layer setCornerRadius:v19];
 
     v31 = self->_pointerShape;
     if (_UIPlasmaEnabled() && [(PSPointerShape *)v31 shapeType]== 1)
     {
 
-      v32 = [(UIView *)self->_axColorStroke layer];
-      [v32 setBorderWidth:0.0];
+      layer2 = [(UIView *)self->_axColorStroke layer];
+      [layer2 setBorderWidth:0.0];
 
       [(CAShapeLayer *)self->_axColorStrokeShapeLayer setLineWidth:v17];
       v33 = self->_axColorStrokeShapeLayer;
@@ -1249,19 +1249,19 @@ LABEL_10:
       v42 = CGPathCreateCopyByTransformingPath(v37, &transform);
       v43 = sub_100003600(self->_axColorStrokeShapeLayer, v42, self->_axColorStroke);
       CGPathRelease(v42);
-      v29 = [(UIView *)self->_axColorStroke layer];
-      [v29 addSublayer:self->_axColorStrokeShapeLayer];
+      layer3 = [(UIView *)self->_axColorStroke layer];
+      [layer3 addSublayer:self->_axColorStrokeShapeLayer];
     }
 
     else
     {
 
       [(CAShapeLayer *)self->_axColorStrokeShapeLayer removeFromSuperlayer];
-      v44 = [(UIView *)self->_axColorStroke layer];
-      [v44 setBorderColor:{objc_msgSend(v7, "CGColor")}];
+      layer4 = [(UIView *)self->_axColorStroke layer];
+      [layer4 setBorderColor:{objc_msgSend(v7, "CGColor")}];
 
-      v29 = [(UIView *)self->_axColorStroke layer];
-      [v29 setBorderWidth:v17];
+      layer3 = [(UIView *)self->_axColorStroke layer];
+      [layer3 setBorderWidth:v17];
     }
   }
 
@@ -1277,12 +1277,12 @@ LABEL_10:
     self->_axColorStrokeShapeLayer = 0;
 
     [(UIView *)self->_axColorStroke removeFromSuperview];
-    v29 = self->_axColorStroke;
+    layer3 = self->_axColorStroke;
     self->_axColorStroke = 0;
   }
 
 LABEL_24:
-  if ([(PUIDPointerShapeView *)self _shouldShowAxCenterPointForPointerShape:v4])
+  if ([(PUIDPointerShapeView *)self _shouldShowAxCenterPointForPointerShape:shapeCopy])
   {
     [(PUIDPointerSettings *)self->_settings axLargeSystemPointerCenterDotSize];
     v46 = v45;
@@ -1298,8 +1298,8 @@ LABEL_24:
 
       v53 = +[CAShapeLayer layer];
       [(CAShapeLayer *)v53 setLineCap:kCALineCapRound];
-      v54 = [(UIView *)v51 layer];
-      [v54 addSublayer:v53];
+      layer5 = [(UIView *)v51 layer];
+      [layer5 addSublayer:v53];
 
       [(PUIDPointerShapeView *)self addSubview:v51];
       axCenterDot = self->_axCenterDot;
@@ -1310,13 +1310,13 @@ LABEL_24:
       self->_axCenterDotShapeLayer = v53;
     }
 
-    [(PUIDPointerShapeView *)self expectedShapeBoundsForPointerShape:v4];
+    [(PUIDPointerShapeView *)self expectedShapeBoundsForPointerShape:shapeCopy];
     [(UIView *)self->_axCenterDot setFrame:0.0, 0.0, v48, v48];
     v58 = self->_axCenterDot;
     UIRectGetCenter();
     [(UIView *)v58 setCenter:?];
-    v59 = [(UIView *)self->_axCenterDot layer];
-    [v59 setCornerRadius:v49];
+    layer6 = [(UIView *)self->_axCenterDot layer];
+    [layer6 setCornerRadius:v49];
 
     v60 = self->_axCenterDotShapeLayer;
     v61 = v7;
@@ -1349,14 +1349,14 @@ LABEL_34:
   [(PUIDPointerShapeView *)self _axUpdateInvertColorsFilters];
 }
 
-- (double)_axColorStrokeWidthForPointerShape:(id)a3
+- (double)_axColorStrokeWidthForPointerShape:(id)shape
 {
-  v4 = a3;
+  shapeCopy = shape;
   _AXSPointerStrokeColorWidth();
   v6 = v5;
-  v7 = [v4 shapeType];
+  shapeType = [shapeCopy shapeType];
 
-  if (v7 == 1)
+  if (shapeType == 1)
   {
     [(PUIDPointerShapeView *)self _axPointerZoomScaleFactor];
     return v8 * v6;
@@ -1365,9 +1365,9 @@ LABEL_34:
   return v6;
 }
 
-- (BOOL)_shouldShowAxColorStrokeForPointerShape:(id)a3 color:(id *)a4
+- (BOOL)_shouldShowAxColorStrokeForPointerShape:(id)shape color:(id *)color
 {
-  if ([a3 shapeType] - 1 > 2)
+  if ([shape shapeType] - 1 > 2)
   {
     return 0;
   }
@@ -1375,31 +1375,31 @@ LABEL_34:
   _AXSPointerStrokeColor();
   v5 = _AXSPointerStrokeColorValues();
   v6 = v5 != 0;
-  if (a4 && v5)
+  if (color && v5)
   {
-    *a4 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+    *color = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
   }
 
   return v6;
 }
 
-- (BOOL)_shouldShowAxCenterPointForPointerShape:(id)a3
+- (BOOL)_shouldShowAxCenterPointForPointerShape:(id)shape
 {
-  v3 = a3;
+  shapeCopy = shape;
   if (!_AXSPointerShouldShowCenterPoint())
   {
     goto LABEL_7;
   }
 
-  v4 = [v3 shapeType];
-  if (v4 == 2)
+  shapeType = [shapeCopy shapeType];
+  if (shapeType == 2)
   {
     goto LABEL_9;
   }
 
-  if (v4 == 1)
+  if (shapeType == 1)
   {
-    v5 = v3;
+    v5 = shapeCopy;
     if (_UIPlasmaEnabled() && [v5 shapeType] == 1)
     {
 
@@ -1418,15 +1418,15 @@ LABEL_10:
   return v6;
 }
 
-- (CGRect)_colorStrokeShapeBoundsForPointerShape:(id)a3
+- (CGRect)_colorStrokeShapeBoundsForPointerShape:(id)shape
 {
-  v4 = a3;
-  [(PUIDPointerShapeView *)self expectedShapeBoundsForPointerShape:v4];
+  shapeCopy = shape;
+  [(PUIDPointerShapeView *)self expectedShapeBoundsForPointerShape:shapeCopy];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [(PUIDPointerShapeView *)self _axColorStrokeWidthForPointerShape:v4];
+  [(PUIDPointerShapeView *)self _axColorStrokeWidthForPointerShape:shapeCopy];
   v14 = v13;
 
   v15 = v6 - v14;
@@ -1440,22 +1440,22 @@ LABEL_10:
   return result;
 }
 
-- (void)_axUpdateDoubleInvertFilterOnView:(id)a3
+- (void)_axUpdateDoubleInvertFilterOnView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
     return;
   }
 
-  v10 = [a3 layer];
+  layer = [view layer];
   if (UIAccessibilityIsInvertColorsEnabled())
   {
-    v3 = [v10 valueForKeyPath:@"filters.InvertColorsDoubleInvert"];
+    v3 = [layer valueForKeyPath:@"filters.InvertColorsDoubleInvert"];
 
     if (!v3)
     {
-      v4 = [v10 filters];
-      v5 = [v4 mutableCopy];
+      filters = [layer filters];
+      v5 = [filters mutableCopy];
 
       if (!v5)
       {
@@ -1466,7 +1466,7 @@ LABEL_10:
       [v6 setName:@"InvertColorsDoubleInvert"];
       [v6 setAccessibility:1];
       [v5 addObject:v6];
-      [v10 setFilters:v5];
+      [layer setFilters:v5];
 
       goto LABEL_10;
     }
@@ -1474,16 +1474,16 @@ LABEL_10:
 
   else
   {
-    v7 = [v10 filters];
-    v8 = [v7 indexOfObjectPassingTest:&stru_100048C30];
+    filters2 = [layer filters];
+    v8 = [filters2 indexOfObjectPassingTest:&stru_100048C30];
 
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [v10 filters];
-      v5 = [v9 mutableCopy];
+      filters3 = [layer filters];
+      v5 = [filters3 mutableCopy];
 
       [v5 removeObjectAtIndex:v8];
-      [v10 setFilters:v5];
+      [layer setFilters:v5];
 LABEL_10:
     }
   }
@@ -1503,26 +1503,26 @@ LABEL_10:
   {
     if (_AXSZoomTouchEnabled())
     {
-      v3 = [sub_100006040() sharedInstance];
-      [v3 registerInterestInZoomAttributes];
+      sharedInstance = [sub_100006040() sharedInstance];
+      [sharedInstance registerInterestInZoomAttributes];
 
       objc_initWeak(&location, self);
-      v4 = [sub_100006040() sharedInstance];
+      sharedInstance2 = [sub_100006040() sharedInstance];
       v5 = sub_1000062B4();
       v27[0] = v5;
       v6 = sub_100006424();
       v27[1] = v6;
       v7 = [NSArray arrayWithObjects:v27 count:2];
-      v8 = [(PUIDPointerShapeView *)self window];
-      v9 = [v8 screen];
-      v10 = [v9 displayIdentity];
-      v11 = [v10 displayID];
+      window = [(PUIDPointerShapeView *)self window];
+      screen = [window screen];
+      displayIdentity = [screen displayIdentity];
+      displayID = [displayIdentity displayID];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_1000057B0;
       v24[3] = &unk_100048C58;
       objc_copyWeak(&v25, &location);
-      v12 = [v4 registerForZoomAttributes:v7 onDisplay:v11 updatesImmediatelyWithChangedHandler:v24];
+      v12 = [sharedInstance2 registerForZoomAttributes:v7 onDisplay:displayID updatesImmediatelyWithChangedHandler:v24];
       zoomRegistrationIdentifier = self->_zoomRegistrationIdentifier;
       self->_zoomRegistrationIdentifier = v12;
 
@@ -1532,13 +1532,13 @@ LABEL_10:
       v22 = &unk_100048A00;
       objc_copyWeak(&v23, &location);
       v14 = objc_retainBlock(&v19);
-      v15 = [sub_100006670() sharedInstance];
-      [v15 registerUpdateBlock:v14 forRetrieveSelector:"zoomPreferredCurrentLensMode" withListener:self];
+      sharedInstance3 = [sub_100006670() sharedInstance];
+      [sharedInstance3 registerUpdateBlock:v14 forRetrieveSelector:"zoomPreferredCurrentLensMode" withListener:self];
 
-      v16 = [sub_100006670() sharedInstance];
-      v17 = [v16 zoomPreferredCurrentLensMode];
+      sharedInstance4 = [sub_100006670() sharedInstance];
+      zoomPreferredCurrentLensMode = [sharedInstance4 zoomPreferredCurrentLensMode];
       v18 = sub_1000068E4();
-      self->_inDockedZoomMode = [v17 isEqualToString:v18];
+      self->_inDockedZoomMode = [zoomPreferredCurrentLensMode isEqualToString:v18];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(&v25);

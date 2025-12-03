@@ -1,16 +1,16 @@
 @interface SCROBrailleUIApp
 + (BOOL)isHidingViews;
 + (id)allApps;
-+ (id)appForView:(id)a3;
++ (id)appForView:(id)view;
 + (void)closeAllApps;
 + (void)closeAllAppsExceptTheLowerMostView;
 + (void)initialize;
 + (void)showViews;
-- (SCROBrailleUIApp)initWithDelegate:(id)a3;
+- (SCROBrailleUIApp)initWithDelegate:(id)delegate;
 - (SCROBrailleUIAppDelegate)delegate;
 - (void)_requestRefreshBraille;
 - (void)close;
-- (void)handleAction:(id)a3;
+- (void)handleAction:(id)action;
 - (void)open;
 @end
 
@@ -35,9 +35,9 @@ uint64_t __30__SCROBrailleUIApp_initialize__block_invoke()
 + (BOOL)isHidingViews
 {
   v2 = +[SCROBrailleUIDisplayManager sharedManager];
-  v3 = [v2 isHidingViews];
+  isHidingViews = [v2 isHidingViews];
 
-  return v3;
+  return isHidingViews;
 }
 
 + (void)showViews
@@ -60,8 +60,8 @@ uint64_t __30__SCROBrailleUIApp_initialize__block_invoke()
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [a1 allApps];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allApps = [self allApps];
+  v3 = [allApps countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -73,14 +73,14 @@ uint64_t __30__SCROBrailleUIApp_initialize__block_invoke()
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allApps);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) close];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allApps countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -91,50 +91,50 @@ uint64_t __30__SCROBrailleUIApp_initialize__block_invoke()
 
 + (void)closeAllAppsExceptTheLowerMostView
 {
-  v11 = [a1 allApps];
-  v2 = [v11 count];
+  allApps = [self allApps];
+  v2 = [allApps count];
   if (v2)
   {
-    if ([v11 count] != 1)
+    if ([allApps count] != 1)
     {
       v3 = 0;
       do
       {
-        v4 = [v11 objectAtIndexedSubscript:v3];
+        v4 = [allApps objectAtIndexedSubscript:v3];
         [v4 close];
 
         ++v3;
       }
 
-      while (v3 < [v11 count] - 1);
+      while (v3 < [allApps count] - 1);
     }
 
-    v5 = [v11 lastObject];
-    v6 = [v5 views];
-    if ([v6 count] != 1)
+    lastObject = [allApps lastObject];
+    views = [lastObject views];
+    if ([views count] != 1)
     {
       v7 = 0;
       do
       {
         v8 = [SCROBrailleUIAction alloc];
-        v9 = [v6 objectAtIndexedSubscript:v7];
+        v9 = [views objectAtIndexedSubscript:v7];
         v10 = [(SCROBrailleUIAction *)v8 initWithType:2 originator:v9];
 
-        [v5 handleAction:v10];
+        [lastObject handleAction:v10];
         ++v7;
       }
 
-      while (v7 < [v6 count] - 1);
+      while (v7 < [views count] - 1);
     }
   }
 
   MEMORY[0x2821F96F8](v2);
 }
 
-+ (id)appForView:(id)a3
++ (id)appForView:(id)view
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  viewCopy = view;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -154,8 +154,8 @@ uint64_t __30__SCROBrailleUIApp_initialize__block_invoke()
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 views];
-        v10 = [v9 containsObject:v3];
+        views = [v8 views];
+        v10 = [views containsObject:viewCopy];
 
         if (v10)
         {
@@ -181,16 +181,16 @@ LABEL_11:
   return v5;
 }
 
-- (SCROBrailleUIApp)initWithDelegate:(id)a3
+- (SCROBrailleUIApp)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SCROBrailleUIApp;
   v5 = [(SCROBrailleUIApp *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -222,13 +222,13 @@ LABEL_11:
   }
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [a3 type];
-  if (v4 != 3)
+  type = [action type];
+  if (type != 3)
   {
-    if (v4 == 2)
+    if (type == 2)
     {
       v5 = *MEMORY[0x277D85DE8];
 
@@ -242,9 +242,9 @@ LABEL_18:
   }
 
   v6 = +[SCROBrailleUISettingsManager sharedInstance];
-  v7 = [v6 shouldReopenViewsWhenRestart];
+  shouldReopenViewsWhenRestart = [v6 shouldReopenViewsWhenRestart];
 
-  if (!v7)
+  if (!shouldReopenViewsWhenRestart)
   {
     v19 = 0u;
     v20 = 0u;
@@ -281,8 +281,8 @@ LABEL_18:
   [v8 hideViews];
 
   [(SCROBrailleUIApp *)self _requestRefreshBraille];
-  v16 = [(SCROBrailleUIApp *)self delegate];
-  [v16 handleDidBrailleUIEnd];
+  delegate = [(SCROBrailleUIApp *)self delegate];
+  [delegate handleDidBrailleUIEnd];
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -292,8 +292,8 @@ LABEL_18:
   v6 = kSCROBrailleUIRequestTypeKey[0];
   v7[0] = &unk_287651BD8;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  v4 = [(SCROBrailleUIApp *)self delegate];
-  [v4 handleBrailleUIRequest:v3];
+  delegate = [(SCROBrailleUIApp *)self delegate];
+  [delegate handleBrailleUIRequest:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 }

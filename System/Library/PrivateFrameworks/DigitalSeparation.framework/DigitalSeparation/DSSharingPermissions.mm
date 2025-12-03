@@ -1,6 +1,6 @@
 @interface DSSharingPermissions
 + (void)initialize;
-- (BOOL)shouldAllowBundleIDWithNoPolicy:(id)a3;
+- (BOOL)shouldAllowBundleIDWithNoPolicy:(id)policy;
 - (DSSharingPermissions)init;
 - (NSArray)allPeople;
 - (NSArray)allPublicSharingTypes;
@@ -8,41 +8,41 @@
 - (NSArray)allReadOnlySharingTypes;
 - (NSArray)allSharingTypes;
 - (NSDictionary)elapsedUnfinishedFetchesBySource;
-- (id)person:(int64_t)a3 withFilter:(BOOL)a4;
-- (id)publicSharingType:(int64_t)a3;
-- (id)readOnlySharingPerson:(int64_t)a3 withFilter:(BOOL)a4;
-- (id)readOnlySharingType:(int64_t)a3 withFilter:(BOOL)a4;
-- (id)sharingType:(int64_t)a3 withFilter:(BOOL)a4;
-- (int64_t)peopleCountWithFilter:(BOOL)a3;
+- (id)person:(int64_t)person withFilter:(BOOL)filter;
+- (id)publicSharingType:(int64_t)type;
+- (id)readOnlySharingPerson:(int64_t)person withFilter:(BOOL)filter;
+- (id)readOnlySharingType:(int64_t)type withFilter:(BOOL)filter;
+- (id)sharingType:(int64_t)type withFilter:(BOOL)filter;
+- (int64_t)peopleCountWithFilter:(BOOL)filter;
 - (int64_t)publicSharingTypesCount;
-- (int64_t)readOnlySharingPeopleCountWithFilter:(BOOL)a3;
-- (int64_t)readOnlySharingTypesCountWithFilter:(BOOL)a3;
-- (int64_t)sharingTypesCountWithFilter:(BOOL)a3;
-- (void)_trackResourceForPublicAccess:(id)a3 source:(id)a4;
-- (void)addParticipant:(id)a3 forSource:(id)a4 sharedResource:(id)a5 deviceOwnerRole:(int64_t)a6;
-- (void)fetchCompletedForSource:(id)a3;
-- (void)fetchPermissionsFromSources:(id)a3 includingErrors:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)fetchPermissionsOnQueue:(id)a3 completion:(id)a4;
-- (void)fetchStartedForSource:(id)a3;
-- (void)filterPeopleWithPredicate:(id)a3;
-- (void)filterReadOnlySharingPeopleWithPredicate:(id)a3;
-- (void)filterReadOnlySharingTypesWithPredicate:(id)a3;
-- (void)filterSharingTypesWithPredicate:(id)a3;
-- (void)removePerson:(id)a3;
-- (void)removePerson:(id)a3 sources:(id)a4;
-- (void)removePublicSharingType:(id)a3;
-- (void)removeSharingType:(id)a3;
-- (void)removeSharingType:(id)a3 people:(id)a4;
+- (int64_t)readOnlySharingPeopleCountWithFilter:(BOOL)filter;
+- (int64_t)readOnlySharingTypesCountWithFilter:(BOOL)filter;
+- (int64_t)sharingTypesCountWithFilter:(BOOL)filter;
+- (void)_trackResourceForPublicAccess:(id)access source:(id)source;
+- (void)addParticipant:(id)participant forSource:(id)source sharedResource:(id)resource deviceOwnerRole:(int64_t)role;
+- (void)fetchCompletedForSource:(id)source;
+- (void)fetchPermissionsFromSources:(id)sources includingErrors:(id)errors queue:(id)queue completion:(id)completion;
+- (void)fetchPermissionsOnQueue:(id)queue completion:(id)completion;
+- (void)fetchStartedForSource:(id)source;
+- (void)filterPeopleWithPredicate:(id)predicate;
+- (void)filterReadOnlySharingPeopleWithPredicate:(id)predicate;
+- (void)filterReadOnlySharingTypesWithPredicate:(id)predicate;
+- (void)filterSharingTypesWithPredicate:(id)predicate;
+- (void)removePerson:(id)person;
+- (void)removePerson:(id)person sources:(id)sources;
+- (void)removePublicSharingType:(id)type;
+- (void)removeSharingType:(id)type;
+- (void)removeSharingType:(id)type people:(id)people;
 - (void)sort;
-- (void)stopAllSharingOnQueue:(id)a3 completion:(id)a4;
-- (void)verifyDataUsagePoliciesForSources:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)stopAllSharingOnQueue:(id)queue completion:(id)completion;
+- (void)verifyDataUsagePoliciesForSources:(id)sources queue:(id)queue completion:(id)completion;
 @end
 
 @implementation DSSharingPermissions
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLogSharingPermissions = os_log_create("com.apple.DigitalSeparation", "DSSharingPermissions");
 
@@ -59,23 +59,23 @@
   if (v2)
   {
     v2->_permissionsLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEB40] orderedSet];
-    [(DSSharingPermissions *)v3 setPeople:v4];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+    [(DSSharingPermissions *)v3 setPeople:orderedSet];
 
-    v5 = [MEMORY[0x277CBEB40] orderedSet];
-    [(DSSharingPermissions *)v3 setReadOnlySharingPeople:v5];
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
+    [(DSSharingPermissions *)v3 setReadOnlySharingPeople:orderedSet2];
 
-    v6 = [MEMORY[0x277CBEB40] orderedSet];
-    [(DSSharingPermissions *)v3 setSharingTypes:v6];
+    orderedSet3 = [MEMORY[0x277CBEB40] orderedSet];
+    [(DSSharingPermissions *)v3 setSharingTypes:orderedSet3];
 
-    v7 = [MEMORY[0x277CBEB40] orderedSet];
-    [(DSSharingPermissions *)v3 setPublicSharingTypes:v7];
+    orderedSet4 = [MEMORY[0x277CBEB40] orderedSet];
+    [(DSSharingPermissions *)v3 setPublicSharingTypes:orderedSet4];
 
-    v8 = [MEMORY[0x277CBEB40] orderedSet];
-    [(DSSharingPermissions *)v3 setReadOnlySharingTypes:v8];
+    orderedSet5 = [MEMORY[0x277CBEB40] orderedSet];
+    [(DSSharingPermissions *)v3 setReadOnlySharingTypes:orderedSet5];
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    [(DSSharingPermissions *)v3 setFetchStartTimesBySource:v9];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(DSSharingPermissions *)v3 setFetchStartTimesBySource:dictionary];
 
     v10 = dispatch_queue_create("com.apple.DigitalSeparation.SharingPermissions", 0);
     [(DSSharingPermissions *)v3 setWorkQueue:v10];
@@ -83,13 +83,13 @@
     v11 = dispatch_queue_create("com.apple.DigitalSeparation.DataUsageQueue", 0);
     [(DSSharingPermissions *)v3 setDataUsageQueue:v11];
 
-    v12 = [(DSSharingPermissions *)v3 workQueue];
+    workQueue = [(DSSharingPermissions *)v3 workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __28__DSSharingPermissions_init__block_invoke;
     block[3] = &unk_278F72AC0;
     v15 = v3;
-    dispatch_async(v12, block);
+    dispatch_async(workQueue, block);
   }
 
   return v3;
@@ -101,29 +101,29 @@ void __28__DSSharingPermissions_init__block_invoke(uint64_t a1)
   [*(a1 + 32) setMe:v2];
 }
 
-- (BOOL)shouldAllowBundleIDWithNoPolicy:(id)a3
+- (BOOL)shouldAllowBundleIDWithNoPolicy:(id)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   v4 = +[DSUtilities allApps];
-  v5 = ![v3 isEqualToString:@"com.apple.Health"] || objc_msgSend(v4, "containsObject:", v3);
+  v5 = ![policyCopy isEqualToString:@"com.apple.Health"] || objc_msgSend(v4, "containsObject:", policyCopy);
 
   return v5;
 }
 
-- (void)verifyDataUsagePoliciesForSources:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)verifyDataUsagePoliciesForSources:(id)sources queue:(id)queue completion:(id)completion
 {
   v64 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  queue = a4;
-  v37 = a5;
-  v41 = [MEMORY[0x277CBEB18] array];
-  v42 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  sourcesCopy = sources;
+  queue = queue;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
+  v42 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(sourcesCopy, "count")}];
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(sourcesCopy, "count")}];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v9 = v7;
+  v9 = sourcesCopy;
   v10 = [v9 countByEnumeratingWithState:&v58 objects:v63 count:16];
   if (v10)
   {
@@ -139,18 +139,18 @@ void __28__DSSharingPermissions_init__block_invoke(uint64_t a1)
         }
 
         v14 = *(*(&v58 + 1) + 8 * i);
-        v15 = [v14 name];
-        v16 = [DSSourceDescriptor sourceDescriptorForSource:v15];
+        name = [v14 name];
+        v16 = [DSSourceDescriptor sourceDescriptorForSource:name];
 
-        v17 = [v16 dataUsageBundleIdentifier];
-        if (v17 && [(DSSharingPermissions *)self shouldAllowBundleIDWithNoPolicy:v17])
+        dataUsageBundleIdentifier = [v16 dataUsageBundleIdentifier];
+        if (dataUsageBundleIdentifier && [(DSSharingPermissions *)self shouldAllowBundleIDWithNoPolicy:dataUsageBundleIdentifier])
         {
-          v18 = [v14 name];
-          [v42 setObject:v18 forKeyedSubscript:v17];
+          name2 = [v14 name];
+          [v42 setObject:name2 forKeyedSubscript:dataUsageBundleIdentifier];
         }
 
-        v19 = [v14 name];
-        [v8 setObject:v14 forKeyedSubscript:v19];
+        name3 = [v14 name];
+        [v8 setObject:v14 forKeyedSubscript:name3];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v58 objects:v63 count:16];
@@ -164,8 +164,8 @@ void __28__DSSharingPermissions_init__block_invoke(uint64_t a1)
   {
     v36 = v9;
     v21 = objc_alloc(MEMORY[0x277CC37B0]);
-    v22 = [(DSSharingPermissions *)self dataUsageQueue];
-    v23 = [v21 initWithQueue:v22];
+    dataUsageQueue = [(DSSharingPermissions *)self dataUsageQueue];
+    v23 = [v21 initWithQueue:dataUsageQueue];
 
     v24 = dispatch_group_create();
     v53 = 0u;
@@ -196,7 +196,7 @@ void __28__DSSharingPermissions_init__block_invoke(uint64_t a1)
           v47[3] = &unk_278F72AE8;
           v48 = v42;
           v49 = v29;
-          v50 = v41;
+          v50 = array;
           v51 = v24;
           v52 = v8;
           [v23 getLocalPolicies:v30 completion:v47];
@@ -212,12 +212,12 @@ void __28__DSSharingPermissions_init__block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __75__DSSharingPermissions_verifyDataUsagePoliciesForSources_queue_completion___block_invoke_18;
     block[3] = &unk_278F72628;
-    v31 = v37;
-    v46 = v37;
+    v31 = completionCopy;
+    v46 = completionCopy;
     v44 = v8;
-    v32 = v41;
-    v45 = v41;
-    v33 = queue;
+    v32 = array;
+    v45 = array;
+    queueCopy2 = queue;
     dispatch_group_notify(v24, queue, block);
 
     v20 = v42;
@@ -233,10 +233,10 @@ void __28__DSSharingPermissions_init__block_invoke(uint64_t a1)
       _os_log_impl(&dword_248C40000, v34, OS_LOG_TYPE_INFO, "All sources have required data usage policies", buf, 2u);
     }
 
-    v31 = v37;
-    v32 = v41;
-    (*(v37 + 2))(v37, v9, v41);
-    v33 = queue;
+    v31 = completionCopy;
+    v32 = array;
+    (*(completionCopy + 2))(completionCopy, v9, array);
+    queueCopy2 = queue;
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -347,13 +347,13 @@ void __75__DSSharingPermissions_verifyDataUsagePoliciesForSources_queue_completi
   (*(v2 + 16))(v2, v3, *(a1 + 40));
 }
 
-- (void)fetchPermissionsFromSources:(id)a3 includingErrors:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)fetchPermissionsFromSources:(id)sources includingErrors:(id)errors queue:(id)queue completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v27 = a4;
-  queue = a5;
-  v11 = a6;
+  sourcesCopy = sources;
+  errorsCopy = errors;
+  queue = queue;
+  completionCopy = completion;
   v12 = os_signpost_id_generate(DSLogSharingPermissions);
   v13 = DSLogSharingPermissions;
   v14 = v13;
@@ -363,41 +363,41 @@ void __75__DSSharingPermissions_verifyDataUsagePoliciesForSources_queue_completi
     _os_signpost_emit_with_name_impl(&dword_248C40000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "fetch", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v15 = [MEMORY[0x277CBEB18] arrayWithArray:v27];
+  v15 = [MEMORY[0x277CBEB18] arrayWithArray:errorsCopy];
   v16 = dispatch_group_create();
   objc_initWeak(&location, self);
   v17 = DSLogSharingPermissions;
   if (os_log_type_enabled(DSLogSharingPermissions, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v40 = v10;
+    v40 = sourcesCopy;
     _os_log_impl(&dword_248C40000, v17, OS_LOG_TYPE_INFO, "Fetching sharing permissions from sources: %{public}@", buf, 0xCu);
   }
 
-  v18 = [v10 count];
-  v19 = [(DSSharingPermissions *)self workQueue];
+  v18 = [sourcesCopy count];
+  workQueue = [(DSSharingPermissions *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__DSSharingPermissions_fetchPermissionsFromSources_includingErrors_queue_completion___block_invoke;
   block[3] = &unk_278F72B88;
   v33 = v16;
-  v34 = v10;
-  v20 = v10;
+  v34 = sourcesCopy;
+  v20 = sourcesCopy;
   v21 = v16;
   objc_copyWeak(&v37, &location);
   v22 = v15;
   v35 = v22;
-  v36 = self;
-  dispatch_apply(v18, v19, block);
+  selfCopy = self;
+  dispatch_apply(v18, workQueue, block);
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __85__DSSharingPermissions_fetchPermissionsFromSources_includingErrors_queue_completion___block_invoke_40;
   v28[3] = &unk_278F72BB0;
-  v30 = v11;
+  v30 = completionCopy;
   v31 = v12;
   v29 = v22;
-  v23 = v11;
+  v23 = completionCopy;
   v24 = v22;
   dispatch_group_notify(v21, queue, v28);
 
@@ -1141,43 +1141,43 @@ void __85__DSSharingPermissions_fetchPermissionsFromSources_includingErrors_queu
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchPermissionsOnQueue:(id)a3 completion:(id)a4
+- (void)fetchPermissionsOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = objc_alloc_init(DSSourceRepository);
   [(DSSharingPermissions *)self setRepo:v8];
 
   os_unfair_lock_lock(&self->_permissionsLock);
-  v9 = [(DSSharingPermissions *)self people];
-  [v9 removeAllObjects];
+  people = [(DSSharingPermissions *)self people];
+  [people removeAllObjects];
 
-  v10 = [(DSSharingPermissions *)self readOnlySharingPeople];
-  [v10 removeAllObjects];
+  readOnlySharingPeople = [(DSSharingPermissions *)self readOnlySharingPeople];
+  [readOnlySharingPeople removeAllObjects];
 
-  v11 = [(DSSharingPermissions *)self sharingTypes];
-  [v11 removeAllObjects];
+  sharingTypes = [(DSSharingPermissions *)self sharingTypes];
+  [sharingTypes removeAllObjects];
 
-  v12 = [(DSSharingPermissions *)self publicSharingTypes];
-  [v12 removeAllObjects];
+  publicSharingTypes = [(DSSharingPermissions *)self publicSharingTypes];
+  [publicSharingTypes removeAllObjects];
 
-  v13 = [(DSSharingPermissions *)self readOnlySharingTypes];
-  [v13 removeAllObjects];
+  readOnlySharingTypes = [(DSSharingPermissions *)self readOnlySharingTypes];
+  [readOnlySharingTypes removeAllObjects];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
   if (MGGetBoolAnswer())
   {
     objc_initWeak(&location, self);
-    v14 = [(DSSharingPermissions *)self repo];
-    v15 = [v14 sources];
+    repo = [(DSSharingPermissions *)self repo];
+    sources = [repo sources];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __59__DSSharingPermissions_fetchPermissionsOnQueue_completion___block_invoke;
     v18[3] = &unk_278F72BD8;
     objc_copyWeak(&v21, &location);
-    v19 = v6;
-    v20 = v7;
-    [(DSSharingPermissions *)self verifyDataUsagePoliciesForSources:v15 queue:v19 completion:v18];
+    v19 = queueCopy;
+    v20 = completionCopy;
+    [(DSSharingPermissions *)self verifyDataUsagePoliciesForSources:sources queue:v19 completion:v18];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -1185,9 +1185,9 @@ void __85__DSSharingPermissions_fetchPermissionsFromSources_includingErrors_queu
 
   else
   {
-    v16 = [(DSSharingPermissions *)self repo];
-    v17 = [v16 sources];
-    [(DSSharingPermissions *)self fetchPermissionsFromSources:v17 includingErrors:MEMORY[0x277CBEBF8] queue:v6 completion:v7];
+    repo2 = [(DSSharingPermissions *)self repo];
+    sources2 = [repo2 sources];
+    [(DSSharingPermissions *)self fetchPermissionsFromSources:sources2 includingErrors:MEMORY[0x277CBEBF8] queue:queueCopy completion:completionCopy];
   }
 }
 
@@ -1199,14 +1199,14 @@ void __59__DSSharingPermissions_fetchPermissionsOnQueue_completion___block_invok
   [WeakRetained fetchPermissionsFromSources:v6 includingErrors:v5 queue:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)_trackResourceForPublicAccess:(id)a3 source:(id)a4
+- (void)_trackResourceForPublicAccess:(id)access source:(id)source
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 visibility] == 2)
+  accessCopy = access;
+  sourceCopy = source;
+  if ([accessCopy visibility] == 2)
   {
-    v8 = v6;
+    v8 = accessCopy;
   }
 
   else
@@ -1214,9 +1214,9 @@ void __59__DSSharingPermissions_fetchPermissionsOnQueue_completion___block_invok
     v8 = 0;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 participationAccess] & 2) != 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([accessCopy participationAccess] & 2) != 0)
   {
-    v9 = v6;
+    v9 = accessCopy;
 
     v8 = v9;
   }
@@ -1224,15 +1224,15 @@ void __59__DSSharingPermissions_fetchPermissionsOnQueue_completion___block_invok
   if (v8)
   {
     os_unfair_lock_lock(&self->_permissionsLock);
-    v10 = [[DSPublicSharingType alloc] initWithSource:v7];
-    v11 = [(DSSharingPermissions *)self publicSharingTypes];
-    v12 = [v11 indexOfObject:v10];
+    v10 = [[DSPublicSharingType alloc] initWithSource:sourceCopy];
+    publicSharingTypes = [(DSSharingPermissions *)self publicSharingTypes];
+    v12 = [publicSharingTypes indexOfObject:v10];
 
-    v13 = [(DSSharingPermissions *)self publicSharingTypes];
-    v14 = v13;
+    publicSharingTypes2 = [(DSSharingPermissions *)self publicSharingTypes];
+    v14 = publicSharingTypes2;
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v13 addObject:v10];
+      [publicSharingTypes2 addObject:v10];
 
       [(DSPublicSharingType *)v10 addPublicResource:v8];
       v15 = DSLogSharingPermissions;
@@ -1248,7 +1248,7 @@ void __59__DSSharingPermissions_fetchPermissionsOnQueue_completion___block_invok
 
     else
     {
-      v16 = [v13 objectAtIndexedSubscript:v12];
+      v16 = [publicSharingTypes2 objectAtIndexedSubscript:v12];
 
       [(DSPublicSharingType *)v16 addPublicResource:v8];
       v17 = DSLogSharingPermissions;
@@ -1271,14 +1271,14 @@ void __59__DSSharingPermissions_fetchPermissionsOnQueue_completion___block_invok
 - (void)sort
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  v3 = [(DSSharingPermissions *)self people];
-  [v3 sortUsingComparator:&__block_literal_global_1];
+  people = [(DSSharingPermissions *)self people];
+  [people sortUsingComparator:&__block_literal_global_1];
 
-  v4 = [(DSSharingPermissions *)self sharingTypes];
-  [v4 sortUsingComparator:&__block_literal_global_52];
+  sharingTypes = [(DSSharingPermissions *)self sharingTypes];
+  [sharingTypes sortUsingComparator:&__block_literal_global_52];
 
-  v5 = [(DSSharingPermissions *)self publicSharingTypes];
-  [v5 sortUsingComparator:&__block_literal_global_55];
+  publicSharingTypes = [(DSSharingPermissions *)self publicSharingTypes];
+  [publicSharingTypes sortUsingComparator:&__block_literal_global_55];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
 }
@@ -1370,12 +1370,12 @@ uint64_t __28__DSSharingPermissions_sort__block_invoke_3(uint64_t a1, void *a2, 
   return v7;
 }
 
-- (void)addParticipant:(id)a3 forSource:(id)a4 sharedResource:(id)a5 deviceOwnerRole:(int64_t)a6
+- (void)addParticipant:(id)participant forSource:(id)source sharedResource:(id)resource deviceOwnerRole:(int64_t)role
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [[DSSharingPerson alloc] initWithSource:v11 sharedResource:v12 participant:v10 deviceOwnerRole:a6];
+  participantCopy = participant;
+  sourceCopy = source;
+  resourceCopy = resource;
+  v13 = [[DSSharingPerson alloc] initWithSource:sourceCopy sharedResource:resourceCopy participant:participantCopy deviceOwnerRole:role];
   objc_initWeak(&location, self);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -1384,14 +1384,14 @@ uint64_t __28__DSSharingPermissions_sort__block_invoke_3(uint64_t a1, void *a2, 
   objc_copyWeak(v29, &location);
   v14 = v13;
   v24 = v14;
-  v25 = self;
-  v15 = v10;
+  selfCopy = self;
+  v15 = participantCopy;
   v26 = v15;
-  v16 = v11;
+  v16 = sourceCopy;
   v27 = v16;
-  v17 = v12;
+  v17 = resourceCopy;
   v28 = v17;
-  v29[1] = a6;
+  v29[1] = role;
   v18 = MEMORY[0x24C1E7EB0](v23);
   v19 = [(DSSharingPermissions *)self me];
 
@@ -1402,14 +1402,14 @@ uint64_t __28__DSSharingPermissions_sort__block_invoke_3(uint64_t a1, void *a2, 
 
   else
   {
-    v20 = [(DSSharingPermissions *)self workQueue];
+    workQueue = [(DSSharingPermissions *)self workQueue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOwnerRole___block_invoke_57;
     v21[3] = &unk_278F726C8;
     v21[4] = self;
     v22 = v18;
-    dispatch_async(v20, v21);
+    dispatch_async(workQueue, v21);
   }
 
   objc_destroyWeak(v29);
@@ -1569,25 +1569,25 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   }
 }
 
-- (void)removePerson:(id)a3
+- (void)removePerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 allSources];
-  [(DSSharingPermissions *)self removePerson:v4 sources:v5];
+  personCopy = person;
+  allSources = [personCopy allSources];
+  [(DSSharingPermissions *)self removePerson:personCopy sources:allSources];
 }
 
-- (void)removePerson:(id)a3 sources:(id)a4
+- (void)removePerson:(id)person sources:(id)sources
 {
   v40 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v6 = a4;
-  v28 = [MEMORY[0x277CBEB18] array];
+  personCopy = person;
+  sourcesCopy = sources;
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_lock_lock(&self->_permissionsLock);
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v6;
+  v7 = sourcesCopy;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v8)
   {
@@ -1604,8 +1604,8 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
         }
 
         v12 = [[DSSharingType alloc] initWithSource:*(*(&v34 + 1) + 8 * v11)];
-        v13 = [(DSSharingPermissions *)self sharingTypes];
-        v14 = [v13 indexOfObject:v12];
+        sharingTypes = [(DSSharingPermissions *)self sharingTypes];
+        v14 = [sharingTypes indexOfObject:v12];
 
         if (v14 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -1614,16 +1614,16 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
 
         else
         {
-          v16 = [(DSSharingPermissions *)self sharingTypes];
-          v15 = [v16 objectAtIndexedSubscript:v14];
+          sharingTypes2 = [(DSSharingPermissions *)self sharingTypes];
+          v15 = [sharingTypes2 objectAtIndexedSubscript:v14];
 
-          [v15 removePerson:v29];
-          v17 = [v15 allPeople];
-          v18 = [v17 count];
+          [v15 removePerson:personCopy];
+          allPeople = [v15 allPeople];
+          v18 = [allPeople count];
 
           if (!v18)
           {
-            [v28 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -1637,13 +1637,13 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
     while (v9);
   }
 
-  v19 = [v29 allSources];
-  v20 = [v19 count];
+  allSources = [personCopy allSources];
+  v20 = [allSources count];
 
   if (!v20)
   {
-    v21 = [(DSSharingPermissions *)self people];
-    [v21 removeObject:v29];
+    people = [(DSSharingPermissions *)self people];
+    [people removeObject:personCopy];
   }
 
   os_unfair_lock_unlock(&self->_permissionsLock);
@@ -1651,7 +1651,7 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v22 = v28;
+  v22 = array;
   v23 = [v22 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v23)
   {
@@ -1667,7 +1667,7 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
           objc_enumerationMutation(v22);
         }
 
-        [(DSSharingPermissions *)self removeSharingType:*(*(&v30 + 1) + 8 * v26++), v28];
+        [(DSSharingPermissions *)self removeSharingType:*(*(&v30 + 1) + 8 * v26++), array];
       }
 
       while (v24 != v26);
@@ -1680,25 +1680,25 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSharingType:(id)a3
+- (void)removeSharingType:(id)type
 {
-  v4 = a3;
-  v5 = [v4 allPeople];
-  [(DSSharingPermissions *)self removeSharingType:v4 people:v5];
+  typeCopy = type;
+  allPeople = [typeCopy allPeople];
+  [(DSSharingPermissions *)self removeSharingType:typeCopy people:allPeople];
 }
 
-- (void)removeSharingType:(id)a3 people:(id)a4
+- (void)removeSharingType:(id)type people:(id)people
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v31 = [MEMORY[0x277CBEB18] array];
+  typeCopy = type;
+  peopleCopy = people;
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_lock_lock(&self->_permissionsLock);
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = v7;
+  v8 = peopleCopy;
   v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v9)
   {
@@ -1715,24 +1715,24 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
         }
 
         v13 = *(*(&v36 + 1) + 8 * v12);
-        v14 = [(DSSharingPermissions *)self people];
-        v15 = [v14 indexOfObject:v13];
+        people = [(DSSharingPermissions *)self people];
+        v15 = [people indexOfObject:v13];
 
         if (v15 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v16 = [(DSSharingPermissions *)self people];
-          v17 = [v16 objectAtIndexedSubscript:v15];
+          people2 = [(DSSharingPermissions *)self people];
+          v17 = [people2 objectAtIndexedSubscript:v15];
 
-          v18 = [v6 source];
-          v19 = [v18 name];
-          [v17 removeSourceWithName:v19];
+          source = [typeCopy source];
+          name = [source name];
+          [v17 removeSourceWithName:name];
 
-          v20 = [v17 allSources];
-          v21 = [v20 count];
+          allSources = [v17 allSources];
+          v21 = [allSources count];
 
           if (!v21)
           {
-            [v31 addObject:v17];
+            [array addObject:v17];
           }
         }
 
@@ -1746,13 +1746,13 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
     while (v10);
   }
 
-  v22 = [v6 allPeople];
-  v23 = [v22 count];
+  allPeople = [typeCopy allPeople];
+  v23 = [allPeople count];
 
   if (!v23)
   {
-    v24 = [(DSSharingPermissions *)self sharingTypes];
-    [v24 removeObject:v6];
+    sharingTypes = [(DSSharingPermissions *)self sharingTypes];
+    [sharingTypes removeObject:typeCopy];
   }
 
   os_unfair_lock_unlock(&self->_permissionsLock);
@@ -1760,7 +1760,7 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v25 = v31;
+  v25 = array;
   v26 = [v25 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v26)
   {
@@ -1789,68 +1789,68 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePublicSharingType:(id)a3
+- (void)removePublicSharingType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_permissionsLock);
-  v5 = [(DSSharingPermissions *)self publicSharingTypes];
-  [v5 removeObject:v4];
+  publicSharingTypes = [(DSSharingPermissions *)self publicSharingTypes];
+  [publicSharingTypes removeObject:typeCopy];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
 }
 
-- (void)filterPeopleWithPredicate:(id)a3
+- (void)filterPeopleWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_lock(&self->_permissionsLock);
-  v5 = [(DSSharingPermissions *)self people];
-  v6 = [v5 filteredOrderedSetUsingPredicate:v4];
+  people = [(DSSharingPermissions *)self people];
+  v6 = [people filteredOrderedSetUsingPredicate:predicateCopy];
 
   [(DSSharingPermissions *)self setFilteredPeople:v6];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
 }
 
-- (void)filterReadOnlySharingPeopleWithPredicate:(id)a3
+- (void)filterReadOnlySharingPeopleWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_lock(&self->_permissionsLock);
-  v5 = [(DSSharingPermissions *)self readOnlySharingPeople];
-  v6 = [v5 filteredOrderedSetUsingPredicate:v4];
+  readOnlySharingPeople = [(DSSharingPermissions *)self readOnlySharingPeople];
+  v6 = [readOnlySharingPeople filteredOrderedSetUsingPredicate:predicateCopy];
 
   [(DSSharingPermissions *)self setFilteredReadOnlySharingPeople:v6];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
 }
 
-- (void)filterSharingTypesWithPredicate:(id)a3
+- (void)filterSharingTypesWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_lock(&self->_permissionsLock);
-  v5 = [(DSSharingPermissions *)self sharingTypes];
-  v6 = [v5 filteredOrderedSetUsingPredicate:v4];
+  sharingTypes = [(DSSharingPermissions *)self sharingTypes];
+  v6 = [sharingTypes filteredOrderedSetUsingPredicate:predicateCopy];
 
   [(DSSharingPermissions *)self setFilteredSharingTypes:v6];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
 }
 
-- (void)filterReadOnlySharingTypesWithPredicate:(id)a3
+- (void)filterReadOnlySharingTypesWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_lock(&self->_permissionsLock);
-  v5 = [(DSSharingPermissions *)self readOnlySharingTypes];
-  v6 = [v5 filteredOrderedSetUsingPredicate:v4];
+  readOnlySharingTypes = [(DSSharingPermissions *)self readOnlySharingTypes];
+  v6 = [readOnlySharingTypes filteredOrderedSetUsingPredicate:predicateCopy];
 
   [(DSSharingPermissions *)self setFilteredReadOnlySharingTypes:v6];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
 }
 
-- (id)person:(int64_t)a3 withFilter:(BOOL)a4
+- (id)person:(int64_t)person withFilter:(BOOL)filter
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  if (a4)
+  if (filter)
   {
     [(DSSharingPermissions *)self filteredPeople];
   }
@@ -1861,7 +1861,7 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   }
   v7 = ;
   v8 = v7;
-  if (a3 < 0 || [v7 count] <= a3)
+  if (person < 0 || [v7 count] <= person)
   {
     if (os_log_type_enabled(DSLogSharingPermissions, OS_LOG_TYPE_FAULT))
     {
@@ -1874,17 +1874,17 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
 
   else
   {
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    v9 = [v8 objectAtIndexedSubscript:person];
     os_unfair_lock_unlock(&self->_permissionsLock);
   }
 
   return v9;
 }
 
-- (id)readOnlySharingPerson:(int64_t)a3 withFilter:(BOOL)a4
+- (id)readOnlySharingPerson:(int64_t)person withFilter:(BOOL)filter
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  if (a4)
+  if (filter)
   {
     [(DSSharingPermissions *)self filteredReadOnlySharingPeople];
   }
@@ -1895,7 +1895,7 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   }
   v7 = ;
   v8 = v7;
-  if (a3 < 0 || [v7 count] <= a3)
+  if (person < 0 || [v7 count] <= person)
   {
     if (os_log_type_enabled(DSLogSharingPermissions, OS_LOG_TYPE_FAULT))
     {
@@ -1908,17 +1908,17 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
 
   else
   {
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    v9 = [v8 objectAtIndexedSubscript:person];
     os_unfair_lock_unlock(&self->_permissionsLock);
   }
 
   return v9;
 }
 
-- (id)sharingType:(int64_t)a3 withFilter:(BOOL)a4
+- (id)sharingType:(int64_t)type withFilter:(BOOL)filter
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  if (a4)
+  if (filter)
   {
     [(DSSharingPermissions *)self filteredSharingTypes];
   }
@@ -1929,7 +1929,7 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   }
   v7 = ;
   v8 = v7;
-  if (a3 < 0 || [v7 count] <= a3)
+  if (type < 0 || [v7 count] <= type)
   {
     if (os_log_type_enabled(DSLogSharingPermissions, OS_LOG_TYPE_FAULT))
     {
@@ -1942,19 +1942,19 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
 
   else
   {
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    v9 = [v8 objectAtIndexedSubscript:type];
     os_unfair_lock_unlock(&self->_permissionsLock);
   }
 
   return v9;
 }
 
-- (id)publicSharingType:(int64_t)a3
+- (id)publicSharingType:(int64_t)type
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  v5 = [(DSSharingPermissions *)self publicSharingTypes];
-  v6 = v5;
-  if (a3 < 0 || [v5 count] <= a3)
+  publicSharingTypes = [(DSSharingPermissions *)self publicSharingTypes];
+  v6 = publicSharingTypes;
+  if (type < 0 || [publicSharingTypes count] <= type)
   {
     if (os_log_type_enabled(DSLogSharingPermissions, OS_LOG_TYPE_FAULT))
     {
@@ -1967,17 +1967,17 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
 
   else
   {
-    v7 = [v6 objectAtIndexedSubscript:a3];
+    v7 = [v6 objectAtIndexedSubscript:type];
     os_unfair_lock_unlock(&self->_permissionsLock);
   }
 
   return v7;
 }
 
-- (id)readOnlySharingType:(int64_t)a3 withFilter:(BOOL)a4
+- (id)readOnlySharingType:(int64_t)type withFilter:(BOOL)filter
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  if (a4)
+  if (filter)
   {
     [(DSSharingPermissions *)self filteredReadOnlySharingTypes];
   }
@@ -1988,7 +1988,7 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   }
   v7 = ;
   v8 = v7;
-  if (a3 < 0 || [v7 count] <= a3)
+  if (type < 0 || [v7 count] <= type)
   {
     if (os_log_type_enabled(DSLogSharingPermissions, OS_LOG_TYPE_FAULT))
     {
@@ -2001,17 +2001,17 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
 
   else
   {
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    v9 = [v8 objectAtIndexedSubscript:type];
     os_unfair_lock_unlock(&self->_permissionsLock);
   }
 
   return v9;
 }
 
-- (int64_t)peopleCountWithFilter:(BOOL)a3
+- (int64_t)peopleCountWithFilter:(BOOL)filter
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  if (a3)
+  if (filter)
   {
     [(DSSharingPermissions *)self filteredPeople];
   }
@@ -2037,10 +2037,10 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   return v6;
 }
 
-- (int64_t)readOnlySharingPeopleCountWithFilter:(BOOL)a3
+- (int64_t)readOnlySharingPeopleCountWithFilter:(BOOL)filter
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  if (a3)
+  if (filter)
   {
     [(DSSharingPermissions *)self filteredReadOnlySharingPeople];
   }
@@ -2066,10 +2066,10 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   return v6;
 }
 
-- (int64_t)sharingTypesCountWithFilter:(BOOL)a3
+- (int64_t)sharingTypesCountWithFilter:(BOOL)filter
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  if (a3)
+  if (filter)
   {
     [(DSSharingPermissions *)self filteredSharingTypes];
   }
@@ -2098,8 +2098,8 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
 - (int64_t)publicSharingTypesCount
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  v3 = [(DSSharingPermissions *)self publicSharingTypes];
-  v4 = [v3 count];
+  publicSharingTypes = [(DSSharingPermissions *)self publicSharingTypes];
+  v4 = [publicSharingTypes count];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
   if (v4 < 0)
@@ -2115,10 +2115,10 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   return v4;
 }
 
-- (int64_t)readOnlySharingTypesCountWithFilter:(BOOL)a3
+- (int64_t)readOnlySharingTypesCountWithFilter:(BOOL)filter
 {
   os_unfair_lock_lock(&self->_permissionsLock);
-  if (a3)
+  if (filter)
   {
     [(DSSharingPermissions *)self filteredReadOnlySharingTypes];
   }
@@ -2146,48 +2146,48 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
 
 - (NSArray)allPeople
 {
-  v2 = [(DSSharingPermissions *)self people];
-  v3 = [v2 array];
+  people = [(DSSharingPermissions *)self people];
+  array = [people array];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)allReadOnlySharingPeople
 {
-  v2 = [(DSSharingPermissions *)self readOnlySharingPeople];
-  v3 = [v2 array];
+  readOnlySharingPeople = [(DSSharingPermissions *)self readOnlySharingPeople];
+  array = [readOnlySharingPeople array];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)allSharingTypes
 {
-  v2 = [(DSSharingPermissions *)self sharingTypes];
-  v3 = [v2 array];
+  sharingTypes = [(DSSharingPermissions *)self sharingTypes];
+  array = [sharingTypes array];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)allPublicSharingTypes
 {
-  v2 = [(DSSharingPermissions *)self publicSharingTypes];
-  v3 = [v2 array];
+  publicSharingTypes = [(DSSharingPermissions *)self publicSharingTypes];
+  array = [publicSharingTypes array];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)allReadOnlySharingTypes
 {
-  v2 = [(DSSharingPermissions *)self readOnlySharingTypes];
-  v3 = [v2 array];
+  readOnlySharingTypes = [(DSSharingPermissions *)self readOnlySharingTypes];
+  array = [readOnlySharingTypes array];
 
-  return v3;
+  return array;
 }
 
 - (NSDictionary)elapsedUnfinishedFetchesBySource
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   os_unfair_lock_lock(&self->_permissionsLock);
   v20 = 0u;
@@ -2210,12 +2210,12 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [(DSSharingPermissions *)self fetchStartTimesBySource];
-        v11 = [v10 objectForKeyedSubscript:v9];
-        v12 = [v11 unsignedLongLongValue];
+        fetchStartTimesBySource = [(DSSharingPermissions *)self fetchStartTimesBySource];
+        v11 = [fetchStartTimesBySource objectForKeyedSubscript:v9];
+        unsignedLongLongValue = [v11 unsignedLongLongValue];
 
-        v13 = [MEMORY[0x277CCABB0] numberWithDouble:(v4 - v12) / 1000000000.0];
-        [v3 setObject:v13 forKeyedSubscript:v9];
+        v13 = [MEMORY[0x277CCABB0] numberWithDouble:(v4 - unsignedLongLongValue) / 1000000000.0];
+        [dictionary setObject:v13 forKeyedSubscript:v9];
       }
 
       v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -2225,49 +2225,49 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
   }
 
   os_unfair_lock_unlock(&self->_permissionsLock);
-  v14 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
+  v14 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (void)fetchStartedForSource:(id)a3
+- (void)fetchStartedForSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   os_unfair_lock_lock(&self->_permissionsLock);
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW)];
-  v6 = [(DSSharingPermissions *)self fetchStartTimesBySource];
-  [v6 setObject:v5 forKeyedSubscript:v4];
+  fetchStartTimesBySource = [(DSSharingPermissions *)self fetchStartTimesBySource];
+  [fetchStartTimesBySource setObject:v5 forKeyedSubscript:sourceCopy];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
 }
 
-- (void)fetchCompletedForSource:(id)a3
+- (void)fetchCompletedForSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   os_unfair_lock_lock(&self->_permissionsLock);
-  v5 = [(DSSharingPermissions *)self fetchStartTimesBySource];
-  [v5 setObject:0 forKeyedSubscript:v4];
+  fetchStartTimesBySource = [(DSSharingPermissions *)self fetchStartTimesBySource];
+  [fetchStartTimesBySource setObject:0 forKeyedSubscript:sourceCopy];
 
   os_unfair_lock_unlock(&self->_permissionsLock);
 }
 
-- (void)stopAllSharingOnQueue:(id)a3 completion:(id)a4
+- (void)stopAllSharingOnQueue:(id)queue completion:(id)completion
 {
   v134 = *MEMORY[0x277D85DE8];
-  queue = a3;
-  v93 = a4;
+  queue = queue;
+  completionCopy = completion;
   v6 = dispatch_group_create();
-  v98 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [(DSSharingPermissions *)self allSharingTypes];
-  v9 = [v8 copy];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  allSharingTypes = [(DSSharingPermissions *)self allSharingTypes];
+  v9 = [allSharingTypes copy];
 
   objc_initWeak(&location, self);
   v10 = MEMORY[0x277CBEB58];
-  v11 = [(DSSharingPermissions *)self allPublicSharingTypes];
-  v12 = [v11 copy];
+  allPublicSharingTypes = [(DSSharingPermissions *)self allPublicSharingTypes];
+  v12 = [allPublicSharingTypes copy];
   v96 = [v10 setWithArray:v12];
 
   v126 = 0u;
@@ -2290,8 +2290,8 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
 
         v17 = *(*(&v124 + 1) + 8 * i);
         v18 = [DSPublicSharingType alloc];
-        v19 = [v17 source];
-        v20 = [(DSPublicSharingType *)v18 initWithSource:v19];
+        source = [v17 source];
+        v20 = [(DSPublicSharingType *)v18 initWithSource:source];
 
         [v96 removeObject:v20];
       }
@@ -2333,9 +2333,9 @@ void __80__DSSharingPermissions_addParticipant_forSource_sharedResource_deviceOw
         v26 = *(*(&v120 + 1) + 8 * j);
         dispatch_group_enter(v6);
         v27 = os_signpost_id_generate(DSLogSharingPermissions);
-        v28 = [v26 source];
-        v29 = [v28 name];
-        v30 = [v29 isEqualToString:@"com.apple.DigitalSeparation.Calendars"];
+        source2 = [v26 source];
+        name = [source2 name];
+        v30 = [name isEqualToString:@"com.apple.DigitalSeparation.Calendars"];
 
         if (v30)
         {
@@ -2354,9 +2354,9 @@ LABEL_60:
 
         else
         {
-          v36 = [v26 source];
-          v37 = [v36 name];
-          v38 = [v37 isEqualToString:@"com.apple.DigitalSeparation.FindMy"];
+          source3 = [v26 source];
+          name2 = [source3 name];
+          v38 = [name2 isEqualToString:@"com.apple.DigitalSeparation.FindMy"];
 
           if (v38)
           {
@@ -2374,9 +2374,9 @@ LABEL_60:
 
           else
           {
-            v40 = [v26 source];
-            v41 = [v40 name];
-            v42 = [v41 isEqualToString:@"com.apple.DigitalSeparation.Photos"];
+            source4 = [v26 source];
+            name3 = [source4 name];
+            v42 = [name3 isEqualToString:@"com.apple.DigitalSeparation.Photos"];
 
             if (v42)
             {
@@ -2394,9 +2394,9 @@ LABEL_60:
 
             else
             {
-              v44 = [v26 source];
-              v45 = [v44 name];
-              v46 = [v45 isEqualToString:@"com.apple.DigitalSeparation.HomeKit.HomeSharing"];
+              source5 = [v26 source];
+              name4 = [source5 name];
+              v46 = [name4 isEqualToString:@"com.apple.DigitalSeparation.HomeKit.HomeSharing"];
 
               if (v46)
               {
@@ -2414,9 +2414,9 @@ LABEL_60:
 
               else
               {
-                v48 = [v26 source];
-                v49 = [v48 name];
-                v50 = [v49 isEqualToString:@"com.apple.DigitalSeparation.HealthKit.HealthSharing"];
+                source6 = [v26 source];
+                name5 = [source6 name];
+                v50 = [name5 isEqualToString:@"com.apple.DigitalSeparation.HealthKit.HealthSharing"];
 
                 if (v50)
                 {
@@ -2434,9 +2434,9 @@ LABEL_60:
 
                 else
                 {
-                  v52 = [v26 source];
-                  v53 = [v52 name];
-                  v54 = [v53 isEqualToString:@"com.apple.DigitalSeparation.Notes"];
+                  source7 = [v26 source];
+                  name6 = [source7 name];
+                  v54 = [name6 isEqualToString:@"com.apple.DigitalSeparation.Notes"];
 
                   if (v54)
                   {
@@ -2454,9 +2454,9 @@ LABEL_60:
 
                   else
                   {
-                    v56 = [v26 source];
-                    v57 = [v56 name];
-                    v58 = [v57 isEqualToString:@"com.apple.DigitalSeparation.Zelkova"];
+                    source8 = [v26 source];
+                    name7 = [source8 name];
+                    v58 = [name7 isEqualToString:@"com.apple.DigitalSeparation.Zelkova"];
 
                     if (v58)
                     {
@@ -2474,9 +2474,9 @@ LABEL_60:
 
                     else
                     {
-                      v60 = [v26 source];
-                      v61 = [v60 name];
-                      v62 = [v61 isEqualToString:@"com.apple.DigitalSeparation.Fitness"];
+                      source9 = [v26 source];
+                      name8 = [source9 name];
+                      v62 = [name8 isEqualToString:@"com.apple.DigitalSeparation.Fitness"];
 
                       if (v62)
                       {
@@ -2494,9 +2494,9 @@ LABEL_60:
 
                       else
                       {
-                        v64 = [v26 source];
-                        v65 = [v64 name];
-                        v66 = [v65 isEqualToString:@"com.apple.DigitalSeparation.PassKeys"];
+                        source10 = [v26 source];
+                        name9 = [source10 name];
+                        v66 = [name9 isEqualToString:@"com.apple.DigitalSeparation.PassKeys"];
 
                         if (v66)
                         {
@@ -2514,9 +2514,9 @@ LABEL_60:
 
                         else
                         {
-                          v68 = [v26 source];
-                          v69 = [v68 name];
-                          v70 = [v69 isEqualToString:@"com.apple.DigitalSeparation.ItemSharing"];
+                          source11 = [v26 source];
+                          name10 = [source11 name];
+                          v70 = [name10 isEqualToString:@"com.apple.DigitalSeparation.ItemSharing"];
 
                           if (v70)
                           {
@@ -2534,9 +2534,9 @@ LABEL_60:
 
                           else
                           {
-                            v72 = [v26 source];
-                            v73 = [v72 name];
-                            v74 = [v73 isEqualToString:@"com.apple.DigitalSeparation.Maps"];
+                            source12 = [v26 source];
+                            name11 = [source12 name];
+                            v74 = [name11 isEqualToString:@"com.apple.DigitalSeparation.Maps"];
 
                             v75 = DSLogSharingPermissions;
                             v32 = v75;
@@ -2563,10 +2563,10 @@ LABEL_60:
                               v32 = DSLogSharingPermissions;
                               if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
                               {
-                                v82 = [v26 source];
-                                v83 = [v82 name];
+                                source13 = [v26 source];
+                                name12 = [source13 name];
                                 *buf = 138543362;
-                                v131 = v83;
+                                v131 = name12;
                                 _os_log_fault_impl(&dword_248C40000, v32, OS_LOG_TYPE_FAULT, "Signpost for unsupported source name %{public}@", buf, 0xCu);
                               }
                             }
@@ -2584,24 +2584,24 @@ LABEL_60:
         v76 = DSLogSharingPermissions;
         if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
         {
-          v77 = [v26 source];
-          v78 = [v77 name];
+          source14 = [v26 source];
+          name13 = [source14 name];
           *buf = 138543362;
-          v131 = v78;
+          v131 = name13;
           _os_log_impl(&dword_248C40000, v76, OS_LOG_TYPE_INFO, "Stopping all sharing for type %{public}@", buf, 0xCu);
         }
 
-        v79 = [v26 allPeople];
-        v80 = [v79 copy];
+        allPeople = [v26 allPeople];
+        v80 = [allPeople copy];
 
         v114[0] = MEMORY[0x277D85DD0];
         v114[1] = 3221225472;
         v114[2] = __57__DSSharingPermissions_stopAllSharingOnQueue_completion___block_invoke;
         v114[3] = &unk_278F72C68;
         v114[4] = v26;
-        v115 = v98;
+        v115 = array;
         objc_copyWeak(v119, &location);
-        v116 = v7;
+        v116 = array2;
         v81 = v80;
         v117 = v81;
         v119[1] = v27;
@@ -2642,9 +2642,9 @@ LABEL_60:
         v105[2] = __57__DSSharingPermissions_stopAllSharingOnQueue_completion___block_invoke_60;
         v105[3] = &unk_278F72C90;
         v105[4] = v88;
-        v106 = v98;
+        v106 = array;
         objc_copyWeak(&v109, &location);
-        v107 = v7;
+        v107 = array2;
         v108 = v6;
         [v88 stopAllSharingOnQueue:queue completion:v105];
 
@@ -2661,13 +2661,13 @@ LABEL_60:
   block[1] = 3221225472;
   block[2] = __57__DSSharingPermissions_stopAllSharingOnQueue_completion___block_invoke_61;
   block[3] = &unk_278F72CB8;
-  v103 = v93;
+  v103 = completionCopy;
   v104 = v21;
-  v101 = v7;
-  v102 = v98;
-  v89 = v98;
-  v90 = v7;
-  v91 = v93;
+  v101 = array2;
+  v102 = array;
+  v89 = array;
+  v90 = array2;
+  v91 = completionCopy;
   dispatch_group_notify(v6, queue, block);
 
   objc_destroyWeak(&location);

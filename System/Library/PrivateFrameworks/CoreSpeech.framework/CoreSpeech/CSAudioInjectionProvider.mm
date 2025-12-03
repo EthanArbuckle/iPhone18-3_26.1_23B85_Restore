@@ -1,58 +1,58 @@
 @interface CSAudioInjectionProvider
 + (id)defaultInjectionProvider;
-- (BOOL)_connectBuiltInDevice:(id)a3 withError:(id *)a4;
-- (BOOL)_connectPluginDevice:(id)a3 withError:(id *)a4;
-- (BOOL)activateAudioSessionWithReason:(unint64_t)a3 streamHandleId:(unint64_t)a4 error:(id *)a5;
-- (BOOL)connectDevice:(id)a3 withOutError:(id *)a4;
-- (BOOL)deactivateAudioSession:(unint64_t)a3 error:(id *)a4;
-- (BOOL)deactivateAudioSession:(unint64_t)a3 streamHandleId:(unint64_t)a4 error:(id *)a5;
-- (BOOL)isRecordingWithRecordDeviceIndicator:(id)a3;
-- (BOOL)playRecordStartingAlertAndResetEndpointerFromStream:(unint64_t)a3 withAlertOverride:(int64_t)a4;
-- (BOOL)prepareAudioStreamRecord:(id)a3 recordDeviceIndicator:(id)a4 error:(id *)a5;
-- (BOOL)prewarmAudioSessionWithStreamHandleId:(unint64_t)a3 error:(id *)a4;
-- (BOOL)startAudioStreamWithOption:(id)a3 recordDeviceIndicator:(id)a4 error:(id *)a5;
-- (BOOL)stopAudioStreamWithRecordDeviceIndicator:(id)a3 error:(id *)a4;
+- (BOOL)_connectBuiltInDevice:(id)device withError:(id *)error;
+- (BOOL)_connectPluginDevice:(id)device withError:(id *)error;
+- (BOOL)activateAudioSessionWithReason:(unint64_t)reason streamHandleId:(unint64_t)id error:(id *)error;
+- (BOOL)connectDevice:(id)device withOutError:(id *)error;
+- (BOOL)deactivateAudioSession:(unint64_t)session error:(id *)error;
+- (BOOL)deactivateAudioSession:(unint64_t)session streamHandleId:(unint64_t)id error:(id *)error;
+- (BOOL)isRecordingWithRecordDeviceIndicator:(id)indicator;
+- (BOOL)playRecordStartingAlertAndResetEndpointerFromStream:(unint64_t)stream withAlertOverride:(int64_t)override;
+- (BOOL)prepareAudioStreamRecord:(id)record recordDeviceIndicator:(id)indicator error:(id *)error;
+- (BOOL)prewarmAudioSessionWithStreamHandleId:(unint64_t)id error:(id *)error;
+- (BOOL)startAudioStreamWithOption:(id)option recordDeviceIndicator:(id)indicator error:(id *)error;
+- (BOOL)stopAudioStreamWithRecordDeviceIndicator:(id)indicator error:(id *)error;
 - (CSAudioInjectionProvider)init;
-- (id)audioDeviceInfoWithStreamHandleId:(unint64_t)a3 recordDeviceIndicator:(id)a4;
+- (id)audioDeviceInfoWithStreamHandleId:(unint64_t)id recordDeviceIndicator:(id)indicator;
 - (id)metrics;
 - (id)primaryInputDevice;
-- (id)recordDeviceInfoWithStreamHandleId:(unint64_t)a3 recordDeviceIndicator:(id)a4;
-- (id)recordRouteWithRecordDeviceIndicator:(id)a3;
-- (id)recordSettingsWithStreamHandleId:(unint64_t)a3;
+- (id)recordDeviceInfoWithStreamHandleId:(unint64_t)id recordDeviceIndicator:(id)indicator;
+- (id)recordRouteWithRecordDeviceIndicator:(id)indicator;
+- (id)recordSettingsWithStreamHandleId:(unint64_t)id;
 - (void)_createSpeechDetectionVADIfNeeded;
 - (void)_tearDownSpeechDetectionVADIfNeeded;
-- (void)audioEngineAudioChunkForTvAvailable:(id)a3 audioChunk:(id)a4;
-- (void)audioEngineBufferAvailable:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 atTime:(unint64_t)a7 isFileLoadedBuffer:(BOOL)a8;
-- (void)audioEngineDidStartRecord:(id)a3 audioStreamHandleId:(unint64_t)a4 successfully:(BOOL)a5 error:(id)a6;
-- (void)audioEngineDidStopRecord:(id)a3 audioStreamHandleId:(unint64_t)a4 reason:(unint64_t)a5;
+- (void)audioEngineAudioChunkForTvAvailable:(id)available audioChunk:(id)chunk;
+- (void)audioEngineBufferAvailable:(id)available audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d atTime:(unint64_t)time isFileLoadedBuffer:(BOOL)loadedBuffer;
+- (void)audioEngineDidStartRecord:(id)record audioStreamHandleId:(unint64_t)id successfully:(BOOL)successfully error:(id)error;
+- (void)audioEngineDidStopRecord:(id)record audioStreamHandleId:(unint64_t)id reason:(unint64_t)reason;
 - (void)dealloc;
-- (void)disconnectDevice:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)selectBuiltInDevice:(id)a3 withCompletion:(id)a4;
-- (void)setContext:(id)a3 completion:(id)a4;
+- (void)disconnectDevice:(id)device;
+- (void)registerObserver:(id)observer;
+- (void)selectBuiltInDevice:(id)device withCompletion:(id)completion;
+- (void)setContext:(id)context completion:(id)completion;
 - (void)start;
 - (void)stop;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 - (void)willDestroy;
 @end
 
 @implementation CSAudioInjectionProvider
 
-- (void)audioEngineAudioChunkForTvAvailable:(id)a3 audioChunk:(id)a4
+- (void)audioEngineAudioChunkForTvAvailable:(id)available audioChunk:(id)chunk
 {
-  v5 = a4;
+  chunkCopy = chunk;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000A453C;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = chunkCopy;
+  v7 = chunkCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)audioEngineDidStopRecord:(id)a3 audioStreamHandleId:(unint64_t)a4 reason:(unint64_t)a5
+- (void)audioEngineDidStopRecord:(id)record audioStreamHandleId:(unint64_t)id reason:(unint64_t)reason
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -60,44 +60,44 @@
   block[2] = sub_1000A46F8;
   block[3] = &unk_1002512C0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = id;
+  block[6] = reason;
   dispatch_async(queue, block);
 }
 
-- (void)audioEngineBufferAvailable:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 atTime:(unint64_t)a7 isFileLoadedBuffer:(BOOL)a8
+- (void)audioEngineBufferAvailable:(id)available audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d atTime:(unint64_t)time isFileLoadedBuffer:(BOOL)loadedBuffer
 {
-  v13 = a5;
-  v14 = a6;
+  bufferCopy = buffer;
+  dCopy = d;
   queue = self->_queue;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000A4910;
   v18[3] = &unk_100250EF0;
-  v23 = a8;
+  loadedBufferCopy = loadedBuffer;
   v18[4] = self;
-  v19 = v13;
-  v20 = v14;
-  v21 = a4;
-  v22 = a7;
-  v16 = v14;
-  v17 = v13;
+  v19 = bufferCopy;
+  v20 = dCopy;
+  idCopy = id;
+  timeCopy = time;
+  v16 = dCopy;
+  v17 = bufferCopy;
   dispatch_async(queue, v18);
 }
 
-- (void)audioEngineDidStartRecord:(id)a3 audioStreamHandleId:(unint64_t)a4 successfully:(BOOL)a5 error:(id)a6
+- (void)audioEngineDidStartRecord:(id)record audioStreamHandleId:(unint64_t)id successfully:(BOOL)successfully error:(id)error
 {
-  v9 = a6;
+  errorCopy = error;
   queue = self->_queue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000A4B64;
   v12[3] = &unk_100250678;
-  v13 = v9;
-  v14 = a4;
-  v15 = a5;
+  v13 = errorCopy;
+  idCopy = id;
+  successfullyCopy = successfully;
   v12[4] = self;
-  v11 = v9;
+  v11 = errorCopy;
   dispatch_async(queue, v12);
 }
 
@@ -130,7 +130,7 @@
   return v11;
 }
 
-- (BOOL)playRecordStartingAlertAndResetEndpointerFromStream:(unint64_t)a3 withAlertOverride:(int64_t)a4
+- (BOOL)playRecordStartingAlertAndResetEndpointerFromStream:(unint64_t)stream withAlertOverride:(int64_t)override
 {
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -138,42 +138,42 @@
     v7 = 136315394;
     v8 = "[CSAudioInjectionProvider playRecordStartingAlertAndResetEndpointerFromStream:withAlertOverride:]";
     v9 = 2048;
-    v10 = a4;
+    overrideCopy = override;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s playing start recording alert with override: %lu", &v7, 0x16u);
   }
 
   return 1;
 }
 
-- (BOOL)deactivateAudioSession:(unint64_t)a3 error:(id *)a4
+- (BOOL)deactivateAudioSession:(unint64_t)session error:(id *)error
 {
   self->_deactivateStartTime = mach_absolute_time();
   v7 = +[AVAudioSession sharedInstance];
-  LOBYTE(a4) = [v7 setActive:0 withOptions:a3 error:a4];
+  LOBYTE(error) = [v7 setActive:0 withOptions:session error:error];
 
   self->_deactivateEndTime = mach_absolute_time();
-  return a4;
+  return error;
 }
 
-- (BOOL)deactivateAudioSession:(unint64_t)a3 streamHandleId:(unint64_t)a4 error:(id *)a5
+- (BOOL)deactivateAudioSession:(unint64_t)session streamHandleId:(unint64_t)id error:(id *)error
 {
   self->_deactivateStartTime = mach_absolute_time();
   v8 = +[AVAudioSession sharedInstance];
-  LOBYTE(a5) = [v8 setActive:0 withOptions:a3 error:a5];
+  LOBYTE(error) = [v8 setActive:0 withOptions:session error:error];
 
   self->_deactivateEndTime = mach_absolute_time();
-  return a5;
+  return error;
 }
 
-- (BOOL)activateAudioSessionWithReason:(unint64_t)a3 streamHandleId:(unint64_t)a4 error:(id *)a5
+- (BOOL)activateAudioSessionWithReason:(unint64_t)reason streamHandleId:(unint64_t)id error:(id *)error
 {
   self->_activateStartTime = mach_absolute_time();
-  if (CSIsHorseman() && (+[AVAudioSession sharedInstance](AVAudioSession, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 setCategory:AVAudioSessionCategoryPlayAndRecord mode:AVAudioSessionModeSpeechRecognition options:1 error:a5], v7, (v8 & 1) == 0))
+  if (CSIsHorseman() && (+[AVAudioSession sharedInstance](AVAudioSession, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 setCategory:AVAudioSessionCategoryPlayAndRecord mode:AVAudioSessionModeSpeechRecognition options:1 error:error], v7, (v8 & 1) == 0))
   {
     v12 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
-      v13 = *a5;
+      v13 = *error;
       v14 = 136315394;
       v15 = "[CSAudioInjectionProvider activateAudioSessionWithReason:streamHandleId:error:]";
       v16 = 2112;
@@ -187,22 +187,22 @@
   else
   {
     v9 = +[AVAudioSession sharedInstance];
-    v10 = [v9 setActive:1 error:a5];
+    v10 = [v9 setActive:1 error:error];
 
     self->_activateEndTime = mach_absolute_time();
     return v10;
   }
 }
 
-- (BOOL)prewarmAudioSessionWithStreamHandleId:(unint64_t)a3 error:(id *)a4
+- (BOOL)prewarmAudioSessionWithStreamHandleId:(unint64_t)id error:(id *)error
 {
   v5 = +[AVAudioSession sharedInstance];
-  LOBYTE(a4) = [v5 setActive:1 withOptions:0x2000 error:a4];
+  LOBYTE(error) = [v5 setActive:1 withOptions:0x2000 error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)recordSettingsWithStreamHandleId:(unint64_t)a3
+- (id)recordSettingsWithStreamHandleId:(unint64_t)id
 {
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = v4;
@@ -212,9 +212,9 @@
     [v5 setObject:&off_10025E2D0 forKey:AVSampleRateKey];
     [v5 setObject:&off_10025E2E8 forKey:AVLinearPCMBitDepthKey];
     v6 = +[CSFPreferences sharedPreferences];
-    v7 = [v6 useSpeexForAudioInjection];
+    useSpeexForAudioInjection = [v6 useSpeexForAudioInjection];
 
-    if (v7)
+    if (useSpeexForAudioInjection)
     {
       v8 = &off_10025E300;
     }
@@ -230,20 +230,20 @@
   return v5;
 }
 
-- (id)audioDeviceInfoWithStreamHandleId:(unint64_t)a3 recordDeviceIndicator:(id)a4
+- (id)audioDeviceInfoWithStreamHandleId:(unint64_t)id recordDeviceIndicator:(id)indicator
 {
-  v6 = a4;
+  indicatorCopy = indicator;
   v7 = [CSFAudioDeviceInfo alloc];
-  v8 = [(CSAudioInjectionProvider *)self recordDeviceInfoWithStreamHandleId:a3 recordDeviceIndicator:v6];
+  v8 = [(CSAudioInjectionProvider *)self recordDeviceInfoWithStreamHandleId:id recordDeviceIndicator:indicatorCopy];
 
-  v9 = [(CSAudioInjectionProvider *)self getPlaybackRouteForStreamID:a3];
+  v9 = [(CSAudioInjectionProvider *)self getPlaybackRouteForStreamID:id];
   v10 = +[NSArray array];
   v11 = [v7 initWithRecordDeviceInfo:v8 playbackRoute:v9 playbackDeviceTypeList:v10];
 
   return v11;
 }
 
-- (id)recordDeviceInfoWithStreamHandleId:(unint64_t)a3 recordDeviceIndicator:(id)a4
+- (id)recordDeviceInfoWithStreamHandleId:(unint64_t)id recordDeviceIndicator:(id)indicator
 {
   v8 = 0;
   v9 = &v8;
@@ -257,7 +257,7 @@
   block[2] = sub_1000A55AC;
   block[3] = &unk_100252170;
   block[5] = &v8;
-  block[6] = a3;
+  block[6] = id;
   block[4] = self;
   dispatch_async_and_wait(queue, block);
   v5 = v9[5];
@@ -266,9 +266,9 @@
   return v5;
 }
 
-- (id)recordRouteWithRecordDeviceIndicator:(id)a3
+- (id)recordRouteWithRecordDeviceIndicator:(id)indicator
 {
-  v4 = a3;
+  indicatorCopy = indicator;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -281,9 +281,9 @@
   block[2] = sub_1000A58B4;
   block[3] = &unk_100252228;
   block[4] = self;
-  v10 = v4;
+  v10 = indicatorCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = indicatorCopy;
   dispatch_async_and_wait(queue, block);
   v7 = v13[5];
 
@@ -292,9 +292,9 @@
   return v7;
 }
 
-- (BOOL)isRecordingWithRecordDeviceIndicator:(id)a3
+- (BOOL)isRecordingWithRecordDeviceIndicator:(id)indicator
 {
-  v4 = a3;
+  indicatorCopy = indicator;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -308,27 +308,27 @@
   block[3] = &unk_100252228;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = indicatorCopy;
   v11 = v6;
   dispatch_async_and_wait(queue, block);
   v7 = v14[5];
   if (v7)
   {
-    v8 = [v7 isRecording];
+    isRecording = [v7 isRecording];
   }
 
   else
   {
-    v8 = 0;
+    isRecording = 0;
   }
 
   _Block_object_dispose(&v13, 8);
-  return v8;
+  return isRecording;
 }
 
-- (BOOL)stopAudioStreamWithRecordDeviceIndicator:(id)a3 error:(id *)a4
+- (BOOL)stopAudioStreamWithRecordDeviceIndicator:(id)indicator error:(id *)error
 {
-  v6 = a3;
+  indicatorCopy = indicator;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -353,13 +353,13 @@
   block[3] = &unk_100252228;
   v16 = buf;
   block[4] = self;
-  v10 = v6;
+  v10 = indicatorCopy;
   v15 = v10;
   dispatch_async_and_wait(queue, block);
   v11 = *(*&buf[8] + 40);
   if (v11)
   {
-    v12 = [v11 stopAudioStreamWithOutError:a4];
+    v12 = [v11 stopAudioStreamWithOutError:error];
   }
 
   else
@@ -371,10 +371,10 @@
   return v12;
 }
 
-- (BOOL)startAudioStreamWithOption:(id)a3 recordDeviceIndicator:(id)a4 error:(id *)a5
+- (BOOL)startAudioStreamWithOption:(id)option recordDeviceIndicator:(id)indicator error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  optionCopy = option;
+  indicatorCopy = indicator;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -386,11 +386,11 @@
   block[1] = 3221225472;
   block[2] = sub_1000A6148;
   block[3] = &unk_1002509A8;
-  v11 = v8;
+  v11 = optionCopy;
   v24 = v11;
-  v25 = self;
+  selfCopy = self;
   v27 = &v28;
-  v12 = v9;
+  v12 = indicatorCopy;
   v26 = v12;
   dispatch_async_and_wait(queue, block);
   v13 = v29[5];
@@ -399,7 +399,7 @@
     didStartDelayInSeconds = self->_didStartDelayInSeconds;
     if (didStartDelayInSeconds <= 0.0)
     {
-      [v29[5] startAudioStreamWithOption:v11 withOutError:a5];
+      [v29[5] startAudioStreamWithOption:v11 withOutError:error];
     }
 
     else
@@ -412,7 +412,7 @@
       v19[3] = &unk_100252170;
       v21 = &v28;
       v20 = v11;
-      v22 = a5;
+      errorCopy = error;
       dispatch_after(v15, v16, v19);
     }
   }
@@ -432,31 +432,31 @@
   return v13 != 0;
 }
 
-- (BOOL)prepareAudioStreamRecord:(id)a3 recordDeviceIndicator:(id)a4 error:(id *)a5
+- (BOOL)prepareAudioStreamRecord:(id)record recordDeviceIndicator:(id)indicator error:(id *)error
 {
-  v6 = a3;
+  recordCopy = record;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000A640C;
   v10[3] = &unk_100253C48;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
+  v11 = recordCopy;
+  v8 = recordCopy;
   dispatch_async(queue, v10);
 
   return 1;
 }
 
-- (void)setContext:(id)a3 completion:(id)a4
+- (void)setContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isPluginContext])
+  contextCopy = context;
+  completionCopy = completion;
+  if ([contextCopy isPluginContext])
   {
     if (self->_shouldSupportOnlyTVRemote)
     {
-      [v6 setDeviceId:self->_atvRemoteDeviceID];
+      [contextCopy setDeviceId:self->_atvRemoteDeviceID];
     }
 
     v12 = 0;
@@ -469,48 +469,48 @@
     block[2] = sub_1000A65F0;
     block[3] = &unk_100252228;
     block[4] = self;
-    v10 = v6;
+    v10 = contextCopy;
     v11 = &v12;
     dispatch_async_and_wait(queue, block);
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, v13[3], 1, 0);
+      completionCopy[2](completionCopy, v13[3], 1, 0);
     }
 
     _Block_object_dispose(&v12, 8);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7, 1, 2, 0);
+    completionCopy[2](completionCopy, 1, 2, 0);
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A6808;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A68BC;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -521,32 +521,32 @@
   [(CSAudioInjectionProvider *)&v2 willDestroy];
 }
 
-- (void)disconnectDevice:(id)a3
+- (void)disconnectDevice:(id)device
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  deviceCopy = device;
+  v5 = deviceCopy;
+  if (deviceCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000A69B4;
     v7[3] = &unk_100253C48;
-    v8 = v4;
-    v9 = self;
+    v8 = deviceCopy;
+    selfCopy = self;
     dispatch_async(queue, v7);
   }
 }
 
-- (BOOL)connectDevice:(id)a3 withOutError:(id *)a4
+- (BOOL)connectDevice:(id)device withOutError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  deviceCopy = device;
+  v7 = deviceCopy;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  if (v6)
+  if (deviceCopy)
   {
     queue = self->_queue;
     v11[0] = _NSConcreteStackBlock;
@@ -554,9 +554,9 @@
     v11[2] = sub_1000A6CE8;
     v11[3] = &unk_100252000;
     v11[4] = self;
-    v12 = v6;
+    v12 = deviceCopy;
     v13 = &v15;
-    v14 = a4;
+    errorCopy = error;
     dispatch_async_and_wait(queue, v11);
 
     v9 = *(v16 + 24);
@@ -616,8 +616,8 @@
     primaryBuiltInDevice = self->_primaryBuiltInDevice;
     if (primaryBuiltInDevice)
     {
-      v4 = [(CSAudioInjectionDevice *)primaryBuiltInDevice injectionEngine];
-      [v4 stop];
+      injectionEngine = [(CSAudioInjectionDevice *)primaryBuiltInDevice injectionEngine];
+      [injectionEngine stop];
 
       audioInjectionEngines = self->_audioInjectionEngines;
 
@@ -631,47 +631,47 @@
   primaryBuiltInDevice = self->_primaryBuiltInDevice;
   if (primaryBuiltInDevice)
   {
-    v4 = [(CSAudioInjectionDevice *)primaryBuiltInDevice injectionEngine];
-    [(NSMutableDictionary *)self->_audioInjectionEngines setObject:v4 forKeyedSubscript:&off_10025E2A0];
+    injectionEngine = [(CSAudioInjectionDevice *)primaryBuiltInDevice injectionEngine];
+    [(NSMutableDictionary *)self->_audioInjectionEngines setObject:injectionEngine forKeyedSubscript:&off_10025E2A0];
 
-    v5 = [(CSAudioInjectionDevice *)self->_primaryBuiltInDevice injectionEngine];
-    [v5 start];
+    injectionEngine2 = [(CSAudioInjectionDevice *)self->_primaryBuiltInDevice injectionEngine];
+    [injectionEngine2 start];
   }
 }
 
-- (BOOL)_connectBuiltInDevice:(id)a3 withError:(id *)a4
+- (BOOL)_connectBuiltInDevice:(id)device withError:(id *)error
 {
-  v7 = a3;
+  deviceCopy = device;
   primaryBuiltInDevice = self->_primaryBuiltInDevice;
   if (!primaryBuiltInDevice)
   {
     goto LABEL_8;
   }
 
-  v9 = [(CSAudioInjectionDevice *)primaryBuiltInDevice deviceUID];
-  v10 = [v9 UUIDString];
-  v11 = [v7 deviceUID];
-  v12 = [v11 UUIDString];
-  if (![v10 isEqualToString:v12])
+  deviceUID = [(CSAudioInjectionDevice *)primaryBuiltInDevice deviceUID];
+  uUIDString = [deviceUID UUIDString];
+  deviceUID2 = [deviceCopy deviceUID];
+  uUIDString2 = [deviceUID2 UUIDString];
+  if (![uUIDString isEqualToString:uUIDString2])
   {
 
     goto LABEL_8;
   }
 
-  v13 = [(CSAudioInjectionDevice *)self->_primaryBuiltInDevice injectionEngine];
+  injectionEngine = [(CSAudioInjectionDevice *)self->_primaryBuiltInDevice injectionEngine];
 
-  if (!v13)
+  if (!injectionEngine)
   {
 LABEL_8:
-    v16 = [CSAudioInjectionEngineFactory engineWithDevice:v7 streamHandleId:1];
+    v16 = [CSAudioInjectionEngineFactory engineWithDevice:deviceCopy streamHandleId:1];
     [v16 setDelegate:self];
-    v15 = [v16 attachDevice:v7 withOutError:a4];
+    v15 = [v16 attachDevice:deviceCopy withOutError:error];
     [v16 start];
     [(NSMutableDictionary *)self->_audioInjectionEngines setObject:v16 forKey:&off_10025E2A0];
     v17 = [(NSMutableDictionary *)self->_audioInjectionEngines objectForKeyedSubscript:&off_10025E2A0];
-    [v7 setInjectionEngine:v17];
+    [deviceCopy setInjectionEngine:v17];
 
-    objc_storeStrong(&self->_primaryBuiltInDevice, a3);
+    objc_storeStrong(&self->_primaryBuiltInDevice, device);
     goto LABEL_9;
   }
 
@@ -689,38 +689,38 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)_connectPluginDevice:(id)a3 withError:(id *)a4
+- (BOOL)_connectPluginDevice:(id)device withError:(id *)error
 {
   latestPluginStreamId = self->_latestPluginStreamId;
-  v7 = a3;
-  v8 = [CSAudioInjectionEngineFactory engineWithDevice:v7 streamHandleId:latestPluginStreamId];
+  deviceCopy = device;
+  v8 = [CSAudioInjectionEngineFactory engineWithDevice:deviceCopy streamHandleId:latestPluginStreamId];
   [v8 setDelegate:self];
   [v8 start];
-  [v7 setInjectionEngine:v8];
-  LOBYTE(a4) = [v8 attachDevice:v7 withOutError:a4];
+  [deviceCopy setInjectionEngine:v8];
+  LOBYTE(error) = [v8 attachDevice:deviceCopy withOutError:error];
 
   audioInjectionEngines = self->_audioInjectionEngines;
   v10 = [NSNumber numberWithUnsignedInteger:self->_latestPluginStreamId];
   [(NSMutableDictionary *)audioInjectionEngines setObject:v8 forKey:v10];
 
   ++self->_latestPluginStreamId;
-  return a4;
+  return error;
 }
 
-- (void)selectBuiltInDevice:(id)a3 withCompletion:(id)a4
+- (void)selectBuiltInDevice:(id)device withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A7648;
   block[3] = &unk_1002533A0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = deviceCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = deviceCopy;
   dispatch_async(queue, block);
 }
 
@@ -789,9 +789,9 @@ LABEL_9:
     if (v14)
     {
       v15 = +[NSUUID UUID];
-      v16 = [v15 UUIDString];
+      uUIDString = [v15 UUIDString];
       atvRemoteDeviceID = v2->_atvRemoteDeviceID;
-      v2->_atvRemoteDeviceID = v16;
+      v2->_atvRemoteDeviceID = uUIDString;
 
       v18 = [[CSAudioInjectionDevice alloc] initWithDeviceType:5 deviceName:@"ATVRemoteInput" deviceID:v2->_atvRemoteDeviceID productID:0];
       v19 = &OBJC_IVAR___CSAudioInjectionProvider__primaryTvRemoteDevice;

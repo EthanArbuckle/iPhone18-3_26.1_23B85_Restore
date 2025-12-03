@@ -1,18 +1,18 @@
 @interface MCNewMDMPayloadHandler
 + (id)_exchangeSyncUUIDString;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
-- (id)_cannotCheckInErrorWithName:(id)a3;
-- (id)_mdmDictWithInstaller:(id)a3 options:(id)a4 payload:(id)a5;
-- (id)persistentRefForUUID:(id)a3 outError:(id *)a4;
-- (id)persistentRefsForUUIDs:(id)a3 outError:(id *)a4;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
+- (id)_cannotCheckInErrorWithName:(id)name;
+- (id)_mdmDictWithInstaller:(id)installer options:(id)options payload:(id)payload;
+- (id)persistentRefForUUID:(id)d outError:(id *)error;
+- (id)persistentRefsForUUIDs:(id)ds outError:(id *)error;
 - (void)_releaseDependency;
 - (void)_retainDependency;
-- (void)didInstallOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4;
-- (void)didRemoveOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4;
-- (void)removeWithInstaller:(id)a3 options:(id)a4;
+- (void)didInstallOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions;
+- (void)didRemoveOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions;
+- (void)removeWithInstaller:(id)installer options:(id)options;
 - (void)setAside;
-- (void)setAsideWithInstaller:(id)a3;
-- (void)setIdleRebootValue:(BOOL)a3;
+- (void)setAsideWithInstaller:(id)installer;
+- (void)setIdleRebootValue:(BOOL)value;
 - (void)unsetAside;
 @end
 
@@ -29,7 +29,7 @@
   v5 = ((8 * v4) | 4) / 5;
   v6 = [v3 mutableCopy];
   [v6 appendBytes:&unk_100136A98 length:4];
-  v7 = [v6 bytes];
+  bytes = [v6 bytes];
   v8 = malloc_type_calloc(v5 + 1, v5, 0x100004077774924uLL);
   v9 = v8;
   if (v4 >= 1)
@@ -49,10 +49,10 @@
     v13 = v8;
     do
     {
-      v14 = (16 * ((v7[v10 >> 3] >> (~v10 & 7)) & 1)) | (8 * ((v7[(v10 + 1) >> 3] >> (~(v10 + 1) & 7)) & 1)) | (4 * ((v7[(v10 + 2) >> 3] >> (~(v10 + 2) & 7)) & 1)) | (2 * ((v7[(v10 + 3) >> 3] >> (~(v10 + 3) & 7)) & 1)) | (v7[(v10 + 4) >> 3] >> (~(v10 + 4) & 7)) & 1;
+      v14 = (16 * ((bytes[v10 >> 3] >> (~v10 & 7)) & 1)) | (8 * ((bytes[(v10 + 1) >> 3] >> (~(v10 + 1) & 7)) & 1)) | (4 * ((bytes[(v10 + 2) >> 3] >> (~(v10 + 2) & 7)) & 1)) | (2 * ((bytes[(v10 + 3) >> 3] >> (~(v10 + 3) & 7)) & 1)) | (bytes[(v10 + 4) >> 3] >> (~(v10 + 4) & 7)) & 1;
       v15 = v14 | 0x30;
       v16 = v14 + 55;
-      if (((16 * ((v7[v10 >> 3] >> (~v10 & 7)) & 1)) | (8 * ((v7[(v10 + 1) >> 3] >> (~(v10 + 1) & 7)) & 1)) | (4 * ((v7[(v10 + 2) >> 3] >> (~(v10 + 2) & 7)) & 1)) | (2 * ((v7[(v10 + 3) >> 3] >> (~(v10 + 3) & 7)) & 1))) < 0xA)
+      if (((16 * ((bytes[v10 >> 3] >> (~v10 & 7)) & 1)) | (8 * ((bytes[(v10 + 1) >> 3] >> (~(v10 + 1) & 7)) & 1)) | (4 * ((bytes[(v10 + 2) >> 3] >> (~(v10 + 2) & 7)) & 1)) | (2 * ((bytes[(v10 + 3) >> 3] >> (~(v10 + 3) & 7)) & 1))) < 0xA)
       {
         v16 = v15;
       }
@@ -70,20 +70,20 @@
   return v17;
 }
 
-- (id)_cannotCheckInErrorWithName:(id)a3
+- (id)_cannotCheckInErrorWithName:(id)name
 {
   v3 = MCMDMErrorDomain;
   v4 = MCErrorArray();
-  v5 = [NSError MCErrorWithDomain:v3 code:12002 descriptionArray:v4 errorType:MCErrorTypeNeedsRetry, a3, 0];
+  v5 = [NSError MCErrorWithDomain:v3 code:12002 descriptionArray:v4 errorType:MCErrorTypeNeedsRetry, name, 0];
 
   return v5;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v69 = a3;
-  v10 = a4;
-  v68 = a5;
+  installerCopy = installer;
+  optionsCopy = options;
+  clientCopy = client;
   v70 = +[NSFileManager defaultManager];
   v80 = 0;
   v81 = &v80;
@@ -92,14 +92,14 @@
   v84 = sub_10003F8DC;
   v85 = 0;
   v11 = kMDMPasscodeKey;
-  v12 = [v10 objectForKeyedSubscript:kMDMPasscodeKey];
+  v12 = [optionsCopy objectForKeyedSubscript:kMDMPasscodeKey];
   if (v12)
   {
-    v13 = [v10 mutableCopy];
+    v13 = [optionsCopy mutableCopy];
     [v13 removeObjectForKey:v11];
     v14 = [v13 copy];
 
-    v10 = v14;
+    optionsCopy = v14;
   }
 
   v15 = MDMFilePath();
@@ -107,13 +107,13 @@
 
   if (v16)
   {
-    v17 = MCErrorArray();
-    v18 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12001 descriptionArray:v17 errorType:MCErrorTypeFatal, 0];
-    v19 = [v18 MCCopyAsPrimaryError];
+    payload = MCErrorArray();
+    v18 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12001 descriptionArray:payload errorType:MCErrorTypeFatal, 0];
+    mCCopyAsPrimaryError = [v18 MCCopyAsPrimaryError];
 LABEL_7:
     v22 = 0;
     v23 = v81[5];
-    v81[5] = v19;
+    v81[5] = mCCopyAsPrimaryError;
 LABEL_8:
 
     goto LABEL_9;
@@ -124,26 +124,26 @@ LABEL_8:
 
   if (v21)
   {
-    v17 = MCErrorArray();
-    v18 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12088 descriptionArray:v17 errorType:MCErrorTypeFatal, 0];
-    v19 = [v18 MCCopyAsPrimaryError];
+    payload = MCErrorArray();
+    v18 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12088 descriptionArray:payload errorType:MCErrorTypeFatal, 0];
+    mCCopyAsPrimaryError = [v18 MCCopyAsPrimaryError];
     goto LABEL_7;
   }
 
-  v17 = [(MCNewPayloadHandler *)self payload];
-  v38 = [v17 identityUUID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  identityUUID = [payload identityUUID];
   v39 = (v81 + 5);
   obj = v81[5];
-  v18 = [(MCNewMDMPayloadHandler *)self persistentRefForUUID:v38 outError:&obj];
+  v18 = [(MCNewMDMPayloadHandler *)self persistentRefForUUID:identityUUID outError:&obj];
   objc_storeStrong(v39, obj);
 
   if (!v81[5])
   {
-    [v17 setIdentityPersistentID:v18];
-    v40 = [v17 serverPinningUUIDs];
+    [payload setIdentityPersistentID:v18];
+    serverPinningUUIDs = [payload serverPinningUUIDs];
     v41 = (v81 + 5);
     v78 = v81[5];
-    v23 = [(MCNewMDMPayloadHandler *)self persistentRefsForUUIDs:v40 outError:&v78];
+    v23 = [(MCNewMDMPayloadHandler *)self persistentRefsForUUIDs:serverPinningUUIDs outError:&v78];
     objc_storeStrong(v41, v78);
 
     if (v81[5])
@@ -152,11 +152,11 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    [v17 setServerPinningPersistentRefs:v23];
-    v42 = [v17 checkInPinningUUIDs];
+    [payload setServerPinningPersistentRefs:v23];
+    checkInPinningUUIDs = [payload checkInPinningUUIDs];
     v43 = (v81 + 5);
     v77 = v81[5];
-    v44 = [(MCNewMDMPayloadHandler *)self persistentRefsForUUIDs:v42 outError:&v77];
+    v44 = [(MCNewMDMPayloadHandler *)self persistentRefsForUUIDs:checkInPinningUUIDs outError:&v77];
     objc_storeStrong(v43, v77);
 
     if (v81[5])
@@ -164,24 +164,24 @@ LABEL_8:
       goto LABEL_40;
     }
 
-    [v17 setCheckInPinningPersistentRefs:v44];
+    [payload setCheckInPinningPersistentRefs:v44];
     v45 = +[MCActivationUtilities sharedInstance];
-    v46 = [v45 isHRNMode];
+    isHRNMode = [v45 isHRNMode];
 
-    if (v46 == 2)
+    if (isHRNMode == 2)
     {
-      v52 = [v17 pollingIntervalMinutes];
-      v66 = v52;
-      if (v52)
+      pollingIntervalMinutes = [payload pollingIntervalMinutes];
+      friendlyName2 = pollingIntervalMinutes;
+      if (pollingIntervalMinutes)
       {
-        if ([v52 integerValue] > 4)
+        if ([pollingIntervalMinutes integerValue] > 4)
         {
 LABEL_38:
 
 LABEL_39:
           if (!v81[5])
           {
-            v55 = [(MCNewMDMPayloadHandler *)self _mdmDictWithInstaller:v69 options:v10 payload:v17];
+            v55 = [(MCNewMDMPayloadHandler *)self _mdmDictWithInstaller:installerCopy options:optionsCopy payload:payload];
             v56 = +[MDMConfiguration sharedConfiguration];
             v75[0] = _NSConcreteStackBlock;
             v75[1] = 3221225472;
@@ -217,8 +217,8 @@ LABEL_39:
               if (!v81[5])
               {
                 [(MCNewMDMPayloadHandler *)self _retainDependency];
-                v61 = [v17 serverCapabilities];
-                v65 = [v61 containsObject:kMDMUserChannelCapability];
+                serverCapabilities = [payload serverCapabilities];
+                v65 = [serverCapabilities containsObject:kMDMUserChannelCapability];
 
                 if (v65)
                 {
@@ -238,16 +238,16 @@ LABEL_41:
           goto LABEL_8;
         }
 
-        v47 = [v17 friendlyName];
+        friendlyName = [payload friendlyName];
         v51 = MCErrorArray();
-        v53 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12096 descriptionArray:v51 errorType:MCErrorTypeFatal, v47, 0];
+        v53 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12096 descriptionArray:v51 errorType:MCErrorTypeFatal, friendlyName, 0];
       }
 
       else
       {
-        v47 = [v17 friendlyName];
+        friendlyName = [payload friendlyName];
         v51 = MCErrorArray();
-        v53 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12097 descriptionArray:v51 errorType:MCErrorTypeFatal, v47, 0];
+        v53 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12097 descriptionArray:v51 errorType:MCErrorTypeFatal, friendlyName, 0];
       }
 
       v54 = v81[5];
@@ -256,35 +256,35 @@ LABEL_41:
 
     else
     {
-      if (v46 == 1)
+      if (isHRNMode == 1)
       {
-        v49 = [v17 topic];
-        v50 = v49 == 0;
+        topic = [payload topic];
+        v50 = topic == 0;
 
         if (!v50)
         {
           goto LABEL_39;
         }
 
-        v66 = [v17 friendlyName];
-        v47 = MCErrorArray();
-        v48 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12098 descriptionArray:v47 errorType:MCErrorTypeFatal, v66, 0];
+        friendlyName2 = [payload friendlyName];
+        friendlyName = MCErrorArray();
+        mCCopyAsPrimaryError2 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12098 descriptionArray:friendlyName errorType:MCErrorTypeFatal, friendlyName2, 0];
       }
 
       else
       {
-        if (v46)
+        if (isHRNMode)
         {
           goto LABEL_39;
         }
 
-        v66 = MCErrorArray();
-        v47 = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12099 descriptionArray:v66 errorType:MCErrorTypeFatal, 0];
-        v48 = [v47 MCCopyAsPrimaryError];
+        friendlyName2 = MCErrorArray();
+        friendlyName = [NSError MCErrorWithDomain:MCMDMErrorDomain code:12099 descriptionArray:friendlyName2 errorType:MCErrorTypeFatal, 0];
+        mCCopyAsPrimaryError2 = [friendlyName MCCopyAsPrimaryError];
       }
 
       v51 = v81[5];
-      v81[5] = v48;
+      v81[5] = mCCopyAsPrimaryError2;
     }
 
     goto LABEL_38;
@@ -296,27 +296,27 @@ LABEL_9:
   v24 = v81[5];
   if (v24)
   {
-    v25 = [(MCNewPayloadHandler *)self payload];
-    v26 = [v25 friendlyName];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    friendlyName3 = [payload2 friendlyName];
     v27 = MCErrorArray();
-    v28 = [NSError MCErrorWithDomain:MCInstallationErrorDomain code:4001 descriptionArray:v27 underlyingError:v81[5] errorType:MCErrorTypeFatal, v26, 0];
+    v28 = [NSError MCErrorWithDomain:MCInstallationErrorDomain code:4001 descriptionArray:v27 underlyingError:v81[5] errorType:MCErrorTypeFatal, friendlyName3, 0];
 
-    if (a6)
+    if (error)
     {
       v29 = v28;
-      *a6 = v28;
+      *error = v28;
     }
 
     v30 = _MCLogObjects[0];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v31 = [(MCNewPayloadHandler *)self payload];
-      v32 = [v31 friendlyName];
-      v33 = [v28 MCVerboseDescription];
+      payload3 = [(MCNewPayloadHandler *)self payload];
+      friendlyName4 = [payload3 friendlyName];
+      mCVerboseDescription = [v28 MCVerboseDescription];
       *buf = 138543618;
-      v87 = v32;
+      v87 = friendlyName4;
       v88 = 2114;
-      v89 = v33;
+      v89 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Cannot install MDM “%{public}@”. Error: %{public}@", buf, 0x16u);
     }
 
@@ -333,9 +333,9 @@ LABEL_9:
   {
     MDMSendDevicePostureChangedNotification();
     v35 = +[MDMCloudConfiguration sharedConfiguration];
-    v36 = [v35 isSupervised];
+    isSupervised = [v35 isSupervised];
 
-    if (v36)
+    if (isSupervised)
     {
       [(MCNewMDMPayloadHandler *)self setIdleRebootValue:0];
     }
@@ -345,90 +345,90 @@ LABEL_9:
   return v24 == 0;
 }
 
-- (id)_mdmDictWithInstaller:(id)a3 options:(id)a4 payload:(id)a5
+- (id)_mdmDictWithInstaller:(id)installer options:(id)options payload:(id)payload
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  optionsCopy = options;
+  payloadCopy = payload;
+  installerCopy = installer;
   v12 = +[NSMutableDictionary dictionary];
-  v13 = [v10 profile];
-  v14 = [v13 identifier];
-  [v12 setObject:v14 forKey:kMDMManagingProfileIdentifierKey];
+  profile = [payloadCopy profile];
+  identifier = [profile identifier];
+  [v12 setObject:identifier forKey:kMDMManagingProfileIdentifierKey];
 
-  v15 = [v10 identityPersistentID];
-  [v12 MCSetObjectIfNotNil:v15 forKey:kMDMIdentityPersistentRefKey];
+  identityPersistentID = [payloadCopy identityPersistentID];
+  [v12 MCSetObjectIfNotNil:identityPersistentID forKey:kMDMIdentityPersistentRefKey];
 
-  v16 = [v10 serverPinningPersistentRefs];
-  [v12 MCSetObjectIfNotNil:v16 forKey:kMDMServerPinningCertPersistentRefsKey];
+  serverPinningPersistentRefs = [payloadCopy serverPinningPersistentRefs];
+  [v12 MCSetObjectIfNotNil:serverPinningPersistentRefs forKey:kMDMServerPinningCertPersistentRefsKey];
 
-  v17 = [v10 checkInPinningPersistentRefs];
-  [v12 MCSetObjectIfNotNil:v17 forKey:kMDMCheckInPinningCertPersistentRefsKey];
+  checkInPinningPersistentRefs = [payloadCopy checkInPinningPersistentRefs];
+  [v12 MCSetObjectIfNotNil:checkInPinningPersistentRefs forKey:kMDMCheckInPinningCertPersistentRefsKey];
 
   v18 = &sem_close_ptr;
-  v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 pinningRevocationCheckRequired]);
+  v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payloadCopy pinningRevocationCheckRequired]);
   [v12 setObject:v19 forKey:kMDMPinningRevocationCheckRequiredKey];
 
-  v20 = [v10 topic];
-  [v12 MCSetObjectIfNotNil:v20 forKey:kMDMTopicKey];
+  topic = [payloadCopy topic];
+  [v12 MCSetObjectIfNotNil:topic forKey:kMDMTopicKey];
 
-  v21 = [v10 pollingIntervalMinutes];
-  [v12 MCSetObjectIfNotNil:v21 forKey:kMDMPollingIntervalKey];
+  pollingIntervalMinutes = [payloadCopy pollingIntervalMinutes];
+  [v12 MCSetObjectIfNotNil:pollingIntervalMinutes forKey:kMDMPollingIntervalKey];
 
-  v22 = [v10 serverURLString];
-  [v12 MCSetObjectIfNotNil:v22 forKey:kMDMServerURLKey];
+  serverURLString = [payloadCopy serverURLString];
+  [v12 MCSetObjectIfNotNil:serverURLString forKey:kMDMServerURLKey];
 
-  v23 = [v10 checkInURLString];
-  [v12 MCSetObjectIfNotNil:v23 forKey:kMDMCheckInURLKey];
+  checkInURLString = [payloadCopy checkInURLString];
+  [v12 MCSetObjectIfNotNil:checkInURLString forKey:kMDMCheckInURLKey];
 
-  v24 = [v10 serverCapabilities];
-  [v12 MCSetObjectIfNotNil:v24 forKey:kMDMServerCapabilitiesKey];
+  serverCapabilities = [payloadCopy serverCapabilities];
+  [v12 MCSetObjectIfNotNil:serverCapabilities forKey:kMDMServerCapabilitiesKey];
 
-  v25 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v10 accessRights]);
+  v25 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [payloadCopy accessRights]);
   [v12 setObject:v25 forKey:kMDMAccessRightsKey];
 
-  v26 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 useDevelopmentAPNS]);
+  v26 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payloadCopy useDevelopmentAPNS]);
   [v12 setObject:v26 forKey:kMDMUseDevelopmentAPNSKey];
 
   v27 = +[NSString MCMakeUUID];
   [v12 setObject:v27 forKey:kMDMPushMagicKey];
 
-  v28 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 signMessage]);
+  v28 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payloadCopy signMessage]);
   [v12 setObject:v28 forKey:kMDMSignMessageKey];
 
-  v29 = [v10 enrollmentMode];
-  [v12 MCSetObjectIfNotNil:v29 forKey:kMDMEnrollmentModeKey];
+  enrollmentMode = [payloadCopy enrollmentMode];
+  [v12 MCSetObjectIfNotNil:enrollmentMode forKey:kMDMEnrollmentModeKey];
 
-  v30 = [v10 requiredAppIDForMDM];
-  [v12 MCSetObjectIfNotNil:v30 forKey:kMDMRequiredAppIDForMDMKey];
+  requiredAppIDForMDM = [payloadCopy requiredAppIDForMDM];
+  [v12 MCSetObjectIfNotNil:requiredAppIDForMDM forKey:kMDMRequiredAppIDForMDMKey];
 
-  v31 = [v11 setAsideDictionariesForPayloadHandlerClass:objc_opt_class()];
+  v31 = [installerCopy setAsideDictionariesForPayloadHandlerClass:objc_opt_class()];
 
   v73 = v31;
   if ([v31 count] == 1)
   {
-    v32 = [v31 anyObject];
+    anyObject = [v31 anyObject];
   }
 
   else
   {
-    v32 = 0;
+    anyObject = 0;
   }
 
-  v33 = [v9 objectForKeyedSubscript:kMCInstallProfileOptionIsESSOEnrollment];
-  v34 = [v33 BOOLValue];
+  v33 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsESSOEnrollment];
+  bOOLValue = [v33 BOOLValue];
 
-  if (v34)
+  if (bOOLValue)
   {
-    v35 = [v9 objectForKeyedSubscript:kMCInstallProfileOptionESSOAppITunesStoreID];
+    v35 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionESSOAppITunesStoreID];
     v36 = kMDMEnrollmentSSOAppStoreIDKey;
   }
 
   else
   {
     v36 = kMDMEnrollmentSSOAppStoreIDKey;
-    if (v32)
+    if (anyObject)
     {
-      v35 = [v32 objectForKeyedSubscript:kMDMEnrollmentSSOAppStoreIDKey];
+      v35 = [anyObject objectForKeyedSubscript:kMDMEnrollmentSSOAppStoreIDKey];
     }
 
     else
@@ -446,48 +446,48 @@ LABEL_9:
   }
 
   v71 = v37;
-  if (v32)
+  if (anyObject)
   {
-    v38 = [v32 objectForKeyedSubscript:kMDMPersonaKey];
-    if (![v10 isUserEnrollment])
+    v38 = [anyObject objectForKeyedSubscript:kMDMPersonaKey];
+    if (![payloadCopy isUserEnrollment])
     {
       goto LABEL_24;
     }
 
     v68 = a2;
-    v69 = v9;
-    v70 = self;
+    v69 = optionsCopy;
+    selfCopy2 = self;
     v39 = kMDMEnrollmentIDKey;
-    v40 = [v32 objectForKeyedSubscript:kMDMEnrollmentIDKey];
+    uUIDString = [anyObject objectForKeyedSubscript:kMDMEnrollmentIDKey];
     v41 = kMDMiCloudEnrollmentIDKey;
-    v42 = [v32 objectForKeyedSubscript:kMDMiCloudEnrollmentIDKey];
+    uUIDString2 = [anyObject objectForKeyedSubscript:kMDMiCloudEnrollmentIDKey];
     v43 = kMDMEASEnrollmentIDKey;
-    v44 = [v32 objectForKeyedSubscript:kMDMEASEnrollmentIDKey];
+    _exchangeSyncUUIDString = [anyObject objectForKeyedSubscript:kMDMEASEnrollmentIDKey];
   }
 
   else
   {
-    if (([v10 isUserEnrollment] & 1) == 0)
+    if (([payloadCopy isUserEnrollment] & 1) == 0)
     {
       v38 = 0;
       goto LABEL_24;
     }
 
     v68 = a2;
-    v69 = v9;
+    v69 = optionsCopy;
     v45 = +[NSUUID UUID];
-    v40 = [v45 UUIDString];
+    uUIDString = [v45 UUIDString];
 
     v46 = +[NSUUID UUID];
-    v42 = [v46 UUIDString];
+    uUIDString2 = [v46 UUIDString];
 
-    v70 = self;
-    v44 = [objc_opt_class() _exchangeSyncUUIDString];
+    selfCopy2 = self;
+    _exchangeSyncUUIDString = [objc_opt_class() _exchangeSyncUUIDString];
     v47 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v75 = v44;
+      v75 = _exchangeSyncUUIDString;
       _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Generated new EAS Enrollment ID: %{private}@", buf, 0xCu);
     }
 
@@ -497,40 +497,40 @@ LABEL_9:
     v43 = kMDMEASEnrollmentIDKey;
   }
 
-  [v12 setObject:v40 forKeyedSubscript:v39];
-  [v12 setObject:v42 forKeyedSubscript:v41];
-  [v12 setObject:v44 forKeyedSubscript:v43];
-  [v10 setEnrollmentID:v40];
-  [v10 setICloudEnrollmentID:v42];
-  [v10 setEasEnrollmentID:v44];
+  [v12 setObject:uUIDString forKeyedSubscript:v39];
+  [v12 setObject:uUIDString2 forKeyedSubscript:v41];
+  [v12 setObject:_exchangeSyncUUIDString forKeyedSubscript:v43];
+  [payloadCopy setEnrollmentID:uUIDString];
+  [payloadCopy setICloudEnrollmentID:uUIDString2];
+  [payloadCopy setEasEnrollmentID:_exchangeSyncUUIDString];
   [v12 setObject:&__kCFBooleanTrue forKeyedSubscript:kMDMUserEnrollmentKey];
   if (v38)
   {
-    v48 = [v10 personaID];
-    if (v48)
+    personaID = [payloadCopy personaID];
+    if (personaID)
     {
-      v49 = v48;
-      v50 = [v10 personaID];
-      v51 = [v50 isEqualToString:v38];
+      v49 = personaID;
+      personaID2 = [payloadCopy personaID];
+      v51 = [personaID2 isEqualToString:v38];
 
       if ((v51 & 1) == 0)
       {
         v52 = +[NSAssertionHandler currentHandler];
-        v53 = [v10 personaID];
-        [v52 handleFailureInMethod:v68 object:v70 file:@"MCNewMDMPayloadHandler.m" lineNumber:378 description:{@"Persona ID from the new payload (%@) and the old payload (%@) doesn't match!!!", v53, v38}];
+        personaID3 = [payloadCopy personaID];
+        [v52 handleFailureInMethod:v68 object:selfCopy2 file:@"MCNewMDMPayloadHandler.m" lineNumber:378 description:{@"Persona ID from the new payload (%@) and the old payload (%@) doesn't match!!!", personaID3, v38}];
       }
     }
   }
 
-  v9 = v69;
-  self = v70;
+  optionsCopy = v69;
+  self = selfCopy2;
   v18 = &sem_close_ptr;
 LABEL_24:
-  v54 = [v10 personaID];
-  v55 = v54;
-  if (v54)
+  personaID4 = [payloadCopy personaID];
+  v55 = personaID4;
+  if (personaID4)
   {
-    v56 = v54;
+    v56 = personaID4;
   }
 
   else
@@ -538,27 +538,27 @@ LABEL_24:
     v56 = v38;
   }
 
-  [v10 setPersonaID:v56];
+  [payloadCopy setPersonaID:v56];
 
-  v57 = [v10 personaID];
-  [v12 setObject:v57 forKeyedSubscript:kMDMPersonaKey];
+  personaID5 = [payloadCopy personaID];
+  [v12 setObject:personaID5 forKeyedSubscript:kMDMPersonaKey];
 
   v58 = v18[244];
-  v59 = [v9 objectForKeyedSubscript:kMCInstallProfileOptionIsCloudProfile];
+  v59 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsCloudProfile];
   v60 = [v58 numberWithBool:{objc_msgSend(v59, "BOOLValue")}];
   [v12 setObject:v60 forKeyedSubscript:kMDMIsADEProfileKey];
 
-  v61 = [v9 objectForKeyedSubscript:kMCInstallProfileOptionIsCloudLocked];
+  v61 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsCloudLocked];
   LODWORD(v59) = [v61 BOOLValue];
 
-  v62 = [(MCNewPayloadHandler *)self profileHandler];
-  v63 = [v62 profile];
-  v64 = [v63 isLocked];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  profile2 = [profileHandler profile];
+  isLocked = [profile2 isLocked];
 
-  v65 = [v18[244] numberWithBool:v59 | v64];
+  v65 = [v18[244] numberWithBool:v59 | isLocked];
   [v12 setObject:v65 forKeyedSubscript:kMDMIsProfileLockedKey];
 
-  v66 = [v9 objectForKeyedSubscript:kMCInstallProfileOptionRMAccountIdentifier];
+  v66 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionRMAccountIdentifier];
   if (v66)
   {
     objc_opt_class();
@@ -571,38 +571,38 @@ LABEL_24:
   return v12;
 }
 
-- (id)persistentRefForUUID:(id)a3 outError:(id *)a4
+- (id)persistentRefForUUID:(id)d outError:(id *)error
 {
-  v6 = a3;
-  v7 = [(MCNewPayloadHandler *)self profileHandler];
-  v8 = [v7 persistentIDForCertificateUUID:v6];
+  dCopy = d;
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  v8 = [profileHandler persistentIDForCertificateUUID:dCopy];
 
   if (v8)
   {
     v9 = v8;
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = MCMDMErrorDomain;
-    v11 = [(MCNewPayloadHandler *)self payload];
-    v12 = [v11 friendlyName];
+    payload = [(MCNewPayloadHandler *)self payload];
+    friendlyName = [payload friendlyName];
     v13 = MCErrorArray();
-    *a4 = [NSError MCErrorWithDomain:v10 code:12005 descriptionArray:v13 errorType:MCErrorTypeFatal, v12, 0];
+    *error = [NSError MCErrorWithDomain:v10 code:12005 descriptionArray:v13 errorType:MCErrorTypeFatal, friendlyName, 0];
   }
 
   return v8;
 }
 
-- (id)persistentRefsForUUIDs:(id)a3 outError:(id *)a4
+- (id)persistentRefsForUUIDs:(id)ds outError:(id *)error
 {
-  v6 = a3;
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  dsCopy = ds;
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dsCopy count]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -617,7 +617,7 @@ LABEL_24:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(MCNewMDMPayloadHandler *)self persistentRefForUUID:*(*(&v17 + 1) + 8 * i) outError:a4, v17];
+        v13 = [(MCNewMDMPayloadHandler *)self persistentRefForUUID:*(*(&v17 + 1) + 8 * i) outError:error, v17];
         if (!v13)
         {
 
@@ -647,25 +647,25 @@ LABEL_11:
 
 - (void)_retainDependency
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 identityPersistentID];
-  v4 = [NSMutableArray arrayWithObject:v3];
+  payload = [(MCNewPayloadHandler *)self payload];
+  identityPersistentID = [payload identityPersistentID];
+  v4 = [NSMutableArray arrayWithObject:identityPersistentID];
 
-  v5 = [v2 serverPinningPersistentRefs];
-  if (v5)
+  serverPinningPersistentRefs = [payload serverPinningPersistentRefs];
+  if (serverPinningPersistentRefs)
   {
-    [v4 addObjectsFromArray:v5];
+    [v4 addObjectsFromArray:serverPinningPersistentRefs];
   }
 
-  v16 = v5;
-  v6 = [v2 checkInPinningPersistentRefs];
-  if (v6)
+  v16 = serverPinningPersistentRefs;
+  checkInPinningPersistentRefs = [payload checkInPinningPersistentRefs];
+  if (checkInPinningPersistentRefs)
   {
-    [v4 addObjectsFromArray:v6];
+    [v4 addObjectsFromArray:checkInPinningPersistentRefs];
   }
 
   v7 = +[MCDependencyManager sharedManager];
-  v8 = [v2 UUID];
+  uUID = [payload UUID];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -687,8 +687,8 @@ LABEL_11:
           objc_enumerationMutation(v9);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * v14) MCHexString];
-        [v7 addDependent:v8 ofParent:v15 inDomain:v13];
+        mCHexString = [*(*(&v17 + 1) + 8 * v14) MCHexString];
+        [v7 addDependent:uUID ofParent:mCHexString inDomain:v13];
 
         v14 = v14 + 1;
       }
@@ -703,29 +703,29 @@ LABEL_11:
 
 - (void)_releaseDependency
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 identityPersistentID];
-  v4 = [NSMutableArray arrayWithObject:v3];
+  payload = [(MCNewPayloadHandler *)self payload];
+  identityPersistentID = [payload identityPersistentID];
+  v4 = [NSMutableArray arrayWithObject:identityPersistentID];
 
-  v5 = [v2 serverPinningPersistentRefs];
-  v6 = [v2 serverPinningPersistentRefs];
+  serverPinningPersistentRefs = [payload serverPinningPersistentRefs];
+  serverPinningPersistentRefs2 = [payload serverPinningPersistentRefs];
 
-  if (v6)
+  if (serverPinningPersistentRefs2)
   {
-    [v4 addObjectsFromArray:v5];
+    [v4 addObjectsFromArray:serverPinningPersistentRefs];
   }
 
-  v18 = v5;
-  v7 = [v2 checkInPinningPersistentRefs];
-  v8 = [v2 checkInPinningPersistentRefs];
+  v18 = serverPinningPersistentRefs;
+  checkInPinningPersistentRefs = [payload checkInPinningPersistentRefs];
+  checkInPinningPersistentRefs2 = [payload checkInPinningPersistentRefs];
 
-  if (v8)
+  if (checkInPinningPersistentRefs2)
   {
-    [v4 addObjectsFromArray:v7];
+    [v4 addObjectsFromArray:checkInPinningPersistentRefs];
   }
 
   v9 = +[MCDependencyManager sharedManager];
-  v10 = [v2 UUID];
+  uUID = [payload UUID];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -747,8 +747,8 @@ LABEL_11:
           objc_enumerationMutation(v11);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) MCHexString];
-        [v9 removeDependent:v10 fromParent:v17 inDomain:v15];
+        mCHexString = [*(*(&v19 + 1) + 8 * v16) MCHexString];
+        [v9 removeDependent:uUID fromParent:mCHexString inDomain:v15];
 
         v16 = v16 + 1;
       }
@@ -800,30 +800,30 @@ LABEL_11:
   [(MCNewMDMPayloadHandler *)self _releaseDependency];
 }
 
-- (void)setAsideWithInstaller:(id)a3
+- (void)setAsideWithInstaller:(id)installer
 {
-  v4 = a3;
+  installerCopy = installer;
   v12.receiver = self;
   v12.super_class = MCNewMDMPayloadHandler;
-  [(MCNewPayloadHandler *)&v12 setAsideWithInstaller:v4];
-  v5 = [(MCNewPayloadHandler *)self payload];
+  [(MCNewPayloadHandler *)&v12 setAsideWithInstaller:installerCopy];
+  payload = [(MCNewPayloadHandler *)self payload];
   v6 = objc_opt_new();
-  v7 = [v5 enrollmentID];
-  [v6 setObject:v7 forKeyedSubscript:kMDMEnrollmentIDKey];
+  enrollmentID = [payload enrollmentID];
+  [v6 setObject:enrollmentID forKeyedSubscript:kMDMEnrollmentIDKey];
 
-  v8 = [v5 iCloudEnrollmentID];
-  [v6 setObject:v8 forKeyedSubscript:kMDMiCloudEnrollmentIDKey];
+  iCloudEnrollmentID = [payload iCloudEnrollmentID];
+  [v6 setObject:iCloudEnrollmentID forKeyedSubscript:kMDMiCloudEnrollmentIDKey];
 
-  v9 = [v5 easEnrollmentID];
-  [v6 setObject:v9 forKeyedSubscript:kMDMEASEnrollmentIDKey];
+  easEnrollmentID = [payload easEnrollmentID];
+  [v6 setObject:easEnrollmentID forKeyedSubscript:kMDMEASEnrollmentIDKey];
 
-  v10 = [v5 personaID];
-  [v6 setObject:v10 forKeyedSubscript:kMDMPersonaKey];
+  personaID = [payload personaID];
+  [v6 setObject:personaID forKeyedSubscript:kMDMPersonaKey];
 
   if ([v6 count])
   {
     v11 = [v6 copy];
-    [v4 addSetAsideDictionary:v11 forPayloadHandlerClass:objc_opt_class()];
+    [installerCopy addSetAsideDictionary:v11 forPayloadHandlerClass:objc_opt_class()];
   }
 }
 
@@ -863,20 +863,20 @@ LABEL_11:
   }
 }
 
-- (void)removeWithInstaller:(id)a3 options:(id)a4
+- (void)removeWithInstaller:(id)installer options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:kMCRemoveProfileOptionRemovedDueToMigrationFromOtherDevice];
-  v9 = [v8 BOOLValue];
+  installerCopy = installer;
+  optionsCopy = options;
+  v8 = [optionsCopy objectForKeyedSubscript:kMCRemoveProfileOptionRemovedDueToMigrationFromOtherDevice];
+  bOOLValue = [v8 BOOLValue];
 
   v10 = +[MDMConfiguration sharedConfiguration];
-  v11 = [v10 rmAccountID];
+  rmAccountID = [v10 rmAccountID];
 
   if (!self->_setAside)
   {
-    v12 = [(MCNewPayloadHandler *)self payload];
-    if ([v12 checkOutWhenRemoved])
+    payload = [(MCNewPayloadHandler *)self payload];
+    if ([payload checkOutWhenRemoved])
     {
       *v44 = 0;
       v45 = v44;
@@ -902,9 +902,9 @@ LABEL_11:
         v17 = _MCLogObjects[1];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = [*(v45 + 5) MCVerboseDescription];
+          mCVerboseDescription = [*(v45 + 5) MCVerboseDescription];
           *buf = 138543362;
-          v53 = v18;
+          v53 = mCVerboseDescription;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Cannot check out. Error: %{public}@", buf, 0xCu);
         }
       }
@@ -921,7 +921,7 @@ LABEL_11:
 
     v21 = _MCLogObjects[1];
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (bOOLValue)
     {
       if (v22)
       {
@@ -946,36 +946,36 @@ LABEL_11:
     setAsideDictionary = self->_setAsideDictionary;
     self->_setAsideDictionary = 0;
 
-    v24 = [v12 personaID];
+    personaID = [payload personaID];
 
-    if (v24)
+    if (personaID)
     {
       v25 = objc_opt_new();
       v50[0] = @"Persona Identifier";
-      v26 = [v12 personaID];
+      personaID2 = [payload personaID];
       v50[1] = @"Profile Identifier";
-      v51[0] = v26;
-      v27 = [(MCNewPayloadHandler *)self profileHandler];
-      v28 = [v27 profile];
-      v29 = [v28 identifier];
-      v30 = v29;
+      v51[0] = personaID2;
+      profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+      profile = [profileHandler profile];
+      identifier = [profile identifier];
+      v30 = identifier;
       v31 = &stru_10011E740;
-      if (v29)
+      if (identifier)
       {
-        v31 = v29;
+        v31 = identifier;
       }
 
       v51[1] = v31;
       v32 = [NSDictionary dictionaryWithObjects:v51 forKeys:v50 count:2];
       [v25 logRegularEventForTopic:DMCEventsTopicPersona reason:@"Delete Persona during MDM profile uninstallation" details:v32];
 
-      v33 = [v12 personaID];
-      [DMCPersonaHelper removePersonaAndAccountsWithPersonaID:v33];
+      personaID3 = [payload personaID];
+      [DMCPersonaHelper removePersonaAndAccountsWithPersonaID:personaID3];
     }
 
     else
     {
-      if (!v11)
+      if (!rmAccountID)
       {
 LABEL_23:
 
@@ -985,13 +985,13 @@ LABEL_23:
       v34 = objc_opt_new();
       [v34 signOutAllPrimaryAccounts];
 
-      v33 = +[ACAccountStore defaultStore];
-      v35 = [v33 dmc_remoteManagementAccountForIdentifier:v11];
+      personaID3 = +[ACAccountStore defaultStore];
+      v35 = [personaID3 dmc_remoteManagementAccountForIdentifier:rmAccountID];
       v36 = v35;
       if (v35)
       {
-        v37 = [v35 dmc_altDSID];
-        [v33 dmc_removeMAIDRelatedAccountsWithAltDSID:v37 asynchronous:0];
+        dmc_altDSID = [v35 dmc_altDSID];
+        [personaID3 dmc_removeMAIDRelatedAccountsWithAltDSID:dmc_altDSID asynchronous:0];
       }
     }
 
@@ -1001,9 +1001,9 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)didInstallOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4
+- (void)didInstallOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions
 {
-  v4 = [MDMClient sharedClient:a3];
+  v4 = [MDMClient sharedClient:restrictions];
   [v4 notifyNewConfiguration];
 
   v5 = +[MDMClient sharedClient];
@@ -1016,9 +1016,9 @@ LABEL_24:
   }
 }
 
-- (void)didRemoveOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4
+- (void)didRemoveOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions
 {
-  v4 = [MDMClient sharedClient:a3];
+  v4 = [MDMClient sharedClient:restrictions];
   [v4 notifyNewConfiguration];
 
   if (+[DMCMultiUserModeUtilities inSharediPadUserSession])
@@ -1028,21 +1028,21 @@ LABEL_24:
   }
 }
 
-- (void)setIdleRebootValue:(BOOL)a3
+- (void)setIdleRebootValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
     v14 = 67109120;
-    v15 = v3;
+    v15 = valueCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Attempting to set kAKSConfigInactivityRebootEnabled config with value: %x\n...", &v14, 8u);
   }
 
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   v6 = Mutable;
   v7 = &kCFBooleanFalse;
-  if (v3)
+  if (valueCopy)
   {
     v7 = &kCFBooleanTrue;
   }
@@ -1068,7 +1068,7 @@ LABEL_10:
   else if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
     v14 = 67109120;
-    v15 = v3;
+    v15 = valueCopy;
     v11 = "Successfully set kAKSConfigInactivityRebootEnabled config with value: %x\n";
     v12 = v9;
     v13 = OS_LOG_TYPE_DEFAULT;

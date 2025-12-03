@@ -1,15 +1,15 @@
 @interface DDParsecNoDataViewControllerGuidedAccessDictionaryLookup
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)loadView;
 @end
 
 @implementation DDParsecNoDataViewControllerGuidedAccessDictionaryLookup
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DDParsecNoDataViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"DDParsecNoDataViewController" hasInstanceVariable:@"_container" withType:"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DDParsecNoDataViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"DDParsecNoDataViewController" hasInstanceVariable:@"_container" withType:"UIView"];
 }
 
 - (void)loadView
@@ -24,9 +24,9 @@
     v10 = 0u;
     v11 = 0u;
     v3 = [(DDParsecNoDataViewControllerGuidedAccessDictionaryLookup *)self safeUIViewForKey:@"_container", 0];
-    v4 = [v3 subviews];
+    subviews = [v3 subviews];
 
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    v5 = [subviews countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -38,7 +38,7 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -52,7 +52,7 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v6 = [subviews countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v6);

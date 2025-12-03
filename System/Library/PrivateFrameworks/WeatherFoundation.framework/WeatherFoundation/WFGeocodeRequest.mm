@@ -1,23 +1,23 @@
 @interface WFGeocodeRequest
 - (CLLocationCoordinate2D)coordinate;
-- (WFGeocodeRequest)initWithCoordinate:(CLLocationCoordinate2D)a3 resultHandler:(id)a4;
-- (WFGeocodeRequest)initWithSearchCompletion:(id)a3 resultHandler:(id)a4;
-- (WFGeocodeRequest)initWithSearchString:(id)a3 resultHandler:(id)a4;
+- (WFGeocodeRequest)initWithCoordinate:(CLLocationCoordinate2D)coordinate resultHandler:(id)handler;
+- (WFGeocodeRequest)initWithSearchCompletion:(id)completion resultHandler:(id)handler;
+- (WFGeocodeRequest)initWithSearchString:(id)string resultHandler:(id)handler;
 - (id)description;
 - (void)cleanup;
 - (void)handleCancellation;
-- (void)handleError:(id)a3 forResponseIdentifier:(id)a4;
-- (void)handleResponse:(id)a3;
-- (void)startWithService:(id)a3;
+- (void)handleError:(id)error forResponseIdentifier:(id)identifier;
+- (void)handleResponse:(id)response;
+- (void)startWithService:(id)service;
 @end
 
 @implementation WFGeocodeRequest
 
-- (WFGeocodeRequest)initWithCoordinate:(CLLocationCoordinate2D)a3 resultHandler:(id)a4
+- (WFGeocodeRequest)initWithCoordinate:(CLLocationCoordinate2D)coordinate resultHandler:(id)handler
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v7 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = WFGeocodeRequest;
   v8 = [(WFTask *)&v14 initWithResponseRequired:1];
@@ -26,7 +26,7 @@
   {
     v8->_coordinate.latitude = latitude;
     v8->_coordinate.longitude = longitude;
-    v10 = [v7 copy];
+    v10 = [handlerCopy copy];
     resultHandler = v9->_resultHandler;
     v9->_resultHandler = v10;
 
@@ -36,20 +36,20 @@
   return v9;
 }
 
-- (WFGeocodeRequest)initWithSearchString:(id)a3 resultHandler:(id)a4
+- (WFGeocodeRequest)initWithSearchString:(id)string resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = WFGeocodeRequest;
   v8 = [(WFTask *)&v15 initWithResponseRequired:1];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [stringCopy copy];
     searchString = v8->_searchString;
     v8->_searchString = v9;
 
-    v11 = [v7 copy];
+    v11 = [handlerCopy copy];
     resultHandler = v8->_resultHandler;
     v8->_resultHandler = v11;
 
@@ -59,18 +59,18 @@
   return v8;
 }
 
-- (WFGeocodeRequest)initWithSearchCompletion:(id)a3 resultHandler:(id)a4
+- (WFGeocodeRequest)initWithSearchCompletion:(id)completion resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  completionCopy = completion;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = WFGeocodeRequest;
   v9 = [(WFTask *)&v15 initWithResponseRequired:1];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_autocompleteSearchResult, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_autocompleteSearchResult, completion);
+    v11 = [handlerCopy copy];
     resultHandler = v10->_resultHandler;
     v10->_resultHandler = v11;
 
@@ -82,23 +82,23 @@
 
 - (id)description
 {
-  v3 = [(WFGeocodeRequest *)self autocompleteSearchResult];
+  autocompleteSearchResult = [(WFGeocodeRequest *)self autocompleteSearchResult];
 
-  if (v3)
+  if (autocompleteSearchResult)
   {
-    v4 = [(WFGeocodeRequest *)self autocompleteSearchResult];
-    v5 = [v4 calloutTitle];
+    autocompleteSearchResult2 = [(WFGeocodeRequest *)self autocompleteSearchResult];
+    calloutTitle = [autocompleteSearchResult2 calloutTitle];
 
     goto LABEL_8;
   }
 
-  v6 = [(WFGeocodeRequest *)self searchString];
+  searchString = [(WFGeocodeRequest *)self searchString];
 
-  if (v6)
+  if (searchString)
   {
-    v7 = [(WFGeocodeRequest *)self searchString];
+    searchString2 = [(WFGeocodeRequest *)self searchString];
 LABEL_7:
-    v5 = v7;
+    calloutTitle = searchString2;
     goto LABEL_8;
   }
 
@@ -106,42 +106,42 @@ LABEL_7:
   if (CLLocationCoordinate2DIsValid(v16))
   {
     [(WFGeocodeRequest *)self coordinate];
-    v7 = NSStringFromCLLocationCoordinate2D(v8, v9);
+    searchString2 = NSStringFromCLLocationCoordinate2D(v8, v9);
     goto LABEL_7;
   }
 
-  v5 = @"<none>";
+  calloutTitle = @"<none>";
 LABEL_8:
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
-  v12 = [(WFTask *)self identifier];
-  v13 = [v10 stringWithFormat:@"<%@: %p, input = %@, identifier = %@>", v11, self, v5, v12];
+  identifier = [(WFTask *)self identifier];
+  v13 = [v10 stringWithFormat:@"<%@: %p, input = %@, identifier = %@>", v11, self, calloutTitle, identifier];
 
   return v13;
 }
 
-- (void)startWithService:(id)a3
+- (void)startWithService:(id)service
 {
-  v16 = a3;
-  v4 = [(WFGeocodeRequest *)self autocompleteSearchResult];
+  serviceCopy = service;
+  autocompleteSearchResult = [(WFGeocodeRequest *)self autocompleteSearchResult];
 
-  if (v4)
+  if (autocompleteSearchResult)
   {
-    v5 = [(WFGeocodeRequest *)self autocompleteSearchResult];
-    v6 = [(WFTask *)self identifier];
-    [v16 locationForSearchCompletion:v5 taskIdentifier:v6];
+    autocompleteSearchResult2 = [(WFGeocodeRequest *)self autocompleteSearchResult];
+    identifier = [(WFTask *)self identifier];
+    [serviceCopy locationForSearchCompletion:autocompleteSearchResult2 taskIdentifier:identifier];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v7 = [(WFGeocodeRequest *)self searchString];
+  searchString = [(WFGeocodeRequest *)self searchString];
 
-  if (v7)
+  if (searchString)
   {
-    v5 = [(WFGeocodeRequest *)self searchString];
-    v6 = [(WFTask *)self identifier];
-    [v16 locationForString:v5 taskIdentifier:v6];
+    autocompleteSearchResult2 = [(WFGeocodeRequest *)self searchString];
+    identifier = [(WFTask *)self identifier];
+    [serviceCopy locationForString:autocompleteSearchResult2 taskIdentifier:identifier];
     goto LABEL_5;
   }
 
@@ -151,44 +151,44 @@ LABEL_5:
     [(WFGeocodeRequest *)self coordinate];
     v9 = v8;
     v11 = v10;
-    v5 = [(WFTask *)self identifier];
-    [v16 locationForCoordinate:v5 taskIdentifier:{v9, v11}];
+    autocompleteSearchResult2 = [(WFTask *)self identifier];
+    [serviceCopy locationForCoordinate:autocompleteSearchResult2 taskIdentifier:{v9, v11}];
   }
 
   else
   {
     v12 = [WFGeocodeResponse alloc];
-    v13 = [(WFTask *)self identifier];
-    v14 = [v13 UUID];
-    v5 = [(WFResponse *)v12 initWithIdentifier:v14];
+    identifier2 = [(WFTask *)self identifier];
+    uUID = [identifier2 UUID];
+    autocompleteSearchResult2 = [(WFResponse *)v12 initWithIdentifier:uUID];
 
     v15 = [MEMORY[0x277CCA9B8] wf_errorWithCode:5];
-    [(WFResponse *)v5 setError:v15];
+    [(WFResponse *)autocompleteSearchResult2 setError:v15];
 
-    [(WFGeocodeRequest *)self handleResponse:v5];
+    [(WFGeocodeRequest *)self handleResponse:autocompleteSearchResult2];
   }
 
 LABEL_6:
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 location];
-    [(WFGeocodeRequest *)self setGeocodedResult:v6];
+    v5 = responseCopy;
+    location = [v5 location];
+    [(WFGeocodeRequest *)self setGeocodedResult:location];
 
-    v7 = [(WFGeocodeRequest *)self resultHandler];
+    resultHandler = [(WFGeocodeRequest *)self resultHandler];
 
-    if (v7)
+    if (resultHandler)
     {
-      v8 = [(WFGeocodeRequest *)self resultHandler];
-      v9 = [(WFGeocodeRequest *)self geocodedResult];
-      v10 = [v5 error];
-      (v8)[2](v8, v9, v10);
+      resultHandler2 = [(WFGeocodeRequest *)self resultHandler];
+      geocodedResult = [(WFGeocodeRequest *)self geocodedResult];
+      error = [v5 error];
+      (resultHandler2)[2](resultHandler2, geocodedResult, error);
     }
 
     v11.receiver = self;
@@ -202,27 +202,27 @@ LABEL_6:
   }
 }
 
-- (void)handleError:(id)a3 forResponseIdentifier:(id)a4
+- (void)handleError:(id)error forResponseIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFGeocodeRequest *)self resultHandler];
-  (v8)[2](v8, 0, v7);
+  identifierCopy = identifier;
+  errorCopy = error;
+  resultHandler = [(WFGeocodeRequest *)self resultHandler];
+  (resultHandler)[2](resultHandler, 0, errorCopy);
 
   v9.receiver = self;
   v9.super_class = WFGeocodeRequest;
-  [(WFTask *)&v9 handleError:v7 forResponseIdentifier:v6];
+  [(WFTask *)&v9 handleError:errorCopy forResponseIdentifier:identifierCopy];
 }
 
 - (void)handleCancellation
 {
-  v3 = [(WFGeocodeRequest *)self resultHandler];
+  resultHandler = [(WFGeocodeRequest *)self resultHandler];
 
-  if (v3)
+  if (resultHandler)
   {
-    v4 = [(WFGeocodeRequest *)self resultHandler];
+    resultHandler2 = [(WFGeocodeRequest *)self resultHandler];
     v5 = [MEMORY[0x277CCA9B8] wf_errorWithCode:13];
-    (v4)[2](v4, 0, v5);
+    (resultHandler2)[2](resultHandler2, 0, v5);
   }
 
   resultHandler = self->_resultHandler;

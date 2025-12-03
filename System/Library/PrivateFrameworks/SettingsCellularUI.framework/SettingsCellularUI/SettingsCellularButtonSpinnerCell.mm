@@ -1,18 +1,18 @@
 @interface SettingsCellularButtonSpinnerCell
-- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithCoder:(id)a3;
-- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithCoder:(id)coder;
+- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation SettingsCellularButtonSpinnerCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_2658E458C(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_2658E458C(specifier);
 }
 
 - (void)prepareForReuse
@@ -27,9 +27,9 @@
   [v2 setAccessoryView_];
 }
 
-- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_26596A2AC();
     v9 = v8;
@@ -41,13 +41,13 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return SettingsCellularButtonSpinnerCell.init(style:reuseIdentifier:specifier:)(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return SettingsCellularButtonSpinnerCell.init(style:reuseIdentifier:specifier:)(style, v7, v9, specifier);
 }
 
-- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_26596A2AC();
     *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell_contentModel) = 0;
@@ -64,19 +64,19 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for SettingsCellularButtonSpinnerCell();
-  v7 = [(PSTableCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(PSTableCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithCoder:(id)a3
+- (_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell_contentModel) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell____lazy_storage___activityIndicator) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SettingsCellularButtonSpinnerCell();
-  v4 = a3;
-  v5 = [(SettingsCellularButtonSpinnerCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SettingsCellularButtonSpinnerCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

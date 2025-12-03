@@ -1,11 +1,11 @@
 @interface WOSpokenUtilities
 + (NSString)standardPause;
 + (NSString)textToSpeechEndOfSentence;
-+ (id)appendEndPhrasePunctuationWithPhrase:(id)a3;
-+ (id)spokenMetricWithActivityType:(id)a3 value:(double)a4 distanceType:(unint64_t)a5 metricType:(unint64_t)a6 formattingManager:(id)a7;
-+ (id)spokenPaceForSingleDistanceUnitWithDistance:(id)a3 distanceType:(unint64_t)a4 duration:(double)a5 formattingManager:(id)a6;
-+ (id)spokenPaceWithDistance:(id)a3 distanceType:(unint64_t)a4 duration:(double)a5 metricType:(unint64_t)a6 formattingManager:(id)a7;
-+ (id)textToSpeechPauseWithDurationInMilliseconds:(unint64_t)a3;
++ (id)appendEndPhrasePunctuationWithPhrase:(id)phrase;
++ (id)spokenMetricWithActivityType:(id)type value:(double)value distanceType:(unint64_t)distanceType metricType:(unint64_t)metricType formattingManager:(id)manager;
++ (id)spokenPaceForSingleDistanceUnitWithDistance:(id)distance distanceType:(unint64_t)type duration:(double)duration formattingManager:(id)manager;
++ (id)spokenPaceWithDistance:(id)distance distanceType:(unint64_t)type duration:(double)duration metricType:(unint64_t)metricType formattingManager:(id)manager;
++ (id)textToSpeechPauseWithDurationInMilliseconds:(unint64_t)milliseconds;
 - (WOSpokenUtilities)init;
 @end
 
@@ -22,7 +22,7 @@
   return v3;
 }
 
-+ (id)textToSpeechPauseWithDurationInMilliseconds:(unint64_t)a3
++ (id)textToSpeechPauseWithDurationInMilliseconds:(unint64_t)milliseconds
 {
   v3 = dispatch thunk of CustomStringConvertible.description.getter();
   MEMORY[0x20F2E6D80](v3);
@@ -40,11 +40,11 @@
   return v2;
 }
 
-+ (id)spokenMetricWithActivityType:(id)a3 value:(double)a4 distanceType:(unint64_t)a5 metricType:(unint64_t)a6 formattingManager:(id)a7
++ (id)spokenMetricWithActivityType:(id)type value:(double)value distanceType:(unint64_t)distanceType metricType:(unint64_t)metricType formattingManager:(id)manager
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = specialized static SpokenUtilities.spokenMetric(activityType:value:distanceType:metricType:formattingManager:)(v11, a5, a6, v12, a4);
+  typeCopy = type;
+  managerCopy = manager;
+  v13 = specialized static SpokenUtilities.spokenMetric(activityType:value:distanceType:metricType:formattingManager:)(typeCopy, distanceType, metricType, managerCopy, value);
   v15 = v14;
 
   v16 = MEMORY[0x20F2E6C00](v13, v15);
@@ -52,11 +52,11 @@
   return v16;
 }
 
-+ (id)spokenPaceWithDistance:(id)a3 distanceType:(unint64_t)a4 duration:(double)a5 metricType:(unint64_t)a6 formattingManager:(id)a7
++ (id)spokenPaceWithDistance:(id)distance distanceType:(unint64_t)type duration:(double)duration metricType:(unint64_t)metricType formattingManager:(id)manager
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = specialized static SpokenUtilities.spokenPace(distance:distanceType:duration:metricType:formattingManager:)(v11, a4, a6, v12, a5);
+  distanceCopy = distance;
+  managerCopy = manager;
+  v13 = specialized static SpokenUtilities.spokenPace(distance:distanceType:duration:metricType:formattingManager:)(distanceCopy, type, metricType, managerCopy, duration);
   v15 = v14;
 
   v16 = MEMORY[0x20F2E6C00](v13, v15);
@@ -64,11 +64,11 @@
   return v16;
 }
 
-+ (id)spokenPaceForSingleDistanceUnitWithDistance:(id)a3 distanceType:(unint64_t)a4 duration:(double)a5 formattingManager:(id)a6
++ (id)spokenPaceForSingleDistanceUnitWithDistance:(id)distance distanceType:(unint64_t)type duration:(double)duration formattingManager:(id)manager
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = specialized static SpokenUtilities.spokenPaceForSingleDistanceUnit(distance:distanceType:duration:formattingManager:)(v9, a4, v10, a5);
+  distanceCopy = distance;
+  managerCopy = manager;
+  v11 = specialized static SpokenUtilities.spokenPaceForSingleDistanceUnit(distance:distanceType:duration:formattingManager:)(distanceCopy, type, managerCopy, duration);
   v13 = v12;
 
   v14 = MEMORY[0x20F2E6C00](v11, v13);
@@ -76,7 +76,7 @@
   return v14;
 }
 
-+ (id)appendEndPhrasePunctuationWithPhrase:(id)a3
++ (id)appendEndPhrasePunctuationWithPhrase:(id)phrase
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = specialized static SpokenUtilities.appendEndPhrasePunctuation(phrase:)(v3, v4);

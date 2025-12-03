@@ -1,7 +1,7 @@
 @interface COSScanWatchDynamicHelpViewController
 - (COSScanWatchDynamicHelpDelegate)scanDelegate;
-- (void)setState:(int64_t)a3 animated:(BOOL)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setState:(int64_t)state animated:(BOOL)animated;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -16,34 +16,34 @@
   layingFlatController = self->_layingFlatController;
   self->_layingFlatController = v3;
 
-  v5 = [(COSScanWatchDynamicHelpViewController *)self view];
-  [v5 bounds];
+  view = [(COSScanWatchDynamicHelpViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self->_layingFlatController view];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  view2 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self->_layingFlatController view];
+  [view2 setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self->_layingFlatController view];
-  [v15 setAutoresizingMask:5];
+  view3 = [(COSAppleWatchPairingDiscoveryLayingFlatViewController *)self->_layingFlatController view];
+  [view3 setAutoresizingMask:5];
 
   v16 = objc_alloc_init(COSAppleWatchPairingDiscoveryNoWatchViewController);
   noWatchController = self->_noWatchController;
   self->_noWatchController = v16;
 
-  v18 = [(COSScanWatchDynamicHelpViewController *)self view];
-  [v18 bounds];
+  view4 = [(COSScanWatchDynamicHelpViewController *)self view];
+  [view4 bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
-  v27 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self->_noWatchController view];
-  [v27 setFrame:{v20, v22, v24, v26 + -50.0}];
+  view5 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self->_noWatchController view];
+  [view5 setFrame:{v20, v22, v24, v26 + -50.0}];
 
-  v28 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self->_noWatchController view];
-  [v28 setAutoresizingMask:5];
+  view6 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self->_noWatchController view];
+  [view6 setAutoresizingMask:5];
 
   if (self->_discoveredWatchNearby)
   {
@@ -59,36 +59,36 @@
   [COSScanWatchDynamicHelpViewController setState:"setState:animated:" animated:?];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = COSScanWatchDynamicHelpViewController;
-  [(COSScanWatchDynamicHelpViewController *)&v5 viewDidDisappear:a3];
+  [(COSScanWatchDynamicHelpViewController *)&v5 viewDidDisappear:disappear];
   [PBBridgeCAReporter recordTransitionedDynamicHelpViewFromType:self->_state toType:3];
   WeakRetained = objc_loadWeakRetained(&self->_scanDelegate);
   [WeakRetained dynamicHelpControllerDidDisappear:self];
 }
 
-- (void)setState:(int64_t)a3 animated:(BOOL)a4
+- (void)setState:(int64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000E5188;
   v11[3] = &unk_100268220;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = state;
   v7 = objc_retainBlock(v11);
-  [PBBridgeCAReporter recordTransitionedDynamicHelpViewFromType:self->_state toType:a3];
-  if (v4)
+  [PBBridgeCAReporter recordTransitionedDynamicHelpViewFromType:self->_state toType:state];
+  if (animatedCopy)
   {
-    v8 = [(COSScanWatchDynamicHelpViewController *)self view];
+    view = [(COSScanWatchDynamicHelpViewController *)self view];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000E52E4;
     v9[3] = &unk_100269120;
     v10 = v7;
-    [UIView transitionWithView:v8 duration:5242880 options:v9 animations:&stru_10026B8F0 completion:0.45];
+    [UIView transitionWithView:view duration:5242880 options:v9 animations:&stru_10026B8F0 completion:0.45];
   }
 
   else
@@ -96,7 +96,7 @@
     (v7[2])(v7);
   }
 
-  self->_state = a3;
+  self->_state = state;
 }
 
 - (COSScanWatchDynamicHelpDelegate)scanDelegate

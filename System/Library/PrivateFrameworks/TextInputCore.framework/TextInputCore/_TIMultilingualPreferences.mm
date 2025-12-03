@@ -1,5 +1,5 @@
 @interface _TIMultilingualPreferences
-+ (id)inputModesForIdentifiers:(id)a3;
++ (id)inputModesForIdentifiers:(id)identifiers;
 - (NSArray)preferredAdditionalInputModes;
 - (NSArray)userEnabledInputModes;
 - (NSArray)userPreferredLanguages;
@@ -11,8 +11,8 @@
 - (NSArray)userPreferredLanguages
 {
   v2 = MEMORY[0x277CBEAF8];
-  v3 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v4 = [v2 languagesByAddingRelatedLanguagesToLanguages:v3];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v4 = [v2 languagesByAddingRelatedLanguagesToLanguages:preferredLanguages];
   v5 = v4;
   if (v4)
   {
@@ -31,12 +31,12 @@
 
 - (NSArray)userEnabledInputModes
 {
-  v2 = [MEMORY[0x277D6F380] sharedInputModeController];
-  v3 = [v2 enabledInputModeIdentifiers];
+  mEMORY[0x277D6F380] = [MEMORY[0x277D6F380] sharedInputModeController];
+  enabledInputModeIdentifiers = [mEMORY[0x277D6F380] enabledInputModeIdentifiers];
 
-  if (v3)
+  if (enabledInputModeIdentifiers)
   {
-    v4 = v3;
+    v4 = enabledInputModeIdentifiers;
   }
 
   else
@@ -53,11 +53,11 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v4 = [v3 valueForPreferenceKey:*MEMORY[0x277D6F798]];
-  v5 = [v4 stringValue];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v4 = [mEMORY[0x277D6F470] valueForPreferenceKey:*MEMORY[0x277D6F798]];
+  stringValue = [v4 stringValue];
 
-  v6 = [v5 componentsSeparatedByString:{@", "}];
+  v6 = [stringValue componentsSeparatedByString:{@", "}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -97,13 +97,13 @@
 
 - (TIInputMode)preferredSecondaryInputMode
 {
-  v2 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v3 = [v2 valueForPreferenceKey:*MEMORY[0x277D6F930]];
-  v4 = [v3 stringValue];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v3 = [mEMORY[0x277D6F470] valueForPreferenceKey:*MEMORY[0x277D6F930]];
+  stringValue = [v3 stringValue];
 
-  if (v4 && ([v4 isEqualToString:@"auto"] & 1) == 0)
+  if (stringValue && ([stringValue isEqualToString:@"auto"] & 1) == 0)
   {
-    v5 = [TIInputMode inputModeWithIdentifier:v4];
+    v5 = [TIInputMode inputModeWithIdentifier:stringValue];
   }
 
   else
@@ -114,16 +114,16 @@
   return v5;
 }
 
-+ (id)inputModesForIdentifiers:(id)a3
++ (id)inputModesForIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -141,7 +141,7 @@
         v10 = [TIInputMode inputModeWithIdentifier:*(*(&v13 + 1) + 8 * i), v13];
         if (v10)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -153,7 +153,7 @@
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 @end

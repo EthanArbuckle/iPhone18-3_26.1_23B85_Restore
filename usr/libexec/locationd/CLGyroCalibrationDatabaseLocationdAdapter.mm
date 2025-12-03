@@ -1,10 +1,10 @@
 @interface CLGyroCalibrationDatabaseLocationdAdapter
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)syncgetBiasFit:(id *)a3;
-- (BOOL)syncgetGyroStatsWithBias:(id *)a3 slope:(id *)a4 l2Error:(id *)a5 isDynamic:(BOOL)a6 deltaBias:(id *)a7 deltaSlope:(id *)a8 deltaError:(id *)a9 isDeltaDynamic:(BOOL)a10;
-- (BOOL)syncgetInsertWithBias:(id *)a3 variance:(id *)a4 temperature:(float)a5 timestamp:(double)a6;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)syncgetBiasFit:(id *)fit;
+- (BOOL)syncgetGyroStatsWithBias:(id *)bias slope:(id *)slope l2Error:(id *)error isDynamic:(BOOL)dynamic deltaBias:(id *)deltaBias deltaSlope:(id *)deltaSlope deltaError:(id *)deltaError isDeltaDynamic:(BOOL)self0;
+- (BOOL)syncgetInsertWithBias:(id *)bias variance:(id *)variance temperature:(float)temperature timestamp:(double)timestamp;
 - (BOOL)syncgetSupportsMiniCalibration;
 - (BOOL)syncgetWipeDatabase;
 - (CLGyroCalibrationDatabaseLocationdAdapter)init;
@@ -14,11 +14,11 @@
 - (int)syncgetNumTemperatures;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
-- (void)dumpDatabase:(id)a3 onCompletion:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
+- (void)dumpDatabase:(id)database onCompletion:(id)completion;
 - (void)endService;
-- (void)getBiasFitWithReply:(id)a3;
+- (void)getBiasFitWithReply:(id)reply;
 - (void)startFactoryGYTT;
 @end
 
@@ -34,12 +34,12 @@
   return result;
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -76,20 +76,20 @@
   v2();
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
 + (BOOL)isSupported
@@ -102,11 +102,11 @@
   return byte_102658298;
 }
 
-- (BOOL)syncgetGyroStatsWithBias:(id *)a3 slope:(id *)a4 l2Error:(id *)a5 isDynamic:(BOOL)a6 deltaBias:(id *)a7 deltaSlope:(id *)a8 deltaError:(id *)a9 isDeltaDynamic:(BOOL)a10
+- (BOOL)syncgetGyroStatsWithBias:(id *)bias slope:(id *)slope l2Error:(id *)error isDynamic:(BOOL)dynamic deltaBias:(id *)deltaBias deltaSlope:(id *)deltaSlope deltaError:(id *)deltaError isDeltaDynamic:(BOOL)self0
 {
-  v10 = a6;
-  v15 = [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee];
-  v16 = (*(*v15 + 256))(v15, a3, a4, a5, v10);
+  dynamicCopy = dynamic;
+  adaptee = [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee];
+  v16 = (*(*adaptee + 256))(adaptee, bias, slope, error, dynamicCopy);
   if (v16)
   {
     v17 = *(*[(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee]+ 256);
@@ -131,20 +131,20 @@
   v2();
 }
 
-- (BOOL)syncgetBiasFit:(id *)a3
+- (BOOL)syncgetBiasFit:(id *)fit
 {
   v3 = *(*[(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee]+ 216);
 
   return v3();
 }
 
-- (void)getBiasFitWithReply:(id)a3
+- (void)getBiasFitWithReply:(id)reply
 {
   memset(__src, 0, sizeof(__src));
-  v4 = [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee];
-  v5 = (*(*v4 + 216))(v4, __src);
+  adaptee = [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee];
+  v5 = (*(*adaptee + 216))(adaptee, __src);
   memcpy(v6, __src, sizeof(v6));
-  (*(a3 + 2))(a3, v5, v6);
+  (*(reply + 2))(reply, v5, v6);
 }
 
 - (int)syncgetNonFactoryRoundCount
@@ -164,27 +164,27 @@
 - (double)syncgetLastMiniCalibration
 {
   v4 = 0.0;
-  v2 = [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee];
-  (*(*v2 + 288))(v2, &v4);
+  adaptee = [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee];
+  (*(*adaptee + 288))(adaptee, &v4);
   return v4;
 }
 
-- (BOOL)syncgetInsertWithBias:(id *)a3 variance:(id *)a4 temperature:(float)a5 timestamp:(double)a6
+- (BOOL)syncgetInsertWithBias:(id *)bias variance:(id *)variance temperature:(float)temperature timestamp:(double)timestamp
 {
   v8 = *(*[(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee]+ 208);
-  v9.n128_f32[0] = a5;
-  v10.n128_f64[0] = a6;
+  v9.n128_f32[0] = temperature;
+  v10.n128_f64[0] = timestamp;
 
   return v8(v9, v10);
 }
 
-- (void)dumpDatabase:(id)a3 onCompletion:(id)a4
+- (void)dumpDatabase:(id)database onCompletion:(id)completion
 {
-  v6 = [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee];
-  v7 = (*(*v6 + 224))(v6, a3);
-  v8 = *(a4 + 2);
+  adaptee = [(CLGyroCalibrationDatabaseLocationdAdapter *)self adaptee];
+  v7 = (*(*adaptee + 224))(adaptee, database);
+  v8 = *(completion + 2);
 
-  v8(a4, v7);
+  v8(completion, v7);
 }
 
 - (BOOL)syncgetWipeDatabase

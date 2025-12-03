@@ -26,7 +26,7 @@
     v6 = v5;
   }
 
-  v7 = [a1 initWithBase64EncodedString:v6 options:0];
+  v7 = [self initWithBase64EncodedString:v6 options:0];
 
   return v7;
 }

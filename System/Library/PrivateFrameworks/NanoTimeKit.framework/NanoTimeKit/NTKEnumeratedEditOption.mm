@@ -1,52 +1,52 @@
 @interface NTKEnumeratedEditOption
-+ (BOOL)_valueIsValid:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesRestrictedByDevice:(id)a3;
-+ (id)legacyOptionWithName:(id)a3 forDevice:(id)a4;
-+ (id)legacyOptionWithPigmentEditOption:(id)a3 forDevice:(id)a4;
-+ (id)optionAtIndex:(unint64_t)a3 forDevice:(id)a4;
-+ (id)optionsRestrictedByDevice:(id)a3;
-+ (unint64_t)indexOfOption:(id)a3 forDevice:(id)a4;
-+ (unint64_t)numberOfOptionsForDevice:(id)a3;
++ (BOOL)_valueIsValid:(unint64_t)valid forDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_orderedValuesRestrictedByDevice:(id)device;
++ (id)legacyOptionWithName:(id)name forDevice:(id)device;
++ (id)legacyOptionWithPigmentEditOption:(id)option forDevice:(id)device;
++ (id)optionAtIndex:(unint64_t)index forDevice:(id)device;
++ (id)optionsRestrictedByDevice:(id)device;
++ (unint64_t)indexOfOption:(id)option forDevice:(id)device;
++ (unint64_t)numberOfOptionsForDevice:(id)device;
 @end
 
 @implementation NTKEnumeratedEditOption
 
-+ (id)legacyOptionWithName:(id)a3 forDevice:(id)a4
++ (id)legacyOptionWithName:(id)name forDevice:(id)device
 {
-  v21 = a3;
-  v6 = a4;
+  nameCopy = name;
+  deviceCopy = device;
   v7 = objc_opt_class();
   v8 = objc_sync_enter(v7);
-  __58__NTKEnumeratedEditOption_legacyOptionWithName_forDevice___block_invoke(v8, v6);
+  __58__NTKEnumeratedEditOption_legacyOptionWithName_forDevice___block_invoke(v8, deviceCopy);
   v9 = legacyOptionWithName_forDevice__mappingOptionsByClass;
-  v10 = NSStringFromClass(a1);
-  v11 = [v9 objectForKeyedSubscript:v10];
+  v10 = NSStringFromClass(self);
+  dictionary = [v9 objectForKeyedSubscript:v10];
 
-  if (!v11)
+  if (!dictionary)
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v12 = [a1 numberOfOptionsForDevice:v6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v12 = [self numberOfOptionsForDevice:deviceCopy];
     if (v12)
     {
       for (i = 0; i != v12; ++i)
       {
-        v14 = [a1 optionAtIndex:i forDevice:v6];
+        v14 = [self optionAtIndex:i forDevice:deviceCopy];
         if ([v14 conformsToProtocol:&unk_28A87B948])
         {
-          v15 = [v14 pigmentEditOption];
-          v16 = [v15 fullname];
-          [v11 setObject:v14 forKeyedSubscript:v16];
+          pigmentEditOption = [v14 pigmentEditOption];
+          fullname = [pigmentEditOption fullname];
+          [dictionary setObject:v14 forKeyedSubscript:fullname];
         }
       }
     }
 
     v17 = legacyOptionWithName_forDevice__mappingOptionsByClass;
-    v18 = NSStringFromClass(a1);
-    [v17 setObject:v11 forKeyedSubscript:v18];
+    v18 = NSStringFromClass(self);
+    [v17 setObject:dictionary forKeyedSubscript:v18];
   }
 
-  v19 = [v11 objectForKeyedSubscript:v21];
+  v19 = [dictionary objectForKeyedSubscript:nameCopy];
 
   objc_sync_exit(v7);
 
@@ -89,65 +89,65 @@ uint64_t __58__NTKEnumeratedEditOption_legacyOptionWithName_forDevice___block_in
   return v5;
 }
 
-+ (id)legacyOptionWithPigmentEditOption:(id)a3 forDevice:(id)a4
++ (id)legacyOptionWithPigmentEditOption:(id)option forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [a3 fullname];
-  v8 = [a1 legacyOptionWithName:v7 forDevice:v6];
+  deviceCopy = device;
+  fullname = [option fullname];
+  v8 = [self legacyOptionWithName:fullname forDevice:deviceCopy];
 
   return v8;
 }
 
-+ (unint64_t)numberOfOptionsForDevice:(id)a3
++ (unint64_t)numberOfOptionsForDevice:(id)device
 {
-  v3 = [a1 _orderedValuesForDevice:a3];
+  v3 = [self _orderedValuesForDevice:device];
   v4 = [v3 count];
 
   return v4;
 }
 
-+ (id)optionAtIndex:(unint64_t)a3 forDevice:(id)a4
++ (id)optionAtIndex:(unint64_t)index forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [a1 _orderedValuesForDevice:v6];
+  deviceCopy = device;
+  v7 = [self _orderedValuesForDevice:deviceCopy];
   v8 = [v7 count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
-    a3 = 0;
+    index = 0;
   }
 
-  v9 = [a1 _orderedValuesForDevice:v6];
-  v10 = [v9 objectAtIndex:a3];
-  v11 = [v10 unsignedIntegerValue];
+  v9 = [self _orderedValuesForDevice:deviceCopy];
+  v10 = [v9 objectAtIndex:index];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  v12 = [a1 _optionWithValue:v11 forDevice:v6];
+  v12 = [self _optionWithValue:unsignedIntegerValue forDevice:deviceCopy];
 
   return v12;
 }
 
-+ (unint64_t)indexOfOption:(id)a3 forDevice:(id)a4
++ (unint64_t)indexOfOption:(id)option forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [a3 _value];
-  v8 = [a1 _orderedValuesForDevice:v6];
+  deviceCopy = device;
+  _value = [option _value];
+  v8 = [self _orderedValuesForDevice:deviceCopy];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:_value];
   v10 = [v8 indexOfObject:v9];
 
   return v10;
 }
 
-+ (id)optionsRestrictedByDevice:(id)a3
++ (id)optionsRestrictedByDevice:(id)device
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a1 _orderedValuesRestrictedByDevice:{v4, 0}];
+  v6 = [self _orderedValuesRestrictedByDevice:{deviceCopy, 0}];
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -162,7 +162,7 @@ uint64_t __58__NTKEnumeratedEditOption_legacyOptionWithName_forDevice___block_in
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _optionWithValue:objc_msgSend(*(*(&v13 + 1) + 8 * i) forDevice:{"unsignedIntValue"), v4}];
+        v11 = [self _optionWithValue:objc_msgSend(*(*(&v13 + 1) + 8 * i) forDevice:{"unsignedIntValue"), deviceCopy}];
         if (v11)
         {
           [v5 addObject:v11];
@@ -178,10 +178,10 @@ uint64_t __58__NTKEnumeratedEditOption_legacyOptionWithName_forDevice___block_in
   return v5;
 }
 
-+ (BOOL)_valueIsValid:(unint64_t)a3 forDevice:(id)a4
++ (BOOL)_valueIsValid:(unint64_t)valid forDevice:(id)device
 {
-  v6 = [a1 _orderedValuesForDevice:a4];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v6 = [self _orderedValuesForDevice:device];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:valid];
   v8 = [v6 containsObject:v7];
 
   if ((v8 & 1) == 0)
@@ -189,21 +189,21 @@ uint64_t __58__NTKEnumeratedEditOption_legacyOptionWithName_forDevice___block_in
     v9 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(NTKEnumeratedEditOption *)a1 _valueIsValid:a3 forDevice:v9];
+      [(NTKEnumeratedEditOption *)self _valueIsValid:valid forDevice:v9];
     }
   }
 
   return v8;
 }
 
-+ (id)_orderedValuesRestrictedByDevice:(id)a3
++ (id)_orderedValuesRestrictedByDevice:(id)device
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   OUTLINED_FUNCTION_1_6();
   OUTLINED_FUNCTION_0_5();

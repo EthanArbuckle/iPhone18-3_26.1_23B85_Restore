@@ -1,40 +1,40 @@
 @interface PDDPSchoolworkQueryZone
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsZoneInfo:(id)a3;
+- (int)StringAsZoneInfo:(id)info;
 - (int)zoneInfo;
 - (unint64_t)hash;
 - (void)clearOneofValuesForZoneInfo;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasZoneInfo:(BOOL)a3;
-- (void)setZoneIdentifier:(id)a3;
-- (void)setZoneName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasZoneInfo:(BOOL)info;
+- (void)setZoneIdentifier:(id)identifier;
+- (void)setZoneName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPSchoolworkQueryZone
 
-- (void)setZoneName:(id)a3
+- (void)setZoneName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [(PDDPSchoolworkQueryZone *)self clearOneofValuesForZoneInfo];
   *&self->_has |= 2u;
   self->_zoneInfo = 1;
   zoneName = self->_zoneName;
-  self->_zoneName = v4;
+  self->_zoneName = nameCopy;
 }
 
-- (void)setZoneIdentifier:(id)a3
+- (void)setZoneIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(PDDPSchoolworkQueryZone *)self clearOneofValuesForZoneInfo];
   *&self->_has |= 2u;
   self->_zoneInfo = 2;
   zoneIdentifier = self->_zoneIdentifier;
-  self->_zoneIdentifier = v4;
+  self->_zoneIdentifier = identifierCopy;
 }
 
 - (int)zoneInfo
@@ -50,9 +50,9 @@
   }
 }
 
-- (void)setHasZoneInfo:(BOOL)a3
+- (void)setHasZoneInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 2;
   }
@@ -65,20 +65,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsZoneInfo:(id)a3
+- (int)StringAsZoneInfo:(id)info
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  infoCopy = info;
+  if ([infoCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"zone_name"])
+  else if ([infoCopy isEqualToString:@"zone_name"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"zone_identifier"])
+  else if ([infoCopy isEqualToString:@"zone_identifier"])
   {
     v4 = 2;
   }
@@ -107,8 +107,8 @@
   v7.receiver = self;
   v7.super_class = PDDPSchoolworkQueryZone;
   v3 = [(PDDPSchoolworkQueryZone *)&v7 description];
-  v4 = [(PDDPSchoolworkQueryZone *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPSchoolworkQueryZone *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -126,8 +126,8 @@
   zoneIdentifier = self->_zoneIdentifier;
   if (zoneIdentifier)
   {
-    v7 = [(PDDPZoneIdentifier *)zoneIdentifier dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"zone_identifier"];
+    dictionaryRepresentation = [(PDDPZoneIdentifier *)zoneIdentifier dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"zone_identifier"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -161,74 +161,74 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_zoneName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_offset)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     limit = self->_limit;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_zoneIdentifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[8] = self->_zoneInfo;
-    *(v4 + 48) |= 2u;
+    toCopy[8] = self->_zoneInfo;
+    *(toCopy + 48) |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_zoneName)
   {
-    [v4 setZoneName:?];
-    v4 = v5;
+    [toCopy setZoneName:?];
+    toCopy = v5;
   }
 
   if (self->_offset)
   {
     [v5 setOffset:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[2] = self->_limit;
-    *(v4 + 48) |= 1u;
+    toCopy[2] = self->_limit;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_zoneIdentifier)
   {
     [v5 setZoneIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -236,11 +236,11 @@
     *(v5 + 48) |= 2u;
   }
 
-  v7 = [(NSString *)self->_zoneName copyWithZone:a3];
+  v7 = [(NSString *)self->_zoneName copyWithZone:zone];
   v8 = v6[5];
   v6[5] = v7;
 
-  v9 = [(NSData *)self->_offset copyWithZone:a3];
+  v9 = [(NSData *)self->_offset copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
@@ -250,31 +250,31 @@
     *(v6 + 48) |= 1u;
   }
 
-  v11 = [(PDDPZoneIdentifier *)self->_zoneIdentifier copyWithZone:a3];
+  v11 = [(PDDPZoneIdentifier *)self->_zoneIdentifier copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_zoneInfo != *(v4 + 8))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_zoneInfo != *(equalCopy + 8))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_18:
     v10 = 0;
@@ -282,13 +282,13 @@ LABEL_18:
   }
 
   zoneName = self->_zoneName;
-  if (zoneName | *(v4 + 5) && ![(NSString *)zoneName isEqual:?])
+  if (zoneName | *(equalCopy + 5) && ![(NSString *)zoneName isEqual:?])
   {
     goto LABEL_18;
   }
 
   offset = self->_offset;
-  if (offset | *(v4 + 2))
+  if (offset | *(equalCopy + 2))
   {
     if (![(NSData *)offset isEqual:?])
     {
@@ -296,22 +296,22 @@ LABEL_18:
     }
   }
 
-  v8 = *(v4 + 48);
+  v8 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_limit != *(v4 + 2))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_limit != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_18;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  if (zoneIdentifier | *(v4 + 3))
+  if (zoneIdentifier | *(equalCopy + 3))
   {
     v10 = [(PDDPZoneIdentifier *)zoneIdentifier isEqual:?];
   }
@@ -353,18 +353,18 @@ LABEL_19:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(PDDPZoneIdentifier *)self->_zoneIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[12] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[12] & 2) != 0)
   {
-    self->_zoneInfo = v4[8];
+    self->_zoneInfo = fromCopy[8];
     *&self->_has |= 2u;
   }
 
-  v8 = v4;
-  if (*(v4 + 5))
+  v8 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(PDDPSchoolworkQueryZone *)self setZoneName:?];
     v5 = v8;

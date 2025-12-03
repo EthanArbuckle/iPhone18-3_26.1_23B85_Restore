@@ -1,6 +1,6 @@
 @interface ICAttachmentMapModel
 - (id)MKMapItem;
-- (id)attributesForSharingHTMLWithTagName:(id *)a3 textContent:(id *)a4;
+- (id)attributesForSharingHTMLWithTagName:(id *)name textContent:(id *)content;
 - (void)MKMapItem;
 - (void)addLocation;
 @end
@@ -9,9 +9,9 @@
 
 - (id)MKMapItem
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 metadata];
-  v4 = [v3 objectForKeyedSubscript:@"map_item_data"];
+  attachment = [(ICAttachmentModel *)self attachment];
+  metadata = [attachment metadata];
+  v4 = [metadata objectForKeyedSubscript:@"map_item_data"];
 
   if (v4)
   {
@@ -42,39 +42,39 @@
 
 - (void)addLocation
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [ICAttachmentLocation newAttachmentLocationForAttachment:v3];
-  v5 = [(ICAttachmentModel *)self attachment];
-  [v5 setLocation:v4];
+  attachment = [(ICAttachmentModel *)self attachment];
+  v4 = [ICAttachmentLocation newAttachmentLocationForAttachment:attachment];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  [attachment2 setLocation:v4];
 
-  v11 = [(ICAttachmentMapModel *)self MKMapItem];
-  v6 = [v11 placemark];
+  mKMapItem = [(ICAttachmentMapModel *)self MKMapItem];
+  placemark = [mKMapItem placemark];
 
-  v7 = [(ICAttachmentModel *)self attachment];
-  v8 = [v7 location];
-  if (v6)
+  attachment3 = [(ICAttachmentModel *)self attachment];
+  location = [attachment3 location];
+  if (placemark)
   {
-    v9 = [v11 placemark];
-    [v8 setLocationFromPlacemark:v9];
+    placemark2 = [mKMapItem placemark];
+    [location setLocationFromPlacemark:placemark2];
   }
 
   else
   {
-    v9 = [(ICAttachmentModel *)self attachment];
-    v10 = [v9 URL];
-    [v8 setLocationFromURL:v10];
+    placemark2 = [(ICAttachmentModel *)self attachment];
+    v10 = [placemark2 URL];
+    [location setLocationFromURL:v10];
   }
 }
 
-- (id)attributesForSharingHTMLWithTagName:(id *)a3 textContent:(id *)a4
+- (id)attributesForSharingHTMLWithTagName:(id *)name textContent:(id *)content
 {
-  v6 = [(ICAttachmentModel *)self attachment];
-  v7 = [v6 urlString];
+  attachment = [(ICAttachmentModel *)self attachment];
+  urlString = [attachment urlString];
 
-  *a3 = @"a";
-  v8 = v7;
-  *a4 = v7;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"href=%@", v7];
+  *name = @"a";
+  v8 = urlString;
+  *content = urlString;
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"href=%@", urlString];
 
   return v9;
 }
@@ -82,7 +82,7 @@
 - (void)MKMapItem
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = objc_begin_catch(a1);
+  v1 = objc_begin_catch(self);
   v2 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
   {

@@ -1,7 +1,7 @@
 @interface CRLInspectorTextFieldAbstractNumberFormatter
 + (id)formatter;
 - (CRLInspectorTextFieldAbstractNumberFormatter)init;
-- (id)crlaxLocalizedDescriptionFromValue:(id)a3;
+- (id)crlaxLocalizedDescriptionFromValue:(id)value;
 @end
 
 @implementation CRLInspectorTextFieldAbstractNumberFormatter
@@ -27,20 +27,20 @@
   return v3;
 }
 
-- (id)crlaxLocalizedDescriptionFromValue:(id)a3
+- (id)crlaxLocalizedDescriptionFromValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
+  valueCopy = value;
+  v5 = valueCopy;
   if (self->mTSAXValueFormat)
   {
     v6 = [(CRLInspectorTextFieldAbstractNumberFormatter *)self copy];
-    v7 = [(CRLAccessibilityValueFormat *)self->mTSAXValueFormat numberFormat];
-    [v6 crl_setFormat:v7];
+    numberFormat = [(CRLAccessibilityValueFormat *)self->mTSAXValueFormat numberFormat];
+    [v6 crl_setFormat:numberFormat];
 
     v8 = [v6 stringFromNumber:v5];
-    v9 = [(CRLAccessibilityValueFormat *)self->mTSAXValueFormat unitStringsDictKey];
+    unitStringsDictKey = [(CRLAccessibilityValueFormat *)self->mTSAXValueFormat unitStringsDictKey];
     [v5 floatValue];
-    v11 = [NSString localizedStringWithFormat:v9, v8, v10];
+    v11 = [NSString localizedStringWithFormat:unitStringsDictKey, v8, v10];
   }
 
   else
@@ -48,12 +48,12 @@
     mTSAXRulerUnitType = self->mTSAXRulerUnitType;
     if (mTSAXRulerUnitType == 5)
     {
-      [(CRLInspectorTextFieldAbstractNumberFormatter *)self stringFromNumber:v4];
+      [(CRLInspectorTextFieldAbstractNumberFormatter *)self stringFromNumber:valueCopy];
     }
 
     else
     {
-      [v4 crl_CGFloatValue];
+      [valueCopy crl_CGFloatValue];
       [CRLRulerUnitsAccessibility crlaxLocalizedDescriptionForUnits:mTSAXRulerUnitType value:?];
     }
     v11 = ;

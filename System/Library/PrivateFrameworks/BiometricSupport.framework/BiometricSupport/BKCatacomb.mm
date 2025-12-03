@@ -1,14 +1,14 @@
 @interface BKCatacomb
-+ (id)catacombWithDir:(id)a3;
++ (id)catacombWithDir:(id)dir;
 - (BKCatacomb)init;
 - (id)content;
 - (int)commitWrite;
 - (int)deleteAll;
-- (int)deleteFile:(id)a3;
-- (int)readData:(id *)a3 fromFile:(id)a4 logString:(id *)a5;
+- (int)deleteFile:(id)file;
+- (int)readData:(id *)data fromFile:(id)file logString:(id *)string;
 - (int)recover;
-- (int)syncDir:(id)a3;
-- (int)writeData:(id)a3 toFile:(id)a4;
+- (int)syncDir:(id)dir;
+- (int)writeData:(id)data toFile:(id)file;
 - (void)commitWrite;
 - (void)deleteAll;
 - (void)recover;
@@ -39,13 +39,13 @@
   return v3;
 }
 
-+ (id)catacombWithDir:(id)a3
++ (id)catacombWithDir:(id)dir
 {
-  v3 = a3;
+  dirCopy = dir;
   v4 = objc_alloc_init(BKCatacomb);
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:v3];
+    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:dirCopy];
     catacombDir = v4->_catacombDir;
     v4->_catacombDir = v5;
   }
@@ -53,13 +53,13 @@
   return v4;
 }
 
-- (int)syncDir:(id)a3
+- (int)syncDir:(id)dir
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dirCopy = dir;
+  v4 = dirCopy;
+  if (dirCopy)
   {
-    v5 = open([v3 UTF8String], 0x100000);
+    v5 = open([dirCopy UTF8String], 0x100000);
     if (v5 == -1)
     {
       [BKCatacomb syncDir:];
@@ -89,13 +89,13 @@
   return v8;
 }
 
-- (int)writeData:(id)a3 toFile:(id)a4
+- (int)writeData:(id)data toFile:(id)file
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dataCopy = data;
+  fileCopy = file;
+  v8 = fileCopy;
+  if (!dataCopy)
   {
     if (__osLog)
     {
@@ -125,7 +125,7 @@
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!fileCopy)
   {
     if (__osLog)
     {
@@ -157,15 +157,15 @@ LABEL_24:
 LABEL_25:
     v22 = 0;
     v18 = 0;
-    v12 = 0;
+    catacombPrepareDir = 0;
     v17 = 0;
     v24 = 22;
     goto LABEL_72;
   }
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [(BKCatacomb *)self catacombCommitDir];
-  v11 = [v9 fileExistsAtPath:v10];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  catacombCommitDir = [(BKCatacomb *)self catacombCommitDir];
+  v11 = [defaultManager fileExistsAtPath:catacombCommitDir];
 
   if (v11)
   {
@@ -196,14 +196,14 @@ LABEL_25:
 
     v22 = 0;
     v18 = 0;
-    v12 = 0;
+    catacombPrepareDir = 0;
     v17 = 0;
     v24 = 1;
     goto LABEL_72;
   }
 
-  v12 = [(BKCatacomb *)self catacombPrepareDir];
-  if (!v12)
+  catacombPrepareDir = [(BKCatacomb *)self catacombPrepareDir];
+  if (!catacombPrepareDir)
   {
     if (__osLog)
     {
@@ -232,19 +232,19 @@ LABEL_25:
 
     v22 = 0;
     v18 = 0;
-    v12 = 0;
+    catacombPrepareDir = 0;
     goto LABEL_44;
   }
 
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  v14 = [v13 fileExistsAtPath:v12];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v14 = [defaultManager2 fileExistsAtPath:catacombPrepareDir];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
     writeAttributes = self->_writeAttributes;
     v37 = 0;
-    [v15 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:writeAttributes error:&v37];
+    [defaultManager3 createDirectoryAtPath:catacombPrepareDir withIntermediateDirectories:1 attributes:writeAttributes error:&v37];
     v17 = v37;
 
     if (v17)
@@ -280,7 +280,7 @@ LABEL_25:
     }
   }
 
-  v18 = [v12 stringByAppendingPathComponent:v8];
+  v18 = [catacombPrepareDir stringByAppendingPathComponent:v8];
   if (!v18)
   {
     if (__osLog)
@@ -316,8 +316,8 @@ LABEL_44:
     goto LABEL_72;
   }
 
-  v19 = [MEMORY[0x277CCAA00] defaultManager];
-  v20 = [v19 createFileAtPath:v18 contents:0 attributes:self->_writeAttributes];
+  defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+  v20 = [defaultManager4 createFileAtPath:v18 contents:0 attributes:self->_writeAttributes];
 
   if ((v20 & 1) == 0)
   {
@@ -388,7 +388,7 @@ LABEL_71:
     goto LABEL_72;
   }
 
-  [v21 writeData:v6];
+  [v21 writeData:dataCopy];
   v23 = fcntl([v22 fileDescriptor], 51);
   if (v23)
   {
@@ -401,7 +401,7 @@ LABEL_71:
   {
     [v22 closeFile];
 
-    v24 = [(BKCatacomb *)self syncDir:v12];
+    v24 = [(BKCatacomb *)self syncDir:catacombPrepareDir];
     if (!v24)
     {
       v22 = 0;
@@ -439,10 +439,10 @@ LABEL_71:
 
   v17 = 0;
 LABEL_72:
-  v34 = [(BKCatacomb *)self recover];
-  if (v34)
+  recover = [(BKCatacomb *)self recover];
+  if (recover)
   {
-    v35 = v34;
+    v35 = recover;
     if (__osLog)
     {
       v36 = __osLog;
@@ -477,10 +477,10 @@ LABEL_13:
 
 - (int)commitWrite
 {
-  v2 = self;
+  selfCopy = self;
   v50 = *MEMORY[0x277D85DE8];
-  v3 = [(BKCatacomb *)self catacombPrepareDir];
-  if (!v3)
+  catacombPrepareDir = [(BKCatacomb *)self catacombPrepareDir];
+  if (!catacombPrepareDir)
   {
     [BKCatacomb commitWrite];
 LABEL_27:
@@ -488,16 +488,16 @@ LABEL_27:
     goto LABEL_24;
   }
 
-  v4 = [(BKCatacomb *)v2 catacombCommitDir];
-  if (!v4)
+  catacombCommitDir = [(BKCatacomb *)selfCopy catacombCommitDir];
+  if (!catacombCommitDir)
   {
     [BKCatacomb commitWrite];
     goto LABEL_27;
   }
 
-  v5 = v4;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  v5 = catacombCommitDir;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v5];
 
   if (v7)
   {
@@ -507,8 +507,8 @@ LABEL_30:
     goto LABEL_24;
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v3];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager2 fileExistsAtPath:catacombPrepareDir];
 
   if ((v9 & 1) == 0)
   {
@@ -516,9 +516,9 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
   v47 = 0;
-  [v10 moveItemAtPath:v3 toPath:v5 error:&v47];
+  [defaultManager3 moveItemAtPath:catacombPrepareDir toPath:v5 error:&v47];
   v11 = v47;
 
   if (v11)
@@ -529,9 +529,9 @@ LABEL_33:
     goto LABEL_24;
   }
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
   v46 = 0;
-  v13 = [v12 contentsOfDirectoryAtPath:v5 error:&v46];
+  v13 = [defaultManager4 contentsOfDirectoryAtPath:v5 error:&v46];
   v14 = v46;
 
   if (v14)
@@ -540,7 +540,7 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v37 = v3;
+  v37 = catacombPrepareDir;
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -567,16 +567,16 @@ LABEL_33:
       v20 = *(*(&v42 + 1) + 8 * i);
       v21 = v5;
       v22 = [v5 stringByAppendingPathComponent:v20];
-      v23 = v2;
-      v24 = [(NSString *)v2->_catacombDir stringByAppendingPathComponent:v20];
-      v25 = [MEMORY[0x277CCAA00] defaultManager];
-      v26 = [v25 fileExistsAtPath:v24];
+      v23 = selfCopy;
+      v24 = [(NSString *)selfCopy->_catacombDir stringByAppendingPathComponent:v20];
+      defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
+      v26 = [defaultManager5 fileExistsAtPath:v24];
 
       if (v26)
       {
-        v27 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager6 = [MEMORY[0x277CCAA00] defaultManager];
         v41 = 0;
-        [v27 removeItemAtPath:v24 error:&v41];
+        [defaultManager6 removeItemAtPath:v24 error:&v41];
         v28 = v41;
 
         if (v28)
@@ -586,9 +586,9 @@ LABEL_33:
         }
       }
 
-      v29 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager7 = [MEMORY[0x277CCAA00] defaultManager];
       v40 = 0;
-      [v29 moveItemAtPath:v22 toPath:v24 error:&v40];
+      [defaultManager7 moveItemAtPath:v22 toPath:v24 error:&v40];
       v30 = v40;
 
       if (v30)
@@ -601,7 +601,7 @@ LABEL_21:
       }
 
       v5 = v21;
-      v2 = v23;
+      selfCopy = v23;
     }
 
     v15 = obj;
@@ -616,9 +616,9 @@ LABEL_21:
 
 LABEL_17:
 
-  v31 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager8 = [MEMORY[0x277CCAA00] defaultManager];
   v39 = 0;
-  [v31 removeItemAtPath:v5 error:&v39];
+  [defaultManager8 removeItemAtPath:v5 error:&v39];
   v32 = v39;
 
   if (v32)
@@ -630,24 +630,24 @@ LABEL_22:
 
   else
   {
-    [(BKCatacomb *)v2 syncDir:v2->_catacombDir];
+    [(BKCatacomb *)selfCopy syncDir:selfCopy->_catacombDir];
 
     v33 = 0;
   }
 
-  v3 = v37;
+  catacombPrepareDir = v37;
 LABEL_24:
 
   v35 = *MEMORY[0x277D85DE8];
   return v33;
 }
 
-- (int)readData:(id *)a3 fromFile:(id)a4 logString:(id *)a5
+- (int)readData:(id *)data fromFile:(id)file logString:(id *)string
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = v8;
-  if (!a3)
+  fileCopy = file;
+  v9 = fileCopy;
+  if (!data)
   {
     if (__osLog)
     {
@@ -677,7 +677,7 @@ LABEL_24:
     goto LABEL_47;
   }
 
-  if (!v8)
+  if (!fileCopy)
   {
     if (__osLog)
     {
@@ -708,16 +708,16 @@ LABEL_47:
     _os_log_impl(&dword_223E00000, v38, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", buf, 0x30u);
 LABEL_48:
     v26 = 0;
-    v24 = 0;
+    data = 0;
     v22 = 0;
     v17 = 0;
     v28 = 22;
     goto LABEL_34;
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [(BKCatacomb *)self catacombCommitDir];
-  v12 = [v10 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  catacombCommitDir = [(BKCatacomb *)self catacombCommitDir];
+  v12 = [defaultManager fileExistsAtPath:catacombCommitDir];
 
   if (v12)
   {
@@ -749,9 +749,9 @@ LABEL_48:
     goto LABEL_59;
   }
 
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  v14 = [(BKCatacomb *)self catacombPrepareDir];
-  v15 = [v13 fileExistsAtPath:v14];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  catacombPrepareDir = [(BKCatacomb *)self catacombPrepareDir];
+  v15 = [defaultManager2 fileExistsAtPath:catacombPrepareDir];
 
   if (v15)
   {
@@ -784,7 +784,7 @@ LABEL_59:
     _os_log_impl(&dword_223E00000, v39, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", buf, 0x30u);
 LABEL_60:
     v26 = 0;
-    v24 = 0;
+    data = 0;
     v22 = 0;
     v17 = 0;
     v28 = 1;
@@ -795,12 +795,12 @@ LABEL_60:
   if (v16)
   {
     v17 = v16;
-    v18 = [MEMORY[0x277CCAA00] defaultManager];
-    v19 = [v18 fileExistsAtPath:v17];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    v19 = [defaultManager3 fileExistsAtPath:v17];
 
     if (!v19)
     {
-      v24 = [MEMORY[0x277CBEA90] data];
+      data = [MEMORY[0x277CBEA90] data];
       v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"File '%@' doesn't exist", v17];
       v22 = 0;
       goto LABEL_11;
@@ -815,17 +815,17 @@ LABEL_60:
     if (v22)
     {
       v41 = 0;
-      v24 = [v22 readDataToEndOfFileAndReturnError:&v41];
+      data = [v22 readDataToEndOfFileAndReturnError:&v41];
       v25 = v41;
 
-      if (v24)
+      if (data)
       {
 
         v26 = @"Succeeded";
 LABEL_11:
-        v27 = v24;
+        v27 = data;
         v28 = 0;
-        *a3 = v24;
+        *data = data;
         goto LABEL_34;
       }
 
@@ -923,7 +923,7 @@ LABEL_11:
       }
     }
 
-    v24 = 0;
+    data = 0;
     v28 = 5;
   }
 
@@ -955,27 +955,27 @@ LABEL_11:
     }
 
     v26 = 0;
-    v24 = 0;
+    data = 0;
     v22 = 0;
     v17 = 0;
     v28 = 12;
   }
 
 LABEL_34:
-  if (a5)
+  if (string)
   {
     v35 = v26;
-    *a5 = v26;
+    *string = v26;
   }
 
   v36 = *MEMORY[0x277D85DE8];
   return v28;
 }
 
-- (int)deleteFile:(id)a3
+- (int)deleteFile:(id)file
 {
-  v4 = a3;
-  if (!v4)
+  fileCopy = file;
+  if (!fileCopy)
   {
     [BKCatacomb deleteFile:];
 LABEL_12:
@@ -983,9 +983,9 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(BKCatacomb *)self catacombCommitDir];
-  v7 = [v5 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  catacombCommitDir = [(BKCatacomb *)self catacombCommitDir];
+  v7 = [defaultManager fileExistsAtPath:catacombCommitDir];
 
   if (v7)
   {
@@ -993,9 +993,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [(BKCatacomb *)self catacombPrepareDir];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  catacombPrepareDir = [(BKCatacomb *)self catacombPrepareDir];
+  v10 = [defaultManager2 fileExistsAtPath:catacombPrepareDir];
 
   if (v10)
   {
@@ -1003,7 +1003,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v11 = [(NSString *)self->_catacombDir stringByAppendingPathComponent:v4];
+  v11 = [(NSString *)self->_catacombDir stringByAppendingPathComponent:fileCopy];
   if (!v11)
   {
     [BKCatacomb deleteFile:];
@@ -1011,9 +1011,9 @@ LABEL_12:
   }
 
   v12 = v11;
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
   v17 = 0;
-  [v13 removeItemAtPath:v12 error:&v17];
+  [defaultManager3 removeItemAtPath:v12 error:&v17];
   v14 = v17;
 
   if (v14)
@@ -1036,10 +1036,10 @@ LABEL_7:
 
 - (int)recover
 {
-  v2 = self;
+  selfCopy = self;
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [(BKCatacomb *)self catacombPrepareDir];
-  if (!v3)
+  catacombPrepareDir = [(BKCatacomb *)self catacombPrepareDir];
+  if (!catacombPrepareDir)
   {
     [BKCatacomb recover];
 LABEL_30:
@@ -1049,22 +1049,22 @@ LABEL_30:
     goto LABEL_22;
   }
 
-  v4 = [(BKCatacomb *)v2 catacombCommitDir];
-  if (!v4)
+  catacombCommitDir = [(BKCatacomb *)selfCopy catacombCommitDir];
+  if (!catacombCommitDir)
   {
     [BKCatacomb recover];
     goto LABEL_30;
   }
 
-  v5 = v4;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v3];
+  v5 = catacombCommitDir;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:catacombPrepareDir];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v46 = 0;
-    [v8 removeItemAtPath:v3 error:&v46];
+    [defaultManager2 removeItemAtPath:catacombPrepareDir error:&v46];
     v9 = v46;
 
     if (v9)
@@ -1074,14 +1074,14 @@ LABEL_30:
     }
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v10 fileExistsAtPath:v5];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+  v11 = [defaultManager3 fileExistsAtPath:v5];
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
     v45 = 0;
-    v13 = [v12 contentsOfDirectoryAtPath:v5 error:&v45];
+    v13 = [defaultManager4 contentsOfDirectoryAtPath:v5 error:&v45];
     v14 = v45;
 
     if (v14)
@@ -1091,7 +1091,7 @@ LABEL_30:
       goto LABEL_22;
     }
 
-    v36 = v3;
+    v36 = catacombPrepareDir;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -1118,16 +1118,16 @@ LABEL_9:
       v19 = *(*(&v41 + 1) + 8 * v18);
       v20 = v5;
       v21 = [v5 stringByAppendingPathComponent:v19];
-      v22 = v2;
-      v23 = [(NSString *)v2->_catacombDir stringByAppendingPathComponent:v19];
-      v24 = [MEMORY[0x277CCAA00] defaultManager];
-      v25 = [v24 fileExistsAtPath:v23];
+      v22 = selfCopy;
+      v23 = [(NSString *)selfCopy->_catacombDir stringByAppendingPathComponent:v19];
+      defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
+      v25 = [defaultManager5 fileExistsAtPath:v23];
 
       if (v25)
       {
-        v26 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager6 = [MEMORY[0x277CCAA00] defaultManager];
         v40 = 0;
-        [v26 removeItemAtPath:v23 error:&v40];
+        [defaultManager6 removeItemAtPath:v23 error:&v40];
         v27 = v40;
 
         if (v27)
@@ -1136,9 +1136,9 @@ LABEL_9:
         }
       }
 
-      v28 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager7 = [MEMORY[0x277CCAA00] defaultManager];
       v39 = 0;
-      [v28 moveItemAtPath:v21 toPath:v23 error:&v39];
+      [defaultManager7 moveItemAtPath:v21 toPath:v23 error:&v39];
       v29 = v39;
 
       if (v29)
@@ -1155,7 +1155,7 @@ LABEL_25:
 
       ++v18;
       v5 = v20;
-      v2 = v22;
+      selfCopy = v22;
       if (v16 == v18)
       {
         v14 = obj;
@@ -1167,14 +1167,14 @@ LABEL_25:
 
 LABEL_17:
 
-        v30 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager8 = [MEMORY[0x277CCAA00] defaultManager];
         v38 = 0;
-        [v30 removeItemAtPath:v5 error:&v38];
+        [defaultManager8 removeItemAtPath:v5 error:&v38];
         v31 = v38;
 
         if (!v31)
         {
-          v3 = v36;
+          catacombPrepareDir = v36;
           goto LABEL_20;
         }
 
@@ -1182,7 +1182,7 @@ LABEL_17:
         v32 = 5;
         v14 = v31;
 LABEL_26:
-        v3 = v36;
+        catacombPrepareDir = v36;
         goto LABEL_22;
       }
     }
@@ -1195,7 +1195,7 @@ LABEL_26:
   if (v7)
   {
 LABEL_20:
-    [(BKCatacomb *)v2 syncDir:v2->_catacombDir];
+    [(BKCatacomb *)selfCopy syncDir:selfCopy->_catacombDir];
 
     v14 = 0;
   }
@@ -1209,18 +1209,18 @@ LABEL_22:
 
 - (int)deleteAll
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:self->_catacombDir];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:self->_catacombDir];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   catacombDir = self->_catacombDir;
   v9 = 0;
-  [v5 removeItemAtPath:catacombDir error:&v9];
+  [defaultManager2 removeItemAtPath:catacombDir error:&v9];
   v7 = v9;
 
   if (!v7)
@@ -1234,10 +1234,10 @@ LABEL_22:
 
 - (id)content
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   catacombDir = self->_catacombDir;
   v7 = 0;
-  v5 = [v3 contentsOfDirectoryAtPath:catacombDir error:&v7];
+  v5 = [defaultManager contentsOfDirectoryAtPath:catacombDir error:&v7];
 
   return v5;
 }

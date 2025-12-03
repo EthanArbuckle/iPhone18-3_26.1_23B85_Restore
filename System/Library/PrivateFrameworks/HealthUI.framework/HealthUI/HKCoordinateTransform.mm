@@ -1,10 +1,10 @@
 @interface HKCoordinateTransform
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation HKCoordinateTransform
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4 = objc_opt_class();
 

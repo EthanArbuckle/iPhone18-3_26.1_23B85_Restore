@@ -1,5 +1,5 @@
 @interface SSSScreenshotsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityAnnotateItems;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityPostLayoutChangeIfNecessary;
@@ -10,19 +10,19 @@
 
 @implementation SSSScreenshotsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SSSScreenshotsViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SSSScreenshotsViewController" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"SSSScreenshotsViewController" hasInstanceMethod:@"_configureBarsIfNecessary" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SSSScreenshotsViewController" hasInstanceMethod:@"annotationButtonPressed" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_annotationModeEnabled" withType:"BOOL"];
-  [v3 validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_annotationEnabledButton" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_undoItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_redoItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_doneItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_closeItem" withType:"UIBarButtonItem"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SSSScreenshotsViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SSSScreenshotsViewController" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"SSSScreenshotsViewController" hasInstanceMethod:@"_configureBarsIfNecessary" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SSSScreenshotsViewController" hasInstanceMethod:@"annotationButtonPressed" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_annotationModeEnabled" withType:"BOOL"];
+  [validationsCopy validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_annotationEnabledButton" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_undoItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_redoItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_doneItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"SSSScreenshotsViewController" hasInstanceVariable:@"_closeItem" withType:"UIBarButtonItem"];
 }
 
 - (void)_configureBarsIfNecessary
@@ -78,18 +78,18 @@
 - (void)_updateAnnotationButtonAccessibilityTraits
 {
   v3 = [(SSSScreenshotsViewControllerAccessibility *)self safeValueForKey:@"_annotationEnabledButton"];
-  v4 = [v3 accessibilityTraits];
+  accessibilityTraits = [v3 accessibilityTraits];
 
   v5 = [(SSSScreenshotsViewControllerAccessibility *)self safeBoolForKey:@"_annotationModeEnabled"];
-  v6 = v4 & ~*MEMORY[0x29EDC7FC0];
+  v6 = accessibilityTraits & ~*MEMORY[0x29EDC7FC0];
   if (v5)
   {
-    v7 = *MEMORY[0x29EDC7FC0] | v4;
+    v7 = *MEMORY[0x29EDC7FC0] | accessibilityTraits;
   }
 
   else
   {
-    v7 = v4 & ~*MEMORY[0x29EDC7FC0];
+    v7 = accessibilityTraits & ~*MEMORY[0x29EDC7FC0];
   }
 
   v8 = [(SSSScreenshotsViewControllerAccessibility *)self safeValueForKey:@"_annotationEnabledButton"];

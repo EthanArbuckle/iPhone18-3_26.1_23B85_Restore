@@ -1,22 +1,22 @@
 @interface STKListDisplayAlertViewController
-- (BOOL)navigationBar:(id)a3 shouldPopItem:(id)a4;
-- (BOOL)validateAction:(id)a3;
+- (BOOL)navigationBar:(id)bar shouldPopItem:(id)item;
+- (BOOL)validateAction:(id)action;
 - (id)_simToolkitListItems;
 - (id)newTopBar;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_selectListItem:(unint64_t)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_selectListItem:(unint64_t)item;
 - (void)leftNavigationButtonPressed;
 - (void)rightNavigationButtonPressed;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation STKListDisplayAlertViewController
 
-- (BOOL)validateAction:(id)a3
+- (BOOL)validateAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -25,17 +25,17 @@
 
 - (id)_simToolkitListItems
 {
-  v2 = [(STKBaseAlertViewController *)self sessionAction];
-  v3 = [v2 sessionData];
-  v4 = [v3 listItems];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  sessionData = [sessionAction sessionData];
+  listItems = [sessionData listItems];
 
-  return v4;
+  return listItems;
 }
 
-- (void)_selectListItem:(unint64_t)a3
+- (void)_selectListItem:(unint64_t)item
 {
-  v4 = [(STKBaseAlertViewController *)self sessionAction];
-  [v4 sendSuccessWithSelectedItemIndex:a3];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  [sessionAction sendSuccessWithSelectedItemIndex:item];
 }
 
 - (void)viewDidLoad
@@ -43,7 +43,7 @@
   v24.receiver = self;
   v24.super_class = STKListDisplayAlertViewController;
   [(STKBaseAlertViewController *)&v24 viewDidLoad];
-  v3 = [(STKListDisplayAlertViewController *)self view];
+  view = [(STKListDisplayAlertViewController *)self view];
   v4 = [[UITableView alloc] initWithFrame:1 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   table = self->_table;
   self->_table = v4;
@@ -59,25 +59,25 @@
   [(UITableView *)self->_table setOpaque:0];
   [(UITableView *)self->_table setEstimatedRowHeight:100.0];
   [(UITableView *)self->_table setRowHeight:UITableViewAutomaticDimension];
-  [v3 addSubview:self->_table];
-  v23 = [(UITableView *)self->_table widthAnchor];
-  v22 = [v3 widthAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  [view addSubview:self->_table];
+  widthAnchor = [(UITableView *)self->_table widthAnchor];
+  widthAnchor2 = [view widthAnchor];
+  v21 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v25[0] = v21;
-  v20 = [(UITableView *)self->_table centerXAnchor];
-  v18 = v3;
-  v19 = [v3 centerXAnchor];
-  v8 = [v20 constraintEqualToAnchor:v19];
+  centerXAnchor = [(UITableView *)self->_table centerXAnchor];
+  v18 = view;
+  centerXAnchor2 = [view centerXAnchor];
+  v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v25[1] = v8;
-  v9 = [(UITableView *)self->_table topAnchor];
-  v10 = [(STKBaseAlertViewController *)self topBar];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  topAnchor = [(UITableView *)self->_table topAnchor];
+  topBar = [(STKBaseAlertViewController *)self topBar];
+  bottomAnchor = [topBar bottomAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   v25[2] = v12;
-  v13 = [(UITableView *)self->_table bottomAnchor];
-  v14 = [v3 safeAreaLayoutGuide];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  bottomAnchor2 = [(UITableView *)self->_table bottomAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide bottomAnchor];
+  v16 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v25[3] = v16;
   v17 = [NSArray arrayWithObjects:v25 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -85,36 +85,36 @@
 
 - (void)leftNavigationButtonPressed
 {
-  v3 = [(STKBaseAlertViewController *)self sessionAction];
-  [v3 sendResponse:4];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  [sessionAction sendResponse:4];
 
   [(STKBaseAlertViewController *)self dismiss];
 }
 
 - (void)rightNavigationButtonPressed
 {
-  v3 = [(STKBaseAlertViewController *)self sessionAction];
-  [v3 sendResponse:1];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  [sessionAction sendResponse:1];
 
   [(STKBaseAlertViewController *)self dismiss];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(STKListDisplayAlertViewController *)self _simToolkitListItems:a3];
+  v4 = [(STKListDisplayAlertViewController *)self _simToolkitListItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"name"];
-  v7 = [(STKListDisplayAlertViewController *)self _simToolkitListItems];
-  v8 = [v5 row];
+  _simToolkitListItems = [(STKListDisplayAlertViewController *)self _simToolkitListItems];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
+  v9 = [_simToolkitListItems objectAtIndex:v8];
 
   if ([v9 isSelected])
   {
@@ -127,29 +127,29 @@
   }
 
   [v6 setAccessoryType:v10];
-  v11 = [v6 textLabel];
-  [v11 setLineBreakMode:0];
+  textLabel = [v6 textLabel];
+  [textLabel setLineBreakMode:0];
 
-  v12 = [v6 textLabel];
-  [v12 setNumberOfLines:0];
+  textLabel2 = [v6 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
-  v13 = [v6 textLabel];
-  v14 = [v9 text];
-  [v13 setText:v14];
+  textLabel3 = [v6 textLabel];
+  text = [v9 text];
+  [textLabel3 setText:text];
 
-  v15 = [v6 textLabel];
-  [v15 setTextAlignment:1];
+  textLabel4 = [v6 textLabel];
+  [textLabel4 setTextAlignment:1];
 
-  v16 = [v6 textLabel];
+  textLabel5 = [v6 textLabel];
   v17 = +[UIColor whiteColor];
-  [v16 setTextColor:v17];
+  [textLabel5 setTextColor:v17];
 
-  v18 = [v6 textLabel];
-  [v18 setOpaque:0];
+  textLabel6 = [v6 textLabel];
+  [textLabel6 setOpaque:0];
 
-  v19 = [v6 textLabel];
+  textLabel7 = [v6 textLabel];
   v20 = +[UIColor clearColor];
-  [v19 setBackgroundColor:v20];
+  [textLabel7 setBackgroundColor:v20];
 
   [v6 setOpaque:0];
   v21 = +[UIColor clearColor];
@@ -158,9 +158,9 @@
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [(UITableView *)self->_table indexPathForSelectedRow:a3];
+  v5 = [(UITableView *)self->_table indexPathForSelectedRow:view];
   if (v5)
   {
     v6 = v5;
@@ -198,7 +198,7 @@
   return v3;
 }
 
-- (BOOL)navigationBar:(id)a3 shouldPopItem:(id)a4
+- (BOOL)navigationBar:(id)bar shouldPopItem:(id)item
 {
   if (objc_opt_respondsToSelector())
   {

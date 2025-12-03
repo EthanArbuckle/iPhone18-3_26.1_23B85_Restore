@@ -1,18 +1,18 @@
 @interface SPDiscoveredAccessory
-- (BOOL)isEqual:(id)a3;
-- (SPDiscoveredAccessory)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SPDiscoveredAccessory)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPDiscoveredAccessory
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -22,11 +22,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SPDiscoveredAccessory *)self identifier];
-      v7 = [(SPDiscoveredAccessory *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(SPDiscoveredAccessory *)self identifier];
+      identifier2 = [(SPDiscoveredAccessory *)v5 identifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [identifier isEqual:identifier2];
     }
 
     else
@@ -40,66 +40,66 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SPDiscoveredAccessory *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(SPDiscoveredAccessory *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(SPDiscoveredAccessory *)self identifier];
-  v6 = [v5 copy];
+  identifier = [(SPDiscoveredAccessory *)self identifier];
+  v6 = [identifier copy];
   [v4 setIdentifier:v6];
 
-  v7 = [(SPDiscoveredAccessory *)self macAddress];
-  v8 = [v7 copy];
+  macAddress = [(SPDiscoveredAccessory *)self macAddress];
+  v8 = [macAddress copy];
   [v4 setMacAddress:v8];
 
-  v9 = [(SPDiscoveredAccessory *)self discoveredMetadata];
-  v10 = [v9 copy];
+  discoveredMetadata = [(SPDiscoveredAccessory *)self discoveredMetadata];
+  v10 = [discoveredMetadata copy];
   [v4 setDiscoveredMetadata:v10];
 
-  v11 = [(SPDiscoveredAccessory *)self productInformation];
-  v12 = [v11 copy];
+  productInformation = [(SPDiscoveredAccessory *)self productInformation];
+  v12 = [productInformation copy];
   [v4 setProductInformation:v12];
 
   [v4 setIsBatteryTooLow:{-[SPDiscoveredAccessory isBatteryTooLow](self, "isBatteryTooLow")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_macAddress forKey:@"macAddress"];
-  [v5 encodeObject:self->_discoveredMetadata forKey:@"discoveredMetadata"];
-  [v5 encodeObject:self->_productInformation forKey:@"productInformation"];
-  [v5 encodeBool:self->_isBatteryTooLow forKey:@"isBatteryTooLow"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_macAddress forKey:@"macAddress"];
+  [coderCopy encodeObject:self->_discoveredMetadata forKey:@"discoveredMetadata"];
+  [coderCopy encodeObject:self->_productInformation forKey:@"productInformation"];
+  [coderCopy encodeBool:self->_isBatteryTooLow forKey:@"isBatteryTooLow"];
 }
 
-- (SPDiscoveredAccessory)initWithCoder:(id)a3
+- (SPDiscoveredAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   identifier = self->_identifier;
   self->_identifier = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"macAddress"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"macAddress"];
   macAddress = self->_macAddress;
   self->_macAddress = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discoveredMetadata"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discoveredMetadata"];
   discoveredMetadata = self->_discoveredMetadata;
   self->_discoveredMetadata = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productInformation"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productInformation"];
   productInformation = self->_productInformation;
   self->_productInformation = v11;
 
-  v13 = [v4 decodeBoolForKey:@"isBatteryTooLow"];
+  v13 = [coderCopy decodeBoolForKey:@"isBatteryTooLow"];
   self->_isBatteryTooLow = v13;
   return self;
 }
@@ -108,12 +108,12 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SPDiscoveredAccessory *)self identifier];
-  v6 = [(SPDiscoveredAccessory *)self macAddress];
-  v7 = [v6 fm_hexString];
-  v8 = [(SPDiscoveredAccessory *)self discoveredMetadata];
-  v9 = [(SPDiscoveredAccessory *)self productInformation];
-  v10 = [v3 stringWithFormat:@"<%@: %p %@ [%@] %@ %@>", v4, self, v5, v7, v8, v9];
+  identifier = [(SPDiscoveredAccessory *)self identifier];
+  macAddress = [(SPDiscoveredAccessory *)self macAddress];
+  fm_hexString = [macAddress fm_hexString];
+  discoveredMetadata = [(SPDiscoveredAccessory *)self discoveredMetadata];
+  productInformation = [(SPDiscoveredAccessory *)self productInformation];
+  v10 = [v3 stringWithFormat:@"<%@: %p %@ [%@] %@ %@>", v4, self, identifier, fm_hexString, discoveredMetadata, productInformation];
 
   return v10;
 }

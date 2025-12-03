@@ -1,18 +1,18 @@
 @interface _NFSecureElementAndHostCardEmulationSession
-+ (id)validateEntitlements:(id)a3;
-- (id)_getSecureElementWrapperForSEID:(id)a3;
-- (void)didStartSession:(id)a3;
-- (void)startEmulationWithCompletion:(id)a3;
-- (void)stopEmulationWithCompletion:(id)a3;
-- (void)transceive:(id)a3 forSEID:(id)a4 completion:(id)a5;
++ (id)validateEntitlements:(id)entitlements;
+- (id)_getSecureElementWrapperForSEID:(id)d;
+- (void)didStartSession:(id)session;
+- (void)startEmulationWithCompletion:(id)completion;
+- (void)stopEmulationWithCompletion:(id)completion;
+- (void)transceive:(id)transceive forSEID:(id)d completion:(id)completion;
 @end
 
 @implementation _NFSecureElementAndHostCardEmulationSession
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  v5 = a3;
-  if ([v5 seSessionAccess] && (objc_msgSend(v5, "hceAccess") & 1) != 0)
+  entitlementsCopy = entitlements;
+  if ([entitlementsCopy seSessionAccess] && (objc_msgSend(entitlementsCopy, "hceAccess") & 1) != 0)
   {
     v6 = 0;
   }
@@ -24,9 +24,9 @@
     if (Logger)
     {
       v8 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v12 = 45;
       if (isMetaClass)
@@ -41,7 +41,7 @@
     v13 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = object_getClass(a1);
+      v14 = object_getClass(self);
       if (class_isMetaClass(v14))
       {
         v15 = 43;
@@ -55,7 +55,7 @@
       *buf = 67109890;
       v27 = v15;
       v28 = 2082;
-      v29 = object_getClassName(a1);
+      v29 = object_getClassName(self);
       v30 = 2082;
       v31 = sel_getName(a2);
       v32 = 1024;
@@ -83,33 +83,33 @@
   return v6;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = _NFSecureElementAndHostCardEmulationSession;
-  [(_NFHCESession *)&v7 didStartSession:a3];
+  [(_NFHCESession *)&v7 didStartSession:session];
   v4 = +[_NFHardwareManager sharedHardwareManager];
-  v5 = [v4 secureElementWrapper];
+  secureElementWrapper = [v4 secureElementWrapper];
   embeddedSecureElementWrapper = self->_embeddedSecureElementWrapper;
-  self->_embeddedSecureElementWrapper = v5;
+  self->_embeddedSecureElementWrapper = secureElementWrapper;
 }
 
-- (id)_getSecureElementWrapperForSEID:(id)a3
+- (id)_getSecureElementWrapperForSEID:(id)d
 {
-  v5 = a3;
-  v6 = [(_NFSecureElementAndHostCardEmulationSession *)self embeddedSecureElementWrapper];
-  v7 = [v6 serialNumber];
-  if ([v7 isEqualToString:v5])
+  dCopy = d;
+  embeddedSecureElementWrapper = [(_NFSecureElementAndHostCardEmulationSession *)self embeddedSecureElementWrapper];
+  serialNumber = [embeddedSecureElementWrapper serialNumber];
+  if ([serialNumber isEqualToString:dCopy])
   {
 
 LABEL_4:
-    v11 = [(_NFSecureElementAndHostCardEmulationSession *)self embeddedSecureElementWrapper];
+    embeddedSecureElementWrapper2 = [(_NFSecureElementAndHostCardEmulationSession *)self embeddedSecureElementWrapper];
     goto LABEL_15;
   }
 
-  v8 = [(_NFSecureElementAndHostCardEmulationSession *)self embeddedSecureElementWrapper];
-  v9 = [v8 systemOSSerialNumber];
-  v10 = [v9 isEqualToString:v5];
+  embeddedSecureElementWrapper3 = [(_NFSecureElementAndHostCardEmulationSession *)self embeddedSecureElementWrapper];
+  systemOSSerialNumber = [embeddedSecureElementWrapper3 systemOSSerialNumber];
+  v10 = [systemOSSerialNumber isEqualToString:dCopy];
 
   if (v10)
   {
@@ -131,7 +131,7 @@ LABEL_4:
       v16 = 43;
     }
 
-    v13(3, "%c[%{public}s %{public}s]:%i Unknown secure element id: %{public}@", v16, ClassName, Name, 55, v5);
+    v13(3, "%c[%{public}s %{public}s]:%i Unknown secure element id: %{public}@", v16, ClassName, Name, 55, dCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -158,19 +158,19 @@ LABEL_4:
     v29 = 1024;
     v30 = 55;
     v31 = 2114;
-    v32 = v5;
+    v32 = dCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Unknown secure element id: %{public}@", buf, 0x2Cu);
   }
 
-  v11 = 0;
+  embeddedSecureElementWrapper2 = 0;
 LABEL_15:
 
-  return v11;
+  return embeddedSecureElementWrapper2;
 }
 
-- (void)startEmulationWithCompletion:(id)a3
+- (void)startEmulationWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   kdebug_trace();
   v6 = NFSharedSignpostLog();
   if (os_signpost_enabled(v6))
@@ -181,56 +181,56 @@ LABEL_15:
 
   v12.receiver = self;
   v12.super_class = _NFSecureElementAndHostCardEmulationSession;
-  v7 = [(_NFSession *)&v12 workQueue];
+  workQueue = [(_NFSession *)&v12 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100061DDC;
   block[3] = &unk_100316050;
-  v10 = v5;
+  v10 = completionCopy;
   v11 = a2;
   block[4] = self;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)stopEmulationWithCompletion:(id)a3
+- (void)stopEmulationWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFSecureElementAndHostCardEmulationSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000624B0;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)transceive:(id)a3 forSEID:(id)a4 completion:(id)a5
+- (void)transceive:(id)transceive forSEID:(id)d completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  transceiveCopy = transceive;
+  dCopy = d;
+  completionCopy = completion;
   v21.receiver = self;
   v21.super_class = _NFSecureElementAndHostCardEmulationSession;
-  v12 = [(_NFSession *)&v21 workQueue];
+  workQueue = [(_NFSession *)&v21 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100062B60;
   block[3] = &unk_1003165C0;
-  v19 = v11;
+  v19 = completionCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v10;
-  v18 = v9;
-  v13 = v9;
-  v14 = v10;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = dCopy;
+  v18 = transceiveCopy;
+  v13 = transceiveCopy;
+  v14 = dCopy;
+  v15 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 @end

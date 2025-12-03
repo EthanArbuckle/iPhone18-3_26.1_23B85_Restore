@@ -1,20 +1,20 @@
 @interface SHJSONLCustomCatalogContainer
-+ (id)customCatalogURLFromURL:(id)a3 error:(id *)a4;
-- (BOOL)containsSignatureWithIdentifier:(id)a3;
-- (BOOL)loadFromData:(id)a3 error:(id *)a4;
-- (BOOL)loadFromURL:(id)a3 error:(id *)a4;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
++ (id)customCatalogURLFromURL:(id)l error:(id *)error;
+- (BOOL)containsSignatureWithIdentifier:(id)identifier;
+- (BOOL)loadFromData:(id)data error:(id *)error;
+- (BOOL)loadFromURL:(id)l error:(id *)error;
+- (BOOL)writeToURL:(id)l error:(id *)error;
 - (NSArray)referenceSignatures;
 - (NSData)dataRepresentation;
 - (SHJSONLCustomCatalogContainer)init;
-- (id)jsonObjectRepresentationWithError:(id *)a3;
-- (id)matchReferenceAtIndex:(int64_t)a3;
-- (id)matchReferenceForTrackID:(unint64_t)a3;
-- (id)mediaItemsForReferenceSignature:(id)a3;
-- (id)referenceSignatureForTrackID:(unint64_t)a3;
+- (id)jsonObjectRepresentationWithError:(id *)error;
+- (id)matchReferenceAtIndex:(int64_t)index;
+- (id)matchReferenceForTrackID:(unint64_t)d;
+- (id)mediaItemsForReferenceSignature:(id)signature;
+- (id)referenceSignatureForTrackID:(unint64_t)d;
 - (int64_t)count;
-- (void)addSignature:(id)a3 representingMediaItems:(id)a4;
-- (void)removeSignatureWithID:(id)a3;
+- (void)addSignature:(id)signature representingMediaItems:(id)items;
+- (void)removeSignatureWithID:(id)d;
 @end
 
 @implementation SHJSONLCustomCatalogContainer
@@ -38,54 +38,54 @@
   return v2;
 }
 
-- (BOOL)loadFromData:(id)a3 error:(id *)a4
+- (BOOL)loadFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if ([v6 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v7 = objc_alloc_init(MEMORY[0x277D54E18]);
-    v8 = [(SHJSONLCustomCatalogContainer *)self transformer];
-    [v7 setDelegate:v8];
+    transformer = [(SHJSONLCustomCatalogContainer *)self transformer];
+    [v7 setDelegate:transformer];
 
-    v9 = [(SHJSONLCustomCatalogContainer *)self container];
-    v10 = [(SHJSONLCustomCatalogContainer *)self transformer];
-    [v10 setDelegate:v9];
+    container = [(SHJSONLCustomCatalogContainer *)self container];
+    transformer2 = [(SHJSONLCustomCatalogContainer *)self transformer];
+    [transformer2 setDelegate:container];
 
-    v11 = [v7 loadData:v6 withCompression:517 error:a4];
-    v12 = [(SHJSONLCustomCatalogContainer *)self transformer];
-    [v12 reset];
+    v11 = [v7 loadData:dataCopy withCompression:517 error:error];
+    transformer3 = [(SHJSONLCustomCatalogContainer *)self transformer];
+    [transformer3 reset];
   }
 
   else
   {
-    [SHError annotateClientError:a4 code:300 underlyingError:0];
+    [SHError annotateClientError:error code:300 underlyingError:0];
     v11 = 0;
   }
 
   return v11;
 }
 
-- (BOOL)loadFromURL:(id)a3 error:(id *)a4
+- (BOOL)loadFromURL:(id)l error:(id *)error
 {
-  v6 = [SHJSONLCustomCatalogContainer customCatalogURLFromURL:a3 error:?];
+  v6 = [SHJSONLCustomCatalogContainer customCatalogURLFromURL:l error:?];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x277D54E18]);
-    v8 = [(SHJSONLCustomCatalogContainer *)self transformer];
-    [v7 setDelegate:v8];
+    transformer = [(SHJSONLCustomCatalogContainer *)self transformer];
+    [v7 setDelegate:transformer];
 
-    v9 = [(SHJSONLCustomCatalogContainer *)self container];
-    v10 = [(SHJSONLCustomCatalogContainer *)self transformer];
-    [v10 setDelegate:v9];
+    container = [(SHJSONLCustomCatalogContainer *)self container];
+    transformer2 = [(SHJSONLCustomCatalogContainer *)self transformer];
+    [transformer2 setDelegate:container];
 
-    v11 = [v7 loadDataFromURL:v6 withCompression:517 error:a4];
-    v12 = [(SHJSONLCustomCatalogContainer *)self transformer];
-    [v12 reset];
+    v11 = [v7 loadDataFromURL:v6 withCompression:517 error:error];
+    transformer3 = [(SHJSONLCustomCatalogContainer *)self transformer];
+    [transformer3 reset];
   }
 
   else
   {
-    [SHError annotateClientError:a4 code:301 underlyingError:0];
+    [SHError annotateClientError:error code:301 underlyingError:0];
     v11 = 0;
   }
 
@@ -141,7 +141,7 @@ LABEL_10:
   return v4;
 }
 
-- (id)jsonObjectRepresentationWithError:(id *)a3
+- (id)jsonObjectRepresentationWithError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
@@ -152,11 +152,11 @@ LABEL_10:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(SHJSONLCustomCatalogContainer *)self container];
-  v8 = [v7 referenceSignatures];
+  container = [(SHJSONLCustomCatalogContainer *)self container];
+  referenceSignatures = [container referenceSignatures];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  obj = referenceSignatures;
+  v9 = [referenceSignatures countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -171,14 +171,14 @@ LABEL_10:
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 signature];
+        signature = [v13 signature];
         v15 = [v13 ID];
-        v16 = [SHJSONLCustomCatalogTransformer catalogFileRepresentationOfSignature:v14 withID:v15];
+        v16 = [SHJSONLCustomCatalogTransformer catalogFileRepresentationOfSignature:signature withID:v15];
         [v6 addObject:v16];
 
         v17 = [(SHJSONLCustomCatalogContainer *)self mediaItemsForReferenceSignature:v13];
         v18 = [v13 ID];
-        v19 = [SHJSONLCustomCatalogTransformer catalogFileRepresentationOfMediaItems:v17 withID:v18 error:a3];
+        v19 = [SHJSONLCustomCatalogTransformer catalogFileRepresentationOfMediaItems:v17 withID:v18 error:error];
 
         if (!v19)
         {
@@ -208,14 +208,14 @@ LABEL_11:
   return v20;
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = [SHJSONLCustomCatalogContainer customCatalogURLFromURL:a3 error:?];
+  v6 = [SHJSONLCustomCatalogContainer customCatalogURLFromURL:l error:?];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277D54E20]) initWithDestination:v6 compression:517];
-    v8 = [(SHJSONLCustomCatalogContainer *)self jsonObjectRepresentationWithError:a4];
+    v8 = [(SHJSONLCustomCatalogContainer *)self jsonObjectRepresentationWithError:error];
     v9 = v8;
     if (v8)
     {
@@ -238,7 +238,7 @@ LABEL_11:
               objc_enumerationMutation(v10);
             }
 
-            if (![v7 writeObject:*(*(&v18 + 1) + 8 * i) error:{a4, v18}])
+            if (![v7 writeObject:*(*(&v18 + 1) + 8 * i) error:{error, v18}])
             {
 
               goto LABEL_14;
@@ -255,7 +255,7 @@ LABEL_11:
         }
       }
 
-      v15 = [v7 closeWithError:a4];
+      v15 = [v7 closeWithError:error];
     }
 
     else
@@ -267,7 +267,7 @@ LABEL_14:
 
   else
   {
-    [SHError annotateClientError:a4 code:301 underlyingError:0];
+    [SHError annotateClientError:error code:301 underlyingError:0];
     v15 = 0;
   }
 
@@ -275,108 +275,108 @@ LABEL_14:
   return v15;
 }
 
-+ (id)customCatalogURLFromURL:(id)a3 error:(id *)a4
++ (id)customCatalogURLFromURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  if ([v5 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
     v13 = 0;
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v5 path];
-    [v6 fileExistsAtPath:v7 isDirectory:&v13];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [lCopy path];
+    [defaultManager fileExistsAtPath:path isDirectory:&v13];
 
     if (v13 == 1)
     {
-      v8 = [v5 URLByAppendingPathComponent:@"Signatures"];
+      v8 = [lCopy URLByAppendingPathComponent:@"Signatures"];
 
-      v9 = [MEMORY[0x277CE1CB8] SHCustomCatalogContentType];
-      v10 = [v9 preferredFilenameExtension];
-      v5 = [v8 URLByAppendingPathExtension:v10];
+      sHCustomCatalogContentType = [MEMORY[0x277CE1CB8] SHCustomCatalogContentType];
+      preferredFilenameExtension = [sHCustomCatalogContentType preferredFilenameExtension];
+      lCopy = [v8 URLByAppendingPathExtension:preferredFilenameExtension];
     }
 
-    v5 = v5;
-    v11 = v5;
+    lCopy = lCopy;
+    v11 = lCopy;
   }
 
   else
   {
-    [SHError annotateClientError:a4 code:301 underlyingError:0];
+    [SHError annotateClientError:error code:301 underlyingError:0];
     v11 = 0;
   }
 
   return v11;
 }
 
-- (id)mediaItemsForReferenceSignature:(id)a3
+- (id)mediaItemsForReferenceSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [(SHJSONLCustomCatalogContainer *)self container];
-  v6 = [v5 mediaItemsForReferenceSignature:v4];
+  signatureCopy = signature;
+  container = [(SHJSONLCustomCatalogContainer *)self container];
+  v6 = [container mediaItemsForReferenceSignature:signatureCopy];
 
   return v6;
 }
 
-- (id)referenceSignatureForTrackID:(unint64_t)a3
+- (id)referenceSignatureForTrackID:(unint64_t)d
 {
-  v4 = [(SHJSONLCustomCatalogContainer *)self container];
-  v5 = [v4 referenceSignatureForTrackID:a3];
+  container = [(SHJSONLCustomCatalogContainer *)self container];
+  v5 = [container referenceSignatureForTrackID:d];
 
   return v5;
 }
 
-- (void)addSignature:(id)a3 representingMediaItems:(id)a4
+- (void)addSignature:(id)signature representingMediaItems:(id)items
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHJSONLCustomCatalogContainer *)self container];
-  [v8 addSignature:v7 representingMediaItems:v6];
+  itemsCopy = items;
+  signatureCopy = signature;
+  container = [(SHJSONLCustomCatalogContainer *)self container];
+  [container addSignature:signatureCopy representingMediaItems:itemsCopy];
 }
 
-- (void)removeSignatureWithID:(id)a3
+- (void)removeSignatureWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(SHJSONLCustomCatalogContainer *)self container];
-  [v5 removeSignatureWithID:v4];
+  dCopy = d;
+  container = [(SHJSONLCustomCatalogContainer *)self container];
+  [container removeSignatureWithID:dCopy];
 }
 
 - (NSArray)referenceSignatures
 {
-  v2 = [(SHJSONLCustomCatalogContainer *)self container];
-  v3 = [v2 referenceSignatures];
+  container = [(SHJSONLCustomCatalogContainer *)self container];
+  referenceSignatures = [container referenceSignatures];
 
-  return v3;
+  return referenceSignatures;
 }
 
 - (int64_t)count
 {
-  v2 = [(SHJSONLCustomCatalogContainer *)self referenceSignatures];
-  v3 = [v2 count];
+  referenceSignatures = [(SHJSONLCustomCatalogContainer *)self referenceSignatures];
+  v3 = [referenceSignatures count];
 
   return v3;
 }
 
-- (id)matchReferenceAtIndex:(int64_t)a3
+- (id)matchReferenceAtIndex:(int64_t)index
 {
-  v5 = [(SHJSONLCustomCatalogContainer *)self referenceSignatures];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  referenceSignatures = [(SHJSONLCustomCatalogContainer *)self referenceSignatures];
+  v6 = [referenceSignatures objectAtIndexedSubscript:index];
 
   v7 = [(SHJSONLCustomCatalogContainer *)self mediaItemsForReferenceSignature:v6];
   v8 = [SHReferenceMatch alloc];
-  v9 = [v6 signature];
-  v10 = [(SHReferenceMatch *)v8 initWithSignature:v9 mediaItems:v7];
+  signature = [v6 signature];
+  v10 = [(SHReferenceMatch *)v8 initWithSignature:signature mediaItems:v7];
 
   return v10;
 }
 
-- (id)matchReferenceForTrackID:(unint64_t)a3
+- (id)matchReferenceForTrackID:(unint64_t)d
 {
-  v4 = [(SHJSONLCustomCatalogContainer *)self referenceSignatureForTrackID:a3];
+  v4 = [(SHJSONLCustomCatalogContainer *)self referenceSignatureForTrackID:d];
   if (v4)
   {
     v5 = [(SHJSONLCustomCatalogContainer *)self mediaItemsForReferenceSignature:v4];
     v6 = [SHReferenceMatch alloc];
-    v7 = [v4 signature];
-    v8 = [(SHReferenceMatch *)v6 initWithSignature:v7 mediaItems:v5];
+    signature = [v4 signature];
+    v8 = [(SHReferenceMatch *)v6 initWithSignature:signature mediaItems:v5];
   }
 
   else
@@ -387,11 +387,11 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)containsSignatureWithIdentifier:(id)a3
+- (BOOL)containsSignatureWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SHJSONLCustomCatalogContainer *)self container];
-  v6 = [v5 signatureExistsForIdentifier:v4];
+  identifierCopy = identifier;
+  container = [(SHJSONLCustomCatalogContainer *)self container];
+  v6 = [container signatureExistsForIdentifier:identifierCopy];
 
   return v6;
 }

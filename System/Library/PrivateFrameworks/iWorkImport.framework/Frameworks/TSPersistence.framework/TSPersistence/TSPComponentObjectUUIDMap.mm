@@ -1,23 +1,23 @@
 @interface TSPComponentObjectUUIDMap
-- (TSPComponentObjectUUIDMap)initWithComponentObjectUUIDMap:(id)a3;
-- (TSPComponentObjectUUIDMap)initWithMessage:(const void *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectUUIDForIdentifier:(int64_t)a3;
-- (int64_t)identifierForObjectUUID:(id)a3;
+- (TSPComponentObjectUUIDMap)initWithComponentObjectUUIDMap:(id)map;
+- (TSPComponentObjectUUIDMap)initWithMessage:(const void *)message;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectUUIDForIdentifier:(int64_t)identifier;
+- (int64_t)identifierForObjectUUID:(id)d;
 - (unint64_t)count;
 - (void)dealloc;
-- (void)enumerateIdentifiersAndObjectUUIDsUsingBlock:(id)a3;
-- (void)saveToMessage:(void *)a3;
+- (void)enumerateIdentifiersAndObjectUUIDsUsingBlock:(id)block;
+- (void)saveToMessage:(void *)message;
 @end
 
 @implementation TSPComponentObjectUUIDMap
 
-- (TSPComponentObjectUUIDMap)initWithMessage:(const void *)a3
+- (TSPComponentObjectUUIDMap)initWithMessage:(const void *)message
 {
   v6.receiver = self;
   v6.super_class = TSPComponentObjectUUIDMap;
   v4 = [(TSPComponentObjectUUIDMap *)&v6 init];
-  if (v4 && *(a3 + 2) >= 1)
+  if (v4 && *(message + 2) >= 1)
   {
     operator new();
   }
@@ -25,14 +25,14 @@
   return v4;
 }
 
-- (TSPComponentObjectUUIDMap)initWithComponentObjectUUIDMap:(id)a3
+- (TSPComponentObjectUUIDMap)initWithComponentObjectUUIDMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v8.receiver = self;
   v8.super_class = TSPComponentObjectUUIDMap;
   v5 = [(TSPComponentObjectUUIDMap *)&v8 init];
   v6 = v5;
-  if (v4 && v5 && v4[1])
+  if (mapCopy && v5 && mapCopy[1])
   {
     operator new();
   }
@@ -75,13 +75,13 @@
   }
 }
 
-- (id)objectUUIDForIdentifier:(int64_t)a3
+- (id)objectUUIDForIdentifier:(int64_t)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   identifierToUUIDMap = self->_identifierToUUIDMap;
   if (identifierToUUIDMap)
   {
-    identifierToUUIDMap = sub_2769ABC64(identifierToUUIDMap, &v5);
+    identifierToUUIDMap = sub_2769ABC64(identifierToUUIDMap, &identifierCopy);
     if (identifierToUUIDMap)
     {
       identifierToUUIDMap = identifierToUUIDMap[3];
@@ -91,11 +91,11 @@
   return identifierToUUIDMap;
 }
 
-- (int64_t)identifierForObjectUUID:(id)a3
+- (int64_t)identifierForObjectUUID:(id)d
 {
-  v9 = a3;
+  dCopy = d;
   uuidToIdentifierMap = self->_uuidToIdentifierMap;
-  if (uuidToIdentifierMap && (v6 = sub_276A174D4(uuidToIdentifierMap, &v9, v4)) != 0)
+  if (uuidToIdentifierMap && (v6 = sub_276A174D4(uuidToIdentifierMap, &dCopy, v4)) != 0)
   {
     v7 = v6[3];
   }
@@ -108,10 +108,10 @@
   return v7;
 }
 
-- (void)enumerateIdentifiersAndObjectUUIDsUsingBlock:(id)a3
+- (void)enumerateIdentifiersAndObjectUUIDsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     identifierToUUIDMap = self->_identifierToUUIDMap;
     if (identifierToUUIDMap)
@@ -126,7 +126,7 @@
           break;
         }
 
-        (*(v4 + 2))(v4, v6[2], v6[3], &v7);
+        (*(blockCopy + 2))(blockCopy, v6[2], v6[3], &v7);
       }
 
       while ((v7 & 1) == 0);
@@ -134,7 +134,7 @@
   }
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
   identifierToUUIDMap = self->_identifierToUUIDMap;
   if (identifierToUUIDMap)
@@ -144,34 +144,34 @@
     {
       while (1)
       {
-        v6 = *(a3 + 2);
+        v6 = *(message + 2);
         if (!v6)
         {
           break;
         }
 
-        v7 = *(a3 + 2);
+        v7 = *(message + 2);
         v8 = *v6;
         if (v7 >= *v6)
         {
-          if (v8 == *(a3 + 3))
+          if (v8 == *(message + 3))
           {
 LABEL_8:
-            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3, v8 + 1);
-            v6 = *(a3 + 2);
+            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message, v8 + 1);
+            v6 = *(message + 2);
             v8 = *v6;
           }
 
           *v6 = v8 + 1;
-          v9 = sub_2769F5280(*a3);
-          v10 = *(a3 + 2);
-          v11 = *(a3 + 2) + 8 * v10;
-          *(a3 + 2) = v10 + 1;
+          v9 = sub_2769F5280(*message);
+          v10 = *(message + 2);
+          v11 = *(message + 2) + 8 * v10;
+          *(message + 2) = v10 + 1;
           *(v11 + 8) = v9;
           goto LABEL_10;
         }
 
-        *(a3 + 2) = v7 + 1;
+        *(message + 2) = v7 + 1;
         v9 = *&v6[2 * v7 + 2];
 LABEL_10:
         *(v9 + 16) |= 2u;
@@ -200,15 +200,15 @@ LABEL_10:
         }
       }
 
-      v8 = *(a3 + 3);
+      v8 = *(message + 3);
       goto LABEL_8;
     }
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSPMutableComponentObjectUUIDMap, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSPMutableComponentObjectUUIDMap, a2, zone);
 
   return MEMORY[0x2821F9670](v4, sel_initWithComponentObjectUUIDMap_, self);
 }

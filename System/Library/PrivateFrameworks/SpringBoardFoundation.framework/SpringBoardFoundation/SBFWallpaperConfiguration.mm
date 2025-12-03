@@ -9,18 +9,18 @@
 {
   v4.receiver = self;
   v4.super_class = SBFWallpaperConfiguration;
-  v2 = [(PBUIWallpaperConfiguration *)&v4 wallpaperOptions];
+  wallpaperOptions = [(PBUIWallpaperConfiguration *)&v4 wallpaperOptions];
 
-  return v2;
+  return wallpaperOptions;
 }
 
 - (SBFWallpaperImage)wallpaperImage
 {
   v4.receiver = self;
   v4.super_class = SBFWallpaperConfiguration;
-  v2 = [(PBUIWallpaperConfiguration *)&v4 wallpaperImage];
+  wallpaperImage = [(PBUIWallpaperConfiguration *)&v4 wallpaperImage];
 
-  return v2;
+  return wallpaperImage;
 }
 
 @end

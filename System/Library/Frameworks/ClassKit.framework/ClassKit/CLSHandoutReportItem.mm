@@ -1,9 +1,9 @@
 @interface CLSHandoutReportItem
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 + (id)hashableColumnNames;
-- (CLSHandoutReportItem)initWithDatabaseRow:(id)a3;
+- (CLSHandoutReportItem)initWithDatabaseRow:(id)row;
 - (unint64_t)changeHash;
-- (void)bindTo:(id)a3;
+- (void)bindTo:(id)to;
 @end
 
 @implementation CLSHandoutReportItem
@@ -29,60 +29,60 @@
     v3 = 0;
   }
 
-  v4 = [(CLSHandoutReportItem *)self endDate];
-  v5 = [v4 hash];
+  endDate = [(CLSHandoutReportItem *)self endDate];
+  v5 = [endDate hash];
 
   return v5 ^ v3;
 }
 
-- (CLSHandoutReportItem)initWithDatabaseRow:(id)a3
+- (CLSHandoutReportItem)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v23.receiver = self;
   v23.super_class = CLSHandoutReportItem;
   v5 = [(CLSHandoutReportItem *)&v23 init];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"type");
+    v6 = sub_10016D778(rowCopy, @"type");
     -[CLSHandoutReportItem setType:](v5, "setType:", [v6 intValue]);
 
-    v7 = sub_10016D778(v4, @"granularity");
+    v7 = sub_10016D778(rowCopy, @"granularity");
     -[CLSHandoutReportItem setGranularity:](v5, "setGranularity:", [v7 intValue]);
 
-    v8 = sub_10016D778(v4, @"studentID");
+    v8 = sub_10016D778(rowCopy, @"studentID");
     [(CLSHandoutReportItem *)v5 setStudentID:v8];
 
-    v9 = sub_10016D778(v4, @"classID");
+    v9 = sub_10016D778(rowCopy, @"classID");
     [(CLSHandoutReportItem *)v5 setClassID:v9];
 
-    v10 = sub_10016D778(v4, @"handoutID");
+    v10 = sub_10016D778(rowCopy, @"handoutID");
     [(CLSHandoutReportItem *)v5 setHandoutID:v10];
 
-    v11 = sub_10016D6F0(v4, @"startDate");
+    v11 = sub_10016D6F0(rowCopy, @"startDate");
     [(CLSHandoutReportItem *)v5 setStartDate:v11];
 
-    v12 = sub_10016D6F0(v4, @"endDate");
+    v12 = sub_10016D6F0(rowCopy, @"endDate");
     [(CLSHandoutReportItem *)v5 setEndDate:v12];
 
-    v13 = sub_10016D778(v4, @"completed");
+    v13 = sub_10016D778(rowCopy, @"completed");
     -[CLSHandoutReportItem setCompleted:](v5, "setCompleted:", [v13 BOOLValue]);
 
-    v14 = sub_10016D778(v4, @"attachmentID");
+    v14 = sub_10016D778(rowCopy, @"attachmentID");
     [(CLSHandoutReportItem *)v5 setAttachmentID:v14];
 
-    v15 = sub_10016D778(v4, @"reportID");
+    v15 = sub_10016D778(rowCopy, @"reportID");
     [(CLSHandoutReportItem *)v5 setReportID:v15];
 
     v16 = objc_opt_class();
     v17 = [NSSet setWithObjects:v16, objc_opt_class(), 0];
-    v18 = sub_10016D778(v4, @"primaryActivityReport");
+    v18 = sub_10016D778(rowCopy, @"primaryActivityReport");
     if (v18)
     {
       v19 = [NSKeyedUnarchiver cls_secureUnarchiveObjectOfClasses:v17 withData:v18];
       [(CLSHandoutReportItem *)v5 setPrimaryActivityReport:v19];
     }
 
-    v20 = sub_10016D778(v4, @"additionalActivityReports");
+    v20 = sub_10016D778(rowCopy, @"additionalActivityReports");
 
     if (v20)
     {
@@ -94,44 +94,44 @@
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = [NSNumber numberWithInt:[(CLSHandoutReportItem *)self type]];
-  sub_1000982FC(v4, v5, @"type");
+  sub_1000982FC(toCopy, v5, @"type");
 
   v6 = [NSNumber numberWithInt:[(CLSHandoutReportItem *)self granularity]];
-  sub_1000982FC(v4, v6, @"granularity");
+  sub_1000982FC(toCopy, v6, @"granularity");
 
-  v7 = [(CLSHandoutReportItem *)self studentID];
-  sub_1000982FC(v4, v7, @"studentID");
+  studentID = [(CLSHandoutReportItem *)self studentID];
+  sub_1000982FC(toCopy, studentID, @"studentID");
 
-  v8 = [(CLSHandoutReportItem *)self classID];
-  sub_1000982FC(v4, v8, @"classID");
+  classID = [(CLSHandoutReportItem *)self classID];
+  sub_1000982FC(toCopy, classID, @"classID");
 
-  v9 = [(CLSHandoutReportItem *)self handoutID];
-  sub_1000982FC(v4, v9, @"handoutID");
+  handoutID = [(CLSHandoutReportItem *)self handoutID];
+  sub_1000982FC(toCopy, handoutID, @"handoutID");
 
-  v10 = [(CLSHandoutReportItem *)self startDate];
-  sub_1000982FC(v4, v10, @"startDate");
+  startDate = [(CLSHandoutReportItem *)self startDate];
+  sub_1000982FC(toCopy, startDate, @"startDate");
 
-  v11 = [(CLSHandoutReportItem *)self endDate];
-  sub_1000982FC(v4, v11, @"endDate");
+  endDate = [(CLSHandoutReportItem *)self endDate];
+  sub_1000982FC(toCopy, endDate, @"endDate");
 
   v12 = [NSNumber numberWithBool:[(CLSHandoutReportItem *)self isCompleted]];
-  sub_1000982FC(v4, v12, @"completed");
+  sub_1000982FC(toCopy, v12, @"completed");
 
-  v13 = [(CLSHandoutReportItem *)self attachmentID];
-  sub_1000982FC(v4, v13, @"attachmentID");
+  attachmentID = [(CLSHandoutReportItem *)self attachmentID];
+  sub_1000982FC(toCopy, attachmentID, @"attachmentID");
 
-  v14 = [(CLSHandoutReportItem *)self reportID];
-  sub_1000982FC(v4, v14, @"reportID");
+  reportID = [(CLSHandoutReportItem *)self reportID];
+  sub_1000982FC(toCopy, reportID, @"reportID");
 
-  v15 = [(CLSHandoutReportItem *)self primaryActivityReport];
-  if (v15)
+  primaryActivityReport = [(CLSHandoutReportItem *)self primaryActivityReport];
+  if (primaryActivityReport)
   {
     v24 = 0;
-    v16 = [NSKeyedArchiver archivedDataWithRootObject:v15 requiringSecureCoding:1 error:&v24];
+    v16 = [NSKeyedArchiver archivedDataWithRootObject:primaryActivityReport requiringSecureCoding:1 error:&v24];
     v17 = v24;
     v18 = v17;
     if (v17)
@@ -139,14 +139,14 @@
       [v17 cls_debug:CLSLogDatabase];
     }
 
-    sub_1000982FC(v4, v16, @"primaryActivityReport");
+    sub_1000982FC(toCopy, v16, @"primaryActivityReport");
   }
 
-  v19 = [(CLSHandoutReportItem *)self additionalActivityReports];
-  if (v19)
+  additionalActivityReports = [(CLSHandoutReportItem *)self additionalActivityReports];
+  if (additionalActivityReports)
   {
     v23 = 0;
-    v20 = [NSKeyedArchiver archivedDataWithRootObject:v19 requiringSecureCoding:1 error:&v23];
+    v20 = [NSKeyedArchiver archivedDataWithRootObject:additionalActivityReports requiringSecureCoding:1 error:&v23];
     v21 = v23;
     v22 = v21;
     if (v21)
@@ -154,20 +154,20 @@
       [v21 cls_debug:CLSLogDatabase];
     }
 
-    sub_1000982FC(v4, v20, @"additionalActivityReports");
+    sub_1000982FC(toCopy, v20, @"additionalActivityReports");
   }
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3 == 1)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version == 1)
   {
 LABEL_7:
     if (sub_1000B9298(v8, @"create index CLSHandoutReportItem_studentID on CLSHandoutReportItem (studentID)", 0, 0, 0))
     {
-      a3 = 2;
+      version = 2;
       goto LABEL_9;
     }
 
@@ -176,9 +176,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSHandoutReportItem(   type                       integer not null,    granularity                integer not null,    studentID                  text not null,    classID                    text not null,    handoutID                  text not null,    completed                  integer not null,    attachmentID               text not null,    reportID                   text not null,    startDate                  real,    endDate                    real,    primaryActivityReport      blob,    additionalActivityReports  blob)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSHandoutReportItem_handoutID on CLSHandoutReportItem (handoutID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSHandoutReportItem_attachmentID on CLSHandoutReportItem (attachmentID)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSHandoutReportItem_reportID on CLSHandoutReportItem (reportID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSHandoutReportItem(   type                       integer not null,    granularity                integer not null,    studentID                  text not null,    classID                    text not null,    handoutID                  text not null,    completed                  integer not null,    attachmentID               text not null,    reportID                   text not null,    startDate                  real,    endDate                    real,    primaryActivityReport      blob,    additionalActivityReports  blob)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSHandoutReportItem_handoutID on CLSHandoutReportItem (handoutID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSHandoutReportItem_attachmentID on CLSHandoutReportItem (attachmentID)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSHandoutReportItem_reportID on CLSHandoutReportItem (reportID)", 0, 0, 0))
     {
       goto LABEL_10;
     }
@@ -187,7 +187,7 @@ LABEL_10:
   }
 
 LABEL_9:
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_11:
 

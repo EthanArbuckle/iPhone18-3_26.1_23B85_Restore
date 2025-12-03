@@ -2,37 +2,37 @@
 - (UIPanGestureRecognizer)_panGestureRecognizer;
 - (UIView)view;
 - (_UISheetPresentationInteractionDelegate)_delegate;
-- (void)_handlePan:(id)a3;
-- (void)_setPanGestureRecognizer:(id)a3;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)_handlePan:(id)pan;
+- (void)_setPanGestureRecognizer:(id)recognizer;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UISheetPresentationInteraction
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
-  v7 = [(_UISheetPresentationInteraction *)self view];
+  viewCopy = view;
+  view = [(_UISheetPresentationInteraction *)self view];
 
-  v5 = v7;
-  if (v7 && v7 != v4)
+  v5 = view;
+  if (view && view != viewCopy)
   {
-    v6 = [(_UISheetPresentationInteraction *)self _panGestureRecognizer];
-    [v7 removeGestureRecognizer:v6];
+    _panGestureRecognizer = [(_UISheetPresentationInteraction *)self _panGestureRecognizer];
+    [view removeGestureRecognizer:_panGestureRecognizer];
 
-    v5 = v7;
+    v5 = view;
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  [(_UISheetPresentationInteraction *)self setView:v5];
-  if (v5)
+  viewCopy = view;
+  [(_UISheetPresentationInteraction *)self setView:viewCopy];
+  if (viewCopy)
   {
-    v4 = [(_UISheetPresentationInteraction *)self _panGestureRecognizer];
-    [v5 addGestureRecognizer:v4];
+    _panGestureRecognizer = [(_UISheetPresentationInteraction *)self _panGestureRecognizer];
+    [viewCopy addGestureRecognizer:_panGestureRecognizer];
   }
 }
 
@@ -53,55 +53,55 @@
   return panGestureRecognizer;
 }
 
-- (void)_setPanGestureRecognizer:(id)a3
+- (void)_setPanGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
+  recognizerCopy = recognizer;
   p_panGestureRecognizer = &self->__panGestureRecognizer;
-  if (self->__panGestureRecognizer != v5)
+  if (self->__panGestureRecognizer != recognizerCopy)
   {
-    v9 = v5;
-    v7 = [(_UISheetPresentationInteraction *)self view];
+    v9 = recognizerCopy;
+    view = [(_UISheetPresentationInteraction *)self view];
     panGestureRecognizer = self->__panGestureRecognizer;
     if (panGestureRecognizer)
     {
       [(UIGestureRecognizer *)panGestureRecognizer removeTarget:self action:sel__handlePan_];
-      [v7 removeGestureRecognizer:self->__panGestureRecognizer];
+      [view removeGestureRecognizer:self->__panGestureRecognizer];
     }
 
-    objc_storeStrong(&self->__panGestureRecognizer, a3);
+    objc_storeStrong(&self->__panGestureRecognizer, recognizer);
     if (*p_panGestureRecognizer)
     {
       [(UIGestureRecognizer *)*p_panGestureRecognizer addTarget:self action:sel__handlePan_];
-      [v7 addGestureRecognizer:self->__panGestureRecognizer];
+      [view addGestureRecognizer:self->__panGestureRecognizer];
     }
 
-    v5 = v9;
+    recognizerCopy = v9;
   }
 }
 
-- (void)_handlePan:(id)a3
+- (void)_handlePan:(id)pan
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  panCopy = pan;
+  if ([panCopy state] == 1)
   {
-    v5 = [(_UISheetPresentationInteraction *)self _delegate];
-    v6 = [v5 _sheetPresentationInteractionPresentingViewController:self];
-    v7 = [v5 _sheetPresentationInteractionPresentedViewController:self];
-    v8 = [v7 presentationController];
+    _delegate = [(_UISheetPresentationInteraction *)self _delegate];
+    v6 = [_delegate _sheetPresentationInteractionPresentingViewController:self];
+    v7 = [_delegate _sheetPresentationInteractionPresentedViewController:self];
+    presentationController = [v7 presentationController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = presentationController;
       if (objc_opt_respondsToSelector())
       {
-        [v5 _sheetPresentationInteractionWillStartPresentationTransition:self];
+        [_delegate _sheetPresentationInteractionWillStartPresentationTransition:self];
       }
 
       [v9 _setPresentsWithGesture:1];
-      v10 = [v9 _sheetInteraction];
-      [v10 registerPanGestureRecognizer:v4];
+      _sheetInteraction = [v9 _sheetInteraction];
+      [_sheetInteraction registerPanGestureRecognizer:panCopy];
 
-      [v4 removeTarget:self action:sel__handlePan_];
+      [panCopy removeTarget:self action:sel__handlePan_];
       objc_initWeak(&location, self);
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -115,9 +115,9 @@
       v12[3] = &unk_1E70F6B40;
       v11 = v9;
       v13 = v11;
-      v14 = v4;
-      v15 = self;
-      v16 = v5;
+      v14 = panCopy;
+      selfCopy = self;
+      v16 = _delegate;
       [v11 _startInteractiveTransitionWithProgress:v6 fromViewController:v12 completion:0.0];
 
       objc_destroyWeak(&v18);

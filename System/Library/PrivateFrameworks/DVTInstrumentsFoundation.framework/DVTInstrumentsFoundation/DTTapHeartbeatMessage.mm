@@ -1,7 +1,7 @@
 @interface DTTapHeartbeatMessage
 - (DTTapHeartbeatMessage)init;
 - (unint64_t)heartbeatTime;
-- (void)setHeartbeatTime:(unint64_t)a3;
+- (void)setHeartbeatTime:(unint64_t)time;
 @end
 
 @implementation DTTapHeartbeatMessage
@@ -15,18 +15,18 @@
 
 - (unint64_t)heartbeatTime
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"heart"];
-  v4 = [v3 unsignedLongLongValue];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"heart"];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)setHeartbeatTime:(unint64_t)a3
+- (void)setHeartbeatTime:(unint64_t)time
 {
-  v5 = [(DTTapMessage *)self plist];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  [v5 setObject:v4 forKey:@"heart"];
+  plist = [(DTTapMessage *)self plist];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:time];
+  [plist setObject:v4 forKey:@"heart"];
 }
 
 @end

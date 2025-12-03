@@ -2,8 +2,8 @@
 - (BOOL)currentThreadIsForPrimaryiCloudAccount;
 - (OTPersonaActualAdapter)init;
 - (id)currentThreadPersonaUniqueString;
-- (void)performBlockWithPersonaIdentifier:(id)a3 block:(id)a4;
-- (void)prepareThreadForKeychainAPIUseForPersonaIdentifier:(id)a3;
+- (void)performBlockWithPersonaIdentifier:(id)identifier block:(id)block;
+- (void)prepareThreadForKeychainAPIUseForPersonaIdentifier:(id)identifier;
 @end
 
 @implementation OTPersonaActualAdapter
@@ -11,18 +11,18 @@
 - (BOOL)currentThreadIsForPrimaryiCloudAccount
 {
   v2 = +[UMUserManager sharedManager];
-  v3 = [v2 currentPersona];
+  currentPersona = [v2 currentPersona];
 
-  v4 = [v3 userPersonaType];
+  userPersonaType = [currentPersona userPersonaType];
   v5 = 1;
-  if (v4 <= 6)
+  if (userPersonaType <= 6)
   {
-    if (((1 << v4) & 0x29) != 0)
+    if (((1 << userPersonaType) & 0x29) != 0)
     {
       goto LABEL_9;
     }
 
-    if (((1 << v4) & 0x44) != 0)
+    if (((1 << userPersonaType) & 0x44) != 0)
     {
 LABEL_8:
       v5 = 0;
@@ -30,16 +30,16 @@ LABEL_8:
     }
   }
 
-  if (v4 != 1000)
+  if (userPersonaType != 1000)
   {
     v6 = sub_100006274("persona");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v3 userPersonaUniqueString];
+      userPersonaUniqueString = [currentPersona userPersonaUniqueString];
       v9 = 138412546;
-      v10 = v7;
+      v10 = userPersonaUniqueString;
       v11 = 1024;
-      v12 = [v3 userPersonaType];
+      userPersonaType2 = [currentPersona userPersonaType];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received unexpected Universal/Managed/other persona; treating as not for primary account: %@(%d)", &v9, 0x12u);
     }
 
@@ -54,36 +54,36 @@ LABEL_9:
 - (id)currentThreadPersonaUniqueString
 {
   v2 = +[UMUserManager sharedManager];
-  v3 = [v2 currentPersona];
+  currentPersona = [v2 currentPersona];
 
-  v4 = [v3 userPersonaUniqueString];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
-  return v4;
+  return userPersonaUniqueString;
 }
 
-- (void)performBlockWithPersonaIdentifier:(id)a3 block:(id)a4
+- (void)performBlockWithPersonaIdentifier:(id)identifier block:(id)block
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(OTPersonaActualAdapter *)self currentThreadPersonaUniqueString];
-  if ([v8 isEqualToString:v7])
+  identifierCopy = identifier;
+  blockCopy = block;
+  currentThreadPersonaUniqueString = [(OTPersonaActualAdapter *)self currentThreadPersonaUniqueString];
+  if ([identifierCopy isEqualToString:currentThreadPersonaUniqueString])
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 
   else
   {
-    [(OTPersonaActualAdapter *)self prepareThreadForKeychainAPIUseForPersonaIdentifier:v8];
-    v6[2](v6);
-    [(OTPersonaActualAdapter *)self prepareThreadForKeychainAPIUseForPersonaIdentifier:v7];
+    [(OTPersonaActualAdapter *)self prepareThreadForKeychainAPIUseForPersonaIdentifier:identifierCopy];
+    blockCopy[2](blockCopy);
+    [(OTPersonaActualAdapter *)self prepareThreadForKeychainAPIUseForPersonaIdentifier:currentThreadPersonaUniqueString];
   }
 }
 
-- (void)prepareThreadForKeychainAPIUseForPersonaIdentifier:(id)a3
+- (void)prepareThreadForKeychainAPIUseForPersonaIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[UMUserPersona currentPersona];
-  v5 = [v4 generateAndRestorePersonaContextWithPersonaUniqueString:v3];
+  v5 = [v4 generateAndRestorePersonaContextWithPersonaUniqueString:identifierCopy];
 
   v6 = sub_100006274("ckks-persona");
   v7 = v6;
@@ -92,7 +92,7 @@ LABEL_9:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412546;
-      v9 = v3;
+      v9 = identifierCopy;
       v10 = 2112;
       v11 = v5;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Unable to adopt persona %@: %@", &v8, 0x16u);
@@ -102,7 +102,7 @@ LABEL_9:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = identifierCopy;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Adopted persona for id '%@'", &v8, 0xCu);
   }
 }

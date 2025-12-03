@@ -1,10 +1,10 @@
 @interface NFReaderRestrictor
-- (BOOL)_readerModeStoppedShouldCooloffRun:(id)a3;
+- (BOOL)_readerModeStoppedShouldCooloffRun:(id)run;
 - (BOOL)_requiresReaderModeProtection;
 - (BOOL)_validateStartStopSequence;
 - (BOOL)readerModeProtectionActive;
 - (BOOL)readerModeStoppedShouldCooloffRun;
-- (NFReaderRestrictor)initWithThermalMonitor:(id)a3 delegate:(id)a4;
+- (NFReaderRestrictor)initWithThermalMonitor:(id)monitor delegate:(id)delegate;
 - (NFReaderRestrictorDelegate)delegate;
 - (double)getCooloffTime;
 - (double)maxOperationTimeSpan;
@@ -15,12 +15,12 @@
 - (void)_handleReaderBurnoutProtectionDebounceTimer;
 - (void)_handleReaderBurnoutProtectionTimer;
 - (void)_purgeOldOperations;
-- (void)_tagDetectedWithDate:(id)a3;
-- (void)setCurrentTestTime:(id)a3;
-- (void)stackLoaded:(id)a3;
+- (void)_tagDetectedWithDate:(id)date;
+- (void)setCurrentTestTime:(id)time;
+- (void)stackLoaded:(id)loaded;
 - (void)stackUnloaded;
 - (void)tagDetected;
-- (void)thermalStateChanged:(unint64_t)a3;
+- (void)thermalStateChanged:(unint64_t)changed;
 - (void)triggerBurnoutTimer;
 @end
 
@@ -93,21 +93,21 @@
   [(NSLock *)self->_burnoutStateLock lock];
   if ([(NFReaderRestrictor *)self _requiresReaderModeProtection]&& self->_burnoutProtectionState > 1)
   {
-    v3 = 1;
+    thermalPressureCritical = 1;
   }
 
   else if ([(NFReaderRestrictor *)self _requiresThermalModeProtection])
   {
-    v3 = [(NFReaderRestrictor *)self thermalPressureCritical];
+    thermalPressureCritical = [(NFReaderRestrictor *)self thermalPressureCritical];
   }
 
   else
   {
-    v3 = 0;
+    thermalPressureCritical = 0;
   }
 
   [(NSLock *)self->_burnoutStateLock unlock];
-  return v3;
+  return thermalPressureCritical;
 }
 
 - (BOOL)readerModeStoppedShouldCooloffRun
@@ -314,10 +314,10 @@
   return 1;
 }
 
-- (NFReaderRestrictor)initWithThermalMonitor:(id)a3 delegate:(id)a4
+- (NFReaderRestrictor)initWithThermalMonitor:(id)monitor delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  monitorCopy = monitor;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = NFReaderRestrictor;
   v9 = [(NFReaderRestrictor *)&v16 init];
@@ -331,8 +331,8 @@
     readerOperationTimes = v9->_readerOperationTimes;
     v9->_readerOperationTimes = v12;
 
-    objc_storeStrong(&v9->_thermalMonitor, a3);
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeStrong(&v9->_thermalMonitor, monitor);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     currentTestTime = v9->_currentTestTime;
     v9->_currentTestTime = 0;
 
@@ -380,9 +380,9 @@ LABEL_8:
   return v3;
 }
 
-- (void)stackLoaded:(id)a3
+- (void)stackLoaded:(id)loaded
 {
-  v4 = a3;
+  loadedCopy = loaded;
   objc_initWeak(&location, self);
   [(NSLock *)self->_burnoutStateLock lock];
   self->_burnoutProtectionState = 0;
@@ -392,7 +392,7 @@ LABEL_8:
   v16[2] = sub_1000A1FF4;
   v16[3] = &unk_100315F08;
   objc_copyWeak(&v17, &location);
-  v6 = [v5 initWithCallback:v16 queue:v4];
+  v6 = [v5 initWithCallback:v16 queue:loadedCopy];
   readermodeBurnoutProtectionTimer = self->_readermodeBurnoutProtectionTimer;
   self->_readermodeBurnoutProtectionTimer = v6;
 
@@ -402,7 +402,7 @@ LABEL_8:
   v14[2] = sub_1000A206C;
   v14[3] = &unk_100315F08;
   objc_copyWeak(&v15, &location);
-  v9 = [v8 initWithCallback:v14 queue:v4];
+  v9 = [v8 initWithCallback:v14 queue:loadedCopy];
   readermodeBurnoutProtectionDebounceTimer = self->_readermodeBurnoutProtectionDebounceTimer;
   self->_readermodeBurnoutProtectionDebounceTimer = v9;
 
@@ -413,7 +413,7 @@ LABEL_8:
   v12[2] = sub_1000A20EC;
   v12[3] = &unk_100317C00;
   objc_copyWeak(&v13, &location);
-  sub_1000689D8(thermalMonitor, v12, v4);
+  sub_1000689D8(thermalMonitor, v12, loadedCopy);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
@@ -440,13 +440,13 @@ LABEL_8:
   [(NSLock *)burnoutStateLock unlock];
 }
 
-- (void)_tagDetectedWithDate:(id)a3
+- (void)_tagDetectedWithDate:(id)date
 {
   burnoutStateLock = self->_burnoutStateLock;
-  v5 = a3;
+  dateCopy = date;
   [(NSLock *)burnoutStateLock lock];
   readerOperationTimes = self->_readerOperationTimes;
-  v7 = sub_1000B2E8C(NFReaderOperation, @"ReaderStarted", v5);
+  v7 = sub_1000B2E8C(NFReaderOperation, @"ReaderStarted", dateCopy);
 
   [(NSMutableArray *)readerOperationTimes addObject:v7];
   if ([(NFReaderRestrictor *)self _requiresThermalModeProtection]&& [(NFReaderRestrictor *)self thermalPressureCritical])
@@ -491,9 +491,9 @@ LABEL_8:
   }
 }
 
-- (BOOL)_readerModeStoppedShouldCooloffRun:(id)a3
+- (BOOL)_readerModeStoppedShouldCooloffRun:(id)run
 {
-  v5 = a3;
+  runCopy = run;
   [(NSLock *)self->_burnoutStateLock lock];
   if (![(NFReaderRestrictor *)self _requiresReaderModeProtection])
   {
@@ -554,7 +554,7 @@ LABEL_9:
     }
 
     readerOperationTimes = self->_readerOperationTimes;
-    v37 = sub_1000B2E8C(NFReaderOperation, @"ReaderStopped", v5);
+    v37 = sub_1000B2E8C(NFReaderOperation, @"ReaderStopped", runCopy);
     [(NSMutableArray *)readerOperationTimes addObject:v37];
 
     goto LABEL_33;
@@ -586,7 +586,7 @@ LABEL_36:
   [(NFReaderRestrictor *)self getCooloffTime];
   v13 = v12;
   v14 = self->_readerOperationTimes;
-  v15 = sub_1000B2E8C(NFReaderOperation, @"ReaderStopped", v5);
+  v15 = sub_1000B2E8C(NFReaderOperation, @"ReaderStopped", runCopy);
   [(NSMutableArray *)v14 addObject:v15];
 
   [(NFTimer *)self->_readermodeBurnoutProtectionTimer stopTimer];
@@ -795,10 +795,10 @@ LABEL_37:
   return v15;
 }
 
-- (void)setCurrentTestTime:(id)a3
+- (void)setCurrentTestTime:(id)time
 {
-  v5 = a3;
-  objc_storeStrong(&self->_currentTestTime, a3);
+  timeCopy = time;
+  objc_storeStrong(&self->_currentTestTime, time);
   if (self->_burnoutProtectionState == 3 && ![(NFReaderRestrictor *)self thermalPressureCritical])
   {
     [(NFTimer *)self->_readermodeBurnoutProtectionDebounceTimer stopTimer];
@@ -806,7 +806,7 @@ LABEL_37:
   }
 }
 
-- (void)thermalStateChanged:(unint64_t)a3
+- (void)thermalStateChanged:(unint64_t)changed
 {
   [(NSLock *)self->_burnoutStateLock lock];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -824,7 +824,7 @@ LABEL_37:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i New state : %lu", v10, ClassName, Name, 442, a3);
+    v7(6, "%c[%{public}s %{public}s]:%i New state : %lu", v10, ClassName, Name, 442, changed);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -851,11 +851,11 @@ LABEL_37:
     v74 = 1024;
     v75 = 442;
     v76 = 2048;
-    v77 = a3;
+    changedCopy = changed;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i New state : %lu", buf, 0x2Cu);
   }
 
-  if (a3 < 2)
+  if (changed < 2)
   {
     burnoutProtectionState = self->_burnoutProtectionState;
     if (burnoutProtectionState == 2)
@@ -974,9 +974,9 @@ LABEL_37:
     goto LABEL_50;
   }
 
-  if (a3 - 3 >= 2)
+  if (changed - 3 >= 2)
   {
-    if (a3 != 2 || self->_burnoutProtectionState != 3)
+    if (changed != 2 || self->_burnoutProtectionState != 3)
     {
       goto LABEL_65;
     }
@@ -1162,8 +1162,8 @@ LABEL_65:
 
     self->_burnoutProtectionState = 2;
     [(NSLock *)self->_burnoutStateLock unlock];
-    v13 = [(NFReaderRestrictor *)self delegate];
-    [v13 handleReaderBurnoutTimer];
+    delegate = [(NFReaderRestrictor *)self delegate];
+    [delegate handleReaderBurnoutTimer];
   }
 
   else
@@ -1286,8 +1286,8 @@ LABEL_65:
 
       self->_burnoutProtectionState = 0;
       [(NSLock *)self->_burnoutStateLock unlock];
-      v24 = [(NFReaderRestrictor *)self delegate];
-      [v24 handleReaderBurnoutCleared:coolOffRunning];
+      delegate = [(NFReaderRestrictor *)self delegate];
+      [delegate handleReaderBurnoutCleared:coolOffRunning];
     }
 
     else
@@ -1324,13 +1324,13 @@ LABEL_65:
 
 - (double)maxReaderTime
 {
-  v3 = [(NFReaderRestrictor *)self thermalPressureNominal];
+  thermalPressureNominal = [(NFReaderRestrictor *)self thermalPressureNominal];
   result = 20.0;
-  if ((v3 & 1) == 0)
+  if ((thermalPressureNominal & 1) == 0)
   {
-    v5 = [(NFReaderRestrictor *)self thermalPressureBackoff];
+    thermalPressureBackoff = [(NFReaderRestrictor *)self thermalPressureBackoff];
     result = 0.0;
-    if (v5)
+    if (thermalPressureBackoff)
     {
       return 7.0;
     }

@@ -1,6 +1,6 @@
 @interface PKInputPointExtraRollLatencyFilter
 - (id).cxx_construct;
-- (void)addInputPoint:(id *)a3;
+- (void)addInputPoint:(id *)point;
 - (void)resetFilter;
 @end
 
@@ -22,7 +22,7 @@
   std::vector<double>::resize(&self->_inputRolls.__begin_, 0);
 }
 
-- (void)addInputPoint:(id *)a3
+- (void)addInputPoint:(id *)point
 {
   if (self)
   {
@@ -87,7 +87,7 @@
           std::__allocate_at_least[abi:ne200100]<std::allocator<double>>(&self->_inputRolls, v16);
         }
 
-        *(8 * v10) = a3->var13;
+        *(8 * v10) = point->var13;
         v13 = (8 * v10 + 8);
         memcpy(0, begin, v9);
         v17 = p_inputRolls->__begin_;
@@ -108,15 +108,15 @@
 
       else
       {
-        *end = a3->var13;
+        *end = point->var13;
         v13 = end + 1;
       }
 
       self->_inputRolls.__end_ = v13;
-      a3->var13 = *begin;
+      point->var13 = *begin;
     }
 
-    memmove(&self->super._filteredPoint, a3, 0x88uLL);
+    memmove(&self->super._filteredPoint, point, 0x88uLL);
   }
 }
 

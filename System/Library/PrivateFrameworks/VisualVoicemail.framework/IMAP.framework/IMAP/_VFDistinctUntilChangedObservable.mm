@@ -1,14 +1,14 @@
 @interface _VFDistinctUntilChangedObservable
-- (BOOL)_isLastResultDistinctFromResult:(id)a3;
-- (_VFDistinctUntilChangedObservable)initWithObservable:(id)a3;
-- (id)subscribe:(id)a3;
+- (BOOL)_isLastResultDistinctFromResult:(id)result;
+- (_VFDistinctUntilChangedObservable)initWithObservable:(id)observable;
+- (id)subscribe:(id)subscribe;
 @end
 
 @implementation _VFDistinctUntilChangedObservable
 
-- (_VFDistinctUntilChangedObservable)initWithObservable:(id)a3
+- (_VFDistinctUntilChangedObservable)initWithObservable:(id)observable
 {
-  v5 = a3;
+  observableCopy = observable;
   v10.receiver = self;
   v10.super_class = _VFDistinctUntilChangedObservable;
   v6 = [(_VFDistinctUntilChangedObservable *)&v10 init];
@@ -18,22 +18,22 @@
     lock = v6->_lock;
     v6->_lock = v7;
 
-    objc_storeStrong(&v6->_observable, a3);
+    objc_storeStrong(&v6->_observable, observable);
   }
 
   return v6;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   observable = self->_observable;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __47___VFDistinctUntilChangedObservable_subscribe___block_invoke;
   v17[3] = &unk_279E33BE0;
   v17[4] = self;
-  v18 = v4;
+  v18 = subscribeCopy;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __47___VFDistinctUntilChangedObservable_subscribe___block_invoke_2;
@@ -51,14 +51,14 @@
   return v8;
 }
 
-- (BOOL)_isLastResultDistinctFromResult:(id)a3
+- (BOOL)_isLastResultDistinctFromResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   [(NSLock *)self->_lock lock];
-  v6 = [v5 isEqual:self->_lastObservedResult];
+  v6 = [resultCopy isEqual:self->_lastObservedResult];
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_lastObservedResult, a3);
+    objc_storeStrong(&self->_lastObservedResult, result);
   }
 
   [(NSLock *)self->_lock unlock];

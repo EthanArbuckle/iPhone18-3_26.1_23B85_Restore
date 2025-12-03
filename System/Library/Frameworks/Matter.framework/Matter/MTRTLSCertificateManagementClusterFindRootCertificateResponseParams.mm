@@ -1,9 +1,9 @@
 @interface MTRTLSCertificateManagementClusterFindRootCertificateResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRTLSCertificateManagementClusterFindRootCertificateResponseParams)init;
-- (MTRTLSCertificateManagementClusterFindRootCertificateResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRTLSCertificateManagementClusterFindRootCertificateResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRTLSCertificateManagementClusterFindRootCertificateResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRTLSCertificateManagementClusterFindRootCertificateResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,19 +16,19 @@
   v2 = [(MTRTLSCertificateManagementClusterFindRootCertificateResponseParams *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     certificateDetails = v2->_certificateDetails;
-    v2->_certificateDetails = v3;
+    v2->_certificateDetails = array;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTLSCertificateManagementClusterFindRootCertificateResponseParams);
-  v5 = [(MTRTLSCertificateManagementClusterFindRootCertificateResponseParams *)self certificateDetails];
-  [(MTRTLSCertificateManagementClusterFindRootCertificateResponseParams *)v4 setCertificateDetails:v5];
+  certificateDetails = [(MTRTLSCertificateManagementClusterFindRootCertificateResponseParams *)self certificateDetails];
+  [(MTRTLSCertificateManagementClusterFindRootCertificateResponseParams *)v4 setCertificateDetails:certificateDetails];
 
   return v4;
 }
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (MTRTLSCertificateManagementClusterFindRootCertificateResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRTLSCertificateManagementClusterFindRootCertificateResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTRTLSCertificateManagementClusterFindRootCertificateResponseParams;
   v7 = [(MTRTLSCertificateManagementClusterFindRootCertificateResponseParams *)&v15 init];
@@ -55,7 +55,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:2049 commandID:3 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:2049 commandID:3 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -78,7 +78,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -89,7 +89,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRTLSCertificateManagementClusterFindRootCertificateResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRTLSCertificateManagementClusterFindRootCertificateResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRTLSCertificateManagementClusterFindRootCertificateResponseParams;
@@ -97,7 +97,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRTLSCertificateManagementClusterFindRootCertificateResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRTLSCertificateManagementClusterFindRootCertificateResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -113,10 +113,10 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v5 = objc_opt_new();
-  sub_238E8175C(a3, v15);
+  sub_238E8175C(struct, v15);
   while (sub_238E817AC(v15))
   {
     v6 = objc_opt_new();

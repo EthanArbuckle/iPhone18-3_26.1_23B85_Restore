@@ -1,25 +1,25 @@
 @interface CLSActivityItem
-- (id)generateReportFromDataInDatabase:(id)a3;
-- (void)_populateReportItem:(id)a3;
+- (id)generateReportFromDataInDatabase:(id)database;
+- (void)_populateReportItem:(id)item;
 @end
 
 @implementation CLSActivityItem
 
-- (id)generateReportFromDataInDatabase:(id)a3
+- (id)generateReportFromDataInDatabase:(id)database
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (void)_populateReportItem:(id)a3
+- (void)_populateReportItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CLSActivityItem *)self title];
-  [v4 setTitle:v5];
+  itemCopy = item;
+  title = [(CLSActivityItem *)self title];
+  [itemCopy setTitle:title];
 
-  v6 = [(CLSActivityItem *)self identifier];
-  [v4 setIdentifier:v6];
+  identifier = [(CLSActivityItem *)self identifier];
+  [itemCopy setIdentifier:identifier];
 }
 
 @end

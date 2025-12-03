@@ -1,10 +1,10 @@
 @interface PSPearlStream
-+ (id)pearlStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 width:(unint64_t)a5 height:(unint64_t)a6 pixelFormat:(unsigned int)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validate:(id *)a3;
++ (id)pearlStreamWithResourceKey:(id)key options:(ps_resource_options *)options width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validate:(id *)validate;
 - (PSPearlStream)init;
-- (PSPearlStream)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PSPearlStream)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSPearlStream
@@ -23,64 +23,64 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = PSPearlStream;
-  [(PSResourceStream *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_width forKey:@"width"];
-  [v4 encodeInteger:self->_height forKey:@"height"];
-  [v4 encodeInt32:self->_pixelFormat forKey:@"pixelFormat"];
-  [v4 encodeInteger:self->_dxWidth forKey:@"dxWidth"];
-  [v4 encodeInteger:self->_dxHeight forKey:@"dxHeight"];
-  [v4 encodeInt32:self->_dxPixelFormat forKey:@"dxPixelFormat"];
-  [v4 encodeInteger:self->_dyWidth forKey:@"dyWidth"];
-  [v4 encodeInteger:self->_dyHeight forKey:@"dyHeight"];
-  [v4 encodeInt32:self->_dyPixelFormat forKey:@"dyPixelFormat"];
-  [v4 encodeInteger:self->_scoreWidth forKey:@"scoreWidth"];
-  [v4 encodeInteger:self->_scoreHeight forKey:@"scoreHeight"];
-  [v4 encodeInteger:self->_scorePixelFormat forKey:@"scorePixelFormat"];
+  [(PSResourceStream *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_width forKey:@"width"];
+  [coderCopy encodeInteger:self->_height forKey:@"height"];
+  [coderCopy encodeInt32:self->_pixelFormat forKey:@"pixelFormat"];
+  [coderCopy encodeInteger:self->_dxWidth forKey:@"dxWidth"];
+  [coderCopy encodeInteger:self->_dxHeight forKey:@"dxHeight"];
+  [coderCopy encodeInt32:self->_dxPixelFormat forKey:@"dxPixelFormat"];
+  [coderCopy encodeInteger:self->_dyWidth forKey:@"dyWidth"];
+  [coderCopy encodeInteger:self->_dyHeight forKey:@"dyHeight"];
+  [coderCopy encodeInt32:self->_dyPixelFormat forKey:@"dyPixelFormat"];
+  [coderCopy encodeInteger:self->_scoreWidth forKey:@"scoreWidth"];
+  [coderCopy encodeInteger:self->_scoreHeight forKey:@"scoreHeight"];
+  [coderCopy encodeInteger:self->_scorePixelFormat forKey:@"scorePixelFormat"];
 }
 
-- (PSPearlStream)initWithCoder:(id)a3
+- (PSPearlStream)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PSPearlStream;
-  v5 = [(PSResourceStream *)&v9 initWithCoder:v4];
+  v5 = [(PSResourceStream *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(PSResourceStream *)v5 setResourceClass:11];
-    v6->_width = [v4 decodeIntegerForKey:@"width"];
-    v6->_height = [v4 decodeIntegerForKey:@"height"];
-    v6->_pixelFormat = [v4 decodeInt32ForKey:@"pixelFormat"];
-    v6->_dxWidth = [v4 decodeIntegerForKey:@"dxWidth"];
-    v6->_dxHeight = [v4 decodeIntegerForKey:@"dxHeight"];
-    v6->_dxPixelFormat = [v4 decodeInt32ForKey:@"dxPixelFormat"];
-    v6->_dyWidth = [v4 decodeIntegerForKey:@"dyWidth"];
-    v6->_dyHeight = [v4 decodeIntegerForKey:@"dyHeight"];
-    v6->_dyPixelFormat = [v4 decodeInt32ForKey:@"dyPixelFormat"];
-    v6->_scoreWidth = [v4 decodeIntegerForKey:@"scoreWidth"];
-    v6->_scoreHeight = [v4 decodeIntegerForKey:@"scoreHeight"];
-    v6->_scorePixelFormat = [v4 decodeInt32ForKey:@"scorePixelFormat"];
+    v6->_width = [coderCopy decodeIntegerForKey:@"width"];
+    v6->_height = [coderCopy decodeIntegerForKey:@"height"];
+    v6->_pixelFormat = [coderCopy decodeInt32ForKey:@"pixelFormat"];
+    v6->_dxWidth = [coderCopy decodeIntegerForKey:@"dxWidth"];
+    v6->_dxHeight = [coderCopy decodeIntegerForKey:@"dxHeight"];
+    v6->_dxPixelFormat = [coderCopy decodeInt32ForKey:@"dxPixelFormat"];
+    v6->_dyWidth = [coderCopy decodeIntegerForKey:@"dyWidth"];
+    v6->_dyHeight = [coderCopy decodeIntegerForKey:@"dyHeight"];
+    v6->_dyPixelFormat = [coderCopy decodeInt32ForKey:@"dyPixelFormat"];
+    v6->_scoreWidth = [coderCopy decodeIntegerForKey:@"scoreWidth"];
+    v6->_scoreHeight = [coderCopy decodeIntegerForKey:@"scoreHeight"];
+    v6->_scorePixelFormat = [coderCopy decodeInt32ForKey:@"scorePixelFormat"];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v19 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v21.receiver = self;
@@ -136,33 +136,33 @@ LABEL_19:
   return v19;
 }
 
-+ (id)pearlStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 width:(unint64_t)a5 height:(unint64_t)a6 pixelFormat:(unsigned int)a7
++ (id)pearlStreamWithResourceKey:(id)key options:(ps_resource_options *)options width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format
 {
-  v11 = a3;
+  keyCopy = key;
   v12 = objc_alloc_init(PSPearlStream);
-  [(PSResourceStream *)v12 setKey:v11];
+  [(PSResourceStream *)v12 setKey:keyCopy];
   [(PSResourceStream *)v12 setProvider:9];
-  v12->_width = a5;
-  v12->_height = a6;
-  v12->_pixelFormat = a7;
+  v12->_width = width;
+  v12->_height = height;
+  v12->_pixelFormat = format;
   [(PSPearlStream *)v12 setHasAttachments:0];
-  [(PSResourceStream *)v12 setOptions:a4->storage_mode, a4->creation_mode];
+  [(PSResourceStream *)v12 setOptions:options->storage_mode, options->creation_mode];
 
   return v12;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   if ([(PSResourceStream *)self resourceClass]!= 9)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resource Class invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_22;
     }
 
 LABEL_21:
-    *a3 = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v9];
+    *validate = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v9];
     goto LABEL_22;
   }
 
@@ -171,7 +171,7 @@ LABEL_21:
   if (!v5)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream key invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_22;
     }
@@ -183,7 +183,7 @@ LABEL_21:
   if (!v6)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.creation_mode invalid for the stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_22;
     }
@@ -194,7 +194,7 @@ LABEL_21:
   if ([(PSResourceStream *)self options]== 0)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.storage_mode invalid for the stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_22;
     }
@@ -206,7 +206,7 @@ LABEL_21:
   if (v7 == 1 && (!self->_width || !self->_height))
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"CVDataBuffer properties required for descriptor mode (options.creation_mode)"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_22;
     }
@@ -221,7 +221,7 @@ LABEL_21:
   }
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Pearl Stream should never have a creation mode with allocator since it is unsupported"];
-  if (a3)
+  if (validate)
   {
     goto LABEL_21;
   }

@@ -1,20 +1,20 @@
 @interface VSViewServiceRequestOperation
-- (BOOL)viewServiceHostViewController:(id)a3 shouldAuthenticateAccountProviderWithIdentifier:(id)a4;
+- (BOOL)viewServiceHostViewController:(id)controller shouldAuthenticateAccountProviderWithIdentifier:(id)identifier;
 - (VSViewServiceRequestOperation)init;
-- (VSViewServiceRequestOperation)initWithViewServiceRequest:(id)a3;
+- (VSViewServiceRequestOperation)initWithViewServiceRequest:(id)request;
 - (VSViewServiceRequestOperationDelegate)delegate;
 - (void)_dismissViewController;
 - (void)_dismissViewControllerIfRequired;
 - (void)_presentViewController;
 - (void)cancel;
-- (void)dismissViewServiceHostViewController:(id)a3;
+- (void)dismissViewServiceHostViewController:(id)controller;
 - (void)executionDidBegin;
 - (void)finishExecutionIfPossible;
-- (void)presentViewServiceHostViewController:(id)a3;
-- (void)viewServiceHostViewController:(id)a3 didCancelRequest:(id)a4;
-- (void)viewServiceHostViewController:(id)a3 didChooseAdditionalProvidersForRequest:(id)a4;
-- (void)viewServiceHostViewController:(id)a3 request:(id)a4 didFailWithError:(id)a5;
-- (void)viewServiceHostViewController:(id)a3 request:(id)a4 didFinishWithResponse:(id)a5;
+- (void)presentViewServiceHostViewController:(id)controller;
+- (void)viewServiceHostViewController:(id)controller didCancelRequest:(id)request;
+- (void)viewServiceHostViewController:(id)controller didChooseAdditionalProvidersForRequest:(id)request;
+- (void)viewServiceHostViewController:(id)controller request:(id)request didFailWithError:(id)error;
+- (void)viewServiceHostViewController:(id)controller request:(id)request didFinishWithResponse:(id)response;
 @end
 
 @implementation VSViewServiceRequestOperation
@@ -29,10 +29,10 @@
   return 0;
 }
 
-- (VSViewServiceRequestOperation)initWithViewServiceRequest:(id)a3
+- (VSViewServiceRequestOperation)initWithViewServiceRequest:(id)request
 {
-  v4 = a3;
-  if (!v4)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewServiceRequest parameter must not be nil."];
   }
@@ -42,13 +42,13 @@
   v5 = [(VSViewServiceRequestOperation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestCopy copy];
     viewServiceRequest = v5->_viewServiceRequest;
     v5->_viewServiceRequest = v6;
 
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     requestID = v5->_requestID;
-    v5->_requestID = v8;
+    v5->_requestID = uUID;
 
     v10 = objc_alloc_init(VSOptional);
     v11 = v5->_result;
@@ -62,23 +62,23 @@
 {
   v9 = *MEMORY[0x277D85DE8];
   VSRequireMainThread();
-  v3 = [(VSViewServiceRequestOperation *)self viewServiceHostViewController];
+  viewServiceHostViewController = [(VSViewServiceRequestOperation *)self viewServiceHostViewController];
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = viewServiceHostViewController;
     _os_log_impl(&dword_23AB8E000, v4, OS_LOG_TYPE_DEFAULT, "Will present view controller: %@", &v7, 0xCu);
   }
 
-  v5 = [(VSViewServiceRequestOperation *)self delegate];
-  [v5 viewServiceRequestOperation:self presentViewController:v3];
+  delegate = [(VSViewServiceRequestOperation *)self delegate];
+  [delegate viewServiceRequestOperation:self presentViewController:viewServiceHostViewController];
 
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = viewServiceHostViewController;
     _os_log_impl(&dword_23AB8E000, v6, OS_LOG_TYPE_DEFAULT, "Did present view controller: %@", &v7, 0xCu);
   }
 }
@@ -87,23 +87,23 @@
 {
   v9 = *MEMORY[0x277D85DE8];
   VSRequireMainThread();
-  v3 = [(VSViewServiceRequestOperation *)self viewServiceHostViewController];
+  viewServiceHostViewController = [(VSViewServiceRequestOperation *)self viewServiceHostViewController];
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = viewServiceHostViewController;
     _os_log_impl(&dword_23AB8E000, v4, OS_LOG_TYPE_DEFAULT, "Will dismiss view controller: %@", &v7, 0xCu);
   }
 
-  v5 = [(VSViewServiceRequestOperation *)self delegate];
-  [v5 viewServiceRequestOperation:self dismissViewController:v3];
+  delegate = [(VSViewServiceRequestOperation *)self delegate];
+  [delegate viewServiceRequestOperation:self dismissViewController:viewServiceHostViewController];
 
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = viewServiceHostViewController;
     _os_log_impl(&dword_23AB8E000, v6, OS_LOG_TYPE_DEFAULT, "Did dismiss view controller: %@", &v7, 0xCu);
   }
 }
@@ -127,7 +127,7 @@
   }
 }
 
-- (void)presentViewServiceHostViewController:(id)a3
+- (void)presentViewServiceHostViewController:(id)controller
 {
   VSRequireMainThread();
   self->_isPresentingViewController = 1;
@@ -135,28 +135,28 @@
   [(VSViewServiceRequestOperation *)self _presentViewController];
 }
 
-- (void)dismissViewServiceHostViewController:(id)a3
+- (void)dismissViewServiceHostViewController:(id)controller
 {
   VSRequireMainThread();
 
   [(VSViewServiceRequestOperation *)self _dismissViewControllerIfRequired];
 }
 
-- (void)viewServiceHostViewController:(id)a3 request:(id)a4 didFinishWithResponse:(id)a5
+- (void)viewServiceHostViewController:(id)controller request:(id)request didFinishWithResponse:(id)response
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  responseCopy = response;
   v7 = VSDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = responseCopy;
     _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "View service returned response: %@.", &v11, 0xCu);
   }
 
   VSRequireMainThread();
   [(VSViewServiceRequestOperation *)self _dismissViewControllerIfRequired];
-  v8 = [v6 copy];
+  v8 = [responseCopy copy];
   v9 = [VSFailable failableWithObject:v8];
   v10 = [VSOptional optionalWithObject:v9];
   [(VSViewServiceRequestOperation *)self setResult:v10];
@@ -164,25 +164,25 @@
   [(VSViewServiceRequestOperation *)self finishExecutionIfPossible];
 }
 
-- (void)viewServiceHostViewController:(id)a3 request:(id)a4 didFailWithError:(id)a5
+- (void)viewServiceHostViewController:(id)controller request:(id)request didFailWithError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = VSErrorLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [VSViewServiceRequestOperation viewServiceHostViewController:v6 request:v7 didFailWithError:?];
+    [VSViewServiceRequestOperation viewServiceHostViewController:errorCopy request:v7 didFailWithError:?];
   }
 
   VSRequireMainThread();
   [(VSViewServiceRequestOperation *)self _dismissViewControllerIfRequired];
-  v8 = [VSFailable failableWithError:v6];
+  v8 = [VSFailable failableWithError:errorCopy];
   v9 = [VSOptional optionalWithObject:v8];
   [(VSViewServiceRequestOperation *)self setResult:v9];
 
   [(VSViewServiceRequestOperation *)self finishExecutionIfPossible];
 }
 
-- (void)viewServiceHostViewController:(id)a3 didChooseAdditionalProvidersForRequest:(id)a4
+- (void)viewServiceHostViewController:(id)controller didChooseAdditionalProvidersForRequest:(id)request
 {
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -201,7 +201,7 @@
   [(VSViewServiceRequestOperation *)self finishExecutionIfPossible];
 }
 
-- (void)viewServiceHostViewController:(id)a3 didCancelRequest:(id)a4
+- (void)viewServiceHostViewController:(id)controller didCancelRequest:(id)request
 {
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -220,12 +220,12 @@
   [(VSViewServiceRequestOperation *)self finishExecutionIfPossible];
 }
 
-- (BOOL)viewServiceHostViewController:(id)a3 shouldAuthenticateAccountProviderWithIdentifier:(id)a4
+- (BOOL)viewServiceHostViewController:(id)controller shouldAuthenticateAccountProviderWithIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   VSRequireMainThread();
-  v6 = [(VSViewServiceRequestOperation *)self delegate];
-  LOBYTE(self) = [v6 viewServiceRequestOperation:self shouldAuthenticateAccountProviderWithIdentifier:v5];
+  delegate = [(VSViewServiceRequestOperation *)self delegate];
+  LOBYTE(self) = [delegate viewServiceRequestOperation:self shouldAuthenticateAccountProviderWithIdentifier:identifierCopy];
 
   return self;
 }

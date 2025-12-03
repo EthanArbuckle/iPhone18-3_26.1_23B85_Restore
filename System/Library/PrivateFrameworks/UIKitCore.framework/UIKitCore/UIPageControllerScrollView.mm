@@ -1,22 +1,22 @@
 @interface UIPageControllerScrollView
 - (unint64_t)_abuttedPagingEdges;
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4;
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished;
 - (void)_scrollViewDidEndDecelerating;
-- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)a3;
+- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)deceleration;
 - (void)_scrollViewWillBeginDragging;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation UIPageControllerScrollView
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -29,12 +29,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -68,10 +68,10 @@
   [(UIScrollView *)&v3 _scrollViewWillBeginDragging];
 }
 
-- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)a3
+- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)deceleration
 {
-  v3 = a3;
-  if (!a3)
+  decelerationCopy = deceleration;
+  if (!deceleration)
   {
     [(UIPageController *)self->_pageController _scrollViewDidScroll:self forceUpdate:1];
     [(UIPageController *)self->_pageController _scrollViewDidEndPaging];
@@ -79,7 +79,7 @@
 
   v5.receiver = self;
   v5.super_class = UIPageControllerScrollView;
-  [(UIScrollView *)&v5 _scrollViewDidEndDraggingWithDeceleration:v3];
+  [(UIScrollView *)&v5 _scrollViewDidEndDraggingWithDeceleration:decelerationCopy];
 }
 
 - (void)_scrollViewDidEndDecelerating
@@ -91,27 +91,27 @@
   [(UIScrollView *)&v3 _scrollViewDidEndDecelerating];
 }
 
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   [(UIPageController *)self->_pageController _scrollViewDidScroll:self forceUpdate:1];
   [(UIPageController *)self->_pageController _scrollViewDidEndPaging];
   v7.receiver = self;
   v7.super_class = UIPageControllerScrollView;
-  [(UIScrollView *)&v7 _scrollViewAnimationEnded:a3 finished:v4];
+  [(UIScrollView *)&v7 _scrollViewAnimationEnded:ended finished:finishedCopy];
 }
 
 - (unint64_t)_abuttedPagingEdges
 {
   v14.receiver = self;
   v14.super_class = UIPageControllerScrollView;
-  v3 = [(UIScrollView *)&v14 _abuttedPagingEdges];
+  _abuttedPagingEdges = [(UIScrollView *)&v14 _abuttedPagingEdges];
   if (![(UIScrollView *)self _isHorizontalBouncing])
   {
     [(UIPageController *)self->_pageController delegate];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(UIPageController *)self->_pageController visibleIndex];
+      visibleIndex = [(UIPageController *)self->_pageController visibleIndex];
       [(UIScrollView *)self _pageDecelerationTarget];
       v6 = v5;
       [(UIScrollView *)self contentOffset];
@@ -129,15 +129,15 @@
             v12 = -v12;
           }
 
-          v4 = (v12 + v4);
+          visibleIndex = (v12 + visibleIndex);
         }
       }
 
-      return v3 & 0xFFFFFFFFFFFFFFF5 | (2 * (v4 < 1)) | (8 * (v4 >= [(UIPageController *)self->_pageController pageCount]- 1));
+      return _abuttedPagingEdges & 0xFFFFFFFFFFFFFFF5 | (2 * (visibleIndex < 1)) | (8 * (visibleIndex >= [(UIPageController *)self->_pageController pageCount]- 1));
     }
   }
 
-  return v3;
+  return _abuttedPagingEdges;
 }
 
 @end

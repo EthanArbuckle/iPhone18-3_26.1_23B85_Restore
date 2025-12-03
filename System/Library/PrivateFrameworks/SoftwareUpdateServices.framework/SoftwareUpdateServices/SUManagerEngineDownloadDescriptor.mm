@@ -1,84 +1,84 @@
 @interface SUManagerEngineDownloadDescriptor
-+ (id)phaseToString:(int64_t)a3;
-- (BOOL)armInstall:(id)a3;
++ (id)phaseToString:(int64_t)string;
+- (BOOL)armInstall:(id)install;
 - (BOOL)disarmInstall;
-- (SUManagerEngineDownloadDescriptor)initWithAsset:(id)a3 releaseDate:(id)a4 sessionID:(id)a5 scanOptions:(id)a6 downloadOptions:(id)a7 installTonightConfig:(id)a8 coreDescriptor:(id)a9 downloadAtPhase:(int64_t)a10 cleanupLevel:(id)a11;
+- (SUManagerEngineDownloadDescriptor)initWithAsset:(id)asset releaseDate:(id)date sessionID:(id)d scanOptions:(id)options downloadOptions:(id)downloadOptions installTonightConfig:(id)config coreDescriptor:(id)descriptor downloadAtPhase:(int64_t)self0 cleanupLevel:(id)self1;
 - (id)summary;
 @end
 
 @implementation SUManagerEngineDownloadDescriptor
 
-- (SUManagerEngineDownloadDescriptor)initWithAsset:(id)a3 releaseDate:(id)a4 sessionID:(id)a5 scanOptions:(id)a6 downloadOptions:(id)a7 installTonightConfig:(id)a8 coreDescriptor:(id)a9 downloadAtPhase:(int64_t)a10 cleanupLevel:(id)a11
+- (SUManagerEngineDownloadDescriptor)initWithAsset:(id)asset releaseDate:(id)date sessionID:(id)d scanOptions:(id)options downloadOptions:(id)downloadOptions installTonightConfig:(id)config coreDescriptor:(id)descriptor downloadAtPhase:(int64_t)self0 cleanupLevel:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a11;
+  assetCopy = asset;
+  dateCopy = date;
+  dCopy = d;
+  optionsCopy = options;
+  downloadOptionsCopy = downloadOptions;
+  configCopy = config;
+  descriptorCopy = descriptor;
+  levelCopy = level;
   v29.receiver = self;
   v29.super_class = SUManagerEngineDownloadDescriptor;
   v25 = [(SUManagerEngineDownloadDescriptor *)&v29 init];
   v26 = v25;
   if (v25)
   {
-    [(SUManagerEngineDownloadDescriptor *)v25 setAsset:v17];
-    [(SUManagerEngineDownloadDescriptor *)v26 setReleaseDate:v18];
-    [(SUManagerEngineDownloadDescriptor *)v26 setSessionID:v19];
-    [(SUManagerEngineDownloadDescriptor *)v26 setScanOptions:v20];
-    [(SUManagerEngineDownloadDescriptor *)v26 setDownloadOptions:v21];
+    [(SUManagerEngineDownloadDescriptor *)v25 setAsset:assetCopy];
+    [(SUManagerEngineDownloadDescriptor *)v26 setReleaseDate:dateCopy];
+    [(SUManagerEngineDownloadDescriptor *)v26 setSessionID:dCopy];
+    [(SUManagerEngineDownloadDescriptor *)v26 setScanOptions:optionsCopy];
+    [(SUManagerEngineDownloadDescriptor *)v26 setDownloadOptions:downloadOptionsCopy];
     [(SUManagerEngineDownloadDescriptor *)v26 setInstallOptions:0];
-    [(SUManagerEngineDownloadDescriptor *)v26 setInstallTonightConfig:v22];
-    [(SUManagerEngineDownloadDescriptor *)v26 setCoreDescriptor:v23];
-    [(SUManagerEngineDownloadDescriptor *)v26 setAtPhase:a10];
-    [(SUManagerEngineDownloadDescriptor *)v26 setCleanupLevel:v24];
+    [(SUManagerEngineDownloadDescriptor *)v26 setInstallTonightConfig:configCopy];
+    [(SUManagerEngineDownloadDescriptor *)v26 setCoreDescriptor:descriptorCopy];
+    [(SUManagerEngineDownloadDescriptor *)v26 setAtPhase:phase];
+    [(SUManagerEngineDownloadDescriptor *)v26 setCleanupLevel:levelCopy];
     v27 = v26;
   }
 
   return v26;
 }
 
-+ (id)phaseToString:(int64_t)a3
++ (id)phaseToString:(int64_t)string
 {
-  if (a3 > 6)
+  if (string > 6)
   {
     return @"DownloadPhaseUndefined";
   }
 
   else
   {
-    return off_279CAB760[a3];
+    return off_279CAB760[string];
   }
 }
 
 - (id)summary
 {
   v15 = objc_alloc(MEMORY[0x277CCACA8]);
-  v14 = [(SUManagerEngineDownloadDescriptor *)self asset];
-  v3 = [(SUManagerEngineDownloadDescriptor *)self releaseDate];
-  v4 = [(SUManagerEngineDownloadDescriptor *)self sessionID];
-  v5 = [(SUManagerEngineDownloadDescriptor *)self scanOptions];
-  v6 = [(SUManagerEngineDownloadDescriptor *)self downloadOptions];
-  v7 = [(SUManagerEngineDownloadDescriptor *)self installTonightConfig];
+  asset = [(SUManagerEngineDownloadDescriptor *)self asset];
+  releaseDate = [(SUManagerEngineDownloadDescriptor *)self releaseDate];
+  sessionID = [(SUManagerEngineDownloadDescriptor *)self sessionID];
+  scanOptions = [(SUManagerEngineDownloadDescriptor *)self scanOptions];
+  downloadOptions = [(SUManagerEngineDownloadDescriptor *)self downloadOptions];
+  installTonightConfig = [(SUManagerEngineDownloadDescriptor *)self installTonightConfig];
   v8 = [SUManagerEngineDownloadDescriptor phaseToString:[(SUManagerEngineDownloadDescriptor *)self atPhase]];
-  v9 = [(SUManagerEngineDownloadDescriptor *)self cleanupLevel];
-  v10 = [(SUManagerEngineDownloadDescriptor *)self coreDescriptor];
-  v11 = [v10 summary];
-  v12 = [v15 initWithFormat:@"asset:%@ releaseDate:%@ sessionID:%@ scanOptions:%@ downloadOptions:%@ installTonightConfig:%@ atPhase:%@ cleanupLevel:%@, coreDescriptor:%@", v14, v3, v4, v5, v6, v7, v8, v9, v11];
+  cleanupLevel = [(SUManagerEngineDownloadDescriptor *)self cleanupLevel];
+  coreDescriptor = [(SUManagerEngineDownloadDescriptor *)self coreDescriptor];
+  summary = [coreDescriptor summary];
+  v12 = [v15 initWithFormat:@"asset:%@ releaseDate:%@ sessionID:%@ scanOptions:%@ downloadOptions:%@ installTonightConfig:%@ atPhase:%@ cleanupLevel:%@, coreDescriptor:%@", asset, releaseDate, sessionID, scanOptions, downloadOptions, installTonightConfig, v8, cleanupLevel, summary];
 
   return v12;
 }
 
-- (BOOL)armInstall:(id)a3
+- (BOOL)armInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   if ([(SUManagerEngineDownloadDescriptor *)self atPhase]== 5 || [(SUManagerEngineDownloadDescriptor *)self atPhase]== 6)
   {
     [(SUManagerEngineDownloadDescriptor *)self setAtPhase:6];
     v5 = 1;
-    v6 = v4;
+    v6 = installCopy;
   }
 
   else
@@ -95,13 +95,13 @@
 - (BOOL)disarmInstall
 {
   [(SUManagerEngineDownloadDescriptor *)self setInstallOptions:0];
-  v3 = [(SUManagerEngineDownloadDescriptor *)self atPhase];
-  if (v3 == 6)
+  atPhase = [(SUManagerEngineDownloadDescriptor *)self atPhase];
+  if (atPhase == 6)
   {
     [(SUManagerEngineDownloadDescriptor *)self setAtPhase:5];
   }
 
-  return v3 == 6;
+  return atPhase == 6;
 }
 
 @end

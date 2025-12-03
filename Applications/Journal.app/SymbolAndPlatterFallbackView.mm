@@ -1,11 +1,11 @@
 @interface SymbolAndPlatterFallbackView
-- (_TtC7Journal28SymbolAndPlatterFallbackView)initWithCoder:(id)a3;
-- (_TtC7Journal28SymbolAndPlatterFallbackView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal28SymbolAndPlatterFallbackView)initWithCoder:(id)coder;
+- (_TtC7Journal28SymbolAndPlatterFallbackView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SymbolAndPlatterFallbackView
 
-- (_TtC7Journal28SymbolAndPlatterFallbackView)initWithFrame:(CGRect)a3
+- (_TtC7Journal28SymbolAndPlatterFallbackView)initWithFrame:(CGRect)frame
 {
   v4 = OBJC_IVAR____TtC7Journal28SymbolAndPlatterFallbackView_platterView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(UIView) init];
@@ -23,7 +23,7 @@
   return v8;
 }
 
-- (_TtC7Journal28SymbolAndPlatterFallbackView)initWithCoder:(id)a3
+- (_TtC7Journal28SymbolAndPlatterFallbackView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal28SymbolAndPlatterFallbackView_platterView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(UIView) init];

@@ -1,16 +1,16 @@
 @interface IMUbiquitousFetchedResultsController
-- (IMUbiquitousFetchedResultsController)initWithFetchRequest:(id)a3 managedObjectContext:(id)a4 sectionNameKeyPath:(id)a5 cacheName:(id)a6;
-- (void)coordinatorWillRemoveStore:(id)a3;
+- (IMUbiquitousFetchedResultsController)initWithFetchRequest:(id)request managedObjectContext:(id)context sectionNameKeyPath:(id)path cacheName:(id)name;
+- (void)coordinatorWillRemoveStore:(id)store;
 - (void)dealloc;
 @end
 
 @implementation IMUbiquitousFetchedResultsController
 
-- (IMUbiquitousFetchedResultsController)initWithFetchRequest:(id)a3 managedObjectContext:(id)a4 sectionNameKeyPath:(id)a5 cacheName:(id)a6
+- (IMUbiquitousFetchedResultsController)initWithFetchRequest:(id)request managedObjectContext:(id)context sectionNameKeyPath:(id)path cacheName:(id)name
 {
   v11.receiver = self;
   v11.super_class = IMUbiquitousFetchedResultsController;
-  v6 = [(IMUbiquitousFetchedResultsController *)&v11 initWithFetchRequest:a3 managedObjectContext:a4 sectionNameKeyPath:a5 cacheName:a6];
+  v6 = [(IMUbiquitousFetchedResultsController *)&v11 initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:path cacheName:name];
   if (v6)
   {
     v7 = +[NSOperationQueue currentQueue];
@@ -34,13 +34,13 @@
   [(IMUbiquitousFetchedResultsController *)&v4 dealloc];
 }
 
-- (void)coordinatorWillRemoveStore:(id)a3
+- (void)coordinatorWillRemoveStore:(id)store
 {
-  v4 = [a3 object];
-  v5 = [v4 persistentStoreCoordinator];
-  v6 = [(IMUbiquitousFetchedResultsController *)self managedObjectContext];
-  v7 = [v6 persistentStoreCoordinator];
-  v8 = [v5 isEqual:v7];
+  object = [store object];
+  persistentStoreCoordinator = [object persistentStoreCoordinator];
+  managedObjectContext = [(IMUbiquitousFetchedResultsController *)self managedObjectContext];
+  persistentStoreCoordinator2 = [managedObjectContext persistentStoreCoordinator];
+  v8 = [persistentStoreCoordinator isEqual:persistentStoreCoordinator2];
 
   if (v8)
   {
@@ -51,9 +51,9 @@
     v15[4] = self;
     v9 = objc_retainBlock(v15);
     v10 = +[NSOperationQueue currentQueue];
-    v11 = [(IMUbiquitousFetchedResultsController *)self queue];
+    queue = [(IMUbiquitousFetchedResultsController *)self queue];
 
-    if (v10 == v11)
+    if (v10 == queue)
     {
       (v9[2])(v9);
     }
@@ -62,9 +62,9 @@
     {
       v12 = [NSBlockOperation blockOperationWithBlock:v9];
       [v12 setQueuePriority:8];
-      v13 = [(IMUbiquitousFetchedResultsController *)self queue];
+      queue2 = [(IMUbiquitousFetchedResultsController *)self queue];
       v14 = [NSArray arrayWithObject:v12];
-      [v13 addOperations:v14 waitUntilFinished:1];
+      [queue2 addOperations:v14 waitUntilFinished:1];
     }
   }
 }

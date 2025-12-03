@@ -3,7 +3,7 @@
 - (id)nextInputMode;
 - (id)previousInputMode;
 - (void)reloadInputModes;
-- (void)updateInputModes:(id)a3 withHUD:(BOOL)a4;
+- (void)updateInputModes:(id)modes withHUD:(BOOL)d;
 @end
 
 @implementation UIInlineInputSwitcher
@@ -11,21 +11,21 @@
 - (void)reloadInputModes
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
   [v4 _clearAllExtensionsIfNeeded];
 
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 isMinimized];
+  isMinimized = [v5 isMinimized];
 
-  if (v6)
+  if (isMinimized)
   {
-    v29 = self;
-    v30 = v3;
+    selfCopy = self;
+    v30 = array;
     v7 = UIKeyboardGetActiveUniqueInputModesForHardwareKeyboard();
     v8 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v9 = [v8 inputViews];
-    v10 = [v9 isCustomInputView];
+    inputViews = [v8 inputViews];
+    isCustomInputView = [inputViews isCustomInputView];
 
     v37 = 0u;
     v38 = 0u;
@@ -51,12 +51,12 @@
           v17 = +[UIKeyboardInputModeController sharedInputModeController];
           v18 = [v17 inputModeWithIdentifier:v16];
 
-          if (!v10 || ([v18 hardwareLayout], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
+          if (!isCustomInputView || ([v18 hardwareLayout], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
           {
             if (([v18 isEmojiInputMode] & 1) == 0)
             {
-              v20 = [v18 primaryLanguage];
-              IsNonLinguistic = UIKeyboardInputModeIsNonLinguistic(v20);
+              primaryLanguage = [v18 primaryLanguage];
+              IsNonLinguistic = UIKeyboardInputModeIsNonLinguistic(primaryLanguage);
 
               if ((IsNonLinguistic & 1) == 0 && ([v18 isExtensionInputMode] & 1) == 0)
               {
@@ -75,8 +75,8 @@
       while (v13);
     }
 
-    self = v29;
-    v3 = v30;
+    self = selfCopy;
+    array = v30;
   }
 
   else
@@ -107,7 +107,7 @@
 
           if (([v28 isEmojiInputMode] & 1) == 0)
           {
-            [v3 addObject:v26];
+            [array addObject:v26];
           }
 
           ++v25;
@@ -121,21 +121,21 @@
     }
   }
 
-  [(UIInlineInputSwitcher *)self setAvailableInputModes:v3];
+  [(UIInlineInputSwitcher *)self setAvailableInputModes:array];
 }
 
 - (id)defaultInputMode
 {
   v3 = UIKeyboardGetCurrentInputMode();
-  v4 = [(UIInlineInputSwitcher *)self availableInputModes];
-  v5 = [v4 containsObject:v3];
+  availableInputModes = [(UIInlineInputSwitcher *)self availableInputModes];
+  v5 = [availableInputModes containsObject:v3];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(UIInlineInputSwitcher *)self availableInputModes];
-    v7 = [v6 firstObject];
+    availableInputModes2 = [(UIInlineInputSwitcher *)self availableInputModes];
+    firstObject = [availableInputModes2 firstObject];
 
-    v3 = v7;
+    v3 = firstObject;
   }
 
   return v3;
@@ -143,7 +143,7 @@
 
 - (id)nextInputMode
 {
-  v3 = [(UIInlineInputSwitcher *)self availableInputModes];
+  availableInputModes = [(UIInlineInputSwitcher *)self availableInputModes];
   if ([(UIInputSwitcher *)self isVisible])
   {
     [(UIInlineInputSwitcher *)self selectedInputMode];
@@ -154,20 +154,20 @@
     [(UIInlineInputSwitcher *)self defaultInputMode];
   }
   v4 = ;
-  v5 = [v3 indexOfObject:v4];
+  v5 = [availableInputModes indexOfObject:v4];
 
-  v6 = [(UIInlineInputSwitcher *)self availableInputModes];
-  v7 = (v5 + 1) % [v6 count];
+  availableInputModes2 = [(UIInlineInputSwitcher *)self availableInputModes];
+  v7 = (v5 + 1) % [availableInputModes2 count];
 
-  v8 = [(UIInlineInputSwitcher *)self availableInputModes];
-  v9 = [v8 objectAtIndexedSubscript:v7];
+  availableInputModes3 = [(UIInlineInputSwitcher *)self availableInputModes];
+  v9 = [availableInputModes3 objectAtIndexedSubscript:v7];
 
   return v9;
 }
 
 - (id)previousInputMode
 {
-  v3 = [(UIInlineInputSwitcher *)self availableInputModes];
+  availableInputModes = [(UIInlineInputSwitcher *)self availableInputModes];
   if ([(UIInputSwitcher *)self isVisible])
   {
     [(UIInlineInputSwitcher *)self selectedInputMode];
@@ -178,65 +178,65 @@
     [(UIInlineInputSwitcher *)self defaultInputMode];
   }
   v4 = ;
-  v5 = [v3 indexOfObject:v4];
+  v5 = [availableInputModes indexOfObject:v4];
 
   if (v5 <= 0)
   {
-    v6 = [(UIInlineInputSwitcher *)self availableInputModes];
-    v5 = [v6 count];
+    availableInputModes2 = [(UIInlineInputSwitcher *)self availableInputModes];
+    v5 = [availableInputModes2 count];
   }
 
-  v7 = [(UIInlineInputSwitcher *)self availableInputModes];
-  v8 = [v7 objectAtIndexedSubscript:v5 - 1];
+  availableInputModes3 = [(UIInlineInputSwitcher *)self availableInputModes];
+  v8 = [availableInputModes3 objectAtIndexedSubscript:v5 - 1];
 
   return v8;
 }
 
-- (void)updateInputModes:(id)a3 withHUD:(BOOL)a4
+- (void)updateInputModes:(id)modes withHUD:(BOOL)d
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(UIInputSwitcher *)self usingCapsLockLanguageSwitch];
-  if (!a4)
+  modesCopy = modes;
+  usingCapsLockLanguageSwitch = [(UIInputSwitcher *)self usingCapsLockLanguageSwitch];
+  if (!d)
   {
-    v18[0] = v6;
-    v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-    [(UIInlineInputSwitcher *)self setAvailableInputModes:v9];
+    v18[0] = modesCopy;
+    currentLinguisticInputMode = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
+    [(UIInlineInputSwitcher *)self setAvailableInputModes:currentLinguisticInputMode];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  if (v7)
+  if (usingCapsLockLanguageSwitch)
   {
     v8 = +[UIKeyboardInputModeController sharedInputModeController];
-    v9 = [v8 currentLinguisticInputMode];
+    currentLinguisticInputMode = [v8 currentLinguisticInputMode];
 
-    v10 = [v9 identifier];
-    v11 = [v10 isEqualToString:v6];
+    identifier = [currentLinguisticInputMode identifier];
+    v11 = [identifier isEqualToString:modesCopy];
 
     if (v11)
     {
       v12 = +[UIKeyboardInputModeController sharedInputModeController];
       v13 = [v12 inputModeForASCIIToggleWithTraits:0];
 
-      v9 = v13;
+      currentLinguisticInputMode = v13;
     }
 
-    if (v9)
+    if (currentLinguisticInputMode)
     {
-      v17[0] = v6;
-      v14 = [v9 identifier];
-      v17[1] = v14;
+      v17[0] = modesCopy;
+      identifier2 = [currentLinguisticInputMode identifier];
+      v17[1] = identifier2;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
       [(UIInlineInputSwitcher *)self setAvailableInputModes:v15];
     }
 
     else
     {
-      v16 = v6;
-      v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
-      [(UIInlineInputSwitcher *)self setAvailableInputModes:v14];
+      v16 = modesCopy;
+      identifier2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
+      [(UIInlineInputSwitcher *)self setAvailableInputModes:identifier2];
     }
 
     goto LABEL_11;

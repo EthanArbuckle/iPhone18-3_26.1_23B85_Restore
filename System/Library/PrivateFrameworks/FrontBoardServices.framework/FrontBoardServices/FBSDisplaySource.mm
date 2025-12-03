@@ -1,27 +1,27 @@
 @interface FBSDisplaySource
 - (FBSDisplaySource)init;
-- (id)_transformDisplaysIfNecessaryFromDisplayConfiguration:(uint64_t)a1;
+- (id)_transformDisplaysIfNecessaryFromDisplayConfiguration:(uint64_t)configuration;
 - (id)connectedConfigurations;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initWithDisplay:(char)a3 alwaysConnected:(uint64_t)a4 triggers:(void *)a5 monitor:;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initWithDisplay:(char)display alwaysConnected:(uint64_t)connected triggers:(void *)triggers monitor:;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (uint64_t)displayID;
-- (void)_callOutQueue_postToObservers:(uint64_t)a3 includeBookendObserver:(void *)a4 connected:;
-- (void)_callOutQueue_postToObservers:(uint64_t)a3 includeBookendObserver:(void *)a4 disconnected:;
-- (void)_callOutQueue_postToObservers:(uint64_t)a3 includeBookendObserver:(void *)a4 updated:;
+- (void)_callOutQueue_postToObservers:(uint64_t)observers includeBookendObserver:(void *)observer connected:;
+- (void)_callOutQueue_postToObservers:(uint64_t)observers includeBookendObserver:(void *)observer disconnected:;
+- (void)_callOutQueue_postToObservers:(uint64_t)observers includeBookendObserver:(void *)observer updated:;
 - (void)_lock_noteConnected;
 - (void)_lock_noteDisconnecting;
-- (void)_lock_noteUpdatedForTransformInvalidation:(uint64_t)a1;
-- (void)_lock_setAttachment:(const os_unfair_lock *)a1;
-- (void)_lock_setRawConfiguration:(uint64_t)a1;
-- (void)_lock_setRawReportedConfiguration:(void *)a3 effectiveReportedConfigurations:;
-- (void)_updateForInitialization:(int)a3 forTransformInvalidation:;
+- (void)_lock_noteUpdatedForTransformInvalidation:(uint64_t)invalidation;
+- (void)_lock_setAttachment:(const os_unfair_lock *)attachment;
+- (void)_lock_setRawConfiguration:(uint64_t)configuration;
+- (void)_lock_setRawReportedConfiguration:(void *)configuration effectiveReportedConfigurations:;
+- (void)_updateForInitialization:(int)initialization forTransformInvalidation:;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAllowsUnknown:(uint64_t)a1;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAllowsUnknown:(uint64_t)unknown;
 - (void)updateTransforms;
 @end
 
@@ -29,11 +29,11 @@
 
 - (id)connectedConfigurations
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 92));
-    v2 = *(a1 + 80);
-    os_unfair_lock_unlock((a1 + 92));
+    os_unfair_lock_lock((self + 92));
+    v2 = *(self + 80);
+    os_unfair_lock_unlock((self + 92));
   }
 
   else
@@ -47,7 +47,7 @@
 - (void)_lock_noteConnected
 {
   v3 = MEMORY[0x1E696AEC0];
-  v12 = [a1 debugDescription];
+  v12 = [self debugDescription];
   v4 = [v3 stringWithFormat:@"rawConfiguration cannot be nil : %@"];
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -121,7 +121,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalidate must be called before deallocing"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -163,7 +163,7 @@ void __39__FBSDisplaySource__lock_noteConnected__block_invoke_3(uint64_t a1)
     v14 = 2114;
     v15 = v11;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = @"FBSDisplaySource.m";
     v20 = 1024;
@@ -177,38 +177,38 @@ void __39__FBSDisplaySource__lock_noteConnected__block_invoke_3(uint64_t a1)
   _bs_set_crash_log_message();
 }
 
-- (id)initWithDisplay:(char)a3 alwaysConnected:(uint64_t)a4 triggers:(void *)a5 monitor:
+- (id)initWithDisplay:(char)display alwaysConnected:(uint64_t)connected triggers:(void *)triggers monitor:
 {
   v10 = a2;
-  v11 = a5;
-  v12 = v11;
-  if (a1)
+  triggersCopy = triggers;
+  v12 = triggersCopy;
+  if (self)
   {
     if (!v10)
     {
       [FBSDisplaySource initWithDisplay:? alwaysConnected:? triggers:? monitor:?];
     }
 
-    if (!v11)
+    if (!triggersCopy)
     {
       [FBSDisplaySource initWithDisplay:? alwaysConnected:? triggers:? monitor:?];
     }
 
-    v13 = [v11 callOutQueue];
-    if (!v13)
+    callOutQueue = [triggersCopy callOutQueue];
+    if (!callOutQueue)
     {
       [FBSDisplaySource initWithDisplay:? alwaysConnected:? triggers:? monitor:?];
     }
 
-    v14 = v13;
-    v18.receiver = a1;
+    v14 = callOutQueue;
+    v18.receiver = self;
     v18.super_class = FBSDisplaySource;
     v15 = objc_msgSendSuper2(&v18, sel_init);
     v16 = v15;
     if (v15)
     {
       objc_storeStrong(v15 + 1, a2);
-      *(v16 + 120) = a3;
+      *(v16 + 120) = display;
       *(v16 + 100) = [v10 displayId];
       objc_storeStrong((v16 + 24), v14);
       *(v16 + 104) = atomic_fetch_add_explicit(&initWithDisplay_alwaysConnected_triggers_monitor____instanceCounter, 1u, memory_order_relaxed) + 1;
@@ -216,9 +216,9 @@ void __39__FBSDisplaySource__lock_noteConnected__block_invoke_3(uint64_t a1)
       objc_storeWeak((v16 + 16), v12);
       *(v16 + 92) = 0;
       *(v16 + 96) = 0;
-      *(v16 + 121) = a4 != 0;
-      *(v16 + 122) = a4 & 1;
-      if (a4)
+      *(v16 + 121) = connected != 0;
+      *(v16 + 122) = connected & 1;
+      if (connected)
       {
         [*(v16 + 8) addObserver:v16 forKeyPath:@"tag" options:0 context:v16];
         [*(v16 + 8) addObserver:v16 forKeyPath:@"availableModes" options:0 context:v16];
@@ -243,43 +243,43 @@ void __39__FBSDisplaySource__lock_noteConnected__block_invoke_3(uint64_t a1)
       [(FBSDisplaySource *)v16 _updateForInitialization:0 forTransformInvalidation:?];
     }
 
-    a1 = v16;
+    self = v16;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_updateForInitialization:(int)a3 forTransformInvalidation:
+- (void)_updateForInitialization:(int)initialization forTransformInvalidation:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [*(a1 + 8) immutableCopy];
-    os_unfair_lock_lock((a1 + 88));
-    if ((*(a1 + 125) & 1) != 0 || (*(a1 + 123) & 1) == 0 && !a2)
+    immutableCopy = [*(self + 8) immutableCopy];
+    os_unfair_lock_lock((self + 88));
+    if ((*(self + 125) & 1) != 0 || (*(self + 123) & 1) == 0 && !a2)
     {
       goto LABEL_39;
     }
 
-    if (*(a1 + 120) != 1)
+    if (*(self + 120) != 1)
     {
-      v7 = [v6 tag];
-      v8 = [v6 availableModes];
-      v9 = *(a1 + 32);
-      if (!v7 || ![v8 count])
+      v7 = [immutableCopy tag];
+      availableModes = [immutableCopy availableModes];
+      v9 = *(self + 32);
+      if (!v7 || ![availableModes count])
       {
-        [(FBSDisplaySource *)a1 _lock_setRawConfiguration:?];
+        [(FBSDisplaySource *)self _lock_setRawConfiguration:?];
         goto LABEL_19;
       }
 
       if (v9)
       {
-        v10 = [v9 identity];
-        v11 = [v10 connectionSeed];
-        if (v11 == [v6 connectionSeed] && (v12 = objc_msgSend(v9, "seed"), v12 == objc_msgSend(v6, "seed")))
+        identity = [v9 identity];
+        connectionSeed = [identity connectionSeed];
+        if (connectionSeed == [immutableCopy connectionSeed] && (v12 = objc_msgSend(v9, "seed"), v12 == objc_msgSend(immutableCopy, "seed")))
         {
-          v13 = [v9 tags];
+          tags = [v9 tags];
 
-          if (v13 == v7 && !a3)
+          if (tags == v7 && !initialization)
           {
             goto LABEL_19;
           }
@@ -290,11 +290,11 @@ void __39__FBSDisplaySource__lock_noteConnected__block_invoke_3(uint64_t a1)
         }
       }
 
-      v14 = [[FBSDisplayConfiguration alloc] _initWithImmutableDisplay:v6 originalDisplay:*(a1 + 8) assertIfInvalid:1];
+      v14 = [[FBSDisplayConfiguration alloc] _initWithImmutableDisplay:immutableCopy originalDisplay:*(self + 8) assertIfInvalid:1];
       v15 = v14;
       if (!v14 || [v14 isMainDisplay])
       {
-        v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"we failed to make a non-main display for %@ -> created raw configuration: %@", v6, v15];
+        v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"we failed to make a non-main display for %@ -> created raw configuration: %@", immutableCopy, v15];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           [FBSDisplaySource _updateForInitialization:? forTransformInvalidation:?];
@@ -304,53 +304,53 @@ void __39__FBSDisplaySource__lock_noteConnected__block_invoke_3(uint64_t a1)
         _bs_set_crash_log_message();
       }
 
-      [(FBSDisplaySource *)a1 _lock_setRawConfiguration:v15];
+      [(FBSDisplaySource *)self _lock_setRawConfiguration:v15];
 
 LABEL_19:
-      v16 = *(a1 + 32);
+      v16 = *(self + 32);
       if (v16 && ([v16 isHiddenDisplay] & 1) == 0)
       {
-        v17 = *(a1 + 108);
+        v17 = *(self + 108);
         if (v17 == 3 || v17 == 1)
         {
-          [*(a1 + 40) identity];
+          [*(self + 40) identity];
           objc_claimAutoreleasedReturnValue();
-          [*(a1 + 32) identity];
+          [*(self + 32) identity];
           objc_claimAutoreleasedReturnValue();
           BSEqualObjects();
         }
 
-        if (v17 || (*(a1 + 124) & 1) == 0 && [*(a1 + 32) type] == 7)
+        if (v17 || (*(self + 124) & 1) == 0 && [*(self + 32) type] == 7)
         {
           goto LABEL_36;
         }
 
-        [(FBSDisplaySource *)a1 _lock_noteConnected];
-        v18 = *(a1 + 32);
-        v19 = *(a1 + 40);
-        *(a1 + 40) = v18;
+        [(FBSDisplaySource *)self _lock_noteConnected];
+        v18 = *(self + 32);
+        v19 = *(self + 40);
+        *(self + 40) = v18;
       }
 
       else
       {
-        if ((*(a1 + 108) | 2) != 3)
+        if ((*(self + 108) | 2) != 3)
         {
           goto LABEL_36;
         }
 
-        [(FBSDisplaySource *)a1 _lock_noteDisconnecting];
-        v19 = *(a1 + 40);
-        *(a1 + 40) = 0;
+        [(FBSDisplaySource *)self _lock_noteDisconnecting];
+        v19 = *(self + 40);
+        *(self + 40) = 0;
       }
 
 LABEL_36:
       goto LABEL_37;
     }
 
-    v8 = [[FBSDisplayConfiguration alloc] _initWithImmutableDisplay:v6 originalDisplay:*(a1 + 8) assertIfInvalid:1];
-    if (([v8 isMainDisplay] & 1) == 0)
+    availableModes = [[FBSDisplayConfiguration alloc] _initWithImmutableDisplay:immutableCopy originalDisplay:*(self + 8) assertIfInvalid:1];
+    if (([availableModes isMainDisplay] & 1) == 0)
     {
-      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"we failed to make a main display for %@ - created raw configuration=%@", v6, v8];
+      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"we failed to make a main display for %@ - created raw configuration=%@", immutableCopy, availableModes];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         [FBSDisplaySource _updateForInitialization:? forTransformInvalidation:?];
@@ -360,8 +360,8 @@ LABEL_36:
       _bs_set_crash_log_message();
     }
 
-    [(FBSDisplaySource *)a1 _lock_setRawConfiguration:v8];
-    v20 = *(a1 + 108);
+    [(FBSDisplaySource *)self _lock_setRawConfiguration:availableModes];
+    v20 = *(self + 108);
     if (v20 <= 2)
     {
       if (v20)
@@ -374,7 +374,7 @@ LABEL_36:
 
       else
       {
-        [FBSDisplaySource _updateForInitialization:a1 forTransformInvalidation:?];
+        [FBSDisplaySource _updateForInitialization:self forTransformInvalidation:?];
       }
     }
 
@@ -382,7 +382,7 @@ LABEL_36:
     {
       if (v20 == 3)
       {
-        [(FBSDisplaySource *)a1 _lock_noteUpdatedForTransformInvalidation:a3];
+        [(FBSDisplaySource *)self _lock_noteUpdatedForTransformInvalidation:initialization];
         goto LABEL_37;
       }
 
@@ -390,7 +390,7 @@ LABEL_36:
       {
 LABEL_45:
         v21 = MEMORY[0x1E696AEC0];
-        v22 = [a1 debugDescription];
+        v22 = [self debugDescription];
         v23 = [v21 stringWithFormat:@"mainDisplay cannot debounce nor disconnect : %@", v22];
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -407,20 +407,20 @@ LABEL_37:
 
     if (a2)
     {
-      *(a1 + 123) = 1;
+      *(self + 123) = 1;
     }
 
 LABEL_39:
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_unlock((self + 88));
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSDisplaySource *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSDisplaySource *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -436,22 +436,22 @@ LABEL_39:
   evlock_rawConfiguration = self->_evlock_rawConfiguration;
   if (evlock_rawConfiguration)
   {
-    v7 = [(FBSDisplayConfiguration *)evlock_rawConfiguration succinctDescription];
-    v8 = [v3 appendObject:v7 withName:@"rawConfig"];
+    succinctDescription = [(FBSDisplayConfiguration *)evlock_rawConfiguration succinctDescription];
+    v8 = [v3 appendObject:succinctDescription withName:@"rawConfig"];
 
     v9 = [(NSSet *)self->_evlock_reportedEffectiveConfigurations count];
     evlock_reportedEffectiveConfigurations = self->_evlock_reportedEffectiveConfigurations;
     if (v9 == 1)
     {
-      v11 = [(NSSet *)evlock_reportedEffectiveConfigurations anyObject];
-      v12 = [v11 succinctDescription];
-      v13 = [v3 appendObject:v12 withName:@"effectiveConfig"];
+      anyObject = [(NSSet *)evlock_reportedEffectiveConfigurations anyObject];
+      succinctDescription2 = [anyObject succinctDescription];
+      v13 = [v3 appendObject:succinctDescription2 withName:@"effectiveConfig"];
     }
 
     else
     {
-      v11 = [(NSSet *)evlock_reportedEffectiveConfigurations allObjects];
-      [v3 appendArraySection:v11 withName:@"effectiveConfigs" skipIfEmpty:1];
+      anyObject = [(NSSet *)evlock_reportedEffectiveConfigurations allObjects];
+      [v3 appendArraySection:anyObject withName:@"effectiveConfigs" skipIfEmpty:1];
     }
   }
 
@@ -460,15 +460,15 @@ LABEL_39:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSDisplaySource *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSDisplaySource *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [off_1E76BC9B0 builderWithObject:self];
   os_unfair_lock_lock(&self->_externallyVisibleLock);
@@ -486,15 +486,15 @@ LABEL_39:
     evlock_reportedEffectiveConfigurations = self->_evlock_reportedEffectiveConfigurations;
     if (v9 == 1)
     {
-      v11 = [(NSSet *)evlock_reportedEffectiveConfigurations anyObject];
-      v12 = [v11 succinctDescription];
-      v13 = [v4 appendObject:v12 withName:@"effectiveConfig"];
+      anyObject = [(NSSet *)evlock_reportedEffectiveConfigurations anyObject];
+      succinctDescription = [anyObject succinctDescription];
+      v13 = [v4 appendObject:succinctDescription withName:@"effectiveConfig"];
     }
 
     else
     {
-      v11 = [(NSSet *)evlock_reportedEffectiveConfigurations allObjects];
-      [v4 appendArraySection:v11 withName:@"effectiveConfigs" skipIfEmpty:1];
+      anyObject = [(NSSet *)evlock_reportedEffectiveConfigurations allObjects];
+      [v4 appendArraySection:anyObject withName:@"effectiveConfigs" skipIfEmpty:1];
     }
   }
 
@@ -503,43 +503,43 @@ LABEL_39:
   return v4;
 }
 
-- (void)_lock_setRawReportedConfiguration:(void *)a3 effectiveReportedConfigurations:
+- (void)_lock_setRawReportedConfiguration:(void *)configuration effectiveReportedConfigurations:
 {
   v8 = a2;
-  v5 = a3;
-  if (a1)
+  configurationCopy = configuration;
+  if (self)
   {
-    os_unfair_lock_assert_owner(a1 + 22);
+    os_unfair_lock_assert_owner(self + 22);
     v6 = v8;
-    if (v8 | v5)
+    if (v8 | configurationCopy)
     {
-      if (!v8 || (v7 = [v5 count], v6 = v8, !v7))
+      if (!v8 || (v7 = [configurationCopy count], v6 = v8, !v7))
       {
         [FBSDisplaySource _lock_setRawReportedConfiguration:? effectiveReportedConfigurations:?];
       }
     }
 
-    [(FBSDisplaySource *)v6 _lock_setRawReportedConfiguration:a1 effectiveReportedConfigurations:v5];
+    [(FBSDisplaySource *)v6 _lock_setRawReportedConfiguration:self effectiveReportedConfigurations:configurationCopy];
   }
 }
 
-- (void)_lock_noteUpdatedForTransformInvalidation:(uint64_t)a1
+- (void)_lock_noteUpdatedForTransformInvalidation:(uint64_t)invalidation
 {
-  if (a1)
+  if (invalidation)
   {
-    os_unfair_lock_assert_owner((a1 + 88));
-    v4 = *(a1 + 32);
+    os_unfair_lock_assert_owner((invalidation + 88));
+    v4 = *(invalidation + 32);
     if (!v4)
     {
-      [(FBSDisplaySource *)a1 _lock_noteUpdatedForTransformInvalidation:?];
+      [(FBSDisplaySource *)invalidation _lock_noteUpdatedForTransformInvalidation:?];
     }
 
     v5 = v4;
-    v6 = [v5 identity];
-    v7 = *(a1 + 100);
-    if (v7 != [v6 displayID])
+    identity = [v5 identity];
+    v7 = *(invalidation + 100);
+    if (v7 != [identity displayID])
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"displayID must be consistent : expected=%u rawConfiguration=%@", *(a1 + 100), *(a1 + 32)];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"displayID must be consistent : expected=%u rawConfiguration=%@", *(invalidation + 100), *(invalidation + 32)];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         [FBSDisplaySource _lock_noteUpdatedForTransformInvalidation:?];
@@ -549,23 +549,23 @@ LABEL_39:
       _bs_set_crash_log_message();
     }
 
-    if (*(a1 + 108) != 3)
+    if (*(invalidation + 108) != 3)
     {
-      [(FBSDisplaySource *)a1 _lock_noteUpdatedForTransformInvalidation:?];
+      [(FBSDisplaySource *)invalidation _lock_noteUpdatedForTransformInvalidation:?];
     }
 
-    v8 = *(a1 + 24);
+    v8 = *(invalidation + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __62__FBSDisplaySource__lock_noteUpdatedForTransformInvalidation___block_invoke;
     block[3] = &unk_1E76BFC20;
-    block[4] = a1;
-    v13 = v6;
+    block[4] = invalidation;
+    v13 = identity;
     v14 = v5;
     v15 = sel__lock_noteUpdatedForTransformInvalidation_;
     v16 = a2;
     v9 = v5;
-    v10 = v6;
+    v10 = identity;
     dispatch_async(v8, block);
   }
 }
@@ -573,7 +573,7 @@ LABEL_39:
 - (void)_lock_noteDisconnecting
 {
   v3 = MEMORY[0x1E696AEC0];
-  v12 = [a1 debugDescription];
+  v12 = [self debugDescription];
   v4 = [v3 stringWithFormat:@"reported configuration cannot be nil : %@"];
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -590,22 +590,22 @@ LABEL_39:
   _bs_set_crash_log_message();
 }
 
-- (id)_transformDisplaysIfNecessaryFromDisplayConfiguration:(uint64_t)a1
+- (id)_transformDisplaysIfNecessaryFromDisplayConfiguration:(uint64_t)configuration
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (configuration)
   {
-    os_unfair_lock_lock((a1 + 88));
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    v5 = [WeakRetained transformer];
+    os_unfair_lock_lock((configuration + 88));
+    WeakRetained = objc_loadWeakRetained((configuration + 16));
+    transformer = [WeakRetained transformer];
 
-    os_unfair_lock_unlock((a1 + 88));
-    if (v5)
+    os_unfair_lock_unlock((configuration + 88));
+    if (transformer)
     {
-      os_unfair_lock_lock((a1 + 96));
-      v6 = [v5 transformDisplayConfiguration:v3];
-      os_unfair_lock_unlock((a1 + 96));
+      os_unfair_lock_lock((configuration + 96));
+      v6 = [transformer transformDisplayConfiguration:v3];
+      os_unfair_lock_unlock((configuration + 96));
       if ([v3 isMainDisplay])
       {
         v7 = [v6 objectsPassingTest:&__block_literal_global_34];
@@ -632,12 +632,12 @@ LABEL_39:
         if (v8)
         {
           v9 = v8;
-          v10 = 0;
+          identity = 0;
           v11 = *v17;
           do
           {
             v12 = 0;
-            v13 = v10;
+            v13 = identity;
             do
             {
               if (*v17 != v11)
@@ -651,16 +651,16 @@ LABEL_39:
                 [(FBSDisplaySource *)v3 _transformDisplaysIfNecessaryFromDisplayConfiguration:?];
               }
 
-              v10 = [v14 identity];
+              identity = [v14 identity];
 
-              if ([v7 containsObject:v10])
+              if ([v7 containsObject:identity])
               {
-                [(FBSDisplaySource *)v10 _transformDisplaysIfNecessaryFromDisplayConfiguration:?];
+                [(FBSDisplaySource *)identity _transformDisplaysIfNecessaryFromDisplayConfiguration:?];
               }
 
-              [v7 addObject:v10];
+              [v7 addObject:identity];
               ++v12;
-              v13 = v10;
+              v13 = identity;
             }
 
             while (v9 != v12);
@@ -751,10 +751,10 @@ void __43__FBSDisplaySource__lock_noteDisconnecting__block_invoke(uint64_t a1)
   __43__FBSDisplaySource__lock_noteDisconnecting__block_invoke_cold_1(v3, v2);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  pathCopy = path;
   v8 = BKLogDisplay();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -765,28 +765,28 @@ void __43__FBSDisplaySource__lock_noteDisconnecting__block_invoke(uint64_t a1)
     v12 = 1024;
     v13 = instanceID;
     v14 = 2112;
-    v15 = v7;
+    v15 = pathCopy;
     _os_log_impl(&dword_1A2DBB000, v8, OS_LOG_TYPE_DEFAULT, "[FBSDisplaySource %u-%u] KVO: did change %@", v11, 0x18u);
   }
 
   [(FBSDisplaySource *)self _updateForInitialization:0 forTransformInvalidation:?];
 }
 
-- (void)setAllowsUnknown:(uint64_t)a1
+- (void)setAllowsUnknown:(uint64_t)unknown
 {
-  if (a1)
+  if (unknown)
   {
-    os_unfair_lock_lock((a1 + 88));
-    if (*(a1 + 124) == a2)
+    os_unfair_lock_lock((unknown + 88));
+    if (*(unknown + 124) == a2)
     {
 
-      os_unfair_lock_unlock((a1 + 88));
+      os_unfair_lock_unlock((unknown + 88));
     }
 
     else
     {
-      *(a1 + 124) = a2;
-      os_unfair_lock_unlock((a1 + 88));
+      *(unknown + 124) = a2;
+      os_unfair_lock_unlock((unknown + 88));
       OUTLINED_FUNCTION_18_1();
 
       [(FBSDisplaySource *)v4 _updateForInitialization:v5 forTransformInvalidation:v6];
@@ -796,59 +796,59 @@ void __43__FBSDisplaySource__lock_noteDisconnecting__block_invoke(uint64_t a1)
 
 - (void)updateTransforms
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_not_owner((a1 + 96));
-    if (*(a1 + 121) == 1)
+    os_unfair_lock_assert_not_owner((self + 96));
+    if (*(self + 121) == 1)
     {
 
-      [(FBSDisplaySource *)a1 _updateForInitialization:1 forTransformInvalidation:?];
+      [(FBSDisplaySource *)self _updateForInitialization:1 forTransformInvalidation:?];
     }
   }
 }
 
-- (void)_lock_setAttachment:(const os_unfair_lock *)a1
+- (void)_lock_setAttachment:(const os_unfair_lock *)attachment
 {
-  if (a1)
+  if (attachment)
   {
-    os_unfair_lock_assert_owner(a1 + 22);
-    a1[27]._os_unfair_lock_opaque = a2;
-    os_unfair_lock_lock(&a1[23]);
-    a1[28]._os_unfair_lock_opaque = a1[27]._os_unfair_lock_opaque;
+    os_unfair_lock_assert_owner(attachment + 22);
+    attachment[27]._os_unfair_lock_opaque = a2;
+    os_unfair_lock_lock(&attachment[23]);
+    attachment[28]._os_unfair_lock_opaque = attachment[27]._os_unfair_lock_opaque;
 
-    os_unfair_lock_unlock(&a1[23]);
+    os_unfair_lock_unlock(&attachment[23]);
   }
 }
 
-- (void)_lock_setRawConfiguration:(uint64_t)a1
+- (void)_lock_setRawConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
     v3 = a2;
-    os_unfair_lock_assert_owner((a1 + 88));
+    os_unfair_lock_assert_owner((configuration + 88));
     v4 = [v3 copy];
 
-    v5 = *(a1 + 32);
-    *(a1 + 32) = v4;
+    v5 = *(configuration + 32);
+    *(configuration + 32) = v4;
 
-    os_unfair_lock_lock((a1 + 92));
-    objc_storeStrong((a1 + 64), *(a1 + 32));
-    os_unfair_lock_unlock((a1 + 92));
+    os_unfair_lock_lock((configuration + 92));
+    objc_storeStrong((configuration + 64), *(configuration + 32));
+    os_unfair_lock_unlock((configuration + 92));
     v6 = BKLogDisplay();
     if (OUTLINED_FUNCTION_31_0(v6))
     {
-      v12 = [*(a1 + 32) debugDescription];
+      v12 = [*(configuration + 32) debugDescription];
       OUTLINED_FUNCTION_28_0();
       _os_log_debug_impl(v7, v8, v9, v10, v11, 0x18u);
     }
   }
 }
 
-- (void)_callOutQueue_postToObservers:(uint64_t)a3 includeBookendObserver:(void *)a4 connected:
+- (void)_callOutQueue_postToObservers:(uint64_t)observers includeBookendObserver:(void *)observer connected:
 {
   v6 = a2;
-  v7 = a4;
-  if (a1)
+  observerCopy = observer;
+  if (self)
   {
     BSDispatchQueueAssert();
   }
@@ -879,21 +879,21 @@ void __39__FBSDisplaySource__lock_noteConnected__block_invoke_148(uint64_t a1)
   }
 }
 
-- (void)_callOutQueue_postToObservers:(uint64_t)a3 includeBookendObserver:(void *)a4 disconnected:
+- (void)_callOutQueue_postToObservers:(uint64_t)observers includeBookendObserver:(void *)observer disconnected:
 {
   v6 = a2;
-  v7 = a4;
-  if (a1)
+  observerCopy = observer;
+  if (self)
   {
     BSDispatchQueueAssert();
   }
 }
 
-- (void)_callOutQueue_postToObservers:(uint64_t)a3 includeBookendObserver:(void *)a4 updated:
+- (void)_callOutQueue_postToObservers:(uint64_t)observers includeBookendObserver:(void *)observer updated:
 {
   v6 = a2;
-  v7 = a4;
-  if (a1)
+  observerCopy = observer;
+  if (self)
   {
     BSDispatchQueueAssert();
   }

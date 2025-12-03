@@ -2,14 +2,14 @@
 + (id)_defaultAttributes;
 + (id)_defaultFont;
 - (BOOL)_needsDoubleUpdateConstraintsPass;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (CGSize)intrinsicContentSize;
 - (NSString)text;
 - (UIColor)textColor;
 - (UIFont)font;
-- (UIVectorLabel)initWithFrame:(CGRect)a3;
+- (UIVectorLabel)initWithFrame:(CGRect)frame;
 - (_UILabelContent)_content;
 - (double)_baselineOffsetFromBottom;
 - (double)_firstBaselineOffsetFromTop;
@@ -18,32 +18,32 @@
 - (double)_preferredMaxLayoutWidth;
 - (id)_attributedTextCompatibleForSizing;
 - (id)_defaultAttributes;
-- (id)_layoutParametersWithinSize:(CGSize)a3 forSizing:(BOOL)a4;
+- (id)_layoutParametersWithinSize:(CGSize)size forSizing:(BOOL)sizing;
 - (id)_materializedAttributedText;
 - (void)_ensureSizingLayout;
 - (void)_ensureVisualLayout;
-- (void)_generateDeferredAnimations:(id)a3;
-- (void)_mergeDefaultAttributesForDowngradingContent:(id)a3;
+- (void)_generateDeferredAnimations:(id)animations;
+- (void)_mergeDefaultAttributesForDowngradingContent:(id)content;
 - (void)_prepareForFirstIntrinsicContentSizeCalculation;
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3;
-- (void)_setAttributedText:(id)a3;
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds;
+- (void)_setAttributedText:(id)text;
 - (void)_setNeedsUpdateLayerIfNeeded;
-- (void)_setTextColor:(id)a3;
+- (void)_setTextColor:(id)color;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPreferredMaxLayoutWidth:(double)a3;
-- (void)setText:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setPreferredMaxLayoutWidth:(double)width;
+- (void)setText:(id)text;
 @end
 
 @implementation UIVectorLabel
 
-- (UIVectorLabel)initWithFrame:(CGRect)a3
+- (UIVectorLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIVectorLabel;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -66,7 +66,7 @@
   block[1] = 3221225472;
   block[2] = __35__UIVectorLabel__defaultAttributes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_7_13 != -1)
   {
     dispatch_once(&_MergedGlobals_7_13, block);
@@ -91,13 +91,13 @@ void __35__UIVectorLabel__defaultAttributes__block_invoke(uint64_t a1)
   qword_1ED49AE78 = v3;
 }
 
-- (void)_mergeDefaultAttributesForDowngradingContent:(id)a3
+- (void)_mergeDefaultAttributesForDowngradingContent:(id)content
 {
   defaultAttributes = self->_defaultAttributes;
-  v5 = a3;
+  contentCopy = content;
   if ([(NSMutableDictionary *)defaultAttributes count])
   {
-    [(NSMutableDictionary *)self->_defaultAttributes addEntriesFromDictionary:v5];
+    [(NSMutableDictionary *)self->_defaultAttributes addEntriesFromDictionary:contentCopy];
 
     v6 = [(_UILabelContent *)self->_content contentWithDefaultAttributes:self->_defaultAttributes];
     content = self->_content;
@@ -106,7 +106,7 @@ void __35__UIVectorLabel__defaultAttributes__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [v5 mutableCopy];
+    v8 = [contentCopy mutableCopy];
 
     content = self->_defaultAttributes;
     self->_defaultAttributes = v8;
@@ -118,8 +118,8 @@ void __35__UIVectorLabel__defaultAttributes__block_invoke(uint64_t a1)
   defaultAttributes = self->_defaultAttributes;
   if (!defaultAttributes)
   {
-    v4 = [objc_opt_class() _defaultAttributes];
-    v5 = [v4 mutableCopy];
+    _defaultAttributes = [objc_opt_class() _defaultAttributes];
+    v5 = [_defaultAttributes mutableCopy];
     v6 = self->_defaultAttributes;
     self->_defaultAttributes = v5;
 
@@ -135,8 +135,8 @@ void __35__UIVectorLabel__defaultAttributes__block_invoke(uint64_t a1)
   if (!content)
   {
     v4 = [_UILabelContent alloc];
-    v5 = [(UIVectorLabel *)self _defaultAttributes];
-    v6 = [(_UILabelContent *)v4 initWithDefaultAttributes:v5];
+    _defaultAttributes = [(UIVectorLabel *)self _defaultAttributes];
+    v6 = [(_UILabelContent *)v4 initWithDefaultAttributes:_defaultAttributes];
     v7 = self->_content;
     self->_content = v6;
 
@@ -146,30 +146,30 @@ void __35__UIVectorLabel__defaultAttributes__block_invoke(uint64_t a1)
   return content;
 }
 
-- (void)_setTextColor:(id)a3
+- (void)_setTextColor:(id)color
 {
-  v7 = a3;
-  if (!v7)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v7 = +[UIColor blackColor];
+    colorCopy = +[UIColor blackColor];
   }
 
-  v4 = [(UIVectorLabel *)self _content];
+  _content = [(UIVectorLabel *)self _content];
   v5 = *off_1E70EC920;
-  if (([v4 isAttribute:*off_1E70EC920 uniformlyEqualToValue:v7] & 1) == 0)
+  if (([_content isAttribute:*off_1E70EC920 uniformlyEqualToValue:colorCopy] & 1) == 0)
   {
-    v6 = [v4 contentByApplyingAttributeToEntireRange:v5 value:v7];
+    v6 = [_content contentByApplyingAttributeToEntireRange:v5 value:colorCopy];
     [(UIVectorLabel *)self _setContent:v6];
 
-    [(NSMutableDictionary *)self->_defaultAttributes setObject:v7 forKey:v5];
+    [(NSMutableDictionary *)self->_defaultAttributes setObject:colorCopy forKey:v5];
     [(UIVectorLabel *)self _setNeedsUpdateLayerIfNeeded];
   }
 }
 
 - (UIColor)textColor
 {
-  v2 = [(UIVectorLabel *)self _content];
-  v3 = [v2 defaultValueForAttribute:*off_1E70EC920];
+  _content = [(UIVectorLabel *)self _content];
+  v3 = [_content defaultValueForAttribute:*off_1E70EC920];
   v4 = v3;
   if (v3)
   {
@@ -186,41 +186,41 @@ void __35__UIVectorLabel__defaultAttributes__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v7 = a3;
-  if (!v7)
+  fontCopy = font;
+  if (!fontCopy)
   {
-    v7 = [objc_opt_class() _defaultFont];
+    fontCopy = [objc_opt_class() _defaultFont];
   }
 
-  v4 = [(UIVectorLabel *)self _content];
+  _content = [(UIVectorLabel *)self _content];
   v5 = *off_1E70EC918;
-  if (([v4 isAttribute:*off_1E70EC918 uniformlyEqualToValue:v7] & 1) == 0)
+  if (([_content isAttribute:*off_1E70EC918 uniformlyEqualToValue:fontCopy] & 1) == 0)
   {
-    v6 = [v4 contentByApplyingAttributeToEntireRange:v5 value:v7];
+    v6 = [_content contentByApplyingAttributeToEntireRange:v5 value:fontCopy];
     [(UIVectorLabel *)self _setContent:v6];
 
-    [(NSMutableDictionary *)self->_defaultAttributes setObject:v7 forKey:v5];
+    [(NSMutableDictionary *)self->_defaultAttributes setObject:fontCopy forKey:v5];
     [(UIVectorLabel *)self _setNeedsUpdateLayerIfNeeded];
   }
 }
 
 - (UIFont)font
 {
-  v2 = [(UIVectorLabel *)self _content];
-  v3 = [v2 defaultValueForAttribute:*off_1E70EC918];
+  _content = [(UIVectorLabel *)self _content];
+  v3 = [_content defaultValueForAttribute:*off_1E70EC918];
 
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v6 = a3;
-  v4 = [(UIVectorLabel *)self _content];
-  if (([v4 isEqualToString:v6] & 1) == 0)
+  textCopy = text;
+  _content = [(UIVectorLabel *)self _content];
+  if (([_content isEqualToString:textCopy] & 1) == 0)
   {
-    v5 = [v4 contentWithString:v6];
+    v5 = [_content contentWithString:textCopy];
     [(UIVectorLabel *)self _setContent:v5];
 
     [(UIVectorLabel *)self _setNeedsUpdateLayerIfNeeded];
@@ -229,19 +229,19 @@ void __35__UIVectorLabel__defaultAttributes__block_invoke(uint64_t a1)
 
 - (NSString)text
 {
-  v2 = [(UIVectorLabel *)self _content];
-  v3 = [v2 string];
+  _content = [(UIVectorLabel *)self _content];
+  string = [_content string];
 
-  return v3;
+  return string;
 }
 
-- (void)_setAttributedText:(id)a3
+- (void)_setAttributedText:(id)text
 {
-  v6 = a3;
-  v4 = [(UIVectorLabel *)self _content];
-  if (([v4 isEqualToAttributedString:v6] & 1) == 0)
+  textCopy = text;
+  _content = [(UIVectorLabel *)self _content];
+  if (([_content isEqualToAttributedString:textCopy] & 1) == 0)
   {
-    v5 = [v4 contentWithAttributedString:v6];
+    v5 = [_content contentWithAttributedString:textCopy];
     [(UIVectorLabel *)self _setContent:v5];
 
     [(UIVectorLabel *)self _setNeedsUpdateLayerIfNeeded];
@@ -250,41 +250,41 @@ void __35__UIVectorLabel__defaultAttributes__block_invoke(uint64_t a1)
 
 - (id)_materializedAttributedText
 {
-  v3 = [(UIVectorLabel *)self _content];
-  v4 = [v3 attributedStringContent];
-  [(UIVectorLabel *)self _setContent:v4];
+  _content = [(UIVectorLabel *)self _content];
+  attributedStringContent = [_content attributedStringContent];
+  [(UIVectorLabel *)self _setContent:attributedStringContent];
 
-  v5 = [(UIVectorLabel *)self _content];
-  v6 = [v5 attributedString];
+  _content2 = [(UIVectorLabel *)self _content];
+  attributedString = [_content2 attributedString];
 
-  return v6;
+  return attributedString;
 }
 
-- (void)setPreferredMaxLayoutWidth:(double)a3
+- (void)setPreferredMaxLayoutWidth:(double)width
 {
-  v5 = [(UIVectorLabel *)self _needsDoubleUpdateConstraintsPass];
+  _needsDoubleUpdateConstraintsPass = [(UIVectorLabel *)self _needsDoubleUpdateConstraintsPass];
   v6 = *&self->_labelFlags & 0xFE;
-  if (a3 != 0.0)
+  if (width != 0.0)
   {
     ++v6;
   }
 
   *&self->_labelFlags = v6;
-  if (self->_preferredMaxLayoutWidth != a3)
+  if (self->_preferredMaxLayoutWidth != width)
   {
-    self->_preferredMaxLayoutWidth = a3;
+    self->_preferredMaxLayoutWidth = width;
     [(UIView *)self invalidateIntrinsicContentSize];
   }
 
-  [(UIView *)self _needsDoubleUpdateConstraintsPassMayHaveChangedFrom:v5];
+  [(UIView *)self _needsDoubleUpdateConstraintsPassMayHaveChangedFrom:_needsDoubleUpdateConstraintsPass];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -298,12 +298,12 @@ void __35__UIVectorLabel__defaultAttributes__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -339,9 +339,9 @@ void __35__UIVectorLabel__defaultAttributes__block_invoke(uint64_t a1)
   else
   {
     v4 = v3;
-    v5 = [(UIVectorLabel *)self numberOfLines];
+    numberOfLines = [(UIVectorLabel *)self numberOfLines];
     v6 = 1.79769313e308;
-    if (v5 != 1)
+    if (numberOfLines != 1)
     {
       v6 = v4;
     }
@@ -369,8 +369,8 @@ LABEL_7:
 
   [(UIView *)self bounds];
   v19 = [(UIVectorLabel *)self _layoutParametersWithinSize:0 forSizing:v3, v4];
-  v5 = [(_UIVectorTextLayout *)self->_visualLayout parameters];
-  v6 = [v5 isEqualToParameters:v19];
+  parameters = [(_UIVectorTextLayout *)self->_visualLayout parameters];
+  v6 = [parameters isEqualToParameters:v19];
 
   if (v6)
   {
@@ -405,8 +405,8 @@ LABEL_11:
 
 LABEL_8:
   v19 = v9;
-  v12 = [(_UIVectorTextLayout *)sizingLayout parameters];
-  v13 = [v12 isEqualToParameters:v19];
+  parameters2 = [(_UIVectorTextLayout *)sizingLayout parameters];
+  v13 = [parameters2 isEqualToParameters:v19];
 
   if (!v13)
   {
@@ -421,14 +421,14 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)_layoutParametersWithinSize:(CGSize)a3 forSizing:(BOOL)a4
+- (id)_layoutParametersWithinSize:(CGSize)size forSizing:(BOOL)sizing
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = objc_opt_new();
   [v8 setWithinSize:{width, height}];
   [v8 setNumberOfLines:{-[UIVectorLabel numberOfLines](self, "numberOfLines")}];
-  if (a4)
+  if (sizing)
   {
     [(UIVectorLabel *)self _attributedTextCompatibleForSizing];
   }
@@ -440,16 +440,16 @@ LABEL_14:
   v9 = ;
   [v8 setAttributedText:v9];
 
-  v10 = [(UIView *)self traitCollection];
-  [v8 setTraitCollection:v10];
+  traitCollection = [(UIView *)self traitCollection];
+  [v8 setTraitCollection:traitCollection];
 
   return v8;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  width = a3.width;
-  v5 = [(UIVectorLabel *)self numberOfLines:a3.width];
+  width = size.width;
+  v5 = [(UIVectorLabel *)self numberOfLines:size.width];
   if (width <= 0.0 || v5 == 1)
   {
     v7 = 1.79769313e308;
@@ -489,8 +489,8 @@ LABEL_14:
 
     if ((*(&self->super._viewFlags + 7) & 2) != 0 && !v17)
     {
-      v22 = [(UIView *)self _layoutEngine];
-      if (v22)
+      _layoutEngine = [(UIView *)self _layoutEngine];
+      if (_layoutEngine)
       {
         _UIViewEnumerateLayoutConstraintsAndAdjustForConstantChangeForSelectedAttributes(self, _UILayoutAttributeIsBaselineAttribute);
       }
@@ -506,10 +506,10 @@ LABEL_20:
   return result;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines
 {
-  v5 = [(UIVectorLabel *)self _layoutParametersWithinSize:1 forSizing:a3.size.width, a3.size.height];
-  [v5 setNumberOfLines:a4];
+  v5 = [(UIVectorLabel *)self _layoutParametersWithinSize:1 forSizing:bounds.size.width, bounds.size.height];
+  [v5 setNumberOfLines:lines];
   v6 = [[_UIVectorTextLayout alloc] initWithTextParameters:v5];
   [(_UIVectorTextLayout *)v6 boundingRect];
   v8 = v7;
@@ -606,12 +606,12 @@ LABEL_20:
   [(UIView *)&v2 _prepareForFirstIntrinsicContentSizeCalculation];
 }
 
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self alignmentRectForFrame:?];
   self->_preferredMaxLayoutWidth = v8;
   v9.receiver = self;
@@ -619,19 +619,19 @@ LABEL_20:
   [(UIView *)&v9 _prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:x, y, width, height];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = UIVectorLabel;
-  if ([(UIView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"textLayout"];
+    v5 = [keyCopy isEqualToString:@"textLayout"];
   }
 
   return v5;
@@ -639,10 +639,10 @@ LABEL_20:
 
 - (void)_setNeedsUpdateLayerIfNeeded
 {
-  v3 = [(UIView *)self superview];
-  if (v3)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v4 = v3;
+    v4 = superview;
     v5 = +[UIView _isInAnimationBlockWithAnimationsEnabled];
 
     if (v5)
@@ -662,20 +662,20 @@ LABEL_20:
   [(UIView *)&v5 layoutSubviews];
   [(UIVectorLabel *)self _ensureVisualLayout];
   visualLayout = self->_visualLayout;
-  v4 = [(UIVectorLabel *)self _labelLayer];
-  [v4 setTextLayout:visualLayout];
+  _labelLayer = [(UIVectorLabel *)self _labelLayer];
+  [_labelLayer setTextLayout:visualLayout];
 }
 
-- (void)_generateDeferredAnimations:(id)a3
+- (void)_generateDeferredAnimations:(id)animations
 {
-  v4 = [a3 objectForKeyedSubscript:@"textLayout"];
+  v4 = [animations objectForKeyedSubscript:@"textLayout"];
   if (v4)
   {
     v6 = v4;
     [(UIVectorLabel *)self _ensureVisualLayout];
     [(UIView *)self setNeedsLayout];
-    v5 = [(UIView *)self superview];
-    [v5 layoutIfNeeded];
+    superview = [(UIView *)self superview];
+    [superview layoutIfNeeded];
 
     v4 = v6;
   }
@@ -683,23 +683,23 @@ LABEL_20:
 
 - (id)_attributedTextCompatibleForSizing
 {
-  v3 = [(UIVectorLabel *)self _content];
-  v4 = [v3 length];
+  _content = [(UIVectorLabel *)self _content];
+  v4 = [_content length];
 
   if (v4)
   {
-    v5 = [(UIVectorLabel *)self _content];
-    v6 = [v5 attributedString];
+    _content2 = [(UIVectorLabel *)self _content];
+    attributedString = [_content2 attributedString];
   }
 
   else
   {
     v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v5 = [(UIVectorLabel *)self _defaultAttributes];
-    v6 = [v7 initWithString:@"x" attributes:v5];
+    _content2 = [(UIVectorLabel *)self _defaultAttributes];
+    attributedString = [v7 initWithString:@"x" attributes:_content2];
   }
 
-  v8 = v6;
+  v8 = attributedString;
 
   return v8;
 }

@@ -1,17 +1,17 @@
 @interface MISOnlineAuthEntry
-- (BOOL)isEqual:(id)a3;
-- (MISOnlineAuthEntry)initWithProfileUUID:(id)a3 cdHash:(id)a4 gracePeriod:(int)a5 lastSuccessMonotonicTime:(int64_t)a6 lastSuccessResetCount:(int64_t)a7 isRejected:(BOOL)a8 isRejectedByWholeProfile:(BOOL)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MISOnlineAuthEntry)initWithProfileUUID:(id)d cdHash:(id)hash gracePeriod:(int)period lastSuccessMonotonicTime:(int64_t)time lastSuccessResetCount:(int64_t)count isRejected:(BOOL)rejected isRejectedByWholeProfile:(BOOL)profile;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryDescription;
 - (unint64_t)hash;
 @end
 
 @implementation MISOnlineAuthEntry
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v13 = objc_msgSend_profileUUID(self, v11, v12);
   objc_msgSend_setProfileUUID_(v10, v14, v13);
@@ -47,12 +47,12 @@
   return v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_profileUUID(self, v6, v7);
     v11 = objc_msgSend_profileUUID(v5, v9, v10);
     if (objc_msgSend_isEqual_(v8, v12, v11))
@@ -117,23 +117,23 @@
   return v17;
 }
 
-- (MISOnlineAuthEntry)initWithProfileUUID:(id)a3 cdHash:(id)a4 gracePeriod:(int)a5 lastSuccessMonotonicTime:(int64_t)a6 lastSuccessResetCount:(int64_t)a7 isRejected:(BOOL)a8 isRejectedByWholeProfile:(BOOL)a9
+- (MISOnlineAuthEntry)initWithProfileUUID:(id)d cdHash:(id)hash gracePeriod:(int)period lastSuccessMonotonicTime:(int64_t)time lastSuccessResetCount:(int64_t)count isRejected:(BOOL)rejected isRejectedByWholeProfile:(BOOL)profile
 {
-  v16 = a3;
-  v17 = a4;
+  dCopy = d;
+  hashCopy = hash;
   v21.receiver = self;
   v21.super_class = MISOnlineAuthEntry;
   v18 = [(MISOnlineAuthEntry *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_profileUUID, a3);
-    objc_storeStrong(&v19->_cdHash, a4);
-    v19->_gracePeriod = a5;
-    v19->_lastSuccessMonotonicTime = a6;
-    v19->_lastSuccessResetCount = a7;
-    v19->_isRejected = a8;
-    v19->_isRejectedByWholeProfile = a9;
+    objc_storeStrong(&v18->_profileUUID, d);
+    objc_storeStrong(&v19->_cdHash, hash);
+    v19->_gracePeriod = period;
+    v19->_lastSuccessMonotonicTime = time;
+    v19->_lastSuccessResetCount = count;
+    v19->_isRejected = rejected;
+    v19->_isRejectedByWholeProfile = profile;
   }
 
   return v19;

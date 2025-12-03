@@ -1,8 +1,8 @@
 @interface WFIconColorBackground
 + (WFIconColorBackground)clearBackground;
-- (BOOL)isEqual:(id)a3;
-- (WFIconColorBackground)initWithCoder:(id)a3;
-- (WFIconColorBackground)initWithColor:(id)a3 blendMode:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (WFIconColorBackground)initWithCoder:(id)coder;
+- (WFIconColorBackground)initWithColor:(id)color blendMode:(int64_t)mode;
 @end
 
 @implementation WFIconColorBackground
@@ -16,24 +16,24 @@
   return v4;
 }
 
-- (WFIconColorBackground)initWithCoder:(id)a3
+- (WFIconColorBackground)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
 
   v6 = [(WFIconColorBackground *)self initWithColor:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(WFIconColorBackground *)self color];
-    v6 = [v4 color];
-    v7 = v5;
-    v8 = v6;
+    color = [(WFIconColorBackground *)self color];
+    color2 = [equalCopy color];
+    v7 = color;
+    v8 = color2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -58,23 +58,23 @@
   return v10;
 }
 
-- (WFIconColorBackground)initWithColor:(id)a3 blendMode:(int64_t)a4
+- (WFIconColorBackground)initWithColor:(id)color blendMode:(int64_t)mode
 {
-  v8 = a3;
-  if (!v8)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFIconBackground.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"color"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFIconBackground.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"color"}];
   }
 
   v14.receiver = self;
   v14.super_class = WFIconColorBackground;
-  v9 = [(WFIconBackground *)&v14 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(WFIconBackground *)&v14 _init];
+  v10 = _init;
+  if (_init)
   {
-    objc_storeStrong(v9 + 1, a3);
-    v10->_blendMode = a4;
+    objc_storeStrong(_init + 1, color);
+    v10->_blendMode = mode;
     v11 = v10;
   }
 

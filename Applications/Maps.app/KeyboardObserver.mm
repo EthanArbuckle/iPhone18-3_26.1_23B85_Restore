@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (CGRect)keyboardFrame;
 - (KeyboardObserver)init;
-- (void)keyboardWillOrDidChangeFrame:(id)a3;
+- (void)keyboardWillOrDidChangeFrame:(id)frame;
 @end
 
 @implementation KeyboardObserver
@@ -53,10 +53,10 @@
   return result;
 }
 
-- (void)keyboardWillOrDidChangeFrame:(id)a3
+- (void)keyboardWillOrDidChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v9 = [v4 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [frame userInfo];
+  v9 = [userInfo objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
 
   if (v9)
   {

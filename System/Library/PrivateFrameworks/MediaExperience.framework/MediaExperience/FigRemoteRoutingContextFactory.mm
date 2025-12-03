@@ -1,11 +1,11 @@
 @interface FigRemoteRoutingContextFactory
-- (int)copySidePlayContextWithAllocator:(__CFAllocator *)a3 options:(__CFDictionary *)a4 context:(OpaqueFigRoutingContext *)a5;
-- (int)copySystemMirroringContextWithAllocator:(__CFAllocator *)a3 options:(__CFDictionary *)a4 context:(OpaqueFigRoutingContext *)a5;
+- (int)copySidePlayContextWithAllocator:(__CFAllocator *)allocator options:(__CFDictionary *)options context:(OpaqueFigRoutingContext *)context;
+- (int)copySystemMirroringContextWithAllocator:(__CFAllocator *)allocator options:(__CFDictionary *)options context:(OpaqueFigRoutingContext *)context;
 @end
 
 @implementation FigRemoteRoutingContextFactory
 
-- (int)copySystemMirroringContextWithAllocator:(__CFAllocator *)a3 options:(__CFDictionary *)a4 context:(OpaqueFigRoutingContext *)a5
+- (int)copySystemMirroringContextWithAllocator:(__CFAllocator *)allocator options:(__CFDictionary *)options context:(OpaqueFigRoutingContext *)context
 {
   if (FigRoutingContextIsSystemContextAllowed_onceToken != -1)
   {
@@ -15,7 +15,7 @@
   if (FigRoutingContextIsSystemContextAllowed_isAllowed)
   {
 
-    return FigRoutingContextRemoteCopySystemMirroringContext(a3, a4, a5);
+    return FigRoutingContextRemoteCopySystemMirroringContext(allocator, options, context);
   }
 
   else
@@ -25,7 +25,7 @@
   }
 }
 
-- (int)copySidePlayContextWithAllocator:(__CFAllocator *)a3 options:(__CFDictionary *)a4 context:(OpaqueFigRoutingContext *)a5
+- (int)copySidePlayContextWithAllocator:(__CFAllocator *)allocator options:(__CFDictionary *)options context:(OpaqueFigRoutingContext *)context
 {
   if (FigRoutingContextIsSystemContextAllowed_onceToken != -1)
   {
@@ -35,7 +35,7 @@
   if (FigRoutingContextIsSystemContextAllowed_isAllowed)
   {
 
-    return FigRoutingContextRemoteCopySidePlayContext(a3, a4, a5);
+    return FigRoutingContextRemoteCopySidePlayContext(allocator, options, context);
   }
 
   else

@@ -1,5 +1,5 @@
 @interface GDHome
-- (GDHome)initWithHMHome:(id)a3;
+- (GDHome)initWithHMHome:(id)home;
 - (NSArray)users;
 - (id)persons;
 @end
@@ -67,16 +67,16 @@
   return v17;
 }
 
-- (GDHome)initWithHMHome:(id)a3
+- (GDHome)initWithHMHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = GDHome;
   v6 = [(GDHome *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inner, a3);
+    objc_storeStrong(&v6->_inner, home);
   }
 
   return v7;

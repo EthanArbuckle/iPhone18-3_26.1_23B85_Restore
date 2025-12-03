@@ -1,23 +1,23 @@
 @interface SiriAnalyticsMessageResolutionPipeline
-- (SiriAnalyticsMessageResolutionPipeline)initWithQueue:(id)a3;
-- (void)registerMessageResolver:(id)a3;
-- (void)resolveAndEmitMessage:(id)a3 isolatedStreamUUID:(id)a4;
-- (void)resolveMessage:(id)a3 completion:(id)a4;
+- (SiriAnalyticsMessageResolutionPipeline)initWithQueue:(id)queue;
+- (void)registerMessageResolver:(id)resolver;
+- (void)resolveAndEmitMessage:(id)message isolatedStreamUUID:(id)d;
+- (void)resolveMessage:(id)message completion:(id)completion;
 @end
 
 @implementation SiriAnalyticsMessageResolutionPipeline
 
-- (void)registerMessageResolver:(id)a3
+- (void)registerMessageResolver:(id)resolver
 {
-  v4 = a3;
+  resolverCopy = resolver;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__SiriAnalyticsMessageResolutionPipeline_registerMessageResolver___block_invoke;
   v7[3] = &unk_1E8587870;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = resolverCopy;
+  selfCopy = self;
+  v6 = resolverCopy;
   dispatch_async(queue, v7);
 }
 
@@ -56,12 +56,12 @@ uint64_t __66__SiriAnalyticsMessageResolutionPipeline_registerMessageResolver___
   return result;
 }
 
-- (void)resolveMessage:(id)a3 completion:(id)a4
+- (void)resolveMessage:(id)message completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSHashTable *)self->_resolvers allObjects];
+  messageCopy = message;
+  completionCopy = completion;
+  allObjects = [(NSHashTable *)self->_resolvers allObjects];
   if (SiriAnalyticsLoggingInit_once != -1)
   {
     dispatch_once(&SiriAnalyticsLoggingInit_once, &__block_literal_global_701);
@@ -74,9 +74,9 @@ uint64_t __66__SiriAnalyticsMessageResolutionPipeline_registerMessageResolver___
     *buf = 136315650;
     *&buf[4] = "[SiriAnalyticsMessageResolutionPipeline resolveMessage:completion:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = messageCopy;
     *&buf[22] = 2048;
-    v31 = [v8 count];
+    v31 = [allObjects count];
     _os_log_impl(&dword_1D9863000, v10, OS_LOG_TYPE_INFO, "%s Resolving message: %@ with %lu resolvers", buf, 0x20u);
   }
 
@@ -90,10 +90,10 @@ uint64_t __66__SiriAnalyticsMessageResolutionPipeline_registerMessageResolver___
   v21[1] = 3221225472;
   v21[2] = __68__SiriAnalyticsMessageResolutionPipeline_resolveMessage_completion___block_invoke;
   v21[3] = &unk_1E8587820;
-  v11 = v6;
+  v11 = messageCopy;
   v22 = v11;
   v23 = buf;
-  [v8 enumerateObjectsUsingBlock:v21];
+  [allObjects enumerateObjectsUsingBlock:v21];
   if (*(*&buf[8] + 40))
   {
     if (SiriAnalyticsLoggingInit_once != -1)
@@ -121,7 +121,7 @@ uint64_t __66__SiriAnalyticsMessageResolutionPipeline_registerMessageResolver___
     v17[3] = &unk_1E8587848;
     v20 = buf;
     v18 = v11;
-    v19 = v7;
+    v19 = completionCopy;
     [v13 resolveMessage:v18 completion:v17];
   }
 
@@ -142,7 +142,7 @@ uint64_t __66__SiriAnalyticsMessageResolutionPipeline_registerMessageResolver___
       _os_log_error_impl(&dword_1D9863000, v14, OS_LOG_TYPE_ERROR, "%s No applicable resolvers found for message: %@, dropping.", v24, 0x16u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   _Block_object_dispose(buf, 8);
@@ -204,22 +204,22 @@ void __68__SiriAnalyticsMessageResolutionPipeline_resolveMessage_completion___bl
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveAndEmitMessage:(id)a3 isolatedStreamUUID:(id)a4
+- (void)resolveAndEmitMessage:(id)message isolatedStreamUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dCopy = d;
   v8 = mach_absolute_time();
   queue = self->_queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __83__SiriAnalyticsMessageResolutionPipeline_resolveAndEmitMessage_isolatedStreamUUID___block_invoke;
   v12[3] = &unk_1E85877F8;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
+  v13 = messageCopy;
+  selfCopy = self;
+  v15 = dCopy;
   v16 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = dCopy;
+  v11 = messageCopy;
   dispatch_async(queue, v12);
 }
 
@@ -251,16 +251,16 @@ void __83__SiriAnalyticsMessageResolutionPipeline_resolveAndEmitMessage_isolated
   }
 }
 
-- (SiriAnalyticsMessageResolutionPipeline)initWithQueue:(id)a3
+- (SiriAnalyticsMessageResolutionPipeline)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SiriAnalyticsMessageResolutionPipeline;
   v6 = [(SiriAnalyticsMessageResolutionPipeline *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

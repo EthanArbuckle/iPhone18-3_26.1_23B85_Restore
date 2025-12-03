@@ -1,62 +1,62 @@
 @interface NTKLayoutRule
-+ (id)layoutRuleForDevice:(id)a3 withReferenceFrame:(CGRect)a4 horizontalLayout:(int64_t)a5 verticalLayout:(int64_t)a6 clip:(BOOL)a7;
-- (BOOL)isEqual:(id)a3;
-- (CGRect)calculateLayoutFrameForBoundsSize:(CGSize)a3;
++ (id)layoutRuleForDevice:(id)device withReferenceFrame:(CGRect)frame horizontalLayout:(int64_t)layout verticalLayout:(int64_t)verticalLayout clip:(BOOL)clip;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)calculateLayoutFrameForBoundsSize:(CGSize)size;
 - (CGRect)referenceFrame;
 - (CGSize)maximumSize;
-- (double)calculateLayoutFrameHeightForBoundsSize:(CGSize)a3;
-- (double)calculateLayoutFrameWidthForBoundsSize:(CGSize)a3;
-- (double)calculateLayoutFrameXOriginForBoundsSize:(CGSize)a3;
-- (double)calculateLayoutFrameYOriginForBoundsSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)calculateLayoutFrameHeightForBoundsSize:(CGSize)size;
+- (double)calculateLayoutFrameWidthForBoundsSize:(CGSize)size;
+- (double)calculateLayoutFrameXOriginForBoundsSize:(CGSize)size;
+- (double)calculateLayoutFrameYOriginForBoundsSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initForDevice:(id)a3;
-- (id)layoutRuleByConvertingToCoordinateSpaceWithFrame:(CGRect)a3;
+- (id)initForDevice:(id)device;
+- (id)layoutRuleByConvertingToCoordinateSpaceWithFrame:(CGRect)frame;
 - (unint64_t)hash;
 - (void)validate;
 @end
 
 @implementation NTKLayoutRule
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKLayoutRule;
   v6 = [(NTKLayoutRule *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-+ (id)layoutRuleForDevice:(id)a3 withReferenceFrame:(CGRect)a4 horizontalLayout:(int64_t)a5 verticalLayout:(int64_t)a6 clip:(BOOL)a7
++ (id)layoutRuleForDevice:(id)device withReferenceFrame:(CGRect)frame horizontalLayout:(int64_t)layout verticalLayout:(int64_t)verticalLayout clip:(BOOL)clip
 {
-  v7 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3;
-  v16 = [[a1 alloc] initForDevice:v15];
+  clipCopy = clip;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
+  v16 = [[self alloc] initForDevice:deviceCopy];
 
   [v16 setReferenceFrame:{x, y, width, height}];
-  [v16 setHorizontalLayout:a5];
-  [v16 setVerticalLayout:a6];
-  [v16 setClipsToReferenceFrame:v7];
+  [v16 setHorizontalLayout:layout];
+  [v16 setVerticalLayout:verticalLayout];
+  [v16 setClipsToReferenceFrame:clipCopy];
   [v16 validate];
 
   return v16;
 }
 
-- (id)layoutRuleByConvertingToCoordinateSpaceWithFrame:(CGRect)a3
+- (id)layoutRuleByConvertingToCoordinateSpaceWithFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v5 = [(NTKLayoutRule *)self copy:a3.origin.x];
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v5 = [(NTKLayoutRule *)self copy:frame.origin.x];
   [v5 referenceFrame];
   v9 = CGRectOffset(v8, -x, -y);
   [v5 setReferenceFrame:{v9.origin.x, v9.origin.y, v9.size.width, v9.size.height}];
@@ -64,14 +64,14 @@
   return v5;
 }
 
-- (double)calculateLayoutFrameXOriginForBoundsSize:(CGSize)a3
+- (double)calculateLayoutFrameXOriginForBoundsSize:(CGSize)size
 {
-  width = a3.width;
-  v5 = [(NTKLayoutRule *)self horizontalLayout];
+  width = size.width;
+  horizontalLayout = [(NTKLayoutRule *)self horizontalLayout];
   result = 0.0;
-  if (v5 > 2)
+  if (horizontalLayout > 2)
   {
-    if ((v5 - 3) > 1)
+    if ((horizontalLayout - 3) > 1)
     {
       return result;
     }
@@ -79,7 +79,7 @@
     goto LABEL_7;
   }
 
-  switch(v5)
+  switch(horizontalLayout)
   {
     case 0:
 LABEL_7:
@@ -97,14 +97,14 @@ LABEL_7:
   return result;
 }
 
-- (double)calculateLayoutFrameYOriginForBoundsSize:(CGSize)a3
+- (double)calculateLayoutFrameYOriginForBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  v5 = [(NTKLayoutRule *)self verticalLayout];
+  height = size.height;
+  verticalLayout = [(NTKLayoutRule *)self verticalLayout];
   result = 0.0;
-  if (v5 > 2)
+  if (verticalLayout > 2)
   {
-    if ((v5 - 3) > 1)
+    if ((verticalLayout - 3) > 1)
     {
       return result;
     }
@@ -112,7 +112,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  switch(v5)
+  switch(verticalLayout)
   {
     case 0:
 LABEL_7:
@@ -130,10 +130,10 @@ LABEL_7:
   return result;
 }
 
-- (double)calculateLayoutFrameWidthForBoundsSize:(CGSize)a3
+- (double)calculateLayoutFrameWidthForBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(NTKLayoutRule *)self verticalLayout]== 4)
   {
     if (height != 0.0)
@@ -145,10 +145,10 @@ LABEL_7:
 
   else
   {
-    v7 = [(NTKLayoutRule *)self horizontalLayout];
-    if (v7 >= 3)
+    horizontalLayout = [(NTKLayoutRule *)self horizontalLayout];
+    if (horizontalLayout >= 3)
     {
-      if (v7 - 3 < 2)
+      if (horizontalLayout - 3 < 2)
       {
         [(NTKLayoutRule *)self referenceFrame];
         return v9;
@@ -168,10 +168,10 @@ LABEL_7:
   return width;
 }
 
-- (double)calculateLayoutFrameHeightForBoundsSize:(CGSize)a3
+- (double)calculateLayoutFrameHeightForBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(NTKLayoutRule *)self horizontalLayout]== 4)
   {
     if (width != 0.0)
@@ -183,10 +183,10 @@ LABEL_7:
 
   else
   {
-    v7 = [(NTKLayoutRule *)self verticalLayout];
-    if (v7 >= 3)
+    verticalLayout = [(NTKLayoutRule *)self verticalLayout];
+    if (verticalLayout >= 3)
     {
-      if (v7 - 3 < 2)
+      if (verticalLayout - 3 < 2)
       {
         [(NTKLayoutRule *)self referenceFrame];
         return v9;
@@ -206,10 +206,10 @@ LABEL_7:
   return height;
 }
 
-- (CGRect)calculateLayoutFrameForBoundsSize:(CGSize)a3
+- (CGRect)calculateLayoutFrameForBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(NTKLayoutRule *)self validate];
   [(NTKLayoutRule *)self calculateLayoutFrameWidthForBoundsSize:width, height];
   v7 = v6;
@@ -249,14 +249,14 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[NTKLayoutRule referenceFrame](self, "referenceFrame"), v6 = v5, v8 = v7, v10 = v9, v12 = v11, [v4 referenceFrame], v23.origin.x = v13, v23.origin.y = v14, v23.size.width = v15, v23.size.height = v16, v22.origin.x = v6, v22.origin.y = v8, v22.size.width = v10, v22.size.height = v12, CGRectEqualToRect(v22, v23)) && (v17 = -[NTKLayoutRule horizontalLayout](self, "horizontalLayout"), v17 == objc_msgSend(v4, "horizontalLayout")) && (v18 = -[NTKLayoutRule verticalLayout](self, "verticalLayout"), v18 == objc_msgSend(v4, "verticalLayout")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[NTKLayoutRule referenceFrame](self, "referenceFrame"), v6 = v5, v8 = v7, v10 = v9, v12 = v11, [equalCopy referenceFrame], v23.origin.x = v13, v23.origin.y = v14, v23.size.width = v15, v23.size.height = v16, v22.origin.x = v6, v22.origin.y = v8, v22.size.width = v10, v22.size.height = v12, CGRectEqualToRect(v22, v23)) && (v17 = -[NTKLayoutRule horizontalLayout](self, "horizontalLayout"), v17 == objc_msgSend(equalCopy, "horizontalLayout")) && (v18 = -[NTKLayoutRule verticalLayout](self, "verticalLayout"), v18 == objc_msgSend(equalCopy, "verticalLayout")))
   {
-    v19 = [(NTKLayoutRule *)self clipsToReferenceFrame];
-    v20 = v19 ^ [v4 clipsToReferenceFrame] ^ 1;
+    clipsToReferenceFrame = [(NTKLayoutRule *)self clipsToReferenceFrame];
+    v20 = clipsToReferenceFrame ^ [equalCopy clipsToReferenceFrame] ^ 1;
   }
 
   else
@@ -275,9 +275,9 @@ LABEL_7:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(NTKLayoutRule *)self referenceFrame];
   [v4 setReferenceFrame:?];
   [v4 setHorizontalLayout:{-[NTKLayoutRule horizontalLayout](self, "horizontalLayout")}];
@@ -289,50 +289,50 @@ LABEL_7:
 - (void)validate
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKLayoutRule *)self horizontalLayout];
-  v4 = [(NTKLayoutRule *)self verticalLayout];
-  if (v3 == 4)
+  horizontalLayout = [(NTKLayoutRule *)self horizontalLayout];
+  verticalLayout = [(NTKLayoutRule *)self verticalLayout];
+  if (horizontalLayout == 4)
   {
-    if ((v4 - 3) > 1)
+    if ((verticalLayout - 3) > 1)
     {
       return;
     }
 
-    v5 = [(NTKLayoutRule *)self verticalLayout];
-    v6 = [(NTKLayoutRule *)self horizontalLayout];
-    if ((v5 - 1) > 3)
+    verticalLayout2 = [(NTKLayoutRule *)self verticalLayout];
+    horizontalLayout2 = [(NTKLayoutRule *)self horizontalLayout];
+    if ((verticalLayout2 - 1) > 3)
     {
       v7 = @"NTKLayoutMin";
     }
 
     else
     {
-      v7 = off_2787804E0[v5 - 1];
+      v7 = off_2787804E0[verticalLayout2 - 1];
     }
 
-    if ((v6 - 1) > 3)
+    if ((horizontalLayout2 - 1) > 3)
     {
       v11 = @"NTKLayoutMin";
     }
 
     else
     {
-      v11 = off_2787804E0[v6 - 1];
+      v11 = off_2787804E0[horizontalLayout2 - 1];
     }
 
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** Error in <NTKLayoutRule %p>: %@ for verticalLayout does not make sense when horizontalLayout is %@.", self, v7, v11];
     v13 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(NTKLayoutRule *)self verticalLayout];
-      if ((v14 - 1) > 3)
+      verticalLayout3 = [(NTKLayoutRule *)self verticalLayout];
+      if ((verticalLayout3 - 1) > 3)
       {
         v15 = @"NTKLayoutMin";
       }
 
       else
       {
-        v15 = off_2787804E0[v14 - 1];
+        v15 = off_2787804E0[verticalLayout3 - 1];
       }
 
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Breaking verticalLayout by resetting %@ to NTKLayoutMin", v15];
@@ -347,43 +347,43 @@ LABEL_7:
     goto LABEL_29;
   }
 
-  if (v4 == 4 && ([(NTKLayoutRule *)self horizontalLayout]- 3) <= 1)
+  if (verticalLayout == 4 && ([(NTKLayoutRule *)self horizontalLayout]- 3) <= 1)
   {
-    v8 = [(NTKLayoutRule *)self horizontalLayout];
-    v9 = [(NTKLayoutRule *)self verticalLayout];
-    if ((v8 - 1) > 3)
+    horizontalLayout3 = [(NTKLayoutRule *)self horizontalLayout];
+    verticalLayout4 = [(NTKLayoutRule *)self verticalLayout];
+    if ((horizontalLayout3 - 1) > 3)
     {
       v10 = @"NTKLayoutMin";
     }
 
     else
     {
-      v10 = off_2787804E0[v8 - 1];
+      v10 = off_2787804E0[horizontalLayout3 - 1];
     }
 
-    if ((v9 - 1) > 3)
+    if ((verticalLayout4 - 1) > 3)
     {
       v16 = @"NTKLayoutMin";
     }
 
     else
     {
-      v16 = off_2787804E0[v9 - 1];
+      v16 = off_2787804E0[verticalLayout4 - 1];
     }
 
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** Error in <NTKLayoutRule %p>: %@ for horizontalLayout does not make sense when verticalLayout is %@.", self, v10, v16];
     v18 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(NTKLayoutRule *)self horizontalLayout];
-      if ((v19 - 1) > 3)
+      horizontalLayout4 = [(NTKLayoutRule *)self horizontalLayout];
+      if ((horizontalLayout4 - 1) > 3)
       {
         v20 = @"NTKLayoutMin";
       }
 
       else
       {
-        v20 = off_2787804E0[v19 - 1];
+        v20 = off_2787804E0[horizontalLayout4 - 1];
       }
 
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Breaking horizontalLayout by resetting %@ to NTKLayoutMin", v20];
@@ -426,9 +426,9 @@ LABEL_29:
     v8 = off_2787804E0[v7];
   }
 
-  v9 = [(NTKLayoutRule *)self clipsToReferenceFrame];
+  clipsToReferenceFrame = [(NTKLayoutRule *)self clipsToReferenceFrame];
   v10 = @"no";
-  if (v9)
+  if (clipsToReferenceFrame)
   {
     v10 = @"yes";
   }

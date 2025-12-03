@@ -1,25 +1,25 @@
 @interface TKSmartCardSlot
-- (BOOL)simulateCardReinsertionWithError:(id *)a3;
+- (BOOL)simulateCardReinsertionWithError:(id *)error;
 - (TKSmartCard)makeSmartCard;
-- (TKSmartCardSlot)initWithEndpoint:(id)a3 error:(id *)a4;
-- (id)synchronous:(BOOL)a3 remoteSlotWithErrorHandler:(id)a4;
+- (TKSmartCardSlot)initWithEndpoint:(id)endpoint error:(id *)error;
+- (id)synchronous:(BOOL)synchronous remoteSlotWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation TKSmartCardSlot
 
-- (id)synchronous:(BOOL)a3 remoteSlotWithErrorHandler:(id)a4
+- (id)synchronous:(BOOL)synchronous remoteSlotWithErrorHandler:(id)handler
 {
   connection = self->_connection;
-  if (a3)
+  if (synchronous)
   {
-    [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:a4];
+    [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:handler];
   }
 
   else
   {
-    [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:a4];
+    [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:handler];
   }
   v5 = ;
 
@@ -158,7 +158,7 @@ void __32__TKSmartCardSlot_makeSmartCard__block_invoke(uint64_t a1, void *a2)
 - (void)invalidate
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -173,9 +173,9 @@ void __32__TKSmartCardSlot_makeSmartCard__block_invoke(uint64_t a1, void *a2)
   [(TKSmartCardSlot *)&v3 dealloc];
 }
 
-- (TKSmartCardSlot)initWithEndpoint:(id)a3 error:(id *)a4
+- (TKSmartCardSlot)initWithEndpoint:(id)endpoint error:(id *)error
 {
-  v6 = a3;
+  endpointCopy = endpoint;
   v21.receiver = self;
   v21.super_class = TKSmartCardSlot;
   v7 = [(TKSmartCardSlot *)&v21 init];
@@ -198,14 +198,14 @@ void __32__TKSmartCardSlot_makeSmartCard__block_invoke(uint64_t a1, void *a2)
     v10[3] = &unk_1E86B7288;
     v10[4] = &v17;
     v10[5] = &v11;
-    [(TKSmartCardSlot *)v7 connectToEndpoint:v6 synchronous:1 reply:v10];
+    [(TKSmartCardSlot *)v7 connectToEndpoint:endpointCopy synchronous:1 reply:v10];
     if ((v18[3] & 1) == 0)
     {
 
       v8 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v12[5];
+        *error = v12[5];
       }
     }
 
@@ -229,7 +229,7 @@ void __42__TKSmartCardSlot_initWithEndpoint_error___block_invoke(uint64_t a1, vo
   }
 }
 
-- (BOOL)simulateCardReinsertionWithError:(id *)a3
+- (BOOL)simulateCardReinsertionWithError:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
   state = self->_state;
@@ -269,13 +269,13 @@ void __42__TKSmartCardSlot_initWithEndpoint_error___block_invoke(uint64_t a1, vo
     [v8 simulateCardReinsertionWithReply:v14];
 
     v9 = v23;
-    if (a3 && (v23[3] & 1) == 0)
+    if (error && (v23[3] & 1) == 0)
     {
-      *a3 = v17[5];
+      *error = v17[5];
       v9 = v23;
     }
 
-    LOBYTE(a3) = *(v9 + 24);
+    LOBYTE(error) = *(v9 + 24);
     _Block_object_dispose(&v16, 8);
 
     _Block_object_dispose(&v22, 8);
@@ -288,20 +288,20 @@ void __42__TKSmartCardSlot_initWithEndpoint_error___block_invoke(uint64_t a1, vo
       [TKSmartCardSlot simulateCardReinsertionWithError:?];
     }
 
-    if (a3)
+    if (error)
     {
       v10 = MEMORY[0x1E696ABC0];
       v26 = *MEMORY[0x1E696A278];
       v27[0] = @"Card is missing";
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-      *a3 = [v10 errorWithDomain:@"CryptoTokenKit" code:-1001 userInfo:v11];
+      *error = [v10 errorWithDomain:@"CryptoTokenKit" code:-1001 userInfo:v11];
 
-      LOBYTE(a3) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return a3 & 1;
+  return error & 1;
 }
 
 void __52__TKSmartCardSlot_simulateCardReinsertionWithError___block_invoke(uint64_t a1, void *a2)

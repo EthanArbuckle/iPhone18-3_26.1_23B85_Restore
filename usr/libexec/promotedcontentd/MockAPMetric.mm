@@ -1,38 +1,38 @@
 @interface MockAPMetric
-- (MockAPMetric)initWithPurpose:(int64_t)a3 metric:(int64_t)a4 contentIdentifier:(id)a5 contextIdentifier:(id)a6 handle:(id)a7 secondaryHandle:(id)a8 branch:(id)a9 properties:(id)a10 internalProperties:(id)a11 relayData:(id)a12 environment:(id)a13 order:(int64_t)a14 options:(int64_t)a15;
-- (MockAPMetric)initWithPurpose:(int64_t)a3 metric:(int64_t)a4 contentIdentifier:(id)a5 contextIdentifier:(id)a6 handle:(id)a7 secondaryHandle:(id)a8 properties:(id)a9 internalProperties:(id)a10 options:(int64_t)a11;
+- (MockAPMetric)initWithPurpose:(int64_t)purpose metric:(int64_t)metric contentIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier handle:(id)handle secondaryHandle:(id)secondaryHandle branch:(id)branch properties:(id)self0 internalProperties:(id)self1 relayData:(id)self2 environment:(id)self3 order:(int64_t)self4 options:(int64_t)self5;
+- (MockAPMetric)initWithPurpose:(int64_t)purpose metric:(int64_t)metric contentIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier handle:(id)handle secondaryHandle:(id)secondaryHandle properties:(id)properties internalProperties:(id)self0 options:(int64_t)self1;
 - (NSString)bundleIdentifier;
 @end
 
 @implementation MockAPMetric
 
-- (MockAPMetric)initWithPurpose:(int64_t)a3 metric:(int64_t)a4 contentIdentifier:(id)a5 contextIdentifier:(id)a6 handle:(id)a7 secondaryHandle:(id)a8 properties:(id)a9 internalProperties:(id)a10 options:(int64_t)a11
+- (MockAPMetric)initWithPurpose:(int64_t)purpose metric:(int64_t)metric contentIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier handle:(id)handle secondaryHandle:(id)secondaryHandle properties:(id)properties internalProperties:(id)self0 options:(int64_t)self1
 {
-  v13 = a7;
+  handleCopy = handle;
   v17.receiver = self;
   v17.super_class = MockAPMetric;
   v14 = [(MockAPMetric *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_handle, a7);
+    objc_storeStrong(&v14->_handle, handle);
   }
 
   return v15;
 }
 
-- (MockAPMetric)initWithPurpose:(int64_t)a3 metric:(int64_t)a4 contentIdentifier:(id)a5 contextIdentifier:(id)a6 handle:(id)a7 secondaryHandle:(id)a8 branch:(id)a9 properties:(id)a10 internalProperties:(id)a11 relayData:(id)a12 environment:(id)a13 order:(int64_t)a14 options:(int64_t)a15
+- (MockAPMetric)initWithPurpose:(int64_t)purpose metric:(int64_t)metric contentIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier handle:(id)handle secondaryHandle:(id)secondaryHandle branch:(id)branch properties:(id)self0 internalProperties:(id)self1 relayData:(id)self2 environment:(id)self3 order:(int64_t)self4 options:(int64_t)self5
 {
-  v19 = a7;
+  handleCopy = handle;
   v23.receiver = self;
   v23.super_class = MockAPMetric;
   v20 = [(MockAPMetric *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    v20->_purpose = a3;
-    v20->_metric = a4;
-    objc_storeStrong(&v20->_handle, a7);
+    v20->_purpose = purpose;
+    v20->_metric = metric;
+    objc_storeStrong(&v20->_handle, handle);
   }
 
   return v21;
@@ -40,8 +40,8 @@
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(MockAPMetric *)self internalProperties];
-  v3 = [v2 objectForKey:kAPMetricBundleIdentifierKey];
+  internalProperties = [(MockAPMetric *)self internalProperties];
+  v3 = [internalProperties objectForKey:kAPMetricBundleIdentifierKey];
 
   return v3;
 }

@@ -1,22 +1,22 @@
 @interface ATXBestContactHandleForServiceDataSource
-- (ATXBestContactHandleForServiceDataSource)initWithDevice:(id)a3;
-- (id)_getBestGuessFromRankedHandle:(id)a3 forService:(id)a4;
-- (void)allHandlesForContact:(id)a3 callback:(id)a4;
-- (void)bestHandleForContact:(id)a3 service:(id)a4 callback:(id)a5;
+- (ATXBestContactHandleForServiceDataSource)initWithDevice:(id)device;
+- (id)_getBestGuessFromRankedHandle:(id)handle forService:(id)service;
+- (void)allHandlesForContact:(id)contact callback:(id)callback;
+- (void)bestHandleForContact:(id)contact service:(id)service callback:(id)callback;
 @end
 
 @implementation ATXBestContactHandleForServiceDataSource
 
-- (ATXBestContactHandleForServiceDataSource)initWithDevice:(id)a3
+- (ATXBestContactHandleForServiceDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = ATXBestContactHandleForServiceDataSource;
   v6 = [(ATXBestContactHandleForServiceDataSource *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_alloc(MEMORY[0x277D425F8]);
     v9 = objc_opt_new();
     v10 = [v8 initWithGuardedData:v9];
@@ -27,18 +27,18 @@
   return v7;
 }
 
-- (void)allHandlesForContact:(id)a3 callback:(id)a4
+- (void)allHandlesForContact:(id)contact callback:(id)callback
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  callbackCopy = callback;
   v7 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v5 phoneNumbers];
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  phoneNumbers = [contactCopy phoneNumbers];
+  v9 = [phoneNumbers countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -50,22 +50,22 @@
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(phoneNumbers);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * v12) value];
-        v14 = [v13 unformattedInternationalStringValue];
+        value = [*(*(&v26 + 1) + 8 * v12) value];
+        unformattedInternationalStringValue = [value unformattedInternationalStringValue];
 
-        if ([v14 length])
+        if ([unformattedInternationalStringValue length])
         {
-          [v7 addObject:v14];
+          [v7 addObject:unformattedInternationalStringValue];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v10 = [phoneNumbers countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v10);
@@ -75,8 +75,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = [v5 emailAddresses];
-  v16 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  emailAddresses = [contactCopy emailAddresses];
+  v16 = [emailAddresses countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v16)
   {
     v17 = v16;
@@ -88,44 +88,44 @@
       {
         if (*v23 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v20 = [*(*(&v22 + 1) + 8 * v19) value];
-        if ([v20 length])
+        value2 = [*(*(&v22 + 1) + 8 * v19) value];
+        if ([value2 length])
         {
-          [v7 addObject:v20];
+          [v7 addObject:value2];
         }
 
         ++v19;
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v17 = [emailAddresses countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v17);
   }
 
-  v6[2](v6, v7, 0);
+  callbackCopy[2](callbackCopy, v7, 0);
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)bestHandleForContact:(id)a3 service:(id)a4 callback:(id)a5
+- (void)bestHandleForContact:(id)contact service:(id)service callback:(id)callback
 {
   v89 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v56 = a4;
-  v8 = a5;
+  contactCopy = contact;
+  serviceCopy = service;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA350))
   {
-    v52 = v8;
+    v52 = callbackCopy;
     v60 = objc_opt_new();
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
-    obj = [v7 phoneNumbers];
+    obj = [contactCopy phoneNumbers];
     v9 = [obj countByEnumeratingWithState:&v78 objects:v88 count:16];
     if (v9)
     {
@@ -139,12 +139,12 @@
             objc_enumerationMutation(obj);
           }
 
-          v12 = [*(*(&v78 + 1) + 8 * i) value];
+          value = [*(*(&v78 + 1) + 8 * i) value];
           v13 = objc_alloc(MEMORY[0x277CFE078]);
-          v14 = [v12 stringValue];
-          v15 = [v7 givenName];
-          v16 = [v7 identifier];
-          v17 = [v13 initWithIdentifier:v14 type:1 displayName:v15 personId:v16 personIdType:3];
+          stringValue = [value stringValue];
+          givenName = [contactCopy givenName];
+          identifier = [contactCopy identifier];
+          v17 = [v13 initWithIdentifier:stringValue type:1 displayName:givenName personId:identifier personIdType:3];
 
           [v60 addObject:v17];
         }
@@ -155,14 +155,14 @@
       while (v9);
     }
 
-    if (([v56 isEqualToString:*MEMORY[0x277D18690]] & 1) == 0)
+    if (([serviceCopy isEqualToString:*MEMORY[0x277D18690]] & 1) == 0)
     {
       v76 = 0u;
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      v18 = [v7 emailAddresses];
-      v19 = [v18 countByEnumeratingWithState:&v74 objects:v87 count:16];
+      emailAddresses = [contactCopy emailAddresses];
+      v19 = [emailAddresses countByEnumeratingWithState:&v74 objects:v87 count:16];
       if (v19)
       {
         v20 = *v75;
@@ -172,37 +172,37 @@
           {
             if (*v75 != v20)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(emailAddresses);
             }
 
-            v22 = [*(*(&v74 + 1) + 8 * j) value];
+            value2 = [*(*(&v74 + 1) + 8 * j) value];
             v23 = objc_alloc(MEMORY[0x277CFE078]);
-            v24 = [v7 givenName];
-            v25 = [v7 identifier];
-            v26 = [v23 initWithIdentifier:v22 type:2 displayName:v24 personId:v25 personIdType:3];
+            givenName2 = [contactCopy givenName];
+            identifier2 = [contactCopy identifier];
+            v26 = [v23 initWithIdentifier:value2 type:2 displayName:givenName2 personId:identifier2 personIdType:3];
 
             [v60 addObject:v26];
           }
 
-          v19 = [v18 countByEnumeratingWithState:&v74 objects:v87 count:16];
+          v19 = [emailAddresses countByEnumeratingWithState:&v74 objects:v87 count:16];
         }
 
         while (v19);
       }
     }
 
-    v51 = [MEMORY[0x277CFE0B0] sharedInteractionAdvisor];
-    v50 = [MEMORY[0x277CFE0B8] interactionAdvisorSettingsDefault];
-    v27 = [v51 rankCandidateContacts:v60 usingSettings:v50];
+    mEMORY[0x277CFE0B0] = [MEMORY[0x277CFE0B0] sharedInteractionAdvisor];
+    interactionAdvisorSettingsDefault = [MEMORY[0x277CFE0B8] interactionAdvisorSettingsDefault];
+    v27 = [mEMORY[0x277CFE0B0] rankCandidateContacts:v60 usingSettings:interactionAdvisorSettingsDefault];
     v28 = objc_opt_class();
     obja = NSStringFromClass(v28);
     v29 = obja;
-    v30 = [obja UTF8String];
+    uTF8String = [obja UTF8String];
     v31 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v54 = dispatch_queue_create(v30, v31);
+    v54 = dispatch_queue_create(uTF8String, v31);
 
-    v55 = [MEMORY[0x277D18728] sharedInstance];
-    [v55 addDelegate:self forService:v56 listenerID:obja queue:v54];
+    mEMORY[0x277D18728] = [MEMORY[0x277D18728] sharedInstance];
+    [mEMORY[0x277D18728] addDelegate:self forService:serviceCopy listenerID:obja queue:v54];
     v68 = 0;
     v69 = &v68;
     v70 = 0x3032000000;
@@ -229,10 +229,10 @@
 
           v35 = *(*(&v64 + 1) + 8 * k);
           v36 = dispatch_semaphore_create(0);
-          v37 = [v35 identifier];
-          v38 = [v37 rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL;
+          identifier3 = [v35 identifier];
+          v38 = [identifier3 rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL;
 
-          v39 = [v35 identifier];
+          identifier4 = [v35 identifier];
           if (v38)
           {
             v40 = IDSCopyIDForPhoneNumber();
@@ -253,7 +253,7 @@
               *buf = 138412546;
               v83 = v41;
               v84 = 2112;
-              v85 = v56;
+              v85 = serviceCopy;
               _os_log_debug_impl(&dword_23E3EA000, v42, OS_LOG_TYPE_DEBUG, "Refreshing ID status for %@ on service %@", buf, 0x16u);
             }
 
@@ -265,7 +265,7 @@
             v62[5] = v35;
             v43 = v36;
             v63 = v43;
-            [v55 refreshIDStatusForDestination:v41 service:v56 listenerID:obja queue:v54 completionBlock:v62];
+            [mEMORY[0x277D18728] refreshIDStatusForDestination:v41 service:serviceCopy listenerID:obja queue:v54 completionBlock:v62];
             [MEMORY[0x277D425A0] waitForSemaphore:v43 timeoutSeconds:5.0];
             lock = self->_lock;
             v61[0] = MEMORY[0x277D85DD0];
@@ -296,11 +296,11 @@
 
 LABEL_35:
 
-    [v55 removeDelegate:self forService:*MEMORY[0x277D186B0] listenerID:obja];
+    [mEMORY[0x277D18728] removeDelegate:self forService:*MEMORY[0x277D186B0] listenerID:obja];
     v46 = v69[5];
     if (!v46)
     {
-      v47 = [(ATXBestContactHandleForServiceDataSource *)self _getBestGuessFromRankedHandle:v53 forService:v56];
+      v47 = [(ATXBestContactHandleForServiceDataSource *)self _getBestGuessFromRankedHandle:v53 forService:serviceCopy];
       v48 = v69[5];
       v69[5] = v47;
 
@@ -310,12 +310,12 @@ LABEL_35:
     v52[2](v52, v46, 0);
     _Block_object_dispose(&v68, 8);
 
-    v8 = v52;
+    callbackCopy = v52;
   }
 
   else
   {
-    v8[2](v8, &stru_2850AD368, 0);
+    callbackCopy[2](callbackCopy, &stru_2850AD368, 0);
   }
 
   v49 = *MEMORY[0x277D85DE8];
@@ -346,16 +346,16 @@ void __82__ATXBestContactHandleForServiceDataSource_bestHandleForContact_service
   v3[1] = v4;
 }
 
-- (id)_getBestGuessFromRankedHandle:(id)a3 forService:(id)a4
+- (id)_getBestGuessFromRankedHandle:(id)handle forService:(id)service
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  handleCopy = handle;
+  serviceCopy = service;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = handleCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -372,9 +372,9 @@ void __82__ATXBestContactHandleForServiceDataSource_bestHandleForContact_service
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v6 isEqualToString:{v11, v17}] && objc_msgSend(v13, "type") == 1)
+        if ([serviceCopy isEqualToString:{v11, v17}] && objc_msgSend(v13, "type") == 1)
         {
-          v14 = [v13 identifier];
+          identifier = [v13 identifier];
           goto LABEL_12;
         }
       }
@@ -389,12 +389,12 @@ void __82__ATXBestContactHandleForServiceDataSource_bestHandleForContact_service
     }
   }
 
-  v14 = 0;
+  identifier = 0;
 LABEL_12:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return identifier;
 }
 
 @end

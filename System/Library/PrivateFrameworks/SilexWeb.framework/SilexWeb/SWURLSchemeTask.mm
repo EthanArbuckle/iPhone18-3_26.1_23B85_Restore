@@ -1,27 +1,27 @@
 @interface SWURLSchemeTask
 - (NSURLRequest)request;
-- (SWURLSchemeTask)initWithTask:(id)a3 logger:(id)a4;
-- (void)didFailWithError:(id)a3;
+- (SWURLSchemeTask)initWithTask:(id)task logger:(id)logger;
+- (void)didFailWithError:(id)error;
 - (void)didFinish;
-- (void)didReceiveData:(id)a3;
-- (void)didReceiveResponse:(id)a3;
-- (void)performBlockOnMainThread:(id)a3;
+- (void)didReceiveData:(id)data;
+- (void)didReceiveResponse:(id)response;
+- (void)performBlockOnMainThread:(id)thread;
 @end
 
 @implementation SWURLSchemeTask
 
-- (SWURLSchemeTask)initWithTask:(id)a3 logger:(id)a4
+- (SWURLSchemeTask)initWithTask:(id)task logger:(id)logger
 {
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  loggerCopy = logger;
   v12.receiver = self;
   v12.super_class = SWURLSchemeTask;
   v9 = [(SWURLSchemeTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_task, a3);
-    objc_storeStrong(&v10->_logger, a4);
+    objc_storeStrong(&v9->_task, task);
+    objc_storeStrong(&v10->_logger, logger);
   }
 
   return v10;
@@ -58,9 +58,9 @@ uint64_t __26__SWURLSchemeTask_request__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)didReceiveResponse:(id)a3
+- (void)didReceiveResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   logger = self->_logger;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Received response for task %@", self];
   [(SWLogger *)logger log:v6];
@@ -70,16 +70,16 @@ uint64_t __26__SWURLSchemeTask_request__block_invoke(uint64_t a1)
   v8[2] = __38__SWURLSchemeTask_didReceiveResponse___block_invoke;
   v8[3] = &unk_1E84DB4D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = responseCopy;
+  v7 = responseCopy;
   [(SWURLSchemeTask *)self performBlockOnMainThread:v8];
 }
 
-- (void)didReceiveData:(id)a3
+- (void)didReceiveData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   logger = self->_logger;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Received data (%li) for task %@", objc_msgSend(v4, "length"), self];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Received data (%li) for task %@", objc_msgSend(dataCopy, "length"), self];
   [(SWLogger *)logger log:v6];
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -87,8 +87,8 @@ uint64_t __26__SWURLSchemeTask_request__block_invoke(uint64_t a1)
   v8[2] = __34__SWURLSchemeTask_didReceiveData___block_invoke;
   v8[3] = &unk_1E84DB4D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dataCopy;
+  v7 = dataCopy;
   [(SWURLSchemeTask *)self performBlockOnMainThread:v8];
 }
 
@@ -126,20 +126,20 @@ uint64_t __28__SWURLSchemeTask_didFinish__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v4);
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   logger = self->_logger;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed task %@ with error %@", self, v4];
-  [(SWLogger *)logger logError:v6];
+  errorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed task %@ with error %@", self, errorCopy];
+  [(SWLogger *)logger logError:errorCopy];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__SWURLSchemeTask_didFailWithError___block_invoke;
   v8[3] = &unk_1E84DB4D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = errorCopy;
+  v7 = errorCopy;
   [(SWURLSchemeTask *)self performBlockOnMainThread:v8];
 }
 
@@ -163,10 +163,10 @@ uint64_t __36__SWURLSchemeTask_didFailWithError___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v4);
 }
 
-- (void)performBlockOnMainThread:(id)a3
+- (void)performBlockOnMainThread:(id)thread
 {
   v3 = MEMORY[0x1E696AF00];
-  block = a3;
+  block = thread;
   if ([v3 isMainThread])
   {
     block[2]();

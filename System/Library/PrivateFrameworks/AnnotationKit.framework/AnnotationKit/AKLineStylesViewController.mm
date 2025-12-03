@@ -1,33 +1,33 @@
 @interface AKLineStylesViewController
-+ (id)generateLineImageForTag:(int64_t)a3 selected:(BOOL)a4;
++ (id)generateLineImageForTag:(int64_t)tag selected:(BOOL)selected;
 - (AKController)controller;
-- (AKLineStylesViewController)initWithController:(id)a3;
-- (id)indexPathForLineWidthTag:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (AKLineStylesViewController)initWithController:(id)controller;
+- (id)indexPathForLineWidthTag:(int64_t)tag;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)currentLineWidthTag;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)selectRowForTag:(int64_t)a3;
-- (void)selectedLineWidthChanged:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)selectRowForTag:(int64_t)tag;
+- (void)selectedLineWidthChanged:(int64_t)changed;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AKLineStylesViewController
 
-- (AKLineStylesViewController)initWithController:(id)a3
+- (AKLineStylesViewController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = AKLineStylesViewController;
   v5 = [(AKLineStylesViewController *)&v9 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(AKLineStylesViewController *)v5 setController:v4];
+    [(AKLineStylesViewController *)v5 setController:controllerCopy];
     [(AKLineStylesViewController *)v6 setLineWidthTags:&unk_2851BAB90];
-    v7 = [(AKLineStylesViewController *)v6 lineWidthTags];
-    -[AKLineStylesViewController setPreferredContentSize:](v6, "setPreferredContentSize:", 60.0, (48 * [v7 count]));
+    lineWidthTags = [(AKLineStylesViewController *)v6 lineWidthTags];
+    -[AKLineStylesViewController setPreferredContentSize:](v6, "setPreferredContentSize:", 60.0, (48 * [lineWidthTags count]));
   }
 
   return v6;
@@ -38,42 +38,42 @@
   v23.receiver = self;
   v23.super_class = AKLineStylesViewController;
   [(AKLineStylesViewController *)&v23 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(AKLineStylesViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(AKLineStylesViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   v5 = objc_alloc(MEMORY[0x277D75B40]);
   v6 = [v5 initWithFrame:0 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(AKLineStylesViewController *)self setTableView:v6];
 
-  v7 = [(AKLineStylesViewController *)self tableView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(AKLineStylesViewController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [MEMORY[0x277D75348] clearColor];
-  v9 = [(AKLineStylesViewController *)self tableView];
-  [v9 setBackgroundColor:v8];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  tableView2 = [(AKLineStylesViewController *)self tableView];
+  [tableView2 setBackgroundColor:clearColor2];
 
-  v10 = [(AKLineStylesViewController *)self tableView];
-  [v10 setAlwaysBounceVertical:0];
+  tableView3 = [(AKLineStylesViewController *)self tableView];
+  [tableView3 setAlwaysBounceVertical:0];
 
-  v11 = [(AKLineStylesViewController *)self tableView];
-  [v11 setSeparatorStyle:0];
+  tableView4 = [(AKLineStylesViewController *)self tableView];
+  [tableView4 setSeparatorStyle:0];
 
-  v12 = [(AKLineStylesViewController *)self tableView];
-  [v12 setRowHeight:48.0];
+  tableView5 = [(AKLineStylesViewController *)self tableView];
+  [tableView5 setRowHeight:48.0];
 
-  v13 = [(AKLineStylesViewController *)self tableView];
-  [v13 setDelegate:self];
+  tableView6 = [(AKLineStylesViewController *)self tableView];
+  [tableView6 setDelegate:self];
 
-  v14 = [(AKLineStylesViewController *)self tableView];
-  [v14 setDataSource:self];
+  tableView7 = [(AKLineStylesViewController *)self tableView];
+  [tableView7 setDataSource:self];
 
-  v15 = [(AKLineStylesViewController *)self tableView];
-  [v15 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKLineStylesRowIdentifier"];
+  tableView8 = [(AKLineStylesViewController *)self tableView];
+  [tableView8 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKLineStylesRowIdentifier"];
 
-  v16 = [(AKLineStylesViewController *)self view];
-  v17 = [(AKLineStylesViewController *)self tableView];
-  [v16 addSubview:v17];
+  view2 = [(AKLineStylesViewController *)self view];
+  tableView9 = [(AKLineStylesViewController *)self tableView];
+  [view2 addSubview:tableView9];
 
   v18 = _NSDictionaryOfVariableBindings(&cfstr_Tableview.isa, self->_tableView, 0);
   v19 = MEMORY[0x277CCAAD0];
@@ -85,19 +85,19 @@
   [v21 activateConstraints:v22];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AKLineStylesViewController;
-  [(AKLineStylesViewController *)&v4 viewWillAppear:a3];
+  [(AKLineStylesViewController *)&v4 viewWillAppear:appear];
   [(AKLineStylesViewController *)self selectRowForTag:[(AKLineStylesViewController *)self currentLineWidthTag]];
 }
 
-- (id)indexPathForLineWidthTag:(int64_t)a3
+- (id)indexPathForLineWidthTag:(int64_t)tag
 {
-  v4 = [(AKLineStylesViewController *)self lineWidthTags];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 indexOfObject:v5];
+  lineWidthTags = [(AKLineStylesViewController *)self lineWidthTags];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:tag];
+  v6 = [lineWidthTags indexOfObject:v5];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -112,41 +112,41 @@
   return v7;
 }
 
-- (void)selectRowForTag:(int64_t)a3
+- (void)selectRowForTag:(int64_t)tag
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = [(AKLineStylesViewController *)self indexPathForLineWidthTag:a3];
+  v4 = [(AKLineStylesViewController *)self indexPathForLineWidthTag:tag];
   if (v4)
   {
-    v5 = [(AKLineStylesViewController *)self tableView];
+    tableView = [(AKLineStylesViewController *)self tableView];
     v7[0] = v4;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-    [v5 reloadRowsAtIndexPaths:v6 withRowAnimation:0];
+    [tableView reloadRowsAtIndexPaths:v6 withRowAnimation:0];
   }
 }
 
 - (int64_t)currentLineWidthTag
 {
-  v2 = [(AKLineStylesViewController *)self controller];
-  v3 = [v2 attributeController];
-  v4 = [v2 currentPageController];
-  v5 = [v2 currentPageController];
-  v6 = [v5 pageModelController];
+  controller = [(AKLineStylesViewController *)self controller];
+  attributeController = [controller attributeController];
+  currentPageController = [controller currentPageController];
+  currentPageController2 = [controller currentPageController];
+  pageModelController = [currentPageController2 pageModelController];
 
-  [v3 strokeWidth];
+  [attributeController strokeWidth];
   v8 = round(v7);
-  v9 = [v6 selectedAnnotations];
-  [v4 modelBaseScaleFactor];
+  selectedAnnotations = [pageModelController selectedAnnotations];
+  [currentPageController modelBaseScaleFactor];
   v11 = v10;
-  if ([v9 count] == 1)
+  if ([selectedAnnotations count] == 1)
   {
-    v12 = [v9 anyObject];
+    anyObject = [selectedAnnotations anyObject];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [v9 anyObject];
-      [v14 strokeWidth];
+      anyObject2 = [selectedAnnotations anyObject];
+      [anyObject2 strokeWidth];
       v8 = round(v15 / v11);
     }
   }
@@ -154,73 +154,73 @@
   return v8 + 765000;
 }
 
-- (void)selectedLineWidthChanged:(int64_t)a3
+- (void)selectedLineWidthChanged:(int64_t)changed
 {
-  v5 = [(AKLineStylesViewController *)self tableView];
-  v8 = [v5 selectedCell];
+  tableView = [(AKLineStylesViewController *)self tableView];
+  selectedCell = [tableView selectedCell];
 
-  if (v8)
+  if (selectedCell)
   {
-    v6 = (a3 - 765000);
-    if ((a3 - 765001) >= 0xF)
+    changedCopy = (changed - 765000);
+    if ((changed - 765001) >= 0xF)
     {
-      v6 = a3;
+      changedCopy = changed;
     }
 
-    [v8 setLineWidth:v6];
-    [v8 setTag:a3];
-    v7 = [(AKLineStylesViewController *)self controller];
-    [v7 performActionForSender:v8];
+    [selectedCell setLineWidth:changedCopy];
+    [selectedCell setTag:changed];
+    controller = [(AKLineStylesViewController *)self controller];
+    [controller performActionForSender:selectedCell];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(AKLineStylesViewController *)self lineWidthTags:a3];
+  v4 = [(AKLineStylesViewController *)self lineWidthTags:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"AKLineStylesRowIdentifier" forIndexPath:v6];
-  v8 = [(AKLineStylesViewController *)self lineWidthTags];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"AKLineStylesRowIdentifier" forIndexPath:pathCopy];
+  lineWidthTags = [(AKLineStylesViewController *)self lineWidthTags];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
-  v11 = [v10 integerValue];
+  v10 = [lineWidthTags objectAtIndex:v9];
+  integerValue = [v10 integerValue];
 
-  v12 = [objc_opt_class() generateLineImageForTag:v11 selected:{v11 == -[AKLineStylesViewController currentLineWidthTag](self, "currentLineWidthTag")}];
-  v13 = [v7 imageView];
-  [v13 setImage:v12];
+  v12 = [objc_opt_class() generateLineImageForTag:integerValue selected:{integerValue == -[AKLineStylesViewController currentLineWidthTag](self, "currentLineWidthTag")}];
+  imageView = [v7 imageView];
+  [imageView setImage:v12];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AKLineStylesViewController *)self lineWidthTags];
-  v9 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  lineWidthTags = [(AKLineStylesViewController *)self lineWidthTags];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [lineWidthTags objectAtIndex:v9];
 
   -[AKLineStylesViewController selectedLineWidthChanged:](self, "selectedLineWidthChanged:", [v10 integerValue]);
-  [v7 reloadData];
+  [viewCopy reloadData];
 }
 
-+ (id)generateLineImageForTag:(int64_t)a3 selected:(BOOL)a4
++ (id)generateLineImageForTag:(int64_t)tag selected:(BOOL)selected
 {
-  v4 = a4;
+  selectedCopy = selected;
   v20.width = 38.0;
   v20.height = 38.0;
   UIGraphicsBeginImageContextWithOptions(v20, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   v7 = CurrentContext;
-  if (v4)
+  if (selectedCopy)
   {
     CGContextSaveGState(CurrentContext);
     v21.size.width = 36.0;
@@ -228,8 +228,8 @@
     v21.origin.y = 1.0;
     v21.size.height = 36.0;
     v8 = CGPathCreateWithEllipseInRect(v21, 0);
-    v9 = [MEMORY[0x277D75348] systemBlueColor];
-    CGContextSetStrokeColorWithColor(v7, [v9 CGColor]);
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    CGContextSetStrokeColorWithColor(v7, [systemBlueColor CGColor]);
 
     CGContextSetLineWidth(v7, 2.0);
     CGContextAddPath(v7, v8);
@@ -239,17 +239,17 @@
   }
 
   CGContextSaveGState(v7);
-  v10 = [MEMORY[0x277D75348] grayColor];
-  [v10 set];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [grayColor set];
 
-  v11 = (a3 - 765000);
+  v11 = (tag - 765000);
   v12 = v11 * 1.5;
-  if (a3 < 0xBAC4F)
+  if (tag < 0xBAC4F)
   {
     v11 = v11 * 1.25;
   }
 
-  if (a3 >= 765003)
+  if (tag >= 765003)
   {
     v13 = v11;
   }

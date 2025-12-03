@@ -2,19 +2,19 @@
 + (CGSize)playbackTimeIndicatorTileSize;
 - (PUPlaybackTimeIndicatorTileViewControllerDelegate)delegate;
 - (void)_flashTimeIndicator;
-- (void)_handleVideoPlayer:(id)a3 change:(id)a4;
-- (void)_handleViewModel:(id)a3 change:(id)a4;
-- (void)_setIndicatorFormat:(int64_t)a3 animated:(BOOL)a4;
-- (void)_setIndicatorVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)_handleVideoPlayer:(id)player change:(id)change;
+- (void)_handleViewModel:(id)model change:(id)change;
+- (void)_setIndicatorFormat:(int64_t)format animated:(BOOL)animated;
+- (void)_setIndicatorVisible:(BOOL)visible animated:(BOOL)animated;
 - (void)_updateIndicatorDisplayStyle;
-- (void)_updateIndicatorValueWithTime:(id *)a3;
+- (void)_updateIndicatorValueWithTime:(id *)time;
 - (void)becomeReusable;
-- (void)setDelegate:(id)a3;
-- (void)setForcedIndicatorVisibilityEndDate:(id)a3;
-- (void)setVideoPlayer:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setForcedIndicatorVisibilityEndDate:(id)date;
+- (void)setVideoPlayer:(id)player;
+- (void)setViewModel:(id)model;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUPlaybackTimeIndicatorTileViewController
@@ -32,25 +32,25 @@
   [(PUPlaybackTimeIndicatorTileViewController *)self setForcedIndicatorVisibilityEndDate:v3];
 }
 
-- (void)_handleViewModel:(id)a3 change:(id)a4
+- (void)_handleViewModel:(id)model change:(id)change
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v6 isScrubbingDidChange])
+  modelCopy = model;
+  changeCopy = change;
+  if ([changeCopy isScrubbingDidChange])
   {
     [(PUPlaybackTimeIndicatorTileViewController *)self _updateIndicatorDisplayStyle];
   }
 
-  if ([v6 chromeVisibilityDidChange])
+  if ([changeCopy chromeVisibilityDidChange])
   {
-    if ([v11 isChromeVisible])
+    if ([modelCopy isChromeVisible])
     {
-      if ([v11 lastChromeVisibilityChangeReason] == 1)
+      if ([modelCopy lastChromeVisibilityChangeReason] == 1)
       {
-        v7 = [(PUPlaybackTimeIndicatorTileViewController *)self videoPlayer];
-        v8 = [v7 desiredPlayState];
+        videoPlayer = [(PUPlaybackTimeIndicatorTileViewController *)self videoPlayer];
+        desiredPlayState = [videoPlayer desiredPlayState];
 
-        if (v8 == 4)
+        if (desiredPlayState == 4)
         {
           if (!self->_delegateFlags.respondsToCanFlashIndicator || (-[PUPlaybackTimeIndicatorTileViewController delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 playbackTimeIndicatorTileViewControllerCanFlashIndicator:self], v9, v10))
           {
@@ -62,85 +62,85 @@
   }
 }
 
-- (void)_handleVideoPlayer:(id)a3 change:(id)a4
+- (void)_handleVideoPlayer:(id)player change:(id)change
 {
-  v5 = a4;
-  if (([v5 isAtBeginningDidChange] & 1) != 0 || objc_msgSend(v5, "desiredPlayStateDidChange"))
+  changeCopy = change;
+  if (([changeCopy isAtBeginningDidChange] & 1) != 0 || objc_msgSend(changeCopy, "desiredPlayStateDidChange"))
   {
     [(PUPlaybackTimeIndicatorTileViewController *)self _updateIndicatorDisplayStyle];
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PUPlaybackTimeIndicatorTileViewController *)self videoPlayer];
+  modelCopy = model;
+  changeCopy = change;
+  videoPlayer = [(PUPlaybackTimeIndicatorTileViewController *)self videoPlayer];
 
-  if (v7 == v9)
+  if (videoPlayer == modelCopy)
   {
-    [(PUPlaybackTimeIndicatorTileViewController *)self _handleVideoPlayer:v9 change:v6];
+    [(PUPlaybackTimeIndicatorTileViewController *)self _handleVideoPlayer:modelCopy change:changeCopy];
   }
 
   else
   {
-    v8 = [(PUPlaybackTimeIndicatorTileViewController *)self viewModel];
+    viewModel = [(PUPlaybackTimeIndicatorTileViewController *)self viewModel];
 
-    if (v8 == v9)
+    if (viewModel == modelCopy)
     {
-      [(PUPlaybackTimeIndicatorTileViewController *)self _handleViewModel:v9 change:v6];
+      [(PUPlaybackTimeIndicatorTileViewController *)self _handleViewModel:modelCopy change:changeCopy];
     }
   }
 }
 
 - (void)_updateIndicatorDisplayStyle
 {
-  v11 = [(PUPlaybackTimeIndicatorTileViewController *)self videoPlayer];
-  v3 = [(PUPlaybackTimeIndicatorTileViewController *)self viewModel];
+  videoPlayer = [(PUPlaybackTimeIndicatorTileViewController *)self videoPlayer];
+  viewModel = [(PUPlaybackTimeIndicatorTileViewController *)self viewModel];
   v4 = +[PUScrubberSettings sharedInstance];
-  if ([v11 desiredPlayState] == 3)
+  if ([videoPlayer desiredPlayState] == 3)
   {
     goto LABEL_2;
   }
 
-  if ([v3 isScrubbing])
+  if ([viewModel isScrubbing])
   {
-    v5 = [v4 scrubbingPlaybackIndicator];
+    scrubbingPlaybackIndicator = [v4 scrubbingPlaybackIndicator];
   }
 
-  else if ([v11 isAtBeginning] && objc_msgSend(v11, "isActivated"))
+  else if ([videoPlayer isAtBeginning] && objc_msgSend(videoPlayer, "isActivated"))
   {
-    v5 = [v4 initialPlaybackIndicator];
+    scrubbingPlaybackIndicator = [v4 initialPlaybackIndicator];
   }
 
   else
   {
-    v6 = [(PUPlaybackTimeIndicatorTileViewController *)self forcedIndicatorVisibilityEndDate];
-    [v6 timeIntervalSinceNow];
+    forcedIndicatorVisibilityEndDate = [(PUPlaybackTimeIndicatorTileViewController *)self forcedIndicatorVisibilityEndDate];
+    [forcedIndicatorVisibilityEndDate timeIntervalSinceNow];
     v8 = v7;
 
     if (v8 <= 0.0)
     {
-      if ([v11 desiredPlayState] != 4)
+      if ([videoPlayer desiredPlayState] != 4)
       {
 LABEL_2:
-        v5 = [v4 defaultPlaybackIndicator];
+        scrubbingPlaybackIndicator = [v4 defaultPlaybackIndicator];
         goto LABEL_12;
       }
 
-      v5 = [v4 playingPlaybackIndicator];
+      scrubbingPlaybackIndicator = [v4 playingPlaybackIndicator];
     }
 
     else
     {
-      v5 = [v4 chromeShownPlaybackIndicator];
+      scrubbingPlaybackIndicator = [v4 chromeShownPlaybackIndicator];
     }
   }
 
 LABEL_12:
-  if (v11)
+  if (videoPlayer)
   {
-    v9 = v3 == 0;
+    v9 = viewModel == 0;
   }
 
   else
@@ -149,34 +149,34 @@ LABEL_12:
   }
 
   v10 = !v9;
-  [(PUPlaybackTimeIndicatorTileViewController *)self _setIndicatorFormat:v5 animated:v10];
+  [(PUPlaybackTimeIndicatorTileViewController *)self _setIndicatorFormat:scrubbingPlaybackIndicator animated:v10];
 }
 
-- (void)_updateIndicatorValueWithTime:(id *)a3
+- (void)_updateIndicatorValueWithTime:(id *)time
 {
-  v5 = [(PUPlaybackTimeIndicatorTileViewController *)self videoPlayer];
-  v6 = v5;
-  v9 = *a3;
+  videoPlayer = [(PUPlaybackTimeIndicatorTileViewController *)self videoPlayer];
+  v6 = videoPlayer;
+  v9 = *time;
   memset(&v8[1], 0, sizeof($3CC8671D27C23BF42ADDB32F2B5E48AE));
-  if (v5)
+  if (videoPlayer)
   {
-    [v5 duration];
+    [videoPlayer duration];
   }
 
-  v7 = [(PUPlaybackTimeIndicatorTileViewController *)self _label];
+  _label = [(PUPlaybackTimeIndicatorTileViewController *)self _label];
   v8[0] = v9;
-  [v7 setCurrentPlaybackTime:v8];
+  [_label setCurrentPlaybackTime:v8];
   v8[0] = v8[1];
-  [v7 setPlaybackDuration:v8];
+  [_label setPlaybackDuration:v8];
 }
 
-- (void)setForcedIndicatorVisibilityEndDate:(id)a3
+- (void)setForcedIndicatorVisibilityEndDate:(id)date
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_forcedIndicatorVisibilityEndDate != v5 && ([(NSDate *)v5 isEqual:?]& 1) == 0)
+  dateCopy = date;
+  v6 = dateCopy;
+  if (self->_forcedIndicatorVisibilityEndDate != dateCopy && ([(NSDate *)dateCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_forcedIndicatorVisibilityEndDate, a3);
+    objc_storeStrong(&self->_forcedIndicatorVisibilityEndDate, date);
     [(PUPlaybackTimeIndicatorTileViewController *)self _updateIndicatorDisplayStyle];
     if (v6)
     {
@@ -202,9 +202,9 @@ void __81__PUPlaybackTimeIndicatorTileViewController_setForcedIndicatorVisibilit
   [WeakRetained _updateIndicatorDisplayStyle];
 }
 
-- (void)_setIndicatorVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setIndicatorVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->__isIndicatorVisible != a3)
+  if (self->__isIndicatorVisible != visible)
   {
     v21 = v9;
     v22 = v8;
@@ -212,20 +212,20 @@ void __81__PUPlaybackTimeIndicatorTileViewController_setForcedIndicatorVisibilit
     v24 = v6;
     v25 = v4;
     v26 = v5;
-    v10 = a4;
-    v11 = a3;
-    self->__isIndicatorVisible = a3;
+    animatedCopy = animated;
+    visibleCopy = visible;
+    self->__isIndicatorVisible = visible;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __75__PUPlaybackTimeIndicatorTileViewController__setIndicatorVisible_animated___block_invoke;
     aBlock[3] = &unk_1E7B7FF98;
     aBlock[4] = self;
-    v20 = a3;
+    visibleCopy2 = visible;
     v12 = _Block_copy(aBlock);
     v13 = v12;
-    if (v10)
+    if (animatedCopy)
     {
-      if (v11)
+      if (visibleCopy)
       {
         v14 = 0.1;
       }
@@ -235,7 +235,7 @@ void __81__PUPlaybackTimeIndicatorTileViewController_setForcedIndicatorVisibilit
         v14 = 0.3;
       }
 
-      if (v11)
+      if (visibleCopy)
       {
         v15 = 0.0;
       }
@@ -274,31 +274,31 @@ void __75__PUPlaybackTimeIndicatorTileViewController__setIndicatorVisible_animat
   [v2 setAlpha:v3];
 }
 
-- (void)_setIndicatorFormat:(int64_t)a3 animated:(BOOL)a4
+- (void)_setIndicatorFormat:(int64_t)format animated:(BOOL)animated
 {
-  if (self->__indicatorFormat != a3)
+  if (self->__indicatorFormat != format)
   {
-    v5 = a4;
-    self->__indicatorFormat = a3;
-    if (a3)
+    animatedCopy = animated;
+    self->__indicatorFormat = format;
+    if (format)
     {
-      v8 = [(PUPlaybackTimeIndicatorTileViewController *)self _label];
-      [v8 setFormat:a3];
+      _label = [(PUPlaybackTimeIndicatorTileViewController *)self _label];
+      [_label setFormat:format];
     }
 
-    [(PUPlaybackTimeIndicatorTileViewController *)self _setIndicatorVisible:a3 != 0 animated:v5];
+    [(PUPlaybackTimeIndicatorTileViewController *)self _setIndicatorVisible:format != 0 animated:animatedCopy];
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
-  if (viewModel != v5)
+  if (viewModel != modelCopy)
   {
-    v12 = v5;
+    v12 = modelCopy;
     [(PUBrowsingViewModel *)viewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(PUBrowsingViewModel *)self->_viewModel registerChangeObserver:self];
     [(PUPlaybackTimeIndicatorTileViewController *)self _updateIndicatorDisplayStyle];
     if (-[PUBrowsingViewModel isChromeVisible](v12, "isChromeVisible") && (-[PUBrowsingViewModel lastChromeVisibilityChangeDate](v12, "lastChromeVisibilityChangeDate"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, -[PUBrowsingViewModel lastChromeVisibilityChangeDate](v12, "lastChromeVisibilityChangeDate"), v9 = objc_claimAutoreleasedReturnValue(), [v9 timeIntervalSinceNow], v11 = v10, v9, v8, v11 > -2.0))
@@ -311,26 +311,26 @@ void __75__PUPlaybackTimeIndicatorTileViewController__setIndicatorVisible_animat
       viewModel = [(PUPlaybackTimeIndicatorTileViewController *)self _cancelFlashTimeIndicator];
     }
 
-    v5 = v12;
+    modelCopy = v12;
   }
 
-  MEMORY[0x1EEE66BB8](viewModel, v5);
+  MEMORY[0x1EEE66BB8](viewModel, modelCopy);
 }
 
-- (void)setVideoPlayer:(id)a3
+- (void)setVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   videoPlayer = self->_videoPlayer;
-  if (videoPlayer != v5)
+  if (videoPlayer != playerCopy)
   {
     [(PUBrowsingVideoPlayer *)videoPlayer unregisterTimeObserver:self];
     [(PUBrowsingVideoPlayer *)self->_videoPlayer unregisterChangeObserver:self];
-    objc_storeStrong(&self->_videoPlayer, a3);
+    objc_storeStrong(&self->_videoPlayer, player);
     [(PUBrowsingVideoPlayer *)self->_videoPlayer registerTimeObserver:self];
     [(PUBrowsingVideoPlayer *)self->_videoPlayer registerChangeObserver:self];
-    if (v5)
+    if (playerCopy)
     {
-      [(PUBrowsingVideoPlayer *)v5 currentTime];
+      [(PUBrowsingVideoPlayer *)playerCopy currentTime];
     }
 
     else
@@ -351,9 +351,9 @@ void __75__PUPlaybackTimeIndicatorTileViewController__setIndicatorVisible_animat
   [(PUPlaybackTimeIndicatorTileViewController *)self setViewModel:0];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -368,16 +368,16 @@ void __75__PUPlaybackTimeIndicatorTileViewController__setIndicatorVisible_animat
   v7.receiver = self;
   v7.super_class = PUPlaybackTimeIndicatorTileViewController;
   [(PUTileViewController *)&v7 viewDidLoad];
-  v3 = [(PUTileViewController *)self view];
+  view = [(PUTileViewController *)self view];
   v4 = [PUPlaybackTimeLabel alloc];
-  [v3 bounds];
+  [view bounds];
   v5 = [(PUPlaybackTimeLabel *)v4 initWithFrame:?];
   label = self->__label;
   self->__label = v5;
 
   [(PUPlaybackTimeLabel *)self->__label setAutoresizingMask:18];
   [(PUPlaybackTimeLabel *)self->__label setAlpha:0.0];
-  [v3 addSubview:self->__label];
+  [view addSubview:self->__label];
 }
 
 + (CGSize)playbackTimeIndicatorTileSize

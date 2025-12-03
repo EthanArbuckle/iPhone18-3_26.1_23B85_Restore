@@ -15,16 +15,16 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   v5 = CFNotificationCenterGetDarwinNotifyCenter();
   if (qword_27C8424A0 != -1)
   {
     swift_once();
   }
 
-  CFNotificationCenterRemoveObserver(v5, v4, qword_27C844780, 0);
+  CFNotificationCenterRemoveObserver(v5, selfCopy, qword_27C844780, 0);
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(HFCameraEventDiagnosticsAttachmentRequestListener *)&v6 dealloc];
 }

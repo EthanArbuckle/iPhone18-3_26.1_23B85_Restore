@@ -1,31 +1,31 @@
 @interface CPSystemCoordinatorParticipantState
 - (CPSystemCoordinatorParticipantState)init;
-- (CPSystemCoordinatorParticipantState)initWithCoder:(id)a3;
+- (CPSystemCoordinatorParticipantState)initWithCoder:(id)coder;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSystemCoordinatorParticipantState
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemCoordinatorState.ParticipantState.hash.getter();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SystemCoordinatorState.ParticipantState.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SystemCoordinatorState.ParticipantState.encode(with:)(coderCopy);
 }
 
-- (CPSystemCoordinatorParticipantState)initWithCoder:(id)a3
+- (CPSystemCoordinatorParticipantState)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized SystemCoordinatorState.ParticipantState.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized SystemCoordinatorState.ParticipantState.init(coder:)(coderCopy);
 
   return v4;
 }

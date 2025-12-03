@@ -1,6 +1,6 @@
 @interface _PIParallaxInactiveStyleLearnResult
 - (CGRect)styleFrame;
-- (_PIParallaxInactiveStyleLearnResult)initWithStyleData:(id)a3 frame:(CGRect)a4;
+- (_PIParallaxInactiveStyleLearnResult)initWithStyleData:(id)data frame:(CGRect)frame;
 @end
 
 @implementation _PIParallaxInactiveStyleLearnResult
@@ -18,17 +18,17 @@
   return result;
 }
 
-- (_PIParallaxInactiveStyleLearnResult)initWithStyleData:(id)a3 frame:(CGRect)a4
+- (_PIParallaxInactiveStyleLearnResult)initWithStyleData:(id)data frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = _PIParallaxInactiveStyleLearnResult;
-  v8 = a3;
+  dataCopy = data;
   v9 = [(_PIParallaxInactiveStyleLearnResult *)&v13 init];
-  v10 = [v8 copy];
+  v10 = [dataCopy copy];
 
   styleData = v9->_styleData;
   v9->_styleData = v10;

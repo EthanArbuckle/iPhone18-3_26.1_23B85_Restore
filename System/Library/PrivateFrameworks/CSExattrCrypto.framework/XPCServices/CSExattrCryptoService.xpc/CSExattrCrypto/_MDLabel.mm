@@ -1,16 +1,16 @@
 @interface _MDLabel
-- ($DCF20CAD073027CB89FDEFA7A9A33809)_getUUIDBytesForUserUUID:(__CFUUID *)a3;
-- (_MDLabel)initWithUUID:(__CFUUID *)a3 attributes:(__CFDictionary *)a4 forUserUUID:(__CFUUID *)a5;
+- ($DCF20CAD073027CB89FDEFA7A9A33809)_getUUIDBytesForUserUUID:(__CFUUID *)d;
+- (_MDLabel)initWithUUID:(__CFUUID *)d attributes:(__CFDictionary *)attributes forUserUUID:(__CFUUID *)iD;
 - (id)description;
 - (unint64_t)_cfTypeID;
 - (void)dealloc;
-- (void)getAttr:(__CFString *)a3;
-- (void)updateAttrs:(__CFDictionary *)a3;
+- (void)getAttr:(__CFString *)attr;
+- (void)updateAttrs:(__CFDictionary *)attrs;
 @end
 
 @implementation _MDLabel
 
-- ($DCF20CAD073027CB89FDEFA7A9A33809)_getUUIDBytesForUserUUID:(__CFUUID *)a3
+- ($DCF20CAD073027CB89FDEFA7A9A33809)_getUUIDBytesForUserUUID:(__CFUUID *)d
 {
   v7 = CFUUIDGetUUIDBytes(self->_uuid);
   v6 = *&v7.byte8;
@@ -21,7 +21,7 @@
     memset(&v8, 0, sizeof(v8));
     CC_MD5_Init(&v8);
     CC_MD5_Update(&v8, &data, 0x10u);
-    data = CFUUIDGetUUIDBytes(a3);
+    data = CFUUIDGetUUIDBytes(d);
     CC_MD5_Update(&v8, &data, 0x10u);
     CC_MD5_Final(&data.byte0, &v8);
     v6 = *&data.byte8;
@@ -47,21 +47,21 @@
   return result;
 }
 
-- (_MDLabel)initWithUUID:(__CFUUID *)a3 attributes:(__CFDictionary *)a4 forUserUUID:(__CFUUID *)a5
+- (_MDLabel)initWithUUID:(__CFUUID *)d attributes:(__CFDictionary *)attributes forUserUUID:(__CFUUID *)iD
 {
   v15.receiver = self;
   v15.super_class = _MDLabel;
   v8 = [(_MDLabel *)&v15 init];
   if (v8)
   {
-    if (a4)
+    if (attributes)
     {
-      MutableCopy = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, a4);
+      MutableCopy = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes);
       v8->_attrs = MutableCopy;
       Value = CFDictionaryGetValue(MutableCopy, kMDLabelAttributeBits);
       if ((!Value || !CFNumberGetValue(Value, kCFNumberSInt64Type, &v8->_attrBits)) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        sub_10000CB88(a4);
+        sub_10000CB88(attributes);
       }
     }
 
@@ -70,9 +70,9 @@
       v8->_attrs = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     }
 
-    v8->_uuid = CFRetain(a3);
-    v8->_userUUID = CFRetain(a5);
-    v11 = [(_MDLabel *)v8 _getUUIDBytesForUserUUID:a5];
+    v8->_uuid = CFRetain(d);
+    v8->_userUUID = CFRetain(iD);
+    v11 = [(_MDLabel *)v8 _getUUIDBytesForUserUUID:iD];
     _MDLabelUUIDEncode(v11, v12, byte_10001A1A0);
     v13 = CFStringCreateWithCString(kCFAllocatorDefault, byte_10001A1A0, 0x8000100u);
     CFDictionarySetValue(v8->_attrs, kMDLabelID, v13);
@@ -109,26 +109,26 @@
   return v2;
 }
 
-- (void)getAttr:(__CFString *)a3
+- (void)getAttr:(__CFString *)attr
 {
-  result = CFDictionaryGetValue(self->_attrs, a3);
+  result = CFDictionaryGetValue(self->_attrs, attr);
   if (!result)
   {
 
-    return [(_MDLabel *)self getAttrFallback:a3];
+    return [(_MDLabel *)self getAttrFallback:attr];
   }
 
   return result;
 }
 
-- (void)updateAttrs:(__CFDictionary *)a3
+- (void)updateAttrs:(__CFDictionary *)attrs
 {
-  Count = CFDictionaryGetCount(a3);
+  Count = CFDictionaryGetCount(attrs);
   v6 = (&v11 - ((8 * Count + 15) & 0xFFFFFFFFFFFFFFF0));
   bzero(v6, 8 * Count);
   v7 = v6;
   bzero(v6, 8 * Count);
-  CFDictionaryGetKeysAndValues(a3, v6, v6);
+  CFDictionaryGetKeysAndValues(attrs, v6, v6);
   if (Count >= 1)
   {
     do

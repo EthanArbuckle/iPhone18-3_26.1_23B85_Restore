@@ -7,7 +7,7 @@
 - (void)ic_addDidMoveToWindowHandler:()ICDidMoveToWindowHandler
 {
   v4 = a3;
-  v5 = objc_getAssociatedObject(a1, ICDidMoveToWindowSpyKey);
+  v5 = objc_getAssociatedObject(self, ICDidMoveToWindowSpyKey);
 
   if (v5)
   {
@@ -22,10 +22,10 @@
     v8[2] = __65__UIView_ICDidMoveToWindowHandler__ic_addDidMoveToWindowHandler___block_invoke;
     v8[3] = &unk_1E846A9E8;
     v9 = v4;
-    v7 = [(ICDidMoveToWindowSpy *)v6 initWithOwner:a1 handler:v8];
+    v7 = [(ICDidMoveToWindowSpy *)v6 initWithOwner:self handler:v8];
     [(ICDidMoveToWindowSpy *)v7 setHidden:1];
-    [a1 addSubview:v7];
-    objc_setAssociatedObject(a1, ICDidMoveToWindowSpyKey, v7, 1);
+    [self addSubview:v7];
+    objc_setAssociatedObject(self, ICDidMoveToWindowSpyKey, v7, 1);
   }
 }
 

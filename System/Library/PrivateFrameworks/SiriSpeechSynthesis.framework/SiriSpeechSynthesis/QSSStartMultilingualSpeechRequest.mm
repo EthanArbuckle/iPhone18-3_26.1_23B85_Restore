@@ -1,7 +1,7 @@
 @interface QSSStartMultilingualSpeechRequest
 - (NSArray)language_parameters_by_id;
-- (Offset<siri::speech::schema_fb::StartMultilingualSpeechRequest>)addObjectToBuffer:(void *)a3;
-- (QSSStartMultilingualSpeechRequest)initWithFlatbuffData:(id)a3 root:(const StartMultilingualSpeechRequest *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::StartMultilingualSpeechRequest>)addObjectToBuffer:(void *)buffer;
+- (QSSStartMultilingualSpeechRequest)initWithFlatbuffData:(id)data root:(const StartMultilingualSpeechRequest *)root verify:(BOOL)verify;
 - (QSSStartSpeechRequest)start_speech_request;
 - (id)flatbuffData;
 @end
@@ -37,14 +37,14 @@ flatbuffers::DetachedBuffer *__49__QSSStartMultilingualSpeechRequest_flatbuffDat
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::StartMultilingualSpeechRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::StartMultilingualSpeechRequest>)addObjectToBuffer:(void *)buffer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSStartMultilingualSpeechRequest *)self start_speech_request];
-  v16 = [v5 addObjectToBuffer:a3];
+  start_speech_request = [(QSSStartMultilingualSpeechRequest *)self start_speech_request];
+  v16 = [start_speech_request addObjectToBuffer:buffer];
 
-  v6 = [(QSSStartMultilingualSpeechRequest *)self language_parameters_by_id];
-  v7 = [v6 count];
+  language_parameters_by_id = [(QSSStartMultilingualSpeechRequest *)self language_parameters_by_id];
+  v7 = [language_parameters_by_id count];
   if (v7)
   {
     if (!(v7 >> 62))
@@ -64,35 +64,35 @@ flatbuffers::DetachedBuffer *__49__QSSStartMultilingualSpeechRequest_flatbuffDat
   {
     *v19;
     *v19;
-    [**(&v18 + 1) addObjectToBuffer:a3];
+    [**(&v18 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v8 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v9 = *(a3 + 8);
-  v10 = *(a3 + 12);
-  v11 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v16);
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v8 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v9 = *(buffer + 8);
+  v10 = *(buffer + 12);
+  v11 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, v16);
   if (v8)
   {
-    v12 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v8);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v12);
+    v12 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v8);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v12);
   }
 
-  v13.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v9 - v10 + v11);
+  v13.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v9 - v10 + v11);
   v14 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
 - (NSArray)language_parameters_by_id
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"language_parameters_by_id"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"language_parameters_by_id"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 7u)
@@ -109,7 +109,7 @@ flatbuffers::DetachedBuffer *__49__QSSStartMultilingualSpeechRequest_flatbuffDat
           do
           {
             v11 = [[QSSLanguageParameters alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -120,10 +120,10 @@ flatbuffers::DetachedBuffer *__49__QSSStartMultilingualSpeechRequest_flatbuffDat
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"language_parameters_by_id"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"language_parameters_by_id"];
   }
 
-  return v3;
+  return array;
 }
 
 - (QSSStartSpeechRequest)start_speech_request
@@ -151,42 +151,42 @@ flatbuffers::DetachedBuffer *__49__QSSStartMultilingualSpeechRequest_flatbuffDat
   return v3;
 }
 
-- (QSSStartMultilingualSpeechRequest)initWithFlatbuffData:(id)a3 root:(const StartMultilingualSpeechRequest *)a4 verify:(BOOL)a5
+- (QSSStartMultilingualSpeechRequest)initWithFlatbuffData:(id)data root:(const StartMultilingualSpeechRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSStartMultilingualSpeechRequest;
   v10 = [(QSSStartMultilingualSpeechRequest *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -208,9 +208,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

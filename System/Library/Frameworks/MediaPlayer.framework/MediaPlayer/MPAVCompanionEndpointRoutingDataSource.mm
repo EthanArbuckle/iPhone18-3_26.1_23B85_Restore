@@ -1,18 +1,18 @@
 @interface MPAVCompanionEndpointRoutingDataSource
 - (id)discoverySessionConfiguration;
-- (id)getRoutesForCategory:(id)a3;
+- (id)getRoutesForCategory:(id)category;
 @end
 
 @implementation MPAVCompanionEndpointRoutingDataSource
 
-- (id)getRoutesForCategory:(id)a3
+- (id)getRoutesForCategory:(id)category
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  categoryCopy = category;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18.receiver = self;
   v18.super_class = MPAVCompanionEndpointRoutingDataSource;
-  [(MPAVEndpointRoutingDataSource *)&v18 getRoutesForCategory:v4];
+  [(MPAVEndpointRoutingDataSource *)&v18 getRoutesForCategory:categoryCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;

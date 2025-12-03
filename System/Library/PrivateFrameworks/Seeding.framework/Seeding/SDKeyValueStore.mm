@@ -1,7 +1,7 @@
 @interface SDKeyValueStore
 + (NSDictionary)devicesDictionary;
-+ (id)deviceDictionaryForDeviceIdentifier:(id)a3;
-+ (void)insertOrUpdateDevice:(id)a3;
++ (id)deviceDictionaryForDeviceIdentifier:(id)identifier;
++ (void)insertOrUpdateDevice:(id)device;
 + (void)synchronize;
 @end
 
@@ -11,13 +11,13 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = a1;
-    objc_sync_enter(v3);
-    v4 = [MEMORY[0x277CCAD80] defaultStore];
-    [v4 synchronize];
-    v5 = [v4 dictionaryForKey:@"BetaDevices"];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    defaultStore = [MEMORY[0x277CCAD80] defaultStore];
+    [defaultStore synchronize];
+    v5 = [defaultStore dictionaryForKey:@"BetaDevices"];
 
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -28,17 +28,17 @@
   return v5;
 }
 
-+ (id)deviceDictionaryForDeviceIdentifier:(id)a3
++ (id)deviceDictionaryForDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (_os_feature_enabled_impl())
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [v5 devicesDictionary];
-    v7 = [v6 objectForKey:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    devicesDictionary = [selfCopy devicesDictionary];
+    v7 = [devicesDictionary objectForKey:identifierCopy];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -49,28 +49,28 @@
   return v7;
 }
 
-+ (void)insertOrUpdateDevice:(id)a3
++ (void)insertOrUpdateDevice:(id)device
 {
-  v12 = a3;
+  deviceCopy = device;
   if (_os_feature_enabled_impl())
   {
-    v4 = a1;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = MEMORY[0x277CBEB38];
-    v6 = [v4 devicesDictionary];
-    v7 = [v5 dictionaryWithDictionary:v6];
+    devicesDictionary = [selfCopy devicesDictionary];
+    v7 = [v5 dictionaryWithDictionary:devicesDictionary];
 
-    v8 = [v12 dictionaryRepresentation];
-    v9 = [v12 identifier];
-    [v7 setObject:v8 forKey:v9];
+    dictionaryRepresentation = [deviceCopy dictionaryRepresentation];
+    identifier = [deviceCopy identifier];
+    [v7 setObject:dictionaryRepresentation forKey:identifier];
 
-    v10 = [MEMORY[0x277CCAD80] defaultStore];
-    [v10 setDictionary:v7 forKey:@"BetaDevices"];
+    defaultStore = [MEMORY[0x277CCAD80] defaultStore];
+    [defaultStore setDictionary:v7 forKey:@"BetaDevices"];
 
-    v11 = [MEMORY[0x277CCAD80] defaultStore];
-    [v11 synchronize];
+    defaultStore2 = [MEMORY[0x277CCAD80] defaultStore];
+    [defaultStore2 synchronize];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -78,10 +78,10 @@
 {
   if (_os_feature_enabled_impl())
   {
-    obj = a1;
+    obj = self;
     objc_sync_enter(obj);
-    v3 = [MEMORY[0x277CCAD80] defaultStore];
-    [v3 synchronize];
+    defaultStore = [MEMORY[0x277CCAD80] defaultStore];
+    [defaultStore synchronize];
 
     objc_sync_exit(obj);
   }

@@ -1,28 +1,28 @@
 @interface HUNetworkRouterManualReconfigurationViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUNetworkRouterManualReconfigurationViewController)initWithHome:(id)a3;
-- (HUNetworkRouterManualReconfigurationViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUNetworkRouterManualReconfigurationViewController)initWithHome:(id)home;
+- (HUNetworkRouterManualReconfigurationViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 @end
 
 @implementation HUNetworkRouterManualReconfigurationViewController
 
-- (HUNetworkRouterManualReconfigurationViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUNetworkRouterManualReconfigurationViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUNetworkRouterManualReconfigurationViewController.m" lineNumber:27 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkRouterManualReconfigurationViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkRouterManualReconfigurationViewController.m" lineNumber:27 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkRouterManualReconfigurationViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (HUNetworkRouterManualReconfigurationViewController)initWithHome:(id)a3
+- (HUNetworkRouterManualReconfigurationViewController)initWithHome:(id)home
 {
-  v4 = a3;
-  v5 = [[HUNetworkRouterManualReconfigurationItemManager alloc] initWithHome:v4 delegate:self];
+  homeCopy = home;
+  v5 = [[HUNetworkRouterManualReconfigurationItemManager alloc] initWithHome:homeCopy delegate:self];
 
   v8.receiver = self;
   v8.super_class = HUNetworkRouterManualReconfigurationViewController;
@@ -31,11 +31,11 @@
   return v6;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(HUItemTableViewController *)self itemManager];
-  v8 = [v7 isItemNetworkConfigurationItem:v6];
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v8 = [itemManager isItemNetworkConfigurationItem:itemCopy];
 
   if (v8)
   {
@@ -44,8 +44,8 @@
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HUNetworkRouterManualReconfigurationViewController.m" lineNumber:41 description:{@"Couldn't find a cell class for item: %@", v6}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkRouterManualReconfigurationViewController.m" lineNumber:41 description:{@"Couldn't find a cell class for item: %@", itemCopy}];
 
     v9 = 0;
   }
@@ -53,37 +53,37 @@
   return v9;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
+  cellCopy = cell;
   v11.receiver = self;
   v11.super_class = HUNetworkRouterManualReconfigurationViewController;
-  v9 = a4;
-  [(HUItemTableViewController *)&v11 setupCell:v8 forItem:v9 indexPath:a5];
+  itemCopy = item;
+  [(HUItemTableViewController *)&v11 setupCell:cellCopy forItem:itemCopy indexPath:path];
   v10 = [(HUItemTableViewController *)self itemManager:v11.receiver];
-  LODWORD(self) = [v10 isItemNetworkConfigurationItem:v9];
+  LODWORD(self) = [v10 isItemNetworkConfigurationItem:itemCopy];
 
   if (self)
   {
-    [v8 setHideIcon:1];
+    [cellCopy setHideIcon:1];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v23.receiver = self;
   v23.super_class = HUNetworkRouterManualReconfigurationViewController;
-  [(HUItemTableViewController *)&v23 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
-  v12 = [(HUItemTableViewController *)self itemManager];
-  LODWORD(a5) = [v12 isItemNetworkConfigurationItem:v11];
+  [(HUItemTableViewController *)&v23 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  LODWORD(path) = [itemManager isItemNetworkConfigurationItem:itemCopy];
 
-  if (a5)
+  if (path)
   {
     v13 = objc_opt_class();
-    v14 = v11;
+    v14 = itemCopy;
     if (v14)
     {
       if (objc_opt_isKindOfClass())
@@ -102,31 +102,31 @@
         goto LABEL_9;
       }
 
-      v17 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v17 handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v13, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v13, objc_opt_class()}];
     }
 
     v16 = 0;
 LABEL_9:
 
-    v19 = v10;
-    v20 = [v16 accessory];
-    v21 = [v20 room];
-    v22 = [v21 name];
-    [v19 setDescriptionText:v22];
+    v19 = cellCopy;
+    accessory = [v16 accessory];
+    room = [accessory room];
+    name = [room name];
+    [v19 setDescriptionText:name];
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v10 = [(HUItemTableViewController *)self itemManager];
-  v11 = [v10 isItemNetworkConfigurationItem:v9];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  v11 = [itemManager2 isItemNetworkConfigurationItem:v9];
 
   if (v11)
   {
@@ -137,20 +137,20 @@ LABEL_9:
   {
     v14.receiver = self;
     v14.super_class = HUNetworkRouterManualReconfigurationViewController;
-    v12 = [(HUItemTableViewController *)&v14 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v12 = [(HUItemTableViewController *)&v14 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = HUNetworkRouterManualReconfigurationViewController;
-  v5 = a4;
-  v6 = a3;
-  [(HUItemTableViewController *)&v7 tableView:v6 didSelectRowAtIndexPath:v5];
-  [v6 deselectRowAtIndexPath:v5 animated:{1, v7.receiver, v7.super_class}];
+  pathCopy = path;
+  viewCopy = view;
+  [(HUItemTableViewController *)&v7 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:{1, v7.receiver, v7.super_class}];
 }
 
 @end

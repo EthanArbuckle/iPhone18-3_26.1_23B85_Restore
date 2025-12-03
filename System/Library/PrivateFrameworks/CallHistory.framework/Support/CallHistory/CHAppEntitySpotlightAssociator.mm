@@ -1,15 +1,15 @@
 @interface CHAppEntitySpotlightAssociator
-+ (void)associateRecentCall:(id)a3 with:(id)a4;
++ (void)associateRecentCall:(id)call with:(id)with;
 - (CHAppEntitySpotlightAssociator)init;
 @end
 
 @implementation CHAppEntitySpotlightAssociator
 
-+ (void)associateRecentCall:(id)a3 with:(id)a4
++ (void)associateRecentCall:(id)call with:(id)with
 {
-  v5 = a3;
-  v6 = a4;
-  sub_100029168(v5, v6);
+  callCopy = call;
+  withCopy = with;
+  sub_100029168(callCopy, withCopy);
 }
 
 - (CHAppEntitySpotlightAssociator)init

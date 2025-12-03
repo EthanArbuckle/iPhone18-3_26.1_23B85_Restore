@@ -1,27 +1,27 @@
 @interface SGKeyValueCacheFile
-+ (id)encodedStringForFullName:(id)a3;
-+ (id)fullNameForEncodedContact:(id)a3;
-+ (id)keyValueCacheForPath:(id)a3;
++ (id)encodedStringForFullName:(id)name;
++ (id)fullNameForEncodedContact:(id)contact;
++ (id)keyValueCacheForPath:(id)path;
 + (id)pathToCache;
-+ (void)clearCacheAtPath:(id)a3;
-- (SGKeyValueCacheFile)initWithCoder:(id)a3;
-- (SGKeyValueCacheFile)initWithFileDescriptor:(int)a3;
-- (SGKeyValueCacheFile)initWithPath:(id)a3;
++ (void)clearCacheAtPath:(id)path;
+- (SGKeyValueCacheFile)initWithCoder:(id)coder;
+- (SGKeyValueCacheFile)initWithFileDescriptor:(int)descriptor;
+- (SGKeyValueCacheFile)initWithPath:(id)path;
 - (id)_map;
 - (id)description;
 - (id)initBlank;
 - (id)initInMemory;
-- (id)initTemporaryForOverwritingCache:(id)a3;
-- (id)valueForKey:(id)a3 found:(BOOL *)a4;
+- (id)initTemporaryForOverwritingCache:(id)cache;
+- (id)valueForKey:(id)key found:(BOOL *)found;
 - (void)commitTemporaryFile;
 - (void)dealloc;
-- (void)deleteValueByRecordId:(id)a3;
-- (void)deleteValueByRecordIdSet:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateRowsWithBlock:(void *)a1;
-- (void)setValue:(id)a3 forKey:(id)a4 fromRecordId:(id)a5;
-- (void)setValueIfNotPresent:(id)a3 forKey:(id)a4 fromRecordId:(id)a5;
-- (void)setValueIfNotPresentWithDict:(id)a3 fromRecordId:(id)a4;
+- (void)deleteValueByRecordId:(id)id;
+- (void)deleteValueByRecordIdSet:(id)set;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateRowsWithBlock:(void *)block;
+- (void)setValue:(id)value forKey:(id)key fromRecordId:(id)id;
+- (void)setValueIfNotPresent:(id)present forKey:(id)key fromRecordId:(id)id;
+- (void)setValueIfNotPresentWithDict:(id)dict fromRecordId:(id)id;
 @end
 
 @implementation SGKeyValueCacheFile
@@ -131,34 +131,34 @@ LABEL_18:
   return v3;
 }
 
-- (SGKeyValueCacheFile)initWithCoder:(id)a3
+- (SGKeyValueCacheFile)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SGKeyValueCacheFile *)self initBlank];
-  if (v5)
+  coderCopy = coder;
+  initBlank = [(SGKeyValueCacheFile *)self initBlank];
+  if (initBlank)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
-    data = v5->_data;
-    v5->_data = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    data = initBlank->_data;
+    initBlank->_data = v6;
   }
 
-  return v5;
+  return initBlank;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SGKeyValueCacheFile *)self _map];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  _map = [(SGKeyValueCacheFile *)self _map];
+  [coderCopy encodeObject:_map forKey:@"data"];
 }
 
 - (id)description
 {
   v3 = objc_opt_new();
-  v4 = [(SGKeyValueCacheFile *)self _map];
+  _map = [(SGKeyValueCacheFile *)self _map];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 appendFormat:@"%@ (size: %lu bytes)\n", v6, objc_msgSend(v4, "length")];
+  [v3 appendFormat:@"%@ (size: %lu bytes)\n", v6, objc_msgSend(_map, "length")];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -213,39 +213,39 @@ void __34__SGKeyValueCacheFile_description__block_invoke(uint64_t a1, uint64_t a
   v15 = *(a2 + 24);
 }
 
-- (void)enumerateRowsWithBlock:(void *)a1
+- (void)enumerateRowsWithBlock:(void *)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    v4 = [a1 _map];
-    v5 = v4;
-    if (v4)
+    _map = [block _map];
+    v5 = _map;
+    if (_map)
     {
-      v6 = [v4 bytes];
-      v7 = [v5 bytes];
+      bytes = [_map bytes];
+      bytes2 = [v5 bytes];
       v19 = 0;
-      v8 = v7 + [v5 length];
-      while ((v8 - v6) >= 0x10)
+      v8 = bytes2 + [v5 length];
+      while ((v8 - bytes) >= 0x10)
       {
         v9 = v5;
-        v10 = *(v6 + 8);
-        v11 = *(v6 + 10);
+        v10 = *(bytes + 8);
+        v11 = *(bytes + 10);
         v12 = v11 + v10;
-        if (v8 - (v6 + 16) < v11 + v10)
+        if (v8 - (bytes + 16) < v11 + v10)
         {
 
           break;
         }
 
-        v13 = *v6;
+        v13 = *bytes;
         v14 = v10;
         v15 = v11;
         v16 = 0;
-        v17 = v6;
+        v17 = bytes;
         v18 = v9;
         v3[2](v3, &v13, &v19);
-        v6 += 16 + v12;
+        bytes += 16 + v12;
         if (v19 == 1)
         {
           break;
@@ -255,14 +255,14 @@ void __34__SGKeyValueCacheFile_description__block_invoke(uint64_t a1, uint64_t a
   }
 }
 
-- (void)deleteValueByRecordIdSet:(id)a3
+- (void)deleteValueByRecordIdSet:(id)set
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  setCopy = set;
   if (self->_fd < 0 && !self->_memStore)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:511 description:@"Cache is read-only"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:511 description:@"Cache is read-only"];
   }
 
   v6 = objc_opt_new();
@@ -270,7 +270,7 @@ void __34__SGKeyValueCacheFile_description__block_invoke(uint64_t a1, uint64_t a
   v28[1] = 3221225472;
   v28[2] = __48__SGKeyValueCacheFile_deleteValueByRecordIdSet___block_invoke;
   v28[3] = &unk_1E7EFB4A8;
-  v7 = v5;
+  v7 = setCopy;
   v29 = v7;
   v8 = v6;
   v30 = v8;
@@ -307,10 +307,10 @@ void __34__SGKeyValueCacheFile_description__block_invoke(uint64_t a1, uint64_t a
             objc_enumerationMutation(v11);
           }
 
-          v18 = [*(*(&v24 + 1) + 8 * v16) longLongValue];
+          longLongValue = [*(*(&v24 + 1) + 8 * v16) longLongValue];
           v15 = v17 + 2;
           ++v16;
-          *v17 = v18;
+          *v17 = longLongValue;
           v17[1] = 0;
           v17 += 2;
         }
@@ -370,14 +370,14 @@ void __48__SGKeyValueCacheFile_deleteValueByRecordIdSet___block_invoke(uint64_t 
   v9 = a2[3];
 }
 
-- (void)deleteValueByRecordId:(id)a3
+- (void)deleteValueByRecordId:(id)id
 {
-  v5 = a3;
-  v6 = v5;
+  idCopy = id;
+  v6 = idCopy;
   if (self->_fd < 0 && !self->_memStore)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:486 description:@"Cache is read-only"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:486 description:@"Cache is read-only"];
 
     if (v6)
     {
@@ -385,14 +385,14 @@ void __48__SGKeyValueCacheFile_deleteValueByRecordIdSet___block_invoke(uint64_t 
     }
   }
 
-  else if (v5)
+  else if (idCopy)
   {
 LABEL_4:
-    v7 = [v6 internalEntityId];
+    internalEntityId = [v6 internalEntityId];
     goto LABEL_7;
   }
 
-  v7 = -1;
+  internalEntityId = -1;
 LABEL_7:
   v13 = 0;
   v14 = &v13;
@@ -403,11 +403,11 @@ LABEL_7:
   v12[2] = __45__SGKeyValueCacheFile_deleteValueByRecordId___block_invoke;
   v12[3] = &unk_1E7EFB480;
   v12[4] = &v13;
-  v12[5] = v7;
+  v12[5] = internalEntityId;
   [(SGKeyValueCacheFile *)self enumerateRowsWithBlock:v12];
   if (v14[3])
   {
-    v11[0] = v7;
+    v11[0] = internalEntityId;
     v11[1] = 0;
     pthread_mutex_lock(&self->_lock);
     memStore = self->_memStore;
@@ -438,27 +438,27 @@ void __45__SGKeyValueCacheFile_deleteValueByRecordId___block_invoke(uint64_t a1,
   }
 }
 
-- (void)setValueIfNotPresentWithDict:(id)a3 fromRecordId:(id)a4
+- (void)setValueIfNotPresentWithDict:(id)dict fromRecordId:(id)id
 {
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dictCopy = dict;
+  idCopy = id;
   if (self->_fd < 0 && !self->_memStore)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:434 description:@"Cache is read-only"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:434 description:@"Cache is read-only"];
   }
 
   v9 = objc_opt_new();
-  v10 = [v8 numericValue];
+  numericValue = [idCopy numericValue];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __65__SGKeyValueCacheFile_setValueIfNotPresentWithDict_fromRecordId___block_invoke;
   v45[3] = &unk_1E7EFB430;
-  v47 = v10;
+  v47 = numericValue;
   v11 = v9;
   v46 = v11;
-  v34 = self;
+  selfCopy = self;
   [(SGKeyValueCacheFile *)self enumerateRowsWithBlock:v45];
   v43 = 0u;
   v44 = 0u;
@@ -480,7 +480,7 @@ void __45__SGKeyValueCacheFile_deleteValueByRecordId___block_invoke(uint64_t a1,
           objc_enumerationMutation(v12);
         }
 
-        v18 = [v7 objectForKeyedSubscript:*(*(&v41 + 1) + 8 * i)];
+        v18 = [dictCopy objectForKeyedSubscript:*(*(&v41 + 1) + 8 * i)];
         v19 = v18 == 0;
 
         v15 |= v19;
@@ -493,16 +493,16 @@ void __45__SGKeyValueCacheFile_deleteValueByRecordId___block_invoke(uint64_t a1,
 
     if (v15)
     {
-      v20 = v7;
-      v21 = v34;
-      [(SGKeyValueCacheFile *)v34 deleteValueByRecordId:v8];
+      v20 = dictCopy;
+      v21 = selfCopy;
+      [(SGKeyValueCacheFile *)selfCopy deleteValueByRecordId:idCopy];
 LABEL_25:
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __65__SGKeyValueCacheFile_setValueIfNotPresentWithDict_fromRecordId___block_invoke_2;
       v35[3] = &unk_1E7EFB458;
       v35[4] = v21;
-      v36 = v8;
+      v36 = idCopy;
       [v20 enumerateKeysAndObjectsUsingBlock:v35];
 
       goto LABEL_26;
@@ -513,12 +513,12 @@ LABEL_25:
   {
   }
 
-  v33 = v8;
+  v33 = idCopy;
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v22 = v7;
+  v22 = dictCopy;
   v23 = [v22 countByEnumeratingWithState:&v37 objects:v48 count:16];
   if (v23)
   {
@@ -555,8 +555,8 @@ LABEL_25:
   }
 
   v20 = v12;
-  v8 = v33;
-  v21 = v34;
+  idCopy = v33;
+  v21 = selfCopy;
   if ([v20 count])
   {
     goto LABEL_25;
@@ -654,12 +654,12 @@ void __65__SGKeyValueCacheFile_setValueIfNotPresentWithDict_fromRecordId___block
   [*(a1 + 32) setValue:v8 forKey:v6 fromRecordId:*(a1 + 40)];
 }
 
-- (void)setValueIfNotPresent:(id)a3 forKey:(id)a4 fromRecordId:(id)a5
+- (void)setValueIfNotPresent:(id)present forKey:(id)key fromRecordId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 UTF8String];
+  presentCopy = present;
+  keyCopy = key;
+  idCopy = id;
+  uTF8String = [keyCopy UTF8String];
   v13 = 0;
   v14 = &v13;
   v15 = 0x5012000000;
@@ -673,12 +673,12 @@ void __65__SGKeyValueCacheFile_setValueIfNotPresentWithDict_fromRecordId___block
   v12[2] = __64__SGKeyValueCacheFile_setValueIfNotPresent_forKey_fromRecordId___block_invoke;
   v12[3] = &unk_1E7EFB408;
   v12[4] = &v13;
-  v12[5] = v11;
-  v12[6] = strlen(v11);
+  v12[5] = uTF8String;
+  v12[6] = strlen(uTF8String);
   [(SGKeyValueCacheFile *)self enumerateRowsWithBlock:v12];
   if (!v14[8])
   {
-    [(SGKeyValueCacheFile *)self setValue:v8 forKey:v9 fromRecordId:v10];
+    [(SGKeyValueCacheFile *)self setValue:presentCopy forKey:keyCopy fromRecordId:idCopy];
   }
 
   _Block_object_dispose(&v13, 8);
@@ -720,57 +720,57 @@ void __64__SGKeyValueCacheFile_setValueIfNotPresent_forKey_fromRecordId___block_
   v10 = *(a2 + 3);
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4 fromRecordId:(id)a5
+- (void)setValue:(id)value forKey:(id)key fromRecordId:(id)id
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  valueCopy = value;
+  keyCopy = key;
+  idCopy = id;
   if (self->_fd < 0 && !self->_memStore)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:377 description:@"Cache is read-only"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:377 description:@"Cache is read-only"];
 
-    if (v10)
+    if (keyCopy)
     {
       goto LABEL_4;
     }
   }
 
-  else if (v10)
+  else if (keyCopy)
   {
     goto LABEL_4;
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"key"}];
 
 LABEL_4:
-  if (![v10 length])
+  if (![keyCopy length])
   {
     goto LABEL_24;
   }
 
-  v12 = [v10 UTF8String];
-  v13 = [v9 UTF8String];
-  v14 = strlen(v12);
-  if (!v13)
+  uTF8String = [keyCopy UTF8String];
+  uTF8String2 = [valueCopy UTF8String];
+  v14 = strlen(uTF8String);
+  if (!uTF8String2)
   {
     v15 = 0;
-    if (v12)
+    if (uTF8String)
     {
       goto LABEL_7;
     }
 
 LABEL_14:
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:386 description:{@"Invalid parameter not satisfying: %@", @"keyUtf8"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:386 description:{@"Invalid parameter not satisfying: %@", @"keyUtf8"}];
 
     goto LABEL_7;
   }
 
-  v15 = strlen(v13);
-  if (!v12)
+  v15 = strlen(uTF8String2);
+  if (!uTF8String)
   {
     goto LABEL_14;
   }
@@ -778,38 +778,38 @@ LABEL_14:
 LABEL_7:
   if (v14 >= 0xFFFF)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:387 description:{@"Invalid parameter not satisfying: %@", @"keyLen < UINT16_MAX"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:387 description:{@"Invalid parameter not satisfying: %@", @"keyLen < UINT16_MAX"}];
   }
 
   if (v15 >= 0xFFFF)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:388 description:{@"Invalid parameter not satisfying: %@", @"valLen < UINT16_MAX"}];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:388 description:{@"Invalid parameter not satisfying: %@", @"valLen < UINT16_MAX"}];
   }
 
   v27 = 0;
-  if (v11)
+  if (idCopy)
   {
-    v16 = [v11 internalEntityId];
+    internalEntityId = [idCopy internalEntityId];
   }
 
   else
   {
-    v16 = -1;
+    internalEntityId = -1;
   }
 
-  v26 = v16;
+  v26 = internalEntityId;
   LOWORD(v27) = v14;
   WORD1(v27) = v15;
   memStore = self->_memStore;
   if (memStore)
   {
     [(NSMutableData *)memStore appendBytes:&v26 length:16];
-    [(NSMutableData *)self->_memStore appendBytes:v12 length:v14];
+    [(NSMutableData *)self->_memStore appendBytes:uTF8String length:v14];
     if (v15)
     {
-      [(NSMutableData *)self->_memStore appendBytes:v13 length:v15];
+      [(NSMutableData *)self->_memStore appendBytes:uTF8String2 length:v15];
     }
   }
 
@@ -817,9 +817,9 @@ LABEL_7:
   {
     v28.iov_base = &v26;
     v28.iov_len = 16;
-    v29 = v12;
+    v29 = uTF8String;
     v30 = v14;
-    v31 = v13;
+    v31 = uTF8String2;
     v32 = v15;
     pthread_mutex_lock(&self->_lock);
     if (v15)
@@ -844,18 +844,18 @@ LABEL_24:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)valueForKey:(id)a3 found:(BOOL *)a4
+- (id)valueForKey:(id)key found:(BOOL *)found
 {
-  v7 = a3;
-  if (!v7)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:341 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheFile.m" lineNumber:341 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
-  if ([v7 length])
+  if ([keyCopy length])
   {
-    v8 = [v7 UTF8String];
+    uTF8String = [keyCopy UTF8String];
     v21 = 0;
     v22 = &v21;
     v23 = 0x5012000000;
@@ -878,13 +878,13 @@ LABEL_24:
     v16[3] = &unk_1E7EFB3E0;
     v16[4] = v18;
     v16[5] = &v21;
-    v16[6] = v8;
-    v17 = strlen(v8);
+    v16[6] = uTF8String;
+    v17 = strlen(uTF8String);
     [(SGKeyValueCacheFile *)self enumerateRowsWithBlock:v16];
     v9 = v22;
-    if (a4)
+    if (found)
     {
-      *a4 = v22[8] != 0;
+      *found = v22[8] != 0;
     }
 
     v10 = v9[8];
@@ -1023,9 +1023,9 @@ LABEL_4:
     goto LABEL_25;
   }
 
-  v10 = [(NSString *)path UTF8String];
-  v11 = [(NSString *)v4->_path UTF8String];
-  rename(v10, v11, v12);
+  uTF8String = [(NSString *)path UTF8String];
+  uTF8String2 = [(NSString *)v4->_path UTF8String];
+  rename(uTF8String, uTF8String2, v12);
   if (v13 != -1)
   {
     fd = v4->_fd;
@@ -1065,8 +1065,8 @@ LABEL_15:
   tmpDir = self->_tmpDir;
   if (tmpDir)
   {
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
-    [v16 removeItemAtPath:self->_tmpDir error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtPath:self->_tmpDir error:0];
 
     tmpDir = self->_tmpDir;
   }
@@ -1111,8 +1111,8 @@ LABEL_15:
 
   if (self->_tmpDir)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    [v4 removeItemAtPath:self->_tmpDir error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtPath:self->_tmpDir error:0];
   }
 
   v5.receiver = self;
@@ -1122,48 +1122,48 @@ LABEL_15:
 
 - (id)initInMemory
 {
-  v2 = [(SGKeyValueCacheFile *)self initBlank];
-  if (v2)
+  initBlank = [(SGKeyValueCacheFile *)self initBlank];
+  if (initBlank)
   {
     v3 = objc_opt_new();
-    v4 = v2[13];
-    v2[13] = v3;
+    v4 = initBlank[13];
+    initBlank[13] = v3;
   }
 
-  return v2;
+  return initBlank;
 }
 
-- (id)initTemporaryForOverwritingCache:(id)a3
+- (id)initTemporaryForOverwritingCache:(id)cache
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5[13])
+  cacheCopy = cache;
+  v6 = cacheCopy;
+  if (cacheCopy[13])
   {
-    v7 = [(SGKeyValueCacheFile *)self initInMemory];
-    v8 = v7;
-    if (v7)
+    initInMemory = [(SGKeyValueCacheFile *)self initInMemory];
+    v8 = initInMemory;
+    if (initInMemory)
     {
-      objc_storeStrong(v7 + 14, a3);
+      objc_storeStrong(initInMemory + 14, cache);
     }
 
-    v9 = v8;
-    v10 = v9;
+    initBlank = v8;
+    v10 = initBlank;
   }
 
-  else if (v5[11] && *(v5 + 20) > 0)
+  else if (cacheCopy[11] && *(cacheCopy + 20) > 0)
   {
     v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:? isDirectory:?];
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v30 = 0;
-    v13 = [v12 URLForDirectory:99 inDomain:1 appropriateForURL:v11 create:1 error:&v30];
+    v13 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:v11 create:1 error:&v30];
     v14 = v30;
-    v15 = [v13 path];
+    path = [v13 path];
 
-    if (v15)
+    if (path)
     {
-      v16 = [v6[11] lastPathComponent];
-      v17 = [v15 stringByAppendingPathComponent:v16];
+      lastPathComponent = [v6[11] lastPathComponent];
+      v17 = [path stringByAppendingPathComponent:lastPathComponent];
 
       v18 = open_dprotected_np([v17 UTF8String], 2562, 3, 0, 384);
       if ((v18 & 0x80000000) != 0)
@@ -1183,10 +1183,10 @@ LABEL_15:
           _os_log_error_impl(&dword_1BA729000, v23, OS_LOG_TYPE_ERROR, "Could not open temporary cache file %@: [%i] %s", buf, 0x1Cu);
         }
 
-        v24 = [MEMORY[0x1E696AC08] defaultManager];
-        [v24 removeItemAtPath:v15 error:0];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager2 removeItemAtPath:path error:0];
 
-        v9 = [(SGKeyValueCacheFile *)self initBlank];
+        initBlank = [(SGKeyValueCacheFile *)self initBlank];
         v10 = 0;
       }
 
@@ -1196,13 +1196,13 @@ LABEL_15:
         p_isa = &v19->super.isa;
         if (v19)
         {
-          objc_storeStrong(&v19->_tmpDir, v15);
+          objc_storeStrong(&v19->_tmpDir, path);
           objc_storeStrong(p_isa + 11, v17);
-          objc_storeStrong(p_isa + 14, a3);
+          objc_storeStrong(p_isa + 14, cache);
         }
 
-        v9 = p_isa;
-        v10 = v9;
+        initBlank = p_isa;
+        v10 = initBlank;
       }
     }
 
@@ -1216,7 +1216,7 @@ LABEL_15:
         _os_log_error_impl(&dword_1BA729000, v22, OS_LOG_TYPE_ERROR, "Could not create temporary directory: %@", buf, 0xCu);
       }
 
-      v9 = [(SGKeyValueCacheFile *)self initBlank];
+      initBlank = [(SGKeyValueCacheFile *)self initBlank];
       v10 = 0;
     }
   }
@@ -1231,7 +1231,7 @@ LABEL_15:
       _os_log_error_impl(&dword_1BA729000, v21, OS_LOG_TYPE_ERROR, "Could not create temporary directory for readonly target: %@", buf, 0xCu);
     }
 
-    v9 = [(SGKeyValueCacheFile *)self initBlank];
+    initBlank = [(SGKeyValueCacheFile *)self initBlank];
     v10 = 0;
   }
 
@@ -1239,11 +1239,11 @@ LABEL_15:
   return v10;
 }
 
-- (SGKeyValueCacheFile)initWithPath:(id)a3
+- (SGKeyValueCacheFile)initWithPath:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = open_dprotected_np([v5 UTF8String], 522, 3, 0, 384);
+  pathCopy = path;
+  v6 = open_dprotected_np([pathCopy UTF8String], 522, 3, 0, 384);
   if ((v6 & 0x80000000) != 0)
   {
     v11 = sgLogHandle();
@@ -1253,7 +1253,7 @@ LABEL_15:
       v15 = __error();
       v16 = strerror(*v15);
       *buf = 138412802;
-      v18 = v5;
+      v18 = pathCopy;
       v19 = 1024;
       v20 = v14;
       v21 = 2080;
@@ -1261,7 +1261,7 @@ LABEL_15:
       _os_log_error_impl(&dword_1BA729000, v11, OS_LOG_TYPE_ERROR, "Could not open cache file %@: [%i] %s", buf, 0x1Cu);
     }
 
-    v9 = [(SGKeyValueCacheFile *)self initBlank];
+    initBlank = [(SGKeyValueCacheFile *)self initBlank];
     v10 = 0;
   }
 
@@ -1271,80 +1271,80 @@ LABEL_15:
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_path, a3);
+      objc_storeStrong(&v7->_path, path);
     }
 
-    v9 = v8;
-    v10 = v9;
+    initBlank = v8;
+    v10 = initBlank;
   }
 
   v12 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (SGKeyValueCacheFile)initWithFileDescriptor:(int)a3
+- (SGKeyValueCacheFile)initWithFileDescriptor:(int)descriptor
 {
   result = [(SGKeyValueCacheFile *)self initBlank];
   if (result)
   {
-    result->_fd = a3;
+    result->_fd = descriptor;
   }
 
   return result;
 }
 
-+ (id)fullNameForEncodedContact:(id)a3
++ (id)fullNameForEncodedContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 substringFromIndex:1];
+  v5 = [contactCopy substringFromIndex:1];
   objc_autoreleasePoolPop(v4);
 
   return v5;
 }
 
-+ (id)encodedStringForFullName:(id)a3
++ (id)encodedStringForFullName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@" %@", v3];
+  nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@" %@", nameCopy];
   objc_autoreleasePoolPop(v4);
 
-  return v5;
+  return nameCopy;
 }
 
-+ (void)clearCacheAtPath:(id)a3
++ (void)clearCacheAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [a1 pathToCache];
+  pathCopy = path;
+  pathToCache = [self pathToCache];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__SGKeyValueCacheFile_clearCacheAtPath___block_invoke;
   v7[3] = &unk_1E7EFC848;
-  v8 = v4;
-  v6 = v4;
-  [v5 runWithLockAcquired:v7];
+  v8 = pathCopy;
+  v6 = pathCopy;
+  [pathToCache runWithLockAcquired:v7];
 }
 
-+ (id)keyValueCacheForPath:(id)a3
++ (id)keyValueCacheForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__1938;
   v17 = __Block_byref_object_dispose__1939;
   v18 = 0;
-  v5 = [a1 pathToCache];
+  pathToCache = [self pathToCache];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__SGKeyValueCacheFile_keyValueCacheForPath___block_invoke;
   v9[3] = &unk_1E7EFB3B8;
-  v6 = v4;
+  v6 = pathCopy;
   v10 = v6;
   v11 = &v13;
-  v12 = a1;
-  [v5 runWithLockAcquired:v9];
+  selfCopy = self;
+  [pathToCache runWithLockAcquired:v9];
   v7 = v14[5];
 
   _Block_object_dispose(&v13, 8);

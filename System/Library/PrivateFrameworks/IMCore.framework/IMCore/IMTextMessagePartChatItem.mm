@@ -2,16 +2,16 @@
 - (BOOL)canEditMessageText;
 - (BOOL)shouldDisplayRichLink;
 - (NSDate)lastEditDateForMessagePart;
-- (id)_initWithItem:(id)a3 text:(id)a4 translationSecondaryText:(id)a5 index:(int64_t)a6 messagePartRange:(_NSRange)a7 subject:(id)a8 isShowingEditHistory:(BOOL)a9 showTranslationAlternateText:(BOOL)a10;
-- (id)_initWithItem:(id)a3 text:(id)a4 translationSecondaryText:(id)a5 index:(int64_t)a6 messagePartRange:(_NSRange)a7 subject:(id)a8 shouldDisplayLink:(BOOL)a9 isShowingEditHistory:(BOOL)a10 showTranslationAlternateText:(BOOL)a11;
-- (id)_initWithItem:(id)a3 text:(id)a4 translationSecondaryText:(id)a5 index:(int64_t)a6 messagePartRange:(_NSRange)a7 subject:(id)a8 visibleAssociatedMessageChatItems:(id)a9 isShowingEditHistory:(BOOL)a10 showTranslationAlternateText:(BOOL)a11 shouldDisplayLink:(BOOL)a12;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item text:(id)text translationSecondaryText:(id)secondaryText index:(int64_t)index messagePartRange:(_NSRange)range subject:(id)subject isShowingEditHistory:(BOOL)history showTranslationAlternateText:(BOOL)self0;
+- (id)_initWithItem:(id)item text:(id)text translationSecondaryText:(id)secondaryText index:(int64_t)index messagePartRange:(_NSRange)range subject:(id)subject shouldDisplayLink:(BOOL)link isShowingEditHistory:(BOOL)self0 showTranslationAlternateText:(BOOL)self1;
+- (id)_initWithItem:(id)item text:(id)text translationSecondaryText:(id)secondaryText index:(int64_t)index messagePartRange:(_NSRange)range subject:(id)subject visibleAssociatedMessageChatItems:(id)items isShowingEditHistory:(BOOL)self0 showTranslationAlternateText:(BOOL)self1 shouldDisplayLink:(BOOL)self2;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)messageSummaryInfo;
-- (id)replyContextPreviewChatItemForReply:(id)a3 chatContext:(id)a4;
+- (id)replyContextPreviewChatItemForReply:(id)reply chatContext:(id)context;
 - (int64_t)numberOfPreviousEdits;
-- (void)_setShowTranslationAlternateText:(BOOL)a3;
-- (void)enumerateEmojiTokensWithBlock:(id)a3;
+- (void)_setShowTranslationAlternateText:(BOOL)text;
+- (void)enumerateEmojiTokensWithBlock:(id)block;
 @end
 
 @implementation IMTextMessagePartChatItem
@@ -24,19 +24,19 @@
   return v6 ^ 1;
 }
 
-- (id)replyContextPreviewChatItemForReply:(id)a3 chatContext:(id)a4
+- (id)replyContextPreviewChatItemForReply:(id)reply chatContext:(id)context
 {
-  v5 = a3;
+  replyCopy = reply;
   v6 = [IMReplyContextTextMessagePartChatItem alloc];
   v9 = objc_msgSend__item(self, v7, v8);
-  v12 = objc_msgSend_guid(v5, v10, v11);
-  v15 = objc_msgSend_isFromMe(v5, v13, v14);
+  v12 = objc_msgSend_guid(replyCopy, v10, v11);
+  v15 = objc_msgSend_isFromMe(replyCopy, v13, v14);
   v18 = objc_msgSend_text(self, v16, v17);
   v21 = objc_msgSend_index(self, v19, v20);
   v24 = objc_msgSend_messagePartRange(self, v22, v23);
   v26 = v25;
   v28 = objc_msgSend_subject(self, v25, v27);
-  v30 = objc_msgSend__initWithItem_parentItem_replyMessageGUID_replyIsFromMe_text_index_messagePartRange_subject_(v6, v29, v9, v5, v12, v15, v18, v21, v24, v26, v28);
+  v30 = objc_msgSend__initWithItem_parentItem_replyMessageGUID_replyIsFromMe_text_index_messagePartRange_subject_(v6, v29, v9, replyCopy, v12, v15, v18, v21, v24, v26, v28);
 
   return v30;
 }
@@ -116,9 +116,9 @@ LABEL_7:
   return v14;
 }
 
-- (void)enumerateEmojiTokensWithBlock:(id)a3
+- (void)enumerateEmojiTokensWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend_subject(self, v5, v6);
   v10 = objc_msgSend_string(v7, v8, v9);
 
@@ -133,7 +133,7 @@ LABEL_7:
     v28[1] = 3221225472;
     v28[2] = sub_1A82D91A8;
     v28[3] = &unk_1E78119F8;
-    v29 = v4;
+    v29 = blockCopy;
     v30 = &v31;
     objc_msgSend__enumerateEmojiTokensInRange_block_(v10, v16, 0, v15, v28);
   }
@@ -148,7 +148,7 @@ LABEL_7:
     v25[1] = 3221225472;
     v25[2] = sub_1A82D9218;
     v25[3] = &unk_1E78119F8;
-    v26 = v4;
+    v26 = blockCopy;
     v27 = &v31;
     objc_msgSend__enumerateEmojiTokensInRange_block_(v20, v24, 0, v23, v25);
   }
@@ -156,15 +156,15 @@ LABEL_7:
   _Block_object_dispose(&v31, 8);
 }
 
-- (void)_setShowTranslationAlternateText:(BOOL)a3
+- (void)_setShowTranslationAlternateText:(BOOL)text
 {
-  if (self->_showTranslationAlternateText != a3)
+  if (self->_showTranslationAlternateText != text)
   {
-    self->_showTranslationAlternateText = a3;
+    self->_showTranslationAlternateText = text;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = objc_alloc(objc_opt_class());
   v6 = objc_msgSend__item(self, v4, v5);
@@ -184,46 +184,46 @@ LABEL_7:
   return shouldDisplayLink;
 }
 
-- (id)_initWithItem:(id)a3 text:(id)a4 translationSecondaryText:(id)a5 index:(int64_t)a6 messagePartRange:(_NSRange)a7 subject:(id)a8 shouldDisplayLink:(BOOL)a9 isShowingEditHistory:(BOOL)a10 showTranslationAlternateText:(BOOL)a11
+- (id)_initWithItem:(id)item text:(id)text translationSecondaryText:(id)secondaryText index:(int64_t)index messagePartRange:(_NSRange)range subject:(id)subject shouldDisplayLink:(BOOL)link isShowingEditHistory:(BOOL)self0 showTranslationAlternateText:(BOOL)self1
 {
-  v15 = __PAIR16__(a11, a10);
-  isShowingEditHistory_showTranslationAlternateText = objc_msgSend__initWithItem_text_translationSecondaryText_index_messagePartRange_subject_isShowingEditHistory_showTranslationAlternateText_(self, a2, a3, a4, a5, a6, a7.location, a7.length, a8, v15);
+  v15 = __PAIR16__(alternateText, history);
+  isShowingEditHistory_showTranslationAlternateText = objc_msgSend__initWithItem_text_translationSecondaryText_index_messagePartRange_subject_isShowingEditHistory_showTranslationAlternateText_(self, a2, item, text, secondaryText, index, range.location, range.length, subject, v15);
   v13 = isShowingEditHistory_showTranslationAlternateText;
   if (isShowingEditHistory_showTranslationAlternateText)
   {
-    objc_msgSend_setShouldDisplayRichLink_(isShowingEditHistory_showTranslationAlternateText, v12, a9);
+    objc_msgSend_setShouldDisplayRichLink_(isShowingEditHistory_showTranslationAlternateText, v12, link);
   }
 
   return v13;
 }
 
-- (id)_initWithItem:(id)a3 text:(id)a4 translationSecondaryText:(id)a5 index:(int64_t)a6 messagePartRange:(_NSRange)a7 subject:(id)a8 isShowingEditHistory:(BOOL)a9 showTranslationAlternateText:(BOOL)a10
+- (id)_initWithItem:(id)item text:(id)text translationSecondaryText:(id)secondaryText index:(int64_t)index messagePartRange:(_NSRange)range subject:(id)subject isShowingEditHistory:(BOOL)history showTranslationAlternateText:(BOOL)self0
 {
   BYTE2(v11) = 1;
-  LOWORD(v11) = __PAIR16__(a10, a9);
-  return objc_msgSend__initWithItem_text_translationSecondaryText_index_messagePartRange_subject_visibleAssociatedMessageChatItems_isShowingEditHistory_showTranslationAlternateText_shouldDisplayLink_(self, a2, a3, a4, a5, a6, a7.location, a7.length, a8, 0, v11);
+  LOWORD(v11) = __PAIR16__(alternateText, history);
+  return objc_msgSend__initWithItem_text_translationSecondaryText_index_messagePartRange_subject_visibleAssociatedMessageChatItems_isShowingEditHistory_showTranslationAlternateText_shouldDisplayLink_(self, a2, item, text, secondaryText, index, range.location, range.length, subject, 0, v11);
 }
 
-- (id)_initWithItem:(id)a3 text:(id)a4 translationSecondaryText:(id)a5 index:(int64_t)a6 messagePartRange:(_NSRange)a7 subject:(id)a8 visibleAssociatedMessageChatItems:(id)a9 isShowingEditHistory:(BOOL)a10 showTranslationAlternateText:(BOOL)a11 shouldDisplayLink:(BOOL)a12
+- (id)_initWithItem:(id)item text:(id)text translationSecondaryText:(id)secondaryText index:(int64_t)index messagePartRange:(_NSRange)range subject:(id)subject visibleAssociatedMessageChatItems:(id)items isShowingEditHistory:(BOOL)self0 showTranslationAlternateText:(BOOL)self1 shouldDisplayLink:(BOOL)self2
 {
-  length = a7.length;
-  location = a7.location;
-  v19 = a8;
+  length = range.length;
+  location = range.location;
+  subjectCopy = subject;
   v27.receiver = self;
   v27.super_class = IMTextMessagePartChatItem;
-  v22 = [(IMMessagePartChatItem *)&v27 _initWithItem:a3 text:a4 translationSecondaryText:a5 index:a6 messagePartRange:location visibleAssociatedMessageChatItems:length, a9];
-  if (v22)
+  items = [(IMMessagePartChatItem *)&v27 _initWithItem:item text:text translationSecondaryText:secondaryText index:index messagePartRange:location visibleAssociatedMessageChatItems:length, items];
+  if (items)
   {
-    v23 = objc_msgSend_copy(v19, v20, v21);
-    v24 = v22[24];
-    v22[24] = v23;
+    v23 = objc_msgSend_copy(subjectCopy, v20, v21);
+    v24 = items[24];
+    items[24] = v23;
 
-    *(v22 + 184) = a10;
-    *(v22 + 185) = a11;
-    objc_msgSend_setShouldDisplayRichLink_(v22, v25, a12);
+    *(items + 184) = history;
+    *(items + 185) = alternateText;
+    objc_msgSend_setShouldDisplayRichLink_(items, v25, link);
   }
 
-  return v22;
+  return items;
 }
 
 - (int64_t)numberOfPreviousEdits

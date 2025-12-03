@@ -1,12 +1,12 @@
 @interface EFMutableByteSet
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addBytesInRange:(_NSRange)a3;
-- (void)removeBytesInRange:(_NSRange)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addBytesInRange:(_NSRange)range;
+- (void)removeBytesInRange:(_NSRange)range;
 @end
 
 @implementation EFMutableByteSet
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(EFByteSet);
   if (result)
@@ -19,16 +19,16 @@
   return result;
 }
 
-- (void)addBytesInRange:(_NSRange)a3
+- (void)addBytesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a3.location + a3.length;
-  if (a3.location + a3.length >= 0x101)
+  length = range.length;
+  location = range.location;
+  v6 = range.location + range.length;
+  if (range.location + range.length >= 0x101)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = NSStringFromRange(a3);
+    v9 = NSStringFromRange(range);
     [v7 raise:v8 format:{@"range extends beyond {0..255}: (NSRange) %@", v9}];
   }
 
@@ -56,16 +56,16 @@
   }
 }
 
-- (void)removeBytesInRange:(_NSRange)a3
+- (void)removeBytesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a3.location + a3.length;
-  if (a3.location + a3.length >= 0x101)
+  length = range.length;
+  location = range.location;
+  v6 = range.location + range.length;
+  if (range.location + range.length >= 0x101)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = NSStringFromRange(a3);
+    v9 = NSStringFromRange(range);
     [v7 raise:v8 format:{@"range extends beyond {0..255}: (NSRange) %@", v9}];
   }
 

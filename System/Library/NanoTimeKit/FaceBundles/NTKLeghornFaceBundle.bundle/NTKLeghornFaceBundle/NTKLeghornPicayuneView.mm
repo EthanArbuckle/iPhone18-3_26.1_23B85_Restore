@@ -1,21 +1,21 @@
 @interface NTKLeghornPicayuneView
-+ (CGRect)_bezelViewRectForDevice:(id)a3;
-+ (CGSize)_bezelViewSizeForDevice:(id)a3;
-+ (double)_bezelViewScaleForDevice:(id)a3;
-+ (double)_miniClockScaleForDevice:(id)a3;
-- (NTKLeghornPicayuneView)initWithDevice:(id)a3 clockTimer:(id)a4;
++ (CGRect)_bezelViewRectForDevice:(id)device;
++ (CGSize)_bezelViewSizeForDevice:(id)device;
++ (double)_bezelViewScaleForDevice:(id)device;
++ (double)_miniClockScaleForDevice:(id)device;
+- (NTKLeghornPicayuneView)initWithDevice:(id)device clockTimer:(id)timer;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setOverrideDate:(id)date;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation NTKLeghornPicayuneView
 
-+ (double)_miniClockScaleForDevice:(id)a3
++ (double)_miniClockScaleForDevice:(id)device
 {
-  v4 = objc_msgSend_sizeClass(a3, a2, v3);
+  v4 = objc_msgSend_sizeClass(device, a2, v3);
   result = 0.6325;
   if (v4 != 9)
   {
@@ -25,22 +25,22 @@
   return result;
 }
 
-+ (double)_bezelViewScaleForDevice:(id)a3
++ (double)_bezelViewScaleForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_opt_class();
-  objc_msgSend__miniClockScaleForDevice_(v4, v5, v6, v3);
+  objc_msgSend__miniClockScaleForDevice_(v4, v5, v6, deviceCopy);
   v8 = v7;
 
   return v8 * 1.12049113;
 }
 
-+ (CGSize)_bezelViewSizeForDevice:(id)a3
++ (CGSize)_bezelViewSizeForDevice:(id)device
 {
-  v4 = a3;
-  objc_msgSend_screenBounds(v4, v5, v6);
-  objc_msgSend_screenScale(v4, v7, v8);
-  objc_msgSend__bezelViewScaleForDevice_(a1, v9, v10, v4);
+  deviceCopy = device;
+  objc_msgSend_screenBounds(deviceCopy, v5, v6);
+  objc_msgSend_screenScale(deviceCopy, v7, v8);
+  objc_msgSend__bezelViewScaleForDevice_(self, v9, v10, deviceCopy);
 
   UICeilToScale();
   v12 = v11;
@@ -52,9 +52,9 @@
   return result;
 }
 
-+ (CGRect)_bezelViewRectForDevice:(id)a3
++ (CGRect)_bezelViewRectForDevice:(id)device
 {
-  objc_msgSend__bezelViewSizeForDevice_(a1, a2, v3, a3);
+  objc_msgSend__bezelViewSizeForDevice_(self, a2, v3, device);
   v5 = v4;
   v7 = v6;
   v8 = 0.0;
@@ -66,20 +66,20 @@
   return result;
 }
 
-- (NTKLeghornPicayuneView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (NTKLeghornPicayuneView)initWithDevice:(id)device clockTimer:(id)timer
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  timerCopy = timer;
   v29.receiver = self;
   v29.super_class = NTKLeghornPicayuneView;
-  v9 = [(CLKUITimeView *)&v29 initWithDevice:v7 clockTimer:v8];
+  v9 = [(CLKUITimeView *)&v29 initWithDevice:deviceCopy clockTimer:timerCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_clockTimer, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_clockTimer, timer);
     v11 = objc_opt_class();
-    objc_msgSend__bezelViewRectForDevice_(v11, v12, v13, v7);
+    objc_msgSend__bezelViewRectForDevice_(v11, v12, v13, deviceCopy);
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -139,13 +139,13 @@
   objc_msgSend_setCenter_(self->_digitalTimeView, v53, v54);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v107.receiver = self;
   v107.super_class = NTKLeghornPicayuneView;
-  [(CLKUITimeView *)&v107 setConfiguration:v4];
-  v7 = objc_msgSend_timeStyle(v4, v5, v6);
+  [(CLKUITimeView *)&v107 setConfiguration:configurationCopy];
+  v7 = objc_msgSend_timeStyle(configurationCopy, v5, v6);
   if (v7)
   {
     v10 = v7;
@@ -171,7 +171,7 @@
         self->_digitalTimeView = 0;
       }
 
-      v24 = objc_msgSend_palette(v4, v8, v9);
+      v24 = objc_msgSend_palette(configurationCopy, v8, v9);
       objc_msgSend_setPalette_(self->_analogTimeView, v25, v26, v24);
     }
 
@@ -205,7 +205,7 @@
       v39 = v38;
       device = self->_device;
       clockTimer = self->_clockTimer;
-      v43 = objc_msgSend_digitalLayoutStyle(v4, v42, v32);
+      v43 = objc_msgSend_digitalLayoutStyle(configurationCopy, v42, v32);
       v45 = objc_msgSend_initWithFrame_forDevice_clockTimer_layout_(v29, v44, v33, device, clockTimer, v43, v35, v37, v39);
       v46 = self->_digitalTimeView;
       self->_digitalTimeView = v45;
@@ -217,18 +217,18 @@
       objc_msgSend_addSubview_(self, v54, v55, self->_digitalTimeView);
     }
 
-    v56 = objc_msgSend_digitalLayoutStyle(v4, v8, v9);
+    v56 = objc_msgSend_digitalLayoutStyle(configurationCopy, v8, v9);
     objc_msgSend_setLayoutStyle_(self->_digitalTimeView, v57, v58, v56);
-    v61 = objc_msgSend_palette(v4, v59, v60);
+    v61 = objc_msgSend_palette(configurationCopy, v59, v60);
     v64 = objc_msgSend_timeMinutesColor(v61, v62, v63);
     objc_msgSend_setMinutesColor_(self->_digitalTimeView, v65, v66, v64);
 
-    v24 = objc_msgSend_palette(v4, v67, v68);
+    v24 = objc_msgSend_palette(configurationCopy, v67, v68);
     v71 = objc_msgSend_timeSecondsColor(v24, v69, v70);
     objc_msgSend_setSecondsColor_(self->_digitalTimeView, v72, v73, v71);
   }
 
-  v76 = objc_msgSend_palette(v4, v74, v75);
+  v76 = objc_msgSend_palette(configurationCopy, v74, v75);
   objc_msgSend_setColorPalette_(self->_bezelView, v77, v78, v76);
 
   v79 = objc_opt_class();
@@ -249,23 +249,23 @@
   v97 = self->_analogTimeView;
   v105 = v104;
   objc_msgSend_setTransform_(v97, v98, v104.tx, &v105);
-  v101 = objc_msgSend_aodVibrancyEnabled(v4, v99, v100);
+  v101 = objc_msgSend_aodVibrancyEnabled(configurationCopy, v99, v100);
   objc_msgSend_setLiveSecondsInTritium_(self->_bezelView, v102, v103, v101);
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v15.receiver = self;
   v15.super_class = NTKLeghornPicayuneView;
   [(CLKUITimeView *)&v15 setState:?];
-  if (a3 == 1)
+  if (state == 1)
   {
     objc_msgSend__ensureDataSourceActive_(self, v5, v6, 0);
     objc_msgSend_setFrozen_(self->_analogTimeView, v11, v12, 1);
     objc_msgSend_setFrozen_(self->_digitalTimeView, v13, v14, 1);
   }
 
-  else if (a3)
+  else if (state)
   {
     objc_msgSend__ensureDataSourceActive_(self, v5, v6, 0);
   }
@@ -278,14 +278,14 @@
   }
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
   v7.receiver = self;
   v7.super_class = NTKLeghornPicayuneView;
-  v4 = a3;
-  [(CLKUITimeView *)&v7 setOverrideDate:v4];
-  objc_msgSend_setOverrideDate_duration_(self->_digitalTimeView, v5, 0.0, v4, v7.receiver, v7.super_class);
-  objc_msgSend_setOverrideDate_duration_(self->_analogTimeView, v6, 0.0, v4);
+  dateCopy = date;
+  [(CLKUITimeView *)&v7 setOverrideDate:dateCopy];
+  objc_msgSend_setOverrideDate_duration_(self->_digitalTimeView, v5, 0.0, dateCopy, v7.receiver, v7.super_class);
+  objc_msgSend_setOverrideDate_duration_(self->_analogTimeView, v6, 0.0, dateCopy);
 }
 
 @end

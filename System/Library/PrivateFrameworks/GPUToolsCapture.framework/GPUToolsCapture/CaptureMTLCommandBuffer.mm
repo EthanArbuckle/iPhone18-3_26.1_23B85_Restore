@@ -1,70 +1,70 @@
 @interface CaptureMTLCommandBuffer
 - (BOOL)commitAndWaitUntilSubmitted;
-- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)a3;
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLCommandBuffer)initWithBaseObject:(id)a3 captureCommandQueue:(id)a4 funcRef:(GTTraceFuncRef)a5;
+- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)deadline;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLCommandBuffer)initWithBaseObject:(id)object captureCommandQueue:(id)queue funcRef:(GTTraceFuncRef)ref;
 - (NSString)description;
 - (id)accelerationStructureCommandEncoder;
-- (id)accelerationStructureCommandEncoderWithDescriptor:(id)a3;
+- (id)accelerationStructureCommandEncoderWithDescriptor:(id)descriptor;
 - (id)blitCommandEncoder;
-- (id)blitCommandEncoderWithDescriptor:(id)a3;
+- (id)blitCommandEncoderWithDescriptor:(id)descriptor;
 - (id)computeCommandEncoder;
-- (id)computeCommandEncoderWithDescriptor:(id)a3;
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3;
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor;
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type;
 - (id)debugCommandEncoder;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3;
-- (id)renderCommandEncoderWithDescriptor:(id)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor;
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor;
 - (id)resourceStateCommandEncoder;
-- (id)resourceStateCommandEncoderWithDescriptor:(id)a3;
-- (id)sampledComputeCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4;
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
+- (id)resourceStateCommandEncoderWithDescriptor:(id)descriptor;
+- (id)sampledComputeCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)type programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
 - (unint64_t)accelerationStructureCommandEncoderPreamble;
 - (unint64_t)streamReference;
-- (void)__waitUntilCompletedAsync:(id)a3;
-- (void)__waitUntilScheduledAsync:(id)a3;
+- (void)__waitUntilCompletedAsync:(id)async;
+- (void)__waitUntilScheduledAsync:(id)async;
 - (void)_encodeDownloadPoint;
-- (void)_preCommitWithIndex:(unint64_t)a3;
-- (void)addCompletedHandler:(id)a3;
-- (void)addPurgedHeap:(id)a3;
-- (void)addPurgedResource:(id)a3;
-- (void)addRequestsToDownloadQueue:(id)a3 withIndex:(unint64_t)a4;
-- (void)addScheduledHandler:(id)a3;
+- (void)_preCommitWithIndex:(unint64_t)index;
+- (void)addCompletedHandler:(id)handler;
+- (void)addPurgedHeap:(id)heap;
+- (void)addPurgedResource:(id)resource;
+- (void)addRequestsToDownloadQueue:(id)queue withIndex:(unint64_t)index;
+- (void)addScheduledHandler:(id)handler;
 - (void)commit;
 - (void)commitAndHold;
-- (void)commitWithDeadline:(unint64_t)a3;
-- (void)configWithCommandBufferDescriptor:(id)a3;
+- (void)commitWithDeadline:(unint64_t)deadline;
+- (void)configWithCommandBufferDescriptor:(id)descriptor;
 - (void)dealloc;
-- (void)dropResourceGroups:(const void *)a3 count:(unint64_t)a4;
-- (void)encodeCacheHintFinalize:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5;
-- (void)encodeCacheHintTag:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5;
-- (void)encodeConditionalAbortEvent:(id)a3;
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 value:(unint64_t)a5 forIndex:(unint64_t)a6;
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 values:(const unint64_t *)a5 indices:(const unint64_t *)a6 count:(unint64_t)a7;
-- (void)encodeDashboardTagForResourceGroup:(id)a3;
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4;
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4 agentMask:(unint64_t)a5;
-- (void)encodeSignalEventScheduled:(id)a3 value:(unint64_t)a4;
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4;
+- (void)dropResourceGroups:(const void *)groups count:(unint64_t)count;
+- (void)encodeCacheHintFinalize:(unint64_t)finalize resourceGroups:(const void *)groups count:(unint64_t)count;
+- (void)encodeCacheHintTag:(unint64_t)tag resourceGroups:(const void *)groups count:(unint64_t)count;
+- (void)encodeConditionalAbortEvent:(id)event;
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard value:(unint64_t)value forIndex:(unint64_t)index;
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard values:(const unint64_t *)values indices:(const unint64_t *)indices count:(unint64_t)count;
+- (void)encodeDashboardTagForResourceGroup:(id)group;
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value;
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value agentMask:(unint64_t)mask;
+- (void)encodeSignalEventScheduled:(id)scheduled value:(unint64_t)value;
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value;
 - (void)enqueue;
 - (void)popDebugGroup;
-- (void)presentDrawable:(id)a3;
-- (void)presentDrawable:(id)a3 afterMinimumDuration:(double)a4;
-- (void)presentDrawable:(id)a3 atTime:(double)a4;
-- (void)presentDrawable:(id)a3 options:(id)a4;
-- (void)pushDebugGroup:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setPrivateData:(id)a3;
-- (void)setPrivateDataOffset:(unint64_t)a3;
-- (void)setPrivateLoggingBuffer:(id)a3;
-- (void)setResourceGroups:(const void *)a3 count:(unint64_t)a4;
+- (void)presentDrawable:(id)drawable;
+- (void)presentDrawable:(id)drawable afterMinimumDuration:(double)duration;
+- (void)presentDrawable:(id)drawable atTime:(double)time;
+- (void)presentDrawable:(id)drawable options:(id)options;
+- (void)pushDebugGroup:(id)group;
+- (void)setLabel:(id)label;
+- (void)setPrivateData:(id)data;
+- (void)setPrivateDataOffset:(unint64_t)offset;
+- (void)setPrivateLoggingBuffer:(id)buffer;
+- (void)setResourceGroups:(const void *)groups count:(unint64_t)count;
 - (void)touch;
-- (void)trackPresent:(id)a3;
-- (void)unionRetainSet:(id)a3;
-- (void)useResidencySet:(id)a3;
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4;
+- (void)trackPresent:(id)present;
+- (void)unionRetainSet:(id)set;
+- (void)useResidencySet:(id)set;
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count;
 - (void)waitUntilCompleted;
 - (void)waitUntilScheduled;
 @end
@@ -98,10 +98,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -116,21 +116,21 @@
   *(v14 + 15) |= 8u;
 }
 
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    for (i = 0; i != a4; ++i)
+    for (i = 0; i != count; ++i)
     {
-      v8 = a3[i];
+      v8 = sets[i];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        ResidencySetTakeSnapshotInternal(a3[i], 0);
+        ResidencySetTakeSnapshotInternal(sets[i], 0);
       }
     }
 
-    RetainArray(self->_retainedObjects, a3, a4);
+    RetainArray(self->_retainedObjects, sets, count);
   }
 
   else
@@ -143,25 +143,25 @@
   traceStream = self->_traceStream;
   v10 = GTTraceContext_pushEncoderWithStream(self->_traceContext, &v29);
   baseObject = self->_baseObject;
-  v12 = 8 * a4;
+  v12 = 8 * count;
   __chkstk_darwin(v10, v13);
-  bzero(&v29 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v29 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v14 = a3;
+    setsCopy = sets;
     v15 = (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v16 = a4;
+    countCopy = count;
     do
     {
-      v17 = *v14++;
+      v17 = *setsCopy++;
       *v15++ = [v17 baseObject];
-      --v16;
+      --countCopy;
     }
 
-    while (v16);
+    while (countCopy);
   }
 
-  [(MTLCommandBufferSPI *)baseObject useResidencySets:&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4];
+  [(MTLCommandBufferSPI *)baseObject useResidencySets:&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0) count:count];
   v18 = v30;
   *(v30 + 8) = -15253;
   v19 = BYTE9(v31);
@@ -181,10 +181,10 @@
   }
 
   *(v18 + 13) = v19;
-  v23 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -192,11 +192,11 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v23, v24);
-  bzero(&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  v26 = StreamArray(&v29, (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, a4);
+  __chkstk_darwin(traceStream, v24);
+  bzero(&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  v26 = StreamArray(&v29, (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0)), sets, count);
   *v20 = var0;
-  *(v20 + 1) = a4;
+  *(v20 + 1) = count;
   v20[16] = v26;
   *(v20 + 17) = 0;
   *(v20 + 5) = 0;
@@ -206,22 +206,22 @@
   *(v30 + 15) |= 8u;
 }
 
-- (void)useResidencySet:(id)a3
+- (void)useResidencySet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    ResidencySetTakeSnapshotInternal(v4, 0);
+    ResidencySetTakeSnapshotInternal(setCopy, 0);
   }
 
-  [v4 touch];
-  if (v4)
+  [setCopy touch];
+  if (setCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:setCopy];
     }
   }
 
@@ -231,8 +231,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLCommandBufferSPI *)baseObject useResidencySet:v8];
+  baseObject = [setCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject useResidencySet:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15254;
@@ -253,10 +253,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -264,10 +264,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [setCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -283,34 +283,34 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setResourceGroups:(const void *)a3 count:(unint64_t)a4
+- (void)setResourceGroups:(const void *)groups count:(unint64_t)count
 {
-  RetainArray(self->_retainedObjects, a3, a4);
+  RetainArray(self->_retainedObjects, groups, count);
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceStream = self->_traceStream;
   v8 = GTTraceContext_pushEncoderWithStream(self->_traceContext, &v27);
   baseObject = self->_baseObject;
-  v10 = 8 * a4;
+  v10 = 8 * count;
   __chkstk_darwin(v8, v11);
-  bzero(&v27 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v27 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v12 = a3;
+    groupsCopy = groups;
     v13 = (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v14 = a4;
+    countCopy = count;
     do
     {
-      v15 = *v12++;
+      v15 = *groupsCopy++;
       *v13++ = [v15 baseObject];
-      --v14;
+      --countCopy;
     }
 
-    while (v14);
+    while (countCopy);
   }
 
-  [(MTLCommandBufferSPI *)baseObject setResourceGroups:&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4];
+  [(MTLCommandBufferSPI *)baseObject setResourceGroups:&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0) count:count];
   v16 = v28;
   *(v28 + 8) = -15898;
   v17 = BYTE9(v29);
@@ -330,10 +330,10 @@
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -341,11 +341,11 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v21, v22);
-  bzero(&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  v24 = StreamArray(&v27, (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, a4);
+  __chkstk_darwin(traceStream, v22);
+  bzero(&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  v24 = StreamArray(&v27, (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0)), groups, count);
   *v18 = var0;
-  *(v18 + 1) = a4;
+  *(v18 + 1) = count;
   v18[16] = v24;
   *(v18 + 17) = 0;
   *(v18 + 5) = 0;
@@ -355,11 +355,11 @@
   *(v28 + 15) |= 8u;
 }
 
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   baseObject = self->_baseObject;
-  v9 = unwrapMTLRenderPassDescriptor_(a3, self->_retainedObjects);
-  v10 = [(MTLCommandBufferSPI *)baseObject sampledRenderCommandEncoderWithDescriptor:v9 programInfoBuffer:a4 capacity:a5];
+  v9 = unwrapMTLRenderPassDescriptor_(descriptor, self->_retainedObjects);
+  v10 = [(MTLCommandBufferSPI *)baseObject sampledRenderCommandEncoderWithDescriptor:v9 programInfoBuffer:buffer capacity:capacity];
 
   if (v10)
   {
@@ -374,9 +374,9 @@
   return v11;
 }
 
-- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4
+- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
-  v5 = [(MTLCommandBufferSPI *)self->_baseObject sampledComputeCommandEncoderWithProgramInfoBuffer:a3 capacity:a4];
+  v5 = [(MTLCommandBufferSPI *)self->_baseObject sampledComputeCommandEncoderWithProgramInfoBuffer:buffer capacity:capacity];
   if (v5)
   {
     v6 = [[CaptureMTLComputeCommandEncoder alloc] initWithBaseObject:v5 captureCommandBuffer:self];
@@ -390,9 +390,9 @@
   return v6;
 }
 
-- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)type programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
-  v6 = [(MTLCommandBufferSPI *)self->_baseObject sampledComputeCommandEncoderWithDispatchType:a3 programInfoBuffer:a4 capacity:a5];
+  v6 = [(MTLCommandBufferSPI *)self->_baseObject sampledComputeCommandEncoderWithDispatchType:type programInfoBuffer:buffer capacity:capacity];
   if (v6)
   {
     v7 = [[CaptureMTLComputeCommandEncoder alloc] initWithBaseObject:v6 captureCommandBuffer:self];
@@ -406,9 +406,9 @@
   return v7;
 }
 
-- (id)sampledComputeCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
-  v8 = a3;
+  descriptorCopy = descriptor;
   v38 = 0u;
   v39 = 0u;
   v37 = 0u;
@@ -426,9 +426,9 @@
   *(&v39 + 11) = 0;
   HIBYTE(v39) = 0;
   baseObject = self->_baseObject;
-  v15 = unwrapMTLComputePassDescriptor_(v8, self->_retainedObjects);
-  v36 = a4;
-  v16 = [(MTLCommandBufferSPI *)baseObject sampledComputeCommandEncoderWithDescriptor:v15 programInfoBuffer:a4 capacity:a5];
+  v15 = unwrapMTLComputePassDescriptor_(descriptorCopy, self->_retainedObjects);
+  bufferCopy = buffer;
+  v16 = [(MTLCommandBufferSPI *)baseObject sampledComputeCommandEncoderWithDescriptor:v15 programInfoBuffer:buffer capacity:capacity];
 
   if (v16)
   {
@@ -460,10 +460,10 @@
   }
 
   *(v18 + 13) = v19;
-  v23 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -471,10 +471,10 @@
     var0 = 0;
   }
 
-  v25 = [(CaptureMTLComputeCommandEncoder *)v17 traceStream];
-  if (v25)
+  traceStream2 = [(CaptureMTLComputeCommandEncoder *)v17 traceStream];
+  if (traceStream2)
   {
-    v26 = v25->var0;
+    v26 = traceStream2->var0;
   }
 
   else
@@ -482,10 +482,10 @@
     v26 = 0;
   }
 
-  v27 = SaveMTLComputePassDescriptor(&v37, v8);
+  v27 = SaveMTLComputePassDescriptor(&v37, descriptorCopy);
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v28 = GTTraceEncoder_storeBlob(&v37, v36, a5);
+    v28 = GTTraceEncoder_storeBlob(&v37, bufferCopy, capacity);
   }
 
   else
@@ -495,7 +495,7 @@
 
   *v20 = var0;
   *(v20 + 1) = v26;
-  *(v20 + 2) = a5;
+  *(v20 + 2) = capacity;
   v20[24] = v27;
   v20[25] = v28;
   *(v20 + 26) = 0;
@@ -518,9 +518,9 @@
   return v17;
 }
 
-- (id)resourceStateCommandEncoderWithDescriptor:(id)a3
+- (id)resourceStateCommandEncoderWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
@@ -538,7 +538,7 @@
   *(&v33 + 11) = 0;
   HIBYTE(v33) = 0;
   baseObject = self->_baseObject;
-  v11 = unwrapMTLResourceStatePassDescriptor_(v4, self->_retainedObjects);
+  v11 = unwrapMTLResourceStatePassDescriptor_(descriptorCopy, self->_retainedObjects);
   v12 = [(MTLCommandBufferSPI *)baseObject resourceStateCommandEncoderWithDescriptor:v11];
 
   if (v12)
@@ -571,10 +571,10 @@
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -582,10 +582,10 @@
     var0 = 0;
   }
 
-  v21 = [(CaptureMTLResourceStateCommandEncoder *)v13 traceStream];
-  if (v21)
+  traceStream2 = [(CaptureMTLResourceStateCommandEncoder *)v13 traceStream];
+  if (traceStream2)
   {
-    v22 = v21->var0;
+    v22 = traceStream2->var0;
   }
 
   else
@@ -593,7 +593,7 @@
     v22 = 0;
   }
 
-  v23 = SaveMTLResourceStatePassDescriptor(&v31, v4);
+  v23 = SaveMTLResourceStatePassDescriptor(&v31, descriptorCopy);
   *v16 = var0;
   *(v16 + 1) = v22;
   v16[16] = v23;
@@ -635,10 +635,10 @@
   *(&v28 + 9) = 16400;
   *(&v28 + 11) = 0;
   HIBYTE(v28) = 0;
-  v8 = [(MTLCommandBufferSPI *)self->_baseObject resourceStateCommandEncoder];
-  if (v8)
+  resourceStateCommandEncoder = [(MTLCommandBufferSPI *)self->_baseObject resourceStateCommandEncoder];
+  if (resourceStateCommandEncoder)
   {
-    v9 = [[CaptureMTLResourceStateCommandEncoder alloc] initWithBaseObject:v8 captureCommandBuffer:self];
+    v9 = [[CaptureMTLResourceStateCommandEncoder alloc] initWithBaseObject:resourceStateCommandEncoder captureCommandBuffer:self];
   }
 
   else
@@ -666,10 +666,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -677,10 +677,10 @@
     var0 = 0;
   }
 
-  v17 = [(CaptureMTLResourceStateCommandEncoder *)v9 traceStream];
-  if (v17)
+  traceStream2 = [(CaptureMTLResourceStateCommandEncoder *)v9 traceStream];
+  if (traceStream2)
   {
-    v18 = v17->var0;
+    v18 = traceStream2->var0;
   }
 
   else
@@ -708,9 +708,9 @@
   return v9;
 }
 
-- (id)renderCommandEncoderWithDescriptor:(id)a3
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
@@ -728,7 +728,7 @@
   *(&v33 + 11) = 0;
   HIBYTE(v33) = 0;
   baseObject = self->_baseObject;
-  v11 = unwrapMTLRenderPassDescriptor_(v4, self->_retainedObjects);
+  v11 = unwrapMTLRenderPassDescriptor_(descriptorCopy, self->_retainedObjects);
   v12 = [(MTLCommandBufferSPI *)baseObject renderCommandEncoderWithDescriptor:v11];
 
   if (v12)
@@ -761,10 +761,10 @@
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -772,10 +772,10 @@
     var0 = 0;
   }
 
-  v21 = [(CaptureMTLRenderCommandEncoder *)v13 traceStream];
-  if (v21)
+  traceStream2 = [(CaptureMTLRenderCommandEncoder *)v13 traceStream];
+  if (traceStream2)
   {
-    v22 = v21->var0;
+    v22 = traceStream2->var0;
   }
 
   else
@@ -783,7 +783,7 @@
     v22 = 0;
   }
 
-  v23 = SaveMTLRenderPassDescriptor(&v31, v4);
+  v23 = SaveMTLRenderPassDescriptor(&v31, descriptorCopy);
   *v16 = var0;
   *(v16 + 1) = v22;
   v16[16] = v23;
@@ -807,15 +807,15 @@
   return v13;
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLCommandBufferSPI *)self->_baseObject pushDebugGroup:v4];
+  [(MTLCommandBufferSPI *)self->_baseObject pushDebugGroup:groupCopy];
   v6 = v19;
   *(v19 + 8) = -16065;
   v7 = BYTE9(v20);
@@ -835,10 +835,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -846,16 +846,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [groupCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [groupCopy UTF8String];
+    v15 = strlen([groupCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -864,26 +864,26 @@
   *(v19 + 15) |= 8u;
 }
 
-- (void)presentDrawable:(id)a3 options:(id)a4
+- (void)presentDrawable:(id)drawable options:(id)options
 {
-  v11 = a3;
-  v6 = a4;
+  drawableCopy = drawable;
+  optionsCopy = options;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLCommandBuffer_presentDrawable_options", "Present SPI", 0, 0);
-  [v11 touch];
-  v7 = v11;
-  if (v11)
+  [drawableCopy touch];
+  v7 = drawableCopy;
+  if (drawableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v11];
-      v7 = v11;
+      [(NSMutableSet *)retainedObjects addObject:drawableCopy];
+      v7 = drawableCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v10 = [v7 baseObject];
-  [(MTLCommandBufferSPI *)baseObject presentDrawable:v10 options:v6];
+  baseObject = [v7 baseObject];
+  [(MTLCommandBufferSPI *)baseObject presentDrawable:baseObject options:optionsCopy];
 }
 
 - (void)popDebugGroup
@@ -913,10 +913,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -931,9 +931,9 @@
   *(v14 + 15) |= 8u;
 }
 
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
@@ -951,7 +951,7 @@
   *(&v33 + 11) = 0;
   HIBYTE(v33) = 0;
   baseObject = self->_baseObject;
-  v11 = unwrapMTLRenderPassDescriptor_(v4, self->_retainedObjects);
+  v11 = unwrapMTLRenderPassDescriptor_(descriptorCopy, self->_retainedObjects);
   v12 = [(MTLCommandBufferSPI *)baseObject parallelRenderCommandEncoderWithDescriptor:v11];
 
   if (v12)
@@ -984,10 +984,10 @@
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -995,10 +995,10 @@
     var0 = 0;
   }
 
-  v21 = [(CaptureMTLParallelRenderCommandEncoder *)v13 traceStream];
-  if (v21)
+  traceStream2 = [(CaptureMTLParallelRenderCommandEncoder *)v13 traceStream];
+  if (traceStream2)
   {
-    v22 = v21->var0;
+    v22 = traceStream2->var0;
   }
 
   else
@@ -1006,7 +1006,7 @@
     v22 = 0;
   }
 
-  v23 = SaveMTLRenderPassDescriptor(&v31, v4);
+  v23 = SaveMTLRenderPassDescriptor(&v31, descriptorCopy);
   *v16 = var0;
   *(v16 + 1) = v22;
   v16[16] = v23;
@@ -1030,16 +1030,16 @@
   return v13;
 }
 
-- (void)encodeSignalEventScheduled:(id)a3 value:(unint64_t)a4
+- (void)encodeSignalEventScheduled:(id)scheduled value:(unint64_t)value
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  scheduledCopy = scheduled;
+  [scheduledCopy touch];
+  if (scheduledCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:scheduledCopy];
     }
   }
 
@@ -1049,8 +1049,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLCommandBufferSPI *)baseObject encodeSignalEventScheduled:v10 value:a4];
+  baseObject = [scheduledCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject encodeSignalEventScheduled:baseObject value:value];
 
   v11 = v23;
   *(v23 + 8) = -15217;
@@ -1071,10 +1071,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1082,10 +1082,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [scheduledCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -1095,23 +1095,23 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = value;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  eventCopy = event;
+  [eventCopy touch];
+  if (eventCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:eventCopy];
     }
   }
 
@@ -1121,8 +1121,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLCommandBufferSPI *)baseObject encodeSignalEvent:v10 value:a4];
+  baseObject = [eventCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject encodeSignalEvent:baseObject value:value];
 
   v11 = v23;
   *(v23 + 8) = -15990;
@@ -1143,10 +1143,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1154,10 +1154,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [eventCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -1167,23 +1167,23 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = value;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)encodeDashboardTagForResourceGroup:(id)a3
+- (void)encodeDashboardTagForResourceGroup:(id)group
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  groupCopy = group;
+  [groupCopy touch];
+  if (groupCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:groupCopy];
     }
   }
 
@@ -1193,8 +1193,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLCommandBufferSPI *)baseObject encodeDashboardTagForResourceGroup:v8];
+  baseObject = [groupCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject encodeDashboardTagForResourceGroup:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15500;
@@ -1215,10 +1215,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1226,10 +1226,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [groupCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -1245,16 +1245,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 values:(const unint64_t *)a5 indices:(const unint64_t *)a6 count:(unint64_t)a7
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard values:(const unint64_t *)values indices:(const unint64_t *)indices count:(unint64_t)count
 {
-  v12 = a3;
-  [v12 touch];
-  if (v12)
+  groupCopy = group;
+  [groupCopy touch];
+  if (groupCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v12];
+      [(NSMutableSet *)retainedObjects addObject:groupCopy];
     }
   }
 
@@ -1264,8 +1264,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v30);
   baseObject = self->_baseObject;
-  v16 = [v12 baseObject];
-  [(MTLCommandBufferSPI *)baseObject encodeDashboardFinalizeForResourceGroup:v16 dashboard:a4 values:a5 indices:a6 count:a7];
+  baseObject = [groupCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject encodeDashboardFinalizeForResourceGroup:baseObject dashboard:dashboard values:values indices:indices count:count];
 
   v17 = v31;
   *(v31 + 8) = -15410;
@@ -1286,10 +1286,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1297,10 +1297,10 @@
     var0 = 0;
   }
 
-  v24 = [v12 traceStream];
-  if (v24)
+  traceStream2 = [groupCopy traceStream];
+  if (traceStream2)
   {
-    v25 = *v24;
+    v25 = *traceStream2;
   }
 
   else
@@ -1308,12 +1308,12 @@
     v25 = 0;
   }
 
-  v26 = GTTraceEncoder_storeBytes(&v30, a5, 8 * a7);
-  v27 = GTTraceEncoder_storeBytes(&v30, a6, 8 * a7);
+  v26 = GTTraceEncoder_storeBytes(&v30, values, 8 * count);
+  v27 = GTTraceEncoder_storeBytes(&v30, indices, 8 * count);
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a4;
-  *(v19 + 3) = a7;
+  *(v19 + 2) = dashboard;
+  *(v19 + 3) = count;
   v19[32] = v26;
   v19[33] = v27;
   *(v19 + 34) = 0;
@@ -1324,16 +1324,16 @@
   *(v31 + 15) |= 8u;
 }
 
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 value:(unint64_t)a5 forIndex:(unint64_t)a6
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard value:(unint64_t)value forIndex:(unint64_t)index
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  groupCopy = group;
+  [groupCopy touch];
+  if (groupCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:groupCopy];
     }
   }
 
@@ -1343,8 +1343,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v26);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  [(MTLCommandBufferSPI *)baseObject encodeDashboardFinalizeForResourceGroup:v14 dashboard:a4 value:a5 forIndex:a6];
+  baseObject = [groupCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject encodeDashboardFinalizeForResourceGroup:baseObject dashboard:dashboard value:value forIndex:index];
 
   v15 = v27;
   *(v27 + 8) = -15501;
@@ -1365,10 +1365,10 @@
   }
 
   *(v15 + 13) = v16;
-  v20 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1376,10 +1376,10 @@
     var0 = 0;
   }
 
-  v22 = [v10 traceStream];
-  if (v22)
+  traceStream2 = [groupCopy traceStream];
+  if (traceStream2)
   {
-    v23 = *v22;
+    v23 = *traceStream2;
   }
 
   else
@@ -1389,116 +1389,116 @@
 
   *v17 = var0;
   *(v17 + 1) = v23;
-  *(v17 + 2) = a4;
-  *(v17 + 3) = a5;
-  *(v17 + 4) = a6;
+  *(v17 + 2) = dashboard;
+  *(v17 + 3) = value;
+  *(v17 + 4) = index;
   s();
   *v24 = v25;
   *(v24 + 8) = BYTE8(v28);
   *(v27 + 15) |= 8u;
 }
 
-- (void)encodeConditionalAbortEvent:(id)a3
+- (void)encodeConditionalAbortEvent:(id)event
 {
-  v8 = a3;
+  eventCopy = event;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLCommandBuffer_encodeConditionalAbortEvent", "Conditional abort", 0, 0);
-  [v8 touch];
-  v4 = v8;
-  if (v8)
+  [eventCopy touch];
+  v4 = eventCopy;
+  if (eventCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
-      v4 = v8;
+      [(NSMutableSet *)retainedObjects addObject:eventCopy];
+      v4 = eventCopy;
     }
   }
 
   baseObject = self->_baseObject;
-  v7 = [v4 baseObject];
-  [(MTLCommandBufferSPI *)baseObject encodeConditionalAbortEvent:v7];
+  baseObject = [v4 baseObject];
+  [(MTLCommandBufferSPI *)baseObject encodeConditionalAbortEvent:baseObject];
 }
 
-- (void)encodeCacheHintTag:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5
+- (void)encodeCacheHintTag:(unint64_t)tag resourceGroups:(const void *)groups count:(unint64_t)count
 {
-  v6 = a4;
-  RetainArray(self->_retainedObjects, a4, a5);
+  groupsCopy = groups;
+  RetainArray(self->_retainedObjects, groups, count);
   baseObject = self->_baseObject;
-  __chkstk_darwin(v10, 8 * a5);
+  __chkstk_darwin(v10, 8 * count);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v12, v11);
-  if (a5)
+  if (count)
   {
     v13 = v12;
-    v14 = a5;
+    countCopy = count;
     do
     {
-      v15 = *v6++;
+      v15 = *groupsCopy++;
       *v13 = [v15 baseObject];
       v13 += 8;
-      --v14;
+      --countCopy;
     }
 
-    while (v14);
+    while (countCopy);
   }
 
-  [(MTLCommandBufferSPI *)baseObject encodeCacheHintTag:a3 resourceGroups:v12 count:a5];
+  [(MTLCommandBufferSPI *)baseObject encodeCacheHintTag:tag resourceGroups:v12 count:count];
 }
 
-- (void)encodeCacheHintFinalize:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5
+- (void)encodeCacheHintFinalize:(unint64_t)finalize resourceGroups:(const void *)groups count:(unint64_t)count
 {
-  v6 = a4;
-  RetainArray(self->_retainedObjects, a4, a5);
+  groupsCopy = groups;
+  RetainArray(self->_retainedObjects, groups, count);
   baseObject = self->_baseObject;
-  __chkstk_darwin(v10, 8 * a5);
+  __chkstk_darwin(v10, 8 * count);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v12, v11);
-  if (a5)
+  if (count)
   {
     v13 = v12;
-    v14 = a5;
+    countCopy = count;
     do
     {
-      v15 = *v6++;
+      v15 = *groupsCopy++;
       *v13 = [v15 baseObject];
       v13 += 8;
-      --v14;
+      --countCopy;
     }
 
-    while (v14);
+    while (countCopy);
   }
 
-  [(MTLCommandBufferSPI *)baseObject encodeCacheHintFinalize:a3 resourceGroups:v12 count:a5];
+  [(MTLCommandBufferSPI *)baseObject encodeCacheHintFinalize:finalize resourceGroups:v12 count:count];
 }
 
-- (void)dropResourceGroups:(const void *)a3 count:(unint64_t)a4
+- (void)dropResourceGroups:(const void *)groups count:(unint64_t)count
 {
-  RetainArray(self->_retainedObjects, a3, a4);
+  RetainArray(self->_retainedObjects, groups, count);
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceStream = self->_traceStream;
   v8 = GTTraceContext_pushEncoderWithStream(self->_traceContext, &v27);
   baseObject = self->_baseObject;
-  v10 = 8 * a4;
+  v10 = 8 * count;
   __chkstk_darwin(v8, v11);
-  bzero(&v27 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v27 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v12 = a3;
+    groupsCopy = groups;
     v13 = (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v14 = a4;
+    countCopy = count;
     do
     {
-      v15 = *v12++;
+      v15 = *groupsCopy++;
       *v13++ = [v15 baseObject];
-      --v14;
+      --countCopy;
     }
 
-    while (v14);
+    while (countCopy);
   }
 
-  [(MTLCommandBufferSPI *)baseObject dropResourceGroups:&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4];
+  [(MTLCommandBufferSPI *)baseObject dropResourceGroups:&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0) count:count];
   v16 = v28;
   *(v28 + 8) = -15897;
   v17 = BYTE9(v29);
@@ -1518,10 +1518,10 @@
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1529,11 +1529,11 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v21, v22);
-  bzero(&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  v24 = StreamArray(&v27, (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, a4);
+  __chkstk_darwin(traceStream, v22);
+  bzero(&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  v24 = StreamArray(&v27, (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0)), groups, count);
   *v18 = var0;
-  *(v18 + 1) = a4;
+  *(v18 + 1) = count;
   v18[16] = v24;
   *(v18 + 17) = 0;
   *(v18 + 5) = 0;
@@ -1543,17 +1543,17 @@
   *(v28 + 15) |= 8u;
 }
 
-- (void)configWithCommandBufferDescriptor:(id)a3
+- (void)configWithCommandBufferDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLCommandBuffer_configWithCommandBufferDescriptor", "Shader logging", 0, 0);
   baseObject = self->_baseObject;
-  v6 = unwrapMTLCommandBufferDescriptor(v4);
+  v6 = unwrapMTLCommandBufferDescriptor(descriptorCopy);
 
   [(MTLCommandBufferSPI *)baseObject configWithCommandBufferDescriptor:v6];
 }
 
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type
 {
   v29 = 0u;
   v30 = 0u;
@@ -1602,10 +1602,10 @@
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1613,10 +1613,10 @@
     var0 = 0;
   }
 
-  v19 = [(CaptureMTLComputeCommandEncoder *)v11 traceStream];
-  if (v19)
+  traceStream2 = [(CaptureMTLComputeCommandEncoder *)v11 traceStream];
+  if (traceStream2)
   {
-    v20 = v19->var0;
+    v20 = traceStream2->var0;
   }
 
   else
@@ -1626,7 +1626,7 @@
 
   *v14 = var0;
   *(v14 + 1) = v20;
-  *(v14 + 2) = a3;
+  *(v14 + 2) = type;
   traceStream = self->_traceStream;
   *(v29 + 15) |= 8u;
   PushFunc(traceStream);
@@ -1645,9 +1645,9 @@
   return v11;
 }
 
-- (id)computeCommandEncoderWithDescriptor:(id)a3
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
@@ -1665,7 +1665,7 @@
   *(&v33 + 11) = 0;
   HIBYTE(v33) = 0;
   baseObject = self->_baseObject;
-  v11 = unwrapMTLComputePassDescriptor_(v4, self->_retainedObjects);
+  v11 = unwrapMTLComputePassDescriptor_(descriptorCopy, self->_retainedObjects);
   v12 = [(MTLCommandBufferSPI *)baseObject computeCommandEncoderWithDescriptor:v11];
 
   if (v12)
@@ -1698,10 +1698,10 @@
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1709,10 +1709,10 @@
     var0 = 0;
   }
 
-  v21 = [(CaptureMTLComputeCommandEncoder *)v13 traceStream];
-  if (v21)
+  traceStream2 = [(CaptureMTLComputeCommandEncoder *)v13 traceStream];
+  if (traceStream2)
   {
-    v22 = v21->var0;
+    v22 = traceStream2->var0;
   }
 
   else
@@ -1720,7 +1720,7 @@
     v22 = 0;
   }
 
-  v23 = SaveMTLComputePassDescriptor(&v31, v4);
+  v23 = SaveMTLComputePassDescriptor(&v31, descriptorCopy);
   *v16 = var0;
   *(v16 + 1) = v22;
   v16[16] = v23;
@@ -1762,10 +1762,10 @@
   *(&v28 + 9) = 16400;
   *(&v28 + 11) = 0;
   HIBYTE(v28) = 0;
-  v8 = [(MTLCommandBufferSPI *)self->_baseObject computeCommandEncoder];
-  if (v8)
+  computeCommandEncoder = [(MTLCommandBufferSPI *)self->_baseObject computeCommandEncoder];
+  if (computeCommandEncoder)
   {
-    v9 = [[CaptureMTLComputeCommandEncoder alloc] initWithBaseObject:v8 captureCommandBuffer:self];
+    v9 = [[CaptureMTLComputeCommandEncoder alloc] initWithBaseObject:computeCommandEncoder captureCommandBuffer:self];
   }
 
   else
@@ -1793,10 +1793,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1804,10 +1804,10 @@
     var0 = 0;
   }
 
-  v17 = [(CaptureMTLComputeCommandEncoder *)v9 traceStream];
-  if (v17)
+  traceStream2 = [(CaptureMTLComputeCommandEncoder *)v9 traceStream];
+  if (traceStream2)
   {
-    v18 = v17->var0;
+    v18 = traceStream2->var0;
   }
 
   else
@@ -1835,9 +1835,9 @@
   return v9;
 }
 
-- (id)blitCommandEncoderWithDescriptor:(id)a3
+- (id)blitCommandEncoderWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
@@ -1855,7 +1855,7 @@
   *(&v33 + 11) = 0;
   HIBYTE(v33) = 0;
   baseObject = self->_baseObject;
-  v11 = unwrapMTLBlitPassDescriptor_(v4, self->_retainedObjects);
+  v11 = unwrapMTLBlitPassDescriptor_(descriptorCopy, self->_retainedObjects);
   v12 = [(MTLCommandBufferSPI *)baseObject blitCommandEncoderWithDescriptor:v11];
 
   if (v12)
@@ -1888,10 +1888,10 @@
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1899,10 +1899,10 @@
     var0 = 0;
   }
 
-  v21 = [(CaptureMTLBlitCommandEncoder *)v13 traceStream];
-  if (v21)
+  traceStream2 = [(CaptureMTLBlitCommandEncoder *)v13 traceStream];
+  if (traceStream2)
   {
-    v22 = v21->var0;
+    v22 = traceStream2->var0;
   }
 
   else
@@ -1910,7 +1910,7 @@
     v22 = 0;
   }
 
-  v23 = SaveMTLBlitPassDescriptor(&v31, v4);
+  v23 = SaveMTLBlitPassDescriptor(&v31, descriptorCopy);
   *v16 = var0;
   *(v16 + 1) = v22;
   v16[16] = v23;
@@ -1952,10 +1952,10 @@
   *(&v28 + 9) = 16400;
   *(&v28 + 11) = 0;
   HIBYTE(v28) = 0;
-  v8 = [(MTLCommandBufferSPI *)self->_baseObject blitCommandEncoder];
-  if (v8)
+  blitCommandEncoder = [(MTLCommandBufferSPI *)self->_baseObject blitCommandEncoder];
+  if (blitCommandEncoder)
   {
-    v9 = [[CaptureMTLBlitCommandEncoder alloc] initWithBaseObject:v8 captureCommandBuffer:self];
+    v9 = [[CaptureMTLBlitCommandEncoder alloc] initWithBaseObject:blitCommandEncoder captureCommandBuffer:self];
   }
 
   else
@@ -1983,10 +1983,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1994,10 +1994,10 @@
     var0 = 0;
   }
 
-  v17 = [(CaptureMTLBlitCommandEncoder *)v9 traceStream];
-  if (v17)
+  traceStream2 = [(CaptureMTLBlitCommandEncoder *)v9 traceStream];
+  if (traceStream2)
   {
-    v18 = v17->var0;
+    v18 = traceStream2->var0;
   }
 
   else
@@ -2025,16 +2025,16 @@
   return v9;
 }
 
-- (void)addPurgedResource:(id)a3
+- (void)addPurgedResource:(id)resource
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  resourceCopy = resource;
+  [resourceCopy touch];
+  if (resourceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:resourceCopy];
     }
   }
 
@@ -2044,8 +2044,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLCommandBufferSPI *)baseObject addPurgedResource:v8];
+  baseObject = [resourceCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject addPurgedResource:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15967;
@@ -2066,10 +2066,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2077,10 +2077,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [resourceCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -2096,16 +2096,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)addPurgedHeap:(id)a3
+- (void)addPurgedHeap:(id)heap
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  heapCopy = heap;
+  [heapCopy touch];
+  if (heapCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:heapCopy];
     }
   }
 
@@ -2115,8 +2115,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLCommandBufferSPI *)baseObject addPurgedHeap:v8];
+  baseObject = [heapCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject addPurgedHeap:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15966;
@@ -2137,10 +2137,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2148,10 +2148,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [heapCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -2167,18 +2167,18 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)__waitUntilScheduledAsync:(id)a3
+- (void)__waitUntilScheduledAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __53__CaptureMTLCommandBuffer___waitUntilScheduledAsync___block_invoke;
   v8[3] = &unk_2F1AC8;
-  v9 = self;
-  v10 = v9;
-  v11 = v4;
-  v5 = v4;
-  v6 = v9;
+  selfCopy = self;
+  v10 = selfCopy;
+  v11 = asyncCopy;
+  v5 = asyncCopy;
+  v6 = selfCopy;
   v7 = objc_retainBlock(v8);
   [v6[2] __waitUntilScheduledAsync:v7];
 }
@@ -2232,18 +2232,18 @@ void __53__CaptureMTLCommandBuffer___waitUntilScheduledAsync___block_invoke(uint
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)__waitUntilCompletedAsync:(id)a3
+- (void)__waitUntilCompletedAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke;
   v8[3] = &unk_2F1AC8;
-  v9 = self;
-  v10 = v9;
-  v11 = v4;
-  v5 = v4;
-  v6 = v9;
+  selfCopy = self;
+  v10 = selfCopy;
+  v11 = asyncCopy;
+  v5 = asyncCopy;
+  v6 = selfCopy;
   v7 = objc_retainBlock(v8);
   [v6[2] __waitUntilCompletedAsync:v7];
 }
@@ -2297,37 +2297,37 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)setPrivateLoggingBuffer:(id)a3
+- (void)setPrivateLoggingBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLCommandBuffer_setPrivateLoggingBuffer", "Command Buffer logging", 0, 0);
-  [(MTLCommandBufferSPI *)self->_baseObject setPrivateLoggingBuffer:v4];
+  [(MTLCommandBufferSPI *)self->_baseObject setPrivateLoggingBuffer:bufferCopy];
 }
 
-- (void)setPrivateDataOffset:(unint64_t)a3
+- (void)setPrivateDataOffset:(unint64_t)offset
 {
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLCommandBuffer_setPrivateDataOffset", "Command Buffer Private Data", 0, 0);
   baseObject = self->_baseObject;
 
-  [(MTLCommandBufferSPI *)baseObject setPrivateDataOffset:a3];
+  [(MTLCommandBufferSPI *)baseObject setPrivateDataOffset:offset];
 }
 
-- (void)setPrivateData:(id)a3
+- (void)setPrivateData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLCommandBuffer_setPrivateData", "Command Buffer Private Data", 0, 0);
-  [(MTLCommandBufferSPI *)self->_baseObject setPrivateData:v4];
+  [(MTLCommandBufferSPI *)self->_baseObject setPrivateData:dataCopy];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLCommandBufferSPI *)self->_baseObject setLabel:v4];
+  [(MTLCommandBufferSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -16365;
   v7 = BYTE9(v20);
@@ -2347,10 +2347,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2358,16 +2358,16 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -2376,13 +2376,13 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLCommandBufferSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLCommandBufferSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -2437,27 +2437,27 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v3 = self;
-  if ((dword_31F7C8 & 0x2000000) != 0 || (v5.receiver = self, v5.super_class = CaptureMTLCommandBuffer, ![(CaptureMTLCommandBuffer *)&v5 respondsToSelector:a3]))
+  selfCopy = self;
+  if ((dword_31F7C8 & 0x2000000) != 0 || (v5.receiver = self, v5.super_class = CaptureMTLCommandBuffer, ![(CaptureMTLCommandBuffer *)&v5 respondsToSelector:selector]))
   {
-    v3 = v3->_baseObject;
+    selfCopy = selfCopy->_baseObject;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4 agentMask:(unint64_t)a5
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value agentMask:(unint64_t)mask
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  eventCopy = event;
+  [eventCopy touch];
+  if (eventCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:eventCopy];
     }
   }
 
@@ -2467,18 +2467,18 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v25);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
+  baseObject = [eventCopy baseObject];
   if (*(boundaryTrackerInstance + 20))
   {
-    v13 = a5 | 2;
+    maskCopy = mask | 2;
   }
 
   else
   {
-    v13 = a5;
+    maskCopy = mask;
   }
 
-  [(MTLCommandBufferSPI *)baseObject encodeSignalEvent:v12 value:a4 agentMask:v13];
+  [(MTLCommandBufferSPI *)baseObject encodeSignalEvent:baseObject value:value agentMask:maskCopy];
 
   v14 = v26;
   *(v26 + 8) = -15285;
@@ -2499,10 +2499,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2510,10 +2510,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
     var0 = 0;
   }
 
-  v21 = [v8 traceStream];
-  if (v21)
+  traceStream2 = [eventCopy traceStream];
+  if (traceStream2)
   {
-    v22 = *v21;
+    v22 = *traceStream2;
   }
 
   else
@@ -2523,18 +2523,18 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
 
   *v16 = var0;
   *(v16 + 1) = v22;
-  *(v16 + 2) = a4;
-  *(v16 + 3) = a5;
+  *(v16 + 2) = value;
+  *(v16 + 3) = mask;
   s();
   *v23 = v24;
   *(v23 + 8) = BYTE8(v27);
   *(v26 + 15) |= 8u;
 }
 
-- (id)accelerationStructureCommandEncoderWithDescriptor:(id)a3
+- (id)accelerationStructureCommandEncoderWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(CaptureMTLCommandBuffer *)self accelerationStructureCommandEncoderPreamble];
+  descriptorCopy = descriptor;
+  accelerationStructureCommandEncoderPreamble = [(CaptureMTLCommandBuffer *)self accelerationStructureCommandEncoderPreamble];
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
@@ -2552,12 +2552,12 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   *(&v34 + 11) = 0;
   HIBYTE(v34) = 0;
   baseObject = self->_baseObject;
-  v12 = unwrapMTLAccelerationStructurePassDescriptor_(v4, self->_retainedObjects);
+  v12 = unwrapMTLAccelerationStructurePassDescriptor_(descriptorCopy, self->_retainedObjects);
   v13 = [(MTLCommandBufferSPI *)baseObject accelerationStructureCommandEncoderWithDescriptor:v12];
 
   if (v13)
   {
-    v14 = [[CaptureMTLAccelerationStructureCommandEncoder alloc] initWithBaseObject:v13 captureCommandBuffer:self copyEventValue:v5];
+    v14 = [[CaptureMTLAccelerationStructureCommandEncoder alloc] initWithBaseObject:v13 captureCommandBuffer:self copyEventValue:accelerationStructureCommandEncoderPreamble];
   }
 
   else
@@ -2585,10 +2585,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v15 + 13) = v16;
-  v20 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2596,10 +2596,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
     var0 = 0;
   }
 
-  v22 = [(CaptureMTLAccelerationStructureCommandEncoder *)v14 traceStream];
-  if (v22)
+  traceStream2 = [(CaptureMTLAccelerationStructureCommandEncoder *)v14 traceStream];
+  if (traceStream2)
   {
-    v23 = v22->var0;
+    v23 = traceStream2->var0;
   }
 
   else
@@ -2607,7 +2607,7 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
     v23 = 0;
   }
 
-  v24 = SaveMTLAccelerationStructurePassDescriptor(&v32, v4);
+  v24 = SaveMTLAccelerationStructurePassDescriptor(&v32, descriptorCopy);
   *v17 = var0;
   *(v17 + 1) = v23;
   v17[16] = v24;
@@ -2633,7 +2633,7 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
 
 - (id)accelerationStructureCommandEncoder
 {
-  v3 = [(CaptureMTLCommandBuffer *)self accelerationStructureCommandEncoderPreamble];
+  accelerationStructureCommandEncoderPreamble = [(CaptureMTLCommandBuffer *)self accelerationStructureCommandEncoderPreamble];
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
@@ -2650,10 +2650,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   *(&v29 + 9) = 16400;
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
-  v9 = [(MTLCommandBufferSPI *)self->_baseObject accelerationStructureCommandEncoder];
-  if (v9)
+  accelerationStructureCommandEncoder = [(MTLCommandBufferSPI *)self->_baseObject accelerationStructureCommandEncoder];
+  if (accelerationStructureCommandEncoder)
   {
-    v10 = [[CaptureMTLAccelerationStructureCommandEncoder alloc] initWithBaseObject:v9 captureCommandBuffer:self copyEventValue:v3];
+    v10 = [[CaptureMTLAccelerationStructureCommandEncoder alloc] initWithBaseObject:accelerationStructureCommandEncoder captureCommandBuffer:self copyEventValue:accelerationStructureCommandEncoderPreamble];
   }
 
   else
@@ -2681,10 +2681,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2692,10 +2692,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
     var0 = 0;
   }
 
-  v18 = [(CaptureMTLAccelerationStructureCommandEncoder *)v10 traceStream];
-  if (v18)
+  traceStream2 = [(CaptureMTLAccelerationStructureCommandEncoder *)v10 traceStream];
+  if (traceStream2)
   {
-    v19 = v18->var0;
+    v19 = traceStream2->var0;
   }
 
   else
@@ -2727,12 +2727,12 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
 {
   if (!self->_accelerationStructureDescriptorProcessEvent)
   {
-    v3 = [(MTLCommandBufferSPI *)self->_baseObject device];
-    v4 = DEVICEOBJECT(v3);
+    device = [(MTLCommandBufferSPI *)self->_baseObject device];
+    v4 = DEVICEOBJECT(device);
 
-    v5 = [v4 newSharedEvent];
+    newSharedEvent = [v4 newSharedEvent];
     accelerationStructureDescriptorProcessEvent = self->_accelerationStructureDescriptorProcessEvent;
-    self->_accelerationStructureDescriptorProcessEvent = v5;
+    self->_accelerationStructureDescriptorProcessEvent = newSharedEvent;
 
     self->_accelerationStructureDescriptorCopyEventValue = 0;
   }
@@ -2768,10 +2768,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2789,10 +2789,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
 
 - (id)debugCommandEncoder
 {
-  v3 = [(MTLCommandBufferSPI *)self->_baseObject debugCommandEncoder];
-  if (v3)
+  debugCommandEncoder = [(MTLCommandBufferSPI *)self->_baseObject debugCommandEncoder];
+  if (debugCommandEncoder)
   {
-    v4 = [[CaptureMTLDebugCommandEncoder alloc] initWithBaseObject:v3 captureCommandBuffer:self];
+    v4 = [[CaptureMTLDebugCommandEncoder alloc] initWithBaseObject:debugCommandEncoder captureCommandBuffer:self];
   }
 
   else
@@ -2803,9 +2803,9 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   return v4;
 }
 
-- (void)addCompletedHandler:(id)a3
+- (void)addCompletedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   completedDispatchArray = self->_completedDispatchArray;
   if (!completedDispatchArray)
   {
@@ -2816,7 +2816,7 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
     completedDispatchArray = self->_completedDispatchArray;
   }
 
-  v8 = objc_retainBlock(v4);
+  v8 = objc_retainBlock(handlerCopy);
   [(NSMutableArray *)completedDispatchArray addObject:v8];
 
   v20 = 0u;
@@ -2843,10 +2843,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2855,23 +2855,23 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *v12 = var0;
-  *(v12 + 1) = v4;
+  *(v12 + 1) = handlerCopy;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (void)presentDrawable:(id)a3 afterMinimumDuration:(double)a4
+- (void)presentDrawable:(id)drawable afterMinimumDuration:(double)duration
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  drawableCopy = drawable;
+  [drawableCopy touch];
+  if (drawableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:drawableCopy];
     }
   }
 
@@ -2880,10 +2880,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   v22 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
-  [(CaptureMTLCommandBuffer *)self trackPresent:v6];
+  [(CaptureMTLCommandBuffer *)self trackPresent:drawableCopy];
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLCommandBufferSPI *)baseObject presentDrawable:v10 afterMinimumDuration:a4];
+  baseObject = [drawableCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject presentDrawable:baseObject afterMinimumDuration:duration];
 
   v11 = v23;
   *(v23 + 8) = -16133;
@@ -2904,10 +2904,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2915,10 +2915,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [drawableCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -2928,23 +2928,23 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = duration;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)presentDrawable:(id)a3 atTime:(double)a4
+- (void)presentDrawable:(id)drawable atTime:(double)time
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  drawableCopy = drawable;
+  [drawableCopy touch];
+  if (drawableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:drawableCopy];
     }
   }
 
@@ -2953,10 +2953,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   v22 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
-  [(CaptureMTLCommandBuffer *)self trackPresent:v6];
+  [(CaptureMTLCommandBuffer *)self trackPresent:drawableCopy];
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLCommandBufferSPI *)baseObject presentDrawable:v10 atTime:a4];
+  baseObject = [drawableCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject presentDrawable:baseObject atTime:time];
 
   v11 = v23;
   *(v23 + 8) = -16358;
@@ -2977,10 +2977,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2988,10 +2988,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [drawableCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -3001,23 +3001,23 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = time;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)presentDrawable:(id)a3
+- (void)presentDrawable:(id)drawable
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  drawableCopy = drawable;
+  [drawableCopy touch];
+  if (drawableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:drawableCopy];
     }
   }
 
@@ -3026,10 +3026,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   v20 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
-  [(CaptureMTLCommandBuffer *)self trackPresent:v4];
+  [(CaptureMTLCommandBuffer *)self trackPresent:drawableCopy];
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLCommandBufferSPI *)baseObject presentDrawable:v8];
+  baseObject = [drawableCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject presentDrawable:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -16359;
@@ -3050,10 +3050,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3061,10 +3061,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [drawableCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -3080,18 +3080,18 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   *(v21 + 15) |= 8u;
 }
 
-- (void)trackPresent:(id)a3
+- (void)trackPresent:(id)present
 {
-  v4 = a3;
+  presentCopy = present;
   self->_layerRef = 0;
-  v8 = v4;
-  if ([v4 conformsToProtocol:&OBJC_PROTOCOL___CAMetalDrawable])
+  v8 = presentCopy;
+  if ([presentCopy conformsToProtocol:&OBJC_PROTOCOL___CAMetalDrawable])
   {
-    v5 = [v8 layer];
-    v6 = [v5 traceStream];
-    if (v6)
+    layer = [v8 layer];
+    traceStream = [layer traceStream];
+    if (traceStream)
     {
-      v7 = *v6;
+      v7 = *traceStream;
     }
 
     else
@@ -3106,9 +3106,9 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   self->_presentDrawableUsed = 1;
 }
 
-- (void)addScheduledHandler:(id)a3
+- (void)addScheduledHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   scheduledDispatchArray = self->_scheduledDispatchArray;
   if (!scheduledDispatchArray)
   {
@@ -3119,7 +3119,7 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
     scheduledDispatchArray = self->_scheduledDispatchArray;
   }
 
-  v8 = objc_retainBlock(v4);
+  v8 = objc_retainBlock(handlerCopy);
   [(NSMutableArray *)scheduledDispatchArray addObject:v8];
 
   v20 = 0u;
@@ -3146,10 +3146,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3158,14 +3158,14 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *v12 = var0;
-  *(v12 + 1) = v4;
+  *(v12 + 1) = handlerCopy;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)a3
+- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)deadline
 {
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
@@ -3196,10 +3196,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3208,16 +3208,16 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = deadline;
   *(v8 + 2) = 1;
   v13 = v21;
   *(v21 + 15) |= 8u;
   [(CaptureMTLCommandBuffer *)self _preCommitWithIndex:*v13];
-  v14 = [(MTLCommandBufferSPI *)self->_baseObject commitAndWaitUntilSubmittedWithDeadline:a3];
-  v15 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v15)
+  v14 = [(MTLCommandBufferSPI *)self->_baseObject commitAndWaitUntilSubmittedWithDeadline:deadline];
+  traceStream2 = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream2)
   {
-    v16 = v15->var0;
+    v16 = traceStream2->var0;
   }
 
   else
@@ -3226,7 +3226,7 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *v8 = v16;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = deadline;
   *(v8 + 4) = v14;
   *(v8 + 5) = 0;
   s();
@@ -3267,10 +3267,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3283,11 +3283,11 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   v11 = v19;
   *(v19 + 15) |= 8u;
   [(CaptureMTLCommandBuffer *)self _preCommitWithIndex:*v11];
-  v12 = [(MTLCommandBufferSPI *)self->_baseObject commitAndWaitUntilSubmitted];
-  v13 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v13)
+  commitAndWaitUntilSubmitted = [(MTLCommandBufferSPI *)self->_baseObject commitAndWaitUntilSubmitted];
+  traceStream2 = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream2)
   {
-    v14 = v13->var0;
+    v14 = traceStream2->var0;
   }
 
   else
@@ -3296,16 +3296,16 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *v6 = v14;
-  *(v6 + 2) = v12;
+  *(v6 + 2) = commitAndWaitUntilSubmitted;
   *(v6 + 3) = 0;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v20);
   *(v19 + 15) |= 8u;
-  return v12;
+  return commitAndWaitUntilSubmitted;
 }
 
-- (void)commitWithDeadline:(unint64_t)a3
+- (void)commitWithDeadline:(unint64_t)deadline
 {
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
@@ -3336,10 +3336,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3348,11 +3348,11 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = deadline;
   v13 = v17;
   *(v17 + 15) |= 8u;
   [(CaptureMTLCommandBuffer *)self _preCommitWithIndex:*v13];
-  [(MTLCommandBufferSPI *)self->_baseObject commitWithDeadline:a3];
+  [(MTLCommandBufferSPI *)self->_baseObject commitWithDeadline:deadline];
   s();
   *v14 = v15;
   *(v14 + 8) = BYTE8(v18);
@@ -3390,10 +3390,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3443,10 +3443,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3498,10 +3498,10 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3516,14 +3516,14 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
   *(v14 + 15) |= 8u;
 }
 
-- (void)addRequestsToDownloadQueue:(id)a3 withIndex:(unint64_t)a4
+- (void)addRequestsToDownloadQueue:(id)queue withIndex:(unint64_t)index
 {
-  v77 = a3;
+  queueCopy = queue;
   if (self->_isCapturing)
   {
     if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
     {
-      v73 = a4;
+      indexCopy = index;
       newpool = 0;
       apr_pool_create_ex(&newpool, 0, 0, 0);
       v6 = newpool;
@@ -3547,7 +3547,7 @@ void __53__CaptureMTLCommandBuffer___waitUntilCompletedAsync___block_invoke(uint
         while (v11);
       }
 
-      v82 = [(CaptureMTLCommandQueue *)self->_captureCommandQueue device];
+      device = [(CaptureMTLCommandQueue *)self->_captureCommandQueue device];
       v74 = _sharedCaptureManager;
       v94[0] = v8;
       v94[1] = v9;
@@ -3602,7 +3602,7 @@ LABEL_24:
       }
 
       v75 = 0;
-      v80 = self;
+      selfCopy = self;
 LABEL_26:
       v78 = v25 + 64;
       v76 = v25;
@@ -3610,34 +3610,34 @@ LABEL_26:
       {
         if (!v25 || (v30 = &v78[64 * (HIDWORD(v29) - v29)], (v30[15] & 8) == 0))
         {
-          v64 = [(CaptureMTLCommandBuffer *)self commandQueue];
-          v65 = [v64 traceStream];
-          ResourceTracker_processUsedResidencySets(v13, v73, v65, newpool);
+          commandQueue = [(CaptureMTLCommandBuffer *)self commandQueue];
+          traceStream = [commandQueue traceStream];
+          ResourceTracker_processUsedResidencySets(v13, indexCopy, traceStream, newpool);
 
           v66 = ResourceTracker_harvestResources(v13, newpool);
-          DownloadRequests = GTResourceHarvesterGetDownloadRequests([(NSMutableArray *)v82 harvester], var0, v66);
+          DownloadRequests = GTResourceHarvesterGetDownloadRequests([(NSMutableArray *)device harvester], var0, v66);
           v68 = GTResourceDownloaderProcessRequest(newpool, DownloadRequests);
           GTMTLCaptureState_appendDownloadRequests(v74, v68);
           v69 = v79;
-          [v79 setDownloadQueue:v77];
-          v70 = [(NSMutableArray *)v82 downloader];
-          [v70 downloadRequest:v68 atPoint:v79];
+          [v79 setDownloadQueue:queueCopy];
+          downloader = [(NSMutableArray *)device downloader];
+          [downloader downloadRequest:v68 atPoint:v79];
 
           if ((v12[1992] & 1) != 0 && self->_presentDrawableUsed)
           {
             v71 = [(NSMutableArray *)self->_downloadPoints objectAtIndexedSubscript:v75 + 1];
 
             GTMTLCaptureState_appendDownloadRequests(v74, v7);
-            [v71 setDownloadQueue:v77];
-            v72 = [(NSMutableArray *)v82 downloader];
-            [v72 downloadRequest:v7 atPoint:v71];
+            [v71 setDownloadQueue:queueCopy];
+            downloader2 = [(NSMutableArray *)device downloader];
+            [downloader2 downloadRequest:v7 atPoint:v71];
 
             v69 = v71;
           }
 
           apr_pool_destroy(newpool);
 
-          downloadPoints = v82;
+          downloadPoints = device;
           goto LABEL_62;
         }
 
@@ -3657,12 +3657,12 @@ LABEL_26:
         else
         {
           v32 = ResourceTracker_harvestResources(v13, newpool);
-          v33 = GTResourceHarvesterGetDownloadRequests([(NSMutableArray *)v82 harvester], var0, v32);
+          v33 = GTResourceHarvesterGetDownloadRequests([(NSMutableArray *)device harvester], var0, v32);
           v34 = GTResourceDownloaderProcessRequest(newpool, v33);
           GTMTLCaptureState_appendDownloadRequests(v74, v34);
-          [v79 setDownloadQueue:v77];
-          v35 = [(NSMutableArray *)v82 downloader];
-          [v35 downloadRequest:v34 atPoint:v79];
+          [v79 setDownloadQueue:queueCopy];
+          downloader3 = [(NSMutableArray *)device downloader];
+          [downloader3 downloadRequest:v34 atPoint:v79];
 
           v85 = GTResourceTrackerMakeWithDescriptor(v94);
           v36 = [(NSMutableArray *)self->_downloadPoints objectAtIndexedSubscript:++v75];
@@ -3740,8 +3740,8 @@ LABEL_46:
                     v51[48] = 1;
                     *(v51 + 49) = 0;
                     *(v51 + 13) = 0;
-                    v52 = GTResourceHarvesterGetDownloadRequests([(NSMutableArray *)v82 harvester], var0, v48);
-                    self = v80;
+                    v52 = GTResourceHarvesterGetDownloadRequests([(NSMutableArray *)device harvester], var0, v48);
+                    self = selfCopy;
                     v53 = GTResourceDownloaderProcessRequest(v87, v52);
                     apr_array_cat(v7, v53);
                     if (v7->nelts >= 1)
@@ -3816,9 +3816,9 @@ LABEL_46:
           }
 
           v21 = *(*(&v90 + 1) + 8 * i);
-          v22 = [v21 downloadValue];
-          v23 = [v21 downloadEvent];
-          [v23 setSignaledValue:v22];
+          downloadValue = [v21 downloadValue];
+          downloadEvent = [v21 downloadEvent];
+          [downloadEvent setSignaledValue:downloadValue];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v90 objects:v98 count:16];
@@ -3833,12 +3833,12 @@ LABEL_62:
   }
 }
 
-- (void)_preCommitWithIndex:(unint64_t)a3
+- (void)_preCommitWithIndex:(unint64_t)index
 {
-  v5 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v5)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v5->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3846,11 +3846,11 @@ LABEL_62:
     var0 = 0;
   }
 
-  v7 = [(CaptureMTLCommandQueue *)self->_captureCommandQueue device];
-  v8 = [v7 traceStream];
-  if (v8)
+  device = [(CaptureMTLCommandQueue *)self->_captureCommandQueue device];
+  traceStream2 = [device traceStream];
+  if (traceStream2)
   {
-    v9 = *v8;
+    v9 = *traceStream2;
   }
 
   else
@@ -3858,10 +3858,10 @@ LABEL_62:
     v9 = 0;
   }
 
-  v10 = [(CaptureMTLCommandQueue *)self->_captureCommandQueue traceStream];
-  if (v10)
+  traceStream3 = [(CaptureMTLCommandQueue *)self->_captureCommandQueue traceStream];
+  if (traceStream3)
   {
-    v11 = v10->var0;
+    v11 = traceStream3->var0;
   }
 
   else
@@ -3869,10 +3869,10 @@ LABEL_62:
     v11 = 0;
   }
 
-  v12 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v12)
+  traceStream4 = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream4)
   {
-    v13 = v12->var0;
+    v13 = traceStream4->var0;
   }
 
   else
@@ -3884,7 +3884,7 @@ LABEL_62:
 
   *&size_ptr = 0x500000008;
   *(&size_ptr + 1) = var0;
-  v79 = a3;
+  indexCopy2 = index;
   v80 = 0;
   v81 = 0;
   v82 = v9;
@@ -3896,10 +3896,10 @@ LABEL_62:
   GTCaptureBoundaryTracker_handleTrigger(&size_ptr);
   if (self->_presentDrawableUsed)
   {
-    v15 = [(CaptureMTLCommandBuffer *)self traceStream];
-    if (v15)
+    traceStream5 = [(CaptureMTLCommandBuffer *)self traceStream];
+    if (traceStream5)
     {
-      v16 = v15->var0;
+      v16 = traceStream5->var0;
     }
 
     else
@@ -3907,11 +3907,11 @@ LABEL_62:
       v16 = 0;
     }
 
-    v17 = [(CaptureMTLCommandQueue *)self->_captureCommandQueue device];
-    v18 = [v17 traceStream];
-    if (v18)
+    device2 = [(CaptureMTLCommandQueue *)self->_captureCommandQueue device];
+    traceStream6 = [device2 traceStream];
+    if (traceStream6)
     {
-      v19 = *v18;
+      v19 = *traceStream6;
     }
 
     else
@@ -3920,10 +3920,10 @@ LABEL_62:
     }
 
     layerRef = self->_layerRef;
-    v21 = [(CaptureMTLCommandQueue *)self->_captureCommandQueue traceStream];
-    if (v21)
+    traceStream7 = [(CaptureMTLCommandQueue *)self->_captureCommandQueue traceStream];
+    if (traceStream7)
     {
-      v22 = v21->var0;
+      v22 = traceStream7->var0;
     }
 
     else
@@ -3931,10 +3931,10 @@ LABEL_62:
       v22 = 0;
     }
 
-    v23 = [(CaptureMTLCommandBuffer *)self traceStream];
-    if (v23)
+    traceStream8 = [(CaptureMTLCommandBuffer *)self traceStream];
+    if (traceStream8)
     {
-      v24 = v23->var0;
+      v24 = traceStream8->var0;
     }
 
     else
@@ -3946,7 +3946,7 @@ LABEL_62:
 
     *&size_ptr = 0x300000003;
     *(&size_ptr + 1) = v16;
-    v79 = a3;
+    indexCopy2 = index;
     v80 = 0;
     v81 = 0;
     v82 = v19;
@@ -3966,33 +3966,33 @@ LABEL_62:
     self->_scheduledDispatchArray = 0;
 
     traceContext = self->_traceContext;
-    v30 = self;
+    selfCopy = self;
     v31 = self->_isCapturing;
-    baseObject = v30->_baseObject;
+    baseObject = selfCopy->_baseObject;
     v72[0] = _NSConcreteStackBlock;
     v72[1] = 3221225472;
     v72[2] = __47__CaptureMTLCommandBuffer__preCommitWithIndex___block_invoke;
     v72[3] = &unk_2F1A78;
     v73 = v27;
-    v74 = v30;
-    v75 = a3;
+    v74 = selfCopy;
+    indexCopy3 = index;
     v76 = traceContext;
     v77 = v31;
-    v33 = v30;
+    v33 = selfCopy;
     v34 = v27;
     [(MTLCommandBufferSPI *)baseObject addScheduledHandler:v72];
   }
 
   if ((dword_31F7C8 & 0x1000000) != 0)
   {
-    v35 = self;
-    v36 = v35->_baseObject;
+    selfCopy2 = self;
+    v36 = selfCopy2->_baseObject;
     v70[0] = _NSConcreteStackBlock;
     v70[1] = 3221225472;
     v70[2] = __47__CaptureMTLCommandBuffer__preCommitWithIndex___block_invoke_2;
     v70[3] = &unk_2F2578;
-    v71 = v35;
-    v37 = v35;
+    v71 = selfCopy2;
+    v37 = selfCopy2;
     [(MTLCommandBufferSPI *)v36 addCompletedHandler:v70];
   }
 
@@ -4007,19 +4007,19 @@ LABEL_62:
     retainedObjects = self->_retainedObjects;
     self->_retainedObjects = 0;
 
-    v43 = self;
-    v44 = v43->_baseObject;
+    selfCopy3 = self;
+    v44 = selfCopy3->_baseObject;
     v64[0] = _NSConcreteStackBlock;
     v64[1] = 3221225472;
     v64[2] = __47__CaptureMTLCommandBuffer__preCommitWithIndex___block_invoke_3;
     v64[3] = &unk_2F1AA0;
     v68 = v40;
-    v69 = a3;
+    indexCopy4 = index;
     v65 = v38;
     v66 = v39;
-    v67 = v43;
+    v67 = selfCopy3;
     v45 = v40;
-    v46 = v43;
+    v46 = selfCopy3;
     v47 = v39;
     v48 = v38;
     [(MTLCommandBufferSPI *)v44 addCompletedHandler:v64];
@@ -4027,28 +4027,28 @@ LABEL_62:
 
   if (self->_isCapturing && (*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v49 = [(CaptureMTLCommandBuffer *)self device];
-    v50 = [v49 dispatchGroup];
-    dispatch_group_enter(v50);
+    device3 = [(CaptureMTLCommandBuffer *)self device];
+    dispatchGroup = [device3 dispatchGroup];
+    dispatch_group_enter(dispatchGroup);
 
     atomic_fetch_add((_sharedCaptureManager + 216), 1uLL);
-    v51 = [v49 baseObject];
-    v52 = DEVICEOBJECT(v51);
+    baseObject = [device3 baseObject];
+    v52 = DEVICEOBJECT(baseObject);
 
     if (objc_opt_respondsToSelector())
     {
-      v53 = [v52 indirectArgumentBufferDecodingData];
-      v54 = v53;
-      if (v53 != &_dispatch_data_empty && v53)
+      indirectArgumentBufferDecodingData = [v52 indirectArgumentBufferDecodingData];
+      v54 = indirectArgumentBufferDecodingData;
+      if (indirectArgumentBufferDecodingData != &_dispatch_data_empty && indirectArgumentBufferDecodingData)
       {
         *&size_ptr = 0;
         buffer_ptr = 0;
-        map = dispatch_data_create_map(v53, &buffer_ptr, &size_ptr);
+        map = dispatch_data_create_map(indirectArgumentBufferDecodingData, &buffer_ptr, &size_ptr);
         v56 = buffer_ptr;
         if (buffer_ptr && size_ptr << 32)
         {
           v57 = size_ptr;
-          Bytes = GTTraceMemPool_allocateBytes(self->_traceStream->var3, a3, (size_ptr << 32) | 0xFFLL);
+          Bytes = GTTraceMemPool_allocateBytes(self->_traceStream->var3, index, (size_ptr << 32) | 0xFFLL);
           memcpy(Bytes + 16, v56, v57);
         }
       }
@@ -4059,7 +4059,7 @@ LABEL_62:
     v61[1] = 3221225472;
     v61[2] = __47__CaptureMTLCommandBuffer__preCommitWithIndex___block_invoke_4;
     v61[3] = &unk_2F2578;
-    v60 = v49;
+    v60 = device3;
     v62 = v60;
     [v59 addCompletedHandler:v61];
 
@@ -4070,7 +4070,7 @@ LABEL_62:
   }
 
   GTTelemetry_trackCommit(self);
-  [(CaptureMTLCommandQueue *)self->_captureCommandQueue commitCommandBuffer:self withIndex:a3];
+  [(CaptureMTLCommandQueue *)self->_captureCommandQueue commitCommandBuffer:self withIndex:index];
 }
 
 void __47__CaptureMTLCommandBuffer__preCommitWithIndex___block_invoke(uint64_t a1)
@@ -4240,16 +4240,16 @@ void __47__CaptureMTLCommandBuffer__preCommitWithIndex___block_invoke_4(uint64_t
   dispatch_group_leave(v1);
 }
 
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  eventCopy = event;
+  [eventCopy touch];
+  if (eventCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:eventCopy];
     }
   }
 
@@ -4260,8 +4260,8 @@ void __47__CaptureMTLCommandBuffer__preCommitWithIndex___block_invoke_4(uint64_t
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v33);
   GTMTLCaptureEventBuffer_add(self->_baseObject, *(&v34 + 1));
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLCommandBufferSPI *)baseObject encodeWaitForEvent:v10 value:a4];
+  baseObject = [eventCopy baseObject];
+  [(MTLCommandBufferSPI *)baseObject encodeWaitForEvent:baseObject value:value];
 
   if (self->_isCapturing)
   {
@@ -4274,18 +4274,18 @@ void __47__CaptureMTLCommandBuffer__preCommitWithIndex___block_invoke_4(uint64_t
     v32[1] = v32;
     v32[2] = 0x2020000000;
     v32[3] = *(&v34 + 1);
-    v11 = [(CaptureMTLCommandQueue *)self->_captureCommandQueue device];
+    device = [(CaptureMTLCommandQueue *)self->_captureCommandQueue device];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v6;
+      v12 = eventCopy;
       if (IsEventActuallyShared([v12 traceStream]))
       {
-        v13 = [v11 dispatchGroup];
-        dispatch_group_enter(v13);
+        dispatchGroup = [device dispatchGroup];
+        dispatch_group_enter(dispatchGroup);
 
-        v14 = [v12 baseObject];
-        v15 = [v11 captureEventListener];
+        baseObject2 = [v12 baseObject];
+        captureEventListener = [device captureEventListener];
         v16 = v31;
         v31[0] = _NSConcreteStackBlock;
         v31[1] = 3221225472;
@@ -4294,8 +4294,8 @@ void __47__CaptureMTLCommandBuffer__preCommitWithIndex___block_invoke_4(uint64_t
         v31[7] = v32;
         v31[4] = self;
         v31[5] = v12;
-        v31[6] = v11;
-        [v14 notifyListener:v15 atValue:a4 block:v31];
+        v31[6] = device;
+        [baseObject2 notifyListener:captureEventListener atValue:value block:v31];
 LABEL_13:
       }
     }
@@ -4311,14 +4311,14 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v17 = v6;
+      v17 = eventCopy;
       if (IsEventActuallyShared([v17 traceStream]))
       {
-        v18 = [v11 dispatchGroup];
-        dispatch_group_enter(v18);
+        dispatchGroup2 = [device dispatchGroup];
+        dispatch_group_enter(dispatchGroup2);
 
-        v14 = [v17 baseObject];
-        v15 = [v11 captureEventListener];
+        baseObject2 = [v17 baseObject];
+        captureEventListener = [device captureEventListener];
         v16 = v30;
         v30[0] = _NSConcreteStackBlock;
         v30[1] = 3221225472;
@@ -4327,8 +4327,8 @@ LABEL_15:
         v30[7] = v32;
         v30[4] = self;
         v30[5] = v17;
-        v30[6] = v11;
-        [v14 notifyListener:v15 atValue:a4 block:v30];
+        v30[6] = device;
+        [baseObject2 notifyListener:captureEventListener atValue:value block:v30];
         goto LABEL_13;
       }
     }
@@ -4356,10 +4356,10 @@ LABEL_16:
   }
 
   *(v19 + 13) = v20;
-  v24 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v24)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v24->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4367,10 +4367,10 @@ LABEL_16:
     var0 = 0;
   }
 
-  v26 = [v6 traceStream];
-  if (v26)
+  traceStream2 = [eventCopy traceStream];
+  if (traceStream2)
   {
-    v27 = *v26;
+    v27 = *traceStream2;
   }
 
   else
@@ -4380,7 +4380,7 @@ LABEL_16:
 
   *v21 = var0;
   *(v21 + 1) = v27;
-  *(v21 + 2) = a4;
+  *(v21 + 2) = value;
   s();
   *v28 = v29;
   *(v28 + 8) = BYTE8(v35);
@@ -4491,13 +4491,13 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
   dispatch_group_leave(v18);
 }
 
-- (void)unionRetainSet:(id)a3
+- (void)unionRetainSet:(id)set
 {
-  if (self->_retainedObjects != a3)
+  if (self->_retainedObjects != set)
   {
-    v5 = a3;
+    setCopy = set;
     pthread_mutex_lock(&self->_retainMutex);
-    [(NSMutableSet *)self->_retainedObjects unionSet:v5];
+    [(NSMutableSet *)self->_retainedObjects unionSet:setCopy];
 
     pthread_mutex_unlock(&self->_retainMutex);
   }
@@ -4525,9 +4525,9 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
         }
 
         v8 = *(*(&v38 + 1) + 8 * i);
-        v9 = [v8 downloadValue];
-        v10 = [v8 downloadEvent];
-        [v10 setSignaledValue:v9];
+        downloadValue = [v8 downloadValue];
+        downloadEvent = [v8 downloadEvent];
+        [downloadEvent setSignaledValue:downloadValue];
       }
 
       v5 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -4593,10 +4593,10 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
   }
 
   *(v21 + 13) = v22;
-  v26 = [(CaptureMTLCommandBuffer *)self traceStream];
-  if (v26)
+  traceStream = [(CaptureMTLCommandBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v26->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -4622,24 +4622,24 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
   [(CaptureMTLCommandBuffer *)&v30 dealloc];
 }
 
-- (CaptureMTLCommandBuffer)initWithBaseObject:(id)a3 captureCommandQueue:(id)a4 funcRef:(GTTraceFuncRef)a5
+- (CaptureMTLCommandBuffer)initWithBaseObject:(id)object captureCommandQueue:(id)queue funcRef:(GTTraceFuncRef)ref
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v10 = a3;
-  v11 = a4;
+  var1 = ref.var1;
+  var0 = ref.var0;
+  objectCopy = object;
+  queueCopy = queue;
   v57.receiver = self;
   v57.super_class = CaptureMTLCommandBuffer;
   v12 = [(CaptureMTLCommandBuffer *)&v57 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_captureCommandQueue, a4);
-    objc_storeStrong(&v13->_baseObject, a3);
-    v14 = [v11 traceContext];
-    v13->_traceContext = v14;
-    v15 = DEVICEOBJECT(v10);
-    v13->_traceStream = GTTraceContext_openStream(v14, v15, 0);
+    objc_storeStrong(&v12->_captureCommandQueue, queue);
+    objc_storeStrong(&v13->_baseObject, object);
+    traceContext = [queueCopy traceContext];
+    v13->_traceContext = traceContext;
+    v15 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v15, 0);
 
     traceStream = v13->_traceStream;
     if (traceStream)
@@ -4652,11 +4652,11 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
       v17 = 0;
     }
 
-    v18 = [v11 device];
-    v19 = [v18 traceStream];
-    if (v19)
+    device = [queueCopy device];
+    traceStream = [device traceStream];
+    if (traceStream)
     {
-      v20 = *v19;
+      v20 = *traceStream;
     }
 
     else
@@ -4664,10 +4664,10 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
       v20 = 0;
     }
 
-    v21 = [v11 traceStream];
-    if (v21)
+    traceStream2 = [queueCopy traceStream];
+    if (traceStream2)
     {
-      v22 = *v21;
+      v22 = *traceStream2;
     }
 
     else
@@ -4694,11 +4694,11 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
       v24 = *_sharedCaptureManager;
       if (*_sharedCaptureManager)
       {
-        v25 = [v11 device];
-        v26 = [v25 traceStream];
-        if (v26)
+        device2 = [queueCopy device];
+        traceStream3 = [device2 traceStream];
+        if (traceStream3)
         {
-          v27 = *v26;
+          v27 = *traceStream3;
         }
 
         else
@@ -4720,7 +4720,7 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
     }
 
     pthread_mutex_init(&v13->_retainMutex, 0);
-    if (([v10 retainedReferences] & 1) != 0 || v13->_isCapturing)
+    if (([objectCopy retainedReferences] & 1) != 0 || v13->_isCapturing)
     {
       v30 = objc_alloc_init(NSMutableSet);
       retainedObjects = v13->_retainedObjects;
@@ -4729,16 +4729,16 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
       if (v13->_isCapturing)
       {
         apr_pool_create_ex(&v13->_pool, 0, 0, 0);
-        v32 = DEVICEOBJECT(v10);
+        v32 = DEVICEOBJECT(objectCopy);
 
         v33 = [[NSMutableArray alloc] initWithCapacity:1];
         downloadPoints = v13->_downloadPoints;
         v13->_downloadPoints = v33;
 
-        v35 = [v32 device];
-        v36 = [v35 newSharedEvent];
+        device3 = [v32 device];
+        newSharedEvent = [device3 newSharedEvent];
         downloadEvent = v13->_downloadEvent;
-        v13->_downloadEvent = v36;
+        v13->_downloadEvent = newSharedEvent;
 
         v38 = DEVICEOBJECT(v13->_downloadEvent);
         v39 = DEVICEOBJECT(v13->_baseObject);
@@ -4751,7 +4751,7 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
         [v39 addCompletedHandler:&v42];
 
         [(CaptureMTLCommandBuffer *)v13 _encodeDownloadPoint:v42];
-        v10 = v32;
+        objectCopy = v32;
       }
     }
 
@@ -4771,20 +4771,20 @@ void __52__CaptureMTLCommandBuffer_encodeWaitForEvent_value___block_invoke_2(uin
   [(GTDownloadPoint *)v9 setDownloadEvent:self->_downloadEvent];
   [(NSMutableArray *)self->_downloadPoints addObject:v9];
   v4 = DEVICEOBJECT(self->_baseObject);
-  v5 = [(GTDownloadPoint *)v9 waitEvent];
-  [v4 encodeSignalEvent:v5 value:{-[GTDownloadPoint waitValue](v9, "waitValue")}];
+  waitEvent = [(GTDownloadPoint *)v9 waitEvent];
+  [v4 encodeSignalEvent:waitEvent value:{-[GTDownloadPoint waitValue](v9, "waitValue")}];
 
   v6 = objc_opt_respondsToSelector();
-  v7 = [(GTDownloadPoint *)v9 downloadEvent];
-  v8 = [(GTDownloadPoint *)v9 downloadValue];
+  downloadEvent = [(GTDownloadPoint *)v9 downloadEvent];
+  downloadValue = [(GTDownloadPoint *)v9 downloadValue];
   if (v6)
   {
-    [v4 encodeWaitForEvent:v7 value:v8 timeout:GT_ENV];
+    [v4 encodeWaitForEvent:downloadEvent value:downloadValue timeout:GT_ENV];
   }
 
   else
   {
-    [v4 encodeWaitForEvent:v7 value:v8];
+    [v4 encodeWaitForEvent:downloadEvent value:downloadValue];
   }
 }
 

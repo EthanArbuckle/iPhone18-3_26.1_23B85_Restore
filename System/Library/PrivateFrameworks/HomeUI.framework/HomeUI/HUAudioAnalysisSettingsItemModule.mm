@@ -1,44 +1,44 @@
 @interface HUAudioAnalysisSettingsItemModule
-- (HUAudioAnalysisSettingsItemModule)initWithItemUpdater:(id)a3;
-- (HUAudioAnalysisSettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)enableAudioAnalysisSetting:(BOOL)a3 forItem:(id)a4;
+- (HUAudioAnalysisSettingsItemModule)initWithItemUpdater:(id)updater;
+- (HUAudioAnalysisSettingsItemModule)initWithItemUpdater:(id)updater home:(id)home;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)enableAudioAnalysisSetting:(BOOL)setting forItem:(id)item;
 - (id)itemProviders;
-- (id)updateAudioAnalysisDetectionSettings:(BOOL)a3 forItem:(id)a4;
+- (id)updateAudioAnalysisDetectionSettings:(BOOL)settings forItem:(id)item;
 - (void)_buildItemProviders;
-- (void)mediaProfileContainer:(id)a3 didUpdateSettingKeypath:(id)a4 value:(id)a5;
+- (void)mediaProfileContainer:(id)container didUpdateSettingKeypath:(id)keypath value:(id)value;
 @end
 
 @implementation HUAudioAnalysisSettingsItemModule
 
-- (HUAudioAnalysisSettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4
+- (HUAudioAnalysisSettingsItemModule)initWithItemUpdater:(id)updater home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  updaterCopy = updater;
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HUAudioAnalysisSettingsItemModule.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAudioAnalysisSettingsItemModule.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
   }
 
   v13.receiver = self;
   v13.super_class = HUAudioAnalysisSettingsItemModule;
-  v9 = [(HFItemModule *)&v13 initWithItemUpdater:v7];
+  v9 = [(HFItemModule *)&v13 initWithItemUpdater:updaterCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a4);
+    objc_storeStrong(&v9->_home, home);
     [(HUAudioAnalysisSettingsItemModule *)v10 _buildItemProviders];
   }
 
   return v10;
 }
 
-- (HUAudioAnalysisSettingsItemModule)initWithItemUpdater:(id)a3
+- (HUAudioAnalysisSettingsItemModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_home_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUAudioAnalysisSettingsItemModule.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HUAudioAnalysisSettingsItemModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAudioAnalysisSettingsItemModule.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HUAudioAnalysisSettingsItemModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
@@ -46,31 +46,31 @@
 - (void)_buildItemProviders
 {
   v3 = objc_alloc(MEMORY[0x277D147F0]);
-  v4 = [(HUAudioAnalysisSettingsItemModule *)self home];
-  v5 = [v3 initWithHome:v4];
+  home = [(HUAudioAnalysisSettingsItemModule *)self home];
+  v5 = [v3 initWithHome:home];
   [(HUAudioAnalysisSettingsItemModule *)self setMediaAccessoryItemProvider:v5];
 
-  v6 = [(HUAudioAnalysisSettingsItemModule *)self mediaAccessoryItemProvider];
-  [v6 setFilter:&__block_literal_global_173];
+  mediaAccessoryItemProvider = [(HUAudioAnalysisSettingsItemModule *)self mediaAccessoryItemProvider];
+  [mediaAccessoryItemProvider setFilter:&__block_literal_global_173];
 
   v7 = [HUHomeAudioAnalysisDetectionSettingsItemProvider alloc];
-  v8 = [(HUAudioAnalysisSettingsItemModule *)self home];
-  v9 = [(HUHomeAudioAnalysisDetectionSettingsItemProvider *)v7 initWithHome:v8];
+  home2 = [(HUAudioAnalysisSettingsItemModule *)self home];
+  v9 = [(HUHomeAudioAnalysisDetectionSettingsItemProvider *)v7 initWithHome:home2];
   [(HUAudioAnalysisSettingsItemModule *)self setSoundsItemProvider:v9];
 
   v10 = objc_alloc(MEMORY[0x277D14C38]);
-  v11 = [(HUAudioAnalysisSettingsItemModule *)self mediaAccessoryItemProvider];
+  mediaAccessoryItemProvider2 = [(HUAudioAnalysisSettingsItemModule *)self mediaAccessoryItemProvider];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __56__HUAudioAnalysisSettingsItemModule__buildItemProviders__block_invoke_3;
   v16[3] = &unk_277DC01A0;
   v16[4] = self;
-  v12 = [v10 initWithSourceProvider:v11 transformationBlock:v16];
+  v12 = [v10 initWithSourceProvider:mediaAccessoryItemProvider2 transformationBlock:v16];
   [(HUAudioAnalysisSettingsItemModule *)self setAudioAnalysisDeviceItemProvider:v12];
 
   v13 = objc_alloc(MEMORY[0x277D142F0]);
-  v14 = [(HUAudioAnalysisSettingsItemModule *)self home];
-  v15 = [v13 initWithHome:v14];
+  home3 = [(HUAudioAnalysisSettingsItemModule *)self home];
+  v15 = [v13 initWithHome:home3];
 
   [v15 setFilter:&__block_literal_global_291];
 }
@@ -224,34 +224,34 @@ LABEL_9:
 - (id)itemProviders
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HUAudioAnalysisSettingsItemModule *)self soundsItemProvider];
-  v5 = [(HUAudioAnalysisSettingsItemModule *)self audioAnalysisDeviceItemProvider];
-  v6 = [(HUAudioAnalysisSettingsItemModule *)self accessoryItemProvider];
-  v7 = [v3 setWithObjects:{v4, v5, v6, 0}];
+  soundsItemProvider = [(HUAudioAnalysisSettingsItemModule *)self soundsItemProvider];
+  audioAnalysisDeviceItemProvider = [(HUAudioAnalysisSettingsItemModule *)self audioAnalysisDeviceItemProvider];
+  accessoryItemProvider = [(HUAudioAnalysisSettingsItemModule *)self accessoryItemProvider];
+  v7 = [v3 setWithObjects:{soundsItemProvider, audioAnalysisDeviceItemProvider, accessoryItemProvider, 0}];
 
   return v7;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUAudioAnalysisSettingsAudioAnalysisSoundsItemSectionIdentifier"];
   v7 = _HULocalizedStringWithDefaultValue(@"HUListenSettingsSoundsSection_Header", @"HUListenSettingsSoundsSection_Header", 1);
   [v6 setHeaderTitle:v7];
 
   v8 = objc_opt_new();
-  v9 = [(HUAudioAnalysisSettingsItemModule *)self soundsItemProvider];
-  v10 = [v9 items];
-  v11 = [v10 allObjects];
-  [v8 na_safeAddObjectsFromArray:v11];
+  soundsItemProvider = [(HUAudioAnalysisSettingsItemModule *)self soundsItemProvider];
+  items = [soundsItemProvider items];
+  allObjects = [items allObjects];
+  [v8 na_safeAddObjectsFromArray:allObjects];
 
   [v6 setItems:v8];
   [v5 addObject:v6];
-  v12 = [(HUAudioAnalysisSettingsItemModule *)self home];
-  v13 = [v12 audioAnalysisClassifierOptions];
+  home = [(HUAudioAnalysisSettingsItemModule *)self home];
+  audioAnalysisClassifierOptions = [home audioAnalysisClassifierOptions];
 
-  if (v13)
+  if (audioAnalysisClassifierOptions)
   {
     v14 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUAudioAnalysisSettingsAudioAnalysisDeviceItemSectionIdentifier"];
     v15 = _HULocalizedStringWithDefaultValue(@"HUListenSettingsHomePodSection_Header", @"HUListenSettingsHomePodSection_Header", 1);
@@ -261,19 +261,19 @@ LABEL_9:
     [v14 setFooterTitle:v16];
 
     v17 = objc_opt_new();
-    v18 = [(HUAudioAnalysisSettingsItemModule *)self audioAnalysisDeviceItemProvider];
-    v19 = [v18 items];
-    v20 = [v19 allObjects];
-    [v17 na_safeAddObjectsFromArray:v20];
+    audioAnalysisDeviceItemProvider = [(HUAudioAnalysisSettingsItemModule *)self audioAnalysisDeviceItemProvider];
+    items2 = [audioAnalysisDeviceItemProvider items];
+    allObjects2 = [items2 allObjects];
+    [v17 na_safeAddObjectsFromArray:allObjects2];
 
     v21 = [v17 copy];
-    v22 = [objc_opt_class() _audioAnalysisDeviceItemComparator];
-    v23 = [v21 sortedArrayUsingComparator:v22];
+    _audioAnalysisDeviceItemComparator = [objc_opt_class() _audioAnalysisDeviceItemComparator];
+    v23 = [v21 sortedArrayUsingComparator:_audioAnalysisDeviceItemComparator];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __69__HUAudioAnalysisSettingsItemModule_buildSectionsWithDisplayedItems___block_invoke;
     v26[3] = &unk_277DB85D8;
-    v27 = v4;
+    v27 = itemsCopy;
     v24 = [v23 na_filter:v26];
     [v14 setItems:v24];
 
@@ -283,13 +283,13 @@ LABEL_9:
   return v5;
 }
 
-- (id)enableAudioAnalysisSetting:(BOOL)a3 forItem:(id)a4
+- (id)enableAudioAnalysisSetting:(BOOL)setting forItem:(id)item
 {
-  v5 = [a4 sourceItem];
+  sourceItem = [item sourceItem];
   v6 = &unk_28251AE08;
-  if ([v5 conformsToProtocol:v6])
+  if ([sourceItem conformsToProtocol:v6])
   {
-    v7 = v5;
+    v7 = sourceItem;
   }
 
   else
@@ -307,16 +307,16 @@ LABEL_9:
     v12[2] = __72__HUAudioAnalysisSettingsItemModule_enableAudioAnalysisSetting_forItem___block_invoke;
     v12[3] = &unk_277DBB320;
     v13 = v8;
-    v14 = a3;
-    v10 = [v9 futureWithBlock:v12];
+    settingCopy = setting;
+    futureWithNoResult = [v9 futureWithBlock:v12];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v10;
+  return futureWithNoResult;
 }
 
 void __72__HUAudioAnalysisSettingsItemModule_enableAudioAnalysisSetting_forItem___block_invoke(uint64_t a1, void *a2)
@@ -364,44 +364,44 @@ uint64_t __71__HUAudioAnalysisSettingsItemModule__audioAnalysisDeviceItemCompara
   return v8;
 }
 
-- (void)mediaProfileContainer:(id)a3 didUpdateSettingKeypath:(id)a4 value:(id)a5
+- (void)mediaProfileContainer:(id)container didUpdateSettingKeypath:(id)keypath value:(id)value
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  keypathCopy = keypath;
+  valueCopy = value;
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v8;
+    v17 = keypathCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = valueCopy;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "Received update for setting keypath %@ value = %@", &v16, 0x16u);
   }
 
-  v11 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   v12 = MEMORY[0x277D14788];
-  v13 = [(HUAudioAnalysisSettingsItemModule *)self itemProviders];
-  v14 = [v12 requestToReloadItemProviders:v13 senderSelector:a2];
-  v15 = [v11 performItemUpdateRequest:v14];
+  itemProviders = [(HUAudioAnalysisSettingsItemModule *)self itemProviders];
+  v14 = [v12 requestToReloadItemProviders:itemProviders senderSelector:a2];
+  v15 = [itemUpdater performItemUpdateRequest:v14];
 }
 
-- (id)updateAudioAnalysisDetectionSettings:(BOOL)a3 forItem:(id)a4
+- (id)updateAudioAnalysisDetectionSettings:(BOOL)settings forItem:(id)item
 {
-  v4 = a3;
-  v7 = a4;
-  v8 = [(HUAudioAnalysisSettingsItemModule *)self home];
-  v9 = [v8 audioAnalysisClassifierOptions];
+  settingsCopy = settings;
+  itemCopy = item;
+  home = [(HUAudioAnalysisSettingsItemModule *)self home];
+  audioAnalysisClassifierOptions = [home audioAnalysisClassifierOptions];
 
-  v10 = [v7 audioDetectionType];
-  v11 = v10 | v9;
+  audioDetectionType = [itemCopy audioDetectionType];
+  v11 = audioDetectionType | audioAnalysisClassifierOptions;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __82__HUAudioAnalysisSettingsItemModule_updateAudioAnalysisDetectionSettings_forItem___block_invoke;
   v16[3] = &unk_277DBC9F8;
-  if (!v4)
+  if (!settingsCopy)
   {
-    v11 = v9 & ~v10;
+    v11 = audioAnalysisClassifierOptions & ~audioDetectionType;
   }
 
   v16[4] = self;

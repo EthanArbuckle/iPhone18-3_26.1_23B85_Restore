@@ -7,20 +7,20 @@
 - (id)searchPredicate;
 - (int64_t)hash;
 - (unint64_t)mediaStateIcon;
-- (void)setCanBeClosed:(BOOL)a3;
-- (void)setCanBeCopied:(BOOL)a3;
-- (void)setCanBePinned:(BOOL)a3;
-- (void)setIsInteractivelyInserted:(BOOL)a3;
-- (void)setIsUnread:(BOOL)a3;
-- (void)setMediaStateIcon:(unint64_t)a3;
-- (void)setSearchPredicate:(id)a3;
-- (void)setShareParticipants:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setCanBeClosed:(BOOL)closed;
+- (void)setCanBeCopied:(BOOL)copied;
+- (void)setCanBePinned:(BOOL)pinned;
+- (void)setIsInteractivelyInserted:(BOOL)inserted;
+- (void)setIsUnread:(BOOL)unread;
+- (void)setMediaStateIcon:(unint64_t)icon;
+- (void)setSearchPredicate:(id)predicate;
+- (void)setShareParticipants:(id)participants;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SFTabSwitcherItem
 
-- (void)setCanBeClosed:(BOOL)a3
+- (void)setCanBeClosed:(BOOL)closed
 {
   v5 = _s4ItemVMa();
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -29,15 +29,15 @@
   v9 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherItemInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v8 + v9, v7, _s4ItemVMa);
-  *v7 = a3;
+  *v7 = closed;
   swift_beginAccess();
-  v10 = self;
+  selfCopy = self;
   v11 = v8;
   sub_18B81FC54(v7, v8 + v9, _s4ItemVMa);
   swift_endAccess();
 }
 
-- (void)setCanBeCopied:(BOOL)a3
+- (void)setCanBeCopied:(BOOL)copied
 {
   v5 = _s4ItemVMa();
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -46,15 +46,15 @@
   v9 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherItemInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v8 + v9, v7, _s4ItemVMa);
-  v7[1] = a3;
+  v7[1] = copied;
   swift_beginAccess();
-  v10 = self;
+  selfCopy = self;
   v11 = v8;
   sub_18B81FC54(v7, v8 + v9, _s4ItemVMa);
   swift_endAccess();
 }
 
-- (void)setCanBePinned:(BOOL)a3
+- (void)setCanBePinned:(BOOL)pinned
 {
   v5 = _s4ItemVMa();
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -63,15 +63,15 @@
   v9 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherItemInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v8 + v9, v7, _s4ItemVMa);
-  v7[2] = a3;
+  v7[2] = pinned;
   swift_beginAccess();
-  v10 = self;
+  selfCopy = self;
   v11 = v8;
   sub_18B81FC54(v7, v8 + v9, _s4ItemVMa);
   swift_endAccess();
 }
 
-- (void)setIsInteractivelyInserted:(BOOL)a3
+- (void)setIsInteractivelyInserted:(BOOL)inserted
 {
   v5 = _s4ItemVMa();
   v6 = v5 - 8;
@@ -81,15 +81,15 @@
   v10 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherItemInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v9 + v10, v8, _s4ItemVMa);
-  v8[*(v6 + 40)] = a3;
+  v8[*(v6 + 40)] = inserted;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   v12 = v9;
   sub_18B81FC54(v8, v9 + v10, _s4ItemVMa);
   swift_endAccess();
 }
 
-- (void)setMediaStateIcon:(unint64_t)a3
+- (void)setMediaStateIcon:(unint64_t)icon
 {
   v5 = _s4ItemVMa();
   v6 = v5 - 8;
@@ -99,24 +99,24 @@
   v10 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherItemInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v9 + v10, v8, _s4ItemVMa);
-  *&v8[*(v6 + 56)] = a3;
+  *&v8[*(v6 + 56)] = icon;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   v12 = v9;
   sub_18B81FC54(v8, v9 + v10, _s4ItemVMa);
   swift_endAccess();
 }
 
-- (void)setSearchPredicate:(id)a3
+- (void)setSearchPredicate:(id)predicate
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(predicate);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_18B82D2C0(sub_18BA93AE4, v5);
 }
 
-- (void)setIsUnread:(BOOL)a3
+- (void)setIsUnread:(BOOL)unread
 {
   v5 = _s4ItemVMa();
   v6 = v5 - 8;
@@ -126,25 +126,25 @@
   v10 = OBJC_IVAR____TtC12MobileSafari25SFTabSwitcherItemInternal_wrapped;
   swift_beginAccess();
   sub_18B8162EC(v9 + v10, v8, _s4ItemVMa);
-  v8[*(v6 + 52)] = a3;
+  v8[*(v6 + 52)] = unread;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   v12 = v9;
   sub_18B81FC54(v8, v9 + v10, _s4ItemVMa);
   swift_endAccess();
 }
 
-- (void)setShareParticipants:(id)a3
+- (void)setShareParticipants:(id)participants
 {
   sub_18B7B0AC0(0, &qword_1ED6511A8);
   v4 = sub_18BC20D98();
-  v5 = self;
+  selfCopy = self;
   sub_18B82E41C(v4);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_18BC20BD8();
     v6 = v5;
@@ -156,7 +156,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_18B82F06C(v4, v6);
 }
 
@@ -172,7 +172,7 @@
   sub_18BC22158();
   sub_18BC1EC08();
   sub_18BA93A40(&qword_1EA9D3970, 255, MEMORY[0x1E69695A8]);
-  v8 = self;
+  selfCopy = self;
   sub_18BC20A78();
   v9 = sub_18BC221A8();
 

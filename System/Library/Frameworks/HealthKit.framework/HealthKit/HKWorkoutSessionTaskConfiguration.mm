@@ -1,12 +1,12 @@
 @interface HKWorkoutSessionTaskConfiguration
-- (HKWorkoutSessionTaskConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKWorkoutSessionTaskConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKWorkoutSessionTaskConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HKWorkoutSessionTaskConfiguration);
   [(HKWorkoutSessionTaskConfiguration *)v4 setSessionUUID:self->_sessionUUID];
@@ -22,29 +22,29 @@
   return v4;
 }
 
-- (HKWorkoutSessionTaskConfiguration)initWithCoder:(id)a3
+- (HKWorkoutSessionTaskConfiguration)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = HKWorkoutSessionTaskConfiguration;
-  v5 = [(HKTaskConfiguration *)&v19 initWithCoder:v4];
+  v5 = [(HKTaskConfiguration *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"session_uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"session_uuid"];
     sessionUUID = v5->_sessionUUID;
     v5->_sessionUUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workout_configuration"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workout_configuration"];
     workoutConfiguration = v5->_workoutConfiguration;
     v5->_workoutConfiguration = v8;
 
-    v5->_requiresCoreLocationAssertion = [v4 decodeBoolForKey:@"cl_assertion"];
-    v5->_requiresRecovery = [v4 decodeBoolForKey:@"recovery"];
-    v5->_supportsAppRelaunchForRecovery = [v4 decodeBoolForKey:@"recovery_relaunch_app"];
-    v5->_shouldStopPreviousSession = [v4 decodeBoolForKey:@"stop_previous"];
-    v5->_supports3rdPartyAOT = [v4 decodeBoolForKey:@"supports_3rd_party_aot"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"current_activity"];
+    v5->_requiresCoreLocationAssertion = [coderCopy decodeBoolForKey:@"cl_assertion"];
+    v5->_requiresRecovery = [coderCopy decodeBoolForKey:@"recovery"];
+    v5->_supportsAppRelaunchForRecovery = [coderCopy decodeBoolForKey:@"recovery_relaunch_app"];
+    v5->_shouldStopPreviousSession = [coderCopy decodeBoolForKey:@"stop_previous"];
+    v5->_supports3rdPartyAOT = [coderCopy decodeBoolForKey:@"supports_3rd_party_aot"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"current_activity"];
     currentActivity = v5->_currentActivity;
     v5->_currentActivity = v10;
 
@@ -53,33 +53,33 @@
     v20[1] = objc_opt_class();
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v14 = [v12 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"activity_configurations"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"activity_configurations"];
     activityConfigurations = v5->_activityConfigurations;
     v5->_activityConfigurations = v15;
 
-    v5->_sessionType = [v4 decodeIntegerForKey:@"session_type"];
+    v5->_sessionType = [coderCopy decodeIntegerForKey:@"session_type"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKWorkoutSessionTaskConfiguration;
-  v4 = a3;
-  [(HKTaskConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_sessionUUID forKey:{@"session_uuid", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_workoutConfiguration forKey:@"workout_configuration"];
-  [v4 encodeBool:self->_requiresCoreLocationAssertion forKey:@"cl_assertion"];
-  [v4 encodeBool:self->_requiresRecovery forKey:@"recovery"];
-  [v4 encodeBool:self->_supportsAppRelaunchForRecovery forKey:@"recovery_relaunch_app"];
-  [v4 encodeBool:self->_shouldStopPreviousSession forKey:@"stop_previous"];
-  [v4 encodeBool:self->_supports3rdPartyAOT forKey:@"supports_3rd_party_aot"];
-  [v4 encodeObject:self->_currentActivity forKey:@"current_activity"];
-  [v4 encodeObject:self->_activityConfigurations forKey:@"activity_configurations"];
-  [v4 encodeInteger:self->_sessionType forKey:@"session_type"];
+  coderCopy = coder;
+  [(HKTaskConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_sessionUUID forKey:{@"session_uuid", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_workoutConfiguration forKey:@"workout_configuration"];
+  [coderCopy encodeBool:self->_requiresCoreLocationAssertion forKey:@"cl_assertion"];
+  [coderCopy encodeBool:self->_requiresRecovery forKey:@"recovery"];
+  [coderCopy encodeBool:self->_supportsAppRelaunchForRecovery forKey:@"recovery_relaunch_app"];
+  [coderCopy encodeBool:self->_shouldStopPreviousSession forKey:@"stop_previous"];
+  [coderCopy encodeBool:self->_supports3rdPartyAOT forKey:@"supports_3rd_party_aot"];
+  [coderCopy encodeObject:self->_currentActivity forKey:@"current_activity"];
+  [coderCopy encodeObject:self->_activityConfigurations forKey:@"activity_configurations"];
+  [coderCopy encodeInteger:self->_sessionType forKey:@"session_type"];
 }
 
 @end

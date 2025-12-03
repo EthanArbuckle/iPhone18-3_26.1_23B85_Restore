@@ -1,7 +1,7 @@
 @interface CCSQLCommandOrder
 - (CCSQLCommandOrder)init;
-- (CCSQLCommandOrder)initWithOrderMode:(int64_t)a3 columnNames:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CCSQLCommandOrder)initWithOrderMode:(int64_t)mode columnNames:(id)names;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,17 +13,17 @@
   objc_exception_throw(v2);
 }
 
-- (CCSQLCommandOrder)initWithOrderMode:(int64_t)a3 columnNames:(id)a4
+- (CCSQLCommandOrder)initWithOrderMode:(int64_t)mode columnNames:(id)names
 {
-  v6 = a4;
+  namesCopy = names;
   v12.receiver = self;
   v12.super_class = CCSQLCommandOrder;
   v7 = [(CCSQLCommandOrder *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_orderMode = a3;
-    v9 = [v6 copy];
+    v7->_orderMode = mode;
+    v9 = [namesCopy copy];
     columnNames = v8->_columnNames;
     v8->_columnNames = v9;
   }
@@ -42,11 +42,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   v5[1] = self->_orderMode;
-  v6 = [(NSArray *)self->_columnNames copyWithZone:a3];
+  v6 = [(NSArray *)self->_columnNames copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 

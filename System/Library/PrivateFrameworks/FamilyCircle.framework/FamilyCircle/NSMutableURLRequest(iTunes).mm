@@ -11,16 +11,16 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 ams_DSID];
-    v7 = v6;
-    if (v6)
+    ams_DSID = [v4 ams_DSID];
+    v7 = ams_DSID;
+    if (ams_DSID)
     {
-      v8 = [v6 stringValue];
-      [a1 setValue:v8 forHTTPHeaderField:@"X-iTunes-DSID"];
+      stringValue = [ams_DSID stringValue];
+      [self setValue:stringValue forHTTPHeaderField:@"X-iTunes-DSID"];
     }
 
-    v9 = [v5 ams_cookies];
-    v10 = [MEMORY[0x1E696AC58] requestHeaderFieldsWithCookies:v9];
+    ams_cookies = [v5 ams_cookies];
+    v10 = [MEMORY[0x1E696AC58] requestHeaderFieldsWithCookies:ams_cookies];
     if (v10)
     {
       v19 = 0;
@@ -31,7 +31,7 @@
         v13 = [v11 base64EncodedStringWithOptions:0];
         if (v13)
         {
-          [a1 setValue:v13 forHTTPHeaderField:@"X-iTunes-LoggedIn-Data"];
+          [self setValue:v13 forHTTPHeaderField:@"X-iTunes-LoggedIn-Data"];
         }
       }
 
@@ -49,16 +49,16 @@
       }
     }
 
-    v14 = [v5 username];
-    if (v14)
+    username = [v5 username];
+    if (username)
     {
-      [a1 setValue:v14 forHTTPHeaderField:@"X-iTunes-AppleId"];
+      [self setValue:username forHTTPHeaderField:@"X-iTunes-AppleId"];
     }
 
     v15 = MEMORY[0x1E698CBB8];
-    v16 = [MEMORY[0x1E698CAC8] currentProcess];
-    v17 = [v15 userAgentForProcessInfo:v16];
-    [a1 setValue:v17 forHTTPHeaderField:@"X-iTunes-User-Agent"];
+    currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
+    v17 = [v15 userAgentForProcessInfo:currentProcess];
+    [self setValue:v17 forHTTPHeaderField:@"X-iTunes-User-Agent"];
   }
 
   v18 = *MEMORY[0x1E69E9840];

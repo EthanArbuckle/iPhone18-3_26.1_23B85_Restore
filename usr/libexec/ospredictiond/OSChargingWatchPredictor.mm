@@ -1,26 +1,26 @@
 @interface OSChargingWatchPredictor
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8;
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log;
 @end
 
 @implementation OSChargingWatchPredictor
 
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log
 {
-  v10 = a4;
-  v11 = a7;
-  v12 = a8;
+  eventsCopy = events;
+  dateCopy = date;
+  logCopy = log;
   v13 = +[NSCalendar currentCalendar];
-  v14 = [v13 components:32 fromDate:v11];
+  v14 = [v13 components:32 fromDate:dateCopy];
 
   v103 = v14;
-  v115 = [v14 hour];
-  v15 = [OSIntelligenceUtilities events:v10 forHourBin:1 date:v11 withMaxDuration:12.0];
-  v16 = [OSIntelligenceUtilities events:v10 forHourBin:2 date:v11 withMaxDuration:12.0];
-  v17 = [OSIntelligenceUtilities events:v10 forHourBin:4 date:v11 withMaxDuration:12.0];
-  v18 = [OSIntelligenceUtilities events:v10 forHourBin:8 date:v11 withMaxDuration:12.0];
-  v19 = [OSIntelligenceUtilities events:v10 forHourBin:16 date:v11 withMaxDuration:12.0];
-  v106 = v10;
-  v20 = [OSIntelligenceUtilities events:v10 forHourBin:24 date:v11 withMaxDuration:12.0];
+  hour = [v14 hour];
+  v15 = [OSIntelligenceUtilities events:eventsCopy forHourBin:1 date:dateCopy withMaxDuration:12.0];
+  v16 = [OSIntelligenceUtilities events:eventsCopy forHourBin:2 date:dateCopy withMaxDuration:12.0];
+  v17 = [OSIntelligenceUtilities events:eventsCopy forHourBin:4 date:dateCopy withMaxDuration:12.0];
+  v18 = [OSIntelligenceUtilities events:eventsCopy forHourBin:8 date:dateCopy withMaxDuration:12.0];
+  v19 = [OSIntelligenceUtilities events:eventsCopy forHourBin:16 date:dateCopy withMaxDuration:12.0];
+  v106 = eventsCopy;
+  v20 = [OSIntelligenceUtilities events:eventsCopy forHourBin:24 date:dateCopy withMaxDuration:12.0];
   [OSIntelligenceUtilities standardDeviationOf:v15];
   v22 = v21;
   [OSIntelligenceUtilities standardDeviationOf:v16];
@@ -46,17 +46,17 @@
   v38 = v37;
   [OSIntelligenceUtilities medianOf:v20];
   v40 = v39;
-  v41 = v12;
+  v41 = logCopy;
   v117 = v15;
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
   {
-    v42 = [NSNumber numberWithDouble:v115];
-    [NSNumber numberWithUnsignedInteger:a5];
+    v42 = [NSNumber numberWithDouble:hour];
+    [NSNumber numberWithUnsignedInteger:level];
     v43 = v16;
     v45 = v44 = v20;
-    [NSNumber numberWithDouble:a3];
+    [NSNumber numberWithDouble:features];
     v47 = v46 = v17;
-    [NSNumber numberWithDouble:a6];
+    [NSNumber numberWithDouble:plugin];
     v49 = v48 = v18;
     *buf = 138413058;
     v132 = v42;
@@ -166,7 +166,7 @@
     _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "Model inputs for hourBin16: count %lu, std_dur_16: %f, med_dur_16: %lf", buf, 0x20u);
   }
 
-  v105 = v11;
+  v105 = dateCopy;
 
   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
   {
@@ -187,13 +187,13 @@
   }
 
   v62 = +[NSMutableDictionary dictionary];
-  v63 = [NSNumber numberWithUnsignedInteger:a5];
+  v63 = [NSNumber numberWithUnsignedInteger:level];
   [v62 setObject:v63 forKeyedSubscript:@"plugin_battery_level"];
 
-  v64 = [NSNumber numberWithDouble:a6];
+  v64 = [NSNumber numberWithDouble:plugin];
   [v62 setObject:v64 forKeyedSubscript:@"time_from_plugin"];
 
-  v65 = [NSNumber numberWithDouble:v115];
+  v65 = [NSNumber numberWithDouble:hour];
   [v62 setObject:v65 forKeyedSubscript:@"hour"];
 
   v66 = [NSNumber numberWithDouble:*&v107];
@@ -260,8 +260,8 @@
   v125 = 0u;
   v126 = 0u;
   v121 = v62;
-  v84 = [v62 allKeys];
-  v85 = [v84 countByEnumeratingWithState:&v123 objects:v130 count:16];
+  allKeys = [v62 allKeys];
+  v85 = [allKeys countByEnumeratingWithState:&v123 objects:v130 count:16];
   if (v85)
   {
     v86 = v85;
@@ -273,7 +273,7 @@
       {
         if (*v124 != v87)
         {
-          objc_enumerationMutation(v84);
+          objc_enumerationMutation(allKeys);
         }
 
         v89 = *(*(&v123 + 1) + 8 * v88);
@@ -292,7 +292,7 @@
       }
 
       while (v86 != v88);
-      v86 = [v84 countByEnumeratingWithState:&v123 objects:v130 count:16];
+      v86 = [allKeys countByEnumeratingWithState:&v123 objects:v130 count:16];
     }
 
     while (v86);

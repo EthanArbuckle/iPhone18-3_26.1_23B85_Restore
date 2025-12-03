@@ -1,5 +1,5 @@
 @interface ARCoachingStateHidden
-- (id)doAction:(int64_t)a3;
+- (id)doAction:(int64_t)action;
 - (void)enter;
 - (void)exit;
 @end
@@ -8,27 +8,27 @@
 
 - (void)enter
 {
-  v3 = [(ARCoachingState *)self view];
-  v4 = [v3 wasEverActivated];
+  view = [(ARCoachingState *)self view];
+  wasEverActivated = [view wasEverActivated];
 
-  v5 = [(ARCoachingState *)self view];
-  [v5 setHidden:1];
+  view2 = [(ARCoachingState *)self view];
+  [view2 setHidden:1];
 
-  v6 = [(ARCoachingState *)self view];
-  [v6 teardown];
+  view3 = [(ARCoachingState *)self view];
+  [view3 teardown];
 
-  if (v4)
+  if (wasEverActivated)
   {
-    v7 = [(ARCoachingState *)self view];
-    v8 = [v7 delegate];
+    view4 = [(ARCoachingState *)self view];
+    delegate = [view4 delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(ARCoachingState *)self view];
-      v11 = [v10 delegate];
-      v12 = [(ARCoachingState *)self view];
-      [v11 coachingOverlayViewDidDeactivate:v12];
+      view5 = [(ARCoachingState *)self view];
+      delegate2 = [view5 delegate];
+      view6 = [(ARCoachingState *)self view];
+      [delegate2 coachingOverlayViewDidDeactivate:view6];
     }
   }
 
@@ -38,50 +38,50 @@
 
 - (void)exit
 {
-  v3 = [(ARCoachingState *)self view];
-  v4 = [v3 delegate];
+  view = [(ARCoachingState *)self view];
+  delegate = [view delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v8 = [(ARCoachingState *)self view];
-    v6 = [v8 delegate];
-    v7 = [(ARCoachingState *)self view];
-    [v6 coachingOverlayViewWillActivate:v7];
+    view2 = [(ARCoachingState *)self view];
+    delegate2 = [view2 delegate];
+    view3 = [(ARCoachingState *)self view];
+    [delegate2 coachingOverlayViewWillActivate:view3];
   }
 }
 
-- (id)doAction:(int64_t)a3
+- (id)doAction:(int64_t)action
 {
   v4 = 0;
-  if (a3 <= 4)
+  if (action <= 4)
   {
-    if (a3 != 1)
+    if (action != 1)
     {
-      if (a3 != 4)
+      if (action != 4)
       {
         goto LABEL_21;
       }
 
-      v5 = [(ARCoachingState *)self view];
-      v6 = [v5 checkActivationHeuristics];
+      view = [(ARCoachingState *)self view];
+      checkActivationHeuristics = [view checkActivationHeuristics];
 
-      if (!v6)
+      if (!checkActivationHeuristics)
       {
         goto LABEL_12;
       }
 
-      v7 = [(ARCoachingState *)self view];
-      v8 = [v7 session];
-      v9 = [v8 currentFrame];
-      [v9 timestamp];
+      view2 = [(ARCoachingState *)self view];
+      session = [view2 session];
+      currentFrame = [session currentFrame];
+      [currentFrame timestamp];
       v11 = v10;
 
       autoActivateTime = self->_autoActivateTime;
       if (autoActivateTime < 0.0)
       {
-        v13 = [(ARCoachingState *)self view];
-        self->_autoActivateTime = v11 + ARCoachingMinimumActivationDelay([v13 goal]);
+        view3 = [(ARCoachingState *)self view];
+        self->_autoActivateTime = v11 + ARCoachingMinimumActivationDelay([view3 goal]);
 LABEL_11:
 
 LABEL_15:
@@ -97,18 +97,18 @@ LABEL_15:
       if (!self->_minimumWaitComplete)
       {
         self->_minimumWaitComplete = 1;
-        v13 = [(ARCoachingState *)self view];
-        v20 = [v13 goal];
-        v21 = [(ARCoachingState *)self view];
-        self->_autoActivateTime = v11 + ARCoachingAdditionalActivationDelay(v20, [v21 isRelocalizing]);
+        view3 = [(ARCoachingState *)self view];
+        goal = [view3 goal];
+        view4 = [(ARCoachingState *)self view];
+        self->_autoActivateTime = v11 + ARCoachingAdditionalActivationDelay(goal, [view4 isRelocalizing]);
 
         goto LABEL_11;
       }
 
-      v15 = [(ARCoachingState *)self view];
-      v16 = [v15 isRelocalizing];
+      view5 = [(ARCoachingState *)self view];
+      isRelocalizing = [view5 isRelocalizing];
 
-      if (v16)
+      if (isRelocalizing)
       {
         goto LABEL_18;
       }
@@ -118,7 +118,7 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  switch(a3)
+  switch(action)
   {
     case 5:
 LABEL_18:
@@ -128,8 +128,8 @@ LABEL_18:
       v14 = ARCoachingStateSessionFailed;
 LABEL_20:
       v17 = [v14 alloc];
-      v18 = [(ARCoachingState *)self view];
-      v4 = [v17 initWithView:v18];
+      view6 = [(ARCoachingState *)self view];
+      v4 = [v17 initWithView:view6];
 
       break;
     case 8:

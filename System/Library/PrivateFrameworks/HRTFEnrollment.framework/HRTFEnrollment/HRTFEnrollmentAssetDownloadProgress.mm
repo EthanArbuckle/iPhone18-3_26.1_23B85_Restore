@@ -1,20 +1,20 @@
 @interface HRTFEnrollmentAssetDownloadProgress
-- (HRTFEnrollmentAssetDownloadProgress)initWithTotalBytes:(int64_t)a3 downloadedBytes:(int64_t)a4 isStalled:(BOOL)a5 estimatedRemainingTime:(double)a6;
+- (HRTFEnrollmentAssetDownloadProgress)initWithTotalBytes:(int64_t)bytes downloadedBytes:(int64_t)downloadedBytes isStalled:(BOOL)stalled estimatedRemainingTime:(double)time;
 @end
 
 @implementation HRTFEnrollmentAssetDownloadProgress
 
-- (HRTFEnrollmentAssetDownloadProgress)initWithTotalBytes:(int64_t)a3 downloadedBytes:(int64_t)a4 isStalled:(BOOL)a5 estimatedRemainingTime:(double)a6
+- (HRTFEnrollmentAssetDownloadProgress)initWithTotalBytes:(int64_t)bytes downloadedBytes:(int64_t)downloadedBytes isStalled:(BOOL)stalled estimatedRemainingTime:(double)time
 {
   v11.receiver = self;
   v11.super_class = HRTFEnrollmentAssetDownloadProgress;
   result = [(HRTFEnrollmentAssetDownloadProgress *)&v11 init];
   if (result)
   {
-    result->_totalBytes = a3;
-    result->_downloadedBytes = a4;
-    result->_isStalled = a5;
-    result->_estimatedRemainingTime = a6;
+    result->_totalBytes = bytes;
+    result->_downloadedBytes = downloadedBytes;
+    result->_isStalled = stalled;
+    result->_estimatedRemainingTime = time;
   }
 
   return result;

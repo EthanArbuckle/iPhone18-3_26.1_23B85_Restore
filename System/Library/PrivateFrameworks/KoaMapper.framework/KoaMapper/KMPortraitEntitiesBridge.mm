@@ -1,13 +1,13 @@
 @interface KMPortraitEntitiesBridge
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
 - (KMPortraitEntitiesBridge)init;
 @end
 
 @implementation KMPortraitEntitiesBridge
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = objc_alloc_init(MEMORY[0x277D3A430]);
   [v6 setLimit:500];
   v33[0] = 0;
@@ -43,7 +43,7 @@
   v17 = v21;
   v14[4] = self;
   v18 = &v23;
-  v10 = v5;
+  v10 = blockCopy;
   v15 = v10;
   [v7 iterRankedNamedEntitiesWithQuery:v6 error:&obj block:v14];
   objc_storeStrong(v9, obj);

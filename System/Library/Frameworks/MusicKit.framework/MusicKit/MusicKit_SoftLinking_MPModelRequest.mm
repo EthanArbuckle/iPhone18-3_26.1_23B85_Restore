@@ -20,7 +20,7 @@
 + (id)_playlistEntrySupportedPropertiesForPlayback;
 + (id)_playlistSupportedProperties;
 + (id)_playlistSupportedPropertiesForPlayback;
-+ (id)_propertySetForRawProperties:(id)a3 relationships:(id)a4;
++ (id)_propertySetForRawProperties:(id)properties relationships:(id)relationships;
 + (id)_radioStationSupportedPropertiesForPlayback;
 + (id)_recentlyAddedObjectSupportedProperties;
 + (id)_representativeSongSupportedProperties;
@@ -28,13 +28,13 @@
 + (id)_songSupportedProperties;
 + (id)_songSupportedPropertiesForPlayback;
 + (id)_storeAssetSupportedProperties;
-+ (id)_supportedPropertiesForModelObjectType:(int64_t)a3;
++ (id)_supportedPropertiesForModelObjectType:(int64_t)type;
 + (id)_tvEpisodeSupportedProperties;
 + (id)_tvEpisodeSupportedPropertiesForPlayback;
 + (id)_tvSeasonSupportedProperties;
 + (id)_tvSeasonSupportedPropertiesForPlayback;
 + (id)_tvShowSupportedProperties;
-- (id)_initWithUnderlyingRequest:(id)a3;
+- (id)_initWithUnderlyingRequest:(id)request;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelRequest
@@ -287,8 +287,8 @@
 
   v6 = *v4;
   v26[0] = v6;
-  v7 = [a1 _playlistEntrySupportedPropertiesForPlayback];
-  v28[0] = v7;
+  _playlistEntrySupportedPropertiesForPlayback = [self _playlistEntrySupportedPropertiesForPlayback];
+  v28[0] = _playlistEntrySupportedPropertiesForPlayback;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -310,12 +310,12 @@
 
   v10 = *v8;
   v26[1] = v10;
-  v11 = [a1 _songSupportedPropertiesForPlayback];
-  v28[1] = v11;
+  _songSupportedPropertiesForPlayback = [self _songSupportedPropertiesForPlayback];
+  v28[1] = _songSupportedPropertiesForPlayback;
   v12 = getMPModelRelationshipGenericMovie();
   v26[2] = v12;
-  v13 = [a1 _movieSupportedPropertiesForPlayback];
-  v28[2] = v13;
+  _movieSupportedPropertiesForPlayback = [self _movieSupportedPropertiesForPlayback];
+  v28[2] = _movieSupportedPropertiesForPlayback;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -339,8 +339,8 @@ LABEL_13:
 
   v27 = *v14;
   v16 = v27;
-  v17 = [a1 _tvEpisodeSupportedPropertiesForPlayback];
-  v28[3] = v17;
+  _tvEpisodeSupportedPropertiesForPlayback = [self _tvEpisodeSupportedPropertiesForPlayback];
+  v28[3] = _tvEpisodeSupportedPropertiesForPlayback;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v26 count:4];
   v19 = [v3 initWithProperties:MEMORY[0x277CBEBF8] relationships:v18];
 
@@ -355,16 +355,16 @@ LABEL_13:
   v3 = objc_alloc(getMPPropertySetClass());
   v4 = getMPModelRelationshipPlaylistEntrySong();
   v14[0] = v4;
-  v5 = [a1 _songSupportedPropertiesForPlayback];
-  v15[0] = v5;
+  _songSupportedPropertiesForPlayback = [self _songSupportedPropertiesForPlayback];
+  v15[0] = _songSupportedPropertiesForPlayback;
   v6 = getMPModelRelationshipPlaylistEntryMovie();
   v14[1] = v6;
-  v7 = [a1 _movieSupportedPropertiesForPlayback];
-  v15[1] = v7;
+  _movieSupportedPropertiesForPlayback = [self _movieSupportedPropertiesForPlayback];
+  v15[1] = _movieSupportedPropertiesForPlayback;
   v8 = getMPModelRelationshipPlaylistEntryTVEpisode();
   v14[2] = v8;
-  v9 = [a1 _tvEpisodeSupportedPropertiesForPlayback];
-  v15[2] = v9;
+  _tvEpisodeSupportedPropertiesForPlayback = [self _tvEpisodeSupportedPropertiesForPlayback];
+  v15[2] = _tvEpisodeSupportedPropertiesForPlayback;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v11 = [v3 initWithProperties:MEMORY[0x277CBEBF8] relationships:v10];
 
@@ -379,12 +379,12 @@ LABEL_13:
   v3 = objc_alloc(getMPPropertySetClass());
   v4 = getMPModelRelationshipGenericAlbum();
   v22[0] = v4;
-  v5 = [a1 _albumSupportedPropertiesForPlayback];
-  v25[0] = v5;
+  _albumSupportedPropertiesForPlayback = [self _albumSupportedPropertiesForPlayback];
+  v25[0] = _albumSupportedPropertiesForPlayback;
   v6 = getMPModelRelationshipGenericPlaylist_0();
   v22[1] = v6;
-  v7 = [a1 _playlistSupportedPropertiesForPlayback];
-  v25[1] = v7;
+  _playlistSupportedPropertiesForPlayback = [self _playlistSupportedPropertiesForPlayback];
+  v25[1] = _playlistSupportedPropertiesForPlayback;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -407,12 +407,12 @@ LABEL_13:
 
   v23 = *v8;
   v10 = v23;
-  v11 = [a1 _radioStationSupportedPropertiesForPlayback];
-  v25[2] = v11;
+  _radioStationSupportedPropertiesForPlayback = [self _radioStationSupportedPropertiesForPlayback];
+  v25[2] = _radioStationSupportedPropertiesForPlayback;
   v12 = getMPModelRelationshipGenericTVSeason();
   v24 = v12;
-  v13 = [a1 _tvSeasonSupportedPropertiesForPlayback];
-  v25[3] = v13;
+  _tvSeasonSupportedPropertiesForPlayback = [self _tvSeasonSupportedPropertiesForPlayback];
+  v25[3] = _tvSeasonSupportedPropertiesForPlayback;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v22 count:4];
   v15 = [v3 initWithProperties:MEMORY[0x277CBEBF8] relationships:v14];
 
@@ -641,20 +641,20 @@ LABEL_28:
   v3 = objc_alloc(getMPPropertySetClass());
   v4 = getMPModelRelationshipGenericAlbum();
   v16[0] = v4;
-  v5 = [a1 _albumSupportedProperties];
-  v17[0] = v5;
+  _albumSupportedProperties = [self _albumSupportedProperties];
+  v17[0] = _albumSupportedProperties;
   v6 = getMPModelRelationshipGenericMovie();
   v16[1] = v6;
-  v7 = [a1 _movieSupportedProperties];
-  v17[1] = v7;
+  _movieSupportedProperties = [self _movieSupportedProperties];
+  v17[1] = _movieSupportedProperties;
   v8 = getMPModelRelationshipGenericPlaylist_0();
   v16[2] = v8;
-  v9 = [a1 _playlistSupportedProperties];
-  v17[2] = v9;
+  _playlistSupportedProperties = [self _playlistSupportedProperties];
+  v17[2] = _playlistSupportedProperties;
   v10 = getMPModelRelationshipGenericTVSeason();
   v16[3] = v10;
-  v11 = [a1 _tvSeasonSupportedProperties];
-  v17[3] = v11;
+  _tvSeasonSupportedProperties = [self _tvSeasonSupportedProperties];
+  v17[3] = _tvSeasonSupportedProperties;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:4];
   v13 = [v3 initWithProperties:MEMORY[0x277CBEBF8] relationships:v12];
 
@@ -1172,8 +1172,8 @@ LABEL_28:
 
   v71 = *v69;
   v112[1] = v71;
-  v72 = [a1 _genreSupportedProperties];
-  v114[1] = v72;
+  _genreSupportedProperties = [self _genreSupportedProperties];
+  v114[1] = _genreSupportedProperties;
   v108 = 0;
   v109 = &v108;
   v110 = 0x2020000000;
@@ -1197,8 +1197,8 @@ LABEL_72:
 
   v113 = *v73;
   v75 = v113;
-  v76 = [a1 _representativeSongSupportedProperties];
-  v114[2] = v76;
+  _representativeSongSupportedProperties = [self _representativeSongSupportedProperties];
+  v114[2] = _representativeSongSupportedProperties;
   v77 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v114 forKeys:v112 count:3];
   v78 = [v66 initWithProperties:v107 relationships:v77];
 
@@ -1614,8 +1614,8 @@ LABEL_10:
 
   v27 = *v25;
   v61[0] = v27;
-  v28 = [a1 _playbackPositionSupportedProperties];
-  v63[0] = v28;
+  _playbackPositionSupportedProperties = [self _playbackPositionSupportedProperties];
+  v63[0] = _playbackPositionSupportedProperties;
   v57 = 0;
   v58 = &v57;
   v59 = 0x2020000000;
@@ -1637,8 +1637,8 @@ LABEL_10:
 
   v31 = *v29;
   v61[1] = v31;
-  v32 = [a1 _localFileAssetSupportedProperties];
-  v63[1] = v32;
+  _localFileAssetSupportedProperties = [self _localFileAssetSupportedProperties];
+  v63[1] = _localFileAssetSupportedProperties;
   v57 = 0;
   v58 = &v57;
   v59 = 0x2020000000;
@@ -1662,8 +1662,8 @@ LABEL_43:
 
   v62 = *v33;
   v35 = v62;
-  v36 = [a1 _storeAssetSupportedProperties];
-  v63[2] = v36;
+  _storeAssetSupportedProperties = [self _storeAssetSupportedProperties];
+  v63[2] = _storeAssetSupportedProperties;
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:v61 count:3];
   v38 = [v51 initWithProperties:v24 relationships:v37];
 
@@ -2961,8 +2961,8 @@ LABEL_25:
 
   v49 = *v13;
   v66[0] = v49;
-  v55 = [a1 _albumSupportedProperties];
-  v68[0] = v55;
+  _albumSupportedProperties = [self _albumSupportedProperties];
+  v68[0] = _albumSupportedProperties;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -2990,8 +2990,8 @@ LABEL_25:
 
   v48 = *v16;
   v66[1] = v48;
-  v54 = [a1 _artistSupportedProperties];
-  v68[1] = v54;
+  _artistSupportedProperties = [self _artistSupportedProperties];
+  v68[1] = _artistSupportedProperties;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -3019,8 +3019,8 @@ LABEL_25:
 
   v47 = *v19;
   v66[2] = v47;
-  v53 = [a1 _songSupportedProperties];
-  v68[2] = v53;
+  _songSupportedProperties = [self _songSupportedProperties];
+  v68[2] = _songSupportedProperties;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -3048,8 +3048,8 @@ LABEL_25:
 
   v46 = *v22;
   v66[3] = v46;
-  v25 = [a1 _movieSupportedProperties];
-  v68[3] = v25;
+  _movieSupportedProperties = [self _movieSupportedProperties];
+  v68[3] = _movieSupportedProperties;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -3077,8 +3077,8 @@ LABEL_25:
 
   v29 = *v26;
   v66[4] = v29;
-  v30 = [a1 _playlistSupportedProperties];
-  v68[4] = v30;
+  _playlistSupportedProperties = [self _playlistSupportedProperties];
+  v68[4] = _playlistSupportedProperties;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -3106,8 +3106,8 @@ LABEL_25:
 
   v34 = *v31;
   v66[5] = v34;
-  v35 = [a1 _tvEpisodeSupportedProperties];
-  v68[5] = v35;
+  _tvEpisodeSupportedProperties = [self _tvEpisodeSupportedProperties];
+  v68[5] = _tvEpisodeSupportedProperties;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -3137,86 +3137,86 @@ LABEL_34:
 
   v67 = *v36;
   v39 = v67;
-  v40 = [a1 _tvSeasonSupportedProperties];
-  v68[6] = v40;
+  _tvSeasonSupportedProperties = [self _tvSeasonSupportedProperties];
+  v68[6] = _tvSeasonSupportedProperties;
   v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v68 forKeys:v66 count:7];
   v42 = [v51 initWithProperties:v52 relationships:v41];
   [v56 setItemProperties:v42];
 
-  v43 = [[a1 alloc] _initWithUnderlyingRequest:v56];
+  v43 = [[self alloc] _initWithUnderlyingRequest:v56];
   v44 = *MEMORY[0x277D85DE8];
 
   return v43;
 }
 
-- (id)_initWithUnderlyingRequest:(id)a3
+- (id)_initWithUnderlyingRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = MusicKit_SoftLinking_MPModelRequest;
   v6 = [(MusicKit_SoftLinking_MPModelRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingRequest, a3);
+    objc_storeStrong(&v6->_underlyingRequest, request);
   }
 
   return v7;
 }
 
-+ (id)_supportedPropertiesForModelObjectType:(int64_t)a3
++ (id)_supportedPropertiesForModelObjectType:(int64_t)type
 {
   v3 = 0;
   v17[1] = *MEMORY[0x277D85DE8];
-  switch(a3)
+  switch(type)
   {
     case 0:
-      v4 = [a1 _albumSupportedProperties];
+      _albumSupportedProperties = [self _albumSupportedProperties];
       goto LABEL_23;
     case 2:
-      v4 = [a1 _artistSupportedProperties];
+      _albumSupportedProperties = [self _artistSupportedProperties];
       goto LABEL_23;
     case 3:
-      v4 = [a1 _composerSupportedProperties];
+      _albumSupportedProperties = [self _composerSupportedProperties];
       goto LABEL_23;
     case 5:
-      v4 = [a1 _curatorSupportedProperties];
+      _albumSupportedProperties = [self _curatorSupportedProperties];
       goto LABEL_23;
     case 9:
-      v4 = [a1 _genreSupportedProperties];
+      _albumSupportedProperties = [self _genreSupportedProperties];
       goto LABEL_23;
     case 12:
-      v4 = [a1 _lyricsSupportedProperties];
+      _albumSupportedProperties = [self _lyricsSupportedProperties];
       goto LABEL_23;
     case 13:
-      v4 = [a1 _movieSupportedProperties];
+      _albumSupportedProperties = [self _movieSupportedProperties];
       goto LABEL_23;
     case 14:
     case 28:
     case 32:
     case 36:
     case 37:
-      v4 = [a1 _songSupportedProperties];
+      _albumSupportedProperties = [self _songSupportedProperties];
       goto LABEL_23;
     case 15:
-      v4 = [a1 _pinSupportedProperties];
+      _albumSupportedProperties = [self _pinSupportedProperties];
       goto LABEL_23;
     case 17:
     case 21:
     case 22:
-      v4 = [a1 _playlistSupportedProperties];
+      _albumSupportedProperties = [self _playlistSupportedProperties];
       goto LABEL_23;
     case 18:
-      v4 = [a1 _playlistAuthorSupportedProperties];
+      _albumSupportedProperties = [self _playlistAuthorSupportedProperties];
       goto LABEL_23;
     case 19:
-      v4 = [a1 _playlistEntrySupportedProperties];
+      _albumSupportedProperties = [self _playlistEntrySupportedProperties];
       goto LABEL_23;
     case 20:
-      v4 = [a1 _playlistEntryReactionSupportedProperties];
+      _albumSupportedProperties = [self _playlistEntryReactionSupportedProperties];
       goto LABEL_23;
     case 25:
-      v4 = [a1 _recentlyAddedObjectSupportedProperties];
+      _albumSupportedProperties = [self _recentlyAddedObjectSupportedProperties];
       goto LABEL_23;
     case 31:
       v5 = objc_alloc(getMPPropertySetClass());
@@ -3248,15 +3248,15 @@ LABEL_34:
       v3 = [v5 initWithProperties:v10 relationships:MEMORY[0x277CBEC10]];
       break;
     case 33:
-      v4 = [a1 _tvEpisodeSupportedProperties];
+      _albumSupportedProperties = [self _tvEpisodeSupportedProperties];
       goto LABEL_23;
     case 34:
-      v4 = [a1 _tvSeasonSupportedProperties];
+      _albumSupportedProperties = [self _tvSeasonSupportedProperties];
       goto LABEL_23;
     case 35:
-      v4 = [a1 _tvShowSupportedProperties];
+      _albumSupportedProperties = [self _tvShowSupportedProperties];
 LABEL_23:
-      v3 = v4;
+      v3 = _albumSupportedProperties;
       break;
     default:
       break;
@@ -3267,23 +3267,23 @@ LABEL_23:
   return v3;
 }
 
-+ (id)_propertySetForRawProperties:(id)a3 relationships:(id)a4
++ (id)_propertySetForRawProperties:(id)properties relationships:(id)relationships
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
+  relationshipsCopy = relationships;
+  propertiesCopy = properties;
   v9 = objc_alloc_init(v6);
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __82__MusicKit_SoftLinking_MPModelRequest__propertySetForRawProperties_relationships___block_invoke;
   v17 = &unk_278229DA8;
   v18 = v9;
-  v19 = a1;
+  selfCopy = self;
   v10 = v9;
-  [v7 enumerateKeysAndObjectsUsingBlock:&v14];
+  [relationshipsCopy enumerateKeysAndObjectsUsingBlock:&v14];
 
   v11 = objc_alloc(getMPPropertySetClass());
-  v12 = [v11 initWithProperties:v8 relationships:{v10, v14, v15, v16, v17}];
+  v12 = [v11 initWithProperties:propertiesCopy relationships:{v10, v14, v15, v16, v17}];
 
   return v12;
 }
@@ -3601,8 +3601,8 @@ LABEL_15:
 
   v14 = *v12;
   v42[0] = v14;
-  v15 = [a1 _albumSupportedProperties];
-  v44[0] = v15;
+  _albumSupportedProperties = [self _albumSupportedProperties];
+  v44[0] = _albumSupportedProperties;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -3624,8 +3624,8 @@ LABEL_15:
 
   v18 = *v16;
   v42[1] = v18;
-  v19 = [a1 _artistSupportedProperties];
-  v44[1] = v19;
+  _artistSupportedProperties = [self _artistSupportedProperties];
+  v44[1] = _artistSupportedProperties;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -3647,8 +3647,8 @@ LABEL_15:
 
   v22 = *v20;
   v42[2] = v22;
-  v23 = [a1 _playlistSupportedProperties];
-  v44[2] = v23;
+  _playlistSupportedProperties = [self _playlistSupportedProperties];
+  v44[2] = _playlistSupportedProperties;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -3672,8 +3672,8 @@ LABEL_28:
 
   v43 = *v24;
   v26 = v43;
-  v27 = [a1 _songSupportedProperties];
-  v44[3] = v27;
+  _songSupportedProperties = [self _songSupportedProperties];
+  v44[3] = _songSupportedProperties;
   v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v42 count:4];
   v29 = [v33 initWithProperties:v37 relationships:v28];
 
@@ -3752,8 +3752,8 @@ LABEL_13:
 
   v23 = *v11;
   v13 = v23;
-  v14 = [a1 _socialPersonSupportedProperties];
-  v24 = v14;
+  _socialPersonSupportedProperties = [self _socialPersonSupportedProperties];
+  v24 = _socialPersonSupportedProperties;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
   v16 = [v3 initWithProperties:v10 relationships:v15];
 
@@ -3833,16 +3833,16 @@ LABEL_13:
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:3];
   v10 = getMPModelRelationshipPlaylistEntrySong();
   v33[0] = v10;
-  v11 = [a1 _songSupportedProperties];
-  v35[0] = v11;
+  _songSupportedProperties = [self _songSupportedProperties];
+  v35[0] = _songSupportedProperties;
   v12 = getMPModelRelationshipPlaylistEntryMovie();
   v33[1] = v12;
-  v13 = [a1 _movieSupportedProperties];
-  v35[1] = v13;
+  _movieSupportedProperties = [self _movieSupportedProperties];
+  v35[1] = _movieSupportedProperties;
   v14 = getMPModelRelationshipPlaylistEntryTVEpisode();
   v33[2] = v14;
-  v15 = [a1 _tvEpisodeSupportedProperties];
-  v35[2] = v15;
+  _tvEpisodeSupportedProperties = [self _tvEpisodeSupportedProperties];
+  v35[2] = _tvEpisodeSupportedProperties;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -3866,8 +3866,8 @@ LABEL_16:
 
   v34 = *v16;
   v18 = v34;
-  v19 = [a1 _socialPersonSupportedProperties];
-  v35[3] = v19;
+  _socialPersonSupportedProperties = [self _socialPersonSupportedProperties];
+  v35[3] = _socialPersonSupportedProperties;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v33 count:4];
   v21 = [v25 initWithProperties:v28 relationships:v20];
 
@@ -3946,8 +3946,8 @@ LABEL_13:
 
   v23 = *v11;
   v13 = v23;
-  v14 = [a1 _socialPersonSupportedProperties];
-  v24 = v14;
+  _socialPersonSupportedProperties = [self _socialPersonSupportedProperties];
+  v24 = _socialPersonSupportedProperties;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
   v16 = [v3 initWithProperties:v10 relationships:v15];
 
@@ -4931,8 +4931,8 @@ LABEL_66:
 
   v49 = *v25;
   v80[0] = v49;
-  v65 = [a1 _playbackPositionSupportedProperties];
-  v83[0] = v65;
+  _playbackPositionSupportedProperties = [self _playbackPositionSupportedProperties];
+  v83[0] = _playbackPositionSupportedProperties;
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -4954,8 +4954,8 @@ LABEL_66:
 
   v48 = *v27;
   v80[1] = v48;
-  v64 = [a1 _storeAssetSupportedProperties];
-  v83[1] = v64;
+  _storeAssetSupportedProperties = [self _storeAssetSupportedProperties];
+  v83[1] = _storeAssetSupportedProperties;
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -4977,8 +4977,8 @@ LABEL_66:
 
   v31 = *v29;
   v80[2] = v31;
-  v32 = [a1 _localFileAssetSupportedProperties];
-  v83[2] = v32;
+  _localFileAssetSupportedProperties = [self _localFileAssetSupportedProperties];
+  v83[2] = _localFileAssetSupportedProperties;
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;

@@ -1,9 +1,9 @@
 @interface ENDownloadManagerState
 - (ENDownloadManagerState)init;
-- (ENDownloadManagerState)initWithCoder:(id)a3;
+- (ENDownloadManagerState)initWithCoder:(id)coder;
 - (NSArray)endpoints;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEndpoints:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEndpoints:(id)endpoints;
 @end
 
 @implementation ENDownloadManagerState
@@ -23,16 +23,16 @@
   return v2;
 }
 
-- (void)setEndpoints:(id)a3
+- (void)setEndpoints:(id)endpoints
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endpointsCopy = endpoints;
   v5 = objc_alloc_init(MEMORY[0x277CBEB30]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = endpointsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -48,8 +48,8 @@
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 serverBaseURL];
-        v13 = [(NSDictionary *)self->_statesByURL objectForKeyedSubscript:v12];
+        serverBaseURL = [v11 serverBaseURL];
+        v13 = [(NSDictionary *)self->_statesByURL objectForKeyedSubscript:serverBaseURL];
         if (v13)
         {
           v14 = v13;
@@ -61,7 +61,7 @@
           v14 = [[ENDownloadEndpointState alloc] initWithEndpoint:v11];
         }
 
-        [v5 setObject:v14 forKeyedSubscript:v12];
+        [v5 setObject:v14 forKeyedSubscript:serverBaseURL];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -85,8 +85,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(ENDownloadManagerState *)self endpointStates];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  endpointStates = [(ENDownloadManagerState *)self endpointStates];
+  v5 = [endpointStates countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -97,14 +97,14 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(endpointStates);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) endpoint];
-        [v3 addObject:v9];
+        endpoint = [*(*(&v13 + 1) + 8 * i) endpoint];
+        [v3 addObject:endpoint];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [endpointStates countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -116,24 +116,24 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ENDownloadManagerState *)self endpointStates];
-  [v4 encodeInteger:1 forKey:@"vers"];
-  [v4 encodeObject:v5 forKey:@"endpoints"];
+  coderCopy = coder;
+  endpointStates = [(ENDownloadManagerState *)self endpointStates];
+  [coderCopy encodeInteger:1 forKey:@"vers"];
+  [coderCopy encodeObject:endpointStates forKey:@"endpoints"];
 }
 
-- (ENDownloadManagerState)initWithCoder:(id)a3
+- (ENDownloadManagerState)initWithCoder:(id)coder
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"vers"] == 1)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"vers"] == 1)
   {
     v5 = MEMORY[0x277CBEB90];
     v6 = objc_opt_class();
     v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"endpoints"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"endpoints"];
     if (v8)
     {
       v9 = [(ENDownloadManagerState *)self init];
@@ -163,9 +163,9 @@
               }
 
               v17 = *(*(&v27 + 1) + 8 * i);
-              v18 = [v17 endpoint];
-              v19 = [v18 serverBaseURL];
-              [v11 setObject:v17 forKeyedSubscript:v19];
+              endpoint = [v17 endpoint];
+              serverBaseURL = [endpoint serverBaseURL];
+              [v11 setObject:v17 forKeyedSubscript:serverBaseURL];
             }
 
             v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -183,22 +183,22 @@
       }
 
       self = v10;
-      v22 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v22 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
-  return v22;
+  return selfCopy;
 }
 
 @end

@@ -3,7 +3,7 @@
 - (void)dealloc;
 - (void)invalidate;
 - (void)resume;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation FigNSXPCConnection
@@ -22,11 +22,11 @@
   [(FigNSXPCConnection *)&v4 resume];
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    [(FigNSXPCConnection *)&v4 setInvalidationHandler:v5, v3.receiver, v3.super_class, self, FigNSXPCConnection, MEMORY[0x1E69E9820], 3221225472, __45__FigNSXPCConnection_setInvalidationHandler___block_invoke, &unk_1E79907D8, self, a3];
+    [(FigNSXPCConnection *)&v4 setInvalidationHandler:v5, v3.receiver, v3.super_class, self, FigNSXPCConnection, MEMORY[0x1E69E9820], 3221225472, __45__FigNSXPCConnection_setInvalidationHandler___block_invoke, &unk_1E79907D8, self, handler];
   }
 
   else

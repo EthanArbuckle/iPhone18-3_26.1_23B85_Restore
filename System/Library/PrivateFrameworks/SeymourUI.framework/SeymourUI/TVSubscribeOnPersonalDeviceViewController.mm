@@ -1,35 +1,35 @@
 @interface TVSubscribeOnPersonalDeviceViewController
-- (_TtC9SeymourUI41TVSubscribeOnPersonalDeviceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI41TVSubscribeOnPersonalDeviceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVSubscribeOnPersonalDeviceViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BD7E07C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for TVSubscribeOnPersonalDeviceViewController();
   v4 = v5.receiver;
-  [(TVSubscribeOnPersonalDeviceViewController *)&v5 viewWillAppear:v3];
+  [(TVSubscribeOnPersonalDeviceViewController *)&v5 viewWillAppear:appearCopy];
   sub_20BC99278();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20BD7E664(a3);
+  selfCopy = self;
+  sub_20BD7E664(disappear);
 }
 
-- (_TtC9SeymourUI41TVSubscribeOnPersonalDeviceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI41TVSubscribeOnPersonalDeviceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,31 +1,31 @@
 @interface TextEffectsRenderer
 - (BOOL)fragmentsValid;
-- (CGPoint)convertPointFromRenderSpace:(CGPoint)a3;
-- (CGPoint)convertPointToRenderSpace:(CGPoint)a3 location:(id)a4 affinity:(int64_t)a5;
-- (CGPoint)convertPointToTextAnimationsCoordinateSpace:(CGPoint)a3;
+- (CGPoint)convertPointFromRenderSpace:(CGPoint)space;
+- (CGPoint)convertPointToRenderSpace:(CGPoint)space location:(id)location affinity:(int64_t)affinity;
+- (CGPoint)convertPointToTextAnimationsCoordinateSpace:(CGPoint)space;
 - (CGRect)customTextBounds;
 - (NSCustomTextRenderingDelegate)delegate;
 - (_NSCustomTextRenderingDisplayLink)externalDisplayLink;
-- (id)animatorForTextAnimation:(id)a3;
-- (id)animatorForTextAnimation:(id)a3 notify:(id)a4;
+- (id)animatorForTextAnimation:(id)animation;
+- (id)animatorForTextAnimation:(id)animation notify:(id)notify;
 - (void)beginLayout;
-- (void)didLayoutFragment:(id)a3;
-- (void)endLayoutWithConsumer:(id)a3;
-- (void)enumerateTextSegmentsInRange:(id)a3 type:(int64_t)a4 options:(unint64_t)a5 textLayoutManager:(id)a6 usingBlock:(id)a7;
-- (void)invalidateTemporaryAttributesInRange:(id)a3;
+- (void)didLayoutFragment:(id)fragment;
+- (void)endLayoutWithConsumer:(id)consumer;
+- (void)enumerateTextSegmentsInRange:(id)range type:(int64_t)type options:(unint64_t)options textLayoutManager:(id)manager usingBlock:(id)block;
+- (void)invalidateTemporaryAttributesInRange:(id)range;
 - (void)postLayoutNotify;
-- (void)setContentsScale:(double)a3;
-- (void)setExternalDisplayLink:(id)a3;
+- (void)setContentsScale:(double)scale;
+- (void)setExternalDisplayLink:(id)link;
 - (void)setNeedsDisplay;
 @end
 
 @implementation TextEffectsRenderer
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v3 = *(self + OBJC_IVAR____TtC20TextAnimationSupport19TextEffectsRenderer_contentsScale);
-  *(self + OBJC_IVAR____TtC20TextAnimationSupport19TextEffectsRenderer_contentsScale) = a3;
-  v4 = self;
+  *(self + OBJC_IVAR____TtC20TextAnimationSupport19TextEffectsRenderer_contentsScale) = scale;
+  selfCopy = self;
   TextEffectsRenderer.contentsScale.didset(v3);
 }
 
@@ -38,26 +38,26 @@
 
 - (void)setNeedsDisplay
 {
-  v2 = self;
+  selfCopy = self;
   TextEffectsRenderer.setNeedsDisplay()();
 }
 
-- (void)endLayoutWithConsumer:(id)a3
+- (void)endLayoutWithConsumer:(id)consumer
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(consumer);
   _Block_copy(v4);
-  v5 = self;
-  specialized TextEffectsRenderer.endLayout(with:)(v5, v4);
+  selfCopy = self;
+  specialized TextEffectsRenderer.endLayout(with:)(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)didLayoutFragment:(id)a3
+- (void)didLayoutFragment:(id)fragment
 {
   v5 = OBJC_IVAR____TtC20TextAnimationSupport19TextEffectsRenderer_updatedFragments;
   swift_beginAccess();
-  v6 = a3;
-  v7 = self;
+  fragmentCopy = fragment;
+  selfCopy = self;
   MEMORY[0x19A8BD720]();
   if (*((*(self + v5) & 0xFFFFFFFFFFFFFF8) + 0x10) >= *((*(self + v5) & 0xFFFFFFFFFFFFFF8) + 0x18) >> 1)
   {
@@ -70,7 +70,7 @@
 
 - (void)postLayoutNotify
 {
-  v2 = self;
+  selfCopy = self;
   TextEffectsRenderer.postLayoutNotify()();
 }
 
@@ -116,46 +116,46 @@
   return v2;
 }
 
-- (void)setExternalDisplayLink:(id)a3
+- (void)setExternalDisplayLink:(id)link
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  specialized TextEffectsRenderer.externalDisplayLink.setter(a3);
+  selfCopy = self;
+  specialized TextEffectsRenderer.externalDisplayLink.setter(link);
 
   swift_unknownObjectRelease();
 }
 
 - (BOOL)fragmentsValid
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TextEffectsRenderer.fragmentsValid.getter();
 
   return v3;
 }
 
-- (void)enumerateTextSegmentsInRange:(id)a3 type:(int64_t)a4 options:(unint64_t)a5 textLayoutManager:(id)a6 usingBlock:(id)a7
+- (void)enumerateTextSegmentsInRange:(id)range type:(int64_t)type options:(unint64_t)options textLayoutManager:(id)manager usingBlock:(id)block
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(block);
   v16[2] = v12;
-  v13 = a3;
-  v14 = a6;
-  v15 = self;
-  TextEffectsRenderer.enumerateTextSegments(in:type:options:textLayoutManager:using:)(v13, a4, a5, v14, partial apply for thunk for @callee_unowned @convention(block) (@unowned NSTextRange?, @unowned CGRect, @unowned CGFloat, @unowned NSTextContainer) -> (@unowned ObjCBool), v16);
+  rangeCopy = range;
+  managerCopy = manager;
+  selfCopy = self;
+  TextEffectsRenderer.enumerateTextSegments(in:type:options:textLayoutManager:using:)(rangeCopy, type, options, managerCopy, partial apply for thunk for @callee_unowned @convention(block) (@unowned NSTextRange?, @unowned CGRect, @unowned CGFloat, @unowned NSTextContainer) -> (@unowned ObjCBool), v16);
   _Block_release(v12);
 }
 
-- (void)invalidateTemporaryAttributesInRange:(id)a3
+- (void)invalidateTemporaryAttributesInRange:(id)range
 {
-  v4 = a3;
-  v5 = self;
-  TextEffectsRenderer.invalidateTemporaryAttributes(in:)(v4);
+  rangeCopy = range;
+  selfCopy = self;
+  TextEffectsRenderer.invalidateTemporaryAttributes(in:)(rangeCopy);
 }
 
-- (CGPoint)convertPointFromRenderSpace:(CGPoint)a3
+- (CGPoint)convertPointFromRenderSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = space.y;
+  x = space.x;
+  selfCopy = self;
   v6 = TextEffectsRenderer.convertFromRenderSpace(_:)(__PAIR128__(*&y, *&x));
 
   v7 = v6.x;
@@ -165,11 +165,11 @@
   return result;
 }
 
-- (CGPoint)convertPointToTextAnimationsCoordinateSpace:(CGPoint)a3
+- (CGPoint)convertPointToTextAnimationsCoordinateSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = space.y;
+  x = space.x;
+  selfCopy = self;
   TextEffectsRenderer._convertToRenderSpace(_:textRange:)(0, x, y);
   v7 = v6;
   v9 = v8;
@@ -181,13 +181,13 @@
   return result;
 }
 
-- (CGPoint)convertPointToRenderSpace:(CGPoint)a3 location:(id)a4 affinity:(int64_t)a5
+- (CGPoint)convertPointToRenderSpace:(CGPoint)space location:(id)location affinity:(int64_t)affinity
 {
-  y = a3.y;
-  x = a3.x;
+  y = space.y;
+  x = space.x;
   swift_unknownObjectRetain();
-  v10 = self;
-  TextEffectsRenderer.convertToRenderSpace(_:location:affinity:)(a4, a5, x, y);
+  selfCopy = self;
+  TextEffectsRenderer.convertToRenderSpace(_:location:affinity:)(location, affinity, x, y);
   v12 = v11;
   v14 = v13;
   swift_unknownObjectRelease();
@@ -199,7 +199,7 @@
   return result;
 }
 
-- (id)animatorForTextAnimation:(id)a3
+- (id)animatorForTextAnimation:(id)animation
 {
   type metadata accessor for AnyTextAnimation();
   v3 = swift_dynamicCastClass();
@@ -211,9 +211,9 @@
   return v3;
 }
 
-- (id)animatorForTextAnimation:(id)a3 notify:(id)a4
+- (id)animatorForTextAnimation:(id)animation notify:(id)notify
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(notify);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   type metadata accessor for AnyTextAnimation();
@@ -222,7 +222,7 @@
   {
     v8 = v7;
     swift_unknownObjectRetain_n();
-    v9 = self;
+    selfCopy = self;
     v10 = TextEffectsAnimationController.animator(for:with:)(v8, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned _NSTextAnimator) -> (), v6);
 
     swift_unknownObjectRelease_n();

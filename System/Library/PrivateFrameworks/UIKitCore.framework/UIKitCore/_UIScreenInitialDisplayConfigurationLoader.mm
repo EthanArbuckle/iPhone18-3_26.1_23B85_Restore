@@ -44,13 +44,13 @@
   {
     if (+[UIApplication _expectsCADisplays])
     {
-      v4 = [MEMORY[0x1E6979328] displays];
-      v5 = [v4 count];
+      displays = [MEMORY[0x1E6979328] displays];
+      v5 = [displays count];
 
       if (v5)
       {
-        v6 = [v3 applicationInitializationContext];
-        if (!v6)
+        applicationInitializationContext = [v3 applicationInitializationContext];
+        if (!applicationInitializationContext)
         {
           v7 = *(__UILogGetCategoryCachedImpl("DisplayConfigurationFetch", &initialDisplayContext___s_category) + 8);
           if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -60,15 +60,15 @@
           }
         }
 
-        v8 = [v6 mainDisplayContext];
+        mainDisplayContext = [applicationInitializationContext mainDisplayContext];
         context = self->_context;
-        self->_context = v8;
+        self->_context = mainDisplayContext;
 
         if (!self->_context)
         {
-          v10 = [MEMORY[0x1E69DEBE8] defaultContext];
+          defaultContext = [MEMORY[0x1E69DEBE8] defaultContext];
           v11 = self->_context;
-          self->_context = v10;
+          self->_context = defaultContext;
         }
       }
     }

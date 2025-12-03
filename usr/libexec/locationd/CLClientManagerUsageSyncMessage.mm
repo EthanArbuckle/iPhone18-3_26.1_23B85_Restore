@@ -1,5 +1,5 @@
 @interface CLClientManagerUsageSyncMessage
-- (BOOL)isMessageOfType:(id)a3;
+- (BOOL)isMessageOfType:(id)type;
 - (void)dealloc;
 @end
 
@@ -16,11 +16,11 @@
   [(CLClientManagerUsageSyncMessage *)&v3 dealloc];
 }
 
-- (BOOL)isMessageOfType:(id)a3
+- (BOOL)isMessageOfType:(id)type
 {
-  v4 = [(CLClientManagerUsageSyncMessage *)self messageType];
+  messageType = [(CLClientManagerUsageSyncMessage *)self messageType];
 
-  return [(NSString *)v4 isEqual:a3];
+  return [(NSString *)messageType isEqual:type];
 }
 
 @end

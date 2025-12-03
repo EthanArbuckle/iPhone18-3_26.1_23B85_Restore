@@ -1,19 +1,19 @@
 @interface SEFidoKeyManager
 + (_TtC10seserviced16SEFidoKeyManager)singleton;
-- (BOOL)deleteKeyWithRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 error:(id *)a6;
-- (BOOL)storeKeyWithRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 keyData:(id)a6 error:(id *)a7;
+- (BOOL)deleteKeyWithRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash error:(id *)error;
+- (BOOL)storeKeyWithRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash keyData:(id)data error:(id *)error;
 - (_TtC10seserviced16SEFidoKeyManager)init;
-- (id)createFidoAttestationWithSecureElement:(id)a3 instanceAID:(id)a4 fidoKey:(id)a5 relyingParty:(id)a6 relyingPartyAccountHash:(id)a7 challenge:(id)a8 error:(id *)a9;
-- (id)findKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 secureElement:(id)a6 error:(id *)a7;
-- (id)performFidoSignatureWithSecureElement:(id)a3 instanceAID:(id)a4 loadedKey:(id)a5 relyingParty:(id)a6 relyingPartyAccountHash:(id)a7 challenge:(id)a8 ptaEndPointIdentifierForExtension:(id)a9 externalizedAuth:(id)a10 error:(id *)a11;
-- (id)performFidoVerificationWithPublicKey:(id)a3 signedChallenge:(id)a4 error:(id *)a5;
-- (void)reportCAEvent:(id)a3;
-- (void)reportCAEvent:(id)a3 count:(int64_t)a4;
+- (id)createFidoAttestationWithSecureElement:(id)element instanceAID:(id)d fidoKey:(id)key relyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge error:(id *)error;
+- (id)findKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash secureElement:(id)element error:(id *)error;
+- (id)performFidoSignatureWithSecureElement:(id)element instanceAID:(id)d loadedKey:(id)key relyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge ptaEndPointIdentifierForExtension:(id)extension externalizedAuth:(id)self0 error:(id *)self1;
+- (id)performFidoVerificationWithPublicKey:(id)key signedChallenge:(id)challenge error:(id *)error;
+- (void)reportCAEvent:(id)event;
+- (void)reportCAEvent:(id)event count:(int64_t)count;
 @end
 
 @implementation SEFidoKeyManager
 
-- (void)reportCAEvent:(id)a3 count:(int64_t)a4
+- (void)reportCAEvent:(id)event count:(int64_t)count
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = objc_opt_self();
@@ -22,7 +22,7 @@
   *(inited + 16) = xmmword_1004098F0;
   AnyHashable.init<A>(_:)();
   *(inited + 96) = &type metadata for Int;
-  *(inited + 72) = a4;
+  *(inited + 72) = count;
   sub_100090BC4(inited);
   swift_setDeallocating();
   sub_1000B6158(inited + 32);
@@ -31,7 +31,7 @@
   sub_10004DC84(v5, isa);
 }
 
-- (void)reportCAEvent:(id)a3
+- (void)reportCAEvent:(id)event
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v3 = objc_opt_self();
@@ -61,15 +61,15 @@
   return v3;
 }
 
-- (id)createFidoAttestationWithSecureElement:(id)a3 instanceAID:(id)a4 fidoKey:(id)a5 relyingParty:(id)a6 relyingPartyAccountHash:(id)a7 challenge:(id)a8 error:(id *)a9
+- (id)createFidoAttestationWithSecureElement:(id)element instanceAID:(id)d fidoKey:(id)key relyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge error:(id *)error
 {
-  v38 = a3;
-  v15 = a4;
-  v37 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = self;
+  elementCopy = element;
+  dCopy = d;
+  keyCopy = key;
+  partyCopy = party;
+  hashCopy = hash;
+  challengeCopy = challenge;
+  selfCopy = self;
   v20 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v22 = v21;
 
@@ -82,7 +82,7 @@
   v28 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v30 = v29;
 
-  v31 = sub_10031CD40(v38, v20, v22, v37, v36, v24, v25, v27);
+  v31 = sub_10031CD40(elementCopy, v20, v22, keyCopy, v36, v24, v25, v27);
   v33 = v32;
 
   sub_10006A178(v28, v30);
@@ -94,17 +94,17 @@
   return v34.super.isa;
 }
 
-- (id)performFidoSignatureWithSecureElement:(id)a3 instanceAID:(id)a4 loadedKey:(id)a5 relyingParty:(id)a6 relyingPartyAccountHash:(id)a7 challenge:(id)a8 ptaEndPointIdentifierForExtension:(id)a9 externalizedAuth:(id)a10 error:(id *)a11
+- (id)performFidoSignatureWithSecureElement:(id)element instanceAID:(id)d loadedKey:(id)key relyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge ptaEndPointIdentifierForExtension:(id)extension externalizedAuth:(id)self0 error:(id *)self1
 {
-  v49 = a3;
-  v44 = a4;
-  v48 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
-  v46 = self;
-  v21 = a9;
+  elementCopy = element;
+  dCopy = d;
+  keyCopy = key;
+  partyCopy = party;
+  hashCopy = hash;
+  challengeCopy = challenge;
+  authCopy = auth;
+  selfCopy = self;
+  extensionCopy = extension;
   v22 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v24 = v23;
 
@@ -116,7 +116,7 @@
 
   v29 = v22;
   v30 = v24;
-  if (v21)
+  if (extensionCopy)
   {
     v31 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v43 = v32;
@@ -132,7 +132,7 @@
   v33 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v35 = v34;
 
-  v36 = sub_100323540(v49, v29, v30, v48, v42, v47);
+  v36 = sub_100323540(elementCopy, v29, v30, keyCopy, v42, v47);
   v40 = v37;
   v41 = v36;
 
@@ -147,11 +147,11 @@
   return v38.super.isa;
 }
 
-- (id)performFidoVerificationWithPublicKey:(id)a3 signedChallenge:(id)a4 error:(id *)a5
+- (id)performFidoVerificationWithPublicKey:(id)key signedChallenge:(id)challenge error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  keyCopy = key;
+  challengeCopy = challenge;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
@@ -165,18 +165,18 @@
   return v16;
 }
 
-- (id)findKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 secureElement:(id)a6 error:(id *)a7
+- (id)findKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash secureElement:(id)element error:(id *)error
 {
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  v17 = a6;
-  v18 = self;
-  if (a5)
+  elementCopy = element;
+  selfCopy = self;
+  if (keyHash)
   {
-    v19 = a5;
-    a5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    keyHashCopy = keyHash;
+    keyHash = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v21 = v20;
   }
 
@@ -185,7 +185,7 @@
     v21 = 0xF000000000000000;
   }
 
-  sub_10031EFE8(v11, v13, v14, v16, a5, v21, a6);
+  sub_10031EFE8(v11, v13, v14, v16, keyHash, v21, element);
   v23 = v22;
   v25 = v24;
 
@@ -195,14 +195,14 @@
     sub_10030990C(0, 1, 0x20746F6E2079654BLL, 0xEE003F646E756F66, 0);
     swift_willThrow();
 
-    sub_10006A2D0(a5, v21);
-    if (a7)
+    sub_10006A2D0(keyHash, v21);
+    if (error)
     {
       v26 = _convertErrorToNSError(_:)();
 
       v27 = v26;
       v28 = 0;
-      *a7 = v26;
+      *error = v26;
     }
 
     else
@@ -215,7 +215,7 @@
   else
   {
 
-    sub_10006A2D0(a5, v21);
+    sub_10006A2D0(keyHash, v21);
     v29 = v25;
     isa = Data._bridgeToObjectiveC()().super.isa;
     sub_10006A2D0(v29, v23);
@@ -225,15 +225,15 @@
   return v28;
 }
 
-- (BOOL)storeKeyWithRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 keyData:(id)a6 error:(id *)a7
+- (BOOL)storeKeyWithRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash keyData:(id)data error:(id *)error
 {
   v25 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
-  v15 = a5;
-  v16 = a6;
-  v17 = self;
+  keyHashCopy = keyHash;
+  dataCopy = data;
+  selfCopy = self;
   v18 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v20 = v19;
 
@@ -247,14 +247,14 @@
   return 1;
 }
 
-- (BOOL)deleteKeyWithRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 error:(id *)a6
+- (BOOL)deleteKeyWithRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash error:(id *)error
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  v14 = a5;
-  v15 = self;
+  keyHashCopy = keyHash;
+  selfCopy = self;
   v16 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
 

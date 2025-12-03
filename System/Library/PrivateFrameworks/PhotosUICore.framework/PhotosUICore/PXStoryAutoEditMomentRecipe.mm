@@ -2,7 +2,7 @@
 - ($7B05257DCED3654557744F96476E9D8A)incomingTransition;
 - ($7B05257DCED3654557744F96476E9D8A)innerTransition;
 - (PXStoryAutoEditMomentRecipe)init;
-- (PXStoryAutoEditMomentRecipe)initWithRecipeType:(unint64_t)a3 incomingTransition:(id *)a4 innerTransition:(id *)a5 motion:(id *)a6;
+- (PXStoryAutoEditMomentRecipe)initWithRecipeType:(unint64_t)type incomingTransition:(id *)transition innerTransition:(id *)innerTransition motion:(id *)motion;
 - (id)description;
 @end
 
@@ -51,22 +51,22 @@
   return v11;
 }
 
-- (PXStoryAutoEditMomentRecipe)initWithRecipeType:(unint64_t)a3 incomingTransition:(id *)a4 innerTransition:(id *)a5 motion:(id *)a6
+- (PXStoryAutoEditMomentRecipe)initWithRecipeType:(unint64_t)type incomingTransition:(id *)transition innerTransition:(id *)innerTransition motion:(id *)motion
 {
   v14.receiver = self;
   v14.super_class = PXStoryAutoEditMomentRecipe;
   result = [(PXStoryAutoEditMomentRecipe *)&v14 init];
   if (result)
   {
-    result->_recipeType = a3;
-    v11 = *&a4->var0;
-    result->_incomingTransition.settings = a4->var2;
+    result->_recipeType = type;
+    v11 = *&transition->var0;
+    result->_incomingTransition.settings = transition->var2;
     *&result->_incomingTransition.kind = v11;
-    v12 = *&a5->var0;
-    result->_innerTransition.settings = a5->var2;
+    v12 = *&innerTransition->var0;
+    result->_innerTransition.settings = innerTransition->var2;
     *&result->_innerTransition.kind = v12;
-    v13 = *&a6->var0;
-    result->_motion.settings.pan.relativeMotion = a6->var1.var0.var1;
+    v13 = *&motion->var0;
+    result->_motion.settings.pan.relativeMotion = motion->var1.var0.var1;
     *&result->_motion.style = v13;
   }
 
@@ -75,8 +75,8 @@
 
 - (PXStoryAutoEditMomentRecipe)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryAutoEditClip.m" lineNumber:417 description:{@"%s is not available as initializer", "-[PXStoryAutoEditMomentRecipe init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryAutoEditClip.m" lineNumber:417 description:{@"%s is not available as initializer", "-[PXStoryAutoEditMomentRecipe init]"}];
 
   abort();
 }

@@ -1,8 +1,8 @@
 @interface FCWidgetConfig
-- (FCWidgetConfig)initWithCoder:(id)a3;
-- (FCWidgetConfig)initWithConfigDictionary:(id)a3;
-- (FCWidgetConfig)initWithWidgetConfig:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FCWidgetConfig)initWithCoder:(id)coder;
+- (FCWidgetConfig)initWithConfigDictionary:(id)dictionary;
+- (FCWidgetConfig)initWithWidgetConfig:(id)config;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)forYouBackgroundMinimumUpdateInterval;
 - (int64_t)minimumArticleExposureDurationToBePreseen;
 - (int64_t)smallWidgetSystemHoneymoonDuration;
@@ -16,20 +16,20 @@
 - (int64_t)widgetSystemReloadJitterMax;
 - (int64_t)widgetSystemReloadJitterMaxHoneymoon;
 - (unsigned)minimumNumberOfTimesPreseenToBeSeen;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCWidgetConfig
 
-- (FCWidgetConfig)initWithWidgetConfig:(id)a3
+- (FCWidgetConfig)initWithWidgetConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v9.receiver = self;
   v9.super_class = FCWidgetConfig;
   v5 = [(FCWidgetConfig *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configCopy copy];
     pbWidgetConfig = v5->_pbWidgetConfig;
     v5->_pbWidgetConfig = v6;
   }
@@ -37,15 +37,15 @@
   return v5;
 }
 
-- (FCWidgetConfig)initWithConfigDictionary:(id)a3
+- (FCWidgetConfig)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = FCWidgetConfig;
   v5 = [(FCWidgetConfig *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     configDictionary = v5->_configDictionary;
     v5->_configDictionary = v6;
   }
@@ -55,170 +55,170 @@
 
 - (int64_t)forYouBackgroundMinimumUpdateInterval
 {
-  v3 = [(FCWidgetConfig *)self pbWidgetConfig];
+  pbWidgetConfig = [(FCWidgetConfig *)self pbWidgetConfig];
 
-  if (v3)
+  if (pbWidgetConfig)
   {
-    v4 = [(FCWidgetConfig *)self pbWidgetConfig];
-    v5 = [v4 forYouBackgroundMinimumUpdateInterval];
+    pbWidgetConfig2 = [(FCWidgetConfig *)self pbWidgetConfig];
+    forYouBackgroundMinimumUpdateInterval = [pbWidgetConfig2 forYouBackgroundMinimumUpdateInterval];
   }
 
   else
   {
-    v4 = [(FCWidgetConfig *)self configDictionary];
-    v5 = FCAppConfigurationIntegerValue(v4, @"forYouBackgroundMinimumUpdateInterval", 1200);
+    pbWidgetConfig2 = [(FCWidgetConfig *)self configDictionary];
+    forYouBackgroundMinimumUpdateInterval = FCAppConfigurationIntegerValue(pbWidgetConfig2, @"forYouBackgroundMinimumUpdateInterval", 1200);
   }
 
-  v6 = v5;
+  v6 = forYouBackgroundMinimumUpdateInterval;
 
   return v6;
 }
 
 - (int64_t)minimumArticleExposureDurationToBePreseen
 {
-  v3 = [(FCWidgetConfig *)self pbWidgetConfig];
+  pbWidgetConfig = [(FCWidgetConfig *)self pbWidgetConfig];
 
-  if (v3)
+  if (pbWidgetConfig)
   {
-    v4 = [(FCWidgetConfig *)self pbWidgetConfig];
-    v5 = [v4 minimumArticleExposureDurationToBePreseen];
+    pbWidgetConfig2 = [(FCWidgetConfig *)self pbWidgetConfig];
+    minimumArticleExposureDurationToBePreseen = [pbWidgetConfig2 minimumArticleExposureDurationToBePreseen];
   }
 
   else
   {
-    v4 = [(FCWidgetConfig *)self configDictionary];
-    v5 = FCAppConfigurationIntegerValue(v4, @"minimumArticleExposureDurationToBePreseen", 1000);
+    pbWidgetConfig2 = [(FCWidgetConfig *)self configDictionary];
+    minimumArticleExposureDurationToBePreseen = FCAppConfigurationIntegerValue(pbWidgetConfig2, @"minimumArticleExposureDurationToBePreseen", 1000);
   }
 
-  v6 = v5;
+  v6 = minimumArticleExposureDurationToBePreseen;
 
   return v6;
 }
 
 - (unsigned)minimumNumberOfTimesPreseenToBeSeen
 {
-  v3 = [(FCWidgetConfig *)self pbWidgetConfig];
+  pbWidgetConfig = [(FCWidgetConfig *)self pbWidgetConfig];
 
-  if (v3)
+  if (pbWidgetConfig)
   {
-    v4 = [(FCWidgetConfig *)self pbWidgetConfig];
-    v5 = [v4 minimumNumberOfTimesPreseenToBeSeen];
+    pbWidgetConfig2 = [(FCWidgetConfig *)self pbWidgetConfig];
+    minimumNumberOfTimesPreseenToBeSeen = [pbWidgetConfig2 minimumNumberOfTimesPreseenToBeSeen];
   }
 
   else
   {
-    v4 = [(FCWidgetConfig *)self configDictionary];
-    v5 = FCAppConfigurationIntegerValue(v4, @"minimumNumberOfTimesPreseenToBeSeen", 2);
+    pbWidgetConfig2 = [(FCWidgetConfig *)self configDictionary];
+    minimumNumberOfTimesPreseenToBeSeen = FCAppConfigurationIntegerValue(pbWidgetConfig2, @"minimumNumberOfTimesPreseenToBeSeen", 2);
   }
 
-  return v5;
+  return minimumNumberOfTimesPreseenToBeSeen;
 }
 
 - (int64_t)widgetSystemReloadInterval
 {
-  v2 = [(FCWidgetConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"widgetSystemReloadInterval", 300);
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"widgetSystemReloadInterval", 300);
 
   return v3;
 }
 
 - (int64_t)widgetSystemReloadJitterMax
 {
-  v2 = [(FCWidgetConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"widgetSystemReloadJitterMax", 600);
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"widgetSystemReloadJitterMax", 600);
 
   return v3;
 }
 
 - (int64_t)widgetSystemHoneymoonDuration
 {
-  v2 = [(FCWidgetConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"widgetSystemHoneymoonDuration", 172800);
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"widgetSystemHoneymoonDuration", 172800);
 
   return v3;
 }
 
 - (int64_t)widgetSystemReloadIntervalHoneymoon
 {
-  v2 = [(FCWidgetConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"widgetSystemReloadIntervalHoneymoon", 300);
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"widgetSystemReloadIntervalHoneymoon", 300);
 
   return v3;
 }
 
 - (int64_t)widgetSystemReloadJitterMaxHoneymoon
 {
-  v2 = [(FCWidgetConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"widgetSystemReloadJitterMaxHoneymoon", 600);
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"widgetSystemReloadJitterMaxHoneymoon", 600);
 
   return v3;
 }
 
 - (int64_t)smallWidgetSystemReloadInterval
 {
-  v2 = [(FCWidgetConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"smallWidgetSystemReloadInterval", 7200);
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"smallWidgetSystemReloadInterval", 7200);
 
   return v3;
 }
 
 - (int64_t)smallWidgetSystemReloadJitterMax
 {
-  v2 = [(FCWidgetConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"smallWidgetSystemReloadJitterMax", 600);
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"smallWidgetSystemReloadJitterMax", 600);
 
   return v3;
 }
 
 - (int64_t)smallWidgetSystemHoneymoonDuration
 {
-  v2 = [(FCWidgetConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"smallWidgetSystemHoneymoonDuration", 172800);
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"smallWidgetSystemHoneymoonDuration", 172800);
 
   return v3;
 }
 
 - (int64_t)smallWidgetSystemReloadIntervalHoneymoon
 {
-  v2 = [(FCWidgetConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"smallWidgetSystemReloadIntervalHoneymoon", 7200);
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"smallWidgetSystemReloadIntervalHoneymoon", 7200);
 
   return v3;
 }
 
 - (int64_t)smallWidgetSystemReloadJitterMaxHoneymoon
 {
-  v2 = [(FCWidgetConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"smallWidgetSystemReloadJitterMaxHoneymoon", 600);
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"smallWidgetSystemReloadJitterMaxHoneymoon", 600);
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(FCWidgetConfig);
-  v5 = [(FCWidgetConfig *)self pbWidgetConfig];
-  [(FCWidgetConfig *)v4 setPbWidgetConfig:v5];
+  pbWidgetConfig = [(FCWidgetConfig *)self pbWidgetConfig];
+  [(FCWidgetConfig *)v4 setPbWidgetConfig:pbWidgetConfig];
 
-  v6 = [(FCWidgetConfig *)self configDictionary];
-  [(FCWidgetConfig *)v4 setConfigDictionary:v6];
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  [(FCWidgetConfig *)v4 setConfigDictionary:configDictionary];
 
   return v4;
 }
 
-- (FCWidgetConfig)initWithCoder:(id)a3
+- (FCWidgetConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FCWidgetConfig;
   v5 = [(FCWidgetConfig *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pbWidgetConfig"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pbWidgetConfig"];
     pbWidgetConfig = v5->_pbWidgetConfig;
     v5->_pbWidgetConfig = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configDictionary"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configDictionary"];
     configDictionary = v5->_configDictionary;
     v5->_configDictionary = v8;
   }
@@ -226,14 +226,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FCWidgetConfig *)self pbWidgetConfig];
-  [v4 encodeObject:v5 forKey:@"pbWidgetConfig"];
+  coderCopy = coder;
+  pbWidgetConfig = [(FCWidgetConfig *)self pbWidgetConfig];
+  [coderCopy encodeObject:pbWidgetConfig forKey:@"pbWidgetConfig"];
 
-  v6 = [(FCWidgetConfig *)self configDictionary];
-  [v4 encodeObject:v6 forKey:@"configDictionary"];
+  configDictionary = [(FCWidgetConfig *)self configDictionary];
+  [coderCopy encodeObject:configDictionary forKey:@"configDictionary"];
 }
 
 @end

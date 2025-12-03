@@ -1,30 +1,30 @@
 @interface FMDMovieProxCardMovieView
-- (FMDMovieProxCardMovieView)initWithMovieURL:(id)a3 adjustmentsURL:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (FMDMovieProxCardMovieView)initWithMovieURL:(id)l adjustmentsURL:(id)rL;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAdjustments;
 @end
 
 @implementation FMDMovieProxCardMovieView
 
-- (FMDMovieProxCardMovieView)initWithMovieURL:(id)a3 adjustmentsURL:(id)a4
+- (FMDMovieProxCardMovieView)initWithMovieURL:(id)l adjustmentsURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v15.receiver = self;
   v15.super_class = FMDMovieProxCardMovieView;
   v8 = [(FMDMovieProxCardMovieView *)&v15 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_adjustmentsURL, a4);
-    v10 = [AVPlayer playerWithURL:v6];
+    objc_storeStrong(&v8->_adjustmentsURL, rL);
+    v10 = [AVPlayer playerWithURL:lCopy];
     player = v9->_player;
     v9->_player = v10;
 
     [(AVPlayer *)v9->_player setActionAtItemEnd:2];
     v12 = v9->_player;
-    v13 = [(FMDMovieProxCardMovieView *)v9 layer];
-    [v13 setPlayer:v12];
+    layer = [(FMDMovieProxCardMovieView *)v9 layer];
+    [layer setPlayer:v12];
 
     [(FMDMovieProxCardMovieView *)v9 updateAdjustments];
   }
@@ -32,13 +32,13 @@
   return v9;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [a3 userInterfaceStyle];
+  userInterfaceStyle = [change userInterfaceStyle];
   v5 = +[UITraitCollection currentTraitCollection];
-  v6 = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [v5 userInterfaceStyle];
 
-  if (v4 != v6)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(FMDMovieProxCardMovieView *)self updateAdjustments];
@@ -48,17 +48,17 @@
 - (void)updateAdjustments
 {
   v3 = +[UITraitCollection currentTraitCollection];
-  v4 = [v3 userInterfaceStyle];
+  userInterfaceStyle = [v3 userInterfaceStyle];
 
-  if (v4 <= 2)
+  if (userInterfaceStyle <= 2)
   {
-    v5 = dword_100025F40[v4];
+    v5 = dword_100025F40[userInterfaceStyle];
   }
 
-  v8 = [(FMDMovieProxCardMovieView *)self adjustmentsURL];
+  adjustmentsURL = [(FMDMovieProxCardMovieView *)self adjustmentsURL];
   v6 = SFAdjustmentFiltersForAssetTypeAndURL();
-  v7 = [(FMDMovieProxCardMovieView *)self layer];
-  [v7 setFilters:v6];
+  layer = [(FMDMovieProxCardMovieView *)self layer];
+  [layer setFilters:v6];
 }
 
 @end

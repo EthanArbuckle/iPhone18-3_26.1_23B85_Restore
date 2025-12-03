@@ -1,23 +1,23 @@
 @interface ICQUIExtensionKitHelpers
 + (BOOL)isExtensionKitProcess;
-+ (BOOL)isExtensionKitURL:(id)a3;
++ (BOOL)isExtensionKitURL:(id)l;
 @end
 
 @implementation ICQUIExtensionKitHelpers
 
-+ (BOOL)isExtensionKitURL:(id)a3
++ (BOOL)isExtensionKitURL:(id)l
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v3 resolvingAgainstBaseURL:1];
-    v4 = [v18 queryItems];
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    v18 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:1];
+    queryItems = [v18 queryItems];
+    v5 = [queryItems countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v5)
     {
       v6 = v5;
@@ -28,15 +28,15 @@
         {
           if (*v20 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(queryItems);
           }
 
           v9 = *(*(&v19 + 1) + 8 * i);
-          v10 = [v9 name];
-          if ([v10 isEqualToString:@"useExtensionKit"])
+          name = [v9 name];
+          if ([name isEqualToString:@"useExtensionKit"])
           {
-            v11 = [v9 value];
-            v12 = [v11 isEqualToString:@"false"];
+            value = [v9 value];
+            v12 = [value isEqualToString:@"false"];
 
             if (v12)
             {
@@ -44,7 +44,7 @@
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v24 = v3;
+                v24 = lCopy;
                 _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "Upsell URL ExtensionKit query param is set to false in URL: %@", buf, 0xCu);
               }
 
@@ -58,7 +58,7 @@
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v6 = [queryItems countByEnumeratingWithState:&v19 objects:v25 count:16];
         if (v6)
         {
           continue;
@@ -68,12 +68,12 @@
       }
     }
 
-    v4 = _ICQGetLogSystem();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    queryItems = _ICQGetLogSystem();
+    if (os_log_type_enabled(queryItems, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v3;
-      _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "Upsell URL does not contain ExtensionKit query param, defaulting to new ExtensionKit flow. URL: %@", buf, 0xCu);
+      v24 = lCopy;
+      _os_log_impl(&dword_275623000, queryItems, OS_LOG_TYPE_DEFAULT, "Upsell URL does not contain ExtensionKit query param, defaulting to new ExtensionKit flow. URL: %@", buf, 0xCu);
     }
 
     v13 = 1;
@@ -97,9 +97,9 @@ LABEL_22:
 
 + (BOOL)isExtensionKitProcess
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.iCloudQuotaUI.RemoteiCloudQuotaUI"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.iCloudQuotaUI.RemoteiCloudQuotaUI"];
 
   return v4;
 }

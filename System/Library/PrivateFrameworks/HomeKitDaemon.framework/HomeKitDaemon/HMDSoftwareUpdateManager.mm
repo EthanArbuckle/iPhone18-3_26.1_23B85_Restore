@@ -3,10 +3,10 @@
 - (HMDAppleMediaAccessory)accessory;
 - (HMDSoftwareUpdateManager)init;
 - (id)messageDestination;
-- (void)_handleStart:(id)a3;
-- (void)_handleStop:(id)a3;
+- (void)_handleStart:(id)start;
+- (void)_handleStop:(id)stop;
 - (void)registerForMessages;
-- (void)startUpdate:(id)a3 completionHandler:(id)a4;
+- (void)startUpdate:(id)update completionHandler:(id)handler;
 @end
 
 @implementation HMDSoftwareUpdateManager
@@ -21,27 +21,27 @@
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x277D0F820]);
-  v4 = [(HMDSoftwareUpdateManager *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMDSoftwareUpdateManager *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
 
-- (void)startUpdate:(id)a3 completionHandler:(id)a4
+- (void)startUpdate:(id)update completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDSoftwareUpdateManager *)self clientQueue];
+  updateCopy = update;
+  handlerCopy = handler;
+  clientQueue = [(HMDSoftwareUpdateManager *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__HMDSoftwareUpdateManager_startUpdate_completionHandler___block_invoke;
   block[3] = &unk_278689F98;
-  v12 = v6;
-  v13 = v7;
+  v12 = updateCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = updateCopy;
+  v10 = handlerCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __58__HMDSoftwareUpdateManager_startUpdate_completionHandler___block_invoke(id *a1)
@@ -177,47 +177,47 @@ void __58__HMDSoftwareUpdateManager_startUpdate_completionHandler___block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStop:(id)a3
+- (void)_handleStop:(id)stop
 {
-  v8 = a3;
-  v4 = [v8 transport];
-  if (v4)
+  stopCopy = stop;
+  transport = [stopCopy transport];
+  if (transport)
   {
-    v5 = [(HMDSoftwareUpdateManager *)self activeClients];
-    [v5 removeObject:v4];
+    activeClients = [(HMDSoftwareUpdateManager *)self activeClients];
+    [activeClients removeObject:transport];
   }
 
-  v6 = [v8 responseHandler];
+  responseHandler = [stopCopy responseHandler];
 
-  if (v6)
+  if (responseHandler)
   {
-    v7 = [v8 responseHandler];
-    v7[2](v7, 0, 0);
+    responseHandler2 = [stopCopy responseHandler];
+    responseHandler2[2](responseHandler2, 0, 0);
   }
 }
 
-- (void)_handleStart:(id)a3
+- (void)_handleStart:(id)start
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 transport];
-  if (v5)
+  startCopy = start;
+  transport = [startCopy transport];
+  if (transport)
   {
-    v6 = [(HMDSoftwareUpdateManager *)self activeClients];
-    [v6 addObject:v5];
+    activeClients = [(HMDSoftwareUpdateManager *)self activeClients];
+    [activeClients addObject:transport];
   }
 
-  v7 = [v4 responseHandler];
+  responseHandler = [startCopy responseHandler];
 
-  if (v7)
+  if (responseHandler)
   {
-    v8 = [(HMDSoftwareUpdateManager *)self accessory];
-    v9 = [v8 softwareUpdate];
+    accessory = [(HMDSoftwareUpdateManager *)self accessory];
+    softwareUpdate = [accessory softwareUpdate];
 
-    if (v9)
+    if (softwareUpdate)
     {
       v14 = *MEMORY[0x277CD1130];
-      v10 = encodeRootObjectForIncomingXPCMessage(v9, 0);
+      v10 = encodeRootObjectForIncomingXPCMessage(softwareUpdate, 0);
       v15[0] = v10;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     }
@@ -227,8 +227,8 @@ void __58__HMDSoftwareUpdateManager_startUpdate_completionHandler___block_invoke
       v11 = 0;
     }
 
-    v12 = [v4 responseHandler];
-    (v12)[2](v12, 0, v11);
+    responseHandler2 = [startCopy responseHandler];
+    (responseHandler2)[2](responseHandler2, 0, v11);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -237,17 +237,17 @@ void __58__HMDSoftwareUpdateManager_startUpdate_completionHandler___block_invoke
 - (void)registerForMessages
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSoftwareUpdateManager *)self messageDispatcher];
+  messageDispatcher = [(HMDSoftwareUpdateManager *)self messageDispatcher];
   v4 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v5 = *MEMORY[0x277CD1108];
   v11[0] = v4;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  [v3 registerForMessage:v5 receiver:self policies:v6 selector:sel__handleStart_];
+  [messageDispatcher registerForMessage:v5 receiver:self policies:v6 selector:sel__handleStart_];
 
   v7 = *MEMORY[0x277CD1118];
   v10 = v4;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
-  [v3 registerForMessage:v7 receiver:self policies:v8 selector:sel__handleStop_];
+  [messageDispatcher registerForMessage:v7 receiver:self policies:v8 selector:sel__handleStop_];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -263,9 +263,9 @@ void __58__HMDSoftwareUpdateManager_startUpdate_completionHandler___block_invoke
     if (v3)
     {
       v4 = HMDispatchQueueNameString();
-      v5 = [v4 UTF8String];
+      uTF8String = [v4 UTF8String];
       v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v7 = dispatch_queue_create(v5, v6);
+      v7 = dispatch_queue_create(uTF8String, v6);
       clientQueue = v3->_clientQueue;
       v3->_clientQueue = v7;
 
@@ -274,15 +274,15 @@ void __58__HMDSoftwareUpdateManager_startUpdate_completionHandler___block_invoke
       identifier = v3->_identifier;
       v3->_identifier = v10;
 
-      v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       activeClients = v3->_activeClients;
-      v3->_activeClients = v12;
+      v3->_activeClients = weakObjectsHashTable;
 
       [(HMDSoftwareUpdateManager *)v3 registerForMessages];
     }
 
     self = v3;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -298,17 +298,17 @@ void __58__HMDSoftwareUpdateManager_startUpdate_completionHandler___block_invoke
     }
 
     objc_autoreleasePoolPop(v15);
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
 + (BOOL)isSupported
 {
-  v2 = [MEMORY[0x277D0F8E8] productInfo];
-  v3 = [v2 productClass] == 6;
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  v3 = [productInfo productClass] == 6;
 
   return v3;
 }

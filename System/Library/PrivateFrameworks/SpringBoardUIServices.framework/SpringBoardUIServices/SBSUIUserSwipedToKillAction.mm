@@ -1,24 +1,24 @@
 @interface SBSUIUserSwipedToKillAction
-+ (id)userSwipedToKillActionWithTimeoutHandler:(id)a3;
++ (id)userSwipedToKillActionWithTimeoutHandler:(id)handler;
 - (void)acknowledge;
 @end
 
 @implementation SBSUIUserSwipedToKillAction
 
-+ (id)userSwipedToKillActionWithTimeoutHandler:(id)a3
++ (id)userSwipedToKillActionWithTimeoutHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x1E698E5F8];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__SBSUIUserSwipedToKillAction_userSwipedToKillActionWithTimeoutHandler___block_invoke;
   v10[3] = &unk_1E789E448;
-  v11 = v4;
-  v6 = v4;
+  v11 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [v5 responderWithHandler:v10];
   [v7 setQueue:MEMORY[0x1E69E96A0]];
   [v7 setTimeout:{dispatch_time(0, 100000000)}];
-  v8 = [[a1 alloc] initWithInfo:0 responder:v7];
+  v8 = [[self alloc] initWithInfo:0 responder:v7];
 
   return v8;
 }
@@ -37,8 +37,8 @@ void __72__SBSUIUserSwipedToKillAction_userSwipedToKillActionWithTimeoutHandler_
 
 - (void)acknowledge
 {
-  v3 = [MEMORY[0x1E698E600] response];
-  [(SBSUIUserSwipedToKillAction *)self sendResponse:v3];
+  response = [MEMORY[0x1E698E600] response];
+  [(SBSUIUserSwipedToKillAction *)self sendResponse:response];
 }
 
 @end

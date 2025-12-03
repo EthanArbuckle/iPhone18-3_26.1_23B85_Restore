@@ -1,36 +1,36 @@
 @interface WFPBRemoteWidgetConfigurationEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBRemoteWidgetConfigurationEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[2])
+  fromCopy = from;
+  if (fromCopy[2])
   {
     [(WFPBRemoteWidgetConfigurationEvent *)self setKey:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(WFPBRemoteWidgetConfigurationEvent *)self setBundleIdentifier:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(WFPBRemoteWidgetConfigurationEvent *)self setWidgetIdentifier:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(WFPBRemoteWidgetConfigurationEvent *)self setSizeClass:?];
   }
@@ -44,13 +44,13 @@
   return v4 ^ v5 ^ [(NSString *)self->_sizeClass hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | v4[2])) || -[NSString isEqual:](key, "isEqual:")) && ((bundleIdentifier = self->_bundleIdentifier, !(bundleIdentifier | v4[1])) || -[NSString isEqual:](bundleIdentifier, "isEqual:")) && ((widgetIdentifier = self->_widgetIdentifier, !(widgetIdentifier | v4[4])) || -[NSString isEqual:](widgetIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | equalCopy[2])) || -[NSString isEqual:](key, "isEqual:")) && ((bundleIdentifier = self->_bundleIdentifier, !(bundleIdentifier | equalCopy[1])) || -[NSString isEqual:](bundleIdentifier, "isEqual:")) && ((widgetIdentifier = self->_widgetIdentifier, !(widgetIdentifier | equalCopy[4])) || -[NSString isEqual:](widgetIdentifier, "isEqual:")))
   {
     sizeClass = self->_sizeClass;
-    if (sizeClass | v4[3])
+    if (sizeClass | equalCopy[3])
     {
       v9 = [(NSString *)sizeClass isEqual:?];
     }
@@ -69,94 +69,94 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_widgetIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_widgetIdentifier copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSString *)self->_sizeClass copyWithZone:a3];
+  v12 = [(NSString *)self->_sizeClass copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v5;
+    [toCopy setKey:?];
+    toCopy = v5;
   }
 
   if (self->_bundleIdentifier)
   {
     [v5 setBundleIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_widgetIdentifier)
   {
     [v5 setWidgetIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sizeClass)
   {
     [v5 setSizeClass:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_widgetIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sizeClass)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   bundleIdentifier = self->_bundleIdentifier;
@@ -186,8 +186,8 @@
   v8.receiver = self;
   v8.super_class = WFPBRemoteWidgetConfigurationEvent;
   v4 = [(WFPBRemoteWidgetConfigurationEvent *)&v8 description];
-  v5 = [(WFPBRemoteWidgetConfigurationEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBRemoteWidgetConfigurationEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

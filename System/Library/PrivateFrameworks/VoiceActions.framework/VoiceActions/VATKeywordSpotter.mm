@@ -1,75 +1,75 @@
 @interface VATKeywordSpotter
-+ (id)pronounciationsFor:(id)a3 wordSeparator:(id)a4;
-- (BOOL)_isDetectionValidForResult:(void *)a3 reason:(id *)a4;
++ (id)pronounciationsFor:(id)for wordSeparator:(id)separator;
+- (BOOL)_isDetectionValidForResult:(void *)result reason:(id *)reason;
 - (BOOL)audioDebuggingEnabled;
 - (BOOL)batchDecodeEnabled;
 - (BOOL)duringKeywordSilenceCheckEnabled;
 - (BOOL)postKeywordSilenceCheckEnabled;
 - (BOOL)preKeywordSilenceCheckEnabled;
 - (BOOL)secondPassEnabled;
-- (VATKeywordSpotter)initWithConfig:(id)a3 keywords:(id)a4 delegate:(id)a5;
-- (VATKeywordSpotter)initWithConfig:(id)a3 keywordsWithPhonemes:(id)a4 delegate:(id)a5;
+- (VATKeywordSpotter)initWithConfig:(id)config keywords:(id)keywords delegate:(id)delegate;
+- (VATKeywordSpotter)initWithConfig:(id)config keywordsWithPhonemes:(id)phonemes delegate:(id)delegate;
 - (id).cxx_construct;
-- (id)_handleAudioDebuggingForKeyword:(id)a3 result:(void *)a4 buffer:(id)a5;
-- (id)_handleSecondPass:(id)a3 expectedKeyword:(id)a4 duration:(double *)a5 secondPassAudio:(id *)a6;
-- (id)_replaceModelPathWithAbsolutePathForTest:(id)a3;
+- (id)_handleAudioDebuggingForKeyword:(id)keyword result:(void *)result buffer:(id)buffer;
+- (id)_handleSecondPass:(id)pass expectedKeyword:(id)keyword duration:(double *)duration secondPassAudio:(id *)audio;
+- (id)_replaceModelPathWithAbsolutePathForTest:(id)test;
 - (id)_thresholdsForAllPhrases;
-- (void)_acousticCallback:(id)a3 rows:(int64_t)a4 cols:(int64_t)a5;
-- (void)_handleValidResult:(void *)a3;
-- (void)_initializeDecoderForKeywordsWithPhonemes:(id)a3;
-- (void)_postKeywordSilenceProcessingWithResults:(id)a3 rows:(int64_t)a4 cols:(int64_t)a5;
-- (void)addAudioSamples:(const void *)a3 count:(int)a4 isFloat:(BOOL)a5;
-- (void)addAudioSamples:(const void *)a3 count:(int)a4 isFloat:(BOOL)a5 filePath:(id)a6 byteCount:(int64_t)a7 currentDuration:(double)a8;
+- (void)_acousticCallback:(id)callback rows:(int64_t)rows cols:(int64_t)cols;
+- (void)_handleValidResult:(void *)result;
+- (void)_initializeDecoderForKeywordsWithPhonemes:(id)phonemes;
+- (void)_postKeywordSilenceProcessingWithResults:(id)results rows:(int64_t)rows cols:(int64_t)cols;
+- (void)addAudioSamples:(const void *)samples count:(int)count isFloat:(BOOL)float;
+- (void)addAudioSamples:(const void *)samples count:(int)count isFloat:(BOOL)float filePath:(id)path byteCount:(int64_t)byteCount currentDuration:(double)duration;
 - (void)dealloc;
-- (void)setSecondPassEnabled:(BOOL)a3 customAssetPath:(id)a4;
-- (void)setStreamingMode:(BOOL)a3;
+- (void)setSecondPassEnabled:(BOOL)enabled customAssetPath:(id)path;
+- (void)setStreamingMode:(BOOL)mode;
 - (void)start;
 - (void)stop;
-- (void)updateWithKeywords:(id)a3;
-- (void)updateWithKeywordsWithPhonemes:(id)a3;
+- (void)updateWithKeywords:(id)keywords;
+- (void)updateWithKeywordsWithPhonemes:(id)phonemes;
 @end
 
 @implementation VATKeywordSpotter
 
 - (BOOL)secondPassEnabled
 {
-  v2 = [(VATKeywordSpotter *)self configuration];
-  v3 = [v2 runtime];
-  v4 = [v3 secondPass];
+  configuration = [(VATKeywordSpotter *)self configuration];
+  runtime = [configuration runtime];
+  secondPass = [runtime secondPass];
 
-  return v4;
+  return secondPass;
 }
 
-- (void)setSecondPassEnabled:(BOOL)a3 customAssetPath:(id)a4
+- (void)setSecondPassEnabled:(BOOL)enabled customAssetPath:(id)path
 {
-  [(VATKeywordSpotter *)self setCustomSecondPassModelPath:a4];
+  [(VATKeywordSpotter *)self setCustomSecondPassModelPath:path];
 
   MEMORY[0x2821F9670](self, sel_setSecondPassEnabled_);
 }
 
 - (BOOL)batchDecodeEnabled
 {
-  v2 = [(VATKeywordSpotter *)self configuration];
-  v3 = [v2 runtime];
-  v4 = [v3 batchDecode];
+  configuration = [(VATKeywordSpotter *)self configuration];
+  runtime = [configuration runtime];
+  batchDecode = [runtime batchDecode];
 
-  return v4;
+  return batchDecode;
 }
 
 - (BOOL)audioDebuggingEnabled
 {
-  v2 = [(VATKeywordSpotter *)self configuration];
-  v3 = [v2 runtime];
-  v4 = [v3 audioDebug];
+  configuration = [(VATKeywordSpotter *)self configuration];
+  runtime = [configuration runtime];
+  audioDebug = [runtime audioDebug];
 
-  return v4;
+  return audioDebug;
 }
 
-- (id)_handleSecondPass:(id)a3 expectedKeyword:(id)a4 duration:(double *)a5 secondPassAudio:(id *)a6
+- (id)_handleSecondPass:(id)pass expectedKeyword:(id)keyword duration:(double *)duration secondPassAudio:(id *)audio
 {
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  *a6 = [0 copy];
-  *a5 = 0.0;
+  *audio = [0 copy];
+  *duration = 0.0;
 
   return v8;
 }
@@ -108,68 +108,68 @@
   return v3;
 }
 
-- (id)_replaceModelPathWithAbsolutePathForTest:(id)a3
+- (id)_replaceModelPathWithAbsolutePathForTest:(id)test
 {
-  v4 = a3;
-  v5 = [(FeatureExtractObjc *)self->fe configuration];
-  [v5 _replaceModelPathWithCustomModelPathForTestWithPrefix:v4];
+  testCopy = test;
+  configuration = [(FeatureExtractObjc *)self->fe configuration];
+  [configuration _replaceModelPathWithCustomModelPathForTestWithPrefix:testCopy];
 
-  v6 = [(FeatureExtractObjc *)self->fe configuration];
-  v7 = [v6 description];
+  configuration2 = [(FeatureExtractObjc *)self->fe configuration];
+  v7 = [configuration2 description];
 
   return v7;
 }
 
-- (id)_handleAudioDebuggingForKeyword:(id)a3 result:(void *)a4 buffer:(id)a5
+- (id)_handleAudioDebuggingForKeyword:(id)keyword result:(void *)result buffer:(id)buffer
 {
-  v8 = a3;
-  v9 = a5;
+  keywordCopy = keyword;
+  bufferCopy = buffer;
   fe = self->fe;
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f", *(a4 + 6)];
-  v12 = [(FeatureExtractObjc *)fe saveAudioBufferToFileWithPcmBuffer:v9 keyword:v8 score:v11 duration:*(a4 + 13)];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f", *(result + 6)];
+  v12 = [(FeatureExtractObjc *)fe saveAudioBufferToFileWithPcmBuffer:bufferCopy keyword:keywordCopy score:v11 duration:*(result + 13)];
 
   return v12;
 }
 
-- (void)_handleValidResult:(void *)a3
+- (void)_handleValidResult:(void *)result
 {
   v111 = *MEMORY[0x277D85DE8];
-  v3 = *a3;
-  if (*(*a3 + 23) < 0)
+  v3 = *result;
+  if (*(*result + 23) < 0)
   {
     v3 = *v3;
   }
 
   v93 = [MEMORY[0x277CCACA8] stringWithCString:v3 encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
   v103 = 0.0;
-  v4 = *(*a3 + 32);
-  v5 = [(VATKeywordSpotter *)self configuration];
-  v6 = [v5 decoder];
-  v7 = [v6 audioCapture];
-  v8 = [v7 leftOfStartFrameOffset];
+  v4 = *(*result + 32);
+  configuration = [(VATKeywordSpotter *)self configuration];
+  decoder = [configuration decoder];
+  audioCapture = [decoder audioCapture];
+  leftOfStartFrameOffset = [audioCapture leftOfStartFrameOffset];
 
-  v9 = *(*a3 + 36);
-  v10 = [(VATKeywordSpotter *)self configuration];
-  v11 = [v10 decoder];
-  v12 = [v11 audioCapture];
-  v13 = v9 + [v12 rightOfEndFrameOffset];
+  v9 = *(*result + 36);
+  configuration2 = [(VATKeywordSpotter *)self configuration];
+  decoder2 = [configuration2 decoder];
+  audioCapture2 = [decoder2 audioCapture];
+  v13 = v9 + [audioCapture2 rightOfEndFrameOffset];
 
   v14 = v13;
   v102 = v13;
-  v15 = [(VATKeywordSpotter *)self configuration];
-  v16 = [v15 runtime];
-  v88 = (v4 - v8);
-  if ([v16 secondPass])
+  configuration3 = [(VATKeywordSpotter *)self configuration];
+  runtime = [configuration3 runtime];
+  v88 = (v4 - leftOfStartFrameOffset);
+  if ([runtime secondPass])
   {
   }
 
   else
   {
-    v17 = [(VATKeywordSpotter *)self configuration];
-    v18 = [v17 runtime];
-    v19 = [v18 audioDebug];
+    configuration4 = [(VATKeywordSpotter *)self configuration];
+    runtime2 = [configuration4 runtime];
+    audioDebug = [runtime2 audioDebug];
 
-    if (!v19)
+    if (!audioDebug)
     {
       v91 = 0;
 LABEL_44:
@@ -180,13 +180,13 @@ LABEL_44:
   }
 
   v90 = [(FeatureExtractObjc *)self->fe audioForKeywordWithStartFrame:v88 endFrame:v14 actualEndFrame:&v102];
-  v20 = [(VATKeywordSpotter *)self configuration];
-  v21 = [v20 runtime];
-  v22 = [v21 secondPass];
+  configuration5 = [(VATKeywordSpotter *)self configuration];
+  runtime3 = [configuration5 runtime];
+  secondPass = [runtime3 secondPass];
 
   if (v90)
   {
-    v23 = v22;
+    v23 = secondPass;
   }
 
   else
@@ -201,7 +201,7 @@ LABEL_44:
 
   else
   {
-    v27 = [(VATKeywordSpotter *)self _handleAudioDebuggingForKeyword:v93 result:*a3 buffer:v90];
+    v27 = [(VATKeywordSpotter *)self _handleAudioDebuggingForKeyword:v93 result:*result buffer:v90];
     v28 = _VATLoggingFacility(kVATLogCategoryFramework);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
@@ -213,11 +213,11 @@ LABEL_44:
     v91 = v27;
   }
 
-  v29 = [(VATKeywordSpotter *)self configuration];
-  v30 = [v29 runtime];
-  v31 = [v30 secondPass];
+  configuration6 = [(VATKeywordSpotter *)self configuration];
+  runtime4 = [configuration6 runtime];
+  secondPass2 = [runtime4 secondPass];
 
-  if (!v31)
+  if (!secondPass2)
   {
     obj = 0;
 LABEL_45:
@@ -242,21 +242,21 @@ LABEL_45:
   v87 = v101;
   if (v87)
   {
-    v32 = [(VATKeywordSpotter *)self configuration];
-    v33 = [v32 runtime];
-    v34 = [v33 audioDebug];
+    configuration7 = [(VATKeywordSpotter *)self configuration];
+    runtime5 = [configuration7 runtime];
+    audioDebug2 = [runtime5 audioDebug];
 
-    if (v34)
+    if (audioDebug2)
     {
       v35 = [objc_alloc(MEMORY[0x277CB83A8]) initWithStreamDescription:&unk_272387710];
       v36 = [objc_alloc(MEMORY[0x277CB83C8]) initWithPCMFormat:v35 frameCapacity:objc_msgSend(v87, "length") / *(objc_msgSend(v35, "streamDescription") + 24)];
       [v36 setFrameLength:{objc_msgSend(v36, "frameCapacity")}];
-      v37 = [v36 frameCapacity];
-      *([v36 mutableAudioBufferList] + 12) = v37;
+      frameCapacity = [v36 frameCapacity];
+      *([v36 mutableAudioBufferList] + 12) = frameCapacity;
       v38 = *([v36 mutableAudioBufferList] + 16);
       v39 = v87;
       memcpy(v38, [v87 bytes], 2 * objc_msgSend(v36, "frameCapacity"));
-      v40 = [(VATKeywordSpotter *)self _handleAudioDebuggingForKeyword:v93 result:*a3 buffer:v36];
+      v40 = [(VATKeywordSpotter *)self _handleAudioDebuggingForKeyword:v93 result:*result buffer:v36];
 
       v41 = _VATLoggingFacility(kVATLogCategoryFramework);
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
@@ -272,8 +272,8 @@ LABEL_45:
 
   v86 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"_[0-9]+$" options:0 error:0];
   v84 = [v86 stringByReplacingMatchesInString:v93 options:0 range:0 withTemplate:{objc_msgSend(v93, "length"), &stru_2881908A8}];
-  v42 = [v84 lowercaseString];
-  v43 = [v42 stringByReplacingOccurrencesOfString:@"_" withString:&stru_2881908A8];
+  lowercaseString = [v84 lowercaseString];
+  v43 = [lowercaseString stringByReplacingOccurrencesOfString:@"_" withString:&stru_2881908A8];
 
   v96 = [v43 stringByReplacingOccurrencesOfString:@" " withString:&stru_2881908A8];
 
@@ -298,8 +298,8 @@ LABEL_45:
         }
 
         v48 = *(*(&v97 + 1) + 8 * i);
-        v49 = [v48 lowercaseString];
-        v50 = [v49 stringByReplacingOccurrencesOfString:@" " withString:&stru_2881908A8];
+        lowercaseString2 = [v48 lowercaseString];
+        v50 = [lowercaseString2 stringByReplacingOccurrencesOfString:@" " withString:&stru_2881908A8];
 
         v51 = _VATLoggingFacility(kVATLogCategoryFramework);
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
@@ -400,33 +400,33 @@ LABEL_46:
   {
     v58 = self->_delegate;
     v59 = [VATKeywordSpotterResult alloc];
-    LODWORD(v60) = *(*a3 + 24);
-    LODWORD(v61) = *(*a3 + 56);
-    v62 = [(VATKeywordSpotterResult *)v59 initWithKeyword:v93 cost:*(*a3 + 32) threshold:*(*a3 + 36) start:*(*a3 + 52) end:v60 duration:v61];
+    LODWORD(v60) = *(*result + 24);
+    LODWORD(v61) = *(*result + 56);
+    v62 = [(VATKeywordSpotterResult *)v59 initWithKeyword:v93 cost:*(*result + 32) threshold:*(*result + 36) start:*(*result + 52) end:v60 duration:v61];
     [(VATKeywordSpotterResult *)v62 setAudioFileURL:v91];
-    v63 = [(VATKeywordSpotter *)self configuration];
-    v64 = [v63 runtime];
-    v65 = [v64 secondPass];
+    configuration8 = [(VATKeywordSpotter *)self configuration];
+    runtime6 = [configuration8 runtime];
+    secondPass3 = [runtime6 secondPass];
 
-    if (v65)
+    if (secondPass3)
     {
       [(VATKeywordSpotterResult *)v62 setSecondPassResult:v95];
       [(VATKeywordSpotterResult *)v62 setSecondPassDuration:v103];
     }
 
-    v66 = [(VATKeywordSpotter *)self configuration];
-    v67 = [v66 runtime];
-    if ([v67 secondPass])
+    configuration9 = [(VATKeywordSpotter *)self configuration];
+    runtime7 = [configuration9 runtime];
+    if ([runtime7 secondPass])
     {
     }
 
     else
     {
-      v72 = [(VATKeywordSpotter *)self configuration];
-      v73 = [v72 runtime];
-      v74 = [v73 audioDebug];
+      configuration10 = [(VATKeywordSpotter *)self configuration];
+      runtime8 = [configuration10 runtime];
+      audioDebug3 = [runtime8 audioDebug];
 
-      if (!v74)
+      if (!audioDebug3)
       {
 LABEL_56:
         [(VATKeywordSpotterDelegate *)v58 keywordSpotted:v62 nbestResults:0 filePath:self->_filePath fileByteCount:self->_fileByteCount fileDuration:self->_fileCurrentDuration];
@@ -443,8 +443,8 @@ LABEL_56:
 
   v68 = objc_opt_respondsToSelector();
   v69 = self->_delegate;
-  v70 = *a3;
-  v71 = *(*a3 + 24);
+  v70 = *result;
+  v71 = *(*result + 24);
   if (v68)
   {
     [(VATKeywordSpotterDelegate *)v69 keywordSpotted:v93 cost:*(v70 + 32) threshold:*(v70 + 36) start:v71 end:*(v70 + 56)];
@@ -460,32 +460,32 @@ LABEL_64:
   v83 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isDetectionValidForResult:(void *)a3 reason:(id *)a4
+- (BOOL)_isDetectionValidForResult:(void *)result reason:(id *)reason
 {
   v97 = *MEMORY[0x277D85DE8];
-  v81 = [(VATKeywordSpotter *)self preKeywordSilenceCheckEnabled];
-  v5 = [(VATKeywordSpotter *)self configuration];
-  v6 = [v5 runtime];
-  v7 = [v6 duringKeywordSilence];
+  preKeywordSilenceCheckEnabled = [(VATKeywordSpotter *)self preKeywordSilenceCheckEnabled];
+  configuration = [(VATKeywordSpotter *)self configuration];
+  runtime = [configuration runtime];
+  duringKeywordSilence = [runtime duringKeywordSilence];
 
-  v8 = [(VATKeywordSpotter *)self configuration];
-  v9 = [v8 runtime];
-  v10 = [v9 duringKeywordSilence];
+  configuration2 = [(VATKeywordSpotter *)self configuration];
+  runtime2 = [configuration2 runtime];
+  duringKeywordSilence2 = [runtime2 duringKeywordSilence];
 
-  if (v10)
+  if (duringKeywordSilence2)
   {
     floatFstDecoder = self->_floatFstDecoder;
-    v12 = *(a3 + 8);
-    v13 = *(a3 + 9);
-    v78 = [(VATKeywordSpotter *)self configuration];
-    v14 = [v78 decoder];
-    v15 = [v14 duringKeywordSilence];
-    [v15 minPercentageOfNonSilenceFrames];
+    v12 = *(result + 8);
+    v13 = *(result + 9);
+    configuration3 = [(VATKeywordSpotter *)self configuration];
+    decoder = [configuration3 decoder];
+    duringKeywordSilence3 = [decoder duringKeywordSilence];
+    [duringKeywordSilence3 minPercentageOfNonSilenceFrames];
     v17 = v16;
-    v18 = [(VATKeywordSpotter *)self configuration];
-    v19 = [v18 decoder];
-    v20 = [v19 duringKeywordSilence];
-    [v20 silenceProbability];
+    configuration4 = [(VATKeywordSpotter *)self configuration];
+    decoder2 = [configuration4 decoder];
+    duringKeywordSilence4 = [decoder2 duringKeywordSilence];
+    [duringKeywordSilence4 silenceProbability];
     v22 = floatFstDecoder[8];
     LODWORD(v23) = v12 - v22;
     v24 = v13 - v22;
@@ -515,14 +515,14 @@ LABEL_64:
     v28 = ((v17 * v27) + 0.5);
     v26 = v25 >= v28;
 
-    if (a4 && v25 < v28)
+    if (reason && v25 < v28)
     {
       v29 = MEMORY[0x277CCACA8];
-      v79 = [(VATKeywordSpotter *)self configuration];
-      v30 = [v79 decoder];
-      v31 = [v30 duringKeywordSilence];
-      [v31 minPercentageOfNonSilenceFrames];
-      *a4 = [v29 stringWithFormat:@"speechToSilence ratio %4.2f < %4.2f", (v25 / v27), v32];
+      configuration5 = [(VATKeywordSpotter *)self configuration];
+      decoder3 = [configuration5 decoder];
+      duringKeywordSilence5 = [decoder3 duringKeywordSilence];
+      [duringKeywordSilence5 minPercentageOfNonSilenceFrames];
+      *reason = [v29 stringWithFormat:@"speechToSilence ratio %4.2f < %4.2f", (v25 / v27), v32];
 
       v26 = 0;
     }
@@ -530,36 +530,36 @@ LABEL_64:
 
   else
   {
-    v26 = v7 ^ 1;
+    v26 = duringKeywordSilence ^ 1;
   }
 
   if ([(VATKeywordSpotter *)self preKeywordSilenceCheckEnabled])
   {
     v75 = v26;
     v33 = self->_floatFstDecoder;
-    v34 = *(a3 + 8);
-    v82 = [(VATKeywordSpotter *)self configuration];
-    v80 = [v82 decoder];
-    v77 = [v80 preKeywordSilence];
-    v35 = [v77 lookbackFrames];
-    v76 = [(VATKeywordSpotter *)self configuration];
-    v36 = [v76 decoder];
-    v37 = [v36 preKeywordSilence];
-    v38 = [v37 minSilenceInLookbackFrames];
-    v39 = [(VATKeywordSpotter *)self configuration];
-    v40 = [v39 decoder];
-    v41 = [v40 preKeywordSilence];
-    [v41 silenceProbability];
+    v34 = *(result + 8);
+    configuration6 = [(VATKeywordSpotter *)self configuration];
+    decoder4 = [configuration6 decoder];
+    preKeywordSilence = [decoder4 preKeywordSilence];
+    lookbackFrames = [preKeywordSilence lookbackFrames];
+    configuration7 = [(VATKeywordSpotter *)self configuration];
+    decoder5 = [configuration7 decoder];
+    preKeywordSilence2 = [decoder5 preKeywordSilence];
+    minSilenceInLookbackFrames = [preKeywordSilence2 minSilenceInLookbackFrames];
+    configuration8 = [(VATKeywordSpotter *)self configuration];
+    decoder6 = [configuration8 decoder];
+    preKeywordSilence3 = [decoder6 preKeywordSilence];
+    [preKeywordSilence3 silenceProbability];
     v43 = v33[8];
     v44 = v34 >= v43;
     v45 = v34 - v43;
     if (v45 != 0 && v44)
     {
-      v50 = v82;
+      v50 = configuration6;
       v46 = 0;
-      if (v35 >= 1)
+      if (lookbackFrames >= 1)
       {
-        v47 = v35 & 0x7FFFFFFF;
+        v47 = lookbackFrames & 0x7FFFFFFF;
         do
         {
           if (!v45)
@@ -572,7 +572,7 @@ LABEL_64:
             ++v46;
           }
 
-          --v35;
+          --lookbackFrames;
           --v45;
           --v47;
         }
@@ -580,27 +580,27 @@ LABEL_64:
         while (v47);
       }
 
-      v48 = (v35 + v46);
-      v49 = v48 >= v38;
+      v48 = (lookbackFrames + v46);
+      v49 = v48 >= minSilenceInLookbackFrames;
     }
 
     else
     {
       v48 = 0;
       v49 = 1;
-      v50 = v82;
+      v50 = configuration6;
     }
 
-    if (a4 && (v49 & 1) == 0)
+    if (reason && (v49 & 1) == 0)
     {
       v51 = MEMORY[0x277CCACA8];
-      v83 = [(VATKeywordSpotter *)self configuration];
-      v52 = [v83 decoder];
-      v53 = [v52 preKeywordSilence];
-      v54 = [v53 minSilenceInLookbackFrames];
-      if ([*a4 length])
+      configuration9 = [(VATKeywordSpotter *)self configuration];
+      decoder7 = [configuration9 decoder];
+      preKeywordSilence4 = [decoder7 preKeywordSilence];
+      minSilenceInLookbackFrames2 = [preKeywordSilence4 minSilenceInLookbackFrames];
+      if ([*reason length])
       {
-        v55 = *a4;
+        v55 = *reason;
       }
 
       else
@@ -608,7 +608,7 @@ LABEL_64:
         v55 = &stru_2881908A8;
       }
 
-      *a4 = [v51 stringWithFormat:@"pre-keyword silence frames %d < %ld. %@", v48, v54, v55];
+      *reason = [v51 stringWithFormat:@"pre-keyword silence frames %d < %ld. %@", v48, minSilenceInLookbackFrames2, v55];
     }
 
     v26 = v75;
@@ -616,36 +616,36 @@ LABEL_64:
 
   else
   {
-    v49 = !v81;
+    v49 = !preKeywordSilenceCheckEnabled;
   }
 
   v56 = v26;
   v57 = v26 ^ 1u;
   if (((v49 ^ 1) & 1) != 0 || v57)
   {
-    if (*(a3 + 23) >= 0)
+    if (*(result + 23) >= 0)
     {
-      v58 = a3;
+      resultCopy = result;
     }
 
     else
     {
-      v58 = *a3;
+      resultCopy = *result;
     }
 
-    v59 = [MEMORY[0x277CCACA8] stringWithCString:v58 encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
-    v60 = [(VATKeywordSpotter *)self configuration];
-    v61 = [v60 runtime];
-    v62 = [v61 audioDebug];
+    v59 = [MEMORY[0x277CCACA8] stringWithCString:resultCopy encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
+    configuration10 = [(VATKeywordSpotter *)self configuration];
+    runtime3 = [configuration10 runtime];
+    audioDebug = [runtime3 audioDebug];
 
-    if (v62)
+    if (audioDebug)
     {
-      v63 = *(a3 + 8);
-      *buf = *(a3 + 9);
+      v63 = *(result + 8);
+      *buf = *(result + 9);
       v64 = [FeatureExtractObjc audioForKeywordWithStartFrame:"audioForKeywordWithStartFrame:endFrame:actualEndFrame:" endFrame:v63 actualEndFrame:?];
       if (v64 && (-[VATKeywordSpotter configuration](self, "configuration"), v65 = objc_claimAutoreleasedReturnValue(), [v65 runtime], v66 = objc_claimAutoreleasedReturnValue(), v67 = objc_msgSend(v66, "audioDebug"), v66, v65, v67))
       {
-        v68 = [(VATKeywordSpotter *)self _handleAudioDebuggingForKeyword:v59 result:a3 buffer:v64];
+        v68 = [(VATKeywordSpotter *)self _handleAudioDebuggingForKeyword:v59 result:result buffer:v64];
       }
 
       else
@@ -662,10 +662,10 @@ LABEL_64:
     v69 = _VATLoggingFacility(kVATLogCategoryFramework);
     if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
     {
-      v73 = *(a3 + 8);
-      v84 = *(a3 + 9);
-      v86 = *a4;
-      v74 = [v68 path];
+      v73 = *(result + 8);
+      v84 = *(result + 9);
+      v86 = *reason;
+      path = [v68 path];
       *buf = 138413314;
       *&buf[4] = v59;
       v89 = 1024;
@@ -675,14 +675,14 @@ LABEL_64:
       v93 = 2112;
       v94 = v86;
       v95 = 2112;
-      v96 = v74;
+      v96 = path;
       _os_log_debug_impl(&dword_2721E4000, v69, OS_LOG_TYPE_DEBUG, "Keyword %@ [%d,%d] dismissed. %@, %@", buf, 0x2Cu);
     }
 
     delegate = self->_delegate;
     if (objc_opt_respondsToSelector())
     {
-      [(VATKeywordSpotterDelegate *)self->_delegate keywordDiscarded:v59 failedPreSilence:v49 ^ 1u failedDuringSilence:v57 failedPostSilence:0 failedSecondPass:0 secondPassResult:0 reason:*a4 audioURL:v68];
+      [(VATKeywordSpotterDelegate *)self->_delegate keywordDiscarded:v59 failedPreSilence:v49 ^ 1u failedDuringSilence:v57 failedPostSilence:0 failedSecondPass:0 secondPassResult:0 reason:*reason audioURL:v68];
     }
   }
 
@@ -690,35 +690,35 @@ LABEL_64:
   return v49 & v56;
 }
 
-- (void)_postKeywordSilenceProcessingWithResults:(id)a3 rows:(int64_t)a4 cols:(int64_t)a5
+- (void)_postKeywordSilenceProcessingWithResults:(id)results rows:(int64_t)rows cols:(int64_t)cols
 {
   v92 = *MEMORY[0x277D85DE8];
-  v80 = a3;
-  [v80 bytes];
-  v82 = self;
-  if (a4 >= 1)
+  resultsCopy = results;
+  [resultsCopy bytes];
+  selfCopy = self;
+  if (rows >= 1)
   {
     sub_272366344(1uLL);
   }
 
-  v7 = self->_frameCountSinceKeywordDetected + a4;
+  v7 = self->_frameCountSinceKeywordDetected + rows;
   self->_frameCountSinceKeywordDetected = v7;
   v83 = 0;
   v84 = -1;
-  v8 = [(VATKeywordSpotter *)self configuration];
-  v9 = [v8 decoder];
-  v10 = [v9 postKeywordSilence];
-  v11 = [v10 lookForwardFrames];
+  configuration = [(VATKeywordSpotter *)self configuration];
+  decoder = [configuration decoder];
+  postKeywordSilence = [decoder postKeywordSilence];
+  lookForwardFrames = [postKeywordSilence lookForwardFrames];
 
-  if (v11 <= v7)
+  if (lookForwardFrames <= v7)
   {
-    v19 = [(VATKeywordSpotter *)v82 configuration];
-    v20 = [v19 decoder];
-    v21 = [v20 postKeywordSilence];
-    v22 = [v21 lookForwardFrames];
+    configuration2 = [(VATKeywordSpotter *)selfCopy configuration];
+    decoder2 = [configuration2 decoder];
+    postKeywordSilence2 = [decoder2 postKeywordSilence];
+    lookForwardFrames2 = [postKeywordSilence2 lookForwardFrames];
 
-    p_keywordResults = &v82->_keywordResults;
-    v23 = *(v82->_keywordResults.__begin_ + 9);
+    p_keywordResults = &selfCopy->_keywordResults;
+    v23 = *(selfCopy->_keywordResults.__begin_ + 9);
     if (v23 <= 0)
     {
       v24 = -(-v23 & 7);
@@ -726,31 +726,31 @@ LABEL_64:
 
     else
     {
-      v24 = *(v82->_keywordResults.__begin_ + 9) & 7;
+      v24 = *(selfCopy->_keywordResults.__begin_ + 9) & 7;
     }
 
     v25 = 15 - v24;
-    if (v22 == 8)
+    if (lookForwardFrames2 == 8)
     {
       v26 = v25;
     }
 
     else
     {
-      v26 = v22;
+      v26 = lookForwardFrames2;
     }
 
     v78 = v26;
-    floatFstDecoder = v82->_floatFstDecoder;
-    v73 = [(VATKeywordSpotter *)v82 configuration];
-    v27 = [v73 decoder];
-    v28 = [v27 postKeywordSilence];
-    [v28 silenceProbability];
+    floatFstDecoder = selfCopy->_floatFstDecoder;
+    configuration3 = [(VATKeywordSpotter *)selfCopy configuration];
+    decoder3 = [configuration3 decoder];
+    postKeywordSilence3 = [decoder3 postKeywordSilence];
+    [postKeywordSilence3 silenceProbability];
     v30 = v29;
-    v31 = [(VATKeywordSpotter *)v82 configuration];
-    v32 = [v31 decoder];
-    v33 = [v32 postKeywordSilence];
-    v34 = sub_27236638C(floatFstDecoder, v23, 0, 0, v78, [v33 minSilenceFramesExpected], &v84, &v83, v30);
+    configuration4 = [(VATKeywordSpotter *)selfCopy configuration];
+    decoder4 = [configuration4 decoder];
+    postKeywordSilence4 = [decoder4 postKeywordSilence];
+    v34 = sub_27236638C(floatFstDecoder, v23, 0, 0, v78, [postKeywordSilence4 minSilenceFramesExpected], &v84, &v83, v30);
 
     begin = p_keywordResults->__begin_;
     if (*(p_keywordResults->__begin_ + 23) < 0)
@@ -766,15 +766,15 @@ LABEL_64:
       {
         v77 = [MEMORY[0x277CCABB0] numberWithInt:v83];
         v63 = MEMORY[0x277CCABB0];
-        v64 = [(VATKeywordSpotter *)v82 configuration];
-        v65 = [v64 decoder];
-        v66 = [v65 postKeywordSilence];
-        v67 = [v63 numberWithInteger:{objc_msgSend(v66, "minSilenceFramesExpected")}];
+        configuration5 = [(VATKeywordSpotter *)selfCopy configuration];
+        decoder5 = [configuration5 decoder];
+        postKeywordSilence5 = [decoder5 postKeywordSilence];
+        v67 = [v63 numberWithInteger:{objc_msgSend(postKeywordSilence5, "minSilenceFramesExpected")}];
         v68 = MEMORY[0x277CCABB0];
-        v69 = [(VATKeywordSpotter *)v82 configuration];
-        v70 = [v69 decoder];
-        v71 = [v70 postKeywordSilence];
-        v72 = [v68 numberWithInteger:{objc_msgSend(v71, "lookForwardFrames")}];
+        configuration6 = [(VATKeywordSpotter *)selfCopy configuration];
+        decoder6 = [configuration6 decoder];
+        postKeywordSilence6 = [decoder6 postKeywordSilence];
+        v72 = [v68 numberWithInteger:{objc_msgSend(postKeywordSilence6, "lookForwardFrames")}];
         *buf = 138413058;
         *&buf[4] = v79;
         v86 = 2112;
@@ -786,24 +786,24 @@ LABEL_64:
         _os_log_debug_impl(&dword_2721E4000, v36, OS_LOG_TYPE_DEBUG, "Enough silence after keyword %@, %@ > %@/%@", buf, 0x2Au);
       }
 
-      v38 = &v82->_keywordResults;
-      v37 = v82;
-      [(VATKeywordSpotter *)v82 _handleValidResult:p_keywordResults];
+      v38 = &selfCopy->_keywordResults;
+      v37 = selfCopy;
+      [(VATKeywordSpotter *)selfCopy _handleValidResult:p_keywordResults];
     }
 
     else
     {
-      v39 = [(VATKeywordSpotter *)v82 configuration];
-      v40 = [v39 runtime];
-      v41 = [v40 audioDebug];
+      configuration7 = [(VATKeywordSpotter *)selfCopy configuration];
+      runtime = [configuration7 runtime];
+      audioDebug = [runtime audioDebug];
 
-      if (v41)
+      if (audioDebug)
       {
-        v42 = v82->_keywordResults.__begin_;
+        v42 = selfCopy->_keywordResults.__begin_;
         v43 = *(v42 + 8);
         *buf = *(v42 + 9);
         v44 = [FeatureExtractObjc audioForKeywordWithStartFrame:"audioForKeywordWithStartFrame:endFrame:actualEndFrame:" endFrame:v43 actualEndFrame:?];
-        v74 = [(VATKeywordSpotter *)v82 _handleAudioDebuggingForKeyword:v79 result:v82->_keywordResults.__begin_ buffer:v44];
+        v74 = [(VATKeywordSpotter *)selfCopy _handleAudioDebuggingForKeyword:v79 result:selfCopy->_keywordResults.__begin_ buffer:v44];
       }
 
       else
@@ -814,15 +814,15 @@ LABEL_64:
       v45 = MEMORY[0x277CCACA8];
       v76 = [MEMORY[0x277CCABB0] numberWithInt:v83];
       v46 = MEMORY[0x277CCABB0];
-      v47 = [(VATKeywordSpotter *)v82 configuration];
-      v48 = [v47 decoder];
-      v49 = [v48 postKeywordSilence];
-      v50 = [v46 numberWithInteger:{objc_msgSend(v49, "minSilenceFramesExpected")}];
+      configuration8 = [(VATKeywordSpotter *)selfCopy configuration];
+      decoder7 = [configuration8 decoder];
+      postKeywordSilence7 = [decoder7 postKeywordSilence];
+      v50 = [v46 numberWithInteger:{objc_msgSend(postKeywordSilence7, "minSilenceFramesExpected")}];
       v51 = MEMORY[0x277CCABB0];
-      v52 = [(VATKeywordSpotter *)v82 configuration];
-      v53 = [v52 decoder];
-      v54 = [v53 postKeywordSilence];
-      v55 = [v51 numberWithInteger:{objc_msgSend(v54, "lookForwardFrames")}];
+      configuration9 = [(VATKeywordSpotter *)selfCopy configuration];
+      decoder8 = [configuration9 decoder];
+      postKeywordSilence8 = [decoder8 postKeywordSilence];
+      v55 = [v51 numberWithInteger:{objc_msgSend(postKeywordSilence8, "lookForwardFrames")}];
       v56 = [v45 stringWithFormat:@"not enough silence after keyword %@ < %@/%@", v76, v50, v55];
 
       v57 = _VATLoggingFacility(kVATLogCategoryFramework);
@@ -835,11 +835,11 @@ LABEL_64:
         _os_log_impl(&dword_2721E4000, v57, OS_LOG_TYPE_INFO, "Discarding keyword %@, %@", buf, 0x16u);
       }
 
-      delegate = v82->_delegate;
+      delegate = selfCopy->_delegate;
       if (objc_opt_respondsToSelector())
       {
-        v59 = v82->_delegate;
-        v60 = v82->_keywordResults.__begin_;
+        v59 = selfCopy->_delegate;
+        v60 = selfCopy->_keywordResults.__begin_;
         if (*(v60 + 23) < 0)
         {
           v60 = *v60;
@@ -849,8 +849,8 @@ LABEL_64:
         [(VATKeywordSpotterDelegate *)v59 keywordDiscarded:v61 failedPreSilence:0 failedDuringSilence:0 failedPostSilence:1 failedSecondPass:0 secondPassResult:0 reason:v56 audioURL:v74];
       }
 
-      v38 = &v82->_keywordResults;
-      v37 = v82;
+      v38 = &selfCopy->_keywordResults;
+      v37 = selfCopy;
     }
 
     v37->_frameCountSinceKeywordDetected = 0;
@@ -864,11 +864,11 @@ LABEL_64:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v13 = MEMORY[0x277CCABB0];
-      v14 = [(VATKeywordSpotter *)v82 configuration];
-      v15 = [v14 decoder];
-      v16 = [v15 postKeywordSilence];
-      v17 = [v13 numberWithInteger:{objc_msgSend(v16, "minSilenceFramesExpected")}];
-      frameCountSinceKeywordDetected = v82->_frameCountSinceKeywordDetected;
+      configuration10 = [(VATKeywordSpotter *)selfCopy configuration];
+      decoder9 = [configuration10 decoder];
+      postKeywordSilence9 = [decoder9 postKeywordSilence];
+      v17 = [v13 numberWithInteger:{objc_msgSend(postKeywordSilence9, "minSilenceFramesExpected")}];
+      frameCountSinceKeywordDetected = selfCopy->_frameCountSinceKeywordDetected;
       *buf = 138412546;
       *&buf[4] = v17;
       v86 = 1024;
@@ -880,12 +880,12 @@ LABEL_64:
   v62 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_acousticCallback:(id)a3 rows:(int64_t)a4 cols:(int64_t)a5
+- (void)_acousticCallback:(id)callback rows:(int64_t)rows cols:(int64_t)cols
 {
   v147 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (a4 != 8)
+  callbackCopy = callback;
+  v9 = callbackCopy;
+  if (rows != 8)
   {
     v126 = sub_2723686B0(v125, "/Library/Caches/com.apple.xbs/Sources/VoiceActions/VoiceActions/v1/VATKeywordSpotter.m", 86);
     v127 = sub_2723686B0(v126, " line ", 6);
@@ -896,23 +896,23 @@ LABEL_64:
     std::terminate();
   }
 
-  if (v8)
+  if (callbackCopy)
   {
-    v10 = [(VATKeywordSpotter *)self configuration];
+    configuration = [(VATKeywordSpotter *)self configuration];
     v133 = v9;
-    v11 = [v10 runtime];
-    v137 = self;
-    if ([v11 postKeywordSilence])
+    runtime = [configuration runtime];
+    selfCopy = self;
+    if ([runtime postKeywordSilence])
     {
       end = self->_keywordResults.__end_;
       begin = self->_keywordResults.__begin_;
 
       v14 = end == begin;
-      self = v137;
+      self = selfCopy;
       if (!v14)
       {
-        [(VATKeywordSpotter *)v137 _postKeywordSilenceProcessingWithResults:v9 rows:8 cols:a5];
-        v137->_processedFrameCount += 8;
+        [(VATKeywordSpotter *)selfCopy _postKeywordSilenceProcessingWithResults:v9 rows:8 cols:cols];
+        selfCopy->_processedFrameCount += 8;
         goto LABEL_9;
       }
     }
@@ -921,22 +921,22 @@ LABEL_64:
     {
     }
 
-    v17 = [v9 bytes];
+    bytes = [v9 bytes];
     p_keywordResults = &self->_keywordResults;
     *&v18 = 138413058;
     v131 = v18;
     v19 = 0;
-    v135 = 4 * a5;
-    v136 = a5;
+    v135 = 4 * cols;
+    colsCopy = cols;
     while (1)
     {
       v138 = v19;
-      v139 = v17;
-      if (a5)
+      v139 = bytes;
+      if (cols)
       {
-        if (!(a5 >> 62))
+        if (!(cols >> 62))
         {
-          sub_272366344(a5);
+          sub_272366344(cols);
         }
 
         sub_27236F7F0();
@@ -1107,7 +1107,7 @@ LABEL_64:
 
         v58 = *(floatFstDecoder + 15);
         v9 = v133;
-        self = v137;
+        self = selfCopy;
         if (v58)
         {
           while (1)
@@ -1302,7 +1302,7 @@ LABEL_87:
         if (v85)
         {
           v86 = v82[20];
-          self = v137;
+          self = selfCopy;
           if (v86)
           {
             do
@@ -1337,7 +1337,7 @@ LABEL_87:
         {
           size = 0;
           v87 = 0;
-          self = v137;
+          self = selfCopy;
         }
       }
 
@@ -1359,9 +1359,9 @@ LABEL_87:
       }
 
       sub_272370FCC(v87, size, v90, 1);
-      v91 = [(VATKeywordSpotter *)self configuration];
-      v92 = [v91 runtime];
-      if (([(__CFString *)v92 batchDecode]& 1) != 0 || __dst.__r_.__value_.__l.__size_ == __dst.__r_.__value_.__r.__words[0])
+      configuration2 = [(VATKeywordSpotter *)self configuration];
+      runtime2 = [configuration2 runtime];
+      if (([(__CFString *)runtime2 batchDecode]& 1) != 0 || __dst.__r_.__value_.__l.__size_ == __dst.__r_.__value_.__r.__words[0])
       {
         goto LABEL_151;
       }
@@ -1377,8 +1377,8 @@ LABEL_152:
       ++self->_processedFrameCount;
       __str.__r_.__value_.__r.__words[0] = &__dst;
       sub_272363E94(&__str);
-      a5 = v136;
-      v17 = v139 + v135;
+      cols = colsCopy;
+      bytes = v139 + v135;
       v19 = v138 + 1;
       if (v138 == 7)
       {
@@ -1392,19 +1392,19 @@ LABEL_152:
       v94 = *__dst.__r_.__value_.__l.__data_;
     }
 
-    v91 = [MEMORY[0x277CCACA8] stringWithCString:v94 encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding", v131)}];
+    configuration2 = [MEMORY[0x277CCACA8] stringWithCString:v94 encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding", v131)}];
     v140 = &stru_2881908A8;
     v95 = [(VATKeywordSpotter *)self _isDetectionValidForResult:__dst.__r_.__value_.__r.__words[0] reason:&v140];
-    v92 = v140;
+    runtime2 = v140;
     if (v95)
     {
-      v96 = [(VATKeywordSpotter *)self configuration];
-      v97 = [v96 runtime];
-      v98 = [v97 postKeywordSilence];
+      configuration3 = [(VATKeywordSpotter *)self configuration];
+      runtime3 = [configuration3 runtime];
+      postKeywordSilence = [runtime3 postKeywordSilence];
 
       v99 = _VATLoggingFacility(kVATLogCategoryFramework);
       v100 = os_log_type_enabled(v99, OS_LOG_TYPE_DEBUG);
-      if (v98)
+      if (postKeywordSilence)
       {
         if (v100)
         {
@@ -1412,7 +1412,7 @@ LABEL_152:
           v119 = *(__dst.__r_.__value_.__r.__words[0] + 36);
           v121 = self->_processedFrameCount;
           LODWORD(__str.__r_.__value_.__l.__data_) = v131;
-          *(__str.__r_.__value_.__r.__words + 4) = v91;
+          *(__str.__r_.__value_.__r.__words + 4) = configuration2;
           WORD2(__str.__r_.__value_.__r.__words[1]) = 1024;
           *(&__str.__r_.__value_.__r.__words[1] + 6) = v120;
           WORD1(__str.__r_.__value_.__r.__words[2]) = 1024;
@@ -1537,7 +1537,7 @@ LABEL_152:
           v122 = *(__dst.__r_.__value_.__r.__words[0] + 36);
           v124 = self->_processedFrameCount;
           LODWORD(__str.__r_.__value_.__l.__data_) = v131;
-          *(__str.__r_.__value_.__r.__words + 4) = v91;
+          *(__str.__r_.__value_.__r.__words + 4) = configuration2;
           WORD2(__str.__r_.__value_.__r.__words[1]) = 1024;
           *(&__str.__r_.__value_.__r.__words[1] + 6) = v123;
           WORD1(__str.__r_.__value_.__r.__words[2]) = 1024;
@@ -1559,13 +1559,13 @@ LABEL_152:
         v118 = *(__dst.__r_.__value_.__r.__words[0] + 32);
         v117 = *(__dst.__r_.__value_.__r.__words[0] + 36);
         LODWORD(__str.__r_.__value_.__l.__data_) = v131;
-        *(__str.__r_.__value_.__r.__words + 4) = v91;
+        *(__str.__r_.__value_.__r.__words + 4) = configuration2;
         WORD2(__str.__r_.__value_.__r.__words[1]) = 1024;
         *(&__str.__r_.__value_.__r.__words[1] + 6) = v118;
         WORD1(__str.__r_.__value_.__r.__words[2]) = 1024;
         HIDWORD(__str.__r_.__value_.__r.__words[2]) = v117;
         LOWORD(v144) = 2112;
-        *(&v144 + 2) = v92;
+        *(&v144 + 2) = runtime2;
         _os_log_debug_impl(&dword_2721E4000, v109, OS_LOG_TYPE_DEBUG, "Keyword %@ [%d,%d] dismissed. %@", &__str, 0x22u);
       }
     }
@@ -1587,10 +1587,10 @@ LABEL_9:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_initializeDecoderForKeywordsWithPhonemes:(id)a3
+- (void)_initializeDecoderForKeywordsWithPhonemes:(id)phonemes
 {
   v4 = *MEMORY[0x277D85DE8];
-  a3;
+  phonemes;
   fwrite("Allocating new decoder\n", 0x17uLL, 1uLL, *MEMORY[0x277D85DF8]);
   self->_processedFrameCount = 0;
   operator new();
@@ -1598,29 +1598,29 @@ LABEL_9:
 
 - (BOOL)postKeywordSilenceCheckEnabled
 {
-  v2 = [(VATKeywordSpotter *)self configuration];
-  v3 = [v2 runtime];
-  v4 = [v3 postKeywordSilence];
+  configuration = [(VATKeywordSpotter *)self configuration];
+  runtime = [configuration runtime];
+  postKeywordSilence = [runtime postKeywordSilence];
 
-  return v4;
+  return postKeywordSilence;
 }
 
 - (BOOL)duringKeywordSilenceCheckEnabled
 {
-  v2 = [(VATKeywordSpotter *)self configuration];
-  v3 = [v2 runtime];
-  v4 = [v3 duringKeywordSilence];
+  configuration = [(VATKeywordSpotter *)self configuration];
+  runtime = [configuration runtime];
+  duringKeywordSilence = [runtime duringKeywordSilence];
 
-  return v4;
+  return duringKeywordSilence;
 }
 
 - (BOOL)preKeywordSilenceCheckEnabled
 {
-  v2 = [(VATKeywordSpotter *)self configuration];
-  v3 = [v2 runtime];
-  v4 = [v3 preKeywordSilence];
+  configuration = [(VATKeywordSpotter *)self configuration];
+  runtime = [configuration runtime];
+  preKeywordSilence = [runtime preKeywordSilence];
 
-  return v4;
+  return preKeywordSilence;
 }
 
 - (void)stop
@@ -1702,19 +1702,19 @@ LABEL_9:
   }
 }
 
-- (void)addAudioSamples:(const void *)a3 count:(int)a4 isFloat:(BOOL)a5 filePath:(id)a6 byteCount:(int64_t)a7 currentDuration:(double)a8
+- (void)addAudioSamples:(const void *)samples count:(int)count isFloat:(BOOL)float filePath:(id)path byteCount:(int64_t)byteCount currentDuration:(double)duration
 {
-  objc_storeStrong(&self->_filePath, a6);
-  self->_fileCurrentDuration = a8;
-  self->_fileByteCount += a7;
+  objc_storeStrong(&self->_filePath, path);
+  self->_fileCurrentDuration = duration;
+  self->_fileByteCount += byteCount;
 
   MEMORY[0x2821F9670](self, sel_addAudioSamples_count_isFloat_);
 }
 
-- (void)addAudioSamples:(const void *)a3 count:(int)a4 isFloat:(BOOL)a5
+- (void)addAudioSamples:(const void *)samples count:(int)count isFloat:(BOOL)float
 {
   fe = self->fe;
-  if (a5)
+  if (float)
   {
     MEMORY[0x2821F9670](fe, sel_addFloatSamples_count_);
   }
@@ -1725,7 +1725,7 @@ LABEL_9:
   }
 }
 
-- (void)setStreamingMode:(BOOL)a3
+- (void)setStreamingMode:(BOOL)mode
 {
   fe = self->fe;
   if (fe)
@@ -1770,12 +1770,12 @@ LABEL_9:
   }
 }
 
-- (VATKeywordSpotter)initWithConfig:(id)a3 keywordsWithPhonemes:(id)a4 delegate:(id)a5
+- (VATKeywordSpotter)initWithConfig:(id)config keywordsWithPhonemes:(id)phonemes delegate:(id)delegate
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  phonemesCopy = phonemes;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = VATKeywordSpotter;
   v11 = [(VATKeywordSpotter *)&v30 init];
@@ -1785,7 +1785,7 @@ LABEL_9:
   }
 
   v29 = 0;
-  v12 = [[VATConfiguration alloc] initWithFilename:v8 error:&v29];
+  v12 = [[VATConfiguration alloc] initWithFilename:configCopy error:&v29];
   v13 = v29;
   if (!v12)
   {
@@ -1799,7 +1799,7 @@ LABEL_9:
     }
 
     *location = 138412546;
-    *&location[4] = v8;
+    *&location[4] = configCopy;
     v32 = 2112;
     v33 = v13;
     v19 = "Failed to load config from %@: %@";
@@ -1830,9 +1830,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  objc_storeStrong(&v11->_delegate, a5);
-  objc_storeStrong(&v11->_keywordsWithPhonemes, a4);
-  [(VATKeywordSpotter *)v11 _initializeDecoderForKeywordsWithPhonemes:v9];
+  objc_storeStrong(&v11->_delegate, delegate);
+  objc_storeStrong(&v11->_keywordsWithPhonemes, phonemes);
+  [(VATKeywordSpotter *)v11 _initializeDecoderForKeywordsWithPhonemes:phonemesCopy];
   objc_initWeak(location, v11);
   v16 = v11->fe;
   v24 = MEMORY[0x277D85DD0];
@@ -1853,13 +1853,13 @@ LABEL_10:
   return v17;
 }
 
-- (VATKeywordSpotter)initWithConfig:(id)a3 keywords:(id)a4 delegate:(id)a5
+- (VATKeywordSpotter)initWithConfig:(id)config keywords:(id)keywords delegate:(id)delegate
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v21 = self;
+  configCopy = config;
+  keywordsCopy = keywords;
+  delegateCopy = delegate;
+  selfCopy = self;
   v11 = objc_alloc_init(G2PFactoredObjc);
   [(G2PFactoredObjc *)v11 setup];
   v12 = objc_opt_new();
@@ -1867,7 +1867,7 @@ LABEL_10:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = v9;
+  v13 = keywordsCopy;
   v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v14)
   {
@@ -1898,15 +1898,15 @@ LABEL_10:
     while (v14);
   }
 
-  v18 = [(VATKeywordSpotter *)v21 initWithConfig:v8 keywordsWithPhonemes:v12 delegate:v10];
+  v18 = [(VATKeywordSpotter *)selfCopy initWithConfig:configCopy keywordsWithPhonemes:v12 delegate:delegateCopy];
   v19 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-- (void)updateWithKeywordsWithPhonemes:(id)a3
+- (void)updateWithKeywordsWithPhonemes:(id)phonemes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  phonemesCopy = phonemes;
   [(VATKeywordSpotter *)self stop];
   v25 = 0;
   v26 = 0;
@@ -1915,7 +1915,7 @@ LABEL_10:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v4;
+  v5 = phonemesCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v28 count:16];
   if (v6)
   {
@@ -1976,10 +1976,10 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithKeywords:(id)a3
+- (void)updateWithKeywords:(id)keywords
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keywordsCopy = keywords;
   v5 = objc_alloc_init(G2PFactoredObjc);
   [(G2PFactoredObjc *)v5 setup];
   v6 = objc_opt_new();
@@ -1987,7 +1987,7 @@ LABEL_10:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v4;
+  v7 = keywordsCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -2036,9 +2036,9 @@ LABEL_10:
   [(VATKeywordSpotter *)&v4 dealloc];
 }
 
-+ (id)pronounciationsFor:(id)a3 wordSeparator:(id)a4
++ (id)pronounciationsFor:(id)for wordSeparator:(id)separator
 {
-  v4 = [VATKeywordSpotter pronounciationsFor:a3 wordSeparator:a4 prefixWithPhrase:0];
+  v4 = [VATKeywordSpotter pronounciationsFor:for wordSeparator:separator prefixWithPhrase:0];
 
   return v4;
 }

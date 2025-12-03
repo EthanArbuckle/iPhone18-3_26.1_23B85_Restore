@@ -1,29 +1,29 @@
 @interface JavaUtilPriorityQueue
-- (BOOL)offerWithId:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (JavaUtilPriorityQueue)initWithJavaUtilPriorityQueue:(id)a3;
-- (JavaUtilPriorityQueue)initWithJavaUtilSortedSet:(id)a3;
+- (BOOL)offerWithId:(id)id;
+- (BOOL)removeWithId:(id)id;
+- (JavaUtilPriorityQueue)initWithJavaUtilPriorityQueue:(id)queue;
+- (JavaUtilPriorityQueue)initWithJavaUtilSortedSet:(id)set;
 - (id)iterator;
 - (id)peek;
 - (id)poll;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilPriorityQueue
 
-- (JavaUtilPriorityQueue)initWithJavaUtilPriorityQueue:(id)a3
+- (JavaUtilPriorityQueue)initWithJavaUtilPriorityQueue:(id)queue
 {
   JavaUtilAbstractQueue_init(self, a2);
-  sub_1001B7FA0(self, a3);
+  sub_1001B7FA0(self, queue);
   return self;
 }
 
-- (JavaUtilPriorityQueue)initWithJavaUtilSortedSet:(id)a3
+- (JavaUtilPriorityQueue)initWithJavaUtilSortedSet:(id)set
 {
   JavaUtilAbstractQueue_init(self, a2);
-  sub_1001B805C(self, a3);
+  sub_1001B805C(self, set);
   return self;
 }
 
@@ -37,9 +37,9 @@
   return v3;
 }
 
-- (BOOL)offerWithId:(id)a3
+- (BOOL)offerWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     v8 = new_JavaLangNullPointerException_initWithNSString_(@"o == null");
     objc_exception_throw(v8);
@@ -52,7 +52,7 @@
     JreThrowNullPointerException();
   }
 
-  IOSObjectArray_Set(elements, self->size_, a3);
+  IOSObjectArray_Set(elements, self->size_, id);
   size = self->size_;
   self->size_ = size + 1;
   sub_1001B7914(self, size);
@@ -105,9 +105,9 @@
   return elements->elementType_;
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
-  if (!a3 || self->size_ < 1)
+  if (!id || self->size_ < 1)
   {
     return 0;
   }
@@ -127,7 +127,7 @@
       IOSArray_throwOutOfBoundsWithMsg(size, v5);
     }
 
-    if ([a3 isEqual:(&elements->elementType_)[v5]])
+    if ([id isEqual:(&elements->elementType_)[v5]])
     {
       break;
     }
@@ -142,15 +142,15 @@
   return 1;
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_7;
   }
 
-  [a3 defaultReadObject];
-  v5 = sub_1001B7E48([a3 readInt]);
+  [stream defaultReadObject];
+  v5 = sub_1001B7E48([stream readInt]);
   JreStrongAssign(&self->elements_, v5);
   if (self->size_ >= 1)
   {
@@ -163,7 +163,7 @@
         break;
       }
 
-      IOSObjectArray_Set(elements, v6++, [a3 readObject]);
+      IOSObjectArray_Set(elements, v6++, [stream readObject]);
       if (v6 >= self->size_)
       {
         return;
@@ -175,14 +175,14 @@ LABEL_7:
   }
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3 || ([a3 defaultWriteObject], (elements = self->elements_) == 0))
+  if (!stream || ([stream defaultWriteObject], (elements = self->elements_) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  [a3 writeIntWithInt:elements->super.size_];
+  [stream writeIntWithInt:elements->super.size_];
   if (self->size_ >= 1)
   {
     v6 = 0;
@@ -195,7 +195,7 @@ LABEL_7:
         IOSArray_throwOutOfBoundsWithMsg(size, v6);
       }
 
-      [a3 writeObjectWithId:(&v7->elementType_)[v6++]];
+      [stream writeObjectWithId:(&v7->elementType_)[v6++]];
     }
 
     while (v6 < self->size_);

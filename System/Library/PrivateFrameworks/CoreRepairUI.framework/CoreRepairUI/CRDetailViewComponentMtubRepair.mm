@@ -13,8 +13,8 @@
   {
     v5 = objc_opt_new();
     v6 = [MEMORY[0x277D00FC0] getComponentName:1029];
-    v7 = [(CRUDetailViewComponent *)self repairDate];
-    v8 = [(CRUDetailViewComponent *)self componentRepairSpecifierForComponent:v6 IsUsed:0 repairDate:v7];
+    repairDate = [(CRUDetailViewComponent *)self repairDate];
+    v8 = [(CRUDetailViewComponent *)self componentRepairSpecifierForComponent:v6 IsUsed:0 repairDate:repairDate];
     [v5 addObjectsFromArray:v8];
 
     v9 = *(&self->super.super.super.super.super.super.isa + v3);
@@ -35,13 +35,13 @@
   if (v2)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [(CRUDetailViewComponent *)v2 locale];
-    v6 = [v5 localizedStringWithKey:@"REAR_SYSTEM_REPAIR_KB_URL" defaultString:@"REAR_SYSTEM_REPAIR_KB_URL"];
+    locale = [(CRUDetailViewComponent *)v2 locale];
+    v6 = [locale localizedStringWithKey:@"REAR_SYSTEM_REPAIR_KB_URL" defaultString:@"REAR_SYSTEM_REPAIR_KB_URL"];
     v7 = [v4 URLWithString:v6];
     [(CRUDetailViewComponent *)v3 setKbArticleURL:v7];
 
-    v8 = [(CRUDetailViewComponent *)v3 locale];
-    v9 = [v8 localizedStringWithKey:@"GENUINE_APPLE_PART" defaultString:@"GENUINE_APPLE_PART"];
+    locale2 = [(CRUDetailViewComponent *)v3 locale];
+    v9 = [locale2 localizedStringWithKey:@"GENUINE_APPLE_PART" defaultString:@"GENUINE_APPLE_PART"];
     [(CRUDetailViewComponent *)v3 setTitleText:v9];
 
     v10 = objc_opt_new();
@@ -49,17 +49,17 @@
     v12 = [MEMORY[0x277D00FC0] getLocalizationKey:1029];
     v13 = [v11 stringWithFormat:@"GENUINE_%@_DESC", v12];
 
-    v14 = [(CRUDetailViewComponent *)v3 locale];
-    v15 = [v14 localizedStringWithKey:v13 defaultString:v13];
+    locale3 = [(CRUDetailViewComponent *)v3 locale];
+    v15 = [locale3 localizedStringWithKey:v13 defaultString:v13];
     [v10 appendString:v15];
 
-    v16 = [(CRUDetailViewComponent *)v3 repairHistoryItems];
-    v17 = [v16 objectForKeyedSubscript:@"MTUB"];
+    repairHistoryItems = [(CRUDetailViewComponent *)v3 repairHistoryItems];
+    v17 = [repairHistoryItems objectForKeyedSubscript:@"MTUB"];
 
     if (v17)
     {
-      v18 = [v17 repairDate];
-      [(CRUDetailViewComponent *)v3 setRepairDate:v18];
+      repairDate = [v17 repairDate];
+      [(CRUDetailViewComponent *)v3 setRepairDate:repairDate];
     }
 
     [(CRUDetailViewComponent *)v3 setInformativeText:v10];
@@ -67,8 +67,8 @@
     v20 = [MEMORY[0x277D00FC0] getLocalizationKey:1029];
     v21 = [v19 stringWithFormat:@"%@_FOOTER_LEARN_MORE", v20];
 
-    v22 = [(CRUDetailViewComponent *)v3 locale];
-    v23 = [v22 localizedStringWithKey:v21 defaultString:v21];
+    locale4 = [(CRUDetailViewComponent *)v3 locale];
+    v23 = [locale4 localizedStringWithKey:v21 defaultString:v21];
     [(CRUDetailViewComponent *)v3 setFooterText:v23];
   }
 

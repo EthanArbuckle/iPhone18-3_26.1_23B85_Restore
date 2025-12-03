@@ -14,17 +14,17 @@
 
 - (unint64_t)transportMethod
 {
-  v2 = [(CSDTTYProviderObserver *)self utilityProvider];
-  v3 = [v2 currentPreferredTransportMethod];
+  utilityProvider = [(CSDTTYProviderObserver *)self utilityProvider];
+  currentPreferredTransportMethod = [utilityProvider currentPreferredTransportMethod];
 
-  if (v3 == 2)
+  if (currentPreferredTransportMethod == 2)
   {
     return 2;
   }
 
   else
   {
-    return v3 == 1;
+    return currentPreferredTransportMethod == 1;
   }
 }
 

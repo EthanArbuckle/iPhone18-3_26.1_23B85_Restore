@@ -6,7 +6,7 @@
 
 - (id)jsonify
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10044F4F8(NSMutableSet_ptr, &NSSet.makeIterator());
 
   return v3;

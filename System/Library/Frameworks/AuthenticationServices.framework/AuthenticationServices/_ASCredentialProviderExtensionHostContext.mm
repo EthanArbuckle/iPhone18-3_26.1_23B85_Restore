@@ -1,124 +1,124 @@
 @interface _ASCredentialProviderExtensionHostContext
 - (_ASCredentialProviderExtensionHostContextDelegate)delegate;
-- (void)prepareToCancelRequestWithError:(id)a3 completion:(id)a4;
-- (void)prepareToCompleteAssertionRequestWithSelectedPasskeyCredential:(id)a3 completion:(id)a4;
-- (void)prepareToCompleteExtensionConfigurationRequestWithCompletion:(id)a3;
-- (void)prepareToCompleteOneTimeCodeRequestWithSelectedCredential:(id)a3 completion:(id)a4;
-- (void)prepareToCompleteRegistrationRequestWithSelectedPasskeyCredential:(id)a3 completion:(id)a4;
-- (void)prepareToCompleteRequestWithSelectedCredential:(id)a3 completion:(id)a4;
-- (void)prepareToCompleteRequestWithSelectedText:(id)a3 completion:(id)a4;
+- (void)prepareToCancelRequestWithError:(id)error completion:(id)completion;
+- (void)prepareToCompleteAssertionRequestWithSelectedPasskeyCredential:(id)credential completion:(id)completion;
+- (void)prepareToCompleteExtensionConfigurationRequestWithCompletion:(id)completion;
+- (void)prepareToCompleteOneTimeCodeRequestWithSelectedCredential:(id)credential completion:(id)completion;
+- (void)prepareToCompleteRegistrationRequestWithSelectedPasskeyCredential:(id)credential completion:(id)completion;
+- (void)prepareToCompleteRequestWithSelectedCredential:(id)credential completion:(id)completion;
+- (void)prepareToCompleteRequestWithSelectedText:(id)text completion:(id)completion;
 @end
 
 @implementation _ASCredentialProviderExtensionHostContext
 
-- (void)prepareToCompleteRequestWithSelectedCredential:(id)a3 completion:(id)a4
+- (void)prepareToCompleteRequestWithSelectedCredential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained prepareToCompleteRequestWithHostContext:self credential:v8 completion:v6];
+    [WeakRetained prepareToCompleteRequestWithHostContext:self credential:credentialCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareToCompleteAssertionRequestWithSelectedPasskeyCredential:(id)a3 completion:(id)a4
+- (void)prepareToCompleteAssertionRequestWithSelectedPasskeyCredential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained prepareToCompleteRequestWithHostContext:self passkeyAssertionCredential:v8 completion:v6];
+    [WeakRetained prepareToCompleteRequestWithHostContext:self passkeyAssertionCredential:credentialCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareToCompleteRegistrationRequestWithSelectedPasskeyCredential:(id)a3 completion:(id)a4
+- (void)prepareToCompleteRegistrationRequestWithSelectedPasskeyCredential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained prepareToCompleteRequestWithHostContext:self passkeyRegistrationCredential:v8 completion:v6];
+    [WeakRetained prepareToCompleteRequestWithHostContext:self passkeyRegistrationCredential:credentialCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareToCompleteOneTimeCodeRequestWithSelectedCredential:(id)a3 completion:(id)a4
+- (void)prepareToCompleteOneTimeCodeRequestWithSelectedCredential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained prepareToCompleteOneTimeCodeRequestWithHostContext:self credential:v8 completion:v6];
+    [WeakRetained prepareToCompleteOneTimeCodeRequestWithHostContext:self credential:credentialCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareToCompleteRequestWithSelectedText:(id)a3 completion:(id)a4
+- (void)prepareToCompleteRequestWithSelectedText:(id)text completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  textCopy = text;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained prepareToCompleteSelectionRequestWithHostContext:self text:v8 completion:v6];
+    [WeakRetained prepareToCompleteSelectionRequestWithHostContext:self text:textCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareToCancelRequestWithError:(id)a3 completion:(id)a4
+- (void)prepareToCancelRequestWithError:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained prepareToCancelRequestWithHostContext:self error:v8 completion:v6];
+    [WeakRetained prepareToCancelRequestWithHostContext:self error:errorCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareToCompleteExtensionConfigurationRequestWithCompletion:(id)a3
+- (void)prepareToCompleteExtensionConfigurationRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained prepareToCompleteExtensionConfigurationRequestWithHost:self completion:v4];
+    [WeakRetained prepareToCompleteExtensionConfigurationRequestWithHost:self completion:completionCopy];
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 

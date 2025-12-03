@@ -1,10 +1,10 @@
 @interface SecBackupKeybagEntry
-+ (id)fromDatabase:(id)a3 error:(id *)a4;
-+ (id)fromDatabaseRow:(id)a3;
-+ (id)state:(id)a3;
-+ (id)tryFromDatabase:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (SecBackupKeybagEntry)initWithPublicKey:(id)a3 publickeyHash:(id)a4 user:(id)a5;
++ (id)fromDatabase:(id)database error:(id *)error;
++ (id)fromDatabaseRow:(id)row;
++ (id)state:(id)state;
++ (id)tryFromDatabase:(id)database error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (SecBackupKeybagEntry)initWithPublicKey:(id)key publickeyHash:(id)hash user:(id)user;
 - (id)sqlValues;
 - (id)whereClauseToFindSelf;
 @end
@@ -14,16 +14,16 @@
 - (id)sqlValues
 {
   v11[0] = @"publickey";
-  v3 = [(SecBackupKeybagEntry *)self publickey];
-  v4 = [v3 base64EncodedStringWithOptions:0];
+  publickey = [(SecBackupKeybagEntry *)self publickey];
+  v4 = [publickey base64EncodedStringWithOptions:0];
   v12[0] = v4;
   v11[1] = @"publickeyHash";
-  v5 = [(SecBackupKeybagEntry *)self publickeyHash];
-  v6 = [v5 base64EncodedStringWithOptions:0];
+  publickeyHash = [(SecBackupKeybagEntry *)self publickeyHash];
+  v6 = [publickeyHash base64EncodedStringWithOptions:0];
   v12[1] = v6;
   v11[2] = @"musr";
-  v7 = [(SecBackupKeybagEntry *)self musr];
-  v8 = [v7 base64EncodedStringWithOptions:0];
+  musr = [(SecBackupKeybagEntry *)self musr];
+  v8 = [musr base64EncodedStringWithOptions:0];
   v12[2] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
 
@@ -33,24 +33,24 @@
 - (id)whereClauseToFindSelf
 {
   v5 = @"publickeyHash";
-  v2 = [(SecBackupKeybagEntry *)self publickeyHash];
-  v6 = v2;
+  publickeyHash = [(SecBackupKeybagEntry *)self publickeyHash];
+  v6 = publickeyHash;
   v3 = [NSDictionary dictionaryWithObjects:&v6 forKeys:&v5 count:1];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SecBackupKeybagEntry *)self publickeyHash];
-    v7 = [v5 publickeyHash];
+    v5 = equalCopy;
+    publickeyHash = [(SecBackupKeybagEntry *)self publickeyHash];
+    publickeyHash2 = [v5 publickeyHash];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [publickeyHash isEqual:publickeyHash2];
   }
 
   else
@@ -61,76 +61,76 @@
   return v8;
 }
 
-- (SecBackupKeybagEntry)initWithPublicKey:(id)a3 publickeyHash:(id)a4 user:(id)a5
+- (SecBackupKeybagEntry)initWithPublicKey:(id)key publickeyHash:(id)hash user:(id)user
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  hashCopy = hash;
+  userCopy = user;
   v15.receiver = self;
   v15.super_class = SecBackupKeybagEntry;
   v12 = [(SecBackupKeybagEntry *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_publickey, a3);
-    objc_storeStrong(&v13->_publickeyHash, a4);
-    objc_storeStrong(&v13->_musr, a5);
+    objc_storeStrong(&v12->_publickey, key);
+    objc_storeStrong(&v13->_publickeyHash, hash);
+    objc_storeStrong(&v13->_musr, user);
   }
 
   return v13;
 }
 
-+ (id)fromDatabaseRow:(id)a3
++ (id)fromDatabaseRow:(id)row
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"publickey"];
-  v5 = [v4 asBase64DecodedData];
+  rowCopy = row;
+  v4 = [rowCopy objectForKeyedSubscript:@"publickey"];
+  asBase64DecodedData = [v4 asBase64DecodedData];
 
-  v6 = [v3 objectForKeyedSubscript:@"publickeyHash"];
-  v7 = [v6 asBase64DecodedData];
+  v6 = [rowCopy objectForKeyedSubscript:@"publickeyHash"];
+  asBase64DecodedData2 = [v6 asBase64DecodedData];
 
-  v8 = [v3 objectForKeyedSubscript:@"musr"];
+  v8 = [rowCopy objectForKeyedSubscript:@"musr"];
 
-  v9 = [v8 asBase64DecodedData];
+  asBase64DecodedData3 = [v8 asBase64DecodedData];
 
   v10 = 0;
-  if (v5 && v7 && v9)
+  if (asBase64DecodedData && asBase64DecodedData2 && asBase64DecodedData3)
   {
-    v10 = [[SecBackupKeybagEntry alloc] initWithPublicKey:v5 publickeyHash:v7 user:v9];
+    v10 = [[SecBackupKeybagEntry alloc] initWithPublicKey:asBase64DecodedData publickeyHash:asBase64DecodedData2 user:asBase64DecodedData3];
   }
 
   return v10;
 }
 
-+ (id)tryFromDatabase:(id)a3 error:(id *)a4
++ (id)tryFromDatabase:(id)database error:(id *)error
 {
   v10 = @"publickeyHash";
-  v11 = a3;
-  v6 = a3;
-  v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
+  databaseCopy = database;
+  databaseCopy2 = database;
+  v7 = [NSDictionary dictionaryWithObjects:&databaseCopy forKeys:&v10 count:1];
 
-  v8 = [a1 tryFromDatabaseWhere:v7 error:a4];
+  v8 = [self tryFromDatabaseWhere:v7 error:error];
 
   return v8;
 }
 
-+ (id)fromDatabase:(id)a3 error:(id *)a4
++ (id)fromDatabase:(id)database error:(id *)error
 {
   v10 = @"publickeyHash";
-  v11 = a3;
-  v6 = a3;
-  v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
+  databaseCopy = database;
+  databaseCopy2 = database;
+  v7 = [NSDictionary dictionaryWithObjects:&databaseCopy forKeys:&v10 count:1];
 
-  v8 = [a1 fromDatabaseWhere:v7 error:a4];
+  v8 = [self fromDatabaseWhere:v7 error:error];
 
   return v8;
 }
 
-+ (id)state:(id)a3
++ (id)state:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v8 = 0;
-  v4 = [SecBackupKeybagEntry tryFromDatabase:v3 error:&v8];
+  v4 = [SecBackupKeybagEntry tryFromDatabase:stateCopy error:&v8];
   v5 = v8;
   if (v5)
   {
@@ -138,7 +138,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v10 = v3;
+      v10 = stateCopy;
       v11 = 2112;
       v12 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "CKKS: error fetching SecBackupKeybagEntry(%@): %@", buf, 0x16u);
@@ -147,7 +147,7 @@
 
   if (!v4)
   {
-    v4 = [[SecBackupKeybagEntry alloc] initWithPublicKey:0 publickeyHash:v3 user:0];
+    v4 = [[SecBackupKeybagEntry alloc] initWithPublicKey:0 publickeyHash:stateCopy user:0];
   }
 
   return v4;

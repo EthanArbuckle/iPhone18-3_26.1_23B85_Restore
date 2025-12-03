@@ -1,71 +1,71 @@
 @interface _UIContextMenuListView
 - (BOOL)_shouldScrollToSelectedAction;
 - (BOOL)_showChildIndicatorOnTrailingEdge;
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
 - (CGSize)nativeContentSize;
-- (CGSize)preferredContentSizeWithinContainerSize:(CGSize)a3;
+- (CGSize)preferredContentSizeWithinContainerSize:(CGSize)size;
 - (CGSize)visibleContentSize;
-- (CGVector)selectionGestureAllowableMovementForGestureBeginningAtIndexPath:(id)a3;
+- (CGVector)selectionGestureAllowableMovementForGestureBeginningAtIndexPath:(id)path;
 - (NSDirectionalEdgeInsets)contentMargins;
 - (NSDirectionalEdgeInsets)contentMarginsWithoutSelection;
 - (NSDirectionalEdgeInsets)headerMargins;
 - (NSDirectionalEdgeInsets)menuTitleMargins;
 - (NSString)backgroundMaterialGroupName;
 - (UIEdgeInsets)contentInsets;
-- (_UIContextMenuListView)initWithFrame:(CGRect)a3;
+- (_UIContextMenuListView)initWithFrame:(CGRect)frame;
 - (double)_clampedCornerRadius;
-- (double)closestScrollTruncationDetentToHeight:(double)a3;
-- (id)_collectionView:(id)a3 typeSelectStringForItemAtIndexPath:(id)a4;
-- (id)_dataSourceForCollectionView:(id)a3;
+- (double)closestScrollTruncationDetentToHeight:(double)height;
+- (id)_collectionView:(id)view typeSelectStringForItemAtIndexPath:(id)path;
+- (id)_dataSourceForCollectionView:(id)view;
 - (id)_footerIndexPath;
 - (id)_headerIndexPath;
 - (id)_platformMetrics;
-- (id)_viewAtIndexPath:(id)a3;
-- (id)cellForElement:(id)a3;
-- (id)elementAtIndexPath:(id)a3;
-- (id)indexPathForElement:(id)a3;
-- (id)indexPathForItemAtPoint:(CGPoint)a3;
+- (id)_viewAtIndexPath:(id)path;
+- (id)cellForElement:(id)element;
+- (id)elementAtIndexPath:(id)path;
+- (id)indexPathForElement:(id)element;
+- (id)indexPathForItemAtPoint:(CGPoint)point;
 - (id)preferredFocusEnvironments;
-- (void)_collectionView:(id)a3 typeSelectResultDidUpdate:(id)a4;
-- (void)_collectionView:(id)a3 updateTypeSelectResultForCell:(id)a4 atIndexPath:(id)a5 withItemResult:(id)a6 animator:(id)a7;
-- (void)_configureCell:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 forElement:(id)a6 section:(id)a7 size:(int64_t)a8;
-- (void)_portalCellIfNeeded:(id)a3;
+- (void)_collectionView:(id)view typeSelectResultDidUpdate:(id)update;
+- (void)_collectionView:(id)view updateTypeSelectResultForCell:(id)cell atIndexPath:(id)path withItemResult:(id)result animator:(id)animator;
+- (void)_configureCell:(id)cell inCollectionView:(id)view atIndexPath:(id)path forElement:(id)element section:(id)section size:(int64_t)size;
+- (void)_portalCellIfNeeded:(id)needed;
 - (void)_removeAllPortals;
 - (void)_setupCellPortalingIfNeeded;
 - (void)_sizeClippingAndCollectionViews;
 - (void)_tearDownCellPortalingIfNeeded;
-- (void)_updateCellPortalingWithCell:(id)a3;
-- (void)_updateCellPortalingWithUpdateFocusInContext:(id)a3 inCollectionView:(id)a4;
+- (void)_updateCellPortalingWithCell:(id)cell;
+- (void)_updateCellPortalingWithUpdateFocusInContext:(id)context inCollectionView:(id)view;
 - (void)_updateCollectionViewAlpha;
 - (void)_updateContentMargins;
 - (void)_updateCornerRadius;
 - (void)_updateGlassBackgroundIfNeeded;
-- (void)_updateKeyboardShortcutMetricsForSnapshot:(id)a3;
+- (void)_updateKeyboardShortcutMetricsForSnapshot:(id)snapshot;
 - (void)_updatePlatterHairline;
 - (void)_updateScrollInsets;
 - (void)_updateShadowAlpha;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)dealloc;
 - (void)didCompleteInPlaceMenuTransition;
 - (void)disableTypeSelectIfNeeded;
-- (void)highlightItemAtIndexPath:(id)a3 forHover:(BOOL)a4 playFeedback:(BOOL)a5;
+- (void)highlightItemAtIndexPath:(id)path forHover:(BOOL)hover playFeedback:(BOOL)feedback;
 - (void)layoutSubviews;
 - (void)modifierKeyServiceDidChangeCurrentModifierFlags;
 - (void)scrollToFirstSignificantAction;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setAllowsFocus:(BOOL)a3;
-- (void)setCollectionViewAlpha:(double)a3;
-- (void)setDisplayedMenu:(id)a3;
-- (void)setEmphasized:(BOOL)a3;
-- (void)setPreferredMenuMaterial:(id)a3;
-- (void)setReversesActionOrder:(BOOL)a3;
-- (void)setRoundedEdges:(unint64_t)a3;
-- (void)setShadowAlpha:(double)a3;
-- (void)setShouldEnableTypeSelect:(BOOL)a3;
-- (void)setSubmenuTitleViewExpanded:(BOOL)a3 withMaterialGroupName:(id)a4 associatedCellContentView:(id)a5 highlighted:(BOOL)a6;
-- (void)setSuppressGlassBackground:(BOOL)a3;
-- (void)setVisibleContentSize:(CGSize)a3;
-- (void)unHighlightItemAtIndexPath:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setAllowsFocus:(BOOL)focus;
+- (void)setCollectionViewAlpha:(double)alpha;
+- (void)setDisplayedMenu:(id)menu;
+- (void)setEmphasized:(BOOL)emphasized;
+- (void)setPreferredMenuMaterial:(id)material;
+- (void)setReversesActionOrder:(BOOL)order;
+- (void)setRoundedEdges:(unint64_t)edges;
+- (void)setShadowAlpha:(double)alpha;
+- (void)setShouldEnableTypeSelect:(BOOL)select;
+- (void)setSubmenuTitleViewExpanded:(BOOL)expanded withMaterialGroupName:(id)name associatedCellContentView:(id)view highlighted:(BOOL)highlighted;
+- (void)setSuppressGlassBackground:(BOOL)background;
+- (void)setVisibleContentSize:(CGSize)size;
+- (void)unHighlightItemAtIndexPath:(id)path;
 - (void)willStartInPlaceMenuTransition;
 @end
 
@@ -96,35 +96,35 @@
   v14 = v6 + v13;
   v16 = v8 - (v11 + v15);
   v18 = v10 - (v13 + v17);
-  v19 = [(_UIContextMenuListView *)self backgroundView];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  backgroundView = [(_UIContextMenuListView *)self backgroundView];
+  [backgroundView setFrame:{v12, v14, v16, v18}];
 
-  v20 = [(_UIContextMenuListView *)self clippingView];
-  [v20 setFrame:{v12, v14, v16, v18}];
+  clippingView = [(_UIContextMenuListView *)self clippingView];
+  [clippingView setFrame:{v12, v14, v16, v18}];
 
-  v21 = [(_UIContextMenuListView *)self _platformMetrics];
-  v32 = [v21 gradientMaskingConfiguration];
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  gradientMaskingConfiguration = [_platformMetrics gradientMaskingConfiguration];
 
-  if (v32)
+  if (gradientMaskingConfiguration)
   {
-    if ([v32 embedBackgroundForCompositing])
+    if ([gradientMaskingConfiguration embedBackgroundForCompositing])
     {
-      [v32 gradientMaskEdgeInsets];
+      [gradientMaskingConfiguration gradientMaskEdgeInsets];
       v23 = v14 + v22;
-      v24 = [(_UIContextMenuListView *)self cvBackgroundView];
-      [v24 setFrame:{v12, v23, v16, v18}];
+      cvBackgroundView = [(_UIContextMenuListView *)self cvBackgroundView];
+      [cvBackgroundView setFrame:{v12, v23, v16, v18}];
     }
 
-    [v32 gradientMaskEdgeInsets];
+    [gradientMaskingConfiguration gradientMaskEdgeInsets];
     v26 = v25;
-    [v32 gradientMaskEdgeInsets];
+    [gradientMaskingConfiguration gradientMaskEdgeInsets];
     v28 = v14 - v26;
     v29 = v18 - (-v27 - v26);
-    v30 = [(_UIContextMenuListView *)self collectionView];
-    [v30 setFrame:{v12 + 0.0, v28, v16, v29}];
+    collectionView = [(_UIContextMenuListView *)self collectionView];
+    [collectionView setFrame:{v12 + 0.0, v28, v16, v29}];
 
-    v31 = [(_UIContextMenuListView *)self borderView];
-    [v31 setFrame:{v12 + -1.0, v14 + -1.0, v16 + 2.0, v18 + 2.0}];
+    borderView = [(_UIContextMenuListView *)self borderView];
+    [borderView setFrame:{v12 + -1.0, v14 + -1.0, v16 + 2.0, v18 + 2.0}];
   }
 
   [(_UIContextMenuListView *)self _updateScrollInsets];
@@ -147,48 +147,48 @@
 - (void)_updateScrollInsets
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIContextMenuListView *)self _platformMetrics];
-  v4 = [v3 gradientMaskingConfiguration];
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  gradientMaskingConfiguration = [_platformMetrics gradientMaskingConfiguration];
 
-  if (!v4)
+  if (!gradientMaskingConfiguration)
   {
-    v5 = [(_UIContextMenuListView *)self collectionView];
-    [v5 contentSize];
+    collectionView = [(_UIContextMenuListView *)self collectionView];
+    [collectionView contentSize];
     v7 = v6;
 
     [(_UIContextMenuListView *)self visibleContentSize];
     v9 = v7 - v8;
-    v10 = [(_UIContextMenuListView *)self collectionView];
-    [v10 frame];
+    collectionView2 = [(_UIContextMenuListView *)self collectionView];
+    [collectionView2 frame];
     v11 = v9 + CGRectGetHeight(v27) - v7;
 
     v12 = fmax(v11, 0.0);
-    v13 = [(_UIContextMenuListView *)self collectionView];
-    [v13 contentInset];
+    collectionView3 = [(_UIContextMenuListView *)self collectionView];
+    [collectionView3 contentInset];
     v15 = v14;
 
-    v16 = [(_UIContextMenuListView *)self collectionView];
-    [v16 setContentInset:{0.0, 0.0, v12, 0.0}];
+    collectionView4 = [(_UIContextMenuListView *)self collectionView];
+    [collectionView4 setContentInset:{0.0, 0.0, v12, 0.0}];
 
     if (v15 != v12)
     {
-      v17 = [(_UIContextMenuListView *)self displayedMenu];
-      v18 = [v17 _pinnedFooterElement];
+      displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
+      _pinnedFooterElement = [displayedMenu _pinnedFooterElement];
 
-      if (v18)
+      if (_pinnedFooterElement)
       {
-        v19 = [(_UIContextMenuListView *)self collectionView];
-        v20 = [v19 collectionViewLayout];
+        collectionView5 = [(_UIContextMenuListView *)self collectionView];
+        collectionViewLayout = [collectionView5 collectionViewLayout];
 
-        v21 = [v20 _invalidationContextForRefreshingVisibleElementAttributes];
-        v22 = [(_UIContextMenuListView *)self _footerIndexPath];
-        v26[0] = v22;
+        _invalidationContextForRefreshingVisibleElementAttributes = [collectionViewLayout _invalidationContextForRefreshingVisibleElementAttributes];
+        _footerIndexPath = [(_UIContextMenuListView *)self _footerIndexPath];
+        v26[0] = _footerIndexPath;
         v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-        [v21 invalidateSupplementaryElementsOfKind:@"kContextMenuPinnedFooter" atIndexPaths:v23];
+        [_invalidationContextForRefreshingVisibleElementAttributes invalidateSupplementaryElementsOfKind:@"kContextMenuPinnedFooter" atIndexPaths:v23];
 
-        v24 = [(_UIContextMenuListView *)self collectionView];
-        v25 = [v24 collectionViewLayout];
-        [v25 invalidateLayoutWithContext:v21];
+        collectionView6 = [(_UIContextMenuListView *)self collectionView];
+        collectionViewLayout2 = [collectionView6 collectionViewLayout];
+        [collectionViewLayout2 invalidateLayoutWithContext:_invalidationContextForRefreshingVisibleElementAttributes];
       }
     }
   }
@@ -214,8 +214,8 @@
 
 - (id)_platformMetrics
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIContextMenuGetPlatformMetrics([v2 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   return v3;
 }
@@ -226,9 +226,9 @@
   if (!backgroundMaterialGroupName)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v4 stringWithFormat:@"context-menu-background-%@", v6];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v7 = [v4 stringWithFormat:@"context-menu-background-%@", uUIDString];
     v8 = self->_backgroundMaterialGroupName;
     self->_backgroundMaterialGroupName = v7;
 
@@ -240,44 +240,44 @@
 
 - (void)_updateShadowAlpha
 {
-  v3 = [(_UIContextMenuListView *)self _platformMetrics];
-  v33 = [v3 previewShadowSettings];
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  previewShadowSettings = [_platformMetrics previewShadowSettings];
 
-  if (v33 && ([v33 opacity], v4 > 0.0))
+  if (previewShadowSettings && ([previewShadowSettings opacity], v4 > 0.0))
   {
-    [v33 opacity];
+    [previewShadowSettings opacity];
     v6 = v5;
     [(_UIContextMenuListView *)self emphasisAlphaMultiplier];
     v8 = v6 * v7;
     [(_UIContextMenuListView *)self shadowAlpha];
     *&v8 = v8 * ceil(v9);
-    v10 = [(_UIContextMenuListView *)self clippingView];
-    v11 = [v10 layer];
+    clippingView = [(_UIContextMenuListView *)self clippingView];
+    layer = [clippingView layer];
     LODWORD(v12) = LODWORD(v8);
-    [v11 setShadowOpacity:v12];
+    [layer setShadowOpacity:v12];
 
-    v13 = [v33 color];
-    v14 = [v13 CGColor];
-    v15 = [(_UIContextMenuListView *)self clippingView];
-    v16 = [v15 layer];
-    [v16 setShadowColor:v14];
+    color = [previewShadowSettings color];
+    cGColor = [color CGColor];
+    clippingView2 = [(_UIContextMenuListView *)self clippingView];
+    layer2 = [clippingView2 layer];
+    [layer2 setShadowColor:cGColor];
 
-    [v33 offset];
+    [previewShadowSettings offset];
     v18 = v17;
     v20 = v19;
-    v21 = [(_UIContextMenuListView *)self clippingView];
-    v22 = [v21 layer];
-    [v22 setShadowOffset:{v18, v20}];
+    clippingView3 = [(_UIContextMenuListView *)self clippingView];
+    layer3 = [clippingView3 layer];
+    [layer3 setShadowOffset:{v18, v20}];
 
-    [v33 radius];
+    [previewShadowSettings radius];
     v24 = v23;
-    v25 = [(_UIContextMenuListView *)self clippingView];
-    v26 = [v25 layer];
-    [v26 setShadowRadius:v24];
+    clippingView4 = [(_UIContextMenuListView *)self clippingView];
+    layer4 = [clippingView4 layer];
+    [layer4 setShadowRadius:v24];
 
-    v27 = [(_UIContextMenuListView *)self clippingView];
-    v28 = [v27 layer];
-    [v28 setShadowPathIsBounds:1];
+    clippingView5 = [(_UIContextMenuListView *)self clippingView];
+    layer5 = [clippingView5 layer];
+    [layer5 setShadowPathIsBounds:1];
   }
 
   else
@@ -286,8 +286,8 @@
     v30 = v29;
     [(_UIContextMenuListView *)self emphasisAlphaMultiplier];
     v32 = v30 * v31;
-    v27 = [(_UIContextMenuListView *)self shadowView];
-    [v27 setAlpha:v32];
+    clippingView5 = [(_UIContextMenuListView *)self shadowView];
+    [clippingView5 setAlpha:v32];
   }
 }
 
@@ -310,20 +310,20 @@
 {
   [(_UIContextMenuListView *)self _clampedCornerRadius];
   v4 = v3;
-  v5 = [(_UIContextMenuListView *)self _platformMetrics];
-  v6 = [v5 gradientMaskingConfiguration];
-  v7 = [v6 backgroundMasksCorners];
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  gradientMaskingConfiguration = [_platformMetrics gradientMaskingConfiguration];
+  backgroundMasksCorners = [gradientMaskingConfiguration backgroundMasksCorners];
 
-  if (v7)
+  if (backgroundMasksCorners)
   {
-    v8 = [(_UIContextMenuListView *)self backgroundView];
-    [v8 _setContinuousCornerRadius:v4];
+    backgroundView = [(_UIContextMenuListView *)self backgroundView];
+    [backgroundView _setContinuousCornerRadius:v4];
 
-    v9 = [(_UIContextMenuListView *)self cvBackgroundView];
-    [v9 _setContinuousCornerRadius:v4];
+    cvBackgroundView = [(_UIContextMenuListView *)self cvBackgroundView];
+    [cvBackgroundView _setContinuousCornerRadius:v4];
 
-    v10 = [(_UIContextMenuListView *)self borderView];
-    [v10 _setContinuousCornerRadius:v4 + 1.0];
+    borderView = [(_UIContextMenuListView *)self borderView];
+    [borderView _setContinuousCornerRadius:v4 + 1.0];
 
     v11 = v4;
     v12 = v4;
@@ -349,12 +349,12 @@
   }
 
   v13 = *MEMORY[0x1E69796E8];
-  v14 = [(_UIContextMenuListView *)self clippingView];
-  v15 = [v14 layer];
-  [v15 setCornerCurve:v13];
+  clippingView = [(_UIContextMenuListView *)self clippingView];
+  layer = [clippingView layer];
+  [layer setCornerCurve:v13];
 
-  v16 = [(_UIContextMenuListView *)self clippingView];
-  v17 = [v16 layer];
+  clippingView2 = [(_UIContextMenuListView *)self clippingView];
+  layer2 = [clippingView2 layer];
   v25 = v12;
   v26 = v12;
   v27 = v12;
@@ -363,12 +363,12 @@
   v30 = v11;
   v31 = v11;
   v32 = v11;
-  [v17 setCornerRadii:&v25];
+  [layer2 setCornerRadii:&v25];
 
-  v18 = [(UIView *)self layer];
-  [v18 setCornerCurve:v13];
+  layer3 = [(UIView *)self layer];
+  [layer3 setCornerCurve:v13];
 
-  v19 = [(UIView *)self layer];
+  layer4 = [(UIView *)self layer];
   v25 = v12;
   v26 = v12;
   v27 = v12;
@@ -377,20 +377,20 @@
   v30 = v11;
   v31 = v11;
   v32 = v11;
-  [v19 setCornerRadii:&v25];
+  [layer4 setCornerRadii:&v25];
 
   v20 = v4 + -2.0;
-  v21 = [(_UIContextMenuListView *)self collectionView];
-  [v21 contentInset];
+  collectionView = [(_UIContextMenuListView *)self collectionView];
+  [collectionView contentInset];
   v23 = v20 + v22;
-  v24 = [(_UIContextMenuListView *)self collectionView];
-  [v24 setScrollIndicatorInsets:{v20, 0.0, v23, 0.0}];
+  collectionView2 = [(_UIContextMenuListView *)self collectionView];
+  [collectionView2 setScrollIndicatorInsets:{v20, 0.0, v23, 0.0}];
 }
 
 - (double)_clampedCornerRadius
 {
-  v3 = [(_UIContextMenuListView *)self _platformMetrics];
-  [v3 menuCornerRadius];
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  [_platformMetrics menuCornerRadius];
   v5 = v4;
 
   [(UIView *)self bounds];
@@ -404,23 +404,23 @@
   v14.super_class = _UIContextMenuListView;
   [(UIView *)&v14 layoutSubviews];
   [(_UIContextMenuListView *)self _sizeClippingAndCollectionViews];
-  v3 = [(_UIContextMenuListView *)self shadowView];
-  v4 = [(_UIContextMenuListView *)self clippingView];
-  [v4 frame];
-  [v3 frameWithContentWithFrame:?];
+  shadowView = [(_UIContextMenuListView *)self shadowView];
+  clippingView = [(_UIContextMenuListView *)self clippingView];
+  [clippingView frame];
+  [shadowView frameWithContentWithFrame:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(_UIContextMenuListView *)self shadowView];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  shadowView2 = [(_UIContextMenuListView *)self shadowView];
+  [shadowView2 setFrame:{v6, v8, v10, v12}];
 }
 
 - (id)_footerIndexPath
 {
-  v2 = [(_UIContextMenuListView *)self displayedMenu];
-  v3 = [v2 _pinnedFooterElement];
-  if (v3)
+  displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
+  _pinnedFooterElement = [displayedMenu _pinnedFooterElement];
+  if (_pinnedFooterElement)
   {
     v4 = [MEMORY[0x1E696AC88] indexPathWithIndex:1];
   }
@@ -436,15 +436,15 @@
 - (void)_setupCellPortalingIfNeeded
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIContextMenuListView *)self _platformMetrics];
-  v4 = [v3 gradientMaskingConfiguration];
-  self->_portalingFocusedView = v4 != 0;
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  gradientMaskingConfiguration = [_platformMetrics gradientMaskingConfiguration];
+  self->_portalingFocusedView = gradientMaskingConfiguration != 0;
 
   if ([(_UIContextMenuListView *)self portalingFocusedView])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     portals = self->_portals;
-    self->_portals = v5;
+    self->_portals = array;
 
     v7 = objc_alloc_init(UIView);
     portalContainerView = self->_portalContainerView;
@@ -455,10 +455,10 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [(_UIContextMenuListView *)self outgoingCollectionView];
-    v10 = [v9 visibleCells];
+    outgoingCollectionView = [(_UIContextMenuListView *)self outgoingCollectionView];
+    visibleCells = [outgoingCollectionView visibleCells];
 
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v11 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -470,61 +470,61 @@
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(visibleCells);
           }
 
           [(_UIContextMenuListView *)self _updateCellPortalingWithCell:*(*(&v16 + 1) + 8 * v14++)];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
     }
 
-    v15 = [(_UIContextMenuListView *)self clippingView];
-    [v15 setClipsToBounds:1];
+    clippingView = [(_UIContextMenuListView *)self clippingView];
+    [clippingView setClipsToBounds:1];
   }
 }
 
 - (void)_updateContentMargins
 {
-  v3 = [(_UIContextMenuListView *)self displayedMenu];
-  v4 = [v3 metadata];
+  displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
+  metadata = [displayedMenu metadata];
 
-  v5 = (v4 >> 8) & 1;
-  if ((v4 & 0x10000) != 0 || [(_UIContextMenuListView *)self position]== 1)
+  v5 = (metadata >> 8) & 1;
+  if ((metadata & 0x10000) != 0 || [(_UIContextMenuListView *)self position]== 1)
   {
-    v6 = [(_UIContextMenuListView *)self _showChildIndicatorOnTrailingEdge];
-    v7 = !v6;
-    LODWORD(v5) = !v6 | v5;
+    _showChildIndicatorOnTrailingEdge = [(_UIContextMenuListView *)self _showChildIndicatorOnTrailingEdge];
+    v7 = !_showChildIndicatorOnTrailingEdge;
+    LODWORD(v5) = !_showChildIndicatorOnTrailingEdge | v5;
   }
 
   else
   {
     v7 = 0;
-    v6 = 0;
+    _showChildIndicatorOnTrailingEdge = 0;
   }
 
-  v8 = [(UIView *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v10 = _UIContextMenuGetPlatformMetrics(v9);
+  v10 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v10 menuItemInternalPadding];
   v53 = v12;
   v54 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = _UIContextMenuGetPlatformMetrics(v9);
+  v17 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v17 headerPadding];
   v51 = v19;
   v52 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = _UIContextMenuGetPlatformMetrics(v9);
+  v24 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v24 menuTitlePadding];
   v47 = v26;
   v49 = v25;
@@ -534,12 +534,12 @@
   v31 = v14;
   if (v5)
   {
-    v32 = [(UIView *)self traitCollection];
-    v33 = _UIContextMenuGetPlatformMetrics([v32 userInterfaceIdiom]);
-    v34 = [v33 titleFont];
-    v35 = [v34 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v32];
+    traitCollection2 = [(UIView *)self traitCollection];
+    v33 = _UIContextMenuGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
+    titleFont = [v33 titleFont];
+    v35 = [titleFont _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection2];
 
-    v36 = _UIContextMenuGetPlatformMetrics(v9);
+    v36 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
     [v36 leadingIndentationWidth];
     v38 = v37;
 
@@ -552,9 +552,9 @@
     }
   }
 
-  if (v6)
+  if (_showChildIndicatorOnTrailingEdge)
   {
-    v40 = _UIContextMenuGetPlatformMetrics(v9);
+    v40 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
     [v40 menuGutterWidth];
     v42 = v41;
 
@@ -562,9 +562,9 @@
   }
 
   v43 = [(_UIContextMenuListView *)self _platformMetrics:v47];
-  v44 = [v43 alignMenuHeaderAndItemContents];
+  alignMenuHeaderAndItemContents = [v43 alignMenuHeaderAndItemContents];
 
-  if (v44)
+  if (alignMenuHeaderAndItemContents)
   {
     v45 = v16;
   }
@@ -574,7 +574,7 @@
     v45 = v30;
   }
 
-  if (v44)
+  if (alignMenuHeaderAndItemContents)
   {
     v28 = v31;
     v46 = v16;
@@ -585,7 +585,7 @@
     v46 = v23;
   }
 
-  if (v44)
+  if (alignMenuHeaderAndItemContents)
   {
     v21 = v31;
   }
@@ -603,8 +603,8 @@
   v4 = v3;
   [(_UIContextMenuListView *)self emphasisAlphaMultiplier];
   v6 = v4 * v5;
-  v7 = [(_UIContextMenuListView *)self collectionView];
-  [v7 setAlpha:v6];
+  collectionView = [(_UIContextMenuListView *)self collectionView];
+  [collectionView setAlpha:v6];
 }
 
 - (void)_tearDownCellPortalingIfNeeded
@@ -612,55 +612,55 @@
   if ([(_UIContextMenuListView *)self portalingFocusedView])
   {
     [(_UIContextMenuListView *)self setPortalingFocusedView:0];
-    v3 = [(_UIContextMenuListView *)self clippingView];
-    [v3 setClipsToBounds:0];
+    clippingView = [(_UIContextMenuListView *)self clippingView];
+    [clippingView setClipsToBounds:0];
 
     [(_UIContextMenuListView *)self _removeAllPortals];
   }
 }
 
-- (_UIContextMenuListView)initWithFrame:(CGRect)a3
+- (_UIContextMenuListView)initWithFrame:(CGRect)frame
 {
   v35[1] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = _UIContextMenuListView;
-  v3 = [(UIView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 layer];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(UIView *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v6 = [(_UIContextMenuListView *)v4 _platformMetrics];
+    _platformMetrics = [(_UIContextMenuListView *)v4 _platformMetrics];
     [(_UIContextMenuListView *)v4 _updateGlassBackgroundIfNeeded];
     v7 = [UIView alloc];
     [(UIView *)v4 bounds];
     v8 = [(UIView *)v7 initWithFrame:?];
     [(_UIContextMenuListView *)v4 setClippingView:v8];
 
-    v9 = [(_UIContextMenuListView *)v4 clippingView];
-    [v9 setClipsToBounds:1];
+    clippingView = [(_UIContextMenuListView *)v4 clippingView];
+    [clippingView setClipsToBounds:1];
 
-    v10 = [(_UIContextMenuListView *)v4 clippingView];
-    [(UIView *)v4 addSubview:v10];
+    clippingView2 = [(_UIContextMenuListView *)v4 clippingView];
+    [(UIView *)v4 addSubview:clippingView2];
 
-    v11 = [(UIView *)v4 traitCollection];
-    v12 = _UIContextMenuGetPlatformMetrics([v11 userInterfaceIdiom]);
+    traitCollection = [(UIView *)v4 traitCollection];
+    v12 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
     v13 = [UIVisualEffectView alloc];
-    v14 = [v12 menuBackgroundEffect];
-    v15 = [(UIVisualEffectView *)v13 initWithEffect:v14];
+    menuBackgroundEffect = [v12 menuBackgroundEffect];
+    v15 = [(UIVisualEffectView *)v13 initWithEffect:menuBackgroundEffect];
 
-    v16 = [v12 menuBackgroundColor];
-    [(UIView *)v15 setBackgroundColor:v16];
+    menuBackgroundColor = [v12 menuBackgroundColor];
+    [(UIView *)v15 setBackgroundColor:menuBackgroundColor];
 
     [(_UIContextMenuListView *)v4 setBackgroundView:v15];
-    v17 = [(_UIContextMenuListView *)v4 backgroundMaterialGroupName];
-    v18 = [(_UIContextMenuListView *)v4 backgroundView];
-    [v18 _setGroupName:v17];
+    backgroundMaterialGroupName = [(_UIContextMenuListView *)v4 backgroundMaterialGroupName];
+    backgroundView = [(_UIContextMenuListView *)v4 backgroundView];
+    [backgroundView _setGroupName:backgroundMaterialGroupName];
 
-    v19 = [(_UIContextMenuListView *)v4 clippingView];
-    v20 = [(_UIContextMenuListView *)v4 backgroundView];
-    [v19 addSubview:v20];
+    clippingView3 = [(_UIContextMenuListView *)v4 clippingView];
+    backgroundView2 = [(_UIContextMenuListView *)v4 backgroundView];
+    [clippingView3 addSubview:backgroundView2];
 
     [(_UIContextMenuListView *)v4 setCollectionViewAlpha:1.0];
     [(_UIContextMenuListView *)v4 setEmphasized:1];
@@ -698,40 +698,40 @@
   [(UIView *)&v4 dealloc];
 }
 
-- (void)setShouldEnableTypeSelect:(BOOL)a3
+- (void)setShouldEnableTypeSelect:(BOOL)select
 {
-  v3 = a3;
-  self->_shouldEnableTypeSelect = a3;
-  v4 = [(_UIContextMenuListView *)self collectionView];
-  [v4 _setTypeSelectShouldAvoidBecomingFirstResponder:v3];
+  selectCopy = select;
+  self->_shouldEnableTypeSelect = select;
+  collectionView = [(_UIContextMenuListView *)self collectionView];
+  [collectionView _setTypeSelectShouldAvoidBecomingFirstResponder:selectCopy];
 }
 
 - (void)disableTypeSelectIfNeeded
 {
-  v2 = [(_UIContextMenuListView *)self collectionView];
-  [v2 _disableTypeSelectIfNeeded];
+  collectionView = [(_UIContextMenuListView *)self collectionView];
+  [collectionView _disableTypeSelectIfNeeded];
 }
 
-- (void)setShadowAlpha:(double)a3
+- (void)setShadowAlpha:(double)alpha
 {
-  if (self->_shadowAlpha != a3)
+  if (self->_shadowAlpha != alpha)
   {
     v9[9] = v3;
     v9[10] = v4;
-    self->_shadowAlpha = a3;
-    if (a3 > 0.0)
+    self->_shadowAlpha = alpha;
+    if (alpha > 0.0)
     {
-      v6 = [(_UIContextMenuListView *)self shadowView];
-      if (v6)
+      shadowView = [(_UIContextMenuListView *)self shadowView];
+      if (shadowView)
       {
       }
 
       else
       {
-        v7 = [(_UIContextMenuListView *)self _platformMetrics];
-        v8 = [v7 prefersGlassAppearance];
+        _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+        prefersGlassAppearance = [_platformMetrics prefersGlassAppearance];
 
-        if ((v8 & 1) == 0)
+        if ((prefersGlassAppearance & 1) == 0)
         {
           v9[0] = MEMORY[0x1E69E9820];
           v9[1] = 3221225472;
@@ -747,35 +747,35 @@
   }
 }
 
-- (void)setCollectionViewAlpha:(double)a3
+- (void)setCollectionViewAlpha:(double)alpha
 {
-  if (self->_collectionViewAlpha != a3)
+  if (self->_collectionViewAlpha != alpha)
   {
-    self->_collectionViewAlpha = a3;
+    self->_collectionViewAlpha = alpha;
     [(_UIContextMenuListView *)self _updateCollectionViewAlpha];
   }
 }
 
-- (void)setRoundedEdges:(unint64_t)a3
+- (void)setRoundedEdges:(unint64_t)edges
 {
-  if (self->_roundedEdges != a3)
+  if (self->_roundedEdges != edges)
   {
-    self->_roundedEdges = a3;
+    self->_roundedEdges = edges;
     [(_UIContextMenuListView *)self _updateCornerRadius];
   }
 }
 
-- (CGVector)selectionGestureAllowableMovementForGestureBeginningAtIndexPath:(id)a3
+- (CGVector)selectionGestureAllowableMovementForGestureBeginningAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuListView *)self collectionView];
-  v6 = [v5 _autoScrollAssistantForIndexPath:v4];
+  pathCopy = path;
+  collectionView = [(_UIContextMenuListView *)self collectionView];
+  v6 = [collectionView _autoScrollAssistantForIndexPath:pathCopy];
 
-  v7 = [v6 scrollView];
+  scrollView = [v6 scrollView];
 
-  v8 = [(_UIContextMenuListView *)self collectionView];
+  collectionView2 = [(_UIContextMenuListView *)self collectionView];
 
-  if (v7 == v8)
+  if (scrollView == collectionView2)
   {
     [(_UIContextMenuListView *)self visibleContentSize];
     v10 = v13;
@@ -784,12 +784,12 @@
 
   else
   {
-    [v7 frame];
+    [scrollView frame];
     v10 = v9;
     v12 = v11;
   }
 
-  [v7 contentSize];
+  [scrollView contentSize];
   if (v15 <= v12)
   {
     v16 = 0.0;
@@ -800,7 +800,7 @@
     v16 = 10.0;
   }
 
-  [v7 contentSize];
+  [scrollView contentSize];
   if (v17 <= v10)
   {
     v18 = 0.0;
@@ -818,50 +818,50 @@
   return result;
 }
 
-- (void)setReversesActionOrder:(BOOL)a3
+- (void)setReversesActionOrder:(BOOL)order
 {
-  if (self->_reversesActionOrder != a3)
+  if (self->_reversesActionOrder != order)
   {
-    self->_reversesActionOrder = a3;
-    v4 = [(_UIContextMenuListView *)self displayedMenu];
+    self->_reversesActionOrder = order;
+    displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
 
-    if (v4)
+    if (displayedMenu)
     {
-      v5 = [(_UIContextMenuListView *)self displayedMenu];
-      v15 = _UIContextMenuCollectionViewDataSourceSnapshot(v5, self->_reversesActionOrder);
+      displayedMenu2 = [(_UIContextMenuListView *)self displayedMenu];
+      v15 = _UIContextMenuCollectionViewDataSourceSnapshot(displayedMenu2, self->_reversesActionOrder);
 
-      v6 = [(_UIContextMenuListView *)self collectionViewDataSource];
-      [v6 applySnapshotUsingReloadData:v15];
+      collectionViewDataSource = [(_UIContextMenuListView *)self collectionViewDataSource];
+      [collectionViewDataSource applySnapshotUsingReloadData:v15];
 
-      v7 = [(_UIContextMenuListView *)self displayedMenu];
-      v8 = [v7 _hasGlobalHeader];
-      v9 = [(_UIContextMenuListView *)self displayedMenu];
-      v10 = [v9 _pinnedFooterElement];
-      v11 = [(_UIContextMenuListView *)self position];
-      v12 = [(UIView *)self traitCollection];
-      v13 = _UIContextMenuCollectionViewLayout(v15, v8, v10 != 0, v11, v12);
-      v14 = [(_UIContextMenuListView *)self collectionView];
-      [v14 setCollectionViewLayout:v13];
+      displayedMenu3 = [(_UIContextMenuListView *)self displayedMenu];
+      _hasGlobalHeader = [displayedMenu3 _hasGlobalHeader];
+      displayedMenu4 = [(_UIContextMenuListView *)self displayedMenu];
+      _pinnedFooterElement = [displayedMenu4 _pinnedFooterElement];
+      position = [(_UIContextMenuListView *)self position];
+      traitCollection = [(UIView *)self traitCollection];
+      v13 = _UIContextMenuCollectionViewLayout(v15, _hasGlobalHeader, _pinnedFooterElement != 0, position, traitCollection);
+      collectionView = [(_UIContextMenuListView *)self collectionView];
+      [collectionView setCollectionViewLayout:v13];
     }
   }
 }
 
-- (void)setEmphasized:(BOOL)a3
+- (void)setEmphasized:(BOOL)emphasized
 {
-  if (self->_emphasized != a3)
+  if (self->_emphasized != emphasized)
   {
-    v3 = a3;
-    self->_emphasized = a3;
-    v5 = [(_UIContextMenuListView *)self collectionView];
-    v6 = [v5 panGestureRecognizer];
-    [v6 setEnabled:v3];
+    emphasizedCopy = emphasized;
+    self->_emphasized = emphasized;
+    collectionView = [(_UIContextMenuListView *)self collectionView];
+    panGestureRecognizer = [collectionView panGestureRecognizer];
+    [panGestureRecognizer setEnabled:emphasizedCopy];
 
     v7 = 1.0;
     if (!self->_emphasized)
     {
-      v8 = [(_UIContextMenuListView *)self parentHierarchyStyle];
+      parentHierarchyStyle = [(_UIContextMenuListView *)self parentHierarchyStyle];
       v7 = 0.8;
-      if (v8 == 1)
+      if (parentHierarchyStyle == 1)
       {
         v7 = 0.5;
       }
@@ -874,16 +874,16 @@
   }
 }
 
-- (void)setSubmenuTitleViewExpanded:(BOOL)a3 withMaterialGroupName:(id)a4 associatedCellContentView:(id)a5 highlighted:(BOOL)a6
+- (void)setSubmenuTitleViewExpanded:(BOOL)expanded withMaterialGroupName:(id)name associatedCellContentView:(id)view highlighted:(BOOL)highlighted
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(_UIContextMenuListView *)self _headerIndexPath];
-  if (v12)
+  expandedCopy = expanded;
+  nameCopy = name;
+  viewCopy = view;
+  _headerIndexPath = [(_UIContextMenuListView *)self _headerIndexPath];
+  if (_headerIndexPath)
   {
-    v13 = [(_UIContextMenuListView *)self collectionView];
-    v14 = [v13 supplementaryViewForElementKind:@"kContextMenuSubmenuTitleHeader" atIndexPath:v12];
+    collectionView = [(_UIContextMenuListView *)self collectionView];
+    v14 = [collectionView supplementaryViewForElementKind:@"kContextMenuSubmenuTitleHeader" atIndexPath:_headerIndexPath];
 
     v41 = 0;
     v42 = &v41;
@@ -900,42 +900,42 @@
     v33[1] = 3221225472;
     v33[2] = __114___UIContextMenuListView_setSubmenuTitleViewExpanded_withMaterialGroupName_associatedCellContentView_highlighted___block_invoke;
     v33[3] = &unk_1E711AC10;
-    v39 = a6;
+    highlightedCopy = highlighted;
     v33[4] = self;
-    v34 = v12;
-    v40 = v8;
+    v34 = _headerIndexPath;
+    v40 = expandedCopy;
     v19 = v14;
     v35 = v19;
-    v20 = v11;
+    v20 = viewCopy;
     v36 = v20;
     v38 = &v41;
-    v37 = v10;
+    v37 = nameCopy;
     [UIView performWithoutAnimation:v33];
-    v21 = [v19 contentView];
-    v22 = [v21 options];
+    contentView = [v19 contentView];
+    options = [contentView options];
 
-    if (v8)
+    if (expandedCopy)
     {
-      v23 = v22 & 0xFFFFFFFFFFFFFEBFLL | 0x40;
+      v23 = options & 0xFFFFFFFFFFFFFEBFLL | 0x40;
     }
 
     else
     {
-      v23 = [v20 options] & 0x100 | v22 & 0xFFFFFFFFFFFFFFBFLL;
+      v23 = [v20 options] & 0x100 | options & 0xFFFFFFFFFFFFFFBFLL;
     }
 
-    v24 = [v19 contentView];
-    [v24 setOptions:v23];
+    contentView2 = [v19 contentView];
+    [contentView2 setOptions:v23];
 
-    v25 = [v19 obscuringMaterialView];
-    v26 = v25;
+    obscuringMaterialView = [v19 obscuringMaterialView];
+    v26 = obscuringMaterialView;
     v27 = 1.0;
-    if (v8)
+    if (expandedCopy)
     {
       v27 = 0.0;
     }
 
-    [v25 setAlpha:v27];
+    [obscuringMaterialView setAlpha:v27];
 
     v28 = v42;
     [v19 directionalLayoutMargins];
@@ -951,11 +951,11 @@
   }
 }
 
-- (void)setPreferredMenuMaterial:(id)a3
+- (void)setPreferredMenuMaterial:(id)material
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuListView *)self _platformMetrics];
-  v6 = _UIContextMenuListViewResolvedMaterial(v4, [v5 prefersGlassAppearance]);
+  materialCopy = material;
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  v6 = _UIContextMenuListViewResolvedMaterial(materialCopy, [_platformMetrics prefersGlassAppearance]);
 
   preferredMenuMaterial = self->_preferredMenuMaterial;
   self->_preferredMenuMaterial = v6;
@@ -963,25 +963,25 @@
   [(_UIContextMenuListView *)self _updateGlassBackgroundIfNeeded];
 }
 
-- (void)setSuppressGlassBackground:(BOOL)a3
+- (void)setSuppressGlassBackground:(BOOL)background
 {
-  if (self->_suppressGlassBackground != a3)
+  if (self->_suppressGlassBackground != background)
   {
-    self->_suppressGlassBackground = a3;
+    self->_suppressGlassBackground = background;
     [(_UIContextMenuListView *)self _updateGlassBackgroundIfNeeded];
   }
 }
 
 - (void)_updateGlassBackgroundIfNeeded
 {
-  v3 = [(_UIContextMenuListView *)self preferredMenuMaterial];
-  if (v3 || (-[UIView _background](self, "_background"), (v3 = objc_claimAutoreleasedReturnValue()) != 0) || (-[_UIContextMenuListView _platformMetrics](self, "_platformMetrics"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 prefersGlassAppearance], v5, v6) && (_UIContextMenuListViewResolvedMaterial(0, 1), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  preferredMenuMaterial = [(_UIContextMenuListView *)self preferredMenuMaterial];
+  if (preferredMenuMaterial || (-[UIView _background](self, "_background"), (preferredMenuMaterial = objc_claimAutoreleasedReturnValue()) != 0) || (-[_UIContextMenuListView _platformMetrics](self, "_platformMetrics"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 prefersGlassAppearance], v5, v6) && (_UIContextMenuListViewResolvedMaterial(0, 1), (preferredMenuMaterial = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = v3;
+    v7 = preferredMenuMaterial;
     if ([(_UIContextMenuListView *)self suppressGlassBackground]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v4 = [v7 _identityGlass];
-      [(UIView *)self _setBackground:v4];
+      _identityGlass = [v7 _identityGlass];
+      [(UIView *)self _setBackground:_identityGlass];
     }
 
     else
@@ -991,18 +991,18 @@
   }
 }
 
-- (CGSize)preferredContentSizeWithinContainerSize:(CGSize)a3
+- (CGSize)preferredContentSizeWithinContainerSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_UIContextMenuListView *)self collectionView];
+  height = size.height;
+  width = size.width;
+  collectionView = [(_UIContextMenuListView *)self collectionView];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3010000000;
   v22 = 0;
   v23 = 0;
   v21 = "";
-  [v6 contentSize];
+  [collectionView contentSize];
   v22 = v7;
   v23 = v8;
   if (![(_UIContextMenuListView *)self hasValidContentSize])
@@ -1013,9 +1013,9 @@
     v12[3] = &unk_1E711AC38;
     v16 = width;
     v17 = height;
-    v14 = self;
+    selfCopy = self;
     v15 = &v18;
-    v13 = v6;
+    v13 = collectionView;
     [UIView performWithoutAnimation:v12];
   }
 
@@ -1035,25 +1035,25 @@
   return result;
 }
 
-- (double)closestScrollTruncationDetentToHeight:(double)a3
+- (double)closestScrollTruncationDetentToHeight:(double)height
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [(_UIContextMenuListView *)self collectionView];
-  [v5 contentSize];
-  if (v6 > a3)
+  collectionView = [(_UIContextMenuListView *)self collectionView];
+  [collectionView contentSize];
+  if (v6 > height)
   {
-    v7 = [(_UIContextMenuListView *)self reversesActionOrder];
-    v8 = a3 + -50.0;
-    if (v7)
+    reversesActionOrder = [(_UIContextMenuListView *)self reversesActionOrder];
+    v8 = height + -50.0;
+    if (reversesActionOrder)
     {
-      [v5 contentSize];
+      [collectionView contentSize];
       v8 = v9 - v8;
     }
 
-    [v5 bounds];
+    [collectionView bounds];
     v11 = v10;
-    v12 = [v5 _collectionViewData];
-    v13 = [(UICollectionViewData *)v12 layoutAttributesForElementsInRect:v8, v11, 100.0];
+    _collectionViewData = [collectionView _collectionViewData];
+    v13 = [(UICollectionViewData *)_collectionViewData layoutAttributesForElementsInRect:v8, v11, 100.0];
 
     if ([v13 count])
     {
@@ -1068,7 +1068,7 @@
         v16 = v15;
         v17 = *v26;
         v18 = 1.79769313e308;
-        v19 = a3;
+        heightCopy2 = height;
         do
         {
           for (i = 0; i != v16; ++i)
@@ -1083,16 +1083,16 @@
             {
               [v21 frame];
               MidY = CGRectGetMidY(v31);
-              if (v7)
+              if (reversesActionOrder)
               {
-                [v5 contentSize];
+                [collectionView contentSize];
                 MidY = v23 - MidY;
               }
 
-              if (MidY < a3 && a3 - MidY < v18)
+              if (MidY < height && height - MidY < v18)
               {
-                v19 = MidY;
-                v18 = a3 - MidY;
+                heightCopy2 = MidY;
+                v18 = height - MidY;
               }
             }
           }
@@ -1105,53 +1105,53 @@
 
       else
       {
-        v19 = a3;
+        heightCopy2 = height;
       }
 
-      a3 = v19;
+      height = heightCopy2;
     }
   }
 
-  return a3;
+  return height;
 }
 
-- (void)setVisibleContentSize:(CGSize)a3
+- (void)setVisibleContentSize:(CGSize)size
 {
-  if (a3.width != self->_visibleContentSize.width || a3.height != self->_visibleContentSize.height)
+  if (size.width != self->_visibleContentSize.width || size.height != self->_visibleContentSize.height)
   {
-    self->_visibleContentSize = a3;
+    self->_visibleContentSize = size;
     [(_UIContextMenuListView *)self _updateScrollInsets];
   }
 }
 
-- (void)setDisplayedMenu:(id)a3
+- (void)setDisplayedMenu:(id)menu
 {
   v84 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_displayedMenu, a3);
+  menuCopy = menu;
+  objc_storeStrong(&self->_displayedMenu, menu);
   [(_UIContextMenuListView *)self setHasValidContentSize:0];
   [(_UIContextMenuListView *)self setHighlightedIndexPath:0];
-  v6 = [(_UIContextMenuListView *)self selectionView];
-  [v6 setAlpha:0.0];
+  selectionView = [(_UIContextMenuListView *)self selectionView];
+  [selectionView setAlpha:0.0];
 
-  v7 = [(_UIContextMenuListView *)self collectionViewDataSource];
-  [(_UIContextMenuListView *)self setOutgoingCollectionViewDataSource:v7];
+  collectionViewDataSource = [(_UIContextMenuListView *)self collectionViewDataSource];
+  [(_UIContextMenuListView *)self setOutgoingCollectionViewDataSource:collectionViewDataSource];
 
   [(_UIContextMenuListView *)self _updateContentMargins];
-  v8 = [(_UIContextMenuListView *)self displayedMenu];
-  v9 = _UIContextMenuCollectionViewDataSourceSnapshot(v8, [(_UIContextMenuListView *)self reversesActionOrder]);
+  displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
+  v9 = _UIContextMenuCollectionViewDataSourceSnapshot(displayedMenu, [(_UIContextMenuListView *)self reversesActionOrder]);
 
   if ([(_UIContextMenuListView *)self allowsAlternates])
   {
-    v10 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
-    [(_UIContextMenuListView *)self setElementsWithAlternates:v10];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    [(_UIContextMenuListView *)self setElementsWithAlternates:weakObjectsPointerArray];
 
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v11 = [v9 itemIdentifiers];
-    v12 = [v11 countByEnumeratingWithState:&v79 objects:v83 count:16];
+    itemIdentifiers = [v9 itemIdentifiers];
+    v12 = [itemIdentifiers countByEnumeratingWithState:&v79 objects:v83 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1162,24 +1162,24 @@
         {
           if (*v80 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(itemIdentifiers);
           }
 
           v16 = *(*(&v79 + 1) + 8 * i);
           if ([v16 _isLeaf])
           {
-            v17 = [v16 _leafAlternates];
-            v18 = [v17 count];
+            _leafAlternates = [v16 _leafAlternates];
+            v18 = [_leafAlternates count];
 
             if (v18)
             {
-              v19 = [(_UIContextMenuListView *)self elementsWithAlternates];
-              [v19 addPointer:v16];
+              elementsWithAlternates = [(_UIContextMenuListView *)self elementsWithAlternates];
+              [elementsWithAlternates addPointer:v16];
             }
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v79 objects:v83 count:16];
+        v13 = [itemIdentifiers countByEnumeratingWithState:&v79 objects:v83 count:16];
       }
 
       while (v13);
@@ -1192,18 +1192,18 @@
   }
 
   [(_UIContextMenuListView *)self _updateKeyboardShortcutMetricsForSnapshot:v9];
-  v20 = [(_UIContextMenuListView *)self displayedMenu];
-  v21 = [v20 _hasGlobalHeader];
-  v22 = [(_UIContextMenuListView *)self displayedMenu];
-  v23 = [v22 _pinnedFooterElement];
-  v24 = [(_UIContextMenuListView *)self position];
-  v25 = [(UIView *)self traitCollection];
-  v26 = _UIContextMenuCollectionViewLayout(v9, v21, v23 != 0, v24, v25);
+  displayedMenu2 = [(_UIContextMenuListView *)self displayedMenu];
+  _hasGlobalHeader = [displayedMenu2 _hasGlobalHeader];
+  displayedMenu3 = [(_UIContextMenuListView *)self displayedMenu];
+  _pinnedFooterElement = [displayedMenu3 _pinnedFooterElement];
+  position = [(_UIContextMenuListView *)self position];
+  traitCollection = [(UIView *)self traitCollection];
+  v26 = _UIContextMenuCollectionViewLayout(v9, _hasGlobalHeader, _pinnedFooterElement != 0, position, traitCollection);
 
   [(UIView *)self bounds];
   Width = CGRectGetWidth(v85);
-  v28 = [(UIView *)self window];
-  [v28 bounds];
+  window = [(UIView *)self window];
+  [window bounds];
   Height = CGRectGetHeight(v86);
 
   if (Height < 44.0)
@@ -1211,86 +1211,86 @@
     Height = 44.0;
   }
 
-  v30 = [[UICollectionView alloc] initWithFrame:v26 collectionViewLayout:0.0, 0.0, Width, Height];
-  [(UICollectionView *)v30 setAllowsSelection:1];
-  [(UICollectionView *)v30 setAllowsMultipleSelection:1];
+  height = [[UICollectionView alloc] initWithFrame:v26 collectionViewLayout:0.0, 0.0, Width, Height];
+  [(UICollectionView *)height setAllowsSelection:1];
+  [(UICollectionView *)height setAllowsMultipleSelection:1];
   v31 = +[UIColor clearColor];
-  [(UICollectionView *)v30 setBackgroundColor:v31];
+  [(UICollectionView *)height setBackgroundColor:v31];
 
-  [(UICollectionView *)v30 setAlwaysBounceVertical:0];
-  [(UICollectionView *)v30 setAlwaysBounceHorizontal:0];
-  [(UIView *)v30 setClipsToBounds:0];
-  v32 = [(_UIContextMenuListView *)self _platformMetrics];
-  v33 = [v32 gradientMaskingConfiguration];
-  v34 = [(UIView *)v30 layer];
-  [v34 setAllowsGroupOpacity:v33 != 0];
+  [(UICollectionView *)height setAlwaysBounceVertical:0];
+  [(UICollectionView *)height setAlwaysBounceHorizontal:0];
+  [(UIView *)height setClipsToBounds:0];
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  gradientMaskingConfiguration = [_platformMetrics gradientMaskingConfiguration];
+  layer = [(UIView *)height layer];
+  [layer setAllowsGroupOpacity:gradientMaskingConfiguration != 0];
 
-  [(UICollectionView *)v30 setDelegate:self];
-  [(UICollectionView *)v30 setRemembersLastFocusedIndexPath:1];
-  [(UICollectionView *)v30 _setTypeSelectShouldAvoidBecomingFirstResponder:[(_UIContextMenuListView *)self shouldEnableTypeSelect]];
-  v35 = [v5 _pinnedFooterElement];
+  [(UICollectionView *)height setDelegate:self];
+  [(UICollectionView *)height setRemembersLastFocusedIndexPath:1];
+  [(UICollectionView *)height _setTypeSelectShouldAvoidBecomingFirstResponder:[(_UIContextMenuListView *)self shouldEnableTypeSelect]];
+  _pinnedFooterElement2 = [menuCopy _pinnedFooterElement];
 
-  if (v35)
+  if (_pinnedFooterElement2)
   {
     v36 = +[UIScrollEdgeEffectStyle hardStyle];
-    v37 = [(UIScrollView *)v30 bottomEdgeEffect];
-    [v37 setStyle:v36];
+    bottomEdgeEffect = [(UIScrollView *)height bottomEdgeEffect];
+    [bottomEdgeEffect setStyle:v36];
   }
 
-  v38 = [(_UIContextMenuListView *)self _platformMetrics];
-  v39 = [v38 gradientMaskingConfiguration];
+  _platformMetrics2 = [(_UIContextMenuListView *)self _platformMetrics];
+  gradientMaskingConfiguration2 = [_platformMetrics2 gradientMaskingConfiguration];
 
-  if (v39)
+  if (gradientMaskingConfiguration2)
   {
-    [(UICollectionView *)v30 setAllowsSelection:1];
-    [(UIView *)v30 setClipsToBounds:0];
-    [(UIScrollView *)v30 setContentInsetAdjustmentBehavior:2];
-    [v39 gradientMaskEdgeInsets];
-    [(UICollectionView *)v30 setContentInset:?];
-    [v39 gradientMaskLengths];
-    [(UIScrollView *)v30 _setGradientMaskLengths:?];
-    [v39 gradientMaskEdgeInsets];
-    [(UIScrollView *)v30 _setGradientMaskEdgeInsets:?];
-    if ([v39 embedBackgroundForCompositing])
+    [(UICollectionView *)height setAllowsSelection:1];
+    [(UIView *)height setClipsToBounds:0];
+    [(UIScrollView *)height setContentInsetAdjustmentBehavior:2];
+    [gradientMaskingConfiguration2 gradientMaskEdgeInsets];
+    [(UICollectionView *)height setContentInset:?];
+    [gradientMaskingConfiguration2 gradientMaskLengths];
+    [(UIScrollView *)height _setGradientMaskLengths:?];
+    [gradientMaskingConfiguration2 gradientMaskEdgeInsets];
+    [(UIScrollView *)height _setGradientMaskEdgeInsets:?];
+    if ([gradientMaskingConfiguration2 embedBackgroundForCompositing])
     {
       [(_UIContextMenuListView *)self _clampedCornerRadius];
       v41 = v40;
-      v42 = [(UIView *)self traitCollection];
-      v43 = _UIContextMenuGetPlatformMetrics([v42 userInterfaceIdiom]);
+      traitCollection2 = [(UIView *)self traitCollection];
+      v43 = _UIContextMenuGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
       v44 = [UIVisualEffectView alloc];
-      v45 = [v43 menuBackgroundEffect];
-      v46 = [(UIVisualEffectView *)v44 initWithEffect:v45];
+      menuBackgroundEffect = [v43 menuBackgroundEffect];
+      v46 = [(UIVisualEffectView *)v44 initWithEffect:menuBackgroundEffect];
 
-      v47 = [v43 menuBackgroundColor];
-      [(UIView *)v46 setBackgroundColor:v47];
+      menuBackgroundColor = [v43 menuBackgroundColor];
+      [(UIView *)v46 setBackgroundColor:menuBackgroundColor];
 
       [(UIVisualEffectView *)v46 _setContinuousCornerRadius:v41];
-      v48 = [(_UIContextMenuListView *)self backgroundMaterialGroupName];
-      [(UIVisualEffectView *)v46 _setGroupName:v48];
+      backgroundMaterialGroupName = [(_UIContextMenuListView *)self backgroundMaterialGroupName];
+      [(UIVisualEffectView *)v46 _setGroupName:backgroundMaterialGroupName];
 
       v49 = [UIView alloc];
-      [(UIView *)v30 bounds];
+      [(UIView *)height bounds];
       v50 = [(UIView *)v49 initWithFrame:?];
       [(UIView *)v50 addSubview:v46];
-      [v39 gradientMaskEdgeInsets];
+      [gradientMaskingConfiguration2 gradientMaskEdgeInsets];
       v52 = v51;
-      [v39 gradientMaskEdgeInsets];
+      [gradientMaskingConfiguration2 gradientMaskEdgeInsets];
       [(UIView *)v50 bounds];
       [(UIView *)v46 setFrame:v53 + 0.0, v52 + v54];
       [(_UIContextMenuListView *)self setCvBackgroundView:v46];
-      [(UICollectionView *)v30 setBackgroundView:v50];
+      [(UICollectionView *)height setBackgroundView:v50];
     }
 
-    v55 = [(_UIContextMenuListView *)self borderView];
+    borderView = [(_UIContextMenuListView *)self borderView];
 
-    if (!v55)
+    if (!borderView)
     {
       v56 = objc_alloc_init(UIView);
       [(_UIContextMenuListView *)self setBorderView:v56];
 
-      v57 = [(_UIContextMenuListView *)self borderView];
-      v58 = [(_UIContextMenuListView *)self clippingView];
-      [(UIView *)self insertSubview:v57 belowSubview:v58];
+      borderView2 = [(_UIContextMenuListView *)self borderView];
+      clippingView = [(_UIContextMenuListView *)self clippingView];
+      [(UIView *)self insertSubview:borderView2 belowSubview:clippingView];
     }
 
     [(UIView *)self bounds];
@@ -1298,43 +1298,43 @@
     v62 = v61 + -1.0;
     v64 = v63 + 2.0;
     v66 = v65 + 2.0;
-    v67 = [(_UIContextMenuListView *)self borderView];
-    [v67 setFrame:{v60, v62, v64, v66}];
+    borderView3 = [(_UIContextMenuListView *)self borderView];
+    [borderView3 setFrame:{v60, v62, v64, v66}];
 
     [(_UIContextMenuListView *)self _updatePlatterHairline];
   }
 
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kContextMenuSmallCell"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kContextMenuMediumCell"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kContextMenuLargeCell"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kContextMenuLoadingCell"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kContextMenuCustomViewCell"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuHeader" withReuseIdentifier:@"kContextMenuHeader"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuPinnedFooter" withReuseIdentifier:@"kContextMenuPinnedFooter"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuSubmenuTitleHeader" withReuseIdentifier:@"kContextMenuSubmenuTitleHeader"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuSectionSeparator" withReuseIdentifier:@"kContextMenuSectionSeparator"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuGradientMaskSectionSeparator" withReuseIdentifier:@"kContextMenuGradientMaskSectionSeparator"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuGradientStyleHeader" withReuseIdentifier:@"kContextMenuGradientStyleHeader"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuGradientStyleFooter" withReuseIdentifier:@"kContextMenuGradientStyleFooter"];
-  [(UICollectionView *)v30 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuThinSectionSeparator" withReuseIdentifier:@"kContextMenuThinSectionSeparator"];
-  v68 = [(_UIContextMenuListView *)self _dataSourceForCollectionView:v30];
+  [(UICollectionView *)height registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kContextMenuSmallCell"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kContextMenuMediumCell"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kContextMenuLargeCell"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kContextMenuLoadingCell"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kContextMenuCustomViewCell"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuHeader" withReuseIdentifier:@"kContextMenuHeader"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuPinnedFooter" withReuseIdentifier:@"kContextMenuPinnedFooter"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuSubmenuTitleHeader" withReuseIdentifier:@"kContextMenuSubmenuTitleHeader"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuSectionSeparator" withReuseIdentifier:@"kContextMenuSectionSeparator"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuGradientMaskSectionSeparator" withReuseIdentifier:@"kContextMenuGradientMaskSectionSeparator"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuGradientStyleHeader" withReuseIdentifier:@"kContextMenuGradientStyleHeader"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuGradientStyleFooter" withReuseIdentifier:@"kContextMenuGradientStyleFooter"];
+  [(UICollectionView *)height registerClass:objc_opt_class() forSupplementaryViewOfKind:@"kContextMenuThinSectionSeparator" withReuseIdentifier:@"kContextMenuThinSectionSeparator"];
+  v68 = [(_UIContextMenuListView *)self _dataSourceForCollectionView:height];
   [(_UIContextMenuListView *)self setCollectionViewDataSource:v68];
 
-  v69 = [(_UIContextMenuListView *)self collectionViewDataSource];
-  [v69 applySnapshotUsingReloadData:v9];
+  collectionViewDataSource2 = [(_UIContextMenuListView *)self collectionViewDataSource];
+  [collectionViewDataSource2 applySnapshotUsingReloadData:v9];
 
-  [(_UIContextMenuListView *)self setCollectionView:v30];
-  v70 = [(_UIContextMenuListView *)self _platformMetrics];
-  v71 = [v70 gradientMaskingConfiguration];
+  [(_UIContextMenuListView *)self setCollectionView:height];
+  _platformMetrics3 = [(_UIContextMenuListView *)self _platformMetrics];
+  gradientMaskingConfiguration3 = [_platformMetrics3 gradientMaskingConfiguration];
 
-  v72 = [(_UIContextMenuListView *)self clippingView];
-  if (v71)
+  clippingView2 = [(_UIContextMenuListView *)self clippingView];
+  if (gradientMaskingConfiguration3)
   {
-    v73 = [(_UIContextMenuListView *)self outgoingCollectionView];
-    if (!v73)
+    outgoingCollectionView = [(_UIContextMenuListView *)self outgoingCollectionView];
+    if (!outgoingCollectionView)
     {
-      v74 = [(_UIContextMenuListView *)self backgroundView];
-      [v72 insertSubview:v30 aboveSubview:v74];
+      backgroundView = [(_UIContextMenuListView *)self backgroundView];
+      [clippingView2 insertSubview:height aboveSubview:backgroundView];
 
       v75 = 0;
       goto LABEL_29;
@@ -1343,18 +1343,18 @@
 
   else
   {
-    v73 = [(_UIContextMenuListView *)self backgroundView];
+    outgoingCollectionView = [(_UIContextMenuListView *)self backgroundView];
   }
 
-  v75 = v73;
-  [v72 insertSubview:v30 aboveSubview:v73];
+  v75 = outgoingCollectionView;
+  [clippingView2 insertSubview:height aboveSubview:outgoingCollectionView];
 LABEL_29:
 
   [(_UIContextMenuListView *)self _updateCollectionViewAlpha];
-  v76 = [(_UIContextMenuListView *)self allowsAlternates];
+  allowsAlternates = [(_UIContextMenuListView *)self allowsAlternates];
   v77 = +[_UIContextMenuModifierKeyService sharedService];
   v78 = v77;
-  if (v76)
+  if (allowsAlternates)
   {
     [v77 addObserver:self];
   }
@@ -1367,8 +1367,8 @@ LABEL_29:
 
 - (void)willStartInPlaceMenuTransition
 {
-  v3 = [(_UIContextMenuListView *)self collectionView];
-  [(_UIContextMenuListView *)self setOutgoingCollectionView:v3];
+  collectionView = [(_UIContextMenuListView *)self collectionView];
+  [(_UIContextMenuListView *)self setOutgoingCollectionView:collectionView];
 
   [(_UIContextMenuListView *)self _setupCellPortalingIfNeeded];
 }
@@ -1381,22 +1381,22 @@ LABEL_29:
   [(_UIContextMenuListView *)self _tearDownCellPortalingIfNeeded];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(_UIContextMenuListView *)self _platformMetrics];
-  v5 = [v4 wantsContinuousHighlight];
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  wantsContinuousHighlight = [_platformMetrics wantsContinuousHighlight];
 
-  if (v5)
+  if (wantsContinuousHighlight)
   {
-    v6 = [(_UIContextMenuListView *)self highlightedIndexPath];
-    if (v6)
+    highlightedIndexPath = [(_UIContextMenuListView *)self highlightedIndexPath];
+    if (highlightedIndexPath)
     {
-      v7 = [(_UIContextMenuListView *)self _viewAtIndexPath:v6];
+      v7 = [(_UIContextMenuListView *)self _viewAtIndexPath:highlightedIndexPath];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v7 backgroundView];
-        [v8 frame];
+        backgroundView = [v7 backgroundView];
+        [backgroundView frame];
         [v7 convertRect:self toView:?];
         v10 = v9;
         v12 = v11;
@@ -1421,103 +1421,103 @@ LABEL_29:
 - (id)preferredFocusEnvironments
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIContextMenuListView *)self displayedMenu];
-  v4 = [v3 metadata];
+  displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
+  metadata = [displayedMenu metadata];
   if ([(_UIContextMenuListView *)self typeSelectActive])
   {
     v13.receiver = self;
     v13.super_class = _UIContextMenuListView;
-    v5 = [(UIView *)&v13 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(UIView *)&v13 preferredFocusEnvironments];
     goto LABEL_10;
   }
 
-  v6 = [(_UIContextMenuListView *)self highlightedIndexPath];
+  highlightedIndexPath = [(_UIContextMenuListView *)self highlightedIndexPath];
 
-  if (v6)
+  if (highlightedIndexPath)
   {
-    v7 = [(_UIContextMenuListView *)self highlightedIndexPath];
-    v8 = [(_UIContextMenuListView *)self _viewAtIndexPath:v7];
+    highlightedIndexPath2 = [(_UIContextMenuListView *)self highlightedIndexPath];
+    v8 = [(_UIContextMenuListView *)self _viewAtIndexPath:highlightedIndexPath2];
   }
 
   else
   {
-    if ((v4 & 0x100) == 0 || ([v3 options] & 0x20) == 0)
+    if ((metadata & 0x100) == 0 || ([displayedMenu options] & 0x20) == 0)
     {
       goto LABEL_9;
     }
 
-    v10 = [(_UIContextMenuListView *)self displayedMenu];
-    v11 = [v10 selectedElements];
-    v7 = [v11 firstObject];
+    displayedMenu2 = [(_UIContextMenuListView *)self displayedMenu];
+    selectedElements = [displayedMenu2 selectedElements];
+    highlightedIndexPath2 = [selectedElements firstObject];
 
-    v12 = [(_UIContextMenuListView *)self indexPathForElement:v7];
+    v12 = [(_UIContextMenuListView *)self indexPathForElement:highlightedIndexPath2];
     v8 = [(_UIContextMenuListView *)self _viewAtIndexPath:v12];
   }
 
   if (v8)
   {
     v14[0] = v8;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
+    preferredFocusEnvironments = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
 
     goto LABEL_10;
   }
 
 LABEL_9:
-  v5 = MEMORY[0x1E695E0F0];
+  preferredFocusEnvironments = MEMORY[0x1E695E0F0];
 LABEL_10:
 
-  return v5;
+  return preferredFocusEnvironments;
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v11 = a4;
-  [(_UIContextMenuListView *)self _updateCellPortalingWithUpdateFocusInContext:v11 inCollectionView:a3];
-  v7 = [v11 nextFocusedIndexPath];
-  v8 = [v11 nextFocusedItem];
+  contextCopy = context;
+  [(_UIContextMenuListView *)self _updateCellPortalingWithUpdateFocusInContext:contextCopy inCollectionView:view];
+  nextFocusedIndexPath = [contextCopy nextFocusedIndexPath];
+  nextFocusedItem = [contextCopy nextFocusedItem];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v9 = [v11 nextFocusedItem];
-  v10 = [UIFocusSystem environment:self containsEnvironment:v9];
+  nextFocusedItem2 = [contextCopy nextFocusedItem];
+  v10 = [UIFocusSystem environment:self containsEnvironment:nextFocusedItem2];
 
   if (v10)
   {
     [(_UIContextMenuListView *)self _headerIndexPath];
-    v7 = v8 = v7;
+    nextFocusedIndexPath = nextFocusedItem = nextFocusedIndexPath;
 LABEL_4:
   }
 
-  if (v7 || [(_UIContextMenuListView *)self parentHierarchyStyle]== 1)
+  if (nextFocusedIndexPath || [(_UIContextMenuListView *)self parentHierarchyStyle]== 1)
   {
-    [(_UIContextMenuListView *)self highlightItemAtIndexPath:v7 forHover:0];
+    [(_UIContextMenuListView *)self highlightItemAtIndexPath:nextFocusedIndexPath forHover:0];
   }
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v5 = [(_UIContextMenuListView *)self elementAtIndexPath:a4];
+  v5 = [(_UIContextMenuListView *)self elementAtIndexPath:path];
   if ([v5 _canBeHighlighted])
   {
-    v6 = [(_UIContextMenuListView *)self allowsFocus];
+    allowsFocus = [(_UIContextMenuListView *)self allowsFocus];
   }
 
   else
   {
-    v6 = 0;
+    allowsFocus = 0;
   }
 
-  return v6;
+  return allowsFocus;
 }
 
-- (void)setAllowsFocus:(BOOL)a3
+- (void)setAllowsFocus:(BOOL)focus
 {
-  self->_allowsFocus = a3;
-  v4 = [(_UIContextMenuListView *)self _headerIndexPath];
-  v5 = [(_UIContextMenuListView *)self _viewAtIndexPath:v4];
+  self->_allowsFocus = focus;
+  _headerIndexPath = [(_UIContextMenuListView *)self _headerIndexPath];
+  v5 = [(_UIContextMenuListView *)self _viewAtIndexPath:_headerIndexPath];
 
   if (v5)
   {
@@ -1525,51 +1525,51 @@ LABEL_4:
   }
 }
 
-- (id)_collectionView:(id)a3 typeSelectStringForItemAtIndexPath:(id)a4
+- (id)_collectionView:(id)view typeSelectStringForItemAtIndexPath:(id)path
 {
-  v5 = [(_UIContextMenuListView *)self elementAtIndexPath:a4];
+  v5 = [(_UIContextMenuListView *)self elementAtIndexPath:path];
   if ([v5 _canBeHighlighted] && -[_UIContextMenuListView allowsFocus](self, "allowsFocus"))
   {
-    v6 = [v5 title];
+    title = [v5 title];
   }
 
   else
   {
-    v6 = 0;
+    title = 0;
   }
 
-  return v6;
+  return title;
 }
 
-- (void)_collectionView:(id)a3 updateTypeSelectResultForCell:(id)a4 atIndexPath:(id)a5 withItemResult:(id)a6 animator:(id)a7
+- (void)_collectionView:(id)view updateTypeSelectResultForCell:(id)cell atIndexPath:(id)path withItemResult:(id)result animator:(id)animator
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  [(_UIContextMenuListView *)self setTypeSelectActive:v13 != 0];
+  cellCopy = cell;
+  pathCopy = path;
+  resultCopy = result;
+  animatorCopy = animator;
+  [(_UIContextMenuListView *)self setTypeSelectActive:resultCopy != 0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v11 actionView];
-    v16 = [(_UIContextMenuListView *)self elementAtIndexPath:v12];
-    v17 = [v16 title];
-    v18 = [v16 attributedTitle];
-    v43 = v17;
-    v19 = [v17 length];
-    if (v19 || [v18 length])
+    actionView = [cellCopy actionView];
+    v16 = [(_UIContextMenuListView *)self elementAtIndexPath:pathCopy];
+    title = [v16 title];
+    attributedTitle = [v16 attributedTitle];
+    v43 = title;
+    v19 = [title length];
+    if (v19 || [attributedTitle length])
     {
       v39 = v16;
-      v40 = v15;
-      v41 = v14;
-      v42 = v12;
-      v20 = [v15 _primaryContentColorForCurrentState];
+      v40 = actionView;
+      v41 = animatorCopy;
+      v42 = pathCopy;
+      _primaryContentColorForCurrentState = [actionView _primaryContentColorForCurrentState];
       v21 = +[_UITypeSelectInteraction _defaultSecondaryColorTransformer];
-      v22 = (v21)[2](v21, v20);
+      v22 = (v21)[2](v21, _primaryContentColorForCurrentState);
 
-      v23 = [v13 unmatchingRanges];
-      if (v18)
+      unmatchingRanges = [resultCopy unmatchingRanges];
+      if (attributedTitle)
       {
         v24 = *off_1E70EC920;
       }
@@ -1579,28 +1579,28 @@ LABEL_4:
         v25 = objc_alloc(MEMORY[0x1E696AAB0]);
         v24 = *off_1E70EC920;
         v59 = *off_1E70EC920;
-        v60[0] = v20;
+        v60[0] = _primaryContentColorForCurrentState;
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:&v59 count:1];
-        v18 = [v25 initWithString:v43 attributes:v26];
+        attributedTitle = [v25 initWithString:v43 attributes:v26];
       }
 
-      v27 = [v18 mutableCopy];
+      v27 = [attributedTitle mutableCopy];
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
       v55[2] = __108___UIContextMenuListView__collectionView_updateTypeSelectResultForCell_atIndexPath_withItemResult_animator___block_invoke;
       v55[3] = &unk_1E711AC88;
-      v28 = v20;
+      v28 = _primaryContentColorForCurrentState;
       v56 = v28;
       v29 = v27;
       v57 = v29;
-      v30 = v23;
+      v30 = unmatchingRanges;
       v58 = v30;
-      [v18 enumerateAttribute:v24 inRange:0 options:v19 usingBlock:{0, v55}];
+      [attributedTitle enumerateAttribute:v24 inRange:0 options:v19 usingBlock:{0, v55}];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __108___UIContextMenuListView__collectionView_updateTypeSelectResultForCell_atIndexPath_withItemResult_animator___block_invoke_3;
       aBlock[3] = &unk_1E711ACB0;
-      v48 = v13;
+      v48 = resultCopy;
       v49 = v30;
       v54 = v19;
       v50 = v22;
@@ -1618,41 +1618,41 @@ LABEL_4:
       v44[2] = __108___UIContextMenuListView__collectionView_updateTypeSelectResultForCell_atIndexPath_withItemResult_animator___block_invoke_4;
       v44[3] = &unk_1E70F37C0;
       v36 = v31;
-      v15 = v40;
+      actionView = v40;
       v45 = v36;
       v46 = v35;
       v37 = v35;
-      v14 = v41;
+      animatorCopy = v41;
       [v41 addAnimations:v44];
 
-      v12 = v42;
+      pathCopy = v42;
       v16 = v39;
     }
   }
 }
 
-- (void)_collectionView:(id)a3 typeSelectResultDidUpdate:(id)a4
+- (void)_collectionView:(id)view typeSelectResultDidUpdate:(id)update
 {
-  v14 = a3;
-  v6 = a4;
-  if (v6)
+  viewCopy = view;
+  updateCopy = update;
+  if (updateCopy)
   {
     if (![(_UIContextMenuListView *)self typeSelectActive])
     {
-      v7 = [(UIView *)self _focusSystem];
-      v8 = [v7 _focusedItemIsContainedInEnvironment:self includeSelf:1];
+      _focusSystem = [(UIView *)self _focusSystem];
+      v8 = [_focusSystem _focusedItemIsContainedInEnvironment:self includeSelf:1];
 
       if ((v8 & 1) == 0)
       {
-        v9 = [v6 preferredItem];
-        v10 = v9;
-        if (v9)
+        preferredItem = [updateCopy preferredItem];
+        v10 = preferredItem;
+        if (preferredItem)
         {
-          v11 = [v9 indexPath];
-          [(_UIContextMenuListView *)self highlightItemAtIndexPath:v11];
-          v12 = [v14 cellForItemAtIndexPath:v11];
-          v13 = [v14 _focusSystem];
-          [v13 _updateFocusImmediatelyToEnvironment:v12];
+          indexPath = [preferredItem indexPath];
+          [(_UIContextMenuListView *)self highlightItemAtIndexPath:indexPath];
+          v12 = [viewCopy cellForItemAtIndexPath:indexPath];
+          _focusSystem2 = [viewCopy _focusSystem];
+          [_focusSystem2 _updateFocusImmediatelyToEnvironment:v12];
         }
       }
     }
@@ -1661,27 +1661,27 @@ LABEL_4:
 
 - (void)scrollToFirstSignificantAction
 {
-  v3 = [(_UIContextMenuListView *)self highlightedIndexPath];
-  if (v3 && (v4 = v3, -[_UIContextMenuListView highlightedIndexPath](self, "highlightedIndexPath"), v5 = objc_claimAutoreleasedReturnValue(), -[_UIContextMenuListView _headerIndexPath](self, "_headerIndexPath"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqual:v6], v6, v5, v4, (v7 & 1) == 0))
+  highlightedIndexPath = [(_UIContextMenuListView *)self highlightedIndexPath];
+  if (highlightedIndexPath && (v4 = highlightedIndexPath, -[_UIContextMenuListView highlightedIndexPath](self, "highlightedIndexPath"), v5 = objc_claimAutoreleasedReturnValue(), -[_UIContextMenuListView _headerIndexPath](self, "_headerIndexPath"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqual:v6], v6, v5, v4, (v7 & 1) == 0))
   {
-    v17 = [(_UIContextMenuListView *)self collectionView];
-    v11 = [(_UIContextMenuListView *)self highlightedIndexPath];
-    [v17 scrollToItemAtIndexPath:v11 atScrollPosition:2 animated:0];
+    collectionView = [(_UIContextMenuListView *)self collectionView];
+    highlightedIndexPath2 = [(_UIContextMenuListView *)self highlightedIndexPath];
+    [collectionView scrollToItemAtIndexPath:highlightedIndexPath2 atScrollPosition:2 animated:0];
   }
 
   else
   {
     if ([(_UIContextMenuListView *)self _shouldScrollToSelectedAction])
     {
-      v8 = [(_UIContextMenuListView *)self displayedMenu];
-      v9 = [v8 selectedElements];
-      v17 = [v9 firstObject];
+      displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
+      selectedElements = [displayedMenu selectedElements];
+      collectionView = [selectedElements firstObject];
 
-      v10 = [(_UIContextMenuListView *)self collectionViewDataSource];
-      v11 = [v10 indexPathForItemIdentifier:v17];
+      collectionViewDataSource = [(_UIContextMenuListView *)self collectionViewDataSource];
+      highlightedIndexPath2 = [collectionViewDataSource indexPathForItemIdentifier:collectionView];
 
-      v12 = [(_UIContextMenuListView *)self collectionView];
-      [v12 scrollToItemAtIndexPath:v11 atScrollPosition:2 animated:0];
+      collectionView2 = [(_UIContextMenuListView *)self collectionView];
+      [collectionView2 scrollToItemAtIndexPath:highlightedIndexPath2 atScrollPosition:2 animated:0];
     }
 
     else
@@ -1691,161 +1691,161 @@ LABEL_4:
         return;
       }
 
-      v13 = [(_UIContextMenuListView *)self collectionView];
-      v14 = [v13 numberOfSections] - 1;
+      collectionView3 = [(_UIContextMenuListView *)self collectionView];
+      v14 = [collectionView3 numberOfSections] - 1;
 
-      v15 = [(_UIContextMenuListView *)self collectionView];
-      v16 = [v15 numberOfItemsInSection:v14] - 1;
+      collectionView4 = [(_UIContextMenuListView *)self collectionView];
+      v16 = [collectionView4 numberOfItemsInSection:v14] - 1;
 
-      v17 = [MEMORY[0x1E696AC88] indexPathForItem:v16 inSection:v14];
-      v11 = [(_UIContextMenuListView *)self collectionView];
-      v12 = [(_UIContextMenuListView *)self _platformMetrics];
-      [v12 sectionInsets];
-      [v11 _scrollToItemAtIndexPath:v17 atScrollPosition:4 additionalInsets:0 animated:?];
+      collectionView = [MEMORY[0x1E696AC88] indexPathForItem:v16 inSection:v14];
+      highlightedIndexPath2 = [(_UIContextMenuListView *)self collectionView];
+      collectionView2 = [(_UIContextMenuListView *)self _platformMetrics];
+      [collectionView2 sectionInsets];
+      [highlightedIndexPath2 _scrollToItemAtIndexPath:collectionView atScrollPosition:4 additionalInsets:0 animated:?];
     }
   }
 }
 
 - (BOOL)_shouldScrollToSelectedAction
 {
-  v2 = [(_UIContextMenuListView *)self displayedMenu];
-  v3 = (([v2 options] & 0x20) != 0 || objc_msgSend(v2, "forceAutomaticSelection")) && (objc_msgSend(v2, "metadata") & 0x10100) == 256;
+  displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
+  v3 = (([displayedMenu options] & 0x20) != 0 || objc_msgSend(displayedMenu, "forceAutomaticSelection")) && (objc_msgSend(displayedMenu, "metadata") & 0x10100) == 256;
 
   return v3;
 }
 
-- (id)indexPathForItemAtPoint:(CGPoint)a3
+- (id)indexPathForItemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(UIView *)self bounds];
   v23.x = x;
   v23.y = y;
   if (CGRectContainsPoint(v26, v23))
   {
-    v6 = [(_UIContextMenuListView *)self collectionView];
-    v7 = [v6 visibleSupplementaryViewsOfKind:@"kContextMenuSubmenuTitleHeader"];
-    v8 = [v7 firstObject];
+    collectionView = [(_UIContextMenuListView *)self collectionView];
+    v7 = [collectionView visibleSupplementaryViewsOfKind:@"kContextMenuSubmenuTitleHeader"];
+    firstObject = [v7 firstObject];
 
-    if (v8 && ([v8 convertPoint:self fromView:{x, y}], v10 = v9, v12 = v11, objc_msgSend(v8, "bounds"), v24.x = v10, v24.y = v12, CGRectContainsPoint(v27, v24)))
+    if (firstObject && ([firstObject convertPoint:self fromView:{x, y}], v10 = v9, v12 = v11, objc_msgSend(firstObject, "bounds"), v24.x = v10, v24.y = v12, CGRectContainsPoint(v27, v24)))
     {
-      v13 = [(_UIContextMenuListView *)self _headerIndexPath];
+      _headerIndexPath = [(_UIContextMenuListView *)self _headerIndexPath];
     }
 
     else
     {
-      v13 = 0;
+      _headerIndexPath = 0;
     }
 
-    v14 = [v6 visibleSupplementaryViewsOfKind:@"kContextMenuPinnedFooter"];
-    v15 = [v14 firstObject];
+    v14 = [collectionView visibleSupplementaryViewsOfKind:@"kContextMenuPinnedFooter"];
+    firstObject2 = [v14 firstObject];
 
-    if (v15)
+    if (firstObject2)
     {
-      [v15 convertPoint:self fromView:{x, y}];
+      [firstObject2 convertPoint:self fromView:{x, y}];
       v17 = v16;
       v19 = v18;
-      [v15 bounds];
+      [firstObject2 bounds];
       v25.x = v17;
       v25.y = v19;
       if (CGRectContainsPoint(v28, v25))
       {
-        v20 = [(_UIContextMenuListView *)self _footerIndexPath];
+        _footerIndexPath = [(_UIContextMenuListView *)self _footerIndexPath];
 
-        v13 = v20;
+        _headerIndexPath = _footerIndexPath;
       }
     }
 
-    if (!v13)
+    if (!_headerIndexPath)
     {
-      [v6 convertPoint:self fromView:{x, y}];
-      v13 = [v6 indexPathForItemAtPoint:?];
+      [collectionView convertPoint:self fromView:{x, y}];
+      _headerIndexPath = [collectionView indexPathForItemAtPoint:?];
     }
   }
 
   else
   {
-    v13 = 0;
+    _headerIndexPath = 0;
   }
 
-  return v13;
+  return _headerIndexPath;
 }
 
-- (id)elementAtIndexPath:(id)a3
+- (id)elementAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuListView *)self _headerIndexPath];
-  v6 = [v4 isEqual:v5];
+  pathCopy = path;
+  _headerIndexPath = [(_UIContextMenuListView *)self _headerIndexPath];
+  v6 = [pathCopy isEqual:_headerIndexPath];
 
   if (v6)
   {
-    v7 = [(_UIContextMenuListView *)self displayedMenu];
+    displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
   }
 
   else
   {
-    v8 = [(_UIContextMenuListView *)self _footerIndexPath];
-    v9 = [v4 isEqual:v8];
+    _footerIndexPath = [(_UIContextMenuListView *)self _footerIndexPath];
+    v9 = [pathCopy isEqual:_footerIndexPath];
 
     if (v9)
     {
-      v10 = [(_UIContextMenuListView *)self displayedMenu];
-      [v10 _pinnedFooterElement];
+      displayedMenu2 = [(_UIContextMenuListView *)self displayedMenu];
+      [displayedMenu2 _pinnedFooterElement];
     }
 
     else
     {
-      v10 = [(_UIContextMenuListView *)self collectionViewDataSource];
-      [v10 itemIdentifierForIndexPath:v4];
+      displayedMenu2 = [(_UIContextMenuListView *)self collectionViewDataSource];
+      [displayedMenu2 itemIdentifierForIndexPath:pathCopy];
     }
-    v7 = ;
+    displayedMenu = ;
   }
 
-  return v7;
+  return displayedMenu;
 }
 
-- (id)indexPathForElement:(id)a3
+- (id)indexPathForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuListView *)self displayedMenu];
-  v6 = [v4 isEqual:v5];
+  elementCopy = element;
+  displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
+  v6 = [elementCopy isEqual:displayedMenu];
 
   if (v6)
   {
-    v7 = [(_UIContextMenuListView *)self _headerIndexPath];
+    _headerIndexPath = [(_UIContextMenuListView *)self _headerIndexPath];
 LABEL_5:
-    v11 = v7;
+    v11 = _headerIndexPath;
     goto LABEL_7;
   }
 
-  v8 = [(_UIContextMenuListView *)self displayedMenu];
-  v9 = [v8 _pinnedFooterElement];
-  v10 = [v4 isEqual:v9];
+  displayedMenu2 = [(_UIContextMenuListView *)self displayedMenu];
+  _pinnedFooterElement = [displayedMenu2 _pinnedFooterElement];
+  v10 = [elementCopy isEqual:_pinnedFooterElement];
 
   if (v10)
   {
-    v7 = [(_UIContextMenuListView *)self _footerIndexPath];
+    _headerIndexPath = [(_UIContextMenuListView *)self _footerIndexPath];
     goto LABEL_5;
   }
 
-  v12 = [(_UIContextMenuListView *)self collectionViewDataSource];
-  v11 = [v12 indexPathForItemIdentifier:v4];
+  collectionViewDataSource = [(_UIContextMenuListView *)self collectionViewDataSource];
+  v11 = [collectionViewDataSource indexPathForItemIdentifier:elementCopy];
 
 LABEL_7:
 
   return v11;
 }
 
-- (id)cellForElement:(id)a3
+- (id)cellForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuListView *)self collectionViewDataSource];
-  v6 = [v5 indexPathForItemIdentifier:v4];
+  elementCopy = element;
+  collectionViewDataSource = [(_UIContextMenuListView *)self collectionViewDataSource];
+  v6 = [collectionViewDataSource indexPathForItemIdentifier:elementCopy];
 
   if (v6)
   {
-    v7 = [(_UIContextMenuListView *)self collectionView];
-    v8 = [v7 cellForItemAtIndexPath:v6];
+    collectionView = [(_UIContextMenuListView *)self collectionView];
+    v8 = [collectionView cellForItemAtIndexPath:v6];
   }
 
   else
@@ -1856,24 +1856,24 @@ LABEL_7:
   return v8;
 }
 
-- (void)unHighlightItemAtIndexPath:(id)a3
+- (void)unHighlightItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(_UIContextMenuListView *)self setHighlightedIndexPath:0];
-  v5 = [(UIView *)self traitCollection];
-  v6 = _UIContextMenuGetPlatformMetrics([v5 userInterfaceIdiom]);
-  v7 = [v6 allowsItemHighlighting];
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+  allowsItemHighlighting = [v6 allowsItemHighlighting];
 
-  if (v7)
+  if (allowsItemHighlighting)
   {
-    v8 = [(_UIContextMenuListView *)self _viewAtIndexPath:v4];
+    v8 = [(_UIContextMenuListView *)self _viewAtIndexPath:pathCopy];
     [v8 setHighlighted:0];
   }
 
-  v9 = [(_UIContextMenuListView *)self _platformMetrics];
-  v10 = [v9 wantsContinuousHighlight];
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  wantsContinuousHighlight = [_platformMetrics wantsContinuousHighlight];
 
-  if (v10)
+  if (wantsContinuousHighlight)
   {
     v11 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.3];
     v12[0] = MEMORY[0x1E69E9820];
@@ -1885,74 +1885,74 @@ LABEL_7:
   }
 }
 
-- (void)highlightItemAtIndexPath:(id)a3 forHover:(BOOL)a4 playFeedback:(BOOL)a5
+- (void)highlightItemAtIndexPath:(id)path forHover:(BOOL)hover playFeedback:(BOOL)feedback
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = [(_UIContextMenuListView *)self highlightedIndexPath];
-  v9 = [v8 isEqual:v7];
+  hoverCopy = hover;
+  pathCopy = path;
+  highlightedIndexPath = [(_UIContextMenuListView *)self highlightedIndexPath];
+  v9 = [highlightedIndexPath isEqual:pathCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(_UIContextMenuListView *)self highlightedIndexPath];
+    highlightedIndexPath2 = [(_UIContextMenuListView *)self highlightedIndexPath];
 
-    if (v10)
+    if (highlightedIndexPath2)
     {
-      v11 = [(_UIContextMenuListView *)self highlightedIndexPath];
-      [(_UIContextMenuListView *)self unHighlightItemAtIndexPath:v11];
+      highlightedIndexPath3 = [(_UIContextMenuListView *)self highlightedIndexPath];
+      [(_UIContextMenuListView *)self unHighlightItemAtIndexPath:highlightedIndexPath3];
     }
 
-    if (!v7)
+    if (!pathCopy)
     {
       goto LABEL_18;
     }
 
-    v12 = [(_UIContextMenuListView *)self elementAtIndexPath:v7];
-    v13 = [v12 _canBeHighlighted];
+    v12 = [(_UIContextMenuListView *)self elementAtIndexPath:pathCopy];
+    _canBeHighlighted = [v12 _canBeHighlighted];
 
-    if (v13)
+    if (_canBeHighlighted)
     {
-      [(_UIContextMenuListView *)self setHighlightedIndexPath:v7];
-      v14 = [(UIView *)self traitCollection];
-      v15 = _UIContextMenuGetPlatformMetrics([v14 userInterfaceIdiom]);
-      v16 = [v15 allowsItemHighlighting];
+      [(_UIContextMenuListView *)self setHighlightedIndexPath:pathCopy];
+      traitCollection = [(UIView *)self traitCollection];
+      v15 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+      allowsItemHighlighting = [v15 allowsItemHighlighting];
 
-      if (v16)
+      if (allowsItemHighlighting)
       {
-        v17 = [(_UIContextMenuListView *)self _viewAtIndexPath:v7];
+        v17 = [(_UIContextMenuListView *)self _viewAtIndexPath:pathCopy];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v18 = v17;
-          [v18 setHighlighted:1 forHover:v5];
-          v19 = [(_UIContextMenuListView *)self _platformMetrics];
-          v20 = [v19 wantsContinuousHighlight];
+          [v18 setHighlighted:1 forHover:hoverCopy];
+          _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+          wantsContinuousHighlight = [_platformMetrics wantsContinuousHighlight];
 
-          if (v20)
+          if (wantsContinuousHighlight)
           {
-            v21 = [v18 backgroundView];
-            [v21 setHidden:1];
-            [v21 frame];
+            backgroundView = [v18 backgroundView];
+            [backgroundView setHidden:1];
+            [backgroundView frame];
             v23 = v22;
             v25 = v24;
             v27 = v26;
             v29 = v28;
-            v30 = [(_UIContextMenuListView *)self collectionView];
-            [v18 convertRect:v30 toView:{v23, v25, v27, v29}];
+            collectionView = [(_UIContextMenuListView *)self collectionView];
+            [v18 convertRect:collectionView toView:{v23, v25, v27, v29}];
             v32 = v31;
             v34 = v33;
             v36 = v35;
             v38 = v37;
 
-            v51 = v21;
-            v39 = [v21 layer];
-            [v39 cornerRadius];
+            v51 = backgroundView;
+            layer = [backgroundView layer];
+            [layer cornerRadius];
             v41 = v40;
 
-            v42 = [(_UIContextMenuListView *)self selectionView];
-            v43 = [v42 window];
+            selectionView = [(_UIContextMenuListView *)self selectionView];
+            window = [selectionView window];
 
-            if (!v43)
+            if (!window)
             {
               v55[0] = MEMORY[0x1E69E9820];
               v55[1] = 3221225472;
@@ -1979,8 +1979,8 @@ LABEL_7:
             aBlock[8] = v38;
             aBlock[9] = v41;
             v46 = _Block_copy(aBlock);
-            v47 = [(_UIContextMenuListView *)self selectionView];
-            IsEffectivelyInvisible = _UIPointerViewIsEffectivelyInvisible(v47);
+            selectionView2 = [(_UIContextMenuListView *)self selectionView];
+            IsEffectivelyInvisible = _UIPointerViewIsEffectivelyInvisible(selectionView2);
 
             if (IsEffectivelyInvisible)
             {
@@ -2018,45 +2018,45 @@ LABEL_18:
   }
 }
 
-- (id)_viewAtIndexPath:(id)a3
+- (id)_viewAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuListView *)self _headerIndexPath];
-  v6 = [v4 isEqual:v5];
+  pathCopy = path;
+  _headerIndexPath = [(_UIContextMenuListView *)self _headerIndexPath];
+  v6 = [pathCopy isEqual:_headerIndexPath];
 
   if (v6)
   {
-    v7 = [(_UIContextMenuListView *)self collectionView];
-    v8 = [v7 supplementaryViewForElementKind:@"kContextMenuSubmenuTitleHeader" atIndexPath:v4];
+    collectionView = [(_UIContextMenuListView *)self collectionView];
+    v8 = [collectionView supplementaryViewForElementKind:@"kContextMenuSubmenuTitleHeader" atIndexPath:pathCopy];
   }
 
   else
   {
-    v9 = [(_UIContextMenuListView *)self _footerIndexPath];
-    v10 = [v4 isEqual:v9];
+    _footerIndexPath = [(_UIContextMenuListView *)self _footerIndexPath];
+    v10 = [pathCopy isEqual:_footerIndexPath];
 
-    v11 = [(_UIContextMenuListView *)self collectionView];
-    v7 = v11;
+    collectionView2 = [(_UIContextMenuListView *)self collectionView];
+    collectionView = collectionView2;
     if (v10)
     {
-      v12 = [v11 visibleSupplementaryViewsOfKind:@"kContextMenuPinnedFooter"];
-      v13 = [v12 firstObject];
+      v12 = [collectionView2 visibleSupplementaryViewsOfKind:@"kContextMenuPinnedFooter"];
+      firstObject = [v12 firstObject];
 
       goto LABEL_7;
     }
 
-    v8 = [v11 cellForItemAtIndexPath:v4];
+    v8 = [collectionView2 cellForItemAtIndexPath:pathCopy];
   }
 
-  v13 = v8;
+  firstObject = v8;
 LABEL_7:
 
-  return v13;
+  return firstObject;
 }
 
-- (id)_dataSourceForCollectionView:(id)a3
+- (id)_dataSourceForCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_initWeak(&location, self);
   v5 = [UICollectionViewDiffableDataSource alloc];
   v10[0] = MEMORY[0x1E69E9820];
@@ -2064,7 +2064,7 @@ LABEL_7:
   v10[2] = __55___UIContextMenuListView__dataSourceForCollectionView___block_invoke;
   v10[3] = &unk_1E711ACD8;
   objc_copyWeak(&v11, &location);
-  v6 = [(UICollectionViewDiffableDataSource *)v5 initWithCollectionView:v4 cellProvider:v10];
+  v6 = [(UICollectionViewDiffableDataSource *)v5 initWithCollectionView:viewCopy cellProvider:v10];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55___UIContextMenuListView__dataSourceForCollectionView___block_invoke_2;
@@ -2078,31 +2078,31 @@ LABEL_7:
   return v6;
 }
 
-- (void)_configureCell:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 forElement:(id)a6 section:(id)a7 size:(int64_t)a8
+- (void)_configureCell:(id)cell inCollectionView:(id)view atIndexPath:(id)path forElement:(id)element section:(id)section size:(int64_t)size
 {
-  v14 = a3;
-  v53 = a4;
-  v52 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v14 actionView];
-  if ([v16 layout] == 1)
+  cellCopy = cell;
+  viewCopy = view;
+  pathCopy = path;
+  elementCopy = element;
+  sectionCopy = section;
+  actionView = [cellCopy actionView];
+  if ([sectionCopy layout] == 1)
   {
-    v18 = [(_UIContextMenuListView *)self _platformMetrics];
-    [v18 enableFloatingFocusStyle];
+    _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+    [_platformMetrics enableFloatingFocusStyle];
   }
 
-  else if (a8 > 1)
+  else if (size > 1)
   {
-    v19 = [(_UIContextMenuListView *)self _platformMetrics];
-    [v19 prefersLeadingImageCellLayout];
+    _platformMetrics2 = [(_UIContextMenuListView *)self _platformMetrics];
+    [_platformMetrics2 prefersLeadingImageCellLayout];
   }
 
-  [v17 setLayoutClass:objc_opt_class()];
-  v50 = v14;
-  [v14 _setFocusStyle:{objc_msgSend(v17, "focusStyle")}];
-  v54 = [v16 isMultiColorPalette];
-  v20 = v15;
+  [actionView setLayoutClass:objc_opt_class()];
+  v50 = cellCopy;
+  [cellCopy _setFocusStyle:{objc_msgSend(actionView, "focusStyle")}];
+  isMultiColorPalette = [sectionCopy isMultiColorPalette];
+  v20 = elementCopy;
   v21 = v20;
   if ([(_UIContextMenuListView *)self allowsAlternates])
   {
@@ -2110,35 +2110,35 @@ LABEL_7:
     v21 = _UIMenuElementAlternateForModifierFlags(v20, [v22 currentModifierFlags]);
   }
 
-  v23 = [v21 image];
-  v24 = [v21 subtitle];
-  v55 = v24;
+  image = [v21 image];
+  subtitle = [v21 subtitle];
+  v55 = subtitle;
   if ([v21 _isLeaf])
   {
     v25 = v21;
-    if (![v24 length] && (dyld_program_sdk_at_least() & 1) == 0)
+    if (![subtitle length] && (dyld_program_sdk_at_least() & 1) == 0)
     {
       [v25 discoverabilityTitle];
-      v27 = v26 = v23;
+      v27 = v26 = image;
 
       v55 = v27;
-      v23 = v26;
+      image = v26;
     }
 
     v51 = [v25 attributes] & 1;
-    v28 = [v25 attributes];
-    v56 = [v25 _keyboardShortcut];
-    v29 = [v25 state];
-    if (v29 == 1)
+    attributes = [v25 attributes];
+    _keyboardShortcut = [v25 _keyboardShortcut];
+    state = [v25 state];
+    if (state == 1)
     {
-      v30 = [v25 selectedImage];
+      selectedImage = [v25 selectedImage];
 
-      if (v30)
+      if (selectedImage)
       {
-        v31 = [v25 selectedImage];
+        selectedImage2 = [v25 selectedImage];
 
-        v54 = 2;
-        v23 = v31;
+        isMultiColorPalette = 2;
+        image = selectedImage2;
       }
     }
 
@@ -2148,71 +2148,71 @@ LABEL_7:
   else
   {
     v33 = v20;
-    v28 = [v33 options];
-    LODWORD(v29) = [v33 _shouldShowSelectionState];
+    attributes = [v33 options];
+    LODWORD(state) = [v33 _shouldShowSelectionState];
 
-    v56 = 0;
+    _keyboardShortcut = 0;
     v51 = 0;
     v32 = 16;
-    v29 = v29;
+    state = state;
   }
 
-  v34 = [v21 attributedTitle];
+  attributedTitle = [v21 attributedTitle];
 
-  if (v34)
+  if (attributedTitle)
   {
-    v35 = [v21 attributedTitle];
-    [v17 setAttributedTitle:v35];
-  }
-
-  else
-  {
-    v35 = [v21 title];
-    [v17 setTitle:v35];
-  }
-
-  [v17 setSubtitle:v55];
-  v36 = [v20 _accessoryAction];
-
-  if (v36)
-  {
-    v37 = [v20 _accessoryAction];
-    [v17 setAccessoryAction:v37];
+    attributedTitle2 = [v21 attributedTitle];
+    [actionView setAttributedTitle:attributedTitle2];
   }
 
   else
   {
-    [v17 setImage:v23];
+    attributedTitle2 = [v21 title];
+    [actionView setTitle:attributedTitle2];
   }
 
-  v49 = v23;
-  if (v56 && [(_UIContextMenuListView *)self allowsKeyboardShortcuts])
+  [actionView setSubtitle:v55];
+  _accessoryAction = [v20 _accessoryAction];
+
+  if (_accessoryAction)
   {
-    [v17 setKeyboardShortcut:v56];
+    _accessoryAction2 = [v20 _accessoryAction];
+    [actionView setAccessoryAction:_accessoryAction2];
+  }
+
+  else
+  {
+    [actionView setImage:image];
+  }
+
+  v49 = image;
+  if (_keyboardShortcut && [(_UIContextMenuListView *)self allowsKeyboardShortcuts])
+  {
+    [actionView setKeyboardShortcut:_keyboardShortcut];
     if (self->_explicitModifierLabelWidth > 0.0 || self->_explicitInputLabelWidth > 0.0)
     {
-      [v17 setKeyboardShortcutModifiersWidth:? inputWidth:?];
+      [actionView setKeyboardShortcutModifiersWidth:? inputWidth:?];
     }
   }
 
   else
   {
-    [v17 setKeyboardShortcut:0];
+    [actionView setKeyboardShortcut:0];
   }
 
-  v38 = v28 & 2;
-  v39 = [v20 accessibilityIdentifier];
-  [v17 setAccessibilityIdentifier:v39];
+  v38 = attributes & 2;
+  accessibilityIdentifier = [v20 accessibilityIdentifier];
+  [actionView setAccessibilityIdentifier:accessibilityIdentifier];
 
-  v40 = [(_UIContextMenuListView *)self displayedMenu];
-  v41 = [v40 metadata];
+  displayedMenu = [(_UIContextMenuListView *)self displayedMenu];
+  metadata = [displayedMenu metadata];
 
-  if ((v41 & 0x10000) != 0 && [(_UIContextMenuListView *)self _showChildIndicatorOnTrailingEdge])
+  if ((metadata & 0x10000) != 0 && [(_UIContextMenuListView *)self _showChildIndicatorOnTrailingEdge])
   {
     v32 |= 0x20uLL;
   }
 
-  if ([v16 hasImageInLargeCell])
+  if ([sectionCopy hasImageInLargeCell])
   {
     v42 = v38 | v51 | v32 | 0x100;
   }
@@ -2222,29 +2222,29 @@ LABEL_7:
     v42 = v38 | v51 | v32;
   }
 
-  [v17 setSelectedIconBehavior:v54];
-  v43 = [v17 layout];
-  v44 = [v43 useContentShapeForSelectionHighlight];
+  [actionView setSelectedIconBehavior:isMultiColorPalette];
+  layout = [actionView layout];
+  useContentShapeForSelectionHighlight = [layout useContentShapeForSelectionHighlight];
 
-  if (v44)
+  if (useContentShapeForSelectionHighlight)
   {
-    v46 = v52;
-    v45 = v53;
-    if ((v29 - 1) <= 1)
+    v46 = pathCopy;
+    v45 = viewCopy;
+    if ((state - 1) <= 1)
     {
-      [v53 selectItemAtIndexPath:v52 animated:0 scrollPosition:0];
+      [viewCopy selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
     }
   }
 
   else
   {
     v47 = v42 | 4;
-    if (v29 != 1)
+    if (state != 1)
     {
       v47 = v42;
     }
 
-    if (v29 == 2)
+    if (state == 2)
     {
       v42 |= 8uLL;
     }
@@ -2254,8 +2254,8 @@ LABEL_7:
       v42 = v47;
     }
 
-    v46 = v52;
-    v45 = v53;
+    v46 = pathCopy;
+    v45 = viewCopy;
   }
 
   if ([(_UIContextMenuListView *)self allowsBackgroundViewInteraction])
@@ -2268,8 +2268,8 @@ LABEL_7:
     v48 = v42 | 0x80;
   }
 
-  [v17 setOptions:v48];
-  [v17 setNumberOfTitleLines:{objc_msgSend(v16, "actionLineLimit")}];
+  [actionView setOptions:v48];
+  [actionView setNumberOfTitleLines:{objc_msgSend(sectionCopy, "actionLineLimit")}];
   if ([v20 _isLeaf])
   {
     v59 = 0;
@@ -2291,7 +2291,7 @@ LABEL_7:
     [v20 _acceptMenuVisit:0 commandVisit:v58 actionVisit:v57 deferredElementVisit:0];
     if (v60[5])
     {
-      [v17 setPasteVariant:?];
+      [actionView setPasteVariant:?];
     }
 
     _Block_object_dispose(&v59, 8);
@@ -2305,23 +2305,23 @@ LABEL_7:
     return 1;
   }
 
-  v4 = [(_UIContextMenuListView *)self _platformMetrics];
-  v5 = [v4 cascadedLayoutShowsChevronOnTrailingEdge];
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  cascadedLayoutShowsChevronOnTrailingEdge = [_platformMetrics cascadedLayoutShowsChevronOnTrailingEdge];
 
-  return v5;
+  return cascadedLayoutShowsChevronOnTrailingEdge;
 }
 
 - (void)_updatePlatterHairline
 {
-  v3 = [(_UIContextMenuListView *)self _platformMetrics];
-  v14 = [v3 gradientMaskingConfiguration];
+  _platformMetrics = [(_UIContextMenuListView *)self _platformMetrics];
+  gradientMaskingConfiguration = [_platformMetrics gradientMaskingConfiguration];
 
-  v4 = v14;
-  if (v14)
+  v4 = gradientMaskingConfiguration;
+  if (gradientMaskingConfiguration)
   {
-    v5 = [v14 platterHairlineColorProvider];
-    v6 = [(UIView *)self traitCollection];
-    v7 = (v5)[2](v5, v6);
+    platterHairlineColorProvider = [gradientMaskingConfiguration platterHairlineColorProvider];
+    traitCollection = [(UIView *)self traitCollection];
+    v7 = (platterHairlineColorProvider)[2](platterHairlineColorProvider, traitCollection);
 
     if (v7)
     {
@@ -2333,53 +2333,53 @@ LABEL_7:
       v8 = 0.0;
     }
 
-    v9 = [v7 CGColor];
-    v10 = [(_UIContextMenuListView *)self borderView];
-    v11 = [v10 layer];
-    [v11 setBorderColor:v9];
+    cGColor = [v7 CGColor];
+    borderView = [(_UIContextMenuListView *)self borderView];
+    layer = [borderView layer];
+    [layer setBorderColor:cGColor];
 
-    v12 = [(_UIContextMenuListView *)self borderView];
-    v13 = [v12 layer];
-    [v13 setBorderWidth:v8];
+    borderView2 = [(_UIContextMenuListView *)self borderView];
+    layer2 = [borderView2 layer];
+    [layer2 setBorderWidth:v8];
 
-    v4 = v14;
+    v4 = gradientMaskingConfiguration;
   }
 }
 
-- (void)_updateCellPortalingWithCell:(id)a3
+- (void)_updateCellPortalingWithCell:(id)cell
 {
-  v4 = a3;
-  if (-[_UIContextMenuListView portalingFocusedView](self, "portalingFocusedView") && [v4 isFocused])
+  cellCopy = cell;
+  if (-[_UIContextMenuListView portalingFocusedView](self, "portalingFocusedView") && [cellCopy isFocused])
   {
-    [(_UIContextMenuListView *)self _portalCellIfNeeded:v4];
+    [(_UIContextMenuListView *)self _portalCellIfNeeded:cellCopy];
   }
 }
 
-- (void)_updateCellPortalingWithUpdateFocusInContext:(id)a3 inCollectionView:(id)a4
+- (void)_updateCellPortalingWithUpdateFocusInContext:(id)context inCollectionView:(id)view
 {
-  v9 = a3;
-  v6 = a4;
+  contextCopy = context;
+  viewCopy = view;
   if ([(_UIContextMenuListView *)self portalingFocusedView])
   {
-    v7 = [v9 nextFocusedIndexPath];
-    if (v7)
+    nextFocusedIndexPath = [contextCopy nextFocusedIndexPath];
+    if (nextFocusedIndexPath)
     {
-      v8 = [v6 cellForItemAtIndexPath:v7];
+      v8 = [viewCopy cellForItemAtIndexPath:nextFocusedIndexPath];
       [(_UIContextMenuListView *)self _portalCellIfNeeded:v8];
     }
   }
 }
 
-- (void)_portalCellIfNeeded:(id)a3
+- (void)_portalCellIfNeeded:(id)needed
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(_UIContextMenuListView *)self portals];
-  v6 = [(_UIPortalView *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  portals = [(_UIContextMenuListView *)self portals];
+  v6 = [(_UIPortalView *)portals countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2390,11 +2390,11 @@ LABEL_3:
     {
       if (*v18 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(portals);
       }
 
-      v10 = [*(*(&v17 + 1) + 8 * v9) sourceView];
-      v11 = [v10 isEqual:v4];
+      sourceView = [*(*(&v17 + 1) + 8 * v9) sourceView];
+      v11 = [sourceView isEqual:neededCopy];
 
       if (v11)
       {
@@ -2403,7 +2403,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [(_UIPortalView *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [(_UIPortalView *)portals countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -2418,22 +2418,22 @@ LABEL_3:
   {
 LABEL_9:
 
-    v5 = [[_UIPortalView alloc] initWithSourceView:v4];
-    [(_UIPortalView *)v5 setHidesSourceView:1];
-    [(_UIPortalView *)v5 setMatchesPosition:1];
-    [(_UIPortalView *)v5 setMatchesTransform:1];
-    [(_UIPortalView *)v5 setMatchesAlpha:1];
-    [(_UIPortalView *)v5 setAllowsHitTesting:0];
-    v12 = [v4 layer];
-    v13 = [v12 flipsHorizontalAxis];
-    v14 = [(_UIPortalView *)v5 portalLayer];
-    [v14 setFlipsHorizontalAxis:v13];
+    portals = [[_UIPortalView alloc] initWithSourceView:neededCopy];
+    [(_UIPortalView *)portals setHidesSourceView:1];
+    [(_UIPortalView *)portals setMatchesPosition:1];
+    [(_UIPortalView *)portals setMatchesTransform:1];
+    [(_UIPortalView *)portals setMatchesAlpha:1];
+    [(_UIPortalView *)portals setAllowsHitTesting:0];
+    layer = [neededCopy layer];
+    flipsHorizontalAxis = [layer flipsHorizontalAxis];
+    portalLayer = [(_UIPortalView *)portals portalLayer];
+    [portalLayer setFlipsHorizontalAxis:flipsHorizontalAxis];
 
-    v15 = [(_UIContextMenuListView *)self portals];
-    [v15 addObject:v5];
+    portals2 = [(_UIContextMenuListView *)self portals];
+    [portals2 addObject:portals];
 
-    v16 = [(_UIContextMenuListView *)self portalContainerView];
-    [v16 addSubview:v5];
+    portalContainerView = [(_UIContextMenuListView *)self portalContainerView];
+    [portalContainerView addSubview:portals];
   }
 }
 
@@ -2444,8 +2444,8 @@ LABEL_9:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(_UIContextMenuListView *)self portals];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  portals = [(_UIContextMenuListView *)self portals];
+  v4 = [portals countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2457,34 +2457,34 @@ LABEL_9:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(portals);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [portals countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(_UIContextMenuListView *)self portals];
-  [v8 removeAllObjects];
+  portals2 = [(_UIContextMenuListView *)self portals];
+  [portals2 removeAllObjects];
 }
 
-- (void)_updateKeyboardShortcutMetricsForSnapshot:(id)a3
+- (void)_updateKeyboardShortcutMetricsForSnapshot:(id)snapshot
 {
   v46 = *MEMORY[0x1E69E9840];
-  v32 = a3;
+  snapshotCopy = snapshot;
   if ([(_UIContextMenuListView *)self allowsKeyboardShortcuts]&& [(UIView *)self effectiveUserInterfaceLayoutDirection]== UIUserInterfaceLayoutDirectionRightToLeft)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = [v32 sectionIdentifiers];
+    obj = [snapshotCopy sectionIdentifiers];
     v4 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v4)
     {
@@ -2511,7 +2511,7 @@ LABEL_9:
             v39 = 0u;
             v36 = 0u;
             v37 = 0u;
-            v10 = [v32 itemIdentifiersInSectionWithIdentifier:v9];
+            v10 = [snapshotCopy itemIdentifiersInSectionWithIdentifier:v9];
             v11 = [v10 countByEnumeratingWithState:&v36 objects:v44 count:16];
             if (v11)
             {
@@ -2532,9 +2532,9 @@ LABEL_9:
                     v16 = v15;
                     if ([(_UIContextMenuListView *)self allowsAlternates])
                     {
-                      v17 = [(_UIContextMenuListView *)self elementsWithAlternates];
+                      elementsWithAlternates = [(_UIContextMenuListView *)self elementsWithAlternates];
 
-                      if (v17)
+                      if (elementsWithAlternates)
                       {
                         v18 = +[_UIContextMenuModifierKeyService sharedService];
                         v19 = _UIMenuElementAlternateForModifierFlags(v16, [v18 currentModifierFlags]);
@@ -2548,27 +2548,27 @@ LABEL_9:
                       }
                     }
 
-                    v21 = [v16 _keyboardShortcut];
+                    _keyboardShortcut = [v16 _keyboardShortcut];
 
-                    if (v21)
+                    if (_keyboardShortcut)
                     {
                       if (!v6)
                       {
-                        v22 = [(UIView *)self traitCollection];
-                        v23 = _UIContextMenuGetPlatformMetrics([v22 userInterfaceIdiom]);
+                        traitCollection = [(UIView *)self traitCollection];
+                        v23 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
                         v6 = objc_opt_new();
-                        v24 = [v23 itemKeyboardShortcutColor];
-                        [v6 setTextColor:v24];
+                        itemKeyboardShortcutColor = [v23 itemKeyboardShortcutColor];
+                        [v6 setTextColor:itemKeyboardShortcutColor];
 
-                        v25 = [v23 titleFont];
-                        [v6 setFont:v25];
+                        titleFont = [v23 titleFont];
+                        [v6 setFont:titleFont];
 
                         [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
                         [(UIView *)self addSubview:v6];
                       }
 
-                      v26 = [v16 _keyboardShortcut];
-                      [v6 setShortcut:v26];
+                      _keyboardShortcut2 = [v16 _keyboardShortcut];
+                      [v6 setShortcut:_keyboardShortcut2];
 
                       [v6 setNeedsLayout];
                       [v6 layoutIfNeeded];
@@ -2626,19 +2626,19 @@ LABEL_9:
 {
   if ([(_UIContextMenuListView *)self allowsAlternates])
   {
-    v3 = [(_UIContextMenuListView *)self elementsWithAlternates];
+    elementsWithAlternates = [(_UIContextMenuListView *)self elementsWithAlternates];
 
-    if (v3)
+    if (elementsWithAlternates)
     {
-      v4 = [(_UIContextMenuListView *)self collectionViewDataSource];
-      v7 = [v4 snapshot];
+      collectionViewDataSource = [(_UIContextMenuListView *)self collectionViewDataSource];
+      snapshot = [collectionViewDataSource snapshot];
 
-      v5 = [v7 itemIdentifiers];
-      [v7 reconfigureItemsWithIdentifiers:v5];
+      itemIdentifiers = [snapshot itemIdentifiers];
+      [snapshot reconfigureItemsWithIdentifiers:itemIdentifiers];
 
-      [(_UIContextMenuListView *)self _updateKeyboardShortcutMetricsForSnapshot:v7];
-      v6 = [(_UIContextMenuListView *)self collectionViewDataSource];
-      [v6 applySnapshot:v7 animatingDifferences:0];
+      [(_UIContextMenuListView *)self _updateKeyboardShortcutMetricsForSnapshot:snapshot];
+      collectionViewDataSource2 = [(_UIContextMenuListView *)self collectionViewDataSource];
+      [collectionViewDataSource2 applySnapshot:snapshot animatingDifferences:0];
     }
   }
 }

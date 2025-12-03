@@ -1,21 +1,21 @@
 @interface PGSharingSuggestionGraphBasedSource
-- (BOOL)canRunWithInput:(id)a3;
+- (BOOL)canRunWithInput:(id)input;
 @end
 
 @implementation PGSharingSuggestionGraphBasedSource
 
-- (BOOL)canRunWithInput:(id)a3
+- (BOOL)canRunWithInput:(id)input
 {
-  v3 = [a3 momentNodes];
-  if ([v3 count])
+  momentNodes = [input momentNodes];
+  if ([momentNodes count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 universalStartDate];
+    firstObject = [momentNodes firstObject];
+    universalStartDate = [firstObject universalStartDate];
 
-    v6 = [v3 lastObject];
-    v7 = [v6 universalEndDate];
+    lastObject = [momentNodes lastObject];
+    universalEndDate = [lastObject universalEndDate];
 
-    [v7 timeIntervalSinceDate:v5];
+    [universalEndDate timeIntervalSinceDate:universalStartDate];
     v9 = v8 < 7776000.0;
   }
 

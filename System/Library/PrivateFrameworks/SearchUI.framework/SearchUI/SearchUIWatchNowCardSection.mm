@@ -1,19 +1,19 @@
 @interface SearchUIWatchNowCardSection
-+ (id)placeholderCardForMediaContainer:(BOOL)a3;
++ (id)placeholderCardForMediaContainer:(BOOL)container;
 @end
 
 @implementation SearchUIWatchNowCardSection
 
-+ (id)placeholderCardForMediaContainer:(BOOL)a3
++ (id)placeholderCardForMediaContainer:(BOOL)container
 {
-  v3 = a3;
+  containerCopy = container;
   objc_opt_class();
   v4 = objc_opt_new();
   [v4 setIsPlaceholder:1];
   v5 = objc_opt_new();
   [v4 setTitle:v5];
 
-  if (v3)
+  if (containerCopy)
   {
     v6 = &stru_1F55BC4E8;
   }

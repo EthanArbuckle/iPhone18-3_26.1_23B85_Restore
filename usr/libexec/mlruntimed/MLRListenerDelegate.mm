@@ -1,14 +1,14 @@
 @interface MLRListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MLRListenerDelegate)initWithXPCActivityManager:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MLRListenerDelegate)initWithXPCActivityManager:(id)manager;
 @end
 
 @implementation MLRListenerDelegate
 
-- (MLRListenerDelegate)initWithXPCActivityManager:(id)a3
+- (MLRListenerDelegate)initWithXPCActivityManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v10.receiver = self;
     v10.super_class = MLRListenerDelegate;
@@ -16,32 +16,32 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_XPCActivityManager, a3);
+      objc_storeStrong(&v6->_XPCActivityManager, manager);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   XPCActivityManager = self->_XPCActivityManager;
-  v5 = a4;
+  connectionCopy = connection;
   [(MLRXPCActivityManager *)XPCActivityManager registerIfNeeded];
-  v6 = [[MLRServiceConnection alloc] initWithXPCConnection:v5];
+  v6 = [[MLRServiceConnection alloc] initWithXPCConnection:connectionCopy];
   v7 = DESServiceGetXPCInterface();
-  [v5 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  [v5 setExportedObject:v6];
-  [v5 resume];
+  [connectionCopy setExportedObject:v6];
+  [connectionCopy resume];
 
   return 1;
 }

@@ -2,27 +2,27 @@
 - (NFMLLeashBreakDelegate)leashDelegate;
 - (NFMLeashManager)init;
 - (void)beginMonitoringLeash;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)connect;
 - (void)dealloc;
 - (void)leashTest;
-- (void)peripheralDidUpdateRSSI:(id)a3 error:(id)a4;
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5;
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5;
-- (void)scalablePipeManagerDidUpdateState:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setLeashIdentifier:(id)a3;
-- (void)setLeashMode:(int64_t)a3;
-- (void)setProximityChangeHandler:(id)a3;
-- (void)setServiceUUID:(id)a3;
-- (void)setTestMode:(BOOL)a3;
+- (void)peripheralDidUpdateRSSI:(id)i error:(id)error;
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error;
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint;
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect;
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error;
+- (void)scalablePipeManagerDidUpdateState:(id)state;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setLeashIdentifier:(id)identifier;
+- (void)setLeashMode:(int64_t)mode;
+- (void)setProximityChangeHandler:(id)handler;
+- (void)setServiceUUID:(id)d;
+- (void)setTestMode:(BOOL)mode;
 - (void)stopMonitoringLeash;
-- (void)update:(id)a3;
+- (void)update:(id)update;
 @end
 
 @implementation NFMLeashManager
@@ -65,20 +65,20 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   centralQueue = self->_centralQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__NFMLeashManager_setDelegate_queue___block_invoke;
   block[3] = &unk_279933730;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = queueCopy;
+  v13 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = queueCopy;
   dispatch_async(centralQueue, block);
 }
 
@@ -143,7 +143,7 @@ uint64_t __28__NFMLeashManager_leashTest__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLeashMode:(int64_t)a3
+- (void)setLeashMode:(int64_t)mode
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = nfm_log();
@@ -154,7 +154,7 @@ uint64_t __28__NFMLeashManager_leashTest__block_invoke(uint64_t a1)
     v11 = 2080;
     v12 = "[NFMLeashManager setLeashMode:]";
     v13 = 2048;
-    v14 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_25B17F000, v5, OS_LOG_TYPE_DEFAULT, "%d %s - leashMode: %ld", buf, 0x1Cu);
   }
 
@@ -164,15 +164,15 @@ uint64_t __28__NFMLeashManager_leashTest__block_invoke(uint64_t a1)
   v8[2] = __32__NFMLeashManager_setLeashMode___block_invoke;
   v8[3] = &unk_279933758;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = mode;
   dispatch_async(centralQueue, v8);
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLeashIdentifier:(id)a3
+- (void)setLeashIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -181,7 +181,7 @@ uint64_t __28__NFMLeashManager_leashTest__block_invoke(uint64_t a1)
     v13 = 2080;
     v14 = "[NFMLeashManager setLeashIdentifier:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = identifierCopy;
     _os_log_impl(&dword_25B17F000, v5, OS_LOG_TYPE_DEFAULT, "%d %s - leashIdentifier: %@", buf, 0x1Cu);
   }
 
@@ -191,17 +191,17 @@ uint64_t __28__NFMLeashManager_leashTest__block_invoke(uint64_t a1)
   v9[2] = __38__NFMLeashManager_setLeashIdentifier___block_invoke;
   v9[3] = &unk_279933780;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = identifierCopy;
+  v7 = identifierCopy;
   dispatch_async(centralQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setServiceUUID:(id)a3
+- (void)setServiceUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -210,7 +210,7 @@ uint64_t __28__NFMLeashManager_leashTest__block_invoke(uint64_t a1)
     v14 = 2080;
     v15 = "[NFMLeashManager setServiceUUID:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = dCopy;
     _os_log_impl(&dword_25B17F000, v5, OS_LOG_TYPE_DEFAULT, "%d %s - serviceUUID: %@", buf, 0x1Cu);
   }
 
@@ -219,9 +219,9 @@ uint64_t __28__NFMLeashManager_leashTest__block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __34__NFMLeashManager_setServiceUUID___block_invoke;
   v9[3] = &unk_279933780;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = dCopy;
+  selfCopy = self;
+  v7 = dCopy;
   dispatch_async(centralQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -256,13 +256,13 @@ void __34__NFMLeashManager_setServiceUUID___block_invoke(uint64_t a1)
   *(*v3 + 26) = v6;
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  dataCopy = data;
+  iCopy = i;
   v14 = nfm_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -271,25 +271,25 @@ void __34__NFMLeashManager_setServiceUUID___block_invoke(uint64_t a1)
     v23 = 2080;
     v24 = "[NFMLeashManager centralManager:didDiscoverPeripheral:advertisementData:RSSI:]";
     v25 = 2112;
-    v26 = v10;
+    v26 = managerCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = peripheralCopy;
     v29 = 2112;
-    v30 = v12;
+    v30 = dataCopy;
     v31 = 2112;
-    v32 = v13;
+    v32 = iCopy;
     _os_log_impl(&dword_25B17F000, v14, OS_LOG_TYPE_DEFAULT, "%d %s - central: (%@); peripheral: (%@); data: (%@), rssi: (%@)", v22, 0x3Au);
   }
 
-  v15 = [v12 objectForKey:*MEMORY[0x277CBDD30]];
-  v16 = [v15 firstObject];
+  v15 = [dataCopy objectForKey:*MEMORY[0x277CBDD30]];
+  firstObject = [v15 firstObject];
 
-  v17 = [v16 UUIDString];
-  v18 = [v17 isEqualToString:self->_serviceUUID];
+  uUIDString = [firstObject UUIDString];
+  v18 = [uUIDString isEqualToString:self->_serviceUUID];
 
   if (v18)
   {
-    v19 = [v11 copy];
+    v19 = [peripheralCopy copy];
     discoveredPeripheral = self->_discoveredPeripheral;
     self->_discoveredPeripheral = v19;
 
@@ -299,11 +299,11 @@ void __34__NFMLeashManager_setServiceUUID___block_invoke(uint64_t a1)
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v8 = nfm_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -312,9 +312,9 @@ void __34__NFMLeashManager_setServiceUUID___block_invoke(uint64_t a1)
     v11 = 2080;
     v12 = "[NFMLeashManager centralManager:didFailToConnectPeripheral:error:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = peripheralCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = errorCopy;
     _os_log_impl(&dword_25B17F000, v8, OS_LOG_TYPE_DEFAULT, "%d %s -- %@ / %@", v10, 0x26u);
   }
 
@@ -466,14 +466,14 @@ void __38__NFMLeashManager_stopMonitoringLeash__block_invoke(uint64_t a1)
   *(v11 + 25) = 0;
 }
 
-- (void)setProximityChangeHandler:(id)a3
+- (void)setProximityChangeHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = MEMORY[0x25F8637B0](v4);
+    v6 = MEMORY[0x25F8637B0](handlerCopy);
     *buf = 67109634;
     v13 = 236;
     v14 = 2080;
@@ -489,8 +489,8 @@ void __38__NFMLeashManager_stopMonitoringLeash__block_invoke(uint64_t a1)
   v10[2] = __45__NFMLeashManager_setProximityChangeHandler___block_invoke;
   v10[3] = &unk_2799337D0;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(centralQueue, v10);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -513,7 +513,7 @@ void *__45__NFMLeashManager_setProximityChangeHandler___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = nfm_log();
@@ -533,11 +533,11 @@ void *__45__NFMLeashManager_setProximityChangeHandler___block_invoke(uint64_t a1
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peripheralDidUpdateRSSI:(id)a3 error:(id)a4
+- (void)peripheralDidUpdateRSSI:(id)i error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  errorCopy = error;
   v8 = nfm_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -546,9 +546,9 @@ void *__45__NFMLeashManager_setProximityChangeHandler___block_invoke(uint64_t a1
     v19 = 2080;
     v20 = "[NFMLeashManager peripheralDidUpdateRSSI:error:]";
     v21 = 2112;
-    *v22 = v6;
+    *v22 = iCopy;
     *&v22[8] = 2112;
-    *&v22[10] = v7;
+    *&v22[10] = errorCopy;
     _os_log_impl(&dword_25B17F000, v8, OS_LOG_TYPE_DEFAULT, "%d %s - peripheral (%@); error (%@)", buf, 0x26u);
   }
 
@@ -556,8 +556,8 @@ void *__45__NFMLeashManager_setProximityChangeHandler___block_invoke(uint64_t a1
   {
     if (self->_connected)
     {
-      v9 = [(CBPeripheral *)self->_peripheral RSSI];
-      [v9 floatValue];
+      rSSI = [(CBPeripheral *)self->_peripheral RSSI];
+      [rSSI floatValue];
       v11 = v10;
     }
 
@@ -594,11 +594,11 @@ void *__45__NFMLeashManager_setProximityChangeHandler___block_invoke(uint64_t a1
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   v8 = nfm_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -607,14 +607,14 @@ void *__45__NFMLeashManager_setProximityChangeHandler___block_invoke(uint64_t a1
     v19 = 2080;
     v20 = "[NFMLeashManager centralManager:didConnectPeripheral:]";
     v21 = 2112;
-    v22 = *&v6;
+    v22 = *&managerCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = peripheralCopy;
     _os_log_impl(&dword_25B17F000, v8, OS_LOG_TYPE_DEFAULT, "%d %s - central (%@); peripheral (%@)", buf, 0x26u);
   }
 
   [(CBPeripheral *)self->_peripheral setDelegate:0];
-  objc_storeStrong(&self->_peripheral, a4);
+  objc_storeStrong(&self->_peripheral, peripheral);
   [(CBPeripheral *)self->_peripheral setDelegate:self];
   self->_connected = 1;
   [(CBPeripheral *)self->_peripheral readRSSI];
@@ -697,10 +697,10 @@ uint64_t __55__NFMLeashManager_centralManager_didConnectPeripheral___block_invok
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -709,13 +709,13 @@ uint64_t __55__NFMLeashManager_centralManager_didConnectPeripheral___block_invok
     v15 = 2080;
     v16 = "[NFMLeashManager centralManagerDidUpdateState:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = stateCopy;
     v19 = 2048;
-    v20 = [v4 state];
+    state = [stateCopy state];
     _os_log_impl(&dword_25B17F000, v5, OS_LOG_TYPE_DEFAULT, "%d %s - central (%@); state (%ld)", buf, 0x26u);
   }
 
-  if ([v4 state] == 5)
+  if ([stateCopy state] == 5)
   {
     centralPhase = self->_centralPhase;
     if (centralPhase == 1)
@@ -743,7 +743,7 @@ uint64_t __55__NFMLeashManager_centralManager_didConnectPeripheral___block_invok
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTestMode:(BOOL)a3
+- (void)setTestMode:(BOOL)mode
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = nfm_log();
@@ -762,7 +762,7 @@ uint64_t __55__NFMLeashManager_centralManager_didConnectPeripheral___block_invok
   v8[2] = __31__NFMLeashManager_setTestMode___block_invoke;
   v8[3] = &unk_2799337F8;
   v8[4] = self;
-  v9 = a3;
+  modeCopy = mode;
   dispatch_async(centralQueue, v8);
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -787,10 +787,10 @@ void __31__NFMLeashManager_setTestMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)scalablePipeManagerDidUpdateState:(id)a3
+- (void)scalablePipeManagerDidUpdateState:(id)state
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -799,13 +799,13 @@ void __31__NFMLeashManager_setTestMode___block_invoke(uint64_t a1)
     v8 = 2080;
     v9 = "[NFMLeashManager scalablePipeManagerDidUpdateState:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = stateCopy;
     v12 = 2048;
-    v13 = [v4 state];
+    state = [stateCopy state];
     _os_log_impl(&dword_25B17F000, v5, OS_LOG_TYPE_DEFAULT, "%d %s - pipeManager: (%@); state: %ld", v7, 0x26u);
   }
 
-  if ([v4 state] == 5)
+  if ([stateCopy state] == 5)
   {
     [(CBScalablePipeManager *)self->_pipeManager registerEndpoint:self->_leashIdentifier type:1 priority:2];
   }
@@ -813,12 +813,12 @@ void __31__NFMLeashManager_setTestMode___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  endpointCopy = endpoint;
+  errorCopy = error;
   v10 = nfm_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -827,22 +827,22 @@ void __31__NFMLeashManager_setTestMode___block_invoke(uint64_t a1)
     v13 = 2080;
     v14 = "[NFMLeashManager scalablePipeManager:didRegisterEndpoint:error:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = managerCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = endpointCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = errorCopy;
     _os_log_impl(&dword_25B17F000, v10, OS_LOG_TYPE_DEFAULT, "%d %s - pipeManager: (%@); identifier (%@); error: (%@)", v12, 0x30u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  endpointCopy = endpoint;
   v7 = nfm_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -851,20 +851,20 @@ void __31__NFMLeashManager_setTestMode___block_invoke(uint64_t a1)
     v10 = 2080;
     v11 = "[NFMLeashManager scalablePipeManager:didUnregisterEndpoint:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = managerCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = endpointCopy;
     _os_log_impl(&dword_25B17F000, v7, OS_LOG_TYPE_DEFAULT, "%d %s - pipeManager: (%@); identifier (%@)", v9, 0x26u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  connectCopy = connect;
   v8 = nfm_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -873,25 +873,25 @@ void __31__NFMLeashManager_setTestMode___block_invoke(uint64_t a1)
     v22 = 2080;
     v23 = "[NFMLeashManager scalablePipeManager:pipeDidConnect:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = managerCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = connectCopy;
     _os_log_impl(&dword_25B17F000, v8, OS_LOG_TYPE_DEFAULT, "%d %s - pipeManager: (%@); pipe (%@)", buf, 0x26u);
   }
 
-  objc_storeStrong(&self->_pipe, a4);
-  v9 = [(CBScalablePipe *)self->_pipe central];
-  v10 = [v9 identifier];
+  objc_storeStrong(&self->_pipe, connect);
+  central = [(CBScalablePipe *)self->_pipe central];
+  identifier = [central identifier];
   centralManager = self->_centralManager;
-  v19 = v10;
+  v19 = identifier;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
   v13 = [(CBCentralManager *)centralManager retrievePeripheralsWithIdentifiers:v12];
 
   if ([v13 count])
   {
-    v14 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     peripheral = self->_peripheral;
-    self->_peripheral = v14;
+    self->_peripheral = firstObject;
 
     [(CBCentralManager *)self->_centralManager connectPeripheral:self->_peripheral options:0];
   }
@@ -927,7 +927,7 @@ void __54__NFMLeashManager_scalablePipeManager_pipeDidConnect___block_invoke(uin
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = nfm_log();

@@ -1,8 +1,8 @@
 @interface MTRICDManagementClusterRegisterClientParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRICDManagementClusterRegisterClientParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -22,9 +22,9 @@
     monitoredSubject = v3->_monitoredSubject;
     v3->_monitoredSubject = &unk_284C3E4C8;
 
-    v6 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     key = v3->_key;
-    v3->_key = v6;
+    v3->_key = data;
 
     verificationKey = v3->_verificationKey;
     v3->_verificationKey = 0;
@@ -42,29 +42,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRICDManagementClusterRegisterClientParams);
-  v5 = [(MTRICDManagementClusterRegisterClientParams *)self checkInNodeID];
-  [(MTRICDManagementClusterRegisterClientParams *)v4 setCheckInNodeID:v5];
+  checkInNodeID = [(MTRICDManagementClusterRegisterClientParams *)self checkInNodeID];
+  [(MTRICDManagementClusterRegisterClientParams *)v4 setCheckInNodeID:checkInNodeID];
 
-  v6 = [(MTRICDManagementClusterRegisterClientParams *)self monitoredSubject];
-  [(MTRICDManagementClusterRegisterClientParams *)v4 setMonitoredSubject:v6];
+  monitoredSubject = [(MTRICDManagementClusterRegisterClientParams *)self monitoredSubject];
+  [(MTRICDManagementClusterRegisterClientParams *)v4 setMonitoredSubject:monitoredSubject];
 
   v7 = [(MTRICDManagementClusterRegisterClientParams *)self key];
   [(MTRICDManagementClusterRegisterClientParams *)v4 setKey:v7];
 
-  v8 = [(MTRICDManagementClusterRegisterClientParams *)self verificationKey];
-  [(MTRICDManagementClusterRegisterClientParams *)v4 setVerificationKey:v8];
+  verificationKey = [(MTRICDManagementClusterRegisterClientParams *)self verificationKey];
+  [(MTRICDManagementClusterRegisterClientParams *)v4 setVerificationKey:verificationKey];
 
-  v9 = [(MTRICDManagementClusterRegisterClientParams *)self clientType];
-  [(MTRICDManagementClusterRegisterClientParams *)v4 setClientType:v9];
+  clientType = [(MTRICDManagementClusterRegisterClientParams *)self clientType];
+  [(MTRICDManagementClusterRegisterClientParams *)v4 setClientType:clientType];
 
-  v10 = [(MTRICDManagementClusterRegisterClientParams *)self timedInvokeTimeoutMs];
-  [(MTRICDManagementClusterRegisterClientParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTRICDManagementClusterRegisterClientParams *)self timedInvokeTimeoutMs];
+  [(MTRICDManagementClusterRegisterClientParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v11 = [(MTRICDManagementClusterRegisterClientParams *)self serverSideProcessingTimeout];
-  [(MTRICDManagementClusterRegisterClientParams *)v4 setServerSideProcessingTimeout:v11];
+  serverSideProcessingTimeout = [(MTRICDManagementClusterRegisterClientParams *)self serverSideProcessingTimeout];
+  [(MTRICDManagementClusterRegisterClientParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -83,39 +83,39 @@
   return v10;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v31 = 0;
+  unsignedCharValue = 0;
   v27 = 0u;
   v28 = 0u;
   v29 = 0;
   v26[0] = 0;
   v26[1] = 0;
   v25 = v26;
-  v5 = [(MTRICDManagementClusterRegisterClientParams *)self checkInNodeID];
-  *&v27 = [v5 unsignedLongLongValue];
+  checkInNodeID = [(MTRICDManagementClusterRegisterClientParams *)self checkInNodeID];
+  *&v27 = [checkInNodeID unsignedLongLongValue];
 
-  v6 = [(MTRICDManagementClusterRegisterClientParams *)self monitoredSubject];
-  *(&v27 + 1) = [v6 unsignedLongLongValue];
+  monitoredSubject = [(MTRICDManagementClusterRegisterClientParams *)self monitoredSubject];
+  *(&v27 + 1) = [monitoredSubject unsignedLongLongValue];
 
   v7 = [(MTRICDManagementClusterRegisterClientParams *)self key];
   sub_238DB6950(v19, [v7 bytes], objc_msgSend(v7, "length"));
 
   v28 = v19[0];
-  v8 = [(MTRICDManagementClusterRegisterClientParams *)self verificationKey];
+  verificationKey = [(MTRICDManagementClusterRegisterClientParams *)self verificationKey];
 
-  if (v8)
+  if (verificationKey)
   {
     v29 = 1;
     v30 = 0uLL;
-    v9 = [(MTRICDManagementClusterRegisterClientParams *)self verificationKey];
-    sub_238DB6950(v19, [v9 bytes], objc_msgSend(v9, "length"));
+    verificationKey2 = [(MTRICDManagementClusterRegisterClientParams *)self verificationKey];
+    sub_238DB6950(v19, [verificationKey2 bytes], objc_msgSend(verificationKey2, "length"));
 
     v30 = v19[0];
   }
 
-  v10 = [(MTRICDManagementClusterRegisterClientParams *)self clientType];
-  v31 = [v10 unsignedCharValue];
+  clientType = [(MTRICDManagementClusterRegisterClientParams *)self clientType];
+  unsignedCharValue = [clientType unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v24);
   if (v24)
@@ -136,8 +136,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v24);
-      v11 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v24);
+      v11 = sub_2393C7114(reader, 21, 256);
       v14 = v18;
       v13 = v11;
     }
@@ -165,19 +165,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRICDManagementClusterRegisterClientParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -188,7 +188,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x298000000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

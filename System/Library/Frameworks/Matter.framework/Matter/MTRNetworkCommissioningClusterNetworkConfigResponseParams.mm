@@ -1,9 +1,9 @@
 @interface MTRNetworkCommissioningClusterNetworkConfigResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRNetworkCommissioningClusterNetworkConfigResponseParams)init;
-- (MTRNetworkCommissioningClusterNetworkConfigResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRNetworkCommissioningClusterNetworkConfigResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRNetworkCommissioningClusterNetworkConfigResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -39,26 +39,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRNetworkCommissioningClusterNetworkConfigResponseParams);
-  v5 = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self networkingStatus];
-  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setNetworkingStatus:v5];
+  networkingStatus = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self networkingStatus];
+  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setNetworkingStatus:networkingStatus];
 
-  v6 = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self debugText];
-  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setDebugText:v6];
+  debugText = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self debugText];
+  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setDebugText:debugText];
 
-  v7 = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self networkIndex];
-  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setNetworkIndex:v7];
+  networkIndex = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self networkIndex];
+  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setNetworkIndex:networkIndex];
 
-  v8 = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self clientIdentity];
-  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setClientIdentity:v8];
+  clientIdentity = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self clientIdentity];
+  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setClientIdentity:clientIdentity];
 
-  v9 = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self possessionSignature];
-  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setPossessionSignature:v9];
+  possessionSignature = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self possessionSignature];
+  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setPossessionSignature:possessionSignature];
 
-  v10 = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -126,7 +126,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRNetworkCommissioningClusterNetworkConfigResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRNetworkCommissioningClusterNetworkConfigResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRNetworkCommissioningClusterNetworkConfigResponseParams;
@@ -134,7 +134,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -150,20 +150,20 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self setNetworkingStatus:v5];
 
-  if (*(a3 + 8) == 1)
+  if (*(struct + 8) == 1)
   {
-    v6 = sub_238DE36B8(a3 + 8);
+    v6 = sub_238DE36B8(struct + 8);
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v6 length:v6[1] encoding:4];
     [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self setDebugText:v7];
 
-    v8 = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self debugText];
+    debugText = [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self debugText];
 
-    if (!v8)
+    if (!debugText)
     {
       v9 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
       v10 = 0x17C500000000;
@@ -177,9 +177,9 @@ LABEL_6:
     [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self setDebugText:0];
   }
 
-  if (*(a3 + 32) == 1)
+  if (*(struct + 32) == 1)
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(a3 + 32)];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(struct + 32)];
     [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self setNetworkIndex:v12];
   }
 
@@ -188,9 +188,9 @@ LABEL_6:
     [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self setNetworkIndex:0];
   }
 
-  if (*(a3 + 40) == 1)
+  if (*(struct + 40) == 1)
   {
-    v13 = sub_238DE36B8(a3 + 40);
+    v13 = sub_238DE36B8(struct + 40);
     v14 = [MEMORY[0x277CBEA90] dataWithBytes:*v13 length:v13[1]];
     [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self setClientIdentity:v14];
   }
@@ -200,8 +200,8 @@ LABEL_6:
     [(MTRNetworkCommissioningClusterNetworkConfigResponseParams *)self setClientIdentity:0];
   }
 
-  v16 = *(a3 + 64);
-  v15 = a3 + 64;
+  v16 = *(struct + 64);
+  v15 = struct + 64;
   if (v16 == 1)
   {
     v17 = sub_238DE36B8(v15);

@@ -1,19 +1,19 @@
 @interface PDDPTypedValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)addStringListValue:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBoolValue:(BOOL)a3;
-- (void)setHasEncryptionScheme:(BOOL)a3;
-- (void)setHasInt64Value:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addStringListValue:(id)value;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBoolValue:(BOOL)value;
+- (void)setHasEncryptionScheme:(BOOL)scheme;
+- (void)setHasInt64Value:(BOOL)value;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPTypedValue
@@ -31,9 +31,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -46,60 +46,60 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"STRING_TYPE"])
+  else if ([typeCopy isEqualToString:@"STRING_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"STRING_LIST_TYPE"])
+  else if ([typeCopy isEqualToString:@"STRING_LIST_TYPE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DATE_TYPE"])
+  else if ([typeCopy isEqualToString:@"DATE_TYPE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"DATE_LIST_TYPE"])
+  else if ([typeCopy isEqualToString:@"DATE_LIST_TYPE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"INT64_TYPE"])
+  else if ([typeCopy isEqualToString:@"INT64_TYPE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"INT64_LIST_TYPE"])
+  else if ([typeCopy isEqualToString:@"INT64_LIST_TYPE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DOUBLE_TYPE"])
+  else if ([typeCopy isEqualToString:@"DOUBLE_TYPE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"DOUBLE_LIST_TYPE"])
+  else if ([typeCopy isEqualToString:@"DOUBLE_LIST_TYPE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"BOOLEAN_TYPE"])
+  else if ([typeCopy isEqualToString:@"BOOLEAN_TYPE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"BOOLEAN_LIST_TYPE"])
+  else if ([typeCopy isEqualToString:@"BOOLEAN_LIST_TYPE"])
   {
     v4 = 10;
   }
@@ -112,9 +112,9 @@
   return v4;
 }
 
-- (void)setHasEncryptionScheme:(BOOL)a3
+- (void)setHasEncryptionScheme:(BOOL)scheme
 {
-  if (a3)
+  if (scheme)
   {
     v3 = 4;
   }
@@ -127,27 +127,27 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addStringListValue:(id)a3
+- (void)addStringListValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   stringListValues = self->_stringListValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!stringListValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_stringListValues;
     self->_stringListValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     stringListValues = self->_stringListValues;
   }
 
-  [(NSMutableArray *)stringListValues addObject:v4];
+  [(NSMutableArray *)stringListValues addObject:valueCopy];
 }
 
-- (void)setHasInt64Value:(BOOL)a3
+- (void)setHasInt64Value:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -160,9 +160,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasBoolValue:(BOOL)a3
+- (void)setHasBoolValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 16;
   }
@@ -180,8 +180,8 @@
   v7.receiver = self;
   v7.super_class = PDDPTypedValue;
   v3 = [(PDDPTypedValue *)&v7 description];
-  v4 = [(PDDPTypedValue *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPTypedValue *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -229,8 +229,8 @@
   dateValue = self->_dateValue;
   if (dateValue)
   {
-    v11 = [(PDDPDate *)dateValue dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"date_value"];
+    dictionaryRepresentation = [(PDDPDate *)dateValue dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"date_value"];
   }
 
   v12 = self->_has;
@@ -272,9 +272,9 @@ LABEL_18:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -366,36 +366,36 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[14] = self->_type;
-    *(v4 + 64) |= 8u;
+    toCopy[14] = self->_type;
+    *(toCopy + 64) |= 8u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[8] = self->_encryptionScheme;
-    *(v4 + 64) |= 4u;
+    toCopy[8] = self->_encryptionScheme;
+    *(toCopy + 64) |= 4u;
   }
 
-  v11 = v4;
+  v11 = toCopy;
   if (self->_stringValue)
   {
-    [v4 setStringValue:?];
+    [toCopy setStringValue:?];
   }
 
   if ([(PDDPTypedValue *)self stringListValuesCount])
   {
     [v11 clearStringListValues];
-    v6 = [(PDDPTypedValue *)self stringListValuesCount];
-    if (v6)
+    stringListValuesCount = [(PDDPTypedValue *)self stringListValuesCount];
+    if (stringListValuesCount)
     {
-      v7 = v6;
+      v7 = stringListValuesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PDDPTypedValue *)self stringListValueAtIndex:i];
@@ -444,9 +444,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -462,7 +462,7 @@ LABEL_17:
     *(v5 + 64) |= 4u;
   }
 
-  v8 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v8 = [(NSString *)self->_stringValue copyWithZone:zone];
   v9 = v6[6];
   v6[6] = v8;
 
@@ -485,7 +485,7 @@ LABEL_17:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v15 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v6 addStringListValue:v15];
       }
 
@@ -495,7 +495,7 @@ LABEL_17:
     while (v12);
   }
 
-  v16 = [(PDDPDate *)self->_dateValue copyWithZone:a3];
+  v16 = [(PDDPDate *)self->_dateValue copyWithZone:zone];
   v17 = v6[3];
   v6[3] = v16;
 
@@ -537,49 +537,49 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_type != *(v4 + 14))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_type != *(equalCopy + 14))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_30;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_encryptionScheme != *(v4 + 8))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_encryptionScheme != *(equalCopy + 8))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_30;
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 6) && ![(NSString *)stringValue isEqual:?])
+  if (stringValue | *(equalCopy + 6) && ![(NSString *)stringValue isEqual:?])
   {
     goto LABEL_30;
   }
 
   stringListValues = self->_stringListValues;
-  if (stringListValues | *(v4 + 5))
+  if (stringListValues | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)stringListValues isEqual:?])
     {
@@ -588,7 +588,7 @@ LABEL_15:
   }
 
   dateValue = self->_dateValue;
-  if (dateValue | *(v4 + 3))
+  if (dateValue | *(equalCopy + 3))
   {
     if (![(PDDPDate *)dateValue isEqual:?])
     {
@@ -598,34 +598,34 @@ LABEL_15:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_int64Value != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_int64Value != *(equalCopy + 2))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_30;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_doubleValue != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_doubleValue != *(equalCopy + 1))
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_30;
   }
 
-  v9 = (*(v4 + 64) & 0x10) == 0;
+  v9 = (*(equalCopy + 64) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0)
+    if ((*(equalCopy + 64) & 0x10) == 0)
     {
 LABEL_30:
       v9 = 0;
@@ -634,13 +634,13 @@ LABEL_30:
 
     if (self->_BOOLValue)
     {
-      if ((*(v4 + 60) & 1) == 0)
+      if ((*(equalCopy + 60) & 1) == 0)
       {
         goto LABEL_30;
       }
     }
 
-    else if (*(v4 + 60))
+    else if (*(equalCopy + 60))
     {
       goto LABEL_30;
     }
@@ -739,25 +739,25 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v10 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 64);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 64);
   if ((v6 & 8) != 0)
   {
-    self->_type = v4[14];
+    self->_type = fromCopy[14];
     *&self->_has |= 8u;
-    v6 = *(v4 + 64);
+    v6 = *(fromCopy + 64);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_encryptionScheme = v4[8];
+    self->_encryptionScheme = fromCopy[8];
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PDDPTypedValue *)self setStringValue:?];
   }

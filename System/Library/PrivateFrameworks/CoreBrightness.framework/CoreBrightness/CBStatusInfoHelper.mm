@@ -1,28 +1,28 @@
 @interface CBStatusInfoHelper
-+ (id)copyStatusInfoFor:(id)a3;
++ (id)copyStatusInfoFor:(id)for;
 @end
 
 @implementation CBStatusInfoHelper
 
-+ (id)copyStatusInfoFor:(id)a3
++ (id)copyStatusInfoFor:(id)for
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  forCopy = for;
   v12 = 0;
-  if ([a3 conformsToProtocol:&unk_1F59CBF78])
+  if ([for conformsToProtocol:&unk_1F59CBF78])
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v11 = [v13 copyIdentifiers];
+    copyIdentifiers = [forCopy copyIdentifiers];
     v4 = MEMORY[0x1E69E9820];
     v5 = -1073741824;
     v6 = 0;
     v7 = __40__CBStatusInfoHelper_copyStatusInfoFor___block_invoke;
     v8 = &unk_1E867BD88;
-    v9 = v13;
+    v9 = forCopy;
     v10 = v12;
-    [v11 enumerateObjectsUsingBlock:?];
-    MEMORY[0x1E69E5920](v11);
+    [copyIdentifiers enumerateObjectsUsingBlock:?];
+    MEMORY[0x1E69E5920](copyIdentifiers);
   }
 
   return v12;

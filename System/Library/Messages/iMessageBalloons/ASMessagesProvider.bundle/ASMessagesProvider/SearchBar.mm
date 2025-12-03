@@ -1,24 +1,24 @@
 @interface SearchBar
 - (NSArray)keyCommands;
-- (_TtC18ASMessagesProvider9SearchBar)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider9SearchBar)initWithFrame:(CGRect)a3;
+- (_TtC18ASMessagesProvider9SearchBar)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider9SearchBar)initWithFrame:(CGRect)frame;
 - (void)handleCancelKeyCommand;
 - (void)layoutSubviews;
 @end
 
 @implementation SearchBar
 
-- (_TtC18ASMessagesProvider9SearchBar)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider9SearchBar)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_getObjectType();
   v11.receiver = self;
   v11.super_class = type metadata accessor for SearchBar();
-  v8 = [(SearchBar *)&v11 initWithFrame:x, y, width, height];
-  [(SearchBar *)v8 _setOverrideContentInsets:1 forRectEdges:28.0, 0.0, 0.0, 0.0];
+  height = [(SearchBar *)&v11 initWithFrame:x, y, width, height];
+  [(SearchBar *)height _setOverrideContentInsets:1 forRectEdges:28.0, 0.0, 0.0, 0.0];
   sub_BD88(&qword_9477F0);
   v9 = swift_allocObject();
   *(v9 + 16) = xmmword_77B6D0;
@@ -28,10 +28,10 @@
 
   swift_unknownObjectRelease();
 
-  return v8;
+  return height;
 }
 
-- (_TtC18ASMessagesProvider9SearchBar)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider9SearchBar)initWithCoder:(id)coder
 {
   result = sub_76A840();
   __break(1u);
@@ -40,7 +40,7 @@
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_4C63CC();
 
   if (v3)
@@ -59,14 +59,14 @@
 
 - (void)handleCancelKeyCommand
 {
-  v4 = self;
-  v2 = [(SearchBar *)v4 delegate];
-  if (v2)
+  selfCopy = self;
+  delegate = [(SearchBar *)selfCopy delegate];
+  if (delegate)
   {
-    v3 = v2;
-    if ([v2 respondsToSelector:"searchBarCancelButtonClicked:"])
+    v3 = delegate;
+    if ([delegate respondsToSelector:"searchBarCancelButtonClicked:"])
     {
-      [v3 searchBarCancelButtonClicked:v4];
+      [v3 searchBarCancelButtonClicked:selfCopy];
     }
 
     swift_unknownObjectRelease();

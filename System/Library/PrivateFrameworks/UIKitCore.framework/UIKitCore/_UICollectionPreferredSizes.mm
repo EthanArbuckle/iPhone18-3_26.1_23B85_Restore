@@ -1,28 +1,28 @@
 @interface _UICollectionPreferredSizes
-- (__n128)setObject:(uint64_t)a3 atIndexedSubscript:;
+- (__n128)setObject:(uint64_t)object atIndexedSubscript:;
 - (double)largestItemSize;
 - (id)copyByDirtyingPreferredSizes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)elementKinds;
 - (id)indexes;
-- (id)indexesOfItemsWithoutPreferredSizesInRange:(uint64_t)a3;
-- (id)initWithSizes:(void *)a3 indexes:(void *)a4 supplementarySizesDict:(uint64_t)a5 frameOffset:(void *)a6 supplementaryBaseOffsets:;
-- (id)objectAtIndexedSubscript:(uint64_t)a1;
-- (id)objectForKeyedSubscript:(uint64_t)a1;
-- (id)preferredSizesApplyingFrameOffset:(void *)a3 supplementaryBaseOffsets:;
-- (uint64_t)containsSupplementaryOffsets:(uint64_t)a1;
+- (id)indexesOfItemsWithoutPreferredSizesInRange:(uint64_t)range;
+- (id)initWithSizes:(void *)sizes indexes:(void *)indexes supplementarySizesDict:(uint64_t)dict frameOffset:(void *)offset supplementaryBaseOffsets:;
+- (id)objectAtIndexedSubscript:(uint64_t)subscript;
+- (id)objectForKeyedSubscript:(uint64_t)subscript;
+- (id)preferredSizesApplyingFrameOffset:(void *)offset supplementaryBaseOffsets:;
+- (uint64_t)containsSupplementaryOffsets:(uint64_t)offsets;
 @end
 
 @implementation _UICollectionPreferredSizes
 
 - (id)elementKinds
 {
-  if (a1)
+  if (self)
   {
     v1 = MEMORY[0x1E695DFD8];
-    v2 = [*(a1 + 24) allKeys];
-    v3 = [v1 setWithArray:v2];
+    allKeys = [*(self + 24) allKeys];
+    v3 = [v1 setWithArray:allKeys];
   }
 
   else
@@ -35,17 +35,17 @@
 
 - (id)indexes
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 32))
+    if (*(self + 32))
     {
-      v2 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:*(a1 + 16)];
-      [v2 shiftIndexesStartingAtIndex:0 by:*(a1 + 32)];
+      v2 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:*(self + 16)];
+      [v2 shiftIndexesStartingAtIndex:0 by:*(self + 32)];
     }
 
     else
     {
-      v2 = *(a1 + 16);
+      v2 = *(self + 16);
     }
   }
 
@@ -57,14 +57,14 @@
   return v2;
 }
 
-- (id)initWithSizes:(void *)a3 indexes:(void *)a4 supplementarySizesDict:(uint64_t)a5 frameOffset:(void *)a6 supplementaryBaseOffsets:
+- (id)initWithSizes:(void *)sizes indexes:(void *)indexes supplementarySizesDict:(uint64_t)dict frameOffset:(void *)offset supplementaryBaseOffsets:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = _UICollectionPreferredSizes;
   v11 = objc_msgSendSuper2(&v19, sel_init);
   if (v11)
@@ -82,9 +82,9 @@
     v13 = *(v11 + 1);
     *(v11 + 1) = v12;
 
-    if (a3)
+    if (sizes)
     {
-      v14 = [a3 mutableCopy];
+      v14 = [sizes mutableCopy];
     }
 
     else
@@ -95,9 +95,9 @@
     v15 = *(v11 + 2);
     *(v11 + 2) = v14;
 
-    if (a4)
+    if (indexes)
     {
-      v16 = [a4 mutableCopy];
+      v16 = [indexes mutableCopy];
     }
 
     else
@@ -108,19 +108,19 @@
     v17 = *(v11 + 3);
     *(v11 + 3) = v16;
 
-    *(v11 + 4) = a5;
-    objc_storeStrong(v11 + 5, a6);
+    *(v11 + 4) = dict;
+    objc_storeStrong(v11 + 5, offset);
   }
 
   return v11;
 }
 
-- (id)objectAtIndexedSubscript:(uint64_t)a1
+- (id)objectAtIndexedSubscript:(uint64_t)subscript
 {
-  if (a1)
+  if (subscript)
   {
-    v2 = *(a1 + 8);
-    v3 = [MEMORY[0x1E696AD98] numberWithInteger:*(a1 + 32) + a2];
+    v2 = *(subscript + 8);
+    v3 = [MEMORY[0x1E696AD98] numberWithInteger:*(subscript + 32) + a2];
     v4 = [v2 objectForKeyedSubscript:v3];
   }
 
@@ -132,37 +132,37 @@
   return v4;
 }
 
-- (__n128)setObject:(uint64_t)a3 atIndexedSubscript:
+- (__n128)setObject:(uint64_t)object atIndexedSubscript:
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 32);
-    v7 = *(a1 + 8);
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:v6 + a3];
+    v6 = *(self + 32);
+    v7 = *(self + 8);
+    object = [MEMORY[0x1E696AD98] numberWithInteger:v6 + object];
     if (a2)
     {
-      [v7 setObject:a2 forKeyedSubscript:v8];
+      [v7 setObject:a2 forKeyedSubscript:object];
 
-      [*(a1 + 16) addIndex:v6 + a3];
+      [*(self + 16) addIndex:v6 + object];
     }
 
     else
     {
-      [v7 removeObjectForKey:v8];
+      [v7 removeObjectForKey:object];
 
-      [*(a1 + 16) removeIndex:v6 + a3];
+      [*(self + 16) removeIndex:v6 + object];
     }
 
     result = *MEMORY[0x1E695F060];
-    *(a1 + 48) = *MEMORY[0x1E695F060];
+    *(self + 48) = *MEMORY[0x1E695F060];
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_UICollectionPreferredSizes allocWithZone:a3];
+  v4 = [_UICollectionPreferredSizes allocWithZone:zone];
   sizes = self->_sizes;
   indexes = self->_indexes;
   supplementarySizesDict = self->_supplementarySizesDict;
@@ -183,61 +183,61 @@
   return v7;
 }
 
-- (id)indexesOfItemsWithoutPreferredSizesInRange:(uint64_t)a3
+- (id)indexesOfItemsWithoutPreferredSizesInRange:(uint64_t)range
 {
-  if (a1)
+  if (self)
   {
-    v3 = a3;
-    if (a3)
+    rangeCopy = range;
+    if (range)
     {
-      v5 = [(_UICollectionPreferredSizes *)a1 indexes];
-      v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
-      if (a2 < a2 + v3)
+      indexes = [(_UICollectionPreferredSizes *)self indexes];
+      indexSet = objc_alloc_init(MEMORY[0x1E696AD50]);
+      if (a2 < a2 + rangeCopy)
       {
         do
         {
-          if (([v5 containsIndex:a2] & 1) == 0)
+          if (([indexes containsIndex:a2] & 1) == 0)
           {
-            [v6 addIndex:a2];
+            [indexSet addIndex:a2];
           }
 
           ++a2;
-          --v3;
+          --rangeCopy;
         }
 
-        while (v3);
+        while (rangeCopy);
       }
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AC90] indexSet];
+      indexSet = [MEMORY[0x1E696AC90] indexSet];
     }
   }
 
   else
   {
-    v6 = 0;
+    indexSet = 0;
   }
 
-  return v6;
+  return indexSet;
 }
 
-- (id)objectForKeyedSubscript:(uint64_t)a1
+- (id)objectForKeyedSubscript:(uint64_t)subscript
 {
-  if (a1)
+  if (subscript)
   {
     if (![a2 length])
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel_objectForKeyedSubscript_ object:a1 file:@"_UICollectionPreferredSizes.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_objectForKeyedSubscript_ object:subscript file:@"_UICollectionPreferredSizes.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
     }
 
-    v4 = [*(a1 + 24) objectForKeyedSubscript:a2];
+    v4 = [*(subscript + 24) objectForKeyedSubscript:a2];
     if (!v4)
     {
-      v4 = [[_UICollectionPreferredSizes alloc] initWithSizes:0 indexes:0 supplementarySizesDict:*(a1 + 32) frameOffset:*(a1 + 40) supplementaryBaseOffsets:?];
-      [*(a1 + 24) setObject:v4 forKeyedSubscript:a2];
+      v4 = [[_UICollectionPreferredSizes alloc] initWithSizes:0 indexes:0 supplementarySizesDict:*(subscript + 32) frameOffset:*(subscript + 40) supplementaryBaseOffsets:?];
+      [*(subscript + 24) setObject:v4 forKeyedSubscript:a2];
     }
   }
 
@@ -249,21 +249,21 @@
   return v4;
 }
 
-- (uint64_t)containsSupplementaryOffsets:(uint64_t)a1
+- (uint64_t)containsSupplementaryOffsets:(uint64_t)offsets
 {
-  v2 = a1;
+  offsetsCopy = offsets;
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (offsets)
   {
     if (!a2)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:sel_containsSupplementaryOffsets_ object:v2 file:@"_UICollectionPreferredSizes.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"supplementaryOffsets"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_containsSupplementaryOffsets_ object:offsetsCopy file:@"_UICollectionPreferredSizes.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"supplementaryOffsets"}];
     }
 
     v4 = a2;
     v5 = v4;
-    if (*(v2 + 40))
+    if (*(offsetsCopy + 40))
     {
       v6 = [v4 offsetsByApplyingOffsets:?];
 
@@ -274,8 +274,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [(_UICollectionPreferredSizes *)v2 elementKinds];
-    v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    elementKinds = [(_UICollectionPreferredSizes *)offsetsCopy elementKinds];
+    v8 = [elementKinds countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
@@ -286,11 +286,11 @@
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(elementKinds);
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [(_UICollectionPreferredSizes *)v2 objectForKeyedSubscript:v12];
+          v13 = [(_UICollectionPreferredSizes *)offsetsCopy objectForKeyedSubscript:v12];
           if (v13)
           {
             v14 = [v5 rangeForElementKind:v12];
@@ -298,20 +298,20 @@
             {
               v16 = v14;
               v17 = v15;
-              v18 = [(_UICollectionPreferredSizes *)v13 indexes];
-              v19 = [v18 countOfIndexesInRange:{v16, v17}];
+              indexes = [(_UICollectionPreferredSizes *)v13 indexes];
+              v19 = [indexes countOfIndexesInRange:{v16, v17}];
 
               if (v19)
               {
 
-                v2 = 1;
+                offsetsCopy = 1;
                 goto LABEL_18;
               }
             }
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v9 = [elementKinds countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v9)
         {
           continue;
@@ -321,32 +321,32 @@
       }
     }
 
-    v2 = 0;
+    offsetsCopy = 0;
 LABEL_18:
   }
 
-  return v2;
+  return offsetsCopy;
 }
 
-- (id)preferredSizesApplyingFrameOffset:(void *)a3 supplementaryBaseOffsets:
+- (id)preferredSizesApplyingFrameOffset:(void *)offset supplementaryBaseOffsets:
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 32);
-    v5 = *(a1 + 40);
+    v6 = *(self + 32);
+    v5 = *(self + 40);
     if (v5)
     {
-      v7 = [v5 offsetsByApplyingOffsets:?];
+      offsetCopy = [v5 offsetsByApplyingOffsets:?];
     }
 
     else
     {
-      v7 = a3;
+      offsetCopy = offset;
     }
 
-    v8 = v7;
+    v8 = offsetCopy;
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v10 = *(a1 + 24);
+    v10 = *(self + 24);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __90___UICollectionPreferredSizes_preferredSizesApplyingFrameOffset_supplementaryBaseOffsets___block_invoke;
@@ -356,7 +356,7 @@ LABEL_18:
     v11 = v9;
     v12 = v8;
     [v10 enumerateKeysAndObjectsUsingBlock:v15];
-    v13 = [[_UICollectionPreferredSizes alloc] initWithSizes:*(a1 + 16) indexes:v11 supplementarySizesDict:v6 + a2 frameOffset:v12 supplementaryBaseOffsets:?];
+    v13 = [[_UICollectionPreferredSizes alloc] initWithSizes:*(self + 16) indexes:v11 supplementarySizesDict:v6 + a2 frameOffset:v12 supplementaryBaseOffsets:?];
   }
 
   else
@@ -369,11 +369,11 @@ LABEL_18:
 
 - (id)copyByDirtyingPreferredSizes
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1[1], "count")}];
-    v3 = *(v1 + 1);
+    v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self[1], "count")}];
+    v3 = *(selfCopy + 1);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __59___UICollectionPreferredSizes_copyByDirtyingPreferredSizes__block_invoke;
@@ -382,7 +382,7 @@ LABEL_18:
     v4 = v2;
     [v3 enumerateKeysAndObjectsUsingBlock:v11];
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v6 = *(v1 + 3);
+    v6 = *(selfCopy + 3);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __59___UICollectionPreferredSizes_copyByDirtyingPreferredSizes__block_invoke_2;
@@ -390,43 +390,43 @@ LABEL_18:
     v10 = v5;
     v7 = v5;
     [v6 enumerateKeysAndObjectsUsingBlock:v9];
-    v1 = [[_UICollectionPreferredSizes alloc] initWithSizes:v4 indexes:*(v1 + 2) supplementarySizesDict:v7 frameOffset:*(v1 + 4) supplementaryBaseOffsets:*(v1 + 5)];
+    selfCopy = [[_UICollectionPreferredSizes alloc] initWithSizes:v4 indexes:*(selfCopy + 2) supplementarySizesDict:v7 frameOffset:*(selfCopy + 4) supplementaryBaseOffsets:*(selfCopy + 5)];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (double)largestItemSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if (![*(a1 + 8) count])
+  if (![*(self + 8) count])
   {
     return *MEMORY[0x1E695F060];
   }
 
-  v2 = *(a1 + 48);
-  if (v2 == *MEMORY[0x1E695F060] && *(a1 + 56) == *(MEMORY[0x1E695F060] + 8))
+  v2 = *(self + 48);
+  if (v2 == *MEMORY[0x1E695F060] && *(self + 56) == *(MEMORY[0x1E695F060] + 8))
   {
     v8 = 0;
     v9 = &v8;
     v10 = 0x3010000000;
     v11 = "";
     v12 = *MEMORY[0x1E695F060];
-    v4 = [(_UICollectionPreferredSizes *)a1 indexes];
+    indexes = [(_UICollectionPreferredSizes *)self indexes];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __46___UICollectionPreferredSizes_largestItemSize__block_invoke;
     v7[3] = &unk_1E70FA4A0;
-    v7[4] = a1;
+    v7[4] = self;
     v7[5] = &v8;
-    [v4 enumerateIndexesUsingBlock:v7];
+    [indexes enumerateIndexesUsingBlock:v7];
 
     v5 = v9;
-    *(a1 + 48) = *(v9 + 2);
+    *(self + 48) = *(v9 + 2);
     v2 = v5[4];
     _Block_object_dispose(&v8, 8);
   }

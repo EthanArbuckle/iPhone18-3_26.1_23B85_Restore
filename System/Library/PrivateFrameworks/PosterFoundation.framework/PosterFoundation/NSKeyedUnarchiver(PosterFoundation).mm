@@ -12,7 +12,7 @@
   v11 = a5;
   v12 = a4;
   v13 = [v10 setWithObject:a3];
-  v14 = [a1 pf_unarchivedObjectOfClasses:v13 fromData:v12 classReplacementMap:v11 error:a6];
+  v14 = [self pf_unarchivedObjectOfClasses:v13 fromData:v12 classReplacementMap:v11 error:a6];
 
   return v14;
 }
@@ -26,7 +26,7 @@
   v14[3] = &unk_1E8189DF8;
   v15 = v10;
   v11 = v10;
-  v12 = [a1 pf_unarchivedObjectOfClasses:a3 fromData:a4 strict:0 classReplacementBlock:v14 error:a6];
+  v12 = [self pf_unarchivedObjectOfClasses:a3 fromData:a4 strict:0 classReplacementBlock:v14 error:a6];
 
   return v12;
 }
@@ -36,7 +36,7 @@
   v12 = a3;
   v13 = a4;
   v14 = a6;
-  v15 = [[a1 alloc] initForReadingFromData:v13 error:a7];
+  v15 = [[self alloc] initForReadingFromData:v13 error:a7];
   [v15 setRequiresSecureCoding:1];
   [v15 setDecodingFailurePolicy:1];
   if (a5)

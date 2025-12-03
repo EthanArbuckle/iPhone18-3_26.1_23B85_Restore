@@ -1,9 +1,9 @@
 @interface SCNTextureDelegateSource
-- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5;
-- (void)__updateTextureWithDelegate:(id)a3 engineContext:(__C3DEngineContext *)a4;
-- (void)cleanup:(__C3DRendererContext *)a3;
+- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time;
+- (void)__updateTextureWithDelegate:(id)delegate engineContext:(__C3DEngineContext *)context;
+- (void)cleanup:(__C3DRendererContext *)cleanup;
 - (void)dealloc;
-- (void)renderWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5;
+- (void)renderWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time;
 @end
 
 @implementation SCNTextureDelegateSource
@@ -15,12 +15,12 @@
   [(SCNTextureSource *)&v3 dealloc];
 }
 
-- (void)renderWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5
+- (void)renderWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time
 {
-  v7 = [(SCNTextureSource *)self rendererContextForTextureSourceWithEngineContext:a3, a4, a5];
-  if (v7)
+  time = [(SCNTextureSource *)self rendererContextForTextureSourceWithEngineContext:context, sampler, time];
+  if (time)
   {
-    GLContext = C3DRendererContextGetGLContext(v7);
+    GLContext = C3DRendererContextGetGLContext(time);
   }
 
   else
@@ -28,7 +28,7 @@
     GLContext = 0;
   }
 
-  Scene = C3DEngineContextGetScene(a3);
+  Scene = C3DEngineContextGetScene(context);
   AnimationManager = C3DSceneGetAnimationManager(Scene);
   if (!AnimationManager)
   {
@@ -42,10 +42,10 @@
   [self->_delegate drawInContext:GLContext atTime:C3DAnimationManagerGetSystemTime(AnimationManager)];
 }
 
-- (void)__updateTextureWithDelegate:(id)a3 engineContext:(__C3DEngineContext *)a4
+- (void)__updateTextureWithDelegate:(id)delegate engineContext:(__C3DEngineContext *)context
 {
-  v6 = [(SCNTextureSource *)self rendererContextForTextureSourceWithEngineContext:a4];
-  Scene = C3DEngineContextGetScene(a4);
+  v6 = [(SCNTextureSource *)self rendererContextForTextureSourceWithEngineContext:context];
+  Scene = C3DEngineContextGetScene(context);
   AnimationManager = C3DSceneGetAnimationManager(Scene);
   if (!AnimationManager)
   {
@@ -65,9 +65,9 @@
     {
       self->_lastUpdate = v18;
       GLContext = C3DRendererContextGetGLContext(v6);
-      [(SCNTextureOffscreenRenderingSource *)self _bindFramebuffer:a4];
+      [(SCNTextureOffscreenRenderingSource *)self _bindFramebuffer:context];
       [self->_delegate drawInContext:GLContext atTime:v18];
-      [(SCNTextureOffscreenRenderingSource *)self _unbindFramebuffer:a4];
+      [(SCNTextureOffscreenRenderingSource *)self _unbindFramebuffer:context];
       v21 = objc_opt_respondsToSelector();
       v22 = 0.0;
       if (v21)
@@ -80,27 +80,27 @@
   }
 }
 
-- (void)cleanup:(__C3DRendererContext *)a3
+- (void)cleanup:(__C3DRendererContext *)cleanup
 {
   v3.receiver = self;
   v3.super_class = SCNTextureDelegateSource;
-  [(SCNTextureOffscreenRenderingSource *)&v3 cleanup:a3];
+  [(SCNTextureOffscreenRenderingSource *)&v3 cleanup:cleanup];
 }
 
-- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5
+- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time
 {
-  Stats = C3DEngineContextGetStats(a3);
+  Stats = C3DEngineContextGetStats(context);
   v9 = CACurrentMediaTime();
-  v10 = [(SCNTextureDelegateSource *)self delegate];
-  if (v10)
+  delegate = [(SCNTextureDelegateSource *)self delegate];
+  if (delegate)
   {
-    v11 = v10;
-    [v10 contentSize];
+    v11 = delegate;
+    [delegate contentSize];
     v13 = 0;
     if (v14 > 0.0 && v12 > 0.0)
     {
-      v13 = [(SCNTextureOffscreenRenderingSource *)self __prepareFramebufferWithSize:a3 withEngineContext:a4 textureSampler:0 needsStencil:?];
-      [(SCNTextureDelegateSource *)self __updateTextureWithDelegate:v11 engineContext:a3];
+      v13 = [(SCNTextureOffscreenRenderingSource *)self __prepareFramebufferWithSize:context withEngineContext:sampler textureSampler:0 needsStencil:?];
+      [(SCNTextureDelegateSource *)self __updateTextureWithDelegate:v11 engineContext:context];
     }
 
     *(Stats + 160) = *(Stats + 160) + CACurrentMediaTime() - v9;

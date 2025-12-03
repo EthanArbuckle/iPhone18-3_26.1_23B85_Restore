@@ -1,12 +1,12 @@
 @interface FTMURLSessionViewModel
 - (_TtC11FTMInternal22FTMURLSessionViewModel)init;
-- (void)URLSession:(id)a3 didCreateTask:(id)a4;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3;
+- (void)URLSession:(id)session didCreateTask:(id)task;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session;
 @end
 
 @implementation FTMURLSessionViewModel
@@ -28,7 +28,7 @@
   return [(FTMURLSessionViewModel *)&v7 init];
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v5 = type metadata accessor for URL();
   v6 = *(v5 - 8);
@@ -40,52 +40,52 @@
   (*(v6 + 8))(v9, v5);
 }
 
-- (void)URLSession:(id)a3 didCreateTask:(id)a4
+- (void)URLSession:(id)session didCreateTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
   sub_10026B530(sub_10026A568, &unk_1003212E0);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
   sub_10026B530(nullsub_1, &unk_1003212B8);
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
   sub_10026B530(nullsub_1, &unk_100321290);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  sessionCopy = session;
+  taskCopy = task;
+  metricsCopy = metrics;
+  selfCopy = self;
   sub_10026B530(nullsub_1, &unk_100321268);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_10026B7BC(v9, a5);
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
+  errorCopy = error;
+  sub_10026B7BC(taskCopy, error);
 }
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
+  sessionCopy = session;
+  selfCopy = self;
   sub_10026BD50();
 }
 

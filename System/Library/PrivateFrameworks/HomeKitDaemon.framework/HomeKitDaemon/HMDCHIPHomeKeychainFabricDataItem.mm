@@ -1,18 +1,18 @@
 @interface HMDCHIPHomeKeychainFabricDataItem
-- (HMDCHIPHomeKeychainFabricDataItem)initWithKeyItemValueDictionary:(id)a3;
+- (HMDCHIPHomeKeychainFabricDataItem)initWithKeyItemValueDictionary:(id)dictionary;
 @end
 
 @implementation HMDCHIPHomeKeychainFabricDataItem
 
-- (HMDCHIPHomeKeychainFabricDataItem)initWithKeyItemValueDictionary:(id)a3
+- (HMDCHIPHomeKeychainFabricDataItem)initWithKeyItemValueDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v48.receiver = self;
   v48.super_class = HMDCHIPHomeKeychainFabricDataItem;
   v5 = [(HMDCHIPHomeKeychainFabricDataItem *)&v48 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rootKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rootKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       v5->_rootKeyPair = v9;
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"opKey"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"opKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       v5->_residentOpKeyPair = v14;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"fabricID"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"fabricID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
     fabricID = v5->_fabricID;
     v5->_fabricID = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"residentNodeID"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"residentNodeID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
     residentNodeID = v5->_residentNodeID;
     v5->_residentNodeID = v22;
 
-    v24 = [v4 objectForKeyedSubscript:@"rcac"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"rcac"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,7 +105,7 @@
     rcac = v5->_rcac;
     v5->_rcac = v26;
 
-    v28 = [v4 objectForKeyedSubscript:@"ipk"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"ipk"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -122,7 +122,7 @@
     ipk = v5->_ipk;
     v5->_ipk = v30;
 
-    v32 = [v4 objectForKeyedSubscript:@"version"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -139,7 +139,7 @@
     version = v5->_version;
     v5->_version = v34;
 
-    v36 = [v4 objectForKeyedSubscript:@"createTime"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"createTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -157,7 +157,7 @@
     v40 = v39;
 
     v5->_creationTime = v40;
-    v41 = [v4 objectForKeyedSubscript:@"uuid"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

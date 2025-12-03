@@ -1,6 +1,6 @@
 @interface GAXOverlayUserInterfaceViewController
 - (BOOL)_hasOverlayUserInterface;
-- (BOOL)isModalContentBeingPresentedInOverlayUserInterfaceView:(id)a3;
+- (BOOL)isModalContentBeingPresentedInOverlayUserInterfaceView:(id)view;
 - (GAXOverlayUserInterfaceViewControllerDelegate)delegate;
 - (void)_checkPresenceOfOverlayUserInterface;
 - (void)loadView;
@@ -25,24 +25,24 @@
   [(GAXViewController *)&v4 releaseOutlets];
   if ([(GAXOverlayUserInterfaceViewController *)self isViewLoaded])
   {
-    v3 = [(GAXOverlayUserInterfaceViewController *)self view];
-    [v3 setDelegate:0];
+    view = [(GAXOverlayUserInterfaceViewController *)self view];
+    [view setDelegate:0];
   }
 }
 
 - (BOOL)_hasOverlayUserInterface
 {
-  v3 = [(GAXOverlayUserInterfaceViewController *)self view];
-  v4 = [v3 subviews];
-  if ([v4 count])
+  view = [(GAXOverlayUserInterfaceViewController *)self view];
+  subviews = [view subviews];
+  if ([subviews count])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(GAXOverlayUserInterfaceViewController *)self presentedViewController];
-    v5 = v6 != 0;
+    presentedViewController = [(GAXOverlayUserInterfaceViewController *)self presentedViewController];
+    v5 = presentedViewController != 0;
   }
 
   return v5;
@@ -50,12 +50,12 @@
 
 - (void)_checkPresenceOfOverlayUserInterface
 {
-  v3 = [(GAXOverlayUserInterfaceViewController *)self hasOverlayUserInterface];
-  v4 = [(GAXOverlayUserInterfaceViewController *)self _hasOverlayUserInterface];
-  [(GAXOverlayUserInterfaceViewController *)self setHasOverlayUserInterface:v4];
-  if (!v4)
+  hasOverlayUserInterface = [(GAXOverlayUserInterfaceViewController *)self hasOverlayUserInterface];
+  _hasOverlayUserInterface = [(GAXOverlayUserInterfaceViewController *)self _hasOverlayUserInterface];
+  [(GAXOverlayUserInterfaceViewController *)self setHasOverlayUserInterface:_hasOverlayUserInterface];
+  if (!_hasOverlayUserInterface)
   {
-    if (v3)
+    if (hasOverlayUserInterface)
     {
       AXPerformBlockAsynchronouslyOnMainThread();
     }
@@ -70,10 +70,10 @@
   [(GAXOverlayUserInterfaceViewController *)self _checkPresenceOfOverlayUserInterface];
 }
 
-- (BOOL)isModalContentBeingPresentedInOverlayUserInterfaceView:(id)a3
+- (BOOL)isModalContentBeingPresentedInOverlayUserInterfaceView:(id)view
 {
-  v3 = [(GAXOverlayUserInterfaceViewController *)self presentedViewController];
-  v4 = v3 != 0;
+  presentedViewController = [(GAXOverlayUserInterfaceViewController *)self presentedViewController];
+  v4 = presentedViewController != 0;
 
   return v4;
 }

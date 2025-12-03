@@ -3,10 +3,10 @@
 + (id)_extensionAuxiliaryVendorProtocol;
 - (id)_shadowPrincipalObject;
 - (id)extensionLogicProvider;
-- (id)hostContextWithErrorHandler:(id)a3;
-- (id)syncHostContextWithErrorHandler:(id)a3;
-- (void)followUpPerformUpdateWithCompletionHandler:(id)a3;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
+- (id)hostContextWithErrorHandler:(id)handler;
+- (id)syncHostContextWithErrorHandler:(id)handler;
+- (void)followUpPerformUpdateWithCompletionHandler:(id)handler;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
 @end
 
 @implementation FLExtensionContext
@@ -60,19 +60,19 @@ void __55__FLExtensionContext__extensionAuxiliaryVendorProtocol__block_invoke()
 - (id)extensionLogicProvider
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(FLExtensionContext *)self _principalObject];
-  v4 = v3;
-  if (v3)
+  _principalObject = [(FLExtensionContext *)self _principalObject];
+  v4 = _principalObject;
+  if (_principalObject)
   {
-    v5 = v3;
+    _shadowPrincipalObject = _principalObject;
   }
 
   else
   {
-    v5 = [(FLExtensionContext *)self _shadowPrincipalObject];
+    _shadowPrincipalObject = [(FLExtensionContext *)self _shadowPrincipalObject];
   }
 
-  v6 = v5;
+  v6 = _shadowPrincipalObject;
 
   v7 = _FLLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -92,9 +92,9 @@ void __55__FLExtensionContext__extensionAuxiliaryVendorProtocol__block_invoke()
   shadowPrincipalObject = self->_shadowPrincipalObject;
   if (!shadowPrincipalObject)
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 infoDictionary];
-    v6 = [v5 objectForKeyedSubscript:@"NSExtension"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v6 = [infoDictionary objectForKeyedSubscript:@"NSExtension"];
     v7 = [v6 objectForKeyedSubscript:@"NSExtensionPrincipalClass"];
 
     Class = objc_getClass([v7 UTF8String]);
@@ -111,43 +111,43 @@ void __55__FLExtensionContext__extensionAuxiliaryVendorProtocol__block_invoke()
   return shadowPrincipalObject;
 }
 
-- (id)hostContextWithErrorHandler:(id)a3
+- (id)hostContextWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FLExtensionContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(FLExtensionContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)syncHostContextWithErrorHandler:(id)a3
+- (id)syncHostContextWithErrorHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(FLExtensionContext *)self _auxiliaryConnection];
+    _auxiliaryConnection = [(FLExtensionContext *)self _auxiliaryConnection];
     v13 = 136315394;
     v14 = "[FLExtensionContext syncHostContextWithErrorHandler:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = _auxiliaryConnection;
     _os_log_impl(&dword_245383000, v5, OS_LOG_TYPE_DEFAULT, "%s self._auxiliaryConnection: %@", &v13, 0x16u);
   }
 
-  v7 = [(FLExtensionContext *)self _auxiliaryConnection];
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  _auxiliaryConnection2 = [(FLExtensionContext *)self _auxiliaryConnection];
+  v8 = [_auxiliaryConnection2 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   v9 = _FLLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(FLExtensionContext *)self _auxiliaryConnection];
+    _auxiliaryConnection3 = [(FLExtensionContext *)self _auxiliaryConnection];
     v13 = 136315650;
     v14 = "[FLExtensionContext syncHostContextWithErrorHandler:]";
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
-    v18 = v10;
+    v18 = _auxiliaryConnection3;
     _os_log_impl(&dword_245383000, v9, OS_LOG_TYPE_DEFAULT, "%s return hostContext: %@ self._auxiliaryConnection: %@", &v13, 0x20u);
   }
 
@@ -156,11 +156,11 @@ void __55__FLExtensionContext__extensionAuxiliaryVendorProtocol__block_invoke()
   return v8;
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
   v11 = _FLLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -168,22 +168,22 @@ void __55__FLExtensionContext__extensionAuxiliaryVendorProtocol__block_invoke()
     _os_log_impl(&dword_245383000, v11, OS_LOG_TYPE_DEFAULT, "FLExtensionContext: process action", v14, 2u);
   }
 
-  v12 = [(FLExtensionContext *)self extensionLogicProvider];
-  v13 = v12;
-  if (v12)
+  extensionLogicProvider = [(FLExtensionContext *)self extensionLogicProvider];
+  v13 = extensionLogicProvider;
+  if (extensionLogicProvider)
   {
-    [v12 processFollowUpItem:v8 selectedAction:v9 completion:v10];
+    [extensionLogicProvider processFollowUpItem:itemCopy selectedAction:actionCopy completion:completionCopy];
   }
 
   else
   {
-    v10[2](v10, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)followUpPerformUpdateWithCompletionHandler:(id)a3
+- (void)followUpPerformUpdateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -195,13 +195,13 @@ void __55__FLExtensionContext__extensionAuxiliaryVendorProtocol__block_invoke()
   v10[1] = 3221225472;
   v10[2] = __65__FLExtensionContext_followUpPerformUpdateWithCompletionHandler___block_invoke;
   v10[3] = &unk_278E35F70;
-  v6 = v4;
+  v6 = handlerCopy;
   v11 = v6;
   v7 = MEMORY[0x245D69850](v10);
-  v8 = [(FLExtensionContext *)self extensionLogicProvider];
+  extensionLogicProvider = [(FLExtensionContext *)self extensionLogicProvider];
   if (objc_opt_respondsToSelector())
   {
-    [v8 followUpPerformUpdateWithCompletionHandler:v7];
+    [extensionLogicProvider followUpPerformUpdateWithCompletionHandler:v7];
   }
 
   else

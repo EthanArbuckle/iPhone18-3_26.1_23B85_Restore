@@ -1,18 +1,18 @@
 @interface TUIKeyplane
-+ (CGSize)sizeBasisForLayoutClass:(int64_t)a3;
-+ (CGSize)sizeFromScreenTraits:(id)a3 layout:(id)a4 layoutClass:(int64_t)a5;
-+ (double)baseHeightForLayout:(id)a3 layoutClass:(int64_t)a4 landscape:(BOOL)a5;
-+ (double)customHeightForLayout:(id)a3;
-+ (id)keyplaneFromKBTree:(id)a3 withType:(int64_t)a4;
-+ (int64_t)layoutClassFromKeyplaneName:(id)a3;
-+ (int64_t)layoutClassFromScreenDimensions:(CGSize)a3;
-- (BOOL)hasSimilarLayoutToKeyplane:(id)a3;
++ (CGSize)sizeBasisForLayoutClass:(int64_t)class;
++ (CGSize)sizeFromScreenTraits:(id)traits layout:(id)layout layoutClass:(int64_t)class;
++ (double)baseHeightForLayout:(id)layout layoutClass:(int64_t)class landscape:(BOOL)landscape;
++ (double)customHeightForLayout:(id)layout;
++ (id)keyplaneFromKBTree:(id)tree withType:(int64_t)type;
++ (int64_t)layoutClassFromKeyplaneName:(id)name;
++ (int64_t)layoutClassFromScreenDimensions:(CGSize)dimensions;
+- (BOOL)hasSimilarLayoutToKeyplane:(id)keyplane;
 - (BOOL)isGridLayout;
-- (BOOL)keyplaneKeyIsTenKeySwitchKey:(id)a3;
-- (BOOL)needsResetFromKeyplane:(id)a3;
-- (BOOL)shouldDuplicateKey:(id)a3 forRow:(id)a4;
-- (BOOL)shouldDuplicateTenKeySwitchKey:(id)a3 forTreeRow:(id)a4 forRowNumber:(unint64_t)a5;
-- (BOOL)variantTypeIncludesSpaceBar:(int64_t)a3;
+- (BOOL)keyplaneKeyIsTenKeySwitchKey:(id)key;
+- (BOOL)needsResetFromKeyplane:(id)keyplane;
+- (BOOL)shouldDuplicateKey:(id)key forRow:(id)row;
+- (BOOL)shouldDuplicateTenKeySwitchKey:(id)key forTreeRow:(id)row forRowNumber:(unint64_t)number;
+- (BOOL)variantTypeIncludesSpaceBar:(int64_t)bar;
 - (CGSize)leftSplitSize;
 - (CGSize)rightSplitSize;
 - (NSArray)orderedKeysByRow;
@@ -20,34 +20,34 @@
 - (NSString)prefix;
 - (TUIKeyplane)init;
 - (double)finalHeightForSplitKeyboard;
-- (double)finalSplitSizeForRightSide:(BOOL)a3;
-- (double)heightMultiplierForRowNumber:(unint64_t)a3;
-- (double)multiplierForKey:(id)a3 withProperties:(id)a4;
-- (id)candidateBarKeyFromKeyplane:(id)a3;
-- (id)createPreparedKeyFromTree:(id)a3 withMultiplier:(double)a4 type:(int64_t)a5 shape:(int64_t)a6;
-- (id)defaultKeysOrderedByRowForKeyplane:(id)a3;
+- (double)finalSplitSizeForRightSide:(BOOL)side;
+- (double)heightMultiplierForRowNumber:(unint64_t)number;
+- (double)multiplierForKey:(id)key withProperties:(id)properties;
+- (id)candidateBarKeyFromKeyplane:(id)keyplane;
+- (id)createPreparedKeyFromTree:(id)tree withMultiplier:(double)multiplier type:(int64_t)type shape:(int64_t)shape;
+- (id)defaultKeysOrderedByRowForKeyplane:(id)keyplane;
 - (id)defaultRowSet;
 - (id)description;
-- (id)duplicateTreeForSplitMode:(id)a3;
-- (id)findRowSpanningDuplicatesForKeyplane:(id)a3;
-- (id)keyRowFromTreeRow:(id)a3 rowNumber:(unint64_t)a4 type:(int64_t)a5;
-- (id)keysForName:(id)a3;
-- (id)rowSetForType:(int64_t)a3;
-- (id)rowsForKeyboardType:(int64_t)a3;
-- (id)sortedKeysForKeyplane:(id)a3;
-- (id)stringFromKeyboardType:(int64_t)a3;
-- (id)stringFromLayoutClass:(int64_t)a3;
-- (id)stringFromLayoutStyle:(int64_t)a3;
-- (id)stringFromLayoutType:(int64_t)a3;
+- (id)duplicateTreeForSplitMode:(id)mode;
+- (id)findRowSpanningDuplicatesForKeyplane:(id)keyplane;
+- (id)keyRowFromTreeRow:(id)row rowNumber:(unint64_t)number type:(int64_t)type;
+- (id)keysForName:(id)name;
+- (id)rowSetForType:(int64_t)type;
+- (id)rowsForKeyboardType:(int64_t)type;
+- (id)sortedKeysForKeyplane:(id)keyplane;
+- (id)stringFromKeyboardType:(int64_t)type;
+- (id)stringFromLayoutClass:(int64_t)class;
+- (id)stringFromLayoutStyle:(int64_t)style;
+- (id)stringFromLayoutType:(int64_t)type;
 - (int64_t)keyLayoutStyle;
-- (int64_t)keyStyleForLayoutClass:(int64_t)a3;
+- (int64_t)keyStyleForLayoutClass:(int64_t)class;
 - (unint64_t)numberOfKeys;
 - (unint64_t)numberOfRows;
-- (unint64_t)variantRowLimitForLayoutWithKey:(id)a3 variantSelectorType:(int64_t)a4;
-- (void)duplicateTenKeySwitchKey:(id)a3;
-- (void)unduplicateTenKeySwitchKey:(id)a3;
-- (void)updateKeyboardType:(int64_t)a3;
-- (void)updateVariantOrderForKey:(id)a3 withVariantSelectorType:(int64_t)a4;
+- (unint64_t)variantRowLimitForLayoutWithKey:(id)key variantSelectorType:(int64_t)type;
+- (void)duplicateTenKeySwitchKey:(id)key;
+- (void)unduplicateTenKeySwitchKey:(id)key;
+- (void)updateKeyboardType:(int64_t)type;
+- (void)updateVariantOrderForKey:(id)key withVariantSelectorType:(int64_t)type;
 @end
 
 @implementation TUIKeyplane
@@ -56,21 +56,21 @@
 {
   if (-[TUIKeyplane currentVariantType](self, "currentVariantType") && (-[TUIKeyplane variantKeysByRow](self, "variantKeysByRow"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, v4))
   {
-    v5 = [(TUIKeyplane *)self variantKeysByRow];
+    variantKeysByRow = [(TUIKeyplane *)self variantKeysByRow];
   }
 
   else
   {
-    v5 = [(TUIKeyplane *)self defaultKeysByRow];
+    variantKeysByRow = [(TUIKeyplane *)self defaultKeysByRow];
   }
 
-  return v5;
+  return variantKeysByRow;
 }
 
 - (unint64_t)numberOfRows
 {
-  v2 = [(TUIKeyplane *)self orderedKeysByRow];
-  v3 = [v2 count];
+  orderedKeysByRow = [(TUIKeyplane *)self orderedKeysByRow];
+  v3 = [orderedKeysByRow count];
 
   return v3;
 }
@@ -82,18 +82,18 @@
   v2 = [(TUIKeyplane *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cache = v2->_cache;
-    v2->_cache = v3;
+    v2->_cache = dictionary;
 
     v2->_indexOfLastRow = -1;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     doubleHeightKeys = v2->_doubleHeightKeys;
-    v2->_doubleHeightKeys = v5;
+    v2->_doubleHeightKeys = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     rowSizes = v2->_rowSizes;
-    v2->_rowSizes = v7;
+    v2->_rowSizes = dictionary3;
   }
 
   return v2;
@@ -101,28 +101,28 @@
 
 - (BOOL)isGridLayout
 {
-  v3 = [(TUIKeyplane *)self fullTree];
-  v4 = ([v3 gridLayout] & 1) != 0 || -[TUIKeyplane layoutType](self, "layoutType") == 2;
+  fullTree = [(TUIKeyplane *)self fullTree];
+  v4 = ([fullTree gridLayout] & 1) != 0 || -[TUIKeyplane layoutType](self, "layoutType") == 2;
 
   return v4;
 }
 
 - (id)defaultRowSet
 {
-  v3 = [(TUIKeyplane *)self keylayout];
-  v4 = [v3 subtreeWithType:15];
+  keylayout = [(TUIKeyplane *)self keylayout];
+  v4 = [keylayout subtreeWithType:15];
 
   if (v4)
   {
-    v5 = v4;
+    keylayout2 = v4;
   }
 
   else
   {
-    v5 = [(TUIKeyplane *)self keylayout];
+    keylayout2 = [(TUIKeyplane *)self keylayout];
   }
 
-  v6 = v5;
+  v6 = keylayout2;
 
   return v6;
 }
@@ -150,9 +150,9 @@
 
 - (int64_t)keyLayoutStyle
 {
-  v3 = [(TUIKeyplane *)self layoutClass];
+  layoutClass = [(TUIKeyplane *)self layoutClass];
 
-  return [(TUIKeyplane *)self keyStyleForLayoutClass:v3];
+  return [(TUIKeyplane *)self keyStyleForLayoutClass:layoutClass];
 }
 
 - (CGSize)rightSplitSize
@@ -166,51 +166,51 @@
 
 - (NSString)name
 {
-  v2 = [(TUIKeyplane *)self fullTree];
-  v3 = [v2 name];
+  fullTree = [(TUIKeyplane *)self fullTree];
+  name = [fullTree name];
 
-  return v3;
+  return name;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TUIKeyplane *)self fullTree];
-  v6 = [v5 name];
+  fullTree = [(TUIKeyplane *)self fullTree];
+  name = [fullTree name];
   v7 = [(TUIKeyplane *)self stringFromLayoutClass:[(TUIKeyplane *)self layoutClass]];
   v8 = [(TUIKeyplane *)self stringFromLayoutType:[(TUIKeyplane *)self layoutType]];
   v9 = [(TUIKeyplane *)self stringFromLayoutStyle:[(TUIKeyplane *)self keyLayoutStyle]];
-  v10 = [v3 stringWithFormat:@"<%@: %p> name = %@ size class = %@; layout type = %@; key style = %@; number of rows = %li", v4, self, v6, v7, v8, v9, -[TUIKeyplane numberOfRows](self, "numberOfRows")];;
+  v10 = [v3 stringWithFormat:@"<%@: %p> name = %@ size class = %@; layout type = %@; key style = %@; number of rows = %li", v4, self, name, v7, v8, v9, -[TUIKeyplane numberOfRows](self, "numberOfRows")];;
 
   return v10;
 }
 
-- (unint64_t)variantRowLimitForLayoutWithKey:(id)a3 variantSelectorType:(int64_t)a4
+- (unint64_t)variantRowLimitForLayoutWithKey:(id)key variantSelectorType:(int64_t)type
 {
-  v6 = a3;
+  keyCopy = key;
   if ([(TUIKeyplane *)self keyLayoutStyle]!= 1)
   {
     v7 = 5;
     goto LABEL_11;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    if ([v6 variantType] == 4)
+    if ([keyCopy variantType] == 4)
     {
       v7 = 10;
       goto LABEL_11;
     }
 
-    v8 = [v6 variantType] == 7;
+    v8 = [keyCopy variantType] == 7;
     v9 = 12;
     v10 = 10;
   }
 
   else
   {
-    v8 = [v6 displayType] == 27;
+    v8 = [keyCopy displayType] == 27;
     v9 = 15;
     v10 = 5;
   }
@@ -230,38 +230,38 @@ LABEL_11:
   return v7;
 }
 
-- (void)updateVariantOrderForKey:(id)a3 withVariantSelectorType:(int64_t)a4
+- (void)updateVariantOrderForKey:(id)key withVariantSelectorType:(int64_t)type
 {
   v88 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 backingTree];
-  v8 = [v7 subtrees];
+  keyCopy = key;
+  backingTree = [keyCopy backingTree];
+  subtrees = [backingTree subtrees];
 
-  if (v8)
+  if (subtrees)
   {
-    v71 = a4;
-    v72 = self;
-    v9 = [v6 arrangedVariantsArray];
+    typeCopy = type;
+    selfCopy = self;
+    arrangedVariantsArray = [keyCopy arrangedVariantsArray];
 
-    if (!v9)
+    if (!arrangedVariantsArray)
     {
       v10 = objc_alloc(MEMORY[0x1E695DF70]);
-      v11 = [v6 backingTree];
-      v12 = [v11 subtrees];
-      v13 = [v10 initWithArray:v12];
-      [v6 setArrangedVariantsArray:v13];
+      backingTree2 = [keyCopy backingTree];
+      subtrees2 = [backingTree2 subtrees];
+      v13 = [v10 initWithArray:subtrees2];
+      [keyCopy setArrangedVariantsArray:v13];
     }
 
-    v14 = [v6 arrangedVariantsArray];
-    v15 = [v14 objectAtIndexedSubscript:0];
-    [v6 setPrimaryVariant:v15];
+    arrangedVariantsArray2 = [keyCopy arrangedVariantsArray];
+    v15 = [arrangedVariantsArray2 objectAtIndexedSubscript:0];
+    [keyCopy setPrimaryVariant:v15];
 
     v83 = 0u;
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v16 = [v6 arrangedVariantsArray];
-    v17 = [v16 countByEnumeratingWithState:&v81 objects:v87 count:16];
+    arrangedVariantsArray3 = [keyCopy arrangedVariantsArray];
+    v17 = [arrangedVariantsArray3 countByEnumeratingWithState:&v81 objects:v87 count:16];
     if (v17)
     {
       v18 = v17;
@@ -272,16 +272,16 @@ LABEL_11:
         {
           if (*v82 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(arrangedVariantsArray3);
           }
 
           v21 = *(*(&v81 + 1) + 8 * i);
-          v22 = [v21 displayString];
-          v23 = [v6 adjustedPrimaryVariantDisplayStringForSpecialCases];
-          if (v23)
+          displayString = [v21 displayString];
+          adjustedPrimaryVariantDisplayStringForSpecialCases = [keyCopy adjustedPrimaryVariantDisplayStringForSpecialCases];
+          if (adjustedPrimaryVariantDisplayStringForSpecialCases)
           {
-            v24 = v23;
-            v25 = [v22 containsString:v23];
+            v24 = adjustedPrimaryVariantDisplayStringForSpecialCases;
+            v25 = [displayString containsString:adjustedPrimaryVariantDisplayStringForSpecialCases];
 
             if (v25)
             {
@@ -291,23 +291,23 @@ LABEL_11:
 
           else
           {
-            v26 = [v6 backingTree];
-            v27 = [v26 displayString];
-            v28 = [v22 containsString:v27];
+            backingTree3 = [keyCopy backingTree];
+            displayString2 = [backingTree3 displayString];
+            v28 = [displayString containsString:displayString2];
 
             if (v28)
             {
 LABEL_16:
-              [v6 setPrimaryVariant:v21];
+              [keyCopy setPrimaryVariant:v21];
               goto LABEL_17;
             }
           }
 
-          v29 = [v6 flickableSet];
-          [v29 addObject:v21];
+          flickableSet = [keyCopy flickableSet];
+          [flickableSet addObject:v21];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v81 objects:v87 count:16];
+        v18 = [arrangedVariantsArray3 countByEnumeratingWithState:&v81 objects:v87 count:16];
         if (v18)
         {
           continue;
@@ -319,28 +319,28 @@ LABEL_16:
 
 LABEL_17:
 
-    v30 = v72;
-    if (-[TUIKeyplane keyLayoutStyle](v72, "keyLayoutStyle") == 1 && ([v6 backingTree], v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "subtrees"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "count"), objc_msgSend(v6, "backingTree"), v34 = objc_claimAutoreleasedReturnValue(), v35 = -[TUIKeyplane variantRowLimitForLayoutWithKey:variantSelectorType:](v72, "variantRowLimitForLayoutWithKey:variantSelectorType:", v34, v71), v34, v32, v31, v33 <= v35))
+    v30 = selfCopy;
+    if (-[TUIKeyplane keyLayoutStyle](selfCopy, "keyLayoutStyle") == 1 && ([keyCopy backingTree], v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "subtrees"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "count"), objc_msgSend(keyCopy, "backingTree"), v34 = objc_claimAutoreleasedReturnValue(), v35 = -[TUIKeyplane variantRowLimitForLayoutWithKey:variantSelectorType:](selfCopy, "variantRowLimitForLayoutWithKey:variantSelectorType:", v34, typeCopy), v34, v32, v31, v33 <= v35))
     {
-      v37 = [v6 arrangedVariantsArray];
-      v38 = [v6 primaryVariant];
-      [v37 removeObject:v38];
+      arrangedVariantsArray4 = [keyCopy arrangedVariantsArray];
+      primaryVariant = [keyCopy primaryVariant];
+      [arrangedVariantsArray4 removeObject:primaryVariant];
 
-      v39 = [v6 arrangedVariantsArray];
-      v40 = [v6 primaryVariant];
-      [v39 insertObject:v40 atIndex:0];
+      arrangedVariantsArray5 = [keyCopy arrangedVariantsArray];
+      primaryVariant2 = [keyCopy primaryVariant];
+      [arrangedVariantsArray5 insertObject:primaryVariant2 atIndex:0];
 
       v79 = 0u;
       v80 = 0u;
       v77 = 0u;
       v78 = 0u;
-      v41 = [(TUIKeyplane *)v72 orderedKeysByRow];
-      v42 = [v41 countByEnumeratingWithState:&v77 objects:v86 count:16];
+      orderedKeysByRow = [(TUIKeyplane *)selfCopy orderedKeysByRow];
+      v42 = [orderedKeysByRow countByEnumeratingWithState:&v77 objects:v86 count:16];
       v43 = 0;
       if (v42)
       {
         v44 = *v78;
-        v69 = v41;
+        v69 = orderedKeysByRow;
         v65 = *v78;
         do
         {
@@ -353,7 +353,7 @@ LABEL_17:
             v70 = v46;
             if (*v78 != v44)
             {
-              objc_enumerationMutation(v41);
+              objc_enumerationMutation(orderedKeysByRow);
             }
 
             v68 = v45;
@@ -385,16 +385,16 @@ LABEL_17:
                   [v55 multiplier];
                   if (v56 > 0.0)
                   {
-                    v57 = [v55 backingTree];
-                    v58 = [v6 backingTree];
-                    v59 = [v57 isEqual:v58];
+                    backingTree4 = [v55 backingTree];
+                    backingTree5 = [keyCopy backingTree];
+                    v59 = [backingTree4 isEqual:backingTree5];
 
                     if (v59)
                     {
 
-                      v41 = v69;
+                      orderedKeysByRow = v69;
                       v43 = v70;
-                      v30 = v72;
+                      v30 = selfCopy;
                       goto LABEL_39;
                     }
                   }
@@ -414,12 +414,12 @@ LABEL_17:
               }
             }
 
-            v41 = v69;
+            orderedKeysByRow = v69;
             v46 = v70 + 1;
             v43 = v67;
             v45 = v68 + 1;
             v44 = v65;
-            v30 = v72;
+            v30 = selfCopy;
             v54 = 1;
           }
 
@@ -437,69 +437,69 @@ LABEL_17:
 
 LABEL_39:
 
-      v60 = [(TUIKeyplane *)v30 rowSizes];
+      rowSizes = [(TUIKeyplane *)v30 rowSizes];
       v61 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v43];
-      v62 = [v60 objectForKey:v61];
+      v62 = [rowSizes objectForKey:v61];
       [v62 floatValue];
       v64 = v63;
 
-      [v6 updateVariantOrderForSmallLayoutsWithKeyplaneWidth:v54 keyStartingPosition:v71 variantSelectorType:v64];
+      [keyCopy updateVariantOrderForSmallLayoutsWithKeyplaneWidth:v54 keyStartingPosition:typeCopy variantSelectorType:v64];
     }
 
     else
     {
-      v36 = [v6 backingTree];
-      [v6 updateVariantOrderForMultilineSelectorWithRowLimit:{-[TUIKeyplane variantRowLimitForLayoutWithKey:variantSelectorType:](v72, "variantRowLimitForLayoutWithKey:variantSelectorType:", v36, v71)}];
+      backingTree6 = [keyCopy backingTree];
+      [keyCopy updateVariantOrderForMultilineSelectorWithRowLimit:{-[TUIKeyplane variantRowLimitForLayoutWithKey:variantSelectorType:](selfCopy, "variantRowLimitForLayoutWithKey:variantSelectorType:", backingTree6, typeCopy)}];
     }
   }
 }
 
-- (id)stringFromLayoutClass:(int64_t)a3
+- (id)stringFromLayoutClass:(int64_t)class
 {
-  if (a3 > 4)
+  if (class > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1E72D7668 + a3);
+    return *(&off_1E72D7668 + class);
   }
 }
 
-- (id)stringFromLayoutStyle:(int64_t)a3
+- (id)stringFromLayoutStyle:(int64_t)style
 {
-  if (a3 > 3)
+  if (style > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1E72D7648 + a3);
+    return *(&off_1E72D7648 + style);
   }
 }
 
-- (id)stringFromLayoutType:(int64_t)a3
+- (id)stringFromLayoutType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1E72D7628 + a3);
+    return *(&off_1E72D7628 + type);
   }
 }
 
-- (id)stringFromKeyboardType:(int64_t)a3
+- (id)stringFromKeyboardType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 > 8)
+    if (type > 8)
     {
-      switch(a3)
+      switch(type)
       {
         case 9:
           return @"Twitter";
@@ -512,12 +512,12 @@ LABEL_39:
       goto LABEL_26;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       return @"NamePhonePad";
     }
 
-    else if (a3 == 7)
+    else if (type == 7)
     {
       return @"EmailAddress";
     }
@@ -530,9 +530,9 @@ LABEL_39:
 
   else
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      switch(a3)
+      switch(type)
       {
         case 0:
           return @"Default";
@@ -543,16 +543,16 @@ LABEL_39:
       }
 
 LABEL_26:
-      NSLog(&cfstr_KeyboardTypeLi.isa, a2, a3);
+      NSLog(&cfstr_KeyboardTypeLi.isa, a2, type);
       return @"Default";
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       return @"URL";
     }
 
-    else if (a3 == 4)
+    else if (type == 4)
     {
       return @"NumberPad";
     }
@@ -564,14 +564,14 @@ LABEL_26:
   }
 }
 
-- (id)sortedKeysForKeyplane:(id)a3
+- (id)sortedKeysForKeyplane:(id)keyplane
 {
-  v81 = self;
+  selfCopy = self;
   v102 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  keyplaneCopy = keyplane;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v83 = [v3 visualStyle] - 1;
-  if (([v3 isKanaPlane] & 1) != 0 || (objc_msgSend(v3, "name"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsString:", @"n10"), v5, v6) && v83 < 5)
+  v83 = [keyplaneCopy visualStyle] - 1;
+  if (([keyplaneCopy isKanaPlane] & 1) != 0 || (objc_msgSend(keyplaneCopy, "name"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsString:", @"n10"), v5, v6) && v83 < 5)
   {
     v87 = 1;
     v7 = 2;
@@ -579,8 +579,8 @@ LABEL_26:
 
   else
   {
-    v22 = [v3 name];
-    v23 = [v22 containsString:@"Fudge"];
+    name = [keyplaneCopy name];
+    v23 = [name containsString:@"Fudge"];
 
     v87 = 0;
     if (!v23)
@@ -591,7 +591,7 @@ LABEL_26:
     v7 = 1;
   }
 
-  [(TUIKeyplane *)v81 setLayoutType:v7, v81];
+  [(TUIKeyplane *)selfCopy setLayoutType:v7, selfCopy];
 LABEL_6:
   if (v83 >= 5)
   {
@@ -603,23 +603,23 @@ LABEL_6:
     v8 = 1.0;
   }
 
-  v9 = [v3 keys];
-  v10 = [v9 firstObject];
-  [v10 frame];
+  keys = [keyplaneCopy keys];
+  firstObject = [keys firstObject];
+  [firstObject frame];
   v12 = v11;
 
   if (v12 < 15.0)
   {
-    v13 = [v3 keys];
-    v14 = [v13 count];
+    keys2 = [keyplaneCopy keys];
+    v14 = [keys2 count];
 
     if (v14 >= 2)
     {
       v15 = 1;
       while (1)
       {
-        v16 = [v3 keys];
-        v17 = [v16 objectAtIndex:v15];
+        keys3 = [keyplaneCopy keys];
+        v17 = [keys3 objectAtIndex:v15];
         [v17 frame];
         v19 = v18;
 
@@ -629,8 +629,8 @@ LABEL_6:
         }
 
         ++v15;
-        v20 = [v3 keys];
-        v21 = [v20 count];
+        keys4 = [keyplaneCopy keys];
+        v21 = [keys4 count];
 
         if (v15 >= v21)
         {
@@ -647,8 +647,8 @@ LABEL_18:
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v24 = [v3 keysOrderedByPosition];
-  v25 = [v24 countByEnumeratingWithState:&v96 objects:v101 count:16];
+  keysOrderedByPosition = [keyplaneCopy keysOrderedByPosition];
+  v25 = [keysOrderedByPosition countByEnumeratingWithState:&v96 objects:v101 count:16];
   v85 = v4;
   if (!v25)
   {
@@ -658,13 +658,13 @@ LABEL_18:
   }
 
   v26 = v25;
-  obj = v24;
+  obj = keysOrderedByPosition;
   v86 = 0;
-  v84 = 0;
+  displayRowHint = 0;
   v27 = 0;
   v90 = 0;
   v28 = *v97;
-  v82 = v3;
+  v82 = keyplaneCopy;
   v89 = v87;
   do
   {
@@ -676,14 +676,14 @@ LABEL_18:
       }
 
       v30 = *(*(&v96 + 1) + 8 * i);
-      v31 = [v30 shape];
-      if ([v31 isEmpty])
+      shape = [v30 shape];
+      if ([shape isEmpty])
       {
         goto LABEL_57;
       }
 
-      v32 = [v30 shape];
-      [v32 frame];
+      shape2 = [v30 shape];
+      [shape2 frame];
       IsEmpty = CGRectIsEmpty(v104);
 
       if (IsEmpty)
@@ -710,10 +710,10 @@ LABEL_18:
 
       if ((v89 & 1) != 0 && [v30 interactionType] == 13)
       {
-        [v30 setDisplayRowHint:(v84 + 1)];
+        [v30 setDisplayRowHint:(displayRowHint + 1)];
         v37 = [v30 copy];
 
-        [v30 setDisplayRowHint:v84];
+        [v30 setDisplayRowHint:displayRowHint];
         v89 = 1;
         if ((v87 & 1) == 0)
         {
@@ -729,13 +729,13 @@ LABEL_18:
       }
 
       [v30 setState:4];
-      v84 = [v30 displayRowHint];
-      v38 = [MEMORY[0x1E696AD98] numberWithInteger:v84];
+      displayRowHint = [v30 displayRowHint];
+      v38 = [MEMORY[0x1E696AD98] numberWithInteger:displayRowHint];
       v39 = [v4 objectForKey:v38];
 
       if (v39)
       {
-        v40 = [MEMORY[0x1E696AD98] numberWithInteger:v84];
+        v40 = [MEMORY[0x1E696AD98] numberWithInteger:displayRowHint];
         v41 = [v4 objectForKey:v40];
       }
 
@@ -744,15 +744,15 @@ LABEL_18:
         v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
       }
 
-      v42 = [v30 displayType];
-      if (v42 != [v90 displayType])
+      displayType = [v30 displayType];
+      if (displayType != [v90 displayType])
       {
         goto LABEL_42;
       }
 
-      v43 = [v30 representedString];
-      v44 = [v90 representedString];
-      if (([v43 isEqualToString:v44] & 1) == 0)
+      representedString = [v30 representedString];
+      representedString2 = [v90 representedString];
+      if (([representedString isEqualToString:representedString2] & 1) == 0)
       {
 
 LABEL_42:
@@ -788,7 +788,7 @@ LABEL_42:
         [v52 setKeyplane:v82];
         if (v83 >= 5)
         {
-          if ([(TUIKeyplane *)v81 layoutType]== 1)
+          if ([(TUIKeyplane *)selfCopy layoutType]== 1)
           {
             v53 = 3;
           }
@@ -807,15 +807,15 @@ LABEL_42:
         [v52 setStyle:v53];
         [v52 setInGridLayout:v87];
         [v41 addObject:v52];
-        v54 = [MEMORY[0x1E696AD98] numberWithInteger:v84];
+        v54 = [MEMORY[0x1E696AD98] numberWithInteger:displayRowHint];
         [v4 setObject:v41 forKey:v54];
 
         goto LABEL_56;
       }
 
-      v45 = [v30 displayType];
+      displayType2 = [v30 displayType];
 
-      v46 = v45 == 21;
+      v46 = displayType2 == 21;
       v4 = v85;
       if (v46)
       {
@@ -824,7 +824,7 @@ LABEL_42:
 
 LABEL_56:
 
-      v31 = v90;
+      shape = v90;
       v90 = v30;
       v27 = v37;
 LABEL_57:
@@ -851,8 +851,8 @@ LABEL_57:
       v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    v24 = v59;
-    v3 = v82;
+    keysOrderedByPosition = v59;
+    keyplaneCopy = v82;
 
     [v27 frame];
     v61 = 0.0;
@@ -870,7 +870,7 @@ LABEL_57:
     [v62 setKeyplane:v82];
     if (v83 >= 5)
     {
-      if ([(TUIKeyplane *)v81 layoutType]== 1)
+      if ([(TUIKeyplane *)selfCopy layoutType]== 1)
       {
         v63 = 3;
       }
@@ -888,26 +888,26 @@ LABEL_57:
 
     [v62 setStyle:v63];
     [v62 setInGridLayout:v87];
-    [v24 addObject:v62];
+    [keysOrderedByPosition addObject:v62];
     v64 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v27, "displayRowHint")}];
-    [v4 setObject:v24 forKey:v64];
+    [v4 setObject:keysOrderedByPosition forKey:v64];
 
 LABEL_76:
   }
 
   else
   {
-    v3 = v82;
+    keyplaneCopy = v82;
     v58 = v90;
   }
 
   if ([v4 count])
   {
     v91 = v58;
-    v65 = v3;
+    v65 = keyplaneCopy;
     v66 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v67 = [v4 allKeys];
-    v68 = [v67 sortedArrayUsingComparator:&__block_literal_global_4262];
+    allKeys = [v4 allKeys];
+    v68 = [allKeys sortedArrayUsingComparator:&__block_literal_global_4262];
 
     v94 = 0u;
     v95 = 0u;
@@ -932,12 +932,12 @@ LABEL_76:
           v75 = [v4 objectForKey:v74];
           if ([v75 count] && (objc_msgSend(v69, "count") < 3 || objc_msgSend(v75, "count") >= 2))
           {
-            v76 = [v74 integerValue];
-            if (v76 <= [v66 count])
+            integerValue = [v74 integerValue];
+            if (integerValue <= [v66 count])
             {
               if ([v74 integerValue])
               {
-                v77 = [v74 integerValue];
+                integerValue2 = [v74 integerValue];
                 v78 = v66;
                 v79 = v75;
               }
@@ -946,10 +946,10 @@ LABEL_76:
               {
                 v78 = v66;
                 v79 = v75;
-                v77 = 0;
+                integerValue2 = 0;
               }
 
-              [v78 insertObject:v79 atIndex:v77];
+              [v78 insertObject:v79 atIndex:integerValue2];
             }
 
             else
@@ -967,7 +967,7 @@ LABEL_76:
       while (v71);
     }
 
-    v3 = v65;
+    keyplaneCopy = v65;
     v58 = v91;
   }
 
@@ -979,17 +979,17 @@ LABEL_76:
   return v66;
 }
 
-- (double)heightMultiplierForRowNumber:(unint64_t)a3
+- (double)heightMultiplierForRowNumber:(unint64_t)number
 {
-  v4 = [(TUIKeyplane *)self defaultRowSet];
-  v5 = [v4 subtrees];
-  v6 = [v5 count];
+  defaultRowSet = [(TUIKeyplane *)self defaultRowSet];
+  subtrees = [defaultRowSet subtrees];
+  v6 = [subtrees count];
 
   v7 = 1.0;
-  if (v6 > a3)
+  if (v6 > number)
   {
-    v8 = [v4 subtrees];
-    v9 = [v8 objectAtIndex:a3];
+    subtrees2 = [defaultRowSet subtrees];
+    v9 = [subtrees2 objectAtIndex:number];
 
     if (v9)
     {
@@ -1006,30 +1006,30 @@ LABEL_76:
   return v7;
 }
 
-- (int64_t)keyStyleForLayoutClass:(int64_t)a3
+- (int64_t)keyStyleForLayoutClass:(int64_t)class
 {
-  if (a3 > 4)
+  if (class > 4)
   {
     return -1;
   }
 
   else
   {
-    return qword_1900C14F0[a3];
+    return qword_1900C14F0[class];
   }
 }
 
-- (BOOL)needsResetFromKeyplane:(id)a3
+- (BOOL)needsResetFromKeyplane:(id)keyplane
 {
-  v4 = a3;
-  v5 = [(TUIKeyplane *)self name];
-  v6 = [v4 name];
-  if ([v5 isEqualToString:v6] && (v7 = -[TUIKeyplane currentVariantType](self, "currentVariantType"), v7 == objc_msgSend(v4, "currentVariantType")) && -[TUIKeyplane hasSimilarLayoutToKeyplane:](self, "hasSimilarLayoutToKeyplane:", v4) && (v8 = -[TUIKeyplane layoutClass](self, "layoutClass"), v8 == objc_msgSend(v4, "layoutClass")))
+  keyplaneCopy = keyplane;
+  name = [(TUIKeyplane *)self name];
+  name2 = [keyplaneCopy name];
+  if ([name isEqualToString:name2] && (v7 = -[TUIKeyplane currentVariantType](self, "currentVariantType"), v7 == objc_msgSend(keyplaneCopy, "currentVariantType")) && -[TUIKeyplane hasSimilarLayoutToKeyplane:](self, "hasSimilarLayoutToKeyplane:", keyplaneCopy) && (v8 = -[TUIKeyplane layoutClass](self, "layoutClass"), v8 == objc_msgSend(keyplaneCopy, "layoutClass")))
   {
-    v9 = [(TUIKeyplane *)self fullTree];
-    v10 = [v9 visualStyling];
-    v11 = [v4 fullTree];
-    v12 = (([v11 visualStyling] ^ v10) & 0x3F) != 0;
+    fullTree = [(TUIKeyplane *)self fullTree];
+    visualStyling = [fullTree visualStyling];
+    fullTree2 = [keyplaneCopy fullTree];
+    v12 = (([fullTree2 visualStyling] ^ visualStyling) & 0x3F) != 0;
   }
 
   else
@@ -1040,25 +1040,25 @@ LABEL_76:
   return v12;
 }
 
-- (BOOL)hasSimilarLayoutToKeyplane:(id)a3
+- (BOOL)hasSimilarLayoutToKeyplane:(id)keyplane
 {
-  v4 = a3;
-  v5 = [(TUIKeyplane *)self currentVariantType];
-  if (v5 == [v4 currentVariantType] && (-[TUIKeyplane orderedKeysByRow](self, "orderedKeysByRow"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), objc_msgSend(v4, "orderedKeysByRow"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v6, v7 == v9))
+  keyplaneCopy = keyplane;
+  currentVariantType = [(TUIKeyplane *)self currentVariantType];
+  if (currentVariantType == [keyplaneCopy currentVariantType] && (-[TUIKeyplane orderedKeysByRow](self, "orderedKeysByRow"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), objc_msgSend(keyplaneCopy, "orderedKeysByRow"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v6, v7 == v9))
   {
-    v10 = [(TUIKeyplane *)self orderedKeysByRow];
-    v11 = [v10 count];
+    orderedKeysByRow = [(TUIKeyplane *)self orderedKeysByRow];
+    v11 = [orderedKeysByRow count];
 
     if (v11)
     {
       v12 = 0;
       while (1)
       {
-        v13 = [(TUIKeyplane *)self orderedKeysByRow];
-        v14 = [v13 objectAtIndex:v12];
+        orderedKeysByRow2 = [(TUIKeyplane *)self orderedKeysByRow];
+        v14 = [orderedKeysByRow2 objectAtIndex:v12];
 
-        v15 = [v4 orderedKeysByRow];
-        v16 = [v15 objectAtIndex:v12];
+        orderedKeysByRow3 = [keyplaneCopy orderedKeysByRow];
+        v16 = [orderedKeysByRow3 objectAtIndex:v12];
 
         v11 = [v14 count];
         v17 = [v16 count];
@@ -1070,8 +1070,8 @@ LABEL_76:
         }
 
         ++v12;
-        v18 = [(TUIKeyplane *)self orderedKeysByRow];
-        v19 = [v18 count];
+        orderedKeysByRow4 = [(TUIKeyplane *)self orderedKeysByRow];
+        v19 = [orderedKeysByRow4 count];
 
         if (v12 >= v19)
         {
@@ -1090,9 +1090,9 @@ LABEL_76:
   return v11;
 }
 
-- (double)finalSplitSizeForRightSide:(BOOL)a3
+- (double)finalSplitSizeForRightSide:(BOOL)side
 {
-  if (a3)
+  if (side)
   {
     [(TUIKeyplane *)self rightSplitSize];
     v4 = 280.0;
@@ -1112,15 +1112,15 @@ LABEL_76:
   return result;
 }
 
-- (id)candidateBarKeyFromKeyplane:(id)a3
+- (id)candidateBarKeyFromKeyplane:(id)keyplane
 {
-  v4 = a3;
-  v5 = [(TUIKeyplane *)self defaultRowSet];
-  v6 = [v5 subtrees];
+  keyplaneCopy = keyplane;
+  defaultRowSet = [(TUIKeyplane *)self defaultRowSet];
+  subtrees = [defaultRowSet subtrees];
 
-  if ([v6 count])
+  if ([subtrees count])
   {
-    v7 = [v6 objectAtIndex:0];
+    v7 = [subtrees objectAtIndex:0];
     v8 = [(TUIKeyplane *)self keyRowFromTreeRow:v7 rowNumber:0 type:0];
 
     v9 = [v8 valueForKeyPath:@"@sum.multiplier"];
@@ -1131,14 +1131,14 @@ LABEL_76:
     v9 = 0;
   }
 
-  v10 = [v4 firstCachedKeyWithName:@"Candidate-Selection"];
+  v10 = [keyplaneCopy firstCachedKeyWithName:@"Candidate-Selection"];
   if (!v10)
   {
-    v11 = [v4 keys];
-    if ([v11 count])
+    keys = [keyplaneCopy keys];
+    if ([keys count])
     {
-      v12 = [v4 keys];
-      v13 = [v12 objectAtIndex:0];
+      keys2 = [keyplaneCopy keys];
+      v13 = [keys2 objectAtIndex:0];
       v10 = [v13 copy];
     }
 
@@ -1154,8 +1154,8 @@ LABEL_76:
     [v10 setInteractionType:3];
   }
 
-  v14 = [(TUIKeyplane *)self fullTree];
-  [v14 replaceKey:0 withKey:v10];
+  fullTree = [(TUIKeyplane *)self fullTree];
+  [fullTree replaceKey:0 withKey:v10];
 
   [v9 floatValue];
   v16 = [TUIKey keyFromKBTree:v10 layoutType:2 layoutShape:0 multiplier:v15];
@@ -1163,11 +1163,11 @@ LABEL_76:
   return v16;
 }
 
-- (id)createPreparedKeyFromTree:(id)a3 withMultiplier:(double)a4 type:(int64_t)a5 shape:(int64_t)a6
+- (id)createPreparedKeyFromTree:(id)tree withMultiplier:(double)multiplier type:(int64_t)type shape:(int64_t)shape
 {
-  v7 = [TUIKey keyFromKBTree:a3 layoutType:a5 layoutShape:a6 multiplier:a4];
-  v8 = [(TUIKeyplane *)self fullTree];
-  [v7 setKeyplane:v8];
+  v7 = [TUIKey keyFromKBTree:tree layoutType:type layoutShape:shape multiplier:multiplier];
+  fullTree = [(TUIKeyplane *)self fullTree];
+  [v7 setKeyplane:fullTree];
 
   [v7 setStyle:{-[TUIKeyplane keyStyleForLayoutClass:](self, "keyStyleForLayoutClass:", -[TUIKeyplane layoutClass](self, "layoutClass"))}];
   [v7 setInGridLayout:{-[TUIKeyplane isGridLayout](self, "isGridLayout")}];
@@ -1175,12 +1175,12 @@ LABEL_76:
   return v7;
 }
 
-- (id)findRowSpanningDuplicatesForKeyplane:(id)a3
+- (id)findRowSpanningDuplicatesForKeyplane:(id)keyplane
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  if ([v3 type] == 2)
+  keyplaneCopy = keyplane;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([keyplaneCopy type] == 2)
   {
     v24 = 0u;
     v25 = 0u;
@@ -1202,7 +1202,7 @@ LABEL_76:
             objc_enumerationMutation(&unk_1F03D8F78);
           }
 
-          v9 = [v3 cachedKeysByKeyName:*(*(&v22 + 1) + 8 * v8)];
+          v9 = [keyplaneCopy cachedKeysByKeyName:*(*(&v22 + 1) + 8 * v8)];
           if ([v9 count] >= 2)
           {
             v20 = 0u;
@@ -1224,8 +1224,8 @@ LABEL_76:
                     objc_enumerationMutation(v10);
                   }
 
-                  v15 = [*(*(&v18 + 1) + 8 * i) name];
-                  [v4 setObject:v10 forKey:v15];
+                  name = [*(*(&v18 + 1) + 8 * i) name];
+                  [dictionary setObject:v10 forKey:name];
                 }
 
                 v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -1248,25 +1248,25 @@ LABEL_76:
     }
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)keysForName:(id)a3
+- (id)keysForName:(id)name
 {
-  v4 = a3;
-  v5 = [(TUIKeyplane *)self doubleHeightKeys];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  doubleHeightKeys = [(TUIKeyplane *)self doubleHeightKeys];
+  v6 = [doubleHeightKeys objectForKey:nameCopy];
 
   return v6;
 }
 
-- (void)unduplicateTenKeySwitchKey:(id)a3
+- (void)unduplicateTenKeySwitchKey:(id)key
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUIKeyplane *)self doubleHeightKeys];
-  v6 = [v4 name];
-  v7 = [v5 objectForKey:v6];
+  keyCopy = key;
+  doubleHeightKeys = [(TUIKeyplane *)self doubleHeightKeys];
+  name = [keyCopy name];
+  v7 = [doubleHeightKeys objectForKey:name];
   v8 = [v7 copy];
 
   if (v8 && [v8 count] == 2)
@@ -1292,9 +1292,9 @@ LABEL_76:
           }
 
           v14 = *(*(&v23 + 1) + 8 * v13);
-          v15 = [(TUIKeyplane *)self doubleHeightKeys];
-          v16 = [v14 name];
-          [v15 removeObjectForKey:v16];
+          doubleHeightKeys2 = [(TUIKeyplane *)self doubleHeightKeys];
+          name2 = [v14 name];
+          [doubleHeightKeys2 removeObjectForKey:name2];
 
           ++v13;
         }
@@ -1306,55 +1306,55 @@ LABEL_76:
       while (v11);
     }
 
-    v17 = [v9 lastObject];
-    v18 = [(TUIKeyplane *)self defaultRowSet];
-    v19 = [v18 subtrees];
-    v20 = [v19 lastObject];
-    v21 = [v20 subtrees];
+    lastObject = [v9 lastObject];
+    defaultRowSet = [(TUIKeyplane *)self defaultRowSet];
+    subtrees = [defaultRowSet subtrees];
+    lastObject2 = [subtrees lastObject];
+    subtrees2 = [lastObject2 subtrees];
 
-    [v21 removeObject:v17];
-    v22 = [(TUIKeyplane *)self fullTree];
-    [v22 removeKey:v17];
+    [subtrees2 removeObject:lastObject];
+    fullTree = [(TUIKeyplane *)self fullTree];
+    [fullTree removeKey:lastObject];
   }
 }
 
-- (void)duplicateTenKeySwitchKey:(id)a3
+- (void)duplicateTenKeySwitchKey:(id)key
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUIKeyplane *)self doubleHeightKeys];
-  v6 = [v4 name];
-  v7 = [v5 objectForKey:v6];
+  keyCopy = key;
+  doubleHeightKeys = [(TUIKeyplane *)self doubleHeightKeys];
+  name = [keyCopy name];
+  v7 = [doubleHeightKeys objectForKey:name];
 
   if (!v7)
   {
-    v8 = [v4 copy];
-    [v8 setDisplayRowHint:{objc_msgSend(v4, "displayRowHint") + 1}];
+    v8 = [keyCopy copy];
+    [v8 setDisplayRowHint:{objc_msgSend(keyCopy, "displayRowHint") + 1}];
     v9 = MEMORY[0x1E695DF90];
-    v10 = [v4 cache];
-    v11 = [v9 dictionaryWithDictionary:v10];
+    cache = [keyCopy cache];
+    v11 = [v9 dictionaryWithDictionary:cache];
 
     v27 = v11;
     [v8 setCache:v11];
-    v12 = [(TUIKeyplane *)self defaultRowSet];
-    v13 = [v12 subtrees];
-    v14 = [v13 lastObject];
-    v15 = [v14 subtrees];
+    defaultRowSet = [(TUIKeyplane *)self defaultRowSet];
+    subtrees = [defaultRowSet subtrees];
+    lastObject = [subtrees lastObject];
+    subtrees2 = [lastObject subtrees];
 
-    [v15 insertObject:v8 atIndex:0];
-    v16 = [(TUIKeyplane *)self fullTree];
-    [v16 replaceKey:0 withKey:v8];
+    [subtrees2 insertObject:v8 atIndex:0];
+    fullTree = [(TUIKeyplane *)self fullTree];
+    [fullTree replaceKey:0 withKey:v8];
 
-    v17 = [(TUIKeyplane *)self fullTree];
-    LOBYTE(v13) = objc_opt_respondsToSelector();
+    fullTree2 = [(TUIKeyplane *)self fullTree];
+    LOBYTE(subtrees) = objc_opt_respondsToSelector();
 
-    if (v13)
+    if (subtrees)
     {
-      v18 = [(TUIKeyplane *)self fullTree];
-      [v18 updateCachedKeyList];
+      fullTree3 = [(TUIKeyplane *)self fullTree];
+      [fullTree3 updateCachedKeyList];
     }
 
-    v33[0] = v4;
+    v33[0] = keyCopy;
     v33[1] = v8;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
     v28 = 0u;
@@ -1377,9 +1377,9 @@ LABEL_76:
           }
 
           v24 = *(*(&v28 + 1) + 8 * v23);
-          v25 = [(TUIKeyplane *)self doubleHeightKeys];
-          v26 = [v24 name];
-          [v25 setObject:v19 forKey:v26];
+          doubleHeightKeys2 = [(TUIKeyplane *)self doubleHeightKeys];
+          name2 = [v24 name];
+          [doubleHeightKeys2 setObject:v19 forKey:name2];
 
           ++v23;
         }
@@ -1393,22 +1393,22 @@ LABEL_76:
   }
 }
 
-- (id)duplicateTreeForSplitMode:(id)a3
+- (id)duplicateTreeForSplitMode:(id)mode
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUIKeyplane *)self fullTree];
-  v6 = [v5 cachedKeysByKeyName:@"Space-Key"];
+  modeCopy = mode;
+  fullTree = [(TUIKeyplane *)self fullTree];
+  v6 = [fullTree cachedKeysByKeyName:@"Space-Key"];
 
   if ([v6 count] < 2 || (objc_msgSend(v6, "objectAtIndex:", 1), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_15:
-    v8 = [v4 copy];
+    v8 = [modeCopy copy];
     goto LABEL_16;
   }
 
   v8 = v7;
-  if (![v7 isEqual:v4])
+  if (![v7 isEqual:modeCopy])
   {
     goto LABEL_16;
   }
@@ -1433,7 +1433,7 @@ LABEL_15:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        if (([v14 isEqual:{v4, v21}] & 1) == 0)
+        if (([v14 isEqual:{modeCopy, v21}] & 1) == 0)
         {
           v15 = v14;
 
@@ -1466,49 +1466,49 @@ LABEL_14:
 LABEL_16:
   if (([v6 containsObject:{v8, v21}] & 1) == 0)
   {
-    v16 = [(TUIKeyplane *)self fullTree];
-    [v16 replaceKey:0 withKey:v8];
+    fullTree2 = [(TUIKeyplane *)self fullTree];
+    [fullTree2 replaceKey:0 withKey:v8];
   }
 
   v17 = MEMORY[0x1E695DF90];
-  v18 = [v4 cache];
-  v19 = [v17 dictionaryWithDictionary:v18];
+  cache = [modeCopy cache];
+  dictionary = [v17 dictionaryWithDictionary:cache];
 
-  if (!v19)
+  if (!dictionary)
   {
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  [v19 setObject:&unk_1F03D8C78 forKey:@"KBsplitMode"];
-  [v8 setCache:v19];
+  [dictionary setObject:&unk_1F03D8C78 forKey:@"KBsplitMode"];
+  [v8 setCache:dictionary];
   [v8 setSplitMode:3];
 
   return v8;
 }
 
-- (BOOL)keyplaneKeyIsTenKeySwitchKey:(id)a3
+- (BOOL)keyplaneKeyIsTenKeySwitchKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [v4 hasSuffix:@"Switch-Key"];
+  keyCopy = key;
+  name = [keyCopy name];
+  v5 = [name hasSuffix:@"Switch-Key"];
 
   if (!v5)
   {
     goto LABEL_8;
   }
 
-  v6 = [v3 name];
-  if (![v6 hasPrefix:@"TenKey"])
+  name2 = [keyCopy name];
+  if (![name2 hasPrefix:@"TenKey"])
   {
-    v7 = [v3 name];
-    if ([v7 hasPrefix:@"FiftyOn"])
+    name3 = [keyCopy name];
+    if ([name3 hasPrefix:@"FiftyOn"])
     {
 
       goto LABEL_5;
     }
 
-    v9 = [v3 name];
-    v10 = [v9 hasPrefix:@"Korean10Key"];
+    name4 = [keyCopy name];
+    v10 = [name4 hasPrefix:@"Korean10Key"];
 
     if (v10)
     {
@@ -1529,18 +1529,18 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)shouldDuplicateKey:(id)a3 forRow:(id)a4
+- (BOOL)shouldDuplicateKey:(id)key forRow:(id)row
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  rowCopy = row;
   if ([(TUIKeyplane *)self layoutClass]== 2)
   {
-    v8 = [v7 subtreesWithProperty:@"KBinteractionType" value:&unk_1F03D8C60];
-    if ([v8 count] <= 1 && objc_msgSend(v6, "interactionType") == 15)
+    v8 = [rowCopy subtreesWithProperty:@"KBinteractionType" value:&unk_1F03D8C60];
+    if ([v8 count] <= 1 && objc_msgSend(keyCopy, "interactionType") == 15)
     {
-      v9 = [v7 properties];
-      v10 = [v6 name];
-      v11 = [v9 objectForKey:v10];
+      properties = [rowCopy properties];
+      name = [keyCopy name];
+      v11 = [properties objectForKey:name];
       v12 = v11 == 0;
     }
 
@@ -1558,24 +1558,24 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)shouldDuplicateTenKeySwitchKey:(id)a3 forTreeRow:(id)a4 forRowNumber:(unint64_t)a5
+- (BOOL)shouldDuplicateTenKeySwitchKey:(id)key forTreeRow:(id)row forRowNumber:(unint64_t)number
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([(TUIKeyplane *)self layoutType]== 2 && [(TUIKeyplane *)self indexOfLastRow]- 1 == a5 && [(TUIKeyplane *)self keyplaneKeyIsTenKeySwitchKey:v7])
+  keyCopy = key;
+  if ([(TUIKeyplane *)self layoutType]== 2 && [(TUIKeyplane *)self indexOfLastRow]- 1 == number && [(TUIKeyplane *)self keyplaneKeyIsTenKeySwitchKey:keyCopy])
   {
-    v8 = [(TUIKeyplane *)self fullTree];
-    v9 = [v8 firstCachedKeyWithName:@"Dictation-Key"];
+    fullTree = [(TUIKeyplane *)self fullTree];
+    v9 = [fullTree firstCachedKeyWithName:@"Dictation-Key"];
 
-    v10 = [(TUIKeyplane *)self fullTree];
-    v11 = [v10 firstCachedKeyWithName:@"International-Key"];
+    fullTree2 = [(TUIKeyplane *)self fullTree];
+    v11 = [fullTree2 firstCachedKeyWithName:@"International-Key"];
 
     if (v11 && ([v11 visible] & 1) == 0)
     {
       if (v9 && [v9 visible])
       {
-        v14 = [(TUIKeyplane *)self fullTree];
-        v15 = [v14 cachedKeysByKeyName:@"Adaptive-Key"];
+        fullTree3 = [(TUIKeyplane *)self fullTree];
+        v15 = [fullTree3 cachedKeysByKeyName:@"Adaptive-Key"];
 
         v21 = 0u;
         v22 = 0u;
@@ -1635,20 +1635,20 @@ LABEL_22:
   return v12;
 }
 
-- (double)multiplierForKey:(id)a3 withProperties:(id)a4
+- (double)multiplierForKey:(id)key withProperties:(id)properties
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 name];
-  v8 = [v6 objectForKey:v7];
+  keyCopy = key;
+  propertiesCopy = properties;
+  name = [keyCopy name];
+  v8 = [propertiesCopy objectForKey:name];
 
-  if (v8 || ([v5 representedString], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKey:", v9), v8 = objc_claimAutoreleasedReturnValue(), v9, v8) || (objc_msgSend(v5, "name"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "rangeOfString:", @"_"), v16, v13 = 1.0, v17 == 1) && (objc_msgSend(v5, "name"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "substringFromIndex:", 2), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKey:", v19), v8 = objc_claimAutoreleasedReturnValue(), v19, v18, v8))
+  if (v8 || ([keyCopy representedString], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(propertiesCopy, "objectForKey:", v9), v8 = objc_claimAutoreleasedReturnValue(), v9, v8) || (objc_msgSend(keyCopy, "name"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "rangeOfString:", @"_"), v16, v13 = 1.0, v17 == 1) && (objc_msgSend(keyCopy, "name"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "substringFromIndex:", 2), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(propertiesCopy, "objectForKey:", v19), v8 = objc_claimAutoreleasedReturnValue(), v19, v18, v8))
   {
-    v10 = [v6 objectForKey:v8];
+    v10 = [propertiesCopy objectForKey:v8];
 
     if (v10)
     {
-      v11 = [v6 objectForKey:v8];
+      v11 = [propertiesCopy objectForKey:v8];
       [v11 doubleValue];
       v13 = v12;
     }
@@ -1663,15 +1663,15 @@ LABEL_22:
   return v13;
 }
 
-- (id)keyRowFromTreeRow:(id)a3 rowNumber:(unint64_t)a4 type:(int64_t)a5
+- (id)keyRowFromTreeRow:(id)row rowNumber:(unint64_t)number type:(int64_t)type
 {
   v296 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([v7 type] == 7 || objc_msgSend(v7, "type") == 4)
+  rowCopy = row;
+  if ([rowCopy type] == 7 || objc_msgSend(rowCopy, "type") == 4)
   {
     v238 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [v7 properties];
-    v9 = [v8 objectForKey:@"KBToggleKeys_Undo-Key"];
+    properties = [rowCopy properties];
+    v9 = [properties objectForKey:@"KBToggleKeys_Undo-Key"];
     if (v9)
     {
       v221 = 1;
@@ -1679,22 +1679,22 @@ LABEL_22:
 
     else
     {
-      v10 = [v7 properties];
-      v11 = [v10 objectForKey:@"KBToggleKeys_Redo-Key"];
+      properties2 = [rowCopy properties];
+      v11 = [properties2 objectForKey:@"KBToggleKeys_Redo-Key"];
       v221 = v11 != 0;
     }
 
-    v12 = [v7 properties];
-    v237 = [v12 mutableCopy];
+    properties3 = [rowCopy properties];
+    v237 = [properties3 mutableCopy];
 
-    v13 = [(UIKBTree *)self->_keylayout name];
-    v14 = [v13 containsString:@"Numbers-And-Punctuation"];
+    name = [(UIKBTree *)self->_keylayout name];
+    v14 = [name containsString:@"Numbers-And-Punctuation"];
 
     v220 = v14;
     if (v14)
     {
-      v15 = [(UIKBTree *)self->_keylayout name];
-      v16 = [v15 containsString:@"Alternate"];
+      name2 = [(UIKBTree *)self->_keylayout name];
+      v16 = [name2 containsString:@"Alternate"];
     }
 
     else
@@ -1702,16 +1702,16 @@ LABEL_22:
       v16 = 0;
     }
 
-    v17 = self;
-    v18 = a4 + 1;
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Rowset.Row%li", a4 + 1];
-    v233 = v17;
-    v20 = [(TUIKeyplane *)v17 keylayout];
-    v21 = [v20 properties];
+    selfCopy = self;
+    v18 = number + 1;
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Rowset.Row%li", number + 1];
+    v233 = selfCopy;
+    keylayout = [(TUIKeyplane *)selfCopy keylayout];
+    properties4 = [keylayout properties];
     v217 = v19;
-    v22 = [v21 objectForKey:v19];
+    v22 = [properties4 objectForKey:v19];
 
-    v230 = a4;
+    numberCopy = number;
     v224 = v22;
     if (v22)
     {
@@ -1719,8 +1719,8 @@ LABEL_22:
       v284 = 0u;
       v281 = 0u;
       v282 = 0u;
-      v23 = [v22 allKeys];
-      v24 = [v23 countByEnumeratingWithState:&v281 objects:v295 count:16];
+      allKeys = [v22 allKeys];
+      v24 = [allKeys countByEnumeratingWithState:&v281 objects:v295 count:16];
       if (v24)
       {
         v25 = v24;
@@ -1731,7 +1731,7 @@ LABEL_22:
           {
             if (*v282 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(allKeys);
             }
 
             v28 = *(*(&v281 + 1) + 8 * i);
@@ -1739,24 +1739,24 @@ LABEL_22:
             [v237 setObject:v29 forKey:v28];
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v281 objects:v295 count:16];
+          v25 = [allKeys countByEnumeratingWithState:&v281 objects:v295 count:16];
         }
 
         while (v25);
       }
 
-      a4 = v230;
+      number = numberCopy;
     }
 
     v30 = MEMORY[0x1E696AEC0];
     v31 = v233;
-    v32 = [(TUIKeyplane *)v233 stringFromKeyboardType:a5];
+    v32 = [(TUIKeyplane *)v233 stringFromKeyboardType:type];
     v33 = [v30 stringWithFormat:@"Rowset.%@.Row%li", v32, v18];
 
-    v34 = [(TUIKeyplane *)v233 keylayout];
-    v35 = [v34 properties];
+    keylayout2 = [(TUIKeyplane *)v233 keylayout];
+    properties5 = [keylayout2 properties];
     v216 = v33;
-    v36 = [v35 objectForKey:v33];
+    v36 = [properties5 objectForKey:v33];
 
     v223 = v36;
     if (v36)
@@ -1765,8 +1765,8 @@ LABEL_22:
       v280 = 0u;
       v277 = 0u;
       v278 = 0u;
-      v37 = [v36 allKeys];
-      v38 = [v37 countByEnumeratingWithState:&v277 objects:v294 count:16];
+      allKeys2 = [v36 allKeys];
+      v38 = [allKeys2 countByEnumeratingWithState:&v277 objects:v294 count:16];
       if (v38)
       {
         v39 = v38;
@@ -1777,7 +1777,7 @@ LABEL_22:
           {
             if (*v278 != v40)
             {
-              objc_enumerationMutation(v37);
+              objc_enumerationMutation(allKeys2);
             }
 
             v42 = *(*(&v277 + 1) + 8 * j);
@@ -1785,7 +1785,7 @@ LABEL_22:
             [v237 setObject:v43 forKey:v42];
           }
 
-          v39 = [v37 countByEnumeratingWithState:&v277 objects:v294 count:16];
+          v39 = [allKeys2 countByEnumeratingWithState:&v277 objects:v294 count:16];
         }
 
         while (v39);
@@ -1795,14 +1795,14 @@ LABEL_22:
     }
 
     v219 = v16;
-    v234 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v273 = 0u;
     v274 = 0u;
     v275 = 0u;
     v276 = 0u;
-    obj = [v7 subtrees];
+    obj = [rowCopy subtrees];
     v44 = 0x1E696A000uLL;
-    v235 = v7;
+    v235 = rowCopy;
     v227 = [obj countByEnumeratingWithState:&v273 objects:v293 count:16];
     if (v227)
     {
@@ -1827,26 +1827,26 @@ LABEL_22:
           v231 = v49;
           if ([v49 type] != 8)
           {
-            v56 = [v49 name];
-            v57 = [v56 rangeOfString:@"Row"];
+            name3 = [v49 name];
+            v57 = [name3 rangeOfString:@"Row"];
 
-            v58 = [v49 name];
-            v59 = [v58 length];
+            name4 = [v49 name];
+            v59 = [name4 length];
 
             if (v57 >= v59 || ([v49 name], v60 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v60, "substringFromIndex:", v57), v61 = objc_claimAutoreleasedReturnValue(), v60, -[TUIKeyplane keylayout](v31, "keylayout"), v62 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v62, "properties"), v63 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v63, "objectForKey:", v61), v64 = objc_claimAutoreleasedReturnValue(), v63, v62, v61, !v64))
             {
-              v65 = [(TUIKeyplane *)v31 keylayout];
-              v66 = [v65 properties];
-              v67 = [v49 name];
-              v64 = [v66 objectForKey:v67];
+              keylayout3 = [(TUIKeyplane *)v31 keylayout];
+              properties6 = [keylayout3 properties];
+              name5 = [v49 name];
+              v64 = [properties6 objectForKey:name5];
             }
 
             v271 = 0u;
             v272 = 0u;
             v269 = 0u;
             v270 = 0u;
-            v68 = [v49 subtrees];
-            v239 = [v68 countByEnumeratingWithState:&v269 objects:v292 count:16];
+            subtrees = [v49 subtrees];
+            v239 = [subtrees countByEnumeratingWithState:&v269 objects:v292 count:16];
             if (v239)
             {
               v69 = *v270;
@@ -1857,19 +1857,19 @@ LABEL_22:
                 {
                   if (*v270 != v69)
                   {
-                    objc_enumerationMutation(v68);
+                    objc_enumerationMutation(subtrees);
                   }
 
                   v71 = *(*(&v269 + 1) + 8 * k);
-                  v72 = [v71 shape];
+                  shape = [v71 shape];
 
-                  if (!v72)
+                  if (!shape)
                   {
-                    v73 = [MEMORY[0x1E69DCB70] shape];
-                    [v71 setShape:v73];
+                    shape2 = [MEMORY[0x1E69DCB70] shape];
+                    [v71 setShape:shape2];
                   }
 
-                  [v71 setDisplayRowHint:a4];
+                  [v71 setDisplayRowHint:number];
                   v74 = [TUIKey layoutTypeForKey:v71];
                   if (v64)
                   {
@@ -1884,29 +1884,29 @@ LABEL_22:
                   v76 = v75;
                   if (v74 == 3)
                   {
-                    v77 = [(TUIKeyplane *)v31 doubleHeightKeys];
-                    v78 = [v71 name];
-                    v79 = [v77 objectForKey:v78];
+                    doubleHeightKeys = [(TUIKeyplane *)v31 doubleHeightKeys];
+                    name6 = [v71 name];
+                    v79 = [doubleHeightKeys objectForKey:name6];
 
                     if (v79)
                     {
-                      v80 = 2;
+                      concaveCorner = 2;
                     }
 
                     else
                     {
-                      v81 = [v231 shape];
-                      v80 = [v81 concaveCorner];
+                      shape3 = [v231 shape];
+                      concaveCorner = [shape3 concaveCorner];
 
-                      if (v80)
+                      if (concaveCorner)
                       {
-                        v82 = [v231 shape];
-                        [v82 setConcaveCorner:0];
+                        shape4 = [v231 shape];
+                        [shape4 setConcaveCorner:0];
 
-                        v83 = [v231 shape];
-                        [v83 setConcaveCornerOffset:{v45, v46}];
+                        shape5 = [v231 shape];
+                        [shape5 setConcaveCornerOffset:{v45, v46}];
 
-                        v80 = 0;
+                        concaveCorner = 0;
                       }
 
                       v69 = v229;
@@ -1917,7 +1917,7 @@ LABEL_22:
 
                   else
                   {
-                    v80 = 0;
+                    concaveCorner = 0;
                   }
 
                   if (v74 != 1)
@@ -1928,8 +1928,8 @@ LABEL_22:
                   if (([v71 visible] & 1) == 0)
                   {
                     v85 = [MEMORY[0x1E696AD98] numberWithDouble:v76];
-                    v91 = [v71 name];
-                    [v234 setObject:v85 forKey:v91];
+                    name7 = [v71 name];
+                    [dictionary setObject:v85 forKey:name7];
 LABEL_71:
 
                     continue;
@@ -1940,7 +1940,7 @@ LABEL_71:
                     [(TUIKeyplane *)v31 setNumberOfPaddingKeys:[(TUIKeyplane *)v31 numberOfPaddingKeys]+ 1];
                   }
 
-                  v84 = [(TUIKeyplane *)v31 createPreparedKeyFromTree:v71 withMultiplier:v74 type:v80 shape:v76];
+                  v84 = [(TUIKeyplane *)v31 createPreparedKeyFromTree:v71 withMultiplier:v74 type:concaveCorner shape:v76];
                   [v238 addObject:v84];
 
                   if ([(TUIKeyplane *)v31 shouldDuplicateKey:v71 forRow:v235])
@@ -1948,27 +1948,27 @@ LABEL_71:
                     v85 = [(TUIKeyplane *)v31 duplicateTreeForSplitMode:v71];
                     [v85 name];
                     v87 = v86 = v31;
-                    v88 = [v71 name];
-                    [v237 setObject:v87 forKey:v88];
+                    name8 = [v71 name];
+                    [v237 setObject:v87 forKey:name8];
 
                     v89 = v236;
                     if (!v236)
                     {
-                      v90 = [v231 subtrees];
-                      v89 = [v90 mutableCopy];
+                      subtrees2 = [v231 subtrees];
+                      v89 = [subtrees2 mutableCopy];
                     }
 
                     v236 = v89;
                     [v89 insertObject:v85 atIndex:{objc_msgSend(v238, "count")}];
-                    v91 = [(TUIKeyplane *)v86 createPreparedKeyFromTree:v85 withMultiplier:v74 type:v80 shape:v76];
-                    [v238 addObject:v91];
+                    name7 = [(TUIKeyplane *)v86 createPreparedKeyFromTree:v85 withMultiplier:v74 type:concaveCorner shape:v76];
+                    [v238 addObject:name7];
                     v31 = v86;
-                    a4 = v230;
+                    number = numberCopy;
                     goto LABEL_71;
                   }
                 }
 
-                v239 = [v68 countByEnumeratingWithState:&v269 objects:v292 count:16];
+                v239 = [subtrees countByEnumeratingWithState:&v269 objects:v292 count:16];
               }
 
               while (v239);
@@ -1980,32 +1980,32 @@ LABEL_71:
               [v231 setSubtrees:v92];
 
               [v236 removeAllObjects];
-              v93 = v236;
+              name11 = v236;
               v236 = 0;
-              v7 = v235;
+              rowCopy = v235;
               goto LABEL_101;
             }
 
             v236 = 0;
-            v7 = v235;
+            rowCopy = v235;
             goto LABEL_102;
           }
 
-          v50 = [v49 shape];
+          shape6 = [v49 shape];
 
-          if (!v50)
+          if (!shape6)
           {
-            v51 = [MEMORY[0x1E69DCB70] shape];
-            [v49 setShape:v51];
+            shape7 = [MEMORY[0x1E69DCB70] shape];
+            [v49 setShape:shape7];
           }
 
-          [v49 setDisplayRowHint:a4];
-          if ([(TUIKeyplane *)v31 indexOfLastRow]- 1 == a4 && [(TUIKeyplane *)v31 keyplaneKeyIsTenKeySwitchKey:v49])
+          [v49 setDisplayRowHint:number];
+          if ([(TUIKeyplane *)v31 indexOfLastRow]- 1 == number && [(TUIKeyplane *)v31 keyplaneKeyIsTenKeySwitchKey:v49])
           {
-            v52 = [(TUIKeyplane *)v31 shouldDuplicateTenKeySwitchKey:v49 forTreeRow:v7 forRowNumber:a4];
-            v53 = [(TUIKeyplane *)v31 doubleHeightKeys];
-            v54 = [v49 name];
-            v55 = [v53 objectForKey:v54];
+            v52 = [(TUIKeyplane *)v31 shouldDuplicateTenKeySwitchKey:v49 forTreeRow:rowCopy forRowNumber:number];
+            doubleHeightKeys2 = [(TUIKeyplane *)v31 doubleHeightKeys];
+            name9 = [v49 name];
+            v55 = [doubleHeightKeys2 objectForKey:name9];
 
             if (v52)
             {
@@ -2021,9 +2021,9 @@ LABEL_71:
           v94 = [TUIKey layoutTypeForKey:v49];
           if (v94 == 3)
           {
-            v95 = [(TUIKeyplane *)v31 doubleHeightKeys];
-            v96 = [v49 name];
-            v97 = [v95 objectForKey:v96];
+            doubleHeightKeys3 = [(TUIKeyplane *)v31 doubleHeightKeys];
+            name10 = [v49 name];
+            v97 = [doubleHeightKeys3 objectForKey:name10];
 
             if (v97)
             {
@@ -2032,16 +2032,16 @@ LABEL_71:
 
             else
             {
-              v99 = [v49 shape];
-              v100 = [v99 concaveCorner];
+              shape8 = [v49 shape];
+              concaveCorner2 = [shape8 concaveCorner];
 
-              if (v100)
+              if (concaveCorner2)
               {
-                v101 = [v49 shape];
-                [v101 setConcaveCorner:0];
+                shape9 = [v49 shape];
+                [shape9 setConcaveCorner:0];
 
-                v102 = [v49 shape];
-                [v102 setConcaveCornerOffset:{v45, v46}];
+                shape10 = [v49 shape];
+                [shape10 setConcaveCornerOffset:{v45, v46}];
               }
 
               v98 = 0;
@@ -2065,8 +2065,8 @@ LABEL_71:
           if (([v49 visible] & 1) == 0)
           {
             v64 = [*(v44 + 3480) numberWithDouble:v104];
-            v93 = [v49 name];
-            [v234 setObject:v64 forKey:v93];
+            name11 = [v49 name];
+            [dictionary setObject:v64 forKey:name11];
 LABEL_101:
 
 LABEL_102:
@@ -2084,26 +2084,26 @@ LABEL_102:
             v106 = [(TUIKeyplane *)v31 createPreparedKeyFromTree:v49 withMultiplier:v94 type:v98 shape:v104];
             [v238 addObject:v106];
 
-            if ([(TUIKeyplane *)v31 shouldDuplicateKey:v49 forRow:v7])
+            if ([(TUIKeyplane *)v31 shouldDuplicateKey:v49 forRow:rowCopy])
             {
               v64 = [(TUIKeyplane *)v31 duplicateTreeForSplitMode:v49];
-              v107 = [v64 name];
-              v108 = [v49 name];
-              [v237 setObject:v107 forKey:v108];
+              name12 = [v64 name];
+              name13 = [v49 name];
+              [v237 setObject:name12 forKey:name13];
 
               v109 = v236;
               if (!v236)
               {
-                v110 = [v7 subtrees];
-                v109 = [v110 mutableCopy];
+                subtrees3 = [rowCopy subtrees];
+                v109 = [subtrees3 mutableCopy];
               }
 
               v236 = v109;
               if (([v109 containsObject:v64] & 1) == 0)
               {
                 [v109 insertObject:v64 atIndex:{objc_msgSend(v238, "count")}];
-                v93 = [(TUIKeyplane *)v31 createPreparedKeyFromTree:v64 withMultiplier:v94 type:v98 shape:v104];
-                [v238 addObject:v93];
+                name11 = [(TUIKeyplane *)v31 createPreparedKeyFromTree:v64 withMultiplier:v94 type:v98 shape:v104];
+                [v238 addObject:name11];
                 goto LABEL_101;
               }
 
@@ -2129,54 +2129,54 @@ LABEL_103:
     v47 = 0.0;
 LABEL_107:
 
-    if ([v234 count])
+    if ([dictionary count])
     {
-      v111 = [v234 allKeys];
-      if ([v111 containsObject:@"Dictation-Key"])
+      allKeys3 = [dictionary allKeys];
+      if ([allKeys3 containsObject:@"Dictation-Key"])
       {
         v112 = 1;
       }
 
       else
       {
-        v114 = [v234 allKeys];
-        v112 = [v114 containsObject:@"NumberPad-Dictation"];
+        allKeys4 = [dictionary allKeys];
+        v112 = [allKeys4 containsObject:@"NumberPad-Dictation"];
       }
 
-      v115 = [v234 allKeys];
-      v116 = [v115 containsObject:@"International-Key"];
+      allKeys5 = [dictionary allKeys];
+      v116 = [allKeys5 containsObject:@"International-Key"];
 
-      v117 = [v234 objectForKey:@"International-Key"];
+      v117 = [dictionary objectForKey:@"International-Key"];
       v118 = 0.0;
       v119 = 0.0;
       if (v117)
       {
-        v120 = [v234 objectForKey:@"International-Key"];
+        v120 = [dictionary objectForKey:@"International-Key"];
         [v120 doubleValue];
         v119 = v121;
       }
 
-      v122 = [v234 objectForKey:@"Dictation-Key"];
+      v122 = [dictionary objectForKey:@"Dictation-Key"];
       if (v122)
       {
-        v123 = [v234 objectForKey:@"Dictation-Key"];
+        v123 = [dictionary objectForKey:@"Dictation-Key"];
         [v123 doubleValue];
         v118 = v124;
       }
 
-      v125 = [v234 objectForKey:@"NumberPad-International"];
+      v125 = [dictionary objectForKey:@"NumberPad-International"];
 
-      v126 = [v234 objectForKey:@"NumberPad-Dictation"];
+      v126 = [dictionary objectForKey:@"NumberPad-Dictation"];
 
-      v127 = [v234 objectForKey:@"NumberPad-Empty"];
+      v127 = [dictionary objectForKey:@"NumberPad-Empty"];
 
-      v128 = [(TUIKeyplane *)v31 fullTree];
-      [v128 name];
+      fullTree = [(TUIKeyplane *)v31 fullTree];
+      [fullTree name];
       v130 = v129 = v31;
       v131 = [v130 hasPrefix:@"Dynamic-Thai-24-Key"];
 
-      v132 = [(TUIKeyplane *)v129 fullTree];
-      v133 = [v132 cachedKeysByKeyName:@"Adaptive-Key"];
+      fullTree2 = [(TUIKeyplane *)v129 fullTree];
+      v133 = [fullTree2 cachedKeysByKeyName:@"Adaptive-Key"];
 
       v267 = 0u;
       v268 = 0u;
@@ -2243,15 +2243,15 @@ LABEL_126:
             }
 
             v145 = *(*(&v261 + 1) + 8 * n);
-            v146 = [v145 backingTree];
-            v147 = [v146 displayType];
+            backingTree = [v145 backingTree];
+            displayType = [backingTree displayType];
 
             if ((v112 & v116) == 0)
             {
               if (v116)
               {
                 v148 = 1.0;
-                v150 = v147 == 4;
+                v150 = displayType == 4;
               }
 
               else
@@ -2262,12 +2262,12 @@ LABEL_126:
                 }
 
                 v148 = 1.0;
-                v150 = v147 == 13;
+                v150 = displayType == 13;
               }
 
-              if (!v150 && v147 != 18)
+              if (!v150 && displayType != 18)
               {
-                if (v147 != 25)
+                if (displayType != 25)
                 {
                   continue;
                 }
@@ -2281,7 +2281,7 @@ LABEL_148:
             }
 
             v148 = 2.0;
-            if (v147 == 18 || v147 == 25)
+            if (displayType == 18 || displayType == 25)
             {
               goto LABEL_148;
             }
@@ -2374,19 +2374,19 @@ LABEL_180:
               }
 
               v159 = *(*(&v253 + 1) + 8 * ii);
-              v169 = [v159 backingTree];
-              v170 = [v169 displayType];
+              backingTree2 = [v159 backingTree];
+              displayType2 = [backingTree2 displayType];
 
-              if (v170 == 13)
+              if (displayType2 == 13)
               {
                 [v159 multiplier];
                 [v159 setMultiplier:v118 + v171];
               }
 
-              v172 = [v159 backingTree];
-              v173 = [v172 displayType];
+              backingTree3 = [v159 backingTree];
+              displayType3 = [backingTree3 displayType];
 
-              if (v173 == 18)
+              if (displayType3 == 18)
               {
                 goto LABEL_180;
               }
@@ -2430,10 +2430,10 @@ LABEL_180:
               if ((v116 & 1) == 0)
               {
                 v159 = *(*(&v249 + 1) + 8 * jj);
-                v214 = [v159 backingTree];
-                v215 = [v214 displayType];
+                backingTree4 = [v159 backingTree];
+                displayType4 = [backingTree4 displayType];
 
-                if (v215 == 13)
+                if (displayType4 == 13)
                 {
                   goto LABEL_180;
                 }
@@ -2483,19 +2483,19 @@ LABEL_181:
             }
 
             v188 = *(*(&v245 + 1) + 8 * v187);
-            v189 = [v188 backingTree];
-            v190 = [v189 interactionType];
+            backingTree5 = [v188 backingTree];
+            interactionType = [backingTree5 interactionType];
             if (!v125)
             {
-              if (v190 == 14)
+              if (interactionType == 14)
               {
               }
 
               else
               {
-                v193 = [v188 backingTree];
-                v194 = [v193 name];
-                v195 = [v194 containsString:@"NumberPad-Dot"];
+                backingTree6 = [v188 backingTree];
+                name14 = [backingTree6 name];
+                v195 = [name14 containsString:@"NumberPad-Dot"];
 
                 v44 = 0x1E696A000;
                 v31 = v233;
@@ -2512,13 +2512,13 @@ LABEL_181:
               goto LABEL_208;
             }
 
-            if (v190 == 9)
+            if (interactionType == 9)
             {
               goto LABEL_203;
             }
 
-            v191 = [v188 backingTree];
-            if ([v191 interactionType] == 5)
+            backingTree7 = [v188 backingTree];
+            if ([backingTree7 interactionType] == 5)
             {
 
               v44 = 0x1E696A000;
@@ -2530,10 +2530,10 @@ LABEL_208:
               goto LABEL_209;
             }
 
-            v197 = [v188 backingTree];
-            v198 = [v197 interactionType];
+            backingTree8 = [v188 backingTree];
+            interactionType2 = [backingTree8 interactionType];
 
-            if (!v198)
+            if (!interactionType2)
             {
               v192 = 0.0;
               v31 = v233;
@@ -2576,10 +2576,10 @@ LABEL_209:
                     }
 
                     v205 = *(*(&v241 + 1) + 8 * kk);
-                    v206 = [v205 backingTree];
-                    v207 = [v206 interactionType];
+                    backingTree9 = [v205 backingTree];
+                    interactionType3 = [backingTree9 interactionType];
 
-                    if (v207 == 9)
+                    if (interactionType3 == 9)
                     {
                       [v205 multiplier];
                       [v205 setMultiplier:v208 * 0.5];
@@ -2602,27 +2602,27 @@ LABEL_209:
 
 LABEL_182:
 
-      v7 = v235;
-      a4 = v230;
+      rowCopy = v235;
+      number = numberCopy;
     }
 
-    v175 = [(TUIKeyplane *)v31 rowSizes];
+    rowSizes = [(TUIKeyplane *)v31 rowSizes];
     v176 = [*(v44 + 3480) numberWithDouble:v47];
-    v177 = [*(v44 + 3480) numberWithUnsignedInteger:a4];
-    [v175 setObject:v176 forKey:v177];
+    v177 = [*(v44 + 3480) numberWithUnsignedInteger:number];
+    [rowSizes setObject:v176 forKey:v177];
 
-    if ([(TUIKeyplane *)v31 indexOfLastRow]== a4)
+    if ([(TUIKeyplane *)v31 indexOfLastRow]== number)
     {
-      v178 = [(TUIKeyplane *)v31 cache];
+      cache = [(TUIKeyplane *)v31 cache];
       v179 = [*(v44 + 3480) numberWithBool:v226 & 1];
-      v180 = [*(v44 + 3480) numberWithInteger:a5];
-      [v178 setObject:v179 forKey:v180];
+      v180 = [*(v44 + 3480) numberWithInteger:type];
+      [cache setObject:v179 forKey:v180];
     }
 
     if (v236)
     {
       v181 = [v236 mutableCopy];
-      [v7 setSubtrees:v181];
+      [rowCopy setSubtrees:v181];
 
       [v236 removeAllObjects];
     }
@@ -2638,37 +2638,37 @@ LABEL_182:
   return v113;
 }
 
-- (id)defaultKeysOrderedByRowForKeyplane:(id)a3
+- (id)defaultKeysOrderedByRowForKeyplane:(id)keyplane
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [v4 subtreeWithType:3];
+  keyplaneCopy = keyplane;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = [keyplaneCopy subtreeWithType:3];
   [(TUIKeyplane *)self setKeylayout:v6];
-  v7 = [(TUIKeyplane *)self defaultRowSet];
-  v8 = [v7 subtrees];
-  -[TUIKeyplane setIndexOfLastRow:](self, "setIndexOfLastRow:", [v8 count] - 1);
-  if ([v8 count])
+  defaultRowSet = [(TUIKeyplane *)self defaultRowSet];
+  subtrees = [defaultRowSet subtrees];
+  -[TUIKeyplane setIndexOfLastRow:](self, "setIndexOfLastRow:", [subtrees count] - 1);
+  if ([subtrees count])
   {
     v9 = 0;
     do
     {
-      v10 = [v8 objectAtIndex:v9];
+      v10 = [subtrees objectAtIndex:v9];
       v11 = [(TUIKeyplane *)self keyRowFromTreeRow:v10 rowNumber:v9 type:0];
       if ([v11 count])
       {
         v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9];
-        [v5 setObject:v11 forKey:v12];
+        [dictionary setObject:v11 forKey:v12];
       }
 
       ++v9;
     }
 
-    while (v9 < [v8 count]);
+    while (v9 < [subtrees count]);
   }
 
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [v5 allKeys];
-  v15 = [v14 count];
+  array = [MEMORY[0x1E695DF70] array];
+  allKeys = [dictionary allKeys];
+  v15 = [allKeys count];
 
   if (v15)
   {
@@ -2676,42 +2676,42 @@ LABEL_182:
     do
     {
       v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v16];
-      v18 = [v5 objectForKey:v17];
+      v18 = [dictionary objectForKey:v17];
 
       if (v18)
       {
-        [v13 addObject:v18];
+        [array addObject:v18];
         v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v16];
-        [v5 removeObjectForKey:v19];
+        [dictionary removeObjectForKey:v19];
       }
 
       ++v16;
 
-      v20 = [v5 allKeys];
-      v21 = [v20 count];
+      allKeys2 = [dictionary allKeys];
+      v21 = [allKeys2 count];
     }
 
     while (v21);
   }
 
-  return v13;
+  return array;
 }
 
-- (id)rowSetForType:(int64_t)a3
+- (id)rowSetForType:(int64_t)type
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(TUIKeyplane *)self stringFromKeyboardType:a3];
+  v5 = [(TUIKeyplane *)self stringFromKeyboardType:type];
   v6 = [v4 stringWithFormat:@"_%@", v5];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(TUIKeyplane *)self keylayout];
-  v8 = [v7 subtrees];
+  keylayout = [(TUIKeyplane *)self keylayout];
+  subtrees = [keylayout subtrees];
 
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v9 = [subtrees countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = *v17;
@@ -2721,14 +2721,14 @@ LABEL_182:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subtrees);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
         if ([v12 type] == 15)
         {
-          v13 = [v12 name];
-          v14 = [v13 containsString:v6];
+          name = [v12 name];
+          v14 = [name containsString:v6];
 
           if (v14)
           {
@@ -2738,7 +2738,7 @@ LABEL_182:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [subtrees countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         continue;
@@ -2753,30 +2753,30 @@ LABEL_12:
   return v9;
 }
 
-- (id)rowsForKeyboardType:(int64_t)a3
+- (id)rowsForKeyboardType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     [(TUIKeyplane *)self setCurrentVariantType:?];
     goto LABEL_8;
   }
 
-  v5 = [(TUIKeyplane *)self keylayout];
+  keylayout = [(TUIKeyplane *)self keylayout];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
   {
 LABEL_8:
-    v12 = [(TUIKeyplane *)self defaultKeysByRow];
+    defaultKeysByRow = [(TUIKeyplane *)self defaultKeysByRow];
     goto LABEL_21;
   }
 
-  v7 = [(TUIKeyplane *)self keylayout];
-  v8 = [v7 orderedRowsForType:a3];
+  keylayout2 = [(TUIKeyplane *)self keylayout];
+  v8 = [keylayout2 orderedRowsForType:type];
 
   if ([v8 count])
   {
-    if (-[TUIKeyplane currentVariantType](self, "currentVariantType") != a3 || (-[TUIKeyplane variantKeysByRow](self, "variantKeysByRow"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, !v10))
+    if (-[TUIKeyplane currentVariantType](self, "currentVariantType") != type || (-[TUIKeyplane variantKeysByRow](self, "variantKeysByRow"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, !v10))
     {
       [MEMORY[0x1E695DF70] array];
       v30 = v28 = v8;
@@ -2787,24 +2787,24 @@ LABEL_8:
         do
         {
           v15 = [v13 objectAtIndex:{v14, v28}];
-          v16 = [(TUIKeyplane *)self keylayout];
-          v17 = [v16 rowSet];
-          v18 = [v17 subtrees];
-          v19 = [v18 count];
+          keylayout3 = [(TUIKeyplane *)self keylayout];
+          rowSet = [keylayout3 rowSet];
+          subtrees = [rowSet subtrees];
+          v19 = [subtrees count];
 
           if (v14 < v19 && (-[TUIKeyplane keylayout](self, "keylayout"), v20 = objc_claimAutoreleasedReturnValue(), [v20 rowSet], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "subtrees"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "objectAtIndex:", v14), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v15, "isEqualToTree:", v23), v23, v22, v21, v20, v24))
           {
-            v25 = [(TUIKeyplane *)self defaultKeysByRow];
-            v26 = [v25 objectAtIndex:v14];
+            defaultKeysByRow2 = [(TUIKeyplane *)self defaultKeysByRow];
+            v26 = [defaultKeysByRow2 objectAtIndex:v14];
             [v30 addObject:v26];
           }
 
           else
           {
-            v25 = [(TUIKeyplane *)self keyRowFromTreeRow:v15 rowNumber:v14 type:a3];
-            if ([v25 count])
+            defaultKeysByRow2 = [(TUIKeyplane *)self keyRowFromTreeRow:v15 rowNumber:v14 type:type];
+            if ([defaultKeysByRow2 count])
             {
-              [v30 addObject:v25];
+              [v30 addObject:defaultKeysByRow2];
             }
           }
 
@@ -2815,46 +2815,46 @@ LABEL_8:
       }
 
       [(TUIKeyplane *)self setVariantKeysByRow:v30, v28];
-      [(TUIKeyplane *)self setCurrentVariantType:a3];
-      v12 = [(TUIKeyplane *)self variantKeysByRow];
+      [(TUIKeyplane *)self setCurrentVariantType:type];
+      defaultKeysByRow = [(TUIKeyplane *)self variantKeysByRow];
 
       v8 = v29;
       goto LABEL_20;
     }
 
-    v11 = [(TUIKeyplane *)self variantKeysByRow];
+    variantKeysByRow = [(TUIKeyplane *)self variantKeysByRow];
   }
 
   else
   {
-    v11 = [(TUIKeyplane *)self defaultKeysByRow];
+    variantKeysByRow = [(TUIKeyplane *)self defaultKeysByRow];
   }
 
-  v12 = v11;
+  defaultKeysByRow = variantKeysByRow;
 LABEL_20:
 
 LABEL_21:
 
-  return v12;
+  return defaultKeysByRow;
 }
 
-- (BOOL)variantTypeIncludesSpaceBar:(int64_t)a3
+- (BOOL)variantTypeIncludesSpaceBar:(int64_t)bar
 {
-  v4 = [(TUIKeyplane *)self cache];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  cache = [(TUIKeyplane *)self cache];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:bar];
+  v6 = [cache objectForKey:v5];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (unint64_t)numberOfKeys
@@ -2864,8 +2864,8 @@ LABEL_21:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(TUIKeyplane *)self orderedKeysByRow];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  orderedKeysByRow = [(TUIKeyplane *)self orderedKeysByRow];
+  v4 = [orderedKeysByRow countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2877,13 +2877,13 @@ LABEL_21:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(orderedKeysByRow);
         }
 
         v6 += [*(*(&v10 + 1) + 8 * i) count];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [orderedKeysByRow countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -2904,52 +2904,52 @@ LABEL_21:
 
 - (NSString)prefix
 {
-  v3 = [(TUIKeyplane *)self fullTree];
-  v4 = [v3 name];
-  v5 = [v4 rangeOfString:@"_"];
+  fullTree = [(TUIKeyplane *)self fullTree];
+  name = [fullTree name];
+  v5 = [name rangeOfString:@"_"];
 
-  v6 = [(TUIKeyplane *)self fullTree];
-  v7 = [v6 name];
-  v8 = [v7 length];
+  fullTree2 = [(TUIKeyplane *)self fullTree];
+  name2 = [fullTree2 name];
+  v8 = [name2 length];
 
-  v9 = [(TUIKeyplane *)self fullTree];
-  v10 = [v9 name];
-  v11 = v10;
+  fullTree3 = [(TUIKeyplane *)self fullTree];
+  name3 = [fullTree3 name];
+  v11 = name3;
   if (v5 >= v8)
   {
-    v13 = [v10 stringByReplacingOccurrencesOfString:@"Dynamic-" withString:&stru_1F03BA8F8];
+    v13 = [name3 stringByReplacingOccurrencesOfString:@"Dynamic-" withString:&stru_1F03BA8F8];
   }
 
   else
   {
-    v12 = [v10 substringToIndex:v5];
+    v12 = [name3 substringToIndex:v5];
     v13 = [v12 stringByReplacingOccurrencesOfString:@"Dynamic-" withString:&stru_1F03BA8F8];
   }
 
   return v13;
 }
 
-- (void)updateKeyboardType:(int64_t)a3
+- (void)updateKeyboardType:(int64_t)type
 {
-  v4 = [(TUIKeyplane *)self rowsForKeyboardType:a3];
+  v4 = [(TUIKeyplane *)self rowsForKeyboardType:type];
   [(TUIKeyplane *)self setVariantKeysByRow:v4];
 }
 
-+ (CGSize)sizeFromScreenTraits:(id)a3 layout:(id)a4 layoutClass:(int64_t)a5
++ (CGSize)sizeFromScreenTraits:(id)traits layout:(id)layout layoutClass:(int64_t)class
 {
-  v7 = a3;
-  v8 = a4;
-  +[TUIKeyplane baseHeightForLayout:layoutClass:landscape:](TUIKeyplane, "baseHeightForLayout:layoutClass:landscape:", v8, a5, [v7 isKeyboardMinorEdgeWidth] ^ 1);
+  traitsCopy = traits;
+  layoutCopy = layout;
+  +[TUIKeyplane baseHeightForLayout:layoutClass:landscape:](TUIKeyplane, "baseHeightForLayout:layoutClass:landscape:", layoutCopy, class, [traitsCopy isKeyboardMinorEdgeWidth] ^ 1);
   v10 = v9;
-  [v7 keyboardWidth];
+  [traitsCopy keyboardWidth];
   v12 = v11;
-  if ([v7 idiom] == 3)
+  if ([traitsCopy idiom] == 3)
   {
-    [v7 bounds];
+    [traitsCopy bounds];
     v14 = v13;
-    [v7 bounds];
+    [traitsCopy bounds];
     v16 = v15;
-    [v7 bounds];
+    [traitsCopy bounds];
     if (v16 >= v17 * 0.7)
     {
       v12 = v14 + -24.0;
@@ -2971,9 +2971,9 @@ LABEL_21:
       v10 = 130.0;
     }
 
-    v25 = [MEMORY[0x1E69DCBE0] activeInstance];
-    v26 = [v25 textInputTraits];
-    [v26 preferredInputViewHeight];
+    activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+    textInputTraits = [activeInstance textInputTraits];
+    [textInputTraits preferredInputViewHeight];
     v28 = v27 + -16.0;
 
     if (v28 < v10 && v28 > 0.0)
@@ -2984,21 +2984,21 @@ LABEL_21:
     goto LABEL_36;
   }
 
-  if (a5 == 1)
+  if (class == 1)
   {
-    if (![v7 idiom])
+    if (![traitsCopy idiom])
     {
-      [v7 keyboardWidth];
+      [traitsCopy keyboardWidth];
       if (v18 > 400.0)
       {
-        if ([v7 isKeyboardMinorEdgeWidth])
+        if ([traitsCopy isKeyboardMinorEdgeWidth])
         {
           v10 = v10 + 8.0;
         }
       }
     }
 
-    if (([v7 isKeyboardMinorEdgeWidth] & 1) == 0)
+    if (([traitsCopy isKeyboardMinorEdgeWidth] & 1) == 0)
     {
       [MEMORY[0x1E69DCBE0] deviceSpecificPaddingForInterfaceOrientation:4 inputMode:0];
       v12 = v12 - (v19 + v20);
@@ -3006,26 +3006,26 @@ LABEL_21:
     }
   }
 
-  if ([v7 idiom] != 1 && !objc_msgSend(v7, "isFloating"))
+  if ([traitsCopy idiom] != 1 && !objc_msgSend(traitsCopy, "isFloating"))
   {
     goto LABEL_26;
   }
 
-  if (a5 != 1)
+  if (class != 1)
   {
-    [v7 bounds];
+    [traitsCopy bounds];
     v12 = v30;
 LABEL_26:
-    if (a5 == 3)
+    if (class == 3)
     {
-      if ([v7 isKeyboardMinorEdgeWidth] && (objc_msgSend(v7, "keyboardWidth"), v31 < 834.0))
+      if ([traitsCopy isKeyboardMinorEdgeWidth] && (objc_msgSend(traitsCopy, "keyboardWidth"), v31 < 834.0))
       {
         v10 = v10 + -3.0;
       }
 
-      else if (([v7 isKeyboardMinorEdgeWidth] & 1) == 0)
+      else if (([traitsCopy isKeyboardMinorEdgeWidth] & 1) == 0)
       {
-        [v7 keyboardWidth];
+        [traitsCopy keyboardWidth];
         if (v32 < 1194.0)
         {
           v10 = v10 + -6.0;
@@ -3036,22 +3036,22 @@ LABEL_26:
     goto LABEL_33;
   }
 
-  [TUIKeyplane baseHeightForLayout:v8 layoutClass:1 landscape:0];
+  [TUIKeyplane baseHeightForLayout:layoutCopy layoutClass:1 landscape:0];
   v10 = v23 + 1.0;
   v12 = 320.0;
 LABEL_33:
-  v33 = [v7 screen];
-  [v33 scale];
+  screen = [traitsCopy screen];
+  [screen scale];
   v35 = v34;
-  v36 = [v7 screen];
-  [v36 nativeScale];
+  screen2 = [traitsCopy screen];
+  [screen2 nativeScale];
   v38 = v35 / v37;
 
   if (v38 > 1.0)
   {
-    v39 = [v7 isFloating];
+    isFloating = [traitsCopy isFloating];
     v40 = round(v10 * v38);
-    if ((v39 & 1) == 0)
+    if ((isFloating & 1) == 0)
     {
       v10 = v40;
     }
@@ -3066,13 +3066,13 @@ LABEL_36:
   return result;
 }
 
-+ (CGSize)sizeBasisForLayoutClass:(int64_t)a3
++ (CGSize)sizeBasisForLayoutClass:(int64_t)class
 {
-  if (a3 <= 1)
+  if (class <= 1)
   {
-    if (a3)
+    if (class)
     {
-      if (a3 != 1)
+      if (class != 1)
       {
         goto LABEL_12;
       }
@@ -3090,16 +3090,16 @@ LABEL_36:
 
   else
   {
-    if (a3 == 2)
+    if (class == 2)
     {
       v3 = 1024.0;
       v4 = 0x4088000000000000;
       goto LABEL_13;
     }
 
-    if (a3 != 3)
+    if (class != 3)
     {
-      if (a3 == 4)
+      if (class == 4)
       {
         v3 = 1366.0;
         v4 = 0x4090000000000000;
@@ -3124,15 +3124,15 @@ LABEL_14:
   return result;
 }
 
-+ (double)baseHeightForLayout:(id)a3 layoutClass:(int64_t)a4 landscape:(BOOL)a5
++ (double)baseHeightForLayout:(id)layout layoutClass:(int64_t)class landscape:(BOOL)landscape
 {
-  v5 = a5;
-  v7 = a3;
-  if (v5)
+  landscapeCopy = landscape;
+  layoutCopy = layout;
+  if (landscapeCopy)
   {
-    if ((a4 - 2) < 3)
+    if ((class - 2) < 3)
     {
-      v8 = dbl_1900C1518[a4 - 2];
+      v8 = dbl_1900C1518[class - 2];
       goto LABEL_19;
     }
 
@@ -3142,15 +3142,15 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a4 > 1)
+  if (class > 1)
   {
-    if (a4 == 2 || a4 == 3)
+    if (class == 2 || class == 3)
     {
       v8 = 258.0;
       goto LABEL_19;
     }
 
-    if (a4 == 4)
+    if (class == 4)
     {
       v8 = 325.0;
       goto LABEL_19;
@@ -3159,20 +3159,20 @@ LABEL_18:
     goto LABEL_17;
   }
 
-  if (!a4)
+  if (!class)
   {
     v8 = 132.0;
     goto LABEL_19;
   }
 
-  if (a4 != 1)
+  if (class != 1)
   {
 LABEL_17:
     v9 = 0x406B000000000000;
     goto LABEL_18;
   }
 
-  [objc_opt_class() customHeightForLayout:v7];
+  [objc_opt_class() customHeightForLayout:layoutCopy];
   if (v10 == 0.0)
   {
     v8 = 216.0;
@@ -3188,34 +3188,34 @@ LABEL_19:
   return v8;
 }
 
-+ (int64_t)layoutClassFromScreenDimensions:(CGSize)a3
++ (int64_t)layoutClassFromScreenDimensions:(CGSize)dimensions
 {
-  if (*MEMORY[0x1E695F060] == a3.width && *(MEMORY[0x1E695F060] + 8) == a3.height)
+  if (*MEMORY[0x1E695F060] == dimensions.width && *(MEMORY[0x1E695F060] + 8) == dimensions.height)
   {
     return -1;
   }
 
-  if (a3.width > a3.height)
+  if (dimensions.width > dimensions.height)
   {
-    a3.width = a3.height;
+    dimensions.width = dimensions.height;
   }
 
-  if (a3.width < 320.0)
+  if (dimensions.width < 320.0)
   {
     return 0;
   }
 
-  if (a3.width < 730.0)
+  if (dimensions.width < 730.0)
   {
     return 1;
   }
 
-  if (a3.width < 815.0)
+  if (dimensions.width < 815.0)
   {
     return 2;
   }
 
-  if (a3.width >= 1024.0)
+  if (dimensions.width >= 1024.0)
   {
     return 4;
   }
@@ -3223,62 +3223,62 @@ LABEL_19:
   return 3;
 }
 
-+ (int64_t)layoutClassFromKeyplaneName:(id)a3
++ (int64_t)layoutClassFromKeyplaneName:(id)name
 {
-  v3 = a3;
-  if ([v3 containsString:@"Mini"])
+  nameCopy = name;
+  if ([nameCopy containsString:@"Mini"])
   {
     v4 = 0;
   }
 
-  else if ([v3 containsString:@"Small_"])
+  else if ([nameCopy containsString:@"Small_"])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsString:@"Medium"])
+  else if ([nameCopy containsString:@"Medium"])
   {
     v4 = 2;
   }
 
-  else if ([v3 containsString:@"Large"])
+  else if ([nameCopy containsString:@"Large"])
   {
     v4 = 3;
   }
 
-  else if ([v3 containsString:@"Grand"])
+  else if ([nameCopy containsString:@"Grand"])
   {
     v4 = 4;
   }
 
   else
   {
-    NSLog(&cfstr_ErrorNoMapping.isa, v3);
+    NSLog(&cfstr_ErrorNoMapping.isa, nameCopy);
     v4 = -1;
   }
 
   return v4;
 }
 
-+ (double)customHeightForLayout:(id)a3
++ (double)customHeightForLayout:(id)layout
 {
-  v3 = a3;
-  if ([&unk_1F03D8F90 containsObject:v3])
+  layoutCopy = layout;
+  if ([&unk_1F03D8F90 containsObject:layoutCopy])
   {
     v4 = 240.0;
   }
 
-  else if ([v3 isEqualToString:@"Thai-24-Key"])
+  else if ([layoutCopy isEqualToString:@"Thai-24-Key"])
   {
     v4 = 265.0;
   }
 
-  else if ([v3 isEqualToString:@"QWERTY-Arabic"])
+  else if ([layoutCopy isEqualToString:@"QWERTY-Arabic"])
   {
     v4 = 250.0;
   }
 
-  else if ([v3 isEqualToString:@"AZERTY-Arabic"])
+  else if ([layoutCopy isEqualToString:@"AZERTY-Arabic"])
   {
     v4 = 250.0;
   }
@@ -3291,14 +3291,14 @@ LABEL_19:
   return v4;
 }
 
-+ (id)keyplaneFromKBTree:(id)a3 withType:(int64_t)a4
++ (id)keyplaneFromKBTree:(id)tree withType:(int64_t)type
 {
-  v5 = a3;
+  treeCopy = tree;
   v6 = objc_alloc_init(TUIKeyplane);
-  [(TUIKeyplane *)v6 setFullTree:v5];
+  [(TUIKeyplane *)v6 setFullTree:treeCopy];
   [(TUIKeyplane *)v6 setEffectsType:+[TUIKeyplane defaultEffectsType]];
-  v7 = [v5 name];
-  [(TUIKeyplane *)v6 setLayoutClass:[TUIKeyplane layoutClassFromKeyplaneName:v7]];
+  name = [treeCopy name];
+  [(TUIKeyplane *)v6 setLayoutClass:[TUIKeyplane layoutClassFromKeyplaneName:name]];
 
   if ([(TUIKeyplane *)v6 isGridLayout])
   {
@@ -3312,16 +3312,16 @@ LABEL_19:
 
   [(TUIKeyplane *)v6 setLayoutType:v8];
   [(TUIKeyplane *)v6 setNumberOfPaddingKeys:0];
-  v9 = [(TUIKeyplane *)v6 findRowSpanningDuplicatesForKeyplane:v5];
+  v9 = [(TUIKeyplane *)v6 findRowSpanningDuplicatesForKeyplane:treeCopy];
   [(TUIKeyplane *)v6 setDoubleHeightKeys:v9];
 
-  v10 = [(TUIKeyplane *)v6 defaultKeysOrderedByRowForKeyplane:v5];
+  v10 = [(TUIKeyplane *)v6 defaultKeysOrderedByRowForKeyplane:treeCopy];
   [(TUIKeyplane *)v6 setDefaultKeysByRow:v10];
 
-  v11 = [(TUIKeyplane *)v6 rowsForKeyboardType:a4];
+  v11 = [(TUIKeyplane *)v6 rowsForKeyboardType:type];
   [(TUIKeyplane *)v6 setVariantKeysByRow:v11];
 
-  [(TUIKeyplane *)v6 setCurrentVariantType:a4];
+  [(TUIKeyplane *)v6 setCurrentVariantType:type];
 
   return v6;
 }

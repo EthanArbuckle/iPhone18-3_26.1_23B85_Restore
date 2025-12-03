@@ -1,5 +1,5 @@
 @interface ICDateEditedFilterTypeSelection
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)emptySummary;
 - (id)emptySummaryTitle;
 - (id)shortEmptySummary;
@@ -7,18 +7,18 @@
 
 @implementation ICDateEditedFilterTypeSelection
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(ICDateFilterTypeSelection *)+[ICDateEditedFilterTypeSelection allocWithZone:](ICDateEditedFilterTypeSelection initWithSelectionType:"initWithSelectionType:", [(ICDateFilterTypeSelection *)self selectionType]];
-  v6 = [(ICDateFilterTypeSelection *)self primaryDate];
-  [(ICDateFilterTypeSelection *)v5 setPrimaryDate:v6];
+  primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+  [(ICDateFilterTypeSelection *)v5 setPrimaryDate:primaryDate];
 
-  v7 = [(ICDateFilterTypeSelection *)self secondaryDate];
-  [(ICDateFilterTypeSelection *)v5 setSecondaryDate:v7];
+  secondaryDate = [(ICDateFilterTypeSelection *)self secondaryDate];
+  [(ICDateFilterTypeSelection *)v5 setSecondaryDate:secondaryDate];
 
   [(ICDateFilterTypeSelection *)v5 setRelativeRangeSelectionType:[(ICDateFilterTypeSelection *)self relativeRangeSelectionType]];
-  v8 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-  v9 = [v8 copyWithZone:a3];
+  relativeRangeAmount = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+  v9 = [relativeRangeAmount copyWithZone:zone];
   [(ICDateFilterTypeSelection *)v5 setRelativeRangeAmount:v9];
 
   return v5;

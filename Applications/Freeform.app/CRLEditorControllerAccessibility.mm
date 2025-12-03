@@ -1,20 +1,20 @@
 @interface CRLEditorControllerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (CRLSelectionPathAccessibility)crlaxSelectionPath;
 - (NSArray)crlaxCurrentEditors;
-- (id)crlaxEditorForEditAction:(SEL)a3 withSender:(id)a4;
+- (id)crlaxEditorForEditAction:(SEL)action withSender:(id)sender;
 - (id)crlaxTextInputEditor;
-- (void)crlaxSetSelectionPath:(id)a3;
-- (void)crlaxSetSelectionPath:(id)a3 withFlags:(unint64_t)a4;
+- (void)crlaxSetSelectionPath:(id)path;
+- (void)crlaxSetSelectionPath:(id)path withFlags:(unint64_t)flags;
 @end
 
 @implementation CRLEditorControllerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -22,11 +22,11 @@
 - (CRLSelectionPathAccessibility)crlaxSelectionPath
 {
   v8 = 0;
-  v2 = [(CRLEditorControllerAccessibility *)self crlaxTarget];
-  v3 = [v2 selectionPath];
+  crlaxTarget = [(CRLEditorControllerAccessibility *)self crlaxTarget];
+  selectionPath = [crlaxTarget selectionPath];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, selectionPath, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -37,31 +37,31 @@
   return v6;
 }
 
-- (void)crlaxSetSelectionPath:(id)a3
+- (void)crlaxSetSelectionPath:(id)path
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1003D7C08;
   v4[3] = &unk_10183AE28;
   v4[4] = self;
-  v3 = a3;
-  v5 = v3;
+  pathCopy = path;
+  v5 = pathCopy;
   if (__CRLAccessibilityPerformSafeBlock(v4))
   {
     abort();
   }
 }
 
-- (void)crlaxSetSelectionPath:(id)a3 withFlags:(unint64_t)a4
+- (void)crlaxSetSelectionPath:(id)path withFlags:(unint64_t)flags
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1003D7CB4;
   v6[3] = &unk_10183C780;
   v6[4] = self;
-  v5 = a3;
-  v7 = v5;
-  v8 = a4;
+  pathCopy = path;
+  v7 = pathCopy;
+  flagsCopy = flags;
   if (__CRLAccessibilityPerformSafeBlock(v6))
   {
     abort();
@@ -70,20 +70,20 @@
 
 - (id)crlaxTextInputEditor
 {
-  v2 = [(CRLEditorControllerAccessibility *)self crlaxTarget];
-  v3 = [v2 textInputEditor];
+  crlaxTarget = [(CRLEditorControllerAccessibility *)self crlaxTarget];
+  textInputEditor = [crlaxTarget textInputEditor];
 
-  return v3;
+  return textInputEditor;
 }
 
 - (NSArray)crlaxCurrentEditors
 {
   v8 = 0;
-  v2 = [(CRLEditorControllerAccessibility *)self crlaxTarget];
-  v3 = [v2 currentEditors];
+  crlaxTarget = [(CRLEditorControllerAccessibility *)self crlaxTarget];
+  currentEditors = [crlaxTarget currentEditors];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsClass(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsClass(v4, currentEditors, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -94,7 +94,7 @@
   return v6;
 }
 
-- (id)crlaxEditorForEditAction:(SEL)a3 withSender:(id)a4
+- (id)crlaxEditorForEditAction:(SEL)action withSender:(id)sender
 {
   v11 = 0;
   v12 = &v11;
@@ -107,10 +107,10 @@
   v7[2] = sub_1003D7EE8;
   v7[3] = &unk_10185DF18;
   v9 = &v11;
-  v10 = a3;
+  actionCopy = action;
   v7[4] = self;
-  v4 = a4;
-  v8 = v4;
+  senderCopy = sender;
+  v8 = senderCopy;
   if (__CRLAccessibilityPerformSafeBlock(v7))
   {
     abort();

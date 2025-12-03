@@ -1,10 +1,10 @@
 @interface LACAnalyticsData
 - (LACAnalyticsData)init;
 - (NSString)description;
-- (void)authenticationAttemptFailedForEvent:(int64_t)a3;
-- (void)authenticationStartedForEvent:(int64_t)a3;
-- (void)authenticationSuccessfulForEvent:(int64_t)a3;
-- (void)mergeAnalyticsData:(id)a3;
+- (void)authenticationAttemptFailedForEvent:(int64_t)event;
+- (void)authenticationStartedForEvent:(int64_t)event;
+- (void)authenticationSuccessfulForEvent:(int64_t)event;
+- (void)mergeAnalyticsData:(id)data;
 @end
 
 @implementation LACAnalyticsData
@@ -19,31 +19,31 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LACAnalyticsData *)self biomeDialogEvent];
-  v5 = [v3 stringWithFormat:@"<LACAnalyticsData %p %@>", self, v4];;
+  biomeDialogEvent = [(LACAnalyticsData *)self biomeDialogEvent];
+  v5 = [v3 stringWithFormat:@"<LACAnalyticsData %p %@>", self, biomeDialogEvent];;
 
   return v5;
 }
 
-- (void)mergeAnalyticsData:(id)a3
+- (void)mergeAnalyticsData:(id)data
 {
-  v7 = a3;
-  v4 = [v7 biomeDialogEvent];
+  dataCopy = data;
+  biomeDialogEvent = [dataCopy biomeDialogEvent];
 
-  if (v4)
+  if (biomeDialogEvent)
   {
-    v5 = [(LACAnalyticsData *)self biomeDialogEvent];
-    v6 = [v7 biomeDialogEvent];
-    [v5 mergeBiomeEvent:v6];
+    biomeDialogEvent2 = [(LACAnalyticsData *)self biomeDialogEvent];
+    biomeDialogEvent3 = [dataCopy biomeDialogEvent];
+    [biomeDialogEvent2 mergeBiomeEvent:biomeDialogEvent3];
   }
 }
 
-- (void)authenticationStartedForEvent:(int64_t)a3
+- (void)authenticationStartedForEvent:(int64_t)event
 {
-  if (a3)
+  if (event)
   {
-    v5 = [(LACAnalyticsData *)self biomeDialogEvent];
-    switch(a3)
+    biomeDialogEvent = [(LACAnalyticsData *)self biomeDialogEvent];
+    switch(event)
     {
       case 1:
         v6 = 1;
@@ -55,20 +55,20 @@
         v6 = 3;
         break;
       default:
-        v6 = 4 * (a3 == 4);
+        v6 = 4 * (event == 4);
         break;
     }
 
-    v7 = v5;
-    [v5 startedAuthenticationWithMechanism:v6];
+    v7 = biomeDialogEvent;
+    [biomeDialogEvent startedAuthenticationWithMechanism:v6];
   }
 }
 
-- (void)authenticationSuccessfulForEvent:(int64_t)a3
+- (void)authenticationSuccessfulForEvent:(int64_t)event
 {
-  if (a3)
+  if (event)
   {
-    switch(a3)
+    switch(event)
     {
       case 1:
         v4 = 1;
@@ -80,20 +80,20 @@
         v4 = 3;
         break;
       default:
-        v4 = 4 * (a3 == 4);
+        v4 = 4 * (event == 4);
         break;
     }
 
-    v5 = [(LACAnalyticsData *)self biomeDialogEvent];
-    [v5 succeededAuthenticationWithMechanism:v4];
+    biomeDialogEvent = [(LACAnalyticsData *)self biomeDialogEvent];
+    [biomeDialogEvent succeededAuthenticationWithMechanism:v4];
   }
 }
 
-- (void)authenticationAttemptFailedForEvent:(int64_t)a3
+- (void)authenticationAttemptFailedForEvent:(int64_t)event
 {
-  if (a3)
+  if (event)
   {
-    switch(a3)
+    switch(event)
     {
       case 1:
         v4 = 1;
@@ -105,12 +105,12 @@
         v4 = 3;
         break;
       default:
-        v4 = 4 * (a3 == 4);
+        v4 = 4 * (event == 4);
         break;
     }
 
-    v5 = [(LACAnalyticsData *)self biomeDialogEvent];
-    [v5 failedAuthenticationWithMechanism:v4];
+    biomeDialogEvent = [(LACAnalyticsData *)self biomeDialogEvent];
+    [biomeDialogEvent failedAuthenticationWithMechanism:v4];
   }
 }
 

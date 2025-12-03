@@ -3,7 +3,7 @@
 - (void)_handleConnectionReset;
 - (void)_setupConnection;
 - (void)invalidate;
-- (void)sendLayerProperties:(id)a3;
+- (void)sendLayerProperties:(id)properties;
 @end
 
 @implementation CARLayerPropertyMarshal
@@ -22,18 +22,18 @@
   return v3;
 }
 
-- (void)sendLayerProperties:(id)a3
+- (void)sendLayerProperties:(id)properties
 {
-  v4 = a3;
-  v6 = [(CARLayerPropertyMarshal *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 sendLayerProperties:v4];
+  propertiesCopy = properties;
+  connection = [(CARLayerPropertyMarshal *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy sendLayerProperties:propertiesCopy];
 }
 
 - (void)invalidate
 {
-  v3 = [(CARLayerPropertyMarshal *)self connection];
-  [v3 invalidate];
+  connection = [(CARLayerPropertyMarshal *)self connection];
+  [connection invalidate];
 
   [(CARLayerPropertyMarshal *)self setConnection:0];
 }

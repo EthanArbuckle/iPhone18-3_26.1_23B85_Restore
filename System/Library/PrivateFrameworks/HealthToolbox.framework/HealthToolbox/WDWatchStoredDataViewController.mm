@@ -1,14 +1,14 @@
 @interface WDWatchStoredDataViewController
 - (BOOL)_shouldDisplayPrivacySection;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_updateFont;
 - (void)addUnpairedWatchHeaderView;
-- (void)handlePairedDevicesSnapshot:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)handlePairedDevicesSnapshot:(id)snapshot;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTableHeaderViewForUnpairedWatch;
 @end
 
@@ -16,17 +16,17 @@
 
 - (void)addUnpairedWatchHeaderView
 {
-  v3 = [(WDStoredDataByCategoryViewController *)self profile];
-  v4 = [v3 healthStore];
-  v5 = [v4 profileIdentifier];
-  v6 = [v5 type];
+  profile = [(WDStoredDataByCategoryViewController *)self profile];
+  healthStore = [profile healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v6 != 3)
+  if (type != 3)
   {
     v7 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(UILabel *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v7 setTextColor:v8];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v7 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v7 setNumberOfLines:0];
     [(UILabel *)v7 setTextAlignment:1];
@@ -34,38 +34,38 @@
     v32 = [v9 localizedStringForKey:@"SOURCES_WATCH_UNPAIRED" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
 
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(WDSourceStoredDataViewController *)self source];
-    v12 = [v11 name];
-    v13 = [v10 localizedStringWithFormat:v32, v12];
+    source = [(WDSourceStoredDataViewController *)self source];
+    name = [source name];
+    v13 = [v10 localizedStringWithFormat:v32, name];
     [(UILabel *)v7 setText:v13];
 
     v14 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v14 addSubview:v7];
-    v15 = [(UILabel *)v7 topAnchor];
-    v16 = [v14 topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:30.0];
+    topAnchor = [(UILabel *)v7 topAnchor];
+    topAnchor2 = [v14 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:30.0];
     [v17 setActive:1];
 
-    v18 = [(UILabel *)v7 bottomAnchor];
-    v19 = [v14 bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    bottomAnchor = [(UILabel *)v7 bottomAnchor];
+    bottomAnchor2 = [v14 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v20 setActive:1];
 
-    v21 = [(UILabel *)v7 leadingAnchor];
-    v22 = [v14 leadingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:40.0];
+    leadingAnchor = [(UILabel *)v7 leadingAnchor];
+    leadingAnchor2 = [v14 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:40.0];
     [v23 setActive:1];
 
-    v24 = [(UILabel *)v7 trailingAnchor];
-    v25 = [v14 trailingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25 constant:-40.0];
+    trailingAnchor = [(UILabel *)v7 trailingAnchor];
+    trailingAnchor2 = [v14 trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-40.0];
     [v26 setActive:1];
 
-    v27 = [v14 widthAnchor];
-    v28 = [(WDWatchStoredDataViewController *)self view];
-    [v28 frame];
-    v29 = [v27 constraintEqualToConstant:CGRectGetWidth(v34)];
+    widthAnchor = [v14 widthAnchor];
+    view = [(WDWatchStoredDataViewController *)self view];
+    [view frame];
+    v29 = [widthAnchor constraintEqualToConstant:CGRectGetWidth(v34)];
     [v29 setActive:1];
 
     messageLabel = self->_messageLabel;
@@ -73,8 +73,8 @@
 
     [(WDWatchStoredDataViewController *)self _updateFont];
     [v14 layoutIfNeeded];
-    v31 = [(WDWatchStoredDataViewController *)self tableView];
-    [v31 setTableHeaderView:v14];
+    tableView = [(WDWatchStoredDataViewController *)self tableView];
+    [tableView setTableHeaderView:v14];
   }
 }
 
@@ -82,9 +82,9 @@
 {
   objc_initWeak(&location, self);
   v3 = objc_alloc(MEMORY[0x277CCD6A8]);
-  v4 = [(WDStoredDataByCategoryViewController *)self profile];
-  v5 = [v4 healthStore];
-  v6 = [v3 initWithHealthStore:v5];
+  profile = [(WDStoredDataByCategoryViewController *)self profile];
+  healthStore = [profile healthStore];
+  v6 = [v3 initWithHealthStore:healthStore];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -118,30 +118,30 @@ void __72__WDWatchStoredDataViewController_updateTableHeaderViewForUnpairedWatch
   [WeakRetained handlePairedDevicesSnapshot:*(a1 + 32)];
 }
 
-- (void)handlePairedDevicesSnapshot:(id)a3
+- (void)handlePairedDevicesSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(WDSourceStoredDataViewController *)self source];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v4 deviceInfoForSourceBundleIdentifier:v6];
+  snapshotCopy = snapshot;
+  source = [(WDSourceStoredDataViewController *)self source];
+  bundleIdentifier = [source bundleIdentifier];
+  v7 = [snapshotCopy deviceInfoForSourceBundleIdentifier:bundleIdentifier];
 
   if (v7)
   {
     if (![(WDWatchStoredDataViewController *)self watchPaired])
     {
       [(WDWatchStoredDataViewController *)self setWatchPaired:1];
-      v8 = [(WDWatchStoredDataViewController *)self tableView];
-      [v8 setTableHeaderView:0];
+      tableView = [(WDWatchStoredDataViewController *)self tableView];
+      [tableView setTableHeaderView:0];
 
-      v9 = [(WDWatchStoredDataViewController *)self tableView];
-      [v9 beginUpdates];
+      tableView2 = [(WDWatchStoredDataViewController *)self tableView];
+      [tableView2 beginUpdates];
 
-      v10 = [(WDWatchStoredDataViewController *)self tableView];
+      tableView3 = [(WDWatchStoredDataViewController *)self tableView];
       v11 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-      [v10 insertSections:v11 withRowAnimation:3];
+      [tableView3 insertSections:v11 withRowAnimation:3];
 
-      v12 = [(WDWatchStoredDataViewController *)self tableView];
-      [v12 endUpdates];
+      tableView4 = [(WDWatchStoredDataViewController *)self tableView];
+      [tableView4 endUpdates];
     }
   }
 
@@ -161,107 +161,107 @@ void __72__WDWatchStoredDataViewController_updateTableHeaderViewForUnpairedWatch
   [(UILabel *)self->_messageLabel setFont:v4];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = WDWatchStoredDataViewController;
-  [(WDStoredDataByCategoryViewController *)&v13 traitCollectionDidChange:v4];
-  if (v4)
+  [(WDStoredDataByCategoryViewController *)&v13 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(WDWatchStoredDataViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(WDWatchStoredDataViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
       [(WDWatchStoredDataViewController *)self _updateFont];
-      v9 = [(WDWatchStoredDataViewController *)self tableView];
-      [v9 beginUpdates];
+      tableView = [(WDWatchStoredDataViewController *)self tableView];
+      [tableView beginUpdates];
 
-      v10 = [(WDWatchStoredDataViewController *)self tableView];
-      v11 = [v10 tableHeaderView];
-      [v11 setNeedsLayout];
+      tableView2 = [(WDWatchStoredDataViewController *)self tableView];
+      tableHeaderView = [tableView2 tableHeaderView];
+      [tableHeaderView setNeedsLayout];
 
-      v12 = [(WDWatchStoredDataViewController *)self tableView];
-      [v12 endUpdates];
+      tableView3 = [(WDWatchStoredDataViewController *)self tableView];
+      [tableView3 endUpdates];
     }
   }
 }
 
 - (BOOL)_shouldDisplayPrivacySection
 {
-  v2 = [(WDStoredDataByCategoryViewController *)self profile];
-  v3 = [v2 healthStore];
-  v4 = [v3 profileIdentifier];
-  v5 = [v4 type] != 3;
+  profile = [(WDStoredDataByCategoryViewController *)self profile];
+  healthStore = [profile healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  v5 = [profileIdentifier type] != 3;
 
   return v5;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(WDWatchStoredDataViewController *)self watchPaired]&& [(WDWatchStoredDataViewController *)self _shouldDisplayPrivacySection])
   {
     v7.receiver = self;
     v7.super_class = WDWatchStoredDataViewController;
-    v5 = [(WDStoredDataByCategoryViewController *)&v7 numberOfSectionsInTableView:v4]+ 1;
+    v5 = [(WDStoredDataByCategoryViewController *)&v7 numberOfSectionsInTableView:viewCopy]+ 1;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = WDWatchStoredDataViewController;
-    v5 = [(WDStoredDataByCategoryViewController *)&v8 numberOfSectionsInTableView:v4];
+    v5 = [(WDStoredDataByCategoryViewController *)&v8 numberOfSectionsInTableView:viewCopy];
   }
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(WDWatchStoredDataViewController *)self watchPaired]&& [(WDWatchStoredDataViewController *)self _shouldDisplayPrivacySection])
   {
-    if (!a4)
+    if (!section)
     {
       v8 = 1;
       goto LABEL_7;
     }
 
-    v7 = [(WDStoredDataByCategoryViewController *)&v10 tableView:v6 numberOfRowsInSection:a4 - 1, self, WDWatchStoredDataViewController, v11.receiver, v11.super_class];
+    wDWatchStoredDataViewController = [(WDStoredDataByCategoryViewController *)&v10 tableView:viewCopy numberOfRowsInSection:section - 1, self, WDWatchStoredDataViewController, v11.receiver, v11.super_class];
   }
 
   else
   {
-    v7 = [(WDStoredDataByCategoryViewController *)&v11 tableView:v6 numberOfRowsInSection:a4, v10.receiver, v10.super_class, self, WDWatchStoredDataViewController];
+    wDWatchStoredDataViewController = [(WDStoredDataByCategoryViewController *)&v11 tableView:viewCopy numberOfRowsInSection:section, v10.receiver, v10.super_class, self, WDWatchStoredDataViewController];
   }
 
-  v8 = v7;
+  v8 = wDWatchStoredDataViewController;
 LABEL_7:
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(WDWatchStoredDataViewController *)self watchPaired]&& [(WDWatchStoredDataViewController *)self _shouldDisplayPrivacySection])
   {
-    if ([v7 section])
+    if ([pathCopy section])
     {
-      v8 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v7 inSection:{"row"), objc_msgSend(v7, "section") - 1}];
+      v8 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(pathCopy inSection:{"row"), objc_msgSend(pathCopy, "section") - 1}];
       v19.receiver = self;
       v19.super_class = WDWatchStoredDataViewController;
-      v9 = [(WDStoredDataByCategoryViewController *)&v19 tableView:v6 cellForRowAtIndexPath:v8];
+      v9 = [(WDStoredDataByCategoryViewController *)&v19 tableView:viewCopy cellForRowAtIndexPath:v8];
     }
 
     else
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"WDWatchStoredDataViewControllerPrivacyCellIdentifier"];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"WDWatchStoredDataViewControllerPrivacyCellIdentifier"];
       if (!v9)
       {
         v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"WDWatchStoredDataViewControllerPrivacyCellIdentifier"];
@@ -269,17 +269,17 @@ LABEL_7:
 
       v11 = WDBundle();
       v12 = [v11 localizedStringForKey:@"PRIVACY_SETTINGS" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-      v13 = [v9 textLabel];
-      [v13 setText:v12];
+      textLabel = [v9 textLabel];
+      [textLabel setText:v12];
 
-      v14 = [(WDWatchStoredDataViewController *)self view];
-      v15 = [v14 tintColor];
-      v16 = [v9 textLabel];
-      [v16 setTextColor:v15];
+      view = [(WDWatchStoredDataViewController *)self view];
+      tintColor = [view tintColor];
+      textLabel2 = [v9 textLabel];
+      [textLabel2 setTextColor:tintColor];
 
-      v17 = [(WDStoredDataByCategoryViewController *)self bodyFont];
-      v18 = [v9 textLabel];
-      [v18 setFont:v17];
+      bodyFont = [(WDStoredDataByCategoryViewController *)self bodyFont];
+      textLabel3 = [v9 textLabel];
+      [textLabel3 setFont:bodyFont];
     }
   }
 
@@ -287,48 +287,48 @@ LABEL_7:
   {
     v20.receiver = self;
     v20.super_class = WDWatchStoredDataViewController;
-    v9 = [(WDStoredDataByCategoryViewController *)&v20 tableView:v6 cellForRowAtIndexPath:v7];
+    v9 = [(WDStoredDataByCategoryViewController *)&v20 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   }
 
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(WDWatchStoredDataViewController *)self watchPaired]&& [(WDWatchStoredDataViewController *)self _shouldDisplayPrivacySection])
   {
-    if (!a4)
+    if (!section)
     {
       goto LABEL_7;
     }
 
-    [(WDStoredDataByCategoryViewController *)&v8 tableView:v6 titleForHeaderInSection:a4 - 1, self, WDWatchStoredDataViewController, v9.receiver, v9.super_class];
+    [(WDStoredDataByCategoryViewController *)&v8 tableView:viewCopy titleForHeaderInSection:section - 1, self, WDWatchStoredDataViewController, v9.receiver, v9.super_class];
   }
 
   else
   {
-    [(WDStoredDataByCategoryViewController *)&v9 tableView:v6 titleForHeaderInSection:a4, v8.receiver, v8.super_class, self, WDWatchStoredDataViewController];
+    [(WDStoredDataByCategoryViewController *)&v9 tableView:viewCopy titleForHeaderInSection:section, v8.receiver, v8.super_class, self, WDWatchStoredDataViewController];
   }
-  a4 = ;
+  section = ;
 LABEL_7:
 
-  return a4;
+  return section;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 reuseIdentifier];
-  v10 = [v9 isEqualToString:@"WDWatchStoredDataViewControllerPrivacyCellIdentifier"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  reuseIdentifier = [v8 reuseIdentifier];
+  v10 = [reuseIdentifier isEqualToString:@"WDWatchStoredDataViewControllerPrivacyCellIdentifier"];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v12 = [MEMORY[0x277CBEBC0] URLWithString:@"bridge:root=PRIVACY_ID"];
-    [v11 openSensitiveURL:v12 withOptions:0];
+    [defaultWorkspace openSensitiveURL:v12 withOptions:0];
 
     [v8 setSelected:0];
   }
@@ -337,7 +337,7 @@ LABEL_7:
   {
     v13.receiver = self;
     v13.super_class = WDWatchStoredDataViewController;
-    [(WDStoredDataByCategoryViewController *)&v13 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(WDStoredDataByCategoryViewController *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 

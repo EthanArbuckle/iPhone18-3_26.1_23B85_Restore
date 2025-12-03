@@ -1,28 +1,28 @@
 @interface AVAnnotationTextRepresentation
-- (AVAnnotationTextRepresentation)initWithText:(id)a3 font:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (AVAnnotationTextRepresentation)initWithText:(id)text font:(id)font;
+- (BOOL)isEqual:(id)equal;
 - (CGColor)backgroundColor;
 - (CGColor)foregroundColor;
-- (id)_initWithPropertyList:(id)a3 binaryData:(id)a4;
-- (id)_propertyListAndBinaryData:(id *)a3;
+- (id)_initWithPropertyList:(id)list binaryData:(id)data;
+- (id)_propertyListAndBinaryData:(id *)data;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setBackgroundColor:(CGColor *)a3;
-- (void)setForegroundColor:(CGColor *)a3;
+- (void)setBackgroundColor:(CGColor *)color;
+- (void)setForegroundColor:(CGColor *)color;
 @end
 
 @implementation AVAnnotationTextRepresentation
 
-- (AVAnnotationTextRepresentation)initWithText:(id)a3 font:(id)a4
+- (AVAnnotationTextRepresentation)initWithText:(id)text font:(id)font
 {
   v8.receiver = self;
   v8.super_class = AVAnnotationTextRepresentation;
   v6 = [(AVAnnotationRepresentation *)&v8 _initWithRepresentationType:@"AVAnnotationRepresentationTypeText"];
   if (v6)
   {
-    v6->_text = [a3 copy];
-    v6->_font = [a4 copy];
+    v6->_text = [text copy];
+    v6->_font = [font copy];
     v6->_backgroundColor = FigCreateCGColorSRGBFromCFArray();
     v6->_foregroundColor = FigCreateCGColorSRGBFromCFArray();
     v6->_link = 0;
@@ -34,18 +34,18 @@
   return v6;
 }
 
-- (id)_initWithPropertyList:(id)a3 binaryData:(id)a4
+- (id)_initWithPropertyList:(id)list binaryData:(id)data
 {
   v35 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = AVAnnotationTextRepresentation;
-  v5 = [(AVAnnotationRepresentation *)&v32 _initWithPropertyList:a3 binaryData:a4];
+  v5 = [(AVAnnotationRepresentation *)&v32 _initWithPropertyList:list binaryData:data];
   if (!v5)
   {
     goto LABEL_31;
   }
 
-  v6 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyText"];
+  v6 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyText"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -53,7 +53,7 @@
   }
 
   v5[4] = [v6 copy];
-  v7 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyFont"];
+  v7 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyFont"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -61,7 +61,7 @@
   }
 
   v5[5] = [v7 copy];
-  v8 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyBackgroundColor"];
+  v8 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyBackgroundColor"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || [v8 count] != 4)
   {
@@ -106,7 +106,7 @@ LABEL_8:
   }
 
   v5[6] = FigCreateCGColorSRGBFromCFArray();
-  v13 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyForegroundColor"];
+  v13 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyForegroundColor"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || [v13 count] != 4)
   {
@@ -151,7 +151,7 @@ LABEL_18:
   }
 
   v5[7] = FigCreateCGColorSRGBFromCFArray();
-  v18 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyLink"];
+  v18 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyLink"];
   if (v18)
   {
     v19 = v18;
@@ -169,7 +169,7 @@ LABEL_31:
 
 LABEL_27:
   v5[8] = v18;
-  v20 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyHasShadow"];
+  v20 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyHasShadow"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -177,7 +177,7 @@ LABEL_27:
   }
 
   *(v5 + 72) = [v20 BOOLValue];
-  v21 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyHasUnderline"];
+  v21 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyHasUnderline"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -185,7 +185,7 @@ LABEL_27:
   }
 
   *(v5 + 73) = [v21 BOOLValue];
-  v22 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyWritingMode"];
+  v22 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyWritingMode"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -213,9 +213,9 @@ LABEL_27:
   return v2;
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
-  v4 = CGColorRetain(a3);
+  v4 = CGColorRetain(color);
   CGColorRelease(self->_backgroundColor);
   self->_backgroundColor = v4;
 }
@@ -227,21 +227,21 @@ LABEL_27:
   return v2;
 }
 
-- (void)setForegroundColor:(CGColor *)a3
+- (void)setForegroundColor:(CGColor *)color
 {
-  v4 = CGColorRetain(a3);
+  v4 = CGColorRetain(color);
   CGColorRelease(self->_foregroundColor);
   self->_foregroundColor = v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v11.receiver = self;
   v11.super_class = AVAnnotationTextRepresentation;
   v5 = [(AVAnnotationRepresentation *)&v11 isEqual:?];
-  if (a3 != self)
+  if (equal != self)
   {
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_17;
     }
@@ -254,11 +254,11 @@ LABEL_27:
 
     if (v5)
     {
-      v5 = -[NSString isEqualToString:](-[AVAnnotationTextRepresentation text](self, "text"), "isEqualToString:", [a3 text]) && -[NSString isEqualToString:](-[AVAnnotationTextRepresentation font](self, "font"), "isEqualToString:", objc_msgSend(a3, "font")) && CGColorEqualToColor(-[AVAnnotationTextRepresentation backgroundColor](self, "backgroundColor"), objc_msgSend(a3, "backgroundColor")) && CGColorEqualToColor(-[AVAnnotationTextRepresentation foregroundColor](self, "foregroundColor"), objc_msgSend(a3, "foregroundColor"));
+      v5 = -[NSString isEqualToString:](-[AVAnnotationTextRepresentation text](self, "text"), "isEqualToString:", [equal text]) && -[NSString isEqualToString:](-[AVAnnotationTextRepresentation font](self, "font"), "isEqualToString:", objc_msgSend(equal, "font")) && CGColorEqualToColor(-[AVAnnotationTextRepresentation backgroundColor](self, "backgroundColor"), objc_msgSend(equal, "backgroundColor")) && CGColorEqualToColor(-[AVAnnotationTextRepresentation foregroundColor](self, "foregroundColor"), objc_msgSend(equal, "foregroundColor"));
     }
 
-    v6 = [(AVAnnotationTextRepresentation *)self link];
-    if (v6 == [a3 link])
+    link = [(AVAnnotationTextRepresentation *)self link];
+    if (link == [equal link])
     {
       if (v5)
       {
@@ -268,7 +268,7 @@ LABEL_27:
 
     else if (v5)
     {
-      if (!-[NSString isEqualToString:](-[AVAnnotationTextRepresentation link](self, "link"), "isEqualToString:", [a3 link]))
+      if (!-[NSString isEqualToString:](-[AVAnnotationTextRepresentation link](self, "link"), "isEqualToString:", [equal link]))
       {
 LABEL_17:
         LOBYTE(v5) = 0;
@@ -276,14 +276,14 @@ LABEL_17:
       }
 
 LABEL_15:
-      v7 = [(AVAnnotationTextRepresentation *)self hasShadow];
-      if (v7 == [a3 hasShadow])
+      hasShadow = [(AVAnnotationTextRepresentation *)self hasShadow];
+      if (hasShadow == [equal hasShadow])
       {
-        v8 = [(AVAnnotationTextRepresentation *)self hasUnderline];
-        if (v8 == [a3 hasUnderline])
+        hasUnderline = [(AVAnnotationTextRepresentation *)self hasUnderline];
+        if (hasUnderline == [equal hasUnderline])
         {
-          v10 = [(AVAnnotationTextRepresentation *)self writingMode];
-          LOBYTE(v5) = v10 == [a3 writingMode];
+          writingMode = [(AVAnnotationTextRepresentation *)self writingMode];
+          LOBYTE(v5) = writingMode == [equal writingMode];
           return v5;
         }
       }
@@ -312,7 +312,7 @@ LABEL_15:
   return v10 ^ [objc_msgSend(MEMORY[0x1E696AD98] numberWithInteger:{-[AVAnnotationTextRepresentation writingMode](self, "writingMode")), "hash"}];
 }
 
-- (id)_propertyListAndBinaryData:(id *)a3
+- (id)_propertyListAndBinaryData:(id *)data
 {
   v8.receiver = self;
   v8.super_class = AVAnnotationTextRepresentation;
@@ -323,18 +323,18 @@ LABEL_15:
   [v5 setObject:FigCopyCGColorSRGBAsCFArray() forKey:@"AVAnnotationRepresentationArchiveKeyBackgroundColor"];
   [(AVAnnotationTextRepresentation *)self foregroundColor];
   [v5 setObject:FigCopyCGColorSRGBAsCFArray() forKey:@"AVAnnotationRepresentationArchiveKeyForegroundColor"];
-  v6 = [(AVAnnotationTextRepresentation *)self link];
-  if (v6)
+  link = [(AVAnnotationTextRepresentation *)self link];
+  if (link)
   {
-    [v5 setObject:v6 forKey:@"AVAnnotationRepresentationArchiveKeyLink"];
+    [v5 setObject:link forKey:@"AVAnnotationRepresentationArchiveKeyLink"];
   }
 
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", -[AVAnnotationTextRepresentation hasShadow](self, "hasShadow")), @"AVAnnotationRepresentationArchiveKeyHasShadow"}];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", -[AVAnnotationTextRepresentation hasUnderline](self, "hasUnderline")), @"AVAnnotationRepresentationArchiveKeyHasUnderline"}];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[AVAnnotationTextRepresentation writingMode](self, "writingMode")), @"AVAnnotationRepresentationArchiveKeyWritingMode"}];
-  if (a3)
+  if (data)
   {
-    *a3 = [MEMORY[0x1E695DEF0] data];
+    *data = [MEMORY[0x1E695DEF0] data];
   }
 
   return v5;

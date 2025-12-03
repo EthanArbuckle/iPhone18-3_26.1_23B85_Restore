@@ -12,16 +12,16 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 elementMappings];
-  v9 = [v7 primaryAlias];
+  elementMappings = [self elementMappings];
+  primaryAlias = [v7 primaryAlias];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [elementMappings objectForKeyedSubscript:primaryAlias];
 
   if (v10)
   {
-    v11 = [v6 elements];
-    v12 = [v10 mappingKey];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    elements = [v6 elements];
+    mappingKey = [v10 mappingKey];
+    v13 = [elements objectForKeyedSubscript:mappingKey];
   }
 
   else
@@ -34,7 +34,7 @@
 
 - (id)logicalButtonForPhysicalPressOf:()GameController onPhysicalInputProfile:
 {
-  v1 = [a1 logicalElementForPhysicalPressOf:? onPhysicalInputProfile:?];
+  v1 = [self logicalElementForPhysicalPressOf:? onPhysicalInputProfile:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -51,7 +51,7 @@
 
 - (id)logicalDirectionPadForPhysicalPressOf:()GameController onPhysicalInputProfile:
 {
-  v1 = [a1 logicalElementForPhysicalPressOf:? onPhysicalInputProfile:?];
+  v1 = [self logicalElementForPhysicalPressOf:? onPhysicalInputProfile:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -69,10 +69,10 @@
 - (id)elementMappingForPhysicalPress:()GameController
 {
   v4 = a3;
-  v5 = [a1 elementMappings];
-  v6 = [v4 primaryAlias];
+  elementMappings = [self elementMappings];
+  primaryAlias = [v4 primaryAlias];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [elementMappings objectForKeyedSubscript:primaryAlias];
 
   return v7;
 }
@@ -80,10 +80,10 @@
 - (id)directionPadMappingForPhysicalPress:()GameController
 {
   v4 = a3;
-  v5 = [a1 elementMappings];
-  v6 = [v4 primaryAlias];
+  elementMappings = [self elementMappings];
+  primaryAlias = [v4 primaryAlias];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [elementMappings objectForKeyedSubscript:primaryAlias];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

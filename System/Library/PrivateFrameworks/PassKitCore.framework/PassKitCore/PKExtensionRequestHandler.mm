@@ -1,18 +1,18 @@
 @interface PKExtensionRequestHandler
 - (BOOL)isInvalidated;
 - (NSExtensionContext)extensionContext;
-- (id)_initWithExtension:(id)a3 extensionRequestOptions:(unint64_t)a4;
+- (id)_initWithExtension:(id)extension extensionRequestOptions:(unint64_t)options;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PKExtensionRequestHandler
 
-- (id)_initWithExtension:(id)a3 extensionRequestOptions:(unint64_t)a4
+- (id)_initWithExtension:(id)extension extensionRequestOptions:(unint64_t)options
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  extensionCopy = extension;
+  if (extensionCopy)
   {
     v22.receiver = self;
     v22.super_class = PKExtensionRequestHandler;
@@ -21,10 +21,10 @@
     if (v8)
     {
       v8->_lock._os_unfair_lock_opaque = 0;
-      objc_storeStrong(&v8->_extension, a3);
+      objc_storeStrong(&v8->_extension, extension);
       extension = v9->_extension;
       v21 = 0;
-      v11 = [(NSExtension *)extension beginExtensionRequestWithOptions:a4 inputItems:0 error:&v21];
+      v11 = [(NSExtension *)extension beginExtensionRequestWithOptions:options inputItems:0 error:&v21];
       v12 = v21;
       requestIdentifier = v9->_requestIdentifier;
       v9->_requestIdentifier = v11;
@@ -68,15 +68,15 @@
     }
 
     self = v9;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 - (void)dealloc

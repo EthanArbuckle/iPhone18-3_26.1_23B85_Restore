@@ -1,20 +1,20 @@
 @interface MBLockdownPlugin
-- (id)_restoreLockdownKeysWithEngine:(id)a3;
-- (id)_savePurpleBuddyRestoreState:(id)a3 persona:(id)a4;
-- (id)_setLockdownValue:(id)a3 forDomain:(id)a4 key:(id)a5 connection:(id)a6;
-- (id)_setPurpleBuddyRestoreState:(id)a3 withEngine:(id)a4;
-- (id)endedBackupWithEngine:(id)a3 error:(id)a4;
-- (id)endedRestoreWithPolicy:(id)a3 engine:(id)a4 error:(id)a5;
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4;
-- (id)preparingBackupWithEngine:(id)a3;
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4;
+- (id)_restoreLockdownKeysWithEngine:(id)engine;
+- (id)_savePurpleBuddyRestoreState:(id)state persona:(id)persona;
+- (id)_setLockdownValue:(id)value forDomain:(id)domain key:(id)key connection:(id)connection;
+- (id)_setPurpleBuddyRestoreState:(id)state withEngine:(id)engine;
+- (id)endedBackupWithEngine:(id)engine error:(id)error;
+- (id)endedRestoreWithPolicy:(id)policy engine:(id)engine error:(id)error;
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine;
+- (id)preparingBackupWithEngine:(id)engine;
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine;
 @end
 
 @implementation MBLockdownPlugin
 
-- (id)preparingBackupWithEngine:(id)a3
+- (id)preparingBackupWithEngine:(id)engine
 {
-  v45 = a3;
+  engineCopy = engine;
   v3 = MBGetDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -89,7 +89,7 @@
       while (v7);
     }
 
-    if ([v45 backsUpPrimaryAccount])
+    if ([engineCopy backsUpPrimaryAccount])
     {
       v71 = 0u;
       v72 = 0u;
@@ -304,8 +304,8 @@
       _MBLog();
     }
 
-    v41 = [v45 properties];
-    [v41 setLockdownKeys:v55];
+    properties = [engineCopy properties];
+    [properties setLockdownKeys:v55];
 
     v38 = 0;
   }
@@ -329,26 +329,26 @@
   return v38;
 }
 
-- (id)_setLockdownValue:(id)a3 forDomain:(id)a4 key:(id)a5 connection:(id)a6
+- (id)_setLockdownValue:(id)value forDomain:(id)domain key:(id)key connection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v12)
+  valueCopy = value;
+  domainCopy = domain;
+  keyCopy = key;
+  connectionCopy = connection;
+  v13 = connectionCopy;
+  if (connectionCopy)
   {
-    if (v9)
+    if (valueCopy)
     {
       v20 = 0;
-      v14 = [v12 setObject:v9 forDomain:v10 andKey:v11 withError:&v20];
+      v14 = [connectionCopy setObject:valueCopy forDomain:domainCopy andKey:keyCopy withError:&v20];
       v15 = v20;
     }
 
     else
     {
       v19 = 0;
-      v14 = [v12 removeObjectWithDomain:v10 andKey:v11 withError:&v19];
+      v14 = [connectionCopy removeObjectWithDomain:domainCopy andKey:keyCopy withError:&v19];
       v15 = v19;
     }
 
@@ -373,11 +373,11 @@
   return v16;
 }
 
-- (id)endedBackupWithEngine:(id)a3 error:(id)a4
+- (id)endedBackupWithEngine:(id)engine error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 backsUpPrimaryAccount] && (objc_msgSend(v6, "isDeviceTransferEngine") & 1) == 0)
+  engineCopy = engine;
+  errorCopy = error;
+  if ([engineCopy backsUpPrimaryAccount] && (objc_msgSend(engineCopy, "isDeviceTransferEngine") & 1) == 0)
   {
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -396,7 +396,7 @@
       v33 = sub_10014996C;
       v34 = sub_10014997C;
       v35 = 0;
-      if (v7 && ([MBError isError:v7 withCode:500]& 1) == 0)
+      if (errorCopy && ([MBError isError:errorCopy withCode:500]& 1) == 0)
       {
         self = 0;
         v25 = 1;
@@ -405,9 +405,9 @@
       else
       {
         v10 = +[NSTimeZone systemTimeZone];
-        v11 = [v10 abbreviation];
+        abbreviation = [v10 abbreviation];
 
-        if ([v6 isCloudKitEngine])
+        if ([engineCopy isCloudKitEngine])
         {
           v12 = MBGetDefaultLog();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -417,14 +417,14 @@
             _MBLog();
           }
 
-          v13 = v6;
-          v14 = [v13 cache];
+          v13 = engineCopy;
+          cache = [v13 cache];
           v29[0] = _NSConcreteStackBlock;
           v29[1] = 3221225472;
           v29[2] = sub_100149984;
           v29[3] = &unk_1003BFC08;
           v29[4] = buf;
-          v15 = [v14 enumerateSnapshots:v29];
+          v15 = [cache enumerateSnapshots:v29];
           v16 = @"LastCloudBackupDate";
           v17 = @"LastCloudBackupTZ";
         }
@@ -442,7 +442,7 @@
           v13 = +[NSDate date];
           [v13 timeIntervalSinceReferenceDate];
           v21 = [NSNumber numberWithUnsignedLongLong:v20];
-          v14 = *(v31 + 5);
+          cache = *(v31 + 5);
           *(v31 + 5) = v21;
           v16 = @"LastiTunesBackupDate";
           v17 = @"LastiTunesBackupTZ";
@@ -457,7 +457,7 @@
             *v36 = 138412802;
             v37 = v23;
             v38 = 2112;
-            v39 = v11;
+            v39 = abbreviation;
             v40 = 2112;
             v41 = v16;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Setting last backup date to %@/%@ for key %@", v36, 0x20u);
@@ -467,17 +467,17 @@
 
           v24 = [(MBLockdownPlugin *)self _setLockdownValue:*(v31 + 5) forDomain:@"com.apple.mobile.backup" key:v16 connection:v9];
 
-          if (v24 || ([(MBLockdownPlugin *)self _setLockdownValue:v11 forDomain:@"com.apple.mobile.backup" key:v17 connection:v9], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+          if (v24 || ([(MBLockdownPlugin *)self _setLockdownValue:abbreviation forDomain:@"com.apple.mobile.backup" key:v17 connection:v9], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v7 = v24;
+            errorCopy = v24;
             v25 = 1;
-            self = v7;
+            self = errorCopy;
           }
 
           else
           {
             v25 = 0;
-            v7 = 0;
+            errorCopy = 0;
           }
         }
 
@@ -526,21 +526,21 @@
   return self;
 }
 
-- (id)_savePurpleBuddyRestoreState:(id)a3 persona:(id)a4
+- (id)_savePurpleBuddyRestoreState:(id)state persona:(id)persona
 {
-  v5 = a3;
-  v6 = [a4 userIncompleteRestoreDirectory];
-  v7 = [v6 stringByAppendingPathComponent:@"/var/mobile/Library/Preferences/com.apple.purplebuddy.plist"];
+  stateCopy = state;
+  userIncompleteRestoreDirectory = [persona userIncompleteRestoreDirectory];
+  v7 = [userIncompleteRestoreDirectory stringByAppendingPathComponent:@"/var/mobile/Library/Preferences/com.apple.purplebuddy.plist"];
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v31 = v7;
     v32 = 2114;
-    v33 = v5;
+    v33 = stateCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Saving the PurpleBuddy restore state at %{public}@: %{public}@", buf, 0x16u);
     v24 = v7;
-    v26 = v5;
+    v26 = stateCopy;
     _MBLog();
   }
 
@@ -558,10 +558,10 @@
 
   v12 = v11;
 
-  if (v5)
+  if (stateCopy)
   {
-    [v12 setObject:v5 forKeyedSubscript:@"SetupState"];
-    [v12 setObject:v5 forKeyedSubscript:@"RestoreState"];
+    [v12 setObject:stateCopy forKeyedSubscript:@"SetupState"];
+    [v12 setObject:stateCopy forKeyedSubscript:@"RestoreState"];
   }
 
   else
@@ -570,10 +570,10 @@
     [v12 removeObjectForKey:@"RestoreState"];
   }
 
-  v13 = [v7 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [v7 stringByDeletingLastPathComponent];
   v14 = +[NSFileManager defaultManager];
   v29 = 0;
-  v15 = [v14 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:&v29];
+  v15 = [v14 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v29];
   v16 = v29;
 
   if ((v15 & 1) == 0)
@@ -582,11 +582,11 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v31 = v13;
+      v31 = stringByDeletingLastPathComponent;
       v32 = 2114;
       v33 = v16;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to create the directory at %{public}@: %{public}@", buf, 0x16u);
-      v25 = v13;
+      v25 = stringByDeletingLastPathComponent;
       v27 = v16;
       _MBLog();
     }
@@ -621,10 +621,10 @@
   return v21;
 }
 
-- (id)_setPurpleBuddyRestoreState:(id)a3 withEngine:(id)a4
+- (id)_setPurpleBuddyRestoreState:(id)state withEngine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  engineCopy = engine;
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -644,12 +644,12 @@
       v19 = 2112;
       v20 = @"SetupState";
       v21 = 2112;
-      v22 = v6;
+      v22 = stateCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Setting %@ %@ to %@", buf, 0x20u);
       _MBLog();
     }
 
-    v11 = [(MBLockdownPlugin *)self _setLockdownValue:v6 forDomain:@"com.apple.purplebuddy" key:@"SetupState" connection:v9];
+    v11 = [(MBLockdownPlugin *)self _setLockdownValue:stateCopy forDomain:@"com.apple.purplebuddy" key:@"SetupState" connection:v9];
     if (!v11)
     {
       v12 = MBGetDefaultLog();
@@ -660,18 +660,18 @@
         v19 = 2112;
         v20 = @"RestoreState";
         v21 = 2112;
-        v22 = v6;
+        v22 = stateCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Setting %@ %@ to %@", buf, 0x20u);
         _MBLog();
       }
 
-      v11 = [(MBLockdownPlugin *)self _setLockdownValue:v6 forDomain:@"com.apple.purplebuddy" key:@"RestoreState" connection:v9];
+      v11 = [(MBLockdownPlugin *)self _setLockdownValue:stateCopy forDomain:@"com.apple.purplebuddy" key:@"RestoreState" connection:v9];
       if (!v11)
       {
-        if ([v7 isForegroundRestore])
+        if ([engineCopy isForegroundRestore])
         {
-          v13 = [v7 persona];
-          v11 = [(MBLockdownPlugin *)self _savePurpleBuddyRestoreState:v6 persona:v13];
+          persona = [engineCopy persona];
+          v11 = [(MBLockdownPlugin *)self _savePurpleBuddyRestoreState:stateCopy persona:persona];
         }
 
         else
@@ -708,23 +708,23 @@
   return v11;
 }
 
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v5 = a4;
-  if (![v5 restoresPrimaryAccount])
+  engineCopy = engine;
+  if (![engineCopy restoresPrimaryAccount])
   {
     goto LABEL_17;
   }
 
-  if (([v5 isServiceEngine] & 1) == 0)
+  if (([engineCopy isServiceEngine] & 1) == 0)
   {
-    v19 = self;
+    selfCopy = self;
     v6 = 1;
     while (1)
     {
       v7 = v6;
       v8 = +[FMDFMIPManager sharedInstance];
-      v9 = [v8 lockdownShouldDisableDeviceRestore];
+      lockdownShouldDisableDeviceRestore = [v8 lockdownShouldDisableDeviceRestore];
 
       v10 = fmdFMIPLastOperationResult;
       v11 = MBGetDefaultLog();
@@ -754,17 +754,17 @@ LABEL_13:
       }
     }
 
-    self = v19;
+    self = selfCopy;
     if (v12)
     {
       *buf = 67109120;
-      LODWORD(v21) = v9;
+      LODWORD(v21) = lockdownShouldDisableDeviceRestore;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[FMDFMIPManager lockdownShouldDisableDeviceRestore] returned %d", buf, 8u);
-      v18 = v9;
+      v18 = lockdownShouldDisableDeviceRestore;
       _MBLog();
     }
 
-    if (v9)
+    if (lockdownShouldDisableDeviceRestore)
     {
       v13 = @"Find My iPhone must be disabled before restoring";
       v14 = 211;
@@ -772,9 +772,9 @@ LABEL_13:
     }
   }
 
-  if ([v5 isServiceEngine])
+  if ([engineCopy isServiceEngine])
   {
-    v15 = [(MBLockdownPlugin *)self _setPurpleBuddyRestoreState:@"RestoringFromBackup" withEngine:v5];
+    v15 = [(MBLockdownPlugin *)self _setPurpleBuddyRestoreState:@"RestoringFromBackup" withEngine:engineCopy];
 LABEL_16:
     v16 = v15;
   }
@@ -788,38 +788,38 @@ LABEL_17:
   return v16;
 }
 
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v5 = a4;
-  if (![v5 restoresPrimaryAccount])
+  engineCopy = engine;
+  if (![engineCopy restoresPrimaryAccount])
   {
     v7 = 0;
     goto LABEL_12;
   }
 
-  if ([v5 isDeviceTransferEngine])
+  if ([engineCopy isDeviceTransferEngine])
   {
     v6 = @"RestoredFromDevice";
   }
 
-  else if ([v5 isDriveEngine])
+  else if ([engineCopy isDriveEngine])
   {
     v6 = @"RestoredFromiTunesBackup";
   }
 
   else
   {
-    if (![v5 isServiceEngine])
+    if (![engineCopy isServiceEngine])
     {
 LABEL_10:
-      v8 = [(MBLockdownPlugin *)self _restoreLockdownKeysWithEngine:v5];
+      v8 = [(MBLockdownPlugin *)self _restoreLockdownKeysWithEngine:engineCopy];
       goto LABEL_11;
     }
 
     v6 = @"BackgroundRestoringFromiCloudBackup";
   }
 
-  v8 = [(MBLockdownPlugin *)self _setPurpleBuddyRestoreState:v6 withEngine:v5];
+  v8 = [(MBLockdownPlugin *)self _setPurpleBuddyRestoreState:v6 withEngine:engineCopy];
   if (!v8)
   {
     goto LABEL_10;
@@ -832,24 +832,24 @@ LABEL_12:
   return v7;
 }
 
-- (id)_restoreLockdownKeysWithEngine:(id)a3
+- (id)_restoreLockdownKeysWithEngine:(id)engine
 {
-  v59 = a3;
-  v3 = [v59 settingsContext];
-  v4 = [v3 shouldRestoreSystemFiles];
+  engineCopy = engine;
+  settingsContext = [engineCopy settingsContext];
+  shouldRestoreSystemFiles = [settingsContext shouldRestoreSystemFiles];
 
-  if (v4)
+  if (shouldRestoreSystemFiles)
   {
-    v5 = [v59 properties];
-    v58 = [v5 lockdownKeys];
+    properties = [engineCopy properties];
+    lockdownKeys = [properties lockdownKeys];
 
-    if (v58)
+    if (lockdownKeys)
     {
       v6 = MBGetDefaultLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v85 = v58;
+        v85 = lockdownKeys;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Loaded saved lockdown keys: %@", buf, 0xCu);
         _MBLog();
       }
@@ -987,7 +987,7 @@ LABEL_73:
                 _MBLog();
               }
 
-              v25 = [v58 objectForKeyedSubscript:v11];
+              v25 = [lockdownKeys objectForKeyedSubscript:v11];
 
               v71 = 0u;
               v72 = 0u;
@@ -1082,7 +1082,7 @@ LABEL_73:
                 _MBLog();
               }
 
-              v34 = [v58 objectForKeyedSubscript:v32];
+              v34 = [lockdownKeys objectForKeyedSubscript:v32];
               v63 = 0u;
               v64 = 0u;
               v61 = 0u;
@@ -1172,7 +1172,7 @@ LABEL_75:
         v44 = 0;
       }
 
-      v46 = v58;
+      v46 = lockdownKeys;
     }
 
     else
@@ -1204,16 +1204,16 @@ LABEL_75:
   return v43;
 }
 
-- (id)endedRestoreWithPolicy:(id)a3 engine:(id)a4 error:(id)a5
+- (id)endedRestoreWithPolicy:(id)policy engine:(id)engine error:(id)error
 {
-  v7 = a4;
-  if ([v7 restoresPrimaryAccount])
+  engineCopy = engine;
+  if ([engineCopy restoresPrimaryAccount])
   {
-    v8 = [v7 isServiceEngine];
+    isServiceEngine = [engineCopy isServiceEngine];
     v9 = 0;
-    if (a5 && v8)
+    if (error && isServiceEngine)
     {
-      v9 = [(MBLockdownPlugin *)self _setPurpleBuddyRestoreState:0 withEngine:v7];
+      v9 = [(MBLockdownPlugin *)self _setPurpleBuddyRestoreState:0 withEngine:engineCopy];
     }
   }
 

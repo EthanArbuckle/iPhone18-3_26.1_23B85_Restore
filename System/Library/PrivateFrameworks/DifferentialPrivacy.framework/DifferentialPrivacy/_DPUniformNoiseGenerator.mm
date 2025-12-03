@@ -1,35 +1,35 @@
 @interface _DPUniformNoiseGenerator
-+ (id)generatorWithValueRange:(id)a3;
-- (_DPUniformNoiseGenerator)initWithValueRange:(id)a3;
++ (id)generatorWithValueRange:(id)range;
+- (_DPUniformNoiseGenerator)initWithValueRange:(id)range;
 - (id)description;
 @end
 
 @implementation _DPUniformNoiseGenerator
 
-- (_DPUniformNoiseGenerator)initWithValueRange:(id)a3
+- (_DPUniformNoiseGenerator)initWithValueRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v11.receiver = self;
   v11.super_class = _DPUniformNoiseGenerator;
   v5 = [(_DPUniformNoiseGenerator *)&v11 init];
   if (v5)
   {
-    v6 = [v4 minPossible];
-    [v6 doubleValue];
+    minPossible = [rangeCopy minPossible];
+    [minPossible doubleValue];
     v5->_minValue = v7;
 
-    v8 = [v4 range];
-    [v8 doubleValue];
+    range = [rangeCopy range];
+    [range doubleValue];
     v5->_range = v9;
   }
 
   return v5;
 }
 
-+ (id)generatorWithValueRange:(id)a3
++ (id)generatorWithValueRange:(id)range
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithValueRange:v4];
+  rangeCopy = range;
+  v5 = [[self alloc] initWithValueRange:rangeCopy];
 
   return v5;
 }

@@ -2,7 +2,7 @@
 + (id)Datastream;
 + (id)configurationForDatastream;
 + (id)storeConfigurationForDatastream;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -10,13 +10,13 @@
 
 + (id)configurationForDatastream
 {
-  v3 = [a1 storeConfigurationForDatastream];
-  v4 = [a1 syncPolicyForDatastream];
+  storeConfigurationForDatastream = [self storeConfigurationForDatastream];
+  syncPolicyForDatastream = [self syncPolicyForDatastream];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"BD282BB0-1D42-4EED-92EA-978297F981E7"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"IntelligenceFlow.Transcript.Datastream" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.intelligenceflow.intelligenceflowd" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"IntelligenceFlow.Transcript.Datastream" eventClass:objc_opt_class() storeConfig:storeConfigurationForDatastream syncPolicy:syncPolicyForDatastream legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.intelligenceflow.intelligenceflowd" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -32,7 +32,7 @@
 + (id)Datastream
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForDatastream];
+  configurationForDatastream = [self configurationForDatastream];
   v3 = +[BMIntelligenceFlowTranscriptDatastreamEvent columns];
   v4 = BMEventTimestampSQLColumn();
   v21[0] = v4;
@@ -56,26 +56,26 @@
   v15 = [v10 arrayByAddingObjectsFromArray:v14];
 
   v16 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"IntelligenceFlow.Transcript.Datastream" columns:v15];
-  v17 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligenceFlow.Transcript.Datastream" schema:v16 configuration:v2];
+  v17 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligenceFlow.Transcript.Datastream" schema:v16 configuration:configurationForDatastream];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Datastream"])
+  if ([name isEqualToString:@"Datastream"])
   {
-    v4 = [a1 Datastream];
+    datastream = [self Datastream];
   }
 
   else
   {
-    v4 = 0;
+    datastream = 0;
   }
 
-  return v4;
+  return datastream;
 }
 
 + (id)validKeyPaths

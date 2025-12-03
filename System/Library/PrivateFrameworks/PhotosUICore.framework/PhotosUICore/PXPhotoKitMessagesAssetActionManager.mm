@@ -1,24 +1,24 @@
 @interface PXPhotoKitMessagesAssetActionManager
-+ (id)assetActionManagerWithCMMSession:(id)a3;
-- (id)_selectionSnapshotForPerformerClass:(Class)a3 applySubsetIfNeeded:(BOOL)a4;
++ (id)assetActionManagerWithCMMSession:(id)session;
+- (id)_selectionSnapshotForPerformerClass:(Class)class applySubsetIfNeeded:(BOOL)needed;
 - (void)px_registerAdditionalPerformerClasses;
 @end
 
 @implementation PXPhotoKitMessagesAssetActionManager
 
-- (id)_selectionSnapshotForPerformerClass:(Class)a3 applySubsetIfNeeded:(BOOL)a4
+- (id)_selectionSnapshotForPerformerClass:(Class)class applySubsetIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v8 = [(PXPhotoKitMessagesAssetActionManager *)self selectionManager];
-  v9 = [v8 selectionSnapshot];
+  neededCopy = needed;
+  selectionManager = [(PXPhotoKitMessagesAssetActionManager *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  v10 = [v9 dataSource];
-  if (!v10)
+  dataSource = [selectionSnapshot dataSource];
+  if (!dataSource)
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v42 = objc_opt_class();
     v43 = NSStringFromClass(v42);
-    [v41 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMessagesAssetActionManager.m" lineNumber:48 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"selectionSnapshot.dataSource", v43}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitMessagesAssetActionManager.m" lineNumber:48 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"selectionSnapshot.dataSource", v43}];
 LABEL_25:
 
     goto LABEL_3;
@@ -27,66 +27,66 @@ LABEL_25:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v44 = objc_opt_class();
     v43 = NSStringFromClass(v44);
-    v45 = [v10 px_descriptionForAssertionMessage];
-    [v41 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMessagesAssetActionManager.m" lineNumber:48 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"selectionSnapshot.dataSource", v43, v45}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitMessagesAssetActionManager.m" lineNumber:48 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"selectionSnapshot.dataSource", v43, px_descriptionForAssertionMessage}];
 
     goto LABEL_25;
   }
 
 LABEL_3:
-  if (([v9 isAnyItemSelected] & 1) != 0 || (-[PXPhotoKitMessagesAssetActionManager objectReference](self, "objectReference"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  if (([selectionSnapshot isAnyItemSelected] & 1) != 0 || (-[PXPhotoKitMessagesAssetActionManager objectReference](self, "objectReference"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
-    if (([v9 isAnyItemSelected] & 1) != 0 || (objc_msgSend(v10, "containerCollection"), v17 = objc_claimAutoreleasedReturnValue(), v18 = -[objc_class canPerformOnImplicitSelectionInContainerCollection:](a3, "canPerformOnImplicitSelectionInContainerCollection:", v17), v17, !v18))
+    if (([selectionSnapshot isAnyItemSelected] & 1) != 0 || (objc_msgSend(dataSource, "containerCollection"), v17 = objc_claimAutoreleasedReturnValue(), v18 = -[objc_class canPerformOnImplicitSelectionInContainerCollection:](class, "canPerformOnImplicitSelectionInContainerCollection:", v17), v17, !v18))
     {
-      if ([(objc_class *)a3 canPerformOnSubsetOfSelection]&& v4)
+      if ([(objc_class *)class canPerformOnSubsetOfSelection]&& neededCopy)
       {
         v22 = objc_alloc_init(off_1E77217C8);
-        v23 = [v10 photosDataSource];
-        v24 = [v9 selectedIndexPaths];
-        v25 = [(PXPhotoKitAssetActionManager *)self person];
-        v26 = [(PXPhotoKitAssetActionManager *)self socialGroup];
+        photosDataSource = [dataSource photosDataSource];
+        selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+        person = [(PXPhotoKitAssetActionManager *)self person];
+        socialGroup = [(PXPhotoKitAssetActionManager *)self socialGroup];
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __96__PXPhotoKitMessagesAssetActionManager__selectionSnapshotForPerformerClass_applySubsetIfNeeded___block_invoke;
         v46[3] = &unk_1E7740DD0;
         v50 = v22;
-        v51 = a3;
-        v47 = v23;
-        v48 = v25;
-        v49 = v26;
+        classCopy = class;
+        v47 = photosDataSource;
+        v48 = person;
+        v49 = socialGroup;
         v27 = v22;
-        v28 = v26;
-        v29 = v25;
-        v30 = v23;
-        [v24 enumerateItemIndexPathsUsingBlock:v46];
-        v31 = [[off_1E77218D8 alloc] initWithDataSource:v10 selectedIndexPaths:v27];
+        v28 = socialGroup;
+        v29 = person;
+        v30 = photosDataSource;
+        [selectedIndexPaths enumerateItemIndexPathsUsingBlock:v46];
+        v31 = [[off_1E77218D8 alloc] initWithDataSource:dataSource selectedIndexPaths:v27];
 
-        v9 = v31;
+        selectionSnapshot = v31;
       }
     }
 
     else
     {
       v19 = [off_1E77218D8 alloc];
-      v20 = [v10 allItemIndexPaths];
-      v21 = [v19 initWithDataSource:v10 selectedIndexPaths:v20];
+      allItemIndexPaths = [dataSource allItemIndexPaths];
+      v21 = [v19 initWithDataSource:dataSource selectedIndexPaths:allItemIndexPaths];
 
-      v9 = v21;
+      selectionSnapshot = v21;
     }
   }
 
   else
   {
-    v12 = [v9 dataSource];
-    v13 = [v12 identifier];
-    v14 = [(PXPhotoKitMessagesAssetActionManager *)self objectReference];
-    v15 = v14;
-    if (v14)
+    dataSource2 = [selectionSnapshot dataSource];
+    identifier = [dataSource2 identifier];
+    objectReference = [(PXPhotoKitMessagesAssetActionManager *)self objectReference];
+    v15 = objectReference;
+    if (objectReference)
     {
-      [v14 indexPath];
+      [objectReference indexPath];
       v16 = v53;
     }
 
@@ -97,21 +97,21 @@ LABEL_3:
       v54 = 0u;
     }
 
-    if (v13 != v16)
+    if (identifier != v16)
     {
-      v32 = [v9 dataSource];
-      v33 = [(PXPhotoKitMessagesAssetActionManager *)self objectReference];
-      v34 = [v32 objectReferenceForObjectReference:v33];
+      dataSource3 = [selectionSnapshot dataSource];
+      objectReference2 = [(PXPhotoKitMessagesAssetActionManager *)self objectReference];
+      v34 = [dataSource3 objectReferenceForObjectReference:objectReference2];
       [(PXPhotoKitMessagesAssetActionManager *)self setObjectReference:v34];
     }
 
     v35 = [off_1E77218D8 alloc];
-    v36 = [v9 dataSource];
-    v37 = [(PXPhotoKitMessagesAssetActionManager *)self objectReference];
-    v38 = v37;
-    if (v37)
+    dataSource4 = [selectionSnapshot dataSource];
+    objectReference3 = [(PXPhotoKitMessagesAssetActionManager *)self objectReference];
+    v38 = objectReference3;
+    if (objectReference3)
     {
-      [v37 indexPath];
+      [objectReference3 indexPath];
     }
 
     else
@@ -119,12 +119,12 @@ LABEL_3:
       memset(v52, 0, sizeof(v52));
     }
 
-    v39 = [v35 initWithDataSource:v36 selectedIndexPath:v52];
+    v39 = [v35 initWithDataSource:dataSource4 selectedIndexPath:v52];
 
-    v9 = v39;
+    selectionSnapshot = v39;
   }
 
-  return v9;
+  return selectionSnapshot;
 }
 
 void __96__PXPhotoKitMessagesAssetActionManager__selectionSnapshotForPerformerClass_applySubsetIfNeeded___block_invoke(uint64_t a1, __int128 *a2)
@@ -153,16 +153,16 @@ void __96__PXPhotoKitMessagesAssetActionManager__selectionSnapshotForPerformerCl
   [(PXPhotoKitAssetActionManager *)self registerPerformerClass:objc_opt_class() forType:*off_1E7721A28];
 }
 
-+ (id)assetActionManagerWithCMMSession:(id)a3
++ (id)assetActionManagerWithCMMSession:(id)session
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 viewModel];
-  v6 = [v5 selectionManager];
+  sessionCopy = session;
+  viewModel = [sessionCopy viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  v7 = [[a1 alloc] initWithSelectionManager:v6];
-  v8 = [v6 dataSourceManager];
-  if (v8)
+  v7 = [[self alloc] initWithSelectionManager:selectionManager];
+  dataSourceManager = [selectionManager dataSourceManager];
+  if (dataSourceManager)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -170,32 +170,32 @@ void __96__PXPhotoKitMessagesAssetActionManager__selectionSnapshotForPerformerCl
       goto LABEL_3;
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PXPhotoKitMessagesAssetActionManager assetActionManagerWithCMMSession:]"];
     v19 = objc_opt_class();
     v18 = NSStringFromClass(v19);
-    v20 = [v8 px_descriptionForAssertionMessage];
-    [v15 handleFailureInFunction:v16 file:@"PXPhotoKitMessagesAssetActionManager.m" lineNumber:24 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"selectionManager.dataSourceManager", v18, v20}];
+    px_descriptionForAssertionMessage = [dataSourceManager px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInFunction:v16 file:@"PXPhotoKitMessagesAssetActionManager.m" lineNumber:24 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"selectionManager.dataSourceManager", v18, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PXPhotoKitMessagesAssetActionManager assetActionManagerWithCMMSession:]"];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    [v15 handleFailureInFunction:v16 file:@"PXPhotoKitMessagesAssetActionManager.m" lineNumber:24 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"selectionManager.dataSourceManager", v18}];
+    [currentHandler handleFailureInFunction:v16 file:@"PXPhotoKitMessagesAssetActionManager.m" lineNumber:24 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"selectionManager.dataSourceManager", v18}];
   }
 
 LABEL_3:
-  [v7 setDataSourceManager:v8];
+  [v7 setDataSourceManager:dataSourceManager];
 
-  v9 = [v4 importStatusManager];
-  [v7 setImportStatusManager:v9];
+  importStatusManager = [sessionCopy importStatusManager];
+  [v7 setImportStatusManager:importStatusManager];
 
-  v10 = [v4 importSessionID];
+  importSessionID = [sessionCopy importSessionID];
 
-  [v7 setImportSessionID:v10];
+  [v7 setImportSessionID:importSessionID];
   v11 = MEMORY[0x1E695DFD8];
   v21[0] = *off_1E7721A28;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];

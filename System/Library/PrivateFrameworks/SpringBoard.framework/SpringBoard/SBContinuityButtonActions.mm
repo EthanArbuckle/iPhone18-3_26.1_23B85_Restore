@@ -5,7 +5,7 @@
 - (BOOL)_processHomeButtonInLibraryViewController;
 - (BOOL)_processHomeButtonInSwitcherController;
 - (BOOL)_processHomeButtonInSystemApertureController;
-- (SBContinuityButtonActions)initWithWindowScene:(id)a3 debugName:(id)a4;
+- (SBContinuityButtonActions)initWithWindowScene:(id)scene debugName:(id)name;
 - (SBWindowScene)windowScene;
 - (void)_requeueHomeButtonRequest;
 - (void)invalidate;
@@ -17,25 +17,25 @@
 
 @implementation SBContinuityButtonActions
 
-- (SBContinuityButtonActions)initWithWindowScene:(id)a3 debugName:(id)a4
+- (SBContinuityButtonActions)initWithWindowScene:(id)scene debugName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = SBContinuityButtonActions;
   v8 = [(SBContinuityButtonActions *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_windowScene, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_windowScene, sceneCopy);
+    v10 = [nameCopy copy];
     debugName = v9->_debugName;
     v9->_debugName = v10;
 
     v12 = +[SBDefaults localDefaults];
-    v13 = [v12 controlCenterDefaults];
+    controlCenterDefaults = [v12 controlCenterDefaults];
     controlCenterDefaults = v9->_controlCenterDefaults;
-    v9->_controlCenterDefaults = v13;
+    v9->_controlCenterDefaults = controlCenterDefaults;
   }
 
   return v9;
@@ -43,9 +43,9 @@
 
 - (void)invalidate
 {
-  v4 = [MEMORY[0x277D0AB20] sharedInstance];
-  v3 = [(SBContinuityButtonActions *)self _menuButtonEventName];
-  [v4 cancelEventsWithName:v3];
+  mEMORY[0x277D0AB20] = [MEMORY[0x277D0AB20] sharedInstance];
+  _menuButtonEventName = [(SBContinuityButtonActions *)self _menuButtonEventName];
+  [mEMORY[0x277D0AB20] cancelEventsWithName:_menuButtonEventName];
 }
 
 - (void)performHomeButtonAction
@@ -60,8 +60,8 @@
 - (void)performSwitcherButtonAction
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v2 = [WeakRetained switcherController];
-  [v2 toggleMainSwitcherWithSource:20 animated:1];
+  switcherController = [WeakRetained switcherController];
+  [switcherController toggleMainSwitcherWithSource:20 animated:1];
 }
 
 - (void)performSpotlightButtonAction
@@ -83,26 +83,26 @@
 - (void)performControlCenterButtonAction
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained controlCenterController];
+  controlCenterController = [WeakRetained controlCenterController];
 
-  if ([v3 isPresented])
+  if ([controlCenterController isPresented])
   {
-    [v3 dismissAnimated:1];
+    [controlCenterController dismissAnimated:1];
   }
 
   else
   {
-    [v3 presentAnimated:1];
+    [controlCenterController presentAnimated:1];
   }
 }
 
 - (BOOL)_processHomeButtonInSystemApertureController
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained systemApertureController];
+  systemApertureController = [WeakRetained systemApertureController];
 
-  v4 = [v3 handleHomeButtonPress];
-  if (v4)
+  handleHomeButtonPress = [systemApertureController handleHomeButtonPress];
+  if (handleHomeButtonPress)
   {
     v5 = SBLogContinuityDisplay();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -112,18 +112,18 @@
     }
   }
 
-  return v4;
+  return handleHomeButtonPress;
 }
 
 - (BOOL)_processHomeButtonInBannerManager
 {
-  v3 = [(SBContinuityButtonActions *)self windowScene];
+  windowScene = [(SBContinuityButtonActions *)self windowScene];
   v4 = +[SBWorkspace mainWorkspace];
-  v5 = [v4 transientOverlayPresentationManager];
-  v6 = [v5 transientOverlayPresenterForWindowScene:v3];
+  transientOverlayPresentationManager = [v4 transientOverlayPresentationManager];
+  v6 = [transientOverlayPresentationManager transientOverlayPresenterForWindowScene:windowScene];
 
-  v7 = [SBApp bannerManager];
-  v8 = [v7 bannerWindowInWindowScene:v3];
+  bannerManager = [SBApp bannerManager];
+  v8 = [bannerManager bannerWindowInWindowScene:windowScene];
   [v8 windowLevel];
   if ([v6 hasPresentationAboveWindowLevel:?])
   {
@@ -134,7 +134,7 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v10 = [v7 handleHomeButtonPressInWindowScene:WeakRetained];
+  v10 = [bannerManager handleHomeButtonPressInWindowScene:WeakRetained];
 
   if (!v10)
   {
@@ -156,12 +156,12 @@ LABEL_8:
 
 - (BOOL)_processHomeButtonInCommandTabUI
 {
-  v2 = [(SBContinuityButtonActions *)self windowScene];
-  v3 = [v2 commandTabController];
-  v4 = [v3 isVisible];
-  if (v4)
+  windowScene = [(SBContinuityButtonActions *)self windowScene];
+  commandTabController = [windowScene commandTabController];
+  isVisible = [commandTabController isVisible];
+  if (isVisible)
   {
-    [v3 dismiss];
+    [commandTabController dismiss];
     v5 = SBLogContinuityDisplay();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -170,21 +170,21 @@ LABEL_8:
     }
   }
 
-  return v4;
+  return isVisible;
 }
 
 - (BOOL)_processHomeButtonInLibraryViewController
 {
-  v2 = [(SBContinuityButtonActions *)self windowScene];
-  v3 = [v2 modalLibraryController];
-  v4 = [v2 layoutStateProvider];
-  v5 = [v4 layoutState];
-  v6 = [v5 unlockedEnvironmentMode];
+  windowScene = [(SBContinuityButtonActions *)self windowScene];
+  modalLibraryController = [windowScene modalLibraryController];
+  layoutStateProvider = [windowScene layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
+  unlockedEnvironmentMode = [layoutState unlockedEnvironmentMode];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 2 && [v3 isPresentingLibraryInForeground])
+  if ((unlockedEnvironmentMode & 0xFFFFFFFFFFFFFFFELL) == 2 && [modalLibraryController isPresentingLibraryInForeground])
   {
-    v7 = [v3 libraryViewController];
-    [v7 popPresentationState];
+    libraryViewController = [modalLibraryController libraryViewController];
+    [libraryViewController popPresentationState];
 
     v8 = SBLogContinuityDisplay();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -206,10 +206,10 @@ LABEL_8:
 
 - (BOOL)_processHomeButtonInSwitcherController
 {
-  v2 = [(SBContinuityButtonActions *)self windowScene];
-  v3 = [v2 switcherController];
-  v4 = [v3 handleHomeButtonPress];
-  if (v4)
+  windowScene = [(SBContinuityButtonActions *)self windowScene];
+  switcherController = [windowScene switcherController];
+  handleHomeButtonPress = [switcherController handleHomeButtonPress];
+  if (handleHomeButtonPress)
   {
     v5 = SBLogContinuityDisplay();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -219,14 +219,14 @@ LABEL_8:
     }
   }
 
-  return v4;
+  return handleHomeButtonPress;
 }
 
 - (BOOL)_processHomeButtonInApp
 {
-  v2 = [(SBContinuityButtonActions *)self windowScene];
+  windowScene = [(SBContinuityButtonActions *)self windowScene];
   v3 = +[SBUIController sharedInstance];
-  v4 = [v3 handleHomeButtonSinglePressUpForWindowScene:v2 withSourceType:0];
+  v4 = [v3 handleHomeButtonSinglePressUpForWindowScene:windowScene withSourceType:0];
 
   if (v4)
   {
@@ -250,7 +250,7 @@ LABEL_8:
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "SBUIController is busy - queued the home button event for later processing", buf, 2u);
   }
 
-  v4 = [(SBContinuityButtonActions *)self _menuButtonEventName];
+  _menuButtonEventName = [(SBContinuityButtonActions *)self _menuButtonEventName];
   objc_initWeak(buf, self);
   v5 = MEMORY[0x277D0AB18];
   v8[0] = MEMORY[0x277D85DD0];
@@ -258,10 +258,10 @@ LABEL_8:
   v8[2] = __54__SBContinuityButtonActions__requeueHomeButtonRequest__block_invoke;
   v8[3] = &unk_2783A8C68;
   objc_copyWeak(&v9, buf);
-  v6 = [v5 eventWithName:v4 handler:v8];
-  v7 = [MEMORY[0x277D0AB20] sharedInstance];
-  [v7 cancelEventsWithName:v4];
-  [v7 executeOrAppendEvent:v6];
+  v6 = [v5 eventWithName:_menuButtonEventName handler:v8];
+  mEMORY[0x277D0AB20] = [MEMORY[0x277D0AB20] sharedInstance];
+  [mEMORY[0x277D0AB20] cancelEventsWithName:_menuButtonEventName];
+  [mEMORY[0x277D0AB20] executeOrAppendEvent:v6];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);

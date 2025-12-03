@@ -1,26 +1,26 @@
 @interface FMDRequestAckNotify
-- (BOOL)canReplace:(id)a3;
-- (FMDRequestAckNotify)initWithAccount:(id)a3 messageCommand:(id)a4 cmdStatusCode:(int64_t)a5 ackURL:(id)a6;
+- (BOOL)canReplace:(id)replace;
+- (FMDRequestAckNotify)initWithAccount:(id)account messageCommand:(id)command cmdStatusCode:(int64_t)code ackURL:(id)l;
 - (id)requestBody;
 @end
 
 @implementation FMDRequestAckNotify
 
-- (FMDRequestAckNotify)initWithAccount:(id)a3 messageCommand:(id)a4 cmdStatusCode:(int64_t)a5 ackURL:(id)a6
+- (FMDRequestAckNotify)initWithAccount:(id)account messageCommand:(id)command cmdStatusCode:(int64_t)code ackURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  accountCopy = account;
+  commandCopy = command;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = FMDRequestAckNotify;
-  v13 = [(FMDRequest *)&v16 initWithAccount:v10];
+  v13 = [(FMDRequest *)&v16 initWithAccount:accountCopy];
   v14 = v13;
   if (v13)
   {
-    [(FMDRequestAckNotify *)v13 setAccount:v10];
-    [(FMDRequestAckNotify *)v14 setMessageCommand:v11];
-    [(FMDRequestAckNotify *)v14 setCmdStatusCode:a5];
-    [(FMDRequestAckNotify *)v14 setAckURL:v12];
+    [(FMDRequestAckNotify *)v13 setAccount:accountCopy];
+    [(FMDRequestAckNotify *)v14 setMessageCommand:commandCopy];
+    [(FMDRequestAckNotify *)v14 setCmdStatusCode:code];
+    [(FMDRequestAckNotify *)v14 setAckURL:lCopy];
   }
 
   return v14;
@@ -30,30 +30,30 @@
 {
   v7.receiver = self;
   v7.super_class = FMDRequestAckNotify;
-  v3 = [(FMDRequest *)&v7 requestBody];
+  requestBody = [(FMDRequest *)&v7 requestBody];
   v4 = [NSNumber numberWithInteger:[(FMDRequestAckNotify *)self cmdStatusCode]];
-  [v3 setObject:v4 forKeyedSubscript:@"statusCode"];
+  [requestBody setObject:v4 forKeyedSubscript:@"statusCode"];
 
-  v5 = [(FMDRequestAckNotify *)self messageCommand];
-  [v3 setObject:v5 forKeyedSubscript:@"cmdContext"];
+  messageCommand = [(FMDRequestAckNotify *)self messageCommand];
+  [requestBody setObject:messageCommand forKeyedSubscript:@"cmdContext"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = replaceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FMDRequestAckNotify *)self messageCommand];
-      v7 = [v6 objectForKeyedSubscript:@"id"];
-      v8 = [v5 messageCommand];
-      v9 = [v8 objectForKeyedSubscript:@"id"];
+      messageCommand = [(FMDRequestAckNotify *)self messageCommand];
+      v7 = [messageCommand objectForKeyedSubscript:@"id"];
+      messageCommand2 = [v5 messageCommand];
+      v9 = [messageCommand2 objectForKeyedSubscript:@"id"];
       v10 = [v7 isEqualToString:v9];
     }
 

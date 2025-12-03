@@ -1,13 +1,13 @@
 @interface SKCloudServiceController
-+ (id)_publicErrorForPrivateError:(id)a3;
++ (id)_publicErrorForPrivateError:(id)error;
 + (void)requestAuthorization:(void *)completionHandler;
 - (BOOL)_allowsPromptingForPrivacyAcknowledgement;
 - (SKCloudServiceController)init;
-- (id)_cloudServiceStatusMonitorWithError:(id *)a3;
-- (void)_handleCapabilitiesDidChangeNotification:(id)a3;
-- (void)_handleStorefrontCountryCodeDidChangeNotification:(id)a3;
-- (void)_handleStorefrontIdentifierDidChangeNotification:(id)a3;
-- (void)_setAllowsPromptingForPrivacyAcknowledgement:(BOOL)a3;
+- (id)_cloudServiceStatusMonitorWithError:(id *)error;
+- (void)_handleCapabilitiesDidChangeNotification:(id)notification;
+- (void)_handleStorefrontCountryCodeDidChangeNotification:(id)notification;
+- (void)_handleStorefrontIdentifierDidChangeNotification:(id)notification;
+- (void)_setAllowsPromptingForPrivacyAcknowledgement:(BOOL)acknowledgement;
 - (void)dealloc;
 - (void)init;
 - (void)requestCapabilitiesWithCompletionHandler:(void *)completionHandler;
@@ -46,15 +46,15 @@
   os_unfair_lock_lock(&self->_lock);
   if (self->_cloudServiceStatusMonitor)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = getICCloudServiceStatusCapabilitiesDidChangeNotification();
-    [v3 removeObserver:self name:v4 object:self->_cloudServiceStatusMonitor];
+    [defaultCenter removeObserver:self name:v4 object:self->_cloudServiceStatusMonitor];
 
     v5 = getICCloudServiceStatusStorefrontCountryCodeDidChangeNotification();
-    [v3 removeObserver:self name:v5 object:self->_cloudServiceStatusMonitor];
+    [defaultCenter removeObserver:self name:v5 object:self->_cloudServiceStatusMonitor];
 
     v6 = getICCloudServiceStatusStorefrontIdentifierDidChangeNotification();
-    [v3 removeObserver:self name:v6 object:self->_cloudServiceStatusMonitor];
+    [defaultCenter removeObserver:self name:v6 object:self->_cloudServiceStatusMonitor];
 
     [(ICCloudServiceStatusMonitor *)self->_cloudServiceStatusMonitor endObservingCloudServiceStatus];
   }
@@ -455,28 +455,28 @@ void __80__SKCloudServiceController_requestUserTokenForDeveloperToken_completion
   return allowsPromptingForPrivacyAcknowledgement;
 }
 
-- (void)_setAllowsPromptingForPrivacyAcknowledgement:(BOOL)a3
+- (void)_setAllowsPromptingForPrivacyAcknowledgement:(BOOL)acknowledgement
 {
-  v3 = a3;
+  acknowledgementCopy = acknowledgement;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  self->_allowsPromptingForPrivacyAcknowledgement = v3;
+  self->_allowsPromptingForPrivacyAcknowledgement = acknowledgementCopy;
   cloudServiceStatusMonitor = self->_cloudServiceStatusMonitor;
   if (cloudServiceStatusMonitor)
   {
-    [(ICCloudServiceStatusMonitor *)cloudServiceStatusMonitor setPrivacyAcknowledgementPolicy:v3];
+    [(ICCloudServiceStatusMonitor *)cloudServiceStatusMonitor setPrivacyAcknowledgementPolicy:acknowledgementCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_handleCapabilitiesDidChangeNotification:(id)a3
+- (void)_handleCapabilitiesDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v4 = __69__SKCloudServiceController__handleCapabilitiesDidChangeNotification___block_invoke;
   v5 = &unk_1E7B27980;
-  v6 = self;
+  selfCopy = self;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v4(block);
@@ -505,13 +505,13 @@ void __69__SKCloudServiceController__handleCapabilitiesDidChangeNotification___b
   [v3 postNotificationName:@"SKCloudServiceCapabilitiesDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_handleStorefrontCountryCodeDidChangeNotification:(id)a3
+- (void)_handleStorefrontCountryCodeDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v4 = __78__SKCloudServiceController__handleStorefrontCountryCodeDidChangeNotification___block_invoke;
   v5 = &unk_1E7B27980;
-  v6 = self;
+  selfCopy = self;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v4(block);
@@ -540,13 +540,13 @@ void __78__SKCloudServiceController__handleStorefrontCountryCodeDidChangeNotific
   [v3 postNotificationName:@"SKStorefrontCountryCodeDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_handleStorefrontIdentifierDidChangeNotification:(id)a3
+- (void)_handleStorefrontIdentifierDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v4 = __77__SKCloudServiceController__handleStorefrontIdentifierDidChangeNotification___block_invoke;
   v5 = &unk_1E7B27980;
-  v6 = self;
+  selfCopy = self;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v4(block);
@@ -575,11 +575,11 @@ void __77__SKCloudServiceController__handleStorefrontIdentifierDidChangeNotifica
   [v3 postNotificationName:@"SKStorefrontIdentifierDidChangeNotification" object:*(a1 + 32)];
 }
 
-+ (id)_publicErrorForPrivateError:(id)a3
++ (id)_publicErrorForPrivateError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v5 = [v3 domain];
+  domain = [errorCopy domain];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -601,17 +601,17 @@ void __77__SKCloudServiceController__handleStorefrontIdentifierDidChangeNotifica
     _Unwind_Resume(v21);
   }
 
-  v8 = [v5 isEqualToString:*v6];
+  v8 = [domain isEqualToString:*v6];
 
   if (!v8)
   {
     goto LABEL_17;
   }
 
-  v9 = [v3 code];
-  if (v9 <= -7101)
+  code = [errorCopy code];
+  if (code <= -7101)
   {
-    switch(v9)
+    switch(code)
     {
       case -8100:
         v13 = 0;
@@ -622,8 +622,8 @@ void __77__SKCloudServiceController__handleStorefrontIdentifierDidChangeNotifica
         v13 = 0;
         goto LABEL_33;
       case -7101:
-        v14 = [v3 userInfo];
-        v13 = [v14 objectForKey:*MEMORY[0x1E696A278]];
+        userInfo = [errorCopy userInfo];
+        v13 = [userInfo objectForKey:*MEMORY[0x1E696A278]];
 
 LABEL_33:
         v11 = 0;
@@ -638,11 +638,11 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v9 > -7010)
+  if (code > -7010)
   {
-    if (v9 != -7009)
+    if (code != -7009)
     {
-      if (v9 == -7007)
+      if (code == -7007)
       {
         v11 = [v4 localizedStringForKey:@"PRIVACY_ACKNOWLEDGEMENT_REQUIRED" value:&stru_1F29BCE20 table:0];
         v13 = 0;
@@ -654,17 +654,17 @@ LABEL_17:
     }
 
     v11 = [v4 localizedStringForKey:@"PERMISSION_DENIED" value:&stru_1F29BCE20 table:0];
-    v20 = [v3 userInfo];
-    v13 = [v20 objectForKey:*MEMORY[0x1E696A278]];
+    userInfo2 = [errorCopy userInfo];
+    v13 = [userInfo2 objectForKey:*MEMORY[0x1E696A278]];
 
     v12 = 6;
   }
 
   else
   {
-    if (v9 != -7100)
+    if (code != -7100)
     {
-      if (v9 == -7011)
+      if (code == -7011)
       {
         v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v11 = 0;
@@ -724,7 +724,7 @@ LABEL_26:
   return v18;
 }
 
-- (id)_cloudServiceStatusMonitorWithError:(id *)a3
+- (id)_cloudServiceStatusMonitorWithError:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_not_owner(&self->_lock);
@@ -748,7 +748,7 @@ LABEL_26:
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SKErrorDomain" code:6 userInfo:v19];
 
     v14 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -788,15 +788,15 @@ LABEL_26:
     }
 
     [(ICCloudServiceStatusMonitor *)self->_cloudServiceStatusMonitor beginObservingCloudServiceStatus];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v11 = getICCloudServiceStatusCapabilitiesDidChangeNotification();
-    [v10 addObserver:self selector:sel__handleCapabilitiesDidChangeNotification_ name:v11 object:self->_cloudServiceStatusMonitor];
+    [defaultCenter addObserver:self selector:sel__handleCapabilitiesDidChangeNotification_ name:v11 object:self->_cloudServiceStatusMonitor];
 
     v12 = getICCloudServiceStatusStorefrontCountryCodeDidChangeNotification();
-    [v10 addObserver:self selector:sel__handleStorefrontCountryCodeDidChangeNotification_ name:v12 object:self->_cloudServiceStatusMonitor];
+    [defaultCenter addObserver:self selector:sel__handleStorefrontCountryCodeDidChangeNotification_ name:v12 object:self->_cloudServiceStatusMonitor];
 
     v13 = getICCloudServiceStatusStorefrontIdentifierDidChangeNotification();
-    [v10 addObserver:self selector:sel__handleStorefrontIdentifierDidChangeNotification_ name:v13 object:self->_cloudServiceStatusMonitor];
+    [defaultCenter addObserver:self selector:sel__handleStorefrontIdentifierDidChangeNotification_ name:v13 object:self->_cloudServiceStatusMonitor];
 
     cloudServiceStatusMonitor = self->_cloudServiceStatusMonitor;
   }
@@ -804,11 +804,11 @@ LABEL_26:
   v14 = cloudServiceStatusMonitor;
   os_unfair_lock_unlock(&self->_lock);
   v15 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_14:
     v20 = v15;
-    *a3 = v15;
+    *error = v15;
   }
 
 LABEL_15:
@@ -820,7 +820,7 @@ LABEL_15:
 {
   v6 = *MEMORY[0x1E69E9840];
   v2 = 138543618;
-  v3 = a1;
+  selfCopy = self;
   v4 = 2114;
   v5 = a2;
   _os_log_error_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%{public}@: Cannot setup cloud service status monitor upon initialization. Encountered error: %{public}@.", &v2, 0x16u);

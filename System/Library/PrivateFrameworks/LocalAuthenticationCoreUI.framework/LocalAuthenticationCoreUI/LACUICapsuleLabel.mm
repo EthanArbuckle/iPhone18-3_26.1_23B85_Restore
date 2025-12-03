@@ -1,23 +1,23 @@
 @interface LACUICapsuleLabel
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4;
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines;
 - (CGSize)intrinsicContentSize;
 - (double)_insetHorizontal;
 - (double)_insetVertical;
 - (id)_desaturatedSystemRedColor;
-- (void)_setBackgroundColor:(void *)a1;
-- (void)setStyle:(int64_t)a3;
+- (void)_setBackgroundColor:(void *)color;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation LACUICapsuleLabel
 
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 bounds];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v12 = v11;
 
   if (width <= v12)
@@ -46,14 +46,14 @@
 
     v25.receiver = self;
     v25.super_class = LACUICapsuleLabel;
-    [(LACUICapsuleLabel *)&v25 textRectForBounds:a4 limitedToNumberOfLines:x, y, width, height + v23 * -2.0];
+    [(LACUICapsuleLabel *)&v25 textRectForBounds:lines limitedToNumberOfLines:x, y, width, height + v23 * -2.0];
   }
 
   else
   {
     v26.receiver = self;
     v26.super_class = LACUICapsuleLabel;
-    [(LACUICapsuleLabel *)&v26 textRectForBounds:a4 limitedToNumberOfLines:x, y, width, height];
+    [(LACUICapsuleLabel *)&v26 textRectForBounds:lines limitedToNumberOfLines:x, y, width, height];
     if (self)
     {
       v17 = self->_style;
@@ -94,8 +94,8 @@
   [(LACUICapsuleLabel *)&v16 intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(LACUICapsuleLabel *)self text];
-  v8 = [v7 length];
+  text = [(LACUICapsuleLabel *)self text];
+  v8 = [text length];
 
   if (v8)
   {
@@ -123,11 +123,11 @@
     }
 
     v6 = v6 + v10 * 2.0;
-    v12 = [(LACUICapsuleLabel *)self layer];
-    [v12 setCornerRadius:{fmin(v6 * 0.5, 18.0)}];
+    layer = [(LACUICapsuleLabel *)self layer];
+    [layer setCornerRadius:{fmin(v6 * 0.5, 18.0)}];
 
-    v13 = [(LACUICapsuleLabel *)self layer];
-    [v13 masksToBounds];
+    layer2 = [(LACUICapsuleLabel *)self layer];
+    [layer2 masksToBounds];
   }
 
   v14 = v4;
@@ -137,45 +137,45 @@
   return result;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  switch(a3)
+  switch(style)
   {
     case 2:
-      v8 = [(LACUICapsuleLabel *)self _desaturatedSystemRedColor];
+      _desaturatedSystemRedColor = [(LACUICapsuleLabel *)self _desaturatedSystemRedColor];
       v5 = MEMORY[0x277D75348];
       goto LABEL_7;
     case 1:
-      v8 = [MEMORY[0x277D75348] whiteColor];
-      v6 = [MEMORY[0x277D75348] systemRedColor];
+      _desaturatedSystemRedColor = [MEMORY[0x277D75348] whiteColor];
+      systemRedColor = [MEMORY[0x277D75348] systemRedColor];
 LABEL_8:
-      v7 = v6;
+      v7 = systemRedColor;
       goto LABEL_10;
     case 0:
-      v8 = [MEMORY[0x277D75348] labelColor];
+      _desaturatedSystemRedColor = [MEMORY[0x277D75348] labelColor];
       v5 = MEMORY[0x277D75348];
 LABEL_7:
-      v6 = [v5 clearColor];
+      systemRedColor = [v5 clearColor];
       goto LABEL_8;
   }
 
-  v8 = 0;
+  _desaturatedSystemRedColor = 0;
   v7 = 0;
 LABEL_10:
-  [(LACUICapsuleLabel *)self setTextColor:v8];
+  [(LACUICapsuleLabel *)self setTextColor:_desaturatedSystemRedColor];
   [(LACUICapsuleLabel *)self _setBackgroundColor:v7];
-  self->_style = a3;
+  self->_style = style;
 }
 
 - (double)_insetHorizontal
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   result = 0.0;
-  if (*(a1 + 808) == 1)
+  if (*(self + 808) == 1)
   {
     return 16.0;
   }
@@ -185,13 +185,13 @@ LABEL_10:
 
 - (double)_insetVertical
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   result = 0.0;
-  if (*(a1 + 808) == 1)
+  if (*(self + 808) == 1)
   {
     return 2.0;
   }
@@ -201,21 +201,21 @@ LABEL_10:
 
 - (id)_desaturatedSystemRedColor
 {
-  if (a1)
+  if (self)
   {
-    v1 = [MEMORY[0x277D75348] systemRedColor];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
     v7 = 0.0;
     v8 = 0.0;
     v5 = 0.0;
     v6 = 0.0;
-    if ([v1 getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5])
+    if ([systemRedColor getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5])
     {
       v2 = [MEMORY[0x277D75348] colorWithHue:v8 saturation:fmax(fmin(v7 + -0.4 brightness:1.0) alpha:{0.0), v6, v5}];
     }
 
     else
     {
-      v2 = v1;
+      v2 = systemRedColor;
     }
 
     v3 = v2;
@@ -229,15 +229,15 @@ LABEL_10:
   return v3;
 }
 
-- (void)_setBackgroundColor:(void *)a1
+- (void)_setBackgroundColor:(void *)color
 {
-  if (a1)
+  if (color)
   {
     v3 = a2;
-    v5 = [a1 layer];
-    v4 = [v3 CGColor];
+    layer = [color layer];
+    cGColor = [v3 CGColor];
 
-    [v5 setBackgroundColor:v4];
+    [layer setBackgroundColor:cGColor];
   }
 }
 

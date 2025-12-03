@@ -1,12 +1,12 @@
 @interface SessionPlatterMetricContainer
-- (_TtC9SeymourUI29SessionPlatterMetricContainer)initWithCoder:(id)a3;
-- (_TtC9SeymourUI29SessionPlatterMetricContainer)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI29SessionPlatterMetricContainer)initWithCoder:(id)coder;
+- (_TtC9SeymourUI29SessionPlatterMetricContainer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SessionPlatterMetricContainer
 
-- (_TtC9SeymourUI29SessionPlatterMetricContainer)initWithCoder:(id)a3
+- (_TtC9SeymourUI29SessionPlatterMetricContainer)initWithCoder:(id)coder
 {
   result = sub_20C13DE24();
   __break(1u);
@@ -21,14 +21,14 @@
   [(SessionPlatterMetricContainer *)&v6 layoutSubviews];
   sub_20BD825A8();
   v3 = OBJC_IVAR____TtC9SeymourUI29SessionPlatterMetricContainer_contentView;
-  v4 = [*&v2[OBJC_IVAR____TtC9SeymourUI29SessionPlatterMetricContainer_contentView] layer];
-  [v4 setAnchorPoint_];
+  layer = [*&v2[OBJC_IVAR____TtC9SeymourUI29SessionPlatterMetricContainer_contentView] layer];
+  [layer setAnchorPoint_];
 
-  v5 = [*&v2[v3] layer];
-  [v5 setPosition_];
+  layer2 = [*&v2[v3] layer];
+  [layer2 setPosition_];
 }
 
-- (_TtC9SeymourUI29SessionPlatterMetricContainer)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI29SessionPlatterMetricContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,28 +1,28 @@
 @interface HULocationServicesOnboardingFlow
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
-- (HULocationServicesOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
-- (id)processUserInput:(id)a3;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
+- (HULocationServicesOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
+- (id)processUserInput:(id)input;
 @end
 
 @implementation HULocationServicesOnboardingFlow
 
-- (HULocationServicesOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HULocationServicesOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v19.receiver = self;
   v19.super_class = HULocationServicesOnboardingFlow;
   v8 = [(HULocationServicesOnboardingFlow *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     objc_initWeak(&location, v9);
     v10 = objc_alloc_init(MEMORY[0x277D2C900]);
     readyFuture = v9->_readyFuture;
     v9->_readyFuture = v10;
 
-    v12 = [objc_opt_class() needsOnboardingForHome:v7 options:v6];
+    v12 = [objc_opt_class() needsOnboardingForHome:homeCopy options:optionsCopy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __62__HULocationServicesOnboardingFlow_initWithUsageOptions_home___block_invoke;
@@ -78,45 +78,45 @@ void __62__HULocationServicesOnboardingFlow_initWithUsageOptions_home___block_in
   }
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"HULocationServicesOnboardingKey_UserInput"];
+  inputCopy = input;
+  v6 = [inputCopy objectForKeyedSubscript:@"HULocationServicesOnboardingKey_UserInput"];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
-    v20 = v5;
+    v20 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", buf, 0x20u);
   }
 
   if ([v6 integerValue] && objc_msgSend(v6, "integerValue") != 1)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HULocationServicesOnboardingFlow.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HULocationServicesOnboardingValue_Enable) || (userInputValue.integerValue == HULocationServicesOnboardingValue_Disable)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HULocationServicesOnboardingFlow.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HULocationServicesOnboardingValue_Enable) || (userInputValue.integerValue == HULocationServicesOnboardingValue_Disable)"}];
   }
 
   if (![v6 integerValue] || objc_msgSend(v6, "integerValue") == 1)
   {
     v9 = [v6 integerValue] == 0;
-    v10 = [(HULocationServicesOnboardingFlow *)self home];
+    home = [(HULocationServicesOnboardingFlow *)self home];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __53__HULocationServicesOnboardingFlow_processUserInput___block_invoke;
     v14[3] = &unk_277DB8E70;
     v14[4] = self;
     v14[5] = a2;
-    [v10 updateLocationServicesEnabled:v9 completion:v14];
+    [home updateLocationServicesEnabled:v9 completion:v14];
 
-    [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_LocationServices_FinishedOnboarding"];
-    v11 = [(HULocationServicesOnboardingFlow *)self onboardingFuture];
-    [v11 finishWithNoResult];
+    [inputCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_LocationServices_FinishedOnboarding"];
+    onboardingFuture = [(HULocationServicesOnboardingFlow *)self onboardingFuture];
+    [onboardingFuture finishWithNoResult];
   }
 
   return 0;
@@ -150,18 +150,18 @@ void __53__HULocationServicesOnboardingFlow_processUserInput___block_invoke(uint
   }
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  objc_initWeak(&location, a1);
+  homeCopy = home;
+  optionsCopy = options;
+  objc_initWeak(&location, self);
   v9 = MEMORY[0x277D2C900];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__HULocationServicesOnboardingFlow_needsOnboardingForHome_options___block_invoke;
   v13[3] = &unk_277DB75B0;
   objc_copyWeak(v15, &location);
-  v10 = v7;
+  v10 = homeCopy;
   v14 = v10;
   v15[1] = a2;
   v11 = [v9 futureWithBlock:v13];

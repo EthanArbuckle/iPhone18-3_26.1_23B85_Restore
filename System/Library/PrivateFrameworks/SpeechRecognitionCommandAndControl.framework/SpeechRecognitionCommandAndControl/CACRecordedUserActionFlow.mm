@@ -1,17 +1,17 @@
 @interface CACRecordedUserActionFlow
-- (BOOL)doesNextSpokenCommandMatchIdentifier:(id)a3;
+- (BOOL)doesNextSpokenCommandMatchIdentifier:(id)identifier;
 - (CACRecordedUserActionFlow)init;
-- (CACRecordedUserActionFlow)initWithCoder:(id)a3;
-- (CACRecordedUserActionFlow)initWithUserActions:(id)a3;
+- (CACRecordedUserActionFlow)initWithCoder:(id)coder;
+- (CACRecordedUserActionFlow)initWithUserActions:(id)actions;
 - (id)description;
 - (id)plistDescription;
 - (void)_configureEnvironment;
-- (void)_executeNextActionWithCompletionBlock:(id)a3;
-- (void)_exitFlowWithError:(id)a3 completionBlock:(id)a4;
+- (void)_executeNextActionWithCompletionBlock:(id)block;
+- (void)_exitFlowWithError:(id)error completionBlock:(id)block;
 - (void)_restoreEnvironment;
-- (void)beginExecutingWithCompletionBlock:(id)a3;
+- (void)beginExecutingWithCompletionBlock:(id)block;
 - (void)cancelExecution;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CACRecordedUserActionFlow
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (CACRecordedUserActionFlow)initWithUserActions:(id)a3
+- (CACRecordedUserActionFlow)initWithUserActions:(id)actions
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  actionsCopy = actions;
   v6 = [(CACRecordedUserActionFlow *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tasks, a3);
+    objc_storeStrong(&v6->_tasks, actions);
     v15[0] = @"OverlayType";
     v8 = +[CACPreferences sharedPreferences];
-    v9 = [v8 alwaysShowOverlayType];
+    alwaysShowOverlayType = [v8 alwaysShowOverlayType];
     v15[1] = @"LocaleIdentifier";
-    v16[0] = v9;
+    v16[0] = alwaysShowOverlayType;
     v10 = +[CACPreferences sharedPreferences];
-    v11 = [v10 bestLocaleIdentifier];
-    v16[1] = v11;
+    bestLocaleIdentifier = [v10 bestLocaleIdentifier];
+    v16[1] = bestLocaleIdentifier;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
     environmentSettings = v7->_environmentSettings;
     v7->_environmentSettings = v12;
@@ -58,31 +58,31 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:1 forKey:@"Version"];
-  [v4 encodeObject:self->_tasks forKey:@"Tasks"];
-  [v4 encodeObject:self->_environmentSettings forKey:@"EnvironmentSettings"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"Version"];
+  [coderCopy encodeObject:self->_tasks forKey:@"Tasks"];
+  [coderCopy encodeObject:self->_environmentSettings forKey:@"EnvironmentSettings"];
 }
 
-- (CACRecordedUserActionFlow)initWithCoder:(id)a3
+- (CACRecordedUserActionFlow)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CACRecordedUserActionFlow *)self init];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Tasks"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Tasks"];
     tasks = v5->_tasks;
     v5->_tasks = v9;
 
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"EnvironmentSettings"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"EnvironmentSettings"];
     environmentSettings = v5->_environmentSettings;
     v5->_environmentSettings = v14;
   }
@@ -90,45 +90,45 @@
   return v5;
 }
 
-- (BOOL)doesNextSpokenCommandMatchIdentifier:(id)a3
+- (BOOL)doesNextSpokenCommandMatchIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  executingTaskIndex = v5->_executingTaskIndex;
-  if (executingTaskIndex + 1 >= [(NSArray *)v5->_tasks count])
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  executingTaskIndex = selfCopy->_executingTaskIndex;
+  if (executingTaskIndex + 1 >= [(NSArray *)selfCopy->_tasks count])
   {
     v10 = 0;
   }
 
   else
   {
-    v7 = [(NSArray *)v5->_tasks objectAtIndex:v5->_executingTaskIndex + 1];
-    v8 = [v7 spokenCommand];
-    v9 = [v8 identifier];
-    v10 = [v9 isEqualToString:v4];
+    v7 = [(NSArray *)selfCopy->_tasks objectAtIndex:selfCopy->_executingTaskIndex + 1];
+    spokenCommand = [v7 spokenCommand];
+    identifier = [spokenCommand identifier];
+    v10 = [identifier isEqualToString:identifierCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (void)beginExecutingWithCompletionBlock:(id)a3
+- (void)beginExecutingWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  *&v5->_isExecuting = 1;
-  objc_sync_exit(v5);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  *&selfCopy->_isExecuting = 1;
+  objc_sync_exit(selfCopy);
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__CACRecordedUserActionFlow_beginExecutingWithCompletionBlock___block_invoke;
   v7[3] = &unk_279CEB3E0;
-  v7[4] = v5;
-  v8 = v4;
-  v6 = v4;
+  v7[4] = selfCopy;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -149,37 +149,37 @@ uint64_t __63__CACRecordedUserActionFlow_beginExecutingWithCompletionBlock___blo
   objc_sync_exit(obj);
 }
 
-- (void)_executeNextActionWithCompletionBlock:(id)a3
+- (void)_executeNextActionWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = 1;
-  if (v5->_skipNextAction)
+  if (selfCopy->_skipNextAction)
   {
     v6 = 2;
   }
 
-  v7 = v6 + v5->_executingTaskIndex;
-  v5->_executingTaskIndex = v7;
-  v5->_skipNextAction = 0;
-  isCancelled = v5->_isCancelled;
-  v9 = [(NSArray *)v5->_tasks count];
+  v7 = v6 + selfCopy->_executingTaskIndex;
+  selfCopy->_executingTaskIndex = v7;
+  selfCopy->_skipNextAction = 0;
+  isCancelled = selfCopy->_isCancelled;
+  v9 = [(NSArray *)selfCopy->_tasks count];
   v10 = v9;
   if (isCancelled || v7 >= v9)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     if (isCancelled)
     {
-      v12 = v5;
+      v12 = selfCopy;
       objc_sync_enter(v12);
       v12->_isExecuting = 0;
       objc_sync_exit(v12);
 
       v11 = [CACLocaleUtilities localizedUIStringForKey:@"CommandPlayback.Error.CancelledByUser"];
       v13 = CACMakeError(3000, v11);
-      [(CACRecordedUserActionFlow *)v12 _exitFlowWithError:v13 completionBlock:v4];
+      [(CACRecordedUserActionFlow *)v12 _exitFlowWithError:v13 completionBlock:blockCopy];
 
       goto LABEL_12;
     }
@@ -189,8 +189,8 @@ uint64_t __63__CACRecordedUserActionFlow_beginExecutingWithCompletionBlock___blo
 
   else
   {
-    v11 = [(NSArray *)v5->_tasks objectAtIndex:v5->_executingTaskIndex];
-    objc_sync_exit(v5);
+    v11 = [(NSArray *)selfCopy->_tasks objectAtIndex:selfCopy->_executingTaskIndex];
+    objc_sync_exit(selfCopy);
   }
 
   if (v7 < v10)
@@ -199,19 +199,19 @@ uint64_t __63__CACRecordedUserActionFlow_beginExecutingWithCompletionBlock___blo
     v15[1] = 3221225472;
     v15[2] = __67__CACRecordedUserActionFlow__executeNextActionWithCompletionBlock___block_invoke;
     v15[3] = &unk_279CEB690;
-    v15[4] = v5;
-    v16 = v4;
+    v15[4] = selfCopy;
+    v16 = blockCopy;
     [v11 beginExecutingWithCompletionBlock:v15];
   }
 
   else
   {
-    v14 = v5;
+    v14 = selfCopy;
     objc_sync_enter(v14);
     v14->_isExecuting = 0;
     objc_sync_exit(v14);
 
-    [(CACRecordedUserActionFlow *)v14 _exitFlowWithError:0 completionBlock:v4];
+    [(CACRecordedUserActionFlow *)v14 _exitFlowWithError:0 completionBlock:blockCopy];
   }
 
 LABEL_12:
@@ -241,12 +241,12 @@ void __67__CACRecordedUserActionFlow__executeNextActionWithCompletionBlock___blo
   }
 }
 
-- (void)_exitFlowWithError:(id)a3 completionBlock:(id)a4
+- (void)_exitFlowWithError:(id)error completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  errorCopy = error;
   [(CACRecordedUserActionFlow *)self _restoreEnvironment];
-  v6[2](v6, v7);
+  blockCopy[2](blockCopy, errorCopy);
 }
 
 - (void)_configureEnvironment
@@ -256,8 +256,8 @@ void __67__CACRecordedUserActionFlow__executeNextActionWithCompletionBlock___blo
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSDictionary *)self->_environmentSettings allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSDictionary *)self->_environmentSettings allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -268,7 +268,7 @@ void __67__CACRecordedUserActionFlow__executeNextActionWithCompletionBlock___blo
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -276,19 +276,19 @@ void __67__CACRecordedUserActionFlow__executeNextActionWithCompletionBlock___blo
         {
           v9 = [(NSDictionary *)self->_environmentSettings objectForKey:v8];
           v10 = +[CACPreferences sharedPreferences];
-          v11 = [v10 alwaysShowOverlayType];
+          alwaysShowOverlayType = [v10 alwaysShowOverlayType];
 
-          if (([v9 isEqualToString:v11] & 1) == 0)
+          if (([v9 isEqualToString:alwaysShowOverlayType] & 1) == 0)
           {
             v12 = +[CACPreferences sharedPreferences];
             [v12 setAlwaysShowOverlayType:v9];
 
-            [(NSMutableDictionary *)self->_orignalEnvironmentSettings setObject:v11 forKey:v8];
+            [(NSMutableDictionary *)self->_orignalEnvironmentSettings setObject:alwaysShowOverlayType forKey:v8];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -302,8 +302,8 @@ void __67__CACRecordedUserActionFlow__executeNextActionWithCompletionBlock___blo
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_orignalEnvironmentSettings allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_orignalEnvironmentSettings allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -314,7 +314,7 @@ void __67__CACRecordedUserActionFlow__executeNextActionWithCompletionBlock___blo
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -326,7 +326,7 @@ void __67__CACRecordedUserActionFlow__executeNextActionWithCompletionBlock___blo
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -357,8 +357,8 @@ void __67__CACRecordedUserActionFlow__executeNextActionWithCompletionBlock___blo
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) plistDescription];
-        [v4 addObject:v10];
+        plistDescription = [*(*(&v12 + 1) + 8 * i) plistDescription];
+        [v4 addObject:plistDescription];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];

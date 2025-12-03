@@ -7,16 +7,16 @@
 
 - (id)launchdIdentifier
 {
-  v2 = [(LSPlugInKitProxy *)self bundleIdentifier];
+  bundleIdentifier = [(LSPlugInKitProxy *)self bundleIdentifier];
 
-  return v2;
+  return bundleIdentifier;
 }
 
 - (id)launchdVersion
 {
-  v2 = [(LSPlugInKitProxy *)self bundleVersion];
+  bundleVersion = [(LSPlugInKitProxy *)self bundleVersion];
 
-  return v2;
+  return bundleVersion;
 }
 
 @end

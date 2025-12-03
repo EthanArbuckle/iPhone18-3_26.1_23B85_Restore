@@ -1,31 +1,31 @@
 @interface STCachingCodableStore
-- (STCachingCodableStore)initWithKeyValueStore:(id)a3 cacheSize:(id)a4 valueClass:(Class)a5;
+- (STCachingCodableStore)initWithKeyValueStore:(id)store cacheSize:(id)size valueClass:(Class)class;
 - (id)description;
 - (id)purge;
-- (id)readValueForKey:(id)a3;
-- (void)enumerateKeysAndValuesUsingBlock:(id)a3;
-- (void)persistValue:(id)a3 forKey:(id)a4;
-- (void)removeValueForKey:(id)a3;
+- (id)readValueForKey:(id)key;
+- (void)enumerateKeysAndValuesUsingBlock:(id)block;
+- (void)persistValue:(id)value forKey:(id)key;
+- (void)removeValueForKey:(id)key;
 @end
 
 @implementation STCachingCodableStore
 
-- (STCachingCodableStore)initWithKeyValueStore:(id)a3 cacheSize:(id)a4 valueClass:(Class)a5
+- (STCachingCodableStore)initWithKeyValueStore:(id)store cacheSize:(id)size valueClass:(Class)class
 {
-  v9 = a3;
-  v10 = a4;
+  storeCopy = store;
+  sizeCopy = size;
   v15.receiver = self;
   v15.super_class = STCachingCodableStore;
   v11 = [(STCachingCodableStore *)&v15 init];
-  objc_storeStrong(&v11->_backingStore, a3);
-  objc_storeStrong(&v11->_valueClass, a5);
+  objc_storeStrong(&v11->_backingStore, store);
+  objc_storeStrong(&v11->_valueClass, class);
   v12 = objc_opt_new();
   keyValueCache = v11->_keyValueCache;
   v11->_keyValueCache = v12;
 
-  if (v10)
+  if (sizeCopy)
   {
-    -[NSCache setCountLimit:](v11->_keyValueCache, "setCountLimit:", [v10 unsignedIntegerValue]);
+    -[NSCache setCountLimit:](v11->_keyValueCache, "setCountLimit:", [sizeCopy unsignedIntegerValue]);
   }
 
   return v11;
@@ -35,60 +35,60 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass([(STCachingCodableStore *)self valueClass]);
-  v5 = [(STCachingCodableStore *)self keyValueCache];
-  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ { ValueType: %@, CacheSizeLimit: %lu }>", v3, v4, [v5 countLimit]);
+  keyValueCache = [(STCachingCodableStore *)self keyValueCache];
+  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ { ValueType: %@, CacheSizeLimit: %lu }>", v3, v4, [keyValueCache countLimit]);
 
   return v6;
 }
 
-- (void)persistValue:(id)a3 forKey:(id)a4
+- (void)persistValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STCachingCodableStore *)self keyValueCache];
-  v9 = [v7 copy];
-  [v8 setObject:v9 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  keyValueCache = [(STCachingCodableStore *)self keyValueCache];
+  v9 = [valueCopy copy];
+  [keyValueCache setObject:v9 forKey:keyCopy];
 
   v13 = 0;
-  v10 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v13];
+  v10 = [NSKeyedArchiver archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:&v13];
 
   v11 = v13;
   if (v10)
   {
-    v12 = [(STCachingCodableStore *)self backingStore];
-    [v12 persistValue:v10 forKey:v6];
+    backingStore = [(STCachingCodableStore *)self backingStore];
+    [backingStore persistValue:v10 forKey:keyCopy];
   }
 
   else
   {
-    v12 = +[STLog cachingCodableStore];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    backingStore = +[STLog cachingCodableStore];
+    if (os_log_type_enabled(backingStore, OS_LOG_TYPE_ERROR))
     {
-      sub_100112268(v11, v12);
+      sub_100112268(v11, backingStore);
     }
   }
 }
 
-- (void)removeValueForKey:(id)a3
+- (void)removeValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(STCachingCodableStore *)self keyValueCache];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  keyValueCache = [(STCachingCodableStore *)self keyValueCache];
+  [keyValueCache removeObjectForKey:keyCopy];
 
-  v6 = [(STCachingCodableStore *)self backingStore];
-  [v6 removeValueForKey:v4];
+  backingStore = [(STCachingCodableStore *)self backingStore];
+  [backingStore removeValueForKey:keyCopy];
 }
 
-- (id)readValueForKey:(id)a3
+- (id)readValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(STCachingCodableStore *)self keyValueCache];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  keyValueCache = [(STCachingCodableStore *)self keyValueCache];
+  v6 = [keyValueCache objectForKey:keyCopy];
 
   if (!v6)
   {
-    v7 = [(STCachingCodableStore *)self backingStore];
-    v8 = [v7 readValueForKey:v4];
+    backingStore = [(STCachingCodableStore *)self backingStore];
+    v8 = [backingStore readValueForKey:keyCopy];
 
     if (v8)
     {
@@ -97,9 +97,9 @@
       v9 = v14;
       if (v6)
       {
-        v10 = [(STCachingCodableStore *)self keyValueCache];
+        keyValueCache2 = [(STCachingCodableStore *)self keyValueCache];
         v11 = [v6 copy];
-        [v10 setObject:v11 forKey:v4];
+        [keyValueCache2 setObject:v11 forKey:keyCopy];
 
         v12 = v8;
         v8 = v9;
@@ -107,10 +107,10 @@
 
       else
       {
-        v10 = +[STLog cachingCodableStore];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        keyValueCache2 = +[STLog cachingCodableStore];
+        if (os_log_type_enabled(keyValueCache2, OS_LOG_TYPE_ERROR))
         {
-          sub_1001122E0(self, v9, v10);
+          sub_1001122E0(self, v9, keyValueCache2);
         }
 
         v6 = 0;
@@ -127,26 +127,26 @@
   return v6;
 }
 
-- (void)enumerateKeysAndValuesUsingBlock:(id)a3
+- (void)enumerateKeysAndValuesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(STCachingCodableStore *)self backingStore];
+  blockCopy = block;
+  backingStore = [(STCachingCodableStore *)self backingStore];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011C78;
   v7[3] = &unk_1001A2F80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndValuesUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [backingStore enumerateKeysAndValuesUsingBlock:v7];
 }
 
 - (id)purge
 {
-  v2 = [(STCachingCodableStore *)self backingStore];
-  v3 = [v2 purge];
+  backingStore = [(STCachingCodableStore *)self backingStore];
+  purge = [backingStore purge];
 
-  return v3;
+  return purge;
 }
 
 @end

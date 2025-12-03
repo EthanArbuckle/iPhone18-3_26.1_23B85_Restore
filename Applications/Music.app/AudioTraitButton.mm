@@ -1,11 +1,11 @@
 @interface AudioTraitButton
 - (BOOL)isHighlighted;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
-- (_TtC5Music16AudioTraitButton)initWithCoder:(id)a3;
-- (_TtC5Music16AudioTraitButton)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC5Music16AudioTraitButton)initWithCoder:(id)coder;
+- (_TtC5Music16AudioTraitButton)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation AudioTraitButton
@@ -17,15 +17,15 @@
   return [(AudioTraitButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1001CBC78(a3);
+  selfCopy = self;
+  sub_1001CBC78(highlighted);
 }
 
 - (CGRect)hitRect
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001CBD68();
   v5 = v4;
   v7 = v6;
@@ -42,21 +42,21 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
   if (UIViewIgnoresTouchEvents())
   {
 
-    v8 = v7;
+    selfCopy = eventCopy;
   }
 
   else
   {
-    v9 = [(AudioTraitButton *)v8 pointInside:v7 withEvent:x, y];
+    v9 = [(AudioTraitButton *)selfCopy pointInside:eventCopy withEvent:x, y];
 
     if (v9)
     {
@@ -64,18 +64,18 @@
     }
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_5:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(AudioTraitButton *)v6 hitRect];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(AudioTraitButton *)selfCopy hitRect];
   v9.x = x;
   v9.y = y;
   v7 = CGRectContainsPoint(v10, v9);
@@ -83,12 +83,12 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC5Music16AudioTraitButton)initWithFrame:(CGRect)a3
+- (_TtC5Music16AudioTraitButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Music16AudioTraitButton_isShowingDisclosure) = 0;
   v8 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Music16AudioTraitButton_hitRectMinimumSize);
   v9 = type metadata accessor for AudioTraitButton();
@@ -99,7 +99,7 @@ LABEL_5:
   return [(AudioTraitButton *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5Music16AudioTraitButton)initWithCoder:(id)a3
+- (_TtC5Music16AudioTraitButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Music16AudioTraitButton_isShowingDisclosure) = 0;
   v4 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Music16AudioTraitButton_hitRectMinimumSize);
@@ -107,8 +107,8 @@ LABEL_5:
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for AudioTraitButton();
-  v5 = a3;
-  v6 = [(AudioTraitButton *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(AudioTraitButton *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

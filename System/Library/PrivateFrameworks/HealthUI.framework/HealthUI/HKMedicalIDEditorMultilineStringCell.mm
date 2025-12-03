@@ -1,29 +1,29 @@
 @interface HKMedicalIDEditorMultilineStringCell
-- (CGRect)_cursorRectForTextView:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)_cursorRectForTextView:(id)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (HKMedicalIDEditorCellHeightChangeDelegate)heightChangeDelegate;
-- (HKMedicalIDEditorMultilineStringCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKMedicalIDEditorMultilineStringCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)textViewExtraMargins;
-- (double)estimatedHeightWithWidth:(double)a3;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (double)estimatedHeightWithWidth:(double)width;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setLabel:(id)a3;
-- (void)setPlaceholder:(id)a3;
-- (void)setStringValue:(id)a3;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)setLabel:(id)label;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setStringValue:(id)value;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation HKMedicalIDEditorMultilineStringCell
 
-- (HKMedicalIDEditorMultilineStringCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKMedicalIDEditorMultilineStringCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v20.receiver = self;
   v20.super_class = HKMedicalIDEditorMultilineStringCell;
-  v4 = [(HKMedicalIDEditorCell *)&v20 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKMedicalIDEditorCell *)&v20 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -40,31 +40,31 @@
     v4->_textView = v8;
 
     [(UITextView *)v4->_textView setDelegate:v4];
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v4->_textView setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v4->_textView setBackgroundColor:clearColor];
 
     [(UITextView *)v4->_textView setContentInset:-5.0, 0.0, -5.0, 0.0];
     [(UITextView *)v4->_textView setTextAlignment:4];
     [(UITextView *)v4->_textView setScrollEnabled:0];
-    v11 = [MEMORY[0x1E69DC888] labelColor];
-    [(UITextView *)v4->_textView setTextColor:v11];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UITextView *)v4->_textView setTextColor:labelColor];
 
     v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     placeholderLabel = v4->_placeholderLabel;
     v4->_placeholderLabel = v12;
 
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v4->_placeholderLabel setTextColor:v14];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v4->_placeholderLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v4->_placeholderLabel setTextAlignment:4];
-    v15 = [(HKMedicalIDEditorMultilineStringCell *)v4 contentView];
-    [v15 addSubview:v4->_labelLabel];
+    contentView = [(HKMedicalIDEditorMultilineStringCell *)v4 contentView];
+    [contentView addSubview:v4->_labelLabel];
 
-    v16 = [(HKMedicalIDEditorMultilineStringCell *)v4 contentView];
-    [v16 addSubview:v4->_textView];
+    contentView2 = [(HKMedicalIDEditorMultilineStringCell *)v4 contentView];
+    [contentView2 addSubview:v4->_textView];
 
-    v17 = [(HKMedicalIDEditorMultilineStringCell *)v4 contentView];
-    [v17 addSubview:v4->_placeholderLabel];
+    contentView3 = [(HKMedicalIDEditorMultilineStringCell *)v4 contentView];
+    [contentView3 addSubview:v4->_placeholderLabel];
 
     v18 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel__labelTapped_];
     [(UILabel *)v4->_labelLabel addGestureRecognizer:v18];
@@ -84,19 +84,19 @@
   [(HKMedicalIDEditorCell *)&v3 dealloc];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = HKMedicalIDEditorMultilineStringCell;
-  [(HKMedicalIDEditorCell *)&v7 _contentSizeCategoryDidChange:a3];
+  [(HKMedicalIDEditorCell *)&v7 _contentSizeCategoryDidChange:change];
   v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
   [(UILabel *)self->_labelLabel setFont:v4];
 
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [(UITextView *)self->_textView setFont:v5];
 
-  v6 = [(UITextView *)self->_textView font];
-  [(UILabel *)self->_placeholderLabel setFont:v6];
+  font = [(UITextView *)self->_textView font];
+  [(UILabel *)self->_placeholderLabel setFont:font];
 }
 
 - (void)layoutSubviews
@@ -104,7 +104,7 @@
   v49.receiver = self;
   v49.super_class = HKMedicalIDEditorMultilineStringCell;
   [(HKMedicalIDEditorMultilineStringCell *)&v49 layoutSubviews];
-  v3 = [(UIView *)self hk_isLeftToRight];
+  hk_isLeftToRight = [(UIView *)self hk_isLeftToRight];
   [(HKMedicalIDEditorMultilineStringCell *)self textViewExtraMargins];
   v5 = v4;
   [(HKMedicalIDEditorMultilineStringCell *)self textViewExtraMargins];
@@ -118,22 +118,22 @@
   }
 
   v11 = v5 + 9.0;
-  if (v3)
+  if (hk_isLeftToRight)
   {
     v12 = v6 + 16.0;
-    v13 = [(HKMedicalIDEditorMultilineStringCell *)self contentView];
-    [v13 bounds];
+    contentView = [(HKMedicalIDEditorMultilineStringCell *)self contentView];
+    [contentView bounds];
     v15 = v14 - (v6 + 16.0) - 14.0;
   }
 
   else
   {
-    v16 = [(HKMedicalIDEditorMultilineStringCell *)self contentView];
-    [v16 bounds];
+    contentView2 = [(HKMedicalIDEditorMultilineStringCell *)self contentView];
+    [contentView2 bounds];
     v15 = v17 - (v6 + 16.0) - 14.0;
 
-    v13 = [(HKMedicalIDEditorMultilineStringCell *)self contentView];
-    [v13 bounds];
+    contentView = [(HKMedicalIDEditorMultilineStringCell *)self contentView];
+    [contentView bounds];
     v12 = v18 - v15 + -16.0 - v6;
   }
 
@@ -144,7 +144,7 @@
   v50.size.width = v15;
   v50.size.height = v20;
   MaxY = CGRectGetMaxY(v50);
-  if (v3)
+  if (hk_isLeftToRight)
   {
     v22 = v12 + -5.0;
   }
@@ -162,8 +162,8 @@
   v23 = MaxY + -4.0;
   [(UITextView *)self->_textView sizeThatFits:v15 + 10.0, 100000.0, *&v11];
   v25 = v24;
-  v26 = [(UITextView *)self->_textView font];
-  [v26 lineHeight];
+  font = [(UITextView *)self->_textView font];
+  [font lineHeight];
   v28 = v27 + 20.0;
 
   if (v25 < v28)
@@ -171,8 +171,8 @@
     v25 = v28;
   }
 
-  v29 = [(UILabel *)self->_placeholderLabel font];
-  [v29 lineHeight];
+  font2 = [(UILabel *)self->_placeholderLabel font];
+  [font2 lineHeight];
   v31 = v30;
 
   v32.n128_f64[0] = v12;
@@ -195,17 +195,17 @@
   [(UILabel *)self->_placeholderLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UITextView *)self->_textView frame:a3.width];
+  width = fits.width;
+  [(UITextView *)self->_textView frame:fits.width];
   v6 = v5;
   textView = self->_textView;
   [(UITextView *)textView bounds];
   [(UITextView *)textView sizeThatFits:CGRectGetWidth(v17), 100000.0];
   v9 = v8;
-  v10 = [(UITextView *)self->_textView font];
-  [v10 lineHeight];
+  font = [(UITextView *)self->_textView font];
+  [font lineHeight];
   v12 = v11 + 20.0;
 
   if (v9 >= v12)
@@ -225,7 +225,7 @@
   return result;
 }
 
-- (double)estimatedHeightWithWidth:(double)a3
+- (double)estimatedHeightWithWidth:(double)width
 {
   [(HKMedicalIDEditorMultilineStringCell *)self textViewExtraMargins];
   v5 = 16.0;
@@ -239,7 +239,7 @@
 
   [(HKMedicalIDEditorMultilineStringCell *)self textViewExtraMargins];
   v11 = v10 + 9.0;
-  v12 = a3 - v5 - 14.0;
+  v12 = width - v5 - 14.0;
   [(UILabel *)self->_labelLabel sizeThatFits:v12, 100000.0];
   v27.size.height = v13;
   v14 = v5 + -5.0;
@@ -250,8 +250,8 @@
   v16 = v12 + 10.0;
   [(UITextView *)self->_textView sizeThatFits:v16, 100000.0];
   v18 = v17;
-  v19 = [(UITextView *)self->_textView font];
-  [v19 lineHeight];
+  font = [(UITextView *)self->_textView font];
+  [font lineHeight];
   v21 = v20 + 20.0;
 
   if (v18 >= v21)
@@ -270,54 +270,54 @@
   return CGRectGetMaxY(*(&v22 - 3)) + 23.0;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   [(UILabel *)self->_labelLabel setText:v4];
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
   textView = self->_textView;
-  v5 = a3;
-  [(UITextView *)textView setText:v5];
-  v6 = [v5 length];
+  valueCopy = value;
+  [(UITextView *)textView setText:valueCopy];
+  v6 = [valueCopy length];
 
   placeholderLabel = self->_placeholderLabel;
 
   [(UILabel *)placeholderLabel setHidden:v6 != 0];
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  v4 = [a3 copy];
+  v4 = [placeholder copy];
   [(UILabel *)self->_placeholderLabel setText:v4];
 }
 
-- (CGRect)_cursorRectForTextView:(id)a3
+- (CGRect)_cursorRectForTextView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 selectedTextRange];
-  v6 = [v5 end];
-  [v4 caretRectForPosition:v6];
+  viewCopy = view;
+  selectedTextRange = [viewCopy selectedTextRange];
+  v6 = [selectedTextRange end];
+  [viewCopy caretRectForPosition:v6];
   v8 = v7;
   v10 = v9;
 
-  [v4 bounds];
+  [viewCopy bounds];
   MaxX = CGRectGetMaxX(v29);
   if (MaxX < v8)
   {
     v8 = MaxX;
   }
 
-  [v4 bounds];
+  [viewCopy bounds];
   MaxY = CGRectGetMaxY(v30);
   if (MaxY < v10)
   {
     v10 = MaxY;
   }
 
-  [v4 frame];
+  [viewCopy frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -328,8 +328,8 @@
   v31.size.width = v18;
   v31.size.height = v20;
   Width = CGRectGetWidth(v31);
-  v22 = [(UITextView *)self->_textView font];
-  [v22 pointSize];
+  font = [(UITextView *)self->_textView font];
+  [font pointSize];
   v24 = v23;
 
   v25 = v8;
@@ -343,27 +343,27 @@
   return result;
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v15 = a3;
-  v4 = [v15 selectedTextRange];
-  v5 = [v4 isEmpty];
+  selectionCopy = selection;
+  selectedTextRange = [selectionCopy selectedTextRange];
+  isEmpty = [selectedTextRange isEmpty];
 
-  if (v5)
+  if (isEmpty)
   {
-    [(HKMedicalIDEditorMultilineStringCell *)self _cursorRectForTextView:v15];
+    [(HKMedicalIDEditorMultilineStringCell *)self _cursorRectForTextView:selectionCopy];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
     WeakRetained = objc_loadWeakRetained(&self->_heightChangeDelegate);
-    [WeakRetained medicalIDEditorCellDidChangeSelection:self keepRectVisible:v15 inView:{v7, v9, v11, v13}];
+    [WeakRetained medicalIDEditorCellDidChangeSelection:self keepRectVisible:selectionCopy inView:{v7, v9, v11, v13}];
   }
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   v8.receiver = self;
   v8.super_class = HKMedicalIDEditorMultilineStringCell;
   [(HKMedicalIDEditorCell *)&v8 beginEditing];
@@ -372,8 +372,8 @@
   v6[2] = __64__HKMedicalIDEditorMultilineStringCell_textViewDidBeginEditing___block_invoke;
   v6[3] = &unk_1E81B5AD0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = editingCopy;
+  v5 = editingCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -388,32 +388,32 @@ void __64__HKMedicalIDEditorMultilineStringCell_textViewDidBeginEditing___block_
   [WeakRetained medicalIDEditorCellDidBeginEditing:*(a1 + 32) keepRectVisible:*(a1 + 40) inView:{v3, v5, v7, v9}];
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v15 = a3;
+  changeCopy = change;
   [(HKMedicalIDEditorMultilineStringCell *)self setNeedsLayout];
-  v4 = [v15 text];
-  -[UILabel setHidden:](self->_placeholderLabel, "setHidden:", [v4 length] != 0);
+  text = [changeCopy text];
+  -[UILabel setHidden:](self->_placeholderLabel, "setHidden:", [text length] != 0);
 
-  [v15 bounds];
-  [v15 sizeThatFits:{CGRectGetWidth(v17), 100000.0}];
+  [changeCopy bounds];
+  [changeCopy sizeThatFits:{CGRectGetWidth(v17), 100000.0}];
   if (self->_lastSeenTextViewContentHeight != v5)
   {
     self->_lastSeenTextViewContentHeight = v5;
-    [(HKMedicalIDEditorMultilineStringCell *)self _cursorRectForTextView:v15];
+    [(HKMedicalIDEditorMultilineStringCell *)self _cursorRectForTextView:changeCopy];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
     WeakRetained = objc_loadWeakRetained(&self->_heightChangeDelegate);
-    [WeakRetained medicalIDEditorCell:self didChangeHeight:v15 keepRectVisible:self->_lastSeenTextViewContentHeight inView:{v7, v9, v11, v13}];
+    [WeakRetained medicalIDEditorCell:self didChangeHeight:changeCopy keepRectVisible:self->_lastSeenTextViewContentHeight inView:{v7, v9, v11, v13}];
   }
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = [a3 text];
-  [(HKMedicalIDEditorMultilineStringCell *)self setStringValue:v4];
+  text = [editing text];
+  [(HKMedicalIDEditorMultilineStringCell *)self setStringValue:text];
 
   [(HKMedicalIDEditorCell *)self valueDidChange];
 }

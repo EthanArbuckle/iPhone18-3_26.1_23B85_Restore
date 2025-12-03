@@ -1,22 +1,22 @@
 @interface STBackgroundActivityManager
 + (id)sharedInstance;
 - (NSSet)activeBackgroundActivities;
-- (STBackgroundActivityManager)initWithDefaults:(id)a3;
-- (id)_allValidBackgroundActivitiesInPrecedenceScope:(unint64_t)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)resolvedBackgroundActivityFromBackgroundActivities:(id)a3 inPrecedenceScope:(unint64_t)a4;
+- (STBackgroundActivityManager)initWithDefaults:(id)defaults;
+- (id)_allValidBackgroundActivitiesInPrecedenceScope:(unint64_t)scope;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)resolvedBackgroundActivityFromBackgroundActivities:(id)activities inPrecedenceScope:(unint64_t)scope;
 - (id)succinctDescription;
-- (id)validBackgroundActivitiesForBackgroundActivities:(id)a3;
-- (id)visualDescriptorForBackgroundActivityWithIdentifier:(id)a3;
+- (id)validBackgroundActivitiesForBackgroundActivities:(id)activities;
+- (id)visualDescriptorForBackgroundActivityWithIdentifier:(id)identifier;
 - (void)_forceResetBackgroundActivitiesForClients;
 - (void)_registerForInternalDefaultsChanges;
 - (void)_updateBackgroundActivitiesForClients;
 - (void)_updateSupportedBackgroundActivitiesAndVisualDescriptorsFromBundleRecords;
-- (void)addActiveBackgroundActivities:(id)a3;
-- (void)addBackgroundActivityClient:(id)a3;
-- (void)recordBundlesChangedForBundleManager:(id)a3;
-- (void)removeActiveBackgroundActivities:(id)a3;
+- (void)addActiveBackgroundActivities:(id)activities;
+- (void)addBackgroundActivityClient:(id)client;
+- (void)recordBundlesChangedForBundleManager:(id)manager;
+- (void)removeActiveBackgroundActivities:(id)activities;
 @end
 
 @implementation STBackgroundActivityManager
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __45__STBackgroundActivityManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_19 != -1)
   {
     dispatch_once(&_MergedGlobals_19, block);
@@ -48,7 +48,7 @@
 - (void)_updateBackgroundActivitiesForClients
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(STBackgroundActivityManager *)self activeBackgroundActivities];
+  activeBackgroundActivities = [(STBackgroundActivityManager *)self activeBackgroundActivities];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -69,7 +69,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) activeBackgroundActivitiesDidUpdate:{v3, v10}];
+        [*(*(&v10 + 1) + 8 * v8++) activeBackgroundActivitiesDidUpdate:{activeBackgroundActivities, v10}];
       }
 
       while (v6 != v8);
@@ -91,9 +91,9 @@ void __45__STBackgroundActivityManager_sharedInstance__block_invoke(uint64_t a1)
   qword_1ED7F5D98 = v2;
 }
 
-- (STBackgroundActivityManager)initWithDefaults:(id)a3
+- (STBackgroundActivityManager)initWithDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v14.receiver = self;
   v14.super_class = STBackgroundActivityManager;
   v6 = [(STBackgroundActivityManager *)&v14 init];
@@ -103,15 +103,15 @@ void __45__STBackgroundActivityManager_sharedInstance__block_invoke(uint64_t a1)
     bundleManager = v6->_bundleManager;
     v6->_bundleManager = v7;
 
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     subscribedClients = v6->_subscribedClients;
-    v6->_subscribedClients = v9;
+    v6->_subscribedClients = weakObjectsHashTable;
 
     v11 = [MEMORY[0x1E695DFA8] set];
     activeBackgroundActivities = v6->_activeBackgroundActivities;
     v6->_activeBackgroundActivities = v11;
 
-    objc_storeStrong(&v6->_systemStatusDefaults, a3);
+    objc_storeStrong(&v6->_systemStatusDefaults, defaults);
     [(STBackgroundActivityManager *)v6 _registerForInternalDefaultsChanges];
     [(STBundleManager *)v6->_bundleManager addObserver:v6];
     [(STBackgroundActivityManager *)v6 _updateSupportedBackgroundActivitiesAndVisualDescriptorsFromBundleRecords];
@@ -120,16 +120,16 @@ void __45__STBackgroundActivityManager_sharedInstance__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)addActiveBackgroundActivities:(id)a3
+- (void)addActiveBackgroundActivities:(id)activities
 {
-  [(NSMutableSet *)self->_activeBackgroundActivities unionSet:a3];
+  [(NSMutableSet *)self->_activeBackgroundActivities unionSet:activities];
 
   [(STBackgroundActivityManager *)self _updateBackgroundActivitiesForClients];
 }
 
-- (void)removeActiveBackgroundActivities:(id)a3
+- (void)removeActiveBackgroundActivities:(id)activities
 {
-  [(NSMutableSet *)self->_activeBackgroundActivities minusSet:a3];
+  [(NSMutableSet *)self->_activeBackgroundActivities minusSet:activities];
 
   [(STBackgroundActivityManager *)self _updateBackgroundActivitiesForClients];
 }
@@ -137,7 +137,7 @@ void __45__STBackgroundActivityManager_sharedInstance__block_invoke(uint64_t a1)
 - (void)_forceResetBackgroundActivitiesForClients
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(STBackgroundActivityManager *)self activeBackgroundActivities];
+  activeBackgroundActivities = [(STBackgroundActivityManager *)self activeBackgroundActivities];
   v4 = [MEMORY[0x1E695DFD8] set];
   v12 = 0u;
   v13 = 0u;
@@ -160,7 +160,7 @@ void __45__STBackgroundActivityManager_sharedInstance__block_invoke(uint64_t a1)
 
         v10 = *(*(&v12 + 1) + 8 * i);
         [v10 activeBackgroundActivitiesDidUpdate:{v4, v12}];
-        [v10 activeBackgroundActivitiesDidUpdate:v3];
+        [v10 activeBackgroundActivitiesDidUpdate:activeBackgroundActivities];
       }
 
       v7 = [(NSHashTable *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -172,16 +172,16 @@ void __45__STBackgroundActivityManager_sharedInstance__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addBackgroundActivityClient:(id)a3
+- (void)addBackgroundActivityClient:(id)client
 {
   subscribedClients = self->_subscribedClients;
-  v5 = a3;
-  [(NSHashTable *)subscribedClients addObject:v5];
-  v6 = [(STBackgroundActivityManager *)self activeBackgroundActivities];
-  [v5 activeBackgroundActivitiesDidUpdate:v6];
+  clientCopy = client;
+  [(NSHashTable *)subscribedClients addObject:clientCopy];
+  activeBackgroundActivities = [(STBackgroundActivityManager *)self activeBackgroundActivities];
+  [clientCopy activeBackgroundActivitiesDidUpdate:activeBackgroundActivities];
 }
 
-- (id)_allValidBackgroundActivitiesInPrecedenceScope:(unint64_t)a3
+- (id)_allValidBackgroundActivitiesInPrecedenceScope:(unint64_t)scope
 {
   if (qword_1ED7F5DB8 != -1)
   {
@@ -189,7 +189,7 @@ void __45__STBackgroundActivityManager_sharedInstance__block_invoke(uint64_t a1)
   }
 
   v4 = &qword_1ED7F5DA8;
-  if (a3 != 1)
+  if (scope != 1)
   {
     v4 = &qword_1ED7F5DB0;
   }
@@ -309,52 +309,52 @@ void __78__STBackgroundActivityManager__allValidBackgroundActivitiesInPrecedence
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)validBackgroundActivitiesForBackgroundActivities:(id)a3
+- (id)validBackgroundActivitiesForBackgroundActivities:(id)activities
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFA8] setWithSet:v4];
+  activitiesCopy = activities;
+  v5 = [MEMORY[0x1E695DFA8] setWithSet:activitiesCopy];
   v6 = [(STBackgroundActivityManager *)self _allValidBackgroundActivitiesInPrecedenceScope:999];
   v7 = [v6 set];
   [v5 intersectSet:v7];
 
   if (self->_allowAllBackgroundActivities)
   {
-    [v5 unionSet:v4];
+    [v5 unionSet:activitiesCopy];
   }
 
   return v5;
 }
 
-- (id)resolvedBackgroundActivityFromBackgroundActivities:(id)a3 inPrecedenceScope:(unint64_t)a4
+- (id)resolvedBackgroundActivityFromBackgroundActivities:(id)activities inPrecedenceScope:(unint64_t)scope
 {
-  v6 = a3;
-  v7 = [(STBackgroundActivityManager *)self _allValidBackgroundActivitiesInPrecedenceScope:a4];
+  activitiesCopy = activities;
+  v7 = [(STBackgroundActivityManager *)self _allValidBackgroundActivitiesInPrecedenceScope:scope];
   v8 = [v7 mutableCopy];
-  [v8 intersectSet:v6];
+  [v8 intersectSet:activitiesCopy];
   if (self->_allowAllBackgroundActivities)
   {
-    v9 = [MEMORY[0x1E695DFA0] orderedSetWithSet:v6];
+    v9 = [MEMORY[0x1E695DFA0] orderedSetWithSet:activitiesCopy];
     v10 = [(STBackgroundActivityManager *)self _allValidBackgroundActivitiesInPrecedenceScope:999];
     [v9 minusOrderedSet:v10];
 
     if ([v9 count])
     {
-      v11 = [v9 firstObject];
+      firstObject = [v9 firstObject];
 
       goto LABEL_6;
     }
   }
 
-  v11 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 LABEL_6:
 
-  return v11;
+  return firstObject;
 }
 
-- (id)visualDescriptorForBackgroundActivityWithIdentifier:(id)a3
+- (id)visualDescriptorForBackgroundActivityWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_visualDescriptors objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSDictionary *)self->_visualDescriptors objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -363,7 +363,7 @@ LABEL_6:
 
   else
   {
-    v7 = [STBackgroundActivityVisualDescriptor visualDescriptorForBackgroundActivityWithIdentifier:v4];
+    v7 = [STBackgroundActivityVisualDescriptor visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
   }
 
   v8 = v7;
@@ -419,11 +419,11 @@ uint64_t __66__STBackgroundActivityManager__registerForInternalDefaultsChanges__
   return MEMORY[0x1EEE66BB8](WeakRetained, v2);
 }
 
-- (void)recordBundlesChangedForBundleManager:(id)a3
+- (void)recordBundlesChangedForBundleManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   objc_initWeak(&location, self);
-  if (self->_bundleManager == v4)
+  if (self->_bundleManager == managerCopy)
   {
     objc_copyWeak(&v5, &location);
     BSDispatchMain();
@@ -442,13 +442,13 @@ void __68__STBackgroundActivityManager_recordBundlesChangedForBundleManager___bl
 - (void)_updateSupportedBackgroundActivitiesAndVisualDescriptorsFromBundleRecords
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(STBundleManager *)self->_bundleManager recordIdentifiers];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  recordIdentifiers = [(STBundleManager *)self->_bundleManager recordIdentifiers];
   v5 = STSystemStatusLogBundleLoading();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v40 = v4;
+    v40 = recordIdentifiers;
     _os_log_impl(&dword_1DA9C2000, v5, OS_LOG_TYPE_DEFAULT, "Bundle manager reports background activity bundle identifiers changed: %{public}@", buf, 0xCu);
   }
 
@@ -456,7 +456,7 @@ void __68__STBackgroundActivityManager_recordBundlesChangedForBundleManager___bl
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v4;
+  obj = recordIdentifiers;
   v6 = [obj countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (v6)
   {
@@ -464,7 +464,7 @@ void __68__STBackgroundActivityManager_recordBundlesChangedForBundleManager___bl
     v8 = *v36;
     v9 = 0x1E85DD000uLL;
     v26 = *v36;
-    v27 = self;
+    selfCopy = self;
     do
     {
       v10 = 0;
@@ -487,8 +487,8 @@ void __68__STBackgroundActivityManager_recordBundlesChangedForBundleManager___bl
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v14 = [v12 backgroundActivityIdentifiers];
-          v15 = [v14 countByEnumeratingWithState:&v31 objects:v43 count:16];
+          backgroundActivityIdentifiers = [v12 backgroundActivityIdentifiers];
+          v15 = [backgroundActivityIdentifiers countByEnumeratingWithState:&v31 objects:v43 count:16];
           if (v15)
           {
             v16 = v15;
@@ -499,14 +499,14 @@ void __68__STBackgroundActivityManager_recordBundlesChangedForBundleManager___bl
               {
                 if (*v32 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(backgroundActivityIdentifiers);
                 }
 
                 v19 = *(*(&v31 + 1) + 8 * i);
                 v20 = [v12 visualDescriptorForBackgroundActivityWithIdentifier:v19];
                 if (v20)
                 {
-                  [(NSDictionary *)v3 setValue:v20 forKey:v19];
+                  [(NSDictionary *)dictionary setValue:v20 forKey:v19];
                   v21 = STSystemStatusLogBundleLoading();
                   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
                   {
@@ -530,12 +530,12 @@ void __68__STBackgroundActivityManager_recordBundlesChangedForBundleManager___bl
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v31 objects:v43 count:16];
+              v16 = [backgroundActivityIdentifiers countByEnumeratingWithState:&v31 objects:v43 count:16];
             }
 
             while (v16);
             v8 = v26;
-            self = v27;
+            self = selfCopy;
             v9 = 0x1E85DD000;
             v7 = v28;
           }
@@ -545,12 +545,12 @@ void __68__STBackgroundActivityManager_recordBundlesChangedForBundleManager___bl
 
         else
         {
-          v14 = STSystemStatusLogBundleLoading();
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+          backgroundActivityIdentifiers = STSystemStatusLogBundleLoading();
+          if (os_log_type_enabled(backgroundActivityIdentifiers, OS_LOG_TYPE_ERROR))
           {
             *buf = 138477827;
             v40 = v11;
-            _os_log_error_impl(&dword_1DA9C2000, v14, OS_LOG_TYPE_ERROR, "Bundle %{private}@ is of unexpected type, expected 'BackgroundActivities'", buf, 0xCu);
+            _os_log_error_impl(&dword_1DA9C2000, backgroundActivityIdentifiers, OS_LOG_TYPE_ERROR, "Bundle %{private}@ is of unexpected type, expected 'BackgroundActivities'", buf, 0xCu);
           }
         }
 
@@ -567,7 +567,7 @@ void __68__STBackgroundActivityManager_recordBundlesChangedForBundleManager___bl
   visualDescriptors = self->_visualDescriptors;
   v23 = BSEqualObjects();
   v24 = self->_visualDescriptors;
-  self->_visualDescriptors = v3;
+  self->_visualDescriptors = dictionary;
 
   if ((v23 & 1) == 0)
   {
@@ -579,26 +579,26 @@ void __68__STBackgroundActivityManager_recordBundlesChangedForBundleManager___bl
 
 - (id)succinctDescription
 {
-  v2 = [(STBackgroundActivityManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STBackgroundActivityManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBackgroundActivityManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STBackgroundActivityManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBackgroundActivityManager *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STBackgroundActivityManager *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

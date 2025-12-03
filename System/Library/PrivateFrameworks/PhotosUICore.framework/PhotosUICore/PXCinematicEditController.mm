@@ -6,19 +6,19 @@
 - (PXCinematicEditControllerDelegate)delegate;
 - (PXFocusTimelineController)focusTimelineDelegate;
 - (double)cinematicAperture;
-- (id)axDescriptionForFocusDecisionAtTime:(id *)a3;
+- (id)axDescriptionForFocusDecisionAtTime:(id *)time;
 - (id)cinematographyState;
 - (id)compositionController;
 - (int64_t)cinematicDebugMode;
 - (void)_updatePortraitVideoAdjustmentFromCinematography;
 - (void)cinematographyWasEdited;
-- (void)cinematographyWasEditedAtTime:(id *)a3;
-- (void)removeFocusDecisionAtTime:(id *)a3;
-- (void)resetToCinematographyState:(id)a3;
-- (void)setAsset:(id)a3 editSource:(id)a4;
-- (void)setCinematicAdjustmentActive:(BOOL)a3;
-- (void)setCinematicAperture:(double)a3;
-- (void)setCinematicDebugMode:(int64_t)a3;
+- (void)cinematographyWasEditedAtTime:(id *)time;
+- (void)removeFocusDecisionAtTime:(id *)time;
+- (void)resetToCinematographyState:(id)state;
+- (void)setAsset:(id)asset editSource:(id)source;
+- (void)setCinematicAdjustmentActive:(BOOL)active;
+- (void)setCinematicAperture:(double)aperture;
+- (void)setCinematicDebugMode:(int64_t)mode;
 - (void)toggleAutoFocusState;
 - (void)updateFocusDecisions;
 @end
@@ -46,7 +46,7 @@
   return WeakRetained;
 }
 
-- (id)axDescriptionForFocusDecisionAtTime:(id *)a3
+- (id)axDescriptionForFocusDecisionAtTime:(id *)time
 {
   v17 = 0;
   v18 = &v17;
@@ -72,8 +72,8 @@
       v10[1] = 3221225472;
       v10[2] = __65__PXCinematicEditController_axDescriptionForFocusDecisionAtTime___block_invoke;
       v10[3] = &unk_1E7748538;
-      v11 = *&a3->var0;
-      var3 = a3->var3;
+      v11 = *&time->var0;
+      var3 = time->var3;
       v10[4] = self;
       v10[5] = &v17;
       [v7 enumerateObjectsUsingBlock:v10];
@@ -117,29 +117,29 @@ void __65__PXCinematicEditController_axDescriptionForFocusDecisionAtTime___block
   }
 }
 
-- (void)resetToCinematographyState:(id)a3
+- (void)resetToCinematographyState:(id)state
 {
-  v4 = a3;
-  v5 = [(PXCinematicEditController *)self cinematographyScript];
-  [v5 reloadWithChangesDictionary:v4];
+  stateCopy = state;
+  cinematographyScript = [(PXCinematicEditController *)self cinematographyScript];
+  [cinematographyScript reloadWithChangesDictionary:stateCopy];
 
   [(PXCinematicEditController *)self cinematographyWasEdited];
 }
 
 - (id)cinematographyState
 {
-  v2 = [(PXCinematicEditController *)self compositionController];
-  v3 = [v2 portraitVideoAdjustmentController];
-  v4 = [v3 cinematographyState];
-  v5 = [v4 copy];
+  compositionController = [(PXCinematicEditController *)self compositionController];
+  portraitVideoAdjustmentController = [compositionController portraitVideoAdjustmentController];
+  cinematographyState = [portraitVideoAdjustmentController cinematographyState];
+  v5 = [cinematographyState copy];
 
   return v5;
 }
 
 - (BOOL)canToggleBackToUserFocusState
 {
-  v3 = [(PXCinematicEditController *)self savedManualFocusCinematographyState];
-  v4 = [v3 objectForKeyedSubscript:@"user_decisions"];
+  savedManualFocusCinematographyState = [(PXCinematicEditController *)self savedManualFocusCinematographyState];
+  v4 = [savedManualFocusCinematographyState objectForKeyedSubscript:@"user_decisions"];
   v5 = v4;
   v6 = MEMORY[0x1E695E0F0];
   if (v4)
@@ -158,8 +158,8 @@ void __65__PXCinematicEditController_axDescriptionForFocusDecisionAtTime___block
 
     else
     {
-      v9 = [(PXCinematicEditController *)self uneditedUserDecisions];
-      v8 = [v9 count] != 0;
+      uneditedUserDecisions = [(PXCinematicEditController *)self uneditedUserDecisions];
+      v8 = [uneditedUserDecisions count] != 0;
     }
   }
 
@@ -173,31 +173,31 @@ void __65__PXCinematicEditController_axDescriptionForFocusDecisionAtTime___block
 
 - (BOOL)isInAutoFocusState
 {
-  v2 = [(PXCinematicEditController *)self cinematographyScript];
+  cinematographyScript = [(PXCinematicEditController *)self cinematographyScript];
   start = **&MEMORY[0x1E6960CC0];
   v5 = **&MEMORY[0x1E6960C68];
   CMTimeRangeMake(&v7, &start, &v5);
-  v3 = [v2 userDecisionsInTimeRange:&v7];
+  v3 = [cinematographyScript userDecisionsInTimeRange:&v7];
 
-  LOBYTE(v2) = [v3 count] == 0;
-  return v2;
+  LOBYTE(cinematographyScript) = [v3 count] == 0;
+  return cinematographyScript;
 }
 
 - (void)toggleAutoFocusState
 {
   if ([(PXCinematicEditController *)self isInAutoFocusState])
   {
-    v5 = [(PXCinematicEditController *)self savedManualFocusCinematographyState];
-    [(PXCinematicEditController *)self resetToCinematographyState:v5];
+    savedManualFocusCinematographyState = [(PXCinematicEditController *)self savedManualFocusCinematographyState];
+    [(PXCinematicEditController *)self resetToCinematographyState:savedManualFocusCinematographyState];
   }
 
   else
   {
-    v3 = [(PXCinematicEditController *)self cinematographyState];
-    [(PXCinematicEditController *)self setSavedManualFocusCinematographyState:v3];
+    cinematographyState = [(PXCinematicEditController *)self cinematographyState];
+    [(PXCinematicEditController *)self setSavedManualFocusCinematographyState:cinematographyState];
 
-    v4 = [(PXCinematicEditController *)self cinematographyScript];
-    [v4 removeAllUserDecisions];
+    cinematographyScript = [(PXCinematicEditController *)self cinematographyScript];
+    [cinematographyScript removeAllUserDecisions];
 
     [(PXCinematicEditController *)self cinematographyWasEdited];
   }
@@ -205,12 +205,12 @@ void __65__PXCinematicEditController_axDescriptionForFocusDecisionAtTime___block
 
 - (id)compositionController
 {
-  v2 = [(PXCinematicEditController *)self delegate];
-  v3 = [v2 compositionController];
+  delegate = [(PXCinematicEditController *)self delegate];
+  compositionController = [delegate compositionController];
 
-  if (v3)
+  if (compositionController)
   {
-    v4 = v3;
+    v4 = compositionController;
   }
 
   else
@@ -223,21 +223,21 @@ void __65__PXCinematicEditController_axDescriptionForFocusDecisionAtTime___block
     }
   }
 
-  return v3;
+  return compositionController;
 }
 
-- (void)setCinematicAperture:(double)a3
+- (void)setCinematicAperture:(double)aperture
 {
-  v5 = [(PXCinematicEditController *)self compositionController];
-  v6 = [v5 adjustmentConstants];
-  v7 = [v6 PIPortraitVideoAdjustmentKey];
+  compositionController = [(PXCinematicEditController *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
+  pIPortraitVideoAdjustmentKey = [adjustmentConstants PIPortraitVideoAdjustmentKey];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__PXCinematicEditController_setCinematicAperture___block_invoke;
   v8[3] = &unk_1E7748510;
   v8[4] = self;
-  *&v8[5] = a3;
-  [v5 modifyAdjustmentWithKey:v7 modificationBlock:v8];
+  *&v8[5] = aperture;
+  [compositionController modifyAdjustmentWithKey:pIPortraitVideoAdjustmentKey modificationBlock:v8];
 }
 
 void __50__PXCinematicEditController_setCinematicAperture___block_invoke(uint64_t a1, void *a2)
@@ -256,7 +256,7 @@ void __50__PXCinematicEditController_setCinematicAperture___block_invoke(uint64_
   }
 }
 
-- (void)removeFocusDecisionAtTime:(id *)a3
+- (void)removeFocusDecisionAtTime:(id *)time
 {
   v15 = 0u;
   v16 = 0u;
@@ -273,8 +273,8 @@ void __50__PXCinematicEditController_setCinematicAperture___block_invoke(uint64_
     v8[1] = 3221225472;
     v8[2] = __55__PXCinematicEditController_removeFocusDecisionAtTime___block_invoke;
     v8[3] = &unk_1E77484E8;
-    v9 = *&a3->var0;
-    var3 = a3->var3;
+    v9 = *&time->var0;
+    var3 = time->var3;
     v8[4] = self;
     [v6 enumerateObjectsUsingBlock:v8];
   }
@@ -336,35 +336,35 @@ void __55__PXCinematicEditController_removeFocusDecisionAtTime___block_invoke(ui
   }
 }
 
-- (void)setCinematicDebugMode:(int64_t)a3
+- (void)setCinematicDebugMode:(int64_t)mode
 {
-  v4 = [(PXCinematicEditController *)self compositionController];
-  v5 = [v4 adjustmentConstants];
-  v6 = [v5 PIPortraitVideoAdjustmentKey];
+  compositionController = [(PXCinematicEditController *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
+  pIPortraitVideoAdjustmentKey = [adjustmentConstants PIPortraitVideoAdjustmentKey];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__PXCinematicEditController_setCinematicDebugMode___block_invoke;
   v7[3] = &__block_descriptor_40_e45_v16__0__PIPortraitVideoAdjustmentController_8l;
-  v7[4] = a3;
-  [v4 modifyAdjustmentWithKey:v6 modificationBlock:v7];
+  v7[4] = mode;
+  [compositionController modifyAdjustmentWithKey:pIPortraitVideoAdjustmentKey modificationBlock:v7];
 }
 
 - (int64_t)cinematicDebugMode
 {
-  v2 = [(PXCinematicEditController *)self compositionController];
-  v3 = [v2 portraitVideoAdjustmentController];
-  v4 = [v3 debugMode];
+  compositionController = [(PXCinematicEditController *)self compositionController];
+  portraitVideoAdjustmentController = [compositionController portraitVideoAdjustmentController];
+  debugMode = [portraitVideoAdjustmentController debugMode];
 
-  return v4;
+  return debugMode;
 }
 
 - (double)cinematicAperture
 {
-  v3 = [(PXCinematicEditController *)self compositionController];
-  v4 = [v3 portraitVideoAdjustmentController];
-  v5 = [v4 aperture];
+  compositionController = [(PXCinematicEditController *)self compositionController];
+  portraitVideoAdjustmentController = [compositionController portraitVideoAdjustmentController];
+  aperture = [portraitVideoAdjustmentController aperture];
 
-  if (!v5 || ([v4 aperture], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "doubleValue"), v8 = v7, v6, v8 < 0.8))
+  if (!aperture || ([portraitVideoAdjustmentController aperture], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "doubleValue"), v8 = v7, v6, v8 < 0.8))
   {
     [(PXCinematicEditController *)self originalAperture];
     v8 = v9;
@@ -375,12 +375,12 @@ void __55__PXCinematicEditController_removeFocusDecisionAtTime___block_invoke(ui
 
 - (BOOL)cinematicAdjustmentActive
 {
-  v2 = [(PXCinematicEditController *)self compositionController];
-  v3 = v2;
-  if (v2)
+  compositionController = [(PXCinematicEditController *)self compositionController];
+  v3 = compositionController;
+  if (compositionController)
   {
-    v4 = [v2 portraitVideoAdjustmentController];
-    v5 = [v4 enabled];
+    portraitVideoAdjustmentController = [compositionController portraitVideoAdjustmentController];
+    enabled = [portraitVideoAdjustmentController enabled];
   }
 
   else
@@ -392,43 +392,43 @@ void __55__PXCinematicEditController_removeFocusDecisionAtTime___block_invoke(ui
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_ERROR, "_updatePortraitVideoAdjustmentFromCinematography: Could not get composition controller", v8, 2u);
     }
 
-    v5 = 0;
+    enabled = 0;
   }
 
-  return v5;
+  return enabled;
 }
 
-- (void)setCinematicAdjustmentActive:(BOOL)a3
+- (void)setCinematicAdjustmentActive:(BOOL)active
 {
-  v4 = [(PXCinematicEditController *)self compositionController];
-  v5 = v4;
-  if (v4)
+  compositionController = [(PXCinematicEditController *)self compositionController];
+  v5 = compositionController;
+  if (compositionController)
   {
-    v6 = [v4 adjustmentConstants];
-    v7 = [v6 PIPortraitVideoAdjustmentKey];
+    adjustmentConstants = [compositionController adjustmentConstants];
+    pIPortraitVideoAdjustmentKey = [adjustmentConstants PIPortraitVideoAdjustmentKey];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __58__PXCinematicEditController_setCinematicAdjustmentActive___block_invoke;
     v8[3] = &__block_descriptor_33_e45_v16__0__PIPortraitVideoAdjustmentController_8l;
-    v9 = a3;
-    [v5 modifyAdjustmentWithKey:v7 modificationBlock:v8];
+    activeCopy = active;
+    [v5 modifyAdjustmentWithKey:pIPortraitVideoAdjustmentKey modificationBlock:v8];
   }
 
   else
   {
-    v6 = PLPhotoEditGetLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    adjustmentConstants = PLPhotoEditGetLog();
+    if (os_log_type_enabled(adjustmentConstants, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_ERROR, "_updatePortraitVideoAdjustmentFromCinematography: Could not get composition controller", buf, 2u);
+      _os_log_impl(&dword_1A3C1C000, adjustmentConstants, OS_LOG_TYPE_ERROR, "_updatePortraitVideoAdjustmentFromCinematography: Could not get composition controller", buf, 2u);
     }
   }
 }
 
-- (void)cinematographyWasEditedAtTime:(id *)a3
+- (void)cinematographyWasEditedAtTime:(id *)time
 {
   [(PXCinematicEditController *)self _updatePortraitVideoAdjustmentFromCinematography];
-  v5 = *a3;
+  v5 = *time;
   [(PXCinematicEditController *)self updateFocusDecisionsAnimatedAtTime:&v5];
 }
 
@@ -634,8 +634,8 @@ void __64__PXCinematicEditController_updateFocusDecisionsAnimatedAtTime___block_
   epoch = duration.epoch;
   CMTimeRangeMake(&v22, &start, &duration);
   v6 = [(PTCinematographyScript *)cinematographyScript userDecisionsInTimeRange:&v22];
-  v7 = [(PXCinematicEditController *)self uneditedUserDecisions];
-  v8 = [v6 isEqualToArray:v7];
+  uneditedUserDecisions = [(PXCinematicEditController *)self uneditedUserDecisions];
+  v8 = [v6 isEqualToArray:uneditedUserDecisions];
 
   v9 = self->_cinematographyScript;
   start = *v4;
@@ -645,28 +645,28 @@ void __64__PXCinematicEditController_updateFocusDecisionsAnimatedAtTime___block_
   v10 = [(PTCinematographyScript *)v9 framesInTimeRange:&v22];
   if ([v10 count])
   {
-    v11 = [(PXCinematicEditController *)self compositionController];
-    v12 = [v11 adjustmentConstants];
+    compositionController = [(PXCinematicEditController *)self compositionController];
+    adjustmentConstants = [compositionController adjustmentConstants];
 
-    v13 = [(PXCinematicEditController *)self compositionController];
-    v14 = [v12 PIPortraitVideoAdjustmentKey];
+    compositionController2 = [(PXCinematicEditController *)self compositionController];
+    pIPortraitVideoAdjustmentKey = [adjustmentConstants PIPortraitVideoAdjustmentKey];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __77__PXCinematicEditController__updatePortraitVideoAdjustmentFromCinematography__block_invoke;
     v16[3] = &unk_1E7748430;
     v19 = v8;
     v17 = v10;
-    v18 = self;
-    [v13 modifyAdjustmentWithKey:v14 modificationBlock:v16];
+    selfCopy = self;
+    [compositionController2 modifyAdjustmentWithKey:pIPortraitVideoAdjustmentKey modificationBlock:v16];
   }
 
   else
   {
-    v12 = PLPhotoEditGetLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    adjustmentConstants = PLPhotoEditGetLog();
+    if (os_log_type_enabled(adjustmentConstants, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v22.start.value) = 0;
-      _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "ERROR: Cinematography returned no frames", &v22, 2u);
+      _os_log_impl(&dword_1A3C1C000, adjustmentConstants, OS_LOG_TYPE_ERROR, "ERROR: Cinematography returned no frames", &v22, 2u);
     }
   }
 }
@@ -739,42 +739,42 @@ void __77__PXCinematicEditController__updatePortraitVideoAdjustmentFromCinematog
   [v4 setCinematographyState:v15];
 }
 
-- (void)setAsset:(id)a3 editSource:(id)a4
+- (void)setAsset:(id)asset editSource:(id)source
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (self->_asset != v7)
+  assetCopy = asset;
+  sourceCopy = source;
+  if (self->_asset != assetCopy)
   {
-    v9 = [(PXCinematicEditController *)self asset];
+    asset = [(PXCinematicEditController *)self asset];
 
-    if (v9)
+    if (asset)
     {
       [(PXCinematicEditController *)self setAsset:0];
       [(PXCinematicEditController *)self setEditSource:0];
       [(PXCinematicEditController *)self setCinematographyScript:0];
     }
 
-    objc_storeStrong(&self->_asset, a3);
-    objc_storeStrong(&self->_editSource, a4);
+    objc_storeStrong(&self->_asset, asset);
+    objc_storeStrong(&self->_editSource, source);
     v10 = objc_alloc_init(MEMORY[0x1E695DFB8]);
     focusEventTimes = self->_focusEventTimes;
     self->_focusEventTimes = v10;
 
-    if (v7)
+    if (assetCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v8 videoURL];
-        v13 = [MEMORY[0x1E6988168] assetWithURL:v12];
+        videoURL = [sourceCopy videoURL];
+        v13 = [MEMORY[0x1E6988168] assetWithURL:videoURL];
         if (v13)
         {
-          v14 = [(PXCinematicEditController *)self cinematographyState];
-          v15 = v14 == 0;
+          cinematographyState = [(PXCinematicEditController *)self cinematographyState];
+          v15 = cinematographyState == 0;
 
-          v16 = [(PXCinematicEditController *)self delegate];
-          [v16 disableCinematicUIForLoadingAsset];
+          delegate = [(PXCinematicEditController *)self delegate];
+          [delegate disableCinematicUIForLoadingAsset];
 
           v17 = objc_alloc_init(MEMORY[0x1E69C4F80]);
           [(PXCinematicEditController *)self setCinematographyScript:v17];
@@ -785,8 +785,8 @@ void __77__PXCinematicEditController__updatePortraitVideoAdjustmentFromCinematog
           block[1] = 3221225472;
           block[2] = __49__PXCinematicEditController_setAsset_editSource___block_invoke;
           block[3] = &unk_1E77492D0;
-          v21 = v7;
-          v22 = self;
+          v21 = assetCopy;
+          selfCopy = self;
           v23 = v13;
           objc_copyWeak(&v24, location);
           v25 = v15;
@@ -802,7 +802,7 @@ void __77__PXCinematicEditController__updatePortraitVideoAdjustmentFromCinematog
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
             LODWORD(location[0]) = 138412290;
-            *(location + 4) = v12;
+            *(location + 4) = videoURL;
             _os_log_impl(&dword_1A3C1C000, v19, OS_LOG_TYPE_ERROR, "Couldn't create AVAsset for %@", location, 0xCu);
           }
         }
@@ -810,12 +810,12 @@ void __77__PXCinematicEditController__updatePortraitVideoAdjustmentFromCinematog
 
       else
       {
-        v12 = PLPhotoEditGetLog();
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        videoURL = PLPhotoEditGetLog();
+        if (os_log_type_enabled(videoURL, OS_LOG_TYPE_ERROR))
         {
           LODWORD(location[0]) = 138412290;
-          *(location + 4) = v8;
-          _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "Can't start cinematography for non-video edit source %@", location, 0xCu);
+          *(location + 4) = sourceCopy;
+          _os_log_impl(&dword_1A3C1C000, videoURL, OS_LOG_TYPE_ERROR, "Can't start cinematography for non-video edit source %@", location, 0xCu);
         }
       }
     }

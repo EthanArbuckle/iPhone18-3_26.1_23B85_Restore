@@ -1,28 +1,28 @@
 @interface HRCEventLogger
-- (HRCEventLogger)initWithRootDirectory:(id)a3 ioHelper:(id)a4 isInternalVariant:(BOOL)a5 queue:(id)a6;
+- (HRCEventLogger)initWithRootDirectory:(id)directory ioHelper:(id)helper isInternalVariant:(BOOL)variant queue:(id)queue;
 - (void)_addClient;
 - (void)_flush;
 - (void)_flushAndClose;
-- (void)_handleAnalyticsReport:(unsigned __int8)a3 data:(id)a4;
-- (void)_handleBluetoothDiscoveryEnabledUpdate:(BOOL)a3 withTimestamp:(unint64_t)a4;
+- (void)_handleAnalyticsReport:(unsigned __int8)report data:(id)data;
+- (void)_handleBluetoothDiscoveryEnabledUpdate:(BOOL)update withTimestamp:(unint64_t)timestamp;
 - (void)_handleFlushNotification;
-- (void)_handleHeartRate:(id)a3 withTimestamp:(unint64_t)a4;
-- (void)_handleOpportunisticModeUpdate:(BOOL)a3 withTimestamp:(unint64_t)a4;
-- (void)_handleSourceUpdate:(const HRCSourceUpdate *)a3 withTimestamp:(unint64_t)a4;
-- (void)_handleStreamingModeUpdate:(unint64_t)a3 withTimestamp:(unint64_t)a4;
-- (void)_handleWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4 withTimestamp:(unint64_t)a5;
+- (void)_handleHeartRate:(id)rate withTimestamp:(unint64_t)timestamp;
+- (void)_handleOpportunisticModeUpdate:(BOOL)update withTimestamp:(unint64_t)timestamp;
+- (void)_handleSourceUpdate:(const HRCSourceUpdate *)update withTimestamp:(unint64_t)timestamp;
+- (void)_handleStreamingModeUpdate:(unint64_t)update withTimestamp:(unint64_t)timestamp;
+- (void)_handleWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType withTimestamp:(unint64_t)timestamp;
 - (void)_recomputeLoggingStatus;
 - (void)_removeClient;
 - (void)addClient;
 - (void)dealloc;
 - (void)flush;
-- (void)handleAnalyticsReport:(unsigned __int8)a3 data:(id)a4;
-- (void)handleBluetoothDiscoveryEnabledUpdate:(BOOL)a3 withTimestamp:(unint64_t)a4;
-- (void)handleHeartRate:(id)a3 withTimestamp:(unint64_t)a4;
-- (void)handleOpportunisticModeUpdate:(BOOL)a3 withTimestamp:(unint64_t)a4;
-- (void)handleSourceUpdate:(const HRCSourceUpdate *)a3 withTimestamp:(unint64_t)a4;
-- (void)handleStreamingModeUpdate:(unint64_t)a3 withTimestamp:(unint64_t)a4;
-- (void)handleWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4 withTimestamp:(unint64_t)a5;
+- (void)handleAnalyticsReport:(unsigned __int8)report data:(id)data;
+- (void)handleBluetoothDiscoveryEnabledUpdate:(BOOL)update withTimestamp:(unint64_t)timestamp;
+- (void)handleHeartRate:(id)rate withTimestamp:(unint64_t)timestamp;
+- (void)handleOpportunisticModeUpdate:(BOOL)update withTimestamp:(unint64_t)timestamp;
+- (void)handleSourceUpdate:(const HRCSourceUpdate *)update withTimestamp:(unint64_t)timestamp;
+- (void)handleStreamingModeUpdate:(unint64_t)update withTimestamp:(unint64_t)timestamp;
+- (void)handleWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType withTimestamp:(unint64_t)timestamp;
 - (void)removeClient;
 @end
 
@@ -65,36 +65,36 @@
   }
 
   v5 = self->_clientCount == 0;
-  v6 = [(HRCEventLogger *)self ioHelper];
-  v7 = v6;
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  v7 = ioHelper;
   if (v5)
   {
-    [v6 stopLogging];
+    [ioHelper stopLogging];
   }
 
   else
   {
-    [v6 startLogging];
+    [ioHelper startLogging];
   }
 }
 
-- (HRCEventLogger)initWithRootDirectory:(id)a3 ioHelper:(id)a4 isInternalVariant:(BOOL)a5 queue:(id)a6
+- (HRCEventLogger)initWithRootDirectory:(id)directory ioHelper:(id)helper isInternalVariant:(BOOL)variant queue:(id)queue
 {
-  v9 = a4;
-  v10 = a6;
+  helperCopy = helper;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = HRCEventLogger;
   v11 = [(HRCEventLogger *)&v18 init];
   v11->_clientCount = 0;
-  objc_storeStrong(&v11->_loggingQueue, a6);
-  objc_storeStrong(&v11->_ioHelper, a4);
+  objc_storeStrong(&v11->_loggingQueue, queue);
+  objc_storeStrong(&v11->_ioHelper, helper);
   objc_initWeak(&location, v11);
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1000194B4;
   handler[3] = &unk_100040C58;
   objc_copyWeak(&v16, &location);
-  notify_register_dispatch("com.apple.HeartRateCoordinator.logFlush", &v11->_flushToken, v10, handler);
+  notify_register_dispatch("com.apple.HeartRateCoordinator.logFlush", &v11->_flushToken, queueCopy, handler);
   v12 = sub_10000132C();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -138,20 +138,20 @@
   dispatch_async(loggingQueue, block);
 }
 
-- (void)handleOpportunisticModeUpdate:(BOOL)a3 withTimestamp:(unint64_t)a4
+- (void)handleOpportunisticModeUpdate:(BOOL)update withTimestamp:(unint64_t)timestamp
 {
   loggingQueue = self->_loggingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000196FC;
   block[3] = &unk_100040E78;
-  v6 = a3;
+  updateCopy = update;
   block[4] = self;
-  block[5] = a4;
+  block[5] = timestamp;
   dispatch_async(loggingQueue, block);
 }
 
-- (void)handleStreamingModeUpdate:(unint64_t)a3 withTimestamp:(unint64_t)a4
+- (void)handleStreamingModeUpdate:(unint64_t)update withTimestamp:(unint64_t)timestamp
 {
   loggingQueue = self->_loggingQueue;
   block[0] = _NSConcreteStackBlock;
@@ -159,18 +159,18 @@
   block[2] = sub_100019784;
   block[3] = &unk_100040BF0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = update;
+  block[6] = timestamp;
   dispatch_async(loggingQueue, block);
 }
 
-- (void)handleSourceUpdate:(const HRCSourceUpdate *)a3 withTimestamp:(unint64_t)a4
+- (void)handleSourceUpdate:(const HRCSourceUpdate *)update withTimestamp:(unint64_t)timestamp
 {
-  v7 = a3->var0;
-  var1 = a3->var1;
-  v9 = a3->var2;
-  v10 = a3->var3;
-  v11 = *&a3->var4;
+  v7 = update->var0;
+  var1 = update->var1;
+  v9 = update->var2;
+  v10 = update->var3;
+  v11 = *&update->var4;
   loggingQueue = self->_loggingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3321888768;
@@ -182,14 +182,14 @@
   v19 = v9;
   v20 = v10;
   v21 = v11;
-  v22 = a4;
+  timestampCopy = timestamp;
   v13 = v10;
   v14 = v9;
   v15 = v7;
   dispatch_async(loggingQueue, block);
 }
 
-- (void)handleWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4 withTimestamp:(unint64_t)a5
+- (void)handleWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType withTimestamp:(unint64_t)timestamp
 {
   loggingQueue = self->_loggingQueue;
   v6[0] = _NSConcreteStackBlock;
@@ -197,52 +197,52 @@
   v6[2] = sub_100019928;
   v6[3] = &unk_100040ED8;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = type;
+  v6[6] = locationType;
+  v6[7] = timestamp;
   dispatch_async(loggingQueue, v6);
 }
 
-- (void)handleBluetoothDiscoveryEnabledUpdate:(BOOL)a3 withTimestamp:(unint64_t)a4
+- (void)handleBluetoothDiscoveryEnabledUpdate:(BOOL)update withTimestamp:(unint64_t)timestamp
 {
   loggingQueue = self->_loggingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000199B0;
   block[3] = &unk_100040E78;
-  v6 = a3;
+  updateCopy = update;
   block[4] = self;
-  block[5] = a4;
+  block[5] = timestamp;
   dispatch_async(loggingQueue, block);
 }
 
-- (void)handleHeartRate:(id)a3 withTimestamp:(unint64_t)a4
+- (void)handleHeartRate:(id)rate withTimestamp:(unint64_t)timestamp
 {
-  v6 = a3;
+  rateCopy = rate;
   loggingQueue = self->_loggingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100019A68;
   block[3] = &unk_100040F00;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = rateCopy;
+  timestampCopy = timestamp;
+  v8 = rateCopy;
   dispatch_async(loggingQueue, block);
 }
 
-- (void)handleAnalyticsReport:(unsigned __int8)a3 data:(id)a4
+- (void)handleAnalyticsReport:(unsigned __int8)report data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   loggingQueue = self->_loggingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100019B20;
   block[3] = &unk_100040F28;
-  v11 = a3;
+  reportCopy = report;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = dataCopy;
+  v8 = dataCopy;
   dispatch_async(loggingQueue, block);
 }
 
@@ -274,21 +274,21 @@
 - (void)_flush
 {
   dispatch_assert_queue_V2(self->_loggingQueue);
-  v4 = [(HRCEventLogger *)self ioHelper];
-  v3 = [v4 started];
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  started = [ioHelper started];
 
-  if (v3)
+  if (started)
   {
-    v5 = [(HRCEventLogger *)self ioHelper];
-    [v5 flush];
+    ioHelper2 = [(HRCEventLogger *)self ioHelper];
+    [ioHelper2 flush];
   }
 }
 
 - (void)_flushAndClose
 {
   dispatch_assert_queue_V2(self->_loggingQueue);
-  v3 = [(HRCEventLogger *)self ioHelper];
-  [v3 flushAndClose];
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  [ioHelper flushAndClose];
 }
 
 - (void)_handleFlushNotification
@@ -301,10 +301,10 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "HRCEventLogger flush received", buf, 2u);
   }
 
-  v4 = [(HRCEventLogger *)self ioHelper];
-  v5 = [v4 started];
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  started = [ioHelper started];
 
-  if (v5)
+  if (started)
   {
     [(HRCEventLogger *)self _flushAndClose];
     v6 = "com.apple.HeartRateCoordinator.logFlushFinshed";
@@ -324,61 +324,61 @@
   }
 }
 
-- (void)_handleOpportunisticModeUpdate:(BOOL)a3 withTimestamp:(unint64_t)a4
+- (void)_handleOpportunisticModeUpdate:(BOOL)update withTimestamp:(unint64_t)timestamp
 {
   dispatch_assert_queue_V2(self->_loggingQueue);
-  v7 = [(HRCEventLogger *)self ioHelper];
-  v8 = [v7 started];
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  started = [ioHelper started];
 
-  if (v8)
+  if (started)
   {
-    v9 = [(HRCEventLogger *)self ioHelper];
-    v12 = a4;
-    v13 = a3;
-    v10 = [NSData dataWithBytes:&v12 length:9];
+    ioHelper2 = [(HRCEventLogger *)self ioHelper];
+    timestampCopy = timestamp;
+    updateCopy = update;
+    v10 = [NSData dataWithBytes:&timestampCopy length:9];
     v11 = sub_100001844(396, 9, v10);
 
-    [v9 handleEncodedData:v11];
+    [ioHelper2 handleEncodedData:v11];
   }
 }
 
-- (void)_handleStreamingModeUpdate:(unint64_t)a3 withTimestamp:(unint64_t)a4
+- (void)_handleStreamingModeUpdate:(unint64_t)update withTimestamp:(unint64_t)timestamp
 {
-  v5 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_loggingQueue);
-  v7 = [(HRCEventLogger *)self ioHelper];
-  v8 = [v7 started];
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  started = [ioHelper started];
 
-  if (v8)
+  if (started)
   {
-    v9 = [(HRCEventLogger *)self ioHelper];
-    v12 = a4;
-    v13 = v5;
-    v10 = [NSData dataWithBytes:&v12 length:9];
+    ioHelper2 = [(HRCEventLogger *)self ioHelper];
+    timestampCopy = timestamp;
+    v13 = updateCopy;
+    v10 = [NSData dataWithBytes:&timestampCopy length:9];
     v11 = sub_100001844(397, 9, v10);
 
-    [v9 handleEncodedData:v11];
+    [ioHelper2 handleEncodedData:v11];
   }
 }
 
-- (void)_handleSourceUpdate:(const HRCSourceUpdate *)a3 withTimestamp:(unint64_t)a4
+- (void)_handleSourceUpdate:(const HRCSourceUpdate *)update withTimestamp:(unint64_t)timestamp
 {
   dispatch_assert_queue_V2(self->_loggingQueue);
-  v7 = [(HRCEventLogger *)self ioHelper];
-  v8 = [v7 started];
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  started = [ioHelper started];
 
-  if (v8)
+  if (started)
   {
-    v9 = [(HRCEventLogger *)self ioHelper];
-    v13 = a3->var0;
-    var1 = a3->var1;
-    v15 = a3->var2;
-    v16 = a3->var3;
-    v17 = *&a3->var4;
+    ioHelper2 = [(HRCEventLogger *)self ioHelper];
+    v13 = update->var0;
+    var1 = update->var1;
+    v15 = update->var2;
+    v16 = update->var3;
+    v17 = *&update->var4;
     v19[0] = 0;
     v19[1] = 0;
     v20 = 0;
-    v18[0] = a4;
+    v18[0] = timestamp;
     [v13 timeIntervalSinceReferenceDate];
     v18[1] = v10;
     [v16 getUUIDBytes:v19];
@@ -386,71 +386,71 @@
     v11 = [NSData dataWithBytes:v18 length:34];
     v12 = sub_100001844(398, 34, v11);
 
-    [v9 handleEncodedData:v12];
+    [ioHelper2 handleEncodedData:v12];
   }
 }
 
-- (void)_handleWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4 withTimestamp:(unint64_t)a5
+- (void)_handleWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType withTimestamp:(unint64_t)timestamp
 {
   dispatch_assert_queue_V2(self->_loggingQueue);
-  v9 = [(HRCEventLogger *)self ioHelper];
-  v10 = [v9 started];
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  started = [ioHelper started];
 
-  if (v10)
+  if (started)
   {
-    v11 = [(HRCEventLogger *)self ioHelper];
-    v14[0] = a5;
-    v14[1] = a3;
-    v14[2] = a4;
+    ioHelper2 = [(HRCEventLogger *)self ioHelper];
+    v14[0] = timestamp;
+    v14[1] = type;
+    v14[2] = locationType;
     v12 = [NSData dataWithBytes:v14 length:24];
     v13 = sub_100001844(399, 24, v12);
 
-    [v11 handleEncodedData:v13];
+    [ioHelper2 handleEncodedData:v13];
   }
 }
 
-- (void)_handleBluetoothDiscoveryEnabledUpdate:(BOOL)a3 withTimestamp:(unint64_t)a4
+- (void)_handleBluetoothDiscoveryEnabledUpdate:(BOOL)update withTimestamp:(unint64_t)timestamp
 {
   dispatch_assert_queue_V2(self->_loggingQueue);
-  v7 = [(HRCEventLogger *)self ioHelper];
-  v8 = [v7 started];
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  started = [ioHelper started];
 
-  if (v8)
+  if (started)
   {
-    v9 = [(HRCEventLogger *)self ioHelper];
-    v12 = a4;
-    v13 = a3;
-    v10 = [NSData dataWithBytes:&v12 length:9];
+    ioHelper2 = [(HRCEventLogger *)self ioHelper];
+    timestampCopy = timestamp;
+    updateCopy = update;
+    v10 = [NSData dataWithBytes:&timestampCopy length:9];
     v11 = sub_100001844(400, 9, v10);
 
-    [v9 handleEncodedData:v11];
+    [ioHelper2 handleEncodedData:v11];
   }
 }
 
-- (void)_handleHeartRate:(id)a3 withTimestamp:(unint64_t)a4
+- (void)_handleHeartRate:(id)rate withTimestamp:(unint64_t)timestamp
 {
-  v6 = a3;
+  rateCopy = rate;
   dispatch_assert_queue_V2(self->_loggingQueue);
-  v7 = [(HRCEventLogger *)self ioHelper];
-  v8 = [v7 started];
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  started = [ioHelper started];
 
-  if (v8)
+  if (started)
   {
-    v9 = [(HRCEventLogger *)self ioHelper];
-    v10 = v6;
+    ioHelper2 = [(HRCEventLogger *)self ioHelper];
+    v10 = rateCopy;
     memset(&v21[3], 0, 50);
-    v21[0] = a4;
-    v11 = [v10 timestamp];
-    [v11 timeIntervalSinceReferenceDate];
+    v21[0] = timestamp;
+    timestamp = [v10 timestamp];
+    [timestamp timeIntervalSinceReferenceDate];
     v21[1] = v12;
 
     [v10 heartRate];
     v21[2] = v13;
-    v14 = [v10 confidence];
-    if (v14)
+    confidence = [v10 confidence];
+    if (confidence)
     {
-      v15 = [v10 confidence];
-      [v15 doubleValue];
+      confidence2 = [v10 confidence];
+      [confidence2 doubleValue];
       v21[3] = v16;
     }
 
@@ -460,14 +460,14 @@
     }
 
     LOBYTE(v21[4]) = [v10 hrContext];
-    v17 = [v10 uuid];
-    [v17 getUUIDBytes:&v21[4] + 1];
+    uuid = [v10 uuid];
+    [uuid getUUIDBytes:&v21[4] + 1];
 
     BYTE1(v21[6]) = [v10 confidenceLevel];
     BYTE2(v21[6]) = [v10 arbitrationStatus];
     BYTE3(v21[6]) = [v10 sourceType];
-    v18 = [v10 deviceUuid];
-    [v18 getUUIDBytes:&v21[6] + 4];
+    deviceUuid = [v10 deviceUuid];
+    [deviceUuid getUUIDBytes:&v21[6] + 4];
 
     BYTE4(v21[8]) = [v10 streamingThrottleStatus];
     BYTE5(v21[8]) = [v10 sensorLocation];
@@ -475,43 +475,43 @@
     v19 = [NSData dataWithBytes:v21 length:74];
     v20 = sub_100001844(401, 74, v19);
 
-    [v9 handleEncodedData:v20];
+    [ioHelper2 handleEncodedData:v20];
   }
 }
 
-- (void)_handleAnalyticsReport:(unsigned __int8)a3 data:(id)a4
+- (void)_handleAnalyticsReport:(unsigned __int8)report data:(id)data
 {
-  v4 = a3;
-  v6 = a4;
+  reportCopy = report;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_loggingQueue);
-  v7 = [(HRCEventLogger *)self ioHelper];
-  v8 = [v7 started];
+  ioHelper = [(HRCEventLogger *)self ioHelper];
+  started = [ioHelper started];
 
   v9 = sub_10000132C();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v18[0] = 67109120;
-    v18[1] = v8;
+    v18[1] = started;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Writing analytics to log, logging started: %{BOOL}u", v18, 8u);
   }
 
-  if ((v8 & 1) == 0)
+  if ((started & 1) == 0)
   {
-    v10 = [(HRCEventLogger *)self ioHelper];
-    [v10 startLogging];
+    ioHelper2 = [(HRCEventLogger *)self ioHelper];
+    [ioHelper2 startLogging];
   }
 
-  v11 = [(HRCEventLogger *)self ioHelper];
-  v12 = v6;
+  ioHelper3 = [(HRCEventLogger *)self ioHelper];
+  v12 = dataCopy;
   v13 = v12;
-  if (v4 == 2)
+  if (reportCopy == 2)
   {
     v14 = [v12 length];
     v15 = 403;
     goto LABEL_9;
   }
 
-  if (v4 == 1)
+  if (reportCopy == 1)
   {
     v14 = [v12 length];
     v15 = 402;
@@ -523,11 +523,11 @@ LABEL_9:
   v16 = 0;
 LABEL_11:
 
-  [v11 handleEncodedData:v16];
-  if ((v8 & 1) == 0)
+  [ioHelper3 handleEncodedData:v16];
+  if ((started & 1) == 0)
   {
-    v17 = [(HRCEventLogger *)self ioHelper];
-    [v17 stopLogging];
+    ioHelper4 = [(HRCEventLogger *)self ioHelper];
+    [ioHelper4 stopLogging];
   }
 }
 

@@ -1,56 +1,56 @@
 @interface MTSubscriptionSyncProcessor
 + (id)subscriptionSyncProcessorSyncKeys;
 - (BOOL)hasLocalChanges;
-- (BOOL)mergeData:(id)a3 forKey:(id)a4 version:(id)a5 mismatch:(BOOL)a6;
-- (BOOL)mergeLocalAndRemoteData:(id)a3 forKey:(id)a4 version:(id)a5 mismatch:(BOOL)a6;
-- (BOOL)overrideLocalWithRemoteData:(id)a3 forKey:(id)a4 version:(id)a5 mismatch:(BOOL)a6;
-- (BOOL)updatePodcastsToAdd:(id)a3 addingPodcastIfNeeded:(id)a4 hasLocalPodcast:(BOOL)a5;
-- (BOOL)updatePodcastsToUnsubscribe:(id)a3 remotePodcast:(id)a4 localPodcast:(id)a5;
-- (BOOL)updateSettingsIfNeededForLocalPodcast:(id)a3 remotePodcast:(id)a4;
-- (MTSubscriptionSyncProcessor)initWithStorage:(id)a3 config:(id)a4 cloudSyncBugReporter:(id)a5;
+- (BOOL)mergeData:(id)data forKey:(id)key version:(id)version mismatch:(BOOL)mismatch;
+- (BOOL)mergeLocalAndRemoteData:(id)data forKey:(id)key version:(id)version mismatch:(BOOL)mismatch;
+- (BOOL)overrideLocalWithRemoteData:(id)data forKey:(id)key version:(id)version mismatch:(BOOL)mismatch;
+- (BOOL)updatePodcastsToAdd:(id)add addingPodcastIfNeeded:(id)needed hasLocalPodcast:(BOOL)podcast;
+- (BOOL)updatePodcastsToUnsubscribe:(id)unsubscribe remotePodcast:(id)podcast localPodcast:(id)localPodcast;
+- (BOOL)updateSettingsIfNeededForLocalPodcast:(id)podcast remotePodcast:(id)remotePodcast;
+- (MTSubscriptionSyncProcessor)initWithStorage:(id)storage config:(id)config cloudSyncBugReporter:(id)reporter;
 - (id)_addedSubscriptions;
 - (id)_podcastSubscriptions;
 - (id)context;
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5;
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version;
 - (id)logPrefix;
-- (id)podcastCacheInContext:(id)a3;
-- (id)syncDictionaryToMetricsDictionary:(id)a3;
-- (id)unvisitedPodcastsToUnsubscribeIn:(id)a3 mismatch:(BOOL *)a4 version:(id)a5;
-- (id)versionForGetTransaction:(id)a3 key:(id)a4;
+- (id)podcastCacheInContext:(id)context;
+- (id)syncDictionaryToMetricsDictionary:(id)dictionary;
+- (id)unvisitedPodcastsToUnsubscribeIn:(id)in mismatch:(BOOL *)mismatch version:(id)version;
+- (id)versionForGetTransaction:(id)transaction key:(id)key;
 - (int64_t)operationTypeForSET;
 - (unint64_t)_subscribedPodcastsCount;
-- (void)checkPotentialLibraryDeletionIssueForPreviouslySubscribedPodcastsCount:(unint64_t)a3 podcastsToUnsubscribeCount:(unint64_t)a4 newVersion:(id)a5;
-- (void)completeTransactionWithNewVersion:(id)a3 mismatch:(BOOL)a4 finishedBlock:(id)a5;
-- (void)conflictForSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)importRemotePodcastDicts:(id)a3 inContext:(id)a4 visitingPodcastsInCache:(id)a5 updatingPodcastsToAdd:(id)a6 updatingPodcastsToUnsubscribe:(id)a7 mismatch:(BOOL)a8 version:(id)a9;
+- (void)checkPotentialLibraryDeletionIssueForPreviouslySubscribedPodcastsCount:(unint64_t)count podcastsToUnsubscribeCount:(unint64_t)unsubscribeCount newVersion:(id)version;
+- (void)completeTransactionWithNewVersion:(id)version mismatch:(BOOL)mismatch finishedBlock:(id)block;
+- (void)conflictForSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)importRemotePodcastDicts:(id)dicts inContext:(id)context visitingPodcastsInCache:(id)cache updatingPodcastsToAdd:(id)add updatingPodcastsToUnsubscribe:(id)unsubscribe mismatch:(BOOL)mismatch version:(id)version;
 - (void)markAddedSubscriptionsAsSynced;
 - (void)markAllShowsAsSynced;
-- (void)markShowsAsSyncedForPredicate:(id)a3;
-- (void)reorderLocalPodcastsToMatchRemote:(id)a3;
-- (void)reportImportingRemotePodcast:(id)a3 withLocalPodcast:(id)a4 shouldAddPodcast:(BOOL)a5 shouldUnsubscribeLocalPodcast:(BOOL)a6 shouldUpdateSettings:(BOOL)a7 mismatch:(BOOL)a8 version:(id)a9;
-- (void)subscribeFromCloudToPodcasts:(id)a3;
-- (void)successfulGetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)successfulSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7;
-- (void)transaction:(id)a3 didProcessResponseWithDomainVersion:(id)a4;
-- (void)updateSettingsForLocalPodcast:(id)a3 remotePodcast:(id)a4 ctx:(id)a5;
+- (void)markShowsAsSyncedForPredicate:(id)predicate;
+- (void)reorderLocalPodcastsToMatchRemote:(id)remote;
+- (void)reportImportingRemotePodcast:(id)podcast withLocalPodcast:(id)localPodcast shouldAddPodcast:(BOOL)addPodcast shouldUnsubscribeLocalPodcast:(BOOL)unsubscribeLocalPodcast shouldUpdateSettings:(BOOL)settings mismatch:(BOOL)mismatch version:(id)version;
+- (void)subscribeFromCloudToPodcasts:(id)podcasts;
+- (void)successfulGetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)successfulSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block;
+- (void)transaction:(id)transaction didProcessResponseWithDomainVersion:(id)version;
+- (void)updateSettingsForLocalPodcast:(id)podcast remotePodcast:(id)remotePodcast ctx:(id)ctx;
 @end
 
 @implementation MTSubscriptionSyncProcessor
 
-- (MTSubscriptionSyncProcessor)initWithStorage:(id)a3 config:(id)a4 cloudSyncBugReporter:(id)a5
+- (MTSubscriptionSyncProcessor)initWithStorage:(id)storage config:(id)config cloudSyncBugReporter:(id)reporter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storageCopy = storage;
+  configCopy = config;
+  reporterCopy = reporter;
   v20.receiver = self;
   v20.super_class = MTSubscriptionSyncProcessor;
   v11 = [(MTSubscriptionSyncProcessor *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    [(MTSubscriptionSyncProcessor *)v11 setConfig:v9];
-    [(MTSubscriptionSyncProcessor *)v12 setStorageProvider:v8];
-    [(MTSubscriptionSyncProcessor *)v12 setCloudSyncBugReporter:v10];
+    [(MTSubscriptionSyncProcessor *)v11 setConfig:configCopy];
+    [(MTSubscriptionSyncProcessor *)v12 setStorageProvider:storageCopy];
+    [(MTSubscriptionSyncProcessor *)v12 setCloudSyncBugReporter:reporterCopy];
     v13 = dispatch_queue_create("MTSubscriptionSyncProcessor.workQueue", 0);
     [(MTSubscriptionSyncProcessor *)v12 setWorkQueue:v13];
 
@@ -84,18 +84,18 @@
 
 - (id)context
 {
-  v2 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  v3 = [v2 importContext];
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  importContext = [storageProvider importContext];
 
-  return v3;
+  return importContext;
 }
 
 - (int64_t)operationTypeForSET
 {
-  v2 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  v3 = [v2 syncType];
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  syncType = [storageProvider syncType];
 
-  if (v3 == 1)
+  if (syncType == 1)
   {
     return 13;
   }
@@ -108,73 +108,73 @@
 
 - (BOOL)hasLocalChanges
 {
-  v2 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  v3 = [v2 syncDirtyFlag];
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  syncDirtyFlag = [storageProvider syncDirtyFlag];
 
-  return v3;
+  return syncDirtyFlag;
 }
 
-- (id)versionForGetTransaction:(id)a3 key:(id)a4
+- (id)versionForGetTransaction:(id)transaction key:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = _MTLogCategoryCloudSync();
   v7 = v6;
   signpostID = self->_signpostID;
   if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
     v17 = 138412290;
-    v18 = v5;
+    v18 = keyCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "MTSubscriptionSyncProcessor.GET", "key: %@", &v17, 0xCu);
   }
 
-  v9 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  v10 = [v9 syncVersion];
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  syncVersion = [storageProvider syncVersion];
 
   v11 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
     v17 = 138543874;
-    v18 = v12;
+    v18 = logPrefix;
     v19 = 2114;
-    v20 = v10;
+    v20 = syncVersion;
     v21 = 2114;
-    v22 = v5;
+    v22 = keyCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Version for GET transaction [%{public}@] key: %{public}@", &v17, 0x20u);
   }
 
   v13 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    logPrefix2 = [(MTSubscriptionSyncProcessor *)self logPrefix];
     v17 = 138543874;
-    v18 = v14;
+    v18 = logPrefix2;
     v19 = 2114;
-    v20 = v10;
+    v20 = syncVersion;
     v21 = 2114;
-    v22 = v5;
+    v22 = keyCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Gathering addedSubscriptions for GET transaction [%{public}@] key: %{public}@", &v17, 0x20u);
   }
 
-  v15 = [(MTSubscriptionSyncProcessor *)self _addedSubscriptions];
-  [(MTSubscriptionSyncProcessor *)self setAddedSubscriptions:v15];
+  _addedSubscriptions = [(MTSubscriptionSyncProcessor *)self _addedSubscriptions];
+  [(MTSubscriptionSyncProcessor *)self setAddedSubscriptions:_addedSubscriptions];
 
   [(MTSubscriptionSyncProcessor *)self setInitialSubscribedPodcastsCount:[(MTSubscriptionSyncProcessor *)self _subscribedPodcastsCount]];
 
-  return v10;
+  return syncVersion;
 }
 
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version
 {
-  v7 = a4;
+  keyCopy = key;
   if (+[_TtC18PodcastsFoundation18SyncKeysRepository shouldSyncInReadOnlyMode])
   {
-    v8 = [(MTSubscriptionSyncProcessor *)self cloudSyncBugReporter];
-    v9 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v10 = [v9 syncType];
-    v11 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v12 = [v11 syncVersion];
-    [v8 reportSubscriptionsSyncIssue:4 subscriptionSyncType:v10 version:v12 userInfo:0];
+    cloudSyncBugReporter = [(MTSubscriptionSyncProcessor *)self cloudSyncBugReporter];
+    storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    syncType = [storageProvider syncType];
+    storageProvider2 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    syncVersion = [storageProvider2 syncVersion];
+    [cloudSyncBugReporter reportSubscriptionsSyncIssue:4 subscriptionSyncType:syncType version:syncVersion userInfo:0];
   }
 
   v13 = _MTLogCategoryCloudSync();
@@ -183,87 +183,87 @@
   if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     v49 = 138412290;
-    v50 = v7;
+    v50 = keyCopy;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "MTSubscriptionSyncProcessor.SET", "key: %@", &v49, 0xCu);
   }
 
-  v16 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  if ([v16 syncDirtyFlag])
+  storageProvider3 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  if ([storageProvider3 syncDirtyFlag])
   {
   }
 
   else
   {
-    v17 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v18 = [v17 syncVersion];
+    storageProvider4 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    syncVersion2 = [storageProvider4 syncVersion];
 
-    if (v18)
+    if (syncVersion2)
     {
-      v19 = _MTLogCategoryCloudSync();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      _podcastSubscriptions = _MTLogCategoryCloudSync();
+      if (os_log_type_enabled(_podcastSubscriptions, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-        v21 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-        v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v21 syncDirtyFlag]);
-        v23 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-        v24 = [v23 syncVersion];
+        logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
+        storageProvider5 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+        v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [storageProvider5 syncDirtyFlag]);
+        storageProvider6 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+        syncVersion3 = [storageProvider6 syncVersion];
         v49 = 138544130;
-        v50 = v20;
+        v50 = logPrefix;
         v51 = 2114;
         v52 = v22;
         v53 = 2114;
-        v54 = v24;
+        v54 = syncVersion3;
         v55 = 2114;
-        v56 = v7;
-        _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ No data for SET transaction. syncDirtyFlag: %{public}@, podcastSyncVersion: %{public}@, key: %{public}@", &v49, 0x2Au);
+        v56 = keyCopy;
+        _os_log_impl(&_mh_execute_header, _podcastSubscriptions, OS_LOG_TYPE_DEFAULT, "%{public}@ No data for SET transaction. syncDirtyFlag: %{public}@, podcastSyncVersion: %{public}@, key: %{public}@", &v49, 0x2Au);
       }
 
       goto LABEL_21;
     }
   }
 
-  v25 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  *a5 = [v25 syncVersion];
+  storageProvider7 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  *version = [storageProvider7 syncVersion];
 
   v26 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-    v28 = *a5;
+    logPrefix2 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    v28 = *version;
     v49 = 138543874;
-    v50 = v27;
+    v50 = logPrefix2;
     v51 = 2114;
     v52 = v28;
     v53 = 2114;
-    v54 = v7;
+    v54 = keyCopy;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ Gathering data for SET transaction [%{public}@] key: %{public}@", &v49, 0x20u);
   }
 
-  v19 = [(MTSubscriptionSyncProcessor *)self _podcastSubscriptions];
-  v29 = [(MTSubscriptionSyncProcessor *)self _addedSubscriptions];
-  [(MTSubscriptionSyncProcessor *)self setAddedSubscriptions:v29];
+  _podcastSubscriptions = [(MTSubscriptionSyncProcessor *)self _podcastSubscriptions];
+  _addedSubscriptions = [(MTSubscriptionSyncProcessor *)self _addedSubscriptions];
+  [(MTSubscriptionSyncProcessor *)self setAddedSubscriptions:_addedSubscriptions];
 
   [(MTSubscriptionSyncProcessor *)self setInitialSubscribedPodcastsCount:[(MTSubscriptionSyncProcessor *)self _subscribedPodcastsCount]];
-  if (!v19)
+  if (!_podcastSubscriptions)
   {
 LABEL_21:
-    v44 = 0;
+    value = 0;
     goto LABEL_22;
   }
 
   v30 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-    v32 = *a5;
-    v33 = [NSNumber numberWithUnsignedInteger:[v19 count]];
-    v34 = [v19 description];
+    logPrefix3 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    v32 = *version;
+    v33 = [NSNumber numberWithUnsignedInteger:[_podcastSubscriptions count]];
+    v34 = [_podcastSubscriptions description];
     v49 = 138544387;
-    v50 = v31;
+    v50 = logPrefix3;
     v51 = 2114;
     v52 = v32;
     v53 = 2114;
-    v54 = v7;
+    v54 = keyCopy;
     v55 = 2114;
     v56 = v33;
     v57 = 2113;
@@ -271,129 +271,129 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ Providing data for SET transaction [%{public}@] key: %{public}@ : count %{public}@, data: %{private}@", &v49, 0x34u);
   }
 
-  v35 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  v36 = [v35 syncVersion];
-  v37 = [v36 integerValue];
+  storageProvider8 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  syncVersion4 = [storageProvider8 syncVersion];
+  integerValue = [syncVersion4 integerValue];
 
-  if (![v19 count]&& *a5 && v37 >= 11)
+  if (![_podcastSubscriptions count]&& *version && integerValue >= 11)
   {
-    v38 = [(MTSubscriptionSyncProcessor *)self cloudSyncBugReporter];
-    v39 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v40 = [v39 syncType];
-    v41 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v42 = [v41 syncVersion];
-    [v38 reportSubscriptionsSyncIssue:0 subscriptionSyncType:v40 version:v42 userInfo:0];
+    cloudSyncBugReporter2 = [(MTSubscriptionSyncProcessor *)self cloudSyncBugReporter];
+    storageProvider9 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    syncType2 = [storageProvider9 syncType];
+    storageProvider10 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    syncVersion5 = [storageProvider10 syncVersion];
+    [cloudSyncBugReporter2 reportSubscriptionsSyncIssue:0 subscriptionSyncType:syncType2 version:syncVersion5 userInfo:0];
   }
 
   v43 = objc_alloc_init(MZKeyValueStoreNode);
-  [(MZKeyValueStoreNode *)v43 setArrayValue:v19];
-  v44 = [(MZKeyValueStoreNode *)v43 value];
+  [(MZKeyValueStoreNode *)v43 setArrayValue:_podcastSubscriptions];
+  value = [(MZKeyValueStoreNode *)v43 value];
 
 LABEL_22:
   v45 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
   {
-    v46 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    logPrefix4 = [(MTSubscriptionSyncProcessor *)self logPrefix];
     v49 = 138543362;
-    v50 = v46;
+    v50 = logPrefix4;
     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting subscriptions sync dirty = NO", &v49, 0xCu);
   }
 
-  v47 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  [v47 setSyncDirtyFlag:0];
+  storageProvider11 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  [storageProvider11 setSyncDirtyFlag:0];
 
-  return v44;
+  return value;
 }
 
-- (void)transaction:(id)a3 didProcessResponseWithDomainVersion:(id)a4
+- (void)transaction:(id)transaction didProcessResponseWithDomainVersion:(id)version
 {
-  v5 = a4;
-  v6 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  [v6 setPodcastsDomainVersion:v5];
+  versionCopy = version;
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  [storageProvider setPodcastsDomainVersion:versionCopy];
 }
 
-- (void)successfulGetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)successfulGetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = a4;
+  keyCopy = key;
+  versionCopy = version;
+  blockCopy = block;
+  dataCopy = data;
   v15 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
     v18 = 138543874;
-    v19 = v16;
+    v19 = logPrefix;
     v20 = 2114;
-    v21 = v11;
+    v21 = keyCopy;
     v22 = 2114;
-    v23 = v12;
+    v23 = versionCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Successful GET transaction for key: %{public}@, new version: [%{public}@]", &v18, 0x20u);
   }
 
-  v17 = [(MTSubscriptionSyncProcessor *)self mergeData:v14 forKey:v11 version:v12 mismatch:0];
-  [(MTSubscriptionSyncProcessor *)self completeTransactionWithNewVersion:v12 mismatch:v17 finishedBlock:v13];
+  v17 = [(MTSubscriptionSyncProcessor *)self mergeData:dataCopy forKey:keyCopy version:versionCopy mismatch:0];
+  [(MTSubscriptionSyncProcessor *)self completeTransactionWithNewVersion:versionCopy mismatch:v17 finishedBlock:blockCopy];
 }
 
-- (void)successfulSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)successfulSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
+  keyCopy = key;
+  versionCopy = version;
+  blockCopy = block;
   v13 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
     v15 = 138543874;
-    v16 = v14;
+    v16 = logPrefix;
     v17 = 2114;
-    v18 = v10;
+    v18 = keyCopy;
     v19 = 2114;
-    v20 = v11;
+    v20 = versionCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Successful SET transaction for key: %{public}@, new version: [%{public}@]", &v15, 0x20u);
   }
 
   [(MTSubscriptionSyncProcessor *)self markAddedSubscriptionsAsSynced];
-  [(MTSubscriptionSyncProcessor *)self completeTransactionWithNewVersion:v11 mismatch:0 finishedBlock:v12];
+  [(MTSubscriptionSyncProcessor *)self completeTransactionWithNewVersion:versionCopy mismatch:0 finishedBlock:blockCopy];
 }
 
-- (void)conflictForSetTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 version:(id)a6 finishedBlock:(id)a7
+- (void)conflictForSetTransaction:(id)transaction withData:(id)data forKey:(id)key version:(id)version finishedBlock:(id)block
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = a4;
+  keyCopy = key;
+  versionCopy = version;
+  blockCopy = block;
+  dataCopy = data;
   v15 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
     v18 = 138543874;
-    v19 = v16;
+    v19 = logPrefix;
     v20 = 2114;
-    v21 = v11;
+    v21 = keyCopy;
     v22 = 2114;
-    v23 = v12;
+    v23 = versionCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Conflict on SET transaction for key: %{public}@, new version: [%{public}@]", &v18, 0x20u);
   }
 
-  v17 = [(MTSubscriptionSyncProcessor *)self mergeData:v14 forKey:v11 version:v12 mismatch:1];
-  [(MTSubscriptionSyncProcessor *)self completeTransactionWithNewVersion:v12 mismatch:v17 finishedBlock:v13];
+  v17 = [(MTSubscriptionSyncProcessor *)self mergeData:dataCopy forKey:keyCopy version:versionCopy mismatch:1];
+  [(MTSubscriptionSyncProcessor *)self completeTransactionWithNewVersion:versionCopy mismatch:v17 finishedBlock:blockCopy];
 }
 
-- (BOOL)mergeData:(id)a3 forKey:(id)a4 version:(id)a5 mismatch:(BOOL)a6
+- (BOOL)mergeData:(id)data forKey:(id)key version:(id)version mismatch:(BOOL)mismatch
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  mismatchCopy = mismatch;
+  versionCopy = version;
+  keyCopy = key;
+  dataCopy = data;
   if (+[_TtC18PodcastsFoundation18SyncKeysRepository shouldSyncInReadOnlyMode])
   {
-    v13 = [(MTSubscriptionSyncProcessor *)self overrideLocalWithRemoteData:v12 forKey:v11 version:v10 mismatch:v6];
+    v13 = [(MTSubscriptionSyncProcessor *)self overrideLocalWithRemoteData:dataCopy forKey:keyCopy version:versionCopy mismatch:mismatchCopy];
   }
 
   else
   {
-    v13 = [(MTSubscriptionSyncProcessor *)self mergeLocalAndRemoteData:v12 forKey:v11 version:v10 mismatch:v6];
+    v13 = [(MTSubscriptionSyncProcessor *)self mergeLocalAndRemoteData:dataCopy forKey:keyCopy version:versionCopy mismatch:mismatchCopy];
   }
 
   v14 = v13;
@@ -401,25 +401,25 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)overrideLocalWithRemoteData:(id)a3 forKey:(id)a4 version:(id)a5 mismatch:(BOOL)a6
+- (BOOL)overrideLocalWithRemoteData:(id)data forKey:(id)key version:(id)version mismatch:(BOOL)mismatch
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  mismatchCopy = mismatch;
+  dataCopy = data;
+  keyCopy = key;
+  versionCopy = version;
   v13 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-    v15 = [(MTSubscriptionSyncProcessor *)self addedSubscriptions];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    addedSubscriptions = [(MTSubscriptionSyncProcessor *)self addedSubscriptions];
     *buf = 138543618;
-    *&buf[4] = v14;
+    *&buf[4] = logPrefix;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = addedSubscriptions;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Read-only sync mode -> Overriding all local data. Local shows that will be overriden: %@; Also, deleting all Hidden podcasts synchronously.", buf, 0x16u);
   }
 
-  v32 = [(MTSubscriptionSyncProcessor *)self context];
+  context = [(MTSubscriptionSyncProcessor *)self context];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
@@ -430,35 +430,35 @@ LABEL_22:
   v33[3] = &unk_1004DDDD8;
   v33[4] = self;
   v37 = buf;
-  v16 = v10;
+  v16 = dataCopy;
   v34 = v16;
-  v17 = v11;
+  v17 = keyCopy;
   v35 = v17;
-  v31 = v12;
+  v31 = versionCopy;
   v36 = v31;
-  v38 = v6;
-  [v32 performBlockAndWaitWithSave:v33];
+  v38 = mismatchCopy;
+  [context performBlockAndWaitWithSave:v33];
   if (*(*&buf[8] + 24) == 1)
   {
     v18 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+      logPrefix2 = [(MTSubscriptionSyncProcessor *)self logPrefix];
       *v41 = 138543362;
-      v42 = v19;
+      v42 = logPrefix2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@ Found a merge conflict on read-only sync mode!", v41, 0xCu);
     }
 
-    v20 = v6;
+    v20 = mismatchCopy;
     v21 = objc_alloc_init(MZKeyValueStoreNode);
     [(MZKeyValueStoreNode *)v21 setKey:v17];
     [(MZKeyValueStoreNode *)v21 setValue:v16];
-    v22 = [(MZKeyValueStoreNode *)v21 arrayValue];
-    v23 = [(MTSubscriptionSyncProcessor *)self cloudSyncBugReporter];
-    v24 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v25 = [v24 syncType];
-    v26 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v27 = [v26 syncVersion];
+    arrayValue = [(MZKeyValueStoreNode *)v21 arrayValue];
+    cloudSyncBugReporter = [(MTSubscriptionSyncProcessor *)self cloudSyncBugReporter];
+    storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    syncType = [storageProvider syncType];
+    storageProvider2 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    syncVersion = [storageProvider2 syncVersion];
     v39[0] = @"remoteData";
     v39[1] = @"remoteMismatch";
     v28 = @"false";
@@ -467,50 +467,50 @@ LABEL_22:
       v28 = @"true";
     }
 
-    v40[0] = v22;
+    v40[0] = arrayValue;
     v40[1] = v28;
     v29 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:2];
-    [v23 reportSubscriptionsSyncIssue:3 subscriptionSyncType:v25 version:v27 userInfo:v29];
+    [cloudSyncBugReporter reportSubscriptionsSyncIssue:3 subscriptionSyncType:syncType version:syncVersion userInfo:v29];
   }
 
   _Block_object_dispose(buf, 8);
   return 0;
 }
 
-- (BOOL)mergeLocalAndRemoteData:(id)a3 forKey:(id)a4 version:(id)a5 mismatch:(BOOL)a6
+- (BOOL)mergeLocalAndRemoteData:(id)data forKey:(id)key version:(id)version mismatch:(BOOL)mismatch
 {
-  v47 = a6;
-  v44 = a3;
-  v46 = a4;
-  v45 = a5;
+  mismatchCopy = mismatch;
+  dataCopy = data;
+  keyCopy = key;
+  versionCopy = version;
   v8 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
     *buf = 138544130;
-    *&buf[4] = v9;
+    *&buf[4] = logPrefix;
     *&buf[12] = 2114;
-    *&buf[14] = v46;
+    *&buf[14] = keyCopy;
     *&buf[22] = 2114;
-    v69 = v45;
+    v69 = versionCopy;
     v70 = 1026;
-    v71 = v47;
+    v71 = mismatchCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Merging data for key: %{public}@; newVersion: [%{public}@]; mismatch: %{public}d", buf, 0x26u);
   }
 
   v48 = objc_alloc_init(MZKeyValueStoreNode);
-  [(MZKeyValueStoreNode *)v48 setKey:v46];
-  [(MZKeyValueStoreNode *)v48 setValue:v44];
+  [(MZKeyValueStoreNode *)v48 setKey:keyCopy];
+  [(MZKeyValueStoreNode *)v48 setValue:dataCopy];
   if ([(MZKeyValueStoreNode *)v48 hasData])
   {
-    v10 = [(MZKeyValueStoreNode *)v48 arrayValue];
+    arrayValue = [(MZKeyValueStoreNode *)v48 arrayValue];
     v11 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-      v13 = [v10 count];
+      logPrefix2 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+      v13 = [arrayValue count];
       *buf = 138543618;
-      *&buf[4] = v12;
+      *&buf[4] = logPrefix2;
       *&buf[12] = 2048;
       *&buf[14] = v13;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Merging %lu remote dictionaries:", buf, 0x16u);
@@ -520,7 +520,7 @@ LABEL_22:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    obj = v10;
+    obj = arrayValue;
     v14 = [obj countByEnumeratingWithState:&v59 objects:v67 count:16];
     if (v14)
     {
@@ -538,9 +538,9 @@ LABEL_22:
           v18 = _MTLogCategoryCloudSync();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+            logPrefix3 = [(MTSubscriptionSyncProcessor *)self logPrefix];
             *buf = 138543619;
-            *&buf[4] = v19;
+            *&buf[4] = logPrefix3;
             *&buf[12] = 2113;
             *&buf[14] = v17;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ %{private}@", buf, 0x16u);
@@ -558,19 +558,19 @@ LABEL_22:
       v20 = _MTLogCategoryCloudSync();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+        logPrefix4 = [(MTSubscriptionSyncProcessor *)self logPrefix];
         *buf = 138543362;
-        *&buf[4] = v21;
+        *&buf[4] = logPrefix4;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%{public}@ Nothing to merge: Store node has data, but there are no podcast items.", buf, 0xCu);
       }
 
       v22 = _MTLogCategoryCloudSync();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+        logPrefix5 = [(MTSubscriptionSyncProcessor *)self logPrefix];
         v24 = [(MZKeyValueStoreNode *)v48 debugDescription];
         *buf = 138543619;
-        *&buf[4] = v23;
+        *&buf[4] = logPrefix5;
         *&buf[12] = 2113;
         *&buf[14] = v24;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%{public}@ Node data: %{private}@", buf, 0x16u);
@@ -579,17 +579,17 @@ LABEL_22:
 
     v25 = objc_opt_new();
     v26 = objc_opt_new();
-    v27 = [(MTSubscriptionSyncProcessor *)self context];
+    context = [(MTSubscriptionSyncProcessor *)self context];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
-    LOBYTE(v69) = v47;
+    LOBYTE(v69) = mismatchCopy;
     v51[0] = _NSConcreteStackBlock;
     v51[1] = 3221225472;
     v51[2] = sub_100156CC0;
     v51[3] = &unk_1004DDE00;
     v51[4] = self;
-    v28 = v27;
+    v28 = context;
     v52 = v28;
     v29 = obj;
     v53 = v29;
@@ -597,21 +597,21 @@ LABEL_22:
     v54 = v30;
     v31 = v26;
     v55 = v31;
-    v58 = v47;
-    v32 = v45;
+    v58 = mismatchCopy;
+    v32 = versionCopy;
     v56 = v32;
     v57 = buf;
     [v28 performBlockAndWaitWithSave:v51];
-    LOBYTE(v47) = (*(*&buf[8] + 24) | v47) != 0;
+    LOBYTE(mismatchCopy) = (*(*&buf[8] + 24) | mismatchCopy) != 0;
     if ([v30 count])
     {
       v33 = _MTLogCategoryCloudSync();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+        logPrefix6 = [(MTSubscriptionSyncProcessor *)self logPrefix];
         v35 = [v30 count];
         *v63 = 138543618;
-        v64 = v34;
+        v64 = logPrefix6;
         v65 = 2050;
         v66 = v35;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ Subscribing to %{public}lu podcasts from cloud sync", v63, 0x16u);
@@ -625,19 +625,19 @@ LABEL_22:
       v36 = _MTLogCategoryCloudSync();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v37 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+        logPrefix7 = [(MTSubscriptionSyncProcessor *)self logPrefix];
         v38 = [v31 count];
         *v63 = 138543618;
-        v64 = v37;
+        v64 = logPrefix7;
         v65 = 2050;
         v66 = v38;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "%{public}@ Unsubscribing %{public}lu podcasts from cloud sync (will be also deleted if they need to)", v63, 0x16u);
       }
 
-      v39 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-      v40 = [v31 allObjects];
-      v41 = [(MTSubscriptionSyncProcessor *)self context];
-      [v39 disableSubscriptionsWithUuids:v40 ctx:v41];
+      storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+      allObjects = [v31 allObjects];
+      context2 = [(MTSubscriptionSyncProcessor *)self context];
+      [storageProvider disableSubscriptionsWithUuids:allObjects ctx:context2];
 
       -[MTSubscriptionSyncProcessor checkPotentialLibraryDeletionIssueForPreviouslySubscribedPodcastsCount:podcastsToUnsubscribeCount:newVersion:](self, "checkPotentialLibraryDeletionIssueForPreviouslySubscribedPodcastsCount:podcastsToUnsubscribeCount:newVersion:", -[MTSubscriptionSyncProcessor initialSubscribedPodcastsCount](self, "initialSubscribedPodcastsCount"), [v31 count], v32);
     }
@@ -653,55 +653,55 @@ LABEL_22:
     v29 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+      logPrefix8 = [(MTSubscriptionSyncProcessor *)self logPrefix];
       *buf = 138544130;
-      *&buf[4] = v42;
+      *&buf[4] = logPrefix8;
       *&buf[12] = 2114;
-      *&buf[14] = v45;
+      *&buf[14] = versionCopy;
       *&buf[22] = 2114;
-      v69 = v46;
+      v69 = keyCopy;
       v70 = 1024;
-      v71 = v47;
+      v71 = mismatchCopy;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ Nothing to merge: No data in the cloud node version: [%{public}@] key: %{public}@ mismatch:%d", buf, 0x26u);
     }
   }
 
-  return v47;
+  return mismatchCopy;
 }
 
-- (id)podcastCacheInContext:(id)a3
+- (id)podcastCacheInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [MTEntityUpdaterCache alloc];
-  v6 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  v7 = +[MTPodcast predicateForSyncablePodcastsForSyncType:](MTPodcast, "predicateForSyncablePodcastsForSyncType:", [v6 syncType]);
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  v7 = +[MTPodcast predicateForSyncablePodcastsForSyncType:](MTPodcast, "predicateForSyncablePodcastsForSyncType:", [storageProvider syncType]);
   v8 = kMTPodcastEntityName;
   v12[0] = kPodcastStoreCollectionId;
   v12[1] = kPodcastFeedUrl;
   v12[2] = kPodcastUuid;
   v9 = [NSArray arrayWithObjects:v12 count:3];
-  v10 = [(MTEntityUpdaterCache *)v5 initWithPredicate:v7 entityName:v8 ctx:v4 properties:v9 fetchProperties:0];
+  v10 = [(MTEntityUpdaterCache *)v5 initWithPredicate:v7 entityName:v8 ctx:contextCopy properties:v9 fetchProperties:0];
 
   [(MTEntityUpdaterCache *)v10 setAllowKeyForValue:&stru_1004DDE40];
 
   return v10;
 }
 
-- (void)importRemotePodcastDicts:(id)a3 inContext:(id)a4 visitingPodcastsInCache:(id)a5 updatingPodcastsToAdd:(id)a6 updatingPodcastsToUnsubscribe:(id)a7 mismatch:(BOOL)a8 version:(id)a9
+- (void)importRemotePodcastDicts:(id)dicts inContext:(id)context visitingPodcastsInCache:(id)cache updatingPodcastsToAdd:(id)add updatingPodcastsToUnsubscribe:(id)unsubscribe mismatch:(BOOL)mismatch version:(id)version
 {
-  v43 = a8;
-  v14 = a3;
-  v47 = a4;
-  v51 = a5;
-  v46 = a6;
-  v45 = a7;
-  v44 = a9;
+  mismatchCopy = mismatch;
+  dictsCopy = dicts;
+  contextCopy = context;
+  cacheCopy = cache;
+  addCopy = add;
+  unsubscribeCopy = unsubscribe;
+  versionCopy = version;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v14;
-  v15 = [v14 countByEnumeratingWithState:&v53 objects:v67 count:16];
+  obj = dictsCopy;
+  v15 = [dictsCopy countByEnumeratingWithState:&v53 objects:v67 count:16];
   if (v15)
   {
     v16 = v15;
@@ -710,7 +710,7 @@ LABEL_22:
     v41 = kPodcastTitle;
     v40 = kPodcastStoreCollectionId;
     v49 = kPodcastUuid;
-    v39 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v16; i = i + 1)
@@ -722,11 +722,11 @@ LABEL_22:
 
         v18 = *(*(&v53 + 1) + 8 * i);
         v19 = [v18 objectForKey:v52];
-        v20 = [v51 propertyDictionaryForSearchItem:v18];
+        v20 = [cacheCopy propertyDictionaryForSearchItem:v18];
         v21 = _MTLogCategoryCloudSync();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+          logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
           v23 = v16;
           if (v20)
           {
@@ -742,9 +742,9 @@ LABEL_22:
           [v18 objectForKey:v52];
           v26 = v48 = v19;
           v27 = [v18 objectForKey:v40];
-          v28 = [v27 unsignedLongLongValue];
+          unsignedLongLongValue = [v27 unsignedLongLongValue];
           *buf = 138544387;
-          v58 = v22;
+          v58 = logPrefix;
           v59 = 2114;
           v60 = v24;
           v16 = v23;
@@ -753,17 +753,17 @@ LABEL_22:
           v63 = 2113;
           v64 = v26;
           v65 = 2049;
-          v66 = v28;
+          v66 = unsignedLongLongValue;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ local match for podcast %{private}@, %{private}@, %{private}lld", buf, 0x34u);
 
-          self = v39;
+          self = selfCopy;
           v19 = v48;
         }
 
         v29 = [v20 objectForKeyedSubscript:v49];
         if (v20)
         {
-          v30 = [v47 podcastForUuid:v29];
+          v30 = [contextCopy podcastForUuid:v29];
           if (v19)
           {
             goto LABEL_13;
@@ -777,12 +777,12 @@ LABEL_22:
           {
 LABEL_13:
             v31 = v19;
-            v32 = [(MTSubscriptionSyncProcessor *)self updatePodcastsToUnsubscribe:v45 remotePodcast:v18 localPodcast:v30];
+            v32 = [(MTSubscriptionSyncProcessor *)self updatePodcastsToUnsubscribe:unsubscribeCopy remotePodcast:v18 localPodcast:v30];
             v33 = [(MTSubscriptionSyncProcessor *)self updateSettingsIfNeededForLocalPodcast:v30 remotePodcast:v18];
-            v34 = [(MTSubscriptionSyncProcessor *)self updatePodcastsToAdd:v46 addingPodcastIfNeeded:v18 hasLocalPodcast:v30 != 0];
+            v34 = [(MTSubscriptionSyncProcessor *)self updatePodcastsToAdd:addCopy addingPodcastIfNeeded:v18 hasLocalPodcast:v30 != 0];
             v35 = v32;
             v19 = v31;
-            [(MTSubscriptionSyncProcessor *)self reportImportingRemotePodcast:v18 withLocalPodcast:v30 shouldAddPodcast:v34 shouldUnsubscribeLocalPodcast:v35 shouldUpdateSettings:v33 mismatch:v43 version:v44];
+            [(MTSubscriptionSyncProcessor *)self reportImportingRemotePodcast:v18 withLocalPodcast:v30 shouldAddPodcast:v34 shouldUnsubscribeLocalPodcast:v35 shouldUpdateSettings:v33 mismatch:mismatchCopy version:versionCopy];
             goto LABEL_18;
           }
         }
@@ -809,42 +809,42 @@ LABEL_18:
   }
 }
 
-- (BOOL)updatePodcastsToUnsubscribe:(id)a3 remotePodcast:(id)a4 localPodcast:(id)a5
+- (BOOL)updatePodcastsToUnsubscribe:(id)unsubscribe remotePodcast:(id)podcast localPodcast:(id)localPodcast
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 objectForKey:kPodcastSubscribed];
-  v12 = [v11 BOOLValue];
+  unsubscribeCopy = unsubscribe;
+  podcastCopy = podcast;
+  localPodcastCopy = localPodcast;
+  v11 = [podcastCopy objectForKey:kPodcastSubscribed];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v10 && !(v12 & 1 | (([v10 subscribed] & 1) == 0)))
+  if (localPodcastCopy && !(bOOLValue & 1 | (([localPodcastCopy subscribed] & 1) == 0)))
   {
     v14 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-      v16 = [v10 title];
-      v17 = [v10 feedURL];
-      v18 = [v10 storeCollectionId];
-      v19 = [v10 uuid];
-      v20 = [v9 description];
+      logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
+      title = [localPodcastCopy title];
+      feedURL = [localPodcastCopy feedURL];
+      storeCollectionId = [localPodcastCopy storeCollectionId];
+      uuid = [localPodcastCopy uuid];
+      v20 = [podcastCopy description];
       v23 = 138544643;
-      v24 = v15;
+      v24 = logPrefix;
       v25 = 2113;
-      v26 = v16;
+      v26 = title;
       v27 = 2113;
-      v28 = v17;
+      v28 = feedURL;
       v29 = 2049;
-      v30 = v18;
+      v30 = storeCollectionId;
       v31 = 2114;
-      v32 = v19;
+      v32 = uuid;
       v33 = 2113;
       v34 = v20;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Marking local podcast for unsubscribe: %{private}@, %{private}@, %{private}lld, %{public}@. Remote dict: %{private}@", &v23, 0x3Eu);
     }
 
-    v21 = [v10 uuid];
-    [v8 addObject:v21];
+    uuid2 = [localPodcastCopy uuid];
+    [unsubscribeCopy addObject:uuid2];
 
     v13 = 1;
   }
@@ -857,79 +857,79 @@ LABEL_18:
   return v13;
 }
 
-- (BOOL)updateSettingsIfNeededForLocalPodcast:(id)a3 remotePodcast:(id)a4
+- (BOOL)updateSettingsIfNeededForLocalPodcast:(id)podcast remotePodcast:(id)remotePodcast
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTSubscriptionSyncProcessor *)self context];
-  if (v6)
+  podcastCopy = podcast;
+  remotePodcastCopy = remotePodcast;
+  context = [(MTSubscriptionSyncProcessor *)self context];
+  if (podcastCopy)
   {
-    [(MTSubscriptionSyncProcessor *)self updateSettingsForLocalPodcast:v6 remotePodcast:v7 ctx:v8];
+    [(MTSubscriptionSyncProcessor *)self updateSettingsForLocalPodcast:podcastCopy remotePodcast:remotePodcastCopy ctx:context];
   }
 
-  return v6 != 0;
+  return podcastCopy != 0;
 }
 
-- (BOOL)updatePodcastsToAdd:(id)a3 addingPodcastIfNeeded:(id)a4 hasLocalPodcast:(BOOL)a5
+- (BOOL)updatePodcastsToAdd:(id)add addingPodcastIfNeeded:(id)needed hasLocalPodcast:(BOOL)podcast
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 objectForKey:kPodcastSubscribed];
-  v11 = [v10 BOOLValue];
+  podcastCopy = podcast;
+  addCopy = add;
+  neededCopy = needed;
+  v10 = [neededCopy objectForKey:kPodcastSubscribed];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = !v5 & v11;
+  v12 = !podcastCopy & bOOLValue;
   if (v12 == 1)
   {
     v13 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-      v15 = [v9 description];
+      logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
+      v15 = [neededCopy description];
       v17 = 138543619;
-      v18 = v14;
+      v18 = logPrefix;
       v19 = 2113;
       v20 = v15;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Marking remote podcast for insertion in local DB [reason: not in local DB and subscribed]: %{private}@", &v17, 0x16u);
     }
 
-    [v8 addObject:v9];
+    [addCopy addObject:neededCopy];
   }
 
   return v12;
 }
 
-- (void)reportImportingRemotePodcast:(id)a3 withLocalPodcast:(id)a4 shouldAddPodcast:(BOOL)a5 shouldUnsubscribeLocalPodcast:(BOOL)a6 shouldUpdateSettings:(BOOL)a7 mismatch:(BOOL)a8 version:(id)a9
+- (void)reportImportingRemotePodcast:(id)podcast withLocalPodcast:(id)localPodcast shouldAddPodcast:(BOOL)addPodcast shouldUnsubscribeLocalPodcast:(BOOL)unsubscribeLocalPodcast shouldUpdateSettings:(BOOL)settings mismatch:(BOOL)mismatch version:(id)version
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  v12 = a5;
-  v15 = a3;
-  v16 = a4;
-  v17 = a9;
-  v18 = [(MTSubscriptionSyncProcessor *)self config];
-  v19 = [v18 supportsMetrics];
+  mismatchCopy = mismatch;
+  settingsCopy = settings;
+  unsubscribeLocalPodcastCopy = unsubscribeLocalPodcast;
+  addPodcastCopy = addPodcast;
+  podcastCopy = podcast;
+  localPodcastCopy = localPodcast;
+  versionCopy = version;
+  config = [(MTSubscriptionSyncProcessor *)self config];
+  supportsMetrics = [config supportsMetrics];
 
-  if (v19)
+  if (supportsMetrics)
   {
-    v20 = [v15 mutableCopy];
-    [v20 setValue:v17 forKey:@"version"];
-    v21 = [NSNumber numberWithBool:v9];
+    v20 = [podcastCopy mutableCopy];
+    [v20 setValue:versionCopy forKey:@"version"];
+    v21 = [NSNumber numberWithBool:mismatchCopy];
     [v20 setValue:v21 forKey:@"mismatch"];
 
-    v22 = [(MTSubscriptionSyncProcessor *)self syncDictionaryToMetricsDictionary:v15];
+    v22 = [(MTSubscriptionSyncProcessor *)self syncDictionaryToMetricsDictionary:podcastCopy];
     [v20 setValue:v22 forKey:@"sync_data"];
 
-    if (v10)
+    if (settingsCopy)
     {
-      v24 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-      [v24 recordUserAction:@"cloud_sync_update_podcast" dataSource:v16 withData:v20];
+      storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+      [storageProvider recordUserAction:@"cloud_sync_update_podcast" dataSource:localPodcastCopy withData:v20];
 
-      if (!v11)
+      if (!unsubscribeLocalPodcastCopy)
       {
 LABEL_4:
-        if (!v12)
+        if (!addPodcastCopy)
         {
 LABEL_6:
 
@@ -937,28 +937,28 @@ LABEL_6:
         }
 
 LABEL_5:
-        v23 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-        [v23 recordUserAction:@"cloud_sync_add_podcast" dataSource:0 withData:v20];
+        storageProvider2 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+        [storageProvider2 recordUserAction:@"cloud_sync_add_podcast" dataSource:0 withData:v20];
 
         goto LABEL_6;
       }
     }
 
-    else if (!v11)
+    else if (!unsubscribeLocalPodcastCopy)
     {
       goto LABEL_4;
     }
 
-    v25 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    storageProvider3 = [(MTSubscriptionSyncProcessor *)self storageProvider];
     v28[0] = @"version";
     v28[1] = @"mismatch";
-    v29[0] = v17;
-    v26 = [NSNumber numberWithBool:v9];
+    v29[0] = versionCopy;
+    v26 = [NSNumber numberWithBool:mismatchCopy];
     v29[1] = v26;
     v27 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
-    [v25 recordUserAction:@"cloud_sync_delete_podcast" dataSource:v16 withData:v27];
+    [storageProvider3 recordUserAction:@"cloud_sync_delete_podcast" dataSource:localPodcastCopy withData:v27];
 
-    if (!v12)
+    if (!addPodcastCopy)
     {
       goto LABEL_6;
     }
@@ -969,23 +969,23 @@ LABEL_5:
 LABEL_7:
 }
 
-- (id)unvisitedPodcastsToUnsubscribeIn:(id)a3 mismatch:(BOOL *)a4 version:(id)a5
+- (id)unvisitedPodcastsToUnsubscribeIn:(id)in mismatch:(BOOL *)mismatch version:(id)version
 {
-  v8 = a5;
-  v9 = a3;
+  versionCopy = version;
+  inCopy = in;
   [(MTSubscriptionSyncProcessor *)self context];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100157B0C;
   v17 = v16[3] = &unk_1004DDE68;
-  v18 = self;
-  v19 = v8;
-  v21 = a4;
+  selfCopy = self;
+  v19 = versionCopy;
+  mismatchCopy = mismatch;
   v10 = objc_opt_new();
   v20 = v10;
-  v11 = v8;
+  v11 = versionCopy;
   v12 = v17;
-  [v9 enumerateUnvisitedItemUuids:v16];
+  [inCopy enumerateUnvisitedItemUuids:v16];
 
   v13 = v20;
   v14 = v10;
@@ -993,73 +993,73 @@ LABEL_7:
   return v10;
 }
 
-- (void)checkPotentialLibraryDeletionIssueForPreviouslySubscribedPodcastsCount:(unint64_t)a3 podcastsToUnsubscribeCount:(unint64_t)a4 newVersion:(id)a5
+- (void)checkPotentialLibraryDeletionIssueForPreviouslySubscribedPodcastsCount:(unint64_t)count podcastsToUnsubscribeCount:(unint64_t)unsubscribeCount newVersion:(id)version
 {
-  v8 = a4 / a3;
-  v9 = _MTLogCategoryCloudSync();
-  v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (a3 >= 0xA && v8 >= 0.8)
+  v8 = unsubscribeCount / count;
+  cloudSyncBugReporter = _MTLogCategoryCloudSync();
+  v10 = os_log_type_enabled(cloudSyncBugReporter, OS_LOG_TYPE_DEFAULT);
+  if (count >= 0xA && v8 >= 0.8)
   {
     if (v10)
     {
-      v11 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+      logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
       v20 = 138543874;
-      v21 = v11;
+      v21 = logPrefix;
       v22 = 2048;
-      v23 = a4;
+      unsubscribeCountCopy2 = unsubscribeCount;
       v24 = 2048;
-      v25 = *&v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Big library unsubscription detected: podcastsToUnsubscribeCount: %lu, unsubscribedRatio: %f", &v20, 0x20u);
+      countCopy = *&v8;
+      _os_log_impl(&_mh_execute_header, cloudSyncBugReporter, OS_LOG_TYPE_DEFAULT, "%{public}@ Big library unsubscription detected: podcastsToUnsubscribeCount: %lu, unsubscribedRatio: %f", &v20, 0x20u);
     }
 
-    v9 = [(MTSubscriptionSyncProcessor *)self cloudSyncBugReporter];
-    v12 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v13 = [v12 syncType];
-    v14 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v15 = [v14 syncVersion];
+    cloudSyncBugReporter = [(MTSubscriptionSyncProcessor *)self cloudSyncBugReporter];
+    storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    syncType = [storageProvider syncType];
+    storageProvider2 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    syncVersion = [storageProvider2 syncVersion];
     v28[0] = @"previouslyFollowedShowsCount";
-    v16 = [NSNumber numberWithUnsignedInteger:a3];
+    v16 = [NSNumber numberWithUnsignedInteger:count];
     v29[0] = v16;
     v28[1] = @"showsToUnfollowCount";
-    v17 = [NSNumber numberWithUnsignedInteger:a4];
+    v17 = [NSNumber numberWithUnsignedInteger:unsubscribeCount];
     v29[1] = v17;
     v28[2] = @"unfollowRatio";
     v18 = [NSNumber numberWithDouble:v8];
     v29[2] = v18;
     v19 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:3];
-    [v9 reportSubscriptionsSyncIssue:1 subscriptionSyncType:v13 version:v15 userInfo:v19];
+    [cloudSyncBugReporter reportSubscriptionsSyncIssue:1 subscriptionSyncType:syncType version:syncVersion userInfo:v19];
 
     goto LABEL_8;
   }
 
   if (v10)
   {
-    v12 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    storageProvider = [(MTSubscriptionSyncProcessor *)self logPrefix];
     v20 = 138544130;
-    v21 = v12;
+    v21 = storageProvider;
     v22 = 2048;
-    v23 = a4;
+    unsubscribeCountCopy2 = unsubscribeCount;
     v24 = 2048;
-    v25 = a3;
+    countCopy = count;
     v26 = 2048;
     v27 = v8;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %ld unsubscriptions detected out of %ld total subscribed shows, unsubscriptionRatio: %f", &v20, 0x2Au);
+    _os_log_impl(&_mh_execute_header, cloudSyncBugReporter, OS_LOG_TYPE_DEFAULT, "%{public}@ %ld unsubscriptions detected out of %ld total subscribed shows, unsubscriptionRatio: %f", &v20, 0x2Au);
 LABEL_8:
   }
 }
 
-- (void)completeTransactionWithNewVersion:(id)a3 mismatch:(BOOL)a4 finishedBlock:(id)a5
+- (void)completeTransactionWithNewVersion:(id)version mismatch:(BOOL)mismatch finishedBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  mismatchCopy = mismatch;
+  versionCopy = version;
+  blockCopy = block;
   v10 = _MTLogCategoryCloudSync();
   v11 = v10;
   signpostID = self->_signpostID;
   if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     v13 = @"NO";
-    if (v6)
+    if (mismatchCopy)
     {
       v13 = @"YES";
     }
@@ -1072,74 +1072,74 @@ LABEL_8:
   v14 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-    v16 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v17 = [v16 syncVersion];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    syncVersion = [storageProvider syncVersion];
     v28 = 138544130;
-    v29 = v15;
+    v29 = logPrefix;
     v30 = 2114;
-    v31 = v8;
+    v31 = versionCopy;
     v32 = 2114;
-    v33 = v17;
+    v33 = syncVersion;
     v34 = 1024;
-    v35 = v6;
+    v35 = mismatchCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Transaction complete: Updating sync version to %{public}@ (from %{public}@), mismatch %d", &v28, 0x26u);
   }
 
-  v18 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  [v18 setSyncVersion:v8];
+  storageProvider2 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  [storageProvider2 setSyncVersion:versionCopy];
 
   v19 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    logPrefix2 = [(MTSubscriptionSyncProcessor *)self logPrefix];
     v28 = 138543362;
-    v29 = v20;
+    v29 = logPrefix2;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Cleaning up old hidden podcasts after successful transaction", &v28, 0xCu);
   }
 
-  v21 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  [v21 cleanUpOldHiddenPodcasts];
+  storageProvider3 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  [storageProvider3 cleanUpOldHiddenPodcasts];
 
   v22 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-    v24 = v23;
+    logPrefix3 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    v24 = logPrefix3;
     v25 = @"NO";
-    if (v6)
+    if (mismatchCopy)
     {
       v25 = @"YES";
     }
 
     v28 = 138543618;
-    v29 = v23;
+    v29 = logPrefix3;
     v30 = 2114;
     v31 = v25;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting subscriptions sync dirty = %{public}@", &v28, 0x16u);
   }
 
-  v26 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  [v26 setSyncDirtyFlag:v6];
+  storageProvider4 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  [storageProvider4 setSyncDirtyFlag:mismatchCopy];
 
-  if (!v6)
+  if (!mismatchCopy)
   {
-    v27 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    [v27 updateSubscriptionsLastSyncTimestamp];
+    storageProvider5 = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    [storageProvider5 updateSubscriptionsLastSyncTimestamp];
   }
 
-  v9[2](v9, v6);
+  blockCopy[2](blockCopy, mismatchCopy);
 }
 
-- (void)reorderLocalPodcastsToMatchRemote:(id)a3
+- (void)reorderLocalPodcastsToMatchRemote:(id)remote
 {
-  v4 = a3;
+  remoteCopy = remote;
   v5 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
     *buf = 138543362;
-    v14 = v6;
+    v14 = logPrefix;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Reordering local podcasts to match remote dictionaries:", buf, 0xCu);
   }
 
@@ -1148,29 +1148,29 @@ LABEL_8:
   v9[1] = 3221225472;
   v9[2] = sub_100158710;
   v10 = v9[3] = &unk_1004D94C8;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = remoteCopy;
+  selfCopy = self;
+  v7 = remoteCopy;
   v8 = v10;
   [v8 performBlockAndWaitWithSave:v9];
 }
 
-- (id)syncDictionaryToMetricsDictionary:(id)a3
+- (id)syncDictionaryToMetricsDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_opt_class() subscriptionSyncProcessorSyncKeys];
-  v5 = [v3 dictionaryWithValuesForKeys:v4];
+  dictionaryCopy = dictionary;
+  subscriptionSyncProcessorSyncKeys = [objc_opt_class() subscriptionSyncProcessorSyncKeys];
+  v5 = [dictionaryCopy dictionaryWithValuesForKeys:subscriptionSyncProcessorSyncKeys];
 
   return v5;
 }
 
 - (id)_addedSubscriptions
 {
-  v3 = [(MTSubscriptionSyncProcessor *)self context];
-  v4 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  v5 = +[MTPodcast predicateForSyncablePodcastsForSyncType:](MTPodcast, "predicateForSyncablePodcastsForSyncType:", [v4 syncType]);
-  v6 = [NSPredicate predicateWithFormat:@"%K != NULL", kPodcastFeedUrl];
-  v7 = [v5 AND:v6];
+  context = [(MTSubscriptionSyncProcessor *)self context];
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  v5 = +[MTPodcast predicateForSyncablePodcastsForSyncType:](MTPodcast, "predicateForSyncablePodcastsForSyncType:", [storageProvider syncType]);
+  kPodcastFeedUrl = [NSPredicate predicateWithFormat:@"%K != NULL", kPodcastFeedUrl];
+  v7 = [v5 AND:kPodcastFeedUrl];
   v8 = [MTPodcast predicateForHasBeenSynced:0];
   v9 = [v7 AND:v8];
 
@@ -1178,13 +1178,13 @@ LABEL_8:
   v16[1] = 3221225472;
   v16[2] = sub_100158DA8;
   v16[3] = &unk_1004D8DA8;
-  v17 = v3;
+  v17 = context;
   v18 = v9;
-  v19 = self;
+  selfCopy = self;
   v10 = objc_opt_new();
   v20 = v10;
   v11 = v9;
-  v12 = v3;
+  v12 = context;
   [v12 performBlockAndWait:v16];
   v13 = v20;
   v14 = v10;
@@ -1194,11 +1194,11 @@ LABEL_8:
 
 - (unint64_t)_subscribedPodcastsCount
 {
-  v3 = [(MTSubscriptionSyncProcessor *)self context];
-  v4 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  v5 = +[MTPodcast predicateForSyncablePodcastsForSyncType:](MTPodcast, "predicateForSyncablePodcastsForSyncType:", [v4 syncType]);
-  v6 = [NSPredicate predicateWithFormat:@"%K != NULL", kPodcastFeedUrl];
-  v7 = [v5 AND:v6];
+  context = [(MTSubscriptionSyncProcessor *)self context];
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  v5 = +[MTPodcast predicateForSyncablePodcastsForSyncType:](MTPodcast, "predicateForSyncablePodcastsForSyncType:", [storageProvider syncType]);
+  kPodcastFeedUrl = [NSPredicate predicateWithFormat:@"%K != NULL", kPodcastFeedUrl];
+  v7 = [v5 AND:kPodcastFeedUrl];
   v8 = +[MTPodcast predicateForSubscribedPodcasts];
   v9 = [v7 AND:v8];
 
@@ -1211,7 +1211,7 @@ LABEL_8:
   v14[2] = sub_100159194;
   v14[3] = &unk_1004D9040;
   v17 = &v18;
-  v10 = v3;
+  v10 = context;
   v15 = v10;
   v11 = v9;
   v16 = v11;
@@ -1227,17 +1227,17 @@ LABEL_8:
   v3 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-    v5 = [(MTSubscriptionSyncProcessor *)self addedSubscriptions];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    addedSubscriptions = [(MTSubscriptionSyncProcessor *)self addedSubscriptions];
     v8 = 138543619;
-    v9 = v4;
+    v9 = logPrefix;
     v10 = 2113;
-    v11 = v5;
+    v11 = addedSubscriptions;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Marking new subscriptions as synced: %{private}@", &v8, 0x16u);
   }
 
-  v6 = [(MTSubscriptionSyncProcessor *)self addedSubscriptions];
-  v7 = [MTPodcast predicateForPodcastUuids:v6];
+  addedSubscriptions2 = [(MTSubscriptionSyncProcessor *)self addedSubscriptions];
+  v7 = [MTPodcast predicateForPodcastUuids:addedSubscriptions2];
 
   [(MTSubscriptionSyncProcessor *)self markShowsAsSyncedForPredicate:v7];
 }
@@ -1247,28 +1247,28 @@ LABEL_8:
   v3 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
     v7 = 138543362;
-    v8 = v4;
+    v8 = logPrefix;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Marking all shows as synced", &v7, 0xCu);
   }
 
-  v5 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  v6 = +[MTPodcast predicateForSyncablePodcastsForSyncType:](MTPodcast, "predicateForSyncablePodcastsForSyncType:", [v5 syncType]);
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  v6 = +[MTPodcast predicateForSyncablePodcastsForSyncType:](MTPodcast, "predicateForSyncablePodcastsForSyncType:", [storageProvider syncType]);
 
   [(MTSubscriptionSyncProcessor *)self markShowsAsSyncedForPredicate:v6];
 }
 
-- (void)markShowsAsSyncedForPredicate:(id)a3
+- (void)markShowsAsSyncedForPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   [(MTSubscriptionSyncProcessor *)self context];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001594B4;
   v8 = v7[3] = &unk_1004D8798;
-  v9 = v4;
-  v5 = v4;
+  v9 = predicateCopy;
+  v5 = predicateCopy;
   v6 = v8;
   [v6 performBlockAndWaitWithSave:v7];
 }
@@ -1280,7 +1280,7 @@ LABEL_8:
   v10[1] = 3221225472;
   v10[2] = sub_100159728;
   v11 = v10[3] = &unk_1004D94C8;
-  v12 = self;
+  selfCopy = self;
   v3 = objc_opt_new();
   v13 = v3;
   v4 = v11;
@@ -1290,9 +1290,9 @@ LABEL_8:
     v5 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+      logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
       *buf = 138543362;
-      v15 = v6;
+      v15 = logPrefix;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%{public}@ WARNING: Syncing up an empty podcast library", buf, 0xCu);
     }
   }
@@ -1303,205 +1303,205 @@ LABEL_8:
   return v3;
 }
 
-- (void)subscribeFromCloudToPodcasts:(id)a3
+- (void)subscribeFromCloudToPodcasts:(id)podcasts
 {
-  v4 = a3;
-  v5 = [(MTSubscriptionSyncProcessor *)self context];
-  v6 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  [v6 subscriptionsLastSyncTimestamp];
+  podcastsCopy = podcasts;
+  context = [(MTSubscriptionSyncProcessor *)self context];
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  [storageProvider subscriptionsLastSyncTimestamp];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100159CA0;
   v9[3] = &unk_1004D94C8;
-  v10 = v4;
-  v11 = self;
-  v12 = v5;
-  v7 = v5;
-  v8 = v4;
+  v10 = podcastsCopy;
+  selfCopy = self;
+  v12 = context;
+  v7 = context;
+  v8 = podcastsCopy;
   [v7 performBlockAndWaitWithSave:v9];
 }
 
-- (void)updateSettingsForLocalPodcast:(id)a3 remotePodcast:(id)a4 ctx:(id)a5
+- (void)updateSettingsForLocalPodcast:(id)podcast remotePodcast:(id)remotePodcast ctx:(id)ctx
 {
-  v7 = a3;
-  v8 = a4;
-  v91 = a5;
+  podcastCopy = podcast;
+  remotePodcastCopy = remotePodcast;
+  ctxCopy = ctx;
   v9 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-    v11 = [v7 title];
-    v12 = [v7 feedURL];
-    v13 = [v7 storeCollectionId];
-    v14 = [v7 uuid];
-    v15 = [v8 description];
+    logPrefix = [(MTSubscriptionSyncProcessor *)self logPrefix];
+    title = [podcastCopy title];
+    feedURL = [podcastCopy feedURL];
+    storeCollectionId = [podcastCopy storeCollectionId];
+    uuid = [podcastCopy uuid];
+    v15 = [remotePodcastCopy description];
     *buf = 138544643;
-    v95 = v10;
+    v95 = logPrefix;
     v96 = 2113;
-    v97 = v11;
+    v97 = title;
     v98 = 2113;
-    v99 = v12;
+    v99 = feedURL;
     v100 = 2049;
-    v101 = v13;
+    v101 = storeCollectionId;
     v102 = 2114;
-    v103 = v14;
+    v103 = uuid;
     v104 = 2113;
     v105 = v15;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating settings for podcast: %{private}@, %{private}@, %{private}lld, %{public}@. Remote dictionary: %{private}@", buf, 0x3Eu);
   }
 
-  [v7 setHasBeenSynced:1];
-  v16 = [v8 objectForKey:kPodcastSubscribed];
-  v17 = [v16 BOOLValue];
+  [podcastCopy setHasBeenSynced:1];
+  v16 = [remotePodcastCopy objectForKey:kPodcastSubscribed];
+  bOOLValue = [v16 BOOLValue];
 
-  v18 = [v7 subscribed];
-  if ((v18 & 1) == 0 && v17)
+  subscribed = [podcastCopy subscribed];
+  if ((subscribed & 1) == 0 && bOOLValue)
   {
     v19 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-      v21 = [v7 title];
-      v22 = [v7 feedURL];
-      v23 = [v7 storeCollectionId];
-      v24 = [v7 uuid];
+      logPrefix2 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+      title2 = [podcastCopy title];
+      feedURL2 = [podcastCopy feedURL];
+      storeCollectionId2 = [podcastCopy storeCollectionId];
+      uuid2 = [podcastCopy uuid];
       *buf = 138544387;
-      v95 = v20;
+      v95 = logPrefix2;
       v96 = 2113;
-      v97 = v21;
+      v97 = title2;
       v98 = 2113;
-      v99 = v22;
+      v99 = feedURL2;
       v100 = 2049;
-      v101 = v23;
+      v101 = storeCollectionId2;
       v102 = 2114;
-      v103 = v24;
+      v103 = uuid2;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Enabling subscription for podcast: %{private}@, %{private}@, %{private}lld, %{public}@", buf, 0x34u);
     }
 
-    v25 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-    v26 = [v7 uuid];
-    [v25 enableSubscriptionOnPodcastUuid:v26 ctx:v91];
+    storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+    uuid3 = [podcastCopy uuid];
+    [storageProvider enableSubscriptionOnPodcastUuid:uuid3 ctx:ctxCopy];
 
 LABEL_8:
     goto LABEL_10;
   }
 
-  if (!(v17 & 1 | ((v18 & 1) == 0)))
+  if (!(bOOLValue & 1 | ((subscribed & 1) == 0)))
   {
-    v25 = _MTLogCategoryCloudSync();
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    storageProvider = _MTLogCategoryCloudSync();
+    if (os_log_type_enabled(storageProvider, OS_LOG_TYPE_DEFAULT))
     {
-      v51 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-      v52 = [v7 title];
-      v53 = [v7 feedURL];
-      v54 = [v7 storeCollectionId];
-      v55 = [v7 uuid];
+      logPrefix3 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+      title3 = [podcastCopy title];
+      feedURL3 = [podcastCopy feedURL];
+      storeCollectionId3 = [podcastCopy storeCollectionId];
+      uuid4 = [podcastCopy uuid];
       *buf = 138544387;
-      v95 = v51;
+      v95 = logPrefix3;
       v96 = 2113;
-      v97 = v52;
+      v97 = title3;
       v98 = 2113;
-      v99 = v53;
+      v99 = feedURL3;
       v100 = 2049;
-      v101 = v54;
+      v101 = storeCollectionId3;
       v102 = 2114;
-      v103 = v55;
-      _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping unsubscription of remotely unsubscribed podcast [reason: all unsubscriptions should be handled in batch later in the process]: %{private}@, %{private}@, %{private}lld, %{public}@", buf, 0x34u);
+      v103 = uuid4;
+      _os_log_impl(&_mh_execute_header, storageProvider, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping unsubscription of remotely unsubscribed podcast [reason: all unsubscriptions should be handled in batch later in the process]: %{private}@, %{private}@, %{private}lld, %{public}@", buf, 0x34u);
     }
 
     goto LABEL_8;
   }
 
 LABEL_10:
-  v27 = [v8 objectForKeyedSubscript:kPodcastShowTypeSetting];
+  v27 = [remotePodcastCopy objectForKeyedSubscript:kPodcastShowTypeSetting];
   v28 = v27;
   if (v27)
   {
     v29 = v27;
-    v30 = [v27 longLongValue];
+    longLongValue = [v27 longLongValue];
     v31 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-      v33 = [v7 title];
-      v34 = [v7 feedURL];
-      v35 = [v7 storeCollectionId];
-      v36 = [v7 uuid];
+      logPrefix4 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+      title4 = [podcastCopy title];
+      feedURL4 = [podcastCopy feedURL];
+      storeCollectionId4 = [podcastCopy storeCollectionId];
+      uuid5 = [podcastCopy uuid];
       *buf = 138544643;
-      v95 = v32;
+      v95 = logPrefix4;
       v96 = 2050;
-      v97 = v30;
+      v97 = longLongValue;
       v98 = 2113;
-      v99 = v33;
+      v99 = title4;
       v100 = 2113;
-      v101 = v34;
+      v101 = feedURL4;
       v102 = 2049;
-      v103 = v35;
+      v103 = storeCollectionId4;
       v104 = 2114;
-      v105 = v36;
+      v105 = uuid5;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ Subscriptions Sync wants to set show type setting to %{public}lld, for podcast: %{private}@, %{private}@, %{private}lld, %{public}@", buf, 0x3Eu);
     }
 
-    [v7 setShowTypeSetting:v30];
+    [podcastCopy setShowTypeSetting:longLongValue];
     v28 = v29;
   }
 
-  v93 = [v8 objectForKey:kPodcastLastTouchDate];
-  v37 = [v8 objectForKey:kPodcastDarkCount];
+  v93 = [remotePodcastCopy objectForKey:kPodcastLastTouchDate];
+  v37 = [remotePodcastCopy objectForKey:kPodcastDarkCount];
   if (v37)
   {
     if (v93)
     {
-      [v7 lastTouchDate];
+      [podcastCopy lastTouchDate];
       v38 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
       v39 = [v38 compare:v93];
 
       if (v39 == -1)
       {
-        v40 = [v7 isDark];
+        isDark = [podcastCopy isDark];
         v41 = _MTLogCategoryCloudSync();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
-          v42 = [(MTSubscriptionSyncProcessor *)self logPrefix];
-          v85 = [v37 longLongValue];
-          [v7 title];
-          v43 = v88 = v40;
-          v44 = [v7 feedURL];
-          v45 = [v7 storeCollectionId];
-          v46 = [v7 uuid];
+          logPrefix5 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+          longLongValue2 = [v37 longLongValue];
+          [podcastCopy title];
+          v43 = v88 = isDark;
+          feedURL5 = [podcastCopy feedURL];
+          storeCollectionId5 = [podcastCopy storeCollectionId];
+          uuid6 = [podcastCopy uuid];
           *buf = 138544643;
-          v95 = v42;
+          v95 = logPrefix5;
           v96 = 2050;
-          v97 = v85;
+          v97 = longLongValue2;
           v98 = 2113;
           v99 = v43;
           v100 = 2113;
-          v101 = v44;
+          v101 = feedURL5;
           v102 = 2049;
-          v103 = v45;
+          v103 = storeCollectionId5;
           v104 = 2114;
-          v105 = v46;
+          v105 = uuid6;
           _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting darkCount = %{public}lld for podcast: %{private}@, %{private}@, %{private}lld, %{public}@", buf, 0x3Eu);
 
-          v40 = v88;
+          isDark = v88;
         }
 
-        [v7 setDarkCount:{objc_msgSend(v37, "longLongValue")}];
-        if (v40 != [v7 isDark])
+        [podcastCopy setDarkCount:{objc_msgSend(v37, "longLongValue")}];
+        if (isDark != [podcastCopy isDark])
         {
-          v47 = v40;
-          v48 = [v7 isDark];
-          v49 = [v7 latestExitFromDarkDownloads];
-          if (v49)
+          v47 = isDark;
+          isDark2 = [podcastCopy isDark];
+          latestExitFromDarkDownloads = [podcastCopy latestExitFromDarkDownloads];
+          if (latestExitFromDarkDownloads)
           {
-            v50 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:v47 isDark:v48 reason:6 previousExit:v49];
+            v50 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:v47 isDark:isDark2 reason:6 previousExit:latestExitFromDarkDownloads];
           }
 
           else
           {
             v56 = +[NSDate now];
-            v50 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:v47 isDark:v48 reason:6 previousExit:v56];
+            v50 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:v47 isDark:isDark2 reason:6 previousExit:v56];
           }
 
           v57 = objc_opt_new();
@@ -1511,10 +1511,10 @@ LABEL_10:
     }
   }
 
-  v58 = [v7 feedURL];
+  feedURL6 = [podcastCopy feedURL];
   v59 = kPodcastFeedUrl;
-  v60 = [v8 objectForKeyedSubscript:kPodcastFeedUrl];
-  v61 = [v58 isEqualToString:v60];
+  v60 = [remotePodcastCopy objectForKeyedSubscript:kPodcastFeedUrl];
+  v61 = [feedURL6 isEqualToString:v60];
 
   if ((v61 & 1) == 0)
   {
@@ -1522,61 +1522,61 @@ LABEL_10:
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
     {
       [(MTSubscriptionSyncProcessor *)self logPrefix];
-      v63 = v86 = v8;
+      v63 = v86 = remotePodcastCopy;
       v64 = [v86 objectForKeyedSubscript:v59];
-      v65 = [v7 title];
-      v66 = [v7 feedURL];
+      title5 = [podcastCopy title];
+      feedURL7 = [podcastCopy feedURL];
       v67 = v37;
-      v68 = [v7 storeCollectionId];
-      [v7 uuid];
+      storeCollectionId6 = [podcastCopy storeCollectionId];
+      [podcastCopy uuid];
       v69 = v89 = v28;
       *buf = 138544643;
       v95 = v63;
       v96 = 2113;
       v97 = v64;
       v98 = 2113;
-      v99 = v65;
+      v99 = title5;
       v100 = 2113;
-      v101 = v66;
+      v101 = feedURL7;
       v102 = 2049;
-      v103 = v68;
+      v103 = storeCollectionId6;
       v37 = v67;
       v104 = 2114;
       v105 = v69;
       _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting feedURL = %{private}@ for podcast: %{private}@, %{private}@, %{private}lld, %{public}@", buf, 0x3Eu);
 
       v28 = v89;
-      v8 = v86;
+      remotePodcastCopy = v86;
     }
 
-    v70 = [v8 objectForKeyedSubscript:v59];
-    [v7 setFeedURL:v70];
+    v70 = [remotePodcastCopy objectForKeyedSubscript:v59];
+    [podcastCopy setFeedURL:v70];
   }
 
-  v71 = [v8 objectForKeyedSubscript:kPodcastAddedDate];
+  v71 = [remotePodcastCopy objectForKeyedSubscript:kPodcastAddedDate];
   v72 = v71;
   if (v71)
   {
     [v71 timeIntervalSinceReferenceDate];
     v74 = v73;
-    [v7 addedDate];
+    [podcastCopy addedDate];
     if (v74 < v75)
     {
       v76 = _MTLogCategoryCloudSync();
       if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
       {
-        v77 = [(MTSubscriptionSyncProcessor *)self logPrefix];
+        logPrefix6 = [(MTSubscriptionSyncProcessor *)self logPrefix];
         [v72 timeIntervalSinceReferenceDate];
         v79 = v78;
         v80 = [v72 description];
-        [v7 title];
+        [podcastCopy title];
         v81 = v90 = v28;
-        v82 = [v7 feedURL];
-        v83 = [v7 storeCollectionId];
-        [v7 uuid];
+        feedURL8 = [podcastCopy feedURL];
+        storeCollectionId7 = [podcastCopy storeCollectionId];
+        [podcastCopy uuid];
         v84 = v87 = v37;
         *buf = 138544899;
-        v95 = v77;
+        v95 = logPrefix6;
         v96 = 2050;
         v97 = v79;
         v98 = 2114;
@@ -1584,9 +1584,9 @@ LABEL_10:
         v100 = 2113;
         v101 = v81;
         v102 = 2113;
-        v103 = v82;
+        v103 = feedURL8;
         v104 = 2049;
-        v105 = v83;
+        v105 = storeCollectionId7;
         v106 = 2114;
         v107 = v84;
         _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting addedDate = %{public}f(%{public}@) for podcast: %{private}@, %{private}@, %{private}lld, %{public}@", buf, 0x48u);
@@ -1596,17 +1596,17 @@ LABEL_10:
       }
 
       [v72 timeIntervalSinceReferenceDate];
-      [v7 setAddedDate:?];
+      [podcastCopy setAddedDate:?];
     }
   }
 }
 
 - (id)logPrefix
 {
-  v2 = [(MTSubscriptionSyncProcessor *)self storageProvider];
-  v3 = [v2 syncType];
+  storageProvider = [(MTSubscriptionSyncProcessor *)self storageProvider];
+  syncType = [storageProvider syncType];
 
-  if (v3 == 1)
+  if (syncType == 1)
   {
     return @"[Subscription V3 Sync]";
   }

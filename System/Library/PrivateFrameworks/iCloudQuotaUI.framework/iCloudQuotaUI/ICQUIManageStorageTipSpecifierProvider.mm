@@ -1,29 +1,29 @@
 @interface ICQUIManageStorageTipSpecifierProvider
 - (ICQCloudStorageSummary)storageSummary;
-- (ICQUIManageStorageTipSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4 summary:(id)a5;
+- (ICQUIManageStorageTipSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter summary:(id)summary;
 - (NSArray)specifiers;
 - (id)account;
-- (id)manageStorageSpecifiersForSummary:(id)a3;
+- (id)manageStorageSpecifiersForSummary:(id)summary;
 - (void)_fetchStorageSummaryAndRefreshSpecifiers;
-- (void)_refreshTipsWithSummary:(id)a3;
-- (void)setSpecifiers:(id)a3;
+- (void)_refreshTipsWithSummary:(id)summary;
+- (void)setSpecifiers:(id)specifiers;
 @end
 
 @implementation ICQUIManageStorageTipSpecifierProvider
 
-- (ICQUIManageStorageTipSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4 summary:(id)a5
+- (ICQUIManageStorageTipSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter summary:(id)summary
 {
-  v8 = a5;
+  summaryCopy = summary;
   v9 = *MEMORY[0x277D7F2D0];
   v14.receiver = self;
   v14.super_class = ICQUIManageStorageTipSpecifierProvider;
-  v10 = [(ICQUITipSpecifierProvider *)&v14 initWithAccountManager:a3 presenter:a4 sectionAnchorIdentifier:v9 showUpwardPointingTips:0];
+  v10 = [(ICQUITipSpecifierProvider *)&v14 initWithAccountManager:manager presenter:presenter sectionAnchorIdentifier:v9 showUpwardPointingTips:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_storageSummary, v8);
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v11 selector:sel__fetchStorageSummaryAndRefreshSpecifiers name:@"QuotaDidChange" object:0];
+    objc_storeWeak(&v10->_storageSummary, summaryCopy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__fetchStorageSummaryAndRefreshSpecifiers name:@"QuotaDidChange" object:0];
   }
 
   return v11;
@@ -32,8 +32,8 @@
 - (id)account
 {
   v2 = [(ICQUIManageStorageTipSpecifierProvider *)self valueForKey:@"_accountManager"];
-  v3 = [v2 accounts];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [v2 accounts];
+  v4 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v4;
 }
@@ -43,8 +43,8 @@
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [(ICQUIManageStorageTipSpecifierProvider *)self storageSummary];
-    v5 = [(ICQUIManageStorageTipSpecifierProvider *)self manageStorageSpecifiersForSummary:v4];
+    storageSummary = [(ICQUIManageStorageTipSpecifierProvider *)self storageSummary];
+    v5 = [(ICQUIManageStorageTipSpecifierProvider *)self manageStorageSpecifiersForSummary:storageSummary];
     v6 = self->_specifiers;
     self->_specifiers = v5;
 
@@ -56,24 +56,24 @@
   return v7;
 }
 
-- (id)manageStorageSpecifiersForSummary:(id)a3
+- (id)manageStorageSpecifiersForSummary:(id)summary
 {
-  v4 = a3;
-  v5 = [v4 manageStoragePage];
-  v6 = [v5 tips];
-  v7 = [v6 count];
+  summaryCopy = summary;
+  manageStoragePage = [summaryCopy manageStoragePage];
+  tips = [manageStoragePage tips];
+  v7 = [tips count];
 
   if (v7)
   {
     v8 = [ICQUIManageStorageTipViewModel alloc];
-    v9 = [v4 manageStoragePage];
-    v10 = [v9 tips];
-    v11 = [v10 firstObject];
-    v12 = [(ICQUIManageStorageTipViewModel *)v8 initWithTipInfo:v11];
+    manageStoragePage2 = [summaryCopy manageStoragePage];
+    tips2 = [manageStoragePage2 tips];
+    firstObject = [tips2 firstObject];
+    v12 = [(ICQUIManageStorageTipViewModel *)v8 initWithTipInfo:firstObject];
     [(ICQUITipSpecifierProvider *)self setViewModel:v12];
 
-    v13 = [(ICQUITipSpecifierProvider *)self _tipSpecifiers];
-    v14 = [v13 copy];
+    _tipSpecifiers = [(ICQUITipSpecifierProvider *)self _tipSpecifiers];
+    v14 = [_tipSpecifiers copy];
   }
 
   else
@@ -84,15 +84,15 @@
   return v14;
 }
 
-- (void)setSpecifiers:(id)a3
+- (void)setSpecifiers:(id)specifiers
 {
-  v7 = a3;
-  if (v7)
+  specifiersCopy = specifiers;
+  if (specifiersCopy)
   {
     v5 = [(NSArray *)self->_specifiers copy];
-    objc_storeStrong(&self->_specifiers, a3);
-    v6 = [(ICQUITipSpecifierProvider *)self delegate];
-    [v6 reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:1];
+    objc_storeStrong(&self->_specifiers, specifiers);
+    delegate = [(ICQUITipSpecifierProvider *)self delegate];
+    [delegate reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:1];
   }
 
   else
@@ -101,15 +101,15 @@
   }
 }
 
-- (void)_refreshTipsWithSummary:(id)a3
+- (void)_refreshTipsWithSummary:(id)summary
 {
-  [(ICQUIManageStorageTipSpecifierProvider *)self setStorageSummary:a3];
+  [(ICQUIManageStorageTipSpecifierProvider *)self setStorageSummary:summary];
   v6 = [(NSArray *)self->_specifiers copy];
   specifiers = self->_specifiers;
   self->_specifiers = 0;
 
-  v5 = [(ICQUITipSpecifierProvider *)self delegate];
-  [v5 reloadSpecifiersForProvider:self oldSpecifiers:v6 animated:1];
+  delegate = [(ICQUITipSpecifierProvider *)self delegate];
+  [delegate reloadSpecifiersForProvider:self oldSpecifiers:v6 animated:1];
 }
 
 - (void)_fetchStorageSummaryAndRefreshSpecifiers
@@ -120,8 +120,8 @@
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v3 = objc_alloc(MEMORY[0x277D7F338]);
-  v4 = [(ICQUIManageStorageTipSpecifierProvider *)self account];
-  v12 = [v3 initWithAccount:v4];
+  account = [(ICQUIManageStorageTipSpecifierProvider *)self account];
+  v12 = [v3 initWithAccount:account];
 
   v5 = v8[5];
   v6[0] = MEMORY[0x277D85DD0];

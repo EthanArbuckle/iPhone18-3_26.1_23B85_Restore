@@ -9,8 +9,8 @@
 
 - (uint64_t)pui_significantEvent
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20512];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20512];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -34,21 +34,21 @@
 
   v6 = v5;
 
-  v7 = [v6 unsignedIntegerValue];
-  return v7;
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (void)pui_setSignificantEvent:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:20512];
+  [otherSettings setObject:v4 forSetting:20512];
 }
 
 - (uint64_t)pui_deviceOrientation
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20513];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20513];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -73,22 +73,22 @@
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (void)pui_setDeviceOrientation:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:20513];
+  [otherSettings setObject:v4 forSetting:20513];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface SRCompactResultPlatterViewController
-- (id)_createReusableViewWithClass:(Class)a3 snippetViewController:(id)a4;
-- (void)setSiriContentViewControllers:(id)a3;
+- (id)_createReusableViewWithClass:(Class)class snippetViewController:(id)controller;
+- (void)setSiriContentViewControllers:(id)controllers;
 @end
 
 @implementation SRCompactResultPlatterViewController
 
-- (void)setSiriContentViewControllers:(id)a3
+- (void)setSiriContentViewControllers:(id)controllers
 {
-  v5 = a3;
-  if (self->_siriContentViewControllers != v5)
+  controllersCopy = controllers;
+  if (self->_siriContentViewControllers != controllersCopy)
   {
-    v17 = v5;
-    objc_storeStrong(&self->_siriContentViewControllers, a3);
+    v17 = controllersCopy;
+    objc_storeStrong(&self->_siriContentViewControllers, controllers);
     v6 = objc_opt_new();
     if ([(NSArray *)self->_siriContentViewControllers count])
     {
@@ -20,7 +20,7 @@
       do
       {
         v8 = [(NSArray *)self->_siriContentViewControllers objectAtIndex:v7, v17];
-        v9 = [(NSArray *)self->_siriContentViewControllers lastObject];
+        lastObject = [(NSArray *)self->_siriContentViewControllers lastObject];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -50,7 +50,7 @@
         }
 
         ++v7;
-        if (v8 != v9)
+        if (v8 != lastObject)
         {
           v16 = [(NSArray *)self->_siriContentViewControllers objectAtIndex:v7];
           [(SRCompactResultPlatterViewController *)self appendSeparatorToViewControllers:v6 forNextViewController:v16];
@@ -62,23 +62,23 @@
 
     [(SRCompactResultPlatterViewController *)self setContentViewControllers:v6, v17];
 
-    v5 = v18;
+    controllersCopy = v18;
   }
 }
 
-- (id)_createReusableViewWithClass:(Class)a3 snippetViewController:(id)a4
+- (id)_createReusableViewWithClass:(Class)class snippetViewController:(id)controller
 {
-  v5 = a4;
-  if (a3)
+  controllerCopy = controller;
+  if (class)
   {
-    a3 = [[a3 alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    class = [[class alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     if (objc_opt_respondsToSelector())
     {
-      [(objc_class *)a3 setSnippetViewController:v5];
+      [(objc_class *)class setSnippetViewController:controllerCopy];
     }
   }
 
-  return a3;
+  return class;
 }
 
 @end

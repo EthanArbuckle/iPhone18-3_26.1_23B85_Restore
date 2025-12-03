@@ -1,48 +1,48 @@
 @interface ARUISpriteUniforms
 - ($3BA783FF50B239963188BE194EBFFEBA)uniforms;
-- (ARUISpriteUniforms)initWithSprite:(id)a3 inContext:(id)a4;
-- (void)_updateUniformsWithSprite:(id)a3;
-- (void)_updateVertexAttributesWithSprite:(id)a3 inContet:(id)a4;
+- (ARUISpriteUniforms)initWithSprite:(id)sprite inContext:(id)context;
+- (void)_updateUniformsWithSprite:(id)sprite;
+- (void)_updateVertexAttributesWithSprite:(id)sprite inContet:(id)contet;
 @end
 
 @implementation ARUISpriteUniforms
 
-- (ARUISpriteUniforms)initWithSprite:(id)a3 inContext:(id)a4
+- (ARUISpriteUniforms)initWithSprite:(id)sprite inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  spriteCopy = sprite;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = ARUISpriteUniforms;
   v8 = [(ARUISpriteUniforms *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ARUISpriteUniforms *)v8 _updateVertexAttributesWithSprite:v6 inContet:v7];
-    [(ARUISpriteUniforms *)v9 _updateUniformsWithSprite:v6];
+    [(ARUISpriteUniforms *)v8 _updateVertexAttributesWithSprite:spriteCopy inContet:contextCopy];
+    [(ARUISpriteUniforms *)v9 _updateUniformsWithSprite:spriteCopy];
   }
 
   return v9;
 }
 
-- (void)_updateVertexAttributesWithSprite:(id)a3 inContet:(id)a4
+- (void)_updateVertexAttributesWithSprite:(id)sprite inContet:(id)contet
 {
-  v32 = a3;
-  v6 = a4;
-  [v6 skewAdjustmentMatrix];
+  spriteCopy = sprite;
+  contetCopy = contet;
+  [contetCopy skewAdjustmentMatrix];
   v30 = v8;
   v31 = v7;
   v28 = v10;
   v29 = v9;
-  [v6 drawableDiameter];
-  [v6 screenScale];
-  [v32 translation];
-  [v32 translation];
+  [contetCopy drawableDiameter];
+  [contetCopy screenScale];
+  [spriteCopy translation];
+  [spriteCopy translation];
   *v11.i64 = matrix_float4x4_translation();
   v26 = v12;
   v27 = v11;
   v24 = v14;
   v25 = v13;
-  [v32 size];
+  [spriteCopy size];
   matrix_float4x4_uniform_scale();
   v15 = 0;
   v33 = v16;
@@ -85,12 +85,12 @@
   *&self[2].super.isa = v23;
 }
 
-- (void)_updateUniformsWithSprite:(id)a3
+- (void)_updateUniformsWithSprite:(id)sprite
 {
-  v4 = a3;
-  [v4 textureRect];
+  spriteCopy = sprite;
+  [spriteCopy textureRect];
   *self->_anon_10 = v5;
-  [v4 opacity];
+  [spriteCopy opacity];
   v7 = v6;
 
   *&self->_anon_10[16] = v7;

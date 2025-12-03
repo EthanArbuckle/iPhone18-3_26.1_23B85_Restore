@@ -1,17 +1,17 @@
 @interface _AFSpeakableUtterancePassThroughProvider
-- (id)stringForExpression:(id)a3 containsPrivacySensitiveContents:(BOOL *)a4;
+- (id)stringForExpression:(id)expression containsPrivacySensitiveContents:(BOOL *)contents;
 @end
 
 @implementation _AFSpeakableUtterancePassThroughProvider
 
-- (id)stringForExpression:(id)a3 containsPrivacySensitiveContents:(BOOL *)a4
+- (id)stringForExpression:(id)expression containsPrivacySensitiveContents:(BOOL *)contents
 {
-  if (a4)
+  if (contents)
   {
-    *a4 = 0;
+    *contents = 0;
   }
 
-  v4 = [a3 copy];
+  v4 = [expression copy];
 
   return v4;
 }

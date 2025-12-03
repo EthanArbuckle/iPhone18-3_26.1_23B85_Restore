@@ -1,58 +1,58 @@
 @interface PKBitmapContext
-+ (id)create16FloatExtendedWithSize:(id)a3 configuration:(id)a4;
-+ (id)create16FloatWithSize:(id)a3 configuration:(id)a4;
-+ (id)create32FloatWithSize:(id)a3 configuration:(id)a4;
-+ (id)create8UintWithSize:(id)a3 configuration:(id)a4;
-+ (id)createWithCGBitmapContext:(CGContext *)a3;
-+ (id)createWithSize:(id)a3 origin:(char)a4 format:(const vImage_CGImageFormat *)a5;
-- (char)_initWithSize:(uint64_t)a3 origin:(int)a4 format:(char *)a5;
++ (id)create16FloatExtendedWithSize:(id)size configuration:(id)configuration;
++ (id)create16FloatWithSize:(id)size configuration:(id)configuration;
++ (id)create32FloatWithSize:(id)size configuration:(id)configuration;
++ (id)create8UintWithSize:(id)size configuration:(id)configuration;
++ (id)createWithCGBitmapContext:(CGContext *)context;
++ (id)createWithSize:(id)size origin:(char)origin format:(const vImage_CGImageFormat *)format;
+- (char)_initWithSize:(uint64_t)size origin:(int)origin format:(char *)format;
 - (unint64_t)_initWithBitmapContext:(unint64_t)result;
-- (void)_accessContext:(uint64_t)a1;
-- (void)accessData:(id)a3;
+- (void)_accessContext:(uint64_t)context;
+- (void)accessData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation PKBitmapContext
 
-+ (id)createWithSize:(id)a3 origin:(char)a4 format:(const vImage_CGImageFormat *)a5
++ (id)createWithSize:(id)size origin:(char)origin format:(const vImage_CGImageFormat *)format
 {
-  v6 = a4;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  originCopy = origin;
+  var1 = size.var1;
+  var0 = size.var0;
   v9 = [PKBitmapContext alloc];
 
-  return [(PKBitmapContext *)v9 _initWithSize:var1 origin:v6 format:a5];
+  return [(PKBitmapContext *)v9 _initWithSize:var1 origin:originCopy format:format];
 }
 
-- (char)_initWithSize:(uint64_t)a3 origin:(int)a4 format:(char *)a5
+- (char)_initWithSize:(uint64_t)size origin:(int)origin format:(char *)format
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_50;
   }
 
-  if (!a5)
+  if (!format)
   {
     goto LABEL_49;
   }
 
-  v39.receiver = a1;
+  v39.receiver = self;
   v39.super_class = PKBitmapContext;
   v9 = objc_msgSendSuper2(&v39, sel_init);
   v10 = v9;
   if (v9)
   {
-    if (v9 + 16 == a5)
+    if (v9 + 16 == format)
     {
       goto LABEL_22;
     }
 
-    v11 = CGColorSpaceRetain(*(a5 + 1));
+    v11 = CGColorSpaceRetain(*(format + 1));
     v12 = v11;
-    if (*(a5 + 3))
+    if (*(format + 3))
     {
-      v13 = *(a5 + 4) & 0x1F;
+      v13 = *(format + 4) & 0x1F;
       if (!v11 || v13 == 7)
       {
         if (v13)
@@ -86,7 +86,7 @@
 LABEL_15:
           v15 = 16 * NumberOfComponents;
           v16 = malloc_type_aligned_alloc(8uLL, v15, 0x66BBC5B0uLL);
-          memcpy(v16, *(a5 + 3), v15);
+          memcpy(v16, *(format + 3), v15);
 LABEL_17:
           v17 = *(v10 + 3);
           if (v17)
@@ -101,18 +101,18 @@ LABEL_17:
             free(v18);
           }
 
-          v20 = *a5;
-          v19 = *(a5 + 1);
-          v21 = *(a5 + 8);
+          v20 = *format;
+          v19 = *(format + 1);
+          v21 = *(format + 8);
           *(v10 + 3) = v12;
-          v22 = *(a5 + 2);
+          v22 = *(format + 2);
           *(v10 + 4) = v20;
           *(v10 + 5) = v19;
           *(v10 + 4) = v22;
           *(v10 + 5) = v16;
           *(v10 + 12) = v21;
 LABEL_22:
-          v23 = MEMORY[0x1B26FA130](v10 + 56, a3, a2);
+          v23 = MEMORY[0x1B26FA130](v10 + 56, size, a2);
           if ((v23 & 0x8000000000000000) == 0 && !*(v10 + 7))
           {
             v24 = *(v10 + 8);
@@ -191,7 +191,7 @@ LABEL_35:
               v32 = *(v10 + 11);
               if (v32)
               {
-                v33 = _PKCreateBitmapContext(v10 + 2, (v10 + 56), v32, a4);
+                v33 = _PKCreateBitmapContext(v10 + 2, (v10 + 56), v32, origin);
                 *(v10 + 12) = v33;
                 if (v33)
                 {
@@ -232,12 +232,12 @@ LABEL_52:
   return v34;
 }
 
-+ (id)create8UintWithSize:(id)a3 configuration:(id)a4
++ (id)create8UintWithSize:(id)size configuration:(id)configuration
 {
-  v4 = *&a4.var0;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  if ((*&a4.var0 & 0x10000) != 0)
+  v4 = *&configuration.var0;
+  var1 = size.var1;
+  var0 = size.var0;
+  if ((*&configuration.var0 & 0x10000) != 0)
   {
     v7 = PKColorSpaceStandardLinearRGB();
   }
@@ -285,12 +285,12 @@ LABEL_9:
   return [[PKBitmapContext alloc] _initWithSize:var1 origin:v4 format:v13];
 }
 
-+ (id)create16FloatWithSize:(id)a3 configuration:(id)a4
++ (id)create16FloatWithSize:(id)size configuration:(id)configuration
 {
-  v4 = *&a4.var0;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  if ((*&a4.var0 & 0x10000) != 0)
+  v4 = *&configuration.var0;
+  var1 = size.var1;
+  var0 = size.var0;
+  if ((*&configuration.var0 & 0x10000) != 0)
   {
     v7 = PKColorSpaceStandardLinearRGB();
   }
@@ -338,12 +338,12 @@ LABEL_9:
   return [[PKBitmapContext alloc] _initWithSize:var1 origin:v4 format:v13];
 }
 
-+ (id)create16FloatExtendedWithSize:(id)a3 configuration:(id)a4
++ (id)create16FloatExtendedWithSize:(id)size configuration:(id)configuration
 {
-  v4 = *&a4.var0;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  if ((*&a4.var0 & 0x10000) != 0)
+  v4 = *&configuration.var0;
+  var1 = size.var1;
+  var0 = size.var0;
+  if ((*&configuration.var0 & 0x10000) != 0)
   {
     v7 = PKColorSpaceStandardExtendedLinearRGB();
   }
@@ -391,12 +391,12 @@ LABEL_9:
   return [[PKBitmapContext alloc] _initWithSize:var1 origin:v4 format:v13];
 }
 
-+ (id)create32FloatWithSize:(id)a3 configuration:(id)a4
++ (id)create32FloatWithSize:(id)size configuration:(id)configuration
 {
-  v4 = *&a4.var0;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  if ((*&a4.var0 & 0x10000) != 0)
+  v4 = *&configuration.var0;
+  var1 = size.var1;
+  var0 = size.var0;
+  if ((*&configuration.var0 & 0x10000) != 0)
   {
     v7 = PKColorSpaceStandardLinearRGB();
   }
@@ -444,11 +444,11 @@ LABEL_9:
   return [[PKBitmapContext alloc] _initWithSize:var1 origin:v4 format:v13];
 }
 
-+ (id)createWithCGBitmapContext:(CGContext *)a3
++ (id)createWithCGBitmapContext:(CGContext *)context
 {
   v4 = [PKBitmapContext alloc];
 
-  return [(PKBitmapContext *)v4 _initWithBitmapContext:a3];
+  return [(PKBitmapContext *)v4 _initWithBitmapContext:context];
 }
 
 - (unint64_t)_initWithBitmapContext:(unint64_t)result
@@ -586,10 +586,10 @@ LABEL_20:
   [(PKBitmapContext *)&v6 dealloc];
 }
 
-- (void)_accessContext:(uint64_t)a1
+- (void)_accessContext:(uint64_t)context
 {
   v3 = a2;
-  if (a1)
+  if (context)
   {
     if (!v3)
     {
@@ -599,20 +599,20 @@ LABEL_20:
 
     v5 = v3;
     v4 = objc_autoreleasePoolPush();
-    v5[2](v5, *(a1 + 96));
+    v5[2](v5, *(context + 96));
     objc_autoreleasePoolPop(v4);
     v3 = v5;
   }
 }
 
-- (void)accessData:(id)a3
+- (void)accessData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
-    if (v4)
+    if (dataCopy)
     {
-      v9 = v4;
+      v9 = dataCopy;
       v5 = objc_autoreleasePoolPush();
       v6 = ++self->_vImageAccessCounter;
       if ((v6 & 0x100) == 0)
@@ -623,7 +623,7 @@ LABEL_20:
         if (v8 < 0x100)
         {
           objc_autoreleasePoolPop(v7);
-          v4 = v9;
+          dataCopy = v9;
           goto LABEL_6;
         }
 

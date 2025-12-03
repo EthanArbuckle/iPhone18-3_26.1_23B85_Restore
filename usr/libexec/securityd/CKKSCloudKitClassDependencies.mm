@@ -1,11 +1,11 @@
 @interface CKKSCloudKitClassDependencies
 + (id)forLiveCloudKit;
-- (CKKSCloudKitClassDependencies)initWithFetchRecordZoneChangesOperationClass:(Class)a3 fetchRecordsOperationClass:(Class)a4 queryOperationClass:(Class)a5 modifySubscriptionsOperationClass:(Class)a6 modifyRecordZonesOperationClass:(Class)a7 apsConnectionClass:(Class)a8 nsnotificationCenterClass:(Class)a9 nsdistributednotificationCenterClass:(Class)a10 notifierClass:(Class)a11;
+- (CKKSCloudKitClassDependencies)initWithFetchRecordZoneChangesOperationClass:(Class)class fetchRecordsOperationClass:(Class)operationClass queryOperationClass:(Class)queryOperationClass modifySubscriptionsOperationClass:(Class)subscriptionsOperationClass modifyRecordZonesOperationClass:(Class)zonesOperationClass apsConnectionClass:(Class)connectionClass nsnotificationCenterClass:(Class)centerClass nsdistributednotificationCenterClass:(Class)self0 notifierClass:(Class)self1;
 @end
 
 @implementation CKKSCloudKitClassDependencies
 
-- (CKKSCloudKitClassDependencies)initWithFetchRecordZoneChangesOperationClass:(Class)a3 fetchRecordsOperationClass:(Class)a4 queryOperationClass:(Class)a5 modifySubscriptionsOperationClass:(Class)a6 modifyRecordZonesOperationClass:(Class)a7 apsConnectionClass:(Class)a8 nsnotificationCenterClass:(Class)a9 nsdistributednotificationCenterClass:(Class)a10 notifierClass:(Class)a11
+- (CKKSCloudKitClassDependencies)initWithFetchRecordZoneChangesOperationClass:(Class)class fetchRecordsOperationClass:(Class)operationClass queryOperationClass:(Class)queryOperationClass modifySubscriptionsOperationClass:(Class)subscriptionsOperationClass modifyRecordZonesOperationClass:(Class)zonesOperationClass apsConnectionClass:(Class)connectionClass nsnotificationCenterClass:(Class)centerClass nsdistributednotificationCenterClass:(Class)self0 notifierClass:(Class)self1
 {
   v20.receiver = self;
   v20.super_class = CKKSCloudKitClassDependencies;
@@ -13,15 +13,15 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_fetchRecordZoneChangesOperationClass, a3);
-    objc_storeStrong(&v18->_fetchRecordsOperationClass, a4);
-    objc_storeStrong(&v18->_queryOperationClass, a5);
-    objc_storeStrong(&v18->_modifySubscriptionsOperationClass, a6);
-    objc_storeStrong(&v18->_modifyRecordZonesOperationClass, a7);
-    objc_storeStrong(&v18->_apsConnectionClass, a8);
-    objc_storeStrong(&v18->_nsnotificationCenterClass, a9);
-    objc_storeStrong(&v18->_nsdistributednotificationCenterClass, a10);
-    objc_storeStrong(&v18->_notifierClass, a11);
+    objc_storeStrong(&v17->_fetchRecordZoneChangesOperationClass, class);
+    objc_storeStrong(&v18->_fetchRecordsOperationClass, operationClass);
+    objc_storeStrong(&v18->_queryOperationClass, queryOperationClass);
+    objc_storeStrong(&v18->_modifySubscriptionsOperationClass, subscriptionsOperationClass);
+    objc_storeStrong(&v18->_modifyRecordZonesOperationClass, zonesOperationClass);
+    objc_storeStrong(&v18->_apsConnectionClass, connectionClass);
+    objc_storeStrong(&v18->_nsnotificationCenterClass, centerClass);
+    objc_storeStrong(&v18->_nsdistributednotificationCenterClass, nsdistributednotificationCenterClass);
+    objc_storeStrong(&v18->_notifierClass, notifierClass);
   }
 
   return v18;

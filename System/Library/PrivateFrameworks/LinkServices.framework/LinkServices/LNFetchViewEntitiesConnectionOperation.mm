@@ -1,32 +1,32 @@
 @interface LNFetchViewEntitiesConnectionOperation
-- (LNFetchViewEntitiesConnectionOperation)initWithConnectionInterface:(id)a3 interactionIDs:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)finishWithError:(id)a3;
+- (LNFetchViewEntitiesConnectionOperation)initWithConnectionInterface:(id)interface interactionIDs:(id)ds queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNFetchViewEntitiesConnectionOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchViewEntitiesConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchViewEntitiesConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchViewEntitiesConnectionOperation *)self result];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    result = [(LNFetchViewEntitiesConnectionOperation *)self result];
+    v7 = [(LNConnectionOperation *)self validatingResult:result error:errorCopy];
 
-    v8 = [(LNFetchViewEntitiesConnectionOperation *)self completionHandler];
-    v9 = [(LNFetchViewEntitiesConnectionOperation *)self result];
-    (v8)[2](v8, v9, v7);
+    completionHandler2 = [(LNFetchViewEntitiesConnectionOperation *)self completionHandler];
+    result2 = [(LNFetchViewEntitiesConnectionOperation *)self result];
+    (completionHandler2)[2](completionHandler2, result2, v7);
 
     [(LNFetchViewEntitiesConnectionOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNFetchViewEntitiesConnectionOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -41,14 +41,14 @@
     _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "Fetching app view entities", buf, 2u);
   }
 
-  v4 = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
   interactionIDs = self->_interactionIDs;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__LNFetchViewEntitiesConnectionOperation_start__block_invoke;
   v6[3] = &unk_1E74B1F78;
   v6[4] = self;
-  [v4 fetchViewEntitiesWithInteractionIDs:interactionIDs completionHandler:v6];
+  [connectionInterface fetchViewEntitiesWithInteractionIDs:interactionIDs completionHandler:v6];
 }
 
 void __47__LNFetchViewEntitiesConnectionOperation_start__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -63,16 +63,16 @@ void __47__LNFetchViewEntitiesConnectionOperation_start__block_invoke(uint64_t a
   os_activity_scope_leave(&v8);
 }
 
-- (LNFetchViewEntitiesConnectionOperation)initWithConnectionInterface:(id)a3 interactionIDs:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (LNFetchViewEntitiesConnectionOperation)initWithConnectionInterface:(id)interface interactionIDs:(id)ds queue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v11)
+  interfaceCopy = interface;
+  dsCopy = ds;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (interfaceCopy)
   {
-    if (v14)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -80,8 +80,8 @@ void __47__LNFetchViewEntitiesConnectionOperation_start__block_invoke(uint64_t a
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"LNFetchViewEntitiesConnectionOperation.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchViewEntitiesConnectionOperation.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
     if (v15)
     {
@@ -89,18 +89,18 @@ void __47__LNFetchViewEntitiesConnectionOperation_start__block_invoke(uint64_t a
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNFetchViewEntitiesConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchViewEntitiesConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v16 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v24.receiver = self;
   v24.super_class = LNFetchViewEntitiesConnectionOperation;
-  v17 = [(LNInterfaceConnectionOperation *)&v24 initWithIdentifier:v16 connectionInterface:v11 priority:2 queue:v13 activity:&__block_literal_global_6544];
+  v17 = [(LNInterfaceConnectionOperation *)&v24 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:2 queue:queueCopy activity:&__block_literal_global_6544];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_interactionIDs, a4);
+    objc_storeStrong(&v17->_interactionIDs, ds);
     v18 = _Block_copy(v15);
     completionHandler = v17->_completionHandler;
     v17->_completionHandler = v18;

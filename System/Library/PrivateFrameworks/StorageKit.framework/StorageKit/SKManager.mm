@@ -1,55 +1,55 @@
 @interface SKManager
-+ (BOOL)isMountPointWithPath:(id)a3;
-+ (id)BSDNameFromString:(id)a3;
++ (BOOL)isMountPointWithPath:(id)path;
++ (id)BSDNameFromString:(id)string;
 + (id)initializedManager;
 + (id)sharedManager;
-+ (id)sharedManagerWithBindingsSafety:(BOOL)a3;
++ (id)sharedManagerWithBindingsSafety:(BOOL)safety;
 + (id)syncSharedManager;
 - (BOOL)isBusy;
 - (OS_dispatch_queue)callbackQueue;
-- (SKManager)initWithBindingSafety:(BOOL)a3;
-- (id)_diskForPath:(id)a3;
-- (id)_diskForString:(id)a3;
+- (SKManager)initWithBindingSafety:(BOOL)safety;
+- (id)_diskForPath:(id)path;
+- (id)_diskForString:(id)string;
 - (id)allDisks;
 - (id)allDisksSet;
-- (id)childDisksForWholeDisk:(id)a3;
-- (id)diskForBSDname:(id)a3;
-- (id)diskForPath:(id)a3;
-- (id)diskForString:(id)a3;
-- (id)diskForUUID:(id)a3;
-- (id)diskForVolumeName:(id)a3;
-- (id)filesystemWithSKType:(id)a3 isCaseSensitive:(BOOL)a4 isEncrypted:(BOOL)a5;
+- (id)childDisksForWholeDisk:(id)disk;
+- (id)diskForBSDname:(id)dname;
+- (id)diskForPath:(id)path;
+- (id)diskForString:(id)string;
+- (id)diskForUUID:(id)d;
+- (id)diskForVolumeName:(id)name;
+- (id)filesystemWithSKType:(id)type isCaseSensitive:(BOOL)sensitive isEncrypted:(BOOL)encrypted;
 - (id)filesystems;
 - (id)formatableFileSystems;
-- (id)knownDiskForDictionary:(id)a3;
-- (id)knownDiskForDictionary:(id)a3 waitingForDaemon:(BOOL)a4 fromSet:(id)a5;
-- (id)knownDisksForDictionaries:(id)a3;
-- (id)newDiskWithDictionary:(id)a3;
-- (id)physicalStoresForAPFSVolume:(id)a3;
+- (id)knownDiskForDictionary:(id)dictionary;
+- (id)knownDiskForDictionary:(id)dictionary waitingForDaemon:(BOOL)daemon fromSet:(id)set;
+- (id)knownDisksForDictionaries:(id)dictionaries;
+- (id)newDiskWithDictionary:(id)dictionary;
+- (id)physicalStoresForAPFSVolume:(id)volume;
 - (id)visibleDisks;
-- (id)volumesForAPFSPS:(id)a3;
-- (id)wholeDiskForDisk:(id)a3;
-- (void)_disksAppeared:(id)a3 toListener:(id)a4;
-- (void)_initialPopulateCompleteForListener:(id)a3;
-- (void)addListener:(id)a3;
-- (void)disksAppeared:(id)a3;
-- (void)disksChanged:(id)a3;
-- (void)disksDisappeared:(id)a3;
+- (id)volumesForAPFSPS:(id)s;
+- (id)wholeDiskForDisk:(id)disk;
+- (void)_disksAppeared:(id)appeared toListener:(id)listener;
+- (void)_initialPopulateCompleteForListener:(id)listener;
+- (void)addListener:(id)listener;
+- (void)disksAppeared:(id)appeared;
+- (void)disksChanged:(id)changed;
+- (void)disksDisappeared:(id)disappeared;
 - (void)initialPopulateComplete;
-- (void)knownDiskForDictionary:(id)a3 notify:(id)a4 onQueue:(id)a5;
+- (void)knownDiskForDictionary:(id)dictionary notify:(id)notify onQueue:(id)queue;
 - (void)managerResumed;
 - (void)managerStalled;
-- (void)removeListener:(id)a3;
-- (void)setCallbackQueue:(id)a3;
-- (void)setVisibleRoles:(id)a3;
+- (void)removeListener:(id)listener;
+- (void)setCallbackQueue:(id)queue;
+- (void)setVisibleRoles:(id)roles;
 - (void)syncAllDisks;
 @end
 
 @implementation SKManager
 
-+ (id)sharedManagerWithBindingsSafety:(BOOL)a3
++ (id)sharedManagerWithBindingsSafety:(BOOL)safety
 {
-  if (a3)
+  if (safety)
   {
     +[SKManager sharedManagerWithBindingsSafety:];
   }
@@ -76,7 +76,7 @@
   block[1] = 3221225472;
   block[2] = __26__SKManager_sharedManager__block_invoke_27;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once != -1)
   {
     dispatch_once(&sharedManager_once, block);
@@ -109,7 +109,7 @@ void __26__SKManager_sharedManager__block_invoke_27(uint64_t a1)
   sSharedManager = v1;
 }
 
-- (SKManager)initWithBindingSafety:(BOOL)a3
+- (SKManager)initWithBindingSafety:(BOOL)safety
 {
   v21.receiver = self;
   v21.super_class = SKManager;
@@ -117,7 +117,7 @@ void __26__SKManager_sharedManager__block_invoke_27(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    v4->_shouldBeBindingsSafe = a3;
+    v4->_shouldBeBindingsSafe = safety;
     v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:10];
     allDisks = v5->allDisks;
     v5->allDisks = v6;
@@ -126,9 +126,9 @@ void __26__SKManager_sharedManager__block_invoke_27(uint64_t a1)
     listenersAppearedDisks = v5->_listenersAppearedDisks;
     v5->_listenersAppearedDisks = v8;
 
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     listeners = v5->_listeners;
-    v5->_listeners = v10;
+    v5->_listeners = weakObjectsHashTable;
 
     v12 = objc_opt_new();
     waitingForDiskSet = v5->_waitingForDiskSet;
@@ -152,20 +152,20 @@ void __26__SKManager_sharedManager__block_invoke_27(uint64_t a1)
 
 + (id)syncSharedManager
 {
-  v2 = [a1 sharedManager];
-  [v2 syncAllDisks];
+  sharedManager = [self sharedManager];
+  [sharedManager syncAllDisks];
 
-  return v2;
+  return sharedManager;
 }
 
 + (id)initializedManager
 {
-  v2 = [a1 sharedManager];
+  sharedManager = [self sharedManager];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__SKManager_initializedManager__block_invoke;
   block[3] = &unk_279D1F5B0;
-  v3 = v2;
+  v3 = sharedManager;
   v6 = v3;
   if (initializedManager_once != -1)
   {
@@ -178,26 +178,26 @@ void __26__SKManager_sharedManager__block_invoke_27(uint64_t a1)
 - (OS_dispatch_queue)callbackQueue
 {
   v2 = +[SKHelperClient sharedClient];
-  v3 = [v2 callbackQueue];
+  callbackQueue = [v2 callbackQueue];
 
-  return v3;
+  return callbackQueue;
 }
 
-- (void)setCallbackQueue:(id)a3
+- (void)setCallbackQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = +[SKHelperClient sharedClient];
-  [v4 setCallbackQueue:v3];
+  [v4 setCallbackQueue:queueCopy];
 }
 
 - (id)allDisks
 {
   v3 = self->allDisks;
   objc_sync_enter(v3);
-  v4 = [(NSMutableSet *)self->allDisks allObjects];
+  allObjects = [(NSMutableSet *)self->allDisks allObjects];
   objc_sync_exit(v3);
 
-  return v4;
+  return allObjects;
 }
 
 - (id)allDisksSet
@@ -235,12 +235,12 @@ void __26__SKManager_sharedManager__block_invoke_27(uint64_t a1)
   [v2 syncAllDisks];
 }
 
-- (void)setVisibleRoles:(id)a3
+- (void)setVisibleRoles:(id)roles
 {
-  v7 = a3;
+  rolesCopy = roles;
   v4 = self->allDisks;
   objc_sync_enter(v4);
-  v5 = [v7 copy];
+  v5 = [rolesCopy copy];
   visibleRoles = self->_visibleRoles;
   self->_visibleRoles = v5;
 
@@ -272,8 +272,8 @@ void __26__SKManager_sharedManager__block_invoke_27(uint64_t a1)
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 role];
-        if ([(NSSet *)self->_visibleRoles containsObject:v10])
+        role = [v9 role];
+        if ([(NSSet *)self->_visibleRoles containsObject:role])
         {
           [v3 addObject:v9];
         }
@@ -291,11 +291,11 @@ void __26__SKManager_sharedManager__block_invoke_27(uint64_t a1)
   return v3;
 }
 
-- (id)diskForBSDname:(id)a3
+- (id)diskForBSDname:(id)dname
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dnameCopy = dname;
+  if (dnameCopy)
   {
     v5 = self->allDisks;
     objc_sync_enter(v5);
@@ -318,8 +318,8 @@ void __26__SKManager_sharedManager__block_invoke_27(uint64_t a1)
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 diskIdentifier];
-          v12 = [v11 isEqualToString:v4];
+          diskIdentifier = [v10 diskIdentifier];
+          v12 = [diskIdentifier isEqualToString:dnameCopy];
 
           if (v12)
           {
@@ -353,10 +353,10 @@ LABEL_12:
   return v7;
 }
 
-- (id)diskForUUID:(id)a3
+- (id)diskForUUID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   obj = self->allDisks;
   objc_sync_enter(obj);
   v17 = 0u;
@@ -378,8 +378,8 @@ LABEL_12:
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 volumeUUID];
-        if ([v10 isEqualToString:v4])
+        volumeUUID = [v9 volumeUUID];
+        if ([volumeUUID isEqualToString:dCopy])
         {
 
 LABEL_13:
@@ -387,8 +387,8 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v11 = [v9 mediaUUID];
-        v12 = [v11 isEqualToString:v4];
+        mediaUUID = [v9 mediaUUID];
+        v12 = [mediaUUID isEqualToString:dCopy];
 
         if (v12)
         {
@@ -420,10 +420,10 @@ LABEL_14:
   return v13;
 }
 
-- (id)diskForVolumeName:(id)a3
+- (id)diskForVolumeName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = self->allDisks;
   objc_sync_enter(v5);
   v16 = 0u;
@@ -445,8 +445,8 @@ LABEL_14:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 volumeName];
-        v12 = [v11 isEqualToString:v4];
+        volumeName = [v10 volumeName];
+        v12 = [volumeName isEqualToString:nameCopy];
 
         if (v12)
         {
@@ -474,14 +474,14 @@ LABEL_11:
   return v13;
 }
 
-+ (BOOL)isMountPointWithPath:(id)a3
++ (BOOL)isMountPointWithPath:(id)path
 {
   v7 = 0;
   v6 = 0;
   v5[1] = 0x400000000;
   v5[2] = 0;
   v5[0] = 0x800000005;
-  v3 = getattrlist([a3 fileSystemRepresentation], v5, &v6, 0xCuLL, 0);
+  v3 = getattrlist([path fileSystemRepresentation], v5, &v6, 0xCuLL, 0);
   result = 0;
   if (!v3)
   {
@@ -491,24 +491,24 @@ LABEL_11:
   return result;
 }
 
-+ (id)BSDNameFromString:(id)a3
++ (id)BSDNameFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"apfs://disk"])
+  stringCopy = string;
+  if ([stringCopy hasPrefix:@"apfs://disk"])
   {
-    v4 = v3;
+    v4 = stringCopy;
   }
 
   else
   {
     v5 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^(\\/dev\\/)?r?(disk\\d+(s\\d+){0 options:2})$" error:{1, 0}];
-    v6 = [v5 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v6 = [v5 matchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
     v7 = v6;
     if (v6 && [v6 count] == 1 && (objc_msgSend(v7, "objectAtIndexedSubscript:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "numberOfRanges"), v8, v9 >= 3))
     {
       v10 = [v7 objectAtIndexedSubscript:0];
       v11 = [v10 rangeAtIndex:2];
-      v4 = [v3 substringWithRange:{v11, v12}];
+      v4 = [stringCopy substringWithRange:{v11, v12}];
     }
 
     else
@@ -520,14 +520,14 @@ LABEL_11:
   return v4;
 }
 
-- (id)_diskForString:(id)a3
+- (id)_diskForString:(id)string
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   memset(uu, 0, sizeof(uu));
-  if ([v4 length] != 36 || uuid_parse(objc_msgSend(v4, "UTF8String"), uu) || (-[SKManager diskForUUID:](self, "diskForUUID:", v4), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ([stringCopy length] != 36 || uuid_parse(objc_msgSend(stringCopy, "UTF8String"), uu) || (-[SKManager diskForUUID:](self, "diskForUUID:", stringCopy), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [objc_opt_class() BSDNameFromString:v4];
+    v5 = [objc_opt_class() BSDNameFromString:stringCopy];
     if (v5)
     {
       v6 = [(SKManager *)self diskForBSDname:v5];
@@ -538,15 +538,15 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v8 = [(SKManager *)self _diskForPath:v4];
-    if (v8 && [SKManager isMountPointWithPath:v4])
+    v8 = [(SKManager *)self _diskForPath:stringCopy];
+    if (v8 && [SKManager isMountPointWithPath:stringCopy])
     {
       v9 = v8;
     }
 
     else
     {
-      v6 = [(SKManager *)self diskForVolumeName:v4];
+      v6 = [(SKManager *)self diskForVolumeName:stringCopy];
 
       if (!v6)
       {
@@ -570,11 +570,11 @@ LABEL_13:
   return v6;
 }
 
-- (id)diskForString:(id)a3
+- (id)diskForString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
     v6 = [(SKManager *)self _diskForString:v5];
     v7 = v6;
@@ -600,19 +600,19 @@ LABEL_13:
   return v9;
 }
 
-- (id)_diskForPath:(id)a3
+- (id)_diskForPath:(id)path
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v27 = 0u;
   memset(v28, 0, 432);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  if (([v4 isEqualToString:@"/"] & 1) == 0)
+  if (([pathCopy isEqualToString:@"/"] & 1) == 0)
   {
-    v5 = open([v4 fileSystemRepresentation], 2129920);
+    v5 = open([pathCopy fileSystemRepresentation], 2129920);
     if (v5 != -1)
     {
       v6 = v5;
@@ -620,7 +620,7 @@ LABEL_13:
       {
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:v28 + 8];
 
-        v4 = v7;
+        pathCopy = v7;
       }
 
       close(v6);
@@ -648,8 +648,8 @@ LABEL_13:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 mountPoint];
-        v15 = [v14 isEqualToString:v4];
+        mountPoint = [v13 mountPoint];
+        v15 = [mountPoint isEqualToString:pathCopy];
 
         if (v15)
         {
@@ -676,11 +676,11 @@ LABEL_16:
   return v10;
 }
 
-- (id)diskForPath:(id)a3
+- (id)diskForPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy && [pathCopy length])
   {
     v6 = [(SKManager *)self _diskForPath:v5];
     v7 = v6;
@@ -706,29 +706,29 @@ LABEL_16:
   return v9;
 }
 
-- (id)wholeDiskForDisk:(id)a3
+- (id)wholeDiskForDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
-  if ([v4 isWholeDisk])
+  if ([diskCopy isWholeDisk])
   {
-    v5 = v4;
+    v5 = diskCopy;
 LABEL_3:
     v6 = v5;
     goto LABEL_7;
   }
 
-  v7 = [v4 cachedWholeDiskByIdentifier];
-  if (!v7)
+  cachedWholeDiskByIdentifier = [diskCopy cachedWholeDiskByIdentifier];
+  if (!cachedWholeDiskByIdentifier)
   {
     [(SKManager *)self syncAllDisks];
-    v7 = [v4 cachedWholeDiskByIdentifier];
-    if (!v7)
+    cachedWholeDiskByIdentifier = [diskCopy cachedWholeDiskByIdentifier];
+    if (!cachedWholeDiskByIdentifier)
     {
       v9 = +[SKHelperClient sharedClient];
       v10[0] = MEMORY[0x277D85DD0];
@@ -736,14 +736,14 @@ LABEL_3:
       v10[2] = __30__SKManager_wholeDiskForDisk___block_invoke;
       v10[3] = &unk_279D1F600;
       v10[4] = &v11;
-      [v9 wholeDiskForDisk:v4 blocking:1 withCallbackBlock:v10];
+      [v9 wholeDiskForDisk:diskCopy blocking:1 withCallbackBlock:v10];
 
       v5 = v12[5];
       goto LABEL_3;
     }
   }
 
-  v6 = v7;
+  v6 = cachedWholeDiskByIdentifier;
 
 LABEL_7:
   _Block_object_dispose(&v11, 8);
@@ -751,19 +751,19 @@ LABEL_7:
   return v6;
 }
 
-- (id)childDisksForWholeDisk:(id)a3
+- (id)childDisksForWholeDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [v4 type];
-  v6 = [v5 isEqualToString:kSKDiskTypeRAID[0]];
+  type = [diskCopy type];
+  v6 = [type isEqualToString:kSKDiskTypeRAID[0]];
 
-  if ((v6 & 1) == 0 && (([v4 children], (v9 = objc_claimAutoreleasedReturnValue()) != 0) || (-[SKManager syncAllDisks](self, "syncAllDisks"), objc_msgSend(v4, "children"), (v9 = objc_claimAutoreleasedReturnValue()) != 0)))
+  if ((v6 & 1) == 0 && (([diskCopy children], (v9 = objc_claimAutoreleasedReturnValue()) != 0) || (-[SKManager syncAllDisks](self, "syncAllDisks"), objc_msgSend(diskCopy, "children"), (v9 = objc_claimAutoreleasedReturnValue()) != 0)))
   {
     v8 = v9;
   }
@@ -776,7 +776,7 @@ LABEL_7:
     v11[2] = __36__SKManager_childDisksForWholeDisk___block_invoke;
     v11[3] = &unk_279D1F628;
     v11[4] = &v12;
-    [v7 childDisksForWholeDisk:v4 blocking:1 withCallbackBlock:v11];
+    [v7 childDisksForWholeDisk:diskCopy blocking:1 withCallbackBlock:v11];
 
     v8 = v13[5];
   }
@@ -860,13 +860,13 @@ void __24__SKManager_filesystems__block_invoke(uint64_t a1)
 - (id)formatableFileSystems
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(SKManager *)self filesystems];
+  filesystems = [(SKManager *)self filesystems];
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = filesystems;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -899,12 +899,12 @@ void __24__SKManager_filesystems__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)filesystemWithSKType:(id)a3 isCaseSensitive:(BOOL)a4 isEncrypted:(BOOL)a5
+- (id)filesystemWithSKType:(id)type isCaseSensitive:(BOOL)sensitive isEncrypted:(BOOL)encrypted
 {
-  v5 = a5;
-  v6 = a4;
+  encryptedCopy = encrypted;
+  sensitiveCopy = sensitive;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  typeCopy = type;
   [(SKManager *)self filesystems];
   v20 = 0u;
   v21 = 0u;
@@ -925,12 +925,12 @@ void __24__SKManager_filesystems__block_invoke(uint64_t a1)
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 type];
-        if ([v15 isEqualToString:v8] && objc_msgSend(v14, "isCaseSensitive") == v6)
+        type = [v14 type];
+        if ([type isEqualToString:typeCopy] && objc_msgSend(v14, "isCaseSensitive") == sensitiveCopy)
         {
-          v16 = [v14 isEncrypted];
+          isEncrypted = [v14 isEncrypted];
 
-          if (v16 == v5)
+          if (isEncrypted == encryptedCopy)
           {
             v17 = v14;
             goto LABEL_14;
@@ -960,9 +960,9 @@ LABEL_14:
   return v17;
 }
 
-- (id)physicalStoresForAPFSVolume:(id)a3
+- (id)physicalStoresForAPFSVolume:(id)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -975,7 +975,7 @@ LABEL_14:
   v7[2] = __41__SKManager_physicalStoresForAPFSVolume___block_invoke;
   v7[3] = &unk_279D1F628;
   v7[4] = &v8;
-  [v4 physicalStoresForAPFSVolume:v3 blocking:1 completionBlock:v7];
+  [v4 physicalStoresForAPFSVolume:volumeCopy blocking:1 completionBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -983,9 +983,9 @@ LABEL_14:
   return v5;
 }
 
-- (id)volumesForAPFSPS:(id)a3
+- (id)volumesForAPFSPS:(id)s
 {
-  v3 = a3;
+  sCopy = s;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -998,7 +998,7 @@ LABEL_14:
   v7[2] = __30__SKManager_volumesForAPFSPS___block_invoke;
   v7[3] = &unk_279D1F628;
   v7[4] = &v8;
-  [v4 volumesForAPFSPS:v3 blocking:1 completionBlock:v7];
+  [v4 volumesForAPFSPS:sCopy blocking:1 completionBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1006,11 +1006,11 @@ LABEL_14:
   return v5;
 }
 
-- (id)knownDisksForDictionaries:(id)a3
+- (id)knownDisksForDictionaries:(id)dictionaries
 {
-  v4 = a3;
-  v5 = [(SKManager *)self allDisksSet];
-  v6 = [(SKManager *)self knownDisksForDictionaries:v4 waitingForDaemon:1 fromSet:v5];
+  dictionariesCopy = dictionaries;
+  allDisksSet = [(SKManager *)self allDisksSet];
+  v6 = [(SKManager *)self knownDisksForDictionaries:dictionariesCopy waitingForDaemon:1 fromSet:allDisksSet];
 
   return v6;
 }
@@ -1028,15 +1028,15 @@ id __64__SKManager_knownDisksForDictionaries_waitingForDaemon_fromSet___block_in
   return v1;
 }
 
-- (void)knownDiskForDictionary:(id)a3 notify:(id)a4 onQueue:(id)a5
+- (void)knownDiskForDictionary:(id)dictionary notify:(id)notify onQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dictionaryCopy = dictionary;
+  notifyCopy = notify;
+  queueCopy = queue;
+  if (dictionaryCopy)
   {
-    v11 = [(SKManager *)self allDisksSet];
-    v12 = [(SKManager *)self knownDiskForDictionary:v8 waitingForDaemon:0 fromSet:v11];
+    allDisksSet = [(SKManager *)self allDisksSet];
+    v12 = [(SKManager *)self knownDiskForDictionary:dictionaryCopy waitingForDaemon:0 fromSet:allDisksSet];
 
     if (v12)
     {
@@ -1044,10 +1044,10 @@ id __64__SKManager_knownDisksForDictionaries_waitingForDaemon_fromSet___block_in
       block[1] = 3221225472;
       block[2] = __51__SKManager_knownDiskForDictionary_notify_onQueue___block_invoke_2;
       block[3] = &unk_279D1F678;
-      v22 = v9;
+      v22 = notifyCopy;
       v12 = v12;
       v21 = v12;
-      dispatch_async(v10, block);
+      dispatch_async(queueCopy, block);
 
       v13 = v22;
     }
@@ -1061,9 +1061,9 @@ id __64__SKManager_knownDisksForDictionaries_waitingForDaemon_fromSet___block_in
       v16[2] = __51__SKManager_knownDiskForDictionary_notify_onQueue___block_invoke_3;
       v16[3] = &unk_279D1F6A0;
       v16[4] = self;
-      v17 = v8;
-      v19 = v9;
-      v18 = v10;
+      v17 = dictionaryCopy;
+      v19 = notifyCopy;
+      v18 = queueCopy;
       dispatch_after(v14, v15, v16);
 
       v13 = v17;
@@ -1076,28 +1076,28 @@ id __64__SKManager_knownDisksForDictionaries_waitingForDaemon_fromSet___block_in
     v23[1] = 3221225472;
     v23[2] = __51__SKManager_knownDiskForDictionary_notify_onQueue___block_invoke;
     v23[3] = &unk_279D1F650;
-    v24 = v9;
-    dispatch_async(v10, v23);
+    v24 = notifyCopy;
+    dispatch_async(queueCopy, v23);
     v12 = v24;
   }
 }
 
-- (id)knownDiskForDictionary:(id)a3
+- (id)knownDiskForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(SKManager *)self allDisksSet];
-  v6 = [(SKManager *)self knownDiskForDictionary:v4 waitingForDaemon:1 fromSet:v5];
+  dictionaryCopy = dictionary;
+  allDisksSet = [(SKManager *)self allDisksSet];
+  v6 = [(SKManager *)self knownDiskForDictionary:dictionaryCopy waitingForDaemon:1 fromSet:allDisksSet];
 
   return v6;
 }
 
-- (id)knownDiskForDictionary:(id)a3 waitingForDaemon:(BOOL)a4 fromSet:(id)a5
+- (id)knownDiskForDictionary:(id)dictionary waitingForDaemon:(BOOL)daemon fromSet:(id)set
 {
-  v6 = a4;
+  daemonCopy = daemon;
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v8 && ([MEMORY[0x277CBEB68] null], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "isEqual:", v10), v10, (v11 & 1) == 0))
+  dictionaryCopy = dictionary;
+  setCopy = set;
+  if (dictionaryCopy && ([MEMORY[0x277CBEB68] null], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(dictionaryCopy, "isEqual:", v10), v10, (v11 & 1) == 0))
   {
     v36 = 0;
     v37 = &v36;
@@ -1111,17 +1111,17 @@ id __64__SKManager_knownDisksForDictionaries_waitingForDaemon_fromSet___block_in
     v27 = 3221225472;
     v28 = __61__SKManager_knownDiskForDictionary_waitingForDaemon_fromSet___block_invoke;
     v29 = &unk_279D1F6F0;
-    v30 = v9;
-    v15 = v8;
+    v30 = setCopy;
+    v15 = dictionaryCopy;
     v31 = v15;
     v34 = &v36;
-    v35 = v6;
+    v35 = daemonCopy;
     v16 = v13;
     v32 = v16;
-    v33 = self;
+    selfCopy = self;
     dispatch_sync(waitingForDiskQueue, &v26);
     v17 = v37;
-    if (v6 && !v37[5])
+    if (daemonCopy && !v37[5])
     {
       dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
       v17 = v37;
@@ -1249,11 +1249,11 @@ id __61__SKManager_knownDiskForDictionary_waitingForDaemon_fromSet___block_invok
   return v1;
 }
 
-- (id)newDiskWithDictionary:(id)a3
+- (id)newDiskWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"type"];
-  v5 = [v3 objectForKey:@"**ClassName**"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"type"];
+  v5 = [dictionaryCopy objectForKey:@"**ClassName**"];
   if ([v4 isEqualToString:kSKDiskTypeAPFSPS[0]] && (objc_msgSend(v5, "isEqualToString:", @"SKAPFSStoreDisk") & 1) != 0)
   {
     v6 = off_279D1F1D0;
@@ -1284,36 +1284,36 @@ id __61__SKManager_knownDiskForDictionary_waitingForDaemon_fromSet___block_invok
     v6 = off_279D1F230;
   }
 
-  v7 = [objc_alloc(*v6) initWithDictionary:v3];
+  v7 = [objc_alloc(*v6) initWithDictionary:dictionaryCopy];
 
   return v7;
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   v5 = self->_listeners;
   objc_sync_enter(v5);
-  [(NSHashTable *)self->_listeners addObject:v4];
+  [(NSHashTable *)self->_listeners addObject:listenerCopy];
   listenersAppearedDisks = self->_listenersAppearedDisks;
   v7 = [MEMORY[0x277CBEB58] setWithCapacity:5];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "hash")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(listenerCopy, "hash")}];
   [(NSMutableDictionary *)listenersAppearedDisks setObject:v7 forKey:v8];
 
-  v9 = [(SKManager *)self allDisks];
-  v10 = [v9 count];
+  allDisks = [(SKManager *)self allDisks];
+  v10 = [allDisks count];
 
   if (v10)
   {
     v11 = +[SKHelperClient sharedClient];
-    v12 = [v11 xpcQueue];
+    xpcQueue = [v11 xpcQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __25__SKManager_addListener___block_invoke;
     block[3] = &unk_279D1F718;
     block[4] = self;
-    v18 = v4;
-    dispatch_async(v12, block);
+    v18 = listenerCopy;
+    dispatch_async(xpcQueue, block);
   }
 
   objc_sync_exit(v5);
@@ -1324,8 +1324,8 @@ id __61__SKManager_knownDiskForDictionary_waitingForDaemon_fromSet___block_invok
   v15[2] = __25__SKManager_addListener___block_invoke_2;
   v15[3] = &unk_279D1F718;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
+  v16 = listenerCopy;
+  v14 = listenerCopy;
   [v13 syncAllDisksWithCompletionBlock:v15];
 }
 
@@ -1336,14 +1336,14 @@ void __25__SKManager_addListener___block_invoke(uint64_t a1)
   [v2 _disksAppeared:v3 toListener:*(a1 + 40)];
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v7 = a3;
+  listenerCopy = listener;
   v4 = self->_listeners;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_listeners removeObject:v7];
+  [(NSHashTable *)self->_listeners removeObject:listenerCopy];
   listenersAppearedDisks = self->_listenersAppearedDisks;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "hash")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(listenerCopy, "hash")}];
   [(NSMutableDictionary *)listenersAppearedDisks removeObjectForKey:v6];
 
   objc_sync_exit(v4);
@@ -1387,17 +1387,17 @@ void __25__SKManager_addListener___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_initialPopulateCompleteForListener:(id)a3
+- (void)_initialPopulateCompleteForListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(SKManager *)self callbackQueue];
+  listenerCopy = listener;
+  callbackQueue = [(SKManager *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SKManager__initialPopulateCompleteForListener___block_invoke;
   block[3] = &unk_279D1F5B0;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = listenerCopy;
+  v6 = listenerCopy;
+  dispatch_async(callbackQueue, block);
 }
 
 uint64_t __49__SKManager__initialPopulateCompleteForListener___block_invoke(uint64_t a1)
@@ -1419,11 +1419,11 @@ uint64_t __49__SKManager__initialPopulateCompleteForListener___block_invoke(uint
   return result;
 }
 
-- (void)disksAppeared:(id)a3
+- (void)disksAppeared:(id)appeared
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  appearedCopy = appeared;
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(appearedCopy, "count")}];
   v6 = [MEMORY[0x277CBEB58] set];
   v36 = 0;
   v37 = &v36;
@@ -1433,7 +1433,7 @@ uint64_t __49__SKManager__initialPopulateCompleteForListener___block_invoke(uint
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v4;
+  v7 = appearedCopy;
   v8 = [v7 countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v8)
   {
@@ -1481,14 +1481,14 @@ uint64_t __49__SKManager__initialPopulateCompleteForListener___block_invoke(uint
   dispatch_sync(waitingForDiskQueue, block);
   if ([v6 count])
   {
-    v17 = [v6 allObjects];
-    [(SKManager *)self disksChanged:v17];
+    allObjects = [v6 allObjects];
+    [(SKManager *)self disksChanged:allObjects];
   }
 
   v18 = self->_listeners;
   objc_sync_enter(v18);
-  v19 = [v16 allObjects];
-  SKLogArrayRedacted(v37[24], "CLIENT - Disks appeared:", v19);
+  allObjects2 = [v16 allObjects];
+  SKLogArrayRedacted(v37[24], "CLIENT - Disks appeared:", allObjects2);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -1507,7 +1507,7 @@ uint64_t __49__SKManager__initialPopulateCompleteForListener___block_invoke(uint
           objc_enumerationMutation(v20);
         }
 
-        [(SKManager *)self _disksAppeared:v19 toListener:*(*(&v25 + 1) + 8 * j), v25];
+        [(SKManager *)self _disksAppeared:allObjects2 toListener:*(*(&v25 + 1) + 8 * j), v25];
       }
 
       v21 = [(NSHashTable *)v20 countByEnumeratingWithState:&v25 objects:v40 count:16];
@@ -1611,17 +1611,17 @@ void __27__SKManager_disksAppeared___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_disksAppeared:(id)a3 toListener:(id)a4
+- (void)_disksAppeared:(id)appeared toListener:(id)listener
 {
-  v6 = a3;
-  v7 = a4;
+  appearedCopy = appeared;
+  listenerCopy = listener;
   if (objc_opt_respondsToSelector())
   {
     listenersAppearedDisks = self->_listenersAppearedDisks;
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "hash")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(listenerCopy, "hash")}];
     v10 = [(NSMutableDictionary *)listenersAppearedDisks objectForKey:v9];
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 visibleDiskRoles], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([listenerCopy visibleDiskRoles], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
       v12 = MEMORY[0x277CCAC30];
       v20[0] = MEMORY[0x277D85DD0];
@@ -1629,14 +1629,14 @@ void __27__SKManager_disksAppeared___block_invoke(uint64_t a1)
       v20[2] = __39__SKManager__disksAppeared_toListener___block_invoke;
       v20[3] = &unk_279D1F768;
       v21 = v10;
-      v22 = v7;
+      v22 = listenerCopy;
       v13 = [v12 predicateWithBlock:v20];
-      v14 = [v6 filteredArrayUsingPredicate:v13];
+      v14 = [appearedCopy filteredArrayUsingPredicate:v13];
     }
 
     else
     {
-      v14 = v6;
+      v14 = appearedCopy;
     }
 
     v15 = [MEMORY[0x277CBEB98] setWithArray:v14];
@@ -1647,7 +1647,7 @@ void __27__SKManager_disksAppeared___block_invoke(uint64_t a1)
     v17[2] = __39__SKManager__disksAppeared_toListener___block_invoke_2;
     v17[3] = &unk_279D1F718;
     v18 = v14;
-    v19 = v7;
+    v19 = listenerCopy;
     v16 = v14;
     dispatch_async(MEMORY[0x277D85CD0], v17);
   }
@@ -1685,13 +1685,13 @@ uint64_t __39__SKManager__disksAppeared_toListener___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)disksDisappeared:(id)a3
+- (void)disksDisappeared:(id)disappeared
 {
   v56 = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v35 = self;
-  v32 = [(SKManager *)self allDisksSet];
-  v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v34, "count")}];
+  disappearedCopy = disappeared;
+  selfCopy = self;
+  allDisksSet = [(SKManager *)self allDisksSet];
+  v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(disappearedCopy, "count")}];
   obj = self->allDisks;
   objc_sync_enter(obj);
   v49 = 0u;
@@ -1717,7 +1717,7 @@ uint64_t __39__SKManager__disksAppeared_toListener___block_invoke_2(uint64_t a1)
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v10 = v34;
+        v10 = disappearedCopy;
         v11 = [v10 countByEnumeratingWithState:&v45 objects:v54 count:16];
         if (v11)
         {
@@ -1751,17 +1751,17 @@ uint64_t __39__SKManager__disksAppeared_toListener___block_invoke_2(uint64_t a1)
     while (v6);
   }
 
-  [(NSMutableSet *)v35->allDisks minusSet:v4];
+  [(NSMutableSet *)selfCopy->allDisks minusSet:v4];
   objc_sync_exit(obj);
 
-  obja = v35->_listeners;
+  obja = selfCopy->_listeners;
   objc_sync_enter(obja);
   SKLogArrayRedacted(OS_LOG_TYPE_DEFAULT, "CLIENT - Disks disappeared:", v4);
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v33 = v35->_listeners;
+  v33 = selfCopy->_listeners;
   v14 = [(NSHashTable *)v33 countByEnumeratingWithState:&v41 objects:v53 count:16];
   if (v14)
   {
@@ -1781,23 +1781,23 @@ uint64_t __39__SKManager__disksAppeared_toListener___block_invoke_2(uint64_t a1)
         {
           if ((objc_opt_respondsToSelector() & 1) == 0 || ([v17 visibleDiskRoles], v18 = objc_claimAutoreleasedReturnValue(), v19 = v18 == 0, v18, v19))
           {
-            v22 = [(SKManager *)v35 knownDisksForDictionaries:v34 waitingForDaemon:0 fromSet:v32, obja, v31];
+            v22 = [(SKManager *)selfCopy knownDisksForDictionaries:disappearedCopy waitingForDaemon:0 fromSet:allDisksSet, obja, v31];
           }
 
           else
           {
-            v20 = [v4 allObjects];
+            allObjects = [v4 allObjects];
             v39[0] = MEMORY[0x277D85DD0];
             v39[1] = 3221225472;
             v40[0] = __30__SKManager_disksDisappeared___block_invoke;
             v40[1] = &unk_279D1F768;
-            v40[2] = v35;
+            v40[2] = selfCopy;
             v40[3] = v17;
             v21 = [MEMORY[0x277CCAC30] predicateWithBlock:v39];
-            v22 = [v20 filteredArrayUsingPredicate:v21];
+            v22 = [allObjects filteredArrayUsingPredicate:v21];
           }
 
-          listenersAppearedDisks = v35->_listenersAppearedDisks;
+          listenersAppearedDisks = selfCopy->_listenersAppearedDisks;
           v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v17, "hash", obja)}];
           v25 = [(NSMutableDictionary *)listenersAppearedDisks objectForKey:v24];
 
@@ -1852,18 +1852,18 @@ uint64_t __30__SKManager_disksDisappeared___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)disksChanged:(id)a3
+- (void)disksChanged:(id)changed
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  changedCopy = changed;
+  v5 = [changedCopy mutableCopy];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __26__SKManager_disksChanged___block_invoke;
   aBlock[3] = &unk_279D1F718;
-  v45 = self;
+  selfCopy = self;
   aBlock[4] = self;
-  v36 = v4;
+  v36 = changedCopy;
   v68 = v36;
   block = _Block_copy(aBlock);
   if (self->_shouldBeBindingsSafe)
@@ -1902,7 +1902,7 @@ uint64_t __30__SKManager_disksDisappeared___block_invoke_2(uint64_t a1)
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v10 = v45->allDisks;
+        v10 = selfCopy->allDisks;
         v11 = [(NSMutableSet *)v10 countByEnumeratingWithState:&v59 objects:v70 count:16];
         if (v11)
         {
@@ -1947,18 +1947,18 @@ LABEL_19:
   objc_sync_exit(v38);
   if ([v41 count])
   {
-    [(SKManager *)v45 disksAppeared:v41];
+    [(SKManager *)selfCopy disksAppeared:v41];
     [obj removeObjectsInArray:v41];
   }
 
-  v14 = [(SKManager *)v45 knownDisksForDictionaries:obj waitingForDaemon:0];
-  v39 = v45->_listeners;
+  v14 = [(SKManager *)selfCopy knownDisksForDictionaries:obj waitingForDaemon:0];
+  v39 = selfCopy->_listeners;
   objc_sync_enter(v39);
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v42 = v45->_listeners;
+  v42 = selfCopy->_listeners;
   v15 = [(NSHashTable *)v42 countByEnumeratingWithState:&v55 objects:v69 count:16];
   if (v15)
   {
@@ -2004,7 +2004,7 @@ LABEL_19:
           v23 = [MEMORY[0x277CCAC30] predicateWithBlock:v53];
           v44 = [v14 filteredArrayUsingPredicate:v23];
 
-          listenersAppearedDisks = v45->_listenersAppearedDisks;
+          listenersAppearedDisks = selfCopy->_listenersAppearedDisks;
           v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v18, "hash")}];
           v26 = [(NSMutableDictionary *)listenersAppearedDisks objectForKey:v25];
 

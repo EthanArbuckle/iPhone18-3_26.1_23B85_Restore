@@ -1,43 +1,43 @@
 @interface NSPCoreData
-+ (BOOL)triggerProactiveTokenFetch:(id)a3 lowerTokenCountThreshold:(unint64_t)a4;
++ (BOOL)triggerProactiveTokenFetch:(id)fetch lowerTokenCountThreshold:(unint64_t)threshold;
 + (id)NSPEventsCacheGet;
-+ (id)NSPEventsCacheUpdate:(id)a3;
++ (id)NSPEventsCacheUpdate:(id)update;
 + (id)childCoreDataContext;
-+ (id)compareModelVersion:(id)a3 model2:(id)a4;
-+ (id)computeStats:(id)a3;
++ (id)compareModelVersion:(id)version model2:(id)model2;
++ (id)computeStats:(id)stats;
 + (id)fetchEvents;
-+ (id)fetchEvents:(id)a3 mostRecent:(BOOL)a4 limit:(unint64_t)a5;
-+ (id)fetchLatestEvents:(unint64_t)a3 vendors:(id)a4;
++ (id)fetchEvents:(id)events mostRecent:(BOOL)recent limit:(unint64_t)limit;
++ (id)fetchLatestEvents:(unint64_t)events vendors:(id)vendors;
 + (id)getMinMaxDate;
-+ (id)getModelVersion:(id)a3;
-+ (id)getNSPEventStatsForSingleWindow:(id)a3 eventType:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 windowStartTime:(id)a7 windowDuration:(id)a8;
++ (id)getModelVersion:(id)version;
++ (id)getNSPEventStatsForSingleWindow:(id)window eventType:(int64_t)type startDate:(id)date endDate:(id)endDate windowStartTime:(id)time windowDuration:(id)duration;
 + (id)getNSPEventsDenormalizer;
 + (id)getNSPEventsNormalizer;
 + (id)getNSPEventsPredictor;
-+ (id)getNSPEventsProbability:(id)a3 count:(int64_t)a4;
-+ (id)getNSPTokenStatsForSingleWindow:(id)a3 startDate:(id)a4 endDate:(id)a5 windowStartTime:(id)a6 windowDuration:(id)a7 statsCategory:(int64_t)a8;
++ (id)getNSPEventsProbability:(id)probability count:(int64_t)count;
++ (id)getNSPTokenStatsForSingleWindow:(id)window startDate:(id)date endDate:(id)endDate windowStartTime:(id)time windowDuration:(id)duration statsCategory:(int64_t)category;
 + (id)getProactiveTokenFetchConfiguration;
-+ (id)getTokenCountStatsForMultipleWindows:(id)a3 minDate:(id)a4 maxDate:(id)a5 windowDuration:(id)a6;
++ (id)getTokenCountStatsForMultipleWindows:(id)windows minDate:(id)date maxDate:(id)maxDate windowDuration:(id)duration;
 + (id)getVendorDictionary;
-+ (id)getVendorIdFromDictionary:(id)a3;
-+ (id)getVendorNameById:(int64_t)a3;
++ (id)getVendorIdFromDictionary:(id)dictionary;
++ (id)getVendorNameById:(int64_t)id;
 + (id)initNSPEventsModelPredictor;
-+ (id)normalizeData:(id)a3;
-+ (id)prepareInputForPrediction:(id)a3 vendor:(id)a4;
++ (id)normalizeData:(id)data;
++ (id)prepareInputForPrediction:(id)prediction vendor:(id)vendor;
 + (id)prepareInputForTraining;
-+ (id)prepareMLData:(id)a3 startAt:(unsigned int)a4 dataShape:(id)a5;
-+ (id)prepareTokenEventsFromPrediction:(id)a3;
++ (id)prepareMLData:(id)data startAt:(unsigned int)at dataShape:(id)shape;
++ (id)prepareTokenEventsFromPrediction:(id)prediction;
 + (id)sharedCoreDataContext;
-+ (id)tokenTypeEnumToString:(int)a3;
-+ (id)updateProactiveTokenFetchConfiguration:(id)a3 statsDuration:(id)a4 lowerTokenCountThreshold:(id)a5 lowerTokenCountProbability:(id)a6 upperLWMCountThreshold:(id)a7 upperLWMCountProbabilityOffset:(id)a8;
-+ (id)updateVendorDictionaryFromModel:(id)a3;
-+ (void)handleNSPEventsPredictions:(id)a3;
-+ (void)predictNSPEvent:(id)a3;
-+ (void)prepareModelInputWithFeatures:(id)a3 keyedSubscripts:(id)a4 features:(id)a5;
-+ (void)printMLMultiArray:(id)a3;
-+ (void)purgeEventsOlderThanDate:(id)a3;
-+ (void)purgeEventsOlderThanDays:(int64_t)a3;
-+ (void)saveTokenEvent:(id)a3 eventType:(int)a4 vendor:(id)a5 tokenCount:(unint64_t)a6;
++ (id)tokenTypeEnumToString:(int)string;
++ (id)updateProactiveTokenFetchConfiguration:(id)configuration statsDuration:(id)duration lowerTokenCountThreshold:(id)threshold lowerTokenCountProbability:(id)probability upperLWMCountThreshold:(id)countThreshold upperLWMCountProbabilityOffset:(id)offset;
++ (id)updateVendorDictionaryFromModel:(id)model;
++ (void)handleNSPEventsPredictions:(id)predictions;
++ (void)predictNSPEvent:(id)event;
++ (void)prepareModelInputWithFeatures:(id)features keyedSubscripts:(id)subscripts features:(id)a5;
++ (void)printMLMultiArray:(id)array;
++ (void)purgeEventsOlderThanDate:(id)date;
++ (void)purgeEventsOlderThanDays:(int64_t)days;
++ (void)saveTokenEvent:(id)event eventType:(int)type vendor:(id)vendor tokenCount:(unint64_t)count;
 - (NSPCoreData)init;
 @end
 
@@ -52,8 +52,8 @@
 
   if (qword_100129810)
   {
-    v2 = [qword_100129810 persistentContainer];
-    v3 = [v2 viewContext];
+    persistentContainer = [qword_100129810 persistentContainer];
+    viewContext = [persistentContainer viewContext];
   }
 
   else
@@ -66,10 +66,10 @@
       _os_log_fault_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "%s called with null coreData", &v6, 0xCu);
     }
 
-    v3 = 0;
+    viewContext = 0;
   }
 
-  return v3;
+  return viewContext;
 }
 
 + (id)childCoreDataContext
@@ -166,12 +166,12 @@ LABEL_10:
         v9 = [[NSPPersistentContainer alloc] initWithName:@"NSPCoreDataModel" managedObjectModel:v8];
         [(NSPCoreData *)v2 setPersistentContainer:v9];
 
-        v10 = [(NSPCoreData *)v2 persistentContainer];
+        persistentContainer = [(NSPCoreData *)v2 persistentContainer];
 
-        if (v10)
+        if (persistentContainer)
         {
-          v11 = [(NSPCoreData *)v2 persistentContainer];
-          [v11 loadPersistentStoresWithCompletionHandler:&stru_10010A650];
+          persistentContainer2 = [(NSPCoreData *)v2 persistentContainer];
+          [persistentContainer2 loadPersistentStoresWithCompletionHandler:&stru_10010A650];
 
           v12 = v2;
 LABEL_9:
@@ -306,27 +306,27 @@ LABEL_19:
   return v13;
 }
 
-+ (id)updateProactiveTokenFetchConfiguration:(id)a3 statsDuration:(id)a4 lowerTokenCountThreshold:(id)a5 lowerTokenCountProbability:(id)a6 upperLWMCountThreshold:(id)a7 upperLWMCountProbabilityOffset:(id)a8
++ (id)updateProactiveTokenFetchConfiguration:(id)configuration statsDuration:(id)duration lowerTokenCountThreshold:(id)threshold lowerTokenCountProbability:(id)probability upperLWMCountThreshold:(id)countThreshold upperLWMCountProbabilityOffset:(id)offset
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  configurationCopy = configuration;
+  durationCopy = duration;
+  thresholdCopy = threshold;
+  probabilityCopy = probability;
+  countThresholdCopy = countThreshold;
+  offsetCopy = offset;
   v19 = +[NSPCoreData getProactiveTokenFetchConfiguration];
   v20 = v19;
   if (v19)
   {
-    if (v13)
+    if (configurationCopy)
     {
-      [v19 setObject:v13 forKey:@"NSPEventsKeyProactiveTokenFetchEnabled"];
+      [v19 setObject:configurationCopy forKey:@"NSPEventsKeyProactiveTokenFetchEnabled"];
       v21 = nplog_obj();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v22 = [v13 BOOLValue];
+        bOOLValue = [configurationCopy BOOLValue];
         v23 = "NO";
-        if (v22)
+        if (bOOLValue)
         {
           v23 = "YES";
         }
@@ -354,62 +354,62 @@ LABEL_9:
       }
     }
 
-    if (v14)
+    if (durationCopy)
     {
-      [v20 setObject:v14 forKey:@"NSPEventsKeyStatsDuration"];
+      [v20 setObject:durationCopy forKey:@"NSPEventsKeyStatsDuration"];
       v27 = nplog_obj();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         v35 = 138412290;
-        v36 = v14;
+        v36 = durationCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "updated NSPEventsKeyStatsDuration %@", &v35, 0xCu);
       }
     }
 
-    if (v15)
+    if (thresholdCopy)
     {
-      [v20 setObject:v15 forKey:@"NSPEventsKeyLowerTokenCountThreshold"];
+      [v20 setObject:thresholdCopy forKey:@"NSPEventsKeyLowerTokenCountThreshold"];
       v28 = nplog_obj();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         v35 = 138412290;
-        v36 = v15;
+        v36 = thresholdCopy;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "updated NSPEventsKeyLowerTokenCountThreshold %@", &v35, 0xCu);
       }
     }
 
-    if (v16)
+    if (probabilityCopy)
     {
-      [v20 setObject:v16 forKey:@"NSPEventsKeyLowerTokenCountProbability"];
+      [v20 setObject:probabilityCopy forKey:@"NSPEventsKeyLowerTokenCountProbability"];
       v29 = nplog_obj();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         v35 = 138412290;
-        v36 = v16;
+        v36 = probabilityCopy;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "updated NSPEventsKeyLowerTokenCountProbability %@", &v35, 0xCu);
       }
     }
 
-    if (v17)
+    if (countThresholdCopy)
     {
-      [v20 setObject:v17 forKey:@"NSPEventsKeyUpperLWMCountThreshold"];
+      [v20 setObject:countThresholdCopy forKey:@"NSPEventsKeyUpperLWMCountThreshold"];
       v30 = nplog_obj();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         v35 = 138412290;
-        v36 = v17;
+        v36 = countThresholdCopy;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "updated NSPEventsKeyUpperLWMCountThreshold %@", &v35, 0xCu);
       }
     }
 
-    if (v18)
+    if (offsetCopy)
     {
-      [v20 setObject:v18 forKey:@"NSPEventsKeyUpperLWMCountProbabilityOffset"];
+      [v20 setObject:offsetCopy forKey:@"NSPEventsKeyUpperLWMCountProbabilityOffset"];
       v31 = nplog_obj();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
         v35 = 138412290;
-        v36 = v18;
+        v36 = offsetCopy;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "updated NSPEventsKeyUpperLWMCountProbabilityOffset %@", &v35, 0xCu);
       }
     }
@@ -431,9 +431,9 @@ LABEL_31:
   return v20;
 }
 
-+ (BOOL)triggerProactiveTokenFetch:(id)a3 lowerTokenCountThreshold:(unint64_t)a4
++ (BOOL)triggerProactiveTokenFetch:(id)fetch lowerTokenCountThreshold:(unint64_t)threshold
 {
-  v5 = COERCE_DOUBLE(a3);
+  v5 = COERCE_DOUBLE(fetch);
   v6 = +[NSPCoreData getProactiveTokenFetchConfiguration];
   v7 = v6;
   if (v6)
@@ -595,12 +595,12 @@ LABEL_31:
                     {
                       v38 = COERCE_DOUBLE([v36 integerValue]);
                       v39 = v13;
-                      v40 = [v12 integerValue];
+                      integerValue = [v12 integerValue];
                       [v87 doubleValue];
                       *buf = 134218754;
                       v99 = v38;
                       v100 = 2048;
-                      v101 = *&v40;
+                      v101 = *&integerValue;
                       v13 = v39;
                       v102 = 2112;
                       v103 = v5;
@@ -704,18 +704,18 @@ LABEL_30:
                         v58 = *(*(&v93 + 1) + 8 * i);
                         if (v58)
                         {
-                          v59 = [NSPCoreData getNSPEventsProbability:*(*(&v93 + 1) + 8 * i) count:a4];
+                          v59 = [NSPCoreData getNSPEventsProbability:*(*(&v93 + 1) + 8 * i) count:threshold];
                           if (v59)
                           {
                             v60 = nplog_obj();
                             if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
                             {
-                              v61 = [v88 integerValue];
+                              integerValue2 = [v88 integerValue];
                               [v59 doubleValue];
                               *buf = 134218754;
-                              v99 = *&a4;
+                              v99 = *&threshold;
                               v100 = 2048;
-                              v101 = *&v61;
+                              v101 = *&integerValue2;
                               v5 = v91;
                               v102 = 2112;
                               v103 = v91;
@@ -905,10 +905,10 @@ LABEL_73:
   return v43;
 }
 
-+ (id)getNSPEventsProbability:(id)a3 count:(int64_t)a4
++ (id)getNSPEventsProbability:(id)probability count:(int64_t)count
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"mean"];
+  probabilityCopy = probability;
+  v6 = [probabilityCopy objectForKey:@"mean"];
   if (!v6)
   {
     v8 = nplog_obj();
@@ -922,7 +922,7 @@ LABEL_73:
     goto LABEL_7;
   }
 
-  v7 = [v5 objectForKey:@"stdDev"];
+  v7 = [probabilityCopy objectForKey:@"stdDev"];
   if (!v7)
   {
     v16 = nplog_obj();
@@ -954,7 +954,7 @@ LABEL_7:
   }
 
   [v6 doubleValue];
-  v13 = a4 - v12;
+  v13 = count - v12;
   [v8 doubleValue];
   v11 = [NSNumber numberWithDouble:((erf(v13 / v14 / 1.41421356) + 1.0) * 0.5)];
 LABEL_9:
@@ -1001,11 +1001,11 @@ LABEL_9:
   return v4;
 }
 
-+ (id)computeStats:(id)a3
++ (id)computeStats:(id)stats
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  statsCopy = stats;
+  v4 = statsCopy;
+  if (!statsCopy)
   {
     v6 = nplog_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -1018,7 +1018,7 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  v5 = [v3 count];
+  v5 = [statsCopy count];
   if (v5 <= 4)
   {
     v6 = nplog_obj();
@@ -1098,13 +1098,13 @@ LABEL_18:
   return v7;
 }
 
-+ (id)getNSPEventStatsForSingleWindow:(id)a3 eventType:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 windowStartTime:(id)a7 windowDuration:(id)a8
++ (id)getNSPEventStatsForSingleWindow:(id)window eventType:(int64_t)type startDate:(id)date endDate:(id)endDate windowStartTime:(id)time windowDuration:(id)duration
 {
-  v27 = a3;
-  v13 = a5;
-  v14 = a6;
-  v28 = a7;
-  v15 = a8;
+  windowCopy = window;
+  dateCopy = date;
+  endDateCopy = endDate;
+  timeCopy = time;
+  durationCopy = duration;
   v16 = +[NSPCoreData sharedCoreDataContext];
   if (!v16)
   {
@@ -1118,7 +1118,7 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  if (!v13)
+  if (!dateCopy)
   {
     v17 = nplog_obj();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -1135,7 +1135,7 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  if (!v14)
+  if (!endDateCopy)
   {
     v17 = nplog_obj();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -1154,7 +1154,7 @@ LABEL_12:
   {
     v18 = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     [v17 setTimeZone:v18];
-    v19 = [v17 components:16 fromDate:v13 toDate:v14 options:0];
+    v19 = [v17 components:16 fromDate:dateCopy toDate:endDateCopy options:0];
     v20 = v19;
     if (v19)
     {
@@ -1175,14 +1175,14 @@ LABEL_12:
         v30[1] = 3221225472;
         v30[2] = sub_100077E18;
         v30[3] = &unk_10010A678;
-        v31 = v13;
+        v31 = dateCopy;
         v38 = &v41;
         v32 = v17;
         v33 = v20;
-        v34 = v28;
-        v35 = v15;
-        v36 = v27;
-        v40 = a4;
+        v34 = timeCopy;
+        v35 = durationCopy;
+        v36 = windowCopy;
+        typeCopy = type;
         v37 = v16;
         v39 = buf;
         [v37 performBlockAndWait:v30];
@@ -1212,9 +1212,9 @@ LABEL_12:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          *&buf[4] = v13;
+          *&buf[4] = dateCopy;
           *&buf[12] = 2112;
-          *&buf[14] = v14;
+          *&buf[14] = endDateCopy;
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Invalid dates. startDate:%@ endDate:%@", buf, 0x16u);
         }
 
@@ -1256,14 +1256,14 @@ LABEL_22:
   return v22;
 }
 
-+ (id)getNSPTokenStatsForSingleWindow:(id)a3 startDate:(id)a4 endDate:(id)a5 windowStartTime:(id)a6 windowDuration:(id)a7 statsCategory:(int64_t)a8
++ (id)getNSPTokenStatsForSingleWindow:(id)window startDate:(id)date endDate:(id)endDate windowStartTime:(id)time windowDuration:(id)duration statsCategory:(int64_t)category
 {
-  v8 = a8;
-  v33 = a3;
-  v13 = a4;
-  v14 = a5;
-  v35 = a6;
-  v34 = a7;
+  categoryCopy = category;
+  windowCopy = window;
+  dateCopy = date;
+  endDateCopy = endDate;
+  timeCopy = time;
+  durationCopy = duration;
   v15 = +[NSPCoreData sharedCoreDataContext];
   if (v15)
   {
@@ -1271,9 +1271,9 @@ LABEL_22:
     v17 = v16;
     if (v16)
     {
-      if (v13)
+      if (dateCopy)
       {
-        if (v14)
+        if (endDateCopy)
         {
           [v16 setPropertiesToFetch:&off_100113CC0];
           [v17 setResultType:2];
@@ -1282,7 +1282,7 @@ LABEL_22:
           {
             oslog = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
             [v18 setTimeZone:oslog];
-            v19 = [v18 components:16 fromDate:v13 toDate:v14 options:0];
+            v19 = [v18 components:16 fromDate:dateCopy toDate:endDateCopy options:0];
             v20 = v19;
             if (v19)
             {
@@ -1293,7 +1293,7 @@ LABEL_22:
               if (v63[3] < 0x1F)
               {
                 [v20 setDay:1];
-                v23 = [v35 weekday];
+                weekday = [timeCopy weekday];
                 *buf = 0;
                 *&buf[8] = buf;
                 *&buf[16] = 0x3032000000;
@@ -1316,22 +1316,22 @@ LABEL_22:
                 v36[1] = 3221225472;
                 v36[2] = sub_100078AA8;
                 v36[3] = &unk_10010A6A0;
-                v37 = v13;
+                v37 = dateCopy;
                 v45 = &v62;
                 v38 = v18;
                 v39 = v20;
-                v40 = v35;
-                v41 = v34;
-                v42 = v33;
+                v40 = timeCopy;
+                v41 = durationCopy;
+                v42 = windowCopy;
                 v43 = v17;
                 v44 = v15;
                 v46 = &v56;
                 v48 = &v50;
-                v49 = v23;
+                v49 = weekday;
                 v47 = buf;
                 [v44 performBlockAndWait:v36];
                 v22 = +[NSMutableArray array];
-                if (v8)
+                if (categoryCopy)
                 {
                   v24 = +[NSMutableArray array];
                   [v24 addObjectsFromArray:*(*&buf[8] + 40)];
@@ -1343,7 +1343,7 @@ LABEL_22:
                   }
                 }
 
-                if ((v8 & 2) != 0)
+                if ((categoryCopy & 2) != 0)
                 {
                   v26 = [NSPCoreData computeStats:*(*&buf[8] + 40)];
                   if (v26)
@@ -1352,7 +1352,7 @@ LABEL_22:
                   }
                 }
 
-                if ((v8 & 4) != 0)
+                if ((categoryCopy & 4) != 0)
                 {
                   v27 = [NSPCoreData computeStats:v57[5]];
                   if (v27)
@@ -1361,7 +1361,7 @@ LABEL_22:
                   }
                 }
 
-                if ((v8 & 8) != 0)
+                if ((categoryCopy & 8) != 0)
                 {
                   v28 = [NSPCoreData computeStats:v51[5]];
                   if (v28)
@@ -1382,9 +1382,9 @@ LABEL_22:
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412546;
-                  *&buf[4] = v13;
+                  *&buf[4] = dateCopy;
                   *&buf[12] = 2112;
-                  *&buf[14] = v14;
+                  *&buf[14] = endDateCopy;
                   _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Invalid dates. startDate: %@  endDate: %@", buf, 0x16u);
                 }
 
@@ -1483,12 +1483,12 @@ LABEL_35:
   return v22;
 }
 
-+ (id)getTokenCountStatsForMultipleWindows:(id)a3 minDate:(id)a4 maxDate:(id)a5 windowDuration:(id)a6
++ (id)getTokenCountStatsForMultipleWindows:(id)windows minDate:(id)date maxDate:(id)maxDate windowDuration:(id)duration
 {
-  v34 = a3;
-  v33 = a4;
-  v32 = a5;
-  v9 = a6;
+  windowsCopy = windows;
+  dateCopy = date;
+  maxDateCopy = maxDate;
+  durationCopy = duration;
   v10 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   if (v10)
   {
@@ -1506,7 +1506,7 @@ LABEL_35:
       v14 = [v10 dateFromComponents:v13];
 
       v15 = [v14 dateByAddingTimeInterval:86400.0];
-      [v9 doubleValue];
+      [durationCopy doubleValue];
       v17 = v16;
       v18 = +[NSMutableArray array];
       v19 = nplog_obj();
@@ -1533,7 +1533,7 @@ LABEL_35:
         do
         {
           v25 = [v10 components:96 fromDate:v14];
-          v26 = [NSPCoreData getNSPTokenStatsForSingleWindow:v34 startDate:v33 endDate:v32 windowStartTime:v25 windowDuration:v9 statsCategory:1];
+          v26 = [NSPCoreData getNSPTokenStatsForSingleWindow:windowsCopy startDate:dateCopy endDate:maxDateCopy windowStartTime:v25 windowDuration:durationCopy statsCategory:1];
           v27 = v26;
           if (v26 && [v26 count])
           {
@@ -1592,10 +1592,10 @@ LABEL_35:
   return v18;
 }
 
-+ (void)saveTokenEvent:(id)a3 eventType:(int)a4 vendor:(id)a5 tokenCount:(unint64_t)a6
++ (void)saveTokenEvent:(id)event eventType:(int)type vendor:(id)vendor tokenCount:(unint64_t)count
 {
-  v9 = a3;
-  v10 = a5;
+  eventCopy = event;
+  vendorCopy = vendor;
   v11 = +[NSPCoreData sharedCoreDataContext];
   v12 = v11;
   if (v11)
@@ -1605,10 +1605,10 @@ LABEL_35:
     v14[2] = sub_10007955C;
     v14[3] = &unk_10010A6C8;
     v15 = v11;
-    v16 = v9;
-    v19 = a4;
-    v17 = v10;
-    v18 = a6;
+    v16 = eventCopy;
+    typeCopy = type;
+    v17 = vendorCopy;
+    countCopy = count;
     [v15 performBlockAndWait:v14];
 
     v13 = v15;
@@ -1625,9 +1625,9 @@ LABEL_35:
   }
 }
 
-+ (void)purgeEventsOlderThanDate:(id)a3
++ (void)purgeEventsOlderThanDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSPCoreData sharedCoreDataContext];
   if (v4)
   {
@@ -1635,7 +1635,7 @@ LABEL_35:
     v6[1] = 3221225472;
     v6[2] = sub_1000798F0;
     v6[3] = &unk_1001098C0;
-    v7 = v3;
+    v7 = dateCopy;
     v8 = v4;
     [v8 performBlockAndWait:v6];
 
@@ -1653,11 +1653,11 @@ LABEL_35:
   }
 }
 
-+ (void)purgeEventsOlderThanDays:(int64_t)a3
++ (void)purgeEventsOlderThanDays:(int64_t)days
 {
   v4 = +[NSCalendar currentCalendar];
   v5 = +[NSDate date];
-  v6 = [v4 dateByAddingUnit:16 value:-a3 toDate:v5 options:0];
+  v6 = [v4 dateByAddingUnit:16 value:-days toDate:v5 options:0];
 
   [NSPCoreData purgeEventsOlderThanDate:v6];
 }
@@ -1716,14 +1716,14 @@ LABEL_35:
   return v2;
 }
 
-+ (id)NSPEventsCacheUpdate:(id)a3
++ (id)NSPEventsCacheUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   v4 = +[NSPCoreData NSPEventsCacheGet];
   if (v4)
   {
-    v5 = [v3 vendor];
-    v6 = [NSPCoreData getVendorIdFromDictionary:v5];
+    vendor = [updateCopy vendor];
+    v6 = [NSPCoreData getVendorIdFromDictionary:vendor];
 
     if (v6)
     {
@@ -1732,7 +1732,7 @@ LABEL_35:
         [v4 removeObjectAtIndex:0];
       }
 
-      [v4 addObject:v3];
+      [v4 addObject:updateCopy];
       v6 = v4;
     }
   }
@@ -1753,14 +1753,14 @@ LABEL_35:
   return v6;
 }
 
-+ (id)fetchLatestEvents:(unint64_t)a3 vendors:(id)a4
++ (id)fetchLatestEvents:(unint64_t)events vendors:(id)vendors
 {
-  v5 = a4;
+  vendorsCopy = vendors;
   v6 = +[NSPCoreData sharedCoreDataContext];
   if (v6)
   {
     v7 = +[NSPCoreData NSPEventsCacheGet];
-    if ([v7 count]>= a3)
+    if ([v7 count]>= events)
     {
       v9 = nplog_obj();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -1785,8 +1785,8 @@ LABEL_35:
       v11[1] = 3221225472;
       v11[2] = sub_10007A4CC;
       v11[3] = &unk_10010A718;
-      v15 = a3;
-      v12 = v5;
+      eventsCopy = events;
+      v12 = vendorsCopy;
       v14 = buf;
       v13 = v6;
       [v13 performBlockAndWait:v11];
@@ -1811,9 +1811,9 @@ LABEL_35:
   return v8;
 }
 
-+ (id)fetchEvents:(id)a3 mostRecent:(BOOL)a4 limit:(unint64_t)a5
++ (id)fetchEvents:(id)events mostRecent:(BOOL)recent limit:(unint64_t)limit
 {
-  v7 = a3;
+  eventsCopy = events;
   v8 = +[NSPCoreData sharedCoreDataContext];
   if (v8)
   {
@@ -1827,10 +1827,10 @@ LABEL_35:
     v12[1] = 3221225472;
     v12[2] = sub_10007AD24;
     v12[3] = &unk_10010A740;
-    v17 = a4;
+    recentCopy = recent;
     v15 = buf;
-    v16 = a5;
-    v13 = v7;
+    limitCopy = limit;
+    v13 = eventsCopy;
     v14 = v8;
     [v14 performBlockAndWait:v12];
     v9 = *(v19 + 5);
@@ -1859,25 +1859,25 @@ LABEL_35:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 model];
-    v5 = [v4 modelDescription];
-    v6 = [v5 inputDescriptionsByName];
-    v7 = [v6 objectForKeyedSubscript:@"normalizer_input"];
+    model = [v2 model];
+    modelDescription = [model modelDescription];
+    inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+    v7 = [inputDescriptionsByName objectForKeyedSubscript:@"normalizer_input"];
 
     v8 = nplog_obj();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [v7 multiArrayConstraint];
-      v25 = [v24 shape];
+      multiArrayConstraint = [v7 multiArrayConstraint];
+      shape = [multiArrayConstraint shape];
       v29 = 138412290;
-      v30 = v25;
+      v30 = shape;
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "input shape %@", &v29, 0xCu);
     }
 
-    v9 = [v7 multiArrayConstraint];
-    v10 = [v9 shape];
+    multiArrayConstraint2 = [v7 multiArrayConstraint];
+    shape2 = [multiArrayConstraint2 shape];
 
-    if (!v10)
+    if (!shape2)
     {
       v12 = nplog_obj();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -1907,31 +1907,31 @@ LABEL_35:
       goto LABEL_12;
     }
 
-    v13 = [v11 model];
-    v14 = [v13 modelDescription];
-    v15 = [v14 inputDescriptionsByName];
-    v16 = [v15 objectForKeyedSubscript:@"denormalizer_input"];
+    model2 = [v11 model];
+    modelDescription2 = [model2 modelDescription];
+    inputDescriptionsByName2 = [modelDescription2 inputDescriptionsByName];
+    v16 = [inputDescriptionsByName2 objectForKeyedSubscript:@"denormalizer_input"];
 
     v17 = nplog_obj();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [v16 multiArrayConstraint];
-      v27 = [v26 shape];
+      multiArrayConstraint3 = [v16 multiArrayConstraint];
+      shape3 = [multiArrayConstraint3 shape];
       v29 = 138412290;
-      v30 = v27;
+      v30 = shape3;
       _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "target shape %@", &v29, 0xCu);
     }
 
-    v18 = [v16 multiArrayConstraint];
-    v19 = [v18 shape];
+    multiArrayConstraint4 = [v16 multiArrayConstraint];
+    shape4 = [multiArrayConstraint4 shape];
 
-    if (v19)
+    if (shape4)
     {
       v20 = +[NSPCoreData fetchEvents];
       if (v20)
       {
         v21 = v20;
-        v22 = [[NSPEventsPredictorTrainingBatchProvider alloc] init:v20 inputShape:v10 targetShape:v19];
+        v22 = [[NSPEventsPredictorTrainingBatchProvider alloc] init:v20 inputShape:shape2 targetShape:shape4];
 LABEL_11:
 
 LABEL_12:
@@ -1980,13 +1980,13 @@ LABEL_14:
   return v22;
 }
 
-+ (id)getModelVersion:(id)a3
++ (id)getModelVersion:(id)version
 {
-  if (a3)
+  if (version)
   {
-    v3 = [a3 modelDescription];
-    v4 = [v3 metadata];
-    v5 = [v4 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+    modelDescription = [version modelDescription];
+    metadata = [modelDescription metadata];
+    v5 = [metadata objectForKeyedSubscript:MLModelCreatorDefinedKey];
 
     if (!v5)
     {
@@ -2067,11 +2067,11 @@ LABEL_10:
   return v13;
 }
 
-+ (id)compareModelVersion:(id)a3 model2:(id)a4
++ (id)compareModelVersion:(id)version model2:(id)model2
 {
-  v5 = a4;
-  v6 = [NSPCoreData getModelVersion:a3];
-  v7 = [NSPCoreData getModelVersion:v5];
+  model2Copy = model2;
+  v6 = [NSPCoreData getModelVersion:version];
+  v7 = [NSPCoreData getModelVersion:model2Copy];
   v8 = v7;
   if (v6)
   {
@@ -2178,9 +2178,9 @@ LABEL_22:
 
   v22 = [NSNumber alloc];
   v23 = [v6 objectAtIndex:v15];
-  v24 = [v23 intValue];
+  intValue = [v23 intValue];
   v25 = [v8 objectAtIndex:v15];
-  v21 = [v22 initWithInt:{v24 - objc_msgSend(v25, "intValue")}];
+  v21 = [v22 initWithInt:{intValue - objc_msgSend(v25, "intValue")}];
 
 LABEL_28:
 
@@ -2202,11 +2202,11 @@ LABEL_28:
   return v2;
 }
 
-+ (id)updateVendorDictionaryFromModel:(id)a3
++ (id)updateVendorDictionaryFromModel:(id)model
 {
-  v3 = [a3 modelDescription];
-  v4 = [v3 metadata];
-  v5 = [v4 objectForKeyedSubscript:MLModelCreatorDefinedKey];
+  modelDescription = [model modelDescription];
+  metadata = [modelDescription metadata];
+  v5 = [metadata objectForKeyedSubscript:MLModelCreatorDefinedKey];
 
   if (!v5)
   {
@@ -2291,14 +2291,14 @@ LABEL_15:
   return v9;
 }
 
-+ (id)getVendorIdFromDictionary:(id)a3
++ (id)getVendorIdFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[NSPCoreData getVendorDictionary];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 objectForKey:v3];
+    v6 = [v4 objectForKey:dictionaryCopy];
   }
 
   else
@@ -2317,7 +2317,7 @@ LABEL_15:
   return v6;
 }
 
-+ (id)getVendorNameById:(int64_t)a3
++ (id)getVendorNameById:(int64_t)id
 {
   v4 = +[NSPCoreData getVendorDictionary];
   v5 = v4;
@@ -2344,9 +2344,9 @@ LABEL_15:
 
           v11 = *(*(&v16 + 1) + 8 * i);
           v12 = [v6 objectForKey:v11, v16];
-          v13 = [v12 longValue];
+          longValue = [v12 longValue];
 
-          if (v13 == a3)
+          if (longValue == id)
           {
             v14 = v11;
             goto LABEL_14;
@@ -2367,7 +2367,7 @@ LABEL_15:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v22 = a3;
+      idCopy = id;
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Vendor id %lu not found", buf, 0xCu);
     }
   }
@@ -2378,7 +2378,7 @@ LABEL_15:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
-      v22 = "+[NSPCoreData getVendorNameById:]";
+      idCopy = "+[NSPCoreData getVendorNameById:]";
       _os_log_fault_impl(&_mh_execute_header, v6, OS_LOG_TYPE_FAULT, "%s called with null dictionary", buf, 0xCu);
     }
   }
@@ -2446,9 +2446,9 @@ LABEL_14:
       goto LABEL_50;
     }
 
-    v9 = [v7 firstObject];
-    v45 = v9;
-    if (!v9)
+    firstObject = [v7 firstObject];
+    v45 = firstObject;
+    if (!firstObject)
     {
       v10 = nplog_obj();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -2464,7 +2464,7 @@ LABEL_14:
     }
 
     v44 = v8;
-    v10 = [NSString stringWithFormat:@"%@/networkserviceproxy/%@", v9, @"NSPEventsPredictor.mlmodelc"];
+    v10 = [NSString stringWithFormat:@"%@/networkserviceproxy/%@", firstObject, @"NSPEventsPredictor.mlmodelc"];
     if (!v10)
     {
       v12 = nplog_obj();
@@ -2484,12 +2484,12 @@ LABEL_14:
     v12 = v11;
     if (!v11)
     {
-      v13 = nplog_obj();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+      path = nplog_obj();
+      if (os_log_type_enabled(path, OS_LOG_TYPE_FAULT))
       {
         *buf = 136315138;
         v53 = "+[NSPCoreData initNSPEventsModelPredictor]";
-        _os_log_fault_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "%s called with null dstURL", buf, 0xCu);
+        _os_log_fault_impl(&_mh_execute_header, path, OS_LOG_TYPE_FAULT, "%s called with null dstURL", buf, 0xCu);
       }
 
       v19 = 0;
@@ -2498,14 +2498,14 @@ LABEL_14:
     }
 
     v43 = v4;
-    v13 = [v11 path];
+    path = [v11 path];
     v14 = +[NSFileManager defaultManager];
     v15 = v14;
     if (v14)
     {
-      if (![v14 fileExistsAtPath:v13])
+      if (![v14 fileExistsAtPath:path])
       {
-        v42 = v13;
+        v42 = path;
         v25 = 0;
         goto LABEL_16;
       }
@@ -2536,10 +2536,10 @@ LABEL_14:
 
       if (v18)
       {
-        v42 = v13;
-        v20 = [(NSPEventsPredictor *)v16 model];
-        v21 = [(NSPEventsPredictor *)v18 model];
-        v22 = [NSPCoreData compareModelVersion:v20 model2:v21];
+        v42 = path;
+        model = [(NSPEventsPredictor *)v16 model];
+        model2 = [(NSPEventsPredictor *)v18 model];
+        v22 = [NSPCoreData compareModelVersion:model model2:model2];
 
         if (v22)
         {
@@ -2575,8 +2575,8 @@ LABEL_16:
 
               if (v16)
               {
-                v29 = [(NSPEventsPredictor *)v16 model];
-                v30 = [NSPCoreData updateVendorDictionaryFromModel:v29];
+                model3 = [(NSPEventsPredictor *)v16 model];
+                v30 = [NSPCoreData updateVendorDictionaryFromModel:model3];
 
                 if (!v30)
                 {
@@ -2591,8 +2591,8 @@ LABEL_16:
                 v32 = nplog_obj();
                 if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
                 {
-                  v33 = [(NSPEventsPredictor *)v16 model];
-                  v34 = [NSPCoreData getModelVersion:v33];
+                  model4 = [(NSPEventsPredictor *)v16 model];
+                  v34 = [NSPCoreData getModelVersion:model4];
                   *buf = 138412546;
                   v53 = v12;
                   v54 = 2112;
@@ -2665,7 +2665,7 @@ LABEL_16:
 
         v36 = 0;
 LABEL_45:
-        v13 = v42;
+        path = v42;
         goto LABEL_46;
       }
 
@@ -2885,67 +2885,67 @@ LABEL_10:
   return v2;
 }
 
-+ (void)printMLMultiArray:(id)a3
++ (void)printMLMultiArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v37 = [v3 shape];
+    shape = [arrayCopy shape];
     *buf = 138412546;
-    *v43 = v3;
+    *v43 = arrayCopy;
     *&v43[8] = 2112;
-    v44 = v37;
+    v44 = shape;
     _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "mlmultiarray shape %@ %@", buf, 0x16u);
   }
 
-  v5 = [v3 shape];
-  v6 = [v5 count];
+  shape2 = [arrayCopy shape];
+  v6 = [shape2 count];
 
   if (v6 >= 3)
   {
-    v7 = [v3 shape];
-    v8 = [v7 objectAtIndexedSubscript:0];
-    v9 = [v8 intValue];
+    shape3 = [arrayCopy shape];
+    v8 = [shape3 objectAtIndexedSubscript:0];
+    intValue = [v8 intValue];
 
-    if (v9 >= 1)
+    if (intValue >= 1)
     {
       v39 = 0;
       *&v10 = 67109890;
       v38 = v10;
       do
       {
-        v11 = [v3 shape];
-        v12 = [v11 objectAtIndexedSubscript:1];
-        v13 = [v12 intValue];
+        shape4 = [arrayCopy shape];
+        v12 = [shape4 objectAtIndexedSubscript:1];
+        intValue2 = [v12 intValue];
 
-        if (v13 >= 1)
+        if (intValue2 >= 1)
         {
-          for (i = 0; i < v33; ++i)
+          for (i = 0; i < intValue8; ++i)
           {
-            v14 = [v3 shape];
-            v15 = [v14 objectAtIndexedSubscript:2];
-            v16 = [v15 intValue];
+            shape5 = [arrayCopy shape];
+            v15 = [shape5 objectAtIndexedSubscript:2];
+            intValue3 = [v15 intValue];
 
-            if (v16 >= 1)
+            if (intValue3 >= 1)
             {
               v17 = 0;
               do
               {
-                v18 = [v3 strides];
-                v19 = [v18 objectAtIndexedSubscript:0];
-                v41 = [v19 intValue];
-                v20 = [v3 strides];
-                v21 = [v20 objectAtIndexedSubscript:1];
-                v22 = [v21 intValue];
-                v23 = [v3 strides];
-                v24 = [v23 objectAtIndexedSubscript:2];
-                v25 = [v24 intValue];
+                strides = [arrayCopy strides];
+                v19 = [strides objectAtIndexedSubscript:0];
+                intValue4 = [v19 intValue];
+                strides2 = [arrayCopy strides];
+                v21 = [strides2 objectAtIndexedSubscript:1];
+                intValue5 = [v21 intValue];
+                strides3 = [arrayCopy strides];
+                v24 = [strides3 objectAtIndexedSubscript:2];
+                intValue6 = [v24 intValue];
 
                 v26 = nplog_obj();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
                 {
-                  v30 = [v3 objectAtIndexedSubscript:(v41 * v39 + v22 * i + v25 * v17)];
+                  v30 = [arrayCopy objectAtIndexedSubscript:(intValue4 * v39 + intValue5 * i + intValue6 * v17)];
                   *buf = v38;
                   *v43 = v39;
                   *&v43[4] = 1024;
@@ -2958,58 +2958,58 @@ LABEL_10:
                 }
 
                 ++v17;
-                v27 = [v3 shape];
-                v28 = [v27 objectAtIndexedSubscript:2];
-                v29 = [v28 intValue];
+                shape6 = [arrayCopy shape];
+                v28 = [shape6 objectAtIndexedSubscript:2];
+                intValue7 = [v28 intValue];
               }
 
-              while (v17 < v29);
+              while (v17 < intValue7);
             }
 
-            v31 = [v3 shape];
-            v32 = [v31 objectAtIndexedSubscript:1];
-            v33 = [v32 intValue];
+            shape7 = [arrayCopy shape];
+            v32 = [shape7 objectAtIndexedSubscript:1];
+            intValue8 = [v32 intValue];
           }
         }
 
-        v34 = [v3 shape];
-        v35 = [v34 objectAtIndexedSubscript:0];
-        v36 = [v35 intValue];
+        shape8 = [arrayCopy shape];
+        v35 = [shape8 objectAtIndexedSubscript:0];
+        intValue9 = [v35 intValue];
 
         ++v39;
       }
 
-      while (v39 < v36);
+      while (v39 < intValue9);
     }
   }
 }
 
-+ (id)normalizeData:(id)a3
++ (id)normalizeData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[NSPCoreData getNSPEventsNormalizer];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 model];
-    v7 = [v6 modelDescription];
-    v8 = [v7 inputDescriptionsByName];
-    v9 = [v8 objectForKeyedSubscript:@"normalizer_input"];
+    model = [v4 model];
+    modelDescription = [model modelDescription];
+    inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+    v9 = [inputDescriptionsByName objectForKeyedSubscript:@"normalizer_input"];
 
     v10 = nplog_obj();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v85 = [v9 multiArrayConstraint];
-      v86 = [v85 shape];
+      multiArrayConstraint = [v9 multiArrayConstraint];
+      shape = [multiArrayConstraint shape];
       *buf = 138412290;
-      v98 = v86;
+      v98 = shape;
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "normalizer model shape %@", buf, 0xCu);
     }
 
-    v11 = [v9 multiArrayConstraint];
-    v12 = [v11 shape];
+    multiArrayConstraint2 = [v9 multiArrayConstraint];
+    shape2 = [multiArrayConstraint2 shape];
 
-    if (!v12)
+    if (!shape2)
     {
       v27 = nplog_obj();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
@@ -3022,16 +3022,16 @@ LABEL_10:
       goto LABEL_39;
     }
 
-    v13 = [v3 shape];
+    shape3 = [dataCopy shape];
 
-    if (v12 == v13)
+    if (shape2 == shape3)
     {
       v94 = 0;
-      v81 = [v5 predictionFromNormalizer_input:v3 error:&v94];
+      v81 = [v5 predictionFromNormalizer_input:dataCopy error:&v94];
       v27 = v94;
       if (v81)
       {
-        v80 = [v81 Identity];
+        identity = [v81 Identity];
       }
 
       else
@@ -3044,20 +3044,20 @@ LABEL_10:
           _os_log_error_impl(&_mh_execute_header, v82, OS_LOG_TYPE_ERROR, "Failed to normalize the input. error:%@", buf, 0xCu);
         }
 
-        v80 = 0;
+        identity = 0;
       }
 
       goto LABEL_40;
     }
 
-    v14 = [v3 shape];
-    v15 = [v14 count];
-    v16 = [v12 count];
+    shape4 = [dataCopy shape];
+    v15 = [shape4 count];
+    v16 = [shape2 count];
 
     if (v15 == v16)
     {
-      v17 = [v3 shape];
-      v18 = [v17 count];
+      shape5 = [dataCopy shape];
+      v18 = [shape5 count];
 
       if (v18)
       {
@@ -3065,9 +3065,9 @@ LABEL_10:
         v20 = 1;
         while (1)
         {
-          v21 = [v3 shape];
-          v22 = [v21 objectAtIndexedSubscript:v19];
-          v23 = [v12 objectAtIndexedSubscript:v19];
+          shape6 = [dataCopy shape];
+          v22 = [shape6 objectAtIndexedSubscript:v19];
+          v23 = [shape2 objectAtIndexedSubscript:v19];
 
           if (v22 > v23)
           {
@@ -3075,8 +3075,8 @@ LABEL_10:
           }
 
           v19 = v20;
-          v24 = [v3 shape];
-          v25 = [v24 count];
+          shape7 = [dataCopy shape];
+          v25 = [shape7 count];
 
           if (v25 <= v20++)
           {
@@ -3094,7 +3094,7 @@ LABEL_10:
       }
 
 LABEL_11:
-      v27 = [[MLMultiArray alloc] initWithShape:v12 dataType:65568 error:0];
+      v27 = [[MLMultiArray alloc] initWithShape:shape2 dataType:65568 error:0];
       if (!v27)
       {
         v53 = nplog_obj();
@@ -3105,23 +3105,23 @@ LABEL_11:
           _os_log_fault_impl(&_mh_execute_header, v53, OS_LOG_TYPE_FAULT, "%s called with null reshapedInput", buf, 0xCu);
         }
 
-        v80 = 0;
+        identity = 0;
         goto LABEL_48;
       }
 
-      v28 = [v3 shape];
-      v29 = [v28 count];
+      shape8 = [dataCopy shape];
+      v29 = [shape8 count];
 
       if (v29 >= 3)
       {
         v91 = v5;
         v92 = v27;
         v90 = v9;
-        v30 = [v3 shape];
-        v31 = [v30 objectAtIndexedSubscript:1];
-        v32 = [v31 unsignedIntValue];
+        shape9 = [dataCopy shape];
+        v31 = [shape9 objectAtIndexedSubscript:1];
+        unsignedIntValue = [v31 unsignedIntValue];
 
-        if (v32)
+        if (unsignedIntValue)
         {
           v33 = 0;
           do
@@ -3135,8 +3135,8 @@ LABEL_11:
             v37 = [NSArray arrayWithObjects:v96 count:3];
             v38 = [NSMutableArray arrayWithArray:v37];
 
-            v39 = [v3 shape];
-            v40 = [v39 objectAtIndexedSubscript:2];
+            shape10 = [dataCopy shape];
+            v40 = [shape10 objectAtIndexedSubscript:2];
             LODWORD(v35) = [v40 unsignedIntValue];
 
             if (v35)
@@ -3148,25 +3148,25 @@ LABEL_11:
                 v43 = [NSNumber numberWithUnsignedInt:v41];
                 [v38 replaceObjectAtIndex:v42 withObject:v43];
 
-                v44 = [v3 objectForKeyedSubscript:v38];
+                v44 = [dataCopy objectForKeyedSubscript:v38];
                 [v92 setObject:v44 forKeyedSubscript:v38];
 
                 v41 = (v41 + 1);
-                v45 = [v3 shape];
-                v46 = [v45 objectAtIndexedSubscript:2];
-                v47 = [v46 unsignedIntValue];
+                shape11 = [dataCopy shape];
+                v46 = [shape11 objectAtIndexedSubscript:2];
+                unsignedIntValue2 = [v46 unsignedIntValue];
               }
 
-              while (v41 < v47);
+              while (v41 < unsignedIntValue2);
             }
 
             v33 = (v33 + 1);
-            v48 = [v3 shape];
-            v49 = [v48 objectAtIndexedSubscript:1];
-            v50 = [v49 unsignedIntValue];
+            shape12 = [dataCopy shape];
+            v49 = [shape12 objectAtIndexedSubscript:1];
+            unsignedIntValue3 = [v49 unsignedIntValue];
           }
 
-          while (v33 < v50);
+          while (v33 < unsignedIntValue3);
         }
 
         v93 = 0;
@@ -3178,18 +3178,18 @@ LABEL_11:
         if (v51)
         {
           v88 = v52;
-          v89 = v12;
+          v89 = shape2;
           v54 = [MLMultiArray alloc];
-          v55 = [v3 shape];
-          v56 = [v54 initWithShape:v55 dataType:65568 error:0];
+          shape13 = [dataCopy shape];
+          v56 = [v54 initWithShape:shape13 dataType:65568 error:0];
 
           if (v56)
           {
-            v57 = [v3 shape];
-            v58 = [v57 objectAtIndexedSubscript:1];
-            v59 = [v58 unsignedIntValue];
+            shape14 = [dataCopy shape];
+            v58 = [shape14 objectAtIndexedSubscript:1];
+            unsignedIntValue4 = [v58 unsignedIntValue];
 
-            if (v59)
+            if (unsignedIntValue4)
             {
               v60 = 0;
               do
@@ -3203,8 +3203,8 @@ LABEL_11:
                 v64 = [NSArray arrayWithObjects:v95 count:3];
                 v65 = [NSMutableArray arrayWithArray:v64];
 
-                v66 = [v3 shape];
-                v67 = [v66 objectAtIndexedSubscript:2];
+                shape15 = [dataCopy shape];
+                v67 = [shape15 objectAtIndexedSubscript:2];
                 LODWORD(v63) = [v67 unsignedIntValue];
 
                 if (v63)
@@ -3216,30 +3216,30 @@ LABEL_11:
                     v70 = [NSNumber numberWithUnsignedInt:v68];
                     [v65 replaceObjectAtIndex:v69 withObject:v70];
 
-                    v71 = [v51 Identity];
-                    v72 = [v71 objectForKeyedSubscript:v65];
+                    identity2 = [v51 Identity];
+                    v72 = [identity2 objectForKeyedSubscript:v65];
                     [v56 setObject:v72 forKeyedSubscript:v65];
 
                     v68 = (v68 + 1);
-                    v73 = [v3 shape];
-                    v74 = [v73 objectAtIndexedSubscript:2];
-                    v75 = [v74 unsignedIntValue];
+                    shape16 = [dataCopy shape];
+                    v74 = [shape16 objectAtIndexedSubscript:2];
+                    unsignedIntValue5 = [v74 unsignedIntValue];
                   }
 
-                  while (v68 < v75);
+                  while (v68 < unsignedIntValue5);
                 }
 
                 v60 = (v60 + 1);
-                v76 = [v3 shape];
-                v77 = [v76 objectAtIndexedSubscript:1];
-                v78 = [v77 unsignedIntValue];
+                shape17 = [dataCopy shape];
+                v77 = [shape17 objectAtIndexedSubscript:1];
+                unsignedIntValue6 = [v77 unsignedIntValue];
               }
 
-              while (v60 < v78);
+              while (v60 < unsignedIntValue6);
             }
 
             v79 = v56;
-            v80 = v79;
+            identity = v79;
           }
 
           else
@@ -3253,13 +3253,13 @@ LABEL_11:
             }
 
             v79 = 0;
-            v80 = 0;
+            identity = 0;
           }
 
           v9 = v90;
           v5 = v91;
           v53 = v88;
-          v12 = v89;
+          shape2 = v89;
           v27 = v92;
         }
 
@@ -3273,7 +3273,7 @@ LABEL_11:
             _os_log_error_impl(&_mh_execute_header, v79, OS_LOG_TYPE_ERROR, "Failed to normalize the input. error:%@", buf, 0xCu);
           }
 
-          v80 = 0;
+          identity = 0;
           v9 = v90;
         }
 
@@ -3288,17 +3288,17 @@ LABEL_48:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
 LABEL_38:
-        v83 = [v3 shape];
+        shape18 = [dataCopy shape];
         *buf = 138412546;
-        v98 = v83;
+        v98 = shape18;
         v99 = 2112;
-        v100 = v12;
+        v100 = shape2;
         _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Incompatiable shape (%@ vs %@)", buf, 0x16u);
       }
     }
 
 LABEL_39:
-    v80 = 0;
+    identity = 0;
 LABEL_40:
 
     goto LABEL_41;
@@ -3312,17 +3312,17 @@ LABEL_40:
     _os_log_fault_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "%s called with null normalizer", buf, 0xCu);
   }
 
-  v80 = 0;
+  identity = 0;
 LABEL_41:
 
-  return v80;
+  return identity;
 }
 
-+ (id)prepareMLData:(id)a3 startAt:(unsigned int)a4 dataShape:(id)a5
++ (id)prepareMLData:(id)data startAt:(unsigned int)at dataShape:(id)shape
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [[MLMultiArray alloc] initWithShape:v8 dataType:65568 error:0];
+  dataCopy = data;
+  shapeCopy = shape;
+  v9 = [[MLMultiArray alloc] initWithShape:shapeCopy dataType:65568 error:0];
   if (!v9)
   {
     v51 = nplog_obj();
@@ -3336,33 +3336,33 @@ LABEL_41:
     goto LABEL_17;
   }
 
-  v10 = [v8 objectAtIndexedSubscript:1];
-  v11 = [v10 unsignedIntValue];
+  v10 = [shapeCopy objectAtIndexedSubscript:1];
+  unsignedIntValue = [v10 unsignedIntValue];
 
-  if ([v7 count] <= v11)
+  if ([dataCopy count] <= unsignedIntValue)
   {
 LABEL_17:
     v50 = 0;
     goto LABEL_18;
   }
 
-  v54 = v8;
-  v13 = a4 + 1;
+  v54 = shapeCopy;
+  v13 = at + 1;
   v56 = v9;
-  v57 = v11 + v13;
+  v57 = unsignedIntValue + v13;
   if (v13 < v57)
   {
     v14 = 0;
     *&v12 = 138412290;
     v53 = v12;
     v15 = NEPolicySession_ptr;
-    v55 = v7;
+    v55 = dataCopy;
     do
     {
       v64 = v14;
-      v16 = [v7 objectAtIndexedSubscript:{v13 - 1, v53}];
+      v16 = [dataCopy objectAtIndexedSubscript:{v13 - 1, v53}];
       v63 = v13;
-      v17 = [v7 objectAtIndexedSubscript:v13];
+      v17 = [dataCopy objectAtIndexedSubscript:v13];
       v18 = nplog_obj();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
@@ -3371,36 +3371,36 @@ LABEL_17:
         _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Preparing input from NSPEvent :%@", buf, 0xCu);
       }
 
-      v19 = [v17 date];
-      v20 = [v15[71] currentCalendar];
-      v61 = [v20 component:32 fromDate:v19];
+      date = [v17 date];
+      currentCalendar = [v15[71] currentCalendar];
+      v61 = [currentCalendar component:32 fromDate:date];
 
-      v21 = [v15[71] currentCalendar];
-      v60 = [v21 component:64 fromDate:v19];
+      currentCalendar2 = [v15[71] currentCalendar];
+      v60 = [currentCalendar2 component:64 fromDate:date];
 
-      v22 = [v15[71] currentCalendar];
-      v23 = [v22 component:128 fromDate:v19];
+      currentCalendar3 = [v15[71] currentCalendar];
+      v23 = [currentCalendar3 component:128 fromDate:date];
 
-      v24 = [v17 date];
-      [v24 timeIntervalSinceReferenceDate];
+      date2 = [v17 date];
+      [date2 timeIntervalSinceReferenceDate];
       v26 = v25;
-      v27 = [v16 date];
-      [v27 timeIntervalSinceReferenceDate];
+      date3 = [v16 date];
+      [date3 timeIntervalSinceReferenceDate];
       v29 = v28;
 
-      v30 = [v17 vendor];
-      v31 = [NSPCoreData getVendorIdFromDictionary:v30];
+      vendor = [v17 vendor];
+      v31 = [NSPCoreData getVendorIdFromDictionary:vendor];
       if (v31)
       {
         *&v32 = ([v17 eventType] + 1);
         v58 = [NSNumber numberWithFloat:v32];
-        v59 = v30;
+        v59 = vendor;
         v66[0] = v58;
         *&v33 = [v17 tokenCount];
         v34 = [NSNumber numberWithFloat:v33];
         v66[1] = v34;
-        v35 = [v15[71] currentCalendar];
-        *&v36 = [v35 component:512 fromDate:v19];
+        currentCalendar4 = [v15[71] currentCalendar];
+        *&v36 = [currentCalendar4 component:512 fromDate:date];
         v37 = [NSNumber numberWithFloat:v36];
         v66[2] = v37;
         *&v38 = (v23 + 3600 * v61 + 60 * v60);
@@ -3423,11 +3423,11 @@ LABEL_17:
         v65[1] = v47;
         v48 = [NSArray arrayWithObjects:v65 count:2];
 
-        v30 = v59;
+        vendor = v59;
         v49 = v62;
         [NSPCoreData prepareModelInputWithFeatures:v56 keyedSubscripts:v48 features:v44];
 
-        v7 = v55;
+        dataCopy = v55;
       }
 
       else
@@ -3437,7 +3437,7 @@ LABEL_17:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
         {
           *buf = v53;
-          v68 = v30;
+          v68 = vendor;
           _os_log_error_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "Invalid vendor id for vendor %@", buf, 0xCu);
         }
 
@@ -3453,15 +3453,15 @@ LABEL_17:
 
   v9 = v56;
   v50 = v56;
-  v8 = v54;
+  shapeCopy = v54;
 LABEL_18:
 
   return v50;
 }
 
-+ (id)prepareTokenEventsFromPrediction:(id)a3
++ (id)prepareTokenEventsFromPrediction:(id)prediction
 {
-  v3 = a3;
+  predictionCopy = prediction;
   v60 = +[NSPCoreData childCoreDataContext];
   if (!v60)
   {
@@ -3492,8 +3492,8 @@ LABEL_18:
   }
 
   v5 = v4;
-  v6 = [v3 shape];
-  v7 = [v6 count];
+  shape = [predictionCopy shape];
+  v7 = [shape count];
 
   if (v7 < 3)
   {
@@ -3503,11 +3503,11 @@ LABEL_4:
   }
 
   v59 = v5;
-  v9 = [v3 shape];
-  v10 = [v9 objectAtIndexedSubscript:0];
-  v11 = [v10 intValue];
+  shape2 = [predictionCopy shape];
+  v10 = [shape2 objectAtIndexedSubscript:0];
+  intValue = [v10 intValue];
 
-  if (v11 < 1)
+  if (intValue < 1)
   {
 LABEL_17:
     v5 = v59;
@@ -3519,24 +3519,24 @@ LABEL_17:
     v61 = 0;
     *&v12 = 134218242;
     v58 = v12;
-    v62 = v3;
+    v62 = predictionCopy;
     while (1)
     {
-      v13 = [v3 shape];
-      v14 = [v13 objectAtIndexedSubscript:1];
-      v15 = [v14 intValue];
+      shape3 = [predictionCopy shape];
+      v14 = [shape3 objectAtIndexedSubscript:1];
+      intValue2 = [v14 intValue];
 
-      if (v15 >= 1)
+      if (intValue2 >= 1)
       {
         break;
       }
 
 LABEL_16:
-      v52 = [v3 shape];
-      v53 = [v52 objectAtIndexedSubscript:0];
-      v54 = [v53 intValue];
+      shape4 = [predictionCopy shape];
+      v53 = [shape4 objectAtIndexedSubscript:0];
+      intValue3 = [v53 intValue];
 
-      if (++v61 >= v54)
+      if (++v61 >= intValue3)
       {
         goto LABEL_17;
       }
@@ -3629,12 +3629,12 @@ LABEL_16:
       }
 
       v16 = (v16 + 1);
-      v3 = v62;
-      v49 = [v62 shape];
-      v50 = [v49 objectAtIndexedSubscript:1];
-      v51 = [v50 intValue];
+      predictionCopy = v62;
+      shape5 = [v62 shape];
+      v50 = [shape5 objectAtIndexedSubscript:1];
+      intValue4 = [v50 intValue];
 
-      if (v16 >= v51)
+      if (v16 >= intValue4)
       {
         goto LABEL_16;
       }
@@ -3649,7 +3649,7 @@ LABEL_16:
     }
 
     v8 = 0;
-    v3 = v62;
+    predictionCopy = v62;
     v5 = v59;
   }
 
@@ -3658,16 +3658,16 @@ LABEL_18:
   return v8;
 }
 
-+ (void)prepareModelInputWithFeatures:(id)a3 keyedSubscripts:(id)a4 features:(id)a5
++ (void)prepareModelInputWithFeatures:(id)features keyedSubscripts:(id)subscripts features:(id)a5
 {
-  v7 = a3;
+  featuresCopy = features;
   v8 = a5;
-  v9 = [NSMutableArray arrayWithArray:a4];
+  v9 = [NSMutableArray arrayWithArray:subscripts];
   v10 = [NSNumber numberWithInt:0];
   [v9 addObject:v10];
 
-  v11 = [v7 shape];
-  v12 = [v11 count];
+  shape = [featuresCopy shape];
+  v12 = [shape count];
   v13 = [v9 count];
 
   if (v12 == v13)
@@ -3697,7 +3697,7 @@ LABEL_18:
           v20 = *(*(&v23 + 1) + 8 * v19);
           v21 = [NSNumber numberWithInt:v17];
           [v9 replaceObjectAtIndex:objc_msgSend(v9 withObject:{"count") - 1, v21}];
-          [v7 setObject:v20 forKeyedSubscript:v9];
+          [featuresCopy setObject:v20 forKeyedSubscript:v9];
           v17 = (v17 + 1);
 
           v19 = v19 + 1;
@@ -3714,16 +3714,16 @@ LABEL_18:
   }
 }
 
-+ (id)prepareInputForPrediction:(id)a3 vendor:(id)a4
++ (id)prepareInputForPrediction:(id)prediction vendor:(id)vendor
 {
-  v4 = a3;
-  v5 = [v4 objectAtIndexedSubscript:1];
+  predictionCopy = prediction;
+  v5 = [predictionCopy objectAtIndexedSubscript:1];
   v6 = +[NSPCoreData getVendorDictionary];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 allKeys];
-    v9 = +[NSPCoreData fetchLatestEvents:vendors:](NSPCoreData, "fetchLatestEvents:vendors:", [v5 unsignedLongValue] + 1, v8);
+    allKeys = [v6 allKeys];
+    v9 = +[NSPCoreData fetchLatestEvents:vendors:](NSPCoreData, "fetchLatestEvents:vendors:", [v5 unsignedLongValue] + 1, allKeys);
     v10 = v9;
     if (v9)
     {
@@ -3736,11 +3736,11 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v13 = [[MLMultiArray alloc] initWithShape:v4 dataType:65568 error:0];
+      v13 = [[MLMultiArray alloc] initWithShape:predictionCopy dataType:65568 error:0];
       if (v13)
       {
         v14 = v13;
-        v15 = [NSPCoreData prepareMLData:v10 startAt:0 dataShape:v4];
+        v15 = [NSPCoreData prepareMLData:v10 startAt:0 dataShape:predictionCopy];
 
         v12 = [NSPCoreData normalizeData:v15];
 LABEL_7:
@@ -3778,12 +3778,12 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v8 = nplog_obj();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+  allKeys = nplog_obj();
+  if (os_log_type_enabled(allKeys, OS_LOG_TYPE_FAULT))
   {
     v18 = 136315138;
     v19 = "+[NSPCoreData prepareInputForPrediction:vendor:]";
-    _os_log_fault_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "%s called with null dictionary", &v18, 0xCu);
+    _os_log_fault_impl(&_mh_execute_header, allKeys, OS_LOG_TYPE_FAULT, "%s called with null dictionary", &v18, 0xCu);
   }
 
   v12 = 0;
@@ -3792,14 +3792,14 @@ LABEL_9:
   return v12;
 }
 
-+ (void)handleNSPEventsPredictions:(id)a3
++ (void)handleNSPEventsPredictions:(id)predictions
 {
-  v3 = a3;
+  predictionsCopy = predictions;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  v4 = [predictionsCopy countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3810,7 +3810,7 @@ LABEL_9:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(predictionsCopy);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -3823,39 +3823,39 @@ LABEL_9:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v5 = [predictionsCopy countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v5);
   }
 }
 
-+ (void)predictNSPEvent:(id)a3
++ (void)predictNSPEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[NSPCoreData getNSPEventsPredictor];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 model];
-    v7 = [v6 modelDescription];
-    v8 = [v7 inputDescriptionsByName];
-    v9 = [v8 objectForKeyedSubscript:@"lstm_input"];
+    model = [v4 model];
+    modelDescription = [model modelDescription];
+    inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+    v9 = [inputDescriptionsByName objectForKeyedSubscript:@"lstm_input"];
 
     v10 = nplog_obj();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v9 multiArrayConstraint];
-      v26 = [v25 shape];
+      multiArrayConstraint = [v9 multiArrayConstraint];
+      shape = [multiArrayConstraint shape];
       *buf = 138412290;
-      v34 = v26;
+      v34 = shape;
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "model shape %@", buf, 0xCu);
     }
 
-    v11 = [v9 multiArrayConstraint];
-    v12 = [v11 shape];
+    multiArrayConstraint2 = [v9 multiArrayConstraint];
+    shape2 = [multiArrayConstraint2 shape];
 
-    if (!v12)
+    if (!shape2)
     {
       v13 = nplog_obj();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -3868,7 +3868,7 @@ LABEL_9:
       goto LABEL_20;
     }
 
-    v13 = [NSPCoreData prepareInputForPrediction:v12 vendor:v3];
+    v13 = [NSPCoreData prepareInputForPrediction:shape2 vendor:eventCopy];
     if (!v13)
     {
       v15 = nplog_obj();
@@ -3899,11 +3899,11 @@ LABEL_9:
       goto LABEL_18;
     }
 
-    v16 = [v14 Identity];
-    [NSPCoreData printMLMultiArray:v16];
+    identity = [v14 Identity];
+    [NSPCoreData printMLMultiArray:identity];
 
     v17 = +[NSPCoreData getNSPEventsDenormalizer];
-    v30 = v12;
+    v30 = shape2;
     if (!v17)
     {
       v20 = nplog_obj();
@@ -3920,19 +3920,19 @@ LABEL_9:
 
     v29 = v5;
     v18 = v9;
-    v19 = [v14 Identity];
+    identity2 = [v14 Identity];
     v31 = v15;
-    v20 = [v17 predictionFromDenormalizer_input:v19 error:&v31];
+    v20 = [v17 predictionFromDenormalizer_input:identity2 error:&v31];
     v21 = v31;
 
     if (v20)
     {
-      v28 = v3;
-      v22 = [v20 Identity];
-      [NSPCoreData printMLMultiArray:v22];
+      v28 = eventCopy;
+      identity3 = [v20 Identity];
+      [NSPCoreData printMLMultiArray:identity3];
 
-      v23 = [v20 Identity];
-      v24 = [NSPCoreData prepareTokenEventsFromPrediction:v23];
+      identity4 = [v20 Identity];
+      v24 = [NSPCoreData prepareTokenEventsFromPrediction:identity4];
 
       if (!v24)
       {
@@ -3946,12 +3946,12 @@ LABEL_9:
         }
 
         v24 = 0;
-        v3 = v28;
+        eventCopy = v28;
         goto LABEL_16;
       }
 
       [NSPCoreData handleNSPEventsPredictions:v24];
-      v3 = v28;
+      eventCopy = v28;
     }
 
     else
@@ -3971,7 +3971,7 @@ LABEL_16:
 
 LABEL_17:
     v15 = v21;
-    v12 = v30;
+    shape2 = v30;
 LABEL_18:
 
 LABEL_19:
@@ -3991,16 +3991,16 @@ LABEL_20:
 LABEL_21:
 }
 
-+ (id)tokenTypeEnumToString:(int)a3
++ (id)tokenTypeEnumToString:(int)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_10010A760 + a3);
+    return *(&off_10010A760 + string);
   }
 }
 

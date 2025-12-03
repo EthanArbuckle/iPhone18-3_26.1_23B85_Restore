@@ -1,30 +1,30 @@
 @interface UIWebBrowserFindOnPageHighlighter
-+ (BOOL)expandedRectsWouldIntersect:(id)a3;
++ (BOOL)expandedRectsWouldIntersect:(id)intersect;
 - (BOOL)_highlightSelection;
-- (BOOL)_updateHighlightedMatchIndex:(BOOL)a3;
-- (BOOL)updateHighlightBubbleWobble:(BOOL)a3;
-- (UIWebBrowserFindOnPageHighlighter)initWithBrowserView:(id)a3;
-- (UIWebBrowserFindOnPageHighlighter)initWithPDFViewHandler:(id)a3;
+- (BOOL)_updateHighlightedMatchIndex:(BOOL)index;
+- (BOOL)updateHighlightBubbleWobble:(BOOL)wobble;
+- (UIWebBrowserFindOnPageHighlighter)initWithBrowserView:(id)view;
+- (UIWebBrowserFindOnPageHighlighter)initWithPDFViewHandler:(id)handler;
 - (id)_currentPDFSearchResult;
-- (void)_addContentViewAtIndex:(unint64_t)a3 withRect:(CGRect)a4;
+- (void)_addContentViewAtIndex:(unint64_t)index withRect:(CGRect)rect;
 - (void)_clearHighlightViews;
 - (void)_commonInitialize;
-- (void)_highlightFindOnPageMatch:(BOOL)a3;
-- (void)_highlightFindOnPageMatchForPDF:(BOOL)a3 withPDFHandler:(id)a4;
-- (void)_setSelectionRect:(CGRect)a3 textRects:(id)a4 contentImage:(CGImage *)a5 contentViews:(id)a6 wobble:(BOOL)a7;
+- (void)_highlightFindOnPageMatch:(BOOL)match;
+- (void)_highlightFindOnPageMatchForPDF:(BOOL)f withPDFHandler:(id)handler;
+- (void)_setSelectionRect:(CGRect)rect textRects:(id)rects contentImage:(CGImage *)image contentViews:(id)views wobble:(BOOL)wobble;
 - (void)dealloc;
-- (void)search:(id)a3 hasPartialResults:(id)a4;
-- (void)searchDidBegin:(id)a3;
-- (void)searchDidFinish:(id)a3;
-- (void)searchDidTimeOut:(id)a3;
-- (void)searchLimitHit:(id)a3;
-- (void)searchWasCancelled:(id)a3;
-- (void)setSearchText:(id)a3 matchLimit:(unint64_t)a4;
+- (void)search:(id)search hasPartialResults:(id)results;
+- (void)searchDidBegin:(id)begin;
+- (void)searchDidFinish:(id)finish;
+- (void)searchDidTimeOut:(id)out;
+- (void)searchLimitHit:(id)hit;
+- (void)searchWasCancelled:(id)cancelled;
+- (void)setSearchText:(id)text matchLimit:(unint64_t)limit;
 @end
 
 @implementation UIWebBrowserFindOnPageHighlighter
 
-- (UIWebBrowserFindOnPageHighlighter)initWithBrowserView:(id)a3
+- (UIWebBrowserFindOnPageHighlighter)initWithBrowserView:(id)view
 {
   v7.receiver = self;
   v7.super_class = UIWebBrowserFindOnPageHighlighter;
@@ -33,14 +33,14 @@
   if (v4)
   {
     [(UIWebBrowserFindOnPageHighlighter *)v4 _commonInitialize];
-    v5->_browserView = a3;
-    [a3 addSubview:v5->_highlightHostView];
+    v5->_browserView = view;
+    [view addSubview:v5->_highlightHostView];
   }
 
   return v5;
 }
 
-- (UIWebBrowserFindOnPageHighlighter)initWithPDFViewHandler:(id)a3
+- (UIWebBrowserFindOnPageHighlighter)initWithPDFViewHandler:(id)handler
 {
   v7.receiver = self;
   v7.super_class = UIWebBrowserFindOnPageHighlighter;
@@ -49,8 +49,8 @@
   if (v4)
   {
     [(UIWebBrowserFindOnPageHighlighter *)v4 _commonInitialize];
-    v5->_pdfHandler = a3;
-    [objc_msgSend(a3 "pdfView")];
+    v5->_pdfHandler = handler;
+    [objc_msgSend(handler "pdfView")];
   }
 
   return v5;
@@ -77,10 +77,10 @@
   [(UIWebBrowserFindOnPageHighlighter *)&v3 dealloc];
 }
 
-+ (BOOL)expandedRectsWouldIntersect:(id)a3
++ (BOOL)expandedRectsWouldIntersect:(id)intersect
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = [a3 count];
+  v4 = [intersect count];
   if (v4 == 1)
   {
     return 0;
@@ -91,7 +91,7 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v7 = [intersect countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -102,7 +102,7 @@
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(intersect);
         }
 
         [*(*(&v24 + 1) + 8 * i) rectValue];
@@ -154,7 +154,7 @@
         [v6 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithCGRect:", x, y, width, height)}];
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [intersect countByEnumeratingWithState:&v24 objects:v29 count:16];
       v5 = 0;
     }
 
@@ -171,13 +171,13 @@ LABEL_21:
   return v5;
 }
 
-- (void)_addContentViewAtIndex:(unint64_t)a3 withRect:(CGRect)a4
+- (void)_addContentViewAtIndex:(unint64_t)index withRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(NSArray *)self->_pdfHighlightViews objectAtIndex:a3];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = [(NSArray *)self->_pdfHighlightViews objectAtIndex:index];
   [v9 setFrame:{x, y, width, height}];
   highlightHostView = self->_highlightHostView;
 
@@ -193,21 +193,21 @@ LABEL_21:
   self->_pdfHighlightViews = 0;
 }
 
-- (void)_setSelectionRect:(CGRect)a3 textRects:(id)a4 contentImage:(CGImage *)a5 contentViews:(id)a6 wobble:(BOOL)a7
+- (void)_setSelectionRect:(CGRect)rect textRects:(id)rects contentImage:(CGImage *)image contentViews:(id)views wobble:(BOOL)wobble
 {
-  v7 = a7;
+  wobbleCopy = wobble;
   v57 = *MEMORY[0x1E69E9840];
   [(UIWebBrowserFindOnPageHighlighter *)self _clearHighlightViews];
 
-  self->_pdfHighlightViews = a6;
+  self->_pdfHighlightViews = views;
   v12 = +[UIColor clearColor];
-  if (v7)
+  if (wobbleCopy)
   {
     v53 = 0uLL;
     v54 = 0uLL;
     v51 = 0uLL;
     v52 = 0uLL;
-    v13 = [a4 countByEnumeratingWithState:&v51 objects:v56 count:16];
+    v13 = [rects countByEnumeratingWithState:&v51 objects:v56 count:16];
     if (v13)
     {
       v14 = v13;
@@ -219,7 +219,7 @@ LABEL_21:
         {
           if (*v52 != v16)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(rects);
           }
 
           [*(*(&v51 + 1) + 8 * i) rectValue];
@@ -235,7 +235,7 @@ LABEL_21:
           [(UIWebBrowserFindOnPageHighlighter *)self _addContentViewAtIndex:v15++ withRect:x, y, width, height];
         }
 
-        v14 = [a4 countByEnumeratingWithState:&v51 objects:v56 count:16];
+        v14 = [rects countByEnumeratingWithState:&v51 objects:v56 count:16];
       }
 
       while (v14);
@@ -245,10 +245,10 @@ LABEL_21:
     v48[1] = 3221225472;
     v48[2] = __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_contentImage_contentViews_wobble___block_invoke;
     v48[3] = &unk_1E712BD10;
-    v49 = a3;
-    v48[4] = a4;
+    rectCopy = rect;
+    v48[4] = rects;
     v48[5] = self;
-    v50 = a5;
+    imageCopy = image;
     [UIView animateWithDuration:0 delay:v48 options:0 animations:0.12 completion:0.0];
   }
 
@@ -258,7 +258,7 @@ LABEL_21:
     v47 = 0uLL;
     v44 = 0uLL;
     v45 = 0uLL;
-    v23 = [a4 countByEnumeratingWithState:&v44 objects:v55 count:16];
+    v23 = [rects countByEnumeratingWithState:&v44 objects:v55 count:16];
     if (v23)
     {
       v24 = v23;
@@ -270,7 +270,7 @@ LABEL_21:
         {
           if (*v45 != v26)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(rects);
           }
 
           [*(*(&v44 + 1) + 8 * j) rectValue];
@@ -284,13 +284,13 @@ LABEL_21:
           v30 = v61.size.width;
           v38 = v61.size.height;
           v39 = v61.size.width;
-          MinX = CGRectGetMinX(a3);
+          MinX = CGRectGetMinX(rect);
           v62.origin.x = v28;
           v62.origin.y = v29;
           v62.size.width = v30;
           v62.size.height = v38;
           v32 = round(MinX - CGRectGetMinX(v62));
-          MinY = CGRectGetMinY(a3);
+          MinY = CGRectGetMinY(rect);
           v63.origin.x = v28;
           v63.origin.y = v29;
           v63.size.width = v39;
@@ -304,13 +304,13 @@ LABEL_21:
           v65 = CGRectIntegral(v64);
           v36 = [(UIView *)v35 initWithFrame:v65.origin.x, v65.origin.y, v65.size.width, v65.size.height];
           [(UIView *)v36 setBackgroundColor:v12];
-          [(_UIWebFindOnPageHighlightBubbleView *)v36 setHighlightedContent:a5 withOrigin:v32, v34];
+          [(_UIWebFindOnPageHighlightBubbleView *)v36 setHighlightedContent:image withOrigin:v32, v34];
           [(UIView *)self->_highlightHostView addSubview:v36];
           [(NSMutableArray *)self->_highlightBubbleViews addObject:v36];
           [(UIWebBrowserFindOnPageHighlighter *)self _addContentViewAtIndex:v25++ withRect:v43, v42, v41, v40];
         }
 
-        v24 = [a4 countByEnumeratingWithState:&v44 objects:v55 count:16];
+        v24 = [rects countByEnumeratingWithState:&v44 objects:v55 count:16];
       }
 
       while (v24);
@@ -358,26 +358,26 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
   return result;
 }
 
-- (BOOL)updateHighlightBubbleWobble:(BOOL)a3
+- (BOOL)updateHighlightBubbleWobble:(BOOL)wobble
 {
-  v3 = a3;
+  wobbleCopy = wobble;
   v55 = *MEMORY[0x1E69E9840];
   WebThreadLock();
-  v5 = [(UIWebDocumentView *)self->_browserView webView];
-  v6 = [v5 selectedFrame];
-  if (!v6)
+  webView = [(UIWebDocumentView *)self->_browserView webView];
+  selectedFrame = [webView selectedFrame];
+  if (!selectedFrame)
   {
-    v6 = [v5 mainFrame];
+    selectedFrame = [webView mainFrame];
   }
 
-  [objc_msgSend(v6 "frameView")];
+  [objc_msgSend(selectedFrame "frameView")];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v7 = [objc_msgSend(v6 "frameView")];
+  v7 = [objc_msgSend(selectedFrame "frameView")];
   [v7 selectionRect];
   x = v56.origin.x;
   y = v56.origin.y;
@@ -388,10 +388,10 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
     return 0;
   }
 
-  v13 = [v7 selectionView];
-  v14 = [v7 selectionTextRects];
+  selectionView = [v7 selectionView];
+  selectionTextRects = [v7 selectionTextRects];
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v13 visibleRect];
+  [selectionView visibleRect];
   v16 = v57.origin.x;
   v17 = v57.origin.y;
   v18 = v57.size.width;
@@ -401,7 +401,7 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
   v62.size.width = width;
   v62.size.height = height;
   v58 = CGRectIntersection(v57, v62);
-  [v13 convertRect:0 toView:{v58.origin.x, v58.origin.y, v58.size.width, v58.size.height}];
+  [selectionView convertRect:0 toView:{v58.origin.x, v58.origin.y, v58.size.width, v58.size.height}];
   v45 = v20;
   v46 = v21;
   v47 = v22;
@@ -410,7 +410,7 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v24 = [v14 countByEnumeratingWithState:&v49 objects:v54 count:16];
+  v24 = [selectionTextRects countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v24)
   {
     v25 = v24;
@@ -421,7 +421,7 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
       {
         if (*v50 != v26)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(selectionTextRects);
         }
 
         [*(*(&v49 + 1) + 8 * i) CGRectValue];
@@ -434,7 +434,7 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
         v59.size.width = v18;
         v59.size.height = v19;
         v60 = CGRectIntersection(v59, v63);
-        [v13 convertRect:0 toView:{v60.origin.x, v60.origin.y, v60.size.width, v60.size.height}];
+        [selectionView convertRect:0 toView:{v60.origin.x, v60.origin.y, v60.size.width, v60.size.height}];
         v32 = v61.origin.x;
         v33 = v61.origin.y;
         v34 = v61.size.width;
@@ -445,7 +445,7 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
         }
       }
 
-      v25 = [v14 countByEnumeratingWithState:&v49 objects:v54 count:16];
+      v25 = [selectionTextRects countByEnumeratingWithState:&v49 objects:v54 count:16];
     }
 
     while (v25);
@@ -460,7 +460,7 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
     {
       v53 = [MEMORY[0x1E696B098] valueWithCGRect:{v45, v46, v47, v48}];
       v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-      v39 = self;
+      selfCopy2 = self;
       v40 = v45;
       v41 = v46;
       v42 = v47;
@@ -469,7 +469,7 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
 
     else
     {
-      v39 = self;
+      selfCopy2 = self;
       v40 = v45;
       v41 = v46;
       v42 = v47;
@@ -477,7 +477,7 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
       v38 = v15;
     }
 
-    [(UIWebBrowserFindOnPageHighlighter *)v39 setSelectionRect:v38 textRects:v37 contentImage:v3 wobble:v40, v41, v42, v43];
+    [(UIWebBrowserFindOnPageHighlighter *)selfCopy2 setSelectionRect:v38 textRects:v37 contentImage:wobbleCopy wobble:v40, v41, v42, v43];
   }
 
   return v12;
@@ -486,29 +486,29 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
 - (BOOL)_highlightSelection
 {
   WebThreadLock();
-  LODWORD(v3) = [(UIWebBrowserFindOnPageHighlighter *)self updateHighlightBubbleWobble:1];
-  if (v3)
+  LODWORD(selectedDOMRange) = [(UIWebBrowserFindOnPageHighlighter *)self updateHighlightBubbleWobble:1];
+  if (selectedDOMRange)
   {
-    v4 = [(UIWebDocumentView *)self->_browserView webView];
-    v3 = [v4 selectedDOMRange];
-    if (v3)
+    webView = [(UIWebDocumentView *)self->_browserView webView];
+    selectedDOMRange = [webView selectedDOMRange];
+    if (selectedDOMRange)
     {
       [(UIWebDocumentView *)self->_browserView _documentScale];
       v6 = v5;
-      v7 = [(UIView *)self->_browserView _scroller];
-      [v7 zoomScale];
+      _scroller = [(UIView *)self->_browserView _scroller];
+      [_scroller zoomScale];
       v9 = v8;
-      v10 = [v4 selectedFrame];
-      if (!v10)
+      selectedFrame = [webView selectedFrame];
+      if (!selectedFrame)
       {
-        v10 = [v4 mainFrame];
+        selectedFrame = [webView mainFrame];
       }
 
-      [objc_msgSend(v10 "frameView")];
+      [objc_msgSend(selectedFrame "frameView")];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [objc_msgSend(v10 "frameView")];
+        v11 = [objc_msgSend(selectedFrame "frameView")];
         [v11 selectionRect];
         x = v53.origin.x;
         y = v53.origin.y;
@@ -518,13 +518,13 @@ uint64_t __98__UIWebBrowserFindOnPageHighlighter__setSelectionRect_textRects_con
         if (IsEmpty)
         {
 LABEL_20:
-          LOBYTE(v3) = !IsEmpty;
-          return v3;
+          LOBYTE(selectedDOMRange) = !IsEmpty;
+          return selectedDOMRange;
         }
 
         v50 = v6;
-        v17 = [v11 selectionView];
-        [v17 visibleRect];
+        selectionView = [v11 selectionView];
+        [selectionView visibleRect];
         v61.origin.x = x;
         v61.origin.y = y;
         v61.size.width = width;
@@ -544,13 +544,13 @@ LABEL_20:
           v56.size.width = v20;
           v56.size.height = v21;
           v48 = v19;
-          [objc_msgSend(v17 "_frame")];
-          [v17 convertRect:0 toView:?];
+          [objc_msgSend(selectionView "_frame")];
+          [selectionView convertRect:0 toView:?];
           v24 = v23;
           v26 = v25;
           v28 = v27;
           v30 = v29;
-          [v7 visibleBounds];
+          [_scroller visibleBounds];
           v33 = v9 * v32 / v28;
           if (v33 >= v9 * v31 / v30)
           {
@@ -559,7 +559,7 @@ LABEL_20:
 
           v47 = v18;
           v34 = v33 + v33 * -0.05;
-          [v7 minimumZoomScale];
+          [_scroller minimumZoomScale];
           if (v34 >= v35)
           {
             v35 = v34;
@@ -587,7 +587,7 @@ LABEL_20:
           v49 = v9;
         }
 
-        [v17 convertRect:0 toView:{v18, v19, v20, v21}];
+        [selectionView convertRect:0 toView:{v18, v19, v20, v21}];
         v24 = v37;
         v26 = v38;
         v28 = v39;
@@ -616,50 +616,50 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      LOBYTE(v3) = 0;
+      LOBYTE(selectedDOMRange) = 0;
     }
   }
 
-  return v3;
+  return selectedDOMRange;
 }
 
-- (void)setSearchText:(id)a3 matchLimit:(unint64_t)a4
+- (void)setSearchText:(id)text matchLimit:(unint64_t)limit
 {
   self->_highlightedMatchIndex = 0x7FFFFFFFFFFFFFFFLL;
-  if ([a3 caseInsensitiveCompare:self->_searchText])
+  if ([text caseInsensitiveCompare:self->_searchText])
   {
     [(UIWebBrowserFindOnPageHighlighter *)self _clearHighlightViews];
-    if ([a3 length])
+    if ([text length])
     {
       self->_numberOfMatches = 0x7FFFFFFFFFFFFFFFLL;
 
-      self->_searchText = [a3 copy];
+      self->_searchText = [text copy];
       pdfHandler = self->_pdfHandler;
       if (pdfHandler)
       {
         v8 = [(UIWebPDFViewHandler *)pdfHandler searchControllerForHighlighter:self];
         [v8 setSearchDelegate:self];
-        [v8 setResultLimit:a4 + 1];
+        [v8 setResultLimit:limit + 1];
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
         v11[2] = __62__UIWebBrowserFindOnPageHighlighter_setSearchText_matchLimit___block_invoke;
         v11[3] = &unk_1E7101E78;
         v11[4] = v8;
-        v11[5] = a3;
+        v11[5] = text;
         dispatch_async(MEMORY[0x1E69E96A0], v11);
       }
 
       else
       {
         WebThreadLock();
-        v9 = [(UIWebDocumentView *)self->_browserView webView];
-        v10 = [objc_msgSend(objc_msgSend(v9 "mainFrame")];
+        webView = [(UIWebDocumentView *)self->_browserView webView];
+        v10 = [objc_msgSend(objc_msgSend(webView "mainFrame")];
         if ([v10 conformsToProtocol:&unk_1F016E3D0])
         {
           [v10 deselectAll];
         }
 
-        self->_numberOfMatches = [v9 countMatchesForText:a3 options:-[UIWebBrowserFindOnPageHighlighter findOnPageOptions](self highlight:"findOnPageOptions") limit:0 markMatches:{a4 + 1, 0}];
+        self->_numberOfMatches = [webView countMatchesForText:text options:-[UIWebBrowserFindOnPageHighlighter findOnPageOptions](self highlight:"findOnPageOptions") limit:0 markMatches:{limit + 1, 0}];
       }
     }
 
@@ -672,7 +672,7 @@ LABEL_19:
   }
 }
 
-- (BOOL)_updateHighlightedMatchIndex:(BOOL)a3
+- (BOOL)_updateHighlightedMatchIndex:(BOOL)index
 {
   numberOfMatches = self->_numberOfMatches;
   if (numberOfMatches)
@@ -694,7 +694,7 @@ LABEL_19:
       v8 = highlightedMatchIndex + 1;
     }
 
-    if (!a3)
+    if (!index)
     {
       v8 = v5;
     }
@@ -714,29 +714,29 @@ LABEL_19:
   }
 
   v4 = v3;
-  v5 = [v3 results];
-  if (![v5 count])
+  results = [v3 results];
+  if (![results count])
   {
     return 0;
   }
 
   highlightedMatchIndex = self->_highlightedMatchIndex;
-  if (highlightedMatchIndex == 0x7FFFFFFFFFFFFFFFLL || highlightedMatchIndex >= [v5 count])
+  if (highlightedMatchIndex == 0x7FFFFFFFFFFFFFFFLL || highlightedMatchIndex >= [results count])
   {
     return 0;
   }
 
-  v7 = [v4 results];
+  results2 = [v4 results];
   v8 = self->_highlightedMatchIndex;
 
-  return [v7 objectAtIndex:v8];
+  return [results2 objectAtIndex:v8];
 }
 
-- (void)_highlightFindOnPageMatchForPDF:(BOOL)a3 withPDFHandler:(id)a4
+- (void)_highlightFindOnPageMatchForPDF:(BOOL)f withPDFHandler:(id)handler
 {
-  if ([(UIWebBrowserFindOnPageHighlighter *)self _updateHighlightedMatchIndex:a3])
+  if ([(UIWebBrowserFindOnPageHighlighter *)self _updateHighlightedMatchIndex:f])
   {
-    [a4 revealSearchResult:-[UIWebBrowserFindOnPageHighlighter _currentPDFSearchResult](self andZoomIn:{"_currentPDFSearchResult"), self->_zoomToHighlightSelection}];
+    [handler revealSearchResult:-[UIWebBrowserFindOnPageHighlighter _currentPDFSearchResult](self andZoomIn:{"_currentPDFSearchResult"), self->_zoomToHighlightSelection}];
     self->_zoomToHighlightSelection = 0;
     if (objc_opt_respondsToSelector())
     {
@@ -747,9 +747,9 @@ LABEL_19:
   }
 }
 
-- (void)_highlightFindOnPageMatch:(BOOL)a3
+- (void)_highlightFindOnPageMatch:(BOOL)match
 {
-  v3 = a3;
+  matchCopy = match;
   if (self->_pdfHandler)
   {
 
@@ -759,24 +759,24 @@ LABEL_19:
   else if (self->_browserView)
   {
     WebThreadLock();
-    v5 = [(UIWebDocumentView *)self->_browserView webView];
-    v6 = [v5 mainFrame];
-    [v6 recursiveSetUpdateAppearanceEnabled:1];
-    v7 = [(UIWebBrowserFindOnPageHighlighter *)self findOnPageOptions];
-    if (v3)
+    webView = [(UIWebDocumentView *)self->_browserView webView];
+    mainFrame = [webView mainFrame];
+    [mainFrame recursiveSetUpdateAppearanceEnabled:1];
+    findOnPageOptions = [(UIWebBrowserFindOnPageHighlighter *)self findOnPageOptions];
+    if (matchCopy)
     {
-      v8 = v7;
+      v8 = findOnPageOptions;
     }
 
     else
     {
-      v8 = v7 | 8;
+      v8 = findOnPageOptions | 8;
     }
 
     v9 = 3;
     while (1)
     {
-      [v5 findString:self->_searchText options:v8];
+      [webView findString:self->_searchText options:v8];
       if ([(UIWebBrowserFindOnPageHighlighter *)self _highlightSelection])
       {
         break;
@@ -785,13 +785,13 @@ LABEL_19:
       if (!--v9)
       {
 
-        [v6 recursiveSetUpdateAppearanceEnabled:0];
+        [mainFrame recursiveSetUpdateAppearanceEnabled:0];
         return;
       }
     }
 
-    [v6 recursiveSetUpdateAppearanceEnabled:0];
-    [(UIWebBrowserFindOnPageHighlighter *)self _updateHighlightedMatchIndex:v3];
+    [mainFrame recursiveSetUpdateAppearanceEnabled:0];
+    [(UIWebBrowserFindOnPageHighlighter *)self _updateHighlightedMatchIndex:matchCopy];
     if (objc_opt_respondsToSelector())
     {
       delegate = self->_delegate;
@@ -801,7 +801,7 @@ LABEL_19:
   }
 }
 
-- (void)searchDidBegin:(id)a3
+- (void)searchDidBegin:(id)begin
 {
   if (objc_opt_respondsToSelector())
   {
@@ -811,7 +811,7 @@ LABEL_19:
   }
 }
 
-- (void)searchDidTimeOut:(id)a3
+- (void)searchDidTimeOut:(id)out
 {
   if (objc_opt_respondsToSelector())
   {
@@ -821,7 +821,7 @@ LABEL_19:
   }
 }
 
-- (void)searchWasCancelled:(id)a3
+- (void)searchWasCancelled:(id)cancelled
 {
   if (objc_opt_respondsToSelector())
   {
@@ -831,9 +831,9 @@ LABEL_19:
   }
 }
 
-- (void)searchLimitHit:(id)a3
+- (void)searchLimitHit:(id)hit
 {
-  [a3 pause];
+  [hit pause];
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
@@ -842,7 +842,7 @@ LABEL_19:
   }
 }
 
-- (void)searchDidFinish:(id)a3
+- (void)searchDidFinish:(id)finish
 {
   if (self->_numberOfMatches == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -857,10 +857,10 @@ LABEL_19:
   }
 }
 
-- (void)search:(id)a3 hasPartialResults:(id)a4
+- (void)search:(id)search hasPartialResults:(id)results
 {
   numberOfMatches = self->_numberOfMatches;
-  v7 = [a4 count];
+  v7 = [results count];
   if (numberOfMatches != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 += self->_numberOfMatches;
@@ -871,7 +871,7 @@ LABEL_19:
   {
     delegate = self->_delegate;
 
-    [(UIWebFindOnPageHighlighterDelegate *)delegate findOnPageHighlighter:self hasPartialSearchResults:a4];
+    [(UIWebFindOnPageHighlighterDelegate *)delegate findOnPageHighlighter:self hasPartialSearchResults:results];
   }
 }
 

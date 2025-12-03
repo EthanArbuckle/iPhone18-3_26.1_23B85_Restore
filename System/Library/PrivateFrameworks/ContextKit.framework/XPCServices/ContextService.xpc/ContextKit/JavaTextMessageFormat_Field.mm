@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaTextMessageFormat_Field alloc];
     JavaTextFormat_Field_initWithNSString_(v2, @"message argument field");

@@ -110,7 +110,7 @@ LABEL_21:
   v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown assertion identifier: %@", v16];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    [RBSAssertion(PosterFoundation) pf_assertionForTarget:a2 assertionIdentifier:a1 explanation:v20 invalidationHandler:?];
+    [RBSAssertion(PosterFoundation) pf_assertionForTarget:a2 assertionIdentifier:self explanation:v20 invalidationHandler:?];
   }
 
   [v20 UTF8String];
@@ -138,7 +138,7 @@ LABEL_21:
       v17 = @"PosterUpdateMemoryAssertion";
     }
 
-    v18 = [a1 pf_assertionForTarget:v13 assertionIdentifier:v17 explanation:v12 invalidationHandler:v15];
+    v18 = [self pf_assertionForTarget:v13 assertionIdentifier:v17 explanation:v12 invalidationHandler:v15];
   }
 
   else
@@ -173,10 +173,10 @@ LABEL_21:
   v4 = a3;
   v5 = [v3 attributeWithDomain:@"com.apple.posterboard" name:@"Foreground"];
   v6 = objc_alloc(MEMORY[0x1E69C7548]);
-  v7 = [MEMORY[0x1E69C7640] currentProcess];
+  currentProcess = [MEMORY[0x1E69C7640] currentProcess];
   v12[0] = v5;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v9 = [v6 initWithExplanation:v4 target:v7 attributes:v8];
+  v9 = [v6 initWithExplanation:v4 target:currentProcess attributes:v8];
 
   v10 = *MEMORY[0x1E69E9840];
 
@@ -325,12 +325,12 @@ LABEL_21:
   v5 = a4;
   v6 = MEMORY[0x1E69C7640];
   v7 = a3;
-  v8 = [v6 currentProcess];
+  currentProcess = [v6 currentProcess];
   v9 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.common" name:@"FinishTaskInterruptable"];
   v10 = objc_alloc(MEMORY[0x1E69C7548]);
   v17[0] = v9;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v12 = [v10 initWithExplanation:v7 target:v8 attributes:v11];
+  v12 = [v10 initWithExplanation:v7 target:currentProcess attributes:v11];
 
   if (v5)
   {
@@ -382,10 +382,10 @@ LABEL_21:
 
   v8 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.PosterKit" name:v7];
   v9 = objc_alloc(MEMORY[0x1E69C7548]);
-  v10 = [MEMORY[0x1E69C7640] currentProcess];
+  currentProcess = [MEMORY[0x1E69C7640] currentProcess];
   v15[0] = v8;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v12 = [v9 initWithExplanation:v6 target:v10 attributes:v11];
+  v12 = [v9 initWithExplanation:v6 target:currentProcess attributes:v11];
 
   v13 = *MEMORY[0x1E69E9840];
 

@@ -1,10 +1,10 @@
 @interface FCHeadlineExperimentalTitleProvider
 + (BOOL)isDebugModeEnabled;
-- (FCHeadlineExperimentalTitleProvider)initWithShouldShowAlternateHeadlines:(BOOL)a3;
-- (id)_debugHeadlineMetadataFromTitle:(id)a3 fromExperimentalTitles:(id)a4 forArticleID:(id)a5;
-- (id)_headlineMetadataFromTitle:(id)a3 fromExperimentalTitles:(id)a4 forArticleID:(id)a5;
-- (id)headlineMetadataFromTitle:(id)a3 fromExperimentalTitles:(id)a4 forArticleID:(id)a5;
-- (id)metadataForDefaultHeadlineWithTitle:(id)a3;
+- (FCHeadlineExperimentalTitleProvider)initWithShouldShowAlternateHeadlines:(BOOL)headlines;
+- (id)_debugHeadlineMetadataFromTitle:(id)title fromExperimentalTitles:(id)titles forArticleID:(id)d;
+- (id)_headlineMetadataFromTitle:(id)title fromExperimentalTitles:(id)titles forArticleID:(id)d;
+- (id)headlineMetadataFromTitle:(id)title fromExperimentalTitles:(id)titles forArticleID:(id)d;
+- (id)metadataForDefaultHeadlineWithTitle:(id)title;
 @end
 
 @implementation FCHeadlineExperimentalTitleProvider
@@ -33,7 +33,7 @@ void __57__FCHeadlineExperimentalTitleProvider_isDebugModeEnabled__block_invoke(
   }
 }
 
-- (FCHeadlineExperimentalTitleProvider)initWithShouldShowAlternateHeadlines:(BOOL)a3
+- (FCHeadlineExperimentalTitleProvider)initWithShouldShowAlternateHeadlines:(BOOL)headlines
 {
   v10.receiver = self;
   v10.super_class = FCHeadlineExperimentalTitleProvider;
@@ -41,55 +41,55 @@ void __57__FCHeadlineExperimentalTitleProvider_isDebugModeEnabled__block_invoke(
   if (v4)
   {
     v5 = +[FCFeldsparIDProvider sharedInstance];
-    v6 = [v5 feldsparID];
-    v7 = [v6 copy];
+    feldsparID = [v5 feldsparID];
+    v7 = [feldsparID copy];
     feldsparID = v4->_feldsparID;
     v4->_feldsparID = v7;
 
-    v4->_shouldShowAlternateHeadlines = +[FCHeadlineExperimentalTitleProvider isDebugModeEnabled]|| a3;
+    v4->_shouldShowAlternateHeadlines = +[FCHeadlineExperimentalTitleProvider isDebugModeEnabled]|| headlines;
   }
 
   return v4;
 }
 
-- (id)headlineMetadataFromTitle:(id)a3 fromExperimentalTitles:(id)a4 forArticleID:(id)a5
+- (id)headlineMetadataFromTitle:(id)title fromExperimentalTitles:(id)titles forArticleID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  dCopy = d;
+  titlesCopy = titles;
+  titleCopy = title;
   if (+[FCHeadlineExperimentalTitleProvider isDebugModeEnabled])
   {
-    [(FCHeadlineExperimentalTitleProvider *)self _debugHeadlineMetadataFromTitle:v10 fromExperimentalTitles:v9 forArticleID:v8];
+    [(FCHeadlineExperimentalTitleProvider *)self _debugHeadlineMetadataFromTitle:titleCopy fromExperimentalTitles:titlesCopy forArticleID:dCopy];
   }
 
   else
   {
-    [(FCHeadlineExperimentalTitleProvider *)self _headlineMetadataFromTitle:v10 fromExperimentalTitles:v9 forArticleID:v8];
+    [(FCHeadlineExperimentalTitleProvider *)self _headlineMetadataFromTitle:titleCopy fromExperimentalTitles:titlesCopy forArticleID:dCopy];
   }
   v11 = ;
 
   return v11;
 }
 
-- (id)_headlineMetadataFromTitle:(id)a3 fromExperimentalTitles:(id)a4 forArticleID:(id)a5
+- (id)_headlineMetadataFromTitle:(id)title fromExperimentalTitles:(id)titles forArticleID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!-[FCHeadlineExperimentalTitleProvider shouldShowAlternateHeadlines](self, "shouldShowAlternateHeadlines") || ![v9 count] || (-[FCHeadlineExperimentalTitleProvider feldsparID](self, "feldsparID"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  titleCopy = title;
+  titlesCopy = titles;
+  dCopy = d;
+  if (!-[FCHeadlineExperimentalTitleProvider shouldShowAlternateHeadlines](self, "shouldShowAlternateHeadlines") || ![titlesCopy count] || (-[FCHeadlineExperimentalTitleProvider feldsparID](self, "feldsparID"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
     v23 = MEMORY[0x1E69E9820];
-    v24 = v8;
+    v24 = titleCopy;
     v20 = [(FCHeadlineExperimentalTitleProvider *)self metadataForDefaultHeadlineWithTitle:v24, v23, 3221225472, __102__FCHeadlineExperimentalTitleProvider__headlineMetadataFromTitle_fromExperimentalTitles_forArticleID___block_invoke, &unk_1E7C465B8, self];
 
     goto LABEL_8;
   }
 
-  v12 = v8;
-  v13 = [v9 count];
+  v12 = titleCopy;
+  v13 = [titlesCopy count];
   if (v13 == 1)
   {
-    v18 = [v9 objectAtIndexedSubscript:0];
+    v18 = [titlesCopy objectAtIndexedSubscript:0];
 
     v17 = 0;
     if ([v12 isEqualToString:v18])
@@ -105,18 +105,18 @@ void __57__FCHeadlineExperimentalTitleProvider_isDebugModeEnabled__block_invoke(
 
   else
   {
-    if ([v9 count] < 2)
+    if ([titlesCopy count] < 2)
     {
       v22 = [(FCHeadlineExperimentalTitleProvider *)self metadataForDefaultHeadlineWithTitle:v12];
       goto LABEL_16;
     }
 
-    v14 = [(FCHeadlineExperimentalTitleProvider *)self feldsparID];
-    v15 = [v14 hash];
-    v16 = [v10 hash] ^ v15;
-    v17 = v16 % [v9 count];
+    feldsparID = [(FCHeadlineExperimentalTitleProvider *)self feldsparID];
+    v15 = [feldsparID hash];
+    v16 = [dCopy hash] ^ v15;
+    v17 = v16 % [titlesCopy count];
 
-    v18 = [v9 objectAtIndexedSubscript:v17];
+    v18 = [titlesCopy objectAtIndexedSubscript:v17];
 
     v19 = 3;
   }
@@ -131,22 +131,22 @@ LABEL_8:
   return v20;
 }
 
-- (id)_debugHeadlineMetadataFromTitle:(id)a3 fromExperimentalTitles:(id)a4 forArticleID:(id)a5
+- (id)_debugHeadlineMetadataFromTitle:(id)title fromExperimentalTitles:(id)titles forArticleID:(id)d
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  titlesCopy = titles;
+  dCopy = d;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v9)
+  if (titlesCopy)
   {
-    v23 = v10;
-    v24 = self;
+    v23 = dCopy;
+    selfCopy = self;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = v9;
+    v12 = titlesCopy;
     v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
@@ -171,8 +171,8 @@ LABEL_8:
       while (v14);
     }
 
-    v10 = v23;
-    self = v24;
+    dCopy = v23;
+    self = selfCopy;
   }
 
   else
@@ -180,8 +180,8 @@ LABEL_8:
     v18 = 1;
     do
     {
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d %@", v18, v8];
-      [v11 addObject:v19];
+      titleCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d %@", v18, titleCopy];
+      [v11 addObject:titleCopy];
 
       v18 = (v18 + 1);
     }
@@ -189,17 +189,17 @@ LABEL_8:
     while (v18 != 8);
   }
 
-  v20 = [(FCHeadlineExperimentalTitleProvider *)self _headlineMetadataFromTitle:v8 fromExperimentalTitles:v11 forArticleID:v10];
+  v20 = [(FCHeadlineExperimentalTitleProvider *)self _headlineMetadataFromTitle:titleCopy fromExperimentalTitles:v11 forArticleID:dCopy];
 
   v21 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-- (id)metadataForDefaultHeadlineWithTitle:(id)a3
+- (id)metadataForDefaultHeadlineWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [[FCHeadlineExperimentalTitleMetadata alloc] initWithChosenTitle:v3 isTitleExperimental:0 arrayIndexUsedforTitle:0 treatmentState:1];
+  titleCopy = title;
+  v4 = [[FCHeadlineExperimentalTitleMetadata alloc] initWithChosenTitle:titleCopy isTitleExperimental:0 arrayIndexUsedforTitle:0 treatmentState:1];
 
   return v4;
 }

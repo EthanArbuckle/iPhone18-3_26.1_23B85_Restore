@@ -1,6 +1,6 @@
 @interface STUIStatusBarRegionAxisCenteringLayout
 - (STUIStatusBarRegionAxisCenteringLayout)init;
-- (id)constraintsForDisplayItems:(id)a3 layoutGuides:(id)a4 inContainerItem:(id)a5 axis:(int64_t)a6;
+- (id)constraintsForDisplayItems:(id)items layoutGuides:(id)guides inContainerItem:(id)item axis:(int64_t)axis;
 @end
 
 @implementation STUIStatusBarRegionAxisCenteringLayout
@@ -17,148 +17,148 @@
   return result;
 }
 
-- (id)constraintsForDisplayItems:(id)a3 layoutGuides:(id)a4 inContainerItem:(id)a5 axis:(int64_t)a6
+- (id)constraintsForDisplayItems:(id)items layoutGuides:(id)guides inContainerItem:(id)item axis:(int64_t)axis
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v11 count];
-  v15 = [MEMORY[0x277CBEB18] array];
-  v71 = v13;
+  itemsCopy = items;
+  guidesCopy = guides;
+  itemCopy = item;
+  v14 = [itemsCopy count];
+  array = [MEMORY[0x277CBEB18] array];
+  v71 = itemCopy;
   if (v14 == 1)
   {
-    v16 = [v11 firstObject];
-    v17 = [v16 layoutItem];
+    firstObject = [itemsCopy firstObject];
+    layoutItem = [firstObject layoutItem];
 
-    v18 = v17;
+    v18 = layoutItem;
     v19 = v18;
-    if (a6 == 1)
+    if (axis == 1)
     {
-      v20 = [v18 centerYAnchor];
+      centerYAnchor = [v18 centerYAnchor];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
         goto LABEL_14;
       }
 
-      v20 = [v18 centerXAnchor];
+      centerYAnchor = [v18 centerXAnchor];
     }
 
-    v6 = v20;
+    v6 = centerYAnchor;
 LABEL_14:
 
-    v34 = v13;
+    v34 = itemCopy;
     v35 = v34;
-    if (a6 == 1)
+    if (axis == 1)
     {
-      v36 = [v34 centerYAnchor];
+      centerYAnchor2 = [v34 centerYAnchor];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
         goto LABEL_19;
       }
 
-      v36 = [v34 centerXAnchor];
+      centerYAnchor2 = [v34 centerXAnchor];
     }
 
-    v16 = v36;
+    firstObject = centerYAnchor2;
 LABEL_19:
 
-    v37 = [v6 constraintEqualToAnchor:v16];
-    [v15 addObject:v37];
+    v37 = [v6 constraintEqualToAnchor:firstObject];
+    [array addObject:v37];
 
     v38 = v19;
     v39 = v38;
-    if (a6 == 1)
+    if (axis == 1)
     {
-      v40 = [v38 topAnchor];
+      topAnchor = [v38 topAnchor];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
         goto LABEL_24;
       }
 
-      v40 = [v38 leadingAnchor];
+      topAnchor = [v38 leadingAnchor];
     }
 
-    v6 = v40;
+    v6 = topAnchor;
 LABEL_24:
 
     v41 = v35;
     v42 = v41;
-    if (a6 == 1)
+    if (axis == 1)
     {
-      v43 = [v41 topAnchor];
+      topAnchor2 = [v41 topAnchor];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
         goto LABEL_29;
       }
 
-      v43 = [v41 leadingAnchor];
+      topAnchor2 = [v41 leadingAnchor];
     }
 
-    v16 = v43;
+    firstObject = topAnchor2;
 LABEL_29:
 
-    v44 = [v6 constraintGreaterThanOrEqualToAnchor:v16];
-    [v15 addObject:v44];
+    v44 = [v6 constraintGreaterThanOrEqualToAnchor:firstObject];
+    [array addObject:v44];
 
     v45 = v39;
     v46 = v45;
-    if (a6 == 1)
+    if (axis == 1)
     {
-      v47 = [v45 bottomAnchor];
+      bottomAnchor = [v45 bottomAnchor];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
         goto LABEL_34;
       }
 
-      v47 = [v45 trailingAnchor];
+      bottomAnchor = [v45 trailingAnchor];
     }
 
-    v6 = v47;
+    v6 = bottomAnchor;
 LABEL_34:
 
     v48 = v42;
     v49 = v48;
-    if (a6 == 1)
+    if (axis == 1)
     {
-      v50 = [v48 bottomAnchor];
+      bottomAnchor2 = [v48 bottomAnchor];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
 LABEL_39:
 
-        v51 = [v6 constraintLessThanOrEqualToAnchor:v16];
-        [v15 addObject:v51];
+        v51 = [v6 constraintLessThanOrEqualToAnchor:firstObject];
+        [array addObject:v51];
 
         goto LABEL_69;
       }
 
-      v50 = [v48 trailingAnchor];
+      bottomAnchor2 = [v48 trailingAnchor];
     }
 
-    v16 = v50;
+    firstObject = bottomAnchor2;
     goto LABEL_39;
   }
 
@@ -175,163 +175,163 @@ LABEL_39:
   v72[1] = 3221225472;
   v72[2] = __103__STUIStatusBarRegionAxisCenteringLayout_constraintsForDisplayItems_layoutGuides_inContainerItem_axis___block_invoke;
   v72[3] = &unk_279D38EB0;
-  v67 = v15;
-  v23 = v15;
+  v67 = array;
+  v23 = array;
   v73 = v23;
   v24 = v21;
   v74 = v24;
-  v81 = a6;
-  v25 = v13;
-  v26 = self;
+  axisCopy = axis;
+  v25 = itemCopy;
+  selfCopy = self;
   v75 = v25;
-  v69 = v11;
+  v69 = itemsCopy;
   v80 = v83;
-  v76 = v11;
-  v77 = self;
-  v27 = v12;
+  v76 = itemsCopy;
+  selfCopy2 = self;
+  v27 = guidesCopy;
   v78 = v27;
   v82 = v14;
   v28 = v70;
   v79 = v28;
   [v76 enumerateObjectsUsingBlock:v72];
-  v29 = v26[2];
+  v29 = selfCopy[2];
   v30 = v24;
   v31 = v30;
   if (v29 != -1.0)
   {
-    if (a6 == 1)
+    if (axis == 1)
     {
-      v33 = [v30 heightAnchor];
+      heightAnchor = [v30 heightAnchor];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
         goto LABEL_61;
       }
 
-      v33 = [v30 widthAnchor];
+      heightAnchor = [v30 widthAnchor];
     }
 
-    v14 = v33;
+    v14 = heightAnchor;
 LABEL_61:
 
-    v62 = [v14 constraintEqualToConstant:v26[2]];
+    v62 = [v14 constraintEqualToConstant:selfCopy[2]];
     [v23 addObject:v62];
 
     v63 = v28;
     v64 = v63;
-    if (a6 == 1)
+    if (axis == 1)
     {
-      v65 = [v63 heightAnchor];
+      heightAnchor2 = [v63 heightAnchor];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
 LABEL_66:
 
-        v26 = [v14 constraintEqualToConstant:v26[2]];
-        [v23 addObject:v26];
+        selfCopy = [v14 constraintEqualToConstant:selfCopy[2]];
+        [v23 addObject:selfCopy];
         goto LABEL_67;
       }
 
-      v65 = [v63 widthAnchor];
+      heightAnchor2 = [v63 widthAnchor];
     }
 
-    v14 = v65;
+    v14 = heightAnchor2;
     goto LABEL_66;
   }
 
-  if (a6 == 1)
+  if (axis == 1)
   {
-    v32 = [v30 heightAnchor];
+    heightAnchor3 = [v30 heightAnchor];
   }
 
   else
   {
-    if (a6)
+    if (axis)
     {
       goto LABEL_42;
     }
 
-    v32 = [v30 widthAnchor];
+    heightAnchor3 = [v30 widthAnchor];
   }
 
-  v14 = v32;
+  v14 = heightAnchor3;
 LABEL_42:
 
   v52 = v28;
   v53 = v52;
-  if (a6 == 1)
+  if (axis == 1)
   {
-    v54 = [v52 heightAnchor];
+    heightAnchor4 = [v52 heightAnchor];
   }
 
   else
   {
-    if (a6)
+    if (axis)
     {
       goto LABEL_47;
     }
 
-    v54 = [v52 widthAnchor];
+    heightAnchor4 = [v52 widthAnchor];
   }
 
-  v22 = v54;
+  v22 = heightAnchor4;
 LABEL_47:
 
   v55 = [v14 constraintEqualToAnchor:v22];
   [v23 addObject:v55];
 
-  if (v26[1] == -1.0)
+  if (selfCopy[1] == -1.0)
   {
-    v56 = [v27 lastObject];
-    v14 = v56;
-    if (a6 == 1)
+    lastObject = [v27 lastObject];
+    v14 = lastObject;
+    if (axis == 1)
     {
-      v57 = [v56 heightAnchor];
+      heightAnchor5 = [lastObject heightAnchor];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
         goto LABEL_53;
       }
 
-      v57 = [v56 widthAnchor];
+      heightAnchor5 = [lastObject widthAnchor];
     }
 
-    v26 = v57;
+    selfCopy = heightAnchor5;
 LABEL_53:
 
     v58 = v31;
     v59 = v58;
-    if (a6 == 1)
+    if (axis == 1)
     {
-      v60 = [v58 heightAnchor];
+      heightAnchor6 = [v58 heightAnchor];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
 LABEL_58:
 
-        v61 = [v26 constraintEqualToAnchor:v22];
+        v61 = [selfCopy constraintEqualToAnchor:v22];
         [v23 addObject:v61];
 
 LABEL_67:
         goto LABEL_68;
       }
 
-      v60 = [v58 widthAnchor];
+      heightAnchor6 = [v58 widthAnchor];
     }
 
-    v22 = v60;
+    v22 = heightAnchor6;
     goto LABEL_58;
   }
 
@@ -340,11 +340,11 @@ LABEL_68:
   [v27 addObject:v28];
 
   _Block_object_dispose(v83, 8);
-  v11 = v69;
-  v15 = v68;
+  itemsCopy = v69;
+  array = v68;
 LABEL_69:
 
-  return v15;
+  return array;
 }
 
 void __103__STUIStatusBarRegionAxisCenteringLayout_constraintsForDisplayItems_layoutGuides_inContainerItem_axis___block_invoke(uint64_t a1, void *a2, uint64_t a3)

@@ -1,5 +1,5 @@
 @interface LibcoreReflectGenericArrayTypeImpl
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)getGenericComponentType;
 - (void)dealloc;
@@ -24,27 +24,27 @@
   return [(JavaLangReflectType *)componentType getResolvedType];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [JavaLangReflectGenericArrayType_class_() isInstance:a3];
+  v5 = [JavaLangReflectGenericArrayType_class_() isInstance:equal];
   if (v5)
   {
     v6 = JavaLangReflectGenericArrayType_class_();
-    if (!a3)
+    if (!equal)
     {
       [(LibcoreReflectGenericArrayTypeImpl *)self getGenericComponentType];
       JreThrowNullPointerException();
     }
 
-    if (([v6 isInstance:a3] & 1) == 0)
+    if (([v6 isInstance:equal] & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
-    v7 = [(LibcoreReflectGenericArrayTypeImpl *)self getGenericComponentType];
-    v8 = [a3 getGenericComponentType];
+    getGenericComponentType = [(LibcoreReflectGenericArrayTypeImpl *)self getGenericComponentType];
+    getGenericComponentType2 = [equal getGenericComponentType];
 
-    LOBYTE(v5) = JavaUtilObjects_equalsWithId_withId_(v7, v8);
+    LOBYTE(v5) = JavaUtilObjects_equalsWithId_withId_(getGenericComponentType, getGenericComponentType2);
   }
 
   return v5;

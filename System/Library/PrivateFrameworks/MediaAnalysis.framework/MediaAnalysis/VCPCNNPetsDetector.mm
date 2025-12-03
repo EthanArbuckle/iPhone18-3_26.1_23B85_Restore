@@ -1,19 +1,19 @@
 @interface VCPCNNPetsDetector
-+ (id)detector:(int)a3;
++ (id)detector:(int)detector;
 - (id).cxx_construct;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4 withChannels:(int)a5;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6;
-- (int)generatePetsRegions:(float *)a3 outHeight:(int)a4 outWidth:(int)a5 boxes:(id)a6 faceBoxes:(id)a7 maxNumRegions:(int)a8;
-- (int)petsDetection:(__CVBuffer *)a3 petsRegions:(id)a4 petsFaceRegions:(id)a5 cancel:(id)a6;
-- (int)postProcBoxes:(id)a3 maxNumRegions:(int)a4;
-- (void)nonMaxSuppression:(id)a3;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data withChannels:(int)channels;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width;
+- (int)generatePetsRegions:(float *)regions outHeight:(int)height outWidth:(int)width boxes:(id)boxes faceBoxes:(id)faceBoxes maxNumRegions:(int)numRegions;
+- (int)petsDetection:(__CVBuffer *)detection petsRegions:(id)regions petsFaceRegions:(id)faceRegions cancel:(id)cancel;
+- (int)postProcBoxes:(id)boxes maxNumRegions:(int)regions;
+- (void)nonMaxSuppression:(id)suppression;
 @end
 
 @implementation VCPCNNPetsDetector
 
-+ (id)detector:(int)a3
++ (id)detector:(int)detector
 {
-  v3 = *&a3;
+  v3 = *&detector;
   if (+[VCPCNNPetsDetector detector:]::once != -1)
   {
     +[VCPCNNPetsDetector detector:];
@@ -31,19 +31,19 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
   return result;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4 withChannels:(int)a5
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data withChannels:(int)channels
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -54,20 +54,20 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
   }
 
   v10 = Height;
-  v11 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v11 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v35 = v11;
-  if (!v11 || (v12 = v11, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v39 = a3, v40 = 1024, v41 = v12, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v12 = v35) == 0))
+  if (!v11 || (v12 = v11, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v39 = image, v40 = 1024, v41 = v12, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v12 = v35) == 0))
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    if (a5 == 3)
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+    if (channels == 3)
     {
-      bzero(a4, 3 * 4 * Width * v10);
+      bzero(data, 3 * 4 * Width * v10);
       if (v10 >= 1)
       {
         v16 = 0;
-        v17 = &a4[2 * v10 * Width];
-        v18 = &a4[v10 * Width];
+        v17 = &data[2 * v10 * Width];
+        v18 = &data[v10 * Width];
         v19 = 4 * Width;
         do
         {
@@ -79,7 +79,7 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
             {
               LOBYTE(v15) = BaseAddress[(v20 * 4) + 2];
               *&v22 = ((LODWORD(v15) / 255.0) + -0.485) / 0.229;
-              a4[v20] = *&v22;
+              data[v20] = *&v22;
               LOBYTE(v22) = BaseAddress[(v20 * 4) + 1];
               *&v23 = ((v22 / 255.0) + -0.456) / 0.224;
               v18[v20] = *&v23;
@@ -96,7 +96,7 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
           ++v16;
           v17 = (v17 + v19);
           v18 = (v18 + v19);
-          a4 = (a4 + v19);
+          data = (data + v19);
         }
 
         while (v16 != v10);
@@ -105,13 +105,13 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
 
     else
     {
-      bzero(a4, 16 * Width * v10);
+      bzero(data, 16 * Width * v10);
       if (v10 >= 1)
       {
         v26 = 0;
-        v27 = &a4[3 * v10 * Width];
-        v28 = &a4[2 * v10 * Width];
-        v29 = &a4[v10 * Width];
+        v27 = &data[3 * v10 * Width];
+        v28 = &data[2 * v10 * Width];
+        v29 = &data[v10 * Width];
         v30 = 4 * Width;
         do
         {
@@ -123,7 +123,7 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
             {
               LOBYTE(v25) = BaseAddress[(v31 * 4) + 2];
               *&v33 = LODWORD(v25) / 255.0;
-              a4[v31] = *&v33;
+              data[v31] = *&v33;
               LOBYTE(v33) = BaseAddress[(v31 * 4) + 1];
               *&v34 = v33 / 255.0;
               v29[v31] = *&v34;
@@ -142,7 +142,7 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
           v27 = (v27 + v30);
           v28 = (v28 + v30);
           v29 = (v29 + v30);
-          a4 = (a4 + v30);
+          data = (data + v30);
         }
 
         while (v26 != v10);
@@ -159,19 +159,19 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
   return v12;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width
 {
-  if (!a3)
+  if (!input)
   {
     return -108;
   }
 
   cf = 0;
-  Scaler::Scale(&self->_scaler, a4, &cf, *&a6, *&a5, 1111970369);
+  Scaler::Scale(&self->_scaler, buffer, &cf, *&width, *&height, 1111970369);
   v9 = v8;
   if (!v8)
   {
-    v9 = [(VCPCNNPetsDetector *)self copyImage:cf toData:a3 withChannels:3];
+    v9 = [(VCPCNNPetsDetector *)self copyImage:cf toData:input withChannels:3];
   }
 
   if (cf)
@@ -182,15 +182,15 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
   return v9;
 }
 
-- (void)nonMaxSuppression:(id)a3
+- (void)nonMaxSuppression:(id)suppression
 {
-  v19 = a3;
-  v3 = [v19 count];
+  suppressionCopy = suppression;
+  v3 = [suppressionCopy count];
   if (v3)
   {
     for (i = 0; i != v3; ++i)
     {
-      v5 = [v19 objectAtIndexedSubscript:i];
+      v5 = [suppressionCopy objectAtIndexedSubscript:i];
       LODWORD(v6) = 1.0;
       [v5 setFlag:v6];
     }
@@ -199,7 +199,7 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
     v8 = 1;
     do
     {
-      v9 = [v19 objectAtIndexedSubscript:v7];
+      v9 = [suppressionCopy objectAtIndexedSubscript:v7];
       [v9 flag];
       v11 = v10 == 1.0 && v3 > ++v7;
       v12 = v8;
@@ -207,7 +207,7 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
       {
         do
         {
-          v13 = [v19 objectAtIndexedSubscript:v12];
+          v13 = [suppressionCopy objectAtIndexedSubscript:v12];
           [v13 flag];
           if (v14 == 1.0)
           {
@@ -241,28 +241,28 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
   }
 }
 
-- (int)generatePetsRegions:(float *)a3 outHeight:(int)a4 outWidth:(int)a5 boxes:(id)a6 faceBoxes:(id)a7 maxNumRegions:(int)a8
+- (int)generatePetsRegions:(float *)regions outHeight:(int)height outWidth:(int)width boxes:(id)boxes faceBoxes:(id)faceBoxes maxNumRegions:(int)numRegions
 {
-  v64 = a6;
-  v63 = a7;
-  if (a4 >= 1)
+  boxesCopy = boxes;
+  faceBoxesCopy = faceBoxes;
+  if (height >= 1)
   {
     v61 = 0;
-    v57 = &a3[36 * a5 * a4];
-    v65 = 4 * a5 * a4;
-    v10 = a5 * a4;
-    v59 = a4;
+    v57 = &regions[36 * width * height];
+    v65 = 4 * width * height;
+    v10 = width * height;
+    heightCopy = height;
     do
     {
-      if (a5 >= 1)
+      if (width >= 1)
       {
         v11 = 0;
         v66 = ((32 * v61) | 0x10);
         do
         {
           v12 = 0;
-          v13 = &v57[v61 * a5 + v11];
-          v14 = &a3[v61 * a5 + v11];
+          v13 = &v57[v61 * width + v11];
+          v14 = &regions[v61 * width + v11];
           v62 = v11;
           v67 = ((32 * v11) | 0x10);
           v15 = 9;
@@ -290,7 +290,7 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
               *&v33 = v29;
               *&v34 = v21 * v28;
               v35 = [(VCPBoundingBox *)v27 initWithCenterAndSize:v31 y:v32 width:v33 height:v34 confidence:v30];
-              [v64 addObject:v35];
+              [boxesCopy addObject:v35];
             }
 
             v36 = fmaxf(v18[2 * v10], v18[3 * v10]);
@@ -312,7 +312,7 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
               *&v50 = v46;
               *&v51 = v38 * v45;
               v52 = [(VCPBoundingBox *)v44 initWithCenterAndSize:v48 y:v49 width:v50 height:v51 confidence:v47];
-              [v63 addObject:v52];
+              [faceBoxesCopy addObject:v52];
             }
 
             v16 += 2;
@@ -324,54 +324,54 @@ uint64_t __31__VCPCNNPetsDetector_detector___block_invoke()
           v11 = v62 + 1;
         }
 
-        while (v62 + 1 != a5);
+        while (v62 + 1 != width);
       }
 
       ++v61;
     }
 
-    while (v61 != v59);
+    while (v61 != heightCopy);
   }
 
-  v53 = self;
-  [(VCPCNNPetsDetector *)self postProcBoxes:v64 maxNumRegions:a8, self];
-  [(VCPCNNPetsDetector *)v53 postProcBoxes:v63 maxNumRegions:a8];
+  selfCopy = self;
+  [(VCPCNNPetsDetector *)self postProcBoxes:boxesCopy maxNumRegions:numRegions, self];
+  [(VCPCNNPetsDetector *)selfCopy postProcBoxes:faceBoxesCopy maxNumRegions:numRegions];
 
   return 0;
 }
 
-- (int)postProcBoxes:(id)a3 maxNumRegions:(int)a4
+- (int)postProcBoxes:(id)boxes maxNumRegions:(int)regions
 {
-  LODWORD(i) = a4;
-  v6 = a3;
-  [(VCPCNNPetsDetector *)self nonMaxSuppression:v6];
-  [v6 sortUsingComparator:&__block_literal_global_191];
-  if ([v6 count] > i)
+  LODWORD(i) = regions;
+  boxesCopy = boxes;
+  [(VCPCNNPetsDetector *)self nonMaxSuppression:boxesCopy];
+  [boxesCopy sortUsingComparator:&__block_literal_global_191];
+  if ([boxesCopy count] > i)
   {
-    for (i = i; [v6 count] > i; ++i)
+    for (i = i; [boxesCopy count] > i; ++i)
     {
-      [v6 removeLastObject];
+      [boxesCopy removeLastObject];
     }
   }
 
-  v7 = [v6 lastObject];
-  if (v7)
+  lastObject = [boxesCopy lastObject];
+  if (lastObject)
   {
     do
     {
-      [v7 flag];
+      [lastObject flag];
       if (v8 != 0.0)
       {
         break;
       }
 
-      [v6 removeLastObject];
-      v9 = [v6 lastObject];
+      [boxesCopy removeLastObject];
+      lastObject2 = [boxesCopy lastObject];
 
-      v7 = v9;
+      lastObject = lastObject2;
     }
 
-    while (v9);
+    while (lastObject2);
   }
 
   return 0;
@@ -421,15 +421,15 @@ uint64_t __50__VCPCNNPetsDetector_postProcBoxes_maxNumRegions___block_invoke(uin
   return v11;
 }
 
-- (int)petsDetection:(__CVBuffer *)a3 petsRegions:(id)a4 petsFaceRegions:(id)a5 cancel:(id)a6
+- (int)petsDetection:(__CVBuffer *)detection petsRegions:(id)regions petsFaceRegions:(id)faceRegions cancel:(id)cancel
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v42 = a4;
-  v10 = a5;
-  v41 = a6;
+  regionsCopy = regions;
+  faceRegionsCopy = faceRegions;
+  cancelCopy = cancel;
   v11 = objc_autoreleasePoolPush();
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(detection);
+  Height = CVPixelBufferGetHeight(detection);
   v14 = Height;
   if (Width <= Height)
   {
@@ -473,7 +473,7 @@ LABEL_13:
   }
 
   v18 = [(VCPCNNPetsDetector *)self getInputBuffer:v14 srcWidth:Width cnnInputHeight:&v43 cnnInputWidth:&v43 + 4];
-  v17 = [(VCPCNNPetsDetector *)self createInput:v18 withBuffer:a3 cnnInputHeight:v43 cnnInputWidth:HIDWORD(v43)];
+  v17 = [(VCPCNNPetsDetector *)self createInput:v18 withBuffer:detection cnnInputHeight:v43 cnnInputWidth:HIDWORD(v43)];
   if (v17)
   {
     goto LABEL_13;
@@ -481,7 +481,7 @@ LABEL_13:
 
   v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v39 = [(VCPCNNPetsDetector *)self generatePetsBoxes:v40 faceBoxes:v22 cancel:v41];
+  v39 = [(VCPCNNPetsDetector *)self generatePetsBoxes:v40 faceBoxes:v22 cancel:cancelCopy];
   if (v39)
   {
     v19 = 1;
@@ -504,7 +504,7 @@ LABEL_13:
       v29 = [v28 numberWithFloat:?];
       v47[1] = v29;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:2];
-      [v42 addObject:v30];
+      [regionsCopy addObject:v30];
     }
 
     for (j = 0; [v22 count] > j; ++j)
@@ -522,7 +522,7 @@ LABEL_13:
       v37 = [v36 numberWithFloat:?];
       v45[1] = v37;
       v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
-      [v10 addObject:v38];
+      [faceRegionsCopy addObject:v38];
     }
 
     v19 = 0;

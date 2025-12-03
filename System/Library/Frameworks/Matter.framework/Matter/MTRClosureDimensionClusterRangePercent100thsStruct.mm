@@ -1,6 +1,6 @@
 @interface MTRClosureDimensionClusterRangePercent100thsStruct
 - (MTRClosureDimensionClusterRangePercent100thsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,7 +24,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRClosureDimensionClusterRangePercent100thsStruct);
   v5 = [(MTRClosureDimensionClusterRangePercent100thsStruct *)self min];

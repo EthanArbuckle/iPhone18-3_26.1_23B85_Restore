@@ -1,20 +1,20 @@
 @interface CalDefaultCalendarMigrationController
 - (BOOL)shouldPerformMigration;
-- (CalDefaultCalendarMigrationController)initWithDefaultsProvider:(id)a3;
+- (CalDefaultCalendarMigrationController)initWithDefaultsProvider:(id)provider;
 @end
 
 @implementation CalDefaultCalendarMigrationController
 
-- (CalDefaultCalendarMigrationController)initWithDefaultsProvider:(id)a3
+- (CalDefaultCalendarMigrationController)initWithDefaultsProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = CalDefaultCalendarMigrationController;
   v6 = [(CalDefaultCalendarMigrationController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaultsProvider, a3);
+    objc_storeStrong(&v6->_defaultsProvider, provider);
   }
 
   return v7;
@@ -22,8 +22,8 @@
 
 - (BOOL)shouldPerformMigration
 {
-  v3 = [(CalDefaultCalendarMigrationController *)self defaultsProvider];
-  v4 = [v3 shouldPerformMigrationWithDestinationDirectory:0];
+  defaultsProvider = [(CalDefaultCalendarMigrationController *)self defaultsProvider];
+  v4 = [defaultsProvider shouldPerformMigrationWithDestinationDirectory:0];
 
   if (v4)
   {
@@ -41,8 +41,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(CalDefaultCalendarMigrationController *)self defaultsProvider];
-  v9 = [v8 needsMigrationCleanupWithDestinationDirectory:0];
+  defaultsProvider2 = [(CalDefaultCalendarMigrationController *)self defaultsProvider];
+  v9 = [defaultsProvider2 needsMigrationCleanupWithDestinationDirectory:0];
 
   if (v9)
   {

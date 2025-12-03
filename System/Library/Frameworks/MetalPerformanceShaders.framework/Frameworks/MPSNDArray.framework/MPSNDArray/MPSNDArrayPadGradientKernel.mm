@@ -1,58 +1,58 @@
 @interface MPSNDArrayPadGradientKernel
-- (MPSNDArrayPadGradientKernel)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayPadGradientKernel)initWithDevice:(id)a3 edgeMode:(unint64_t)a4 paddingSize:(MPSNDArrayPaddingSize *)a5;
+- (MPSNDArrayPadGradientKernel)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayPadGradientKernel)initWithDevice:(id)device edgeMode:(unint64_t)mode paddingSize:(MPSNDArrayPaddingSize *)size;
 - (MPSNDArrayPaddingSize)paddingSize;
 - (double)dimensionsToBeRetained;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayPadGradientKernel
 
-- (MPSNDArrayPadGradientKernel)initWithDevice:(id)a3 edgeMode:(unint64_t)a4 paddingSize:(MPSNDArrayPaddingSize *)a5
+- (MPSNDArrayPadGradientKernel)initWithDevice:(id)device edgeMode:(unint64_t)mode paddingSize:(MPSNDArrayPaddingSize *)size
 {
   v20.receiver = self;
   v20.super_class = MPSNDArrayPadGradientKernel;
-  result = [(MPSNDArrayUnaryGradientKernel *)&v20 initWithDevice:a3];
+  result = [(MPSNDArrayUnaryGradientKernel *)&v20 initWithDevice:device];
   result->super.super.super._encodeGradient = EncodePadGradient;
   result->super.super.super._encodeData = result;
-  result->_edgeMode = a4;
-  v9 = *&a5->paddingSize[12][0];
-  v8 = *&a5->paddingSize[13][0];
-  v10 = *&a5->paddingSize[15][0];
-  *&result->_paddingSize.paddingSize[14][0] = *&a5->paddingSize[14][0];
+  result->_edgeMode = mode;
+  v9 = *&size->paddingSize[12][0];
+  v8 = *&size->paddingSize[13][0];
+  v10 = *&size->paddingSize[15][0];
+  *&result->_paddingSize.paddingSize[14][0] = *&size->paddingSize[14][0];
   *&result->_paddingSize.paddingSize[15][0] = v10;
   *&result->_paddingSize.paddingSize[12][0] = v9;
   *&result->_paddingSize.paddingSize[13][0] = v8;
-  v12 = *&a5->paddingSize[8][0];
-  v11 = *&a5->paddingSize[9][0];
-  v13 = *&a5->paddingSize[11][0];
-  *&result->_paddingSize.paddingSize[10][0] = *&a5->paddingSize[10][0];
+  v12 = *&size->paddingSize[8][0];
+  v11 = *&size->paddingSize[9][0];
+  v13 = *&size->paddingSize[11][0];
+  *&result->_paddingSize.paddingSize[10][0] = *&size->paddingSize[10][0];
   *&result->_paddingSize.paddingSize[11][0] = v13;
   *&result->_paddingSize.paddingSize[8][0] = v12;
   *&result->_paddingSize.paddingSize[9][0] = v11;
-  v15 = *&a5->paddingSize[4][0];
-  v14 = *&a5->paddingSize[5][0];
-  v16 = *&a5->paddingSize[7][0];
-  *&result->_paddingSize.paddingSize[6][0] = *&a5->paddingSize[6][0];
+  v15 = *&size->paddingSize[4][0];
+  v14 = *&size->paddingSize[5][0];
+  v16 = *&size->paddingSize[7][0];
+  *&result->_paddingSize.paddingSize[6][0] = *&size->paddingSize[6][0];
   *&result->_paddingSize.paddingSize[7][0] = v16;
   *&result->_paddingSize.paddingSize[4][0] = v15;
   *&result->_paddingSize.paddingSize[5][0] = v14;
-  v17 = *&a5->paddingSize[0][0];
-  v18 = *&a5->paddingSize[1][0];
-  v19 = *&a5->paddingSize[3][0];
-  *&result->_paddingSize.paddingSize[2][0] = *&a5->paddingSize[2][0];
+  v17 = *&size->paddingSize[0][0];
+  v18 = *&size->paddingSize[1][0];
+  v19 = *&size->paddingSize[3][0];
+  *&result->_paddingSize.paddingSize[2][0] = *&size->paddingSize[2][0];
   *&result->_paddingSize.paddingSize[3][0] = v19;
   *&result->_paddingSize.paddingSize[0][0] = v17;
   *&result->_paddingSize.paddingSize[1][0] = v18;
   return result;
 }
 
-- (MPSNDArrayPadGradientKernel)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayPadGradientKernel)initWithCoder:(id)coder device:(id)device
 {
   v11.receiver = self;
   v11.super_class = MPSNDArrayPadGradientKernel;
-  v5 = [(MPSNDArrayUnaryGradientKernel *)&v11 initWithCoder:a3 device:a4];
+  v5 = [(MPSNDArrayUnaryGradientKernel *)&v11 initWithCoder:coder device:device];
   v6 = v5;
   if (v5)
   {
@@ -63,21 +63,21 @@
     v9 = &v6->_paddingSize.paddingSize[0][1];
     do
     {
-      *(v9 - 1) = [a3 decodeIntegerForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v8, 0)}];
-      *v9 = [a3 decodeIntegerForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v8, 1)}];
+      *(v9 - 1) = [coder decodeIntegerForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v8, 0)}];
+      *v9 = [coder decodeIntegerForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v8, 1)}];
       v9 += 2;
       ++v8;
     }
 
     while (v8 != 16);
-    v6->_edgeMode = [a3 decodeIntegerForKey:@"MPSNDArrayPad.edgeMode"];
+    v6->_edgeMode = [coder decodeIntegerForKey:@"MPSNDArrayPad.edgeMode"];
     objc_autoreleasePoolPop(v7);
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v10.receiver = self;
@@ -88,24 +88,24 @@
   v7 = &self->_paddingSize.paddingSize[0][1];
   do
   {
-    [a3 encodeInteger:*(v7 - 1) forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v6, 0)}];
+    [coder encodeInteger:*(v7 - 1) forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v6, 0)}];
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v6, 1];
     v9 = *v7;
     v7 += 2;
-    [a3 encodeInteger:v9 forKey:v8];
+    [coder encodeInteger:v9 forKey:v8];
     ++v6;
   }
 
   while (v6 != 16);
-  [a3 encodeInteger:self->_edgeMode forKey:@"MPSNDArrayPad.edgeMode"];
+  [coder encodeInteger:self->_edgeMode forKey:@"MPSNDArrayPad.edgeMode"];
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v18.receiver = self;
   v18.super_class = MPSNDArrayPadGradientKernel;
-  result = [(MPSNDArrayMultiaryGradientKernel *)&v18 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryGradientKernel *)&v18 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 18) = self->_edgeMode;
@@ -144,11 +144,11 @@
 
 - (double)dimensionsToBeRetained
 {
-  v1 = a1 + 19;
-  if (a1[49])
+  v1 = self + 19;
+  if (self[49])
   {
     v2 = 0;
-    if (a1[47])
+    if (self[47])
     {
       goto LABEL_3;
     }
@@ -156,12 +156,12 @@
 
   else
   {
-    v2 = a1[50] == 0;
-    if (a1[47])
+    v2 = self[50] == 0;
+    if (self[47])
     {
 LABEL_3:
       v3 = 0;
-      if (a1[45])
+      if (self[45])
       {
         goto LABEL_4;
       }
@@ -170,12 +170,12 @@ LABEL_3:
     }
   }
 
-  v3 = a1[48] == 0;
-  if (a1[45])
+  v3 = self[48] == 0;
+  if (self[45])
   {
 LABEL_4:
     v4 = 0;
-    if (a1[43])
+    if (self[43])
     {
       goto LABEL_5;
     }
@@ -184,12 +184,12 @@ LABEL_4:
   }
 
 LABEL_20:
-  v4 = a1[46] == 0;
-  if (a1[43])
+  v4 = self[46] == 0;
+  if (self[43])
   {
 LABEL_5:
     v5 = 0;
-    if (a1[41])
+    if (self[41])
     {
       goto LABEL_6;
     }
@@ -198,12 +198,12 @@ LABEL_5:
   }
 
 LABEL_21:
-  v5 = a1[44] == 0;
-  if (a1[41])
+  v5 = self[44] == 0;
+  if (self[41])
   {
 LABEL_6:
     v6 = 0;
-    if (a1[39])
+    if (self[39])
     {
       goto LABEL_7;
     }
@@ -212,12 +212,12 @@ LABEL_6:
   }
 
 LABEL_22:
-  v6 = a1[42] == 0;
-  if (a1[39])
+  v6 = self[42] == 0;
+  if (self[39])
   {
 LABEL_7:
     v7 = 0;
-    if (a1[37])
+    if (self[37])
     {
       goto LABEL_8;
     }
@@ -226,12 +226,12 @@ LABEL_7:
   }
 
 LABEL_23:
-  v7 = a1[40] == 0;
-  if (a1[37])
+  v7 = self[40] == 0;
+  if (self[37])
   {
 LABEL_8:
     v8 = 0;
-    if (a1[35])
+    if (self[35])
     {
       goto LABEL_9;
     }
@@ -240,12 +240,12 @@ LABEL_8:
   }
 
 LABEL_24:
-  v8 = a1[38] == 0;
-  if (a1[35])
+  v8 = self[38] == 0;
+  if (self[35])
   {
 LABEL_9:
     v9 = 0;
-    if (a1[33])
+    if (self[33])
     {
       goto LABEL_10;
     }
@@ -254,12 +254,12 @@ LABEL_9:
   }
 
 LABEL_25:
-  v9 = a1[36] == 0;
-  if (a1[33])
+  v9 = self[36] == 0;
+  if (self[33])
   {
 LABEL_10:
     v10 = 0;
-    if (a1[31])
+    if (self[31])
     {
       goto LABEL_11;
     }
@@ -268,8 +268,8 @@ LABEL_10:
   }
 
 LABEL_26:
-  v10 = a1[34] == 0;
-  if (a1[31])
+  v10 = self[34] == 0;
+  if (self[31])
   {
 LABEL_11:
     v11 = 0;
@@ -282,7 +282,7 @@ LABEL_11:
   }
 
 LABEL_27:
-  v11 = a1[32] == 0;
+  v11 = self[32] == 0;
   if (v1[10])
   {
 LABEL_12:

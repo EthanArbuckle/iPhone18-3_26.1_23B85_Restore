@@ -1,5 +1,5 @@
 @interface ATXHeroAndClipEventSamplers
-+ (id)debugSampler:(id)a3;
++ (id)debugSampler:(id)sampler;
 + (id)defaultSampler;
 @end
 
@@ -12,10 +12,10 @@
   return v2;
 }
 
-+ (id)debugSampler:(id)a3
++ (id)debugSampler:(id)sampler
 {
-  v3 = a3;
-  v4 = [[ATXHeroAndClipDebugSampler alloc] initWithSampleIndices:v3];
+  samplerCopy = sampler;
+  v4 = [[ATXHeroAndClipDebugSampler alloc] initWithSampleIndices:samplerCopy];
 
   return v4;
 }

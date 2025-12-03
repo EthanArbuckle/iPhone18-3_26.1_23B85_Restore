@@ -1,59 +1,59 @@
 @interface PKPeerPaymentAssociatedAccountActivationViewController
 - (BOOL)_isAssociatedAccountPending;
-- (PKPeerPaymentAssociatedAccountActivationViewController)initWithPeerPaymentSetupFlowController:(id)a3;
-- (unint64_t)_nextStateAfterCheckingFamilyMemberAppleCashCapabilities:(BOOL *)a3;
+- (PKPeerPaymentAssociatedAccountActivationViewController)initWithPeerPaymentSetupFlowController:(id)controller;
+- (unint64_t)_nextStateAfterCheckingFamilyMemberAppleCashCapabilities:(BOOL *)capabilities;
 - (void)_cancelTimer;
 - (void)_checkFamilyMemberAppleCashCapabilities;
 - (void)_handlePeerPaymentAccountDidChangeNotification;
-- (void)_presentDisplayableError:(id)a3;
+- (void)_presentDisplayableError:(id)error;
 - (void)_sendMoneyInMessages;
-- (void)_setState:(unint64_t)a3;
-- (void)_showSpinner:(BOOL)a3;
+- (void)_setState:(unint64_t)state;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)_startTimerIfNeccessary;
-- (void)_terminateAddAssociatedAccountFlowWithSucces:(BOOL)a3 updatedAccount:(id)a4;
+- (void)_terminateAddAssociatedAccountFlowWithSucces:(BOOL)succes updatedAccount:(id)account;
 - (void)dealloc;
-- (void)deviceSharingCapabilitiesUpdated:(id)a3 maximumPossibleDevices:(int64_t)a4 forAppleID:(id)a5;
-- (void)deviceSharingCapabilitiesUpdated:(id)a3 newSharingCapabilties:(id)a4 forAppleID:(id)a5;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (void)deviceSharingCapabilitiesUpdated:(id)updated maximumPossibleDevices:(int64_t)devices forAppleID:(id)d;
+- (void)deviceSharingCapabilitiesUpdated:(id)updated newSharingCapabilties:(id)capabilties forAppleID:(id)d;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPeerPaymentAssociatedAccountActivationViewController
 
-- (PKPeerPaymentAssociatedAccountActivationViewController)initWithPeerPaymentSetupFlowController:(id)a3
+- (PKPeerPaymentAssociatedAccountActivationViewController)initWithPeerPaymentSetupFlowController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = PKPeerPaymentAssociatedAccountActivationViewController;
-  v6 = -[PKExplanationViewController initWithContext:](&v20, sel_initWithContext_, [v5 context]);
+  v6 = -[PKExplanationViewController initWithContext:](&v20, sel_initWithContext_, [controllerCopy context]);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
-    v8 = [(PKPeerPaymentSetupFlowController *)v7->_controller deviceCapabiltiesManager];
-    [v8 registerObserver:v7];
+    objc_storeStrong(&v6->_controller, controller);
+    deviceCapabiltiesManager = [(PKPeerPaymentSetupFlowController *)v7->_controller deviceCapabiltiesManager];
+    [deviceCapabiltiesManager registerObserver:v7];
 
-    v9 = [(PKPeerPaymentSetupFlowController *)v7->_controller configuration];
-    v10 = [v9 peerPaymentSetupConfigurationType];
+    configuration = [(PKPeerPaymentSetupFlowController *)v7->_controller configuration];
+    peerPaymentSetupConfigurationType = [configuration peerPaymentSetupConfigurationType];
 
-    if (v10 == 1)
+    if (peerPaymentSetupConfigurationType == 1)
     {
-      v11 = [(PKPeerPaymentSetupFlowController *)v7->_controller configuration];
-      v12 = [v11 familyMember];
+      configuration2 = [(PKPeerPaymentSetupFlowController *)v7->_controller configuration];
+      familyMember = [configuration2 familyMember];
       familyMember = v7->_familyMember;
-      v7->_familyMember = v12;
+      v7->_familyMember = familyMember;
 
-      v14 = [v11 associatedAccountSetupDelegate];
-      objc_storeWeak(&v7->_delegate, v14);
+      associatedAccountSetupDelegate = [configuration2 associatedAccountSetupDelegate];
+      objc_storeWeak(&v7->_delegate, associatedAccountSetupDelegate);
 
-      v7->_setupType = [v11 setupType];
+      v7->_setupType = [configuration2 setupType];
     }
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v16 = *MEMORY[0x1E69BC378];
-    v17 = [(PKPeerPaymentSetupFlowController *)v7->_controller peerPaymentWebService];
-    v18 = [v17 targetDevice];
-    [v15 addObserver:v7 selector:sel__handlePeerPaymentAccountDidChangeNotification name:v16 object:v18];
+    peerPaymentWebService = [(PKPeerPaymentSetupFlowController *)v7->_controller peerPaymentWebService];
+    targetDevice = [peerPaymentWebService targetDevice];
+    [defaultCenter addObserver:v7 selector:sel__handlePeerPaymentAccountDidChangeNotification name:v16 object:targetDevice];
   }
 
   return v7;
@@ -61,8 +61,8 @@
 
 - (void)dealloc
 {
-  v3 = [(PKPeerPaymentSetupFlowController *)self->_controller deviceCapabiltiesManager];
-  [v3 unregisterObserver:self];
+  deviceCapabiltiesManager = [(PKPeerPaymentSetupFlowController *)self->_controller deviceCapabiltiesManager];
+  [deviceCapabiltiesManager unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPeerPaymentAssociatedAccountActivationViewController;
@@ -75,13 +75,13 @@
   v14.super_class = PKPeerPaymentAssociatedAccountActivationViewController;
   [(PKExplanationViewController *)&v14 viewDidLoad];
   [(PKExplanationViewController *)self setShowCancelButton:0];
-  v3 = [(PKPeerPaymentAssociatedAccountActivationViewController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(PKPeerPaymentAssociatedAccountActivationViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v4 = [(PKExplanationViewController *)self explanationView];
-  [v4 setDelegate:self];
-  [v4 setForceShowSetupLaterButton:0];
-  [v4 setShowPrivacyView:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setDelegate:self];
+  [explanationView setForceShowSetupLaterButton:0];
+  [explanationView setShowPrivacyView:0];
   [(PKExplanationViewController *)self context];
   if ((PKPaymentSetupContextIsBridge() & 1) == 0)
   {
@@ -90,16 +90,16 @@
     v7 = PKUIScreenScale();
     v8 = PKUIImageFromPDF(v6, 80.0, 80.0, v7);
 
-    [v4 setImage:v8];
-    v9 = [v4 imageView];
-    [v9 setClipsToBounds:1];
-    [v9 _setContinuousCornerRadius:20.0];
-    [v4 setTopMargin:30.0];
+    [explanationView setImage:v8];
+    imageView = [explanationView imageView];
+    [imageView setClipsToBounds:1];
+    [imageView _setContinuousCornerRadius:20.0];
+    [explanationView setTopMargin:30.0];
   }
 
-  v10 = [(PKPeerPaymentSetupFlowController *)self->_controller peerPaymentAccount];
+  peerPaymentAccount = [(PKPeerPaymentSetupFlowController *)self->_controller peerPaymentAccount];
   account = self->_account;
-  self->_account = v10;
+  self->_account = peerPaymentAccount;
 
   v12 = objc_alloc_init(PKPeerPaymentIconEducationView);
   iconEducationView = self->_iconEducationView;
@@ -108,17 +108,17 @@
   [(PKPeerPaymentAssociatedAccountActivationViewController *)self _setState:1];
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
   v103 = *MEMORY[0x1E69E9840];
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
     v6 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = PKPeerPaymentAssociatedAccountActivationStateToString(state);
-      v8 = PKPeerPaymentAssociatedAccountActivationStateToString(a3);
+      v8 = PKPeerPaymentAssociatedAccountActivationStateToString(state);
       *buf = 138412546;
       v100 = v7;
       v101 = 2112;
@@ -126,22 +126,22 @@
       _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentAssociatedAccountActivationViewController transitioning from state %@ to state %@", buf, 0x16u);
     }
 
-    self->_state = a3;
-    v9 = [(PKFamilyMember *)self->_familyMember firstName];
-    v10 = [(PKExplanationViewController *)self explanationView];
-    v11 = [v10 dockView];
-    v12 = [v11 footerView];
+    self->_state = state;
+    firstName = [(PKFamilyMember *)self->_familyMember firstName];
+    explanationView = [(PKExplanationViewController *)self explanationView];
+    dockView = [explanationView dockView];
+    footerView = [dockView footerView];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __68__PKPeerPaymentAssociatedAccountActivationViewController__setState___block_invoke;
     aBlock[3] = &unk_1E8020298;
-    v13 = v10;
+    v13 = explanationView;
     v91 = v13;
-    v14 = v11;
+    v14 = dockView;
     v92 = v14;
-    v15 = v12;
+    v15 = footerView;
     v93 = v15;
-    v94 = self;
+    selfCopy = self;
     v16 = _Block_copy(aBlock);
     v87[0] = MEMORY[0x1E69E9820];
     v87[1] = 3221225472;
@@ -149,7 +149,7 @@
     v87[3] = &unk_1E8012FD0;
     v17 = v14;
     v88 = v17;
-    v89 = self;
+    selfCopy2 = self;
     v18 = _Block_copy(v87);
     v19 = v18;
     v20 = self->_state;
@@ -161,21 +161,21 @@
         if ((v20 - 3) < 2)
         {
           v84 = v15;
-          v22 = v9;
+          v22 = firstName;
           (*(v18 + 2))(v18, 0);
           v23 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_12.isa);
-          v24 = [(PKPeerPaymentAccount *)self->_account supportsFamilySharingFeatureDescriptor];
-          v25 = [v24 osVersionRange];
+          supportsFamilySharingFeatureDescriptor = [(PKPeerPaymentAccount *)self->_account supportsFamilySharingFeatureDescriptor];
+          osVersionRange = [supportsFamilySharingFeatureDescriptor osVersionRange];
 
-          v26 = [v25 minimum];
-          v27 = [v26 iphone];
+          minimum = [osVersionRange minimum];
+          iphone = [minimum iphone];
 
-          v28 = [v25 minimum];
-          v29 = [v28 watch];
+          minimum2 = [osVersionRange minimum];
+          watch = [minimum2 watch];
 
-          if (v27 && v29)
+          if (iphone && watch)
           {
-            PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_13.isa, &stru_1F3BDB530.isa, v22, v27, v29, v22);
+            PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_13.isa, &stru_1F3BDB530.isa, v22, iphone, watch, v22);
           }
 
           else
@@ -186,7 +186,7 @@
           (*(v16 + 2))(v16, v23, v66, 0, 1, 0);
 
           v21 = 4;
-          v9 = v22;
+          firstName = v22;
 LABEL_38:
           v15 = v84;
           goto LABEL_39;
@@ -197,7 +197,7 @@ LABEL_38:
           (*(v18 + 2))(v18, 0);
           v80 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_15.isa);
           v82 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_16.isa);
-          v78 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_17.isa, &stru_1F3BD6370.isa, v9, v82);
+          v78 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_17.isa, &stru_1F3BD6370.isa, firstName, v82);
           v51 = [v78 rangeOfString:v82];
           v74 = v52;
           v76 = v51;
@@ -205,16 +205,16 @@ LABEL_38:
           v97 = *MEMORY[0x1E69DB650];
           [MEMORY[0x1E69DC888] labelColor];
           v54 = v15;
-          v56 = v55 = v9;
+          v56 = v55 = firstName;
           v98 = v56;
           v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
           v58 = [v53 initWithString:v78 attributes:v57];
 
-          v9 = v55;
+          firstName = v55;
           v15 = v54;
           v59 = [MEMORY[0x1E695DFF8] URLWithString:@"https://support.apple.com/102660"];
-          v60 = [MEMORY[0x1E69DC888] linkColor];
-          [v58 pk_addLinkURL:v59 toRange:v76 withColor:v74 isUnderlined:{v60, 0}];
+          linkColor = [MEMORY[0x1E69DC888] linkColor];
+          [v58 pk_addLinkURL:v59 toRange:v76 withColor:v74 isUnderlined:{linkColor, 0}];
 
           v61 = [v58 copy];
           v45 = v80;
@@ -258,13 +258,13 @@ LABEL_39:
       }
 
       (*(v18 + 2))(v18, 1);
-      v50 = [(PKPeerPaymentSetupFlowController *)self->_controller peerPaymentService];
+      peerPaymentService = [(PKPeerPaymentSetupFlowController *)self->_controller peerPaymentService];
       v85[0] = MEMORY[0x1E69E9820];
       v85[1] = 3221225472;
       v85[2] = __68__PKPeerPaymentAssociatedAccountActivationViewController__setState___block_invoke_4;
       v85[3] = &unk_1E80140E8;
       v85[4] = self;
-      [v50 updateAccountAndAssociatedAccountsWithCompletion:v85];
+      [peerPaymentService updateAccountAndAssociatedAccountsWithCompletion:v85];
 LABEL_27:
 
       goto LABEL_28;
@@ -277,7 +277,7 @@ LABEL_27:
         (*(v18 + 2))(v18, 0);
         v81 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_20.isa);
         v30 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_22.isa);
-        v31 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_21.isa, &stru_1F3BD6370.isa, v9, v30);
+        v31 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_21.isa, &stru_1F3BD6370.isa, firstName, v30);
 
         v32 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_22.isa);
         v33 = v31;
@@ -288,19 +288,19 @@ LABEL_27:
 
         v36 = objc_alloc(MEMORY[0x1E696AD40]);
         v95 = *MEMORY[0x1E69DB650];
-        v37 = [MEMORY[0x1E69DC888] labelColor];
-        v96 = v37;
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
+        v96 = labelColor;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v96 forKeys:&v95 count:1];
         v38 = v15;
-        v40 = v39 = v9;
+        v40 = v39 = firstName;
         v41 = [v36 initWithString:v33 attributes:v40];
 
-        v9 = v39;
+        firstName = v39;
         v15 = v38;
 
         v42 = [MEMORY[0x1E695DFF8] URLWithString:@"https://support.apple.com/kb/HT211324"];
-        v43 = [MEMORY[0x1E69DC888] linkColor];
-        [v41 pk_addLinkURL:v42 toRange:v79 withColor:v77 isUnderlined:{v43, 0}];
+        linkColor2 = [MEMORY[0x1E69DC888] linkColor];
+        [v41 pk_addLinkURL:v42 toRange:v79 withColor:v77 isUnderlined:{linkColor2, 0}];
 
         v44 = [v41 copy];
         v45 = v81;
@@ -315,18 +315,18 @@ LABEL_28:
       }
 
       (*(v18 + 2))(v18, 0);
-      v50 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_18.isa);
-      PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_19.isa, &stru_1F3BD5BF0.isa, v9);
+      peerPaymentService = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_18.isa);
+      PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_19.isa, &stru_1F3BD5BF0.isa, firstName);
       goto LABEL_26;
     }
 
     if (v20 == 8)
     {
       (*(v18 + 2))(v18, 0);
-      v50 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_12.isa);
-      PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_23.isa, &stru_1F3BD5BF0.isa, v9);
+      peerPaymentService = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_12.isa);
+      PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_23.isa, &stru_1F3BD5BF0.isa, firstName);
       v62 = LABEL_26:;
-      (*(v16 + 2))(v16, v50, v62, 0, 1, 0);
+      (*(v16 + 2))(v16, peerPaymentService, v62, 0, 1, 0);
 
       goto LABEL_27;
     }
@@ -339,12 +339,12 @@ LABEL_28:
     (*(v18 + 2))(v18, 0);
     v47 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_24.isa);
     setupType = self->_setupType;
-    v83 = v9;
+    v83 = firstName;
     v84 = v15;
     if (setupType == 1)
     {
-      v72 = v9;
-      v73 = v9;
+      v72 = firstName;
+      v73 = firstName;
       v49 = PKLocalizedFeatureString();
     }
 
@@ -356,7 +356,7 @@ LABEL_28:
         goto LABEL_35;
       }
 
-      v49 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_25.isa, &stru_1F3BD5BF0.isa, v9);
+      v49 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_25.isa, &stru_1F3BD5BF0.isa, firstName);
     }
 
     v67 = v49;
@@ -379,7 +379,7 @@ LABEL_35:
     (*(v16 + 2))(v16, v47, v67, 0, IsSetupAssistant, 1);
 
     v21 = 4;
-    v9 = v83;
+    firstName = v83;
     goto LABEL_38;
   }
 }
@@ -489,9 +489,9 @@ uint64_t __68__PKPeerPaymentAssociatedAccountActivationViewController__setState_
 
 - (BOOL)_isAssociatedAccountPending
 {
-  v3 = [(PKFamilyMember *)self->_familyMember altDSID];
-  v4 = [(PKPeerPaymentAccount *)self->_account peerPaymentAccountWithAltDSID:v3];
-  v5 = [(PKPeerPaymentAccount *)self->_account accountInvitationWithAltDSID:v3];
+  altDSID = [(PKFamilyMember *)self->_familyMember altDSID];
+  v4 = [(PKPeerPaymentAccount *)self->_account peerPaymentAccountWithAltDSID:altDSID];
+  v5 = [(PKPeerPaymentAccount *)self->_account accountInvitationWithAltDSID:altDSID];
   v6 = v5;
   v7 = v5 && [v5 status] == 1 || v4 == 0;
 
@@ -597,9 +597,9 @@ void __81__PKPeerPaymentAssociatedAccountActivationViewController__startTimerIfN
     return;
   }
 
-  v4 = [(PKPeerPaymentSetupFlowController *)self->_controller deviceCapabiltiesManager];
-  v5 = [(PKFamilyMember *)self->_familyMember appleID];
-  v6 = [v4 currentFetchStatusForAppleID:v5];
+  deviceCapabiltiesManager = [(PKPeerPaymentSetupFlowController *)self->_controller deviceCapabiltiesManager];
+  appleID = [(PKFamilyMember *)self->_familyMember appleID];
+  v6 = [deviceCapabiltiesManager currentFetchStatusForAppleID:appleID];
 
   if (![v6 deviceCountFetchInProgress] || objc_msgSend(v6, "secondsPassedSinceFetchStart") < 11)
   {
@@ -609,10 +609,10 @@ void __81__PKPeerPaymentAssociatedAccountActivationViewController__startTimerIfN
       goto LABEL_29;
     }
 
-    v7 = [(PKFamilyMember *)self->_familyMember appleID];
-    v8 = [v6 fetchError];
-    v9 = v8;
-    if (!v8)
+    appleID2 = [(PKFamilyMember *)self->_familyMember appleID];
+    fetchError = [v6 fetchError];
+    v9 = fetchError;
+    if (!fetchError)
     {
       if ([v6 allPossibleCapabilitiesFetched])
       {
@@ -638,9 +638,9 @@ void __81__PKPeerPaymentAssociatedAccountActivationViewController__startTimerIfN
       goto LABEL_28;
     }
 
-    v10 = [v8 domain];
+    domain = [fetchError domain];
     v11 = *MEMORY[0x1E69A4770];
-    v12 = v10;
+    v12 = domain;
     v13 = v12;
     if (v12 == v11)
     {
@@ -667,7 +667,7 @@ void __81__PKPeerPaymentAssociatedAccountActivationViewController__startTimerIfN
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v7;
+        v18 = appleID2;
         _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "The handle %@ is not registered with IDS which means they dont have a device signed in", buf, 0xCu);
       }
 
@@ -688,13 +688,13 @@ LABEL_28:
 LABEL_29:
 }
 
-- (unint64_t)_nextStateAfterCheckingFamilyMemberAppleCashCapabilities:(BOOL *)a3
+- (unint64_t)_nextStateAfterCheckingFamilyMemberAppleCashCapabilities:(BOOL *)capabilities
 {
   v60 = *MEMORY[0x1E69E9840];
-  v5 = [(PKFamilyMember *)self->_familyMember appleID];
-  v50 = self;
-  v6 = [(PKPeerPaymentSetupFlowController *)self->_controller deviceCapabiltiesManager];
-  v7 = [v6 currentFetchStatusForAppleID:v5];
+  appleID = [(PKFamilyMember *)self->_familyMember appleID];
+  selfCopy = self;
+  deviceCapabiltiesManager = [(PKPeerPaymentSetupFlowController *)self->_controller deviceCapabiltiesManager];
+  v7 = [deviceCapabiltiesManager currentFetchStatusForAppleID:appleID];
 
   if ([v7 deviceCountFetchInProgress])
   {
@@ -702,7 +702,7 @@ LABEL_29:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v57 = v5;
+      v57 = appleID;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "The initial IDS fetch is still progress for %@. Handling this as an unknown error", buf, 0xCu);
     }
 
@@ -710,8 +710,8 @@ LABEL_29:
     goto LABEL_79;
   }
 
-  v10 = [v7 fetchedCapabilities];
-  v11 = [v10 count];
+  fetchedCapabilities = [v7 fetchedCapabilities];
+  v11 = [fetchedCapabilities count];
 
   if (!v11)
   {
@@ -719,30 +719,30 @@ LABEL_29:
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v57 = v5;
+      v57 = appleID;
       _os_log_impl(&dword_1BD026000, v41, OS_LOG_TYPE_DEFAULT, "The handle %@ has no devices", buf, 0xCu);
     }
 
-    if (a3)
+    if (capabilities)
     {
-      *a3 = 0;
+      *capabilities = 0;
     }
 
     v9 = 3;
     goto LABEL_79;
   }
 
-  v12 = [(PKPeerPaymentAccount *)v50->_account supportsFamilySharingFeatureDescriptor];
-  v47 = [v12 osVersionRange];
+  supportsFamilySharingFeatureDescriptor = [(PKPeerPaymentAccount *)selfCopy->_account supportsFamilySharingFeatureDescriptor];
+  osVersionRange = [supportsFamilySharingFeatureDescriptor osVersionRange];
 
   v13 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v47 asDictionary];
+    asDictionary = [osVersionRange asDictionary];
     *buf = 138412546;
-    v57 = v5;
+    v57 = appleID;
     v58 = 2112;
-    v59 = v14;
+    v59 = asDictionary;
     _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "Checking apple cash capabilites for %@ using required OS range %@", buf, 0x16u);
   }
 
@@ -750,8 +750,8 @@ LABEL_29:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v15 = [v7 fetchedCapabilities];
-  v16 = [v15 countByEnumeratingWithState:&v51 objects:v55 count:16];
+  fetchedCapabilities2 = [v7 fetchedCapabilities];
+  v16 = [fetchedCapabilities2 countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (!v16)
   {
 
@@ -761,10 +761,10 @@ LABEL_29:
   }
 
   v17 = v16;
-  obj = v15;
-  v43 = a3;
+  obj = fetchedCapabilities2;
+  capabilitiesCopy = capabilities;
   v44 = v7;
-  v45 = v5;
+  v45 = appleID;
   v46 = 0;
   v48 = 0;
   v18 = *v52;
@@ -785,18 +785,18 @@ LABEL_10:
       _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "Checking apple cash device capabilities for %@", buf, 0xCu);
     }
 
-    v21 = [(__CFString *)v20 fromDeviceVersion];
-    v22 = [(__CFString *)v20 deviceRegion];
-    v23 = [(PKPeerPaymentSetupFlowController *)v50->_controller paymentWebService];
-    v24 = [v23 context];
-    v25 = [v24 configuration];
+    fromDeviceVersion = [(__CFString *)v20 fromDeviceVersion];
+    deviceRegion = [(__CFString *)v20 deviceRegion];
+    paymentWebService = [(PKPeerPaymentSetupFlowController *)selfCopy->_controller paymentWebService];
+    context = [paymentWebService context];
+    configuration = [context configuration];
 
-    if (([v25 peerPaymentEnabledForRegion:v22] & 1) == 0)
+    if (([configuration peerPaymentEnabledForRegion:deviceRegion] & 1) == 0)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v57 = v22;
+        v57 = deviceRegion;
         _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "This devices apple cash capabilities are not supported since %@ is not an eligible region", buf, 0xCu);
       }
 
@@ -816,7 +816,7 @@ LABEL_10:
       goto LABEL_42;
     }
 
-    if (v21)
+    if (fromDeviceVersion)
     {
       break;
     }
@@ -856,7 +856,7 @@ LABEL_43:
     }
   }
 
-  if (!v47 && (PKPeerPaymentSkipFamilySharingVersionCheck() & 1) == 0)
+  if (!osVersionRange && (PKPeerPaymentSkipFamilySharingVersionCheck() & 1) == 0)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -869,11 +869,11 @@ LABEL_43:
     goto LABEL_41;
   }
 
-  v26 = [v21 iphone];
+  iphone = [fromDeviceVersion iphone];
 
-  if (v26)
+  if (iphone)
   {
-    v27 = [v47 versionMeetsRequirements:v21 deviceClass:@"iPhone"];
+    v27 = [osVersionRange versionMeetsRequirements:fromDeviceVersion deviceClass:@"iPhone"];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v28 = @"NO";
@@ -906,11 +906,11 @@ LABEL_53:
     goto LABEL_43;
   }
 
-  v33 = [v21 ipad];
+  ipad = [fromDeviceVersion ipad];
 
-  if (v33)
+  if (ipad)
   {
-    v27 = [v47 versionMeetsRequirements:v21 deviceClass:@"iPad"];
+    v27 = [osVersionRange versionMeetsRequirements:fromDeviceVersion deviceClass:@"iPad"];
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_51;
@@ -931,11 +931,11 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  v35 = [v21 watch];
+  watch = [fromDeviceVersion watch];
 
-  if (v35)
+  if (watch)
   {
-    v27 = [v47 versionMeetsRequirements:v21 deviceClass:@"Watch"];
+    v27 = [osVersionRange versionMeetsRequirements:fromDeviceVersion deviceClass:@"Watch"];
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_51;
@@ -973,7 +973,7 @@ LABEL_69:
   if ((v48 & 1) == 0)
   {
 LABEL_58:
-    a3 = v43;
+    capabilities = capabilitiesCopy;
     if (v46)
     {
       goto LABEL_71;
@@ -984,12 +984,12 @@ LABEL_58:
   }
 
 LABEL_70:
-  a3 = v43;
+  capabilities = capabilitiesCopy;
   if (v46)
   {
 LABEL_71:
     v7 = v44;
-    v5 = v45;
+    appleID = v45;
     if ((v40 & 1) == 0)
     {
       v9 = 4;
@@ -1002,7 +1002,7 @@ LABEL_71:
   v9 = 6;
 LABEL_74:
   v7 = v44;
-  v5 = v45;
+  appleID = v45;
   if ((v40 & 1) == 0)
   {
     goto LABEL_76;
@@ -1011,16 +1011,16 @@ LABEL_74:
 LABEL_75:
   v9 = v39;
 LABEL_76:
-  if (a3)
+  if (capabilities)
   {
-    *a3 = v38;
+    *capabilities = v38;
   }
 
 LABEL_79:
   return v9;
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   account = self->_account;
@@ -1032,24 +1032,24 @@ LABEL_79:
 
   else
   {
-    v6 = [(PKPeerPaymentSetupFlowController *)self->_controller peerPaymentAccount];
-    [v7 addPeerPaymentAssociatedAccountSetupCompletedWithSucess:1 updatedAccount:v6 forFamilyMember:self->_familyMember];
+    peerPaymentAccount = [(PKPeerPaymentSetupFlowController *)self->_controller peerPaymentAccount];
+    [v7 addPeerPaymentAssociatedAccountSetupCompletedWithSucess:1 updatedAccount:peerPaymentAccount forFamilyMember:self->_familyMember];
   }
 }
 
-- (void)deviceSharingCapabilitiesUpdated:(id)a3 newSharingCapabilties:(id)a4 forAppleID:(id)a5
+- (void)deviceSharingCapabilitiesUpdated:(id)updated newSharingCapabilties:(id)capabilties forAppleID:(id)d
 {
-  v7 = a3;
-  v8 = a5;
+  updatedCopy = updated;
+  dCopy = d;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __124__PKPeerPaymentAssociatedAccountActivationViewController_deviceSharingCapabilitiesUpdated_newSharingCapabilties_forAppleID___block_invoke;
   block[3] = &unk_1E8010A88;
-  v12 = v8;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v8;
+  v12 = dCopy;
+  v13 = updatedCopy;
+  selfCopy = self;
+  v9 = updatedCopy;
+  v10 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1071,19 +1071,19 @@ uint64_t __124__PKPeerPaymentAssociatedAccountActivationViewController_deviceSha
   return [*(a1 + 48) _checkFamilyMemberAppleCashCapabilities];
 }
 
-- (void)deviceSharingCapabilitiesUpdated:(id)a3 maximumPossibleDevices:(int64_t)a4 forAppleID:(id)a5
+- (void)deviceSharingCapabilitiesUpdated:(id)updated maximumPossibleDevices:(int64_t)devices forAppleID:(id)d
 {
-  v7 = a3;
-  v8 = a5;
+  updatedCopy = updated;
+  dCopy = d;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __125__PKPeerPaymentAssociatedAccountActivationViewController_deviceSharingCapabilitiesUpdated_maximumPossibleDevices_forAppleID___block_invoke;
   block[3] = &unk_1E8010A88;
-  v12 = v8;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v8;
+  v12 = dCopy;
+  v13 = updatedCopy;
+  selfCopy = self;
+  v9 = updatedCopy;
+  v10 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1136,11 +1136,11 @@ uint64_t __104__PKPeerPaymentAssociatedAccountActivationViewController__handlePe
 
 - (void)_sendMoneyInMessages
 {
-  v8 = [(PKFamilyMember *)self->_familyMember appleID];
-  v3 = [MEMORY[0x1E696AB90] zero];
-  v4 = [(PKPeerPaymentSetupFlowController *)self->_controller peerPaymentAccount];
-  v5 = [v4 currentBalance];
-  v6 = [v5 currency];
+  appleID = [(PKFamilyMember *)self->_familyMember appleID];
+  zero = [MEMORY[0x1E696AB90] zero];
+  peerPaymentAccount = [(PKPeerPaymentSetupFlowController *)self->_controller peerPaymentAccount];
+  currentBalance = [peerPaymentAccount currentBalance];
+  currency = [currentBalance currency];
 
   v7 = PKPeerPaymentGetSendPaymentSensitiveURL();
   if (v7)
@@ -1149,18 +1149,18 @@ uint64_t __104__PKPeerPaymentAssociatedAccountActivationViewController__handlePe
   }
 }
 
-- (void)_presentDisplayableError:(id)a3
+- (void)_presentDisplayableError:(id)error
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __83__PKPeerPaymentAssociatedAccountActivationViewController__presentDisplayableError___block_invoke;
   v6[3] = &unk_1E8010970;
   v6[4] = self;
-  v4 = PKAlertForDisplayableErrorWithHandlers(a3, 0, v6, 0);
+  v4 = PKAlertForDisplayableErrorWithHandlers(error, 0, v6, 0);
   if (v4)
   {
-    v5 = [(PKPeerPaymentAssociatedAccountActivationViewController *)self navigationController];
-    [v5 presentViewController:v4 animated:1 completion:0];
+    navigationController = [(PKPeerPaymentAssociatedAccountActivationViewController *)self navigationController];
+    [navigationController presentViewController:v4 animated:1 completion:0];
   }
 
   else
@@ -1169,10 +1169,10 @@ uint64_t __104__PKPeerPaymentAssociatedAccountActivationViewController__handlePe
   }
 }
 
-- (void)_terminateAddAssociatedAccountFlowWithSucces:(BOOL)a3 updatedAccount:(id)a4
+- (void)_terminateAddAssociatedAccountFlowWithSucces:(BOOL)succes updatedAccount:(id)account
 {
-  v4 = a3;
-  v6 = a4;
+  succesCopy = succes;
+  accountCopy = account;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1184,7 +1184,7 @@ uint64_t __104__PKPeerPaymentAssociatedAccountActivationViewController__handlePe
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained addPeerPaymentAssociatedAccountSetupCompletedWithSucess:v4 updatedAccount:v6 forFamilyMember:self->_familyMember];
+    [WeakRetained addPeerPaymentAssociatedAccountSetupCompletedWithSucess:succesCopy updatedAccount:accountCopy forFamilyMember:self->_familyMember];
   }
 
   else
@@ -1193,11 +1193,11 @@ uint64_t __104__PKPeerPaymentAssociatedAccountActivationViewController__handlePe
   }
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v4 = [(PKExplanationViewController *)self explanationView];
-  [v4 setShowSpinner:v3];
+  spinnerCopy = spinner;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowSpinner:spinnerCopy];
 }
 
 @end

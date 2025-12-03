@@ -1,10 +1,10 @@
 @interface DirectionsStartEndTableViewCell
-+ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)a3;
++ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)idiom;
 + (id)reuseIdentifier;
 - (CGRect)_separatorFrame;
-- (DirectionsStartEndTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (DirectionsStartEndTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setAlignSeparatorWithLeadingText:(BOOL)a3;
+- (void)setAlignSeparatorWithLeadingText:(BOOL)text;
 @end
 
 @implementation DirectionsStartEndTableViewCell
@@ -23,10 +23,10 @@
     v23 = 0u;
     v11 = objc_opt_class();
     v12 = [(DirectionsStartEndTableViewCell *)self traitCollection:0];
-    v13 = [v12 userInterfaceIdiom];
+    userInterfaceIdiom = [v12 userInterfaceIdiom];
     if (v11)
     {
-      [v11 cellMetricsForIdiom:v13];
+      [v11 cellMetricsForIdiom:userInterfaceIdiom];
     }
 
     else
@@ -37,8 +37,8 @@
     v14 = *&v23 + 0.0 + *(&v23 + 1);
     if ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:[(DirectionsStartEndTableViewCell *)self semanticContentAttribute]])
     {
-      v15 = [(DirectionsStartEndTableViewCell *)self contentView];
-      [v15 bounds];
+      contentView = [(DirectionsStartEndTableViewCell *)self contentView];
+      [contentView bounds];
       MaxX = CGRectGetMaxX(v25);
       v26.origin.x = v4;
       v26.origin.y = v6;
@@ -73,15 +73,15 @@
   return result;
 }
 
-- (void)setAlignSeparatorWithLeadingText:(BOOL)a3
+- (void)setAlignSeparatorWithLeadingText:(BOOL)text
 {
-  if (self->_alignSeparatorWithLeadingText != a3)
+  if (self->_alignSeparatorWithLeadingText != text)
   {
-    self->_alignSeparatorWithLeadingText = a3;
-    v5 = [(DirectionsStartEndTableViewCell *)self separatorStyle];
+    self->_alignSeparatorWithLeadingText = text;
+    separatorStyle = [(DirectionsStartEndTableViewCell *)self separatorStyle];
     [(DirectionsStartEndTableViewCell *)self setSeparatorStyle:([(DirectionsStartEndTableViewCell *)self separatorStyle]+ 1) % 3];
 
-    [(DirectionsStartEndTableViewCell *)self setSeparatorStyle:v5];
+    [(DirectionsStartEndTableViewCell *)self setSeparatorStyle:separatorStyle];
   }
 }
 
@@ -93,32 +93,32 @@
   [(DirectionsStartEndContentView *)self->_startEndView prepareForReuse];
 }
 
-- (DirectionsStartEndTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (DirectionsStartEndTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v17.receiver = self;
   v17.super_class = DirectionsStartEndTableViewCell;
-  v4 = [(MapsThemeTableViewCell *)&v17 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MapsThemeTableViewCell *)&v17 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(DirectionsStartEndTableViewCell *)v4 setAccessibilityIdentifier:@"DirectionsStartEndCell"];
     v6 = objc_alloc([objc_opt_class() startEndViewClass]);
-    v7 = [(DirectionsStartEndTableViewCell *)v5 contentView];
-    [v7 bounds];
+    contentView = [(DirectionsStartEndTableViewCell *)v5 contentView];
+    [contentView bounds];
     v8 = [v6 initWithFrame:?];
     startEndView = v5->_startEndView;
     v5->_startEndView = v8;
 
     [(DirectionsStartEndContentView *)v5->_startEndView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(DirectionsStartEndTableViewCell *)v5 contentView];
-    [v10 addSubview:v5->_startEndView];
+    contentView2 = [(DirectionsStartEndTableViewCell *)v5 contentView];
+    [contentView2 addSubview:v5->_startEndView];
 
     v11 = v5->_startEndView;
-    v12 = [(DirectionsStartEndTableViewCell *)v5 contentView];
+    contentView3 = [(DirectionsStartEndTableViewCell *)v5 contentView];
     LODWORD(v13) = 1148846080;
-    v14 = [(DirectionsStartEndContentView *)v11 _maps_constraintsEqualToEdgesOfView:v12 priority:v13];
-    v15 = [v14 allConstraints];
-    [NSLayoutConstraint activateConstraints:v15];
+    v14 = [(DirectionsStartEndContentView *)v11 _maps_constraintsEqualToEdgesOfView:contentView3 priority:v13];
+    allConstraints = [v14 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
   }
 
   return v5;
@@ -131,7 +131,7 @@
   return NSStringFromClass(v2);
 }
 
-+ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)a3
++ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)idiom
 {
   result = [a2 startEndViewClass];
   if (result)

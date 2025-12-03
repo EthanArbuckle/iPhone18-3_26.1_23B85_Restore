@@ -1,23 +1,23 @@
 @interface PXRemoveAssetsFromFeaturedPhotosAction
 - (PXFastEnumeration)suggestions;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXRemoveAssetsFromFeaturedPhotosAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXRemoveAssetsFromFeaturedPhotosAction *)self suggestions];
-  v6 = [(PXPhotosAction *)self photoLibrary];
+  undoCopy = undo;
+  suggestions = [(PXRemoveAssetsFromFeaturedPhotosAction *)self suggestions];
+  photoLibrary = [(PXPhotosAction *)self photoLibrary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__PXRemoveAssetsFromFeaturedPhotosAction_performUndo___block_invoke;
   v8[3] = &unk_1E774C648;
-  v9 = v5;
-  v7 = v5;
-  [v6 performChanges:v8 completionHandler:v4];
+  v9 = suggestions;
+  v7 = suggestions;
+  [photoLibrary performChanges:v8 completionHandler:undoCopy];
 }
 
 void __54__PXRemoveAssetsFromFeaturedPhotosAction_performUndo___block_invoke(uint64_t a1)
@@ -57,18 +57,18 @@ void __54__PXRemoveAssetsFromFeaturedPhotosAction_performUndo___block_invoke(uin
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXRemoveAssetsFromFeaturedPhotosAction *)self suggestions];
-  v6 = [(PXPhotosAction *)self photoLibrary];
+  actionCopy = action;
+  suggestions = [(PXRemoveAssetsFromFeaturedPhotosAction *)self suggestions];
+  photoLibrary = [(PXPhotosAction *)self photoLibrary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__PXRemoveAssetsFromFeaturedPhotosAction_performAction___block_invoke;
   v8[3] = &unk_1E774C648;
-  v9 = v5;
-  v7 = v5;
-  [v6 performChanges:v8 completionHandler:v4];
+  v9 = suggestions;
+  v7 = suggestions;
+  [photoLibrary performChanges:v8 completionHandler:actionCopy];
 }
 
 void __56__PXRemoveAssetsFromFeaturedPhotosAction_performAction___block_invoke(uint64_t a1)
@@ -119,8 +119,8 @@ void __56__PXRemoveAssetsFromFeaturedPhotosAction_performAction___block_invoke(u
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(PXAssetsAction *)self assets];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    assets = [(PXAssetsAction *)self assets];
+    v6 = [assets countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -132,18 +132,18 @@ void __56__PXRemoveAssetsFromFeaturedPhotosAction_performAction___block_invoke(u
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(assets);
           }
 
           v10 = [MEMORY[0x1E6978AE8] fetchRecentInterestSuggestionsForAsset:*(*(&v15 + 1) + 8 * v9)];
-          v11 = [v10 fetchedObjects];
-          [v4 addObjectsFromArray:v11];
+          fetchedObjects = [v10 fetchedObjects];
+          [v4 addObjectsFromArray:fetchedObjects];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [assets countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);

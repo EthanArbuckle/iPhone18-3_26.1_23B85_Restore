@@ -1,13 +1,13 @@
 @interface TSCH3DPixelBuffer
-+ (id)pixelBufferFromFramebuffer:(id)a3 processor:(id)a4 session:(id)a5 sourceRegion:(void *)a6 components:(unint64_t)a7 flipped:(BOOL)a8;
-+ (id)pixelBufferWithSize:(void *)a3 components:(unint64_t)a4;
-- (BOOL)copyPixelsFromFramebuffer:(id)a3 processor:(id)a4 session:(id)a5 sourceRegion:(void *)a6 targetRegion:(void *)a7 flipped:(BOOL)a8;
-- (TSCH3DPixelBuffer)initWithSize:(void *)a3 components:(unint64_t)a4;
++ (id)pixelBufferFromFramebuffer:(id)framebuffer processor:(id)processor session:(id)session sourceRegion:(void *)region components:(unint64_t)components flipped:(BOOL)flipped;
++ (id)pixelBufferWithSize:(void *)size components:(unint64_t)components;
+- (BOOL)copyPixelsFromFramebuffer:(id)framebuffer processor:(id)processor session:(id)session sourceRegion:(void *)region targetRegion:(void *)targetRegion flipped:(BOOL)flipped;
+- (TSCH3DPixelBuffer)initWithSize:(void *)size components:(unint64_t)components;
 - (box<glm::detail::tvec2<int>>)bounds;
 - (char)buffer;
 - (id)TSUImage;
-- (void)copyPixelsFromData:(const void *)a3;
-- (void)copyPixelsFromSourceBuffer:(id)a3 sourceRegion:(void *)a4 targetRegion:(void *)a5 flipped:(BOOL)a6;
+- (void)copyPixelsFromData:(const void *)data;
+- (void)copyPixelsFromSourceBuffer:(id)buffer sourceRegion:(void *)region targetRegion:(void *)targetRegion flipped:(BOOL)flipped;
 - (void)data;
 - (void)dealloc;
 - (void)flip;
@@ -15,15 +15,15 @@
 
 @implementation TSCH3DPixelBuffer
 
-+ (id)pixelBufferWithSize:(void *)a3 components:(unint64_t)a4
++ (id)pixelBufferWithSize:(void *)size components:(unint64_t)components
 {
-  v6 = [a1 alloc];
-  v11 = objc_msgSend_initWithSize_components_(v6, v7, v8, v9, v10, a3, a4);
+  v6 = [self alloc];
+  v11 = objc_msgSend_initWithSize_components_(v6, v7, v8, v9, v10, size, components);
 
   return v11;
 }
 
-- (TSCH3DPixelBuffer)initWithSize:(void *)a3 components:(unint64_t)a4
+- (TSCH3DPixelBuffer)initWithSize:(void *)size components:(unint64_t)components
 {
   v32.receiver = self;
   v32.super_class = TSCH3DPixelBuffer;
@@ -31,10 +31,10 @@
   v10 = v6;
   if (v6)
   {
-    v6->_size.var0.var0 = *a3;
-    v6->_size.var1.var0 = *(a3 + 1);
-    v6->_components = a4;
-    v11 = sub_2761D7D78(a3, a4, 0, 0, v7, v8, v9);
+    v6->_size.var0.var0 = *size;
+    v6->_size.var1.var0 = *(size + 1);
+    v6->_components = components;
+    v11 = sub_2761D7D78(size, components, 0, 0, v7, v8, v9);
     v10->_bitmapContext = v11;
     if (!v11)
     {
@@ -136,26 +136,26 @@
   return objc_msgSend_data(self, a2, v2, v3, v4);
 }
 
-- (void)copyPixelsFromData:(const void *)a3
+- (void)copyPixelsFromData:(const void *)data
 {
   v8 = objc_msgSend_data(self, a2, v3, v4, v5);
   if (v8)
   {
     v9 = self->_components * self->_size.var1.var0 * self->_size.var0.var0;
 
-    memcpy(v8, a3, v9);
+    memcpy(v8, data, v9);
   }
 }
 
-- (void)copyPixelsFromSourceBuffer:(id)a3 sourceRegion:(void *)a4 targetRegion:(void *)a5 flipped:(BOOL)a6
+- (void)copyPixelsFromSourceBuffer:(id)buffer sourceRegion:(void *)region targetRegion:(void *)targetRegion flipped:(BOOL)flipped
 {
-  v124 = a6;
-  v9 = a3;
-  v120 = v9;
-  v127 = objc_msgSend_buffer(v9, v10, v11, v12, v13);
-  if (v9)
+  flippedCopy = flipped;
+  bufferCopy = buffer;
+  v120 = bufferCopy;
+  v127 = objc_msgSend_buffer(bufferCopy, v10, v11, v12, v13);
+  if (bufferCopy)
   {
-    objc_msgSend_size(v9, v14, v15, v16, v17);
+    objc_msgSend_size(bufferCopy, v14, v15, v16, v17);
   }
 
   else
@@ -163,14 +163,14 @@
     v131 = 0;
   }
 
-  v18 = *(a4 + 3);
-  v19 = *(a4 + 2);
-  v20 = *(a4 + 1);
-  v125 = *a4;
+  v18 = *(region + 3);
+  v19 = *(region + 2);
+  v20 = *(region + 1);
+  v125 = *region;
   objc_msgSend_size(self, v14, v15, v16, v17);
   v21 = v129;
-  v22 = *a5;
-  if (v129 < *a5 || (v23 = v130, v130 < v22.i32[1]) || (v24 = *(a5 + 2), v24 < 0) || (v25 = *(a5 + 3), v25 < 0))
+  v22 = *targetRegion;
+  if (v129 < *targetRegion || (v23 = v130, v130 < v22.i32[1]) || (v24 = *(targetRegion + 2), v24 < 0) || (v25 = *(targetRegion + 3), v25 < 0))
   {
     v128 = xmmword_2764D6090;
     v27 = 2;
@@ -181,12 +181,12 @@
     v26 = vmax_s32(v22, 0);
     if (v129 >= v24)
     {
-      v21 = *(a5 + 2);
+      v21 = *(targetRegion + 2);
     }
 
     if (v130 >= v25)
     {
-      v23 = *(a5 + 3);
+      v23 = *(targetRegion + 3);
     }
 
     *&v128 = v26;
@@ -194,7 +194,7 @@
     v27 = v23 - v26.i32[1];
   }
 
-  if ((sub_276171128(&v128, a5, 0) & 1) == 0)
+  if ((sub_276171128(&v128, targetRegion, 0) & 1) == 0)
   {
     v32 = MEMORY[0x277D81150];
     v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, v29, v30, v31, "[TSCH3DPixelBuffer copyPixelsFromSourceBuffer:sourceRegion:targetRegion:flipped:]");
@@ -248,8 +248,8 @@ LABEL_34:
     v52 = v51;
     v121 = (v18 - v20) * (v19 - v125);
     v122 = v19 - v125;
-    v53 = *(a5 + 1);
-    v123 = *a5;
+    v53 = *(targetRegion + 1);
+    v123 = *targetRegion;
     v54 = -v53;
     v55 = 0x277CCA000uLL;
     do
@@ -269,7 +269,7 @@ LABEL_34:
       }
 
       v73 = v54 + v130 - 1;
-      if (!v124)
+      if (!flippedCopy)
       {
         v73 = v53;
       }
@@ -343,26 +343,26 @@ LABEL_35:
   }
 }
 
-+ (id)pixelBufferFromFramebuffer:(id)a3 processor:(id)a4 session:(id)a5 sourceRegion:(void *)a6 components:(unint64_t)a7 flipped:(BOOL)a8
++ (id)pixelBufferFromFramebuffer:(id)framebuffer processor:(id)processor session:(id)session sourceRegion:(void *)region components:(unint64_t)components flipped:(BOOL)flipped
 {
-  v11 = objc_msgSend_pixelBufferFromViewport_components_flipped_forProcessor_session_(a3, a2, v8, v9, v10, a6, a7, a8, a4, a5);
+  v11 = objc_msgSend_pixelBufferFromViewport_components_flipped_forProcessor_session_(framebuffer, a2, v8, v9, v10, region, components, flipped, processor, session);
 
   return v11;
 }
 
-- (BOOL)copyPixelsFromFramebuffer:(id)a3 processor:(id)a4 session:(id)a5 sourceRegion:(void *)a6 targetRegion:(void *)a7 flipped:(BOOL)a8
+- (BOOL)copyPixelsFromFramebuffer:(id)framebuffer processor:(id)processor session:(id)session sourceRegion:(void *)region targetRegion:(void *)targetRegion flipped:(BOOL)flipped
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  flippedCopy = flipped;
+  framebufferCopy = framebuffer;
+  processorCopy = processor;
+  sessionCopy = session;
   v17 = objc_opt_class();
-  v22 = objc_msgSend_pixelBufferFromFramebuffer_processor_session_sourceRegion_components_flipped_(v17, v18, v19, v20, v21, v14, v15, v16, a6, self->_components, 0);
+  v22 = objc_msgSend_pixelBufferFromFramebuffer_processor_session_sourceRegion_components_flipped_(v17, v18, v19, v20, v21, framebufferCopy, processorCopy, sessionCopy, region, self->_components, 0);
   v27 = v22;
   if (v22)
   {
     objc_msgSend_bounds(v22, v23, v24, v25, v26);
-    objc_msgSend_copyPixelsFromSourceBuffer_sourceRegion_targetRegion_flipped_(self, v28, v29, v30, v31, v27, v48, a7, v8);
+    objc_msgSend_copyPixelsFromSourceBuffer_sourceRegion_targetRegion_flipped_(self, v28, v29, v30, v31, v27, v48, targetRegion, flippedCopy);
   }
 
   else

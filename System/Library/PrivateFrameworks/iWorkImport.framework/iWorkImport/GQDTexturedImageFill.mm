@@ -1,7 +1,7 @@
 @interface GQDTexturedImageFill
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor;
 - (void)dealloc;
-- (void)setColor:(id)a3;
+- (void)setColor:(id)color;
 @end
 
 @implementation GQDTexturedImageFill
@@ -13,9 +13,9 @@
   [(GQDTexturedImageFill *)&v3 dealloc];
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
-  if (sub_42FBC(a3, qword_A35E8, "technique", &dword_A40E8, &self->mTechnique))
+  if (sub_42FBC(reader, qword_A35E8, "technique", &dword_A40E8, &self->mTechnique))
   {
     return 1;
   }
@@ -26,13 +26,13 @@
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
   mColor = self->mColor;
-  if (mColor != a3)
+  if (mColor != color)
   {
 
-    self->mColor = a3;
+    self->mColor = color;
   }
 }
 

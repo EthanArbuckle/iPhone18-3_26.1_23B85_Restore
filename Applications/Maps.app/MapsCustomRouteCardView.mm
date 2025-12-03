@@ -1,8 +1,8 @@
 @interface MapsCustomRouteCardView
-- (MapsCustomRouteCardView)initWithCoder:(id)a3;
-- (MapsCustomRouteCardView)initWithFrame:(CGRect)a3;
+- (MapsCustomRouteCardView)initWithCoder:(id)coder;
+- (MapsCustomRouteCardView)initWithFrame:(CGRect)frame;
 - (MapsCustomRouteCardViewDelegate)delegate;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (void)_commonInit;
 - (void)_pressedNav;
 - (void)_pressedOfflineDownloadButton;
@@ -10,18 +10,18 @@
 - (void)_pressedSaveToLibrary;
 - (void)_pressedStepping;
 - (void)_unitsDidChange;
-- (void)_updateDirectionsButtonWithSuggestedMode:(unint64_t)a3;
+- (void)_updateDirectionsButtonWithSuggestedMode:(unint64_t)mode;
 - (void)_updateDisclaimerLabel;
 - (void)_updateGraphView;
 - (void)_updateOfflineButtonIfNecessary;
 - (void)_updateOfflineSubscription;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setButtonEnabled:(BOOL)a3;
-- (void)setRoute:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setButtonEnabled:(BOOL)enabled;
+- (void)setRoute:(id)route;
 - (void)updateButtons;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation MapsCustomRouteCardView
@@ -33,13 +33,13 @@
   return WeakRetained;
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 link];
-  if (v11 && ![v9 contentType])
+  viewCopy = view;
+  itemCopy = item;
+  actionCopy = action;
+  link = [itemCopy link];
+  if (link && ![itemCopy contentType])
   {
     objc_initWeak(&location, self);
     v14[0] = _NSConcreteStackBlock;
@@ -47,7 +47,7 @@
     v14[2] = sub_100D21434;
     v14[3] = &unk_101660418;
     objc_copyWeak(&v16, &location);
-    v15 = v11;
+    v15 = link;
     v12 = [UIAction actionWithHandler:v14];
 
     objc_destroyWeak(&v16);
@@ -56,23 +56,23 @@
 
   else
   {
-    v12 = v10;
+    v12 = actionCopy;
   }
 
   return v12;
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 745 && a3.var1 == &unk_101644E90)
+  if (key.var0 == 745 && key.var1 == &unk_101644E90)
   {
     [(MapsCustomRouteCardView *)self updateButtons];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_1019354F8 == a6)
+  if (off_1019354F8 == context)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -89,7 +89,7 @@
   {
     v6.receiver = self;
     v6.super_class = MapsCustomRouteCardView;
-    [(MapsCustomRouteCardView *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(MapsCustomRouteCardView *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -129,24 +129,24 @@
     goto LABEL_9;
   }
 
-  v4 = [(MapDataSubscriptionInfo *)v3 state];
-  v5 = [v4 loadState];
+  state = [(MapDataSubscriptionInfo *)v3 state];
+  loadState = [state loadState];
 
-  if (v5)
+  if (loadState)
   {
 LABEL_4:
     v6 = 1;
     goto LABEL_10;
   }
 
-  v7 = [(MapDataSubscriptionInfo *)v3 state];
-  v8 = [v7 downloadState];
+  state2 = [(MapDataSubscriptionInfo *)v3 state];
+  downloadState = [state2 downloadState];
 
-  if (v8 <= 1)
+  if (downloadState <= 1)
   {
-    if (v8)
+    if (downloadState)
     {
-      if (v8 != 1)
+      if (downloadState != 1)
       {
         goto LABEL_4;
       }
@@ -161,9 +161,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v8 != 2)
+  if (downloadState != 2)
   {
-    if (v8 != 5)
+    if (downloadState != 5)
     {
       goto LABEL_4;
     }
@@ -171,11 +171,11 @@ LABEL_9:
     goto LABEL_32;
   }
 
-  v37 = [(MapDataSubscriptionInfo *)v3 state];
-  v38 = [v37 downloadProgress];
-  v39 = [v38 isIndeterminate];
+  state3 = [(MapDataSubscriptionInfo *)v3 state];
+  downloadProgress = [state3 downloadProgress];
+  isIndeterminate = [downloadProgress isIndeterminate];
 
-  if (v39)
+  if (isIndeterminate)
   {
     v6 = 3;
   }
@@ -291,25 +291,25 @@ LABEL_23:
 LABEL_24:
   if (v6 == 4)
   {
-    v31 = [(MapDataSubscriptionInfo *)self->_offlineSubscription state];
-    v32 = [v31 downloadProgress];
+    state4 = [(MapDataSubscriptionInfo *)self->_offlineSubscription state];
+    downloadProgress2 = [state4 downloadProgress];
 
     [(MapsProgressBarButton *)self->_offlineDownloadProgressButton setProgressionHidden:0];
-    [v32 fractionCompleted];
+    [downloadProgress2 fractionCompleted];
     [(MapsProgressBarButton *)self->_offlineDownloadProgressButton setProgress:?];
-    v33 = [v32 byteCompletedCount];
-    if (v33)
+    byteCompletedCount = [downloadProgress2 byteCompletedCount];
+    if (byteCompletedCount)
     {
-      v34 = [v32 byteCompletedCount];
-      v35 = [v34 longLongValue];
+      byteCompletedCount2 = [downloadProgress2 byteCompletedCount];
+      longLongValue = [byteCompletedCount2 longLongValue];
     }
 
     else
     {
-      v35 = [v32 completedUnitCount];
+      longLongValue = [downloadProgress2 completedUnitCount];
     }
 
-    v36 = [MKRoundingByteCountFormatter stringFromByteCountWithRoundingTo1MB:v35];
+    v36 = [MKRoundingByteCountFormatter stringFromByteCountWithRoundingTo1MB:longLongValue];
     [(MapsProgressBarButton *)self->_offlineDownloadProgressButton setTitle:v36 forState:0];
   }
 }
@@ -319,8 +319,8 @@ LABEL_24:
   route = self->_route;
   if (route)
   {
-    v4 = [(GEOComposedRoute *)route boundingMapRegion];
-    v5 = [GEOMapRegion _maps_offlineCoverageRegionForRouteBounds:v4];
+    boundingMapRegion = [(GEOComposedRoute *)route boundingMapRegion];
+    v5 = [GEOMapRegion _maps_offlineCoverageRegionForRouteBounds:boundingMapRegion];
 
     v6 = +[MapsOfflineUIHelper sharedHelper];
     v7 = [v6 subscriptionInfoForRegion:v5];
@@ -425,13 +425,13 @@ LABEL_24:
   }
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
-  if (self->_route != v5)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
-    objc_storeStrong(&self->_route, a3);
-    [(GEOComposedRoute *)v5 distance];
+    objc_storeStrong(&self->_route, route);
+    [(GEOComposedRoute *)routeCopy distance];
     v36[0] = NSFontAttributeName;
     v6 = [UIFont _preferredFontForTextStyle:UIFontTextStyleTitle2 weight:UIFontWeightSemibold];
     v37[0] = v6;
@@ -442,10 +442,10 @@ LABEL_24:
     v9 = sub_100C86B78(v8);
     [(UILabel *)self->_distanceLabel setAttributedText:v9];
 
-    v10 = [(GEOComposedRoute *)v5 previewDurationString];
-    [(GEOComposedRoute *)v5 travelAndChargingDuration];
+    previewDurationString = [(GEOComposedRoute *)routeCopy previewDurationString];
+    [(GEOComposedRoute *)routeCopy travelAndChargingDuration];
     v12 = v11;
-    v13 = [(GEOComposedRoute *)v5 elevationProfile];
+    elevationProfile = [(GEOComposedRoute *)routeCopy elevationProfile];
     v34[0] = NSFontAttributeName;
     v14 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     v34[1] = NSForegroundColorAttributeName;
@@ -453,7 +453,7 @@ LABEL_24:
     v15 = +[UIColor secondaryLabelColor];
     v35[1] = v15;
     v16 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:2];
-    v17 = sub_100C86368(v10, v13, v16, v12);
+    v17 = sub_100C86368(previewDurationString, elevationProfile, v16, v12);
     [(MapsThemeMultiPartLabel *)self->_descriptionLabel setMultiPartString:v17];
 
     [(MapsCustomRouteCardView *)self _updateGraphView];
@@ -464,12 +464,12 @@ LABEL_24:
     v29 = sub_100D22474;
     v30 = &unk_101651820;
     objc_copyWeak(&v32, &location);
-    v18 = v5;
+    v18 = routeCopy;
     v31 = v18;
     v19 = objc_retainBlock(&v27);
     v20 = [MKLocationManager sharedLocationManager:v27];
-    v21 = [v20 lastLocation];
-    (v19[2])(v19, v21, 0);
+    lastLocation = [v20 lastLocation];
+    (v19[2])(v19, lastLocation, 0);
 
     v22 = +[MKLocationManager sharedLocationManager];
     v23 = [v22 singleLocationUpdateWithHandler:v19];
@@ -477,27 +477,27 @@ LABEL_24:
     [v23 start];
     [(MapsCustomRouteCardView *)self _updateOfflineSubscription];
     v24 = [[GEOComposedWaypointToRoute alloc] initWithRoute:v18];
-    v25 = [(GEOComposedRoute *)v18 storageID];
-    v26 = [HistoryEntryRecentsItem saveCustomRoute:v18 asWaypoint:v24 withOriginalHistoryIdentifier:v25];
+    storageID = [(GEOComposedRoute *)v18 storageID];
+    v26 = [HistoryEntryRecentsItem saveCustomRoute:v18 asWaypoint:v24 withOriginalHistoryIdentifier:storageID];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)setButtonEnabled:(BOOL)a3
+- (void)setButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = enabledCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Setting buttons enabled %d", v6, 8u);
   }
 
-  [(UIButton *)self->_saveToLibraryButton setEnabled:v3];
-  [(UIButton *)self->_directionsButton setEnabled:v3];
+  [(UIButton *)self->_saveToLibraryButton setEnabled:enabledCopy];
+  [(UIButton *)self->_directionsButton setEnabled:enabledCopy];
 }
 
 - (void)updateButtons
@@ -518,8 +518,8 @@ LABEL_24:
     route = self->_route;
     if (BOOL)
     {
-      v8 = [(GEOComposedRoute *)route storageID];
-      v9 = v8 == 0;
+      storageID = [(GEOComposedRoute *)route storageID];
+      v9 = storageID == 0;
 
       if (v9)
       {
@@ -548,8 +548,8 @@ LABEL_24:
 
     else
     {
-      v15 = [(GEOComposedRoute *)route storageID];
-      v16 = v15 == 0;
+      storageID2 = [(GEOComposedRoute *)route storageID];
+      v16 = storageID2 == 0;
 
       if (v16)
       {
@@ -602,10 +602,10 @@ LABEL_24:
   }
 }
 
-- (void)_updateDirectionsButtonWithSuggestedMode:(unint64_t)a3
+- (void)_updateDirectionsButtonWithSuggestedMode:(unint64_t)mode
 {
   v5 = +[UIButtonConfiguration _maps_primaryCardFooterActionButtonConfiguration];
-  if (!a3)
+  if (!mode)
   {
 LABEL_12:
     v27 = sub_1007989A4();
@@ -621,9 +621,9 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a3 != 1)
+  if (mode != 1)
   {
-    if (a3 == 4)
+    if (mode == 4)
     {
       if (GEOConfigGetBOOL())
       {
@@ -695,14 +695,14 @@ LABEL_15:
   }
 
   v13 = +[UIColor systemGreenColor];
-  v14 = [v5 background];
-  [v14 setBackgroundColor:v13];
+  background = [v5 background];
+  [background setBackgroundColor:v13];
 
   v15 = [UIFont _preferredFontForTextStyle:UIFontTextStyleTitle3 weight:UIFontWeightBold];
   v16 = [UIFont _maps_cappedFont:v15 withMaxPoint:34.0];
 
-  v17 = [v16 fontDescriptor];
-  v18 = [v17 fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
+  fontDescriptor = [v16 fontDescriptor];
+  v18 = [fontDescriptor fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
   v19 = [UIFont fontWithDescriptor:v18 size:0.0];
 
   v29[0] = _NSConcreteStackBlock;
@@ -730,40 +730,40 @@ LABEL_21:
 {
   if ([(GEOComposedRoute *)self->_route source]== 2)
   {
-    v3 = [(GEOComposedRoute *)self->_route disclaimerText];
-    v4 = [v3 length];
+    disclaimerText = [(GEOComposedRoute *)self->_route disclaimerText];
+    v4 = [disclaimerText length];
 
     if (v4)
     {
       [(NSLayoutConstraint *)self->_disclaimerLabelBottomConstraint setActive:1];
       [(UITextView *)self->_disclaimerLabel setAlpha:1.0];
-      v5 = [(GEOComposedRoute *)self->_route disclaimerText];
-      v6 = [(GEOComposedRoute *)self->_route disclaimerURL];
-      v7 = [v6 url];
+      disclaimerText2 = [(GEOComposedRoute *)self->_route disclaimerText];
+      disclaimerURL = [(GEOComposedRoute *)self->_route disclaimerURL];
+      v7 = [disclaimerURL url];
       if (v7)
       {
-        v8 = v5;
-        v9 = [(GEOComposedRoute *)self->_route disclaimerURL];
-        v10 = [v9 displayTitle];
-        v11 = [v10 stringValue];
-        if (v11)
+        v8 = disclaimerText2;
+        disclaimerURL2 = [(GEOComposedRoute *)self->_route disclaimerURL];
+        displayTitle = [disclaimerURL2 displayTitle];
+        stringValue = [displayTitle stringValue];
+        if (stringValue)
         {
-          v12 = [(GEOComposedRoute *)self->_route disclaimerURL];
-          v13 = [v12 displayTitle];
-          v33 = [v13 stringValue];
+          disclaimerURL3 = [(GEOComposedRoute *)self->_route disclaimerURL];
+          displayTitle2 = [disclaimerURL3 displayTitle];
+          stringValue2 = [displayTitle2 stringValue];
         }
 
         else
         {
-          v33 = 0;
+          stringValue2 = 0;
         }
 
-        v5 = v8;
+        disclaimerText2 = v8;
       }
 
       else
       {
-        v33 = 0;
+        stringValue2 = 0;
       }
 
       v36[0] = NSFontAttributeName;
@@ -774,20 +774,20 @@ LABEL_21:
       v37[1] = v16;
       v17 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:2];
 
-      v18 = [(GEOComposedRoute *)self->_route storageID];
-      if (v18)
+      storageID = [(GEOComposedRoute *)self->_route storageID];
+      if (storageID)
       {
       }
 
-      else if ([v33 length])
+      else if ([stringValue2 length])
       {
         v20 = +[NSBundle mainBundle];
         [v20 localizedStringForKey:@"[Curated route viewing] Safety disclaimer concatination" value:@"localized string not found" table:0];
-        v21 = v32 = v5;
-        v31 = [NSString stringWithFormat:v21, v32, v33];
+        v21 = v32 = disclaimerText2;
+        v31 = [NSString stringWithFormat:v21, v32, stringValue2];
 
         v19 = [[NSMutableAttributedString alloc] initWithString:v31 attributes:v17];
-        v22 = [v31 rangeOfString:v33];
+        v22 = [v31 rangeOfString:stringValue2];
         v29 = v23;
         v30 = v22;
         v34[0] = NSForegroundColorAttributeName;
@@ -797,18 +797,18 @@ LABEL_21:
         v25 = [UIFont _preferredFontForTextStyle:UIFontTextStyleFootnote weight:UIFontWeightSemibold];
         v35[1] = v25;
         v34[2] = NSLinkAttributeName;
-        v26 = [(GEOComposedRoute *)self->_route disclaimerURL];
-        v27 = [v26 url];
+        disclaimerURL4 = [(GEOComposedRoute *)self->_route disclaimerURL];
+        v27 = [disclaimerURL4 url];
         v35[2] = v27;
         v28 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:3];
 
-        v5 = v32;
+        disclaimerText2 = v32;
         [v19 setAttributes:v28 range:{v30, v29}];
 
         goto LABEL_17;
       }
 
-      v19 = [[NSMutableAttributedString alloc] initWithString:v5 attributes:v17];
+      v19 = [[NSMutableAttributedString alloc] initWithString:disclaimerText2 attributes:v17];
 LABEL_17:
       [(UITextView *)self->_disclaimerLabel setAttributedText:v19];
 
@@ -824,8 +824,8 @@ LABEL_17:
 
 - (void)_updateGraphView
 {
-  v3 = [(UIViewController *)self->_graphViewController view];
-  [v3 removeFromSuperview];
+  view = [(UIViewController *)self->_graphViewController view];
+  [view removeFromSuperview];
 
   graphViewController = self->_graphViewController;
   self->_graphViewController = 0;
@@ -839,10 +839,10 @@ LABEL_17:
     self->_renderedGraphWidth = v6;
 
     v8 = +[_TtC4Maps23MapsElevationChartStyle navigationLineStyle];
-    v9 = [(GEOComposedRoute *)self->_route elevationProfile];
+    elevationProfile = [(GEOComposedRoute *)self->_route elevationProfile];
     isMetric = self->_isMetric;
-    v11 = [(MapsCustomRouteCardView *)self traitCollection];
-    v12 = [_TtC4Maps32MapsElevationGraphViewController makeHostingControllerFor:v9 width:isMetric isMetric:v11 traitCollection:0 shouldHighlight:v8 chartStyle:self->_zeroMeters currentPosition:v5];
+    traitCollection = [(MapsCustomRouteCardView *)self traitCollection];
+    v12 = [_TtC4Maps32MapsElevationGraphViewController makeHostingControllerFor:elevationProfile width:isMetric isMetric:traitCollection traitCollection:0 shouldHighlight:v8 chartStyle:self->_zeroMeters currentPosition:v5];
     v13 = self->_graphViewController;
     self->_graphViewController = v12;
 
@@ -850,15 +850,15 @@ LABEL_17:
     if (v14)
     {
       v44 = v8;
-      v15 = [(UIViewController *)v14 view];
-      [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v15 setUserInteractionEnabled:0];
+      view2 = [(UIViewController *)v14 view];
+      [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [view2 setUserInteractionEnabled:0];
       v16 = +[UIColor clearColor];
-      [v15 setBackgroundColor:v16];
+      [view2 setBackgroundColor:v16];
 
-      [(UIView *)self->_summaryContainer addSubview:v15];
-      v17 = [(GEOComposedRoute *)self->_route elevationProfile];
-      if ([v17 isValid])
+      [(UIView *)self->_summaryContainer addSubview:view2];
+      elevationProfile2 = [(GEOComposedRoute *)self->_route elevationProfile];
+      if ([elevationProfile2 isValid])
       {
         v18 = -8.0;
       }
@@ -868,9 +868,9 @@ LABEL_17:
         v18 = -3.0;
       }
 
-      v19 = [(GEOComposedRoute *)self->_route elevationProfile];
+      elevationProfile3 = [(GEOComposedRoute *)self->_route elevationProfile];
       v20 = 0.0;
-      if ([v19 isValid])
+      if ([elevationProfile3 isValid])
       {
         v21 = 82.0;
       }
@@ -880,44 +880,44 @@ LABEL_17:
         v21 = 0.0;
       }
 
-      v22 = [(GEOComposedRoute *)self->_route elevationProfile];
-      if ([v22 isValid])
+      elevationProfile4 = [(GEOComposedRoute *)self->_route elevationProfile];
+      if ([elevationProfile4 isValid])
       {
         v20 = 10.0;
       }
 
-      v43 = [v15 leadingAnchor];
-      v42 = [(UIView *)self->_summaryContainer leadingAnchor];
-      v41 = [v43 constraintEqualToAnchor:v42];
+      leadingAnchor = [view2 leadingAnchor];
+      leadingAnchor2 = [(UIView *)self->_summaryContainer leadingAnchor];
+      v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v47[0] = v41;
-      v40 = [v15 trailingAnchor];
-      v23 = [(UIView *)self->_summaryContainer trailingAnchor];
-      v24 = [v40 constraintEqualToAnchor:v23];
+      trailingAnchor = [view2 trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_summaryContainer trailingAnchor];
+      v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v47[1] = v24;
-      v25 = [v15 heightAnchor];
-      v26 = [v25 constraintEqualToConstant:v21];
+      heightAnchor = [view2 heightAnchor];
+      v26 = [heightAnchor constraintEqualToConstant:v21];
       v47[2] = v26;
-      v27 = [v15 topAnchor];
-      v28 = [(MapsThemeMultiPartLabel *)self->_descriptionLabel bottomAnchor];
-      v29 = [v27 constraintEqualToAnchor:v28 constant:v20];
+      topAnchor = [view2 topAnchor];
+      bottomAnchor = [(MapsThemeMultiPartLabel *)self->_descriptionLabel bottomAnchor];
+      v29 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:v20];
       v47[3] = v29;
       v30 = [NSArray arrayWithObjects:v47 count:4];
       [NSLayoutConstraint activateConstraints:v30];
 
       if (-[GEOComposedRoute source](self->_route, "source") == 2 && (-[GEOComposedRoute disclaimerText](self->_route, "disclaimerText"), v31 = objc_claimAutoreleasedReturnValue(), v32 = [v31 length], v31, v32))
       {
-        v33 = [v15 bottomAnchor];
-        v34 = [(UITextView *)self->_disclaimerLabel topAnchor];
-        v35 = [v33 constraintEqualToAnchor:v34];
+        bottomAnchor2 = [view2 bottomAnchor];
+        topAnchor2 = [(UITextView *)self->_disclaimerLabel topAnchor];
+        v35 = [bottomAnchor2 constraintEqualToAnchor:topAnchor2];
         v45 = v35;
         v36 = &v45;
       }
 
       else
       {
-        v33 = [v15 bottomAnchor];
-        v34 = [(UIView *)self->_summaryContainer bottomAnchor];
-        v35 = [v33 constraintEqualToAnchor:v34 constant:v18];
+        bottomAnchor2 = [view2 bottomAnchor];
+        topAnchor2 = [(UIView *)self->_summaryContainer bottomAnchor];
+        v35 = [bottomAnchor2 constraintEqualToAnchor:topAnchor2 constant:v18];
         v46 = v35;
         v36 = &v46;
       }
@@ -947,13 +947,13 @@ LABEL_17:
         goto LABEL_17;
       }
 
-      v15 = sub_10006D178();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      view2 = sub_10006D178();
+      if (os_log_type_enabled(view2, OS_LOG_TYPE_ERROR))
       {
         v39 = +[NSThread callStackSymbols];
         *buf = 138412290;
         v49 = v39;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, view2, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
 
@@ -978,8 +978,8 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "pressed save to library", v5, 2u);
   }
 
-  v4 = [(MapsCustomRouteCardView *)self delegate];
-  [v4 pressedSaveToLibrary];
+  delegate = [(MapsCustomRouteCardView *)self delegate];
+  [delegate pressedSaveToLibrary];
 }
 
 - (void)_pressedRoutePlanning
@@ -999,8 +999,8 @@ LABEL_17:
   block[3] = &unk_101661B18;
   block[4] = self;
   dispatch_after(v4, &_dispatch_main_q, block);
-  v5 = [(MapsCustomRouteCardView *)self delegate];
-  [v5 pressedRoutePlanning];
+  delegate = [(MapsCustomRouteCardView *)self delegate];
+  [delegate pressedRoutePlanning];
 }
 
 - (void)_pressedStepping
@@ -1012,8 +1012,8 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "pressed stepping", v5, 2u);
   }
 
-  v4 = [(MapsCustomRouteCardView *)self delegate];
-  [v4 pressedStepping];
+  delegate = [(MapsCustomRouteCardView *)self delegate];
+  [delegate pressedStepping];
 }
 
 - (void)_pressedNav
@@ -1025,8 +1025,8 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "pressed go", v5, 2u);
   }
 
-  v4 = [(MapsCustomRouteCardView *)self delegate];
-  [v4 pressedNavigation];
+  delegate = [(MapsCustomRouteCardView *)self delegate];
+  [delegate pressedNavigation];
 }
 
 - (void)dealloc
@@ -1132,8 +1132,8 @@ LABEL_17:
   [(MultilineStackView *)self->_buttonStackView setContentCompressionResistancePriority:1 forAxis:v24];
   [(MultilineStackView *)self->_buttonStackView setAccessibilityIdentifier:@"ButtonStackView"];
   [(MultilineStackView *)self->_buttonStackView setRowHeightBlock:&stru_1016517F8];
-  v25 = [(GEOComposedRoute *)self->_route origin];
-  if ([v25 isCurrentLocation])
+  origin = [(GEOComposedRoute *)self->_route origin];
+  if ([origin isCurrentLocation])
   {
     v26 = +[GEOCountryConfiguration sharedConfiguration];
     if ([v26 currentCountrySupportsNavigation])
@@ -1168,72 +1168,72 @@ LABEL_17:
   [(UIView *)self->_summaryContainer addSubview:self->_disclaimerLabel];
   [(MapsCustomRouteCardView *)self addSubview:self->_summaryContainer];
   [(MapsCustomRouteCardView *)self addSubview:self->_buttonStackView];
-  v84 = [(UIView *)self->_summaryContainer topAnchor];
-  v83 = [(MapsCustomRouteCardView *)self topAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  topAnchor = [(UIView *)self->_summaryContainer topAnchor];
+  topAnchor2 = [(MapsCustomRouteCardView *)self topAnchor];
+  v82 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v85[0] = v82;
-  v81 = [(UIView *)self->_summaryContainer leadingAnchor];
-  v80 = [(MapsCustomRouteCardView *)self leadingAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80 constant:16.0];
+  leadingAnchor = [(UIView *)self->_summaryContainer leadingAnchor];
+  leadingAnchor2 = [(MapsCustomRouteCardView *)self leadingAnchor];
+  v79 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v85[1] = v79;
-  v78 = [(UIView *)self->_summaryContainer trailingAnchor];
-  v77 = [(MapsCustomRouteCardView *)self trailingAnchor];
-  v76 = [v78 constraintEqualToAnchor:v77 constant:-16.0];
+  trailingAnchor = [(UIView *)self->_summaryContainer trailingAnchor];
+  trailingAnchor2 = [(MapsCustomRouteCardView *)self trailingAnchor];
+  v76 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v85[2] = v76;
-  v75 = [(UILabel *)self->_distanceLabel leadingAnchor];
-  v74 = [(UIView *)self->_summaryContainer leadingAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74 constant:14.0];
+  leadingAnchor3 = [(UILabel *)self->_distanceLabel leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_summaryContainer leadingAnchor];
+  v73 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:14.0];
   v85[3] = v73;
-  v72 = [(UILabel *)self->_distanceLabel trailingAnchor];
-  v71 = [(UIView *)self->_summaryContainer trailingAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71 constant:-14.0];
+  trailingAnchor3 = [(UILabel *)self->_distanceLabel trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_summaryContainer trailingAnchor];
+  v70 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-14.0];
   v85[4] = v70;
-  v69 = [(UILabel *)self->_distanceLabel topAnchor];
-  v68 = [(UIView *)self->_summaryContainer topAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68 constant:12.0];
+  topAnchor3 = [(UILabel *)self->_distanceLabel topAnchor];
+  topAnchor4 = [(UIView *)self->_summaryContainer topAnchor];
+  v67 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:12.0];
   v85[5] = v67;
-  v66 = [(MapsThemeMultiPartLabel *)self->_descriptionLabel leadingAnchor];
-  v65 = [(UILabel *)self->_distanceLabel leadingAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  leadingAnchor5 = [(MapsThemeMultiPartLabel *)self->_descriptionLabel leadingAnchor];
+  leadingAnchor6 = [(UILabel *)self->_distanceLabel leadingAnchor];
+  v64 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v85[6] = v64;
-  v63 = [(MapsThemeMultiPartLabel *)self->_descriptionLabel trailingAnchor];
-  v62 = [(UILabel *)self->_distanceLabel trailingAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  trailingAnchor5 = [(MapsThemeMultiPartLabel *)self->_descriptionLabel trailingAnchor];
+  trailingAnchor6 = [(UILabel *)self->_distanceLabel trailingAnchor];
+  v61 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v85[7] = v61;
-  v60 = [(MapsThemeMultiPartLabel *)self->_descriptionLabel topAnchor];
-  v59 = [(UILabel *)self->_distanceLabel bottomAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59 constant:-7.0];
+  topAnchor5 = [(MapsThemeMultiPartLabel *)self->_descriptionLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_distanceLabel bottomAnchor];
+  v58 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:-7.0];
   v85[8] = v58;
-  v57 = [(UITextView *)self->_disclaimerLabel leadingAnchor];
-  v56 = [(UIView *)self->_summaryContainer leadingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56 constant:8.0];
+  leadingAnchor7 = [(UITextView *)self->_disclaimerLabel leadingAnchor];
+  leadingAnchor8 = [(UIView *)self->_summaryContainer leadingAnchor];
+  v55 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:8.0];
   v85[9] = v55;
-  v54 = [(UITextView *)self->_disclaimerLabel trailingAnchor];
-  v53 = [(UIView *)self->_summaryContainer trailingAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53 constant:-10.0];
+  trailingAnchor7 = [(UITextView *)self->_disclaimerLabel trailingAnchor];
+  trailingAnchor8 = [(UIView *)self->_summaryContainer trailingAnchor];
+  v52 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-10.0];
   v85[10] = v52;
-  v51 = [(MultilineStackView *)self->_buttonStackView leadingAnchor];
-  v50 = [(MapsCustomRouteCardView *)self leadingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50 constant:16.0];
+  leadingAnchor9 = [(MultilineStackView *)self->_buttonStackView leadingAnchor];
+  leadingAnchor10 = [(MapsCustomRouteCardView *)self leadingAnchor];
+  v49 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:16.0];
   v85[11] = v49;
-  v48 = [(MultilineStackView *)self->_buttonStackView trailingAnchor];
-  v34 = [(MapsCustomRouteCardView *)self trailingAnchor];
-  v35 = [v48 constraintEqualToAnchor:v34 constant:-16.0];
+  trailingAnchor9 = [(MultilineStackView *)self->_buttonStackView trailingAnchor];
+  trailingAnchor10 = [(MapsCustomRouteCardView *)self trailingAnchor];
+  v35 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-16.0];
   v85[12] = v35;
-  v36 = [(MultilineStackView *)self->_buttonStackView topAnchor];
-  v37 = [(UIView *)self->_summaryContainer bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37 constant:16.0];
+  topAnchor6 = [(MultilineStackView *)self->_buttonStackView topAnchor];
+  bottomAnchor2 = [(UIView *)self->_summaryContainer bottomAnchor];
+  v38 = [topAnchor6 constraintEqualToAnchor:bottomAnchor2 constant:16.0];
   v85[13] = v38;
-  v39 = [(MultilineStackView *)self->_buttonStackView bottomAnchor];
-  v40 = [(MapsCustomRouteCardView *)self bottomAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  bottomAnchor3 = [(MultilineStackView *)self->_buttonStackView bottomAnchor];
+  bottomAnchor4 = [(MapsCustomRouteCardView *)self bottomAnchor];
+  v41 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v85[14] = v41;
   v42 = [NSArray arrayWithObjects:v85 count:15];
   [NSLayoutConstraint activateConstraints:v42];
 
-  v43 = [(UITextView *)self->_disclaimerLabel bottomAnchor];
-  v44 = [(UIView *)self->_summaryContainer bottomAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
+  bottomAnchor5 = [(UITextView *)self->_disclaimerLabel bottomAnchor];
+  bottomAnchor6 = [(UIView *)self->_summaryContainer bottomAnchor];
+  v45 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   disclaimerLabelBottomConstraint = self->_disclaimerLabelBottomConstraint;
   self->_disclaimerLabelBottomConstraint = v45;
 
@@ -1243,11 +1243,11 @@ LABEL_17:
   _GEOConfigAddDelegateListenerForKey();
 }
 
-- (MapsCustomRouteCardView)initWithFrame:(CGRect)a3
+- (MapsCustomRouteCardView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MapsCustomRouteCardView;
-  v3 = [(MapsCustomRouteCardView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsCustomRouteCardView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1257,11 +1257,11 @@ LABEL_17:
   return v4;
 }
 
-- (MapsCustomRouteCardView)initWithCoder:(id)a3
+- (MapsCustomRouteCardView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MapsCustomRouteCardView;
-  v3 = [(MapsCustomRouteCardView *)&v6 initWithCoder:a3];
+  v3 = [(MapsCustomRouteCardView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

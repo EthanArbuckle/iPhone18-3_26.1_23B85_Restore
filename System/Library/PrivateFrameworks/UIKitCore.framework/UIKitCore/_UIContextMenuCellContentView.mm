@@ -4,14 +4,14 @@
 - (CGSize)_maxImageSize;
 - (UIShape)contentShape;
 - (UIView)iconView;
-- (_UIContextMenuCellContentView)initWithFrame:(CGRect)a3;
+- (_UIContextMenuCellContentView)initWithFrame:(CGRect)frame;
 - (_UISlotView)securePasteButtonSlotView;
 - (id)_childIndicatorColorForCurrentState;
 - (id)_childIndicatorImage;
 - (id)_childIndicatorSymbolImageConfiguration;
-- (id)_contentImageViewForImage:(id)a3;
+- (id)_contentImageViewForImage:(id)image;
 - (id)_decorationSymbolImageConfiguration;
-- (id)_iconSymbolConfigurationForCurrentTraitsUsingBoldFont:(BOOL)a3;
+- (id)_iconSymbolConfigurationForCurrentTraitsUsingBoldFont:(BOOL)font;
 - (id)_mixedSelectionImage;
 - (id)_primaryBackgroundColorForCurrentState;
 - (id)_primaryCompositingFilterForCurrentTraitsAndState;
@@ -28,15 +28,15 @@
 - (unsigned)_secureName;
 - (void)_createLabelStackViewIfNeeded;
 - (void)_hideContents;
-- (void)_inheritRelevantPropertiesFromContentView:(id)a3;
+- (void)_inheritRelevantPropertiesFromContentView:(id)view;
 - (void)_installSubtitleLabelIfNeeded;
 - (void)_installTitleLabelIfNeeded;
-- (void)_setDecorationImage:(id)a3;
+- (void)_setDecorationImage:(id)image;
 - (void)_setNeedsConstraintRebuild;
 - (void)_updateAppearanceForStateChange;
 - (void)_updateAttachedConstraintsForViewHierarchyChange;
 - (void)_updateCompositingFiltersForCurrentState;
-- (void)_updateForOptionsChangeFromPreviousOptions:(unint64_t)a3;
+- (void)_updateForOptionsChangeFromPreviousOptions:(unint64_t)options;
 - (void)_updateHoverStyleIfNeeded;
 - (void)_updateIconImageAppearanceForStateChange;
 - (void)_updateLabelsForCurrentState;
@@ -46,19 +46,19 @@
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessoryAction:(id)a3;
-- (void)setAttributedTitle:(id)a3;
-- (void)setControlState:(unint64_t)a3 withAnimationCoordinator:(id)a4;
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setImage:(id)a3;
-- (void)setIsEmphasized:(BOOL)a3;
-- (void)setKeyboardShortcut:(id)a3;
-- (void)setLayoutClass:(Class)a3;
-- (void)setNumberOfTitleLines:(unint64_t)a3;
-- (void)setOptions:(unint64_t)a3;
-- (void)setPasteVariant:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAccessoryAction:(id)action;
+- (void)setAttributedTitle:(id)title;
+- (void)setControlState:(unint64_t)state withAnimationCoordinator:(id)coordinator;
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setImage:(id)image;
+- (void)setIsEmphasized:(BOOL)emphasized;
+- (void)setKeyboardShortcut:(id)shortcut;
+- (void)setLayoutClass:(Class)class;
+- (void)setNumberOfTitleLines:(unint64_t)lines;
+- (void)setOptions:(unint64_t)options;
+- (void)setPasteVariant:(id)variant;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 - (void)updateConstraints;
 @end
 
@@ -75,31 +75,31 @@
 
 - (void)_updateHoverStyleIfNeeded
 {
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
-    v8 = v3;
+    hoverStyle = window;
     if ([(_UIContextMenuCellContentView *)self needsHoverStyleUpdate])
     {
-      v4 = [(_UIContextMenuCellContentView *)self needsConstraintRebuild];
+      needsConstraintRebuild = [(_UIContextMenuCellContentView *)self needsConstraintRebuild];
 
-      if (v4)
+      if (needsConstraintRebuild)
       {
         return;
       }
 
-      v5 = [(_UIContextMenuCellContentView *)self layout];
-      v8 = [v5 hoverStyle];
+      layout = [(_UIContextMenuCellContentView *)self layout];
+      hoverStyle = [layout hoverStyle];
 
-      [(UIView *)self setHoverStyle:v8];
+      [(UIView *)self setHoverStyle:hoverStyle];
       v6 = ([(_UIContextMenuCellContentView *)self options]& 1) == 0;
-      v7 = [(UIView *)self hoverStyle];
-      [v7 setEnabled:v6];
+      hoverStyle2 = [(UIView *)self hoverStyle];
+      [hoverStyle2 setEnabled:v6];
 
       [(_UIContextMenuCellContentView *)self setNeedsHoverStyleUpdate:0];
     }
 
-    v3 = v8;
+    window = hoverStyle;
   }
 }
 
@@ -112,17 +112,17 @@
 
 - (void)_installTitleLabelIfNeeded
 {
-  v3 = [(_UIContextMenuCellContentView *)self titleLabel];
+  titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
 
-  if (!v3)
+  if (!titleLabel)
   {
-    v4 = [(_UIContextMenuCellContentView *)self _primaryTitleLabel];
+    _primaryTitleLabel = [(_UIContextMenuCellContentView *)self _primaryTitleLabel];
     titleLabel = self->_titleLabel;
-    self->_titleLabel = v4;
+    self->_titleLabel = _primaryTitleLabel;
 
-    v7 = [(_UIContextMenuCellContentView *)self labelStackView];
-    v6 = [(_UIContextMenuCellContentView *)self titleLabel];
-    [v7 insertArrangedSubview:v6 atIndex:0];
+    labelStackView = [(_UIContextMenuCellContentView *)self labelStackView];
+    titleLabel2 = [(_UIContextMenuCellContentView *)self titleLabel];
+    [labelStackView insertArrangedSubview:titleLabel2 atIndex:0];
   }
 }
 
@@ -136,30 +136,30 @@
   [(UILabel *)v4 setMinimumScaleFactor:0.9];
   LODWORD(v5) = 0.5;
   [(UILabel *)v4 _setHyphenationFactor:v5];
-  v6 = [(UIView *)self traitCollection];
-  v7 = _UIContextMenuGetPlatformMetrics([v6 userInterfaceIdiom]);
-  v8 = [v7 titleFont];
-  v9 = [v8 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v6];
+  traitCollection = [(UIView *)self traitCollection];
+  v7 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+  titleFont = [v7 titleFont];
+  v9 = [titleFont _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
 
   [(UILabel *)v4 setFont:v9];
-  v10 = [(_UIContextMenuCellContentView *)self _primaryContentColorForCurrentState];
-  [(UILabel *)v4 setTextColor:v10];
+  _primaryContentColorForCurrentState = [(_UIContextMenuCellContentView *)self _primaryContentColorForCurrentState];
+  [(UILabel *)v4 setTextColor:_primaryContentColorForCurrentState];
 
-  v11 = [(_UIContextMenuCellContentView *)self _primaryCompositingFilterForCurrentTraitsAndState];
-  v12 = [(UIView *)v4 layer];
-  [v12 setCompositingFilter:v11];
+  _primaryCompositingFilterForCurrentTraitsAndState = [(_UIContextMenuCellContentView *)self _primaryCompositingFilterForCurrentTraitsAndState];
+  layer = [(UIView *)v4 layer];
+  [layer setCompositingFilter:_primaryCompositingFilterForCurrentTraitsAndState];
 
   return v4;
 }
 
 - (id)_primaryContentColorForCurrentState
 {
-  v3 = [(_UIContextMenuCellContentView *)self layout];
-  v4 = [v3 preferredContentColorForCurrentState];
+  layout = [(_UIContextMenuCellContentView *)self layout];
+  preferredContentColorForCurrentState = [layout preferredContentColorForCurrentState];
 
-  if (v4)
+  if (preferredContentColorForCurrentState)
   {
-    v5 = v4;
+    v5 = preferredContentColorForCurrentState;
 LABEL_8:
     v10 = v5;
 LABEL_9:
@@ -168,24 +168,24 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = [(UIView *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   if (([(_UIContextMenuCellContentView *)self options]& 1) != 0)
   {
-    v5 = _UIContextMenuItemPrimaryColor(v7, [(_UIContextMenuCellContentView *)self controlState]| 2);
+    v5 = _UIContextMenuItemPrimaryColor(userInterfaceIdiom, [(_UIContextMenuCellContentView *)self controlState]| 2);
     goto LABEL_8;
   }
 
   if (([(_UIContextMenuCellContentView *)self options]& 2) != 0)
   {
-    v14 = [(_UIContextMenuCellContentView *)self controlState];
-    v15 = _UIContextMenuGetPlatformMetrics(v7);
-    v16 = [v15 itemPrimaryDestructiveColorProvider];
-    v17 = v16;
-    if (v16)
+    controlState = [(_UIContextMenuCellContentView *)self controlState];
+    v15 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
+    itemPrimaryDestructiveColorProvider = [v15 itemPrimaryDestructiveColorProvider];
+    v17 = itemPrimaryDestructiveColorProvider;
+    if (itemPrimaryDestructiveColorProvider)
     {
-      v10 = (*(v16 + 16))(v16, v14);
+      v10 = (*(itemPrimaryDestructiveColorProvider + 16))(itemPrimaryDestructiveColorProvider, controlState);
     }
 
     else
@@ -196,17 +196,17 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [(_UIContextMenuCellContentView *)self options];
-  v9 = [(_UIContextMenuCellContentView *)self controlState];
-  if ((v8 & 0x40) != 0)
+  options = [(_UIContextMenuCellContentView *)self options];
+  controlState2 = [(_UIContextMenuCellContentView *)self controlState];
+  if ((options & 0x40) != 0)
   {
-    v18 = _UIContextMenuGetPlatformMetrics(v7);
-    v10 = _UIContextMenuItemPrimaryColor(v7, v9);
-    v19 = [v18 itemPrimaryEmphasizedColorProvider];
-    v20 = v19;
-    if (v19)
+    v18 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
+    v10 = _UIContextMenuItemPrimaryColor(userInterfaceIdiom, controlState2);
+    itemPrimaryEmphasizedColorProvider = [v18 itemPrimaryEmphasizedColorProvider];
+    v20 = itemPrimaryEmphasizedColorProvider;
+    if (itemPrimaryEmphasizedColorProvider)
     {
-      v21 = (*(v19 + 16))(v19, v9);
+      v21 = (*(itemPrimaryEmphasizedColorProvider + 16))(itemPrimaryEmphasizedColorProvider, controlState2);
 
       v10 = v21;
     }
@@ -214,10 +214,10 @@ LABEL_9:
 
   else
   {
-    v10 = _UIContextMenuItemPrimaryColor(v7, v9);
+    v10 = _UIContextMenuItemPrimaryColor(userInterfaceIdiom, controlState2);
   }
 
-  v22 = _UIContextMenuGetPlatformMetrics(v7);
+  v22 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v22 itemPrimaryAlpha];
   v24 = v23;
 
@@ -236,39 +236,39 @@ LABEL_10:
 
 - (void)_updateTitleLabelNumberOfLines
 {
-  v3 = [(_UIContextMenuCellContentView *)self titleLabel];
-  if (v3)
+  titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+  if (titleLabel)
   {
-    v13 = v3;
-    v4 = [(_UIContextMenuCellContentView *)self _resolvedLineLimit];
+    v13 = titleLabel;
+    _resolvedLineLimit = [(_UIContextMenuCellContentView *)self _resolvedLineLimit];
     if (([(_UIContextMenuCellContentView *)self overrideNumberOfTitleLines]& 0x8000000000000000) == 0)
     {
-      v4 = [(_UIContextMenuCellContentView *)self overrideNumberOfTitleLines];
+      _resolvedLineLimit = [(_UIContextMenuCellContentView *)self overrideNumberOfTitleLines];
     }
 
-    [v13 setNumberOfLines:v4];
-    [v13 setAdjustsFontSizeToFitWidth:v4 == 1];
-    v5 = [(_UIContextMenuCellContentView *)self layout];
-    [v13 setTextAlignment:{objc_msgSend(v5, "labelTextAlignment")}];
+    [v13 setNumberOfLines:_resolvedLineLimit];
+    [v13 setAdjustsFontSizeToFitWidth:_resolvedLineLimit == 1];
+    layout = [(_UIContextMenuCellContentView *)self layout];
+    [v13 setTextAlignment:{objc_msgSend(layout, "labelTextAlignment")}];
 
-    v6 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+    emphasizedTitleLabel = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
 
-    v3 = v13;
-    if (v6)
+    titleLabel = v13;
+    if (emphasizedTitleLabel)
     {
-      v7 = [v13 textAlignment];
-      v8 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-      [v8 setTextAlignment:v7];
+      textAlignment = [v13 textAlignment];
+      emphasizedTitleLabel2 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+      [emphasizedTitleLabel2 setTextAlignment:textAlignment];
 
-      v9 = [v13 numberOfLines];
-      v10 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-      [v10 setNumberOfLines:v9];
+      numberOfLines = [v13 numberOfLines];
+      emphasizedTitleLabel3 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+      [emphasizedTitleLabel3 setNumberOfLines:numberOfLines];
 
-      v11 = [v13 adjustsFontSizeToFitWidth];
-      v12 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-      [v12 setAdjustsFontSizeToFitWidth:v11];
+      adjustsFontSizeToFitWidth = [v13 adjustsFontSizeToFitWidth];
+      emphasizedTitleLabel4 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+      [emphasizedTitleLabel4 setAdjustsFontSizeToFitWidth:adjustsFontSizeToFitWidth];
 
-      v3 = v13;
+      titleLabel = v13;
     }
   }
 }
@@ -277,83 +277,83 @@ LABEL_10:
 {
   if ([(_UIContextMenuCellContentView *)self numberOfTitleLines]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [(UIView *)self traitCollection];
-    v4 = [v3 preferredContentSizeCategory];
-    IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory(v4, v5);
+    traitCollection = [(UIView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory(preferredContentSizeCategory, v5);
 
     if (IsAccessibilityContentSizeCategory)
     {
-      v7 = 0;
+      numberOfTitleLines = 0;
     }
 
     else
     {
-      v7 = 2;
+      numberOfTitleLines = 2;
     }
   }
 
   else
   {
-    v7 = [(_UIContextMenuCellContentView *)self numberOfTitleLines];
+    numberOfTitleLines = [(_UIContextMenuCellContentView *)self numberOfTitleLines];
   }
 
-  v8 = [(_UIContextMenuCellContentView *)self layout];
-  v9 = [v8 labelMaximumNumberOfLines];
+  layout = [(_UIContextMenuCellContentView *)self layout];
+  labelMaximumNumberOfLines = [layout labelMaximumNumberOfLines];
 
-  if (v7 >= v9)
+  if (numberOfTitleLines >= labelMaximumNumberOfLines)
   {
-    return v9;
+    return labelMaximumNumberOfLines;
   }
 
   else
   {
-    return v7;
+    return numberOfTitleLines;
   }
 }
 
 - (void)_updateAttachedConstraintsForViewHierarchyChange
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIContextMenuCellContentView *)self layout];
-  [v3 removeConstraints];
+  layout = [(_UIContextMenuCellContentView *)self layout];
+  [layout removeConstraints];
 
-  v4 = [(_UIContextMenuCellContentView *)self nonSymbolImageWidth];
-  [v4 setActive:0];
+  nonSymbolImageWidth = [(_UIContextMenuCellContentView *)self nonSymbolImageWidth];
+  [nonSymbolImageWidth setActive:0];
 
-  v5 = [(_UIContextMenuCellContentView *)self nonSymbolImageHeight];
-  [v5 setActive:0];
+  nonSymbolImageHeight = [(_UIContextMenuCellContentView *)self nonSymbolImageHeight];
+  [nonSymbolImageHeight setActive:0];
 
-  v6 = [(_UIContextMenuCellContentView *)self layout];
-  [v6 installConstraints];
+  layout2 = [(_UIContextMenuCellContentView *)self layout];
+  [layout2 installConstraints];
 
-  v7 = [(_UIContextMenuCellContentView *)self iconView];
+  iconView = [(_UIContextMenuCellContentView *)self iconView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(_UIContextMenuCellContentView *)self iconView];
-    v10 = [v9 image];
-    v11 = [v10 isSymbolImage];
+    iconView2 = [(_UIContextMenuCellContentView *)self iconView];
+    image = [iconView2 image];
+    isSymbolImage = [image isSymbolImage];
 
-    if ((v11 & 1) == 0)
+    if ((isSymbolImage & 1) == 0)
     {
       [(_UIContextMenuCellContentView *)self _maxImageSize];
       v13 = v12;
       v15 = v14;
-      v16 = [v9 widthAnchor];
-      v17 = [v16 constraintLessThanOrEqualToConstant:v13];
+      widthAnchor = [iconView2 widthAnchor];
+      v17 = [widthAnchor constraintLessThanOrEqualToConstant:v13];
       [(_UIContextMenuCellContentView *)self setNonSymbolImageWidth:v17];
 
-      v18 = [v9 heightAnchor];
-      v19 = [v18 constraintLessThanOrEqualToConstant:v15];
+      heightAnchor = [iconView2 heightAnchor];
+      v19 = [heightAnchor constraintLessThanOrEqualToConstant:v15];
       [(_UIContextMenuCellContentView *)self setNonSymbolImageHeight:v19];
 
       v20 = MEMORY[0x1E69977A0];
-      v21 = [(_UIContextMenuCellContentView *)self nonSymbolImageWidth];
-      v24[0] = v21;
-      v22 = [(_UIContextMenuCellContentView *)self nonSymbolImageHeight];
-      v24[1] = v22;
+      nonSymbolImageWidth2 = [(_UIContextMenuCellContentView *)self nonSymbolImageWidth];
+      v24[0] = nonSymbolImageWidth2;
+      nonSymbolImageHeight2 = [(_UIContextMenuCellContentView *)self nonSymbolImageHeight];
+      v24[1] = nonSymbolImageHeight2;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
       [v20 activateConstraints:v23];
     }
@@ -364,19 +364,19 @@ LABEL_10:
 
 - (UIView)iconView
 {
-  v3 = [(_UIContextMenuCellContentView *)self accessoryButton];
-  v4 = v3;
-  if (v3)
+  accessoryButton = [(_UIContextMenuCellContentView *)self accessoryButton];
+  v4 = accessoryButton;
+  if (accessoryButton)
   {
-    v5 = v3;
+    iconImageView = accessoryButton;
   }
 
   else
   {
-    v5 = [(_UIContextMenuCellContentView *)self iconImageView];
+    iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
   }
 
-  v6 = v5;
+  v6 = iconImageView;
 
   return v6;
 }
@@ -394,10 +394,10 @@ LABEL_10:
 {
   if (self->_pasteVariant)
   {
-    v3 = [(_UIContextMenuCellContentView *)self options];
+    options = [(_UIContextMenuCellContentView *)self options];
     WeakRetained = objc_loadWeakRetained(&self->_securePasteButtonSlotView);
     v5 = WeakRetained;
-    if (v3)
+    if (options)
     {
       [WeakRetained removeFromSuperview];
 
@@ -423,33 +423,33 @@ LABEL_10:
       v10 = v9;
       if (objc_opt_respondsToSelector())
       {
-        v11 = [(UIView *)self traitCollection];
-        v12 = _UIContextMenuGetPlatformMetrics([v11 userInterfaceIdiom]);
-        v13 = [v12 prefersLeadingImageCellLayout];
+        traitCollection = [(UIView *)self traitCollection];
+        v12 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+        prefersLeadingImageCellLayout = [v12 prefersLeadingImageCellLayout];
 
         v52 = MEMORY[0x1E69BC820];
-        v14 = [(_UIContextMenuCellContentView *)self pasteVariant];
-        v15 = [v14 secureName];
+        pasteVariant = [(_UIContextMenuCellContentView *)self pasteVariant];
+        secureName = [pasteVariant secureName];
         v50 = v10 + -2.0;
         v51 = v8 + -2.0;
-        v16 = [(_UIContextMenuCellContentView *)self labelStackView];
-        v17 = [(_UIContextMenuCellContentView *)self labelStackView];
-        [v17 bounds];
-        [v16 convertRect:self toView:?];
+        labelStackView = [(_UIContextMenuCellContentView *)self labelStackView];
+        labelStackView2 = [(_UIContextMenuCellContentView *)self labelStackView];
+        [labelStackView2 bounds];
+        [labelStackView convertRect:self toView:?];
         v19 = v18;
         v21 = v20;
         v23 = v22;
         v25 = v24;
-        v26 = [(_UIContextMenuCellContentView *)self iconView];
-        v27 = [(_UIContextMenuCellContentView *)self iconView];
-        [v27 bounds];
-        [v26 convertRect:self toView:?];
+        iconView = [(_UIContextMenuCellContentView *)self iconView];
+        iconView2 = [(_UIContextMenuCellContentView *)self iconView];
+        [iconView2 bounds];
+        [iconView convertRect:self toView:?];
         v29 = v28;
         v31 = v30;
         v33 = v32;
         v35 = v34;
-        v36 = [(_UIContextMenuCellContentView *)self layout];
-        v37 = [v52 contextMenuDynamicPasteButtonTagWithSecureName:v15 size:v13 titleFrame:objc_msgSend(v36 iconFrame:"layoutSize") layout:v51 layoutSize:{v50, v19, v21, v23, v25, v29, v31, v33, v35}];
+        layout = [(_UIContextMenuCellContentView *)self layout];
+        v37 = [v52 contextMenuDynamicPasteButtonTagWithSecureName:secureName size:prefersLeadingImageCellLayout titleFrame:objc_msgSend(layout iconFrame:"layoutSize") layout:v51 layoutSize:{v50, v19, v21, v23, v25, v29, v31, v33, v35}];
       }
 
       else
@@ -466,12 +466,12 @@ LABEL_10:
 
         v43 = ([(_UIContextMenuCellContentView *)self options]>> 5) & 1;
         v44 = MEMORY[0x1E69BC820];
-        v14 = [(_UIContextMenuCellContentView *)self pasteVariant];
-        v45 = [v14 secureName];
+        pasteVariant = [(_UIContextMenuCellContentView *)self pasteVariant];
+        secureName2 = [pasteVariant secureName];
         [(UIView *)self->_labelStackView frame];
         v47 = v46;
-        v16 = [(_UIContextMenuCellContentView *)self layout];
-        v37 = [v44 contextMenuPasteButtonTagWithSecureName:v45 size:objc_msgSend(v16 titleOrigin:"layoutSize") layoutSize:v43 hasTrailingGutter:{v8 + -2.0, v10 + -2.0, v39, v47}];
+        labelStackView = [(_UIContextMenuCellContentView *)self layout];
+        v37 = [v44 contextMenuPasteButtonTagWithSecureName:secureName2 size:objc_msgSend(labelStackView titleOrigin:"layoutSize") layoutSize:v43 hasTrailingGutter:{v8 + -2.0, v10 + -2.0, v39, v47}];
       }
 
       objc_initWeak(location, self);
@@ -500,25 +500,25 @@ LABEL_10:
 
 - (int64_t)focusStyle
 {
-  v2 = [(_UIContextMenuCellContentView *)self layout];
-  v3 = [v2 focusStyle];
+  layout = [(_UIContextMenuCellContentView *)self layout];
+  focusStyle = [layout focusStyle];
 
-  return v3;
+  return focusStyle;
 }
 
 - (void)_createLabelStackViewIfNeeded
 {
-  v3 = [(_UIContextMenuCellContentView *)self labelStackView];
+  labelStackView = [(_UIContextMenuCellContentView *)self labelStackView];
 
-  if (!v3)
+  if (!labelStackView)
   {
     v4 = objc_opt_new();
     [(UIStackView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v4 setBaselineRelativeArrangement:1];
     [(UIStackView *)v4 setAxis:1];
     [(UIStackView *)v4 setSpacing:20.0];
-    v5 = [(UIView *)v4 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(UIView *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
     labelStackView = self->_labelStackView;
     self->_labelStackView = v4;
@@ -529,15 +529,15 @@ LABEL_10:
 
 - (id)_primaryCompositingFilterForCurrentTraitsAndState
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v5 = [v4 itemPrimaryCompositingFilterProvider];
-  if (v5)
+  itemPrimaryCompositingFilterProvider = [v4 itemPrimaryCompositingFilterProvider];
+  if (itemPrimaryCompositingFilterProvider)
   {
-    v6 = [v4 itemPrimaryCompositingFilterProvider];
-    v7 = [(UIView *)self traitCollection];
-    v8 = (v6)[2](v6, v7, [(_UIContextMenuCellContentView *)self controlState]);
+    itemPrimaryCompositingFilterProvider2 = [v4 itemPrimaryCompositingFilterProvider];
+    traitCollection2 = [(UIView *)self traitCollection];
+    v8 = (itemPrimaryCompositingFilterProvider2)[2](itemPrimaryCompositingFilterProvider2, traitCollection2, [(_UIContextMenuCellContentView *)self controlState]);
   }
 
   else
@@ -550,18 +550,18 @@ LABEL_10:
 
 - (void)_updateSubtitleLabelNumberOfLines
 {
-  v3 = [(_UIContextMenuCellContentView *)self subtitleLabel];
-  if (v3)
+  subtitleLabel = [(_UIContextMenuCellContentView *)self subtitleLabel];
+  if (subtitleLabel)
   {
-    v5 = v3;
-    v4 = [(_UIContextMenuCellContentView *)self _resolvedLineLimit];
+    v5 = subtitleLabel;
+    _resolvedLineLimit = [(_UIContextMenuCellContentView *)self _resolvedLineLimit];
     if (([(_UIContextMenuCellContentView *)self overrideNumberOfSubtitleLines]& 0x8000000000000000) == 0)
     {
-      v4 = [(_UIContextMenuCellContentView *)self overrideNumberOfSubtitleLines];
+      _resolvedLineLimit = [(_UIContextMenuCellContentView *)self overrideNumberOfSubtitleLines];
     }
 
-    [v5 setNumberOfLines:v4];
-    v3 = v5;
+    [v5 setNumberOfLines:_resolvedLineLimit];
+    subtitleLabel = v5;
   }
 }
 
@@ -571,101 +571,101 @@ LABEL_10:
   {
     [(_UIContextMenuCellContentView *)self setNeedsConstraintRebuild:0];
     [(_UIContextMenuCellContentView *)self _updateAttachedConstraintsForViewHierarchyChange];
-    v3 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
-    if (v3)
+    emphasizedIconImageView = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
+    if (emphasizedIconImageView)
     {
-      v4 = v3;
-      v5 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
-      v6 = [v5 window];
+      v4 = emphasizedIconImageView;
+      emphasizedIconImageView2 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
+      window = [emphasizedIconImageView2 window];
 
-      if (!v6)
+      if (!window)
       {
-        v7 = [(_UIContextMenuCellContentView *)self iconImageView];
-        v8 = [v7 superview];
-        v9 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
-        v10 = [(_UIContextMenuCellContentView *)self iconImageView];
-        [v8 insertSubview:v9 aboveSubview:v10];
+        iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
+        superview = [iconImageView superview];
+        emphasizedIconImageView3 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
+        iconImageView2 = [(_UIContextMenuCellContentView *)self iconImageView];
+        [superview insertSubview:emphasizedIconImageView3 aboveSubview:iconImageView2];
       }
     }
 
-    v11 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-    v12 = [v11 leadingAnchor];
-    v13 = [(_UIContextMenuCellContentView *)self labelStackView];
-    v14 = [v13 leadingAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    emphasizedTitleLabel = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+    leadingAnchor = [emphasizedTitleLabel leadingAnchor];
+    labelStackView = [(_UIContextMenuCellContentView *)self labelStackView];
+    leadingAnchor2 = [labelStackView leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v15 setActive:1];
 
-    v16 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-    v17 = [v16 trailingAnchor];
-    v18 = [(_UIContextMenuCellContentView *)self labelStackView];
-    v19 = [v18 trailingAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    emphasizedTitleLabel2 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+    trailingAnchor = [emphasizedTitleLabel2 trailingAnchor];
+    labelStackView2 = [(_UIContextMenuCellContentView *)self labelStackView];
+    trailingAnchor2 = [labelStackView2 trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v20 setActive:1];
 
-    v21 = [(_UIContextMenuCellContentView *)self iconImageView];
-    v22 = [v21 superview];
+    iconImageView3 = [(_UIContextMenuCellContentView *)self iconImageView];
+    superview2 = [iconImageView3 superview];
 
-    if (v22)
+    if (superview2)
     {
-      v23 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
-      v24 = [v23 centerXAnchor];
-      v25 = [(_UIContextMenuCellContentView *)self iconImageView];
-      v26 = [v25 centerXAnchor];
-      v27 = [v24 constraintEqualToAnchor:v26];
+      emphasizedIconImageView4 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
+      centerXAnchor = [emphasizedIconImageView4 centerXAnchor];
+      iconImageView4 = [(_UIContextMenuCellContentView *)self iconImageView];
+      centerXAnchor2 = [iconImageView4 centerXAnchor];
+      v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v27 setActive:1];
 
-      v28 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
-      v29 = [v28 centerYAnchor];
-      v30 = [(_UIContextMenuCellContentView *)self iconImageView];
-      v31 = [v30 centerYAnchor];
-      v32 = [v29 constraintEqualToAnchor:v31];
+      emphasizedIconImageView5 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
+      centerYAnchor = [emphasizedIconImageView5 centerYAnchor];
+      iconImageView5 = [(_UIContextMenuCellContentView *)self iconImageView];
+      centerYAnchor2 = [iconImageView5 centerYAnchor];
+      v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [v32 setActive:1];
     }
 
-    v33 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-    v34 = [v33 firstBaselineAnchor];
-    v35 = [(_UIContextMenuCellContentView *)self labelStackView];
-    v36 = [v35 firstBaselineAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36];
+    emphasizedTitleLabel3 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+    firstBaselineAnchor = [emphasizedTitleLabel3 firstBaselineAnchor];
+    labelStackView3 = [(_UIContextMenuCellContentView *)self labelStackView];
+    firstBaselineAnchor2 = [labelStackView3 firstBaselineAnchor];
+    v37 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     [v37 setActive:1];
   }
 
-  v38 = [(_UIContextMenuCellContentView *)self nonSymbolImageWidth];
+  nonSymbolImageWidth = [(_UIContextMenuCellContentView *)self nonSymbolImageWidth];
 
-  if (v38)
+  if (nonSymbolImageWidth)
   {
     [(_UIContextMenuCellContentView *)self _maxImageSize];
     v40 = v39;
     v42 = v41;
-    v43 = [(_UIContextMenuCellContentView *)self nonSymbolImageWidth];
-    [v43 setConstant:v40];
+    nonSymbolImageWidth2 = [(_UIContextMenuCellContentView *)self nonSymbolImageWidth];
+    [nonSymbolImageWidth2 setConstant:v40];
 
-    v44 = [(_UIContextMenuCellContentView *)self nonSymbolImageHeight];
-    [v44 setConstant:v42];
+    nonSymbolImageHeight = [(_UIContextMenuCellContentView *)self nonSymbolImageHeight];
+    [nonSymbolImageHeight setConstant:v42];
   }
 
-  v45 = [(_UIContextMenuCellContentView *)self layout];
-  [v45 updateConstraints];
+  layout = [(_UIContextMenuCellContentView *)self layout];
+  [layout updateConstraints];
 
   v46.receiver = self;
   v46.super_class = _UIContextMenuCellContentView;
   [(UIView *)&v46 updateConstraints];
 }
 
-- (_UIContextMenuCellContentView)initWithFrame:(CGRect)a3
+- (_UIContextMenuCellContentView)initWithFrame:(CGRect)frame
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = _UIContextMenuCellContentView;
-  v3 = [(UIView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(UIView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v6 = [(UIView *)v4 layer];
-    [v6 setAllowsGroupOpacity:0];
+    layer2 = [(UIView *)v4 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     [(UIView *)v4 setTintAdjustmentMode:1];
     [(_UIContextMenuCellContentView *)v4 setOverrideNumberOfTitleLines:-1];
@@ -683,22 +683,22 @@ LABEL_10:
   return v4;
 }
 
-- (void)setLayoutClass:(Class)a3
+- (void)setLayoutClass:(Class)class
 {
-  v5 = [(_UIContextMenuCellContentView *)self layout];
+  layout = [(_UIContextMenuCellContentView *)self layout];
   v6 = objc_opt_class();
 
-  if (v6 != a3)
+  if (v6 != class)
   {
     [(UIView *)self setHoverStyle:0];
     [(_UIContextMenuCellLayout *)self->_layout removeConstraints];
-    v7 = [[a3 alloc] initWithContentView:self];
+    v7 = [[class alloc] initWithContentView:self];
     layout = self->_layout;
     self->_layout = v7;
 
     v9 = [(_UIContextMenuCellContentView *)self _iconSymbolConfigurationForCurrentTraitsUsingBoldFont:0];
-    v10 = [(_UIContextMenuCellContentView *)self iconImageView];
-    [v10 _setOverridingSymbolConfiguration:v9];
+    iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
+    [iconImageView _setOverridingSymbolConfiguration:v9];
 
     [(_UIContextMenuCellContentView *)self _setNeedsConstraintRebuild];
 
@@ -706,37 +706,37 @@ LABEL_10:
   }
 }
 
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
   v4.receiver = self;
   v4.super_class = _UIContextMenuCellContentView;
-  [(UIView *)&v4 setDirectionalLayoutMargins:a3.top, a3.leading, a3.bottom, a3.trailing];
+  [(UIView *)&v4 setDirectionalLayoutMargins:margins.top, margins.leading, margins.bottom, margins.trailing];
   [(UIView *)self setNeedsUpdateConstraints];
 }
 
 - (BOOL)shouldHighlightOnHover
 {
-  v2 = [(_UIContextMenuCellContentView *)self layout];
-  v3 = [v2 hoverStyle];
-  v4 = v3 == 0;
+  layout = [(_UIContextMenuCellContentView *)self layout];
+  hoverStyle = [layout hoverStyle];
+  v4 = hoverStyle == 0;
 
   return v4;
 }
 
 - (UIShape)contentShape
 {
-  v2 = [(_UIContextMenuCellContentView *)self layout];
-  v3 = [v2 contentShape];
+  layout = [(_UIContextMenuCellContentView *)self layout];
+  contentShape = [layout contentShape];
 
-  return v3;
+  return contentShape;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuCellContentView *)self titleLabel];
-  v6 = [v5 text];
-  v7 = [v4 isEqualToString:v6];
+  titleCopy = title;
+  titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+  text = [titleLabel text];
+  v7 = [titleCopy isEqualToString:text];
 
   if ((v7 & 1) == 0)
   {
@@ -744,18 +744,18 @@ LABEL_10:
     v8[1] = 3221225472;
     v8[2] = __42___UIContextMenuCellContentView_setTitle___block_invoke;
     v8[3] = &unk_1E70F35B8;
-    v9 = v4;
-    v10 = self;
+    v9 = titleCopy;
+    selfCopy = self;
     [UIView performWithoutAnimation:v8];
   }
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuCellContentView *)self titleLabel];
-  v6 = [v5 attributedText];
-  v7 = [v4 isEqualToAttributedString:v6];
+  titleCopy = title;
+  titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+  attributedText = [titleLabel attributedText];
+  v7 = [titleCopy isEqualToAttributedString:attributedText];
 
   if ((v7 & 1) == 0)
   {
@@ -763,18 +763,18 @@ LABEL_10:
     v8[1] = 3221225472;
     v8[2] = __52___UIContextMenuCellContentView_setAttributedTitle___block_invoke;
     v8[3] = &unk_1E70F35B8;
-    v9 = v4;
-    v10 = self;
+    v9 = titleCopy;
+    selfCopy = self;
     [UIView performWithoutAnimation:v8];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuCellContentView *)self subtitleLabel];
-  v6 = [v5 text];
-  v7 = [v4 isEqualToString:v6];
+  subtitleCopy = subtitle;
+  subtitleLabel = [(_UIContextMenuCellContentView *)self subtitleLabel];
+  text = [subtitleLabel text];
+  v7 = [subtitleCopy isEqualToString:text];
 
   if ((v7 & 1) == 0)
   {
@@ -782,24 +782,24 @@ LABEL_10:
     v8[1] = 3221225472;
     v8[2] = __45___UIContextMenuCellContentView_setSubtitle___block_invoke;
     v8[3] = &unk_1E70F35B8;
-    v9 = v4;
-    v10 = self;
+    v9 = subtitleCopy;
+    selfCopy = self;
     [UIView performWithoutAnimation:v8];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuCellContentView *)self iconImageView];
-  v6 = [v5 image];
-  v7 = [v4 isEqual:v6];
+  imageCopy = image;
+  iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
+  image = [iconImageView image];
+  v7 = [imageCopy isEqual:image];
 
   if (v7)
   {
-    v8 = [(_UIContextMenuCellContentView *)self iconImageView];
+    iconImageView2 = [(_UIContextMenuCellContentView *)self iconImageView];
 
-    if (v8)
+    if (iconImageView2)
     {
       [(_UIContextMenuCellContentView *)self _setNeedsConstraintRebuild];
     }
@@ -811,41 +811,41 @@ LABEL_10:
     v9[1] = 3221225472;
     v9[2] = __42___UIContextMenuCellContentView_setImage___block_invoke;
     v9[3] = &unk_1E70F35B8;
-    v10 = v4;
-    v11 = self;
+    v10 = imageCopy;
+    selfCopy = self;
     [UIView performWithoutAnimation:v9];
   }
 }
 
-- (void)setAccessoryAction:(id)a3
+- (void)setAccessoryAction:(id)action
 {
-  v12 = a3;
-  v4 = [(_UIContextMenuCellContentView *)self accessoryButton];
-  if (v12)
+  actionCopy = action;
+  accessoryButton = [(_UIContextMenuCellContentView *)self accessoryButton];
+  if (actionCopy)
   {
 
-    if (!v4)
+    if (!accessoryButton)
     {
-      v5 = [UIButton systemButtonWithPrimaryAction:v12];
+      v5 = [UIButton systemButtonWithPrimaryAction:actionCopy];
       [(_UIContextMenuCellContentView *)self setAccessoryButton:v5];
 
-      v6 = [(_UIContextMenuCellContentView *)self _primaryContentColorForCurrentState];
-      v7 = [(_UIContextMenuCellContentView *)self accessoryButton];
-      [v7 setTintColor:v6];
+      _primaryContentColorForCurrentState = [(_UIContextMenuCellContentView *)self _primaryContentColorForCurrentState];
+      accessoryButton2 = [(_UIContextMenuCellContentView *)self accessoryButton];
+      [accessoryButton2 setTintColor:_primaryContentColorForCurrentState];
 
       v8 = [(_UIContextMenuCellContentView *)self _iconSymbolConfigurationForCurrentTraitsUsingBoldFont:0];
-      v9 = [(_UIContextMenuCellContentView *)self accessoryButton];
-      v10 = [v9 imageView];
-      [v10 setPreferredSymbolConfiguration:v8];
+      accessoryButton3 = [(_UIContextMenuCellContentView *)self accessoryButton];
+      imageView = [accessoryButton3 imageView];
+      [imageView setPreferredSymbolConfiguration:v8];
 
-      v11 = [(_UIContextMenuCellContentView *)self accessoryButton];
-      [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+      accessoryButton4 = [(_UIContextMenuCellContentView *)self accessoryButton];
+      [accessoryButton4 setTranslatesAutoresizingMaskIntoConstraints:0];
     }
   }
 
   else
   {
-    [v4 removeFromSuperview];
+    [accessoryButton removeFromSuperview];
 
     [(_UIContextMenuCellContentView *)self setAccessoryButton:0];
   }
@@ -854,12 +854,12 @@ LABEL_10:
   [(_UIContextMenuCellContentView *)self _setNeedsConstraintRebuild];
 }
 
-- (void)setKeyboardShortcut:(id)a3
+- (void)setKeyboardShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuCellContentView *)self keyShortcutInputView];
-  v6 = [v5 shortcut];
-  v7 = [v4 isEqual:v6];
+  shortcutCopy = shortcut;
+  keyShortcutInputView = [(_UIContextMenuCellContentView *)self keyShortcutInputView];
+  shortcut = [keyShortcutInputView shortcut];
+  v7 = [shortcutCopy isEqual:shortcut];
 
   if ((v7 & 1) == 0)
   {
@@ -867,18 +867,18 @@ LABEL_10:
     v8[1] = 3221225472;
     v8[2] = __53___UIContextMenuCellContentView_setKeyboardShortcut___block_invoke;
     v8[3] = &unk_1E70F35B8;
-    v9 = v4;
-    v10 = self;
+    v9 = shortcutCopy;
+    selfCopy = self;
     [UIView performWithoutAnimation:v8];
   }
 }
 
-- (void)_setDecorationImage:(id)a3
+- (void)_setDecorationImage:(id)image
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuCellContentView *)self decorationImageView];
-  v6 = [v5 image];
-  v7 = [v4 isEqual:v6];
+  imageCopy = image;
+  decorationImageView = [(_UIContextMenuCellContentView *)self decorationImageView];
+  image = [decorationImageView image];
+  v7 = [imageCopy isEqual:image];
 
   if ((v7 & 1) == 0)
   {
@@ -886,30 +886,30 @@ LABEL_10:
     v8[1] = 3221225472;
     v8[2] = __53___UIContextMenuCellContentView__setDecorationImage___block_invoke;
     v8[3] = &unk_1E70F35B8;
-    v9 = v4;
-    v10 = self;
+    v9 = imageCopy;
+    selfCopy = self;
     [UIView performWithoutAnimation:v8];
   }
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
   options = self->_options;
-  if (options != a3)
+  if (options != options)
   {
-    self->_options = a3;
+    self->_options = options;
     [(_UIContextMenuCellContentView *)self _updateForOptionsChangeFromPreviousOptions:options];
   }
 }
 
-- (void)_updateForOptionsChangeFromPreviousOptions:(unint64_t)a3
+- (void)_updateForOptionsChangeFromPreviousOptions:(unint64_t)options
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76___UIContextMenuCellContentView__updateForOptionsChangeFromPreviousOptions___block_invoke;
   aBlock[3] = &unk_1E71162C0;
   aBlock[4] = self;
-  aBlock[5] = a3;
+  aBlock[5] = options;
   v4 = _Block_copy(aBlock);
   v5 = v4[2](v4, 1);
   if (v5)
@@ -953,8 +953,8 @@ LABEL_8:
 LABEL_9:
   if (v4[2](v4, 256))
   {
-    v10 = [(UIView *)self traitCollection];
-    v11 = _UIContextMenuGetPlatformMetrics([v10 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v11 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
     v6 |= [v11 prefersLeadingImageCellLayout];
   }
@@ -993,11 +993,11 @@ LABEL_9:
   }
 }
 
-- (void)setNumberOfTitleLines:(unint64_t)a3
+- (void)setNumberOfTitleLines:(unint64_t)lines
 {
-  if (self->_numberOfTitleLines != a3)
+  if (self->_numberOfTitleLines != lines)
   {
-    self->_numberOfTitleLines = a3;
+    self->_numberOfTitleLines = lines;
     [(_UIContextMenuCellContentView *)self _updateTitleLabelNumberOfLines];
 
     [(_UIContextMenuCellContentView *)self _updateSubtitleLabelNumberOfLines];
@@ -1006,73 +1006,73 @@ LABEL_9:
 
 - (unint64_t)measuredNumberOfTitleLines
 {
-  v2 = [(_UIContextMenuCellContentView *)self titleLabel];
-  v3 = [v2 _measuredNumberOfLines];
+  titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+  _measuredNumberOfLines = [titleLabel _measuredNumberOfLines];
 
-  return v3;
+  return _measuredNumberOfLines;
 }
 
 - (unint64_t)measuredNumberOfSubTitleLines
 {
-  v2 = [(_UIContextMenuCellContentView *)self subtitleLabel];
-  v3 = [v2 _measuredNumberOfLines];
+  subtitleLabel = [(_UIContextMenuCellContentView *)self subtitleLabel];
+  _measuredNumberOfLines = [subtitleLabel _measuredNumberOfLines];
 
-  return v3;
+  return _measuredNumberOfLines;
 }
 
-- (void)_inheritRelevantPropertiesFromContentView:(id)a3
+- (void)_inheritRelevantPropertiesFromContentView:(id)view
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (viewCopy)
   {
-    -[_UIContextMenuCellContentView setOverrideNumberOfTitleLines:](self, "setOverrideNumberOfTitleLines:", [v4 measuredNumberOfTitleLines]);
-    v5 = [v6 measuredNumberOfSubTitleLines];
+    -[_UIContextMenuCellContentView setOverrideNumberOfTitleLines:](self, "setOverrideNumberOfTitleLines:", [viewCopy measuredNumberOfTitleLines]);
+    measuredNumberOfSubTitleLines = [v6 measuredNumberOfSubTitleLines];
   }
 
   else
   {
-    v5 = -1;
+    measuredNumberOfSubTitleLines = -1;
     [(_UIContextMenuCellContentView *)self setOverrideNumberOfTitleLines:-1];
   }
 
-  [(_UIContextMenuCellContentView *)self setOverrideNumberOfSubtitleLines:v5];
+  [(_UIContextMenuCellContentView *)self setOverrideNumberOfSubtitleLines:measuredNumberOfSubTitleLines];
   [(_UIContextMenuCellContentView *)self _updateTitleLabelNumberOfLines];
   [(_UIContextMenuCellContentView *)self _updateSubtitleLabelNumberOfLines];
 }
 
 - (void)_hideContents
 {
-  v3 = [(_UIContextMenuCellContentView *)self titleLabel];
-  [v3 setAlpha:0.0];
+  titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+  [titleLabel setAlpha:0.0];
 
-  v4 = [(_UIContextMenuCellContentView *)self subtitleLabel];
-  [v4 setAlpha:0.0];
+  subtitleLabel = [(_UIContextMenuCellContentView *)self subtitleLabel];
+  [subtitleLabel setAlpha:0.0];
 
-  v5 = [(_UIContextMenuCellContentView *)self decorationImageView];
-  [v5 setAlpha:0.0];
+  decorationImageView = [(_UIContextMenuCellContentView *)self decorationImageView];
+  [decorationImageView setAlpha:0.0];
 
-  v6 = [(_UIContextMenuCellContentView *)self iconImageView];
-  [v6 setAlpha:0.0];
+  iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
+  [iconImageView setAlpha:0.0];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(_UIContextMenuCellContentView *)self pasteVariant];
+  pasteVariant = [(_UIContextMenuCellContentView *)self pasteVariant];
 
-  if (v3)
+  if (pasteVariant)
   {
-    v4 = [(_UIContextMenuCellContentView *)self titleLabel];
-    [v4 setAlpha:1.0];
+    titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+    [titleLabel setAlpha:1.0];
 
-    v5 = [(_UIContextMenuCellContentView *)self subtitleLabel];
-    [v5 setAlpha:1.0];
+    subtitleLabel = [(_UIContextMenuCellContentView *)self subtitleLabel];
+    [subtitleLabel setAlpha:1.0];
 
-    v6 = [(_UIContextMenuCellContentView *)self decorationImageView];
-    [v6 setAlpha:1.0];
+    decorationImageView = [(_UIContextMenuCellContentView *)self decorationImageView];
+    [decorationImageView setAlpha:1.0];
 
-    v7 = [(_UIContextMenuCellContentView *)self iconImageView];
-    [v7 setAlpha:1.0];
+    iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
+    [iconImageView setAlpha:1.0];
 
     [(_UIContextMenuCellContentView *)self setPasteVariant:0];
     WeakRetained = objc_loadWeakRetained(&self->_securePasteButtonSlotView);
@@ -1082,21 +1082,21 @@ LABEL_9:
   }
 }
 
-- (void)setPasteVariant:(id)a3
+- (void)setPasteVariant:(id)variant
 {
-  v5 = a3;
-  v10 = v5;
-  if (v5)
+  variantCopy = variant;
+  v10 = variantCopy;
+  if (variantCopy)
   {
-    v6 = [v5 localizedStringForLocalization:0];
+    v6 = [variantCopy localizedStringForLocalization:0];
     [(_UIContextMenuCellContentView *)self setTitle:v6];
 
     [(_UIContextMenuCellContentView *)self setSubtitle:0];
-    v7 = [v10 glyph];
-    v8 = [UIImage _systemImageNamed:v7];
+    glyph = [v10 glyph];
+    v8 = [UIImage _systemImageNamed:glyph];
     [(_UIContextMenuCellContentView *)self setImage:v8];
 
-    objc_storeStrong(&self->_pasteVariant, a3);
+    objc_storeStrong(&self->_pasteVariant, variant);
     [(UIView *)self setNeedsLayout];
   }
 
@@ -1120,9 +1120,9 @@ LABEL_9:
 
 - (void)_installSubtitleLabelIfNeeded
 {
-  v3 = [(_UIContextMenuCellContentView *)self subtitleLabel];
+  subtitleLabel = [(_UIContextMenuCellContentView *)self subtitleLabel];
 
-  if (!v3)
+  if (!subtitleLabel)
   {
     v4 = [UILabel alloc];
     v5 = [(UILabel *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -1131,54 +1131,54 @@ LABEL_9:
     [(UILabel *)v5 setAdjustsFontForContentSizeCategory:1];
     LODWORD(v6) = 0.5;
     [(UILabel *)v5 _setHyphenationFactor:v6];
-    v7 = [(UIView *)self traitCollection];
-    v8 = _UIContextMenuGetPlatformMetrics([v7 userInterfaceIdiom]);
-    v9 = [v8 subtitleFont];
-    v10 = [v9 _fontAdjustedForCurrentContentSizeCategory];
+    traitCollection = [(UIView *)self traitCollection];
+    v8 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+    subtitleFont = [v8 subtitleFont];
+    _fontAdjustedForCurrentContentSizeCategory = [subtitleFont _fontAdjustedForCurrentContentSizeCategory];
 
-    [(UILabel *)v5 setFont:v10];
-    v11 = [(_UIContextMenuCellContentView *)self _subtitleTextColor];
-    [(UILabel *)v5 setTextColor:v11];
+    [(UILabel *)v5 setFont:_fontAdjustedForCurrentContentSizeCategory];
+    _subtitleTextColor = [(_UIContextMenuCellContentView *)self _subtitleTextColor];
+    [(UILabel *)v5 setTextColor:_subtitleTextColor];
 
     [(UIView *)v5 _setOverrideUserInterfaceRenderingMode:[(_UIContextMenuCellContentView *)self _subtitleLabelRenderingMode]];
-    v12 = [(_UIContextMenuCellContentView *)self _subtitleLabelFilterForCurrentTraitsAndState];
-    v13 = [(UIView *)v5 layer];
-    [v13 setCompositingFilter:v12];
+    _subtitleLabelFilterForCurrentTraitsAndState = [(_UIContextMenuCellContentView *)self _subtitleLabelFilterForCurrentTraitsAndState];
+    layer = [(UIView *)v5 layer];
+    [layer setCompositingFilter:_subtitleLabelFilterForCurrentTraitsAndState];
 
     subtitleLabel = self->_subtitleLabel;
     self->_subtitleLabel = v5;
 
     [(_UIContextMenuCellContentView *)self _updateSubtitleLabelNumberOfLines];
-    v16 = [(_UIContextMenuCellContentView *)self labelStackView];
-    v15 = [(_UIContextMenuCellContentView *)self subtitleLabel];
-    [v16 addArrangedSubview:v15];
+    labelStackView = [(_UIContextMenuCellContentView *)self labelStackView];
+    subtitleLabel2 = [(_UIContextMenuCellContentView *)self subtitleLabel];
+    [labelStackView addArrangedSubview:subtitleLabel2];
   }
 }
 
-- (id)_contentImageViewForImage:(id)a3
+- (id)_contentImageViewForImage:(id)image
 {
-  v4 = a3;
-  v5 = [[UIImageView alloc] initWithImage:v4];
+  imageCopy = image;
+  v5 = [[UIImageView alloc] initWithImage:imageCopy];
   [(UIImageView *)v5 setContentMode:1];
   [(UIImageView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(_UIContextMenuCellContentView *)self _primaryContentColorForCurrentState];
-  [(UIView *)v5 setTintColor:v6];
+  _primaryContentColorForCurrentState = [(_UIContextMenuCellContentView *)self _primaryContentColorForCurrentState];
+  [(UIView *)v5 setTintColor:_primaryContentColorForCurrentState];
 
-  v7 = [v4 isSymbolImage];
-  if (v7)
+  isSymbolImage = [imageCopy isSymbolImage];
+  if (isSymbolImage)
   {
-    v8 = [(_UIContextMenuCellContentView *)self _primaryCompositingFilterForCurrentTraitsAndState];
+    _primaryCompositingFilterForCurrentTraitsAndState = [(_UIContextMenuCellContentView *)self _primaryCompositingFilterForCurrentTraitsAndState];
   }
 
   else
   {
-    v8 = 0;
+    _primaryCompositingFilterForCurrentTraitsAndState = 0;
   }
 
-  v9 = [(UIView *)v5 layer];
-  [v9 setCompositingFilter:v8];
+  layer = [(UIView *)v5 layer];
+  [layer setCompositingFilter:_primaryCompositingFilterForCurrentTraitsAndState];
 
-  if (v7)
+  if (isSymbolImage)
   {
   }
 
@@ -1187,88 +1187,88 @@ LABEL_9:
 
 - (void)_updateAppearanceForStateChange
 {
-  v15 = [(_UIContextMenuCellContentView *)self _primaryContentColorForCurrentState];
+  _primaryContentColorForCurrentState = [(_UIContextMenuCellContentView *)self _primaryContentColorForCurrentState];
   if (![(_UIContextMenuCellContentView *)self typeSelectState])
   {
     if ([(_UIContextMenuCellContentView *)self _primaryContentColorShouldOverrideForCurrentState]|| ![(_UIContextMenuCellContentView *)self hasAttributedTitle])
     {
-      v3 = [(_UIContextMenuCellContentView *)self titleLabel];
-      [v3 setTextColor:v15];
+      titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+      [titleLabel setTextColor:_primaryContentColorForCurrentState];
 
-      v4 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-      [v4 setTextColor:v15];
+      emphasizedTitleLabel = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+      [emphasizedTitleLabel setTextColor:_primaryContentColorForCurrentState];
     }
 
-    v5 = [(_UIContextMenuCellContentView *)self _childIndicatorColorForCurrentState];
-    v6 = [(_UIContextMenuCellContentView *)self decorationImageView];
-    [v6 setTintColor:v5];
+    _childIndicatorColorForCurrentState = [(_UIContextMenuCellContentView *)self _childIndicatorColorForCurrentState];
+    decorationImageView = [(_UIContextMenuCellContentView *)self decorationImageView];
+    [decorationImageView setTintColor:_childIndicatorColorForCurrentState];
 
-    v7 = [(_UIContextMenuCellContentView *)self iconImageView];
-    [v7 setTintColor:v15];
+    iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
+    [iconImageView setTintColor:_primaryContentColorForCurrentState];
 
     [(_UIContextMenuCellContentView *)self _updateIconImageAppearanceForStateChange];
-    v8 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
-    [v8 setTintColor:v15];
+    emphasizedIconImageView = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
+    [emphasizedIconImageView setTintColor:_primaryContentColorForCurrentState];
 
-    v9 = [(_UIContextMenuCellContentView *)self accessoryButton];
-    v10 = [v9 imageView];
-    [v10 setTintColor:v15];
+    accessoryButton = [(_UIContextMenuCellContentView *)self accessoryButton];
+    imageView = [accessoryButton imageView];
+    [imageView setTintColor:_primaryContentColorForCurrentState];
   }
 
-  v11 = [(UIView *)self traitCollection];
-  v12 = _UIContextMenuGetPlatformMetrics([v11 userInterfaceIdiom]);
-  v13 = [v12 wantsFloatingContentViewAsBackground];
+  traitCollection = [(UIView *)self traitCollection];
+  v12 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+  wantsFloatingContentViewAsBackground = [v12 wantsFloatingContentViewAsBackground];
 
-  if ((v13 & 1) == 0)
+  if ((wantsFloatingContentViewAsBackground & 1) == 0)
   {
-    v14 = [(_UIContextMenuCellContentView *)self _primaryBackgroundColorForCurrentState];
-    [(UIView *)self setBackgroundColor:v14];
+    _primaryBackgroundColorForCurrentState = [(_UIContextMenuCellContentView *)self _primaryBackgroundColorForCurrentState];
+    [(UIView *)self setBackgroundColor:_primaryBackgroundColorForCurrentState];
   }
 }
 
 - (void)_updateIconImageAppearanceForStateChange
 {
-  v12 = [(_UIContextMenuCellContentView *)self iconImageView];
-  v3 = [v12 image];
-  if ([v3 isSymbolImage])
+  iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
+  image = [iconImageView image];
+  if ([image isSymbolImage])
   {
-    v4 = [(_UIContextMenuCellContentView *)self iconImageView];
-    v5 = [v4 image];
-    v6 = [v5 _isColoredSymbolImage];
+    iconImageView2 = [(_UIContextMenuCellContentView *)self iconImageView];
+    image2 = [iconImageView2 image];
+    _isColoredSymbolImage = [image2 _isColoredSymbolImage];
 
-    if (!v6)
+    if (!_isColoredSymbolImage)
     {
       return;
     }
 
-    v7 = [(UIView *)self traitCollection];
-    v12 = _UIContextMenuGetPlatformMetrics([v7 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    iconImageView = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-    v3 = [v12 itemColoredSymbolImageUserInterfaceStyleOverrideProvider];
-    if (v3)
+    image = [iconImageView itemColoredSymbolImageUserInterfaceStyleOverrideProvider];
+    if (image)
     {
-      v8 = v3[2](v3, [(_UIContextMenuCellContentView *)self controlState], ([(_UIContextMenuCellContentView *)self options]>> 1) & 1);
-      v9 = [(_UIContextMenuCellContentView *)self iconImageView];
-      v10 = [(UIView *)v9 _internalTraitOverrides];
-      v11 = v10;
+      v8 = image[2](image, [(_UIContextMenuCellContentView *)self controlState], ([(_UIContextMenuCellContentView *)self options]>> 1) & 1);
+      iconImageView3 = [(_UIContextMenuCellContentView *)self iconImageView];
+      _internalTraitOverrides = [(UIView *)iconImageView3 _internalTraitOverrides];
+      v11 = _internalTraitOverrides;
       if (v8)
       {
-        [v10 setUserInterfaceStyle:v8];
+        [_internalTraitOverrides setUserInterfaceStyle:v8];
       }
 
       else
       {
-        [(_UITraitOverrides *)v10 _removeTraitToken:?];
+        [(_UITraitOverrides *)_internalTraitOverrides _removeTraitToken:?];
       }
     }
   }
 }
 
-- (void)setIsEmphasized:(BOOL)a3
+- (void)setIsEmphasized:(BOOL)emphasized
 {
-  if (self->_isEmphasized != a3)
+  if (self->_isEmphasized != emphasized)
   {
-    self->_isEmphasized = a3;
+    self->_isEmphasized = emphasized;
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __49___UIContextMenuCellContentView_setIsEmphasized___block_invoke;
@@ -1285,8 +1285,8 @@ LABEL_9:
       v4 = 1.0;
     }
 
-    v5 = [(_UIContextMenuCellContentView *)self titleLabel];
-    [v5 setAlpha:v4];
+    titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+    [titleLabel setAlpha:v4];
 
     if (self->_isEmphasized)
     {
@@ -1298,13 +1298,13 @@ LABEL_9:
       v6 = 0.0;
     }
 
-    v7 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-    [v7 setAlpha:v6];
+    emphasizedTitleLabel = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+    [emphasizedTitleLabel setAlpha:v6];
 
-    v8 = [(_UIContextMenuCellContentView *)self titleLabel];
-    v9 = [v8 numberOfLines];
-    v10 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-    [v10 setNumberOfLines:v9];
+    titleLabel2 = [(_UIContextMenuCellContentView *)self titleLabel];
+    numberOfLines = [titleLabel2 numberOfLines];
+    emphasizedTitleLabel2 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+    [emphasizedTitleLabel2 setNumberOfLines:numberOfLines];
 
     if (self->_isEmphasized)
     {
@@ -1316,8 +1316,8 @@ LABEL_9:
       v11 = 1.0;
     }
 
-    v12 = [(_UIContextMenuCellContentView *)self iconImageView];
-    [v12 setAlpha:v11];
+    iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
+    [iconImageView setAlpha:v11];
 
     if (self->_isEmphasized)
     {
@@ -1329,8 +1329,8 @@ LABEL_9:
       v13 = 0.0;
     }
 
-    v14 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
-    [v14 setAlpha:v13];
+    emphasizedIconImageView = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
+    [emphasizedIconImageView setAlpha:v13];
 
     if (([(_UIContextMenuCellContentView *)self options]& 0x10) != 0)
     {
@@ -1346,8 +1346,8 @@ LABEL_9:
           v18 = 1.0;
         }
 
-        v17 = [(_UIContextMenuCellContentView *)self decorationImageView];
-        [v17 setAlpha:v18];
+        decorationImageView = [(_UIContextMenuCellContentView *)self decorationImageView];
+        [decorationImageView setAlpha:v18];
       }
 
       else
@@ -1355,8 +1355,8 @@ LABEL_9:
         v15 = 0.0;
         if (self->_isEmphasized)
         {
-          v16 = [(UIView *)self superview];
-          if ([v16 _flipsHorizontalAxis])
+          superview = [(UIView *)self superview];
+          if ([superview _flipsHorizontalAxis])
           {
             v15 = -1.57079633;
           }
@@ -1368,9 +1368,9 @@ LABEL_9:
         }
 
         CGAffineTransformMakeRotation(&v43, v15);
-        v17 = [(_UIContextMenuCellContentView *)self decorationImageView];
+        decorationImageView = [(_UIContextMenuCellContentView *)self decorationImageView];
         v46 = v43;
-        [v17 setTransform:&v46];
+        [decorationImageView setTransform:&v46];
       }
     }
 
@@ -1381,25 +1381,25 @@ LABEL_9:
     *&v41.a = *&v42.a;
     *&v41.c = v19;
     *&v41.tx = *&v42.tx;
-    v20 = [(_UIContextMenuCellContentView *)self titleLabel];
-    v21 = [(_UIContextMenuCellContentView *)self titleLabel];
-    [v21 bounds];
-    [v20 sizeThatFits:{v22, v23}];
+    titleLabel3 = [(_UIContextMenuCellContentView *)self titleLabel];
+    titleLabel4 = [(_UIContextMenuCellContentView *)self titleLabel];
+    [titleLabel4 bounds];
+    [titleLabel3 sizeThatFits:{v22, v23}];
     v25 = v24;
 
-    v26 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-    v27 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-    [v27 bounds];
-    [v26 sizeThatFits:{v28, v29}];
+    emphasizedTitleLabel3 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+    emphasizedTitleLabel4 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+    [emphasizedTitleLabel4 bounds];
+    [emphasizedTitleLabel3 sizeThatFits:{v28, v29}];
     v31 = v30;
 
-    v32 = [(UIView *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(UIView *)self effectiveUserInterfaceLayoutDirection];
     if (self->_isEmphasized)
     {
-      v33 = [(_UIContextMenuCellContentView *)self titleLabel];
-      [v33 bounds];
+      titleLabel5 = [(_UIContextMenuCellContentView *)self titleLabel];
+      [titleLabel5 bounds];
       v34 = CGRectGetWidth(v47) * -0.5;
-      if (v32 == UIUserInterfaceLayoutDirectionRightToLeft)
+      if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
       {
         v35 = -v34;
       }
@@ -1424,10 +1424,10 @@ LABEL_9:
 
     else
     {
-      v33 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-      [v33 bounds];
+      titleLabel5 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+      [titleLabel5 bounds];
       v36 = CGRectGetWidth(v48) * -0.5;
-      if (v32 == UIUserInterfaceLayoutDirectionRightToLeft)
+      if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
       {
         v37 = -v36;
       }
@@ -1450,20 +1450,20 @@ LABEL_9:
       v41 = v46;
     }
 
-    v38 = [(_UIContextMenuCellContentView *)self titleLabel];
+    titleLabel6 = [(_UIContextMenuCellContentView *)self titleLabel];
     v46 = v42;
-    [v38 setTransform:&v46];
+    [titleLabel6 setTransform:&v46];
 
-    v39 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+    emphasizedTitleLabel5 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
     v46 = v41;
-    [v39 setTransform:&v46];
+    [emphasizedTitleLabel5 setTransform:&v46];
   }
 }
 
-- (void)setControlState:(unint64_t)a3 withAnimationCoordinator:(id)a4
+- (void)setControlState:(unint64_t)state withAnimationCoordinator:(id)coordinator
 {
-  v6 = a4;
-  self->_controlState = a3;
+  coordinatorCopy = coordinator;
+  self->_controlState = state;
   [(_UIContextMenuCellContentView *)self _updateCompositingFiltersForCurrentState];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1472,9 +1472,9 @@ LABEL_9:
   aBlock[4] = self;
   v7 = _Block_copy(aBlock);
   v8 = v7;
-  if (v6)
+  if (coordinatorCopy)
   {
-    [v6 addCoordinatedAnimations:v7 completion:0];
+    [coordinatorCopy addCoordinatedAnimations:v7 completion:0];
   }
 
   else
@@ -1482,37 +1482,37 @@ LABEL_9:
     (*(v7 + 2))(v7);
   }
 
-  v9 = [(_UIContextMenuCellContentView *)self layout];
+  layout = [(_UIContextMenuCellContentView *)self layout];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(_UIContextMenuCellContentView *)self layout];
-    [v11 setControlState:a3 withAnimationCoordinator:v6];
+    layout2 = [(_UIContextMenuCellContentView *)self layout];
+    [layout2 setControlState:state withAnimationCoordinator:coordinatorCopy];
   }
 }
 
 - (void)_updateCompositingFiltersForCurrentState
 {
-  v25 = [(_UIContextMenuCellContentView *)self _primaryCompositingFilterForCurrentTraitsAndState];
-  v3 = [(_UIContextMenuCellContentView *)self titleLabel];
-  v4 = [v3 layer];
-  [v4 setCompositingFilter:v25];
+  _primaryCompositingFilterForCurrentTraitsAndState = [(_UIContextMenuCellContentView *)self _primaryCompositingFilterForCurrentTraitsAndState];
+  titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+  layer = [titleLabel layer];
+  [layer setCompositingFilter:_primaryCompositingFilterForCurrentTraitsAndState];
 
-  v5 = [(_UIContextMenuCellContentView *)self _subtitleLabelFilterForCurrentTraitsAndState];
-  v6 = [(_UIContextMenuCellContentView *)self subtitleLabel];
-  v7 = [v6 layer];
-  [v7 setCompositingFilter:v5];
+  _subtitleLabelFilterForCurrentTraitsAndState = [(_UIContextMenuCellContentView *)self _subtitleLabelFilterForCurrentTraitsAndState];
+  subtitleLabel = [(_UIContextMenuCellContentView *)self subtitleLabel];
+  layer2 = [subtitleLabel layer];
+  [layer2 setCompositingFilter:_subtitleLabelFilterForCurrentTraitsAndState];
 
-  v8 = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
-  v9 = [v8 layer];
-  [v9 setCompositingFilter:v25];
+  emphasizedTitleLabel = [(_UIContextMenuCellContentView *)self emphasizedTitleLabel];
+  layer3 = [emphasizedTitleLabel layer];
+  [layer3 setCompositingFilter:_primaryCompositingFilterForCurrentTraitsAndState];
 
-  v10 = [(_UIContextMenuCellContentView *)self iconImageView];
-  v11 = [v10 image];
-  if ([v11 isSymbolImage])
+  iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
+  image = [iconImageView image];
+  if ([image isSymbolImage])
   {
-    v12 = v25;
+    v12 = _primaryCompositingFilterForCurrentTraitsAndState;
   }
 
   else
@@ -1520,15 +1520,15 @@ LABEL_9:
     v12 = 0;
   }
 
-  v13 = [(_UIContextMenuCellContentView *)self iconImageView];
-  v14 = [v13 layer];
-  [v14 setCompositingFilter:v12];
+  iconImageView2 = [(_UIContextMenuCellContentView *)self iconImageView];
+  layer4 = [iconImageView2 layer];
+  [layer4 setCompositingFilter:v12];
 
-  v15 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
-  v16 = [v15 image];
-  if ([v16 isSymbolImage])
+  emphasizedIconImageView = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
+  image2 = [emphasizedIconImageView image];
+  if ([image2 isSymbolImage])
   {
-    v17 = v25;
+    v17 = _primaryCompositingFilterForCurrentTraitsAndState;
   }
 
   else
@@ -1536,15 +1536,15 @@ LABEL_9:
     v17 = 0;
   }
 
-  v18 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
-  v19 = [v18 layer];
-  [v19 setCompositingFilter:v17];
+  emphasizedIconImageView2 = [(_UIContextMenuCellContentView *)self emphasizedIconImageView];
+  layer5 = [emphasizedIconImageView2 layer];
+  [layer5 setCompositingFilter:v17];
 
-  v20 = [(_UIContextMenuCellContentView *)self decorationImageView];
-  v21 = [v20 image];
-  if ([v21 isSymbolImage])
+  decorationImageView = [(_UIContextMenuCellContentView *)self decorationImageView];
+  image3 = [decorationImageView image];
+  if ([image3 isSymbolImage])
   {
-    v22 = v25;
+    v22 = _primaryCompositingFilterForCurrentTraitsAndState;
   }
 
   else
@@ -1552,9 +1552,9 @@ LABEL_9:
     v22 = 0;
   }
 
-  v23 = [(_UIContextMenuCellContentView *)self decorationImageView];
-  v24 = [v23 layer];
-  [v24 setCompositingFilter:v22];
+  decorationImageView2 = [(_UIContextMenuCellContentView *)self decorationImageView];
+  layer6 = [decorationImageView2 layer];
+  [layer6 setCompositingFilter:v22];
 }
 
 - (void)_updateLabelsForCurrentState
@@ -1562,23 +1562,23 @@ LABEL_9:
   [(_UIContextMenuCellContentView *)self _updateTitleLabelNumberOfLines];
   [(_UIContextMenuCellContentView *)self _updateSubtitleLabelNumberOfLines];
   v3 = [(_UIContextMenuCellContentView *)self _iconSymbolConfigurationForCurrentTraitsUsingBoldFont:0];
-  v4 = [(_UIContextMenuCellContentView *)self iconImageView];
-  [v4 _setOverridingSymbolConfiguration:v3];
+  iconImageView = [(_UIContextMenuCellContentView *)self iconImageView];
+  [iconImageView _setOverridingSymbolConfiguration:v3];
 
   [(UIView *)self setNeedsUpdateConstraints];
 }
 
 - (id)_subtitleLabelFilterForCurrentTraitsAndState
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v5 = [v4 itemSubtitleCompositingFilterProvider];
-  if (v5)
+  itemSubtitleCompositingFilterProvider = [v4 itemSubtitleCompositingFilterProvider];
+  if (itemSubtitleCompositingFilterProvider)
   {
-    v6 = [v4 itemSubtitleCompositingFilterProvider];
-    v7 = [(UIView *)self traitCollection];
-    v8 = (v6)[2](v6, v7, [(_UIContextMenuCellContentView *)self controlState]);
+    itemSubtitleCompositingFilterProvider2 = [v4 itemSubtitleCompositingFilterProvider];
+    traitCollection2 = [(UIView *)self traitCollection];
+    v8 = (itemSubtitleCompositingFilterProvider2)[2](itemSubtitleCompositingFilterProvider2, traitCollection2, [(_UIContextMenuCellContentView *)self controlState]);
   }
 
   else
@@ -1591,22 +1591,22 @@ LABEL_9:
 
 - (int64_t)_subtitleLabelRenderingMode
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIContextMenuGetPlatformMetrics([v2 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v4 = [v3 itemSubtitleRenderingMode];
-  return v4;
+  itemSubtitleRenderingMode = [v3 itemSubtitleRenderingMode];
+  return itemSubtitleRenderingMode;
 }
 
-- (id)_iconSymbolConfigurationForCurrentTraitsUsingBoldFont:(BOOL)a3
+- (id)_iconSymbolConfigurationForCurrentTraitsUsingBoldFont:(BOOL)font
 {
-  v3 = a3;
-  v5 = [(_UIContextMenuCellContentView *)self layout];
-  v6 = [v5 preferredIconFontUsingBoldFont:v3];
+  fontCopy = font;
+  layout = [(_UIContextMenuCellContentView *)self layout];
+  v6 = [layout preferredIconFontUsingBoldFont:fontCopy];
 
-  v7 = [(UIView *)self traitCollection];
-  v8 = [v7 preferredContentSizeCategory];
-  IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory(v8, v9);
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory(preferredContentSizeCategory, v9);
 
   if (IsAccessibilityContentSizeCategory)
   {
@@ -1624,30 +1624,30 @@ LABEL_9:
 
 - (id)_primaryBackgroundColorForCurrentState
 {
-  v3 = [(_UIContextMenuCellContentView *)self layout];
-  v4 = [v3 preferredBackgroundColorForCurrentState];
+  layout = [(_UIContextMenuCellContentView *)self layout];
+  preferredBackgroundColorForCurrentState = [layout preferredBackgroundColorForCurrentState];
 
-  if (!v4)
+  if (!preferredBackgroundColorForCurrentState)
   {
-    v5 = [(_UIContextMenuCellContentView *)self options];
-    v6 = [(UIView *)self traitCollection];
-    v7 = [v6 userInterfaceIdiom];
-    v8 = [(_UIContextMenuCellContentView *)self controlState];
-    v9 = _UIContextMenuGetPlatformMetrics(v7);
-    v10 = [v9 itemBackgroundColorProvider];
-    v11 = v10;
-    if (v10)
+    options = [(_UIContextMenuCellContentView *)self options];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+    controlState = [(_UIContextMenuCellContentView *)self controlState];
+    v9 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
+    itemBackgroundColorProvider = [v9 itemBackgroundColorProvider];
+    v11 = itemBackgroundColorProvider;
+    if (itemBackgroundColorProvider)
     {
-      v4 = (*(v10 + 16))(v10, v8, (v5 >> 1) & 1);
+      preferredBackgroundColorForCurrentState = (*(itemBackgroundColorProvider + 16))(itemBackgroundColorProvider, controlState, (options >> 1) & 1);
     }
 
     else
     {
-      v4 = 0;
+      preferredBackgroundColorForCurrentState = 0;
     }
   }
 
-  return v4;
+  return preferredBackgroundColorForCurrentState;
 }
 
 - (BOOL)_primaryContentColorShouldOverrideForCurrentState
@@ -1667,57 +1667,57 @@ LABEL_9:
 
 - (id)_childIndicatorColorForCurrentState
 {
-  if (!-[_UIContextMenuCellContentView _hasTrailingAccessory](self, "_hasTrailingAccessory") || (-[UIView traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "trailingAccessoryColor"), v5 = objc_claimAutoreleasedReturnValue(), v4, v3, !v5))
+  if (!-[_UIContextMenuCellContentView _hasTrailingAccessory](self, "_hasTrailingAccessory") || (-[UIView traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "trailingAccessoryColor"), _primaryContentColorForCurrentState = objc_claimAutoreleasedReturnValue(), v4, v3, !_primaryContentColorForCurrentState))
   {
-    v5 = [(_UIContextMenuCellContentView *)self _primaryContentColorForCurrentState];
+    _primaryContentColorForCurrentState = [(_UIContextMenuCellContentView *)self _primaryContentColorForCurrentState];
   }
 
-  return v5;
+  return _primaryContentColorForCurrentState;
 }
 
 - (id)_subtitleTextColor
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIContextMenuGetPlatformMetrics([v2 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v4 = [v3 itemSubtitleColor];
+  itemSubtitleColor = [v3 itemSubtitleColor];
 
-  return v4;
+  return itemSubtitleColor;
 }
 
 - (CGSize)_maxImageSize
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v5 = [(_UIContextMenuCellContentView *)self titleLabel];
-  v6 = [v5 font];
-  v7 = v6;
-  if (v6)
+  titleLabel = [(_UIContextMenuCellContentView *)self titleLabel];
+  font = [titleLabel font];
+  v7 = font;
+  if (font)
   {
-    v8 = v6;
+    v8 = font;
   }
 
   else
   {
-    v9 = [(UIView *)self traitCollection];
-    v10 = _UIContextMenuGetPlatformMetrics([v9 userInterfaceIdiom]);
-    v11 = [v10 titleFont];
-    v8 = [v11 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v9];
+    traitCollection2 = [(UIView *)self traitCollection];
+    v10 = _UIContextMenuGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
+    titleFont = [v10 titleFont];
+    v8 = [titleFont _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection2];
   }
 
-  v12 = _UIContextMenuGetPlatformMetrics(v4);
+  v12 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v12 dynamicImageBoxWidth];
   v14 = v13;
 
   [v8 _scaledValueForValue:v14];
   UIRoundToViewScale(self);
   v16 = v15;
-  v17 = _UIContextMenuGetPlatformMetrics(v4);
+  v17 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v17 itemTopToFirstBaseline];
   v19 = v18;
 
-  v20 = _UIContextMenuGetPlatformMetrics(v4);
+  v20 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v20 itemLastBaselineToBottom];
   v22 = v21;
 
@@ -1734,34 +1734,34 @@ LABEL_9:
 
 - (id)_decorationSymbolImageConfiguration
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIContextMenuGetPlatformMetrics([v2 userInterfaceIdiom]);
-  v4 = [v3 decorationViewSymbolConfiguration];
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+  decorationViewSymbolConfiguration = [v3 decorationViewSymbolConfiguration];
 
-  return v4;
+  return decorationViewSymbolConfiguration;
 }
 
 - (id)_childIndicatorSymbolImageConfiguration
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIContextMenuGetPlatformMetrics([v2 userInterfaceIdiom]);
-  v4 = [v3 childIndicatorSymbolConfiguration];
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+  childIndicatorSymbolConfiguration = [v3 childIndicatorSymbolConfiguration];
 
-  return v4;
+  return childIndicatorSymbolConfiguration;
 }
 
 - (id)_selectionImage
 {
-  v2 = [(_UIContextMenuCellContentView *)self _decorationSymbolImageConfiguration];
-  v3 = [UIImage systemImageNamed:@"checkmark" withConfiguration:v2];
+  _decorationSymbolImageConfiguration = [(_UIContextMenuCellContentView *)self _decorationSymbolImageConfiguration];
+  v3 = [UIImage systemImageNamed:@"checkmark" withConfiguration:_decorationSymbolImageConfiguration];
 
   return v3;
 }
 
 - (id)_mixedSelectionImage
 {
-  v2 = [(_UIContextMenuCellContentView *)self _decorationSymbolImageConfiguration];
-  v3 = [UIImage systemImageNamed:@"minus" withConfiguration:v2];
+  _decorationSymbolImageConfiguration = [(_UIContextMenuCellContentView *)self _decorationSymbolImageConfiguration];
+  v3 = [UIImage systemImageNamed:@"minus" withConfiguration:_decorationSymbolImageConfiguration];
 
   return v3;
 }

@@ -1,80 +1,80 @@
 @interface TSUMutableNumberFormat
-- (void)p_copyIVarsFromNumberFormat:(id)a3;
-- (void)setCurrencyCode:(id)a3;
-- (void)setNegativeStyle:(int)a3;
-- (void)setNilValueForKey:(id)a3;
-- (void)setPrefixString:(id)a3;
-- (void)setSuffixString:(id)a3;
-- (void)setUseAccountingStyle:(BOOL)a3;
-- (void)setValueType:(int)a3;
+- (void)p_copyIVarsFromNumberFormat:(id)format;
+- (void)setCurrencyCode:(id)code;
+- (void)setNegativeStyle:(int)style;
+- (void)setNilValueForKey:(id)key;
+- (void)setPrefixString:(id)string;
+- (void)setSuffixString:(id)string;
+- (void)setUseAccountingStyle:(BOOL)style;
+- (void)setValueType:(int)type;
 @end
 
 @implementation TSUMutableNumberFormat
 
-- (void)p_copyIVarsFromNumberFormat:(id)a3
+- (void)p_copyIVarsFromNumberFormat:(id)format
 {
-  if (a3 == self)
+  if (format == self)
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUMutableNumberFormat p_copyIVarsFromNumberFormat:]"];
     [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUNumberFormat.m"), 1562, @"It's not safe to copy an object onto itself"}];
   }
 
-  self->super.mValueType = *(a3 + 2);
+  self->super.mValueType = *(format + 2);
 
-  self->super.mFormatString = *(a3 + 2);
-  self->super.mDecimalPlaces = *(a3 + 12);
+  self->super.mFormatString = *(format + 2);
+  self->super.mDecimalPlaces = *(format + 12);
 
-  self->super.mCurrencyCode = *(a3 + 4);
-  self->super.mUseAccountingStyle = *(a3 + 40);
-  self->super.mNegativeStyle = *(a3 + 11);
-  self->super.mShowThousandsSeparator = *(a3 + 48);
-  self->super.mFractionAccuracy = *(a3 + 13);
-  self->super.mFormatStringRequiresSuppressionOfMinusSign = *(a3 + 56);
-  self->super.mUseScientificFormattingAutomatically = *(a3 + 57);
-  self->super.mIgnoreDecimalPlacesForZeroValue = *(a3 + 58);
+  self->super.mCurrencyCode = *(format + 4);
+  self->super.mUseAccountingStyle = *(format + 40);
+  self->super.mNegativeStyle = *(format + 11);
+  self->super.mShowThousandsSeparator = *(format + 48);
+  self->super.mFractionAccuracy = *(format + 13);
+  self->super.mFormatStringRequiresSuppressionOfMinusSign = *(format + 56);
+  self->super.mUseScientificFormattingAutomatically = *(format + 57);
+  self->super.mIgnoreDecimalPlacesForZeroValue = *(format + 58);
 
-  self->super.mPrefixString = *(a3 + 8);
-  self->super.mSuffixString = *(a3 + 9);
-  self->super.mBase = *(a3 + 80);
-  self->super.mBasePlaces = *(a3 + 41);
-  self->super.mBaseUseMinusSign = *(a3 + 84);
-  self->super.mIsCustom = *(a3 + 85);
-  self->super.mScaleFactor = *(a3 + 11);
-  self->super.mFormatStringContainsTabCharacter = *(a3 + 96);
-  self->super.mFormatContainsSpecialTokens = *(a3 + 97);
-  self->super.mFormatContainsIntegerToken = *(a3 + 98);
-  self->super.mNumberOfHashDecimalPlaceholders = *(a3 + 99);
-  self->super.mTotalNumberOfDecimalPlaceholdersInFormat = *(a3 + 100);
-  self->super.mRequiresFractionReplacement = *(a3 + 101);
+  self->super.mPrefixString = *(format + 8);
+  self->super.mSuffixString = *(format + 9);
+  self->super.mBase = *(format + 80);
+  self->super.mBasePlaces = *(format + 41);
+  self->super.mBaseUseMinusSign = *(format + 84);
+  self->super.mIsCustom = *(format + 85);
+  self->super.mScaleFactor = *(format + 11);
+  self->super.mFormatStringContainsTabCharacter = *(format + 96);
+  self->super.mFormatContainsSpecialTokens = *(format + 97);
+  self->super.mFormatContainsIntegerToken = *(format + 98);
+  self->super.mNumberOfHashDecimalPlaceholders = *(format + 99);
+  self->super.mTotalNumberOfDecimalPlaceholdersInFormat = *(format + 100);
+  self->super.mRequiresFractionReplacement = *(format + 101);
 
-  self->super.mInterstitialStrings = *(a3 + 13);
-  self->super.mInterstitialStringInsertionIndexes = *(a3 + 14);
-  self->super.mIndexFromRightOfLastDigitPlaceholder = *(a3 + 60);
-  self->super.mIsTextFormat = *(a3 + 122);
-  self->super.mMinimumIntegerWidth = *(a3 + 123);
-  self->super.mDecimalWidth = *(a3 + 124);
-  self->super.mNumberOfNonSpaceIntegerPlaceholderDigits = *(a3 + 125);
-  self->super.mNumberOfNonSpaceDecimalPlaceholderDigits = *(a3 + 126);
+  self->super.mInterstitialStrings = *(format + 13);
+  self->super.mInterstitialStringInsertionIndexes = *(format + 14);
+  self->super.mIndexFromRightOfLastDigitPlaceholder = *(format + 60);
+  self->super.mIsTextFormat = *(format + 122);
+  self->super.mMinimumIntegerWidth = *(format + 123);
+  self->super.mDecimalWidth = *(format + 124);
+  self->super.mNumberOfNonSpaceIntegerPlaceholderDigits = *(format + 125);
+  self->super.mNumberOfNonSpaceDecimalPlaceholderDigits = *(format + 126);
 
-  self->super.mFormatName = *(a3 + 16);
+  self->super.mFormatName = *(format + 16);
 }
 
-- (void)setValueType:(int)a3
+- (void)setValueType:(int)type
 {
-  if (self->super.mValueType == a3)
+  if (self->super.mValueType == type)
   {
     return;
   }
 
-  v3 = *&a3;
-  if (a3 == 1)
+  v3 = *&type;
+  if (type == 1)
   {
     [(TSUMutableNumberFormat *)self willChangeValueForKey:@"decimalPlaces"];
     [(TSUMutableNumberFormat *)self willChangeValueForKey:@"currencyCode"];
   }
 
-  else if ((a3 - 1) > 1)
+  else if ((type - 1) > 1)
   {
     v5 = 0;
     goto LABEL_7;
@@ -97,59 +97,59 @@ LABEL_7:
   }
 }
 
-- (void)setPrefixString:(id)a3
+- (void)setPrefixString:(id)string
 {
   mPrefixString = self->super.mPrefixString;
-  if (mPrefixString != a3)
+  if (mPrefixString != string)
   {
 
-    self->super.mPrefixString = [a3 copy];
+    self->super.mPrefixString = [string copy];
   }
 }
 
-- (void)setSuffixString:(id)a3
+- (void)setSuffixString:(id)string
 {
   mSuffixString = self->super.mSuffixString;
-  if (mSuffixString != a3)
+  if (mSuffixString != string)
   {
 
-    self->super.mSuffixString = [a3 copy];
+    self->super.mSuffixString = [string copy];
   }
 }
 
-- (void)setCurrencyCode:(id)a3
+- (void)setCurrencyCode:(id)code
 {
   mCurrencyCode = self->super.mCurrencyCode;
-  if (mCurrencyCode != a3)
+  if (mCurrencyCode != code)
   {
 
-    self->super.mCurrencyCode = [a3 copy];
+    self->super.mCurrencyCode = [code copy];
   }
 }
 
-- (void)setNegativeStyle:(int)a3
+- (void)setNegativeStyle:(int)style
 {
-  v4 = [(TSUNumberFormat *)self numberFormatBySettingNegativeStyle:*&a3];
+  v4 = [(TSUNumberFormat *)self numberFormatBySettingNegativeStyle:*&style];
 
   [(TSUMutableNumberFormat *)self p_copyIVarsFromNumberFormat:v4];
 }
 
-- (void)setUseAccountingStyle:(BOOL)a3
+- (void)setUseAccountingStyle:(BOOL)style
 {
-  v4 = [(TSUNumberFormat *)self numberFormatBySettingUseAccountingStyle:a3];
+  v4 = [(TSUNumberFormat *)self numberFormatBySettingUseAccountingStyle:style];
 
   [(TSUMutableNumberFormat *)self p_copyIVarsFromNumberFormat:v4];
 }
 
-- (void)setNilValueForKey:(id)a3
+- (void)setNilValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"currencyCode"])
+  if ([key isEqualToString:@"currencyCode"])
   {
     v5 = +[TSUNumberFormatter currentLocaleCurrencyCode];
     v6 = @"currencyCode";
   }
 
-  else if ([a3 isEqualToString:@"prefixString"])
+  else if ([key isEqualToString:@"prefixString"])
   {
     v5 = &stru_287DDF830;
     v6 = @"prefixString";
@@ -157,11 +157,11 @@ LABEL_7:
 
   else
   {
-    if (![a3 isEqualToString:@"suffixString"])
+    if (![key isEqualToString:@"suffixString"])
     {
       v7.receiver = self;
       v7.super_class = TSUMutableNumberFormat;
-      [(TSUMutableNumberFormat *)&v7 setNilValueForKey:a3];
+      [(TSUMutableNumberFormat *)&v7 setNilValueForKey:key];
       return;
     }
 

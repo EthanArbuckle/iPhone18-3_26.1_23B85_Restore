@@ -1,21 +1,21 @@
 @interface CKStewieStoppedSharingChatItem
 - (id)_transcriptText;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptText;
 @end
 
 @implementation CKStewieStoppedSharingChatItem
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
-  if (a4 < 1)
+  if (index < 1)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [a5 objectAtIndex:{a4 - 1, a7.width, a7.height}];
+    v8 = [items objectAtIndex:{index - 1, override.width, override.height}];
   }
 
   v9 = +[CKUIBehavior sharedBehaviors];
@@ -29,36 +29,36 @@
 
 - (id)loadTranscriptText
 {
-  v2 = [(CKStewieStoppedSharingChatItem *)self _transcriptText];
-  v3 = v2;
+  _transcriptText = [(CKStewieStoppedSharingChatItem *)self _transcriptText];
+  v3 = _transcriptText;
   v4 = &stru_1F04268F8;
-  if (v2)
+  if (_transcriptText)
   {
-    v4 = v2;
+    v4 = _transcriptText;
   }
 
   v5 = v4;
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v6 transcriptEmphasizedFontAttributes];
 
-  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v7];
+  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:transcriptEmphasizedFontAttributes];
 
   return v8;
 }
 
 - (id)_transcriptText
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isTranscriptSharingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTranscriptSharingEnabled = [mEMORY[0x1E69A8070] isTranscriptSharingEnabled];
 
-  if (v4)
+  if (isTranscriptSharingEnabled)
   {
-    v5 = [(CKChatItem *)self IMChatItem];
-    v6 = [(CKChatItem *)self IMChatItem];
-    v7 = [v6 handle];
-    v8 = [v5 chat];
-    v9 = [v7 displayNameForChat:v8];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    iMChatItem2 = [(CKChatItem *)self IMChatItem];
+    handle = [iMChatItem2 handle];
+    chat = [iMChatItem chat];
+    v9 = [handle displayNameForChat:chat];
 
     v10 = MEMORY[0x1E696AEC0];
     v11 = CKFrameworkBundle();

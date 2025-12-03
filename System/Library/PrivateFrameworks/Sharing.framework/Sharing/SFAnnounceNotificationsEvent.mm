@@ -33,8 +33,8 @@
 - (void)submitEvent
 {
   v4 = +[SFAnnounceNotificationsEvent eventName];
-  v3 = [(SFAnnounceNotificationsEvent *)self eventPayload];
-  SFMetricsLog(v4, v3);
+  eventPayload = [(SFAnnounceNotificationsEvent *)self eventPayload];
+  SFMetricsLog(v4, eventPayload);
 }
 
 @end

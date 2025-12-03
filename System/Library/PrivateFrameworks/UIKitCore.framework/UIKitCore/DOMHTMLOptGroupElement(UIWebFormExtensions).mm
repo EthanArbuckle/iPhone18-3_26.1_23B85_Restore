@@ -8,14 +8,14 @@
 
 - (UIDOMHTMLOptGroupSelectedItem)createSelectedItem
 {
-  v1 = [[UIDOMHTMLOptGroupSelectedItem alloc] initWithHTMLOptGroupNode:a1];
+  v1 = [[UIDOMHTMLOptGroupSelectedItem alloc] initWithHTMLOptGroupNode:self];
 
   return v1;
 }
 
 - (UIDOMHTMLOptGroupCell)createPickerCell
 {
-  v1 = [[UIDOMHTMLOptGroupCell alloc] initWithHTMLOptGroupNode:a1];
+  v1 = [[UIDOMHTMLOptGroupCell alloc] initWithHTMLOptGroupNode:self];
 
   return v1;
 }
@@ -24,9 +24,9 @@
 {
   v5 = 0;
   v4 = 0;
-  [a1 getTextWritingDirection:&v5 override:&v4];
-  v2 = [a1 label];
-  return [v2 _uikit_stringWithWritingDirection:v5 asOverride:v4];
+  [self getTextWritingDirection:&v5 override:&v4];
+  label = [self label];
+  return [label _uikit_stringWithWritingDirection:v5 asOverride:v4];
 }
 
 @end

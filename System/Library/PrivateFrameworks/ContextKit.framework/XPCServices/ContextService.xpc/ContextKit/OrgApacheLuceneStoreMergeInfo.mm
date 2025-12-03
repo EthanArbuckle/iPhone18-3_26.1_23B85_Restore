@@ -1,18 +1,18 @@
 @interface OrgApacheLuceneStoreMergeInfo
-- (BOOL)isEqual:(id)a3;
-- (OrgApacheLuceneStoreMergeInfo)initWithInt:(int)a3 withLong:(int64_t)a4 withBoolean:(BOOL)a5 withInt:(int)a6;
+- (BOOL)isEqual:(id)equal;
+- (OrgApacheLuceneStoreMergeInfo)initWithInt:(int)int withLong:(int64_t)long withBoolean:(BOOL)boolean withInt:(int)withInt;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation OrgApacheLuceneStoreMergeInfo
 
-- (OrgApacheLuceneStoreMergeInfo)initWithInt:(int)a3 withLong:(int64_t)a4 withBoolean:(BOOL)a5 withInt:(int)a6
+- (OrgApacheLuceneStoreMergeInfo)initWithInt:(int)int withLong:(int64_t)long withBoolean:(BOOL)boolean withInt:(int)withInt
 {
-  self->totalMaxDoc_ = a3;
-  self->estimatedMergeBytes_ = a4;
-  self->isExternal_ = a5;
-  self->mergeMaxNumSegments_ = a6;
+  self->totalMaxDoc_ = int;
+  self->estimatedMergeBytes_ = long;
+  self->isExternal_ = boolean;
+  self->mergeMaxNumSegments_ = withInt;
   return self;
 }
 
@@ -33,17 +33,17 @@
   return self->totalMaxDoc_ - v4 + 32 * v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (a3)
+  if (equal)
   {
-    v5 = [(OrgApacheLuceneStoreMergeInfo *)self getClass];
-    if (v5 == [a3 getClass])
+    getClass = [(OrgApacheLuceneStoreMergeInfo *)self getClass];
+    if (getClass == [equal getClass])
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -51,9 +51,9 @@
         JreThrowClassCastException();
       }
 
-      if (self->estimatedMergeBytes_ == *(a3 + 2) && self->isExternal_ == *(a3 + 24) && self->mergeMaxNumSegments_ == *(a3 + 7))
+      if (self->estimatedMergeBytes_ == *(equal + 2) && self->isExternal_ == *(equal + 24) && self->mergeMaxNumSegments_ == *(equal + 7))
       {
-        return self->totalMaxDoc_ == *(a3 + 2);
+        return self->totalMaxDoc_ == *(equal + 2);
       }
     }
   }

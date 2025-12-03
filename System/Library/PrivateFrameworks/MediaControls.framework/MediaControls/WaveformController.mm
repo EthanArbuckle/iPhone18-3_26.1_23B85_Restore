@@ -1,15 +1,15 @@
 @interface WaveformController
 - (_TtC13MediaControls18WaveformController)init;
-- (void)audioAnalyzer:(id)a3 didUpdateWaveform:(id)a4;
+- (void)audioAnalyzer:(id)analyzer didUpdateWaveform:(id)waveform;
 @end
 
 @implementation WaveformController
 
-- (void)audioAnalyzer:(id)a3 didUpdateWaveform:(id)a4
+- (void)audioAnalyzer:(id)analyzer didUpdateWaveform:(id)waveform
 {
-  v5 = a4;
-  v6 = self;
-  sub_1A22D2CF8(v5, 1);
+  waveformCopy = waveform;
+  selfCopy = self;
+  sub_1A22D2CF8(waveformCopy, 1);
 }
 
 - (_TtC13MediaControls18WaveformController)init

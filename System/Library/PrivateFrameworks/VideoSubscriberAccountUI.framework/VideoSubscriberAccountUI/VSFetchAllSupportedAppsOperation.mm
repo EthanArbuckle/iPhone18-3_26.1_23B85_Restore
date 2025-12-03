@@ -31,23 +31,23 @@
 
 - (void)executionDidBegin
 {
-  v3 = [(VSFetchAllSupportedAppsOperation *)self privateQueue];
+  privateQueue = [(VSFetchAllSupportedAppsOperation *)self privateQueue];
   v4 = objc_alloc_init(MEMORY[0x277CE21A8]);
   [v4 setMethodName:*MEMORY[0x277CE2378]];
   [v4 setRequestType:1];
   v5 = [objc_alloc(MEMORY[0x277CE21B0]) initWithRequest:v4];
-  [v3 addOperation:v5];
+  [privateQueue addOperation:v5];
   v6 = MEMORY[0x277CCA8C8];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __53__VSFetchAllSupportedAppsOperation_executionDidBegin__block_invoke;
   v12 = &unk_279E19848;
   v13 = v5;
-  v14 = self;
+  selfCopy = self;
   v7 = v5;
   v8 = [v6 blockOperationWithBlock:&v9];
   [v8 addDependency:{v7, v9, v10, v11, v12}];
-  [v3 addOperation:v8];
+  [privateQueue addOperation:v8];
 }
 
 void __53__VSFetchAllSupportedAppsOperation_executionDidBegin__block_invoke(uint64_t a1)

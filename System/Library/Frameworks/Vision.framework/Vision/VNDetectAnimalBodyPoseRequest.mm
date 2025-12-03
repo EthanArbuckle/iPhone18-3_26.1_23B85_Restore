@@ -1,10 +1,10 @@
 @interface VNDetectAnimalBodyPoseRequest
 + (id)_supportedJointNamesRevision1;
 + (id)_supportedJointsGroupsNamesRevision1;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (NSArray)supportedJointNamesAndReturnError:(NSError *)error;
 - (NSArray)supportedJointsGroupNamesAndReturnError:(NSError *)error;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 @end
 
 @implementation VNDetectAnimalBodyPoseRequest
@@ -80,16 +80,16 @@ void __62__VNDetectAnimalBodyPoseRequest__supportedJointNamesRevision1__block_in
   +[VNDetectAnimalBodyPoseRequest _supportedJointNamesRevision1]::supportedJointNamesRevision1 = v0;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
   if (v9)
   {
-    v10 = [v8 session];
+    session = [contextCopy session];
     v18 = 0;
-    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v18 forRevision:a3 loadedInSession:v10 error:a5];
+    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v18 forRevision:revision loadedInSession:session error:error];
     v12 = v18;
     if (v11)
     {
@@ -97,9 +97,9 @@ void __62__VNDetectAnimalBodyPoseRequest__supportedJointNamesRevision1__block_in
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
       [v12 setObject:v13 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-      v14 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v15 = [v11 processUsingQualityOfServiceClass:v14 options:v12 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v15 = [v11 processUsingQualityOfServiceClass:qosClass options:v12 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v16 = v15 != 0;
       if (v15)
       {
@@ -123,64 +123,64 @@ void __62__VNDetectAnimalBodyPoseRequest__supportedJointNamesRevision1__block_in
 
 - (NSArray)supportedJointsGroupNamesAndReturnError:(NSError *)error
 {
-  v5 = [(VNRequest *)self resolvedRevision];
-  if (v5 == 1)
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  if (resolvedRevision == 1)
   {
-    v6 = [objc_opt_class() _supportedJointsGroupsNamesRevision1];
+    _supportedJointsGroupsNamesRevision1 = [objc_opt_class() _supportedJointsGroupsNamesRevision1];
   }
 
   else if (error)
   {
-    v7 = [VNError errorForUnsupportedRevision:v5 ofRequest:self];
+    v7 = [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
     v8 = v7;
-    v6 = 0;
+    _supportedJointsGroupsNamesRevision1 = 0;
     *error = v7;
   }
 
   else
   {
-    v6 = 0;
+    _supportedJointsGroupsNamesRevision1 = 0;
   }
 
-  return v6;
+  return _supportedJointsGroupsNamesRevision1;
 }
 
 - (NSArray)supportedJointNamesAndReturnError:(NSError *)error
 {
-  v5 = [(VNRequest *)self resolvedRevision];
-  if (v5 == 1)
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  if (resolvedRevision == 1)
   {
-    v6 = [objc_opt_class() _supportedJointNamesRevision1];
+    _supportedJointNamesRevision1 = [objc_opt_class() _supportedJointNamesRevision1];
   }
 
   else if (error)
   {
-    v7 = [VNError errorForUnsupportedRevision:v5 ofRequest:self];
+    v7 = [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
     v8 = v7;
-    v6 = 0;
+    _supportedJointNamesRevision1 = 0;
     *error = v7;
   }
 
   else
   {
-    v6 = 0;
+    _supportedJointNamesRevision1 = 0;
   }
 
-  return v6;
+  return _supportedJointNamesRevision1;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNAnimalBodyPoseDetectorType";
     v5 = @"VNAnimalBodyPoseDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else

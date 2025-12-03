@@ -1,31 +1,31 @@
 @interface PKLiveStrokesParticlesAnimation
-- (BOOL)isDoneAtTime:(double)a3;
+- (BOOL)isDoneAtTime:(double)time;
 - (CGRect)bounds;
 - (CGRect)destinationFrame;
-- (PKLiveStrokesParticlesAnimation)initWithStrokes:(id)a3 startTime:(double)a4 duration:(double)a5 destinationFrame:(CGRect)a6;
+- (PKLiveStrokesParticlesAnimation)initWithStrokes:(id)strokes startTime:(double)time duration:(double)duration destinationFrame:(CGRect)frame;
 - (void)_calculateBounds;
 @end
 
 @implementation PKLiveStrokesParticlesAnimation
 
-- (PKLiveStrokesParticlesAnimation)initWithStrokes:(id)a3 startTime:(double)a4 duration:(double)a5 destinationFrame:(CGRect)a6
+- (PKLiveStrokesParticlesAnimation)initWithStrokes:(id)strokes startTime:(double)time duration:(double)duration destinationFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  strokesCopy = strokes;
   v18.receiver = self;
   v18.super_class = PKLiveStrokesParticlesAnimation;
   v14 = [(PKLiveStrokesParticlesAnimation *)&v18 init];
   if (v14)
   {
-    v15 = [v13 copy];
+    v15 = [strokesCopy copy];
     strokes = v14->_strokes;
     v14->_strokes = v15;
 
-    v14->_startTime = a4;
-    v14->_duration = a5;
+    v14->_startTime = time;
+    v14->_duration = duration;
     v14->_destinationFrame.origin.x = x;
     v14->_destinationFrame.origin.y = y;
     v14->_destinationFrame.size.width = width;
@@ -93,12 +93,12 @@
   self->_bounds.size.height = height;
 }
 
-- (BOOL)isDoneAtTime:(double)a3
+- (BOOL)isDoneAtTime:(double)time
 {
   [(PKLiveStrokesParticlesAnimation *)self startTime];
   v6 = v5;
   [(PKLiveStrokesParticlesAnimation *)self duration];
-  return v6 + v7 <= a3;
+  return v6 + v7 <= time;
 }
 
 - (CGRect)destinationFrame

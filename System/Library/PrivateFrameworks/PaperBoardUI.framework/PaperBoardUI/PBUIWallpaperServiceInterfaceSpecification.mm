@@ -7,10 +7,10 @@
 
 + (NSString)identifier
 {
-  v2 = [a1 interface];
-  v3 = [v2 identifier];
+  interface = [self interface];
+  identifier = [interface identifier];
 
-  return v3;
+  return identifier;
 }
 
 + (BSServiceInterface)interface

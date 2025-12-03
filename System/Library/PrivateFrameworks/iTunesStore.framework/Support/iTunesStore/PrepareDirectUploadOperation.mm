@@ -1,24 +1,24 @@
 @interface PrepareDirectUploadOperation
-- (PrepareDirectUploadOperation)initWithRequest:(id)a3;
-- (id)_newURLRequestWithURL:(id)a3;
+- (PrepareDirectUploadOperation)initWithRequest:(id)request;
+- (id)_newURLRequestWithURL:(id)l;
 - (id)_uploadURL;
 - (id)outputBlock;
 - (void)run;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation PrepareDirectUploadOperation
 
-- (PrepareDirectUploadOperation)initWithRequest:(id)a3
+- (PrepareDirectUploadOperation)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = PrepareDirectUploadOperation;
   v6 = [(PrepareDirectUploadOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;
@@ -34,13 +34,13 @@
   return v4;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(PrepareDirectUploadOperation *)self lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -50,17 +50,17 @@
 
 - (void)run
 {
-  v3 = [(DirectUploadRequest *)self->_request localAssetURL];
+  localAssetURL = [(DirectUploadRequest *)self->_request localAssetURL];
   v4 = objc_alloc_init(NSFileManager);
-  if (!v3)
+  if (!localAssetURL)
   {
     goto LABEL_46;
   }
 
-  if ([v3 isFileURL])
+  if ([localAssetURL isFileURL])
   {
-    v5 = [v3 path];
-    v6 = [v4 isReadableFileAtPath:v5];
+    path = [localAssetURL path];
+    v6 = [v4 isReadableFileAtPath:path];
 
     if ((v6 & 1) == 0)
     {
@@ -70,34 +70,34 @@
         v19 = +[SSLogConfig sharedConfig];
       }
 
-      v27 = [v19 shouldLog];
-      v28 = [v19 shouldLogToDisk];
-      v29 = [v19 OSLogObject];
-      v30 = v29;
-      if (v28)
+      shouldLog = [v19 shouldLog];
+      shouldLogToDisk = [v19 shouldLogToDisk];
+      oSLogObject = [v19 OSLogObject];
+      v30 = oSLogObject;
+      if (shouldLogToDisk)
       {
-        v27 |= 2u;
+        shouldLog |= 2u;
       }
 
-      if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v27 &= 2u;
+        shouldLog &= 2u;
       }
 
-      if (!v27)
+      if (!shouldLog)
       {
 
         goto LABEL_45;
       }
 
       v31 = objc_opt_class();
-      v32 = [(DirectUploadRequest *)self->_request databaseIdentifier];
+      databaseIdentifier = [(DirectUploadRequest *)self->_request databaseIdentifier];
       v42 = 138412802;
       v43 = v31;
       v44 = 2048;
-      v45 = v32;
+      v45 = databaseIdentifier;
       v46 = 2112;
-      v47 = v3;
+      v47 = localAssetURL;
       LODWORD(v41) = 32;
       v26 = _os_log_send_and_compose_impl();
 
@@ -110,9 +110,9 @@
     }
   }
 
-  v7 = [(DirectUploadRequest *)self->_request accountIdentifier];
+  accountIdentifier = [(DirectUploadRequest *)self->_request accountIdentifier];
 
-  if (!v7)
+  if (!accountIdentifier)
   {
     v19 = +[SSLogConfig sharedDaemonConfig];
     if (!v19)
@@ -120,32 +120,32 @@
       v19 = +[SSLogConfig sharedConfig];
     }
 
-    v20 = [v19 shouldLog];
-    v21 = [v19 shouldLogToDisk];
-    v22 = [v19 OSLogObject];
-    v23 = v22;
-    if (v21)
+    shouldLog2 = [v19 shouldLog];
+    shouldLogToDisk2 = [v19 shouldLogToDisk];
+    oSLogObject2 = [v19 OSLogObject];
+    v23 = oSLogObject2;
+    if (shouldLogToDisk2)
     {
-      v20 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v20 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (!v20)
+    if (!shouldLog2)
     {
 
       goto LABEL_45;
     }
 
     v24 = objc_opt_class();
-    v25 = [(DirectUploadRequest *)self->_request databaseIdentifier];
+    databaseIdentifier2 = [(DirectUploadRequest *)self->_request databaseIdentifier];
     v42 = 138412546;
     v43 = v24;
     v44 = 2048;
-    v45 = v25;
+    v45 = databaseIdentifier2;
     LODWORD(v41) = 22;
     v26 = _os_log_send_and_compose_impl();
 
@@ -166,8 +166,8 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v8 = [(PrepareDirectUploadOperation *)self _uploadURL];
-  if (v8)
+  _uploadURL = [(PrepareDirectUploadOperation *)self _uploadURL];
+  if (_uploadURL)
   {
     v9 = [[NSMutableString alloc] initWithString:@"com.apple.itunesstored"];
     v10 = +[SSLogConfig sharedDaemonConfig];
@@ -176,30 +176,30 @@ LABEL_46:
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
-    v12 = [v10 shouldLogToDisk];
-    v13 = [v10 OSLogObject];
-    v14 = v13;
-    if (v12)
+    shouldLog3 = [v10 shouldLog];
+    shouldLogToDisk3 = [v10 shouldLogToDisk];
+    oSLogObject3 = [v10 OSLogObject];
+    v14 = oSLogObject3;
+    if (shouldLogToDisk3)
     {
-      v11 |= 2u;
+      shouldLog3 |= 2u;
     }
 
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
-      v11 &= 2u;
+      shouldLog3 &= 2u;
     }
 
-    if (v11)
+    if (shouldLog3)
     {
       v15 = objc_opt_class();
-      v16 = [(DirectUploadRequest *)self->_request databaseIdentifier];
+      databaseIdentifier3 = [(DirectUploadRequest *)self->_request databaseIdentifier];
       v42 = 138412802;
       v43 = v15;
       v44 = 2048;
-      v45 = v16;
+      v45 = databaseIdentifier3;
       v46 = 2112;
-      v47 = v8;
+      v47 = _uploadURL;
       LODWORD(v41) = 32;
       v40 = &v42;
       v17 = _os_log_send_and_compose_impl();
@@ -217,12 +217,12 @@ LABEL_46:
     {
     }
 
-    v35 = [(PrepareDirectUploadOperation *)self _newURLRequestWithURL:v8];
-    v37 = [(DirectUploadRequest *)self->_request sourceApplication];
-    if (v37)
+    v35 = [(PrepareDirectUploadOperation *)self _newURLRequestWithURL:_uploadURL];
+    sourceApplication = [(DirectUploadRequest *)self->_request sourceApplication];
+    if (sourceApplication)
     {
       [v9 appendString:@"."];
-      [v9 appendString:v37];
+      [v9 appendString:sourceApplication];
     }
 
     if ([v35 allowsCellularAccess])
@@ -237,7 +237,7 @@ LABEL_46:
     [v36 setHTTPShouldUsePipelining:1];
     [v36 setSessionSendsLaunchEvents:1];
     [v36 set_allowsRetryForBackgroundDataTasks:1];
-    [v36 set_sourceApplicationBundleIdentifier:v37];
+    [v36 set_sourceApplicationBundleIdentifier:sourceApplication];
 
     v34 = 0;
   }
@@ -252,32 +252,32 @@ LABEL_46:
 LABEL_47:
   [(PrepareDirectUploadOperation *)self setError:v34];
   [(PrepareDirectUploadOperation *)self setSuccess:0];
-  v38 = [(PrepareDirectUploadOperation *)self outputBlock];
-  v39 = v38;
-  if (v38)
+  outputBlock = [(PrepareDirectUploadOperation *)self outputBlock];
+  v39 = outputBlock;
+  if (outputBlock)
   {
-    (*(v38 + 16))(v38, v36, v35, v34);
+    (*(outputBlock + 16))(outputBlock, v36, v35, v34);
     [(PrepareDirectUploadOperation *)self setOutputBlock:0];
   }
 }
 
-- (id)_newURLRequestWithURL:(id)a3
+- (id)_newURLRequestWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[NSMutableURLRequest alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[NSMutableURLRequest alloc] initWithURL:lCopy];
   [v5 setHTTPMethod:@"POST"];
-  v6 = [(DirectUploadRequest *)self->_request accountIdentifier];
-  [ISStoreURLOperation addITunesStoreHeadersToRequest:v5 withAccountIdentifier:v6];
+  accountIdentifier = [(DirectUploadRequest *)self->_request accountIdentifier];
+  [ISStoreURLOperation addITunesStoreHeadersToRequest:v5 withAccountIdentifier:accountIdentifier];
   v7 = +[SSDevice currentDevice];
-  v8 = [v7 userAgent];
+  userAgent = [v7 userAgent];
 
-  if (v8)
+  if (userAgent)
   {
-    [v5 setValue:v8 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+    [v5 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
   }
 
   v9 = +[SSVCookieStorage sharedStorage];
-  v10 = [v9 cookieHeadersForURL:v4 userIdentifier:v6];
+  v10 = [v9 cookieHeadersForURL:lCopy userIdentifier:accountIdentifier];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
@@ -286,8 +286,8 @@ LABEL_47:
   v11 = v5;
   v25 = v11;
   [v10 enumerateKeysAndObjectsUsingBlock:v24];
-  v12 = [(DirectUploadRequest *)self->_request parentRelationshipType];
-  v13 = [v12 isEqualToString:SSVMediaSocialPostAttachmentRelationshipCoverImage];
+  parentRelationshipType = [(DirectUploadRequest *)self->_request parentRelationshipType];
+  v13 = [parentRelationshipType isEqualToString:SSVMediaSocialPostAttachmentRelationshipCoverImage];
 
   if (v13)
   {
@@ -311,17 +311,17 @@ LABEL_47:
       {
 LABEL_10:
         v18 = +[NSUUID UUID];
-        v19 = [v18 UUIDString];
+        uUIDString = [v18 UUIDString];
 
         v20 = UTTypeCopyPreferredTagWithClass(v16, kUTTagClassFilenameExtension);
         if (v20)
         {
-          v21 = [v19 stringByAppendingPathExtension:v20];
+          v21 = [uUIDString stringByAppendingPathExtension:v20];
 
-          v19 = v21;
+          uUIDString = v21;
         }
 
-        [v11 setValue:v19 forHTTPHeaderField:@"X-Original-Filename"];
+        [v11 setValue:uUIDString forHTTPHeaderField:@"X-Original-Filename"];
         CFRelease(v16);
 
         goto LABEL_13;
@@ -401,19 +401,19 @@ LABEL_13:
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v15 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 &= 2u;
     }
@@ -445,7 +445,7 @@ LABEL_23:
         goto LABEL_29;
       }
 
-      v18 = [NSString stringWithCString:v20 encoding:4, v23, v22, *v23, *&v23[16]];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, v23, v22, *v23, *&v23[16]];
       free(v20);
       SSFileLog();
     }

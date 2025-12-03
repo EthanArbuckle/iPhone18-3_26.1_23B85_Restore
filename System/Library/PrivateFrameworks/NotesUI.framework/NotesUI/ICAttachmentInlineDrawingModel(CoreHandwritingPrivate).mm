@@ -11,8 +11,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v0 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v1 = [v0 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  v1 = [preferredLanguages countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v1)
   {
     v2 = *v8;
@@ -22,7 +22,7 @@
       {
         if (*v8 != v2)
         {
-          objc_enumerationMutation(v0);
+          objc_enumerationMutation(preferredLanguages);
         }
 
         v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:*(*(&v7 + 1) + 8 * i)];
@@ -35,7 +35,7 @@
         }
       }
 
-      v1 = [v0 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v1 = [preferredLanguages countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v1)
       {
         continue;

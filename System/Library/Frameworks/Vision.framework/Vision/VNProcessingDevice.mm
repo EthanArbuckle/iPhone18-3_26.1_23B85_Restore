@@ -4,11 +4,11 @@
 + (id)defaultCPUDevice;
 + (id)defaultDevice;
 + (id)defaultMetalDevice;
-+ (id)deviceForMetalDevice:(id)a3;
++ (id)deviceForMetalDevice:(id)device;
 + (id)directANEDevice;
 + (void)_lockStaticObjectsAccessLock;
 + (void)forcedCleanup;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -55,7 +55,7 @@
     v4 = VNCreateMetalDevice();
     if (v4)
     {
-      v5 = [a1 deviceForMetalDevice:v4];
+      v5 = [self deviceForMetalDevice:v4];
       v6 = requestPerformingDevice_defaultMetalDevice;
       requestPerformingDevice_defaultMetalDevice = v5;
     }
@@ -85,16 +85,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v5 = a3;
+    equalCopy = equal;
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  return a3 == self;
+  return equal == self;
 }
 
 - (unint64_t)hash
@@ -154,13 +154,13 @@
   return v4;
 }
 
-+ (id)deviceForMetalDevice:(id)a3
++ (id)deviceForMetalDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   +[VNProcessingDevice _lockStaticObjectsAccessLock];
   if (ourMetalToProcessingDeviceMap)
   {
-    v4 = [ourMetalToProcessingDeviceMap objectForKey:v3];
+    v4 = [ourMetalToProcessingDeviceMap objectForKey:deviceCopy];
     if (v4)
     {
       goto LABEL_7;
@@ -169,15 +169,15 @@
 
   else
   {
-    v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v6 = ourMetalToProcessingDeviceMap;
-    ourMetalToProcessingDeviceMap = v5;
+    ourMetalToProcessingDeviceMap = strongToStrongObjectsMapTable;
   }
 
-  v4 = [[VNMetalProcessingDevice alloc] initWithMetalDevice:v3];
+  v4 = [[VNMetalProcessingDevice alloc] initWithMetalDevice:deviceCopy];
   if (v4)
   {
-    [ourMetalToProcessingDeviceMap setObject:v4 forKey:v3];
+    [ourMetalToProcessingDeviceMap setObject:v4 forKey:deviceCopy];
   }
 
 LABEL_7:
@@ -192,23 +192,23 @@ LABEL_7:
   v3 = requestPerformingDevice_defaultDevice;
   if (!requestPerformingDevice_defaultDevice)
   {
-    v4 = [a1 defaultANEDevice];
+    defaultANEDevice = [self defaultANEDevice];
     v5 = requestPerformingDevice_defaultDevice;
-    requestPerformingDevice_defaultDevice = v4;
+    requestPerformingDevice_defaultDevice = defaultANEDevice;
 
     v3 = requestPerformingDevice_defaultDevice;
     if (!requestPerformingDevice_defaultDevice)
     {
-      v6 = [a1 defaultMetalDevice];
+      defaultMetalDevice = [self defaultMetalDevice];
       v7 = requestPerformingDevice_defaultDevice;
-      requestPerformingDevice_defaultDevice = v6;
+      requestPerformingDevice_defaultDevice = defaultMetalDevice;
 
       v3 = requestPerformingDevice_defaultDevice;
       if (!requestPerformingDevice_defaultDevice)
       {
-        v8 = [a1 defaultCPUDevice];
+        defaultCPUDevice = [self defaultCPUDevice];
         v9 = requestPerformingDevice_defaultDevice;
-        requestPerformingDevice_defaultDevice = v8;
+        requestPerformingDevice_defaultDevice = defaultCPUDevice;
 
         v3 = requestPerformingDevice_defaultDevice;
       }
@@ -228,16 +228,16 @@ LABEL_7:
   if (!allDevices)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [a1 defaultCPUDevice];
-    [v4 addObject:v5];
+    defaultCPUDevice = [self defaultCPUDevice];
+    [v4 addObject:defaultCPUDevice];
 
     v6 = +[VNMetalProcessingDevice allDevices];
     [v4 addObjectsFromArray:v6];
 
-    v7 = [a1 defaultANEDevice];
-    if (v7)
+    defaultANEDevice = [self defaultANEDevice];
+    if (defaultANEDevice)
     {
-      [v4 addObject:v7];
+      [v4 addObject:defaultANEDevice];
     }
 
     v8 = [v4 copy];

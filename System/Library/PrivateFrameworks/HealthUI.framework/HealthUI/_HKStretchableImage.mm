@@ -1,19 +1,19 @@
 @interface _HKStretchableImage
 - (double)_desiredWidth;
-- (void)_renderSingleImageInContext:(CGContext *)a3 point:(CGPoint)a4 contextBounds:(CGRect)a5 alpha:(double)a6;
-- (void)_renderStretchedInContext:(CGContext *)a3 frame:(CGRect)a4 contextBounds:(CGRect)a5 alpha:(double)a6;
-- (void)renderInContext:(CGContext *)a3 topCenter:(CGPoint)a4 bottomCenter:(CGPoint)a5 contextBounds:(CGRect)a6 alpha:(double)a7;
+- (void)_renderSingleImageInContext:(CGContext *)context point:(CGPoint)point contextBounds:(CGRect)bounds alpha:(double)alpha;
+- (void)_renderStretchedInContext:(CGContext *)context frame:(CGRect)frame contextBounds:(CGRect)bounds alpha:(double)alpha;
+- (void)renderInContext:(CGContext *)context topCenter:(CGPoint)center bottomCenter:(CGPoint)bottomCenter contextBounds:(CGRect)bounds alpha:(double)alpha;
 @end
 
 @implementation _HKStretchableImage
 
-- (void)_renderStretchedInContext:(CGContext *)a3 frame:(CGRect)a4 contextBounds:(CGRect)a5 alpha:(double)a6
+- (void)_renderStretchedInContext:(CGContext *)context frame:(CGRect)frame contextBounds:(CGRect)bounds alpha:(double)alpha
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (CGRectIntersectsRect(a4, a5))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (CGRectIntersectsRect(frame, bounds))
   {
     v27.origin.x = x;
     v27.origin.y = y;
@@ -70,26 +70,26 @@
     v34.size.width = v13;
     v34.size.height = v18;
     v22 = v21 - CGRectGetMaxY(v34);
-    CGContextSaveGState(a3);
-    _RenderImageInRect(a3, self->_topImage, MinX, MinY, v13, v23, a6);
-    _RenderImageInRect(a3, self->_centerImage, MinX, MaxY, v13, v18, a6);
-    _RenderImageInRect(a3, self->_bottomImage, MinX, v25, v13, v22, a6);
+    CGContextSaveGState(context);
+    _RenderImageInRect(context, self->_topImage, MinX, MinY, v13, v23, alpha);
+    _RenderImageInRect(context, self->_centerImage, MinX, MaxY, v13, v18, alpha);
+    _RenderImageInRect(context, self->_bottomImage, MinX, v25, v13, v22, alpha);
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)_renderSingleImageInContext:(CGContext *)a3 point:(CGPoint)a4 contextBounds:(CGRect)a5 alpha:(double)a6
+- (void)_renderSingleImageInContext:(CGContext *)context point:(CGPoint)point contextBounds:(CGRect)bounds alpha:(double)alpha
 {
   singlePointImage = self->_singlePointImage;
   if (singlePointImage)
   {
-    y = a5.origin.y;
-    x = a5.origin.x;
-    v10 = a4.y;
-    v11 = a4.x;
-    height = a5.size.height;
-    width = a5.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    v10 = point.y;
+    v11 = point.x;
+    height = bounds.size.height;
+    width = bounds.size.width;
     [(UIImage *)singlePointImage size];
     v15 = v14;
     v17 = v16;
@@ -107,24 +107,24 @@
     {
       v20 = self->_singlePointImage;
 
-      [(UIImage *)v20 drawInRect:0 blendMode:v18 alpha:v19, v15, v17, a6];
+      [(UIImage *)v20 drawInRect:0 blendMode:v18 alpha:v19, v15, v17, alpha];
     }
   }
 }
 
-- (void)renderInContext:(CGContext *)a3 topCenter:(CGPoint)a4 bottomCenter:(CGPoint)a5 contextBounds:(CGRect)a6 alpha:(double)a7
+- (void)renderInContext:(CGContext *)context topCenter:(CGPoint)center bottomCenter:(CGPoint)bottomCenter contextBounds:(CGRect)bounds alpha:(double)alpha
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a5.y;
-  v12 = a4.y;
-  v13 = a4.x;
-  if (HKUIEqualDoubles(a4.y, a5.y))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v11 = bottomCenter.y;
+  v12 = center.y;
+  v13 = center.x;
+  if (HKUIEqualDoubles(center.y, bottomCenter.y))
   {
 
-    [(_HKStretchableImage *)self _renderSingleImageInContext:a3 point:v13 contextBounds:v12 alpha:x, y, width, height, a7];
+    [(_HKStretchableImage *)self _renderSingleImageInContext:context point:v13 contextBounds:v12 alpha:x, y, width, height, alpha];
   }
 
   else
@@ -137,7 +137,7 @@
     v19 = v18;
     [(UIImage *)self->_bottomImage size];
 
-    [(_HKStretchableImage *)self _renderStretchedInContext:a3 frame:v13 + v17 * -0.5 contextBounds:v12 - v19 alpha:v17, v11 - v12 + v19 + v20, x, y, v21, v22];
+    [(_HKStretchableImage *)self _renderStretchedInContext:context frame:v13 + v17 * -0.5 contextBounds:v12 - v19 alpha:v17, v11 - v12 + v19 + v20, x, y, v21, v22];
   }
 }
 

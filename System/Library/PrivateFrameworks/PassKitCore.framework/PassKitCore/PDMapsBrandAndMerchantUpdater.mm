@@ -1,32 +1,32 @@
 @interface PDMapsBrandAndMerchantUpdater
-+ (BOOL)canUpdateMapsBrandForBrand:(id)a3 outConfiguration:(id *)a4;
-+ (BOOL)canUpdateMapsBrandForTransaction:(id)a3 outConfiguration:(id *)a4;
-+ (BOOL)canUpdateMapsMerchantForMerchant:(id)a3 outConfiguration:(id *)a4;
-+ (BOOL)canUpdateMapsMerchantForTransaction:(id)a3 outConfiguration:(id *)a4;
-+ (id)_configurationForMapsBrand:(id)a3;
-+ (id)_configurationForMapsMerchant:(id)a3;
++ (BOOL)canUpdateMapsBrandForBrand:(id)brand outConfiguration:(id *)configuration;
++ (BOOL)canUpdateMapsBrandForTransaction:(id)transaction outConfiguration:(id *)configuration;
++ (BOOL)canUpdateMapsMerchantForMerchant:(id)merchant outConfiguration:(id *)configuration;
++ (BOOL)canUpdateMapsMerchantForTransaction:(id)transaction outConfiguration:(id *)configuration;
++ (id)_configurationForMapsBrand:(id)brand;
++ (id)_configurationForMapsMerchant:(id)merchant;
 + (id)oldestPossibleLastProcessedDate;
-- (BOOL)_validHeroImageForPhoto:(id)a3;
-- (PDMapsBrandAndMerchantUpdater)initWithDataSource:(id)a3;
-- (id)_bestHeroImageForMapItem:(id)a3 size:(CGSize)a4 allowSmaller:(BOOL)a5;
-- (id)_heroImageProviderNameForMapItem:(id)a3;
+- (BOOL)_validHeroImageForPhoto:(id)photo;
+- (PDMapsBrandAndMerchantUpdater)initWithDataSource:(id)source;
+- (id)_bestHeroImageForMapItem:(id)item size:(CGSize)size allowSmaller:(BOOL)smaller;
+- (id)_heroImageProviderNameForMapItem:(id)item;
 - (id)traits;
-- (void)_brandAndMerchantInformationForMapItems:(id)a3 completion:(id)a4;
+- (void)_brandAndMerchantInformationForMapItems:(id)items completion:(id)completion;
 - (void)_executeNextRequestIfPossible;
-- (void)_startNextMapsUpdatesRequest:(id)a3 completion:(id)a4;
+- (void)_startNextMapsUpdatesRequest:(id)request completion:(id)completion;
 - (void)beginCoalesingMapsDataRequests;
 - (void)endCoalesingMapsDataRequests;
-- (void)merchantDataForMapsURL:(id)a3 completion:(id)a4;
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4;
-- (void)updateMapsDataForConfiguration:(id)a3 completion:(id)a4;
-- (void)updateMapsDataForConfigurations:(id)a3;
+- (void)merchantDataForMapsURL:(id)l completion:(id)completion;
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria;
+- (void)updateMapsDataForConfiguration:(id)configuration completion:(id)completion;
+- (void)updateMapsDataForConfigurations:(id)configurations;
 @end
 
 @implementation PDMapsBrandAndMerchantUpdater
 
-- (PDMapsBrandAndMerchantUpdater)initWithDataSource:(id)a3
+- (PDMapsBrandAndMerchantUpdater)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = PDMapsBrandAndMerchantUpdater;
   v6 = [(PDMapsBrandAndMerchantUpdater *)&v15 init];
@@ -36,7 +36,7 @@
     requests = v6->_requests;
     v6->_requests = v7;
 
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     v6->_lock._os_unfair_lock_opaque = 0;
     v9 = objc_alloc_init(off_10091CF90());
     mapService = v6->_mapService;
@@ -67,42 +67,42 @@
   return v3;
 }
 
-+ (BOOL)canUpdateMapsMerchantForTransaction:(id)a3 outConfiguration:(id *)a4
++ (BOOL)canUpdateMapsMerchantForTransaction:(id)transaction outConfiguration:(id *)configuration
 {
-  v6 = a3;
-  v7 = [v6 merchant];
-  v8 = [v7 mapsMerchant];
+  transactionCopy = transaction;
+  merchant = [transactionCopy merchant];
+  mapsMerchant = [merchant mapsMerchant];
 
-  v9 = [v8 identifier];
-  v10 = [v8 resultProviderIdentifier];
-  v11 = [v8 lastProcessedDate];
-  v12 = [v6 transactionDate];
-  v13 = [a1 oldestPossibleLastProcessedDate];
-  [v12 timeIntervalSinceDate:v13];
+  identifier = [mapsMerchant identifier];
+  resultProviderIdentifier = [mapsMerchant resultProviderIdentifier];
+  lastProcessedDate = [mapsMerchant lastProcessedDate];
+  transactionDate = [transactionCopy transactionDate];
+  oldestPossibleLastProcessedDate = [self oldestPossibleLastProcessedDate];
+  [transactionDate timeIntervalSinceDate:oldestPossibleLastProcessedDate];
   v15 = v14;
 
-  if (v11)
+  if (lastProcessedDate)
   {
-    v16 = [a1 oldestPossibleLastProcessedDate];
-    [v11 timeIntervalSinceDate:v16];
+    oldestPossibleLastProcessedDate2 = [self oldestPossibleLastProcessedDate];
+    [lastProcessedDate timeIntervalSinceDate:oldestPossibleLastProcessedDate2];
     v18 = v17;
 
     v19 = 0;
-    if (!v9 || v15 >= 0.0 || v18 >= 0.0)
+    if (!identifier || v15 >= 0.0 || v18 >= 0.0)
     {
       goto LABEL_11;
     }
   }
 
-  else if (!v9)
+  else if (!identifier)
   {
     v19 = 0;
     goto LABEL_11;
   }
 
-  if (a4)
+  if (configuration)
   {
-    *a4 = [a1 _configurationForMapsMerchant:v8];
+    *configuration = [self _configurationForMapsMerchant:mapsMerchant];
   }
 
   v19 = 1;
@@ -110,7 +110,7 @@ LABEL_11:
   v20 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = v9;
+    v28 = identifier;
     if (v19)
     {
       v21 = @"YES";
@@ -121,69 +121,69 @@ LABEL_11:
       v21 = @"NO";
     }
 
-    v22 = [v6 identifier];
-    v23 = [v6 serviceIdentifier];
-    v24 = [v8 name];
-    v25 = v10;
-    v26 = v24;
+    identifier2 = [transactionCopy identifier];
+    serviceIdentifier = [transactionCopy serviceIdentifier];
+    name = [mapsMerchant name];
+    v25 = resultProviderIdentifier;
+    v26 = name;
     *buf = 138414082;
     v30 = v21;
     v31 = 2112;
-    v32 = v22;
+    v32 = identifier2;
     v33 = 2112;
-    v34 = v23;
+    v34 = serviceIdentifier;
     v35 = 2112;
-    v36 = v24;
+    v36 = name;
     v37 = 2112;
-    v38 = v11;
+    v38 = lastProcessedDate;
     v39 = 2048;
     v40 = v28;
     v41 = 2048;
     v42 = v25;
     v43 = 2112;
-    v44 = v12;
+    v44 = transactionDate;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Can update maps merchant %@ for identifier %@, serviceIdentifier %@, name %@, mapsMerchantLastProcessedDate %@, mapsMerchantMUID %ld, mapsMerchantResultProviderID %ld, transactionDate %@", buf, 0x52u);
   }
 
   return v19;
 }
 
-+ (BOOL)canUpdateMapsBrandForTransaction:(id)a3 outConfiguration:(id *)a4
++ (BOOL)canUpdateMapsBrandForTransaction:(id)transaction outConfiguration:(id *)configuration
 {
-  v6 = a3;
-  v7 = [v6 merchant];
-  v8 = [v7 mapsBrand];
+  transactionCopy = transaction;
+  merchant = [transactionCopy merchant];
+  mapsBrand = [merchant mapsBrand];
 
-  v9 = [v8 identifier];
-  v10 = [v8 resultProviderIdentifier];
-  v11 = [v8 lastProcessedDate];
-  v12 = [v6 transactionDate];
-  v13 = [a1 oldestPossibleLastProcessedDate];
-  [v12 timeIntervalSinceDate:v13];
+  identifier = [mapsBrand identifier];
+  resultProviderIdentifier = [mapsBrand resultProviderIdentifier];
+  lastProcessedDate = [mapsBrand lastProcessedDate];
+  transactionDate = [transactionCopy transactionDate];
+  oldestPossibleLastProcessedDate = [self oldestPossibleLastProcessedDate];
+  [transactionDate timeIntervalSinceDate:oldestPossibleLastProcessedDate];
   v15 = v14;
 
-  if (v11)
+  if (lastProcessedDate)
   {
-    v16 = [a1 oldestPossibleLastProcessedDate];
-    [v11 timeIntervalSinceDate:v16];
+    oldestPossibleLastProcessedDate2 = [self oldestPossibleLastProcessedDate];
+    [lastProcessedDate timeIntervalSinceDate:oldestPossibleLastProcessedDate2];
     v18 = v17;
 
     v19 = 0;
-    if (!v9 || v15 >= 0.0 || v18 >= 0.0)
+    if (!identifier || v15 >= 0.0 || v18 >= 0.0)
     {
       goto LABEL_11;
     }
   }
 
-  else if (!v9)
+  else if (!identifier)
   {
     v19 = 0;
     goto LABEL_11;
   }
 
-  if (a4)
+  if (configuration)
   {
-    *a4 = [a1 _configurationForMapsBrand:v8];
+    *configuration = [self _configurationForMapsBrand:mapsBrand];
   }
 
   v19 = 1;
@@ -191,7 +191,7 @@ LABEL_11:
   v20 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = v9;
+    v28 = identifier;
     if (v19)
     {
       v21 = @"YES";
@@ -202,43 +202,43 @@ LABEL_11:
       v21 = @"NO";
     }
 
-    v22 = [v6 identifier];
-    v23 = [v6 serviceIdentifier];
-    v24 = [v8 name];
-    v25 = v10;
-    v26 = v24;
+    identifier2 = [transactionCopy identifier];
+    serviceIdentifier = [transactionCopy serviceIdentifier];
+    name = [mapsBrand name];
+    v25 = resultProviderIdentifier;
+    v26 = name;
     *buf = 138414082;
     v30 = v21;
     v31 = 2112;
-    v32 = v22;
+    v32 = identifier2;
     v33 = 2112;
-    v34 = v23;
+    v34 = serviceIdentifier;
     v35 = 2112;
-    v36 = v24;
+    v36 = name;
     v37 = 2112;
-    v38 = v11;
+    v38 = lastProcessedDate;
     v39 = 2048;
     v40 = v28;
     v41 = 2048;
     v42 = v25;
     v43 = 2112;
-    v44 = v12;
+    v44 = transactionDate;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Can update maps brand %@ for identifier %@, serviceIdentifier %@, name %@, mapsBrandLastProcessedDate %@, mapsBrandMUID %ld, mapsMerchantResultProviderID %ld, transactionDate %@", buf, 0x52u);
   }
 
   return v19;
 }
 
-+ (BOOL)canUpdateMapsMerchantForMerchant:(id)a3 outConfiguration:(id *)a4
++ (BOOL)canUpdateMapsMerchantForMerchant:(id)merchant outConfiguration:(id *)configuration
 {
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [v6 resultProviderIdentifier];
-  v9 = [v6 lastProcessedDate];
-  if (v9)
+  merchantCopy = merchant;
+  identifier = [merchantCopy identifier];
+  resultProviderIdentifier = [merchantCopy resultProviderIdentifier];
+  lastProcessedDate = [merchantCopy lastProcessedDate];
+  if (lastProcessedDate)
   {
-    v10 = [a1 oldestPossibleLastProcessedDate];
-    [v9 timeIntervalSinceDate:v10];
+    oldestPossibleLastProcessedDate = [self oldestPossibleLastProcessedDate];
+    [lastProcessedDate timeIntervalSinceDate:oldestPossibleLastProcessedDate];
     v12 = v11 < 0.0;
   }
 
@@ -247,16 +247,16 @@ LABEL_11:
     v12 = 1;
   }
 
-  v13 = v7 != 0 && v12;
-  if (a4 && v7 != 0 && v12)
+  v13 = identifier != 0 && v12;
+  if (configuration && identifier != 0 && v12)
   {
-    *a4 = [a1 _configurationForMapsMerchant:v6];
+    *configuration = [self _configurationForMapsMerchant:merchantCopy];
   }
 
   v14 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    if (v7 != 0 && v12)
+    if (identifier != 0 && v12)
     {
       v15 = @"YES";
     }
@@ -266,33 +266,33 @@ LABEL_11:
       v15 = @"NO";
     }
 
-    v16 = [v6 name];
+    name = [merchantCopy name];
     v18 = 138413314;
     v19 = v15;
     v20 = 2112;
-    v21 = v16;
+    v21 = name;
     v22 = 2112;
-    v23 = v9;
+    v23 = lastProcessedDate;
     v24 = 2048;
-    v25 = v7;
+    v25 = identifier;
     v26 = 2048;
-    v27 = v8;
+    v27 = resultProviderIdentifier;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Can update maps merchant %@, name %@, mapsMerchantLastProcessedDate %@, mapsMerchantMUID %ld, mapsMerchantResultProviderID %ld", &v18, 0x34u);
   }
 
   return v13;
 }
 
-+ (BOOL)canUpdateMapsBrandForBrand:(id)a3 outConfiguration:(id *)a4
++ (BOOL)canUpdateMapsBrandForBrand:(id)brand outConfiguration:(id *)configuration
 {
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [v6 resultProviderIdentifier];
-  v9 = [v6 lastProcessedDate];
-  if (v9)
+  brandCopy = brand;
+  identifier = [brandCopy identifier];
+  resultProviderIdentifier = [brandCopy resultProviderIdentifier];
+  lastProcessedDate = [brandCopy lastProcessedDate];
+  if (lastProcessedDate)
   {
-    v10 = [a1 oldestPossibleLastProcessedDate];
-    [v9 timeIntervalSinceDate:v10];
+    oldestPossibleLastProcessedDate = [self oldestPossibleLastProcessedDate];
+    [lastProcessedDate timeIntervalSinceDate:oldestPossibleLastProcessedDate];
     v12 = v11 < 0.0;
   }
 
@@ -301,16 +301,16 @@ LABEL_11:
     v12 = 1;
   }
 
-  v13 = v7 != 0 && v12;
-  if (a4 && v7 != 0 && v12)
+  v13 = identifier != 0 && v12;
+  if (configuration && identifier != 0 && v12)
   {
-    *a4 = [a1 _configurationForMapsBrand:v6];
+    *configuration = [self _configurationForMapsBrand:brandCopy];
   }
 
   v14 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    if (v7 != 0 && v12)
+    if (identifier != 0 && v12)
     {
       v15 = @"YES";
     }
@@ -320,47 +320,47 @@ LABEL_11:
       v15 = @"NO";
     }
 
-    v16 = [v6 name];
+    name = [brandCopy name];
     v18 = 138413314;
     v19 = v15;
     v20 = 2112;
-    v21 = v16;
+    v21 = name;
     v22 = 2112;
-    v23 = v9;
+    v23 = lastProcessedDate;
     v24 = 2048;
-    v25 = v7;
+    v25 = identifier;
     v26 = 2048;
-    v27 = v8;
+    v27 = resultProviderIdentifier;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Can update maps brand %@, name %@, mapsBrandLastProcessedDate %@, mapsBrandMUID %ld, mapsMerchantResultProviderID %ld", &v18, 0x34u);
   }
 
   return v13;
 }
 
-+ (id)_configurationForMapsMerchant:(id)a3
++ (id)_configurationForMapsMerchant:(id)merchant
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v3 resultProviderIdentifier];
-  [v3 locationLatitude];
+  merchantCopy = merchant;
+  identifier = [merchantCopy identifier];
+  resultProviderIdentifier = [merchantCopy resultProviderIdentifier];
+  [merchantCopy locationLatitude];
   v7 = v6;
-  [v3 locationLongitude];
+  [merchantCopy locationLongitude];
   v9 = v8;
 
   v10 = CLLocationCoordinate2DMake(v7, v9);
-  v11 = [[PDMapsBrandAndMerchantUpdaterConfiguration alloc] initWithMUID:v4 resultProviderID:v5 coordinate:v10.latitude, v10.longitude];
+  v11 = [[PDMapsBrandAndMerchantUpdaterConfiguration alloc] initWithMUID:identifier resultProviderID:resultProviderIdentifier coordinate:v10.latitude, v10.longitude];
 
   return v11;
 }
 
-+ (id)_configurationForMapsBrand:(id)a3
++ (id)_configurationForMapsBrand:(id)brand
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v3 resultProviderIdentifier];
+  brandCopy = brand;
+  identifier = [brandCopy identifier];
+  resultProviderIdentifier = [brandCopy resultProviderIdentifier];
 
   v6 = CLLocationCoordinate2DMake(0.0, 0.0);
-  v7 = [[PDMapsBrandAndMerchantUpdaterConfiguration alloc] initWithMUID:v4 resultProviderID:v5 coordinate:v6.latitude, v6.longitude];
+  v7 = [[PDMapsBrandAndMerchantUpdaterConfiguration alloc] initWithMUID:identifier resultProviderID:resultProviderIdentifier coordinate:v6.latitude, v6.longitude];
 
   return v7;
 }
@@ -400,32 +400,32 @@ LABEL_11:
   }
 }
 
-- (void)updateMapsDataForConfiguration:(id)a3 completion:(id)a4
+- (void)updateMapsDataForConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = a3;
+    configurationCopy = configuration;
     v8 = [PKPaymentTransactionMapsUpdateProcessorRequest alloc];
-    v9 = [[NSArray alloc] initWithObjects:{v7, 0}];
+    v9 = [[NSArray alloc] initWithObjects:{configurationCopy, 0}];
 
     v10 = [(PKPaymentTransactionMapsUpdateProcessorRequest *)v8 initWithConfigurations:v9];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10001ADF4;
     v11[3] = &unk_10083C090;
-    v12 = v6;
+    v12 = completionCopy;
     [(PDMapsBrandAndMerchantUpdater *)self _startNextMapsUpdatesRequest:v10 completion:v11];
   }
 }
 
-- (void)merchantDataForMapsURL:(id)a3 completion:(id)a4
+- (void)merchantDataForMapsURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  lCopy = l;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [objc_alloc(off_10091CF98()) initWithMapsURL:v6];
+    v8 = [objc_alloc(off_10091CF98()) initWithMapsURL:lCopy];
     if (v8)
     {
       v9 = [objc_alloc(off_10091CFA0()) initWithRequest:v8];
@@ -435,7 +435,7 @@ LABEL_11:
       v10[2] = sub_10001B014;
       v10[3] = &unk_10083C0B8;
       objc_copyWeak(&v12, &location);
-      v11 = v7;
+      v11 = completionCopy;
       [v9 startWithCompletionHandler:v10];
 
       objc_destroyWeak(&v12);
@@ -444,17 +444,17 @@ LABEL_11:
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)updateMapsDataForConfigurations:(id)a3
+- (void)updateMapsDataForConfigurations:(id)configurations
 {
-  v4 = a3;
-  if ([v4 count])
+  configurationsCopy = configurations;
+  if ([configurationsCopy count])
   {
-    v5 = [v4 mutableCopy];
+    v5 = [configurationsCopy mutableCopy];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -474,8 +474,8 @@ LABEL_4:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v43 + 1) + 8 * v10) configurations];
-        v12 = [NSSet setWithArray:v11];
+        configurations = [*(*(&v43 + 1) + 8 * v10) configurations];
+        v12 = [NSSet setWithArray:configurations];
         [v5 minusSet:v12];
 
         if (!v5)
@@ -502,7 +502,7 @@ LABEL_4:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v34 = self;
+      selfCopy = self;
       v13 = self->_requests;
       v14 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v39 objects:v50 count:16];
       if (v14)
@@ -539,8 +539,8 @@ LABEL_13:
 
       if ([v5 count])
       {
-        v18 = [v5 allObjects];
-        v19 = [v18 count];
+        allObjects = [v5 allObjects];
+        v19 = [allObjects count];
         v20 = objc_alloc_init(NSMutableArray);
         if (v19 >= 1)
         {
@@ -559,7 +559,7 @@ LABEL_13:
               v24 = v22;
             }
 
-            v25 = [v18 subarrayWithRange:{v21, v24}];
+            v25 = [allObjects subarrayWithRange:{v21, v24}];
             [v20 addObject:v25];
 
             v21 += 100;
@@ -599,8 +599,8 @@ LABEL_13:
           while (v29);
         }
 
-        os_unfair_lock_lock(&v34->_lock);
-        [(NSMutableArray *)v34->_requests addObjectsFromArray:v26];
+        os_unfair_lock_lock(&selfCopy->_lock);
+        [(NSMutableArray *)selfCopy->_requests addObjectsFromArray:v26];
         v33 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
@@ -609,47 +609,47 @@ LABEL_13:
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Maps update requests queued %@", buf, 0xCu);
         }
 
-        os_unfair_lock_unlock(&v34->_lock);
-        [(PDMapsBrandAndMerchantUpdater *)v34 _executeNextRequestIfPossible];
+        os_unfair_lock_unlock(&selfCopy->_lock);
+        [(PDMapsBrandAndMerchantUpdater *)selfCopy _executeNextRequestIfPossible];
       }
     }
   }
 }
 
-- (void)_startNextMapsUpdatesRequest:(id)a3 completion:(id)a4
+- (void)_startNextMapsUpdatesRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   mapService = self->_mapService;
-  v8 = [a3 mapIdentifiers];
-  v9 = [(PDMapsBrandAndMerchantUpdater *)self traits];
-  v10 = [(MKMapService *)mapService ticketForIdentifiers:v8 traits:v9];
+  mapIdentifiers = [request mapIdentifiers];
+  traits = [(PDMapsBrandAndMerchantUpdater *)self traits];
+  v10 = [(MKMapService *)mapService ticketForIdentifiers:mapIdentifiers traits:traits];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10001B664;
   v12[3] = &unk_10083C0E0;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [v10 submitWithHandler:v12 networkActivity:0];
 }
 
-- (void)_brandAndMerchantInformationForMapItems:(id)a3 completion:(id)a4
+- (void)_brandAndMerchantInformationForMapItems:(id)items completion:(id)completion
 {
-  v6 = a3;
-  v41 = a4;
+  itemsCopy = items;
+  completionCopy = completion;
   v43 = objc_alloc_init(NSMutableArray);
   v42 = objc_alloc_init(NSMutableArray);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v6;
+  obj = itemsCopy;
   v46 = [obj countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v46)
   {
     v45 = *v50;
-    v47 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v46; i = i + 1)
@@ -660,32 +660,32 @@ LABEL_13:
         }
 
         v8 = *(*(&v49 + 1) + 8 * i);
-        v9 = [v8 _geoMapItem];
-        v10 = [v9 _mapsCategoryId];
-        v11 = [v9 _walletCategoryIdentifier];
+        _geoMapItem = [v8 _geoMapItem];
+        _mapsCategoryId = [_geoMapItem _mapsCategoryId];
+        _walletCategoryIdentifier = [_geoMapItem _walletCategoryIdentifier];
         v12 = objc_alloc(off_10091CFA8());
-        v13 = [v9 _walletPlaceStyling];
-        v14 = [v12 initWithStyleAttributes:v13];
+        _walletPlaceStyling = [_geoMapItem _walletPlaceStyling];
+        v14 = [v12 initWithStyleAttributes:_walletPlaceStyling];
 
-        v48 = v11;
+        v48 = _walletCategoryIdentifier;
         v15 = PKMerchantCategoryFromString();
         v16 = [v8 _bestWalletHeroImageForSize:1 allowSmaller:{1.79769313e308, 1.79769313e308}];
-        v17 = [v8 _walletHeroImageProviderName];
+        _walletHeroImageProviderName = [v8 _walletHeroImageProviderName];
         if (!v16)
         {
-          v16 = [(PDMapsBrandAndMerchantUpdater *)self _bestHeroImageForMapItem:v9 size:1 allowSmaller:1.79769313e308, 1.79769313e308];
-          v18 = [(PDMapsBrandAndMerchantUpdater *)self _heroImageProviderNameForMapItem:v9];
+          v16 = [(PDMapsBrandAndMerchantUpdater *)self _bestHeroImageForMapItem:_geoMapItem size:1 allowSmaller:1.79769313e308, 1.79769313e308];
+          v18 = [(PDMapsBrandAndMerchantUpdater *)self _heroImageProviderNameForMapItem:_geoMapItem];
 
-          v17 = v18;
-          self = v47;
+          _walletHeroImageProviderName = v18;
+          self = selfCopy;
         }
 
-        v19 = [v8 _isMapItemTypeBrand];
+        _isMapItemTypeBrand = [v8 _isMapItemTypeBrand];
         dataSource = self->_dataSource;
-        v21 = [v8 _muid];
-        if (v19)
+        _muid = [v8 _muid];
+        if (_isMapItemTypeBrand)
         {
-          v22 = [(PDMapsBrandAndMerchantUpdaterDataSource *)dataSource mapsBrandWithIdentifier:v21];
+          v22 = [(PDMapsBrandAndMerchantUpdaterDataSource *)dataSource mapsBrandWithIdentifier:_muid];
           if (!v22)
           {
             v22 = objc_alloc_init(PKMapsBrand);
@@ -693,11 +693,11 @@ LABEL_13:
 
           [v22 setIdentifier:{objc_msgSend(v8, "_muid")}];
           [v22 setResultProviderIdentifier:{objc_msgSend(v8, "_resultProviderID")}];
-          v23 = [v8 name];
-          [v22 setName:v23];
+          name = [v8 name];
+          [v22 setName:name];
 
-          v24 = [v8 phoneNumber];
-          [v22 setPhoneNumber:v24];
+          phoneNumber = [v8 phoneNumber];
+          [v22 setPhoneNumber:phoneNumber];
 
           v25 = [v8 url];
           [v22 setURL:v25];
@@ -706,7 +706,7 @@ LABEL_13:
           [v22 setLogoURL:v26];
 
           [v22 setCategory:v15];
-          [v22 setDetailedCategory:v10];
+          [v22 setDetailedCategory:_mapsCategoryId];
           if (v14)
           {
             v27 = [NSKeyedArchiver archivedDataWithRootObject:v14 requiringSecureCoding:1 error:0];
@@ -714,7 +714,7 @@ LABEL_13:
           }
 
           [v22 setHeroImageURL:v16];
-          [v22 setHeroImageAttributionName:v17];
+          [v22 setHeroImageAttributionName:_walletHeroImageProviderName];
           v28 = +[NSDate date];
           [v22 setLastProcessedDate:v28];
 
@@ -728,14 +728,14 @@ LABEL_13:
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Updating maps brand %@", buf, 0xCu);
             }
 
-            [(PDMapsBrandAndMerchantUpdaterDataSource *)v47->_dataSource updateMapsBrand:v22];
+            [(PDMapsBrandAndMerchantUpdaterDataSource *)selfCopy->_dataSource updateMapsBrand:v22];
             [v42 addObject:v22];
           }
         }
 
         else
         {
-          v22 = [(PDMapsBrandAndMerchantUpdaterDataSource *)dataSource mapsMerchantWithIdentifier:v21];
+          v22 = [(PDMapsBrandAndMerchantUpdaterDataSource *)dataSource mapsMerchantWithIdentifier:_muid];
           if (!v22)
           {
             v22 = objc_alloc_init(PKMapsMerchant);
@@ -743,24 +743,24 @@ LABEL_13:
 
           [v22 setIdentifier:{objc_msgSend(v8, "_muid")}];
           [v22 setResultProviderIdentifier:{objc_msgSend(v8, "_resultProviderID")}];
-          v30 = [v8 name];
-          [v22 setName:v30];
+          name2 = [v8 name];
+          [v22 setName:name2];
 
-          v31 = [v8 phoneNumber];
-          [v22 setPhoneNumber:v31];
+          phoneNumber2 = [v8 phoneNumber];
+          [v22 setPhoneNumber:phoneNumber2];
 
           v32 = [v8 url];
           [v22 setURL:v32];
 
-          v33 = [v8 placemark];
-          v34 = [v33 location];
-          [v22 setLocation:v34];
+          placemark = [v8 placemark];
+          location = [placemark location];
+          [v22 setLocation:location];
 
-          v35 = [v33 postalAddress];
-          [v22 setPostalAddress:v35];
+          postalAddress = [placemark postalAddress];
+          [v22 setPostalAddress:postalAddress];
 
           [v22 setCategory:v15];
-          [v22 setDetailedCategory:v10];
+          [v22 setDetailedCategory:_mapsCategoryId];
           if (v14)
           {
             v36 = [NSKeyedArchiver archivedDataWithRootObject:v14 requiringSecureCoding:1 error:0];
@@ -768,7 +768,7 @@ LABEL_13:
           }
 
           [v22 setHeroImageURL:v16];
-          [v22 setHeroImageAttributionName:v17];
+          [v22 setHeroImageAttributionName:_walletHeroImageProviderName];
           v37 = +[NSDate date];
           [v22 setLastProcessedDate:v37];
 
@@ -782,12 +782,12 @@ LABEL_13:
               _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Updating maps merchant %@", buf, 0xCu);
             }
 
-            [(PDMapsBrandAndMerchantUpdaterDataSource *)v47->_dataSource updateMapsMerchant:v22];
+            [(PDMapsBrandAndMerchantUpdaterDataSource *)selfCopy->_dataSource updateMapsMerchant:v22];
             [v43 addObject:v22];
           }
         }
 
-        self = v47;
+        self = selfCopy;
       }
 
       v46 = [obj countByEnumeratingWithState:&v49 objects:v55 count:16];
@@ -796,11 +796,11 @@ LABEL_13:
     while (v46);
   }
 
-  if (v41)
+  if (completionCopy)
   {
     v39 = [v43 copy];
     v40 = [v42 copy];
-    v41[2](v41, v39, v40);
+    completionCopy[2](completionCopy, v39, v40);
   }
 }
 
@@ -809,9 +809,9 @@ LABEL_13:
   os_unfair_lock_lock(&self->_lock);
   if (!self->_traits)
   {
-    v3 = [(MKMapService *)self->_mapService defaultTraits];
+    defaultTraits = [(MKMapService *)self->_mapService defaultTraits];
     traits = self->_traits;
-    self->_traits = v3;
+    self->_traits = defaultTraits;
 
     [(GEOMapServiceTraits *)self->_traits setWantsBrandIcon:1];
     [(GEOMapServiceTraits *)self->_traits setSupportsBrandFallback:1];
@@ -823,18 +823,18 @@ LABEL_13:
   return v5;
 }
 
-- (id)_bestHeroImageForMapItem:(id)a3 size:(CGSize)a4 allowSmaller:(BOOL)a5
+- (id)_bestHeroImageForMapItem:(id)item size:(CGSize)size allowSmaller:(BOOL)smaller
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [v9 _photos];
-  v11 = [v10 firstObject];
+  smallerCopy = smaller;
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
+  _photos = [itemCopy _photos];
+  firstObject = [_photos firstObject];
 
-  if ([(PDMapsBrandAndMerchantUpdater *)self _validHeroImageForPhoto:v11])
+  if ([(PDMapsBrandAndMerchantUpdater *)self _validHeroImageForPhoto:firstObject])
   {
-    v12 = [v11 bestPhotoForSize:v5 allowSmaller:{width, height}];
+    v12 = [firstObject bestPhotoForSize:smallerCopy allowSmaller:{width, height}];
     v13 = [v12 url];
 
     if (v13)
@@ -845,41 +845,41 @@ LABEL_13:
     }
   }
 
-  v14 = [v9 _bestHeroBrandIconURLForSize:v5 allowSmaller:{width, height}];
+  v14 = [itemCopy _bestHeroBrandIconURLForSize:smallerCopy allowSmaller:{width, height}];
 LABEL_6:
 
   return v14;
 }
 
-- (id)_heroImageProviderNameForMapItem:(id)a3
+- (id)_heroImageProviderNameForMapItem:(id)item
 {
-  v4 = [a3 _photos];
-  v5 = [v4 firstObject];
+  _photos = [item _photos];
+  firstObject = [_photos firstObject];
 
-  if ([(PDMapsBrandAndMerchantUpdater *)self _validHeroImageForPhoto:v5])
+  if ([(PDMapsBrandAndMerchantUpdater *)self _validHeroImageForPhoto:firstObject])
   {
-    v6 = [v5 attribution];
-    v7 = [v6 providerName];
+    attribution = [firstObject attribution];
+    providerName = [attribution providerName];
   }
 
   else
   {
-    v7 = 0;
+    providerName = 0;
   }
 
-  return v7;
+  return providerName;
 }
 
-- (BOOL)_validHeroImageForPhoto:(id)a3
+- (BOOL)_validHeroImageForPhoto:(id)photo
 {
-  v3 = a3;
+  photoCopy = photo;
   BOOL = GEOConfigGetBOOL();
   v5 = GEOConfigGetBOOL();
   v6 = v5;
   if (BOOL)
   {
-    v7 = [v3 highQuality];
-    if ((v7 & v6 & 1) == 0)
+    highQuality = [photoCopy highQuality];
+    if ((highQuality & v6 & 1) == 0)
     {
       goto LABEL_7;
     }
@@ -887,14 +887,14 @@ LABEL_6:
 
   else if (!v5)
   {
-    LOBYTE(v7) = 1;
+    LOBYTE(highQuality) = 1;
     goto LABEL_7;
   }
 
-  LOBYTE(v7) = [v3 businessProvided];
+  LOBYTE(highQuality) = [photoCopy businessProvided];
 LABEL_7:
 
-  return v7;
+  return highQuality;
 }
 
 - (void)_executeNextRequestIfPossible
@@ -908,9 +908,9 @@ LABEL_7:
 
   else
   {
-    v3 = [(NSMutableArray *)self->_requests firstObject];
+    firstObject = [(NSMutableArray *)self->_requests firstObject];
     currentRequest = self->_currentRequest;
-    self->_currentRequest = v3;
+    self->_currentRequest = firstObject;
 
     v5 = self->_currentRequest;
     if (v5)
@@ -926,11 +926,11 @@ LABEL_7:
       v7 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(PKPaymentTransactionMapsUpdateProcessorRequest *)v6 configurations];
+        configurations = [(PKPaymentTransactionMapsUpdateProcessorRequest *)v6 configurations];
         *buf = 138412546;
         v11 = v6;
         v12 = 2048;
-        v13 = [v8 count];
+        v13 = [configurations count];
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Starting maps update request %@ with %ld items", buf, 0x16u);
       }
 
@@ -944,11 +944,11 @@ LABEL_7:
   }
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
+  v8 = identifierCopy;
   v9 = v8;
   if (v8 == @"PDMapsBrandAndMerchantUpdaterActivityIdentifier" || v8 && (v10 = [(__CFString *)v8 isEqualToString:@"PDMapsBrandAndMerchantUpdaterActivityIdentifier"], v9, v10))
   {
@@ -976,7 +976,7 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Updating %ld maps brands and %ld maps merchants", buf, 0x16u);
     }
 
-    v32 = v7;
+    v32 = criteriaCopy;
 
     v18 = objc_alloc_init(NSMutableSet);
     v37 = 0u;
@@ -1051,7 +1051,7 @@ LABEL_7:
       [(PDMapsBrandAndMerchantUpdater *)self updateMapsDataForConfigurations:v31];
     }
 
-    v7 = v32;
+    criteriaCopy = v32;
   }
 }
 

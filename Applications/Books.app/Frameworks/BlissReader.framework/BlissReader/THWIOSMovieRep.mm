@@ -1,6 +1,6 @@
 @interface THWIOSMovieRep
 - (BOOL)autoplayAllowed;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isExpanded;
 - (BOOL)isPlaying;
 - (BOOL)isVisibleOnCanvas;
@@ -8,7 +8,7 @@
 - (BOOL)meetsStageDimensionRequirementForExpanded;
 - (BOOL)p_hasValidViewForFreeTransform;
 - (BOOL)p_shouldShowPosterImage;
-- (BOOL)shouldRecognizePressOnRep:(id)a3;
+- (BOOL)shouldRecognizePressOnRep:(id)rep;
 - (BOOL)wantsFullscreenOnlyDisplay;
 - (BOOL)wantsPressAction;
 - (CALayer)pressableAnimationLayer;
@@ -17,81 +17,81 @@
 - (CGRect)rectForCompletion;
 - (THAnimationController)animationController;
 - (THWAutoplayConfig)autoplayConfig;
-- (THWIOSMovieRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (THWIOSMovieRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (THWMovieInfo)movieInfo;
 - (THWPressableRepGestureTargetHandler)pressableHandler;
 - (double)p_percentElapsed;
 - (id)animationLayer;
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5;
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted;
 - (id)movieLayout;
 - (id)shadowAnimationLayer;
 - (id)targetLayer;
 - (int)pressableAction;
-- (void)addChildViewsToArray:(id)a3;
-- (void)animationControllerDidPresent:(id)a3;
+- (void)addChildViewsToArray:(id)array;
+- (void)animationControllerDidPresent:(id)present;
 - (void)autoplayPause;
 - (void)autoplayStart;
 - (void)autoplayStop;
-- (void)buttonControl:(id)a3 didUpdateLayer:(id)a4;
-- (void)buttonControlWasPressed:(id)a3;
-- (void)control:(id)a3 repWasAdded:(id)a4;
-- (void)control:(id)a3 repWillBeRemoved:(id)a4;
+- (void)buttonControl:(id)control didUpdateLayer:(id)layer;
+- (void)buttonControlWasPressed:(id)pressed;
+- (void)control:(id)control repWasAdded:(id)added;
+- (void)control:(id)control repWillBeRemoved:(id)removed;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (void)didUpdateLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 - (void)expandableExpandedPresentationDidEnd;
 - (void)expandableWillPresentExpanded;
-- (void)freeTransformDidEndPassedThreshold:(BOOL)a3;
+- (void)freeTransformDidEndPassedThreshold:(BOOL)threshold;
 - (void)freeTransformWillBegin;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)p_moviePlayerNowPlayingWillChange:(id)a3;
-- (void)p_moviePlayerPlaybackDidFinish:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)p_moviePlayerNowPlayingWillChange:(id)change;
+- (void)p_moviePlayerPlaybackDidFinish:(id)finish;
 - (void)p_pause;
 - (void)p_play;
 - (void)p_reportProgress;
-- (void)p_setMoviePlayerBackgroundColor:(id)a3 animated:(BOOL)a4;
+- (void)p_setMoviePlayerBackgroundColor:(id)color animated:(BOOL)animated;
 - (void)p_stop;
 - (void)p_stopAndInvalidate;
-- (void)p_teardownPlayerIsTransferringToExpanded:(BOOL)a3;
-- (void)p_vantageDidChange:(id)a3;
+- (void)p_teardownPlayerIsTransferringToExpanded:(BOOL)expanded;
+- (void)p_vantageDidChange:(id)change;
 - (void)pause;
 - (void)play;
-- (void)reparentTargetLayerIfBackedByView:(id)a3;
-- (void)setChildReps:(id)a3;
-- (void)setMoviePlayerViewController:(id)a3;
+- (void)reparentTargetLayerIfBackedByView:(id)view;
+- (void)setChildReps:(id)reps;
+- (void)setMoviePlayerViewController:(id)controller;
 - (void)stop;
 - (void)updateChildrenFromLayout;
-- (void)updateLayerGeometryFromLayout:(id)a3;
-- (void)willAddChildView:(id)a3 toView:(id)a4;
+- (void)updateLayerGeometryFromLayout:(id)layout;
+- (void)willAddChildView:(id)view toView:(id)toView;
 - (void)willBeRemoved;
-- (void)willBeginHandlingGesture:(id)a3;
-- (void)willRemoveChildView:(id)a3;
+- (void)willBeginHandlingGesture:(id)gesture;
+- (void)willRemoveChildView:(id)view;
 @end
 
 @implementation THWIOSMovieRep
 
-- (THWIOSMovieRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWIOSMovieRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v17.receiver = self;
   v17.super_class = THWIOSMovieRep;
-  v4 = [(THWIOSMovieRep *)&v17 initWithLayout:a3 canvas:a4];
+  v4 = [(THWIOSMovieRep *)&v17 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (!v4)
   {
 LABEL_7:
-    v6 = v5;
+    movieInfo = v5;
     goto LABEL_8;
   }
 
-  v6 = [(THWIOSMovieRep *)v4 movieInfo];
+  movieInfo = [(THWIOSMovieRep *)v4 movieInfo];
 
-  if (v6)
+  if (movieInfo)
   {
     v7 = [THWFreeTransformableRepGestureTargetHandler alloc];
-    v8 = [(THWIOSMovieRep *)v5 hostICC];
-    v9 = [v8 widgetHost];
-    v10 = [v9 freeTransformRepHandler];
-    v11 = [(THWFreeTransformableRepGestureTargetHandler *)v7 initWithFreeTransformableRep:v5 handler:v10];
+    hostICC = [(THWIOSMovieRep *)v5 hostICC];
+    widgetHost = [hostICC widgetHost];
+    freeTransformRepHandler = [widgetHost freeTransformRepHandler];
+    v11 = [(THWFreeTransformableRepGestureTargetHandler *)v7 initWithFreeTransformableRep:v5 handler:freeTransformRepHandler];
     freeTransformableHandler = v5->_freeTransformableHandler;
     v5->_freeTransformableHandler = v11;
 
@@ -100,14 +100,14 @@ LABEL_7:
 
     if ([(THWIOSMovieRep *)v5 isExpanded])
     {
-      v14 = [(THWIOSMovieRep *)v5 hostICC];
-      v15 = [v14 delegate];
+      hostICC2 = [(THWIOSMovieRep *)v5 hostICC];
+      delegate = [hostICC2 delegate];
       v5->_progressTracker = TSUProtocolCast();
     }
 
     else
     {
-      v14 = [(THWIOSMovieRep *)v5 interactiveCanvasController];
+      hostICC2 = [(THWIOSMovieRep *)v5 interactiveCanvasController];
       v5->_progressTracker = TSUProtocolCast();
     }
 
@@ -116,7 +116,7 @@ LABEL_7:
 
 LABEL_8:
 
-  return v6;
+  return movieInfo;
 }
 
 - (void)dealloc
@@ -129,8 +129,8 @@ LABEL_8:
   self->_moviePlayerViewController = 0;
 
   [(THWIOSMovieRep *)self setChildReps:0];
-  v5 = [(THWIOSMovieRep *)self buttonControlRep];
-  [v5 setDelegate:0];
+  buttonControlRep = [(THWIOSMovieRep *)self buttonControlRep];
+  [buttonControlRep setDelegate:0];
 
   pressableHandler = self->_pressableHandler;
   self->_pressableHandler = 0;
@@ -148,8 +148,8 @@ LABEL_8:
 
 - (BOOL)isPlaying
 {
-  v2 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v3 = v2 != 0;
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  v3 = moviePlayerViewController != 0;
 
   return v3;
 }
@@ -158,8 +158,8 @@ LABEL_8:
 {
   [(THWIOSMovieRep *)self p_play];
   objc_opt_class();
-  v3 = [(THWIOSMovieRep *)self layout];
-  v4 = [v3 mediaListener];
+  layout = [(THWIOSMovieRep *)self layout];
+  mediaListener = [layout mediaListener];
   v6 = TSUDynamicCast();
 
   v5 = +[THWAVController sharedController];
@@ -169,13 +169,13 @@ LABEL_8:
 - (void)pause
 {
   [(THWIOSMovieRep *)self p_reportProgress];
-  v3 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v4 = [v3 player];
-  [v4 pause];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  player = [moviePlayerViewController player];
+  [player pause];
 
   objc_opt_class();
-  v5 = [(THWIOSMovieRep *)self layout];
-  v6 = [v5 mediaListener];
+  layout = [(THWIOSMovieRep *)self layout];
+  mediaListener = [layout mediaListener];
   v8 = TSUDynamicCast();
 
   v7 = +[THWAVController sharedController];
@@ -186,8 +186,8 @@ LABEL_8:
 {
   [(THWIOSMovieRep *)self p_stop];
   objc_opt_class();
-  v3 = [(THWIOSMovieRep *)self layout];
-  v4 = [v3 mediaListener];
+  layout = [(THWIOSMovieRep *)self layout];
+  mediaListener = [layout mediaListener];
   v6 = TSUDynamicCast();
 
   v5 = +[THWAVController sharedController];
@@ -197,40 +197,40 @@ LABEL_8:
 - (THWMovieInfo)movieInfo
 {
   objc_opt_class();
-  v3 = [(THWIOSMovieRep *)self info];
+  info = [(THWIOSMovieRep *)self info];
   v4 = TSUDynamicCast();
 
   return v4;
 }
 
-- (void)setMoviePlayerViewController:(id)a3
+- (void)setMoviePlayerViewController:(id)controller
 {
-  v12 = a3;
+  controllerCopy = controller;
   if (self->_moviePlayerViewController)
   {
     [(THWIOSMovieRep *)self p_teardownPlayerIsTransferringToExpanded:1];
   }
 
-  if (v12)
+  if (controllerCopy)
   {
-    objc_storeStrong(&self->_moviePlayerViewController, a3);
+    objc_storeStrong(&self->_moviePlayerViewController, controller);
     v5 = +[NSNotificationCenter defaultCenter];
-    v6 = [(AVPlayerViewController *)self->_moviePlayerViewController player];
-    v7 = [v6 currentItem];
-    [v5 addObserver:self selector:"p_moviePlayerPlaybackDidFinish:" name:AVPlayerItemDidPlayToEndTimeNotification object:v7];
+    player = [(AVPlayerViewController *)self->_moviePlayerViewController player];
+    currentItem = [player currentItem];
+    [v5 addObserver:self selector:"p_moviePlayerPlaybackDidFinish:" name:AVPlayerItemDidPlayToEndTimeNotification object:currentItem];
 
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:self selector:"p_vantageDidChange:" name:@"THVantageDidChangeNotification" object:0];
 
-    v9 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v10 = [v9 player];
-    [v10 addObserver:self forKeyPath:@"status" options:1 context:off_55CFB0];
+    moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+    player2 = [moviePlayerViewController player];
+    [player2 addObserver:self forKeyPath:@"status" options:1 context:off_55CFB0];
 
     [(THWIOSMovieRep *)self setMoviePlayerControllerIsLoaded:1];
   }
 
-  v11 = [(THWIOSMovieRep *)self layout];
-  [v11 invalidate];
+  layout = [(THWIOSMovieRep *)self layout];
+  [layout invalidate];
 }
 
 - (void)willBeRemoved
@@ -257,13 +257,13 @@ LABEL_8:
   if (!pressableHandler)
   {
     objc_opt_class();
-    v4 = [(THWIOSMovieRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
     v5 = TSUDynamicCast();
 
-    v6 = [v5 pressHandlerForPressableReps];
-    if (v6)
+    pressHandlerForPressableReps = [v5 pressHandlerForPressableReps];
+    if (pressHandlerForPressableReps)
     {
-      v7 = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:self pressHandler:v6];
+      v7 = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:self pressHandler:pressHandlerForPressableReps];
       v8 = self->_pressableHandler;
       self->_pressableHandler = v7;
 
@@ -278,9 +278,9 @@ LABEL_8:
 
 - (BOOL)p_shouldShowPosterImage
 {
-  v3 = [(THWIOSMovieRep *)self interactiveCanvasController];
-  v4 = [v3 widgetHost];
-  v5 = [v4 repIsPresentedExpanded:self];
+  interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
+  widgetHost = [interactiveCanvasController widgetHost];
+  v5 = [widgetHost repIsPresentedExpanded:self];
 
   if ([(THWIOSMovieRep *)self isPlaying]|| [(THWIOSMovieRep *)self isInFullscreen])
   {
@@ -295,21 +295,21 @@ LABEL_8:
   return v6 & (v5 ^ 1);
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v12.receiver = self;
   v12.super_class = THWIOSMovieRep;
-  [(THWIOSMovieRep *)&v12 didUpdateLayer:v4];
+  [(THWIOSMovieRep *)&v12 didUpdateLayer:layerCopy];
   if ([(THWIOSMovieRep *)self p_shouldShowPosterImage])
   {
-    v5 = [(THWIOSMovieRep *)self movieInfo];
-    v6 = [v5 posterImageData];
-    v7 = [v4 contents];
+    movieInfo = [(THWIOSMovieRep *)self movieInfo];
+    posterImageData = [movieInfo posterImageData];
+    contents = [layerCopy contents];
 
-    if (!v7 && v6)
+    if (!contents && posterImageData)
     {
-      [v4 setContents:{+[TSDBitmapImageProvider CGImageForImageData:](TSDBitmapImageProvider, "CGImageForImageData:", v6)}];
+      [layerCopy setContents:{+[TSDBitmapImageProvider CGImageForImageData:](TSDBitmapImageProvider, "CGImageForImageData:", posterImageData)}];
     }
   }
 
@@ -320,7 +320,7 @@ LABEL_8:
     v8[1] = 3221225472;
     v8[2] = sub_2888;
     v8[3] = &unk_45AD88;
-    v9 = v4;
+    v9 = layerCopy;
     objc_copyWeak(&v10, &location);
     [(THWIOSMovieRep *)self setRemovePosterLayer:v8];
     objc_destroyWeak(&v10);
@@ -330,16 +330,16 @@ LABEL_8:
 
   if (!UIAccessibilityIsInvertColorsEnabled())
   {
-    [v4 th_accessibilityUndoInvertColorsIfNecessary];
+    [layerCopy th_accessibilityUndoInvertColorsIfNecessary];
   }
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
-  v5 = [(THWIOSMovieRep *)self layout];
-  v6 = [v5 geometry];
-  [v6 size];
+  CGContextSaveGState(context);
+  layout = [(THWIOSMovieRep *)self layout];
+  geometry = [layout geometry];
+  [geometry size];
   TSDRectWithSize();
   v8 = v7;
   v10 = v9;
@@ -347,21 +347,21 @@ LABEL_8:
   v14 = v13;
 
   v19 = +[TSDImageProviderPool sharedPool];
-  v15 = [(THWIOSMovieRep *)self movieInfo];
-  v16 = [v15 posterImageData];
-  if (v16)
+  movieInfo = [(THWIOSMovieRep *)self movieInfo];
+  posterImageData = [movieInfo posterImageData];
+  if (posterImageData)
   {
     objc_opt_class();
-    v17 = [v19 providerForData:v16 shouldValidate:1];
+    v17 = [v19 providerForData:posterImageData shouldValidate:1];
     v18 = TSUDynamicCast();
 
     if (v18)
     {
-      [v18 drawImageInContext:a3 rect:{v8, v10, v12, v14}];
+      [v18 drawImageInContext:context rect:{v8, v10, v12, v14}];
     }
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 - (BOOL)layerUpdatesPaused
@@ -374,17 +374,17 @@ LABEL_8:
   return [(THWIOSMovieRep *)self animating];
 }
 
-- (void)updateLayerGeometryFromLayout:(id)a3
+- (void)updateLayerGeometryFromLayout:(id)layout
 {
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
   v10 = 0u;
-  v4 = a3;
-  v5 = [(THWIOSMovieRep *)self layout];
-  v6 = [v5 geometry];
-  [(THWIOSMovieRep *)self computeDirectLayerFrame:&v13 andTransform:&v10 basedOnLayoutGeometry:v6];
+  layoutCopy = layout;
+  layout = [(THWIOSMovieRep *)self layout];
+  geometry = [layout geometry];
+  [(THWIOSMovieRep *)self computeDirectLayerFrame:&v13 andTransform:&v10 basedOnLayoutGeometry:geometry];
 
   v7 = v10;
   v8 = v11;
@@ -393,45 +393,45 @@ LABEL_8:
   v7 = v10;
   v8 = v11;
   v9 = v12;
-  [v4 setIfDifferentFrame:&v7 orTransform:{v13, v14}];
+  [layoutCopy setIfDifferentFrame:&v7 orTransform:{v13, v14}];
 }
 
 - (BOOL)wantsFullscreenOnlyDisplay
 {
-  v3 = [(THWIOSMovieRep *)self movieLayout];
-  v4 = [v3 info];
-  v5 = [v4 geometry];
-  [v5 size];
+  movieLayout = [(THWIOSMovieRep *)self movieLayout];
+  info = [movieLayout info];
+  geometry = [info geometry];
+  [geometry size];
   if (v6 < 150.0)
   {
-    v8 = 1;
+    widgetInteractionDisabledOnPage = 1;
   }
 
   else
   {
-    v7 = [(THWIOSMovieRep *)self pressableHandler];
-    v8 = [v7 widgetInteractionDisabledOnPage];
+    pressableHandler = [(THWIOSMovieRep *)self pressableHandler];
+    widgetInteractionDisabledOnPage = [pressableHandler widgetInteractionDisabledOnPage];
   }
 
-  return v8;
+  return widgetInteractionDisabledOnPage;
 }
 
 - (id)movieLayout
 {
   objc_opt_class();
-  v3 = [(THWIOSMovieRep *)self layout];
+  layout = [(THWIOSMovieRep *)self layout];
   v4 = TSUDynamicCast();
 
   return v4;
 }
 
-- (void)setChildReps:(id)a3
+- (void)setChildReps:(id)reps
 {
-  v5 = a3;
-  if (self->_childReps != v5 && ![(NSArray *)v5 isEqualToArray:?])
+  repsCopy = reps;
+  if (self->_childReps != repsCopy && ![(NSArray *)repsCopy isEqualToArray:?])
   {
     [(NSArray *)self->_childReps makeObjectsPerformSelector:"setParentRep:" withObject:0];
-    objc_storeStrong(&self->_childReps, a3);
+    objc_storeStrong(&self->_childReps, reps);
     [(NSArray *)self->_childReps makeObjectsPerformSelector:"setParentRep:" withObject:self];
   }
 
@@ -440,12 +440,12 @@ LABEL_8:
 
 - (BOOL)isVisibleOnCanvas
 {
-  v3 = [(THWIOSMovieRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
 
-  if (v3)
+  if (interactiveCanvasController)
   {
-    v4 = [(THWIOSMovieRep *)self interactiveCanvasController];
-    [v4 visibleUnscaledRect];
+    interactiveCanvasController2 = [(THWIOSMovieRep *)self interactiveCanvasController];
+    [interactiveCanvasController2 visibleUnscaledRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -495,43 +495,43 @@ LABEL_8:
   return v21;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(THWIOSMovieRep *)self pressableHandler];
-  v6 = [v5 canHandleGesture:v4];
+  gestureCopy = gesture;
+  pressableHandler = [(THWIOSMovieRep *)self pressableHandler];
+  v6 = [pressableHandler canHandleGesture:gestureCopy];
 
   if (!v6)
   {
-    v8 = [v4 gestureKind];
+    gestureKind = [gestureCopy gestureKind];
     v9 = TSWPImmediatePress;
 
-    if (v8 != v9)
+    if (gestureKind != v9)
     {
-      v7 = [(THWIOSMovieRep *)self freeTransformableHandler];
+      freeTransformableHandler = [(THWIOSMovieRep *)self freeTransformableHandler];
       goto LABEL_5;
     }
 
     objc_opt_class();
     v10 = TSUDynamicCast();
-    v13 = [v10 view];
-    v14 = [v13 isAncestorScrollViewDragging];
+    view = [v10 view];
+    isAncestorScrollViewDragging = [view isAncestorScrollViewDragging];
 
-    if (v14)
+    if (isAncestorScrollViewDragging)
     {
       [v10 cancel];
     }
 
-    if ([v4 gestureState] == 3)
+    if ([gestureCopy gestureState] == 3)
     {
-      v15 = [(THWIOSMovieRep *)self autoplayConfig];
-      v16 = [v15 enabled];
+      autoplayConfig = [(THWIOSMovieRep *)self autoplayConfig];
+      enabled = [autoplayConfig enabled];
 
-      if (v16)
+      if (enabled)
       {
-        v17 = [(THWIOSMovieRep *)self moviePlayerViewController];
-        v18 = [v17 player];
-        [v18 rate];
+        moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+        player = [moviePlayerViewController player];
+        [player rate];
         v20 = v19;
 
         if (v20 != 0.0)
@@ -554,35 +554,35 @@ LABEL_15:
     goto LABEL_6;
   }
 
-  v7 = [(THWIOSMovieRep *)self pressableHandler];
+  freeTransformableHandler = [(THWIOSMovieRep *)self pressableHandler];
 LABEL_5:
-  v10 = v7;
-  v11 = [v7 handleGesture:v4];
+  v10 = freeTransformableHandler;
+  v11 = [freeTransformableHandler handleGesture:gestureCopy];
 LABEL_6:
 
   return v11;
 }
 
-- (void)willBeginHandlingGesture:(id)a3
+- (void)willBeginHandlingGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(THWIOSMovieRep *)self freeTransformableHandler];
-  [v5 willBeginHandlingGesture:v4];
+  gestureCopy = gesture;
+  freeTransformableHandler = [(THWIOSMovieRep *)self freeTransformableHandler];
+  [freeTransformableHandler willBeginHandlingGesture:gestureCopy];
 }
 
 - (BOOL)isExpanded
 {
-  v2 = [(THWIOSMovieRep *)self layout];
-  v3 = [v2 isExpanded];
+  layout = [(THWIOSMovieRep *)self layout];
+  isExpanded = [layout isExpanded];
 
-  return v3;
+  return isExpanded;
 }
 
 - (BOOL)meetsStageDimensionRequirementForExpanded
 {
-  v2 = [(THWIOSMovieRep *)self layout];
-  v3 = [v2 geometry];
-  [v3 size];
+  layout = [(THWIOSMovieRep *)self layout];
+  geometry = [layout geometry];
+  [geometry size];
   v5 = v4;
   v7 = v6;
 
@@ -591,13 +591,13 @@ LABEL_6:
 
 - (void)freeTransformWillBegin
 {
-  v3 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  [v3 setShowsPlaybackControls:0];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  [moviePlayerViewController setShowsPlaybackControls:0];
 
   [(THWIOSMovieRep *)self setInFreeTransform:1];
-  v4 = [(THWIOSMovieRep *)self interactiveCanvasController];
-  v5 = [(THWIOSMovieRep *)self buttonControlRep];
-  v6 = [v4 layerForRep:v5];
+  interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
+  buttonControlRep = [(THWIOSMovieRep *)self buttonControlRep];
+  v6 = [interactiveCanvasController layerForRep:buttonControlRep];
 
   if (v6)
   {
@@ -614,12 +614,12 @@ LABEL_6:
   }
 }
 
-- (void)freeTransformDidEndPassedThreshold:(BOOL)a3
+- (void)freeTransformDidEndPassedThreshold:(BOOL)threshold
 {
   [(THWIOSMovieRep *)self setInFreeTransform:0];
-  v5 = [(THWIOSMovieRep *)self interactiveCanvasController];
-  v6 = [(THWIOSMovieRep *)self buttonControlRep];
-  v7 = [v5 layerForRep:v6];
+  interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
+  buttonControlRep = [(THWIOSMovieRep *)self buttonControlRep];
+  v7 = [interactiveCanvasController layerForRep:buttonControlRep];
 
   if (v7)
   {
@@ -635,12 +635,12 @@ LABEL_6:
     +[CATransaction commit];
   }
 
-  if (!a3)
+  if (!threshold)
   {
-    v9 = [(THWIOSMovieRep *)self autoplayConfig];
-    v10 = [v9 enabled];
-    v11 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    [v11 setShowsPlaybackControls:v10 ^ 1];
+    autoplayConfig = [(THWIOSMovieRep *)self autoplayConfig];
+    enabled = [autoplayConfig enabled];
+    moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+    [moviePlayerViewController setShowsPlaybackControls:enabled ^ 1];
   }
 }
 
@@ -648,9 +648,9 @@ LABEL_6:
 {
   if ([(THWIOSMovieRep *)self p_hasValidViewForFreeTransform])
   {
-    v3 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v4 = [v3 view];
-    [v4 frame];
+    moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+    view = [moviePlayerViewController view];
+    [view frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -659,8 +659,8 @@ LABEL_6:
 
   else
   {
-    v3 = [(THWIOSMovieRep *)self layout];
-    [v3 frameInParent];
+    moviePlayerViewController = [(THWIOSMovieRep *)self layout];
+    [moviePlayerViewController frameInParent];
     v6 = v13;
     v8 = v14;
     v10 = v15;
@@ -698,62 +698,62 @@ LABEL_6:
 - (void)expandableWillPresentExpanded
 {
   v3 = UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning();
-  v4 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  [v4 setShowsPlaybackControls:v3];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  [moviePlayerViewController setShowsPlaybackControls:v3];
 
-  v5 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v6 = [v5 view];
-  [v6 setAccessibilityViewIsModal:1];
+  moviePlayerViewController2 = [(THWIOSMovieRep *)self moviePlayerViewController];
+  view = [moviePlayerViewController2 view];
+  [view setAccessibilityViewIsModal:1];
 
-  v7 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v8 = [v7 view];
-  [v8 setShouldGroupAccessibilityChildren:1];
+  moviePlayerViewController3 = [(THWIOSMovieRep *)self moviePlayerViewController];
+  view2 = [moviePlayerViewController3 view];
+  [view2 setShouldGroupAccessibilityChildren:1];
 
-  v10 = [(THWIOSMovieRep *)self interactiveCanvasController];
-  v9 = [v10 canvasView];
-  [v9 setAccessibilityElementsHidden:1];
+  interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
+  canvasView = [interactiveCanvasController canvasView];
+  [canvasView setAccessibilityElementsHidden:1];
 }
 
 - (void)expandableExpandedPresentationDidEnd
 {
-  v3 = [(THWIOSMovieRep *)self autoplayConfig];
-  v4 = [v3 enabled];
-  v5 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  [v5 setShowsPlaybackControls:v4 ^ 1];
+  autoplayConfig = [(THWIOSMovieRep *)self autoplayConfig];
+  enabled = [autoplayConfig enabled];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  [moviePlayerViewController setShowsPlaybackControls:enabled ^ 1];
 
-  v6 = [(THWIOSMovieRep *)self layout];
-  [v6 invalidate];
+  layout = [(THWIOSMovieRep *)self layout];
+  [layout invalidate];
 
-  v7 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v8 = [v7 view];
-  [v8 setAccessibilityViewIsModal:0];
+  moviePlayerViewController2 = [(THWIOSMovieRep *)self moviePlayerViewController];
+  view = [moviePlayerViewController2 view];
+  [view setAccessibilityViewIsModal:0];
 
   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
-  v10 = [(THWIOSMovieRep *)self interactiveCanvasController];
-  v9 = [v10 canvasView];
-  [v9 setAccessibilityElementsHidden:0];
+  interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
+  canvasView = [interactiveCanvasController canvasView];
+  [canvasView setAccessibilityElementsHidden:0];
 }
 
 - (BOOL)p_hasValidViewForFreeTransform
 {
-  v3 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v4 = [v3 view];
-  [v4 bounds];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  view = [moviePlayerViewController view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  if (v9)
+  moviePlayerViewController2 = [(THWIOSMovieRep *)self moviePlayerViewController];
+  if (moviePlayerViewController2)
   {
-    v10 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v11 = [v10 view];
+    moviePlayerViewController3 = [(THWIOSMovieRep *)self moviePlayerViewController];
+    view2 = [moviePlayerViewController3 view];
     v12 = v6 > 0.0;
     if (v8 <= 0.0)
     {
       v12 = 0;
     }
 
-    if (v11)
+    if (view2)
     {
       v13 = v12;
     }
@@ -774,16 +774,16 @@ LABEL_6:
 
 - (id)animationLayer
 {
-  v3 = [(THWIOSMovieRep *)self freeTransformableHandler];
-  v4 = [v3 ftc];
-  v5 = [v4 isFreeTransformInProgress];
+  freeTransformableHandler = [(THWIOSMovieRep *)self freeTransformableHandler];
+  v4 = [freeTransformableHandler ftc];
+  isFreeTransformInProgress = [v4 isFreeTransformInProgress];
 
-  if (!v5 || (-[THWIOSMovieRep freeTransformableHandler](self, "freeTransformableHandler"), v6 = objc_claimAutoreleasedReturnValue(), [v6 ftc], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "freeTransformLayer"), v8 = objc_claimAutoreleasedReturnValue(), v7, v6, !v8))
+  if (!isFreeTransformInProgress || (-[THWIOSMovieRep freeTransformableHandler](self, "freeTransformableHandler"), v6 = objc_claimAutoreleasedReturnValue(), [v6 ftc], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "freeTransformLayer"), v8 = objc_claimAutoreleasedReturnValue(), v7, v6, !v8))
   {
     if (!-[THWIOSMovieRep p_hasValidViewForFreeTransform](self, "p_hasValidViewForFreeTransform") || (-[THWIOSMovieRep moviePlayerViewController](self, "moviePlayerViewController"), v9 = objc_claimAutoreleasedReturnValue(), [v9 view], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "layer"), v8 = objc_claimAutoreleasedReturnValue(), v10, v9, !v8))
     {
-      v11 = [(THWIOSMovieRep *)self interactiveCanvasController];
-      v8 = [v11 layerForRep:self];
+      interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
+      v8 = [interactiveCanvasController layerForRep:self];
     }
   }
 
@@ -792,23 +792,23 @@ LABEL_6:
 
 - (id)shadowAnimationLayer
 {
-  v3 = [(THWIOSMovieRep *)self freeTransformableHandler];
-  v4 = [v3 ftc];
-  v5 = [v4 isFreeTransformInProgress];
+  freeTransformableHandler = [(THWIOSMovieRep *)self freeTransformableHandler];
+  v4 = [freeTransformableHandler ftc];
+  isFreeTransformInProgress = [v4 isFreeTransformInProgress];
 
-  if (v5)
+  if (isFreeTransformInProgress)
   {
-    v6 = [(THWIOSMovieRep *)self freeTransformableHandler];
-    v7 = [v6 ftc];
-    v8 = [v7 shadowLayer];
+    freeTransformableHandler2 = [(THWIOSMovieRep *)self freeTransformableHandler];
+    v7 = [freeTransformableHandler2 ftc];
+    shadowLayer = [v7 shadowLayer];
   }
 
   else
   {
-    v8 = 0;
+    shadowLayer = 0;
   }
 
-  return v8;
+  return shadowLayer;
 }
 
 - (CGAffineTransform)freeTransform
@@ -817,14 +817,14 @@ LABEL_6:
   *&retstr->a = *&CGAffineTransformIdentity.a;
   *&retstr->c = v5;
   *&retstr->tx = *&CGAffineTransformIdentity.tx;
-  v6 = [(THWIOSMovieRep *)self freeTransformableHandler];
-  v7 = [v6 ftc];
-  v8 = [v7 isFreeTransformInProgress];
+  freeTransformableHandler = [(THWIOSMovieRep *)self freeTransformableHandler];
+  v7 = [freeTransformableHandler ftc];
+  isFreeTransformInProgress = [v7 isFreeTransformInProgress];
 
-  if (v8)
+  if (isFreeTransformInProgress)
   {
-    v10 = [(THWIOSMovieRep *)self freeTransformableHandler];
-    v11 = [v10 ftc];
+    freeTransformableHandler2 = [(THWIOSMovieRep *)self freeTransformableHandler];
+    v11 = [freeTransformableHandler2 ftc];
     v12 = v11;
     if (v11)
     {
@@ -848,37 +848,37 @@ LABEL_6:
 
 - (id)targetLayer
 {
-  v5 = [(THWIOSMovieRep *)self freeTransformableHandler];
-  v6 = [v5 ftc];
-  v7 = [v6 isFreeTransformInProgress];
-  if (v7)
+  freeTransformableHandler = [(THWIOSMovieRep *)self freeTransformableHandler];
+  v6 = [freeTransformableHandler ftc];
+  isFreeTransformInProgress = [v6 isFreeTransformInProgress];
+  if (isFreeTransformInProgress)
   {
-    v2 = [(THWIOSMovieRep *)self freeTransformableHandler];
-    v3 = [v2 ftc];
+    freeTransformableHandler2 = [(THWIOSMovieRep *)self freeTransformableHandler];
+    v3 = [freeTransformableHandler2 ftc];
     if (![v3 passedThreshold])
     {
-      v8 = 0;
+      animationLayer = 0;
       goto LABEL_6;
     }
   }
 
-  v8 = [(THWIOSMovieRep *)self animationLayer];
-  if (v7)
+  animationLayer = [(THWIOSMovieRep *)self animationLayer];
+  if (isFreeTransformInProgress)
   {
 LABEL_6:
   }
 
-  return v8;
+  return animationLayer;
 }
 
 - (CGRect)ftcTargetFrame
 {
-  v3 = [(THWIOSMovieRep *)self freeTransformableHandler];
-  v4 = [v3 ftc];
+  freeTransformableHandler = [(THWIOSMovieRep *)self freeTransformableHandler];
+  v4 = [freeTransformableHandler ftc];
   if ([v4 isFreeTransformInProgress])
   {
-    v5 = [(THWIOSMovieRep *)self freeTransformableHandler];
-    v6 = [v5 ftc];
+    freeTransformableHandler2 = [(THWIOSMovieRep *)self freeTransformableHandler];
+    v6 = [freeTransformableHandler2 ftc];
     [v6 completionTargetRect];
     x = v7;
     y = v9;
@@ -905,15 +905,15 @@ LABEL_6:
   return result;
 }
 
-- (void)reparentTargetLayerIfBackedByView:(id)a3
+- (void)reparentTargetLayerIfBackedByView:(id)view
 {
-  v6 = [(THWIOSMovieRep *)self reparentingView];
-  v4 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v5 = [v4 view];
-  [v6 addSubview:v5];
+  reparentingView = [(THWIOSMovieRep *)self reparentingView];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  view = [moviePlayerViewController view];
+  [reparentingView addSubview:view];
 }
 
-- (void)animationControllerDidPresent:(id)a3
+- (void)animationControllerDidPresent:(id)present
 {
   animationController = self->_animationController;
   self->_animationController = 0;
@@ -927,17 +927,17 @@ LABEL_6:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)addChildViewsToArray:(id)a3
+- (void)addChildViewsToArray:(id)array
 {
-  v29 = a3;
-  v4 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v5 = [v4 view];
-  if (v5)
+  arrayCopy = array;
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  view = [moviePlayerViewController view];
+  if (view)
   {
-    v6 = v5;
-    v7 = [(THWIOSMovieRep *)self moviePlayerControllerIsLoaded];
+    v6 = view;
+    moviePlayerControllerIsLoaded = [(THWIOSMovieRep *)self moviePlayerControllerIsLoaded];
 
-    if (!v7)
+    if (!moviePlayerControllerIsLoaded)
     {
       goto LABEL_5;
     }
@@ -947,39 +947,39 @@ LABEL_6:
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(THWIOSMovieRep *)self interactiveCanvasController];
-    [v16 convertUnscaledToBoundsRect:{v9, v11, v13, v15}];
+    interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
+    [interactiveCanvasController convertUnscaledToBoundsRect:{v9, v11, v13, v15}];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
 
-    v25 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v26 = [v25 view];
-    [v26 setFrame:{v18, v20, v22, v24}];
+    moviePlayerViewController2 = [(THWIOSMovieRep *)self moviePlayerViewController];
+    view2 = [moviePlayerViewController2 view];
+    [view2 setFrame:{v18, v20, v22, v24}];
 
-    v27 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v28 = [v27 view];
-    [v29 addObject:v28];
+    moviePlayerViewController3 = [(THWIOSMovieRep *)self moviePlayerViewController];
+    view3 = [moviePlayerViewController3 view];
+    [arrayCopy addObject:view3];
 
-    v4 = +[UIColor clearColor];
-    [(THWIOSMovieRep *)self p_setMoviePlayerBackgroundColor:v4 animated:0];
+    moviePlayerViewController = +[UIColor clearColor];
+    [(THWIOSMovieRep *)self p_setMoviePlayerBackgroundColor:moviePlayerViewController animated:0];
   }
 
 LABEL_5:
 }
 
-- (void)willAddChildView:(id)a3 toView:(id)a4
+- (void)willAddChildView:(id)view toView:(id)toView
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 addSubview:v7];
-  [(THWIOSMovieRep *)self setReparentingView:v6];
+  toViewCopy = toView;
+  viewCopy = view;
+  [toViewCopy addSubview:viewCopy];
+  [(THWIOSMovieRep *)self setReparentingView:toViewCopy];
 
-  v8 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v9 = [v8 view];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  view = [moviePlayerViewController view];
 
-  if (v9 == v7)
+  if (view == viewCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -990,20 +990,20 @@ LABEL_5:
   }
 }
 
-- (void)willRemoveChildView:(id)a3
+- (void)willRemoveChildView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v7 = v4;
-    v5 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v6 = [v5 view];
+    v7 = viewCopy;
+    moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+    view = [moviePlayerViewController view];
 
-    v4 = v7;
-    if (v6 == v7)
+    viewCopy = v7;
+    if (view == v7)
     {
       [v7 removeFromSuperview];
-      v4 = v7;
+      viewCopy = v7;
     }
   }
 }
@@ -1023,48 +1023,48 @@ LABEL_5:
   }
 }
 
-- (void)control:(id)a3 repWasAdded:(id)a4
+- (void)control:(id)control repWasAdded:(id)added
 {
-  v5 = a4;
+  addedCopy = added;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
   [(THWIOSMovieRep *)self setButtonControlRep:v6];
-  v7 = [(THWIOSMovieRep *)self buttonControlRep];
-  [v7 setDelegate:self];
+  buttonControlRep = [(THWIOSMovieRep *)self buttonControlRep];
+  [buttonControlRep setDelegate:self];
 }
 
-- (void)control:(id)a3 repWillBeRemoved:(id)a4
+- (void)control:(id)control repWillBeRemoved:(id)removed
 {
-  v5 = a4;
-  v6 = [(THWIOSMovieRep *)self buttonControlRep];
+  removedCopy = removed;
+  buttonControlRep = [(THWIOSMovieRep *)self buttonControlRep];
 
-  if (v6 == v5)
+  if (buttonControlRep == removedCopy)
   {
-    v7 = [(THWIOSMovieRep *)self buttonControlRep];
-    [v7 setDelegate:0];
+    buttonControlRep2 = [(THWIOSMovieRep *)self buttonControlRep];
+    [buttonControlRep2 setDelegate:0];
 
     [(THWIOSMovieRep *)self setButtonControlRep:0];
   }
 }
 
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted
 {
-  v5 = a5;
+  highlightedCopy = highlighted;
   v7 = THBundle();
   v8 = @"ib_media_btn_small_pause-N";
-  if (v5)
+  if (highlightedCopy)
   {
     v8 = @"ib_media_btn_small_pause-P";
   }
 
   v9 = @"ib_media_movie_play-P";
-  if (!v5)
+  if (!highlightedCopy)
   {
     v9 = @"ib_media_movie_play-N";
   }
 
-  if (a4)
+  if (state)
   {
     v10 = v8;
   }
@@ -1079,17 +1079,17 @@ LABEL_5:
   return v11;
 }
 
-- (void)buttonControlWasPressed:(id)a3
+- (void)buttonControlWasPressed:(id)pressed
 {
   if ([(THWIOSMovieRep *)self wantsFullscreenOnlyDisplay])
   {
-    v4 = [(THWIOSMovieRep *)self interactiveCanvasController];
-    v5 = [(THWIOSMovieRep *)self buttonControlRep];
-    v7 = [v4 layerForRep:v5];
+    interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
+    buttonControlRep = [(THWIOSMovieRep *)self buttonControlRep];
+    v7 = [interactiveCanvasController layerForRep:buttonControlRep];
 
     [v7 setOpacity:0.0];
-    v6 = [(THWIOSMovieRep *)self pressableHandler];
-    [v6 spoofGesture];
+    pressableHandler = [(THWIOSMovieRep *)self pressableHandler];
+    [pressableHandler spoofGesture];
   }
 
   else
@@ -1102,13 +1102,13 @@ LABEL_5:
 - (void)p_stopAndInvalidate
 {
   [(THWIOSMovieRep *)self p_reportProgress];
-  v3 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v4 = [v3 player];
-  [v4 pause];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  player = [moviePlayerViewController player];
+  [player pause];
 
   objc_opt_class();
-  v5 = [(THWIOSMovieRep *)self layout];
-  v6 = [v5 mediaListener];
+  layout = [(THWIOSMovieRep *)self layout];
+  mediaListener = [layout mediaListener];
   v8 = TSUDynamicCast();
 
   v7 = +[THWAVController sharedController];
@@ -1118,34 +1118,34 @@ LABEL_5:
 - (void)p_stop
 {
   [(THWIOSMovieRep *)self p_reportProgress];
-  v4 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v3 = [v4 player];
-  [v3 pause];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  player = [moviePlayerViewController player];
+  [player pause];
 }
 
 - (void)p_pause
 {
   [(THWIOSMovieRep *)self p_reportProgress];
-  v4 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v3 = [v4 player];
-  [v3 pause];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  player = [moviePlayerViewController player];
+  [player pause];
 }
 
-- (void)p_setMoviePlayerBackgroundColor:(id)a3 animated:(BOOL)a4
+- (void)p_setMoviePlayerBackgroundColor:(id)color animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_46A4;
   v11 = &unk_45ADB0;
-  v12 = self;
-  v5 = a3;
-  v13 = v5;
+  selfCopy = self;
+  colorCopy = color;
+  v13 = colorCopy;
   v6 = objc_retainBlock(&v8);
   v7 = v6;
-  if (v4)
+  if (animatedCopy)
   {
-    [UIView animateWithDuration:v6 animations:0.25, v8, v9, v10, v11, v12];
+    [UIView animateWithDuration:v6 animations:0.25, v8, v9, v10, v11, selfCopy];
   }
 
   else
@@ -1158,37 +1158,37 @@ LABEL_5:
 {
   if (self->_moviePlayerViewController)
   {
-    v25 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v3 = [v25 player];
-    [v3 play];
+    moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+    player = [moviePlayerViewController player];
+    [player play];
   }
 
   else
   {
-    v4 = [(THWIOSMovieRep *)self movieInfo];
-    v5 = [v4 movieRemoteURL];
-    v6 = [AVPlayerItem playerItemWithURL:v5];
+    movieInfo = [(THWIOSMovieRep *)self movieInfo];
+    movieRemoteURL = [movieInfo movieRemoteURL];
+    v6 = [AVPlayerItem playerItemWithURL:movieRemoteURL];
     [(THWIOSMovieRep *)self setPlayerItem:v6];
 
     v7 = +[NSNotificationCenter defaultCenter];
-    v8 = [(THWIOSMovieRep *)self playerItem];
-    [v7 addObserver:self selector:"p_moviePlayerPlaybackDidFinish:" name:AVPlayerItemDidPlayToEndTimeNotification object:v8];
+    playerItem = [(THWIOSMovieRep *)self playerItem];
+    [v7 addObserver:self selector:"p_moviePlayerPlaybackDidFinish:" name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
 
     v9 = [AVPlayer alloc];
-    v10 = [(THWIOSMovieRep *)self playerItem];
-    v25 = [v9 initWithPlayerItem:v10];
+    playerItem2 = [(THWIOSMovieRep *)self playerItem];
+    moviePlayerViewController = [v9 initWithPlayerItem:playerItem2];
 
-    v11 = [(THWIOSMovieRep *)self movieInfo];
-    v12 = [v11 drmContext];
-    [v25 setAllowsExternalPlayback:{objc_msgSend(v12, "kiUanAfQBD5qIUraolUj") ^ 1}];
+    movieInfo2 = [(THWIOSMovieRep *)self movieInfo];
+    drmContext = [movieInfo2 drmContext];
+    [moviePlayerViewController setAllowsExternalPlayback:{objc_msgSend(drmContext, "kiUanAfQBD5qIUraolUj") ^ 1}];
 
-    v13 = [(THWIOSMovieRep *)self info];
-    v3 = [v13 drmContext];
+    info = [(THWIOSMovieRep *)self info];
+    player = [info drmContext];
 
-    if ([v3 kiUanAfQBD5qIUraolUj])
+    if ([player kiUanAfQBD5qIUraolUj])
     {
-      v14 = [(THWIOSMovieRep *)self playerItem];
-      [v3 authorizeAVPlayerItemForPlayback:v14];
+      playerItem3 = [(THWIOSMovieRep *)self playerItem];
+      [player authorizeAVPlayerItemForPlayback:playerItem3];
     }
 
     v15 = objc_alloc_init(AVPlayerViewController);
@@ -1196,47 +1196,47 @@ LABEL_5:
     self->_moviePlayerViewController = v15;
 
     [(AVPlayerViewController *)self->_moviePlayerViewController setAllowsPictureInPicturePlayback:0];
-    [(AVPlayerViewController *)self->_moviePlayerViewController setPlayer:v25];
-    v17 = [(THWIOSMovieRep *)self autoplayConfig];
-    v18 = [v17 enabled];
-    v19 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    [v19 setShowsPlaybackControls:v18 ^ 1];
+    [(AVPlayerViewController *)self->_moviePlayerViewController setPlayer:moviePlayerViewController];
+    autoplayConfig = [(THWIOSMovieRep *)self autoplayConfig];
+    enabled = [autoplayConfig enabled];
+    moviePlayerViewController2 = [(THWIOSMovieRep *)self moviePlayerViewController];
+    [moviePlayerViewController2 setShowsPlaybackControls:enabled ^ 1];
 
     [(THWIOSMovieRep *)self setMoviePlayerControllerIsLoaded:0];
     v20 = +[NSNotificationCenter defaultCenter];
     [v20 addObserver:self selector:"p_vantageDidChange:" name:@"THVantageDidChangeNotification" object:0];
 
     v21 = +[NSNotificationCenter defaultCenter];
-    v22 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    [v21 postNotificationName:@"THWMPMoviePlayerNowPlayingMovieWillChangeNotification" object:v22];
+    moviePlayerViewController3 = [(THWIOSMovieRep *)self moviePlayerViewController];
+    [v21 postNotificationName:@"THWMPMoviePlayerNowPlayingMovieWillChangeNotification" object:moviePlayerViewController3];
 
-    v23 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v24 = [v23 player];
-    [v24 addObserver:self forKeyPath:@"status" options:1 context:off_55CFB0];
+    moviePlayerViewController4 = [(THWIOSMovieRep *)self moviePlayerViewController];
+    player2 = [moviePlayerViewController4 player];
+    [player2 addObserver:self forKeyPath:@"status" options:1 context:off_55CFB0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_55CFB0 == a6 && [v10 isEqualToString:@"status"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_55CFB0 == context && [pathCopy isEqualToString:@"status"])
   {
-    v13 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v14 = [v13 player];
-    v15 = [v14 status];
+    moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+    player = [moviePlayerViewController player];
+    status = [player status];
 
-    if (v15 == &dword_0 + 1)
+    if (status == &dword_0 + 1)
     {
-      v16 = [(THWIOSMovieRep *)self moviePlayerViewController];
-      v17 = [v16 player];
+      moviePlayerViewController2 = [(THWIOSMovieRep *)self moviePlayerViewController];
+      player2 = [moviePlayerViewController2 player];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_4C64;
       v19[3] = &unk_45ADD8;
       v19[4] = self;
-      [v17 prerollAtRate:v19 completionHandler:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0))];
+      [player2 prerollAtRate:v19 completionHandler:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0))];
     }
   }
 
@@ -1244,34 +1244,34 @@ LABEL_5:
   {
     v18.receiver = self;
     v18.super_class = THWIOSMovieRep;
-    [(THWIOSMovieRep *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(THWIOSMovieRep *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)p_teardownPlayerIsTransferringToExpanded:(BOOL)a3
+- (void)p_teardownPlayerIsTransferringToExpanded:(BOOL)expanded
 {
-  v5 = [(THWIOSMovieRep *)self moviePlayerViewController];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
 
-  if (v5)
+  if (moviePlayerViewController)
   {
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 removeObserver:self name:0 object:self->_moviePlayerViewController];
 
     v7 = +[NSNotificationCenter defaultCenter];
-    v8 = [(THWIOSMovieRep *)self playerItem];
-    [v7 removeObserver:self name:0 object:v8];
+    playerItem = [(THWIOSMovieRep *)self playerItem];
+    [v7 removeObserver:self name:0 object:playerItem];
 
-    v9 = [(AVPlayerViewController *)self->_moviePlayerViewController player];
-    [v9 removeObserver:self forKeyPath:@"status"];
+    player = [(AVPlayerViewController *)self->_moviePlayerViewController player];
+    [player removeObserver:self forKeyPath:@"status"];
 
-    if (!a3)
+    if (!expanded)
     {
-      v10 = [(AVPlayerViewController *)self->_moviePlayerViewController player];
-      [v10 pause];
+      player2 = [(AVPlayerViewController *)self->_moviePlayerViewController player];
+      [player2 pause];
     }
 
-    v11 = [(AVPlayerViewController *)self->_moviePlayerViewController view];
-    [v11 removeFromSuperview];
+    view = [(AVPlayerViewController *)self->_moviePlayerViewController view];
+    [view removeFromSuperview];
 
     moviePlayerViewController = self->_moviePlayerViewController;
     self->_moviePlayerViewController = 0;
@@ -1283,88 +1283,88 @@ LABEL_5:
   [v13 removeObserver:self name:@"THVantageDidChangeNotification" object:0];
 }
 
-- (void)p_vantageDidChange:(id)a3
+- (void)p_vantageDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 valueForKey:@"THVantageChangeReason"];
+  userInfo = [change userInfo];
+  v7 = [userInfo valueForKey:@"THVantageChangeReason"];
 
   v5 = [v7 isEqualToString:@"THVantageChangeReasonRotation"];
-  if (([v7 isEqualToString:@"THVantageChangeReasonScrolling"] & 1) != 0 || (v6 = objc_msgSend(v7, "isEqualToString:", @"THVantageChangeReasonPresentationMode")) != 0)
+  if (([v7 isEqualToString:@"THVantageChangeReasonScrolling"] & 1) != 0 || (isVisibleOnCanvas = objc_msgSend(v7, "isEqualToString:", @"THVantageChangeReasonPresentationMode")) != 0)
   {
-    v6 = [(THWIOSMovieRep *)self isVisibleOnCanvas];
+    isVisibleOnCanvas = [(THWIOSMovieRep *)self isVisibleOnCanvas];
   }
 
-  if (((v5 | v6) & 1) == 0)
+  if (((v5 | isVisibleOnCanvas) & 1) == 0)
   {
     [(THWIOSMovieRep *)self p_pause];
   }
 }
 
-- (void)p_moviePlayerNowPlayingWillChange:(id)a3
+- (void)p_moviePlayerNowPlayingWillChange:(id)change
 {
-  v9 = a3;
-  v4 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  if (v4)
+  changeCopy = change;
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  if (moviePlayerViewController)
   {
-    v5 = v4;
-    v6 = [v9 object];
-    v7 = [(THWIOSMovieRep *)self moviePlayerViewController];
+    v5 = moviePlayerViewController;
+    object = [changeCopy object];
+    moviePlayerViewController2 = [(THWIOSMovieRep *)self moviePlayerViewController];
 
-    if (v6 != v7)
+    if (object != moviePlayerViewController2)
     {
       [(THWIOSMovieRep *)self p_teardownPlayerIsTransferringToExpanded:0];
-      v8 = [(THWIOSMovieRep *)self layout];
-      [v8 invalidate];
+      layout = [(THWIOSMovieRep *)self layout];
+      [layout invalidate];
     }
   }
 }
 
-- (void)p_moviePlayerPlaybackDidFinish:(id)a3
+- (void)p_moviePlayerPlaybackDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(AVPlayerViewController *)self->_moviePlayerViewController player];
-  v6 = [v5 currentItem];
-  if (!v6)
+  finishCopy = finish;
+  player = [(AVPlayerViewController *)self->_moviePlayerViewController player];
+  currentItem = [player currentItem];
+  if (!currentItem)
   {
     goto LABEL_11;
   }
 
-  v7 = v6;
-  v8 = [v4 object];
-  v9 = [(AVPlayerViewController *)self->_moviePlayerViewController player];
-  v10 = [v9 currentItem];
+  v7 = currentItem;
+  object = [finishCopy object];
+  player2 = [(AVPlayerViewController *)self->_moviePlayerViewController player];
+  currentItem2 = [player2 currentItem];
 
-  if (v8 == v10)
+  if (object == currentItem2)
   {
     [(THWIOSMovieRep *)self p_reportProgress];
-    v5 = [(THWIOSMovieRep *)self movieInfo];
-    if ([v5 loopOption])
+    player = [(THWIOSMovieRep *)self movieInfo];
+    if ([player loopOption])
     {
-      if ([v5 loopOption] != &dword_0 + 1)
+      if ([player loopOption] != &dword_0 + 1)
       {
 LABEL_11:
 
         goto LABEL_12;
       }
 
-      v11 = [(THWIOSMovieRep *)self moviePlayerViewController];
-      v12 = [v11 player];
+      moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+      player3 = [moviePlayerViewController player];
       v17 = *&kCMTimeZero.value;
       epoch = kCMTimeZero.epoch;
-      [v12 seekToTime:&v17];
+      [player3 seekToTime:&v17];
 
-      v13 = [(THWIOSMovieRep *)self moviePlayerViewController];
-      v14 = [v13 player];
-      [v14 play];
+      moviePlayerViewController2 = [(THWIOSMovieRep *)self moviePlayerViewController];
+      player4 = [moviePlayerViewController2 player];
+      [player4 play];
     }
 
     else
     {
-      v15 = [(THWIOSMovieRep *)self moviePlayerViewController];
-      v16 = [v15 player];
+      moviePlayerViewController3 = [(THWIOSMovieRep *)self moviePlayerViewController];
+      player5 = [moviePlayerViewController3 player];
       v17 = *&kCMTimeZero.value;
       epoch = kCMTimeZero.epoch;
-      [v16 seekToTime:&v17];
+      [player5 seekToTime:&v17];
 
       if ([(THWIOSMovieRep *)self isInFullscreen]&& ![(THWIOSMovieRep *)self animatedFromFullscreen]|| [(THWIOSMovieRep *)self inFreeTransform])
       {
@@ -1373,8 +1373,8 @@ LABEL_11:
 
       [(THWIOSMovieRep *)self setAnimatedFromFullscreen:0];
       [(THWIOSMovieRep *)self p_teardownPlayerIsTransferringToExpanded:0];
-      v13 = [(THWIOSMovieRep *)self layout];
-      [v13 invalidate];
+      moviePlayerViewController2 = [(THWIOSMovieRep *)self layout];
+      [moviePlayerViewController2 invalidate];
     }
 
     goto LABEL_11;
@@ -1383,17 +1383,17 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)buttonControl:(id)a3 didUpdateLayer:(id)a4
+- (void)buttonControl:(id)control didUpdateLayer:(id)layer
 {
-  v4 = a4;
-  [v4 setMinificationFilter:kCAFilterTrilinear];
-  [v4 setMagnificationFilter:kCAFilterTrilinear];
+  layerCopy = layer;
+  [layerCopy setMinificationFilter:kCAFilterTrilinear];
+  [layerCopy setMagnificationFilter:kCAFilterTrilinear];
 }
 
 - (CALayer)pressableAnimationLayer
 {
-  v3 = [(THWIOSMovieRep *)self interactiveCanvasController];
-  v4 = [v3 layerForRep:self];
+  interactiveCanvasController = [(THWIOSMovieRep *)self interactiveCanvasController];
+  v4 = [interactiveCanvasController layerForRep:self];
 
   return v4;
 }
@@ -1408,18 +1408,18 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)shouldRecognizePressOnRep:(id)a3
+- (BOOL)shouldRecognizePressOnRep:(id)rep
 {
-  v3 = [(THWIOSMovieRep *)self layout];
-  v4 = [v3 isExpanded];
+  layout = [(THWIOSMovieRep *)self layout];
+  isExpanded = [layout isExpanded];
 
-  return v4 ^ 1;
+  return isExpanded ^ 1;
 }
 
 - (int)pressableAction
 {
-  v2 = [(THWIOSMovieRep *)self autoplayConfig];
-  if ([v2 enabled])
+  autoplayConfig = [(THWIOSMovieRep *)self autoplayConfig];
+  if ([autoplayConfig enabled])
   {
     v3 = 0;
   }
@@ -1434,22 +1434,22 @@ LABEL_12:
 
 - (double)p_percentElapsed
 {
-  v3 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  v4 = [v3 player];
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  player = [moviePlayerViewController player];
 
-  if (v4)
+  if (player)
   {
-    v5 = [(THWIOSMovieRep *)self movieInfo];
-    [v5 endTime];
+    movieInfo = [(THWIOSMovieRep *)self movieInfo];
+    [movieInfo endTime];
     v7 = v6;
-    [v5 startTime];
+    [movieInfo startTime];
     v9 = v7 - v8;
-    v10 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v11 = [v10 player];
-    v12 = v11;
-    if (v11)
+    moviePlayerViewController2 = [(THWIOSMovieRep *)self moviePlayerViewController];
+    player2 = [moviePlayerViewController2 player];
+    v12 = player2;
+    if (player2)
     {
-      [v11 currentTime];
+      [player2 currentTime];
     }
 
     else
@@ -1459,7 +1459,7 @@ LABEL_12:
 
     Seconds = CMTimeGetSeconds(&time);
 
-    [v5 startTime];
+    [movieInfo startTime];
     if (v9 == 0.0)
     {
       v13 = 0.0;
@@ -1492,35 +1492,35 @@ LABEL_12:
 
 - (THWAutoplayConfig)autoplayConfig
 {
-  v2 = [(THWIOSMovieRep *)self info];
-  v3 = [v2 autoplayConfig];
+  info = [(THWIOSMovieRep *)self info];
+  autoplayConfig = [info autoplayConfig];
 
-  return v3;
+  return autoplayConfig;
 }
 
 - (BOOL)autoplayAllowed
 {
-  v2 = [(THWIOSMovieRep *)self pressableHandler];
-  v3 = [v2 widgetInteractionAllowAutoplay];
+  pressableHandler = [(THWIOSMovieRep *)self pressableHandler];
+  widgetInteractionAllowAutoplay = [pressableHandler widgetInteractionAllowAutoplay];
 
-  return v3;
+  return widgetInteractionAllowAutoplay;
 }
 
 - (void)autoplayStart
 {
-  v3 = [(THWIOSMovieRep *)self moviePlayerViewController];
-  if (!v3 || (v4 = v3, -[THWIOSMovieRep moviePlayerViewController](self, "moviePlayerViewController"), v5 = objc_claimAutoreleasedReturnValue(), [v5 player], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "rate"), v8 = v7, v6, v5, v4, v8 == 0.0))
+  moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+  if (!moviePlayerViewController || (v4 = moviePlayerViewController, -[THWIOSMovieRep moviePlayerViewController](self, "moviePlayerViewController"), v5 = objc_claimAutoreleasedReturnValue(), [v5 player], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "rate"), v8 = v7, v6, v5, v4, v8 == 0.0))
   {
-    v9 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v10 = [v9 player];
+    moviePlayerViewController2 = [(THWIOSMovieRep *)self moviePlayerViewController];
+    player = [moviePlayerViewController2 player];
     v15 = *&kCMTimeZero.value;
     epoch = kCMTimeZero.epoch;
-    [v10 seekToTime:&v15];
+    [player seekToTime:&v15];
 
     [(THWIOSMovieRep *)self p_play];
     objc_opt_class();
-    v11 = [(THWIOSMovieRep *)self layout];
-    v12 = [v11 mediaListener];
+    layout = [(THWIOSMovieRep *)self layout];
+    mediaListener = [layout mediaListener];
     v13 = TSUDynamicCast();
 
     v14 = +[THWAVController sharedController];
@@ -1533,15 +1533,15 @@ LABEL_12:
   if ([(THWIOSMovieRep *)self isPlaying])
   {
     [(THWIOSMovieRep *)self p_pause];
-    v3 = [(THWIOSMovieRep *)self moviePlayerViewController];
-    v4 = [v3 player];
+    moviePlayerViewController = [(THWIOSMovieRep *)self moviePlayerViewController];
+    player = [moviePlayerViewController player];
     v9 = *&kCMTimeZero.value;
     epoch = kCMTimeZero.epoch;
-    [v4 seekToTime:&v9];
+    [player seekToTime:&v9];
 
     objc_opt_class();
-    v5 = [(THWIOSMovieRep *)self layout];
-    v6 = [v5 mediaListener];
+    layout = [(THWIOSMovieRep *)self layout];
+    mediaListener = [layout mediaListener];
     v7 = TSUDynamicCast();
 
     v8 = +[THWAVController sharedController];

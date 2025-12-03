@@ -1,43 +1,43 @@
 @interface PKContinuityPaymentCoordinator
 - (BOOL)isAwaitingReply;
-- (PKContinuityPaymentCoordinator)initWithContinuityPaymentService:(id)a3;
+- (PKContinuityPaymentCoordinator)initWithContinuityPaymentService:(id)service;
 - (PKContinuityPaymentCoordinatorDelegate)delegate;
 - (PKRemotePaymentRequest)currentRemotePaymentRequest;
 - (double)updatePaymentDeviceTimeout;
 - (void)_deviceUpdateTimerDidTimeout;
 - (void)_deviceUpdateTotalTimerDidTimeout;
-- (void)_queue_sendPaymentResult:(id)a3 completion:(id)a4;
+- (void)_queue_sendPaymentResult:(id)result completion:(id)completion;
 - (void)_resetRequest;
 - (void)_send_didReceiveCancellation;
-- (void)_send_didReceivePayment:(id)a3;
-- (void)_send_didReceiveUpdatedPaymentDevice:(id)a3;
+- (void)_send_didReceivePayment:(id)payment;
+- (void)_send_didReceiveUpdatedPaymentDevice:(id)device;
 - (void)_send_didTimeoutTotalUpdatePaymentDevices;
 - (void)_send_didTimeoutUpdatePaymentDevices;
-- (void)cancelRemotePaymentRequestWithCompletion:(id)a3;
+- (void)cancelRemotePaymentRequestWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)didReceiveCancellationForRemotePaymentRequest:(id)a3;
-- (void)didReceivePayment:(id)a3 forRemotePaymentRequest:(id)a4;
-- (void)didReceiveUpdatedPaymentDevices:(id)a3;
-- (void)sendPaymentClientUpdate:(id)a3 completion:(id)a4;
-- (void)sendPaymentResult:(id)a3 completion:(id)a4;
-- (void)sendRemotePaymentRequest:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setUpdatePaymentDeviceTimeout:(double)a3;
+- (void)didReceiveCancellationForRemotePaymentRequest:(id)request;
+- (void)didReceivePayment:(id)payment forRemotePaymentRequest:(id)request;
+- (void)didReceiveUpdatedPaymentDevices:(id)devices;
+- (void)sendPaymentClientUpdate:(id)update completion:(id)completion;
+- (void)sendPaymentResult:(id)result completion:(id)completion;
+- (void)sendRemotePaymentRequest:(id)request completion:(id)completion;
+- (void)setDelegate:(id)delegate;
+- (void)setUpdatePaymentDeviceTimeout:(double)timeout;
 - (void)updatePaymentDevices;
 @end
 
 @implementation PKContinuityPaymentCoordinator
 
-- (PKContinuityPaymentCoordinator)initWithContinuityPaymentService:(id)a3
+- (PKContinuityPaymentCoordinator)initWithContinuityPaymentService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v25.receiver = self;
   v25.super_class = PKContinuityPaymentCoordinator;
   v6 = [(PKContinuityPaymentCoordinator *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_continuityPaymentService, a3);
+    objc_storeStrong(&v6->_continuityPaymentService, service);
     [(PKContinuityPaymentService *)v7->_continuityPaymentService setDelegate:v7];
     v8 = dispatch_queue_create("com.apple.PassKit.PKContinuityPaymentCoordinator.internal", 0);
     internalQueue = v7->_internalQueue;
@@ -140,17 +140,17 @@ void __42__PKContinuityPaymentCoordinator_delegate__block_invoke(uint64_t a1)
   *(v3 + 40) = WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PKContinuityPaymentCoordinator_setDelegate___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -180,7 +180,7 @@ double __60__PKContinuityPaymentCoordinator_updatePaymentDeviceTimeout__block_in
   return result;
 }
 
-- (void)setUpdatePaymentDeviceTimeout:(double)a3
+- (void)setUpdatePaymentDeviceTimeout:(double)timeout
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -188,7 +188,7 @@ double __60__PKContinuityPaymentCoordinator_updatePaymentDeviceTimeout__block_in
   v4[2] = __64__PKContinuityPaymentCoordinator_setUpdatePaymentDeviceTimeout___block_invoke;
   v4[3] = &unk_1E79CAED8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = timeout;
   dispatch_sync(internalQueue, v4);
 }
 
@@ -280,10 +280,10 @@ uint64_t __54__PKContinuityPaymentCoordinator_updatePaymentDevices__block_invoke
   return result;
 }
 
-- (void)sendRemotePaymentRequest:(id)a3 completion:(id)a4
+- (void)sendRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2020000000;
@@ -301,21 +301,21 @@ uint64_t __54__PKContinuityPaymentCoordinator_updatePaymentDevices__block_invoke
   block[2] = __70__PKContinuityPaymentCoordinator_sendRemotePaymentRequest_completion___block_invoke;
   block[3] = &unk_1E79E12D8;
   block[4] = self;
-  v10 = v6;
+  v10 = requestCopy;
   v18 = v10;
   v11 = v8;
   v19 = v11;
   v20 = v22;
   v21 = v24;
   dispatch_sync(internalQueue, block);
-  if (v7)
+  if (completionCopy)
   {
     callbackQueue = self->_callbackQueue;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __70__PKContinuityPaymentCoordinator_sendRemotePaymentRequest_completion___block_invoke_23;
     v13[3] = &unk_1E79CBE88;
-    v14 = v7;
+    v14 = completionCopy;
     v15 = v24;
     v16 = v22;
     dispatch_group_notify(v11, callbackQueue, v13);
@@ -440,10 +440,10 @@ void __70__PKContinuityPaymentCoordinator_sendRemotePaymentRequest_completion___
   }
 }
 
-- (void)sendPaymentClientUpdate:(id)a3 completion:(id)a4
+- (void)sendPaymentClientUpdate:(id)update completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2020000000;
@@ -463,19 +463,19 @@ void __70__PKContinuityPaymentCoordinator_sendRemotePaymentRequest_completion___
   block[4] = self;
   v10 = v8;
   v18 = v10;
-  v11 = v6;
+  v11 = updateCopy;
   v19 = v11;
   v20 = v22;
   v21 = v24;
   dispatch_sync(internalQueue, block);
-  if (v7)
+  if (completionCopy)
   {
     callbackQueue = self->_callbackQueue;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __69__PKContinuityPaymentCoordinator_sendPaymentClientUpdate_completion___block_invoke_25;
     v13[3] = &unk_1E79CBE88;
-    v14 = v7;
+    v14 = completionCopy;
     v15 = v24;
     v16 = v22;
     dispatch_group_notify(v10, callbackQueue, v13);
@@ -576,34 +576,34 @@ void __69__PKContinuityPaymentCoordinator_sendPaymentClientUpdate_completion___b
   }
 }
 
-- (void)sendPaymentResult:(id)a3 completion:(id)a4
+- (void)sendPaymentResult:(id)result completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__PKContinuityPaymentCoordinator_sendPaymentResult_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = resultCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = resultCopy;
   dispatch_sync(internalQueue, block);
 }
 
-- (void)cancelRemotePaymentRequestWithCompletion:(id)a3
+- (void)cancelRemotePaymentRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__PKContinuityPaymentCoordinator_cancelRemotePaymentRequestWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -670,17 +670,17 @@ void __75__PKContinuityPaymentCoordinator_cancelRemotePaymentRequestWithCompleti
   }
 }
 
-- (void)didReceiveUpdatedPaymentDevices:(id)a3
+- (void)didReceiveUpdatedPaymentDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PKContinuityPaymentCoordinator_didReceiveUpdatedPaymentDevices___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -703,20 +703,20 @@ uint64_t __66__PKContinuityPaymentCoordinator_didReceiveUpdatedPaymentDevices___
   return [*(a1 + 32) _send_didReceiveUpdatedPaymentDevice:*(a1 + 40)];
 }
 
-- (void)didReceivePayment:(id)a3 forRemotePaymentRequest:(id)a4
+- (void)didReceivePayment:(id)payment forRemotePaymentRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  paymentCopy = payment;
+  requestCopy = request;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__PKContinuityPaymentCoordinator_didReceivePayment_forRemotePaymentRequest___block_invoke;
   block[3] = &unk_1E79C4E00;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = requestCopy;
+  v13 = paymentCopy;
+  v9 = paymentCopy;
+  v10 = requestCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -775,17 +775,17 @@ LABEL_11:
   [*(a1 + 32) _send_didReceivePayment:*(a1 + 48)];
 }
 
-- (void)didReceiveCancellationForRemotePaymentRequest:(id)a3
+- (void)didReceiveCancellationForRemotePaymentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__PKContinuityPaymentCoordinator_didReceiveCancellationForRemotePaymentRequest___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -821,11 +821,11 @@ void __80__PKContinuityPaymentCoordinator_didReceiveCancellationForRemotePayment
   }
 }
 
-- (void)_queue_sendPaymentResult:(id)a3 completion:(id)a4
+- (void)_queue_sendPaymentResult:(id)result completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
@@ -840,22 +840,22 @@ void __80__PKContinuityPaymentCoordinator_didReceiveCancellationForRemotePayment
   v9 = PKLogFacilityTypeGetObject(9uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 status];
-    v11 = [(PKRemotePaymentRequest *)self->_currentRemotePaymentRequest device];
-    v12 = [v11 deviceName];
-    v13 = [(PKRemotePaymentRequest *)self->_currentRemotePaymentRequest identifier];
+    status = [resultCopy status];
+    device = [(PKRemotePaymentRequest *)self->_currentRemotePaymentRequest device];
+    deviceName = [device deviceName];
+    identifier = [(PKRemotePaymentRequest *)self->_currentRemotePaymentRequest identifier];
     *buf = 134218498;
-    v33 = v10;
+    v33 = status;
     v34 = 2112;
-    v35 = v12;
+    v35 = deviceName;
     v36 = 2112;
-    v37 = v13;
+    v37 = identifier;
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Sending payment status %ld to '%@' for request with identifier: %@", buf, 0x20u);
   }
 
   currentRemotePaymentRequest = self->_currentRemotePaymentRequest;
   ++self->_messageSendCount;
-  v15 = [(PKRemotePaymentRequest *)currentRemotePaymentRequest identifier];
+  identifier2 = [(PKRemotePaymentRequest *)currentRemotePaymentRequest identifier];
   continuityPaymentService = self->_continuityPaymentService;
   v17 = self->_currentRemotePaymentRequest;
   v24[0] = MEMORY[0x1E69E9820];
@@ -863,19 +863,19 @@ void __80__PKContinuityPaymentCoordinator_didReceiveCancellationForRemotePayment
   v24[2] = __70__PKContinuityPaymentCoordinator__queue_sendPaymentResult_completion___block_invoke;
   v24[3] = &unk_1E79E1328;
   v24[4] = self;
-  v18 = v15;
+  v18 = identifier2;
   v25 = v18;
   v26 = v28;
   v27 = v30;
-  [(PKContinuityPaymentService *)continuityPaymentService sendPaymentResult:v6 forRemotePaymentRequest:v17 completion:v24];
-  if (v7)
+  [(PKContinuityPaymentService *)continuityPaymentService sendPaymentResult:resultCopy forRemotePaymentRequest:v17 completion:v24];
+  if (completionCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __70__PKContinuityPaymentCoordinator__queue_sendPaymentResult_completion___block_invoke_29;
     block[3] = &unk_1E79CBE88;
-    v21 = v7;
+    v21 = completionCopy;
     v22 = v30;
     v23 = v28;
     dispatch_group_notify(v8, callbackQueue, block);
@@ -980,7 +980,7 @@ void __70__PKContinuityPaymentCoordinator__queue_sendPaymentResult_completion___
   v6[2] = __70__PKContinuityPaymentCoordinator__send_didTimeoutUpdatePaymentDevices__block_invoke;
   v6[3] = &unk_1E79C4DD8;
   v7 = WeakRetained;
-  v8 = self;
+  selfCopy = self;
   v5 = WeakRetained;
   dispatch_async(callbackQueue, v6);
 }
@@ -994,7 +994,7 @@ void __70__PKContinuityPaymentCoordinator__queue_sendPaymentResult_completion___
   v6[2] = __75__PKContinuityPaymentCoordinator__send_didTimeoutTotalUpdatePaymentDevices__block_invoke;
   v6[3] = &unk_1E79C4DD8;
   v7 = WeakRetained;
-  v8 = self;
+  selfCopy = self;
   v5 = WeakRetained;
   dispatch_async(callbackQueue, v6);
 }
@@ -1007,9 +1007,9 @@ void __75__PKContinuityPaymentCoordinator__send_didTimeoutTotalUpdatePaymentDevi
   [v1 continuityPaymentCoordinator:v2 didTimeoutTotalWithPaymentDevices:v3];
 }
 
-- (void)_send_didReceiveUpdatedPaymentDevice:(id)a3
+- (void)_send_didReceiveUpdatedPaymentDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1017,16 +1017,16 @@ void __75__PKContinuityPaymentCoordinator__send_didTimeoutTotalUpdatePaymentDevi
   block[2] = __71__PKContinuityPaymentCoordinator__send_didReceiveUpdatedPaymentDevice___block_invoke;
   block[3] = &unk_1E79C4E00;
   v10 = WeakRetained;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = deviceCopy;
+  v7 = deviceCopy;
   v8 = WeakRetained;
   dispatch_async(callbackQueue, block);
 }
 
-- (void)_send_didReceivePayment:(id)a3
+- (void)_send_didReceivePayment:(id)payment
 {
-  v4 = a3;
+  paymentCopy = payment;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1034,9 +1034,9 @@ void __75__PKContinuityPaymentCoordinator__send_didTimeoutTotalUpdatePaymentDevi
   block[2] = __58__PKContinuityPaymentCoordinator__send_didReceivePayment___block_invoke;
   block[3] = &unk_1E79C4E00;
   v10 = WeakRetained;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = paymentCopy;
+  v7 = paymentCopy;
   v8 = WeakRetained;
   dispatch_async(callbackQueue, block);
 }
@@ -1050,7 +1050,7 @@ void __75__PKContinuityPaymentCoordinator__send_didTimeoutTotalUpdatePaymentDevi
   v6[2] = __62__PKContinuityPaymentCoordinator__send_didReceiveCancellation__block_invoke;
   v6[3] = &unk_1E79C4DD8;
   v7 = WeakRetained;
-  v8 = self;
+  selfCopy = self;
   v5 = WeakRetained;
   dispatch_async(callbackQueue, v6);
 }

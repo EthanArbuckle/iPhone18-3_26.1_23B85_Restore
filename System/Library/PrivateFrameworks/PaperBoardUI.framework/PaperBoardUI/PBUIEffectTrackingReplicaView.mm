@@ -2,7 +2,7 @@
 - (BOOL)hasPortalProvider;
 - (BOOL)hasSnapshotProvider;
 - (BOOL)shouldMatchWallpaperPosition;
-- (PBUIEffectTrackingReplicaView)initWithFrame:(CGRect)a3;
+- (PBUIEffectTrackingReplicaView)initWithFrame:(CGRect)frame;
 - (PBUIEffectTrackingReplicaViewDelegate)delegate;
 - (PBUIFakeBlurObserver)observer;
 - (id)setNeedsReconfiguration;
@@ -13,38 +13,38 @@
 - (uint64_t)snapshotsView;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)offsetWallpaperBy:(CGPoint)a3;
-- (void)setPortalProvider:(id)a3;
-- (void)setPortalView:(uint64_t)a1;
-- (void)setReason:(id)a3;
-- (void)setShouldMatchWallpaperPosition:(BOOL)a3;
-- (void)setShowsSnapshot:(BOOL)a3;
-- (void)setSnapshotProvider:(id)a3;
-- (void)setSnapshotsView:(uint64_t)a1;
-- (void)setStyle:(int64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)offsetWallpaperBy:(CGPoint)by;
+- (void)setPortalProvider:(id)provider;
+- (void)setPortalView:(uint64_t)view;
+- (void)setReason:(id)reason;
+- (void)setShouldMatchWallpaperPosition:(BOOL)position;
+- (void)setShowsSnapshot:(BOOL)snapshot;
+- (void)setSnapshotProvider:(id)provider;
+- (void)setSnapshotsView:(uint64_t)view;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation PBUIEffectTrackingReplicaView
 
-- (PBUIEffectTrackingReplicaView)initWithFrame:(CGRect)a3
+- (PBUIEffectTrackingReplicaView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = PBUIEffectTrackingReplicaView;
   v7 = [(PBUIEffectTrackingReplicaView *)&v13 initWithFrame:?];
   if (v7)
   {
-    v9 = [[PBUISnapshotReplicaView alloc] initWithFrame:x, y, width, height];
+    height = [[PBUISnapshotReplicaView alloc] initWithFrame:x, y, width, height];
     snapshotsView = v7->_snapshotsView;
-    v7->_snapshotsView = v9;
+    v7->_snapshotsView = height;
 
-    v11 = [[PBUIPortalReplicaEffectView alloc] initWithFrame:x, y, width, height];
+    height2 = [[PBUIPortalReplicaEffectView alloc] initWithFrame:x, y, width, height];
     portalView = v7->_portalView;
-    v7->_portalView = v11;
+    v7->_portalView = height2;
 
     [(PBUIEffectTrackingReplicaView *)v7 setObservesSnapshotValidity:?];
     [(PBUIEffectTrackingReplicaView *)v7 addSubview:v7->_snapshotsView];
@@ -57,9 +57,9 @@
   return v7;
 }
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
-  v4 = [a3 copy];
+  v4 = [reason copy];
   reason = self->_reason;
   self->_reason = v4;
 
@@ -68,29 +68,29 @@
   [(PBUISnapshotReplicaView *)self->_snapshotsView setReason:v6];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(PBUIEffectTrackingReplicaView *)&self->super.super.super.isa setNeedsReconfiguration];
   }
 }
 
-- (void)setShowsSnapshot:(BOOL)a3
+- (void)setShowsSnapshot:(BOOL)snapshot
 {
-  if (self->_showsSnapshot != a3)
+  if (self->_showsSnapshot != snapshot)
   {
-    self->_showsSnapshot = a3;
+    self->_showsSnapshot = snapshot;
     [(PBUIEffectTrackingReplicaView *)&self->super.super.super.isa setNeedsReconfiguration];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &PrivateKVOContext)
+  if (context == &PrivateKVOContext)
   {
-    if ([a3 isEqualToString:{@"valid", a4, a5}])
+    if ([path isEqualToString:{@"valid", object, change}])
     {
       [PBUIEffectTrackingReplicaView observeValueForKeyPath:? ofObject:? change:? context:?];
     }
@@ -100,14 +100,14 @@
   {
     v7.receiver = self;
     v7.super_class = PBUIEffectTrackingReplicaView;
-    [(PBUIEffectTrackingReplicaView *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PBUIEffectTrackingReplicaView *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)offsetWallpaperBy:(CGPoint)a3
+- (void)offsetWallpaperBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   [(PBUISnapshotReplicaView *)self->_snapshotsView offsetWallpaperBy:?];
   portalView = self->_portalView;
 
@@ -126,13 +126,13 @@
   return [(PBUIPortalReplicaView *)portalView shouldMatchWallpaperPosition];
 }
 
-- (void)setShouldMatchWallpaperPosition:(BOOL)a3
+- (void)setShouldMatchWallpaperPosition:(BOOL)position
 {
-  v3 = a3;
+  positionCopy = position;
   [(PBUISnapshotReplicaView *)self->_snapshotsView setShouldMatchWallpaperPosition:?];
   portalView = self->_portalView;
 
-  [(PBUIPortalReplicaView *)portalView setShouldMatchWallpaperPosition:v3];
+  [(PBUIPortalReplicaView *)portalView setShouldMatchWallpaperPosition:positionCopy];
 }
 
 - (PBUIFakeBlurObserver)observer
@@ -257,51 +257,51 @@
   return result;
 }
 
-- (void)setPortalProvider:(id)a3
+- (void)setPortalProvider:(id)provider
 {
-  [(PBUIPortalReplicaView *)self->_portalView setProvider:a3];
+  [(PBUIPortalReplicaView *)self->_portalView setProvider:provider];
 
   [(PBUIEffectTrackingReplicaView *)&self->super.super.super.isa setNeedsReconfiguration];
 }
 
-- (void)setSnapshotProvider:(id)a3
+- (void)setSnapshotProvider:(id)provider
 {
-  [(PBUISnapshotReplicaView *)self->_snapshotsView setProvider:a3];
+  [(PBUISnapshotReplicaView *)self->_snapshotsView setProvider:provider];
 
   [(PBUIEffectTrackingReplicaView *)&self->super.super.super.isa setNeedsReconfiguration];
 }
 
 - (BOOL)hasSnapshotProvider
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 472) provider];
-  v2 = v1 != 0;
+  provider = [*(self + 472) provider];
+  v2 = provider != 0;
 
   return v2;
 }
 
 - (BOOL)hasPortalProvider
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 480) provider];
-  v2 = v1 != 0;
+  provider = [*(self + 480) provider];
+  v2 = provider != 0;
 
   return v2;
 }
 
 - (uint64_t)observesSnapshotValidity
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 410);
+    v1 = *(self + 410);
   }
 
   else
@@ -312,11 +312,11 @@
   return v1 & 1;
 }
 
-- (void)setSnapshotsView:(uint64_t)a1
+- (void)setSnapshotsView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_5(a1, a2, 472);
+    OUTLINED_FUNCTION_0_5(view, a2, 472);
   }
 }
 
@@ -330,11 +330,11 @@
   return result;
 }
 
-- (void)setPortalView:(uint64_t)a1
+- (void)setPortalView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_5(a1, a2, 480);
+    OUTLINED_FUNCTION_0_5(view, a2, 480);
   }
 }
 

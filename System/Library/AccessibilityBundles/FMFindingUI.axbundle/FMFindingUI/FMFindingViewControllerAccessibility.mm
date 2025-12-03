@@ -1,10 +1,10 @@
 @interface FMFindingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityLabelForModernItemViewWithMode:(unsigned int)a3;
-- (id)_accessibilityValueForModernItemViewWithMode:(unsigned int)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityLabelForModernItemViewWithMode:(unsigned int)mode;
+- (id)_accessibilityValueForModernItemViewWithMode:(unsigned int)mode;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axLoadHeaderElement;
-- (void)accessibilityDidUpdateWithTopLabelMessage:(id)a3 instruction:(id)a4;
+- (void)accessibilityDidUpdateWithTopLabelMessage:(id)message instruction:(id)instruction;
 - (void)accessibilityDistanceAndDirectionUpdated;
 - (void)accessibilityShowViewHandler;
 - (void)viewDidLoad;
@@ -12,36 +12,36 @@
 
 @implementation FMFindingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FMFindingUI.FMFindingViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityNameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"foundPlayerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityR1DistanceView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityModeRawValue" withFullSignature:{"I", 0}];
-  [v3 validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityDistanceAndDirectionUpdated" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityDidUpdateWithTopLabelMessage:instruction:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityShowViewHandler" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FMFindingUI.FMFindingViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityNameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"foundPlayerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityR1DistanceView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityModeRawValue" withFullSignature:{"I", 0}];
+  [validationsCopy validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityDistanceAndDirectionUpdated" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityDidUpdateWithTopLabelMessage:instruction:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"FMFindingUI.FMFindingViewController" hasInstanceMethod:@"accessibilityShowViewHandler" withFullSignature:{"v", 0}];
 }
 
 - (void)_axLoadHeaderElement
 {
-  v3 = [(FMFindingViewControllerAccessibility *)self _axCachedAggregateHeaderElement];
+  _axCachedAggregateHeaderElement = [(FMFindingViewControllerAccessibility *)self _axCachedAggregateHeaderElement];
 
-  if (!v3)
+  if (!_axCachedAggregateHeaderElement)
   {
     objc_opt_class();
     v4 = __UIAccessibilityCastAsClass();
-    v5 = [v4 view];
+    view = [v4 view];
 
     v6 = [(FMFindingViewControllerAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
     v7 = [(FMFindingViewControllerAccessibility *)self safeValueForKey:@"accessibilityNameLabel"];
     v8 = objc_alloc(MEMORY[0x29EDC7318]);
     v9 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{2, v6, v7}];
-    v10 = [v8 initWithAccessibilityContainer:v5 representedElements:v9];
+    v10 = [v8 initWithAccessibilityContainer:view representedElements:v9];
 
     [v10 _setAccessibilityServesAsFirstElement:1];
     [v10 _setAccessibilityTraitsBlock:&__block_literal_global_0];
@@ -59,13 +59,13 @@
   v7 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
+  view = [v3 view];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __82__FMFindingViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v5[3] = &unk_29F2BDFB8;
   objc_copyWeak(&v6, &location);
-  [v4 _setAccessibilityElementsBlock:v5];
+  [view _setAccessibilityElementsBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -200,12 +200,12 @@ id __82__FMFindingViewControllerAccessibility__accessibilityLoadAccessibilityInf
   [(FMFindingViewControllerAccessibility *)self _axSetCachedAccessibilityElements:0];
 }
 
-- (void)accessibilityDidUpdateWithTopLabelMessage:(id)a3 instruction:(id)a4
+- (void)accessibilityDidUpdateWithTopLabelMessage:(id)message instruction:(id)instruction
 {
   v6.receiver = self;
   v6.super_class = FMFindingViewControllerAccessibility;
-  v5 = a4;
-  [(FMFindingViewControllerAccessibility *)&v6 accessibilityDidUpdateWithTopLabelMessage:a3 instruction:v5];
+  instructionCopy = instruction;
+  [(FMFindingViewControllerAccessibility *)&v6 accessibilityDidUpdateWithTopLabelMessage:message instruction:instructionCopy];
   UIAccessibilitySpeakIfNotSpeaking();
 }
 
@@ -215,19 +215,19 @@ id __82__FMFindingViewControllerAccessibility__accessibilityLoadAccessibilityInf
   v6.super_class = FMFindingViewControllerAccessibility;
   [(FMFindingViewControllerAccessibility *)&v6 accessibilityDistanceAndDirectionUpdated];
   v3 = [(FMFindingViewControllerAccessibility *)self safeValueForKey:@"accessibilityR1DistanceView"];
-  v4 = [v3 accessibilityLabel];
-  v5 = v4;
-  if (v4 && [v4 length] && (objc_msgSend(accessibilityDistanceAndDirectionUpdated_previousDistance, "isEqualToString:", v5) & 1) == 0)
+  accessibilityLabel = [v3 accessibilityLabel];
+  v5 = accessibilityLabel;
+  if (accessibilityLabel && [accessibilityLabel length] && (objc_msgSend(accessibilityDistanceAndDirectionUpdated_previousDistance, "isEqualToString:", v5) & 1) == 0)
   {
     UIAccessibilitySpeakIfNotSpeaking();
     objc_storeStrong(&accessibilityDistanceAndDirectionUpdated_previousDistance, v5);
   }
 }
 
-- (id)_accessibilityLabelForModernItemViewWithMode:(unsigned int)a3
+- (id)_accessibilityLabelForModernItemViewWithMode:(unsigned int)mode
 {
-  v4 = a3 - 1;
-  if (a3 - 1 <= 7 && ((0x8Bu >> v4) & 1) != 0)
+  v4 = mode - 1;
+  if (mode - 1 <= 7 && ((0x8Bu >> v4) & 1) != 0)
   {
     v5 = accessibilityLocalizedString(off_29F2BDFD8[v4]);
   }
@@ -240,9 +240,9 @@ id __82__FMFindingViewControllerAccessibility__accessibilityLoadAccessibilityInf
   return v5;
 }
 
-- (id)_accessibilityValueForModernItemViewWithMode:(unsigned int)a3
+- (id)_accessibilityValueForModernItemViewWithMode:(unsigned int)mode
 {
-  if (a3 == 4)
+  if (mode == 4)
   {
     v4 = @"item.in.field.of.vision.mode";
 LABEL_5:
@@ -251,7 +251,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v4 = @"item.out.field.of.vision.mode";
     goto LABEL_5;

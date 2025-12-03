@@ -1,35 +1,35 @@
 @interface TPSContextualBiomeAppInFocusEvent
-+ (id)observationDateFromEvent:(id)a3;
++ (id)observationDateFromEvent:(id)event;
 - (id)_filteringPredicate;
 - (id)filterHandler;
 - (id)filterParametersForBiomeQuery;
-- (id)publisherFromStartTime:(double)a3;
+- (id)publisherFromStartTime:(double)time;
 @end
 
 @implementation TPSContextualBiomeAppInFocusEvent
 
-+ (id)observationDateFromEvent:(id)a3
++ (id)observationDateFromEvent:(id)event
 {
-  v3 = [a3 eventBody];
-  v4 = [v3 absoluteTimestamp];
+  eventBody = [event eventBody];
+  absoluteTimestamp = [eventBody absoluteTimestamp];
 
-  return v4;
+  return absoluteTimestamp;
 }
 
-- (id)publisherFromStartTime:(double)a3
+- (id)publisherFromStartTime:(double)time
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
+  v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:time];
   v4 = objc_alloc(MEMORY[0x1E698F2D0]);
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v4 initWithStartDate:v3 endDate:v5 maxEvents:0 lastN:0 reversed:0];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [v4 initWithStartDate:v3 endDate:date maxEvents:0 lastN:0 reversed:0];
 
   v7 = BiomeLibrary();
   v8 = [v7 App];
-  v9 = [v8 InFocus];
+  inFocus = [v8 InFocus];
 
   v29 = 0;
-  v10 = [v9 remoteDevicesWithError:&v29];
+  v10 = [inFocus remoteDevicesWithError:&v29];
   v11 = v29;
   if (v11)
   {
@@ -41,7 +41,7 @@
       _os_log_impl(&dword_1C00A7000, v12, OS_LOG_TYPE_DEFAULT, "Defaulting to base App.InFocus publisher. Unable to retrieve remote devices: %@", buf, 0xCu);
     }
 
-    v13 = [v9 publisherWithOptions:v6];
+    v13 = [inFocus publisherWithOptions:v6];
   }
 
   else
@@ -67,7 +67,7 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [v9 publisherForDevice:*(*(&v25 + 1) + 8 * i) withUseCase:@"FeatureDiscoverability" options:{v6, v24}];
+          v20 = [inFocus publisherForDevice:*(*(&v25 + 1) + 8 * i) withUseCase:@"FeatureDiscoverability" options:{v6, v24}];
           [v14 addObject:v20];
         }
 
@@ -77,7 +77,7 @@
       while (v17);
     }
 
-    v21 = [v9 publisherWithOptions:v6];
+    v21 = [inFocus publisherWithOptions:v6];
     [v14 addObject:v21];
 
     v13 = [objc_alloc(MEMORY[0x1E698F0D0]) initWithPublishers:v14];
@@ -91,15 +91,15 @@
 
 - (id)filterHandler
 {
-  v2 = [(TPSContextualBiomeAppInFocusEvent *)self _filteringPredicate];
-  v3 = v2;
-  if (v2)
+  _filteringPredicate = [(TPSContextualBiomeAppInFocusEvent *)self _filteringPredicate];
+  v3 = _filteringPredicate;
+  if (_filteringPredicate)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __50__TPSContextualBiomeAppInFocusEvent_filterHandler__block_invoke;
     aBlock[3] = &unk_1E8101708;
-    v7 = v2;
+    v7 = _filteringPredicate;
     v4 = _Block_copy(aBlock);
   }
 
@@ -130,14 +130,14 @@ uint64_t __50__TPSContextualBiomeAppInFocusEvent_filterHandler__block_invoke(uin
 
 - (id)filterParametersForBiomeQuery
 {
-  v3 = [(TPSContextualBiomeEvent *)self filterInfo];
+  filterInfo = [(TPSContextualBiomeEvent *)self filterInfo];
 
-  if (v3)
+  if (filterInfo)
   {
     v20.receiver = self;
     v20.super_class = TPSContextualBiomeAppInFocusEvent;
-    v4 = [(TPSContextualBiomeEvent *)&v20 filterParametersForBiomeQuery];
-    v5 = [v4 mutableCopy];
+    filterParametersForBiomeQuery = [(TPSContextualBiomeEvent *)&v20 filterParametersForBiomeQuery];
+    v5 = [filterParametersForBiomeQuery mutableCopy];
     v6 = v5;
     if (v5)
     {
@@ -151,24 +151,24 @@ uint64_t __50__TPSContextualBiomeAppInFocusEvent_filterHandler__block_invoke(uin
 
     v9 = v7;
 
-    v10 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v11 = [v10 TPSSafeObjectForKey:@"launchReason"];
+    filterInfo2 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v11 = [filterInfo2 TPSSafeObjectForKey:@"launchReason"];
 
     if (v11)
     {
-      v12 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v13 = [v12 TPSSafeStringForKey:@"launchReason"];
+      filterInfo3 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v13 = [filterInfo3 TPSSafeStringForKey:@"launchReason"];
       [v9 setObject:v13 forKeyedSubscript:@"launchReason"];
     }
 
-    v14 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v15 = [v14 TPSSafeUIntegerForKey:@"launchType"];
+    filterInfo4 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v15 = [filterInfo4 TPSSafeUIntegerForKey:@"launchType"];
 
     if (v15)
     {
       v16 = MEMORY[0x1E696AD98];
-      v17 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v18 = [v16 numberWithInt:{objc_msgSend(v17, "TPSSafeIntForKey:", @"launchType"}];
+      filterInfo5 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v18 = [v16 numberWithInt:{objc_msgSend(filterInfo5, "TPSSafeIntForKey:", @"launchType"}];
       [v9 setObject:v18 forKeyedSubscript:@"launchType"];
     }
 
@@ -185,18 +185,18 @@ uint64_t __50__TPSContextualBiomeAppInFocusEvent_filterHandler__block_invoke(uin
 
 - (id)_filteringPredicate
 {
-  v3 = [(TPSContextualBiomeEvent *)self filterInfo];
+  filterInfo = [(TPSContextualBiomeEvent *)self filterInfo];
 
-  if (v3)
+  if (filterInfo)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v6 = [v5 TPSSafeObjectForKey:@"isStarting"];
+    filterInfo2 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v6 = [filterInfo2 TPSSafeObjectForKey:@"isStarting"];
 
     if (v6)
     {
-      v7 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v8 = [v7 TPSSafeBoolForKey:@"isStarting"];
+      filterInfo3 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v8 = [filterInfo3 TPSSafeBoolForKey:@"isStarting"];
 
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
@@ -207,13 +207,13 @@ uint64_t __50__TPSContextualBiomeAppInFocusEvent_filterHandler__block_invoke(uin
       [v4 addObject:v9];
     }
 
-    v10 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v11 = [v10 TPSSafeObjectForKey:@"bundleID"];
+    filterInfo4 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v11 = [filterInfo4 TPSSafeObjectForKey:@"bundleID"];
 
     if (v11)
     {
-      v12 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v13 = [v12 TPSSafeStringForKey:@"bundleID"];
+      filterInfo5 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v13 = [filterInfo5 TPSSafeStringForKey:@"bundleID"];
 
       v14 = MEMORY[0x1E696AE18];
       v35[0] = MEMORY[0x1E69E9820];
@@ -226,13 +226,13 @@ uint64_t __50__TPSContextualBiomeAppInFocusEvent_filterHandler__block_invoke(uin
       [v4 addObject:v16];
     }
 
-    v17 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v18 = [v17 TPSSafeObjectForKey:@"launchReason"];
+    filterInfo6 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v18 = [filterInfo6 TPSSafeObjectForKey:@"launchReason"];
 
     if (v18)
     {
-      v19 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v20 = [v19 TPSSafeStringForKey:@"launchReason"];
+      filterInfo7 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v20 = [filterInfo7 TPSSafeStringForKey:@"launchReason"];
 
       v21 = MEMORY[0x1E696AE18];
       v33[0] = MEMORY[0x1E69E9820];
@@ -245,13 +245,13 @@ uint64_t __50__TPSContextualBiomeAppInFocusEvent_filterHandler__block_invoke(uin
       [v4 addObject:v23];
     }
 
-    v24 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v25 = [v24 TPSSafeObjectForKey:@"launchType"];
+    filterInfo8 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v25 = [filterInfo8 TPSSafeObjectForKey:@"launchType"];
 
     if (v25)
     {
-      v26 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v27 = [v26 TPSSafeIntForKey:@"launchType"];
+      filterInfo9 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v27 = [filterInfo9 TPSSafeIntForKey:@"launchType"];
 
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;

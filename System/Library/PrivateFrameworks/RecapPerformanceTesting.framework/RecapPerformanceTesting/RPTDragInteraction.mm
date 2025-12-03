@@ -1,22 +1,22 @@
 @interface RPTDragInteraction
 - (CGPoint)destinationLocation;
 - (CGPoint)sourceLocation;
-- (id)_andThenDragBy:(CGVector)a3;
-- (id)initByDraggingWindow:(id)a3 byDelta:(CGVector)a4;
-- (id)initFromSourceLocation:(CGPoint)a3 toDestinationLocation:(CGPoint)a4;
-- (id)interactionByScalingBy:(double)a3;
+- (id)_andThenDragBy:(CGVector)by;
+- (id)initByDraggingWindow:(id)window byDelta:(CGVector)delta;
+- (id)initFromSourceLocation:(CGPoint)location toDestinationLocation:(CGPoint)destinationLocation;
+- (id)interactionByScalingBy:(double)by;
 - (id)reversedInteraction;
-- (void)invokeWithComposer:(id)a3 duration:(double)a4;
+- (void)invokeWithComposer:(id)composer duration:(double)duration;
 @end
 
 @implementation RPTDragInteraction
 
-- (id)initByDraggingWindow:(id)a3 byDelta:(CGVector)a4
+- (id)initByDraggingWindow:(id)window byDelta:(CGVector)delta
 {
-  dy = a4.dy;
-  dx = a4.dx;
-  v7 = a3;
-  [v7 rpt_accessibilityActivationPointAttribute];
+  dy = delta.dy;
+  dx = delta.dx;
+  windowCopy = window;
+  [windowCopy rpt_accessibilityActivationPointAttribute];
   v9 = v8;
   v11 = v10;
   v19.receiver = self;
@@ -27,7 +27,7 @@
   {
     v12->_sourceLocation.x = v9;
     v12->_sourceLocation.y = v11;
-    v14 = [RPTCoordinateSpaceConverter converterFromWindow:v7];
+    v14 = [RPTCoordinateSpaceConverter converterFromWindow:windowCopy];
     conversion = v13->_conversion;
     v13->_conversion = v14;
 
@@ -40,12 +40,12 @@
   return v13;
 }
 
-- (id)initFromSourceLocation:(CGPoint)a3 toDestinationLocation:(CGPoint)a4
+- (id)initFromSourceLocation:(CGPoint)location toDestinationLocation:(CGPoint)destinationLocation
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = destinationLocation.y;
+  x = destinationLocation.x;
+  v6 = location.y;
+  v7 = location.x;
   v13.receiver = self;
   v13.super_class = RPTDragInteraction;
   v8 = [(RPTDragInteraction *)&v13 init];
@@ -66,9 +66,9 @@
   return v9;
 }
 
-- (void)invokeWithComposer:(id)a3 duration:(double)a4
+- (void)invokeWithComposer:(id)composer duration:(double)duration
 {
-  v16 = a3;
+  composerCopy = composer;
   if ([(RPTDragInteraction *)self _locationsAreAlreadyScreenSpace])
   {
     x = self->_sourceLocation.x;
@@ -77,8 +77,8 @@
 
   else
   {
-    v8 = [(RPTDragInteraction *)self conversion];
-    [v8 convertPoint:{self->_sourceLocation.x, self->_sourceLocation.y}];
+    conversion = [(RPTDragInteraction *)self conversion];
+    [conversion convertPoint:{self->_sourceLocation.x, self->_sourceLocation.y}];
     x = v9;
     y = v10;
   }
@@ -91,16 +91,16 @@
 
   else
   {
-    v13 = [(RPTDragInteraction *)self conversion];
-    [v13 convertPoint:{self->_destinationLocation.x, self->_destinationLocation.y}];
+    conversion2 = [(RPTDragInteraction *)self conversion];
+    [conversion2 convertPoint:{self->_destinationLocation.x, self->_destinationLocation.y}];
     v11 = v14;
     v12 = v15;
   }
 
-  [v16 pointerMoveToPointIfApplicable:{x, y}];
-  [v16 pointerOrFingerTapDown:{x, y}];
-  [v16 pointerOrFingerMoveToPoint:v11 duration:{v12, a4}];
-  [v16 pointerOrFingerTapUp:{v11, v12}];
+  [composerCopy pointerMoveToPointIfApplicable:{x, y}];
+  [composerCopy pointerOrFingerTapDown:{x, y}];
+  [composerCopy pointerOrFingerMoveToPoint:v11 duration:{v12, duration}];
+  [composerCopy pointerOrFingerTapUp:{v11, v12}];
 }
 
 - (id)reversedInteraction
@@ -112,21 +112,21 @@
   return v3;
 }
 
-- (id)interactionByScalingBy:(double)a3
+- (id)interactionByScalingBy:(double)by
 {
-  v4 = [[RPTDragInteraction alloc] initFromSourceLocation:self->_sourceLocation.x toDestinationLocation:self->_sourceLocation.y, vaddq_f64(self->_sourceLocation, vmulq_n_f64(vsubq_f64(self->_destinationLocation, self->_sourceLocation), a3))];
+  v4 = [[RPTDragInteraction alloc] initFromSourceLocation:self->_sourceLocation.x toDestinationLocation:self->_sourceLocation.y, vaddq_f64(self->_sourceLocation, vmulq_n_f64(vsubq_f64(self->_destinationLocation, self->_sourceLocation), by))];
   [v4 set_locationsAreAlreadyScreenSpace:{-[RPTDragInteraction _locationsAreAlreadyScreenSpace](self, "_locationsAreAlreadyScreenSpace")}];
   [v4 setConversion:self->_conversion];
 
   return v4;
 }
 
-- (id)_andThenDragBy:(CGVector)a3
+- (id)_andThenDragBy:(CGVector)by
 {
-  dy = a3.dy;
-  dx = a3.dx;
-  v6 = [(RPTDragInteraction *)self conversion];
-  [v6 convertVector:{dx, dy}];
+  dy = by.dy;
+  dx = by.dx;
+  conversion = [(RPTDragInteraction *)self conversion];
+  [conversion convertVector:{dx, dy}];
   v8 = v7;
   v10 = v9;
 

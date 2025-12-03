@@ -1,47 +1,47 @@
 @interface USBudget
-- (USBudget)initWithCategories:(id)a3 applications:(id)a4 exemptApplications:(id)a5 webDomains:(id)a6 schedule:(id)a7 calendarIdentifier:(id)a8 identifier:(id)a9;
-- (USBudget)initWithCategories:(id)a3 applications:(id)a4 webDomains:(id)a5 schedule:(id)a6 calendarIdentifier:(id)a7 identifier:(id)a8;
-- (USBudget)initWithCoder:(id)a3;
-- (USBudget)initWithType:(int64_t)a3 items:(id)a4 schedule:(id)a5 calendarIdentifier:(id)a6 identifier:(id)a7;
+- (USBudget)initWithCategories:(id)categories applications:(id)applications exemptApplications:(id)exemptApplications webDomains:(id)domains schedule:(id)schedule calendarIdentifier:(id)identifier identifier:(id)a9;
+- (USBudget)initWithCategories:(id)categories applications:(id)applications webDomains:(id)domains schedule:(id)schedule calendarIdentifier:(id)identifier identifier:(id)a8;
+- (USBudget)initWithCoder:(id)coder;
+- (USBudget)initWithType:(int64_t)type items:(id)items schedule:(id)schedule calendarIdentifier:(id)identifier identifier:(id)a7;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USBudget
 
-- (USBudget)initWithCategories:(id)a3 applications:(id)a4 webDomains:(id)a5 schedule:(id)a6 calendarIdentifier:(id)a7 identifier:(id)a8
+- (USBudget)initWithCategories:(id)categories applications:(id)applications webDomains:(id)domains schedule:(id)schedule calendarIdentifier:(id)identifier identifier:(id)a8
 {
   v14 = MEMORY[0x277CBEB98];
   v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  identifierCopy = identifier;
+  scheduleCopy = schedule;
+  domainsCopy = domains;
+  applicationsCopy = applications;
+  categoriesCopy = categories;
   v21 = [v14 set];
-  v22 = [(USBudget *)self initWithCategories:v20 applications:v19 exemptApplications:v21 webDomains:v18 schedule:v17 calendarIdentifier:v16 identifier:v15];
+  v22 = [(USBudget *)self initWithCategories:categoriesCopy applications:applicationsCopy exemptApplications:v21 webDomains:domainsCopy schedule:scheduleCopy calendarIdentifier:identifierCopy identifier:v15];
 
   return v22;
 }
 
-- (USBudget)initWithCategories:(id)a3 applications:(id)a4 exemptApplications:(id)a5 webDomains:(id)a6 schedule:(id)a7 calendarIdentifier:(id)a8 identifier:(id)a9
+- (USBudget)initWithCategories:(id)categories applications:(id)applications exemptApplications:(id)exemptApplications webDomains:(id)domains schedule:(id)schedule calendarIdentifier:(id)identifier identifier:(id)a9
 {
-  v16 = a3;
-  v46 = a4;
-  v17 = a7;
-  v18 = a8;
+  categoriesCopy = categories;
+  applicationsCopy = applications;
+  scheduleCopy = schedule;
+  identifierCopy = identifier;
   v19 = a9;
-  v20 = a6;
-  v21 = a5;
+  domainsCopy = domains;
+  exemptApplicationsCopy = exemptApplications;
   v22 = objc_opt_new();
-  v23 = [v22 normalizeDomainNames:v20];
+  v23 = [v22 normalizeDomainNames:domainsCopy];
 
-  if (![v16 count] && !objc_msgSend(v46, "count") && !objc_msgSend(v23, "count"))
+  if (![categoriesCopy count] && !objc_msgSend(applicationsCopy, "count") && !objc_msgSend(v23, "count"))
   {
     [USBudget initWithCategories:a2 applications:self exemptApplications:? webDomains:? schedule:? calendarIdentifier:? identifier:?];
   }
 
-  if (![v17 count])
+  if (![scheduleCopy count])
   {
     [USBudget initWithCategories:a2 applications:self exemptApplications:? webDomains:? schedule:? calendarIdentifier:? identifier:?];
   }
@@ -51,10 +51,10 @@
   v48[2] = __113__USBudget_initWithCategories_applications_exemptApplications_webDomains_schedule_calendarIdentifier_identifier___block_invoke;
   v48[3] = &unk_279E09990;
   v50 = a2;
-  v24 = self;
-  v49 = v24;
-  [v17 enumerateKeysAndObjectsUsingBlock:v48];
-  v47.receiver = v24;
+  selfCopy = self;
+  v49 = selfCopy;
+  [scheduleCopy enumerateKeysAndObjectsUsingBlock:v48];
+  v47.receiver = selfCopy;
   v47.super_class = USBudget;
   v25 = [(USBudget *)&v47 init];
   if (v19)
@@ -67,20 +67,20 @@
   else
   {
     identifier = objc_opt_new();
-    v28 = [identifier UUIDString];
+    uUIDString = [identifier UUIDString];
     v29 = v25->_identifier;
-    v25->_identifier = v28;
+    v25->_identifier = uUIDString;
   }
 
-  v30 = [v16 copy];
+  v30 = [categoriesCopy copy];
   categoryIdentifiers = v25->_categoryIdentifiers;
   v25->_categoryIdentifiers = v30;
 
-  v32 = [v46 copy];
+  v32 = [applicationsCopy copy];
   bundleIdentifiers = v25->_bundleIdentifiers;
   v25->_bundleIdentifiers = v32;
 
-  v34 = [v21 copy];
+  v34 = [exemptApplicationsCopy copy];
   exemptBundleIdentifiers = v25->_exemptBundleIdentifiers;
   v25->_exemptBundleIdentifiers = v34;
 
@@ -88,9 +88,9 @@
   webDomains = v25->_webDomains;
   v25->_webDomains = v36;
 
-  if (v18)
+  if (identifierCopy)
   {
-    v38 = [v18 copy];
+    v38 = [identifierCopy copy];
     calendarIdentifier = v25->_calendarIdentifier;
     v25->_calendarIdentifier = v38;
   }
@@ -98,13 +98,13 @@
   else
   {
     calendarIdentifier = [MEMORY[0x277CBEA80] currentCalendar];
-    v40 = [calendarIdentifier calendarIdentifier];
-    v41 = [v40 copy];
+    calendarIdentifier = [calendarIdentifier calendarIdentifier];
+    v41 = [calendarIdentifier copy];
     v42 = v25->_calendarIdentifier;
     v25->_calendarIdentifier = v41;
   }
 
-  v43 = [v17 copy];
+  v43 = [scheduleCopy copy];
   schedule = v25->_schedule;
   v25->_schedule = v43;
 
@@ -120,33 +120,33 @@ void __113__USBudget_initWithCategories_applications_exemptApplications_webDomai
   }
 }
 
-- (USBudget)initWithType:(int64_t)a3 items:(id)a4 schedule:(id)a5 calendarIdentifier:(id)a6 identifier:(id)a7
+- (USBudget)initWithType:(int64_t)type items:(id)items schedule:(id)schedule calendarIdentifier:(id)identifier identifier:(id)a7
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  itemsCopy = items;
+  scheduleCopy = schedule;
+  identifierCopy = identifier;
   v16 = a7;
   v17 = objc_opt_new();
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      v18 = [MEMORY[0x277CBEB98] set];
+      currentHandler = [MEMORY[0x277CBEB98] set];
       v25 = v16;
-      v19 = self;
+      selfCopy3 = self;
       v20 = v17;
       v21 = v17;
-      v22 = v18;
-      v23 = v13;
+      v22 = currentHandler;
+      v23 = itemsCopy;
       goto LABEL_11;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
-      v18 = [MEMORY[0x277CBEB98] set];
+      currentHandler = [MEMORY[0x277CBEB98] set];
       v25 = v16;
-      v19 = self;
-      v20 = v13;
+      selfCopy3 = self;
+      v20 = itemsCopy;
       v21 = v17;
       goto LABEL_8;
     }
@@ -154,27 +154,27 @@ void __113__USBudget_initWithCategories_applications_exemptApplications_webDomai
 
   else
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"USUsageMonitor.m" lineNumber:61 description:@"Screen Time budgets are unsupported"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"USUsageMonitor.m" lineNumber:61 description:@"Screen Time budgets are unsupported"];
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
-      v18 = [MEMORY[0x277CBEB98] set];
+      currentHandler = [MEMORY[0x277CBEB98] set];
       v25 = v16;
-      v19 = self;
+      selfCopy3 = self;
       v20 = v17;
-      v21 = v13;
+      v21 = itemsCopy;
 LABEL_8:
-      v22 = v18;
+      v22 = currentHandler;
       v23 = v17;
 LABEL_11:
-      self = [(USBudget *)v19 initWithCategories:v20 applications:v21 exemptApplications:v22 webDomains:v23 schedule:v14 calendarIdentifier:v15 identifier:v25];
+      self = [(USBudget *)selfCopy3 initWithCategories:v20 applications:v21 exemptApplications:v22 webDomains:v23 schedule:scheduleCopy calendarIdentifier:identifierCopy identifier:v25];
       goto LABEL_12;
     }
   }
@@ -184,25 +184,25 @@ LABEL_13:
   return self;
 }
 
-- (USBudget)initWithCoder:(id)a3
+- (USBudget)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
   v6 = objc_alloc(MEMORY[0x277CBEB98]);
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"CategoryIdentifiers"];
-  v34 = [v4 decodeObjectOfClasses:v8 forKey:@"BundleIdentifiers"];
-  v32 = [v4 decodeObjectOfClasses:v8 forKey:@"ExemptBundleIdentifiers"];
-  v10 = [v4 decodeObjectOfClasses:v8 forKey:@"WebDomains"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"CategoryIdentifiers"];
+  v34 = [coderCopy decodeObjectOfClasses:v8 forKey:@"BundleIdentifiers"];
+  v32 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ExemptBundleIdentifiers"];
+  v10 = [coderCopy decodeObjectOfClasses:v8 forKey:@"WebDomains"];
   v11 = objc_opt_new();
   v33 = [v11 normalizeDomainNames:v10];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CalendarIdentifier"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CalendarIdentifier"];
   v13 = objc_alloc(MEMORY[0x277CBEB98]);
   v14 = objc_opt_class();
   v15 = [v13 initWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"Schedule"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"Schedule"];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -289,17 +289,17 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"Identifier"];
-  [v5 encodeObject:self->_categoryIdentifiers forKey:@"CategoryIdentifiers"];
-  [v5 encodeObject:self->_bundleIdentifiers forKey:@"BundleIdentifiers"];
-  [v5 encodeObject:self->_exemptBundleIdentifiers forKey:@"ExemptBundleIdentifiers"];
-  [v5 encodeObject:self->_webDomains forKey:@"WebDomains"];
-  [v5 encodeObject:self->_calendarIdentifier forKey:@"CalendarIdentifier"];
-  [v5 encodeObject:self->_schedule forKey:@"Schedule"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
+  [coderCopy encodeObject:self->_categoryIdentifiers forKey:@"CategoryIdentifiers"];
+  [coderCopy encodeObject:self->_bundleIdentifiers forKey:@"BundleIdentifiers"];
+  [coderCopy encodeObject:self->_exemptBundleIdentifiers forKey:@"ExemptBundleIdentifiers"];
+  [coderCopy encodeObject:self->_webDomains forKey:@"WebDomains"];
+  [coderCopy encodeObject:self->_calendarIdentifier forKey:@"CalendarIdentifier"];
+  [coderCopy encodeObject:self->_schedule forKey:@"Schedule"];
 }
 
 - (id)description
@@ -309,8 +309,8 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
   v51.receiver = self;
   v51.super_class = USBudget;
   v4 = [(USBudget *)&v51 description];
-  v5 = [(USBudget *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  identifier = [(USBudget *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, identifier];
 
   objc_msgSend(v6, "appendString:", @" Categories: (");
   v47 = 0;
@@ -321,8 +321,8 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = [(USBudget *)self categoryIdentifiers];
-  v8 = [v7 countByEnumeratingWithState:&v43 objects:v55 count:16];
+  categoryIdentifiers = [(USBudget *)self categoryIdentifiers];
+  v8 = [categoryIdentifiers countByEnumeratingWithState:&v43 objects:v55 count:16];
   if (v8)
   {
     v9 = *v44;
@@ -332,7 +332,7 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
       {
         if (*v44 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(categoryIdentifiers);
         }
 
         if (*(v48 + 24) == 1)
@@ -347,7 +347,7 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v43 objects:v55 count:16];
+      v8 = [categoryIdentifiers countByEnumeratingWithState:&v43 objects:v55 count:16];
     }
 
     while (v8);
@@ -360,8 +360,8 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v11 = [(USBudget *)self bundleIdentifiers];
-  v12 = [v11 countByEnumeratingWithState:&v39 objects:v54 count:16];
+  bundleIdentifiers = [(USBudget *)self bundleIdentifiers];
+  v12 = [bundleIdentifiers countByEnumeratingWithState:&v39 objects:v54 count:16];
   if (v12)
   {
     v13 = *v40;
@@ -371,7 +371,7 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
       {
         if (*v40 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(bundleIdentifiers);
         }
 
         if (*(v48 + 24) == 1)
@@ -386,7 +386,7 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v39 objects:v54 count:16];
+      v12 = [bundleIdentifiers countByEnumeratingWithState:&v39 objects:v54 count:16];
     }
 
     while (v12);
@@ -401,8 +401,8 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v15 = [(USBudget *)self exemptBundleIdentifiers];
-    v16 = [v15 countByEnumeratingWithState:&v35 objects:v53 count:16];
+    exemptBundleIdentifiers = [(USBudget *)self exemptBundleIdentifiers];
+    v16 = [exemptBundleIdentifiers countByEnumeratingWithState:&v35 objects:v53 count:16];
     if (v16)
     {
       v17 = *v36;
@@ -412,7 +412,7 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
         {
           if (*v36 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(exemptBundleIdentifiers);
           }
 
           if (*(v48 + 24) == 1)
@@ -427,7 +427,7 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
           }
         }
 
-        v16 = [v15 countByEnumeratingWithState:&v35 objects:v53 count:16];
+        v16 = [exemptBundleIdentifiers countByEnumeratingWithState:&v35 objects:v53 count:16];
       }
 
       while (v16);
@@ -442,8 +442,8 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v19 = [(USBudget *)self webDomains];
-  v20 = [v19 countByEnumeratingWithState:&v31 objects:v52 count:16];
+  webDomains = [(USBudget *)self webDomains];
+  v20 = [webDomains countByEnumeratingWithState:&v31 objects:v52 count:16];
   if (v20)
   {
     v21 = *v32;
@@ -453,7 +453,7 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
       {
         if (*v32 != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(webDomains);
         }
 
         if (*(v48 + 24) == 1)
@@ -468,18 +468,18 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
         }
       }
 
-      v20 = [v19 countByEnumeratingWithState:&v31 objects:v52 count:16];
+      v20 = [webDomains countByEnumeratingWithState:&v31 objects:v52 count:16];
     }
 
     while (v20);
   }
 
   [v6 appendString:@""]);
-  v23 = [(USBudget *)self calendarIdentifier];
-  [v6 appendFormat:@" %@:{", v23];
+  calendarIdentifier = [(USBudget *)self calendarIdentifier];
+  [v6 appendFormat:@" %@:{", calendarIdentifier];
 
   *(v48 + 24) = 1;
-  v24 = [(USBudget *)self schedule];
+  schedule = [(USBudget *)self schedule];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __23__USBudget_description__block_invoke;
@@ -487,7 +487,7 @@ uint64_t __26__USBudget_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, v
   v30 = &v47;
   v25 = v6;
   v29 = v25;
-  [v24 enumerateKeysAndObjectsUsingBlock:v28];
+  [schedule enumerateKeysAndObjectsUsingBlock:v28];
 
   [v25 appendString:@"}"];
   _Block_object_dispose(&v47, 8);

@@ -1,70 +1,70 @@
 @interface PXRadarConfiguration
 - (PXRadarConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addAttachment:(id)a3;
-- (void)addDiagnosticProvider:(id)a3;
-- (void)addLegacyTapToRadar:(id)a3;
-- (void)addScreenshot:(id)a3;
-- (void)collectDiagnosticsWithCompletionHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addAttachment:(id)attachment;
+- (void)addDiagnosticProvider:(id)provider;
+- (void)addLegacyTapToRadar:(id)radar;
+- (void)addScreenshot:(id)screenshot;
+- (void)collectDiagnosticsWithCompletionHandler:(id)handler;
 @end
 
 @implementation PXRadarConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PXRadarConfiguration *)self title];
-  [v4 setTitle:v5];
+  title = [(PXRadarConfiguration *)self title];
+  [v4 setTitle:title];
 
   [v4 setComponent:{-[PXRadarConfiguration component](self, "component")}];
   [v4 setClassification:{-[PXRadarConfiguration classification](self, "classification")}];
   v6 = [(PXRadarConfiguration *)self description];
   [v4 setDescription:v6];
 
-  v7 = [(PXRadarConfiguration *)self keywordIDs];
-  [v4 setKeywordIDs:v7];
+  keywordIDs = [(PXRadarConfiguration *)self keywordIDs];
+  [v4 setKeywordIDs:keywordIDs];
 
-  v8 = [(PXRadarConfiguration *)self additionalExtensionIdentifiers];
-  [v4 setAdditionalExtensionIdentifiers:v8];
+  additionalExtensionIdentifiers = [(PXRadarConfiguration *)self additionalExtensionIdentifiers];
+  [v4 setAdditionalExtensionIdentifiers:additionalExtensionIdentifiers];
 
   [v4 setAttachmentsIncludeAnyUserAsset:{-[PXRadarConfiguration attachmentsIncludeAnyUserAsset](self, "attachmentsIncludeAnyUserAsset")}];
   [v4 setWantsSystemDiagnostics:{-[PXRadarConfiguration wantsSystemDiagnostics](self, "wantsSystemDiagnostics")}];
   [v4 setWantsPhotosDiagnostics:{-[PXRadarConfiguration wantsPhotosDiagnostics](self, "wantsPhotosDiagnostics")}];
   [v4 setIsProgressUIAllowed:{-[PXRadarConfiguration isProgressUIAllowed](self, "isProgressUIAllowed")}];
-  v9 = [(PXRadarConfiguration *)self completionHandler];
-  [v4 setCompletionHandler:v9];
+  completionHandler = [(PXRadarConfiguration *)self completionHandler];
+  [v4 setCompletionHandler:completionHandler];
 
-  v10 = [v4 diagnosticProviders];
-  v11 = [(PXRadarConfiguration *)self diagnosticProviders];
-  [v10 setArray:v11];
+  diagnosticProviders = [v4 diagnosticProviders];
+  diagnosticProviders2 = [(PXRadarConfiguration *)self diagnosticProviders];
+  [diagnosticProviders setArray:diagnosticProviders2];
 
-  v12 = [v4 screenshots];
-  v13 = [(PXRadarConfiguration *)self screenshots];
-  [v12 setArray:v13];
+  screenshots = [v4 screenshots];
+  screenshots2 = [(PXRadarConfiguration *)self screenshots];
+  [screenshots setArray:screenshots2];
 
-  v14 = [v4 attachments];
-  v15 = [(PXRadarConfiguration *)self attachments];
-  [v14 setArray:v15];
+  attachments = [v4 attachments];
+  attachments2 = [(PXRadarConfiguration *)self attachments];
+  [attachments setArray:attachments2];
 
-  v16 = [v4 diagnosticContainers];
-  v17 = [(PXRadarConfiguration *)self diagnosticContainers];
-  [v16 setArray:v17];
+  diagnosticContainers = [v4 diagnosticContainers];
+  diagnosticContainers2 = [(PXRadarConfiguration *)self diagnosticContainers];
+  [diagnosticContainers setArray:diagnosticContainers2];
 
   return v4;
 }
 
-- (void)collectDiagnosticsWithCompletionHandler:(id)a3
+- (void)collectDiagnosticsWithCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXRadarConfiguration *)self diagnosticContainers];
+  handlerCopy = handler;
+  diagnosticContainers = [(PXRadarConfiguration *)self diagnosticContainers];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(PXRadarConfiguration *)self legacyTapToRadars];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  legacyTapToRadars = [(PXRadarConfiguration *)self legacyTapToRadars];
+  v8 = [legacyTapToRadars countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = *v22;
@@ -74,17 +74,17 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(legacyTapToRadars);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * i) diagnosticDictionary];
-        if (v11)
+        diagnosticDictionary = [*(*(&v21 + 1) + 8 * i) diagnosticDictionary];
+        if (diagnosticDictionary)
         {
-          [v6 addObject:v11];
+          [v6 addObject:diagnosticDictionary];
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [legacyTapToRadars countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -97,15 +97,15 @@
     {
       v13 = [[PXTapToRadarConcreteDiagnosticContainer alloc] initWithName:@"Legacy"];
       [(PXTapToRadarConcreteDiagnosticContainer *)v13 addAttachment:v12];
-      [v5 addObject:v13];
+      [diagnosticContainers addObject:v13];
     }
   }
 
-  v14 = [(PXRadarConfiguration *)self diagnosticProviders];
-  v15 = [v14 mutableCopy];
+  diagnosticProviders = [(PXRadarConfiguration *)self diagnosticProviders];
+  v15 = [diagnosticProviders mutableCopy];
 
-  v16 = [(PXRadarConfiguration *)self diagnosticProviders];
-  [v16 removeAllObjects];
+  diagnosticProviders2 = [(PXRadarConfiguration *)self diagnosticProviders];
+  [diagnosticProviders2 removeAllObjects];
 
   v20[0] = 0;
   v20[1] = v20;
@@ -118,13 +118,13 @@
   aBlock[2] = __64__PXRadarConfiguration_collectDiagnosticsWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E7730CA8;
   aBlock[5] = v20;
-  v17 = v5;
+  v17 = diagnosticContainers;
   aBlock[4] = v17;
   v18 = _Block_copy(aBlock);
   v15;
   v18;
   v17;
-  v4;
+  handlerCopy;
   PXIterateAsynchronously();
 }
 
@@ -200,32 +200,32 @@ uint64_t __64__PXRadarConfiguration_collectDiagnosticsWithCompletionHandler___bl
   return [v11 next];
 }
 
-- (void)addAttachment:(id)a3
+- (void)addAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(PXRadarConfiguration *)self attachments];
-  [v5 addObject:v4];
+  attachmentCopy = attachment;
+  attachments = [(PXRadarConfiguration *)self attachments];
+  [attachments addObject:attachmentCopy];
 }
 
-- (void)addScreenshot:(id)a3
+- (void)addScreenshot:(id)screenshot
 {
-  v4 = a3;
-  v5 = [(PXRadarConfiguration *)self screenshots];
-  [v5 addObject:v4];
+  screenshotCopy = screenshot;
+  screenshots = [(PXRadarConfiguration *)self screenshots];
+  [screenshots addObject:screenshotCopy];
 }
 
-- (void)addLegacyTapToRadar:(id)a3
+- (void)addLegacyTapToRadar:(id)radar
 {
-  v4 = a3;
-  v5 = [(PXRadarConfiguration *)self legacyTapToRadars];
-  [v5 addObject:v4];
+  radarCopy = radar;
+  legacyTapToRadars = [(PXRadarConfiguration *)self legacyTapToRadars];
+  [legacyTapToRadars addObject:radarCopy];
 }
 
-- (void)addDiagnosticProvider:(id)a3
+- (void)addDiagnosticProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(PXRadarConfiguration *)self diagnosticProviders];
-  [v5 addObject:v4];
+  providerCopy = provider;
+  diagnosticProviders = [(PXRadarConfiguration *)self diagnosticProviders];
+  [diagnosticProviders addObject:providerCopy];
 }
 
 - (PXRadarConfiguration)init

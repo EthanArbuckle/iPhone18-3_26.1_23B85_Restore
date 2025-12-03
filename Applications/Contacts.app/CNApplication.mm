@@ -1,8 +1,8 @@
 @interface CNApplication
 + (void)prewarmResourcesForLaunch;
-- (BOOL)openURL:(id)a3;
+- (BOOL)openURL:(id)l;
 - (CNApplication)init;
-- (void)checkInLaunchTasks:(unint64_t)a3;
+- (void)checkInLaunchTasks:(unint64_t)tasks;
 @end
 
 @implementation CNApplication
@@ -36,35 +36,35 @@
   return v2;
 }
 
-- (BOOL)openURL:(id)a3
+- (BOOL)openURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 scheme];
-  v6 = [v5 isEqualToString:@"tel"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v6 = [scheme isEqualToString:@"tel"];
 
   if (v6)
   {
     v7 = +[LSApplicationWorkspace defaultWorkspace];
-    v8 = [v7 openSensitiveURL:v4 withOptions:0];
+    v8 = [v7 openSensitiveURL:lCopy withOptions:0];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = CNApplication;
-    v8 = [(CNApplication *)&v10 openURL:v4];
+    v8 = [(CNApplication *)&v10 openURL:lCopy];
   }
 
   return v8;
 }
 
-- (void)checkInLaunchTasks:(unint64_t)a3
+- (void)checkInLaunchTasks:(unint64_t)tasks
 {
-  atomic_fetch_or(&self->_launchTaskCompletionMask, a3);
+  atomic_fetch_or(&self->_launchTaskCompletionMask, tasks);
   if ([(CNApplication *)self areAllLaunchTasksComplete]&& (atomic_exchange(&self->_extendedLaunchFinished, 1u) & 1) == 0)
   {
-    v4 = [(CNApplication *)self _launchTestName];
-    [(CNApplication *)self finishedTest:v4 extraResults:0];
+    _launchTestName = [(CNApplication *)self _launchTestName];
+    [(CNApplication *)self finishedTest:_launchTestName extraResults:0];
   }
 }
 

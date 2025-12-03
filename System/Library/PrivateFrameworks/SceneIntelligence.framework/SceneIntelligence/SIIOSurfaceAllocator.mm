@@ -1,35 +1,35 @@
 @interface SIIOSurfaceAllocator
-- (id)allocateWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 stride:(unint64_t)a6;
+- (id)allocateWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format stride:(unint64_t)stride;
 @end
 
 @implementation SIIOSurfaceAllocator
 
-- (id)allocateWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 stride:(unint64_t)a6
+- (id)allocateWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format stride:(unint64_t)stride
 {
   v74[7] = *MEMORY[0x277D85DE8];
-  v8 = SIPlaneCountForPixelFormat(a5);
-  v64 = a5;
+  v8 = SIPlaneCountForPixelFormat(format);
+  formatCopy = format;
   if (v8 == 1)
   {
-    v9 = SIBytesPerElementForPixelFormat(a5);
+    v9 = SIBytesPerElementForPixelFormat(format);
   }
 
   else
   {
-    v9 = SIBytesPerElementForPlanarPixelFormat(a5, 0);
+    v9 = SIBytesPerElementForPlanarPixelFormat(format, 0);
   }
 
   v10 = v9;
   v11 = v8 == 1;
   v12 = MEMORY[0x277CBEB38];
   v73[0] = *MEMORY[0x277CD2B88];
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:width];
   v74[0] = v13;
   v73[1] = *MEMORY[0x277CD2A28];
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:height];
   v74[1] = v14;
   v73[2] = *MEMORY[0x277CD2A70];
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v64];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:formatCopy];
   v74[2] = v15;
   v16 = *MEMORY[0x277CD29E8];
   v73[3] = *MEMORY[0x277CD29F0];
@@ -46,19 +46,19 @@
 
   if (v11)
   {
-    if (a6)
+    if (stride)
     {
-      v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a6 * a4];
-      [(__CFDictionary *)properties setObject:v19 forKeyedSubscript:*MEMORY[0x277CD2948]];
+      height = [MEMORY[0x277CCABB0] numberWithUnsignedLong:stride * height];
+      [(__CFDictionary *)properties setObject:height forKeyedSubscript:*MEMORY[0x277CD2948]];
 
-      v56 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a6];
+      v56 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:stride];
       [(__CFDictionary *)properties setObject:v56 forKeyedSubscript:*MEMORY[0x277CD2968]];
     }
   }
 
   else
   {
-    if (a6)
+    if (stride)
     {
       v20 = __SceneIntelligenceLogSharedInstance();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -90,12 +90,12 @@
       v59 = v22;
       v58 = v24;
       v65 = v23;
-      v25 = SIBytesPerElementForPlanarPixelFormat(v64, v23);
-      v26 = SIVerticalSubsamplingForPlanarPixelFormat(v64, v65);
-      v27 = a3 / SIHorizontalSubsamplingForPlanarPixelFormat(v64, v65);
+      v25 = SIBytesPerElementForPlanarPixelFormat(formatCopy, v23);
+      v26 = SIVerticalSubsamplingForPlanarPixelFormat(formatCopy, v65);
+      v27 = width / SIHorizontalSubsamplingForPlanarPixelFormat(formatCopy, v65);
       v28 = [SIIOSurfaceAllocator alignPlaneBytesPerRow:v27 * v25];
-      v29 = a4 / v26;
-      v30 = MEMORY[0x223D4BE20](v61, v28 * (a4 / v26));
+      v29 = height / v26;
+      v30 = MEMORY[0x223D4BE20](v61, v28 * (height / v26));
       v62 = MEMORY[0x223D4BE20](v60, v21);
       v67[0] = v52;
       v63 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v28];

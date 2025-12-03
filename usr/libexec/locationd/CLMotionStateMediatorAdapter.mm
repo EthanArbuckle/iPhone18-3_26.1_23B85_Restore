@@ -1,35 +1,35 @@
 @interface CLMotionStateMediatorAdapter
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLMotionStateMediatorAdapter)init;
 - (id)syncgetActivityOverride;
 - (void)adaptee;
-- (void)addClient:(id)a3 prepareSessionEndForSessionType:(int64_t)a4;
+- (void)addClient:(id)client prepareSessionEndForSessionType:(int64_t)type;
 - (void)beginService;
-- (void)beginWorkoutSession:(WorkoutSettings *)a3 withOverview:(id)a4 enableWorkoutChangeDetection:(BOOL)a5;
-- (void)currentWorkoutActiveStateWithReply:(id)a3;
+- (void)beginWorkoutSession:(WorkoutSettings *)session withOverview:(id)overview enableWorkoutChangeDetection:(BOOL)detection;
+- (void)currentWorkoutActiveStateWithReply:(id)reply;
 - (void)didExitGeoFence;
 - (void)didTimeoutGeoFence;
-- (void)didUpdateWeather:(id)a3;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)didUpdateWeather:(id)weather;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)endWorkoutSession:(WorkoutSettings *)a3;
-- (void)lastKnownIndoorOutdoorStateWithReply:(id)a3;
-- (void)onOutdoorUpdate:(id)a3;
-- (void)onVisit:(id)a3;
-- (void)pauseWorkout:(WorkoutSettings *)a3;
-- (void)registerForWorkoutSessionUpdates:(id)a3;
-- (void)removeClient:(id)a3 prepareSessionEndForSessionType:(int64_t)a4;
-- (void)resumeWorkout:(WorkoutSettings *)a3;
-- (void)setCurrentWorkoutType:(WorkoutSettings *)a3 isManualTransition:(BOOL)a4;
-- (void)setWorkoutSuggestedStopTimeout:(double)a3;
-- (void)triggerWorkoutLocationEventForTesting:(int64_t)a3 withReply:(id)a4;
-- (void)unregisterForWorkoutSessionUpdates:(id)a3;
-- (void)updateWorkoutReminderMuteSetting:(int64_t)a3 mute:(BOOL)a4;
+- (void)endWorkoutSession:(WorkoutSettings *)session;
+- (void)lastKnownIndoorOutdoorStateWithReply:(id)reply;
+- (void)onOutdoorUpdate:(id)update;
+- (void)onVisit:(id)visit;
+- (void)pauseWorkout:(WorkoutSettings *)workout;
+- (void)registerForWorkoutSessionUpdates:(id)updates;
+- (void)removeClient:(id)client prepareSessionEndForSessionType:(int64_t)type;
+- (void)resumeWorkout:(WorkoutSettings *)workout;
+- (void)setCurrentWorkoutType:(WorkoutSettings *)type isManualTransition:(BOOL)transition;
+- (void)setWorkoutSuggestedStopTimeout:(double)timeout;
+- (void)triggerWorkoutLocationEventForTesting:(int64_t)testing withReply:(id)reply;
+- (void)unregisterForWorkoutSessionUpdates:(id)updates;
+- (void)updateWorkoutReminderMuteSetting:(int64_t)setting mute:(BOOL)mute;
 - (void)userDismissedWorkoutAlert;
-- (void)workoutSnapshotWithReply:(id)a3;
+- (void)workoutSnapshotWithReply:(id)reply;
 @end
 
 @implementation CLMotionStateMediatorAdapter
@@ -44,12 +44,12 @@
   return result;
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -86,81 +86,81 @@
   v2();
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLMotionStateMediatorAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLMotionStateMediatorAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLMotionStateMediatorAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (void)onOutdoorUpdate:(id)a3
+- (void)onOutdoorUpdate:(id)update
 {
-  v4 = [(CLMotionStateMediatorAdapter *)self adaptee];
-  (*(a3 + 2))(v5, a3);
-  sub_1000C5F7C(v4, v5);
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
+  (*(update + 2))(v5, update);
+  sub_1000C5F7C(adaptee, v5);
 }
 
-- (void)onVisit:(id)a3
+- (void)onVisit:(id)visit
 {
   v4 = *([(CLMotionStateMediatorAdapter *)self adaptee]+ 1049);
   if (v4)
   {
 
-    sub_100C1BE60(v4, a3);
+    sub_100C1BE60(v4, visit);
   }
 }
 
-- (void)didUpdateWeather:(id)a3
+- (void)didUpdateWeather:(id)weather
 {
   v4 = *([(CLMotionStateMediatorAdapter *)self adaptee]+ 1049);
   if (v4)
   {
 
-    sub_100C1BA34(v4, a3);
+    sub_100C1BA34(v4, weather);
   }
 }
 
-- (void)addClient:(id)a3 prepareSessionEndForSessionType:(int64_t)a4
+- (void)addClient:(id)client prepareSessionEndForSessionType:(int64_t)type
 {
-  v6 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_100687D14(v6, a3, a4);
+  sub_100687D14(adaptee, client, type);
 }
 
-- (void)removeClient:(id)a3 prepareSessionEndForSessionType:(int64_t)a4
+- (void)removeClient:(id)client prepareSessionEndForSessionType:(int64_t)type
 {
-  v6 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_100687EA4(v6, a3, a4);
+  sub_100687EA4(adaptee, client, type);
 }
 
-- (void)setWorkoutSuggestedStopTimeout:(double)a3
+- (void)setWorkoutSuggestedStopTimeout:(double)timeout
 {
-  v4 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_1006880BC(v4, a3);
+  sub_1006880BC(adaptee, timeout);
 }
 
 - (void)userDismissedWorkoutAlert
 {
-  v2 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_1006881D0(v2);
+  sub_1006881D0(adaptee);
 }
 
-- (void)triggerWorkoutLocationEventForTesting:(int64_t)a3 withReply:(id)a4
+- (void)triggerWorkoutLocationEventForTesting:(int64_t)testing withReply:(id)reply
 {
-  v5 = sub_100D36564([(CLMotionStateMediatorAdapter *)self adaptee]+ 6648, a3);
-  v6 = *(a4 + 2);
+  v5 = sub_100D36564([(CLMotionStateMediatorAdapter *)self adaptee]+ 6648, testing);
+  v6 = *(reply + 2);
   if (v5)
   {
     v7 = 100;
@@ -171,15 +171,15 @@
     v7 = 108;
   }
 
-  v6(a4, v7);
+  v6(reply, v7);
 }
 
-- (void)lastKnownIndoorOutdoorStateWithReply:(id)a3
+- (void)lastKnownIndoorOutdoorStateWithReply:(id)reply
 {
-  v4 = [(CLMotionStateMediatorAdapter *)self adaptee];
-  v5 = v4[632];
-  v6 = *(v4 + 1266);
-  (*(a3 + 2))(a3, &v5);
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
+  v5 = adaptee[632];
+  v6 = *(adaptee + 1266);
+  (*(reply + 2))(reply, &v5);
 }
 
 - (void)didExitGeoFence
@@ -250,26 +250,26 @@
   return v2;
 }
 
-- (void)registerForWorkoutSessionUpdates:(id)a3
+- (void)registerForWorkoutSessionUpdates:(id)updates
 {
-  v4 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_1006888B0(v4, a3);
+  sub_1006888B0(adaptee, updates);
 }
 
-- (void)unregisterForWorkoutSessionUpdates:(id)a3
+- (void)unregisterForWorkoutSessionUpdates:(id)updates
 {
-  v4 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_100688998(v4, a3);
+  sub_100688998(adaptee, updates);
 }
 
-- (void)beginWorkoutSession:(WorkoutSettings *)a3 withOverview:(id)a4 enableWorkoutChangeDetection:(BOOL)a5
+- (void)beginWorkoutSession:(WorkoutSettings *)session withOverview:(id)overview enableWorkoutChangeDetection:(BOOL)detection
 {
-  v5 = a5;
-  v8 = [(CLMotionStateMediatorAdapter *)self adaptee];
-  (*(a4 + 2))(v9, a4);
-  sub_100688B14(v8, a3->var0, v9, v5);
+  detectionCopy = detection;
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
+  (*(overview + 2))(v9, overview);
+  sub_100688B14(adaptee, session->var0, v9, detectionCopy);
   sub_100106180(v11);
   if (v10 < 0)
   {
@@ -277,36 +277,36 @@
   }
 }
 
-- (void)setCurrentWorkoutType:(WorkoutSettings *)a3 isManualTransition:(BOOL)a4
+- (void)setCurrentWorkoutType:(WorkoutSettings *)type isManualTransition:(BOOL)transition
 {
-  v4 = a4;
-  v6 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  transitionCopy = transition;
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_100689098(v6, a3->var0, v4);
+  sub_100689098(adaptee, type->var0, transitionCopy);
 }
 
-- (void)endWorkoutSession:(WorkoutSettings *)a3
+- (void)endWorkoutSession:(WorkoutSettings *)session
 {
-  v4 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_100687390(v4, a3->var0);
+  sub_100687390(adaptee, session->var0);
 }
 
-- (void)pauseWorkout:(WorkoutSettings *)a3
+- (void)pauseWorkout:(WorkoutSettings *)workout
 {
-  v4 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_100689280(v4, a3->var0);
+  sub_100689280(adaptee, workout->var0);
 }
 
-- (void)resumeWorkout:(WorkoutSettings *)a3
+- (void)resumeWorkout:(WorkoutSettings *)workout
 {
-  v4 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_1006893C0(v4, a3->var0);
+  sub_1006893C0(adaptee, workout->var0);
 }
 
-- (void)currentWorkoutActiveStateWithReply:(id)a3
+- (void)currentWorkoutActiveStateWithReply:(id)reply
 {
   v7 = 0;
   v18 = 0u;
@@ -347,7 +347,7 @@
 
   sub_1006976A0(v11, &v19[1]);
   v5 = sub_1006897D0(&v8);
-  (*(a3 + 2))(a3, v4, v12, v5);
+  (*(reply + 2))(reply, v4, v12, v5);
   sub_100666704(v11);
   if (SHIBYTE(v10) < 0)
   {
@@ -361,40 +361,40 @@
   }
 }
 
-- (void)workoutSnapshotWithReply:(id)a3
+- (void)workoutSnapshotWithReply:(id)reply
 {
-  v4 = [(CLMotionStateMediatorAdapter *)self adaptee];
-  v5 = *(v4 + 10072);
-  v12[12] = *(v4 + 10056);
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
+  v5 = *(adaptee + 10072);
+  v12[12] = *(adaptee + 10056);
   v12[13] = v5;
-  v12[14] = *(v4 + 10088);
-  v6 = *(v4 + 10008);
-  v12[8] = *(v4 + 9992);
+  v12[14] = *(adaptee + 10088);
+  v6 = *(adaptee + 10008);
+  v12[8] = *(adaptee + 9992);
   v12[9] = v6;
-  v7 = *(v4 + 10040);
-  v12[10] = *(v4 + 10024);
+  v7 = *(adaptee + 10040);
+  v12[10] = *(adaptee + 10024);
   v12[11] = v7;
-  v8 = *(v4 + 9944);
-  v12[4] = *(v4 + 9928);
+  v8 = *(adaptee + 9944);
+  v12[4] = *(adaptee + 9928);
   v12[5] = v8;
-  v9 = *(v4 + 9976);
-  v12[6] = *(v4 + 9960);
+  v9 = *(adaptee + 9976);
+  v12[6] = *(adaptee + 9960);
   v12[7] = v9;
-  v10 = *(v4 + 9880);
-  v12[0] = *(v4 + 9864);
+  v10 = *(adaptee + 9880);
+  v12[0] = *(adaptee + 9864);
   v12[1] = v10;
-  v11 = *(v4 + 9912);
-  v12[2] = *(v4 + 9896);
+  v11 = *(adaptee + 9912);
+  v12[2] = *(adaptee + 9896);
   v12[3] = v11;
-  (*(a3 + 2))(a3, v12);
+  (*(reply + 2))(reply, v12);
 }
 
-- (void)updateWorkoutReminderMuteSetting:(int64_t)a3 mute:(BOOL)a4
+- (void)updateWorkoutReminderMuteSetting:(int64_t)setting mute:(BOOL)mute
 {
-  v4 = a4;
-  v6 = [(CLMotionStateMediatorAdapter *)self adaptee];
+  muteCopy = mute;
+  adaptee = [(CLMotionStateMediatorAdapter *)self adaptee];
 
-  sub_100689A04(v6, a3, v4);
+  sub_100689A04(adaptee, setting, muteCopy);
 }
 
 + (BOOL)isSupported

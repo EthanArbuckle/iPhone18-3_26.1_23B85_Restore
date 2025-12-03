@@ -5,32 +5,32 @@
 - (NSString)description;
 - (char)gradientColor;
 - (char)solidColor;
-- (void)configureForAggregateAcknowledgmentChatItem:(id)a3;
+- (void)configureForAggregateAcknowledgmentChatItem:(id)item;
 - (void)configureGestureRecognizers;
-- (void)configurePileForChatItem:(id)a3;
+- (void)configurePileForChatItem:(id)item;
 - (void)layoutSubviews;
-- (void)longPressGestureRecognized:(id)a3;
+- (void)longPressGestureRecognized:(id)recognized;
 - (void)playInsertionAnimationOnTopPlatter;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setGradientReferenceView:(id)a3;
-- (void)setHidesFirstTapbackTail:(BOOL)a3;
-- (void)setInvertTailDirection:(BOOL)a3;
-- (void)setIsFadedOut:(BOOL)a3;
-- (void)tapGestureRecognized:(id)a3;
+- (void)setGradientReferenceView:(id)view;
+- (void)setHidesFirstTapbackTail:(BOOL)tail;
+- (void)setInvertTailDirection:(BOOL)direction;
+- (void)setIsFadedOut:(BOOL)out;
+- (void)tapGestureRecognized:(id)recognized;
 - (void)transcriptBackgroundLuminanceChanged;
 - (void)updateForBackgroundState;
 @end
 
 @implementation CKAggregateAcknowledgmentBalloonView
 
-- (void)configureForAggregateAcknowledgmentChatItem:(id)a3
+- (void)configureForAggregateAcknowledgmentChatItem:(id)item
 {
   v5.receiver = self;
   v5.super_class = CKAggregateAcknowledgmentBalloonView;
-  v4 = a3;
-  [(CKAcknowledgmentBalloonView *)&v5 configureForAggregateAcknowledgmentChatItem:v4];
-  [(CKAggregateAcknowledgmentBalloonView *)self configurePileForChatItem:v4, v5.receiver, v5.super_class];
+  itemCopy = item;
+  [(CKAcknowledgmentBalloonView *)&v5 configureForAggregateAcknowledgmentChatItem:itemCopy];
+  [(CKAggregateAcknowledgmentBalloonView *)self configurePileForChatItem:itemCopy, v5.receiver, v5.super_class];
 }
 
 - (BOOL)hidesFirstTapbackTail
@@ -40,16 +40,16 @@
   return *(self + v3);
 }
 
-- (void)setHidesFirstTapbackTail:(BOOL)a3
+- (void)setHidesFirstTapbackTail:(BOOL)tail
 {
-  v4 = self;
-  sub_19091433C(a3);
+  selfCopy = self;
+  sub_19091433C(tail);
 }
 
-- (void)setIsFadedOut:(BOOL)a3
+- (void)setIsFadedOut:(BOOL)out
 {
-  v4 = self;
-  sub_190915A24(a3);
+  selfCopy = self;
+  sub_190915A24(out);
 }
 
 - (CKGradientReferenceView)gradientReferenceView
@@ -60,10 +60,10 @@
   return Strong;
 }
 
-- (void)setGradientReferenceView:(id)a3
+- (void)setGradientReferenceView:(id)view
 {
-  v5 = a3;
-  v4 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1909197A8();
 }
 
@@ -74,14 +74,14 @@
   return *(self + v3);
 }
 
-- (void)setInvertTailDirection:(BOOL)a3
+- (void)setInvertTailDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   v5 = OBJC_IVAR___CKAggregateAcknowledgmentBalloonView_invertTailDirection;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
-  if (v6 != v3)
+  *(self + v5) = directionCopy;
+  if (v6 != directionCopy)
   {
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
@@ -103,20 +103,20 @@
 
 - (void)transcriptBackgroundLuminanceChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_190916674();
 }
 
-- (void)configurePileForChatItem:(id)a3
+- (void)configurePileForChatItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_190914D38(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_190914D38(itemCopy);
 }
 
 - (void)prepareForDisplay
 {
-  v2 = self;
+  selfCopy = self;
   sub_190916EB4();
 }
 
@@ -131,23 +131,23 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_190917364();
 }
 
 - (void)playInsertionAnimationOnTopPlatter
 {
-  v2 = self;
+  selfCopy = self;
   sub_19091559C();
 }
 
 - (void)updateForBackgroundState
 {
-  v2 = self;
-  v3 = [(CKAggregateAcknowledgmentBalloonView *)v2 traitCollection];
-  v4 = [v3 isTranscriptBackgroundActive];
+  selfCopy = self;
+  traitCollection = [(CKAggregateAcknowledgmentBalloonView *)selfCopy traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  if (v4)
+  if (isTranscriptBackgroundActive)
   {
     v5 = 1;
   }
@@ -156,36 +156,36 @@
   {
     v6 = OBJC_IVAR___CKAggregateAcknowledgmentBalloonView_forcesMaterialBackground;
     swift_beginAccess();
-    v5 = *(v2 + v6);
+    v5 = *(selfCopy + v6);
   }
 
-  *(v2 + OBJC_IVAR___CKAggregateAcknowledgmentBalloonView_wantsMaterialBackground) = v5;
+  *(selfCopy + OBJC_IVAR___CKAggregateAcknowledgmentBalloonView_wantsMaterialBackground) = v5;
   sub_190915D9C();
 }
 
 - (void)configureGestureRecognizers
 {
-  v2 = self;
+  selfCopy = self;
   AggregateAcknowledgmentBalloonView.configureGestureRecognizers()();
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = self;
-  AggregateAcknowledgmentBalloonView.tapGestureRecognized(_:)(v4);
+  recognizedCopy = recognized;
+  selfCopy = self;
+  AggregateAcknowledgmentBalloonView.tapGestureRecognized(_:)(recognizedCopy);
 }
 
-- (void)longPressGestureRecognized:(id)a3
+- (void)longPressGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = self;
-  sub_1909189B8(v4);
+  recognizedCopy = recognized;
+  selfCopy = self;
+  sub_1909189B8(recognizedCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   AggregateAcknowledgmentBalloonView.description.getter();
 
   v3 = sub_190D56ED0();

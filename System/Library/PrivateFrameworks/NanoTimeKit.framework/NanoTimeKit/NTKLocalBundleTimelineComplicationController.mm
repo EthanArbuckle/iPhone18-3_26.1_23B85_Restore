@@ -1,20 +1,20 @@
 @interface NTKLocalBundleTimelineComplicationController
-+ (BOOL)_acceptsComplicationType:(unint64_t)a3 family:(int64_t)a4 forDevice:(id)a5;
-+ (BOOL)acceptsComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-+ (Class)complicationDataSourceClassForComplication:(id)a3 family:(int64_t)a4 device:(id)a5;
-+ (Class)dataSourceFromComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
++ (BOOL)_acceptsComplicationType:(unint64_t)type family:(int64_t)family forDevice:(id)device;
++ (BOOL)acceptsComplication:(id)complication family:(int64_t)family forDevice:(id)device;
++ (Class)complicationDataSourceClassForComplication:(id)complication family:(int64_t)family device:(id)device;
++ (Class)dataSourceFromComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 @end
 
 @implementation NTKLocalBundleTimelineComplicationController
 
-+ (BOOL)acceptsComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
++ (BOOL)acceptsComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 complicationType])
+  complicationCopy = complication;
+  deviceCopy = device;
+  if ([complicationCopy complicationType])
   {
     v9 = +[NTKBundleComplicationManager sharedManager];
-    v10 = [v9 dataSourceClassForBundleComplication:v7 withFamily:a4 andDevice:v8 factorInMigration:1] != 0;
+    v10 = [v9 dataSourceClassForBundleComplication:complicationCopy withFamily:family andDevice:deviceCopy factorInMigration:1] != 0;
   }
 
   else
@@ -25,32 +25,32 @@
   return v10;
 }
 
-+ (BOOL)_acceptsComplicationType:(unint64_t)a3 family:(int64_t)a4 forDevice:(id)a5
++ (BOOL)_acceptsComplicationType:(unint64_t)type family:(int64_t)family forDevice:(id)device
 {
-  v7 = a5;
-  if (a3 <= 0x30 && ((1 << a3) & 0x1000080000001) != 0)
+  deviceCopy = device;
+  if (type <= 0x30 && ((1 << type) & 0x1000080000001) != 0)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [NTKComplication anyComplicationOfType:a3];
+    v9 = [NTKComplication anyComplicationOfType:type];
     v10 = +[NTKBundleComplicationManager sharedManager];
-    v8 = [v10 dataSourceClassForBundleComplication:v9 withFamily:a4 andDevice:v7 factorInMigration:1] != 0;
+    v8 = [v10 dataSourceClassForBundleComplication:v9 withFamily:family andDevice:deviceCopy factorInMigration:1] != 0;
   }
 
   return v8;
 }
 
-+ (Class)dataSourceFromComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
++ (Class)dataSourceFromComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 complicationType])
+  complicationCopy = complication;
+  deviceCopy = device;
+  if ([complicationCopy complicationType])
   {
     v9 = +[NTKBundleComplicationManager sharedManager];
-    v10 = [v9 dataSourceClassForBundleComplication:v7 withFamily:a4 andDevice:v8 factorInMigration:1];
+    v10 = [v9 dataSourceClassForBundleComplication:complicationCopy withFamily:family andDevice:deviceCopy factorInMigration:1];
   }
 
   else
@@ -61,12 +61,12 @@
   return v10;
 }
 
-+ (Class)complicationDataSourceClassForComplication:(id)a3 family:(int64_t)a4 device:(id)a5
++ (Class)complicationDataSourceClassForComplication:(id)complication family:(int64_t)family device:(id)device
 {
-  v8 = a3;
-  v9 = a5;
+  complicationCopy = complication;
+  deviceCopy = device;
   v10 = +[NTKBundleComplicationManager sharedManager];
-  v11 = [v10 dataSourceClassForBundleComplication:v8 withFamily:a4 andDevice:v9 factorInMigration:1];
+  v11 = [v10 dataSourceClassForBundleComplication:complicationCopy withFamily:family andDevice:deviceCopy factorInMigration:1];
 
   if (v11)
   {
@@ -75,9 +75,9 @@
 
   else
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = &OBJC_METACLASS___NTKLocalBundleTimelineComplicationController;
-    v12 = objc_msgSendSuper2(&v15, sel_complicationDataSourceClassForComplication_family_device_, v8, a4, v9);
+    v12 = objc_msgSendSuper2(&v15, sel_complicationDataSourceClassForComplication_family_device_, complicationCopy, family, deviceCopy);
   }
 
   v13 = v12;

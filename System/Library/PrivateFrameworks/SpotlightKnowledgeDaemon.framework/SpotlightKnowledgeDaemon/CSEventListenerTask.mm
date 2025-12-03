@@ -1,7 +1,7 @@
 @interface CSEventListenerTask
 - (BOOL)allowed;
-- (CSEventListenerTask)initWithConfig:(id)a3;
-- (void)_throttling:(BOOL)a3;
+- (CSEventListenerTask)initWithConfig:(id)config;
+- (void)_throttling:(BOOL)_throttling;
 - (void)complete;
 - (void)end;
 - (void)enter;
@@ -13,27 +13,27 @@
 
 @implementation CSEventListenerTask
 
-- (CSEventListenerTask)initWithConfig:(id)a3
+- (CSEventListenerTask)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v16.receiver = self;
   v16.super_class = CSEventListenerTask;
   v5 = [(CSEventListenerTask *)&v16 init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [configCopy name];
     name = v5->_name;
-    v5->_name = v6;
+    v5->_name = name;
 
-    v8 = [v4 taskIdentifier];
+    taskIdentifier = [configCopy taskIdentifier];
     taskIdentifier = v5->_taskIdentifier;
-    v5->_taskIdentifier = v8;
+    v5->_taskIdentifier = taskIdentifier;
 
-    v10 = [v4 taskOptions];
+    taskOptions = [configCopy taskOptions];
     options = v5->_options;
-    v5->_options = v10;
+    v5->_options = taskOptions;
 
-    v5->_needsThrottling = ([v4 eventFlags] & 0x40) != 0;
+    v5->_needsThrottling = ([configCopy eventFlags] & 0x40) != 0;
     v5->_yieldLock._os_unfair_lock_opaque = 0;
     taskQueue = v5->_taskQueue;
     v5->_taskQueue = 0;
@@ -106,15 +106,15 @@
   }
 }
 
-- (void)_throttling:(BOOL)a3
+- (void)_throttling:(BOOL)_throttling
 {
   v15 = *MEMORY[0x277D85DE8];
   if (self->_needsThrottling)
   {
-    v3 = a3;
+    _throttlingCopy = _throttling;
     v5 = +[SKGActivityJournal sharedJournal];
     v6 = v5;
-    if (v3)
+    if (_throttlingCopy)
     {
       v7 = 52;
     }
@@ -135,12 +135,12 @@
         v11 = 138412546;
         v12 = name;
         v13 = 1024;
-        v14 = v3;
+        v14 = _throttlingCopy;
         _os_log_impl(&dword_231B25000, v8, OS_LOG_TYPE_INFO, "### changing throttle state for %@ event: permitted: %{BOOL}d", &v11, 0x12u);
       }
     }
 
-    atomic_store(v3, &self->_allowed);
+    atomic_store(_throttlingCopy, &self->_allowed);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -155,9 +155,9 @@
     atomic_store(0, &self->_jobCount);
     if (!self->_taskQueue)
     {
-      v3 = [(NSString *)self->_name UTF8String];
+      uTF8String = [(NSString *)self->_name UTF8String];
       v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v5 = dispatch_queue_create(v3, v4);
+      v5 = dispatch_queue_create(uTF8String, v4);
       taskQueue = self->_taskQueue;
       self->_taskQueue = v5;
     }
@@ -181,7 +181,7 @@
       }
     }
 
-    v11 = [MEMORY[0x277CF0810] sharedScheduler];
+    mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
     taskIdentifier = self->_taskIdentifier;
     v13 = self->_taskQueue;
     v15[0] = MEMORY[0x277D85DD0];
@@ -189,7 +189,7 @@
     v15[2] = __28__CSEventListenerTask_setup__block_invoke;
     v15[3] = &unk_27893D098;
     v15[4] = self;
-    [v11 registerForTaskWithIdentifier:taskIdentifier usingQueue:v13 launchHandler:v15];
+    [mEMORY[0x277CF0810] registerForTaskWithIdentifier:taskIdentifier usingQueue:v13 launchHandler:v15];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -347,8 +347,8 @@ void __29__CSEventListenerTask_handle__block_invoke_3(uint64_t a1)
   v52 = *MEMORY[0x277D85DE8];
   if (self->_needsThrottling)
   {
-    v3 = [MEMORY[0x277CF0810] sharedScheduler];
-    v4 = [v3 taskRequestForIdentifier:self->_taskIdentifier];
+    mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
+    v4 = [mEMORY[0x277CF0810] taskRequestForIdentifier:self->_taskIdentifier];
 
     v5 = v4;
     if (!v4)
@@ -485,9 +485,9 @@ void __29__CSEventListenerTask_handle__block_invoke_3(uint64_t a1)
         }
       }
 
-      v26 = [MEMORY[0x277CF0810] sharedScheduler];
+      mEMORY[0x277CF0810]2 = [MEMORY[0x277CF0810] sharedScheduler];
       v45 = 0;
-      [v26 updateTaskRequest:v5 error:&v45];
+      [mEMORY[0x277CF0810]2 updateTaskRequest:v5 error:&v45];
       v27 = v45;
 
       self->_wait = 0;
@@ -495,9 +495,9 @@ void __29__CSEventListenerTask_handle__block_invoke_3(uint64_t a1)
 
     else
     {
-      v28 = [MEMORY[0x277CF0810] sharedScheduler];
+      mEMORY[0x277CF0810]3 = [MEMORY[0x277CF0810] sharedScheduler];
       v44 = 0;
-      v29 = [v28 submitTaskRequest:v5 error:&v44];
+      v29 = [mEMORY[0x277CF0810]3 submitTaskRequest:v5 error:&v44];
       v27 = v44;
 
       if (v29)

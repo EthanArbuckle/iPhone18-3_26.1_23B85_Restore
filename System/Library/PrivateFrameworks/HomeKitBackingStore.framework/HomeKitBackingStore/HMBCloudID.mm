@@ -1,30 +1,30 @@
 @interface HMBCloudID
-- (BOOL)isEqual:(id)a3;
-- (HMBCloudID)initWithCoder:(id)a3;
-- (HMBCloudID)initWithContainerID:(id)a3 scope:(int64_t)a4;
-- (HMBCloudID)initWithContainerID:(id)a3 scope:(int64_t)a4 name:(id)a5 modelID:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMBCloudID)initWithCoder:(id)coder;
+- (HMBCloudID)initWithContainerID:(id)d scope:(int64_t)scope;
+- (HMBCloudID)initWithContainerID:(id)d scope:(int64_t)scope name:(id)name modelID:(id)iD;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMBCloudID
 
 - (unint64_t)hash
 {
-  v2 = [(HMBCloudID *)self modelID];
-  v3 = [v2 hash];
+  modelID = [(HMBCloudID *)self modelID];
+  v3 = [modelID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -35,9 +35,9 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMBCloudID *)self modelID];
-    v8 = [v6 modelID];
-    v9 = [v7 isEqual:v8];
+    modelID = [(HMBCloudID *)self modelID];
+    modelID2 = [v6 modelID];
+    v9 = [modelID isEqual:modelID2];
   }
 
   else
@@ -48,13 +48,13 @@
   return v9;
 }
 
-- (HMBCloudID)initWithCoder:(id)a3
+- (HMBCloudID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBCID.c"];
-  v6 = [v4 decodeIntegerForKey:@"HMBCID.s"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBCID.n"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBCID.m"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBCID.c"];
+  v6 = [coderCopy decodeIntegerForKey:@"HMBCID.s"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBCID.n"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBCID.m"];
 
   if (v5)
   {
@@ -68,42 +68,42 @@
 
   if (v9 || v8 == 0)
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HMBCloudID *)self initWithContainerID:v5 scope:v6 name:v7 modelID:v8];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMBCloudID *)self containerID];
-  [v4 encodeObject:v5 forKey:@"HMBCID.c"];
+  coderCopy = coder;
+  containerID = [(HMBCloudID *)self containerID];
+  [coderCopy encodeObject:containerID forKey:@"HMBCID.c"];
 
-  [v4 encodeInteger:-[HMBCloudID scope](self forKey:{"scope"), @"HMBCID.s"}];
-  v6 = [(HMBCloudID *)self name];
-  [v4 encodeObject:v6 forKey:@"HMBCID.n"];
+  [coderCopy encodeInteger:-[HMBCloudID scope](self forKey:{"scope"), @"HMBCID.s"}];
+  name = [(HMBCloudID *)self name];
+  [coderCopy encodeObject:name forKey:@"HMBCID.n"];
 
-  v7 = [(HMBCloudID *)self modelID];
-  [v4 encodeObject:v7 forKey:@"HMBCID.m"];
+  modelID = [(HMBCloudID *)self modelID];
+  [coderCopy encodeObject:modelID forKey:@"HMBCID.m"];
 }
 
 - (id)attributeDescriptions
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMBCloudID *)self name];
-  v5 = [v3 initWithName:@"Name" value:v4];
+  name = [(HMBCloudID *)self name];
+  v5 = [v3 initWithName:@"Name" value:name];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMBCloudID *)self modelID];
-  v8 = [v6 initWithName:@"Model ID" value:v7];
+  modelID = [(HMBCloudID *)self modelID];
+  v8 = [v6 initWithName:@"Model ID" value:modelID];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -112,41 +112,41 @@
   return v9;
 }
 
-- (HMBCloudID)initWithContainerID:(id)a3 scope:(int64_t)a4 name:(id)a5 modelID:(id)a6
+- (HMBCloudID)initWithContainerID:(id)d scope:(int64_t)scope name:(id)name modelID:(id)iD
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
   v17.receiver = self;
   v17.super_class = HMBCloudID;
   v14 = [(HMBCloudID *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_containerID, a3);
-    v15->_scope = a4;
-    objc_storeStrong(&v15->_name, a5);
-    objc_storeStrong(&v15->_modelID, a6);
+    objc_storeStrong(&v14->_containerID, d);
+    v15->_scope = scope;
+    objc_storeStrong(&v15->_name, name);
+    objc_storeStrong(&v15->_modelID, iD);
   }
 
   return v15;
 }
 
-- (HMBCloudID)initWithContainerID:(id)a3 scope:(int64_t)a4
+- (HMBCloudID)initWithContainerID:(id)d scope:(int64_t)scope
 {
   v30[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  [v5 environment];
+  dCopy = d;
+  [dCopy environment];
   v6 = CKContainerEnvironmentString();
-  v7 = [v5 containerIdentifier];
-  v24 = a4;
+  containerIdentifier = [dCopy containerIdentifier];
+  scopeCopy = scope;
   v8 = CKDatabaseScopeString();
-  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@", v6, v8, v7];
+  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@", v6, v8, containerIdentifier];
   v30[0] = v6;
-  v30[1] = v7;
+  v30[1] = containerIdentifier;
   v30[2] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:3];
-  v10 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -168,7 +168,7 @@
         }
 
         v16 = [*(*(&v25 + 1) + 8 * v15) dataUsingEncoding:4];
-        [v10 appendData:v16];
+        [data appendData:v16];
 
         ++v15;
       }
@@ -181,8 +181,8 @@
   }
 
   v17 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"759390E3-198F-48EB-AD00-31296DACBBA6"];
-  v18 = [MEMORY[0x277CCAD78] hmf_UUIDWithNamespace:v17 data:v10];
-  v19 = [(HMBCloudID *)self initWithContainerID:v5 scope:v24 name:v22 modelID:v18];
+  v18 = [MEMORY[0x277CCAD78] hmf_UUIDWithNamespace:v17 data:data];
+  v19 = [(HMBCloudID *)self initWithContainerID:dCopy scope:scopeCopy name:v22 modelID:v18];
 
   v20 = *MEMORY[0x277D85DE8];
   return v19;

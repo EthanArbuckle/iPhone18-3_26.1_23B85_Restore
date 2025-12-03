@@ -28,7 +28,7 @@
 
 - (void)setup
 {
-  v2 = self;
+  selfCopy = self;
   sub_59AD0();
 }
 

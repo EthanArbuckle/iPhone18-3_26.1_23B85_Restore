@@ -1,22 +1,22 @@
 @interface WFCompactPlatterPresentationController
-+ (CGRect)presentedViewFrameInContainerView:(id)a3 containerViewSize:(CGSize)a4 withSizeCalculation:(BOOL)a5 ofPresentedPlatter:(id)a6;
-+ (CGRect)usableFrameForPresentingInContainerViewOfSize:(CGSize)a3;
-+ (CGSize)preferredSizeForPresentingInContainerViewOfSize:(CGSize)a3;
++ (CGRect)presentedViewFrameInContainerView:(id)view containerViewSize:(CGSize)size withSizeCalculation:(BOOL)calculation ofPresentedPlatter:(id)platter;
++ (CGRect)usableFrameForPresentingInContainerViewOfSize:(CGSize)size;
++ (CGSize)preferredSizeForPresentingInContainerViewOfSize:(CGSize)size;
 - (CGRect)frameOfDismissedViewInContainerView;
 - (CGRect)frameOfPresentedViewInContainerView;
-- (CGRect)presentedViewFrameInContainerViewOfSize:(CGSize)a3 withSizeCalculation:(BOOL)a4;
+- (CGRect)presentedViewFrameInContainerViewOfSize:(CGSize)size withSizeCalculation:(BOOL)calculation;
 - (UIViewControllerTransitionCoordinator)activeTransitionCoordinator;
-- (WFCompactPlatterPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (double)maximumExpectedHeightForPlatterPresentation:(id)a3;
+- (WFCompactPlatterPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (double)maximumExpectedHeightForPlatterPresentation:(id)presentation;
 - (void)dealloc;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
 - (void)keyboardWillChange;
-- (void)platterPresentationDidInvalidateSize:(id)a3;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)platterPresentationDidInvalidateSize:(id)size;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)updatePresentedViewFrameAnimatedAlongsideKeyboard:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)updatePresentedViewFrameAnimatedAlongsideKeyboard:(BOOL)keyboard;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation WFCompactPlatterPresentationController
@@ -28,15 +28,15 @@
   return WeakRetained;
 }
 
-- (CGRect)presentedViewFrameInContainerViewOfSize:(CGSize)a3 withSizeCalculation:(BOOL)a4
+- (CGRect)presentedViewFrameInContainerViewOfSize:(CGSize)size withSizeCalculation:(BOOL)calculation
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  calculationCopy = calculation;
+  height = size.height;
+  width = size.width;
   v8 = objc_opt_class();
-  v9 = [(WFCompactPlatterPresentationController *)self containerView];
-  v10 = [(WFCompactPlatterPresentationController *)self presentedViewController];
-  [v8 presentedViewFrameInContainerView:v9 containerViewSize:v4 withSizeCalculation:v10 ofPresentedPlatter:{width, height}];
+  containerView = [(WFCompactPlatterPresentationController *)self containerView];
+  presentedViewController = [(WFCompactPlatterPresentationController *)self presentedViewController];
+  [v8 presentedViewFrameInContainerView:containerView containerViewSize:calculationCopy withSizeCalculation:presentedViewController ofPresentedPlatter:{width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -67,23 +67,23 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = v7;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  v8 = coordinatorCopy;
   memset(&v32, 0, sizeof(v32));
-  if (v7)
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   v31 = v32;
   if (!CGAffineTransformIsIdentity(&v31))
   {
-    v9 = [(WFCompactPlatterPresentationController *)self containerView];
-    [v9 bounds];
+    containerView = [(WFCompactPlatterPresentationController *)self containerView];
+    [containerView bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -113,13 +113,13 @@
   v30.receiver = self;
   v30.super_class = WFCompactPlatterPresentationController;
   [(WFCompactPlatterPresentationController *)&v30 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
-  v22 = [(WFCompactPlatterPresentationController *)self presentedView];
+  presentedView = [(WFCompactPlatterPresentationController *)self presentedView];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __93__WFCompactPlatterPresentationController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v25[3] = &unk_279EE7998;
-  v26 = v22;
-  v27 = self;
+  v26 = presentedView;
+  selfCopy = self;
   v28 = width;
   v29 = height;
   v24[0] = MEMORY[0x277D85DD0];
@@ -127,7 +127,7 @@
   v24[2] = __93__WFCompactPlatterPresentationController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v24[3] = &unk_279EE79C0;
   v24[4] = self;
-  v23 = v22;
+  v23 = presentedView;
   [v8 animateAlongsideTransition:v25 completion:v24];
 }
 
@@ -154,26 +154,26 @@ void __93__WFCompactPlatterPresentationController_viewWillTransitionToSize_withT
   }
 }
 
-- (double)maximumExpectedHeightForPlatterPresentation:(id)a3
+- (double)maximumExpectedHeightForPlatterPresentation:(id)presentation
 {
-  v4 = [(WFCompactPlatterPresentationController *)self containerView];
-  [v4 bounds];
+  containerView = [(WFCompactPlatterPresentationController *)self containerView];
+  [containerView bounds];
   [(WFCompactPlatterPresentationController *)self presentedViewFrameInContainerViewOfSize:0 withSizeCalculation:v5, v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)updatePresentedViewFrameAnimatedAlongsideKeyboard:(BOOL)a3
+- (void)updatePresentedViewFrameAnimatedAlongsideKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  v5 = [(WFCompactPlatterPresentationController *)self presentedView];
+  keyboardCopy = keyboard;
+  presentedView = [(WFCompactPlatterPresentationController *)self presentedView];
   [(WFCompactPlatterPresentationController *)self frameOfPresentedViewInContainerView];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 frame];
+  [presentedView frame];
   v28.origin.x = v7;
   v28.origin.y = v9;
   v28.size.width = v11;
@@ -184,19 +184,19 @@ void __93__WFCompactPlatterPresentationController_viewWillTransitionToSize_withT
     aBlock[1] = 3221225472;
     aBlock[2] = __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAnimatedAlongsideKeyboard___block_invoke;
     aBlock[3] = &unk_279EE89B0;
-    v22 = v5;
+    v22 = presentedView;
     v23 = v7;
     v24 = v9;
     v25 = v11;
     v26 = v13;
     v14 = _Block_copy(aBlock);
-    v15 = [(WFCompactPlatterPresentationController *)self presentedViewController];
+    presentedViewController = [(WFCompactPlatterPresentationController *)self presentedViewController];
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(WFCompactPlatterPresentationController *)self presentedViewController];
-      v17 = [v16 platterHeightAnimationsDisabled];
+      presentedViewController2 = [(WFCompactPlatterPresentationController *)self presentedViewController];
+      platterHeightAnimationsDisabled = [presentedViewController2 platterHeightAnimationsDisabled];
 
-      if (v17)
+      if (platterHeightAnimationsDisabled)
       {
         v14[2](v14);
 LABEL_9:
@@ -209,12 +209,12 @@ LABEL_9:
     {
     }
 
-    if (v3)
+    if (keyboardCopy)
     {
-      v18 = [MEMORY[0x277D7BDB0] sharedKeyboard];
+      mEMORY[0x277D7BDB0] = [MEMORY[0x277D7BDB0] sharedKeyboard];
       v19 = MEMORY[0x277D75D18];
-      [v18 animationDuration];
-      [v19 animateWithDuration:objc_msgSend(v18 delay:"animationCurve") << 16 options:v14 animations:0 completion:{v20, 0.0}];
+      [mEMORY[0x277D7BDB0] animationDuration];
+      [v19 animateWithDuration:objc_msgSend(mEMORY[0x277D7BDB0] delay:"animationCurve") << 16 options:v14 animations:0 completion:{v20, 0.0}];
     }
 
     else
@@ -237,7 +237,7 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
   return [v2 layoutIfNeeded];
 }
 
-- (void)platterPresentationDidInvalidateSize:(id)a3
+- (void)platterPresentationDidInvalidateSize:(id)size
 {
   if (self->_transitionState == 2)
   {
@@ -251,14 +251,14 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
   }
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v6.receiver = self;
   v6.super_class = WFCompactPlatterPresentationController;
   [(WFCompactPlatterPresentationController *)&v6 dismissalTransitionDidEnd:?];
   v5 = 2;
-  if (v3)
+  if (endCopy)
   {
     v5 = 0;
   }
@@ -274,14 +274,14 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
   self->_transitionState = 3;
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v6.receiver = self;
   v6.super_class = WFCompactPlatterPresentationController;
   [(WFCompactPlatterPresentationController *)&v6 presentationTransitionDidEnd:?];
   v5 = 2;
-  if (!v3)
+  if (!endCopy)
   {
     v5 = 0;
   }
@@ -316,8 +316,8 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(WFCompactPlatterPresentationController *)self containerView];
-  [v3 bounds];
+  containerView = [(WFCompactPlatterPresentationController *)self containerView];
+  [containerView bounds];
   [(WFCompactPlatterPresentationController *)self presentedViewFrameInContainerViewOfSize:1 withSizeCalculation:v4, v5];
   v7 = v6;
   v9 = v8;
@@ -337,26 +337,26 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7BE00] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7BE00] object:0];
 
   v4.receiver = self;
   v4.super_class = WFCompactPlatterPresentationController;
   [(WFCompactPlatterPresentationController *)&v4 dealloc];
 }
 
-- (WFCompactPlatterPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (WFCompactPlatterPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v6 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = WFCompactPlatterPresentationController;
-  v7 = [(WFCompactPlatterPresentationController *)&v11 initWithPresentedViewController:v6 presentingViewController:a4];
+  v7 = [(WFCompactPlatterPresentationController *)&v11 initWithPresentedViewController:controllerCopy presentingViewController:viewController];
   if (v7)
   {
-    [v6 setPlatterContentContainer:v7];
+    [controllerCopy setPlatterContentContainer:v7];
     [MEMORY[0x277D7BDB0] beginObservingKeyboardNotifications];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel_keyboardWillChange name:*MEMORY[0x277D7BE00] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_keyboardWillChange name:*MEMORY[0x277D7BE00] object:0];
 
     v9 = v7;
   }
@@ -364,13 +364,13 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
   return v7;
 }
 
-+ (CGRect)presentedViewFrameInContainerView:(id)a3 containerViewSize:(CGSize)a4 withSizeCalculation:(BOOL)a5 ofPresentedPlatter:(id)a6
++ (CGRect)presentedViewFrameInContainerView:(id)view containerViewSize:(CGSize)size withSizeCalculation:(BOOL)calculation ofPresentedPlatter:(id)platter
 {
-  v7 = a5;
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a6;
+  calculationCopy = calculation;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  platterCopy = platter;
   [objc_opt_class() usableFrameForPresentingInContainerViewOfSize:{width, height}];
   x = v52.origin.x;
   y = v52.origin.y;
@@ -383,9 +383,9 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
   v53.size.height = v15;
   v17 = CGRectGetHeight(v53) * 0.8;
   v18 = v17;
-  if (v7)
+  if (calculationCopy)
   {
-    [v11 platterHeightForWidth:v16 withMaximumHeight:v17];
+    [platterCopy platterHeightForWidth:v16 withMaximumHeight:v17];
   }
 
   if (v17 >= v18)
@@ -408,13 +408,13 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
   v56.size.width = v14;
   v56.size.height = v15;
   MinY = CGRectGetMinY(v56);
-  v22 = [MEMORY[0x277D7BDB0] sharedKeyboard];
-  v23 = [v22 isVisible];
+  mEMORY[0x277D7BDB0] = [MEMORY[0x277D7BDB0] sharedKeyboard];
+  isVisible = [mEMORY[0x277D7BDB0] isVisible];
 
-  if (v23)
+  if (isVisible)
   {
-    v25 = [MEMORY[0x277D7BDB0] sharedKeyboard];
-    [v25 keyboardFrameInView:v10];
+    mEMORY[0x277D7BDB0]2 = [MEMORY[0x277D7BDB0] sharedKeyboard];
+    [mEMORY[0x277D7BDB0]2 keyboardFrameInView:viewCopy];
     v27 = v26;
     v29 = v28;
     rect = v30;
@@ -441,8 +441,8 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
     v24 = v17 - v34;
   }
 
-  v38 = [MEMORY[0x277D759A0] mainScreen];
-  [v38 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   UIRectIntegralWithScale();
   v40 = v39;
   v42 = v41;
@@ -460,9 +460,9 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
   return result;
 }
 
-+ (CGSize)preferredSizeForPresentingInContainerViewOfSize:(CGSize)a3
++ (CGSize)preferredSizeForPresentingInContainerViewOfSize:(CGSize)size
 {
-  [objc_opt_class() usableFrameForPresentingInContainerViewOfSize:{a3.width, a3.height}];
+  [objc_opt_class() usableFrameForPresentingInContainerViewOfSize:{size.width, size.height}];
   x = v11.origin.x;
   y = v11.origin.y;
   width = v11.size.width;
@@ -479,12 +479,12 @@ uint64_t __92__WFCompactPlatterPresentationController_updatePresentedViewFrameAn
   return result;
 }
 
-+ (CGRect)usableFrameForPresentingInContainerViewOfSize:(CGSize)a3
++ (CGRect)usableFrameForPresentingInContainerViewOfSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 _peripheryInsets];
+  height = size.height;
+  width = size.width;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _peripheryInsets];
   v7 = v6;
 
   v8 = v7 + 8.0;

@@ -1,9 +1,9 @@
 @interface UIInputViewSetPlacement_GenericApplicator
-+ (id)applicatorForOwner:(id)a3 withPlacement:(id)a4;
++ (id)applicatorForOwner:(id)owner withPlacement:(id)placement;
 - (BOOL)allConstraintsActive;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isGesture:(id)a3 inDraggableView:(CGPoint)a4;
-- (BOOL)preBeginGesture:(id)a3 shouldBegin:(BOOL *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isGesture:(id)gesture inDraggableView:(CGPoint)view;
+- (BOOL)preBeginGesture:(id)gesture shouldBegin:(BOOL *)begin;
 - (CGPoint)origin;
 - (CGRect)popoverFrame;
 - (CGRect)targetRect;
@@ -13,12 +13,12 @@
 - (UIEdgeInsets)inputAccessoryPadding;
 - (UIEdgeInsets)inputAssistantPadding;
 - (UIView)draggableView;
-- (id)initForOwner:(id)a3 withPlacement:(id)a4;
-- (void)applyChanges:(id)a3;
+- (id)initForOwner:(id)owner withPlacement:(id)placement;
+- (void)applyChanges:(id)changes;
 - (void)checkVerticalConstraint;
 - (void)resetConstantsIfNeeded;
-- (void)updateForInteractiveTransitionStart:(BOOL)a3;
-- (void)updateForOffset:(UIOffset)a3;
+- (void)updateForInteractiveTransitionStart:(BOOL)start;
+- (void)updateForOffset:(UIOffset)offset;
 @end
 
 @implementation UIInputViewSetPlacement_GenericApplicator
@@ -64,18 +64,18 @@
 - (UIView)draggableView
 {
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v3 = [WeakRetained hostView];
+  hostView = [WeakRetained hostView];
 
-  return v3;
+  return hostView;
 }
 
 - (NSArray)constraints
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_horizontalConstraint)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_verticalConstraint)
@@ -107,24 +107,24 @@
 - (UIEdgeInsets)inputAccessoryPadding
 {
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v4 = [WeakRetained hostView];
-  v5 = [v4 _rootInputWindowController];
-  v6 = [v5 placement];
+  hostView = [WeakRetained hostView];
+  _rootInputWindowController = [hostView _rootInputWindowController];
+  placement = [_rootInputWindowController placement];
 
-  v7 = [v6 subPlacements];
-  v8 = [v7 firstObject];
+  subPlacements = [placement subPlacements];
+  firstObject = [subPlacements firstObject];
   v9 = objc_loadWeakRetained(&self->_owner);
-  v10 = [v9 placement];
+  placement2 = [v9 placement];
 
   v11 = 0.0;
-  if (v8 == v10 && [v6 isFloatingAssistantView] && (objc_msgSend(v6, "isCompactAssistantView") & 1) == 0)
+  if (firstObject == placement2 && [placement isFloatingAssistantView] && (objc_msgSend(placement, "isCompactAssistantView") & 1) == 0)
   {
     v12 = objc_loadWeakRetained(&self->_owner);
-    v13 = [v12 hostView];
-    v14 = [v13 _rootInputWindowController];
-    v15 = [v14 inputViewSet];
-    v16 = [v15 inputAssistantView];
-    [v16 frame];
+    hostView2 = [v12 hostView];
+    _rootInputWindowController2 = [hostView2 _rootInputWindowController];
+    inputViewSet = [_rootInputWindowController2 inputViewSet];
+    inputAssistantView = [inputViewSet inputAssistantView];
+    [inputAssistantView frame];
     v11 = v17;
   }
 
@@ -139,41 +139,41 @@
   return result;
 }
 
-- (id)initForOwner:(id)a3 withPlacement:(id)a4
+- (id)initForOwner:(id)owner withPlacement:(id)placement
 {
-  v6 = a3;
-  v7 = a4;
+  ownerCopy = owner;
+  placementCopy = placement;
   v44.receiver = self;
   v44.super_class = UIInputViewSetPlacement_GenericApplicator;
   v8 = [(UIInputViewSetPlacement_GenericApplicator *)&v44 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_owner, v6);
+    objc_storeWeak(&v8->_owner, ownerCopy);
     v9->_isInteractiveStateTransition = 0;
-    if (!v7)
+    if (!placementCopy)
     {
-      v7 = [v6 placement];
+      placementCopy = [ownerCopy placement];
     }
 
-    v10 = [v6 inputViewSet];
-    v11 = [v6 hostView];
-    v12 = [v6 containerView];
-    v13 = [v7 horizontalConstraintForInputViewSet:v10 hostView:v11 containerView:v12];
+    inputViewSet = [ownerCopy inputViewSet];
+    hostView = [ownerCopy hostView];
+    containerView = [ownerCopy containerView];
+    v13 = [placementCopy horizontalConstraintForInputViewSet:inputViewSet hostView:hostView containerView:containerView];
     horizontalConstraint = v9->_horizontalConstraint;
     v9->_horizontalConstraint = v13;
 
-    v15 = [v6 inputViewSet];
-    v16 = [v6 hostView];
-    v17 = [v6 containerView];
-    v18 = [v7 verticalConstraintForInputViewSet:v15 hostView:v16 containerView:v17];
+    inputViewSet2 = [ownerCopy inputViewSet];
+    hostView2 = [ownerCopy hostView];
+    containerView2 = [ownerCopy containerView];
+    v18 = [placementCopy verticalConstraintForInputViewSet:inputViewSet2 hostView:hostView2 containerView:containerView2];
     verticalConstraint = v9->_verticalConstraint;
     v9->_verticalConstraint = v18;
 
-    v20 = [v6 inputViewSet];
-    v21 = [v6 hostView];
-    v22 = [v6 containerView];
-    v23 = [v7 widthConstraintForInputViewSet:v20 hostView:v21 containerView:v22];
+    inputViewSet3 = [ownerCopy inputViewSet];
+    hostView3 = [ownerCopy hostView];
+    containerView3 = [ownerCopy containerView];
+    v23 = [placementCopy widthConstraintForInputViewSet:inputViewSet3 hostView:hostView3 containerView:containerView3];
     widthConstraint = v9->_widthConstraint;
     v9->_widthConstraint = v23;
 
@@ -205,11 +205,11 @@
   return v9;
 }
 
-+ (id)applicatorForOwner:(id)a3 withPlacement:(id)a4
++ (id)applicatorForOwner:(id)owner withPlacement:(id)placement
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initForOwner:v7 withPlacement:v6];
+  placementCopy = placement;
+  ownerCopy = owner;
+  v8 = [[self alloc] initForOwner:ownerCopy withPlacement:placementCopy];
 
   return v8;
 }
@@ -229,13 +229,13 @@
 - (CGRect)targetRect
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 _window];
+  _window = [v3 _window];
 
-  if (v4)
+  if (_window)
   {
-    v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [(UIInputViewSetPlacement_GenericApplicator *)self draggableView];
-    [v5 dragGestureRectInView:v6];
+    draggableView2 = +[UIKeyboardImpl activeInstance];
+    draggableView = [(UIInputViewSetPlacement_GenericApplicator *)self draggableView];
+    [draggableView2 dragGestureRectInView:draggableView];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -244,11 +244,11 @@
 
   else
   {
-    v5 = [(UIInputViewSetPlacement_GenericApplicator *)self draggableView];
-    [v5 bounds];
+    draggableView2 = [(UIInputViewSetPlacement_GenericApplicator *)self draggableView];
+    [draggableView2 bounds];
     v8 = v15 + -80.0;
-    v6 = [(UIInputViewSetPlacement_GenericApplicator *)self draggableView];
-    [v6 bounds];
+    draggableView = [(UIInputViewSetPlacement_GenericApplicator *)self draggableView];
+    [draggableView bounds];
     v10 = v16 + -80.0;
     *&v12 = 80.0;
     *&v14 = 80.0;
@@ -265,9 +265,9 @@
   return result;
 }
 
-- (BOOL)preBeginGesture:(id)a3 shouldBegin:(BOOL *)a4
+- (BOOL)preBeginGesture:(id)gesture shouldBegin:(BOOL *)begin
 {
-  v6 = a3;
+  gestureCopy = gesture;
   [(UIInputViewSetPlacement_GenericApplicator *)self targetRect];
   if (CGRectIsEmpty(v10))
   {
@@ -276,7 +276,7 @@
 
   else
   {
-    if ([v6 numberOfTouches] != 2)
+    if ([gestureCopy numberOfTouches] != 2)
     {
       v8 = 0;
       goto LABEL_7;
@@ -285,17 +285,17 @@
     v7 = 1;
   }
 
-  *a4 = v7;
+  *begin = v7;
   v8 = 1;
 LABEL_7:
 
   return v8;
 }
 
-- (BOOL)isGesture:(id)a3 inDraggableView:(CGPoint)a4
+- (BOOL)isGesture:(id)gesture inDraggableView:(CGPoint)view
 {
-  y = a4.y;
-  x = a4.x;
+  y = view.y;
+  x = view.x;
   [(UIInputViewSetPlacement_GenericApplicator *)self targetRect];
   v10 = x;
   v11 = y;
@@ -329,25 +329,25 @@ LABEL_7:
   return result;
 }
 
-- (void)applyChanges:(id)a3
+- (void)applyChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v6 = [v4 objectForKey:@"Alpha"];
+  v6 = [changesCopy objectForKey:@"Alpha"];
   if (v6)
   {
-    v7 = [WeakRetained hostView];
-    v8 = [v7 layer];
-    [v8 setAllowsGroupOpacity:0];
+    hostView = [WeakRetained hostView];
+    layer = [hostView layer];
+    [layer setAllowsGroupOpacity:0];
 
     [v6 doubleValue];
     v10 = v9;
-    v11 = [WeakRetained hostView];
-    [v11 setAlpha:v10];
+    hostView2 = [WeakRetained hostView];
+    [hostView2 setAlpha:v10];
   }
 
   [WeakRetained setHideInputViewBackdrops:0];
-  v12 = [v4 objectForKey:@"Transform"];
+  v12 = [changesCopy objectForKey:@"Transform"];
   v13 = v12;
   if (v12)
   {
@@ -362,13 +362,13 @@ LABEL_7:
     v33 = *(MEMORY[0x1E695EFD0] + 32);
   }
 
-  v15 = [WeakRetained hostView];
+  hostView3 = [WeakRetained hostView];
   v30[0] = v31;
   v30[1] = v32;
   v30[2] = v33;
-  [v15 setTransform:v30];
+  [hostView3 setTransform:v30];
 
-  v16 = [v4 objectForKey:@"TouchInsets"];
+  v16 = [changesCopy objectForKey:@"TouchInsets"];
   v17 = v16;
   if (v16)
   {
@@ -387,10 +387,10 @@ LABEL_7:
     v25 = 0.0;
   }
 
-  v26 = [WeakRetained hostView];
-  [v26 _setTouchInsets:{v19, v21, v23, v25}];
+  hostView4 = [WeakRetained hostView];
+  [hostView4 _setTouchInsets:{v19, v21, v23, v25}];
 
-  v27 = [v4 objectForKey:@"Origin"];
+  v27 = [changesCopy objectForKey:@"Origin"];
   v28 = v27;
   if (v27 && !self->_isInteractiveStateTransition)
   {
@@ -404,12 +404,12 @@ LABEL_7:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = UIInputViewSetAreConstraintsEqualEnough(self->_horizontalConstraint, v5[1]) && UIInputViewSetAreConstraintsEqualEnough(self->_verticalConstraint, v5[2]) && UIInputViewSetAreConstraintsEqualEnough(self->_widthConstraint, v5[3]);
   }
 
@@ -427,25 +427,25 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = UIInputViewSetPlacement_GenericApplicator;
   v4 = [(UIInputViewSetPlacement_GenericApplicator *)&v8 description];
-  v5 = [(UIInputViewSetPlacement_GenericApplicator *)self constraints];
-  v6 = [v3 stringWithFormat:@"<%@ %@>", v4, v5];;
+  constraints = [(UIInputViewSetPlacement_GenericApplicator *)self constraints];
+  v6 = [v3 stringWithFormat:@"<%@ %@>", v4, constraints];;
 
   return v6;
 }
 
-- (void)updateForOffset:(UIOffset)a3
+- (void)updateForOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  [(NSLayoutConstraint *)self->_horizontalConstraint setConstant:a3.horizontal];
+  vertical = offset.vertical;
+  [(NSLayoutConstraint *)self->_horizontalConstraint setConstant:offset.horizontal];
   verticalConstraint = self->_verticalConstraint;
 
   [(NSLayoutConstraint *)verticalConstraint setConstant:vertical];
 }
 
-- (void)updateForInteractiveTransitionStart:(BOOL)a3
+- (void)updateForInteractiveTransitionStart:(BOOL)start
 {
-  self->_isInteractiveStateTransition = a3;
-  if (a3)
+  self->_isInteractiveStateTransition = start;
+  if (start)
   {
     LODWORD(v3) = 1144750080;
     [(NSLayoutConstraint *)self->_widthConstraint setPriority:v3];

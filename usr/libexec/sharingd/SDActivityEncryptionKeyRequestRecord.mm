@@ -18,12 +18,12 @@
   linkClient = self->_linkClient;
   if (linkClient)
   {
-    v4 = [NSString stringWithFormat:@"linkClient: <%@>, ", linkClient];
+    linkClient = [NSString stringWithFormat:@"linkClient: <%@>, ", linkClient];
   }
 
   else
   {
-    v4 = &stru_1008EFBD0;
+    linkClient = &stru_1008EFBD0;
   }
 
   v5 = objc_opt_class();
@@ -32,7 +32,7 @@
   v11.receiver = self;
   v11.super_class = SDActivityEncryptionKeyRequestRecord;
   v8 = [(SDActivityRequestRecord *)&v11 description];
-  v9 = [NSString stringWithFormat:@"<%@: %p, previousKeyIdentifier:%@, %@%@>", v6, self, previousKeyIdentifier, v4, v8];
+  v9 = [NSString stringWithFormat:@"<%@: %p, previousKeyIdentifier:%@, %@%@>", v6, self, previousKeyIdentifier, linkClient, v8];
 
   return v9;
 }

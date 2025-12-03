@@ -1,31 +1,31 @@
 @interface RTMapItemProviderPOIHistory
-- (RTMapItemProviderPOIHistory)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 placeInferenceQueryStore:(id)a5;
-- (RTMapItemProviderPOIHistory)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 placeInferenceQueryStore:(id)a5 parameters:(id)a6;
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4;
+- (RTMapItemProviderPOIHistory)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator placeInferenceQueryStore:(id)store;
+- (RTMapItemProviderPOIHistory)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator placeInferenceQueryStore:(id)store parameters:(id)parameters;
+- (id)mapItemsWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation RTMapItemProviderPOIHistory
 
-- (RTMapItemProviderPOIHistory)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 placeInferenceQueryStore:(id)a5
+- (RTMapItemProviderPOIHistory)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator placeInferenceQueryStore:(id)store
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[RTMapItemProviderPOIHistoryParameters alloc] initWithDefaultsManager:v10];
-  v12 = [(RTMapItemProviderPOIHistory *)self initWithDefaultsManager:v10 distanceCalculator:v9 placeInferenceQueryStore:v8 parameters:v11];
+  storeCopy = store;
+  calculatorCopy = calculator;
+  managerCopy = manager;
+  v11 = [[RTMapItemProviderPOIHistoryParameters alloc] initWithDefaultsManager:managerCopy];
+  v12 = [(RTMapItemProviderPOIHistory *)self initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy placeInferenceQueryStore:storeCopy parameters:v11];
 
   return v12;
 }
 
-- (RTMapItemProviderPOIHistory)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 placeInferenceQueryStore:(id)a5 parameters:(id)a6
+- (RTMapItemProviderPOIHistory)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator placeInferenceQueryStore:(id)store parameters:(id)parameters
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v10)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  storeCopy = store;
+  parametersCopy = parameters;
+  v14 = parametersCopy;
+  if (!managerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v11)
+  if (!calculatorCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v12)
+  if (!storeCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v13)
+  if (!parametersCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -78,18 +78,18 @@ LABEL_19:
 
 LABEL_20:
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
   v23.receiver = self;
   v23.super_class = RTMapItemProviderPOIHistory;
-  v15 = [(RTMapItemProviderBase *)&v23 initWithDefaultsManager:v10 distanceCalculator:v11];
+  v15 = [(RTMapItemProviderBase *)&v23 initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy];
   p_isa = &v15->super.super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_placeInferenceQueryStore, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_placeInferenceQueryStore, store);
+    objc_storeStrong(p_isa + 4, parameters);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v17 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -104,28 +104,28 @@ LABEL_20:
   }
 
   self = p_isa;
-  v19 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v19;
+  return selfCopy;
 }
 
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4
+- (id)mapItemsWithOptions:(id)options error:(id *)error
 {
-  v88 = a4;
+  errorCopy = error;
   v176 = *MEMORY[0x277D85DE8];
-  v93 = a3;
-  v4 = [v93 endDate];
-  v5 = [v93 startDate];
-  [v4 timeIntervalSinceDate:v5];
+  optionsCopy = options;
+  endDate = [optionsCopy endDate];
+  startDate = [optionsCopy startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v7 = v6;
 
   if (v7 < 300.0)
   {
     v8 = 0;
-    if (v88)
+    if (errorCopy)
     {
-      *v88 = 0;
+      *errorCopy = 0;
     }
 
     goto LABEL_62;
@@ -137,11 +137,11 @@ LABEL_21:
   v168 = __Block_byref_object_copy__134;
   v169 = __Block_byref_object_dispose__134;
   v9 = objc_alloc(MEMORY[0x277CCA970]);
-  v10 = [v93 startDate];
+  startDate2 = [optionsCopy startDate];
   v11 = MEMORY[0x277CBEAA8];
-  v12 = [v93 endDate];
-  v13 = [v11 dateWithTimeInterval:v12 sinceDate:-300.0];
-  v170 = [v9 initWithStartDate:v10 endDate:v13];
+  endDate2 = [optionsCopy endDate];
+  v13 = [v11 dateWithTimeInterval:endDate2 sinceDate:-300.0];
+  v170 = [v9 initWithStartDate:startDate2 endDate:v13];
 
   v159 = 0;
   v160 = &v159;
@@ -203,10 +203,10 @@ LABEL_21:
     v14 = v160[5];
     if (v14)
     {
-      if (v88)
+      if (errorCopy)
       {
         v8 = 0;
-        *v88 = v14;
+        *errorCopy = v14;
         goto LABEL_61;
       }
 
@@ -222,7 +222,7 @@ LABEL_32:
 
     v15 = objc_autoreleasePoolPush();
     v16 = dispatch_semaphore_create(0);
-    v17 = [(RTMapItemProviderPOIHistory *)self placeInferenceQueryStore];
+    placeInferenceQueryStore = [(RTMapItemProviderPOIHistory *)self placeInferenceQueryStore];
     v18 = v166[5];
     v107[0] = MEMORY[0x277D85DD0];
     v107[1] = 3221225472;
@@ -239,10 +239,10 @@ LABEL_32:
     v118 = &v149;
     v119 = &v143;
     v120 = a2;
-    v108 = v93;
+    v108 = optionsCopy;
     v19 = v16;
     v109 = v19;
-    [v17 fetchPlaceInferenceQueriesWithDateInterval:v18 ascending:1 limit:&unk_28459F1F8 handler:v107];
+    [placeInferenceQueryStore fetchPlaceInferenceQueriesWithDateInterval:v18 ascending:1 limit:&unk_28459F1F8 handler:v107];
 
     v20 = v19;
     v21 = [MEMORY[0x277CBEAA8] now];
@@ -257,11 +257,11 @@ LABEL_32:
     v25 = v24;
     v26 = objc_opt_new();
     v27 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_110];
-    v28 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v29 = [v28 filteredArrayUsingPredicate:v27];
-    v30 = [v29 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v29 = [callStackSymbols filteredArrayUsingPredicate:v27];
+    firstObject = [v29 firstObject];
 
-    [v26 submitToCoreAnalytics:v30 type:1 duration:v25];
+    [v26 submitToCoreAnalytics:firstObject type:1 duration:v25];
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
     {
@@ -301,19 +301,19 @@ LABEL_12:
 
   if (!v126[5])
   {
-    if (v88)
+    if (errorCopy)
     {
       v8 = 0;
-      *v88 = 0;
+      *errorCopy = 0;
       goto LABEL_61;
     }
 
     goto LABEL_32;
   }
 
-  v38 = [v166[5] endDate];
-  v39 = [v126[5] date];
-  [v38 timeIntervalSinceDate:v39];
+  endDate3 = [v166[5] endDate];
+  date = [v126[5] date];
+  [endDate3 timeIntervalSinceDate:date];
   v41 = v40;
 
   v105 = 0u;
@@ -337,7 +337,7 @@ LABEL_12:
         }
 
         v48 = *(*(&v103 + 1) + 8 * i);
-        v49 = [v150[5] objectForKeyedSubscript:{v48, v88}];
+        v49 = [v150[5] objectForKeyedSubscript:{v48, errorCopy}];
         [v49 doubleValue];
         v51 = v50 > v46;
 
@@ -438,7 +438,7 @@ LABEL_12:
         }
 
         v73 = *(*(&v95 + 1) + 8 * k);
-        v74 = [v144[5] objectForKeyedSubscript:{v73, v88}];
+        v74 = [v144[5] objectForKeyedSubscript:{v73, errorCopy}];
         [v74 doubleValue];
         v76 = v75;
 
@@ -466,15 +466,15 @@ LABEL_12:
     while (v70);
   }
 
-  v83 = [(RTMapItemProviderPOIHistory *)self parameters];
-  [v83 distanceThreshold];
+  parameters = [(RTMapItemProviderPOIHistory *)self parameters];
+  [parameters distanceThreshold];
   v85 = v84;
-  v86 = [v93 location];
-  v8 = [(RTMapItemProviderBase *)self filterInferredMapItems:v55 byDistance:v86 fromLocation:v88 error:v85];
+  location = [optionsCopy location];
+  v8 = [(RTMapItemProviderBase *)self filterInferredMapItems:v55 byDistance:location fromLocation:errorCopy error:v85];
 
-  if (v88)
+  if (errorCopy)
   {
-    *v88 = 0;
+    *errorCopy = 0;
   }
 
 LABEL_61:

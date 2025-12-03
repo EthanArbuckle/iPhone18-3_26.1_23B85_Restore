@@ -1,20 +1,20 @@
 @interface PADAVSerialAssetReader
-- (BOOL)_setupAssetReaderWithVideoURL:(id)a3 error:(id *)a4;
-- (PADAVSerialAssetReader)initWithVideoURL:(id)a3 error:(id *)a4;
+- (BOOL)_setupAssetReaderWithVideoURL:(id)l error:(id *)error;
+- (PADAVSerialAssetReader)initWithVideoURL:(id)l error:(id *)error;
 - (id)retrieveNextFrame;
 - (void)close;
 @end
 
 @implementation PADAVSerialAssetReader
 
-- (PADAVSerialAssetReader)initWithVideoURL:(id)a3 error:(id *)a4
+- (PADAVSerialAssetReader)initWithVideoURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = PADAVSerialAssetReader;
   v7 = [(PADAVSerialAssetReader *)&v11 init];
   v8 = v7;
-  if (v7 && (v7->_isReading = 0, ![(PADAVSerialAssetReader *)v7 _setupAssetReaderWithVideoURL:v6 error:a4]))
+  if (v7 && (v7->_isReading = 0, ![(PADAVSerialAssetReader *)v7 _setupAssetReaderWithVideoURL:lCopy error:error]))
   {
     v9 = 0;
   }
@@ -27,20 +27,20 @@
   return v9;
 }
 
-- (BOOL)_setupAssetReaderWithVideoURL:(id)a3 error:(id *)a4
+- (BOOL)_setupAssetReaderWithVideoURL:(id)l error:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CE63D8] assetWithURL:v6];
+  lCopy = l;
+  v7 = [MEMORY[0x277CE63D8] assetWithURL:lCopy];
   v8 = [v7 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
   v39 = *MEMORY[0x277CC4E30];
   v40[0] = &unk_285878520;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
   v11 = [v10 mutableCopy];
 
-  v12 = [objc_alloc(MEMORY[0x277CE6430]) initWithTrack:v9 outputSettings:v11];
+  v12 = [objc_alloc(MEMORY[0x277CE6430]) initWithTrack:firstObject outputSettings:v11];
   output = self->_output;
   self->_output = v12;
 
@@ -54,7 +54,7 @@
   {
     if ([(AVAssetReader *)v16 canAddOutput:self->_output])
     {
-      a4 = MEMORY[0x277CC08F0];
+      error = MEMORY[0x277CC08F0];
       v17 = *MEMORY[0x277CC08F0];
       v32 = 0;
       v33 = 0;
@@ -74,43 +74,43 @@
 
       CMTimeMake(duration, v18 - v17, v19);
       start.value = v17;
-      *&start.timescale = *(a4 + 1);
+      *&start.timescale = *(error + 1);
       CMTimeRangeMake(&v31, &start, duration);
       v27 = self->_assetReader;
       *&duration[0].value = v31;
       [(AVAssetReader *)v27 setTimeRange:duration];
       [(AVAssetReader *)self->_assetReader addOutput:self->_output];
-      LOBYTE(a4) = 1;
+      LOBYTE(error) = 1;
     }
 
-    else if (a4)
+    else if (error)
     {
       v25 = MEMORY[0x277CCA9B8];
       v35 = *MEMORY[0x277CCA068];
       v36 = @"Unable to add output to AVAssetReader";
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-      *a4 = [v25 errorWithDomain:@"com.apple.coreidv.CoreIDVPAD.PADErrorDomain" code:1 userInfo:v26];
+      *error = [v25 errorWithDomain:@"com.apple.coreidv.CoreIDVPAD.PADErrorDomain" code:1 userInfo:v26];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v20 = objc_alloc(MEMORY[0x277CCACA8]);
-    v21 = [v6 path];
-    v22 = [v20 initWithFormat:@"Unable to create AVAssetReader with file at URL %@", v21];
+    path = [lCopy path];
+    v22 = [v20 initWithFormat:@"Unable to create AVAssetReader with file at URL %@", path];
 
     v23 = MEMORY[0x277CCA9B8];
     v37 = *MEMORY[0x277CCA068];
     v38 = v22;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-    *a4 = [v23 errorWithDomain:@"com.apple.coreidv.CoreIDVPAD.PADErrorDomain" code:1 userInfo:v24];
+    *error = [v23 errorWithDomain:@"com.apple.coreidv.CoreIDVPAD.PADErrorDomain" code:1 userInfo:v24];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a4;
+  return error;
 }
 
 - (id)retrieveNextFrame
@@ -132,11 +132,11 @@
       _os_signpost_emit_with_name_impl(&dword_245686000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AV.ReadFrame", "", &buf, 2u);
     }
 
-    v6 = [(AVAssetReaderTrackOutput *)self->_output copyNextSampleBuffer];
-    if (v6)
+    copyNextSampleBuffer = [(AVAssetReaderTrackOutput *)self->_output copyNextSampleBuffer];
+    if (copyNextSampleBuffer)
     {
-      v7 = v6;
-      ImageBuffer = CMSampleBufferGetImageBuffer(v6);
+      v7 = copyNextSampleBuffer;
+      ImageBuffer = CMSampleBufferGetImageBuffer(copyNextSampleBuffer);
       memset(&buf, 0, sizeof(buf));
       CMSampleBufferGetPresentationTimeStamp(&buf, v7);
       CFRelease(v7);

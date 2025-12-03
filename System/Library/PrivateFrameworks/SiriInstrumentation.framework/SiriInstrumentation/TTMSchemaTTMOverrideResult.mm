@@ -1,33 +1,33 @@
 @interface TTMSchemaTTMOverrideResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTMSchemaTTMOverrideResult)initWithDictionary:(id)a3;
-- (TTMSchemaTTMOverrideResult)initWithJSON:(id)a3;
+- (TTMSchemaTTMOverrideResult)initWithDictionary:(id)dictionary;
+- (TTMSchemaTTMOverrideResult)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasRecommendation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasRecommendation:(BOOL)recommendation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTMSchemaTTMOverrideResult
 
-- (TTMSchemaTTMOverrideResult)initWithDictionary:(id)a3
+- (TTMSchemaTTMOverrideResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = TTMSchemaTTMOverrideResult;
   v5 = [(TTMSchemaTTMOverrideResult *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"overrideType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"overrideType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTMSchemaTTMOverrideResult setOverrideType:](v5, "setOverrideType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"recommendation"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"recommendation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (TTMSchemaTTMOverrideResult)initWithJSON:(id)a3
+- (TTMSchemaTTMOverrideResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTMSchemaTTMOverrideResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTMSchemaTTMOverrideResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTMSchemaTTMOverrideResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,7 +76,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -91,7 +91,7 @@
       v6 = off_1E78E7F68[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"overrideType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"overrideType"];
     has = self->_has;
   }
 
@@ -108,12 +108,12 @@
       v8 = off_1E78E7FB0[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"recommendation"];
+    [dictionary setObject:v8 forKeyedSubscript:@"recommendation"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -142,16 +142,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[16];
+  v6 = equalCopy[16];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -160,7 +160,7 @@ LABEL_3:
   if (*&has)
   {
     overrideType = self->_overrideType;
-    if (overrideType != [v4 overrideType])
+    if (overrideType != [equalCopy overrideType])
     {
 LABEL_10:
       v10 = 0;
@@ -168,7 +168,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[16];
+    v6 = equalCopy[16];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -180,7 +180,7 @@ LABEL_10:
   if (v8)
   {
     recommendation = self->_recommendation;
-    if (recommendation != [v4 recommendation])
+    if (recommendation != [equalCopy recommendation])
     {
       goto LABEL_10;
     }
@@ -192,28 +192,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasRecommendation:(BOOL)a3
+- (void)setHasRecommendation:(BOOL)recommendation
 {
-  if (a3)
+  if (recommendation)
   {
     v3 = 2;
   }

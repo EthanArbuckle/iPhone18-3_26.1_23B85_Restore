@@ -1,8 +1,8 @@
 @interface SCATSoundSwitchSourceController
 + (id)_soundSwitchSourceShouldEnabledDict;
-- (id)_specifierForLocString:(id)a3 identifier:(id)a4 switchType:(int64_t)a5;
+- (id)_specifierForLocString:(id)string identifier:(id)identifier switchType:(int64_t)type;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATSoundSwitchSourceController
@@ -89,20 +89,20 @@
   return v4;
 }
 
-- (id)_specifierForLocString:(id)a3 identifier:(id)a4 switchType:(int64_t)a5
+- (id)_specifierForLocString:(id)string identifier:(id)identifier switchType:(int64_t)type
 {
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  stringCopy = string;
   v10 = +[SCATSoundSwitchSourceController _soundSwitchSourceShouldEnabledDict];
-  v11 = settingsLocString(v9, @"Accessibility");
+  v11 = settingsLocString(stringCopy, @"Accessibility");
 
   v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:1 edit:0];
 
-  v13 = [NSNumber numberWithLong:a5];
+  v13 = [NSNumber numberWithLong:type];
   v14 = [v10 objectForKeyedSubscript:v13];
   [v12 setProperty:v14 forKey:PSEnabledKey];
 
-  [v12 setIdentifier:v8];
+  [v12 setIdentifier:identifierCopy];
 
   return v12;
 }
@@ -144,9 +144,9 @@
   v20 = 0u;
   v21 = 0u;
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchSwitches];
+  assistiveTouchSwitches = [v3 assistiveTouchSwitches];
 
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [assistiveTouchSwitches countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -158,12 +158,12 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assistiveTouchSwitches);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 source];
-        v12 = [v11 isEqualToString:v8];
+        source = [v10 source];
+        v12 = [source isEqualToString:v8];
 
         if (v12)
         {
@@ -178,7 +178,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [assistiveTouchSwitches countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -187,34 +187,34 @@
   return v2;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v51.receiver = self;
   v51.super_class = SCATSoundSwitchSourceController;
-  v8 = [(SCATSoundSwitchSourceController *)&v51 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:@"SOUND_ACTION_PRACTICE_ID"];
+  v8 = [(SCATSoundSwitchSourceController *)&v51 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  identifier = [specifier identifier];
+  v11 = [identifier isEqualToString:@"SOUND_ACTION_PRACTICE_ID"];
 
   if (v11)
   {
     v12 = objc_alloc_init(SoundActionsPracticeNavigationController);
-    v13 = [(SCATSoundSwitchSourceController *)self assetURL];
-    [(SoundActionsPracticeNavigationController *)v12 setAssetURL:v13];
+    assetURL = [(SCATSoundSwitchSourceController *)self assetURL];
+    [(SoundActionsPracticeNavigationController *)v12 setAssetURL:assetURL];
 
     [(SCATSoundSwitchSourceController *)self presentModalViewController:v12 withTransition:3];
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     goto LABEL_36;
   }
 
-  v14 = [v9 name];
-  v12 = [AXSwitch switchWithAction:0 name:v14 source:SCATSwitchSourceSound type:SCATSwitchTypeOptional];
+  name = [specifier name];
+  v12 = [AXSwitch switchWithAction:0 name:name source:SCATSwitchSourceSound type:SCATSwitchTypeOptional];
 
   [(SoundActionsPracticeNavigationController *)v12 setAccessibilityEventUsagePage:3];
-  v15 = [v9 identifier];
-  v16 = [v15 isEqualToString:@"SOUND_ACTION_CLICK_ID"];
+  identifier2 = [specifier identifier];
+  v16 = [identifier2 isEqualToString:@"SOUND_ACTION_CLICK_ID"];
 
   if (v16)
   {
@@ -224,8 +224,8 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v18 = [v9 identifier];
-  v19 = [v18 isEqualToString:@"SOUND_ACTION_CLUCK_ID"];
+  identifier3 = [specifier identifier];
+  v19 = [identifier3 isEqualToString:@"SOUND_ACTION_CLUCK_ID"];
 
   if (v19)
   {
@@ -233,8 +233,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v20 = [v9 identifier];
-  v21 = [v20 isEqualToString:@"SOUND_ACTION_EE_ID"];
+  identifier4 = [specifier identifier];
+  v21 = [identifier4 isEqualToString:@"SOUND_ACTION_EE_ID"];
 
   if (v21)
   {
@@ -242,8 +242,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v22 = [v9 identifier];
-  v23 = [v22 isEqualToString:@"SOUND_ACTION_EH_ID"];
+  identifier5 = [specifier identifier];
+  v23 = [identifier5 isEqualToString:@"SOUND_ACTION_EH_ID"];
 
   if (v23)
   {
@@ -251,8 +251,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v24 = [v9 identifier];
-  v25 = [v24 isEqualToString:@"SOUND_ACTION_KK_ID"];
+  identifier6 = [specifier identifier];
+  v25 = [identifier6 isEqualToString:@"SOUND_ACTION_KK_ID"];
 
   if (v25)
   {
@@ -260,8 +260,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v26 = [v9 identifier];
-  v27 = [v26 isEqualToString:@"SOUND_ACTION_LA_ID"];
+  identifier7 = [specifier identifier];
+  v27 = [identifier7 isEqualToString:@"SOUND_ACTION_LA_ID"];
 
   if (v27)
   {
@@ -269,8 +269,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v28 = [v9 identifier];
-  v29 = [v28 isEqualToString:@"SOUND_ACTION_MUH_ID"];
+  identifier8 = [specifier identifier];
+  v29 = [identifier8 isEqualToString:@"SOUND_ACTION_MUH_ID"];
 
   if (v29)
   {
@@ -278,8 +278,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v30 = [v9 identifier];
-  v31 = [v30 isEqualToString:@"SOUND_ACTION_OO_ID"];
+  identifier9 = [specifier identifier];
+  v31 = [identifier9 isEqualToString:@"SOUND_ACTION_OO_ID"];
 
   if (v31)
   {
@@ -287,8 +287,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v32 = [v9 identifier];
-  v33 = [v32 isEqualToString:@"SOUND_ACTION_POP_ID"];
+  identifier10 = [specifier identifier];
+  v33 = [identifier10 isEqualToString:@"SOUND_ACTION_POP_ID"];
 
   if (v33)
   {
@@ -296,8 +296,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v34 = [v9 identifier];
-  v35 = [v34 isEqualToString:@"SOUND_ACTION_PP_ID"];
+  identifier11 = [specifier identifier];
+  v35 = [identifier11 isEqualToString:@"SOUND_ACTION_PP_ID"];
 
   if (v35)
   {
@@ -305,8 +305,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v36 = [v9 identifier];
-  v37 = [v36 isEqualToString:@"SOUND_ACTION_SH_ID"];
+  identifier12 = [specifier identifier];
+  v37 = [identifier12 isEqualToString:@"SOUND_ACTION_SH_ID"];
 
   if (v37)
   {
@@ -314,8 +314,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v38 = [v9 identifier];
-  v39 = [v38 isEqualToString:@"SOUND_ACTION_SS_ID"];
+  identifier13 = [specifier identifier];
+  v39 = [identifier13 isEqualToString:@"SOUND_ACTION_SS_ID"];
 
   if (v39)
   {
@@ -323,8 +323,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v40 = [v9 identifier];
-  v41 = [v40 isEqualToString:@"SOUND_ACTION_TT_ID"];
+  identifier14 = [specifier identifier];
+  v41 = [identifier14 isEqualToString:@"SOUND_ACTION_TT_ID"];
 
   if (v41)
   {
@@ -332,8 +332,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v42 = [v9 identifier];
-  v43 = [v42 isEqualToString:@"SOUND_ACTION_UH_ID"];
+  identifier15 = [specifier identifier];
+  v43 = [identifier15 isEqualToString:@"SOUND_ACTION_UH_ID"];
 
   if (v43)
   {
@@ -345,28 +345,28 @@ LABEL_32:
   v44 = +[SCATOnboardingManager sharedInstance];
   if ([v44 inSCATOnboarding])
   {
-    v45 = [(SCATSoundSwitchSourceController *)self navigationController];
-    [v44 addOnboardingSwitch:v12 navigationController:v45];
+    navigationController = [(SCATSoundSwitchSourceController *)self navigationController];
+    [v44 addOnboardingSwitch:v12 navigationController:navigationController];
   }
 
   else
   {
-    v45 = [[SCATSwitchActionsController alloc] initWithSwitch:v12];
-    v46 = [(SCATSoundSwitchSourceController *)self assetURL];
-    [(SCATSwitchActionsController *)v45 setAssetURL:v46];
+    navigationController = [[SCATSwitchActionsController alloc] initWithSwitch:v12];
+    assetURL2 = [(SCATSoundSwitchSourceController *)self assetURL];
+    [(SCATSwitchActionsController *)navigationController setAssetURL:assetURL2];
 
-    [(SCATSwitchActionsController *)v45 setParentController:self];
-    v47 = [(SCATSoundSwitchSourceController *)self rootController];
-    [(SCATSwitchActionsController *)v45 setRootController:v47];
+    [(SCATSwitchActionsController *)navigationController setParentController:self];
+    rootController = [(SCATSoundSwitchSourceController *)self rootController];
+    [(SCATSwitchActionsController *)navigationController setRootController:rootController];
 
     v48 = AXParameterizedLocalizedString();
     v49 = [PSSpecifier preferenceSpecifierNamed:v48 target:self set:0 get:0 detail:0 cell:-1 edit:0];
-    [(SCATSwitchActionsController *)v45 setSpecifier:v49];
+    [(SCATSwitchActionsController *)navigationController setSpecifier:v49];
 
-    v50 = [(SCATSettingsCompletionController *)self completion];
-    [(SCATSettingsCompletionController *)v45 setCompletion:v50];
+    completion = [(SCATSettingsCompletionController *)self completion];
+    [(SCATSettingsCompletionController *)navigationController setCompletion:completion];
 
-    [(SCATSoundSwitchSourceController *)self showController:v45 animate:1];
+    [(SCATSoundSwitchSourceController *)self showController:navigationController animate:1];
   }
 
 LABEL_36:

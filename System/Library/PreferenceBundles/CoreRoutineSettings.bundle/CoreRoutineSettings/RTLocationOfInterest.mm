@@ -8,11 +8,11 @@
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v3 = [(RTLocationOfInterest *)self location];
-  [v3 latitude];
+  location = [(RTLocationOfInterest *)self location];
+  [location latitude];
   v5 = v4;
-  v6 = [(RTLocationOfInterest *)self location];
-  [v6 longitude];
+  location2 = [(RTLocationOfInterest *)self location];
+  [location2 longitude];
   v8 = CLLocationCoordinate2DMake(v5, v7);
 
   latitude = v8.latitude;
@@ -24,12 +24,12 @@
 
 - (id)polygon
 {
-  v2 = self;
+  selfCopy = self;
   [(RTLocationOfInterest *)self coordinate];
   v4 = v3;
   v6 = v5;
-  v7 = [v2 location];
-  [v7 horizontalUncertainty];
+  location = [selfCopy location];
+  [location horizontalUncertainty];
   v9 = v8;
   if (v8 <= 1.0)
   {
@@ -38,8 +38,8 @@
 
   else
   {
-    v2 = [v2 location];
-    [v2 horizontalUncertainty];
+    selfCopy = [selfCopy location];
+    [selfCopy horizontalUncertainty];
     v11 = v10;
   }
 
@@ -56,8 +56,8 @@
   y = MKMapRectNull.origin.y;
   width = MKMapRectNull.size.width;
   height = MKMapRectNull.size.height;
-  v5 = [(RTLocationOfInterest *)self polygon];
-  [v5 boundingMapRect];
+  polygon = [(RTLocationOfInterest *)self polygon];
+  [polygon boundingMapRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;

@@ -1,5 +1,5 @@
 @interface MKBasicMapViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityElements;
@@ -9,12 +9,12 @@
 
 @implementation MKBasicMapViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKBasicMapView" hasInstanceMethod:@"initWithFrame:andGlobe:shouldRasterize:allowsAntialiasing:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "B", "B", "B", 0}];
-  [v3 validateClass:@"MKBasicMapView" hasInstanceMethod:@"mapView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKMapView" hasInstanceMethod:@"setUserTrackingMode:" withFullSignature:{"v", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKBasicMapView" hasInstanceMethod:@"initWithFrame:andGlobe:shouldRasterize:allowsAntialiasing:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "B", "B", "B", 0}];
+  [validationsCopy validateClass:@"MKBasicMapView" hasInstanceMethod:@"mapView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKMapView" hasInstanceMethod:@"setUserTrackingMode:" withFullSignature:{"v", "q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,15 +22,15 @@
   v4.receiver = self;
   v4.super_class = MKBasicMapViewAccessibility;
   [(MKBasicMapViewAccessibility *)&v4 _accessibilityLoadAccessibilityInformation];
-  v3 = [(MKBasicMapViewAccessibility *)self accessibilityElements];
+  accessibilityElements = [(MKBasicMapViewAccessibility *)self accessibilityElements];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(MKBasicMapViewAccessibility *)self safeValueForKey:@"mapView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityElements
@@ -296,9 +296,9 @@ void __56__MKBasicMapViewAccessibility_accessibilityCustomRotors__block_invoke_1
 - (id)accessibilityCustomActions
 {
   v2 = [(MKBasicMapViewAccessibility *)self safeValueForKey:@"mapView"];
-  v3 = [v2 accessibilityCustomActions];
+  accessibilityCustomActions = [v2 accessibilityCustomActions];
 
-  return v3;
+  return accessibilityCustomActions;
 }
 
 @end

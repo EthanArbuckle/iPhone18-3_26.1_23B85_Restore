@@ -1,33 +1,33 @@
 @interface SBLogoutDebugBlockingViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_configureCell:(id)a3 withBlockingTask:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_configureCell:(id)cell withBlockingTask:(id)task;
 - (void)loadView;
-- (void)setDebugBlockingTasks:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setDebugBlockingTasks:(id)tasks;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBLogoutDebugBlockingViewController
 
-- (void)setDebugBlockingTasks:(id)a3
+- (void)setDebugBlockingTasks:(id)tasks
 {
-  v11 = a3;
-  if (self->_debugBlockingTasks != v11)
+  tasksCopy = tasks;
+  if (self->_debugBlockingTasks != tasksCopy)
   {
-    objc_storeStrong(&self->_debugBlockingTasks, a3);
-    v5 = [(NSDictionary *)self->_debugBlockingTasks allKeys];
-    v6 = [v5 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+    objc_storeStrong(&self->_debugBlockingTasks, tasks);
+    allKeys = [(NSDictionary *)self->_debugBlockingTasks allKeys];
+    v6 = [allKeys sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
     applicationKeys = self->_applicationKeys;
     self->_applicationKeys = v6;
 
-    v8 = [(SBLogoutDebugBlockingViewController *)self view];
-    v9 = [v8 window];
+    view = [(SBLogoutDebugBlockingViewController *)self view];
+    window = [view window];
 
-    if (v9)
+    if (window)
     {
-      v10 = [(SBLogoutDebugBlockingViewController *)self _tableView];
-      [v10 reloadData];
+      _tableView = [(SBLogoutDebugBlockingViewController *)self _tableView];
+      [_tableView reloadData];
     }
   }
 }
@@ -42,27 +42,27 @@
   [(SBLogoutDebugBlockingViewController *)self setView:v4];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SBLogoutDebugBlockingViewController;
-  [(SBLogoutDebugBlockingViewController *)&v5 viewWillAppear:a3];
-  v4 = [(SBLogoutDebugBlockingViewController *)self _tableView];
-  [v4 reloadData];
+  [(SBLogoutDebugBlockingViewController *)&v5 viewWillAppear:appear];
+  _tableView = [(SBLogoutDebugBlockingViewController *)self _tableView];
+  [_tableView reloadData];
 }
 
-- (void)_configureCell:(id)a3 withBlockingTask:(id)a4
+- (void)_configureCell:(id)cell withBlockingTask:(id)task
 {
-  v5 = a4;
-  v6 = a3;
-  v21 = [v5 name];
-  v7 = [v5 reason];
-  v8 = [v5 bundleID];
+  taskCopy = task;
+  cellCopy = cell;
+  name = [taskCopy name];
+  reason = [taskCopy reason];
+  bundleID = [taskCopy bundleID];
 
   v9 = &stru_283094718;
-  if (v21)
+  if (name)
   {
-    v10 = v21;
+    v10 = name;
   }
 
   else
@@ -71,9 +71,9 @@
   }
 
   v11 = v10;
-  if (v7)
+  if (reason)
   {
-    v12 = v7;
+    v12 = reason;
   }
 
   else
@@ -82,9 +82,9 @@
   }
 
   v13 = v12;
-  if (v8)
+  if (bundleID)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)", v8];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)", bundleID];
   }
 
   v14 = [MEMORY[0x277CCAB68] stringWithString:v11];
@@ -94,30 +94,30 @@
     [v14 appendString:v9];
   }
 
-  v15 = [v6 textLabel];
-  [v15 setTextAlignment:0];
-  [v15 setText:v14];
+  textLabel = [cellCopy textLabel];
+  [textLabel setTextAlignment:0];
+  [textLabel setText:v14];
   v16 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.75];
-  [v15 setColor:v16];
+  [textLabel setColor:v16];
 
   v17 = [MEMORY[0x277D74300] boldSystemFontOfSize:13.0];
-  [v15 setFont:v17];
+  [textLabel setFont:v17];
 
-  v18 = [v6 detailTextLabel];
-  [v18 setTextAlignment:0];
-  [v18 setText:v13];
-  v19 = [MEMORY[0x277D75348] grayColor];
-  [v18 setColor:v19];
+  detailTextLabel = [cellCopy detailTextLabel];
+  [detailTextLabel setTextAlignment:0];
+  [detailTextLabel setText:v13];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [detailTextLabel setColor:grayColor];
 
   v20 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
-  [v18 setFont:v20];
+  [detailTextLabel setFont:v20];
 
-  [v6 setBackgroundColor:0];
+  [cellCopy setBackgroundColor:0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(NSArray *)self->_applicationKeys objectAtIndex:a4];
+  v5 = [(NSArray *)self->_applicationKeys objectAtIndex:section];
   if (v5)
   {
     v6 = [(NSDictionary *)self->_debugBlockingTasks objectForKey:v5];
@@ -132,17 +132,17 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"DebugBlockingViewCell"];
-  v8 = -[NSArray objectAtIndex:](self->_applicationKeys, "objectAtIndex:", [v6 section]);
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"DebugBlockingViewCell"];
+  v8 = -[NSArray objectAtIndex:](self->_applicationKeys, "objectAtIndex:", [pathCopy section]);
   if (v8)
   {
     v9 = [(NSDictionary *)self->_debugBlockingTasks objectForKey:v8];
     if (v9)
     {
-      v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+      v10 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
       if (v10)
       {
         if (!v7)
@@ -158,23 +158,23 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_applicationKeys objectAtIndex:a4];
+  v4 = [(NSArray *)self->_applicationKeys objectAtIndex:section];
   v5 = +[SBApplicationController sharedInstance];
   v6 = [v5 applicationWithBundleIdentifier:v4];
 
   if (v6)
   {
-    v7 = [v6 displayName];
+    displayName = [v6 displayName];
   }
 
   else
   {
-    v7 = v4;
+    displayName = v4;
   }
 
-  v8 = v7;
+  v8 = displayName;
 
   return v8;
 }

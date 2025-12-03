@@ -1,21 +1,21 @@
 @interface GKLeaderboardChallengeBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
-- (GKLeaderboardChallengeBulletin)initWithPushNotification:(id)a3;
-- (void)handleAction:(id)a3;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
+- (GKLeaderboardChallengeBulletin)initWithPushNotification:(id)notification;
+- (void)handleAction:(id)action;
 @end
 
 @implementation GKLeaderboardChallengeBulletin
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_100276AF4();
 }
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = swift_allocObject();
   *(v6 + 16) = v4;
@@ -23,9 +23,9 @@
   sub_1002770C8(v5, sub_1001FBD0C, v6);
 }
 
-- (GKLeaderboardChallengeBulletin)initWithPushNotification:(id)a3
+- (GKLeaderboardChallengeBulletin)initWithPushNotification:(id)notification
 {
-  if (a3)
+  if (notification)
   {
     v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }

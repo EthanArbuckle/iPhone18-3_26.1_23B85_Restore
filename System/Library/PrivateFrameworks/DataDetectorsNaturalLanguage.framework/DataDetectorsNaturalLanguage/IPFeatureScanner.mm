@@ -1,47 +1,47 @@
 @interface IPFeatureScanner
 + (id)dataDetectorsFeatureExtractor;
-+ (id)descriptionForScanResultType:(int64_t)a3;
++ (id)descriptionForScanResultType:(int64_t)type;
 + (id)eventStore;
 + (id)keywordFeatureExtractor;
 + (id)sentenceFeatureExtractor;
 + (void)resetSharedCachesAndModels;
-- (BOOL)dataFeatures:(id)a3 containDateOlderThan:(id)a4 preciseTimeOnly:(BOOL)a5;
-- (BOOL)isDateAroundNoon:(id)a3;
-- (BOOL)isDateRoundedTo5Minutes:(id)a3;
-- (BOOL)isEventProposalOrConfirmationFromFeatures:(id)a3 fromFeatureAtIndex:(unint64_t)a4 messageUnit:(id)a5 eventIsTenseDependent:(BOOL)a6 extractedFromSubject:(BOOL)a7 extractedPolarity:(unint64_t *)a8 polarityInfluencedByIpsosPlistRef:(BOOL *)a9;
+- (BOOL)dataFeatures:(id)features containDateOlderThan:(id)than preciseTimeOnly:(BOOL)only;
+- (BOOL)isDateAroundNoon:(id)noon;
+- (BOOL)isDateRoundedTo5Minutes:(id)minutes;
+- (BOOL)isEventProposalOrConfirmationFromFeatures:(id)features fromFeatureAtIndex:(unint64_t)index messageUnit:(id)unit eventIsTenseDependent:(BOOL)dependent extractedFromSubject:(BOOL)subject extractedPolarity:(unint64_t *)polarity polarityInfluencedByIpsosPlistRef:(BOOL *)ref;
 - (BOOL)shouldReplaceSendDateWithCurrentDate;
-- (id)_featureDataInFeatures:(id)a3 atIndex:(unint64_t)a4;
-- (id)_featureSentenceInFeatures:(id)a3 atIndex:(unint64_t)a4;
-- (id)_featureWithClass:(Class)a3 inFeatures:(id)a4 atIndex:(unint64_t)a5;
-- (id)_nearbyFeatureDatas:(id)a3 fromFeatureAtIndex:(unint64_t)a4 messageUnit:(id)a5;
-- (id)_nearbyFeatureSentences:(id)a3 fromFeatureAtIndex:(unint64_t)a4 messageUnit:(id)a5;
-- (id)_regroupEventsWithSpreadTimeAsAllDayEvents:(id)a3;
-- (id)_sortedFeaturesByDistance:(id)a3 aroundRange:(_NSRange)a4;
-- (id)_sortedFeaturesByRange:(id)a3;
-- (id)_stitchedEventsFromEvents:(id)a3;
-- (id)analyzeFeatures:(id)a3 messageUnit:(id)a4 checkPolarity:(BOOL)a5 polarity:(unint64_t)a6;
-- (id)bestEventsFromEvents:(id)a3;
-- (id)cleanedStringForFeatureData:(id)a3;
-- (id)dataFeaturesInTheFutureFromDataFeatures:(id)a3 messageUnitSentDate:(id)a4;
-- (id)decoratedTitle:(id)a3 withSubtitles:(id)a4;
-- (id)decoratedTitleFromEventType:(id)a3 title:(id)a4 sender:(id)a5 recipients:(id)a6 isSent:(BOOL)a7 isTitleSenderDecorated:(BOOL *)a8;
-- (id)featuresForTextString:(id)a3 inMessageUnit:(id)a4 extractors:(id)a5 context:(id)a6;
-- (id)filteredEventsForDetectedEvents:(id)a3 referenceDate:(id)a4;
+- (id)_featureDataInFeatures:(id)features atIndex:(unint64_t)index;
+- (id)_featureSentenceInFeatures:(id)features atIndex:(unint64_t)index;
+- (id)_featureWithClass:(Class)class inFeatures:(id)features atIndex:(unint64_t)index;
+- (id)_nearbyFeatureDatas:(id)datas fromFeatureAtIndex:(unint64_t)index messageUnit:(id)unit;
+- (id)_nearbyFeatureSentences:(id)sentences fromFeatureAtIndex:(unint64_t)index messageUnit:(id)unit;
+- (id)_regroupEventsWithSpreadTimeAsAllDayEvents:(id)events;
+- (id)_sortedFeaturesByDistance:(id)distance aroundRange:(_NSRange)range;
+- (id)_sortedFeaturesByRange:(id)range;
+- (id)_stitchedEventsFromEvents:(id)events;
+- (id)analyzeFeatures:(id)features messageUnit:(id)unit checkPolarity:(BOOL)polarity polarity:(unint64_t)a6;
+- (id)bestEventsFromEvents:(id)events;
+- (id)cleanedStringForFeatureData:(id)data;
+- (id)dataFeaturesInTheFutureFromDataFeatures:(id)features messageUnitSentDate:(id)date;
+- (id)decoratedTitle:(id)title withSubtitles:(id)subtitles;
+- (id)decoratedTitleFromEventType:(id)type title:(id)title sender:(id)sender recipients:(id)recipients isSent:(BOOL)sent isTitleSenderDecorated:(BOOL *)decorated;
+- (id)featuresForTextString:(id)string inMessageUnit:(id)unit extractors:(id)extractors context:(id)context;
+- (id)filteredEventsForDetectedEvents:(id)events referenceDate:(id)date;
 - (id)messageSenderName;
-- (id)normalizedAllDayDateFromDate:(id)a3;
-- (id)shortNameForPerson:(id)a3;
-- (id)stitchedEventsFromEvents:(id)a3;
-- (id)stringsFromDataFeatures:(id)a3 matchingTypes:(id)a4;
-- (unint64_t)_distanceBetweenFeature:(id)a3 andFeature:(id)a4;
-- (unint64_t)countOfFeaturesContainDateInTheFuture:(id)a3 messageUnitSentDate:(id)a4;
-- (unint64_t)eventStatusFromPolarity:(unint64_t)a3;
-- (unint64_t)featureSentencePolarityForFeatureAtIndex:(unint64_t)a3 inFeatures:(id)a4;
-- (void)adjustTimeForEvent:(id)a3;
-- (void)adjustTimeForEvents:(id)a3;
-- (void)augmentDetectedDatesWithEndDates:(id)a3;
-- (void)confidenceForEvents:(id)a3;
-- (void)enrichEvents:(id)a3 messageUnits:(id)a4 dateInSubject:(id)a5 dataFeatures:(id)a6;
-- (void)normalizedEvents:(id)a3;
+- (id)normalizedAllDayDateFromDate:(id)date;
+- (id)shortNameForPerson:(id)person;
+- (id)stitchedEventsFromEvents:(id)events;
+- (id)stringsFromDataFeatures:(id)features matchingTypes:(id)types;
+- (unint64_t)_distanceBetweenFeature:(id)feature andFeature:(id)andFeature;
+- (unint64_t)countOfFeaturesContainDateInTheFuture:(id)future messageUnitSentDate:(id)date;
+- (unint64_t)eventStatusFromPolarity:(unint64_t)polarity;
+- (unint64_t)featureSentencePolarityForFeatureAtIndex:(unint64_t)index inFeatures:(id)features;
+- (void)adjustTimeForEvent:(id)event;
+- (void)adjustTimeForEvents:(id)events;
+- (void)augmentDetectedDatesWithEndDates:(id)dates;
+- (void)confidenceForEvents:(id)events;
+- (void)enrichEvents:(id)events messageUnits:(id)units dateInSubject:(id)subject dataFeatures:(id)features;
+- (void)normalizedEvents:(id)events;
 - (void)resetScanState;
 @end
 
@@ -49,15 +49,15 @@
 
 + (void)resetSharedCachesAndModels
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"IPScannerResetSharedCachesAndModelsNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"IPScannerResetSharedCachesAndModelsNotification" object:0];
 }
 
 + (id)eventStore
 {
   if (_sharedEventStore)
   {
-    v2 = _sharedEventStore;
+    result = _sharedEventStore;
   }
 
   else
@@ -67,10 +67,10 @@
       +[IPFeatureScanner eventStore];
     }
 
-    v2 = [eventStore__pasExprOnceResult result];
+    result = [eventStore__pasExprOnceResult result];
   }
 
-  return v2;
+  return result;
 }
 
 void __30__IPFeatureScanner_eventStore__block_invoke()
@@ -173,9 +173,9 @@ uint64_t __44__IPFeatureScanner_sentenceFeatureExtractor__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_sortedFeaturesByRange:(id)a3
+- (id)_sortedFeaturesByRange:(id)range
 {
-  v3 = [a3 mutableCopy];
+  v3 = [range mutableCopy];
   [v3 sortUsingComparator:&__block_literal_global_36];
 
   return v3;
@@ -204,18 +204,18 @@ uint64_t __43__IPFeatureScanner__sortedFeaturesByRange___block_invoke(uint64_t a
   }
 }
 
-- (unint64_t)_distanceBetweenFeature:(id)a3 andFeature:(id)a4
+- (unint64_t)_distanceBetweenFeature:(id)feature andFeature:(id)andFeature
 {
-  v5 = a4;
-  v6 = [a3 matchRange];
+  andFeatureCopy = andFeature;
+  matchRange = [feature matchRange];
   v8 = v7;
-  v9 = [v5 matchRange];
+  matchRange2 = [andFeatureCopy matchRange];
   v11 = v10;
 
-  v12 = v6 - (v11 + v9);
-  if (v12 >= v9 - (v6 + v8))
+  v12 = matchRange - (v11 + matchRange2);
+  if (v12 >= matchRange2 - (matchRange + v8))
   {
-    v12 = v9 - (v6 + v8);
+    v12 = matchRange2 - (matchRange + v8);
   }
 
   if (v12 >= 0)
@@ -229,11 +229,11 @@ uint64_t __43__IPFeatureScanner__sortedFeaturesByRange___block_invoke(uint64_t a
   }
 }
 
-- (id)_sortedFeaturesByDistance:(id)a3 aroundRange:(_NSRange)a4
+- (id)_sortedFeaturesByDistance:(id)distance aroundRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = [a3 mutableCopy];
+  length = range.length;
+  location = range.location;
+  v6 = [distance mutableCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__IPFeatureScanner__sortedFeaturesByDistance_aroundRange___block_invoke;
@@ -287,12 +287,12 @@ uint64_t __58__IPFeatureScanner__sortedFeaturesByDistance_aroundRange___block_in
   }
 }
 
-- (id)_featureWithClass:(Class)a3 inFeatures:(id)a4 atIndex:(unint64_t)a5
+- (id)_featureWithClass:(Class)class inFeatures:(id)features atIndex:(unint64_t)index
 {
-  v6 = a4;
-  if ([v6 count] > a5)
+  featuresCopy = features;
+  if ([featuresCopy count] > index)
   {
-    v7 = [v6 objectAtIndexedSubscript:a5];
+    v7 = [featuresCopy objectAtIndexedSubscript:index];
     if (objc_opt_isKindOfClass())
     {
       goto LABEL_5;
@@ -305,18 +305,18 @@ LABEL_5:
   return v7;
 }
 
-- (id)featuresForTextString:(id)a3 inMessageUnit:(id)a4 extractors:(id)a5 context:(id)a6
+- (id)featuresForTextString:(id)string inMessageUnit:(id)unit extractors:(id)extractors context:(id)context
 {
   v60 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v33 = a4;
-  v10 = a5;
-  v34 = a6;
-  v29 = v9;
-  v30 = v10;
-  if (v9)
+  stringCopy = string;
+  unitCopy = unit;
+  extractorsCopy = extractors;
+  contextCopy = context;
+  v29 = stringCopy;
+  v30 = extractorsCopy;
+  if (stringCopy)
   {
-    v11 = v9;
+    v11 = stringCopy;
     if ([v11 length] >= 0x2711)
     {
       v12 = v11;
@@ -324,27 +324,27 @@ LABEL_5:
     }
 
     v32 = v11;
-    if ([v10 count] == 1)
+    if ([extractorsCopy count] == 1)
     {
-      v13 = [v10 firstObject];
+      firstObject = [extractorsCopy firstObject];
       v53 = 0;
       v54 = &v53;
       v55 = 0x3032000000;
       v56 = __Block_byref_object_copy_;
       v57 = __Block_byref_object_dispose_;
       v58 = 0;
-      v14 = [v13 queue];
+      queue = [firstObject queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __75__IPFeatureScanner_featuresForTextString_inMessageUnit_extractors_context___block_invoke;
       block[3] = &unk_278F22D08;
       v52 = &v53;
-      v48 = v13;
+      v48 = firstObject;
       v49 = v32;
-      v50 = v33;
-      v51 = v34;
-      v15 = v13;
-      dispatch_sync(v14, block);
+      v50 = unitCopy;
+      v51 = contextCopy;
+      v15 = firstObject;
+      dispatch_sync(queue, block);
 
       v16 = v54[5];
       _Block_object_dispose(&v53, 8);
@@ -353,7 +353,7 @@ LABEL_5:
     else
     {
       v17 = dispatch_group_create();
-      v18 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (featuresForTextString_inMessageUnit_extractors_context__onceToken != -1)
       {
         [IPFeatureScanner featuresForTextString:inMessageUnit:extractors:context:];
@@ -363,7 +363,7 @@ LABEL_5:
       v46 = 0u;
       v44 = 0u;
       v43 = 0u;
-      obj = v10;
+      obj = extractorsCopy;
       v19 = [obj countByEnumeratingWithState:&v43 objects:v59 count:16];
       if (v19)
       {
@@ -378,17 +378,17 @@ LABEL_5:
             }
 
             v22 = *(*(&v43 + 1) + 8 * i);
-            v23 = [v22 queue];
+            queue2 = [v22 queue];
             v38[0] = MEMORY[0x277D85DD0];
             v38[1] = 3221225472;
             v38[2] = __75__IPFeatureScanner_featuresForTextString_inMessageUnit_extractors_context___block_invoke_3;
             v38[3] = &unk_278F22D58;
             v38[4] = v22;
             v39 = v32;
-            v40 = v33;
-            v41 = v34;
-            v42 = v18;
-            dispatch_group_async(v17, v23, v38);
+            v40 = unitCopy;
+            v41 = contextCopy;
+            v42 = array;
+            dispatch_group_async(v17, queue2, v38);
           }
 
           v19 = [obj countByEnumeratingWithState:&v43 objects:v59 count:16];
@@ -410,9 +410,9 @@ LABEL_5:
       v35[1] = 3221225472;
       v35[2] = __75__IPFeatureScanner_featuresForTextString_inMessageUnit_extractors_context___block_invoke_5;
       v35[3] = &unk_278F22D80;
-      v36 = v18;
+      v36 = array;
       v37 = &v53;
-      v26 = v18;
+      v26 = array;
       dispatch_sync(v25, v35);
       v16 = v54[5];
 
@@ -484,35 +484,35 @@ uint64_t __75__IPFeatureScanner_featuresForTextString_inMessageUnit_extractors_c
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_featureDataInFeatures:(id)a3 atIndex:(unint64_t)a4
+- (id)_featureDataInFeatures:(id)features atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(IPFeatureScanner *)self _featureWithClass:objc_opt_class() inFeatures:v6 atIndex:a4];
+  featuresCopy = features;
+  v7 = [(IPFeatureScanner *)self _featureWithClass:objc_opt_class() inFeatures:featuresCopy atIndex:index];
 
   return v7;
 }
 
-- (id)_featureSentenceInFeatures:(id)a3 atIndex:(unint64_t)a4
+- (id)_featureSentenceInFeatures:(id)features atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(IPFeatureScanner *)self _featureWithClass:objc_opt_class() inFeatures:v6 atIndex:a4];
+  featuresCopy = features;
+  v7 = [(IPFeatureScanner *)self _featureWithClass:objc_opt_class() inFeatures:featuresCopy atIndex:index];
 
   return v7;
 }
 
-- (id)_nearbyFeatureDatas:(id)a3 fromFeatureAtIndex:(unint64_t)a4 messageUnit:(id)a5
+- (id)_nearbyFeatureDatas:(id)datas fromFeatureAtIndex:(unint64_t)index messageUnit:(id)unit
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a5 originalMessage];
-  v37 = [v9 dateSent];
+  datasCopy = datas;
+  originalMessage = [unit originalMessage];
+  dateSent = [originalMessage dateSent];
 
-  v39 = [(IPFeatureScanner *)self _featureWithClass:objc_opt_class() inFeatures:v8 atIndex:a4];
-  v10 = [v39 matchRange];
+  v39 = [(IPFeatureScanner *)self _featureWithClass:objc_opt_class() inFeatures:datasCopy atIndex:index];
+  matchRange = [v39 matchRange];
   v12 = v11;
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
-  v34 = v8;
-  [(IPFeatureScanner *)self _sortedFeaturesByDistance:v8 aroundRange:v10, v12];
+  v34 = datasCopy;
+  [(IPFeatureScanner *)self _sortedFeaturesByDistance:datasCopy aroundRange:matchRange, v12];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -551,8 +551,8 @@ uint64_t __75__IPFeatureScanner_featuresForTextString_inMessageUnit_extractors_c
           if ((objc_opt_isKindOfClass() & 1) != 0 && v39 != v22)
           {
             v25 = v22;
-            v26 = [v13 lastObject];
-            if ([v26 type] && objc_msgSend(v26, "type") != 1)
+            lastObject = [v13 lastObject];
+            if ([lastObject type] && objc_msgSend(lastObject, "type") != 1)
             {
               goto LABEL_17;
             }
@@ -561,8 +561,8 @@ uint64_t __75__IPFeatureScanner_featuresForTextString_inMessageUnit_extractors_c
             v28 = v19;
             v29 = v14;
             v30 = v13;
-            v31 = [v26 value];
-            if ([v31 compare:v37] != -1)
+            value = [lastObject value];
+            if ([value compare:dateSent] != -1)
             {
 
               v13 = v30;
@@ -573,14 +573,14 @@ uint64_t __75__IPFeatureScanner_featuresForTextString_inMessageUnit_extractors_c
               goto LABEL_17;
             }
 
-            v35 = [v25 type];
+            type = [v25 type];
 
             v13 = v30;
             v14 = v29;
             v19 = v28;
             v20 = v27;
             v16 = v36;
-            if (v35 == 5)
+            if (type == 5)
             {
               [v13 removeLastObject];
             }
@@ -610,16 +610,16 @@ LABEL_21:
   return v13;
 }
 
-- (id)_nearbyFeatureSentences:(id)a3 fromFeatureAtIndex:(unint64_t)a4 messageUnit:(id)a5
+- (id)_nearbyFeatureSentences:(id)sentences fromFeatureAtIndex:(unint64_t)index messageUnit:(id)unit
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(IPFeatureScanner *)self _featureWithClass:objc_opt_class() inFeatures:v7 atIndex:a4];
-  v9 = [v8 matchRange];
+  sentencesCopy = sentences;
+  v8 = [(IPFeatureScanner *)self _featureWithClass:objc_opt_class() inFeatures:sentencesCopy atIndex:index];
+  matchRange = [v8 matchRange];
   v11 = v10;
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
-  v22 = v7;
-  [(IPFeatureScanner *)self _sortedFeaturesByDistance:v7 aroundRange:v9, v11];
+  v22 = sentencesCopy;
+  [(IPFeatureScanner *)self _sortedFeaturesByDistance:sentencesCopy aroundRange:matchRange, v11];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -677,21 +677,21 @@ LABEL_3:
 
 - (BOOL)shouldReplaceSendDateWithCurrentDate
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"IPFeatureManagersReplaceSendDateWithCurrentDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"IPFeatureManagersReplaceSendDateWithCurrentDate"];
 
   return v3;
 }
 
-- (void)augmentDetectedDatesWithEndDates:(id)a3
+- (void)augmentDetectedDatesWithEndDates:(id)dates
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  datesCopy = dates;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v4 = [datesCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
@@ -703,15 +703,15 @@ LABEL_3:
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(datesCopy);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
-        v10 = [v9 type];
-        if (v10 < 2)
+        type = [v9 type];
+        if (type < 2)
         {
-          v11 = [v9 contextDictionary];
-          v12 = [v11 objectForKeyedSubscript:@"endDate"];
+          contextDictionary = [v9 contextDictionary];
+          v12 = [contextDictionary objectForKeyedSubscript:@"endDate"];
 
           if (v12)
           {
@@ -731,30 +731,30 @@ LABEL_18:
           continue;
         }
 
-        if (v10 == 2)
+        if (type == 2)
         {
-          v14 = [v9 matchRange];
-          v15 = [v6 matchRange];
-          v17 = v14 - (v16 + v15);
+          matchRange = [v9 matchRange];
+          matchRange2 = [v6 matchRange];
+          v17 = matchRange - (v16 + matchRange2);
           if (v17 < 0)
           {
-            v17 = v16 + v15 - v14;
+            v17 = v16 + matchRange2 - matchRange;
           }
 
           if (v17 <= 0x31)
           {
-            v18 = [v9 contextDictionary];
-            v13 = [v18 objectForKeyedSubscript:@"endDate"];
+            contextDictionary2 = [v9 contextDictionary];
+            v13 = [contextDictionary2 objectForKeyedSubscript:@"endDate"];
 
-            v19 = [v6 value];
+            value = [v6 value];
             [v13 timeIntervalSinceReferenceDate];
             v21 = v20;
-            [v19 timeIntervalSinceReferenceDate];
+            [value timeIntervalSinceReferenceDate];
             v23 = v21 - v22;
             if (v23 >= 1800.0 && v23 < 43200.0)
             {
-              v24 = [v6 contextDictionary];
-              [v24 setObject:v13 forKeyedSubscript:@"endDate"];
+              contextDictionary3 = [v6 contextDictionary];
+              [contextDictionary3 setObject:v13 forKeyedSubscript:@"endDate"];
             }
 
             goto LABEL_18;
@@ -762,7 +762,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v5 = [datesCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (!v5)
       {
         goto LABEL_23;
@@ -776,19 +776,19 @@ LABEL_23:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)featureSentencePolarityForFeatureAtIndex:(unint64_t)a3 inFeatures:(id)a4
+- (unint64_t)featureSentencePolarityForFeatureAtIndex:(unint64_t)index inFeatures:(id)features
 {
-  v6 = a4;
-  v7 = [v6 objectAtIndexedSubscript:a3];
-  v8 = [v7 matchRange];
+  featuresCopy = features;
+  v7 = [featuresCopy objectAtIndexedSubscript:index];
+  matchRange = [v7 matchRange];
   v9 = 0;
   while (1)
   {
-    v10 = [(IPFeatureScanner *)self _featureSentenceInFeatures:v6 atIndex:a3];
+    v10 = [(IPFeatureScanner *)self _featureSentenceInFeatures:featuresCopy atIndex:index];
     if (v10)
     {
-      v11 = [v7 matchRange];
-      if (v8 >= v11 && v8 - v11 < v12)
+      matchRange2 = [v7 matchRange];
+      if (matchRange >= matchRange2 && matchRange - matchRange2 < v12)
       {
         break;
       }
@@ -796,40 +796,40 @@ LABEL_23:
 
     if (++v9 >= 5)
     {
-      v13 = 0;
+      polarity = 0;
       goto LABEL_8;
     }
   }
 
-  v13 = [v10 polarity];
+  polarity = [v10 polarity];
 
 LABEL_8:
-  return v13;
+  return polarity;
 }
 
-- (BOOL)isDateAroundNoon:(id)a3
+- (BOOL)isDateAroundNoon:(id)noon
 {
-  v3 = a3;
+  noonCopy = noon;
   if (IPGregorianCalendar_once != -1)
   {
     [IPFeatureScanner isDateAroundNoon:];
   }
 
-  v4 = [IPGregorianCalendar_calendar components:32 fromDate:v3];
+  v4 = [IPGregorianCalendar_calendar components:32 fromDate:noonCopy];
   v5 = [v4 hour] >= 11 && objc_msgSend(v4, "hour") < 14;
 
   return v5;
 }
 
-- (BOOL)isDateRoundedTo5Minutes:(id)a3
+- (BOOL)isDateRoundedTo5Minutes:(id)minutes
 {
-  v3 = a3;
+  minutesCopy = minutes;
   if (IPGregorianCalendar_once != -1)
   {
     [IPFeatureScanner isDateAroundNoon:];
   }
 
-  v4 = [IPGregorianCalendar_calendar components:192 fromDate:v3];
+  v4 = [IPGregorianCalendar_calendar components:192 fromDate:minutesCopy];
   if ([v4 second])
   {
     v5 = 0;
@@ -843,18 +843,18 @@ LABEL_8:
   return v5;
 }
 
-- (id)dataFeaturesInTheFutureFromDataFeatures:(id)a3 messageUnitSentDate:(id)a4
+- (id)dataFeaturesInTheFutureFromDataFeatures:(id)features messageUnitSentDate:(id)date
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  featuresCopy = features;
+  dateCopy = date;
   v7 = objc_opt_new();
-  v8 = [v6 dateByAddingTimeInterval:600.0];
+  v8 = [dateCopy dateByAddingTimeInterval:600.0];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v5;
+  v9 = featuresCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -872,8 +872,8 @@ LABEL_8:
         v14 = *(*(&v18 + 1) + 8 * i);
         if (![v14 type] || objc_msgSend(v14, "type") == 1)
         {
-          v15 = [v14 value];
-          if ([v15 compare:v8] != -1)
+          value = [v14 value];
+          if ([value compare:v8] != -1)
           {
             [v7 addObject:v14];
           }
@@ -891,25 +891,25 @@ LABEL_8:
   return v7;
 }
 
-- (unint64_t)countOfFeaturesContainDateInTheFuture:(id)a3 messageUnitSentDate:(id)a4
+- (unint64_t)countOfFeaturesContainDateInTheFuture:(id)future messageUnitSentDate:(id)date
 {
-  v4 = [(IPFeatureScanner *)self dataFeaturesInTheFutureFromDataFeatures:a3 messageUnitSentDate:a4];
+  v4 = [(IPFeatureScanner *)self dataFeaturesInTheFutureFromDataFeatures:future messageUnitSentDate:date];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (BOOL)dataFeatures:(id)a3 containDateOlderThan:(id)a4 preciseTimeOnly:(BOOL)a5
+- (BOOL)dataFeatures:(id)features containDateOlderThan:(id)than preciseTimeOnly:(BOOL)only
 {
-  v29 = a5;
+  onlyCopy = only;
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  featuresCopy = features;
+  thanCopy = than;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v6;
+  v8 = featuresCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
@@ -927,30 +927,30 @@ LABEL_8:
         v13 = *(*(&v31 + 1) + 8 * i);
         if (![v13 type] || objc_msgSend(v13, "type") == 1)
         {
-          v14 = [v13 value];
-          if ([v14 compare:v7] == -1)
+          value = [v13 value];
+          if ([value compare:thanCopy] == -1)
           {
-            if (!v29)
+            if (!onlyCopy)
             {
               goto LABEL_17;
             }
 
-            v15 = [v13 contextDictionary];
-            [v15 objectForKeyedSubscript:@"timeIsApproximate"];
+            contextDictionary = [v13 contextDictionary];
+            [contextDictionary objectForKeyedSubscript:@"timeIsApproximate"];
             v17 = v16 = v8;
-            v30 = [v17 BOOLValue];
+            bOOLValue = [v17 BOOLValue];
 
-            v18 = [v13 contextDictionary];
-            v19 = [v18 objectForKeyedSubscript:@"allDay"];
-            v20 = [v19 BOOLValue];
+            contextDictionary2 = [v13 contextDictionary];
+            v19 = [contextDictionary2 objectForKeyedSubscript:@"allDay"];
+            bOOLValue2 = [v19 BOOLValue];
 
-            v21 = [v13 contextDictionary];
-            v22 = [v21 objectForKeyedSubscript:@"dateTimeIsTenseDependent"];
-            v23 = [v22 BOOLValue];
+            contextDictionary3 = [v13 contextDictionary];
+            v22 = [contextDictionary3 objectForKeyedSubscript:@"dateTimeIsTenseDependent"];
+            bOOLValue3 = [v22 BOOLValue];
 
             v8 = v16;
-            v24 = [(IPFeatureScanner *)self isDateRoundedTo5Minutes:v14];
-            if ((v20 & 1) == 0 && (v23 & 1) == 0 && (v30 & v24) == 0)
+            v24 = [(IPFeatureScanner *)self isDateRoundedTo5Minutes:value];
+            if ((bOOLValue2 & 1) == 0 && (bOOLValue3 & 1) == 0 && (bOOLValue & v24) == 0)
             {
 LABEL_17:
 
@@ -978,32 +978,32 @@ LABEL_18:
   return v25;
 }
 
-- (BOOL)isEventProposalOrConfirmationFromFeatures:(id)a3 fromFeatureAtIndex:(unint64_t)a4 messageUnit:(id)a5 eventIsTenseDependent:(BOOL)a6 extractedFromSubject:(BOOL)a7 extractedPolarity:(unint64_t *)a8 polarityInfluencedByIpsosPlistRef:(BOOL *)a9
+- (BOOL)isEventProposalOrConfirmationFromFeatures:(id)features fromFeatureAtIndex:(unint64_t)index messageUnit:(id)unit eventIsTenseDependent:(BOOL)dependent extractedFromSubject:(BOOL)subject extractedPolarity:(unint64_t *)polarity polarityInfluencedByIpsosPlistRef:(BOOL *)ref
 {
-  v10 = a7;
-  v11 = a6;
+  subjectCopy = subject;
+  dependentCopy = dependent;
   v113 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a5;
-  v17 = v16;
-  *a8 = 1;
-  if (v10)
+  featuresCopy = features;
+  unitCopy = unit;
+  v17 = unitCopy;
+  *polarity = 1;
+  if (subjectCopy)
   {
-    v18 = [v16 originalMessage];
-    v19 = [v18 type];
+    originalMessage = [unitCopy originalMessage];
+    type = [originalMessage type];
     v20 = IPMessageTypeShortMessage;
 
-    if (v19 == v20)
+    if (type == v20)
     {
       v35 = 0;
       goto LABEL_165;
     }
   }
 
-  v21 = [v15 objectAtIndexedSubscript:a4];
-  v22 = [v21 matchRange];
+  v21 = [featuresCopy objectAtIndexedSubscript:index];
+  matchRange = [v21 matchRange];
   v24 = v23;
-  v25 = [(IPFeatureScanner *)self _nearbyFeatureSentences:v15 fromFeatureAtIndex:a4 messageUnit:v17];
+  v25 = [(IPFeatureScanner *)self _nearbyFeatureSentences:featuresCopy fromFeatureAtIndex:index messageUnit:v17];
   if (![v25 count])
   {
     v35 = 0;
@@ -1025,13 +1025,13 @@ LABEL_18:
 
   v28 = [v25 subarrayWithRange:{0, v27}];
 
-  v29 = [v28 firstObject];
+  firstObject = [v28 firstObject];
   if (IPDebuggingModeEnabled_once != -1)
   {
     [IPFeatureScanner isEventProposalOrConfirmationFromFeatures:fromFeatureAtIndex:messageUnit:eventIsTenseDependent:extractedFromSubject:extractedPolarity:polarityInfluencedByIpsosPlistRef:];
   }
 
-  v97 = v29;
+  v97 = firstObject;
   if (IPDebuggingModeEnabled_sEnabled == 1)
   {
     v30 = _IPLogHandle;
@@ -1053,11 +1053,11 @@ LABEL_18:
       _os_log_impl(&dword_2485E4000, v31, OS_LOG_TYPE_INFO, "Evaluating main feature sentence containing date [%@]: %@ #FeatureManager", buf, 0x16u);
 
       v21 = v32;
-      v29 = v97;
+      firstObject = v97;
     }
   }
 
-  if ([v29 isQuoteAttributionLine])
+  if ([firstObject isQuoteAttributionLine])
   {
     v34 = _IPLogHandle;
     if (!_IPLogHandle)
@@ -1073,13 +1073,13 @@ LABEL_18:
     }
 
     v35 = 0;
-    v29 = v97;
+    firstObject = v97;
     goto LABEL_163;
   }
 
-  v36 = [v29 eventVocabularyIgnoreDateKeyword];
+  eventVocabularyIgnoreDateKeyword = [firstObject eventVocabularyIgnoreDateKeyword];
 
-  if (v36)
+  if (eventVocabularyIgnoreDateKeyword)
   {
     v37 = _IPLogHandle;
     if (!_IPLogHandle)
@@ -1111,20 +1111,20 @@ LABEL_18:
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
         v39 = v38;
-        v40 = [v29 eventVocabularyIgnoreDateKeyword];
+        eventVocabularyIgnoreDateKeyword2 = [firstObject eventVocabularyIgnoreDateKeyword];
         *buf = 138412290;
-        v110 = v40;
+        v110 = eventVocabularyIgnoreDateKeyword2;
         _os_log_impl(&dword_2485E4000, v39, OS_LOG_TYPE_INFO, "Keyword: [%@] #FeatureManager", buf, 0xCu);
       }
     }
 
     v35 = 0;
-    *a9 = 1;
+    *ref = 1;
     goto LABEL_163;
   }
 
   v94 = v21;
-  if (v11 && ([v29 matchString], v41 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "languageID"), v42 = objc_claimAutoreleasedReturnValue(), v43 = +[IPTenseDetector tenseOfString:languageID:](IPTenseDetector, "tenseOfString:languageID:", v41, v42), v42, v41, !v43))
+  if (dependentCopy && ([firstObject matchString], v41 = objc_claimAutoreleasedReturnValue(), objc_msgSend(firstObject, "languageID"), v42 = objc_claimAutoreleasedReturnValue(), v43 = +[IPTenseDetector tenseOfString:languageID:](IPTenseDetector, "tenseOfString:languageID:", v41, v42), v42, v41, !v43))
   {
     v64 = _IPLogHandle;
     if (!_IPLogHandle)
@@ -1167,10 +1167,10 @@ LABEL_18:
           objc_enumerationMutation(v45);
         }
 
-        v50 = [*(*(&v103 + 1) + 8 * i) eventVocabularyRejectionKeyword];
-        if (v50)
+        eventVocabularyRejectionKeyword = [*(*(&v103 + 1) + 8 * i) eventVocabularyRejectionKeyword];
+        if (eventVocabularyRejectionKeyword)
         {
-          v57 = v50;
+          v57 = eventVocabularyRejectionKeyword;
           v58 = _IPLogHandle;
           if (!_IPLogHandle)
           {
@@ -1179,7 +1179,7 @@ LABEL_18:
           }
 
           v28 = v92;
-          v29 = v97;
+          firstObject = v97;
           if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
           {
             *buf = 0;
@@ -1208,7 +1208,7 @@ LABEL_18:
             }
           }
 
-          *a9 = 1;
+          *ref = 1;
 
           v35 = 0;
           v21 = v94;
@@ -1222,12 +1222,12 @@ LABEL_18:
     while (v47);
   }
 
-  v29 = v97;
+  firstObject = v97;
   v102 = 0.0;
-  v51 = [v97 polarityForRange:v22 - objc_msgSend(v97 confidence:{"matchRange"), v96, &v102}];
+  v51 = [v97 polarityForRange:matchRange - objc_msgSend(v97 confidence:{"matchRange"), v96, &v102}];
   v52 = [MEMORY[0x277CCABB0] numberWithDouble:v102];
-  v53 = [v94 contextDictionary];
-  [v53 setObject:v52 forKeyedSubscript:@"polarityProbability"];
+  contextDictionary = [v94 contextDictionary];
+  [contextDictionary setObject:v52 forKeyedSubscript:@"polarityProbability"];
 
   if (v51 == 4)
   {
@@ -1246,7 +1246,7 @@ LABEL_18:
     }
 
     v28 = v92;
-    v29 = v97;
+    firstObject = v97;
     if (IPDebuggingModeEnabled_once != -1)
     {
       [IPFeatureScanner isEventProposalOrConfirmationFromFeatures:fromFeatureAtIndex:messageUnit:eventIsTenseDependent:extractedFromSubject:extractedPolarity:polarityInfluencedByIpsosPlistRef:];
@@ -1257,9 +1257,9 @@ LABEL_18:
       v55 = IPSOSLogHandle();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
       {
-        v56 = [v94 matchString];
+        matchString = [v94 matchString];
         *buf = 138412290;
-        v110 = v56;
+        v110 = matchString;
         _os_log_impl(&dword_2485E4000, v55, OS_LOG_TYPE_INFO, "Focused fragment: [%@] #FeatureManager", buf, 0xCu);
       }
 
@@ -1269,7 +1269,7 @@ LABEL_18:
     goto LABEL_162;
   }
 
-  if (!v10 && v51 == 2)
+  if (!subjectCopy && v51 == 2)
   {
     v60 = IPSOSLogHandle();
     if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
@@ -1290,16 +1290,16 @@ LABEL_18:
       v61 = IPSOSLogHandle();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
       {
-        v62 = [v94 matchString];
+        matchString2 = [v94 matchString];
         *buf = 138412290;
-        v110 = v62;
+        v110 = matchString2;
         _os_log_impl(&dword_2485E4000, v61, OS_LOG_TYPE_INFO, "Focused fragment: [%@] #FeatureManager", buf, 0xCu);
       }
     }
 
     v63 = 2;
 LABEL_94:
-    *a8 = v63;
+    *polarity = v63;
 LABEL_95:
     v35 = 1;
     goto LABEL_163;
@@ -1307,7 +1307,7 @@ LABEL_95:
 
   v65 = IPSOSLogHandle();
   v66 = os_log_type_enabled(v65, OS_LOG_TYPE_INFO);
-  if (!v10 && v51 == 3)
+  if (!subjectCopy && v51 == 3)
   {
     if (v66)
     {
@@ -1327,9 +1327,9 @@ LABEL_95:
       v67 = IPSOSLogHandle();
       if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
       {
-        v68 = [v94 matchString];
+        matchString3 = [v94 matchString];
         *buf = 138412290;
-        v110 = v68;
+        v110 = matchString3;
         _os_log_impl(&dword_2485E4000, v67, OS_LOG_TYPE_INFO, "Focused fragment: [%@] #FeatureManager", buf, 0xCu);
       }
     }
@@ -1338,7 +1338,7 @@ LABEL_95:
     goto LABEL_94;
   }
 
-  if (v10)
+  if (subjectCopy)
   {
     v28 = v92;
     v21 = v94;
@@ -1372,9 +1372,9 @@ LABEL_95:
     v65 = IPSOSLogHandle();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
     {
-      v69 = [v94 matchString];
+      matchString4 = [v94 matchString];
       *buf = 138412290;
-      v110 = v69;
+      v110 = matchString4;
       _os_log_impl(&dword_2485E4000, v65, OS_LOG_TYPE_INFO, "Focused fragment: [%@] #FeatureManager", buf, 0xCu);
     }
   }
@@ -1493,10 +1493,10 @@ LABEL_107:
         v77 = 3;
       }
 
-      *a8 = v77;
+      *polarity = v77;
       v72 = 1;
       v21 = v94;
-      v29 = v97;
+      firstObject = v97;
 LABEL_139:
       if ([v74 polarity] == 4)
       {
@@ -1553,19 +1553,19 @@ LABEL_139:
   }
 
 LABEL_155:
-  if (!v10)
+  if (!subjectCopy)
   {
-    [v29 matchRange];
+    [firstObject matchRange];
     v82 = v81 - v96;
-    v83 = [v97 matchString];
-    v84 = [v83 localizedCaseInsensitiveContainsString:@": "];
+    matchString5 = [v97 matchString];
+    v84 = [matchString5 localizedCaseInsensitiveContainsString:@": "];
 
     v85 = v82 < 10;
-    v29 = v97;
+    firstObject = v97;
     if (v85 || v84)
     {
-      v88 = [v21 contextDictionary];
-      [v88 setObject:&unk_285B08898 forKeyedSubscript:@"polarityProbability"];
+      contextDictionary2 = [v21 contextDictionary];
+      [contextDictionary2 setObject:&unk_285B08898 forKeyedSubscript:@"polarityProbability"];
 
       v89 = IPSOSLogHandle();
       if (os_log_type_enabled(v89, OS_LOG_TYPE_INFO))
@@ -1600,35 +1600,35 @@ LABEL_165:
   return v35;
 }
 
-- (id)stitchedEventsFromEvents:(id)a3
+- (id)stitchedEventsFromEvents:(id)events
 {
-  v4 = a3;
-  if ([v4 count] > 1)
+  eventsCopy = events;
+  if ([eventsCopy count] > 1)
   {
-    v6 = [(IPFeatureScanner *)self _stitchedEventsFromEvents:v4];
+    v6 = [(IPFeatureScanner *)self _stitchedEventsFromEvents:eventsCopy];
 
     v5 = [(IPFeatureScanner *)self _regroupEventsWithSpreadTimeAsAllDayEvents:v6];
-    v4 = v6;
+    eventsCopy = v6;
   }
 
   else
   {
-    v5 = [v4 copy];
+    v5 = [eventsCopy copy];
   }
 
   return v5;
 }
 
-- (id)_stitchedEventsFromEvents:(id)a3
+- (id)_stitchedEventsFromEvents:(id)events
 {
   v83 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v65 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  eventsCopy = events;
+  v65 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v66 = [obj countByEnumeratingWithState:&v77 objects:v82 count:16];
   if (v66)
   {
@@ -1671,9 +1671,9 @@ LABEL_165:
               v11 = *(*(&v73 + 1) + 8 * v10);
               if ([v11 isAllDay] && objc_msgSend(v5, "isAllDay"))
               {
-                v12 = [v11 startDate];
-                v13 = [v5 startDate];
-                [v12 timeIntervalSinceDate:v13];
+                startDate = [v11 startDate];
+                startDate2 = [v5 startDate];
+                [startDate timeIntervalSinceDate:startDate2];
                 v15 = v14 == 0.0;
               }
 
@@ -1684,30 +1684,30 @@ LABEL_165:
 
               if (([v11 isAllDay] & 1) == 0 && (objc_msgSend(v5, "isAllDay") & 1) == 0)
               {
-                v16 = [v11 startDate];
-                v17 = [v5 endDate];
-                [v16 timeIntervalSinceDate:v17];
+                startDate3 = [v11 startDate];
+                endDate = [v5 endDate];
+                [startDate3 timeIntervalSinceDate:endDate];
                 if (fabs(v18) <= 3600.0)
                 {
                   goto LABEL_33;
                 }
 
-                v19 = [v11 endDate];
-                v20 = [v5 startDate];
-                [v19 timeIntervalSinceDate:v20];
+                endDate2 = [v11 endDate];
+                startDate4 = [v5 startDate];
+                [endDate2 timeIntervalSinceDate:startDate4];
                 if (fabs(v21) <= 3600.0)
                 {
                   goto LABEL_32;
                 }
 
-                v72 = v16;
-                v22 = [v11 startDate];
-                v23 = [v5 startDate];
-                [v22 timeIntervalSinceDate:v23];
+                v72 = startDate3;
+                startDate5 = [v11 startDate];
+                startDate6 = [v5 startDate];
+                [startDate5 timeIntervalSinceDate:startDate6];
                 if (fabs(v24) <= 3600.0)
                 {
 
-                  v16 = v72;
+                  startDate3 = v72;
 LABEL_32:
 
                   v6 = v69;
@@ -1725,34 +1725,34 @@ LABEL_34:
                   if ([v35 isAllDay])
                   {
 LABEL_36:
-                    v36 = [v35 location];
-                    if (v36)
+                    location = [v35 location];
+                    if (location)
                     {
-                      v37 = v36;
-                      v38 = [v71 location];
+                      v37 = location;
+                      location2 = [v71 location];
 
-                      if (!v38)
+                      if (!location2)
                       {
-                        v39 = [v35 location];
-                        [v71 setLocation:v39];
+                        location3 = [v35 location];
+                        [v71 setLocation:location3];
                       }
                     }
 
                     if ([v71 ipsos_isDateTimeTenseDependent])
                     {
-                      v40 = [v35 ipsos_isDateTimeTenseDependent];
+                      ipsos_isDateTimeTenseDependent = [v35 ipsos_isDateTimeTenseDependent];
                     }
 
                     else
                     {
-                      v40 = 0;
+                      ipsos_isDateTimeTenseDependent = 0;
                     }
 
-                    [v71 setIpsos_isDateTimeTenseDependent:v40];
+                    [v71 setIpsos_isDateTimeTenseDependent:ipsos_isDateTimeTenseDependent];
                     [v6 removeObject:v35];
-                    v55 = [v71 ipsos_dataFeatures];
-                    v56 = [v35 ipsos_dataFeatures];
-                    v57 = [v55 arrayByAddingObjectsFromArray:v56];
+                    ipsos_dataFeatures = [v71 ipsos_dataFeatures];
+                    ipsos_dataFeatures2 = [v35 ipsos_dataFeatures];
+                    v57 = [ipsos_dataFeatures arrayByAddingObjectsFromArray:ipsos_dataFeatures2];
                     [v71 setIpsos_dataFeatures:v57];
 
                     [v6 addObject:v71];
@@ -1769,23 +1769,23 @@ LABEL_36:
                     goto LABEL_36;
                   }
 
-                  v41 = [v35 startDate];
-                  v42 = [v71 startDate];
-                  [v41 timeIntervalSinceDate:v42];
+                  startDate7 = [v35 startDate];
+                  startDate8 = [v71 startDate];
+                  [startDate7 timeIntervalSinceDate:startDate8];
                   v44 = v43;
 
                   if (v44 > 0.0)
                   {
-                    v45 = [v71 startDate];
-                    [v35 setStartDate:v45];
+                    startDate9 = [v71 startDate];
+                    [v35 setStartDate:startDate9];
                   }
 
-                  v46 = [v71 ipsos_isEndTimeApproximate];
-                  if (v46 == [v35 ipsos_isEndTimeApproximate])
+                  ipsos_isEndTimeApproximate = [v71 ipsos_isEndTimeApproximate];
+                  if (ipsos_isEndTimeApproximate == [v35 ipsos_isEndTimeApproximate])
                   {
-                    v47 = [v35 endDate];
-                    v48 = [v71 endDate];
-                    [v47 timeIntervalSinceDate:v48];
+                    endDate3 = [v35 endDate];
+                    endDate4 = [v71 endDate];
+                    [endDate3 timeIntervalSinceDate:endDate4];
                     v50 = v49;
 
                     if (v50 < 0.0)
@@ -1797,51 +1797,51 @@ LABEL_36:
                   if (![v71 ipsos_isEndTimeApproximate] || objc_msgSend(v35, "ipsos_isEndTimeApproximate"))
                   {
 LABEL_54:
-                    v51 = [v71 endDate];
-                    [v35 setEndDate:v51];
+                    endDate5 = [v71 endDate];
+                    [v35 setEndDate:endDate5];
 
                     [v35 setIpsos_isEndTimeApproximate:{objc_msgSend(v71, "ipsos_isEndTimeApproximate")}];
                   }
 
-                  v52 = [v35 location];
-                  if (v52)
+                  location4 = [v35 location];
+                  if (location4)
                   {
 LABEL_58:
                   }
 
                   else
                   {
-                    v53 = [v71 location];
+                    location5 = [v71 location];
 
-                    if (v53)
+                    if (location5)
                     {
-                      v52 = [v71 location];
-                      [v35 setLocation:v52];
+                      location4 = [v71 location];
+                      [v35 setLocation:location4];
                       goto LABEL_58;
                     }
                   }
 
                   if ([v71 ipsos_isDateTimeTenseDependent])
                   {
-                    v54 = [v35 ipsos_isDateTimeTenseDependent];
+                    ipsos_isDateTimeTenseDependent2 = [v35 ipsos_isDateTimeTenseDependent];
                   }
 
                   else
                   {
-                    v54 = 0;
+                    ipsos_isDateTimeTenseDependent2 = 0;
                   }
 
-                  [v35 setIpsos_isDateTimeTenseDependent:v54];
-                  v58 = [v35 ipsos_dataFeatures];
-                  v59 = [v71 ipsos_dataFeatures];
-                  v60 = [v58 arrayByAddingObjectsFromArray:v59];
+                  [v35 setIpsos_isDateTimeTenseDependent:ipsos_isDateTimeTenseDependent2];
+                  ipsos_dataFeatures3 = [v35 ipsos_dataFeatures];
+                  ipsos_dataFeatures4 = [v71 ipsos_dataFeatures];
+                  v60 = [ipsos_dataFeatures3 arrayByAddingObjectsFromArray:ipsos_dataFeatures4];
                   [v35 setIpsos_dataFeatures:v60];
 
                   goto LABEL_65;
                 }
 
-                v25 = [v11 ipsos_isTimeApproximate];
-                if (v25 == [v5 ipsos_isTimeApproximate])
+                ipsos_isTimeApproximate = [v11 ipsos_isTimeApproximate];
+                if (ipsos_isTimeApproximate == [v5 ipsos_isTimeApproximate])
                 {
 
                   v9 = v68;
@@ -1851,9 +1851,9 @@ LABEL_58:
 
                 else
                 {
-                  v26 = [v11 startDate];
-                  v27 = [v5 startDate];
-                  [v26 timeIntervalSinceDate:v27];
+                  startDate10 = [v11 startDate];
+                  startDate11 = [v5 startDate];
+                  [startDate10 timeIntervalSinceDate:startDate11];
                   v29 = fabs(v28);
 
                   v5 = v71;
@@ -1867,17 +1867,17 @@ LABEL_58:
                 }
               }
 
-              v30 = [v11 isAllDay];
-              if (v30 == [v5 isAllDay])
+              isAllDay = [v11 isAllDay];
+              if (isAllDay == [v5 isAllDay])
               {
                 v34 = 0;
               }
 
               else
               {
-                v31 = [v11 startDate];
-                v32 = [v5 startDate];
-                [v31 timeIntervalSinceDate:v32];
+                startDate12 = [v11 startDate];
+                startDate13 = [v5 startDate];
+                [startDate12 timeIntervalSinceDate:startDate13];
                 v34 = fabs(v33) < 86399.0;
               }
 
@@ -1918,13 +1918,13 @@ LABEL_65:
   return v65;
 }
 
-- (id)_regroupEventsWithSpreadTimeAsAllDayEvents:(id)a3
+- (id)_regroupEventsWithSpreadTimeAsAllDayEvents:(id)events
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] <= 1)
+  eventsCopy = events;
+  if ([eventsCopy count] <= 1)
   {
-    v4 = v3;
+    v4 = eventsCopy;
     goto LABEL_30;
   }
 
@@ -1939,8 +1939,8 @@ LABEL_65:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v25 = v3;
-  v6 = v3;
+  v25 = eventsCopy;
+  v6 = eventsCopy;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v7)
   {
@@ -1957,8 +1957,8 @@ LABEL_65:
 
         v11 = *(*(&v30 + 1) + 8 * i);
         v12 = _regroupEventsWithSpreadTimeAsAllDayEvents__sDateFormatter;
-        v13 = [v11 startDate];
-        v14 = [v12 stringFromDate:v13];
+        startDate = [v11 startDate];
+        v14 = [v12 stringFromDate:startDate];
 
         v15 = [v5 objectForKeyedSubscript:v14];
         if (!v15)
@@ -2006,7 +2006,7 @@ LABEL_65:
         v21 = [v16 objectForKeyedSubscript:*(*(&v26 + 1) + 8 * j)];
         if ([v21 count] == 1)
         {
-          v22 = [v21 firstObject];
+          firstObject = [v21 firstObject];
         }
 
         else
@@ -2016,12 +2016,12 @@ LABEL_65:
             goto LABEL_27;
           }
 
-          v22 = [v21 firstObject];
-          [v22 setAllDay:1];
-          [v22 setIpsos_disableTimeAdjustment:1];
+          firstObject = [v21 firstObject];
+          [firstObject setAllDay:1];
+          [firstObject setIpsos_disableTimeAdjustment:1];
         }
 
-        [v4 addObject:v22];
+        [v4 addObject:firstObject];
 
 LABEL_27:
       }
@@ -2032,7 +2032,7 @@ LABEL_27:
     while (v18);
   }
 
-  v3 = v25;
+  eventsCopy = v25;
 LABEL_30:
 
   v23 = *MEMORY[0x277D85DE8];
@@ -2052,15 +2052,15 @@ uint64_t __63__IPFeatureScanner__regroupEventsWithSpreadTimeAsAllDayEvents___blo
   return [v2 setDateStyle:1];
 }
 
-- (void)adjustTimeForEvents:(id)a3
+- (void)adjustTimeForEvents:(id)events
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2072,14 +2072,14 @@ uint64_t __63__IPFeatureScanner__regroupEventsWithSpreadTimeAsAllDayEvents___blo
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         [(IPFeatureScanner *)self adjustTimeForEvent:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [eventsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -2088,35 +2088,35 @@ uint64_t __63__IPFeatureScanner__regroupEventsWithSpreadTimeAsAllDayEvents___blo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)adjustTimeForEvent:(id)a3
+- (void)adjustTimeForEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 ipsos_timeNeedsMeridianGuess])
+  eventCopy = event;
+  if ([eventCopy ipsos_timeNeedsMeridianGuess])
   {
-    v4 = [v3 startDate];
-    v5 = [v3 ipsos_eventClassificationType];
-    v6 = [v5 preferedMeridian];
-    if (!v6)
+    startDate = [eventCopy startDate];
+    ipsos_eventClassificationType = [eventCopy ipsos_eventClassificationType];
+    preferedMeridian = [ipsos_eventClassificationType preferedMeridian];
+    if (!preferedMeridian)
     {
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v7 = v6;
+    v7 = preferedMeridian;
     if (IPGregorianCalendar_once != -1)
     {
       [IPFeatureScanner isDateAroundNoon:];
     }
 
     v8 = IPGregorianCalendar_calendar;
-    v9 = [v8 components:32 fromDate:v4];
-    v10 = [v9 hour];
-    v11 = 12 - v10;
-    if (12 - v10 < 0)
+    v9 = [v8 components:32 fromDate:startDate];
+    hour = [v9 hour];
+    v11 = 12 - hour;
+    if (12 - hour < 0)
     {
-      v11 = v10 - 12;
+      v11 = hour - 12;
     }
 
     if (v11 < 2)
@@ -2126,7 +2126,7 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (v7 == 2 && v10 <= 11)
+    if (v7 == 2 && hour <= 11)
     {
       if (IPDebuggingModeEnabled_once != -1)
       {
@@ -2145,32 +2145,32 @@ LABEL_28:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v13 = v12;
-          v14 = [v3 valueForKey:@"ipsos_betterDescription"];
+          v14 = [eventCopy valueForKey:@"ipsos_betterDescription"];
           v21 = 138412290;
           v22 = v14;
           _os_log_impl(&dword_2485E4000, v13, OS_LOG_TYPE_INFO, "Adjusting time as PM for event: %@ #FeatureManager", &v21, 0xCu);
         }
       }
 
-      v15 = [v3 startDate];
-      v16 = [v15 dateByAddingTimeInterval:43200.0];
-      [v3 setStartDate:v16];
+      startDate2 = [eventCopy startDate];
+      v16 = [startDate2 dateByAddingTimeInterval:43200.0];
+      [eventCopy setStartDate:v16];
 
-      v17 = [v3 endDate];
+      endDate = [eventCopy endDate];
 
-      if (!v17)
+      if (!endDate)
       {
         goto LABEL_28;
       }
 
-      v18 = [v3 endDate];
-      v19 = [v18 dateByAddingTimeInterval:43200.0];
-      [v3 setEndDate:v19];
+      endDate2 = [eventCopy endDate];
+      v19 = [endDate2 dateByAddingTimeInterval:43200.0];
+      [eventCopy setEndDate:v19];
     }
 
     else
     {
-      if (v7 != 1 || v10 < 12)
+      if (v7 != 1 || hour < 12)
       {
         goto LABEL_28;
       }
@@ -2185,16 +2185,16 @@ LABEL_28:
         goto LABEL_28;
       }
 
-      v18 = IPSOSLogHandle();
-      if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+      endDate2 = IPSOSLogHandle();
+      if (!os_log_type_enabled(endDate2, OS_LOG_TYPE_INFO))
       {
         goto LABEL_20;
       }
 
-      v19 = [v3 valueForKey:@"ipsos_betterDescription"];
+      v19 = [eventCopy valueForKey:@"ipsos_betterDescription"];
       v21 = 138412290;
       v22 = v19;
-      _os_log_impl(&dword_2485E4000, v18, OS_LOG_TYPE_INFO, "Adjusting time as AM for event: %@ #FeatureManager", &v21, 0xCu);
+      _os_log_impl(&dword_2485E4000, endDate2, OS_LOG_TYPE_INFO, "Adjusting time as AM for event: %@ #FeatureManager", &v21, 0xCu);
     }
 
 LABEL_20:
@@ -2206,24 +2206,24 @@ LABEL_30:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)filteredEventsForDetectedEvents:(id)a3 referenceDate:(id)a4
+- (id)filteredEventsForDetectedEvents:(id)events referenceDate:(id)date
 {
   v137 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v115 = a4;
-  if (![v6 count])
+  eventsCopy = events;
+  dateCopy = date;
+  if (![eventsCopy count])
   {
     v104 = MEMORY[0x277CBEBF8];
     goto LABEL_200;
   }
 
-  v113 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v113 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v126 = 0u;
   v127 = 0u;
   v128 = 0u;
   v129 = 0u;
-  v112 = v6;
-  v7 = v6;
+  v112 = eventsCopy;
+  v7 = eventsCopy;
   v8 = [v7 countByEnumeratingWithState:&v126 objects:v136 count:16];
   if (!v8)
   {
@@ -2245,8 +2245,8 @@ LABEL_30:
       }
 
       v11 = *(*(&v126 + 1) + 8 * v10);
-      v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v13 = [v12 BOOLForKey:@"IPFeatureManagersSkipConfidenceFiltering"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v13 = [standardUserDefaults BOOLForKey:@"IPFeatureManagersSkipConfidenceFiltering"];
 
       if ((v13 & 1) == 0)
       {
@@ -2286,22 +2286,22 @@ LABEL_30:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
             {
               v19 = v18;
-              v20 = [v11 startDate];
+              startDate = [v11 startDate];
               *buf = 138412290;
-              v133 = v20;
+              v133 = startDate;
               _os_log_impl(&dword_2485E4000, v19, OS_LOG_TYPE_INFO, "Filtered event (Start date: %@) #FeatureManager", buf, 0xCu);
             }
           }
 
-          v21 = self;
+          selfCopy7 = self;
           v22 = -80;
           goto LABEL_171;
         }
       }
 
-      v23 = [v11 ipsos_eventClassificationType];
+      ipsos_eventClassificationType = [v11 ipsos_eventClassificationType];
 
-      if (!v23)
+      if (!ipsos_eventClassificationType)
       {
         v34 = _IPLogHandle;
         if (!_IPLogHandle)
@@ -2334,24 +2334,24 @@ LABEL_30:
           {
 LABEL_60:
             v40 = v35;
-            v41 = [v11 startDate];
+            startDate2 = [v11 startDate];
             *buf = 138412290;
-            v133 = v41;
+            v133 = startDate2;
             _os_log_impl(&dword_2485E4000, v40, OS_LOG_TYPE_INFO, "Filtered event (Start date: %@) #FeatureManager", buf, 0xCu);
           }
         }
 
 LABEL_61:
-        v21 = self;
+        selfCopy7 = self;
         v22 = -65;
         goto LABEL_171;
       }
 
       if ([v11 isAllDay])
       {
-        v24 = [v11 ipsos_eventClassificationType];
+        ipsos_eventClassificationType2 = [v11 ipsos_eventClassificationType];
 
-        if (!v24)
+        if (!ipsos_eventClassificationType2)
         {
           v39 = _IPLogHandle;
           if (!_IPLogHandle)
@@ -2394,10 +2394,10 @@ LABEL_61:
       {
         if (([v11 ipsos_allDayPreferred] & 1) == 0)
         {
-          v25 = [v11 ipsos_eventClassificationType];
-          v26 = [v25 isAllDayAllowed];
+          ipsos_eventClassificationType3 = [v11 ipsos_eventClassificationType];
+          isAllDayAllowed = [ipsos_eventClassificationType3 isAllDayAllowed];
 
-          if ((v26 & 1) == 0)
+          if ((isAllDayAllowed & 1) == 0)
           {
             v47 = _IPLogHandle;
             if (!_IPLogHandle)
@@ -2429,9 +2429,9 @@ LABEL_61:
               if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
               {
                 v49 = v48;
-                v50 = [v11 startDate];
+                startDate3 = [v11 startDate];
                 *buf = 138412290;
-                v133 = v50;
+                v133 = startDate3;
                 _os_log_impl(&dword_2485E4000, v49, OS_LOG_TYPE_INFO, "Filtered event (Start date: %@) #FeatureManager", buf, 0xCu);
               }
             }
@@ -2443,8 +2443,8 @@ LABEL_61:
 
       if (([v11 isAllDay] & 1) == 0)
       {
-        v36 = [v11 startDate];
-        if (![(IPFeatureScanner *)self isDateRoundedTo5Minutes:v36])
+        startDate4 = [v11 startDate];
+        if (![(IPFeatureScanner *)self isDateRoundedTo5Minutes:startDate4])
         {
 
 LABEL_63:
@@ -2478,23 +2478,23 @@ LABEL_63:
             if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
             {
               v44 = v43;
-              v45 = [v11 startDate];
-              v46 = [v11 endDate];
+              startDate5 = [v11 startDate];
+              endDate = [v11 endDate];
               *buf = 138412546;
-              v133 = v45;
+              v133 = startDate5;
               v134 = 2112;
-              v135 = v46;
+              v135 = endDate;
               _os_log_impl(&dword_2485E4000, v44, OS_LOG_TYPE_INFO, "Filtered event (Start date: %@, End date: %@) #FeatureManager", buf, 0x16u);
             }
           }
 
-          v21 = self;
+          selfCopy7 = self;
           v22 = -67;
           goto LABEL_171;
         }
 
-        v37 = [v11 endDate];
-        v38 = [(IPFeatureScanner *)self isDateRoundedTo5Minutes:v37];
+        endDate2 = [v11 endDate];
+        v38 = [(IPFeatureScanner *)self isDateRoundedTo5Minutes:endDate2];
 
         if (!v38)
         {
@@ -2504,8 +2504,8 @@ LABEL_63:
 
       if ([v11 isAllDay])
       {
-        v27 = [v11 title];
-        v28 = [v27 length];
+        title = [v11 title];
+        v28 = [title length];
 
         if (!v28)
         {
@@ -2539,17 +2539,17 @@ LABEL_63:
             if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
             {
               v59 = v58;
-              v60 = [v11 startDate];
-              v61 = [v11 endDate];
+              startDate6 = [v11 startDate];
+              endDate3 = [v11 endDate];
               *buf = 138412546;
-              v133 = v60;
+              v133 = startDate6;
               v134 = 2112;
-              v135 = v61;
+              v135 = endDate3;
               _os_log_impl(&dword_2485E4000, v59, OS_LOG_TYPE_INFO, "Filtered event (Start date: %@, End date: %@) #FeatureManager", buf, 0x16u);
             }
           }
 
-          v21 = self;
+          selfCopy7 = self;
           v22 = -70;
           goto LABEL_171;
         }
@@ -2557,9 +2557,9 @@ LABEL_63:
 
       if (([v11 isAllDay] & 1) == 0)
       {
-        v29 = [v11 ipsos_eventClassificationType];
-        v30 = [v11 startDate];
-        v31 = [v29 isDateWithinRange:v30];
+        ipsos_eventClassificationType4 = [v11 ipsos_eventClassificationType];
+        startDate7 = [v11 startDate];
+        v31 = [ipsos_eventClassificationType4 isDateWithinRange:startDate7];
 
         if ((v31 & 1) == 0)
         {
@@ -2593,33 +2593,33 @@ LABEL_63:
             if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
             {
               v53 = v52;
-              v54 = [v11 ipsos_eventClassificationType];
-              v55 = [v54 identifier];
-              v56 = [v11 startDate];
+              ipsos_eventClassificationType5 = [v11 ipsos_eventClassificationType];
+              identifier = [ipsos_eventClassificationType5 identifier];
+              startDate8 = [v11 startDate];
               *buf = 138412546;
-              v133 = v55;
+              v133 = identifier;
               v134 = 2112;
-              v135 = v56;
+              v135 = startDate8;
               _os_log_impl(&dword_2485E4000, v53, OS_LOG_TYPE_INFO, "Filtered event (Type: %@, Start date: %@) #FeatureManager", buf, 0x16u);
 
               v9 = v116;
             }
           }
 
-          v21 = self;
+          selfCopy7 = self;
           v22 = -69;
           goto LABEL_171;
         }
       }
 
-      v32 = [v11 ipsos_eventClassificationType];
-      if (![v32 isFairlyGeneric])
+      ipsos_eventClassificationType6 = [v11 ipsos_eventClassificationType];
+      if (![ipsos_eventClassificationType6 isFairlyGeneric])
       {
         goto LABEL_111;
       }
 
-      v33 = [v11 ipsos_eventClassificationType];
-      if (([v33 isAppointment] & 1) == 0)
+      ipsos_eventClassificationType7 = [v11 ipsos_eventClassificationType];
+      if (([ipsos_eventClassificationType7 isAppointment] & 1) == 0)
       {
 
 LABEL_111:
@@ -2660,13 +2660,13 @@ LABEL_157:
           if (os_log_type_enabled(v90, OS_LOG_TYPE_INFO))
           {
             v91 = v90;
-            v92 = [v11 ipsos_eventClassificationType];
-            v93 = [v92 identifier];
-            v94 = [v11 startDate];
+            ipsos_eventClassificationType8 = [v11 ipsos_eventClassificationType];
+            identifier2 = [ipsos_eventClassificationType8 identifier];
+            startDate9 = [v11 startDate];
             *buf = 138412546;
-            v133 = v93;
+            v133 = identifier2;
             v134 = 2112;
-            v135 = v94;
+            v135 = startDate9;
             _os_log_impl(&dword_2485E4000, v91, OS_LOG_TYPE_INFO, "Filtered event (Type: %@, Start date: %@) #FeatureManager", buf, 0x16u);
 
             v9 = v116;
@@ -2676,36 +2676,36 @@ LABEL_157:
         if ([v11 isAllDay])
         {
 LABEL_169:
-          v21 = self;
+          selfCopy7 = self;
           v22 = -66;
         }
 
         else
         {
 LABEL_170:
-          v21 = self;
+          selfCopy7 = self;
           v22 = -60;
         }
 
 LABEL_171:
-        [(IPFeatureScanner *)v21 setResultType:v22];
+        [(IPFeatureScanner *)selfCopy7 setResultType:v22];
         goto LABEL_172;
       }
 
-      v88 = [v11 ipsos_isTimeApproximate];
+      ipsos_isTimeApproximate = [v11 ipsos_isTimeApproximate];
 
-      if (v88)
+      if (ipsos_isTimeApproximate)
       {
         goto LABEL_157;
       }
 
 LABEL_112:
-      v62 = [v11 ipsos_eventClassificationType];
-      if ([v62 isFairlyGeneric])
+      ipsos_eventClassificationType9 = [v11 ipsos_eventClassificationType];
+      if ([ipsos_eventClassificationType9 isFairlyGeneric])
       {
-        v63 = [v11 isAllDay];
+        isAllDay = [v11 isAllDay];
 
-        if (v63)
+        if (isAllDay)
         {
           v64 = _IPLogHandle;
           if (!_IPLogHandle)
@@ -2737,13 +2737,13 @@ LABEL_112:
             if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
             {
               v66 = v65;
-              v67 = [v11 ipsos_eventClassificationType];
-              v68 = [v67 identifier];
-              v69 = [v11 startDate];
+              ipsos_eventClassificationType10 = [v11 ipsos_eventClassificationType];
+              identifier3 = [ipsos_eventClassificationType10 identifier];
+              startDate10 = [v11 startDate];
               *buf = 138412546;
-              v133 = v68;
+              v133 = identifier3;
               v134 = 2112;
-              v135 = v69;
+              v135 = startDate10;
               _os_log_impl(&dword_2485E4000, v66, OS_LOG_TYPE_INFO, "Filtered event (Type: %@, Start date: %@) #FeatureManager", buf, 0x16u);
 
               v9 = v116;
@@ -2758,22 +2758,22 @@ LABEL_112:
       {
       }
 
-      v70 = [v11 startDate];
-      [v70 timeIntervalSinceDate:v115];
+      startDate11 = [v11 startDate];
+      [startDate11 timeIntervalSinceDate:dateCopy];
       v72 = v71;
 
-      v73 = [v11 ipsos_isTimeOffset];
-      v74 = [v11 ipsos_isEventTimeOnlyAndReferrengingToSentDate];
+      ipsos_isTimeOffset = [v11 ipsos_isTimeOffset];
+      ipsos_isEventTimeOnlyAndReferrengingToSentDate = [v11 ipsos_isEventTimeOnlyAndReferrengingToSentDate];
       v75 = 0;
       if ([v11 isAllDay] && v72 < 86400.0)
       {
         v75 = [v11 ipsos_allDayPreferred] ^ 1;
       }
 
-      v76 = 0;
+      ipsos_isTimeApproximate2 = 0;
       if (([v11 isAllDay] & 1) == 0 && v72 < 21600.0)
       {
-        v76 = [v11 ipsos_isTimeApproximate];
+        ipsos_isTimeApproximate2 = [v11 ipsos_isTimeApproximate];
       }
 
       v77 = 1;
@@ -2784,10 +2784,10 @@ LABEL_112:
 
       [v11 ipsos_duration];
       v79 = v78;
-      v80 = [v11 ipsos_eventClassificationType];
-      v81 = [v80 isMealRelated];
+      ipsos_eventClassificationType11 = [v11 ipsos_eventClassificationType];
+      isMealRelated = [ipsos_eventClassificationType11 isMealRelated];
 
-      if (((v74 & ~v73 | v75 | v76) & 1) != 0 || ((v77 | v81) & 1) == 0 || v72 > 31536000.0 || v79 > 172800.0)
+      if (((ipsos_isEventTimeOnlyAndReferrengingToSentDate & ~ipsos_isTimeOffset | v75 | ipsos_isTimeApproximate2) & 1) != 0 || ((v77 | isMealRelated) & 1) == 0 || v72 > 31536000.0 || v79 > 172800.0)
       {
         if (IPDebuggingModeEnabled_once != -1)
         {
@@ -2808,13 +2808,13 @@ LABEL_112:
           if (os_log_type_enabled(v83, OS_LOG_TYPE_INFO))
           {
             v84 = v83;
-            v85 = [v11 ipsos_eventClassificationType];
-            v86 = [v85 identifier];
-            v87 = [v11 startDate];
+            ipsos_eventClassificationType12 = [v11 ipsos_eventClassificationType];
+            identifier4 = [ipsos_eventClassificationType12 identifier];
+            startDate12 = [v11 startDate];
             *buf = 138412546;
-            v133 = v86;
+            v133 = identifier4;
             v134 = 2112;
-            v135 = v87;
+            v135 = startDate12;
             _os_log_impl(&dword_2485E4000, v84, OS_LOG_TYPE_INFO, "Filtered event (Type: %@, Start date: %@) #FeatureManager", buf, 0x16u);
           }
         }
@@ -2946,7 +2946,7 @@ LABEL_174:
     v95 = v113;
   }
 
-  v6 = v112;
+  eventsCopy = v112;
 LABEL_200:
 
   v110 = *MEMORY[0x277D85DE8];
@@ -2954,17 +2954,17 @@ LABEL_200:
   return v104;
 }
 
-- (id)normalizedAllDayDateFromDate:(id)a3
+- (id)normalizedAllDayDateFromDate:(id)date
 {
   v3 = IPGregorianCalendar_once;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     [IPFeatureScanner isDateAroundNoon:];
   }
 
   v5 = IPGregorianCalendar_calendar;
-  v6 = [v5 components:254 fromDate:v4];
+  v6 = [v5 components:254 fromDate:dateCopy];
 
   v7 = [v6 copy];
   [v7 setHour:0];
@@ -2976,15 +2976,15 @@ LABEL_200:
   return v8;
 }
 
-- (void)normalizedEvents:(id)a3
+- (void)normalizedEvents:(id)events
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2995,25 +2995,25 @@ LABEL_200:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         if ([v9 isAllDay])
         {
-          v10 = [v9 startDate];
-          v11 = [(IPFeatureScanner *)self normalizedAllDayDateFromDate:v10];
+          startDate = [v9 startDate];
+          v11 = [(IPFeatureScanner *)self normalizedAllDayDateFromDate:startDate];
           [v9 setStartDate:v11];
 
-          v12 = [v9 endDate];
-          v13 = [(IPFeatureScanner *)self normalizedAllDayDateFromDate:v12];
+          endDate = [v9 endDate];
+          v13 = [(IPFeatureScanner *)self normalizedAllDayDateFromDate:endDate];
           [v9 setEndDate:v13];
 
           [v9 setTimeZone:0];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [eventsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -3022,18 +3022,18 @@ LABEL_200:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)bestEventsFromEvents:(id)a3
+- (id)bestEventsFromEvents:(id)events
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] > 1)
+  eventsCopy = events;
+  if ([eventsCopy count] > 1)
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = eventsCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -3065,7 +3065,7 @@ LABEL_200:
 
   else
   {
-    v4 = v3;
+    v4 = eventsCopy;
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -3073,17 +3073,17 @@ LABEL_200:
   return v4;
 }
 
-- (id)stringsFromDataFeatures:(id)a3 matchingTypes:(id)a4
+- (id)stringsFromDataFeatures:(id)features matchingTypes:(id)types
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  featuresCopy = features;
+  typesCopy = types;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(featuresCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = featuresCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -3100,14 +3100,14 @@ LABEL_200:
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "type", v19)}];
-        v15 = [v6 containsObject:v14];
+        v15 = [typesCopy containsObject:v14];
 
         if (v15)
         {
-          v16 = [v13 matchString];
-          if (v16)
+          matchString = [v13 matchString];
+          if (matchString)
           {
-            [v7 addObject:v16];
+            [v7 addObject:matchString];
           }
         }
       }
@@ -3123,20 +3123,20 @@ LABEL_200:
   return v7;
 }
 
-- (id)cleanedStringForFeatureData:(id)a3
+- (id)cleanedStringForFeatureData:(id)data
 {
   v3 = IPLocalizedString_once;
-  v4 = a3;
+  dataCopy = data;
   if (v3 != -1)
   {
     [IPFeatureScanner cleanedStringForFeatureData:];
   }
 
   v5 = [IPLocalizedString_bundle localizedStringForKey:@" value:" table:{&stru_285AD0E88, @"DataDetectorsNaturalLanguage"}];
-  v6 = [v4 matchString];
+  matchString = [dataCopy matchString];
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n", v5];
-  v8 = [v6 stringByReplacingOccurrencesOfString:v7 withString:@"\n"];
+  v8 = [matchString stringByReplacingOccurrencesOfString:v7 withString:@"\n"];
 
   v9 = [v8 stringByReplacingOccurrencesOfString:@" withString:{\n", @"\n"}];
 
@@ -3149,42 +3149,42 @@ LABEL_200:
   return v12;
 }
 
-+ (id)descriptionForScanResultType:(int64_t)a3
++ (id)descriptionForScanResultType:(int64_t)type
 {
   v3 = @"IPFeatureScanResultTypeEventNotFound";
-  if (a3 <= -51)
+  if (type <= -51)
   {
     v4 = @"IPFeatureScanResultTypeEventFilteredOutAllDayEvent";
     v8 = @"IPFeatureScanResultTypeEventNoClassificationType";
     v9 = @"IPFeatureScanResultTypeEventFilteredOut";
-    if (a3 != -60)
+    if (type != -60)
     {
       v9 = @"IPFeatureScanResultTypeEventNotFound";
     }
 
-    if (a3 != -65)
+    if (type != -65)
     {
       v8 = v9;
     }
 
-    if (a3 != -66)
+    if (type != -66)
     {
       v4 = v8;
     }
 
     v10 = @"IPFeatureScanResultTypeEventFilteredOutSeveralDetectedEvents";
     v11 = @"IPFeatureScanResultTypeEventFilteredOutNotRoundedTime";
-    if (a3 != -67)
+    if (type != -67)
     {
       v11 = @"IPFeatureScanResultTypeEventNotFound";
     }
 
-    if (a3 != -68)
+    if (type != -68)
     {
       v10 = v11;
     }
 
-    if (a3 <= -67)
+    if (type <= -67)
     {
       v4 = v10;
     }
@@ -3192,70 +3192,70 @@ LABEL_200:
     v12 = @"IPFeatureScanResultTypeEventFilteredOutLowConfidenceScore";
     v13 = @"IPFeatureScanResultTypeEventFilteredOutAllDayWithNoTitle";
     v14 = @"IPFeatureScanResultTypeEventFilteredOutNotAcceptableTimeRangeForEventType";
-    if (a3 != -69)
+    if (type != -69)
     {
       v14 = @"IPFeatureScanResultTypeEventNotFound";
     }
 
-    if (a3 != -70)
+    if (type != -70)
     {
       v13 = v14;
     }
 
-    if (a3 != -80)
+    if (type != -80)
     {
       v12 = v13;
     }
 
-    if (a3 == -90)
+    if (type == -90)
     {
       v3 = @"IPFeatureScanResultTypeGroupMessageConversation";
     }
 
-    if (a3 == -110)
+    if (type == -110)
     {
       v3 = @"IPFeatureScanResultTypeContainsDateInThePastWithPreciseTime";
     }
 
-    if (a3 > -81)
+    if (type > -81)
     {
       v3 = v12;
     }
 
-    v7 = a3 <= -69;
+    v7 = type <= -69;
   }
 
-  else if (a3 <= -13)
+  else if (type <= -13)
   {
     v4 = @"IPFeatureScanResultTypeIgnoreOrRejectionKeywordFound";
     v15 = @"IPFeatureScanResultTypeNoPolarityProposalOrAcceptation";
     v16 = @"IPFeatureScanResultTypeNoSentencePolarityExtractedOrAssetMissing";
-    if (a3 != -13)
+    if (type != -13)
     {
       v16 = @"IPFeatureScanResultTypeEventNotFound";
     }
 
-    if (a3 != -20)
+    if (type != -20)
     {
       v15 = v16;
     }
 
-    if (a3 != -21)
+    if (type != -21)
     {
       v4 = v15;
     }
 
-    if (a3 == -40)
+    if (type == -40)
     {
       v3 = @"IPFeatureScanResultTypeBlacklistedSender";
     }
 
-    if (a3 == -50)
+    if (type == -50)
     {
       v3 = @"IPFeatureScanResultTypeSubjectContainsRejection";
     }
 
-    v7 = a3 <= -22;
+    v7 = type <= -22;
   }
 
   else
@@ -3263,37 +3263,37 @@ LABEL_200:
     v4 = @"IPFeatureScanResultTypeDisabled";
     v5 = @"IPFeatureScanResultTypeMultipleEventsFound";
     v6 = @"IPFeatureScanResultTypeEventFound";
-    if (a3 != 1)
+    if (type != 1)
     {
       v6 = @"IPFeatureScanResultTypeEventNotFound";
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
       v5 = v6;
     }
 
-    if (a3 != -1)
+    if (type != -1)
     {
       v4 = v5;
     }
 
-    if (a3 == -10)
+    if (type == -10)
     {
       v3 = @"IPFeatureScanResultTypeNoDateInTheFuture";
     }
 
-    if (a3 == -11)
+    if (type == -11)
     {
       v3 = @"IPFeatureScanResultTypeContainsDateInTheFarPast";
     }
 
-    if (a3 == -12)
+    if (type == -12)
     {
       v3 = @"IPFeatureScanResultTypeContainsTooManyDatesInTheFuture";
     }
 
-    v7 = a3 <= -2;
+    v7 = type <= -2;
   }
 
   if (v7)
@@ -3307,27 +3307,27 @@ LABEL_200:
   }
 }
 
-- (void)enrichEvents:(id)a3 messageUnits:(id)a4 dateInSubject:(id)a5 dataFeatures:(id)a6
+- (void)enrichEvents:(id)events messageUnits:(id)units dateInSubject:(id)subject dataFeatures:(id)features
 {
   v97 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v83 = a4;
-  v79 = a5;
-  v11 = a6;
-  if ([v10 count])
+  eventsCopy = events;
+  unitsCopy = units;
+  subjectCopy = subject;
+  featuresCopy = features;
+  if ([eventsCopy count])
   {
-    v82 = [(IPFeatureScanner *)self movieTitlesFromDataFeatures:v11];
-    v78 = [(IPFeatureScanner *)self sportTeamNamesFromDataFeatures:v11];
-    v76 = [(IPFeatureScanner *)self artisNamesFromDataFeatures:v11];
-    v75 = [(IPFeatureScanner *)self restaurantAndBarPOINamesFromDataFeatures:v11];
-    v72 = v11;
-    [(IPFeatureScanner *)self entertainmentPOINamesFromDataFeatures:v11];
-    v74 = v73 = v10;
+    v82 = [(IPFeatureScanner *)self movieTitlesFromDataFeatures:featuresCopy];
+    v78 = [(IPFeatureScanner *)self sportTeamNamesFromDataFeatures:featuresCopy];
+    v76 = [(IPFeatureScanner *)self artisNamesFromDataFeatures:featuresCopy];
+    v75 = [(IPFeatureScanner *)self restaurantAndBarPOINamesFromDataFeatures:featuresCopy];
+    v72 = featuresCopy;
+    [(IPFeatureScanner *)self entertainmentPOINamesFromDataFeatures:featuresCopy];
+    v74 = v73 = eventsCopy;
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
     v95 = 0u;
-    obj = v10;
+    obj = eventsCopy;
     v81 = [obj countByEnumeratingWithState:&v92 objects:v96 count:16];
     if (!v81)
     {
@@ -3346,46 +3346,46 @@ LABEL_200:
         }
 
         v13 = *(*(&v92 + 1) + 8 * v12);
-        v14 = [v13 ipsos_eventClassificationType];
+        ipsos_eventClassificationType = [v13 ipsos_eventClassificationType];
 
-        if (!v14)
+        if (!ipsos_eventClassificationType)
         {
-          v15 = [v13 ipsos_messageUnit];
-          v16 = [v13 ipsos_messageUnit];
-          v17 = [v16 keywordFeatures];
-          v18 = [v13 ipsos_dataFeatures];
-          v19 = [IPEventClassificationType eventClassificationTypeFromMessageUnit:v15 keywordFeatures:v17 datafeatures:v18];
+          ipsos_messageUnit = [v13 ipsos_messageUnit];
+          ipsos_messageUnit2 = [v13 ipsos_messageUnit];
+          keywordFeatures = [ipsos_messageUnit2 keywordFeatures];
+          ipsos_dataFeatures = [v13 ipsos_dataFeatures];
+          v19 = [IPEventClassificationType eventClassificationTypeFromMessageUnit:ipsos_messageUnit keywordFeatures:keywordFeatures datafeatures:ipsos_dataFeatures];
           [v13 setIpsos_eventClassificationType:v19];
         }
 
-        v20 = [v13 ipsos_eventClassificationType];
-        v21 = v20;
-        if (v20 && ![v20 isFairlyGeneric])
+        ipsos_eventClassificationType2 = [v13 ipsos_eventClassificationType];
+        v21 = ipsos_eventClassificationType2;
+        if (ipsos_eventClassificationType2 && ![ipsos_eventClassificationType2 isFairlyGeneric])
         {
           goto LABEL_23;
         }
 
-        v22 = [v83 firstObject];
-        v23 = [v22 bestLanguageID];
+        firstObject = [unitsCopy firstObject];
+        bestLanguageID = [firstObject bestLanguageID];
 
         if ([v82 count])
         {
-          v24 = [IPEventClassificationType eventTypeForMoviesAndLanguageID:v23];
+          v24 = [IPEventClassificationType eventTypeForMoviesAndLanguageID:bestLanguageID];
         }
 
         else if ([v78 count])
         {
-          v24 = [IPEventClassificationType eventTypeForSportAndLanguageID:v23];
+          v24 = [IPEventClassificationType eventTypeForSportAndLanguageID:bestLanguageID];
         }
 
         else if ([v76 count])
         {
-          v24 = [IPEventClassificationType eventTypeForCultureAndLanguageID:v23];
+          v24 = [IPEventClassificationType eventTypeForCultureAndLanguageID:bestLanguageID];
         }
 
         else if ([v75 count])
         {
-          v24 = [IPEventClassificationType eventTypeForMealsAndLanguageID:v23];
+          v24 = [IPEventClassificationType eventTypeForMealsAndLanguageID:bestLanguageID];
         }
 
         else
@@ -3395,7 +3395,7 @@ LABEL_200:
             goto LABEL_22;
           }
 
-          v24 = [IPEventClassificationType eventTypeForEntertainmentAndLanguageID:v23];
+          v24 = [IPEventClassificationType eventTypeForEntertainmentAndLanguageID:bestLanguageID];
         }
 
         v25 = v24;
@@ -3410,23 +3410,23 @@ LABEL_22:
         }
 
 LABEL_23:
-        v26 = [v13 isAllDay];
-        v27 = [v13 ipsos_allDayPreferred];
-        v89 = [v13 ipsos_isTimeApproximate];
-        v28 = [v13 ipsos_isEndTimeApproximate];
-        v29 = [v13 startDate];
-        v30 = [v13 endDate];
-        v31 = v30;
+        isAllDay = [v13 isAllDay];
+        ipsos_allDayPreferred = [v13 ipsos_allDayPreferred];
+        ipsos_isTimeApproximate = [v13 ipsos_isTimeApproximate];
+        ipsos_isEndTimeApproximate = [v13 ipsos_isEndTimeApproximate];
+        startDate = [v13 startDate];
+        endDate = [v13 endDate];
+        v31 = endDate;
         v86 = v12;
-        if (v26)
+        if (isAllDay)
         {
-          [v30 timeIntervalSinceDate:v29];
+          [endDate timeIntervalSinceDate:startDate];
           v33 = fabs(v32) > 86400.0;
         }
 
         else
         {
-          v34 = [v21 adjustedEventClassificationTypeWithStartDate:v29];
+          v34 = [v21 adjustedEventClassificationTypeWithStartDate:startDate];
 
           [v13 setIpsos_eventClassificationType:v34];
           v33 = 0;
@@ -3440,16 +3440,16 @@ LABEL_23:
 
         else
         {
-          v84 = v27;
-          v87 = v28;
+          v84 = ipsos_allDayPreferred;
+          v87 = ipsos_isEndTimeApproximate;
           v35 = v31;
           v36 = MEMORY[0x277CBEAA8];
           v37 = 3600 * [v21 defaultStartingTimeHour];
           v38 = (v37 + 60 * [v21 defaultStartingTimeMinutes]);
-          v39 = [(IPFeatureScanner *)self normalizedAllDayDateFromDate:v29];
+          v39 = [(IPFeatureScanner *)self normalizedAllDayDateFromDate:startDate];
           v40 = [v36 dateWithTimeInterval:v39 sinceDate:v38];
 
-          if (v40 == 0) | v26 & 1 || ((v89 ^ 1))
+          if (v40 == 0) | isAllDay & 1 || ((ipsos_isTimeApproximate ^ 1))
           {
             v31 = v35;
             if (!v40)
@@ -3462,29 +3462,29 @@ LABEL_23:
 
           else
           {
-            [v40 timeIntervalSinceDate:v29];
+            [v40 timeIntervalSinceDate:startDate];
             v42 = fabs(v41) <= 5400.0;
             v31 = v35;
           }
 
-          if (!(v84 & 1 | ((v26 & 1) == 0) | v33) || v42)
+          if (!(v84 & 1 | ((isAllDay & 1) == 0) | v33) || v42)
           {
             v43 = v40;
 
-            v89 = 1;
+            ipsos_isTimeApproximate = 1;
             [v13 setIpsos_usesDefaultClassificationTypeStartTime:1];
             v40 = v43;
 
-            v26 = 0;
+            isAllDay = 0;
             v31 = v40;
-            v29 = v40;
-            v28 = v87;
+            startDate = v40;
+            ipsos_isEndTimeApproximate = v87;
           }
         }
 
 LABEL_36:
         v85 = v40;
-        if (v26 & 1) != 0 || ((v28 ^ 1))
+        if (isAllDay & 1) != 0 || ((ipsos_isEndTimeApproximate ^ 1))
         {
           v88 = v31;
         }
@@ -3494,15 +3494,15 @@ LABEL_36:
           [v21 defaultDuration];
           if (v44 <= 0.0)
           {
-            if ([(IPFeatureScanner *)self isDateAroundNoon:v29])
+            if ([(IPFeatureScanner *)self isDateAroundNoon:startDate])
             {
-              v47 = v29;
+              v47 = startDate;
               v48 = 3600.0;
             }
 
             else
             {
-              v47 = v29;
+              v47 = startDate;
               v48 = 7200.0;
             }
 
@@ -3513,7 +3513,7 @@ LABEL_36:
           {
             v45 = MEMORY[0x277CBEAA8];
             [v21 defaultDuration];
-            v46 = [v45 dateWithTimeInterval:v29 sinceDate:?];
+            v46 = [v45 dateWithTimeInterval:startDate sinceDate:?];
           }
 
           v49 = v46;
@@ -3522,12 +3522,12 @@ LABEL_36:
         }
 
         v91 = 0;
-        v50 = [(IPFeatureScanner *)self bodyMessageUnits];
-        v51 = [v83 objectAtIndexedSubscript:0];
+        bodyMessageUnits = [(IPFeatureScanner *)self bodyMessageUnits];
+        v51 = [unitsCopy objectAtIndexedSubscript:0];
         [v51 originalMessage];
         v53 = v52 = self;
-        v54 = [v53 subject];
-        v55 = [v21 adjustedEventTitleForMessageUnits:v50 subject:v54 dateInSubject:v79 eventStartDate:v29 isGeneratedFromSubject:&v91];
+        subject = [v53 subject];
+        v55 = [v21 adjustedEventTitleForMessageUnits:bodyMessageUnits subject:subject dateInSubject:subjectCopy eventStartDate:startDate isGeneratedFromSubject:&v91];
 
         v90 = 0;
         if ([v21 isSportRelated])
@@ -3551,17 +3551,17 @@ LABEL_36:
           v12 = v86;
           if ([v21 isCultureRelated] && objc_msgSend(v76, "count"))
           {
-            v58 = self;
+            selfCopy3 = self;
             v59 = v55;
             v60 = v76;
 LABEL_65:
-            v56 = [(IPFeatureScanner *)v58 decoratedTitle:v59 withSubtitles:v60];
+            v56 = [(IPFeatureScanner *)selfCopy3 decoratedTitle:v59 withSubtitles:v60];
             goto LABEL_66;
           }
 
           if ([v21 isMealRelated] && objc_msgSend(v75, "count"))
           {
-            v58 = self;
+            selfCopy3 = self;
             v59 = v55;
             v60 = v75;
             goto LABEL_65;
@@ -3569,7 +3569,7 @@ LABEL_65:
 
           if (![v55 length] && objc_msgSend(v74, "count"))
           {
-            v58 = self;
+            selfCopy3 = self;
             v59 = v55;
             v60 = v74;
             goto LABEL_65;
@@ -3580,8 +3580,8 @@ LABEL_65:
             goto LABEL_67;
           }
 
-          v61 = [v21 defaultTitle];
-          v62 = [v61 isEqualToString:v55];
+          defaultTitle = [v21 defaultTitle];
+          v62 = [defaultTitle isEqualToString:v55];
 
           if (!v62)
           {
@@ -3589,15 +3589,15 @@ LABEL_65:
             goto LABEL_67;
           }
 
-          v63 = [v83 firstObject];
-          v64 = [v63 originalMessage];
+          firstObject2 = [unitsCopy firstObject];
+          originalMessage = [firstObject2 originalMessage];
 
-          v65 = [v64 sender];
-          v66 = [v64 recipients];
-          v56 = -[IPFeatureScanner decoratedTitleFromEventType:title:sender:recipients:isSent:isTitleSenderDecorated:](self, "decoratedTitleFromEventType:title:sender:recipients:isSent:isTitleSenderDecorated:", v21, v55, v65, v66, [v64 isSent], &v90);
+          sender = [originalMessage sender];
+          recipients = [originalMessage recipients];
+          v56 = -[IPFeatureScanner decoratedTitleFromEventType:title:sender:recipients:isSent:isTitleSenderDecorated:](self, "decoratedTitleFromEventType:title:sender:recipients:isSent:isTitleSenderDecorated:", v21, v55, sender, recipients, [originalMessage isSent], &v90);
 
           v12 = v86;
-          v55 = v64;
+          v55 = originalMessage;
         }
 
         v57 = v88;
@@ -3605,22 +3605,22 @@ LABEL_66:
 
         v55 = v56;
 LABEL_67:
-        [v13 setAllDay:v26];
-        [v13 setStartDate:v29];
+        [v13 setAllDay:isAllDay];
+        [v13 setStartDate:startDate];
         [v13 setEndDate:v57];
-        [v13 setIpsos_isTimeApproximate:v89];
+        [v13 setIpsos_isTimeApproximate:ipsos_isTimeApproximate];
         [v13 setTitle:v55];
         if ([v55 length])
         {
           v67 = v91;
-          v68 = [v13 ipsos_eventAttributes];
+          ipsos_eventAttributes = [v13 ipsos_eventAttributes];
           v69 = 2048;
           if (v67)
           {
             v69 = 1024;
           }
 
-          [v13 setIpsos_eventAttributes:v68 | v69];
+          [v13 setIpsos_eventAttributes:ipsos_eventAttributes | v69];
           if (v90 == 1)
           {
             [v13 setIpsos_eventAttributes:{objc_msgSend(v13, "ipsos_eventAttributes") | 0x1000}];
@@ -3638,8 +3638,8 @@ LABEL_73:
       {
 LABEL_77:
 
-        v11 = v72;
-        v10 = v73;
+        featuresCopy = v72;
+        eventsCopy = v73;
         break;
       }
     }
@@ -3650,20 +3650,20 @@ LABEL_77:
 
 - (id)messageSenderName
 {
-  v2 = [(IPFeatureScanner *)self bodyMessageUnits];
-  v3 = [v2 firstObject];
-  v4 = [v3 originalMessage];
+  bodyMessageUnits = [(IPFeatureScanner *)self bodyMessageUnits];
+  firstObject = [bodyMessageUnits firstObject];
+  originalMessage = [firstObject originalMessage];
 
-  v5 = [v4 sender];
-  v6 = [v5 displayableName];
+  sender = [originalMessage sender];
+  displayableName = [sender displayableName];
 
-  return v6;
+  return displayableName;
 }
 
-- (id)shortNameForPerson:(id)a3
+- (id)shortNameForPerson:(id)person
 {
-  v3 = [a3 displayableName];
-  if ([v3 containsString:@"@"])
+  displayableName = [person displayableName];
+  if ([displayableName containsString:@"@"])
   {
     v4 = 0;
   }
@@ -3671,7 +3671,7 @@ LABEL_77:
   else
   {
     v5 = objc_opt_new();
-    v6 = [v5 personNameComponentsFromString:v3];
+    v6 = [v5 personNameComponentsFromString:displayableName];
 
     if (v6)
     {
@@ -3680,7 +3680,7 @@ LABEL_77:
 
     else
     {
-      v7 = v3;
+      v7 = displayableName;
     }
 
     v4 = v7;
@@ -3689,10 +3689,10 @@ LABEL_77:
   return v4;
 }
 
-- (id)decoratedTitle:(id)a3 withSubtitles:(id)a4
+- (id)decoratedTitle:(id)title withSubtitles:(id)subtitles
 {
-  v5 = a3;
-  v6 = a4;
+  titleCopy = title;
+  subtitlesCopy = subtitles;
   if (IPLocalizedString_once != -1)
   {
     [IPFeatureScanner cleanedStringForFeatureData:];
@@ -3705,29 +3705,29 @@ LABEL_77:
   }
 
   v8 = [IPLocalizedString_bundle localizedStringForKey:@" / " value:&stru_285AD0E88 table:@"DataDetectorsNaturalLanguage"];
-  if ([v6 count] && objc_msgSend(v6, "count") <= 3)
+  if ([subtitlesCopy count] && objc_msgSend(subtitlesCopy, "count") <= 3)
   {
-    v9 = [MEMORY[0x277CBEB70] orderedSetWithArray:v6];
-    v10 = [v9 array];
+    v9 = [MEMORY[0x277CBEB70] orderedSetWithArray:subtitlesCopy];
+    array = [v9 array];
 
-    v11 = [v10 _pas_componentsJoinedByString:v8];
-    v12 = [MEMORY[0x277CBEAF8] currentLocale];
-    v13 = [v11 lowercaseStringWithLocale:v12];
+    v11 = [array _pas_componentsJoinedByString:v8];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v13 = [v11 lowercaseStringWithLocale:currentLocale];
     if ([v13 isEqualToString:v11])
     {
     }
 
     else
     {
-      v14 = [v11 uppercaseStringWithLocale:v12];
+      v14 = [v11 uppercaseStringWithLocale:currentLocale];
       v15 = [v14 isEqualToString:v11];
 
       if (!v15)
       {
 LABEL_11:
-        if ([v5 length])
+        if ([titleCopy length])
         {
-          v25 = _PASValidatedFormat(v7, v18, v19, v20, v21, v22, v23, v24, v5);
+          v25 = _PASValidatedFormat(v7, v18, v19, v20, v21, v22, v23, v24, titleCopy);
         }
 
         else
@@ -3737,14 +3737,14 @@ LABEL_11:
 
         v26 = v25;
 
-        v6 = v10;
-        v5 = v26;
+        subtitlesCopy = array;
+        titleCopy = v26;
         goto LABEL_15;
       }
     }
 
-    v16 = [MEMORY[0x277CBEAF8] currentLocale];
-    v17 = [v11 capitalizedStringWithLocale:v16];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    v17 = [v11 capitalizedStringWithLocale:currentLocale2];
 
     v11 = v17;
     goto LABEL_11;
@@ -3752,18 +3752,18 @@ LABEL_11:
 
 LABEL_15:
 
-  return v5;
+  return titleCopy;
 }
 
-- (void)confidenceForEvents:(id)a3
+- (void)confidenceForEvents:(id)events
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3774,7 +3774,7 @@ LABEL_15:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -3788,7 +3788,7 @@ LABEL_15:
         [v9 setIpsos_confidence:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [eventsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -3797,22 +3797,22 @@ LABEL_15:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)analyzeFeatures:(id)a3 messageUnit:(id)a4 checkPolarity:(BOOL)a5 polarity:(unint64_t)a6
+- (id)analyzeFeatures:(id)features messageUnit:(id)unit checkPolarity:(BOOL)polarity polarity:(unint64_t)a6
 {
-  v10 = a3;
-  v11 = a4;
+  featuresCopy = features;
+  unitCopy = unit;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
   v40 = __Block_byref_object_copy_;
   v41 = __Block_byref_object_dispose_;
   v42 = objc_opt_new();
-  v12 = [v11 originalMessage];
-  v13 = [v12 dateSent];
+  originalMessage = [unitCopy originalMessage];
+  dateSent = [originalMessage dateSent];
 
-  v14 = [(IPFeatureScanner *)self bodyMessageUnits];
-  v15 = [v14 firstObject];
-  v16 = v15 == v11;
+  bodyMessageUnits = [(IPFeatureScanner *)self bodyMessageUnits];
+  firstObject = [bodyMessageUnits firstObject];
+  v16 = firstObject == unitCopy;
 
   v17 = [objc_alloc(MEMORY[0x277D425F0]) initWithBlock:&__block_literal_global_203];
   v35[0] = 0;
@@ -3824,14 +3824,14 @@ LABEL_15:
   v24[2] = __71__IPFeatureScanner_analyzeFeatures_messageUnit_checkPolarity_polarity___block_invoke_2;
   v24[3] = &unk_278F22DA8;
   v30 = v35;
-  v18 = v13;
-  v33 = a5;
+  v18 = dateSent;
+  polarityCopy = polarity;
   v34 = v16;
   v25 = v18;
-  v26 = self;
-  v19 = v10;
+  selfCopy = self;
+  v19 = featuresCopy;
   v27 = v19;
-  v20 = v11;
+  v20 = unitCopy;
   v28 = v20;
   v32 = a6;
   v21 = v17;
@@ -4154,56 +4154,56 @@ LABEL_57:
   v70 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)eventStatusFromPolarity:(unint64_t)a3
+- (unint64_t)eventStatusFromPolarity:(unint64_t)polarity
 {
-  if (a3 - 2 >= 3)
+  if (polarity - 2 >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3 - 1;
+    return polarity - 1;
   }
 }
 
-- (id)decoratedTitleFromEventType:(id)a3 title:(id)a4 sender:(id)a5 recipients:(id)a6 isSent:(BOOL)a7 isTitleSenderDecorated:(BOOL *)a8
+- (id)decoratedTitleFromEventType:(id)type title:(id)title sender:(id)sender recipients:(id)recipients isSent:(BOOL)sent isTitleSenderDecorated:(BOOL *)decorated
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if ([v17 count] < 2)
+  sentCopy = sent;
+  typeCopy = type;
+  titleCopy = title;
+  senderCopy = sender;
+  recipientsCopy = recipients;
+  if ([recipientsCopy count] < 2)
   {
-    if (v9)
+    if (sentCopy)
     {
-      v19 = [v17 firstObject];
+      firstObject = [recipientsCopy firstObject];
     }
 
     else
     {
-      v19 = v16;
+      firstObject = senderCopy;
     }
 
-    v20 = v19;
-    if (v19)
+    v20 = firstObject;
+    if (firstObject)
     {
-      v21 = [(IPFeatureScanner *)self shortNameForPerson:v19];
+      v21 = [(IPFeatureScanner *)self shortNameForPerson:firstObject];
       if (([v21 containsString:@"+"] & 1) == 0 && objc_msgSend(v21, "integerValue") <= 0)
       {
-        v22 = [v14 decoratedTitleFromTitle:v15 participantName:v21 isTitleSenderDecorated:a8];
+        v22 = [typeCopy decoratedTitleFromTitle:titleCopy participantName:v21 isTitleSenderDecorated:decorated];
 
-        v15 = v22;
+        titleCopy = v22;
       }
     }
 
-    v18 = v15;
+    v18 = titleCopy;
   }
 
   else
   {
-    v18 = v15;
+    v18 = titleCopy;
   }
 
   return v18;

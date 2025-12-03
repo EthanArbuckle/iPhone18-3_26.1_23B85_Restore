@@ -1,7 +1,7 @@
 @interface CLSPartOfDayCalculation
 + (id)_possibleTimesOfDay;
-+ (id)partOfDayForItem:(id)a3;
-+ (id)partsOfDayForFeeder:(id)a3;
++ (id)partOfDayForItem:(id)item;
++ (id)partsOfDayForFeeder:(id)feeder;
 @end
 
 @implementation CLSPartOfDayCalculation
@@ -31,20 +31,20 @@ void __46__CLSPartOfDayCalculation__possibleTimesOfDay__block_invoke()
   _possibleTimesOfDay_possibleTimesOfDay = v0;
 }
 
-+ (id)partsOfDayForFeeder:(id)a3
++ (id)partsOfDayForFeeder:(id)feeder
 {
-  v4 = a3;
-  v5 = [v4 numberOfItems];
-  if (v5)
+  feederCopy = feeder;
+  numberOfItems = [feederCopy numberOfItems];
+  if (numberOfItems)
   {
-    v6 = v5;
+    v6 = numberOfItems;
     v7 = malloc_type_calloc(7uLL, 8uLL, 0x100004000313F17uLL);
     *v7 = xmmword_22F992590;
     v7[1] = xmmword_22F9925A0;
     v7[2] = xmmword_22F9925B0;
     *(v7 + 6) = 0x40F97D0000000000;
-    v8 = [a1 _possibleTimesOfDay];
-    v9 = [v8 count];
+    _possibleTimesOfDay = [self _possibleTimesOfDay];
+    v9 = [_possibleTimesOfDay count];
     v10 = malloc_type_calloc(v9, 8uLL, 0x100004000313F17uLL);
     v28 = 0;
     v29 = &v28;
@@ -54,9 +54,9 @@ void __46__CLSPartOfDayCalculation__possibleTimesOfDay__block_invoke()
     v27[1] = v27;
     v27[2] = 0x2020000000;
     v27[3] = 0xBFF0000000000000;
-    v11 = [v4 localStartDate];
-    v12 = [v4 universalStartDate];
-    [v11 timeIntervalSinceDate:v12];
+    localStartDate = [feederCopy localStartDate];
+    universalStartDate = [feederCopy universalStartDate];
+    [localStartDate timeIntervalSinceDate:universalStartDate];
     v14 = v13;
 
     v26[0] = MEMORY[0x277D85DD0];
@@ -69,7 +69,7 @@ void __46__CLSPartOfDayCalculation__possibleTimesOfDay__block_invoke()
     v26[6] = v6;
     v26[8] = v7;
     v26[9] = v10;
-    [v4 enumerateItemsUsingBlock:v26];
+    [feederCopy enumerateItemsUsingBlock:v26];
     v15 = 0;
     if (v9)
     {
@@ -92,7 +92,7 @@ void __46__CLSPartOfDayCalculation__possibleTimesOfDay__block_invoke()
     }
 
     v29[3] -= v15;
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     if (v9)
     {
       for (i = 0; i != v9; ++i)
@@ -101,11 +101,11 @@ void __46__CLSPartOfDayCalculation__possibleTimesOfDay__block_invoke()
         if (v21)
         {
           v22 = v29[3];
-          v23 = [v8 objectAtIndexedSubscript:i];
+          v23 = [_possibleTimesOfDay objectAtIndexedSubscript:i];
           if (v23)
           {
             v24 = [MEMORY[0x277CCABB0] numberWithDouble:v21 / v22];
-            [v19 setObject:v24 forKeyedSubscript:v23];
+            [dictionary setObject:v24 forKeyedSubscript:v23];
           }
         }
       }
@@ -119,10 +119,10 @@ void __46__CLSPartOfDayCalculation__possibleTimesOfDay__block_invoke()
 
   else
   {
-    v19 = MEMORY[0x277CBEC10];
+    dictionary = MEMORY[0x277CBEC10];
   }
 
-  return v19;
+  return dictionary;
 }
 
 void __47__CLSPartOfDayCalculation_partsOfDayForFeeder___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -321,15 +321,15 @@ LABEL_55:
 LABEL_61:
 }
 
-+ (id)partOfDayForItem:(id)a3
++ (id)partOfDayForItem:(id)item
 {
-  v4 = [a3 cls_localDateComponents];
-  v5 = v4;
-  if (v4)
+  cls_localDateComponents = [item cls_localDateComponents];
+  v5 = cls_localDateComponents;
+  if (cls_localDateComponents)
   {
-    v6 = [v4 hour] * 3600.0;
-    v7 = [v5 minute];
-    v8 = v6 + [v5 second] + v7 * 60.0;
+    v6 = [cls_localDateComponents hour] * 3600.0;
+    minute = [v5 minute];
+    v8 = v6 + [v5 second] + minute * 60.0;
   }
 
   else
@@ -369,8 +369,8 @@ LABEL_61:
   }
 
 LABEL_14:
-  v13 = [a1 _possibleTimesOfDay];
-  v14 = [v13 objectAtIndexedSubscript:v12];
+  _possibleTimesOfDay = [self _possibleTimesOfDay];
+  v14 = [_possibleTimesOfDay objectAtIndexedSubscript:v12];
   free(v10);
 
   return v14;

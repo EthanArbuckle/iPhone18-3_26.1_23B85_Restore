@@ -1,13 +1,13 @@
 @interface MILockdownConnection
-- (MILockdownConnection)initWithLockdownInfo:(void *)a3;
+- (MILockdownConnection)initWithLockdownInfo:(void *)info;
 - (void)handleCancel;
 - (void)readFromService;
-- (void)sendData:(id)a3;
+- (void)sendData:(id)data;
 @end
 
 @implementation MILockdownConnection
 
-- (MILockdownConnection)initWithLockdownInfo:(void *)a3
+- (MILockdownConnection)initWithLockdownInfo:(void *)info
 {
   v10.receiver = self;
   v10.super_class = MILockdownConnection;
@@ -15,7 +15,7 @@
   if (v4)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    CFDictionaryAddValue(Mutable, kLockdownCheckinConnectionInfoKey, a3);
+    CFDictionaryAddValue(Mutable, kLockdownCheckinConnectionInfoKey, info);
     v6 = secure_lockdown_checkin();
     CFRelease(Mutable);
     if (!v6)
@@ -44,9 +44,9 @@
     v5 = lockdown_receive_message();
     v6 = cf;
     v7 = +[NSThread currentThread];
-    v8 = [v7 isCancelled];
+    isCancelled = [v7 isCancelled];
 
-    if (v8)
+    if (isCancelled)
     {
       break;
     }
@@ -155,15 +155,15 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v16 = a3;
-  v4 = [v16 length];
-  v5 = v16;
-  v6 = [v16 bytes];
+  dataCopy = data;
+  v4 = [dataCopy length];
+  v5 = dataCopy;
+  bytes = [dataCopy bytes];
   if (v4 >= 1)
   {
-    v7 = v6;
+    v7 = bytes;
     v8 = 0;
     while (1)
     {

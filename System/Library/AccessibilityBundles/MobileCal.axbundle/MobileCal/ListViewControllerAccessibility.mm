@@ -1,20 +1,20 @@
 @interface ListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityIsDateInCurrentYear:(id)a3;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityIsDateInCurrentYear:(id)year;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation ListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CUIKCalendarModel" hasInstanceMethod:@"dateForCachedOccurrencesInSection: usingFilter:" withFullSignature:{"@", "q", "B", 0}];
-  [v3 validateClass:@"ListViewController" hasInstanceMethod:@"showFilteredData" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ListViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ListViewController" isKindOfClass:@"MainViewController"];
-  [v3 validateClass:@"MainViewController" hasInstanceVariable:@"_model" withType:"CUIKCalendarModel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CUIKCalendarModel" hasInstanceMethod:@"dateForCachedOccurrencesInSection: usingFilter:" withFullSignature:{"@", "q", "B", 0}];
+  [validationsCopy validateClass:@"ListViewController" hasInstanceMethod:@"showFilteredData" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ListViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ListViewController" isKindOfClass:@"MainViewController"];
+  [validationsCopy validateClass:@"MainViewController" hasInstanceVariable:@"_model" withType:"CUIKCalendarModel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,44 +26,44 @@
   v4 = [v3 safeValueForKey:@"reloadData"];
 }
 
-- (BOOL)_accessibilityIsDateInCurrentYear:(id)a3
+- (BOOL)_accessibilityIsDateInCurrentYear:(id)year
 {
-  v4 = a3;
+  yearCopy = year;
   objc_opt_class();
   v5 = [(ListViewControllerAccessibility *)self safeValueForKey:@"_model"];
   v6 = __UIAccessibilityCastAsClass();
 
   v7 = MEMORY[0x29EDC0AC0];
-  v8 = [MEMORY[0x29EDB8DB0] date];
-  v9 = [v6 eventStore];
-  v10 = [v9 timeZone];
-  v11 = [v7 calendarDateWithDate:v8 timeZone:v10];
+  date = [MEMORY[0x29EDB8DB0] date];
+  eventStore = [v6 eventStore];
+  timeZone = [eventStore timeZone];
+  v11 = [v7 calendarDateWithDate:date timeZone:timeZone];
 
-  v12 = [v11 calendarDateForYear];
-  v13 = [v12 calendarDateForEndOfYear];
-  v14 = [v12 date];
-  if ([v4 compare:v14] == -1)
+  calendarDateForYear = [v11 calendarDateForYear];
+  calendarDateForEndOfYear = [calendarDateForYear calendarDateForEndOfYear];
+  date2 = [calendarDateForYear date];
+  if ([yearCopy compare:date2] == -1)
   {
     v16 = 0;
   }
 
   else
   {
-    v15 = [v13 date];
-    v16 = [v4 compare:v15] != 1;
+    date3 = [calendarDateForEndOfYear date];
+    v16 = [yearCopy compare:date3] != 1;
   }
 
   return v16;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v11.receiver = self;
   v11.super_class = ListViewControllerAccessibility;
-  v5 = [(ListViewControllerAccessibility *)&v11 tableView:a3 viewForHeaderInSection:?];
-  v6 = [(ListViewControllerAccessibility *)self _axCalendarModel];
+  v5 = [(ListViewControllerAccessibility *)&v11 tableView:view viewForHeaderInSection:?];
+  _axCalendarModel = [(ListViewControllerAccessibility *)self _axCalendarModel];
   v10 = v5;
-  v7 = v6;
+  v7 = _axCalendarModel;
   AXPerformSafeBlock();
   v8 = v10;
 

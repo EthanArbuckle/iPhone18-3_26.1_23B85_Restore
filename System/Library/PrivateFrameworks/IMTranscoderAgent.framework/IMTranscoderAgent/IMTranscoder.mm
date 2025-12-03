@@ -1,22 +1,22 @@
 @interface IMTranscoder
-+ (BOOL)shouldPreserveAAEncoding:(id)a3;
-+ (BOOL)shouldPreserveHDREncoding:(id)a3;
-+ (BOOL)shouldPreserveHEIFEncoding:(id)a3 target:(int64_t)a4 sourceUTI:(id)a5;
-+ (BOOL)supportsUTI:(id)a3;
-- (BOOL)BOOLFromTranscoderUserInfo:(id)a3 withKey:(id)a4;
-- (void)transcodeFileTransfer:(id)a3 utiType:(id)a4 allowUnfilteredUTIs:(id)a5 target:(int64_t)a6 sizes:(id)a7 commonCapabilities:(id)a8 maxDimension:(unint64_t)a9 transcoderUserInfo:(id)a10 representations:(int64_t)a11 isLQMEnabled:(BOOL)a12 completionBlock:(id)a13;
++ (BOOL)shouldPreserveAAEncoding:(id)encoding;
++ (BOOL)shouldPreserveHDREncoding:(id)encoding;
++ (BOOL)shouldPreserveHEIFEncoding:(id)encoding target:(int64_t)target sourceUTI:(id)i;
++ (BOOL)supportsUTI:(id)i;
+- (BOOL)BOOLFromTranscoderUserInfo:(id)info withKey:(id)key;
+- (void)transcodeFileTransfer:(id)transfer utiType:(id)type allowUnfilteredUTIs:(id)is target:(int64_t)target sizes:(id)sizes commonCapabilities:(id)capabilities maxDimension:(unint64_t)dimension transcoderUserInfo:(id)self0 representations:(int64_t)self1 isLQMEnabled:(BOOL)self2 completionBlock:(id)self3;
 @end
 
 @implementation IMTranscoder
 
-+ (BOOL)supportsUTI:(id)a3
++ (BOOL)supportsUTI:(id)i
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = objc_msgSend_supportedUTIs(a1, a2, a3, v3, v4, v5, v6, 0);
+  v8 = objc_msgSend_supportedUTIs(self, a2, i, v3, v4, v5, v6, 0);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v21, v25, 16, v10, v11);
   if (v12)
   {
@@ -32,7 +32,7 @@
           objc_enumerationMutation(v8);
         }
 
-        if (UTTypeConformsTo(a3, *(*(&v21 + 1) + 8 * v15)))
+        if (UTTypeConformsTo(i, *(*(&v21 + 1) + 8 * v15)))
         {
           LOBYTE(v12) = 1;
           goto LABEL_11;
@@ -58,10 +58,10 @@ LABEL_11:
   return v12;
 }
 
-+ (BOOL)shouldPreserveHEIFEncoding:(id)a3 target:(int64_t)a4 sourceUTI:(id)a5
++ (BOOL)shouldPreserveHEIFEncoding:(id)encoding target:(int64_t)target sourceUTI:(id)i
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3, a4, a5, v5, v6);
+  v10 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, encoding, target, i, v5, v6);
   v16 = objc_msgSend_objectForKey_(v10, v11, @"ForceHEIFEncoding", v12, v13, v14, v15);
   if (v16)
   {
@@ -91,7 +91,7 @@ LABEL_11:
     }
   }
 
-  if (UTTypeConformsTo(a5, *MEMORY[0x277CC2120]))
+  if (UTTypeConformsTo(i, *MEMORY[0x277CC2120]))
   {
     if (!IMOSLoggingEnabled())
     {
@@ -105,7 +105,7 @@ LABEL_11:
     }
 
     v43 = 138412290;
-    v44 = a5;
+    encodingCopy = i;
     v27 = "Rejecting HEIF encoding, source is %@";
 LABEL_15:
     _os_log_impl(&dword_254811000, v26, OS_LOG_TYPE_INFO, v27, &v43, 0xCu);
@@ -115,7 +115,7 @@ LABEL_16:
   }
 
   v28 = IMOSLoggingEnabled();
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((target & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     if (!v28)
     {
@@ -129,7 +129,7 @@ LABEL_16:
     }
 
     v43 = 134217984;
-    v44 = a4;
+    encodingCopy = target;
     v27 = "Rejecting HEIF encoding for non iMessage/RCS target %ld";
     goto LABEL_15;
   }
@@ -140,12 +140,12 @@ LABEL_16:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
       v43 = 138412290;
-      v44 = a3;
+      encodingCopy = encoding;
       _os_log_impl(&dword_254811000, v36, OS_LOG_TYPE_INFO, "Checking for HEIF support %@", &v43, 0xCu);
     }
   }
 
-  v25 = objc_msgSend_objectForKey_(a3, v29, *MEMORY[0x277D188A0], v30, v31, v32, v33);
+  v25 = objc_msgSend_objectForKey_(encoding, v29, *MEMORY[0x277D188A0], v30, v31, v32, v33);
   if (v25)
   {
     if (objc_opt_respondsToSelector())
@@ -162,10 +162,10 @@ LABEL_17:
   return v25;
 }
 
-+ (BOOL)shouldPreserveHDREncoding:(id)a3
++ (BOOL)shouldPreserveHDREncoding:(id)encoding
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3, v3, v4, v5, v6);
+  v8 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, encoding, v3, v4, v5, v6);
   v14 = objc_msgSend_objectForKey_(v8, v9, @"ForceHDREncoding", v10, v11, v12, v13);
   if (v14 && (v15 = v14, (objc_opt_respondsToSelector() & 1) != 0) && objc_msgSend_BOOLValue(v15, v16, v17, v18, v19, v20, v21))
   {
@@ -194,12 +194,12 @@ LABEL_17:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         v38 = 138412290;
-        v39 = a3;
+        encodingCopy = encoding;
         _os_log_impl(&dword_254811000, v29, OS_LOG_TYPE_INFO, "Checking for HDR support %@", &v38, 0xCu);
       }
     }
 
-    v23 = objc_msgSend_objectForKey_(a3, v24, *MEMORY[0x277D18898], v25, v26, v27, v28);
+    v23 = objc_msgSend_objectForKey_(encoding, v24, *MEMORY[0x277D18898], v25, v26, v27, v28);
     if (v23)
     {
       LOBYTE(v23) = (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend_integerValue(v23, v30, v31, v32, v33, v34, v35) == 1;
@@ -210,10 +210,10 @@ LABEL_17:
   return v23;
 }
 
-+ (BOOL)shouldPreserveAAEncoding:(id)a3
++ (BOOL)shouldPreserveAAEncoding:(id)encoding
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3, v3, v4, v5, v6);
+  v8 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, encoding, v3, v4, v5, v6);
   v14 = objc_msgSend_objectForKey_(v8, v9, @"ForceAAEncoding", v10, v11, v12, v13);
   if (v14 && (v15 = v14, (objc_opt_respondsToSelector() & 1) != 0) && objc_msgSend_BOOLValue(v15, v16, v17, v18, v19, v20, v21))
   {
@@ -242,12 +242,12 @@ LABEL_17:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         v38 = 138412290;
-        v39 = a3;
+        encodingCopy = encoding;
         _os_log_impl(&dword_254811000, v29, OS_LOG_TYPE_INFO, "Checking for HEIF support %@", &v38, 0xCu);
       }
     }
 
-    v23 = objc_msgSend_objectForKey_(a3, v24, *MEMORY[0x277D188A0], v25, v26, v27, v28);
+    v23 = objc_msgSend_objectForKey_(encoding, v24, *MEMORY[0x277D188A0], v25, v26, v27, v28);
     if (v23)
     {
       LOBYTE(v23) = (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend_integerValue(v23, v30, v31, v32, v33, v34, v35) == 1;
@@ -258,7 +258,7 @@ LABEL_17:
   return v23;
 }
 
-- (void)transcodeFileTransfer:(id)a3 utiType:(id)a4 allowUnfilteredUTIs:(id)a5 target:(int64_t)a6 sizes:(id)a7 commonCapabilities:(id)a8 maxDimension:(unint64_t)a9 transcoderUserInfo:(id)a10 representations:(int64_t)a11 isLQMEnabled:(BOOL)a12 completionBlock:(id)a13
+- (void)transcodeFileTransfer:(id)transfer utiType:(id)type allowUnfilteredUTIs:(id)is target:(int64_t)target sizes:(id)sizes commonCapabilities:(id)capabilities maxDimension:(unint64_t)dimension transcoderUserInfo:(id)self0 representations:(int64_t)self1 isLQMEnabled:(BOOL)self2 completionBlock:(id)self3
 {
   if (IMOSLoggingEnabled())
   {
@@ -270,18 +270,18 @@ LABEL_17:
     }
   }
 
-  if (a13)
+  if (block)
   {
-    (*(a13 + 2))(a13, a3, 0, 0, 0, 1, 0, 0);
+    (*(block + 2))(block, transfer, 0, 0, 0, 1, 0, 0);
   }
 }
 
-- (BOOL)BOOLFromTranscoderUserInfo:(id)a3 withKey:(id)a4
+- (BOOL)BOOLFromTranscoderUserInfo:(id)info withKey:(id)key
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (info)
   {
-    v9 = objc_msgSend_objectForKey_(a3, a2, a4, a4, v4, v5, v6);
+    v9 = objc_msgSend_objectForKey_(info, a2, key, key, v4, v5, v6);
     if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v16 = objc_msgSend_BOOLValue(v9, v10, v11, v12, v13, v14, v15);
@@ -299,7 +299,7 @@ LABEL_17:
       {
         v18 = @"NO";
         v22 = 138413058;
-        v23 = a3;
+        keyCopy2 = info;
         v24 = 2112;
         if (v16)
         {
@@ -308,7 +308,7 @@ LABEL_17:
 
         v25 = v9;
         v26 = 2112;
-        v27 = a4;
+        keyCopy = key;
         v28 = 2112;
         v29 = v18;
         _os_log_impl(&dword_254811000, v17, OS_LOG_TYPE_INFO, "Has transcoderUserInfo: %@, found %@, so %@ = %@", &v22, 0x2Au);
@@ -324,7 +324,7 @@ LABEL_17:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v22 = 138412290;
-        v23 = a4;
+        keyCopy2 = key;
         _os_log_impl(&dword_254811000, v19, OS_LOG_TYPE_INFO, "No transcoderUserInfo for %@", &v22, 0xCu);
       }
     }

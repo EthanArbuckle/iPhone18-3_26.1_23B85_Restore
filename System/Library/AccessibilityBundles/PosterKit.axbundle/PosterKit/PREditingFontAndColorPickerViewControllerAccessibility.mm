@@ -1,16 +1,16 @@
 @interface PREditingFontAndColorPickerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PREditingFontAndColorPickerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PREditingFontAndColorPickerViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PREditingFontAndColorPickerViewController" hasProperty:@"numberSystemBarItem" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PREditingFontAndColorPickerViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PREditingFontAndColorPickerViewController" hasProperty:@"numberSystemBarItem" withType:"@"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -23,11 +23,11 @@
   [v3 setAccessibilityLabel:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PREditingFontAndColorPickerViewControllerAccessibility;
-  [(PREditingFontAndColorPickerViewControllerAccessibility *)&v3 viewDidAppear:a3];
+  [(PREditingFontAndColorPickerViewControllerAccessibility *)&v3 viewDidAppear:appear];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 

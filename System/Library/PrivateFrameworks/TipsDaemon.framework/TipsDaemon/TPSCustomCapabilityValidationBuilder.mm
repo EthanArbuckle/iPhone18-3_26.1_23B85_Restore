@@ -1,7 +1,7 @@
 @interface TPSCustomCapabilityValidationBuilder
 + (id)deviceCapabilityValidationMap;
-+ (id)targetValidationForCapability:(id)a3;
-+ (id)targetValidationForNRDeviceCapability:(id)a3;
++ (id)targetValidationForCapability:(id)capability;
++ (id)targetValidationForNRDeviceCapability:(id)capability;
 + (id)watchCapabilityValidationMap;
 @end
 
@@ -169,16 +169,16 @@ void __69__TPSCustomCapabilityValidationBuilder_deviceCapabilityValidationMap__b
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)targetValidationForCapability:(id)a3
++ (id)targetValidationForCapability:(id)capability
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  capabilityCopy = capability;
   v5 = objc_alloc_init(TPSTargetingValidation);
-  if ([v4 type] == 2)
+  if ([capabilityCopy type] == 2)
   {
-    v6 = [a1 deviceCapabilityValidationMap];
-    v7 = [v4 key];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    deviceCapabilityValidationMap = [self deviceCapabilityValidationMap];
+    v7 = [capabilityCopy key];
+    v8 = [deviceCapabilityValidationMap objectForKeyedSubscript:v7];
 
     if (v8)
     {
@@ -187,24 +187,24 @@ void __69__TPSCustomCapabilityValidationBuilder_deviceCapabilityValidationMap__b
       v5 = v9;
     }
 
-    v10 = [v4 key];
+    v10 = [capabilityCopy key];
     if (v10)
     {
       v11 = v10;
-      v12 = [v4 value];
+      value = [capabilityCopy value];
 
-      if (v12)
+      if (value)
       {
-        v13 = [v4 key];
+        v13 = [capabilityCopy key];
         v18 = v13;
-        v14 = [v4 value];
-        v19[0] = v14;
+        value2 = [capabilityCopy value];
+        v19[0] = value2;
         v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
         [(TPSTargetingValidation *)v5 setTargetContext:v15];
       }
     }
 
-    -[TPSTargetingValidation setJoinType:](v5, "setJoinType:", [v4 joinType]);
+    -[TPSTargetingValidation setJoinType:](v5, "setJoinType:", [capabilityCopy joinType]);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -238,16 +238,16 @@ void __68__TPSCustomCapabilityValidationBuilder_watchCapabilityValidationMap__bl
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)targetValidationForNRDeviceCapability:(id)a3
++ (id)targetValidationForNRDeviceCapability:(id)capability
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  capabilityCopy = capability;
   v5 = objc_alloc_init(TPSTargetingValidation);
-  if ([v4 type] == 4)
+  if ([capabilityCopy type] == 4)
   {
-    v6 = [a1 watchCapabilityValidationMap];
-    v7 = [v4 key];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    watchCapabilityValidationMap = [self watchCapabilityValidationMap];
+    v7 = [capabilityCopy key];
+    v8 = [watchCapabilityValidationMap objectForKeyedSubscript:v7];
 
     if (v8)
     {
@@ -256,24 +256,24 @@ void __68__TPSCustomCapabilityValidationBuilder_watchCapabilityValidationMap__bl
       v5 = v9;
     }
 
-    v10 = [v4 key];
+    v10 = [capabilityCopy key];
     if (v10)
     {
       v11 = v10;
-      v12 = [v4 value];
+      value = [capabilityCopy value];
 
-      if (v12)
+      if (value)
       {
-        v13 = [v4 key];
+        v13 = [capabilityCopy key];
         v18 = v13;
-        v14 = [v4 value];
-        v19[0] = v14;
+        value2 = [capabilityCopy value];
+        v19[0] = value2;
         v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
         [(TPSTargetingValidation *)v5 setTargetContext:v15];
       }
     }
 
-    -[TPSTargetingValidation setJoinType:](v5, "setJoinType:", [v4 joinType]);
+    -[TPSTargetingValidation setJoinType:](v5, "setJoinType:", [capabilityCopy joinType]);
   }
 
   v16 = *MEMORY[0x277D85DE8];

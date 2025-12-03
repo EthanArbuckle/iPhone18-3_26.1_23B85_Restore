@@ -1,60 +1,60 @@
 @interface PKDisbursementPaymentRequest
-- (PKDisbursementPaymentRequest)initWithDisbursementRequest:(id)a3;
+- (PKDisbursementPaymentRequest)initWithDisbursementRequest:(id)request;
 @end
 
 @implementation PKDisbursementPaymentRequest
 
-- (PKDisbursementPaymentRequest)initWithDisbursementRequest:(id)a3
+- (PKDisbursementPaymentRequest)initWithDisbursementRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v27.receiver = self;
   v27.super_class = PKDisbursementPaymentRequest;
   v5 = [(PKPaymentRequest *)&v27 init];
   if (v5)
   {
-    v6 = [v4 merchantIdentifier];
-    [(PKPaymentRequest *)v5 setMerchantIdentifier:v6];
+    merchantIdentifier = [requestCopy merchantIdentifier];
+    [(PKPaymentRequest *)v5 setMerchantIdentifier:merchantIdentifier];
 
-    v7 = [v4 regionCode];
-    [(PKPaymentRequest *)v5 setCountryCode:v7];
+    regionCode = [requestCopy regionCode];
+    [(PKPaymentRequest *)v5 setCountryCode:regionCode];
 
-    v8 = [v4 supportedNetworks];
-    [(PKPaymentRequest *)v5 setSupportedNetworks:v8];
+    supportedNetworks = [requestCopy supportedNetworks];
+    [(PKPaymentRequest *)v5 setSupportedNetworks:supportedNetworks];
 
-    -[PKPaymentRequest setMerchantCapabilities:](v5, "setMerchantCapabilities:", [v4 merchantCapabilities]);
-    v9 = [v4 summaryItems];
-    [(PKPaymentRequest *)v5 setPaymentSummaryItems:v9];
+    -[PKPaymentRequest setMerchantCapabilities:](v5, "setMerchantCapabilities:", [requestCopy merchantCapabilities]);
+    summaryItems = [requestCopy summaryItems];
+    [(PKPaymentRequest *)v5 setPaymentSummaryItems:summaryItems];
 
-    v10 = [v4 currencyCode];
-    [(PKPaymentRequest *)v5 setCurrencyCode:v10];
+    currencyCode = [requestCopy currencyCode];
+    [(PKPaymentRequest *)v5 setCurrencyCode:currencyCode];
 
-    v11 = [v4 recipientContact];
-    [(PKPaymentRequest *)v5 setBillingContact:v11];
+    recipientContact = [requestCopy recipientContact];
+    [(PKPaymentRequest *)v5 setBillingContact:recipientContact];
 
-    v12 = [v4 recipientContact];
-    [(PKPaymentRequest *)v5 setShippingContact:v12];
+    recipientContact2 = [requestCopy recipientContact];
+    [(PKPaymentRequest *)v5 setShippingContact:recipientContact2];
 
-    v13 = [v4 applicationData];
-    [(PKPaymentRequest *)v5 setApplicationData:v13];
+    applicationData = [requestCopy applicationData];
+    [(PKPaymentRequest *)v5 setApplicationData:applicationData];
 
-    v14 = [v4 supportedRegions];
+    supportedRegions = [requestCopy supportedRegions];
 
-    if (v14)
+    if (supportedRegions)
     {
       v15 = MEMORY[0x1E695DFD8];
-      v16 = [v4 supportedRegions];
-      v17 = [v15 setWithArray:v16];
+      supportedRegions2 = [requestCopy supportedRegions];
+      v17 = [v15 setWithArray:supportedRegions2];
       [(PKPaymentRequest *)v5 setSupportedCountries:v17];
     }
 
     [(PKPaymentRequest *)v5 setRequestType:10];
     [(PKPaymentRequest *)v5 setConfirmationStyle:1];
     v18 = MEMORY[0x1E695DFD8];
-    v19 = [v4 requiredRecipientContactFields];
-    v20 = v19;
-    if (v19)
+    requiredRecipientContactFields = [requestCopy requiredRecipientContactFields];
+    v20 = requiredRecipientContactFields;
+    if (requiredRecipientContactFields)
     {
-      v21 = v19;
+      v21 = requiredRecipientContactFields;
     }
 
     else

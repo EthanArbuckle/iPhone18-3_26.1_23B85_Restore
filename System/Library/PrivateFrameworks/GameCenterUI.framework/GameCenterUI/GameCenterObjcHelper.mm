@@ -1,12 +1,12 @@
 @interface GameCenterObjcHelper
-+ (void)sendFriendInvitationViaPushWithContactID:(id)a3 contactAssociationID:(id)a4 completionHandler:(id)a5;
++ (void)sendFriendInvitationViaPushWithContactID:(id)d contactAssociationID:(id)iD completionHandler:(id)handler;
 @end
 
 @implementation GameCenterObjcHelper
 
-+ (void)sendFriendInvitationViaPushWithContactID:(id)a3 contactAssociationID:(id)a4 completionHandler:(id)a5
++ (void)sendFriendInvitationViaPushWithContactID:(id)d contactAssociationID:(id)iD completionHandler:(id)handler
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(handler);
   v6 = sub_24E347CF8();
   v8 = v7;
   v9 = sub_24E347CF8();

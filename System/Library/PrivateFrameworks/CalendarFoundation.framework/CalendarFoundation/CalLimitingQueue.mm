@@ -1,21 +1,21 @@
 @interface CalLimitingQueue
-- (CalLimitingQueue)initWithQueue:(id)a3 andBlock:(id)a4;
+- (CalLimitingQueue)initWithQueue:(id)queue andBlock:(id)block;
 @end
 
 @implementation CalLimitingQueue
 
-- (CalLimitingQueue)initWithQueue:(id)a3 andBlock:(id)a4
+- (CalLimitingQueue)initWithQueue:(id)queue andBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = CalLimitingQueue;
   v8 = [(CalLimitingQueue *)&v14 init];
   if (v8)
   {
-    if (v6)
+    if (queueCopy)
     {
-      v9 = v6;
+      v9 = queueCopy;
     }
 
     else
@@ -30,7 +30,7 @@
     v12 = *(v8 + 2);
     *(v8 + 2) = v11;
 
-    dispatch_source_set_event_handler(*(v8 + 2), v7);
+    dispatch_source_set_event_handler(*(v8 + 2), blockCopy);
     dispatch_resume(*(v8 + 2));
   }
 

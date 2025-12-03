@@ -1,30 +1,30 @@
 @interface IMTypingIndicatorPipelineParameter
-- (IMTypingIndicatorPipelineParameter)initWithBD:(id)a3 idsTrustedData:(id)a4;
-- (IMTypingIndicatorPipelineParameter)initWithBDBasic:(id)a3 idsTrustedData:(id)a4;
+- (IMTypingIndicatorPipelineParameter)initWithBD:(id)d idsTrustedData:(id)data;
+- (IMTypingIndicatorPipelineParameter)initWithBDBasic:(id)basic idsTrustedData:(id)data;
 @end
 
 @implementation IMTypingIndicatorPipelineParameter
 
-- (IMTypingIndicatorPipelineParameter)initWithBD:(id)a3 idsTrustedData:(id)a4
+- (IMTypingIndicatorPipelineParameter)initWithBD:(id)d idsTrustedData:(id)data
 {
-  v6 = a3;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = IMTypingIndicatorPipelineParameter;
-  v7 = [(IMTextMessagePipelineParameter *)&v19 initWithBD:v6 idsTrustedData:a4];
+  v7 = [(IMTextMessagePipelineParameter *)&v19 initWithBD:dCopy idsTrustedData:data];
   if (v7)
   {
-    v8 = [v6 messageSubType];
-    v9 = [v8 typingIndicator];
+    messageSubType = [dCopy messageSubType];
+    typingIndicator = [messageSubType typingIndicator];
 
-    v10 = [v9 icon];
-    v11 = [v10 image];
+    icon = [typingIndicator icon];
+    image = [icon image];
     v18 = 0;
-    v12 = [v11 dataUsingEncoding:0 error:&v18];
+    v12 = [image dataUsingEncoding:0 error:&v18];
     v13 = v18;
 
-    v14 = [v9 icon];
+    icon2 = [typingIndicator icon];
 
-    if (v14 && !v12)
+    if (icon2 && !v12)
     {
       v15 = IMLogHandleForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -33,11 +33,11 @@
       }
     }
 
-    -[IMTypingIndicatorPipelineParameter setIsFinished:](v7, "setIsFinished:", [v9 isFinished]);
+    -[IMTypingIndicatorPipelineParameter setIsFinished:](v7, "setIsFinished:", [typingIndicator isFinished]);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v9 balloonPluginBundleID];
-      [(IMTypingIndicatorPipelineParameter *)v7 setBalloonPluginBundleID:v16];
+      balloonPluginBundleID = [typingIndicator balloonPluginBundleID];
+      [(IMTypingIndicatorPipelineParameter *)v7 setBalloonPluginBundleID:balloonPluginBundleID];
     }
 
     [(IMTypingIndicatorPipelineParameter *)v7 setTypingIndicatorIconData:v12];
@@ -46,18 +46,18 @@
   return v7;
 }
 
-- (IMTypingIndicatorPipelineParameter)initWithBDBasic:(id)a3 idsTrustedData:(id)a4
+- (IMTypingIndicatorPipelineParameter)initWithBDBasic:(id)basic idsTrustedData:(id)data
 {
-  v6 = a3;
+  basicCopy = basic;
   v11.receiver = self;
   v11.super_class = IMTypingIndicatorPipelineParameter;
-  v7 = [(IMTextMessagePipelineParameter *)&v11 initWithBDBasic:v6 idsTrustedData:a4];
+  v7 = [(IMTextMessagePipelineParameter *)&v11 initWithBDBasic:basicCopy idsTrustedData:data];
   if (v7)
   {
-    v8 = [v6 messageSubType];
-    v9 = [v8 typingIndicator];
+    messageSubType = [basicCopy messageSubType];
+    typingIndicator = [messageSubType typingIndicator];
 
-    -[IMTypingIndicatorPipelineParameter setIsFinished:](v7, "setIsFinished:", [v9 isFinished]);
+    -[IMTypingIndicatorPipelineParameter setIsFinished:](v7, "setIsFinished:", [typingIndicator isFinished]);
   }
 
   return v7;

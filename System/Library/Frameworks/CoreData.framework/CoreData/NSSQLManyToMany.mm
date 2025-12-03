@@ -1,10 +1,10 @@
 @interface NSSQLManyToMany
-- (NSSQLManyToMany)initWithEntity:(id)a3 propertyDescription:(id)a4;
+- (NSSQLManyToMany)initWithEntity:(id)entity propertyDescription:(id)description;
 - (__CFString)inverseColumnName;
 - (__CFString)inverseOrderColumnName;
 - (id)correlationTableName;
 - (uint64_t)isTableSchemaEqual:(uint64_t)result;
-- (void)_setInverseManyToMany:(void *)a1;
+- (void)_setInverseManyToMany:(void *)many;
 - (void)dealloc;
 @end
 
@@ -80,11 +80,11 @@
   return result;
 }
 
-- (NSSQLManyToMany)initWithEntity:(id)a3 propertyDescription:(id)a4
+- (NSSQLManyToMany)initWithEntity:(id)entity propertyDescription:(id)description
 {
   v5.receiver = self;
   v5.super_class = NSSQLManyToMany;
-  result = [(NSSQLRelationship *)&v5 initWithEntity:a3 propertyDescription:a4];
+  result = [(NSSQLRelationship *)&v5 initWithEntity:entity propertyDescription:description];
   if (result)
   {
     result->super.super._propertyType = 9;
@@ -93,26 +93,26 @@
   return result;
 }
 
-- (void)_setInverseManyToMany:(void *)a1
+- (void)_setInverseManyToMany:(void *)many
 {
   v36[3] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!many)
   {
 LABEL_34:
     v25 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  v4 = [a1 entity];
-  if (a1[7] != a2)
+  entity = [many entity];
+  if (many[7] != a2)
   {
-    [(NSSQLRelationship *)a1 _setInverseRelationship:a2];
-    if (a1[8])
+    [(NSSQLRelationship *)many _setInverseRelationship:a2];
+    if (many[8])
     {
       if (!a2)
       {
 LABEL_12:
-        [(NSSQLManyToMany *)a2 _setInverseManyToMany:a1];
+        [(NSSQLManyToMany *)a2 _setInverseManyToMany:many];
         goto LABEL_13;
       }
     }
@@ -120,9 +120,9 @@ LABEL_12:
     else
     {
       v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-      if (v4)
+      if (entity)
       {
-        v6 = *(v4 + 184);
+        v6 = *(entity + 184);
       }
 
       else
@@ -130,15 +130,15 @@ LABEL_12:
         v6 = 0;
       }
 
-      v7 = [v5 initWithFormat:@"%@_%d%@", @"Z", v6, objc_msgSend(objc_msgSend(a1, "name"), "uppercaseString")];
-      v8 = a1[8];
+      v7 = [v5 initWithFormat:@"%@_%d%@", @"Z", v6, objc_msgSend(objc_msgSend(many, "name"), "uppercaseString")];
+      v8 = many[8];
       if (v8 != v7)
       {
 
-        a1[8] = [v7 copy];
+        many[8] = [v7 copy];
       }
 
-      [(NSSQLRelationship *)a2 _setInverseRelationship:a1];
+      [(NSSQLRelationship *)a2 _setInverseRelationship:many];
       if (!a2)
       {
         goto LABEL_12;
@@ -150,7 +150,7 @@ LABEL_12:
       v26 = MEMORY[0x1E695DF30];
       v27 = *MEMORY[0x1E695D930];
       v35[0] = @"entity";
-      v28 = [objc_msgSend(objc_msgSend(a1 "entity")];
+      v28 = [objc_msgSend(objc_msgSend(many "entity")];
       if (v28)
       {
         v29 = v28;
@@ -163,10 +163,10 @@ LABEL_12:
 
       v36[0] = v29;
       v35[1] = @"relationship";
-      v30 = [a1 name];
-      if (v30)
+      name = [many name];
+      if (name)
       {
-        v31 = v30;
+        v31 = name;
       }
 
       else
@@ -176,10 +176,10 @@ LABEL_12:
 
       v36[1] = v31;
       v35[2] = @"inverse";
-      v32 = [a2 name];
-      if (v32)
+      name2 = [a2 name];
+      if (name2)
       {
-        v33 = v32;
+        v33 = name2;
       }
 
       else
@@ -195,12 +195,12 @@ LABEL_12:
   }
 
 LABEL_13:
-  if (!a1[9])
+  if (!many[9])
   {
     v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (v4)
+    if (entity)
     {
-      v10 = *(v4 + 184);
+      v10 = *(entity + 184);
     }
 
     else
@@ -209,9 +209,9 @@ LABEL_13:
     }
 
     v11 = [v9 initWithFormat:@"%@_%d%@", @"Z", v10, objc_msgSend(objc_msgSend(a2, "name"), "uppercaseString")];
-    if (v4)
+    if (entity)
     {
-      v12 = *(v4 + 176);
+      v12 = *(entity + 176);
     }
 
     else
@@ -220,16 +220,16 @@ LABEL_13:
     }
 
     v13 = [(NSSQLStoreMappingGenerator *)v12 uniqueNameWithBase:v11];
-    v14 = a1[9];
+    v14 = many[9];
     if (v14 != v13)
     {
       v15 = v13;
 
-      a1[9] = [v15 copy];
+      many[9] = [v15 copy];
     }
   }
 
-  if (a1[10])
+  if (many[10])
   {
     goto LABEL_34;
   }
@@ -241,9 +241,9 @@ LABEL_13:
   }
 
   v17 = objc_alloc(MEMORY[0x1E696AEC0]);
-  if (v4)
+  if (entity)
   {
-    v18 = *(v4 + 184);
+    v18 = *(entity + 184);
   }
 
   else
@@ -252,9 +252,9 @@ LABEL_13:
   }
 
   v19 = [v17 initWithFormat:@"%@_%d%@", @"Z_FOK", v18, objc_msgSend(objc_msgSend(a2, "name"), "uppercaseString")];
-  if (v4)
+  if (entity)
   {
-    v20 = *(v4 + 176);
+    v20 = *(entity + 176);
   }
 
   else
@@ -264,12 +264,12 @@ LABEL_13:
 
   v34 = v19;
   v21 = [(NSSQLStoreMappingGenerator *)v20 uniqueNameWithBase:v19];
-  v22 = a1[10];
+  v22 = many[10];
   if (v22 != v21)
   {
     v23 = v21;
 
-    a1[10] = [v23 copy];
+    many[10] = [v23 copy];
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -298,14 +298,14 @@ LABEL_13:
   v4 = *(v3 + 56);
   if (v4 == v3)
   {
-    v5 = @"REFLEXIVE";
+    columnName = @"REFLEXIVE";
     if (a2)
     {
       goto LABEL_6;
     }
 
 LABEL_9:
-    result = [(__CFString *)v5 isEqualToString:0];
+    result = [(__CFString *)columnName isEqualToString:0];
     if (!result)
     {
       return result;
@@ -319,7 +319,7 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  v5 = [v4 columnName];
+  columnName = [v4 columnName];
   if (!a2)
   {
     goto LABEL_9;
@@ -329,15 +329,15 @@ LABEL_6:
   length = a2[1].length;
   if (length == a2)
   {
-    v7 = @"REFLEXIVE";
+    columnName2 = @"REFLEXIVE";
   }
 
   else
   {
-    v7 = [(__CFString *)length columnName];
+    columnName2 = [(__CFString *)length columnName];
   }
 
-  if (([(__CFString *)v5 isEqualToString:v7]& 1) == 0)
+  if (([(__CFString *)columnName isEqualToString:columnName2]& 1) == 0)
   {
     return 0;
   }
@@ -382,8 +382,8 @@ LABEL_17:
     v10 = 0;
   }
 
-  v11 = [(NSSQLManyToMany *)a2 inverseOrderColumnName];
-  if ((v10 == 0) == (v11 != 0))
+  inverseOrderColumnName = [(NSSQLManyToMany *)a2 inverseOrderColumnName];
+  if ((v10 == 0) == (inverseOrderColumnName != 0))
   {
     return 0;
   }
@@ -393,7 +393,7 @@ LABEL_17:
     return 1;
   }
 
-  result = [(__CFString *)v10 isEqualToString:v11];
+  result = [(__CFString *)v10 isEqualToString:inverseOrderColumnName];
   if (result)
   {
     return 1;

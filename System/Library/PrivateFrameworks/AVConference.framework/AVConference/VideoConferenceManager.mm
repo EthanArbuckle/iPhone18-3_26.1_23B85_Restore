@@ -1,55 +1,55 @@
 @interface VideoConferenceManager
 + (id)defaultVideoConferenceManager;
-+ (void)addNSError:(id)a3 toConferenceXPCArgumentDictionary:(id)a4;
-- (BOOL)hasVideoConference:(id)a3;
-- (BOOL)isSIPHandleValid:(tagHANDLE *)a3;
++ (void)addNSError:(id)error toConferenceXPCArgumentDictionary:(id)dictionary;
+- (BOOL)hasVideoConference:(id)conference;
+- (BOOL)isSIPHandleValid:(tagHANDLE *)valid;
 - (VideoConferenceManager)init;
-- (id)conferenceForCallID:(unsigned int)a3;
-- (id)conferenceForParticipantID:(id)a3;
-- (id)conferenceForSourceDestinationInfo:(tagVCSourceDestinationInfo *)a3;
+- (id)conferenceForCallID:(unsigned int)d;
+- (id)conferenceForParticipantID:(id)d;
+- (id)conferenceForSourceDestinationInfo:(tagVCSourceDestinationInfo *)info;
 - (tagHANDLE)SIPHandle;
-- (void)addVideoConference:(id)a3;
-- (void)broadcastCellTechChange:(int)a3 cellularMaxPktLen:(unsigned __int16)a4;
+- (void)addVideoConference:(id)conference;
+- (void)broadcastCellTechChange:(int)change cellularMaxPktLen:(unsigned __int16)len;
 - (void)cleanupVTP;
-- (void)createSIPWithPacketMultiplexMode:(int)a3;
-- (void)getClientUUID:(unsigned __int8)a3[16];
-- (void)pauseVideoConferences:(BOOL)a3;
+- (void)createSIPWithPacketMultiplexMode:(int)mode;
+- (void)getClientUUID:(unsigned __int8)d[16];
+- (void)pauseVideoConferences:(BOOL)conferences;
 - (void)registerBlocksForConference;
-- (void)removeVideoConference:(id)a3;
-- (void)setConferenceWithMic:(id)a3;
-- (void)startSIPWithPacketMultiplexMode:(int)a3 transportType:(unsigned int)a4;
-- (void)stopSIPWithTransportType:(unsigned int)a3;
-- (void)videoConference:(id)a3 cancelRelayRequest:(unsigned int)a4 requestDict:(id)a5;
-- (void)videoConference:(id)a3 closeConnectionForCallID:(unsigned int)a4;
-- (void)videoConference:(id)a3 didChangeLocalVariablesForCallID:(unsigned int)a4;
-- (void)videoConference:(id)a3 didReceiveARPLData:(id)a4 fromCallID:(unsigned int)a5;
-- (void)videoConference:(id)a3 didReceiveData:(id)a4 forCallID:(unsigned int)a5;
-- (void)videoConference:(id)a3 didReceiveFirstRemoteFrameForCallID:(unsigned int)a4;
-- (void)videoConference:(id)a3 didRemoteScreenAttributesChange:(id)a4 forCallID:(unsigned int)a5;
-- (void)videoConference:(id)a3 didRemoteVideoAttributesChange:(id)a4 forCallID:(unsigned int)a5;
-- (void)videoConference:(id)a3 didStartSession:(BOOL)a4 withCallID:(unsigned int)a5 error:(id)a6;
-- (void)videoConference:(id)a3 didStartSession:(BOOL)a4 withCallID:(unsigned int)a5 withUserInfo:(id)a6 error:(id)a7;
-- (void)videoConference:(id)a3 didStopWithCallID:(unsigned int)a4 error:(id)a5 callMetadata:(id)a6;
-- (void)videoConference:(id)a3 inititiateRelayRequest:(unsigned int)a4 requestDict:(id)a5;
-- (void)videoConference:(id)a3 isRemoteAudioBelowThreshold:(BOOL)a4;
-- (void)videoConference:(id)a3 localAudioEnabled:(BOOL)a4 forCallID:(unsigned int)a5 error:(id)a6;
-- (void)videoConference:(id)a3 localIPChange:(id)a4 withCallID:(unsigned int)a5;
-- (void)videoConference:(id)a3 receivedNoRemotePacketsForTime:(double)a4 callID:(unsigned int)a5;
-- (void)videoConference:(id)a3 remoteAudioEnabled:(BOOL)a4 forCallID:(unsigned int)a5;
-- (void)videoConference:(id)a3 remoteAudioPaused:(BOOL)a4 callID:(unsigned int)a5;
-- (void)videoConference:(id)a3 remoteCallingModeChanged:(unsigned int)a4 forCallID:(unsigned int)a5;
-- (void)videoConference:(id)a3 remoteMediaStalled:(BOOL)a4 callID:(unsigned int)a5;
-- (void)videoConference:(id)a3 remoteVideoPaused:(BOOL)a4 callID:(unsigned int)a5;
-- (void)videoConference:(id)a3 sendRelayUpdate:(unsigned int)a4 updateDict:(id)a5;
-- (void)videoConference:(id)a3 updateInputFrequencyLevel:(id)a4;
-- (void)videoConference:(id)a3 updateInputMeterLevel:(float)a4;
-- (void)videoConference:(id)a3 updateOutputFrequencyLevel:(id)a4;
-- (void)videoConference:(id)a3 updateOutputMeterLevel:(float)a4;
-- (void)videoConference:(id)a3 videoQualityNotificationForCallID:(unsigned int)a4 isDegraded:(BOOL)a5 isRemote:(BOOL)a6;
-- (void)videoConference:(id)a3 withCallID:(unsigned int)a4 didPauseAudio:(BOOL)a5 error:(id)a6;
-- (void)videoConference:(id)a3 withCallID:(unsigned int)a4 didPauseVideo:(BOOL)a5 error:(id)a6;
-- (void)videoConference:(id)a3 withCallID:(unsigned int)a4 isSendingAudio:(BOOL)a5 error:(id)a6;
-- (void)videoConference:(id)a3 withCallID:(unsigned int)a4 networkHint:(BOOL)a5;
+- (void)removeVideoConference:(id)conference;
+- (void)setConferenceWithMic:(id)mic;
+- (void)startSIPWithPacketMultiplexMode:(int)mode transportType:(unsigned int)type;
+- (void)stopSIPWithTransportType:(unsigned int)type;
+- (void)videoConference:(id)conference cancelRelayRequest:(unsigned int)request requestDict:(id)dict;
+- (void)videoConference:(id)conference closeConnectionForCallID:(unsigned int)d;
+- (void)videoConference:(id)conference didChangeLocalVariablesForCallID:(unsigned int)d;
+- (void)videoConference:(id)conference didReceiveARPLData:(id)data fromCallID:(unsigned int)d;
+- (void)videoConference:(id)conference didReceiveData:(id)data forCallID:(unsigned int)d;
+- (void)videoConference:(id)conference didReceiveFirstRemoteFrameForCallID:(unsigned int)d;
+- (void)videoConference:(id)conference didRemoteScreenAttributesChange:(id)change forCallID:(unsigned int)d;
+- (void)videoConference:(id)conference didRemoteVideoAttributesChange:(id)change forCallID:(unsigned int)d;
+- (void)videoConference:(id)conference didStartSession:(BOOL)session withCallID:(unsigned int)d error:(id)error;
+- (void)videoConference:(id)conference didStartSession:(BOOL)session withCallID:(unsigned int)d withUserInfo:(id)info error:(id)error;
+- (void)videoConference:(id)conference didStopWithCallID:(unsigned int)d error:(id)error callMetadata:(id)metadata;
+- (void)videoConference:(id)conference inititiateRelayRequest:(unsigned int)request requestDict:(id)dict;
+- (void)videoConference:(id)conference isRemoteAudioBelowThreshold:(BOOL)threshold;
+- (void)videoConference:(id)conference localAudioEnabled:(BOOL)enabled forCallID:(unsigned int)d error:(id)error;
+- (void)videoConference:(id)conference localIPChange:(id)change withCallID:(unsigned int)d;
+- (void)videoConference:(id)conference receivedNoRemotePacketsForTime:(double)time callID:(unsigned int)d;
+- (void)videoConference:(id)conference remoteAudioEnabled:(BOOL)enabled forCallID:(unsigned int)d;
+- (void)videoConference:(id)conference remoteAudioPaused:(BOOL)paused callID:(unsigned int)d;
+- (void)videoConference:(id)conference remoteCallingModeChanged:(unsigned int)changed forCallID:(unsigned int)d;
+- (void)videoConference:(id)conference remoteMediaStalled:(BOOL)stalled callID:(unsigned int)d;
+- (void)videoConference:(id)conference remoteVideoPaused:(BOOL)paused callID:(unsigned int)d;
+- (void)videoConference:(id)conference sendRelayUpdate:(unsigned int)update updateDict:(id)dict;
+- (void)videoConference:(id)conference updateInputFrequencyLevel:(id)level;
+- (void)videoConference:(id)conference updateInputMeterLevel:(float)level;
+- (void)videoConference:(id)conference updateOutputFrequencyLevel:(id)level;
+- (void)videoConference:(id)conference updateOutputMeterLevel:(float)level;
+- (void)videoConference:(id)conference videoQualityNotificationForCallID:(unsigned int)d isDegraded:(BOOL)degraded isRemote:(BOOL)remote;
+- (void)videoConference:(id)conference withCallID:(unsigned int)d didPauseAudio:(BOOL)audio error:(id)error;
+- (void)videoConference:(id)conference withCallID:(unsigned int)d didPauseVideo:(BOOL)video error:(id)error;
+- (void)videoConference:(id)conference withCallID:(unsigned int)d isSendingAudio:(BOOL)audio error:(id)error;
+- (void)videoConference:(id)conference withCallID:(unsigned int)d networkHint:(BOOL)hint;
 @end
 
 @implementation VideoConferenceManager
@@ -102,225 +102,225 @@
   return v3;
 }
 
-+ (void)addNSError:(id)a3 toConferenceXPCArgumentDictionary:(id)a4
++ (void)addNSError:(id)error toConferenceXPCArgumentDictionary:(id)dictionary
 {
-  if (a3)
+  if (error)
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{objc_msgSend(a3, "code")}];
-    v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{objc_msgSend(a3, "domain"), @"conferenceErrorDomain", v7, @"conferenceErrorCode", objc_msgSend(a3, "userInfo"), @"conferenceErrorUserInfo", 0}];
-    [a4 setObject:v6 forKeyedSubscript:@"conferenceError"];
+    v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{objc_msgSend(error, "code")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{objc_msgSend(error, "domain"), @"conferenceErrorDomain", v7, @"conferenceErrorCode", objc_msgSend(error, "userInfo"), @"conferenceErrorUserInfo", 0}];
+    [dictionary setObject:v6 forKeyedSubscript:@"conferenceError"];
   }
 }
 
-- (void)videoConference:(id)a3 localIPChange:(id)a4 withCallID:(unsigned int)a5
+- (void)videoConference:(id)conference localIPChange:(id)change withCallID:(unsigned int)d
 {
-  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a5];
-  v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{a4, @"conferenceCallNewBlob", v8, @"conferenceCallID", 0}];
+  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{change, @"conferenceCallNewBlob", v8, @"conferenceCallID", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 didStartSession:(BOOL)a4 withCallID:(unsigned int)a5 error:(id)a6
+- (void)videoConference:(id)conference didStartSession:(BOOL)session withCallID:(unsigned int)d error:(id)error
 {
-  v7 = *&a5;
-  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:a4];
+  v7 = *&d;
+  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:session];
   v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:v7];
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v11, @"conferenceConnectionStarted", v9, 0}];
-  [VideoConferenceManager addNSError:a6 toConferenceXPCArgumentDictionary:v10];
+  [VideoConferenceManager addNSError:error toConferenceXPCArgumentDictionary:v10];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 didStartSession:(BOOL)a4 withCallID:(unsigned int)a5 withUserInfo:(id)a6 error:(id)a7
+- (void)videoConference:(id)conference didStartSession:(BOOL)session withCallID:(unsigned int)d withUserInfo:(id)info error:(id)error
 {
-  v9 = *&a5;
-  v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:a4];
+  v9 = *&d;
+  v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:session];
   v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:v9];
-  v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v13, @"conferenceConnectionStarted", a6, @"conferenceUserInfo", v11, @"conferenceCallID", 0}];
-  [VideoConferenceManager addNSError:a7 toConferenceXPCArgumentDictionary:v12];
+  v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v13, @"conferenceConnectionStarted", info, @"conferenceUserInfo", v11, @"conferenceCallID", 0}];
+  [VideoConferenceManager addNSError:error toConferenceXPCArgumentDictionary:v12];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 didStopWithCallID:(unsigned int)a4 error:(id)a5 callMetadata:(id)a6
+- (void)videoConference:(id)conference didStopWithCallID:(unsigned int)d error:(id)error callMetadata:(id)metadata
 {
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
-  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v10, @"conferenceCallID", a6, @"conferenceCallMetadata", 0}];
-  [VideoConferenceManager addNSError:a5 toConferenceXPCArgumentDictionary:v9];
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v10, @"conferenceCallID", metadata, @"conferenceCallMetadata", 0}];
+  [VideoConferenceManager addNSError:error toConferenceXPCArgumentDictionary:v9];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 withCallID:(unsigned int)a4 didPauseAudio:(BOOL)a5 error:(id)a6
+- (void)videoConference:(id)conference withCallID:(unsigned int)d didPauseAudio:(BOOL)audio error:(id)error
 {
-  v7 = a5;
-  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v7];
+  audioCopy = audio;
+  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:audioCopy];
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v11, @"conferenceCallID", v9, @"conferenceAudioPause", 0}];
-  [VideoConferenceManager addNSError:a6 toConferenceXPCArgumentDictionary:v10];
+  [VideoConferenceManager addNSError:error toConferenceXPCArgumentDictionary:v10];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 withCallID:(unsigned int)a4 isSendingAudio:(BOOL)a5 error:(id)a6
+- (void)videoConference:(id)conference withCallID:(unsigned int)d isSendingAudio:(BOOL)audio error:(id)error
 {
-  v7 = a5;
-  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v7];
+  audioCopy = audio;
+  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:audioCopy];
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v11, @"conferenceCallID", v9, @"conferenceAudioSending", 0}];
-  [VideoConferenceManager addNSError:a6 toConferenceXPCArgumentDictionary:v10];
+  [VideoConferenceManager addNSError:error toConferenceXPCArgumentDictionary:v10];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 withCallID:(unsigned int)a4 didPauseVideo:(BOOL)a5 error:(id)a6
+- (void)videoConference:(id)conference withCallID:(unsigned int)d didPauseVideo:(BOOL)video error:(id)error
 {
-  v7 = a5;
-  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v7];
+  videoCopy = video;
+  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:videoCopy];
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v11, @"conferenceCallID", v9, @"conferenceVideoPause", 0}];
-  [VideoConferenceManager addNSError:a6 toConferenceXPCArgumentDictionary:v10];
+  [VideoConferenceManager addNSError:error toConferenceXPCArgumentDictionary:v10];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 receivedNoRemotePacketsForTime:(double)a4 callID:(unsigned int)a5
+- (void)videoConference:(id)conference receivedNoRemotePacketsForTime:(double)time callID:(unsigned int)d
 {
-  v5 = *&a5;
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a5];
-  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:a4];
+  v5 = *&d;
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:time];
   v9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v10, @"conferenceCallID", v8, @"conferenceNoRemotePacketsTime", 0}];
-  if ([a3 shouldReinitializeCallWithDuration:v5 forCallID:a4])
+  if ([conference shouldReinitializeCallWithDuration:v5 forCallID:time])
   {
     [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
   }
 }
 
-- (void)videoConference:(id)a3 remoteMediaStalled:(BOOL)a4 callID:(unsigned int)a5
+- (void)videoConference:(id)conference remoteMediaStalled:(BOOL)stalled callID:(unsigned int)d
 {
-  v5 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a5];
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v5];
+  stalledCopy = stalled;
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:stalledCopy];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceCallID", v7, @"conferenceIsRemoteMediaStalled", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 didReceiveFirstRemoteFrameForCallID:(unsigned int)a4
+- (void)videoConference:(id)conference didReceiveFirstRemoteFrameForCallID:(unsigned int)d
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
   v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v6, @"conferenceCallID", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 remoteAudioPaused:(BOOL)a4 callID:(unsigned int)a5
+- (void)videoConference:(id)conference remoteAudioPaused:(BOOL)paused callID:(unsigned int)d
 {
-  v5 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a5];
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v5];
+  pausedCopy = paused;
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:pausedCopy];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceCallID", v7, @"conferenceAudioPause", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 remoteVideoPaused:(BOOL)a4 callID:(unsigned int)a5
+- (void)videoConference:(id)conference remoteVideoPaused:(BOOL)paused callID:(unsigned int)d
 {
-  v5 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a5];
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v5];
+  pausedCopy = paused;
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:pausedCopy];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceCallID", v7, @"conferenceVideoPause", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 didRemoteVideoAttributesChange:(id)a4 forCallID:(unsigned int)a5
+- (void)videoConference:(id)conference didRemoteVideoAttributesChange:(id)change forCallID:(unsigned int)d
 {
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a5];
-  v7 = [a4 copyEncodedDictionary];
-  v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceCallID", v7, @"conferenceRemoteVideoAttributes", 0}];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  copyEncodedDictionary = [change copyEncodedDictionary];
+  v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceCallID", copyEncodedDictionary, @"conferenceRemoteVideoAttributes", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 didRemoteScreenAttributesChange:(id)a4 forCallID:(unsigned int)a5
+- (void)videoConference:(id)conference didRemoteScreenAttributesChange:(id)change forCallID:(unsigned int)d
 {
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a5];
-  v7 = [a4 copyEncodedDictionary];
-  v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceCallID", v7, @"conferenceRemoteScreenAttributes", 0}];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  copyEncodedDictionary = [change copyEncodedDictionary];
+  v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceCallID", copyEncodedDictionary, @"conferenceRemoteScreenAttributes", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 updateInputFrequencyLevel:(id)a4
+- (void)videoConference:(id)conference updateInputFrequencyLevel:(id)level
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a4, @"conferenceInputFreqMetering", 0}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{level, @"conferenceInputFreqMetering", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 updateOutputFrequencyLevel:(id)a4
+- (void)videoConference:(id)conference updateOutputFrequencyLevel:(id)level
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a4, @"conferenceOutputFreqMetering", 0}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{level, @"conferenceOutputFreqMetering", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 updateInputMeterLevel:(float)a4
+- (void)videoConference:(id)conference updateInputMeterLevel:(float)level
 {
   v6 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v7 = a4;
+  *&v7 = level;
   v9 = [v6 initWithFloat:v7];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceInputMetering", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 updateOutputMeterLevel:(float)a4
+- (void)videoConference:(id)conference updateOutputMeterLevel:(float)level
 {
   v6 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v7 = a4;
+  *&v7 = level;
   v9 = [v6 initWithFloat:v7];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceOutputMetering", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 isRemoteAudioBelowThreshold:(BOOL)a4
+- (void)videoConference:(id)conference isRemoteAudioBelowThreshold:(BOOL)threshold
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v5 = @"conferenceAudioBelowThreshold";
-  v6[0] = [MEMORY[0x1E696AD98] numberWithBool:a4];
+  v6[0] = [MEMORY[0x1E696AD98] numberWithBool:threshold];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 inititiateRelayRequest:(unsigned int)a4 requestDict:(id)a5
+- (void)videoConference:(id)conference inititiateRelayRequest:(unsigned int)request requestDict:(id)dict
 {
-  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
-  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceCallID", a5, @"conferenceRelayRequest", 0}];
+  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&request];
+  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceCallID", dict, @"conferenceRelayRequest", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 sendRelayUpdate:(unsigned int)a4 updateDict:(id)a5
+- (void)videoConference:(id)conference sendRelayUpdate:(unsigned int)update updateDict:(id)dict
 {
-  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
-  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceCallID", a5, @"conferenceRelayRequest", 0}];
+  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&update];
+  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceCallID", dict, @"conferenceRelayRequest", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 cancelRelayRequest:(unsigned int)a4 requestDict:(id)a5
+- (void)videoConference:(id)conference cancelRelayRequest:(unsigned int)request requestDict:(id)dict
 {
-  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
-  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceCallID", a5, @"conferenceRelayRequest", 0}];
+  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&request];
+  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceCallID", dict, @"conferenceRelayRequest", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 videoQualityNotificationForCallID:(unsigned int)a4 isDegraded:(BOOL)a5 isRemote:(BOOL)a6
+- (void)videoConference:(id)conference videoQualityNotificationForCallID:(unsigned int)d isDegraded:(BOOL)degraded isRemote:(BOOL)remote
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v7];
-  v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v6];
+  remoteCopy = remote;
+  degradedCopy = degraded;
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:degradedCopy];
+  v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:remoteCopy];
   v11 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceCallID", v10, @"conferenceIsVideoDegraded", v12, @"conferenceIsRemote", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 withCallID:(unsigned int)a4 networkHint:(BOOL)a5
+- (void)videoConference:(id)conference withCallID:(unsigned int)d networkHint:(BOOL)hint
 {
-  v5 = a5;
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v5];
+  hintCopy = hint;
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:hintCopy];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"conferenceCallID", v9, @"conferenceNetworkHint", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 didReceiveARPLData:(id)a4 fromCallID:(unsigned int)a5
+- (void)videoConference:(id)conference didReceiveARPLData:(id)data fromCallID:(unsigned int)d
 {
-  v5 = *&a5;
+  v5 = *&d;
   v20 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -338,7 +338,7 @@
     }
   }
 
-  if (!a4 && VRTraceGetErrorLogLevelForModule() >= 7)
+  if (!data && VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v10 = VRTraceErrorLogLevelToCSTR();
     v11 = *MEMORY[0x1E6986650];
@@ -355,54 +355,54 @@
   }
 
   v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:v5];
-  v13 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v12, @"conferenceCallID", a4, @"conferenceARPLData", 0}];
+  v13 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v12, @"conferenceCallID", data, @"conferenceARPLData", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 didChangeLocalVariablesForCallID:(unsigned int)a4
+- (void)videoConference:(id)conference didChangeLocalVariablesForCallID:(unsigned int)d
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
   v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v6, @"conferenceCallID", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 didReceiveData:(id)a4 forCallID:(unsigned int)a5
+- (void)videoConference:(id)conference didReceiveData:(id)data forCallID:(unsigned int)d
 {
-  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a5];
-  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceCallID", a4, @"conferenceData", 0}];
+  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceCallID", data, @"conferenceData", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 remoteAudioEnabled:(BOOL)a4 forCallID:(unsigned int)a5
+- (void)videoConference:(id)conference remoteAudioEnabled:(BOOL)enabled forCallID:(unsigned int)d
 {
-  v5 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a5];
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v5];
+  enabledCopy = enabled;
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:enabledCopy];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v9, @"conferenceCallID", v7, @"conferenceAudioEnabled", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 localAudioEnabled:(BOOL)a4 forCallID:(unsigned int)a5 error:(id)a6
+- (void)videoConference:(id)conference localAudioEnabled:(BOOL)enabled forCallID:(unsigned int)d error:(id)error
 {
-  v7 = a4;
-  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a5];
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v7];
+  enabledCopy = enabled;
+  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:enabledCopy];
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v11, @"conferenceCallID", v9, @"conferenceAudioEnabled", 0}];
-  [VideoConferenceManager addNSError:a6 toConferenceXPCArgumentDictionary:v10];
+  [VideoConferenceManager addNSError:error toConferenceXPCArgumentDictionary:v10];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 closeConnectionForCallID:(unsigned int)a4
+- (void)videoConference:(id)conference closeConnectionForCallID:(unsigned int)d
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&d];
   v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v6, @"conferenceCallID", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)videoConference:(id)a3 remoteCallingModeChanged:(unsigned int)a4 forCallID:(unsigned int)a5
+- (void)videoConference:(id)conference remoteCallingModeChanged:(unsigned int)changed forCallID:(unsigned int)d
 {
-  v5 = *&a5;
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&a4];
+  v5 = *&d;
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*&changed];
   v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:v5];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"conferenceCallID", v9, @"conferenceCallingMode", 0}];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
@@ -416,7 +416,7 @@
   return hSIP;
 }
 
-- (void)createSIPWithPacketMultiplexMode:(int)a3
+- (void)createSIPWithPacketMultiplexMode:(int)mode
 {
   v23 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -490,15 +490,15 @@
     }
   }
 
-  SIPSetPacketMultiplexMode(self->hSIP, a3);
+  SIPSetPacketMultiplexMode(self->hSIP, mode);
   SIPSetAllowSameSourceDestination(self->hSIP, 1);
   SIPSetCellConditionChangeHandler(self->hSIP, CellConditionChangeCallback, self);
   self->sipRefCount = 0;
 }
 
-- (void)startSIPWithPacketMultiplexMode:(int)a3 transportType:(unsigned int)a4
+- (void)startSIPWithPacketMultiplexMode:(int)mode transportType:(unsigned int)type
 {
-  v5 = *&a3;
+  v5 = *&mode;
   v19 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B590](&dword_1DB56E000, "[VideoConferenceManager startSIPWithPacketMultiplexMode:transportType:]");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -524,7 +524,7 @@
   hSIP = self->hSIP;
   if (hSIP != 0xFFFFFFFFLL || ([(VideoConferenceManager *)self createSIPWithPacketMultiplexMode:v5], hSIP = self->hSIP, hSIP != 0xFFFFFFFFLL))
   {
-    if ((SIPStartListen(hSIP, a4 != 0, self->_clientUUID) & 0x80000000) != 0)
+    if ((SIPStartListen(hSIP, type != 0, self->_clientUUID) & 0x80000000) != 0)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -548,15 +548,15 @@
   pthread_mutex_unlock(&self->sipLock);
 }
 
-- (BOOL)isSIPHandleValid:(tagHANDLE *)a3
+- (BOOL)isSIPHandleValid:(tagHANDLE *)valid
 {
   v22 = *MEMORY[0x1E69E9840];
   hSIP = self->hSIP;
-  v4 = hSIP != a3 || hSIP == 0xFFFFFFFFLL;
+  v4 = hSIP != valid || hSIP == 0xFFFFFFFFLL;
   v5 = !v4;
   if (v4)
   {
-    v6 = a3;
+    validCopy = valid;
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
       v8 = VRTraceErrorLogLevelToCSTR();
@@ -571,7 +571,7 @@
         v16 = 1024;
         v17 = 609;
         v18 = 1024;
-        v19 = v6;
+        v19 = validCopy;
         v20 = 1024;
         v21 = v11;
         _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d SIPCallback tried to use stale/invalid handle %d. actual is %d", &v12, 0x28u);
@@ -647,7 +647,7 @@ uint64_t __36__VideoConferenceManager_cleanupVTP__block_invoke(uint64_t a1)
   return pthread_mutex_unlock((*(a1 + 32) + 88));
 }
 
-- (void)stopSIPWithTransportType:(unsigned int)a3
+- (void)stopSIPWithTransportType:(unsigned int)type
 {
   v25 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B590](&dword_1DB56E000, "[VideoConferenceManager stopSIPWithTransportType:]");
@@ -680,7 +680,7 @@ uint64_t __36__VideoConferenceManager_cleanupVTP__block_invoke(uint64_t a1)
   }
 
   hSIP = self->hSIP;
-  if (hSIP == 0xFFFFFFFFLL || (SIPStopListen(hSIP, a3 != 0), v12 = self->hSIP, v12 == 0xFFFFFFFFLL) || self->sipRefCount > 0)
+  if (hSIP == 0xFFFFFFFFLL || (SIPStopListen(hSIP, type != 0), v12 = self->hSIP, v12 == 0xFFFFFFFFLL) || self->sipRefCount > 0)
   {
     pthread_mutex_unlock(&self->sipLock);
   }
@@ -747,11 +747,11 @@ void __51__VideoConferenceManager_stopSIPWithTransportType___block_invoke(uint64
   [(SnapshotTimer *)v2 checkout];
 }
 
-- (void)addVideoConference:(id)a3
+- (void)addVideoConference:(id)conference
 {
   v15 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->stateLock);
-  if (([(NSMutableArray *)self->vcList containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)self->vcList containsObject:conference]& 1) == 0)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -766,25 +766,25 @@ void __51__VideoConferenceManager_stopSIPWithTransportType___block_invoke(uint64
         v11 = 1024;
         v12 = 688;
         v13 = 2112;
-        v14 = a3;
+        conferenceCopy = conference;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d NetworkAgent is being asserted by addVideoConference '%@'", &v7, 0x26u);
       }
     }
 
     [+[VCNetworkAgent sharedInstance](VCNetworkAgent addAssertion];
-    [(NSMutableArray *)self->vcList addObject:a3];
+    [(NSMutableArray *)self->vcList addObject:conference];
   }
 
   pthread_mutex_unlock(&self->stateLock);
 }
 
-- (void)removeVideoConference:(id)a3
+- (void)removeVideoConference:(id)conference
 {
   v15 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->stateLock);
-  if ([(NSMutableArray *)self->vcList containsObject:a3])
+  if ([(NSMutableArray *)self->vcList containsObject:conference])
   {
-    [(NSMutableArray *)self->vcList removeObject:a3];
+    [(NSMutableArray *)self->vcList removeObject:conference];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v5 = VRTraceErrorLogLevelToCSTR();
@@ -798,7 +798,7 @@ void __51__VideoConferenceManager_stopSIPWithTransportType___block_invoke(uint64
         v11 = 1024;
         v12 = 702;
         v13 = 2112;
-        v14 = a3;
+        conferenceCopy = conference;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d NetworkAgent is being un-asserted by removeVideoConference '%@'", &v7, 0x26u);
       }
     }
@@ -806,12 +806,12 @@ void __51__VideoConferenceManager_stopSIPWithTransportType___block_invoke(uint64
     [+[VCNetworkAgent sharedInstance](VCNetworkAgent removeAssertion];
   }
 
-  if ([a3 isEqual:self->activeConference])
+  if ([conference isEqual:self->activeConference])
   {
     self->activeConference = 0;
   }
 
-  if ([a3 isEqual:self->conferenceWithMic])
+  if ([conference isEqual:self->conferenceWithMic])
   {
     self->conferenceWithMic = 0;
   }
@@ -819,13 +819,13 @@ void __51__VideoConferenceManager_stopSIPWithTransportType___block_invoke(uint64
   pthread_mutex_unlock(&self->stateLock);
 }
 
-- (void)setConferenceWithMic:(id)a3
+- (void)setConferenceWithMic:(id)mic
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
   pthread_mutex_lock(&self->stateLock);
-  self->conferenceWithMic = a3;
-  if (a3)
+  self->conferenceWithMic = mic;
+  if (mic)
   {
     v24 = 0u;
     v25 = 0u;
@@ -847,7 +847,7 @@ void __51__VideoConferenceManager_stopSIPWithTransportType___block_invoke(uint64
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
-          if (v11 != a3 && [*(*(&v22 + 1) + 8 * i) hasMic])
+          if (v11 != mic && [*(*(&v22 + 1) + 8 * i) hasMic])
           {
             [v5 addObject:v11];
           }
@@ -889,9 +889,9 @@ void __51__VideoConferenceManager_stopSIPWithTransportType___block_invoke(uint64
   }
 }
 
-- (id)conferenceForCallID:(unsigned int)a3
+- (id)conferenceForCallID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v17 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->stateLock);
   v5 = [MEMORY[0x1E695DEC8] arrayWithArray:self->vcList];
@@ -936,21 +936,21 @@ LABEL_3:
   }
 }
 
-- (BOOL)hasVideoConference:(id)a3
+- (BOOL)hasVideoConference:(id)conference
 {
   pthread_mutex_lock(&self->stateLock);
-  LOBYTE(a3) = [(NSMutableArray *)self->vcList containsObject:a3];
+  LOBYTE(conference) = [(NSMutableArray *)self->vcList containsObject:conference];
   pthread_mutex_unlock(&self->stateLock);
-  return a3;
+  return conference;
 }
 
-- (id)conferenceForParticipantID:(id)a3
+- (id)conferenceForParticipantID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->stateLock);
   v5 = self->activeConference;
   pthread_mutex_unlock(&self->stateLock);
-  if (!v5 || ![(VideoConference *)v5 matchesParticipantID:a3])
+  if (!v5 || ![(VideoConference *)v5 matchesParticipantID:d])
   {
     pthread_mutex_lock(&self->stateLock);
     v6 = [MEMORY[0x1E695DF70] arrayWithArray:self->vcList];
@@ -974,7 +974,7 @@ LABEL_5:
         }
 
         v5 = *(*(&v13 + 1) + 8 * v10);
-        if ([(VideoConference *)v5 matchesParticipantID:a3])
+        if ([(VideoConference *)v5 matchesParticipantID:d])
         {
           break;
         }
@@ -1002,13 +1002,13 @@ LABEL_5:
   return v5;
 }
 
-- (id)conferenceForSourceDestinationInfo:(tagVCSourceDestinationInfo *)a3
+- (id)conferenceForSourceDestinationInfo:(tagVCSourceDestinationInfo *)info
 {
   v27 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->stateLock);
   v5 = self->activeConference;
   pthread_mutex_unlock(&self->stateLock);
-  if (!v5 || ![(VideoConference *)v5 conferenceMatchesSourceDestinationInfo:a3])
+  if (!v5 || ![(VideoConference *)v5 conferenceMatchesSourceDestinationInfo:info])
   {
     pthread_mutex_lock(&self->stateLock);
     v6 = [MEMORY[0x1E695DF70] arrayWithArray:self->vcList];
@@ -1032,7 +1032,7 @@ LABEL_5:
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
-          if ([v11 conferenceMatchesSourceDestinationInfo:a3])
+          if ([v11 conferenceMatchesSourceDestinationInfo:info])
           {
             return v11;
           }
@@ -1098,9 +1098,9 @@ LABEL_14:
   return v5;
 }
 
-- (void)pauseVideoConferences:(BOOL)a3
+- (void)pauseVideoConferences:(BOOL)conferences
 {
-  v3 = a3;
+  conferencesCopy = conferences;
   v19 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1116,7 +1116,7 @@ LABEL_14:
       v15 = 1024;
       v16 = 824;
       v17 = 1024;
-      v18 = v3;
+      v18 = conferencesCopy;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d InterruptMe: (%d) pauseVideoConferences begin", buf, 0x22u);
     }
   }
@@ -1127,7 +1127,7 @@ LABEL_14:
   v9[2] = __48__VideoConferenceManager_pauseVideoConferences___block_invoke;
   v9[3] = &unk_1E85F37A0;
   v9[4] = self;
-  v10 = v3;
+  v10 = conferencesCopy;
   dispatch_async(global_queue, v9);
 }
 
@@ -1186,10 +1186,10 @@ void __48__VideoConferenceManager_pauseVideoConferences___block_invoke_2(uint64_
   }
 }
 
-- (void)broadcastCellTechChange:(int)a3 cellularMaxPktLen:(unsigned __int16)a4
+- (void)broadcastCellTechChange:(int)change cellularMaxPktLen:(unsigned __int16)len
 {
-  v4 = a4;
-  v5 = *&a3;
+  lenCopy = len;
+  v5 = *&change;
   v17 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->stateLock);
   v7 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:self->vcList];
@@ -1213,7 +1213,7 @@ void __48__VideoConferenceManager_pauseVideoConferences___block_invoke_2(uint64_
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) handleCellTechChange:v5 cellularMaxPktLen:v4];
+        [*(*(&v13 + 1) + 8 * v11++) handleCellTechChange:v5 cellularMaxPktLen:lenCopy];
       }
 
       while (v9 != v11);
@@ -1224,10 +1224,10 @@ void __48__VideoConferenceManager_pauseVideoConferences___block_invoke_2(uint64_
   }
 }
 
-- (void)getClientUUID:(unsigned __int8)a3[16]
+- (void)getClientUUID:(unsigned __int8)d[16]
 {
   pthread_mutex_lock(&self->sipLock);
-  uuid_copy(a3, self->_clientUUID);
+  uuid_copy(d, self->_clientUUID);
 
   pthread_mutex_unlock(&self->sipLock);
 }
@@ -1411,19 +1411,6 @@ uint64_t __70__VideoConferenceManager_VideoConference__registerBlocksForConferen
   return v3;
 }
 
-{
-  if ([a2 objectForKeyedSubscript:@"CLIENTDIED"])
-  {
-    return 0;
-  }
-
-  v4 = [a2 objectForKeyedSubscript:@"CONTEXT"];
-  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:{objc_msgSend(v4, "isMicrophoneMuted")}];
-  v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v5, @"conferenceMicrophoneMute", 0}];
-
-  return v6;
-}
-
 uint64_t __70__VideoConferenceManager_VideoConference__registerBlocksForConference__block_invoke_33(uint64_t a1, void *a2)
 {
   if (![a2 objectForKeyedSubscript:@"CLIENTDIED"])
@@ -1432,22 +1419,6 @@ uint64_t __70__VideoConferenceManager_VideoConference__registerBlocksForConferen
   }
 
   return 0;
-}
-
-{
-  if ([a2 objectForKeyedSubscript:@"CLIENTDIED"])
-  {
-    return 0;
-  }
-
-  v4 = [a2 objectForKeyedSubscript:@"CONTEXT"];
-  v5 = [a2 objectForKeyedSubscript:@"conferenceCallID"];
-  v6 = objc_alloc(MEMORY[0x1E696AD98]);
-  [v4 localBitrateForCallID:{objc_msgSend(v5, "unsignedIntValue")}];
-  v7 = [v6 initWithDouble:?];
-  v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"conferenceLocalBitRate", 0}];
-
-  return v8;
 }
 
 uint64_t __70__VideoConferenceManager_VideoConference__registerBlocksForConference__block_invoke_2(uint64_t a1, void *a2)
@@ -1496,19 +1467,6 @@ uint64_t __70__VideoConferenceManager_VideoConference__registerBlocksForConferen
   v4 = [a2 objectForKeyedSubscript:@"CONTEXT"];
   v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:{objc_msgSend(v4, "useViceroyBlobFormat")}];
   v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v5, @"conferenceUsingBlobFormat", 0}];
-
-  return v6;
-}
-
-{
-  if ([a2 objectForKeyedSubscript:@"CLIENTDIED"])
-  {
-    return 0;
-  }
-
-  [objc_msgSend(a2 objectForKeyedSubscript:{@"CONTEXT", "remoteFrameSizeForCallID:", objc_msgSend(objc_msgSend(a2, "objectForKeyedSubscript:", @"conferenceCallID", "unsignedIntValue")}];
-  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:v4];
-  v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v5, @"conferenceRemoteFrameWidth", 0}];
 
   return v6;
 }

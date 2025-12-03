@@ -1,35 +1,35 @@
 @interface HKSPLimitingScheduler
-- (HKSPLimitingScheduler)initWithScheduler:(id)a3;
-- (HKSPLimitingScheduler)initWithScheduler:(id)a3 mutexGenerator:(id)a4 ignoreDelays:(BOOL)a5;
-- (void)scheduleTask:(id)a3;
+- (HKSPLimitingScheduler)initWithScheduler:(id)scheduler;
+- (HKSPLimitingScheduler)initWithScheduler:(id)scheduler mutexGenerator:(id)generator ignoreDelays:(BOOL)delays;
+- (void)scheduleTask:(id)task;
 @end
 
 @implementation HKSPLimitingScheduler
 
-- (HKSPLimitingScheduler)initWithScheduler:(id)a3
+- (HKSPLimitingScheduler)initWithScheduler:(id)scheduler
 {
-  v4 = a3;
+  schedulerCopy = scheduler;
   v5 = &__block_literal_global_21;
-  v6 = [(HKSPLimitingScheduler *)self initWithScheduler:v4 mutexGenerator:&__block_literal_global_21];
+  v6 = [(HKSPLimitingScheduler *)self initWithScheduler:schedulerCopy mutexGenerator:&__block_literal_global_21];
 
   return v6;
 }
 
-- (HKSPLimitingScheduler)initWithScheduler:(id)a3 mutexGenerator:(id)a4 ignoreDelays:(BOOL)a5
+- (HKSPLimitingScheduler)initWithScheduler:(id)scheduler mutexGenerator:(id)generator ignoreDelays:(BOOL)delays
 {
-  v8 = a3;
-  v9 = a4;
+  schedulerCopy = scheduler;
+  generatorCopy = generator;
   v20.receiver = self;
   v20.super_class = HKSPLimitingScheduler;
   v10 = [(HKSPLimitingScheduler *)&v20 init];
   if (v10)
   {
-    v11 = v9[2](v9);
-    v12 = HKSPOrderPreservingScheduler(v8, v11);
+    v11 = generatorCopy[2](generatorCopy);
+    v12 = HKSPOrderPreservingScheduler(schedulerCopy, v11);
     orderPreservingScheduler = v10->_orderPreservingScheduler;
     v10->_orderPreservingScheduler = v12;
 
-    v14 = v9[2](v9);
+    v14 = generatorCopy[2](generatorCopy);
     mutexProvider = v10->_mutexProvider;
     v10->_mutexProvider = v14;
 
@@ -37,22 +37,22 @@
     identifiers = v10->_identifiers;
     v10->_identifiers = v16;
 
-    v10->_ignoreDelays = a5;
+    v10->_ignoreDelays = delays;
     v18 = v10;
   }
 
   return v10;
 }
 
-- (void)scheduleTask:(id)a3
+- (void)scheduleTask:(id)task
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (!v5)
+  taskCopy = task;
+  identifier = [taskCopy identifier];
+  if (!identifier)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v6 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    identifier = [uUID UUIDString];
 
     v7 = HKSPLogForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -60,7 +60,7 @@
       *buf = 138543618;
       v19 = objc_opt_class();
       v20 = 2112;
-      v21 = v5;
+      v21 = identifier;
       v14 = v19;
       _os_log_debug_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEBUG, "[%{public}@] generating identifier %@ for task", buf, 0x16u);
     }
@@ -73,7 +73,7 @@
     *buf = 138543618;
     v19 = v12;
     v20 = 2112;
-    v21 = v5;
+    v21 = identifier;
     v13 = v12;
     _os_log_debug_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEBUG, "[%{public}@] request to perform %@ task", buf, 0x16u);
   }
@@ -83,10 +83,10 @@
   v15[2] = __38__HKSPLimitingScheduler_scheduleTask___block_invoke;
   v15[3] = &unk_279C75CC0;
   v15[4] = self;
-  v16 = v5;
-  v17 = v4;
-  v9 = v4;
-  v10 = v5;
+  v16 = identifier;
+  v17 = taskCopy;
+  v9 = taskCopy;
+  v10 = identifier;
   [(HKSPLimitingScheduler *)self _withLock:v15];
 
   v11 = *MEMORY[0x277D85DE8];

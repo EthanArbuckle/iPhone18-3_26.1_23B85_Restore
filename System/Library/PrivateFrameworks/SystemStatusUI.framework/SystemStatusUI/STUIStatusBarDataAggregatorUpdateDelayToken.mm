@@ -1,5 +1,5 @@
 @interface STUIStatusBarDataAggregatorUpdateDelayToken
-- (STUIStatusBarDataAggregatorUpdateDelayToken)initWithEntryKeys:(id)a3 timeout:(double)a4 timeoutBlock:(id)a5;
+- (STUIStatusBarDataAggregatorUpdateDelayToken)initWithEntryKeys:(id)keys timeout:(double)timeout timeoutBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -36,20 +36,20 @@
   [(STUIStatusBarDataAggregatorUpdateDelayToken *)&v6 dealloc];
 }
 
-- (STUIStatusBarDataAggregatorUpdateDelayToken)initWithEntryKeys:(id)a3 timeout:(double)a4 timeoutBlock:(id)a5
+- (STUIStatusBarDataAggregatorUpdateDelayToken)initWithEntryKeys:(id)keys timeout:(double)timeout timeoutBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  keysCopy = keys;
+  blockCopy = block;
   v22.receiver = self;
   v22.super_class = STUIStatusBarDataAggregatorUpdateDelayToken;
   v10 = [(STUIStatusBarDataAggregatorUpdateDelayToken *)&v22 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [keysCopy copy];
     delayedKeys = v10->_delayedKeys;
     v10->_delayedKeys = v11;
 
-    v13 = [v9 copy];
+    v13 = [blockCopy copy];
     timeoutBlock = v10->_timeoutBlock;
     v10->_timeoutBlock = v13;
 
@@ -60,7 +60,7 @@
     v19[2] = __86__STUIStatusBarDataAggregatorUpdateDelayToken_initWithEntryKeys_timeout_timeoutBlock___block_invoke;
     v19[3] = &unk_279D38178;
     objc_copyWeak(&v20, &location);
-    v16 = [v15 scheduledTimerWithTimeInterval:0 repeats:v19 block:a4];
+    v16 = [v15 scheduledTimerWithTimeInterval:0 repeats:v19 block:timeout];
     timeoutTimer = v10->_timeoutTimer;
     v10->_timeoutTimer = v16;
 

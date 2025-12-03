@@ -1,57 +1,57 @@
 @interface SKUIIndexBarControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityMoveToIndexPath:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityMoveToIndexPath:(id)path;
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
 - (int64_t)_accessibilityTableIndexAdjustment;
-- (void)_accessibilityBumpValue:(BOOL)a3;
-- (void)_sendSelectionForTouch:(id)a3 withEvent:(id)a4;
+- (void)_accessibilityBumpValue:(BOOL)value;
+- (void)_sendSelectionForTouch:(id)touch withEvent:(id)event;
 @end
 
 @implementation SKUIIndexBarControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIIndexBarControl" hasInstanceMethod:@"_visibleBounds" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"SKUIIndexBarControl" hasInstanceVariable:@"_totalEntryCount" withType:"NSInteger"];
-  [v3 validateClass:@"SKUIAttributedStringIndexBarEntry" hasInstanceVariable:@"_synthesizedAttributedString" withType:"NSAttributedString"];
-  [v3 validateClass:@"SKUIIndexBarControl" hasInstanceVariable:@"_lastSelectedIndexPath" withType:"NSIndexPath"];
-  [v3 validateClass:@"SKUIIndexBarControl" hasInstanceVariable:@"_delegate" withType:"<SKUIIndexBarControlDelegate>"];
-  [v3 validateClass:@"SKUIIndexBarControl" hasInstanceMethod:@"_entryAtIndexPath:" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"SKUIIndexBarControlDelegate" hasOptionalInstanceMethod:@"indexBarControl:didSelectEntryAtIndexPath:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIIndexBarControl" hasInstanceMethod:@"_visibleBounds" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"SKUIIndexBarControl" hasInstanceVariable:@"_totalEntryCount" withType:"NSInteger"];
+  [validationsCopy validateClass:@"SKUIAttributedStringIndexBarEntry" hasInstanceVariable:@"_synthesizedAttributedString" withType:"NSAttributedString"];
+  [validationsCopy validateClass:@"SKUIIndexBarControl" hasInstanceVariable:@"_lastSelectedIndexPath" withType:"NSIndexPath"];
+  [validationsCopy validateClass:@"SKUIIndexBarControl" hasInstanceVariable:@"_delegate" withType:"<SKUIIndexBarControlDelegate>"];
+  [validationsCopy validateClass:@"SKUIIndexBarControl" hasInstanceMethod:@"_entryAtIndexPath:" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"SKUIIndexBarControlDelegate" hasOptionalInstanceMethod:@"indexBarControl:didSelectEntryAtIndexPath:"];
 }
 
 - (int64_t)_accessibilityTableIndexAdjustment
 {
   v2 = [(SKUIIndexBarControlAccessibility *)self _accessibilityViewAncestorIsKindOf:objc_opt_class()];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
     v5 = [v2 safeValueForKey:@"delegate"];
     v6 = [v5 safeValueForKey:@"_accessibilityTableViewIndexAdjustment"];
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (void)_accessibilityBumpValue:(BOOL)a3
+- (void)_accessibilityBumpValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   v5 = [(SKUIIndexBarControlAccessibility *)self safeValueForKey:@"_lastSelectedIndexPath"];
   v6 = __UIAccessibilityCastAsClass();
 
   v7 = [v6 row];
-  if (v3)
+  if (valueCopy)
   {
     v8 = v7 + 1;
   }
@@ -70,13 +70,13 @@
   }
 }
 
-- (BOOL)_accessibilityMoveToIndexPath:(id)a3
+- (BOOL)_accessibilityMoveToIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = [(SKUIIndexBarControlAccessibility *)self safeValueForKey:@"_totalEntryCount"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  if ([v5 row] < 0 || objc_msgSend(v5, "row") > v7)
+  if ([pathCopy row] < 0 || objc_msgSend(pathCopy, "row") > integerValue)
   {
     v8 = 0;
     goto LABEL_20;
@@ -88,12 +88,12 @@
   v26 = __Block_byref_object_copy__0;
   v27 = __Block_byref_object_dispose__0;
   v28 = 0;
-  v9 = v5;
+  v9 = pathCopy;
   AXPerformSafeBlock();
   v10 = v24[5];
 
   _Block_object_dispose(&v23, 8);
-  v11 = [MEMORY[0x29EDBA0F8] string];
+  string = [MEMORY[0x29EDBA0F8] string];
   NSClassFromString(&cfstr_Skuiattributed_3.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -107,10 +107,10 @@
       abort();
     }
 
-    v14 = [v13 string];
-    v15 = [v14 lowercaseString];
+    string2 = [v13 string];
+    lowercaseString = [string2 lowercaseString];
 
-    v11 = v13;
+    string = v13;
     goto LABEL_14;
   }
 
@@ -119,10 +119,10 @@
   {
     v16 = @"recently.added";
 LABEL_13:
-    v15 = accessibilitySKUILocalizedString(v16);
+    lowercaseString = accessibilitySKUILocalizedString(v16);
 LABEL_14:
 
-    v11 = v15;
+    string = lowercaseString;
     goto LABEL_15;
   }
 
@@ -141,12 +141,12 @@ LABEL_14:
   }
 
 LABEL_15:
-  v17 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v11];
+  v17 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:string];
 
   v18 = [(SKUIIndexBarControlAccessibility *)self safeIvarForKey:@"_lastSelectedIndexPath"];
   if (v18)
   {
-    objc_storeStrong(v18, a3);
+    objc_storeStrong(v18, path);
   }
 
   v19 = [(SKUIIndexBarControlAccessibility *)self safeValueForKey:@"_delegate"];
@@ -177,17 +177,17 @@ uint64_t __66__SKUIIndexBarControlAccessibility__accessibilityMoveToIndexPath___
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)_sendSelectionForTouch:(id)a3 withEvent:(id)a4
+- (void)_sendSelectionForTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   v39.receiver = self;
   v39.super_class = SKUIIndexBarControlAccessibility;
-  [(SKUIIndexBarControlAccessibility *)&v39 _sendSelectionForTouch:v6 withEvent:v7];
+  [(SKUIIndexBarControlAccessibility *)&v39 _sendSelectionForTouch:touchCopy withEvent:eventCopy];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v8 = [(SKUIIndexBarControlAccessibility *)self _accessibilityValueForKey:@"AXLastIndexPath"];
-    [v6 locationInView:self];
+    [touchCopy locationInView:self];
     v10 = v9;
     v11 = [(SKUIIndexBarControlAccessibility *)self safeValueForKey:@"_visibleBounds"];
     [v11 rectValue];
@@ -197,7 +197,7 @@ uint64_t __66__SKUIIndexBarControlAccessibility__accessibilityMoveToIndexPath___
     v19 = v18;
 
     v20 = [(SKUIIndexBarControlAccessibility *)self safeValueForKey:@"_totalEntryCount"];
-    v21 = [v20 integerValue];
+    integerValue = [v20 integerValue];
 
     v40.origin.x = v13;
     v40.origin.y = v15;
@@ -227,9 +227,9 @@ uint64_t __66__SKUIIndexBarControlAccessibility__accessibilityMoveToIndexPath___
     v43.size.width = v17;
     v43.size.height = v19;
     Height = CGRectGetHeight(v43);
-    v24 = v21 - 1;
-    v25 = llround(v22 / Height * (v21 - 1));
-    if (v21 - 1 >= v25)
+    v24 = integerValue - 1;
+    v25 = llround(v22 / Height * (integerValue - 1));
+    if (integerValue - 1 >= v25)
     {
       v24 = v25;
     }
@@ -241,7 +241,7 @@ uint64_t __66__SKUIIndexBarControlAccessibility__accessibilityMoveToIndexPath___
     v36 = __Block_byref_object_copy__0;
     v37 = __Block_byref_object_dispose__0;
     v38 = 0;
-    if (v26 >= v21)
+    if (v26 >= integerValue)
     {
       goto LABEL_9;
     }

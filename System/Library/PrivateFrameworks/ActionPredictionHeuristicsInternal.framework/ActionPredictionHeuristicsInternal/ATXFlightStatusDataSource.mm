@@ -1,30 +1,30 @@
 @interface ATXFlightStatusDataSource
-- (ATXFlightStatusDataSource)initWithDevice:(id)a3;
-- (BOOL)_flightIDIsValid:(id)a3;
-- (void)flightStatusForFlight:(id)a3 callback:(id)a4;
+- (ATXFlightStatusDataSource)initWithDevice:(id)device;
+- (BOOL)_flightIDIsValid:(id)valid;
+- (void)flightStatusForFlight:(id)flight callback:(id)callback;
 @end
 
 @implementation ATXFlightStatusDataSource
 
-- (ATXFlightStatusDataSource)initWithDevice:(id)a3
+- (ATXFlightStatusDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXFlightStatusDataSource;
   v6 = [(ATXFlightStatusDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (BOOL)_flightIDIsValid:(id)a3
+- (BOOL)_flightIDIsValid:(id)valid
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"airlineCode"];
+  validCopy = valid;
+  v4 = [validCopy objectForKeyedSubscript:@"airlineCode"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -39,7 +39,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"airlineCode"];
+  v5 = [validCopy objectForKeyedSubscript:@"airlineCode"];
   v6 = [v5 isEqualToString:&stru_2850AD368];
 
   if (v6)
@@ -47,7 +47,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"arrivalAirportCode"];
+  v7 = [validCopy objectForKeyedSubscript:@"arrivalAirportCode"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -62,7 +62,7 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"arrivalAirportCode"];
+  v8 = [validCopy objectForKeyedSubscript:@"arrivalAirportCode"];
   v9 = [v8 isEqualToString:&stru_2850AD368];
 
   if (v9)
@@ -70,7 +70,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v10 = [v3 objectForKeyedSubscript:@"flightNumber"];
+  v10 = [validCopy objectForKeyedSubscript:@"flightNumber"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -85,7 +85,7 @@ LABEL_19:
     goto LABEL_13;
   }
 
-  v11 = [v3 objectForKeyedSubscript:@"flightNumber"];
+  v11 = [validCopy objectForKeyedSubscript:@"flightNumber"];
   v12 = [v11 isEqual:&unk_2850BA4D0];
 
   if (v12)
@@ -93,7 +93,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v13 = [v3 objectForKeyedSubscript:@"expectedDepartureTimestamp"];
+  v13 = [validCopy objectForKeyedSubscript:@"expectedDepartureTimestamp"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -111,7 +111,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v14 = [v3 objectForKeyedSubscript:@"expectedDepartureTimestamp"];
+  v14 = [validCopy objectForKeyedSubscript:@"expectedDepartureTimestamp"];
   v15 = [v14 isEqual:&unk_2850BA4D0];
 
   if (v15)
@@ -125,17 +125,17 @@ LABEL_14:
   return v16;
 }
 
-- (void)flightStatusForFlight:(id)a3 callback:(id)a4
+- (void)flightStatusForFlight:(id)flight callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  flightCopy = flight;
+  callbackCopy = callback;
   v8 = __atxlog_handle_heuristic();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [ATXFlightStatusDataSource flightStatusForFlight:v6 callback:v8];
+    [ATXFlightStatusDataSource flightStatusForFlight:flightCopy callback:v8];
   }
 
-  if (![(ATXFlightStatusDataSource *)self _flightIDIsValid:v6])
+  if (![(ATXFlightStatusDataSource *)self _flightIDIsValid:flightCopy])
   {
     v16 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -162,26 +162,26 @@ LABEL_14:
     v19 = 3328;
 LABEL_12:
     v11 = [v17 errorWithDomain:v18 code:v19 userInfo:0];
-    v7[2](v7, 0, v11);
+    callbackCopy[2](callbackCopy, 0, v11);
     goto LABEL_13;
   }
 
   v9 = objc_alloc(MEMORY[0x277CBEAA8]);
-  v10 = [v6 objectForKeyedSubscript:@"expectedDepartureTimestamp"];
+  v10 = [flightCopy objectForKeyedSubscript:@"expectedDepartureTimestamp"];
   [v10 doubleValue];
   v11 = [v9 initWithTimeIntervalSinceReferenceDate:?];
 
   v12 = [MEMORY[0x277D0A9C8] flightFactoryClassWithProvider:*MEMORY[0x277D0A9C0]];
-  v13 = [v6 objectForKeyedSubscript:@"flightNumber"];
-  v14 = [v13 unsignedIntegerValue];
-  v15 = [v6 objectForKeyedSubscript:@"airlineCode"];
+  v13 = [flightCopy objectForKeyedSubscript:@"flightNumber"];
+  unsignedIntegerValue = [v13 unsignedIntegerValue];
+  v15 = [flightCopy objectForKeyedSubscript:@"airlineCode"];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __60__ATXFlightStatusDataSource_flightStatusForFlight_callback___block_invoke;
   v21[3] = &unk_278C3D2F8;
-  v23 = v7;
-  v22 = v6;
-  [v12 loadFlightsWithNumber:v14 airlineCode:v15 date:v11 dateType:1 completionHandler:v21];
+  v23 = callbackCopy;
+  v22 = flightCopy;
+  [v12 loadFlightsWithNumber:unsignedIntegerValue airlineCode:v15 date:v11 dateType:1 completionHandler:v21];
 
 LABEL_13:
 }

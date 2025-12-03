@@ -1,33 +1,33 @@
 @interface UIPrintStandardOptionsSection
 - (BOOL)updatePrintOptionsList;
-- (UIPrintStandardOptionsSection)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintStandardOptionsSection)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setShowContactingPrinter:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setShowContactingPrinter:(BOOL)printer;
 @end
 
 @implementation UIPrintStandardOptionsSection
 
-- (UIPrintStandardOptionsSection)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintStandardOptionsSection)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = UIPrintStandardOptionsSection;
-  v8 = [(UIPrintOptionSection *)&v14 initWithPrintInfo:v6 printPanelViewController:v7];
+  v8 = [(UIPrintOptionSection *)&v14 initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
   v9 = v8;
   if (v8)
   {
     [(UIPrintOptionSection *)v8 setTitle:&stru_2871AE610];
-    v10 = [[UIPrinterSelectionOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v10 = [[UIPrinterSelectionOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintStandardOptionsSection *)v9 setPrinterSelectionOption:v10];
 
-    v11 = [[UIPrintPresetsOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v11 = [[UIPrintPresetsOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintStandardOptionsSection *)v9 setPresetsOption:v11];
 
     [(UIPrintStandardOptionsSection *)v9 updatePrintOptionsList];
-    v12 = [(UIPrintStandardOptionsSection *)v9 presetsOption];
-    [v12 addObserver:v9 forKeyPath:@"shouldShow" options:0 context:0];
+    presetsOption = [(UIPrintStandardOptionsSection *)v9 presetsOption];
+    [presetsOption addObserver:v9 forKeyPath:@"shouldShow" options:0 context:0];
   }
 
   return v9;
@@ -35,15 +35,15 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintStandardOptionsSection *)self presetsOption];
-  [v3 removeObserver:self forKeyPath:@"shouldShow"];
+  presetsOption = [(UIPrintStandardOptionsSection *)self presetsOption];
+  [presetsOption removeObserver:self forKeyPath:@"shouldShow"];
 
   v4.receiver = self;
   v4.super_class = UIPrintStandardOptionsSection;
   [(UIPrintOptionSection *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -56,20 +56,20 @@
 - (BOOL)updatePrintOptionsList
 {
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-  v4 = [(UIPrintStandardOptionsSection *)self printerSelectionOption];
-  [v3 addObject:v4];
+  printerSelectionOption = [(UIPrintStandardOptionsSection *)self printerSelectionOption];
+  [v3 addObject:printerSelectionOption];
 
-  v5 = [(UIPrintStandardOptionsSection *)self presetsOption];
-  v6 = [v5 shouldShow];
+  presetsOption = [(UIPrintStandardOptionsSection *)self presetsOption];
+  shouldShow = [presetsOption shouldShow];
 
-  if (v6)
+  if (shouldShow)
   {
-    v7 = [(UIPrintStandardOptionsSection *)self presetsOption];
-    [v3 addObject:v7];
+    presetsOption2 = [(UIPrintStandardOptionsSection *)self presetsOption];
+    [v3 addObject:presetsOption2];
   }
 
-  v8 = [(UIPrintOptionSection *)self printOptions];
-  v9 = [v8 isEqualToArray:v3];
+  printOptions = [(UIPrintOptionSection *)self printOptions];
+  v9 = [printOptions isEqualToArray:v3];
 
   if ((v9 & 1) == 0)
   {
@@ -79,11 +79,11 @@
   return v9 ^ 1;
 }
 
-- (void)setShowContactingPrinter:(BOOL)a3
+- (void)setShowContactingPrinter:(BOOL)printer
 {
-  v3 = a3;
-  v4 = [(UIPrintStandardOptionsSection *)self printerSelectionOption];
-  [v4 setShowContactingPrinter:v3];
+  printerCopy = printer;
+  printerSelectionOption = [(UIPrintStandardOptionsSection *)self printerSelectionOption];
+  [printerSelectionOption setShowContactingPrinter:printerCopy];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface CRLiOSImageHUDSlider
 - (BOOL)accessibilityPerformEscape;
-- (CRLiOSImageHUDSlider)initWithCoder:(id)a3;
-- (CRLiOSImageHUDSlider)initWithFrame:(CGRect)a3;
+- (CRLiOSImageHUDSlider)initWithCoder:(id)coder;
+- (CRLiOSImageHUDSlider)initWithFrame:(CGRect)frame;
 - (CRLiOSImageHUDViewController)parentHUDViewController;
-- (double)p_positionForValue:(double)a3;
+- (double)p_positionForValue:(double)value;
 - (float)value;
 - (id)accessibilityLabel;
 @end
 
 @implementation CRLiOSImageHUDSlider
 
-- (CRLiOSImageHUDSlider)initWithFrame:(CGRect)a3
+- (CRLiOSImageHUDSlider)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CRLiOSImageHUDSlider;
-  v3 = [(CRLiOSImageHUDSlider *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRLiOSImageHUDSlider *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -25,11 +25,11 @@
   return v4;
 }
 
-- (CRLiOSImageHUDSlider)initWithCoder:(id)a3
+- (CRLiOSImageHUDSlider)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CRLiOSImageHUDSlider;
-  v3 = [(CRLiOSImageHUDSlider *)&v7 initWithCoder:a3];
+  v3 = [(CRLiOSImageHUDSlider *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -60,8 +60,8 @@
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v11 = [(CRLiOSImageHUDSlider *)self detents];
-      v12 = [v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      detents = [(CRLiOSImageHUDSlider *)self detents];
+      v12 = [detents countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v12)
       {
         v13 = v12;
@@ -72,7 +72,7 @@
           {
             if (*v24 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(detents);
             }
 
             [*(*(&v23 + 1) + 8 * i) floatValue];
@@ -87,7 +87,7 @@
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
+          v13 = [detents countByEnumeratingWithState:&v23 objects:v28 count:16];
           if (v13)
           {
             continue;
@@ -104,15 +104,15 @@ LABEL_20:
   return v4;
 }
 
-- (double)p_positionForValue:(double)a3
+- (double)p_positionForValue:(double)value
 {
   [(CRLiOSImageHUDSlider *)self minimumValue];
   v6 = v5;
   [(CRLiOSImageHUDSlider *)self maximumValue];
-  *&a3 = (a3 - v6) / (v7 - v6);
+  *&value = (value - v6) / (v7 - v6);
   [(CRLiOSImageHUDSlider *)self bounds];
   [(CRLiOSImageHUDSlider *)self trackRectForBounds:?];
-  return v8 + *&a3 * v9;
+  return v8 + *&value * v9;
 }
 
 - (id)accessibilityLabel
@@ -125,10 +125,10 @@ LABEL_20:
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = [(CRLiOSImageHUDSlider *)self parentHUDViewController];
-  v3 = [v2 accessibilityPerformEscape];
+  parentHUDViewController = [(CRLiOSImageHUDSlider *)self parentHUDViewController];
+  accessibilityPerformEscape = [parentHUDViewController accessibilityPerformEscape];
 
-  return v3;
+  return accessibilityPerformEscape;
 }
 
 - (CRLiOSImageHUDViewController)parentHUDViewController

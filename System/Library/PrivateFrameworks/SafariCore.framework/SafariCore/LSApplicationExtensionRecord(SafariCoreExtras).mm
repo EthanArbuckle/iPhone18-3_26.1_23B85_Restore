@@ -10,8 +10,8 @@
   v7 = [v6 rangeOfString:@"."];
   v9 = [v6 substringFromIndex:v7 + v8];
   v10 = [objc_alloc(objc_opt_class()) initWithBundleIdentifier:v9 error:a4];
-  v11 = [v10 applicationIdentifier];
-  v12 = [v11 isEqualToString:v6];
+  applicationIdentifier = [v10 applicationIdentifier];
+  v12 = [applicationIdentifier isEqualToString:v6];
 
   if (v12)
   {

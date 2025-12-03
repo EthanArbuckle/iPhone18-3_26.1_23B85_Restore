@@ -1,13 +1,13 @@
 @interface RAPSearchHistoryItemTableViewCell
-- (void)setHistoryItem:(id)a3;
+- (void)setHistoryItem:(id)item;
 @end
 
 @implementation RAPSearchHistoryItemTableViewCell
 
-- (void)setHistoryItem:(id)a3
+- (void)setHistoryItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 historyItem];
+  itemCopy = item;
+  historyItem = [itemCopy historyItem];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -20,25 +20,25 @@
   v24 = sub_101019D6C;
   v25 = sub_101019D7C;
   v26 = 0;
-  v6 = [v4 searchText];
+  searchText = [itemCopy searchText];
   v7 = v28[5];
-  v28[5] = v6;
+  v28[5] = searchText;
 
-  v8 = [v5 historyEntry];
+  historyEntry = [historyItem historyEntry];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_101019D84;
   v17[3] = &unk_101661C40;
   v19 = &v27;
   v20 = &v21;
-  v9 = v4;
+  v9 = itemCopy;
   v18 = v9;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_101019EB4;
   v16[3] = &unk_101661C68;
   v16[4] = &v27;
-  [v8 ifSearch:v17 ifRoute:0 ifPlaceDisplay:v16 ifTransitLineItem:0];
+  [historyEntry ifSearch:v17 ifRoute:0 ifPlaceDisplay:v16 ifTransitLineItem:0];
 
   if (!v22[5])
   {

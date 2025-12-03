@@ -1,8 +1,8 @@
 @interface REMAccountTypeHost
 - (BOOL)isCloudBased;
 - (BOOL)isCloudKit;
-- (BOOL)isEqual:(id)a3;
-- (REMAccountTypeHost)initWithType:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMAccountTypeHost)initWithType:(int64_t)type;
 - (id)description;
 - (id)internalDescription;
 @end
@@ -19,14 +19,14 @@
   return [(REMAccountTypeHost *)self isNonPrimaryCloudKit];
 }
 
-- (REMAccountTypeHost)initWithType:(int64_t)a3
+- (REMAccountTypeHost)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = REMAccountTypeHost;
   result = [(REMAccountTypeHost *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -34,29 +34,29 @@
 
 - (BOOL)isCloudBased
 {
-  v2 = [(REMAccountTypeHost *)self type];
+  type = [(REMAccountTypeHost *)self type];
 
-  return [REMAccount isCloudBasedAccountType:v2];
+  return [REMAccount isCloudBasedAccountType:type];
 }
 
 - (id)description
 {
-  v2 = [(REMAccountTypeHost *)self type];
+  type = [(REMAccountTypeHost *)self type];
 
-  return NSStringFromREMAccountType(v2);
+  return NSStringFromREMAccountType(type);
 }
 
 - (id)internalDescription
 {
-  v2 = [(REMAccountTypeHost *)self type];
+  type = [(REMAccountTypeHost *)self type];
 
-  return REMInternalDescriptionFromREMAccountType(v2);
+  return REMInternalDescriptionFromREMAccountType(type);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -66,8 +66,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(REMAccountTypeHost *)self type];
-      v6 = v5 == [(REMAccountTypeHost *)v4 type];
+      type = [(REMAccountTypeHost *)self type];
+      v6 = type == [(REMAccountTypeHost *)equalCopy type];
     }
 
     else

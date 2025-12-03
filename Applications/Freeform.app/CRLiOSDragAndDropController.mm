@@ -1,10 +1,10 @@
 @interface CRLiOSDragAndDropController
-- (BOOL)canCreateBoardItemsFromDragInfo:(id)a3;
-- (BOOL)insertBoardItemsForDragInfo:(id)a3 atPoint:(CGPoint)a4 onRep:(id)a5;
+- (BOOL)canCreateBoardItemsFromDragInfo:(id)info;
+- (BOOL)insertBoardItemsForDragInfo:(id)info atPoint:(CGPoint)point onRep:(id)rep;
 - (BOOL)shouldCleanupAfterSuccessfulDragOperation;
 - (void)cleanupEndOfDragOperation;
 - (void)dealloc;
-- (void)p_transitionToItemPromiseState:(unint64_t)a3;
+- (void)p_transitionToItemPromiseState:(unint64_t)state;
 @end
 
 @implementation CRLiOSDragAndDropController
@@ -51,12 +51,12 @@
   [(CRLDragAndDropController *)&v7 dealloc];
 }
 
-- (BOOL)canCreateBoardItemsFromDragInfo:(id)a3
+- (BOOL)canCreateBoardItemsFromDragInfo:(id)info
 {
-  v3 = [a3 itemSource];
-  v4 = [v3 canProduceBoardItems];
+  itemSource = [info itemSource];
+  canProduceBoardItems = [itemSource canProduceBoardItems];
 
-  return v4;
+  return canProduceBoardItems;
 }
 
 - (BOOL)shouldCleanupAfterSuccessfulDragOperation
@@ -73,36 +73,36 @@
   return [(CRLDragAndDropController *)&v5 shouldCleanupAfterSuccessfulDragOperation];
 }
 
-- (BOOL)insertBoardItemsForDragInfo:(id)a3 atPoint:(CGPoint)a4 onRep:(id)a5
+- (BOOL)insertBoardItemsForDragInfo:(id)info atPoint:(CGPoint)point onRep:(id)rep
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  v10 = [a3 itemSource];
-  v11 = [(CRLDragAndDropController *)self interactiveCanvasController];
-  v12 = [v11 editingCoordinator];
-  v13 = [v12 followCoordinator];
-  [v13 endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:1];
+  y = point.y;
+  x = point.x;
+  repCopy = rep;
+  itemSource = [info itemSource];
+  interactiveCanvasController = [(CRLDragAndDropController *)self interactiveCanvasController];
+  editingCoordinator = [interactiveCanvasController editingCoordinator];
+  followCoordinator = [editingCoordinator followCoordinator];
+  [followCoordinator endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:1];
 
-  v14 = [(CRLDragAndDropController *)self interactiveCanvasController];
-  v15 = [v14 layerHost];
-  v16 = [v15 asiOSCVC];
+  interactiveCanvasController2 = [(CRLDragAndDropController *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController2 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v17 = [v16 delegate];
-  v18 = [v17 currentDocumentMode];
+  delegate = [asiOSCVC delegate];
+  currentDocumentMode = [delegate currentDocumentMode];
 
-  if ([v18 wantsToEndForDragAndDropInteractions])
+  if ([currentDocumentMode wantsToEndForDragAndDropInteractions])
   {
-    v19 = [v18 boardViewController];
-    v20 = [v19 documentModeController];
-    [v20 resetToDefaultModeAnimated:1];
+    boardViewController = [currentDocumentMode boardViewController];
+    documentModeController = [boardViewController documentModeController];
+    [documentModeController resetToDefaultModeAnimated:1];
   }
 
-  if ([v10 hasNativeBoardItems])
+  if ([itemSource hasNativeBoardItems])
   {
-    v21 = [(CRLDragAndDropController *)self interactiveCanvasController];
-    v22 = [v21 editingCoordinator];
-    v23 = [v22 boardItemFactory];
+    interactiveCanvasController3 = [(CRLDragAndDropController *)self interactiveCanvasController];
+    editingCoordinator2 = [interactiveCanvasController3 editingCoordinator];
+    boardItemFactory = [editingCoordinator2 boardItemFactory];
     v57[0] = _NSConcreteStackBlock;
     v57[1] = 3221225472;
     v57[2] = sub_100115924;
@@ -110,8 +110,8 @@
     v57[4] = self;
     v59 = x;
     v60 = y;
-    v58 = v9;
-    v24 = [v10 loadProvidersForNativeBoardItemsWithBoardItemFactory:v23 loadHandler:v57];
+    v58 = repCopy;
+    v24 = [itemSource loadProvidersForNativeBoardItemsWithBoardItemFactory:boardItemFactory loadHandler:v57];
 
     if (!v24)
     {
@@ -145,20 +145,20 @@
 
   else
   {
-    v47 = v9;
-    v28 = [v10 hasNativeTextStorages];
-    v29 = [(CRLDragAndDropController *)self interactiveCanvasController];
-    v30 = [v29 editingCoordinator];
-    v31 = [v30 boardItemFactory];
-    if (v28)
+    v47 = repCopy;
+    hasNativeTextStorages = [itemSource hasNativeTextStorages];
+    interactiveCanvasController4 = [(CRLDragAndDropController *)self interactiveCanvasController];
+    editingCoordinator3 = [interactiveCanvasController4 editingCoordinator];
+    boardItemFactory2 = [editingCoordinator3 boardItemFactory];
+    if (hasNativeTextStorages)
     {
 
-      v32 = [(CRLDragAndDropController *)self interactiveCanvasController];
-      v33 = [v32 canvasEditor];
-      v34 = [v33 pasteboardController];
+      interactiveCanvasController5 = [(CRLDragAndDropController *)self interactiveCanvasController];
+      canvasEditor = [interactiveCanvasController5 canvasEditor];
+      pasteboardController = [canvasEditor pasteboardController];
 
-      v35 = [v34 delegate];
-      v36 = [v35 sourceContextForPasteboardController:v34];
+      delegate2 = [pasteboardController delegate];
+      v36 = [delegate2 sourceContextForPasteboardController:pasteboardController];
 
       v53[0] = _NSConcreteStackBlock;
       v53[1] = 3221225472;
@@ -166,10 +166,10 @@
       v53[3] = &unk_10183D988;
       v55 = x;
       v56 = y;
-      v53[4] = v31;
+      v53[4] = boardItemFactory2;
       v53[5] = self;
       v54 = v47;
-      v37 = [v10 loadTextStorageUsingBoardItemFactory:v31 forTargetContext:v36 targetStorage:0 loadHandler:v53];
+      v37 = [itemSource loadTextStorageUsingBoardItemFactory:boardItemFactory2 forTargetContext:v36 targetStorage:0 loadHandler:v53];
       if (!v37)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -213,7 +213,7 @@
       v51 = x;
       v52 = y;
       v50 = v47;
-      v41 = [v10 loadProvidersForImportedBoardItemsUsingBoardItemFactory:v31 WithLoadHandler:v49];
+      v41 = [itemSource loadProvidersForImportedBoardItemsUsingBoardItemFactory:boardItemFactory2 WithLoadHandler:v49];
 
       if (!v41)
       {
@@ -249,10 +249,10 @@
       v48[2] = sub_1001161B4;
       v48[3] = &unk_10183AB38;
       v48[4] = self;
-      [v10 setCancellationHandler:v48];
+      [itemSource setCancellationHandler:v48];
     }
 
-    v9 = v47;
+    repCopy = v47;
   }
 
   [(CRLiOSDragAndDropController *)self p_transitionToItemPromiseState:1];
@@ -298,7 +298,7 @@
   }
 }
 
-- (void)p_transitionToItemPromiseState:(unint64_t)a3
+- (void)p_transitionToItemPromiseState:(unint64_t)state
 {
   if (qword_101AD5B68 != -1)
   {
@@ -312,7 +312,7 @@
     v30 = 134218240;
     v31 = itemPromiseState;
     v32 = 2048;
-    v33 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "transitioning item promise state from %zi to %zi", &v30, 0x16u);
   }
 
@@ -345,11 +345,11 @@
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:190 isFatal:0 description:"Should not transition to a new state after we have completed a drag."];
   }
 
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
-      if (a3 != 4)
+      if (state != 4)
       {
         goto LABEL_64;
       }
@@ -390,7 +390,7 @@
       }
 
       [(CRLiOSWindowIgnoreUserInteractionSafeWrapper *)ignoringUserInteractionWrapper endIgnoringUserInteractionSafely];
-      v13 = self->_ignoringUserInteractionWrapper;
+      interactiveCanvasController = self->_ignoringUserInteractionWrapper;
       self->_ignoringUserInteractionWrapper = 0;
 LABEL_63:
 
@@ -424,10 +424,10 @@ LABEL_63:
       sub_10130DA10(v29);
     }
 
-    v13 = [NSString stringWithUTF8String:"[CRLiOSDragAndDropController p_transitionToItemPromiseState:]"];
+    interactiveCanvasController = [NSString stringWithUTF8String:"[CRLiOSDragAndDropController p_transitionToItemPromiseState:]"];
     v24 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLiOSDragAndDropController.m"];
     v25 = "Should only receive promises from state Waiting.";
-    v26 = v13;
+    v26 = interactiveCanvasController;
     v27 = v24;
     v28 = 205;
 LABEL_62:
@@ -436,7 +436,7 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  if (!a3)
+  if (!state)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -460,16 +460,16 @@ LABEL_62:
       sub_10130DA10(v23);
     }
 
-    v13 = [NSString stringWithUTF8String:"[CRLiOSDragAndDropController p_transitionToItemPromiseState:]"];
+    interactiveCanvasController = [NSString stringWithUTF8String:"[CRLiOSDragAndDropController p_transitionToItemPromiseState:]"];
     v24 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLiOSDragAndDropController.m"];
     v25 = "Should never transition to state None. That's only for starting!";
-    v26 = v13;
+    v26 = interactiveCanvasController;
     v27 = v24;
     v28 = 193;
     goto LABEL_62;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     if (self->_itemPromiseState)
     {
@@ -500,19 +500,19 @@ LABEL_62:
       [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:199 isFatal:0 description:"Should only begin waiting for promises from state None."];
     }
 
-    v13 = [(CRLDragAndDropController *)self interactiveCanvasController];
-    v14 = [v13 layerHost];
-    v15 = [v14 asiOSCVC];
-    v16 = [v15 crl_windowWrapper];
-    v17 = [v16 newWrapperBeginningIgnoringUserInteractionSafely];
+    interactiveCanvasController = [(CRLDragAndDropController *)self interactiveCanvasController];
+    layerHost = [interactiveCanvasController layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
+    crl_windowWrapper = [asiOSCVC crl_windowWrapper];
+    newWrapperBeginningIgnoringUserInteractionSafely = [crl_windowWrapper newWrapperBeginningIgnoringUserInteractionSafely];
     v18 = self->_ignoringUserInteractionWrapper;
-    self->_ignoringUserInteractionWrapper = v17;
+    self->_ignoringUserInteractionWrapper = newWrapperBeginningIgnoringUserInteractionSafely;
 
     goto LABEL_63;
   }
 
 LABEL_64:
-  self->_itemPromiseState = a3;
+  self->_itemPromiseState = state;
 }
 
 @end

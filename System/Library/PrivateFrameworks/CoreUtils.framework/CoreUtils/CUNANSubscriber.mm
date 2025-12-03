@@ -1,44 +1,44 @@
 @interface CUNANSubscriber
 - (CUNANSubscriber)init;
 - (NSArray)discoveredEndpoints;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_activateWithCompletion:(id)a3;
+- (id)descriptionWithLevel:(int)level;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_lostAllEndpoints;
-- (void)_subscriber:(id)a3 lostDiscoveryResultForPublishID:(unsigned __int8)a4 address:(id)a5;
-- (void)_subscriber:(id)a3 receivedDiscoveryResult:(id)a4;
-- (void)activateWithCompletion:(id)a3;
+- (void)_subscriber:(id)_subscriber lostDiscoveryResultForPublishID:(unsigned __int8)d address:(id)address;
+- (void)_subscriber:(id)_subscriber receivedDiscoveryResult:(id)result;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)reportMockEndpointFound:(id)a3;
-- (void)reportMockEndpointLost:(id)a3;
-- (void)sendMessageData:(id)a3 endpoint:(id)a4 completionHandler:(id)a5;
-- (void)subscriber:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)subscriber:(id)a3 lostDiscoveryResultForPublishID:(unsigned __int8)a4 address:(id)a5;
-- (void)subscriber:(id)a3 receivedDiscoveryResult:(id)a4;
-- (void)subscriber:(id)a3 receivedMessage:(id)a4 fromPublishID:(unsigned __int8)a5 address:(id)a6;
-- (void)subscriber:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)subscriberStarted:(id)a3;
+- (void)reportMockEndpointFound:(id)found;
+- (void)reportMockEndpointLost:(id)lost;
+- (void)sendMessageData:(id)data endpoint:(id)endpoint completionHandler:(id)handler;
+- (void)subscriber:(id)subscriber failedToStartWithError:(int64_t)error;
+- (void)subscriber:(id)subscriber lostDiscoveryResultForPublishID:(unsigned __int8)d address:(id)address;
+- (void)subscriber:(id)subscriber receivedDiscoveryResult:(id)result;
+- (void)subscriber:(id)subscriber receivedMessage:(id)message fromPublishID:(unsigned __int8)d address:(id)address;
+- (void)subscriber:(id)subscriber terminatedWithReason:(int64_t)reason;
+- (void)subscriberStarted:(id)started;
 @end
 
 @implementation CUNANSubscriber
 
-- (void)subscriber:(id)a3 receivedMessage:(id)a4 fromPublishID:(unsigned __int8)a5 address:(id)a6
+- (void)subscriber:(id)subscriber receivedMessage:(id)message fromPublishID:(unsigned __int8)d address:(id)address
 {
-  v9 = a4;
-  v10 = a6;
+  messageCopy = message;
+  addressCopy = address;
   dispatchQueue = self->_dispatchQueue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68__CUNANSubscriber_subscriber_receivedMessage_fromPublishID_address___block_invoke;
   v14[3] = &unk_1E73A4090;
   v14[4] = self;
-  v15 = v10;
-  v17 = a5;
-  v16 = v9;
-  v12 = v9;
-  v13 = v10;
+  v15 = addressCopy;
+  dCopy = d;
+  v16 = messageCopy;
+  v12 = messageCopy;
+  v13 = addressCopy;
   dispatch_async(dispatchQueue, v14);
 }
 
@@ -74,24 +74,24 @@ void __68__CUNANSubscriber_subscriber_receivedMessage_fromPublishID_address___bl
   }
 }
 
-- (void)_subscriber:(id)a3 lostDiscoveryResultForPublishID:(unsigned __int8)a4 address:(id)a5
+- (void)_subscriber:(id)_subscriber lostDiscoveryResultForPublishID:(unsigned __int8)d address:(id)address
 {
-  v5 = a4;
+  dCopy = d;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  addressCopy = address;
   v8 = logger_5122();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v7 data];
+    data = [addressCopy data];
     v18 = 138412546;
-    v19 = v17;
+    v19 = data;
     v20 = 1024;
-    v21 = v5;
+    v21 = dCopy;
     _os_log_debug_impl(&dword_191EAF000, v8, OS_LOG_TYPE_DEBUG, "WFA lost result: PA <%@>, PI %u", &v18, 0x12u);
   }
 
-  v9 = [v7 data];
-  v10 = _WiFiAwareCreateEndpointIdentifier(v9);
+  data2 = [addressCopy data];
+  v10 = _WiFiAwareCreateEndpointIdentifier(data2);
 
   if (v10)
   {
@@ -143,21 +143,21 @@ void __68__CUNANSubscriber_subscriber_receivedMessage_fromPublishID_address___bl
   }
 }
 
-- (void)subscriber:(id)a3 lostDiscoveryResultForPublishID:(unsigned __int8)a4 address:(id)a5
+- (void)subscriber:(id)subscriber lostDiscoveryResultForPublishID:(unsigned __int8)d address:(id)address
 {
-  v8 = a3;
-  v9 = a5;
+  subscriberCopy = subscriber;
+  addressCopy = address;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__CUNANSubscriber_subscriber_lostDiscoveryResultForPublishID_address___block_invoke;
   v13[3] = &unk_1E73A4090;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = subscriberCopy;
+  dCopy = d;
+  v15 = addressCopy;
+  v11 = addressCopy;
+  v12 = subscriberCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -172,33 +172,33 @@ void *__70__CUNANSubscriber_subscriber_lostDiscoveryResultForPublishID_address__
   return result;
 }
 
-- (void)_subscriber:(id)a3 receivedDiscoveryResult:(id)a4
+- (void)_subscriber:(id)_subscriber receivedDiscoveryResult:(id)result
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  resultCopy = result;
   v6 = logger_5122();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v32 = [v5 publisherAddress];
-    v33 = [v32 data];
-    v34 = [v5 publishID];
-    v35 = [v5 serviceName];
-    v36 = [v5 serviceSpecificInfo];
+    publisherAddress = [resultCopy publisherAddress];
+    data = [publisherAddress data];
+    publishID = [resultCopy publishID];
+    serviceName = [resultCopy serviceName];
+    serviceSpecificInfo = [resultCopy serviceSpecificInfo];
     *buf = 138413058;
-    v38 = v33;
+    v38 = data;
     v39 = 1024;
-    *v40 = v34;
+    *v40 = publishID;
     *&v40[4] = 2112;
-    *&v40[6] = v35;
+    *&v40[6] = serviceName;
     v41 = 2112;
-    v42 = v36;
+    v42 = serviceSpecificInfo;
     _os_log_debug_impl(&dword_191EAF000, v6, OS_LOG_TYPE_DEBUG, "WFA discovery result: PA <%@>, PI %u, SV '%@', SI <%@>", buf, 0x26u);
   }
 
-  v7 = [v5 publisherAddress];
-  v8 = [v7 data];
-  [v5 publishID];
-  v9 = _WiFiAwareCreateEndpointIdentifier(v8);
+  publisherAddress2 = [resultCopy publisherAddress];
+  data2 = [publisherAddress2 data];
+  [resultCopy publishID];
+  v9 = _WiFiAwareCreateEndpointIdentifier(data2);
 
   if (v9)
   {
@@ -206,7 +206,7 @@ void *__70__CUNANSubscriber_subscriber_lostDiscoveryResultForPublishID_address__
     if (v10)
     {
       v11 = v10;
-      v12 = [(CUNANEndpoint *)v10 updateWithDiscoveryResult:v5];
+      v12 = [(CUNANEndpoint *)v10 updateWithDiscoveryResult:resultCopy];
       changeFlags = self->_changeFlags;
       v14 = (v12 | 4) & changeFlags;
       if (((v12 | 4) & changeFlags) != 0)
@@ -235,7 +235,7 @@ void *__70__CUNANSubscriber_subscriber_lostDiscoveryResultForPublishID_address__
     {
       v11 = objc_alloc_init(CUNANEndpoint);
       [(CUNANEndpoint *)v11 setIdentifier:v9];
-      [(CUNANEndpoint *)v11 updateWithDiscoveryResult:v5];
+      [(CUNANEndpoint *)v11 updateWithDiscoveryResult:resultCopy];
       pthread_mutex_lock(&self->_mutex);
       wfaEndpoints = self->_wfaEndpoints;
       if (!wfaEndpoints)
@@ -277,20 +277,20 @@ void *__70__CUNANSubscriber_subscriber_lostDiscoveryResultForPublishID_address__
   }
 }
 
-- (void)subscriber:(id)a3 receivedDiscoveryResult:(id)a4
+- (void)subscriber:(id)subscriber receivedDiscoveryResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  subscriberCopy = subscriber;
+  resultCopy = result;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__CUNANSubscriber_subscriber_receivedDiscoveryResult___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = subscriberCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = subscriberCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -305,7 +305,7 @@ void *__54__CUNANSubscriber_subscriber_receivedDiscoveryResult___block_invoke(vo
   return result;
 }
 
-- (void)subscriber:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)subscriber:(id)subscriber terminatedWithReason:(int64_t)reason
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -313,7 +313,7 @@ void *__54__CUNANSubscriber_subscriber_receivedDiscoveryResult___block_invoke(vo
   v5[2] = __51__CUNANSubscriber_subscriber_terminatedWithReason___block_invoke;
   v5[3] = &unk_1E73A4340;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = reason;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -398,7 +398,7 @@ LABEL_20:
   }
 }
 
-- (void)subscriber:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)subscriber:(id)subscriber failedToStartWithError:(int64_t)error
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -406,7 +406,7 @@ LABEL_20:
   v5[2] = __53__CUNANSubscriber_subscriber_failedToStartWithError___block_invoke;
   v5[3] = &unk_1E73A4340;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = error;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -454,7 +454,7 @@ void __53__CUNANSubscriber_subscriber_failedToStartWithError___block_invoke(uint
   }
 }
 
-- (void)subscriberStarted:(id)a3
+- (void)subscriberStarted:(id)started
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -504,23 +504,23 @@ void __37__CUNANSubscriber_subscriberStarted___block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendMessageData:(id)a3 endpoint:(id)a4 completionHandler:(id)a5
+- (void)sendMessageData:(id)data endpoint:(id)endpoint completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __62__CUNANSubscriber_sendMessageData_endpoint_completionHandler___block_invoke;
   v15[3] = &unk_1E73A4108;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = endpointCopy;
+  v17 = dataCopy;
+  v18 = handlerCopy;
+  v12 = dataCopy;
+  v13 = endpointCopy;
+  v14 = handlerCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -684,17 +684,17 @@ void __62__CUNANSubscriber_sendMessageData_endpoint_completionHandler___block_in
   }
 }
 
-- (void)reportMockEndpointLost:(id)a3
+- (void)reportMockEndpointLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__CUNANSubscriber_reportMockEndpointLost___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lostCopy;
+  v6 = lostCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -723,17 +723,17 @@ uint64_t __42__CUNANSubscriber_reportMockEndpointLost___block_invoke(uint64_t re
   return result;
 }
 
-- (void)reportMockEndpointFound:(id)a3
+- (void)reportMockEndpointFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CUNANSubscriber_reportMockEndpointFound___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = foundCopy;
+  v6 = foundCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -888,10 +888,10 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = logger_5122();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -911,7 +911,7 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
     if (v22)
     {
       v23 = v22;
-      v24 = self;
+      selfCopy = self;
       os_unfair_lock_lock(&gCUNANMockLock);
       v25 = [gCUNANMockSubscribers objectForKeyedSubscript:v23];
       if (!v25)
@@ -930,7 +930,7 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
         [v26 setObject:v25 forKeyedSubscript:v23];
       }
 
-      [v25 addObject:v24];
+      [v25 addObject:selfCopy];
       v70 = 0u;
       v71 = 0u;
       v68 = 0u;
@@ -950,10 +950,10 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
               objc_enumerationMutation(v29);
             }
 
-            v34 = [*(*(&v68 + 1) + 8 * i) mockEndpoint];
-            if (v34)
+            mockEndpoint = [*(*(&v68 + 1) + 8 * i) mockEndpoint];
+            if (mockEndpoint)
             {
-              [(CUNANSubscriber *)v24 reportMockEndpointFound:v34];
+              [(CUNANSubscriber *)selfCopy reportMockEndpointFound:mockEndpoint];
             }
           }
 
@@ -964,9 +964,9 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
       }
 
       os_unfair_lock_unlock(&gCUNANMockLock);
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -992,7 +992,7 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
       if (v53)
       {
         [(WiFiAwareSubscriber *)v53 setDelegate:self];
-        v54 = _Block_copy(v4);
+        v54 = _Block_copy(completionCopy);
         activateCompletion = self->_activateCompletion;
         self->_activateCompletion = v54;
 
@@ -1011,9 +1011,9 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
           _os_log_error_impl(&dword_191EAF000, v57, OS_LOG_TYPE_ERROR, "### Activate failed: %@", buf, 0xCu);
         }
 
-        if (v4)
+        if (completionCopy)
         {
-          (v4)[2](v4, v56);
+          (completionCopy)[2](completionCopy, v56);
         }
       }
 
@@ -1033,24 +1033,24 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
       _os_log_error_impl(&dword_191EAF000, v35, OS_LOG_TYPE_ERROR, "### Activate failed: %@", buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (v4)[2](v4, v23);
+      (completionCopy)[2](completionCopy, v23);
     }
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__CUNANSubscriber_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1060,20 +1060,20 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
   wfaEndpoints = self->_wfaEndpoints;
   if (wfaEndpoints)
   {
-    v4 = [(NSMutableDictionary *)wfaEndpoints allValues];
+    allValues = [(NSMutableDictionary *)wfaEndpoints allValues];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
   pthread_mutex_unlock(&self->_mutex);
 
-  return v4;
+  return allValues;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v43 = 0;
   v44 = &v43;
@@ -1082,7 +1082,7 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
   v47 = __Block_byref_object_dispose__5239;
   v48 = 0;
   obj = 0;
-  NSAppendPrintF(&obj, "CUNANSubscriber %@", *&a3, v3, v4, v5, v6, v7, self->_serviceType);
+  NSAppendPrintF(&obj, "CUNANSubscriber %@", *&level, v3, v4, v5, v6, v7, self->_serviceType);
   objc_storeStrong(&v48, obj);
   changeFlags = self->_changeFlags;
   if (changeFlags)
@@ -1098,7 +1098,7 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
   v19 = [(NSMutableDictionary *)self->_wfaEndpoints count];
   NSAppendPrintF(&v40, ", %d endpoints(s)", v20, v21, v22, v23, v24, v25, v19);
   objc_storeStrong(v18 + 5, v40);
-  if (a3 <= 20)
+  if (level <= 20)
   {
     v32 = v44;
     v39 = v44[5];
@@ -1109,7 +1109,7 @@ void __36__CUNANSubscriber__lostAllEndpoints__block_invoke(uint64_t a1, uint64_t
     v37[1] = 3221225472;
     v37[2] = __40__CUNANSubscriber_descriptionWithLevel___block_invoke;
     v37[3] = &unk_1E73A3760;
-    v38 = a3;
+    levelCopy = level;
     v37[4] = &v43;
     [(NSMutableDictionary *)wfaEndpoints enumerateKeysAndObjectsUsingBlock:v37];
   }

@@ -1,43 +1,43 @@
 @interface CSDABCReporter
-- (CSDABCReporter)initWithQueue:(id)a3;
-- (CSDABCReporter)initWithQueue:(id)a3 block:(id)a4;
-- (id)stringForIDSSessionEndedReason:(unsigned int)a3;
-- (id)stringForIMAVChatEndedReason:(unsigned int)a3;
-- (id)stringForSignatureType:(unint64_t)a3;
-- (id)stringRepresentationForTUCallDisconnectedReason:(int)a3;
-- (void)reportingController:(id)a3 forCallUUID:(id)a4 report:(id)a5;
-- (void)reportingController:(id)a3 statusChangedForCall:(id)a4 totalCallCount:(unint64_t)a5;
+- (CSDABCReporter)initWithQueue:(id)queue;
+- (CSDABCReporter)initWithQueue:(id)queue block:(id)block;
+- (id)stringForIDSSessionEndedReason:(unsigned int)reason;
+- (id)stringForIMAVChatEndedReason:(unsigned int)reason;
+- (id)stringForSignatureType:(unint64_t)type;
+- (id)stringRepresentationForTUCallDisconnectedReason:(int)reason;
+- (void)reportingController:(id)controller forCallUUID:(id)d report:(id)report;
+- (void)reportingController:(id)controller statusChangedForCall:(id)call totalCallCount:(unint64_t)count;
 @end
 
 @implementation CSDABCReporter
 
-- (CSDABCReporter)initWithQueue:(id)a3
+- (CSDABCReporter)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100236810;
   v9[3] = &unk_10061F2D8;
-  v10 = [[SDRDiagnosticReporter alloc] initWithQueue:v4];
+  v10 = [[SDRDiagnosticReporter alloc] initWithQueue:queueCopy];
   v5 = v10;
   v6 = objc_retainBlock(v9);
-  v7 = [(CSDABCReporter *)self initWithQueue:v4 block:v6];
+  v7 = [(CSDABCReporter *)self initWithQueue:queueCopy block:v6];
 
   return v7;
 }
 
-- (CSDABCReporter)initWithQueue:(id)a3 block:(id)a4
+- (CSDABCReporter)initWithQueue:(id)queue block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = CSDABCReporter;
   v9 = [(CSDABCReporter *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = objc_retainBlock(blockCopy);
     block = v10->_block;
     v10->_block = v11;
   }
@@ -45,22 +45,22 @@
   return v10;
 }
 
-- (void)reportingController:(id)a3 forCallUUID:(id)a4 report:(id)a5
+- (void)reportingController:(id)controller forCallUUID:(id)d report:(id)report
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  reportCopy = report;
   v9 = [(CSDABCReporter *)self stringForSignatureType:1];
   v10 = TUCallTUStartCallActionDuration;
-  v11 = [v8 objectForKey:TUCallTUStartCallActionDuration];
+  v11 = [reportCopy objectForKey:TUCallTUStartCallActionDuration];
 
   if (v11)
   {
-    v12 = [v8 objectForKeyedSubscript:v10];
+    v12 = [reportCopy objectForKeyedSubscript:v10];
     v17 = @"CallUUID";
-    v18 = v7;
+    v18 = dCopy;
     v13 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v14 = [(CSDABCReporter *)self block];
-    (v14)[2](v14, v9, @"StartCallAction duration unexpected", v12, v13);
+    block = [(CSDABCReporter *)self block];
+    (block)[2](block, v9, @"StartCallAction duration unexpected", v12, v13);
   }
 
   else
@@ -69,87 +69,87 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v8;
+      v16 = reportCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Unknown report: %@", &v15, 0xCu);
     }
   }
 }
 
-- (void)reportingController:(id)a3 statusChangedForCall:(id)a4 totalCallCount:(unint64_t)a5
+- (void)reportingController:(id)controller statusChangedForCall:(id)call totalCallCount:(unint64_t)count
 {
-  v6 = a4;
-  v7 = -[CSDABCReporter stringRepresentationForTUCallDisconnectedReason:](self, "stringRepresentationForTUCallDisconnectedReason:", [v6 disconnectedReason]);
-  v9 = [v6 status] == 6 && v7 != 0;
-  v10 = [v6 provider];
-  v11 = [v10 identifier];
+  callCopy = call;
+  v7 = -[CSDABCReporter stringRepresentationForTUCallDisconnectedReason:](self, "stringRepresentationForTUCallDisconnectedReason:", [callCopy disconnectedReason]);
+  v9 = [callCopy status] == 6 && v7 != 0;
+  provider = [callCopy provider];
+  identifier = [provider identifier];
 
-  if (!v11 && v9)
+  if (!identifier && v9)
   {
     v12 = [(CSDABCReporter *)self stringForSignatureType:0];
     v33 = @"CallUUID";
-    v13 = [v6 uniqueProxyIdentifier];
-    v34 = v13;
+    uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+    v34 = uniqueProxyIdentifier;
     v14 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
 
-    v15 = [(CSDABCReporter *)self block];
-    (v15)[2](v15, v12, @"nilCallProvider", 0, v14);
+    block = [(CSDABCReporter *)self block];
+    (block)[2](block, v12, @"nilCallProvider", 0, v14);
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  v16 = [v6 provider];
-  v17 = [v16 isFaceTimeProvider] & v9;
+  provider2 = [callCopy provider];
+  v17 = [provider2 isFaceTimeProvider] & v9;
 
   if (v17 == 1)
   {
     v12 = [(CSDABCReporter *)self stringForSignatureType:0];
-    v18 = [v6 providerErrorCode];
-    v19 = [v6 providerContext];
+    providerErrorCode = [callCopy providerErrorCode];
+    providerContext = [callCopy providerContext];
     v20 = TUCallFaceTimeTransportTypeKey;
-    v21 = [v19 objectForKeyedSubscript:TUCallFaceTimeTransportTypeKey];
+    v21 = [providerContext objectForKeyedSubscript:TUCallFaceTimeTransportTypeKey];
     if (v21)
     {
       v22 = v21;
-      v23 = [v6 providerContext];
-      v24 = [v23 objectForKeyedSubscript:v20];
-      v25 = [v24 integerValue];
+      providerContext2 = [callCopy providerContext];
+      v24 = [providerContext2 objectForKeyedSubscript:v20];
+      integerValue = [v24 integerValue];
 
-      if (v25)
+      if (integerValue)
       {
-        if (v25 == 1)
+        if (integerValue == 1)
         {
-          v26 = [(CSDABCReporter *)self stringForIMAVChatEndedReason:v18];
+          v26 = [(CSDABCReporter *)self stringForIMAVChatEndedReason:providerErrorCode];
         }
 
         else
         {
-          if (v25 != 2)
+          if (integerValue != 2)
           {
             v14 = 0;
 LABEL_20:
-            if ([v6 isConversation])
+            if ([callCopy isConversation])
             {
-              if ([v6 disconnectedReason] != 49)
+              if ([callCopy disconnectedReason] != 49)
               {
-                if ([v6 disconnectedReason] != 14 && objc_msgSend(v6, "disconnectedReason") != 17)
+                if ([callCopy disconnectedReason] != 14 && objc_msgSend(callCopy, "disconnectedReason") != 17)
                 {
                   goto LABEL_23;
                 }
 
-                v29 = [v6 providerEndedReason];
-                if (v29 <= 505)
+                providerEndedReason = [callCopy providerEndedReason];
+                if (providerEndedReason <= 505)
                 {
-                  if (v29 > 499)
+                  if (providerEndedReason > 499)
                   {
-                    if (v29 == 500)
+                    if (providerEndedReason == 500)
                     {
 
                       v14 = @"AVC blob recovery timeout";
                       goto LABEL_23;
                     }
 
-                    if (v29 == 505)
+                    if (providerEndedReason == 505)
                     {
 
                       v14 = @"No AVC error reason given";
@@ -159,11 +159,11 @@ LABEL_20:
 
                   else
                   {
-                    if (!v29)
+                    if (!providerEndedReason)
                     {
-                      v30 = [v6 disconnectedReason];
+                      disconnectedReason = [callCopy disconnectedReason];
 
-                      if (v30 == 17)
+                      if (disconnectedReason == 17)
                       {
                         v14 = @"Unknown Dial Failure for Conversation";
                       }
@@ -176,7 +176,7 @@ LABEL_20:
                       goto LABEL_23;
                     }
 
-                    if (v29 == 5)
+                    if (providerEndedReason == 5)
                     {
 
                       v14 = @"Mediaserverd crash";
@@ -187,9 +187,9 @@ LABEL_20:
 
                 else
                 {
-                  if (v29 <= 507)
+                  if (providerEndedReason <= 507)
                   {
-                    if (v29 == 506)
+                    if (providerEndedReason == 506)
                     {
 
                       v14 = @"AVC session did not start";
@@ -204,7 +204,7 @@ LABEL_20:
                     goto LABEL_23;
                   }
 
-                  switch(v29)
+                  switch(providerEndedReason)
                   {
                     case 508:
 
@@ -221,7 +221,7 @@ LABEL_20:
                   }
                 }
 
-                if ((v29 - 3202800) < 0x64)
+                if ((providerEndedReason - 3202800) < 0x64)
                 {
 
                   v14 = @"Bad API usage";
@@ -235,17 +235,17 @@ LABEL_20:
 
 LABEL_23:
             v31 = @"CallUUID";
-            v27 = [v6 uniqueProxyIdentifier];
-            v32 = v27;
-            v15 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+            uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+            v32 = uniqueProxyIdentifier2;
+            block = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
 
-            v28 = [(CSDABCReporter *)self block];
-            (v28)[2](v28, v12, v14, 0, v15);
+            block2 = [(CSDABCReporter *)self block];
+            (block2)[2](block2, v12, v14, 0, block);
 
             goto LABEL_24;
           }
 
-          v26 = [(CSDABCReporter *)self stringForIDSSessionEndedReason:v18];
+          v26 = [(CSDABCReporter *)self stringForIDSSessionEndedReason:providerErrorCode];
         }
 
 LABEL_19:
@@ -265,48 +265,48 @@ LABEL_19:
 LABEL_25:
 }
 
-- (id)stringRepresentationForTUCallDisconnectedReason:(int)a3
+- (id)stringRepresentationForTUCallDisconnectedReason:(int)reason
 {
-  if ((a3 - 8) > 0x10)
+  if ((reason - 8) > 0x10)
   {
     return 0;
   }
 
   else
   {
-    return off_10061F2F8[a3 - 8];
+    return off_10061F2F8[reason - 8];
   }
 }
 
-- (id)stringForIDSSessionEndedReason:(unsigned int)a3
+- (id)stringForIDSSessionEndedReason:(unsigned int)reason
 {
-  if (a3 > 0x31)
+  if (reason > 0x31)
   {
     return &stru_100631E68;
   }
 
   else
   {
-    return off_10061F380[a3];
+    return off_10061F380[reason];
   }
 }
 
-- (id)stringForIMAVChatEndedReason:(unsigned int)a3
+- (id)stringForIMAVChatEndedReason:(unsigned int)reason
 {
-  if (a3 > 0x1F)
+  if (reason > 0x1F)
   {
     return &stru_100631E68;
   }
 
   else
   {
-    return off_10061F510[a3];
+    return off_10061F510[reason];
   }
 }
 
-- (id)stringForSignatureType:(unint64_t)a3
+- (id)stringForSignatureType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     return @"Call Info";
   }

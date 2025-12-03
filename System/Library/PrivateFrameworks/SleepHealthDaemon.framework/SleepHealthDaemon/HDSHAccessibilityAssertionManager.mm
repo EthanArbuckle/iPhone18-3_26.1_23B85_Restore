@@ -1,30 +1,30 @@
 @interface HDSHAccessibilityAssertionManager
 - (BOOL)shouldBeObservingContentProtectionState;
 - (HDAssertion)accessibilityAssertion;
-- (HDSHAccessibilityAssertionManager)initWithProfile:(id)a3;
+- (HDSHAccessibilityAssertionManager)initWithProfile:(id)profile;
 - (void)_queue_takeAccessibilityAssertion;
 - (void)_restoreContentProtectionObservingState;
 - (void)beginObservingContentProtectionState;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
 - (void)dealloc;
 - (void)invalidateAccessibilityAssertion;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)setShouldBeObservingContentProtectionState:(BOOL)a3;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)setShouldBeObservingContentProtectionState:(BOOL)state;
 - (void)stopObservingContentProtectionState;
 @end
 
 @implementation HDSHAccessibilityAssertionManager
 
-- (HDSHAccessibilityAssertionManager)initWithProfile:(id)a3
+- (HDSHAccessibilityAssertionManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = HDSHAccessibilityAssertionManager;
   v5 = [(HDSHAccessibilityAssertionManager *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -36,7 +36,7 @@
   return v6;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v9 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -104,28 +104,28 @@ LABEL_7:
   return v10;
 }
 
-- (void)setShouldBeObservingContentProtectionState:(BOOL)a3
+- (void)setShouldBeObservingContentProtectionState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v21 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277D10718]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v7 = [v5 initWithCategory:0 domainName:@"SleepTracking" profile:WeakRetained];
 
-  if (v3)
+  if (stateCopy)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
   else
   {
-    v8 = 0;
+    date = 0;
   }
 
   v16 = 0;
-  v9 = [v7 setDate:v8 forKey:@"SleepTrackingSessionStartDate" error:&v16];
+  v9 = [v7 setDate:date forKey:@"SleepTrackingSessionStartDate" error:&v16];
   v10 = v16;
-  if (v3)
+  if (stateCopy)
   {
   }
 
@@ -166,9 +166,9 @@ LABEL_7:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v7 = [WeakRetained daemon];
-    v8 = [v7 contentProtectionManager];
-    [v8 addContentProtectionObserver:self withQueue:self->_queue];
+    daemon = [WeakRetained daemon];
+    contentProtectionManager = [daemon contentProtectionManager];
+    [contentProtectionManager addContentProtectionObserver:self withQueue:self->_queue];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -190,9 +190,9 @@ LABEL_7:
 
   [(HDSHAccessibilityAssertionManager *)self setShouldBeObservingContentProtectionState:1, *v10];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained daemon];
-  v8 = [v7 contentProtectionManager];
-  [v8 addContentProtectionObserver:self withQueue:self->_queue];
+  daemon = [WeakRetained daemon];
+  contentProtectionManager = [daemon contentProtectionManager];
+  [contentProtectionManager addContentProtectionObserver:self withQueue:self->_queue];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -213,9 +213,9 @@ LABEL_7:
 
   [(HDSHAccessibilityAssertionManager *)self setShouldBeObservingContentProtectionState:0, *v10];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained daemon];
-  v8 = [v7 contentProtectionManager];
-  [v8 removeContentProtectionObserver:self];
+  daemon = [WeakRetained daemon];
+  contentProtectionManager = [daemon contentProtectionManager];
+  [contentProtectionManager removeContentProtectionObserver:self];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -274,11 +274,11 @@ void __69__HDSHAccessibilityAssertionManager_invalidateAccessibilityAssertion__b
   return v3;
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
   v11 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  if (a3 == 3 && [(HDSHAccessibilityAssertionManager *)self shouldBeObservingContentProtectionState])
+  if (changed == 3 && [(HDSHAccessibilityAssertionManager *)self shouldBeObservingContentProtectionState])
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC320];
@@ -318,11 +318,11 @@ void __69__HDSHAccessibilityAssertionManager_invalidateAccessibilityAssertion__b
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v19 = 0;
-  v11 = [v8 takeAccessibilityAssertionWithOwnerIdentifier:v10 timeout:&v19 error:600.0];
+  v11 = [database takeAccessibilityAssertionWithOwnerIdentifier:v10 timeout:&v19 error:600.0];
   v12 = v19;
   accessibilityAssertion = self->_accessibilityAssertion;
   self->_accessibilityAssertion = v11;
@@ -351,9 +351,9 @@ void __69__HDSHAccessibilityAssertionManager_invalidateAccessibilityAssertion__b
 {
   [(HDAssertion *)self->_accessibilityAssertion invalidate];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 contentProtectionManager];
-  [v5 removeContentProtectionObserver:self];
+  daemon = [WeakRetained daemon];
+  contentProtectionManager = [daemon contentProtectionManager];
+  [contentProtectionManager removeContentProtectionObserver:self];
 
   v6.receiver = self;
   v6.super_class = HDSHAccessibilityAssertionManager;

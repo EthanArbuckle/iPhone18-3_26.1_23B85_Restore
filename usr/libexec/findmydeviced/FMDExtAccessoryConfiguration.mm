@@ -1,18 +1,18 @@
 @interface FMDExtAccessoryConfiguration
-- (FMDExtAccessoryConfiguration)initWithCoder:(id)a3;
-- (FMDExtAccessoryConfiguration)initWithConfigurationInfo:(id)a3;
+- (FMDExtAccessoryConfiguration)initWithCoder:(id)coder;
+- (FMDExtAccessoryConfiguration)initWithConfigurationInfo:(id)info;
 - (double)detachNotificaitonsWaitTime;
-- (double)timeoutForFeature:(id)a3;
-- (id)flavorForFeature:(id)a3;
-- (id)infoForFeature:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (double)timeoutForFeature:(id)feature;
+- (id)flavorForFeature:(id)feature;
+- (id)infoForFeature:(id)feature;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDExtAccessoryConfiguration
 
-- (FMDExtAccessoryConfiguration)initWithConfigurationInfo:(id)a3
+- (FMDExtAccessoryConfiguration)initWithConfigurationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v20.receiver = self;
   v20.super_class = FMDExtAccessoryConfiguration;
   v5 = [(FMDExtAccessoryConfiguration *)&v20 init];
@@ -21,7 +21,7 @@
     goto LABEL_7;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"config"];
+  v6 = [infoCopy objectForKeyedSubscript:@"config"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -29,7 +29,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v4;
+      v22 = infoCopy;
       v18 = "Invalid configuration type %@";
 LABEL_12:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, v18, buf, 0xCu);
@@ -59,7 +59,7 @@ LABEL_13:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v4;
+      v22 = infoCopy;
       v18 = "Partial configuration received %@";
       goto LABEL_12;
     }
@@ -79,35 +79,35 @@ LABEL_14:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDExtAccessoryConfiguration *)self accessoryType];
-  [v4 encodeObject:v5 forKey:@"accessoryType"];
+  coderCopy = coder;
+  accessoryType = [(FMDExtAccessoryConfiguration *)self accessoryType];
+  [coderCopy encodeObject:accessoryType forKey:@"accessoryType"];
 
-  v6 = [(FMDExtAccessoryConfiguration *)self version];
-  [v4 encodeObject:v6 forKey:@"version"];
+  version = [(FMDExtAccessoryConfiguration *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 
-  v7 = [(FMDExtAccessoryConfiguration *)self features];
-  [v4 encodeObject:v7 forKey:@"features"];
+  features = [(FMDExtAccessoryConfiguration *)self features];
+  [coderCopy encodeObject:features forKey:@"features"];
 
-  v8 = [(FMDExtAccessoryConfiguration *)self supportedAccessory];
-  [v4 encodeObject:v8 forKey:@"supportedAccessory"];
+  supportedAccessory = [(FMDExtAccessoryConfiguration *)self supportedAccessory];
+  [coderCopy encodeObject:supportedAccessory forKey:@"supportedAccessory"];
 }
 
-- (FMDExtAccessoryConfiguration)initWithCoder:(id)a3
+- (FMDExtAccessoryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = FMDExtAccessoryConfiguration;
   v5 = [(FMDExtAccessoryConfiguration *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryType"];
     accessoryType = v5->_accessoryType;
     v5->_accessoryType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     version = v5->_version;
     v5->_version = v8;
 
@@ -115,11 +115,11 @@ LABEL_14:
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [NSSet setWithObjects:v10, v11, v12, objc_opt_class(), 0];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"features"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"features"];
     features = v5->_features;
     v5->_features = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportedAccessory"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportedAccessory"];
     supportedAccessory = v5->_supportedAccessory;
     v5->_supportedAccessory = v16;
   }
@@ -127,11 +127,11 @@ LABEL_14:
   return v5;
 }
 
-- (id)flavorForFeature:(id)a3
+- (id)flavorForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(FMDExtAccessoryConfiguration *)self features];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  featureCopy = feature;
+  features = [(FMDExtAccessoryConfiguration *)self features];
+  v6 = [features objectForKeyedSubscript:featureCopy];
   if (!v6)
   {
     v12 = 0;
@@ -139,15 +139,15 @@ LABEL_14:
   }
 
   v7 = v6;
-  v8 = [(FMDExtAccessoryConfiguration *)self features];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  features2 = [(FMDExtAccessoryConfiguration *)self features];
+  v9 = [features2 objectForKeyedSubscript:featureCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(FMDExtAccessoryConfiguration *)self features];
-    v11 = [v5 objectForKeyedSubscript:v4];
+    features = [(FMDExtAccessoryConfiguration *)self features];
+    v11 = [features objectForKeyedSubscript:featureCopy];
     v12 = [v11 objectForKeyedSubscript:@"flavor"];
 
 LABEL_5:
@@ -160,11 +160,11 @@ LABEL_7:
   return v12;
 }
 
-- (double)timeoutForFeature:(id)a3
+- (double)timeoutForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(FMDExtAccessoryConfiguration *)self features];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  featureCopy = feature;
+  features = [(FMDExtAccessoryConfiguration *)self features];
+  v6 = [features objectForKeyedSubscript:featureCopy];
 
   v7 = 2.0;
   if (v6)
@@ -184,11 +184,11 @@ LABEL_7:
   return v7;
 }
 
-- (id)infoForFeature:(id)a3
+- (id)infoForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(FMDExtAccessoryConfiguration *)self features];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  featureCopy = feature;
+  features = [(FMDExtAccessoryConfiguration *)self features];
+  v6 = [features objectForKeyedSubscript:featureCopy];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -205,8 +205,8 @@ LABEL_7:
 
 - (double)detachNotificaitonsWaitTime
 {
-  v2 = [(FMDExtAccessoryConfiguration *)self features];
-  v3 = [v2 objectForKeyedSubscript:@"nwd"];
+  features = [(FMDExtAccessoryConfiguration *)self features];
+  v3 = [features objectForKeyedSubscript:@"nwd"];
 
   v4 = 0.0;
   if (v3)

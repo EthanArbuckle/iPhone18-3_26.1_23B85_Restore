@@ -1,38 +1,38 @@
 @interface NSTextListElement
 + (NSTextListElement)textListElementWithChildElements:(NSArray *)children textList:(NSTextList *)textList nestingLevel:(NSInteger)nestingLevel;
 + (NSTextListElement)textListElementWithContents:(NSAttributedString *)contents markerAttributes:(NSDictionary *)markerAttributes textList:(NSTextList *)textList childElements:(NSArray *)children;
-+ (_NSRange)_textListElementContentsRangeForRange:(_NSRange)a3 inAttributedString:(id)a4 hadMarker:(BOOL *)a5;
-+ (id)_createChildElementsFromAttributedString:(id)a3 inRange:(_NSRange)a4 indentLevel:(int64_t)a5 includesTextListMarkers:(BOOL)a6 effectiveRange:(_NSRange *)a7 textListElementInstantiationCallback:(id)a8;
-+ (id)_createElementWithChildElements:(id)a3 textList:(id)a4 nestingLevel:(int64_t)a5;
-+ (id)_createTextListElementFromAttributedString:(id)a3 inRange:(_NSRange)a4 indentLevel:(int64_t)a5 includesTextListMarkers:(BOOL)a6 effectiveRange:(_NSRange *)a7 textListElementInstantiationCallback:(id)a8;
-+ (id)_createUpdatedTextTabsForTextTabs:(id)a3 markerLocation:(double)a4 listLocation:(double)a5;
-+ (id)_formattedAttributedStringForRootTextListElement:(id)a3;
-+ (id)_rootTextListElementFromAttributedString:(id)a3 atIndex:(int64_t)a4 options:(unint64_t)a5 effectiveRange:(_NSRange *)a6 textListElementInstantiationCallback:(id)a7;
-+ (id)_validatedMarkerAttributesForAttributes:(id)a3;
-+ (void)_fillTextListElement:(id)a3 toAttributedString:(id)a4;
++ (_NSRange)_textListElementContentsRangeForRange:(_NSRange)range inAttributedString:(id)string hadMarker:(BOOL *)marker;
++ (id)_createChildElementsFromAttributedString:(id)string inRange:(_NSRange)range indentLevel:(int64_t)level includesTextListMarkers:(BOOL)markers effectiveRange:(_NSRange *)effectiveRange textListElementInstantiationCallback:(id)callback;
++ (id)_createElementWithChildElements:(id)elements textList:(id)list nestingLevel:(int64_t)level;
++ (id)_createTextListElementFromAttributedString:(id)string inRange:(_NSRange)range indentLevel:(int64_t)level includesTextListMarkers:(BOOL)markers effectiveRange:(_NSRange *)effectiveRange textListElementInstantiationCallback:(id)callback;
++ (id)_createUpdatedTextTabsForTextTabs:(id)tabs markerLocation:(double)location listLocation:(double)listLocation;
++ (id)_formattedAttributedStringForRootTextListElement:(id)element;
++ (id)_rootTextListElementFromAttributedString:(id)string atIndex:(int64_t)index options:(unint64_t)options effectiveRange:(_NSRange *)range textListElementInstantiationCallback:(id)callback;
++ (id)_validatedMarkerAttributesForAttributes:(id)attributes;
++ (void)_fillTextListElement:(id)element toAttributedString:(id)string;
 + (void)initialize;
 - (BOOL)_appendsParagraphSeparator;
 - (NSAttributedString)attributedString;
 - (NSTextListElement)initWithParentElement:(NSTextListElement *)parent textList:(NSTextList *)textList contents:(NSAttributedString *)contents markerAttributes:(NSDictionary *)markerAttributes childElements:(NSArray *)children;
-- (NSTextListElement)textListElementWithChildElements:(id)a3;
-- (_NSRange)rangeForLocation:(id)a3 allowsTrailingEdge:(BOOL)a4;
-- (id)_createConfiguredParagraphStyleForParagraphStyle:(id)a3;
-- (id)_markerTextAttributesForTextList:(id)a3 attributes:(id)a4;
-- (id)locationForCharacterIndex:(int64_t)a3 dataSourceLocationsOnly:(BOOL)a4 actualRange:(_NSRange *)a5;
+- (NSTextListElement)textListElementWithChildElements:(id)elements;
+- (_NSRange)rangeForLocation:(id)location allowsTrailingEdge:(BOOL)edge;
+- (id)_createConfiguredParagraphStyleForParagraphStyle:(id)style;
+- (id)_markerTextAttributesForTextList:(id)list attributes:(id)attributes;
+- (id)locationForCharacterIndex:(int64_t)index dataSourceLocationsOnly:(BOOL)only actualRange:(_NSRange *)range;
 - (id)markerAttributedString;
 - (int64_t)_contentsLocationOffset;
 - (int64_t)_indentLevel;
 - (int64_t)indentLevel;
-- (void)_reparentWithTextListElement:(id)a3 itemNumber:(int64_t)a4;
+- (void)_reparentWithTextListElement:(id)element itemNumber:(int64_t)number;
 - (void)dealloc;
-- (void)setParagraphContentRange:(id)a3;
+- (void)setParagraphContentRange:(id)range;
 @end
 
 @implementation NSTextListElement
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(__NSTextListElementEditedRangeValidator);
     [NSTextContentStorage registerEditedRangeValidator:v2];
@@ -99,7 +99,7 @@
 
   v12 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:&stru_1F01AD578 attributes:markerAttributes];
   v13 = [(NSDictionary *)markerAttributes objectForKeyedSubscript:?];
-  v33 = [(NSTextListElement *)self _appendsParagraphSeparator];
+  _appendsParagraphSeparator = [(NSTextListElement *)self _appendsParagraphSeparator];
   if (self->_contentsOnly && (v14 = [(NSTextElement *)self textContentManager], objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v15 = [(NSTextContentManager *)v14 includesTextListMarkers]^ 1;
@@ -146,10 +146,10 @@ LABEL_32:
   [v12 beginEditing];
   if (v15)
   {
-    v32 = [(NSTextList *)self->_textList markerTextAttachment];
-    v20 = [(NSTextListElement *)self _markerString];
-    v31 = [v20 length];
-    v21 = [v12 mutableString];
+    markerTextAttachment = [(NSTextList *)self->_textList markerTextAttachment];
+    _markerString = [(NSTextListElement *)self _markerString];
+    v31 = [_markerString length];
+    mutableString = [v12 mutableString];
     if (v18)
     {
       v22 = @"%@";
@@ -160,7 +160,7 @@ LABEL_32:
       v22 = @"\t%@\t";
     }
 
-    [v21 appendFormat:v22, v20];
+    [mutableString appendFormat:v22, _markerString];
     v23 = !v18;
     if (([(NSTextList *)self->_textList listOptions]& 1) != 0)
     {
@@ -168,21 +168,21 @@ LABEL_32:
       {
         if ([(NSTextListElement *)i isRepresentedElement])
         {
-          v30 = [(NSTextListElement *)i _markerString];
+          _markerString2 = [(NSTextListElement *)i _markerString];
           [objc_msgSend(v12 "mutableString")];
-          v23 += [v30 length];
+          v23 += [_markerString2 length];
         }
       }
     }
 
-    if (v32 && [v20 isEqualToString:@"\uFFFC"])
+    if (markerTextAttachment && [_markerString isEqualToString:@"\uFFFC"])
     {
-      [v12 addAttribute:@"NSAttachment" value:v32 range:{v23, v31}];
+      [v12 addAttribute:@"NSAttachment" value:markerTextAttachment range:{v23, v31}];
     }
   }
 
   self->_contentsLocationOffset = [v12 length];
-  if (v33)
+  if (_appendsParagraphSeparator)
   {
     [objc_msgSend(v12 "mutableString")];
   }
@@ -190,7 +190,7 @@ LABEL_32:
   [v12 addAttributes:markerAttributes range:{0, objc_msgSend(v12, "length")}];
   if ([(NSAttributedString *)self->_contents length])
   {
-    [v12 replaceCharactersInRange:objc_msgSend(v12 withAttributedString:{"length") - v33, 0, self->_contents}];
+    [v12 replaceCharactersInRange:objc_msgSend(v12 withAttributedString:{"length") - _appendsParagraphSeparator, 0, self->_contents}];
   }
 
   else if (!v18)
@@ -232,13 +232,13 @@ LABEL_3:
 
 - (BOOL)_appendsParagraphSeparator
 {
-  v3 = [(NSTextElement *)self textContentManager];
+  textContentManager = [(NSTextElement *)self textContentManager];
   if (![-[NSTextRange endLocation](-[NSTextElement elementRange](self "elementRange")])
   {
     return 1;
   }
 
-  return [(NSTextContentManager *)v3 containsExtraLineFragment];
+  return [(NSTextContentManager *)textContentManager containsExtraLineFragment];
 }
 
 - (int64_t)_indentLevel
@@ -258,21 +258,21 @@ LABEL_3:
   return result;
 }
 
-- (void)_reparentWithTextListElement:(id)a3 itemNumber:(int64_t)a4
+- (void)_reparentWithTextListElement:(id)element itemNumber:(int64_t)number
 {
   objc_sync_enter(self);
-  [(NSTextListElement *)self setParentElement:a3];
+  [(NSTextListElement *)self setParentElement:element];
   self->_indentLevel = -1;
-  self->_itemNumber = a4;
+  self->_itemNumber = number;
   [(NSTextParagraph *)self setAttributedString:0];
 
   objc_sync_exit(self);
 }
 
-+ (id)_createUpdatedTextTabsForTextTabs:(id)a3 markerLocation:(double)a4 listLocation:(double)a5
++ (id)_createUpdatedTextTabsForTextTabs:(id)tabs markerLocation:(double)location listLocation:(double)listLocation
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v8 = [a3 mutableCopy];
+  v8 = [tabs mutableCopy];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3010000000;
@@ -283,13 +283,13 @@ LABEL_3:
   v14[1] = 3221225472;
   v14[2] = __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocation_listLocation___block_invoke;
   v14[3] = &unk_1E7266B78;
-  *&v14[5] = a5;
+  *&v14[5] = listLocation;
   v14[4] = &v15;
-  [a3 enumerateObjectsUsingBlock:v14];
+  [tabs enumerateObjectsUsingBlock:v14];
   v9 = [NSTextTab alloc];
-  v10 = [(NSTextTab *)v9 initWithTextAlignment:4 location:MEMORY[0x1E695E0F8] options:a4];
+  v10 = [(NSTextTab *)v9 initWithTextAlignment:4 location:MEMORY[0x1E695E0F8] options:location];
   v11 = [NSTextTab alloc];
-  v12 = [(NSTextTab *)v11 initWithTextAlignment:4 location:MEMORY[0x1E695E0F8] options:a5];
+  v12 = [(NSTextTab *)v11 initWithTextAlignment:4 location:MEMORY[0x1E695E0F8] options:listLocation];
   v21[0] = v10;
   v21[1] = v12;
   [v8 replaceObjectsInRange:v16[4] withObjectsFromArray:{v16[5], objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v21, 2)}];
@@ -314,11 +314,11 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
   return result;
 }
 
-- (id)_createConfiguredParagraphStyleForParagraphStyle:(id)a3
+- (id)_createConfiguredParagraphStyleForParagraphStyle:(id)style
 {
-  if (a3)
+  if (style)
   {
-    v4 = [a3 mutableCopy];
+    v4 = [style mutableCopy];
   }
 
   else
@@ -328,9 +328,9 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
 
   v5 = v4;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(NSTextListElement *)self _indentLevel];
+  _indentLevel = [(NSTextListElement *)self _indentLevel];
   [(NSTextListElement *)self _indentOffset];
-  v9 = v8 * v7;
+  v9 = v8 * _indentLevel;
   [(NSTextListElement *)self _markerOffset];
   v11 = v9 - v10;
   [(NSMutableParagraphStyle *)v5 setFirstLineHeadIndent:0.0];
@@ -349,7 +349,7 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
   return v5;
 }
 
-+ (id)_validatedMarkerAttributesForAttributes:(id)a3
++ (id)_validatedMarkerAttributesForAttributes:(id)attributes
 {
   v4 = 0;
   v5 = 0;
@@ -361,11 +361,11 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
   do
   {
     v6 = v8[v4];
-    if ([a3 objectForKeyedSubscript:v6])
+    if ([attributes objectForKeyedSubscript:v6])
     {
       if (!v5)
       {
-        v5 = [a3 mutableCopy];
+        v5 = [attributes mutableCopy];
       }
 
       [v5 removeObjectForKey:v6];
@@ -382,30 +382,30 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
 
   else
   {
-    return a3;
+    return attributes;
   }
 }
 
-+ (id)_createElementWithChildElements:(id)a3 textList:(id)a4 nestingLevel:(int64_t)a5
++ (id)_createElementWithChildElements:(id)elements textList:(id)list nestingLevel:(int64_t)level
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v9 = [[a1 alloc] initWithParentElement:0 textList:a4 contents:0 markerAttributes:0 childElements:a3];
+  v9 = [[self alloc] initWithParentElement:0 textList:list contents:0 markerAttributes:0 childElements:elements];
   v10 = v9;
-  if (a5 < 1)
+  if (level < 1)
   {
-    if (a5 < 0)
+    if (level < 0)
     {
       v12 = MEMORY[0x1E695DF30];
       v13 = *MEMORY[0x1E695D940];
       v14 = objc_opt_class();
-      [v12 raise:v13 format:{@"-[%@ %@] receiving negative nesting level %ld", v14, NSStringFromSelector(a2), a5}];
+      [v12 raise:v13 format:{@"-[%@ %@] receiving negative nesting level %ld", v14, NSStringFromSelector(a2), level}];
     }
   }
 
   else
   {
     v16[0] = v9;
-    v11 = [a1 _createElementWithChildElements:objc_msgSend(MEMORY[0x1E695DEC8] textList:"arrayWithObjects:count:" nestingLevel:{v16, 1), a4, a5 - 1}];
+    v11 = [self _createElementWithChildElements:objc_msgSend(MEMORY[0x1E695DEC8] textList:"arrayWithObjects:count:" nestingLevel:{v16, 1), list, level - 1}];
 
     return v11;
   }
@@ -413,43 +413,43 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
   return v10;
 }
 
-+ (void)_fillTextListElement:(id)a3 toAttributedString:(id)a4
++ (void)_fillTextListElement:(id)element toAttributedString:(id)string
 {
-  v7 = [a3 attributedString];
-  if (v7)
+  attributedString = [element attributedString];
+  if (attributedString)
   {
-    [a4 appendAttributedString:v7];
+    [string appendAttributedString:attributedString];
   }
 
-  v8 = [a3 childElements];
+  childElements = [element childElements];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__NSTextListElement__fillTextListElement_toAttributedString___block_invoke;
   v9[3] = &unk_1E7266BA0;
-  v9[4] = a1;
-  v9[5] = a4;
-  [v8 enumerateObjectsUsingBlock:v9];
+  v9[4] = self;
+  v9[5] = string;
+  [childElements enumerateObjectsUsingBlock:v9];
 }
 
-+ (id)_formattedAttributedStringForRootTextListElement:(id)a3
++ (id)_formattedAttributedStringForRootTextListElement:(id)element
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AD40]);
   [v5 beginEditing];
-  [a1 _fillTextListElement:a3 toAttributedString:v5];
+  [self _fillTextListElement:element toAttributedString:v5];
   [v5 endEditing];
 
   return v5;
 }
 
-+ (_NSRange)_textListElementContentsRangeForRange:(_NSRange)a3 inAttributedString:(id)a4 hadMarker:(BOOL *)a5
++ (_NSRange)_textListElementContentsRangeForRange:(_NSRange)range inAttributedString:(id)string hadMarker:(BOOL *)marker
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = [a4 string];
-  theString = v8;
+  length = range.length;
+  location = range.location;
+  string = [string string];
+  theString = string;
   v27 = location;
   v28 = length;
-  CharactersPtr = CFStringGetCharactersPtr(v8);
+  CharactersPtr = CFStringGetCharactersPtr(string);
   v25 = CharactersPtr;
   if (CharactersPtr)
   {
@@ -458,7 +458,7 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(v8, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(string, 0x600u);
   }
 
   v29 = 0;
@@ -484,7 +484,7 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
       v13.length = length >= 0x40 ? 64 : length;
       v30 = v13.length;
       v13.location = location;
-      CFStringGetCharacters(v8, v13, v23);
+      CFStringGetCharacters(string, v13, v23);
       v11 = v29;
       v12 = *(v23 - v29);
     }
@@ -543,7 +543,7 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
           {
             length -= v18;
             location += v18;
-            *a5 = v15 > 1;
+            *marker = v15 > 1;
             break;
           }
         }
@@ -562,17 +562,17 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
   return result;
 }
 
-+ (id)_createTextListElementFromAttributedString:(id)a3 inRange:(_NSRange)a4 indentLevel:(int64_t)a5 includesTextListMarkers:(BOOL)a6 effectiveRange:(_NSRange *)a7 textListElementInstantiationCallback:(id)a8
++ (id)_createTextListElementFromAttributedString:(id)string inRange:(_NSRange)range indentLevel:(int64_t)level includesTextListMarkers:(BOOL)markers effectiveRange:(_NSRange *)effectiveRange textListElementInstantiationCallback:(id)callback
 {
-  v32 = a6;
-  length = a4.length;
-  location = a4.location;
-  v12 = a8;
+  markersCopy = markers;
+  length = range.length;
+  location = range.location;
+  callbackCopy3 = callback;
   v38 = 0;
   v39 = 0;
-  v13 = a5 + 1;
+  v13 = level + 1;
   v37 = 0;
-  [objc_msgSend(a3 "string")];
+  [objc_msgSend(string "string")];
   v43.location = v39;
   v43.length = v37 - v39;
   v41.location = location;
@@ -584,8 +584,8 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
   v42.location = location;
   v42.length = length;
   v33 = NSIntersectionRange(v42, v44);
-  v34 = a3;
-  v15 = [a3 attributesAtIndex:location effectiveRange:0];
+  stringCopy = string;
+  v15 = [string attributesAtIndex:location effectiveRange:0];
   v16 = [objc_msgSend(v15 objectForKeyedSubscript:{@"NSParagraphStyle", "textLists"}];
   v17 = [v16 count];
   if (v17 == v13)
@@ -596,21 +596,21 @@ uint64_t __83__NSTextListElement__createUpdatedTextTabsForTextTabs_markerLocatio
     if (v14.length + v14.location >= location && v14.length + v14.location - location < length)
     {
       v18 = 0;
-      if ([objc_msgSend(objc_msgSend(objc_msgSend(v34 attributesAtIndex:v14.length + v14.location effectiveRange:{0), "objectForKeyedSubscript:", @"NSParagraphStyle", "textLists"), "count"}] > v13)
+      if ([objc_msgSend(objc_msgSend(objc_msgSend(stringCopy attributesAtIndex:v14.length + v14.location effectiveRange:{0), "objectForKeyedSubscript:", @"NSParagraphStyle", "textLists"), "count"}] > v13)
       {
-        v18 = [a1 _createChildElementsFromAttributedString:v34 inRange:v14.length + v14.location indentLevel:location + length - (v14.length + v14.location) includesTextListMarkers:v13 effectiveRange:v32 textListElementInstantiationCallback:{&v36, a8}];
+        v18 = [self _createChildElementsFromAttributedString:stringCopy inRange:v14.length + v14.location indentLevel:location + length - (v14.length + v14.location) includesTextListMarkers:v13 effectiveRange:markersCopy textListElementInstantiationCallback:{&v36, callback}];
       }
     }
 
     v35 = 0;
-    if (v32)
+    if (markersCopy)
     {
-      v19 = [a1 _textListElementContentsRangeForRange:v33 inAttributedString:v34 hadMarker:&v35];
+      v19 = [self _textListElementContentsRangeForRange:v33 inAttributedString:stringCopy hadMarker:&v35];
       v21 = v20;
       if (v20)
       {
 LABEL_8:
-        v22 = [v34 attributedSubstringFromRange:{v19, v21}];
+        v22 = [stringCopy attributedSubstringFromRange:{v19, v21}];
         goto LABEL_15;
       }
     }
@@ -634,15 +634,15 @@ LABEL_15:
       v40 = NSUnionRange(v14, v36);
 
       v27 = v14.location;
-      v24 = a7;
-      v12 = a8;
+      effectiveRangeCopy4 = effectiveRange;
+      callbackCopy3 = callback;
     }
 
     else
     {
       v27 = v33.location;
-      v24 = a7;
-      v12 = a8;
+      effectiveRangeCopy4 = effectiveRange;
+      callbackCopy3 = callback;
       if (v33 != __PAIR128__(v21, v19))
       {
         v28 = v33.length;
@@ -667,59 +667,59 @@ LABEL_15:
     return 0;
   }
 
-  v23 = [a1 _createChildElementsFromAttributedString:v34 inRange:location indentLevel:length includesTextListMarkers:v13 effectiveRange:v32 textListElementInstantiationCallback:{&v40, a8}];
+  v23 = [self _createChildElementsFromAttributedString:stringCopy inRange:location indentLevel:length includesTextListMarkers:v13 effectiveRange:markersCopy textListElementInstantiationCallback:{&v40, callback}];
   if ([v23 count])
   {
-    v24 = a7;
-    if (a5 < 0)
+    effectiveRangeCopy4 = effectiveRange;
+    if (level < 0)
     {
-      v25 = [v16 firstObject];
+      firstObject = [v16 firstObject];
     }
 
     else
     {
-      v25 = [v16 objectAtIndexedSubscript:a5];
+      firstObject = [v16 objectAtIndexedSubscript:level];
     }
 
-    v26 = [a1 _createElementWithChildElements:v23 textList:v25 nestingLevel:0];
+    v26 = [self _createElementWithChildElements:v23 textList:firstObject nestingLevel:0];
   }
 
   else
   {
     v26 = 0;
-    v24 = a7;
+    effectiveRangeCopy4 = effectiveRange;
   }
 
   v27 = v33.location;
 LABEL_27:
   if (v26)
   {
-    if (v12)
+    if (callbackCopy3)
     {
-      v12[2](v12, v26, v34, v40.location, v40.length, v27, v33.length);
+      callbackCopy3[2](callbackCopy3, v26, stringCopy, v40.location, v40.length, v27, v33.length);
     }
 
-    if (v24)
+    if (effectiveRangeCopy4)
     {
-      *v24 = v40;
+      *effectiveRangeCopy4 = v40;
     }
   }
 
   return v26;
 }
 
-+ (id)_createChildElementsFromAttributedString:(id)a3 inRange:(_NSRange)a4 indentLevel:(int64_t)a5 includesTextListMarkers:(BOOL)a6 effectiveRange:(_NSRange *)a7 textListElementInstantiationCallback:(id)a8
++ (id)_createChildElementsFromAttributedString:(id)string inRange:(_NSRange)range indentLevel:(int64_t)level includesTextListMarkers:(BOOL)markers effectiveRange:(_NSRange *)effectiveRange textListElementInstantiationCallback:(id)callback
 {
-  v8 = a6;
-  length = a4.length;
-  location = a4.location;
+  markersCopy = markers;
+  length = range.length;
+  location = range.location;
   v27.location = 0;
   v27.length = 0;
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v14 = a1;
-  v15 = a1;
-  v16 = v8;
-  v17 = [v15 _createTextListElementFromAttributedString:a3 inRange:location indentLevel:length includesTextListMarkers:a5 effectiveRange:v8 textListElementInstantiationCallback:{&v27, a8}];
+  selfCopy = self;
+  selfCopy2 = self;
+  v16 = markersCopy;
+  v17 = [selfCopy2 _createTextListElementFromAttributedString:string inRange:location indentLevel:length includesTextListMarkers:level effectiveRange:markersCopy textListElementInstantiationCallback:{&v27, callback}];
   if (v17)
   {
     v18 = v17;
@@ -749,7 +749,7 @@ LABEL_27:
         break;
       }
 
-      v18 = [v14 _createTextListElementFromAttributedString:a3 inRange:v27.length + v27.location indentLevel:location + length - (v27.length + v27.location) includesTextListMarkers:a5 effectiveRange:v16 textListElementInstantiationCallback:{&v27, a8}];
+      v18 = [selfCopy _createTextListElementFromAttributedString:string inRange:v27.length + v27.location indentLevel:location + length - (v27.length + v27.location) includesTextListMarkers:level effectiveRange:v16 textListElementInstantiationCallback:{&v27, callback}];
     }
 
     while (v18);
@@ -764,10 +764,10 @@ LABEL_27:
   v23 = v26;
   if ([v26 count])
   {
-    if (a7)
+    if (effectiveRange)
     {
-      a7->location = v20;
-      a7->length = v19;
+      effectiveRange->location = v20;
+      effectiveRange->length = v19;
     }
   }
 
@@ -780,21 +780,21 @@ LABEL_27:
   return v23;
 }
 
-+ (id)_rootTextListElementFromAttributedString:(id)a3 atIndex:(int64_t)a4 options:(unint64_t)a5 effectiveRange:(_NSRange *)a6 textListElementInstantiationCallback:(id)a7
++ (id)_rootTextListElementFromAttributedString:(id)string atIndex:(int64_t)index options:(unint64_t)options effectiveRange:(_NSRange *)range textListElementInstantiationCallback:(id)callback
 {
-  v9 = a5;
-  if ([a3 length] <= a4)
+  optionsCopy = options;
+  if ([string length] <= index)
   {
     return 0;
   }
 
-  result = [objc_msgSend(objc_msgSend(objc_msgSend(a3 attributesAtIndex:a4 effectiveRange:{0), "objectForKeyedSubscript:", @"NSParagraphStyle", "textLists"), "firstObject"}];
+  result = [objc_msgSend(objc_msgSend(objc_msgSend(string attributesAtIndex:index effectiveRange:{0), "objectForKeyedSubscript:", @"NSParagraphStyle", "textLists"), "firstObject"}];
   if (!result)
   {
     return result;
   }
 
-  v14 = [a3 rangeOfTextList:result atIndex:a4];
+  v14 = [string rangeOfTextList:result atIndex:index];
   if (!v15)
   {
     return 0;
@@ -806,7 +806,7 @@ LABEL_27:
   v23 = v15;
   do
   {
-    v18 = [a3 attribute:@"NSAttachment" atIndex:v16 longestEffectiveRange:&v22 inRange:{v16, v17}];
+    v18 = [string attribute:@"NSAttachment" atIndex:v16 longestEffectiveRange:&v22 inRange:{v16, v17}];
     if (!v18)
     {
       break;
@@ -829,7 +829,7 @@ LABEL_27:
     v20 = v16;
     while (1)
     {
-      v21 = [a3 attribute:@"NSAttachment" atIndex:v20 longestEffectiveRange:&v22 inRange:{v16, v17}];
+      v21 = [string attribute:@"NSAttachment" atIndex:v20 longestEffectiveRange:&v22 inRange:{v16, v17}];
       if (v21)
       {
         if ([v21 embeddingType] == 1)
@@ -851,9 +851,9 @@ LABEL_27:
 
 LABEL_17:
   result = 0;
-  if (a4 >= v16 && a4 - v16 < v17)
+  if (index >= v16 && index - v16 < v17)
   {
-    result = [a1 _createTextListElementFromAttributedString:a3 inRange:v16 indentLevel:v17 includesTextListMarkers:-1 effectiveRange:v9 & 1 textListElementInstantiationCallback:{a6, a7}];
+    result = [self _createTextListElementFromAttributedString:string inRange:v16 indentLevel:v17 includesTextListMarkers:-1 effectiveRange:optionsCopy & 1 textListElementInstantiationCallback:{range, callback}];
     if (result)
     {
       return result;
@@ -863,12 +863,12 @@ LABEL_17:
   return result;
 }
 
-- (id)_markerTextAttributesForTextList:(id)a3 attributes:(id)a4
+- (id)_markerTextAttributesForTextList:(id)list attributes:(id)attributes
 {
   markerTextAttributesForTextList = self->_markerTextAttributesForTextList;
   if (markerTextAttributesForTextList)
   {
-    v6 = markerTextAttributesForTextList[2](markerTextAttributesForTextList, a3);
+    v6 = markerTextAttributesForTextList[2](markerTextAttributesForTextList, list);
   }
 
   else
@@ -877,7 +877,7 @@ LABEL_17:
   }
 
   v7 = [v6 count];
-  v8 = [a4 count];
+  v8 = [attributes count];
   if (v7 < 1)
   {
     v9 = 0;
@@ -886,23 +886,23 @@ LABEL_17:
   else if (v8 < 1)
   {
     v9 = 0;
-    a4 = v6;
+    attributes = v6;
   }
 
   else
   {
-    v9 = [a4 mutableCopy];
+    v9 = [attributes mutableCopy];
     [v9 addEntriesFromDictionary:v6];
-    a4 = v9;
+    attributes = v9;
   }
 
   if (![v6 objectForKeyedSubscript:@"NSFont"])
   {
-    v11 = [a4 objectForKeyedSubscript:@"NSFont"];
-    v12 = [v11 fontDescriptor];
+    v11 = [attributes objectForKeyedSubscript:@"NSFont"];
+    fontDescriptor = [v11 fontDescriptor];
     if ((CTFontDescriptorGetSymbolicTraits() & 3) != 0)
     {
-      CopyWithSymbolicTraits = CTFontDescriptorCreateCopyWithSymbolicTraits(v12, 0, 3u);
+      CopyWithSymbolicTraits = CTFontDescriptorCreateCopyWithSymbolicTraits(fontDescriptor, 0, 3u);
       [v11 pointSize];
       v14 = [UIFont fontWithDescriptor:CopyWithSymbolicTraits size:?];
       CFRelease(CopyWithSymbolicTraits);
@@ -912,8 +912,8 @@ LABEL_17:
         {
           if (!v9)
           {
-            v9 = [a4 mutableCopy];
-            a4 = v9;
+            v9 = [attributes mutableCopy];
+            attributes = v9;
           }
 
           [v9 setObject:v14 forKeyedSubscript:@"NSFont"];
@@ -922,15 +922,15 @@ LABEL_17:
     }
   }
 
-  return a4;
+  return attributes;
 }
 
 - (int64_t)indentLevel
 {
   objc_sync_enter(self);
-  v3 = [(NSTextListElement *)self _indentLevel];
+  _indentLevel = [(NSTextListElement *)self _indentLevel];
   objc_sync_exit(self);
-  return v3;
+  return _indentLevel;
 }
 
 - (int64_t)_contentsLocationOffset
@@ -959,21 +959,21 @@ LABEL_17:
       v14->_contents = [(NSAttributedString *)contents copy];
       v14->_markerAttributes = [(NSDictionary *)markerAttributes copy];
       v14->_childElements = [(NSArray *)children copy];
-      v15 = [(NSTextList *)textList startingItemNumber];
+      startingItemNumber = [(NSTextList *)textList startingItemNumber];
       childElements = v14->_childElements;
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __92__NSTextListElement_initWithParentElement_textList_contents_markerAttributes_childElements___block_invoke;
       v20[3] = &unk_1E7266BC8;
       objc_copyWeak(v21, &location);
-      v21[1] = v15;
+      v21[1] = startingItemNumber;
       [(NSArray *)childElements enumerateObjectsUsingBlock:v20];
       v14->_indentLevel = -1;
-      v17 = [(NSTextElement *)v14 coalescingType];
-      v18 = v17 | 8u;
+      coalescingType = [(NSTextElement *)v14 coalescingType];
+      v18 = coalescingType | 8u;
       if (!parent && !v14->_contents && [(NSArray *)v14->_childElements count])
       {
-        v18 = v17 | 9 | [-[NSArray lastObject](v14->_childElements "lastObject")] & 2;
+        v18 = coalescingType | 9 | [-[NSArray lastObject](v14->_childElements "lastObject")] & 2;
       }
 
       [(NSTextElement *)v14 setCoalescingType:v18];
@@ -1014,7 +1014,7 @@ uint64_t __92__NSTextListElement_initWithParentElement_textList_contents_markerA
 
 + (NSTextListElement)textListElementWithContents:(NSAttributedString *)contents markerAttributes:(NSDictionary *)markerAttributes textList:(NSTextList *)textList childElements:(NSArray *)children
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   if ([(NSAttributedString *)contents length])
   {
     v11 = contents;
@@ -1032,19 +1032,19 @@ uint64_t __92__NSTextListElement_initWithParentElement_textList_contents_markerA
 
 + (NSTextListElement)textListElementWithChildElements:(NSArray *)children textList:(NSTextList *)textList nestingLevel:(NSInteger)nestingLevel
 {
-  v5 = [a1 _createElementWithChildElements:children textList:textList nestingLevel:nestingLevel];
+  v5 = [self _createElementWithChildElements:children textList:textList nestingLevel:nestingLevel];
 
   return v5;
 }
 
-- (void)setParagraphContentRange:(id)a3
+- (void)setParagraphContentRange:(id)range
 {
   v7.receiver = self;
   v7.super_class = NSTextListElement;
   [(NSTextParagraph *)&v7 setParagraphContentRange:?];
-  if (a3)
+  if (range)
   {
-    [a3 range];
+    [range range];
     v6 = v5 == [(NSAttributedString *)self->_contents length];
   }
 
@@ -1058,15 +1058,15 @@ uint64_t __92__NSTextListElement_initWithParentElement_textList_contents_markerA
 
 - (id)markerAttributedString
 {
-  v3 = [(NSTextListElement *)self attributedString];
+  attributedString = [(NSTextListElement *)self attributedString];
   if (!self->_contentsOnly)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = attributedString;
   contentsLocationOffset = self->_contentsLocationOffset;
-  if (contentsLocationOffset > [(NSAttributedString *)v3 length])
+  if (contentsLocationOffset > [(NSAttributedString *)attributedString length])
   {
     return 0;
   }
@@ -1076,24 +1076,24 @@ uint64_t __92__NSTextListElement_initWithParentElement_textList_contents_markerA
   return [(NSAttributedString *)v4 attributedSubstringFromRange:0, v7];
 }
 
-- (id)locationForCharacterIndex:(int64_t)a3 dataSourceLocationsOnly:(BOOL)a4 actualRange:(_NSRange *)a5
+- (id)locationForCharacterIndex:(int64_t)index dataSourceLocationsOnly:(BOOL)only actualRange:(_NSRange *)range
 {
-  v9 = [(NSTextListElement *)self _contentsLocationOffset];
+  _contentsLocationOffset = [(NSTextListElement *)self _contentsLocationOffset];
   v10 = [(NSAttributedString *)[(NSTextListElement *)self attributedString] length];
-  if (v10 < a3)
+  if (v10 < index)
   {
     return 0;
   }
 
   v12 = v10;
-  v13 = __OFSUB__(a3, v9);
-  v14 = a3 - v9;
+  v13 = __OFSUB__(index, _contentsLocationOffset);
+  v14 = index - _contentsLocationOffset;
   if (v14 < 0 == v13)
   {
     v17.receiver = self;
     v17.super_class = NSTextListElement;
     v11 = [(NSTextParagraph *)&v17 locationForCharacterIndex:v14 dataSourceLocationsOnly:0 actualRange:0];
-    if (!a5)
+    if (!range)
     {
       return v11;
     }
@@ -1101,54 +1101,54 @@ uint64_t __92__NSTextListElement_initWithParentElement_textList_contents_markerA
     goto LABEL_11;
   }
 
-  if (a4)
+  if (only)
   {
     return 0;
   }
 
   objc_sync_enter(self);
-  v11 = [(NSTextParagraph *)self _textElementLocationForCharacterIndex:a3];
+  v11 = [(NSTextParagraph *)self _textElementLocationForCharacterIndex:index];
   if (!v11)
   {
     v11 = [[_NSTextElementLocation alloc] initWithTextElement:self baseLocation:[(NSTextRange *)[(NSTextElement *)self elementRange] location] offset:v14];
-    [(NSTextParagraph *)self _setElementTextLocation:v11 forCharacterIndex:a3];
+    [(NSTextParagraph *)self _setElementTextLocation:v11 forCharacterIndex:index];
   }
 
   objc_sync_exit(self);
-  if (a5)
+  if (range)
   {
 LABEL_11:
     if (v11)
     {
-      if (v12 == a3)
+      if (v12 == index)
       {
         v15 = 0;
       }
 
       else
       {
-        a3 = [(NSString *)[(NSAttributedString *)[(NSTextListElement *)self attributedString] string] rangeOfComposedCharacterSequenceAtIndex:a3];
+        index = [(NSString *)[(NSAttributedString *)[(NSTextListElement *)self attributedString] string] rangeOfComposedCharacterSequenceAtIndex:index];
       }
 
-      a5->location = a3;
-      a5->length = v15;
+      range->location = index;
+      range->length = v15;
     }
   }
 
   return v11;
 }
 
-- (_NSRange)rangeForLocation:(id)a3 allowsTrailingEdge:(BOOL)a4
+- (_NSRange)rangeForLocation:(id)location allowsTrailingEdge:(BOOL)edge
 {
   v11 = xmmword_18E856180;
-  if (a3 && ((v4 = a4, -[NSTextRange containsLocation:](-[NSTextElement elementRange](self, "elementRange"), "containsLocation:", a3)) || v4 && [-[NSTextRange endLocation](-[NSTextElement elementRange](self "elementRange")]))
+  if (location && ((v4 = edge, -[NSTextRange containsLocation:](-[NSTextElement elementRange](self, "elementRange"), "containsLocation:", location)) || v4 && [-[NSTextRange endLocation](-[NSTextElement elementRange](self "elementRange")]))
   {
-    v7 = [(NSTextContentManager *)[(NSTextElement *)self textContentManager] offsetFromLocation:[(NSTextRange *)[(NSTextElement *)self elementRange] location] toLocation:a3];
+    v7 = [(NSTextContentManager *)[(NSTextElement *)self textContentManager] offsetFromLocation:[(NSTextRange *)[(NSTextElement *)self elementRange] location] toLocation:location];
     v8 = [(NSTextListElement *)self _contentsLocationOffset]+ v7;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 textElement] == self)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [location textElement] == self)
     {
-      v8 += [a3 offset];
+      v8 += [location offset];
     }
 
     [(NSTextListElement *)self locationForCharacterIndex:v8 dataSourceLocationsOnly:0 actualRange:&v11];
@@ -1167,9 +1167,9 @@ LABEL_11:
   return result;
 }
 
-- (NSTextListElement)textListElementWithChildElements:(id)a3
+- (NSTextListElement)textListElementWithChildElements:(id)elements
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithParentElement:-[NSTextListElement parentElement](self textList:"parentElement") contents:self->_textList markerAttributes:self->_contents childElements:{self->_markerAttributes, a3}];
+  v3 = [objc_alloc(objc_opt_class()) initWithParentElement:-[NSTextListElement parentElement](self textList:"parentElement") contents:self->_textList markerAttributes:self->_contents childElements:{self->_markerAttributes, elements}];
 
   return v3;
 }

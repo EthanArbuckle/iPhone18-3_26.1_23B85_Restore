@@ -1,11 +1,11 @@
 @interface ICPasswordUtilities
 + (BOOL)deviceHasPasscode;
 + (ICPasswordUtilities)sharedInstance;
-+ (id)imageForCurrentDecryptedStatusForNote:(id)a3;
-- (void)accessibilityAnnounceAuthSuccessForIntent:(unint64_t)a3 withNote:(id)a4;
-- (void)showChangePasswordDialogueFromDisplayWindow:(id)a3 account:(id)a4 completionHandler:(id)a5;
-- (void)showPasswordSetUpSheetForAccount:(id)a3 displayWindow:(id)a4 completionHandler:(id)a5;
-- (void)showUpdateDivergedPasswordForAccountPassword:(id)a3 oldPassword:(id)a4 account:(id)a5 displayWindow:(id)a6;
++ (id)imageForCurrentDecryptedStatusForNote:(id)note;
+- (void)accessibilityAnnounceAuthSuccessForIntent:(unint64_t)intent withNote:(id)note;
+- (void)showChangePasswordDialogueFromDisplayWindow:(id)window account:(id)account completionHandler:(id)handler;
+- (void)showPasswordSetUpSheetForAccount:(id)account displayWindow:(id)window completionHandler:(id)handler;
+- (void)showUpdateDivergedPasswordForAccountPassword:(id)password oldPassword:(id)oldPassword account:(id)account displayWindow:(id)window;
 @end
 
 @implementation ICPasswordUtilities
@@ -30,9 +30,9 @@ uint64_t __37__ICPasswordUtilities_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0);
 }
 
-+ (id)imageForCurrentDecryptedStatusForNote:(id)a3
++ (id)imageForCurrentDecryptedStatusForNote:(id)note
 {
-  if ([a3 isAuthenticated])
+  if ([note isAuthenticated])
   {
     v3 = @"lock.open.fill";
   }
@@ -56,40 +56,40 @@ uint64_t __37__ICPasswordUtilities_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)showChangePasswordDialogueFromDisplayWindow:(id)a3 account:(id)a4 completionHandler:(id)a5
+- (void)showChangePasswordDialogueFromDisplayWindow:(id)window account:(id)account completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 hasPassphraseSet])
+  windowCopy = window;
+  accountCopy = account;
+  handlerCopy = handler;
+  if ([accountCopy hasPassphraseSet])
   {
-    v11 = [(ICPasswordUtilities *)self displayedSheet];
+    displayedSheet = [(ICPasswordUtilities *)self displayedSheet];
 
-    if (!v11)
+    if (!displayedSheet)
     {
       v12 = [ICPasswordChangeViewController alloc];
       v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v14 = [(ICPasswordChangeViewController *)v12 initWithNibName:0 bundle:v13];
 
-      v15 = [(ICPasswordChangeViewController *)v14 view];
-      [(ICPasswordChangeViewController *)v14 setUpForChangePasswordWithAccount:v9 didAuthenticateWithBiometrics:0];
-      v16 = [(UIViewController *)v14 ic_embedInNavigationControllerForModalPresentation];
-      v17 = [v8 rootViewController];
-      v18 = [v17 ic_topViewController];
+      view = [(ICPasswordChangeViewController *)v14 view];
+      [(ICPasswordChangeViewController *)v14 setUpForChangePasswordWithAccount:accountCopy didAuthenticateWithBiometrics:0];
+      ic_embedInNavigationControllerForModalPresentation = [(UIViewController *)v14 ic_embedInNavigationControllerForModalPresentation];
+      rootViewController = [windowCopy rootViewController];
+      ic_topViewController = [rootViewController ic_topViewController];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __93__ICPasswordUtilities_showChangePasswordDialogueFromDisplayWindow_account_completionHandler___block_invoke;
       v19[3] = &unk_1E846AFD0;
-      v22 = v10;
-      v20 = v9;
-      v21 = self;
-      [v18 presentViewController:v16 animated:1 completion:v19];
+      v22 = handlerCopy;
+      v20 = accountCopy;
+      selfCopy = self;
+      [ic_topViewController presentViewController:ic_embedInNavigationControllerForModalPresentation animated:1 completion:v19];
     }
   }
 
   else
   {
-    [(ICPasswordUtilities *)self showPasswordSetUpSheetForAccount:v9 displayWindow:v8 completionHandler:v10];
+    [(ICPasswordUtilities *)self showPasswordSetUpSheetForAccount:accountCopy displayWindow:windowCopy completionHandler:handlerCopy];
   }
 }
 
@@ -116,20 +116,20 @@ uint64_t __93__ICPasswordUtilities_showChangePasswordDialogueFromDisplayWindow_a
   return [v4 setDisplayedSheet:0];
 }
 
-- (void)showPasswordSetUpSheetForAccount:(id)a3 displayWindow:(id)a4 completionHandler:(id)a5
+- (void)showPasswordSetUpSheetForAccount:(id)account displayWindow:(id)window completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICPasswordUtilities *)self displayedSheet];
+  accountCopy = account;
+  windowCopy = window;
+  handlerCopy = handler;
+  displayedSheet = [(ICPasswordUtilities *)self displayedSheet];
 
-  if (!v11)
+  if (!displayedSheet)
   {
     v12 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [ICPasswordUtilities showPasswordSetUpSheetForAccount:v8 displayWindow:? completionHandler:?];
+      [ICPasswordUtilities showPasswordSetUpSheetForAccount:accountCopy displayWindow:? completionHandler:?];
     }
 
     v13 = [ICPasswordChangeViewController alloc];
@@ -137,31 +137,31 @@ uint64_t __93__ICPasswordUtilities_showChangePasswordDialogueFromDisplayWindow_a
     v22[1] = 3221225472;
     v22[2] = __88__ICPasswordUtilities_showPasswordSetUpSheetForAccount_displayWindow_completionHandler___block_invoke;
     v22[3] = &unk_1E846E500;
-    v14 = v8;
+    v14 = accountCopy;
     v23 = v14;
-    v24 = self;
-    v25 = v10;
+    selfCopy = self;
+    v25 = handlerCopy;
     v15 = [(ICPasswordChangeViewController *)v13 initWithCompletionHandler:v22];
-    v16 = [(ICPasswordChangeViewController *)v15 view];
+    view = [(ICPasswordChangeViewController *)v15 view];
     [(ICPasswordChangeViewController *)v15 setUpForAddingPasswordWithAccount:v14];
-    v17 = [(UIViewController *)v15 ic_embedInNavigationControllerForModalPresentation];
-    [v17 setModalPresentationCapturesStatusBarAppearance:1];
+    ic_embedInNavigationControllerForModalPresentation = [(UIViewController *)v15 ic_embedInNavigationControllerForModalPresentation];
+    [ic_embedInNavigationControllerForModalPresentation setModalPresentationCapturesStatusBarAppearance:1];
     v18 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [v14 shortLoggingDescription];
+      shortLoggingDescription = [v14 shortLoggingDescription];
       *buf = 138412802;
       v27 = v15;
       v28 = 2112;
-      v29 = v21;
+      v29 = shortLoggingDescription;
       v30 = 2112;
-      v31 = v17;
+      v31 = ic_embedInNavigationControllerForModalPresentation;
       _os_log_debug_impl(&dword_1D4171000, v18, OS_LOG_TYPE_DEBUG, "Presenting passwordSetupViewController %@ for account %@ through navigation controller %@", buf, 0x20u);
     }
 
-    v19 = [v9 rootViewController];
-    v20 = [v19 ic_topViewController];
-    [v20 presentViewController:v17 animated:1 completion:0];
+    rootViewController = [windowCopy rootViewController];
+    ic_topViewController = [rootViewController ic_topViewController];
+    [ic_topViewController presentViewController:ic_embedInNavigationControllerForModalPresentation animated:1 completion:0];
   }
 }
 
@@ -189,16 +189,16 @@ uint64_t __88__ICPasswordUtilities_showPasswordSetUpSheetForAccount_displayWindo
   return result;
 }
 
-- (void)showUpdateDivergedPasswordForAccountPassword:(id)a3 oldPassword:(id)a4 account:(id)a5 displayWindow:(id)a6
+- (void)showUpdateDivergedPasswordForAccountPassword:(id)password oldPassword:(id)oldPassword account:(id)account displayWindow:(id)window
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  passwordCopy = password;
+  oldPasswordCopy = oldPassword;
+  accountCopy = account;
+  windowCopy = window;
   if (![(ICPasswordUtilities *)self isShowingDivergedDialogue])
   {
-    v14 = [MEMORY[0x1E69B76D0] sharedState];
-    v15 = [v14 authenticateObject:v12 withPassphrase:v10];
+    mEMORY[0x1E69B76D0] = [MEMORY[0x1E69B76D0] sharedState];
+    v15 = [mEMORY[0x1E69B76D0] authenticateObject:accountCopy withPassphrase:passwordCopy];
 
     if (v15)
     {
@@ -208,9 +208,9 @@ uint64_t __88__ICPasswordUtilities_showPasswordSetUpSheetForAccount_displayWindo
       v22[1] = 3221225472;
       v22[2] = __102__ICPasswordUtilities_showUpdateDivergedPasswordForAccountPassword_oldPassword_account_displayWindow___block_invoke;
       v22[3] = &unk_1E846E528;
-      v23 = v12;
-      v24 = v11;
-      v25 = v10;
+      v23 = accountCopy;
+      v24 = oldPasswordCopy;
+      v25 = passwordCopy;
       objc_copyWeak(&v26, &location);
       [v16 setActionHandler:v22];
       v17 = MEMORY[0x1E69E9820];
@@ -219,7 +219,7 @@ uint64_t __88__ICPasswordUtilities_showPasswordSetUpSheetForAccount_displayWindo
       v20 = &unk_1E846E550;
       objc_copyWeak(&v21, &location);
       [v16 setDismissHandler:&v17];
-      [v16 presentInWindow:v13 completionHandler:{0, v17, v18, v19, v20}];
+      [v16 presentInWindow:windowCopy completionHandler:{0, v17, v18, v19, v20}];
       objc_destroyWeak(&v21);
       objc_destroyWeak(&v26);
 
@@ -256,10 +256,10 @@ void __102__ICPasswordUtilities_showUpdateDivergedPasswordForAccountPassword_old
   [WeakRetained setIsShowingDivergedDialogue:0];
 }
 
-- (void)accessibilityAnnounceAuthSuccessForIntent:(unint64_t)a3 withNote:(id)a4
+- (void)accessibilityAnnounceAuthSuccessForIntent:(unint64_t)intent withNote:(id)note
 {
-  v5 = a4;
-  if (a3)
+  noteCopy = note;
+  if (intent)
   {
     v6 = 0;
   }

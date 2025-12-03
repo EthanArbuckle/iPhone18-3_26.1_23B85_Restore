@@ -1,27 +1,27 @@
 @interface SFAppleIDIdentity
 - (BOOL)certificateExpired;
 - (BOOL)intermediateCertificateExpired;
-- (BOOL)isDateInThePast:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIdentity:(id)a3;
+- (BOOL)isDateInThePast:(id)past;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIdentity:(id)identity;
 - (BOOL)isInvalid;
 - (BOOL)needsRenewal;
 - (NSDate)certificateExpirationDate;
 - (NSDate)intermediateCertificateExpirationDate;
 - (NSString)intermediateCertificateSerialNumber;
-- (SFAppleIDIdentity)initWithAppleID:(id)a3 altDSID:(id)a4;
-- (SFAppleIDIdentity)initWithCoder:(id)a3;
-- (SFAppleIDIdentity)initWithDictionary:(id)a3;
-- (__SecCertificate)copyCertificateWithType:(int64_t)a3;
+- (SFAppleIDIdentity)initWithAppleID:(id)d altDSID:(id)iD;
+- (SFAppleIDIdentity)initWithCoder:(id)coder;
+- (SFAppleIDIdentity)initWithDictionary:(id)dictionary;
+- (__SecCertificate)copyCertificateWithType:(int64_t)type;
 - (__SecIdentity)copyIdentity;
 - (__SecKey)copyPrivateKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int)verifyKeys;
 - (uint64_t)isInvalid;
 - (void)certificateExpired;
 - (void)copyPrivateKey;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)intermediateCertificateExpired;
 - (void)isInvalid;
 - (void)needsRenewal;
@@ -30,155 +30,155 @@
 
 @implementation SFAppleIDIdentity
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   accountIdentifier = self->_accountIdentifier;
-  v17 = v4;
+  v17 = coderCopy;
   if (accountIdentifier)
   {
-    [v4 encodeObject:accountIdentifier forKey:@"AccountIdentifier"];
-    v4 = v17;
+    [coderCopy encodeObject:accountIdentifier forKey:@"AccountIdentifier"];
+    coderCopy = v17;
   }
 
   altDSID = self->_altDSID;
   if (altDSID)
   {
     [v17 encodeObject:altDSID forKey:@"AltDSID"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   appleID = self->_appleID;
   if (appleID)
   {
     [v17 encodeObject:appleID forKey:@"AppleID"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   certificateExpirationDate = self->_certificateExpirationDate;
   if (certificateExpirationDate)
   {
     [v17 encodeObject:certificateExpirationDate forKey:@"CertificateExpirationDate"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   certificatePersistentReference = self->_certificatePersistentReference;
   if (certificatePersistentReference)
   {
     [v17 encodeObject:certificatePersistentReference forKey:@"CertificatePersistentReference"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   intermediateCertificateExpirationDate = self->_intermediateCertificateExpirationDate;
   if (intermediateCertificateExpirationDate)
   {
     [v17 encodeObject:intermediateCertificateExpirationDate forKey:@"IntermediateCertificateExpirationDate"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   intermediateCertificatePersistentReference = self->_intermediateCertificatePersistentReference;
   if (intermediateCertificatePersistentReference)
   {
     [v17 encodeObject:intermediateCertificatePersistentReference forKey:@"IntermediateCertificatePersistentReference"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   lastValidationAttemptDate = self->_lastValidationAttemptDate;
   if (lastValidationAttemptDate)
   {
     [v17 encodeObject:lastValidationAttemptDate forKey:@"LastValidationAttemptDate"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   lastValidationDate = self->_lastValidationDate;
   if (lastValidationDate)
   {
     [v17 encodeObject:lastValidationDate forKey:@"LastValidationDate"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   if (self->_linkedToCurrentUser)
   {
     [v17 encodeBool:1 forKey:@"LinkedToCurrentUser"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   modificationDate = self->_modificationDate;
   if (modificationDate)
   {
     [v17 encodeObject:modificationDate forKey:@"ModificationDate"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   privateKeyPersistentReference = self->_privateKeyPersistentReference;
   if (privateKeyPersistentReference)
   {
     [v17 encodeObject:privateKeyPersistentReference forKey:@"PrivateKeyPersistentReference"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   serialNumber = self->_serialNumber;
   if (serialNumber)
   {
     [v17 encodeObject:serialNumber forKey:@"SerialNumber"];
-    v4 = v17;
+    coderCopy = v17;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SFAppleIDIdentity *)self isEqualToIdentity:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SFAppleIDIdentity *)self isEqualToIdentity:v5];
   }
 
   return v6;
 }
 
-- (SFAppleIDIdentity)initWithAppleID:(id)a3 altDSID:(id)a4
+- (SFAppleIDIdentity)initWithAppleID:(id)d altDSID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = SFAppleIDIdentity;
   v9 = [(SFAppleIDIdentity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_altDSID, a4);
-    objc_storeStrong(&v10->_appleID, a3);
+    objc_storeStrong(&v9->_altDSID, iD);
+    objc_storeStrong(&v10->_appleID, d);
   }
 
   return v10;
 }
 
-- (SFAppleIDIdentity)initWithDictionary:(id)a3
+- (SFAppleIDIdentity)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = SFAppleIDIdentity;
   v5 = [(SFAppleIDIdentity *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Expires"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"Expires"];
     certificateExpirationDate = v5->_certificateExpirationDate;
     v5->_certificateExpirationDate = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"CertificateReference"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"CertificateReference"];
     certificatePersistentReference = v5->_certificatePersistentReference;
     v5->_certificatePersistentReference = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"encDsId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"encDsId"];
     if (v10)
     {
-      v11 = [v4 objectForKeyedSubscript:@"encDsId"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"encDsId"];
     }
 
     else
@@ -189,27 +189,27 @@
     encDSID = v5->_encDSID;
     v5->_encDSID = &v11->isa;
 
-    v13 = [v4 objectForKeyedSubscript:@"IntermediateCertificateReference"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"IntermediateCertificateReference"];
     intermediateCertificatePersistentReference = v5->_intermediateCertificatePersistentReference;
     v5->_intermediateCertificatePersistentReference = v13;
 
-    v15 = [v4 objectForKeyedSubscript:@"LastValidationAttempt"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"LastValidationAttempt"];
     lastValidationAttemptDate = v5->_lastValidationAttemptDate;
     v5->_lastValidationAttemptDate = v15;
 
-    v17 = [v4 objectForKeyedSubscript:@"LastSuccessfulValidation"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"LastSuccessfulValidation"];
     lastValidationDate = v5->_lastValidationDate;
     v5->_lastValidationDate = v17;
 
-    v19 = [v4 objectForKeyedSubscript:@"ModificationDate"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"ModificationDate"];
     modificationDate = v5->_modificationDate;
     v5->_modificationDate = v19;
 
-    v21 = [v4 objectForKeyedSubscript:@"SerialNumber"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"SerialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v21;
 
-    v23 = [v4 objectForKeyedSubscript:@"CertificatePrivateKeyReference"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"CertificatePrivateKeyReference"];
     privateKeyPersistentReference = v5->_privateKeyPersistentReference;
     v5->_privateKeyPersistentReference = v23;
   }
@@ -233,7 +233,7 @@
   NSAppendPrintF();
   v5 = v4;
 
-  v6 = [(SFAppleIDIdentity *)self certificateExpirationDate];
+  certificateExpirationDate = [(SFAppleIDIdentity *)self certificateExpirationDate];
   NSAppendPrintF();
   v7 = v5;
 
@@ -241,11 +241,11 @@
   NSAppendPrintF();
   v8 = v7;
 
-  v26 = [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
+  intermediateCertificateExpirationDate = [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
   NSAppendPrintF();
   v9 = v8;
 
-  v10 = [(SFAppleIDIdentity *)self intermediateCertificateSerialNumber];
+  intermediateCertificateSerialNumber = [(SFAppleIDIdentity *)self intermediateCertificateSerialNumber];
   NSAppendPrintF();
   v11 = v9;
 
@@ -294,18 +294,18 @@
   return v19;
 }
 
-- (__SecCertificate)copyCertificateWithType:(int64_t)a3
+- (__SecCertificate)copyCertificateWithType:(int64_t)type
 {
   v17[3] = *MEMORY[0x1E69E9840];
   cf = 0;
-  if (a3 == 1)
+  if (type == 1)
   {
-    v5 = [(SFAppleIDIdentity *)self intermediateCertificatePersistentReference];
+    intermediateCertificatePersistentReference = [(SFAppleIDIdentity *)self intermediateCertificatePersistentReference];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       if (gLogCategory_SFAppleIDIdentity > 60)
       {
@@ -323,14 +323,14 @@
       goto LABEL_16;
     }
 
-    v5 = [(SFAppleIDIdentity *)self certificatePersistentReference];
+    intermediateCertificatePersistentReference = [(SFAppleIDIdentity *)self certificatePersistentReference];
   }
 
-  v6 = v5;
-  if (!v5)
+  v6 = intermediateCertificatePersistentReference;
+  if (!intermediateCertificatePersistentReference)
   {
 LABEL_16:
-    [(SFAppleIDIdentity *)a3 copyCertificateWithType:&v14, &v15];
+    [(SFAppleIDIdentity *)type copyCertificateWithType:&v14, &v15];
     v6 = v14;
     v8 = v15;
     goto LABEL_17;
@@ -340,7 +340,7 @@ LABEL_16:
   v16[0] = *MEMORY[0x1E697AFF8];
   v16[1] = v7;
   v17[0] = *MEMORY[0x1E697B000];
-  v17[1] = v5;
+  v17[1] = intermediateCertificatePersistentReference;
   v16[2] = *MEMORY[0x1E697B328];
   v17[2] = MEMORY[0x1E695E118];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
@@ -399,9 +399,9 @@ LABEL_12:
 {
   v16[3] = *MEMORY[0x1E69E9840];
   cf = 0;
-  v3 = [(SFAppleIDIdentity *)self privateKeyPersistentReference];
+  privateKeyPersistentReference = [(SFAppleIDIdentity *)self privateKeyPersistentReference];
 
-  if (!v3)
+  if (!privateKeyPersistentReference)
   {
     [(SFAppleIDIdentity *)self copyPrivateKey];
     v7 = v13;
@@ -414,9 +414,9 @@ LABEL_12:
   v5 = *MEMORY[0x1E697B3C8];
   v15[0] = v4;
   v15[1] = v5;
-  v6 = [(SFAppleIDIdentity *)self privateKeyPersistentReference];
+  privateKeyPersistentReference2 = [(SFAppleIDIdentity *)self privateKeyPersistentReference];
   v15[2] = *MEMORY[0x1E697B328];
-  v16[1] = v6;
+  v16[1] = privateKeyPersistentReference2;
   v16[2] = MEMORY[0x1E695E118];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
@@ -460,17 +460,17 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)isDateInThePast:(id)a3
+- (BOOL)isDateInThePast:(id)past
 {
-  if (!a3)
+  if (!past)
   {
     return 0;
   }
 
   v3 = MEMORY[0x1E695DF00];
-  v4 = a3;
-  v5 = [v3 date];
-  v6 = [v4 compare:v5];
+  pastCopy = past;
+  date = [v3 date];
+  v6 = [pastCopy compare:date];
 
   v7 = v6 == -1;
   return v7;
@@ -478,8 +478,8 @@ LABEL_6:
 
 - (BOOL)certificateExpired
 {
-  v3 = [(SFAppleIDIdentity *)self certificateExpirationDate];
-  v4 = [(SFAppleIDIdentity *)self isDateInThePast:v3];
+  certificateExpirationDate = [(SFAppleIDIdentity *)self certificateExpirationDate];
+  v4 = [(SFAppleIDIdentity *)self isDateInThePast:certificateExpirationDate];
 
   if (v4 && gLogCategory_SFAppleIDIdentity <= 30 && (gLogCategory_SFAppleIDIdentity != -1 || _LogCategory_Initialize()))
   {
@@ -491,8 +491,8 @@ LABEL_6:
 
 - (BOOL)intermediateCertificateExpired
 {
-  v3 = [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
-  v4 = [(SFAppleIDIdentity *)self isDateInThePast:v3];
+  intermediateCertificateExpirationDate = [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
+  v4 = [(SFAppleIDIdentity *)self isDateInThePast:intermediateCertificateExpirationDate];
 
   if (v4 && gLogCategory_SFAppleIDIdentity <= 30 && (gLogCategory_SFAppleIDIdentity != -1 || _LogCategory_Initialize()))
   {
@@ -504,9 +504,9 @@ LABEL_6:
 
 - (BOOL)isInvalid
 {
-  v3 = [(SFAppleIDIdentity *)self certificateExpirationDate];
+  certificateExpirationDate = [(SFAppleIDIdentity *)self certificateExpirationDate];
 
-  if (!v3)
+  if (!certificateExpirationDate)
   {
     if (([SFAppleIDIdentity isInvalid]& 1) != 0)
     {
@@ -532,13 +532,13 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v4 = [(SFAppleIDIdentity *)self copyCertificate];
-  if (v4)
+  copyCertificate = [(SFAppleIDIdentity *)self copyCertificate];
+  if (copyCertificate)
   {
-    v5 = v4;
-    v6 = [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
+    v5 = copyCertificate;
+    intermediateCertificateExpirationDate = [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
 
-    if (v6)
+    if (intermediateCertificateExpirationDate)
     {
       if ([(SFAppleIDIdentity *)self intermediateCertificateExpired])
       {
@@ -550,17 +550,17 @@ LABEL_28:
 
       else
       {
-        v7 = [(SFAppleIDIdentity *)self copyIntermediateCertificate];
-        if (v7)
+        copyIntermediateCertificate = [(SFAppleIDIdentity *)self copyIntermediateCertificate];
+        if (copyIntermediateCertificate)
         {
-          v8 = v7;
-          v9 = [(SFAppleIDIdentity *)self copyIdentity];
-          if (v9)
+          v8 = copyIntermediateCertificate;
+          copyIdentity = [(SFAppleIDIdentity *)self copyIdentity];
+          if (copyIdentity)
           {
             CFRelease(v5);
             CFRelease(v8);
 LABEL_9:
-            CFRelease(v9);
+            CFRelease(copyIdentity);
             return 0;
           }
 
@@ -600,10 +600,10 @@ LABEL_27:
 
 - (BOOL)needsRenewal
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(SFAppleIDIdentity *)self certificateExpirationDate];
+  date = [MEMORY[0x1E695DF00] date];
+  certificateExpirationDate = [(SFAppleIDIdentity *)self certificateExpirationDate];
 
-  if (!v4)
+  if (!certificateExpirationDate)
   {
     if (gLogCategory_SFAppleIDIdentity <= 50)
     {
@@ -618,9 +618,9 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  v5 = [v3 dateByAddingTimeInterval:7776000.0];
-  v6 = [(SFAppleIDIdentity *)self certificateExpirationDate];
-  v7 = [v5 compare:v6];
+  v5 = [date dateByAddingTimeInterval:7776000.0];
+  certificateExpirationDate2 = [(SFAppleIDIdentity *)self certificateExpirationDate];
+  v7 = [v5 compare:certificateExpirationDate2];
 
   if (v7 == 1)
   {
@@ -637,9 +637,9 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  v8 = [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
+  intermediateCertificateExpirationDate = [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
 
-  if (!v8)
+  if (!intermediateCertificateExpirationDate)
   {
     if (gLogCategory_SFAppleIDIdentity <= 50)
     {
@@ -656,9 +656,9 @@ LABEL_26:
     goto LABEL_6;
   }
 
-  v9 = [v3 dateByAddingTimeInterval:7776000.0];
-  v10 = [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
-  v11 = [v9 compare:v10];
+  v9 = [date dateByAddingTimeInterval:7776000.0];
+  intermediateCertificateExpirationDate2 = [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
+  v11 = [v9 compare:intermediateCertificateExpirationDate2];
 
   if (v11 == 1)
   {
@@ -690,19 +690,19 @@ LABEL_6:
 
 - (void)removeFromKeychain
 {
-  v3 = [(SFAppleIDIdentity *)self appleID];
+  appleID = [(SFAppleIDIdentity *)self appleID];
   certificate = 0;
-  v4 = [(SFAppleIDIdentity *)self certificatePersistentReference];
+  certificatePersistentReference = [(SFAppleIDIdentity *)self certificatePersistentReference];
 
-  if (v4)
+  if (certificatePersistentReference)
   {
-    v5 = [(SFAppleIDIdentity *)self certificatePersistentReference];
-    SFAppleIDCopyCertificateFromKeychainForReference(v5, &certificate);
+    certificatePersistentReference2 = [(SFAppleIDIdentity *)self certificatePersistentReference];
+    SFAppleIDCopyCertificateFromKeychainForReference(certificatePersistentReference2, &certificate);
 
     if (certificate)
     {
       v6 = SecCertificateCopyKey(certificate);
-      v4 = v6;
+      certificatePersistentReference = v6;
       if (v6)
       {
         v11 = 0;
@@ -710,7 +710,7 @@ LABEL_6:
         v7 = v11;
         if (v7)
         {
-          SFAppleIDRemoveKeyFromKeychain(v3, v7);
+          SFAppleIDRemoveKeyFromKeychain(appleID, v7);
         }
       }
 
@@ -723,11 +723,11 @@ LABEL_6:
     else
     {
       v7 = 0;
-      v4 = 0;
+      certificatePersistentReference = 0;
     }
 
-    v8 = [(SFAppleIDIdentity *)self certificatePersistentReference];
-    SFAppleIDRemoveCertificateFromKeychain(v3, v8);
+    certificatePersistentReference3 = [(SFAppleIDIdentity *)self certificatePersistentReference];
+    SFAppleIDRemoveCertificateFromKeychain(appleID, certificatePersistentReference3);
   }
 
   else
@@ -735,12 +735,12 @@ LABEL_6:
     v7 = 0;
   }
 
-  v9 = [(SFAppleIDIdentity *)self privateKeyPersistentReference];
+  privateKeyPersistentReference = [(SFAppleIDIdentity *)self privateKeyPersistentReference];
 
-  if (v9)
+  if (privateKeyPersistentReference)
   {
-    v10 = [(SFAppleIDIdentity *)self privateKeyPersistentReference];
-    SFAppleIDRemoveKeyFromKeychain(v3, v10);
+    privateKeyPersistentReference2 = [(SFAppleIDIdentity *)self privateKeyPersistentReference];
+    SFAppleIDRemoveKeyFromKeychain(appleID, privateKeyPersistentReference2);
   }
 
   if (certificate)
@@ -748,105 +748,105 @@ LABEL_6:
     CFRelease(certificate);
   }
 
-  if (v4)
+  if (certificatePersistentReference)
   {
-    CFRelease(v4);
+    CFRelease(certificatePersistentReference);
   }
 }
 
-- (SFAppleIDIdentity)initWithCoder:(id)a3
+- (SFAppleIDIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = SFAppleIDIdentity;
   v5 = [(SFAppleIDIdentity *)&v32 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"AccountIdentifier"])
+    if ([coderCopy containsValueForKey:@"AccountIdentifier"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AccountIdentifier"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AccountIdentifier"];
       accountIdentifier = v5->_accountIdentifier;
       v5->_accountIdentifier = v6;
     }
 
-    if ([v4 containsValueForKey:@"AltDSID"])
+    if ([coderCopy containsValueForKey:@"AltDSID"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AltDSID"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AltDSID"];
       altDSID = v5->_altDSID;
       v5->_altDSID = v8;
     }
 
-    if ([v4 containsValueForKey:@"AppleID"])
+    if ([coderCopy containsValueForKey:@"AppleID"])
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AppleID"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppleID"];
       appleID = v5->_appleID;
       v5->_appleID = v10;
     }
 
-    if ([v4 containsValueForKey:@"CertificateExpirationDate"])
+    if ([coderCopy containsValueForKey:@"CertificateExpirationDate"])
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CertificateExpirationDate"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CertificateExpirationDate"];
       certificateExpirationDate = v5->_certificateExpirationDate;
       v5->_certificateExpirationDate = v12;
     }
 
-    if ([v4 containsValueForKey:@"CertificatePersistentReference"])
+    if ([coderCopy containsValueForKey:@"CertificatePersistentReference"])
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CertificatePersistentReference"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CertificatePersistentReference"];
       certificatePersistentReference = v5->_certificatePersistentReference;
       v5->_certificatePersistentReference = v14;
     }
 
-    if ([v4 containsValueForKey:@"IntermediateCertificateExpirationDate"])
+    if ([coderCopy containsValueForKey:@"IntermediateCertificateExpirationDate"])
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IntermediateCertificateExpirationDate"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IntermediateCertificateExpirationDate"];
       intermediateCertificateExpirationDate = v5->_intermediateCertificateExpirationDate;
       v5->_intermediateCertificateExpirationDate = v16;
     }
 
-    if ([v4 containsValueForKey:@"IntermediateCertificatePersistentReference"])
+    if ([coderCopy containsValueForKey:@"IntermediateCertificatePersistentReference"])
     {
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IntermediateCertificatePersistentReference"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IntermediateCertificatePersistentReference"];
       intermediateCertificatePersistentReference = v5->_intermediateCertificatePersistentReference;
       v5->_intermediateCertificatePersistentReference = v18;
     }
 
-    if ([v4 containsValueForKey:@"LastValidationAttemptDate"])
+    if ([coderCopy containsValueForKey:@"LastValidationAttemptDate"])
     {
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastValidationAttemptDate"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastValidationAttemptDate"];
       lastValidationAttemptDate = v5->_lastValidationAttemptDate;
       v5->_lastValidationAttemptDate = v20;
     }
 
-    if ([v4 containsValueForKey:@"LastValidationDate"])
+    if ([coderCopy containsValueForKey:@"LastValidationDate"])
     {
-      v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastValidationDate"];
+      v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastValidationDate"];
       lastValidationDate = v5->_lastValidationDate;
       v5->_lastValidationDate = v22;
     }
 
-    if ([v4 containsValueForKey:@"LinkedToCurrentUser"])
+    if ([coderCopy containsValueForKey:@"LinkedToCurrentUser"])
     {
-      v5->_linkedToCurrentUser = [v4 decodeBoolForKey:@"LinkedToCurrentUser"];
+      v5->_linkedToCurrentUser = [coderCopy decodeBoolForKey:@"LinkedToCurrentUser"];
     }
 
-    if ([v4 containsValueForKey:@"ModificationDate"])
+    if ([coderCopy containsValueForKey:@"ModificationDate"])
     {
-      v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ModificationDate"];
+      v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ModificationDate"];
       modificationDate = v5->_modificationDate;
       v5->_modificationDate = v24;
     }
 
-    if ([v4 containsValueForKey:@"SerialNumber"])
+    if ([coderCopy containsValueForKey:@"SerialNumber"])
     {
-      v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SerialNumber"];
+      v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SerialNumber"];
       serialNumber = v5->_serialNumber;
       v5->_serialNumber = v26;
     }
 
-    if ([v4 containsValueForKey:@"PrivateKeyPersistentReference"])
+    if ([coderCopy containsValueForKey:@"PrivateKeyPersistentReference"])
     {
-      v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivateKeyPersistentReference"];
+      v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivateKeyPersistentReference"];
       privateKeyPersistentReference = v5->_privateKeyPersistentReference;
       v5->_privateKeyPersistentReference = v28;
     }
@@ -857,9 +857,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -881,10 +881,10 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqualToIdentity:(id)a3
+- (BOOL)isEqualToIdentity:(id)identity
 {
-  v8 = a3;
-  if (self == v8)
+  identityCopy = identity;
+  if (self == identityCopy)
   {
     v33 = 1;
     goto LABEL_46;
@@ -903,8 +903,8 @@ LABEL_6:
   {
     [(SFAppleIDIdentity *)self accountIdentifier];
     objc_claimAutoreleasedReturnValue();
-    v10 = [OUTLINED_FUNCTION_3_2() accountIdentifier];
-    v11 = OUTLINED_FUNCTION_1(v10);
+    accountIdentifier = [OUTLINED_FUNCTION_3_2() accountIdentifier];
+    v11 = OUTLINED_FUNCTION_1(accountIdentifier);
 
     if (!v11)
     {
@@ -925,8 +925,8 @@ LABEL_6:
   {
     [(SFAppleIDIdentity *)self altDSID];
     objc_claimAutoreleasedReturnValue();
-    v12 = [OUTLINED_FUNCTION_3_2() altDSID];
-    v13 = OUTLINED_FUNCTION_1(v12);
+    altDSID = [OUTLINED_FUNCTION_3_2() altDSID];
+    v13 = OUTLINED_FUNCTION_1(altDSID);
 
     if (!v13)
     {
@@ -947,8 +947,8 @@ LABEL_6:
   {
     [(SFAppleIDIdentity *)self appleID];
     objc_claimAutoreleasedReturnValue();
-    v14 = [OUTLINED_FUNCTION_3_2() appleID];
-    v15 = OUTLINED_FUNCTION_1(v14);
+    appleID = [OUTLINED_FUNCTION_3_2() appleID];
+    v15 = OUTLINED_FUNCTION_1(appleID);
 
     if (!v15)
     {
@@ -969,8 +969,8 @@ LABEL_6:
   {
     [(SFAppleIDIdentity *)self certificateExpirationDate];
     objc_claimAutoreleasedReturnValue();
-    v16 = [OUTLINED_FUNCTION_3_2() certificateExpirationDate];
-    v17 = OUTLINED_FUNCTION_1(v16);
+    certificateExpirationDate = [OUTLINED_FUNCTION_3_2() certificateExpirationDate];
+    v17 = OUTLINED_FUNCTION_1(certificateExpirationDate);
 
     if (!v17)
     {
@@ -991,8 +991,8 @@ LABEL_6:
   {
     [(SFAppleIDIdentity *)self certificatePersistentReference];
     objc_claimAutoreleasedReturnValue();
-    v18 = [OUTLINED_FUNCTION_3_2() certificatePersistentReference];
-    v19 = OUTLINED_FUNCTION_1(v18);
+    certificatePersistentReference = [OUTLINED_FUNCTION_3_2() certificatePersistentReference];
+    v19 = OUTLINED_FUNCTION_1(certificatePersistentReference);
 
     if (!v19)
     {
@@ -1013,8 +1013,8 @@ LABEL_6:
   {
     [(SFAppleIDIdentity *)self intermediateCertificateExpirationDate];
     objc_claimAutoreleasedReturnValue();
-    v20 = [OUTLINED_FUNCTION_3_2() intermediateCertificateExpirationDate];
-    v21 = OUTLINED_FUNCTION_1(v20);
+    intermediateCertificateExpirationDate = [OUTLINED_FUNCTION_3_2() intermediateCertificateExpirationDate];
+    v21 = OUTLINED_FUNCTION_1(intermediateCertificateExpirationDate);
 
     if (!v21)
     {
@@ -1035,8 +1035,8 @@ LABEL_6:
   {
     [(SFAppleIDIdentity *)self intermediateCertificatePersistentReference];
     objc_claimAutoreleasedReturnValue();
-    v22 = [OUTLINED_FUNCTION_3_2() intermediateCertificatePersistentReference];
-    v23 = OUTLINED_FUNCTION_1(v22);
+    intermediateCertificatePersistentReference = [OUTLINED_FUNCTION_3_2() intermediateCertificatePersistentReference];
+    v23 = OUTLINED_FUNCTION_1(intermediateCertificatePersistentReference);
 
     if (!v23)
     {
@@ -1057,8 +1057,8 @@ LABEL_6:
   {
     [(SFAppleIDIdentity *)self lastValidationAttemptDate];
     objc_claimAutoreleasedReturnValue();
-    v24 = [OUTLINED_FUNCTION_3_2() lastValidationAttemptDate];
-    v25 = OUTLINED_FUNCTION_1(v24);
+    lastValidationAttemptDate = [OUTLINED_FUNCTION_3_2() lastValidationAttemptDate];
+    v25 = OUTLINED_FUNCTION_1(lastValidationAttemptDate);
 
     if (!v25)
     {
@@ -1079,8 +1079,8 @@ LABEL_6:
   {
     [(SFAppleIDIdentity *)self lastValidationDate];
     objc_claimAutoreleasedReturnValue();
-    v26 = [OUTLINED_FUNCTION_3_2() lastValidationDate];
-    v27 = OUTLINED_FUNCTION_1(v26);
+    lastValidationDate = [OUTLINED_FUNCTION_3_2() lastValidationDate];
+    v27 = OUTLINED_FUNCTION_1(lastValidationDate);
 
     if (!v27)
     {
@@ -1088,8 +1088,8 @@ LABEL_6:
     }
   }
 
-  v28 = [(SFAppleIDIdentity *)self linkedToCurrentUser];
-  if (v28 != [(SFAppleIDIdentity *)v8 linkedToCurrentUser])
+  linkedToCurrentUser = [(SFAppleIDIdentity *)self linkedToCurrentUser];
+  if (linkedToCurrentUser != [(SFAppleIDIdentity *)identityCopy linkedToCurrentUser])
   {
 LABEL_45:
     v33 = 0;
@@ -1109,8 +1109,8 @@ LABEL_45:
   {
     [(SFAppleIDIdentity *)self modificationDate];
     objc_claimAutoreleasedReturnValue();
-    v29 = [OUTLINED_FUNCTION_3_2() modificationDate];
-    v30 = OUTLINED_FUNCTION_1(v29);
+    modificationDate = [OUTLINED_FUNCTION_3_2() modificationDate];
+    v30 = OUTLINED_FUNCTION_1(modificationDate);
 
     if (!v30)
     {
@@ -1131,8 +1131,8 @@ LABEL_45:
   {
     [(SFAppleIDIdentity *)self serialNumber];
     objc_claimAutoreleasedReturnValue();
-    v31 = [OUTLINED_FUNCTION_3_2() serialNumber];
-    v32 = OUTLINED_FUNCTION_1(v31);
+    serialNumber = [OUTLINED_FUNCTION_3_2() serialNumber];
+    v32 = OUTLINED_FUNCTION_1(serialNumber);
 
     if (!v32)
     {
@@ -1154,8 +1154,8 @@ LABEL_45:
   {
     [(SFAppleIDIdentity *)self privateKeyPersistentReference];
     objc_claimAutoreleasedReturnValue();
-    v35 = [OUTLINED_FUNCTION_3_2() privateKeyPersistentReference];
-    v33 = OUTLINED_FUNCTION_1(v35);
+    privateKeyPersistentReference = [OUTLINED_FUNCTION_3_2() privateKeyPersistentReference];
+    v33 = OUTLINED_FUNCTION_1(privateKeyPersistentReference);
   }
 
 LABEL_46:
@@ -1269,22 +1269,22 @@ LABEL_46:
 
 - (__SecIdentity)copyIdentity
 {
-  v3 = [(SFAppleIDIdentity *)self copyCertificate];
-  if (!v3)
+  copyCertificate = [(SFAppleIDIdentity *)self copyCertificate];
+  if (!copyCertificate)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = [(SFAppleIDIdentity *)self copyPrivateKey];
-  if (v5)
+  v4 = copyCertificate;
+  copyPrivateKey = [(SFAppleIDIdentity *)self copyPrivateKey];
+  if (copyPrivateKey)
   {
-    v6 = v5;
+    v6 = copyPrivateKey;
     v7 = *MEMORY[0x1E695E480];
     v8 = SecIdentityCreate();
     if (!v8 && gLogCategory_SFAppleIDIdentity <= 60 && (gLogCategory_SFAppleIDIdentity != -1 || _LogCategory_Initialize()))
     {
-      v10 = [(SFAppleIDIdentity *)self appleID];
+      appleID = [(SFAppleIDIdentity *)self appleID];
       LogPrintF();
     }
 
@@ -1305,15 +1305,15 @@ LABEL_46:
 {
   v5 = 201234;
   cf = 0;
-  v6 = [(SFAppleIDIdentity *)self copyCertificate];
-  if (!v6)
+  copyCertificate = [(SFAppleIDIdentity *)self copyCertificate];
+  if (!copyCertificate)
   {
     OUTLINED_FUNCTION_6_3();
     v5 = 201203;
     goto LABEL_33;
   }
 
-  v7 = v6;
+  v7 = copyCertificate;
   if (![(SFAppleIDIdentity *)self copyPrivateKey])
   {
     CFRelease(v7);
@@ -1464,7 +1464,7 @@ LABEL_33:
 {
   if (gLogCategory_SFAppleIDIdentity <= 60 && (gLogCategory_SFAppleIDIdentity != -1 || _LogCategory_Initialize()))
   {
-    v6 = [a1 appleID];
+    appleID = [self appleID];
     LogPrintF();
   }
 
@@ -1474,17 +1474,17 @@ LABEL_33:
 
 - (void)certificateExpired
 {
-  v13 = [a1 appleID];
-  v2 = [a1 certificateExpirationDate];
-  OUTLINED_FUNCTION_7_0(v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13);
+  appleID = [self appleID];
+  certificateExpirationDate = [self certificateExpirationDate];
+  OUTLINED_FUNCTION_7_0(certificateExpirationDate, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, appleID);
   LogPrintF();
 }
 
 - (void)intermediateCertificateExpired
 {
-  v13 = [a1 appleID];
-  v2 = [a1 intermediateCertificateExpirationDate];
-  OUTLINED_FUNCTION_7_0(v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13);
+  appleID = [self appleID];
+  intermediateCertificateExpirationDate = [self intermediateCertificateExpirationDate];
+  OUTLINED_FUNCTION_7_0(intermediateCertificateExpirationDate, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, appleID);
   LogPrintF();
 }
 
@@ -1506,13 +1506,13 @@ LABEL_33:
 
 - (void)isInvalid
 {
-  v1 = [a1 appleID];
+  appleID = [self appleID];
   LogPrintF();
 }
 
 - (void)needsRenewal
 {
-  v1 = [a1 appleID];
+  appleID = [self appleID];
   LogPrintF();
 }
 

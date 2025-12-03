@@ -1,42 +1,42 @@
 @interface VCPFaceShapeModel
-- (BOOL)fitOneImage:(float *)a3;
+- (BOOL)fitOneImage:(float *)image;
 - (BOOL)isIdentityInit;
-- (BOOL)optimizeProjectionMatrix:(int)a3 tracking:(BOOL)a4 firstPass:(BOOL)a5;
-- (BOOL)trackFaceMesh:(float *)a3;
-- (VCPFaceShapeModel)initWithMode:(int)a3;
+- (BOOL)optimizeProjectionMatrix:(int)matrix tracking:(BOOL)tracking firstPass:(BOOL)pass;
+- (BOOL)trackFaceMesh:(float *)mesh;
+- (VCPFaceShapeModel)initWithMode:(int)mode;
 - (__n64)getPose;
 - (id)blendShapes;
-- (int)setCameraIntrinsics:(float)a3 uc:(float)a4 vc:(float)a5;
-- (int)setupModel:(int)a3;
+- (int)setCameraIntrinsics:(float)intrinsics uc:(float)uc vc:(float)vc;
+- (int)setupModel:(int)model;
 - (matrix<double,)getPoseParam;
-- (void)calculateBlendshapeWeights:(float *)a3 prevWeights:(float *)a4 lmBlendshapes:(float *)a5 maxIter:(int)a6;
-- (void)calculateIdentityCoefficients:(float *)a3 extrinsicMatrix:(float *)a4 pts2D:(float *)a5 exprWeights:(float *)a6 lm3DMeanBlendshapes:(float *)a7 lm3DComponents:(float *)a8 maxIter:(int)a9;
-- (void)calculatePosePnpSolver:(int)a3;
+- (void)calculateBlendshapeWeights:(float *)weights prevWeights:(float *)prevWeights lmBlendshapes:(float *)blendshapes maxIter:(int)iter;
+- (void)calculateIdentityCoefficients:(float *)coefficients extrinsicMatrix:(float *)matrix pts2D:(float *)d exprWeights:(float *)weights lm3DMeanBlendshapes:(float *)blendshapes lm3DComponents:(float *)components maxIter:(int)iter;
+- (void)calculatePosePnpSolver:(int)solver;
 - (void)dealloc;
-- (void)getEulerAngle:(float *)a3;
-- (void)getInternal3dLandmarksCoordinates:(const float *)a3 lm3dPos:(float *)a4;
-- (void)getOneInternalLandmarkCoordinates:(const float *)a3 lmCoord:(const int *)a4 lmWeight:(const float *)a5 lm3dPos:(float *)a6;
-- (void)moveBoundaryLandmarks:(const float *)a3 output:(float *)a4 isInput:(BOOL)a5;
-- (void)project3Dto2D:(float *)a3 intrinsinc:(float *)a4 extrinsic:(float *)a5 numVert:(int)a6 out2dpts:(float *)a7;
+- (void)getEulerAngle:(float *)angle;
+- (void)getInternal3dLandmarksCoordinates:(const float *)coordinates lm3dPos:(float *)pos;
+- (void)getOneInternalLandmarkCoordinates:(const float *)coordinates lmCoord:(const int *)coord lmWeight:(const float *)weight lm3dPos:(float *)pos;
+- (void)moveBoundaryLandmarks:(const float *)landmarks output:(float *)output isInput:(BOOL)input;
+- (void)project3Dto2D:(float *)d intrinsinc:(float *)intrinsinc extrinsic:(float *)extrinsic numVert:(int)vert out2dpts:(float *)out2dpts;
 - (void)projectAndUpdateBoundary;
 - (void)reestimateProjectionMatrixPnP;
 - (void)resetIdentityAndExpressions;
-- (void)updateBoundary3dLandmarkBlendshapes:(const float *)a3 numBlendshapes:(int)a4 pts2D:(const float *)a5 lm2D:(const float *)a6 lmBlendshapes:(float *)a7;
-- (void)updateBoundaryLandmarkCoordinates:(const float *)a3 pts2D:(const float *)a4 lm2D:(const float *)a5 lm3dPos:(float *)a6;
+- (void)updateBoundary3dLandmarkBlendshapes:(const float *)blendshapes numBlendshapes:(int)numBlendshapes pts2D:(const float *)d lm2D:(const float *)lm2D lmBlendshapes:(float *)lmBlendshapes;
+- (void)updateBoundaryLandmarkCoordinates:(const float *)coordinates pts2D:(const float *)d lm2D:(const float *)lm2D lm3dPos:(float *)pos;
 - (void)updateBoundaryLmForShapeOptimization;
-- (void)updateFocalLengthInPixels:(float)a3;
-- (void)updateIdentityShape:(float *)a3;
-- (void)updateIntrinsic:(float)a3 vc:(float)a4;
+- (void)updateFocalLengthInPixels:(float)pixels;
+- (void)updateIdentityShape:(float *)shape;
+- (void)updateIntrinsic:(float)intrinsic vc:(float)vc;
 - (void)updateMeshAndLm3dAfterExpressionChange;
 - (void)updateMeshVertices;
-- (void)updateShapeCoeff:(float *)a3 extrinsicMatrix:(float *)a4 pts2D:(float *)a5 exprWeights:(float *)a6 outputblendshapes:(float *)a7;
+- (void)updateShapeCoeff:(float *)coeff extrinsicMatrix:(float *)matrix pts2D:(float *)d exprWeights:(float *)weights outputblendshapes:(float *)outputblendshapes;
 @end
 
 @implementation VCPFaceShapeModel
 
-- (VCPFaceShapeModel)initWithMode:(int)a3
+- (VCPFaceShapeModel)initWithMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v9.receiver = self;
   v9.super_class = VCPFaceShapeModel;
   v4 = [(VCPFaceShapeModel *)&v9 init];
@@ -66,12 +66,12 @@
   return self->_identityInit;
 }
 
-- (int)setCameraIntrinsics:(float)a3 uc:(float)a4 vc:(float)a5
+- (int)setCameraIntrinsics:(float)intrinsics uc:(float)uc vc:(float)vc
 {
-  *&intrinsic_matrix = a3;
-  *(&intrinsic_matrix + 2) = a4;
-  dword_1EC42FEE0 = LODWORD(a3);
-  dword_1EC42FEE4 = LODWORD(a5);
+  *&intrinsic_matrix = intrinsics;
+  *(&intrinsic_matrix + 2) = uc;
+  dword_1EC42FEE0 = LODWORD(intrinsics);
+  dword_1EC42FEE4 = LODWORD(vc);
   v6 = *&dword_1EC42FEE0;
   *self->_intrinsicMatrix = intrinsic_matrix;
   *&self->_intrinsicMatrix[4] = v6;
@@ -95,21 +95,21 @@
   }
 }
 
-- (void)updateIntrinsic:(float)a3 vc:(float)a4
+- (void)updateIntrinsic:(float)intrinsic vc:(float)vc
 {
-  *(&intrinsic_matrix + 2) = a3;
-  dword_1EC42FEE4 = LODWORD(a4);
-  self->_intrinsicMatrix[2] = a3;
-  self->_intrinsicMatrix[5] = a4;
+  *(&intrinsic_matrix + 2) = intrinsic;
+  dword_1EC42FEE4 = LODWORD(vc);
+  self->_intrinsicMatrix[2] = intrinsic;
+  self->_intrinsicMatrix[5] = vc;
   [VCPPnPSolver updateIntrinsic:"updateIntrinsic:vc:" vc:?];
 }
 
-- (void)updateFocalLengthInPixels:(float)a3
+- (void)updateFocalLengthInPixels:(float)pixels
 {
-  dword_1EC42FEE0 = LODWORD(a3);
-  *&intrinsic_matrix = a3;
-  self->_intrinsicMatrix[4] = a3;
-  self->_intrinsicMatrix[0] = a3;
+  dword_1EC42FEE0 = LODWORD(pixels);
+  *&intrinsic_matrix = pixels;
+  self->_intrinsicMatrix[4] = pixels;
+  self->_intrinsicMatrix[0] = pixels;
   poseSolver = self->_poseSolver;
   if (poseSolver)
   {
@@ -117,23 +117,23 @@
   }
 }
 
-- (int)setupModel:(int)a3
+- (int)setupModel:(int)model
 {
-  self->_processingMode = a3;
-  v4 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v5 = [v4 resourceURL];
+  self->_processingMode = model;
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v78 = [MEMORY[0x1E695DFF8] URLWithString:@"face_model_tensor.dat" relativeToURL:v5];
-  v6 = [v78 path];
-  v7 = fopen([v6 UTF8String], "rb");
+  v78 = [MEMORY[0x1E695DFF8] URLWithString:@"face_model_tensor.dat" relativeToURL:resourceURL];
+  path = [v78 path];
+  v7 = fopen([path UTF8String], "rb");
 
-  v8 = [MEMORY[0x1E695DFF8] URLWithString:@"face_model_landmark_coordinates.dat" relativeToURL:v5];
-  v9 = [v8 path];
-  v10 = fopen([v9 UTF8String], "rb");
+  v8 = [MEMORY[0x1E695DFF8] URLWithString:@"face_model_landmark_coordinates.dat" relativeToURL:resourceURL];
+  path2 = [v8 path];
+  v10 = fopen([path2 UTF8String], "rb");
 
-  v11 = [MEMORY[0x1E695DFF8] URLWithString:@"face_model_boundary.dat" relativeToURL:v5];
-  v12 = [v11 path];
-  v13 = fopen([v12 UTF8String], "rb");
+  v11 = [MEMORY[0x1E695DFF8] URLWithString:@"face_model_boundary.dat" relativeToURL:resourceURL];
+  path3 = [v11 path];
+  v13 = fopen([path3 UTF8String], "rb");
 
   v14 = -23;
   if (v7 && v10 && v13)
@@ -666,34 +666,34 @@ LABEL_77:
   [(VCPFaceShapeModel *)&v25 dealloc];
 }
 
-- (void)getEulerAngle:(float *)a3
+- (void)getEulerAngle:(float *)angle
 {
   v3 = *self->_eulerAngle;
-  a3[2] = self->_eulerAngle[2];
-  *a3 = v3;
-  v4 = dbl_1C9F614D0[a3[2] < 0.0] + a3[2];
-  a3[2] = v4;
+  angle[2] = self->_eulerAngle[2];
+  *angle = v3;
+  v4 = dbl_1C9F614D0[angle[2] < 0.0] + angle[2];
+  angle[2] = v4;
 }
 
-- (void)project3Dto2D:(float *)a3 intrinsinc:(float *)a4 extrinsic:(float *)a5 numVert:(int)a6 out2dpts:(float *)a7
+- (void)project3Dto2D:(float *)d intrinsinc:(float *)intrinsinc extrinsic:(float *)extrinsic numVert:(int)vert out2dpts:(float *)out2dpts
 {
-  LODWORD(v8) = a6;
+  LODWORD(v8) = vert;
   v18 = *MEMORY[0x1E69E9840];
-  matrix_multiplication(a4, a5, __C, 3, 3, 4);
+  matrix_multiplication(intrinsinc, extrinsic, __C, 3, 3, 4);
   if (v8 >= 1)
   {
     v8 = v8;
     do
     {
-      __B = *a3;
-      v16 = *(a3 + 2);
+      __B = *d;
+      v16 = *(d + 2);
       v17 = 1065353216;
       matrix_multiplication(__C, &__B, &v13, 3, 4, 1);
       v10 = &v14;
       v11 = vld1_dup_f32(v10);
-      *a7 = vdiv_f32(v13, v11);
-      a7 += 2;
-      a3 += 3;
+      *out2dpts = vdiv_f32(v13, v11);
+      out2dpts += 2;
+      d += 3;
       --v8;
     }
 
@@ -701,23 +701,23 @@ LABEL_77:
   }
 }
 
-- (void)getOneInternalLandmarkCoordinates:(const float *)a3 lmCoord:(const int *)a4 lmWeight:(const float *)a5 lm3dPos:(float *)a6
+- (void)getOneInternalLandmarkCoordinates:(const float *)coordinates lmCoord:(const int *)coord lmWeight:(const float *)weight lm3dPos:(float *)pos
 {
   v6 = 0;
   v13 = *MEMORY[0x1E69E9840];
-  v11 = *a4;
-  v12 = a4[2];
-  v9 = *a5;
-  v10 = *(a5 + 2);
+  v11 = *coord;
+  v12 = coord[2];
+  v9 = *weight;
+  v10 = *(weight + 2);
   do
   {
     v7 = 0;
-    a6[v6] = 0.0;
+    pos[v6] = 0.0;
     v8 = 0.0;
     do
     {
-      v8 = v8 + (a3[3 * *(&v11 + v7) + v6] * *(&v9 + v7));
-      a6[v6] = v8;
+      v8 = v8 + (coordinates[3 * *(&v11 + v7) + v6] * *(&v9 + v7));
+      pos[v6] = v8;
       v7 += 4;
     }
 
@@ -728,7 +728,7 @@ LABEL_77:
   while (v6 != 3);
 }
 
-- (void)updateBoundaryLandmarkCoordinates:(const float *)a3 pts2D:(const float *)a4 lm2D:(const float *)a5 lm3dPos:(float *)a6
+- (void)updateBoundaryLandmarkCoordinates:(const float *)coordinates pts2D:(const float *)d lm2D:(const float *)lm2D lm3dPos:(float *)pos
 {
   v16[1] = *MEMORY[0x1E69E9840];
   if (!self->_boundaryLmUpdated)
@@ -742,7 +742,7 @@ LABEL_77:
       v11 = v7 + 8;
       do
       {
-        *(v11 - 1) = *&a4[2 * boundaryVertices[v9]];
+        *(v11 - 1) = *&d[2 * boundaryVertices[v9]];
         *v11 = v9;
         v11 += 3;
         ++v9;
@@ -759,8 +759,8 @@ LABEL_77:
     v12 = 0;
     do
     {
-      v13 = &a6[3 * v12 + 3 * self->_numInternalLms];
-      v14 = &a3[3 * self->_boundaryLmIndices[v12]];
+      v13 = &pos[3 * v12 + 3 * self->_numInternalLms];
+      v14 = &coordinates[3 * self->_boundaryLmIndices[v12]];
       v15 = *v14;
       v13[2] = v14[2];
       *v13 = v15;
@@ -771,7 +771,7 @@ LABEL_77:
   }
 }
 
-- (void)getInternal3dLandmarksCoordinates:(const float *)a3 lm3dPos:(float *)a4
+- (void)getInternal3dLandmarksCoordinates:(const float *)coordinates lm3dPos:(float *)pos
 {
   if (self->_numInternalLms >= 1)
   {
@@ -787,9 +787,9 @@ LABEL_77:
     v16 = 0;
     do
     {
-      [(VCPFaceShapeModel *)self getOneInternalLandmarkCoordinates:a3 lmCoord:&self->_lmCoord[v15] lmWeight:&self->_lmWeight[v15] lm3dPos:a4, v17, v18, v19, v20, v21, v22, v23, v24];
+      [(VCPFaceShapeModel *)self getOneInternalLandmarkCoordinates:coordinates lmCoord:&self->_lmCoord[v15] lmWeight:&self->_lmWeight[v15] lm3dPos:pos, v17, v18, v19, v20, v21, v22, v23, v24];
       ++v16;
-      a4 += 3;
+      pos += 3;
       v15 += 3;
     }
 
@@ -797,9 +797,9 @@ LABEL_77:
   }
 }
 
-- (void)updateBoundary3dLandmarkBlendshapes:(const float *)a3 numBlendshapes:(int)a4 pts2D:(const float *)a5 lm2D:(const float *)a6 lmBlendshapes:(float *)a7
+- (void)updateBoundary3dLandmarkBlendshapes:(const float *)blendshapes numBlendshapes:(int)numBlendshapes pts2D:(const float *)d lm2D:(const float *)lm2D lmBlendshapes:(float *)lmBlendshapes
 {
-  if (a4 >= 1)
+  if (numBlendshapes >= 1)
   {
     v20 = v12;
     v21 = v11;
@@ -809,54 +809,54 @@ LABEL_77:
     v25 = v7;
     v26 = v13;
     v27 = v14;
-    v17 = a4;
+    numBlendshapesCopy = numBlendshapes;
     do
     {
-      [(VCPFaceShapeModel *)self updateBoundaryLandmarkCoordinates:a3 pts2D:self->_cur2D lm2D:a6 lm3dPos:a7, v20, v21, v22, v23, v24, v25, v26, v27];
-      a3 += 3 * self->_numVertices;
-      a7 += 189;
-      --v17;
+      [(VCPFaceShapeModel *)self updateBoundaryLandmarkCoordinates:blendshapes pts2D:self->_cur2D lm2D:lm2D lm3dPos:lmBlendshapes, v20, v21, v22, v23, v24, v25, v26, v27];
+      blendshapes += 3 * self->_numVertices;
+      lmBlendshapes += 189;
+      --numBlendshapesCopy;
     }
 
-    while (v17);
+    while (numBlendshapesCopy);
   }
 }
 
-- (void)moveBoundaryLandmarks:(const float *)a3 output:(float *)a4 isInput:(BOOL)a5
+- (void)moveBoundaryLandmarks:(const float *)landmarks output:(float *)output isInput:(BOOL)input
 {
-  v5 = a5;
-  memcpy(a4, a3, 0x140uLL);
-  if (v5)
+  inputCopy = input;
+  memcpy(output, landmarks, 0x140uLL);
+  if (inputCopy)
   {
-    v9 = *(a3 + 106);
-    *(a4 + 20) = *(a3 + 102);
-    *(a4 + 21) = v9;
-    v10 = *(a3 + 110);
-    v11 = *(a3 + 114);
-    v12 = *(a3 + 122);
-    *(a4 + 24) = *(a3 + 118);
-    *(a4 + 25) = v12;
-    *(a4 + 22) = v10;
-    *(a4 + 23) = v11;
-    v13 = &a4[2 * self->_numInternalLms];
+    v9 = *(landmarks + 106);
+    *(output + 20) = *(landmarks + 102);
+    *(output + 21) = v9;
+    v10 = *(landmarks + 110);
+    v11 = *(landmarks + 114);
+    v12 = *(landmarks + 122);
+    *(output + 24) = *(landmarks + 118);
+    *(output + 25) = v12;
+    *(output + 22) = v10;
+    *(output + 23) = v11;
+    v13 = &output[2 * self->_numInternalLms];
     v14 = 8 * self->_numBoundaryLms;
 
-    memcpy(v13, a3 + 80, v14);
+    memcpy(v13, landmarks + 80, v14);
   }
 
   else
   {
-    memcpy(a4 + 80, &a3[2 * self->_numInternalLms], 8 * self->_numBoundaryLms);
-    v15 = *(a3 + 21);
-    *(a4 + 102) = *(a3 + 20);
-    *(a4 + 106) = v15;
-    v16 = *(a3 + 25);
-    v18 = *(a3 + 22);
-    v17 = *(a3 + 23);
-    *(a4 + 118) = *(a3 + 24);
-    *(a4 + 122) = v16;
-    *(a4 + 110) = v18;
-    *(a4 + 114) = v17;
+    memcpy(output + 80, &landmarks[2 * self->_numInternalLms], 8 * self->_numBoundaryLms);
+    v15 = *(landmarks + 21);
+    *(output + 102) = *(landmarks + 20);
+    *(output + 106) = v15;
+    v16 = *(landmarks + 25);
+    v18 = *(landmarks + 22);
+    v17 = *(landmarks + 23);
+    *(output + 118) = *(landmarks + 24);
+    *(output + 122) = v16;
+    *(output + 110) = v18;
+    *(output + 114) = v17;
   }
 }
 
@@ -908,7 +908,7 @@ LABEL_77:
   *&self->_eulerAngle[1] = 0;
 }
 
-- (void)updateIdentityShape:(float *)a3
+- (void)updateIdentityShape:(float *)shape
 {
   if (fabsf(self->_eulerAngle[0]) <= 20.0)
   {
@@ -923,7 +923,7 @@ LABEL_77:
       v7 = *&self->_extrinsicMatrix[8];
       *&self->_asyncExtMat[4] = *&self->_extrinsicMatrix[4];
       *&self->_asyncExtMat[8] = v7;
-      memcpy(self->_asyncLm2d, a3, sizeof(self->_asyncLm2d));
+      memcpy(self->_asyncLm2d, shape, sizeof(self->_asyncLm2d));
       curExprWeights = self->_curExprWeights;
       *self->_asyncWeights = *curExprWeights;
       v9 = *(curExprWeights + 4);
@@ -981,9 +981,9 @@ void *__41__VCPFaceShapeModel_updateIdentityShape___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)trackFaceMesh:(float *)a3
+- (BOOL)trackFaceMesh:(float *)mesh
 {
-  [(VCPFaceShapeModel *)self moveBoundaryLandmarks:a3 output:self->_LM2D isInput:1];
+  [(VCPFaceShapeModel *)self moveBoundaryLandmarks:mesh output:self->_LM2D isInput:1];
   [(VCPFaceTensorModel *)self->_tensorModel calculateMesh:self->_curExprWeights numVertices:self->_numVertices blendshapes:self->_curBlendshapes outputMesh:self->_curMesh];
   [(VCPFaceShapeModel *)self projectAndUpdateBoundary];
   v5 = [(VCPFaceShapeModel *)self optimizeProjectionMatrix:2 tracking:1 firstPass:1];
@@ -1024,19 +1024,19 @@ void *__41__VCPFaceShapeModel_updateIdentityShape___block_invoke(uint64_t a1)
     [(VCPFaceShapeModel *)self optimizeProjectionMatrix:1 tracking:1 firstPass:0];
     [(VCPFaceShapeModel *)self projectAndUpdateBoundary];
     [(VCPFaceShapeModel *)self project3Dto2D:self->_LM3D intrinsinc:self->_intrinsicMatrix extrinsic:self->_extrinsicMatrix numVert:63 out2dpts:self->_LM2D];
-    [(VCPFaceShapeModel *)self moveBoundaryLandmarks:self->_LM2D output:a3 isInput:0];
+    [(VCPFaceShapeModel *)self moveBoundaryLandmarks:self->_LM2D output:mesh isInput:0];
     ++self->_numFrmsSinceLastShapeUpdate;
   }
 
   return v5;
 }
 
-- (void)updateShapeCoeff:(float *)a3 extrinsicMatrix:(float *)a4 pts2D:(float *)a5 exprWeights:(float *)a6 outputblendshapes:(float *)a7
+- (void)updateShapeCoeff:(float *)coeff extrinsicMatrix:(float *)matrix pts2D:(float *)d exprWeights:(float *)weights outputblendshapes:(float *)outputblendshapes
 {
   LODWORD(v10) = 5;
-  [(VCPFaceShapeModel *)self calculateIdentityCoefficients:self->_curCoeff extrinsicMatrix:a4 pts2D:a5 exprWeights:a6 lm3DMeanBlendshapes:self->_lm3dMeanBlendshapes lm3DComponents:self->_lm3dBlendshapeComponents maxIter:v10];
-  [(VCPFaceTensorModel *)self->_tensorModel calculateModelBlendshapes:self->_curCoeff outputBlendshapes:a7];
-  CalculateBlendshapes(self->_curCoeff, self->_transformedCoeff, self->_blendShapeDelta, 63, 501, 52, [(VCPFaceTensorModel *)self->_tensorModel tensorCoeff], self->_lm3dMeanBlendshapes, self->_lm3dBlendshapeComponents, [(VCPFaceTensorModel *)self->_tensorModel blendshapeComponentIndex], a3);
+  [(VCPFaceShapeModel *)self calculateIdentityCoefficients:self->_curCoeff extrinsicMatrix:matrix pts2D:d exprWeights:weights lm3DMeanBlendshapes:self->_lm3dMeanBlendshapes lm3DComponents:self->_lm3dBlendshapeComponents maxIter:v10];
+  [(VCPFaceTensorModel *)self->_tensorModel calculateModelBlendshapes:self->_curCoeff outputBlendshapes:outputblendshapes];
+  CalculateBlendshapes(self->_curCoeff, self->_transformedCoeff, self->_blendShapeDelta, 63, 501, 52, [(VCPFaceTensorModel *)self->_tensorModel tensorCoeff], self->_lm3dMeanBlendshapes, self->_lm3dBlendshapeComponents, [(VCPFaceTensorModel *)self->_tensorModel blendshapeComponentIndex], coeff);
   self->_identityInit = 1;
 }
 
@@ -1044,11 +1044,11 @@ void *__41__VCPFaceShapeModel_updateIdentityShape___block_invoke(uint64_t a1)
 {
   [(VCPFaceShapeModel *)self updateBoundary3dLandmarkBlendshapes:[(VCPFaceTensorModel *)self->_tensorModel meanBlendshape] numBlendshapes:52 pts2D:self->_cur2D lm2D:self->_LM2D lmBlendshapes:self->_lm3dMeanBlendshapes];
   [(VCPFaceShapeModel *)self updateBoundary3dLandmarkBlendshapes:self->_curBlendshapes numBlendshapes:52 pts2D:self->_cur2D lm2D:self->_LM2D lmBlendshapes:self->_lm3dBlendshapes];
-  v3 = [(VCPFaceTensorModel *)self->_tensorModel componentsBlendshape];
+  componentsBlendshape = [(VCPFaceTensorModel *)self->_tensorModel componentsBlendshape];
   cur2D = self->_cur2D;
   lm3dBlendshapeComponents = self->_lm3dBlendshapeComponents;
 
-  [(VCPFaceShapeModel *)self updateBoundary3dLandmarkBlendshapes:v3 numBlendshapes:501 pts2D:cur2D lm2D:self->_LM2D lmBlendshapes:lm3dBlendshapeComponents];
+  [(VCPFaceShapeModel *)self updateBoundary3dLandmarkBlendshapes:componentsBlendshape numBlendshapes:501 pts2D:cur2D lm2D:self->_LM2D lmBlendshapes:lm3dBlendshapeComponents];
 }
 
 - (void)reestimateProjectionMatrixPnP
@@ -1059,10 +1059,10 @@ void *__41__VCPFaceShapeModel_updateIdentityShape___block_invoke(uint64_t a1)
   [(VCPFaceShapeModel *)self calculatePosePnpSolver:63];
 }
 
-- (BOOL)fitOneImage:(float *)a3
+- (BOOL)fitOneImage:(float *)image
 {
   ++self->_detectionModeCounterShapeModel;
-  [(VCPFaceShapeModel *)self moveBoundaryLandmarks:a3 output:self->_LM2D isInput:1];
+  [(VCPFaceShapeModel *)self moveBoundaryLandmarks:image output:self->_LM2D isInput:1];
   detectionModeCounterShapeModel = self->_detectionModeCounterShapeModel;
   if (detectionModeCounterShapeModel > 3)
   {
@@ -1147,17 +1147,17 @@ LABEL_12:
   return v5;
 }
 
-- (void)calculateBlendshapeWeights:(float *)a3 prevWeights:(float *)a4 lmBlendshapes:(float *)a5 maxIter:(int)a6
+- (void)calculateBlendshapeWeights:(float *)weights prevWeights:(float *)prevWeights lmBlendshapes:(float *)blendshapes maxIter:(int)iter
 {
   v7 = *MEMORY[0x1E69E9840];
   matrix_multiplication(self->_intrinsicMatrix, self->_extrinsicMatrix, __C, 3, 3, 4);
   operator new();
 }
 
-- (void)calculateIdentityCoefficients:(float *)a3 extrinsicMatrix:(float *)a4 pts2D:(float *)a5 exprWeights:(float *)a6 lm3DMeanBlendshapes:(float *)a7 lm3DComponents:(float *)a8 maxIter:(int)a9
+- (void)calculateIdentityCoefficients:(float *)coefficients extrinsicMatrix:(float *)matrix pts2D:(float *)d exprWeights:(float *)weights lm3DMeanBlendshapes:(float *)blendshapes lm3DComponents:(float *)components maxIter:(int)iter
 {
   v17 = *MEMORY[0x1E69E9840];
-  matrix_multiplication(self->_intrinsicMatrix, a4, __C, 3, 3, 4);
+  matrix_multiplication(self->_intrinsicMatrix, matrix, __C, 3, 3, 4);
   bzero(self->_exprWeightDiagMatrix, 0xF51E4uLL);
   v11 = 0;
   v12 = 0;
@@ -1165,7 +1165,7 @@ LABEL_12:
   {
     if (v11)
     {
-      v13 = a6[v11 - 1];
+      v13 = weights[v11 - 1];
     }
 
     else
@@ -1209,16 +1209,16 @@ LABEL_12:
   return self;
 }
 
-- (BOOL)optimizeProjectionMatrix:(int)a3 tracking:(BOOL)a4 firstPass:(BOOL)a5
+- (BOOL)optimizeProjectionMatrix:(int)matrix tracking:(BOOL)tracking firstPass:(BOOL)pass
 {
   v6 = *MEMORY[0x1E69E9840];
   [(VCPFaceShapeModel *)self getPoseParam];
   operator new();
 }
 
-- (void)calculatePosePnpSolver:(int)a3
+- (void)calculatePosePnpSolver:(int)solver
 {
-  if (![(VCPPnPSolver *)self->_poseSolver estimateExtrinsicsWith:self->_LM2D andPoints3D:self->_LM3D andNumPoints:*&a3])
+  if (![(VCPPnPSolver *)self->_poseSolver estimateExtrinsicsWith:self->_LM2D andPoints3D:self->_LM3D andNumPoints:*&solver])
   {
     [(VCPPnPSolver *)self->_poseSolver pose];
     self->_extrinsicMatrix[0] = v4;
@@ -1257,8 +1257,8 @@ LABEL_12:
 
 - (__n64)getPose
 {
-  result.n64_u32[0] = *(a1 + 252);
-  result.n64_u32[1] = *(a1 + 268);
+  result.n64_u32[0] = *(self + 252);
+  result.n64_u32[1] = *(self + 268);
   return result;
 }
 
@@ -1266,7 +1266,7 @@ LABEL_12:
 {
   if (self->_curExprWeights)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     for (i = 0; i != 51; ++i)
     {
       v5 = VCPBlendShapeLocationFromIndex(i);
@@ -1274,17 +1274,17 @@ LABEL_12:
       {
         *&v6 = self->_curExprWeights[i];
         v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-        [v3 setObject:v7 forKeyedSubscript:v5];
+        [dictionary setObject:v7 forKeyedSubscript:v5];
       }
     }
   }
 
   else
   {
-    v3 = 0;
+    dictionary = 0;
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (void)updateMeshVertices

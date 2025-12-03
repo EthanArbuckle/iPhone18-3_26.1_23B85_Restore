@@ -1,18 +1,18 @@
 @interface ICHTTPCookieStore
 + (ICHTTPCookieStore)sharedCookieStore;
-- (BOOL)_saveCookies:(id)a3 userIdentifier:(id)a4;
-- (BOOL)removeCookiesWithProperties:(id)a3;
-- (BOOL)saveCookies:(id)a3 forURL:(id)a4;
-- (BOOL)saveCookies:(id)a3 forURL:(id)a4 userIdentifier:(id)a5;
-- (BOOL)saveGlobalAccountCookies:(id)a3 forURL:(id)a4;
+- (BOOL)_saveCookies:(id)cookies userIdentifier:(id)identifier;
+- (BOOL)removeCookiesWithProperties:(id)properties;
+- (BOOL)saveCookies:(id)cookies forURL:(id)l;
+- (BOOL)saveCookies:(id)cookies forURL:(id)l userIdentifier:(id)identifier;
+- (BOOL)saveGlobalAccountCookies:(id)cookies forURL:(id)l;
 - (ICHTTPCookieStore)init;
-- (id)_accountForUserIdentifier:(id)a3;
-- (id)_cookieDictionaryForURL:(id)a3 userIdentifier:(id)a4;
-- (id)getCookieWithName:(id)a3 userIdentifier:(id)a4;
-- (id)getCookiesForURL:(id)a3;
-- (id)getCookiesForURL:(id)a3 userIdentifier:(id)a4;
-- (id)getCookiesForUserIdentifier:(id)a3;
-- (id)getCookiesHeadersForURL:(id)a3 userIdentifier:(id)a4;
+- (id)_accountForUserIdentifier:(id)identifier;
+- (id)_cookieDictionaryForURL:(id)l userIdentifier:(id)identifier;
+- (id)getCookieWithName:(id)name userIdentifier:(id)identifier;
+- (id)getCookiesForURL:(id)l;
+- (id)getCookiesForURL:(id)l userIdentifier:(id)identifier;
+- (id)getCookiesForUserIdentifier:(id)identifier;
+- (id)getCookiesHeadersForURL:(id)l userIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)removeAllCookies;
 @end
@@ -31,13 +31,13 @@
   return v3;
 }
 
-- (BOOL)_saveCookies:(id)a3 userIdentifier:(id)a4
+- (BOOL)_saveCookies:(id)cookies userIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(ICHTTPCookieStore *)self _accountForUserIdentifier:a4];
+  cookiesCopy = cookies;
+  v7 = [(ICHTTPCookieStore *)self _accountForUserIdentifier:identifier];
   v8 = v7;
-  if (v7 && [v7 ams_addCookies:v6])
+  if (v7 && [v7 ams_addCookies:cookiesCopy])
   {
     v9 = +[ICMonitoredAccountStore sharedAccountStore];
     v14 = 0;
@@ -51,7 +51,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v16 = self;
+        selfCopy = self;
         v17 = 2114;
         v18 = v8;
         v19 = 2114;
@@ -69,19 +69,19 @@
   return v11;
 }
 
-- (id)_cookieDictionaryForURL:(id)a3 userIdentifier:(id)a4
+- (id)_cookieDictionaryForURL:(id)l userIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [(ICHTTPCookieStore *)self _accountForUserIdentifier:v7];
+  lCopy = l;
+  identifierCopy = identifier;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v9 = [(ICHTTPCookieStore *)self _accountForUserIdentifier:identifierCopy];
   v10 = v9;
   if (v9)
   {
-    if (v6)
+    if (lCopy)
     {
-      [v9 ams_cookiesForURL:v6];
+      [v9 ams_cookiesForURL:lCopy];
     }
 
     else
@@ -108,12 +108,12 @@
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
-          v17 = [v16 name];
+          name = [v16 name];
 
-          if (v17)
+          if (name)
           {
-            v18 = [v16 name];
-            [v8 setObject:v16 forKey:v18];
+            name2 = [v16 name];
+            [dictionary setObject:v16 forKey:name2];
           }
         }
 
@@ -124,17 +124,17 @@
     }
   }
 
-  return v8;
+  return dictionary;
 }
 
-- (id)_accountForUserIdentifier:(id)a3
+- (id)_accountForUserIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = +[ICMonitoredAccountStore sharedAccountStore];
-    if ([v4 longLongValue] == -1)
+    if ([identifierCopy longLongValue] == -1)
     {
       v14 = 0;
       v6 = &v14;
@@ -145,7 +145,7 @@
     {
       v13 = 0;
       v6 = &v13;
-      v7 = [v5 storeAccountForDSID:v4 error:&v13];
+      v7 = [v5 storeAccountForDSID:identifierCopy error:&v13];
     }
 
     v8 = v7;
@@ -156,9 +156,9 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2114;
-        v18 = v4;
+        v18 = identifierCopy;
         v19 = 2114;
         v20 = v9;
         _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to load account for identifier %{public}@. err=%{public}@", buf, 0x20u);
@@ -171,9 +171,9 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2114;
-        v18 = v4;
+        v18 = identifierCopy;
         _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "%{public}@: No account found for identifier %{public}@.", buf, 0x16u);
       }
     }
@@ -276,9 +276,9 @@ void __37__ICHTTPCookieStore_removeAllCookies__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)removeCookiesWithProperties:(id)a3
+- (BOOL)removeCookiesWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -288,10 +288,10 @@ void __37__ICHTTPCookieStore_removeAllCookies__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __49__ICHTTPCookieStore_removeCookiesWithProperties___block_invoke;
   block[3] = &unk_1E7BF97E8;
-  v9 = v4;
+  v9 = propertiesCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = propertiesCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -384,9 +384,9 @@ void __49__ICHTTPCookieStore_removeCookiesWithProperties___block_invoke(void *a1
   }
 }
 
-- (BOOL)saveGlobalAccountCookies:(id)a3 forURL:(id)a4
+- (BOOL)saveGlobalAccountCookies:(id)cookies forURL:(id)l
 {
-  v5 = a3;
+  cookiesCopy = cookies;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -396,10 +396,10 @@ void __49__ICHTTPCookieStore_removeCookiesWithProperties___block_invoke(void *a1
   block[1] = 3221225472;
   block[2] = __53__ICHTTPCookieStore_saveGlobalAccountCookies_forURL___block_invoke;
   block[3] = &unk_1E7BF97E8;
-  v10 = v5;
+  v10 = cookiesCopy;
   v11 = &v12;
   block[4] = self;
-  v7 = v5;
+  v7 = cookiesCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v13 + 24);
 
@@ -414,10 +414,10 @@ uint64_t __53__ICHTTPCookieStore_saveGlobalAccountCookies_forURL___block_invoke(
   return result;
 }
 
-- (BOOL)saveCookies:(id)a3 forURL:(id)a4 userIdentifier:(id)a5
+- (BOOL)saveCookies:(id)cookies forURL:(id)l userIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a5;
+  cookiesCopy = cookies;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -428,11 +428,11 @@ uint64_t __53__ICHTTPCookieStore_saveGlobalAccountCookies_forURL___block_invoke(
   v13[2] = __55__ICHTTPCookieStore_saveCookies_forURL_userIdentifier___block_invoke;
   v13[3] = &unk_1E7BF97C0;
   v13[4] = self;
-  v14 = v7;
-  v15 = v8;
+  v14 = cookiesCopy;
+  v15 = identifierCopy;
   v16 = &v17;
-  v10 = v8;
-  v11 = v7;
+  v10 = identifierCopy;
+  v11 = cookiesCopy;
   dispatch_sync(queue, v13);
   LOBYTE(queue) = *(v18 + 24);
 
@@ -447,19 +447,19 @@ uint64_t __55__ICHTTPCookieStore_saveCookies_forURL_userIdentifier___block_invok
   return result;
 }
 
-- (BOOL)saveCookies:(id)a3 forURL:(id)a4
+- (BOOL)saveCookies:(id)cookies forURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  cookiesCopy = cookies;
+  lCopy = l;
   queue = self->_queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __40__ICHTTPCookieStore_saveCookies_forURL___block_invoke;
   v12[3] = &unk_1E7BFA078;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = cookiesCopy;
+  v14 = lCopy;
+  v9 = lCopy;
+  v10 = cookiesCopy;
   dispatch_sync(queue, v12);
 
   return 1;
@@ -471,19 +471,19 @@ void __40__ICHTTPCookieStore_saveCookies_forURL___block_invoke(uint64_t a1)
   [v2 setCookies:*(a1 + 32) forURL:*(a1 + 40) mainDocumentURL:*(a1 + 40)];
 }
 
-- (id)getCookiesHeadersForURL:(id)a3 userIdentifier:(id)a4
+- (id)getCookiesHeadersForURL:(id)l userIdentifier:(id)identifier
 {
-  v4 = [(ICHTTPCookieStore *)self getCookiesForURL:a3 userIdentifier:a4];
+  v4 = [(ICHTTPCookieStore *)self getCookiesForURL:l userIdentifier:identifier];
   v5 = [MEMORY[0x1E695ABF8] requestHeaderFieldsWithCookies:v4];
 
   return v5;
 }
 
-- (id)getCookieWithName:(id)a3 userIdentifier:(id)a4
+- (id)getCookieWithName:(id)name userIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(ICHTTPCookieStore *)self getCookiesForUserIdentifier:a4];
+  nameCopy = name;
+  [(ICHTTPCookieStore *)self getCookiesForUserIdentifier:identifier];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -502,8 +502,8 @@ void __40__ICHTTPCookieStore_saveCookies_forURL___block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:v6];
+        name = [v11 name];
+        v13 = [name isEqualToString:nameCopy];
 
         if (v13)
         {
@@ -527,9 +527,9 @@ LABEL_11:
   return v8;
 }
 
-- (id)getCookiesForUserIdentifier:(id)a3
+- (id)getCookiesForUserIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -542,9 +542,9 @@ LABEL_11:
   block[2] = __49__ICHTTPCookieStore_getCookiesForUserIdentifier___block_invoke;
   block[3] = &unk_1E7BF97E8;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -575,10 +575,10 @@ void __49__ICHTTPCookieStore_getCookiesForUserIdentifier___block_invoke(uint64_t
   *(v6 + 40) = v5;
 }
 
-- (id)getCookiesForURL:(id)a3 userIdentifier:(id)a4
+- (id)getCookiesForURL:(id)l userIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -591,11 +591,11 @@ void __49__ICHTTPCookieStore_getCookiesForUserIdentifier___block_invoke(uint64_t
   v13[2] = __53__ICHTTPCookieStore_getCookiesForURL_userIdentifier___block_invoke;
   v13[3] = &unk_1E7BF97C0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = lCopy;
+  v15 = identifierCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = identifierCopy;
+  v10 = lCopy;
   dispatch_sync(queue, v13);
   v11 = v18[5];
 
@@ -668,9 +668,9 @@ void __53__ICHTTPCookieStore_getCookiesForURL_userIdentifier___block_invoke(uint
   *(v16 + 40) = v15;
 }
 
-- (id)getCookiesForURL:(id)a3
+- (id)getCookiesForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -682,9 +682,9 @@ void __53__ICHTTPCookieStore_getCookiesForURL_userIdentifier___block_invoke(uint
   v9[1] = 3221225472;
   v9[2] = __38__ICHTTPCookieStore_getCookiesForURL___block_invoke;
   v9[3] = &unk_1E7BFA430;
-  v10 = v4;
+  v10 = lCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = lCopy;
   dispatch_sync(queue, v9);
   v7 = v13[5];
 

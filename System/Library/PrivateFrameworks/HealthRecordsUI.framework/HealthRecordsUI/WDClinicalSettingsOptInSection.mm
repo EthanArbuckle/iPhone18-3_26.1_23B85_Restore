@@ -1,22 +1,22 @@
 @interface WDClinicalSettingsOptInSection
-- (id)_optInCellForTableView:(id)a3;
-- (id)_viewDataCellForTableView:(id)a3;
-- (id)cellForRow:(unint64_t)a3 table:(id)a4;
+- (id)_optInCellForTableView:(id)view;
+- (id)_viewDataCellForTableView:(id)view;
+- (id)cellForRow:(unint64_t)row table:(id)table;
 - (void)_fetchOptInStatus;
-- (void)_handleOptInSwitchChanged:(id)a3;
-- (void)_setOptInStatus:(BOOL)a3;
+- (void)_handleOptInSwitchChanged:(id)changed;
+- (void)_setOptInStatus:(BOOL)status;
 - (void)applicationWillEnterForeground;
-- (void)didSelectRow:(unint64_t)a3 representedByCell:(id)a4 withCompletion:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)didSelectRow:(unint64_t)row representedByCell:(id)cell withCompletion:(id)completion;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WDClinicalSettingsOptInSection
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WDClinicalSettingsOptInSection;
-  [(HRWDTableViewSection *)&v4 viewWillAppear:a3];
+  [(HRWDTableViewSection *)&v4 viewWillAppear:appear];
   [(WDClinicalSettingsOptInSection *)self _fetchOptInStatus];
 }
 
@@ -28,51 +28,51 @@
   [(WDClinicalSettingsOptInSection *)self _fetchOptInStatus];
 }
 
-- (id)cellForRow:(unint64_t)a3 table:(id)a4
+- (id)cellForRow:(unint64_t)row table:(id)table
 {
-  if (a3 == 1)
+  if (row == 1)
   {
-    [(WDClinicalSettingsOptInSection *)self _viewDataCellForTableView:a4];
+    [(WDClinicalSettingsOptInSection *)self _viewDataCellForTableView:table];
   }
 
   else
   {
-    [(WDClinicalSettingsOptInSection *)self _optInCellForTableView:a4];
+    [(WDClinicalSettingsOptInSection *)self _optInCellForTableView:table];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)_viewDataCellForTableView:(id)a3
+- (id)_viewDataCellForTableView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = +[WDClinicalSettingsViewAnalyticsDataCell defaultReuseIdentifier];
-  v5 = [v3 dequeueReusableCellWithIdentifier:v4];
+  v5 = [viewCopy dequeueReusableCellWithIdentifier:v4];
 
   [v5 setViewControllerClass:objc_opt_class()];
   v6 = HRLocalizedString(@"CLINICAL_ACCOUNTS_SETTINGS_VIEW_ANALYTICS_DATA");
-  v7 = [v5 textLabel];
-  [v7 setText:v6];
+  textLabel = [v5 textLabel];
+  [textLabel setText:v6];
 
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  v9 = [v5 textLabel];
-  [v9 setTextColor:v8];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  textLabel2 = [v5 textLabel];
+  [textLabel2 setTextColor:labelColor];
 
-  v10 = [v5 textLabel];
-  [v10 setTextAlignment:4];
+  textLabel3 = [v5 textLabel];
+  [textLabel3 setTextAlignment:4];
 
   [v5 setAccessoryType:1];
 
   return v5;
 }
 
-- (id)_optInCellForTableView:(id)a3
+- (id)_optInCellForTableView:(id)view
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:@"_OptInCell"];
+  v4 = [view dequeueReusableCellWithIdentifier:@"_OptInCell"];
   v5 = HRLocalizedString(@"CLINICAL_ACCOUNTS_SETTINGS_OPT_IN_SWITCH_TITLE");
-  v6 = [v4 textLabel];
-  [v6 setText:v5];
+  textLabel = [v4 textLabel];
+  [textLabel setText:v5];
 
   [v4 setSelectionStyle:0];
   v7 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
@@ -83,52 +83,52 @@
   return v4;
 }
 
-- (void)didSelectRow:(unint64_t)a3 representedByCell:(id)a4 withCompletion:(id)a5
+- (void)didSelectRow:(unint64_t)row representedByCell:(id)cell withCompletion:(id)completion
 {
-  v15 = a4;
-  v7 = a5;
+  cellCopy = cell;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v15 viewControllerClass];
-    if (v8)
+    viewControllerClass = [cellCopy viewControllerClass];
+    if (viewControllerClass)
     {
-      v9 = objc_alloc_init(v8);
+      v9 = objc_alloc_init(viewControllerClass);
       if (v9)
       {
         v10 = v9;
-        v11 = [(HRWDTableViewSection *)self delegate];
-        v12 = [v11 profile];
-        v13 = [v12 healthRecordsStore];
-        [v10 setHealthRecordsStore:v13];
+        delegate = [(HRWDTableViewSection *)self delegate];
+        profile = [delegate profile];
+        healthRecordsStore = [profile healthRecordsStore];
+        [v10 setHealthRecordsStore:healthRecordsStore];
 
-        v14 = [(HRWDTableViewSection *)self delegate];
-        [v14 pushViewController:v10];
+        delegate2 = [(HRWDTableViewSection *)self delegate];
+        [delegate2 pushViewController:v10];
       }
     }
   }
 
-  v7[2](v7, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)_handleOptInSwitchChanged:(id)a3
+- (void)_handleOptInSwitchChanged:(id)changed
 {
-  v4 = [a3 isOn];
+  isOn = [changed isOn];
 
-  [(WDClinicalSettingsOptInSection *)self _setOptInStatus:v4];
+  [(WDClinicalSettingsOptInSection *)self _setOptInStatus:isOn];
 }
 
 - (void)_fetchOptInStatus
 {
-  v3 = [(HRWDTableViewSection *)self delegate];
-  v4 = [v3 profile];
-  v5 = [v4 healthRecordsStore];
+  delegate = [(HRWDTableViewSection *)self delegate];
+  profile = [delegate profile];
+  healthRecordsStore = [profile healthRecordsStore];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__WDClinicalSettingsOptInSection__fetchOptInStatus__block_invoke;
   v6[3] = &unk_1E83DD3C8;
   v6[4] = self;
-  [v5 fetchUserHasAgreedToHealthRecordsDataSubmissionWithCompletion:v6];
+  [healthRecordsStore fetchUserHasAgreedToHealthRecordsDataSubmissionWithCompletion:v6];
 }
 
 void __51__WDClinicalSettingsOptInSection__fetchOptInStatus__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -163,7 +163,7 @@ void __51__WDClinicalSettingsOptInSection__fetchOptInStatus__block_invoke_346(ui
   [v2 reloadTable];
 }
 
-- (void)_setOptInStatus:(BOOL)a3
+- (void)_setOptInStatus:(BOOL)status
 {
   v3 = *MEMORY[0x1E69A2D60];
   v4[0] = MEMORY[0x1E69E9820];
@@ -171,8 +171,8 @@ void __51__WDClinicalSettingsOptInSection__fetchOptInStatus__block_invoke_346(ui
   v4[2] = __50__WDClinicalSettingsOptInSection__setOptInStatus___block_invoke;
   v4[3] = &unk_1E83DD3F0;
   v4[4] = self;
-  v5 = a3;
-  [MEMORY[0x1E69A2D70] setUserDidAccept:a3 currentAgreement:v3 completion:v4];
+  statusCopy = status;
+  [MEMORY[0x1E69A2D70] setUserDidAccept:status currentAgreement:v3 completion:v4];
 }
 
 void __50__WDClinicalSettingsOptInSection__setOptInStatus___block_invoke(uint64_t a1, int a2, void *a3)

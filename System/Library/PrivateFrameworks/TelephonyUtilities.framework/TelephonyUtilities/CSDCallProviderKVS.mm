@@ -1,11 +1,11 @@
 @interface CSDCallProviderKVS
 + (CSDCallProviderKVS)sharedInstance;
-- (BOOL)removeAllCallProvidersForIDSDeviceIdentifier:(id)a3;
-- (BOOL)removeCallProviderForIdentifier:(id)a3;
-- (BOOL)updateCallProvider:(id)a3 forIdentifier:(id)a4;
-- (CSDCallProviderKVS)initWithCallProviderStore:(id)a3 queue:(id)a4 currentDeviceIdentifier:(id)a5;
-- (id)fetchCallProvidersForIDSDeviceIdentifier:(id)a3;
-- (id)keyForCurrentDeviceCallProviderWithIdentifier:(id)a3;
+- (BOOL)removeAllCallProvidersForIDSDeviceIdentifier:(id)identifier;
+- (BOOL)removeCallProviderForIdentifier:(id)identifier;
+- (BOOL)updateCallProvider:(id)provider forIdentifier:(id)identifier;
+- (CSDCallProviderKVS)initWithCallProviderStore:(id)store queue:(id)queue currentDeviceIdentifier:(id)identifier;
+- (id)fetchCallProvidersForIDSDeviceIdentifier:(id)identifier;
+- (id)keyForCurrentDeviceCallProviderWithIdentifier:(id)identifier;
 - (id)unarchivedObjectClasses;
 - (void)synchronize;
 @end
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001B88C4;
   block[3] = &unk_10061A860;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006ACE60 != -1)
   {
     dispatch_once(&qword_1006ACE60, block);
@@ -29,54 +29,54 @@
   return v2;
 }
 
-- (CSDCallProviderKVS)initWithCallProviderStore:(id)a3 queue:(id)a4 currentDeviceIdentifier:(id)a5
+- (CSDCallProviderKVS)initWithCallProviderStore:(id)store queue:(id)queue currentDeviceIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  queueCopy = queue;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = CSDCallProviderKVS;
   v12 = [(CSDCallProviderKVS *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a4);
-    objc_storeStrong(&v13->_callProviderStore, a3);
-    objc_storeStrong(&v13->_currentDeviceIdsIdentifier, a5);
+    objc_storeStrong(&v12->_queue, queue);
+    objc_storeStrong(&v13->_callProviderStore, store);
+    objc_storeStrong(&v13->_currentDeviceIdsIdentifier, identifier);
     v13->_deviceSupportsPrimaryCalling = +[TUCallCapabilities supportsPrimaryCalling];
   }
 
   return v13;
 }
 
-- (BOOL)updateCallProvider:(id)a3 forIdentifier:(id)a4
+- (BOOL)updateCallProvider:(id)provider forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  identifierCopy = identifier;
   if ([(CSDCallProviderKVS *)self deviceSupportsPrimaryCalling])
   {
     v8 = sub_100004778();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v7;
+      v25 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received request to update call provider for identifier %@", buf, 0xCu);
     }
 
-    v9 = [v6 identifier];
-    v10 = [v9 isEqualToString:v7];
+    identifier = [providerCopy identifier];
+    v10 = [identifier isEqualToString:identifierCopy];
 
     if (v10)
     {
       v23 = 0;
-      v11 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v23];
+      v11 = [NSKeyedArchiver archivedDataWithRootObject:providerCopy requiringSecureCoding:1 error:&v23];
       v12 = v23;
       if (v11)
       {
-        v13 = [(CSDCallProviderKVS *)self keyForCurrentDeviceCallProviderWithIdentifier:v7];
+        v13 = [(CSDCallProviderKVS *)self keyForCurrentDeviceCallProviderWithIdentifier:identifierCopy];
         if (v13)
         {
-          v14 = [(CSDCallProviderKVS *)self queue];
+          queue = [(CSDCallProviderKVS *)self queue];
           v20[0] = _NSConcreteStackBlock;
           v20[1] = 3221225472;
           v20[2] = sub_1001B8D38;
@@ -85,13 +85,13 @@
           v21 = v11;
           v13 = v13;
           v22 = v13;
-          dispatch_sync(v14, v20);
+          dispatch_sync(queue, v20);
 
           v15 = sub_100004778();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v25 = v7;
+            v25 = identifierCopy;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Successfully updated call provider for identifier %@", buf, 0xCu);
           }
 
@@ -134,37 +134,37 @@ LABEL_20:
   return v17;
 }
 
-- (BOOL)removeCallProviderForIdentifier:(id)a3
+- (BOOL)removeCallProviderForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(CSDCallProviderKVS *)self deviceSupportsPrimaryCalling])
   {
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received request to remove call provider for identifier %@", buf, 0xCu);
     }
 
-    v6 = [(CSDCallProviderKVS *)self keyForCurrentDeviceCallProviderWithIdentifier:v4];
+    v6 = [(CSDCallProviderKVS *)self keyForCurrentDeviceCallProviderWithIdentifier:identifierCopy];
     v7 = v6 != 0;
     if (v6)
     {
-      v8 = [(CSDCallProviderKVS *)self queue];
+      queue = [(CSDCallProviderKVS *)self queue];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1001B8F80;
       v12[3] = &unk_100619D88;
       v12[4] = self;
       v13 = v6;
-      dispatch_sync(v8, v12);
+      dispatch_sync(queue, v12);
 
       v9 = sub_100004778();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v15 = v4;
+        v15 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Successfully removed call provider for identifier %@", buf, 0xCu);
       }
     }
@@ -187,48 +187,48 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)removeAllCallProvidersForIDSDeviceIdentifier:(id)a3
+- (BOOL)removeAllCallProvidersForIDSDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderKVS *)self deviceSupportsPrimaryCalling];
-  if (v5)
+  identifierCopy = identifier;
+  deviceSupportsPrimaryCalling = [(CSDCallProviderKVS *)self deviceSupportsPrimaryCalling];
+  if (deviceSupportsPrimaryCalling)
   {
-    v6 = [(CSDCallProviderKVS *)self queue];
+    queue = [(CSDCallProviderKVS *)self queue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1001B909C;
     v8[3] = &unk_100619D88;
     v8[4] = self;
-    v9 = v4;
-    dispatch_sync(v6, v8);
+    v9 = identifierCopy;
+    dispatch_sync(queue, v8);
   }
 
-  return v5;
+  return deviceSupportsPrimaryCalling;
 }
 
-- (id)fetchCallProvidersForIDSDeviceIdentifier:(id)a3
+- (id)fetchCallProvidersForIDSDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received request to fetch call provider for IDS identifier %@", buf, 0xCu);
   }
 
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [(CSDCallProviderKVS *)self queue];
+  queue = [(CSDCallProviderKVS *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B93C8;
   block[3] = &unk_100619E58;
   block[4] = self;
-  v8 = v4;
+  v8 = identifierCopy;
   v14 = v8;
   v9 = v6;
   v15 = v9;
-  dispatch_sync(v7, block);
+  dispatch_sync(queue, block);
 
   v10 = sub_100004778();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -247,32 +247,32 @@ LABEL_20:
 
 - (void)synchronize
 {
-  v3 = [(CSDCallProviderKVS *)self queue];
+  queue = [(CSDCallProviderKVS *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B96E4;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
-- (id)keyForCurrentDeviceCallProviderWithIdentifier:(id)a3
+- (id)keyForCurrentDeviceCallProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderKVS *)self currentDeviceIdsIdentifier];
-  v6 = 63 - [v5 length];
-  if ([v4 length] <= v6)
+  identifierCopy = identifier;
+  currentDeviceIdsIdentifier = [(CSDCallProviderKVS *)self currentDeviceIdsIdentifier];
+  v6 = 63 - [currentDeviceIdsIdentifier length];
+  if ([identifierCopy length] <= v6)
   {
-    v7 = v4;
+    v7 = identifierCopy;
   }
 
   else
   {
-    v7 = [v4 substringFromIndex:{objc_msgSend(v4, "length") - v6}];
+    v7 = [identifierCopy substringFromIndex:{objc_msgSend(identifierCopy, "length") - v6}];
   }
 
   v8 = v7;
-  v9 = [NSString stringWithFormat:@"%@/%@", v5, v7];
+  v9 = [NSString stringWithFormat:@"%@/%@", currentDeviceIdsIdentifier, v7];
 
   return v9;
 }

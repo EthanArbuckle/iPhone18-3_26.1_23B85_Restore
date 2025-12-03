@@ -2,8 +2,8 @@
 + (BOOL)controllerNeedsToRun;
 - (COSBuddyControllerDelegate)delegate;
 - (COSMigrationChoiceSetupController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)userTappedContinue:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)userTappedContinue:(id)continue;
 - (void)viewDidLoad;
 @end
 
@@ -29,11 +29,11 @@
     v5 = [v4 localizedStringForKey:@"CANCEL" value:&stru_10026E598 table:@"Localizable"];
     v6 = [v3 initWithTitle:v5 style:0 target:v2 action:"controllerCancelled:"];
 
-    v7 = [(COSMigrationChoiceSetupController *)v2 navigationItem];
-    [v7 setRightBarButtonItem:v6];
+    navigationItem = [(COSMigrationChoiceSetupController *)v2 navigationItem];
+    [navigationItem setRightBarButtonItem:v6];
 
-    v8 = [(COSMigrationChoiceSetupController *)v2 tableView];
-    [v8 setBouncesVertically:0];
+    tableView = [(COSMigrationChoiceSetupController *)v2 tableView];
+    [tableView setBouncesVertically:0];
   }
 
   return v2;
@@ -44,49 +44,49 @@
   v18.receiver = self;
   v18.super_class = COSMigrationChoiceSetupController;
   [(COSMigrationChoiceSetupController *)&v18 viewDidLoad];
-  v3 = [(COSMigrationChoiceSetupController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"COSMigrationChoiceSetupCellID"];
+  tableView = [(COSMigrationChoiceSetupController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"COSMigrationChoiceSetupCellID"];
 
   v4 = [COSMigrationChoiceHeaderView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(COSMigrationChoiceHeaderView *)v4 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(COSMigrationChoiceHeaderView *)v4 initWithFrame:CGRectZero.origin.x, y, width, height];
   headerView = self->_headerView;
-  self->_headerView = v8;
+  self->_headerView = height;
 
-  v10 = [[COSMigrationChoiceFooterView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height2 = [[COSMigrationChoiceFooterView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   footerView = self->_footerView;
-  self->_footerView = v10;
+  self->_footerView = height2;
 
   [(COSMigrationChoiceFooterView *)self->_footerView setUserInteractionEnabled:1];
   [(COSMigrationChoiceFooterView *)self->_footerView setDelegate:self];
-  v12 = [(COSMigrationChoiceSetupController *)self tableView];
+  tableView2 = [(COSMigrationChoiceSetupController *)self tableView];
   v13 = BPSSeparatorColor();
-  [v12 setSeparatorColor:v13];
+  [tableView2 setSeparatorColor:v13];
 
-  v14 = [(COSMigrationChoiceSetupController *)self view];
+  view = [(COSMigrationChoiceSetupController *)self view];
   v15 = +[UIColor clearColor];
-  [v14 setBackgroundColor:v15];
+  [view setBackgroundColor:v15];
 
-  v16 = [(COSMigrationChoiceSetupController *)self view];
+  view2 = [(COSMigrationChoiceSetupController *)self view];
   v17 = BPSBridgeTintColor();
-  [v16 setTintColor:v17];
+  [view2 setTintColor:v17];
 }
 
-- (void)userTappedContinue:(id)a3
+- (void)userTappedContinue:(id)continue
 {
-  v4 = [(COSMigrationChoiceDevicePickerViewCell *)self->_listCell migrationPickerView];
-  v6 = [v4 selectedMigrationDevices];
+  migrationPickerView = [(COSMigrationChoiceDevicePickerViewCell *)self->_listCell migrationPickerView];
+  selectedMigrationDevices = [migrationPickerView selectedMigrationDevices];
 
   BPSMigrateDevices();
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained buddyControllerDone:self];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:{@"COSMigrationChoiceSetupCellID", a4}];
+  v5 = [view dequeueReusableCellWithIdentifier:{@"COSMigrationChoiceSetupCellID", path}];
   objc_storeStrong(&self->_listCell, v5);
 
   return v5;

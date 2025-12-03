@@ -1,43 +1,43 @@
 @interface MPCPodcastsPlaybackIntentDataSource
-+ (BOOL)isValidInsertionIntent:(id)a3 atPosition:(int)a4 forDestination:(int64_t)a5 supportedQueueTypes:(unint64_t)a6 supportedCustomDataQueueIdentifiers:(id)a7;
-+ (BOOL)isValidReplaceIntent:(id)a3 forDestination:(int64_t)a4 supportedQueueTypes:(unint64_t)a5 supportedCustomDataQueueIdentifiers:(id)a6;
-- (void)getRemotePlaybackQueueFromIntent:(id)a3 destination:(int64_t)a4 completion:(id)a5;
-- (void)getSharedListeningTracklistFromIntent:(id)a3 withCompletion:(id)a4;
++ (BOOL)isValidInsertionIntent:(id)intent atPosition:(int)position forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers;
++ (BOOL)isValidReplaceIntent:(id)intent forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers;
+- (void)getRemotePlaybackQueueFromIntent:(id)intent destination:(int64_t)destination completion:(id)completion;
+- (void)getSharedListeningTracklistFromIntent:(id)intent withCompletion:(id)completion;
 @end
 
 @implementation MPCPodcastsPlaybackIntentDataSource
 
-+ (BOOL)isValidReplaceIntent:(id)a3 forDestination:(int64_t)a4 supportedQueueTypes:(unint64_t)a5 supportedCustomDataQueueIdentifiers:(id)a6
++ (BOOL)isValidReplaceIntent:(id)intent forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers
 {
   sub_1C6016D50();
 
   return 1;
 }
 
-+ (BOOL)isValidInsertionIntent:(id)a3 atPosition:(int)a4 forDestination:(int64_t)a5 supportedQueueTypes:(unint64_t)a6 supportedCustomDataQueueIdentifiers:(id)a7
++ (BOOL)isValidInsertionIntent:(id)intent atPosition:(int)position forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers
 {
   sub_1C6016D50();
 
   return 1;
 }
 
-- (void)getRemotePlaybackQueueFromIntent:(id)a3 destination:(int64_t)a4 completion:(id)a5
+- (void)getRemotePlaybackQueueFromIntent:(id)intent destination:(int64_t)destination completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = self;
-  sub_1C5E42A80(v9, a4, v10, v8);
+  intentCopy = intent;
+  selfCopy = self;
+  sub_1C5E42A80(intentCopy, destination, selfCopy, v8);
   _Block_release(v8);
 }
 
-- (void)getSharedListeningTracklistFromIntent:(id)a3 withCompletion:(id)a4
+- (void)getSharedListeningTracklistFromIntent:(id)intent withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_1C5E43198(v7, v8, v6);
+  intentCopy = intent;
+  selfCopy = self;
+  sub_1C5E43198(intentCopy, selfCopy, v6);
   _Block_release(v6);
 }
 

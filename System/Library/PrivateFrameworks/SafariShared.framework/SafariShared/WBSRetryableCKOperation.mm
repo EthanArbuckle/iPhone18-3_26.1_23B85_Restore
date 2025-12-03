@@ -1,11 +1,11 @@
 @interface WBSRetryableCKOperation
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
-- (BOOL)_scheduleRetryIfNeededForError:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
+- (BOOL)_scheduleRetryIfNeededForError:(id)error;
 - (CKOperationConfiguration)configuration;
 - (CKOperationGroup)group;
 - (NSString)description;
 - (OS_os_log)log;
-- (WBSRetryableCKOperation)initWithOwner:(id)a3 handlingQueue:(id)a4;
+- (WBSRetryableCKOperation)initWithOwner:(id)owner handlingQueue:(id)queue;
 - (double)timeout;
 - (id)didExceedRetryTimeout;
 - (id)didReceiveNonRetryableError;
@@ -15,30 +15,30 @@
 - (unint64_t)numberOfRetries;
 - (void)_didFinishOperation;
 - (void)_scheduleNextOperation;
-- (void)_setStatus:(int64_t)a3;
-- (void)_setUpOperation:(id)a3;
+- (void)_setStatus:(int64_t)status;
+- (void)_setUpOperation:(id)operation;
 - (void)cancel;
 - (void)dealloc;
-- (void)sentinelDidDeallocateWithContext:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setDidExceedRetryTimeout:(id)a3;
-- (void)setDidReceiveNonRetryableError:(id)a3;
-- (void)setGroup:(id)a3;
-- (void)setLog:(id)a3;
-- (void)setQualityOfService:(int64_t)a3;
-- (void)setTimeout:(double)a3;
+- (void)sentinelDidDeallocateWithContext:(id)context;
+- (void)setConfiguration:(id)configuration;
+- (void)setDidExceedRetryTimeout:(id)timeout;
+- (void)setDidReceiveNonRetryableError:(id)error;
+- (void)setGroup:(id)group;
+- (void)setLog:(id)log;
+- (void)setQualityOfService:(int64_t)service;
+- (void)setTimeout:(double)timeout;
 - (void)start;
 @end
 
 @implementation WBSRetryableCKOperation
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v4 = a3;
-  v8.receiver = a1;
+  keyCopy = key;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___WBSRetryableCKOperation;
-  v5 = objc_msgSendSuper2(&v8, sel_keyPathsForValuesAffectingValueForKey_, v4);
-  if (([v4 isEqualToString:@"isExecuting"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"isFinished"))
+  v5 = objc_msgSendSuper2(&v8, sel_keyPathsForValuesAffectingValueForKey_, keyCopy);
+  if (([keyCopy isEqualToString:@"isExecuting"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"isFinished"))
   {
     v6 = [v5 setByAddingObject:@"status"];
 
@@ -48,31 +48,31 @@
   return v5;
 }
 
-- (WBSRetryableCKOperation)initWithOwner:(id)a3 handlingQueue:(id)a4
+- (WBSRetryableCKOperation)initWithOwner:(id)owner handlingQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  ownerCopy = owner;
+  queueCopy = queue;
   v25.receiver = self;
   v25.super_class = WBSRetryableCKOperation;
   v8 = [(WBSRetryableCKOperation *)&v25 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_owner, v6);
-    objc_storeStrong(&v9->_handlingQueue, a4);
+    objc_storeWeak(&v8->_owner, ownerCopy);
+    objc_storeStrong(&v9->_handlingQueue, queue);
     v10 = objc_alloc_init(WBSCloudKitOperationRetryManager);
     retryManager = v9->_retryManager;
     v9->_retryManager = v10;
 
-    [(WBSCloudKitOperationRetryManager *)v9->_retryManager setScheduleQueue:v7];
-    v12 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [v12 UUIDString];
+    [(WBSCloudKitOperationRetryManager *)v9->_retryManager setScheduleQueue:queueCopy];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     operationID = v9->_operationID;
-    v9->_operationID = v13;
+    v9->_operationID = uUIDString;
 
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     childOperationIDs = v9->_childOperationIDs;
-    v9->_childOperationIDs = v15;
+    v9->_childOperationIDs = array;
 
     v17 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     operationQueue = v9->_operationQueue;
@@ -81,7 +81,7 @@
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.SafariShared.WBSRetryableCKOperation.%@.%p._operationQueue", objc_opt_class(), v9];
     [(NSOperationQueue *)v9->_operationQueue setName:v19];
 
-    [(NSOperationQueue *)v9->_operationQueue setUnderlyingQueue:v7];
+    [(NSOperationQueue *)v9->_operationQueue setUnderlyingQueue:queueCopy];
     v20 = [MEMORY[0x1E695DFA8] set];
     explicitlySetProperties = v9->_explicitlySetProperties;
     v9->_explicitlySetProperties = v20;
@@ -89,7 +89,7 @@
     v22 = objc_alloc_init(MEMORY[0x1E695B9F8]);
     [(WBSRetryableCKOperation *)v9 setConfiguration:v22];
 
-    [v6 safari_setDeallocationSentinelForObserver:v9];
+    [ownerCopy safari_setDeallocationSentinelForObserver:v9];
     v23 = v9;
   }
 
@@ -126,16 +126,16 @@
   return v4;
 }
 
-- (void)setLog:(id)a3
+- (void)setLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__WBSRetryableCKOperation_setLog___block_invoke;
   v6[3] = &unk_1E7FB6E30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = logCopy;
+  v5 = logCopy;
   os_unfair_lock_lock(&self->_internalLock);
   __34__WBSRetryableCKOperation_setLog___block_invoke(v6);
   os_unfair_lock_unlock(&self->_internalLock);
@@ -160,10 +160,10 @@ uint64_t __34__WBSRetryableCKOperation_setLog___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setTimeout:(double)a3
+- (void)setTimeout:(double)timeout
 {
   os_unfair_lock_lock(&self->_internalLock);
-  [(WBSCloudKitOperationRetryManager *)self->_retryManager setTimeout:a3];
+  [(WBSCloudKitOperationRetryManager *)self->_retryManager setTimeout:timeout];
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -171,9 +171,9 @@ uint64_t __34__WBSRetryableCKOperation_setLog___block_invoke(uint64_t a1)
 - (unint64_t)numberOfRetries
 {
   os_unfair_lock_lock(&self->_internalLock);
-  v3 = [(WBSCloudKitOperationRetryManager *)self->_retryManager numberOfRetries];
+  numberOfRetries = [(WBSCloudKitOperationRetryManager *)self->_retryManager numberOfRetries];
   os_unfair_lock_unlock(&self->_internalLock);
-  return v3;
+  return numberOfRetries;
 }
 
 - (int64_t)_status
@@ -184,10 +184,10 @@ uint64_t __34__WBSRetryableCKOperation_setLog___block_invoke(uint64_t a1)
   return status;
 }
 
-- (void)_setStatus:(int64_t)a3
+- (void)_setStatus:(int64_t)status
 {
   os_unfair_lock_lock(&self->_internalLock);
-  self->_status = a3;
+  self->_status = status;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -201,11 +201,11 @@ uint64_t __34__WBSRetryableCKOperation_setLog___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setDidReceiveNonRetryableError:(id)a3
+- (void)setDidReceiveNonRetryableError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_internalLock);
-  v5 = [v4 copy];
+  v5 = [errorCopy copy];
 
   didReceiveNonRetryableError = self->_didReceiveNonRetryableError;
   self->_didReceiveNonRetryableError = v5;
@@ -224,11 +224,11 @@ uint64_t __34__WBSRetryableCKOperation_setLog___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setDidExceedRetryTimeout:(id)a3
+- (void)setDidExceedRetryTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   os_unfair_lock_lock(&self->_internalLock);
-  v5 = [v4 copy];
+  v5 = [timeoutCopy copy];
 
   didExceedRetryTimeout = self->_didExceedRetryTimeout;
   self->_didExceedRetryTimeout = v5;
@@ -249,7 +249,7 @@ uint64_t __34__WBSRetryableCKOperation_setLog___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BB6F3000, v3, OS_LOG_TYPE_INFO, "Operation %{public}@ was cancelled before starting", buf, 0xCu);
     }
   }
@@ -260,7 +260,7 @@ uint64_t __34__WBSRetryableCKOperation_setLog___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BB6F3000, v4, OS_LOG_TYPE_DEFAULT, "Operation %{public}@ is starting", buf, 0xCu);
     }
 
@@ -295,7 +295,7 @@ void __32__WBSRetryableCKOperation_start__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB6F3000, v3, OS_LOG_TYPE_DEFAULT, "Operation %{public}@ will cancel", buf, 0xCu);
   }
 
@@ -356,55 +356,55 @@ void __33__WBSRetryableCKOperation_cancel__block_invoke(uint64_t a1)
 {
   v15.receiver = self;
   v15.super_class = WBSRetryableCKOperation;
-  v3 = [(WBSRetryableCKOperation *)&v15 qualityOfService];
-  v4 = [(WBSRetryableCKOperation *)self configuration];
-  v5 = [v4 hasQualityOfService];
+  qualityOfService = [(WBSRetryableCKOperation *)&v15 qualityOfService];
+  configuration = [(WBSRetryableCKOperation *)self configuration];
+  hasQualityOfService = [configuration hasQualityOfService];
 
-  if (v5)
+  if (hasQualityOfService)
   {
-    v6 = [(WBSRetryableCKOperation *)self configuration];
-    v7 = [v6 qualityOfService];
+    configuration2 = [(WBSRetryableCKOperation *)self configuration];
+    qualityOfService2 = [configuration2 qualityOfService];
   }
 
   else
   {
-    v8 = [(WBSRetryableCKOperation *)self group];
-    v9 = [v8 defaultConfiguration];
-    v10 = [v9 hasQualityOfService];
+    group = [(WBSRetryableCKOperation *)self group];
+    defaultConfiguration = [group defaultConfiguration];
+    hasQualityOfService2 = [defaultConfiguration hasQualityOfService];
 
-    v7 = v3;
-    if (!v10)
+    qualityOfService2 = qualityOfService;
+    if (!hasQualityOfService2)
     {
       goto LABEL_6;
     }
 
-    v6 = [(WBSRetryableCKOperation *)self group];
-    v11 = [v6 defaultConfiguration];
-    v7 = [v11 qualityOfService];
+    configuration2 = [(WBSRetryableCKOperation *)self group];
+    defaultConfiguration2 = [configuration2 defaultConfiguration];
+    qualityOfService2 = [defaultConfiguration2 qualityOfService];
   }
 
 LABEL_6:
-  if (v7 == -1)
+  if (qualityOfService2 == -1)
   {
-    v12 = [(WBSRetryableCKOperation *)self configuration];
-    v7 = [v12 qualityOfService];
+    configuration3 = [(WBSRetryableCKOperation *)self configuration];
+    qualityOfService2 = [configuration3 qualityOfService];
   }
 
-  if (v7 != v3)
+  if (qualityOfService2 != qualityOfService)
   {
     v14.receiver = self;
     v14.super_class = WBSRetryableCKOperation;
-    [(WBSRetryableCKOperation *)&v14 setQualityOfService:v7];
+    [(WBSRetryableCKOperation *)&v14 setQualityOfService:qualityOfService2];
   }
 
-  [(NSOperationQueue *)self->_operationQueue setQualityOfService:v7];
-  return v7;
+  [(NSOperationQueue *)self->_operationQueue setQualityOfService:qualityOfService2];
+  return qualityOfService2;
 }
 
-- (void)setQualityOfService:(int64_t)a3
+- (void)setQualityOfService:(int64_t)service
 {
   os_unfair_lock_lock(&self->_internalLock);
-  [(CKOperationConfiguration *)self->_configuration setQualityOfService:a3];
+  [(CKOperationConfiguration *)self->_configuration setQualityOfService:service];
   os_unfair_lock_unlock(&self->_internalLock);
 
   [(WBSRetryableCKOperation *)self qualityOfService];
@@ -420,15 +420,15 @@ LABEL_6:
   return v4;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v4 = objc_alloc_init(MEMORY[0x1E695B9F8]);
+    configurationCopy = objc_alloc_init(MEMORY[0x1E695B9F8]);
   }
 
-  v7 = v4;
+  v7 = configurationCopy;
   os_unfair_lock_lock(&self->_internalLock);
   v5 = [v7 copy];
   configuration = self->_configuration;
@@ -447,13 +447,13 @@ LABEL_6:
   return v3;
 }
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_internalLock);
   group = self->_group;
-  self->_group = v4;
-  v6 = v4;
+  self->_group = groupCopy;
+  v6 = groupCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
   [(WBSCloudKitOperationRetryManager *)self->_retryManager setOperationGroup:v6];
@@ -467,25 +467,25 @@ LABEL_6:
   if (([(WBSRetryableCKOperation *)self isCancelled]& 1) == 0)
   {
     os_unfair_lock_lock(&self->_internalLock);
-    v3 = [(WBSRetryableCKOperation *)self _makeOperation];
-    [(WBSRetryableCKOperation *)self _setUpOperation:v3];
-    v4 = [(CKOperation *)v3 operationID];
-    [(NSMutableArray *)self->_childOperationIDs addObject:v4];
+    _makeOperation = [(WBSRetryableCKOperation *)self _makeOperation];
+    [(WBSRetryableCKOperation *)self _setUpOperation:_makeOperation];
+    operationID = [(CKOperation *)_makeOperation operationID];
+    [(NSMutableArray *)self->_childOperationIDs addObject:operationID];
     os_unfair_lock_unlock(&self->_internalLock);
     v5 = [(WBSRetryableCKOperation *)self description];
     v6 = objc_opt_class();
-    v7 = [(WBSRetryableCKOperation *)self numberOfRetries];
+    numberOfRetries = [(WBSRetryableCKOperation *)self numberOfRetries];
     v8 = [(WBSRetryableCKOperation *)self log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138544130;
       v19 = v6;
       v20 = 2114;
-      v21 = v4;
+      v21 = operationID;
       v22 = 2114;
       v23 = v5;
       v24 = 2048;
-      v25 = v7;
+      v25 = numberOfRetries;
       _os_log_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_INFO, "Will begin %{public}@ with ID %{public}@ in %{public}@ retry: %zu", buf, 0x2Au);
     }
 
@@ -494,17 +494,17 @@ LABEL_6:
     v13[2] = __49__WBSRetryableCKOperation__scheduleNextOperation__block_invoke;
     v13[3] = &unk_1E7FCA158;
     v13[4] = self;
-    v14 = v4;
+    v14 = operationID;
     v15 = v5;
     v16 = v6;
-    v17 = v7;
+    v17 = numberOfRetries;
     v9 = v5;
-    v10 = v4;
-    [(CKOperation *)v3 setCompletionBlock:v13];
+    v10 = operationID;
+    [(CKOperation *)_makeOperation setCompletionBlock:v13];
     os_unfair_lock_lock(&self->_internalLock);
     currentOperation = self->_currentOperation;
-    self->_currentOperation = v3;
-    v12 = v3;
+    self->_currentOperation = _makeOperation;
+    v12 = _makeOperation;
 
     os_unfair_lock_unlock(&self->_internalLock);
     [(NSOperationQueue *)self->_operationQueue addOperation:v12];
@@ -533,7 +533,7 @@ void __49__WBSRetryableCKOperation__scheduleNextOperation__block_invoke(uint64_t
   }
 }
 
-- (void)sentinelDidDeallocateWithContext:(id)a3
+- (void)sentinelDidDeallocateWithContext:(id)context
 {
   if (![(WBSRetryableCKOperation *)self isFinished]&& ([(WBSRetryableCKOperation *)self isCancelled]& 1) == 0)
   {
@@ -548,10 +548,10 @@ void __49__WBSRetryableCKOperation__scheduleNextOperation__block_invoke(uint64_t
   }
 }
 
-- (BOOL)_scheduleRetryIfNeededForError:(id)a3
+- (BOOL)_scheduleRetryIfNeededForError:(id)error
 {
   location[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
   if (WeakRetained)
   {
@@ -562,13 +562,13 @@ void __49__WBSRetryableCKOperation__scheduleNextOperation__block_invoke(uint64_t
     v17 = __58__WBSRetryableCKOperation__scheduleRetryIfNeededForError___block_invoke;
     v18 = &unk_1E7FB86B8;
     objc_copyWeak(&v19, location);
-    v7 = [(WBSCloudKitOperationRetryManager *)retryManager scheduleRetryIfNeededForError:v4 usingBlock:&v15];
+    v7 = [(WBSCloudKitOperationRetryManager *)retryManager scheduleRetryIfNeededForError:errorCopy usingBlock:&v15];
     if (v7 == 1)
     {
       v10 = [(WBSRetryableCKOperation *)self log:v15];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [v4 safari_privacyPreservingDescription];
+        [errorCopy safari_privacyPreservingDescription];
         objc_claimAutoreleasedReturnValue();
         [WBSRetryableCKOperation _scheduleRetryIfNeededForError:];
       }
@@ -581,7 +581,7 @@ void __49__WBSRetryableCKOperation__scheduleNextOperation__block_invoke(uint64_t
         v12 = [(WBSRetryableCKOperation *)self log:v15];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          [v4 safari_privacyPreservingDescription];
+          [errorCopy safari_privacyPreservingDescription];
           objc_claimAutoreleasedReturnValue();
           [WBSRetryableCKOperation _scheduleRetryIfNeededForError:];
         }
@@ -609,7 +609,7 @@ void __49__WBSRetryableCKOperation__scheduleNextOperation__block_invoke(uint64_t
         v8 = [(WBSRetryableCKOperation *)self log:v15];
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          [v4 safari_privacyPreservingDescription];
+          [errorCopy safari_privacyPreservingDescription];
           objc_claimAutoreleasedReturnValue();
           [WBSRetryableCKOperation _scheduleRetryIfNeededForError:];
         }
@@ -631,7 +631,7 @@ LABEL_19:
         }
       }
 
-      (*(v10 + 16))(v10, self, WeakRetained, v4);
+      (*(v10 + 16))(v10, self, WeakRetained, errorCopy);
       [(WBSRetryableCKOperation *)self _didFinishOperation];
     }
 
@@ -687,11 +687,11 @@ uint64_t __58__WBSRetryableCKOperation__scheduleRetryIfNeededForError___block_in
   [(WBSRetryableCKOperation *)self _setStatus:2];
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
-  [v4 setConfiguration:self->_configuration];
-  [v4 setGroup:self->_group];
+  operationCopy = operation;
+  [operationCopy setConfiguration:self->_configuration];
+  [operationCopy setGroup:self->_group];
   if ([(CKOperationConfiguration *)self->_configuration isLongLived])
   {
     objc_initWeak(&location, self);
@@ -700,7 +700,7 @@ uint64_t __58__WBSRetryableCKOperation__scheduleRetryIfNeededForError___block_in
     v5[2] = __43__WBSRetryableCKOperation__setUpOperation___block_invoke;
     v5[3] = &unk_1E7FB86B8;
     objc_copyWeak(&v6, &location);
-    [v4 setLongLivedOperationWasPersistedBlock:v5];
+    [operationCopy setLongLivedOperationWasPersistedBlock:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
@@ -771,8 +771,8 @@ void __43__WBSRetryableCKOperation__setUpOperation___block_invoke_2(uint64_t a1)
   v7 = MEMORY[0x1E696AEC0];
   v8 = objc_opt_class();
   operationID = self->_operationID;
-  v10 = [(CKOperationGroup *)self->_group safari_logDescription];
-  v11 = [v7 stringWithFormat:@"<%@: %p operationID: %@; %@%@>", v8, self, operationID, v10, v6];;
+  safari_logDescription = [(CKOperationGroup *)self->_group safari_logDescription];
+  v11 = [v7 stringWithFormat:@"<%@: %p operationID: %@; %@%@>", v8, self, operationID, safari_logDescription, v6];;
 
   return v11;
 }

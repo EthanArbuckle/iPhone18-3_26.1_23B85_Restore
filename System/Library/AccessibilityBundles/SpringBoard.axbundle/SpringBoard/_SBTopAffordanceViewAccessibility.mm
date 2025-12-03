@@ -1,5 +1,5 @@
 @interface _SBTopAffordanceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityMultitaskingElements;
 - (id)_accessibilityWindowControlsView;
 - (id)_axContainerApplicationLabel;
@@ -14,18 +14,18 @@
 
 @implementation _SBTopAffordanceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBTopAffordanceViewController" hasInstanceMethod:@"sceneHandle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSceneHandle" hasInstanceMethod:@"sceneIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBTopAffordanceViewController" hasInstanceVariable:@"_windowControlsViewController" withType:"SWKWindowControlsViewController"];
-  [v3 validateClass:@"SWKWindowControlsViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBApplicationSceneHandle" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplication" hasInstanceMethod:@"processState" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplicationProcessState" hasInstanceMethod:@"pid" withFullSignature:{"i", 0}];
-  [v3 validateClass:@"SBReusableSnapshotItemContainer"];
-  [v3 validateClass:@"_UIContextMenuContainerView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBTopAffordanceViewController" hasInstanceMethod:@"sceneHandle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSceneHandle" hasInstanceMethod:@"sceneIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBTopAffordanceViewController" hasInstanceVariable:@"_windowControlsViewController" withType:"SWKWindowControlsViewController"];
+  [validationsCopy validateClass:@"SWKWindowControlsViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBApplicationSceneHandle" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplication" hasInstanceMethod:@"processState" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplicationProcessState" hasInstanceMethod:@"pid" withFullSignature:{"i", 0}];
+  [validationsCopy validateClass:@"SBReusableSnapshotItemContainer"];
+  [validationsCopy validateClass:@"_UIContextMenuContainerView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -40,17 +40,17 @@
 {
   if ([(_SBTopAffordanceViewAccessibility *)self _axShouldUseRemoteElement]&& !_AXSAutomationEnabled())
   {
-    v3 = MEMORY[0x29EDB8E90];
+    accessibilityElements = MEMORY[0x29EDB8E90];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = _SBTopAffordanceViewAccessibility;
-    v3 = [(_SBTopAffordanceViewAccessibility *)&v5 accessibilityElements];
+    accessibilityElements = [(_SBTopAffordanceViewAccessibility *)&v5 accessibilityElements];
   }
 
-  return v3;
+  return accessibilityElements;
 }
 
 - (void)layoutSubviews
@@ -63,8 +63,8 @@
 
 - (void)dealloc
 {
-  v3 = [(_SBTopAffordanceViewAccessibility *)self _accessibilityRemoteElement];
-  [v3 unregister];
+  _accessibilityRemoteElement = [(_SBTopAffordanceViewAccessibility *)self _accessibilityRemoteElement];
+  [_accessibilityRemoteElement unregister];
 
   [(_SBTopAffordanceViewAccessibility *)self _accessibilitySetRemoteElement:0];
   v4.receiver = self;
@@ -76,8 +76,8 @@
 {
   if ([(_SBTopAffordanceViewAccessibility *)self _axShouldUseRemoteElement])
   {
-    v3 = [(_SBTopAffordanceViewAccessibility *)self _accessibilityViewController];
-    v4 = [v3 safeValueForKey:@"sceneHandle"];
+    _accessibilityViewController = [(_SBTopAffordanceViewAccessibility *)self _accessibilityViewController];
+    v4 = [_accessibilityViewController safeValueForKey:@"sceneHandle"];
 
     v5 = [v4 safeStringForKey:@"sceneIdentifier"];
     v6 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@:%@", @"window-controls", v5];
@@ -114,9 +114,9 @@
       objc_destroyWeak(&location);
     }
 
-    v13 = [(_SBTopAffordanceViewAccessibility *)self _accessibilityWindowControlsView];
-    [v13 setAccessibilityContainer:v12];
-    objc_initWeak(&location, v13);
+    _accessibilityWindowControlsView = [(_SBTopAffordanceViewAccessibility *)self _accessibilityWindowControlsView];
+    [_accessibilityWindowControlsView setAccessibilityContainer:v12];
+    objc_initWeak(&location, _accessibilityWindowControlsView);
     objc_initWeak(&from, self);
     v14[0] = MEMORY[0x29EDCA5F8];
     v14[1] = 3221225472;
@@ -124,7 +124,7 @@
     v14[3] = &unk_29F2FBAB8;
     objc_copyWeak(&v15, &location);
     objc_copyWeak(&v16, &from);
-    [v13 _setAccessibilityLabelBlock:v14];
+    [_accessibilityWindowControlsView _setAccessibilityLabelBlock:v14];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&v15);
     objc_destroyWeak(&from);
@@ -136,19 +136,19 @@
 {
   v10[2] = *MEMORY[0x29EDCA608];
   v3 = objc_opt_new();
-  v4 = [(_SBTopAffordanceViewAccessibility *)self _accessibilityWindowControlsView];
-  v5 = v4;
-  if (v4)
+  _accessibilityWindowControlsView = [(_SBTopAffordanceViewAccessibility *)self _accessibilityWindowControlsView];
+  v5 = _accessibilityWindowControlsView;
+  if (_accessibilityWindowControlsView)
   {
-    v10[0] = v4;
-    v6 = [(_SBTopAffordanceViewAccessibility *)self _axMoveWindowElement];
-    v10[1] = v6;
+    v10[0] = _accessibilityWindowControlsView;
+    _axMoveWindowElement = [(_SBTopAffordanceViewAccessibility *)self _axMoveWindowElement];
+    v10[1] = _axMoveWindowElement;
     v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:2];
     [v3 axSafelyAddObjectsFromArray:v7];
   }
 
-  v8 = [(_SBTopAffordanceViewAccessibility *)self _accessibilityContextMenuContainerView];
-  [v3 axSafelyAddObject:v8];
+  _accessibilityContextMenuContainerView = [(_SBTopAffordanceViewAccessibility *)self _accessibilityContextMenuContainerView];
+  [v3 axSafelyAddObject:_accessibilityContextMenuContainerView];
 
   return v3;
 }
@@ -156,14 +156,14 @@
 - (id)_accessibilityWindowControlsView
 {
   objc_opt_class();
-  v3 = [(_SBTopAffordanceViewAccessibility *)self _accessibilityViewController];
-  v4 = [v3 safeValueForKey:@"_windowControlsViewController"];
+  _accessibilityViewController = [(_SBTopAffordanceViewAccessibility *)self _accessibilityViewController];
+  v4 = [_accessibilityViewController safeValueForKey:@"_windowControlsViewController"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 view];
-  if ([v6 _accessibilityViewIsVisible])
+  view = [v5 view];
+  if ([view _accessibilityViewIsVisible])
   {
-    v7 = v6;
+    v7 = view;
   }
 
   else
@@ -178,8 +178,8 @@
 
 - (int)_accessibilitySceneApplicationPid
 {
-  v2 = [(_SBTopAffordanceViewAccessibility *)self _accessibilityViewController];
-  v3 = [v2 safeValueForKey:@"sceneHandle"];
+  _accessibilityViewController = [(_SBTopAffordanceViewAccessibility *)self _accessibilityViewController];
+  v3 = [_accessibilityViewController safeValueForKey:@"sceneHandle"];
   v4 = [v3 safeValueForKey:@"application"];
   v5 = [v4 safeValueForKey:@"processState"];
   v6 = [v5 safeIntForKey:@"pid"];
@@ -190,9 +190,9 @@
 - (id)_axMoveWindowElement
 {
   v18[1] = *MEMORY[0x29EDCA608];
-  v3 = [(_SBTopAffordanceViewAccessibility *)self __axMoveWindowElement];
+  __axMoveWindowElement = [(_SBTopAffordanceViewAccessibility *)self __axMoveWindowElement];
 
-  if (!v3)
+  if (!__axMoveWindowElement)
   {
     LOBYTE(location) = 0;
     objc_opt_class();
@@ -234,17 +234,17 @@
     objc_destroyWeak(&location);
   }
 
-  v10 = [(_SBTopAffordanceViewAccessibility *)self __axMoveWindowElement];
+  __axMoveWindowElement2 = [(_SBTopAffordanceViewAccessibility *)self __axMoveWindowElement];
 
-  return v10;
+  return __axMoveWindowElement2;
 }
 
 - (id)_axContainerApplicationLabel
 {
   v2 = [(_SBTopAffordanceViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Sbreusablesnap_0.isa)];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

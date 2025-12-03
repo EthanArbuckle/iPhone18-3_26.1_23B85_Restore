@@ -8,15 +8,15 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_MTLCommandBufferEncoderInfo *)self errorState];
-  if (v4 > 4)
+  errorState = [(_MTLCommandBufferEncoderInfo *)self errorState];
+  if (errorState > 4)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = *(&off_1E6EED450 + v4);
+    v5 = *(&off_1E6EED450 + errorState);
   }
 
   return [v3 stringWithFormat:@"<errorState: %@, label: %@, debugSignposts: %@>", v5, -[_MTLCommandBufferEncoderInfo label](self, "label"), -[_MTLCommandBufferEncoderInfo debugSignposts](self, "debugSignposts")];

@@ -1,20 +1,20 @@
 @interface HFMediaStatusItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFMediaStatusItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v45[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(HFStatusItem *)self home];
-  v6 = [v5 hf_allUniqueMediaProfileContainers];
-  v7 = [v4 setWithArray:v6];
+  home = [(HFStatusItem *)self home];
+  hf_allUniqueMediaProfileContainers = [home hf_allUniqueMediaProfileContainers];
+  v7 = [v4 setWithArray:hf_allUniqueMediaProfileContainers];
 
-  v8 = [(HFStatusItem *)self room];
+  room = [(HFStatusItem *)self room];
 
-  if (v8)
+  if (room)
   {
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
@@ -52,11 +52,11 @@
       v16 = &unk_282523790;
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v21 = [MEMORY[0x277CCABB0] numberWithInteger:v17];
-    [v20 setObject:v21 forKeyedSubscript:@"state"];
+    [dictionary setObject:v21 forKeyedSubscript:@"state"];
 
-    [v20 setObject:v16 forKeyedSubscript:@"priority"];
+    [dictionary setObject:v16 forKeyedSubscript:@"priority"];
     if ([v13 count] > 1)
     {
       v22 = [v13 count];
@@ -68,7 +68,7 @@
       _HFLocalizedStringWithDefaultValue(@"HFStatusTitleSpeaker_One", @"HFStatusTitleSpeaker_One", 1);
     }
     v29 = ;
-    [v20 setObject:v29 forKeyedSubscript:@"title"];
+    [dictionary setObject:v29 forKeyedSubscript:@"title"];
 
     if (v14)
     {
@@ -91,16 +91,16 @@
     }
 
     v32 = _HFLocalizedStringWithDefaultValue(v30, v30, 1);
-    [v20 setObject:v32 forKeyedSubscript:@"description"];
+    [dictionary setObject:v32 forKeyedSubscript:@"description"];
 
     v33 = [MEMORY[0x277D755D0] configurationWithPointSize:24.0];
     v34 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v31 configuration:v33];
-    [v20 setObject:v34 forKeyedSubscript:@"icon"];
+    [dictionary setObject:v34 forKeyedSubscript:@"icon"];
 
-    [v20 setObject:v13 forKeyedSubscript:@"representedHomeKitObjects"];
+    [dictionary setObject:v13 forKeyedSubscript:@"representedHomeKitObjects"];
     if (!v14)
     {
-      [v20 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
     }
 
     v35 = [MEMORY[0x277CBEB58] set];
@@ -111,9 +111,9 @@
     v42 = v35;
     v36 = v35;
     [v10 na_each:v41];
-    [v20 setObject:v36 forKeyedSubscript:@"dependentHomeKitObjects"];
+    [dictionary setObject:v36 forKeyedSubscript:@"dependentHomeKitObjects"];
     v37 = MEMORY[0x277D2C900];
-    v38 = [HFItemUpdateOutcome outcomeWithResults:v20];
+    v38 = [HFItemUpdateOutcome outcomeWithResults:dictionary];
     v19 = [v37 futureWithResult:v38];
   }
 

@@ -1,18 +1,18 @@
 @interface CLPCPolicyClient
-- (BOOL)isLowPowerModeCandidate:(unint64_t)a3 error:(id *)a4;
-- (BOOL)setCLPCTrialID:(unint64_t)a3 error:(id *)a4;
-- (BOOL)setGameMode:(BOOL)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)isLowPowerModeCandidate:(unint64_t)candidate error:(id *)error;
+- (BOOL)setCLPCTrialID:(unint64_t)d error:(id *)error;
+- (BOOL)setGameMode:(BOOL)mode options:(unint64_t)options error:(id *)error;
 - (id).cxx_construct;
-- (id)init:(id *)a3;
+- (id)init:(id *)init;
 @end
 
 @implementation CLPCPolicyClient
 
-- (id)init:(id *)a3
+- (id)init:(id *)init
 {
   v8.receiver = self;
   v8.super_class = CLPCPolicyClient;
-  v3 = [(CLPCUserClient *)&v8 init:a3];
+  v3 = [(CLPCUserClient *)&v8 init:init];
   v4 = v3;
   if (v3)
   {
@@ -25,10 +25,10 @@
   return v4;
 }
 
-- (BOOL)isLowPowerModeCandidate:(unint64_t)a3 error:(id *)a4
+- (BOOL)isLowPowerModeCandidate:(unint64_t)candidate error:(id *)error
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (candidate == 2)
   {
     v6 = [CLPCPolicyInterface createClient:0];
     clpc_policy_client = self->clpc_policy_client;
@@ -37,14 +37,14 @@
     v8 = self->clpc_policy_client;
     if (v8)
     {
-      if ([(CLPCPolicyAccess *)v8 isInGameMode:a4]!= 1)
+      if ([(CLPCPolicyAccess *)v8 isInGameMode:error]!= 1)
       {
         *&outputStruct.id = 0;
         v27 = -3;
         IOConnectCallMethod(self->super.clpc.connect, 7u, 0, 0, 0, 0, 0, 0, &outputStruct, &v27);
         v14 = [MEMORY[0x277CBEA90] dataWithBytes:*&outputStruct.id + 40 length:36];
         v9 = v14;
-        if (!a4 || v14)
+        if (!error || v14)
         {
           *&outputStruct.id = 0x10000000FLL;
           outputStruct.size = 36;
@@ -79,7 +79,7 @@
           v28 = *MEMORY[0x277CCA068];
           v29 = @"LPGM candidacy request is too frequent.";
           v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-          *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870207 userInfo:v23];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870207 userInfo:v23];
         }
 
         else
@@ -87,7 +87,7 @@
           v30 = *MEMORY[0x277CCA068];
           v31 = @"Unable to query LPGM info.";
           v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-          *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870199 userInfo:v15];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870199 userInfo:v15];
         }
 
         v11 = 0;
@@ -119,16 +119,16 @@
   }
 
   v11 = 0;
-  *a4 = v10;
+  *error = v10;
 LABEL_8:
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (BOOL)setGameMode:(BOOL)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)setGameMode:(BOOL)mode options:(unint64_t)options error:(id *)error
 {
-  if (!a3)
+  if (!mode)
   {
     *&self->previous_lpgm_info.info.id = 0x10000000FLL;
     self->previous_lpgm_info.info.size = 36;
@@ -142,19 +142,19 @@ LABEL_8:
   return [CLPCUserClient setGameMode:sel_setGameMode_options_error_ options:? error:?];
 }
 
-- (BOOL)setCLPCTrialID:(unint64_t)a3 error:(id *)a4
+- (BOOL)setCLPCTrialID:(unint64_t)d error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   connect = self->super.clpc.connect;
-  input = a3;
+  input = d;
   v6 = IOConnectCallMethod(connect, 9u, &input, 1u, 0, 0, 0, 0, 0, 0);
   v7 = v6;
-  if (a4 && v6)
+  if (error && v6)
   {
     v12 = *MEMORY[0x277CCA068];
     v13[0] = @"Failed to set trial ID.";
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:v7 userInfo:v8];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:v7 userInfo:v8];
   }
 
   result = v7 == 0;

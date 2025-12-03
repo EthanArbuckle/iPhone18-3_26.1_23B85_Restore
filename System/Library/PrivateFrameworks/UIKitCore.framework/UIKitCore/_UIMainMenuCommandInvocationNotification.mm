@@ -1,38 +1,38 @@
 @interface _UIMainMenuCommandInvocationNotification
-- (BOOL)isEqual:(id)a3;
-- (_UIMainMenuCommandInvocationNotification)initWithCoder:(id)a3;
-- (id)_initWithCategoryMenuSessionMap:(id)a3 fallbackMenuIdentifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_UIMainMenuCommandInvocationNotification)initWithCoder:(id)coder;
+- (id)_initWithCategoryMenuSessionMap:(id)map fallbackMenuIdentifier:(id)identifier;
 - (id)description;
-- (id)invokedCommandCategoryMenuIdentifierForSession:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)invokedCommandCategoryMenuIdentifierForSession:(id)session;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuCommandInvocationNotification
 
-- (id)_initWithCategoryMenuSessionMap:(id)a3 fallbackMenuIdentifier:(id)a4
+- (id)_initWithCategoryMenuSessionMap:(id)map fallbackMenuIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = _UIMainMenuCommandInvocationNotification;
   v8 = [(_UIMainMenuCommandInvocationNotification *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [mapCopy copy];
     categoryMenuSessionMap = v8->_categoryMenuSessionMap;
     v8->_categoryMenuSessionMap = v9;
 
-    objc_storeStrong(&v8->_fallbackMenuIdentifier, a4);
+    objc_storeStrong(&v8->_fallbackMenuIdentifier, identifier);
   }
 
   return v8;
 }
 
-- (id)invokedCommandCategoryMenuIdentifierForSession:(id)a3
+- (id)invokedCommandCategoryMenuIdentifierForSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || (categoryMenuSessionMap = self->_categoryMenuSessionMap, [v4 identifier], v7 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](categoryMenuSessionMap, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (!sessionCopy || (categoryMenuSessionMap = self->_categoryMenuSessionMap, [sessionCopy identifier], v7 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](categoryMenuSessionMap, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
     v8 = self->_fallbackMenuIdentifier;
   }
@@ -40,17 +40,17 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   categoryMenuSessionMap = self->_categoryMenuSessionMap;
-  v5 = a3;
-  [v5 encodeObject:categoryMenuSessionMap forKey:@"CategoryMenuSessionMap"];
-  [v5 encodeObject:self->_fallbackMenuIdentifier forKey:@"FallbackMenuIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:categoryMenuSessionMap forKey:@"CategoryMenuSessionMap"];
+  [coderCopy encodeObject:self->_fallbackMenuIdentifier forKey:@"FallbackMenuIdentifier"];
 }
 
-- (_UIMainMenuCommandInvocationNotification)initWithCoder:(id)a3
+- (_UIMainMenuCommandInvocationNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuCommandInvocationNotification *)self init];
   if (v5)
   {
@@ -59,12 +59,12 @@
     v8 = objc_opt_self();
     v9 = objc_opt_self();
     v10 = [v6 setWithObjects:{v7, v8, v9, 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"CategoryMenuSessionMap"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"CategoryMenuSessionMap"];
     categoryMenuSessionMap = v5->_categoryMenuSessionMap;
     v5->_categoryMenuSessionMap = v11;
 
     v13 = objc_opt_self();
-    v14 = [v4 decodeObjectOfClass:v13 forKey:@"FallbackMenuIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:v13 forKey:@"FallbackMenuIdentifier"];
     fallbackMenuIdentifier = v5->_fallbackMenuIdentifier;
     v5->_fallbackMenuIdentifier = v14;
   }
@@ -72,10 +72,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -87,7 +87,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       categoryMenuSessionMap = v7->_categoryMenuSessionMap;
       v9 = self->_categoryMenuSessionMap;
       v10 = categoryMenuSessionMap;
@@ -150,9 +150,9 @@ LABEL_18:
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   [v3 appendDictionarySection:self->_categoryMenuSessionMap withName:@"categoryMenuSessionMap" skipIfEmpty:0];
   v4 = [v3 appendObject:self->_fallbackMenuIdentifier withName:@"fallbackMenuIdentifier"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

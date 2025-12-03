@@ -1,43 +1,43 @@
 @interface SFCard
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCard)initWithCoder:(id)a3;
-- (SFCard)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCard)initWithCoder:(id)coder;
+- (SFCard)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadCardSectionsWithCompletionAndErrorHandler:(id)a3;
-- (void)loadCardSectionsWithCompletionHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadCardSectionsWithCompletionAndErrorHandler:(id)handler;
+- (void)loadCardSectionsWithCompletionHandler:(id)handler;
 @end
 
 @implementation SFCard
 
-- (SFCard)initWithProtobuf:(id)a3
+- (SFCard)initWithProtobuf:(id)protobuf
 {
   v93 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v89.receiver = self;
   v89.super_class = SFCard;
   v5 = [(SFCard *)&v89 init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v6)
+    if (title)
     {
-      v7 = [v4 title];
-      [(SFCard *)v5 setTitle:v7];
+      title2 = [protobufCopy title];
+      [(SFCard *)v5 setTitle:title2];
     }
 
-    if ([v4 type])
+    if ([protobufCopy type])
     {
-      -[SFCard setType:](v5, "setType:", [v4 type]);
+      -[SFCard setType:](v5, "setType:", [protobufCopy type]);
     }
 
-    v8 = [v4 cardSections];
+    cardSections = [protobufCopy cardSections];
     v76 = v5;
-    if (v8)
+    if (cardSections)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -51,8 +51,8 @@
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v10 = [v4 cardSections];
-    v11 = [v10 countByEnumeratingWithState:&v85 objects:v92 count:16];
+    cardSections2 = [protobufCopy cardSections];
+    v11 = [cardSections2 countByEnumeratingWithState:&v85 objects:v92 count:16];
     if (v11)
     {
       v12 = v11;
@@ -63,7 +63,7 @@
         {
           if (*v86 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(cardSections2);
           }
 
           v15 = [[SFCardSection alloc] initWithProtobuf:*(*(&v85 + 1) + 8 * i)];
@@ -73,47 +73,47 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v85 objects:v92 count:16];
+        v12 = [cardSections2 countByEnumeratingWithState:&v85 objects:v92 count:16];
       }
 
       while (v12);
     }
 
     [(SFCard *)v5 setCardSections:v9];
-    v16 = [v4 intentMessageData];
+    intentMessageData = [protobufCopy intentMessageData];
 
-    if (v16)
+    if (intentMessageData)
     {
-      v17 = [v4 intentMessageData];
-      [(SFCard *)v5 setIntentMessageData:v17];
+      intentMessageData2 = [protobufCopy intentMessageData];
+      [(SFCard *)v5 setIntentMessageData:intentMessageData2];
     }
 
-    v18 = [v4 intentMessageName];
+    intentMessageName = [protobufCopy intentMessageName];
 
-    if (v18)
+    if (intentMessageName)
     {
-      v19 = [v4 intentMessageName];
-      [(SFCard *)v5 setIntentMessageName:v19];
+      intentMessageName2 = [protobufCopy intentMessageName];
+      [(SFCard *)v5 setIntentMessageName:intentMessageName2];
     }
 
-    v20 = [v4 intentResponseMessageData];
+    intentResponseMessageData = [protobufCopy intentResponseMessageData];
 
-    if (v20)
+    if (intentResponseMessageData)
     {
-      v21 = [v4 intentResponseMessageData];
-      [(SFCard *)v5 setIntentResponseMessageData:v21];
+      intentResponseMessageData2 = [protobufCopy intentResponseMessageData];
+      [(SFCard *)v5 setIntentResponseMessageData:intentResponseMessageData2];
     }
 
-    v22 = [v4 intentResponseMessageName];
+    intentResponseMessageName = [protobufCopy intentResponseMessageName];
 
-    if (v22)
+    if (intentResponseMessageName)
     {
-      v23 = [v4 intentResponseMessageName];
-      [(SFCard *)v5 setIntentResponseMessageName:v23];
+      intentResponseMessageName2 = [protobufCopy intentResponseMessageName];
+      [(SFCard *)v5 setIntentResponseMessageName:intentResponseMessageName2];
     }
 
-    v24 = [v4 dismissalCommands];
-    if (v24)
+    dismissalCommands = [protobufCopy dismissalCommands];
+    if (dismissalCommands)
     {
       v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -127,8 +127,8 @@
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v26 = [v4 dismissalCommands];
-    v27 = [v26 countByEnumeratingWithState:&v81 objects:v91 count:16];
+    dismissalCommands2 = [protobufCopy dismissalCommands];
+    v27 = [dismissalCommands2 countByEnumeratingWithState:&v81 objects:v91 count:16];
     if (v27)
     {
       v28 = v27;
@@ -139,7 +139,7 @@
         {
           if (*v82 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(dismissalCommands2);
           }
 
           v31 = [[SFAbstractCommand alloc] initWithProtobuf:*(*(&v81 + 1) + 8 * j)];
@@ -149,79 +149,79 @@
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v81 objects:v91 count:16];
+        v28 = [dismissalCommands2 countByEnumeratingWithState:&v81 objects:v91 count:16];
       }
 
       while (v28);
     }
 
     [(SFCard *)v76 setDismissalCommands:v25];
-    v32 = [v4 cardId];
+    cardId = [protobufCopy cardId];
 
-    if (v32)
+    if (cardId)
     {
-      v33 = [v4 cardId];
-      [(SFCard *)v76 setCardId:v33];
+      cardId2 = [protobufCopy cardId];
+      [(SFCard *)v76 setCardId:cardId2];
     }
 
-    v34 = [v4 contextReferenceIdentifier];
+    contextReferenceIdentifier = [protobufCopy contextReferenceIdentifier];
 
-    if (v34)
+    if (contextReferenceIdentifier)
     {
-      v35 = [v4 contextReferenceIdentifier];
-      [(SFCard *)v76 setContextReferenceIdentifier:v35];
+      contextReferenceIdentifier2 = [protobufCopy contextReferenceIdentifier];
+      [(SFCard *)v76 setContextReferenceIdentifier:contextReferenceIdentifier2];
     }
 
-    v36 = [v4 urlValue];
+    urlValue = [protobufCopy urlValue];
 
-    if (v36)
+    if (urlValue)
     {
-      v37 = [v4 urlValue];
-      v38 = _SFPBURLHandwrittenTranslator(v37);
+      urlValue2 = [protobufCopy urlValue];
+      v38 = _SFPBURLHandwrittenTranslator(urlValue2);
       [(SFCard *)v76 setUrlValue:v38];
     }
 
-    if ([v4 source])
+    if ([protobufCopy source])
     {
-      -[SFCard setSource:](v76, "setSource:", [v4 source]);
+      -[SFCard setSource:](v76, "setSource:", [protobufCopy source]);
     }
 
-    v39 = [v4 entityIdentifier];
+    entityIdentifier = [protobufCopy entityIdentifier];
 
-    if (v39)
+    if (entityIdentifier)
     {
-      v40 = [v4 entityIdentifier];
-      [(SFCard *)v76 setEntityIdentifier:v40];
+      entityIdentifier2 = [protobufCopy entityIdentifier];
+      [(SFCard *)v76 setEntityIdentifier:entityIdentifier2];
     }
 
-    v41 = [v4 resultIdentifier];
+    resultIdentifier = [protobufCopy resultIdentifier];
 
-    if (v41)
+    if (resultIdentifier)
     {
-      v42 = [v4 resultIdentifier];
-      [(SFCard *)v76 setResultIdentifier:v42];
+      resultIdentifier2 = [protobufCopy resultIdentifier];
+      [(SFCard *)v76 setResultIdentifier:resultIdentifier2];
     }
 
-    if ([v4 queryId])
+    if ([protobufCopy queryId])
     {
-      -[SFCard setQueryId:](v76, "setQueryId:", [v4 queryId]);
+      -[SFCard setQueryId:](v76, "setQueryId:", [protobufCopy queryId]);
     }
 
-    v43 = [v4 fbr];
+    v43 = [protobufCopy fbr];
 
     if (v43)
     {
-      v44 = [v4 fbr];
+      v44 = [protobufCopy fbr];
       [(SFCard *)v76 setFbr:v44];
     }
 
-    if ([v4 flexibleSectionOrder])
+    if ([protobufCopy flexibleSectionOrder])
     {
-      -[SFCard setFlexibleSectionOrder:](v76, "setFlexibleSectionOrder:", [v4 flexibleSectionOrder]);
+      -[SFCard setFlexibleSectionOrder:](v76, "setFlexibleSectionOrder:", [protobufCopy flexibleSectionOrder]);
     }
 
-    v45 = [v4 entityProtobufMessages];
-    if (v45)
+    entityProtobufMessages = [protobufCopy entityProtobufMessages];
+    if (entityProtobufMessages)
     {
       v46 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -235,8 +235,8 @@
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v47 = [v4 entityProtobufMessages];
-    v48 = [v47 countByEnumeratingWithState:&v77 objects:v90 count:16];
+    entityProtobufMessages2 = [protobufCopy entityProtobufMessages];
+    v48 = [entityProtobufMessages2 countByEnumeratingWithState:&v77 objects:v90 count:16];
     if (v48)
     {
       v49 = v48;
@@ -247,7 +247,7 @@
         {
           if (*v78 != v50)
           {
-            objc_enumerationMutation(v47);
+            objc_enumerationMutation(entityProtobufMessages2);
           }
 
           v52 = [[SFNamedProtobufMessage alloc] initWithProtobuf:*(*(&v77 + 1) + 8 * k)];
@@ -257,7 +257,7 @@
           }
         }
 
-        v49 = [v47 countByEnumeratingWithState:&v77 objects:v90 count:16];
+        v49 = [entityProtobufMessages2 countByEnumeratingWithState:&v77 objects:v90 count:16];
       }
 
       while (v49);
@@ -265,53 +265,53 @@
 
     v5 = v76;
     [(SFCard *)v76 setEntityProtobufMessages:v46];
-    v53 = [v4 titleImage];
+    titleImage = [protobufCopy titleImage];
 
-    if (v53)
+    if (titleImage)
     {
       v54 = [SFImage alloc];
-      v55 = [v4 titleImage];
-      v56 = [(SFImage *)v54 initWithProtobuf:v55];
+      titleImage2 = [protobufCopy titleImage];
+      v56 = [(SFImage *)v54 initWithProtobuf:titleImage2];
       [(SFCard *)v76 setTitleImage:v56];
     }
 
-    v57 = [v4 backgroundColor];
+    backgroundColor = [protobufCopy backgroundColor];
 
-    if (v57)
+    if (backgroundColor)
     {
       v58 = [SFColor alloc];
-      v59 = [v4 backgroundColor];
-      v60 = [(SFColor *)v58 initWithProtobuf:v59];
+      backgroundColor2 = [protobufCopy backgroundColor];
+      v60 = [(SFColor *)v58 initWithProtobuf:backgroundColor2];
       [(SFCard *)v76 setBackgroundColor:v60];
     }
 
-    v61 = [v4 metadata];
+    metadata = [protobufCopy metadata];
 
-    if (v61)
+    if (metadata)
     {
       v62 = [SFDrillDownMetadata alloc];
-      v63 = [v4 metadata];
-      v64 = [(SFDrillDownMetadata *)v62 initWithProtobuf:v63];
+      metadata2 = [protobufCopy metadata];
+      v64 = [(SFDrillDownMetadata *)v62 initWithProtobuf:metadata2];
       [(SFCard *)v76 setMetadata:v64];
     }
 
-    v65 = [v4 drilldownMetadata];
+    drilldownMetadata = [protobufCopy drilldownMetadata];
 
-    if (v65)
+    if (drilldownMetadata)
     {
       v66 = [SFDrillDownMetadata alloc];
-      v67 = [v4 drilldownMetadata];
-      v68 = [(SFDrillDownMetadata *)v66 initWithProtobuf:v67];
+      drilldownMetadata2 = [protobufCopy drilldownMetadata];
+      v68 = [(SFDrillDownMetadata *)v66 initWithProtobuf:drilldownMetadata2];
       [(SFCard *)v76 setDrilldownMetadata:v68];
     }
 
-    v69 = [v4 backgroundImage];
+    backgroundImage = [protobufCopy backgroundImage];
 
-    if (v69)
+    if (backgroundImage)
     {
       v70 = [SFImage alloc];
-      v71 = [v4 backgroundImage];
-      v72 = [(SFImage *)v70 initWithProtobuf:v71];
+      backgroundImage2 = [protobufCopy backgroundImage];
+      v72 = [(SFImage *)v70 initWithProtobuf:backgroundImage2];
       [(SFCard *)v76 setBackgroundImage:v72];
     }
 
@@ -322,27 +322,27 @@
   return v5;
 }
 
-- (void)loadCardSectionsWithCompletionHandler:(id)a3
+- (void)loadCardSectionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__SFCard_Handwritten__loadCardSectionsWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7ACDBB8;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(SFCard *)self loadCardSectionsWithCompletionAndErrorHandler:v6];
 }
 
-- (void)loadCardSectionsWithCompletionAndErrorHandler:(id)a3
+- (void)loadCardSectionsWithCompletionAndErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__SFCard_Handwritten__loadCardSectionsWithCompletionAndErrorHandler___block_invoke;
   v6[3] = &unk_1E7ACDB90;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   SFResourceLoaderLoadCard(self, v6);
 }
 
@@ -356,151 +356,151 @@ void __69__SFCard_Handwritten__loadCardSectionsWithCompletionAndErrorHandler___b
 
 - (unint64_t)hash
 {
-  v45 = [(SFCard *)self title];
-  v3 = [v45 hash];
+  title = [(SFCard *)self title];
+  v3 = [title hash];
   v4 = v3 ^ [(SFCard *)self type];
-  v44 = [(SFCard *)self cardSections];
-  v5 = [v44 hash];
-  v43 = [(SFCard *)self intentMessageData];
-  v6 = v4 ^ v5 ^ [v43 hash];
-  v42 = [(SFCard *)self intentMessageName];
-  v7 = [v42 hash];
-  v41 = [(SFCard *)self intentResponseMessageData];
-  v8 = v7 ^ [v41 hash];
-  v40 = [(SFCard *)self intentResponseMessageName];
-  v9 = v6 ^ v8 ^ [v40 hash];
-  v39 = [(SFCard *)self dismissalCommands];
-  v10 = [v39 hash];
-  v38 = [(SFCard *)self cardId];
-  v11 = v10 ^ [v38 hash];
-  v37 = [(SFCard *)self contextReferenceIdentifier];
-  v12 = v11 ^ [v37 hash];
-  v36 = [(SFCard *)self urlValue];
-  v13 = v9 ^ v12 ^ [v36 hash];
-  v14 = [(SFCard *)self source];
-  v15 = [(SFCard *)self entityIdentifier];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(SFCard *)self resultIdentifier];
-  v18 = v16 ^ [v17 hash];
+  cardSections = [(SFCard *)self cardSections];
+  v5 = [cardSections hash];
+  intentMessageData = [(SFCard *)self intentMessageData];
+  v6 = v4 ^ v5 ^ [intentMessageData hash];
+  intentMessageName = [(SFCard *)self intentMessageName];
+  v7 = [intentMessageName hash];
+  intentResponseMessageData = [(SFCard *)self intentResponseMessageData];
+  v8 = v7 ^ [intentResponseMessageData hash];
+  intentResponseMessageName = [(SFCard *)self intentResponseMessageName];
+  v9 = v6 ^ v8 ^ [intentResponseMessageName hash];
+  dismissalCommands = [(SFCard *)self dismissalCommands];
+  v10 = [dismissalCommands hash];
+  cardId = [(SFCard *)self cardId];
+  v11 = v10 ^ [cardId hash];
+  contextReferenceIdentifier = [(SFCard *)self contextReferenceIdentifier];
+  v12 = v11 ^ [contextReferenceIdentifier hash];
+  urlValue = [(SFCard *)self urlValue];
+  v13 = v9 ^ v12 ^ [urlValue hash];
+  source = [(SFCard *)self source];
+  entityIdentifier = [(SFCard *)self entityIdentifier];
+  v16 = source ^ [entityIdentifier hash];
+  resultIdentifier = [(SFCard *)self resultIdentifier];
+  v18 = v16 ^ [resultIdentifier hash];
   v19 = v18 ^ [(SFCard *)self queryId];
   v20 = [(SFCard *)self fbr];
   v21 = v13 ^ v19 ^ [v20 hash];
-  v22 = [(SFCard *)self flexibleSectionOrder];
-  v23 = [(SFCard *)self entityProtobufMessages];
-  v24 = v22 ^ [v23 hash];
-  v25 = [(SFCard *)self titleImage];
-  v26 = v24 ^ [v25 hash];
-  v27 = [(SFCard *)self backgroundColor];
-  v28 = v26 ^ [v27 hash];
-  v29 = [(SFCard *)self metadata];
-  v35 = v21 ^ v28 ^ [v29 hash];
-  v30 = [(SFCard *)self drilldownMetadata];
-  v31 = [v30 hash];
-  v32 = [(SFCard *)self backgroundImage];
-  v33 = v31 ^ [v32 hash];
+  flexibleSectionOrder = [(SFCard *)self flexibleSectionOrder];
+  entityProtobufMessages = [(SFCard *)self entityProtobufMessages];
+  v24 = flexibleSectionOrder ^ [entityProtobufMessages hash];
+  titleImage = [(SFCard *)self titleImage];
+  v26 = v24 ^ [titleImage hash];
+  backgroundColor = [(SFCard *)self backgroundColor];
+  v28 = v26 ^ [backgroundColor hash];
+  metadata = [(SFCard *)self metadata];
+  v35 = v21 ^ v28 ^ [metadata hash];
+  drilldownMetadata = [(SFCard *)self drilldownMetadata];
+  v31 = [drilldownMetadata hash];
+  backgroundImage = [(SFCard *)self backgroundImage];
+  v33 = v31 ^ [backgroundImage hash];
 
   return v35 ^ v33;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (self == v7)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_88;
   }
 
-  if (![(SFCard *)v7 isMemberOfClass:objc_opt_class()])
+  if (![(SFCard *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v12 = 0;
     goto LABEL_88;
   }
 
-  v8 = v7;
-  v9 = [(SFCard *)self title];
-  v10 = [(SFCard *)v8 title];
-  if ((v9 == v10 || (-[SFCard title](self, "title"), v11 = objc_claimAutoreleasedReturnValue(), -[SFCard title](v8, "title"), v123 = objc_claimAutoreleasedReturnValue(), v124 = v11, [v11 isEqual:?])) && (v13 = -[SFCard type](self, "type"), v13 == -[SFCard type](v8, "type")))
+  v8 = equalCopy;
+  title = [(SFCard *)self title];
+  title2 = [(SFCard *)v8 title];
+  if ((title == title2 || (-[SFCard title](self, "title"), v11 = objc_claimAutoreleasedReturnValue(), -[SFCard title](v8, "title"), v123 = objc_claimAutoreleasedReturnValue(), v124 = v11, [v11 isEqual:?])) && (v13 = -[SFCard type](self, "type"), v13 == -[SFCard type](v8, "type")))
   {
-    v14 = [(SFCard *)self cardSections];
-    v121 = [(SFCard *)v8 cardSections];
-    v122 = v14;
-    v3 = v14 != v121;
-    if (v14 == v121 || (-[SFCard cardSections](self, "cardSections"), v15 = objc_claimAutoreleasedReturnValue(), -[SFCard cardSections](v8, "cardSections"), v118 = v15, v117 = objc_claimAutoreleasedReturnValue(), [v15 isEqual:?]))
+    cardSections = [(SFCard *)self cardSections];
+    cardSections2 = [(SFCard *)v8 cardSections];
+    v122 = cardSections;
+    backgroundImage2 = cardSections != cardSections2;
+    if (cardSections == cardSections2 || (-[SFCard cardSections](self, "cardSections"), v15 = objc_claimAutoreleasedReturnValue(), -[SFCard cardSections](v8, "cardSections"), v118 = v15, v117 = objc_claimAutoreleasedReturnValue(), [v15 isEqual:?]))
     {
-      v22 = [(SFCard *)self intentMessageData];
+      intentMessageData = [(SFCard *)self intentMessageData];
       [(SFCard *)v8 intentMessageData];
-      v119 = v120 = v22;
-      v23 = v22 != v119;
-      *&v128[24] = v3;
-      if (v22 == v119 || (-[SFCard intentMessageData](self, "intentMessageData"), v24 = objc_claimAutoreleasedReturnValue(), -[SFCard intentMessageData](v8, "intentMessageData"), v113 = objc_claimAutoreleasedReturnValue(), v114 = v24, [v24 isEqual:?]))
+      v119 = v120 = intentMessageData;
+      v23 = intentMessageData != v119;
+      *&v128[24] = backgroundImage2;
+      if (intentMessageData == v119 || (-[SFCard intentMessageData](self, "intentMessageData"), v24 = objc_claimAutoreleasedReturnValue(), -[SFCard intentMessageData](v8, "intentMessageData"), v113 = objc_claimAutoreleasedReturnValue(), v114 = v24, [v24 isEqual:?]))
       {
-        v25 = [(SFCard *)self intentMessageName];
-        v115 = [(SFCard *)v8 intentMessageName];
-        v116 = v25;
-        v5 = v25 != v115;
+        intentMessageName = [(SFCard *)self intentMessageName];
+        intentMessageName2 = [(SFCard *)v8 intentMessageName];
+        v116 = intentMessageName;
+        urlValue = intentMessageName != intentMessageName2;
         *&v128[20] = v23;
-        if (v25 == v115 || (-[SFCard intentMessageName](self, "intentMessageName"), v26 = objc_claimAutoreleasedReturnValue(), -[SFCard intentMessageName](v8, "intentMessageName"), v109 = objc_claimAutoreleasedReturnValue(), v110 = v26, [v26 isEqual:?]))
+        if (intentMessageName == intentMessageName2 || (-[SFCard intentMessageName](self, "intentMessageName"), v26 = objc_claimAutoreleasedReturnValue(), -[SFCard intentMessageName](v8, "intentMessageName"), v109 = objc_claimAutoreleasedReturnValue(), v110 = v26, [v26 isEqual:?]))
         {
-          v27 = [(SFCard *)self intentResponseMessageData];
-          v111 = [(SFCard *)v8 intentResponseMessageData];
-          v112 = v27;
-          v4 = v27 != v111;
-          *&v128[16] = v5;
-          if (v27 == v111 || (-[SFCard intentResponseMessageData](self, "intentResponseMessageData"), v28 = objc_claimAutoreleasedReturnValue(), -[SFCard intentResponseMessageData](v8, "intentResponseMessageData"), v105 = objc_claimAutoreleasedReturnValue(), v106 = v28, [v28 isEqual:?]))
+          intentResponseMessageData = [(SFCard *)self intentResponseMessageData];
+          intentResponseMessageData2 = [(SFCard *)v8 intentResponseMessageData];
+          v112 = intentResponseMessageData;
+          backgroundImage3 = intentResponseMessageData != intentResponseMessageData2;
+          *&v128[16] = urlValue;
+          if (intentResponseMessageData == intentResponseMessageData2 || (-[SFCard intentResponseMessageData](self, "intentResponseMessageData"), v28 = objc_claimAutoreleasedReturnValue(), -[SFCard intentResponseMessageData](v8, "intentResponseMessageData"), v105 = objc_claimAutoreleasedReturnValue(), v106 = v28, [v28 isEqual:?]))
           {
-            v29 = [(SFCard *)self intentResponseMessageName];
-            v107 = [(SFCard *)v8 intentResponseMessageName];
-            v108 = v29;
-            v30 = v29 == v107;
-            v31 = v29 != v107;
-            *&v128[12] = v4;
-            if (v30 || (-[SFCard intentResponseMessageName](self, "intentResponseMessageName"), v5 = objc_claimAutoreleasedReturnValue(), -[SFCard intentResponseMessageName](v8, "intentResponseMessageName"), v101 = objc_claimAutoreleasedReturnValue(), v102 = v5, [v5 isEqual:?]))
+            intentResponseMessageName = [(SFCard *)self intentResponseMessageName];
+            intentResponseMessageName2 = [(SFCard *)v8 intentResponseMessageName];
+            v108 = intentResponseMessageName;
+            v30 = intentResponseMessageName == intentResponseMessageName2;
+            v31 = intentResponseMessageName != intentResponseMessageName2;
+            *&v128[12] = backgroundImage3;
+            if (v30 || (-[SFCard intentResponseMessageName](self, "intentResponseMessageName"), urlValue = objc_claimAutoreleasedReturnValue(), -[SFCard intentResponseMessageName](v8, "intentResponseMessageName"), v101 = objc_claimAutoreleasedReturnValue(), v102 = urlValue, [urlValue isEqual:?]))
             {
-              v32 = [(SFCard *)self dismissalCommands];
-              v103 = [(SFCard *)v8 dismissalCommands];
-              v104 = v32;
-              HIDWORD(v129[4]) = v32 != v103;
+              dismissalCommands = [(SFCard *)self dismissalCommands];
+              dismissalCommands2 = [(SFCard *)v8 dismissalCommands];
+              v104 = dismissalCommands;
+              HIDWORD(v129[4]) = dismissalCommands != dismissalCommands2;
               *&v128[8] = v31;
-              if (v32 == v103 || (-[SFCard dismissalCommands](self, "dismissalCommands"), v5 = objc_claimAutoreleasedReturnValue(), -[SFCard dismissalCommands](v8, "dismissalCommands"), v97 = objc_claimAutoreleasedReturnValue(), v98 = v5, [v5 isEqual:?]))
+              if (dismissalCommands == dismissalCommands2 || (-[SFCard dismissalCommands](self, "dismissalCommands"), urlValue = objc_claimAutoreleasedReturnValue(), -[SFCard dismissalCommands](v8, "dismissalCommands"), v97 = objc_claimAutoreleasedReturnValue(), v98 = urlValue, [urlValue isEqual:?]))
               {
-                v33 = [(SFCard *)self cardId];
-                v99 = [(SFCard *)v8 cardId];
-                v100 = v33;
-                LODWORD(v129[4]) = v33 != v99;
-                if (v33 == v99 || (-[SFCard cardId](self, "cardId"), v5 = objc_claimAutoreleasedReturnValue(), -[SFCard cardId](v8, "cardId"), v93 = objc_claimAutoreleasedReturnValue(), v94 = v5, [v5 isEqual:?]))
+                cardId = [(SFCard *)self cardId];
+                cardId2 = [(SFCard *)v8 cardId];
+                v100 = cardId;
+                LODWORD(v129[4]) = cardId != cardId2;
+                if (cardId == cardId2 || (-[SFCard cardId](self, "cardId"), urlValue = objc_claimAutoreleasedReturnValue(), -[SFCard cardId](v8, "cardId"), v93 = objc_claimAutoreleasedReturnValue(), v94 = urlValue, [urlValue isEqual:?]))
                 {
-                  v34 = [(SFCard *)self contextReferenceIdentifier];
-                  v95 = [(SFCard *)v8 contextReferenceIdentifier];
-                  v96 = v34;
-                  HIDWORD(v129[3]) = v34 != v95;
-                  if (v34 == v95 || (-[SFCard contextReferenceIdentifier](self, "contextReferenceIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), -[SFCard contextReferenceIdentifier](v8, "contextReferenceIdentifier"), v89 = objc_claimAutoreleasedReturnValue(), v90 = v5, [v5 isEqual:?]))
+                  contextReferenceIdentifier = [(SFCard *)self contextReferenceIdentifier];
+                  contextReferenceIdentifier2 = [(SFCard *)v8 contextReferenceIdentifier];
+                  v96 = contextReferenceIdentifier;
+                  HIDWORD(v129[3]) = contextReferenceIdentifier != contextReferenceIdentifier2;
+                  if (contextReferenceIdentifier == contextReferenceIdentifier2 || (-[SFCard contextReferenceIdentifier](self, "contextReferenceIdentifier"), urlValue = objc_claimAutoreleasedReturnValue(), -[SFCard contextReferenceIdentifier](v8, "contextReferenceIdentifier"), v89 = objc_claimAutoreleasedReturnValue(), v90 = urlValue, [urlValue isEqual:?]))
                   {
-                    v5 = [(SFCard *)self urlValue];
-                    v91 = [(SFCard *)v8 urlValue];
-                    v92 = v5;
-                    LODWORD(v129[3]) = v5 != v91;
-                    if (v5 == v91 || (-[SFCard urlValue](self, "urlValue"), v5 = objc_claimAutoreleasedReturnValue(), -[SFCard urlValue](v8, "urlValue"), v87 = objc_claimAutoreleasedReturnValue(), v88 = v5, [v5 isEqual:?]))
+                    urlValue = [(SFCard *)self urlValue];
+                    urlValue2 = [(SFCard *)v8 urlValue];
+                    v92 = urlValue;
+                    LODWORD(v129[3]) = urlValue != urlValue2;
+                    if (urlValue == urlValue2 || (-[SFCard urlValue](self, "urlValue"), urlValue = objc_claimAutoreleasedReturnValue(), -[SFCard urlValue](v8, "urlValue"), v87 = objc_claimAutoreleasedReturnValue(), v88 = urlValue, [urlValue isEqual:?]))
                     {
-                      v35 = [(SFCard *)self source];
-                      if (v35 == [(SFCard *)v8 source])
+                      source = [(SFCard *)self source];
+                      if (source == [(SFCard *)v8 source])
                       {
-                        v36 = [(SFCard *)self entityIdentifier];
-                        v85 = [(SFCard *)v8 entityIdentifier];
-                        v86 = v36;
-                        v30 = v36 == v85;
-                        v37 = v36 != v85;
-                        if (v30 || (-[SFCard entityIdentifier](self, "entityIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), -[SFCard entityIdentifier](v8, "entityIdentifier"), v81 = objc_claimAutoreleasedReturnValue(), v82 = v5, [v5 isEqual:?]))
+                        entityIdentifier = [(SFCard *)self entityIdentifier];
+                        entityIdentifier2 = [(SFCard *)v8 entityIdentifier];
+                        v86 = entityIdentifier;
+                        v30 = entityIdentifier == entityIdentifier2;
+                        v37 = entityIdentifier != entityIdentifier2;
+                        if (v30 || (-[SFCard entityIdentifier](self, "entityIdentifier"), urlValue = objc_claimAutoreleasedReturnValue(), -[SFCard entityIdentifier](v8, "entityIdentifier"), v81 = objc_claimAutoreleasedReturnValue(), v82 = urlValue, [urlValue isEqual:?]))
                         {
-                          v5 = [(SFCard *)self resultIdentifier];
-                          v83 = [(SFCard *)v8 resultIdentifier];
-                          v84 = v5;
-                          HIDWORD(v129[2]) = v5 != v83;
+                          urlValue = [(SFCard *)self resultIdentifier];
+                          resultIdentifier = [(SFCard *)v8 resultIdentifier];
+                          v84 = urlValue;
+                          HIDWORD(v129[2]) = urlValue != resultIdentifier;
                           *&v128[4] = v37;
-                          if (v5 == v83 || (-[SFCard resultIdentifier](self, "resultIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), -[SFCard resultIdentifier](v8, "resultIdentifier"), v79 = objc_claimAutoreleasedReturnValue(), v80 = v5, [v5 isEqual:?]))
+                          if (urlValue == resultIdentifier || (-[SFCard resultIdentifier](self, "resultIdentifier"), urlValue = objc_claimAutoreleasedReturnValue(), -[SFCard resultIdentifier](v8, "resultIdentifier"), v79 = objc_claimAutoreleasedReturnValue(), v80 = urlValue, [urlValue isEqual:?]))
                           {
-                            v38 = [(SFCard *)self queryId];
-                            if (v38 == [(SFCard *)v8 queryId])
+                            queryId = [(SFCard *)self queryId];
+                            if (queryId == [(SFCard *)v8 queryId])
                             {
                               v39 = [(SFCard *)self fbr];
                               v77 = [(SFCard *)v8 fbr];
@@ -514,10 +514,10 @@ void __69__SFCard_Handwritten__loadCardSectionsWithCompletionAndErrorHandler___b
 
                               else
                               {
-                                v5 = [(SFCard *)self fbr];
+                                urlValue = [(SFCard *)self fbr];
                                 v75 = [(SFCard *)v8 fbr];
-                                v76 = v5;
-                                if (![v5 isEqual:?])
+                                v76 = urlValue;
+                                if (![urlValue isEqual:?])
                                 {
                                   v126 = 0;
                                   memset(v127, 0, 12);
@@ -539,44 +539,44 @@ void __69__SFCard_Handwritten__loadCardSectionsWithCompletionAndErrorHandler___b
                                 *v128 = v40;
                               }
 
-                              v41 = [(SFCard *)self flexibleSectionOrder];
-                              if (v41 == [(SFCard *)v8 flexibleSectionOrder])
+                              flexibleSectionOrder = [(SFCard *)self flexibleSectionOrder];
+                              if (flexibleSectionOrder == [(SFCard *)v8 flexibleSectionOrder])
                               {
-                                v42 = [(SFCard *)self entityProtobufMessages];
-                                v43 = [(SFCard *)v8 entityProtobufMessages];
-                                LODWORD(v129[2]) = v42 != v43;
-                                v73 = v43;
-                                v74 = v42;
-                                if (v42 == v43 || (-[SFCard entityProtobufMessages](self, "entityProtobufMessages"), v44 = objc_claimAutoreleasedReturnValue(), -[SFCard entityProtobufMessages](v8, "entityProtobufMessages"), v69 = objc_claimAutoreleasedReturnValue(), v70 = v44, [v44 isEqual:?]))
+                                entityProtobufMessages = [(SFCard *)self entityProtobufMessages];
+                                entityProtobufMessages2 = [(SFCard *)v8 entityProtobufMessages];
+                                LODWORD(v129[2]) = entityProtobufMessages != entityProtobufMessages2;
+                                v73 = entityProtobufMessages2;
+                                v74 = entityProtobufMessages;
+                                if (entityProtobufMessages == entityProtobufMessages2 || (-[SFCard entityProtobufMessages](self, "entityProtobufMessages"), v44 = objc_claimAutoreleasedReturnValue(), -[SFCard entityProtobufMessages](v8, "entityProtobufMessages"), v69 = objc_claimAutoreleasedReturnValue(), v70 = v44, [v44 isEqual:?]))
                                 {
-                                  v45 = [(SFCard *)self titleImage];
-                                  v71 = [(SFCard *)v8 titleImage];
-                                  v72 = v45;
-                                  HIDWORD(v129[1]) = v45 != v71;
-                                  if (v45 == v71 || (-[SFCard titleImage](self, "titleImage"), v46 = objc_claimAutoreleasedReturnValue(), -[SFCard titleImage](v8, "titleImage"), v65 = objc_claimAutoreleasedReturnValue(), v66 = v46, [v46 isEqual:?]))
+                                  titleImage = [(SFCard *)self titleImage];
+                                  titleImage2 = [(SFCard *)v8 titleImage];
+                                  v72 = titleImage;
+                                  HIDWORD(v129[1]) = titleImage != titleImage2;
+                                  if (titleImage == titleImage2 || (-[SFCard titleImage](self, "titleImage"), v46 = objc_claimAutoreleasedReturnValue(), -[SFCard titleImage](v8, "titleImage"), v65 = objc_claimAutoreleasedReturnValue(), v66 = v46, [v46 isEqual:?]))
                                   {
-                                    v47 = [(SFCard *)self backgroundColor];
-                                    v67 = [(SFCard *)v8 backgroundColor];
-                                    v68 = v47;
-                                    LODWORD(v129[1]) = v47 != v67;
-                                    if (v47 == v67 || (-[SFCard backgroundColor](self, "backgroundColor"), v48 = objc_claimAutoreleasedReturnValue(), -[SFCard backgroundColor](v8, "backgroundColor"), v61 = objc_claimAutoreleasedReturnValue(), v62 = v48, [v48 isEqual:?]))
+                                    backgroundColor = [(SFCard *)self backgroundColor];
+                                    backgroundColor2 = [(SFCard *)v8 backgroundColor];
+                                    v68 = backgroundColor;
+                                    LODWORD(v129[1]) = backgroundColor != backgroundColor2;
+                                    if (backgroundColor == backgroundColor2 || (-[SFCard backgroundColor](self, "backgroundColor"), v48 = objc_claimAutoreleasedReturnValue(), -[SFCard backgroundColor](v8, "backgroundColor"), v61 = objc_claimAutoreleasedReturnValue(), v62 = v48, [v48 isEqual:?]))
                                     {
-                                      v49 = [(SFCard *)self metadata];
-                                      v63 = [(SFCard *)v8 metadata];
-                                      v64 = v49;
-                                      HIDWORD(v129[0]) = v49 != v63;
-                                      if (v49 == v63 || (-[SFCard metadata](self, "metadata"), v50 = objc_claimAutoreleasedReturnValue(), -[SFCard metadata](v8, "metadata"), v57 = objc_claimAutoreleasedReturnValue(), v58 = v50, [v50 isEqual:?]))
+                                      metadata = [(SFCard *)self metadata];
+                                      metadata2 = [(SFCard *)v8 metadata];
+                                      v64 = metadata;
+                                      HIDWORD(v129[0]) = metadata != metadata2;
+                                      if (metadata == metadata2 || (-[SFCard metadata](self, "metadata"), v50 = objc_claimAutoreleasedReturnValue(), -[SFCard metadata](v8, "metadata"), v57 = objc_claimAutoreleasedReturnValue(), v58 = v50, [v50 isEqual:?]))
                                       {
-                                        v51 = [(SFCard *)self drilldownMetadata];
-                                        v59 = [(SFCard *)v8 drilldownMetadata];
-                                        v60 = v51;
-                                        LODWORD(v129[0]) = v51 != v59;
-                                        if (v51 == v59 || (-[SFCard drilldownMetadata](self, "drilldownMetadata"), v52 = objc_claimAutoreleasedReturnValue(), -[SFCard drilldownMetadata](v8, "drilldownMetadata"), v54 = objc_claimAutoreleasedReturnValue(), v55 = v52, [v52 isEqual:?]))
+                                        drilldownMetadata = [(SFCard *)self drilldownMetadata];
+                                        drilldownMetadata2 = [(SFCard *)v8 drilldownMetadata];
+                                        v60 = drilldownMetadata;
+                                        LODWORD(v129[0]) = drilldownMetadata != drilldownMetadata2;
+                                        if (drilldownMetadata == drilldownMetadata2 || (-[SFCard drilldownMetadata](self, "drilldownMetadata"), v52 = objc_claimAutoreleasedReturnValue(), -[SFCard drilldownMetadata](v8, "drilldownMetadata"), v54 = objc_claimAutoreleasedReturnValue(), v55 = v52, [v52 isEqual:?]))
                                         {
-                                          v53 = [(SFCard *)self backgroundImage];
-                                          v3 = [(SFCard *)v8 backgroundImage];
-                                          v56 = v53;
-                                          if (v53 == v3)
+                                          backgroundImage = [(SFCard *)self backgroundImage];
+                                          backgroundImage2 = [(SFCard *)v8 backgroundImage];
+                                          v56 = backgroundImage;
+                                          if (backgroundImage == backgroundImage2)
                                           {
                                             v18 = 0;
                                             HIDWORD(v127[3]) = 1;
@@ -595,9 +595,9 @@ void __69__SFCard_Handwritten__loadCardSectionsWithCompletionAndErrorHandler___b
 
                                           else
                                           {
-                                            v4 = [(SFCard *)self backgroundImage];
-                                            v5 = [(SFCard *)v8 backgroundImage];
-                                            v12 = [v4 isEqual:v5];
+                                            backgroundImage3 = [(SFCard *)self backgroundImage];
+                                            urlValue = [(SFCard *)v8 backgroundImage];
+                                            v12 = [backgroundImage3 isEqual:urlValue];
                                             v18 = 1;
                                             HIDWORD(v127[3]) = 1;
                                             *(&v127[2] + 4) = 0x100000001;
@@ -1133,7 +1133,7 @@ LABEL_13:
   {
   }
 
-  if (v9 != v10)
+  if (title != title2)
   {
   }
 
@@ -1141,57 +1141,57 @@ LABEL_88:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFCard *)self title];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  title = [(SFCard *)self title];
+  v6 = [title copy];
   [v4 setTitle:v6];
 
   [v4 setType:{-[SFCard type](self, "type")}];
-  v7 = [(SFCard *)self cardSections];
-  v8 = [v7 copy];
+  cardSections = [(SFCard *)self cardSections];
+  v8 = [cardSections copy];
   [v4 setCardSections:v8];
 
-  v9 = [(SFCard *)self intentMessageData];
-  v10 = [v9 copy];
+  intentMessageData = [(SFCard *)self intentMessageData];
+  v10 = [intentMessageData copy];
   [v4 setIntentMessageData:v10];
 
-  v11 = [(SFCard *)self intentMessageName];
-  v12 = [v11 copy];
+  intentMessageName = [(SFCard *)self intentMessageName];
+  v12 = [intentMessageName copy];
   [v4 setIntentMessageName:v12];
 
-  v13 = [(SFCard *)self intentResponseMessageData];
-  v14 = [v13 copy];
+  intentResponseMessageData = [(SFCard *)self intentResponseMessageData];
+  v14 = [intentResponseMessageData copy];
   [v4 setIntentResponseMessageData:v14];
 
-  v15 = [(SFCard *)self intentResponseMessageName];
-  v16 = [v15 copy];
+  intentResponseMessageName = [(SFCard *)self intentResponseMessageName];
+  v16 = [intentResponseMessageName copy];
   [v4 setIntentResponseMessageName:v16];
 
-  v17 = [(SFCard *)self dismissalCommands];
-  v18 = [v17 copy];
+  dismissalCommands = [(SFCard *)self dismissalCommands];
+  v18 = [dismissalCommands copy];
   [v4 setDismissalCommands:v18];
 
-  v19 = [(SFCard *)self cardId];
-  v20 = [v19 copy];
+  cardId = [(SFCard *)self cardId];
+  v20 = [cardId copy];
   [v4 setCardId:v20];
 
-  v21 = [(SFCard *)self contextReferenceIdentifier];
-  v22 = [v21 copy];
+  contextReferenceIdentifier = [(SFCard *)self contextReferenceIdentifier];
+  v22 = [contextReferenceIdentifier copy];
   [v4 setContextReferenceIdentifier:v22];
 
-  v23 = [(SFCard *)self urlValue];
-  v24 = [v23 copy];
+  urlValue = [(SFCard *)self urlValue];
+  v24 = [urlValue copy];
   [v4 setUrlValue:v24];
 
   [v4 setSource:{-[SFCard source](self, "source")}];
-  v25 = [(SFCard *)self entityIdentifier];
-  v26 = [v25 copy];
+  entityIdentifier = [(SFCard *)self entityIdentifier];
+  v26 = [entityIdentifier copy];
   [v4 setEntityIdentifier:v26];
 
-  v27 = [(SFCard *)self resultIdentifier];
-  v28 = [v27 copy];
+  resultIdentifier = [(SFCard *)self resultIdentifier];
+  v28 = [resultIdentifier copy];
   [v4 setResultIdentifier:v28];
 
   [v4 setQueryId:{-[SFCard queryId](self, "queryId")}];
@@ -1200,28 +1200,28 @@ LABEL_88:
   [v4 setFbr:v30];
 
   [v4 setFlexibleSectionOrder:{-[SFCard flexibleSectionOrder](self, "flexibleSectionOrder")}];
-  v31 = [(SFCard *)self entityProtobufMessages];
-  v32 = [v31 copy];
+  entityProtobufMessages = [(SFCard *)self entityProtobufMessages];
+  v32 = [entityProtobufMessages copy];
   [v4 setEntityProtobufMessages:v32];
 
-  v33 = [(SFCard *)self titleImage];
-  v34 = [v33 copy];
+  titleImage = [(SFCard *)self titleImage];
+  v34 = [titleImage copy];
   [v4 setTitleImage:v34];
 
-  v35 = [(SFCard *)self backgroundColor];
-  v36 = [v35 copy];
+  backgroundColor = [(SFCard *)self backgroundColor];
+  v36 = [backgroundColor copy];
   [v4 setBackgroundColor:v36];
 
-  v37 = [(SFCard *)self metadata];
-  v38 = [v37 copy];
+  metadata = [(SFCard *)self metadata];
+  v38 = [metadata copy];
   [v4 setMetadata:v38];
 
-  v39 = [(SFCard *)self drilldownMetadata];
-  v40 = [v39 copy];
+  drilldownMetadata = [(SFCard *)self drilldownMetadata];
+  v40 = [drilldownMetadata copy];
   [v4 setDrilldownMetadata:v40];
 
-  v41 = [(SFCard *)self backgroundImage];
-  v42 = [v41 copy];
+  backgroundImage = [(SFCard *)self backgroundImage];
+  v42 = [backgroundImage copy];
   [v4 setBackgroundImage:v42];
 
   return v4;
@@ -1230,187 +1230,187 @@ LABEL_88:
 - (NSData)jsonData
 {
   v2 = [[_SFPBCard alloc] initWithFacade:self];
-  v3 = [(_SFPBCard *)v2 jsonData];
+  jsonData = [(_SFPBCard *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCard alloc] initWithFacade:self];
-  v3 = [(_SFPBCard *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCard *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v24 = a3;
-  v4 = [(SFCard *)self backgroundColor];
-  [v24 encodeObject:v4 forKey:@"_backgroundColor"];
+  coderCopy = coder;
+  backgroundColor = [(SFCard *)self backgroundColor];
+  [coderCopy encodeObject:backgroundColor forKey:@"_backgroundColor"];
 
-  v5 = [(SFCard *)self cardId];
-  [v24 encodeObject:v5 forKey:@"_cardId"];
+  cardId = [(SFCard *)self cardId];
+  [coderCopy encodeObject:cardId forKey:@"_cardId"];
 
-  v6 = [(SFCard *)self cardSections];
-  [v24 encodeObject:v6 forKey:@"_cardSections"];
+  cardSections = [(SFCard *)self cardSections];
+  [coderCopy encodeObject:cardSections forKey:@"_cardSections"];
 
-  v7 = [(SFCard *)self contextReferenceIdentifier];
-  [v24 encodeObject:v7 forKey:@"_contextReferenceIdentifier"];
+  contextReferenceIdentifier = [(SFCard *)self contextReferenceIdentifier];
+  [coderCopy encodeObject:contextReferenceIdentifier forKey:@"_contextReferenceIdentifier"];
 
-  v8 = [(SFCard *)self dismissalCommands];
-  [v24 encodeObject:v8 forKey:@"_dismissalCommands"];
+  dismissalCommands = [(SFCard *)self dismissalCommands];
+  [coderCopy encodeObject:dismissalCommands forKey:@"_dismissalCommands"];
 
-  v9 = [(SFCard *)self entityIdentifier];
-  [v24 encodeObject:v9 forKey:@"_entityIdentifier"];
+  entityIdentifier = [(SFCard *)self entityIdentifier];
+  [coderCopy encodeObject:entityIdentifier forKey:@"_entityIdentifier"];
 
-  v10 = [(SFCard *)self entityProtobufMessages];
-  [v24 encodeObject:v10 forKey:@"_entityProtobufMessages"];
+  entityProtobufMessages = [(SFCard *)self entityProtobufMessages];
+  [coderCopy encodeObject:entityProtobufMessages forKey:@"_entityProtobufMessages"];
 
   v11 = [(SFCard *)self fbr];
-  [v24 encodeObject:v11 forKey:@"_fbr"];
+  [coderCopy encodeObject:v11 forKey:@"_fbr"];
 
   if ([(SFCard *)self hasFlexibleSectionOrder])
   {
-    [v24 encodeBool:1 forKey:@"_hasFlexibleSectionOrder"];
-    [v24 encodeBool:-[SFCard flexibleSectionOrder](self forKey:{"flexibleSectionOrder"), @"_flexibleSectionOrder"}];
+    [coderCopy encodeBool:1 forKey:@"_hasFlexibleSectionOrder"];
+    [coderCopy encodeBool:-[SFCard flexibleSectionOrder](self forKey:{"flexibleSectionOrder"), @"_flexibleSectionOrder"}];
   }
 
-  v12 = [(SFCard *)self intentMessageData];
-  [v24 encodeObject:v12 forKey:@"_intentMessageData"];
+  intentMessageData = [(SFCard *)self intentMessageData];
+  [coderCopy encodeObject:intentMessageData forKey:@"_intentMessageData"];
 
-  v13 = [(SFCard *)self intentMessageName];
-  [v24 encodeObject:v13 forKey:@"_intentMessageName"];
+  intentMessageName = [(SFCard *)self intentMessageName];
+  [coderCopy encodeObject:intentMessageName forKey:@"_intentMessageName"];
 
-  v14 = [(SFCard *)self intentResponseMessageData];
-  [v24 encodeObject:v14 forKey:@"_intentResponseMessageData"];
+  intentResponseMessageData = [(SFCard *)self intentResponseMessageData];
+  [coderCopy encodeObject:intentResponseMessageData forKey:@"_intentResponseMessageData"];
 
-  v15 = [(SFCard *)self intentResponseMessageName];
-  [v24 encodeObject:v15 forKey:@"_intentResponseMessageName"];
+  intentResponseMessageName = [(SFCard *)self intentResponseMessageName];
+  [coderCopy encodeObject:intentResponseMessageName forKey:@"_intentResponseMessageName"];
 
-  v16 = [(SFCard *)self metadata];
-  [v24 encodeObject:v16 forKey:@"_metadata"];
+  metadata = [(SFCard *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"_metadata"];
 
-  v17 = [(SFCard *)self drilldownMetadata];
-  [v24 encodeObject:v17 forKey:@"_drilldownMetadata"];
+  drilldownMetadata = [(SFCard *)self drilldownMetadata];
+  [coderCopy encodeObject:drilldownMetadata forKey:@"_drilldownMetadata"];
 
   if ([(SFCard *)self hasQueryId])
   {
-    [v24 encodeBool:1 forKey:@"_hasQueryId"];
+    [coderCopy encodeBool:1 forKey:@"_hasQueryId"];
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SFCard queryId](self, "queryId")}];
-    [v24 encodeObject:v18 forKey:@"_queryId"];
+    [coderCopy encodeObject:v18 forKey:@"_queryId"];
   }
 
-  v19 = [(SFCard *)self resultIdentifier];
-  [v24 encodeObject:v19 forKey:@"_resultIdentifier"];
+  resultIdentifier = [(SFCard *)self resultIdentifier];
+  [coderCopy encodeObject:resultIdentifier forKey:@"_resultIdentifier"];
 
   if ([(SFCard *)self hasSource])
   {
-    [v24 encodeBool:1 forKey:@"_hasSource"];
-    [v24 encodeInt32:-[SFCard source](self forKey:{"source"), @"_source"}];
+    [coderCopy encodeBool:1 forKey:@"_hasSource"];
+    [coderCopy encodeInt32:-[SFCard source](self forKey:{"source"), @"_source"}];
   }
 
-  v20 = [(SFCard *)self title];
-  [v24 encodeObject:v20 forKey:@"_title"];
+  title = [(SFCard *)self title];
+  [coderCopy encodeObject:title forKey:@"_title"];
 
-  v21 = [(SFCard *)self titleImage];
-  [v24 encodeObject:v21 forKey:@"_titleImage"];
+  titleImage = [(SFCard *)self titleImage];
+  [coderCopy encodeObject:titleImage forKey:@"_titleImage"];
 
   if ([(SFCard *)self hasType])
   {
-    [v24 encodeBool:1 forKey:@"_hasType"];
-    [v24 encodeInt32:-[SFCard type](self forKey:{"type"), @"_type"}];
+    [coderCopy encodeBool:1 forKey:@"_hasType"];
+    [coderCopy encodeInt32:-[SFCard type](self forKey:{"type"), @"_type"}];
   }
 
-  v22 = [(SFCard *)self urlValue];
-  [v24 encodeObject:v22 forKey:@"_urlValue"];
+  urlValue = [(SFCard *)self urlValue];
+  [coderCopy encodeObject:urlValue forKey:@"_urlValue"];
 
-  v23 = [(SFCard *)self backgroundImage];
-  [v24 encodeObject:v23 forKey:@"_backgroundImage"];
+  backgroundImage = [(SFCard *)self backgroundImage];
+  [coderCopy encodeObject:backgroundImage forKey:@"_backgroundImage"];
 }
 
-- (SFCard)initWithCoder:(id)a3
+- (SFCard)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = SFCard;
   v5 = [(SFCard *)&v27 init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundColor"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundColor"];
   [(SFCard *)v5 setBackgroundColor:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cardId"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cardId"];
   [(SFCard *)v5 setCardId:v7];
 
-  v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_cardSections"];
+  v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_cardSections"];
   [(SFCard *)v5 setCardSections:v8];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contextReferenceIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contextReferenceIdentifier"];
   [(SFCard *)v5 setContextReferenceIdentifier:v9];
 
-  v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_dismissalCommands"];
+  v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_dismissalCommands"];
   [(SFCard *)v5 setDismissalCommands:v10];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_entityIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_entityIdentifier"];
   [(SFCard *)v5 setEntityIdentifier:v11];
 
-  v12 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_entityProtobufMessages"];
+  v12 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_entityProtobufMessages"];
   [(SFCard *)v5 setEntityProtobufMessages:v12];
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fbr"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fbr"];
   [(SFCard *)v5 setFbr:v13];
 
-  if ([v4 decodeBoolForKey:@"_hasFlexibleSectionOrder"])
+  if ([coderCopy decodeBoolForKey:@"_hasFlexibleSectionOrder"])
   {
-    -[SFCard setFlexibleSectionOrder:](v5, "setFlexibleSectionOrder:", [v4 decodeBoolForKey:@"_flexibleSectionOrder"]);
+    -[SFCard setFlexibleSectionOrder:](v5, "setFlexibleSectionOrder:", [coderCopy decodeBoolForKey:@"_flexibleSectionOrder"]);
   }
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_intentMessageData"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_intentMessageData"];
   [(SFCard *)v5 setIntentMessageData:v14];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_intentMessageName"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_intentMessageName"];
   [(SFCard *)v5 setIntentMessageName:v15];
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_intentResponseMessageData"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_intentResponseMessageData"];
   [(SFCard *)v5 setIntentResponseMessageData:v16];
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_intentResponseMessageName"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_intentResponseMessageName"];
   [(SFCard *)v5 setIntentResponseMessageName:v17];
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_metadata"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_metadata"];
   [(SFCard *)v5 setMetadata:v18];
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_drilldownMetadata"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_drilldownMetadata"];
   [(SFCard *)v5 setDrilldownMetadata:v19];
 
-  if ([v4 decodeBoolForKey:@"_hasQueryId"])
+  if ([coderCopy decodeBoolForKey:@"_hasQueryId"])
   {
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_queryId"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_queryId"];
     -[SFCard setQueryId:](v5, "setQueryId:", [v20 unsignedIntegerValue]);
   }
 
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_resultIdentifier"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_resultIdentifier"];
   [(SFCard *)v5 setResultIdentifier:v21];
 
-  if ([v4 decodeBoolForKey:@"_hasSource"])
+  if ([coderCopy decodeBoolForKey:@"_hasSource"])
   {
-    -[SFCard setSource:](v5, "setSource:", [v4 decodeInt32ForKey:@"_source"]);
+    -[SFCard setSource:](v5, "setSource:", [coderCopy decodeInt32ForKey:@"_source"]);
   }
 
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
   [(SFCard *)v5 setTitle:v22];
 
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_titleImage"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_titleImage"];
   [(SFCard *)v5 setTitleImage:v23];
 
-  if ([v4 decodeBoolForKey:@"_hasType"])
+  if ([coderCopy decodeBoolForKey:@"_hasType"])
   {
-    -[SFCard setType:](v5, "setType:", [v4 decodeInt32ForKey:@"_type"]);
+    -[SFCard setType:](v5, "setType:", [coderCopy decodeInt32ForKey:@"_type"]);
   }
 
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_urlValue"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_urlValue"];
   [(SFCard *)v5 setUrlValue:v24];
 
-  v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundImage"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundImage"];
   [(SFCard *)v5 setBackgroundImage:v25];
 
   return v5;

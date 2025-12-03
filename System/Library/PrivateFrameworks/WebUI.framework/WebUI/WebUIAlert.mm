@@ -1,48 +1,48 @@
 @interface WebUIAlert
 - (NSArray)buttonTitles;
-- (WebUIAlert)initWithType:(int)a3 title:(id)a4 bodyText:(id)a5 defaultAction:(int)a6 otherAction:(int)a7 tableAction:(int)a8;
-- (id)_buttonTitleForAction:(int)a3;
+- (WebUIAlert)initWithType:(int)type title:(id)title bodyText:(id)text defaultAction:(int)action otherAction:(int)otherAction tableAction:(int)tableAction;
+- (id)_buttonTitleForAction:(int)action;
 - (id)selectedIdentity;
-- (int)actionForButtonTag:(int64_t)a3;
-- (void)setIdentities:(id)a3;
+- (int)actionForButtonTag:(int64_t)tag;
+- (void)setIdentities:(id)identities;
 @end
 
 @implementation WebUIAlert
 
-- (WebUIAlert)initWithType:(int)a3 title:(id)a4 bodyText:(id)a5 defaultAction:(int)a6 otherAction:(int)a7 tableAction:(int)a8
+- (WebUIAlert)initWithType:(int)type title:(id)title bodyText:(id)text defaultAction:(int)action otherAction:(int)otherAction tableAction:(int)tableAction
 {
-  v14 = a4;
-  v15 = a5;
+  titleCopy = title;
+  textCopy = text;
   v23.receiver = self;
   v23.super_class = WebUIAlert;
   v16 = [(WebUIAlert *)&v23 init];
   v17 = v16;
   if (v16)
   {
-    v16->_type = a3;
-    v18 = [v14 copy];
+    v16->_type = type;
+    v18 = [titleCopy copy];
     title = v17->_title;
     v17->_title = v18;
 
-    v20 = [v15 copy];
+    v20 = [textCopy copy];
     bodyText = v17->_bodyText;
     v17->_bodyText = v20;
 
-    v17->_otherAction = a7;
-    v17->_defaultAction = a6;
-    v17->_tableAction = a8;
-    v17->_hideAction = a6;
+    v17->_otherAction = otherAction;
+    v17->_defaultAction = action;
+    v17->_tableAction = tableAction;
+    v17->_hideAction = action;
   }
 
   return v17;
 }
 
-- (id)_buttonTitleForAction:(int)a3
+- (id)_buttonTitleForAction:(int)action
 {
   v4 = 0;
-  if (a3 > 5)
+  if (action > 5)
   {
-    if (a3 > 10)
+    if (action > 10)
     {
       goto LABEL_9;
     }
@@ -50,7 +50,7 @@
     goto LABEL_8;
   }
 
-  if (a3 > 2 || a3 == 1 || a3 == 2)
+  if (action > 2 || action == 1 || action == 2)
   {
 LABEL_8:
     v4 = _WBSLocalizedString();
@@ -79,14 +79,14 @@ LABEL_9:
   return v3;
 }
 
-- (int)actionForButtonTag:(int64_t)a3
+- (int)actionForButtonTag:(int64_t)tag
 {
-  if (a3 == 1)
+  if (tag == 1)
   {
     return self->_defaultAction;
   }
 
-  if (a3)
+  if (tag)
   {
     return 0;
   }
@@ -100,22 +100,22 @@ LABEL_9:
   return otherAction;
 }
 
-- (void)setIdentities:(id)a3
+- (void)setIdentities:(id)identities
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
+  identitiesCopy = identities;
+  v5 = [identitiesCopy copy];
   identities = self->_identities;
   self->_identities = v5;
 
-  if ([v4 count] >= 2)
+  if ([identitiesCopy count] >= 2)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = v4;
+    v8 = identitiesCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -166,7 +166,7 @@ LABEL_9:
 {
   if ([(NSArray *)self->_identities count]== 1)
   {
-    v3 = [(NSArray *)self->_identities firstObject];
+    firstObject = [(NSArray *)self->_identities firstObject];
   }
 
   else
@@ -174,16 +174,16 @@ LABEL_9:
     indexOfSelectedIdentity = self->_indexOfSelectedIdentity;
     if ((indexOfSelectedIdentity & 0x8000000000000000) != 0 || indexOfSelectedIdentity >= [(NSArray *)self->_identities count])
     {
-      v3 = 0;
+      firstObject = 0;
     }
 
     else
     {
-      v3 = [(NSArray *)self->_identities objectAtIndexedSubscript:self->_indexOfSelectedIdentity];
+      firstObject = [(NSArray *)self->_identities objectAtIndexedSubscript:self->_indexOfSelectedIdentity];
     }
   }
 
-  return v3;
+  return firstObject;
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface CRLCurvedShadow
-+ (id)curvedShadowWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9;
-- (BOOL)isEqual:(id)a3;
-- (CGImage)newShadowImageForRep:(id)a3 withUnscaledSize:(CGSize)a4 viewScale:(double)a5 drawSelector:(SEL)a6 unflipped:(BOOL)a7;
-- (CGRect)boundsForRep:(id)a3;
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3;
-- (CGRect)expandedBoundsForRect:(CGRect)a3;
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
-- (CRLCurvedShadow)initWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9;
++ (id)curvedShadowWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
+- (BOOL)isEqual:(id)equal;
+- (CGImage)newShadowImageForRep:(id)rep withUnscaledSize:(CGSize)size viewScale:(double)scale drawSelector:(SEL)selector unflipped:(BOOL)unflipped;
+- (CGRect)boundsForRep:(id)rep;
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep;
+- (CGRect)expandedBoundsForRect:(CGRect)rect;
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform;
+- (CRLCurvedShadow)initWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newShadowClampedForSwatches;
 - (unint64_t)hash;
 @end
 
 @implementation CRLCurvedShadow
 
-+ (id)curvedShadowWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9
++ (id)curvedShadowWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
-  v9 = a9;
-  v16 = a8;
-  v17 = [[a1 alloc] initWithOffset:v16 angle:v9 radius:a3 curve:a4 opacity:a5 color:a6 enabled:a7];
+  enabledCopy = enabled;
+  colorCopy = color;
+  v17 = [[self alloc] initWithOffset:colorCopy angle:enabledCopy radius:offset curve:angle opacity:radius color:curve enabled:opacity];
 
   return v17;
 }
 
-- (CRLCurvedShadow)initWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9
+- (CRLCurvedShadow)initWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
-  v9 = a9;
-  v16 = a8;
-  if (!v16)
+  enabledCopy = enabled;
+  colorCopy = color;
+  if (!colorCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -59,11 +59,11 @@
 
   v23.receiver = self;
   v23.super_class = CRLCurvedShadow;
-  v20 = [(CRLShadow *)&v23 i_initWithOpacity:v16 color:v9 angle:a7 offset:a4 radius:a3 enabled:a5];
+  v20 = [(CRLShadow *)&v23 i_initWithOpacity:colorCopy color:enabledCopy angle:opacity offset:angle radius:offset enabled:radius];
   v21 = v20;
   if (v20)
   {
-    v20[7] = a6;
+    v20[7] = curve;
   }
 
   return v21;
@@ -81,10 +81,10 @@
   v10 = v9;
   [(CRLShadow *)self opacity];
   v12 = v11;
-  v13 = [(CRLShadow *)self color];
-  v14 = [(CRLShadow *)self isEnabled];
+  color = [(CRLShadow *)self color];
+  isEnabled = [(CRLShadow *)self isEnabled];
   v15 = @"NO";
-  if (v14)
+  if (isEnabled)
   {
     v15 = @"YES";
   }
@@ -92,19 +92,19 @@
   v16 = v15;
   [(CRLCurvedShadow *)self curve];
   v18 = v17;
-  v19 = [(CRLShadow *)self typeDescription];
-  v20 = [NSString stringWithFormat:@"<%@ %p: angle=%g offset=%g radius=%g opacity=%g color=%p enabled=%@  curve=%f type=%@>", v4, self, v6, v8, v10, v12, v13, v16, v18, v19];
+  typeDescription = [(CRLShadow *)self typeDescription];
+  v20 = [NSString stringWithFormat:@"<%@ %p: angle=%g offset=%g radius=%g opacity=%g color=%p enabled=%@  curve=%f type=%@>", v4, self, v6, v8, v10, v12, color, v16, v18, typeDescription];
 
   return v20;
 }
 
-- (CGRect)expandedBoundsForRect:(CGRect)a3
+- (CGRect)expandedBoundsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(CRLCurvedShadow *)self paddingForCurveWithSize:a3.size.width, a3.size.height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(CRLCurvedShadow *)self paddingForCurveWithSize:rect.size.width, rect.size.height];
   v9 = v8;
   [(CRLCurvedShadow *)self paddingForBlur];
   v11 = -v10;
@@ -117,7 +117,7 @@
   return CGRectInset(*&v13, v11, v12);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRLMutableCurvedShadow alloc];
   [(CRLShadow *)self offset];
@@ -130,8 +130,8 @@
   v12 = v11;
   [(CRLShadow *)self opacity];
   v14 = v13;
-  v15 = [(CRLShadow *)self color];
-  v16 = [(CRLCurvedShadow *)v4 initWithOffset:v15 angle:[(CRLShadow *)self isEnabled] radius:v6 curve:v8 opacity:v10 color:v12 enabled:v14];
+  color = [(CRLShadow *)self color];
+  v16 = [(CRLCurvedShadow *)v4 initWithOffset:color angle:[(CRLShadow *)self isEnabled] radius:v6 curve:v8 opacity:v10 color:v12 enabled:v14];
 
   return v16;
 }
@@ -149,22 +149,22 @@
   v11 = v10;
   [(CRLShadow *)self opacity];
   v13 = v12;
-  v14 = [(CRLShadow *)self color];
-  v15 = [(CRLCurvedShadow *)v7 initWithOffset:v14 angle:[(CRLShadow *)self isEnabled] radius:v6 curve:v9 opacity:v11 color:v4 enabled:v13];
+  color = [(CRLShadow *)self color];
+  v15 = [(CRLCurvedShadow *)v7 initWithOffset:color angle:[(CRLShadow *)self isEnabled] radius:v6 curve:v9 opacity:v11 color:v4 enabled:v13];
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6 && (v12.receiver = self, v12.super_class = CRLCurvedShadow, [(CRLShadow *)&v12 isEqual:v6]))
   {
@@ -189,18 +189,18 @@
   return [(CRLShadow *)&v3 hash];
 }
 
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(CRLShadow *)self isEnabled])
   {
-    v10 = *&a4->c;
-    *&v29.a = *&a4->a;
+    v10 = *&transform->c;
+    *&v29.a = *&transform->a;
     *&v29.c = v10;
-    *&v29.tx = *&a4->tx;
+    *&v29.tx = *&transform->tx;
     CGAffineTransformInvert(&v30, &v29);
     v31.origin.x = x;
     v31.origin.y = y;
@@ -222,10 +222,10 @@
     v33.size.width = v16;
     v33.size.height = v18;
     v34 = CGRectOffset(v33, v20, v22);
-    v23 = *&a4->c;
-    *&v30.a = *&a4->a;
+    v23 = *&transform->c;
+    *&v30.a = *&transform->a;
     *&v30.c = v23;
-    *&v30.tx = *&a4->tx;
+    *&v30.tx = *&transform->tx;
     v38 = CGRectApplyAffineTransform(v34, &v30);
     v35.origin.x = x;
     v35.origin.y = y;
@@ -249,11 +249,11 @@
   return result;
 }
 
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep
 {
-  v4 = [a3 styledLayout];
-  v5 = [v4 geometryInRoot];
-  [v5 frame];
+  styledLayout = [rep styledLayout];
+  geometryInRoot = [styledLayout geometryInRoot];
+  [geometryInRoot frame];
   v6 = sub_10011ECB4();
   v8 = v7;
   v10 = v9;
@@ -267,11 +267,11 @@
   return result;
 }
 
-- (CGRect)boundsForRep:(id)a3
+- (CGRect)boundsForRep:(id)rep
 {
-  v4 = [a3 styledLayout];
-  v5 = [v4 geometryInRoot];
-  [v5 frame];
+  styledLayout = [rep styledLayout];
+  geometryInRoot = [styledLayout geometryInRoot];
+  [geometryInRoot frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -285,18 +285,18 @@
   return result;
 }
 
-- (CGImage)newShadowImageForRep:(id)a3 withUnscaledSize:(CGSize)a4 viewScale:(double)a5 drawSelector:(SEL)a6 unflipped:(BOOL)a7
+- (CGImage)newShadowImageForRep:(id)rep withUnscaledSize:(CGSize)size viewScale:(double)scale drawSelector:(SEL)selector unflipped:(BOOL)unflipped
 {
-  v7 = a7;
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  v13 = [(CRLShadow *)self color];
+  unflippedCopy = unflipped;
+  height = size.height;
+  width = size.width;
+  repCopy = rep;
+  color = [(CRLShadow *)self color];
   [(CRLShadow *)self opacity];
-  if (v14 == 0.0 || ([v13 alphaComponent], v17 == 0.0) || width == 0.0 || height == 0.0)
+  if (v14 == 0.0 || ([color alphaComponent], v17 == 0.0) || width == 0.0 || height == 0.0)
   {
 LABEL_2:
-    v15 = [(CRLShadow *)self i_newEmptyImage];
+    i_newEmptyImage = [(CRLShadow *)self i_newEmptyImage];
     goto LABEL_3;
   }
 
@@ -307,7 +307,7 @@ LABEL_2:
 
   v18 = sub_100121ED4(width, height, 1048576.0);
   v20 = v19;
-  [(CRLCurvedShadow *)self boundsForRep:v12];
+  [(CRLCurvedShadow *)self boundsForRep:repCopy];
   v22 = v21;
   v24 = v23;
   v25 = sub_10050DF80(11, v18, v20);
@@ -343,20 +343,20 @@ LABEL_2:
   }
 
   v26 = v25;
-  v53 = v13;
-  v27 = [v12 canvas];
-  v28 = [v27 isPrinting];
-  v29 = [v12 canvas];
-  v30 = [v29 isDrawingIntoPDF];
-  v31 = [v12 canvas];
-  [v31 contentsScale];
-  sub_10050DE7C(v26, v28, v30, 1, 0, v32);
+  v53 = color;
+  canvas = [repCopy canvas];
+  isPrinting = [canvas isPrinting];
+  canvas2 = [repCopy canvas];
+  isDrawingIntoPDF = [canvas2 isDrawingIntoPDF];
+  canvas3 = [repCopy canvas];
+  [canvas3 contentsScale];
+  sub_10050DE7C(v26, isPrinting, isDrawingIntoPDF, 1, 0, v32);
 
-  v33 = [v12 layout];
-  v34 = v33;
-  if (v33)
+  layout = [repCopy layout];
+  v34 = layout;
+  if (layout)
   {
-    [v33 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -370,12 +370,12 @@ LABEL_2:
   CGContextScaleCTM(v26, v18 / width, v18 / width);
   CGContextTranslateCTM(v26, -v22, -v24);
   memset(&v56, 0, sizeof(v56));
-  v39 = [v12 styledLayout];
-  v40 = v39;
-  v13 = v53;
-  if (v39)
+  styledLayout = [repCopy styledLayout];
+  v40 = styledLayout;
+  color = v53;
+  if (styledLayout)
   {
-    [v39 transformInRoot];
+    [styledLayout transformInRoot];
   }
 
   else
@@ -385,7 +385,7 @@ LABEL_2:
 
   transform = v56;
   CGContextConcatCTM(v26, &transform);
-  [v12 performSelector:a6 withObject:v26];
+  [repCopy performSelector:selector withObject:v26];
   Image = CGBitmapContextCreateImage(v26);
   CGContextRelease(v26);
   v42 = sub_10050DF80(3, v18, v20);
@@ -422,15 +422,15 @@ LABEL_2:
   }
 
   v43 = v42;
-  if (v7)
+  if (unflippedCopy)
   {
     memset(&transform, 0, sizeof(transform));
-    v44 = [v12 layout];
-    v45 = [v44 geometry];
-    v46 = v45;
-    if (v45)
+    layout2 = [repCopy layout];
+    geometry = [layout2 geometry];
+    v46 = geometry;
+    if (geometry)
     {
-      [v45 transform];
+      [geometry transform];
     }
 
     else
@@ -491,12 +491,12 @@ LABEL_2:
     [CRLAssertionHandler handleFailureInFunction:v51 file:v52 lineNumber:270 isFatal:0 description:"invalid nil value for '%{public}s'", "imageWithoutShadow"];
   }
 
-  v15 = CGBitmapContextCreateImage(v43);
+  i_newEmptyImage = CGBitmapContextCreateImage(v43);
   CGContextRelease(v43);
   CGImageRelease(Image);
 LABEL_3:
 
-  return v15;
+  return i_newEmptyImage;
 }
 
 @end

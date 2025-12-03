@@ -1,14 +1,14 @@
 @interface SearchUIButton
-- (SearchUIButton)initWithType:(unint64_t)a3;
-- (id)imageNameForToggleState:(BOOL)a3;
-- (void)setFixedSize:(CGSize)a3;
-- (void)setUseCompactMode:(BOOL)a3;
-- (void)updateWithType:(unint64_t)a3;
+- (SearchUIButton)initWithType:(unint64_t)type;
+- (id)imageNameForToggleState:(BOOL)state;
+- (void)setFixedSize:(CGSize)size;
+- (void)setUseCompactMode:(BOOL)mode;
+- (void)updateWithType:(unint64_t)type;
 @end
 
 @implementation SearchUIButton
 
-- (SearchUIButton)initWithType:(unint64_t)a3
+- (SearchUIButton)initWithType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = SearchUIButton;
@@ -16,22 +16,22 @@
   v5 = v4;
   if (v4)
   {
-    [(SearchUIButton *)v4 setType:a3];
+    [(SearchUIButton *)v4 setType:type];
   }
 
   return v5;
 }
 
-- (id)imageNameForToggleState:(BOOL)a3
+- (id)imageNameForToggleState:(BOOL)state
 {
   v3 = @"plus";
-  if (a3)
+  if (state)
   {
     v3 = @"minus";
   }
 
   v4 = @"play.fill";
-  if (a3)
+  if (state)
   {
     v4 = @"pause.fill";
   }
@@ -47,15 +47,15 @@
   }
 }
 
-- (void)updateWithType:(unint64_t)a3
+- (void)updateWithType:(unint64_t)type
 {
   [(TLKButton *)self fixedSize];
   if (v5 == *MEMORY[0x1E695F060] && v4 == *(MEMORY[0x1E695F060] + 8))
   {
     v7 = MEMORY[0x1E69D9138];
-    v8 = [(SearchUIButton *)self useCompactMode];
+    useCompactMode = [(SearchUIButton *)self useCompactMode];
     v9 = MEMORY[0x1E69DDD28];
-    if (!v8)
+    if (!useCompactMode)
     {
       v9 = MEMORY[0x1E69DDCF8];
     }
@@ -80,22 +80,22 @@
   [(SearchUIButton *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)setUseCompactMode:(BOOL)a3
+- (void)setUseCompactMode:(BOOL)mode
 {
-  if (self->_useCompactMode != a3)
+  if (self->_useCompactMode != mode)
   {
-    self->_useCompactMode = a3;
-    v5 = [(SearchUIButton *)self type];
+    self->_useCompactMode = mode;
+    type = [(SearchUIButton *)self type];
 
-    [(SearchUIButton *)self updateWithType:v5];
+    [(SearchUIButton *)self updateWithType:type];
   }
 }
 
-- (void)setFixedSize:(CGSize)a3
+- (void)setFixedSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = SearchUIButton;
-  [(TLKButton *)&v4 setFixedSize:a3.width, a3.height];
+  [(TLKButton *)&v4 setFixedSize:size.width, size.height];
   [(SearchUIButton *)self updateWithType:[(SearchUIButton *)self type]];
 }
 

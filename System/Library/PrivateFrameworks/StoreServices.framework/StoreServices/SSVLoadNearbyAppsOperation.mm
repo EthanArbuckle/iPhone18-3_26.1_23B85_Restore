@@ -4,25 +4,25 @@
 - (NSString)pointOfInterestProviderURL;
 - (NSString)storeFrontSuffix;
 - (NSString)userAgent;
-- (SSVLoadNearbyAppsOperation)initWithBaseURL:(id)a3 location:(id)a4;
-- (id)_lookupWithRequest:(id)a3 error:(id *)a4;
+- (SSVLoadNearbyAppsOperation)initWithBaseURL:(id)l location:(id)location;
+- (id)_lookupWithRequest:(id)request error:(id *)error;
 - (id)_storeFrontSuffix;
 - (id)responseBlock;
 - (void)main;
-- (void)setPointOfInterestIdentifier:(id)a3;
-- (void)setPointOfInterestProviderIdentifier:(id)a3;
-- (void)setPointOfInterestProviderURL:(id)a3;
-- (void)setResponseBlock:(id)a3;
-- (void)setStoreFrontSuffix:(id)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setPointOfInterestIdentifier:(id)identifier;
+- (void)setPointOfInterestProviderIdentifier:(id)identifier;
+- (void)setPointOfInterestProviderURL:(id)l;
+- (void)setResponseBlock:(id)block;
+- (void)setStoreFrontSuffix:(id)suffix;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation SSVLoadNearbyAppsOperation
 
-- (SSVLoadNearbyAppsOperation)initWithBaseURL:(id)a3 location:(id)a4
+- (SSVLoadNearbyAppsOperation)initWithBaseURL:(id)l location:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  locationCopy = location;
   v25.receiver = self;
   v25.super_class = SSVLoadNearbyAppsOperation;
   v8 = [(SSVLoadNearbyAppsOperation *)&v25 init];
@@ -33,11 +33,11 @@
     dispatchQueue = v8->_dispatchQueue;
     v8->_dispatchQueue = v10;
 
-    v12 = [v6 copy];
+    v12 = [lCopy copy];
     baseURLString = v8->_baseURLString;
     v8->_baseURLString = v12;
 
-    objc_storeStrong(&v8->_location, a4);
+    objc_storeStrong(&v8->_location, location);
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     parameters = v8->_parameters;
     v8->_parameters = v14;
@@ -181,17 +181,17 @@ void __43__SSVLoadNearbyAppsOperation_responseBlock__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setPointOfInterestIdentifier:(id)a3
+- (void)setPointOfInterestIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__SSVLoadNearbyAppsOperation_setPointOfInterestIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -212,17 +212,17 @@ void __59__SSVLoadNearbyAppsOperation_setPointOfInterestIdentifier___block_invok
   }
 }
 
-- (void)setPointOfInterestProviderIdentifier:(id)a3
+- (void)setPointOfInterestProviderIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__SSVLoadNearbyAppsOperation_setPointOfInterestProviderIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -243,17 +243,17 @@ void __67__SSVLoadNearbyAppsOperation_setPointOfInterestProviderIdentifier___blo
   }
 }
 
-- (void)setPointOfInterestProviderURL:(id)a3
+- (void)setPointOfInterestProviderURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__SSVLoadNearbyAppsOperation_setPointOfInterestProviderURL___block_invoke;
   v7[3] = &unk_1E84AC028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = lCopy;
+  selfCopy = self;
+  v6 = lCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -274,17 +274,17 @@ void __60__SSVLoadNearbyAppsOperation_setPointOfInterestProviderURL___block_invo
   }
 }
 
-- (void)setResponseBlock:(id)a3
+- (void)setResponseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__SSVLoadNearbyAppsOperation_setResponseBlock___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -301,17 +301,17 @@ void __47__SSVLoadNearbyAppsOperation_setResponseBlock___block_invoke(uint64_t a
   }
 }
 
-- (void)setStoreFrontSuffix:(id)a3
+- (void)setStoreFrontSuffix:(id)suffix
 {
-  v4 = a3;
+  suffixCopy = suffix;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__SSVLoadNearbyAppsOperation_setStoreFrontSuffix___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = suffixCopy;
+  v6 = suffixCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -328,17 +328,17 @@ void __50__SSVLoadNearbyAppsOperation_setStoreFrontSuffix___block_invoke(uint64_
   }
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
-  v4 = a3;
+  agentCopy = agent;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__SSVLoadNearbyAppsOperation_setUserAgent___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = agentCopy;
+  v6 = agentCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -406,8 +406,8 @@ void __43__SSVLoadNearbyAppsOperation_setUserAgent___block_invoke(uint64_t a1)
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v5 = [(NSString *)self->_baseURLString mutableCopy];
   [v5 appendString:@"?"];
-  v6 = [MEMORY[0x1E695DF00] date];
-  [v6 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v8 = v7;
 
   [v4 appendFormat:@"%.0f", v8];
@@ -415,15 +415,15 @@ void __43__SSVLoadNearbyAppsOperation_setUserAgent___block_invoke(uint64_t a1)
   [v3 setValue:v9 forHTTPHeaderField:@"X-JS-TIMESTAMP"];
 
   v10 = +[SSAccountStore defaultStore];
-  v11 = [v10 activeAccount];
-  v12 = SSVStoreFrontIdentifierForAccount(v11);
+  activeAccount = [v10 activeAccount];
+  v12 = SSVStoreFrontIdentifierForAccount(activeAccount);
 
   if (v12)
   {
-    v13 = [(SSVLoadNearbyAppsOperation *)self _storeFrontSuffix];
-    if (v13)
+    _storeFrontSuffix = [(SSVLoadNearbyAppsOperation *)self _storeFrontSuffix];
+    if (_storeFrontSuffix)
     {
-      v14 = [v12 stringByAppendingString:v13];
+      v14 = [v12 stringByAppendingString:_storeFrontSuffix];
 
       v12 = v14;
     }
@@ -443,10 +443,10 @@ void __43__SSVLoadNearbyAppsOperation_setUserAgent___block_invoke(uint64_t a1)
   v17 = v4;
   v32 = v17;
   dispatch_sync(dispatchQueue, block);
-  v18 = [v17 UTF8String];
-  if (v18)
+  uTF8String = [v17 UTF8String];
+  if (uTF8String)
   {
-    v19 = v18;
+    v19 = uTF8String;
     v20 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:20];
     CC_SHA1(v19, [v17 length], objc_msgSend(v20, "mutableBytes"));
     [v20 setLength:16];
@@ -458,25 +458,25 @@ void __43__SSVLoadNearbyAppsOperation_setUserAgent___block_invoke(uint64_t a1)
     }
   }
 
-  v22 = [(SSVLoadNearbyAppsOperation *)self userAgent];
-  if (!v22)
+  userAgent = [(SSVLoadNearbyAppsOperation *)self userAgent];
+  if (!userAgent)
   {
     v23 = +[SSDevice currentDevice];
-    v22 = [v23 userAgentWithClientName:@"AppStore" version:@"2.0"];
+    userAgent = [v23 userAgentWithClientName:@"AppStore" version:@"2.0"];
   }
 
-  [v3 setValue:v22 forHTTPHeaderField:@"User-Agent"];
+  [v3 setValue:userAgent forHTTPHeaderField:@"User-Agent"];
   v24 = [MEMORY[0x1E695DFF8] URLWithString:v16];
   [v3 setURL:v24];
 
   v29 = 0;
   v25 = [(SSVLoadNearbyAppsOperation *)self _lookupWithRequest:v3 error:&v29];
   v26 = v29;
-  v27 = [(SSVLoadNearbyAppsOperation *)self responseBlock];
-  v28 = v27;
-  if (v27)
+  responseBlock = [(SSVLoadNearbyAppsOperation *)self responseBlock];
+  v28 = responseBlock;
+  if (responseBlock)
   {
-    (*(v27 + 16))(v27, v25, v26);
+    (*(responseBlock + 16))(responseBlock, v25, v26);
   }
 }
 
@@ -547,9 +547,9 @@ void __34__SSVLoadNearbyAppsOperation_main__block_invoke_2(uint64_t a1, void *a2
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (id)_lookupWithRequest:(id)a3 error:(id *)a4
+- (id)_lookupWithRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -562,14 +562,14 @@ void __34__SSVLoadNearbyAppsOperation_main__block_invoke_2(uint64_t a1, void *a2
   v19 = __Block_byref_object_copy__23;
   v20 = __Block_byref_object_dispose__23;
   v21 = 0;
-  v7 = [[SSVLoadURLOperation alloc] initWithURLRequest:v6];
+  v7 = [[SSVLoadURLOperation alloc] initWithURLRequest:requestCopy];
   v8 = +[(SSVURLDataConsumer *)SSVURLLookupResponseConsumer];
   [(SSVLoadURLOperation *)v7 setDataConsumer:v8];
 
   [(SSVLoadURLOperation *)v7 setITunesStoreRequest:1];
   [(SSVLoadURLOperation *)v7 setRecordsMetrics:1];
-  v9 = [(SSVLoadNearbyAppsOperation *)self _storeFrontSuffix];
-  [(SSVLoadURLOperation *)v7 setStoreFrontSuffix:v9];
+  _storeFrontSuffix = [(SSVLoadNearbyAppsOperation *)self _storeFrontSuffix];
+  [(SSVLoadURLOperation *)v7 setStoreFrontSuffix:_storeFrontSuffix];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -580,13 +580,13 @@ void __34__SSVLoadNearbyAppsOperation_main__block_invoke_2(uint64_t a1, void *a2
   [(SSVLoadURLOperation *)v7 setOutputBlock:v15];
   [(SSVLoadURLOperation *)v7 main];
   v10 = v17[5];
-  v11 = [(SSVLoadURLOperation *)v7 metricsPageEvent];
-  [v10 _setMetricsPageEvent:v11];
+  metricsPageEvent = [(SSVLoadURLOperation *)v7 metricsPageEvent];
+  [v10 _setMetricsPageEvent:metricsPageEvent];
 
   v12 = v17[5];
-  if (a4 && !v12)
+  if (error && !v12)
   {
-    *a4 = v23[5];
+    *error = v23[5];
     v12 = v17[5];
   }
 
@@ -614,13 +614,13 @@ void __55__SSVLoadNearbyAppsOperation__lookupWithRequest_error___block_invoke(ui
 
 - (id)_storeFrontSuffix
 {
-  v2 = [(SSVLoadNearbyAppsOperation *)self storeFrontSuffix];
-  if (!v2)
+  storeFrontSuffix = [(SSVLoadNearbyAppsOperation *)self storeFrontSuffix];
+  if (!storeFrontSuffix)
   {
-    v2 = @" t:native";
+    storeFrontSuffix = @" t:native";
   }
 
-  return v2;
+  return storeFrontSuffix;
 }
 
 @end

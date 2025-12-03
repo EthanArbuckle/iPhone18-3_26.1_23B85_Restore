@@ -1,16 +1,16 @@
 @interface VocalsAttenuationSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation VocalsAttenuationSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicVocalsAttenuationSlider" isKindOfClass:@"MusicCoreUI.VerticalToggleSlider"];
-  [v3 validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilityToggleIsOn" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicVocalsAttenuationSlider" hasInstanceMethod:@"accessibilitySliderCurrentPercentageValue" withFullSignature:{"f", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicVocalsAttenuationSlider" isKindOfClass:@"MusicCoreUI.VerticalToggleSlider"];
+  [validationsCopy validateClass:@"MusicCoreUI.VerticalToggleSlider" hasInstanceMethod:@"accessibilityToggleIsOn" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicVocalsAttenuationSlider" hasInstanceMethod:@"accessibilitySliderCurrentPercentageValue" withFullSignature:{"f", 0}];
 }
 
 - (id)accessibilityValue

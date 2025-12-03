@@ -1,96 +1,96 @@
 @interface _MTLBinaryArchive
-+ (BOOL)deserializeBinaryArchiveDescriptorMachO:(DeserializedBinaryArchiveLayout *)a3 fileData:(id)a4;
-+ (BOOL)deserializeBinaryArchiveHeader:(DeserializedBinaryArchiveLayout *)a3 fileData:(id)a4 device:(id)a5;
-+ (id)descriptorDataForArchive:(id)a3;
-+ (unsigned)archiveTypeAtURL:(id)a3 device:(id)a4 error:(id *)a5;
-+ (unsigned)archiveVersionCompatible:(MachOToolsVersion *)a3 isMatchingSlice:(BOOL)a4 device:(id)a5;
-+ (void)deserializeBinaryArchiveHeader:(void *)a1 fileData:(unint64_t *)a2 device:;
-- ($2772B1D07D29A72E8557B2574C0AE5C1)reflectionHashWithFunctionId:(SEL)a3 binaryPos:(const void *)a4;
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addFunctionWithDescriptor:(id)a3 library:(id)a4 error:(id *)a5;
-- (BOOL)addLibraryWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)airntSerializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
++ (BOOL)deserializeBinaryArchiveDescriptorMachO:(DeserializedBinaryArchiveLayout *)o fileData:(id)data;
++ (BOOL)deserializeBinaryArchiveHeader:(DeserializedBinaryArchiveLayout *)header fileData:(id)data device:(id)device;
++ (id)descriptorDataForArchive:(id)archive;
++ (unsigned)archiveTypeAtURL:(id)l device:(id)device error:(id *)error;
++ (unsigned)archiveVersionCompatible:(MachOToolsVersion *)compatible isMatchingSlice:(BOOL)slice device:(id)device;
++ (void)deserializeBinaryArchiveHeader:(void *)header fileData:(unint64_t *)data device:;
+- ($2772B1D07D29A72E8557B2574C0AE5C1)reflectionHashWithFunctionId:(SEL)id binaryPos:(const void *)pos;
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addFunctionWithDescriptor:(id)descriptor library:(id)library error:(id *)error;
+- (BOOL)addLibraryWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)airntSerializeToURL:(id)l options:(unint64_t)options error:(id *)error;
 - (BOOL)archiveSkipsAIRValidation;
-- (BOOL)enumerateArchivesFromBackingFileFromSlice:(const MTLLoaderSliceIdentifier *)a3 version:(unint64_t)a4 verifyKey:(id *)a5 offset:(unint64_t)a6 bytes:(unint64_t)a7 enumerator:(id)a8;
-- (BOOL)enumerateArchivesFromPipelineCollection:(id)a3;
-- (BOOL)getScriptsWithAIRNTObject:(void *)a3;
-- (BOOL)getSpecializedFunctionArchivesToSerialize:(void *)a3;
-- (BOOL)legacySerializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)loadAirSliceAtOffset:(unint64_t)a3 sliceLength:(unint64_t)a4;
-- (BOOL)loadAirntBlocksForSlice:(const MTLLoaderSliceIdentifier *)a3 sliceOffset:(unint64_t)a4 skipAIRValidation:(BOOL)a5;
-- (BOOL)loadFileIndex:(void *)a3 expectedSliceId:(const MTLLoaderSliceIdentifier *)a4 expectedVersion:(unint64_t)a5 sliceOffset:(unint64_t)a6;
-- (BOOL)loadFromURL:(id)a3 error:(id *)a4;
-- (BOOL)recompilePipelinesToArchive:(id)a3 error:(id *)a4;
-- (BOOL)recompileStatelessToArchive:(id)a3 error:(id *)a4;
-- (BOOL)recompileToArchive:(id)a3 error:(id *)a4;
-- (BOOL)recompileToArchiveWithURL:(id)a3 error:(id *)a4;
+- (BOOL)enumerateArchivesFromBackingFileFromSlice:(const MTLLoaderSliceIdentifier *)slice version:(unint64_t)version verifyKey:(id *)key offset:(unint64_t)offset bytes:(unint64_t)bytes enumerator:(id)enumerator;
+- (BOOL)enumerateArchivesFromPipelineCollection:(id)collection;
+- (BOOL)getScriptsWithAIRNTObject:(void *)object;
+- (BOOL)getSpecializedFunctionArchivesToSerialize:(void *)serialize;
+- (BOOL)legacySerializeToURL:(id)l options:(unint64_t)options error:(id *)error;
+- (BOOL)loadAirSliceAtOffset:(unint64_t)offset sliceLength:(unint64_t)length;
+- (BOOL)loadAirntBlocksForSlice:(const MTLLoaderSliceIdentifier *)slice sliceOffset:(unint64_t)offset skipAIRValidation:(BOOL)validation;
+- (BOOL)loadFileIndex:(void *)index expectedSliceId:(const MTLLoaderSliceIdentifier *)id expectedVersion:(unint64_t)version sliceOffset:(unint64_t)offset;
+- (BOOL)loadFromURL:(id)l error:(id *)error;
+- (BOOL)recompilePipelinesToArchive:(id)archive error:(id *)error;
+- (BOOL)recompileStatelessToArchive:(id)archive error:(id *)error;
+- (BOOL)recompileToArchive:(id)archive error:(id *)error;
+- (BOOL)recompileToArchiveWithURL:(id)l error:(id *)error;
 - (BOOL)remoteInsertionBegin;
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)storeComputePipelineDescriptor:(id)a3;
-- (BOOL)storeMeshRenderPipelineDescriptor:(id)a3;
-- (BOOL)storeRenderPipelineDescriptor:(id)a3;
-- (BOOL)storeTileRenderPipelineDescriptor:(id)a3;
-- (BOOL)updateReflectionForEntry:(id)a3 binaryKey:(id)a4 requiredReflection:(char)a5;
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error;
+- (BOOL)storeComputePipelineDescriptor:(id)descriptor;
+- (BOOL)storeMeshRenderPipelineDescriptor:(id)descriptor;
+- (BOOL)storeRenderPipelineDescriptor:(id)descriptor;
+- (BOOL)storeTileRenderPipelineDescriptor:(id)descriptor;
+- (BOOL)updateReflectionForEntry:(id)entry binaryKey:(id)key requiredReflection:(char)reflection;
 - (NSArray)keys;
-- (_MTLBinaryArchive)initWithDevice:(id)a3 descriptor:(id)a4 error:(id *)a5;
-- (_MTLBinaryArchive)initWithOptions:(unint64_t)a3 device:(id)a4 url:(id)a5 error:(id *)a6;
+- (_MTLBinaryArchive)initWithDevice:(id)device descriptor:(id)descriptor error:(id *)error;
+- (_MTLBinaryArchive)initWithOptions:(unint64_t)options device:(id)device url:(id)url error:(id *)error;
 - (id).cxx_construct;
 - (id)archiveFunctionIds;
-- (id)flatBufferFromJSON:(id)a3 schema:(const char *)a4 schemaSize:(unint64_t)a5;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)getArchiveIDWithErrorInternal:(id *)a3;
-- (id)getBinaryDataForKey:(id)a3 reflectionType:(char)a4;
-- (id)getFunctionNameFromAirDescriptor:(const stitchedAirDescriptor *)a3;
-- (id)getLibraryDescriptorWithAirScrpt:(const StitchingScript *)a3;
-- (id)localStitchedFunctionLookupWithDescriptor:(const stitchedAirDescriptor *)a3;
-- (id)materializeAIRNTBlockForKey:(id)a3 reflectionType:(char)a4;
-- (id)materializeAirScript:(void *)a3;
-- (id)materializeEntryForKey:(id *)a3 fileIndex:(void *)a4 containsEntry:(id)a5 addEntry:(id)a6;
-- (id)materializeFromFileOffset:(unint64_t)a3 hash:(id *)a4;
-- (id)materializeFromHash:(id *)a3 fileIndex:(void *)a4;
-- (id)materializeReflectionBlock:(void *)a3;
-- (id)newArchiveDataForKeyInternal:(id *)a3;
-- (id)newArchiverIdWithBinaryKey:(id)a3 entry:(id)a4 srcArchiverId:(id)a5 functionType:(unint64_t)a6;
-- (id)newComputePipelineDescriptorWithScript:(const PipelineScript *)a3 obj:(void *)a4 destinationArchive:(id)a5 error:(id *)a6;
-- (id)newFunctionDescriptorWithAirScript:(const ConstantsSpecializationScript *)a3;
-- (id)newLibraryInArchiveAtPos:(void *)a3 atIndex:(unsigned int)a4 error:(id *)a5;
-- (id)newLibraryInArchiveWithRange:(_NSRange)a3 error:(id *)a4;
-- (id)newMeshRenderPipelineDescriptorWithScript:(const PipelineScript *)a3 obj:(void *)a4 destinationArchive:(id)a5 error:(id *)a6;
-- (id)newRecompiledFunctionWithAIRNTObject:(void *)a3 index:(unint64_t)a4 destinationArchive:(id)a5 error:(id *)a6;
-- (id)newRenderPipelineDescriptorWithScript:(const PipelineScript *)a3 obj:(void *)a4 destinationArchive:(id)a5 error:(id *)a6;
-- (id)newSpecializedFunctionWithHash:(id *)a3 libraryPath:(id)a4;
-- (id)newStitchedLibraryWithKey:(id *)a3 descriptors:(const void *)a4;
-- (id)newTileRenderPipelineDescriptorWithScript:(const PipelineScript *)a3 obj:(void *)a4 destinationArchive:(id)a5 error:(id *)a6;
-- (id)recompileFunction:(id)a3 inLibrary:(id)a4 toArchive:(id)a5 toBinary:(BOOL)a6 error:(id *)a7;
-- (void)addArchiveEntryInternal:(id)a3 forKey:(id *)a4;
-- (void)addBinaryEntryImpl:(id)a3 forKey:(id)a4;
-- (void)addBinaryEntryInternal:(id)a3 forKey:(id)a4;
-- (void)addStitchedLibraryWithKey:(id *)a3 descriptors:(const void *)a4 inputFunctions:(id)a5 library:(id)a6;
-- (void)addStitchingInputsFunction:(id)a3 toEntry:(id)a4;
+- (id)flatBufferFromJSON:(id)n schema:(const char *)schema schemaSize:(unint64_t)size;
+- (id)formattedDescription:(unint64_t)description;
+- (id)getArchiveIDWithErrorInternal:(id *)internal;
+- (id)getBinaryDataForKey:(id)key reflectionType:(char)type;
+- (id)getFunctionNameFromAirDescriptor:(const stitchedAirDescriptor *)descriptor;
+- (id)getLibraryDescriptorWithAirScrpt:(const StitchingScript *)scrpt;
+- (id)localStitchedFunctionLookupWithDescriptor:(const stitchedAirDescriptor *)descriptor;
+- (id)materializeAIRNTBlockForKey:(id)key reflectionType:(char)type;
+- (id)materializeAirScript:(void *)script;
+- (id)materializeEntryForKey:(id *)key fileIndex:(void *)index containsEntry:(id)entry addEntry:(id)addEntry;
+- (id)materializeFromFileOffset:(unint64_t)offset hash:(id *)hash;
+- (id)materializeFromHash:(id *)hash fileIndex:(void *)index;
+- (id)materializeReflectionBlock:(void *)block;
+- (id)newArchiveDataForKeyInternal:(id *)internal;
+- (id)newArchiverIdWithBinaryKey:(id)key entry:(id)entry srcArchiverId:(id)id functionType:(unint64_t)type;
+- (id)newComputePipelineDescriptorWithScript:(const PipelineScript *)script obj:(void *)obj destinationArchive:(id)archive error:(id *)error;
+- (id)newFunctionDescriptorWithAirScript:(const ConstantsSpecializationScript *)script;
+- (id)newLibraryInArchiveAtPos:(void *)pos atIndex:(unsigned int)index error:(id *)error;
+- (id)newLibraryInArchiveWithRange:(_NSRange)range error:(id *)error;
+- (id)newMeshRenderPipelineDescriptorWithScript:(const PipelineScript *)script obj:(void *)obj destinationArchive:(id)archive error:(id *)error;
+- (id)newRecompiledFunctionWithAIRNTObject:(void *)object index:(unint64_t)index destinationArchive:(id)archive error:(id *)error;
+- (id)newRenderPipelineDescriptorWithScript:(const PipelineScript *)script obj:(void *)obj destinationArchive:(id)archive error:(id *)error;
+- (id)newSpecializedFunctionWithHash:(id *)hash libraryPath:(id)path;
+- (id)newStitchedLibraryWithKey:(id *)key descriptors:(const void *)descriptors;
+- (id)newTileRenderPipelineDescriptorWithScript:(const PipelineScript *)script obj:(void *)obj destinationArchive:(id)archive error:(id *)error;
+- (id)recompileFunction:(id)function inLibrary:(id)library toArchive:(id)archive toBinary:(BOOL)binary error:(id *)error;
+- (void)addArchiveEntryInternal:(id)internal forKey:(id *)key;
+- (void)addBinaryEntryImpl:(id)impl forKey:(id)key;
+- (void)addBinaryEntryInternal:(id)internal forKey:(id)key;
+- (void)addStitchedLibraryWithKey:(id *)key descriptors:(const void *)descriptors inputFunctions:(id)functions library:(id)library;
+- (void)addStitchingInputsFunction:(id)function toEntry:(id)entry;
 - (void)clearLibCache;
 - (void)dealloc;
 - (void)deallocContainers;
-- (void)findProgramObjectForFunction:(id *)a3;
-- (void)initMetalScriptWithArchive:(id)a3;
-- (void)materializeAirNTAllForSlice:(const MTLLoaderSliceIdentifier *)a3 entryList:(shared_ptr<std::vector<machOEntry>>)a4;
-- (void)materializeAirNTFromOnlineForSlice:(const MTLLoaderSliceIdentifier *)a3 entryList:(shared_ptr<std::vector<machOEntry>>)a4;
-- (void)materializeAirNTSpecializedFunctions:(shared_ptr<std::vector<machOEntry>>)a3;
-- (void)materializeAirNTStitchedFunctions:(shared_ptr<std::vector<machOEntry>>)a3;
+- (void)findProgramObjectForFunction:(id *)function;
+- (void)initMetalScriptWithArchive:(id)archive;
+- (void)materializeAirNTAllForSlice:(const MTLLoaderSliceIdentifier *)slice entryList:(shared_ptr<std::vector<machOEntry>>)list;
+- (void)materializeAirNTFromOnlineForSlice:(const MTLLoaderSliceIdentifier *)slice entryList:(shared_ptr<std::vector<machOEntry>>)list;
+- (void)materializeAirNTSpecializedFunctions:(shared_ptr<std::vector<machOEntry>>)functions;
+- (void)materializeAirNTStitchedFunctions:(shared_ptr<std::vector<machOEntry>>)functions;
 - (void)materializeAll;
 - (void)materializeAllAIRNTLegacy;
-- (void)materializeLinkedBitcodes:(void *)a3 hashList:(void *)a4;
-- (void)preloadLibrariesInAirntObject:(void *)a3 error:(id *)a4;
-- (void)programObjectForFunction:(id *)a3;
-- (void)setMTLLinkedFunctions:(id)a3 LFS:(const LinkedFunctions *)a4 obj:(void *)a5 destinationArchive:(id)a6 error:(id *)a7;
-- (void)setRecompilationTarget:(BOOL)a3;
-- (void)updatePipelineWithPipelineArchiverId:(id)a3 key:(id)a4 functionType:(unint64_t)a5;
+- (void)materializeLinkedBitcodes:(void *)bitcodes hashList:(void *)list;
+- (void)preloadLibrariesInAirntObject:(void *)object error:(id *)error;
+- (void)programObjectForFunction:(id *)function;
+- (void)setMTLLinkedFunctions:(id)functions LFS:(const LinkedFunctions *)s obj:(void *)obj destinationArchive:(id)archive error:(id *)error;
+- (void)setRecompilationTarget:(BOOL)target;
+- (void)updatePipelineWithPipelineArchiverId:(id)id key:(id)key functionType:(unint64_t)type;
 @end
 
 @implementation _MTLBinaryArchive
@@ -406,60 +406,60 @@
   std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::clear(&self->_stitchedLibraryCache.__table_.__bucket_list_.__ptr_);
 }
 
-- (_MTLBinaryArchive)initWithDevice:(id)a3 descriptor:(id)a4 error:(id *)a5
+- (_MTLBinaryArchive)initWithDevice:(id)device descriptor:(id)descriptor error:(id *)error
 {
-  if (a4)
+  if (descriptor)
   {
-    v9 = [a4 options];
-    v10 = [a4 url];
+    options = [descriptor options];
+    v10 = [descriptor url];
 
-    return [(_MTLBinaryArchive *)self initWithOptions:v9 device:a3 url:v10 error:a5];
+    return [(_MTLBinaryArchive *)self initWithOptions:options device:device url:v10 error:error];
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = newErrorWithMessage(&cfstr_Mtlbinaryarchi_0.isa, MTLBinaryArchiveErrorUnexpectedElement);
+      *error = newErrorWithMessage(&cfstr_Mtlbinaryarchi_0.isa, MTLBinaryArchiveErrorUnexpectedElement);
     }
 
     return 0;
   }
 }
 
-- (_MTLBinaryArchive)initWithOptions:(unint64_t)a3 device:(id)a4 url:(id)a5 error:(id *)a6
+- (_MTLBinaryArchive)initWithOptions:(unint64_t)options device:(id)device url:(id)url error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = _MTLBinaryArchive;
   v9 = [(_MTLObjectWithLabel *)&v11 init];
   if (v9)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = 0;
-      if (!a3)
+      *error = 0;
+      if (!options)
       {
-        *a6 = newErrorWithMessage(&cfstr_AtLeastOneOpti.isa, MTLBinaryArchiveErrorUnexpectedElement);
+        *error = newErrorWithMessage(&cfstr_AtLeastOneOpti.isa, MTLBinaryArchiveErrorUnexpectedElement);
 LABEL_7:
 
         return 0;
       }
     }
 
-    else if (!a3)
+    else if (!options)
     {
       goto LABEL_7;
     }
 
-    v9->_device = a4;
-    v9->_options = a3;
+    v9->_device = device;
+    v9->_options = options;
     v9->_internalArchiverId = 0;
     v9->_newBinary = 0;
     atomic_store(0, &v9->_serializing);
     v9->_archiveIDInt = 0;
     v9->_absoluteOpenPath = 0;
     v9->_metalScript = 0;
-    v9->_alwaysReturnDriverReflection = [objc_msgSend(a4 "targetDeviceArchitecture")] == 16777235;
+    v9->_alwaysReturnDriverReflection = [objc_msgSend(device "targetDeviceArchitecture")] == 16777235;
     v9->_hasBuiltins = 0;
     operator new();
   }
@@ -467,15 +467,15 @@ LABEL_7:
   return v9;
 }
 
-+ (BOOL)deserializeBinaryArchiveHeader:(DeserializedBinaryArchiveLayout *)a3 fileData:(id)a4 device:(id)a5
++ (BOOL)deserializeBinaryArchiveHeader:(DeserializedBinaryArchiveLayout *)header fileData:(id)data device:(id)device
 {
-  if (a5)
+  if (device)
   {
-    v8 = [MTLLoader sliceIDForDevice:a5 andDriverVersion:0];
+    v8 = [MTLLoader sliceIDForDevice:device andDriverVersion:0];
     v9 = v8;
     v10 = HIDWORD(v8);
     v11 = +[MTLLoader sliceIDForDescriptors];
-    v12 = [_MTLBinaryArchive sliceIDForSpecializedFunctionsForLLVMVersion:_MTLGetMTLCompilerLLVMVersionForDevice(a5)];
+    v12 = [_MTLBinaryArchive sliceIDForSpecializedFunctionsForLLVMVersion:_MTLGetMTLCompilerLLVMVersionForDevice(device)];
     var0 = v12.var0;
     v14 = HIDWORD(*&v12);
   }
@@ -493,7 +493,7 @@ LABEL_7:
   v48[1] = 3221225472;
   v48[2] = __68___MTLBinaryArchive_deserializeBinaryArchiveHeader_fileData_device___block_invoke;
   v48[3] = &unk_1E6EEA990;
-  v48[4] = a4;
+  v48[4] = data;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3052000000;
@@ -513,9 +513,9 @@ LABEL_7:
   v32[2] = 0x2020000000;
   v33 = 0;
   *v31 = 0;
-  if (a5)
+  if (device)
   {
-    MaxSupportedLLVMVersion = _MTLGetMTLCompilerLLVMVersionForDevice(a5);
+    MaxSupportedLLVMVersion = _MTLGetMTLCompilerLLVMVersionForDevice(device);
   }
 
   else
@@ -534,44 +534,44 @@ LABEL_7:
   v28 = var0;
   v29 = v14;
   v30 = v31[1];
-  v24[4] = a4;
+  v24[4] = data;
   v24[5] = v32;
   v24[6] = &v42;
   v24[7] = &v34;
-  v24[8] = a3;
-  v16 = +[MTLLoader deserializeUniversalBinaryHeaderWithHandler:reader:bytes:](MTLLoader, v24, v48, [a4 length]);
+  v24[8] = header;
+  v16 = +[MTLLoader deserializeUniversalBinaryHeaderWithHandler:reader:bytes:](MTLLoader, v24, v48, [data length]);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __68___MTLBinaryArchive_deserializeBinaryArchiveHeader_fileData_device___block_invoke_3;
   v23[3] = &unk_1E6EEA9B8;
-  v23[4] = a4;
-  v23[5] = a3;
-  a3->var12 = [MTLLoader machOConformsToAIRNTFormat:v23 type:0];
-  if (a3->var1)
+  v23[4] = data;
+  v23[5] = header;
+  header->var12 = [MTLLoader machOConformsToAIRNTFormat:v23 type:0];
+  if (header->var1)
   {
-    if (a3->var0)
+    if (header->var0)
     {
-      a3->var13.var0 = v9;
-      a3->var13.var1 = v10;
+      header->var13.var0 = v9;
+      header->var13.var1 = v10;
     }
 
     else
     {
-      v17 = [a5 getMostCompatibleArchitecture:v43[5]];
+      v17 = [device getMostCompatibleArchitecture:v43[5]];
       if ([v17 cpuType])
       {
-        a3->var13.var0 = [v17 cpuType];
-        a3->var13.var1 = [v17 cpuSubtype];
+        header->var13.var0 = [v17 cpuType];
+        header->var13.var1 = [v17 cpuSubtype];
         v18 = v35;
-        v19 = [v17 cpuType];
-        v22 = [v17 cpuSubtype] | (v19 << 32);
-        *&a3->var2 = *std::unordered_map<unsigned long long,+[_MTLBinaryArchive deserializeBinaryArchiveHeader:fileData:device:]::archSliceId>::operator[](v18 + 6, &v22);
+        cpuType = [v17 cpuType];
+        v22 = [v17 cpuSubtype] | (cpuType << 32);
+        *&header->var2 = *std::unordered_map<unsigned long long,+[_MTLBinaryArchive deserializeBinaryArchiveHeader:fileData:device:]::archSliceId>::operator[](v18 + 6, &v22);
       }
     }
   }
 
   v20 = objc_alloc(MEMORY[0x1E695DEC8]);
-  a3->var14 = [v20 initWithArray:v43[5]];
+  header->var14 = [v20 initWithArray:v43[5]];
   [v43[5] removeAllObjects];
 
   _Block_object_dispose(v32, 8);
@@ -581,10 +581,10 @@ LABEL_7:
   return v16;
 }
 
-+ (void)deserializeBinaryArchiveHeader:(void *)a1 fileData:(unint64_t *)a2 device:
++ (void)deserializeBinaryArchiveHeader:(void *)header fileData:(unint64_t *)data device:
 {
-  v2 = *a2;
-  v3 = a1[1];
+  v2 = *data;
+  v3 = header[1];
   if (!*&v3)
   {
     goto LABEL_18;
@@ -594,7 +594,7 @@ LABEL_7:
   v4.i16[0] = vaddlv_u8(v4);
   if (v4.u32[0] > 1uLL)
   {
-    v5 = *a2;
+    v5 = *data;
     if (v2 >= *&v3)
     {
       v5 = v2 % *&v3;
@@ -606,7 +606,7 @@ LABEL_7:
     v5 = (*&v3 - 1) & v2;
   }
 
-  v6 = *(*a1 + 8 * v5);
+  v6 = *(*header + 8 * v5);
   if (!v6 || (v7 = *v6) == 0)
   {
 LABEL_18:
@@ -655,11 +655,11 @@ LABEL_17:
   return v7 + 3;
 }
 
-+ (BOOL)deserializeBinaryArchiveDescriptorMachO:(DeserializedBinaryArchiveLayout *)a3 fileData:(id)a4
++ (BOOL)deserializeBinaryArchiveDescriptorMachO:(DeserializedBinaryArchiveLayout *)o fileData:(id)data
 {
-  a3->var7 = 0;
-  a3->var8 = 0;
-  if (!a3->var4)
+  o->var7 = 0;
+  o->var8 = 0;
+  if (!o->var4)
   {
     return 0;
   }
@@ -671,41 +671,41 @@ LABEL_17:
   v11[1] = 3221225472;
   v11[2] = __70___MTLBinaryArchive_deserializeBinaryArchiveDescriptorMachO_fileData___block_invoke;
   v11[3] = &unk_1E6EEAA58;
-  v11[5] = a3;
+  v11[5] = o;
   v11[6] = v8;
-  v11[4] = a4;
+  v11[4] = data;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70___MTLBinaryArchive_deserializeBinaryArchiveDescriptorMachO_fileData___block_invoke_4;
   v10[3] = &unk_1E6EEA9B8;
-  v10[4] = a4;
-  v10[5] = a3;
+  v10[4] = data;
+  v10[5] = o;
   return [MTLLoader deserializeMachOContainerWithHandler:v11 reader:v10];
 }
 
-+ (unsigned)archiveVersionCompatible:(MachOToolsVersion *)a3 isMatchingSlice:(BOOL)a4 device:(id)a5
++ (unsigned)archiveVersionCompatible:(MachOToolsVersion *)compatible isMatchingSlice:(BOOL)slice device:(id)device
 {
-  v6 = a4;
+  sliceCopy = slice;
   active_platform = dyld_get_active_platform();
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  if (v9)
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  if (processInfo)
   {
-    [v9 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
   }
 
-  if (active_platform != a3->var1)
+  if (active_platform != compatible->var1)
   {
     return 5;
   }
 
-  if (a3->var0)
+  if (compatible->var0)
   {
     return 6;
   }
 
-  var2 = a3->var2;
-  var4 = a3->var4;
-  if (([a5 isVendorSliceCompatibleWithDeploymentTarget:? platform:? sdkVersion:? compilerPluginVersion:?] & v6) != 0)
+  var2 = compatible->var2;
+  var4 = compatible->var4;
+  if (([device isVendorSliceCompatibleWithDeploymentTarget:? platform:? sdkVersion:? compilerPluginVersion:?] & sliceCopy) != 0)
   {
     return 2;
   }
@@ -716,16 +716,16 @@ LABEL_17:
   }
 }
 
-+ (unsigned)archiveTypeAtURL:(id)a3 device:(id)a4 error:(id *)a5
++ (unsigned)archiveTypeAtURL:(id)l device:(id)device error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v8 = objc_autoreleasePoolPush();
   v9 = objc_opt_new();
-  v10 = [(MTLLoader *)v9 loadFileWithURL:a3 error:a5 errorDomain:&cfstr_Mtlbinaryarchi.isa invalidFileErrorCode:1];
+  v10 = [(MTLLoader *)v9 loadFileWithURL:l error:error errorDomain:&cfstr_Mtlbinaryarchi.isa invalidFileErrorCode:1];
   if (v9)
   {
     v11 = v10 == 0;
@@ -747,11 +747,11 @@ LABEL_17:
     memset(&v27.var2, 0, 17);
     memset(&v27.var5, 0, 33);
     memset(&v27.var10, 0, 17);
-    if ([_MTLBinaryArchive deserializeBinaryArchiveHeader:&v27 fileData:v14 device:a4])
+    if ([_MTLBinaryArchive deserializeBinaryArchiveHeader:&v27 fileData:v14 device:device])
     {
       v26 = 0;
       v25 = 0;
-      v24 = [MTLLoader sliceIDForDevice:a4 legacyDriverVersion:&v26 airntDriverVersion:&v25];
+      v24 = [MTLLoader sliceIDForDevice:device legacyDriverVersion:&v26 airntDriverVersion:&v25];
       if (!v27.var12)
       {
         v12 = !v27.var12;
@@ -782,14 +782,14 @@ LABEL_20:
       {
         v19 = v22;
         v20 = v23;
-        v12 = [_MTLBinaryArchive archiveVersionCompatible:&v19 isMatchingSlice:v27.var0 device:a4];
+        v12 = [_MTLBinaryArchive archiveVersionCompatible:&v19 isMatchingSlice:v27.var0 device:device];
         goto LABEL_20;
       }
 
-      if (a5)
+      if (error)
       {
         v12 = 0;
-        *a5 = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"The file %@ has an invalid format.", a3], MTLBinaryArchiveErrorInvalidFile);
+        *error = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"The file %@ has an invalid format.", l], MTLBinaryArchiveErrorInvalidFile);
         goto LABEL_20;
       }
     }
@@ -801,20 +801,20 @@ LABEL_20:
   v12 = 0;
 LABEL_21:
 
-  if (a5 && *a5)
+  if (error && *error)
   {
-    v17 = *a5;
+    v17 = *error;
   }
 
   objc_autoreleasePoolPop(v8);
   return v12;
 }
 
-- (BOOL)loadAirSliceAtOffset:(unint64_t)a3 sliceLength:(unint64_t)a4
+- (BOOL)loadAirSliceAtOffset:(unint64_t)offset sliceLength:(unint64_t)length
 {
   v44[16] = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  subrange = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], a3, a4);
+  offsetCopy = offset;
+  subrange = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], offset, length);
   v12 = MTLLibraryBuilder::newLibraryWithData(*(self->_device + 55), self->_device, subrange, 0, v8, v9, v10, v11);
   v13 = v12;
   if (v12)
@@ -825,17 +825,17 @@ LABEL_21:
     if ((self->_options & 0x10) != 0 || (!v15 ? (v17 = v14 == 1) : (v17 = 0), !v17 ? (v18 = v15 == 1) : (v18 = 1), !v18 ? (v19 = v16 >= 0xA) : (v19 = 0), v19))
     {
       v20 = v13;
-      v44[0] = &v37;
-      std::__hash_table<std::__hash_value_type<unsigned long long,objc_object  {objcproto13MTLLibrarySPI}*>,std::__unordered_map_hasher<unsigned long long,objc_object  {objcproto13MTLLibrarySPI}*,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,objc_object  {objcproto13MTLLibrarySPI}*,std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto13MTLLibrarySPI}*>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::piecewise_construct_t const&<>>(&self->_libCache.__table_.__bucket_list_.__ptr_, &v37)[3] = v20;
+      v44[0] = &offsetCopy;
+      std::__hash_table<std::__hash_value_type<unsigned long long,objc_object  {objcproto13MTLLibrarySPI}*>,std::__unordered_map_hasher<unsigned long long,objc_object  {objcproto13MTLLibrarySPI}*,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,objc_object  {objcproto13MTLLibrarySPI}*,std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto13MTLLibrarySPI}*>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::piecewise_construct_t const&<>>(&self->_libCache.__table_.__bucket_list_.__ptr_, &offsetCopy)[3] = v20;
     }
 
     v36 = v13;
-    v21 = [(_MTLLibrary *)v13 specializedFunctionHashes];
+    specializedFunctionHashes = [(_MTLLibrary *)v13 specializedFunctionHashes];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v22 = [(NSArray *)v21 countByEnumeratingWithState:&v38 objects:v44 count:16];
+    v22 = [(NSArray *)specializedFunctionHashes countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v22)
     {
       v23 = v22;
@@ -846,28 +846,28 @@ LABEL_21:
         {
           if (*v39 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(specializedFunctionHashes);
           }
 
           [*(*(&v38 + 1) + 8 * i) getValue:v43];
           v42 = v43;
           v26 = std::__hash_table<std::__hash_value_type<MTLUINT256_t,_NSRange>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,_NSRange>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,_NSRange>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,_NSRange>>>::__emplace_unique_key_args<MTLUINT256_t,std::piecewise_construct_t const&,std::tuple<MTLUINT256_t const&>,std::tuple<>>(&self->_specializedLibraryCache.__table_.__bucket_list_.__ptr_, v43);
-          v26[6] = a3;
-          v26[7] = a4;
+          v26[6] = offset;
+          v26[7] = length;
         }
 
-        v23 = [(NSArray *)v21 countByEnumeratingWithState:&v38 objects:v44 count:16];
+        v23 = [(NSArray *)specializedFunctionHashes countByEnumeratingWithState:&v38 objects:v44 count:16];
       }
 
       while (v23);
     }
 
-    v27 = [(_MTLLibrary *)v36 stitchingFunctionHashes];
+    stitchingFunctionHashes = [(_MTLLibrary *)v36 stitchingFunctionHashes];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v28 = [(NSArray *)v27 countByEnumeratingWithState:&v38 objects:v44 count:16];
+    v28 = [(NSArray *)stitchingFunctionHashes countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v28)
     {
       v29 = v28;
@@ -878,17 +878,17 @@ LABEL_21:
         {
           if (*v39 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(stitchingFunctionHashes);
           }
 
           [*(*(&v38 + 1) + 8 * j) getValue:v43];
           v42 = v43;
           v32 = std::__hash_table<std::__hash_value_type<MTLUINT256_t,_NSRange>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,_NSRange>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,_NSRange>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,_NSRange>>>::__emplace_unique_key_args<MTLUINT256_t,std::piecewise_construct_t const&,std::tuple<MTLUINT256_t const&>,std::tuple<>>(&self->_stitchedLibraryCache.__table_.__bucket_list_.__ptr_, v43);
-          v32[6] = a3;
-          v32[7] = a4;
+          v32[6] = offset;
+          v32[7] = length;
         }
 
-        v29 = [(NSArray *)v27 countByEnumeratingWithState:&v38 objects:v44 count:16];
+        v29 = [(NSArray *)stitchingFunctionHashes countByEnumeratingWithState:&v38 objects:v44 count:16];
       }
 
       while (v29);
@@ -910,17 +910,17 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)loadFromURL:(id)a3 error:(id *)a4
+- (BOOL)loadFromURL:(id)l error:(id *)error
 {
   v68 = *MEMORY[0x1E69E9840];
   v7 = objc_autoreleasePoolPush();
-  if (!a3 || ![a3 isFileURL] || (objc_msgSend(a3, "checkResourceIsReachableAndReturnError:", a4) & 1) == 0)
+  if (!l || ![l isFileURL] || (objc_msgSend(l, "checkResourceIsReachableAndReturnError:", error) & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v11 = 1;
       v12 = newErrorWithMessage(&cfstr_InvalidUrl.isa, MTLBinaryArchiveErrorInvalidFile);
-      *a4 = v12;
+      *error = v12;
       v13 = v12;
       LOBYTE(v14) = 0;
     }
@@ -934,7 +934,7 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  if ([(_MTLBinaryArchive *)self archiveSkipsAIRValidation]|| (v8 = [(MTLDevice *)self->_device lookupRecompiledBinaryArchive:a3]) == 0)
+  if ([(_MTLBinaryArchive *)self archiveSkipsAIRValidation]|| (v8 = [(MTLDevice *)self->_device lookupRecompiledBinaryArchive:l]) == 0)
   {
     v10 = 0;
   }
@@ -942,12 +942,12 @@ LABEL_21:
   else
   {
     v9 = v8;
-    [(MTLDevice *)self->_device recordBinaryArchiveUsage:a3];
-    a3 = v9;
+    [(MTLDevice *)self->_device recordBinaryArchiveUsage:l];
+    l = v9;
     v10 = 1;
   }
 
-  v17 = [(MTLLoader *)*(self->_device + 61) loadFileWithURL:a3 error:a4 errorDomain:&cfstr_Mtlbinaryarchi.isa invalidFileErrorCode:1];
+  v17 = [(MTLLoader *)*(self->_device + 61) loadFileWithURL:l error:error errorDomain:&cfstr_Mtlbinaryarchi.isa invalidFileErrorCode:1];
   self->_fileMapping = v17;
   if (v17)
   {
@@ -956,7 +956,7 @@ LABEL_21:
     self->_internalArchiverId = 0;
     if (v18)
     {
-      v50 = a4;
+      errorCopy = error;
       v51 = v7;
       v64 = 0;
       v63 = 0;
@@ -1032,7 +1032,7 @@ LABEL_21:
         goto LABEL_102;
       }
 
-      v20 = [(_MTLBinaryArchive *)self archiveSkipsAIRValidation];
+      archiveSkipsAIRValidation = [(_MTLBinaryArchive *)self archiveSkipsAIRValidation];
       if (!v62.var0 && !v62.var13.var0)
       {
         v21 = 1;
@@ -1147,12 +1147,12 @@ LABEL_68:
             while (v35);
           }
 
-          a4 = v50;
+          error = errorCopy;
           v7 = v51;
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
             public_arch_name_from_id = air_macho_get_public_arch_name_from_id(v61, SHIDWORD(v61));
-            -[_MTLBinaryArchive loadFromURL:error:].cold.1([objc_msgSend(a3 "absoluteString")], __p, &v65, public_arch_name_from_id);
+            -[_MTLBinaryArchive loadFromURL:error:].cold.1([objc_msgSend(l "absoluteString")], __p, &v65, public_arch_name_from_id);
           }
 
           if (SHIBYTE(__p[2]) < 0)
@@ -1185,7 +1185,7 @@ LABEL_102:
         if (v25 == 2)
         {
           p_var13 = &v61;
-          v27 = v20;
+          v27 = archiveSkipsAIRValidation;
           goto LABEL_43;
         }
       }
@@ -1208,9 +1208,9 @@ LABEL_61:
           v14 = [(_MTLBinaryArchive *)self loadAirSliceAtOffset:v62.var10 sliceLength:v62.var11];
         }
 
-        if (!(v10 | v20) && !self->_hasBuiltins && ((v14 ^ 1) & 1) == 0)
+        if (!(v10 | archiveSkipsAIRValidation) && !self->_hasBuiltins && ((v14 ^ 1) & 1) == 0)
         {
-          [(MTLDevice *)self->_device recordBinaryArchiveUsage:a3];
+          [(MTLDevice *)self->_device recordBinaryArchiveUsage:l];
         }
 
         goto LABEL_68;
@@ -1242,10 +1242,10 @@ LABEL_43:
 
 LABEL_103:
   v11 = v14;
-  if (a4 && (v14 & 1) == 0)
+  if (error && (v14 & 1) == 0)
   {
-    v48 = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"The file %@ has an invalid format.", a3], MTLBinaryArchiveErrorInvalidFile);
-    *a4 = v48;
+    v48 = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"The file %@ has an invalid format.", l], MTLBinaryArchiveErrorInvalidFile);
+    *error = v48;
     v49 = v48;
     LOBYTE(v14) = 0;
     v11 = 0;
@@ -1257,7 +1257,7 @@ LABEL_10:
   return v14 & v11 & 1;
 }
 
-- (id)materializeFromFileOffset:(unint64_t)a3 hash:(id *)a4
+- (id)materializeFromFileOffset:(unint64_t)offset hash:(id *)hash
 {
   v29 = 0;
   v30 = &v29;
@@ -1285,8 +1285,8 @@ LABEL_10:
   v12[3] = &unk_1E6EEAA80;
   v12[4] = &v29;
   v12[5] = &v25;
-  v12[8] = a3;
-  v12[9] = a4;
+  v12[8] = offset;
+  v12[9] = hash;
   v12[6] = &v19;
   v12[7] = &v13;
   v11[0] = MEMORY[0x1E69E9820];
@@ -1294,7 +1294,7 @@ LABEL_10:
   v11[2] = __52___MTLBinaryArchive_materializeFromFileOffset_hash___block_invoke_2;
   v11[3] = &unk_1E6EEA9B8;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = offset;
   if ([MTLLoader deserializeMachOWrapperWithType:v12 payloadHandler:v11 reader:?]&& (v5 = v26[3]) != 0 && (subrange = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], v30[3], v5)) != 0)
   {
     v7 = subrange;
@@ -1396,27 +1396,27 @@ LABEL_10:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)materializeFromHash:(id *)a3 fileIndex:(void *)a4
+- (id)materializeFromHash:(id *)hash fileIndex:(void *)index
 {
-  v7 = std::__tree<std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>,std::__map_value_compare<MTLUINT256_t,std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>,CompareHash,true>,std::allocator<std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>>>::lower_bound[abi:ne200100]<MTLUINT256_t>(a4, a3->var0);
-  if (a4 + 8 == v7)
+  v7 = std::__tree<std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>,std::__map_value_compare<MTLUINT256_t,std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>,CompareHash,true>,std::allocator<std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>>>::lower_bound[abi:ne200100]<MTLUINT256_t>(index, hash->var0);
+  if (index + 8 == v7)
   {
     return 0;
   }
 
   v8 = v7;
-  if (memcmp(v7 + 8, a3, v7[16]))
+  if (memcmp(v7 + 8, hash, v7[16]))
   {
     return 0;
   }
 
-  v10 = [(_MTLBinaryArchive *)self materializeFromFileOffset:v8[9] hash:a3];
-  std::__tree<std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>,std::__map_value_compare<MTLUINT256_t,std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>,CompareHash,true>,std::allocator<std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>>>::__remove_node_pointer(a4, v8);
+  v10 = [(_MTLBinaryArchive *)self materializeFromFileOffset:v8[9] hash:hash];
+  std::__tree<std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>,std::__map_value_compare<MTLUINT256_t,std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>,CompareHash,true>,std::allocator<std::__value_type<MTLUINT256_t,std::pair<unsigned int,unsigned long long>>>>::__remove_node_pointer(index, v8);
   operator delete(v8);
   return v10;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v7 = 0;
   v8 = &v7;
@@ -1429,7 +1429,7 @@ LABEL_10:
   block[2] = __42___MTLBinaryArchive_formattedDescription___block_invoke;
   block[3] = &unk_1E6EEAAA8;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = description;
   block[4] = self;
   queue = self->_queue;
   if (queue)
@@ -1447,10 +1447,10 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)storeComputePipelineDescriptor:(id)a3
+- (BOOL)storeComputePipelineDescriptor:(id)descriptor
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (self->_isLegacy || a3 && (self->_options & 0xC0) == 0 && (MTLMetalScriptBuilder::addComputePipelineWithDescriptor(self->_mtlScriptBuilder.__ptr_, a3), self->_isLegacy))
+  if (self->_isLegacy || descriptor && (self->_options & 0xC0) == 0 && (MTLMetalScriptBuilder::addComputePipelineWithDescriptor(self->_mtlScriptBuilder.__ptr_, descriptor), self->_isLegacy))
   {
     if (self->_options)
     {
@@ -1458,8 +1458,8 @@ LABEL_10:
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = [a3 preloadedLibraries];
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      preloadedLibraries = [descriptor preloadedLibraries];
+      v6 = [preloadedLibraries countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = v6;
@@ -1471,23 +1471,23 @@ LABEL_10:
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(preloadedLibraries);
             }
 
             MTLPipelineCollection::addDynamicLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, *(*(&v13 + 1) + 8 * v9++));
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [preloadedLibraries countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v7);
       }
 
-      v10 = [objc_msgSend(a3 "computeFunction")];
+      v10 = [objc_msgSend(descriptor "computeFunction")];
       MTLPipelineCollection::addLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, v10);
-      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [a3 computeFunction], v10, 0);
-      MTLPipelineCollection::addComputePipeline(self->_pipelineCollection.__ptr_, a3);
+      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [descriptor computeFunction], v10, 0);
+      MTLPipelineCollection::addComputePipeline(self->_pipelineCollection.__ptr_, descriptor);
     }
   }
 
@@ -1495,10 +1495,10 @@ LABEL_10:
   return 1;
 }
 
-- (BOOL)storeRenderPipelineDescriptor:(id)a3
+- (BOOL)storeRenderPipelineDescriptor:(id)descriptor
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (self->_isLegacy || a3 && (self->_options & 0xC0) == 0 && (MTLMetalScriptBuilder::addRenderPipelineWithDescriptor(self->_mtlScriptBuilder.__ptr_, a3), self->_isLegacy))
+  if (self->_isLegacy || descriptor && (self->_options & 0xC0) == 0 && (MTLMetalScriptBuilder::addRenderPipelineWithDescriptor(self->_mtlScriptBuilder.__ptr_, descriptor), self->_isLegacy))
   {
     if (self->_options)
     {
@@ -1506,8 +1506,8 @@ LABEL_10:
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v5 = [a3 vertexPreloadedLibraries];
-      v6 = [v5 countByEnumeratingWithState:&v43 objects:v50 count:16];
+      vertexPreloadedLibraries = [descriptor vertexPreloadedLibraries];
+      v6 = [vertexPreloadedLibraries countByEnumeratingWithState:&v43 objects:v50 count:16];
       if (v6)
       {
         v7 = v6;
@@ -1519,14 +1519,14 @@ LABEL_10:
           {
             if (*v44 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(vertexPreloadedLibraries);
             }
 
             MTLPipelineCollection::addDynamicLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, *(*(&v43 + 1) + 8 * v9++));
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v43 objects:v50 count:16];
+          v7 = [vertexPreloadedLibraries countByEnumeratingWithState:&v43 objects:v50 count:16];
         }
 
         while (v7);
@@ -1536,8 +1536,8 @@ LABEL_10:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v10 = [a3 fragmentPreloadedLibraries];
-      v11 = [v10 countByEnumeratingWithState:&v39 objects:v49 count:16];
+      fragmentPreloadedLibraries = [descriptor fragmentPreloadedLibraries];
+      v11 = [fragmentPreloadedLibraries countByEnumeratingWithState:&v39 objects:v49 count:16];
       if (v11)
       {
         v12 = v11;
@@ -1549,14 +1549,14 @@ LABEL_10:
           {
             if (*v40 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(fragmentPreloadedLibraries);
             }
 
             MTLPipelineCollection::addDynamicLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, *(*(&v39 + 1) + 8 * v14++));
           }
 
           while (v12 != v14);
-          v12 = [v10 countByEnumeratingWithState:&v39 objects:v49 count:16];
+          v12 = [fragmentPreloadedLibraries countByEnumeratingWithState:&v39 objects:v49 count:16];
         }
 
         while (v12);
@@ -1566,8 +1566,8 @@ LABEL_10:
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v15 = [a3 objectPreloadedLibraries];
-      v16 = [v15 countByEnumeratingWithState:&v35 objects:v48 count:16];
+      objectPreloadedLibraries = [descriptor objectPreloadedLibraries];
+      v16 = [objectPreloadedLibraries countByEnumeratingWithState:&v35 objects:v48 count:16];
       if (v16)
       {
         v17 = v16;
@@ -1579,14 +1579,14 @@ LABEL_10:
           {
             if (*v36 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(objectPreloadedLibraries);
             }
 
             MTLPipelineCollection::addDynamicLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, *(*(&v35 + 1) + 8 * v19++));
           }
 
           while (v17 != v19);
-          v17 = [v15 countByEnumeratingWithState:&v35 objects:v48 count:16];
+          v17 = [objectPreloadedLibraries countByEnumeratingWithState:&v35 objects:v48 count:16];
         }
 
         while (v17);
@@ -1596,8 +1596,8 @@ LABEL_10:
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v20 = [a3 meshPreloadedLibraries];
-      v21 = [v20 countByEnumeratingWithState:&v31 objects:v47 count:16];
+      meshPreloadedLibraries = [descriptor meshPreloadedLibraries];
+      v21 = [meshPreloadedLibraries countByEnumeratingWithState:&v31 objects:v47 count:16];
       if (v21)
       {
         v22 = v21;
@@ -1609,32 +1609,32 @@ LABEL_10:
           {
             if (*v32 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(meshPreloadedLibraries);
             }
 
             MTLPipelineCollection::addDynamicLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, *(*(&v31 + 1) + 8 * v24++));
           }
 
           while (v22 != v24);
-          v22 = [v20 countByEnumeratingWithState:&v31 objects:v47 count:16];
+          v22 = [meshPreloadedLibraries countByEnumeratingWithState:&v31 objects:v47 count:16];
         }
 
         while (v22);
       }
 
-      v25 = [objc_msgSend(a3 "vertexFunction")];
-      v26 = [objc_msgSend(a3 "fragmentFunction")];
+      v25 = [objc_msgSend(descriptor "vertexFunction")];
+      v26 = [objc_msgSend(descriptor "fragmentFunction")];
       MTLPipelineCollection::addLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, v25);
       MTLPipelineCollection::addLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, v26);
-      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [a3 vertexFunction], v25, 0);
-      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [a3 fragmentFunction], v26, 0);
-      v27 = [objc_msgSend(a3 "objectFunction")];
-      v28 = [objc_msgSend(a3 "meshFunction")];
+      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [descriptor vertexFunction], v25, 0);
+      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [descriptor fragmentFunction], v26, 0);
+      v27 = [objc_msgSend(descriptor "objectFunction")];
+      v28 = [objc_msgSend(descriptor "meshFunction")];
       MTLPipelineCollection::addLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, v27);
       MTLPipelineCollection::addLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, v28);
-      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [a3 objectFunction], v27, 0);
-      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [a3 meshFunction], v28, 0);
-      MTLPipelineCollection::addRenderPipeline(self->_pipelineCollection.__ptr_, a3);
+      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [descriptor objectFunction], v27, 0);
+      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [descriptor meshFunction], v28, 0);
+      MTLPipelineCollection::addRenderPipeline(self->_pipelineCollection.__ptr_, descriptor);
     }
   }
 
@@ -1642,10 +1642,10 @@ LABEL_10:
   return 1;
 }
 
-- (BOOL)storeTileRenderPipelineDescriptor:(id)a3
+- (BOOL)storeTileRenderPipelineDescriptor:(id)descriptor
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (self->_isLegacy || a3 && (self->_options & 0xC0) == 0 && (MTLMetalScriptBuilder::addTileRenderPipelineWithDescriptor(self->_mtlScriptBuilder.__ptr_, a3), self->_isLegacy))
+  if (self->_isLegacy || descriptor && (self->_options & 0xC0) == 0 && (MTLMetalScriptBuilder::addTileRenderPipelineWithDescriptor(self->_mtlScriptBuilder.__ptr_, descriptor), self->_isLegacy))
   {
     if (self->_options)
     {
@@ -1653,8 +1653,8 @@ LABEL_10:
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = [a3 preloadedLibraries];
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      preloadedLibraries = [descriptor preloadedLibraries];
+      v6 = [preloadedLibraries countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = v6;
@@ -1666,23 +1666,23 @@ LABEL_10:
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(preloadedLibraries);
             }
 
             MTLPipelineCollection::addDynamicLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, *(*(&v13 + 1) + 8 * v9++));
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [preloadedLibraries countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v7);
       }
 
-      v10 = [objc_msgSend(a3 "tileFunction")];
+      v10 = [objc_msgSend(descriptor "tileFunction")];
       MTLPipelineCollection::addLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, v10);
-      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [a3 tileFunction], v10, 0);
-      MTLPipelineCollection::addTileRenderPipeline(self->_pipelineCollection.__ptr_, a3);
+      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [descriptor tileFunction], v10, 0);
+      MTLPipelineCollection::addTileRenderPipeline(self->_pipelineCollection.__ptr_, descriptor);
     }
   }
 
@@ -1690,10 +1690,10 @@ LABEL_10:
   return 1;
 }
 
-- (BOOL)storeMeshRenderPipelineDescriptor:(id)a3
+- (BOOL)storeMeshRenderPipelineDescriptor:(id)descriptor
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (self->_isLegacy || a3 && (self->_options & 0xC0) == 0 && (MTLMetalScriptBuilder::addMeshRenderPipelineWithDescriptor(self->_mtlScriptBuilder.__ptr_, a3), self->_isLegacy))
+  if (self->_isLegacy || descriptor && (self->_options & 0xC0) == 0 && (MTLMetalScriptBuilder::addMeshRenderPipelineWithDescriptor(self->_mtlScriptBuilder.__ptr_, descriptor), self->_isLegacy))
   {
     if (self->_options)
     {
@@ -1701,8 +1701,8 @@ LABEL_10:
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v5 = [a3 objectPreloadedLibraries];
-      v6 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      objectPreloadedLibraries = [descriptor objectPreloadedLibraries];
+      v6 = [objectPreloadedLibraries countByEnumeratingWithState:&v33 objects:v39 count:16];
       if (v6)
       {
         v7 = v6;
@@ -1714,14 +1714,14 @@ LABEL_10:
           {
             if (*v34 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(objectPreloadedLibraries);
             }
 
             MTLPipelineCollection::addDynamicLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, *(*(&v33 + 1) + 8 * v9++));
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
+          v7 = [objectPreloadedLibraries countByEnumeratingWithState:&v33 objects:v39 count:16];
         }
 
         while (v7);
@@ -1731,8 +1731,8 @@ LABEL_10:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v10 = [a3 meshPreloadedLibraries];
-      v11 = [v10 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      meshPreloadedLibraries = [descriptor meshPreloadedLibraries];
+      v11 = [meshPreloadedLibraries countByEnumeratingWithState:&v29 objects:v38 count:16];
       if (v11)
       {
         v12 = v11;
@@ -1744,14 +1744,14 @@ LABEL_10:
           {
             if (*v30 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(meshPreloadedLibraries);
             }
 
             MTLPipelineCollection::addDynamicLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, *(*(&v29 + 1) + 8 * v14++));
           }
 
           while (v12 != v14);
-          v12 = [v10 countByEnumeratingWithState:&v29 objects:v38 count:16];
+          v12 = [meshPreloadedLibraries countByEnumeratingWithState:&v29 objects:v38 count:16];
         }
 
         while (v12);
@@ -1761,8 +1761,8 @@ LABEL_10:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v15 = [a3 fragmentPreloadedLibraries];
-      v16 = [v15 countByEnumeratingWithState:&v25 objects:v37 count:16];
+      fragmentPreloadedLibraries = [descriptor fragmentPreloadedLibraries];
+      v16 = [fragmentPreloadedLibraries countByEnumeratingWithState:&v25 objects:v37 count:16];
       if (v16)
       {
         v17 = v16;
@@ -1774,29 +1774,29 @@ LABEL_10:
           {
             if (*v26 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(fragmentPreloadedLibraries);
             }
 
             MTLPipelineCollection::addDynamicLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, *(*(&v25 + 1) + 8 * v19++));
           }
 
           while (v17 != v19);
-          v17 = [v15 countByEnumeratingWithState:&v25 objects:v37 count:16];
+          v17 = [fragmentPreloadedLibraries countByEnumeratingWithState:&v25 objects:v37 count:16];
         }
 
         while (v17);
       }
 
-      v20 = [objc_msgSend(a3 "objectFunction")];
-      v21 = [objc_msgSend(a3 "meshFunction")];
-      v22 = [objc_msgSend(a3 "fragmentFunction")];
+      v20 = [objc_msgSend(descriptor "objectFunction")];
+      v21 = [objc_msgSend(descriptor "meshFunction")];
+      v22 = [objc_msgSend(descriptor "fragmentFunction")];
       MTLPipelineCollection::addLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, v20);
       MTLPipelineCollection::addLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, v21);
       MTLPipelineCollection::addLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, v22);
-      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [a3 objectFunction], v20, 0);
-      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [a3 meshFunction], v21, 0);
-      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [a3 fragmentFunction], v22, 0);
-      MTLPipelineCollection::addMeshRenderPipeline(self->_pipelineCollection.__ptr_, a3);
+      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [descriptor objectFunction], v20, 0);
+      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [descriptor meshFunction], v21, 0);
+      MTLPipelineCollection::addFunction(self->_pipelineCollection.__ptr_, [descriptor fragmentFunction], v22, 0);
+      MTLPipelineCollection::addMeshRenderPipeline(self->_pipelineCollection.__ptr_, descriptor);
     }
   }
 
@@ -1804,9 +1804,9 @@ LABEL_10:
   return 1;
 }
 
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
-  if (a3)
+  if (descriptor)
   {
 
     return [_MTLBinaryArchive addComputePipelineFunctionsWithDescriptor:"addComputePipelineFunctionsWithDescriptor:options:error:" options:? error:?];
@@ -1814,16 +1814,16 @@ LABEL_10:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = newErrorWithMessage(&cfstr_ComputePipelin.isa, MTLBinaryArchiveErrorUnexpectedElement);
+      *error = newErrorWithMessage(&cfstr_ComputePipelin.isa, MTLBinaryArchiveErrorUnexpectedElement);
     }
 
     return 0;
   }
 }
 
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
   [(_MTLBinaryArchive *)self storeComputePipelineDescriptor:?];
   if ((self->_options & 2) == 0)
@@ -1831,14 +1831,14 @@ LABEL_10:
     return 1;
   }
 
-  v10 = [(MTLDevice *)self->_device compiler];
+  compiler = [(MTLDevice *)self->_device compiler];
 
-  return [v10 addComputePipelineStateWithDescriptor:a3 destinationBinaryArchive:self options:a4 error:a5];
+  return [compiler addComputePipelineStateWithDescriptor:descriptor destinationBinaryArchive:self options:options error:error];
 }
 
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
-  if (a3)
+  if (descriptor)
   {
 
     return [_MTLBinaryArchive addRenderPipelineFunctionsWithDescriptor:"addRenderPipelineFunctionsWithDescriptor:options:error:" options:? error:?];
@@ -1846,16 +1846,16 @@ LABEL_10:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = newErrorWithMessage(&cfstr_RenderPipeline.isa, MTLBinaryArchiveErrorUnexpectedElement);
+      *error = newErrorWithMessage(&cfstr_RenderPipeline.isa, MTLBinaryArchiveErrorUnexpectedElement);
     }
 
     return 0;
   }
 }
 
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
   [(_MTLBinaryArchive *)self storeRenderPipelineDescriptor:?];
   if ((self->_options & 2) == 0)
@@ -1863,14 +1863,14 @@ LABEL_10:
     return 1;
   }
 
-  v10 = [(MTLDevice *)self->_device compiler];
+  compiler = [(MTLDevice *)self->_device compiler];
 
-  return [v10 addRenderPipelineStateWithDescriptor:a3 destinationBinaryArchive:self options:a4 error:a5];
+  return [compiler addRenderPipelineStateWithDescriptor:descriptor destinationBinaryArchive:self options:options error:error];
 }
 
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
-  if (a3)
+  if (descriptor)
   {
 
     return [_MTLBinaryArchive addTileRenderPipelineFunctionsWithDescriptor:"addTileRenderPipelineFunctionsWithDescriptor:options:error:" options:? error:?];
@@ -1878,16 +1878,16 @@ LABEL_10:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = newErrorWithMessage(&cfstr_TilePipelineDe.isa, MTLBinaryArchiveErrorUnexpectedElement);
+      *error = newErrorWithMessage(&cfstr_TilePipelineDe.isa, MTLBinaryArchiveErrorUnexpectedElement);
     }
 
     return 0;
   }
 }
 
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
   [(_MTLBinaryArchive *)self storeTileRenderPipelineDescriptor:?];
   if ((self->_options & 2) == 0)
@@ -1895,14 +1895,14 @@ LABEL_10:
     return 1;
   }
 
-  v10 = [(MTLDevice *)self->_device compiler];
+  compiler = [(MTLDevice *)self->_device compiler];
 
-  return [v10 addTileRenderPipelineStateWithDescriptor:a3 destinationBinaryArchive:self options:a4 error:a5];
+  return [compiler addTileRenderPipelineStateWithDescriptor:descriptor destinationBinaryArchive:self options:options error:error];
 }
 
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
-  if (a3)
+  if (descriptor)
   {
 
     return [_MTLBinaryArchive addMeshRenderPipelineFunctionsWithDescriptor:"addMeshRenderPipelineFunctionsWithDescriptor:options:error:" options:? error:?];
@@ -1910,16 +1910,16 @@ LABEL_10:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = newErrorWithMessage(&cfstr_MeshPipelineDe.isa, MTLBinaryArchiveErrorUnexpectedElement);
+      *error = newErrorWithMessage(&cfstr_MeshPipelineDe.isa, MTLBinaryArchiveErrorUnexpectedElement);
     }
 
     return 0;
   }
 }
 
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
   [(_MTLBinaryArchive *)self storeMeshRenderPipelineDescriptor:?];
   if ((self->_options & 2) == 0)
@@ -1927,12 +1927,12 @@ LABEL_10:
     return 1;
   }
 
-  v10 = [(MTLDevice *)self->_device compiler];
+  compiler = [(MTLDevice *)self->_device compiler];
 
-  return [v10 addMeshRenderPipelineStateWithDescriptor:a3 destinationBinaryArchive:self options:a4 error:a5];
+  return [compiler addMeshRenderPipelineStateWithDescriptor:descriptor destinationBinaryArchive:self options:options error:error];
 }
 
-- (BOOL)addFunctionWithDescriptor:(id)a3 library:(id)a4 error:(id *)a5
+- (BOOL)addFunctionWithDescriptor:(id)descriptor library:(id)library error:(id *)error
 {
   if (self->_isLegacy && (options = self->_options, (options & 6) == 0))
   {
@@ -1941,12 +1941,12 @@ LABEL_10:
       return 1;
     }
 
-    v10 = [a4 newFunctionWithDescriptor:a3 error:a5];
+    v10 = [library newFunctionWithDescriptor:descriptor error:error];
   }
 
   else
   {
-    v10 = [a4 newFunctionWithDescriptor:a3 destinationArchive:self error:a5];
+    v10 = [library newFunctionWithDescriptor:descriptor destinationArchive:self error:error];
   }
 
   v11 = v10;
@@ -1955,17 +1955,17 @@ LABEL_10:
     return 0;
   }
 
-  if (self->_isLegacy || (v14 = 1, a3) && (self->_options & 0xC0) == 0 && (MTLMetalScriptBuilder::addFunctionWithDescriptor(self->_mtlScriptBuilder.__ptr_, v10, a4, a3), self->_isLegacy))
+  if (self->_isLegacy || (v14 = 1, descriptor) && (self->_options & 0xC0) == 0 && (MTLMetalScriptBuilder::addFunctionWithDescriptor(self->_mtlScriptBuilder.__ptr_, v10, library, descriptor), self->_isLegacy))
   {
     if (self->_options)
     {
-      v12 = [a4 newFunctionWithName:{objc_msgSend(a3, "name")}];
+      v12 = [library newFunctionWithName:{objc_msgSend(descriptor, "name")}];
       if (!v12)
       {
         v14 = 0;
-        if (a5)
+        if (error)
         {
-          *a5 = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"library does not contain base function '%@'", objc_msgSend(a3, "name")], MTLBinaryArchiveErrorUnexpectedElement);
+          *error = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"library does not contain base function '%@'", objc_msgSend(descriptor, "name")], MTLBinaryArchiveErrorUnexpectedElement);
         }
 
         goto LABEL_10;
@@ -1973,7 +1973,7 @@ LABEL_10:
 
       v13 = v12;
       MTLPipelineCollection::addLibraryData(self->_pipelineCollection.__ptr_, self->_collectArchives, !self->_collectArchives, [v12 libraryData]);
-      MTLPipelineCollection::addSpecializedFunction(self->_pipelineCollection.__ptr_, v13, v11, a4, a3);
+      MTLPipelineCollection::addSpecializedFunction(self->_pipelineCollection.__ptr_, v13, v11, library, descriptor);
     }
 
     v14 = 1;
@@ -1984,17 +1984,17 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)addLibraryWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addLibraryWithDescriptor:(id)descriptor error:(id *)error
 {
   if (!self->_isLegacy || (self->_options & 4) != 0)
   {
-    v6 = [(MTLDevice *)self->_device newLibraryWithStitchedDescriptor:a3 destinationBinaryArchive:self error:a4];
+    v6 = [(MTLDevice *)self->_device newLibraryWithStitchedDescriptor:descriptor destinationBinaryArchive:self error:error];
     if (v6)
     {
       v7 = v6;
-      if (!self->_isLegacy && a3 && (self->_options & 0xC0) == 0)
+      if (!self->_isLegacy && descriptor && (self->_options & 0xC0) == 0)
       {
-        MTLMetalScriptBuilder::addLibraryWithDescriptor(self->_mtlScriptBuilder.__ptr_, v6, a3);
+        MTLMetalScriptBuilder::addLibraryWithDescriptor(self->_mtlScriptBuilder.__ptr_, v6, descriptor);
       }
 
       LOBYTE(v6) = 1;
@@ -2009,7 +2009,7 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)getSpecializedFunctionArchivesToSerialize:(void *)a3
+- (BOOL)getSpecializedFunctionArchivesToSerialize:(void *)serialize
 {
   v15 = *MEMORY[0x1E69E9840];
   next = self->_legacySpecializedFunctions.__table_.__first_node_.__next_;
@@ -2027,7 +2027,7 @@ LABEL_10:
     object = *(next + 6);
     if (object)
     {
-      std::__hash_table<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>>>::__emplace_unique_key_args<MTLUINT256_t,std::pair<MTLUINT256_t const,NSObject  {objcproto16OS_dispatch_data}*> const&>(a3, v13);
+      std::__hash_table<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>>>::__emplace_unique_key_args<MTLUINT256_t,std::pair<MTLUINT256_t const,NSObject  {objcproto16OS_dispatch_data}*> const&>(serialize, v13);
       v9 = v8;
       if (v8)
       {
@@ -2053,7 +2053,7 @@ LABEL_9:
     v12[1] = 3221225472;
     v12[2] = __63___MTLBinaryArchive_getSpecializedFunctionArchivesToSerialize___block_invoke;
     v12[3] = &__block_descriptor_40_e49_B24__0r_____32C__8__NSObject_OS_dispatch_data__16l;
-    v12[4] = a3;
+    v12[4] = serialize;
     result = [(_MTLBinaryArchive *)self enumerateSpecializedFunctionArchivesFromBackingFile:v12];
   }
 
@@ -2061,11 +2061,11 @@ LABEL_9:
   return result;
 }
 
-- (id)flatBufferFromJSON:(id)a3 schema:(const char *)a4 schemaSize:(unint64_t)a5
+- (id)flatBufferFromJSON:(id)n schema:(const char *)schema schemaSize:(unint64_t)size
 {
   size_ptr = 0;
   buffer_ptr = 0;
-  v5 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
+  v5 = dispatch_data_create_map(n, &buffer_ptr, &size_ptr);
   if (size_ptr)
   {
     flatbuffers::IDLOptions::IDLOptions(&v7);
@@ -2092,23 +2092,23 @@ LABEL_5:
   return 0;
 }
 
-- (id)materializeAirScript:(void *)a3
+- (id)materializeAirScript:(void *)script
 {
-  v5 = *(a3 + 4);
+  v5 = *(script + 4);
   if (!v5)
   {
-    v10 = mapFileToMemory(*(a3 + 11), 1);
+    v10 = mapFileToMemory(*(script + 11), 1);
     if (!v10)
     {
       return 0;
     }
 
     v11 = v10;
-    v12 = *(a3 + 11);
+    v12 = *(script + 11);
     if (hasFileExtension(v12, ".airp-json"))
     {
       v13 = &Air::PipelineScriptBinarySchema::data(void)::bfbsData;
-      v14 = self;
+      selfCopy3 = self;
       v15 = v11;
       v16 = 37264;
     }
@@ -2116,7 +2116,7 @@ LABEL_5:
     else if (hasFileExtension(v12, ".aird-json"))
     {
       v13 = &Air::DylibScriptBinarySchema::data(void)::bfbsData;
-      v14 = self;
+      selfCopy3 = self;
       v15 = v11;
       v16 = 712;
     }
@@ -2130,29 +2130,29 @@ LABEL_5:
       }
 
       v13 = &Air::ConstantsSpecializationScriptBinarySchema::data(void)::bfbsData;
-      v14 = self;
+      selfCopy3 = self;
       v15 = v11;
       v16 = 12584;
     }
 
-    v17 = [(_MTLBinaryArchive *)v14 flatBufferFromJSON:v15 schema:v13 schemaSize:v16];
+    v17 = [(_MTLBinaryArchive *)selfCopy3 flatBufferFromJSON:v15 schema:v13 schemaSize:v16];
 LABEL_14:
     dispatch_release(v11);
     return v17;
   }
 
-  v6 = *(a3 + 3);
-  v7 = *(a3 + 7);
-  v8 = [(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData];
+  v6 = *(script + 3);
+  v7 = *(script + 7);
+  dispatchData = [(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData];
 
-  return dispatch_data_create_subrange(v8, v7 + v6, v5);
+  return dispatch_data_create_subrange(dispatchData, v7 + v6, v5);
 }
 
-- (id)newLibraryInArchiveWithRange:(_NSRange)a3 error:(id *)a4
+- (id)newLibraryInArchiveWithRange:(_NSRange)range error:(id *)error
 {
-  length = a3.length;
-  location = a3.location;
-  v16 = a3.location;
+  length = range.length;
+  location = range.location;
+  v16 = range.location;
   v8 = std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::find<unsigned long>(&self->_libCache.__table_.__bucket_list_.__ptr_, &v16);
   if (v8)
   {
@@ -2160,15 +2160,15 @@ LABEL_14:
   }
 
   subrange = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], location, length);
-  v9 = MTLLibraryBuilder::newLibraryWithData(*(self->_device + 55), self->_device, subrange, a4, v11, v12, v13, v14);
+  v9 = MTLLibraryBuilder::newLibraryWithData(*(self->_device + 55), self->_device, subrange, error, v11, v12, v13, v14);
   dispatch_release(subrange);
   return v9;
 }
 
-- (id)newLibraryInArchiveAtPos:(void *)a3 atIndex:(unsigned int)a4 error:(id *)a5
+- (id)newLibraryInArchiveAtPos:(void *)pos atIndex:(unsigned int)index error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v9 = *(*a3 + 8 * a4);
+  v9 = *(*pos + 8 * index);
   if (!*(v9 + 8))
   {
     std::string::basic_string[abi:ne200100]<0>(__p, *(v9 + 16));
@@ -2180,10 +2180,10 @@ LABEL_14:
 
     else
     {
-      v40 = mapFileToMemory(*(*(*a3 + 8 * a4) + 16), (self->_options & 0x20) == 0);
+      v40 = mapFileToMemory(*(*(*pos + 8 * index) + 16), (self->_options & 0x20) == 0);
       if (!v40)
       {
-        if (!a5 || (self->_options & 0x20) != 0)
+        if (!error || (self->_options & 0x20) != 0)
         {
           v42 = 0;
           v46 = 0;
@@ -2193,7 +2193,7 @@ LABEL_14:
         {
           v42 = 0;
           v46 = 0;
-          *a5 = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to map library at path: %s", *(*(*a3 + 8 * a4) + 16)], MTLBinaryArchiveErrorInvalidFile);
+          *error = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to map library at path: %s", *(*(*pos + 8 * index) + 16)], MTLBinaryArchiveErrorInvalidFile);
         }
 
 LABEL_41:
@@ -2215,7 +2215,7 @@ LABEL_41:
         goto LABEL_44;
       }
 
-      v46 = MTLLibraryBuilder::newLibraryWithData(*(self->_device + 55), self->_device, v40, a5, v36, v37, v38, v39);
+      v46 = MTLLibraryBuilder::newLibraryWithData(*(self->_device + 55), self->_device, v40, error, v36, v37, v38, v39);
       if ([(_MTLLibrary *)v46 isStub])
       {
         self->_bitcodeStripped = 1;
@@ -2231,7 +2231,7 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  v47 = *(a3 + 7) + *v9;
+  v47 = *(pos + 7) + *v9;
   v10 = std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::find<unsigned long>(&self->_libCache.__table_.__bucket_list_.__ptr_, &v47);
   if (v10)
   {
@@ -2240,11 +2240,11 @@ LABEL_41:
 
   else
   {
-    v12 = *(*a3 + 8 * a4);
+    v12 = *(*pos + 8 * index);
     v13 = v47;
     v14 = *(v12 + 8);
     object = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], v47, v14);
-    v46 = MTLLibraryBuilder::newLibraryWithData(*(self->_device + 55), self->_device, object, a5, v15, v16, v17, v18);
+    v46 = MTLLibraryBuilder::newLibraryWithData(*(self->_device + 55), self->_device, object, error, v15, v16, v17, v18);
     if ([(_MTLLibrary *)v46 isStub])
     {
       self->_bitcodeStripped = 1;
@@ -2260,12 +2260,12 @@ LABEL_41:
       std::__hash_table<std::__hash_value_type<unsigned long long,objc_object  {objcproto13MTLLibrarySPI}*>,std::__unordered_map_hasher<unsigned long long,objc_object  {objcproto13MTLLibrarySPI}*,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,objc_object  {objcproto13MTLLibrarySPI}*,std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto13MTLLibrarySPI}*>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::piecewise_construct_t const&<>>(&self->_libCache.__table_.__bucket_list_.__ptr_, &v47)[3] = v25;
     }
 
-    v26 = [(_MTLLibrary *)v46 specializedFunctionHashes];
+    specializedFunctionHashes = [(_MTLLibrary *)v46 specializedFunctionHashes];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v27 = [(NSArray *)v26 countByEnumeratingWithState:&v48 objects:__p count:16];
+    v27 = [(NSArray *)specializedFunctionHashes countByEnumeratingWithState:&v48 objects:__p count:16];
     if (v27)
     {
       v28 = *v49;
@@ -2275,7 +2275,7 @@ LABEL_41:
         {
           if (*v49 != v28)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(specializedFunctionHashes);
           }
 
           [*(*(&v48 + 1) + 8 * i) getValue:v53];
@@ -2285,18 +2285,18 @@ LABEL_41:
           v30[7] = v14;
         }
 
-        v27 = [(NSArray *)v26 countByEnumeratingWithState:&v48 objects:__p count:16];
+        v27 = [(NSArray *)specializedFunctionHashes countByEnumeratingWithState:&v48 objects:__p count:16];
       }
 
       while (v27);
     }
 
-    v31 = [(_MTLLibrary *)v46 stitchingFunctionHashes];
+    stitchingFunctionHashes = [(_MTLLibrary *)v46 stitchingFunctionHashes];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v32 = [(NSArray *)v31 countByEnumeratingWithState:&v48 objects:__p count:16];
+    v32 = [(NSArray *)stitchingFunctionHashes countByEnumeratingWithState:&v48 objects:__p count:16];
     if (v32)
     {
       v33 = *v49;
@@ -2306,7 +2306,7 @@ LABEL_41:
         {
           if (*v49 != v33)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(stitchingFunctionHashes);
           }
 
           [*(*(&v48 + 1) + 8 * j) getValue:v53];
@@ -2316,7 +2316,7 @@ LABEL_41:
           v35[7] = v14;
         }
 
-        v32 = [(NSArray *)v31 countByEnumeratingWithState:&v48 objects:__p count:16];
+        v32 = [(NSArray *)stitchingFunctionHashes countByEnumeratingWithState:&v48 objects:__p count:16];
       }
 
       while (v32);
@@ -2330,9 +2330,9 @@ LABEL_44:
   return v46;
 }
 
-- (void)preloadLibrariesInAirntObject:(void *)a3 error:(id *)a4
+- (void)preloadLibrariesInAirntObject:(void *)object error:(id *)error
 {
-  if (*(a3 + 1) != *a3)
+  if (*(object + 1) != *object)
   {
     v14 = v7;
     v15 = v6;
@@ -2344,7 +2344,7 @@ LABEL_44:
     do
     {
 
-      if (a4 && *a4)
+      if (error && *error)
       {
         break;
       }
@@ -2352,13 +2352,13 @@ LABEL_44:
       v13 = (v13 + 1);
     }
 
-    while (v13 < (*(a3 + 1) - *a3) >> 3);
+    while (v13 < (*(object + 1) - *object) >> 3);
   }
 }
 
-- (id)materializeReflectionBlock:(void *)a3
+- (id)materializeReflectionBlock:(void *)block
 {
-  if ((*(a3 + 80) & 0x20) != 0)
+  if ((*(block + 80) & 0x20) != 0)
   {
 
     return MTLNewReflectionBlock(0, 0, 0);
@@ -2366,7 +2366,7 @@ LABEL_44:
 
   else
   {
-    v6 = *(a3 + 12);
+    v6 = *(block + 12);
     if (v6)
     {
       subrange = mapFileToMemory(v6, 1);
@@ -2374,11 +2374,11 @@ LABEL_44:
 
     else
     {
-      subrange = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], *(a3 + 7) + *(a3 + 16), *(a3 + 17));
+      subrange = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], *(block + 7) + *(block + 16), *(block + 17));
     }
 
     v9 = subrange;
-    v10 = *(a3 + 13);
+    v10 = *(block + 13);
     if (v10)
     {
       v11 = mapFileToMemory(v10, 1);
@@ -2386,7 +2386,7 @@ LABEL_44:
 
     else
     {
-      v11 = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], *(a3 + 7) + *(a3 + 18), *(a3 + 19));
+      v11 = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], *(block + 7) + *(block + 18), *(block + 19));
     }
 
     v12 = v11;
@@ -2396,9 +2396,9 @@ LABEL_44:
   }
 }
 
-- (void)materializeAirNTFromOnlineForSlice:(const MTLLoaderSliceIdentifier *)a3 entryList:(shared_ptr<std::vector<machOEntry>>)a4
+- (void)materializeAirNTFromOnlineForSlice:(const MTLLoaderSliceIdentifier *)slice entryList:(shared_ptr<std::vector<machOEntry>>)list
 {
-  var0 = a4.var0;
+  var0 = list.var0;
   v90 = *MEMORY[0x1E69E9840];
   p_airntExtraBinaryEntries = &self->_airntExtraBinaryEntries;
   v85 = 0;
@@ -2410,7 +2410,7 @@ LABEL_44:
   p_airntExtraBinaryEntries->__end_ = p_airntExtraBinaryEntries->__begin_;
   std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::clear(&self->_specializedFunctionByHash.__table_.__bucket_list_.__ptr_);
   std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::clear(&self->_stitchedFunctionByHash.__table_.__bucket_list_.__ptr_);
-  v71 = self;
+  selfCopy = self;
   if (v85 != v84)
   {
     v6 = 0;
@@ -2440,10 +2440,10 @@ LABEL_44:
         }
 
         *(v11 + 8) = v13;
-        *(v13 - 72) = a3->var1 | (a3->var0 << 32);
-        v14 = [v10 data];
-        *(v13 - 40) = v14;
-        dispatch_retain(v14);
+        *(v13 - 72) = slice->var1 | (slice->var0 << 32);
+        data = [v10 data];
+        *(v13 - 40) = data;
+        dispatch_retain(data);
         operator new();
       }
 
@@ -2478,12 +2478,12 @@ LABEL_44:
     }
 
     *(v18 + 8) = v20;
-    *(v20 - 72) = a3->var1 | (a3->var0 << 32);
+    *(v20 - 72) = slice->var1 | (slice->var0 << 32);
     v21 = v89;
-    device = v71->_device;
+    device = selfCopy->_device;
     libraryBuilder = device->_libraryBuilder;
-    v24 = [v89 data];
-    v29 = MTLLibraryBuilder::newLibraryWithData(libraryBuilder, device, v24, 0, v25, v26, v27, v28);
+    data2 = [v89 data];
+    v29 = MTLLibraryBuilder::newLibraryWithData(libraryBuilder, device, data2, 0, v25, v26, v27, v28);
     v30 = [(_MTLLibrary *)v29 newSpecializedFunctionWithHash:v88];
     if (!v30)
     {
@@ -2492,9 +2492,9 @@ LABEL_44:
 
     *(v20 - 48) = [v21 bitcode];
     *(v20 - 40) = [v30 bitcodeDataInternal];
-    v31 = [v21 airScript];
-    *(v20 - 56) = v31;
-    dispatch_retain(v31);
+    airScript = [v21 airScript];
+    *(v20 - 56) = airScript;
+    dispatch_retain(airScript);
     dispatch_retain(*(v20 - 48));
   }
 
@@ -2520,13 +2520,13 @@ LABEL_44:
     *(v33 + 8) = v35;
     *(v35 - 72) = 0;
     v36 = j[6];
-    v37 = [v36 airScript];
-    *(v35 - 56) = v37;
-    dispatch_retain(v37);
-    v38 = v71->_device;
+    airScript2 = [v36 airScript];
+    *(v35 - 56) = airScript2;
+    dispatch_retain(airScript2);
+    v38 = selfCopy->_device;
     v39 = v38->_libraryBuilder;
-    v40 = [v36 data];
-    v45 = MTLLibraryBuilder::newLibraryWithData(v39, v38, v40, 0, v41, v42, v43, v44);
+    data3 = [v36 data];
+    v45 = MTLLibraryBuilder::newLibraryWithData(v39, v38, data3, 0, v41, v42, v43, v44);
     size_ptr = 0;
     buffer_ptr = 0;
     v46 = dispatch_data_create_map([v36 airScript], &buffer_ptr, &size_ptr);
@@ -2585,8 +2585,8 @@ LABEL_44:
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v62 = [v36 linkedBitcodes];
-    v63 = [v62 countByEnumeratingWithState:&v72 objects:v87 count:16];
+    linkedBitcodes = [v36 linkedBitcodes];
+    v63 = [linkedBitcodes countByEnumeratingWithState:&v72 objects:v87 count:16];
     if (v63)
     {
       v64 = *v73;
@@ -2597,14 +2597,14 @@ LABEL_44:
         {
           if (*v73 != v64)
           {
-            objc_enumerationMutation(v62);
+            objc_enumerationMutation(linkedBitcodes);
           }
 
           [*(*(&v72 + 1) + 8 * k) getValue:v88];
           std::vector<MTLUINT256_t>::push_back[abi:ne200100](v65, v88);
         }
 
-        v63 = [v62 countByEnumeratingWithState:&v72 objects:v87 count:16];
+        v63 = [linkedBitcodes countByEnumeratingWithState:&v72 objects:v87 count:16];
       }
 
       while (v63);
@@ -2627,9 +2627,9 @@ LABEL_44:
   v67 = *MEMORY[0x1E69E9840];
 }
 
-- (void)materializeAirNTStitchedFunctions:(shared_ptr<std::vector<machOEntry>>)a3
+- (void)materializeAirNTStitchedFunctions:(shared_ptr<std::vector<machOEntry>>)functions
 {
-  var0 = a3.var0;
+  var0 = functions.var0;
   v26 = *MEMORY[0x1E69E9840];
   for (i = self->_stitchedLibraryCache.__table_.__first_node_.__next_; i; i = *i)
   {
@@ -2657,8 +2657,8 @@ LABEL_44:
 
     *(v7 + 8) = v9;
     *(v9 - 72) = 0;
-    v10 = [(_MTLBinaryArchive *)self newLibraryInArchiveWithRange:v25 error:0, var0];
-    v11 = [v10 newStitchedFunctionWithHash:v24];
+    var0 = [(_MTLBinaryArchive *)self newLibraryInArchiveWithRange:v25 error:0, var0];
+    v11 = [var0 newStitchedFunctionWithHash:v24];
     *(v9 - 40) = [v11 bitcodeDataInternal];
     (*(*[v11 libraryData] + 320))(&__p);
     *(v9 - 56) = [v11 stitchingAirScript];
@@ -2678,11 +2678,11 @@ LABEL_44:
         v23[1] = v14;
         if (!std::__hash_table<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>>>::find<MTLUINT256_t>(self->_uniqueBitcodeList.__ptr_, v23))
         {
-          v15 = [v10 newFunctionWithHash:v23];
-          v16 = [v15 bitcodeDataInternal];
+          v15 = [var0 newFunctionWithHash:v23];
+          bitcodeDataInternal = [v15 bitcodeDataInternal];
           ptr = self->_uniqueBitcodeList.__ptr_;
           v22 = v23;
-          std::__hash_table<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>>>::__emplace_unique_key_args<MTLUINT256_t,std::piecewise_construct_t const&,std::tuple<MTLUINT256_t const&>,std::tuple<>>(ptr, v23)[6] = v16;
+          std::__hash_table<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>>>::__emplace_unique_key_args<MTLUINT256_t,std::piecewise_construct_t const&,std::tuple<MTLUINT256_t const&>,std::tuple<>>(ptr, v23)[6] = bitcodeDataInternal;
         }
 
         v13 += 32;
@@ -2701,13 +2701,13 @@ LABEL_44:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)materializeAirNTSpecializedFunctions:(shared_ptr<std::vector<machOEntry>>)a3
+- (void)materializeAirNTSpecializedFunctions:(shared_ptr<std::vector<machOEntry>>)functions
 {
   v22 = *MEMORY[0x1E69E9840];
   next = self->_specializedLibraryCache.__table_.__first_node_.__next_;
   if (next)
   {
-    var0 = a3.var0;
+    var0 = functions.var0;
     do
     {
       v6 = next[1];
@@ -2747,9 +2747,9 @@ LABEL_44:
       v14 = [v11 newFunctionWithHash:&v17];
       *(v10 - 48) = [v14 bitcodeDataInternal];
       *(v10 - 40) = [v13 bitcodeDataInternal];
-      v15 = [v13 specializationAirScript];
-      *(v10 - 56) = v15;
-      dispatch_retain(v15);
+      specializationAirScript = [v13 specializationAirScript];
+      *(v10 - 56) = specializationAirScript;
+      dispatch_retain(specializationAirScript);
 
       next = *next;
     }
@@ -2760,10 +2760,10 @@ LABEL_44:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)materializeLinkedBitcodes:(void *)a3 hashList:(void *)a4
+- (void)materializeLinkedBitcodes:(void *)bitcodes hashList:(void *)list
 {
-  v4 = *a3;
-  if (*(a3 + 1) - *a3 >= 9uLL)
+  v4 = *bitcodes;
+  if (*(bitcodes + 1) - *bitcodes >= 9uLL)
   {
     v8 = 1;
     do
@@ -2775,33 +2775,33 @@ LABEL_44:
       }
 
       v10 = *(v9 + 24);
-      std::vector<MTLUINT256_t>::push_back[abi:ne200100](a4, v10);
+      std::vector<MTLUINT256_t>::push_back[abi:ne200100](list, v10);
       if (!std::__hash_table<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>>>::find<MTLUINT256_t>(self->_uniqueBitcodeList.__ptr_, v10))
       {
-        v11 = [(_MTLBinaryArchive *)self materializeBitCode:a3 atIndex:v8];
+        v11 = [(_MTLBinaryArchive *)self materializeBitCode:bitcodes atIndex:v8];
         std::__hash_table<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>>>::__emplace_unique_key_args<MTLUINT256_t,std::piecewise_construct_t const&,std::tuple<MTLUINT256_t const&>,std::tuple<>>(self->_uniqueBitcodeList.__ptr_, v10)[6] = v11;
       }
 
       v8 = (v8 + 1);
-      v4 = *a3;
+      v4 = *bitcodes;
     }
 
-    while (v8 < (*(a3 + 1) - *a3) >> 3);
+    while (v8 < (*(bitcodes + 1) - *bitcodes) >> 3);
   }
 }
 
-- (void)materializeAirNTAllForSlice:(const MTLLoaderSliceIdentifier *)a3 entryList:(shared_ptr<std::vector<machOEntry>>)a4
+- (void)materializeAirNTAllForSlice:(const MTLLoaderSliceIdentifier *)slice entryList:(shared_ptr<std::vector<machOEntry>>)list
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = *(a4.var0 + 1);
-  v40 = *a4.var0;
+  v6 = *(list.var0 + 1);
+  v40 = *list.var0;
   v41 = v6;
   if (v6)
   {
     atomic_fetch_add_explicit(&v6->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  [(_MTLBinaryArchive *)self materializeAirNTSpecializedFunctions:&v40, a4.var0];
+  [(_MTLBinaryArchive *)self materializeAirNTSpecializedFunctions:&v40, list.var0];
   if (v41)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v41);
@@ -2846,7 +2846,7 @@ LABEL_44:
       }
 
       *(v11 + 8) = v13;
-      *(v13 - 72) = a3->var1 | (a3->var0 << 32);
+      *(v13 - 72) = slice->var1 | (slice->var0 << 32);
       *(v13 - 56) = [(_MTLBinaryArchive *)self materializeAirScript:p_airntObjectList->__begin_[v10]];
       *(v13 - 48) = [(_MTLBinaryArchive *)self materializeBitCode:p_airntObjectList->__begin_[v10] atIndex:0];
       [(_MTLBinaryArchive *)self materializeLinkedBitcodes:p_airntObjectList->__begin_[v10] hashList:v13 - 24];
@@ -2959,16 +2959,16 @@ LABEL_44:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)airntSerializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)airntSerializeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v18 = 0;
@@ -2983,25 +2983,25 @@ LABEL_44:
   v17[3] = __Block_byref_object_copy_;
   v17[4] = __Block_byref_object_dispose_;
   v17[5] = 0;
-  if (![a3 path] || !objc_msgSend(v6, "filePathURL"))
+  if (![l path] || !objc_msgSend(lCopy, "filePathURL"))
   {
-    if (a5)
+    if (error)
     {
       v12 = newErrorWithMessage(&cfstr_InvalidUrl.isa, MTLBinaryArchiveErrorInvalidFile);
 LABEL_14:
-      LOBYTE(v6) = 0;
-      *a5 = v12;
+      LOBYTE(lCopy) = 0;
+      *error = v12;
       goto LABEL_24;
     }
 
 LABEL_17:
-    LOBYTE(v6) = 0;
+    LOBYTE(lCopy) = 0;
     goto LABEL_24;
   }
 
-  if (stat([objc_msgSend(objc_msgSend(v6 "URLByDeletingLastPathComponent")], &v16) == -1)
+  if (stat([objc_msgSend(objc_msgSend(lCopy "URLByDeletingLastPathComponent")], &v16) == -1)
   {
-    if (a5)
+    if (error)
     {
       v12 = newErrorWithMessage(&cfstr_InvalidUrl.isa, MTLBinaryArchiveErrorInvalidFile);
       goto LABEL_14;
@@ -3018,7 +3018,7 @@ LABEL_17:
   block[2] = __55___MTLBinaryArchive_airntSerializeToURL_options_error___block_invoke;
   block[3] = &unk_1E6EEAB18;
   block[4] = self;
-  block[5] = v6;
+  block[5] = lCopy;
   block[6] = v17;
   block[7] = &v24;
   block[8] = &v18;
@@ -3027,56 +3027,56 @@ LABEL_17:
   v10 = v19[5];
   if (v10)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v10;
+      *error = v10;
     }
 
-    if ((v25[3] & 1) == 0 && *a5)
+    if ((v25[3] & 1) == 0 && *error)
     {
-      v11 = *a5;
+      v11 = *error;
     }
   }
 
   else
   {
-    LOBYTE(v6) = *(v25 + 24);
+    LOBYTE(lCopy) = *(v25 + 24);
   }
 
   objc_autoreleasePoolPop(v8);
   if (v10)
   {
-    if (a5 && *a5)
+    if (error && *error)
     {
-      v13 = *a5;
+      v13 = *error;
     }
 
-    LOBYTE(v6) = *(v25 + 24);
+    LOBYTE(lCopy) = *(v25 + 24);
   }
 
 LABEL_24:
   _Block_object_dispose(v17, 8);
   _Block_object_dispose(&v18, 8);
   _Block_object_dispose(&v24, 8);
-  return v6 & 1;
+  return lCopy & 1;
 }
 
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
   if (self->_isLegacy)
   {
-    return [(_MTLBinaryArchive *)self legacySerializeToURL:a3 options:a4 error:a5];
+    return [(_MTLBinaryArchive *)self legacySerializeToURL:l options:options error:error];
   }
 
   else
   {
-    return [(_MTLBinaryArchive *)self airntSerializeToURL:a3 options:a4 error:a5];
+    return [(_MTLBinaryArchive *)self airntSerializeToURL:l options:options error:error];
   }
 }
 
-- (void)setMTLLinkedFunctions:(id)a3 LFS:(const LinkedFunctions *)a4 obj:(void *)a5 destinationArchive:(id)a6 error:(id *)a7
+- (void)setMTLLinkedFunctions:(id)functions LFS:(const LinkedFunctions *)s obj:(void *)obj destinationArchive:(id)archive error:(id *)error
 {
-  if (a4)
+  if (s)
   {
     memset(v105, 0, sizeof(v105));
     v106 = 1065353216;
@@ -3084,19 +3084,19 @@ LABEL_24:
     v104 = 1065353216;
     memset(v101, 0, sizeof(v101));
     v102 = 1065353216;
-    v7 = *a4->var0;
+    v7 = *s->var0;
     v8 = -v7;
-    v9 = &a4[-v7];
+    v9 = &s[-v7];
     if (*v9->var0 >= 5u)
     {
       v10 = *v9[4].var0;
       if (v10)
       {
-        v11 = &a4[v10 + *a4[v10].var0];
+        v11 = &s[v10 + *s[v10].var0];
         v12 = *v11->var0;
         if (v12)
         {
-          v91 = a4;
+          sCopy = s;
           v95 = &v11[4 * v12];
           do
           {
@@ -3195,22 +3195,22 @@ LABEL_24:
           }
 
           while (v11 != v95);
-          a4 = v91;
-          v8 = -*v91->var0;
+          s = sCopy;
+          v8 = -*sCopy->var0;
         }
       }
     }
 
-    if (*a4[v8].var0 >= 7u)
+    if (*s[v8].var0 >= 7u)
     {
-      if (*a4[v8 + 6].var0)
+      if (*s[v8 + 6].var0)
       {
-        v30 = &a4[*a4[v8 + 6].var0];
+        v30 = &s[*s[v8 + 6].var0];
         v31 = &v30[*v30->var0];
         v32 = *v31->var0;
         if (v32)
         {
-          v92 = a4;
+          sCopy2 = s;
           var0 = v31[4 * v32].var0;
           do
           {
@@ -3309,19 +3309,19 @@ LABEL_24:
           }
 
           while (v31 != var0);
-          a4 = v92;
-          v8 = -*v92->var0;
+          s = sCopy2;
+          v8 = -*sCopy2->var0;
         }
       }
     }
 
-    v50 = &a4[v8];
+    v50 = &s[v8];
     if (*v50->var0 >= 9u)
     {
       v51 = *v50[8].var0;
       if (v51)
       {
-        v52 = &a4[v51 + *a4[v51].var0];
+        v52 = &s[v51 + *s[v51].var0];
         v53 = *v52->var0;
         if (v53)
         {
@@ -3449,8 +3449,8 @@ LABEL_112:
     v75 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v76 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v77 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v78 = *a5;
-    if (*(a5 + 1) - *a5 >= 9uLL)
+    v78 = *obj;
+    if (*(obj + 1) - *obj >= 9uLL)
     {
       v79 = 1;
       do
@@ -3460,7 +3460,7 @@ LABEL_112:
           break;
         }
 
-        v80 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:a5 index:v79 destinationArchive:a6 error:a7];
+        v80 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:obj index:v79 destinationArchive:archive error:error];
         std::string::basic_string[abi:ne200100]<0>(&__p, [objc_msgSend(v80 "name")]);
         if (std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::find<std::string>(v105, &__p))
         {
@@ -3498,25 +3498,25 @@ LABEL_112:
         }
 
         ++v79;
-        v78 = *a5;
+        v78 = *obj;
       }
 
-      while (v79 < (*(a5 + 1) - *a5) >> 3);
+      while (v79 < (*(obj + 1) - *obj) >> 3);
     }
 
-    [a3 setFunctions:v75];
-    [a3 setPrivateFunctions:v76];
-    [a3 setGroups:v77];
+    [functions setFunctions:v75];
+    [functions setPrivateFunctions:v76];
+    [functions setGroups:v77];
     std::__hash_table<std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>,std::__unordered_map_hasher<std::tuple<std::string,unsigned int,unsigned int>,std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>,key_hash,std::equal_to<std::tuple<std::string,unsigned int,unsigned int>>,true>,std::__unordered_map_equal<std::tuple<std::string,unsigned int,unsigned int>,std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>,std::equal_to<std::tuple<std::string,unsigned int,unsigned int>>,key_hash,true>,std::allocator<std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>>>::~__hash_table(v101);
     std::__hash_table<std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>,std::__unordered_map_hasher<std::tuple<std::string,unsigned int,unsigned int>,std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>,key_hash,std::equal_to<std::tuple<std::string,unsigned int,unsigned int>>,true>,std::__unordered_map_equal<std::tuple<std::string,unsigned int,unsigned int>,std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>,std::equal_to<std::tuple<std::string,unsigned int,unsigned int>>,key_hash,true>,std::allocator<std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>>>::~__hash_table(v103);
     std::__hash_table<std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>,std::__unordered_map_hasher<std::tuple<std::string,unsigned int,unsigned int>,std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>,key_hash,std::equal_to<std::tuple<std::string,unsigned int,unsigned int>>,true>,std::__unordered_map_equal<std::tuple<std::string,unsigned int,unsigned int>,std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>,std::equal_to<std::tuple<std::string,unsigned int,unsigned int>>,key_hash,true>,std::allocator<std::__hash_value_type<std::tuple<std::string,unsigned int,unsigned int>,unsigned int>>>::~__hash_table(v105);
   }
 }
 
-- (id)newComputePipelineDescriptorWithScript:(const PipelineScript *)a3 obj:(void *)a4 destinationArchive:(id)a5 error:(id *)a6
+- (id)newComputePipelineDescriptorWithScript:(const PipelineScript *)script obj:(void *)obj destinationArchive:(id)archive error:(id *)error
 {
   v11 = objc_opt_new();
-  v12 = Air::PipelineScript::pipeline_as_compute(a3);
+  v12 = Air::PipelineScript::pipeline_as_compute(script);
   v13 = (v12 - *v12);
   if (*v13 >= 7u && (v14 = v13[3]) != 0)
   {
@@ -3670,7 +3670,7 @@ LABEL_20:
     v56 = 0;
   }
 
-  v57 = [v11 linkedFunctions];
+  linkedFunctions = [v11 linkedFunctions];
   v58 = (v15 - *v15);
   if (*v58 >= 0x17u && (v59 = v58[11]) != 0)
   {
@@ -3682,7 +3682,7 @@ LABEL_20:
     v60 = 0;
   }
 
-  [(_MTLBinaryArchive *)self setMTLLinkedFunctions:v57 LFS:v60 obj:a4 destinationArchive:a5 error:a6];
+  [(_MTLBinaryArchive *)self setMTLLinkedFunctions:linkedFunctions LFS:v60 obj:obj destinationArchive:archive error:error];
   if (v56)
   {
     v61 = (v56 - *v56);
@@ -3829,10 +3829,10 @@ LABEL_83:
   return v11;
 }
 
-- (id)newRenderPipelineDescriptorWithScript:(const PipelineScript *)a3 obj:(void *)a4 destinationArchive:(id)a5 error:(id *)a6
+- (id)newRenderPipelineDescriptorWithScript:(const PipelineScript *)script obj:(void *)obj destinationArchive:(id)archive error:(id *)error
 {
   v8 = objc_opt_new();
-  v9 = Air::PipelineScript::pipeline_as_render(a3);
+  v9 = Air::PipelineScript::pipeline_as_render(script);
   v10 = (v9 - *v9);
   if (*v10 >= 9u && (v11 = v10[4]) != 0)
   {
@@ -4191,7 +4191,7 @@ LABEL_83:
     }
   }
 
-  v116 = [v8 vertexLinkedFunctions];
+  vertexLinkedFunctions = [v8 vertexLinkedFunctions];
   v117 = (v12 - *v12);
   if (*v117 >= 0x2Du && (v118 = v117[22]) != 0)
   {
@@ -4203,8 +4203,8 @@ LABEL_83:
     v119 = 0;
   }
 
-  [(_MTLBinaryArchive *)self setMTLLinkedFunctions:v116 LFS:v119 obj:a4 destinationArchive:a5 error:a6];
-  v120 = Air::PipelineScript::pipeline_as_render(a3);
+  [(_MTLBinaryArchive *)self setMTLLinkedFunctions:vertexLinkedFunctions LFS:v119 obj:obj destinationArchive:archive error:error];
+  v120 = Air::PipelineScript::pipeline_as_render(script);
   v121 = (v120 - *v120);
   if (*v121 >= 0xBu && (v122 = v121[5]) != 0)
   {
@@ -4564,7 +4564,7 @@ LABEL_83:
     }
   }
 
-  v236 = [v8 fragmentLinkedFunctions];
+  fragmentLinkedFunctions = [v8 fragmentLinkedFunctions];
   v237 = (v123 - *v123);
   if (*v237 >= 0x37u && (v238 = v237[27]) != 0)
   {
@@ -4576,14 +4576,14 @@ LABEL_83:
     v239 = 0;
   }
 
-  [(_MTLBinaryArchive *)self setMTLLinkedFunctions:v236 LFS:v239 obj:a4 destinationArchive:a5 error:a6];
+  [(_MTLBinaryArchive *)self setMTLLinkedFunctions:fragmentLinkedFunctions LFS:v239 obj:obj destinationArchive:archive error:error];
   return v8;
 }
 
-- (id)newTileRenderPipelineDescriptorWithScript:(const PipelineScript *)a3 obj:(void *)a4 destinationArchive:(id)a5 error:(id *)a6
+- (id)newTileRenderPipelineDescriptorWithScript:(const PipelineScript *)script obj:(void *)obj destinationArchive:(id)archive error:(id *)error
 {
   v11 = objc_opt_new();
-  v12 = Mtl4::FunctionConstantValue::value_as_ConstantFloat(a3);
+  v12 = Mtl4::FunctionConstantValue::value_as_ConstantFloat(script);
   v13 = (v12 - *v12);
   if (*v13 >= 7u && (v14 = v13[3]) != 0)
   {
@@ -4706,7 +4706,7 @@ LABEL_24:
   v40 = (v15 - *v15);
   v42 = *v40 >= 5u && (v41 = v40[2]) != 0 && *(v15 + v41) != 0;
   [v11 setThreadgroupSizeMatchesTileSize:v42];
-  v43 = [v11 linkedFunctions];
+  linkedFunctions = [v11 linkedFunctions];
   v44 = (v15 - *v15);
   if (*v44 >= 0x17u && (v45 = v44[11]) != 0)
   {
@@ -4718,7 +4718,7 @@ LABEL_24:
     v46 = 0;
   }
 
-  [(_MTLBinaryArchive *)self setMTLLinkedFunctions:v43 LFS:v46 obj:a4 destinationArchive:a5 error:a6];
+  [(_MTLBinaryArchive *)self setMTLLinkedFunctions:linkedFunctions LFS:v46 obj:obj destinationArchive:archive error:error];
   v47 = *v15;
   v48 = -v47;
   v49 = (v15 - v47);
@@ -4794,10 +4794,10 @@ LABEL_24:
   return v11;
 }
 
-- (id)newMeshRenderPipelineDescriptorWithScript:(const PipelineScript *)a3 obj:(void *)a4 destinationArchive:(id)a5 error:(id *)a6
+- (id)newMeshRenderPipelineDescriptorWithScript:(const PipelineScript *)script obj:(void *)obj destinationArchive:(id)archive error:(id *)error
 {
   v10 = objc_opt_new();
-  v11 = Mtl4::FunctionConstantValue::value_as_ConstantFloat2(a3);
+  v11 = Mtl4::FunctionConstantValue::value_as_ConstantFloat2(script);
   v12 = *v11;
   v13 = (v11 - v12);
   v14 = *(v11 - v12);
@@ -4815,7 +4815,7 @@ LABEL_24:
       return v10;
     }
 
-    v252 = a6;
+    errorCopy2 = error;
     v18 = 0;
     v17 = 1;
     v254 = 1;
@@ -4831,7 +4831,7 @@ LABEL_15:
       v21 = 0;
     }
 
-    [v10 setMaxTotalThreadsPerObjectThreadgroup:{v21, v252}];
+    [v10 setMaxTotalThreadsPerObjectThreadgroup:{v21, errorCopy2}];
     v22 = (v18 - *v18);
     if (*v22 >= 0x1Fu)
     {
@@ -4988,7 +4988,7 @@ LABEL_26:
           }
         }
 
-        v67 = [v10 objectLinkedFunctions];
+        objectLinkedFunctions = [v10 objectLinkedFunctions];
         v68 = (v18 - *v18);
         if (*v68 >= 0x1Du && (v69 = v68[14]) != 0)
         {
@@ -5000,8 +5000,8 @@ LABEL_26:
           v70 = 0;
         }
 
-        a6 = v253;
-        [(_MTLBinaryArchive *)self setMTLLinkedFunctions:v67 LFS:v70 obj:a4 destinationArchive:a5 error:v253];
+        error = v253;
+        [(_MTLBinaryArchive *)self setMTLLinkedFunctions:objectLinkedFunctions LFS:v70 obj:obj destinationArchive:archive error:v253];
         if (v17)
         {
           goto LABEL_154;
@@ -5191,7 +5191,7 @@ LABEL_96:
               }
             }
 
-            v125 = [v10 meshLinkedFunctions];
+            meshLinkedFunctions = [v10 meshLinkedFunctions];
             v126 = (v73 - *v73);
             if (*v126 >= 0x1Fu && (v127 = v126[15]) != 0)
             {
@@ -5203,7 +5203,7 @@ LABEL_96:
               v128 = 0;
             }
 
-            [(_MTLBinaryArchive *)self setMTLLinkedFunctions:v125 LFS:v128 obj:a4 destinationArchive:a5 error:a6];
+            [(_MTLBinaryArchive *)self setMTLLinkedFunctions:meshLinkedFunctions LFS:v128 obj:obj destinationArchive:archive error:error];
             goto LABEL_154;
           }
         }
@@ -5233,7 +5233,7 @@ LABEL_96:
   if (v13[2])
   {
 LABEL_11:
-    v252 = a6;
+    errorCopy2 = error;
     if (v14 >= 0xB && v13[5])
     {
       v18 = (v11 + v13[5] + *(v11 + v13[5]));
@@ -5443,19 +5443,19 @@ LABEL_154:
       v191 = 0;
     }
 
-    v255 = a4;
+    objCopy = obj;
     [v10 setStencilAttachmentPixelFormat:v191];
     v192 = (v131 - *v131);
-    v193 = a5;
+    archiveCopy = archive;
     if (*v192 >= 0x21u && (v194 = v192[16]) != 0)
     {
-      v195 = a6;
+      errorCopy4 = error;
       v196 = *(v131 + v194) != 0;
     }
 
     else
     {
-      v195 = a6;
+      errorCopy4 = error;
       v196 = 0;
     }
 
@@ -5628,18 +5628,18 @@ LABEL_154:
       }
     }
 
-    v246 = [v10 fragmentLinkedFunctions];
+    fragmentLinkedFunctions = [v10 fragmentLinkedFunctions];
     v247 = (v131 - *v131);
     if (*v247 < 0x37u)
     {
       v250 = 0;
-      v249 = v195;
+      v249 = errorCopy4;
     }
 
     else
     {
       v248 = v247[27];
-      v249 = v195;
+      v249 = errorCopy4;
       if (v248)
       {
         v250 = v131 + v248 + *(v131 + v248);
@@ -5651,7 +5651,7 @@ LABEL_154:
       }
     }
 
-    [(_MTLBinaryArchive *)self setMTLLinkedFunctions:v246 LFS:v250 obj:v255 destinationArchive:v193 error:v249];
+    [(_MTLBinaryArchive *)self setMTLLinkedFunctions:fragmentLinkedFunctions LFS:v250 obj:objCopy destinationArchive:archiveCopy error:v249];
   }
 
   return v10;
@@ -5659,7 +5659,7 @@ LABEL_154:
 
 - (id)archiveFunctionIds
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = self->_airntBinaryList.__table_.__first_node_.__next_; i; i = *i)
   {
     v9 = 0;
@@ -5673,7 +5673,7 @@ LABEL_154:
       v7 = 0;
       do
       {
-        [v3 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithPointer:", v5 + v6)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithPointer:", v5 + v6)}];
         ++v7;
         v5 = v9;
         v6 += 88;
@@ -5686,12 +5686,12 @@ LABEL_154:
     std::vector<std::pair<MTLHashKey,unsigned int>>::__destroy_vector::operator()[abi:ne200100](&v12);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)newFunctionDescriptorWithAirScript:(const ConstantsSpecializationScript *)a3
+- (id)newFunctionDescriptorWithAirScript:(const ConstantsSpecializationScript *)script
 {
-  v3 = &a3[-*a3->var0];
+  v3 = &script[-*script->var0];
   if (*v3->var0 < 9u)
   {
     return 0;
@@ -5703,8 +5703,8 @@ LABEL_154:
     return 0;
   }
 
-  v6 = *a3[v4].var0;
-  v7 = &a3[v4 + v6];
+  v6 = *script[v4].var0;
+  v7 = &script[v4 + v6];
   v8 = objc_alloc_init(MTLFunctionDescriptor);
   v9 = *v7->var0;
   v10 = -v9;
@@ -5734,7 +5734,7 @@ LABEL_154:
     if (*v15[v16].var0)
     {
       v18 = 0;
-      v19 = &a3[v6 + 12 + v4 + v16 + v14];
+      v19 = &script[v6 + 12 + v4 + v16 + v14];
       do
       {
         v20 = *v19[-8].var0;
@@ -5921,7 +5921,7 @@ LABEL_68:
   return v8;
 }
 
-- (id)newRecompiledFunctionWithAIRNTObject:(void *)a3 index:(unint64_t)a4 destinationArchive:(id)a5 error:(id *)a6
+- (id)newRecompiledFunctionWithAIRNTObject:(void *)object index:(unint64_t)index destinationArchive:(id)archive error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -5934,23 +5934,23 @@ LABEL_68:
   v9[1] = 3221225472;
   v9[2] = __89___MTLBinaryArchive_newRecompiledFunctionWithAIRNTObject_index_destinationArchive_error___block_invoke;
   v9[3] = &unk_1E6EEAB40;
-  v9[8] = a4;
-  v9[9] = a6;
+  v9[8] = index;
+  v9[9] = error;
   v9[6] = &v10;
-  v9[7] = a3;
+  v9[7] = object;
   v9[4] = self;
-  v9[5] = a5;
+  v9[5] = archive;
   dispatch_sync(queue, v9);
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
   return v7;
 }
 
-- (id)getLibraryDescriptorWithAirScrpt:(const StitchingScript *)a3
+- (id)getLibraryDescriptorWithAirScrpt:(const StitchingScript *)scrpt
 {
   v136[1] = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
-  v5 = &a3[-*a3->var0];
+  v5 = &scrpt[-*scrpt->var0];
   if (*v5->var0 < 9u)
   {
     v6 = 0;
@@ -5961,7 +5961,7 @@ LABEL_68:
     v6 = *v5[8].var0;
     if (v6)
     {
-      v6 = (v6 + a3 + *(v6 + a3));
+      v6 = (v6 + scrpt + *(v6 + scrpt));
     }
   }
 
@@ -6571,24 +6571,24 @@ LABEL_152:
   return v121;
 }
 
-- (id)recompileFunction:(id)a3 inLibrary:(id)a4 toArchive:(id)a5 toBinary:(BOOL)a6 error:(id *)a7
+- (id)recompileFunction:(id)function inLibrary:(id)library toArchive:(id)archive toBinary:(BOOL)binary error:(id *)error
 {
-  v8 = a6;
+  binaryCopy = binary;
   v64 = *MEMORY[0x1E69E9840];
-  v12 = [a3 airScript];
-  if (v12 || v8)
+  airScript = [function airScript];
+  if (airScript || binaryCopy)
   {
-    if (v12 || !v8)
+    if (airScript || !binaryCopy)
     {
       buffer_ptr = 0;
       size_ptr = 0;
-      v18 = dispatch_data_create_map(v12, &buffer_ptr, &size_ptr);
+      v18 = dispatch_data_create_map(airScript, &buffer_ptr, &size_ptr);
       v19 = buffer_ptr;
       if (!strncmp(buffer_ptr + 4, "AIRC", 4uLL))
       {
         v38 = [(_MTLBinaryArchive *)self newFunctionDescriptorWithAirScript:v19 + *v19];
         v39 = v38;
-        if (v8)
+        if (binaryCopy)
         {
           [v38 setOptions:{objc_msgSend(v38, "options") | 1}];
         }
@@ -6596,13 +6596,13 @@ LABEL_152:
         dispatch_release(v18);
         v62 = 0u;
         v63 = 0u;
-        if (a3)
+        if (function)
         {
-          [a3 baseFunctionHash];
+          [function baseFunctionHash];
         }
 
-        v40 = [a4 newFunctionWithHash:&v62];
-        v41 = [(_MTLBinaryArchive *)self recompileFunction:v40 inLibrary:a4 toArchive:a5 toBinary:0 error:a7];
+        v40 = [library newFunctionWithHash:&v62];
+        v41 = [(_MTLBinaryArchive *)self recompileFunction:v40 inLibrary:library toArchive:archive toBinary:0 error:error];
         v42 = v41;
         if (v41)
         {
@@ -6610,7 +6610,7 @@ LABEL_152:
           {
             v58 = 0;
             __p = 0;
-            [a4 getFunctionAliasAndNameForHash:&v62 functionName:&v58 alias:&__p];
+            [library getFunctionAliasAndNameForHash:&v62 functionName:&v58 alias:&__p];
             if (__p)
             {
               v51 = __p;
@@ -6622,7 +6622,7 @@ LABEL_152:
             }
 
             [v39 setName:v51];
-            v17 = [a4 newFunctionWithDescriptor:v39 destinationArchive:a5 error:a7];
+            v17 = [library newFunctionWithDescriptor:v39 destinationArchive:archive error:error];
 
             if (v58)
             {
@@ -6636,11 +6636,11 @@ LABEL_152:
           else
           {
 
-            v43 = [v42 libraryData];
-            v44 = (*(*v43 + 128))(v43);
+            libraryData = [v42 libraryData];
+            v44 = (*(*libraryData + 128))(libraryData);
             v49 = MTLLibraryBuilder::newLibraryWithData(*(self->_device + 55), self->_device, v44, 0, v45, v46, v47, v48);
             [v39 setName:{objc_msgSend(v42, "name")}];
-            v17 = [(_MTLLibrary *)v49 newFunctionWithDescriptor:v39 destinationArchive:a5 error:a7];
+            v17 = [(_MTLLibrary *)v49 newFunctionWithDescriptor:v39 destinationArchive:archive error:error];
           }
         }
 
@@ -6653,8 +6653,8 @@ LABEL_152:
 
       else
       {
-        [a3 bitCodeHash];
-        (*(*[a3 libraryData] + 320))(&v58);
+        [function bitCodeHash];
+        (*(*[function libraryData] + 320))(&v58);
         v54 = v18;
         __p = 0;
         v56 = 0;
@@ -6670,7 +6670,7 @@ LABEL_28:
           v36 = [(_MTLBinaryArchive *)self getLibraryDescriptorWithAirScrpt:&v33[v34]];
           dispatch_release(v54);
           [v36 setFunctions:{objc_msgSend(objc_alloc(MEMORY[0x1E695DEC8]), "initWithObjects:count:")}];
-          v17 = [(MTLDevice *)self->_device newLibraryWithStitchedDescriptor:v36 destinationBinaryArchive:a5 error:a7];
+          v17 = [(MTLDevice *)self->_device newLibraryWithStitchedDescriptor:v36 destinationBinaryArchive:archive error:error];
           for (i = __p; i != v56; ++i)
           {
           }
@@ -6690,8 +6690,8 @@ LABEL_28:
             v22 = v20[1];
             v62 = *v20;
             v63 = v22;
-            v23 = [a4 newFunctionWithHash:&v62];
-            v24 = [(_MTLBinaryArchive *)self recompileFunction:v23 inLibrary:a4 toArchive:a5 toBinary:0 error:a7];
+            v23 = [library newFunctionWithHash:&v62];
+            v24 = [(_MTLBinaryArchive *)self recompileFunction:v23 inLibrary:library toArchive:archive toBinary:0 error:error];
             if (!v24)
             {
               break;
@@ -6781,7 +6781,7 @@ LABEL_28:
     {
       *&v62 = 0;
       v58 = 0;
-      [a4 getFunctionAliasAndNameForHash:objc_msgSend(a3 functionName:"bitCodeHash") alias:{&v62, &v58}];
+      [library getFunctionAliasAndNameForHash:objc_msgSend(function functionName:"bitCodeHash") alias:{&v62, &v58}];
       if (v58)
       {
         v15 = v58;
@@ -6795,7 +6795,7 @@ LABEL_28:
       v16 = objc_alloc_init(MTLFunctionDescriptor);
       [(MTLFunctionDescriptor *)v16 setName:v15];
       [(MTLFunctionDescriptor *)v16 setOptions:[(MTLFunctionDescriptor *)v16 options]| 1];
-      v17 = [a4 newFunctionWithDescriptor:v16 destinationArchive:a5 error:a7];
+      v17 = [library newFunctionWithDescriptor:v16 destinationArchive:archive error:error];
     }
 
     v52 = *MEMORY[0x1E69E9840];
@@ -6806,11 +6806,11 @@ LABEL_28:
   {
     v13 = *MEMORY[0x1E69E9840];
 
-    return a3;
+    return function;
   }
 }
 
-- (BOOL)recompileStatelessToArchive:(id)a3 error:(id *)a4
+- (BOOL)recompileStatelessToArchive:(id)archive error:(id *)error
 {
   begin = self->_airntFromDescriptorFunctionList.__begin_;
   end = self->_airntFromDescriptorFunctionList.__end_;
@@ -6843,7 +6843,7 @@ LABEL_28:
     block[4] = self;
     block[5] = &v22;
     block[7] = v8;
-    block[8] = a4;
+    block[8] = error;
     block[6] = &v16;
     dispatch_sync(queue, block);
     v10 = v23[5];
@@ -6888,7 +6888,7 @@ LABEL_14:
   return 0;
 }
 
-- (BOOL)recompilePipelinesToArchive:(id)a3 error:(id *)a4
+- (BOOL)recompilePipelinesToArchive:(id)archive error:(id *)error
 {
   begin = self->_airntPipelineList.__begin_;
   end = self->_airntPipelineList.__end_;
@@ -6920,28 +6920,28 @@ LABEL_14:
       if (v15 == 2)
       {
         v16 = v13;
-        v17 = a4;
-        v18 = [(_MTLBinaryArchive *)self newTileRenderPipelineDescriptorWithScript:buffer_ptr + v14 obj:v10 destinationArchive:a3 error:a4];
-        v26 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v10 destinationArchive:a3 error:a4];
+        errorCopy6 = error;
+        v18 = [(_MTLBinaryArchive *)self newTileRenderPipelineDescriptorWithScript:buffer_ptr + v14 obj:v10 destinationArchive:archive error:error];
+        v26 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v10 destinationArchive:archive error:error];
         if (!v26)
         {
 
           dispatch_release(v16);
           dispatch_release(v12);
-          if (!a4)
+          if (!error)
           {
             return 0;
           }
 
           v41 = @"Failed to materialize function bitcode for tile render pipeline";
 LABEL_50:
-          *v17 = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:v41], MTLBinaryArchiveErrorCompilationFailure);
+          *errorCopy6 = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:v41], MTLBinaryArchiveErrorCompilationFailure);
           return 0;
         }
 
         v20 = v26;
         [v18 setTileFunction:v26];
-        v21 = [a3 addTileRenderPipelineFunctionsWithDescriptor:v18 error:a4];
+        v21 = [archive addTileRenderPipelineFunctionsWithDescriptor:v18 error:error];
 LABEL_18:
         v27 = v21;
 
@@ -6957,7 +6957,7 @@ LABEL_13:
       }
 
       v16 = v13;
-      v18 = [(_MTLBinaryArchive *)self newMeshRenderPipelineDescriptorWithScript:buffer_ptr + v14 obj:v10 destinationArchive:a3 error:a4];
+      v18 = [(_MTLBinaryArchive *)self newMeshRenderPipelineDescriptorWithScript:buffer_ptr + v14 obj:v10 destinationArchive:archive error:error];
       v22 = v8[6];
       if (v22 == -1)
       {
@@ -6980,29 +6980,29 @@ LABEL_13:
         v29 = self->_airntObjectList.__begin_[v28];
       }
 
-      v30 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v10 destinationArchive:a3 error:a4];
+      v30 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v10 destinationArchive:archive error:error];
       if (v23)
       {
-        v23 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v23 destinationArchive:a3 error:a4];
+        v23 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v23 destinationArchive:archive error:error];
       }
 
       if (v29)
       {
         v31 = v29;
-        v32 = a4;
-        v33 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v31 destinationArchive:a3 error:a4];
+        errorCopy3 = error;
+        v33 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v31 destinationArchive:archive error:error];
       }
 
       else
       {
         v33 = 0;
-        v32 = a4;
+        errorCopy3 = error;
       }
 
       [v18 setMeshFunction:v30];
       [v18 setObjectFunction:v33];
       [v18 setFragmentFunction:v23];
-      v27 = [a3 addMeshRenderPipelineFunctionsWithDescriptor:v18 error:v32];
+      v27 = [archive addMeshRenderPipelineFunctionsWithDescriptor:v18 error:errorCopy3];
     }
 
     else
@@ -7015,15 +7015,15 @@ LABEL_13:
         }
 
         v16 = v13;
-        v17 = a4;
-        v18 = [(_MTLBinaryArchive *)self newComputePipelineDescriptorWithScript:buffer_ptr + v14 obj:v10 destinationArchive:a3 error:a4];
-        v19 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v10 destinationArchive:a3 error:a4];
+        errorCopy6 = error;
+        v18 = [(_MTLBinaryArchive *)self newComputePipelineDescriptorWithScript:buffer_ptr + v14 obj:v10 destinationArchive:archive error:error];
+        v19 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v10 destinationArchive:archive error:error];
         if (!v19)
         {
 
           dispatch_release(v16);
           dispatch_release(v12);
-          if (!a4)
+          if (!error)
           {
             return 0;
           }
@@ -7034,12 +7034,12 @@ LABEL_13:
 
         v20 = v19;
         [v18 setComputeFunction:v19];
-        v21 = [a3 addComputePipelineFunctionsWithDescriptor:v18 error:a4];
+        v21 = [archive addComputePipelineFunctionsWithDescriptor:v18 error:error];
         goto LABEL_18;
       }
 
       v16 = v13;
-      v18 = [(_MTLBinaryArchive *)self newRenderPipelineDescriptorWithScript:buffer_ptr + v14 obj:v10 destinationArchive:a3 error:a4];
+      v18 = [(_MTLBinaryArchive *)self newRenderPipelineDescriptorWithScript:buffer_ptr + v14 obj:v10 destinationArchive:archive error:error];
       v24 = v8[4];
       if (v24 == -1)
       {
@@ -7051,8 +7051,8 @@ LABEL_13:
         v25 = self->_airntObjectList.__begin_[v24];
       }
 
-      v34 = a4;
-      v35 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v10 destinationArchive:a3 error:a4];
+      errorCopy7 = error;
+      v35 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v10 destinationArchive:archive error:error];
       v36 = v35;
       if (v35)
       {
@@ -7071,8 +7071,8 @@ LABEL_13:
 
           dispatch_release(v16);
           dispatch_release(v12);
-          v17 = a4;
-          if (!a4)
+          errorCopy6 = error;
+          if (!error)
           {
             return 0;
           }
@@ -7082,17 +7082,17 @@ LABEL_13:
         }
 
         v38 = 0;
-        v34 = a4;
+        errorCopy7 = error;
       }
 
       else
       {
-        v38 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v25 destinationArchive:a3 error:a4];
+        v38 = [(_MTLBinaryArchive *)self newRecompiledFunctionWithAIRNTObject:v25 destinationArchive:archive error:error];
       }
 
       [v18 setVertexFunction:v36];
       [v18 setFragmentFunction:v38];
-      v27 = [a3 addRenderPipelineFunctionsWithDescriptor:v18 error:v34];
+      v27 = [archive addRenderPipelineFunctionsWithDescriptor:v18 error:errorCopy7];
     }
 
     end = v42;
@@ -7112,21 +7112,21 @@ LABEL_40:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v40 = newErrorWithMessage([MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to materialize AirScript for pipeline"], MTLBinaryArchiveErrorInvalidFile);
     result = 0;
-    *a4 = v40;
+    *error = v40;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)recompileToArchiveWithURL:(id)a3 error:(id *)a4
+- (BOOL)recompileToArchiveWithURL:(id)l error:(id *)error
 {
   v7 = objc_opt_new();
-  v8 = [(MTLDevice *)self->_device newBinaryArchiveWithDescriptor:v7 error:a4];
+  v8 = [(MTLDevice *)self->_device newBinaryArchiveWithDescriptor:v7 error:error];
 
   if (!v8)
   {
@@ -7134,9 +7134,9 @@ LABEL_40:
   }
 
   [v8 setRecompilationTarget:1];
-  if ([(_MTLBinaryArchive *)self recompileToArchive:v8 error:a4])
+  if ([(_MTLBinaryArchive *)self recompileToArchive:v8 error:error])
   {
-    v9 = [v8 serializeToURL:a3 error:a4];
+    v9 = [v8 serializeToURL:l error:error];
   }
 
   else
@@ -7147,11 +7147,11 @@ LABEL_40:
   return v9;
 }
 
-- (BOOL)recompileToArchive:(id)a3 error:(id *)a4
+- (BOOL)recompileToArchive:(id)archive error:(id *)error
 {
-  if (self == a3)
+  if (self == archive)
   {
-    if (a4)
+    if (error)
     {
       v6 = MEMORY[0x1E696AEC0];
       v7 = @"Archive cannot be recompiled in place";
@@ -7163,12 +7163,12 @@ LABEL_40:
 
   if (self->_isLegacy)
   {
-    if (a4)
+    if (error)
     {
       v6 = MEMORY[0x1E696AEC0];
       v7 = @"Legacy archive cannot be recompiled";
 LABEL_10:
-      *a4 = newErrorWithMessage([v6 stringWithFormat:v7], MTLBinaryArchiveErrorInvalidFile);
+      *error = newErrorWithMessage([v6 stringWithFormat:v7], MTLBinaryArchiveErrorInvalidFile);
       return 0;
     }
 
@@ -7177,7 +7177,7 @@ LABEL_10:
 
   if (self->_hasBuiltins)
   {
-    if (a4)
+    if (error)
     {
       v6 = MEMORY[0x1E696AEC0];
       v7 = @"Archive containting builtin objects cannot be recompiled";
@@ -7189,7 +7189,7 @@ LABEL_10:
 
   if (!self->_airntBinaryList.__table_.__size_ && self->_airntObjectList.__begin_ == self->_airntObjectList.__end_ && self->_airntFromDescriptorFunctionList.__begin_ == self->_airntFromDescriptorFunctionList.__end_ && self->_airntPipelineList.__begin_ == self->_airntPipelineList.__end_)
   {
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
@@ -7199,36 +7199,36 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [a3 initMetalScriptWithArchive:self];
-  if (![(_MTLBinaryArchive *)self recompilePipelinesToArchive:a3 error:a4])
+  [archive initMetalScriptWithArchive:self];
+  if (![(_MTLBinaryArchive *)self recompilePipelinesToArchive:archive error:error])
   {
     return 0;
   }
 
-  return [(_MTLBinaryArchive *)self recompileStatelessToArchive:a3 error:a4];
+  return [(_MTLBinaryArchive *)self recompileStatelessToArchive:archive error:error];
 }
 
-- (BOOL)legacySerializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)legacySerializeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
   v81[3] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = v10;
-  v12 = a3;
-  if (a4)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = defaultManager;
+  lCopy = l;
+  if (options)
   {
-    v13 = [v10 URLForDirectory:99 inDomain:1 appropriateForURL:a3 create:1 error:a5];
-    v12 = [v13 URLByAppendingPathComponent:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0], "UUID"), "UUIDString")}];
+    v13 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:l create:1 error:error];
+    lCopy = [v13 URLByAppendingPathComponent:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0], "UUID"), "UUIDString")}];
   }
 
-  if (!v12)
+  if (!lCopy)
   {
-    if (!a5)
+    if (!error)
     {
       objc_autoreleasePoolPop(v9);
       LOBYTE(v15) = 0;
@@ -7237,7 +7237,7 @@ LABEL_10:
 
     v16 = newErrorWithMessage(&cfstr_OutputUrlIsInv.isa, MTLBinaryArchiveErrorInvalidFile);
     LOBYTE(v15) = 0;
-    *a5 = v16;
+    *error = v16;
     if (!v16)
     {
       goto LABEL_130;
@@ -7246,8 +7246,8 @@ LABEL_10:
     goto LABEL_129;
   }
 
-  v58 = a3;
-  v14 = [MEMORY[0x1E696AC00] fileHandleForWritingToURL:v12 error:0];
+  lCopy2 = l;
+  v14 = [MEMORY[0x1E696AC00] fileHandleForWritingToURL:lCopy error:0];
   if (v14)
   {
     v15 = v14;
@@ -7256,10 +7256,10 @@ LABEL_10:
   else
   {
     [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
-    v15 = [MEMORY[0x1E696AC00] fileHandleForWritingToURL:v12 error:a5];
+    v15 = [MEMORY[0x1E696AC00] fileHandleForWritingToURL:lCopy error:error];
     if (!v15)
     {
-      if ((a4 & 1) == 0)
+      if ((options & 1) == 0)
       {
         goto LABEL_126;
       }
@@ -7268,12 +7268,12 @@ LABEL_10:
     }
   }
 
-  if ((a4 & 0xC) != 0)
+  if ((options & 0xC) != 0)
   {
     if ((self->_options & 2) == 0)
     {
       v17 = 0;
-      v18 = (a4 & 8) == 0;
+      v18 = (options & 8) == 0;
       goto LABEL_18;
     }
 
@@ -7288,7 +7288,7 @@ LABEL_10:
   v18 = 1;
 LABEL_18:
   v60 = v11;
-  if ((a4 & 0x30) != 0)
+  if ((options & 0x30) != 0)
   {
     if (self->_options)
     {
@@ -7298,7 +7298,7 @@ LABEL_18:
     else
     {
       v19 = 0;
-      if ((a4 & 0x20) != 0)
+      if ((options & 0x20) != 0)
       {
         v18 = 0;
       }
@@ -7310,10 +7310,10 @@ LABEL_18:
     v19 = 0;
   }
 
-  if ((a4 & 0xC0) == 0)
+  if ((options & 0xC0) == 0)
   {
     v20 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_36;
     }
@@ -7324,7 +7324,7 @@ LABEL_18:
   if ((self->_options & 4) != 0)
   {
     v20 = 1;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_36;
     }
@@ -7333,17 +7333,17 @@ LABEL_18:
   }
 
   v20 = 0;
-  if ((a4 & 0x80) != 0)
+  if ((options & 0x80) != 0)
   {
     v18 = 0;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_34:
     if (!v18)
     {
-      *a5 = newErrorWithMessage(&cfstr_SerializationO.isa, MTLBinaryArchiveErrorUnexpectedElement);
+      *error = newErrorWithMessage(&cfstr_SerializationO.isa, MTLBinaryArchiveErrorUnexpectedElement);
     }
   }
 
@@ -7394,11 +7394,11 @@ LABEL_36:
   }
 
   v24 = v74 != v75 && v18;
-  if (v74 == v75 && a5)
+  if (v74 == v75 && error)
   {
     v25 = newErrorWithMessage(&cfstr_TheBinaryArchi.isa, MTLBinaryArchiveErrorInvalidFile);
     v24 = 0;
-    *a5 = v25;
+    *error = v25;
   }
 
   memset(v81, 0, 24);
@@ -7413,7 +7413,7 @@ LABEL_36:
   v69[3] = &unk_1E6EEAB90;
   v69[4] = v15;
   v69[5] = &v70;
-  v69[6] = a5;
+  v69[6] = error;
   if (!v24)
   {
     goto LABEL_116;
@@ -7448,7 +7448,7 @@ LABEL_36:
     block[4] = self;
     block[5] = v78;
     block[6] = v77;
-    block[7] = a4;
+    block[7] = options;
     dispatch_sync(queue, block);
     v81[0] = v71[3];
     v29 = v81[0];
@@ -7460,9 +7460,9 @@ LABEL_36:
       [MTLLoader serializePaddingForOffset:v30 writer:v69];
     }
 
-    if (a5 && v26 != 1)
+    if (error && v26 != 1)
     {
-      *a5 = newErrorWithMessage(&cfstr_SerializationO_0.isa, MTLBinaryArchiveErrorInvalidFile);
+      *error = newErrorWithMessage(&cfstr_SerializationO_0.isa, MTLBinaryArchiveErrorInvalidFile);
     }
 
     _Block_object_dispose(v78, 8);
@@ -7516,7 +7516,7 @@ LABEL_107:
     *v78 = v33;
     __p[0] = 1;
     memset(&v78[8], 0, 32);
-    *&v78[40] = (a4 & 2) != 0;
+    *&v78[40] = (options & 2) != 0;
     std::vector<MTLLoaderMachOPayload>::push_back[abi:ne200100](&v62, v78);
   }
 
@@ -7532,7 +7532,7 @@ LABEL_107:
       v35 = *(i + 2);
       *&v78[8] = *(i + 1);
       *&v78[24] = v35;
-      v78[40] = (a4 & 2) != 0;
+      v78[40] = (options & 2) != 0;
       std::vector<MTLLoaderMachOPayload>::push_back[abi:ne200100](&v62, v78);
     }
   }
@@ -7562,9 +7562,9 @@ LABEL_107:
       [MTLLoader serializePaddingForOffset:v69 writer:?];
     }
 
-    if (a5 && v26 != 1)
+    if (error && v26 != 1)
     {
-      *a5 = newErrorWithMessage(&cfstr_SerializationO_1.isa, MTLBinaryArchiveErrorInvalidFile);
+      *error = newErrorWithMessage(&cfstr_SerializationO_1.isa, MTLBinaryArchiveErrorInvalidFile);
     }
   }
 
@@ -7611,7 +7611,7 @@ LABEL_94:
       v41 = *(j + 2);
       *&v78[8] = *(j + 1);
       *&v78[24] = v41;
-      v78[40] = (a4 & 2) != 0;
+      v78[40] = (options & 2) != 0;
       std::vector<MTLLoaderMachOPayload>::push_back[abi:ne200100](&v62, v78);
     }
   }
@@ -7640,9 +7640,9 @@ LABEL_94:
       [MTLLoader serializePaddingForOffset:v69 writer:?];
     }
 
-    if (a5 && v45 != 1)
+    if (error && v45 != 1)
     {
-      *a5 = newErrorWithMessage(&cfstr_SerializationO_1.isa, MTLBinaryArchiveErrorInvalidFile);
+      *error = newErrorWithMessage(&cfstr_SerializationO_1.isa, MTLBinaryArchiveErrorInvalidFile);
     }
   }
 
@@ -7664,31 +7664,31 @@ LABEL_94:
   }
 
 LABEL_113:
-  if ([v15 seekToOffset:0 error:{a5, v57}] && +[MTLLoader serializeUniversalBinaryHeaderWithSlice:offset:length:count:writer:](MTLLoader, v74, v81, v80, (v75 - v74) >> 3, v69))
+  if ([v15 seekToOffset:0 error:{error, v57}] && +[MTLLoader serializeUniversalBinaryHeaderWithSlice:offset:length:count:writer:](MTLLoader, v74, v81, v80, (v75 - v74) >> 3, v69))
   {
     v47 = v71[3];
     v48 = 1;
-    v49 = a5;
+    errorCopy = error;
     goto LABEL_117;
   }
 
 LABEL_116:
   v48 = 0;
-  v49 = 0;
+  errorCopy = 0;
   v47 = 0;
 LABEL_117:
-  v50 = v48 & [v15 truncateAtOffset:v47 error:{v49, v57}];
+  v50 = v48 & [v15 truncateAtOffset:v47 error:{errorCopy, v57}];
   if (v50)
   {
-    v51 = a5;
+    errorCopy2 = error;
   }
 
   else
   {
-    v51 = 0;
+    errorCopy2 = 0;
   }
 
-  v52 = [v15 closeAndReturnError:v51];
+  v52 = [v15 closeAndReturnError:errorCopy2];
   _Block_object_dispose(&v70, 8);
   if (v74)
   {
@@ -7699,22 +7699,22 @@ LABEL_117:
   LODWORD(v15) = v50 & v52;
   v11 = v60;
   v9 = v61;
-  if (a4)
+  if (options)
   {
     if (v15)
     {
-      LODWORD(v15) = [v60 replaceItemAtURL:v58 withItemAtURL:v12 backupItemName:0 options:0 resultingItemURL:0 error:a5];
+      LODWORD(v15) = [v60 replaceItemAtURL:lCopy2 withItemAtURL:lCopy backupItemName:0 options:0 resultingItemURL:0 error:error];
     }
 
 LABEL_125:
-    [v11 removeItemAtURL:v12 error:0];
+    [v11 removeItemAtURL:lCopy error:0];
   }
 
 LABEL_126:
-  if (!a5 || v15)
+  if (!error || v15)
   {
     objc_autoreleasePoolPop(v9);
-    if (!a5)
+    if (!error)
     {
       goto LABEL_134;
     }
@@ -7722,8 +7722,8 @@ LABEL_126:
     goto LABEL_132;
   }
 
-  v16 = *a5;
-  if (*a5)
+  v16 = *error;
+  if (*error)
   {
 LABEL_129:
     v53 = v16;
@@ -7732,9 +7732,9 @@ LABEL_129:
 LABEL_130:
   objc_autoreleasePoolPop(v9);
 LABEL_132:
-  if (*a5)
+  if (*error)
   {
-    v54 = *a5;
+    v54 = *error;
   }
 
 LABEL_134:
@@ -7742,7 +7742,7 @@ LABEL_134:
   return v15;
 }
 
-- (BOOL)getScriptsWithAIRNTObject:(void *)a3
+- (BOOL)getScriptsWithAIRNTObject:(void *)object
 {
   v12 = 0;
   if (self->_reloadingAfterSerialization)
@@ -7750,20 +7750,20 @@ LABEL_134:
     return 1;
   }
 
-  v5 = [(_MTLBinaryArchive *)self newLibraryInArchiveAtPos:a3 atIndex:0 error:&v12];
+  v5 = [(_MTLBinaryArchive *)self newLibraryInArchiveAtPos:object atIndex:0 error:&v12];
   if (!v5)
   {
     return 0;
   }
 
   v6 = v5;
-  v7 = [v5 isStub];
-  if ((v7 & 1) == 0 && (self->_options & 0x80) == 0)
+  isStub = [v5 isStub];
+  if ((isStub & 1) == 0 && (self->_options & 0x80) == 0)
   {
-    v8 = [v6 newMetalScript];
-    if (v8)
+    newMetalScript = [v6 newMetalScript];
+    if (newMetalScript)
     {
-      v9 = v8;
+      v9 = newMetalScript;
       metalScript = self->_metalScript;
       if (metalScript)
       {
@@ -7775,38 +7775,38 @@ LABEL_134:
     }
   }
 
-  v3 = v7 ^ 1;
+  v3 = isStub ^ 1;
 
   return v3;
 }
 
-- (BOOL)loadAirntBlocksForSlice:(const MTLLoaderSliceIdentifier *)a3 sliceOffset:(unint64_t)a4 skipAIRValidation:(BOOL)a5
+- (BOOL)loadAirntBlocksForSlice:(const MTLLoaderSliceIdentifier *)slice sliceOffset:(unint64_t)offset skipAIRValidation:(BOOL)validation
 {
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75___MTLBinaryArchive_loadAirntBlocksForSlice_sliceOffset_skipAIRValidation___block_invoke;
   v13[3] = &unk_1E6EEAC08;
   v13[4] = self;
-  v13[5] = a3;
-  v13[6] = a4;
+  v13[5] = slice;
+  v13[6] = offset;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __75___MTLBinaryArchive_loadAirntBlocksForSlice_sliceOffset_skipAIRValidation___block_invoke_2;
   v11[3] = &unk_1E6EEAC30;
   v11[4] = self;
-  v11[5] = a4;
-  v12 = a5;
+  v11[5] = offset;
+  validationCopy = validation;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75___MTLBinaryArchive_loadAirntBlocksForSlice_sliceOffset_skipAIRValidation___block_invoke_3;
   v10[3] = &unk_1E6EEAC58;
   v10[4] = self;
-  v7[5] = a4;
+  v7[5] = offset;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75___MTLBinaryArchive_loadAirntBlocksForSlice_sliceOffset_skipAIRValidation___block_invoke_4;
   v8[3] = &unk_1E6EEAC80;
-  v9 = a5;
+  validationCopy2 = validation;
   v8[4] = self;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -7818,43 +7818,43 @@ LABEL_134:
   return result;
 }
 
-- (BOOL)loadFileIndex:(void *)a3 expectedSliceId:(const MTLLoaderSliceIdentifier *)a4 expectedVersion:(unint64_t)a5 sliceOffset:(unint64_t)a6
+- (BOOL)loadFileIndex:(void *)index expectedSliceId:(const MTLLoaderSliceIdentifier *)id expectedVersion:(unint64_t)version sliceOffset:(unint64_t)offset
 {
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79___MTLBinaryArchive_loadFileIndex_expectedSliceId_expectedVersion_sliceOffset___block_invoke;
   v10[3] = &__block_descriptor_64_e61_B52__0_MTLLoaderSliceIdentifier_ii_8Q16r_____32C__24I32Q36Q44l;
-  v10[4] = a4;
-  v10[5] = a5;
-  v10[6] = a3;
-  v10[7] = a6;
+  v10[4] = id;
+  v10[5] = version;
+  v10[6] = index;
+  v10[7] = offset;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79___MTLBinaryArchive_loadFileIndex_expectedSliceId_expectedVersion_sliceOffset___block_invoke_2;
   v9[3] = &unk_1E6EEA9B8;
   v9[4] = self;
-  v9[5] = a6;
+  v9[5] = offset;
   v7 = [MTLLoader deserializeMachOContainerWithHandler:v10 reader:v9];
   if ((v7 & 1) == 0)
   {
-    std::__tree<flatbuffers::Offset<flatbuffers::String>,flatbuffers::FlatBufferBuilder::StringOffsetCompare,std::allocator<flatbuffers::Offset<flatbuffers::String>>>::destroy(a3, *(a3 + 1));
-    *a3 = a3 + 8;
-    *(a3 + 2) = 0;
-    *(a3 + 1) = 0;
+    std::__tree<flatbuffers::Offset<flatbuffers::String>,flatbuffers::FlatBufferBuilder::StringOffsetCompare,std::allocator<flatbuffers::Offset<flatbuffers::String>>>::destroy(index, *(index + 1));
+    *index = index + 8;
+    *(index + 2) = 0;
+    *(index + 1) = 0;
   }
 
   return v7;
 }
 
-- (BOOL)enumerateArchivesFromBackingFileFromSlice:(const MTLLoaderSliceIdentifier *)a3 version:(unint64_t)a4 verifyKey:(id *)a5 offset:(unint64_t)a6 bytes:(unint64_t)a7 enumerator:(id)a8
+- (BOOL)enumerateArchivesFromBackingFileFromSlice:(const MTLLoaderSliceIdentifier *)slice version:(unint64_t)version verifyKey:(id *)key offset:(unint64_t)offset bytes:(unint64_t)bytes enumerator:(id)enumerator
 {
   v8 = 1;
-  if (a7)
+  if (bytes)
   {
     fileData = self->_fileData;
     if (fileData)
     {
-      v16 = [(MTLLoadedFileContentsWrapper *)self->_fileData bytes];
+      bytes = [(MTLLoadedFileContentsWrapper *)self->_fileData bytes];
       v21[0] = 0;
       v21[1] = v21;
       v21[2] = 0x2020000000;
@@ -7864,25 +7864,25 @@ LABEL_134:
       v20[2] = __105___MTLBinaryArchive_enumerateArchivesFromBackingFileFromSlice_version_verifyKey_offset_bytes_enumerator___block_invoke;
       v20[3] = &unk_1E6EEACC8;
       v20[4] = v21;
-      v20[5] = a7;
-      v20[6] = &v16[a6];
+      v20[5] = bytes;
+      v20[6] = &bytes[offset];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __105___MTLBinaryArchive_enumerateArchivesFromBackingFileFromSlice_version_verifyKey_offset_bytes_enumerator___block_invoke_2;
       v19[3] = &unk_1E6EEACF0;
-      v19[8] = a4;
-      v19[9] = a5;
-      v19[10] = a6;
+      v19[8] = version;
+      v19[9] = key;
+      v19[10] = offset;
       v19[6] = v21;
-      v19[7] = a3;
+      v19[7] = slice;
       v19[4] = fileData;
-      v19[5] = a8;
+      v19[5] = enumerator;
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __105___MTLBinaryArchive_enumerateArchivesFromBackingFileFromSlice_version_verifyKey_offset_bytes_enumerator___block_invoke_3;
       v18[3] = &unk_1E6EEAD18;
-      v18[7] = a3;
-      v18[8] = a4;
+      v18[7] = slice;
+      v18[8] = version;
       v18[5] = v20;
       v18[6] = v21;
       v18[4] = v19;
@@ -7894,7 +7894,7 @@ LABEL_134:
   return v8;
 }
 
-- (BOOL)enumerateArchivesFromPipelineCollection:(id)a3
+- (BOOL)enumerateArchivesFromPipelineCollection:(id)collection
 {
   v3 = 1;
   v8 = 1;
@@ -7902,7 +7902,7 @@ LABEL_134:
   if (ptr)
   {
     v7[0] = &v8;
-    v7[1] = a3;
+    v7[1] = collection;
     v5 = *(ptr + 36);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -7917,20 +7917,20 @@ LABEL_134:
   return v3 & 1;
 }
 
-- (id)materializeEntryForKey:(id *)a3 fileIndex:(void *)a4 containsEntry:(id)a5 addEntry:(id)a6
+- (id)materializeEntryForKey:(id *)key fileIndex:(void *)index containsEntry:(id)entry addEntry:(id)addEntry
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = *&a3->var0[16];
-  v23 = *a3->var0;
+  v9 = *&key->var0[16];
+  v23 = *key->var0;
   v24 = v9;
-  v10 = [(_MTLBinaryArchive *)self materializeFromHash:&v23 fileIndex:a4];
+  v10 = [(_MTLBinaryArchive *)self materializeFromHash:&v23 fileIndex:index];
   if (v10)
   {
     v11 = v10;
-    v12 = *&a3->var0[16];
-    v21 = *a3->var0;
+    v12 = *&key->var0[16];
+    v21 = *key->var0;
     v22 = v12;
-    if (v23 == *a3->var0 && *(&v23 + 1) == *&a3->var0[8] && v24 == *&a3->var0[16] && *(&v24 + 1) == *&a3->var0[24])
+    if (v23 == *key->var0 && *(&v23 + 1) == *&key->var0[8] && v24 == *&key->var0[16] && *(&v24 + 1) == *&key->var0[24])
     {
       v17 = v10;
     }
@@ -7939,7 +7939,7 @@ LABEL_134:
     {
       v21 = v23;
       v22 = v24;
-      v16 = (*(a5 + 2))(a5, &v21);
+      v16 = (*(entry + 2))(entry, &v21);
       v17 = 0;
       v18 = 0;
       if (v16)
@@ -7948,7 +7948,7 @@ LABEL_134:
       }
     }
 
-    (*(a6 + 2))(a6, v11, &v21);
+    (*(addEntry + 2))(addEntry, v11, &v21);
 
     v18 = v17;
 LABEL_17:
@@ -7962,37 +7962,37 @@ LABEL_18:
   return v18;
 }
 
-- ($2772B1D07D29A72E8557B2574C0AE5C1)reflectionHashWithFunctionId:(SEL)a3 binaryPos:(const void *)a4
+- ($2772B1D07D29A72E8557B2574C0AE5C1)reflectionHashWithFunctionId:(SEL)id binaryPos:(const void *)pos
 {
   data = a5;
-  MTLHashKey::getHash(a4, 0, 0);
+  MTLHashKey::getHash(pos, 0, 0);
   CC_SHA256_Init(&v9);
-  Hash = MTLHashKey::getHash(a4, 0, 0);
+  Hash = MTLHashKey::getHash(pos, 0, 0);
   CC_SHA256_Update(&v9, Hash, 0x20u);
   CC_SHA256_Update(&v9, &data, 8u);
   return CC_SHA256_Final(retstr->var0, &v9);
 }
 
-- (id)materializeAIRNTBlockForKey:(id)a3 reflectionType:(char)a4
+- (id)materializeAIRNTBlockForKey:(id)key reflectionType:(char)type
 {
-  v4 = a4;
+  typeCopy = type;
   v31[4] = *MEMORY[0x1E69E9840];
   alwaysReturnDriverReflection = self->_alwaysReturnDriverReflection;
-  v8 = [a3 getFunctionId];
-  v9 = std::__hash_table<std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,std::__unordered_map_hasher<MTLHashKey,std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,CompareFunctionIdHash,CompareFunctionIdHash,true>,std::__unordered_map_equal<MTLHashKey,std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,CompareFunctionIdHash,CompareFunctionIdHash,true>,std::allocator<std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>>>::find<MTLHashKey>(&self->_executableFileIndex.__table_.__bucket_list_.__ptr_, v8);
+  getFunctionId = [key getFunctionId];
+  v9 = std::__hash_table<std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,std::__unordered_map_hasher<MTLHashKey,std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,CompareFunctionIdHash,CompareFunctionIdHash,true>,std::__unordered_map_equal<MTLHashKey,std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,CompareFunctionIdHash,CompareFunctionIdHash,true>,std::allocator<std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>>>::find<MTLHashKey>(&self->_executableFileIndex.__table_.__bucket_list_.__ptr_, getFunctionId);
   if (!v9)
   {
     goto LABEL_29;
   }
 
   v10 = v9;
-  v11 = v4 | 2;
+  v11 = typeCopy | 2;
   if (!alwaysReturnDriverReflection)
   {
-    v11 = v4;
+    v11 = typeCopy;
   }
 
-  if (v4)
+  if (typeCopy)
   {
     v12 = v11;
   }
@@ -8015,7 +8015,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  [(_MTLBinaryArchive *)self reflectionHashWithFunctionId:v8 binaryPos:v30];
+  [(_MTLBinaryArchive *)self reflectionHashWithFunctionId:getFunctionId binaryPos:v30];
   v18 = std::__hash_table<HashKey,KeyHashFunction,std::equal_to<HashKey>,std::allocator<HashKey>>::find<HashKey>(&self->_reflectionsIndex.__table_.__bucket_list_.__ptr_, v31);
   if (!v18)
   {
@@ -8101,7 +8101,7 @@ LABEL_18:
     }
 
     [(MTLBinaryEntry *)v23 setIndex:v25];
-    [(NSMutableDictionary *)self->_entries setObject:v23 forKey:a3];
+    [(NSMutableDictionary *)self->_entries setObject:v23 forKey:key];
 
     std::__hash_table<std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,std::__unordered_map_hasher<MTLHashKey,std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,CompareFunctionIdHash,CompareFunctionIdHash,true>,std::__unordered_map_equal<MTLHashKey,std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,CompareFunctionIdHash,CompareFunctionIdHash,true>,std::allocator<std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>>>::remove(&self->_executableFileIndex.__table_.__bucket_list_.__ptr_, v10, v31);
     std::unique_ptr<std::__hash_node<std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,void *>,std::__hash_node_destructor<std::allocator<std::__hash_node<std::__hash_value_type<MTLHashKey,std::tuple<unsigned long long,unsigned long long,unsigned long long,unsigned long long>>,void *>>>>::~unique_ptr[abi:ne200100](v31);
@@ -8157,11 +8157,11 @@ LABEL_35:
   return v2;
 }
 
-+ (id)descriptorDataForArchive:(id)a3
++ (id)descriptorDataForArchive:(id)archive
 {
   v17 = 0;
   v4 = objc_opt_new();
-  v5 = [(MTLLoader *)v4 loadFileWithURL:a3 error:&v17 errorDomain:&cfstr_Mtlbinaryarchi.isa invalidFileErrorCode:1];
+  v5 = [(MTLLoader *)v4 loadFileWithURL:archive error:&v17 errorDomain:&cfstr_Mtlbinaryarchi.isa invalidFileErrorCode:1];
   if (v4)
   {
     v6 = v5 == 0;
@@ -8194,8 +8194,8 @@ LABEL_35:
 
     else
     {
-      v12 = [(MTLLoadedFileContentsWrapper *)v8 sourceContents];
-      v13 = [(NSData *)v12 subdataWithRange:v16.var7, v16.var8];
+      sourceContents = [(MTLLoadedFileContentsWrapper *)v8 sourceContents];
+      v13 = [(NSData *)sourceContents subdataWithRange:v16.var7, v16.var8];
     }
 
     [(MTLLoader *)v4 releaseLoadedFile:v7];
@@ -8213,37 +8213,37 @@ LABEL_35:
   return 0;
 }
 
-- (void)addBinaryEntryImpl:(id)a3 forKey:(id)a4
+- (void)addBinaryEntryImpl:(id)impl forKey:(id)key
 {
   ++self->_newBinary;
   if (![(_MTLBinaryArchive *)self recompilationTarget])
   {
-    [a3 setIndex:-1];
-    [(NSMutableDictionary *)self->_entries setObject:a3 forKey:a4];
+    [impl setIndex:-1];
+    [(NSMutableDictionary *)self->_entries setObject:impl forKey:key];
     v7 = atomic_load(&self->_serializing);
     if ((v7 & 1) != 0 && !self->_isLegacy)
     {
       asynEntries = self->_asynEntries;
 
-      [(NSMutableDictionary *)asynEntries setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)asynEntries setObject:impl forKey:key];
     }
   }
 }
 
-- (void)addArchiveEntryInternal:(id)a3 forKey:(id *)a4
+- (void)addArchiveEntryInternal:(id)internal forKey:(id *)key
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78___MTLBinaryArchive_MTLBinaryArchiveInternal__addArchiveEntryInternal_forKey___block_invoke;
   block[3] = &unk_1E6EEAD68;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = internal;
+  block[6] = key;
   block[4] = self;
   dispatch_sync(queue, block);
 }
 
-- (id)newArchiveDataForKeyInternal:(id *)a3
+- (id)newArchiveDataForKeyInternal:(id *)internal
 {
   v7 = 0;
   v8 = &v7;
@@ -8260,7 +8260,7 @@ LABEL_35:
     block[3] = &unk_1E6EEAAA8;
     block[4] = self;
     block[5] = &v7;
-    block[6] = a3;
+    block[6] = internal;
     dispatch_sync(queue, block);
     v3 = v8[5];
   }
@@ -8274,24 +8274,24 @@ LABEL_35:
   return v3;
 }
 
-- (void)addBinaryEntryInternal:(id)a3 forKey:(id)a4
+- (void)addBinaryEntryInternal:(id)internal forKey:(id)key
 {
   if (!self->_isLegacy || (self->_options & 2) != 0)
   {
-    v7 = a3;
+    internalCopy = internal;
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __77___MTLBinaryArchive_MTLBinaryArchiveInternal__addBinaryEntryInternal_forKey___block_invoke;
     block[3] = &unk_1E6EEADE0;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = internal;
+    block[6] = key;
     dispatch_async(queue, block);
   }
 }
 
-- (id)getArchiveIDWithErrorInternal:(id *)a3
+- (id)getArchiveIDWithErrorInternal:(id *)internal
 {
   v10 = 0;
   v11 = &v10;
@@ -8308,9 +8308,9 @@ LABEL_35:
   v9[5] = &v10;
   dispatch_sync(queue, v9);
   v6 = v11[5];
-  if (a3)
+  if (internal)
   {
-    *a3 = v11[5];
+    *internal = v11[5];
   }
 
   if (self->_archiveIDInt)
@@ -8327,28 +8327,28 @@ LABEL_35:
   return v7;
 }
 
-- (BOOL)updateReflectionForEntry:(id)a3 binaryKey:(id)a4 requiredReflection:(char)a5
+- (BOOL)updateReflectionForEntry:(id)entry binaryKey:(id)key requiredReflection:(char)reflection
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  if (!a5 || (~[a3 reflectionFlags] & 6) == 0)
+  if (!reflection || (~[entry reflectionFlags] & 6) == 0)
   {
     goto LABEL_14;
   }
 
   if (self->_alwaysReturnDriverReflection)
   {
-    v9 = a5 | 2;
+    reflectionCopy = reflection | 2;
   }
 
   else
   {
-    v9 = a5;
+    reflectionCopy = reflection;
   }
 
-  v10 = [a4 getFunctionId];
-  if (([a3 reflectionFlags] & 2) == 0 && (v9 & 2) != 0)
+  getFunctionId = [key getFunctionId];
+  if (([entry reflectionFlags] & 2) == 0 && (reflectionCopy & 2) != 0)
   {
-    -[_MTLBinaryArchive reflectionHashWithFunctionId:binaryPos:](self, "reflectionHashWithFunctionId:binaryPos:", v10, [a3 binaryPosition]);
+    -[_MTLBinaryArchive reflectionHashWithFunctionId:binaryPos:](self, "reflectionHashWithFunctionId:binaryPos:", getFunctionId, [entry binaryPosition]);
     v11 = std::__hash_table<HashKey,KeyHashFunction,std::equal_to<HashKey>,std::allocator<HashKey>>::find<HashKey>(&self->_reflectionsIndex.__table_.__bucket_list_.__ptr_, v17);
     if (!v11)
     {
@@ -8356,19 +8356,19 @@ LABEL_35:
     }
 
     subrange = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], v11[6], v11[7]);
-    [a3 addReflectionWithData:subrange flag:2];
+    [entry addReflectionWithData:subrange flag:2];
   }
 
-  v13 = [a3 reflectionFlags];
+  reflectionFlags = [entry reflectionFlags];
   LOBYTE(v11) = 1;
-  if ((v13 & 4) == 0 && (v9 & 4) != 0)
+  if ((reflectionFlags & 4) == 0 && (reflectionCopy & 4) != 0)
   {
-    -[_MTLBinaryArchive reflectionHashWithFunctionId:binaryPos:](self, "reflectionHashWithFunctionId:binaryPos:", v10, [a3 binaryPosition]);
+    -[_MTLBinaryArchive reflectionHashWithFunctionId:binaryPos:](self, "reflectionHashWithFunctionId:binaryPos:", getFunctionId, [entry binaryPosition]);
     v11 = std::__hash_table<HashKey,KeyHashFunction,std::equal_to<HashKey>,std::allocator<HashKey>>::find<HashKey>(&self->_reflectionsIndex.__table_.__bucket_list_.__ptr_, v17);
     if (v11)
     {
       v14 = dispatch_data_create_subrange([(MTLLoadedFileContentsWrapper *)self->_fileData dispatchData], v11[8], v11[9]);
-      [a3 addReflectionWithData:v14 flag:4];
+      [entry addReflectionWithData:v14 flag:4];
 
 LABEL_14:
       LOBYTE(v11) = 1;
@@ -8380,7 +8380,7 @@ LABEL_15:
   return v11;
 }
 
-- (id)getBinaryDataForKey:(id)a3 reflectionType:(char)a4
+- (id)getBinaryDataForKey:(id)key reflectionType:(char)type
 {
   v4 = 0;
   v9 = 0;
@@ -8396,10 +8396,10 @@ LABEL_15:
     v7[1] = 3221225472;
     v7[2] = __82___MTLBinaryArchive_MTLBinaryArchiveInternal__getBinaryDataForKey_reflectionType___block_invoke;
     v7[3] = &unk_1E6EEAE30;
-    v7[5] = a3;
+    v7[5] = key;
     v7[6] = &v9;
     v7[4] = self;
-    v8 = a4;
+    typeCopy = type;
     dispatch_sync(queue, v7);
     v4 = v10[5];
   }
@@ -8408,10 +8408,10 @@ LABEL_15:
   return v4;
 }
 
-- (void)setRecompilationTarget:(BOOL)a3
+- (void)setRecompilationTarget:(BOOL)target
 {
   v3 = 64;
-  if (!a3)
+  if (!target)
   {
     v3 = 0;
   }
@@ -8419,11 +8419,11 @@ LABEL_15:
   self->_options = self->_options & 0xFFFFFFFFFFFFFFBFLL | v3;
 }
 
-- (void)findProgramObjectForFunction:(id *)a3
+- (void)findProgramObjectForFunction:(id *)function
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = *&a3->var0[16];
-  v13 = *a3->var0;
+  v3 = *&function->var0[16];
+  v13 = *function->var0;
   v14 = v3;
   v8 = 0;
   v9 = &v8;
@@ -8443,11 +8443,11 @@ LABEL_15:
   return v5;
 }
 
-- (void)programObjectForFunction:(id *)a3
+- (void)programObjectForFunction:(id *)function
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = *&a3->var0[16];
-  v13 = *a3->var0;
+  v3 = *&function->var0[16];
+  v13 = *function->var0;
   v14 = v3;
   v8 = 0;
   v9 = &v8;
@@ -8467,11 +8467,11 @@ LABEL_15:
   return v5;
 }
 
-- (id)getFunctionNameFromAirDescriptor:(const stitchedAirDescriptor *)a3
+- (id)getFunctionNameFromAirDescriptor:(const stitchedAirDescriptor *)descriptor
 {
   buffer_ptr = 0;
   size_ptr = 0;
-  v3 = dispatch_data_create_map(a3->var0, &buffer_ptr, &size_ptr);
+  v3 = dispatch_data_create_map(descriptor->var0, &buffer_ptr, &size_ptr);
   v4 = (buffer_ptr + *buffer_ptr);
   v5 = (v4 - *v4);
   if (*v5 >= 9u && (v6 = v5[4]) != 0)
@@ -8528,17 +8528,17 @@ LABEL_15:
   return v16;
 }
 
-- (id)localStitchedFunctionLookupWithDescriptor:(const stitchedAirDescriptor *)a3
+- (id)localStitchedFunctionLookupWithDescriptor:(const stitchedAirDescriptor *)descriptor
 {
-  result = std::__hash_table<HashKey,KeyHashFunction,std::equal_to<HashKey>,std::allocator<HashKey>>::find<HashKey>(&self->_stitchedFunctionByHash.__table_.__bucket_list_.__ptr_, a3->var1.var0);
+  result = std::__hash_table<HashKey,KeyHashFunction,std::equal_to<HashKey>,std::allocator<HashKey>>::find<HashKey>(&self->_stitchedFunctionByHash.__table_.__bucket_list_.__ptr_, descriptor->var1.var0);
   if (result)
   {
     v6 = result;
-    v7 = [(_MTLBinaryArchive *)self getFunctionNameFromAirDescriptor:a3];
+    v7 = [(_MTLBinaryArchive *)self getFunctionNameFromAirDescriptor:descriptor];
     device = self->_device;
     libraryBuilder = device->_libraryBuilder;
-    v10 = [v6[6] data];
-    v15 = MTLLibraryBuilder::newLibraryWithData(libraryBuilder, device, v10, 0, v11, v12, v13, v14);
+    data = [v6[6] data];
+    v15 = MTLLibraryBuilder::newLibraryWithData(libraryBuilder, device, data, 0, v11, v12, v13, v14);
     v16 = [(_MTLLibrary *)v15 newFunctionWithName:v7];
 
     return v16;
@@ -8547,28 +8547,28 @@ LABEL_15:
   return result;
 }
 
-- (void)addStitchingInputsFunction:(id)a3 toEntry:(id)a4
+- (void)addStitchingInputsFunction:(id)function toEntry:(id)entry
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (function)
   {
-    v5 = a3;
+    functionCopy = function;
     __p = 0;
     v32 = 0;
     v33 = 0;
-    std::vector<NSValue *>::reserve(&__p, [a3 count]);
-    v26 = a4;
+    std::vector<NSValue *>::reserve(&__p, [function count]);
+    entryCopy = entry;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    v7 = [functionCopy countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v7)
     {
       v8 = *v28;
       do
       {
-        v9 = v5;
+        v9 = functionCopy;
         for (i = 0; i != v7; ++i)
         {
           if (*v28 != v8)
@@ -8579,10 +8579,10 @@ LABEL_15:
           v11 = *(*(&v27 + 1) + 8 * i);
           if (!std::__hash_table<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>>>::find<MTLUINT256_t>(self->_uniqueBitcodeList.__ptr_, [v11 bitCodeHash]))
           {
-            v12 = [v11 bitcodeDataInternal];
+            bitcodeDataInternal = [v11 bitcodeDataInternal];
             ptr = self->_uniqueBitcodeList.__ptr_;
-            v34 = [v11 bitCodeHash];
-            std::__hash_table<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>>>::__emplace_unique_key_args<MTLUINT256_t,std::piecewise_construct_t const&,std::tuple<MTLUINT256_t const&>,std::tuple<>>(ptr, v34)[6] = v12;
+            bitCodeHash = [v11 bitCodeHash];
+            std::__hash_table<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,std::__unordered_map_hasher<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::__unordered_map_equal<MTLUINT256_t,std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>,UnorderedContainerHash,UnorderedContainerHash,true>,std::allocator<std::__hash_value_type<MTLUINT256_t,NSObject  {objcproto16OS_dispatch_data}*>>>::__emplace_unique_key_args<MTLUINT256_t,std::piecewise_construct_t const&,std::tuple<MTLUINT256_t const&>,std::tuple<>>(ptr, bitCodeHash)[6] = bitcodeDataInternal;
           }
 
           v14 = [objc_alloc(MEMORY[0x1E696B098]) initWithBytes:objc_msgSend(v11 objCType:{"bitCodeHash"), "{?=[32C]}"}];
@@ -8640,14 +8640,14 @@ LABEL_15:
           v32 = v16;
         }
 
-        v5 = v9;
+        functionCopy = v9;
         v7 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
       }
 
       while (v7);
     }
 
-    [v26 setLinkedBitcodes:{objc_msgSend(objc_alloc(MEMORY[0x1E695DEC8]), "initWithObjects:count:")}];
+    [entryCopy setLinkedBitcodes:{objc_msgSend(objc_alloc(MEMORY[0x1E695DEC8]), "initWithObjects:count:")}];
 
     v23 = __p;
     v24 = v32;
@@ -8671,7 +8671,7 @@ LABEL_15:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)newStitchedLibraryWithKey:(id *)a3 descriptors:(const void *)a4
+- (id)newStitchedLibraryWithKey:(id *)key descriptors:(const void *)descriptors
 {
   if (!self->_isLegacy)
   {
@@ -8685,7 +8685,7 @@ LABEL_15:
     v31 = __Block_byref_object_copy__584;
     v32 = __Block_byref_object_dispose__585;
     v33 = &unk_185DF1D43;
-    std::vector<objc_object  {objcproto11MTLFunction}*>::vector[abi:ne200100](__p, 0xCCCCCCCCCCCCCCCDLL * ((*(a4 + 1) - *a4) >> 3));
+    std::vector<objc_object  {objcproto11MTLFunction}*>::vector[abi:ne200100](__p, 0xCCCCCCCCCCCCCCCDLL * ((*(descriptors + 1) - *descriptors) >> 3));
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -8694,7 +8694,7 @@ LABEL_15:
     block[4] = self;
     block[5] = &v28;
     block[6] = &v35;
-    block[7] = a4;
+    block[7] = descriptors;
     dispatch_sync(queue, block);
     if (v36[3])
     {
@@ -8727,26 +8727,26 @@ LABEL_15:
     return v25;
   }
 
-  v5 = [(_MTLBinaryArchive *)self newArchiveDataForKeyInternal:a3, a4];
-  if (!v5)
+  descriptors = [(_MTLBinaryArchive *)self newArchiveDataForKeyInternal:key, descriptors];
+  if (!descriptors)
   {
     return 0;
   }
 
-  v10 = v5;
+  v10 = descriptors;
   device = self->_device;
   libraryBuilder = device->_libraryBuilder;
 
   return MTLLibraryBuilder::newLibraryWithData(libraryBuilder, device, v10, 0, v6, v7, v8, v9);
 }
 
-- (void)addStitchedLibraryWithKey:(id *)a3 descriptors:(const void *)a4 inputFunctions:(id)a5 library:(id)a6
+- (void)addStitchedLibraryWithKey:(id *)key descriptors:(const void *)descriptors inputFunctions:(id)functions library:(id)library
 {
-  v10 = [a6 libraryData];
+  libraryData = [library libraryData];
   if (self->_isLegacy && (self->_options & 4) != 0)
   {
-    v12 = [[MTLAirEntry alloc] initWithData:(*(*v10 + 128))(v10)];
-    [(_MTLBinaryArchive *)self addArchiveEntryInternal:v12 forKey:a3];
+    v12 = [[MTLAirEntry alloc] initWithData:(*(*libraryData + 128))(libraryData)];
+    [(_MTLBinaryArchive *)self addArchiveEntryInternal:v12 forKey:key];
   }
 
   else
@@ -8756,27 +8756,27 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = __108___MTLBinaryArchive_MTLBinaryArchiveInternal__addStitchedLibraryWithKey_descriptors_inputFunctions_library___block_invoke;
     block[3] = &unk_1E6EEAEA8;
-    block[6] = a4;
-    block[7] = v10;
+    block[6] = descriptors;
+    block[7] = libraryData;
     block[4] = self;
-    block[5] = a5;
+    block[5] = functions;
     dispatch_sync(queue, block);
   }
 }
 
-- (id)newSpecializedFunctionWithHash:(id *)a3 libraryPath:(id)a4
+- (id)newSpecializedFunctionWithHash:(id *)hash libraryPath:(id)path
 {
   if (self->_isLegacy)
   {
-    v7 = [(_MTLBinaryArchive *)self newArchiveDataForKeyInternal:a3];
-    if (!v7)
+    data = [(_MTLBinaryArchive *)self newArchiveDataForKeyInternal:hash];
+    if (!data)
     {
       return 0;
     }
 
 LABEL_8:
-    v12 = MTLLibraryBuilder::newLibraryWithData(*(self->_device + 55), self->_device, v7, a4, 0, v8, v9, v10);
-    v13 = [(_MTLLibrary *)v12 newSpecializedFunctionWithHash:a3 libraryPath:a4];
+    v12 = MTLLibraryBuilder::newLibraryWithData(*(self->_device + 55), self->_device, data, path, 0, v8, v9, v10);
+    v13 = [(_MTLLibrary *)v12 newSpecializedFunctionWithHash:hash libraryPath:path];
     if (!v13)
     {
       v13 = [(_MTLLibrary *)v12 newFunctionWithName:[(NSArray *)[(_MTLLibrary *)v12 functionNames] objectAtIndex:0]];
@@ -8785,28 +8785,28 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v11 = std::__hash_table<HashKey,KeyHashFunction,std::equal_to<HashKey>,std::allocator<HashKey>>::find<HashKey>(&self->_specializedLibraryCache.__table_.__bucket_list_.__ptr_, a3->var0);
+  v11 = std::__hash_table<HashKey,KeyHashFunction,std::equal_to<HashKey>,std::allocator<HashKey>>::find<HashKey>(&self->_specializedLibraryCache.__table_.__bucket_list_.__ptr_, hash->var0);
   if (!v11)
   {
-    v14 = std::__hash_table<HashKey,KeyHashFunction,std::equal_to<HashKey>,std::allocator<HashKey>>::find<HashKey>(&self->_specializedFunctionByHash.__table_.__bucket_list_.__ptr_, a3->var0);
+    v14 = std::__hash_table<HashKey,KeyHashFunction,std::equal_to<HashKey>,std::allocator<HashKey>>::find<HashKey>(&self->_specializedFunctionByHash.__table_.__bucket_list_.__ptr_, hash->var0);
     if (!v14)
     {
       return 0;
     }
 
-    v7 = [v14[6] data];
+    data = [v14[6] data];
     goto LABEL_8;
   }
 
   v12 = [(_MTLBinaryArchive *)self newLibraryInArchiveWithRange:v11[6] error:v11[7], 0];
-  v13 = [(_MTLLibrary *)v12 newSpecializedFunctionWithHash:a3 libraryPath:a4];
+  v13 = [(_MTLLibrary *)v12 newSpecializedFunctionWithHash:hash libraryPath:path];
 LABEL_10:
   v15 = v13;
 
   return v15;
 }
 
-- (id)newArchiverIdWithBinaryKey:(id)a3 entry:(id)a4 srcArchiverId:(id)a5 functionType:(unint64_t)a6
+- (id)newArchiverIdWithBinaryKey:(id)key entry:(id)entry srcArchiverId:(id)id functionType:(unint64_t)type
 {
   v25 = 0;
   v26 = &v25;
@@ -8814,10 +8814,10 @@ LABEL_10:
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
   v30 = 0;
-  v11 = [a3 getFunctionId];
+  getFunctionId = [key getFunctionId];
   size_ptr = 0;
   buffer_ptr = 0;
-  v12 = dispatch_data_create_map([a4 airScript], &buffer_ptr, &size_ptr);
+  v12 = dispatch_data_create_map([entry airScript], &buffer_ptr, &size_ptr);
   v13 = buffer_ptr;
   v14 = strncmp(buffer_ptr + 4, "AIRP", 4uLL);
   if (v14)
@@ -8837,33 +8837,33 @@ LABEL_10:
   v21[1] = 3221225472;
   v21[2] = __107___MTLBinaryArchive_MTLBinaryArchiveInternal__newArchiverIdWithBinaryKey_entry_srcArchiverId_functionType___block_invoke;
   v21[3] = &unk_1E6EEAED0;
-  v21[4] = a5;
+  v21[4] = id;
   v21[5] = self;
-  v21[6] = a4;
-  v21[7] = a3;
+  v21[6] = entry;
+  v21[7] = key;
   v21[10] = v15;
-  v21[11] = v11;
+  v21[11] = getFunctionId;
   v22 = v18;
   v21[8] = v12;
   v21[9] = &v25;
-  v21[12] = a6;
+  v21[12] = type;
   dispatch_sync(queue, v21);
   v19 = v26[5];
   _Block_object_dispose(&v25, 8);
   return v19;
 }
 
-- (void)updatePipelineWithPipelineArchiverId:(id)a3 key:(id)a4 functionType:(unint64_t)a5
+- (void)updatePipelineWithPipelineArchiverId:(id)id key:(id)key functionType:(unint64_t)type
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __101___MTLBinaryArchive_MTLBinaryArchiveInternal__updatePipelineWithPipelineArchiverId_key_functionType___block_invoke;
   v6[3] = &unk_1E6EEAEF8;
-  v6[4] = a3;
-  v6[5] = a4;
+  v6[4] = id;
+  v6[5] = key;
   v6[6] = self;
-  v6[7] = a5;
+  v6[7] = type;
   dispatch_sync(queue, v6);
 }
 
@@ -8874,14 +8874,14 @@ LABEL_10:
   return (v3 & 1) == 0;
 }
 
-- (void)initMetalScriptWithArchive:(id)a3
+- (void)initMetalScriptWithArchive:(id)archive
 {
   if ((self->_options & 0x80) == 0)
   {
-    v4 = [a3 getMetalScript];
-    if (v4)
+    getMetalScript = [archive getMetalScript];
+    if (getMetalScript)
     {
-      v5 = v4;
+      v5 = getMetalScript;
       ptr = self->_mtlScriptBuilder.__ptr_;
 
       MTLMetalScriptBuilder::initFromScript(ptr, v5);

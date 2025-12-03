@@ -1,45 +1,45 @@
 @interface TSWPListStyle
-+ (BOOL)isDefaultMissingBulletImage:(id)a3;
-+ (TSWPListStyle)listStyleWithNumberType:(int)a3 inStyleSheet:(id)a4 withNumberedPresetStyle:(id)a5;
-+ (id)CJKListNameForNumberType:(int)a3;
++ (BOOL)isDefaultMissingBulletImage:(id)image;
++ (TSWPListStyle)listStyleWithNumberType:(int)type inStyleSheet:(id)sheet withNumberedPresetStyle:(id)style;
++ (id)CJKListNameForNumberType:(int)type;
 + (id)defaultLabelGeometries;
 + (id)defaultLabelIndents;
 + (id)defaultLabelString;
 + (id)defaultMissingBulletImage;
 + (id)defaultPropertyMap;
-+ (id)defaultStyleWithContext:(id)a3;
-+ (id)defaultStyleWithContext:(id)a3 type:(int)a4;
++ (id)defaultStyleWithContext:(id)context;
++ (id)defaultStyleWithContext:(id)context type:(int)type;
 + (id)defaultTextIndents;
-+ (id)harvardStyleWithContext:(id)a3;
-+ (id)numberedlistStyleForPresets:(id)a3;
-+ (id)pDefaultLabelValuesForLabelTypeProperty:(int)a3;
-+ (id)pLabelTypeArrayForType:(int)a3;
++ (id)harvardStyleWithContext:(id)context;
++ (id)numberedlistStyleForPresets:(id)presets;
++ (id)pDefaultLabelValuesForLabelTypeProperty:(int)property;
++ (id)pLabelTypeArrayForType:(int)type;
 + (id)properties;
 + (id)propertiesAllowingNSNull;
-+ (id)propertyMapForListNumberType:(int)a3;
++ (id)propertyMapForListNumberType:(int)type;
 + (id)stickyOverrideProperties;
-+ (int)effectiveTypeForLevel:(unint64_t)a3 forPropertyMapping:(id)a4;
-+ (int)firstLabelTypeForPropertyMapping:(id)a3;
-+ (int)labelTypeForLevel:(unint64_t)a3 forPropertyMapping:(id)a4;
-+ (int)pLabelTypeForLevel:(unint64_t)a3 forPropertyMapping:(id)a4 includeDegenerateLevels:(BOOL)a5;
-+ (void)pGetDefaultTextIndentFloats:(double)a3[9];
-- (TSWPListStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6;
-- (double)labelIndentForLevel:(unint64_t)a3;
-- (double)textIndentForLevel:(unint64_t)a3 fontSize:(double)a4;
-- (id)overridePropertyMapWithValue:(id)a3 forProperty:(int)a4 atParagraphLevels:(id)a5 withContext:(id)a6;
-- (id)pOverrideArrayWithValue:(id)a3 forProperty:(int)a4 atParagraphLevels:(id)a5 withContext:(id)a6;
-- (int)effectiveTypeForLevel:(unint64_t)a3;
++ (int)effectiveTypeForLevel:(unint64_t)level forPropertyMapping:(id)mapping;
++ (int)firstLabelTypeForPropertyMapping:(id)mapping;
++ (int)labelTypeForLevel:(unint64_t)level forPropertyMapping:(id)mapping;
++ (int)pLabelTypeForLevel:(unint64_t)level forPropertyMapping:(id)mapping includeDegenerateLevels:(BOOL)levels;
++ (void)pGetDefaultTextIndentFloats:(double)floats[9];
+- (TSWPListStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation;
+- (double)labelIndentForLevel:(unint64_t)level;
+- (double)textIndentForLevel:(unint64_t)level fontSize:(double)size;
+- (id)overridePropertyMapWithValue:(id)value forProperty:(int)property atParagraphLevels:(id)levels withContext:(id)context;
+- (id)pOverrideArrayWithValue:(id)value forProperty:(int)property atParagraphLevels:(id)levels withContext:(id)context;
+- (int)effectiveTypeForLevel:(unint64_t)level;
 - (int)firstLabelType;
-- (int)labelTypeForLevel:(unint64_t)a3;
+- (int)labelTypeForLevel:(unint64_t)level;
 @end
 
 @implementation TSWPListStyle
 
-- (TSWPListStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6
+- (TSWPListStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation
 {
   v7.receiver = self;
   v7.super_class = TSWPListStyle;
-  return [(TSSStyle *)&v7 initWithContext:a3 name:a4 overridePropertyMap:a5 isVariation:a6];
+  return [(TSSStyle *)&v7 initWithContext:context name:name overridePropertyMap:map isVariation:variation];
 }
 
 + (id)stickyOverrideProperties
@@ -93,58 +93,58 @@ TSSPropertySet *__41__TSWPListStyle_propertiesAllowingNSNull__block_invoke()
   return result;
 }
 
-- (double)labelIndentForLevel:(unint64_t)a3
+- (double)labelIndentForLevel:(unint64_t)level
 {
-  if (a3 > 8)
+  if (level > 8)
   {
     return 0.0;
   }
 
-  v4 = [-[TSSStyle valueForProperty:](self valueForProperty:{177), "objectAtIndexedSubscript:", a3}];
+  v4 = [-[TSSStyle valueForProperty:](self valueForProperty:{177), "objectAtIndexedSubscript:", level}];
 
   [v4 doubleValue];
   return result;
 }
 
-- (double)textIndentForLevel:(unint64_t)a3 fontSize:(double)a4
+- (double)textIndentForLevel:(unint64_t)level fontSize:(double)size
 {
   v5 = 0.0;
-  if (a3 <= 8)
+  if (level <= 8)
   {
-    [objc_msgSend(-[TSSStyle valueForProperty:](self valueForProperty:{176, 0.0), "objectAtIndexedSubscript:", a3), "doubleValue"}];
+    [objc_msgSend(-[TSSStyle valueForProperty:](self valueForProperty:{176, 0.0), "objectAtIndexedSubscript:", level), "doubleValue"}];
   }
 
-  return v5 * a4;
+  return v5 * size;
 }
 
-+ (BOOL)isDefaultMissingBulletImage:(id)a3
++ (BOOL)isDefaultMissingBulletImage:(id)image
 {
   objc_opt_class();
   v3 = TSUDynamicCast();
   if (v3)
   {
-    v4 = [v3 filename];
+    filename = [v3 filename];
 
-    LOBYTE(v3) = [v4 isEqualToString:@"TSWPMissingBulletImage.png"];
+    LOBYTE(v3) = [filename isEqualToString:@"TSWPMissingBulletImage.png"];
   }
 
   return v3;
 }
 
-+ (int)pLabelTypeForLevel:(unint64_t)a3 forPropertyMapping:(id)a4 includeDegenerateLevels:(BOOL)a5
++ (int)pLabelTypeForLevel:(unint64_t)level forPropertyMapping:(id)mapping includeDegenerateLevels:(BOOL)levels
 {
-  result = [objc_msgSend(objc_msgSend(a4 objectForProperty:{180), "objectAtIndexedSubscript:", a3), "intValue"}];
-  if (!a5)
+  result = [objc_msgSend(objc_msgSend(mapping objectForProperty:{180), "objectAtIndexedSubscript:", level), "intValue"}];
+  if (!levels)
   {
     if (result == 1)
     {
-      v12 = [a4 objectForProperty:182];
+      v12 = [mapping objectForProperty:182];
       if (v12)
       {
         v13 = v12;
-        if ([v12 count] > a3 && (objc_msgSend(a1, "isDefaultMissingBulletImage:", objc_msgSend(v13, "objectAtIndexedSubscript:", a3)) & 1) == 0)
+        if ([v12 count] > level && (objc_msgSend(self, "isDefaultMissingBulletImage:", objc_msgSend(v13, "objectAtIndexedSubscript:", level)) & 1) == 0)
         {
-          v14 = [v13 objectAtIndexedSubscript:a3];
+          v14 = [v13 objectAtIndexedSubscript:level];
           if (v14 != [MEMORY[0x277CBEB68] null])
           {
             return 1;
@@ -160,11 +160,11 @@ TSSPropertySet *__41__TSWPListStyle_propertiesAllowingNSNull__block_invoke()
         return result;
       }
 
-      v10 = [a4 objectForProperty:183];
+      v10 = [mapping objectForProperty:183];
       if (v10)
       {
         v11 = v10;
-        if ([v10 count] > a3 && !objc_msgSend(objc_msgSend(v11, "objectAtIndexedSubscript:", a3), "isEqualToString:", &stru_287D36338))
+        if ([v10 count] > level && !objc_msgSend(objc_msgSend(v11, "objectAtIndexedSubscript:", level), "isEqualToString:", &stru_287D36338))
         {
           return 2;
         }
@@ -177,32 +177,32 @@ TSSPropertySet *__41__TSWPListStyle_propertiesAllowingNSNull__block_invoke()
   return result;
 }
 
-- (int)effectiveTypeForLevel:(unint64_t)a3
+- (int)effectiveTypeForLevel:(unint64_t)level
 {
   v5 = objc_opt_class();
 
-  return [v5 pLabelTypeForLevel:a3 forPropertyMapping:self includeDegenerateLevels:0];
+  return [v5 pLabelTypeForLevel:level forPropertyMapping:self includeDegenerateLevels:0];
 }
 
-+ (int)effectiveTypeForLevel:(unint64_t)a3 forPropertyMapping:(id)a4
++ (int)effectiveTypeForLevel:(unint64_t)level forPropertyMapping:(id)mapping
 {
   v6 = objc_opt_class();
 
-  return [v6 pLabelTypeForLevel:a3 forPropertyMapping:a4 includeDegenerateLevels:0];
+  return [v6 pLabelTypeForLevel:level forPropertyMapping:mapping includeDegenerateLevels:0];
 }
 
-- (int)labelTypeForLevel:(unint64_t)a3
+- (int)labelTypeForLevel:(unint64_t)level
 {
   v5 = objc_opt_class();
 
-  return [v5 pLabelTypeForLevel:a3 forPropertyMapping:self includeDegenerateLevels:1];
+  return [v5 pLabelTypeForLevel:level forPropertyMapping:self includeDegenerateLevels:1];
 }
 
-+ (int)labelTypeForLevel:(unint64_t)a3 forPropertyMapping:(id)a4
++ (int)labelTypeForLevel:(unint64_t)level forPropertyMapping:(id)mapping
 {
   v6 = objc_opt_class();
 
-  return [v6 pLabelTypeForLevel:a3 forPropertyMapping:a4 includeDegenerateLevels:1];
+  return [v6 pLabelTypeForLevel:level forPropertyMapping:mapping includeDegenerateLevels:1];
 }
 
 - (int)firstLabelType
@@ -212,12 +212,12 @@ TSSPropertySet *__41__TSWPListStyle_propertiesAllowingNSNull__block_invoke()
   return [v3 firstLabelTypeForPropertyMapping:self];
 }
 
-+ (int)firstLabelTypeForPropertyMapping:(id)a3
++ (int)firstLabelTypeForPropertyMapping:(id)mapping
 {
   v4 = 0;
   do
   {
-    result = [objc_opt_class() pLabelTypeForLevel:v4 forPropertyMapping:a3 includeDegenerateLevels:1];
+    result = [objc_opt_class() pLabelTypeForLevel:v4 forPropertyMapping:mapping includeDegenerateLevels:1];
     if (result)
     {
       break;
@@ -240,11 +240,11 @@ TSSPropertySet *__41__TSWPListStyle_propertiesAllowingNSNull__block_invoke()
   return result;
 }
 
-+ (void)pGetDefaultTextIndentFloats:(double)a3[9]
++ (void)pGetDefaultTextIndentFloats:(double)floats[9]
 {
   v3 = 0;
   v4 = xmmword_26CA639B0;
-  v5 = a3 + 1;
+  v5 = floats + 1;
   v6 = vdupq_n_s64(9uLL);
   v7 = vdupq_n_s64(2uLL);
   do
@@ -273,7 +273,7 @@ TSSPropertySet *__41__TSWPListStyle_propertiesAllowingNSNull__block_invoke()
   result = +[TSWPListStyle defaultTextIndents]::s_defaultTextIndents;
   if (!+[TSWPListStyle defaultTextIndents]::s_defaultTextIndents)
   {
-    [a1 pGetDefaultTextIndentFloats:v4];
+    [self pGetDefaultTextIndentFloats:v4];
     result = [objc_alloc(MEMORY[0x277CBEA60]) initWithCGFloats:v4 count:9];
     +[TSWPListStyle defaultTextIndents]::s_defaultTextIndents = result;
   }
@@ -341,9 +341,9 @@ TSSPropertySet *__41__TSWPListStyle_propertiesAllowingNSNull__block_invoke()
 {
   v9[9] = *MEMORY[0x277D85DE8];
   v3 = [[TSWPListLabelGeometry alloc] initWithScale:1 scaleWithText:1.0 baselineOffset:0.0];
-  v4 = [a1 defaultLabelIndents];
+  defaultLabelIndents = [self defaultLabelIndents];
   v5 = [TSSPropertyMap alloc];
-  v6 = [a1 pLabelTypeArrayForType:0];
+  v6 = [self pLabelTypeArrayForType:0];
   v9[0] = v3;
   v9[1] = v3;
   v9[2] = v3;
@@ -353,28 +353,28 @@ TSSPropertySet *__41__TSWPListStyle_propertiesAllowingNSNull__block_invoke()
   v9[6] = v3;
   v9[7] = v3;
   v9[8] = v3;
-  v7 = -[TSSPropertyMap initWithPropertiesAndValues:](v5, "initWithPropertiesAndValues:", 180, v6, 176, v4, 177, &unk_287DDCBB8, 181, [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:9], 0);
+  v7 = -[TSSPropertyMap initWithPropertiesAndValues:](v5, "initWithPropertiesAndValues:", 180, v6, 176, defaultLabelIndents, 177, &unk_287DDCBB8, 181, [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:9], 0);
 
   return v7;
 }
 
-+ (id)defaultStyleWithContext:(id)a3
++ (id)defaultStyleWithContext:(id)context
 {
-  v3 = [[a1 alloc] initWithContext:a3 name:0 overridePropertyMap:objc_msgSend(a1 isVariation:{"defaultPropertyMap"), 0}];
+  v3 = [[self alloc] initWithContext:context name:0 overridePropertyMap:objc_msgSend(self isVariation:{"defaultPropertyMap"), 0}];
 
   return v3;
 }
 
-+ (id)defaultStyleWithContext:(id)a3 type:(int)a4
++ (id)defaultStyleWithContext:(id)context type:(int)type
 {
-  v4 = *&a4;
+  v4 = *&type;
   v19[9] = *MEMORY[0x277D85DE8];
-  v7 = [[TSWPListLabelGeometry alloc] initWithScale:1 scaleWithText:dbl_26CA66BA0[a4] baselineOffset:0.0];
+  v7 = [[TSWPListLabelGeometry alloc] initWithScale:1 scaleWithText:dbl_26CA66BA0[type] baselineOffset:0.0];
   if ((v4 - 1) >= 2)
   {
     if (v4 != 3)
     {
-      v10 = [a1 defaultLabelIndents];
+      defaultLabelIndents = [self defaultLabelIndents];
       goto LABEL_7;
     }
 
@@ -406,11 +406,11 @@ TSSPropertySet *__41__TSWPListStyle_propertiesAllowingNSNull__block_invoke()
     v9 = v19;
   }
 
-  v10 = [v8 arrayWithObjects:v9 count:9];
+  defaultLabelIndents = [v8 arrayWithObjects:v9 count:9];
 LABEL_7:
-  v11 = v10;
+  v11 = defaultLabelIndents;
   v12 = [TSSPropertyMap alloc];
-  v13 = [a1 pLabelTypeArrayForType:v4];
+  v13 = [self pLabelTypeArrayForType:v4];
   v17[0] = v7;
   v17[1] = v7;
   v17[2] = v7;
@@ -424,36 +424,36 @@ LABEL_7:
 
   if (v4)
   {
-    -[TSSPropertyMap setObject:forProperty:](v14, "setObject:forProperty:", [a1 pDefaultLabelValuesForLabelTypeProperty:+[TSWPListStyle defaultStyleWithContext:type:]::labelSpecificProperties[v4]], +[TSWPListStyle defaultStyleWithContext:type:]::labelSpecificProperties[v4]);
+    -[TSSPropertyMap setObject:forProperty:](v14, "setObject:forProperty:", [self pDefaultLabelValuesForLabelTypeProperty:+[TSWPListStyle defaultStyleWithContext:type:]::labelSpecificProperties[v4]], +[TSWPListStyle defaultStyleWithContext:type:]::labelSpecificProperties[v4]);
     if (v4 == 3)
     {
-      -[TSSPropertyMap setObject:forProperty:](v14, "setObject:forProperty:", [a1 pDefaultLabelValuesForLabelTypeProperty:185], 185);
+      -[TSSPropertyMap setObject:forProperty:](v14, "setObject:forProperty:", [self pDefaultLabelValuesForLabelTypeProperty:185], 185);
     }
   }
 
-  v15 = [[a1 alloc] initWithContext:a3 name:0 overridePropertyMap:v14 isVariation:0];
+  v15 = [[self alloc] initWithContext:context name:0 overridePropertyMap:v14 isVariation:0];
 
   return v15;
 }
 
-+ (id)harvardStyleWithContext:(id)a3
++ (id)harvardStyleWithContext:(id)context
 {
   v5 = [MEMORY[0x277CBEA60] arrayWithInts:&sHarvardNumberFormats count:9];
   v6 = [MEMORY[0x277CBEA60] arrayWithCGFloats:&sHarvardLabelIndents count:9];
-  v7 = -[TSSPropertyMap initWithPropertiesAndValues:]([TSSPropertyMap alloc], "initWithPropertiesAndValues:", 180, [a1 pLabelTypeArrayForType:3], 176, objc_msgSend(MEMORY[0x277CBEA60], "arrayWithCGFloats:count:", &sHarvardTextIndents, 9), 177, v6, 181, objc_msgSend(objc_opt_class(), "defaultLabelGeometries"), 184, v5, 185, objc_msgSend(a1, "pDefaultLabelValuesForLabelTypeProperty:", 185), 0);
-  v8 = [[a1 alloc] initWithContext:a3 name:0 overridePropertyMap:v7 isVariation:0];
+  v7 = -[TSSPropertyMap initWithPropertiesAndValues:]([TSSPropertyMap alloc], "initWithPropertiesAndValues:", 180, [self pLabelTypeArrayForType:3], 176, objc_msgSend(MEMORY[0x277CBEA60], "arrayWithCGFloats:count:", &sHarvardTextIndents, 9), 177, v6, 181, objc_msgSend(objc_opt_class(), "defaultLabelGeometries"), 184, v5, 185, objc_msgSend(self, "pDefaultLabelValuesForLabelTypeProperty:", 185), 0);
+  v8 = [[self alloc] initWithContext:context name:0 overridePropertyMap:v7 isVariation:0];
 
   return v8;
 }
 
-+ (id)numberedlistStyleForPresets:(id)a3
++ (id)numberedlistStyleForPresets:(id)presets
 {
   v25 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v4 = [presets countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (!v4)
   {
     return 0;
@@ -467,7 +467,7 @@ LABEL_7:
 LABEL_4:
     if (*v20 != v6)
     {
-      objc_enumerationMutation(a3);
+      objc_enumerationMutation(presets);
     }
 
     v8 = *(*(&v19 + 1) + 8 * v7);
@@ -515,7 +515,7 @@ LABEL_8:
       goto LABEL_4;
     }
 
-    v5 = [a3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    v5 = [presets countByEnumeratingWithState:&v19 objects:v24 count:16];
     v8 = 0;
   }
 
@@ -523,9 +523,9 @@ LABEL_8:
   return v8;
 }
 
-- (id)pOverrideArrayWithValue:(id)a3 forProperty:(int)a4 atParagraphLevels:(id)a5 withContext:(id)a6
+- (id)pOverrideArrayWithValue:(id)value forProperty:(int)property atParagraphLevels:(id)levels withContext:(id)context
 {
-  v7 = *&a4;
+  v7 = *&property;
   v25 = *MEMORY[0x277D85DE8];
   objc_opt_class();
   [(TSSStyle *)self valueForProperty:v7];
@@ -536,18 +536,18 @@ LABEL_8:
   }
 
   v11 = [MEMORY[0x277CBEB18] arrayWithArray:v10];
-  if (a3)
+  if (value)
   {
     v22 = 0u;
     v23 = 0u;
-    if (!a5)
+    if (!levels)
     {
-      a5 = &unk_287DDCBE8;
+      levels = &unk_287DDCBE8;
     }
 
     v20 = 0uLL;
     v21 = 0uLL;
-    v12 = [a5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v12 = [levels countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -558,24 +558,24 @@ LABEL_8:
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(a5);
+            objc_enumerationMutation(levels);
           }
 
-          v16 = [*(*(&v20 + 1) + 8 * i) intValue];
-          if ([v11 count] <= v16)
+          intValue = [*(*(&v20 + 1) + 8 * i) intValue];
+          if ([v11 count] <= intValue)
           {
-            v17 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler = [MEMORY[0x277D6C290] currentHandler];
             v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPListStyle pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:]"];
-            [v17 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPListStyle.mm"), 784, @"out of paragraph level bounds"}];
+            [currentHandler handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPListStyle.mm"), 784, @"out of paragraph level bounds"}];
           }
 
-          if ([v11 count] > v16)
+          if ([v11 count] > intValue)
           {
-            [v11 setObject:a3 atIndexedSubscript:v16];
+            [v11 setObject:value atIndexedSubscript:intValue];
           }
         }
 
-        v13 = [a5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [levels countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);
@@ -585,25 +585,25 @@ LABEL_8:
   return v11;
 }
 
-- (id)overridePropertyMapWithValue:(id)a3 forProperty:(int)a4 atParagraphLevels:(id)a5 withContext:(id)a6
+- (id)overridePropertyMapWithValue:(id)value forProperty:(int)property atParagraphLevels:(id)levels withContext:(id)context
 {
-  v8 = *&a4;
+  v8 = *&property;
   v11 = objc_alloc_init(TSSPropertyMap);
   if (v8 > 183)
   {
     if (v8 == 184)
     {
-      [(TSSPropertyMap *)v11 setObject:[(TSWPListStyle *)self pOverrideArrayWithValue:0 forProperty:185 atParagraphLevels:a5 withContext:a6] forProperty:185];
+      [(TSSPropertyMap *)v11 setObject:[(TSWPListStyle *)self pOverrideArrayWithValue:0 forProperty:185 atParagraphLevels:levels withContext:context] forProperty:185];
     }
 
     else if (v8 != 185)
     {
 LABEL_10:
-      v16 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPListStyle overridePropertyMapWithValue:forProperty:atParagraphLevels:withContext:]"];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPListStyle.mm"];
       v19 = @"Unhandled override property in list";
-      v20 = v16;
+      v20 = currentHandler;
       v21 = v17;
       v22 = 849;
 LABEL_11:
@@ -611,7 +611,7 @@ LABEL_11:
       goto LABEL_15;
     }
 
-    v13 = [(TSWPListStyle *)self pOverrideArrayWithValue:0 forProperty:184 atParagraphLevels:a5 withContext:a6];
+    context = [(TSWPListStyle *)self pOverrideArrayWithValue:0 forProperty:184 atParagraphLevels:levels withContext:context];
     v14 = v11;
     v15 = 184;
     goto LABEL_14;
@@ -627,21 +627,21 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v12 = [a3 intValue];
-  if (v12 > 1)
+  intValue = [value intValue];
+  if (intValue > 1)
   {
-    if (v12 == 3)
+    if (intValue == 3)
     {
-      -[TSSPropertyMap setObject:forProperty:](v11, "setObject:forProperty:", -[TSWPListStyle pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:](self, "pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:", [MEMORY[0x277CCABB0] numberWithInt:{+[TSWPListStyle defaultLabelNumberType](TSWPListStyle, "defaultLabelNumberType")}], 184, a5, a6), 184);
-      v13 = -[TSWPListStyle pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:](self, "pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:", [MEMORY[0x277CCABB0] numberWithInt:{+[TSWPListStyle defaultTieredNumber](TSWPListStyle, "defaultTieredNumber")}], 185, a5, a6);
+      -[TSSPropertyMap setObject:forProperty:](v11, "setObject:forProperty:", -[TSWPListStyle pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:](self, "pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:", [MEMORY[0x277CCABB0] numberWithInt:{+[TSWPListStyle defaultLabelNumberType](TSWPListStyle, "defaultLabelNumberType")}], 184, levels, context), 184);
+      context = -[TSWPListStyle pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:](self, "pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:", [MEMORY[0x277CCABB0] numberWithInt:{+[TSWPListStyle defaultTieredNumber](TSWPListStyle, "defaultTieredNumber")}], 185, levels, context);
       v14 = v11;
       v15 = 185;
       goto LABEL_14;
     }
 
-    if (v12 == 2)
+    if (intValue == 2)
     {
-      v13 = [(TSWPListStyle *)self pOverrideArrayWithValue:+[TSWPListStyle forProperty:"defaultLabelString"]atParagraphLevels:183 withContext:a5, a6];
+      context = [(TSWPListStyle *)self pOverrideArrayWithValue:+[TSWPListStyle forProperty:"defaultLabelString"]atParagraphLevels:183 withContext:levels, context];
       v14 = v11;
       v15 = 183;
       goto LABEL_14;
@@ -650,46 +650,46 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  if (!v12)
+  if (!intValue)
   {
     goto LABEL_15;
   }
 
-  if (v12 != 1)
+  if (intValue != 1)
   {
 LABEL_21:
-    v24 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPListStyle overridePropertyMapWithValue:forProperty:atParagraphLevels:withContext:]"];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPListStyle.mm"];
     v19 = @"Not covering a list type in inspector setter";
-    v20 = v24;
+    v20 = currentHandler2;
     v21 = v25;
     v22 = 828;
     goto LABEL_11;
   }
 
-  v13 = -[TSWPListStyle pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:](self, "pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:", [+[TSWPImageBulletProvider sharedInstance](TSWPImageBulletProvider dataForDefaultImageBulletWithContext:"dataForDefaultImageBulletWithContext:", a6], 182, a5, a6);
+  context = -[TSWPListStyle pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:](self, "pOverrideArrayWithValue:forProperty:atParagraphLevels:withContext:", [+[TSWPImageBulletProvider sharedInstance](TSWPImageBulletProvider dataForDefaultImageBulletWithContext:"dataForDefaultImageBulletWithContext:", context], 182, levels, context);
   v14 = v11;
   v15 = 182;
 LABEL_14:
-  [(TSSPropertyMap *)v14 setObject:v13 forProperty:v15];
+  [(TSSPropertyMap *)v14 setObject:context forProperty:v15];
 LABEL_15:
-  [(TSSPropertyMap *)v11 setObject:[(TSWPListStyle *)self pOverrideArrayWithValue:a3 forProperty:v8 atParagraphLevels:a5 withContext:a6] forProperty:v8];
+  [(TSSPropertyMap *)v11 setObject:[(TSWPListStyle *)self pOverrideArrayWithValue:value forProperty:v8 atParagraphLevels:levels withContext:context] forProperty:v8];
 
   return v11;
 }
 
-+ (TSWPListStyle)listStyleWithNumberType:(int)a3 inStyleSheet:(id)a4 withNumberedPresetStyle:(id)a5
++ (TSWPListStyle)listStyleWithNumberType:(int)type inStyleSheet:(id)sheet withNumberedPresetStyle:(id)style
 {
   v27 = *MEMORY[0x277D85DE8];
   v8 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v9 = a3;
+  *&v9 = type;
   v10 = [v8 initWithFloat:v9];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [a4 childrenOfStyle:{a5, 0}];
+  v11 = [sheet childrenOfStyle:{style, 0}];
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -720,9 +720,9 @@ LABEL_15:
 
         else
         {
-          v19 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPListStyle listStyleWithNumberType:inStyleSheet:withNumberedPresetStyle:]"];
-          [v19 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPListStyle.mm"), 871, @"Expected numbered list style"}];
+          [currentHandler handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPListStyle.mm"), 871, @"Expected numbered list style"}];
         }
       }
 
@@ -743,13 +743,13 @@ LABEL_16:
   return v16;
 }
 
-+ (id)propertyMapForListNumberType:(int)a3
++ (id)propertyMapForListNumberType:(int)type
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = type;
   v7 = [v5 initWithFloat:v6];
   v8 = objc_alloc_init(TSSPropertyMap);
-  -[TSSPropertyMap setObject:forProperty:](v8, "setObject:forProperty:", [a1 pLabelTypeArrayForType:3], 180);
+  -[TSSPropertyMap setObject:forProperty:](v8, "setObject:forProperty:", [self pLabelTypeArrayForType:3], 180);
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v11 = 9;
@@ -768,13 +768,13 @@ LABEL_16:
   return v8;
 }
 
-+ (id)CJKListNameForNumberType:(int)a3
++ (id)CJKListNameForNumberType:(int)type
 {
-  if (a3 <= 41)
+  if (type <= 41)
   {
-    if (a3 <= 26)
+    if (type <= 26)
     {
-      switch(a3)
+      switch(type)
       {
         case 15:
           v3 = @"Kanji";
@@ -788,15 +788,15 @@ LABEL_16:
       }
     }
 
-    else if (a3 > 32)
+    else if (type > 32)
     {
-      if (a3 == 33)
+      if (type == 33)
       {
         v3 = @"Chinese Numerals - Trad.";
         goto LABEL_38;
       }
 
-      if (a3 == 39)
+      if (type == 39)
       {
         v3 = @"Chinese Financial Numerals - Simp.";
         goto LABEL_38;
@@ -805,13 +805,13 @@ LABEL_16:
 
     else
     {
-      if (a3 == 27)
+      if (type == 27)
       {
         v3 = @"Katakana Iroha";
         goto LABEL_38;
       }
 
-      if (a3 == 30)
+      if (type == 30)
       {
         v3 = @"Chinese Numerals - Simp.";
         goto LABEL_38;
@@ -821,17 +821,17 @@ LABEL_16:
     return 0;
   }
 
-  if (a3 > 51)
+  if (type > 51)
   {
-    if (a3 > 57)
+    if (type > 57)
     {
-      if (a3 == 58)
+      if (type == 58)
       {
         v3 = @"Hebrew Alpha";
         goto LABEL_38;
       }
 
-      if (a3 == 61)
+      if (type == 61)
       {
         v3 = @"Hebrew Biblical";
         goto LABEL_38;
@@ -840,13 +840,13 @@ LABEL_16:
 
     else
     {
-      if (a3 == 52)
+      if (type == 52)
       {
         v3 = @"Arabic Alpha";
         goto LABEL_38;
       }
 
-      if (a3 == 55)
+      if (type == 55)
       {
         v3 = @"Arabic Abjad";
         goto LABEL_38;
@@ -856,15 +856,15 @@ LABEL_16:
     return 0;
   }
 
-  if (a3 > 47)
+  if (type > 47)
   {
-    if (a3 == 48)
+    if (type == 48)
     {
       v3 = @"Circled Numbers";
       goto LABEL_38;
     }
 
-    if (a3 == 49)
+    if (type == 49)
     {
       v3 = @"Arabic";
       goto LABEL_38;
@@ -873,13 +873,13 @@ LABEL_16:
     return 0;
   }
 
-  if (a3 == 42)
+  if (type == 42)
   {
     v3 = @"Chinese Financial Numerals - Trad.";
     goto LABEL_38;
   }
 
-  if (a3 != 45)
+  if (type != 45)
   {
     return 0;
   }
@@ -891,10 +891,10 @@ LABEL_38:
   return [v5 localizedStringForKey:v3 value:&stru_287D36338 table:@"TSText"];
 }
 
-+ (id)pLabelTypeArrayForType:(int)a3
++ (id)pLabelTypeArrayForType:(int)type
 {
   v4[9] = *MEMORY[0x277D85DE8];
-  v4[0] = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4[0] = [MEMORY[0x277CCABB0] numberWithInt:*&type];
   v4[1] = v4[0];
   v4[2] = v4[0];
   v4[3] = v4[0];
@@ -906,12 +906,12 @@ LABEL_38:
   return [MEMORY[0x277CBEA60] arrayWithObjects:v4 count:9];
 }
 
-+ (id)pDefaultLabelValuesForLabelTypeProperty:(int)a3
++ (id)pDefaultLabelValuesForLabelTypeProperty:(int)property
 {
   v11[9] = *MEMORY[0x277D85DE8];
-  if (a3 > 183)
+  if (property > 183)
   {
-    if (a3 == 184)
+    if (property == 184)
     {
       v10[0] = [MEMORY[0x277CCABB0] numberWithInt:{+[TSWPListStyle defaultLabelNumberType](TSWPListStyle, "defaultLabelNumberType")}];
       v10[1] = v10[0];
@@ -927,7 +927,7 @@ LABEL_38:
       return [v3 arrayWithObjects:v4 count:9];
     }
 
-    if (a3 == 185)
+    if (property == 185)
     {
       v9[0] = [MEMORY[0x277CCABB0] numberWithInt:{+[TSWPListStyle defaultTieredNumber](TSWPListStyle, "defaultTieredNumber")}];
       v9[1] = v9[0];
@@ -944,15 +944,15 @@ LABEL_38:
     }
 
 LABEL_8:
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPListStyle pDefaultLabelValuesForLabelTypeProperty:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPListStyle.mm"), 1029, @"Unhandled array property in list"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPListStyle.mm"), 1029, @"Unhandled array property in list"}];
     return 0;
   }
 
-  if (a3 == 182)
+  if (property == 182)
   {
-    v8[0] = [a1 defaultMissingBulletImage];
+    v8[0] = [self defaultMissingBulletImage];
     v8[1] = v8[0];
     v8[2] = v8[0];
     v8[3] = v8[0];
@@ -966,12 +966,12 @@ LABEL_8:
     return [v3 arrayWithObjects:v4 count:9];
   }
 
-  if (a3 != 183)
+  if (property != 183)
   {
     goto LABEL_8;
   }
 
-  v11[0] = [a1 defaultLabelString];
+  v11[0] = [self defaultLabelString];
   v11[1] = v11[0];
   v11[2] = v11[0];
   v11[3] = v11[0];

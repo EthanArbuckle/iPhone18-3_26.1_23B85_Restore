@@ -1,54 +1,54 @@
 @interface CKStickerReactionSession
 - (CKStickerReactionSession)init;
-- (CKStickerReactionSession)initWithConversation:(id)a3 chatItem:(id)a4 cell:(id)a5;
-- (void)sendSticker:(id)a3;
-- (void)setCell:(id)a3;
-- (void)setChatItem:(id)a3;
-- (void)setConversation:(id)a3;
+- (CKStickerReactionSession)initWithConversation:(id)conversation chatItem:(id)item cell:(id)cell;
+- (void)sendSticker:(id)sticker;
+- (void)setCell:(id)cell;
+- (void)setChatItem:(id)item;
+- (void)setConversation:(id)conversation;
 @end
 
 @implementation CKStickerReactionSession
 
-- (void)setConversation:(id)a3
+- (void)setConversation:(id)conversation
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_conversation);
-  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_conversation) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_conversation) = conversation;
+  conversationCopy = conversation;
 }
 
-- (void)setChatItem:(id)a3
+- (void)setChatItem:(id)item
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_chatItem);
-  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_chatItem) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_chatItem) = item;
+  itemCopy = item;
 }
 
-- (void)setCell:(id)a3
+- (void)setCell:(id)cell
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_cell);
-  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_cell) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_cell) = cell;
+  cellCopy = cell;
 }
 
-- (CKStickerReactionSession)initWithConversation:(id)a3 chatItem:(id)a4 cell:(id)a5
+- (CKStickerReactionSession)initWithConversation:(id)conversation chatItem:(id)item cell:(id)cell
 {
   *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession__didSendSticker) = 0;
-  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_conversation) = a3;
-  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_chatItem) = a4;
-  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_cell) = a5;
+  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_conversation) = conversation;
+  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_chatItem) = item;
+  *(&self->super.isa + OBJC_IVAR___CKStickerReactionSession_cell) = cell;
   v11.receiver = self;
   v11.super_class = CKStickerReactionSession;
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  conversationCopy = conversation;
+  itemCopy = item;
+  cellCopy = cell;
   return [(CKStickerReactionSession *)&v11 init];
 }
 
-- (void)sendSticker:(id)a3
+- (void)sendSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = self;
-  sub_19087AD18(v4);
+  stickerCopy = sticker;
+  selfCopy = self;
+  sub_19087AD18(stickerCopy);
 }
 
 - (CKStickerReactionSession)init

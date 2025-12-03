@@ -1,49 +1,49 @@
 @interface _PXStoryConcreteScorerDisplayAssetsFetchResult
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (PXDisplayAsset)firstObject;
 - (PXDisplayAsset)lastObject;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectsAtIndexes:(id)a3;
-- (id)storyDisplayAssetAtIndex:(int64_t)a3;
-- (id)thumbnailAssetAtIndex:(unint64_t)a3;
-- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)a3;
-- (unint64_t)countOfAssetsWithMediaType:(int64_t)a3;
-- (void)addResourceWithIndex:(int64_t)a3;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectsAtIndexes:(id)indexes;
+- (id)storyDisplayAssetAtIndex:(int64_t)index;
+- (id)thumbnailAssetAtIndex:(unint64_t)index;
+- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)type;
+- (unint64_t)countOfAssetsWithMediaType:(int64_t)type;
+- (void)addResourceWithIndex:(int64_t)index;
 - (void)dealloc;
-- (void)setCount:(int64_t)a3;
+- (void)setCount:(int64_t)count;
 @end
 
 @implementation _PXStoryConcreteScorerDisplayAssetsFetchResult
 
-- (id)thumbnailAssetAtIndex:(unint64_t)a3
+- (id)thumbnailAssetAtIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:475 description:{@"%s not implemented yet", "-[_PXStoryConcreteScorerDisplayAssetsFetchResult thumbnailAssetAtIndex:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:475 description:{@"%s not implemented yet", "-[_PXStoryConcreteScorerDisplayAssetsFetchResult thumbnailAssetAtIndex:]"}];
 
   abort();
 }
 
-- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)a3
+- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)type
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:471 description:{@"%s not implemented yet", "-[_PXStoryConcreteScorerDisplayAssetsFetchResult cachedCountOfAssetsWithMediaType:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:471 description:{@"%s not implemented yet", "-[_PXStoryConcreteScorerDisplayAssetsFetchResult cachedCountOfAssetsWithMediaType:]"}];
 
   abort();
 }
 
-- (unint64_t)countOfAssetsWithMediaType:(int64_t)a3
+- (unint64_t)countOfAssetsWithMediaType:(int64_t)type
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:467 description:{@"%s not implemented yet", "-[_PXStoryConcreteScorerDisplayAssetsFetchResult countOfAssetsWithMediaType:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:467 description:{@"%s not implemented yet", "-[_PXStoryConcreteScorerDisplayAssetsFetchResult countOfAssetsWithMediaType:]"}];
 
   abort();
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:463 description:{@"%s not implemented yet", "-[_PXStoryConcreteScorerDisplayAssetsFetchResult containsObject:]"}];
+  objectCopy = object;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:463 description:{@"%s not implemented yet", "-[_PXStoryConcreteScorerDisplayAssetsFetchResult containsObject:]"}];
 
   abort();
 }
@@ -79,24 +79,24 @@
   return v3;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:450 description:{@"%s not implemented yet", "-[_PXStoryConcreteScorerDisplayAssetsFetchResult objectsAtIndexes:]"}];
+  indexesCopy = indexes;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:450 description:{@"%s not implemented yet", "-[_PXStoryConcreteScorerDisplayAssetsFetchResult objectsAtIndexes:]"}];
 
   abort();
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v3 = [(PXStoryResourcesDataSource *)self->_resourcesDataSource displayAssetResourceAtIndex:self->_resourceIndexes[a3]];
-  v4 = [v3 px_storyResourceDisplayAsset];
+  v3 = [(PXStoryResourcesDataSource *)self->_resourcesDataSource displayAssetResourceAtIndex:self->_resourceIndexes[index]];
+  px_storyResourceDisplayAsset = [v3 px_storyResourceDisplayAsset];
 
-  return v4;
+  return px_storyResourceDisplayAsset;
 }
 
-- (id)storyDisplayAssetAtIndex:(int64_t)a3
+- (id)storyDisplayAssetAtIndex:(int64_t)index
 {
   asset = self->_asset;
   if (!asset)
@@ -108,26 +108,26 @@
     asset = self->_asset;
   }
 
-  [(PXStoryReusableDisplayAsset *)asset configureWithDisplayResourceIndex:self->_resourceIndexes[a3] resourcesDataSource:self->_resourcesDataSource];
+  [(PXStoryReusableDisplayAsset *)asset configureWithDisplayResourceIndex:self->_resourceIndexes[index] resourcesDataSource:self->_resourcesDataSource];
   v8 = self->_asset;
 
   return v8;
 }
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    self->_count = a3;
+    self->_count = count;
     _PXGArrayCapacityResizeToCount();
   }
 }
 
-- (void)addResourceWithIndex:(int64_t)a3
+- (void)addResourceWithIndex:(int64_t)index
 {
   v5 = [(_PXStoryConcreteScorerDisplayAssetsFetchResult *)self count];
   [(_PXStoryConcreteScorerDisplayAssetsFetchResult *)self setCount:[(_PXStoryConcreteScorerDisplayAssetsFetchResult *)self count]+ 1];
-  self->_resourceIndexes[v5] = a3;
+  self->_resourceIndexes[v5] = index;
 }
 
 - (void)dealloc

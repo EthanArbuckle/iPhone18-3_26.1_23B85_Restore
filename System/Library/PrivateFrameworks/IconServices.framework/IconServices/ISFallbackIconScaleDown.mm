@@ -1,20 +1,20 @@
 @interface ISFallbackIconScaleDown
-- (ISFallbackIconScaleDown)initWithImage:(CGImage *)a3 cornerRadius:(id)a4;
+- (ISFallbackIconScaleDown)initWithImage:(CGImage *)image cornerRadius:(id)radius;
 - (void)dealloc;
 @end
 
 @implementation ISFallbackIconScaleDown
 
-- (ISFallbackIconScaleDown)initWithImage:(CGImage *)a3 cornerRadius:(id)a4
+- (ISFallbackIconScaleDown)initWithImage:(CGImage *)image cornerRadius:(id)radius
 {
-  v7 = a4;
+  radiusCopy = radius;
   v10.receiver = self;
   v10.super_class = ISFallbackIconScaleDown;
   v8 = [(ISFallbackIconScaleDown *)&v10 init];
   if (v8)
   {
-    v8->_image = CGImageRetain(a3);
-    objc_storeStrong(&v8->_cornerRadius, a4);
+    v8->_image = CGImageRetain(image);
+    objc_storeStrong(&v8->_cornerRadius, radius);
   }
 
   return v8;

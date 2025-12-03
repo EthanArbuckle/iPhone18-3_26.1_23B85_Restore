@@ -1,13 +1,13 @@
 @interface AttachmentRefreshDeliveryController
-- (AttachmentRefreshDeliveryController)initWithSession:(id)a3;
-- (void)_sendFTMessage:(id)a3 withCompletionBlock:(id)a4;
+- (AttachmentRefreshDeliveryController)initWithSession:(id)session;
+- (void)_sendFTMessage:(id)message withCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)sendFTMessage:(id)a3 attempts:(unint64_t)a4 withCompletionBlock:(id)a5;
+- (void)sendFTMessage:(id)message attempts:(unint64_t)attempts withCompletionBlock:(id)block;
 @end
 
 @implementation AttachmentRefreshDeliveryController
 
-- (AttachmentRefreshDeliveryController)initWithSession:(id)a3
+- (AttachmentRefreshDeliveryController)initWithSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = AttachmentRefreshDeliveryController;
@@ -17,7 +17,7 @@
     v5 = objc_alloc_init(+[FTMessageDelivery APNSMessageDeliveryClass]);
     v4->_messageDelivery = v5;
     [(FTMessageDelivery *)v5 setMaxConcurrentMessages:2];
-    objc_storeWeak(&v4->_session, a3);
+    objc_storeWeak(&v4->_session, session);
   }
 
   return v4;
@@ -30,7 +30,7 @@
   [(AttachmentRefreshDeliveryController *)&v3 dealloc];
 }
 
-- (void)_sendFTMessage:(id)a3 withCompletionBlock:(id)a4
+- (void)_sendFTMessage:(id)message withCompletionBlock:(id)block
 {
   if (IMOSLoggingEnabled())
   {
@@ -38,9 +38,9 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v10 = [a3 messageBody];
+      messageBody = [message messageBody];
       v11 = 2112;
-      v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 command]);
+      v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [message command]);
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "Sending FTMessage: %@ command %@ ", buf, 0x16u);
     }
   }
@@ -49,12 +49,12 @@
   v8[1] = 3221225472;
   v8[2] = sub_91DBC;
   v8[3] = &unk_114A08;
-  v8[4] = a4;
-  [a3 setCompletionBlock:v8];
-  [(FTMessageDelivery *)self->_messageDelivery sendMessage:a3];
+  v8[4] = block;
+  [message setCompletionBlock:v8];
+  [(FTMessageDelivery *)self->_messageDelivery sendMessage:message];
 }
 
-- (void)sendFTMessage:(id)a3 attempts:(unint64_t)a4 withCompletionBlock:(id)a5
+- (void)sendFTMessage:(id)message attempts:(unint64_t)attempts withCompletionBlock:(id)block
 {
   if (IMOSLoggingEnabled())
   {
@@ -62,16 +62,16 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = a3;
+      messageCopy = message;
       v18 = 2048;
-      v19 = a4;
+      attemptsCopy = attempts;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "sendFTMessage %@ attempts %lu ", buf, 0x16u);
     }
   }
 
-  if (a5)
+  if (block)
   {
-    if (a3)
+    if (message)
     {
       if ([+[IMLockdownManager isInternalInstall]&& IMGetCachedDomainBoolForKey() sharedInstance]
       {
@@ -85,10 +85,10 @@
           }
         }
 
-        (*(a5 + 2))(a5, a3, 0, 0);
+        (*(block + 2))(block, message, 0, 0);
       }
 
-      else if (a4 > 1)
+      else if (attempts > 1)
       {
         if (IMOSLoggingEnabled())
         {
@@ -100,21 +100,21 @@
           }
         }
 
-        (*(a5 + 2))(a5, a3, 0, 4);
+        (*(block + 2))(block, message, 0, 4);
       }
 
       else
       {
-        objc_initWeak(buf, a3);
+        objc_initWeak(buf, message);
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
         v14[2] = sub_92518;
         v14[3] = &unk_114A58;
-        v15[1] = a4;
+        v15[1] = attempts;
         v14[4] = self;
         objc_copyWeak(v15, buf);
-        v14[5] = a5;
-        [(AttachmentRefreshDeliveryController *)self _sendFTMessage:a3 withCompletionBlock:v14];
+        v14[5] = block;
+        [(AttachmentRefreshDeliveryController *)self _sendFTMessage:message withCompletionBlock:v14];
         objc_destroyWeak(v15);
         objc_destroyWeak(buf);
       }
@@ -128,12 +128,12 @@
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           *buf = 136315138;
-          v17 = "[AttachmentRefreshDeliveryController sendFTMessage:attempts:withCompletionBlock:]";
+          messageCopy = "[AttachmentRefreshDeliveryController sendFTMessage:attempts:withCompletionBlock:]";
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "nil message sent to %s", buf, 0xCu);
         }
       }
 
-      (*(a5 + 2))(a5, 0, 0, 5);
+      (*(block + 2))(block, 0, 0, 5);
     }
   }
 

@@ -1,15 +1,15 @@
 @interface BKSHIDEventAuthenticationOriginator
-- (id)buildMessage:(id)a3;
-- (int64_t)validateMessage:(id)a3;
+- (id)buildMessage:(id)message;
+- (int64_t)validateMessage:(id)message;
 @end
 
 @implementation BKSHIDEventAuthenticationOriginator
 
-- (int64_t)validateMessage:(id)a3
+- (int64_t)validateMessage:(id)message
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  messageCopy = message;
+  if (!messageCopy)
   {
     v18 = MEMORY[0x1E696AEC0];
     v19 = objc_opt_class();
@@ -42,18 +42,18 @@
     JUMPOUT(0x1863A1320);
   }
 
-  v6 = v5;
+  v6 = messageCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v25 = MEMORY[0x1E696AEC0];
-    v26 = [v6 classForCoder];
-    if (!v26)
+    classForCoder = [v6 classForCoder];
+    if (!classForCoder)
     {
-      v26 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v27 = NSStringFromClass(v26);
+    v27 = NSStringFromClass(classForCoder);
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
     v30 = [v25 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"message", v27, v29];
@@ -108,13 +108,13 @@ LABEL_17:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v34 = MEMORY[0x1E696AEC0];
-    v35 = [(_BKSHIDEventAuthenticationKey *)v8 classForCoder];
-    if (!v35)
+    classForCoder2 = [(_BKSHIDEventAuthenticationKey *)v8 classForCoder];
+    if (!classForCoder2)
     {
-      v35 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v36 = NSStringFromClass(v35);
+    v36 = NSStringFromClass(classForCoder2);
     v37 = objc_opt_class();
     v38 = NSStringFromClass(v37);
     v39 = [v34 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"key", v36, v38];
@@ -145,8 +145,8 @@ LABEL_17:
     JUMPOUT(0x1863A159CLL);
   }
 
-  v9 = [(_BKSHIDEventAuthenticationKey *)v8 _context];
-  memcpy(&__dst, v9, sizeof(__dst));
+  _context = [(_BKSHIDEventAuthenticationKey *)v8 _context];
+  memcpy(&__dst, _context, sizeof(__dst));
   v10 = [(BKSHIDEventAuthenticationMessage *)v6 _calculateSignatureWithHMACContext:?];
   v11 = [v6[11] length];
   if (v11 != [v10 length])
@@ -187,14 +187,14 @@ LABEL_15:
   return v13;
 }
 
-- (id)buildMessage:(id)a3
+- (id)buildMessage:(id)message
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"BKSHIDEventAuthenticationOriginator.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"builder != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSHIDEventAuthenticationOriginator.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"builder != nil"}];
   }
 
   v6 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
@@ -210,7 +210,7 @@ LABEL_15:
 
   self->_keyLastAccessTime = v6 / 1000000000.0;
   v10 = key;
-  v11 = v5;
+  v11 = messageCopy;
   v12 = objc_opt_self();
   v13 = v10;
   if (!v13)
@@ -251,13 +251,13 @@ LABEL_15:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v33 = MEMORY[0x1E696AEC0];
-    v34 = [(_BKSHIDEventAuthenticationKey *)v14 classForCoder];
-    if (!v34)
+    classForCoder = [(_BKSHIDEventAuthenticationKey *)v14 classForCoder];
+    if (!classForCoder)
     {
-      v34 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v35 = NSStringFromClass(v34);
+    v35 = NSStringFromClass(classForCoder);
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
     v38 = [v33 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"key", v35, v37];
@@ -288,23 +288,23 @@ LABEL_15:
     JUMPOUT(0x1863A1A0CLL);
   }
 
-  if (!v5)
+  if (!messageCopy)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:sel__withInternalKey_buildMessage_ object:v12 file:@"BKSHIDEventAuthenticationMessage.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"builder != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__withInternalKey_buildMessage_ object:v12 file:@"BKSHIDEventAuthenticationMessage.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"builder != nil"}];
   }
 
-  v15 = [(BKSHIDEventAuthenticationMessage *)[BKSMutableHIDEventAuthenticationMessage alloc] _init];
-  v11[2](v11, v15);
+  _init = [(BKSHIDEventAuthenticationMessage *)[BKSMutableHIDEventAuthenticationMessage alloc] _init];
+  v11[2](v11, _init);
   v16 = mach_continuous_time();
-  if (v15)
+  if (_init)
   {
-    v15[6] = v16;
+    _init[6] = v16;
     v17 = v14;
-    v18 = [v15 copy];
-    v19 = [(_BKSHIDEventAuthenticationKey *)v17 _context];
+    v18 = [_init copy];
+    _context = [(_BKSHIDEventAuthenticationKey *)v17 _context];
 
-    memcpy(&__dst, v19, sizeof(__dst));
+    memcpy(&__dst, _context, sizeof(__dst));
     v20 = [(BKSHIDEventAuthenticationMessage *)v18 _calculateSignatureWithHMACContext:?];
     v21 = [v20 copy];
     v22 = v18[11];

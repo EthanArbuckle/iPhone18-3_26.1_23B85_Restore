@@ -1,17 +1,17 @@
 @interface ICQUISpecifierCellWithAsyncImageLoading
-- (ICQUISpecifierCellWithAsyncImageLoading)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ICQUISpecifierCellWithAsyncImageLoading)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupViews;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ICQUISpecifierCellWithAsyncImageLoading
 
-- (ICQUISpecifierCellWithAsyncImageLoading)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ICQUISpecifierCellWithAsyncImageLoading)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = ICQUISpecifierCellWithAsyncImageLoading;
-  v4 = [(PSTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -35,8 +35,8 @@
   [(UILabel *)self->_titleLabel setFont:v6];
 
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
-  v7 = [MEMORY[0x277D75348] labelColor];
-  [(UILabel *)self->_titleLabel setColor:v7];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(UILabel *)self->_titleLabel setColor:labelColor];
 
   v8 = objc_alloc_init(MEMORY[0x277D756B8]);
   subtitleLabel = self->_subtitleLabel;
@@ -47,8 +47,8 @@
   v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   [(UILabel *)self->_subtitleLabel setFont:v10];
 
-  v11 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)self->_subtitleLabel setColor:v11];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)self->_subtitleLabel setColor:secondaryLabelColor];
 
   v12 = objc_alloc(MEMORY[0x277D755E8]);
   v13 = [v12 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -77,79 +77,79 @@
   v22 = [MEMORY[0x277D74300] preferredFontForTextStyle:v5];
   [(UILabel *)self->_accessoryLabel setFont:v22];
 
-  v23 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)self->_accessoryLabel setColor:v23];
+  secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)self->_accessoryLabel setColor:secondaryLabelColor2];
 
   [(UILabel *)self->_accessoryLabel setTextAlignment:2];
   LODWORD(v24) = 1148846080;
   [(UILabel *)self->_accessoryLabel setContentCompressionResistancePriority:0 forAxis:v24];
-  v25 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
-  [v25 addSubview:self->_cellImageView];
+  contentView = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
+  [contentView addSubview:self->_cellImageView];
 
-  v26 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
-  [v26 addSubview:v18];
+  contentView2 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
+  [contentView2 addSubview:v18];
 
-  v27 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
-  [v27 addSubview:self->_accessoryLabel];
+  contentView3 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
+  [contentView3 addSubview:self->_accessoryLabel];
 
   v57 = MEMORY[0x277CCAAD0];
-  v76 = [(UIImageView *)self->_cellImageView widthAnchor];
-  v75 = [v76 constraintEqualToConstant:29.0];
+  widthAnchor = [(UIImageView *)self->_cellImageView widthAnchor];
+  v75 = [widthAnchor constraintEqualToConstant:29.0];
   v77[0] = v75;
-  v74 = [(UIImageView *)self->_cellImageView heightAnchor];
-  v73 = [v74 constraintEqualToConstant:40.0];
+  heightAnchor = [(UIImageView *)self->_cellImageView heightAnchor];
+  v73 = [heightAnchor constraintEqualToConstant:40.0];
   v77[1] = v73;
-  v71 = [(UIImageView *)self->_cellImageView leadingAnchor];
-  v72 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
-  v70 = [v72 layoutMarginsGuide];
-  v69 = [v70 leadingAnchor];
-  v68 = [v71 constraintEqualToAnchor:v69];
+  leadingAnchor = [(UIImageView *)self->_cellImageView leadingAnchor];
+  contentView4 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
+  layoutMarginsGuide = [contentView4 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v68 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v77[2] = v68;
-  v66 = [(UIImageView *)self->_cellImageView centerYAnchor];
-  v67 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
-  v65 = [v67 layoutMarginsGuide];
-  v64 = [v65 centerYAnchor];
-  v63 = [v66 constraintEqualToAnchor:v64];
+  centerYAnchor = [(UIImageView *)self->_cellImageView centerYAnchor];
+  contentView5 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
+  layoutMarginsGuide2 = [contentView5 layoutMarginsGuide];
+  centerYAnchor2 = [layoutMarginsGuide2 centerYAnchor];
+  v63 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v77[3] = v63;
-  v61 = [(UILabel *)self->_accessoryLabel centerYAnchor];
-  v62 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
-  v60 = [v62 layoutMarginsGuide];
-  v59 = [v60 centerYAnchor];
-  v58 = [v61 constraintEqualToAnchor:v59];
+  centerYAnchor3 = [(UILabel *)self->_accessoryLabel centerYAnchor];
+  contentView6 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
+  layoutMarginsGuide3 = [contentView6 layoutMarginsGuide];
+  centerYAnchor4 = [layoutMarginsGuide3 centerYAnchor];
+  v58 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v77[4] = v58;
-  v55 = [(UILabel *)self->_accessoryLabel trailingAnchor];
-  v56 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
-  v54 = [v56 layoutMarginsGuide];
-  v53 = [v54 trailingAnchor];
-  v51 = [v55 constraintEqualToAnchor:v53];
+  trailingAnchor = [(UILabel *)self->_accessoryLabel trailingAnchor];
+  contentView7 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
+  layoutMarginsGuide4 = [contentView7 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+  v51 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v77[5] = v51;
-  v50 = [(UILabel *)self->_accessoryLabel leadingAnchor];
-  v49 = [v18 trailingAnchor];
-  v48 = [v50 constraintGreaterThanOrEqualToAnchor:v49];
+  leadingAnchor3 = [(UILabel *)self->_accessoryLabel leadingAnchor];
+  trailingAnchor3 = [v18 trailingAnchor];
+  v48 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor3];
   v77[6] = v48;
-  v46 = [v18 topAnchor];
-  v47 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
-  v45 = [v47 layoutMarginsGuide];
-  v44 = [v45 topAnchor];
-  v43 = [v46 constraintEqualToAnchor:v44 constant:5.0];
+  topAnchor = [v18 topAnchor];
+  contentView8 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
+  layoutMarginsGuide5 = [contentView8 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide5 topAnchor];
+  v43 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v77[7] = v43;
-  v41 = [v18 bottomAnchor];
-  v42 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
-  v40 = [v42 layoutMarginsGuide];
-  v39 = [v40 bottomAnchor];
-  v38 = [v41 constraintEqualToAnchor:v39 constant:-5.0];
+  bottomAnchor = [v18 bottomAnchor];
+  contentView9 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
+  layoutMarginsGuide6 = [contentView9 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide6 bottomAnchor];
+  v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   v77[8] = v38;
   v28 = v18;
   v52 = v18;
-  v29 = [v18 leadingAnchor];
-  v30 = [(UIImageView *)self->_cellImageView trailingAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:10.0];
+  leadingAnchor4 = [v18 leadingAnchor];
+  trailingAnchor4 = [(UIImageView *)self->_cellImageView trailingAnchor];
+  v31 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4 constant:10.0];
   v77[9] = v31;
-  v32 = [v28 centerYAnchor];
-  v33 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
-  v34 = [v33 layoutMarginsGuide];
-  v35 = [v34 centerYAnchor];
-  v36 = [v32 constraintEqualToAnchor:v35];
+  centerYAnchor5 = [v28 centerYAnchor];
+  contentView10 = [(ICQUISpecifierCellWithAsyncImageLoading *)self contentView];
+  layoutMarginsGuide7 = [contentView10 layoutMarginsGuide];
+  centerYAnchor6 = [layoutMarginsGuide7 centerYAnchor];
+  v36 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v77[10] = v36;
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:11];
   [v57 activateConstraints:v37];
@@ -162,39 +162,39 @@
   v4.receiver = self;
   v4.super_class = ICQUISpecifierCellWithAsyncImageLoading;
   [(PSTableCell *)&v4 layoutSubviews];
-  v3 = [(ICQUISpecifierCellWithAsyncImageLoading *)self imageView];
-  [v3 setHidden:1];
+  imageView = [(ICQUISpecifierCellWithAsyncImageLoading *)self imageView];
+  [imageView setHidden:1];
 
   [(ICQUISpecifierCellWithAsyncImageLoading *)self setContentMode:3];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v13.receiver = self;
   v13.super_class = ICQUISpecifierCellWithAsyncImageLoading;
-  v4 = a3;
-  [(PSTableCell *)&v13 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v13 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(ICQUISpecifierCellWithAsyncImageLoading *)self textLabel:v13.receiver];
   [v5 setText:&stru_28844FC60];
 
   titleLabel = self->_titleLabel;
-  v7 = [v4 propertyForKey:*MEMORY[0x277D40170]];
+  v7 = [specifierCopy propertyForKey:*MEMORY[0x277D40170]];
   [(UILabel *)titleLabel setText:v7];
 
   subtitleLabel = self->_subtitleLabel;
-  v9 = [v4 propertyForKey:*MEMORY[0x277D40160]];
+  v9 = [specifierCopy propertyForKey:*MEMORY[0x277D40160]];
   [(UILabel *)subtitleLabel setText:v9];
 
-  v10 = [v4 target];
+  target = [specifierCopy target];
 
-  if (v10)
+  if (target)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       accessoryLabel = self->_accessoryLabel;
-      v12 = [v10 storageUsedLabel];
-      [(UILabel *)accessoryLabel setText:v12];
+      storageUsedLabel = [target storageUsedLabel];
+      [(UILabel *)accessoryLabel setText:storageUsedLabel];
     }
   }
 

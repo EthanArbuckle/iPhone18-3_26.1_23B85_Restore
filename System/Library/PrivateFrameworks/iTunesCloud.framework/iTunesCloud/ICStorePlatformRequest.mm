@@ -8,50 +8,50 @@
 - (NSString)keyProfile;
 - (NSString)platformIdentifier;
 - (NSString)protocolVersion;
-- (id)copyWithItemIdentifiersInRange:(_NSRange)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)performWithResponseHandler:(id)a3;
-- (void)setBatchSize:(int64_t)a3;
+- (id)copyWithItemIdentifiersInRange:(_NSRange)range;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)performWithResponseHandler:(id)handler;
+- (void)setBatchSize:(int64_t)size;
 @end
 
 @implementation ICStorePlatformRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [self->_batchResultsHandler copyWithZone:a3];
+    v6 = [self->_batchResultsHandler copyWithZone:zone];
     v7 = *(v5 + 56);
     *(v5 + 56) = v6;
 
     *(v5 + 48) = self->_batchSize;
-    v8 = [(NSString *)self->_clientIdentifier copyWithZone:a3];
+    v8 = [(NSString *)self->_clientIdentifier copyWithZone:zone];
     v9 = *(v5 + 16);
     *(v5 + 16) = v8;
 
-    v10 = [(NSString *)self->_imageProfile copyWithZone:a3];
+    v10 = [(NSString *)self->_imageProfile copyWithZone:zone];
     v11 = *(v5 + 64);
     *(v5 + 64) = v10;
 
-    v12 = [(NSArray *)self->_itemIdentifiers copyWithZone:a3];
+    v12 = [(NSArray *)self->_itemIdentifiers copyWithZone:zone];
     v13 = *(v5 + 40);
     *(v5 + 40) = v12;
 
-    v14 = [(NSString *)self->_keyProfile copyWithZone:a3];
+    v14 = [(NSString *)self->_keyProfile copyWithZone:zone];
     v15 = *(v5 + 72);
     *(v5 + 72) = v14;
 
     *(v5 + 80) = self->_personalizationStyle;
-    v16 = [(NSString *)self->_platformIdentifier copyWithZone:a3];
+    v16 = [(NSString *)self->_platformIdentifier copyWithZone:zone];
     v17 = *(v5 + 88);
     *(v5 + 88) = v16;
 
-    v18 = [(NSString *)self->_protocolVersion copyWithZone:a3];
+    v18 = [(NSString *)self->_protocolVersion copyWithZone:zone];
     v19 = *(v5 + 96);
     *(v5 + 96) = v18;
 
-    v20 = [(ICRequestContext *)self->_requestContext copyWithZone:a3];
+    v20 = [(ICRequestContext *)self->_requestContext copyWithZone:zone];
     v21 = *(v5 + 128);
     *(v5 + 128) = v20;
 
@@ -68,10 +68,10 @@
 - (NSArray)queryItems
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:7];
-  v4 = [(ICStorePlatformRequest *)self clientIdentifier];
-  if ([v4 length])
+  clientIdentifier = [(ICStorePlatformRequest *)self clientIdentifier];
+  if ([clientIdentifier length])
   {
-    v5 = [MEMORY[0x1E696AF60] queryItemWithName:@"caller" value:v4];
+    v5 = [MEMORY[0x1E696AF60] queryItemWithName:@"caller" value:clientIdentifier];
     [v3 addObject:v5];
   }
 
@@ -82,10 +82,10 @@
     [v3 addObject:v7];
   }
 
-  v8 = [(ICStorePlatformRequest *)self keyProfile];
-  if ([v8 length])
+  keyProfile = [(ICStorePlatformRequest *)self keyProfile];
+  if ([keyProfile length])
   {
-    v9 = [MEMORY[0x1E696AF60] queryItemWithName:@"p" value:v8];
+    v9 = [MEMORY[0x1E696AF60] queryItemWithName:@"p" value:keyProfile];
     [v3 addObject:v9];
   }
 
@@ -107,10 +107,10 @@
     [v3 addObject:v12];
   }
 
-  v13 = [(ICStorePlatformRequest *)self protocolVersion];
-  if ([v13 length])
+  protocolVersion = [(ICStorePlatformRequest *)self protocolVersion];
+  if ([protocolVersion length])
   {
-    v14 = [MEMORY[0x1E696AF60] queryItemWithName:@"version" value:v13];
+    v14 = [MEMORY[0x1E696AF60] queryItemWithName:@"version" value:protocolVersion];
     [v3 addObject:v14];
   }
 
@@ -122,9 +122,9 @@
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
   if ((self->_personalizationStyle - 1) <= 1)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v5 = MEMORY[0x1E696AB78];
-    v6 = v4;
+    v6 = date;
     v7 = objc_alloc_init(v5);
     [v7 setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"];
     v8 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:@"en_US_POSIX"];
@@ -140,10 +140,10 @@
   return v3;
 }
 
-- (id)copyWithItemIdentifiersInRange:(_NSRange)a3
+- (id)copyWithItemIdentifiersInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(ICStorePlatformRequest *)self copy];
   if (v6)
   {
@@ -155,20 +155,20 @@
   return v6;
 }
 
-- (void)setBatchSize:(int64_t)a3
+- (void)setBatchSize:(int64_t)size
 {
-  if (a3 >= 101)
+  if (size >= 101)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Batch size must be <= %ld", 100}];
   }
 
-  v5 = 100;
-  if (a3 < 100)
+  sizeCopy = 100;
+  if (size < 100)
   {
-    v5 = a3;
+    sizeCopy = size;
   }
 
-  self->_batchSize = v5;
+  self->_batchSize = sizeCopy;
 }
 
 - (NSString)protocolVersion
@@ -199,21 +199,21 @@
   }
 }
 
-- (id)performWithResponseHandler:(id)a3
+- (id)performWithResponseHandler:(id)handler
 {
   v76 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  handlerCopy = handler;
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = [(NSArray *)self->_itemIdentifiers count];
-    v6 = [(ICStorePlatformRequest *)self keyProfile];
+    keyProfile = [(ICStorePlatformRequest *)self keyProfile];
     *buf = 138543874;
     *&buf[4] = self;
     *&buf[12] = 2048;
     *&buf[14] = v5;
     *&buf[22] = 2114;
-    v73 = v6;
+    v73 = keyProfile;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing platform request of %ld items with profile '%{public}@'", buf, 0x20u);
   }
 
@@ -223,16 +223,16 @@
 
   group = dispatch_group_create();
   val = objc_alloc_init(MEMORY[0x1E696ADC8]);
-  v9 = [v40 maxConcurrentRequests];
-  v10 = v9 - 1;
-  if (v9 - 1 >= 5)
+  maxConcurrentRequests = [v40 maxConcurrentRequests];
+  v10 = maxConcurrentRequests - 1;
+  if (maxConcurrentRequests - 1 >= 5)
   {
     v10 = 5;
   }
 
-  if (v9 <= 2)
+  if (maxConcurrentRequests <= 2)
   {
-    v11 = v9;
+    v11 = maxConcurrentRequests;
   }
 
   else
@@ -244,8 +244,8 @@
   [val setName:@"com.apple.iTunesCloud.ICStorePlatformRequest.operationQueue"];
   [val setQualityOfService:*p_qualityOfService];
   batchSize = self->_batchSize;
-  v37 = [(ICStorePlatformRequest *)self keyProfile];
-  v13 = [v37 isEqualToString:@"lockup"];
+  keyProfile2 = [(ICStorePlatformRequest *)self keyProfile];
+  v13 = [keyProfile2 isEqualToString:@"lockup"];
   v14 = 50;
   if (v13)
   {
@@ -307,7 +307,7 @@
   v66 = v68;
   v64[4] = queue;
   v64[5] = v41;
-  v36 = v3;
+  v36 = handlerCopy;
   v65 = v36;
   [v25 setCancellationHandler:v64];
   v38 = MEMORY[0x1B8C781E0](self->_batchResultsHandler);
@@ -365,7 +365,7 @@
   v53 = buf;
   v50 = v36;
   v51 = v68;
-  v48 = self;
+  selfCopy = self;
   v49 = v16;
   v31 = v36;
   v32 = val;
@@ -579,27 +579,27 @@ void __53__ICStorePlatformRequest_performWithResponseHandler___block_invoke_3(ui
   clientIdentifier = self->_clientIdentifier;
   if (clientIdentifier)
   {
-    v3 = clientIdentifier;
+    processName = clientIdentifier;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if ([v5 length])
+    if ([bundleIdentifier length])
     {
-      v3 = v5;
+      processName = bundleIdentifier;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AE30] processInfo];
-      v3 = [v6 processName];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
     }
   }
 
-  return v3;
+  return processName;
 }
 
 - (ICStorePlatformRequest)init

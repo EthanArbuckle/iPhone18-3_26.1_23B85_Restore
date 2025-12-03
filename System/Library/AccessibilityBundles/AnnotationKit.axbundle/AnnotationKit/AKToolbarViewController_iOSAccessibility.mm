@@ -1,17 +1,17 @@
 @interface AKToolbarViewController_iOSAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_buildBasicItems;
 @end
 
 @implementation AKToolbarViewController_iOSAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKToolbarViewController_iOS" hasInstanceMethod:@"undoButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKToolbarViewController_iOS" hasInstanceMethod:@"redoButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKToolbarViewController_iOS" hasInstanceMethod:@"_buildBasicItems" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKToolbarViewController_iOS" hasInstanceMethod:@"undoButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKToolbarViewController_iOS" hasInstanceMethod:@"redoButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKToolbarViewController_iOS" hasInstanceMethod:@"_buildBasicItems" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

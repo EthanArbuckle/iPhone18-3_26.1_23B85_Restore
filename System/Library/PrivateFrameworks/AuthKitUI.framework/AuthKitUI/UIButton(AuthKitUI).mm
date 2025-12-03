@@ -8,7 +8,7 @@
 + (id)ak_passwordRecoveryButton
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v24[2] = a1;
+  v24[2] = self;
   v24[1] = a2;
   v24[0] = [MEMORY[0x277D75210] effectWithStyle:?];
   v23 = [MEMORY[0x277D75D00] effectForBlurEffect:v24[0]];
@@ -25,37 +25,37 @@
   [v19 setImage:v20 forState:0];
   [v19 addTarget:v19 action:sel__ak_passwordRecoveryButtonTapped_ forControlEvents:64];
   v4 = MEMORY[0x277CCAAD0];
-  v17 = [v22 topAnchor];
-  v16 = [v19 topAnchor];
-  v15 = [v17 constraintEqualToAnchor:?];
+  topAnchor = [v22 topAnchor];
+  topAnchor2 = [v19 topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:?];
   v25[0] = v15;
-  v14 = [v22 bottomAnchor];
-  v13 = [v19 bottomAnchor];
-  v12 = [v14 constraintEqualToAnchor:?];
+  bottomAnchor = [v22 bottomAnchor];
+  bottomAnchor2 = [v19 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:?];
   v25[1] = v12;
-  v11 = [v22 leadingAnchor];
-  v10 = [v19 leadingAnchor];
-  v9 = [v11 constraintEqualToAnchor:?];
+  leadingAnchor = [v22 leadingAnchor];
+  leadingAnchor2 = [v19 leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:?];
   v25[2] = v9;
-  v8 = [v22 trailingAnchor];
-  v7 = [v19 trailingAnchor];
-  v6 = [v8 constraintEqualToAnchor:?];
+  trailingAnchor = [v22 trailingAnchor];
+  trailingAnchor2 = [v19 trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:?];
   v25[3] = v6;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:4];
   [v4 activateConstraints:?];
   MEMORY[0x277D82BD8](v5);
   MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](trailingAnchor);
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](leadingAnchor);
   MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](topAnchor);
   v18 = MEMORY[0x277D82BE0](v19);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
@@ -70,7 +70,7 @@
 
 - (void)_ak_passwordRecoveryButtonTapped:()AuthKitUI
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);

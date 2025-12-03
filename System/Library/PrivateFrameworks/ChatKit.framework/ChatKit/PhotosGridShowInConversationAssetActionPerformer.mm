@@ -1,41 +1,41 @@
 @interface PhotosGridShowInConversationAssetActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
-+ (id)systemImageNameForActionManager:(id)a3;
-- (_TtC7ChatKit48PhotosGridShowInConversationAssetActionPerformer)initWithActionType:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
++ (id)systemImageNameForActionManager:(id)manager;
+- (_TtC7ChatKit48PhotosGridShowInConversationAssetActionPerformer)initWithActionType:(id)type;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PhotosGridShowInConversationAssetActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  [v9 fetchPropertySetsIfNeeded];
-  v13 = [v9 curationProperties];
-  v14 = [v13 syndicationIdentifier];
+  assetCopy = asset;
+  collectionCopy = collection;
+  personCopy = person;
+  groupCopy = group;
+  [assetCopy fetchPropertySetsIfNeeded];
+  curationProperties = [assetCopy curationProperties];
+  syndicationIdentifier = [curationProperties syndicationIdentifier];
 
-  if (v14)
+  if (syndicationIdentifier)
   {
   }
 
-  return v14 != 0;
+  return syndicationIdentifier != 0;
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v5 = a3;
-  v6 = [v5 selectedIndexPaths];
-  v7 = [v6 count];
+  snapshotCopy = snapshot;
+  selectedIndexPaths = [snapshotCopy selectedIndexPaths];
+  v7 = [selectedIndexPaths count];
 
   return v7 == 1;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
   sub_190BAE060();
   if (v4)
@@ -51,7 +51,7 @@
   return v5;
 }
 
-+ (id)systemImageNameForActionManager:(id)a3
++ (id)systemImageNameForActionManager:(id)manager
 {
   v3 = sub_190D56ED0();
 
@@ -60,15 +60,15 @@
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_190BADCE0();
 }
 
-- (_TtC7ChatKit48PhotosGridShowInConversationAssetActionPerformer)initWithActionType:(id)a3
+- (_TtC7ChatKit48PhotosGridShowInConversationAssetActionPerformer)initWithActionType:(id)type
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for PhotosGridShowInConversationAssetActionPerformer();
-  return [(PXActionPerformer *)&v5 initWithActionType:a3];
+  return [(PXActionPerformer *)&v5 initWithActionType:type];
 }
 
 @end

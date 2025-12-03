@@ -1,22 +1,22 @@
 @interface COMeshControllerQueuedCommand
-- (COMeshControllerQueuedCommand)initWithCommand:(id)a3 completionHandler:(id)a4;
-- (void)invokeCallbackWithError:(id)a3;
+- (COMeshControllerQueuedCommand)initWithCommand:(id)command completionHandler:(id)handler;
+- (void)invokeCallbackWithError:(id)error;
 @end
 
 @implementation COMeshControllerQueuedCommand
 
-- (COMeshControllerQueuedCommand)initWithCommand:(id)a3 completionHandler:(id)a4
+- (COMeshControllerQueuedCommand)initWithCommand:(id)command completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = COMeshControllerQueuedCommand;
   v9 = [(COMeshControllerQueuedCommand *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_command, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_command, command);
+    v11 = [handlerCopy copy];
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
   }
@@ -24,12 +24,12 @@
   return v10;
 }
 
-- (void)invokeCallbackWithError:(id)a3
+- (void)invokeCallbackWithError:(id)error
 {
-  v4 = a3;
-  v6 = [(COMeshControllerQueuedCommand *)self completionHandler];
-  v5 = [(COMeshControllerQueuedCommand *)self command];
-  v6[2](v6, v5, v4);
+  errorCopy = error;
+  completionHandler = [(COMeshControllerQueuedCommand *)self completionHandler];
+  command = [(COMeshControllerQueuedCommand *)self command];
+  completionHandler[2](completionHandler, command, errorCopy);
 }
 
 @end

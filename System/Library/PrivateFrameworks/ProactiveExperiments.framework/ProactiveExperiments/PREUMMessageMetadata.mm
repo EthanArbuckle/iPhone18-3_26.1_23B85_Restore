@@ -1,49 +1,49 @@
 @interface PREUMMessageMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAgeGroup:(id)a3;
+- (int)StringAsAgeGroup:(id)group;
 - (int)ageGroup;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCharCount:(BOOL)a3;
-- (void)setHasHasQuestionMark:(BOOL)a3;
-- (void)setHasIsApricotDevice:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCharCount:(BOOL)count;
+- (void)setHasHasQuestionMark:(BOOL)mark;
+- (void)setHasIsApricotDevice:(BOOL)device;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PREUMMessageMetadata
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PREUMMessageMetadata *)self setHostProcess:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PREUMMessageMetadata *)self setLocale:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PREUMMessageMetadata *)self setLang:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) != 0)
   {
-    self->_isApricotDevice = *(v4 + 41);
+    self->_isApricotDevice = *(fromCopy + 41);
     *&self->_has |= 8u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 2) == 0)
     {
 LABEL_9:
@@ -56,14 +56,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 44) & 2) == 0)
+  else if ((*(fromCopy + 44) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_charCount = *(v4 + 3);
+  self->_charCount = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 1) == 0)
   {
 LABEL_10:
@@ -76,12 +76,12 @@ LABEL_10:
   }
 
 LABEL_17:
-  self->_ageGroup = *(v4 + 2);
+  self->_ageGroup = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 44) & 4) != 0)
+  if ((*(fromCopy + 44) & 4) != 0)
   {
 LABEL_11:
-    self->_hasQuestionMark = *(v4 + 40);
+    self->_hasQuestionMark = *(fromCopy + 40);
     *&self->_has |= 4u;
   }
 
@@ -145,16 +145,16 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   hostProcess = self->_hostProcess;
-  if (hostProcess | *(v4 + 2))
+  if (hostProcess | *(equalCopy + 2))
   {
     if (![(NSString *)hostProcess isEqual:?])
     {
@@ -163,7 +163,7 @@ LABEL_5:
   }
 
   locale = self->_locale;
-  if (locale | *(v4 + 4))
+  if (locale | *(equalCopy + 4))
   {
     if (![(NSString *)locale isEqual:?])
     {
@@ -172,7 +172,7 @@ LABEL_5:
   }
 
   lang = self->_lang;
-  if (lang | *(v4 + 3))
+  if (lang | *(equalCopy + 3))
   {
     if (![(NSString *)lang isEqual:?])
     {
@@ -182,71 +182,71 @@ LABEL_5:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0)
+    if ((*(equalCopy + 44) & 8) == 0)
     {
       goto LABEL_28;
     }
 
-    v8 = *(v4 + 41);
+    v8 = *(equalCopy + 41);
     if (self->_isApricotDevice)
     {
-      if ((*(v4 + 41) & 1) == 0)
+      if ((*(equalCopy + 41) & 1) == 0)
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(v4 + 41))
+    else if (*(equalCopy + 41))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_charCount != *(v4 + 3))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_charCount != *(equalCopy + 3))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_28;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_ageGroup != *(v4 + 2))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_ageGroup != *(equalCopy + 2))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_28;
   }
 
-  v9 = (*(v4 + 44) & 4) == 0;
+  v9 = (*(equalCopy + 44) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) != 0)
+    if ((*(equalCopy + 44) & 4) != 0)
     {
       if (self->_hasQuestionMark)
       {
-        if ((*(v4 + 40) & 1) == 0)
+        if ((*(equalCopy + 40) & 1) == 0)
         {
           goto LABEL_28;
         }
       }
 
-      else if (*(v4 + 40))
+      else if (*(equalCopy + 40))
       {
         goto LABEL_28;
       }
@@ -264,18 +264,18 @@ LABEL_29:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_hostProcess copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_hostProcess copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_locale copyWithZone:a3];
+  v8 = [(NSString *)self->_locale copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_lang copyWithZone:a3];
+  v10 = [(NSString *)self->_lang copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -329,33 +329,33 @@ LABEL_5:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_hostProcess)
   {
-    [v4 setHostProcess:?];
-    v4 = v6;
+    [toCopy setHostProcess:?];
+    toCopy = v6;
   }
 
   if (self->_locale)
   {
     [v6 setLocale:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_lang)
   {
     [v6 setLang:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 41) = self->_isApricotDevice;
-    *(v4 + 44) |= 8u;
+    *(toCopy + 41) = self->_isApricotDevice;
+    *(toCopy + 44) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -374,8 +374,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 3) = self->_charCount;
-  *(v4 + 44) |= 2u;
+  *(toCopy + 3) = self->_charCount;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -389,38 +389,38 @@ LABEL_10:
   }
 
 LABEL_17:
-  *(v4 + 2) = self->_ageGroup;
-  *(v4 + 44) |= 1u;
+  *(toCopy + 2) = self->_ageGroup;
+  *(toCopy + 44) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_11:
-    *(v4 + 40) = self->_hasQuestionMark;
-    *(v4 + 44) |= 4u;
+    *(toCopy + 40) = self->_hasQuestionMark;
+    *(toCopy + 44) |= 4u;
   }
 
 LABEL_12:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_hostProcess)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_locale)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_lang)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -428,7 +428,7 @@ LABEL_12:
   {
     isApricotDevice = self->_isApricotDevice;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -449,7 +449,7 @@ LABEL_9:
 
   charCount = self->_charCount;
   PBDataWriterWriteUint32Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -465,13 +465,13 @@ LABEL_10:
 LABEL_17:
   ageGroup = self->_ageGroup;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_11:
     hasQuestionMark = self->_hasQuestionMark;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_12:
@@ -479,12 +479,12 @@ LABEL_12:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   hostProcess = self->_hostProcess;
   if (hostProcess)
   {
-    [v3 setObject:hostProcess forKey:@"host_process"];
+    [dictionary setObject:hostProcess forKey:@"host_process"];
   }
 
   locale = self->_locale;
@@ -572,15 +572,15 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = PREUMMessageMetadata;
   v4 = [(PREUMMessageMetadata *)&v8 description];
-  v5 = [(PREUMMessageMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PREUMMessageMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasHasQuestionMark:(BOOL)a3
+- (void)setHasHasQuestionMark:(BOOL)mark
 {
-  if (a3)
+  if (mark)
   {
     v3 = 4;
   }
@@ -593,40 +593,40 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsAgeGroup:(id)a3
+- (int)StringAsAgeGroup:(id)group
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GROUP_UNKNOWN"])
+  groupCopy = group;
+  if ([groupCopy isEqualToString:@"GROUP_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_0TO18"])
+  else if ([groupCopy isEqualToString:@"GROUP_0TO18"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_19TO30"])
+  else if ([groupCopy isEqualToString:@"GROUP_19TO30"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_31TO50"])
+  else if ([groupCopy isEqualToString:@"GROUP_31TO50"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_51TO65"])
+  else if ([groupCopy isEqualToString:@"GROUP_51TO65"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_66TO75"])
+  else if ([groupCopy isEqualToString:@"GROUP_66TO75"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_76UP"])
+  else if ([groupCopy isEqualToString:@"GROUP_76UP"])
   {
     v4 = 6;
   }
@@ -652,9 +652,9 @@ LABEL_12:
   }
 }
 
-- (void)setHasCharCount:(BOOL)a3
+- (void)setHasCharCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -667,9 +667,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsApricotDevice:(BOOL)a3
+- (void)setHasIsApricotDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 8;
   }

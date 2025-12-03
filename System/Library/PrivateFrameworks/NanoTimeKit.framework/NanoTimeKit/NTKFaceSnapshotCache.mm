@@ -1,15 +1,15 @@
 @interface NTKFaceSnapshotCache
 + (id)snapshotCache;
 - (NTKFaceSnapshotCache)init;
-- (id)cachedSnapshotOfFace:(id)a3;
-- (id)cachedSnapshotResultOfFace:(id)a3;
-- (void)_attemptSnapshotForRequest:(id)a3;
-- (void)_invokeCallbacksMatchingRequest:(id)a3 withResult:(id)a4 error:(id)a5;
+- (id)cachedSnapshotOfFace:(id)face;
+- (id)cachedSnapshotResultOfFace:(id)face;
+- (void)_attemptSnapshotForRequest:(id)request;
+- (void)_invokeCallbacksMatchingRequest:(id)request withResult:(id)result error:(id)error;
 - (void)_serviceRequestsIfIdle;
-- (void)_snapshotProcessInterrupted:(id)a3;
-- (void)cancelSnapshotRequest:(id)a3;
+- (void)_snapshotProcessInterrupted:(id)interrupted;
+- (void)cancelSnapshotRequest:(id)request;
 - (void)dealloc;
-- (void)fetchSnapshotWithRequest:(id)a3;
+- (void)fetchSnapshotWithRequest:(id)request;
 @end
 
 @implementation NTKFaceSnapshotCache
@@ -40,9 +40,9 @@ void __37__NTKFaceSnapshotCache_snapshotCache__block_invoke()
   v2 = [(NTKFaceSnapshotCache *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     results = v2->_results;
-    v2->_results = v3;
+    v2->_results = dictionary;
 
     v5 = objc_opt_new();
     requestsBySnapshotKey = v2->_requestsBySnapshotKey;
@@ -52,21 +52,21 @@ void __37__NTKFaceSnapshotCache_snapshotCache__block_invoke()
     callCountsByFace = v2->_callCountsByFace;
     v2->_callCountsByFace = v7;
 
-    v9 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     highPriorityRequests = v2->_highPriorityRequests;
-    v2->_highPriorityRequests = v9;
+    v2->_highPriorityRequests = orderedSet;
 
-    v11 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
     lowPriorityRequests = v2->_lowPriorityRequests;
-    v2->_lowPriorityRequests = v11;
+    v2->_lowPriorityRequests = orderedSet2;
 
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("com.apple.nanotimekit.snapshots.face", v13);
     snapshotQueue = v2->_snapshotQueue;
     v2->_snapshotQueue = v14;
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v2 selector:sel__snapshotProcessInterrupted_ name:@"NTKFaceSnapshotClientInterruptionName" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__snapshotProcessInterrupted_ name:@"NTKFaceSnapshotClientInterruptionName" object:0];
   }
 
   return v2;
@@ -74,21 +74,21 @@ void __37__NTKFaceSnapshotCache_snapshotCache__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NTKFaceSnapshotCache;
   [(NTKFaceSnapshotCache *)&v4 dealloc];
 }
 
-- (id)cachedSnapshotResultOfFace:(id)a3
+- (id)cachedSnapshotResultOfFace:(id)face
 {
-  v4 = _NTKFaceSnapshotCacheKeyForFace(a3);
+  v4 = _NTKFaceSnapshotCacheKeyForFace(face);
   if (v4)
   {
-    v5 = [(NTKFaceSnapshotCache *)self results];
-    v6 = [v5 objectForKey:v4];
+    results = [(NTKFaceSnapshotCache *)self results];
+    v6 = [results objectForKey:v4];
   }
 
   else
@@ -99,15 +99,15 @@ void __37__NTKFaceSnapshotCache_snapshotCache__block_invoke()
   return v6;
 }
 
-- (id)cachedSnapshotOfFace:(id)a3
+- (id)cachedSnapshotOfFace:(id)face
 {
-  v3 = [(NTKFaceSnapshotCache *)self cachedSnapshotResultOfFace:a3];
-  v4 = [v3 snapshot];
+  v3 = [(NTKFaceSnapshotCache *)self cachedSnapshotResultOfFace:face];
+  snapshot = [v3 snapshot];
 
-  return v4;
+  return snapshot;
 }
 
-- (void)_snapshotProcessInterrupted:(id)a3
+- (void)_snapshotProcessInterrupted:(id)interrupted
 {
   v4 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -135,29 +135,29 @@ void __52__NTKFaceSnapshotCache__snapshotProcessInterrupted___block_invoke(uint6
   }
 }
 
-- (void)_invokeCallbacksMatchingRequest:(id)a3 withResult:(id)a4 error:(id)a5
+- (void)_invokeCallbacksMatchingRequest:(id)request withResult:(id)result error:(id)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  resultCopy = result;
+  errorCopy = error;
   v11 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 face];
-    v13 = [v8 faceSnapshotKey];
+    face = [requestCopy face];
+    faceSnapshotKey = [requestCopy faceSnapshotKey];
     *buf = 138412802;
-    v34 = v9;
+    v34 = resultCopy;
     v35 = 2112;
-    v36 = v12;
+    v36 = face;
     v37 = 2112;
-    v38 = v13;
+    v38 = faceSnapshotKey;
     _os_log_impl(&dword_22D9C5000, v11, OS_LOG_TYPE_DEFAULT, "Invoking callbacks for result %@ of face %@ with key %@", buf, 0x20u);
   }
 
   requestsBySnapshotKey = self->_requestsBySnapshotKey;
-  v15 = [v8 faceSnapshotKey];
-  v16 = [(NSMutableDictionary *)requestsBySnapshotKey objectForKey:v15];
+  faceSnapshotKey2 = [requestCopy faceSnapshotKey];
+  v16 = [(NSMutableDictionary *)requestsBySnapshotKey objectForKey:faceSnapshotKey2];
 
   v30 = 0u;
   v31 = 0u;
@@ -179,11 +179,11 @@ void __52__NTKFaceSnapshotCache__snapshotProcessInterrupted___block_invoke(uint6
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v28 + 1) + 8 * v21) completion];
-        v23 = v22;
-        if (v22)
+        completion = [*(*(&v28 + 1) + 8 * v21) completion];
+        v23 = completion;
+        if (completion)
         {
-          (*(v22 + 16))(v22, 0, v9, v10);
+          (*(completion + 16))(completion, 0, resultCopy, errorCopy);
         }
 
         ++v21;
@@ -197,81 +197,81 @@ void __52__NTKFaceSnapshotCache__snapshotProcessInterrupted___block_invoke(uint6
   }
 
   v24 = self->_requestsBySnapshotKey;
-  v25 = [v8 faceSnapshotKey];
-  [(NSMutableDictionary *)v24 removeObjectForKey:v25];
+  faceSnapshotKey3 = [requestCopy faceSnapshotKey];
+  [(NSMutableDictionary *)v24 removeObjectForKey:faceSnapshotKey3];
 
-  v26 = [(NTKFaceSnapshotCache *)self callCountsByFace];
-  v27 = [v8 face];
-  [v26 removeObjectForKey:v27];
+  callCountsByFace = [(NTKFaceSnapshotCache *)self callCountsByFace];
+  face2 = [requestCopy face];
+  [callCountsByFace removeObjectForKey:face2];
 }
 
-- (void)cancelSnapshotRequest:(id)a3
+- (void)cancelSnapshotRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 face];
+    face = [requestCopy face];
     v17 = 138412290;
-    v18 = v6;
+    v18 = face;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "Cancel face request for %@", &v17, 0xCu);
   }
 
-  v7 = [(NTKFaceSnapshotCache *)self servicingRequest];
-  if (v7 != v4)
+  servicingRequest = [(NTKFaceSnapshotCache *)self servicingRequest];
+  if (servicingRequest != requestCopy)
   {
-    v8 = [(NTKFaceSnapshotCache *)self requestsBySnapshotKey];
-    v9 = [v4 faceSnapshotKey];
-    v10 = [v8 objectForKey:v9];
+    requestsBySnapshotKey = [(NTKFaceSnapshotCache *)self requestsBySnapshotKey];
+    faceSnapshotKey = [requestCopy faceSnapshotKey];
+    v10 = [requestsBySnapshotKey objectForKey:faceSnapshotKey];
 
-    [v10 removeObject:v4];
-    v11 = [(NTKFaceSnapshotCache *)self highPriorityRequests];
-    [v11 removeObject:v4];
-    v12 = [(NTKFaceSnapshotCache *)self lowPriorityRequests];
-    [v12 removeObject:v4];
-    v13 = [v4 completion];
-    if (v13)
+    [v10 removeObject:requestCopy];
+    highPriorityRequests = [(NTKFaceSnapshotCache *)self highPriorityRequests];
+    [highPriorityRequests removeObject:requestCopy];
+    lowPriorityRequests = [(NTKFaceSnapshotCache *)self lowPriorityRequests];
+    [lowPriorityRequests removeObject:requestCopy];
+    completion = [requestCopy completion];
+    if (completion)
     {
       v14 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v4 face];
+        face2 = [requestCopy face];
         v17 = 138412290;
-        v18 = v15;
+        v18 = face2;
         _os_log_impl(&dword_22D9C5000, v14, OS_LOG_TYPE_DEFAULT, "Cancelling face completion callback called for %@", &v17, 0xCu);
       }
 
       v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.nanotimekit.snapshots" code:31000 userInfo:0];
-      (v13)[2](v13, 1, 0, v16);
+      (completion)[2](completion, 1, 0, v16);
     }
   }
 }
 
-- (void)fetchSnapshotWithRequest:(id)a3
+- (void)fetchSnapshotWithRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 face];
+    face = [requestCopy face];
     v16 = 138412290;
-    v17 = v6;
+    v17 = face;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "Fetch request for %@", &v16, 0xCu);
   }
 
-  v7 = [v4 options];
-  v8 = [v7 priority];
+  options = [requestCopy options];
+  priority = [options priority];
 
-  v9 = [v4 completion];
-  if (v9)
+  completion = [requestCopy completion];
+  if (completion)
   {
-    v10 = [v4 face];
+    face2 = [requestCopy face];
 
-    if (v10)
+    if (face2)
     {
-      if (v8 == 3)
+      if (priority == 3)
       {
         [(NTKFaceSnapshotCache *)self highPriorityRequests];
       }
@@ -281,20 +281,20 @@ void __52__NTKFaceSnapshotCache__snapshotProcessInterrupted___block_invoke(uint6
         [(NTKFaceSnapshotCache *)self lowPriorityRequests];
       }
       v11 = ;
-      [v11 addObject:v4];
+      [v11 addObject:requestCopy];
 
-      v12 = [(NTKFaceSnapshotCache *)self requestsBySnapshotKey];
-      v13 = [v4 faceSnapshotKey];
-      v14 = [v12 objectForKey:v13];
+      requestsBySnapshotKey = [(NTKFaceSnapshotCache *)self requestsBySnapshotKey];
+      faceSnapshotKey = [requestCopy faceSnapshotKey];
+      array = [requestsBySnapshotKey objectForKey:faceSnapshotKey];
 
-      if (!v14)
+      if (!array)
       {
-        v14 = [MEMORY[0x277CBEB18] array];
-        v15 = [v4 faceSnapshotKey];
-        [v12 setObject:v14 forKey:v15];
+        array = [MEMORY[0x277CBEB18] array];
+        faceSnapshotKey2 = [requestCopy faceSnapshotKey];
+        [requestsBySnapshotKey setObject:array forKey:faceSnapshotKey2];
       }
 
-      [v14 addObject:v4];
+      [array addObject:requestCopy];
       [(NTKFaceSnapshotCache *)self _serviceRequestsIfIdle];
     }
   }
@@ -310,15 +310,15 @@ void __52__NTKFaceSnapshotCache__snapshotProcessInterrupted___block_invoke(uint6
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Attempting to service face requests if idle…", &v16, 2u);
   }
 
-  v4 = [(NTKFaceSnapshotCache *)self servicingRequest];
+  servicingRequest = [(NTKFaceSnapshotCache *)self servicingRequest];
 
-  if (!v4)
+  if (!servicingRequest)
   {
-    v7 = [(NTKFaceSnapshotCache *)self highPriorityRequests];
-    v8 = [(NTKFaceSnapshotCache *)self lowPriorityRequests];
-    v9 = [v7 count];
-    v10 = v7;
-    if (v9 || (v11 = [v8 count], v10 = v8, v11))
+    highPriorityRequests = [(NTKFaceSnapshotCache *)self highPriorityRequests];
+    lowPriorityRequests = [(NTKFaceSnapshotCache *)self lowPriorityRequests];
+    v9 = [highPriorityRequests count];
+    v10 = highPriorityRequests;
+    if (v9 || (v11 = [lowPriorityRequests count], v10 = lowPriorityRequests, v11))
     {
       v5 = v10;
     }
@@ -331,8 +331,8 @@ void __52__NTKFaceSnapshotCache__snapshotProcessInterrupted___block_invoke(uint6
     v12 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v7 count];
-      v14 = [v8 count];
+      v13 = [highPriorityRequests count];
+      v14 = [lowPriorityRequests count];
       v16 = 134218240;
       v17 = v13;
       v18 = 2048;
@@ -342,10 +342,10 @@ void __52__NTKFaceSnapshotCache__snapshotProcessInterrupted___block_invoke(uint6
 
     if (v5)
     {
-      v15 = [v5 firstObject];
+      firstObject = [v5 firstObject];
       [v5 removeObjectAtIndex:0];
-      [(NTKFaceSnapshotCache *)self setServicingRequest:v15];
-      [(NTKFaceSnapshotCache *)self _attemptSnapshotForRequest:v15];
+      [(NTKFaceSnapshotCache *)self setServicingRequest:firstObject];
+      [(NTKFaceSnapshotCache *)self _attemptSnapshotForRequest:firstObject];
     }
 
     goto LABEL_14;
@@ -354,47 +354,47 @@ void __52__NTKFaceSnapshotCache__snapshotProcessInterrupted___block_invoke(uint6
   v5 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NTKFaceSnapshotCache *)self servicingRequest];
-    v7 = [v6 face];
+    servicingRequest2 = [(NTKFaceSnapshotCache *)self servicingRequest];
+    highPriorityRequests = [servicingRequest2 face];
     v16 = 138412290;
-    v17 = v7;
+    v17 = highPriorityRequests;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "Skipping service request because already servicing face %@", &v16, 0xCu);
 
 LABEL_14:
   }
 }
 
-- (void)_attemptSnapshotForRequest:(id)a3
+- (void)_attemptSnapshotForRequest:(id)request
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 face];
+  requestCopy = request;
+  face = [requestCopy face];
   v6 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v5;
+    v36 = face;
     _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "Attempting snapshot of face %@", buf, 0xCu);
   }
 
   objc_initWeak(&location, self);
-  v24 = [(NTKFaceSnapshotCache *)self callCountsByFace];
-  v7 = [v24 objectForKey:v5];
+  callCountsByFace = [(NTKFaceSnapshotCache *)self callCountsByFace];
+  v7 = [callCountsByFace objectForKey:face];
   v8 = v7;
   if (!v7)
   {
     v7 = &unk_284181AE0;
   }
 
-  v9 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  if ((v9 + 1) < 3)
+  if ((unsignedIntegerValue + 1) < 3)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-    [v24 setObject:v12 forKey:v5];
+    [callCountsByFace setObject:v12 forKey:face];
 
-    v11 = [v4 options];
-    v13 = [v11 priority] - 1;
+    options = [requestCopy options];
+    v13 = [options priority] - 1;
     if (v13 >= 3)
     {
       v14 = 0;
@@ -407,23 +407,23 @@ LABEL_14:
       v15 = QOS_CLASS_USER_INITIATED;
     }
 
-    v16 = [v11 ntk_asDictionaryOptions];
-    v17 = _NTKFaceSnapshotCacheKeyForFace(v5);
+    ntk_asDictionaryOptions = [options ntk_asDictionaryOptions];
+    v17 = _NTKFaceSnapshotCacheKeyForFace(face);
     v18 = self->_snapshotQueue;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __51__NTKFaceSnapshotCache__attemptSnapshotForRequest___block_invoke_2;
     v25[3] = &unk_27877E4D8;
     v26 = v17;
-    v27 = v5;
-    v28 = v16;
+    v27 = face;
+    v28 = ntk_asDictionaryOptions;
     v29 = v18;
     v19 = v18;
-    v20 = v16;
+    v20 = ntk_asDictionaryOptions;
     v21 = v17;
     objc_copyWeak(&v31, &location);
-    v30 = v4;
-    v22 = v4;
+    v30 = requestCopy;
+    v22 = requestCopy;
     v23 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v15, v14, v25);
     dispatch_async(v19, v23);
 
@@ -436,7 +436,7 @@ LABEL_14:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v36 = v5;
+      v36 = face;
       _os_log_impl(&dword_22D9C5000, v10, OS_LOG_TYPE_DEFAULT, "Skipping face %@ - too many failures", buf, 0xCu);
     }
 
@@ -445,8 +445,8 @@ LABEL_14:
     block[2] = __51__NTKFaceSnapshotCache__attemptSnapshotForRequest___block_invoke;
     block[3] = &unk_27877E438;
     block[4] = self;
-    v33 = v4;
-    v11 = v4;
+    v33 = requestCopy;
+    options = requestCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 

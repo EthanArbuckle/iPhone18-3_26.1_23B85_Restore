@@ -1,17 +1,17 @@
 @interface DocumentPickerViewCoordinator
 - (_TtC13CalendarUIKit29DocumentPickerViewCoordinator)init;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
 @end
 
 @implementation DocumentPickerViewCoordinator
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   sub_1CAD4BFF4();
   v6 = sub_1CAD4E214();
-  v7 = a3;
-  v8 = self;
-  sub_1CAC3EA18(v7, v6);
+  pickerCopy = picker;
+  selfCopy = self;
+  sub_1CAC3EA18(pickerCopy, v6);
 }
 
 - (_TtC13CalendarUIKit29DocumentPickerViewCoordinator)init

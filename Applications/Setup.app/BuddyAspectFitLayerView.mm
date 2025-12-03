@@ -1,44 +1,44 @@
 @interface BuddyAspectFitLayerView
 - (CGRect)originalManagerLayerBounds;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setManagedLayer:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setManagedLayer:(id)layer;
 @end
 
 @implementation BuddyAspectFitLayerView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v6 = a3;
-  v5 = self;
+  frameCopy = frame;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = BuddyAspectFitLayerView;
-  [(BuddyAspectFitLayerView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  [(BuddyAspectFitLayerView *)v5 setNeedsLayout];
+  [(BuddyAspectFitLayerView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  [(BuddyAspectFitLayerView *)selfCopy setNeedsLayout];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  v6 = a3;
-  v5 = self;
+  boundsCopy = bounds;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = BuddyAspectFitLayerView;
-  [(BuddyAspectFitLayerView *)&v3 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  [(BuddyAspectFitLayerView *)v5 setNeedsLayout];
+  [(BuddyAspectFitLayerView *)&v3 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
+  [(BuddyAspectFitLayerView *)selfCopy setNeedsLayout];
 }
 
-- (void)setManagedLayer:(id)a3
+- (void)setManagedLayer:(id)layer
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v12->_managedLayer, location[0]);
+  objc_storeStrong(location, layer);
+  objc_storeStrong(&selfCopy->_managedLayer, location[0]);
   [location[0] bounds];
-  [(BuddyAspectFitLayerView *)v12 setOriginalManagerLayerBounds:v3, v4, v5, v6];
+  [(BuddyAspectFitLayerView *)selfCopy setOriginalManagerLayerBounds:v3, v4, v5, v6];
   v9 = 0;
   if (location[0])
   {
@@ -53,37 +53,37 @@
     v7 = 0;
   }
 
-  v8 = [(BuddyAspectFitLayerView *)v12 layer];
-  [v8 setSublayers:v7];
+  layer = [(BuddyAspectFitLayerView *)selfCopy layer];
+  [layer setSublayers:v7];
 
   if (v9)
   {
   }
 
-  [(BuddyAspectFitLayerView *)v12 setNeedsLayout];
+  [(BuddyAspectFitLayerView *)selfCopy setNeedsLayout];
   objc_storeStrong(location, 0);
 }
 
 - (void)layoutSubviews
 {
-  v145 = self;
+  selfCopy = self;
   v144 = a2;
   v143.receiver = self;
   v143.super_class = BuddyAspectFitLayerView;
   [(BuddyAspectFitLayerView *)&v143 layoutSubviews];
-  v2 = [(BuddyAspectFitLayerView *)v145 managedLayer];
+  managedLayer = [(BuddyAspectFitLayerView *)selfCopy managedLayer];
 
-  if (v2)
+  if (managedLayer)
   {
-    v3 = [(BuddyAspectFitLayerView *)v145 managedLayer];
-    [(CALayer *)v3 bounds];
+    managedLayer2 = [(BuddyAspectFitLayerView *)selfCopy managedLayer];
+    [(CALayer *)managedLayer2 bounds];
     v139 = v4;
     v138 = v5;
     v141 = v6;
     v140 = v7;
     v8 = v7;
-    v9 = [(BuddyAspectFitLayerView *)v145 managedLayer];
-    [(CALayer *)v9 bounds];
+    managedLayer3 = [(BuddyAspectFitLayerView *)selfCopy managedLayer];
+    [(CALayer *)managedLayer3 bounds];
     v135 = v10;
     v134 = v11;
     v137 = v12;
@@ -91,13 +91,13 @@
     v14 = v8 / v12;
 
     v142 = v14;
-    [(BuddyAspectFitLayerView *)v145 frame];
+    [(BuddyAspectFitLayerView *)selfCopy frame];
     v130 = v15;
     v129 = v16;
     v132 = v17;
     v131 = v18;
     v19 = v18;
-    [(BuddyAspectFitLayerView *)v145 frame];
+    [(BuddyAspectFitLayerView *)selfCopy frame];
     v126 = v20;
     v125 = v21;
     v128 = v22;
@@ -107,27 +107,27 @@
     v123 = 0.0;
     if (v142 <= v19 / v22)
     {
-      [(BuddyAspectFitLayerView *)v145 frame];
+      [(BuddyAspectFitLayerView *)selfCopy frame];
       v104 = v44;
       v103 = v45;
       v106 = v46;
       v105 = v47;
       v124 = v46;
-      v48 = [(BuddyAspectFitLayerView *)v145 managedLayer];
-      [(CALayer *)v48 bounds];
+      managedLayer4 = [(BuddyAspectFitLayerView *)selfCopy managedLayer];
+      [(CALayer *)managedLayer4 bounds];
       v100 = v49;
       v99 = v50;
       v102 = v51;
       v101 = v52;
       v53 = v52;
-      [(BuddyAspectFitLayerView *)v145 frame];
+      [(BuddyAspectFitLayerView *)selfCopy frame];
       v96 = v54;
       v95 = v55;
       v98 = v56;
       v97 = v57;
       v58 = v53 * v56;
-      v59 = [(BuddyAspectFitLayerView *)v145 managedLayer];
-      [(CALayer *)v59 bounds];
+      managedLayer5 = [(BuddyAspectFitLayerView *)selfCopy managedLayer];
+      [(CALayer *)managedLayer5 bounds];
       v92 = v60;
       v91 = v61;
       v94 = v62;
@@ -137,28 +137,28 @@
 
     else
     {
-      v24 = [(BuddyAspectFitLayerView *)v145 managedLayer];
-      [(CALayer *)v24 bounds];
+      managedLayer6 = [(BuddyAspectFitLayerView *)selfCopy managedLayer];
+      [(CALayer *)managedLayer6 bounds];
       v120 = v25;
       v119 = v26;
       v122 = v27;
       v121 = v28;
       v29 = v27;
-      [(BuddyAspectFitLayerView *)v145 frame];
+      [(BuddyAspectFitLayerView *)selfCopy frame];
       v116 = v30;
       v115 = v31;
       v118 = v32;
       v117 = v33;
       v34 = v29 * v33;
-      v35 = [(BuddyAspectFitLayerView *)v145 managedLayer];
-      [(CALayer *)v35 bounds];
+      managedLayer7 = [(BuddyAspectFitLayerView *)selfCopy managedLayer];
+      [(CALayer *)managedLayer7 bounds];
       v112 = v36;
       v111 = v37;
       v114 = v38;
       v113 = v39;
       v124 = v34 / v39;
 
-      [(BuddyAspectFitLayerView *)v145 frame];
+      [(BuddyAspectFitLayerView *)selfCopy frame];
       v108 = v40;
       v107 = v41;
       v110 = v42;
@@ -166,34 +166,34 @@
       v123 = v43;
     }
 
-    [(BuddyAspectFitLayerView *)v145 bounds];
+    [(BuddyAspectFitLayerView *)selfCopy bounds];
     rect = v146;
     CGRectGetMidX(v146);
-    [(BuddyAspectFitLayerView *)v145 bounds];
+    [(BuddyAspectFitLayerView *)selfCopy bounds];
     v88 = v147;
     CGRectGetMidY(v147);
     sub_100218FFC();
     *&v90 = v64;
     *(&v90 + 1) = v65;
-    v66 = [(BuddyAspectFitLayerView *)v145 managedLayer];
+    managedLayer8 = [(BuddyAspectFitLayerView *)selfCopy managedLayer];
     v87 = v90;
-    [(CALayer *)v66 setPosition:v90];
+    [(CALayer *)managedLayer8 setPosition:v90];
 
-    [(BuddyAspectFitLayerView *)v145 originalManagerLayerBounds];
+    [(BuddyAspectFitLayerView *)selfCopy originalManagerLayerBounds];
     v83 = v67;
     v82 = v68;
     v85 = v69;
     v84 = v70;
     v71 = v123 / v70;
-    [(BuddyAspectFitLayerView *)v145 originalManagerLayerBounds];
+    [(BuddyAspectFitLayerView *)selfCopy originalManagerLayerBounds];
     v79 = v72;
     v78 = v73;
     v81 = v74;
     v80 = v75;
     CATransform3DMakeScale(&__src, v71, v124 / v74, 1.0);
-    v76 = [(BuddyAspectFitLayerView *)v145 managedLayer];
+    managedLayer9 = [(BuddyAspectFitLayerView *)selfCopy managedLayer];
     memcpy(v77, &__src, sizeof(v77));
-    [(CALayer *)v76 setTransform:v77];
+    [(CALayer *)managedLayer9 setTransform:v77];
   }
 }
 

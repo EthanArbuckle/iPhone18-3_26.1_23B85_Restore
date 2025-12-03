@@ -1,19 +1,19 @@
 @interface MPModelLibraryModelSectionedCollectionDataSource
 - (BOOL)_allowedEntityIdentifiersContainsAllPersistentIDs;
-- (BOOL)hasSameContentAsDataSource:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPModelLibraryModelSectionedCollectionDataSource)initWithRequest:(id)a3 sectionQueryResults:(shared_ptr<mlcore:(void *)a5 :EntityQueryResult>)a4 itemQueryResults:;
+- (BOOL)hasSameContentAsDataSource:(id)source;
+- (BOOL)isEqual:(id)equal;
+- (MPModelLibraryModelSectionedCollectionDataSource)initWithRequest:(id)request sectionQueryResults:(shared_ptr<mlcore:(void *)results :EntityQueryResult>)a4 itemQueryResults:;
 - (id).cxx_construct;
-- (id)identifiersForItemAtIndexPath:(id)a3;
-- (id)identifiersForSectionAtIndex:(int64_t)a3;
-- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)sectionAtIndex:(unint64_t)a3;
+- (id)identifiersForItemAtIndexPath:(id)path;
+- (id)identifiersForSectionAtIndex:(int64_t)index;
+- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)set;
+- (id)itemAtIndexPath:(id)path;
+- (id)sectionAtIndex:(unint64_t)index;
 - (shared_ptr<mlcore::EntityQueryResult>)sectionEntityQueryResult;
 - (shared_ptr<std::map<long)itemEntityQueryResults;
-- (unint64_t)_adjustedIndexForSectionIndex:(int64_t)a3;
+- (unint64_t)_adjustedIndexForSectionIndex:(int64_t)index;
 - (unint64_t)hash;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
 - (unint64_t)numberOfSections;
 - (void)_populateIndexMap;
 @end
@@ -245,17 +245,17 @@
   return (v91 + v92) ^ __ROR8__(v91, 47) ^ v94 ^ __ROR8__(v91 + v92, 32) ^ v94 ^ __ROR8__(v92 ^ v93, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if ([(MPModelLibraryModelSectionedCollectionDataSource *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(MPModelLibraryModelSectionedCollectionDataSource *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(MPModelLibraryModelSectionedCollectionDataSource *)self hasSameContentAsDataSource:v4];
+    v5 = [(MPModelLibraryModelSectionedCollectionDataSource *)self hasSameContentAsDataSource:equalCopy];
   }
 
   else
@@ -273,8 +273,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(MPMediaLibraryEntityTranslationContext *)self->_sectionTranslationContext allowedEntityIdentifiers];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allowedEntityIdentifiers = [(MPMediaLibraryEntityTranslationContext *)self->_sectionTranslationContext allowedEntityIdentifiers];
+  v3 = [allowedEntityIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -284,12 +284,12 @@
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allowedEntityIdentifiers);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
-        v7 = [v6 library];
-        if ([v7 persistentID])
+        library = [v6 library];
+        if ([library persistentID])
         {
         }
 
@@ -305,7 +305,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [allowedEntityIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -321,11 +321,11 @@ LABEL_13:
   return v9;
 }
 
-- (unint64_t)_adjustedIndexForSectionIndex:(int64_t)a3
+- (unint64_t)_adjustedIndexForSectionIndex:(int64_t)index
 {
   if (self->_allowedSectionPersistentIDToSectionQueryResultsIndexMap.__tree_.__size_)
   {
-    v5 = self->_allowedSectionPersistentIDs.__begin_[a3];
+    v5 = self->_allowedSectionPersistentIDs.__begin_[index];
     v10[0] = v5;
     for (i = self->_allowedSectionPersistentIDToSectionQueryResultsIndexMap.__tree_.__end_node_.__left_; i; i = *i)
     {
@@ -341,15 +341,15 @@ LABEL_13:
       }
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:263 description:@"_allowedSectionPersistentIDToSectionQueryResultsIndexMap must contain an entry for every value in _allowedSectionIdentifiers"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:263 description:@"_allowedSectionPersistentIDToSectionQueryResultsIndexMap must contain an entry for every value in _allowedSectionIdentifiers"];
 
 LABEL_8:
     v10[10] = v10;
     return std::__tree<std::__value_type<long long,unsigned long>,std::__map_value_compare<long long,std::__value_type<long long,unsigned long>,std::less<long long>,true>,std::allocator<std::__value_type<long long,unsigned long>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(&self->_allowedSectionPersistentIDToSectionQueryResultsIndexMap, v5)[5];
   }
 
-  return a3;
+  return index;
 }
 
 - (void)_populateIndexMap
@@ -363,12 +363,12 @@ LABEL_8:
     std::__tree<std::__value_type<long long,unsigned long>,std::__map_value_compare<long long,std::__value_type<long long,unsigned long>,std::less<long long>,true>,std::allocator<std::__value_type<long long,unsigned long>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(&self->_allowedSectionPersistentIDToSectionQueryResultsIndexMap, v26)[5] = v3++;
   }
 
-  v4 = [(MPMediaLibraryEntityTranslationContext *)self->_sectionTranslationContext allowedEntityIdentifiers];
+  allowedEntityIdentifiers = [(MPMediaLibraryEntityTranslationContext *)self->_sectionTranslationContext allowedEntityIdentifiers];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v4;
+  v5 = allowedEntityIdentifiers;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
@@ -383,15 +383,15 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v27 + 1) + 8 * v8) library];
-        v10 = [v9 persistentID];
+        library = [*(*(&v27 + 1) + 8 * v8) library];
+        persistentID = [library persistentID];
 
         for (i = self->_allowedSectionPersistentIDToSectionQueryResultsIndexMap.__tree_.__end_node_.__left_; i; i = *i)
         {
           v12 = i[4];
-          if (v10 >= v12)
+          if (persistentID >= v12)
           {
-            if (v12 >= v10)
+            if (v12 >= persistentID)
             {
               end = self->_allowedSectionPersistentIDs.__end_;
               cap = self->_allowedSectionPersistentIDs.__cap_;
@@ -430,7 +430,7 @@ LABEL_8:
                 v22 = end - begin;
                 v23 = (8 * v18);
                 v24 = (8 * v18 - 8 * v22);
-                *v23 = v10;
+                *v23 = persistentID;
                 v15 = v23 + 1;
                 memcpy(v24, begin, v17);
                 v25 = self->_allowedSectionPersistentIDs.__begin_;
@@ -445,7 +445,7 @@ LABEL_8:
 
               else
               {
-                *end = v10;
+                *end = persistentID;
                 v15 = end + 1;
               }
 
@@ -468,12 +468,12 @@ LABEL_8:
   }
 }
 
-- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)a3
+- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)set
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v21 = v4;
-  if (!self->_sectionEntityQueryResult.__ptr_ || ([v4 library], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "persistentID"), v5, !v6))
+  setCopy = set;
+  v21 = setCopy;
+  if (!self->_sectionEntityQueryResult.__ptr_ || ([setCopy library], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "persistentID"), v5, !v6))
   {
 LABEL_26:
     v19 = 0;
@@ -511,7 +511,7 @@ LABEL_26:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218496;
-        v23 = self;
+        selfCopy = self;
         v24 = 2048;
         v25 = v7;
         v26 = 2048;
@@ -572,17 +572,17 @@ LABEL_27:
   return v19;
 }
 
-- (id)identifiersForSectionAtIndex:(int64_t)a3
+- (id)identifiersForSectionAtIndex:(int64_t)index
 {
   ptr = self->_sectionEntityQueryResult.__ptr_;
   if (ptr && mlcore::EntityQueryResult::entityCount(ptr))
   {
-    v7 = [(MPModelLibraryModelSectionedCollectionDataSource *)self _adjustedIndexForSectionIndex:a3];
+    v7 = [(MPModelLibraryModelSectionedCollectionDataSource *)self _adjustedIndexForSectionIndex:index];
     v8 = mlcore::EntityQueryResult::entityCount(self->_sectionEntityQueryResult.__ptr_);
     if (v7 >= v8)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:192 description:{@"Adjusted section index out of bounds: %ld (sectionIndex = %ld / sectionEntityCount = %ld)", v7, a3, v8}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:192 description:{@"Adjusted section index out of bounds: %ld (sectionIndex = %ld / sectionEntityCount = %ld)", v7, index, v8}];
     }
 
     v9 = mlcore::EntityQueryResult::propertyCaches(self->_sectionEntityQueryResult.__ptr_);
@@ -592,8 +592,8 @@ LABEL_27:
       std::vector<mlcore::PropertyCache>::__throw_out_of_range[abi:ne200100]();
     }
 
-    v11 = [(MPMediaLibraryEntityTranslationContext *)self->_sectionTranslationContext modelKind];
-    v12 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [v11 modelClass]);
+    modelKind = [(MPMediaLibraryEntityTranslationContext *)self->_sectionTranslationContext modelKind];
+    v12 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [modelKind modelClass]);
 
     v13 = [v12 identifiersForPropertyCache:v10 + 216 * v7 context:self->_sectionTranslationContext];
   }
@@ -606,16 +606,16 @@ LABEL_27:
   return v13;
 }
 
-- (id)identifiersForItemAtIndexPath:(id)a3
+- (id)identifiersForItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 section];
-  v7 = [(MPModelLibraryModelSectionedCollectionDataSource *)self _adjustedIndexForSectionIndex:v6];
+  pathCopy = path;
+  section = [pathCopy section];
+  v7 = [(MPModelLibraryModelSectionedCollectionDataSource *)self _adjustedIndexForSectionIndex:section];
   v8 = mlcore::EntityQueryResult::entityCount(self->_sectionEntityQueryResult.__ptr_);
   if (v7 >= v8)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:167 description:{@"Adjusted section index out of bounds: %ld (sectionIndex = %ld / sectionEntityCount = %ld)", v7, v6, v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:167 description:{@"Adjusted section index out of bounds: %ld (sectionIndex = %ld / sectionEntityCount = %ld)", v7, section, v8}];
   }
 
   v9 = mlcore::EntityQueryResult::persistentIDAtIndex(self->_sectionEntityQueryResult.__ptr_);
@@ -638,26 +638,26 @@ LABEL_27:
 
     if (v13)
     {
-      v14 = [(MPModelLibraryModelSectionedCollectionDataSource *)self itemAtIndexPath:v5];
-      v15 = [v14 identifiers];
+      v14 = [(MPModelLibraryModelSectionedCollectionDataSource *)self itemAtIndexPath:pathCopy];
+      identifiers = [v14 identifiers];
     }
 
     else
     {
-      v17 = [(MPModelRequest *)self->_request itemKind];
-      v14 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [v17 modelClass]);
+      itemKind = [(MPModelRequest *)self->_request itemKind];
+      v14 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [itemKind modelClass]);
 
       v18 = mlcore::EntityQueryResult::propertyCaches(v12);
-      v19 = [v5 item];
-      if (0x84BDA12F684BDA13 * ((v18[1] - *v18) >> 3) <= v19)
+      item = [pathCopy item];
+      if (0x84BDA12F684BDA13 * ((v18[1] - *v18) >> 3) <= item)
       {
         std::vector<mlcore::PropertyCache>::__throw_out_of_range[abi:ne200100]();
       }
 
-      v15 = [v14 identifiersForPropertyCache:*v18 + 216 * v19 context:self->_itemTranslationContext];
+      identifiers = [v14 identifiersForPropertyCache:*v18 + 216 * item context:self->_itemTranslationContext];
     }
 
-    v16 = v15;
+    v16 = identifiers;
 
     if (v11)
     {
@@ -678,25 +678,25 @@ LABEL_15:
   return v16;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 section];
-  v7 = [(MPModelLibraryModelSectionedCollectionDataSource *)self _adjustedIndexForSectionIndex:v6];
+  pathCopy = path;
+  section = [pathCopy section];
+  v7 = [(MPModelLibraryModelSectionedCollectionDataSource *)self _adjustedIndexForSectionIndex:section];
   v8 = mlcore::EntityQueryResult::entityCount(self->_sectionEntityQueryResult.__ptr_);
   if (v7 >= v8)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:136 description:{@"Adjusted section index out of bounds: %ld (sectionIndex = %ld / sectionEntityCount = %ld)", v7, v6, v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:136 description:{@"Adjusted section index out of bounds: %ld (sectionIndex = %ld / sectionEntityCount = %ld)", v7, section, v8}];
   }
 
-  v9 = [(MPModelRequest *)self->_request itemKind];
-  v10 = [objc_msgSend(v9 "modelClass")];
+  itemKind = [(MPModelRequest *)self->_request itemKind];
+  v10 = [objc_msgSend(itemKind "modelClass")];
 
   if (v10)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:139 description:@"MPModelLibraryModelSectionedCollectionDataSource does not support MPModelLibraryPin"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:139 description:@"MPModelLibraryModelSectionedCollectionDataSource does not support MPModelLibraryPin"];
 
     v12 = 0;
   }
@@ -714,17 +714,17 @@ LABEL_15:
 
     if (v16)
     {
-      [v5 item];
+      [pathCopy item];
       mlcore::EntityQueryResult::entityAtIndex(v16);
       +[MPMediaLibrary logDatabaseAccess];
       if (v23)
       {
-        v17 = [(MPModelRequest *)self->_request itemKind];
-        v18 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [v17 modelClass]);
+        itemKind2 = [(MPModelRequest *)self->_request itemKind];
+        v18 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [itemKind2 modelClass]);
 
-        v19 = [(MPModelRequest *)self->_request itemProperties];
+        itemProperties = [(MPModelRequest *)self->_request itemProperties];
         v20 = (*(*v23 + 48))();
-        v12 = [v18 objectForPropertySet:v19 entityClass:v20 propertyCache:mlcore::Entity::propertyCache(v23) context:self->_itemTranslationContext];
+        v12 = [v18 objectForPropertySet:itemProperties entityClass:v20 propertyCache:mlcore::Entity::propertyCache(v23) context:self->_itemTranslationContext];
       }
 
       else
@@ -752,13 +752,13 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)hasSameContentAsDataSource:(id)a3
+- (BOOL)hasSameContentAsDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (ptr = self->_sectionEntityQueryResult.__ptr_) != 0 && (v6 = v4[12]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (ptr = self->_sectionEntityQueryResult.__ptr_) != 0 && (v6 = sourceCopy[12]) != 0)
   {
-    v7 = v4[13];
+    v7 = sourceCopy[13];
     if (v7)
     {
       atomic_fetch_add_explicit(&v7->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -796,7 +796,7 @@ LABEL_15:
           atomic_fetch_add_explicit(&v12->__shared_owners_, 1uLL, memory_order_relaxed);
         }
 
-        v14 = std::map<long long,std::shared_ptr<mlcore::EntityQueryResult>>::at(*(v4[10] + 8), v10);
+        v14 = std::map<long long,std::shared_ptr<mlcore::EntityQueryResult>>::at(*(sourceCopy[10] + 8), v10);
         v16 = *v14;
         v15 = v14[1];
         if (v15)
@@ -882,7 +882,7 @@ LABEL_29:
   return v21;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
   ptr = self->_sectionEntityQueryResult.__ptr_;
   if (!ptr || !mlcore::EntityQueryResult::entityCount(ptr))
@@ -890,12 +890,12 @@ LABEL_29:
     return 0;
   }
 
-  v7 = [(MPModelLibraryModelSectionedCollectionDataSource *)self _adjustedIndexForSectionIndex:a3];
+  v7 = [(MPModelLibraryModelSectionedCollectionDataSource *)self _adjustedIndexForSectionIndex:section];
   v8 = mlcore::EntityQueryResult::entityCount(self->_sectionEntityQueryResult.__ptr_);
   if (v7 >= v8)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:82 description:{@"Adjusted section index out of bounds: %ld (sectionIndex = %ld / sectionEntityCount = %ld)", v7, a3, v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:82 description:{@"Adjusted section index out of bounds: %ld (sectionIndex = %ld / sectionEntityCount = %ld)", v7, section, v8}];
   }
 
   v9 = mlcore::EntityQueryResult::persistentIDAtIndex(self->_sectionEntityQueryResult.__ptr_);
@@ -928,26 +928,26 @@ LABEL_12:
   return v13;
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
   v6 = [(MPModelLibraryModelSectionedCollectionDataSource *)self _adjustedIndexForSectionIndex:?];
   v7 = mlcore::EntityQueryResult::entityCount(self->_sectionEntityQueryResult.__ptr_);
   if (v6 >= v7)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:59 description:{@"Adjusted section index out of bounds: %ld (sectionIndex = %ld / sectionEntityCount = %ld)", v6, a3, v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryModelSectionedCollectionDataSource.mm" lineNumber:59 description:{@"Adjusted section index out of bounds: %ld (sectionIndex = %ld / sectionEntityCount = %ld)", v6, index, v7}];
   }
 
   mlcore::EntityQueryResult::entityAtIndex(self->_sectionEntityQueryResult.__ptr_);
   +[MPMediaLibrary logDatabaseAccess];
   if (v15)
   {
-    v8 = [(MPModelRequest *)self->_request sectionKind];
-    v9 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [v8 modelClass]);
+    sectionKind = [(MPModelRequest *)self->_request sectionKind];
+    v9 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [sectionKind modelClass]);
 
-    v10 = [(MPModelRequest *)self->_request sectionProperties];
+    sectionProperties = [(MPModelRequest *)self->_request sectionProperties];
     v11 = (*(*v15 + 48))();
-    v12 = [v9 objectForPropertySet:v10 entityClass:v11 propertyCache:mlcore::Entity::propertyCache(v15) context:self->_sectionTranslationContext];
+    v12 = [v9 objectForPropertySet:sectionProperties entityClass:v11 propertyCache:mlcore::Entity::propertyCache(v15) context:self->_sectionTranslationContext];
   }
 
   else
@@ -974,15 +974,15 @@ LABEL_12:
   return result;
 }
 
-- (MPModelLibraryModelSectionedCollectionDataSource)initWithRequest:(id)a3 sectionQueryResults:(shared_ptr<mlcore:(void *)a5 :EntityQueryResult>)a4 itemQueryResults:
+- (MPModelLibraryModelSectionedCollectionDataSource)initWithRequest:(id)request sectionQueryResults:(shared_ptr<mlcore:(void *)results :EntityQueryResult>)a4 itemQueryResults:
 {
   ptr = a4.__ptr_;
-  v8 = a3;
+  requestCopy = request;
   v9 = [(MPModelLibraryModelSectionedCollectionDataSource *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
+    objc_storeStrong(&v9->_request, request);
     v12 = *ptr;
     v11 = *(ptr + 1);
     if (v11)

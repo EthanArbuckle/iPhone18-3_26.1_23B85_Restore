@@ -1,59 +1,59 @@
 @interface ANSTPixelBufferDescriptor
-- (ANSTPixelBufferDescriptor)initWithCoder:(id)a3;
-- (ANSTPixelBufferDescriptor)initWithName:(id)a3 error:(id *)a4;
-- (ANSTPixelBufferDescriptor)initWithName:(id)a3 pixelBufferAttributes:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validatePixelBuffer:(__CVBuffer *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ANSTPixelBufferDescriptor)initWithCoder:(id)coder;
+- (ANSTPixelBufferDescriptor)initWithName:(id)name error:(id *)error;
+- (ANSTPixelBufferDescriptor)initWithName:(id)name pixelBufferAttributes:(id)attributes error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validatePixelBuffer:(__CVBuffer *)buffer;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)height;
 - (unint64_t)width;
 - (unsigned)pixelFormatType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSTPixelBufferDescriptor
 
-- (ANSTPixelBufferDescriptor)initWithName:(id)a3 error:(id *)a4
+- (ANSTPixelBufferDescriptor)initWithName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   result = objc_msgSend_doesNotRecognizeSelector_(self, v7, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTPixelBufferDescriptor)initWithName:(id)a3 pixelBufferAttributes:(id)a4 error:(id *)a5
+- (ANSTPixelBufferDescriptor)initWithName:(id)name pixelBufferAttributes:(id)attributes error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  attributesCopy = attributes;
   v26.receiver = self;
   v26.super_class = ANSTPixelBufferDescriptor;
-  v10 = [(ANSTDescriptor *)&v26 initWithName:a3 error:a5];
+  v10 = [(ANSTDescriptor *)&v26 initWithName:name error:error];
   if (!v10)
   {
     goto LABEL_6;
   }
 
-  v11 = objc_msgSend_objectForKey_(v8, v9, *MEMORY[0x277CC4EC8]);
+  v11 = objc_msgSend_objectForKey_(attributesCopy, v9, *MEMORY[0x277CC4EC8]);
   if (v11)
   {
     v13 = v11;
-    v14 = objc_msgSend_objectForKey_(v8, v12, *MEMORY[0x277CC4DD8]);
+    v14 = objc_msgSend_objectForKey_(attributesCopy, v12, *MEMORY[0x277CC4DD8]);
     if (v14)
     {
       v16 = v14;
-      v17 = objc_msgSend_objectForKey_(v8, v15, *MEMORY[0x277CC4E30]);
+      v17 = objc_msgSend_objectForKey_(attributesCopy, v15, *MEMORY[0x277CC4E30]);
 
       if (v17)
       {
-        v19 = objc_msgSend_copy(v8, v12, v18);
+        v19 = objc_msgSend_copy(attributesCopy, v12, v18);
         pixelBufferAttributes = v10->_pixelBufferAttributes;
         v10->_pixelBufferAttributes = v19;
 
 LABEL_6:
-        a5 = v10;
+        error = v10;
         goto LABEL_10;
       }
     }
@@ -63,61 +63,61 @@ LABEL_6:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v21 = MEMORY[0x277CCA9B8];
     v27 = *MEMORY[0x277CCA068];
     v28[0] = @"Pixel buffer attributes are missing mandatory keys, i.e. width, height, and pixel format type.";
     v22 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v28, &v27, 1);
-    *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v21, v23, @"ANSTErrorDomain", 9, v22);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v21, v23, @"ANSTErrorDomain", 9, v22);
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_10:
 
   v24 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (BOOL)validatePixelBuffer:(__CVBuffer *)a3
+- (BOOL)validatePixelBuffer:(__CVBuffer *)buffer
 {
-  v5 = objc_msgSend_width(self, a2, a3);
-  if (v5 != CVPixelBufferGetWidth(a3))
+  v5 = objc_msgSend_width(self, a2, buffer);
+  if (v5 != CVPixelBufferGetWidth(buffer))
   {
     return 0;
   }
 
   v8 = objc_msgSend_height(self, v6, v7);
-  if (v8 != CVPixelBufferGetHeight(a3))
+  if (v8 != CVPixelBufferGetHeight(buffer))
   {
     return 0;
   }
 
   v11 = objc_msgSend_pixelFormatType(self, v9, v10);
-  return v11 == CVPixelBufferGetPixelFormatType(a3);
+  return v11 == CVPixelBufferGetPixelFormatType(buffer);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = ANSTPixelBufferDescriptor;
-  if (![(ANSTDescriptor *)&v14 isEqual:v4])
+  if (![(ANSTDescriptor *)&v14 isEqual:equalCopy])
   {
     goto LABEL_6;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     isEqualToDictionary = 1;
     goto LABEL_8;
   }
 
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = objc_msgSend_pixelBufferAttributes(self, v5, v6);
-    v10 = objc_msgSend_pixelBufferAttributes(v4, v8, v9);
+    v10 = objc_msgSend_pixelBufferAttributes(equalCopy, v8, v9);
     isEqualToDictionary = objc_msgSend_isEqualToDictionary_(v7, v11, v10);
   }
 
@@ -171,10 +171,10 @@ LABEL_8:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_name(self, v8, v9);
   v13 = objc_msgSend_pixelBufferAttributes(self, v11, v12);
   v15 = objc_msgSend_initWithName_pixelBufferAttributes_error_(v7, v14, v10, v13, 0);
@@ -182,13 +182,13 @@ LABEL_8:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v28[3] = *MEMORY[0x277D85DE8];
   v26.receiver = self;
   v26.super_class = ANSTPixelBufferDescriptor;
-  v4 = a3;
-  [(ANSTDescriptor *)&v26 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ANSTDescriptor *)&v26 encodeWithCoder:coderCopy];
   v5 = MEMORY[0x277CCAC58];
   v8 = objc_msgSend_pixelBufferAttributes(self, v6, v7);
   v25 = 0;
@@ -198,7 +198,7 @@ LABEL_8:
   if (v10)
   {
     v14 = NSStringFromSelector(sel_pixelBufferAttributes);
-    objc_msgSend_encodeObject_forKey_(v4, v15, v10, v14);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v15, v10, v14);
   }
 
   else
@@ -215,33 +215,33 @@ LABEL_8:
     v28[2] = v14;
     v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v19, v28, v27, 3);
     v22 = objc_msgSend_errorWithDomain_code_userInfo_(v16, v21, v18, 4866, v20);
-    objc_msgSend_failWithError_(v4, v23, v22);
+    objc_msgSend_failWithError_(coderCopy, v23, v22);
 
-    v4 = v20;
+    coderCopy = v20;
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (ANSTPixelBufferDescriptor)initWithCoder:(id)a3
+- (ANSTPixelBufferDescriptor)initWithCoder:(id)coder
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = ANSTPixelBufferDescriptor;
-  v7 = [(ANSTDescriptor *)&v41 initWithCoder:v4];
+  v7 = [(ANSTDescriptor *)&v41 initWithCoder:coderCopy];
   if (!v7)
   {
     goto LABEL_7;
   }
 
-  v8 = objc_msgSend_error(v4, v5, v6);
+  v8 = objc_msgSend_error(coderCopy, v5, v6);
 
   if (!v8)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_pixelBufferAttributes);
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v10, v11);
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v10, v11);
 
     if (!v13)
     {
@@ -254,7 +254,7 @@ LABEL_8:
       v45[1] = v25;
       v27 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v26, v45, v44, 2);
       v29 = objc_msgSend_errorWithDomain_code_userInfo_(v23, v28, v24, 4865, v27);
-      objc_msgSend_failWithError_(v4, v30, v29);
+      objc_msgSend_failWithError_(coderCopy, v30, v29);
 
       goto LABEL_3;
     }
@@ -279,7 +279,7 @@ LABEL_8:
       v43[2] = v34;
       v36 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v35, v43, v42, 3);
       v38 = objc_msgSend_errorWithDomain_code_userInfo_(v31, v37, v33, 4864, v36);
-      objc_msgSend_failWithError_(v4, v39, v38);
+      objc_msgSend_failWithError_(coderCopy, v39, v38);
 
       goto LABEL_3;
     }

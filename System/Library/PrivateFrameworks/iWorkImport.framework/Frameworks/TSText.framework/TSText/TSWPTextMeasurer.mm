@@ -1,18 +1,18 @@
 @interface TSWPTextMeasurer
-+ (BOOL)canQuicklyMeasureParagraphStyle:(id)a3;
-+ (BOOL)canQuicklyMeasureString:(id)a3 textMeasurerBundle:(id)a4;
-+ (double)heightForString:(id)a3 textMeasurerBundle:(id)a4 width:(double)a5 outFitWidth:(double *)a6;
-+ (double)widthForString:(id)a3 textMeasurerBundle:(id)a4;
-+ (id)textMeasurerBundleForParagraphStyle:(id)a3;
++ (BOOL)canQuicklyMeasureParagraphStyle:(id)style;
++ (BOOL)canQuicklyMeasureString:(id)string textMeasurerBundle:(id)bundle;
++ (double)heightForString:(id)string textMeasurerBundle:(id)bundle width:(double)width outFitWidth:(double *)fitWidth;
++ (double)widthForString:(id)string textMeasurerBundle:(id)bundle;
++ (id)textMeasurerBundleForParagraphStyle:(id)style;
 @end
 
 @implementation TSWPTextMeasurer
 
-+ (BOOL)canQuicklyMeasureParagraphStyle:(id)a3
++ (BOOL)canQuicklyMeasureParagraphStyle:(id)style
 {
-  v3 = a3;
-  v5 = v3;
-  if (!v3)
+  styleCopy = style;
+  v5 = styleCopy;
+  if (!styleCopy)
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "+[TSWPTextMeasurer canQuicklyMeasureParagraphStyle:]");
@@ -25,7 +25,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  objc_msgSend_floatValueForProperty_(v3, v4, 34);
+  objc_msgSend_floatValueForProperty_(styleCopy, v4, 34);
   if (v7 != 0.0 && fabsf(v7) >= 0.01)
   {
     goto LABEL_19;
@@ -55,14 +55,14 @@ LABEL_20:
   return v24;
 }
 
-+ (BOOL)canQuicklyMeasureString:(id)a3 textMeasurerBundle:(id)a4
++ (BOOL)canQuicklyMeasureString:(id)string textMeasurerBundle:(id)bundle
 {
-  v5 = a3;
-  v7 = a4;
-  if (v5 && (objc_msgSend_containsString_(v5, v6, @"\t") & 1) == 0)
+  stringCopy = string;
+  bundleCopy = bundle;
+  if (stringCopy && (objc_msgSend_containsString_(stringCopy, v6, @"\t") & 1) == 0)
   {
-    v10 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x277CCA900], v8, v5);
-    v13 = objc_msgSend_coveredCharacterSet(v7, v11, v12);
+    v10 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x277CCA900], v8, stringCopy);
+    v13 = objc_msgSend_coveredCharacterSet(bundleCopy, v11, v12);
     isSupersetOfSet = objc_msgSend_isSupersetOfSet_(v13, v14, v10);
   }
 
@@ -74,11 +74,11 @@ LABEL_20:
   return isSupersetOfSet;
 }
 
-+ (id)textMeasurerBundleForParagraphStyle:(id)a3
++ (id)textMeasurerBundleForParagraphStyle:(id)style
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  styleCopy = style;
+  if (!styleCopy)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v3, "+[TSWPTextMeasurer textMeasurerBundleForParagraphStyle:]");
@@ -88,7 +88,7 @@ LABEL_20:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
   }
 
-  FontForStyle = TSWPFastCreateFontForStyle(0, v4, 0x64uLL);
+  FontForStyle = TSWPFastCreateFontForStyle(0, styleCopy, 0x64uLL);
   v15 = FontForStyle;
   if (FontForStyle)
   {
@@ -130,11 +130,11 @@ LABEL_20:
   return v19;
 }
 
-+ (double)heightForString:(id)a3 textMeasurerBundle:(id)a4 width:(double)a5 outFitWidth:(double *)a6
++ (double)heightForString:(id)string textMeasurerBundle:(id)bundle width:(double)width outFitWidth:(double *)fitWidth
 {
-  v9 = a3;
-  v11 = a4;
-  if (!v9)
+  stringCopy = string;
+  bundleCopy = bundle;
+  if (!stringCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "+[TSWPTextMeasurer heightForString:textMeasurerBundle:width:outFitWidth:]");
@@ -144,7 +144,7 @@ LABEL_20:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  if (!v11)
+  if (!bundleCopy)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "+[TSWPTextMeasurer heightForString:textMeasurerBundle:width:outFitWidth:]");
@@ -154,17 +154,17 @@ LABEL_20:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25);
   }
 
-  if (a6)
+  if (fitWidth)
   {
-    *a6 = 0.0;
+    *fitWidth = 0.0;
   }
 
   v26 = objc_alloc(MEMORY[0x277CCA898]);
-  v29 = objc_msgSend_fontAttributes(v11, v27, v28);
-  v31 = objc_msgSend_initWithString_attributes_(v26, v30, v9, v29);
+  v29 = objc_msgSend_fontAttributes(bundleCopy, v27, v28);
+  v31 = objc_msgSend_initWithString_attributes_(v26, v30, stringCopy, v29);
 
   v32 = CTTypesetterCreateWithAttributedString(v31);
-  v37 = objc_msgSend_length(v9, v33, v34);
+  v37 = objc_msgSend_length(stringCopy, v33, v34);
   if (v37 < 1)
   {
     v39 = 0;
@@ -176,17 +176,17 @@ LABEL_20:
     v39 = 0;
     do
     {
-      v40 = CTTypesetterSuggestLineBreak(v32, v38, a5);
-      if (a6)
+      v40 = CTTypesetterSuggestLineBreak(v32, v38, width);
+      if (fitWidth)
       {
         v67.location = v38;
         v67.length = v40;
         Line = CTTypesetterCreateLine(v32, v67);
         TypographicBounds = CTLineGetTypographicBounds(Line, 0, 0, 0);
         CFRelease(Line);
-        if (TypographicBounds > *a6)
+        if (TypographicBounds > *fitWidth)
         {
-          *a6 = TypographicBounds;
+          *fitWidth = TypographicBounds;
         }
       }
 
@@ -197,19 +197,19 @@ LABEL_20:
     while (v38 < v37);
   }
 
-  v43 = objc_msgSend_length(v9, v35, v36);
-  v45 = objc_msgSend_characterAtIndex_(v9, v44, v43 - 1);
+  v43 = objc_msgSend_length(stringCopy, v35, v36);
+  v45 = objc_msgSend_characterAtIndex_(stringCopy, v44, v43 - 1);
   v46 = v45;
   v49 = IsParagraphBreakingCharacter(v45);
-  if (v11)
+  if (bundleCopy)
   {
-    objc_msgSend_fontHeightInfo(v11, v47, v48);
+    objc_msgSend_fontHeightInfo(bundleCopy, v47, v48);
     v50 = v65;
-    objc_msgSend_fontHeightInfo(v11, v51, v52);
+    objc_msgSend_fontHeightInfo(bundleCopy, v51, v52);
     v53 = v64;
-    objc_msgSend_fontHeightInfo(v11, v54, v55);
+    objc_msgSend_fontHeightInfo(bundleCopy, v54, v55);
     v56 = v63;
-    objc_msgSend_fontHeightInfo(v11, v57, v58);
+    objc_msgSend_fontHeightInfo(bundleCopy, v57, v58);
     v59 = v66;
   }
 
@@ -237,11 +237,11 @@ LABEL_20:
   return v61;
 }
 
-+ (double)widthForString:(id)a3 textMeasurerBundle:(id)a4
++ (double)widthForString:(id)string textMeasurerBundle:(id)bundle
 {
-  v5 = a3;
-  v7 = a4;
-  if (!v5)
+  stringCopy = string;
+  bundleCopy = bundle;
+  if (!stringCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "+[TSWPTextMeasurer widthForString:textMeasurerBundle:]");
@@ -251,7 +251,7 @@ LABEL_20:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  if (!v7)
+  if (!bundleCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "+[TSWPTextMeasurer widthForString:textMeasurerBundle:]");
@@ -262,8 +262,8 @@ LABEL_20:
   }
 
   v22 = objc_alloc(MEMORY[0x277CCA898]);
-  v25 = objc_msgSend_fontAttributes(v7, v23, v24);
-  v27 = objc_msgSend_initWithString_attributes_(v22, v26, v5, v25);
+  v25 = objc_msgSend_fontAttributes(bundleCopy, v23, v24);
+  v27 = objc_msgSend_initWithString_attributes_(v22, v26, stringCopy, v25);
 
   objc_msgSend_boundingRectWithSize_options_context_(v27, v28, 0, 0, 1.79769313e308, 1.79769313e308);
   v30 = v29;

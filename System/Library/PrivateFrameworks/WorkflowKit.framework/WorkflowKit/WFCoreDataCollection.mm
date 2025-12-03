@@ -4,24 +4,24 @@
 - (NSArray)deserializedLastRemoteCollectionOrderingSubset;
 - (NSArray)deserializedLastRemoteShortcutOrdering;
 - (id)descriptor;
-- (void)setDeserializedLastRemoteCollectionOrdering:(id)a3;
-- (void)setDeserializedLastRemoteCollectionOrderingSubset:(id)a3;
-- (void)setDeserializedLastRemoteShortcutOrdering:(id)a3;
+- (void)setDeserializedLastRemoteCollectionOrdering:(id)ordering;
+- (void)setDeserializedLastRemoteCollectionOrderingSubset:(id)subset;
+- (void)setDeserializedLastRemoteShortcutOrdering:(id)ordering;
 @end
 
 @implementation WFCoreDataCollection
 
-- (void)setDeserializedLastRemoteCollectionOrderingSubset:(id)a3
+- (void)setDeserializedLastRemoteCollectionOrderingSubset:(id)subset
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (subset)
   {
     v11 = 0;
-    v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v11];
+    v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:subset format:200 options:0 error:&v11];
     v5 = v11;
     if (v4)
     {
-      v6 = self;
+      selfCopy2 = self;
       v7 = v4;
     }
 
@@ -37,11 +37,11 @@
         _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_FAULT, "%s Failed to serialize last remote collection ordering subset into plist data: %{public}@", buf, 0x16u);
       }
 
-      v6 = self;
+      selfCopy2 = self;
       v7 = 0;
     }
 
-    [(WFCoreDataCollection *)v6 setLastRemoteCollectionOrderingSubsetData:v7];
+    [(WFCoreDataCollection *)selfCopy2 setLastRemoteCollectionOrderingSubsetData:v7];
 
     v10 = *MEMORY[0x1E69E9840];
   }
@@ -57,17 +57,17 @@
 - (NSArray)deserializedLastRemoteCollectionOrderingSubset
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(WFCoreDataCollection *)self lastRemoteCollectionOrderingSubsetData];
+  lastRemoteCollectionOrderingSubsetData = [(WFCoreDataCollection *)self lastRemoteCollectionOrderingSubsetData];
 
-  if (v3)
+  if (lastRemoteCollectionOrderingSubsetData)
   {
     v4 = MEMORY[0x1E696AE40];
-    v5 = [(WFCoreDataCollection *)self lastRemoteCollectionOrderingSubsetData];
+    lastRemoteCollectionOrderingSubsetData2 = [(WFCoreDataCollection *)self lastRemoteCollectionOrderingSubsetData];
     v10 = 0;
-    v3 = [v4 propertyListWithData:v5 options:0 format:0 error:&v10];
+    lastRemoteCollectionOrderingSubsetData = [v4 propertyListWithData:lastRemoteCollectionOrderingSubsetData2 options:0 format:0 error:&v10];
     v6 = v10;
 
-    if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (!lastRemoteCollectionOrderingSubsetData || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
 
       v7 = getWFDatabaseLogObject();
@@ -80,26 +80,26 @@
         _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_FAULT, "%s Failed to deserialize last remote collection ordering subset from plist data: %{public}@", buf, 0x16u);
       }
 
-      v3 = 0;
+      lastRemoteCollectionOrderingSubsetData = 0;
     }
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return lastRemoteCollectionOrderingSubsetData;
 }
 
-- (void)setDeserializedLastRemoteCollectionOrdering:(id)a3
+- (void)setDeserializedLastRemoteCollectionOrdering:(id)ordering
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (ordering)
   {
     v11 = 0;
-    v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v11];
+    v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:ordering format:200 options:0 error:&v11];
     v5 = v11;
     if (v4)
     {
-      v6 = self;
+      selfCopy2 = self;
       v7 = v4;
     }
 
@@ -115,11 +115,11 @@
         _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_FAULT, "%s Failed to serialize last remote collection ordering into plist data: %{public}@", buf, 0x16u);
       }
 
-      v6 = self;
+      selfCopy2 = self;
       v7 = 0;
     }
 
-    [(WFCoreDataCollection *)v6 setLastRemoteCollectionOrderingData:v7];
+    [(WFCoreDataCollection *)selfCopy2 setLastRemoteCollectionOrderingData:v7];
 
     v10 = *MEMORY[0x1E69E9840];
   }
@@ -135,17 +135,17 @@
 - (NSArray)deserializedLastRemoteCollectionOrdering
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(WFCoreDataCollection *)self lastRemoteCollectionOrderingData];
+  lastRemoteCollectionOrderingData = [(WFCoreDataCollection *)self lastRemoteCollectionOrderingData];
 
-  if (v3)
+  if (lastRemoteCollectionOrderingData)
   {
     v4 = MEMORY[0x1E696AE40];
-    v5 = [(WFCoreDataCollection *)self lastRemoteCollectionOrderingData];
+    lastRemoteCollectionOrderingData2 = [(WFCoreDataCollection *)self lastRemoteCollectionOrderingData];
     v10 = 0;
-    v3 = [v4 propertyListWithData:v5 options:0 format:0 error:&v10];
+    lastRemoteCollectionOrderingData = [v4 propertyListWithData:lastRemoteCollectionOrderingData2 options:0 format:0 error:&v10];
     v6 = v10;
 
-    if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (!lastRemoteCollectionOrderingData || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
 
       v7 = getWFDatabaseLogObject();
@@ -158,26 +158,26 @@
         _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_FAULT, "%s Failed to deserialize last remote collection ordering from plist data: %{public}@", buf, 0x16u);
       }
 
-      v3 = 0;
+      lastRemoteCollectionOrderingData = 0;
     }
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return lastRemoteCollectionOrderingData;
 }
 
-- (void)setDeserializedLastRemoteShortcutOrdering:(id)a3
+- (void)setDeserializedLastRemoteShortcutOrdering:(id)ordering
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (ordering)
   {
     v11 = 0;
-    v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v11];
+    v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:ordering format:200 options:0 error:&v11];
     v5 = v11;
     if (v4)
     {
-      v6 = self;
+      selfCopy2 = self;
       v7 = v4;
     }
 
@@ -193,11 +193,11 @@
         _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_FAULT, "%s Failed to serialize last remote shortcut ordering into plist data: %{public}@", buf, 0x16u);
       }
 
-      v6 = self;
+      selfCopy2 = self;
       v7 = 0;
     }
 
-    [(WFCoreDataCollection *)v6 setLastRemoteShortcutOrderingData:v7];
+    [(WFCoreDataCollection *)selfCopy2 setLastRemoteShortcutOrderingData:v7];
 
     v10 = *MEMORY[0x1E69E9840];
   }
@@ -213,17 +213,17 @@
 - (NSArray)deserializedLastRemoteShortcutOrdering
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(WFCoreDataCollection *)self lastRemoteShortcutOrderingData];
+  lastRemoteShortcutOrderingData = [(WFCoreDataCollection *)self lastRemoteShortcutOrderingData];
 
-  if (v3)
+  if (lastRemoteShortcutOrderingData)
   {
     v4 = MEMORY[0x1E696AE40];
-    v5 = [(WFCoreDataCollection *)self lastRemoteShortcutOrderingData];
+    lastRemoteShortcutOrderingData2 = [(WFCoreDataCollection *)self lastRemoteShortcutOrderingData];
     v10 = 0;
-    v3 = [v4 propertyListWithData:v5 options:0 format:0 error:&v10];
+    lastRemoteShortcutOrderingData = [v4 propertyListWithData:lastRemoteShortcutOrderingData2 options:0 format:0 error:&v10];
     v6 = v10;
 
-    if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (!lastRemoteShortcutOrderingData || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
 
       v7 = getWFDatabaseLogObject();
@@ -236,23 +236,23 @@
         _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_FAULT, "%s Failed to deserialize last remote shortcut ordering from plist data: %{public}@", buf, 0x16u);
       }
 
-      v3 = 0;
+      lastRemoteShortcutOrderingData = 0;
     }
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return lastRemoteShortcutOrderingData;
 }
 
 - (BOOL)isFolder
 {
-  v3 = [(WFCoreDataCollection *)self identifier];
-  if (v3)
+  identifier = [(WFCoreDataCollection *)self identifier];
+  if (identifier)
   {
     v4 = WFGetBuiltInCollectionIdentifiers(1);
-    v5 = [(WFCoreDataCollection *)self identifier];
-    v6 = [v4 containsObject:v5];
+    identifier2 = [(WFCoreDataCollection *)self identifier];
+    v6 = [v4 containsObject:identifier2];
 
     v7 = v6 ^ 1;
   }
@@ -268,13 +268,13 @@
 - (id)descriptor
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(WFCoreDataCollection *)self identifier];
+  identifier = [(WFCoreDataCollection *)self identifier];
 
-  if (v3)
+  if (identifier)
   {
     v4 = objc_alloc(MEMORY[0x1E69E0A68]);
-    v5 = [(WFCoreDataCollection *)self identifier];
-    v6 = [v4 initWithIdentifier:v5 objectType:2];
+    identifier2 = [(WFCoreDataCollection *)self identifier];
+    v6 = [v4 initWithIdentifier:identifier2 objectType:2];
   }
 
   else

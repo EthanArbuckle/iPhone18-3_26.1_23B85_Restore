@@ -1,33 +1,33 @@
 @interface PUBrowsingViewModel
-+ (PXAssetBadgeInfo)filteredBadgeInfoWithInputInfo:(SEL)a3 assetReference:(PXAssetBadgeInfo *)a4 actionManager:(id)a5;
++ (PXAssetBadgeInfo)filteredBadgeInfoWithInputInfo:(SEL)info assetReference:(PXAssetBadgeInfo *)reference actionManager:(id)manager;
 + (void)initialize;
 - (BOOL)_needsUpdate;
 - (CGSize)secondScreenSize;
 - (PUAssetReference)currentAssetReference;
 - (PUAssetViewModel)assetViewModelForCurrentAssetReference;
-- (PUBrowsingViewModel)initWithLowMemoryMode:(BOOL)a3;
+- (PUBrowsingViewModel)initWithLowMemoryMode:(BOOL)mode;
 - (PXAssetOverlayController)spatialOverlayController;
-- (double)_focusValueForAsset:(id)a3;
-- (id)_assetSharedViewModelForAsset:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)_badgeInfoPromiseForAssetReference:(id)a3;
-- (id)_filteredAllowedBadges:(id)a3 forAssetReference:(id)a4;
+- (double)_focusValueForAsset:(id)asset;
+- (id)_assetSharedViewModelForAsset:(id)asset createIfNeeded:(BOOL)needed;
+- (id)_badgeInfoPromiseForAssetReference:(id)reference;
+- (id)_filteredAllowedBadges:(id)badges forAssetReference:(id)reference;
 - (id)activeAssetReferences;
-- (id)assetViewModelForAssetReference:(id)a3;
+- (id)assetViewModelForAssetReference:(id)reference;
 - (id)currentChange;
 - (id)debugDetailedDescription;
-- (int64_t)_importStateForAssetReference:(id)a3;
-- (void)_handleAssetSharedViewModel:(id)a3 didChange:(id)a4;
-- (void)_handleAssetViewModel:(id)a3 didChange:(id)a4;
+- (int64_t)_importStateForAssetReference:(id)reference;
+- (void)_handleAssetSharedViewModel:(id)model didChange:(id)change;
+- (void)_handleAssetViewModel:(id)model didChange:(id)change;
 - (void)_handleAsyncBrowsingSpeedRegimeInvalidation;
-- (void)_invalidateBrowsingSpeedRegimeAfterMaximumDelay:(double)a3;
+- (void)_invalidateBrowsingSpeedRegimeAfterMaximumDelay:(double)delay;
 - (void)_invalidateCurrentAndNeighboringAssetViewModels;
-- (void)_resetAccessoryViewsVisibilityToDefaultWithChangeReason:(int64_t)a3;
-- (void)_setAnimatingAnyTransition:(BOOL)a3;
-- (void)_setBrowsingSpeedRegime:(int64_t)a3;
-- (void)_setCurrentAssetTransitionProgress:(double)a3;
-- (void)_setTransitionDriverIdentifier:(id)a3;
-- (void)_setVideoContentAllowed:(BOOL)a3;
-- (void)_updateAssetViewModel:(id)a3;
+- (void)_resetAccessoryViewsVisibilityToDefaultWithChangeReason:(int64_t)reason;
+- (void)_setAnimatingAnyTransition:(BOOL)transition;
+- (void)_setBrowsingSpeedRegime:(int64_t)regime;
+- (void)_setCurrentAssetTransitionProgress:(double)progress;
+- (void)_setTransitionDriverIdentifier:(id)identifier;
+- (void)_setVideoContentAllowed:(BOOL)allowed;
+- (void)_updateAssetViewModel:(id)model;
 - (void)_updateAssetViewModelsIfNeeded;
 - (void)_updateContentPrivacyState;
 - (void)_updateIfNeeded;
@@ -40,52 +40,52 @@
 - (void)_updateSystemAuthenticationType;
 - (void)_updateVideoPlayerControllerIfNeeded;
 - (void)_updateWantsContentUnavailableUnlockButtonVisible;
-- (void)assetImportStatusManager:(id)a3 didChangeStatusForAssetReference:(id)a4;
+- (void)assetImportStatusManager:(id)manager didChangeStatusForAssetReference:(id)reference;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)oneUpVideoPlayerControllerPlayerDidChange:(id)a3;
-- (void)registerChangeObserver:(id)a3;
-- (void)setAccessoryViewsDefaultVisibility:(BOOL)a3 changeReason:(int64_t)a4;
-- (void)setAnimating:(BOOL)a3 transitionWithIdentifier:(id)a4;
-- (void)setAssetsDataSource:(id)a3;
-- (void)setChromeVisible:(BOOL)a3 changeReason:(int64_t)a4 context:(id)a5;
-- (void)setContentPrivacyState:(int64_t)a3;
-- (void)setCurrentAssetReference:(id)a3;
-- (void)setCurrentAssetReference:(id)a3 transitionProgress:(double)a4 transitionDriverIdentifier:(id)a5 animated:(BOOL)a6;
-- (void)setImageAnalysisInteraction:(id)a3;
-- (void)setImportStatusManager:(id)a3;
-- (void)setIsAnimatingPresentationSize:(BOOL)a3;
-- (void)setIsAttemptingToPlayVideoOverlay:(BOOL)a3;
-- (void)setIsFillScreenModeEnabled:(BOOL)a3;
-- (void)setIsInSelectionMode:(BOOL)a3;
-- (void)setIsInteractingWithVideoScrubber:(BOOL)a3;
-- (void)setIsLivePhotoContentAllowed:(BOOL)a3;
-- (void)setIsPresentedForPreview:(BOOL)a3;
-- (void)setIsScrolling:(BOOL)a3;
-- (void)setIsScrubbing:(BOOL)a3;
-- (void)setLivePhotoShouldPlay:(BOOL)a3;
-- (void)setMediaProvider:(id)a3;
-- (void)setNavigationBarTitle:(id)a3;
-- (void)setPresentingOverOneUp:(BOOL)a3;
-- (void)setPrivacyController:(id)a3;
-- (void)setResizeTaskDescriptorViewModel:(id)a3;
-- (void)setReviewScreenBarsModel:(id)a3;
-- (void)setSearchContextualVideoThumbnailIdentifier:(id)a3;
-- (void)setSearchQueryMatchInfo:(id)a3;
-- (void)setSecondScreenSize:(CGSize)a3;
-- (void)setSystemAuthenticationType:(int64_t)a3;
-- (void)setVideoContentAllowed:(BOOL)a3 forReason:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)oneUpVideoPlayerControllerPlayerDidChange:(id)change;
+- (void)registerChangeObserver:(id)observer;
+- (void)setAccessoryViewsDefaultVisibility:(BOOL)visibility changeReason:(int64_t)reason;
+- (void)setAnimating:(BOOL)animating transitionWithIdentifier:(id)identifier;
+- (void)setAssetsDataSource:(id)source;
+- (void)setChromeVisible:(BOOL)visible changeReason:(int64_t)reason context:(id)context;
+- (void)setContentPrivacyState:(int64_t)state;
+- (void)setCurrentAssetReference:(id)reference;
+- (void)setCurrentAssetReference:(id)reference transitionProgress:(double)progress transitionDriverIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)setImageAnalysisInteraction:(id)interaction;
+- (void)setImportStatusManager:(id)manager;
+- (void)setIsAnimatingPresentationSize:(BOOL)size;
+- (void)setIsAttemptingToPlayVideoOverlay:(BOOL)overlay;
+- (void)setIsFillScreenModeEnabled:(BOOL)enabled;
+- (void)setIsInSelectionMode:(BOOL)mode;
+- (void)setIsInteractingWithVideoScrubber:(BOOL)scrubber;
+- (void)setIsLivePhotoContentAllowed:(BOOL)allowed;
+- (void)setIsPresentedForPreview:(BOOL)preview;
+- (void)setIsScrolling:(BOOL)scrolling;
+- (void)setIsScrubbing:(BOOL)scrubbing;
+- (void)setLivePhotoShouldPlay:(BOOL)play;
+- (void)setMediaProvider:(id)provider;
+- (void)setNavigationBarTitle:(id)title;
+- (void)setPresentingOverOneUp:(BOOL)up;
+- (void)setPrivacyController:(id)controller;
+- (void)setResizeTaskDescriptorViewModel:(id)model;
+- (void)setReviewScreenBarsModel:(id)model;
+- (void)setSearchContextualVideoThumbnailIdentifier:(id)identifier;
+- (void)setSearchQueryMatchInfo:(id)info;
+- (void)setSecondScreenSize:(CGSize)size;
+- (void)setSystemAuthenticationType:(int64_t)type;
+- (void)setVideoContentAllowed:(BOOL)allowed forReason:(id)reason;
 - (void)setVideoContentAllowedForAllReasons;
-- (void)setVideoOverlayPlayState:(int64_t)a3;
-- (void)setVideoPlayer:(id)a3;
-- (void)setWantsContentUnavailableUnlockButtonVisible:(BOOL)a3;
+- (void)setVideoOverlayPlayState:(int64_t)state;
+- (void)setVideoPlayer:(id)player;
+- (void)setWantsContentUnavailableUnlockButtonVisible:(BOOL)visible;
 - (void)signalReviewScreenSelectionChanged;
-- (void)startPreventingLivePhotoContentForReason:(id)a3;
-- (void)stopPreventingLivePhotoContentForReason:(id)a3;
-- (void)unregisterChangeObserver:(id)a3;
-- (void)videoScrubberInteractionDidEnd:(id)a3;
-- (void)videoScrubberInteractionWillStart:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)startPreventingLivePhotoContentForReason:(id)reason;
+- (void)stopPreventingLivePhotoContentForReason:(id)reason;
+- (void)unregisterChangeObserver:(id)observer;
+- (void)videoScrubberInteractionDidEnd:(id)end;
+- (void)videoScrubberInteractionWillStart:(id)start;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUBrowsingViewModel
@@ -102,31 +102,31 @@
 - (id)debugDetailedDescription
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PUCachedMapTable *)self->_viewModelByAssetReference accurateCount];
-  [v3 appendFormat:@"Asset View Models: %lu\n", v4];
-  [v3 appendFormat:@"Asset Shared View Models: %lu\n", -[PUCachedMapTable accurateCount](self->_assetSharedViewModelByAsset, "accurateCount")];
+  string = [MEMORY[0x1E696AD60] string];
+  accurateCount = [(PUCachedMapTable *)self->_viewModelByAssetReference accurateCount];
+  [string appendFormat:@"Asset View Models: %lu\n", accurateCount];
+  [string appendFormat:@"Asset Shared View Models: %lu\n", -[PUCachedMapTable accurateCount](self->_assetSharedViewModelByAsset, "accurateCount")];
   if ([(PUBrowsingViewModel *)self isScrubbing])
   {
-    [v3 appendString:@"Scrubbing"];
+    [string appendString:@"Scrubbing"];
   }
 
   if ([(PUBrowsingViewModel *)self isScrolling])
   {
-    [v3 appendString:@"Scrolling"];
+    [string appendString:@"Scrolling"];
   }
 
   if ([(PUBrowsingViewModel *)self isAnimatingAnyTransition])
   {
-    v5 = [(PUBrowsingViewModel *)self _animatingTransitionIdentifiers];
-    v6 = [v5 allObjects];
-    v7 = [v6 componentsJoinedByString:{@", "}];
-    [v3 appendFormat:@"Animating Transitions: %@", v7];
+    _animatingTransitionIdentifiers = [(PUBrowsingViewModel *)self _animatingTransitionIdentifiers];
+    allObjects = [_animatingTransitionIdentifiers allObjects];
+    v7 = [allObjects componentsJoinedByString:{@", "}];
+    [string appendFormat:@"Animating Transitions: %@", v7];
   }
 
-  [v3 appendString:@"\nAsset View Models:\n"];
-  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v4];
-  v28 = self;
+  [string appendString:@"\nAsset View Models:\n"];
+  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:accurateCount];
+  selfCopy = self;
   viewModelByAssetReference = self->_viewModelByAssetReference;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
@@ -135,8 +135,8 @@
   v10 = v8;
   v34 = v10;
   [(PUCachedMapTable *)viewModelByAssetReference enumerateKeysAndObjectsUsingBlock:v33];
-  v11 = [v10 allKeys];
-  v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_16471];
+  allKeys = [v10 allKeys];
+  v12 = [allKeys sortedArrayUsingComparator:&__block_literal_global_16471];
 
   v31 = 0u;
   v32 = 0u;
@@ -160,8 +160,8 @@
         v18 = *(*(&v29 + 1) + 8 * i);
         v19 = [v18 description];
         v20 = [v10 objectForKeyedSubscript:v18];
-        v21 = [v20 pu_stringByIndentingNewLines];
-        [v3 appendFormat:@"%@:\n\t%@\n", v19, v21];
+        pu_stringByIndentingNewLines = [v20 pu_stringByIndentingNewLines];
+        [string appendFormat:@"%@:\n\t%@\n", v19, pu_stringByIndentingNewLines];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v29 objects:v35 count:16];
@@ -173,8 +173,8 @@
   v22 = MEMORY[0x1E696AEC0];
   v23 = objc_opt_class();
   v24 = NSStringFromClass(v23);
-  v25 = [v3 pu_stringByIndentingNewLines];
-  v26 = [v22 stringWithFormat:@"<%@ %p> {\n\t%@}", v24, v28, v25];
+  pu_stringByIndentingNewLines2 = [string pu_stringByIndentingNewLines];
+  v26 = [v22 stringWithFormat:@"<%@ %p> {\n\t%@}", v24, selfCopy, pu_stringByIndentingNewLines2];
 
   return v26;
 }
@@ -196,19 +196,19 @@ uint64_t __47__PUBrowsingViewModel_debugDetailedDescription__block_invoke_2(uint
   return v7;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PUBrowsingViewModelPrivacyControllerObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PUBrowsingViewModelPrivacyControllerObservationContext == context)
   {
-    if (v6)
+    if (changeCopy)
     {
       [(PUBrowsingViewModel *)self _updateContentPrivacyState];
-      if ((v6 & 4) == 0)
+      if ((changeCopy & 4) == 0)
       {
 LABEL_6:
-        if ((v6 & 8) == 0)
+        if ((changeCopy & 8) == 0)
         {
           goto LABEL_8;
         }
@@ -219,14 +219,14 @@ LABEL_7:
       }
     }
 
-    else if ((v6 & 4) == 0)
+    else if ((changeCopy & 4) == 0)
     {
       goto LABEL_6;
     }
 
     [(PUBrowsingViewModel *)self _updateSystemAuthenticationType];
     [(PUBrowsingViewModel *)self _updateWantsContentUnavailableUnlockButtonVisible];
-    if ((v6 & 8) == 0)
+    if ((changeCopy & 8) == 0)
     {
       goto LABEL_8;
     }
@@ -234,10 +234,10 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (VideoMuteControllerContext_16495 != a5)
+  if (VideoMuteControllerContext_16495 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1580 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1580 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -251,15 +251,15 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)oneUpVideoPlayerControllerPlayerDidChange:(id)a3
+- (void)oneUpVideoPlayerControllerPlayerDidChange:(id)change
 {
-  v5 = a3;
-  v6 = [(PUBrowsingViewModel *)self videoPlayerController];
+  changeCopy = change;
+  videoPlayerController = [(PUBrowsingViewModel *)self videoPlayerController];
 
-  if (v6 != v5)
+  if (videoPlayerController != changeCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1555 description:{@"Invalid parameter not satisfying: %@", @"controller == self.videoPlayerController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1555 description:{@"Invalid parameter not satisfying: %@", @"controller == self.videoPlayerController"}];
   }
 
   v9[0] = MEMORY[0x1E69E9820];
@@ -267,8 +267,8 @@ LABEL_8:
   v9[2] = __65__PUBrowsingViewModel_oneUpVideoPlayerControllerPlayerDidChange___block_invoke;
   v9[3] = &unk_1E7B80C38;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = changeCopy;
+  v7 = changeCopy;
   [(PUViewModel *)self performChanges:v9];
 }
 
@@ -278,13 +278,13 @@ void __65__PUBrowsingViewModel_oneUpVideoPlayerControllerPlayerDidChange___block
   [*(a1 + 32) setVideoPlayer:v2];
 }
 
-- (void)assetImportStatusManager:(id)a3 didChangeStatusForAssetReference:(id)a4
+- (void)assetImportStatusManager:(id)manager didChangeStatusForAssetReference:(id)reference
 {
-  v5 = a4;
-  v6 = [(PUBrowsingViewModel *)self assetsDataSource];
-  if (v5)
+  referenceCopy = reference;
+  assetsDataSource = [(PUBrowsingViewModel *)self assetsDataSource];
+  if (referenceCopy)
   {
-    [v5 indexPath];
+    [referenceCopy indexPath];
   }
 
   else
@@ -294,7 +294,7 @@ void __65__PUBrowsingViewModel_oneUpVideoPlayerControllerPlayerDidChange___block
   }
 
   v7 = PXIndexPathFromSimpleIndexPath();
-  v8 = [v6 assetReferenceAtIndexPath:v7];
+  v8 = [assetsDataSource assetReferenceAtIndexPath:v7];
 
   v9 = [(PUBrowsingViewModel *)self assetViewModelForAssetReference:v8];
   v12[0] = MEMORY[0x1E69E9820];
@@ -302,7 +302,7 @@ void __65__PUBrowsingViewModel_oneUpVideoPlayerControllerPlayerDidChange___block
   v12[2] = __81__PUBrowsingViewModel_assetImportStatusManager_didChangeStatusForAssetReference___block_invoke;
   v12[3] = &unk_1E7B809F0;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = v8;
   v10 = v8;
   v11 = v9;
@@ -317,16 +317,16 @@ uint64_t __81__PUBrowsingViewModel_assetImportStatusManager_didChangeStatusForAs
   return [v3 setImportState:v2];
 }
 
-- (void)_handleAssetSharedViewModel:(id)a3 didChange:(id)a4
+- (void)_handleAssetSharedViewModel:(id)model didChange:(id)change
 {
-  v7 = a4;
-  v8 = [a3 asset];
-  v9 = [v8 uuid];
+  changeCopy = change;
+  asset = [model asset];
+  uuid = [asset uuid];
 
-  if (![v9 length])
+  if (![uuid length])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1529 description:{@"Invalid parameter not satisfying: %@", @"uuid.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1529 description:{@"Invalid parameter not satisfying: %@", @"uuid.length > 0"}];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -334,10 +334,10 @@ uint64_t __81__PUBrowsingViewModel_assetImportStatusManager_didChangeStatusForAs
   v13[2] = __61__PUBrowsingViewModel__handleAssetSharedViewModel_didChange___block_invoke;
   v13[3] = &unk_1E7B809F0;
   v13[4] = self;
-  v14 = v9;
-  v15 = v7;
-  v10 = v7;
-  v11 = v9;
+  v14 = uuid;
+  v15 = changeCopy;
+  v10 = changeCopy;
+  v11 = uuid;
   [(PUViewModel *)self performChanges:v13];
 }
 
@@ -356,15 +356,15 @@ void __61__PUBrowsingViewModel__handleAssetSharedViewModel_didChange___block_inv
   [v3 addObject:*(a1 + 48)];
 }
 
-- (void)_handleAssetViewModel:(id)a3 didChange:(id)a4
+- (void)_handleAssetViewModel:(id)model didChange:(id)change
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 assetReference];
-  if (!v9)
+  modelCopy = model;
+  changeCopy = change;
+  assetReference = [modelCopy assetReference];
+  if (!assetReference)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1506 description:@"Should always be able to lookup the asset reference of a view model"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1506 description:@"Should always be able to lookup the asset reference of a view model"];
   }
 
   v14[0] = MEMORY[0x1E69E9820];
@@ -372,12 +372,12 @@ void __61__PUBrowsingViewModel__handleAssetSharedViewModel_didChange___block_inv
   v14[2] = __55__PUBrowsingViewModel__handleAssetViewModel_didChange___block_invoke;
   v14[3] = &unk_1E7B7F1D0;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v7;
-  v10 = v7;
-  v11 = v8;
-  v12 = v9;
+  v15 = assetReference;
+  v16 = changeCopy;
+  v17 = modelCopy;
+  v10 = modelCopy;
+  v11 = changeCopy;
+  v12 = assetReference;
   [(PUViewModel *)self performChanges:v14];
 }
 
@@ -417,21 +417,21 @@ void __55__PUBrowsingViewModel__handleAssetViewModel_didChange___block_invoke(ui
 LABEL_11:
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v10 = a3;
-  v7 = a4;
+  modelCopy = model;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1494 description:{@"Invalid parameter not satisfying: %@", @"[change isKindOfClass:[PUAssetViewModelChange class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1494 description:{@"Invalid parameter not satisfying: %@", @"[change isKindOfClass:[PUAssetViewModelChange class]]"}];
     }
 
-    [(PUBrowsingViewModel *)self _handleAssetViewModel:v10 didChange:v7];
+    [(PUBrowsingViewModel *)self _handleAssetViewModel:modelCopy didChange:changeCopy];
   }
 
   else
@@ -442,25 +442,25 @@ LABEL_11:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v9 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1498 description:{@"Invalid parameter not satisfying: %@", @"[change isKindOfClass:[PUAssetSharedViewModelChange class]]"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1498 description:{@"Invalid parameter not satisfying: %@", @"[change isKindOfClass:[PUAssetSharedViewModelChange class]]"}];
       }
 
-      [(PUBrowsingViewModel *)self _handleAssetSharedViewModel:v10 didChange:v7];
+      [(PUBrowsingViewModel *)self _handleAssetSharedViewModel:modelCopy didChange:changeCopy];
     }
   }
 }
 
-- (int64_t)_importStateForAssetReference:(id)a3
+- (int64_t)_importStateForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PUBrowsingViewModel *)self importStatusManager];
-  v6 = v5;
+  referenceCopy = reference;
+  importStatusManager = [(PUBrowsingViewModel *)self importStatusManager];
+  v6 = importStatusManager;
   v7 = 0;
-  if (v4 && v5)
+  if (referenceCopy && importStatusManager)
   {
-    v8 = [v4 asset];
-    v9 = [v6 importStateForAsset:v8];
+    asset = [referenceCopy asset];
+    v9 = [v6 importStateForAsset:asset];
 
     if ((v9 - 1) >= 3)
     {
@@ -476,20 +476,20 @@ LABEL_11:
   return v7;
 }
 
-- (id)_filteredAllowedBadges:(id)a3 forAssetReference:(id)a4
+- (id)_filteredAllowedBadges:(id)badges forAssetReference:(id)reference
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUBrowsingViewModel *)self actionManager];
+  referenceCopy = reference;
+  badgesCopy = badges;
+  actionManager = [(PUBrowsingViewModel *)self actionManager];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__PUBrowsingViewModel__filteredAllowedBadges_forAssetReference___block_invoke;
   v13[3] = &unk_1E7B75F60;
-  v14 = v6;
-  v15 = v8;
-  v9 = v8;
-  v10 = v6;
-  v11 = [v7 badgeInfoPromiseWithAdjustments:v13];
+  v14 = referenceCopy;
+  v15 = actionManager;
+  v9 = actionManager;
+  v10 = referenceCopy;
+  v11 = [badgesCopy badgeInfoPromiseWithAdjustments:v13];
 
   return v11;
 }
@@ -504,42 +504,42 @@ PXAssetBadgeInfo *__64__PUBrowsingViewModel__filteredAllowedBadges_forAssetRefer
   return [PUBrowsingViewModel filteredBadgeInfoWithInputInfo:v6 assetReference:v2 actionManager:v3];
 }
 
-- (id)_badgeInfoPromiseForAssetReference:(id)a3
+- (id)_badgeInfoPromiseForAssetReference:(id)reference
 {
-  v5 = a3;
-  v6 = [(PUBrowsingViewModel *)self assetsDataSource];
-  v7 = [v5 dataSourceIdentifier];
-  v8 = [v6 identifier];
-  v9 = [v7 isEqual:v8];
+  referenceCopy = reference;
+  assetsDataSource = [(PUBrowsingViewModel *)self assetsDataSource];
+  dataSourceIdentifier = [referenceCopy dataSourceIdentifier];
+  identifier = [assetsDataSource identifier];
+  v9 = [dataSourceIdentifier isEqual:identifier];
 
   if ((v9 & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1416 description:{@"Invalid parameter not satisfying: %@", @"[[assetReference dataSourceIdentifier] isEqual:[assetsDataSource identifier]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:1416 description:{@"Invalid parameter not satisfying: %@", @"[[assetReference dataSourceIdentifier] isEqual:[assetsDataSource identifier]]"}];
   }
 
-  v10 = [v5 indexPath];
-  v11 = [v6 badgeInfoPromiseForAssetAtIndexPath:v10 spatialPresentationEnabled:{objc_msgSend(MEMORY[0x1E69C3740], "enabled")}];
+  indexPath = [referenceCopy indexPath];
+  v11 = [assetsDataSource badgeInfoPromiseForAssetAtIndexPath:indexPath spatialPresentationEnabled:{objc_msgSend(MEMORY[0x1E69C3740], "enabled")}];
 
-  v12 = [(PUBrowsingViewModel *)self _filteredAllowedBadges:v11 forAssetReference:v5];
+  v12 = [(PUBrowsingViewModel *)self _filteredAllowedBadges:v11 forAssetReference:referenceCopy];
 
   return v12;
 }
 
-- (double)_focusValueForAsset:(id)a3
+- (double)_focusValueForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PUBrowsingViewModel *)self currentAssetReference];
+  assetCopy = asset;
+  currentAssetReference = [(PUBrowsingViewModel *)self currentAssetReference];
   [(PUBrowsingViewModel *)self currentAssetTransitionProgress];
   v7 = v6;
-  if ([v4 isEqual:v5])
+  if ([assetCopy isEqual:currentAssetReference])
   {
     v8 = -v7;
     goto LABEL_14;
   }
 
-  v9 = [(PUBrowsingViewModel *)self trailingAssetReference];
-  v10 = [v4 isEqual:v9];
+  trailingAssetReference = [(PUBrowsingViewModel *)self trailingAssetReference];
+  v10 = [assetCopy isEqual:trailingAssetReference];
 
   if (v10)
   {
@@ -549,8 +549,8 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v12 = [(PUBrowsingViewModel *)self leadingAssetReference];
-  v13 = [v4 isEqual:v12];
+  leadingAssetReference = [(PUBrowsingViewModel *)self leadingAssetReference];
+  v13 = [assetCopy isEqual:leadingAssetReference];
 
   if (v13)
   {
@@ -558,9 +558,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v14 = [v4 indexPath];
-  v15 = [v5 indexPath];
-  v16 = [v14 compare:v15];
+  indexPath = [assetCopy indexPath];
+  indexPath2 = [currentAssetReference indexPath];
+  v16 = [indexPath compare:indexPath2];
   v17 = 0.0;
   if (v16 == 1)
   {
@@ -583,11 +583,11 @@ LABEL_14:
 
 - (void)_updateNeighboringAssetReferences
 {
-  v3 = [(PUBrowsingViewModel *)self assetsDataSource];
-  v4 = [(PUBrowsingViewModel *)self currentAssetReference];
-  v5 = [v4 indexPath];
-  v6 = v5;
-  if (v5)
+  assetsDataSource = [(PUBrowsingViewModel *)self assetsDataSource];
+  currentAssetReference = [(PUBrowsingViewModel *)self currentAssetReference];
+  indexPath = [currentAssetReference indexPath];
+  v6 = indexPath;
+  if (indexPath)
   {
     v25 = 0;
     v26 = &v25;
@@ -599,10 +599,10 @@ LABEL_14:
     v22[1] = 3221225472;
     v22[2] = __56__PUBrowsingViewModel__updateNeighboringAssetReferences__block_invoke;
     v22[3] = &unk_1E7B7DD28;
-    v7 = v5;
+    v7 = indexPath;
     v23 = v7;
     v24 = &v25;
-    [v3 enumerateIndexPathsStartingAtIndexPath:v7 reverseDirection:1 usingBlock:v22];
+    [assetsDataSource enumerateIndexPathsStartingAtIndexPath:v7 reverseDirection:1 usingBlock:v22];
     v16 = 0;
     v17 = &v16;
     v18 = 0x3032000000;
@@ -615,10 +615,10 @@ LABEL_14:
     v13 = &unk_1E7B7DD28;
     v14 = v7;
     v15 = &v16;
-    [v3 enumerateIndexPathsStartingAtIndexPath:v14 reverseDirection:0 usingBlock:&v10];
+    [assetsDataSource enumerateIndexPathsStartingAtIndexPath:v14 reverseDirection:0 usingBlock:&v10];
     if (v26[5])
     {
-      v8 = [v3 assetReferenceAtIndexPath:{v10, v11, v12, v13}];
+      v8 = [assetsDataSource assetReferenceAtIndexPath:{v10, v11, v12, v13}];
     }
 
     else
@@ -628,7 +628,7 @@ LABEL_14:
 
     if (v17[5])
     {
-      v9 = [v3 assetReferenceAtIndexPath:?];
+      v9 = [assetsDataSource assetReferenceAtIndexPath:?];
     }
 
     else
@@ -672,12 +672,12 @@ void __56__PUBrowsingViewModel__updateNeighboringAssetReferences__block_invoke_2
 
 - (void)_updateWantsContentUnavailableUnlockButtonVisible
 {
-  v3 = [(PUBrowsingViewModel *)self privacyController];
-  v4 = [v3 willPerformAuthenticationAutomatically] ^ 1;
+  privacyController = [(PUBrowsingViewModel *)self privacyController];
+  v4 = [privacyController willPerformAuthenticationAutomatically] ^ 1;
 
-  v5 = [MEMORY[0x1E69C33F0] sharedInstance];
+  mEMORY[0x1E69C33F0] = [MEMORY[0x1E69C33F0] sharedInstance];
   v6 = objc_opt_self();
-  v7 = [v6 shouldAlwaysShowUnlockButtonInContentUnavailableViews];
+  shouldAlwaysShowUnlockButtonInContentUnavailableViews = [v6 shouldAlwaysShowUnlockButtonInContentUnavailableViews];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -685,7 +685,7 @@ void __56__PUBrowsingViewModel__updateNeighboringAssetReferences__block_invoke_2
   v8[3] = &unk_1E7B7DF20;
   v8[4] = self;
   v9 = v4;
-  v10 = v7;
+  v10 = shouldAlwaysShowUnlockButtonInContentUnavailableViews;
   [(PUViewModel *)self performChanges:v8];
 }
 
@@ -706,67 +706,67 @@ uint64_t __72__PUBrowsingViewModel__updateWantsContentUnavailableUnlockButtonVis
 
 - (void)_updateSystemAuthenticationType
 {
-  v3 = [(PUBrowsingViewModel *)self privacyController];
-  v4 = [v3 authenticationType];
+  privacyController = [(PUBrowsingViewModel *)self privacyController];
+  authenticationType = [privacyController authenticationType];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__PUBrowsingViewModel__updateSystemAuthenticationType__block_invoke;
   v5[3] = &unk_1E7B7FF70;
   v5[4] = self;
-  v5[5] = v4;
+  v5[5] = authenticationType;
   [(PUViewModel *)self performChanges:v5];
 }
 
 - (void)_updateContentPrivacyState
 {
-  v3 = [(PUBrowsingViewModel *)self privacyController];
-  v4 = [v3 isLocked];
+  privacyController = [(PUBrowsingViewModel *)self privacyController];
+  isLocked = [privacyController isLocked];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __49__PUBrowsingViewModel__updateContentPrivacyState__block_invoke;
   v5[3] = &unk_1E7B7FF98;
   v5[4] = self;
-  v6 = v4;
+  v6 = isLocked;
   [(PUViewModel *)self performChanges:v5];
 }
 
-- (void)_updateAssetViewModel:(id)a3
+- (void)_updateAssetViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 assetReference];
-  v16 = [(PUBrowsingViewModel *)self isScrubbing];
-  v6 = [(PUBrowsingViewModel *)self isAnimatingAnyTransition];
+  modelCopy = model;
+  assetReference = [modelCopy assetReference];
+  isScrubbing = [(PUBrowsingViewModel *)self isScrubbing];
+  isAnimatingAnyTransition = [(PUBrowsingViewModel *)self isAnimatingAnyTransition];
   v7 = [(PUBrowsingViewModel *)self browsingSpeedRegime]> 0;
   videoContentAllowed = self->_videoContentAllowed;
-  v9 = [v4 asset];
-  v10 = [v9 playbackStyle] == 5;
+  asset = [modelCopy asset];
+  v10 = [asset playbackStyle] == 5;
 
-  LOBYTE(v9) = PXIsOLEDDevice();
-  v11 = [v5 asset];
-  v12 = [v11 mediaSubtypes];
+  LOBYTE(asset) = PXIsOLEDDevice();
+  asset2 = [assetReference asset];
+  mediaSubtypes = [asset2 mediaSubtypes];
 
-  LOBYTE(v11) = [MEMORY[0x1E69C3740] enabled];
-  [(PUBrowsingViewModel *)self _focusValueForAsset:v5];
+  LOBYTE(asset2) = [MEMORY[0x1E69C3740] enabled];
+  [(PUBrowsingViewModel *)self _focusValueForAsset:assetReference];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __45__PUBrowsingViewModel__updateAssetViewModel___block_invoke;
   v17[3] = &unk_1E7B799B0;
-  v18 = v4;
-  v19 = self;
+  v18 = modelCopy;
+  selfCopy = self;
   v21 = v13;
-  v22 = v16;
-  v23 = v11;
-  v24 = v6;
+  v22 = isScrubbing;
+  v23 = asset2;
+  v24 = isAnimatingAnyTransition;
   v25 = v7;
   v26 = videoContentAllowed;
   v27 = v10;
-  v28 = (v12 & 0x100000) != 0;
-  v29 = v9;
-  v20 = v5;
-  v14 = v5;
-  v15 = v4;
+  v28 = (mediaSubtypes & 0x100000) != 0;
+  v29 = asset;
+  v20 = assetReference;
+  v14 = assetReference;
+  v15 = modelCopy;
   [v15 performChanges:v17];
 }
 
@@ -958,12 +958,12 @@ LABEL_4:
 
 - (void)_invalidateCurrentAndNeighboringAssetViewModels
 {
-  v8 = [(PUBrowsingViewModel *)self currentAssetReference];
-  v3 = [(PUBrowsingViewModel *)self leadingAssetReference];
-  v4 = [(PUBrowsingViewModel *)self trailingAssetReference];
-  v5 = [(PUCachedMapTable *)self->_viewModelByAssetReference objectForKey:v8];
-  v6 = [(PUCachedMapTable *)self->_viewModelByAssetReference objectForKey:v3];
-  v7 = [(PUCachedMapTable *)self->_viewModelByAssetReference objectForKey:v4];
+  currentAssetReference = [(PUBrowsingViewModel *)self currentAssetReference];
+  leadingAssetReference = [(PUBrowsingViewModel *)self leadingAssetReference];
+  trailingAssetReference = [(PUBrowsingViewModel *)self trailingAssetReference];
+  v5 = [(PUCachedMapTable *)self->_viewModelByAssetReference objectForKey:currentAssetReference];
+  v6 = [(PUCachedMapTable *)self->_viewModelByAssetReference objectForKey:leadingAssetReference];
+  v7 = [(PUCachedMapTable *)self->_viewModelByAssetReference objectForKey:trailingAssetReference];
   if (v5)
   {
     [(PUBrowsingViewModel *)self _invalidateAssetViewModel:v5];
@@ -985,13 +985,13 @@ LABEL_4:
   if ([(PUBrowsingViewModel *)self needsUpdateImageAnalysisInteraction])
   {
     [(PUBrowsingViewModel *)self setNeedsUpdateImageAnalysisInteraction:0];
-    v3 = [(PUBrowsingViewModel *)self imageAnalysisInteraction];
-    v4 = [v3 isDrivingLivePhotoPlayback];
+    imageAnalysisInteraction = [(PUBrowsingViewModel *)self imageAnalysisInteraction];
+    isDrivingLivePhotoPlayback = [imageAnalysisInteraction isDrivingLivePhotoPlayback];
 
-    if ((v4 & 1) == 0)
+    if ((isDrivingLivePhotoPlayback & 1) == 0)
     {
-      v5 = [(PUBrowsingViewModel *)self imageAnalysisInteraction];
-      if (v5)
+      imageAnalysisInteraction2 = [(PUBrowsingViewModel *)self imageAnalysisInteraction];
+      if (imageAnalysisInteraction2)
       {
       }
 
@@ -1040,8 +1040,8 @@ void __62__PUBrowsingViewModel__updateImageAnalysisInteractionIfNeeded__block_in
   if ([(PUBrowsingViewModel *)self needsUpdateVideoPlayerController])
   {
     [(PUBrowsingViewModel *)self setNeedsUpdateVideoPlayerController:0];
-    v3 = [(PUBrowsingViewModel *)self videoPlayerController];
-    [v3 updateWithBrowsingViewModel:self];
+    videoPlayerController = [(PUBrowsingViewModel *)self videoPlayerController];
+    [videoPlayerController updateWithBrowsingViewModel:self];
   }
 }
 
@@ -1056,13 +1056,13 @@ void __62__PUBrowsingViewModel__updateImageAnalysisInteractionIfNeeded__block_in
   [(PUViewModel *)self performChanges:v2];
 }
 
-- (void)_invalidateBrowsingSpeedRegimeAfterMaximumDelay:(double)a3
+- (void)_invalidateBrowsingSpeedRegimeAfterMaximumDelay:(double)delay
 {
   if (!self->_isBrowsingSpeedRegimeInvalidationScheduled)
   {
     self->_isBrowsingSpeedRegimeInvalidationScheduled = 1;
     objc_initWeak(&location, self);
-    v4 = dispatch_time(0, (a3 * 1000000000.0));
+    v4 = dispatch_time(0, (delay * 1000000000.0));
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __71__PUBrowsingViewModel__invalidateBrowsingSpeedRegimeAfterMaximumDelay___block_invoke;
@@ -1089,16 +1089,16 @@ void __71__PUBrowsingViewModel__invalidateBrowsingSpeedRegimeAfterMaximumDelay__
 
   self->_browsingSpeedRegimeIsValid = 1;
   v26 = +[PUOneUpSettings sharedInstance];
-  v4 = [(PUBrowsingViewModel *)self browsingSpeedRegime];
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v5 timeIntervalSinceDate:self->_currentAssetReferenceChangedDate];
+  browsingSpeedRegime = [(PUBrowsingViewModel *)self browsingSpeedRegime];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_currentAssetReferenceChangedDate];
   v7 = v6;
 
   if (![(PUBrowsingViewModel *)self isScrubbing])
   {
     [v26 visibilityDurationForExitingQuickPagingRegime];
     v9 = v17;
-    if (v4 == 1)
+    if (browsingSpeedRegime == 1)
     {
       if (v7 >= v17 || self->_lastAssetWasCurrentForDuration >= v17)
       {
@@ -1108,18 +1108,18 @@ void __71__PUBrowsingViewModel__invalidateBrowsingSpeedRegimeAfterMaximumDelay__
 
     else
     {
-      if (v4)
+      if (browsingSpeedRegime)
       {
         goto LABEL_38;
       }
 
       [v26 visibilityDurationForEnteringQuickPagingRegime];
       v19 = v18;
-      v20 = [(PUBrowsingViewModel *)self _scrubbingSessionDistance];
-      v21 = v20 >= 0 ? v20 : -v20;
-      v22 = [v26 minNavigationDistanceForQuickPagingRegime];
+      _scrubbingSessionDistance = [(PUBrowsingViewModel *)self _scrubbingSessionDistance];
+      v21 = _scrubbingSessionDistance >= 0 ? _scrubbingSessionDistance : -_scrubbingSessionDistance;
+      minNavigationDistanceForQuickPagingRegime = [v26 minNavigationDistanceForQuickPagingRegime];
       v23 = self->_lastAssetWasCurrentForDuration < v19 && v7 < v19;
-      if (!v23 || v21 <= v22)
+      if (!v23 || v21 <= minNavigationDistanceForQuickPagingRegime)
       {
         goto LABEL_38;
       }
@@ -1131,17 +1131,17 @@ void __71__PUBrowsingViewModel__invalidateBrowsingSpeedRegimeAfterMaximumDelay__
 
   [v26 visibilityDurationForExitingFastRegime];
   v9 = v8;
-  if (v4 != 2)
+  if (browsingSpeedRegime != 2)
   {
-    if (!v4)
+    if (!browsingSpeedRegime)
     {
       [v26 visibilityDurationForEnteringFastRegime];
       v11 = v10;
-      v12 = [(PUBrowsingViewModel *)self _scrubbingSessionDistance];
-      v13 = v12 >= 0 ? v12 : -v12;
-      v14 = [v26 minNavigationDistanceForFastRegime];
+      _scrubbingSessionDistance2 = [(PUBrowsingViewModel *)self _scrubbingSessionDistance];
+      v13 = _scrubbingSessionDistance2 >= 0 ? _scrubbingSessionDistance2 : -_scrubbingSessionDistance2;
+      minNavigationDistanceForFastRegime = [v26 minNavigationDistanceForFastRegime];
       v15 = self->_lastAssetWasCurrentForDuration < v11 && v7 < v11;
-      if (v15 && v13 > v14)
+      if (v15 && v13 > minNavigationDistanceForFastRegime)
       {
         goto LABEL_33;
       }
@@ -1172,11 +1172,11 @@ LABEL_39:
     self->_needsUpdatePlaybackAudioSession = 0;
     if ([(PUBrowsingViewModel *)self isVideoContentAllowed])
     {
-      v3 = [MEMORY[0x1E69C3C48] sharedController];
-      v4 = [v3 isMuted];
+      mEMORY[0x1E69C3C48] = [MEMORY[0x1E69C3C48] sharedController];
+      isMuted = [mEMORY[0x1E69C3C48] isMuted];
 
       v5 = MEMORY[0x1E6958038];
-      if (!v4)
+      if (!isMuted)
       {
         v5 = MEMORY[0x1E6958068];
       }
@@ -1184,7 +1184,7 @@ LABEL_39:
       v6 = *v5;
       if ((PFProcessIsLaunchedToExecuteTests() & 1) == 0)
       {
-        v7 = [(PUBrowsingViewModel *)self audioSessionUpdateQueue];
+        audioSessionUpdateQueue = [(PUBrowsingViewModel *)self audioSessionUpdateQueue];
         v8 = v6;
         PXDispatchAsyncWithSignpost();
       }
@@ -1239,57 +1239,57 @@ void __58__PUBrowsingViewModel__updatePlaybackAudioSessionIfNeeded__block_invoke
 
 - (void)_updateIsInteractingWithVideoScrubber
 {
-  v3 = [(PUBrowsingViewModel *)self videoScrubberInteractionIdentifiers];
-  -[PUBrowsingViewModel setIsInteractingWithVideoScrubber:](self, "setIsInteractingWithVideoScrubber:", [v3 count] != 0);
+  videoScrubberInteractionIdentifiers = [(PUBrowsingViewModel *)self videoScrubberInteractionIdentifiers];
+  -[PUBrowsingViewModel setIsInteractingWithVideoScrubber:](self, "setIsInteractingWithVideoScrubber:", [videoScrubberInteractionIdentifiers count] != 0);
 }
 
-- (void)videoScrubberInteractionDidEnd:(id)a3
+- (void)videoScrubberInteractionDidEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(PUBrowsingViewModel *)self videoScrubberInteractionIdentifiers];
-  [v5 removeObject:v4];
+  endCopy = end;
+  videoScrubberInteractionIdentifiers = [(PUBrowsingViewModel *)self videoScrubberInteractionIdentifiers];
+  [videoScrubberInteractionIdentifiers removeObject:endCopy];
 
   [(PUBrowsingViewModel *)self _updateIsInteractingWithVideoScrubber];
 }
 
-- (void)videoScrubberInteractionWillStart:(id)a3
+- (void)videoScrubberInteractionWillStart:(id)start
 {
-  v4 = a3;
-  v5 = [(PUBrowsingViewModel *)self videoScrubberInteractionIdentifiers];
-  [v5 addObject:v4];
+  startCopy = start;
+  videoScrubberInteractionIdentifiers = [(PUBrowsingViewModel *)self videoScrubberInteractionIdentifiers];
+  [videoScrubberInteractionIdentifiers addObject:startCopy];
 
   [(PUBrowsingViewModel *)self _updateIsInteractingWithVideoScrubber];
 }
 
-- (void)setIsInteractingWithVideoScrubber:(BOOL)a3
+- (void)setIsInteractingWithVideoScrubber:(BOOL)scrubber
 {
-  if (self->_isInteractingWithVideoScrubber != a3)
+  if (self->_isInteractingWithVideoScrubber != scrubber)
   {
-    self->_isInteractingWithVideoScrubber = a3;
+    self->_isInteractingWithVideoScrubber = scrubber;
     [(PUBrowsingViewModel *)self _invalidateAllAssetViewModels];
-    v5 = [(PUBrowsingViewModel *)self currentChange];
-    [v5 setIsInteractingWithVideoScrubberDidChange:1];
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange setIsInteractingWithVideoScrubberDidChange:1];
   }
 }
 
-- (void)setImageAnalysisInteraction:(id)a3
+- (void)setImageAnalysisInteraction:(id)interaction
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  interactionCopy = interaction;
   imageAnalysisInteraction = self->_imageAnalysisInteraction;
-  if (imageAnalysisInteraction != v5)
+  if (imageAnalysisInteraction != interactionCopy)
   {
     [(PUImageAnalysisInteraction *)imageAnalysisInteraction setBrowsingViewModel:0];
-    objc_storeStrong(&self->_imageAnalysisInteraction, a3);
+    objc_storeStrong(&self->_imageAnalysisInteraction, interaction);
     [(PUImageAnalysisInteraction *)self->_imageAnalysisInteraction setBrowsingViewModel:self];
-    v7 = [(PUBrowsingViewModel *)self currentChange];
-    [v7 setImageAnalysisInteractionDidChange:1];
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange setImageAnalysisInteractionDidChange:1];
 
     v8 = PLVisualIntelligenceGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = interactionCopy;
       _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEFAULT, "1-Up image Analysis Interaction has become: %@", &v9, 0xCu);
     }
 
@@ -1297,21 +1297,21 @@ void __58__PUBrowsingViewModel__updatePlaybackAudioSessionIfNeeded__block_invoke
   }
 }
 
-- (void)setVideoPlayer:(id)a3
+- (void)setVideoPlayer:(id)player
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_videoPlayer != v5)
+  playerCopy = player;
+  if (self->_videoPlayer != playerCopy)
   {
-    objc_storeStrong(&self->_videoPlayer, a3);
-    v6 = [(PUBrowsingViewModel *)self currentChange];
-    [v6 setVideoPlayerDidChange:1];
+    objc_storeStrong(&self->_videoPlayer, player);
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange setVideoPlayerDidChange:1];
 
     v7 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v5;
+      v9 = playerCopy;
       _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "1-Up video player has become: %@", &v8, 0xCu);
     }
 
@@ -1319,65 +1319,65 @@ void __58__PUBrowsingViewModel__updatePlaybackAudioSessionIfNeeded__block_invoke
   }
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  if (self->_mediaProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mediaProvider, a3);
-    v5 = v6;
+    v6 = providerCopy;
+    objc_storeStrong(&self->_mediaProvider, provider);
+    providerCopy = v6;
   }
 }
 
-- (void)setIsFillScreenModeEnabled:(BOOL)a3
+- (void)setIsFillScreenModeEnabled:(BOOL)enabled
 {
-  if (self->_isFillScreenModeEnabled != a3)
+  if (self->_isFillScreenModeEnabled != enabled)
   {
-    self->_isFillScreenModeEnabled = a3;
-    v4 = [(PUBrowsingViewModel *)self currentChange];
-    [v4 setIsFillScreenModeEnabledDidChange:1];
+    self->_isFillScreenModeEnabled = enabled;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange setIsFillScreenModeEnabledDidChange:1];
   }
 }
 
-- (void)setWantsContentUnavailableUnlockButtonVisible:(BOOL)a3
+- (void)setWantsContentUnavailableUnlockButtonVisible:(BOOL)visible
 {
-  if (self->_wantsContentUnavailableUnlockButtonVisible != a3)
+  if (self->_wantsContentUnavailableUnlockButtonVisible != visible)
   {
-    self->_wantsContentUnavailableUnlockButtonVisible = a3;
-    v4 = [(PUBrowsingViewModel *)self currentChange];
-    [v4 _setWantsContentUnavailableUnlockButtonVisibleDidChange:1];
+    self->_wantsContentUnavailableUnlockButtonVisible = visible;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setWantsContentUnavailableUnlockButtonVisibleDidChange:1];
   }
 }
 
-- (void)setSystemAuthenticationType:(int64_t)a3
+- (void)setSystemAuthenticationType:(int64_t)type
 {
-  if (self->_systemAuthenticationType != a3)
+  if (self->_systemAuthenticationType != type)
   {
-    self->_systemAuthenticationType = a3;
-    v4 = [(PUBrowsingViewModel *)self currentChange];
-    [v4 _setSystemAuthenticationTypeDidChange:1];
+    self->_systemAuthenticationType = type;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setSystemAuthenticationTypeDidChange:1];
   }
 }
 
-- (void)setContentPrivacyState:(int64_t)a3
+- (void)setContentPrivacyState:(int64_t)state
 {
-  if (self->_contentPrivacyState != a3)
+  if (self->_contentPrivacyState != state)
   {
     v10 = v3;
     v11 = v4;
-    self->_contentPrivacyState = a3;
-    v6 = [(PUBrowsingViewModel *)self currentChange];
-    [v6 _setContentPrivacyStateDidChange:1];
+    self->_contentPrivacyState = state;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setContentPrivacyStateDidChange:1];
 
-    v7 = [(PUBrowsingViewModel *)self assetViewModelForCurrentAssetReference];
-    if ([v7 isAccessoryViewVisible])
+    assetViewModelForCurrentAssetReference = [(PUBrowsingViewModel *)self assetViewModelForCurrentAssetReference];
+    if ([assetViewModelForCurrentAssetReference isAccessoryViewVisible])
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __46__PUBrowsingViewModel_setContentPrivacyState___block_invoke;
       v8[3] = &unk_1E7B80DD0;
-      v9 = v7;
+      v9 = assetViewModelForCurrentAssetReference;
       [v9 performChanges:v8];
     }
   }
@@ -1385,63 +1385,63 @@ void __58__PUBrowsingViewModel__updatePlaybackAudioSessionIfNeeded__block_invoke
 
 - (void)signalReviewScreenSelectionChanged
 {
-  v2 = [(PUBrowsingViewModel *)self currentChange];
-  [v2 _setReviewScreenSelectionDidChange:1];
+  currentChange = [(PUBrowsingViewModel *)self currentChange];
+  [currentChange _setReviewScreenSelectionDidChange:1];
 }
 
-- (void)setReviewScreenBarsModel:(id)a3
+- (void)setReviewScreenBarsModel:(id)model
 {
-  v5 = a3;
-  if (self->_reviewScreenBarsModel != v5)
+  modelCopy = model;
+  if (self->_reviewScreenBarsModel != modelCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_reviewScreenBarsModel, a3);
-    v6 = [(PUBrowsingViewModel *)self currentChange];
-    [v6 _setReviewScreenBarsModelDidChange:1];
+    v7 = modelCopy;
+    objc_storeStrong(&self->_reviewScreenBarsModel, model);
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setReviewScreenBarsModelDidChange:1];
 
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
-- (void)setResizeTaskDescriptorViewModel:(id)a3
+- (void)setResizeTaskDescriptorViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_resizeTaskDescriptorViewModel != v5)
+  modelCopy = model;
+  if (self->_resizeTaskDescriptorViewModel != modelCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_resizeTaskDescriptorViewModel, a3);
-    v6 = [(PUBrowsingViewModel *)self currentChange];
-    [v6 _setResizeTaskDescriptorViewModelDidChange:1];
+    v7 = modelCopy;
+    objc_storeStrong(&self->_resizeTaskDescriptorViewModel, model);
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setResizeTaskDescriptorViewModelDidChange:1];
 
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
-- (void)setNavigationBarTitle:(id)a3
+- (void)setNavigationBarTitle:(id)title
 {
-  v7 = a3;
-  if (([v7 isEqualToString:self->_navigationBarTitle] & 1) == 0)
+  titleCopy = title;
+  if (([titleCopy isEqualToString:self->_navigationBarTitle] & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [titleCopy copy];
     navigationBarTitle = self->_navigationBarTitle;
     self->_navigationBarTitle = v4;
 
-    v6 = [(PUBrowsingViewModel *)self currentChange];
-    [v6 _setNavigationBarTitleDidChange:1];
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setNavigationBarTitleDidChange:1];
   }
 }
 
-- (id)_assetSharedViewModelForAsset:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_assetSharedViewModelForAsset:(id)asset createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  neededCopy = needed;
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:842 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:842 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v8 = [(PUCachedMapTable *)self->_assetSharedViewModelByAsset objectForKey:v7];
+  v8 = [(PUCachedMapTable *)self->_assetSharedViewModelByAsset objectForKey:assetCopy];
   if (v8)
   {
     v9 = 1;
@@ -1449,18 +1449,18 @@ void __58__PUBrowsingViewModel__updatePlaybackAudioSessionIfNeeded__block_invoke
 
   else
   {
-    v9 = !v4;
+    v9 = !neededCopy;
   }
 
   if (!v9)
   {
-    v10 = [[PUAssetSharedViewModel alloc] initWithAsset:v7];
+    v10 = [[PUAssetSharedViewModel alloc] initWithAsset:assetCopy];
     v11 = [(PUCachedMapTable *)self->_viewModelByAssetReference copy];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __68__PUBrowsingViewModel__assetSharedViewModelForAsset_createIfNeeded___block_invoke;
     v17[3] = &unk_1E7B75E58;
-    v12 = v7;
+    v12 = assetCopy;
     v18 = v12;
     v8 = v10;
     v19 = v8;
@@ -1468,8 +1468,8 @@ void __58__PUBrowsingViewModel__updatePlaybackAudioSessionIfNeeded__block_invoke
 
     [(PUCachedMapTable *)self->_assetSharedViewModelByAsset setObject:v8 forKey:v12];
     assetSharedViewModelByAssetUUID = self->_assetSharedViewModelByAssetUUID;
-    v14 = [v12 uuid];
-    [(PUCachedMapTable *)assetSharedViewModelByAssetUUID setObject:v8 forKey:v14];
+    uuid = [v12 uuid];
+    [(PUCachedMapTable *)assetSharedViewModelByAssetUUID setObject:v8 forKey:uuid];
 
     [(PUAssetSharedViewModel *)v8 registerChangeObserver:self];
   }
@@ -1491,10 +1491,10 @@ void __68__PUBrowsingViewModel__assetSharedViewModelForAsset_createIfNeeded___bl
 
 - (PUAssetViewModel)assetViewModelForCurrentAssetReference
 {
-  v3 = [(PUBrowsingViewModel *)self currentAssetReference];
-  if (v3)
+  currentAssetReference = [(PUBrowsingViewModel *)self currentAssetReference];
+  if (currentAssetReference)
   {
-    v4 = [(PUBrowsingViewModel *)self assetViewModelForAssetReference:v3];
+    v4 = [(PUBrowsingViewModel *)self assetViewModelForAssetReference:currentAssetReference];
   }
 
   else
@@ -1505,11 +1505,11 @@ void __68__PUBrowsingViewModel__assetSharedViewModelForAsset_createIfNeeded___bl
   return v4;
 }
 
-- (void)setSearchContextualVideoThumbnailIdentifier:(id)a3
+- (void)setSearchContextualVideoThumbnailIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_searchContextualVideoThumbnailIdentifier != v4 && ![(NSString *)v4 isEqualToString:?])
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (self->_searchContextualVideoThumbnailIdentifier != identifierCopy && ![(NSString *)identifierCopy isEqualToString:?])
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -1529,11 +1529,11 @@ uint64_t __67__PUBrowsingViewModel_setSearchContextualVideoThumbnailIdentifier__
   return [v2 _invalidateAllAssetViewModels];
 }
 
-- (void)setSearchQueryMatchInfo:(id)a3
+- (void)setSearchQueryMatchInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_searchQueryMatchInfo != v4 && ([(PXSearchQueryMatchInfo *)v4 isEqual:?]& 1) == 0)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (self->_searchQueryMatchInfo != infoCopy && ([(PXSearchQueryMatchInfo *)infoCopy isEqual:?]& 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -1553,11 +1553,11 @@ uint64_t __47__PUBrowsingViewModel_setSearchQueryMatchInfo___block_invoke(uint64
   return [v2 _invalidateAllAssetViewModels];
 }
 
-- (id)assetViewModelForAssetReference:(id)a3
+- (id)assetViewModelForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PUBrowsingViewModel *)self assetsDataSource];
-  v6 = [v5 assetReferenceForAssetReference:v4];
+  referenceCopy = reference;
+  assetsDataSource = [(PUBrowsingViewModel *)self assetsDataSource];
+  v6 = [assetsDataSource assetReferenceForAssetReference:referenceCopy];
 
   if (v6)
   {
@@ -1571,12 +1571,12 @@ uint64_t __47__PUBrowsingViewModel_setSearchQueryMatchInfo___block_invoke(uint64
       v13[3] = &unk_1E7B809F0;
       v7 = v8;
       v14 = v7;
-      v15 = self;
+      selfCopy = self;
       v9 = v6;
       v16 = v9;
       [(PUViewModel *)v7 performChanges:v13];
-      v10 = [v9 asset];
-      v11 = [(PUBrowsingViewModel *)self _assetSharedViewModelForAsset:v10 createIfNeeded:0];
+      asset = [v9 asset];
+      v11 = [(PUBrowsingViewModel *)self _assetSharedViewModelForAsset:asset createIfNeeded:0];
 
       [(PUAssetViewModel *)v7 setAssetSharedViewModel:v11];
       [(PUCachedMapTable *)self->_viewModelByAssetReference setObject:v7 forKey:v9];
@@ -1613,24 +1613,24 @@ void __55__PUBrowsingViewModel_assetViewModelForAssetReference___block_invoke(id
 
 - (id)activeAssetReferences
 {
-  v2 = [(PUCachedMapTable *)self->_viewModelByAssetReference keyEnumerator];
-  v3 = [v2 allObjects];
+  keyEnumerator = [(PUCachedMapTable *)self->_viewModelByAssetReference keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (void)_setVideoContentAllowed:(BOOL)a3
+- (void)_setVideoContentAllowed:(BOOL)allowed
 {
-  if (self->_videoContentAllowed != a3)
+  if (self->_videoContentAllowed != allowed)
   {
     v11 = v3;
     v12 = v4;
-    v5 = a3;
-    self->_videoContentAllowed = a3;
-    v7 = [(PUBrowsingViewModel *)self currentChange];
-    [v7 setIsVideoContentAllowedDidChange:1];
+    allowedCopy = allowed;
+    self->_videoContentAllowed = allowed;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange setIsVideoContentAllowedDidChange:1];
 
-    if (v5)
+    if (allowedCopy)
     {
       [(PUBrowsingViewModel *)self _invalidatePlaybackAudioSession];
     }
@@ -1640,7 +1640,7 @@ void __55__PUBrowsingViewModel_assetViewModelForAssetReference___block_invoke(id
     v9[1] = 3221225472;
     v9[2] = __47__PUBrowsingViewModel__setVideoContentAllowed___block_invoke;
     v9[3] = &__block_descriptor_33_e51_v32__0__PUAssetReference_8__PUAssetViewModel_16_B24l;
-    v10 = v5;
+    v10 = allowedCopy;
     [v8 enumerateKeysAndObjectsUsingBlock:v9];
   }
 }
@@ -1673,30 +1673,30 @@ uint64_t __47__PUBrowsingViewModel__setVideoContentAllowed___block_invoke_2(uint
 
 - (void)setVideoContentAllowedForAllReasons
 {
-  v3 = [(PUBrowsingViewModel *)self _videoDisallowedReasons];
-  [v3 removeAllObjects];
+  _videoDisallowedReasons = [(PUBrowsingViewModel *)self _videoDisallowedReasons];
+  [_videoDisallowedReasons removeAllObjects];
   [(PUBrowsingViewModel *)self _setVideoContentAllowed:1];
 }
 
-- (void)setVideoContentAllowed:(BOOL)a3 forReason:(id)a4
+- (void)setVideoContentAllowed:(BOOL)allowed forReason:(id)reason
 {
-  v10 = a4;
-  if (!v10)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:704 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:704 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
   }
 
-  v7 = [(PUBrowsingViewModel *)self _videoDisallowedReasons];
-  v8 = v7;
-  if (a3)
+  _videoDisallowedReasons = [(PUBrowsingViewModel *)self _videoDisallowedReasons];
+  v8 = _videoDisallowedReasons;
+  if (allowed)
   {
-    [v7 removeObject:v10];
+    [_videoDisallowedReasons removeObject:reasonCopy];
   }
 
   else
   {
-    if ([v7 containsObject:v10])
+    if ([_videoDisallowedReasons containsObject:reasonCopy])
     {
       goto LABEL_10;
     }
@@ -1707,18 +1707,18 @@ uint64_t __47__PUBrowsingViewModel__setVideoContentAllowed___block_invoke_2(uint
       [(PUBrowsingViewModel *)self _setVideoDisallowedReasons:v8];
     }
 
-    [v8 addObject:v10];
+    [v8 addObject:reasonCopy];
   }
 
   -[PUBrowsingViewModel _setVideoContentAllowed:](self, "_setVideoContentAllowed:", [v8 count] == 0);
 LABEL_10:
 }
 
-- (void)setIsLivePhotoContentAllowed:(BOOL)a3
+- (void)setIsLivePhotoContentAllowed:(BOOL)allowed
 {
-  if ([(PUBrowsingViewModel *)self isLivePhotoContentAllowed]!= a3)
+  if ([(PUBrowsingViewModel *)self isLivePhotoContentAllowed]!= allowed)
   {
-    self->_isLivePhotoContentAllowed = a3;
+    self->_isLivePhotoContentAllowed = allowed;
 
     [(PUBrowsingViewModel *)self _invalidateAllAssetViewModels];
   }
@@ -1726,60 +1726,60 @@ LABEL_10:
 
 - (void)_updateLivePhotoContentAllowed
 {
-  v3 = [(PUBrowsingViewModel *)self livePhotoContentPreventionReasons];
-  -[PUBrowsingViewModel setIsLivePhotoContentAllowed:](self, "setIsLivePhotoContentAllowed:", [v3 count] == 0);
+  livePhotoContentPreventionReasons = [(PUBrowsingViewModel *)self livePhotoContentPreventionReasons];
+  -[PUBrowsingViewModel setIsLivePhotoContentAllowed:](self, "setIsLivePhotoContentAllowed:", [livePhotoContentPreventionReasons count] == 0);
 }
 
-- (void)stopPreventingLivePhotoContentForReason:(id)a3
+- (void)stopPreventingLivePhotoContentForReason:(id)reason
 {
-  v7 = a3;
-  v4 = [(PUBrowsingViewModel *)self livePhotoContentPreventionReasons];
-  v5 = [v4 containsObject:v7];
+  reasonCopy = reason;
+  livePhotoContentPreventionReasons = [(PUBrowsingViewModel *)self livePhotoContentPreventionReasons];
+  v5 = [livePhotoContentPreventionReasons containsObject:reasonCopy];
 
   if (v5)
   {
-    v6 = [(PUBrowsingViewModel *)self livePhotoContentPreventionReasons];
-    [v6 removeObject:v7];
+    livePhotoContentPreventionReasons2 = [(PUBrowsingViewModel *)self livePhotoContentPreventionReasons];
+    [livePhotoContentPreventionReasons2 removeObject:reasonCopy];
 
     [(PUBrowsingViewModel *)self _updateLivePhotoContentAllowed];
   }
 }
 
-- (void)startPreventingLivePhotoContentForReason:(id)a3
+- (void)startPreventingLivePhotoContentForReason:(id)reason
 {
-  v7 = a3;
-  v4 = [(PUBrowsingViewModel *)self livePhotoContentPreventionReasons];
-  v5 = [v4 containsObject:v7];
+  reasonCopy = reason;
+  livePhotoContentPreventionReasons = [(PUBrowsingViewModel *)self livePhotoContentPreventionReasons];
+  v5 = [livePhotoContentPreventionReasons containsObject:reasonCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(PUBrowsingViewModel *)self livePhotoContentPreventionReasons];
-    [v6 addObject:v7];
+    livePhotoContentPreventionReasons2 = [(PUBrowsingViewModel *)self livePhotoContentPreventionReasons];
+    [livePhotoContentPreventionReasons2 addObject:reasonCopy];
 
     [(PUBrowsingViewModel *)self _updateLivePhotoContentAllowed];
   }
 }
 
-- (void)setPresentingOverOneUp:(BOOL)a3
+- (void)setPresentingOverOneUp:(BOOL)up
 {
-  if (self->_presentingOverOneUp != a3)
+  if (self->_presentingOverOneUp != up)
   {
     v8[7] = v3;
     v8[8] = v4;
-    self->_presentingOverOneUp = a3;
-    if (a3)
+    self->_presentingOverOneUp = up;
+    if (up)
     {
-      v6 = [(PUBrowsingViewModel *)self videoPlayer];
+      videoPlayer = [(PUBrowsingViewModel *)self videoPlayer];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __46__PUBrowsingViewModel_setPresentingOverOneUp___block_invoke;
       v8[3] = &unk_1E7B80DD0;
       v8[4] = self;
-      [v6 performChanges:v8];
+      [videoPlayer performChanges:v8];
     }
 
-    v7 = [(PUBrowsingViewModel *)self currentChange];
-    [v7 _setPresentingOverOneUpDidChange:1];
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setPresentingOverOneUpDidChange:1];
   }
 }
 
@@ -1789,43 +1789,43 @@ void __46__PUBrowsingViewModel_setPresentingOverOneUp___block_invoke(uint64_t a1
   [v1 setDesiredPlayState:1 reason:@"Presenting Over 1-Up"];
 }
 
-- (void)setChromeVisible:(BOOL)a3 changeReason:(int64_t)a4 context:(id)a5
+- (void)setChromeVisible:(BOOL)visible changeReason:(int64_t)reason context:(id)context
 {
-  v6 = a3;
-  v8 = a5;
-  if (self->_isChromeVisible != v6)
+  visibleCopy = visible;
+  contextCopy = context;
+  if (self->_isChromeVisible != visibleCopy)
   {
-    v22 = v8;
-    if (a4 != 1 || v6 || (-[PUBrowsingViewModel assetsDataSource](self, "assetsDataSource"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEmpty], v9, v8 = v22, (v10 & 1) == 0))
+    v22 = contextCopy;
+    if (reason != 1 || visibleCopy || (-[PUBrowsingViewModel assetsDataSource](self, "assetsDataSource"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEmpty], v9, contextCopy = v22, (v10 & 1) == 0))
     {
-      self->_isChromeVisible = v6;
-      v11 = [(PUBrowsingViewModel *)self currentChange];
-      [v11 _setChromeVisibilityDidChange:1];
+      self->_isChromeVisible = visibleCopy;
+      currentChange = [(PUBrowsingViewModel *)self currentChange];
+      [currentChange _setChromeVisibilityDidChange:1];
 
-      [(PUBrowsingViewModel *)self _setLastChromeVisibilityChangeReason:a4];
+      [(PUBrowsingViewModel *)self _setLastChromeVisibilityChangeReason:reason];
       [(PUBrowsingViewModel *)self _setLastChromeVisibilityChangeContext:v22];
-      v12 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       lastChromeVisibilityChangeDate = self->_lastChromeVisibilityChangeDate;
-      self->_lastChromeVisibilityChangeDate = v12;
+      self->_lastChromeVisibilityChangeDate = date;
 
       v14 = +[PUOneUpSettings sharedInstance];
-      v15 = [v14 persistChromeVisibility];
+      persistChromeVisibility = [v14 persistChromeVisibility];
 
-      if (v15)
+      if (persistChromeVisibility)
       {
-        v16 = [MEMORY[0x1E695E000] standardUserDefaults];
-        [v16 setBool:v6 forKey:@"browsingChromeVisibility"];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        [standardUserDefaults setBool:visibleCopy forKey:@"browsingChromeVisibility"];
       }
 
-      v17 = [MEMORY[0x1E69DC938] currentDevice];
-      v18 = [v17 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v18 == 1 && [(PUBrowsingViewModel *)self horizontalSizeClass]== 2)
+      if (userInterfaceIdiom == 1 && [(PUBrowsingViewModel *)self horizontalSizeClass]== 2)
       {
         v19 = +[PUOneUpSettings sharedInstance];
-        v20 = [v19 hideFloatingInfoPanelWhenHidingChrome];
+        hideFloatingInfoPanelWhenHidingChrome = [v19 hideFloatingInfoPanelWhenHidingChrome];
 
-        v21 = v20 ^ 1;
+        v21 = hideFloatingInfoPanelWhenHidingChrome ^ 1;
       }
 
       else
@@ -1833,47 +1833,47 @@ void __46__PUBrowsingViewModel_setPresentingOverOneUp___block_invoke(uint64_t a1
         v21 = 0;
       }
 
-      v8 = v22;
-      if (a4 != 5 && !v6 && (v21 & 1) == 0)
+      contextCopy = v22;
+      if (reason != 5 && !visibleCopy && (v21 & 1) == 0)
       {
         [(PUBrowsingViewModel *)self setAccessoryViewsDefaultVisibility:0 changeReason:3];
         [(PUBrowsingViewModel *)self _resetAccessoryViewsVisibilityToDefaultWithChangeReason:3];
-        v8 = v22;
+        contextCopy = v22;
       }
     }
   }
 }
 
-- (void)setIsAnimatingPresentationSize:(BOOL)a3
+- (void)setIsAnimatingPresentationSize:(BOOL)size
 {
-  if (self->_isAnimatingPresentationSize != a3)
+  if (self->_isAnimatingPresentationSize != size)
   {
-    self->_isAnimatingPresentationSize = a3;
-    v4 = [(PUBrowsingViewModel *)self currentChange];
-    [v4 setIsAnimatingPresentationSizeDidChange:1];
+    self->_isAnimatingPresentationSize = size;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange setIsAnimatingPresentationSizeDidChange:1];
   }
 }
 
-- (void)setIsInSelectionMode:(BOOL)a3
+- (void)setIsInSelectionMode:(BOOL)mode
 {
-  if (self->_isInSelectionMode != a3)
+  if (self->_isInSelectionMode != mode)
   {
-    self->_isInSelectionMode = a3;
-    v4 = [(PUBrowsingViewModel *)self currentChange];
-    [v4 _setIsInSelectionModeDidChange:1];
+    self->_isInSelectionMode = mode;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setIsInSelectionModeDidChange:1];
   }
 }
 
-- (void)_resetAccessoryViewsVisibilityToDefaultWithChangeReason:(int64_t)a3
+- (void)_resetAccessoryViewsVisibilityToDefaultWithChangeReason:(int64_t)reason
 {
-  v5 = [(PUBrowsingViewModel *)self accessoryViewsDefaultVisibility];
+  accessoryViewsDefaultVisibility = [(PUBrowsingViewModel *)self accessoryViewsDefaultVisibility];
   v6 = [(PUCachedMapTable *)self->_viewModelByAssetReference copy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChangeReason___block_invoke;
   v7[3] = &__block_descriptor_41_e51_v32__0__PUAssetReference_8__PUAssetViewModel_16_B24l;
-  v8 = v5;
-  v7[4] = a3;
+  v8 = accessoryViewsDefaultVisibility;
+  v7[4] = reason;
   [v6 enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -1910,121 +1910,121 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
   }
 }
 
-- (void)setAccessoryViewsDefaultVisibility:(BOOL)a3 changeReason:(int64_t)a4
+- (void)setAccessoryViewsDefaultVisibility:(BOOL)visibility changeReason:(int64_t)reason
 {
-  if (self->_accessoryViewsDefaultVisibility != a3)
+  if (self->_accessoryViewsDefaultVisibility != visibility)
   {
-    self->_accessoryViewsDefaultVisibility = a3;
-    [(PUBrowsingViewModel *)self _resetAccessoryViewsVisibilityToDefaultWithChangeReason:a4];
+    self->_accessoryViewsDefaultVisibility = visibility;
+    [(PUBrowsingViewModel *)self _resetAccessoryViewsVisibilityToDefaultWithChangeReason:reason];
   }
 }
 
-- (void)setIsPresentedForPreview:(BOOL)a3
+- (void)setIsPresentedForPreview:(BOOL)preview
 {
-  if (self->_isPresentedForPreview != a3)
+  if (self->_isPresentedForPreview != preview)
   {
-    self->_isPresentedForPreview = a3;
-    v4 = [(PUBrowsingViewModel *)self currentChange];
-    [v4 setIsPresentedForPreviewDidChange:1];
+    self->_isPresentedForPreview = preview;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange setIsPresentedForPreviewDidChange:1];
   }
 }
 
-- (void)setSecondScreenSize:(CGSize)a3
+- (void)setSecondScreenSize:(CGSize)size
 {
-  if (a3.width != self->_secondScreenSize.width || a3.height != self->_secondScreenSize.height)
+  if (size.width != self->_secondScreenSize.width || size.height != self->_secondScreenSize.height)
   {
-    self->_secondScreenSize = a3;
-    v5 = [(PUBrowsingViewModel *)self currentChange];
-    [v5 _setSecondScreenSizeDidChange:1];
+    self->_secondScreenSize = size;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setSecondScreenSizeDidChange:1];
   }
 }
 
-- (void)_setAnimatingAnyTransition:(BOOL)a3
+- (void)_setAnimatingAnyTransition:(BOOL)transition
 {
-  if (self->_isAnimatingAnyTransition != a3)
+  if (self->_isAnimatingAnyTransition != transition)
   {
-    self->_isAnimatingAnyTransition = a3;
-    v5 = [(PUBrowsingViewModel *)self currentChange];
-    [v5 _setAnimatingAnyTransitionDidChange:1];
+    self->_isAnimatingAnyTransition = transition;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setAnimatingAnyTransitionDidChange:1];
 
     [(PUBrowsingViewModel *)self _invalidateAllAssetViewModels];
   }
 }
 
-- (void)setAnimating:(BOOL)a3 transitionWithIdentifier:(id)a4
+- (void)setAnimating:(BOOL)animating transitionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v10 = a4;
-  if (!v10)
+  animatingCopy = animating;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:524 description:{@"Invalid parameter not satisfying: %@", @"transitionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:524 description:{@"Invalid parameter not satisfying: %@", @"transitionIdentifier"}];
   }
 
-  v7 = [(PUBrowsingViewModel *)self _animatingTransitionIdentifiers];
-  if ([v7 containsObject:v10] != v4)
+  _animatingTransitionIdentifiers = [(PUBrowsingViewModel *)self _animatingTransitionIdentifiers];
+  if ([_animatingTransitionIdentifiers containsObject:identifierCopy] != animatingCopy)
   {
-    if (v4)
+    if (animatingCopy)
     {
-      v8 = v10;
-      if (!v7)
+      v8 = identifierCopy;
+      if (!_animatingTransitionIdentifiers)
       {
-        v7 = [MEMORY[0x1E695DFA8] setWithCapacity:5];
-        [(PUBrowsingViewModel *)self _setAnimatingTransitionIdentifiers:v7];
-        v8 = v10;
+        _animatingTransitionIdentifiers = [MEMORY[0x1E695DFA8] setWithCapacity:5];
+        [(PUBrowsingViewModel *)self _setAnimatingTransitionIdentifiers:_animatingTransitionIdentifiers];
+        v8 = identifierCopy;
       }
 
-      [v7 addObject:v8];
+      [_animatingTransitionIdentifiers addObject:v8];
     }
 
     else
     {
-      [v7 removeObject:v10];
+      [_animatingTransitionIdentifiers removeObject:identifierCopy];
     }
 
-    -[PUBrowsingViewModel _setAnimatingAnyTransition:](self, "_setAnimatingAnyTransition:", [v7 count] != 0);
+    -[PUBrowsingViewModel _setAnimatingAnyTransition:](self, "_setAnimatingAnyTransition:", [_animatingTransitionIdentifiers count] != 0);
   }
 }
 
-- (void)setLivePhotoShouldPlay:(BOOL)a3
+- (void)setLivePhotoShouldPlay:(BOOL)play
 {
-  if (self->_livePhotoShouldPlay != a3)
+  if (self->_livePhotoShouldPlay != play)
   {
-    self->_livePhotoShouldPlay = a3;
-    v4 = [(PUBrowsingViewModel *)self currentChange];
-    [v4 setLivePhotoShouldPlayDidChange:1];
+    self->_livePhotoShouldPlay = play;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange setLivePhotoShouldPlayDidChange:1];
   }
 }
 
-- (void)setIsScrolling:(BOOL)a3
+- (void)setIsScrolling:(BOOL)scrolling
 {
-  if (self->_isScrolling != a3)
+  if (self->_isScrolling != scrolling)
   {
-    self->_isScrolling = a3;
-    v5 = [(PUBrowsingViewModel *)self currentChange];
-    [v5 _setIsScrollingDidChange:1];
+    self->_isScrolling = scrolling;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setIsScrollingDidChange:1];
 
     [(PUBrowsingViewModel *)self _invalidateAllAssetViewModels];
   }
 }
 
-- (void)setIsAttemptingToPlayVideoOverlay:(BOOL)a3
+- (void)setIsAttemptingToPlayVideoOverlay:(BOOL)overlay
 {
-  if (self->_isAttemptingToPlayVideoOverlay != a3)
+  if (self->_isAttemptingToPlayVideoOverlay != overlay)
   {
-    self->_isAttemptingToPlayVideoOverlay = a3;
-    v4 = [(PUBrowsingViewModel *)self currentChange];
-    [v4 _setIsAttemptingToPlayVideoOverlayDidChange:1];
+    self->_isAttemptingToPlayVideoOverlay = overlay;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setIsAttemptingToPlayVideoOverlayDidChange:1];
   }
 }
 
-- (void)setVideoOverlayPlayState:(int64_t)a3
+- (void)setVideoOverlayPlayState:(int64_t)state
 {
-  if (self->_videoOverlayPlayState != a3)
+  if (self->_videoOverlayPlayState != state)
   {
-    self->_videoOverlayPlayState = a3;
-    v5 = [(PUBrowsingViewModel *)self currentChange];
-    [v5 _setVideoOverlayPlayStateDidChange:1];
+    self->_videoOverlayPlayState = state;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setVideoOverlayPlayStateDidChange:1];
 
     [(PUBrowsingViewModel *)self _invalidateAllAssetViewModels];
 
@@ -2032,28 +2032,28 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
   }
 }
 
-- (void)setIsScrubbing:(BOOL)a3
+- (void)setIsScrubbing:(BOOL)scrubbing
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_isScrubbing != a3)
+  if (self->_isScrubbing != scrubbing)
   {
     if (self->_isScrubbing)
     {
       v5 = PLOneUpGetLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(PUBrowsingViewModel *)self currentAssetReference];
-        v7 = [v6 asset];
-        v8 = [v7 uuid];
+        currentAssetReference = [(PUBrowsingViewModel *)self currentAssetReference];
+        asset = [currentAssetReference asset];
+        uuid = [asset uuid];
         v10 = 138543362;
-        v11 = v8;
+        v11 = uuid;
         _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "Scrubbing ended on asset UUID: %{public}@", &v10, 0xCu);
       }
     }
 
-    self->_isScrubbing = a3;
-    v9 = [(PUBrowsingViewModel *)self currentChange];
-    [v9 _setIsScrubbingDidChange:1];
+    self->_isScrubbing = scrubbing;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setIsScrubbingDidChange:1];
 
     [(PUBrowsingViewModel *)self _setScrubbingSessionDistance:0];
     [(PUBrowsingViewModel *)self _invalidateImageAnalysisInteraction];
@@ -2062,13 +2062,13 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
   }
 }
 
-- (void)_setBrowsingSpeedRegime:(int64_t)a3
+- (void)_setBrowsingSpeedRegime:(int64_t)regime
 {
-  if (self->_browsingSpeedRegime != a3)
+  if (self->_browsingSpeedRegime != regime)
   {
-    self->_browsingSpeedRegime = a3;
-    v5 = [(PUBrowsingViewModel *)self currentChange];
-    [v5 _setBrowsingSpeedRegimeDidChange:1];
+    self->_browsingSpeedRegime = regime;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setBrowsingSpeedRegimeDidChange:1];
 
     [(PUBrowsingViewModel *)self _invalidateAllAssetViewModels];
 
@@ -2076,49 +2076,49 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
   }
 }
 
-- (void)_setTransitionDriverIdentifier:(id)a3
+- (void)_setTransitionDriverIdentifier:(id)identifier
 {
-  if (self->_transitionDriverIdentifier != a3)
+  if (self->_transitionDriverIdentifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     transitionDriverIdentifier = self->_transitionDriverIdentifier;
     self->_transitionDriverIdentifier = v4;
 
-    v6 = [(PUBrowsingViewModel *)self currentChange];
-    [v6 _setTransitionDriverIdentifierDidChange:1];
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setTransitionDriverIdentifierDidChange:1];
   }
 }
 
-- (void)_setCurrentAssetTransitionProgress:(double)a3
+- (void)_setCurrentAssetTransitionProgress:(double)progress
 {
-  if (self->_currentAssetTransitionProgress != a3)
+  if (self->_currentAssetTransitionProgress != progress)
   {
-    self->_currentAssetTransitionProgress = a3;
-    v4 = [(PUBrowsingViewModel *)self currentChange];
-    [v4 _setCurrentAssetTransitionProgressDidChange:1];
+    self->_currentAssetTransitionProgress = progress;
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setCurrentAssetTransitionProgressDidChange:1];
   }
 }
 
-- (void)setCurrentAssetReference:(id)a3
+- (void)setCurrentAssetReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   currentAssetReference = self->_currentAssetReference;
-  if (currentAssetReference != v4)
+  if (currentAssetReference != referenceCopy)
   {
-    v8 = v4;
-    currentAssetReference = [(PUAssetReference *)currentAssetReference isEqual:v4];
-    v4 = v8;
+    v8 = referenceCopy;
+    currentAssetReference = [(PUAssetReference *)currentAssetReference isEqual:referenceCopy];
+    referenceCopy = v8;
     if ((currentAssetReference & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AFB0] UUID];
-      v7 = [v6 UUIDString];
-      [(PUBrowsingViewModel *)self setCurrentAssetReference:v8 transitionProgress:v7 transitionDriverIdentifier:0 animated:0.0];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      [(PUBrowsingViewModel *)self setCurrentAssetReference:v8 transitionProgress:uUIDString transitionDriverIdentifier:0 animated:0.0];
 
-      v4 = v8;
+      referenceCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](currentAssetReference, v4);
+  MEMORY[0x1EEE66BB8](currentAssetReference, referenceCopy);
 }
 
 - (PUAssetReference)currentAssetReference
@@ -2126,10 +2126,10 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
   currentAssetReference = self->_currentAssetReference;
   if (!currentAssetReference)
   {
-    v4 = [(PUBrowsingViewModel *)self assetsDataSource];
-    v5 = [v4 startingAssetReference];
+    assetsDataSource = [(PUBrowsingViewModel *)self assetsDataSource];
+    startingAssetReference = [assetsDataSource startingAssetReference];
     v6 = self->_currentAssetReference;
-    self->_currentAssetReference = v5;
+    self->_currentAssetReference = startingAssetReference;
 
     currentAssetReference = self->_currentAssetReference;
   }
@@ -2137,45 +2137,45 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
   return currentAssetReference;
 }
 
-- (void)setCurrentAssetReference:(id)a3 transitionProgress:(double)a4 transitionDriverIdentifier:(id)a5 animated:(BOOL)a6
+- (void)setCurrentAssetReference:(id)reference transitionProgress:(double)progress transitionDriverIdentifier:(id)identifier animated:(BOOL)animated
 {
   v52 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  if (v12)
+  referenceCopy = reference;
+  identifierCopy = identifier;
+  if (referenceCopy)
   {
-    v14 = [(PUBrowsingViewModel *)self assetsDataSource];
-    v15 = [v14 identifier];
-    v16 = [(PUAssetReference *)v12 dataSourceIdentifier];
-    v17 = [v15 isEqual:v16];
+    assetsDataSource = [(PUBrowsingViewModel *)self assetsDataSource];
+    identifier = [assetsDataSource identifier];
+    dataSourceIdentifier = [(PUAssetReference *)referenceCopy dataSourceIdentifier];
+    v17 = [identifier isEqual:dataSourceIdentifier];
 
     if ((v17 & 1) == 0)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:334 description:{@"Invalid parameter not satisfying: %@", @"!currentAssetReference || [[[self assetsDataSource] identifier] isEqual:[currentAssetReference dataSourceIdentifier]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:334 description:{@"Invalid parameter not satisfying: %@", @"!currentAssetReference || [[[self assetsDataSource] identifier] isEqual:[currentAssetReference dataSourceIdentifier]]"}];
     }
 
-    v19 = [(PUBrowsingViewModel *)self assetsDataSource];
-    v20 = [v19 assetReferenceForAssetReference:v12];
+    assetsDataSource2 = [(PUBrowsingViewModel *)self assetsDataSource];
+    v20 = [assetsDataSource2 assetReferenceForAssetReference:referenceCopy];
 
     if (!v20)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:335 description:@"Tried to set a current asset reference that doesn't exist in the data source"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUBrowsingViewModel.m" lineNumber:335 description:@"Tried to set a current asset reference that doesn't exist in the data source"];
     }
   }
 
-  if (self->_currentAssetReference != v12 && ![(PUAssetReference *)v12 isEqual:?])
+  if (self->_currentAssetReference != referenceCopy && ![(PUAssetReference *)referenceCopy isEqual:?])
   {
     if (![(PUBrowsingViewModel *)self isScrubbing])
     {
       v22 = PLOneUpGetLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(PUAssetReference *)v12 asset];
-        v24 = [v23 uuid];
+        asset = [(PUAssetReference *)referenceCopy asset];
+        uuid = [asset uuid];
         *buf = 138543362;
-        v51 = v24;
+        v51 = uuid;
         _os_log_impl(&dword_1B36F3000, v22, OS_LOG_TYPE_DEFAULT, "Current asset changed and not scrubbing. UUID: %{public}@", buf, 0xCu);
       }
     }
@@ -2192,26 +2192,26 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
     }
 
     v26 = currentAssetReference;
-    if (v12)
+    if (referenceCopy)
     {
-      objc_storeStrong(&self->_lastViewedAssetReference, a3);
+      objc_storeStrong(&self->_lastViewedAssetReference, reference);
       objc_storeStrong(&self->_assetBeforeLastViewedAssetReference, currentAssetReference);
     }
 
-    objc_storeStrong(&self->_currentAssetReference, a3);
-    v27 = [(PUBrowsingViewModel *)self currentChange];
-    [v27 _setCurrentAssetDidChange:1];
+    objc_storeStrong(&self->_currentAssetReference, reference);
+    currentChange = [(PUBrowsingViewModel *)self currentChange];
+    [currentChange _setCurrentAssetDidChange:1];
 
     [(PUBrowsingViewModel *)self _updateNeighboringAssetReferences];
-    v28 = [(PUAssetReference *)v26 dataSourceIdentifier];
-    v29 = [(PUAssetReference *)v12 dataSourceIdentifier];
-    v30 = [v28 isEqualToString:v29];
+    dataSourceIdentifier2 = [(PUAssetReference *)v26 dataSourceIdentifier];
+    dataSourceIdentifier3 = [(PUAssetReference *)referenceCopy dataSourceIdentifier];
+    v30 = [dataSourceIdentifier2 isEqualToString:dataSourceIdentifier3];
 
     if (v30)
     {
-      v31 = [(PUAssetReference *)v26 indexPath];
-      v32 = [(PUAssetReference *)v12 indexPath];
-      v33 = [v31 compare:v32];
+      indexPath = [(PUAssetReference *)v26 indexPath];
+      indexPath2 = [(PUAssetReference *)referenceCopy indexPath];
+      v33 = [indexPath compare:indexPath2];
 
       v34 = v33 == -1;
       v35 = v33 == -1;
@@ -2229,7 +2229,7 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
       }
 
       v40 = +[PUOneUpSettings sharedInstance];
-      v41 = [v40 userNavigationMaximumDistance];
+      userNavigationMaximumDistance = [v40 userNavigationMaximumDistance];
 
       v42 = [(PUBrowsingViewModel *)self _userNavigationDistance]+ v39;
       if (v37 && v42 == 0)
@@ -2237,14 +2237,14 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
         v42 = -1;
       }
 
-      if (v42 <= -v41)
+      if (v42 <= -userNavigationMaximumDistance)
       {
-        v42 = -v41;
+        v42 = -userNavigationMaximumDistance;
       }
 
-      if (v42 >= v41)
+      if (v42 >= userNavigationMaximumDistance)
       {
-        v43 = v41;
+        v43 = userNavigationMaximumDistance;
       }
 
       else
@@ -2253,33 +2253,33 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
       }
 
       [(PUBrowsingViewModel *)self _setUserNavigationDistance:v43];
-      v44 = [(PUBrowsingViewModel *)self _scrubbingSessionDistance];
-      v45 = v44 > 0 && v37;
-      if (v45 || v38 && v44 < 0)
+      _scrubbingSessionDistance = [(PUBrowsingViewModel *)self _scrubbingSessionDistance];
+      v45 = _scrubbingSessionDistance > 0 && v37;
+      if (v45 || v38 && _scrubbingSessionDistance < 0)
       {
         v46 = 0;
       }
 
       else
       {
-        v46 = v44;
+        v46 = _scrubbingSessionDistance;
       }
 
       [(PUBrowsingViewModel *)self _setScrubbingSessionDistance:v46 + v39];
     }
 
-    v47 = [MEMORY[0x1E695DF00] date];
-    [(NSDate *)v47 timeIntervalSinceDate:self->_currentAssetReferenceChangedDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [(NSDate *)date timeIntervalSinceDate:self->_currentAssetReferenceChangedDate];
     self->_lastAssetWasCurrentForDuration = v48;
     currentAssetReferenceChangedDate = self->_currentAssetReferenceChangedDate;
-    self->_currentAssetReferenceChangedDate = v47;
+    self->_currentAssetReferenceChangedDate = date;
 
     [(PUBrowsingViewModel *)self _invalidateBrowsingSpeedRegime];
   }
 
-  [(PUBrowsingViewModel *)self _setCurrentAssetTransitionProgress:a4];
-  [(PUBrowsingViewModel *)self _setTransitionDriverIdentifier:v13];
-  self->_assetChangesShouldAnimate = a6;
+  [(PUBrowsingViewModel *)self _setCurrentAssetTransitionProgress:progress];
+  [(PUBrowsingViewModel *)self _setTransitionDriverIdentifier:identifierCopy];
+  self->_assetChangesShouldAnimate = animated;
   [(PUBrowsingViewModel *)self _invalidateCurrentAndNeighboringAssetViewModels];
   [(PUBrowsingViewModel *)self _invalidateImageAnalysisInteraction];
   [(PUBrowsingViewModel *)self _updateIfNeeded];
@@ -2300,62 +2300,62 @@ void __79__PUBrowsingViewModel__resetAccessoryViewsVisibilityToDefaultWithChange
   return spatialOverlayController;
 }
 
-- (void)setPrivacyController:(id)a3
+- (void)setPrivacyController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   privacyController = self->_privacyController;
-  if (privacyController != v5)
+  if (privacyController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXContentPrivacyController *)privacyController unregisterChangeObserver:self context:PUBrowsingViewModelPrivacyControllerObservationContext];
-    objc_storeStrong(&self->_privacyController, a3);
+    objc_storeStrong(&self->_privacyController, controller);
     [(PXContentPrivacyController *)self->_privacyController registerChangeObserver:self context:PUBrowsingViewModelPrivacyControllerObservationContext];
     [(PUBrowsingViewModel *)self _updateContentPrivacyState];
     [(PUBrowsingViewModel *)self _updateSystemAuthenticationType];
     privacyController = [(PUBrowsingViewModel *)self _updateWantsContentUnavailableUnlockButtonVisible];
-    v5 = v7;
+    controllerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](privacyController, v5);
+  MEMORY[0x1EEE66BB8](privacyController, controllerCopy);
 }
 
-- (void)setImportStatusManager:(id)a3
+- (void)setImportStatusManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   importStatusManager = self->_importStatusManager;
-  if (importStatusManager != v5)
+  if (importStatusManager != managerCopy)
   {
-    v7 = v5;
+    v7 = managerCopy;
     [(PXAssetImportStatusManager *)importStatusManager removeAssetImportStatusObserver:self];
-    objc_storeStrong(&self->_importStatusManager, a3);
+    objc_storeStrong(&self->_importStatusManager, manager);
     importStatusManager = [(PXAssetImportStatusManager *)self->_importStatusManager addAssetImportStatusObserver:self];
-    v5 = v7;
+    managerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](importStatusManager, v5);
+  MEMORY[0x1EEE66BB8](importStatusManager, managerCopy);
 }
 
-- (void)setAssetsDataSource:(id)a3
+- (void)setAssetsDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   assetsDataSource = self->_assetsDataSource;
-  if (assetsDataSource != v5 && ![(PUTilingDataSource *)assetsDataSource isEqual:v5])
+  if (assetsDataSource != sourceCopy && ![(PUTilingDataSource *)assetsDataSource isEqual:sourceCopy])
   {
-    v7 = [(PUBrowsingViewModel *)self currentAssetReference];
+    currentAssetReference = [(PUBrowsingViewModel *)self currentAssetReference];
     v29 = 0;
     v30 = &v29;
     v31 = 0x3032000000;
     v32 = __Block_byref_object_copy__16533;
     v33 = __Block_byref_object_dispose__16534;
     v34 = 0;
-    if (v7)
+    if (currentAssetReference)
     {
-      if ([(PUAssetsDataSource *)v5 isEmpty])
+      if ([(PUAssetsDataSource *)sourceCopy isEmpty])
       {
 LABEL_10:
-        objc_storeStrong(&self->_assetsDataSource, a3);
-        v15 = [(PUBrowsingViewModel *)self currentChange];
-        [v15 _setAssetsDataSourceDidChange:1];
+        objc_storeStrong(&self->_assetsDataSource, source);
+        currentChange = [(PUBrowsingViewModel *)self currentChange];
+        [currentChange _setAssetsDataSourceDidChange:1];
 
         v16 = [(PUCachedMapTable *)self->_viewModelByAssetReference copy];
         [(PUCachedMapTable *)self->_viewModelByAssetReference removeAllObjects];
@@ -2363,8 +2363,8 @@ LABEL_10:
         v17[1] = 3221225472;
         v17[2] = __43__PUBrowsingViewModel_setAssetsDataSource___block_invoke_2;
         v17[3] = &unk_1E7B75E58;
-        v18 = v5;
-        v19 = self;
+        v18 = sourceCopy;
+        selfCopy = self;
         [v16 enumerateKeysAndObjectsUsingBlock:v17];
         [(PUBrowsingViewModel *)self setCurrentAssetReference:v30[5]];
 
@@ -2373,7 +2373,7 @@ LABEL_10:
       }
 
       v8 = self->_assetsDataSource;
-      v9 = [(PUBrowsingViewModel *)self _userNavigationDistance];
+      _userNavigationDistance = [(PUBrowsingViewModel *)self _userNavigationDistance];
       v25 = 0;
       v26 = &v25;
       v27 = 0x2020000000;
@@ -2386,15 +2386,15 @@ LABEL_10:
       v10 = v8;
       v21 = v10;
       v24 = &v29;
-      v22 = v5;
+      v22 = sourceCopy;
       v11 = _Block_copy(aBlock);
-      v12 = [v7 indexPath];
-      v13 = v9 >> 63;
-      [(PUTilingDataSource *)v10 enumerateIndexPathsStartingAtIndexPath:v12 reverseDirection:v13 usingBlock:v11];
+      indexPath = [currentAssetReference indexPath];
+      v13 = _userNavigationDistance >> 63;
+      [(PUTilingDataSource *)v10 enumerateIndexPathsStartingAtIndexPath:indexPath reverseDirection:v13 usingBlock:v11];
       v26[3] = 0;
       if (!v30[5])
       {
-        [(PUTilingDataSource *)v10 enumerateIndexPathsStartingAtIndexPath:v12 reverseDirection:v13 ^ 1 usingBlock:v11];
+        [(PUTilingDataSource *)v10 enumerateIndexPathsStartingAtIndexPath:indexPath reverseDirection:v13 ^ 1 usingBlock:v11];
       }
 
       _Block_object_dispose(&v25, 8);
@@ -2402,9 +2402,9 @@ LABEL_10:
 
     else
     {
-      v14 = [(PUAssetsDataSource *)v5 startingAssetReference];
+      startingAssetReference = [(PUAssetsDataSource *)sourceCopy startingAssetReference];
       v10 = v30[5];
-      v30[5] = v14;
+      v30[5] = startingAssetReference;
     }
 
     goto LABEL_10;
@@ -2505,30 +2505,30 @@ void __43__PUBrowsingViewModel_setAssetsDataSource___block_invoke_4(uint64_t a1)
   [(PUBrowsingViewModel *)self _updateIfNeeded];
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUBrowsingViewModel;
-  [(PUViewModel *)&v3 unregisterChangeObserver:a3];
+  [(PUViewModel *)&v3 unregisterChangeObserver:observer];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUBrowsingViewModel;
-  [(PUViewModel *)&v3 registerChangeObserver:a3];
+  [(PUViewModel *)&v3 registerChangeObserver:observer];
 }
 
 - (id)currentChange
 {
   v4.receiver = self;
   v4.super_class = PUBrowsingViewModel;
-  v2 = [(PUViewModel *)&v4 currentChange];
+  currentChange = [(PUViewModel *)&v4 currentChange];
 
-  return v2;
+  return currentChange;
 }
 
-- (PUBrowsingViewModel)initWithLowMemoryMode:(BOOL)a3
+- (PUBrowsingViewModel)initWithLowMemoryMode:(BOOL)mode
 {
   v30.receiver = self;
   v30.super_class = PUBrowsingViewModel;
@@ -2536,29 +2536,29 @@ void __43__PUBrowsingViewModel_setAssetsDataSource___block_invoke_4(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    v4->_lowMemoryMode = a3;
+    v4->_lowMemoryMode = mode;
     v6 = [MEMORY[0x1E695DFA8] set];
     invalidAssetViewModels = v5->_invalidAssetViewModels;
     v5->_invalidAssetViewModels = v6;
 
     v8 = +[PUOneUpSettings sharedInstance];
-    v9 = [v8 viewModelCacheCountLimit];
+    viewModelCacheCountLimit = [v8 viewModelCacheCountLimit];
 
     v10 = objc_alloc_init(PUCachedMapTable);
     viewModelByAssetReference = v5->_viewModelByAssetReference;
     v5->_viewModelByAssetReference = v10;
 
-    [(PUCachedMapTable *)v5->_viewModelByAssetReference setCacheCountLimit:v9];
+    [(PUCachedMapTable *)v5->_viewModelByAssetReference setCacheCountLimit:viewModelCacheCountLimit];
     v12 = objc_alloc_init(PUCachedMapTable);
     assetSharedViewModelByAsset = v5->_assetSharedViewModelByAsset;
     v5->_assetSharedViewModelByAsset = v12;
 
-    [(PUCachedMapTable *)v5->_assetSharedViewModelByAsset setCacheCountLimit:v9];
+    [(PUCachedMapTable *)v5->_assetSharedViewModelByAsset setCacheCountLimit:viewModelCacheCountLimit];
     v14 = objc_alloc_init(PUCachedMapTable);
     assetSharedViewModelByAssetUUID = v5->_assetSharedViewModelByAssetUUID;
     v5->_assetSharedViewModelByAssetUUID = v14;
 
-    [(PUCachedMapTable *)v5->_assetSharedViewModelByAssetUUID setCacheCountLimit:v9];
+    [(PUCachedMapTable *)v5->_assetSharedViewModelByAssetUUID setCacheCountLimit:viewModelCacheCountLimit];
     v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     videoScrubberInteractionIdentifiers = v5->_videoScrubberInteractionIdentifiers;
     v5->_videoScrubberInteractionIdentifiers = v16;
@@ -2566,8 +2566,8 @@ void __43__PUBrowsingViewModel_setAssetsDataSource___block_invoke_4(uint64_t a1)
     v18 = +[PUOneUpSettings sharedInstance];
     if ([v18 persistChromeVisibility])
     {
-      v19 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v5->_isChromeVisible = [v19 BOOLForKey:@"browsingChromeVisibility"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v5->_isChromeVisible = [standardUserDefaults BOOLForKey:@"browsingChromeVisibility"];
     }
 
     else
@@ -2590,8 +2590,8 @@ void __43__PUBrowsingViewModel_setAssetsDataSource___block_invoke_4(uint64_t a1)
     v5->_videoPlayerController = v24;
 
     [(PUOneUpVideoPlayerController *)v5->_videoPlayerController setDelegate:v5];
-    v26 = [MEMORY[0x1E69C3C48] sharedController];
-    [v26 registerChangeObserver:v5 context:VideoMuteControllerContext_16495];
+    mEMORY[0x1E69C3C48] = [MEMORY[0x1E69C3C48] sharedController];
+    [mEMORY[0x1E69C3C48] registerChangeObserver:v5 context:VideoMuteControllerContext_16495];
 
     v5->_isLivePhotoContentAllowed = 1;
     v27 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -2602,26 +2602,26 @@ void __43__PUBrowsingViewModel_setAssetsDataSource___block_invoke_4(uint64_t a1)
   return v5;
 }
 
-+ (PXAssetBadgeInfo)filteredBadgeInfoWithInputInfo:(SEL)a3 assetReference:(PXAssetBadgeInfo *)a4 actionManager:(id)a5
++ (PXAssetBadgeInfo)filteredBadgeInfoWithInputInfo:(SEL)info assetReference:(PXAssetBadgeInfo *)reference actionManager:(id)manager
 {
-  v28 = a5;
-  v9 = *&a4->count;
-  *&retstr->badges = *&a4->badges;
+  managerCopy = manager;
+  v9 = *&reference->count;
+  *&retstr->badges = *&reference->badges;
   *&retstr->count = v9;
-  badges = a4->badges;
+  badges = reference->badges;
   v11 = a6;
-  v12 = [v28 asset];
-  v13 = [v28 assetCollection];
-  LOBYTE(a6) = [v11 canPerformActionType:15 onAsset:v12 inAssetCollection:v13];
+  asset = [managerCopy asset];
+  assetCollection = [managerCopy assetCollection];
+  LOBYTE(a6) = [v11 canPerformActionType:15 onAsset:asset inAssetCollection:assetCollection];
 
-  v14 = [v28 asset];
-  v15 = [v28 assetCollection];
-  v16 = [v11 shouldEnableActionType:15 onAsset:v14 inAssetCollection:v15];
+  asset2 = [managerCopy asset];
+  assetCollection2 = [managerCopy assetCollection];
+  v16 = [v11 shouldEnableActionType:15 onAsset:asset2 inAssetCollection:assetCollection2];
 
-  v17 = [MEMORY[0x1E69C3360] sharedManager];
+  mEMORY[0x1E69C3360] = [MEMORY[0x1E69C3360] sharedManager];
   v18 = PXAssetEditOperationTypeForVariationType();
-  v19 = [v28 asset];
-  v20 = [v17 canPerformEditOperationWithType:v18 onAsset:v19];
+  asset3 = [managerCopy asset];
+  v20 = [mEMORY[0x1E69C3360] canPerformEditOperationWithType:v18 onAsset:asset3];
 
   v21 = a6 & v16;
   if (((badges & 0x2000) == 0) | (a6 & v16) & v20 & 1)
@@ -2636,7 +2636,7 @@ void __43__PUBrowsingViewModel_setAssetsDataSource___block_invoke_4(uint64_t a1)
 
   if ((v22 & 0x40000000000) != 0)
   {
-    if ((v21 & 1) == 0 || ([MEMORY[0x1E69C3360] sharedManager], v23 = objc_claimAutoreleasedReturnValue(), PXAssetEditOperationTypeForDepthToggle(), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "asset"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v23, "canPerformEditOperationWithType:onAsset:", v24, v25), v25, v24, v23, (v26 & 1) == 0))
+    if ((v21 & 1) == 0 || ([MEMORY[0x1E69C3360] sharedManager], v23 = objc_claimAutoreleasedReturnValue(), PXAssetEditOperationTypeForDepthToggle(), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(managerCopy, "asset"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v23, "canPerformEditOperationWithType:onAsset:", v24, v25), v25, v24, v23, (v26 & 1) == 0))
     {
       v22 &= ~0x40000000000uLL;
     }
@@ -2651,13 +2651,13 @@ void __43__PUBrowsingViewModel_setAssetsDataSource___block_invoke_4(uint64_t a1)
 + (void)initialize
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v4 = @"browsingChromeVisibility";
     v5[0] = MEMORY[0x1E695E118];
     v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
-    [v2 registerDefaults:v3];
+    [standardUserDefaults registerDefaults:v3];
   }
 }
 

@@ -1,30 +1,30 @@
 @interface ASCredentialRequestContainerViewController
-- (ASCredentialRequestContainerViewController)initWithRootViewController:(id)a3;
+- (ASCredentialRequestContainerViewController)initWithRootViewController:(id)controller;
 - (ASCredentialRequestPaneViewControllerDelegate)paneDelegate;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_setPaneDelegate:(id)a3 forViewController:(id)a4;
+- (void)_setPaneDelegate:(id)delegate forViewController:(id)controller;
 - (void)_setPaneDelegateForTopViewController;
-- (void)_setPaneDelegateForViewController:(id)a3;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setPaneDelegate:(id)a3;
+- (void)_setPaneDelegateForViewController:(id)controller;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setPaneDelegate:(id)delegate;
 - (void)viewDidLoad;
 @end
 
 @implementation ASCredentialRequestContainerViewController
 
-- (ASCredentialRequestContainerViewController)initWithRootViewController:(id)a3
+- (ASCredentialRequestContainerViewController)initWithRootViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = ASCredentialRequestContainerViewController;
   v6 = [(ASCredentialRequestContainerViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootViewController, a3);
+    objc_storeStrong(&v6->_rootViewController, controller);
     if ([MEMORY[0x1E698E020] isPad])
     {
       [(ASCredentialRequestContainerViewController *)v7 setModalPresentationStyle:2];
@@ -51,43 +51,43 @@
   [(ASCredentialRequestContainerViewController *)&v52 viewDidLoad];
   [(ASCredentialRequestContainerViewController *)self addChildViewController:self->_rootViewController];
   v3 = objc_alloc_init(MEMORY[0x1E69DD818]);
-  v4 = [(UIViewController *)self->_rootViewController view];
-  [v4 _setBackground:v3];
+  view = [(UIViewController *)self->_rootViewController view];
+  [view _setBackground:v3];
 
-  v5 = [(UIViewController *)self->_rootViewController view];
-  [v5 _setContinuousCornerRadius:20.0];
+  view2 = [(UIViewController *)self->_rootViewController view];
+  [view2 _setContinuousCornerRadius:20.0];
 
-  v6 = [(UIViewController *)self->_rootViewController view];
-  v7 = [v6 layer];
-  [v7 setMaskedCorners:3];
+  view3 = [(UIViewController *)self->_rootViewController view];
+  layer = [view3 layer];
+  [layer setMaskedCorners:3];
 
-  v8 = [(UIViewController *)self->_rootViewController view];
-  [v8 setClipsToBounds:1];
+  view4 = [(UIViewController *)self->_rootViewController view];
+  [view4 setClipsToBounds:1];
 
   if ([MEMORY[0x1E698E020] isPad])
   {
-    v9 = [(ASCredentialRequestContainerViewController *)self view];
-    [v9 bounds];
+    view5 = [(ASCredentialRequestContainerViewController *)self view];
+    [view5 bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(UIViewController *)self->_rootViewController view];
-    [v18 setFrame:{v11, v13, v15, v17}];
+    view6 = [(UIViewController *)self->_rootViewController view];
+    [view6 setFrame:{v11, v13, v15, v17}];
 
-    v19 = [(UIViewController *)self->_rootViewController view];
-    [v19 setAutoresizingMask:18];
+    view7 = [(UIViewController *)self->_rootViewController view];
+    [view7 setAutoresizingMask:18];
   }
 
   else
   {
-    v19 = [(UIViewController *)self->_rootViewController view];
-    [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view7 = [(UIViewController *)self->_rootViewController view];
+    [view7 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
-  v20 = [(ASCredentialRequestContainerViewController *)self view];
-  v21 = [(UIViewController *)self->_rootViewController view];
-  [v20 addSubview:v21];
+  view8 = [(ASCredentialRequestContainerViewController *)self view];
+  view9 = [(UIViewController *)self->_rootViewController view];
+  [view8 addSubview:view9];
 
   [(UIViewController *)self->_rootViewController didMoveToParentViewController:self];
   if ([MEMORY[0x1E698E020] isPad])
@@ -98,41 +98,41 @@
 
   if (([MEMORY[0x1E698E020] isPad] & 1) == 0)
   {
-    v22 = [(UIViewController *)self->_rootViewController view];
-    v23 = [v22 topAnchor];
-    v24 = [(ASCredentialRequestContainerViewController *)self view];
-    v25 = [v24 bottomAnchor];
-    v51 = [v23 constraintEqualToAnchor:v25];
+    view10 = [(UIViewController *)self->_rootViewController view];
+    topAnchor = [view10 topAnchor];
+    view11 = [(ASCredentialRequestContainerViewController *)self view];
+    bottomAnchor = [view11 bottomAnchor];
+    v51 = [topAnchor constraintEqualToAnchor:bottomAnchor];
 
     LODWORD(v26) = 1144750080;
     [v51 setPriority:v26];
-    v27 = [(UIViewController *)self->_rootViewController view];
-    v28 = [v27 heightAnchor];
+    view12 = [(UIViewController *)self->_rootViewController view];
+    heightAnchor = [view12 heightAnchor];
     [(UIViewController *)self->_rootViewController preferredContentSize];
-    v30 = [v28 constraintEqualToConstant:v29];
+    v30 = [heightAnchor constraintEqualToConstant:v29];
     sheetHeightConstraint = self->_sheetHeightConstraint;
     self->_sheetHeightConstraint = v30;
 
-    v32 = [(UIViewController *)self->_rootViewController view];
-    v33 = [v32 bottomAnchor];
-    v34 = [(ASCredentialRequestContainerViewController *)self view];
-    v35 = [v34 bottomAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35];
+    view13 = [(UIViewController *)self->_rootViewController view];
+    bottomAnchor2 = [view13 bottomAnchor];
+    view14 = [(ASCredentialRequestContainerViewController *)self view];
+    bottomAnchor3 = [view14 bottomAnchor];
+    v36 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     sheetPresentedConstraint = self->_sheetPresentedConstraint;
     self->_sheetPresentedConstraint = v36;
 
     v48 = MEMORY[0x1E696ACD8];
-    v50 = [(UIViewController *)self->_rootViewController view];
-    v49 = [v50 leadingAnchor];
-    v38 = [(ASCredentialRequestContainerViewController *)self view];
-    v39 = [v38 leadingAnchor];
-    v40 = [v49 constraintEqualToAnchor:v39];
+    view15 = [(UIViewController *)self->_rootViewController view];
+    leadingAnchor = [view15 leadingAnchor];
+    view16 = [(ASCredentialRequestContainerViewController *)self view];
+    leadingAnchor2 = [view16 leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v53[0] = v40;
-    v41 = [(UIViewController *)self->_rootViewController view];
-    v42 = [v41 trailingAnchor];
-    v43 = [(ASCredentialRequestContainerViewController *)self view];
-    v44 = [v43 trailingAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44];
+    view17 = [(UIViewController *)self->_rootViewController view];
+    trailingAnchor = [view17 trailingAnchor];
+    view18 = [(ASCredentialRequestContainerViewController *)self view];
+    trailingAnchor2 = [view18 trailingAnchor];
+    v45 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v53[1] = v45;
     v53[2] = v51;
     v53[3] = self->_sheetHeightConstraint;
@@ -178,71 +178,71 @@ void __64__ASCredentialRequestContainerViewController_viewWillDisappear___block_
   }
 }
 
-- (void)setPaneDelegate:(id)a3
+- (void)setPaneDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_paneDelegate, a3);
+  objc_storeWeak(&self->_paneDelegate, delegate);
 
   [(ASCredentialRequestContainerViewController *)self _setPaneDelegateForTopViewController];
 }
 
 - (void)_setPaneDelegateForTopViewController
 {
-  v3 = [(ASCredentialRequestContainerViewController *)self rootViewController];
+  rootViewController = [(ASCredentialRequestContainerViewController *)self rootViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(ASCredentialRequestContainerViewController *)self rootViewController];
-    v5 = [v6 topViewController];
-    [(ASCredentialRequestContainerViewController *)self _setPaneDelegateForViewController:v5];
+    rootViewController2 = [(ASCredentialRequestContainerViewController *)self rootViewController];
+    topViewController = [rootViewController2 topViewController];
+    [(ASCredentialRequestContainerViewController *)self _setPaneDelegateForViewController:topViewController];
   }
 }
 
-- (void)_setPaneDelegateForViewController:(id)a3
+- (void)_setPaneDelegateForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ASCredentialRequestContainerViewController *)self paneDelegate];
-  [(ASCredentialRequestContainerViewController *)self _setPaneDelegate:v5 forViewController:v4];
+  controllerCopy = controller;
+  paneDelegate = [(ASCredentialRequestContainerViewController *)self paneDelegate];
+  [(ASCredentialRequestContainerViewController *)self _setPaneDelegate:paneDelegate forViewController:controllerCopy];
 }
 
-- (void)_setPaneDelegate:(id)a3 forViewController:(id)a4
+- (void)_setPaneDelegate:(id)delegate forViewController:(id)controller
 {
-  v6 = a3;
-  v5 = a4;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setDelegate:v6];
+    [controllerCopy setDelegate:delegateCopy];
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v8 = a4;
-  v7 = [a3 topViewController];
-  [(ASCredentialRequestContainerViewController *)self _clearPaneDelegateForViewController:v7];
+  viewControllerCopy = viewController;
+  topViewController = [controller topViewController];
+  [(ASCredentialRequestContainerViewController *)self _clearPaneDelegateForViewController:topViewController];
 
-  [(ASCredentialRequestContainerViewController *)self _setPaneDelegateForViewController:v8];
+  [(ASCredentialRequestContainerViewController *)self _setPaneDelegateForViewController:viewControllerCopy];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = ASCredentialRequestContainerViewController;
-  [(ASCredentialRequestContainerViewController *)&v11 preferredContentSizeDidChangeForChildContentContainer:v4];
-  if (self->_rootViewController == v4)
+  [(ASCredentialRequestContainerViewController *)&v11 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  if (self->_rootViewController == containerCopy)
   {
-    v5 = [MEMORY[0x1E698E020] isPad];
-    [(UIViewController *)v4 preferredContentSize];
-    if (v5)
+    isPad = [MEMORY[0x1E698E020] isPad];
+    [(UIViewController *)containerCopy preferredContentSize];
+    if (isPad)
     {
       [(ASCredentialRequestContainerViewController *)self setPreferredContentSize:540.0];
       if (([(ASCredentialRequestContainerViewController *)self isBeingPresented]& 1) == 0)
       {
-        v7 = [(ASCredentialRequestContainerViewController *)self sheetPresentationController];
-        [v7 animateChanges:&__block_literal_global_84];
+        sheetPresentationController = [(ASCredentialRequestContainerViewController *)self sheetPresentationController];
+        [sheetPresentationController animateChanges:&__block_literal_global_84];
 LABEL_8:
       }
     }
@@ -252,9 +252,9 @@ LABEL_8:
       [(NSLayoutConstraint *)self->_sheetHeightConstraint setConstant:v6];
       if (([(ASCredentialRequestContainerViewController *)self isBeingPresented]& 1) == 0)
       {
-        v8 = [(UIViewController *)self->_rootViewController transitionCoordinator];
-        v7 = v8;
-        if (v8)
+        transitionCoordinator = [(UIViewController *)self->_rootViewController transitionCoordinator];
+        sheetPresentationController = transitionCoordinator;
+        if (transitionCoordinator)
         {
           v9[0] = MEMORY[0x1E69E9820];
           v9[1] = 3221225472;
@@ -262,7 +262,7 @@ LABEL_8:
           v9[3] = &unk_1E7AF8CA0;
           v9[4] = self;
           v10 = &__block_literal_global_86;
-          [v8 animateAlongsideTransition:v9 completion:?];
+          [transitionCoordinator animateAlongsideTransition:v9 completion:?];
         }
 
         goto LABEL_8;
@@ -329,7 +329,7 @@ void __100__ASCredentialRequestContainerViewController_preferredContentSizeDidCh
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   if ([MEMORY[0x1E698E020] isPad])
   {
@@ -344,7 +344,7 @@ void __100__ASCredentialRequestContainerViewController_preferredContentSizeDidCh
   return v5;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   if ([MEMORY[0x1E698E020] isPad])
   {

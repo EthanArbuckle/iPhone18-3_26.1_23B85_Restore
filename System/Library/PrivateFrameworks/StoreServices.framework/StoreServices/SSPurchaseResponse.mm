@@ -1,17 +1,17 @@
 @interface SSPurchaseResponse
-- (SSPurchaseResponse)initWithCoder:(id)a3;
-- (SSPurchaseResponse)initWithXPCEncoding:(id)a3;
+- (SSPurchaseResponse)initWithCoder:(id)coder;
+- (SSPurchaseResponse)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (id)downloadMetadataForItemIdentifier:(int64_t)a3;
+- (id)downloadMetadataForItemIdentifier:(int64_t)identifier;
 - (id)downloadsMetadata;
 - (id)responseMetrics;
-- (id)transactionIdentifierForItemIdentifier:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)transactionIdentifierForItemIdentifier:(int64_t)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSPurchaseResponse
 
-- (id)downloadMetadataForItemIdentifier:(int64_t)a3
+- (id)downloadMetadataForItemIdentifier:(int64_t)identifier
 {
   v10 = 0;
   v11 = &v10;
@@ -19,10 +19,10 @@
   v13 = __Block_byref_object_copy__61;
   v14 = __Block_byref_object_dispose__61;
   v15 = 0;
-  v4 = [(SSURLConnectionResponse *)self->_response bodyData];
-  if (v4)
+  bodyData = [(SSURLConnectionResponse *)self->_response bodyData];
+  if (bodyData)
   {
-    v5 = [MEMORY[0x1E696AE40] propertyListWithData:v4 options:0 format:0 error:0];
+    v5 = [MEMORY[0x1E696AE40] propertyListWithData:bodyData options:0 format:0 error:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
         v9[2] = __56__SSPurchaseResponse_downloadMetadataForItemIdentifier___block_invoke;
         v9[3] = &unk_1E84B2368;
         v9[4] = &v10;
-        v9[5] = a3;
+        v9[5] = identifier;
         [v6 enumerateObjectsUsingBlock:v9];
       }
     }
@@ -70,16 +70,16 @@ void __56__SSPurchaseResponse_downloadMetadataForItemIdentifier___block_invoke(u
 
 - (id)downloadsMetadata
 {
-  v2 = [(SSURLConnectionResponse *)self->_response bodyData];
+  bodyData = [(SSURLConnectionResponse *)self->_response bodyData];
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__61;
   v12 = __Block_byref_object_dispose__61;
   v13 = objc_opt_new();
-  if (v2)
+  if (bodyData)
   {
-    v3 = [MEMORY[0x1E696AE40] propertyListWithData:v2 options:0 format:0 error:0];
+    v3 = [MEMORY[0x1E696AE40] propertyListWithData:bodyData options:0 format:0 error:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,17 +119,17 @@ void __39__SSPurchaseResponse_downloadsMetadata__block_invoke(uint64_t a1, void 
   }
 }
 
-- (id)transactionIdentifierForItemIdentifier:(int64_t)a3
+- (id)transactionIdentifierForItemIdentifier:(int64_t)identifier
 {
   v45 = *MEMORY[0x1E69E9840];
   transactionIdentifiers = self->_transactionIdentifiers;
   v5 = 0x1E696A000;
   if (!transactionIdentifiers)
   {
-    v7 = [(SSURLConnectionResponse *)self->_response bodyData];
-    if (v7)
+    bodyData = [(SSURLConnectionResponse *)self->_response bodyData];
+    if (bodyData)
     {
-      v8 = [MEMORY[0x1E696AE40] propertyListWithData:v7 options:0 format:0 error:0];
+      v8 = [MEMORY[0x1E696AE40] propertyListWithData:bodyData options:0 format:0 error:0];
       v9 = 0x1E695D000uLL;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -144,8 +144,8 @@ void __39__SSPurchaseResponse_downloadsMetadata__block_invoke(uint64_t a1, void 
         if (objc_opt_isKindOfClass())
         {
           v36 = v8;
-          v37 = v7;
-          v38 = a3;
+          v37 = bodyData;
+          identifierCopy = identifier;
           v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
           v12 = self->_transactionIdentifiers;
           self->_transactionIdentifiers = v11;
@@ -178,12 +178,12 @@ void __39__SSPurchaseResponse_downloadsMetadata__block_invoke(uint64_t a1, void 
                 if (objc_opt_isKindOfClass())
                 {
                   v20 = [objc_alloc(v17[40]) initWithDictionary:v19];
-                  v21 = [v20 itemIdentifier];
-                  v22 = [v20 transactionIdentifier];
-                  v23 = v22;
-                  if (v21)
+                  itemIdentifier = [v20 itemIdentifier];
+                  transactionIdentifier = [v20 transactionIdentifier];
+                  v23 = transactionIdentifier;
+                  if (itemIdentifier)
                   {
-                    v24 = v22 == 0;
+                    v24 = transactionIdentifier == 0;
                   }
 
                   else
@@ -198,7 +198,7 @@ void __39__SSPurchaseResponse_downloadsMetadata__block_invoke(uint64_t a1, void 
                     v27 = v9;
                     v28 = v17;
                     v29 = self->_transactionIdentifiers;
-                    v30 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v21];
+                    v30 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:itemIdentifier];
                     v31 = v29;
                     v17 = v28;
                     v9 = v27;
@@ -219,8 +219,8 @@ void __39__SSPurchaseResponse_downloadsMetadata__block_invoke(uint64_t a1, void 
             while (v15);
           }
 
-          v7 = v37;
-          a3 = v38;
+          bodyData = v37;
+          identifier = identifierCopy;
           v5 = 0x1E696A000uLL;
           v10 = v35;
           v8 = v36;
@@ -231,7 +231,7 @@ void __39__SSPurchaseResponse_downloadsMetadata__block_invoke(uint64_t a1, void 
     transactionIdentifiers = self->_transactionIdentifiers;
   }
 
-  v32 = [*(v5 + 3480) numberWithLongLong:a3];
+  v32 = [*(v5 + 3480) numberWithLongLong:identifier];
   v33 = [(NSMutableDictionary *)transactionIdentifiers objectForKey:v32];
 
   return v33;
@@ -239,13 +239,13 @@ void __39__SSPurchaseResponse_downloadsMetadata__block_invoke(uint64_t a1, void 
 
 - (id)responseMetrics
 {
-  v2 = [(SSPurchaseResponse *)self URLResponse];
-  v3 = [v2 bodyData];
+  uRLResponse = [(SSPurchaseResponse *)self URLResponse];
+  bodyData = [uRLResponse bodyData];
 
-  if (v3)
+  if (bodyData)
   {
     v4 = +[(SSVURLDataConsumer *)SSVURLProtocolConsumer];
-    v5 = [v4 objectForData:v3 response:0 error:0];
+    v5 = [v4 objectForData:bodyData response:0 error:0];
 
     objc_opt_class();
     v6 = 0;
@@ -269,46 +269,46 @@ void __39__SSPurchaseResponse_downloadsMetadata__block_invoke(uint64_t a1, void 
   return v6;
 }
 
-- (SSPurchaseResponse)initWithCoder:(id)a3
+- (SSPurchaseResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = SSPurchaseResponse;
   v5 = [(SSPurchaseResponse *)&v28 init];
   if (v5)
   {
-    v5->_cancelsPurchaseBatch = [v4 decodeBoolForKey:@"0"];
+    v5->_cancelsPurchaseBatch = [coderCopy decodeBoolForKey:@"0"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"4"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"4"];
     downloadIdentifiers = v5->_downloadIdentifiers;
     v5->_downloadIdentifiers = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"1"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"1"];
     error = v5->_error;
     v5->_error = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"2"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"2"];
     purchase = v5->_purchase;
     v5->_purchase = v13;
 
-    [v4 decodeDoubleForKey:@"5"];
+    [coderCopy decodeDoubleForKey:@"5"];
     v5->_requestStartTime = v15;
     v16 = [SSURLConnectionResponse alloc];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"3"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"3"];
     v18 = [(SSURLConnectionResponse *)v16 initWithDatabaseEncoding:v17];
     response = v5->_response;
     v5->_response = v18;
 
-    [v4 decodeDoubleForKey:@"6"];
+    [coderCopy decodeDoubleForKey:@"6"];
     v5->_responseEndTime = v20;
-    [v4 decodeDoubleForKey:@"7"];
+    [coderCopy decodeDoubleForKey:@"7"];
     v5->_responseStartTime = v21;
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"8"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"8"];
     tidHeaders = v5->_tidHeaders;
     v5->_tidHeaders = v25;
   }
@@ -316,28 +316,28 @@ void __39__SSPurchaseResponse_downloadsMetadata__block_invoke(uint64_t a1, void 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cancelsPurchaseBatch = self->_cancelsPurchaseBatch;
-  v6 = a3;
-  [v6 encodeBool:cancelsPurchaseBatch forKey:@"0"];
-  [v6 encodeObject:self->_downloadIdentifiers forKey:@"4"];
-  [v6 encodeObject:self->_error forKey:@"1"];
-  [v6 encodeObject:self->_purchase forKey:@"2"];
-  [v6 encodeDouble:@"5" forKey:self->_requestStartTime];
-  v5 = [(SSURLConnectionResponse *)self->_response databaseEncoding];
-  [v6 encodeObject:v5 forKey:@"3"];
+  coderCopy = coder;
+  [coderCopy encodeBool:cancelsPurchaseBatch forKey:@"0"];
+  [coderCopy encodeObject:self->_downloadIdentifiers forKey:@"4"];
+  [coderCopy encodeObject:self->_error forKey:@"1"];
+  [coderCopy encodeObject:self->_purchase forKey:@"2"];
+  [coderCopy encodeDouble:@"5" forKey:self->_requestStartTime];
+  databaseEncoding = [(SSURLConnectionResponse *)self->_response databaseEncoding];
+  [coderCopy encodeObject:databaseEncoding forKey:@"3"];
 
-  [v6 encodeDouble:@"6" forKey:self->_responseEndTime];
-  [v6 encodeDouble:@"7" forKey:self->_responseStartTime];
-  [v6 encodeObject:self->_tidHeaders forKey:@"8"];
+  [coderCopy encodeDouble:@"6" forKey:self->_responseEndTime];
+  [coderCopy encodeDouble:@"7" forKey:self->_responseStartTime];
+  [coderCopy encodeObject:self->_tidHeaders forKey:@"8"];
 }
 
-- (SSPurchaseResponse)initWithXPCEncoding:(id)a3
+- (SSPurchaseResponse)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v24.receiver = self;
     v24.super_class = SSPurchaseResponse;

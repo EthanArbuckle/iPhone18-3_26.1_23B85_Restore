@@ -1,21 +1,21 @@
 @interface ATXDefaultHomeScreenItemComparator
-- (BOOL)isStackDefaultStack:(id)a3;
-- (unint64_t)rankOfWidgetSuggestedInGallery:(id)a3;
-- (void)loadDefaultItemsWithCompletionHandler:(id)a3;
+- (BOOL)isStackDefaultStack:(id)stack;
+- (unint64_t)rankOfWidgetSuggestedInGallery:(id)gallery;
+- (void)loadDefaultItemsWithCompletionHandler:(id)handler;
 @end
 
 @implementation ATXDefaultHomeScreenItemComparator
 
-- (void)loadDefaultItemsWithCompletionHandler:(id)a3
+- (void)loadDefaultItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ATXDefaultHomeScreenItemManager sharedInstance];
-  v6 = [MEMORY[0x1E69C5CF8] isiPad];
+  isiPad = [MEMORY[0x1E69C5CF8] isiPad];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__ATXDefaultHomeScreenItemComparator_loadDefaultItemsWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E80C1058;
-  if (v6)
+  if (isiPad)
   {
     v7 = 2;
   }
@@ -26,8 +26,8 @@
   }
 
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [v5 fetchSuggestedGalleryItemsOfGridSize:v7 widgetFamilyMask:7294 withCompletionHandler:v9];
 }
 
@@ -75,25 +75,25 @@ uint64_t __76__ATXDefaultHomeScreenItemComparator_loadDefaultItemsWithCompletion
   }
 }
 
-- (unint64_t)rankOfWidgetSuggestedInGallery:(id)a3
+- (unint64_t)rankOfWidgetSuggestedInGallery:(id)gallery
 {
-  v4 = a3;
+  galleryCopy = gallery;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(ATXDefaultHomeScreenItemComparator *)self galleryItems];
+  galleryItems = [(ATXDefaultHomeScreenItemComparator *)self galleryItems];
 
-  if (v5)
+  if (galleryItems)
   {
-    v6 = [(ATXDefaultHomeScreenItemComparator *)self galleryItems];
+    galleryItems2 = [(ATXDefaultHomeScreenItemComparator *)self galleryItems];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __69__ATXDefaultHomeScreenItemComparator_rankOfWidgetSuggestedInGallery___block_invoke;
     v9[3] = &unk_1E80C13F8;
-    v10 = v4;
+    v10 = galleryCopy;
     v11 = &v12;
-    [v6 enumerateObjectsUsingBlock:v9];
+    [galleryItems2 enumerateObjectsUsingBlock:v9];
 
     v7 = v13[3];
   }
@@ -136,42 +136,42 @@ uint64_t __69__ATXDefaultHomeScreenItemComparator_rankOfWidgetSuggestedInGallery
   return MEMORY[0x1EEE66BB8](isKindOfClass, v8);
 }
 
-- (BOOL)isStackDefaultStack:(id)a3
+- (BOOL)isStackDefaultStack:(id)stack
 {
-  v4 = a3;
-  v5 = [(ATXDefaultHomeScreenItemComparator *)self defaultStack];
+  stackCopy = stack;
+  defaultStack = [(ATXDefaultHomeScreenItemComparator *)self defaultStack];
 
-  if (v5)
+  if (defaultStack)
   {
-    v6 = [v4 stackLayoutSize];
+    stackLayoutSize = [stackCopy stackLayoutSize];
     v7 = 0;
-    if (v6 <= 1)
+    if (stackLayoutSize <= 1)
     {
-      if (v6)
+      if (stackLayoutSize)
       {
-        if (v6 != 1)
+        if (stackLayoutSize != 1)
         {
           goto LABEL_17;
         }
 
-        v8 = [(ATXDefaultHomeScreenItemComparator *)self defaultStack];
-        v9 = [v8 mediumDefaultStack];
+        defaultStack2 = [(ATXDefaultHomeScreenItemComparator *)self defaultStack];
+        mediumDefaultStack = [defaultStack2 mediumDefaultStack];
       }
 
       else
       {
-        v8 = [(ATXDefaultHomeScreenItemComparator *)self defaultStack];
-        v9 = [v8 smallDefaultStack];
+        defaultStack2 = [(ATXDefaultHomeScreenItemComparator *)self defaultStack];
+        mediumDefaultStack = [defaultStack2 smallDefaultStack];
       }
     }
 
     else
     {
-      switch(v6)
+      switch(stackLayoutSize)
       {
         case 2:
-          v8 = [(ATXDefaultHomeScreenItemComparator *)self defaultStack];
-          v9 = [v8 largeDefaultStack];
+          defaultStack2 = [(ATXDefaultHomeScreenItemComparator *)self defaultStack];
+          mediumDefaultStack = [defaultStack2 largeDefaultStack];
           break;
         case 3:
           v11 = __atxlog_handle_home_screen();
@@ -183,13 +183,13 @@ uint64_t __69__ATXDefaultHomeScreenItemComparator_rankOfWidgetSuggestedInGallery
           v7 = 0;
           goto LABEL_19;
         case 4:
-          v8 = [(ATXDefaultHomeScreenItemComparator *)self defaultStack];
-          v9 = [v8 extraLargeDefaultStack];
+          defaultStack2 = [(ATXDefaultHomeScreenItemComparator *)self defaultStack];
+          mediumDefaultStack = [defaultStack2 extraLargeDefaultStack];
           break;
         default:
 LABEL_17:
-          v12 = [v4 widgets];
-          v13 = [v12 count];
+          widgets = [stackCopy widgets];
+          v13 = [widgets count];
           v14 = [v7 count];
 
           if (v13 == v14)
@@ -198,7 +198,7 @@ LABEL_17:
             v21 = &v20;
             v22 = 0x2020000000;
             v23 = 1;
-            v15 = [v4 widgets];
+            widgets2 = [stackCopy widgets];
             v17[0] = MEMORY[0x1E69E9820];
             v17[1] = 3221225472;
             v17[2] = __58__ATXDefaultHomeScreenItemComparator_isStackDefaultStack___block_invoke;
@@ -206,7 +206,7 @@ LABEL_17:
             v7 = v7;
             v18 = v7;
             v19 = &v20;
-            [v15 enumerateObjectsUsingBlock:v17];
+            [widgets2 enumerateObjectsUsingBlock:v17];
 
             v10 = *(v21 + 24);
             _Block_object_dispose(&v20, 8);
@@ -221,7 +221,7 @@ LABEL_19:
       }
     }
 
-    v7 = v9;
+    v7 = mediumDefaultStack;
 
     goto LABEL_17;
   }

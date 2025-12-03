@@ -1,9 +1,9 @@
 @interface BMMicroLocationRestrictedLocalizationEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMMicroLocationRestrictedLocalizationEvent)initWithAbsoluteTimeStamp:(double)a3 clientBundleIdentifier:(id)a4 maxProbabilityLabelIdentifier:(id)a5 maxProbability:(double)a6 probabilityVector:(id)a7 numDevicesVector:(id)a8;
-- (BMMicroLocationRestrictedLocalizationEvent)initWithProto:(id)a3;
-- (BMMicroLocationRestrictedLocalizationEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMMicroLocationRestrictedLocalizationEvent)initWithAbsoluteTimeStamp:(double)stamp clientBundleIdentifier:(id)identifier maxProbabilityLabelIdentifier:(id)labelIdentifier maxProbability:(double)probability probabilityVector:(id)vector numDevicesVector:(id)devicesVector;
+- (BMMicroLocationRestrictedLocalizationEvent)initWithProto:(id)proto;
+- (BMMicroLocationRestrictedLocalizationEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
@@ -11,41 +11,41 @@
 
 @implementation BMMicroLocationRestrictedLocalizationEvent
 
-- (BMMicroLocationRestrictedLocalizationEvent)initWithAbsoluteTimeStamp:(double)a3 clientBundleIdentifier:(id)a4 maxProbabilityLabelIdentifier:(id)a5 maxProbability:(double)a6 probabilityVector:(id)a7 numDevicesVector:(id)a8
+- (BMMicroLocationRestrictedLocalizationEvent)initWithAbsoluteTimeStamp:(double)stamp clientBundleIdentifier:(id)identifier maxProbabilityLabelIdentifier:(id)labelIdentifier maxProbability:(double)probability probabilityVector:(id)vector numDevicesVector:(id)devicesVector
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  identifierCopy = identifier;
+  labelIdentifierCopy = labelIdentifier;
+  vectorCopy = vector;
+  devicesVectorCopy = devicesVector;
   v25.receiver = self;
   v25.super_class = BMMicroLocationRestrictedLocalizationEvent;
   v18 = [(BMMicroLocationRestrictedLocalizationEvent *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    v18->_absoluteTimestamp = a3;
-    v20 = [v14 copy];
+    v18->_absoluteTimestamp = stamp;
+    v20 = [identifierCopy copy];
     clientBundleIdentifier = v19->_clientBundleIdentifier;
     v19->_clientBundleIdentifier = v20;
 
-    v22 = [v15 copy];
+    v22 = [labelIdentifierCopy copy];
     maxProbabilityLabelIdentifier = v19->_maxProbabilityLabelIdentifier;
     v19->_maxProbabilityLabelIdentifier = v22;
 
-    v19->_maxProbability = a6;
-    objc_storeStrong(&v19->_probabilityVector, a7);
-    objc_storeStrong(&v19->_numDevicesVector, a8);
+    v19->_maxProbability = probability;
+    objc_storeStrong(&v19->_probabilityVector, vector);
+    objc_storeStrong(&v19->_numDevicesVector, devicesVector);
   }
 
   return v19;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -64,23 +64,23 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMMicroLocationRestrictedLocalizationEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMMicroLocationRestrictedLocalizationEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMMicroLocationRestrictedLocalizationEvent)initWithProto:(id)a3
+- (BMMicroLocationRestrictedLocalizationEvent)initWithProto:(id)proto
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v39 = v4;
-      v5 = v4;
+      v39 = protoCopy;
+      v5 = protoCopy;
       v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v45 = 0u;
@@ -88,8 +88,8 @@
       v47 = 0u;
       v48 = 0u;
       v38 = v5;
-      v7 = [v5 probabilityVectors];
-      v8 = [v7 countByEnumeratingWithState:&v45 objects:v50 count:16];
+      probabilityVectors = [v5 probabilityVectors];
+      v8 = [probabilityVectors countByEnumeratingWithState:&v45 objects:v50 count:16];
       if (v8)
       {
         v9 = v8;
@@ -100,20 +100,20 @@
           {
             if (*v46 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(probabilityVectors);
             }
 
             v12 = *(*(&v45 + 1) + 8 * i);
             v13 = [BMMicroLocationProbabilityPerLabel alloc];
             v14 = objc_alloc(MEMORY[0x1E696AFB0]);
-            v15 = [v12 label];
-            v16 = [v14 initWithUUIDString:v15];
+            label = [v12 label];
+            v16 = [v14 initWithUUIDString:label];
             [v12 probability];
             v17 = [(BMMicroLocationProbabilityPerLabel *)v13 initWithLabelIdentifier:v16 probability:?];
             [v40 addObject:v17];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v45 objects:v50 count:16];
+          v9 = [probabilityVectors countByEnumeratingWithState:&v45 objects:v50 count:16];
         }
 
         while (v9);
@@ -124,8 +124,8 @@
       v41 = 0u;
       v42 = 0u;
       v18 = v38;
-      v19 = [v38 numDevicesVectors];
-      v20 = [v19 countByEnumeratingWithState:&v41 objects:v49 count:16];
+      numDevicesVectors = [v38 numDevicesVectors];
+      v20 = [numDevicesVectors countByEnumeratingWithState:&v41 objects:v49 count:16];
       if (v20)
       {
         v21 = v20;
@@ -136,17 +136,17 @@
           {
             if (*v42 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(numDevicesVectors);
             }
 
             v24 = *(*(&v41 + 1) + 8 * j);
             v25 = [BMMicroLocationNumDevicesPerTechnology alloc];
-            v26 = [v24 technologyString];
-            v27 = -[BMMicroLocationNumDevicesPerTechnology initWithTechnology:numDevices:](v25, "initWithTechnology:numDevices:", v26, [v24 number]);
+            technologyString = [v24 technologyString];
+            v27 = -[BMMicroLocationNumDevicesPerTechnology initWithTechnology:numDevices:](v25, "initWithTechnology:numDevices:", technologyString, [v24 number]);
             [v6 addObject:v27];
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v41 objects:v49 count:16];
+          v21 = [numDevicesVectors countByEnumeratingWithState:&v41 objects:v49 count:16];
         }
 
         while (v21);
@@ -154,15 +154,15 @@
 
       [v38 absoluteTimeStamp];
       v29 = v28;
-      v30 = [v38 clientBundleId];
+      clientBundleId = [v38 clientBundleId];
       v31 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v32 = [v38 maxProbabilityLabel];
-      v33 = [v31 initWithUUIDString:v32];
+      maxProbabilityLabel = [v38 maxProbabilityLabel];
+      v33 = [v31 initWithUUIDString:maxProbabilityLabel];
       [v38 maxProbability];
-      self = [(BMMicroLocationRestrictedLocalizationEvent *)self initWithAbsoluteTimeStamp:v30 clientBundleIdentifier:v33 maxProbabilityLabelIdentifier:v40 maxProbability:v6 probabilityVector:v29 numDevicesVector:v34];
+      self = [(BMMicroLocationRestrictedLocalizationEvent *)self initWithAbsoluteTimeStamp:clientBundleId clientBundleIdentifier:v33 maxProbabilityLabelIdentifier:v40 maxProbability:v6 probabilityVector:v29 numDevicesVector:v34];
 
-      v35 = self;
-      v4 = v39;
+      selfCopy = self;
+      protoCopy = v39;
     }
 
     else
@@ -173,36 +173,36 @@
         [(BMMicroLocationRestrictedLocalizationEvent *)self initWithProto:v18];
       }
 
-      v35 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v35 = 0;
+    selfCopy = 0;
   }
 
   v36 = *MEMORY[0x1E69E9840];
-  return v35;
+  return selfCopy;
 }
 
-- (BMMicroLocationRestrictedLocalizationEvent)initWithProtoData:(id)a3
+- (BMMicroLocationRestrictedLocalizationEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBMicroLocationRestrictedLocalizationEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBMicroLocationRestrictedLocalizationEvent alloc] initWithData:dataCopy];
 
     self = [(BMMicroLocationRestrictedLocalizationEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -229,8 +229,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v25 + 1) + 8 * i) proto];
-        [v3 addObject:v10];
+        proto = [*(*(&v25 + 1) + 8 * i) proto];
+        [v3 addObject:proto];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -258,8 +258,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v21 + 1) + 8 * j) proto];
-        [v4 addObject:v16];
+        proto2 = [*(*(&v21 + 1) + 8 * j) proto];
+        [v4 addObject:proto2];
       }
 
       v13 = [(NSArray *)v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -271,8 +271,8 @@
   v17 = objc_opt_new();
   [v17 setAbsoluteTimeStamp:self->_absoluteTimestamp];
   [v17 setClientBundleId:self->_clientBundleIdentifier];
-  v18 = [(NSUUID *)self->_maxProbabilityLabelIdentifier UUIDString];
-  [v17 setMaxProbabilityLabel:v18];
+  uUIDString = [(NSUUID *)self->_maxProbabilityLabelIdentifier UUIDString];
+  [v17 setMaxProbabilityLabel:uUIDString];
 
   [v17 setMaxProbability:self->_maxProbability];
   [v17 setProbabilityVectors:v3];
@@ -297,9 +297,9 @@
   return v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -307,7 +307,7 @@
     goto LABEL_34;
   }
 
-  v7 = v6;
+  v7 = equalCopy;
   absoluteTimestamp = self->_absoluteTimestamp;
   [v7 absoluteTimestamp];
   v10 = v9;
@@ -316,8 +316,8 @@
   if (clientBundleIdentifier)
   {
 LABEL_5:
-    v4 = [v7 clientBundleIdentifier];
-    v13 = [(NSString *)v12 isEqual:v4];
+    clientBundleIdentifier = [v7 clientBundleIdentifier];
+    v13 = [(NSString *)v12 isEqual:clientBundleIdentifier];
 
     if (clientBundleIdentifier)
     {
@@ -327,8 +327,8 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v3 = [v7 clientBundleIdentifier];
-  if (v3)
+  clientBundleIdentifier2 = [v7 clientBundleIdentifier];
+  if (clientBundleIdentifier2)
   {
     v12 = self->_clientBundleIdentifier;
     goto LABEL_5;
@@ -345,8 +345,8 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v4 = [v7 maxProbabilityLabelIdentifier];
-  if (v4)
+  clientBundleIdentifier = [v7 maxProbabilityLabelIdentifier];
+  if (clientBundleIdentifier)
   {
     v16 = self->_maxProbabilityLabelIdentifier;
 LABEL_13:
@@ -380,8 +380,8 @@ LABEL_17:
   {
     v22 = self->_probabilityVector;
 LABEL_20:
-    v23 = [v7 probabilityVector];
-    v24 = [(NSArray *)v22 isEqual:v23];
+    probabilityVector = [v7 probabilityVector];
+    v24 = [(NSArray *)v22 isEqual:probabilityVector];
 
     if (probabilityVector)
     {
@@ -413,8 +413,8 @@ LABEL_30:
     v28 = self->_numDevicesVector;
   }
 
-  v29 = [v7 numDevicesVector];
-  v30 = [(NSArray *)v28 isEqual:v29];
+  numDevicesVector = [v7 numDevicesVector];
+  v30 = [(NSArray *)v28 isEqual:numDevicesVector];
 
   if (!numDevicesVector)
   {

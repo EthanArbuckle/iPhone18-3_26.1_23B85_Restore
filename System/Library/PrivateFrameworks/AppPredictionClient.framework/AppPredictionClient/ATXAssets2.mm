@@ -1,14 +1,14 @@
 @interface ATXAssets2
-+ (id)dictionaryForClass:(Class)a3;
-+ (id)dictionaryForResource:(id)a3 ofType:(id)a4 specifiedABGroup:(id)a5;
-+ (id)dictionaryFromLazyPlistForClass:(Class)a3;
-+ (id)dictionaryFromLazyPlistWithLegacyPathForClass:(Class)a3;
-+ (id)dictionaryWithLegacyPathForClass:(Class)a3;
-+ (id)pathForResource:(id)a3 ofType:(id)a4 isDirectory:(BOOL)a5;
-+ (id)rawDictionaryForResource:(id)a3 ofType:(id)a4;
-+ (id)rawDictionaryUsingMobileAssetsForResource:(id)a3 ofType:(id)a4;
-+ (id)rawDictionaryUsingTrialForResource:(id)a3 ofType:(id)a4;
-+ (void)addOverridePath:(id)a3 forResource:(id)a4 ofType:(id)a5;
++ (id)dictionaryForClass:(Class)class;
++ (id)dictionaryForResource:(id)resource ofType:(id)type specifiedABGroup:(id)group;
++ (id)dictionaryFromLazyPlistForClass:(Class)class;
++ (id)dictionaryFromLazyPlistWithLegacyPathForClass:(Class)class;
++ (id)dictionaryWithLegacyPathForClass:(Class)class;
++ (id)pathForResource:(id)resource ofType:(id)type isDirectory:(BOOL)directory;
++ (id)rawDictionaryForResource:(id)resource ofType:(id)type;
++ (id)rawDictionaryUsingMobileAssetsForResource:(id)resource ofType:(id)type;
++ (id)rawDictionaryUsingTrialForResource:(id)resource ofType:(id)type;
++ (void)addOverridePath:(id)path forResource:(id)resource ofType:(id)type;
 + (void)clearOverrides;
 + (void)onUpdateRestartThisProcess;
 + (void)updateMobileAssetMetadata;
@@ -16,13 +16,13 @@
 
 @implementation ATXAssets2
 
-+ (void)addOverridePath:(id)a3 forResource:(id)a4 ofType:(id)a5
++ (void)addOverridePath:(id)path forResource:(id)resource ofType:(id)type
 {
-  v14 = a3;
+  pathCopy = path;
   v7 = MEMORY[0x1E69C5D98];
-  v8 = a5;
-  v9 = a4;
-  v10 = [[v7 alloc] initWithFirst:v9 second:v8];
+  typeCopy = type;
+  resourceCopy = resource;
+  v10 = [[v7 alloc] initWithFirst:resourceCopy second:typeCopy];
 
   pthread_mutex_lock(&overridesLock);
   v11 = overrides;
@@ -35,7 +35,7 @@
     v11 = overrides;
   }
 
-  [v11 setObject:v14 forKeyedSubscript:v10];
+  [v11 setObject:pathCopy forKeyedSubscript:v10];
   pthread_mutex_unlock(&overridesLock);
 }
 
@@ -91,31 +91,31 @@ uint64_t __40__ATXAssets2_onUpdateRestartThisProcess__block_invoke_2(uint64_t a1
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-+ (id)pathForResource:(id)a3 ofType:(id)a4 isDirectory:(BOOL)a5
++ (id)pathForResource:(id)resource ofType:(id)type isDirectory:(BOOL)directory
 {
-  v5 = a5;
+  directoryCopy = directory;
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E69C5D98]) initWithFirst:v7 second:v8];
+  resourceCopy = resource;
+  typeCopy = type;
+  v9 = [objc_alloc(MEMORY[0x1E69C5D98]) initWithFirst:resourceCopy second:typeCopy];
   pthread_mutex_lock(&overridesLock);
   v34 = v9;
   v10 = [overrides objectForKeyedSubscript:v9];
   pthread_mutex_unlock(&overridesLock);
-  v11 = [v7 stringByAppendingPathExtension:v8];
+  v11 = [resourceCopy stringByAppendingPathExtension:typeCopy];
   v12 = getAsset();
   v33 = v11;
   v13 = [v12 filesystemPathForAssetDataRelativePath:v11];
   v14 = getTrialAssets();
-  if (([v8 isEqualToString:@"mlmodelc"] & 1) != 0 || v5)
+  if (([typeCopy isEqualToString:@"mlmodelc"] & 1) != 0 || directoryCopy)
   {
-    v15 = [v14 directoryPathForTrialResource:{v7, a1}];
+    v15 = [v14 directoryPathForTrialResource:{resourceCopy, self}];
     v35 = 0;
     v19 = v13;
     if (v15)
     {
-      v20 = [MEMORY[0x1E696AC08] defaultManager];
-      v21 = [v20 fileExistsAtPath:v15 isDirectory:&v35];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v21 = [defaultManager fileExistsAtPath:v15 isDirectory:&v35];
 
       v19 = v13;
       if (v21)
@@ -131,7 +131,7 @@ uint64_t __40__ATXAssets2_onUpdateRestartThisProcess__block_invoke_2(uint64_t a1
             *buf = 138412546;
             v37 = v19;
             v38 = 2112;
-            v39 = v7;
+            v39 = resourceCopy;
             _os_log_impl(&dword_1BF549000, v22, OS_LOG_TYPE_DEFAULT, "Using Trial directory path: %@ for resource: %@", buf, 0x16u);
           }
         }
@@ -141,7 +141,7 @@ uint64_t __40__ATXAssets2_onUpdateRestartThisProcess__block_invoke_2(uint64_t a1
 
   else
   {
-    v15 = [v14 filePathForResource:v7];
+    v15 = [v14 filePathForResource:resourceCopy];
     if (v15 && ([MEMORY[0x1E696AC08] defaultManager], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "fileExistsAtPath:", v15), v16, v17))
     {
       v15 = v15;
@@ -152,7 +152,7 @@ uint64_t __40__ATXAssets2_onUpdateRestartThisProcess__block_invoke_2(uint64_t a1
         *buf = 138412546;
         v37 = v15;
         v38 = 2112;
-        v39 = v7;
+        v39 = resourceCopy;
         _os_log_impl(&dword_1BF549000, v18, OS_LOG_TYPE_DEFAULT, "Using Trial file path: %@ for resource: %@", buf, 0x16u);
       }
 
@@ -175,9 +175,9 @@ uint64_t __40__ATXAssets2_onUpdateRestartThisProcess__block_invoke_2(uint64_t a1
       *buf = 138412802;
       v37 = v31;
       v38 = 2112;
-      v39 = v7;
+      v39 = resourceCopy;
       v40 = 2112;
-      v41 = v8;
+      v41 = typeCopy;
       _os_log_fault_impl(&dword_1BF549000, v23, OS_LOG_TYPE_FAULT, "%@ - could not find path for resource: %@ with extension: %@", buf, 0x20u);
     }
   }
@@ -203,7 +203,7 @@ uint64_t __40__ATXAssets2_onUpdateRestartThisProcess__block_invoke_2(uint64_t a1
     v38 = 2112;
     v39 = v25;
     v40 = 2112;
-    v41 = v7;
+    v41 = resourceCopy;
     _os_log_impl(&dword_1BF549000, v26, OS_LOG_TYPE_DEFAULT, "%@ - using path: %@ for resource name: %@", buf, 0x20u);
   }
 
@@ -222,24 +222,24 @@ uint64_t __40__ATXAssets2_onUpdateRestartThisProcess__block_invoke_2(uint64_t a1
   [v2 downloadMetadataWithCompletion:0];
 }
 
-+ (id)rawDictionaryUsingTrialForResource:(id)a3 ofType:(id)a4
++ (id)rawDictionaryUsingTrialForResource:(id)resource ofType:(id)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resourceCopy = resource;
   v6 = MEMORY[0x1E69C5D98];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithFirst:v5 second:v7];
+  typeCopy = type;
+  v8 = [[v6 alloc] initWithFirst:resourceCopy second:typeCopy];
 
   pthread_mutex_lock(&overridesLock);
   v9 = [overrides objectForKeyedSubscript:v8];
   pthread_mutex_unlock(&overridesLock);
   v10 = v9;
   v11 = getTrialAssets();
-  v12 = [v11 filePathForResource:v5];
+  v12 = [v11 filePathForResource:resourceCopy];
   if (v12)
   {
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [v13 fileExistsAtPath:v12];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v14 = [defaultManager fileExistsAtPath:v12];
 
     if (v14)
     {
@@ -257,7 +257,7 @@ LABEL_8:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = v5;
+      v20 = resourceCopy;
       _os_log_impl(&dword_1BF549000, v16, OS_LOG_TYPE_DEFAULT, "Unable to locate Trial resource: %{public}@", &v19, 0xCu);
     }
   }
@@ -274,16 +274,16 @@ LABEL_10:
   return v17;
 }
 
-+ (id)rawDictionaryUsingMobileAssetsForResource:(id)a3 ofType:(id)a4
++ (id)rawDictionaryUsingMobileAssetsForResource:(id)resource ofType:(id)type
 {
   v5 = MEMORY[0x1E69C5D98];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithFirst:v7 second:v6];
+  typeCopy = type;
+  resourceCopy = resource;
+  v8 = [[v5 alloc] initWithFirst:resourceCopy second:typeCopy];
   pthread_mutex_lock(&overridesLock);
   v9 = [overrides objectForKeyedSubscript:v8];
   pthread_mutex_unlock(&overridesLock);
-  v10 = [v7 stringByAppendingPathExtension:v6];
+  v10 = [resourceCopy stringByAppendingPathExtension:typeCopy];
 
   v11 = getAsset();
   v12 = [v11 filesystemPathForAssetDataRelativePath:v10];
@@ -306,18 +306,18 @@ LABEL_10:
   return v14;
 }
 
-+ (id)rawDictionaryForResource:(id)a3 ofType:(id)a4
++ (id)rawDictionaryForResource:(id)resource ofType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"mlmodelc"])
+  resourceCopy = resource;
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"mlmodelc"])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [a1 pathForResource:v6 ofType:v7 isDirectory:0];
+    v9 = [self pathForResource:resourceCopy ofType:typeCopy isDirectory:0];
     v10 = v9;
     if (v9)
     {
@@ -333,45 +333,45 @@ LABEL_10:
   return v8;
 }
 
-+ (id)dictionaryForResource:(id)a3 ofType:(id)a4 specifiedABGroup:(id)a5
++ (id)dictionaryForResource:(id)resource ofType:(id)type specifiedABGroup:(id)group
 {
-  v8 = a5;
-  v9 = [a1 rawDictionaryForResource:a3 ofType:a4];
-  v10 = [[ATXAssetsABHelper alloc] initWithAssetContents:v9 specifiedABGroup:v8 indexForDevice:+[ATXAssetsABHelper indexForDevice]];
+  groupCopy = group;
+  v9 = [self rawDictionaryForResource:resource ofType:type];
+  v10 = [[ATXAssetsABHelper alloc] initWithAssetContents:v9 specifiedABGroup:groupCopy indexForDevice:+[ATXAssetsABHelper indexForDevice]];
 
-  v11 = [(ATXAssetsABHelper *)v10 abGroupContents];
+  abGroupContents = [(ATXAssetsABHelper *)v10 abGroupContents];
 
-  return v11;
+  return abGroupContents;
 }
 
-+ (id)dictionaryWithLegacyPathForClass:(Class)a3
++ (id)dictionaryWithLegacyPathForClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
-  v5 = [a1 dictionaryForResource:v4 ofType:@"plist" specifiedABGroup:0];
+  v4 = NSStringFromClass(class);
+  v5 = [self dictionaryForResource:v4 ofType:@"plist" specifiedABGroup:0];
 
   return v5;
 }
 
-+ (id)dictionaryFromLazyPlistWithLegacyPathForClass:(Class)a3
++ (id)dictionaryFromLazyPlistWithLegacyPathForClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
-  v5 = [a1 dictionaryForResource:v4 ofType:@"plplist" specifiedABGroup:0];
+  v4 = NSStringFromClass(class);
+  v5 = [self dictionaryForResource:v4 ofType:@"plplist" specifiedABGroup:0];
 
   return v5;
 }
 
-+ (id)dictionaryForClass:(Class)a3
++ (id)dictionaryForClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
-  v5 = [a1 dictionaryForClassName:v4];
+  v4 = NSStringFromClass(class);
+  v5 = [self dictionaryForClassName:v4];
 
   return v5;
 }
 
-+ (id)dictionaryFromLazyPlistForClass:(Class)a3
++ (id)dictionaryFromLazyPlistForClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
-  v5 = [a1 dictionaryFromLazyPlistForClassName:v4];
+  v4 = NSStringFromClass(class);
+  v5 = [self dictionaryFromLazyPlistForClassName:v4];
 
   return v5;
 }

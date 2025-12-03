@@ -1,26 +1,26 @@
 @interface TSCHChartCategoryAxis
-+ (id)axisForInfo:(id)a3;
++ (id)axisForInfo:(id)info;
 - (BOOL)isRangeContinuous;
-- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)a3;
+- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)analysis;
 - (id)defaultProperties;
 - (id)g_genericToSpecificPropertyMap;
 - (id)p_getGenericToCategoryPropertyMap;
 - (id)p_getGenericToCategoryPropertyMapForMultiData;
-- (int)specificPropertyForGeneric:(int)a3;
+- (int)specificPropertyForGeneric:(int)generic;
 - (pair<TSCH3DAxisLabelEnumerator)labelEnumeratorPair;
-- (unint64_t)indexForSelectionPathLabelIndex:(unint64_t)a3;
-- (unint64_t)selectionPathLabelIndexForIndex:(unint64_t)a3;
+- (unint64_t)indexForSelectionPathLabelIndex:(unint64_t)index;
+- (unint64_t)selectionPathLabelIndexForIndex:(unint64_t)index;
 @end
 
 @implementation TSCHChartCategoryAxis
 
-+ (id)axisForInfo:(id)a3
++ (id)axisForInfo:(id)info
 {
-  v3 = a3;
-  v8 = objc_msgSend_chartType(v3, v4, v5, v6, v7);
+  infoCopy = info;
+  v8 = objc_msgSend_chartType(infoCopy, v4, v5, v6, v7);
   isHorizontal = objc_msgSend_isHorizontal(v8, v9, v10, v11, v12);
 
-  v19 = objc_msgSend_model(v3, v14, v15, v16, v17);
+  v19 = objc_msgSend_model(infoCopy, v14, v15, v16, v17);
   if (isHorizontal)
   {
     objc_msgSend_axisIDWithType_ordinal_(TSCHChartAxisID, v18, v20, v21, v22, 2, 0);
@@ -117,7 +117,7 @@ LABEL_15:
   return v59;
 }
 
-- (unint64_t)selectionPathLabelIndexForIndex:(unint64_t)a3
+- (unint64_t)selectionPathLabelIndexForIndex:(unint64_t)index
 {
   if ((objc_msgSend_isCategory(self, a2, v3, v4, v5) & 1) == 0)
   {
@@ -129,18 +129,18 @@ LABEL_15:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v28 = objc_msgSend_model(self, v8, v9, v10, v11);
-  v33 = objc_msgSend_multiDataSetCategoryIndexForCategory_(v28, v29, v30, v31, v32, a3);
+  v33 = objc_msgSend_multiDataSetCategoryIndexForCategory_(v28, v29, v30, v31, v32, index);
 
   return v33;
 }
 
-- (unint64_t)indexForSelectionPathLabelIndex:(unint64_t)a3
+- (unint64_t)indexForSelectionPathLabelIndex:(unint64_t)index
 {
   if ((objc_msgSend_isCategory(self, a2, v3, v4, v5) & 1) == 0)
   {
@@ -152,23 +152,23 @@ LABEL_15:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v28 = objc_msgSend_model(self, v8, v9, v10, v11);
-  v33 = objc_msgSend_categoryForMultiDataSetCategoryIndex_(v28, v29, v30, v31, v32, a3);
+  v33 = objc_msgSend_categoryForMultiDataSetCategoryIndex_(v28, v29, v30, v31, v32, index);
 
   return v33;
 }
 
-- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)a3
+- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)analysis
 {
-  v4 = a3;
-  objc_msgSend_max(v4, v5, v6, v7, v8);
+  analysisCopy = analysis;
+  objc_msgSend_max(analysisCopy, v5, v6, v7, v8);
   v10 = v9;
-  objc_msgSend_min(v4, v11, v9, v12, v13);
+  objc_msgSend_min(analysisCopy, v11, v9, v12, v13);
   v15 = v14;
   v19 = objc_msgSend_model(self, v16, v14, v17, v18);
   v24 = v10 - v15;
@@ -255,9 +255,9 @@ LABEL_15:
   return v36;
 }
 
-- (int)specificPropertyForGeneric:(int)a3
+- (int)specificPropertyForGeneric:(int)generic
 {
-  v6 = *&a3;
+  v6 = *&generic;
   v8 = objc_msgSend_p_getGenericToCategoryPropertyMap(self, a2, v3, v4, v5);
   if (!objc_msgSend_containsKey_(v8, v9, v10, v11, v12, v6) || (v17 = objc_msgSend_intForKey_(v8, v13, v14, v15, v16, v6)) == 0)
   {

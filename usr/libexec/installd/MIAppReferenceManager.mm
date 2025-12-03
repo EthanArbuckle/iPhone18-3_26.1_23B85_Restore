@@ -1,17 +1,17 @@
 @interface MIAppReferenceManager
 + (id)defaultManager;
-- (BOOL)_countFinalReferences:(unint64_t *)a3 inBundleContainer:(id)a4 withError:(id *)a5;
-- (BOOL)_countReferencesWithType:(int)a3 atBaseURL:(id)a4 count:(unint64_t *)a5 withError:(id *)a6;
-- (BOOL)_countTemporaryReferences:(unint64_t *)a3 inBundleContainer:(id)a4 withError:(id *)a5;
-- (BOOL)_removeReferenceAtURL:(id)a3 personaUniqueString:(id)a4 inBundleContainer:(id)a5 wasLastReference:(BOOL *)a6 resultingPersonaUniqueStrings:(id *)a7 error:(id *)a8;
-- (BOOL)_updateReferenceAtURL:(id)a3 byAddingPersonaUniqueString:(id)a4 resultingPersonaUniqueStrings:(id *)a5 error:(id *)a6;
-- (BOOL)_updateReferenceAtURL:(id)a3 byRemovingPersonaUniqueString:(id)a4 resultingPersonaUniqueStrings:(id *)a5 error:(id *)a6;
-- (BOOL)finalizeTemporaryReference:(id)a3 resultingPersonaUniqueStrings:(id *)a4 error:(id *)a5;
-- (BOOL)revokeTemporaryReference:(id)a3 wasLastReference:(BOOL *)a4 error:(id *)a5;
+- (BOOL)_countFinalReferences:(unint64_t *)references inBundleContainer:(id)container withError:(id *)error;
+- (BOOL)_countReferencesWithType:(int)type atBaseURL:(id)l count:(unint64_t *)count withError:(id *)error;
+- (BOOL)_countTemporaryReferences:(unint64_t *)references inBundleContainer:(id)container withError:(id *)error;
+- (BOOL)_removeReferenceAtURL:(id)l personaUniqueString:(id)string inBundleContainer:(id)container wasLastReference:(BOOL *)reference resultingPersonaUniqueStrings:(id *)strings error:(id *)error;
+- (BOOL)_updateReferenceAtURL:(id)l byAddingPersonaUniqueString:(id)string resultingPersonaUniqueStrings:(id *)strings error:(id *)error;
+- (BOOL)_updateReferenceAtURL:(id)l byRemovingPersonaUniqueString:(id)string resultingPersonaUniqueStrings:(id *)strings error:(id *)error;
+- (BOOL)finalizeTemporaryReference:(id)reference resultingPersonaUniqueStrings:(id *)strings error:(id *)error;
+- (BOOL)revokeTemporaryReference:(id)reference wasLastReference:(BOOL *)lastReference error:(id *)error;
 - (MIAppReferenceManager)init;
-- (id)personaUniqueStringsForAppWithBundleID:(id)a3 error:(id *)a4;
-- (id)referencesForIdentifier:(id)a3 inDomain:(unint64_t)a4 error:(id *)a5;
-- (void)enumerateAppReferencesWithBlock:(id)a3;
+- (id)personaUniqueStringsForAppWithBundleID:(id)d error:(id *)error;
+- (id)referencesForIdentifier:(id)identifier inDomain:(unint64_t)domain error:(id *)error;
+- (void)enumerateAppReferencesWithBlock:(id)block;
 @end
 
 @implementation MIAppReferenceManager
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005521C;
   block[3] = &unk_100090CF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000A9718 != -1)
   {
     dispatch_once(&qword_1000A9718, block);
@@ -40,27 +40,27 @@
   return [(MIAppReferenceManager *)&v3 init];
 }
 
-- (BOOL)finalizeTemporaryReference:(id)a3 resultingPersonaUniqueStrings:(id *)a4 error:(id *)a5
+- (BOOL)finalizeTemporaryReference:(id)reference resultingPersonaUniqueStrings:(id *)strings error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 identity];
-  v10 = [v9 bundleID];
+  referenceCopy = reference;
+  identity = [referenceCopy identity];
+  bundleID = [identity bundleID];
   v24 = 0;
-  v11 = +[MIBundleContainer appBundleContainerForIdentifier:inDomain:withError:](MIBundleContainer, "appBundleContainerForIdentifier:inDomain:withError:", v10, [v8 domain], &v24);
+  v11 = +[MIBundleContainer appBundleContainerForIdentifier:inDomain:withError:](MIBundleContainer, "appBundleContainerForIdentifier:inDomain:withError:", bundleID, [referenceCopy domain], &v24);
   v12 = v24;
 
   if (v11)
   {
-    v13 = [v8 uid];
-    v14 = [v9 personaUniqueString];
+    v13 = [referenceCopy uid];
+    personaUniqueString = [identity personaUniqueString];
     v22 = v12;
     v23 = 0;
-    v15 = [(MIAppReferenceManager *)self addReferenceForUserWithID:v13 personaUniqueString:v14 byRemovingTemporaryReference:1 inBundleContainer:v11 resultingPersonaUniqueStrings:&v23 error:&v22];
+    v15 = [(MIAppReferenceManager *)self addReferenceForUserWithID:v13 personaUniqueString:personaUniqueString byRemovingTemporaryReference:1 inBundleContainer:v11 resultingPersonaUniqueStrings:&v23 error:&v22];
     v16 = v23;
     v17 = v22;
 
     v12 = v17;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -70,7 +70,7 @@
   {
     v16 = 0;
     v15 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -79,12 +79,12 @@
   if (!v15)
   {
     v18 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_7:
   v19 = !v15;
-  if (!a4)
+  if (!strings)
   {
     v19 = 1;
   }
@@ -92,31 +92,31 @@ LABEL_7:
   if ((v19 & 1) == 0)
   {
     v20 = v16;
-    *a4 = v16;
+    *strings = v16;
   }
 
   return v15;
 }
 
-- (BOOL)revokeTemporaryReference:(id)a3 wasLastReference:(BOOL *)a4 error:(id *)a5
+- (BOOL)revokeTemporaryReference:(id)reference wasLastReference:(BOOL *)lastReference error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 identity];
-  v10 = [v9 bundleID];
+  referenceCopy = reference;
+  identity = [referenceCopy identity];
+  bundleID = [identity bundleID];
   v20 = 0;
-  v11 = +[MIBundleContainer appBundleContainerForIdentifier:inDomain:withError:](MIBundleContainer, "appBundleContainerForIdentifier:inDomain:withError:", v10, [v8 domain], &v20);
+  v11 = +[MIBundleContainer appBundleContainerForIdentifier:inDomain:withError:](MIBundleContainer, "appBundleContainerForIdentifier:inDomain:withError:", bundleID, [referenceCopy domain], &v20);
   v12 = v20;
 
   if (v11)
   {
-    v13 = [v8 uid];
-    v14 = [v9 personaUniqueString];
+    v13 = [referenceCopy uid];
+    personaUniqueString = [identity personaUniqueString];
     v19 = v12;
-    v15 = [(MIAppReferenceManager *)self removeTemporaryReferenceForUserWithID:v13 personaUniqueString:v14 inBundleContainer:v11 wasLastReference:a4 error:&v19];
+    v15 = [(MIAppReferenceManager *)self removeTemporaryReferenceForUserWithID:v13 personaUniqueString:personaUniqueString inBundleContainer:v11 wasLastReference:lastReference error:&v19];
     v16 = v19;
 
     v12 = v16;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -125,7 +125,7 @@ LABEL_7:
   else
   {
     v15 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -134,7 +134,7 @@ LABEL_7:
   if (!v15)
   {
     v17 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_7:
@@ -142,42 +142,42 @@ LABEL_7:
   return v15;
 }
 
-- (BOOL)_updateReferenceAtURL:(id)a3 byAddingPersonaUniqueString:(id)a4 resultingPersonaUniqueStrings:(id *)a5 error:(id *)a6
+- (BOOL)_updateReferenceAtURL:(id)l byAddingPersonaUniqueString:(id)string resultingPersonaUniqueStrings:(id *)strings error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  stringCopy = string;
   v11 = +[MIFileManager defaultManager];
   v39 = 0;
-  v12 = [MIAppReferenceMetadata referenceMetadataFromURL:v9 error:&v39];
+  v12 = [MIAppReferenceMetadata referenceMetadataFromURL:lCopy error:&v39];
   v13 = v39;
   v14 = v13;
   if (!v12)
   {
-    v17 = [v13 domain];
-    v34 = a6;
-    if ([v17 isEqualToString:NSCocoaErrorDomain])
+    domain = [v13 domain];
+    errorCopy2 = error;
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v18 = [v14 code];
+      code = [v14 code];
 
-      if (v18 == 260)
+      if (code == 260)
       {
-        v19 = [v9 URLByDeletingLastPathComponent];
-        v20 = [v19 URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+        v19URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
         v38 = v14;
-        v21 = [v11 createDirectoryAtURL:v20 withIntermediateDirectories:0 mode:493 error:&v38];
+        v21 = [v11 createDirectoryAtURL:v19URLByDeletingLastPathComponent withIntermediateDirectories:0 mode:493 error:&v38];
         v22 = v38;
 
         if (v21)
         {
           v37 = v22;
-          v23 = [v11 createDirectoryAtURL:v19 withIntermediateDirectories:0 mode:493 error:&v37];
+          v23 = [v11 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:0 mode:493 error:&v37];
           v14 = v37;
 
           if (v23)
           {
             v12 = objc_opt_new();
 
-            a6 = v34;
+            error = errorCopy2;
             goto LABEL_14;
           }
 
@@ -196,24 +196,24 @@ LABEL_27:
     }
 
     v36 = 0;
-    v26 = [v11 removeItemAtURL:v9 error:&v36];
-    v19 = v36;
+    v26 = [v11 removeItemAtURL:lCopy error:&v36];
+    uRLByDeletingLastPathComponent = v36;
     if ((v26 & 1) == 0 && (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3))
     {
-      v32 = [v9 path];
-      v33 = v19;
+      path = [lCopy path];
+      v33 = uRLByDeletingLastPathComponent;
       MOLogWrite();
     }
 
     v27 = MIInstallerErrorDomain;
-    v28 = [v9 path];
-    v22 = sub_100010734("[MIAppReferenceManager _updateReferenceAtURL:byAddingPersonaUniqueString:resultingPersonaUniqueStrings:error:]", 222, v27, 4, v14, 0, @"Failed to deserialize temporary references from %@", v29, v28);
+    path2 = [lCopy path];
+    v22 = sub_100010734("[MIAppReferenceManager _updateReferenceAtURL:byAddingPersonaUniqueString:resultingPersonaUniqueStrings:error:]", 222, v27, 4, v14, 0, @"Failed to deserialize temporary references from %@", v29, path2);
 
     goto LABEL_27;
   }
 
-  v15 = [v12 personas];
-  v16 = [v15 mutableCopy];
+  personas = [v12 personas];
+  v16 = [personas mutableCopy];
 
   if (!v16)
   {
@@ -226,26 +226,26 @@ LABEL_14:
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
-      sub_100059CC8(v9);
+      sub_100059CC8(lCopy);
     }
 
     if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
     {
-      v32 = [v9 path];
+      path = [lCopy path];
       MOLogWrite();
     }
   }
 
 LABEL_15:
-  if (([v16 containsObject:{v10, v32}] & 1) == 0)
+  if (([v16 containsObject:{stringCopy, path}] & 1) == 0)
   {
-    v34 = a6;
-    [v16 addObject:v10];
+    errorCopy2 = error;
+    [v16 addObject:stringCopy];
     v24 = [v16 copy];
     [v12 setPersonas:v24];
 
     v35 = v14;
-    LOBYTE(v24) = [v12 serializeToURL:v9 error:&v35];
+    LOBYTE(v24) = [v12 serializeToURL:lCopy error:&v35];
     v22 = v35;
 
     if (v24)
@@ -258,11 +258,11 @@ LABEL_15:
     {
 LABEL_32:
       v14 = v22;
-      if (v34)
+      if (errorCopy2)
       {
         v30 = v22;
         v25 = 0;
-        *v34 = v22;
+        *errorCopy2 = v22;
       }
 
       else
@@ -273,7 +273,7 @@ LABEL_32:
       goto LABEL_35;
     }
 
-    v19 = [v9 path];
+    uRLByDeletingLastPathComponent = [lCopy path];
     MOLogWrite();
 LABEL_31:
 
@@ -281,9 +281,9 @@ LABEL_31:
   }
 
 LABEL_18:
-  if (a5)
+  if (strings)
   {
-    *a5 = [NSSet setWithArray:v16];
+    *strings = [NSSet setWithArray:v16];
   }
 
   v25 = 1;
@@ -292,27 +292,27 @@ LABEL_35:
   return v25;
 }
 
-- (BOOL)_updateReferenceAtURL:(id)a3 byRemovingPersonaUniqueString:(id)a4 resultingPersonaUniqueStrings:(id *)a5 error:(id *)a6
+- (BOOL)_updateReferenceAtURL:(id)l byRemovingPersonaUniqueString:(id)string resultingPersonaUniqueStrings:(id *)strings error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  stringCopy = string;
   v11 = +[MIFileManager defaultManager];
   v41 = 0;
-  v12 = [MIAppReferenceMetadata referenceMetadataFromURL:v9 error:&v41];
+  v12 = [MIAppReferenceMetadata referenceMetadataFromURL:lCopy error:&v41];
   v13 = v41;
   v14 = v13;
   if (!v12)
   {
-    v21 = [v13 domain];
-    if ([v21 isEqualToString:NSCocoaErrorDomain])
+    domain = [v13 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v22 = [v14 code];
+      code = [v14 code];
 
-      if (v22 == 260)
+      if (code == 260)
       {
 
         v16 = 0;
-        if (!a5)
+        if (!strings)
         {
           v30 = 1;
           v14 = 0;
@@ -329,29 +329,29 @@ LABEL_35:
     }
 
     v40 = 0;
-    v25 = [v11 removeItemAtURL:v9 error:&v40];
-    v24 = v40;
+    v25 = [v11 removeItemAtURL:lCopy error:&v40];
+    path4 = v40;
     if ((v25 & 1) == 0 && (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3))
     {
-      v35 = [v9 path];
-      v37 = v24;
+      path = [lCopy path];
+      v37 = path4;
       MOLogWrite();
     }
 
     v26 = MIInstallerErrorDomain;
-    v27 = [v9 path];
-    v20 = sub_100010734("[MIAppReferenceManager _updateReferenceAtURL:byRemovingPersonaUniqueString:resultingPersonaUniqueStrings:error:]", 280, v26, 4, v14, 0, @"Failed to deserialize temporary references from %@", v28, v27);
+    path2 = [lCopy path];
+    v20 = sub_100010734("[MIAppReferenceManager _updateReferenceAtURL:byRemovingPersonaUniqueString:resultingPersonaUniqueStrings:error:]", 280, v26, 4, v14, 0, @"Failed to deserialize temporary references from %@", v28, path2);
 
     v16 = 0;
     goto LABEL_20;
   }
 
-  v15 = [v12 personas];
-  v16 = [v15 mutableCopy];
+  personas = [v12 personas];
+  v16 = [personas mutableCopy];
 
   if (!v16)
   {
-    if (!a5)
+    if (!strings)
     {
       goto LABEL_36;
     }
@@ -360,28 +360,28 @@ LABEL_12:
     v23 = 0;
 LABEL_35:
     v33 = v23;
-    *a5 = v33;
+    *strings = v33;
 
     goto LABEL_36;
   }
 
-  if (([v16 containsObject:v10] & 1) == 0)
+  if (([v16 containsObject:stringCopy] & 1) == 0)
   {
-    v20 = sub_100010734("[MIAppReferenceManager _updateReferenceAtURL:byRemovingPersonaUniqueString:resultingPersonaUniqueStrings:error:]", 289, MIInstallerErrorDomain, 4, 0, 0, @"Persona %@ not found in %@", v17, v10);
-    v24 = v14;
+    v20 = sub_100010734("[MIAppReferenceManager _updateReferenceAtURL:byRemovingPersonaUniqueString:resultingPersonaUniqueStrings:error:]", 289, MIInstallerErrorDomain, 4, 0, 0, @"Persona %@ not found in %@", v17, stringCopy);
+    path4 = v14;
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  [v16 removeObject:v10];
+  [v16 removeObject:stringCopy];
   v18 = [v16 copy];
   [v12 setPersonas:v18];
 
   if (![v16 count])
   {
     v38 = v14;
-    v31 = [v11 removeItemAtURL:v9 error:&v38];
+    v31 = [v11 removeItemAtURL:lCopy error:&v38];
     v32 = v38;
 
     if (v31)
@@ -393,7 +393,7 @@ LABEL_20:
     {
       if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
       {
-        v36 = [v9 path];
+        path3 = [lCopy path];
         MOLogWrite();
       }
 
@@ -401,7 +401,7 @@ LABEL_20:
     }
 
 LABEL_33:
-    if (a5)
+    if (strings)
     {
       v23 = [NSSet setWithArray:v16];
       goto LABEL_35;
@@ -413,7 +413,7 @@ LABEL_36:
   }
 
   v39 = v14;
-  v19 = [v12 serializeToURL:v9 error:&v39];
+  v19 = [v12 serializeToURL:lCopy error:&v39];
   v20 = v39;
 
   if (v19)
@@ -424,18 +424,18 @@ LABEL_36:
 
   if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
   {
-    v24 = [v9 path];
+    path4 = [lCopy path];
     MOLogWrite();
     goto LABEL_20;
   }
 
 LABEL_21:
   v14 = v20;
-  if (a6)
+  if (error)
   {
     v29 = v20;
     v30 = 0;
-    *a6 = v20;
+    *error = v20;
   }
 
   else
@@ -448,9 +448,9 @@ LABEL_37:
   return v30;
 }
 
-- (BOOL)_countReferencesWithType:(int)a3 atBaseURL:(id)a4 count:(unint64_t *)a5 withError:(id *)a6
+- (BOOL)_countReferencesWithType:(int)type atBaseURL:(id)l count:(unint64_t *)count withError:(id *)error
 {
-  v9 = a4;
+  lCopy = l;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -462,11 +462,11 @@ LABEL_37:
   v21 = sub_1000564E4;
   v22 = 0;
   v10 = +[MIFileManager defaultManager];
-  if ([v10 itemDoesNotExistAtURL:v9])
+  if ([v10 itemDoesNotExistAtURL:lCopy])
   {
-    if (a5)
+    if (count)
     {
-      *a5 = 0;
+      *count = 0;
     }
 
     v11 = 1;
@@ -478,10 +478,10 @@ LABEL_37:
     v15[1] = 3221225472;
     v15[2] = sub_1000564EC;
     v15[3] = &unk_100091BB8;
-    v16 = a3;
+    typeCopy = type;
     v15[4] = &v17;
     v15[5] = &v23;
-    v12 = [v10 traverseDirectoryAtURL:v9 withBlock:v15];
+    v12 = [v10 traverseDirectoryAtURL:lCopy withBlock:v15];
     if (v12)
     {
       objc_storeStrong(v18 + 5, v12);
@@ -491,15 +491,15 @@ LABEL_37:
     v11 = v13 == 0;
     if (v13)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = v13;
+        *error = v13;
       }
     }
 
-    else if (a5)
+    else if (count)
     {
-      *a5 = v24[3];
+      *count = v24[3];
     }
   }
 
@@ -509,34 +509,34 @@ LABEL_37:
   return v11;
 }
 
-- (BOOL)_countFinalReferences:(unint64_t *)a3 inBundleContainer:(id)a4 withError:(id *)a5
+- (BOOL)_countFinalReferences:(unint64_t *)references inBundleContainer:(id)container withError:(id *)error
 {
-  v8 = [a4 referenceStorageURL];
-  LOBYTE(a5) = [(MIAppReferenceManager *)self _countReferencesWithType:2 atBaseURL:v8 count:a3 withError:a5];
+  referenceStorageURL = [container referenceStorageURL];
+  LOBYTE(error) = [(MIAppReferenceManager *)self _countReferencesWithType:2 atBaseURL:referenceStorageURL count:references withError:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_countTemporaryReferences:(unint64_t *)a3 inBundleContainer:(id)a4 withError:(id *)a5
+- (BOOL)_countTemporaryReferences:(unint64_t *)references inBundleContainer:(id)container withError:(id *)error
 {
-  v8 = [a4 referenceStorageURL];
-  LOBYTE(a5) = [(MIAppReferenceManager *)self _countReferencesWithType:1 atBaseURL:v8 count:a3 withError:a5];
+  referenceStorageURL = [container referenceStorageURL];
+  LOBYTE(error) = [(MIAppReferenceManager *)self _countReferencesWithType:1 atBaseURL:referenceStorageURL count:references withError:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_removeReferenceAtURL:(id)a3 personaUniqueString:(id)a4 inBundleContainer:(id)a5 wasLastReference:(BOOL *)a6 resultingPersonaUniqueStrings:(id *)a7 error:(id *)a8
+- (BOOL)_removeReferenceAtURL:(id)l personaUniqueString:(id)string inBundleContainer:(id)container wasLastReference:(BOOL *)reference resultingPersonaUniqueStrings:(id *)strings error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = [(MIAppReferenceManager *)self _updateReferenceAtURL:a3 byRemovingPersonaUniqueString:v14 resultingPersonaUniqueStrings:a7 error:a8];
+  stringCopy = string;
+  containerCopy = container;
+  v16 = [(MIAppReferenceManager *)self _updateReferenceAtURL:l byRemovingPersonaUniqueString:stringCopy resultingPersonaUniqueStrings:strings error:error];
   v17 = v16;
-  if (a6 && v16)
+  if (reference && v16)
   {
     v29 = 0;
     v30 = 0;
     v28 = 0;
-    v18 = [(MIAppReferenceManager *)self _countFinalReferences:&v30 inBundleContainer:v15 withError:&v28];
+    v18 = [(MIAppReferenceManager *)self _countFinalReferences:&v30 inBundleContainer:containerCopy withError:&v28];
     v19 = v28;
     if ((v18 & 1) == 0)
     {
@@ -550,7 +550,7 @@ LABEL_37:
     }
 
     v27 = v19;
-    v20 = [(MIAppReferenceManager *)self _countTemporaryReferences:&v29 inBundleContainer:v15 withError:&v27, v24];
+    v20 = [(MIAppReferenceManager *)self _countTemporaryReferences:&v29 inBundleContainer:containerCopy withError:&v27, v24];
     v21 = v27;
 
     v22 = qword_1000A9720;
@@ -562,13 +562,13 @@ LABEL_13:
         if (*(v22 + 44) < 5)
         {
 LABEL_15:
-          *a6 = v30 + v29 == 0;
+          *reference = v30 + v29 == 0;
 
           goto LABEL_16;
         }
 
 LABEL_14:
-        v26 = [v15 identifier];
+        identifier = [containerCopy identifier];
         MOLogWrite();
 
         goto LABEL_15;
@@ -592,7 +592,7 @@ LABEL_16:
   return v17;
 }
 
-- (void)enumerateAppReferencesWithBlock:(id)a3
+- (void)enumerateAppReferencesWithBlock:(id)block
 {
   if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
   {
@@ -600,9 +600,9 @@ LABEL_16:
   }
 }
 
-- (id)referencesForIdentifier:(id)a3 inDomain:(unint64_t)a4 error:(id *)a5
+- (id)referencesForIdentifier:(id)identifier inDomain:(unint64_t)domain error:(id *)error
 {
-  v30 = a3;
+  identifierCopy = identifier;
   v28 = objc_opt_new();
   v7 = sub_100009938();
   v8 = sub_100009864();
@@ -629,19 +629,19 @@ LABEL_3:
 
       v15 = [*(*(&v32 + 1) + 8 * v14) uid];
       v16 = v15;
-      if (a4 != 3 || v8 == v15)
+      if (domain != 3 || v8 == v15)
       {
         v31 = v12;
-        v17 = [(MIAppReferenceManager *)self personaUniqueStringsForAppWithBundleID:v30 domain:a4 forUserWithID:v15 error:&v31];
+        v17 = [(MIAppReferenceManager *)self personaUniqueStringsForAppWithBundleID:identifierCopy domain:domain forUserWithID:v15 error:&v31];
         v18 = v31;
 
         if (!v17)
         {
 
           v20 = 0;
-          v21 = a5;
+          errorCopy2 = error;
           v22 = v28;
-          if (a5)
+          if (error)
           {
             goto LABEL_20;
           }
@@ -681,19 +681,19 @@ LABEL_16:
 
   else
   {
-    v18 = sub_100010734("[MIAppReferenceManager referencesForIdentifier:inDomain:error:]", 511, MIInstallerErrorDomain, 4, 0, 0, @"Unexpectedly got no references for %@ for users %@", v23, v30);
+    v18 = sub_100010734("[MIAppReferenceManager referencesForIdentifier:inDomain:error:]", 511, MIInstallerErrorDomain, 4, 0, 0, @"Unexpectedly got no references for %@ for users %@", v23, identifierCopy);
 
     v20 = 0;
   }
 
-  v21 = a5;
-  if (a5)
+  errorCopy2 = error;
+  if (error)
   {
 LABEL_20:
     if (!v20)
     {
       v24 = v18;
-      *v21 = v18;
+      *errorCopy2 = v18;
     }
   }
 
@@ -703,10 +703,10 @@ LABEL_22:
   return v20;
 }
 
-- (id)personaUniqueStringsForAppWithBundleID:(id)a3 error:(id *)a4
+- (id)personaUniqueStringsForAppWithBundleID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIAppReferenceManager *)self personaUniqueStringsForAppWithBundleID:v6 domain:2 forUserWithID:sub_100009864() error:a4];
+  dCopy = d;
+  v7 = [(MIAppReferenceManager *)self personaUniqueStringsForAppWithBundleID:dCopy domain:2 forUserWithID:sub_100009864() error:error];
 
   return v7;
 }

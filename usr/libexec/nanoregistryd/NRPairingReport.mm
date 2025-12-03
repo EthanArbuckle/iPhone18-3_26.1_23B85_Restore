@@ -1,20 +1,20 @@
 @interface NRPairingReport
 - (BOOL)isPairingErrorSet;
 - (NRPairingReport)init;
-- (NRPairingReport)initWithCoder:(id)a3;
+- (NRPairingReport)initWithCoder:(id)coder;
 - (NSError)detailedError;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)incrementIncorrectPINcount;
-- (void)setAbortPairingReason:(id)a3;
-- (void)setAggdReportString:(id)a3;
-- (void)setOriginalError:(id)a3;
-- (void)setPairingError:(id)a3;
-- (void)setPairingReportErrorForPairingClient:(id)a3 reason:(id)a4;
-- (void)setPairingReportErrorForRemoteError:(unint64_t)a3 withReason:(id)a4;
-- (void)setProcessName:(id)a3;
-- (void)setSubmitted:(BOOL)a3;
-- (void)setSubreasonWithPairingError:(id)a3;
+- (void)setAbortPairingReason:(id)reason;
+- (void)setAggdReportString:(id)string;
+- (void)setOriginalError:(id)error;
+- (void)setPairingError:(id)error;
+- (void)setPairingReportErrorForPairingClient:(id)client reason:(id)reason;
+- (void)setPairingReportErrorForRemoteError:(unint64_t)error withReason:(id)reason;
+- (void)setProcessName:(id)name;
+- (void)setSubmitted:(BOOL)submitted;
+- (void)setSubreasonWithPairingError:(id)error;
 @end
 
 @implementation NRPairingReport
@@ -74,13 +74,13 @@
   return v3;
 }
 
-- (void)setOriginalError:(id)a3
+- (void)setOriginalError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (![(NRPairingReport *)self isErrorSet])
   {
-    objc_storeStrong(&self->_originalError, a3);
-    [(NRPairingReport *)self setSubreasonWithPairingError:v5];
+    objc_storeStrong(&self->_originalError, error);
+    [(NRPairingReport *)self setSubreasonWithPairingError:errorCopy];
     v6 = nr_daemon_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
 
@@ -100,14 +100,14 @@
   originalError = self->_originalError;
   if (originalError)
   {
-    v4 = [(NSError *)originalError code];
-    v5 = [(NSError *)self->_originalError domain];
+    code = [(NSError *)originalError code];
+    domain = [(NSError *)self->_originalError domain];
 LABEL_16:
-    v15 = [(NSError *)self->_originalError userInfo];
-    if (v15)
+    userInfo = [(NSError *)self->_originalError userInfo];
+    if (userInfo)
     {
-      v16 = [(NSError *)self->_originalError userInfo];
-      v17 = [v16 mutableCopy];
+      userInfo2 = [(NSError *)self->_originalError userInfo];
+      v17 = [userInfo2 mutableCopy];
     }
 
     else
@@ -127,9 +127,9 @@ LABEL_16:
     v21 = sub_1000922D4(self->_subreason);
     [v17 setObject:v21 forKeyedSubscript:@"subreasonString"];
 
-    if (v5)
+    if (domain)
     {
-      v22 = v5;
+      v22 = domain;
     }
 
     else
@@ -137,7 +137,7 @@ LABEL_16:
       v22 = @"com.apple.NanoRegistry";
     }
 
-    v23 = [NSError errorWithDomain:v22 code:v4 userInfo:v17];
+    v23 = [NSError errorWithDomain:v22 code:code userInfo:v17];
 
     goto LABEL_23;
   }
@@ -170,7 +170,7 @@ LABEL_16:
 
           if (v14)
           {
-            v4 = [v11 integerValue];
+            code = [v11 integerValue];
 
             goto LABEL_15;
           }
@@ -186,11 +186,11 @@ LABEL_16:
       }
     }
 
-    v4 = 5;
+    code = 5;
 LABEL_15:
 
     self->_reason = sub_100091E30(self->_subreason);
-    v5 = 0;
+    domain = 0;
     goto LABEL_16;
   }
 
@@ -200,128 +200,128 @@ LABEL_23:
   return v23;
 }
 
-- (NRPairingReport)initWithCoder:(id)a3
+- (NRPairingReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [[(NRPairingReport *)self init] init];
   if (v5)
   {
-    v5->_reason = [v4 decodeInt32ForKey:@"reason"];
-    v5->_subreason = [v4 decodeInt32ForKey:@"subreason"];
-    v5->_incorrectPINcount = [v4 decodeInt32ForKey:@"incorrectPINcount"];
-    v5->_pairingType = [v4 decodeInt32ForKey:@"pairingType"];
-    v5->_isAutomated = [v4 decodeBoolForKey:@"isAutomated"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aggdReportString"];
+    v5->_reason = [coderCopy decodeInt32ForKey:@"reason"];
+    v5->_subreason = [coderCopy decodeInt32ForKey:@"subreason"];
+    v5->_incorrectPINcount = [coderCopy decodeInt32ForKey:@"incorrectPINcount"];
+    v5->_pairingType = [coderCopy decodeInt32ForKey:@"pairingType"];
+    v5->_isAutomated = [coderCopy decodeBoolForKey:@"isAutomated"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aggdReportString"];
     aggdReportString = v5->_aggdReportString;
     v5->_aggdReportString = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
     processName = v5->_processName;
     v5->_processName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"abortPairingReason"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"abortPairingReason"];
     abortPairingReason = v5->_abortPairingReason;
     v5->_abortPairingReason = v10;
 
-    v5->_submitted = [v4 decodeBoolForKey:@"submitted"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalError"];
+    v5->_submitted = [coderCopy decodeBoolForKey:@"submitted"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalError"];
     originalError = v5->_originalError;
     v5->_originalError = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gizmoBuild"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gizmoBuild"];
     gizmoBuild = v5->_gizmoBuild;
     v5->_gizmoBuild = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gizmoHardware"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gizmoHardware"];
     gizmoHardware = v5->_gizmoHardware;
     v5->_gizmoHardware = v16;
 
-    v5->_gizmoMaxPairingVersion = [v4 decodeInt32ForKey:@"gizmoMaxPairingVersion"];
-    v5->_shouldFilePairingReport = [v4 decodeBoolForKey:@"shouldFilePairingReport"];
-    v5->_lossOfIDSConnectivity = [v4 decodeInt64ForKey:@"lossOfIDSConnectivity"];
+    v5->_gizmoMaxPairingVersion = [coderCopy decodeInt32ForKey:@"gizmoMaxPairingVersion"];
+    v5->_shouldFilePairingReport = [coderCopy decodeBoolForKey:@"shouldFilePairingReport"];
+    v5->_lossOfIDSConnectivity = [coderCopy decodeInt64ForKey:@"lossOfIDSConnectivity"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reason = self->_reason;
-  v6 = a3;
-  [v6 encodeInt32:reason forKey:@"reason"];
-  [v6 encodeInt32:self->_subreason forKey:@"subreason"];
-  [v6 encodeInt32:self->_incorrectPINcount forKey:@"incorrectPINcount"];
-  [v6 encodeInt32:self->_pairingType forKey:@"pairingType"];
-  [v6 encodeBool:self->_isAutomated forKey:@"isAutomated"];
-  [v6 encodeObject:self->_aggdReportString forKey:@"aggdReportString"];
-  [v6 encodeObject:self->_processName forKey:@"processName"];
-  [v6 encodeObject:self->_abortPairingReason forKey:@"abortPairingReason"];
-  [v6 encodeBool:self->_submitted forKey:@"submitted"];
-  v5 = [(NSError *)self->_originalError nr_filteredError];
-  [v6 encodeObject:v5 forKey:@"originalError"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:reason forKey:@"reason"];
+  [coderCopy encodeInt32:self->_subreason forKey:@"subreason"];
+  [coderCopy encodeInt32:self->_incorrectPINcount forKey:@"incorrectPINcount"];
+  [coderCopy encodeInt32:self->_pairingType forKey:@"pairingType"];
+  [coderCopy encodeBool:self->_isAutomated forKey:@"isAutomated"];
+  [coderCopy encodeObject:self->_aggdReportString forKey:@"aggdReportString"];
+  [coderCopy encodeObject:self->_processName forKey:@"processName"];
+  [coderCopy encodeObject:self->_abortPairingReason forKey:@"abortPairingReason"];
+  [coderCopy encodeBool:self->_submitted forKey:@"submitted"];
+  nr_filteredError = [(NSError *)self->_originalError nr_filteredError];
+  [coderCopy encodeObject:nr_filteredError forKey:@"originalError"];
 
-  [v6 encodeObject:self->_gizmoBuild forKey:@"gizmoBuild"];
-  [v6 encodeObject:self->_gizmoHardware forKey:@"gizmoHardware"];
-  [v6 encodeInt32:self->_gizmoMaxPairingVersion forKey:@"gizmoMaxPairingVersion"];
-  [v6 encodeBool:self->_shouldFilePairingReport forKey:@"shouldFilePairingReport"];
-  [v6 encodeInt64:self->_lossOfIDSConnectivity forKey:@"lossOfIDSConnectivity"];
+  [coderCopy encodeObject:self->_gizmoBuild forKey:@"gizmoBuild"];
+  [coderCopy encodeObject:self->_gizmoHardware forKey:@"gizmoHardware"];
+  [coderCopy encodeInt32:self->_gizmoMaxPairingVersion forKey:@"gizmoMaxPairingVersion"];
+  [coderCopy encodeBool:self->_shouldFilePairingReport forKey:@"shouldFilePairingReport"];
+  [coderCopy encodeInt64:self->_lossOfIDSConnectivity forKey:@"lossOfIDSConnectivity"];
 }
 
-- (void)setSubreasonWithPairingError:(id)a3
+- (void)setSubreasonWithPairingError:(id)error
 {
-  v4 = a3;
-  [v4 code];
+  errorCopy = error;
+  [errorCopy code];
   v5 = nrGetReportStringForErrorCode();
   [(NRPairingReport *)self setAggdReportString:v5];
 
-  v6 = [v4 code];
-  v7 = sub_100091600(v6);
+  code = [errorCopy code];
+  v7 = sub_100091600(code);
 
   [(NRPairingReport *)self setSubreason:v7];
 }
 
-- (void)setAggdReportString:(id)a3
+- (void)setAggdReportString:(id)string
 {
-  v7 = a3;
+  stringCopy = string;
   aggdReportString = self->_aggdReportString;
   p_aggdReportString = &self->_aggdReportString;
   if ([(NSString *)aggdReportString isEqual:@"pairSuccess"])
   {
-    objc_storeStrong(p_aggdReportString, a3);
+    objc_storeStrong(p_aggdReportString, string);
   }
 }
 
-- (void)setProcessName:(id)a3
+- (void)setProcessName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   processName = self->_processName;
   p_processName = &self->_processName;
   if (!processName)
   {
-    v8 = v5;
-    objc_storeStrong(p_processName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_processName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setAbortPairingReason:(id)a3
+- (void)setAbortPairingReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   abortPairingReason = self->_abortPairingReason;
   p_abortPairingReason = &self->_abortPairingReason;
   if (!abortPairingReason)
   {
-    v8 = v5;
-    objc_storeStrong(p_abortPairingReason, a3);
-    v5 = v8;
+    v8 = reasonCopy;
+    objc_storeStrong(p_abortPairingReason, reason);
+    reasonCopy = v8;
   }
 }
 
-- (void)setSubmitted:(BOOL)a3
+- (void)setSubmitted:(BOOL)submitted
 {
   if (!self->_submitted)
   {
-    self->_submitted = a3;
+    self->_submitted = submitted;
   }
 }
 
@@ -348,8 +348,8 @@ LABEL_23:
 {
   v3 = sub_10009216C([(NRPairingReport *)self reason]);
   v4 = sub_1000922D4([(NRPairingReport *)self subreason]);
-  v5 = [(NRPairingReport *)self incorrectPINcount];
-  v6 = [(NRPairingReport *)self pairingType];
+  incorrectPINcount = [(NRPairingReport *)self incorrectPINcount];
+  pairingType = [(NRPairingReport *)self pairingType];
   v7 = qword_1001B38F8;
   if (!qword_1001B38F8)
   {
@@ -364,21 +364,21 @@ LABEL_23:
     v7 = qword_1001B38F8;
   }
 
-  v10 = [NSNumber numberWithUnsignedInt:v6];
+  v10 = [NSNumber numberWithUnsignedInt:pairingType];
   v11 = [v7 objectForKeyedSubscript:v10];
 
-  v12 = [(NRPairingReport *)self isAutomated];
-  v13 = [(NRPairingReport *)self aggdReportString];
-  v14 = [(NRPairingReport *)self processName];
-  v15 = [(NRPairingReport *)self abortPairingReason];
-  v16 = [NSString stringWithFormat:@"Reason: %@\tSubreason: %@\tIncorrect PIN Count: %d\tPairing Type: %@\tIs Automated: %x\tAGGD ReportString: %@\tProcess Name: %@\tAbort Pairing Reason: %@", v3, v4, v5, v11, v12, v13, v14, v15];
+  isAutomated = [(NRPairingReport *)self isAutomated];
+  aggdReportString = [(NRPairingReport *)self aggdReportString];
+  processName = [(NRPairingReport *)self processName];
+  abortPairingReason = [(NRPairingReport *)self abortPairingReason];
+  v16 = [NSString stringWithFormat:@"Reason: %@\tSubreason: %@\tIncorrect PIN Count: %d\tPairing Type: %@\tIs Automated: %x\tAGGD ReportString: %@\tProcess Name: %@\tAbort Pairing Reason: %@", v3, v4, incorrectPINcount, v11, isAutomated, aggdReportString, processName, abortPairingReason];
 
   return v16;
 }
 
-- (void)setPairingError:(id)a3
+- (void)setPairingError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(NRPairingReport *)self isPairingErrorSet])
   {
     v5 = nr_daemon_log();
@@ -389,18 +389,18 @@ LABEL_23:
       v7 = nr_daemon_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(NRPairingReport *)self pairingError];
-        v9 = [v8 nr_safeDescription];
+        pairingError = [(NRPairingReport *)self pairingError];
+        nr_safeDescription = [pairingError nr_safeDescription];
         v13 = 138543618;
-        v14 = v9;
+        v14 = nr_safeDescription;
         v15 = 2114;
-        v16 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Not setting pairing error %{public}@ because pairing report has already recorded a failure reason: %{public}@", &v13, 0x16u);
       }
     }
   }
 
-  else if (v4)
+  else if (errorCopy)
   {
     v10 = nr_pairing_reporter_log();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
@@ -410,19 +410,19 @@ LABEL_23:
       v12 = nr_pairing_reporter_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_100101A20(v4);
+        sub_100101A20(errorCopy);
       }
     }
 
-    [(NRPairingReport *)self setOriginalError:v4];
-    [(NRPairingReport *)self setSubreasonWithPairingError:v4];
+    [(NRPairingReport *)self setOriginalError:errorCopy];
+    [(NRPairingReport *)self setSubreasonWithPairingError:errorCopy];
   }
 }
 
-- (void)setPairingReportErrorForPairingClient:(id)a3 reason:(id)a4
+- (void)setPairingReportErrorForPairingClient:(id)client reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  reasonCopy = reason;
   if (![(NRPairingReport *)self isPairingErrorSet])
   {
     v11 = nr_pairing_reporter_log();
@@ -434,22 +434,22 @@ LABEL_23:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v24 = v6;
+        selfCopy = clientCopy;
         v25 = 2114;
-        v26 = v7;
+        v26 = reasonCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Setting pairing report with client: %{public}@\treason: %{public}@", buf, 0x16u);
       }
     }
 
-    v14 = [(NRPairingReport *)v6 lastPathComponent];
-    [(NRPairingReport *)self setProcessName:v14];
-    [(NRPairingReport *)self setAbortPairingReason:v7];
-    v15 = [NSString stringWithFormat:@"%@", v7];
-    v16 = [NSString stringWithFormat:@"pairingAborted.%@.%@", v14, v15];
+    lastPathComponent = [(NRPairingReport *)clientCopy lastPathComponent];
+    [(NRPairingReport *)self setProcessName:lastPathComponent];
+    [(NRPairingReport *)self setAbortPairingReason:reasonCopy];
+    reasonCopy = [NSString stringWithFormat:@"%@", reasonCopy];
+    v16 = [NSString stringWithFormat:@"pairingAborted.%@.%@", lastPathComponent, reasonCopy];
     [(NRPairingReport *)self setAggdReportString:v16];
 
-    v10 = v14;
-    v17 = v7;
+    v10 = lastPathComponent;
+    v17 = reasonCopy;
     v18 = qword_1001B3900;
     if (!qword_1001B3900)
     {
@@ -464,12 +464,12 @@ LABEL_23:
       v20 = [v19 objectForKey:v17];
       if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v21 = [v20 integerValue];
+        integerValue = [v20 integerValue];
       }
 
       else
       {
-        v21 = 35;
+        integerValue = 35;
       }
     }
 
@@ -478,16 +478,16 @@ LABEL_23:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v21 = 35;
+        integerValue = 35;
         goto LABEL_20;
       }
 
       v20 = [qword_1001B3900 objectForKey:v10];
-      v21 = [v20 integerValue];
+      integerValue = [v20 integerValue];
     }
 
 LABEL_20:
-    [(NRPairingReport *)self setSubreason:v21];
+    [(NRPairingReport *)self setSubreason:integerValue];
     if ([(NRPairingReport *)self subreason]!= 1)
     {
       [(NRPairingReport *)self subreason];
@@ -508,7 +508,7 @@ LABEL_20:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Not setting pairing report error because pairing report has already recorded a failure reason: %{public}@", buf, 0xCu);
     }
 
@@ -516,9 +516,9 @@ LABEL_23:
   }
 }
 
-- (void)setPairingReportErrorForRemoteError:(unint64_t)a3 withReason:(id)a4
+- (void)setPairingReportErrorForRemoteError:(unint64_t)error withReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   if ([(NRPairingReport *)self isPairingErrorSet])
   {
     v7 = nr_daemon_log();
@@ -547,14 +547,14 @@ LABEL_23:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        *&buf[4] = a3;
+        *&buf[4] = error;
         *&buf[12] = 2114;
-        *&buf[14] = v6;
+        *&buf[14] = reasonCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Setting pairing error with error code: %lu\treason: %{public}@", buf, 0x16u);
       }
     }
 
-    [(NRPairingReport *)self setAbortPairingReason:v6];
+    [(NRPairingReport *)self setAbortPairingReason:reasonCopy];
     v13 = qword_1001B3908;
     if (!qword_1001B3908)
     {
@@ -637,18 +637,18 @@ LABEL_23:
       v13 = qword_1001B3908;
     }
 
-    v16 = [NSNumber numberWithInteger:a3];
-    v17 = [v13 objectForKeyedSubscript:v16];
+    v16 = [NSNumber numberWithInteger:error];
+    error = [v13 objectForKeyedSubscript:v16];
 
-    if (!v17)
+    if (!error)
     {
-      v17 = [NSString stringWithFormat:@"missingError%ld", a3];
+      error = [NSString stringWithFormat:@"missingError%ld", error];
     }
 
-    v18 = [NSString stringWithFormat:@"remoteUnpair.%@.%@", v17, v6];
-    [(NRPairingReport *)self setAggdReportString:v18];
+    reasonCopy = [NSString stringWithFormat:@"remoteUnpair.%@.%@", error, reasonCopy];
+    [(NRPairingReport *)self setAggdReportString:reasonCopy];
 
-    v19 = v6;
+    v19 = reasonCopy;
     v20 = qword_1001B3910;
     if (!qword_1001B3910)
     {
@@ -702,7 +702,7 @@ LABEL_23:
       v20 = qword_1001B3910;
     }
 
-    v25 = [NSNumber numberWithUnsignedInteger:a3];
+    v25 = [NSNumber numberWithUnsignedInteger:error];
     v26 = [v20 objectForKey:v25];
 
     objc_opt_class();
@@ -722,12 +722,12 @@ LABEL_23:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v28 = [v27 integerValue];
+        integerValue = [v27 integerValue];
       }
 
       else
       {
-        v28 = 36;
+        integerValue = 36;
       }
     }
 
@@ -736,16 +736,16 @@ LABEL_23:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v28 = [v26 integerValue];
+        integerValue = [v26 integerValue];
       }
 
       else
       {
-        v28 = 200;
+        integerValue = 200;
       }
     }
 
-    [(NRPairingReport *)self setSubreason:v28];
+    [(NRPairingReport *)self setSubreason:integerValue];
   }
 }
 

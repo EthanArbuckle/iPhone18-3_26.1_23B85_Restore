@@ -1,16 +1,16 @@
 @interface AETestDriver
-+ (id)getBookKeyWithBook:(id)a3 style:(id)a4 geometry:(id)a5;
-+ (id)getContentViewChildren:(id)a3;
-+ (id)getViewSnapshot:(id)a3 parent:(id)a4;
++ (id)getBookKeyWithBook:(id)book style:(id)style geometry:(id)geometry;
++ (id)getContentViewChildren:(id)children;
++ (id)getViewSnapshot:(id)snapshot parent:(id)parent;
 + (id)shared;
-+ (void)getWebViews:(id)a3 result:(id)a4;
++ (void)getWebViews:(id)views result:(id)result;
 - (AETestDriver)init;
-- (void)bookViewDidAppear:(id)a3;
-- (void)bookViewWillDisappear:(id)a3;
-- (void)paginationControllerFinishedBookPagination:(id)a3;
-- (void)paginationControllerFinishedWebkitRendering:(id)a3 renderTree:(id)a4 pageCount:(unint64_t)a5;
-- (void)postEvent:(id)a3 sender:(id)a4;
-- (void)presentationControllerFinishedWebkitRendering:(id)a3 renderTree:(id)a4 pageCount:(unint64_t)a5;
+- (void)bookViewDidAppear:(id)appear;
+- (void)bookViewWillDisappear:(id)disappear;
+- (void)paginationControllerFinishedBookPagination:(id)pagination;
+- (void)paginationControllerFinishedWebkitRendering:(id)rendering renderTree:(id)tree pageCount:(unint64_t)count;
+- (void)postEvent:(id)event sender:(id)sender;
+- (void)presentationControllerFinishedWebkitRendering:(id)rendering renderTree:(id)tree pageCount:(unint64_t)count;
 @end
 
 @implementation AETestDriver
@@ -45,67 +45,67 @@
   return v3;
 }
 
-- (void)postEvent:(id)a3 sender:(id)a4
+- (void)postEvent:(id)event sender:(id)sender
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(AETestDriver *)self testStateProvider];
-  v8 = [v7 testIsRunning];
+  eventCopy = event;
+  senderCopy = sender;
+  testStateProvider = [(AETestDriver *)self testStateProvider];
+  testIsRunning = [testStateProvider testIsRunning];
 
-  if (v8)
+  if (testIsRunning)
   {
     v9 = +[NSNotificationCenter defaultCenter];
-    [v9 postNotificationName:v10 object:v6];
+    [v9 postNotificationName:eventCopy object:senderCopy];
   }
 }
 
-+ (id)getBookKeyWithBook:(id)a3 style:(id)a4 geometry:(id)a5
++ (id)getBookKeyWithBook:(id)book style:(id)style geometry:(id)geometry
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = +[UIScreen mainScreen];
-  [(__CFString *)v12 bounds];
+  bookCopy = book;
+  styleCopy = style;
+  geometryCopy = geometry;
+  bookBundlePath2 = +[UIScreen mainScreen];
+  [(__CFString *)bookBundlePath2 bounds];
   v14 = v13;
   v16 = v15;
 
   v93[0] = @"style";
-  v17 = &_s13BookAnalytics9UtilitiesC29cellularRadioAccessTechnologyAA08CellularefG0OyFZTj_ptr;
-  if (v10)
+  bookBundlePath = &_s13BookAnalytics9UtilitiesC29cellularRadioAccessTechnologyAA08CellularefG0OyFZTj_ptr;
+  if (styleCopy)
   {
     v91[0] = @"fontFamily";
-    v18 = [v10 fontFamily];
-    v82 = v18 != 0;
-    v74 = v18;
-    if (v18)
+    fontFamily = [styleCopy fontFamily];
+    v82 = fontFamily != 0;
+    v74 = fontFamily;
+    if (fontFamily)
     {
-      v19 = [v10 fontFamily];
+      fontFamily2 = [styleCopy fontFamily];
     }
 
     else
     {
-      v19 = &stru_1E7188;
+      fontFamily2 = &stru_1E7188;
     }
 
-    v53 = v19;
-    v92[0] = v19;
+    v53 = fontFamily2;
+    v92[0] = fontFamily2;
     v91[1] = @"lineHeight";
-    [v10 lineHeight];
+    [styleCopy lineHeight];
     v73 = [NSNumber numberWithFloat:?];
     v92[1] = v73;
     v91[2] = @"fontSize";
-    [v10 fontSize];
+    [styleCopy fontSize];
     v72 = [NSNumber numberWithFloat:?];
     v92[2] = v72;
     v91[3] = @"autoHyphenate";
-    v71 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 autoHyphenate]);
+    v71 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [styleCopy autoHyphenate]);
     v92[3] = v71;
     v91[4] = @"optimizeLegibility";
-    v70 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 optimizeLegibility]);
+    v70 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [styleCopy optimizeLegibility]);
     v92[4] = v70;
     v91[5] = @"justification";
-    v12 = NSNumber;
-    v69 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 justification]);
+    bookBundlePath2 = NSNumber;
+    v69 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [styleCopy justification]);
     v92[5] = v69;
     v20 = [NSDictionary dictionaryWithObjects:v92 forKeys:v91 count:6];
   }
@@ -119,15 +119,15 @@
   v76 = v20;
   v94[0] = v20;
   v93[1] = @"geometry";
-  if (v11)
+  if (geometryCopy)
   {
     v89[0] = @"webViewSize";
     v87[0] = @"width";
-    [v11 layoutSize];
+    [geometryCopy layoutSize];
     v68 = [NSNumber numberWithDouble:?];
     v87[1] = @"height";
     v88[0] = v68;
-    [v11 layoutSize];
+    [geometryCopy layoutSize];
     v67 = [NSNumber numberWithDouble:v21];
     v88[1] = v67;
     v66 = [NSDictionary dictionaryWithObjects:v88 forKeys:v87 count:2];
@@ -142,17 +142,17 @@
     v63 = [NSDictionary dictionaryWithObjects:v86 forKeys:v85 count:2];
     v90[1] = v63;
     v89[2] = @"isLandscape";
-    [v11 layoutSize];
+    [geometryCopy layoutSize];
     v23 = v22;
-    [v11 layoutSize];
+    [geometryCopy layoutSize];
     v62 = [NSNumber numberWithInt:v23 > v24];
     v90[2] = v62;
     v89[3] = @"hasSpreadPages";
-    v61 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 hasSpreadPages]);
+    v61 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [geometryCopy hasSpreadPages]);
     v90[3] = v61;
     v89[4] = @"gutterWidth";
-    v12 = NSNumber;
-    [v11 gutterWidth];
+    bookBundlePath2 = NSNumber;
+    [geometryCopy gutterWidth];
     v60 = [NSNumber numberWithDouble:?];
     v90[4] = v60;
     v25 = [NSDictionary dictionaryWithObjects:v90 forKeys:v89 count:5];
@@ -166,155 +166,155 @@
   v75 = v25;
   v94[1] = v25;
   v93[2] = @"info";
-  if (v9)
+  if (bookCopy)
   {
     v83[0] = @"bookEpubId";
-    v26 = [v9 bookEpubId];
-    v81 = v26 != 0;
-    v59 = v26;
-    if (v26)
+    bookEpubId = [bookCopy bookEpubId];
+    v81 = bookEpubId != 0;
+    v59 = bookEpubId;
+    if (bookEpubId)
     {
-      v27 = [v9 bookEpubId];
+      bookEpubId2 = [bookCopy bookEpubId];
     }
 
     else
     {
-      v27 = &stru_1E7188;
+      bookEpubId2 = &stru_1E7188;
     }
 
-    v52 = v27;
-    v84[0] = v27;
+    v52 = bookEpubId2;
+    v84[0] = bookEpubId2;
     v83[1] = @"bookAuthor";
-    v31 = [v9 bookAuthor];
-    HIDWORD(v80) = v31 != 0;
-    v58 = v31;
-    if (v31)
+    bookAuthor = [bookCopy bookAuthor];
+    HIDWORD(v80) = bookAuthor != 0;
+    v58 = bookAuthor;
+    if (bookAuthor)
     {
-      v32 = [v9 bookAuthor];
+      bookAuthor2 = [bookCopy bookAuthor];
     }
 
     else
     {
-      v32 = &stru_1E7188;
+      bookAuthor2 = &stru_1E7188;
     }
 
-    v51 = v32;
-    v84[1] = v32;
+    v51 = bookAuthor2;
+    v84[1] = bookAuthor2;
     v83[2] = @"bookTitle";
-    v33 = [v9 bookTitle];
-    LODWORD(v80) = v33 != 0;
-    v57 = v33;
-    if (v33)
+    bookTitle = [bookCopy bookTitle];
+    LODWORD(v80) = bookTitle != 0;
+    v57 = bookTitle;
+    if (bookTitle)
     {
-      v34 = [v9 bookTitle];
+      bookTitle2 = [bookCopy bookTitle];
     }
 
     else
     {
-      v34 = &stru_1E7188;
+      bookTitle2 = &stru_1E7188;
     }
 
-    v50 = v34;
-    v84[2] = v34;
+    v50 = bookTitle2;
+    v84[2] = bookTitle2;
     v83[3] = @"bookLanguage";
-    v35 = [v9 bookLanguage];
-    HIDWORD(v79) = v35 != 0;
-    v56 = v35;
-    if (v35)
+    bookLanguage = [bookCopy bookLanguage];
+    HIDWORD(v79) = bookLanguage != 0;
+    v56 = bookLanguage;
+    if (bookLanguage)
     {
-      v36 = [v9 bookLanguage];
+      bookLanguage2 = [bookCopy bookLanguage];
     }
 
     else
     {
-      v36 = &stru_1E7188;
+      bookLanguage2 = &stru_1E7188;
     }
 
-    v49 = v36;
-    v84[3] = v36;
+    v49 = bookLanguage2;
+    v84[3] = bookLanguage2;
     v83[4] = @"shortBookTitle";
-    v37 = [v9 shortBookTitle];
-    LODWORD(v79) = v37 != 0;
-    v55 = v37;
-    if (v37)
+    shortBookTitle = [bookCopy shortBookTitle];
+    LODWORD(v79) = shortBookTitle != 0;
+    v55 = shortBookTitle;
+    if (shortBookTitle)
     {
-      v38 = [v9 shortBookTitle];
+      shortBookTitle2 = [bookCopy shortBookTitle];
     }
 
     else
     {
-      v38 = &stru_1E7188;
+      shortBookTitle2 = &stru_1E7188;
     }
 
-    v48 = v38;
-    v84[4] = v38;
+    v48 = shortBookTitle2;
+    v84[4] = shortBookTitle2;
     v83[5] = @"publisherName";
-    v39 = [v9 publisherName];
-    HIDWORD(v78) = v39 != 0;
-    v54 = v39;
-    if (v39)
+    publisherName = [bookCopy publisherName];
+    HIDWORD(v78) = publisherName != 0;
+    v54 = publisherName;
+    if (publisherName)
     {
-      v40 = [v9 publisherName];
+      publisherName2 = [bookCopy publisherName];
     }
 
     else
     {
-      v40 = &stru_1E7188;
+      publisherName2 = &stru_1E7188;
     }
 
-    v47 = v40;
-    v84[5] = v40;
+    v47 = publisherName2;
+    v84[5] = publisherName2;
     v83[6] = @"publisherLocation";
-    v5 = [v9 publisherLocation];
-    LODWORD(v78) = v5 != 0;
-    if (v5)
+    publisherLocation = [bookCopy publisherLocation];
+    LODWORD(v78) = publisherLocation != 0;
+    if (publisherLocation)
     {
-      v41 = [v9 publisherLocation];
+      publisherLocation2 = [bookCopy publisherLocation];
     }
 
     else
     {
-      v41 = &stru_1E7188;
+      publisherLocation2 = &stru_1E7188;
     }
 
-    v46 = v41;
-    v84[6] = v41;
+    v46 = publisherLocation2;
+    v84[6] = publisherLocation2;
     v83[7] = @"publisherYear";
-    v6 = [v9 publisherYear];
-    v77 = v6 != 0;
-    if (v6)
+    publisherYear = [bookCopy publisherYear];
+    v77 = publisherYear != 0;
+    if (publisherYear)
     {
-      v42 = [v9 publisherYear];
+      publisherYear2 = [bookCopy publisherYear];
     }
 
     else
     {
-      v42 = &stru_1E7188;
+      publisherYear2 = &stru_1E7188;
     }
 
-    v45 = v42;
-    v84[7] = v42;
+    v45 = publisherYear2;
+    v84[7] = publisherYear2;
     v83[8] = @"url";
-    v17 = [v9 bookBundlePath];
-    v29 = v17 != 0;
-    v28 = v11;
-    if (v17)
+    bookBundlePath = [bookCopy bookBundlePath];
+    v29 = bookBundlePath != 0;
+    v28 = geometryCopy;
+    if (bookBundlePath)
     {
-      v12 = [v9 bookBundlePath];
+      bookBundlePath2 = [bookCopy bookBundlePath];
     }
 
     else
     {
-      v12 = &stru_1E7188;
+      bookBundlePath2 = &stru_1E7188;
     }
 
-    v84[8] = v12;
+    v84[8] = bookBundlePath2;
     v30 = [NSDictionary dictionaryWithObjects:v84 forKeys:v83 count:9];
   }
 
   else
   {
-    v28 = v11;
+    v28 = geometryCopy;
     v81 = 0;
     v79 = 0;
     v80 = 0;
@@ -326,7 +326,7 @@
 
   v94[2] = v30;
   v43 = [NSDictionary dictionaryWithObjects:v94 forKeys:v93 count:3];
-  if (v9)
+  if (bookCopy)
   {
   }
 
@@ -334,7 +334,7 @@
   {
   }
 
-  if (v9)
+  if (bookCopy)
   {
   }
 
@@ -342,7 +342,7 @@
   {
   }
 
-  if (v9)
+  if (bookCopy)
   {
   }
 
@@ -350,7 +350,7 @@
   {
   }
 
-  if (v9)
+  if (bookCopy)
   {
   }
 
@@ -358,7 +358,7 @@
   {
   }
 
-  if (v9)
+  if (bookCopy)
   {
   }
 
@@ -366,7 +366,7 @@
   {
   }
 
-  if (v9)
+  if (bookCopy)
   {
   }
 
@@ -374,7 +374,7 @@
   {
   }
 
-  if (v9)
+  if (bookCopy)
   {
   }
 
@@ -382,7 +382,7 @@
   {
   }
 
-  if (v9)
+  if (bookCopy)
   {
   }
 
@@ -390,7 +390,7 @@
   {
   }
 
-  if (v9)
+  if (bookCopy)
   {
   }
 
@@ -398,7 +398,7 @@
   {
   }
 
-  if (v9)
+  if (bookCopy)
   {
   }
 
@@ -406,7 +406,7 @@
   {
   }
 
-  if (v10)
+  if (styleCopy)
   {
   }
 
@@ -414,22 +414,22 @@
   {
   }
 
-  if (v10)
+  if (styleCopy)
   {
   }
 
   return v43;
 }
 
-+ (void)getWebViews:(id)a3 result:(id)a4
++ (void)getWebViews:(id)views result:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 subviews];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subviews = [views subviews];
+  v7 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -441,62 +441,62 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v5 addObject:v11];
+          [resultCopy addObject:v11];
         }
 
         else
         {
-          [AETestDriver getWebViews:v11 result:v5];
+          [AETestDriver getWebViews:v11 result:resultCopy];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-+ (id)getContentViewChildren:(id)a3
++ (id)getContentViewChildren:(id)children
 {
-  v3 = a3;
+  childrenCopy = children;
   v4 = +[NSMutableArray array];
-  [AETestDriver getWebViews:v3 result:v4];
+  [AETestDriver getWebViews:childrenCopy result:v4];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_F587C;
   v7[3] = &unk_1E5D58;
-  v8 = v3;
-  v5 = v3;
+  v8 = childrenCopy;
+  v5 = childrenCopy;
   [v4 sortUsingComparator:v7];
 
   return v4;
 }
 
-+ (id)getViewSnapshot:(id)a3 parent:(id)a4
++ (id)getViewSnapshot:(id)snapshot parent:(id)parent
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 bounds];
+  parentCopy = parent;
+  snapshotCopy = snapshot;
+  [snapshotCopy bounds];
   v18.width = v7;
   v18.height = v8;
   UIGraphicsBeginImageContextWithOptions(v18, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v10 = [v6 layer];
-  [v10 renderInContext:CurrentContext];
+  layer = [snapshotCopy layer];
+  [layer renderInContext:CurrentContext];
 
-  [v5 bounds];
-  [v6 convertPoint:v5 fromView:?];
+  [parentCopy bounds];
+  [snapshotCopy convertPoint:parentCopy fromView:?];
   v12 = v11;
   v14 = v13;
 
@@ -507,36 +507,36 @@
   return v15;
 }
 
-- (void)paginationControllerFinishedWebkitRendering:(id)a3 renderTree:(id)a4 pageCount:(unint64_t)a5
+- (void)paginationControllerFinishedWebkitRendering:(id)rendering renderTree:(id)tree pageCount:(unint64_t)count
 {
   layoutDelegate = self->_layoutDelegate;
   if (layoutDelegate)
   {
-    [(AELayoutTestDelegate *)layoutDelegate paginationControllerFinishedWebkitRendering:a3 renderTree:a4 pageCount:a5];
+    [(AELayoutTestDelegate *)layoutDelegate paginationControllerFinishedWebkitRendering:rendering renderTree:tree pageCount:count];
   }
 }
 
-- (void)paginationControllerFinishedBookPagination:(id)a3
+- (void)paginationControllerFinishedBookPagination:(id)pagination
 {
   layoutDelegate = self->_layoutDelegate;
   if (layoutDelegate)
   {
-    [(AELayoutTestDelegate *)layoutDelegate paginationControllerFinishedBookPagination:a3];
+    [(AELayoutTestDelegate *)layoutDelegate paginationControllerFinishedBookPagination:pagination];
   }
 }
 
-- (void)presentationControllerFinishedWebkitRendering:(id)a3 renderTree:(id)a4 pageCount:(unint64_t)a5
+- (void)presentationControllerFinishedWebkitRendering:(id)rendering renderTree:(id)tree pageCount:(unint64_t)count
 {
   layoutDelegate = self->_layoutDelegate;
   if (layoutDelegate)
   {
-    [(AELayoutTestDelegate *)layoutDelegate presentationControllerFinishedWebkitRendering:a3 renderTree:a4 pageCount:a5];
+    [(AELayoutTestDelegate *)layoutDelegate presentationControllerFinishedWebkitRendering:rendering renderTree:tree pageCount:count];
   }
 }
 
-- (void)bookViewDidAppear:(id)a3
+- (void)bookViewDidAppear:(id)appear
 {
-  v6 = a3;
+  appearCopy = appear;
   if (self->_delegate)
   {
     objc_opt_class();
@@ -547,13 +547,13 @@
   eventDispatcher = self->_eventDispatcher;
   if (eventDispatcher)
   {
-    [(AETestDriverEventDispatcher *)eventDispatcher notifyBookController:v6];
+    [(AETestDriverEventDispatcher *)eventDispatcher notifyBookController:appearCopy];
   }
 }
 
-- (void)bookViewWillDisappear:(id)a3
+- (void)bookViewWillDisappear:(id)disappear
 {
-  v6 = a3;
+  disappearCopy = disappear;
   if (self->_delegate)
   {
     objc_opt_class();

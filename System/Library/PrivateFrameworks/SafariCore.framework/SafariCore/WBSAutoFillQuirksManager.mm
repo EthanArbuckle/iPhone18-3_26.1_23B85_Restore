@@ -1,9 +1,9 @@
 @interface WBSAutoFillQuirksManager
-- (BOOL)_isURL:(id)a3 containedInQuirks:(id)a4;
-- (BOOL)arePasskeysDisallowedForRelyingParty:(id)a3;
-- (BOOL)isDomainKnownToAskForCredentialsForOtherServicesWhenEmbeddedAsThirdParty:(id)a3;
-- (BOOL)isDomainKnownToDoSameDocumentNavigationInTextEditingCallback:(id)a3;
-- (BOOL)shouldUseFallbackUIForRelyingParty:(id)a3;
+- (BOOL)_isURL:(id)l containedInQuirks:(id)quirks;
+- (BOOL)arePasskeysDisallowedForRelyingParty:(id)party;
+- (BOOL)isDomainKnownToAskForCredentialsForOtherServicesWhenEmbeddedAsThirdParty:(id)party;
+- (BOOL)isDomainKnownToDoSameDocumentNavigationInTextEditingCallback:(id)callback;
+- (BOOL)shouldUseFallbackUIForRelyingParty:(id)party;
 - (WBSAppIDsToDomainsAssociationManager)appToWebsiteAssociationManager;
 - (WBSAutoFillAssociatedDomainsManager)associatedDomainsManager;
 - (WBSChangePasswordURLManager)changePasswordURLManager;
@@ -16,46 +16,46 @@
 - (id)_domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServicesFromCurrentSnapshot;
 - (id)_domainsToConsiderIdenticalFromCurrentSnapshot;
 - (id)_domainsWithAssociatedCredentialsFromCurrentSnapshot;
-- (id)_initWithBuiltInQuirksURL:(id)a3 downloadsDirectoryURL:(id)a4 resourceName:(id)a5 resourceVersion:(id)a6 updateDateDefaultsKey:(id)a7 updateInterval:(double)a8 isForTesting:(BOOL)a9;
+- (id)_initWithBuiltInQuirksURL:(id)l downloadsDirectoryURL:(id)rL resourceName:(id)name resourceVersion:(id)version updateDateDefaultsKey:(id)key updateInterval:(double)interval isForTesting:(BOOL)testing;
 - (id)_passwordRequirementsByDomainFromCurrentSnapshot;
-- (id)_urlFromRelyingParty:(id)a3;
+- (id)_urlFromRelyingParty:(id)party;
 - (id)domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices;
 - (void)_sendDidDownloadNewDataNotification;
-- (void)didDownloadDataForRemotelyUpdatableDataController:(id)a3;
+- (void)didDownloadDataForRemotelyUpdatableDataController:(id)controller;
 @end
 
 @implementation WBSAutoFillQuirksManager
 
-- (id)_initWithBuiltInQuirksURL:(id)a3 downloadsDirectoryURL:(id)a4 resourceName:(id)a5 resourceVersion:(id)a6 updateDateDefaultsKey:(id)a7 updateInterval:(double)a8 isForTesting:(BOOL)a9
+- (id)_initWithBuiltInQuirksURL:(id)l downloadsDirectoryURL:(id)rL resourceName:(id)name resourceVersion:(id)version updateDateDefaultsKey:(id)key updateInterval:(double)interval isForTesting:(BOOL)testing
 {
-  v9 = a9;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  testingCopy = testing;
+  lCopy = l;
+  rLCopy = rL;
+  nameCopy = name;
+  versionCopy = version;
+  keyCopy = key;
   v29.receiver = self;
   v29.super_class = WBSAutoFillQuirksManager;
   v21 = [(WBSAutoFillQuirksManager *)&v29 init];
   p_isa = &v21->super.isa;
   if (v21)
   {
-    if (v9)
+    if (testingCopy)
     {
-      v21->_isForTesting = v9;
+      v21->_isForTesting = testingCopy;
     }
 
     else
     {
       v23 = [WBSRemotelyUpdatableDataController alloc];
       v24 = objc_opt_class();
-      v25 = [(WBSRemotelyUpdatableDataController *)v23 initWithDataFormat:0 builtInListURL:v16 downloadsDirectoryURL:v17 resourceName:v18 resourceVersion:v19 updateDateDefaultsKey:v20 updateInterval:a8 snapshotClass:v24 snapshotTransformerClass:objc_opt_class()];
+      v25 = [(WBSRemotelyUpdatableDataController *)v23 initWithDataFormat:0 builtInListURL:lCopy downloadsDirectoryURL:rLCopy resourceName:nameCopy resourceVersion:versionCopy updateDateDefaultsKey:keyCopy updateInterval:interval snapshotClass:v24 snapshotTransformerClass:objc_opt_class()];
       v26 = p_isa[3];
       p_isa[3] = v25;
 
       [p_isa[3] setShouldKeepBuiltInSnapshotLoaded:1];
       [p_isa[3] setDelegate:p_isa];
-      if (a8 != 0.0)
+      if (interval != 0.0)
       {
         [p_isa[3] setShouldAttemptToUpdateConfiguration:1];
       }
@@ -75,8 +75,8 @@
   if (!passwordGenerationManager)
   {
     v4 = [WBSPasswordGenerationManager alloc];
-    v5 = [(WBSAutoFillQuirksManager *)self _passwordRequirementsByDomainFromCurrentSnapshot];
-    v6 = [(WBSPasswordGenerationManager *)v4 initWithPasswordRequirementsByDomain:v5];
+    _passwordRequirementsByDomainFromCurrentSnapshot = [(WBSAutoFillQuirksManager *)self _passwordRequirementsByDomainFromCurrentSnapshot];
+    v6 = [(WBSPasswordGenerationManager *)v4 initWithPasswordRequirementsByDomain:_passwordRequirementsByDomainFromCurrentSnapshot];
     v7 = self->_passwordGenerationManager;
     self->_passwordGenerationManager = v6;
 
@@ -94,9 +94,9 @@
   if (!associatedDomainsManager)
   {
     v4 = [WBSAutoFillAssociatedDomainsManager alloc];
-    v5 = [(WBSAutoFillQuirksManager *)self _domainsWithAssociatedCredentialsFromCurrentSnapshot];
-    v6 = [(WBSAutoFillQuirksManager *)self _domainsToConsiderIdenticalFromCurrentSnapshot];
-    v7 = [(WBSAutoFillAssociatedDomainsManager *)v4 initWithDomainsWithAssociatedCredentials:v5 domainsToConsiderIdentical:v6];
+    _domainsWithAssociatedCredentialsFromCurrentSnapshot = [(WBSAutoFillQuirksManager *)self _domainsWithAssociatedCredentialsFromCurrentSnapshot];
+    _domainsToConsiderIdenticalFromCurrentSnapshot = [(WBSAutoFillQuirksManager *)self _domainsToConsiderIdenticalFromCurrentSnapshot];
+    v7 = [(WBSAutoFillAssociatedDomainsManager *)v4 initWithDomainsWithAssociatedCredentials:_domainsWithAssociatedCredentialsFromCurrentSnapshot domainsToConsiderIdentical:_domainsToConsiderIdenticalFromCurrentSnapshot];
     v8 = self->_associatedDomainsManager;
     self->_associatedDomainsManager = v7;
 
@@ -114,8 +114,8 @@
   if (!passwordAuditingEligibleDomainsManager)
   {
     v4 = [WBSPasswordAuditingEligibleDomainsManager alloc];
-    v5 = [(WBSAutoFillQuirksManager *)self _domainsIneligibleForPasswordAuditingFromCurrentSnapshot];
-    v6 = [(WBSPasswordAuditingEligibleDomainsManager *)v4 initWithDomainsIneligibleForPasswordAuditing:v5];
+    _domainsIneligibleForPasswordAuditingFromCurrentSnapshot = [(WBSAutoFillQuirksManager *)self _domainsIneligibleForPasswordAuditingFromCurrentSnapshot];
+    v6 = [(WBSPasswordAuditingEligibleDomainsManager *)v4 initWithDomainsIneligibleForPasswordAuditing:_domainsIneligibleForPasswordAuditingFromCurrentSnapshot];
     v7 = self->_passwordAuditingEligibleDomainsManager;
     self->_passwordAuditingEligibleDomainsManager = v6;
 
@@ -133,8 +133,8 @@
   if (!changePasswordURLManager)
   {
     v4 = [WBSChangePasswordURLManager alloc];
-    v5 = [(WBSAutoFillQuirksManager *)self _changePasswordURLStringsFromCurrentSnapshot];
-    v6 = [(WBSChangePasswordURLManager *)v4 initWithChangePasswordURLStrings:v5];
+    _changePasswordURLStringsFromCurrentSnapshot = [(WBSAutoFillQuirksManager *)self _changePasswordURLStringsFromCurrentSnapshot];
+    v6 = [(WBSChangePasswordURLManager *)v4 initWithChangePasswordURLStrings:_changePasswordURLStringsFromCurrentSnapshot];
     v7 = self->_changePasswordURLManager;
     self->_changePasswordURLManager = v6;
 
@@ -152,8 +152,8 @@
   if (!appToWebsiteAssociationManager)
   {
     v4 = [WBSAppIDsToDomainsAssociationManager alloc];
-    v5 = [(WBSAutoFillQuirksManager *)self _appIDsToDomainsAssociationsFromCurrentSnapshot];
-    v6 = [(WBSAppIDsToDomainsAssociationManager *)v4 initWithAppIDsToDomains:v5];
+    _appIDsToDomainsAssociationsFromCurrentSnapshot = [(WBSAutoFillQuirksManager *)self _appIDsToDomainsAssociationsFromCurrentSnapshot];
+    v6 = [(WBSAppIDsToDomainsAssociationManager *)v4 initWithAppIDsToDomains:_appIDsToDomainsAssociationsFromCurrentSnapshot];
     v7 = self->_appToWebsiteAssociationManager;
     self->_appToWebsiteAssociationManager = v6;
 
@@ -222,9 +222,9 @@ void __67__WBSAutoFillQuirksManager_knownWebBrowsersAndExtensionStorefronts__blo
   domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices = self->_domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices;
   if (!domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices)
   {
-    v4 = [(WBSAutoFillQuirksManager *)self _domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServicesFromCurrentSnapshot];
+    _domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServicesFromCurrentSnapshot = [(WBSAutoFillQuirksManager *)self _domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServicesFromCurrentSnapshot];
     v5 = self->_domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices;
-    self->_domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices = v4;
+    self->_domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices = _domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServicesFromCurrentSnapshot;
 
     domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices = self->_domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices;
   }
@@ -234,7 +234,7 @@ void __67__WBSAutoFillQuirksManager_knownWebBrowsersAndExtensionStorefronts__blo
   return v6;
 }
 
-- (void)didDownloadDataForRemotelyUpdatableDataController:(id)a3
+- (void)didDownloadDataForRemotelyUpdatableDataController:(id)controller
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -276,8 +276,8 @@ uint64_t __78__WBSAutoFillQuirksManager_didDownloadDataForRemotelyUpdatableDataC
 
 - (void)_sendDidDownloadNewDataNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"WBSAutoFillQuirksManagerDidDownloadNewQuirks" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSAutoFillQuirksManagerDidDownloadNewQuirks" object:self];
 }
 
 - (id)_passwordRequirementsByDomainFromCurrentSnapshot
@@ -504,9 +504,9 @@ void __114__WBSAutoFillQuirksManager__domainsThatWhenEmbeddedAsThirdPartyAskForP
   }
 }
 
-- (BOOL)arePasskeysDisallowedForRelyingParty:(id)a3
+- (BOOL)arePasskeysDisallowedForRelyingParty:(id)party
 {
-  v4 = [(WBSAutoFillQuirksManager *)self _urlFromRelyingParty:a3];
+  v4 = [(WBSAutoFillQuirksManager *)self _urlFromRelyingParty:party];
   if (v4)
   {
     v5 = [(WBSAutoFillQuirksManager *)self _isURL:v4 containedInQuirks:&__block_literal_global_20];
@@ -520,9 +520,9 @@ void __114__WBSAutoFillQuirksManager__domainsThatWhenEmbeddedAsThirdPartyAskForP
   return v5;
 }
 
-- (BOOL)shouldUseFallbackUIForRelyingParty:(id)a3
+- (BOOL)shouldUseFallbackUIForRelyingParty:(id)party
 {
-  v4 = [(WBSAutoFillQuirksManager *)self _urlFromRelyingParty:a3];
+  v4 = [(WBSAutoFillQuirksManager *)self _urlFromRelyingParty:party];
   if (v4)
   {
     v5 = [(WBSAutoFillQuirksManager *)self _isURL:v4 containedInQuirks:&__block_literal_global_22];
@@ -536,9 +536,9 @@ void __114__WBSAutoFillQuirksManager__domainsThatWhenEmbeddedAsThirdPartyAskForP
   return v5;
 }
 
-- (BOOL)isDomainKnownToAskForCredentialsForOtherServicesWhenEmbeddedAsThirdParty:(id)a3
+- (BOOL)isDomainKnownToAskForCredentialsForOtherServicesWhenEmbeddedAsThirdParty:(id)party
 {
-  v4 = [(WBSAutoFillQuirksManager *)self _urlFromRelyingParty:a3];
+  v4 = [(WBSAutoFillQuirksManager *)self _urlFromRelyingParty:party];
   if (v4)
   {
     v5 = [(WBSAutoFillQuirksManager *)self _isURL:v4 containedInQuirks:&__block_literal_global_24];
@@ -552,9 +552,9 @@ void __114__WBSAutoFillQuirksManager__domainsThatWhenEmbeddedAsThirdPartyAskForP
   return v5;
 }
 
-- (BOOL)isDomainKnownToDoSameDocumentNavigationInTextEditingCallback:(id)a3
+- (BOOL)isDomainKnownToDoSameDocumentNavigationInTextEditingCallback:(id)callback
 {
-  v4 = [(WBSAutoFillQuirksManager *)self _urlFromRelyingParty:a3];
+  v4 = [(WBSAutoFillQuirksManager *)self _urlFromRelyingParty:callback];
   if (v4)
   {
     v5 = [(WBSAutoFillQuirksManager *)self _isURL:v4 containedInQuirks:&__block_literal_global_26];
@@ -568,27 +568,27 @@ void __114__WBSAutoFillQuirksManager__domainsThatWhenEmbeddedAsThirdPartyAskForP
   return v5;
 }
 
-- (BOOL)_isURL:(id)a3 containedInQuirks:(id)a4
+- (BOOL)_isURL:(id)l containedInQuirks:(id)quirks
 {
-  v6 = a3;
-  v7 = [(WBSRemotelyUpdatableDataController *)self->_remotelyUpdatableDataController fetchDataFromRemotelyLoadedSnapshotFallingBackToBuiltInSnapshot:a4];
+  lCopy = l;
+  v7 = [(WBSRemotelyUpdatableDataController *)self->_remotelyUpdatableDataController fetchDataFromRemotelyLoadedSnapshotFallingBackToBuiltInSnapshot:quirks];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__WBSAutoFillQuirksManager__isURL_containedInQuirks___block_invoke;
   v10[3] = &unk_1E7CF1818;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(v6) = [v7 safari_containsObjectPassingTest:v10];
+  v11 = lCopy;
+  v8 = lCopy;
+  LOBYTE(lCopy) = [v7 safari_containsObjectPassingTest:v10];
 
-  return v6;
+  return lCopy;
 }
 
-- (id)_urlFromRelyingParty:(id)a3
+- (id)_urlFromRelyingParty:(id)party
 {
   v3 = MEMORY[0x1E696AF20];
-  v4 = a3;
+  partyCopy = party;
   v5 = objc_alloc_init(v3);
-  [v5 setHost:v4];
+  [v5 setHost:partyCopy];
 
   [v5 setScheme:@"https"];
   v6 = [v5 URL];

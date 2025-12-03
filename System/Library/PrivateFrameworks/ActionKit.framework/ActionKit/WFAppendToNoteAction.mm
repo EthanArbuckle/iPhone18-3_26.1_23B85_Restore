@@ -1,50 +1,50 @@
 @interface WFAppendToNoteAction
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
-- (id)localizedDescriptionResultWithContext:(id)a3;
-- (id)localizedDescriptionSummaryWithContext:(id)a3;
-- (id)localizedKeywordsWithContext:(id)a3;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
+- (id)localizedDescriptionResultWithContext:(id)context;
+- (id)localizedDescriptionSummaryWithContext:(id)context;
+- (id)localizedKeywordsWithContext:(id)context;
 - (id)parameterSummary;
 - (id)remoteExecuteOnPlatforms;
 - (id)serializationKeysByParameter;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
 @end
 
 @implementation WFAppendToNoteAction
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Appended Note", @"Appended Note");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-- (id)localizedKeywordsWithContext:(id)a3
+- (id)localizedKeywordsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"apple|add", @"apple|add");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   v6 = [v5 componentsSeparatedByString:@"|"];
 
   return v6;
 }
 
-- (id)localizedDescriptionResultWithContext:(id)a3
+- (id)localizedDescriptionResultWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"The updated note", @"The updated note");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-- (id)localizedDescriptionSummaryWithContext:(id)a3
+- (id)localizedDescriptionSummaryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Appends the text passed as input to the specified note.", @"Appends the text passed as input to the specified note.");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -81,21 +81,21 @@
   return v2;
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to append %2$@ to a note?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to append content to a note?");
-    [v7 localizedStringWithFormat:v9, v8, 0];
+    [v7 localizedStringWithFormat:v9, nameCopy, 0];
   }
   v10 = ;
 

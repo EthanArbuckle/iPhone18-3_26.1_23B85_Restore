@@ -1,8 +1,8 @@
 @interface ECHeaderAuthenticationResults
-+ (id)authenticationResultsForHeaders:(id)a3;
-+ (id)authenticationResultsForRawHeaders:(id)a3;
-- (ECHeaderAuthenticationResults)initWithAuthenticationServiceIdentifier:(id)a3 version:(int64_t)a4 statements:(id)a5;
-- (id)firstStatementForMethod:(id)a3;
++ (id)authenticationResultsForHeaders:(id)headers;
++ (id)authenticationResultsForRawHeaders:(id)headers;
+- (ECHeaderAuthenticationResults)initWithAuthenticationServiceIdentifier:(id)identifier version:(int64_t)version statements:(id)statements;
+- (id)firstStatementForMethod:(id)method;
 @end
 
 @implementation ECHeaderAuthenticationResults
@@ -14,49 +14,49 @@ uint64_t ___ef_log_ECHeaderAuthenticationResults_block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)authenticationResultsForHeaders:(id)a3
++ (id)authenticationResultsForHeaders:(id)headers
 {
-  v3 = [_ECHeaderAuthenticationResultsParser authenticationResultsForHeaders:a3];
+  v3 = [_ECHeaderAuthenticationResultsParser authenticationResultsForHeaders:headers];
 
   return v3;
 }
 
-+ (id)authenticationResultsForRawHeaders:(id)a3
++ (id)authenticationResultsForRawHeaders:(id)headers
 {
-  v3 = [_ECHeaderAuthenticationResultsParser authenticationResultsForRawHeaders:a3];
+  v3 = [_ECHeaderAuthenticationResultsParser authenticationResultsForRawHeaders:headers];
 
   return v3;
 }
 
-- (ECHeaderAuthenticationResults)initWithAuthenticationServiceIdentifier:(id)a3 version:(int64_t)a4 statements:(id)a5
+- (ECHeaderAuthenticationResults)initWithAuthenticationServiceIdentifier:(id)identifier version:(int64_t)version statements:(id)statements
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  statementsCopy = statements;
   v14.receiver = self;
   v14.super_class = ECHeaderAuthenticationResults;
   v11 = [(ECHeaderAuthenticationResults *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_authenticationServiceIdentifier, a3);
-    v12->_version = a4;
-    objc_storeStrong(&v12->_statements, a5);
+    objc_storeStrong(&v11->_authenticationServiceIdentifier, identifier);
+    v12->_version = version;
+    objc_storeStrong(&v12->_statements, statements);
   }
 
   return v12;
 }
 
-- (id)firstStatementForMethod:(id)a3
+- (id)firstStatementForMethod:(id)method
 {
-  v4 = a3;
-  v5 = [(ECHeaderAuthenticationResults *)self statements];
+  methodCopy = method;
+  statements = [(ECHeaderAuthenticationResults *)self statements];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__ECHeaderAuthenticationResults_firstStatementForMethod___block_invoke;
   v9[3] = &unk_27874BAB8;
-  v6 = v4;
+  v6 = methodCopy;
   v10 = v6;
-  v7 = [v5 ef_firstObjectPassingTest:v9];
+  v7 = [statements ef_firstObjectPassingTest:v9];
 
   return v7;
 }

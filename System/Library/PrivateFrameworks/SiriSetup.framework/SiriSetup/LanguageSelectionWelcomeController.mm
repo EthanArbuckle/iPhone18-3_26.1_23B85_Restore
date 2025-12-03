@@ -1,26 +1,26 @@
 @interface LanguageSelectionWelcomeController
-- (_TtC9SiriSetup34LanguageSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC9SiriSetup34LanguageSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)continueTappedWithSender:(id)a3;
+- (_TtC9SiriSetup34LanguageSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC9SiriSetup34LanguageSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)continueTappedWithSender:(id)sender;
 @end
 
 @implementation LanguageSelectionWelcomeController
 
-- (void)continueTappedWithSender:(id)a3
+- (void)continueTappedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_269041DD4(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_269041DD4(senderCopy);
 }
 
-- (_TtC9SiriSetup34LanguageSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC9SiriSetup34LanguageSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SiriSetup34LanguageSelectionWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC9SiriSetup34LanguageSelectionWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,11 +1,11 @@
 @interface MDElementAndFED
-- (MDElementAndFED)initWithElement:(id)a3 fed:(id)a4;
+- (MDElementAndFED)initWithElement:(id)element fed:(id)fed;
 - (void)dealloc;
 @end
 
 @implementation MDElementAndFED
 
-- (MDElementAndFED)initWithElement:(id)a3 fed:(id)a4
+- (MDElementAndFED)initWithElement:(id)element fed:(id)fed
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -13,8 +13,8 @@
   v6 = [(MDElementAndFED *)&v9 init];
   if (v6)
   {
-    v6->_element = a3;
-    v6->_fed = a4;
+    v6->_element = element;
+    v6->_fed = fed;
   }
 
   v7 = *MEMORY[0x1E69E9840];

@@ -1,21 +1,21 @@
 @interface PGRelationshipWeekendAnalyzer
-- (PGRelationshipWeekendAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipWeekendAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipWeekendAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = 0.0;
   if (!v4 || (v6 = CFAbsoluteTimeGetCurrent(), v6 < 0.01))
   {
 LABEL_7:
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v8 = [WeakRetained graph];
-    v9 = [v8 anyNodeForLabel:@"Weekend" domain:400 properties:0];
+    graph = [WeakRetained graph];
+    v9 = [graph anyNodeForLabel:@"Weekend" domain:400 properties:0];
 
     if (!v9)
     {
@@ -42,18 +42,18 @@ LABEL_7:
       goto LABEL_42;
     }
 
-    v10 = [v9 edgesCount];
-    v11 = [v9 collection];
-    v12 = [v11 momentNodes];
+    edgesCount = [v9 edgesCount];
+    collection = [v9 collection];
+    momentNodes = [collection momentNodes];
 
-    v13 = [WeakRetained personNodes];
-    v14 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v12 amongPersonNodes:v13];
+    personNodes = [WeakRetained personNodes];
+    v14 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:momentNodes amongPersonNodes:personNodes];
 
     v15 = [v14 count];
     if (v15)
     {
       v16 = v15;
-      v31 = v12;
+      v31 = momentNodes;
       v32 = v9;
       v35 = 0u;
       v36 = 0u;
@@ -78,11 +78,11 @@ LABEL_7:
             }
 
             v24 = *(*(&v33 + 1) + 8 * i);
-            v25 = [v24 localIdentifier];
-            v26 = [WeakRetained relationshipAnalyzerPropertiesForPersonLocalIdentifier:v25];
+            localIdentifier = [v24 localIdentifier];
+            v26 = [WeakRetained relationshipAnalyzerPropertiesForPersonLocalIdentifier:localIdentifier];
             if (v26)
             {
-              [v26 registerNumberOfWeekendMoments:objc_msgSend(v17 amongWeekends:{"countForObject:", v24), v10}];
+              [v26 registerNumberOfWeekendMoments:objc_msgSend(v17 amongWeekends:{"countForObject:", v24), edgesCount}];
             }
 
             if (v4)
@@ -103,7 +103,7 @@ LABEL_7:
                     _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
                   }
 
-                  v12 = v31;
+                  momentNodes = v31;
                   v9 = v32;
                   v14 = v30;
                   goto LABEL_41;
@@ -126,7 +126,7 @@ LABEL_7:
         }
       }
 
-      v12 = v31;
+      momentNodes = v31;
       v9 = v32;
       v14 = v30;
       if (!v4)
@@ -208,16 +208,16 @@ LABEL_43:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (PGRelationshipWeekendAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipWeekendAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipWeekendAnalyzer;
   v5 = [(PGRelationshipWeekendAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

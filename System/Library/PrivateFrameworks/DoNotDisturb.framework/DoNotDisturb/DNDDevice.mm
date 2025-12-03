@@ -1,8 +1,8 @@
 @interface DNDDevice
 + (id)currentDevice;
-+ (id)deviceWithClass:(unint64_t)a3 deviceCapabilities:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (DNDDevice)initWithClass:(unint64_t)a3 deviceCapabilities:(unint64_t)a4 frameworkVersion:(id *)a5;
++ (id)deviceWithClass:(unint64_t)class deviceCapabilities:(unint64_t)capabilities;
+- (BOOL)isEqual:(id)equal;
+- (DNDDevice)initWithClass:(unint64_t)class deviceCapabilities:(unint64_t)capabilities frameworkVersion:(id *)version;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __26__DNDDevice_currentDevice__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentDevice_onceToken != -1)
   {
     dispatch_once(&currentDevice_onceToken, block);
@@ -46,25 +46,25 @@ void __26__DNDDevice_currentDevice__block_invoke(uint64_t a1)
   currentDevice_device = v6;
 }
 
-+ (id)deviceWithClass:(unint64_t)a3 deviceCapabilities:(unint64_t)a4
++ (id)deviceWithClass:(unint64_t)class deviceCapabilities:(unint64_t)capabilities
 {
   memset(v6, 0, sizeof(v6));
-  v4 = [[a1 alloc] initWithClass:a3 deviceCapabilities:a4 frameworkVersion:v6];
+  v4 = [[self alloc] initWithClass:class deviceCapabilities:capabilities frameworkVersion:v6];
 
   return v4;
 }
 
-- (DNDDevice)initWithClass:(unint64_t)a3 deviceCapabilities:(unint64_t)a4 frameworkVersion:(id *)a5
+- (DNDDevice)initWithClass:(unint64_t)class deviceCapabilities:(unint64_t)capabilities frameworkVersion:(id *)version
 {
   v10.receiver = self;
   v10.super_class = DNDDevice;
   result = [(DNDDevice *)&v10 init];
   if (result)
   {
-    result->_deviceClass = a3;
-    result->_deviceCapabilities = a4;
-    v9 = *&a5->var0;
-    result->_frameworkVersion.patchVersion = a5->var2;
+    result->_deviceClass = class;
+    result->_deviceCapabilities = capabilities;
+    v9 = *&version->var0;
+    result->_frameworkVersion.patchVersion = version->var2;
     *&result->_frameworkVersion.majorVersion = v9;
   }
 
@@ -73,8 +73,8 @@ void __26__DNDDevice_currentDevice__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [(DNDDevice *)self deviceClass];
-  v4 = [(DNDDevice *)self deviceCapabilities]^ v3;
+  deviceClass = [(DNDDevice *)self deviceClass];
+  v4 = [(DNDDevice *)self deviceCapabilities]^ deviceClass;
   [(DNDDevice *)self frameworkVersion];
   v5 = DNDStringFromOperatingSystemVersion(v8);
   v6 = [v5 hash];
@@ -82,10 +82,10 @@ void __26__DNDDevice_currentDevice__block_invoke(uint64_t a1)
   return v4 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -95,9 +95,9 @@ void __26__DNDDevice_currentDevice__block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDDevice *)self deviceClass];
-      if (v6 == [(DNDDevice *)v5 deviceClass]&& (v7 = [(DNDDevice *)self deviceCapabilities], v7 == [(DNDDevice *)v5 deviceCapabilities]))
+      v5 = equalCopy;
+      deviceClass = [(DNDDevice *)self deviceClass];
+      if (deviceClass == [(DNDDevice *)v5 deviceClass]&& (v7 = [(DNDDevice *)self deviceCapabilities], v7 == [(DNDDevice *)v5 deviceCapabilities]))
       {
         [(DNDDevice *)self frameworkVersion];
         v8 = DNDStringFromOperatingSystemVersion(&v16);

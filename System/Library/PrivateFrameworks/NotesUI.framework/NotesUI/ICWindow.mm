@@ -1,81 +1,81 @@
 @interface ICWindow
 - (BOOL)accessibilityElementsHidden;
-- (ICWindow)initWithWindowScene:(id)a3 behavior:(int64_t)a4;
+- (ICWindow)initWithWindowScene:(id)scene behavior:(int64_t)behavior;
 - (UIViewController)ic_topmostPresentedViewController;
-- (void)setBehavior:(int64_t)a3;
-- (void)setRootViewController:(id)a3;
+- (void)setBehavior:(int64_t)behavior;
+- (void)setRootViewController:(id)controller;
 @end
 
 @implementation ICWindow
 
-- (ICWindow)initWithWindowScene:(id)a3 behavior:(int64_t)a4
+- (ICWindow)initWithWindowScene:(id)scene behavior:(int64_t)behavior
 {
   v8.receiver = self;
   v8.super_class = ICWindow;
-  v5 = [(ICWindow *)&v8 initWithWindowScene:a3];
+  v5 = [(ICWindow *)&v8 initWithWindowScene:scene];
   v6 = v5;
   if (v5)
   {
-    [(ICWindow *)v5 setBehavior:a4];
+    [(ICWindow *)v5 setBehavior:behavior];
   }
 
   return v6;
 }
 
-- (void)setBehavior:(int64_t)a3
+- (void)setBehavior:(int64_t)behavior
 {
-  self->_behavior = a3;
-  if ((a3 - 2) >= 2)
+  self->_behavior = behavior;
+  if ((behavior - 2) >= 2)
   {
-    if (a3 == 1)
+    if (behavior == 1)
     {
-      v6 = [MEMORY[0x1E69DC888] systemOrangeColor];
-      [(ICWindow *)self setTintColor:v6];
+      systemOrangeColor = [MEMORY[0x1E69DC888] systemOrangeColor];
+      [(ICWindow *)self setTintColor:systemOrangeColor];
 
-      v5 = [(ICWindow *)self traitOverrides];
-      [v5 setUserInterfaceStyle:2];
+      traitOverrides = [(ICWindow *)self traitOverrides];
+      [traitOverrides setUserInterfaceStyle:2];
       goto LABEL_6;
     }
 
-    if (a3)
+    if (behavior)
     {
       goto LABEL_7;
     }
   }
 
-  v5 = [MEMORY[0x1E69DC888] ICTintColor];
-  [(ICWindow *)self setTintColor:v5];
+  traitOverrides = [MEMORY[0x1E69DC888] ICTintColor];
+  [(ICWindow *)self setTintColor:traitOverrides];
 LABEL_6:
 
 LABEL_7:
-  v7 = [(ICWindow *)self traitOverrides];
-  [v7 setNSIntegerValue:a3 forTrait:objc_opt_class()];
+  traitOverrides2 = [(ICWindow *)self traitOverrides];
+  [traitOverrides2 setNSIntegerValue:behavior forTrait:objc_opt_class()];
 }
 
 - (UIViewController)ic_topmostPresentedViewController
 {
-  v2 = [(ICWindow *)self rootViewController];
-  v3 = [v2 presentedViewController];
+  rootViewController = [(ICWindow *)self rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  v4 = [v3 presentedViewController];
-  if (v4)
+  v3PresentedViewController = [presentedViewController presentedViewController];
+  if (v3PresentedViewController)
   {
-    v5 = v4;
+    presentedViewController2 = v3PresentedViewController;
     do
     {
-      v6 = v5;
+      v6 = presentedViewController2;
 
-      v5 = [v6 presentedViewController];
+      presentedViewController2 = [v6 presentedViewController];
 
-      v3 = v6;
+      presentedViewController = v6;
     }
 
-    while (v5);
+    while (presentedViewController2);
   }
 
   else
   {
-    v6 = v3;
+    v6 = presentedViewController;
   }
 
   return v6;
@@ -85,28 +85,28 @@ LABEL_7:
 {
   v4.receiver = self;
   v4.super_class = ICWindow;
-  v2 = [(ICWindow *)&v4 accessibilityElementsHidden];
+  accessibilityElementsHidden = [(ICWindow *)&v4 accessibilityElementsHidden];
   if (([objc_opt_class() _isSecure] & 1) == 0)
   {
-    v2 |= [MEMORY[0x1E69DC938] ic_isLocked];
+    accessibilityElementsHidden |= [MEMORY[0x1E69DC938] ic_isLocked];
   }
 
-  return v2 & 1;
+  return accessibilityElementsHidden & 1;
 }
 
-- (void)setRootViewController:(id)a3
+- (void)setRootViewController:(id)controller
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICWindow *)self rootViewController];
+  controllerCopy = controller;
+  rootViewController = [(ICWindow *)self rootViewController];
   v8.receiver = self;
   v8.super_class = ICWindow;
-  [(ICWindow *)&v8 setRootViewController:v4];
+  [(ICWindow *)&v8 setRootViewController:controllerCopy];
 
-  if (v5)
+  if (rootViewController)
   {
     v9 = @"previousRootViewController";
-    v10[0] = v5;
+    v10[0] = rootViewController;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -115,8 +115,8 @@ LABEL_7:
     v6 = 0;
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"ICWindowRootViewControllerDidChange" object:self userInfo:v6];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICWindowRootViewControllerDidChange" object:self userInfo:v6];
 }
 
 @end

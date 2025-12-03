@@ -1,62 +1,62 @@
 @interface PBUIPosterWallpaperRemoteViewController
 + (BOOL)supportsLandscapeWallpaperContents;
 - (BOOL)isHomeScreenWallpaperDimmed;
-- (BOOL)removeWallpaperStyleForPriority:(int64_t)a3 forVariant:(int64_t)a4 withAnimationFactory:(id)a5;
-- (BOOL)setWallpaperStyle:(int64_t)a3 forPriority:(int64_t)a4 forVariant:(int64_t)a5 withAnimationFactory:(id)a6;
-- (BOOL)setWallpaperStyleTransitionState:(id *)a3 forPriority:(int64_t)a4 forVariant:(int64_t)a5 withAnimationFactory:(id)a6;
+- (BOOL)removeWallpaperStyleForPriority:(int64_t)priority forVariant:(int64_t)variant withAnimationFactory:(id)factory;
+- (BOOL)setWallpaperStyle:(int64_t)style forPriority:(int64_t)priority forVariant:(int64_t)variant withAnimationFactory:(id)factory;
+- (BOOL)setWallpaperStyleTransitionState:(id *)state forPriority:(int64_t)priority forVariant:(int64_t)variant withAnimationFactory:(id)factory;
 - (CGRect)preferredSalientContentRectangle;
-- (PBUIPosterWallpaperRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PBUIPosterWallpaperRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PBUIWallpaperPresentingDelegate)wallpaperPresentingDelegate;
 - (PLKLegibilityEnvironment)legibilityEnvironment;
-- (double)_wallpaperScaleForVariant:(int64_t)a3;
-- (id)_observerLock_observersForVariant:(int64_t)a3;
-- (id)_wallpaperScaleAssertionForVariant:(int64_t)a3 scale:(double)a4;
-- (id)createWallpaperFloatingViewForReason:(id)a3 ignoreReplica:(BOOL)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)legibilitySettingsForVariant:(int64_t)a3;
-- (id)newFakeBlurViewForVariant:(int64_t)a3 style:(int64_t)a4 transformOptions:(unint64_t)a5;
-- (id)requireWallpaperWithReason:(id)a3;
-- (id)setHomescreenWallpaperScale:(double)a3 withAnimationFactory:(id)a4;
-- (id)setLockscreenWallpaperScale:(double)a3 withAnimationFactory:(id)a4;
-- (id)setWallpaperFloatingLayerContainerView:(id)a3 forReason:(id)a4 withAnimationFactory:(id)a5;
+- (double)_wallpaperScaleForVariant:(int64_t)variant;
+- (id)_observerLock_observersForVariant:(int64_t)variant;
+- (id)_wallpaperScaleAssertionForVariant:(int64_t)variant scale:(double)scale;
+- (id)createWallpaperFloatingViewForReason:(id)reason ignoreReplica:(BOOL)replica;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)legibilitySettingsForVariant:(int64_t)variant;
+- (id)newFakeBlurViewForVariant:(int64_t)variant style:(int64_t)style transformOptions:(unint64_t)options;
+- (id)requireWallpaperWithReason:(id)reason;
+- (id)setHomescreenWallpaperScale:(double)scale withAnimationFactory:(id)factory;
+- (id)setLockscreenWallpaperScale:(double)scale withAnimationFactory:(id)factory;
+- (id)setWallpaperFloatingLayerContainerView:(id)view forReason:(id)reason withAnimationFactory:(id)factory;
 - (id)succinctDescription;
-- (id)suspendWallpaperAnimationForReason:(id)a3;
-- (uint64_t)updateWallpaperAnimationWithRotation:(_OWORD *)a3;
+- (id)suspendWallpaperAnimationForReason:(id)reason;
+- (uint64_t)updateWallpaperAnimationWithRotation:(_OWORD *)rotation;
 - (void)_addStateCaptureHandlers;
-- (void)_fireObserverRespondingToSelector:(SEL)a3 variant:(int64_t)a4 block:(id)a5;
+- (void)_fireObserverRespondingToSelector:(SEL)selector variant:(int64_t)variant block:(id)block;
 - (void)_fireObserversWallpaperDidChange;
 - (void)_fireObserversWallpaperWillChange;
-- (void)_legibilityUpdatedForVariants:(id)a3 notifyObservers:(BOOL)a4;
+- (void)_legibilityUpdatedForVariants:(id)variants notifyObservers:(BOOL)observers;
 - (void)_updateFallbackView;
-- (void)_updateWallpaperScaleWithAnimationFactory:(id)a3;
-- (void)addObserver:(id)a3 forVariant:(int64_t)a4;
+- (void)_updateWallpaperScaleWithAnimationFactory:(id)factory;
+- (void)addObserver:(id)observer forVariant:(int64_t)variant;
 - (void)cancelInProcessAnimations;
 - (void)dealloc;
-- (void)noteWillAnimateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)posterComponent:(id)a3 didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)a4;
-- (void)posterComponent:(id)a3 didUpdateDeviceMotionEventsRequested:(BOOL)a4;
-- (void)posterComponent:(id)a3 didUpdateDeviceMotionMode:(unint64_t)a4;
-- (void)posterComponent:(id)a3 didUpdateHideDimmingLayer:(BOOL)a4;
-- (void)posterComponent:(id)a3 didUpdateLegibilitySettings:(id)a4;
-- (void)posterComponent:(id)a3 didUpdatePreferredDeviceMotionUpdateInterval:(double)a4;
-- (void)posterComponent:(id)a3 didUpdatePreferredProminentColor:(id)a4;
-- (void)posterComponent:(id)a3 didUpdatePreferredSalientContentRectangle:(CGRect)a4;
-- (void)removeObserver:(id)a3 forVariant:(int64_t)a4;
-- (void)setActiveVariant:(int64_t)a3 withOutAnimationFactory:(id)a4 inAnimationFactory:(id)a5 completion:(id)a6;
-- (void)setAssociatedPosterConfiguration:(id)a3 withAnimationSettings:(id)a4;
-- (void)setConfiguration:(id)a3 withAnimationSettings:(id)a4;
-- (void)setDeviceMotionUpdateInterval:(double)a3;
-- (void)setExternalDisplayConfiguration:(id)a3;
-- (void)setWallpaperConfigurationManager:(id)a3;
-- (void)triggerPosterTapEvent:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)noteWillAnimateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)posterComponent:(id)component didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)rectangle;
+- (void)posterComponent:(id)component didUpdateDeviceMotionEventsRequested:(BOOL)requested;
+- (void)posterComponent:(id)component didUpdateDeviceMotionMode:(unint64_t)mode;
+- (void)posterComponent:(id)component didUpdateHideDimmingLayer:(BOOL)layer;
+- (void)posterComponent:(id)component didUpdateLegibilitySettings:(id)settings;
+- (void)posterComponent:(id)component didUpdatePreferredDeviceMotionUpdateInterval:(double)interval;
+- (void)posterComponent:(id)component didUpdatePreferredProminentColor:(id)color;
+- (void)posterComponent:(id)component didUpdatePreferredSalientContentRectangle:(CGRect)rectangle;
+- (void)removeObserver:(id)observer forVariant:(int64_t)variant;
+- (void)setActiveVariant:(int64_t)variant withOutAnimationFactory:(id)factory inAnimationFactory:(id)animationFactory completion:(id)completion;
+- (void)setAssociatedPosterConfiguration:(id)configuration withAnimationSettings:(id)settings;
+- (void)setConfiguration:(id)configuration withAnimationSettings:(id)settings;
+- (void)setDeviceMotionUpdateInterval:(double)interval;
+- (void)setExternalDisplayConfiguration:(id)configuration;
+- (void)setWallpaperConfigurationManager:(id)manager;
+- (void)triggerPosterTapEvent:(id)event;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)wallpaperConfigurationManager:(id)a3 didChangeWallpaperConfigurationForVariants:(int64_t)a4;
+- (void)wallpaperConfigurationManager:(id)manager didChangeWallpaperConfigurationForVariants:(int64_t)variants;
 @end
 
 @implementation PBUIPosterWallpaperRemoteViewController
@@ -68,16 +68,16 @@
   [(PBUIPosterWallpaperRemoteViewController *)&v16 viewWillLayoutSubviews];
   if (soft_PF_IS_PAD_DEVICE() && soft_PUIDynamicRotationIsActive())
   {
-    v3 = [(PBUIPosterWallpaperRemoteViewController *)self view];
+    view = [(PBUIPosterWallpaperRemoteViewController *)self view];
     v4 = *(MEMORY[0x277CBF2C0] + 16);
     v15[0] = *MEMORY[0x277CBF2C0];
     v15[1] = v4;
     v15[2] = *(MEMORY[0x277CBF2C0] + 32);
-    [v3 setTransform:v15];
+    [view setTransform:v15];
   }
 
-  v5 = [(PBUIPosterWallpaperRemoteViewController *)self view];
-  [v5 bounds];
+  view2 = [(PBUIPosterWallpaperRemoteViewController *)self view];
+  [view2 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -91,21 +91,21 @@
 
 - (void)cancelInProcessAnimations
 {
-  v3 = [(PBUIPosterWallpaperRemoteViewController *)self view];
-  v2 = [v3 window];
-  [v2 _removeAllRetargetableAnimations:1];
+  view = [(PBUIPosterWallpaperRemoteViewController *)self view];
+  window = [view window];
+  [window _removeAllRetargetableAnimations:1];
 }
 
 - (void)_updateFallbackView
 {
-  v3 = [MEMORY[0x277D75348] systemBlackColor];
-  v4 = [(PBUIPosterWallpaperRemoteViewController *)self activeVariant];
-  IsHidden = PBUIWallpaperStyleIsHidden([(PBUIPosterWallpaperViewController *)self->_viewController activeStyleForVariant:v4]);
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  activeVariant = [(PBUIPosterWallpaperRemoteViewController *)self activeVariant];
+  IsHidden = PBUIWallpaperStyleIsHidden([(PBUIPosterWallpaperViewController *)self->_viewController activeStyleForVariant:activeVariant]);
   v6 = IsHidden;
   v7 = 0;
-  if (v4 <= 1 && !IsHidden)
+  if (activeVariant <= 1 && !IsHidden)
   {
-    v8 = [(PBUIPosterWallpaperRemoteViewController *)self averageColorForVariant:v4];
+    v8 = [(PBUIPosterWallpaperRemoteViewController *)self averageColorForVariant:activeVariant];
     v9 = v8;
     if (v8)
     {
@@ -133,7 +133,7 @@
         v7 = 0;
       }
 
-      v3 = v10;
+      systemBlackColor = v10;
     }
 
     else
@@ -142,25 +142,25 @@
     }
   }
 
-  v11 = [(PBUIPosterWallpaperRemoteViewController *)self view];
-  v12 = [v11 backgroundColor];
-  v13 = v12 == 0;
+  view = [(PBUIPosterWallpaperRemoteViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  v13 = backgroundColor == 0;
 
   v23 = 0.0;
-  v14 = [(PBUIPosterWallpaperRemoteViewController *)self view];
-  v15 = [v14 backgroundColor];
-  v16 = [v15 getRed:0 green:0 blue:0 alpha:&v23];
+  view2 = [(PBUIPosterWallpaperRemoteViewController *)self view];
+  backgroundColor2 = [view2 backgroundColor];
+  v16 = [backgroundColor2 getRed:0 green:0 blue:0 alpha:&v23];
 
   if (v16)
   {
-    v13 = v23 < 1.0 || v12 == 0;
+    v13 = v23 < 1.0 || backgroundColor == 0;
   }
 
-  v18 = v4 < 2 || v6;
+  v18 = activeVariant < 2 || v6;
   if (((v18 | v7) & 1) != 0 || v13)
   {
-    v19 = [(PBUIPosterWallpaperRemoteViewController *)self view];
-    [v19 setBackgroundColor:v3];
+    view3 = [(PBUIPosterWallpaperRemoteViewController *)self view];
+    [view3 setBackgroundColor:systemBlackColor];
   }
 }
 
@@ -200,11 +200,11 @@
   return v2;
 }
 
-- (PBUIPosterWallpaperRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PBUIPosterWallpaperRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v23.receiver = self;
   v23.super_class = PBUIPosterWallpaperRemoteViewController;
-  v4 = [(PBUIPosterWallpaperRemoteViewController *)&v23 initWithNibName:a3 bundle:a4];
+  v4 = [(PBUIPosterWallpaperRemoteViewController *)&v23 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -213,21 +213,21 @@
     stateCaptureHandles = v5->_stateCaptureHandles;
     v5->_stateCaptureHandles = v6;
 
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     effectViews = v5->_effectViews;
-    v5->_effectViews = v8;
+    v5->_effectViews = weakObjectsHashTable;
 
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     wallpaperScaleAssertions = v5->_wallpaperScaleAssertions;
-    v5->_wallpaperScaleAssertions = v10;
+    v5->_wallpaperScaleAssertions = weakObjectsHashTable2;
 
-    v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observerLock_lockScreenObservers = v5->_observerLock_lockScreenObservers;
-    v5->_observerLock_lockScreenObservers = v12;
+    v5->_observerLock_lockScreenObservers = weakObjectsHashTable3;
 
-    v14 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observerLock_homeScreenObservers = v5->_observerLock_homeScreenObservers;
-    v5->_observerLock_homeScreenObservers = v14;
+    v5->_observerLock_homeScreenObservers = weakObjectsHashTable4;
 
     v5->_observerLock._os_unfair_lock_opaque = 0;
     v16 = objc_alloc_init(PBUIPosterWallpaperViewController);
@@ -288,10 +288,10 @@
   [(PBUIPosterWallpaperRemoteViewController *)&v8 dealloc];
 }
 
-- (void)setWallpaperConfigurationManager:(id)a3
+- (void)setWallpaperConfigurationManager:(id)manager
 {
-  objc_storeStrong(&self->_wallpaperConfigurationManager, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_wallpaperConfigurationManager, manager);
+  managerCopy = manager;
   [(PBUIWallpaperConfigurationManager *)self->_wallpaperConfigurationManager setDelegate:self];
 }
 
@@ -300,95 +300,95 @@
   v8.receiver = self;
   v8.super_class = PBUIPosterWallpaperRemoteViewController;
   [(PBUIPosterWallpaperRemoteViewController *)&v8 viewDidLoad];
-  v3 = [(PBUIPosterWallpaperRemoteViewController *)self view];
+  view = [(PBUIPosterWallpaperRemoteViewController *)self view];
   v4 = objc_alloc(MEMORY[0x277D75D18]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   containerView = self->_containerView;
   self->_containerView = v5;
 
   [(UIView *)self->_containerView setAutoresizingMask:18];
-  [v3 addSubview:self->_containerView];
-  v7 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v3 setBackgroundColor:v7];
+  [view addSubview:self->_containerView];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [view setBackgroundColor:systemOrangeColor];
 
   [(PBUIPosterWallpaperRemoteViewController *)self bs_addChildViewController:self->_viewController withSuperview:self->_containerView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = PBUIPosterWallpaperRemoteViewController;
   [(PBUIPosterWallpaperRemoteViewController *)&v5 viewWillAppear:?];
-  [(PBUIPosterWallpaperRemoteViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_viewController toVisible:1 animated:v3];
+  [(PBUIPosterWallpaperRemoteViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_viewController toVisible:1 animated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PBUIPosterWallpaperRemoteViewController;
-  [(PBUIPosterWallpaperRemoteViewController *)&v4 viewDidAppear:a3];
+  [(PBUIPosterWallpaperRemoteViewController *)&v4 viewDidAppear:appear];
   [(PBUIPosterWallpaperRemoteViewController *)self bs_endAppearanceTransitionForChildViewController:self->_viewController toVisible:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = PBUIPosterWallpaperRemoteViewController;
   [(PBUIPosterWallpaperRemoteViewController *)&v5 viewWillDisappear:?];
-  [(PBUIPosterWallpaperRemoteViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_viewController toVisible:0 animated:v3];
+  [(PBUIPosterWallpaperRemoteViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_viewController toVisible:0 animated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PBUIPosterWallpaperRemoteViewController;
-  [(PBUIPosterWallpaperRemoteViewController *)&v4 viewDidDisappear:a3];
+  [(PBUIPosterWallpaperRemoteViewController *)&v4 viewDidDisappear:disappear];
   [(PBUIPosterWallpaperRemoteViewController *)self bs_endAppearanceTransitionForChildViewController:self->_viewController toVisible:0];
 }
 
-- (void)posterComponent:(id)a3 didUpdateLegibilitySettings:(id)a4
+- (void)posterComponent:(id)component didUpdateLegibilitySettings:(id)settings
 {
-  v5 = [a3 variant];
+  variant = [component variant];
   v6 = MEMORY[0x277CBEB98];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:variant];
   v7 = [v6 setWithObject:v8];
   [(PBUIPosterWallpaperRemoteViewController *)self _legibilityUpdatedForVariants:v7 notifyObservers:1];
 }
 
-- (void)posterComponent:(id)a3 didUpdateHideDimmingLayer:(BOOL)a4
+- (void)posterComponent:(id)component didUpdateHideDimmingLayer:(BOOL)layer
 {
-  v6 = [a3 variant];
+  variant = [component variant];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __85__PBUIPosterWallpaperRemoteViewController_posterComponent_didUpdateHideDimmingLayer___block_invoke;
   v7[3] = &__block_descriptor_33_e33_v16__0___PBUIWallpaperObserver__8l;
-  v8 = a4;
-  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_hideDimmingLayerDidChange_ variant:v6 block:v7];
+  layerCopy = layer;
+  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_hideDimmingLayerDidChange_ variant:variant block:v7];
 }
 
-- (void)posterComponent:(id)a3 didUpdatePreferredProminentColor:(id)a4
+- (void)posterComponent:(id)component didUpdatePreferredProminentColor:(id)color
 {
-  v6 = a4;
-  v7 = [a3 variant];
+  colorCopy = color;
+  variant = [component variant];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __92__PBUIPosterWallpaperRemoteViewController_posterComponent_didUpdatePreferredProminentColor___block_invoke;
   v9[3] = &unk_278363A68;
-  v10 = v6;
-  v8 = v6;
-  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_wallpaperDidUpdatePreferredProminentColor_ variant:v7 block:v9];
+  v10 = colorCopy;
+  v8 = colorCopy;
+  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_wallpaperDidUpdatePreferredProminentColor_ variant:variant block:v9];
 }
 
-- (void)posterComponent:(id)a3 didUpdatePreferredSalientContentRectangle:(CGRect)a4
+- (void)posterComponent:(id)component didUpdatePreferredSalientContentRectangle:(CGRect)rectangle
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [a3 variant];
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  variant = [component variant];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __101__PBUIPosterWallpaperRemoteViewController_posterComponent_didUpdatePreferredSalientContentRectangle___block_invoke;
@@ -397,59 +397,59 @@
   *&v10[5] = y;
   *&v10[6] = width;
   *&v10[7] = height;
-  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_wallpaperDidUpdatePreferredSalientContentRectangle_ variant:v9 block:v10];
+  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_wallpaperDidUpdatePreferredSalientContentRectangle_ variant:variant block:v10];
 }
 
-- (void)posterComponent:(id)a3 didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)a4
+- (void)posterComponent:(id)component didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)rectangle
 {
-  v6 = [a3 variant];
+  variant = [component variant];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __119__PBUIPosterWallpaperRemoteViewController_posterComponent_didUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle___block_invoke;
   v7[3] = &__block_descriptor_33_e33_v16__0___PBUIWallpaperObserver__8l;
-  v8 = a4;
-  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_wallpaperDidUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle_ variant:v6 block:v7];
+  rectangleCopy = rectangle;
+  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_wallpaperDidUpdateAdaptiveTimeHonorsPreferredSalientContentRectangle_ variant:variant block:v7];
 }
 
-- (void)posterComponent:(id)a3 didUpdateDeviceMotionEventsRequested:(BOOL)a4
+- (void)posterComponent:(id)component didUpdateDeviceMotionEventsRequested:(BOOL)requested
 {
-  v6 = [a3 variant];
+  variant = [component variant];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __96__PBUIPosterWallpaperRemoteViewController_posterComponent_didUpdateDeviceMotionEventsRequested___block_invoke;
   v7[3] = &__block_descriptor_33_e33_v16__0___PBUIWallpaperObserver__8l;
-  v8 = a4;
-  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_posterDidUpdateWantsMotionEvents_ variant:v6 block:v7];
+  requestedCopy = requested;
+  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_posterDidUpdateWantsMotionEvents_ variant:variant block:v7];
 }
 
-- (void)posterComponent:(id)a3 didUpdateDeviceMotionMode:(unint64_t)a4
+- (void)posterComponent:(id)component didUpdateDeviceMotionMode:(unint64_t)mode
 {
-  v6 = [a3 variant];
+  variant = [component variant];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __85__PBUIPosterWallpaperRemoteViewController_posterComponent_didUpdateDeviceMotionMode___block_invoke;
   v7[3] = &__block_descriptor_40_e33_v16__0___PBUIWallpaperObserver__8l;
-  v7[4] = a4;
-  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_posterDidUpdateDeviceMotionMode_ variant:v6 block:v7];
+  v7[4] = mode;
+  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_posterDidUpdateDeviceMotionMode_ variant:variant block:v7];
 }
 
-- (void)posterComponent:(id)a3 didUpdatePreferredDeviceMotionUpdateInterval:(double)a4
+- (void)posterComponent:(id)component didUpdatePreferredDeviceMotionUpdateInterval:(double)interval
 {
-  v6 = [a3 variant];
+  variant = [component variant];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __104__PBUIPosterWallpaperRemoteViewController_posterComponent_didUpdatePreferredDeviceMotionUpdateInterval___block_invoke;
   v7[3] = &__block_descriptor_40_e33_v16__0___PBUIWallpaperObserver__8l;
-  *&v7[4] = a4;
-  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_wallpaperDidUpdatePreferredDeviceMotionUpdateInterval_ variant:v6 block:v7];
+  *&v7[4] = interval;
+  [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_wallpaperDidUpdatePreferredDeviceMotionUpdateInterval_ variant:variant block:v7];
 }
 
-- (void)_legibilityUpdatedForVariants:(id)a3 notifyObservers:(BOOL)a4
+- (void)_legibilityUpdatedForVariants:(id)variants notifyObservers:(BOOL)observers
 {
-  v4 = a4;
+  observersCopy = observers;
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 count])
+  variantsCopy = variants;
+  if ([variantsCopy count])
   {
     if (!self->_legibilityEnvironmentBuilder)
     {
@@ -458,7 +458,7 @@
       self->_legibilityEnvironmentBuilder = v7;
     }
 
-    if ([v6 containsObject:&unk_282FD5C98])
+    if ([variantsCopy containsObject:&unk_282FD5C98])
     {
       v9 = [(PBUIPosterWallpaperRemoteViewController *)self legibilityEnvironmentContextForVariant:0];
     }
@@ -468,7 +468,7 @@
       v9 = 0;
     }
 
-    if (([v6 containsObject:&unk_282FD5CB0] & 1) != 0 || (-[PLKLegibilityEnvironmentBuilder variants](self->_legibilityEnvironmentBuilder, "variants"), v10 = objc_claimAutoreleasedReturnValue(), getPLKLegibilityEnvironmentVariantHomeScreen(), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "containsObject:", v11), v11, v10, (v12 & 1) == 0))
+    if (([variantsCopy containsObject:&unk_282FD5CB0] & 1) != 0 || (-[PLKLegibilityEnvironmentBuilder variants](self->_legibilityEnvironmentBuilder, "variants"), v10 = objc_claimAutoreleasedReturnValue(), getPLKLegibilityEnvironmentVariantHomeScreen(), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "containsObject:", v11), v11, v10, (v12 & 1) == 0))
     {
       v13 = [(PBUIPosterWallpaperRemoteViewController *)self legibilityEnvironmentContextForVariant:1];
     }
@@ -483,7 +483,7 @@
       goto LABEL_33;
     }
 
-    v34 = v4;
+    v34 = observersCopy;
     if (v9)
     {
       v14 = self->_legibilityEnvironmentBuilder;
@@ -546,7 +546,7 @@ LABEL_17:
           currentLegibilityEnvironment = self->_currentLegibilityEnvironment;
           v27 = getPLKLegibilityEnvironmentVariantLockScreen();
           v28 = [(PLKLegibilityEnvironment *)currentLegibilityEnvironment legibilityEnvironmentContextForVariant:v27];
-          v29 = [v28 legibilitySettings];
+          legibilitySettings = [v28 legibilitySettings];
 
           if (v21)
           {
@@ -554,7 +554,7 @@ LABEL_17:
             v38[1] = 3221225472;
             v38[2] = __89__PBUIPosterWallpaperRemoteViewController__legibilityUpdatedForVariants_notifyObservers___block_invoke_3;
             v38[3] = &unk_278363AD0;
-            v39 = v29;
+            v39 = legibilitySettings;
             v40 = 0;
             [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_wallpaperLegibilitySettingsDidChange_forVariant_ variant:0 block:v38];
           }
@@ -579,7 +579,7 @@ LABEL_33:
         v30 = self->_currentLegibilityEnvironment;
         v31 = getPLKLegibilityEnvironmentVariantHomeScreen();
         v32 = [(PLKLegibilityEnvironment *)v30 legibilityEnvironmentContextForVariant:v31];
-        v33 = [v32 legibilitySettings];
+        legibilitySettings2 = [v32 legibilitySettings];
 
         if (v21)
         {
@@ -587,7 +587,7 @@ LABEL_33:
           v35[1] = 3221225472;
           v35[2] = __89__PBUIPosterWallpaperRemoteViewController__legibilityUpdatedForVariants_notifyObservers___block_invoke_4;
           v35[3] = &unk_278363AD0;
-          v36 = v33;
+          v36 = legibilitySettings2;
           v37 = 1;
           [(PBUIPosterWallpaperRemoteViewController *)self _fireObserverRespondingToSelector:sel_wallpaperLegibilitySettingsDidChange_forVariant_ variant:1 block:v35];
         }
@@ -612,14 +612,14 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)wallpaperConfigurationManager:(id)a3 didChangeWallpaperConfigurationForVariants:(int64_t)a4
+- (void)wallpaperConfigurationManager:(id)manager didChangeWallpaperConfigurationForVariants:(int64_t)variants
 {
-  v4 = a4;
+  variantsCopy = variants;
   v10 = *MEMORY[0x277D85DE8];
   v6 = PBUILogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = PBUIStringForWallpaperLocations(v4);
+    v7 = PBUIStringForWallpaperLocations(variantsCopy);
     v8 = 138412290;
     v9 = v7;
     _os_log_impl(&dword_21E67D000, v6, OS_LOG_TYPE_DEFAULT, "Legacy wallpaper changed for %@", &v8, 0xCu);
@@ -628,59 +628,59 @@ LABEL_34:
   [(PBUIPosterWallpaperViewController *)self->_viewController updateLegacyPoster];
 }
 
-- (BOOL)setWallpaperStyle:(int64_t)a3 forPriority:(int64_t)a4 forVariant:(int64_t)a5 withAnimationFactory:(id)a6
+- (BOOL)setWallpaperStyle:(int64_t)style forPriority:(int64_t)priority forVariant:(int64_t)variant withAnimationFactory:(id)factory
 {
-  v10 = a6;
-  PBUIWallpaperStyleTransitionStateMake(a3, a3, v12, 0.0);
-  LOBYTE(a5) = [(PBUIPosterWallpaperRemoteViewController *)self setWallpaperStyleTransitionState:v12 forPriority:a4 forVariant:a5 withAnimationFactory:v10];
+  factoryCopy = factory;
+  PBUIWallpaperStyleTransitionStateMake(style, style, v12, 0.0);
+  LOBYTE(variant) = [(PBUIPosterWallpaperRemoteViewController *)self setWallpaperStyleTransitionState:v12 forPriority:priority forVariant:variant withAnimationFactory:factoryCopy];
 
   [(PBUIPosterWallpaperRemoteViewController *)self _updateFallbackView];
-  return a5;
+  return variant;
 }
 
-- (BOOL)setWallpaperStyleTransitionState:(id *)a3 forPriority:(int64_t)a4 forVariant:(int64_t)a5 withAnimationFactory:(id)a6
+- (BOOL)setWallpaperStyleTransitionState:(id *)state forPriority:(int64_t)priority forVariant:(int64_t)variant withAnimationFactory:(id)factory
 {
-  v11 = a6;
-  if (!PBUIWallpaperVariantIsValid(a5))
+  factoryCopy = factory;
+  if (!PBUIWallpaperVariantIsValid(variant))
   {
     [PBUIPosterWallpaperRemoteViewController setWallpaperStyleTransitionState:a2 forPriority:? forVariant:? withAnimationFactory:?];
   }
 
-  if (!PBUIWallpaperStylePriorityIsValid(a4))
+  if (!PBUIWallpaperStylePriorityIsValid(priority))
   {
     [PBUIPosterWallpaperRemoteViewController setWallpaperStyleTransitionState:a2 forPriority:? forVariant:? withAnimationFactory:?];
   }
 
-  [(PBUIPosterWallpaperViewController *)self->_viewController setWallpaperStyle:a3->var1 forPriority:a4 forVariant:a5];
+  [(PBUIPosterWallpaperViewController *)self->_viewController setWallpaperStyle:state->var1 forPriority:priority forVariant:variant];
   [(PBUIPosterWallpaperRemoteViewController *)self _updateFallbackView];
 
   return 1;
 }
 
-- (BOOL)removeWallpaperStyleForPriority:(int64_t)a3 forVariant:(int64_t)a4 withAnimationFactory:(id)a5
+- (BOOL)removeWallpaperStyleForPriority:(int64_t)priority forVariant:(int64_t)variant withAnimationFactory:(id)factory
 {
-  v9 = a5;
-  if (!PBUIWallpaperVariantIsValid(a4))
+  factoryCopy = factory;
+  if (!PBUIWallpaperVariantIsValid(variant))
   {
     [PBUIPosterWallpaperRemoteViewController removeWallpaperStyleForPriority:a2 forVariant:? withAnimationFactory:?];
   }
 
-  if (!PBUIWallpaperStylePriorityIsValid(a3))
+  if (!PBUIWallpaperStylePriorityIsValid(priority))
   {
     [PBUIPosterWallpaperRemoteViewController removeWallpaperStyleForPriority:a2 forVariant:? withAnimationFactory:?];
   }
 
-  [(PBUIPosterWallpaperViewController *)self->_viewController removeWallpaperStyleForPriority:a3 forVariant:a4];
+  [(PBUIPosterWallpaperViewController *)self->_viewController removeWallpaperStyleForPriority:priority forVariant:variant];
   [(PBUIPosterWallpaperRemoteViewController *)self _updateFallbackView];
 
   return 1;
 }
 
-- (id)suspendWallpaperAnimationForReason:(id)a3
+- (id)suspendWallpaperAnimationForReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
-  v6 = v5;
+  v6 = reasonCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v6)
   {
@@ -712,38 +712,38 @@ LABEL_34:
   return v10;
 }
 
-- (void)addObserver:(id)a3 forVariant:(int64_t)a4
+- (void)addObserver:(id)observer forVariant:(int64_t)variant
 {
-  v6 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  v7 = [(PBUIPosterWallpaperRemoteViewController *)self _observerLock_observersForVariant:a4];
-  [v7 addObject:v6];
+  v7 = [(PBUIPosterWallpaperRemoteViewController *)self _observerLock_observersForVariant:variant];
+  [v7 addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)removeObserver:(id)a3 forVariant:(int64_t)a4
+- (void)removeObserver:(id)observer forVariant:(int64_t)variant
 {
-  v6 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  v7 = [(PBUIPosterWallpaperRemoteViewController *)self _observerLock_observersForVariant:a4];
-  [v7 removeObject:v6];
+  v7 = [(PBUIPosterWallpaperRemoteViewController *)self _observerLock_observersForVariant:variant];
+  [v7 removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)setActiveVariant:(int64_t)a3 withOutAnimationFactory:(id)a4 inAnimationFactory:(id)a5 completion:(id)a6
+- (void)setActiveVariant:(int64_t)variant withOutAnimationFactory:(id)factory inAnimationFactory:(id)animationFactory completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (self->_activeVariant == a3)
+  factoryCopy = factory;
+  animationFactoryCopy = animationFactory;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (self->_activeVariant == variant)
   {
-    if (v12)
+    if (completionCopy)
     {
-      (*(v12 + 2))(v12);
+      (*(completionCopy + 2))(completionCopy);
     }
   }
 
@@ -753,77 +753,77 @@ LABEL_34:
     v14 = PBUILogCommon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = PBUIStringForWallpaperVariant(a3);
+      v15 = PBUIStringForWallpaperVariant(variant);
       v16 = 138543362;
       v17 = v15;
       _os_log_impl(&dword_21E67D000, v14, OS_LOG_TYPE_DEFAULT, "Setting wallpaper variant to: %{public}@", &v16, 0xCu);
     }
 
-    self->_activeVariant = a3;
-    [(PBUIPosterWallpaperViewController *)self->_viewController setActiveVariant:a3];
+    self->_activeVariant = variant;
+    [(PBUIPosterWallpaperViewController *)self->_viewController setActiveVariant:variant];
     [(PBUIPosterWallpaperRemoteViewController *)self _updateFallbackView];
     [(PBUIPosterWallpaperRemoteViewController *)self _updateWallpaperScaleWithAnimationFactory:0];
     [(PBUIPosterWallpaperRemoteViewController *)self _fireObserversWallpaperDidChange];
   }
 }
 
-- (id)setHomescreenWallpaperScale:(double)a3 withAnimationFactory:(id)a4
+- (id)setHomescreenWallpaperScale:(double)scale withAnimationFactory:(id)factory
 {
-  v6 = a4;
-  v7 = [(PBUIPosterWallpaperRemoteViewController *)self _wallpaperScaleAssertionForVariant:1 scale:a3];
-  [(PBUIPosterWallpaperRemoteViewController *)self _updateWallpaperScaleWithAnimationFactory:v6];
+  factoryCopy = factory;
+  v7 = [(PBUIPosterWallpaperRemoteViewController *)self _wallpaperScaleAssertionForVariant:1 scale:scale];
+  [(PBUIPosterWallpaperRemoteViewController *)self _updateWallpaperScaleWithAnimationFactory:factoryCopy];
 
   return v7;
 }
 
-- (id)setLockscreenWallpaperScale:(double)a3 withAnimationFactory:(id)a4
+- (id)setLockscreenWallpaperScale:(double)scale withAnimationFactory:(id)factory
 {
-  v6 = a4;
-  v7 = [(PBUIPosterWallpaperRemoteViewController *)self _wallpaperScaleAssertionForVariant:0 scale:a3];
-  [(PBUIPosterWallpaperRemoteViewController *)self _updateWallpaperScaleWithAnimationFactory:v6];
+  factoryCopy = factory;
+  v7 = [(PBUIPosterWallpaperRemoteViewController *)self _wallpaperScaleAssertionForVariant:0 scale:scale];
+  [(PBUIPosterWallpaperRemoteViewController *)self _updateWallpaperScaleWithAnimationFactory:factoryCopy];
 
   return v7;
 }
 
-- (id)createWallpaperFloatingViewForReason:(id)a3 ignoreReplica:(BOOL)a4
+- (id)createWallpaperFloatingViewForReason:(id)reason ignoreReplica:(BOOL)replica
 {
-  v4 = a4;
-  v6 = a3;
+  replicaCopy = replica;
+  reasonCopy = reason;
   v7 = [PBUIPosterFloatingLayerReplica alloc];
   v8 = [(PBUIPosterFloatingLayerReplica *)v7 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  [(PBUIPosterFloatingLayerReplica *)v8 setFloatingLayerStandin:!v4];
-  v9 = [(PBUIPosterWallpaperViewController *)self->_viewController portalProviderForFloatingLayer];
-  [(PBUIPortalReplicaView *)v8 setProvider:v9];
+  [(PBUIPosterFloatingLayerReplica *)v8 setFloatingLayerStandin:!replicaCopy];
+  portalProviderForFloatingLayer = [(PBUIPosterWallpaperViewController *)self->_viewController portalProviderForFloatingLayer];
+  [(PBUIPortalReplicaView *)v8 setProvider:portalProviderForFloatingLayer];
 
-  [(PBUIPortalReplicaView *)v8 setReason:v6];
+  [(PBUIPortalReplicaView *)v8 setReason:reasonCopy];
 
   return v8;
 }
 
-- (id)setWallpaperFloatingLayerContainerView:(id)a3 forReason:(id)a4 withAnimationFactory:(id)a5
+- (id)setWallpaperFloatingLayerContainerView:(id)view forReason:(id)reason withAnimationFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  reasonCopy = reason;
+  factoryCopy = factory;
   BSDispatchQueueAssertMain();
-  if (!v10)
+  if (!reasonCopy)
   {
     [PBUIPosterWallpaperRemoteViewController setWallpaperFloatingLayerContainerView:a2 forReason:? withAnimationFactory:?];
   }
 
-  if (!v9)
+  if (!viewCopy)
   {
     [PBUIPosterWallpaperRemoteViewController setWallpaperFloatingLayerContainerView:a2 forReason:? withAnimationFactory:?];
   }
 
   v12 = [PBUIPosterFloatingLayerReplica alloc];
-  [v9 bounds];
+  [viewCopy bounds];
   v13 = [(PBUIPosterFloatingLayerReplica *)v12 initWithFrame:?];
-  v14 = [(PBUIPosterWallpaperViewController *)self->_viewController portalProviderForFloatingLayer];
-  [(PBUIPortalReplicaView *)v13 setProvider:v14];
+  portalProviderForFloatingLayer = [(PBUIPosterWallpaperViewController *)self->_viewController portalProviderForFloatingLayer];
+  [(PBUIPortalReplicaView *)v13 setProvider:portalProviderForFloatingLayer];
 
-  [(PBUIPortalReplicaView *)v13 setReason:v10];
-  [v9 addSubview:v13];
+  [(PBUIPortalReplicaView *)v13 setReason:reasonCopy];
+  [viewCopy addSubview:v13];
   v15 = [PBUIWallpaperFloatingLayerAssertion alloc];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -831,27 +831,27 @@ LABEL_34:
   v19[3] = &unk_278363AF8;
   v20 = v13;
   v16 = v13;
-  v17 = [(PBUIWallpaperFloatingLayerAssertion *)v15 initWithContainerView:v9 forReason:v10 invalidationBlock:v19];
+  v17 = [(PBUIWallpaperFloatingLayerAssertion *)v15 initWithContainerView:viewCopy forReason:reasonCopy invalidationBlock:v19];
 
   return v17;
 }
 
-- (uint64_t)updateWallpaperAnimationWithRotation:(_OWORD *)a3
+- (uint64_t)updateWallpaperAnimationWithRotation:(_OWORD *)rotation
 {
-  v3 = *(a1 + 1000);
-  v4 = a3[1];
-  v6[0] = *a3;
+  v3 = *(self + 1000);
+  v4 = rotation[1];
+  v6[0] = *rotation;
   v6[1] = v4;
   return [v3 setRotation:v6];
 }
 
-- (void)setConfiguration:(id)a3 withAnimationSettings:(id)a4
+- (void)setConfiguration:(id)configuration withAnimationSettings:(id)settings
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  settingsCopy = settings;
   BSDispatchQueueAssertMain();
-  v9 = v7;
+  v9 = configurationCopy;
   NSClassFromString(&cfstr_Prsposterconfi.isa);
   if (!v9)
   {
@@ -864,7 +864,7 @@ LABEL_34:
   }
 
   [(PBUIPosterWallpaperRemoteViewController *)self _fireObserversWallpaperWillChange];
-  [(PBUIPosterWallpaperViewController *)self->_viewController updateConfiguration:v9 withAnimationSettings:v8];
+  [(PBUIPosterWallpaperViewController *)self->_viewController updateConfiguration:v9 withAnimationSettings:settingsCopy];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -900,13 +900,13 @@ LABEL_34:
   [(PBUIPosterWallpaperRemoteViewController *)self _legibilityUpdatedForVariants:v16 notifyObservers:1];
 }
 
-- (void)setAssociatedPosterConfiguration:(id)a3 withAnimationSettings:(id)a4
+- (void)setAssociatedPosterConfiguration:(id)configuration withAnimationSettings:(id)settings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  settingsCopy = settings;
   [(PBUIPosterWallpaperRemoteViewController *)self _fireObserversWallpaperWillChangeForVariant:1];
-  [(PBUIPosterWallpaperViewController *)self->_viewController updateAssociatedPosterConfiguration:v6 withAnimationSettings:v7];
+  [(PBUIPosterWallpaperViewController *)self->_viewController updateAssociatedPosterConfiguration:configurationCopy withAnimationSettings:settingsCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -942,41 +942,41 @@ LABEL_34:
   [(PBUIPosterWallpaperRemoteViewController *)self _legibilityUpdatedForVariants:v14 notifyObservers:1];
 }
 
-- (void)noteWillAnimateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)noteWillAnimateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v26 = *MEMORY[0x277D85DE8];
   if (soft_PF_IS_PAD_DEVICE() && soft_PUIDynamicRotationIsActive())
   {
-    v7 = [(PBUIPosterWallpaperRemoteViewController *)self view];
+    view = [(PBUIPosterWallpaperRemoteViewController *)self view];
     v16 = *(MEMORY[0x277CBF2C0] + 16);
     v22 = *MEMORY[0x277CBF2C0];
     v17 = v22;
     v23 = v16;
     v24 = *(MEMORY[0x277CBF2C0] + 32);
     v15 = v24;
-    [v7 setTransform:&v22];
+    [view setTransform:&v22];
 
-    v8 = [(PBUIPosterWallpaperRemoteViewController *)self view];
-    [v8 layoutIfNeeded];
+    view2 = [(PBUIPosterWallpaperRemoteViewController *)self view];
+    [view2 layoutIfNeeded];
 
-    v9 = [(PBUIPosterWallpaperRemoteViewController *)self view];
+    view3 = [(PBUIPosterWallpaperRemoteViewController *)self view];
     v22 = v17;
     v23 = v16;
     v24 = v15;
-    [(NSHashTable *)v9 setTransform:&v22];
+    [(NSHashTable *)view3 setTransform:&v22];
   }
 
   else
   {
-    v10 = [(PBUIPosterWallpaperRemoteViewController *)self view];
-    [v10 layoutIfNeeded];
+    view4 = [(PBUIPosterWallpaperRemoteViewController *)self view];
+    [view4 layoutIfNeeded];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = self->_effectViews;
-    v11 = [(NSHashTable *)v9 countByEnumeratingWithState:&v18 objects:v25 count:16];
+    view3 = self->_effectViews;
+    v11 = [(NSHashTable *)view3 countByEnumeratingWithState:&v18 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -988,28 +988,28 @@ LABEL_34:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(view3);
           }
 
-          [*(*(&v18 + 1) + 8 * v14++) rotateToInterfaceOrientation:a3];
+          [*(*(&v18 + 1) + 8 * v14++) rotateToInterfaceOrientation:orientation];
         }
 
         while (v12 != v14);
-        v12 = [(NSHashTable *)v9 countByEnumeratingWithState:&v18 objects:v25 count:16];
+        v12 = [(NSHashTable *)view3 countByEnumeratingWithState:&v18 objects:v25 count:16];
       }
 
       while (v12);
     }
   }
 
-  [(PBUIPosterWallpaperViewController *)self->_viewController rotateToInterfaceOrientation:a3 duration:a4];
+  [(PBUIPosterWallpaperViewController *)self->_viewController rotateToInterfaceOrientation:orientation duration:duration];
 }
 
-- (id)requireWallpaperWithReason:(id)a3
+- (id)requireWallpaperWithReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
-  v6 = v5;
+  v6 = reasonCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v6)
   {
@@ -1026,12 +1026,12 @@ LABEL_34:
   return v7;
 }
 
-- (void)triggerPosterTapEvent:(id)a3
+- (void)triggerPosterTapEvent:(id)event
 {
   viewController = self->_viewController;
-  v5 = a3;
-  v6 = [(PBUIPosterWallpaperViewController *)viewController view];
-  [v5 locationInView:v6];
+  eventCopy = event;
+  view = [(PBUIPosterWallpaperViewController *)viewController view];
+  [eventCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
@@ -1040,27 +1040,27 @@ LABEL_34:
   [(PBUIPosterWallpaperViewController *)v11 noteUserTapOccurredWithLocation:v8, v10];
 }
 
-- (id)newFakeBlurViewForVariant:(int64_t)a3 style:(int64_t)a4 transformOptions:(unint64_t)a5
+- (id)newFakeBlurViewForVariant:(int64_t)variant style:(int64_t)style transformOptions:(unint64_t)options
 {
   WeakRetained = objc_loadWeakRetained(&self->_wallpaperPresentingDelegate);
   v9 = [WeakRetained wallpaperPresenter:self requestsOrientationWithRefresh:1];
 
-  v10 = self;
-  v11 = v10;
-  v12 = v10;
-  if ((a5 & 0x10) != 0)
+  selfCopy = self;
+  v11 = selfCopy;
+  v12 = selfCopy;
+  if ((options & 0x10) != 0)
   {
-    v12 = v10->_portalImageProvider;
+    v12 = selfCopy->_portalImageProvider;
   }
 
-  if ((a5 & 0x20) != 0)
+  if ((options & 0x20) != 0)
   {
     v13 = v11->_activeVariantProvider;
 
     v12 = v13;
   }
 
-  v14 = [[PBUIFakeBlurView alloc] initWithVariant:a3 imageProvider:v12 fakeBlurRegistry:v11 wallpaperViewDelegate:0 transformOptions:a5 reachabilityCoordinator:v11->_reachabilityCoordinator];
+  v14 = [[PBUIFakeBlurView alloc] initWithVariant:variant imageProvider:v12 fakeBlurRegistry:v11 wallpaperViewDelegate:0 transformOptions:options reachabilityCoordinator:v11->_reachabilityCoordinator];
   v15 = v14;
   if (v9)
   {
@@ -1077,34 +1077,34 @@ LABEL_34:
   return v15;
 }
 
-- (void)setExternalDisplayConfiguration:(id)a3
+- (void)setExternalDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (![(PBUIExternalDisplayConfiguration *)self->_externalDisplayConfiguration isEqual:?])
   {
-    objc_storeStrong(&self->_externalDisplayConfiguration, a3);
+    objc_storeStrong(&self->_externalDisplayConfiguration, configuration);
   }
 }
 
 - (BOOL)isHomeScreenWallpaperDimmed
 {
-  v2 = [(PBUIPosterWallpaperRemoteViewController *)self currentHomeVariantStyleState];
-  v3 = [v2 isHomeScreenDimmed];
+  currentHomeVariantStyleState = [(PBUIPosterWallpaperRemoteViewController *)self currentHomeVariantStyleState];
+  isHomeScreenDimmed = [currentHomeVariantStyleState isHomeScreenDimmed];
 
-  return v3;
+  return isHomeScreenDimmed;
 }
 
-- (void)setDeviceMotionUpdateInterval:(double)a3
+- (void)setDeviceMotionUpdateInterval:(double)interval
 {
-  if (self->_deviceMotionUpdateInterval != a3)
+  if (self->_deviceMotionUpdateInterval != interval)
   {
     [(PBUIPosterWallpaperViewController *)self->_viewController setDeviceMotionUpdateInterval:?];
   }
 }
 
-- (id)_observerLock_observersForVariant:(int64_t)a3
+- (id)_observerLock_observersForVariant:(int64_t)variant
 {
-  if (a3 == 1)
+  if (variant == 1)
   {
     v4 = &OBJC_IVAR___PBUIPosterWallpaperRemoteViewController__observerLock_homeScreenObservers;
 LABEL_5:
@@ -1113,7 +1113,7 @@ LABEL_5:
     return v5;
   }
 
-  if (!a3)
+  if (!variant)
   {
     v4 = &OBJC_IVAR___PBUIPosterWallpaperRemoteViewController__observerLock_lockScreenObservers;
     goto LABEL_5;
@@ -1124,18 +1124,18 @@ LABEL_5:
   return v5;
 }
 
-- (void)_fireObserverRespondingToSelector:(SEL)a3 variant:(int64_t)a4 block:(id)a5
+- (void)_fireObserverRespondingToSelector:(SEL)selector variant:(int64_t)variant block:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  if (v7)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock(&self->_observerLock);
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(PBUIPosterWallpaperRemoteViewController *)self _observerLock_observersForVariant:a4];
+    v8 = [(PBUIPosterWallpaperRemoteViewController *)self _observerLock_observersForVariant:variant];
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -1178,7 +1178,7 @@ LABEL_5:
     if ([v11 count])
     {
       v15 = v11;
-      v16 = v7;
+      v16 = blockCopy;
       BSDispatchMain();
     }
   }
@@ -1235,9 +1235,9 @@ void __91__PBUIPosterWallpaperRemoteViewController__fireObserverRespondingToSele
   return v5;
 }
 
-- (id)legibilitySettingsForVariant:(int64_t)a3
+- (id)legibilitySettingsForVariant:(int64_t)variant
 {
-  v3 = [(PBUIPosterWallpaperViewController *)self->_viewController legibilitySettingsForVariant:a3];
+  v3 = [(PBUIPosterWallpaperViewController *)self->_viewController legibilitySettingsForVariant:variant];
   v4 = v3;
   if (v3)
   {
@@ -1256,32 +1256,32 @@ void __91__PBUIPosterWallpaperRemoteViewController__fireObserverRespondingToSele
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIPosterWallpaperRemoteViewController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIPosterWallpaperRemoteViewController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIPosterWallpaperRemoteViewController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIPosterWallpaperRemoteViewController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(PBUIPosterWallpaperRemoteViewController *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(PBUIPosterWallpaperRemoteViewController *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__PBUIPosterWallpaperRemoteViewController_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783622E0;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -1300,7 +1300,7 @@ id __81__PBUIPosterWallpaperRemoteViewController_descriptionBuilderWithMultiline
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 1000) withName:@"viewController"];
 }
 
-- (double)_wallpaperScaleForVariant:(int64_t)a3
+- (double)_wallpaperScaleForVariant:(int64_t)variant
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = 1.0;
@@ -1328,17 +1328,17 @@ id __81__PBUIPosterWallpaperRemoteViewController_descriptionBuilderWithMultiline
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          if ([(PBUIWallpaperScaleAssertion *)v13 variant]== a3)
+          if ([(PBUIWallpaperScaleAssertion *)v13 variant]== variant)
           {
-            v14 = [(PBUIWallpaperScaleAssertion *)v13 scale];
-            if (v14 < v9)
+            scale = [(PBUIWallpaperScaleAssertion *)v13 scale];
+            if (scale < v9)
             {
-              v9 = v14;
+              v9 = scale;
             }
 
-            if (v14 >= v8)
+            if (scale >= v8)
             {
-              v8 = v14;
+              v8 = scale;
             }
           }
         }
@@ -1363,11 +1363,11 @@ id __81__PBUIPosterWallpaperRemoteViewController_descriptionBuilderWithMultiline
   return v5;
 }
 
-- (void)_updateWallpaperScaleWithAnimationFactory:(id)a3
+- (void)_updateWallpaperScaleWithAnimationFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   [(PBUIPosterWallpaperRemoteViewController *)self _wallpaperScaleForVariant:[(PBUIPosterWallpaperRemoteViewController *)self activeVariant]];
-  if (v4)
+  if (factoryCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -1375,7 +1375,7 @@ id __81__PBUIPosterWallpaperRemoteViewController_descriptionBuilderWithMultiline
     v8[3] = &unk_278362880;
     v8[4] = self;
     *&v8[5] = v5;
-    [MEMORY[0x277CF0D38] animateWithFactory:v4 actions:v8];
+    [MEMORY[0x277CF0D38] animateWithFactory:factoryCopy actions:v8];
   }
 
   else
@@ -1393,17 +1393,17 @@ uint64_t __85__PBUIPosterWallpaperRemoteViewController__updateWallpaperScaleWith
   return [v1 setTransform:&v3];
 }
 
-- (id)_wallpaperScaleAssertionForVariant:(int64_t)a3 scale:(double)a4
+- (id)_wallpaperScaleAssertionForVariant:(int64_t)variant scale:(double)scale
 {
   objc_initWeak(&location, self);
   v7 = [PBUIWallpaperScaleAssertion alloc];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Wallpaper scale %f", *&a4];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Wallpaper scale %f", *&scale];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__PBUIPosterWallpaperRemoteViewController__wallpaperScaleAssertionForVariant_scale___block_invoke;
   v11[3] = &unk_2783629B0;
   objc_copyWeak(&v12, &location);
-  v9 = [(PBUIWallpaperScaleAssertion *)v7 initWithVariant:a3 scale:v8 forReason:v11 invalidationBlock:a4];
+  v9 = [(PBUIWallpaperScaleAssertion *)v7 initWithVariant:variant scale:v8 forReason:v11 invalidationBlock:scale];
 
   [(NSHashTable *)self->_wallpaperScaleAssertions addObject:v9];
   objc_destroyWeak(&v12);

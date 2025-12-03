@@ -1,41 +1,41 @@
 @interface RAPMapFeaturePickerViewController
 - ($873BFAB23BBB6E2F0B0288ED2F935688)selectedMapRect;
-- (BOOL)mapView:(id)a3 shouldSelectLabelMarker:(id)a4;
+- (BOOL)mapView:(id)view shouldSelectLabelMarker:(id)marker;
 - (CLLocationCoordinate2D)selectedCoordinate;
 - (CLLocationCoordinate2D)tappedCoordinate;
 - (RAPMapStateProtocol)mapViewReportContext;
-- (id)initForPickingFeatureOfKind:(int64_t)a3 withPrompt:(id)a4 title:(id)a5 inMapRect:(id)a6 withCamera:(id)a7 analyticsTarget:(int)a8 preferredMapType:(unint64_t)a9 selection:(id)a10;
-- (id)initForPickingFeatureOfKind:(int64_t)a3 withPrompt:(id)a4 title:(id)a5 inMapRect:(id)a6 withCamera:(id)a7 analyticsTarget:(int)a8 selection:(id)a9;
-- (id)initForPickingFeatureOfKind:(int64_t)a3 withPrompt:(id)a4 title:(id)a5 initialFeatureCoordinate:(CLLocationCoordinate2D)a6 inMapRect:(id)a7 withCamera:(id)a8 analyticsTarget:(int)a9 selection:(id)a10;
-- (id)initForPickingFeatureOfKind:(int64_t)a3 withPrompt:(id)a4 title:(id)a5 initialFeatureCoordinate:(CLLocationCoordinate2D)a6 inMapRect:(id)a7 withCamera:(id)a8 analyticsTarget:(int)a9 selection:(id)a10 textFieldTitle:(id)a11 textFieldText:(id)a12 textFieldWithEditBlock:(id)a13;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (id)initForPickingFeatureOfKind:(int64_t)kind withPrompt:(id)prompt title:(id)title inMapRect:(id)rect withCamera:(id)camera analyticsTarget:(int)target preferredMapType:(unint64_t)type selection:(id)self0;
+- (id)initForPickingFeatureOfKind:(int64_t)kind withPrompt:(id)prompt title:(id)title inMapRect:(id)rect withCamera:(id)camera analyticsTarget:(int)target selection:(id)selection;
+- (id)initForPickingFeatureOfKind:(int64_t)kind withPrompt:(id)prompt title:(id)title initialFeatureCoordinate:(CLLocationCoordinate2D)coordinate inMapRect:(id)rect withCamera:(id)camera analyticsTarget:(int)target selection:(id)self0;
+- (id)initForPickingFeatureOfKind:(int64_t)kind withPrompt:(id)prompt title:(id)title initialFeatureCoordinate:(CLLocationCoordinate2D)coordinate inMapRect:(id)rect withCamera:(id)camera analyticsTarget:(int)target selection:(id)self0 textFieldTitle:(id)self1 textFieldText:(id)self2 textFieldWithEditBlock:(id)self3;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (int)_selectionAction;
 - (void)_cancel;
 - (void)_commit;
-- (void)_handleSegmentedControlTap:(id)a3;
-- (void)_mapTappedForTransitLineSelection:(id)a3;
+- (void)_handleSegmentedControlTap:(id)tap;
+- (void)_mapTappedForTransitLineSelection:(id)selection;
 - (void)_selectionDidChange;
 - (void)_showModeSelector;
 - (void)_updateAttributionInsets;
 - (void)_updateCommitBarItem;
-- (void)displayAnnotationAtCoordinate:(CLLocationCoordinate2D)a3 withText:(id)a4;
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4;
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4;
-- (void)mapView:(id)a3 didSelectLabelMarker:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4;
-- (void)mapViewWillStartRenderingMap:(id)a3;
-- (void)setDidCommit:(BOOL)a3;
-- (void)setHandlerBlocksForUserCommittedSelection:(id)a3 cancelled:(id)a4;
-- (void)setHandlerBlocksForUserCommittedSelection:(id)a3 withRightBarButtonItemTitle:(id)a4;
-- (void)setMapViewZoomLevel:(double)a3;
-- (void)setPrompt:(id)a3;
-- (void)setSelectedLabelMarker:(id)a3;
-- (void)setTextFieldPlaceholder:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)displayAnnotationAtCoordinate:(CLLocationCoordinate2D)coordinate withText:(id)text;
+- (void)mapView:(id)view didAddAnnotationViews:(id)views;
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker;
+- (void)mapView:(id)view didSelectLabelMarker:(id)marker;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered;
+- (void)mapViewWillStartRenderingMap:(id)map;
+- (void)setDidCommit:(BOOL)commit;
+- (void)setHandlerBlocksForUserCommittedSelection:(id)selection cancelled:(id)cancelled;
+- (void)setHandlerBlocksForUserCommittedSelection:(id)selection withRightBarButtonItemTitle:(id)title;
+- (void)setMapViewZoomLevel:(double)level;
+- (void)setPrompt:(id)prompt;
+- (void)setSelectedLabelMarker:(id)marker;
+- (void)setTextFieldPlaceholder:(id)placeholder;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RAPMapFeaturePickerViewController
@@ -62,19 +62,19 @@
   return result;
 }
 
-- (void)_handleSegmentedControlTap:(id)a3
+- (void)_handleSegmentedControlTap:(id)tap
 {
-  v4 = [(MapViewModeSelector *)self->_modeSelector selectedViewMode];
+  selectedViewMode = [(MapViewModeSelector *)self->_modeSelector selectedViewMode];
   v5 = 0;
   mapView = self->_mapView;
-  if (v4 == 2)
+  if (selectedViewMode == 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v4 - 1;
+    v7 = selectedViewMode - 1;
   }
 
   if (v7 <= 6)
@@ -89,28 +89,28 @@
 {
   [(UIView *)self->_floatingControlsView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height];
   v4 = v3;
-  v5 = [(RAPMapFeaturePickerViewController *)self view];
-  [v5 safeAreaInsets];
+  view = [(RAPMapFeaturePickerViewController *)self view];
+  [view safeAreaInsets];
   v7 = v6;
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v8 userInterfaceLayoutDirection];
 
   mapView = self->_mapView;
-  v16 = [(RAPMapFeaturePickerViewController *)self view];
-  [v16 safeAreaInsets];
+  view2 = [(RAPMapFeaturePickerViewController *)self view];
+  [view2 safeAreaInsets];
   v12 = v11;
-  if (v9 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v12 = v11 + 8.0;
-    v13 = [(RAPMapFeaturePickerViewController *)self view];
-    [v13 safeAreaInsets];
+    view3 = [(RAPMapFeaturePickerViewController *)self view];
+    [view3 safeAreaInsets];
   }
 
   else
   {
-    v13 = [(RAPMapFeaturePickerViewController *)self view];
-    [v13 safeAreaInsets];
+    view3 = [(RAPMapFeaturePickerViewController *)self view];
+    [view3 safeAreaInsets];
     v14 = v15 + 8.0;
   }
 
@@ -119,50 +119,50 @@
 
 - (void)_showModeSelector
 {
-  v3 = [(LocationRefinementViewController *)self->_locationPicker userLocationButtonBottomConstraint];
+  userLocationButtonBottomConstraint = [(LocationRefinementViewController *)self->_locationPicker userLocationButtonBottomConstraint];
 
-  if (v3)
+  if (userLocationButtonBottomConstraint)
   {
-    v4 = [(LocationRefinementViewController *)self->_locationPicker userLocationButtonBottomConstraint];
-    v38 = v4;
+    userLocationButtonBottomConstraint2 = [(LocationRefinementViewController *)self->_locationPicker userLocationButtonBottomConstraint];
+    v38 = userLocationButtonBottomConstraint2;
     v5 = [NSArray arrayWithObjects:&v38 count:1];
     [NSLayoutConstraint deactivateConstraints:v5];
 
-    v6 = [(LocationRefinementViewController *)self->_locationPicker snapToUserLocationContainerView];
-    [v6 removeFromSuperview];
+    snapToUserLocationContainerView = [(LocationRefinementViewController *)self->_locationPicker snapToUserLocationContainerView];
+    [snapToUserLocationContainerView removeFromSuperview];
   }
 
   v7 = [[MapViewModeSelector alloc] initWithDesiredViewModes:&off_1016ED880];
   modeSelector = self->_modeSelector;
   self->_modeSelector = v7;
 
-  v9 = [(LocationRefinementViewController *)self->_locationPicker mapView];
-  v10 = [v9 mapType];
+  mapView = [(LocationRefinementViewController *)self->_locationPicker mapView];
+  mapType = [mapView mapType];
   v11 = 3;
   v12 = 7;
-  if (v10 != 108)
+  if (mapType != 108)
   {
     v12 = 0;
   }
 
-  if (v10 != 104)
+  if (mapType != 104)
   {
     v11 = v12;
   }
 
   v13 = 5;
   v14 = -1;
-  if (v10 != 103)
+  if (mapType != 103)
   {
     v14 = 0;
   }
 
-  if (v10 != 4)
+  if (mapType != 4)
   {
     v13 = v14;
   }
 
-  if (v10 <= 103)
+  if (mapType <= 103)
   {
     v11 = v13;
   }
@@ -170,22 +170,22 @@
   v15 = 2;
   v16 = 1;
   v17 = 6;
-  if (v10 != 3)
+  if (mapType != 3)
   {
     v17 = 0;
   }
 
-  if (v10 != 2)
+  if (mapType != 2)
   {
     v16 = v17;
   }
 
-  if (v10 != 1)
+  if (mapType != 1)
   {
     v15 = v16;
   }
 
-  if (v10 <= 3)
+  if (mapType <= 3)
   {
     v18 = v15;
   }
@@ -201,41 +201,41 @@
   floatingControlsView = self->_floatingControlsView;
   self->_floatingControlsView = v19;
 
-  v21 = [(RAPMapFeaturePickerViewController *)self view];
-  [v21 addSubview:self->_floatingControlsView];
+  view = [(RAPMapFeaturePickerViewController *)self view];
+  [view addSubview:self->_floatingControlsView];
 
-  v35 = [(UIView *)self->_floatingControlsView leadingAnchor];
-  v36 = [(RAPMapFeaturePickerViewController *)self view];
-  v34 = [v36 safeAreaLayoutGuide];
-  v33 = [v34 leadingAnchor];
-  v32 = [v35 constraintEqualToAnchor:v33 constant:8.0];
+  leadingAnchor = [(UIView *)self->_floatingControlsView leadingAnchor];
+  view2 = [(RAPMapFeaturePickerViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
   v37[0] = v32;
-  v22 = [(UIView *)self->_floatingControlsView trailingAnchor];
-  v23 = [(RAPMapFeaturePickerViewController *)self view];
-  v24 = [v23 safeAreaLayoutGuide];
-  v25 = [v24 trailingAnchor];
-  v26 = [v22 constraintEqualToAnchor:v25 constant:-8.0];
+  trailingAnchor = [(UIView *)self->_floatingControlsView trailingAnchor];
+  view3 = [(RAPMapFeaturePickerViewController *)self view];
+  safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
   v37[1] = v26;
-  v27 = [(UIView *)self->_floatingControlsView bottomAnchor];
-  v28 = [(MKMapView *)self->_mapView safeAreaLayoutGuide];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:-8.0];
+  bottomAnchor = [(UIView *)self->_floatingControlsView bottomAnchor];
+  safeAreaLayoutGuide3 = [(MKMapView *)self->_mapView safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide3 bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
   v37[2] = v30;
   v31 = [NSArray arrayWithObjects:v37 count:3];
   [NSLayoutConstraint activateConstraints:v31];
 }
 
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered
 {
   self->_mapViewHasFinishedToRenderMap = 1;
-  if ([(RAPMapFeaturePickerViewController *)self requiresRenderedMapToContinue:a3])
+  if ([(RAPMapFeaturePickerViewController *)self requiresRenderedMapToContinue:map])
   {
 
     [(RAPMapFeaturePickerViewController *)self _updateCommitBarItem];
   }
 }
 
-- (void)mapViewWillStartRenderingMap:(id)a3
+- (void)mapViewWillStartRenderingMap:(id)map
 {
   self->_mapViewHasFinishedToRenderMap = 0;
   if ([(RAPMapFeaturePickerViewController *)self requiresRenderedMapToContinue])
@@ -245,9 +245,9 @@
   }
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v14 = a3;
+  viewCopy = view;
   kind = self->_kind;
   if (kind == 2)
   {
@@ -274,15 +274,15 @@
   }
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a4;
-  if (self->_transitLinesAnnotation == v6)
+  annotationCopy = annotation;
+  if (self->_transitLinesAnnotation == annotationCopy)
   {
-    v7 = [a3 dequeueReusableAnnotationViewWithIdentifier:@"transitLinesAnnotation"];
+    v7 = [view dequeueReusableAnnotationViewWithIdentifier:@"transitLinesAnnotation"];
     if (!v7)
     {
-      v7 = [[MKAnnotationView alloc] initWithAnnotation:v6 reuseIdentifier:@"transitLinesAnnotation"];
+      v7 = [[MKAnnotationView alloc] initWithAnnotation:annotationCopy reuseIdentifier:@"transitLinesAnnotation"];
     }
 
     [v7 setCanShowCallout:1];
@@ -298,30 +298,30 @@
   return v7;
 }
 
-- (void)mapView:(id)a3 didSelectLabelMarker:(id)a4
+- (void)mapView:(id)view didSelectLabelMarker:(id)marker
 {
-  v6 = a4;
+  markerCopy = marker;
   if ([(RAPMapFeaturePickerViewController *)self _kindTracksLabelMarkerSelection])
   {
-    objc_storeStrong(&self->_selectedLabelMarker, a4);
+    objc_storeStrong(&self->_selectedLabelMarker, marker);
     [(RAPMapFeaturePickerViewController *)self _selectionDidChange];
   }
 }
 
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker
 {
-  v8 = a4;
-  v5 = [(RAPMapFeaturePickerViewController *)self _kindTracksLabelMarkerSelection];
-  v6 = v8;
-  if (v5)
+  markerCopy = marker;
+  _kindTracksLabelMarkerSelection = [(RAPMapFeaturePickerViewController *)self _kindTracksLabelMarkerSelection];
+  v6 = markerCopy;
+  if (_kindTracksLabelMarkerSelection)
   {
     selectedLabelMarker = self->_selectedLabelMarker;
-    if (!v8 || selectedLabelMarker == v8)
+    if (!markerCopy || selectedLabelMarker == markerCopy)
     {
       self->_selectedLabelMarker = 0;
 
       [(RAPMapFeaturePickerViewController *)self _selectionDidChange];
-      v6 = v8;
+      v6 = markerCopy;
     }
   }
 }
@@ -354,25 +354,25 @@
   return mapViewReportContext;
 }
 
-- (void)setSelectedLabelMarker:(id)a3
+- (void)setSelectedLabelMarker:(id)marker
 {
-  objc_storeStrong(&self->_selectedLabelMarker, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_selectedLabelMarker, marker);
+  markerCopy = marker;
   [(MKMapView *)self->_mapView _selectLabelMarker:self->_selectedLabelMarker animated:1];
 }
 
-- (BOOL)mapView:(id)a3 shouldSelectLabelMarker:(id)a4
+- (BOOL)mapView:(id)view shouldSelectLabelMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  markerCopy = marker;
+  v8 = markerCopy;
   LOBYTE(v9) = 0;
   kind = self->_kind;
   if (kind > 6)
   {
     if (kind == 7)
     {
-      if ([v7 hasBusinessID])
+      if ([markerCopy hasBusinessID])
       {
         v11 = [v8 featureType] == 5;
 LABEL_12:
@@ -388,7 +388,7 @@ LABEL_12:
         goto LABEL_16;
       }
 
-      if ([v7 hasBusinessID])
+      if ([markerCopy hasBusinessID])
       {
         v11 = [v8 featureType] == 6;
         goto LABEL_12;
@@ -403,13 +403,13 @@ LABEL_12:
   {
     if (kind == 1)
     {
-      LOBYTE(v9) = [v7 hasBusinessID];
+      LOBYTE(v9) = [markerCopy hasBusinessID];
     }
   }
 
   else
   {
-    v9 = [v7 isOneWayArrow] ^ 1;
+    v9 = [markerCopy isOneWayArrow] ^ 1;
   }
 
 LABEL_16:
@@ -417,14 +417,14 @@ LABEL_16:
   return v9;
 }
 
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4
+- (void)mapView:(id)view didAddAnnotationViews:(id)views
 {
   transitLinesAnnotation = self->_transitLinesAnnotation;
   if (transitLinesAnnotation)
   {
-    v7 = a4;
-    v8 = [a3 viewForAnnotation:transitLinesAnnotation];
-    v9 = [v7 containsObject:v8];
+    viewsCopy = views;
+    v8 = [view viewForAnnotation:transitLinesAnnotation];
+    v9 = [viewsCopy containsObject:v8];
 
     if (v9)
     {
@@ -439,27 +439,27 @@ LABEL_16:
   }
 }
 
-- (void)displayAnnotationAtCoordinate:(CLLocationCoordinate2D)a3 withText:(id)a4
+- (void)displayAnnotationAtCoordinate:(CLLocationCoordinate2D)coordinate withText:(id)text
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v9 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  textCopy = text;
   v11.latitude = latitude;
   v11.longitude = longitude;
   if (CLLocationCoordinate2DIsValid(v11))
   {
-    v7 = [[RAPTransitLinesAnnotation alloc] initWithCoordinate:v9 title:latitude, longitude];
+    longitude = [[RAPTransitLinesAnnotation alloc] initWithCoordinate:textCopy title:latitude, longitude];
     transitLinesAnnotation = self->_transitLinesAnnotation;
-    self->_transitLinesAnnotation = v7;
+    self->_transitLinesAnnotation = longitude;
 
     [(MKMapView *)self->_mapView addAnnotation:self->_transitLinesAnnotation];
     [(RAPMapFeaturePickerViewController *)self _updateCommitBarItem];
   }
 }
 
-- (void)_mapTappedForTransitLineSelection:(id)a3
+- (void)_mapTappedForTransitLineSelection:(id)selection
 {
-  [a3 locationInView:self->_mapView];
+  [selection locationInView:self->_mapView];
   v5 = v4;
   v7 = v6;
   [(MKMapView *)self->_mapView convertPoint:self->_mapView toCoordinateFromView:?];
@@ -509,10 +509,10 @@ LABEL_16:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v23 + 1) + 8 * i) identifier];
-        if (v20)
+        identifier = [*(*(&v23 + 1) + 8 * i) identifier];
+        if (identifier)
         {
-          [v14 addObject:v20];
+          [v14 addObject:identifier];
         }
       }
 
@@ -562,27 +562,27 @@ LABEL_16:
   return result;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = RAPMapFeaturePickerViewController;
-  [(RAPMapFeaturePickerViewController *)&v7 viewWillDisappear:a3];
+  [(RAPMapFeaturePickerViewController *)&v7 viewWillDisappear:disappear];
   [(LocationRefinementViewController *)self->_locationPicker setMapViewDelegate:0];
-  v4 = [(RAPMapFeaturePickerViewController *)self navigationController];
-  v5 = [v4 isToolbarHidden];
+  navigationController = [(RAPMapFeaturePickerViewController *)self navigationController];
+  isToolbarHidden = [navigationController isToolbarHidden];
 
-  if ((v5 & 1) == 0)
+  if ((isToolbarHidden & 1) == 0)
   {
-    v6 = [(RAPMapFeaturePickerViewController *)self navigationController];
-    [v6 setToolbarHidden:0 animated:0];
+    navigationController2 = [(RAPMapFeaturePickerViewController *)self navigationController];
+    [navigationController2 setToolbarHidden:0 animated:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RAPMapFeaturePickerViewController;
-  [(RAPMapFeaturePickerViewController *)&v4 viewWillAppear:a3];
+  [(RAPMapFeaturePickerViewController *)&v4 viewWillAppear:appear];
   [(LocationRefinementViewController *)self->_locationPicker setMapViewDelegate:self];
 }
 
@@ -591,7 +591,7 @@ LABEL_16:
   v36.receiver = self;
   v36.super_class = RAPMapFeaturePickerViewController;
   [(RAPMapFeaturePickerViewController *)&v36 viewDidLoad];
-  v3 = [(RAPMapFeaturePickerViewController *)self view];
+  view = [(RAPMapFeaturePickerViewController *)self view];
   v4 = self->_kind - 3;
   if (self->_textFieldEditBlock)
   {
@@ -614,39 +614,39 @@ LABEL_16:
     [(LocationRefinementViewController *)v8 setInitialMapViewZoomLevel:?];
   }
 
-  [v3 bounds];
+  [view bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(RAPLocationRefinementViewController *)self->_locationPicker view];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  view2 = [(RAPLocationRefinementViewController *)self->_locationPicker view];
+  [view2 setFrame:{v10, v12, v14, v16}];
 
   [(LocationRefinementViewController *)self->_locationPicker setMapViewDelegate:self];
-  v18 = [(LocationRefinementViewController *)self->_locationPicker mapView];
-  [v18 setShowsUserLocation:1];
+  mapView = [(LocationRefinementViewController *)self->_locationPicker mapView];
+  [mapView setShowsUserLocation:1];
 
-  v19 = [(LocationRefinementViewController *)self->_locationPicker mapView];
-  [v19 _setShowsVenues:1];
+  mapView2 = [(LocationRefinementViewController *)self->_locationPicker mapView];
+  [mapView2 _setShowsVenues:1];
 
   [(LocationRefinementViewController *)self->_locationPicker setInstructionsText:self->_prompt];
-  v20 = [(LocationRefinementViewController *)self->_locationPicker mapView];
-  [v20 visibleMapRect];
+  mapView3 = [(LocationRefinementViewController *)self->_locationPicker mapView];
+  [mapView3 visibleMapRect];
   self->_selectedMapRect.origin.x = v21;
   self->_selectedMapRect.origin.y = v22;
   self->_selectedMapRect.size.width = v23;
   self->_selectedMapRect.size.height = v24;
 
-  v25 = [(LocationRefinementViewController *)self->_locationPicker mapView];
-  [v25 setBackdropViewQualityChangingDisabled:1];
+  mapView4 = [(LocationRefinementViewController *)self->_locationPicker mapView];
+  [mapView4 setBackdropViewQualityChangingDisabled:1];
 
-  v26 = [(LocationRefinementViewController *)self->_locationPicker mapView];
+  mapView5 = [(LocationRefinementViewController *)self->_locationPicker mapView];
   mapView = self->_mapView;
-  self->_mapView = v26;
+  self->_mapView = mapView5;
 
   [(RAPMapFeaturePickerViewController *)self addChildViewController:self->_locationPicker];
-  v28 = [(RAPLocationRefinementViewController *)self->_locationPicker view];
-  [v3 addSubview:v28];
+  view3 = [(RAPLocationRefinementViewController *)self->_locationPicker view];
+  [view addSubview:view3];
 
   [(RAPLocationRefinementViewController *)self->_locationPicker didMoveToParentViewController:self];
   if (self->_rect.origin.x != MKMapRectNull.origin.x || self->_rect.origin.y != MKMapRectNull.origin.y)
@@ -769,24 +769,24 @@ LABEL_34:
   }
 }
 
-- (void)setTextFieldPlaceholder:(id)a3
+- (void)setTextFieldPlaceholder:(id)placeholder
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  placeholderCopy = placeholder;
+  v4 = [placeholderCopy copy];
   textFieldPlaceholder = self->_textFieldPlaceholder;
   self->_textFieldPlaceholder = v4;
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(RAPLocationRefinementViewController *)self->_locationPicker setTextFieldPlaceholder:v6];
+    [(RAPLocationRefinementViewController *)self->_locationPicker setTextFieldPlaceholder:placeholderCopy];
   }
 }
 
-- (void)setMapViewZoomLevel:(double)a3
+- (void)setMapViewZoomLevel:(double)level
 {
-  self->_mapViewZoomLevel = a3;
-  if (a3 >= 0.0)
+  self->_mapViewZoomLevel = level;
+  if (level >= 0.0)
   {
     [(LocationRefinementViewController *)self->_locationPicker setInitialMapViewZoomLevel:?];
   }
@@ -809,8 +809,8 @@ LABEL_34:
 
   if ((kind - 3) < 3)
   {
-    v7 = [(RAPMapFeaturePickerViewController *)self selectedAddressLocation];
-    if (v7)
+    selectedAddressLocation = [(RAPMapFeaturePickerViewController *)self selectedAddressLocation];
+    if (selectedAddressLocation)
     {
       v8 = !self->_didCommit;
     }
@@ -842,9 +842,9 @@ LABEL_34:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [(RAPLocationRefinementViewController *)self->_locationPicker editedValue];
+        editedValue = [(RAPLocationRefinementViewController *)self->_locationPicker editedValue];
         v15 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-        v16 = [v14 stringByTrimmingCharactersInSet:v15];
+        v16 = [editedValue stringByTrimmingCharactersInSet:v15];
 
         v3 = (v3 & 1) != 0 && [v16 length] != 0;
       }
@@ -856,8 +856,8 @@ LABEL_34:
       goto LABEL_31;
     }
 
-    v5 = +[NSBundle mainBundle];
-    v17 = [v5 localizedStringForKey:@"Gathering location data [Report a Problem]" value:@"localized string not found" table:0];
+    selectedTransitLineMarkers = +[NSBundle mainBundle];
+    v17 = [selectedTransitLineMarkers localizedStringForKey:@"Gathering location data [Report a Problem]" value:@"localized string not found" table:0];
     [(RAPMapFeaturePickerViewController *)self setPrompt:v17];
 
     goto LABEL_29;
@@ -866,16 +866,16 @@ LABEL_34:
   if ((kind - 7) < 2)
   {
 LABEL_8:
-    v6 = [(RAPMapFeaturePickerViewController *)self selectedLabelMarker];
-    v3 = v6 != 0;
+    selectedLabelMarker = [(RAPMapFeaturePickerViewController *)self selectedLabelMarker];
+    v3 = selectedLabelMarker != 0;
 
     goto LABEL_31;
   }
 
   if (kind == 6)
   {
-    v5 = [(RAPMapFeaturePickerViewController *)self selectedTransitLineMarkers];
-    if ([v5 count])
+    selectedTransitLineMarkers = [(RAPMapFeaturePickerViewController *)self selectedTransitLineMarkers];
+    if ([selectedTransitLineMarkers count])
     {
       v3 = self->_transitLinesAnnotation != 0;
     }
@@ -889,9 +889,9 @@ LABEL_29:
   }
 
 LABEL_31:
-  v18 = [(RAPMapFeaturePickerViewController *)self requiresRenderedMapToContinue];
-  mapViewHasFinishedToRenderMap = (v18 ^ 1) & v3;
-  if ((v18 ^ 1) & 1) == 0 && (v3)
+  requiresRenderedMapToContinue = [(RAPMapFeaturePickerViewController *)self requiresRenderedMapToContinue];
+  mapViewHasFinishedToRenderMap = (requiresRenderedMapToContinue ^ 1) & v3;
+  if ((requiresRenderedMapToContinue ^ 1) & 1) == 0 && (v3)
   {
     mapViewHasFinishedToRenderMap = self->_mapViewHasFinishedToRenderMap;
   }
@@ -916,19 +916,19 @@ LABEL_31:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = RAPMapFeaturePickerViewController;
-  [(RAPMapFeaturePickerViewController *)&v6 viewDidDisappear:a3];
+  [(RAPMapFeaturePickerViewController *)&v6 viewDidDisappear:disappear];
   if ([(RAPMapFeaturePickerViewController *)self isMovingFromParentViewController])
   {
-    v4 = [(RAPMapFeaturePickerViewController *)self backButtonPressedCallback];
+    backButtonPressedCallback = [(RAPMapFeaturePickerViewController *)self backButtonPressedCallback];
 
-    if (v4)
+    if (backButtonPressedCallback)
     {
-      v5 = [(RAPMapFeaturePickerViewController *)self backButtonPressedCallback];
-      v5[2]();
+      backButtonPressedCallback2 = [(RAPMapFeaturePickerViewController *)self backButtonPressedCallback];
+      backButtonPressedCallback2[2]();
     }
   }
 }
@@ -957,17 +957,17 @@ LABEL_31:
   }
 }
 
-- (void)setHandlerBlocksForUserCommittedSelection:(id)a3 withRightBarButtonItemTitle:(id)a4
+- (void)setHandlerBlocksForUserCommittedSelection:(id)selection withRightBarButtonItemTitle:(id)title
 {
-  v17 = a3;
-  v6 = a4;
-  if (self->_commit != v17)
+  selectionCopy = selection;
+  titleCopy = title;
+  if (self->_commit != selectionCopy)
   {
-    v7 = [v17 copy];
+    v7 = [selectionCopy copy];
     commit = self->_commit;
     self->_commit = v7;
 
-    if (v17)
+    if (selectionCopy)
     {
       if (self->_commitBarItem)
       {
@@ -975,9 +975,9 @@ LABEL_31:
       }
 
       v9 = [UIBarButtonItem alloc];
-      if (v6)
+      if (titleCopy)
       {
-        v10 = [v9 initWithTitle:v6 style:2 target:self action:"_commit"];
+        v10 = [v9 initWithTitle:titleCopy style:2 target:self action:"_commit"];
       }
 
       else
@@ -994,11 +994,11 @@ LABEL_31:
 
     else
     {
-      v11 = [(RAPMapFeaturePickerViewController *)self navigationItem];
-      v12 = [v11 rightBarButtonItem];
+      navigationItem = [(RAPMapFeaturePickerViewController *)self navigationItem];
+      rightBarButtonItem = [navigationItem rightBarButtonItem];
       v13 = self->_commitBarItem;
 
-      if (v12 != v13)
+      if (rightBarButtonItem != v13)
       {
         goto LABEL_11;
       }
@@ -1006,30 +1006,30 @@ LABEL_31:
       v14 = 0;
     }
 
-    v16 = [(RAPMapFeaturePickerViewController *)self navigationItem];
-    [v16 setRightBarButtonItem:v14];
+    navigationItem2 = [(RAPMapFeaturePickerViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v14];
   }
 
 LABEL_11:
 }
 
-- (void)setHandlerBlocksForUserCommittedSelection:(id)a3 cancelled:(id)a4
+- (void)setHandlerBlocksForUserCommittedSelection:(id)selection cancelled:(id)cancelled
 {
-  v19 = a4;
-  v6 = a3;
+  cancelledCopy = cancelled;
+  selectionCopy = selection;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"Next [Report a Problem]" value:@"localized string not found" table:0];
-  [(RAPMapFeaturePickerViewController *)self setHandlerBlocksForUserCommittedSelection:v6 withRightBarButtonItemTitle:v8];
+  [(RAPMapFeaturePickerViewController *)self setHandlerBlocksForUserCommittedSelection:selectionCopy withRightBarButtonItemTitle:v8];
 
-  v9 = v19;
-  if (self->_cancel != v19)
+  v9 = cancelledCopy;
+  if (self->_cancel != cancelledCopy)
   {
-    v10 = [v19 copy];
+    v10 = [cancelledCopy copy];
     cancel = self->_cancel;
     self->_cancel = v10;
 
-    v9 = v19;
-    if (v19)
+    v9 = cancelledCopy;
+    if (cancelledCopy)
     {
       if (self->_cancelBarItem)
       {
@@ -1045,12 +1045,12 @@ LABEL_11:
 
     else
     {
-      v15 = [(RAPMapFeaturePickerViewController *)self navigationItem];
-      v16 = [v15 leftBarButtonItem];
+      navigationItem = [(RAPMapFeaturePickerViewController *)self navigationItem];
+      leftBarButtonItem = [navigationItem leftBarButtonItem];
       v17 = self->_cancelBarItem;
 
       v9 = 0;
-      if (v16 != v17)
+      if (leftBarButtonItem != v17)
       {
         goto LABEL_8;
       }
@@ -1058,32 +1058,32 @@ LABEL_11:
       v14 = 0;
     }
 
-    v18 = [(RAPMapFeaturePickerViewController *)self navigationItem];
-    [v18 setLeftBarButtonItem:v14];
+    navigationItem2 = [(RAPMapFeaturePickerViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v14];
 
-    v9 = v19;
+    v9 = cancelledCopy;
   }
 
 LABEL_8:
 }
 
-- (void)setPrompt:(id)a3
+- (void)setPrompt:(id)prompt
 {
-  v5 = a3;
-  if (self->_prompt != v5)
+  promptCopy = prompt;
+  if (self->_prompt != promptCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_prompt, a3);
+    v6 = promptCopy;
+    objc_storeStrong(&self->_prompt, prompt);
     [(LocationRefinementViewController *)self->_locationPicker setInstructionsText:self->_prompt];
-    v5 = v6;
+    promptCopy = v6;
   }
 }
 
-- (void)setDidCommit:(BOOL)a3
+- (void)setDidCommit:(BOOL)commit
 {
-  if (self->_didCommit != a3)
+  if (self->_didCommit != commit)
   {
-    self->_didCommit = a3;
+    self->_didCommit = commit;
     [(RAPMapFeaturePickerViewController *)self _updateCommitBarItem];
   }
 }
@@ -1112,53 +1112,53 @@ LABEL_8:
   }
 }
 
-- (id)initForPickingFeatureOfKind:(int64_t)a3 withPrompt:(id)a4 title:(id)a5 initialFeatureCoordinate:(CLLocationCoordinate2D)a6 inMapRect:(id)a7 withCamera:(id)a8 analyticsTarget:(int)a9 selection:(id)a10 textFieldTitle:(id)a11 textFieldText:(id)a12 textFieldWithEditBlock:(id)a13
+- (id)initForPickingFeatureOfKind:(int64_t)kind withPrompt:(id)prompt title:(id)title initialFeatureCoordinate:(CLLocationCoordinate2D)coordinate inMapRect:(id)rect withCamera:(id)camera analyticsTarget:(int)target selection:(id)self0 textFieldTitle:(id)self1 textFieldText:(id)self2 textFieldWithEditBlock:(id)self3
 {
-  v14 = *&a9;
-  var1 = a7.var1.var1;
-  var0 = a7.var1.var0;
-  v20 = a7.var0.var1;
-  v21 = a7.var0.var0;
-  longitude = a6.longitude;
-  latitude = a6.latitude;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
-  v29 = [(RAPMapFeaturePickerViewController *)self initForPickingFeatureOfKind:a3 withPrompt:a4 title:a5 initialFeatureCoordinate:a8 inMapRect:v14 withCamera:a10 analyticsTarget:latitude selection:longitude, v21, v20, var0, var1];
-  if (v29)
+  v14 = *&target;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v20 = rect.var0.var1;
+  v21 = rect.var0.var0;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  fieldTitleCopy = fieldTitle;
+  textCopy = text;
+  blockCopy = block;
+  var1 = [(RAPMapFeaturePickerViewController *)self initForPickingFeatureOfKind:kind withPrompt:prompt title:title initialFeatureCoordinate:camera inMapRect:v14 withCamera:selection analyticsTarget:latitude selection:longitude, v21, v20, var0, var1];
+  if (var1)
   {
-    v30 = [v26 copy];
-    v31 = v29[23];
-    v29[23] = v30;
+    v30 = [fieldTitleCopy copy];
+    v31 = var1[23];
+    var1[23] = v30;
 
-    v32 = [v27 copy];
-    v33 = v29[24];
-    v29[24] = v32;
+    v32 = [textCopy copy];
+    v33 = var1[24];
+    var1[24] = v32;
 
-    [v29 _updateCommitBarItem];
-    objc_initWeak(&location, v29);
+    [var1 _updateCommitBarItem];
+    objc_initWeak(&location, var1);
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_100CB5580;
     v37[3] = &unk_101650220;
     objc_copyWeak(&v39, &location);
-    v38 = v28;
+    v38 = blockCopy;
     v34 = objc_retainBlock(v37);
-    v35 = v29[22];
-    v29[22] = v34;
+    v35 = var1[22];
+    var1[22] = v34;
 
     objc_destroyWeak(&v39);
     objc_destroyWeak(&location);
   }
 
-  return v29;
+  return var1;
 }
 
-- (id)initForPickingFeatureOfKind:(int64_t)a3 withPrompt:(id)a4 title:(id)a5 initialFeatureCoordinate:(CLLocationCoordinate2D)a6 inMapRect:(id)a7 withCamera:(id)a8 analyticsTarget:(int)a9 selection:(id)a10
+- (id)initForPickingFeatureOfKind:(int64_t)kind withPrompt:(id)prompt title:(id)title initialFeatureCoordinate:(CLLocationCoordinate2D)coordinate inMapRect:(id)rect withCamera:(id)camera analyticsTarget:(int)target selection:(id)self0
 {
-  longitude = a6.longitude;
-  latitude = a6.latitude;
-  result = [(RAPMapFeaturePickerViewController *)self initForPickingFeatureOfKind:a3 withPrompt:a4 title:a5 inMapRect:a8 withCamera:*&a9 analyticsTarget:a10 selection:a7.var0.var0, a7.var0.var1, a7.var1.var0, a7.var1.var1];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  result = [(RAPMapFeaturePickerViewController *)self initForPickingFeatureOfKind:kind withPrompt:prompt title:title inMapRect:camera withCamera:*&target analyticsTarget:selection selection:rect.var0.var0, rect.var0.var1, rect.var1.var0, rect.var1.var1];
   if (result)
   {
     *(result + 19) = latitude;
@@ -1168,61 +1168,61 @@ LABEL_8:
   return result;
 }
 
-- (id)initForPickingFeatureOfKind:(int64_t)a3 withPrompt:(id)a4 title:(id)a5 inMapRect:(id)a6 withCamera:(id)a7 analyticsTarget:(int)a8 preferredMapType:(unint64_t)a9 selection:(id)a10
+- (id)initForPickingFeatureOfKind:(int64_t)kind withPrompt:(id)prompt title:(id)title inMapRect:(id)rect withCamera:(id)camera analyticsTarget:(int)target preferredMapType:(unint64_t)type selection:(id)self0
 {
-  result = [(RAPMapFeaturePickerViewController *)self initForPickingFeatureOfKind:a3 withPrompt:a4 title:a5 inMapRect:a7 withCamera:*&a8 analyticsTarget:a10 selection:a6.var0.var0, a6.var0.var1, a6.var1.var0, a6.var1.var1];
+  result = [(RAPMapFeaturePickerViewController *)self initForPickingFeatureOfKind:kind withPrompt:prompt title:title inMapRect:camera withCamera:*&target analyticsTarget:selection selection:rect.var0.var0, rect.var0.var1, rect.var1.var0, rect.var1.var1];
   if (result)
   {
     *(result + 56) = 1;
-    *(result + 8) = a9;
+    *(result + 8) = type;
   }
 
   return result;
 }
 
-- (id)initForPickingFeatureOfKind:(int64_t)a3 withPrompt:(id)a4 title:(id)a5 inMapRect:(id)a6 withCamera:(id)a7 analyticsTarget:(int)a8 selection:(id)a9
+- (id)initForPickingFeatureOfKind:(int64_t)kind withPrompt:(id)prompt title:(id)title inMapRect:(id)rect withCamera:(id)camera analyticsTarget:(int)target selection:(id)selection
 {
-  var1 = a6.var1.var1;
-  var0 = a6.var1.var0;
-  v14 = a6.var0.var1;
-  v15 = a6.var0.var0;
-  v19 = a4;
-  v20 = a5;
-  v21 = a7;
-  v22 = a9;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v14 = rect.var0.var1;
+  v15 = rect.var0.var0;
+  promptCopy = prompt;
+  titleCopy = title;
+  cameraCopy = camera;
+  selectionCopy = selection;
   v36.receiver = self;
   v36.super_class = RAPMapFeaturePickerViewController;
   v23 = [(RAPMapFeaturePickerViewController *)&v36 initWithNibName:0 bundle:0];
   v24 = v23;
   if (v23)
   {
-    v23->_kind = a3;
+    v23->_kind = kind;
     v23->_rect.origin.x = v15;
     v23->_rect.origin.y = v14;
     v23->_rect.size.width = var0;
     v23->_rect.size.height = var1;
-    v25 = [v22 copy];
+    v25 = [selectionCopy copy];
     selection = v24->_selection;
     v24->_selection = v25;
 
-    v27 = [v19 copy];
+    v27 = [promptCopy copy];
     prompt = v24->_prompt;
     v24->_prompt = v27;
 
     objc_storeStrong(&v24->_originalPromptMessage, v24->_prompt);
-    v29 = [v21 copy];
+    v29 = [cameraCopy copy];
     mapCamera = v24->_mapCamera;
     v24->_mapCamera = v29;
 
     v31 = kCLLocationCoordinate2DInvalid;
     v24->_selectedCoordinate = kCLLocationCoordinate2DInvalid;
     v24->_initialFeatureCoordinate = v31;
-    v24->_analyticsTarget = a8;
-    [(RAPMapFeaturePickerViewController *)v24 setTitle:v20];
+    v24->_analyticsTarget = target;
+    [(RAPMapFeaturePickerViewController *)v24 setTitle:titleCopy];
     v32 = +[NSBundle mainBundle];
     v33 = [v32 localizedStringForKey:@"Back" value:@"localized string not found" table:0];
-    v34 = [(RAPMapFeaturePickerViewController *)v24 navigationItem];
-    [v34 setBackButtonTitle:v33];
+    navigationItem = [(RAPMapFeaturePickerViewController *)v24 navigationItem];
+    [navigationItem setBackButtonTitle:v33];
 
     v24->_mapViewZoomLevel = -1.0;
   }

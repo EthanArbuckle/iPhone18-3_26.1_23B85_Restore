@@ -55,7 +55,7 @@
 
   [v27 setAccessibilityIdentifier:@"Home.Guest.Categories.Notifications.Alert.NotNowButton"];
   [v17 addAction:v27];
-  [a1 presentViewController:v17 animated:1 completion:0];
+  [self presentViewController:v17 animated:1 completion:0];
 }
 
 + (void)hu_presentingLockLimitAlertIfNeededFromViewController:()HUCommonAlertController home:user:accessory:include:continueActionBlock:cancelActionBlock:
@@ -70,11 +70,11 @@
   v54 = a9;
   v58 = v15;
   v18 = [v14 homeAccessControlForUser:v15];
-  v19 = [v18 restrictedGuestAccessSettings];
-  v20 = [v19 mutableCopy];
+  restrictedGuestAccessSettings = [v18 restrictedGuestAccessSettings];
+  v20 = [restrictedGuestAccessSettings mutableCopy];
 
-  v21 = [v20 accessAllowedToAccessories];
-  v22 = [v21 mutableCopy];
+  accessAllowedToAccessories = [v20 accessAllowedToAccessories];
+  v22 = [accessAllowedToAccessories mutableCopy];
 
   if (a7)
   {
@@ -89,14 +89,14 @@
   v23 = [v22 copy];
   [v20 setAccessAllowedToAccessories:v23];
 
-  v24 = [v20 locksWithReducedFunctionalityDueToSchedule];
+  locksWithReducedFunctionalityDueToSchedule = [v20 locksWithReducedFunctionalityDueToSchedule];
   v55 = v16;
-  v25 = [v24 na_safeContainsObject:v16] & a7;
+  v25 = [locksWithReducedFunctionalityDueToSchedule na_safeContainsObject:v16] & a7;
 
   v26 = HFLogForCategory();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [v15 hf_prettyDescription];
+    hf_prettyDescription = [v15 hf_prettyDescription];
     *buf = 136315906;
     v71 = "+[UIViewController(HUCommonAlertController) hu_presentingLockLimitAlertIfNeededFromViewController:home:user:accessory:include:continueActionBlock:cancelActionBlock:]";
     v72 = 1024;
@@ -104,7 +104,7 @@
     *&v73[4] = 1024;
     *&v73[6] = a7;
     LOWORD(v74[0]) = 2112;
-    *(v74 + 2) = v27;
+    *(v74 + 2) = hf_prettyDescription;
     _os_log_impl(&dword_20CEB6000, v26, OS_LOG_TYPE_DEFAULT, "(%s) displayLimitAlert = %{BOOL}d | isOn = %{BOOL}d | user %@", buf, 0x22u);
   }
 
@@ -113,15 +113,15 @@
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     v29 = MEMORY[0x277CD1650];
-    v30 = [v20 locksWithReducedFunctionalityDueToSchedule];
-    v31 = [v30 allObjects];
-    v32 = [v29 hf_minimumDescriptionsOfAccessories:v31];
+    locksWithReducedFunctionalityDueToSchedule2 = [v20 locksWithReducedFunctionalityDueToSchedule];
+    allObjects = [locksWithReducedFunctionalityDueToSchedule2 allObjects];
+    v32 = [v29 hf_minimumDescriptionsOfAccessories:allObjects];
     v33 = MEMORY[0x277CD1650];
     [v20 accessAllowedToAccessories];
     v51 = v25;
     v35 = v34 = v17;
-    v36 = [v35 allObjects];
-    v37 = [v33 hf_minimumDescriptionsOfAccessories:v36];
+    allObjects2 = [v35 allObjects];
+    v37 = [v33 hf_minimumDescriptionsOfAccessories:allObjects2];
     *buf = 136315650;
     v71 = "+[UIViewController(HUCommonAlertController) hu_presentingLockLimitAlertIfNeededFromViewController:home:user:accessory:include:continueActionBlock:cancelActionBlock:]";
     v72 = 2112;

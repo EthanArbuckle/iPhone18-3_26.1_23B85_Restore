@@ -1,29 +1,29 @@
 @interface AMSAgeVerificationCore
-+ (BOOL)_isTimestamp:(id)a3 validAsOf:(id)a4;
-+ (id)_ageVerificationPresentationResultFromVerificationResult:(id)a3;
-+ (id)_momentOfExpiryFrom:(id)a3;
-+ (id)_resultForAccountVerificationExpirationTimestamp:(id)a3 withBagControlledAgeVerificationRequired:(id)a4 bagWarningThresholdDays:(id)a5 at:(id)a6;
-+ (id)_timestampForWarningThresholdDays:(id)a3 addedTo:(id)a4;
++ (BOOL)_isTimestamp:(id)timestamp validAsOf:(id)of;
++ (id)_ageVerificationPresentationResultFromVerificationResult:(id)result;
++ (id)_momentOfExpiryFrom:(id)from;
++ (id)_resultForAccountVerificationExpirationTimestamp:(id)timestamp withBagControlledAgeVerificationRequired:(id)required bagWarningThresholdDays:(id)days at:(id)at;
++ (id)_timestampForWarningThresholdDays:(id)days addedTo:(id)to;
 @end
 
 @implementation AMSAgeVerificationCore
 
-+ (id)_resultForAccountVerificationExpirationTimestamp:(id)a3 withBagControlledAgeVerificationRequired:(id)a4 bagWarningThresholdDays:(id)a5 at:(id)a6
++ (id)_resultForAccountVerificationExpirationTimestamp:(id)timestamp withBagControlledAgeVerificationRequired:(id)required bagWarningThresholdDays:(id)days at:(id)at
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  timestampCopy = timestamp;
+  daysCopy = days;
+  atCopy = at;
+  requiredCopy = required;
   v14 = objc_alloc_init(AMSAgeVerificationRequiredResult);
   [(AMSAgeVerificationRequiredResult *)v14 setRequiredType:1];
-  v15 = [v13 BOOLValue];
+  bOOLValue = [requiredCopy BOOLValue];
 
-  if ((v15 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  if ([a1 _isAgeVerificationNeededForExpiration:v10 at:v12])
+  if ([self _isAgeVerificationNeededForExpiration:timestampCopy at:atCopy])
   {
     [(AMSAgeVerificationRequiredResult *)v14 setRequiredType:2];
 LABEL_4:
@@ -31,8 +31,8 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v17 = [objc_opt_class() _timestampForWarningThresholdDays:v11 addedTo:v12];
-  if ([a1 _isAgeVerificationNeededForExpiration:v10 at:v17])
+  v17 = [objc_opt_class() _timestampForWarningThresholdDays:daysCopy addedTo:atCopy];
+  if ([self _isAgeVerificationNeededForExpiration:timestampCopy at:v17])
   {
     [(AMSAgeVerificationRequiredResult *)v14 setRequiredType:3];
   }
@@ -44,34 +44,34 @@ LABEL_8:
   return v14;
 }
 
-+ (id)_timestampForWarningThresholdDays:(id)a3 addedTo:(id)a4
++ (id)_timestampForWarningThresholdDays:(id)days addedTo:(id)to
 {
-  v5 = a4;
-  if (a3)
+  toCopy = to;
+  if (days)
   {
-    v6 = [a3 integerValue];
+    integerValue = [days integerValue];
   }
 
   else
   {
-    v6 = 30;
+    integerValue = 30;
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v7 setDay:v6];
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [v8 dateByAddingComponents:v7 toDate:v5 options:0];
+  [v7 setDay:integerValue];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = [currentCalendar dateByAddingComponents:v7 toDate:toCopy options:0];
 
   return v9;
 }
 
-+ (BOOL)_isTimestamp:(id)a3 validAsOf:(id)a4
++ (BOOL)_isTimestamp:(id)timestamp validAsOf:(id)of
 {
-  v6 = a4;
-  v7 = [a1 _momentOfExpiryFrom:a3];
+  ofCopy = of;
+  v7 = [self _momentOfExpiryFrom:timestamp];
   if (v7)
   {
-    v8 = [v6 compare:v7] == -1;
+    v8 = [ofCopy compare:v7] == -1;
   }
 
   else
@@ -82,12 +82,12 @@ LABEL_8:
   return v8;
 }
 
-+ (id)_momentOfExpiryFrom:(id)a3
++ (id)_momentOfExpiryFrom:(id)from
 {
-  v3 = a3;
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  fromCopy = from;
+  if (fromCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{(objc_msgSend(v3, "longLongValue") / 1000)}];
+    v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{(objc_msgSend(fromCopy, "longLongValue") / 1000)}];
   }
 
   else
@@ -98,16 +98,16 @@ LABEL_8:
   return v4;
 }
 
-+ (id)_ageVerificationPresentationResultFromVerificationResult:(id)a3
++ (id)_ageVerificationPresentationResultFromVerificationResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_alloc_init(AMSPromiseResult);
   v5 = objc_alloc_init(AMSAgeVerificationPresentationResult);
   v6 = AMSError(6, @"Age verification screen dismissed without successful age verification", 0, 0);
   v7 = AMSError(0, @"Invalid age verification result", 0, 0);
-  v8 = [v3 requiredType];
+  requiredType = [resultCopy requiredType];
 
-  if (v8 == 1 || v8 == 3)
+  if (requiredType == 1 || requiredType == 3)
   {
     [(AMSAgeVerificationPresentationResult *)v5 setSuccessType:1];
     [(AMSPromiseResult *)v4 setResult:v5];
@@ -115,7 +115,7 @@ LABEL_8:
 
   else
   {
-    if (v8 == 2)
+    if (requiredType == 2)
     {
       v9 = v6;
     }

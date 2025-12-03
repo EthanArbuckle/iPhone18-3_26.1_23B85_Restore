@@ -1,10 +1,10 @@
 @interface PXMemoryDiagnosticsViewController
-- (BOOL)generateSectionTitles:(id *)a3 andTableContent:(id *)a4 forIndex:(int64_t)a5;
-- (PXMemoryDiagnosticsViewController)initWithMemory:(id)a3;
-- (id)assetsForCurationType:(int64_t)a3;
-- (id)curationDebugInformationWithOptions:(id)a3;
+- (BOOL)generateSectionTitles:(id *)titles andTableContent:(id *)content forIndex:(int64_t)index;
+- (PXMemoryDiagnosticsViewController)initWithMemory:(id)memory;
+- (id)assetsForCurationType:(int64_t)type;
+- (id)curationDebugInformationWithOptions:(id)options;
 - (id)radarAttachmentURLs;
-- (id)radarComponentInfoForRoute:(id)a3;
+- (id)radarComponentInfoForRoute:(id)route;
 - (id)radarDescriptionTemplate;
 - (id)radarTitleTemplate;
 - (id)sourceDictionary;
@@ -15,8 +15,8 @@
 - (id)radarDescriptionTemplate
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PHMemory *)self->_sourceMemory localizedTitle];
-  v4 = [v2 stringWithFormat:@"\n- Do you like/dislike the memory? Why?\n\n- Is the title '%@' correct? What would be a better title?\n\n- Do you like the key asset? Would you have picked another one?\n\n- Was this the right time to show you this memory?\n\n- Did you receive a notification? If so, did you appreciate it?\n\n- Other feedback (people, music, movie, selected pictures, place, etc):\n\n", v3];
+  localizedTitle = [(PHMemory *)self->_sourceMemory localizedTitle];
+  v4 = [v2 stringWithFormat:@"\n- Do you like/dislike the memory? Why?\n\n- Is the title '%@' correct? What would be a better title?\n\n- Do you like the key asset? Would you have picked another one?\n\n- Was this the right time to show you this memory?\n\n- Did you receive a notification? If so, did you appreciate it?\n\n- Other feedback (people, music, movie, selected pictures, place, etc):\n\n", localizedTitle];
 
   return v4;
 }
@@ -24,15 +24,15 @@
 - (id)radarTitleTemplate
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PHMemory *)self->_sourceMemory localizedTitle];
-  v4 = [v2 stringWithFormat:@"[MEMORIES] '%@'", v3];
+  localizedTitle = [(PHMemory *)self->_sourceMemory localizedTitle];
+  v4 = [v2 stringWithFormat:@"[MEMORIES] '%@'", localizedTitle];
 
   return v4;
 }
 
-- (id)radarComponentInfoForRoute:(id)a3
+- (id)radarComponentInfoForRoute:(id)route
 {
-  v3 = [a3 isEqualToString:@"Backend"];
+  v3 = [route isEqualToString:@"Backend"];
   v4 = [PXCuratedAssetCollectionDiagnosticsRadarComponentInformation alloc];
   if (v3)
   {
@@ -57,13 +57,13 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PXMemoryDiagnosticsViewController *)self sourceDictionary];
-  v5 = [v4 mutableCopy];
+  sourceDictionary = [(PXMemoryDiagnosticsViewController *)self sourceDictionary];
+  v5 = [sourceDictionary mutableCopy];
 
-  v6 = [(PXCuratedAssetCollectionDiagnosticsViewController *)self fullCurationDebugInformation];
-  if (v6)
+  fullCurationDebugInformation = [(PXCuratedAssetCollectionDiagnosticsViewController *)self fullCurationDebugInformation];
+  if (fullCurationDebugInformation)
   {
-    [v5 addEntriesFromDictionary:v6];
+    [v5 addEntriesFromDictionary:fullCurationDebugInformation];
   }
 
   v7 = [PXMemoriesRelatedDiagnosticsHelper getSummaryFromProviderItem:self->_sourceMemory];
@@ -78,11 +78,11 @@
     [v3 addObject:v8];
   }
 
-  v9 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v10 = [v9 photoAnalysisClient];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  photoAnalysisClient = [px_deprecated_appPhotoLibrary photoAnalysisClient];
   v11 = *MEMORY[0x1E69BEA28];
   v19 = 0;
-  v12 = [v10 requestExportGraphForPurpose:v11 error:&v19];
+  v12 = [photoAnalysisClient requestExportGraphForPurpose:v11 error:&v19];
   v13 = v19;
 
   if (v12)
@@ -117,103 +117,103 @@
   return v3;
 }
 
-- (BOOL)generateSectionTitles:(id *)a3 andTableContent:(id *)a4 forIndex:(int64_t)a5
+- (BOOL)generateSectionTitles:(id *)titles andTableContent:(id *)content forIndex:(int64_t)index
 {
-  if (a5 == 3)
+  if (index == 3)
   {
-    v7 = 2;
+    indexCopy = 2;
   }
 
   else
   {
-    v7 = a5;
+    indexCopy = index;
   }
 
   sourceMemory = self->_sourceMemory;
-  v9 = [(PXMemoryDiagnosticsViewController *)self sourceDictionary];
-  v10 = [PXMemoriesRelatedDiagnosticsHelper generateSectionTitles:a3 andTableContent:a4 forIndex:v7 sourceMemory:sourceMemory sourceDictionary:v9];
+  sourceDictionary = [(PXMemoryDiagnosticsViewController *)self sourceDictionary];
+  v10 = [PXMemoriesRelatedDiagnosticsHelper generateSectionTitles:titles andTableContent:content forIndex:indexCopy sourceMemory:sourceMemory sourceDictionary:sourceDictionary];
 
   return v10;
 }
 
-- (id)curationDebugInformationWithOptions:(id)a3
+- (id)curationDebugInformationWithOptions:(id)options
 {
   v4 = MEMORY[0x1E69789A8];
-  v5 = a3;
-  v6 = [v4 px_deprecated_appPhotoLibrary];
-  v7 = [(PHMemory *)self->_sourceMemory localIdentifier];
+  optionsCopy = options;
+  px_deprecated_appPhotoLibrary = [v4 px_deprecated_appPhotoLibrary];
+  localIdentifier = [(PHMemory *)self->_sourceMemory localIdentifier];
   v10 = 0;
-  v8 = [v6 curationDebugInformationForAssetCollectionWithLocalIdentifier:v7 options:v5 error:&v10];
+  v8 = [px_deprecated_appPhotoLibrary curationDebugInformationForAssetCollectionWithLocalIdentifier:localIdentifier options:optionsCopy error:&v10];
 
   return v8;
 }
 
 - (id)sourceDictionary
 {
-  v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v4 = [v3 photoAnalysisClient];
-  v5 = [(PHMemory *)self->_sourceMemory localIdentifier];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  photoAnalysisClient = [px_deprecated_appPhotoLibrary photoAnalysisClient];
+  localIdentifier = [(PHMemory *)self->_sourceMemory localIdentifier];
   v14 = 0;
-  v6 = [v4 requestMemoryDebugInformationForMemoryWithLocalIdentifier:v5 error:&v14];
+  v6 = [photoAnalysisClient requestMemoryDebugInformationForMemoryWithLocalIdentifier:localIdentifier error:&v14];
   v7 = v14;
 
-  v8 = [(PHMemory *)self->_sourceMemory photosGraphProperties];
-  v9 = [(PHMemory *)self->_sourceMemory localIdentifier];
-  v10 = [(PHMemory *)self->_sourceMemory photosGraphVersion];
+  photosGraphProperties = [(PHMemory *)self->_sourceMemory photosGraphProperties];
+  localIdentifier2 = [(PHMemory *)self->_sourceMemory localIdentifier];
+  photosGraphVersion = [(PHMemory *)self->_sourceMemory photosGraphVersion];
 
-  v11 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v12 = [PXMemoriesRelatedDiagnosticsHelper preprocessDictionary:v8 forMemoryWithLocalIdentifier:v9 algorithmsVersion:v10 inPhotoLibrary:v11];
+  px_deprecated_appPhotoLibrary2 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v12 = [PXMemoriesRelatedDiagnosticsHelper preprocessDictionary:photosGraphProperties forMemoryWithLocalIdentifier:localIdentifier2 algorithmsVersion:photosGraphVersion inPhotoLibrary:px_deprecated_appPhotoLibrary2];
 
   return v12;
 }
 
-- (id)assetsForCurationType:(int64_t)a3
+- (id)assetsForCurationType:(int64_t)type
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v5 = [(PHMemory *)self->_sourceMemory photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  photoLibrary = [(PHMemory *)self->_sourceMemory photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
   v15[0] = v7;
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
   v15[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
-  [v6 setSortDescriptors:v9];
+  [librarySpecificFetchOptions setSortDescriptors:v9];
 
-  [v6 setHighlightCurationType:0];
-  if ((a3 - 1) < 2)
+  [librarySpecificFetchOptions setHighlightCurationType:0];
+  if ((type - 1) < 2)
   {
-    v11 = v6;
+    v11 = librarySpecificFetchOptions;
     v12 = 1;
 LABEL_7:
     [v11 setHighlightCurationType:v12];
     goto LABEL_8;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v11 = v6;
+    v11 = librarySpecificFetchOptions;
     v12 = 2;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!type)
   {
     v10 = [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:self->_sourceMemory referenceAsset:0];
     goto LABEL_9;
   }
 
 LABEL_8:
-  v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self->_sourceMemory options:v6];
+  v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self->_sourceMemory options:librarySpecificFetchOptions];
 LABEL_9:
   v13 = v10;
 
   return v13;
 }
 
-- (PXMemoryDiagnosticsViewController)initWithMemory:(id)a3
+- (PXMemoryDiagnosticsViewController)initWithMemory:(id)memory
 {
-  v5 = a3;
+  memoryCopy = memory;
   v9.receiver = self;
   v9.super_class = PXMemoryDiagnosticsViewController;
   v6 = [(PXCuratedAssetCollectionDiagnosticsViewController *)&v9 init];
@@ -221,7 +221,7 @@ LABEL_9:
   if (v6)
   {
     [(PXMemoryDiagnosticsViewController *)v6 setTitle:@"Memory Debug"];
-    objc_storeStrong(&v7->_sourceMemory, a3);
+    objc_storeStrong(&v7->_sourceMemory, memory);
   }
 
   return v7;

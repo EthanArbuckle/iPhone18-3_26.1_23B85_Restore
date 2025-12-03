@@ -1,10 +1,10 @@
 @interface TIKeyboardExtensionController
-+ (id)keyboardsForBundleID:(id)a3;
-- (id)isKeyboardEnabled:(id)a3;
++ (id)keyboardsForBundleID:(id)d;
+- (id)isKeyboardEnabled:(id)enabled;
 - (id)specifiers;
 - (void)dealloc;
-- (void)setKeyboardEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
+- (void)setKeyboardEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
@@ -27,20 +27,20 @@
   [(TIKeyboardExtensionController *)&v3 dealloc];
 }
 
-- (id)isKeyboardEnabled:(id)a3
+- (id)isKeyboardEnabled:(id)enabled
 {
   v4 = +[TIKeyboardListController inputModes];
-  v5 = [v4 containsObject:{objc_msgSend(a3, "propertyForKey:", PSIDKey)}];
+  v5 = [v4 containsObject:{objc_msgSend(enabled, "propertyForKey:", PSIDKey)}];
 
   return [NSNumber numberWithBool:v5];
 }
 
-- (void)setKeyboardEnabled:(id)a3 specifier:(id)a4
+- (void)setKeyboardEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = [a4 propertyForKey:PSIDKey];
+  v6 = [specifier propertyForKey:PSIDKey];
   v7 = [+[TIKeyboardListController inputModes](TIKeyboardListController "inputModes")];
   v8 = [v7 count];
-  if ([a3 BOOLValue])
+  if ([enabled BOOLValue])
   {
     if (([v7 containsObject:v6] & 1) == 0)
     {
@@ -113,9 +113,9 @@
     v22 = +[PSSpecifier emptyGroupSpecifier];
     [v3 addObject:?];
     v4 = objc_opt_class();
-    v23 = self;
-    v5 = [(TIKeyboardExtensionController *)self specifier];
-    v6 = [v4 keyboardsForBundleID:{objc_msgSend(v5, "propertyForKey:", PSAppSettingsBundleIDKey)}];
+    selfCopy = self;
+    specifier = [(TIKeyboardExtensionController *)self specifier];
+    v6 = [v4 keyboardsForBundleID:{objc_msgSend(specifier, "propertyForKey:", PSAppSettingsBundleIDKey)}];
     v7 = +[TIKeyboardListController inputModes];
     v25 = 0u;
     v26 = 0u;
@@ -139,7 +139,7 @@
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
-          v15 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [v14 displayName], v23, "setKeyboardEnabled:specifier:", "isKeyboardEnabled:", 0, 6, 0);
+          v15 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [v14 displayName], selfCopy, "setKeyboardEnabled:specifier:", "isKeyboardEnabled:", 0, 6, 0);
           [v15 setProperty:objc_msgSend(v14 forKey:{"identifier"), v12}];
           [v15 setProperty:v22 forKey:@"GroupHeader"];
           [v24 addObject:v15];
@@ -157,55 +157,55 @@
       LOBYTE(v10) = 0;
     }
 
-    -[TIKeyboardExtensionController setLastInputModeSpecifier:](v23, "setLastInputModeSpecifier:", [v24 lastObject]);
-    v16 = [obj firstObject];
-    [-[TIKeyboardExtensionController specifier](v23 "specifier")];
-    [-[TIKeyboardExtensionController specifier](v23 "specifier")];
-    v17 = [(TIKeyboardExtensionController *)v23 specifier];
-    v18 = +[TIKeyboardListController keyboardDisplayNameForIdentifier:](TIKeyboardListController, "keyboardDisplayNameForIdentifier:", [v16 identifier]);
-    [v17 setProperty:v18 forKey:PSTitleKey];
-    [(TIKeyboardExtensionController *)v23 setAddExtensionKeyboardController:objc_alloc_init(TIAddExtensionKeyboardController)];
-    [(TIAddExtensionKeyboardController *)[(TIKeyboardExtensionController *)v23 addExtensionKeyboardController] setSpecifier:[(TIKeyboardExtensionController *)v23 specifier]];
-    [(TIAddExtensionKeyboardController *)[(TIKeyboardExtensionController *)v23 addExtensionKeyboardController] setNetworkAccessSpecifierForKeyboardInputMode:v16];
-    if ((v10 & 1) != 0 && [(TIAddExtensionKeyboardController *)[(TIKeyboardExtensionController *)v23 addExtensionKeyboardController] networkAccessSpecifier])
+    -[TIKeyboardExtensionController setLastInputModeSpecifier:](selfCopy, "setLastInputModeSpecifier:", [v24 lastObject]);
+    firstObject = [obj firstObject];
+    [-[TIKeyboardExtensionController specifier](selfCopy "specifier")];
+    [-[TIKeyboardExtensionController specifier](selfCopy "specifier")];
+    specifier2 = [(TIKeyboardExtensionController *)selfCopy specifier];
+    v18 = +[TIKeyboardListController keyboardDisplayNameForIdentifier:](TIKeyboardListController, "keyboardDisplayNameForIdentifier:", [firstObject identifier]);
+    [specifier2 setProperty:v18 forKey:PSTitleKey];
+    [(TIKeyboardExtensionController *)selfCopy setAddExtensionKeyboardController:objc_alloc_init(TIAddExtensionKeyboardController)];
+    [(TIAddExtensionKeyboardController *)[(TIKeyboardExtensionController *)selfCopy addExtensionKeyboardController] setSpecifier:[(TIKeyboardExtensionController *)selfCopy specifier]];
+    [(TIAddExtensionKeyboardController *)[(TIKeyboardExtensionController *)selfCopy addExtensionKeyboardController] setNetworkAccessSpecifierForKeyboardInputMode:firstObject];
+    if ((v10 & 1) != 0 && [(TIAddExtensionKeyboardController *)[(TIKeyboardExtensionController *)selfCopy addExtensionKeyboardController] networkAccessSpecifier])
     {
-      [v24 addObject:{-[TIAddExtensionKeyboardController networkAccessSpecifier](-[TIKeyboardExtensionController addExtensionKeyboardController](v23, "addExtensionKeyboardController"), "networkAccessSpecifier")}];
+      [v24 addObject:{-[TIAddExtensionKeyboardController networkAccessSpecifier](-[TIKeyboardExtensionController addExtensionKeyboardController](selfCopy, "addExtensionKeyboardController"), "networkAccessSpecifier")}];
     }
 
-    if ([(TIKeyboardExtensionController *)v23 aboutPrivacyController])
+    if ([(TIKeyboardExtensionController *)selfCopy aboutPrivacyController])
     {
-      [(TIAboutKeyboardPrivacyController *)[(TIKeyboardExtensionController *)v23 aboutPrivacyController] setSpecifier:v22];
+      [(TIAboutKeyboardPrivacyController *)[(TIKeyboardExtensionController *)selfCopy aboutPrivacyController] setSpecifier:v22];
     }
 
     else
     {
-      [(TIKeyboardExtensionController *)v23 setAboutPrivacyController:[[TIAboutKeyboardPrivacyController alloc] initWithGroupSpecifier:v22 asHeader:0 inListController:v23]];
+      [(TIKeyboardExtensionController *)selfCopy setAboutPrivacyController:[[TIAboutKeyboardPrivacyController alloc] initWithGroupSpecifier:v22 asHeader:0 inListController:selfCopy]];
     }
 
-    [v24 addObjectsFromArray:{+[TIAddExtensionKeyboardController specifiersForExtensionInputMode:parentSpecifier:](TIAddExtensionKeyboardController, "specifiersForExtensionInputMode:parentSpecifier:", objc_msgSend(obj, "firstObject"), -[TIKeyboardExtensionController specifier](v23, "specifier"))}];
-    *&v23->PSListController_opaque[v20] = v24;
+    [v24 addObjectsFromArray:{+[TIAddExtensionKeyboardController specifiersForExtensionInputMode:parentSpecifier:](TIAddExtensionKeyboardController, "specifiersForExtensionInputMode:parentSpecifier:", objc_msgSend(obj, "firstObject"), -[TIKeyboardExtensionController specifier](selfCopy, "specifier"))}];
+    *&selfCopy->PSListController_opaque[v20] = v24;
   }
 
   return v24;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
   [(TIAddExtensionKeyboardController *)[(TIKeyboardExtensionController *)self addExtensionKeyboardController] updateNetworkPolicyState];
-  v8 = [(TIKeyboardExtensionController *)self aboutPrivacyController];
+  aboutPrivacyController = [(TIKeyboardExtensionController *)self aboutPrivacyController];
 
-  [(TIAboutKeyboardPrivacyController *)v8 addPrivacyLinkViewIfNecessaryToHeaderView:a4 forSection:a5];
+  [(TIAboutKeyboardPrivacyController *)aboutPrivacyController addPrivacyLinkViewIfNecessaryToHeaderView:footerView forSection:section];
 }
 
-+ (id)keyboardsForBundleID:(id)a3
++ (id)keyboardsForBundleID:(id)d
 {
   v4 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [+[UIKeyboardInputModeController sharedInputModeController](UIKeyboardInputModeController sharedInputModeController];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sharedInputModeController = [+[UIKeyboardInputModeController sharedInputModeController](UIKeyboardInputModeController sharedInputModeController];
+  v6 = [sharedInputModeController countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -216,17 +216,17 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sharedInputModeController);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if ([a3 isEqualToString:{objc_msgSend(objc_msgSend(v10, "containingBundle"), "bundleIdentifier")}])
+        if ([d isEqualToString:{objc_msgSend(objc_msgSend(v10, "containingBundle"), "bundleIdentifier")}])
         {
           [v4 addObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [sharedInputModeController countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);

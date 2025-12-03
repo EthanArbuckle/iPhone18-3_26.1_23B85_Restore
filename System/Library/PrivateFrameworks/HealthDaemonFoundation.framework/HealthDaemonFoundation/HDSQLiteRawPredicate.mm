@@ -1,42 +1,42 @@
 @interface HDSQLiteRawPredicate
-+ (id)predicateWithSQL:(id)a3 overProperties:(id)a4 values:(id)a5;
-- (BOOL)isCompatibleWithPredicate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)SQLJoinClausesForEntityClass:(Class)a3;
++ (id)predicateWithSQL:(id)l overProperties:(id)properties values:(id)values;
+- (BOOL)isCompatibleWithPredicate:(id)predicate;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLJoinClausesForEntityClass:(Class)class;
 - (id)description;
 - (unint64_t)hash;
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4;
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index;
 @end
 
 @implementation HDSQLiteRawPredicate
 
-+ (id)predicateWithSQL:(id)a3 overProperties:(id)a4 values:(id)a5
++ (id)predicateWithSQL:(id)l overProperties:(id)properties values:(id)values
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  lCopy = l;
+  propertiesCopy = properties;
+  valuesCopy = values;
+  if (!lCopy)
   {
-    [HDSQLiteRawPredicate predicateWithSQL:a2 overProperties:a1 values:?];
+    [HDSQLiteRawPredicate predicateWithSQL:a2 overProperties:self values:?];
   }
 
   v12 = objc_opt_new();
-  v13 = [v9 copy];
+  v13 = [lCopy copy];
   v14 = v12[1];
   v12[1] = v13;
 
-  v15 = [v10 copy];
+  v15 = [propertiesCopy copy];
   v16 = v12[2];
   v12[2] = v15;
 
-  v17 = [v11 copy];
+  v17 = [valuesCopy copy];
   v18 = v12[3];
   v12[3] = v17;
 
   return v12;
 }
 
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -59,7 +59,7 @@
           objc_enumerationMutation(v6);
         }
 
-        _BindValueToStatement(*(*(&v12 + 1) + 8 * v10++), a3, a4);
+        _BindValueToStatement(*(*(&v12 + 1) + 8 * v10++), statement, index);
       }
 
       while (v8 != v10);
@@ -72,7 +72,7 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)SQLJoinClausesForEntityClass:(Class)a3
+- (id)SQLJoinClausesForEntityClass:(Class)class
 {
   v19 = *MEMORY[0x277D85DE8];
   if ([(NSArray *)self->_properties count])
@@ -97,7 +97,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [(objc_class *)a3 joinClausesForProperty:*(*(&v14 + 1) + 8 * i), v14];
+          v11 = [(objc_class *)class joinClausesForProperty:*(*(&v14 + 1) + 8 * i), v14];
           [v5 unionSet:v11];
         }
 
@@ -118,24 +118,24 @@
   return v5;
 }
 
-- (BOOL)isCompatibleWithPredicate:(id)a3
+- (BOOL)isCompatibleWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v9.receiver = self;
   v9.super_class = HDSQLiteRawPredicate;
-  if (![(HDSQLitePredicate *)&v9 isCompatibleWithPredicate:v4])
+  if (![(HDSQLitePredicate *)&v9 isCompatibleWithPredicate:predicateCopy])
   {
     goto LABEL_7;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![(NSString *)self->_sql isEqualToString:v4[1]])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![(NSString *)self->_sql isEqualToString:predicateCopy[1]])
   {
     goto LABEL_7;
   }
 
   properties = self->_properties;
-  v6 = v4[2];
+  v6 = predicateCopy[2];
   if (properties == v6)
   {
     v7 = 1;
@@ -219,9 +219,9 @@ LABEL_8:
   return v4 + v5 + [(NSArray *)self->_properties hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -230,27 +230,27 @@ LABEL_8:
 
   v13.receiver = self;
   v13.super_class = HDSQLiteRawPredicate;
-  if (![(HDSQLitePredicate *)&v13 isEqual:v4])
+  if (![(HDSQLitePredicate *)&v13 isEqual:equalCopy])
   {
     goto LABEL_12;
   }
 
   sql = self->_sql;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (sql != v6 && (!v6 || ![(NSString *)sql isEqual:?]))
   {
     goto LABEL_12;
   }
 
   properties = self->_properties;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (properties != v8 && (!v8 || ![(NSArray *)properties isEqual:?]))
   {
     goto LABEL_12;
   }
 
   values = self->_values;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (values == v10)
   {
     v11 = 1;

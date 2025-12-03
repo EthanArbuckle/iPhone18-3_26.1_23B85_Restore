@@ -1,16 +1,16 @@
 @interface DIIOMedia
-- (DIIOMedia)initWithDevName:(id)a3 error:(id *)a4;
+- (DIIOMedia)initWithDevName:(id)name error:(id *)error;
 - (NSString)BSDName;
-- (id)copyBlockDeviceWithError:(id *)a3;
+- (id)copyBlockDeviceWithError:(id *)error;
 @end
 
 @implementation DIIOMedia
 
-- (DIIOMedia)initWithDevName:(id)a3 error:(id *)a4
+- (DIIOMedia)initWithDevName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 lastPathComponent];
-  v8 = IOBSDNameMatching(kIOMainPortDefault, 0, [v7 UTF8String]);
+  nameCopy = name;
+  lastPathComponent = [nameCopy lastPathComponent];
+  v8 = IOBSDNameMatching(kIOMainPortDefault, 0, [lastPathComponent UTF8String]);
   MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, v8);
 
   if (MatchingService)
@@ -18,16 +18,16 @@
     v13.receiver = self;
     v13.super_class = DIIOMedia;
     self = [(DIIOObject *)&v13 initWithIOObject:MatchingService];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = [NSString stringWithFormat:@"Failed to find IO media entry for %@", v6];
-    v10 = [DIError nilWithEnumValue:153 verboseInfo:v11 error:a4];
+    nameCopy = [NSString stringWithFormat:@"Failed to find IO media entry for %@", nameCopy];
+    selfCopy = [DIError nilWithEnumValue:153 verboseInfo:nameCopy error:error];
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (NSString)BSDName
@@ -37,9 +37,9 @@
   return v2;
 }
 
-- (id)copyBlockDeviceWithError:(id *)a3
+- (id)copyBlockDeviceWithError:(id *)error
 {
-  v3 = [(DIIOObject *)self ioObjectWithClassName:@"IOBlockStorageDevice" iterateParent:1 error:a3];
+  v3 = [(DIIOObject *)self ioObjectWithClassName:@"IOBlockStorageDevice" iterateParent:1 error:error];
   v4 = [(DIIOObject *)[DIBlockDevice alloc] initWithDIIOObject:v3];
 
   return v4;

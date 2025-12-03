@@ -1,41 +1,41 @@
 @interface HKMHValenceDistributionSummaryQuery
-+ (void)configureClientInterface:(id)a3;
++ (void)configureClientInterface:(id)interface;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange;
-- (HKMHValenceDistributionSummaryQuery)initWithDayIndexRange:(id)a3 gregorianCalendar:(id)a4 predicate:(id)a5 options:(unint64_t)a6 ascending:(BOOL)a7 limit:(int64_t)a8 resultsHandler:(id)a9;
-- (void)client_deliverValenceDistributionSummaries:(id)a3 clearPending:(BOOL)a4 isFinalBatch:(BOOL)a5 queryUUID:(id)a6;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKMHValenceDistributionSummaryQuery)initWithDayIndexRange:(id)range gregorianCalendar:(id)calendar predicate:(id)predicate options:(unint64_t)options ascending:(BOOL)ascending limit:(int64_t)limit resultsHandler:(id)handler;
+- (void)client_deliverValenceDistributionSummaries:(id)summaries clearPending:(BOOL)pending isFinalBatch:(BOOL)batch queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKMHValenceDistributionSummaryQuery
 
-- (HKMHValenceDistributionSummaryQuery)initWithDayIndexRange:(id)a3 gregorianCalendar:(id)a4 predicate:(id)a5 options:(unint64_t)a6 ascending:(BOOL)a7 limit:(int64_t)a8 resultsHandler:(id)a9
+- (HKMHValenceDistributionSummaryQuery)initWithDayIndexRange:(id)range gregorianCalendar:(id)calendar predicate:(id)predicate options:(unint64_t)options ascending:(BOOL)ascending limit:(int64_t)limit resultsHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v15 = a4;
-  v16 = a9;
+  var1 = range.var1;
+  var0 = range.var0;
+  calendarCopy = calendar;
+  handlerCopy = handler;
   v17 = MEMORY[0x277CCDA38];
-  v18 = a5;
-  v19 = [v17 stateOfMindType];
+  predicateCopy = predicate;
+  stateOfMindType = [v17 stateOfMindType];
   v26.receiver = self;
   v26.super_class = HKMHValenceDistributionSummaryQuery;
-  v20 = [(HKQuery *)&v26 _initWithObjectType:v19 predicate:v18];
+  v20 = [(HKQuery *)&v26 _initWithObjectType:stateOfMindType predicate:predicateCopy];
 
   if (v20)
   {
     v20->_dayIndexRange.start = var0;
     v20->_dayIndexRange.duration = var1;
-    v21 = [v15 copy];
+    v21 = [calendarCopy copy];
     gregorianCalendar = v20->_gregorianCalendar;
     v20->_gregorianCalendar = v21;
 
-    v20->_options = a6;
-    v20->_ascending = a7;
-    v20->_limit = a8;
-    v23 = [v16 copy];
+    v20->_options = options;
+    v20->_ascending = ascending;
+    v20->_limit = limit;
+    v23 = [handlerCopy copy];
     resultsHandler = v20->_resultsHandler;
     v20->_resultsHandler = v23;
   }
@@ -43,23 +43,23 @@
   return v20;
 }
 
-- (void)client_deliverValenceDistributionSummaries:(id)a3 clearPending:(BOOL)a4 isFinalBatch:(BOOL)a5 queryUUID:(id)a6
+- (void)client_deliverValenceDistributionSummaries:(id)summaries clearPending:(BOOL)pending isFinalBatch:(BOOL)batch queryUUID:(id)d
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(HKQuery *)self queue];
+  summariesCopy = summaries;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __118__HKMHValenceDistributionSummaryQuery_client_deliverValenceDistributionSummaries_clearPending_isFinalBatch_queryUUID___block_invoke;
   v15[3] = &unk_2798A9980;
   v15[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, v15);
+  v16 = summariesCopy;
+  pendingCopy = pending;
+  batchCopy = batch;
+  v17 = dCopy;
+  v13 = dCopy;
+  v14 = summariesCopy;
+  dispatch_async(queue, v15);
 }
 
 void __118__HKMHValenceDistributionSummaryQuery_client_deliverValenceDistributionSummaries_clearPending_isFinalBatch_queryUUID___block_invoke(uint64_t a1)
@@ -141,43 +141,43 @@ uint64_t __118__HKMHValenceDistributionSummaryQuery_client_deliverValenceDistrib
   return result;
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKMHValenceDistributionSummaryQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setDayIndexRange:{self->_dayIndexRange.start, self->_dayIndexRange.duration, v5.receiver, v5.super_class}];
-  [v4 setGregorianCalendar:self->_gregorianCalendar];
-  [v4 setOptions:self->_options];
-  [v4 setAscending:self->_ascending];
-  [v4 setLimit:self->_limit];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setDayIndexRange:{self->_dayIndexRange.start, self->_dayIndexRange.duration, v5.receiver, v5.super_class}];
+  [configurationCopy setGregorianCalendar:self->_gregorianCalendar];
+  [configurationCopy setOptions:self->_options];
+  [configurationCopy setAscending:self->_ascending];
+  [configurationCopy setLimit:self->_limit];
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKMHValenceDistributionSummaryQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverValenceDistributionSummaries_clearPending_isFinalBatch_queryUUID_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverValenceDistributionSummaries_clearPending_isFinalBatch_queryUUID_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x259C8F310](self->_resultsHandler);
-  v6 = [(HKQuery *)self clientQueue];
+  clientQueue = [(HKQuery *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__HKMHValenceDistributionSummaryQuery_queue_deliverError___block_invoke;
   block[3] = &unk_2798A9958;
   block[4] = self;
-  v10 = v4;
+  v10 = errorCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = errorCopy;
+  dispatch_async(clientQueue, block);
 }
 
 uint64_t __58__HKMHValenceDistributionSummaryQuery_queue_deliverError___block_invoke(void *a1)
@@ -215,11 +215,11 @@ uint64_t __58__HKMHValenceDistributionSummaryQuery_queue_deliverError___block_in
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKMHValenceDistributionSummaryQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
 }

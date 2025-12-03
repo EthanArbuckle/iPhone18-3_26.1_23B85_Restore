@@ -1,18 +1,18 @@
 @interface _PASLPDictionary
-- (BOOL)isEqualToDictionary:(id)a3;
-- (_PASLPDictionary)initWithCoder:(id)a3;
-- (_PASLPDictionary)initWithLazyPlistReader:(id)a3 context:(id)a4;
-- (_PASLPDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
+- (BOOL)isEqualToDictionary:(id)dictionary;
+- (_PASLPDictionary)initWithCoder:(id)coder;
+- (_PASLPDictionary)initWithLazyPlistReader:(id)reader context:(id)context;
+- (_PASLPDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
 - (id)_pas_overrideUnlazyDictionary;
 - (id)allKeys;
-- (id)allKeysForObject:(id)a3;
+- (id)allKeysForObject:(id)object;
 - (id)allValues;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3 andKeys:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects andKeys:(id *)keys count:(unint64_t)count;
 @end
 
 @implementation _PASLPDictionary
@@ -74,7 +74,7 @@
   return DeepCopy;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(MEMORY[0x1E695DF90]);
   context = self->_context;
@@ -113,9 +113,9 @@
   return v7;
 }
 
-- (void)getObjects:(id *)a3 andKeys:(id *)a4 count:(unint64_t)a5
+- (void)getObjects:(id *)objects andKeys:(id *)keys count:(unint64_t)count
 {
-  if (a5)
+  if (count)
   {
     context = self->_context;
     if (context)
@@ -127,31 +127,31 @@
     v6[1] = 3221225472;
     v7 = __45___PASLPDictionary_getObjects_andKeys_count___block_invoke;
     v8 = &unk_1E77F24F0;
-    if (context >= a5)
+    if (context >= count)
     {
-      context = a5;
+      context = count;
     }
 
-    v9 = self;
-    v10 = a3;
+    selfCopy = self;
+    objectsCopy = objects;
     v11 = context;
-    v12 = a4;
+    keysCopy = keys;
     pthread_mutex_lock(&runWithGlobalPLPLock_lock_3366);
     v7(v6);
     pthread_mutex_unlock(&runWithGlobalPLPLock_lock_3366);
   }
 }
 
-- (BOOL)isEqualToDictionary:(id)a3
+- (BOOL)isEqualToDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy == self)
   {
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!dictionaryCopy)
   {
 LABEL_11:
     v6 = 0;
@@ -197,17 +197,17 @@ LABEL_12:
   return v6 & 1;
 }
 
-- (id)allKeysForObject:(id)a3
+- (id)allKeysForObject:(id)object
 {
-  v4 = a3;
-  if (v4 && (context = self->_context) != 0 && context->_count)
+  objectCopy = object;
+  if (objectCopy && (context = self->_context) != 0 && context->_count)
   {
     v6 = objc_opt_new();
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __37___PASLPDictionary_allKeysForObject___block_invoke;
     v13 = &unk_1E77F24A0;
-    v14 = v4;
+    v14 = objectCopy;
     v15 = v6;
     v7 = v6;
     [(_PASLPDictionary *)self enumerateKeysAndObjectsUsingBlock:&v10];
@@ -249,20 +249,20 @@ LABEL_12:
   return v8;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  v11 = [(_PASLPDictionaryContext *)self->_context enumerationCache];
-  v12 = v11;
+  var0 = state->var0;
+  enumerationCache = [(_PASLPDictionaryContext *)self->_context enumerationCache];
+  v12 = enumerationCache;
   if (var0)
   {
-    if (v11)
+    if (enumerationCache)
     {
-      [v11 removeAllObjects];
+      [enumerationCache removeAllObjects];
     }
   }
 
-  else if (!v11)
+  else if (!enumerationCache)
   {
     context = self->_context;
     if (context && context->_count)
@@ -275,17 +275,17 @@ LABEL_12:
         v16 = v16->_count;
       }
 
-      if (v16 >= a5)
+      if (v16 >= count)
       {
-        v17 = a5;
+        countCopy = count;
       }
 
       else
       {
-        v17 = v16;
+        countCopy = v16;
       }
 
-      [v14 setCountLimit:v17];
+      [v14 setCountLimit:countCopy];
       [(_PASLPDictionaryContext *)self->_context setEnumerationCache:v15];
       v12 = v15;
       CFAutorelease(v12);
@@ -297,13 +297,13 @@ LABEL_12:
     }
   }
 
-  v18 = 0;
-  if (a5)
+  countCopy2 = 0;
+  if (count)
   {
     while (1)
     {
       v19 = self->_context;
-      if (!v19 || a3->var0 >= v19->_count)
+      if (!v19 || state->var0 >= v19->_count)
       {
         break;
       }
@@ -311,35 +311,35 @@ LABEL_12:
       v20 = [_PASLPReaderProtocol keyAtIndex:"keyAtIndex:usingDictionaryContext:" usingDictionaryContext:?];
       if (!v20)
       {
-        v22 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v22 handleFailureInMethod:a2 object:self file:@"_PASLPDictionary.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPDictionary.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"key"}];
       }
 
       CFRetain(v20);
       CFAutorelease(v20);
-      a4[v18] = v20;
-      ++a3->var0;
+      objects[countCopy2] = v20;
+      ++state->var0;
 
-      if (a5 == ++v18)
+      if (count == ++countCopy2)
       {
-        v18 = a5;
+        countCopy2 = count;
         break;
       }
     }
   }
 
-  a3->var1 = a4;
-  a3->var2 = self;
-  return v18;
+  state->var1 = objects;
+  state->var2 = self;
+  return countCopy2;
 }
 
-- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
-  if (!v6)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_PASLPDictionary.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPDictionary.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v7 = 0;
@@ -360,7 +360,7 @@ LABEL_12:
     v9 = objc_autoreleasePoolPush();
     v10 = [(_PASLPReaderProtocol *)self->_reader keyAtIndex:v7 usingDictionaryContext:self->_context];
     v11 = [(_PASLPReaderProtocol *)self->_reader objectAtIndex:v7 usingDictionaryContext:self->_context];
-    v6[2](v6, v10, v11, &v14);
+    blockCopy[2](blockCopy, v10, v11, &v14);
     v12 = v14;
 
     objc_autoreleasePoolPop(v9);
@@ -377,28 +377,28 @@ LABEL_12:
   return v2;
 }
 
-- (_PASLPDictionary)initWithCoder:(id)a3
+- (_PASLPDictionary)initWithCoder:(id)coder
 {
-  result = a3;
+  result = coder;
   __break(1u);
   return result;
 }
 
-- (_PASLPDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (_PASLPDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
-  v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjects:a3 forKeys:a4 count:a5];
+  v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjects:objects forKeys:keys count:count];
 
   return v6;
 }
 
-- (_PASLPDictionary)initWithLazyPlistReader:(id)a3 context:(id)a4
+- (_PASLPDictionary)initWithLazyPlistReader:(id)reader context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  readerCopy = reader;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (readerCopy)
   {
-    if (v9)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -406,8 +406,8 @@ LABEL_12:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_PASLPDictionary.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"reader"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPDictionary.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"reader"}];
 
     if (v10)
     {
@@ -415,8 +415,8 @@ LABEL_12:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"_PASLPDictionary.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASLPDictionary.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -425,8 +425,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_reader, a3);
-    objc_storeStrong(&v12->_context, a4);
+    objc_storeStrong(&v11->_reader, reader);
+    objc_storeStrong(&v12->_context, context);
   }
 
   return v12;

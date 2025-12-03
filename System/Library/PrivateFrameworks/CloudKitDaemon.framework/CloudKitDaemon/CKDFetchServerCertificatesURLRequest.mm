@@ -1,27 +1,27 @@
 @interface CKDFetchServerCertificatesURLRequest
-+ (BOOL)serverResponseIsComplete:(id)a3;
-+ (__SecTrust)createTrustEvalFromCertificateList:(id)a3 verifiedWithPolicy:(__SecPolicy *)a4;
-+ (id)certificateListServerPlist:(id)a3;
-+ (id)nearestExpirationInCertificateList:(id)a3;
-- (CKDFetchServerCertificatesURLRequest)initWithOperation:(id)a3 verifyWithPolicy:(__SecPolicy *)a4;
++ (BOOL)serverResponseIsComplete:(id)complete;
++ (__SecTrust)createTrustEvalFromCertificateList:(id)list verifiedWithPolicy:(__SecPolicy *)policy;
++ (id)certificateListServerPlist:(id)plist;
++ (id)nearestExpirationInCertificateList:(id)list;
+- (CKDFetchServerCertificatesURLRequest)initWithOperation:(id)operation verifyWithPolicy:(__SecPolicy *)policy;
 - (void)dealloc;
-- (void)requestDidParsePlistObject:(id)a3;
+- (void)requestDidParsePlistObject:(id)object;
 @end
 
 @implementation CKDFetchServerCertificatesURLRequest
 
-- (CKDFetchServerCertificatesURLRequest)initWithOperation:(id)a3 verifyWithPolicy:(__SecPolicy *)a4
+- (CKDFetchServerCertificatesURLRequest)initWithOperation:(id)operation verifyWithPolicy:(__SecPolicy *)policy
 {
   v8.receiver = self;
   v8.super_class = CKDFetchServerCertificatesURLRequest;
-  v5 = [(CKDURLRequest *)&v8 initWithOperation:a3];
+  v5 = [(CKDURLRequest *)&v8 initWithOperation:operation];
   v6 = v5;
   if (v5)
   {
-    v5->_certificateTrustPolicy = a4;
-    if (a4)
+    v5->_certificateTrustPolicy = policy;
+    if (policy)
     {
-      CFRetain(a4);
+      CFRetain(policy);
     }
   }
 
@@ -42,22 +42,22 @@
   [(CKDURLRequest *)&v4 dealloc];
 }
 
-- (void)requestDidParsePlistObject:(id)a3
+- (void)requestDidParsePlistObject:(id)object
 {
   v67[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_opt_class();
-  if (objc_msgSend_serverResponseIsComplete_(v5, v6, v4))
+  if (objc_msgSend_serverResponseIsComplete_(v5, v6, objectCopy))
   {
     v8 = objc_opt_class();
-    v10 = objc_msgSend_certificateListServerPlist_(v8, v9, v4);
+    v10 = objc_msgSend_certificateListServerPlist_(v8, v9, objectCopy);
     v60 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (objc_msgSend_count(v10, v11, v12))
     {
       v16 = 1;
       *&v15 = 138412546;
       v59 = v15;
-      v61 = v4;
+      v61 = objectCopy;
       do
       {
         v17 = objc_msgSend_count(v10, v13, v14, v59) - 1;
@@ -84,7 +84,7 @@
         {
           v32 = TrustEvalFromCertificateList_verifiedWithPolicy;
           v33 = MEMORY[0x277CBEAA8];
-          v34 = objc_msgSend_objectForKeyedSubscript_(v4, v31, @"expiration");
+          v34 = objc_msgSend_objectForKeyedSubscript_(objectCopy, v31, @"expiration");
           v37 = objc_msgSend_integerValue(v34, v35, v36);
           v40 = objc_msgSend_dateWithTimeIntervalSince1970_(v33, v38, v39, v37);
 
@@ -119,7 +119,7 @@
 
           CFRelease(v32);
 
-          v4 = v61;
+          objectCopy = v61;
         }
 
         v55 = objc_msgSend_count(v10, v53, v54);
@@ -142,10 +142,10 @@
   v58 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)serverResponseIsComplete:(id)a3
++ (BOOL)serverResponseIsComplete:(id)complete
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"certs");
+  v3 = objc_msgSend_objectForKeyedSubscript_(complete, a2, @"certs");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -193,24 +193,24 @@
   return v6 & 1;
 }
 
-+ (id)certificateListServerPlist:(id)a3
++ (id)certificateListServerPlist:(id)plist
 {
-  v3 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"certs");
+  v3 = objc_msgSend_objectForKeyedSubscript_(plist, a2, @"certs");
   v5 = objc_msgSend_CKCompactMap_(v3, v4, &unk_28385E3E0);
 
   return v5;
 }
 
-+ (id)nearestExpirationInCertificateList:(id)a3
++ (id)nearestExpirationInCertificateList:(id)list
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  listCopy = list;
   v6 = objc_msgSend_distantFuture(MEMORY[0x277CBEAA8], v4, v5);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v3;
+  v7 = listCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v22, v26, 16);
   if (v9)
   {
@@ -248,11 +248,11 @@
   return v6;
 }
 
-+ (__SecTrust)createTrustEvalFromCertificateList:(id)a3 verifiedWithPolicy:(__SecPolicy *)a4
++ (__SecTrust)createTrustEvalFromCertificateList:(id)list verifiedWithPolicy:(__SecPolicy *)policy
 {
   v19 = *MEMORY[0x277D85DE8];
   trust = 0;
-  v4 = SecTrustCreateWithCertificates(a3, a4, &trust);
+  v4 = SecTrustCreateWithCertificates(list, policy, &trust);
   if (trust)
   {
     v5 = v4 == 0;

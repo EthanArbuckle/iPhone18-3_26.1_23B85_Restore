@@ -1,44 +1,44 @@
 @interface HKSHSleepApneaNotificationInteractedAnalyticsEvent
-- (HKSHSleepApneaNotificationInteractedAnalyticsEvent)initWithNotificationResponse:(id)a3;
+- (HKSHSleepApneaNotificationInteractedAnalyticsEvent)initWithNotificationResponse:(id)response;
 - (id)_notificationAction;
 - (id)_notificationType;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HKSHSleepApneaNotificationInteractedAnalyticsEvent
 
-- (HKSHSleepApneaNotificationInteractedAnalyticsEvent)initWithNotificationResponse:(id)a3
+- (HKSHSleepApneaNotificationInteractedAnalyticsEvent)initWithNotificationResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   v9.receiver = self;
   v9.super_class = HKSHSleepApneaNotificationInteractedAnalyticsEvent;
   v6 = [(HKSHSleepApneaNotificationInteractedAnalyticsEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_response, a3);
+    objc_storeStrong(&v6->_response, response);
   }
 
   return v7;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sourceCopy = source;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v6 setObject:@"true" forKeyedSubscript:@"areHealthNotificationsAuthorized"];
-  v7 = [(HKSHSleepApneaNotificationInteractedAnalyticsEvent *)self _notificationType];
-  [v6 setObject:v7 forKeyedSubscript:@"type"];
+  _notificationType = [(HKSHSleepApneaNotificationInteractedAnalyticsEvent *)self _notificationType];
+  [v6 setObject:_notificationType forKeyedSubscript:@"type"];
 
-  v8 = [(HKSHSleepApneaNotificationInteractedAnalyticsEvent *)self _notificationAction];
-  [v6 setObject:v8 forKeyedSubscript:@"action"];
+  _notificationAction = [(HKSHSleepApneaNotificationInteractedAnalyticsEvent *)self _notificationAction];
+  [v6 setObject:_notificationAction forKeyedSubscript:@"action"];
 
-  v9 = [v5 healthDataSource];
-  v10 = [v5 environmentDataSource];
-  v11 = [v10 currentDate];
+  healthDataSource = [sourceCopy healthDataSource];
+  environmentDataSource = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
   v25 = 0;
-  v12 = [v9 ageWithCurrentDate:v11 error:&v25];
+  v12 = [healthDataSource ageWithCurrentDate:currentDate error:&v25];
   v13 = v25;
 
   v14 = MEMORY[0x277CCC320];
@@ -50,7 +50,7 @@
     if (os_log_type_enabled(*v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2112;
       v29 = v13;
       _os_log_error_impl(&dword_269BCF000, v16, OS_LOG_TYPE_ERROR, "[%{public}@] Error fetching age from data source: %@", buf, 0x16u);
@@ -60,9 +60,9 @@
   }
 
   [v6 setObject:v15 forKeyedSubscript:*MEMORY[0x277CCB7C0]];
-  v17 = [v5 healthDataSource];
+  healthDataSource2 = [sourceCopy healthDataSource];
   v24 = v13;
-  v18 = [v17 biologicalSexWithError:&v24];
+  v18 = [healthDataSource2 biologicalSexWithError:&v24];
   v19 = v24;
 
   if (v19)
@@ -72,7 +72,7 @@
     if (os_log_type_enabled(*v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2112;
       v29 = v19;
       _os_log_error_impl(&dword_269BCF000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] Error biological sex from data source: %@", buf, 0x16u);
@@ -94,37 +94,37 @@
 
 - (id)_notificationType
 {
-  v2 = [(UNNotificationResponse *)self->_response notification];
-  v3 = [v2 request];
-  v4 = [v3 content];
-  v5 = [v4 categoryIdentifier];
+  notification = [(UNNotificationResponse *)self->_response notification];
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
 
-  if ([v5 isEqualToString:@"PossibleSleepApnea"])
+  if ([categoryIdentifier isEqualToString:@"PossibleSleepApnea"])
   {
     v6 = @"possible sleep apnea";
   }
 
-  else if ([v5 isEqualToString:@"SleepApneaNotificationsRemoteDisabled"])
+  else if ([categoryIdentifier isEqualToString:@"SleepApneaNotificationsRemoteDisabled"])
   {
     v6 = @"remote disabled";
   }
 
-  else if ([v5 isEqualToString:@"SleepApneaNotificationsSeedExpired"])
+  else if ([categoryIdentifier isEqualToString:@"SleepApneaNotificationsSeedExpired"])
   {
     v6 = @"seed expired";
   }
 
-  else if ([v5 isEqualToString:@"SleepApneaNotificationsLocalDeviceNoLongerSupported"])
+  else if ([categoryIdentifier isEqualToString:@"SleepApneaNotificationsLocalDeviceNoLongerSupported"])
   {
     v6 = @"feature no longer supported on local device";
   }
 
-  else if ([v5 isEqualToString:@"SleepApneaNotificationsActiveRemoteDeviceNoLongerSupported"])
+  else if ([categoryIdentifier isEqualToString:@"SleepApneaNotificationsActiveRemoteDeviceNoLongerSupported"])
   {
     v6 = @"feature no longer supported on active remote device";
   }
 
-  else if ([v5 isEqualToString:@"SleepApneaNotificationsFeatureIsAvailableAgainAndEnabled"])
+  else if ([categoryIdentifier isEqualToString:@"SleepApneaNotificationsFeatureIsAvailableAgainAndEnabled"])
   {
     v6 = @"feature is available again and enabled";
   }
@@ -139,18 +139,18 @@
 
 - (id)_notificationAction
 {
-  v2 = [(UNNotificationResponse *)self->_response actionIdentifier];
-  if ([v2 isEqualToString:*MEMORY[0x277CE20E8]])
+  actionIdentifier = [(UNNotificationResponse *)self->_response actionIdentifier];
+  if ([actionIdentifier isEqualToString:*MEMORY[0x277CE20E8]])
   {
     v3 = @"openApp";
   }
 
-  else if ([v2 isEqualToString:*MEMORY[0x277CE20F0]])
+  else if ([actionIdentifier isEqualToString:*MEMORY[0x277CE20F0]])
   {
     v3 = @"dismiss";
   }
 
-  else if ([v2 isEqualToString:@"SleepApneaNotificationInteractionAnalyticsNotificationActionLearnMore"])
+  else if ([actionIdentifier isEqualToString:@"SleepApneaNotificationInteractionAnalyticsNotificationActionLearnMore"])
   {
     v3 = @"learnMore";
   }

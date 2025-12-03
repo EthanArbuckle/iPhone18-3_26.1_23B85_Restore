@@ -1,11 +1,11 @@
 @interface IMMetricsAppCloseEvent
-- (IMMetricsAppCloseEvent)initWithReason:(int64_t)a3;
-- (void)setExitTypeWithSuspendReason:(int64_t)a3;
+- (IMMetricsAppCloseEvent)initWithReason:(int64_t)reason;
+- (void)setExitTypeWithSuspendReason:(int64_t)reason;
 @end
 
 @implementation IMMetricsAppCloseEvent
 
-- (IMMetricsAppCloseEvent)initWithReason:(int64_t)a3
+- (IMMetricsAppCloseEvent)initWithReason:(int64_t)reason
 {
   v7.receiver = self;
   v7.super_class = IMMetricsAppCloseEvent;
@@ -14,17 +14,17 @@
   if (v4)
   {
     [(IMAMSMetricsEvent *)v4 setEventType:@"app_close"];
-    [(IMMetricsAppCloseEvent *)v5 setExitTypeWithSuspendReason:a3];
+    [(IMMetricsAppCloseEvent *)v5 setExitTypeWithSuspendReason:reason];
   }
 
   return v5;
 }
 
-- (void)setExitTypeWithSuspendReason:(int64_t)a3
+- (void)setExitTypeWithSuspendReason:(int64_t)reason
 {
-  if (a3)
+  if (reason)
   {
-    if (a3 != 1)
+    if (reason != 1)
     {
       return;
     }

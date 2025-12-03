@@ -1,21 +1,21 @@
 @interface SummarySharingOnboardingChooseSelectionFlowViewController
-- (_TtC18HealthExperienceUI57SummarySharingOnboardingChooseSelectionFlowViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC18HealthExperienceUI57SummarySharingOnboardingChooseSelectionFlowViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC18HealthExperienceUI57SummarySharingOnboardingChooseSelectionFlowViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC18HealthExperienceUI57SummarySharingOnboardingChooseSelectionFlowViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)hxui_cancelButtonTapped;
 - (void)hxui_primaryFooterButtonTapped;
 - (void)hxui_secondaryFooterButtonTapped;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SummarySharingOnboardingChooseSelectionFlowViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for SummarySharingOnboardingChooseSelectionFlowViewController();
   v4 = v6.receiver;
-  [(OBBaseWelcomeController *)&v6 viewDidAppear:v3];
+  [(OBBaseWelcomeController *)&v6 viewDidAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR____TtC18HealthExperienceUI57SummarySharingOnboardingChooseSelectionFlowViewController_selectionFlowContext];
   if (*(v5 + 72) == 1)
   {
@@ -31,13 +31,13 @@
 
 - (void)hxui_primaryFooterButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA33E32C();
 }
 
 - (void)hxui_secondaryFooterButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA33E7C0();
 }
 
@@ -46,21 +46,21 @@
   memset(v4, 0, 24);
   v4[3] = 12;
   v5 = 0;
-  v3 = self;
+  selfCopy = self;
 
   sub_1B9FEF9F4(self, v4);
 
-  [(SummarySharingOnboardingChooseSelectionFlowViewController *)v3 dismissViewControllerAnimated:1 completion:0];
+  [(SummarySharingOnboardingChooseSelectionFlowViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (_TtC18HealthExperienceUI57SummarySharingOnboardingChooseSelectionFlowViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18HealthExperienceUI57SummarySharingOnboardingChooseSelectionFlowViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18HealthExperienceUI57SummarySharingOnboardingChooseSelectionFlowViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18HealthExperienceUI57SummarySharingOnboardingChooseSelectionFlowViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

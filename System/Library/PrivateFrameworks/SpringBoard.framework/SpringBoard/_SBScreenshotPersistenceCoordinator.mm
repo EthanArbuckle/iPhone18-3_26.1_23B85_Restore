@@ -2,16 +2,16 @@
 - (BOOL)_isWritingSnapshot;
 - (void)_decrementWriteCount;
 - (void)_incrementWriteCount;
-- (void)saveScreenshot:(id)a3 withCompletion:(id)a4;
+- (void)saveScreenshot:(id)screenshot withCompletion:(id)completion;
 @end
 
 @implementation _SBScreenshotPersistenceCoordinator
 
-- (void)saveScreenshot:(id)a3 withCompletion:(id)a4
+- (void)saveScreenshot:(id)screenshot withCompletion:(id)completion
 {
-  v12 = a3;
-  v7 = a4;
-  if (!v12)
+  screenshotCopy = screenshot;
+  completionCopy = completion;
+  if (!screenshotCopy)
   {
     [_SBScreenshotPersistenceCoordinator saveScreenshot:a2 withCompletion:self];
   }
@@ -29,20 +29,20 @@
     v8 = dlsym(v9, "PLSaveImageToCameraRollWithTypeAndExtension");
     __PhotoLibrarySaveImageFunction_saveImageFunction = v8;
 LABEL_7:
-    (v8)(v12, @"public.png", @"PNG", self, sel__finishedWritingScreenshot_didFinishSavingWithError_context_, 0);
+    (v8)(screenshotCopy, @"public.png", @"PNG", self, sel__finishedWritingScreenshot_didFinishSavingWithError_context_, 0);
     goto LABEL_8;
   }
 
-  (__PhotoLibrarySaveImageFunction_saveImageFunction)(v12, @"public.png", @"PNG", self, sel__finishedWritingScreenshot_didFinishSavingWithError_context_, 0);
+  (__PhotoLibrarySaveImageFunction_saveImageFunction)(screenshotCopy, @"public.png", @"PNG", self, sel__finishedWritingScreenshot_didFinishSavingWithError_context_, 0);
 LABEL_8:
 }
 
 - (BOOL)_isWritingSnapshot
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_screenshotWriteCount != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_screenshotWriteCount != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

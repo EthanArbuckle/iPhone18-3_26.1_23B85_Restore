@@ -1,21 +1,21 @@
 @interface AMSSignOutTask
-+ (id)_signOutOfAccount:(id)a3;
-- (AMSSignOutTask)initWithAccounts:(id)a3;
++ (id)_signOutOfAccount:(id)account;
+- (AMSSignOutTask)initWithAccounts:(id)accounts;
 - (id)performTask;
 @end
 
 @implementation AMSSignOutTask
 
-- (AMSSignOutTask)initWithAccounts:(id)a3
+- (AMSSignOutTask)initWithAccounts:(id)accounts
 {
-  v5 = a3;
+  accountsCopy = accounts;
   v9.receiver = self;
   v9.super_class = AMSSignOutTask;
   v6 = [(AMSTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accounts, a3);
+    objc_storeStrong(&v6->_accounts, accounts);
   }
 
   return v7;
@@ -29,9 +29,9 @@
   v5[3] = &unk_1E73B3588;
   v5[4] = self;
   v2 = [(AMSTask *)self performTaskWithPromiseBlock:v5];
-  v3 = [v2 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v2 binaryPromiseAdapter];
 
-  return v3;
+  return binaryPromiseAdapter;
 }
 
 id __29__AMSSignOutTask_performTask__block_invoke(uint64_t a1)
@@ -89,13 +89,6 @@ id __29__AMSSignOutTask_performTask__block_invoke_4(uint64_t a1, void *a2)
   return v3;
 }
 
-{
-  v2 = a2;
-  v3 = [objc_opt_class() _signOutOfAccount:v2];
-
-  return v3;
-}
-
 id __29__AMSSignOutTask_performTask__block_invoke_3(uint64_t a1, void *a2)
 {
   v6[0] = MEMORY[0x1E69E9820];
@@ -119,39 +112,39 @@ id __29__AMSSignOutTask_performTask__block_invoke_3(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)_signOutOfAccount:(id)a3
++ (id)_signOutOfAccount:(id)account
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 ams_isiTunesAccount];
+  accountCopy = account;
+  ams_isiTunesAccount = [accountCopy ams_isiTunesAccount];
   v5 = +[AMSLogConfig sharedAccountsConfig];
   v6 = v5;
-  if (v4)
+  if (ams_isiTunesAccount)
   {
     if (!v5)
     {
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
-      v10 = AMSHashIfNeeded(v3);
+      v10 = AMSHashIfNeeded(accountCopy);
       *buf = 138543874;
       v23 = v8;
       v24 = 2114;
       v25 = v9;
       v26 = 2114;
       v27 = v10;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Signing out of an account. account = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Signing out of an account. account = %{public}@", buf, 0x20u);
     }
 
     v11 = objc_alloc_init(AMSBinaryPromise);
-    v12 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v13 = [(AMSBinaryPromise *)v11 completionHandlerAdapter];
-    [v12 removeAccount:v3 withCompletionHandler:v13];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    completionHandlerAdapter = [(AMSBinaryPromise *)v11 completionHandlerAdapter];
+    [ams_sharedAccountStore removeAccount:accountCopy withCompletionHandler:completionHandlerAdapter];
   }
 
   else
@@ -161,28 +154,28 @@ id __29__AMSSignOutTask_performTask__block_invoke_3(uint64_t a1, void *a2)
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v6 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v15 = objc_opt_class();
       v16 = AMSLogKey();
-      v17 = AMSHashIfNeeded(v3);
+      v17 = AMSHashIfNeeded(accountCopy);
       *buf = 138543874;
       v23 = v15;
       v24 = 2114;
       v25 = v16;
       v26 = 2114;
       v27 = v17;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Ignoring a non-iTunes account. account = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Ignoring a non-iTunes account. account = %{public}@", buf, 0x20u);
     }
 
     v18 = MEMORY[0x1E696AEC0];
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    v12 = [v18 stringWithFormat:@"%@ can only operate on iTunes accounts.", v20];
+    ams_sharedAccountStore = [v18 stringWithFormat:@"%@ can only operate on iTunes accounts.", v20];
 
-    v13 = AMSError(2, @"Non-iTunes Account", v12, 0);
-    v11 = [AMSBinaryPromise promiseWithError:v13];
+    completionHandlerAdapter = AMSError(2, @"Non-iTunes Account", ams_sharedAccountStore, 0);
+    v11 = [AMSBinaryPromise promiseWithError:completionHandlerAdapter];
   }
 
   return v11;

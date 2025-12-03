@@ -1,7 +1,7 @@
 @interface ODIGestaltHlpr
 + (id)getSharedInstance;
 - (BOOL)hasPKASupport;
-- (id)copyAnswer:(__CFString *)a3;
+- (id)copyAnswer:(__CFString *)answer;
 - (int64_t)sikaVersion;
 @end
 
@@ -31,20 +31,20 @@ uint64_t __35__ODIGestaltHlpr_getSharedInstance__block_invoke()
   v2 = [(ODIGestaltHlpr *)self copyAnswer:@"HasPKA"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)copyAnswer:(__CFString *)a3
+- (id)copyAnswer:(__CFString *)answer
 {
-  if (a3)
+  if (answer)
   {
     return MGCopyAnswer();
   }

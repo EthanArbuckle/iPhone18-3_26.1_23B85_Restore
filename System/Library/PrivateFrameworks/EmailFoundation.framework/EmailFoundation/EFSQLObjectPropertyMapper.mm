@@ -1,27 +1,27 @@
 @interface EFSQLObjectPropertyMapper
-- (EFSQLObjectPropertyMapper)initWithTable:(id)a3 keyPathMappers:(id)a4 tableRelationships:(id)a5 additionalColumns:(id)a6 additionalSelectExpressions:(id)a7;
+- (EFSQLObjectPropertyMapper)initWithTable:(id)table keyPathMappers:(id)mappers tableRelationships:(id)relationships additionalColumns:(id)columns additionalSelectExpressions:(id)expressions;
 @end
 
 @implementation EFSQLObjectPropertyMapper
 
-- (EFSQLObjectPropertyMapper)initWithTable:(id)a3 keyPathMappers:(id)a4 tableRelationships:(id)a5 additionalColumns:(id)a6 additionalSelectExpressions:(id)a7
+- (EFSQLObjectPropertyMapper)initWithTable:(id)table keyPathMappers:(id)mappers tableRelationships:(id)relationships additionalColumns:(id)columns additionalSelectExpressions:(id)expressions
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  tableCopy = table;
+  mappersCopy = mappers;
+  relationshipsCopy = relationships;
+  columnsCopy = columns;
+  expressionsCopy = expressions;
   v21.receiver = self;
   v21.super_class = EFSQLObjectPropertyMapper;
   v17 = [(EFSQLObjectPropertyMapper *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_mainTable, a3);
-    objc_storeStrong(&v18->_keyPathMappers, a4);
-    objc_storeStrong(&v18->_tableRelationships, a5);
-    objc_storeStrong(&v18->_additionalColumns, a6);
-    objc_storeStrong(&v18->_additionalSelectExpressions, a7);
+    objc_storeStrong(&v17->_mainTable, table);
+    objc_storeStrong(&v18->_keyPathMappers, mappers);
+    objc_storeStrong(&v18->_tableRelationships, relationships);
+    objc_storeStrong(&v18->_additionalColumns, columns);
+    objc_storeStrong(&v18->_additionalSelectExpressions, expressions);
   }
 
   return v18;

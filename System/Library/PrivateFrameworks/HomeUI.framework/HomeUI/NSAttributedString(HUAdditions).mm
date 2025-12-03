@@ -21,7 +21,7 @@
   v11 = objc_alloc_init(MEMORY[0x277D74260]);
   [v11 setMinimumScaleFactor:a4];
   [v11 setMaximumNumberOfLines:a6];
-  [a1 boundingRectWithSize:1 options:v11 context:{a2, a3}];
+  [self boundingRectWithSize:1 options:v11 context:{a2, a3}];
   [v11 actualScaleFactor];
   v13 = v12;
 
@@ -30,20 +30,20 @@
 
 - (uint64_t)hu_attributedStringScaledByFactor:()HUAdditions
 {
-  v4 = [a1 length];
+  v4 = [self length];
 
-  return [a1 _ui_attributedSubstringFromRange:0 scaledByScaleFactor:{v4, a2}];
+  return [self _ui_attributedSubstringFromRange:0 scaledByScaleFactor:{v4, a2}];
 }
 
 - (id)hu_scaledAttributedStringWithBoundingSize:()HUAdditions minimumScaleFactor:maximumNumberOfLines:
 {
-  [a1 hu_scaleFactorForBoundingSize:? minimumScaleFactor:? maximumNumberOfLines:?];
+  [self hu_scaleFactorForBoundingSize:? minimumScaleFactor:? maximumNumberOfLines:?];
   v3 = v2;
-  v4 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if (v3 < 1.0)
   {
-    v6 = [v4 hu_attributedStringScaledByFactor:v3];
+    v6 = [selfCopy hu_attributedStringScaledByFactor:v3];
 
     v5 = v6;
   }
@@ -79,7 +79,7 @@
   v8 = a5;
   v9 = a4;
   v10 = [a3 stringByAppendingString:v9];
-  v11 = [a1 hu_attributedLinkStringForString:v10 linkString:v9 linkURL:v8];
+  v11 = [self hu_attributedLinkStringForString:v10 linkString:v9 linkURL:v8];
 
   return v11;
 }
@@ -91,14 +91,14 @@
   v8 = a4;
   v9 = a5;
   v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:v7];
-  v11 = [v7 string];
-  v12 = [v11 rangeOfString:v8 options:4];
+  string = [v7 string];
+  v12 = [string rangeOfString:v8 options:4];
   v14 = v13;
 
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [v7 string];
-    NSLog(&cfstr_LinkstringIsEx.isa, v8, v15);
+    string2 = [v7 string];
+    NSLog(&cfstr_LinkstringIsEx.isa, v8, string2);
   }
 
   else
@@ -135,18 +135,18 @@
   {
     v20 = v18;
     v21 = v19;
-    v22 = [MEMORY[0x277CBEB38] dictionary];
-    [v22 setObject:&unk_282491EE0 forKey:*MEMORY[0x277D741F0]];
-    v23 = [MEMORY[0x277D75348] hf_keyColor];
-    [v22 setObject:v23 forKey:*MEMORY[0x277D740C0]];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:&unk_282491EE0 forKey:*MEMORY[0x277D741F0]];
+    hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+    [dictionary setObject:hf_keyColor forKey:*MEMORY[0x277D740C0]];
 
-    [v22 na_safeSetObject:v13 forKey:*MEMORY[0x277D740E8]];
+    [dictionary na_safeSetObject:v13 forKey:*MEMORY[0x277D740E8]];
     if (v14)
     {
-      [v22 addEntriesFromDictionary:v14];
+      [dictionary addEntriesFromDictionary:v14];
     }
 
-    [v17 addAttributes:v22 range:{v20, v21}];
+    [v17 addAttributes:dictionary range:{v20, v21}];
   }
 
   return v17;
@@ -155,7 +155,7 @@
 - (id)hu_attributedStringWithDefaultAttributes:()HUAdditions
 {
   v4 = a3;
-  v5 = [a1 hu_attributedStringWithDefaultAttributes:v4 inRange:{0, objc_msgSend(a1, "length")}];
+  v5 = [self hu_attributedStringWithDefaultAttributes:v4 inRange:{0, objc_msgSend(self, "length")}];
 
   return v5;
 }
@@ -164,8 +164,8 @@
 {
   v8 = a3;
   v9 = objc_alloc(MEMORY[0x277CCAB48]);
-  v10 = [a1 string];
-  v11 = [v9 initWithString:v10 attributes:v8];
+  string = [self string];
+  v11 = [v9 initWithString:string attributes:v8];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -173,7 +173,7 @@
   v24[3] = &unk_277DC1D48;
   v12 = v11;
   v25 = v12;
-  [a1 enumerateAttributesInRange:a4 options:a5 usingBlock:{0, v24}];
+  [self enumerateAttributesInRange:a4 options:a5 usingBlock:{0, v24}];
   v13 = *MEMORY[0x277D740A8];
   v14 = [v8 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
 
@@ -200,10 +200,10 @@
 - (id)hu_attributedStringByTrimmingCharactersInCharacterSet:()HUAdditions
 {
   v4 = a3;
-  v5 = [a1 string];
-  v6 = [v4 invertedSet];
+  string = [self string];
+  invertedSet = [v4 invertedSet];
 
-  v7 = [v5 rangeOfCharacterFromSet:v6];
+  v7 = [string rangeOfCharacterFromSet:invertedSet];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:&stru_2823E0EE8];
@@ -212,8 +212,8 @@
   else
   {
     v9 = v7;
-    v10 = [v5 rangeOfCharacterFromSet:v6 options:4];
-    v8 = [a1 attributedSubstringFromRange:{v9, v11 - v9 + v10}];
+    v10 = [string rangeOfCharacterFromSet:invertedSet options:4];
+    v8 = [self attributedSubstringFromRange:{v9, v11 - v9 + v10}];
   }
 
   v12 = v8;
@@ -225,8 +225,8 @@
 {
   if (!hu_attributedStringByTrimmingWhitespaceNewlinesAndObjectReplacementCharacters_whitespaceNewlineAndObjectReplacementCharacters)
   {
-    v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v3 = [v2 mutableCopy];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v3 = [whitespaceAndNewlineCharacterSet mutableCopy];
 
     [v3 addCharactersInString:@"\uFFFC"];
     v4 = [v3 copy];
@@ -234,7 +234,7 @@
     hu_attributedStringByTrimmingWhitespaceNewlinesAndObjectReplacementCharacters_whitespaceNewlineAndObjectReplacementCharacters = v4;
   }
 
-  return [a1 hu_attributedStringByTrimmingCharactersInCharacterSet:?];
+  return [self hu_attributedStringByTrimmingCharactersInCharacterSet:?];
 }
 
 + (id)hu_safeAttributedStringWithHTML:()HUAdditions attributes:
@@ -276,8 +276,8 @@
   {
     v32 = v5;
     v15 = [v14 length];
-    v16 = [v14 string];
-    v17 = [v16 rangeOfString:@"\u2028" options:0 range:{0, v15}];
+    string = [v14 string];
+    v17 = [string rangeOfString:@"\u2028" options:0 range:{0, v15}];
     v19 = v18;
 
     while (v17 != 0x7FFFFFFFFFFFFFFFLL)
@@ -289,8 +289,8 @@
         break;
       }
 
-      v21 = [v14 string];
-      v17 = [v21 rangeOfString:@"\u2028" options:0 range:{v20, v15 - v20}];
+      string2 = [v14 string];
+      v17 = [string2 rangeOfString:@"\u2028" options:0 range:{v20, v15 - v20}];
       v19 = v22;
     }
 

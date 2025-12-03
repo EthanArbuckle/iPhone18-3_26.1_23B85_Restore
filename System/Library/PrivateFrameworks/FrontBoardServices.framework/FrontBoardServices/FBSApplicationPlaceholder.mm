@@ -1,42 +1,42 @@
 @interface FBSApplicationPlaceholder
 + (id)_callOutQueue;
 + (id)_sharedQueue;
-- (BOOL)_canPerformAction:(unint64_t)a3;
-- (BOOL)_performAction:(unint64_t)a3 withResult:(id)a4;
+- (BOOL)_canPerformAction:(unint64_t)action;
+- (BOOL)_performAction:(unint64_t)action withResult:(id)result;
 - (FBSApplicationLibrary)appLibrary;
 - (FBSApplicationPlaceholderProgress)progress;
 - (LSApplicationProxy)_proxy;
 - (double)percentComplete;
-- (id)_initWithApplicationProxy:(id)a3 identity:(id)a4;
-- (id)_initWithBundleIdentifier:(id)a3 url:(id)a4;
-- (id)_initWithBundleProxy:(id)a3 url:(id)a4;
+- (id)_initWithApplicationProxy:(id)proxy identity:(id)identity;
+- (id)_initWithBundleIdentifier:(id)identifier url:(id)url;
+- (id)_initWithBundleProxy:(id)proxy url:(id)url;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)expectedFinalInstallPhase;
 - (unint64_t)installPhase;
 - (unint64_t)installState;
 - (unint64_t)installType;
-- (void)_cancelWithResult:(id)a3;
-- (void)_dispatchToObserversWithBlock:(id)a3;
+- (void)_cancelWithResult:(id)result;
+- (void)_dispatchToObserversWithBlock:(id)block;
 - (void)_noteChangedSignificantly;
-- (void)_pauseWithResult:(id)a3;
-- (void)_prioritizeWithResult:(id)a3;
-- (void)_queue_setProxy:(id)a3 force:(BOOL)a4;
+- (void)_pauseWithResult:(id)result;
+- (void)_prioritizeWithResult:(id)result;
+- (void)_queue_setProxy:(id)proxy force:(BOOL)force;
 - (void)_reloadProgress;
-- (void)_resumeWithResult:(id)a3;
+- (void)_resumeWithResult:(id)result;
 - (void)_sendToObserversPlaceholderDidChangeSignificantly;
 - (void)_sendToObserversPlaceholderProgressDidUpdate;
-- (void)_setProxy:(id)a3 force:(BOOL)a4;
-- (void)addObserver:(id)a3;
+- (void)_setProxy:(id)proxy force:(BOOL)force;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FBSApplicationPlaceholder
 
-- (id)_initWithBundleIdentifier:(id)a3 url:(id)a4
+- (id)_initWithBundleIdentifier:(id)identifier url:(id)url
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  urlCopy = url;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"this initializer is unavailable"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -48,7 +48,7 @@
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSApplicationPlaceholder.m";
     v21 = 1024;
@@ -62,10 +62,10 @@
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithBundleProxy:(id)a3 url:(id)a4
+- (id)_initWithBundleProxy:(id)proxy url:(id)url
 {
-  v7 = a3;
-  v8 = a4;
+  proxyCopy = proxy;
+  urlCopy = url;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"this initializer is unavailable"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -77,7 +77,7 @@
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSApplicationPlaceholder.m";
     v21 = 1024;
@@ -91,29 +91,29 @@
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithApplicationProxy:(id)a3 identity:(id)a4
+- (id)_initWithApplicationProxy:(id)proxy identity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  proxyCopy = proxy;
+  identityCopy = identity;
+  if (!proxyCopy)
   {
     [FBSApplicationPlaceholder _initWithApplicationProxy:a2 identity:?];
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = identityCopy;
+  if (!identityCopy)
   {
     [FBSApplicationPlaceholder _initWithApplicationProxy:a2 identity:?];
   }
 
   v22.receiver = self;
   v22.super_class = FBSApplicationPlaceholder;
-  v11 = [(FBSBundleInfo *)&v22 _initWithBundleProxy:v8 overrideURL:0];
+  v11 = [(FBSBundleInfo *)&v22 _initWithBundleProxy:proxyCopy overrideURL:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(v11 + 8, a3);
-    objc_storeStrong(v12 + 14, a4);
+    objc_storeStrong(v11 + 8, proxy);
+    objc_storeStrong(v12 + 14, identity);
     v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v14 = v12[12];
     v12[12] = v13;
@@ -130,8 +130,8 @@
     v20 = v12[11];
     v12[11] = v19;
 
-    v12[13] = [v8 installType];
-    [v12 _setProxy:v8 force:1];
+    v12[13] = [proxyCopy installType];
+    [v12 _setProxy:proxyCopy force:1];
   }
 
   return v12;
@@ -252,18 +252,18 @@ void __37__FBSApplicationPlaceholder_progress__block_invoke(uint64_t a1)
 
 - (double)percentComplete
 {
-  v2 = [(FBSApplicationPlaceholder *)self progress];
-  [v2 percentComplete];
+  progress = [(FBSApplicationPlaceholder *)self progress];
+  [progress percentComplete];
   v4 = v3;
 
   return v4;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -271,7 +271,7 @@ void __37__FBSApplicationPlaceholder_progress__block_invoke(uint64_t a1)
     v7[2] = __41__FBSApplicationPlaceholder_addObserver___block_invoke;
     v7[3] = &unk_1E76BCD60;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -290,11 +290,11 @@ uint64_t __41__FBSApplicationPlaceholder_addObserver___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -302,7 +302,7 @@ uint64_t __41__FBSApplicationPlaceholder_addObserver___block_invoke(uint64_t a1)
     v7[2] = __44__FBSApplicationPlaceholder_removeObserver___block_invoke;
     v7[3] = &unk_1E76BCD60;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -321,11 +321,11 @@ uint64_t __44__FBSApplicationPlaceholder_removeObserver___block_invoke(uint64_t 
   return result;
 }
 
-- (void)_dispatchToObserversWithBlock:(id)a3
+- (void)_dispatchToObserversWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     callOutQueue = self->_callOutQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -333,7 +333,7 @@ uint64_t __44__FBSApplicationPlaceholder_removeObserver___block_invoke(uint64_t 
     v7[2] = __59__FBSApplicationPlaceholder__dispatchToObserversWithBlock___block_invoke;
     v7[3] = &unk_1E76BDA90;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(callOutQueue, v7);
   }
 }
@@ -442,7 +442,7 @@ void __78__FBSApplicationPlaceholder__sendToObserversPlaceholderDidChangeSignifi
   }
 }
 
-- (BOOL)_canPerformAction:(unint64_t)a3
+- (BOOL)_canPerformAction:(unint64_t)action
 {
   v7 = 0;
   v8 = &v7;
@@ -455,7 +455,7 @@ void __78__FBSApplicationPlaceholder__sendToObserversPlaceholderDidChangeSignifi
   block[3] = &unk_1E76BDAE0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = action;
   dispatch_sync(queue, block);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -469,25 +469,25 @@ uint64_t __47__FBSApplicationPlaceholder__canPerformAction___block_invoke(uint64
   return result;
 }
 
-- (BOOL)_performAction:(unint64_t)a3 withResult:(id)a4
+- (BOOL)_performAction:(unint64_t)action withResult:(id)result
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if ((a3 ^ (a3 - 1)) <= a3 - 1)
+  resultCopy = result;
+  if ((action ^ (action - 1)) <= action - 1)
   {
     [FBSApplicationPlaceholder _performAction:a2 withResult:?];
   }
 
-  v8 = v7;
-  v9 = [(FBSBundleInfo *)self bundleIdentifier];
-  if (a3 > 8)
+  v8 = resultCopy;
+  bundleIdentifier = [(FBSBundleInfo *)self bundleIdentifier];
+  if (action > 8)
   {
     v10 = @"(unknown)";
   }
 
   else
   {
-    v10 = off_1E76BDBA0[a3];
+    v10 = off_1E76BDBA0[action];
   }
 
   v11 = FBSLogApplicationPlaceholder();
@@ -496,7 +496,7 @@ uint64_t __47__FBSApplicationPlaceholder__canPerformAction___block_invoke(uint64
     *buf = 138543618;
     v31 = v10;
     v32 = 2114;
-    v33 = v9;
+    v33 = bundleIdentifier;
     _os_log_impl(&dword_1A2DBB000, v11, OS_LOG_TYPE_DEFAULT, "Received request to perform action %{public}@ on %{public}@", buf, 0x16u);
   }
 
@@ -505,8 +505,8 @@ uint64_t __47__FBSApplicationPlaceholder__canPerformAction___block_invoke(uint64
   v25[2] = __55__FBSApplicationPlaceholder__performAction_withResult___block_invoke;
   v25[3] = &unk_1E76BDB30;
   v26 = v10;
-  v12 = v9;
-  v28 = self;
+  v12 = bundleIdentifier;
+  selfCopy = self;
   v29 = v8;
   v27 = v12;
   v13 = v8;
@@ -518,32 +518,32 @@ uint64_t __47__FBSApplicationPlaceholder__canPerformAction___block_invoke(uint64
   v15 = v14;
   v24 = v15;
   v16 = MEMORY[0x1A58E80F0](v23);
-  if ([(FBSApplicationPlaceholder *)self _canPerformAction:a3])
+  if ([(FBSApplicationPlaceholder *)self _canPerformAction:action])
   {
-    if (a3 > 3)
+    if (action > 3)
     {
-      if (a3 == 4)
+      if (action == 4)
       {
         [(FBSApplicationPlaceholder *)self _resumeWithResult:v16];
         goto LABEL_25;
       }
 
-      if (a3 == 8)
+      if (action == 8)
       {
-        v19 = [(FBSApplicationPlaceholder *)self progress];
+        progress = [(FBSApplicationPlaceholder *)self progress];
 
-        if (v19)
+        if (progress)
         {
           [(FBSApplicationPlaceholder *)self _cancelWithResult:v16];
         }
 
         else
         {
-          v20 = [(FBSApplicationPlaceholder *)self appLibrary];
-          v21 = v20;
-          if (v20)
+          appLibrary = [(FBSApplicationPlaceholder *)self appLibrary];
+          v21 = appLibrary;
+          if (appLibrary)
           {
-            [v20 uninstallApplication:v12 withOptions:0 completion:v16];
+            [appLibrary uninstallApplication:v12 withOptions:0 completion:v16];
           }
 
           else
@@ -558,13 +558,13 @@ uint64_t __47__FBSApplicationPlaceholder__canPerformAction___block_invoke(uint64
 
     else
     {
-      if (a3 == 1)
+      if (action == 1)
       {
         [(FBSApplicationPlaceholder *)self _prioritizeWithResult:v16];
         goto LABEL_25;
       }
 
-      if (a3 == 2)
+      if (action == 2)
       {
         [(FBSApplicationPlaceholder *)self _pauseWithResult:v16];
 LABEL_25:
@@ -725,23 +725,23 @@ void __55__FBSApplicationPlaceholder__performAction_withResult___block_invoke_2(
   [v14 setUnderlyingError:v12];
 }
 
-- (void)_prioritizeWithResult:(id)a3
+- (void)_prioritizeWithResult:(id)result
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FBSBundleInfo *)self bundleIdentifier];
+  resultCopy = result;
+  bundleIdentifier = [(FBSBundleInfo *)self bundleIdentifier];
   v6 = FBSLogApplicationPlaceholder();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v5;
+    v13 = bundleIdentifier;
     _os_log_impl(&dword_1A2DBB000, v6, OS_LOG_TYPE_DEFAULT, "Attempting to prioritize %{public}@", buf, 0xCu);
   }
 
   if (FBSApplicationLibraryLogTransactionEnabled())
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Requesting to prioritize placeholder."];
-    _FBSApplicationLibraryLogTransaction(4, 3, 1, v5, v7);
+    _FBSApplicationLibraryLogTransaction(4, 3, 1, bundleIdentifier, v7);
   }
 
   IXAppInstallCoordinatorClass = getIXAppInstallCoordinatorClass();
@@ -752,39 +752,39 @@ void __55__FBSApplicationPlaceholder__performAction_withResult___block_invoke_2(
     v10[1] = 3221225472;
     v10[2] = __51__FBSApplicationPlaceholder__prioritizeWithResult___block_invoke;
     v10[3] = &unk_1E76BDB58;
-    v11 = v4;
-    [v9 prioritizeCoordinatorForAppWithBundleID:v5 completion:v10];
+    v11 = resultCopy;
+    [v9 prioritizeCoordinatorForAppWithBundleID:bundleIdentifier completion:v10];
   }
 
   else
   {
-    (*(v4 + 2))(v4, @"The IXAppInstallCoordinator class does not exist");
+    (*(resultCopy + 2))(resultCopy, @"The IXAppInstallCoordinator class does not exist");
   }
 }
 
-- (void)_cancelWithResult:(id)a3
+- (void)_cancelWithResult:(id)result
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FBSBundleInfo *)self bundleIdentifier];
+  resultCopy = result;
+  bundleIdentifier = [(FBSBundleInfo *)self bundleIdentifier];
   v6 = FBSLogApplicationPlaceholder();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v5;
+    v22 = bundleIdentifier;
     _os_log_impl(&dword_1A2DBB000, v6, OS_LOG_TYPE_DEFAULT, "Attempting to cancel %{public}@", buf, 0xCu);
   }
 
   if (FBSApplicationLibraryLogTransactionEnabled())
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Requesting to cancel placeholder."];
-    _FBSApplicationLibraryLogTransaction(5, 3, 1, v5, v7);
+    _FBSApplicationLibraryLogTransaction(5, 3, 1, bundleIdentifier, v7);
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  v10 = [v9 processName];
-  v11 = [v8 stringWithFormat:@"%@ requested cancellation via FBSApplicationPlaceholder", v10];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v11 = [v8 stringWithFormat:@"%@ requested cancellation via FBSApplicationPlaceholder", processName];
 
   v12 = MEMORY[0x1E696ABC0];
   v19 = *MEMORY[0x1E696A578];
@@ -800,33 +800,33 @@ void __55__FBSApplicationPlaceholder__performAction_withResult___block_invoke_2(
     v17[1] = 3221225472;
     v17[2] = __47__FBSApplicationPlaceholder__cancelWithResult___block_invoke;
     v17[3] = &unk_1E76BDB58;
-    v18 = v4;
-    [v16 cancelCoordinatorForAppWithBundleID:v5 withReason:v14 client:8 completion:v17];
+    v18 = resultCopy;
+    [v16 cancelCoordinatorForAppWithBundleID:bundleIdentifier withReason:v14 client:8 completion:v17];
   }
 
   else
   {
-    (*(v4 + 2))(v4, @"The IXAppInstallCoordinator class does not exist");
+    (*(resultCopy + 2))(resultCopy, @"The IXAppInstallCoordinator class does not exist");
   }
 }
 
-- (void)_pauseWithResult:(id)a3
+- (void)_pauseWithResult:(id)result
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FBSBundleInfo *)self bundleIdentifier];
+  resultCopy = result;
+  bundleIdentifier = [(FBSBundleInfo *)self bundleIdentifier];
   v6 = FBSLogApplicationPlaceholder();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v5;
+    v13 = bundleIdentifier;
     _os_log_impl(&dword_1A2DBB000, v6, OS_LOG_TYPE_DEFAULT, "Attempting to pause %{public}@", buf, 0xCu);
   }
 
   if (FBSApplicationLibraryLogTransactionEnabled())
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Requesting to pause placeholder."];
-    _FBSApplicationLibraryLogTransaction(6, 3, 1, v5, v7);
+    _FBSApplicationLibraryLogTransaction(6, 3, 1, bundleIdentifier, v7);
   }
 
   IXAppInstallCoordinatorClass = getIXAppInstallCoordinatorClass();
@@ -837,33 +837,33 @@ void __55__FBSApplicationPlaceholder__performAction_withResult___block_invoke_2(
     v10[1] = 3221225472;
     v10[2] = __46__FBSApplicationPlaceholder__pauseWithResult___block_invoke;
     v10[3] = &unk_1E76BDB58;
-    v11 = v4;
-    [v9 pauseCoordinatorForAppWithBundleID:v5 completion:v10];
+    v11 = resultCopy;
+    [v9 pauseCoordinatorForAppWithBundleID:bundleIdentifier completion:v10];
   }
 
   else
   {
-    (*(v4 + 2))(v4, @"The IXAppInstallCoordinator class does not exist");
+    (*(resultCopy + 2))(resultCopy, @"The IXAppInstallCoordinator class does not exist");
   }
 }
 
-- (void)_resumeWithResult:(id)a3
+- (void)_resumeWithResult:(id)result
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FBSBundleInfo *)self bundleIdentifier];
+  resultCopy = result;
+  bundleIdentifier = [(FBSBundleInfo *)self bundleIdentifier];
   v6 = FBSLogApplicationPlaceholder();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v5;
+    v13 = bundleIdentifier;
     _os_log_impl(&dword_1A2DBB000, v6, OS_LOG_TYPE_DEFAULT, "Attempting to resume %{public}@", buf, 0xCu);
   }
 
   if (FBSApplicationLibraryLogTransactionEnabled())
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Requesting to resume placeholder."];
-    _FBSApplicationLibraryLogTransaction(7, 3, 1, v5, v7);
+    _FBSApplicationLibraryLogTransaction(7, 3, 1, bundleIdentifier, v7);
   }
 
   IXAppInstallCoordinatorClass = getIXAppInstallCoordinatorClass();
@@ -874,13 +874,13 @@ void __55__FBSApplicationPlaceholder__performAction_withResult___block_invoke_2(
     v10[1] = 3221225472;
     v10[2] = __47__FBSApplicationPlaceholder__resumeWithResult___block_invoke;
     v10[3] = &unk_1E76BDB58;
-    v11 = v4;
-    [v9 resumeCoordinatorForAppWithBundleID:v5 completion:v10];
+    v11 = resultCopy;
+    [v9 resumeCoordinatorForAppWithBundleID:bundleIdentifier completion:v10];
   }
 
   else
   {
-    (*(v4 + 2))(v4, @"The IXAppInstallCoordinator class does not exist");
+    (*(resultCopy + 2))(resultCopy, @"The IXAppInstallCoordinator class does not exist");
   }
 }
 
@@ -930,28 +930,28 @@ void __55__FBSApplicationPlaceholder__performAction_withResult___block_invoke_2(
   return v3;
 }
 
-- (void)_setProxy:(id)a3 force:(BOOL)a4
+- (void)_setProxy:(id)proxy force:(BOOL)force
 {
-  v6 = a3;
+  proxyCopy = proxy;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__FBSApplicationPlaceholder__setProxy_force___block_invoke;
   block[3] = &unk_1E76BDB80;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = proxyCopy;
+  forceCopy = force;
+  v8 = proxyCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_queue_setProxy:(id)a3 force:(BOOL)a4
+- (void)_queue_setProxy:(id)proxy force:(BOOL)force
 {
-  v7 = a3;
+  proxyCopy = proxy;
   [(FBSApplicationPlaceholderProgress *)self->_queue_progress queue_isValid];
-  v8 = [(LSApplicationProxy *)v7 installProgress];
+  installProgress = [(LSApplicationProxy *)proxyCopy installProgress];
 
-  if (!a4 && self->_proxy == v7)
+  if (!force && self->_proxy == proxyCopy)
   {
     BSEqualBools();
   }
@@ -962,15 +962,15 @@ void __55__FBSApplicationPlaceholder__performAction_withResult___block_invoke_2(
     [FBSApplicationPlaceholder _queue_setProxy:v9 force:?];
   }
 
-  if (a4 || self->_proxy != v7)
+  if (force || self->_proxy != proxyCopy)
   {
-    [(FBSApplicationPlaceholder *)self _reloadFromProxy:v7];
-    v10 = [(LSApplicationProxy *)v7 fbs_correspondingApplicationRecord];
-    [(FBSApplicationPlaceholder *)self _reloadFromRecord:v10];
+    [(FBSApplicationPlaceholder *)self _reloadFromProxy:proxyCopy];
+    fbs_correspondingApplicationRecord = [(LSApplicationProxy *)proxyCopy fbs_correspondingApplicationRecord];
+    [(FBSApplicationPlaceholder *)self _reloadFromRecord:fbs_correspondingApplicationRecord];
 
-    if (self->_proxy != v7)
+    if (self->_proxy != proxyCopy)
     {
-      objc_storeStrong(&self->_proxy, a3);
+      objc_storeStrong(&self->_proxy, proxy);
     }
   }
 
@@ -984,7 +984,7 @@ void __55__FBSApplicationPlaceholder__performAction_withResult___block_invoke_2(
     goto LABEL_18;
   }
 
-  if (!v8)
+  if (!installProgress)
   {
     v11 = FBSLogApplicationPlaceholder();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -993,7 +993,7 @@ void __55__FBSApplicationPlaceholder__performAction_withResult___block_invoke_2(
     }
   }
 
-  if ([(FBSApplicationPlaceholderProgress *)self->_queue_progress queue_updateProxy:v7])
+  if ([(FBSApplicationPlaceholderProgress *)self->_queue_progress queue_updateProxy:proxyCopy])
   {
 LABEL_18:
     [(FBSApplicationPlaceholder *)self _queue_noteChangedSignificantly:self];
@@ -1052,40 +1052,40 @@ uint64_t __40__FBSApplicationPlaceholder_installType__block_invoke(uint64_t a1)
 
 - (unint64_t)installState
 {
-  v2 = [(FBSApplicationPlaceholder *)self progress];
-  v3 = [v2 installState];
+  progress = [(FBSApplicationPlaceholder *)self progress];
+  installState = [progress installState];
 
-  return v3;
+  return installState;
 }
 
 - (unint64_t)installPhase
 {
-  v2 = [(FBSApplicationPlaceholder *)self progress];
-  v3 = [v2 installPhase];
+  progress = [(FBSApplicationPlaceholder *)self progress];
+  installPhase = [progress installPhase];
 
-  return v3;
+  return installPhase;
 }
 
 - (unint64_t)expectedFinalInstallPhase
 {
-  v2 = [(FBSApplicationPlaceholder *)self progress];
-  v3 = [v2 expectedFinalInstallPhase];
+  progress = [(FBSApplicationPlaceholder *)self progress];
+  expectedFinalInstallPhase = [progress expectedFinalInstallPhase];
 
-  return v3;
+  return expectedFinalInstallPhase;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v9.receiver = self;
   v9.super_class = FBSApplicationPlaceholder;
-  v3 = [(FBSBundleInfo *)&v9 succinctDescriptionBuilder];
-  v4 = [(LSApplicationIdentity *)self->_applicationIdentity fbs_personaUniqueString];
-  v5 = [v3 appendObject:v4 withName:@"persona" skipIfNil:1];
+  succinctDescriptionBuilder = [(FBSBundleInfo *)&v9 succinctDescriptionBuilder];
+  fbs_personaUniqueString = [(LSApplicationIdentity *)self->_applicationIdentity fbs_personaUniqueString];
+  v5 = [succinctDescriptionBuilder appendObject:fbs_personaUniqueString withName:@"persona" skipIfNil:1];
 
   v6 = [MEMORY[0x1E696AEC0] NSStringFromLSInstallType:self->_installType];
-  v7 = [v3 appendObject:v6 withName:@"LSInstallType"];
+  v7 = [succinctDescriptionBuilder appendObject:v6 withName:@"LSInstallType"];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 - (FBSApplicationLibrary)appLibrary

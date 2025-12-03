@@ -1,13 +1,13 @@
 @interface PUPhotoPickerResizeTaskDescriptorViewModel
 - (PUPhotoPickerResizeTaskDescriptorViewModel)init;
 - (PUPhotoPickerResizeTaskDescriptorViewModelDelegate)delegate;
-- (id)_infoDictionaryForLocalizedTitle:(id)a3 localizedFileSizeDescription:(id)a4;
-- (id)requestInfoOfKind:(id)a3 withResultHandler:(id)a4;
-- (void)infoUpdaterDidUpdate:(id)a3;
+- (id)_infoDictionaryForLocalizedTitle:(id)title localizedFileSizeDescription:(id)description;
+- (id)requestInfoOfKind:(id)kind withResultHandler:(id)handler;
+- (void)infoUpdaterDidUpdate:(id)update;
 - (void)invalidateAssetsForResizing;
-- (void)performChanges:(id)a3;
-- (void)setFileSizeMenu:(id)a3;
-- (void)setResizeTaskDescriptor:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setFileSizeMenu:(id)menu;
+- (void)setResizeTaskDescriptor:(id)descriptor;
 @end
 
 @implementation PUPhotoPickerResizeTaskDescriptorViewModel
@@ -19,23 +19,23 @@
   return WeakRetained;
 }
 
-- (void)infoUpdaterDidUpdate:(id)a3
+- (void)infoUpdaterDidUpdate:(id)update
 {
-  v5 = a3;
-  v6 = [v5 infoKind];
-  v7 = [v6 isEqualToString:@"PUResizeTaskDescriptorInfoKind"];
+  updateCopy = update;
+  infoKind = [updateCopy infoKind];
+  v7 = [infoKind isEqualToString:@"PUResizeTaskDescriptorInfoKind"];
 
   if (!v7)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUPhotoPickerResizeTaskDescriptorViewModel.m" lineNumber:139 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoPickerResizeTaskDescriptorViewModel.m" lineNumber:139 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = [v5 info];
-  v9 = [v8 objectForKeyedSubscript:@"PUResizeTaskDescriptorInfoLocalizedTitleKey"];
-  v10 = [v8 objectForKeyedSubscript:@"PUResizeTaskDescriptorInfoLocalizedFileSizeDescriptionKey"];
+  info = [updateCopy info];
+  v9 = [info objectForKeyedSubscript:@"PUResizeTaskDescriptorInfoLocalizedTitleKey"];
+  v10 = [info objectForKeyedSubscript:@"PUResizeTaskDescriptorInfoLocalizedFileSizeDescriptionKey"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__PUPhotoPickerResizeTaskDescriptorViewModel_infoUpdaterDidUpdate___block_invoke;
@@ -57,33 +57,33 @@ uint64_t __67__PUPhotoPickerResizeTaskDescriptorViewModel_infoUpdaterDidUpdate__
   return [v2 signalChange:2];
 }
 
-- (id)_infoDictionaryForLocalizedTitle:(id)a3 localizedFileSizeDescription:(id)a4
+- (id)_infoDictionaryForLocalizedTitle:(id)title localizedFileSizeDescription:(id)description
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"PUResizeTaskDescriptorInfoLocalizedTitleKey";
   v10[1] = @"PUResizeTaskDescriptorInfoLocalizedFileSizeDescriptionKey";
-  v11[0] = a3;
-  v11[1] = a4;
+  v11[0] = title;
+  v11[1] = description;
   v5 = MEMORY[0x1E695DF20];
-  v6 = a4;
-  v7 = a3;
+  descriptionCopy = description;
+  titleCopy = title;
   v8 = [v5 dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   return v8;
 }
 
-- (id)requestInfoOfKind:(id)a3 withResultHandler:(id)a4
+- (id)requestInfoOfKind:(id)kind withResultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self delegate];
-  v10 = [v9 assetsForResizing];
-  v11 = [v10 copy];
+  kindCopy = kind;
+  handlerCopy = handler;
+  delegate = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self delegate];
+  assetsForResizing = [delegate assetsForResizing];
+  v11 = [assetsForResizing copy];
 
-  if (![v7 isEqualToString:@"PUResizeTaskDescriptorInfoKind"])
+  if (![kindCopy isEqualToString:@"PUResizeTaskDescriptorInfoKind"])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PUPhotoPickerResizeTaskDescriptorViewModel.m" lineNumber:105 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoPickerResizeTaskDescriptorViewModel.m" lineNumber:105 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -91,27 +91,27 @@ uint64_t __67__PUPhotoPickerResizeTaskDescriptorViewModel_infoUpdaterDidUpdate__
   if (v11)
   {
     v12 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-    v13 = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self resizeTaskDescriptor];
-    v14 = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self localizedFileSizeDescriptionUpdaterQueue];
+    resizeTaskDescriptor = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self resizeTaskDescriptor];
+    localizedFileSizeDescriptionUpdaterQueue = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self localizedFileSizeDescriptionUpdaterQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __82__PUPhotoPickerResizeTaskDescriptorViewModel_requestInfoOfKind_withResultHandler___block_invoke;
     block[3] = &unk_1E7B7DCB0;
     v15 = v12;
     v22 = v15;
-    v23 = v13;
+    v23 = resizeTaskDescriptor;
     v24 = v11;
-    v25 = self;
-    v26 = v8;
-    v16 = v13;
-    dispatch_async(v14, block);
+    selfCopy = self;
+    v26 = handlerCopy;
+    v16 = resizeTaskDescriptor;
+    dispatch_async(localizedFileSizeDescriptionUpdaterQueue, block);
   }
 
   else
   {
     v17 = PULocalizedString(@"SIZE_PICKER_DOWNLOADING");
     v18 = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self _infoDictionaryForLocalizedTitle:v17 localizedFileSizeDescription:v17];
-    (*(v8 + 2))(v8, v18);
+    (*(handlerCopy + 2))(handlerCopy, v18);
 
     v15 = 0;
   }
@@ -132,28 +132,28 @@ void __82__PUPhotoPickerResizeTaskDescriptorViewModel_requestInfoOfKind_withResu
 
 - (void)invalidateAssetsForResizing
 {
-  v2 = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self localizedFileSizeDescriptionUpdater];
-  [v2 invalidateInfo];
+  localizedFileSizeDescriptionUpdater = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self localizedFileSizeDescriptionUpdater];
+  [localizedFileSizeDescriptionUpdater invalidateInfo];
 }
 
-- (void)setFileSizeMenu:(id)a3
+- (void)setFileSizeMenu:(id)menu
 {
-  v5 = a3;
-  if (self->_fileSizeMenu != v5)
+  menuCopy = menu;
+  if (self->_fileSizeMenu != menuCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fileSizeMenu, a3);
+    v6 = menuCopy;
+    objc_storeStrong(&self->_fileSizeMenu, menu);
     [(PUPhotoPickerResizeTaskDescriptorViewModel *)self signalChange:4];
-    v5 = v6;
+    menuCopy = v6;
   }
 }
 
-- (void)setResizeTaskDescriptor:(id)a3
+- (void)setResizeTaskDescriptor:(id)descriptor
 {
-  v9 = a3;
+  descriptorCopy = descriptor;
   v5 = self->_resizeTaskDescriptor;
   v6 = v5;
-  if (v5 == v9)
+  if (v5 == descriptorCopy)
   {
   }
 
@@ -163,20 +163,20 @@ void __82__PUPhotoPickerResizeTaskDescriptorViewModel_requestInfoOfKind_withResu
 
     if (!v7)
     {
-      objc_storeStrong(&self->_resizeTaskDescriptor, a3);
-      v8 = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self localizedFileSizeDescriptionUpdater];
-      [v8 invalidateInfo];
+      objc_storeStrong(&self->_resizeTaskDescriptor, descriptor);
+      localizedFileSizeDescriptionUpdater = [(PUPhotoPickerResizeTaskDescriptorViewModel *)self localizedFileSizeDescriptionUpdater];
+      [localizedFileSizeDescriptionUpdater invalidateInfo];
 
       [(PUPhotoPickerResizeTaskDescriptorViewModel *)self signalChange:1];
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PUPhotoPickerResizeTaskDescriptorViewModel;
-  [(PUPhotoPickerResizeTaskDescriptorViewModel *)&v3 performChanges:a3];
+  [(PUPhotoPickerResizeTaskDescriptorViewModel *)&v3 performChanges:changes];
 }
 
 - (PUPhotoPickerResizeTaskDescriptorViewModel)init

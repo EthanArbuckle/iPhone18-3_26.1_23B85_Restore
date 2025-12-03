@@ -1,24 +1,24 @@
 @interface DAButtonSwitchState
-- (BOOL)isEventAcceptable:(unint64_t)a3 type:(id *)a4 eventType:(id *)a5;
-- (DAButtonSwitchState)initWithIdentifier:(id)a3;
-- (DAButtonSwitchState)initWithIdentifier:(id)a3 startingState:(int)a4;
+- (BOOL)isEventAcceptable:(unint64_t)acceptable type:(id *)type eventType:(id *)eventType;
+- (DAButtonSwitchState)initWithIdentifier:(id)identifier;
+- (DAButtonSwitchState)initWithIdentifier:(id)identifier startingState:(int)state;
 - (void)getNextEvent;
-- (void)getTypeForEvent:(unint64_t)a3 type:(id *)a4 eventType:(id *)a5;
+- (void)getTypeForEvent:(unint64_t)event type:(id *)type eventType:(id *)eventType;
 @end
 
 @implementation DAButtonSwitchState
 
-- (DAButtonSwitchState)initWithIdentifier:(id)a3
+- (DAButtonSwitchState)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = DAButtonSwitchState;
   v5 = [(DAButtonSwitchState *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v5->_identifier = v4;
-    if ([(NSString *)v4 isEqualToString:@"Home"])
+    v5->_identifier = identifierCopy;
+    if ([(NSString *)identifierCopy isEqualToString:@"Home"])
     {
       v7 = 1;
 LABEL_20:
@@ -80,19 +80,19 @@ LABEL_21:
   return v6;
 }
 
-- (DAButtonSwitchState)initWithIdentifier:(id)a3 startingState:(int)a4
+- (DAButtonSwitchState)initWithIdentifier:(id)identifier startingState:(int)state
 {
-  result = [(DAButtonSwitchState *)self initWithIdentifier:a3];
+  result = [(DAButtonSwitchState *)self initWithIdentifier:identifier];
   if (result)
   {
-    if (a4 == 1)
+    if (state == 1)
     {
       v6 = 8;
     }
 
     else
     {
-      if (a4)
+      if (state)
       {
         return result;
       }
@@ -106,16 +106,16 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)isEventAcceptable:(unint64_t)a3 type:(id *)a4 eventType:(id *)a5
+- (BOOL)isEventAcceptable:(unint64_t)acceptable type:(id *)type eventType:(id *)eventType
 {
-  [(DAButtonSwitchState *)self getTypeForEvent:a3 type:a4 eventType:a5];
-  v7 = [(DAButtonSwitchState *)self expectedEvent];
-  if (v7 == a3)
+  [(DAButtonSwitchState *)self getTypeForEvent:acceptable type:type eventType:eventType];
+  expectedEvent = [(DAButtonSwitchState *)self expectedEvent];
+  if (expectedEvent == acceptable)
   {
     [(DAButtonSwitchState *)self getNextEvent];
   }
 
-  return v7 == a3;
+  return expectedEvent == acceptable;
 }
 
 - (void)getNextEvent
@@ -218,19 +218,19 @@ LABEL_21:
   [(DAButtonSwitchState *)self setExpectedEvent:v3];
 }
 
-- (void)getTypeForEvent:(unint64_t)a3 type:(id *)a4 eventType:(id *)a5
+- (void)getTypeForEvent:(unint64_t)event type:(id *)type eventType:(id *)eventType
 {
-  *a4 = @"Button";
+  *type = @"Button";
   v8 = @"KeyDown";
-  if (a3 > 511)
+  if (event > 511)
   {
-    if (a3 < 0x2000)
+    if (event < 0x2000)
     {
-      if (a3 > 2047)
+      if (event > 2047)
       {
-        if (a3 != 2048)
+        if (event != 2048)
         {
-          if (a3 != 4096)
+          if (event != 4096)
           {
             return;
           }
@@ -239,9 +239,9 @@ LABEL_21:
         }
       }
 
-      else if (a3 != 512)
+      else if (event != 512)
       {
-        if (a3 != 1024)
+        if (event != 1024)
         {
           return;
         }
@@ -250,11 +250,11 @@ LABEL_21:
       }
     }
 
-    else if (a3 <= 0x7FFFFFF)
+    else if (event <= 0x7FFFFFF)
     {
-      if (a3 != 0x2000)
+      if (event != 0x2000)
       {
-        if (a3 != 0x4000000)
+        if (event != 0x4000000)
         {
           return;
         }
@@ -263,14 +263,14 @@ LABEL_21:
       }
     }
 
-    else if (a3 != 0x8000000)
+    else if (event != 0x8000000)
     {
-      if (a3 == 0x10000000)
+      if (event == 0x10000000)
       {
         goto LABEL_35;
       }
 
-      if (a3 != 0x20000000)
+      if (event != 0x20000000)
       {
         return;
       }
@@ -279,36 +279,36 @@ LABEL_21:
     goto LABEL_34;
   }
 
-  if (a3 <= 15)
+  if (event <= 15)
   {
-    if (a3 > 3)
+    if (event > 3)
     {
-      if (a3 == 4)
+      if (event == 4)
       {
-        *a4 = @"Switch";
+        *type = @"Switch";
         v8 = @"StateTone";
       }
 
       else
       {
-        if (a3 != 8)
+        if (event != 8)
         {
           return;
         }
 
-        *a4 = @"Switch";
+        *type = @"Switch";
         v8 = @"StateSilent";
       }
 
       goto LABEL_35;
     }
 
-    if (a3 == 1)
+    if (event == 1)
     {
       goto LABEL_35;
     }
 
-    if (a3 != 2)
+    if (event != 2)
     {
       return;
     }
@@ -318,14 +318,14 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (a3 <= 63)
+  if (event <= 63)
   {
-    if (a3 == 16)
+    if (event == 16)
     {
       goto LABEL_35;
     }
 
-    if (a3 != 32)
+    if (event != 32)
     {
       return;
     }
@@ -333,11 +333,11 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (a3 != 64)
+  if (event != 64)
   {
-    if (a3 != 128)
+    if (event != 128)
     {
-      if (a3 != 256)
+      if (event != 256)
       {
         return;
       }
@@ -349,7 +349,7 @@ LABEL_34:
   }
 
 LABEL_35:
-  *a5 = v8;
+  *eventType = v8;
 }
 
 @end

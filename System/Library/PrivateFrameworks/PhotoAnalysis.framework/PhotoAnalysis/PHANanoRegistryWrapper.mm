@@ -7,14 +7,14 @@
 + (BOOL)hasValidWatchPaired
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [v2 getAllDevices];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getAllDevices = [mEMORY[0x277D2BCF8] getAllDevices];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v3;
+  v4 = getAllDevices;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {

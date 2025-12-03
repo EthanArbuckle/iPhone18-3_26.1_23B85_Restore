@@ -1,30 +1,30 @@
 @interface _COCapabilityObserver
-- (_COCapabilityObserver)initWithCapability:(id)a3 cluster:(id)a4 block:(id)a5;
+- (_COCapabilityObserver)initWithCapability:(id)capability cluster:(id)cluster block:(id)block;
 - (id)description;
 @end
 
 @implementation _COCapabilityObserver
 
-- (_COCapabilityObserver)initWithCapability:(id)a3 cluster:(id)a4 block:(id)a5
+- (_COCapabilityObserver)initWithCapability:(id)capability cluster:(id)cluster block:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  capabilityCopy = capability;
+  clusterCopy = cluster;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = _COCapabilityObserver;
   v11 = [(_COCapabilityObserver *)&v23 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [capabilityCopy copy];
     capability = v11->_capability;
     v11->_capability = v12;
 
-    v14 = [v9 copy];
+    v14 = [clusterCopy copy];
     cluster = v11->_cluster;
     v11->_cluster = v14;
 
-    v16 = [v10 copy];
+    v16 = [blockCopy copy];
     block = v11->_block;
     v11->_block = v16;
 
@@ -51,12 +51,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_COCapabilityObserver *)self capability];
-  v5 = [(_COCapabilityObserver *)self cluster];
-  v6 = [(_COCapabilityObserver *)self notified];
-  v7 = [(_COCapabilityObserver *)self lastValue];
+  capability = [(_COCapabilityObserver *)self capability];
+  cluster = [(_COCapabilityObserver *)self cluster];
+  notified = [(_COCapabilityObserver *)self notified];
+  lastValue = [(_COCapabilityObserver *)self lastValue];
   v8 = 78;
-  if (v7)
+  if (lastValue)
   {
     v9 = 89;
   }
@@ -66,12 +66,12 @@
     v9 = 78;
   }
 
-  if (v6)
+  if (notified)
   {
     v8 = 89;
   }
 
-  v10 = [v3 stringWithFormat:@"{ Capability Observer = %p, for Capability(%@) in Cluster(%@), notified(%c) lastValue(%c) }", self, v4, v5, v8, v9];
+  v10 = [v3 stringWithFormat:@"{ Capability Observer = %p, for Capability(%@) in Cluster(%@), notified(%c) lastValue(%c) }", self, capability, cluster, v8, v9];
 
   return v10;
 }

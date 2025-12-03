@@ -1,23 +1,23 @@
 @interface MFSendLaterHeaderCollectionViewCell
-- (MFSendLaterHeaderCollectionViewCell)initWithFrame:(CGRect)a3;
+- (MFSendLaterHeaderCollectionViewCell)initWithFrame:(CGRect)frame;
 - (MFSendLaterHeaderCollectionViewCellDelegate)delegate;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_datePicker:(id)a3 didSelectComponent:(int64_t)a4;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_datePicker:(id)picker didSelectComponent:(int64_t)component;
 - (void)_updateLabelAndDatePickerOrientation;
 - (void)layoutMarginsDidChange;
-- (void)updateActiveComponent:(int64_t)a3;
-- (void)updateWithDate:(id)a3 timeZone:(id)a4 isInvalid:(BOOL)a5;
+- (void)updateActiveComponent:(int64_t)component;
+- (void)updateWithDate:(id)date timeZone:(id)zone isInvalid:(BOOL)invalid;
 @end
 
 @implementation MFSendLaterHeaderCollectionViewCell
 
-- (MFSendLaterHeaderCollectionViewCell)initWithFrame:(CGRect)a3
+- (MFSendLaterHeaderCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v49[2] = *MEMORY[0x1E69E9840];
   v47.receiver = self;
   v47.super_class = MFSendLaterHeaderCollectionViewCell;
-  v4 = [(MFSendLaterHeaderCollectionViewCell *)&v47 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(MFSendLaterHeaderCollectionViewCell *)&v47 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = [MFSendLaterHeaderCollectionViewHelper alloc];
@@ -26,9 +26,9 @@
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(MFSendLaterHeaderCollectionViewCell *)v4 window];
-    v15 = [v14 screen];
-    [v15 scale];
+    window = [(MFSendLaterHeaderCollectionViewCell *)v4 window];
+    screen = [window screen];
+    [screen scale];
     v17 = [(MFSendLaterHeaderCollectionViewHelper *)v5 initWithWidth:width layoutMargins:v7 viewScale:v9, v11, v13, v16];
     [(MFSendLaterHeaderCollectionViewCell *)v4 setViewHelper:v17];
 
@@ -57,34 +57,34 @@
     [v23 setCustomSpacing:v46 afterView:8.0];
     [(MFSendLaterHeaderCollectionViewCell *)v4 addSubview:v23];
     v24 = MEMORY[0x1E696ACD8];
-    v44 = [v23 leadingAnchor];
-    v41 = [(MFSendLaterHeaderCollectionViewCell *)v4 layoutMarginsGuide];
-    v40 = [v41 leadingAnchor];
-    v39 = [v44 constraintEqualToAnchor:?];
+    leadingAnchor = [v23 leadingAnchor];
+    layoutMarginsGuide = [(MFSendLaterHeaderCollectionViewCell *)v4 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:?];
     v48[0] = v39;
-    v43 = [v23 topAnchor];
-    v38 = [(MFSendLaterHeaderCollectionViewCell *)v4 layoutMarginsGuide];
-    v37 = [v38 topAnchor];
-    v36 = [v43 constraintEqualToAnchor:7.0 constant:?];
+    topAnchor = [v23 topAnchor];
+    layoutMarginsGuide2 = [(MFSendLaterHeaderCollectionViewCell *)v4 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide2 topAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:7.0 constant:?];
     v48[1] = v36;
-    v42 = [v23 bottomAnchor];
-    v35 = [(MFSendLaterHeaderCollectionViewCell *)v4 layoutMarginsGuide];
-    v25 = [v35 bottomAnchor];
-    v26 = [v42 constraintEqualToAnchor:v25 constant:-7.0];
+    bottomAnchor = [v23 bottomAnchor];
+    layoutMarginsGuide3 = [(MFSendLaterHeaderCollectionViewCell *)v4 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide3 bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-7.0];
     v48[2] = v26;
-    v27 = [v23 trailingAnchor];
-    v28 = [(MFSendLaterHeaderCollectionViewCell *)v4 layoutMarginsGuide];
-    v29 = [v28 trailingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29];
+    trailingAnchor = [v23 trailingAnchor];
+    layoutMarginsGuide4 = [(MFSendLaterHeaderCollectionViewCell *)v4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v48[3] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:4];
     [v24 activateConstraints:v31];
 
     [(MFSendLaterHeaderCollectionViewCell *)v4 setDatePicker:v45];
     [(MFSendLaterHeaderCollectionViewCell *)v4 setStackView:v23];
-    v32 = [(MFSendLaterHeaderCollectionViewCell *)v4 viewHelper];
-    v33 = [v46 text];
-    [v32 precalculateWidthsWithDescription:v33];
+    viewHelper = [(MFSendLaterHeaderCollectionViewCell *)v4 viewHelper];
+    text = [v46 text];
+    [viewHelper precalculateWidthsWithDescription:text];
 
     [(MFSendLaterHeaderCollectionViewCell *)v4 _updateLabelAndDatePickerOrientation];
   }
@@ -94,34 +94,34 @@
 
 - (void)_updateLabelAndDatePickerOrientation
 {
-  if (a1)
+  if (self)
   {
-    v5 = [a1 stackView];
-    v2 = [a1 viewHelper];
-    v3 = [v2 willContentTruncate];
+    stackView = [self stackView];
+    viewHelper = [self viewHelper];
+    willContentTruncate = [viewHelper willContentTruncate];
 
-    if (v3)
+    if (willContentTruncate)
     {
       v4 = 1;
-      [v5 setAxis:1];
+      [stackView setAxis:1];
     }
 
     else
     {
-      [v5 setAxis:0];
+      [stackView setAxis:0];
       v4 = 3;
     }
 
-    [v5 setAlignment:v4];
-    [v5 layoutIfNeeded];
+    [stackView setAlignment:v4];
+    [stackView layoutIfNeeded];
   }
 }
 
-- (void)updateActiveComponent:(int64_t)a3
+- (void)updateActiveComponent:(int64_t)component
 {
-  if (a3)
+  if (component)
   {
-    if (a3 != 1)
+    if (component != 1)
     {
       goto LABEL_6;
     }
@@ -136,25 +136,25 @@
 
   [(MFSendLaterHeaderCollectionViewCell *)self setCurrentVisibleComponent:v4];
 LABEL_6:
-  v5 = [(MFSendLaterHeaderCollectionViewCell *)self datePicker];
-  [v5 _setCompactStyleDelegate:self];
-  [v5 _compactStyleSetActiveComponent:{-[MFSendLaterHeaderCollectionViewCell currentVisibleComponent](self, "currentVisibleComponent")}];
+  datePicker = [(MFSendLaterHeaderCollectionViewCell *)self datePicker];
+  [datePicker _setCompactStyleDelegate:self];
+  [datePicker _compactStyleSetActiveComponent:{-[MFSendLaterHeaderCollectionViewCell currentVisibleComponent](self, "currentVisibleComponent")}];
 }
 
-- (void)updateWithDate:(id)a3 timeZone:(id)a4 isInvalid:(BOOL)a5
+- (void)updateWithDate:(id)date timeZone:(id)zone isInvalid:(BOOL)invalid
 {
-  v5 = a5;
+  invalidCopy = invalid;
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MFSendLaterHeaderCollectionViewCell *)self datePicker];
-  [v10 setTimeZone:v9];
-  [v10 _setCompactStyleDelegate:self];
-  v11 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v10 _setDisplaysTimeZone:{objc_msgSend(v9, "isEqual:", v11) ^ 1}];
+  dateCopy = date;
+  zoneCopy = zone;
+  datePicker = [(MFSendLaterHeaderCollectionViewCell *)self datePicker];
+  [datePicker setTimeZone:zoneCopy];
+  [datePicker _setCompactStyleDelegate:self];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [datePicker _setDisplaysTimeZone:{objc_msgSend(zoneCopy, "isEqual:", localTimeZone) ^ 1}];
 
-  [v10 setDate:v8];
-  if (v5)
+  [datePicker setDate:dateCopy];
+  if (invalidCopy)
   {
     v12 = &unk_1F3D16188;
   }
@@ -167,32 +167,32 @@ LABEL_6:
   v14 = *MEMORY[0x1E69DB6B8];
   v15[0] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  [v10 _setOverrideCompactTextAttributes:v13];
+  [datePicker _setOverrideCompactTextAttributes:v13];
 }
 
-- (void)_datePicker:(id)a3 didSelectComponent:(int64_t)a4
+- (void)_datePicker:(id)picker didSelectComponent:(int64_t)component
 {
-  v7 = [(MFSendLaterHeaderCollectionViewCell *)self delegate];
-  if (a4)
+  delegate = [(MFSendLaterHeaderCollectionViewCell *)self delegate];
+  if (component)
   {
-    if (a4 == 2)
+    if (component == 2)
     {
       [(MFSendLaterHeaderCollectionViewCell *)self setCurrentVisibleComponent:2];
-      [v7 sendLaterHeaderCollectionViewCellTimeTapped:self];
+      [delegate sendLaterHeaderCollectionViewCellTimeTapped:self];
     }
 
-    else if (a4 == 1)
+    else if (component == 1)
     {
       [(MFSendLaterHeaderCollectionViewCell *)self setCurrentVisibleComponent:1];
-      [v7 sendLaterHeaderCollectionViewCellDateTapped:self];
+      [delegate sendLaterHeaderCollectionViewCellDateTapped:self];
     }
   }
 
   else
   {
-    v6 = [(MFSendLaterHeaderCollectionViewCell *)self datePicker];
-    [v6 _setCompactStyleDelegate:self];
-    [v6 _compactStyleSetActiveComponent:{-[MFSendLaterHeaderCollectionViewCell currentVisibleComponent](self, "currentVisibleComponent")}];
+    datePicker = [(MFSendLaterHeaderCollectionViewCell *)self datePicker];
+    [datePicker _setCompactStyleDelegate:self];
+    [datePicker _compactStyleSetActiveComponent:{-[MFSendLaterHeaderCollectionViewCell currentVisibleComponent](self, "currentVisibleComponent")}];
   }
 }
 
@@ -201,9 +201,9 @@ LABEL_6:
   v5.receiver = self;
   v5.super_class = MFSendLaterHeaderCollectionViewCell;
   [(MFSendLaterHeaderCollectionViewCell *)&v5 layoutMarginsDidChange];
-  v3 = [(MFSendLaterHeaderCollectionViewCell *)self viewHelper];
+  viewHelper = [(MFSendLaterHeaderCollectionViewCell *)self viewHelper];
   [(MFSendLaterHeaderCollectionViewCell *)self layoutMargins];
-  v4 = [v3 updateLayoutMarginsIfNeeded:?];
+  v4 = [viewHelper updateLayoutMarginsIfNeeded:?];
 
   if (v4)
   {
@@ -211,14 +211,14 @@ LABEL_6:
   }
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v8.receiver = self;
   v8.super_class = MFSendLaterHeaderCollectionViewCell;
-  v4 = [(MFSendLaterHeaderCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:a3];
-  v5 = [(MFSendLaterHeaderCollectionViewCell *)self viewHelper];
+  v4 = [(MFSendLaterHeaderCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:attributes];
+  viewHelper = [(MFSendLaterHeaderCollectionViewCell *)self viewHelper];
   [v4 frame];
-  v6 = [v5 updateWidthIfNeeded:CGRectGetWidth(v10)];
+  v6 = [viewHelper updateWidthIfNeeded:CGRectGetWidth(v10)];
 
   if (v6)
   {

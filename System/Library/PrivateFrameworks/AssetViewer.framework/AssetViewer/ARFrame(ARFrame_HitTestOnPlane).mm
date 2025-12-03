@@ -11,8 +11,8 @@
   __asm { FMLA            S1, S0, V4.S[1] }
 
   v42 = _S1;
-  v15 = [a1 camera];
-  [v15 projectionMatrix];
+  camera = [self camera];
+  [camera projectionMatrix];
   v57 = __invert_f4(v56);
   v34 = v57.columns[0];
   v36 = v57.columns[1];
@@ -21,12 +21,12 @@
 
   v16 = vaddq_f32(v38, vmlaq_f32(vmlaq_n_f32(vmulq_n_f32(v34, v46), v36, v42), 0, v40));
   v47 = vdivq_f32(v16, vdupq_laneq_s32(v16, 3));
-  v17 = [a1 camera];
-  [v17 transform];
+  camera2 = [self camera];
+  [camera2 transform];
   v43 = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v18, v47.f32[0]), v19, *v47.f32, 1), v20, v47, 2), v21, v47, 3);
 
-  v22 = [a1 camera];
-  [v22 transform];
+  camera3 = [self camera];
+  [camera3 transform];
   v48 = v23;
 
   _Q0.columns[0] = vsubq_f32(v43, v48);

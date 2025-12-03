@@ -1,5 +1,5 @@
 @interface _WKFeature
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (NSString)description;
 - (NSString)details;
 - (NSString)key;
@@ -88,16 +88,16 @@ LABEL_10:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_WKFeature *)self name];
+  name = [(_WKFeature *)self name];
   v7 = [(_WKFeature *)self key];
-  v8 = [(_WKFeature *)self defaultValue];
+  defaultValue = [(_WKFeature *)self defaultValue];
   v9 = "off";
-  if (v8)
+  if (defaultValue)
   {
     v9 = "on";
   }
 
-  return [v3 stringWithFormat:@"<%@: %p; name = %@; key = %@; defaultValue = %s >", v5, self, v6, v7, v9];
+  return [v3 stringWithFormat:@"<%@: %p; name = %@; key = %@; defaultValue = %s >", v5, self, name, v7, v9];
 }
 
 - (NSString)name
@@ -207,18 +207,18 @@ LABEL_10:
   return &v4->isa;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = _WKFeature;
-  if ([(_WKFeature *)&v5 isKindOfClass:?]|| ([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if ([(_WKFeature *)&v5 isKindOfClass:?]|| ([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 

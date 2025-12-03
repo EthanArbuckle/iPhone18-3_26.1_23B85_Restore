@@ -2,8 +2,8 @@
 - (BICMemoryImageSet)init;
 - (id)imageColor;
 - (id)primaryEntry;
-- (void)addEntry:(id)a3;
-- (void)deleteEntry:(id)a3;
+- (void)addEntry:(id)entry;
+- (void)deleteEntry:(id)entry;
 @end
 
 @implementation BICMemoryImageSet
@@ -25,30 +25,30 @@
   return v3;
 }
 
-- (void)deleteEntry:(id)a3
+- (void)deleteEntry:(id)entry
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_42188;
   v5[3] = &unk_2C7BE8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_accessLock);
+  selfCopy = self;
+  entryCopy = entry;
+  v4 = entryCopy;
+  os_unfair_lock_lock(&selfCopy->_accessLock);
   sub_42188(v5);
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_422A4;
   v5[3] = &unk_2C7BE8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_accessLock);
+  selfCopy = self;
+  entryCopy = entry;
+  v4 = entryCopy;
+  os_unfair_lock_lock(&selfCopy->_accessLock);
   sub_422A4(v5);
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -66,7 +66,7 @@
   v29[1] = 3221225472;
   v30 = sub_42678;
   v31 = &unk_2C7AE0;
-  v32 = self;
+  selfCopy = self;
   v33 = &v34;
   v4 = v29;
   os_unfair_lock_lock(&self->_accessLock);
@@ -81,7 +81,7 @@
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v41 count:16];
   if (v6)
   {
-    v7 = 0;
+    quality = 0;
     v8 = *v26;
     do
     {
@@ -95,16 +95,16 @@
         v10 = *(*(&v25 + 1) + 8 * i);
         if ([v10 potentialPrimary])
         {
-          if (v7 == [v10 quality])
+          if (quality == [v10 quality])
           {
             [v3 addObject:v10];
           }
 
-          else if (v7 < [v10 quality])
+          else if (quality < [v10 quality])
           {
             [v3 removeAllObjects];
             [v3 addObject:v10];
-            v7 = [v10 quality];
+            quality = [v10 quality];
           }
         }
       }
@@ -123,7 +123,7 @@
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v40 count:16];
   if (v12)
   {
-    v13 = 0;
+    level = 0;
     v14 = 0;
     v15 = *v22;
     do
@@ -136,11 +136,11 @@
         }
 
         v17 = *(*(&v21 + 1) + 8 * j);
-        if (v13 < [v17 level])
+        if (level < [v17 level])
         {
           v18 = v17;
 
-          v13 = [v18 level];
+          level = [v18 level];
           v14 = v18;
         }
       }

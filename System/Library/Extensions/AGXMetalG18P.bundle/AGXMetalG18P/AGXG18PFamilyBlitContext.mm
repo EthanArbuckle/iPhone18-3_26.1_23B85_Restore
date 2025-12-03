@@ -1,7 +1,7 @@
 @interface AGXG18PFamilyBlitContext
-- (AGXG18PFamilyBlitContext)initWithCommandBuffer:(id)a3 descriptor:(id)a4;
-- (BOOL)commandBatchIdRangeMin:(unsigned int *)a3 max:(unsigned int *)a4;
-- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)a3 startIndex:(unsigned int)a4 endIndex:(unsigned int)a5;
+- (AGXG18PFamilyBlitContext)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor;
+- (BOOL)commandBatchIdRangeMin:(unsigned int *)min max:(unsigned int *)max;
+- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)buffer startIndex:(unsigned int)index endIndex:(unsigned int)endIndex;
 - (__n128)copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:;
 - (__n128)copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:;
 - (__n128)copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:;
@@ -16,70 +16,70 @@
 - (__n128)optimizeContentsForGPUAccess:slice:level:;
 - (__n128)optimizeContentsForTexture:readAccessPattern:readAccessor:;
 - (__n128)optimizeContentsForTexture:readAccessPattern:readAccessor:slice:level:;
-- (id)reInitWithCommandBuffer:(id)a3;
+- (id)reInitWithCommandBuffer:(id)buffer;
 - (uint64_t)generateMipmapsForTexture:;
 - (uint64_t)invalidateCompressedTexture:;
 - (uint64_t)optimizeContentsForCPUAccess:;
 - (uint64_t)optimizeContentsForGPUAccess:;
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7;
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size;
 - (void)copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:;
 - (void)copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:;
 - (void)copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:;
-- (void)copyFromTensor:(id)a3 sourceSlice:(MTLTensorSlice)a4 toTensor:(id)a5 destinationSlice:(MTLTensorSlice)a6;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10;
+- (void)copyFromTensor:(id)tensor sourceSlice:(MTLTensorSlice)slice toTensor:(id)toTensor destinationSlice:(MTLTensorSlice)destinationSlice;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0;
 - (void)copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:;
 - (void)copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:options:;
 - (void)copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:;
 - (void)copyFromTexture:sourceSlice:sourceLevel:toTexture:destinationSlice:destinationLevel:sliceCount:levelCount:;
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6;
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)deferredEndEncoding;
 - (void)endEncoding;
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 pattern4:(unsigned int)a5;
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 value:(unsigned __int8)a5;
+- (void)fillBuffer:(id)buffer range:(_NSRange)range pattern4:(unsigned int)pattern4;
+- (void)fillBuffer:(id)buffer range:(_NSRange)range value:(unsigned __int8)value;
 - (void)fillBuffer:range:value:;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length;
 - (void)fillTexture:level:slice:region:bytes:length:;
-- (void)filterCounterRangeWithFirstBatch:(unsigned int)a3 lastBatch:(unsigned int)a4 filterIndex:(unsigned int)a5;
+- (void)filterCounterRangeWithFirstBatch:(unsigned int)batch lastBatch:(unsigned int)lastBatch filterIndex:(unsigned int)index;
 - (void)generateMipmapsForTexture:;
-- (void)generateMipmapsForTexture:(id)a3;
-- (void)getTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6 resetCounters:(BOOL)a7 countersBuffer:(id)a8 countersBufferOffset:(unint64_t)a9;
-- (void)invalidateCompressedTexture:(id)a3;
-- (void)invalidateCompressedTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)moveTextureMappingsFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)optimizeContentsForCPUAccess:(id)a3;
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeContentsForGPUAccess:(id)a3;
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
+- (void)generateMipmapsForTexture:(id)texture;
+- (void)getTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice resetCounters:(BOOL)resetCounters countersBuffer:(id)buffer countersBufferOffset:(unint64_t)offset;
+- (void)invalidateCompressedTexture:(id)texture;
+- (void)invalidateCompressedTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level;
+- (void)moveTextureMappingsFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)optimizeContentsForCPUAccess:(id)access;
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeContentsForGPUAccess:(id)access;
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
 - (void)optimizeContentsForGPUAccess:slice:level:;
-- (void)optimizeContentsForTexture:(id)a3 readAccessPattern:(int64_t)a4 readAccessor:(int64_t)a5;
-- (void)optimizeContentsForTexture:(id)a3 readAccessPattern:(int64_t)a4 readAccessor:(int64_t)a5 slice:(unint64_t)a6 level:(unint64_t)a7;
+- (void)optimizeContentsForTexture:(id)texture readAccessPattern:(int64_t)pattern readAccessor:(int64_t)accessor;
+- (void)optimizeContentsForTexture:(id)texture readAccessPattern:(int64_t)pattern readAccessor:(int64_t)accessor slice:(unint64_t)slice level:(unint64_t)level;
 - (void)optimizeContentsForTexture:readAccessPattern:readAccessor:;
 - (void)optimizeContentsForTexture:readAccessPattern:readAccessor:slice:level:;
-- (void)optimizeIndirectCommandBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)resetCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)resetTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6;
-- (void)resolveCounters:(id)a3 inRange:(_NSRange)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6;
-- (void)updateFence:(id)a3;
-- (void)updateTextureMapping:(id)a3 mode:(unint64_t)a4 indirectBuffer:(id)a5 indirectBufferOffset:(unint64_t)a6;
-- (void)updateTextureMapping:(id)a3 mode:(unint64_t)a4 region:(id *)a5 mipLevel:(unint64_t)a6 slice:(unint64_t)a7;
-- (void)updateTextureMappings:(id)a3 mode:(unint64_t)a4 regions:(id *)a5 mipLevels:(const unint64_t *)a6 slices:(const unint64_t *)a7 numRegions:(unint64_t)a8;
-- (void)waitForFence:(id)a3;
+- (void)optimizeIndirectCommandBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)resetCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)resetTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)resolveCounters:(id)counters inRange:(_NSRange)range destinationBuffer:(id)buffer destinationOffset:(unint64_t)offset;
+- (void)updateFence:(id)fence;
+- (void)updateTextureMapping:(id)mapping mode:(unint64_t)mode indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)updateTextureMapping:(id)mapping mode:(unint64_t)mode region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)updateTextureMappings:(id)mappings mode:(unint64_t)mode regions:(id *)regions mipLevels:(const unint64_t *)levels slices:(const unint64_t *)slices numRegions:(unint64_t)numRegions;
+- (void)waitForFence:(id)fence;
 @end
 
 @implementation AGXG18PFamilyBlitContext
 
-- (void)resolveCounters:(id)a3 inRange:(_NSRange)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6
+- (void)resolveCounters:(id)counters inRange:(_NSRange)range destinationBuffer:(id)buffer destinationOffset:(unint64_t)offset
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v37 = *MEMORY[0x29EDCA608];
   if (!self->encodingLegacyBlit)
   {
@@ -178,10 +178,10 @@ LABEL_15:
   if (length)
   {
     impl = self->_impl;
-    if (length + location <= [a3 sampleCount])
+    if (length + location <= [counters sampleCount])
     {
-      v21 = [a3 buffer];
-      if (impl[58] != -1 && [a3 buffer] == *(impl + 28))
+      buffer = [counters buffer];
+      if (impl[58] != -1 && [counters buffer] == *(impl + 28))
       {
         v26 = impl[58];
         if (v26 >= location && v26 < length + location)
@@ -192,8 +192,8 @@ LABEL_15:
       }
 
       *(impl + 240) = 1;
-      v28 = [a3 sampleSize];
-      AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyBufferToBuffer(impl, a5, a6, v21, v28 * location, v28 * length);
+      sampleSize = [counters sampleSize];
+      AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyBufferToBuffer(impl, buffer, offset, buffer, sampleSize * location, sampleSize * length);
       *(impl + 240) = 0;
     }
 
@@ -225,11 +225,11 @@ LABEL_15:
   }
 }
 
-- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)a3 startIndex:(unsigned int)a4 endIndex:(unsigned int)a5
+- (BOOL)setMTLCounterSampleLocationWithBuffer:(id)buffer startIndex:(unsigned int)index endIndex:(unsigned int)endIndex
 {
   if (self->encodingLegacyBlit)
   {
-    if (a3)
+    if (buffer)
     {
       goto LABEL_3;
     }
@@ -325,7 +325,7 @@ LABEL_35:
 LABEL_23:
   IOGPUResourceListAddResource();
   self->encodingLegacyBlit = 1;
-  if (!a3)
+  if (!buffer)
   {
     goto LABEL_24;
   }
@@ -333,13 +333,13 @@ LABEL_23:
 LABEL_3:
   impl = self->_impl;
   v10 = *(*(impl + 1) + 1896);
-  *(impl + 58) = a4;
-  *(impl + 59) = a5;
-  v11 = AGX::CounterSamplingContextGen1::validateSampleIndex(a3, impl + 58);
-  v12 = AGX::CounterSamplingContextGen1::validateSampleIndex(a3, impl + 59);
+  *(impl + 58) = index;
+  *(impl + 59) = endIndex;
+  v11 = AGX::CounterSamplingContextGen1::validateSampleIndex(buffer, impl + 58);
+  v12 = AGX::CounterSamplingContextGen1::validateSampleIndex(buffer, impl + 59);
   if ((v11 & 1) != 0 || v12)
   {
-    v12 = AGX::CounterSamplingContextGen1::setCounterSampleBuffer((impl + 224), a3);
+    v12 = AGX::CounterSamplingContextGen1::setCounterSampleBuffer((impl + 224), buffer);
     if (v12)
     {
       if (*(impl + 28))
@@ -359,7 +359,7 @@ LABEL_3:
   return v12;
 }
 
-- (BOOL)commandBatchIdRangeMin:(unsigned int *)a3 max:(unsigned int *)a4
+- (BOOL)commandBatchIdRangeMin:(unsigned int *)min max:(unsigned int *)max
 {
   if (!self->encodingLegacyBlit)
   {
@@ -457,10 +457,10 @@ LABEL_27:
 LABEL_15:
   v15 = *(self->_impl + 1);
 
-  return AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::userDrawTokenIndex(v15, a3, a4);
+  return AGX::ContextCommon<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::DataBufferAllocator>::userDrawTokenIndex(v15, min, max);
 }
 
-- (void)filterCounterRangeWithFirstBatch:(unsigned int)a3 lastBatch:(unsigned int)a4 filterIndex:(unsigned int)a5
+- (void)filterCounterRangeWithFirstBatch:(unsigned int)batch lastBatch:(unsigned int)lastBatch filterIndex:(unsigned int)index
 {
   if (!self->encodingLegacyBlit)
   {
@@ -557,19 +557,19 @@ LABEL_25:
 
 LABEL_15:
   v16 = *(self->_impl + 1);
-  *(v16 + 1932) = a3;
-  *(v16 + 1936) = a4;
+  *(v16 + 1932) = batch;
+  *(v16 + 1936) = lastBatch;
 }
 
-- (void)copyFromTensor:(id)a3 sourceSlice:(MTLTensorSlice)a4 toTensor:(id)a5 destinationSlice:(MTLTensorSlice)a6
+- (void)copyFromTensor:(id)tensor sourceSlice:(MTLTensorSlice)slice toTensor:(id)toTensor destinationSlice:(MTLTensorSlice)destinationSlice
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v8 = a4.var1;
-  v9 = a4.var0;
-  v10 = self;
+  var1 = destinationSlice.var1;
+  var0 = destinationSlice.var0;
+  v8 = slice.var1;
+  v9 = slice.var0;
+  selfCopy = self;
   switchContextIfNeededImpl(1, &self->encodingLegacyBlit, self->_impl_compute, self->_impl, self->_ctx_compute);
-  impl_compute = v10->_impl_compute;
+  impl_compute = selfCopy->_impl_compute;
   v11 = *impl_compute;
   *(v11 + 1944) = *(*impl_compute + 1940);
   v12 = *(v11 + 168);
@@ -617,8 +617,8 @@ LABEL_3:
   {
     v44 = v15;
     v45 = v11;
-    v46 = a5;
-    v47 = v10;
+    toTensorCopy2 = toTensor;
+    v47 = selfCopy;
     v17 = 0;
     v18 = (v12 + 256);
     v19 = 1;
@@ -631,7 +631,7 @@ LABEL_3:
         *(v18 - 32) = *([v9 tensorExtentsInternal] + 8 * v17 + 8);
         v20 *= v21;
         v18[32] = v20;
-        *v18 = *(*(a3 + 41) + 8 * v17 + 192);
+        *v18 = *(*(tensor + 41) + 8 * v17 + 192);
         v19 *= v21;
       }
 
@@ -644,15 +644,15 @@ LABEL_3:
 
   else
   {
-    if (*(*(a3 + 41) + 337))
+    if (*(*(tensor + 41) + 337))
     {
       goto LABEL_31;
     }
 
     v44 = v15;
     v45 = v11;
-    v46 = a5;
-    v47 = v10;
+    toTensorCopy2 = toTensor;
+    v47 = selfCopy;
     v19 = 1;
     *(v12 + 776) = 1;
     if (v16 <= 1)
@@ -672,7 +672,7 @@ LABEL_3:
     v23 = (v50 + 384);
     v24 = 1;
     v26 = v45;
-    v25 = v46;
+    v25 = toTensorCopy2;
     do
     {
       v27 = *([var1 tensorExtentsInternal] + 8 * v22 + 8);
@@ -681,7 +681,7 @@ LABEL_3:
         *(v23 - 32) = *([var0 tensorExtentsInternal] + 8 * v22 + 8);
         v24 *= v27;
         v23[32] = v24;
-        *v23 = *(v46[41] + 8 * v22 + 192);
+        *v23 = *(toTensorCopy2[41] + 8 * v22 + 192);
       }
 
       ++v22;
@@ -689,17 +689,17 @@ LABEL_3:
     }
 
     while (v44 != v22);
-    v10 = v47;
-    v28 = a3;
+    selfCopy = v47;
+    tensorCopy2 = tensor;
   }
 
   else
   {
-    v25 = v46;
-    v10 = v47;
+    v25 = toTensorCopy2;
+    selfCopy = v47;
     v26 = v45;
-    v28 = a3;
-    if (*(v46[41] + 337))
+    tensorCopy2 = tensor;
+    if (*(toTensorCopy2[41] + 337))
     {
       goto LABEL_31;
     }
@@ -717,7 +717,7 @@ LABEL_3:
     *(v50 + 384) = 1;
   }
 
-  v29 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[*(v28[41] + 24)];
+  v29 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[*(tensorCopy2[41] + 24)];
   *(v50 + 768) = v29;
   v54 = 103;
   v56 = 0;
@@ -728,9 +728,9 @@ LABEL_3:
   TensorBlitPipeline = AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::findOrCreateTensorBlitPipeline(*(impl_compute[7] + 848), &v53);
   v31 = *(*(TensorBlitPipeline + 16) + 4064);
   v32 = *impl_compute;
-  v33 = *v28[41] + *(v28[41] + 32) * v29;
+  v33 = *tensorCopy2[41] + *(tensorCopy2[41] + 32) * v29;
   v34 = MEMORY[0x29EDC5638];
-  v35 = v28 + *MEMORY[0x29EDC5638];
+  v35 = tensorCopy2 + *MEMORY[0x29EDC5638];
   *(v32 + 26408) = v33;
   v36 = *(v32 + 22488);
   *v36 = v33;
@@ -785,10 +785,10 @@ LABEL_3:
   }
 
 LABEL_31:
-  *(*v10->_impl_compute + 1948) = *(*v10->_impl_compute + 1940);
+  *(*selfCopy->_impl_compute + 1948) = *(*selfCopy->_impl_compute + 1940);
 }
 
-- (void)optimizeIndirectCommandBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)optimizeIndirectCommandBuffer:(id)buffer withRange:(_NSRange)range
 {
   if (!self->encodingLegacyBlit)
   {
@@ -884,11 +884,11 @@ LABEL_25:
   }
 }
 
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index
 {
-  v6 = a6;
-  length = a4.length;
-  location = a4.location;
+  indexCopy = index;
+  length = range.length;
+  location = range.location;
   if (!self->encodingLegacyBlit)
   {
     ctx_compute = self->_ctx_compute;
@@ -984,17 +984,17 @@ LABEL_27:
 
 LABEL_15:
   impl = self->_impl;
-  v21 = *(a5 + 52);
-  v22 = *(a3 + 52);
-  v23 = *(a3 + 102) == 0;
+  v21 = *(destination + 52);
+  v22 = *(buffer + 52);
+  v23 = *(buffer + 102) == 0;
 
-  AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::blitCopyICBWithTA(impl, v21, v6, v22, location, length, v23);
+  AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::blitCopyICBWithTA(impl, v21, indexCopy, v22, location, length, v23);
 }
 
-- (void)resetCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)resetCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (!self->encodingLegacyBlit)
   {
     ctx_compute = self->_ctx_compute;
@@ -1090,17 +1090,17 @@ LABEL_27:
 
 LABEL_15:
   impl = self->_impl;
-  v17 = *(a3 + 52);
-  v18 = *(a3 + 102) == 0;
+  v17 = *(buffer + 52);
+  v18 = *(buffer + 102) == 0;
 
   AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::blitResetICBWithTA(impl, v17, location, length, v18);
 }
 
-- (void)moveTextureMappingsFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)moveTextureMappingsFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v13 = a4;
-  v27[0] = *a6;
-  v27[1] = *a7;
+  sliceCopy = slice;
+  v27[0] = *origin;
+  v27[1] = *size;
   if (!self->encodingLegacyBlit)
   {
     ctx_compute = self->_ctx_compute;
@@ -1197,13 +1197,13 @@ LABEL_25:
 LABEL_15:
   impl = self->_impl;
   *(impl[1] + 1944) = *(impl[1] + 1940);
-  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, a3, v27, a5, v13, 0, 0, 0, 0, a8, a11, a10, a9, 0, 0);
+  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, texture, v27, level, sliceCopy, 0, 0, 0, 0, toTexture, destinationOrigin, destinationLevel, destinationSlice, 0, 0);
   *(*(self->_impl + 1) + 1948) = *(*(self->_impl + 1) + 1940);
 }
 
-- (void)resetTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6
+- (void)resetTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice
 {
-  v6 = a6;
+  sliceCopy = slice;
   if (!self->encodingLegacyBlit)
   {
     ctx_compute = self->_ctx_compute;
@@ -1300,19 +1300,19 @@ LABEL_25:
 LABEL_15:
   impl = self->_impl;
   *(impl[1] + 1944) = *(impl[1] + 1940);
-  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, a3, a4, a5, v6, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0);
+  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, counters, region, level, sliceCopy, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0);
   *(*(self->_impl + 1) + 1948) = *(*(self->_impl + 1) + 1940);
 }
 
-- (void)getTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6 resetCounters:(BOOL)a7 countersBuffer:(id)a8 countersBufferOffset:(unint64_t)a9
+- (void)getTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice resetCounters:(BOOL)resetCounters countersBuffer:(id)buffer countersBufferOffset:(unint64_t)offset
 {
-  v9 = a6;
+  sliceCopy = slice;
   if (!self->encodingLegacyBlit)
   {
     ctx_compute = self->_ctx_compute;
     impl_compute = self->_impl_compute;
     v16 = ctx_compute[6];
-    v28 = a7;
+    resetCountersCopy = resetCounters;
     if (*(v16 + 1240) && *(v16 + 1248))
     {
       goto LABEL_8;
@@ -1321,30 +1321,30 @@ LABEL_15:
     v17 = ctx_compute[85];
     if (!v17)
     {
-      v24 = a8;
+      bufferCopy = buffer;
       if (!AGX::DataBufferAllocator<44ul>::growNoInline(ctx_compute + 3, 19, 0))
       {
         goto LABEL_25;
       }
 
       v17 = ctx_compute[85];
-      a8 = v24;
+      buffer = bufferCopy;
     }
 
     v18 = v17 + 16;
     if ((v17 + 16) > ctx_compute[84])
     {
-      v25 = a8;
+      bufferCopy2 = buffer;
       v26 = AGX::DataBufferAllocator<44ul>::growNoInline(ctx_compute + 3, 19, 0);
       v17 = ctx_compute[85];
       if (!v26)
       {
-        a8 = v25;
+        buffer = bufferCopy2;
         goto LABEL_7;
       }
 
       v18 = v17 + 16;
-      a8 = v25;
+      buffer = bufferCopy2;
       if ((v17 + 16) > ctx_compute[84])
       {
         goto LABEL_25;
@@ -1355,7 +1355,7 @@ LABEL_15:
 LABEL_7:
     ctx_compute[85] = v17 + 16;
 LABEL_8:
-    v19 = a8;
+    bufferCopy3 = buffer;
     IOGPUResourceListAddResource();
     AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::endComputePass(*impl_compute, 0, 22);
     *(impl_compute + 1192) = 0;
@@ -1400,8 +1400,8 @@ LABEL_13:
 LABEL_14:
       IOGPUResourceListAddResource();
       self->encodingLegacyBlit = 1;
-      a8 = v19;
-      *&a7 = v28;
+      buffer = bufferCopy3;
+      *&resetCounters = resetCountersCopy;
       goto LABEL_15;
     }
 
@@ -1412,14 +1412,14 @@ LABEL_25:
 LABEL_15:
   impl = self->_impl;
   *(impl[1] + 1944) = *(impl[1] + 1940);
-  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, a3, a4, a5, v9, 0, a7, a8, a9, 0, 0, 0, 0, 0, 0);
+  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, counters, region, level, sliceCopy, 0, resetCounters, buffer, offset, 0, 0, 0, 0, 0, 0);
   *(*(self->_impl + 1) + 1948) = *(*(self->_impl + 1) + 1940);
 }
 
-- (void)updateTextureMapping:(id)a3 mode:(unint64_t)a4 indirectBuffer:(id)a5 indirectBufferOffset:(unint64_t)a6
+- (void)updateTextureMapping:(id)mapping mode:(unint64_t)mode indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
-  v6 = a6;
-  v8 = a4;
+  offsetCopy = offset;
+  modeCopy = mode;
   if (!self->encodingLegacyBlit)
   {
     ctx_compute = self->_ctx_compute;
@@ -1516,14 +1516,14 @@ LABEL_25:
 LABEL_15:
   impl = self->_impl;
   *(impl[1] + 1944) = *(impl[1] + 1940);
-  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTextureIndirect(impl, a3, a5, v6, v8);
+  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTextureIndirect(impl, mapping, buffer, offsetCopy, modeCopy);
   *(*(self->_impl + 1) + 1948) = *(*(self->_impl + 1) + 1940);
 }
 
-- (void)updateTextureMapping:(id)a3 mode:(unint64_t)a4 region:(id *)a5 mipLevel:(unint64_t)a6 slice:(unint64_t)a7
+- (void)updateTextureMapping:(id)mapping mode:(unint64_t)mode region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice
 {
-  v7 = a7;
-  v10 = a4;
+  sliceCopy = slice;
+  modeCopy = mode;
   if (!self->encodingLegacyBlit)
   {
     ctx_compute = self->_ctx_compute;
@@ -1620,17 +1620,17 @@ LABEL_25:
 LABEL_15:
   impl = self->_impl;
   *(impl[1] + 1944) = *(impl[1] + 1940);
-  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, a3, a5, a6, v7, v10, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, mapping, region, level, sliceCopy, modeCopy, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   *(*(self->_impl + 1) + 1948) = *(*(self->_impl + 1) + 1940);
 }
 
-- (void)updateTextureMappings:(id)a3 mode:(unint64_t)a4 regions:(id *)a5 mipLevels:(const unint64_t *)a6 slices:(const unint64_t *)a7 numRegions:(unint64_t)a8
+- (void)updateTextureMappings:(id)mappings mode:(unint64_t)mode regions:(id *)regions mipLevels:(const unint64_t *)levels slices:(const unint64_t *)slices numRegions:(unint64_t)numRegions
 {
-  v11 = a4;
+  modeCopy = mode;
   if (!self->encodingLegacyBlit)
   {
     ctx_compute = self->_ctx_compute;
-    v31 = a8;
+    numRegionsCopy = numRegions;
     impl_compute = self->_impl_compute;
     v16 = ctx_compute[6];
     if (*(v16 + 1240) && *(v16 + 1248))
@@ -1714,7 +1714,7 @@ LABEL_13:
 LABEL_14:
       IOGPUResourceListAddResource();
       self->encodingLegacyBlit = 1;
-      LODWORD(a8) = v31;
+      LODWORD(numRegions) = numRegionsCopy;
       goto LABEL_15;
     }
 
@@ -1727,19 +1727,19 @@ LABEL_15:
   v23 = impl[1];
   v24 = v23[485];
   v23[486] = v24;
-  v25 = a8;
-  if (a8)
+  numRegionsCopy2 = numRegions;
+  if (numRegions)
   {
     do
     {
-      v27 = *a6++;
+      v27 = *levels++;
       v26 = v27;
-      v28 = *a7++;
-      AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, a3, a5++, v26, v28, v11, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-      --v25;
+      v28 = *slices++;
+      AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, mappings, regions++, v26, v28, modeCopy, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      --numRegionsCopy2;
     }
 
-    while (v25);
+    while (numRegionsCopy2);
     v23 = *(self->_impl + 1);
     v24 = v23[485];
   }
@@ -1747,13 +1747,13 @@ LABEL_15:
   v23[487] = v24;
 }
 
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
   if (self->encodingLegacyBlit)
   {
     v6 = (*(self->_impl + 1) + 2028);
 
-    AGX::BarrierTracker::addBackFacingBarrier(v6, a3, a4, 1);
+    AGX::BarrierTracker::addBackFacingBarrier(v6, stages, beforeStages, 1);
   }
 
   else
@@ -1761,7 +1761,7 @@ LABEL_15:
     v10 = v4;
     v11 = v5;
     v7 = *self->_impl_compute;
-    if (AGX::BarrierTracker::addBackFacingBarrier((v7 + 2028), a3, a4, 1))
+    if (AGX::BarrierTracker::addBackFacingBarrier((v7 + 2028), stages, beforeStages, 1))
     {
       v9 = 0;
       agxaReserveCDMTokenSpace<AGX::HAL300::Encoders,AGX::HAL300::DataBufferAllocator>(22, v7 + 24, 4, 0, 0, 0, &v9);
@@ -1772,7 +1772,7 @@ LABEL_15:
   }
 }
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
   if (self->encodingLegacyBlit)
   {
@@ -1805,12 +1805,12 @@ LABEL_15:
     }
   }
 
-  v8 = *(a3 + *MEMORY[0x29EDC5610]);
+  v8 = *(fence + *MEMORY[0x29EDC5610]);
 
   AGX::FenceList::insertFence(v5, v8);
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
   if (self->encodingLegacyBlit)
   {
@@ -1826,7 +1826,7 @@ LABEL_15:
       operator new();
     }
 
-    v6 = *(a3 + *MEMORY[0x29EDC5610]);
+    v6 = *(fence + *MEMORY[0x29EDC5610]);
 
     AGX::FenceList::insertFence(v5, v6);
   }
@@ -1846,16 +1846,16 @@ LABEL_15:
       operator new();
     }
 
-    AGX::FenceList::insertFence(v9, *(a3 + *MEMORY[0x29EDC5610]));
+    AGX::FenceList::insertFence(v9, *(fence + *MEMORY[0x29EDC5610]));
     *(v8 + 2304) = 1;
   }
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0
 {
-  if (!AGX::BlitUtil::requireLegacyBlit<false>(a6))
+  if (!AGX::BlitUtil::requireLegacyBlit<false>(toTexture))
   {
-    AGX::BlitUtil::requireLegacyBlit<false>(a3);
+    AGX::BlitUtil::requireLegacyBlit<false>(texture);
   }
 
   operator new();
@@ -1865,11 +1865,11 @@ LABEL_15:
 {
   v3 = *a2;
   *(**a2 + 1944) = *(**a2 + 1940);
-  v4 = **(a1 + 8);
-  v5 = **(a1 + 32);
-  v97 = **(a1 + 48);
-  v98 = **(a1 + 24);
-  v99 = **(a1 + 64);
+  v4 = **(self + 8);
+  v5 = **(self + 32);
+  v97 = **(self + 48);
+  v98 = **(self + 24);
+  v99 = **(self + 64);
   v6 = *(v5 + 592);
   v7 = *(v4 + 592);
   if (*(v6 + 236))
@@ -1882,9 +1882,9 @@ LABEL_15:
     v8 = *(v7 + 236) == 0;
   }
 
-  v101 = **(a1 + 16);
-  v100 = **(a1 + 40);
-  v96 = **(a1 + 56);
+  v101 = **(self + 16);
+  v100 = **(self + 40);
+  v96 = **(self + 56);
   v9 = *(*(v6 + 208) + 24);
   if (*(*(v7 + 208) + 24) < v9)
   {
@@ -1898,7 +1898,7 @@ LABEL_15:
   v15 = v11 == 260 && v10 == 261;
   v88 = v15;
   v89 = v13;
-  v102 = **(a1 + 8);
+  v102 = **(self + 8);
   if (v8 && *(v6 + 396) == *(v7 + 396))
   {
     v84 = *(v7 + 584) != 0;
@@ -2406,25 +2406,25 @@ LABEL_15:
 - (__n128)copyFromTexture:sourceSlice:sourceLevel:toTexture:destinationSlice:destinationLevel:sliceCount:levelCount:
 {
   *a2 = &unk_2A23F63E0;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  v4 = *(a1 + 40);
-  *(a2 + 56) = *(a1 + 56);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  v4 = *(self + 40);
+  *(a2 + 56) = *(self + 56);
   *(a2 + 40) = v4;
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length
 {
   v13 = *MEMORY[0x29EDCA608];
-  v11 = a4;
-  v12 = a3;
-  v9 = a7;
-  v10 = a5;
-  v8 = a8;
-  AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  levelCopy = level;
+  textureCopy = texture;
+  bytesCopy = bytes;
+  sliceCopy = slice;
+  lengthCopy = length;
+  AGX::BlitUtil::requireLegacyBlit<false>(texture);
   operator new();
 }
 
@@ -2432,33 +2432,33 @@ LABEL_15:
 {
   v3 = *a2;
   *(**a2 + 1944) = *(**a2 + 1940);
-  v4 = **(a1 + 8);
-  v5 = **(a1 + 16);
-  v6 = *(a1 + 32);
-  v7 = **(a1 + 24);
+  v4 = **(self + 8);
+  v5 = **(self + 16);
+  v6 = *(self + 32);
+  v7 = **(self + 24);
   v8 = v6[1];
   v9[0] = *v6;
   v9[1] = v8;
   v9[2] = v6[2];
-  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::fillTexture(v3, v4, v5, v7, v9, **(a1 + 40), **(a1 + 48));
+  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::fillTexture(v3, v4, v5, v7, v9, **(self + 40), **(self + 48));
   *(**a2 + 1948) = *(**a2 + 1940);
 }
 
 - (__n128)fillTexture:level:slice:region:bytes:length:
 {
   *a2 = &unk_2A23F6350;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  *(a2 + 40) = *(a1 + 40);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  *(a2 + 40) = *(self + 40);
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 pattern4:(unsigned int)a5
+- (void)fillBuffer:(id)buffer range:(_NSRange)range pattern4:(unsigned int)pattern4
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (!self->encodingLegacyBlit)
   {
     ctx_compute = self->_ctx_compute;
@@ -2555,27 +2555,27 @@ LABEL_25:
 LABEL_15:
   impl = self->_impl;
   *(impl[1] + 1944) = *(impl[1] + 1940);
-  v21 = a5;
-  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::fillBuffer(impl, a3, location, length, &v21, 4uLL);
+  pattern4Copy = pattern4;
+  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::fillBuffer(impl, buffer, location, length, &pattern4Copy, 4uLL);
   *(*(self->_impl + 1) + 1948) = *(*(self->_impl + 1) + 1940);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
-  v14 = *a6;
-  v13 = *a7;
-  v12 = *a11;
-  [(AGXG18PFamilyBlitContext *)self copyFromTexture:a3 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v14 sourceSize:&v13 toTexture:a8 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v12];
+  v14 = *origin;
+  v13 = *size;
+  v12 = *destinationOrigin;
+  [(AGXG18PFamilyBlitContext *)self copyFromTexture:texture sourceSlice:slice sourceLevel:level sourceOrigin:&v14 sourceSize:&v13 toTexture:toTexture destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v12];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2
 {
   v16 = *MEMORY[0x29EDCA608];
-  v14 = a4;
-  v15 = a3;
-  v12 = a8;
-  v13 = a5;
-  AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  sliceCopy = slice;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  levelCopy = level;
+  AGX::BlitUtil::requireLegacyBlit<false>(texture);
   operator new();
 }
 
@@ -2583,18 +2583,18 @@ LABEL_15:
 {
   v3 = *a2;
   *(**a2 + 1944) = *(**a2 + 1940);
-  v4 = **(a1 + 8);
-  v5 = **(a1 + 16);
-  v6 = **(a1 + 24);
-  v7 = **(a1 + 32);
-  v8 = **(a1 + 40);
-  v9 = **(a1 + 48);
-  v10 = *(a1 + 64);
-  v11 = **(a1 + 56);
+  v4 = **(self + 8);
+  v5 = **(self + 16);
+  v6 = **(self + 24);
+  v7 = **(self + 32);
+  v8 = **(self + 40);
+  v9 = **(self + 48);
+  v10 = *(self + 64);
+  v11 = **(self + 56);
   v16 = *v10;
   v17 = *(v10 + 2);
-  v12 = *(a1 + 72);
-  v13 = *(a1 + 80);
+  v12 = *(self + 72);
+  v13 = *(self + 80);
   v14 = *v12;
   v15 = *(v12 + 2);
   AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::copyTextureToBuffer(v3, v4, v5, v6, v7, v8, v9, v11, &v16, &v14, *v13);
@@ -2604,26 +2604,26 @@ LABEL_15:
 - (__n128)copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:options:
 {
   *a2 = &unk_2A23F62C0;
-  *(a2 + 8) = *(a1 + 8);
-  result = *(a1 + 24);
-  v3 = *(a1 + 40);
-  v4 = *(a1 + 56);
-  *(a2 + 72) = *(a1 + 72);
+  *(a2 + 8) = *(self + 8);
+  result = *(self + 24);
+  v3 = *(self + 40);
+  v4 = *(self + 56);
+  *(a2 + 72) = *(self + 72);
   *(a2 + 56) = v4;
   *(a2 + 40) = v3;
   *(a2 + 24) = result;
   return result;
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
   v17 = *MEMORY[0x29EDCA608];
-  v15 = a4;
-  v16 = a3;
-  v13 = a6;
-  v14 = a5;
-  v12 = a8;
-  AGX::BlitUtil::requireLegacyBlit<false>(a8);
+  offsetCopy = offset;
+  bufferCopy = buffer;
+  imageCopy = image;
+  rowCopy = row;
+  textureCopy = texture;
+  AGX::BlitUtil::requireLegacyBlit<false>(texture);
   operator new();
 }
 
@@ -2631,40 +2631,40 @@ LABEL_15:
 {
   v3 = *a2;
   *(**a2 + 1944) = *(**a2 + 1940);
-  v4 = **(a1 + 8);
-  v5 = **(a1 + 16);
-  v6 = *(a1 + 32);
-  v7 = **(a1 + 24);
+  v4 = **(self + 8);
+  v5 = **(self + 16);
+  v6 = *(self + 32);
+  v7 = **(self + 24);
   v12 = *v6;
   v13 = *(v6 + 2);
-  v8 = *(a1 + 40);
-  v9 = *(a1 + 48);
+  v8 = *(self + 40);
+  v9 = *(self + 48);
   v10 = *v8;
   v11 = *(v8 + 2);
-  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::copyBufferToTexture(v3, v4, v5, v7, &v12, &v10, *v9, **(a1 + 56), **(a1 + 64), **(a1 + 72), **(a1 + 80));
+  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::copyBufferToTexture(v3, v4, v5, v7, &v12, &v10, *v9, **(self + 56), **(self + 64), **(self + 72), **(self + 80));
   *(**a2 + 1948) = *(**a2 + 1940);
 }
 
 - (__n128)copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:
 {
   *a2 = &unk_2A23F6230;
-  *(a2 + 8) = *(a1 + 8);
-  result = *(a1 + 24);
-  v3 = *(a1 + 40);
-  v4 = *(a1 + 56);
-  *(a2 + 72) = *(a1 + 72);
+  *(a2 + 8) = *(self + 8);
+  result = *(self + 24);
+  v3 = *(self + 40);
+  v4 = *(self + 56);
+  *(a2 + 72) = *(self + 72);
   *(a2 + 56) = v4;
   *(a2 + 40) = v3;
   *(a2 + 24) = result;
   return result;
 }
 
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 value:(unsigned __int8)a5
+- (void)fillBuffer:(id)buffer range:(_NSRange)range value:(unsigned __int8)value
 {
   v8 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v6 = a3;
-  v5 = a5;
+  rangeCopy = range;
+  bufferCopy = buffer;
+  valueCopy = value;
   AGX::BlitUtil::requireLegacyBlit<false>(0);
   operator new();
 }
@@ -2673,11 +2673,11 @@ LABEL_15:
 {
   v3 = *a2 + 8;
   *(**a2 + 1944) = *(**a2 + 1940);
-  v4 = *(a1 + 16);
-  v5 = **(a1 + 8);
+  v4 = *(self + 16);
+  v5 = **(self + 8);
   v7 = *v4;
   v6 = v4[1];
-  v8 = **(a1 + 24);
+  v8 = **(self + 24);
   AGX::MSLBlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::blitCDMBuffer(v3, v5, *(v5 + *MEMORY[0x29EDC5638] + 72) + v7, 0, 0, v6, &v8, 1uLL);
   *(**a2 + 1948) = *(**a2 + 1940);
 }
@@ -2685,24 +2685,24 @@ LABEL_15:
 - (__n128)fillBuffer:range:value:
 {
   *a2 = &unk_2A23F61A0;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)generateMipmapsForTexture:(id)a3
+- (void)generateMipmapsForTexture:(id)texture
 {
   v13 = *MEMORY[0x29EDCA608];
-  v8 = a3;
+  textureCopy = texture;
   (*(&self->super.super.super.super.super.isa + *MEMORY[0x29EDBB780]))[89] |= 0x100uLL;
-  v4 = AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  v4 = AGX::BlitUtil::requireLegacyBlit<false>(texture);
   v5 = v4;
   v11[0] = &unk_2A23F6110;
-  v11[1] = &v8;
+  v11[1] = &textureCopy;
   v12 = v11;
   v9[0] = &unk_2A23F6158;
-  v9[1] = &v8;
+  v9[1] = &textureCopy;
   v10 = v9;
   switchContextIfNeededImpl(!v4, &self->encodingLegacyBlit, self->_impl_compute, self->_impl, self->_ctx_compute);
   if (v5)
@@ -2750,7 +2750,7 @@ LABEL_6:
 
 - (void)generateMipmapsForTexture:
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v3 = *a2;
   v4 = **a2;
   v5 = v4[485];
@@ -2895,22 +2895,22 @@ LABEL_21:
   return result;
 }
 
-- (void)optimizeContentsForTexture:(id)a3 readAccessPattern:(int64_t)a4 readAccessor:(int64_t)a5 slice:(unint64_t)a6 level:(unint64_t)a7
+- (void)optimizeContentsForTexture:(id)texture readAccessPattern:(int64_t)pattern readAccessor:(int64_t)accessor slice:(unint64_t)slice level:(unint64_t)level
 {
   v12 = *MEMORY[0x29EDCA608];
-  v10 = a4;
-  v11 = a3;
-  v8 = a6;
-  v9 = a5;
-  v7 = a7;
-  AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  patternCopy = pattern;
+  textureCopy = texture;
+  sliceCopy = slice;
+  accessorCopy = accessor;
+  levelCopy = level;
+  AGX::BlitUtil::requireLegacyBlit<false>(texture);
   operator new();
 }
 
 - (void)optimizeContentsForTexture:readAccessPattern:readAccessor:slice:level:
 {
   v2 = *a2;
-  v3 = **(a1 + 8);
+  v3 = **(self + 8);
   if (v3 == 1)
   {
     goto LABEL_4;
@@ -2921,21 +2921,21 @@ LABEL_21:
     return;
   }
 
-  if (**(a1 + 16) == 2)
+  if (**(self + 16) == 2)
   {
 LABEL_4:
-    v4 = **(a1 + 24);
-    v5 = **(a1 + 32);
-    v6 = **(a1 + 40);
+    v4 = **(self + 24);
+    v5 = **(self + 32);
+    v6 = **(self + 40);
 
     AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::optimizeContentsForUncompressedAccess(v2, v4, v5, v6);
   }
 
   else
   {
-    v7 = **(a1 + 24);
-    v8 = **(a1 + 32);
-    v9 = **(a1 + 40);
+    v7 = **(self + 24);
+    v8 = **(self + 32);
+    v9 = **(self + 40);
     v10 = *(v7 + 592);
     if (!*&v10[6] || (v10[5].i8[0] & 2) != 0)
     {
@@ -2974,28 +2974,28 @@ LABEL_4:
 - (__n128)optimizeContentsForTexture:readAccessPattern:readAccessor:slice:level:
 {
   *a2 = &unk_2A23F6080;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  *(a2 + 40) = *(a1 + 40);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  *(a2 + 40) = *(self + 40);
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)optimizeContentsForTexture:(id)a3 readAccessPattern:(int64_t)a4 readAccessor:(int64_t)a5
+- (void)optimizeContentsForTexture:(id)texture readAccessPattern:(int64_t)pattern readAccessor:(int64_t)accessor
 {
   v8 = *MEMORY[0x29EDCA608];
-  v6 = a4;
-  v7 = a3;
-  v5 = a5;
-  AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  patternCopy = pattern;
+  textureCopy = texture;
+  accessorCopy = accessor;
+  AGX::BlitUtil::requireLegacyBlit<false>(texture);
   operator new();
 }
 
 - (void)optimizeContentsForTexture:readAccessPattern:readAccessor:
 {
   v2 = *a2;
-  v3 = *a1[1];
+  v3 = *self[1];
   if (v3 == 1)
   {
     goto LABEL_4;
@@ -3006,10 +3006,10 @@ LABEL_4:
     return;
   }
 
-  if (*a1[2] == 2)
+  if (*self[2] == 2)
   {
 LABEL_4:
-    v4 = *a1[3];
+    v4 = *self[3];
     v5 = *(v4 + 592);
     if (*(v5 + 48) || !*(v5 + 584))
     {
@@ -3059,7 +3059,7 @@ LABEL_4:
 
   else
   {
-    v8 = *a1[3];
+    v8 = *self[3];
 
     AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::optimizeContentsForCompressedAccess(v2, v8);
   }
@@ -3068,42 +3068,42 @@ LABEL_4:
 - (__n128)optimizeContentsForTexture:readAccessPattern:readAccessor:
 {
   *a2 = &unk_2A23F5FF0;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
   v8 = *MEMORY[0x29EDCA608];
-  v6 = a4;
-  v7 = a3;
-  v5 = a5;
-  AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  sliceCopy = slice;
+  accessCopy = access;
+  levelCopy = level;
+  AGX::BlitUtil::requireLegacyBlit<false>(access);
   operator new();
 }
 
 - (__n128)optimizeContentsForCPUAccess:slice:level:
 {
   *a2 = &unk_2A23F5F60;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3
+- (void)optimizeContentsForCPUAccess:(id)access
 {
   v13 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v4 = AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  accessCopy = access;
+  v4 = AGX::BlitUtil::requireLegacyBlit<false>(access);
   v5 = v4;
   v11[0] = &unk_2A23F5ED0;
-  v11[1] = &v8;
+  v11[1] = &accessCopy;
   v12 = v11;
   v9[0] = &unk_2A23F5F18;
-  v9[1] = &v8;
+  v9[1] = &accessCopy;
   v10 = v9;
   switchContextIfNeededImpl(!v4, &self->encodingLegacyBlit, self->_impl_compute, self->_impl, self->_ctx_compute);
   if (v5)
@@ -3157,22 +3157,22 @@ LABEL_6:
   return result;
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
   v8 = *MEMORY[0x29EDCA608];
-  v6 = a4;
-  v7 = a3;
-  v5 = a5;
-  AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  sliceCopy = slice;
+  accessCopy = access;
+  levelCopy = level;
+  AGX::BlitUtil::requireLegacyBlit<false>(access);
   operator new();
 }
 
 - (void)optimizeContentsForGPUAccess:slice:level:
 {
   v2 = *a2;
-  v3 = **(a1 + 8);
-  v4 = **(a1 + 16);
-  v5 = **(a1 + 24);
+  v3 = **(self + 8);
+  v4 = **(self + 16);
+  v5 = **(self + 24);
   v6 = *(v3 + 592);
   if (!*&v6[6] || (v6[5].i8[0] & 2) != 0)
   {
@@ -3222,23 +3222,23 @@ LABEL_6:
 - (__n128)optimizeContentsForGPUAccess:slice:level:
 {
   *a2 = &unk_2A23F5E40;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3
+- (void)optimizeContentsForGPUAccess:(id)access
 {
   v13 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v4 = AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  accessCopy = access;
+  v4 = AGX::BlitUtil::requireLegacyBlit<false>(access);
   v5 = v4;
   v11[0] = &unk_2A23F5DB0;
-  v11[1] = &v8;
+  v11[1] = &accessCopy;
   v12 = v11;
   v9[0] = &unk_2A23F5DF8;
-  v9[1] = &v8;
+  v9[1] = &accessCopy;
   v10 = v9;
   switchContextIfNeededImpl(!v4, &self->encodingLegacyBlit, self->_impl_compute, self->_impl, self->_ctx_compute);
   if (v5)
@@ -3292,36 +3292,36 @@ LABEL_6:
   return result;
 }
 
-- (void)invalidateCompressedTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)invalidateCompressedTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level
 {
   v8 = *MEMORY[0x29EDCA608];
-  v6 = a4;
-  v7 = a3;
-  v5 = a5;
-  AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  sliceCopy = slice;
+  textureCopy = texture;
+  levelCopy = level;
+  AGX::BlitUtil::requireLegacyBlit<false>(texture);
   operator new();
 }
 
 - (__n128)invalidateCompressedTexture:slice:level:
 {
   *a2 = &unk_2A23F5D20;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)invalidateCompressedTexture:(id)a3
+- (void)invalidateCompressedTexture:(id)texture
 {
   v13 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v4 = AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  textureCopy = texture;
+  v4 = AGX::BlitUtil::requireLegacyBlit<false>(texture);
   v5 = v4;
   v11[0] = &unk_2A23F5C90;
-  v11[1] = &v8;
+  v11[1] = &textureCopy;
   v12 = v11;
   v9[0] = &unk_2A23F5CD8;
-  v9[1] = &v8;
+  v9[1] = &textureCopy;
   v10 = v9;
   switchContextIfNeededImpl(!v4, &self->encodingLegacyBlit, self->_impl_compute, self->_impl, self->_ctx_compute);
   if (v5)
@@ -3375,14 +3375,14 @@ LABEL_6:
   return result;
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1
 {
   v15 = *MEMORY[0x29EDCA608];
-  v13 = a4;
-  v14 = a3;
-  v11 = a8;
-  v12 = a5;
-  AGX::BlitUtil::requireLegacyBlit<false>(a3);
+  sliceCopy = slice;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  levelCopy = level;
+  AGX::BlitUtil::requireLegacyBlit<false>(texture);
   operator new();
 }
 
@@ -3390,17 +3390,17 @@ LABEL_6:
 {
   v3 = *a2;
   *(**a2 + 1944) = *(**a2 + 1940);
-  v4 = **(a1 + 8);
-  v5 = **(a1 + 16);
-  v6 = **(a1 + 24);
-  v7 = **(a1 + 32);
-  v8 = **(a1 + 40);
-  v9 = **(a1 + 48);
-  v10 = *(a1 + 64);
-  v11 = **(a1 + 56);
+  v4 = **(self + 8);
+  v5 = **(self + 16);
+  v6 = **(self + 24);
+  v7 = **(self + 32);
+  v8 = **(self + 40);
+  v9 = **(self + 48);
+  v10 = *(self + 64);
+  v11 = **(self + 56);
   v15 = *v10;
   v16 = *(v10 + 2);
-  v12 = *(a1 + 72);
+  v12 = *(self + 72);
   v13 = *v12;
   v14 = *(v12 + 2);
   AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::copyTextureToBuffer(v3, v4, v5, v6, v7, v8, v9, v11, &v15, &v13, 0);
@@ -3410,25 +3410,25 @@ LABEL_6:
 - (__n128)copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:
 {
   *a2 = &unk_2A23F5C00;
-  *(a2 + 8) = *(a1 + 8);
-  result = *(a1 + 24);
-  v3 = *(a1 + 40);
-  v4 = *(a1 + 56);
-  *(a2 + 72) = *(a1 + 72);
+  *(a2 + 8) = *(self + 8);
+  result = *(self + 24);
+  v3 = *(self + 40);
+  v4 = *(self + 56);
+  *(a2 + 72) = *(self + 72);
   *(a2 + 56) = v4;
   *(a2 + 40) = v3;
   *(a2 + 24) = result;
   return result;
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size
 {
   v12 = *MEMORY[0x29EDCA608];
-  v10 = a4;
-  v11 = a3;
-  v8 = a6;
-  v9 = a5;
-  v7 = a7;
+  offsetCopy = offset;
+  bufferCopy = buffer;
+  destinationOffsetCopy = destinationOffset;
+  toBufferCopy = toBuffer;
+  sizeCopy = size;
   AGX::BlitUtil::requireLegacyBlit<false>(0);
   operator new();
 }
@@ -3437,30 +3437,30 @@ LABEL_6:
 {
   v3 = *a2;
   *(**a2 + 1944) = *(**a2 + 1940);
-  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::copyBufferToBufferImpl(v3, **(a1 + 8), *(**(a1 + 8) + *MEMORY[0x29EDC5638] + 72) + **(a1 + 16), **(a1 + 24), (*(**(a1 + 24) + *MEMORY[0x29EDC5638] + 72) + **(a1 + 32)), **(a1 + 40));
+  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::copyBufferToBufferImpl(v3, **(self + 8), *(**(self + 8) + *MEMORY[0x29EDC5638] + 72) + **(self + 16), **(self + 24), (*(**(self + 24) + *MEMORY[0x29EDC5638] + 72) + **(self + 32)), **(self + 40));
   *(**a2 + 1948) = *(**a2 + 1940);
 }
 
 - (__n128)copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:
 {
   *a2 = &unk_2A23F5B70;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  *(a2 + 40) = *(a1 + 40);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  *(a2 + 40) = *(self + 40);
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
   v16 = *MEMORY[0x29EDCA608];
-  v14 = a4;
-  v15 = a3;
-  v12 = a6;
-  v13 = a5;
-  v11 = a8;
-  AGX::BlitUtil::requireLegacyBlit<false>(a8);
+  offsetCopy = offset;
+  bufferCopy = buffer;
+  imageCopy = image;
+  rowCopy = row;
+  textureCopy = texture;
+  AGX::BlitUtil::requireLegacyBlit<false>(texture);
   operator new();
 }
 
@@ -3468,39 +3468,39 @@ LABEL_6:
 {
   v3 = *a2;
   *(**a2 + 1944) = *(**a2 + 1940);
-  v4 = **(a1 + 8);
-  v5 = **(a1 + 16);
-  v6 = *(a1 + 32);
-  v7 = **(a1 + 24);
+  v4 = **(self + 8);
+  v5 = **(self + 16);
+  v6 = *(self + 32);
+  v7 = **(self + 24);
   v12 = *v6;
   v13 = *(v6 + 2);
-  v8 = *(a1 + 40);
-  v9 = *(a1 + 48);
+  v8 = *(self + 40);
+  v9 = *(self + 48);
   v10 = *v8;
   v11 = *(v8 + 2);
-  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::copyBufferToTexture(v3, v4, v5, v7, &v12, &v10, *v9, **(a1 + 56), **(a1 + 64), **(a1 + 72), 0);
+  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::copyBufferToTexture(v3, v4, v5, v7, &v12, &v10, *v9, **(self + 56), **(self + 64), **(self + 72), 0);
   *(**a2 + 1948) = *(**a2 + 1940);
 }
 
 - (__n128)copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:
 {
   *a2 = &unk_2A23F5AE0;
-  *(a2 + 8) = *(a1 + 8);
-  result = *(a1 + 24);
-  v3 = *(a1 + 40);
-  v4 = *(a1 + 56);
-  *(a2 + 72) = *(a1 + 72);
+  *(a2 + 8) = *(self + 8);
+  result = *(self + 24);
+  v3 = *(self + 40);
+  v4 = *(self + 56);
+  *(a2 + 72) = *(self + 72);
   *(a2 + 56) = v4;
   *(a2 + 40) = v3;
   *(a2 + 24) = result;
   return result;
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  if (!AGX::BlitUtil::requireLegacyBlit<false>(a8))
+  if (!AGX::BlitUtil::requireLegacyBlit<false>(toTexture))
   {
-    AGX::BlitUtil::requireLegacyBlit<false>(a3);
+    AGX::BlitUtil::requireLegacyBlit<false>(texture);
   }
 
   operator new();
@@ -3512,19 +3512,19 @@ LABEL_6:
   v3 = **a2;
   v4 = v3[485];
   v3[486] = v4;
-  v5 = **(a1 + 8);
-  v6 = **(a1 + 16);
-  v7 = *(a1 + 32);
-  v8 = **(a1 + 24);
+  v5 = **(self + 8);
+  v6 = **(self + 16);
+  v7 = *(self + 32);
+  v8 = **(self + 24);
   v30 = *v7;
   v31 = *(v7 + 16);
-  v9 = **(a1 + 40);
-  v10 = **(a1 + 48);
-  v11 = *(a1 + 64);
-  v12 = **(a1 + 56);
+  v9 = **(self + 40);
+  v10 = **(self + 48);
+  v11 = *(self + 64);
+  v12 = **(self + 56);
   v28 = *v11;
   v29 = *(v11 + 16);
-  v13 = *(a1 + 72);
+  v13 = *(self + 72);
   v26 = *v13;
   v27 = *(v13 + 2);
   v14 = *(v9 + 592);
@@ -3590,11 +3590,11 @@ LABEL_6:
 - (__n128)copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:
 {
   *a2 = &unk_2A23F5A50;
-  *(a2 + 8) = *(a1 + 8);
-  result = *(a1 + 24);
-  v3 = *(a1 + 40);
-  v4 = *(a1 + 56);
-  *(a2 + 72) = *(a1 + 72);
+  *(a2 + 8) = *(self + 8);
+  result = *(self + 24);
+  v3 = *(self + 40);
+  v4 = *(self + 56);
+  *(a2 + 72) = *(self + 72);
   *(a2 + 56) = v4;
   *(a2 + 40) = v3;
   *(a2 + 24) = result;
@@ -3606,12 +3606,12 @@ LABEL_6:
   if (self->_impl)
   {
     v3 = *MEMORY[0x29EDBB780];
-    v4 = [*(&self->super.super.super.super.super.isa + v3) device];
+    device = [*(&self->super.super.super.super.super.isa + v3) device];
     impl = self->_impl;
     v7 = impl[31];
     v6 = impl[32];
-    atomic_fetch_or((v4 + 856), v7);
-    atomic_fetch_or((v4 + 864), v6);
+    atomic_fetch_or((device + 856), v7);
+    atomic_fetch_or((device + 864), v6);
     if ([*(&self->super.super.super.super.super.isa + v3) disableDeferredEndEncoding])
     {
       [(AGXG18PFamilyBlitContext *)self deferredEndEncoding];
@@ -3673,16 +3673,16 @@ LABEL_6:
   [(_MTLCommandEncoder *)&v4 dealloc];
 }
 
-- (id)reInitWithCommandBuffer:(id)a3
+- (id)reInitWithCommandBuffer:(id)buffer
 {
-  v5 = a3;
-  *(&self->super.super.super.super.super.isa + *MEMORY[0x29EDBB780]) = v5;
-  [(objc_class *)v5 setCurrentCommandEncoder:self];
-  [a3 setPreviousBlitCommandEncoder:0];
+  bufferCopy = buffer;
+  *(&self->super.super.super.super.super.isa + *MEMORY[0x29EDBB780]) = bufferCopy;
+  [(objc_class *)bufferCopy setCurrentCommandEncoder:self];
+  [buffer setPreviousBlitCommandEncoder:0];
   return self;
 }
 
-- (AGXG18PFamilyBlitContext)initWithCommandBuffer:(id)a3 descriptor:(id)a4
+- (AGXG18PFamilyBlitContext)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v19.receiver = self;
   v19.super_class = AGXG18PFamilyBlitContext;
@@ -3695,10 +3695,10 @@ LABEL_6:
     *(v6 + 11) = v7 + 33536;
     if (v7)
     {
-      v8 = [a3 protectionOptions];
+      protectionOptions = [buffer protectionOptions];
       v9 = *([*&v6[*MEMORY[0x29EDBB780]] device] + 848) + 7008;
       block = MEMORY[0x29EDCA5F8];
-      v21 = 3221225472;
+      bufferCopy = 3221225472;
       v22 = ___ZN3AGX18BlitUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfig_block_invoke;
       v23 = &__block_descriptor_40_e5_v8__0l;
       v24 = v9;
@@ -3707,22 +3707,22 @@ LABEL_6:
         dispatch_once(&AGX::BlitUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once, &block);
       }
 
-      v10 = [a3 device];
-      v11 = (*(*(v10 + 848) + 16456) & 0x1000) == 0;
+      device = [buffer device];
+      v11 = (*(*(device + 848) + 16456) & 0x1000) == 0;
       v12 = *(v6 + 13);
-      v27 = v8;
+      v27 = protectionOptions;
       v29 = &AGX::BlitUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
-      v13 = [v6 numThisEncoder];
-      v30[0] = a3;
+      numThisEncoder = [v6 numThisEncoder];
+      v30[0] = buffer;
       v30[1] = 0;
       v31 = 2;
       v32 = v11;
-      v33 = v13;
+      v33 = numThisEncoder;
       v34 = 0;
       v35 = 1;
-      v36 = [0 usedForRaytracingEmulation];
-      block = v10;
-      v21 = a3;
+      usedForRaytracingEmulation = [0 usedForRaytracingEmulation];
+      block = device;
+      bufferCopy = buffer;
       v22 = v6;
       LODWORD(v23) = v11;
       v24 = 0;
@@ -3730,7 +3730,7 @@ LABEL_6:
       v26 = 1;
       v28 = 0;
       AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::ComputeContext<AGX::HAL300::EncoderComputeServiceConfigA>(v12, v30, &block);
-      v14 = AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::BlitDispatchContext(*(v6 + 12), *(v6 + 13), a4, 0, 0);
+      v14 = AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::BlitDispatchContext(*(v6 + 12), *(v6 + 13), descriptor, 0, 0);
       *(v14 + 4896) = 0;
       *(v14 + 4960) = 0;
       *(v14 + 4968) = 0;

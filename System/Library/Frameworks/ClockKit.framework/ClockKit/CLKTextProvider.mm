@@ -2,29 +2,29 @@
 + (CLKTextProvider)localizableTextProviderWithStringsFileFormatKey:(NSString *)formatKey textProviders:(NSArray *)textProviders;
 + (CLKTextProvider)localizableTextProviderWithStringsFileTextKey:(NSString *)textKey shortTextKey:(NSString *)shortTextKey;
 + (CLKTextProvider)new;
-+ (CLKTextProvider)providerWithJSONObjectRepresentation:(id)a3;
++ (CLKTextProvider)providerWithJSONObjectRepresentation:(id)representation;
 + (CLKTextProvider)textProviderWithFormat:(NSString *)format;
-+ (CLKTextProvider)textProviderWithFormat:(id)a3 arguments:(char *)a4;
-- (BOOL)isEqual:(id)a3;
-- (CGSize)minimumSizeWithStyle:(id)a3 now:(id)a4;
-- (CLKTextProvider)initWithCoder:(id)a3;
++ (CLKTextProvider)textProviderWithFormat:(id)format arguments:(char *)arguments;
+- (BOOL)isEqual:(id)equal;
+- (CGSize)minimumSizeWithStyle:(id)style now:(id)now;
+- (CLKTextProvider)initWithCoder:(id)coder;
 - (id)JSONObjectRepresentation;
-- (id)_addTrackingAttribute:(id)a3 tracking:(id)a4;
-- (id)_cacheForKey:(id)a3;
+- (id)_addTrackingAttribute:(id)attribute tracking:(id)tracking;
+- (id)_cacheForKey:(id)key;
 - (id)_defaultCache;
 - (id)_description;
-- (id)_initWithJSONObjectRepresentation:(id)a3;
-- (id)_italicize:(id)a3;
-- (id)_monospacedNumbers:(id)a3;
-- (id)_timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)a3 andRemovingDesignator:(BOOL)a4 designatorExists:(BOOL *)a5;
+- (id)_initWithJSONObjectRepresentation:(id)representation;
+- (id)_italicize:(id)_italicize;
+- (id)_monospacedNumbers:(id)numbers;
+- (id)_timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)format andRemovingDesignator:(BOOL)designator designatorExists:(BOOL *)exists;
 - (id)attributedString;
-- (id)attributedTextAndSize:(CGSize *)a3 forMaxWidth:(double)a4 withStyle:(id)a5 now:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)attributedTextAndSize:(CGSize *)size forMaxWidth:(double)width withStyle:(id)style now:(id)now;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)finalizedCopy;
 - (id)initPrivate;
-- (id)sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4;
-- (id)startUpdatesWithHandler:(id)a3;
+- (id)sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style;
+- (id)startUpdatesWithHandler:(id)handler;
 - (unint64_t)hash;
 - (void)_commonInit;
 - (void)_localeChanged;
@@ -32,9 +32,9 @@
 - (void)_pruneCacheKeysIfNecessary;
 - (void)_update;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)stopUpdatesForToken:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPaused:(BOOL)paused;
+- (void)stopUpdatesForToken:(id)token;
 @end
 
 @implementation CLKTextProvider
@@ -60,15 +60,15 @@
 + (CLKTextProvider)textProviderWithFormat:(NSString *)format
 {
   va_start(va, format);
-  v3 = [a1 textProviderWithFormat:format arguments:va];
+  v3 = [self textProviderWithFormat:format arguments:va];
 
   return v3;
 }
 
-+ (CLKTextProvider)textProviderWithFormat:(id)a3 arguments:(char *)a4
++ (CLKTextProvider)textProviderWithFormat:(id)format arguments:(char *)arguments
 {
-  v5 = a3;
-  v6 = [[CLKCompoundTextProvider alloc] initWithFormat:v5 arguments:a4];
+  formatCopy = format;
+  v6 = [[CLKCompoundTextProvider alloc] initWithFormat:formatCopy arguments:arguments];
 
   return v6;
 }
@@ -89,7 +89,7 @@
 
 + (CLKTextProvider)new
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___CLKTextProvider;
   return objc_msgSendSuper2(&v3, "new");
 }
@@ -101,8 +101,8 @@
   updateHandlersByToken = self->_updateHandlersByToken;
   self->_updateHandlersByToken = v3;
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__localeChanged name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__localeChanged name:*MEMORY[0x277CBE620] object:0];
 }
 
 - (void)dealloc
@@ -110,8 +110,8 @@
   __26__CLKTextProvider_dealloc__block_invoke(self, self->_secondTimerToken);
   __26__CLKTextProvider_dealloc__block_invoke(v3, self->_minuteTimerToken);
   __26__CLKTextProvider_dealloc__block_invoke(v4, self->_30fpsTimerToken);
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
   v6.receiver = self;
   v6.super_class = CLKTextProvider;
@@ -148,11 +148,11 @@ void __26__CLKTextProvider_dealloc__block_invoke_2(uint64_t a1)
   [v2 stopUpdatesForToken:*(a1 + 32)];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     [(CLKTextProvider *)self _maybeStartOrStopUpdates];
   }
 }
@@ -164,22 +164,22 @@ void __26__CLKTextProvider_dealloc__block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (id)attributedTextAndSize:(CGSize *)a3 forMaxWidth:(double)a4 withStyle:(id)a5 now:(id)a6
+- (id)attributedTextAndSize:(CGSize *)size forMaxWidth:(double)width withStyle:(id)style now:(id)now
 {
-  v10 = a5;
-  if (a4 >= 0.00000011920929)
+  styleCopy = style;
+  if (width >= 0.00000011920929)
   {
-    [(CLKTextProvider *)self _startSessionWithDate:a6];
-    v12 = [(CLKTextProvider *)self _sessionCacheKey];
-    v13 = [(CLKTextProvider *)self _cacheForKey:v12];
+    [(CLKTextProvider *)self _startSessionWithDate:now];
+    _sessionCacheKey = [(CLKTextProvider *)self _sessionCacheKey];
+    v13 = [(CLKTextProvider *)self _cacheForKey:_sessionCacheKey];
 
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __67__CLKTextProvider_attributedTextAndSize_forMaxWidth_withStyle_now___block_invoke;
     v18 = &unk_278A1F920;
-    v19 = self;
-    v20 = v10;
-    v11 = [v13 attributedStringAndSize:a3 forMaxWidth:v20 withStyle:&v15 generator:a4];
+    selfCopy = self;
+    v20 = styleCopy;
+    v11 = [v13 attributedStringAndSize:size forMaxWidth:v20 withStyle:&v15 generator:width];
     [(CLKTextProvider *)self _endSession:v15];
   }
 
@@ -223,11 +223,11 @@ LABEL_8:
   return v3;
 }
 
-- (CGSize)minimumSizeWithStyle:(id)a3 now:(id)a4
+- (CGSize)minimumSizeWithStyle:(id)style now:(id)now
 {
   v7 = 0.0;
   v8 = 0.0;
-  v4 = [(CLKTextProvider *)self attributedTextAndSize:&v7 forMaxWidth:a3 withStyle:a4 now:0.00000011920929];
+  v4 = [(CLKTextProvider *)self attributedTextAndSize:&v7 forMaxWidth:style withStyle:now now:0.00000011920929];
   v5 = v7;
   v6 = v8;
   result.height = v6;
@@ -235,20 +235,20 @@ LABEL_8:
   return result;
 }
 
-- (id)sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4
+- (id)sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style
 {
-  v6 = a4;
-  v7 = [(CLKTextProvider *)self _sessionCacheKey];
-  v8 = [(CLKTextProvider *)self _cacheForKey:v7];
+  styleCopy = style;
+  _sessionCacheKey = [(CLKTextProvider *)self _sessionCacheKey];
+  v8 = [(CLKTextProvider *)self _cacheForKey:_sessionCacheKey];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__CLKTextProvider_sessionAttributedTextForIndex_withStyle___block_invoke;
   v12[3] = &unk_278A1F920;
   v12[4] = self;
-  v13 = v6;
-  v9 = v6;
-  v10 = [v8 attributedStringForIndex:a3 withStyle:v9 generator:v12];
+  v13 = styleCopy;
+  v9 = styleCopy;
+  v10 = [v8 attributedStringForIndex:index withStyle:v9 generator:v12];
 
   return v10;
 }
@@ -257,27 +257,27 @@ LABEL_8:
 {
   if (self->_finalized)
   {
-    v2 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [(CLKTextProvider *)self copy];
-    [(CLKTextProvider *)v2 finalize];
+    selfCopy = [(CLKTextProvider *)self copy];
+    [(CLKTextProvider *)selfCopy finalize];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)startUpdatesWithHandler:(id)a3
+- (id)startUpdatesWithHandler:(id)handler
 {
   v4 = MEMORY[0x277CCABB0];
   nextUpdateToken = self->_nextUpdateToken;
-  v6 = a3;
+  handlerCopy = handler;
   v7 = [v4 numberWithUnsignedInteger:nextUpdateToken];
   updateHandlersByToken = self->_updateHandlersByToken;
   ++self->_nextUpdateToken;
-  v9 = [v6 copy];
+  v9 = [handlerCopy copy];
 
   [(NSMutableDictionary *)updateHandlersByToken setObject:v9 forKey:v7];
   [(CLKTextProvider *)self _maybeStartOrStopUpdates];
@@ -285,9 +285,9 @@ LABEL_8:
   return v7;
 }
 
-- (void)stopUpdatesForToken:(id)a3
+- (void)stopUpdatesForToken:(id)token
 {
-  [(NSMutableDictionary *)self->_updateHandlersByToken removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_updateHandlersByToken removeObjectForKey:token];
 
   [(CLKTextProvider *)self _maybeStartOrStopUpdates];
 }
@@ -300,26 +300,26 @@ LABEL_8:
   {
     v8 = 0;
     [v3 addTextProvider:self andGetPlaceholderString:&v8];
-    v5 = v8;
+    _description = v8;
   }
 
   else
   {
-    v5 = [(CLKTextProvider *)self _description];
+    _description = [(CLKTextProvider *)self _description];
   }
 
-  v6 = v5;
+  v6 = _description;
 
   return v6;
 }
 
-- (id)_timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)a3 andRemovingDesignator:(BOOL)a4 designatorExists:(BOOL *)a5
+- (id)_timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:(id)format andRemovingDesignator:(BOOL)designator designatorExists:(BOOL *)exists
 {
-  v6 = a4;
+  designatorCopy = designator;
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  formatCopy = format;
   v8 = 0x277CCA000uLL;
-  [MEMORY[0x277CCA968] _componentsFromFormatString:v7];
+  [MEMORY[0x277CCA968] _componentsFromFormatString:formatCopy];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -328,8 +328,8 @@ LABEL_8:
   if (v10)
   {
     v11 = v10;
-    v40 = a5;
-    v41 = v7;
+    existsCopy = exists;
+    v41 = formatCopy;
     v12 = *v45;
     v13 = *MEMORY[0x277CBE630];
     v14 = *MEMORY[0x277CBE638];
@@ -367,8 +367,8 @@ LABEL_8:
 
     v19 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_13:
-    a5 = v40;
-    v7 = v41;
+    exists = existsCopy;
+    formatCopy = v41;
     v8 = 0x277CCA000;
   }
 
@@ -377,9 +377,9 @@ LABEL_13:
     v19 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a5)
+  if (exists)
   {
-    *a5 = v19 != 0x7FFFFFFFFFFFFFFFLL;
+    *exists = v19 != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
@@ -387,7 +387,7 @@ LABEL_13:
     goto LABEL_41;
   }
 
-  if (!CLKDesignatorRequiresWhitespace() || v6)
+  if (!CLKDesignatorRequiresWhitespace() || designatorCopy)
   {
     if (v19)
     {
@@ -397,14 +397,14 @@ LABEL_13:
       {
         v23 = [v21 objectForKeyedSubscript:*MEMORY[0x277CBE638]];
         [MEMORY[0x277CCA900] whitespaceCharacterSet];
-        v25 = v24 = v7;
+        v25 = v24 = formatCopy;
         [v23 stringByTrimmingCharactersInSet:v25];
-        v26 = v42 = v6;
+        v26 = v42 = designatorCopy;
 
-        v7 = v24;
+        formatCopy = v24;
         v20 = [v26 length] == 0;
 
-        v6 = v42;
+        designatorCopy = v42;
       }
 
       else
@@ -426,14 +426,14 @@ LABEL_13:
       {
         v29 = [v27 objectForKeyedSubscript:*MEMORY[0x277CBE638]];
         [MEMORY[0x277CCA900] whitespaceCharacterSet];
-        v31 = v30 = v7;
+        v31 = v30 = formatCopy;
         [v29 stringByTrimmingCharactersInSet:v31];
-        v32 = v43 = v6;
+        v32 = v43 = designatorCopy;
 
-        v7 = v30;
+        formatCopy = v30;
         v33 = [v32 length] == 0;
 
-        v6 = v43;
+        designatorCopy = v43;
       }
 
       else
@@ -449,7 +449,7 @@ LABEL_36:
         if (v33)
         {
           [v34 removeObjectAtIndex:v19 + 1];
-          if (!v6)
+          if (!designatorCopy)
           {
 LABEL_38:
             if (!v20)
@@ -459,7 +459,7 @@ LABEL_40:
 
               v37 = [*(v8 + 2408) _formatStringFromComponents:v36];
 
-              v7 = v37;
+              formatCopy = v37;
               v9 = v36;
               goto LABEL_41;
             }
@@ -470,7 +470,7 @@ LABEL_39:
           }
         }
 
-        else if (!v6)
+        else if (!designatorCopy)
         {
           goto LABEL_38;
         }
@@ -500,15 +500,15 @@ LABEL_39:
   }
 
 LABEL_34:
-  if (v33 || v6)
+  if (v33 || designatorCopy)
   {
     goto LABEL_36;
   }
 
 LABEL_41:
-  v38 = v7;
+  v38 = formatCopy;
 
-  return v7;
+  return formatCopy;
 }
 
 - (id)_description
@@ -520,13 +520,13 @@ LABEL_41:
   return v2;
 }
 
-- (id)_italicize:(id)a3
+- (id)_italicize:(id)_italicize
 {
-  v3 = [a3 mutableCopy];
+  v3 = [_italicize mutableCopy];
   v4 = *MEMORY[0x277D740A8];
   v5 = [v3 attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
-  v6 = [v5 fontDescriptor];
-  v7 = [v6 fontDescriptorWithSymbolicTraits:1];
+  fontDescriptor = [v5 fontDescriptor];
+  v7 = [fontDescriptor fontDescriptorWithSymbolicTraits:1];
   [v5 pointSize];
   v8 = [CLKFont fontWithDescriptor:v7 size:?];
 
@@ -535,13 +535,13 @@ LABEL_41:
   return v3;
 }
 
-- (id)_monospacedNumbers:(id)a3
+- (id)_monospacedNumbers:(id)numbers
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 mutableCopy];
+  v3 = [numbers mutableCopy];
   v4 = *MEMORY[0x277D740A8];
   v5 = [v3 attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
-  v6 = [v5 fontDescriptor];
+  fontDescriptor = [v5 fontDescriptor];
   v17 = *MEMORY[0x277D74338];
   v7 = *MEMORY[0x277D74388];
   v14[0] = *MEMORY[0x277D74398];
@@ -553,7 +553,7 @@ LABEL_41:
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
   v18[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-  v11 = [v6 fontDescriptorByAddingAttributes:v10];
+  v11 = [fontDescriptor fontDescriptorByAddingAttributes:v10];
 
   [v5 pointSize];
   v12 = [CLKFont fontWithDescriptor:v11 size:?];
@@ -562,12 +562,12 @@ LABEL_41:
   return v3;
 }
 
-- (id)_addTrackingAttribute:(id)a3 tracking:(id)a4
+- (id)_addTrackingAttribute:(id)attribute tracking:(id)tracking
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
+  trackingCopy = tracking;
+  v6 = [attribute mutableCopy];
   v7 = [v6 length];
-  [v6 addAttribute:*MEMORY[0x277D741E0] value:v5 range:{0, v7}];
+  [v6 addAttribute:*MEMORY[0x277D741E0] value:trackingCopy range:{0, v7}];
 
   v8 = [v6 copy];
 
@@ -589,10 +589,10 @@ LABEL_41:
   return defaultCache;
 }
 
-- (id)_cacheForKey:(id)a3
+- (id)_cacheForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     if (!self->_cachesByKey)
     {
@@ -611,23 +611,23 @@ LABEL_41:
       recentCacheKeys = self->_recentCacheKeys;
     }
 
-    [(NSMutableArray *)recentCacheKeys removeObject:v4];
-    [(NSMutableArray *)self->_recentCacheKeys insertObject:v4 atIndex:0];
+    [(NSMutableArray *)recentCacheKeys removeObject:keyCopy];
+    [(NSMutableArray *)self->_recentCacheKeys insertObject:keyCopy atIndex:0];
     [(CLKTextProvider *)self _pruneCacheKeysIfNecessary];
-    v10 = [(NSMutableDictionary *)self->_cachesByKey objectForKey:v4];
-    if (!v10)
+    _defaultCache = [(NSMutableDictionary *)self->_cachesByKey objectForKey:keyCopy];
+    if (!_defaultCache)
     {
-      v10 = objc_alloc_init(CLKTextProviderCache);
-      [(NSMutableDictionary *)self->_cachesByKey setObject:v10 forKey:v4];
+      _defaultCache = objc_alloc_init(CLKTextProviderCache);
+      [(NSMutableDictionary *)self->_cachesByKey setObject:_defaultCache forKey:keyCopy];
     }
   }
 
   else
   {
-    v10 = [(CLKTextProvider *)self _defaultCache];
+    _defaultCache = [(CLKTextProvider *)self _defaultCache];
   }
 
-  return v10;
+  return _defaultCache;
 }
 
 - (void)_pruneCacheKeysIfNecessary
@@ -678,10 +678,10 @@ void __33__CLKTextProvider__localeChanged__block_invoke(uint64_t a1)
     goto LABEL_4;
   }
 
-  v10 = [(CLKTextProvider *)self _updateFrequency];
-  v4 = v10 == 2;
-  v3 = v10 == 3;
-  if (v10 != 1)
+  _updateFrequency = [(CLKTextProvider *)self _updateFrequency];
+  v4 = _updateFrequency == 2;
+  v3 = _updateFrequency == 3;
+  if (_updateFrequency != 1)
   {
 LABEL_4:
     if (self->_minuteTimerToken)
@@ -873,7 +873,7 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
   [(CLKTextProvider *)self _maybeStartOrStopUpdates];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_finalized)
   {
@@ -883,7 +883,7 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
 
   else
   {
-    v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+    v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
     *(v5 + 120) = self->_timeTravelUpdateFrequency;
     objc_storeStrong((v5 + 80), self->_tintColor);
     *(v5 + 104) = self->_shrinkTextPreference;
@@ -897,16 +897,16 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   timeTravelUpdateFrequency = self->_timeTravelUpdateFrequency;
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __27__CLKTextProvider_isEqual___block_invoke;
   v50[3] = &unk_278A1F948;
-  v7 = v4;
+  v7 = equalCopy;
   v51 = v7;
   v8 = [v5 appendInteger:timeTravelUpdateFrequency counterpart:v50];
   tintColor = self->_tintColor;
@@ -980,40 +980,40 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_timeTravelUpdateFrequency];
-  v5 = [v3 appendObject:self->_tintColor];
-  v6 = [v3 appendInteger:self->_shrinkTextPreference];
-  v7 = [v3 appendBool:self->_italicized];
-  v8 = [v3 appendBool:self->_ignoreUppercaseStyle];
-  v9 = [v3 appendString:self->_accessibilityLabel];
-  v10 = [v3 appendBool:self->_monospacedNumbers];
-  v11 = [v3 appendObject:self->_fontFeatures];
-  v12 = [v3 appendObject:self->_trackingAttribute];
-  v13 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_timeTravelUpdateFrequency];
+  v5 = [builder appendObject:self->_tintColor];
+  v6 = [builder appendInteger:self->_shrinkTextPreference];
+  v7 = [builder appendBool:self->_italicized];
+  v8 = [builder appendBool:self->_ignoreUppercaseStyle];
+  v9 = [builder appendString:self->_accessibilityLabel];
+  v10 = [builder appendBool:self->_monospacedNumbers];
+  v11 = [builder appendObject:self->_fontFeatures];
+  v12 = [builder appendObject:self->_trackingAttribute];
+  v13 = [builder hash];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timeTravelUpdateFrequency = self->_timeTravelUpdateFrequency;
-  v5 = a3;
-  [v5 encodeInteger:timeTravelUpdateFrequency forKey:@"updateFrequency"];
-  [v5 encodeObject:self->_tintColor forKey:@"tintColor"];
-  [v5 encodeBool:self->_shrinkTextPreference != 0 forKey:@"shrinkTextPreference"];
-  [v5 encodeBool:self->_finalized forKey:@"finalized"];
-  [v5 encodeBool:self->_italicized forKey:@"italicized"];
-  [v5 encodeBool:self->_monospacedNumbers forKey:@"monospacedNumbers"];
-  [v5 encodeBool:self->_ignoreUppercaseStyle forKey:@"ignoreUppercaseStyle"];
-  [v5 encodeObject:self->_accessibilityLabel forKey:@"_accessibility"];
-  [v5 encodeObject:self->_fontFeatures forKey:@"fontFeatures"];
-  [v5 encodeObject:self->_trackingAttribute forKey:@"trackingAttribute"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:timeTravelUpdateFrequency forKey:@"updateFrequency"];
+  [coderCopy encodeObject:self->_tintColor forKey:@"tintColor"];
+  [coderCopy encodeBool:self->_shrinkTextPreference != 0 forKey:@"shrinkTextPreference"];
+  [coderCopy encodeBool:self->_finalized forKey:@"finalized"];
+  [coderCopy encodeBool:self->_italicized forKey:@"italicized"];
+  [coderCopy encodeBool:self->_monospacedNumbers forKey:@"monospacedNumbers"];
+  [coderCopy encodeBool:self->_ignoreUppercaseStyle forKey:@"ignoreUppercaseStyle"];
+  [coderCopy encodeObject:self->_accessibilityLabel forKey:@"_accessibility"];
+  [coderCopy encodeObject:self->_fontFeatures forKey:@"fontFeatures"];
+  [coderCopy encodeObject:self->_trackingAttribute forKey:@"trackingAttribute"];
 }
 
-- (CLKTextProvider)initWithCoder:(id)a3
+- (CLKTextProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CLKTextProvider;
   v5 = [(CLKTextProvider *)&v21 init];
@@ -1021,21 +1021,21 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
   if (v5)
   {
     [(CLKTextProvider *)v5 _commonInit];
-    v6->_timeTravelUpdateFrequency = [v4 decodeIntegerForKey:@"updateFrequency"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+    v6->_timeTravelUpdateFrequency = [coderCopy decodeIntegerForKey:@"updateFrequency"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
     tintColor = v6->_tintColor;
     v6->_tintColor = v7;
 
-    v6->_shrinkTextPreference = [v4 decodeBoolForKey:@"shrinkTextPreference"];
-    v6->_finalized = [v4 decodeBoolForKey:@"finalized"];
-    v6->_italicized = [v4 decodeBoolForKey:@"italicized"];
-    v6->_monospacedNumbers = [v4 decodeBoolForKey:@"monospacedNumbers"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trackingAttribute"];
+    v6->_shrinkTextPreference = [coderCopy decodeBoolForKey:@"shrinkTextPreference"];
+    v6->_finalized = [coderCopy decodeBoolForKey:@"finalized"];
+    v6->_italicized = [coderCopy decodeBoolForKey:@"italicized"];
+    v6->_monospacedNumbers = [coderCopy decodeBoolForKey:@"monospacedNumbers"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trackingAttribute"];
     trackingAttribute = v6->_trackingAttribute;
     v6->_trackingAttribute = v9;
 
-    v6->_ignoreUppercaseStyle = [v4 decodeBoolForKey:@"ignoreUppercaseStyle"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_accessibility"];
+    v6->_ignoreUppercaseStyle = [coderCopy decodeBoolForKey:@"ignoreUppercaseStyle"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_accessibility"];
     accessibilityLabel = v6->_accessibilityLabel;
     v6->_accessibilityLabel = v11;
 
@@ -1044,7 +1044,7 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v13 setWithObjects:{v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"fontFeatures"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"fontFeatures"];
     fontFeatures = v6->_fontFeatures;
     v6->_fontFeatures = v18;
   }
@@ -1052,16 +1052,16 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
   return v6;
 }
 
-+ (CLKTextProvider)providerWithJSONObjectRepresentation:(id)a3
++ (CLKTextProvider)providerWithJSONObjectRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a dictionary. Invalid value: %@", v3}];
+    [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a dictionary. Invalid value: %@", representationCopy}];
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"class"];
+  v4 = [representationCopy objectForKeyedSubscript:@"class"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1074,10 +1074,10 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
     [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"class: %@ must be a CLKTextProvider class", v4}];
   }
 
-  v6 = [[v5 alloc] _initWithJSONObjectRepresentation:v3];
+  v6 = [[v5 alloc] _initWithJSONObjectRepresentation:representationCopy];
   if (v6)
   {
-    v7 = [v3 objectForKeyedSubscript:@"tintColor"];
+    v7 = [representationCopy objectForKeyedSubscript:@"tintColor"];
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x277D75348]) initWithJSONObjectRepresentation:v7];
@@ -1088,11 +1088,11 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
   return v6;
 }
 
-- (id)_initWithJSONObjectRepresentation:(id)a3
+- (id)_initWithJSONObjectRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(CLKTextProvider *)self initPrivate];
-  v6 = [v4 objectForKeyedSubscript:@"accessibilityLabel"];
+  representationCopy = representation;
+  initPrivate = [(CLKTextProvider *)self initPrivate];
+  v6 = [representationCopy objectForKeyedSubscript:@"accessibilityLabel"];
 
   if (v6)
   {
@@ -1102,10 +1102,10 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
       [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"value for key '%@' must be a string - invalid value: %@", @"accessibilityLabel", v6}];
     }
 
-    objc_storeStrong(v5 + 11, v6);
+    objc_storeStrong(initPrivate + 11, v6);
   }
 
-  return v5;
+  return initPrivate;
 }
 
 - (id)JSONObjectRepresentation
@@ -1117,8 +1117,8 @@ id __43__CLKTextProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a1)
   v6 = NSStringFromClass(v5);
   [v4 setObject:v6 forKeyedSubscript:@"class"];
 
-  v7 = [(UIColor *)self->_tintColor JSONObjectRepresentation];
-  [v4 setObject:v7 forKeyedSubscript:@"tintColor"];
+  jSONObjectRepresentation = [(UIColor *)self->_tintColor JSONObjectRepresentation];
+  [v4 setObject:jSONObjectRepresentation forKeyedSubscript:@"tintColor"];
 
   [v4 setObject:self->_accessibilityLabel forKeyedSubscript:@"accessibilityLabel"];
 

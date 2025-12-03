@@ -1,30 +1,30 @@
 @interface CHTextStrokeTransformationQuery
-- (id)strokePointTransformationsForContextStrokes:(id)a3 completionWithTelemetry:(id)a4 shouldCancel:(id)a5;
-- (id)strokePointTransformationsForContextStrokes:(id)a3 parameters:(id)a4 completionWithTelemetry:(id)a5 shouldCancel:(id)a6;
+- (id)strokePointTransformationsForContextStrokes:(id)strokes completionWithTelemetry:(id)telemetry shouldCancel:(id)cancel;
+- (id)strokePointTransformationsForContextStrokes:(id)strokes parameters:(id)parameters completionWithTelemetry:(id)telemetry shouldCancel:(id)cancel;
 @end
 
 @implementation CHTextStrokeTransformationQuery
 
-- (id)strokePointTransformationsForContextStrokes:(id)a3 completionWithTelemetry:(id)a4 shouldCancel:(id)a5
+- (id)strokePointTransformationsForContextStrokes:(id)strokes completionWithTelemetry:(id)telemetry shouldCancel:(id)cancel
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  cancelCopy = cancel;
+  telemetryCopy = telemetry;
+  strokesCopy = strokes;
   v11 = objc_alloc_init(CHTransformationParameters);
   objc_msgSend_setOrientationBehavior_(v11, v12, 2, v13, v14, v15);
   objc_msgSend_setAlignmentBehavior_(v11, v16, 1, v17, v18, v19);
   objc_msgSend_setLineSpaceBehavior_(v11, v20, 2, v21, v22, v23);
-  v25 = objc_msgSend_strokePointTransformationsForContextStrokes_parameters_completionWithTelemetry_shouldCancel_(self, v24, v10, v11, v9, v8);
+  v25 = objc_msgSend_strokePointTransformationsForContextStrokes_parameters_completionWithTelemetry_shouldCancel_(self, v24, strokesCopy, v11, telemetryCopy, cancelCopy);
 
   return v25;
 }
 
-- (id)strokePointTransformationsForContextStrokes:(id)a3 parameters:(id)a4 completionWithTelemetry:(id)a5 shouldCancel:(id)a6
+- (id)strokePointTransformationsForContextStrokes:(id)strokes parameters:(id)parameters completionWithTelemetry:(id)telemetry shouldCancel:(id)cancel
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  telemetryCopy = telemetry;
+  cancelCopy = cancel;
+  parametersCopy = parameters;
+  strokesCopy = strokes;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -74,18 +74,18 @@ LABEL_7:
 
   v23 = objc_msgSend_recognitionSession(self, v18, v19, v20, v21, v22);
   v29 = objc_msgSend_latestStrokeProvider(v23, v24, v25, v26, v27, v28);
-  v33 = objc_msgSend_encodedStrokeIdentifiers_withStrokeProvider_(CHStrokeUtilities, v30, v13, v29, v31, v32);
+  v33 = objc_msgSend_encodedStrokeIdentifiers_withStrokeProvider_(CHStrokeUtilities, v30, strokesCopy, v29, v31, v32);
 
   v45 = MEMORY[0x1E69E9820];
   v46 = 3221225472;
   v47 = sub_183740CC8;
   v48 = &unk_1E6DDD320;
-  v49 = v10;
+  v49 = telemetryCopy;
   v50 = v15;
-  v34 = v10;
+  v34 = telemetryCopy;
   v35 = MEMORY[0x1865E6810](&v45);
   v41 = objc_msgSend_recognitionSession(self, v36, v37, v38, v39, v40, v45, v46, v47, v48);
-  v43 = objc_msgSend_strokePointTransformationsForContextStrokes_parameters_completionWithTelemetry_shouldCancel_(v41, v42, v33, v12, v35, v11);
+  v43 = objc_msgSend_strokePointTransformationsForContextStrokes_parameters_completionWithTelemetry_shouldCancel_(v41, v42, v33, parametersCopy, v35, cancelCopy);
 
   return v43;
 }

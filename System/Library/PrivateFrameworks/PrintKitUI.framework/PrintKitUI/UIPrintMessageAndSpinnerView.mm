@@ -2,22 +2,22 @@
 - (BOOL)spinSpinner;
 - (BOOL)spinnerHidden;
 - (NSString)messageText;
-- (UIPrintMessageAndSpinnerView)initWithFrame:(CGRect)a3;
-- (void)setMessageText:(id)a3;
-- (void)setSpinSpinner:(BOOL)a3;
-- (void)setSpinnerHidden:(BOOL)a3;
+- (UIPrintMessageAndSpinnerView)initWithFrame:(CGRect)frame;
+- (void)setMessageText:(id)text;
+- (void)setSpinSpinner:(BOOL)spinner;
+- (void)setSpinnerHidden:(BOOL)hidden;
 - (void)updateConstraints;
 - (void)updateFont;
 @end
 
 @implementation UIPrintMessageAndSpinnerView
 
-- (UIPrintMessageAndSpinnerView)initWithFrame:(CGRect)a3
+- (UIPrintMessageAndSpinnerView)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v14.receiver = self;
   v14.super_class = UIPrintMessageAndSpinnerView;
-  v4 = [(UIPrintMessageAndSpinnerView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UIPrintMessageAndSpinnerView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -32,8 +32,8 @@
     [(UILabel *)v5->_label setNumberOfLines:0];
     [(UILabel *)v5->_label setTextAlignment:1];
     [(UILabel *)v5->_label setLineBreakMode:0];
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v5->_label setTextColor:v9];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v5->_label setTextColor:secondaryLabelColor];
 
     [(UILabel *)v5->_label setBackgroundColor:0];
     [(UILabel *)v5->_label setOpaque:0];
@@ -43,8 +43,8 @@
     spinner = v5->_spinner;
     v5->_spinner = v10;
 
-    v12 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UIActivityIndicatorView *)v5->_spinner setColor:v12];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UIActivityIndicatorView *)v5->_spinner setColor:systemGrayColor];
 
     [(UILabel *)v5->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIActivityIndicatorView *)v5->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -66,19 +66,19 @@
 - (void)updateConstraints
 {
   v3 = _NSDictionaryOfVariableBindings(&cfstr_LabelSpinner.isa, self->_label, self->_spinner, 0);
-  v4 = [(UIPrintMessageAndSpinnerView *)self horizLabelConstraints];
+  horizLabelConstraints = [(UIPrintMessageAndSpinnerView *)self horizLabelConstraints];
 
-  if (!v4)
+  if (!horizLabelConstraints)
   {
     v5 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[_label]|" options:0 metrics:0 views:v3];
     [(UIPrintMessageAndSpinnerView *)self setHorizLabelConstraints:v5];
 
-    v6 = [(UIPrintMessageAndSpinnerView *)self horizLabelConstraints];
-    [(UIPrintMessageAndSpinnerView *)self addConstraints:v6];
+    horizLabelConstraints2 = [(UIPrintMessageAndSpinnerView *)self horizLabelConstraints];
+    [(UIPrintMessageAndSpinnerView *)self addConstraints:horizLabelConstraints2];
   }
 
-  v7 = [(UIPrintMessageAndSpinnerView *)self horizSpinnerConstraint];
-  if (!v7)
+  horizSpinnerConstraint = [(UIPrintMessageAndSpinnerView *)self horizSpinnerConstraint];
+  if (!horizSpinnerConstraint)
   {
     if ([(UIPrintMessageAndSpinnerView *)self spinnerHidden])
     {
@@ -88,17 +88,17 @@
     v8 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_spinner attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
     [(UIPrintMessageAndSpinnerView *)self setHorizSpinnerConstraint:v8];
 
-    v7 = [(UIPrintMessageAndSpinnerView *)self horizSpinnerConstraint];
-    [(UIPrintMessageAndSpinnerView *)self addConstraint:v7];
+    horizSpinnerConstraint = [(UIPrintMessageAndSpinnerView *)self horizSpinnerConstraint];
+    [(UIPrintMessageAndSpinnerView *)self addConstraint:horizSpinnerConstraint];
   }
 
 LABEL_7:
-  v9 = [(UIPrintMessageAndSpinnerView *)self currentVerticalConstraints];
+  currentVerticalConstraints = [(UIPrintMessageAndSpinnerView *)self currentVerticalConstraints];
 
-  if (v9)
+  if (currentVerticalConstraints)
   {
-    v10 = [(UIPrintMessageAndSpinnerView *)self currentVerticalConstraints];
-    [(UIPrintMessageAndSpinnerView *)self removeConstraints:v10];
+    currentVerticalConstraints2 = [(UIPrintMessageAndSpinnerView *)self currentVerticalConstraints];
+    [(UIPrintMessageAndSpinnerView *)self removeConstraints:currentVerticalConstraints2];
 
     [(UIPrintMessageAndSpinnerView *)self setCurrentVerticalConstraints:0];
   }
@@ -116,8 +116,8 @@ LABEL_7:
   v12 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:v11 options:0 metrics:&unk_2871BC258 views:v3];
   [(UIPrintMessageAndSpinnerView *)self setCurrentVerticalConstraints:v12];
 
-  v13 = [(UIPrintMessageAndSpinnerView *)self currentVerticalConstraints];
-  [(UIPrintMessageAndSpinnerView *)self addConstraints:v13];
+  currentVerticalConstraints3 = [(UIPrintMessageAndSpinnerView *)self currentVerticalConstraints];
+  [(UIPrintMessageAndSpinnerView *)self addConstraints:currentVerticalConstraints3];
 
   v14.receiver = self;
   v14.super_class = UIPrintMessageAndSpinnerView;
@@ -126,70 +126,70 @@ LABEL_7:
 
 - (NSString)messageText
 {
-  v2 = [(UIPrintMessageAndSpinnerView *)self label];
-  v3 = [v2 text];
+  label = [(UIPrintMessageAndSpinnerView *)self label];
+  text = [label text];
 
-  return v3;
+  return text;
 }
 
-- (void)setMessageText:(id)a3
+- (void)setMessageText:(id)text
 {
-  v4 = a3;
-  v5 = [(UIPrintMessageAndSpinnerView *)self label];
-  [v5 setText:v4];
+  textCopy = text;
+  label = [(UIPrintMessageAndSpinnerView *)self label];
+  [label setText:textCopy];
 
   [(UIPrintMessageAndSpinnerView *)self setNeedsLayout];
 }
 
 - (BOOL)spinSpinner
 {
-  v2 = [(UIPrintMessageAndSpinnerView *)self spinner];
-  v3 = [v2 isAnimating];
+  spinner = [(UIPrintMessageAndSpinnerView *)self spinner];
+  isAnimating = [spinner isAnimating];
 
-  return v3;
+  return isAnimating;
 }
 
-- (void)setSpinSpinner:(BOOL)a3
+- (void)setSpinSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v4 = [(UIPrintMessageAndSpinnerView *)self spinner];
-  v5 = v4;
-  if (v3)
+  spinnerCopy = spinner;
+  spinner = [(UIPrintMessageAndSpinnerView *)self spinner];
+  v5 = spinner;
+  if (spinnerCopy)
   {
-    [v4 startAnimating];
+    [spinner startAnimating];
   }
 
   else
   {
-    [v4 stopAnimating];
+    [spinner stopAnimating];
   }
 }
 
 - (BOOL)spinnerHidden
 {
-  v2 = self;
-  v3 = [(UIPrintMessageAndSpinnerView *)self spinner];
-  v4 = [v3 superview];
-  LOBYTE(v2) = v4 != v2;
+  selfCopy = self;
+  spinner = [(UIPrintMessageAndSpinnerView *)self spinner];
+  superview = [spinner superview];
+  LOBYTE(selfCopy) = superview != selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setSpinnerHidden:(BOOL)a3
+- (void)setSpinnerHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(UIPrintMessageAndSpinnerView *)self spinnerHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(UIPrintMessageAndSpinnerView *)self spinnerHidden]!= hidden)
   {
-    v5 = [(UIPrintMessageAndSpinnerView *)self spinner];
-    v6 = v5;
-    if (v3)
+    spinner = [(UIPrintMessageAndSpinnerView *)self spinner];
+    v6 = spinner;
+    if (hiddenCopy)
     {
-      [v5 removeFromSuperview];
+      [spinner removeFromSuperview];
     }
 
     else
     {
-      [(UIPrintMessageAndSpinnerView *)self addSubview:v5];
+      [(UIPrintMessageAndSpinnerView *)self addSubview:spinner];
     }
 
     [(UIPrintMessageAndSpinnerView *)self setNeedsUpdateConstraints];

@@ -1,32 +1,32 @@
 @interface NIDLTDOAMeasurement
-- (BOOL)isEqual:(id)a3;
-- (NIDLTDOAMeasurement)initWithAnchorAddress:(unint64_t)a3 measurementType:(int64_t)a4 coordinatesType:(int64_t)a5 transmitTime:(double)a6 receiveTime:(double)a7 signalStrength:(double)a8 carrierFrequencyOffset:(double)a9 coordinates:;
-- (NIDLTDOAMeasurement)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NIDLTDOAMeasurement)initWithAnchorAddress:(unint64_t)address measurementType:(int64_t)type coordinatesType:(int64_t)coordinatesType transmitTime:(double)time receiveTime:(double)receiveTime signalStrength:(double)strength carrierFrequencyOffset:(double)offset coordinates:;
+- (NIDLTDOAMeasurement)initWithCoder:(id)coder;
 - (__n128)coordinates;
 - (double)carrierFrequencyOffset;
 - (double)receiveTime;
 - (double)signalStrength;
 - (double)transmitTime;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)coordinatesType;
 - (int64_t)measurementType;
 - (unint64_t)address;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAddress:(unint64_t)a3;
-- (void)setCarrierFrequencyOffset:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAddress:(unint64_t)address;
+- (void)setCarrierFrequencyOffset:(double)offset;
 - (void)setCoordinates:(NIDLTDOAMeasurement *)self;
-- (void)setCoordinatesType:(int64_t)a3;
-- (void)setMeasurementType:(int64_t)a3;
-- (void)setReceiveTime:(double)a3;
-- (void)setSignalStrength:(double)a3;
-- (void)setTransmitTime:(double)a3;
+- (void)setCoordinatesType:(int64_t)type;
+- (void)setMeasurementType:(int64_t)type;
+- (void)setReceiveTime:(double)time;
+- (void)setSignalStrength:(double)strength;
+- (void)setTransmitTime:(double)time;
 @end
 
 @implementation NIDLTDOAMeasurement
 
-- (NIDLTDOAMeasurement)initWithAnchorAddress:(unint64_t)a3 measurementType:(int64_t)a4 coordinatesType:(int64_t)a5 transmitTime:(double)a6 receiveTime:(double)a7 signalStrength:(double)a8 carrierFrequencyOffset:(double)a9 coordinates:
+- (NIDLTDOAMeasurement)initWithAnchorAddress:(unint64_t)address measurementType:(int64_t)type coordinatesType:(int64_t)coordinatesType transmitTime:(double)time receiveTime:(double)receiveTime signalStrength:(double)strength carrierFrequencyOffset:(double)offset coordinates:
 {
   v18 = *v9;
   v19 = v9[1];
@@ -35,13 +35,13 @@
   result = [(NIDLTDOAMeasurement *)&v20 init];
   if (result)
   {
-    result->_address = a3;
-    result->_measurementType = a4;
-    result->_coordinatesType = a5;
-    result->_transmitTime = a6;
-    result->_receiveTime = a7;
-    result->_signalStrength = a8;
-    result->_carrierFrequencyOffset = a9;
+    result->_address = address;
+    result->_measurementType = type;
+    result->_coordinatesType = coordinatesType;
+    result->_transmitTime = time;
+    result->_receiveTime = receiveTime;
+    result->_signalStrength = strength;
+    result->_carrierFrequencyOffset = offset;
     *result->_coordinates = v18;
     *&result->_coordinates[16] = v19;
   }
@@ -49,128 +49,128 @@
   return result;
 }
 
-- (void)setAddress:(unint64_t)a3
+- (void)setAddress:(unint64_t)address
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_address = a3;
+  obj->_address = address;
   objc_sync_exit(obj);
 }
 
 - (unint64_t)address
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  address = v2->_address;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  address = selfCopy->_address;
+  objc_sync_exit(selfCopy);
 
   return address;
 }
 
-- (void)setMeasurementType:(int64_t)a3
+- (void)setMeasurementType:(int64_t)type
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_measurementType = a3;
+  obj->_measurementType = type;
   objc_sync_exit(obj);
 }
 
 - (int64_t)measurementType
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  measurementType = v2->_measurementType;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  measurementType = selfCopy->_measurementType;
+  objc_sync_exit(selfCopy);
 
   return measurementType;
 }
 
-- (void)setCoordinatesType:(int64_t)a3
+- (void)setCoordinatesType:(int64_t)type
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_coordinatesType = a3;
+  obj->_coordinatesType = type;
   objc_sync_exit(obj);
 }
 
 - (int64_t)coordinatesType
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  coordinatesType = v2->_coordinatesType;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  coordinatesType = selfCopy->_coordinatesType;
+  objc_sync_exit(selfCopy);
 
   return coordinatesType;
 }
 
-- (void)setTransmitTime:(double)a3
+- (void)setTransmitTime:(double)time
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_transmitTime = a3;
+  obj->_transmitTime = time;
   objc_sync_exit(obj);
 }
 
 - (double)transmitTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  transmitTime = v2->_transmitTime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  transmitTime = selfCopy->_transmitTime;
+  objc_sync_exit(selfCopy);
 
   return transmitTime;
 }
 
-- (void)setReceiveTime:(double)a3
+- (void)setReceiveTime:(double)time
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_receiveTime = a3;
+  obj->_receiveTime = time;
   objc_sync_exit(obj);
 }
 
 - (double)receiveTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  receiveTime = v2->_receiveTime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  receiveTime = selfCopy->_receiveTime;
+  objc_sync_exit(selfCopy);
 
   return receiveTime;
 }
 
-- (void)setSignalStrength:(double)a3
+- (void)setSignalStrength:(double)strength
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_signalStrength = a3;
+  obj->_signalStrength = strength;
   objc_sync_exit(obj);
 }
 
 - (double)signalStrength
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  signalStrength = v2->_signalStrength;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  signalStrength = selfCopy->_signalStrength;
+  objc_sync_exit(selfCopy);
 
   return signalStrength;
 }
 
-- (void)setCarrierFrequencyOffset:(double)a3
+- (void)setCarrierFrequencyOffset:(double)offset
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_carrierFrequencyOffset = a3;
+  obj->_carrierFrequencyOffset = offset;
   objc_sync_exit(obj);
 }
 
 - (double)carrierFrequencyOffset
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  carrierFrequencyOffset = v2->_carrierFrequencyOffset;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  carrierFrequencyOffset = selfCopy->_carrierFrequencyOffset;
+  objc_sync_exit(selfCopy);
 
   return carrierFrequencyOffset;
 }
@@ -179,20 +179,20 @@
 {
   v3 = v2[1];
   v4 = *v2;
-  v5 = self;
-  objc_sync_enter(v5);
-  *v5->_coordinates = v4;
-  *&v5->_coordinates[16] = v3;
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  *selfCopy->_coordinates = v4;
+  *&selfCopy->_coordinates[16] = v3;
+  objc_sync_exit(selfCopy);
 }
 
 - (__n128)coordinates
 {
-  v3 = a1;
-  objc_sync_enter(v3);
-  v5 = v3[5];
-  v6 = v3[4];
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = selfCopy[5];
+  v6 = selfCopy[4];
+  objc_sync_exit(selfCopy);
 
   result = v6;
   *a2 = v6;
@@ -242,9 +242,9 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   address = self->_address;
   measurementType = self->_measurementType;
   coordinatesType = self->_coordinatesType;
@@ -258,29 +258,29 @@ LABEL_8:
   return [v4 initWithAnchorAddress:address measurementType:measurementType coordinatesType:coordinatesType transmitTime:v14 receiveTime:transmitTime signalStrength:receiveTime carrierFrequencyOffset:signalStrength coordinates:carrierFrequencyOffset];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_address forKey:@"Address"];
-  [v4 encodeInt:LODWORD(self->_coordinatesType) forKey:@"AnchorCoordinatesType"];
-  [v4 encodeInt:LODWORD(self->_measurementType) forKey:@"MeasurementType"];
-  [v4 encodeDouble:@"TransmitTime" forKey:self->_transmitTime];
-  [v4 encodeDouble:@"ReceiveTime" forKey:self->_receiveTime];
-  [v4 encodeDouble:@"SignalStrength" forKey:self->_signalStrength];
-  [v4 encodeDouble:@"CarrierFrequencyOffset" forKey:self->_carrierFrequencyOffset];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_address forKey:@"Address"];
+  [coderCopy encodeInt:LODWORD(self->_coordinatesType) forKey:@"AnchorCoordinatesType"];
+  [coderCopy encodeInt:LODWORD(self->_measurementType) forKey:@"MeasurementType"];
+  [coderCopy encodeDouble:@"TransmitTime" forKey:self->_transmitTime];
+  [coderCopy encodeDouble:@"ReceiveTime" forKey:self->_receiveTime];
+  [coderCopy encodeDouble:@"SignalStrength" forKey:self->_signalStrength];
+  [coderCopy encodeDouble:@"CarrierFrequencyOffset" forKey:self->_carrierFrequencyOffset];
   v5 = *&self->_coordinates[16];
   v6[0] = *self->_coordinates;
   v6[1] = v5;
-  [v4 encodeDoubleVector3:v6 forKey:@"AnchorCoordinates"];
+  [coderCopy encodeDoubleVector3:v6 forKey:@"AnchorCoordinates"];
 }
 
-- (NIDLTDOAMeasurement)initWithCoder:(id)a3
+- (NIDLTDOAMeasurement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self)
   {
-    self->_address = [v4 decodeIntegerForKey:@"Address"];
+    self->_address = [coderCopy decodeIntegerForKey:@"Address"];
     self->_measurementType = [v5 decodeIntForKey:@"MeasurementType"];
     self->_coordinatesType = [v5 decodeIntForKey:@"AnchorCoordinatesType"];
     [v5 decodeDoubleForKey:@"TransmitTime"];
@@ -314,10 +314,10 @@ LABEL_8:
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v27 = 1;
   }
@@ -327,13 +327,13 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       address = self->_address;
-      v7 = [(NIDLTDOAMeasurement *)v5 address];
+      address = [(NIDLTDOAMeasurement *)v5 address];
       measurementType = self->_measurementType;
-      v9 = [(NIDLTDOAMeasurement *)v5 measurementType];
+      measurementType = [(NIDLTDOAMeasurement *)v5 measurementType];
       coordinatesType = self->_coordinatesType;
-      v11 = [(NIDLTDOAMeasurement *)v5 coordinatesType];
+      coordinatesType = [(NIDLTDOAMeasurement *)v5 coordinatesType];
       transmitTime = self->_transmitTime;
       [(NIDLTDOAMeasurement *)v5 transmitTime];
       v14 = v13;
@@ -363,7 +363,7 @@ LABEL_8:
         v26.f64[0] = 0.0;
       }
 
-      v29 = address == v7 && measurementType == v9;
+      v29 = address == address && measurementType == measurementType;
       if (transmitTime != v14)
       {
         v29 = 0;
@@ -388,12 +388,12 @@ LABEL_8:
       v26.f64[1] = v24.f64[0];
       *&v26.f64[0] = vceqq_f64(v33, v26).u64[0];
       v31 = vceqq_f64(v34, v24);
-      if (coordinatesType != v11)
+      if (coordinatesType != coordinatesType)
       {
         v29 = 0;
       }
 
-      v27 = (v31.i64[0] & v31.i64[1] & *&v26.f64[0]) < 0 != __OFSUB__(coordinatesType, v11) && v29;
+      v27 = (v31.i64[0] & v31.i64[1] & *&v26.f64[0]) < 0 != __OFSUB__(coordinatesType, coordinatesType) && v29;
     }
 
     else

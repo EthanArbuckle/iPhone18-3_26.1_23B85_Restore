@@ -1,33 +1,33 @@
 @interface PPTextUnderstandingServerHandler
 - (PPTextUnderstandingServerHandler)init;
-- (void)spotlightAttributesForBundleId:(id)a3 spotlightIdentifier:(id)a4 extractions:(id)a5 completion:(id)a6;
+- (void)spotlightAttributesForBundleId:(id)id spotlightIdentifier:(id)identifier extractions:(id)extractions completion:(id)completion;
 @end
 
 @implementation PPTextUnderstandingServerHandler
 
-- (void)spotlightAttributesForBundleId:(id)a3 spotlightIdentifier:(id)a4 extractions:(id)a5 completion:(id)a6
+- (void)spotlightAttributesForBundleId:(id)id spotlightIdentifier:(id)identifier extractions:(id)extractions completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
+  idCopy = id;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  extractionsCopy = extractions;
   v13 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412546;
-    v19 = v9;
+    v19 = idCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = identifierCopy;
     _os_log_impl(&dword_23224A000, v13, OS_LOG_TYPE_DEFAULT, "PPTextUnderstandingServerHandler: spotlightAttributesForBundleId: %@ : %@", &v18, 0x16u);
   }
 
-  v14 = [v12 _pas_mappedArrayWithTransform:&__block_literal_global_129];
+  v14 = [extractionsCopy _pas_mappedArrayWithTransform:&__block_literal_global_129];
 
   v15 = objc_opt_new();
-  v16 = [v15 spotlightAttributesForBundleId:v9 spotlightIdentifier:v10 extractions:v14 shouldContinueBlock:&__block_literal_global_134];
+  v16 = [v15 spotlightAttributesForBundleId:idCopy spotlightIdentifier:identifierCopy extractions:v14 shouldContinueBlock:&__block_literal_global_134];
 
-  v11[2](v11, v16, 0);
+  completionCopy[2](completionCopy, v16, 0);
   v17 = *MEMORY[0x277D85DE8];
 }
 

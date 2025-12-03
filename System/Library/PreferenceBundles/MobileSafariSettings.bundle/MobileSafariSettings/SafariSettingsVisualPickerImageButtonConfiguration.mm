@@ -1,30 +1,30 @@
 @interface SafariSettingsVisualPickerImageButtonConfiguration
 - (NSDictionary)dictionaryRepresentation;
-- (SafariSettingsVisualPickerImageButtonConfiguration)initWithDictionaryRepresentation:(id)a3;
-- (SafariSettingsVisualPickerImageButtonConfiguration)initWithTitle:(id)a3 preferenceValue:(id)a4 imageName:(id)a5;
+- (SafariSettingsVisualPickerImageButtonConfiguration)initWithDictionaryRepresentation:(id)representation;
+- (SafariSettingsVisualPickerImageButtonConfiguration)initWithTitle:(id)title preferenceValue:(id)value imageName:(id)name;
 @end
 
 @implementation SafariSettingsVisualPickerImageButtonConfiguration
 
-- (SafariSettingsVisualPickerImageButtonConfiguration)initWithTitle:(id)a3 preferenceValue:(id)a4 imageName:(id)a5
+- (SafariSettingsVisualPickerImageButtonConfiguration)initWithTitle:(id)title preferenceValue:(id)value imageName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  valueCopy = value;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = SafariSettingsVisualPickerImageButtonConfiguration;
   v11 = [(SafariSettingsVisualPickerImageButtonConfiguration *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     imageName = v11->_imageName;
     v11->_imageName = v14;
 
-    v16 = [v9 copy];
+    v16 = [valueCopy copy];
     preferenceValue = v11->_preferenceValue;
     v11->_preferenceValue = v16;
 
@@ -35,31 +35,31 @@
   return v11;
 }
 
-- (SafariSettingsVisualPickerImageButtonConfiguration)initWithDictionaryRepresentation:(id)a3
+- (SafariSettingsVisualPickerImageButtonConfiguration)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 safari_stringForKey:@"SafariSettingsVisualPickerButtonImageName"];
-  v6 = [v4 safari_stringForKey:@"SafariSettingsVisualPickerButtonTitle"];
-  v7 = [v4 safari_numberForKey:@"SafariSettingsVisualPickerButtonPreferenceValue"];
+  representationCopy = representation;
+  v5 = [representationCopy safari_stringForKey:@"SafariSettingsVisualPickerButtonImageName"];
+  v6 = [representationCopy safari_stringForKey:@"SafariSettingsVisualPickerButtonTitle"];
+  v7 = [representationCopy safari_numberForKey:@"SafariSettingsVisualPickerButtonPreferenceValue"];
   v8 = v7;
-  v9 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7)
   {
     self = [(SafariSettingsVisualPickerImageButtonConfiguration *)self initWithTitle:v6 preferenceValue:v7 imageName:v5];
     if (self)
     {
-      self->_enabled = [v4 safari_BOOLForKey:@"SafariSettingsVisualPickerButtonEnabled"];
+      self->_enabled = [representationCopy safari_BOOLForKey:@"SafariSettingsVisualPickerButtonEnabled"];
       self = self;
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (NSDictionary)dictionaryRepresentation

@@ -1,16 +1,16 @@
 @interface KNBuildSmokeSystem
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3;
-- (double)scaleAtIndexPoint:(CGPoint)a3;
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point;
+- (double)scaleAtIndexPoint:(CGPoint)point;
 @end
 
 @implementation KNBuildSmokeSystem
 
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildSmokeSystem *)self indexFromPoint:a3.x, a3.y];
+  v4 = [(KNBuildSmokeSystem *)self indexFromPoint:point.x, point.y];
   [(KNBuildSmokeSystem *)self objectSize];
   v6 = v5 * v4 / [(KNBuildSmokeSystem *)self particleCount];
   [(KNBuildSmokeSystem *)self particleSize];
@@ -27,9 +27,9 @@
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  v3 = [(KNBuildSmokeSystem *)self randomGenerator:a3.x];
+  v3 = [(KNBuildSmokeSystem *)self randomGenerator:point.x];
   [v3 doubleBetween:-1.0 :-0.3];
   v5 = v4;
 
@@ -42,9 +42,9 @@
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point
 {
-  v3 = [(KNBuildSmokeSystem *)self randomGenerator:a3.x];
+  v3 = [(KNBuildSmokeSystem *)self randomGenerator:point.x];
   [v3 doubleBetween:-1.0 :1.0];
   v5 = v4;
 
@@ -57,9 +57,9 @@
   return result;
 }
 
-- (double)scaleAtIndexPoint:(CGPoint)a3
+- (double)scaleAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildSmokeSystem *)self randomGenerator:a3.x];
+  v4 = [(KNBuildSmokeSystem *)self randomGenerator:point.x];
   [(KNBuildSmokeSystem *)self scaleMax];
   [v4 doubleBetween:1.0 :v5];
   v7 = v6;
@@ -67,18 +67,18 @@
   return v7;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point
 {
-  [(KNBuildSmokeSystem *)self indexFromPoint:a3.x, a3.y];
+  [(KNBuildSmokeSystem *)self indexFromPoint:point.x, point.y];
   [(KNBuildSmokeSystem *)self objectSize];
   [(KNBuildSmokeSystem *)self particleCount];
-  v4 = [(KNBuildSmokeSystem *)self direction];
-  if (v4 == (&stru_20.maxprot + 3))
+  direction = [(KNBuildSmokeSystem *)self direction];
+  if (direction == (&stru_20.maxprot + 3))
   {
     goto LABEL_7;
   }
 
-  if (v4 != &dword_C && v4 != (&dword_8 + 3))
+  if (direction != &dword_C && direction != (&dword_8 + 3))
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [NSString stringWithUTF8String:"[KNBuildSmokeSystem lifeSpanAtIndexPoint:]"];

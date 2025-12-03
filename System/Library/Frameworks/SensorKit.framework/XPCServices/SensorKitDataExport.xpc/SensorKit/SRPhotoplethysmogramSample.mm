@@ -11,8 +11,8 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [(SRPhotoplethysmogramSample *)self opticalSamples];
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  opticalSamples = [(SRPhotoplethysmogramSample *)self opticalSamples];
+  v5 = [opticalSamples countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v5)
   {
     v6 = v5;
@@ -23,17 +23,17 @@
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(opticalSamples);
         }
 
-        v9 = [*(*(&v28 + 1) + 8 * i) sr_dictionaryRepresentation];
-        if (v9)
+        sr_dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) sr_dictionaryRepresentation];
+        if (sr_dictionaryRepresentation)
         {
-          [v3 addObject:v9];
+          [v3 addObject:sr_dictionaryRepresentation];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v6 = [opticalSamples countByEnumeratingWithState:&v28 objects:v35 count:16];
     }
 
     while (v6);
@@ -44,8 +44,8 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = [(SRPhotoplethysmogramSample *)self accelerometerSamples];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  accelerometerSamples = [(SRPhotoplethysmogramSample *)self accelerometerSamples];
+  v12 = [accelerometerSamples countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v12)
   {
     v13 = v12;
@@ -56,17 +56,17 @@
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(accelerometerSamples);
         }
 
-        v16 = [*(*(&v24 + 1) + 8 * j) sr_dictionaryRepresentation];
-        if (v16)
+        sr_dictionaryRepresentation2 = [*(*(&v24 + 1) + 8 * j) sr_dictionaryRepresentation];
+        if (sr_dictionaryRepresentation2)
         {
-          [v10 addObject:v16];
+          [v10 addObject:sr_dictionaryRepresentation2];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v34 count:16];
+      v13 = [accelerometerSamples countByEnumeratingWithState:&v24 objects:v34 count:16];
     }
 
     while (v13);
@@ -94,10 +94,10 @@
   v32[4] = @"accelerometerSamples";
   v33[4] = v10;
   v32[5] = @"temperature";
-  v19 = [(SRPhotoplethysmogramSample *)self temperature];
-  if (v19)
+  temperature = [(SRPhotoplethysmogramSample *)self temperature];
+  if (temperature)
   {
-    [v19 doubleValue];
+    [temperature doubleValue];
     if (fabs(v20) == INFINITY)
     {
       v21 = @"INF";

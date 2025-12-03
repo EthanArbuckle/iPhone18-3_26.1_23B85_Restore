@@ -2,7 +2,7 @@
 - (DOCSBRecentItem)init;
 - (NSString)name;
 - (UTType)type;
-- (void)fetchURL:(id)a3;
+- (void)fetchURL:(id)l;
 @end
 
 @implementation DOCSBRecentItem
@@ -20,8 +20,8 @@
   v2 = *(&self->super.isa + OBJC_IVAR___DOCSBRecentItem_backingNode);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 displayName];
+    selfCopy = self;
+    displayName = [v2 displayName];
     sub_24938A45C();
   }
 
@@ -37,7 +37,7 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_249378F84(v7);
 
   v9 = sub_24938A32C();
@@ -46,12 +46,12 @@
   return v9;
 }
 
-- (void)fetchURL:(id)a3
+- (void)fetchURL:(id)l
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(l);
   _Block_copy(v4);
-  v5 = self;
-  sub_24937B8E4(v5, v4);
+  selfCopy = self;
+  sub_24937B8E4(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

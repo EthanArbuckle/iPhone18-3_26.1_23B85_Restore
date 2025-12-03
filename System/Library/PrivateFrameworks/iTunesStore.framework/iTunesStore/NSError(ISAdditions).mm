@@ -8,7 +8,7 @@
 
 - (uint64_t)errorBySettingFatalError:()ISAdditions
 {
-  __ISRecordSPIClassUsage(a1);
+  __ISRecordSPIClassUsage(self);
   [MEMORY[0x277CCABB0] numberWithBool:a3];
 
   return SSErrorBySettingUserInfoValue();
@@ -17,12 +17,12 @@
 - (uint64_t)isEqual:()ISAdditions compareUserInfo:
 {
   v29 = *MEMORY[0x277D85DE8];
-  __ISRecordSPIClassUsage(a1);
+  __ISRecordSPIClassUsage(self);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a1 code];
-    v8 = v7 == [a3 code];
+    code = [self code];
+    v8 = code == [a3 code];
   }
 
   else
@@ -30,21 +30,21 @@
     v8 = 0;
   }
 
-  v9 = [a1 domain];
-  v10 = [a1 domain];
+  domain = [self domain];
+  domain2 = [self domain];
   if (!v8)
   {
     goto LABEL_24;
   }
 
-  if (v9 == v10)
+  if (domain == domain2)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = [v9 isEqualToString:v10];
+    v11 = [domain isEqualToString:domain2];
     if (!v11)
     {
       goto LABEL_25;
@@ -53,16 +53,16 @@
 
   if (a4)
   {
-    v12 = [a1 userInfo];
-    v13 = [a3 userInfo];
-    v14 = [v12 count];
-    if (v14 == [v13 count])
+    userInfo = [self userInfo];
+    userInfo2 = [a3 userInfo];
+    v14 = [userInfo count];
+    if (v14 == [userInfo2 count])
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v15 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v15 = [userInfo countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v15)
       {
         v16 = v15;
@@ -74,12 +74,12 @@
           {
             if (*v25 != v17)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(userInfo);
             }
 
             v19 = *(*(&v24 + 1) + 8 * i);
-            v20 = [v12 objectForKey:v19];
-            v21 = [v13 objectForKey:v19];
+            v20 = [userInfo objectForKey:v19];
+            v21 = [userInfo2 objectForKey:v19];
             if (v11)
             {
               if (v20 == v21)
@@ -99,7 +99,7 @@
             }
           }
 
-          v16 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v16 = [userInfo countByEnumeratingWithState:&v24 objects:v28 count:16];
         }
 
         while (v16);
@@ -124,8 +124,8 @@ LABEL_25:
 
 - (uint64_t)isFatalError
 {
-  __ISRecordSPIClassUsage(a1);
-  v2 = [objc_msgSend(a1 "userInfo")];
+  __ISRecordSPIClassUsage(self);
+  v2 = [objc_msgSend(self "userInfo")];
 
   return [v2 BOOLValue];
 }

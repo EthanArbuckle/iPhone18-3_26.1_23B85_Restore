@@ -1,5 +1,5 @@
 @interface THFlowPageRep
-- (id)p_desiredVisibleLayoutsForRect:(CGRect)a3;
+- (id)p_desiredVisibleLayoutsForRect:(CGRect)rect;
 - (void)canvasDidScrollInFlowMode;
 - (void)updateChildrenFromLayout;
 @end
@@ -20,9 +20,9 @@
       }
     }
 
-    v4 = [(THFlowPageRep *)self layout];
+    layout = [(THFlowPageRep *)self layout];
 
-    [v4 canvasDidScroll];
+    [layout canvasDidScroll];
   }
 }
 
@@ -38,12 +38,12 @@
   [-[THFlowPageRep childReps](self "childReps")];
 }
 
-- (id)p_desiredVisibleLayoutsForRect:(CGRect)a3
+- (id)p_desiredVisibleLayoutsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = objc_alloc_init(NSMutableArray);
   v9 = [-[THFlowPageRep layout](self "layout")];
   v16 = 0u;

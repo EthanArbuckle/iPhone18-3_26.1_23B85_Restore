@@ -1,43 +1,43 @@
 @interface DSPrivacyPermissionDetailController
-- (DSPrivacyPermissionDetailController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6 shouldShowSearchBar:(BOOL)a7;
-- (DSPrivacyPermissionDetailController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 permission:(id)a6 apps:(id)a7;
+- (DSPrivacyPermissionDetailController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view shouldShowSearchBar:(BOOL)bar;
+- (DSPrivacyPermissionDetailController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name permission:(id)permission apps:(id)apps;
 - (DSPrivacyPermissionsDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_updateButton;
 - (void)back;
 - (void)returnFromDetailAndResetPermissionForSelectedApps;
 - (void)returnFromDetailAndStopAllSharingForPermission;
 - (void)stopAllPressed;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation DSPrivacyPermissionDetailController
 
-- (DSPrivacyPermissionDetailController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 permission:(id)a6 apps:(id)a7
+- (DSPrivacyPermissionDetailController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name permission:(id)permission apps:(id)apps
 {
-  v12 = a6;
-  v13 = a7;
+  permissionCopy = permission;
+  appsCopy = apps;
   v25.receiver = self;
   v25.super_class = DSPrivacyPermissionDetailController;
-  v14 = [(DSTableWelcomeController *)&v25 initWithTitle:a3 detailText:a4 icon:0 adoptTableViewScrollView:1 shouldShowSearchBar:0];
+  v14 = [(DSTableWelcomeController *)&v25 initWithTitle:title detailText:text icon:0 adoptTableViewScrollView:1 shouldShowSearchBar:0];
   v15 = MEMORY[0x277D05478];
-  v16 = [v12 tccPermission];
-  v17 = [v15 iconForPermission:v16 tableFormat:0];
+  tccPermission = [permissionCopy tccPermission];
+  v17 = [v15 iconForPermission:tccPermission tableFormat:0];
   [(DSTableWelcomeController *)v14 addBorderedIcon:v17];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_permission, a6);
+    objc_storeStrong(&v14->_permission, permission);
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     selectedApps = v14->_selectedApps;
     v14->_selectedApps = v18;
 
     v20 = MEMORY[0x277D05478];
-    v21 = [v12 tccPermission];
-    v22 = [v20 appsWithPermission:v21 fromAllApps:v13];
+    tccPermission2 = [permissionCopy tccPermission];
+    v22 = [v20 appsWithPermission:tccPermission2 fromAllApps:appsCopy];
     apps = v14->_apps;
     v14->_apps = v22;
   }
@@ -45,14 +45,14 @@
   return v14;
 }
 
-- (DSPrivacyPermissionDetailController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6 shouldShowSearchBar:(BOOL)a7
+- (DSPrivacyPermissionDetailController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view shouldShowSearchBar:(BOOL)bar
 {
   v10 = MEMORY[0x277D054B0];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  nameCopy = name;
+  textCopy = text;
+  titleCopy = title;
   v14 = objc_alloc_init(v10);
-  v15 = [(DSPrivacyPermissionDetailController *)self initWithTitle:v13 detailText:v12 symbolName:v11 permission:v14 apps:MEMORY[0x277CBEBF8]];
+  v15 = [(DSPrivacyPermissionDetailController *)self initWithTitle:titleCopy detailText:textCopy symbolName:nameCopy permission:v14 apps:MEMORY[0x277CBEBF8]];
 
   return v15;
 }
@@ -68,34 +68,34 @@
 
   v5 = MEMORY[0x277CCACA8];
   v6 = DSUILocStringForKey(@"STOP_ALL_APP_SHARING");
-  v7 = [(DSPrivacyPermissionDetailController *)self permission];
-  v8 = [v7 localizedName];
-  v9 = [v5 localizedStringWithFormat:v6, v8];
+  permission = [(DSPrivacyPermissionDetailController *)self permission];
+  localizedName = [permission localizedName];
+  v9 = [v5 localizedStringWithFormat:v6, localizedName];
   v10 = [DSUIUtilities setUpLinkButtonForController:self title:v9 target:self selector:sel_stopAllPressed];
   [(DSTableWelcomeController *)self setLinkButton:v10];
 }
 
 - (void)returnFromDetailAndResetPermissionForSelectedApps
 {
-  v5 = [(DSPrivacyPermissionDetailController *)self delegate];
-  v3 = [(DSPrivacyPermissionDetailController *)self selectedApps];
-  v4 = [(DSPrivacyPermissionDetailController *)self permission];
-  [v5 returnFromDetailAndResetPermissionForSelectedApps:v3 permission:v4];
+  delegate = [(DSPrivacyPermissionDetailController *)self delegate];
+  selectedApps = [(DSPrivacyPermissionDetailController *)self selectedApps];
+  permission = [(DSPrivacyPermissionDetailController *)self permission];
+  [delegate returnFromDetailAndResetPermissionForSelectedApps:selectedApps permission:permission];
 }
 
 - (void)returnFromDetailAndStopAllSharingForPermission
 {
-  v4 = [(DSPrivacyPermissionDetailController *)self delegate];
-  v3 = [(DSPrivacyPermissionDetailController *)self permission];
-  [v4 returnFromDetailAndStopAllSharingForPermission:v3];
+  delegate = [(DSPrivacyPermissionDetailController *)self delegate];
+  permission = [(DSPrivacyPermissionDetailController *)self permission];
+  [delegate returnFromDetailAndStopAllSharingForPermission:permission];
 }
 
 - (void)stopAllPressed
 {
   v3 = MEMORY[0x277D05478];
-  v4 = [(DSPrivacyPermissionDetailController *)self permission];
-  v5 = [v4 tccPermission];
-  v6 = [v3 stringKeyForPermission:v5];
+  permission = [(DSPrivacyPermissionDetailController *)self permission];
+  tccPermission = [permission tccPermission];
+  v6 = [v3 stringKeyForPermission:tccPermission];
   v7 = [@"RESET_ALL_CONFIRMATION_" stringByAppendingString:v6];
   v8 = DSUILocStringForKey(v7);
 
@@ -120,74 +120,74 @@
 
 - (void)back
 {
-  v3 = [(DSPrivacyPermissionDetailController *)self navigationController];
-  v2 = [v3 popViewControllerAnimated:1];
+  navigationController = [(DSPrivacyPermissionDetailController *)self navigationController];
+  v2 = [navigationController popViewControllerAnimated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSPrivacyPermissionDetailController *)self apps];
-  v7 = [v5 row];
+  pathCopy = path;
+  apps = [(DSPrivacyPermissionDetailController *)self apps];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [apps objectAtIndexedSubscript:v7];
 
-  v9 = [v8 appID];
-  v10 = [DSUIUtilities appIconForAppID:v9 format:0];
+  appID = [v8 appID];
+  v10 = [DSUIUtilities appIconForAppID:appID format:0];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  v12 = [v8 displayName];
-  v13 = [DSIconTableViewCell iconTableViewCellFromTableView:v11 withRightAlignedLabel:v12 detail:&stru_285BA4988 icon:v10];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  displayName = [v8 displayName];
+  v13 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView withRightAlignedLabel:displayName detail:&stru_285BA4988 icon:v10];
 
   [v13 setAccessoryType:0];
 
   return v13;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(DSPrivacyPermissionDetailController *)self apps:a3];
+  v4 = [(DSPrivacyPermissionDetailController *)self apps:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSPrivacyPermissionDetailController *)self selectedApps];
-  v7 = [(DSPrivacyPermissionDetailController *)self apps];
-  v8 = [v5 row];
+  pathCopy = path;
+  selectedApps = [(DSPrivacyPermissionDetailController *)self selectedApps];
+  apps = [(DSPrivacyPermissionDetailController *)self apps];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
-  [v6 addObject:v9];
+  v9 = [apps objectAtIndexedSubscript:v8];
+  [selectedApps addObject:v9];
 
   [(DSPrivacyPermissionDetailController *)self _updateButton];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSPrivacyPermissionDetailController *)self selectedApps];
-  v7 = [(DSPrivacyPermissionDetailController *)self apps];
-  v8 = [v5 row];
+  pathCopy = path;
+  selectedApps = [(DSPrivacyPermissionDetailController *)self selectedApps];
+  apps = [(DSPrivacyPermissionDetailController *)self apps];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
-  [v6 removeObject:v9];
+  v9 = [apps objectAtIndexedSubscript:v8];
+  [selectedApps removeObject:v9];
 
   [(DSPrivacyPermissionDetailController *)self _updateButton];
 }
 
 - (void)_updateButton
 {
-  v3 = [(DSTableWelcomeController *)self boldButton];
-  [v3 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
-  v5 = [v4 indexPathsForSelectedRows];
-  v6 = [v5 count];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v6 = [indexPathsForSelectedRows count];
 
-  v7 = [(DSTableWelcomeController *)self boldButton];
+  boldButton2 = [(DSTableWelcomeController *)self boldButton];
   if (v6)
   {
     v8 = @"STOP_ACCESS";
@@ -209,10 +209,10 @@
   }
 
   v10 = DSUILocStringForKey(v8);
-  [v7 setTitle:v10 forState:0];
+  [boldButton2 setTitle:v10 forState:0];
 
-  v11 = [(DSTableWelcomeController *)self boldButton];
-  [v11 addTarget:self action:*v9 forControlEvents:64];
+  boldButton3 = [(DSTableWelcomeController *)self boldButton];
+  [boldButton3 addTarget:self action:*v9 forControlEvents:64];
 }
 
 - (DSPrivacyPermissionsDelegate)delegate

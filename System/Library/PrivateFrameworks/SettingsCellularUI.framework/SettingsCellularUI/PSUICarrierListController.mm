@@ -1,13 +1,13 @@
 @interface PSUICarrierListController
 - (PSUICarrierListController)init;
-- (PSUICarrierListController)initWithOptions:(BOOL)a3 showCarrierItemGroup:(BOOL)a4;
+- (PSUICarrierListController)initWithOptions:(BOOL)options showCarrierItemGroup:(BOOL)group;
 - (id)addOnGroupSpecifier;
 - (id)carrierItemGroupSpecifier;
-- (id)createAddCellularPlanSpecifierIfNeeded:(id)a3;
-- (id)createCarrierItemGroupIfNeeded:(id)a3;
+- (id)createAddCellularPlanSpecifierIfNeeded:(id)needed;
+- (id)createCarrierItemGroupIfNeeded:(id)needed;
 - (id)specifiers;
 - (void)addCancelButton;
-- (void)cellularPlanChanged:(id)a3;
+- (void)cellularPlanChanged:(id)changed;
 - (void)loadView;
 @end
 
@@ -24,8 +24,8 @@
     cancelButton = v2->_cancelButton;
     v2->_cancelButton = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_cellularPlanChanged_ name:@"PSUICellularPlanChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_cellularPlanChanged_ name:@"PSUICellularPlanChanged" object:0];
 
     [(PSUICarrierListController *)v2 setModalInPresentation:1];
     v2->_showCarrierItemGroup = 1;
@@ -35,13 +35,13 @@
   return v2;
 }
 
-- (PSUICarrierListController)initWithOptions:(BOOL)a3 showCarrierItemGroup:(BOOL)a4
+- (PSUICarrierListController)initWithOptions:(BOOL)options showCarrierItemGroup:(BOOL)group
 {
   result = [(PSUICarrierListController *)self init];
   if (result)
   {
-    result->_showAddOnPlanGroup = a3;
-    result->_showCarrierItemGroup = a4;
+    result->_showAddOnPlanGroup = options;
+    result->_showCarrierItemGroup = group;
   }
 
   return result;
@@ -55,17 +55,17 @@
   [(PSUICarrierListController *)self addCancelButton];
 }
 
-- (void)cellularPlanChanged:(id)a3
+- (void)cellularPlanChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   carrierItemGroup = self->_carrierItemGroup;
   if (carrierItemGroup && [(PSUICarrierItemGroup *)carrierItemGroup isFlowRunning])
   {
-    v6 = [(PSUICarrierListController *)self getLogger];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICarrierListController *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "flow is still running", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "flow is still running", buf, 2u);
     }
   }
 
@@ -82,20 +82,20 @@
 
 - (void)addCancelButton
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 sf_isiPad];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  v5 = [(PSUICarrierListController *)self navigationItem];
+  navigationItem = [(PSUICarrierListController *)self navigationItem];
   cancelButton = self->_cancelButton;
-  v7 = v5;
-  if (v4)
+  v7 = navigationItem;
+  if (sf_isiPad)
   {
-    [v5 setRightBarButtonItem:cancelButton animated:1];
+    [navigationItem setRightBarButtonItem:cancelButton animated:1];
   }
 
   else
   {
-    [v5 setLeftBarButtonItem:cancelButton animated:1];
+    [navigationItem setLeftBarButtonItem:cancelButton animated:1];
   }
 }
 
@@ -104,36 +104,36 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (self->_showAddOnPlanGroup)
   {
-    v4 = [(PSUICarrierListController *)self addOnGroupSpecifier];
+    addOnGroupSpecifier = [(PSUICarrierListController *)self addOnGroupSpecifier];
     addOnGroupSpecifier = self->_addOnGroupSpecifier;
-    self->_addOnGroupSpecifier = v4;
+    self->_addOnGroupSpecifier = addOnGroupSpecifier;
 
     v6 = [(PSUICarrierListController *)self createAddCellularPlanSpecifierIfNeeded:self->_addOnGroupSpecifier];
     [(PSUICarrierListController *)self setAddOnPlanGroup:v6];
 
-    v7 = [(PSUICarrierListController *)self addOnPlanGroup];
-    v8 = [v7 specifiers];
+    addOnPlanGroup = [(PSUICarrierListController *)self addOnPlanGroup];
+    specifiers = [addOnPlanGroup specifiers];
 
-    if ([v8 count])
+    if ([specifiers count])
     {
       [v3 addObject:self->_addOnGroupSpecifier];
-      [v3 ps_addSpecifiers:v8 toGroup:self->_addOnGroupSpecifier];
+      [v3 ps_addSpecifiers:specifiers toGroup:self->_addOnGroupSpecifier];
     }
   }
 
   if (self->_showCarrierItemGroup)
   {
-    v9 = [(PSUICarrierListController *)self carrierItemGroupSpecifier];
+    carrierItemGroupSpecifier = [(PSUICarrierListController *)self carrierItemGroupSpecifier];
     carrierItemGroupSpecifier = self->_carrierItemGroupSpecifier;
-    self->_carrierItemGroupSpecifier = v9;
+    self->_carrierItemGroupSpecifier = carrierItemGroupSpecifier;
 
     [v3 addObject:self->_carrierItemGroupSpecifier];
     v11 = [(PSUICarrierListController *)self createCarrierItemGroupIfNeeded:self->_carrierItemGroupSpecifier];
     [(PSUICarrierListController *)self setCarrierItemGroup:v11];
 
-    v12 = [(PSUICarrierListController *)self carrierItemGroup];
-    v13 = [v12 specifiers];
-    [v3 ps_addSpecifiers:v13 toGroup:self->_carrierItemGroupSpecifier];
+    carrierItemGroup = [(PSUICarrierListController *)self carrierItemGroup];
+    specifiers2 = [carrierItemGroup specifiers];
+    [v3 ps_addSpecifiers:specifiers2 toGroup:self->_carrierItemGroupSpecifier];
   }
 
   v14 = *MEMORY[0x277D3FC48];
@@ -179,7 +179,7 @@
   return v3;
 }
 
-- (id)createCarrierItemGroupIfNeeded:(id)a3
+- (id)createCarrierItemGroupIfNeeded:(id)needed
 {
   carrierItemGroup = self->_carrierItemGroup;
   if (carrierItemGroup)
@@ -189,14 +189,14 @@
 
   else
   {
-    v6 = a3;
-    v4 = [[PSUICarrierItemGroup alloc] initWithListController:self groupSpecifier:v6 showCarrierItems:self->_showCarrierItemGroup];
+    neededCopy = needed;
+    v4 = [[PSUICarrierItemGroup alloc] initWithListController:self groupSpecifier:neededCopy showCarrierItems:self->_showCarrierItemGroup];
   }
 
   return v4;
 }
 
-- (id)createAddCellularPlanSpecifierIfNeeded:(id)a3
+- (id)createAddCellularPlanSpecifierIfNeeded:(id)needed
 {
   addOnPlanGroup = self->_addOnPlanGroup;
   if (addOnPlanGroup)
@@ -206,8 +206,8 @@
 
   else
   {
-    v6 = a3;
-    v4 = [[PSUIAddOnPlanGroup alloc] initWithListController:self groupSpecifier:v6];
+    neededCopy = needed;
+    v4 = [[PSUIAddOnPlanGroup alloc] initWithListController:self groupSpecifier:neededCopy];
   }
 
   return v4;

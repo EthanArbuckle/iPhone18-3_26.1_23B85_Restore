@@ -1,23 +1,23 @@
 @interface NPTVPNCollector
-- (id)getVPNStatusAsString:(int64_t)a3;
-- (void)collectVPNAddressesWithCompletion:(id)a3;
-- (void)getExtendedStatus:(int)a3 session:(void *)a4 completionHandler:(id)a5;
-- (void)startCollectingWithCompletion:(id)a3;
+- (id)getVPNStatusAsString:(int64_t)string;
+- (void)collectVPNAddressesWithCompletion:(id)completion;
+- (void)getExtendedStatus:(int)status session:(void *)session completionHandler:(id)handler;
+- (void)startCollectingWithCompletion:(id)completion;
 - (void)stopCollecting;
-- (void)vpnNotificationReceived:(id)a3;
+- (void)vpnNotificationReceived:(id)received;
 @end
 
 @implementation NPTVPNCollector
 
-- (void)startCollectingWithCompletion:(id)a3
+- (void)startCollectingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [MEMORY[0x277CD9300] sharedManager];
-  [(NPTVPNCollector *)self setManager:v6];
+  mEMORY[0x277CD9300] = [MEMORY[0x277CD9300] sharedManager];
+  [(NPTVPNCollector *)self setManager:mEMORY[0x277CD9300]];
 
-  v7 = [MEMORY[0x277CD92B8] sharedManager];
-  [(NPTVPNCollector *)self setConfigManager:v7];
+  mEMORY[0x277CD92B8] = [MEMORY[0x277CD92B8] sharedManager];
+  [(NPTVPNCollector *)self setConfigManager:mEMORY[0x277CD92B8]];
 
   v8 = dispatch_queue_create("NPTVPNCollector.backgroundQueue", MEMORY[0x277D85CD8]);
   [(NPTVPNCollector *)self setBackgroundQueue:v8];
@@ -26,39 +26,39 @@
   [(NPTVPNCollector *)self setCachedMetadata:v9];
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v11 = [(NPTVPNCollector *)self cachedMetadata];
-  [v11 setObject:v10 forKeyedSubscript:@"initial_state"];
+  cachedMetadata = [(NPTVPNCollector *)self cachedMetadata];
+  [cachedMetadata setObject:v10 forKeyedSubscript:@"initial_state"];
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = [(NPTVPNCollector *)self cachedMetadata];
-  [v13 setObject:v12 forKeyedSubscript:@"events"];
+  cachedMetadata2 = [(NPTVPNCollector *)self cachedMetadata];
+  [cachedMetadata2 setObject:v12 forKeyedSubscript:@"events"];
 
-  v14 = [(NPTVPNCollector *)self manager];
+  manager = [(NPTVPNCollector *)self manager];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __49__NPTVPNCollector_startCollectingWithCompletion___block_invoke;
   v26[3] = &unk_2789D4108;
   v27 = v5;
-  v28 = self;
-  v29 = v4;
-  v15 = v4;
+  selfCopy = self;
+  v29 = completionCopy;
+  v15 = completionCopy;
   v16 = v5;
-  [v14 loadFromPreferencesWithCompletionHandler:v26];
+  [manager loadFromPreferencesWithCompletionHandler:v26];
 
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
-  v18 = [MEMORY[0x277CD9300] sharedManager];
-  v19 = [v18 connection];
-  [v17 addObserver:self selector:sel_vpnNotificationReceived_ name:@"com.apple.networkextension.statuschanged" object:v19];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mEMORY[0x277CD9300]2 = [MEMORY[0x277CD9300] sharedManager];
+  connection = [mEMORY[0x277CD9300]2 connection];
+  [defaultCenter addObserver:self selector:sel_vpnNotificationReceived_ name:@"com.apple.networkextension.statuschanged" object:connection];
 
-  v20 = [MEMORY[0x277CCAB98] defaultCenter];
-  v21 = [MEMORY[0x277CD9300] sharedManager];
-  v22 = [v21 connection];
-  [v20 addObserver:self selector:sel_vpnNotificationReceived_ name:@"NEVPNErrorDomain" object:v22];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  mEMORY[0x277CD9300]3 = [MEMORY[0x277CD9300] sharedManager];
+  connection2 = [mEMORY[0x277CD9300]3 connection];
+  [defaultCenter2 addObserver:self selector:sel_vpnNotificationReceived_ name:@"NEVPNErrorDomain" object:connection2];
 
-  v23 = [MEMORY[0x277CCAB98] defaultCenter];
-  v24 = [MEMORY[0x277CD9300] sharedManager];
-  v25 = [v24 connection];
-  [v23 addObserver:self selector:sel_vpnNotificationReceived_ name:@"com.apple.networkextension.app-configuration-changed" object:v25];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  mEMORY[0x277CD9300]4 = [MEMORY[0x277CD9300] sharedManager];
+  connection3 = [mEMORY[0x277CD9300]4 connection];
+  [defaultCenter3 addObserver:self selector:sel_vpnNotificationReceived_ name:@"com.apple.networkextension.app-configuration-changed" object:connection3];
 }
 
 void __49__NPTVPNCollector_startCollectingWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -264,19 +264,19 @@ intptr_t __49__NPTVPNCollector_startCollectingWithCompletion___block_invoke_41(u
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)collectVPNAddressesWithCompletion:(id)a3
+- (void)collectVPNAddressesWithCompletion:(id)completion
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = 0;
   v10[1] = 0;
-  v5 = [(NPTVPNCollector *)self config];
-  v6 = [v5 identifier];
-  [v6 getUUIDBytes:v10];
+  config = [(NPTVPNCollector *)self config];
+  identifier = [config identifier];
+  [identifier getUUIDBytes:v10];
 
   ne_session_create();
-  v7 = [(NPTVPNCollector *)self backgroundQueue];
-  v8 = v4;
+  backgroundQueue = [(NPTVPNCollector *)self backgroundQueue];
+  v8 = completionCopy;
   ne_session_get_status();
 
   v9 = *MEMORY[0x277D85DE8];
@@ -305,19 +305,19 @@ uint64_t __53__NPTVPNCollector_collectVPNAddressesWithCompletion___block_invoke(
   }
 }
 
-- (void)getExtendedStatus:(int)a3 session:(void *)a4 completionHandler:(id)a5
+- (void)getExtendedStatus:(int)status session:(void *)session completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (a3 == 3)
+  if (status == 3)
   {
-    v9 = [(NPTVPNCollector *)self backgroundQueue];
+    backgroundQueue = [(NPTVPNCollector *)self backgroundQueue];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __63__NPTVPNCollector_getExtendedStatus_session_completionHandler___block_invoke;
     v16 = &unk_2789D4180;
     v17 = v8;
-    v18 = v7;
+    v18 = handlerCopy;
     ne_session_get_info();
 
     v10 = v17;
@@ -333,7 +333,7 @@ uint64_t __53__NPTVPNCollector_collectVPNAddressesWithCompletion___block_invoke(
     }
 
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v8];
-    (*(v7 + 2))(v7, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 }
 
@@ -489,25 +489,25 @@ uint64_t __63__NPTVPNCollector_getExtendedStatus_session_completionHandler___blo
   return 1;
 }
 
-- (void)vpnNotificationReceived:(id)a3
+- (void)vpnNotificationReceived:(id)received
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v5 manager];
+  receivedCopy = received;
+  object = [receivedCopy object];
+  manager = [object manager];
   v7 = objc_alloc_init(NPTMetadataEvent);
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v9 = [v4 name];
+  name = [receivedCopy name];
 
-  if (v9 == @"com.apple.networkextension.app-configuration-changed")
+  if (name == @"com.apple.networkextension.app-configuration-changed")
   {
     v11 = 4;
   }
 
   else
   {
-    v10 = [v4 name];
+    name2 = [receivedCopy name];
 
-    if (v10 == @"com.apple.networkextension.statuschanged")
+    if (name2 == @"com.apple.networkextension.statuschanged")
     {
       v11 = 5;
     }
@@ -525,25 +525,25 @@ uint64_t __63__NPTVPNCollector_getExtendedStatus_session_completionHandler___blo
   [(NPTMetadataEvent *)v7 setCollectorType:objc_opt_class()];
   v13 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v13 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSxxx"];
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "isEnabled")}];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(manager, "isEnabled")}];
   [v8 setObject:v14 forKeyedSubscript:@"vpn_enabled"];
 
-  v15 = [v6 protocolConfiguration];
-  v16 = [v15 dictionary];
-  [v8 setObject:v16 forKeyedSubscript:@"vpn_protocol"];
+  protocolConfiguration = [manager protocolConfiguration];
+  dictionary = [protocolConfiguration dictionary];
+  [v8 setObject:dictionary forKeyedSubscript:@"vpn_protocol"];
 
-  v17 = [v6 connection];
-  v18 = -[NPTVPNCollector getVPNStatusAsString:](self, "getVPNStatusAsString:", [v17 status]);
+  connection = [manager connection];
+  v18 = -[NPTVPNCollector getVPNStatusAsString:](self, "getVPNStatusAsString:", [connection status]);
   [v8 setObject:v18 forKeyedSubscript:@"vpn_status"];
 
-  v19 = [v6 connection];
-  v20 = [v19 connectedDate];
-  v21 = [v13 stringFromDate:v20];
+  connection2 = [manager connection];
+  connectedDate = [connection2 connectedDate];
+  v21 = [v13 stringFromDate:connectedDate];
   [v8 setObject:v21 forKeyedSubscript:@"vpn_connected_date"];
 
-  v22 = [(NPTVPNCollector *)self config];
+  config = [(NPTVPNCollector *)self config];
 
-  if (v22)
+  if (config)
   {
     v23 = dispatch_semaphore_create(0);
     v33 = MEMORY[0x277D85DD0];
@@ -561,20 +561,20 @@ uint64_t __63__NPTVPNCollector_getExtendedStatus_session_completionHandler___blo
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:{v8, v33, v34, v35, v36}];
   [(NPTMetadataEvent *)v7 setData:v26];
 
-  v27 = self;
-  objc_sync_enter(v27);
-  v28 = [(NPTVPNCollector *)v27 cachedMetadata];
-  v29 = [v28 objectForKeyedSubscript:@"events"];
-  v30 = [(NPTMetadataEvent *)v7 asDictionary];
-  [v29 addObject:v30];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedMetadata = [(NPTVPNCollector *)selfCopy cachedMetadata];
+  v29 = [cachedMetadata objectForKeyedSubscript:@"events"];
+  asDictionary = [(NPTMetadataEvent *)v7 asDictionary];
+  [v29 addObject:asDictionary];
 
-  objc_sync_exit(v27);
-  v31 = [(NPTVPNCollector *)v27 metadataDidChangeHandler];
+  objc_sync_exit(selfCopy);
+  metadataDidChangeHandler = [(NPTVPNCollector *)selfCopy metadataDidChangeHandler];
 
-  if (v31)
+  if (metadataDidChangeHandler)
   {
-    v32 = [(NPTVPNCollector *)v27 metadataDidChangeHandler];
-    (v32)[2](v32, v7, 0);
+    metadataDidChangeHandler2 = [(NPTVPNCollector *)selfCopy metadataDidChangeHandler];
+    (metadataDidChangeHandler2)[2](metadataDidChangeHandler2, v7, 0);
   }
 }
 
@@ -588,22 +588,22 @@ intptr_t __43__NPTVPNCollector_vpnNotificationReceived___block_invoke(uint64_t a
 
 - (void)stopCollecting
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(NPTVPNCollector *)self setManager:0];
 }
 
-- (id)getVPNStatusAsString:(int64_t)a3
+- (id)getVPNStatusAsString:(int64_t)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2789D41A0[a3];
+    return off_2789D41A0[string];
   }
 }
 

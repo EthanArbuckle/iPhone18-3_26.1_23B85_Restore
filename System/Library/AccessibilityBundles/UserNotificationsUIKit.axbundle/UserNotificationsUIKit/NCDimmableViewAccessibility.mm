@@ -1,5 +1,5 @@
 @interface NCDimmableViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (id)accessibilityLabel;
 - (int64_t)accessibilityContainerType;
@@ -7,16 +7,16 @@
 
 @implementation NCDimmableViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
+  validationsCopy = validations;
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SBBannerWindow"];
+    [validationsCopy validateClass:@"SBBannerWindow"];
   }
 
-  [v3 validateClass:@"NCNotificationViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceMethod:@"_executeClearAction:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"NCNotificationViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceMethod:@"_executeClearAction:" withFullSignature:{"v", "B", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -25,20 +25,20 @@
   v3 = [MEMORY[0x29EDC7DA8] viewControllerForView:self];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 presentingViewController];
+  presentingViewController = [v4 presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
     v7 = v4;
     AXPerformSafeBlock();
   }
 
-  return v5 != 0;
+  return presentingViewController != 0;
 }
 
 - (int64_t)accessibilityContainerType
 {
-  v2 = [(NCDimmableViewAccessibility *)self _accessibilityWindow];
+  _accessibilityWindow = [(NCDimmableViewAccessibility *)self _accessibilityWindow];
   NSClassFromString(&cfstr_Sbbannerwindow.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -55,7 +55,7 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(NCDimmableViewAccessibility *)self _accessibilityWindow];
+  _accessibilityWindow = [(NCDimmableViewAccessibility *)self _accessibilityWindow];
   NSClassFromString(&cfstr_Sbbannerwindow.isa);
   if (objc_opt_isKindOfClass())
   {

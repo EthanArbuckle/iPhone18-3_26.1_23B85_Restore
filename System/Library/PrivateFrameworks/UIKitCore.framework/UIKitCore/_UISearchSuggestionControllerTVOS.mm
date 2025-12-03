@@ -1,7 +1,7 @@
 @interface _UISearchSuggestionControllerTVOS
 - (BOOL)shouldDisplayDefaultSuggestion;
 - (id)makeCollectionView;
-- (void)updateSearchString:(id)a3;
+- (void)updateSearchString:(id)string;
 @end
 
 @implementation _UISearchSuggestionControllerTVOS
@@ -31,7 +31,7 @@
   return 0;
 }
 
-- (void)updateSearchString:(id)a3
+- (void)updateSearchString:(id)string
 {
   if (os_variant_has_internal_diagnostics())
   {

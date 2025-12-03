@@ -1,21 +1,21 @@
 @interface WFStartPhoneCallContextualAction
-+ (void)getTopHitContextualActionsWithLimit:(int64_t)a3 completion:(id)a4;
-- (WFStartPhoneCallContextualAction)initWithPerson:(id)a3 serializedRepresentation:(id)a4 namedQueryInfo:(id)a5;
++ (void)getTopHitContextualActionsWithLimit:(int64_t)limit completion:(id)completion;
+- (WFStartPhoneCallContextualAction)initWithPerson:(id)person serializedRepresentation:(id)representation namedQueryInfo:(id)info;
 - (id)_staticDisplayStringForDecoding;
 - (id)uniqueIdentifier;
 @end
 
 @implementation WFStartPhoneCallContextualAction
 
-- (WFStartPhoneCallContextualAction)initWithPerson:(id)a3 serializedRepresentation:(id)a4 namedQueryInfo:(id)a5
+- (WFStartPhoneCallContextualAction)initWithPerson:(id)person serializedRepresentation:(id)representation namedQueryInfo:(id)info
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v40 = a5;
-  if (v9)
+  personCopy = person;
+  representationCopy = representation;
+  infoCopy = info;
+  if (personCopy)
   {
-    if (v10)
+    if (representationCopy)
     {
       goto LABEL_3;
     }
@@ -23,66 +23,66 @@
 
   else
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"WFStartPhoneCallContextualAction.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFStartPhoneCallContextualAction.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"person"}];
 
-    if (v10)
+    if (representationCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v38 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v38 handleFailureInMethod:a2 object:self file:@"WFStartPhoneCallContextualAction.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"serializedRepresentation"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFStartPhoneCallContextualAction.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"serializedRepresentation"}];
 
 LABEL_3:
-  v11 = [v9 nameComponents];
-  v12 = [v11 givenName];
-  v13 = v12;
-  if (v12)
+  nameComponents = [personCopy nameComponents];
+  givenName = [nameComponents givenName];
+  v13 = givenName;
+  if (givenName)
   {
-    v14 = v12;
+    displayName = givenName;
   }
 
   else
   {
-    v14 = [v9 displayName];
+    displayName = [personCopy displayName];
   }
 
-  v15 = v14;
+  v15 = displayName;
 
   if (![v15 length])
   {
-    v16 = [v9 displayName];
-    v17 = v16;
-    if (v16)
+    displayName2 = [personCopy displayName];
+    v17 = displayName2;
+    if (displayName2)
     {
-      v18 = v16;
+      value = displayName2;
     }
 
     else
     {
-      v19 = [v9 personHandle];
-      v18 = [v19 value];
+      personHandle = [personCopy personHandle];
+      value = [personHandle value];
 
-      v15 = v19;
+      v15 = personHandle;
     }
 
-    v15 = v18;
+    v15 = value;
   }
 
-  v41 = v10;
-  v20 = [[WFContextualActionParameter alloc] initWithType:@"WFContactContentItem" displayString:v15 wfParameterKey:@"WFCallContact" wfSerializedRepresentation:v10];
-  v21 = [v9 image];
-  v22 = [v21 _imageData];
+  v41 = representationCopy;
+  v20 = [[WFContextualActionParameter alloc] initWithType:@"WFContactContentItem" displayString:v15 wfParameterKey:@"WFCallContact" wfSerializedRepresentation:representationCopy];
+  image = [personCopy image];
+  _imageData = [image _imageData];
 
   v23 = [WFContextualActionIcon alloc];
   v24 = v23;
-  if (v22)
+  if (_imageData)
   {
-    v25 = [v9 image];
-    v26 = [v25 _imageData];
-    v27 = [(WFContextualActionIcon *)v24 initWithImageData:v26 scale:1 displayStyle:2.0];
+    image2 = [personCopy image];
+    _imageData2 = [image2 _imageData];
+    v27 = [(WFContextualActionIcon *)v24 initWithImageData:_imageData2 scale:1 displayStyle:2.0];
   }
 
   else
@@ -100,7 +100,7 @@ LABEL_3:
   v33 = [WFContextualActionIcon iconWithApplicationBundleIdentifier:@"com.apple.mobilephone"];
   v42.receiver = self;
   v42.super_class = WFStartPhoneCallContextualAction;
-  v34 = [(WFTopHitItemContextualAction *)&v42 initWithItem:v9 identifier:@"com.apple.mobilephone.call" wfActionIdentifier:@"com.apple.mobilephone.call" associatedAppBundleIdentifier:@"com.apple.mobilephone" parameters:v28 displayString:v31 title:v32 subtitle:v15 primaryColor:4 icon:v27 accessoryIcon:v33 namedQueryInfo:v40];
+  v34 = [(WFTopHitItemContextualAction *)&v42 initWithItem:personCopy identifier:@"com.apple.mobilephone.call" wfActionIdentifier:@"com.apple.mobilephone.call" associatedAppBundleIdentifier:@"com.apple.mobilephone" parameters:v28 displayString:v31 title:v32 subtitle:v15 primaryColor:4 icon:v27 accessoryIcon:v33 namedQueryInfo:infoCopy];
 
   v35 = *MEMORY[0x1E69E9840];
   return v34;
@@ -108,40 +108,40 @@ LABEL_3:
 
 - (id)_staticDisplayStringForDecoding
 {
-  v2 = [(WFStartPhoneCallContextualAction *)self person];
-  v3 = [v2 nameComponents];
-  v4 = [v3 givenName];
-  v5 = v4;
-  if (v4)
+  person = [(WFStartPhoneCallContextualAction *)self person];
+  nameComponents = [person nameComponents];
+  givenName = [nameComponents givenName];
+  v5 = givenName;
+  if (givenName)
   {
-    v6 = v4;
+    displayName = givenName;
   }
 
   else
   {
-    v6 = [v2 displayName];
+    displayName = [person displayName];
   }
 
-  v7 = v6;
+  v7 = displayName;
 
   if (![v7 length])
   {
-    v8 = [v2 displayName];
-    v9 = v8;
-    if (v8)
+    displayName2 = [person displayName];
+    v9 = displayName2;
+    if (displayName2)
     {
-      v10 = v8;
+      value = displayName2;
     }
 
     else
     {
-      v11 = [v2 personHandle];
-      v10 = [v11 value];
+      personHandle = [person personHandle];
+      value = [personHandle value];
 
-      v7 = v11;
+      v7 = personHandle;
     }
 
-    v7 = v10;
+    v7 = value;
   }
 
   v12 = MEMORY[0x1E696AEC0];
@@ -153,31 +153,31 @@ LABEL_3:
 
 - (id)uniqueIdentifier
 {
-  v3 = [(WFContextualAction *)self identifier];
-  v4 = [(WFStartPhoneCallContextualAction *)self person];
-  v5 = [v4 contactIdentifier];
-  v6 = v5;
-  if (v5)
+  identifier = [(WFContextualAction *)self identifier];
+  person = [(WFStartPhoneCallContextualAction *)self person];
+  contactIdentifier = [person contactIdentifier];
+  v6 = contactIdentifier;
+  if (contactIdentifier)
   {
-    v7 = [v3 stringByAppendingFormat:@":%@", v5];
+    v7 = [identifier stringByAppendingFormat:@":%@", contactIdentifier];
   }
 
   else
   {
-    v8 = [(WFStartPhoneCallContextualAction *)self person];
-    v9 = [v8 displayName];
-    v7 = [v3 stringByAppendingFormat:@":%@", v9];
+    person2 = [(WFStartPhoneCallContextualAction *)self person];
+    displayName = [person2 displayName];
+    v7 = [identifier stringByAppendingFormat:@":%@", displayName];
   }
 
   return v7;
 }
 
-+ (void)getTopHitContextualActionsWithLimit:(int64_t)a3 completion:(id)a4
++ (void)getTopHitContextualActionsWithLimit:(int64_t)limit completion:(id)completion
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
+  completionCopy = completion;
   v7 = [v5 errorWithDomain:@"TopHitItemContextualActionError" code:0 userInfo:0];
-  (*(a4 + 2))(v6, 0, v7);
+  (*(completion + 2))(completionCopy, 0, v7);
 }
 
 @end

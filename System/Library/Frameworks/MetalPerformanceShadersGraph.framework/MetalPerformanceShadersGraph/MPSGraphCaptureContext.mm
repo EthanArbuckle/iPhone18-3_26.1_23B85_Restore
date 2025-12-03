@@ -1,29 +1,29 @@
 @interface MPSGraphCaptureContext
-- (MPSGraphCaptureContext)initWithOutputFolderPath:(id)a3 graphName:(id)a4;
-- (id)addFunctionWithBitCode:(id)a3 metalFunctionName:(id)a4 reflection:(id)a5;
-- (id)constantBufferName:(id)a3;
-- (id)dataWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (id)functionNameForPipeline:(id)a3;
-- (id)reflectionForPipeline:(id)a3;
-- (id)wrapComputeEncoder:(id)a3;
-- (void)addPipeline:(id)a3 functionName:(id)a4 withReflection:(id)a5;
-- (void)createNodeWithDispatchInfo:(id)a3 encoderContext:(void *)a4;
+- (MPSGraphCaptureContext)initWithOutputFolderPath:(id)path graphName:(id)name;
+- (id)addFunctionWithBitCode:(id)code metalFunctionName:(id)name reflection:(id)reflection;
+- (id)constantBufferName:(id)name;
+- (id)dataWithBytes:(const void *)bytes length:(unint64_t)length;
+- (id)functionNameForPipeline:(id)pipeline;
+- (id)reflectionForPipeline:(id)pipeline;
+- (id)wrapComputeEncoder:(id)encoder;
+- (void)addPipeline:(id)pipeline functionName:(id)name withReflection:(id)reflection;
+- (void)createNodeWithDispatchInfo:(id)info encoderContext:(void *)context;
 - (void)dealloc;
-- (void)setConstantBuffer:(id)a3;
-- (void)setFeeds:(id)a3 names:(id)a4;
-- (void)setInputBuffers:(id)a3 names:(id)a4;
-- (void)setOutputBuffers:(id)a3 names:(id)a4;
-- (void)setResults:(id)a3 names:(id)a4;
-- (void)writeToJsonFile:(__sFILE *)a3;
-- (void)writejsonFile:(id)a3;
+- (void)setConstantBuffer:(id)buffer;
+- (void)setFeeds:(id)feeds names:(id)names;
+- (void)setInputBuffers:(id)buffers names:(id)names;
+- (void)setOutputBuffers:(id)buffers names:(id)names;
+- (void)setResults:(id)results names:(id)names;
+- (void)writeToJsonFile:(__sFILE *)file;
+- (void)writejsonFile:(id)file;
 @end
 
 @implementation MPSGraphCaptureContext
 
-- (MPSGraphCaptureContext)initWithOutputFolderPath:(id)a3 graphName:(id)a4
+- (MPSGraphCaptureContext)initWithOutputFolderPath:(id)path graphName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  nameCopy = name;
   v27.receiver = self;
   v27.super_class = MPSGraphCaptureContext;
   v8 = [(MPSGraphCaptureContext *)&v27 init];
@@ -117,45 +117,45 @@
   [(MPSGraphCaptureContext *)&v10 dealloc];
 }
 
-- (void)setInputBuffers:(id)a3 names:(id)a4
+- (void)setInputBuffers:(id)buffers names:(id)names
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = getGraphPorts("input", v9, v6, self->_context);
+  buffersCopy = buffers;
+  namesCopy = names;
+  v7 = getGraphPorts("input", buffersCopy, namesCopy, self->_context);
   inputPorts = self->_inputPorts;
   self->_inputPorts = v7;
 }
 
-- (void)setOutputBuffers:(id)a3 names:(id)a4
+- (void)setOutputBuffers:(id)buffers names:(id)names
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = getGraphPorts("output", v9, v6, self->_context + 5);
+  buffersCopy = buffers;
+  namesCopy = names;
+  v7 = getGraphPorts("output", buffersCopy, namesCopy, self->_context + 5);
   outputPorts = self->_outputPorts;
   self->_outputPorts = v7;
 }
 
-- (void)setFeeds:(id)a3 names:(id)a4
+- (void)setFeeds:(id)feeds names:(id)names
 {
-  v7 = a4;
-  v6 = getBuffersFromTensorDatas(a3);
-  [(MPSGraphCaptureContext *)self setInputBuffers:v6 names:v7];
+  namesCopy = names;
+  v6 = getBuffersFromTensorDatas(feeds);
+  [(MPSGraphCaptureContext *)self setInputBuffers:v6 names:namesCopy];
 }
 
-- (void)setResults:(id)a3 names:(id)a4
+- (void)setResults:(id)results names:(id)names
 {
-  v7 = a4;
-  v6 = getBuffersFromTensorDatas(a3);
-  [(MPSGraphCaptureContext *)self setOutputBuffers:v6 names:v7];
+  namesCopy = names;
+  v6 = getBuffersFromTensorDatas(results);
+  [(MPSGraphCaptureContext *)self setOutputBuffers:v6 names:namesCopy];
 }
 
-- (id)dataWithBytes:(const void *)a3 length:(unint64_t)a4
+- (id)dataWithBytes:(const void *)bytes length:(unint64_t)length
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v7 = [(NSMutableArray *)self->_data count];
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"data%u", v7];
-  v9 = [(NSString *)self->_outputFolderPath UTF8String];
-  v10 = strlen(v9);
+  uTF8String = [(NSString *)self->_outputFolderPath UTF8String];
+  v10 = strlen(uTF8String);
   if (v10 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -170,7 +170,7 @@
   *(&__dst.__r_.__value_.__s + 23) = v10;
   if (v10)
   {
-    memmove(&__dst, v9, v10);
+    memmove(&__dst, uTF8String, v10);
   }
 
   __dst.__r_.__value_.__s.__data_[v11] = 0;
@@ -191,7 +191,7 @@
     MTLReportFailure();
   }
 
-  fwrite(a3, 1uLL, a4, v13);
+  fwrite(bytes, 1uLL, length, v13);
   fclose(v13);
   v18[0] = @"Name";
   v18[1] = @"FilePath";
@@ -209,33 +209,33 @@
   return v15;
 }
 
-- (void)setConstantBuffer:(id)a3
+- (void)setConstantBuffer:(id)buffer
 {
-  v6 = a3;
+  bufferCopy = buffer;
   v4 = [MEMORY[0x1E696B098] valueWithPointer:?];
-  v5 = -[MPSGraphCaptureContext dataWithBytes:length:](self, "dataWithBytes:length:", [v6 contents], objc_msgSend(v6, "length"));
+  v5 = -[MPSGraphCaptureContext dataWithBytes:length:](self, "dataWithBytes:length:", [bufferCopy contents], objc_msgSend(bufferCopy, "length"));
   [(NSMutableDictionary *)self->_constantBuffers setObject:v5 forKeyedSubscript:v4];
 }
 
-- (id)constantBufferName:(id)a3
+- (id)constantBufferName:(id)name
 {
-  v4 = [MEMORY[0x1E696B098] valueWithPointer:a3];
+  v4 = [MEMORY[0x1E696B098] valueWithPointer:name];
   v5 = [(NSMutableDictionary *)self->_constantBuffers objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)addFunctionWithBitCode:(id)a3 metalFunctionName:(id)a4 reflection:(id)a5
+- (id)addFunctionWithBitCode:(id)code metalFunctionName:(id)name reflection:(id)reflection
 {
   v47 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v29 = a4;
-  v31 = a5;
+  codeCopy = code;
+  nameCopy = name;
+  reflectionCopy = reflection;
   v8 = [(NSMutableArray *)self->_functions count];
   v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"function%u", v8];
   v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.bc", v30];
-  v9 = [(NSString *)self->_outputFolderPath UTF8String];
-  v10 = strlen(v9);
+  uTF8String = [(NSString *)self->_outputFolderPath UTF8String];
+  v10 = strlen(uTF8String);
   if (v10 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -250,14 +250,14 @@
   *(&__dst.__r_.__value_.__s + 23) = v10;
   if (v10)
   {
-    memmove(&__dst, v9, v10);
+    memmove(&__dst, uTF8String, v10);
   }
 
   __dst.__r_.__value_.__s.__data_[v11] = 0;
   std::string::append(&__dst, [v32 UTF8String]);
-  v12 = v33;
-  v13 = [v33 bytes];
-  v14 = [v33 length];
+  v12 = codeCopy;
+  bytes = [codeCopy bytes];
+  v14 = [codeCopy length];
   if ((__dst.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
     p_dst = &__dst;
@@ -269,15 +269,15 @@
   }
 
   v16 = fopen(p_dst, "wb");
-  fwrite(v13, 1uLL, v14, v16);
+  fwrite(bytes, 1uLL, v14, v16);
   fclose(v16);
   v34 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v17 = [v31 arguments];
-  v18 = [v17 countByEnumeratingWithState:&v35 objects:v46 count:16];
+  arguments = [reflectionCopy arguments];
+  v18 = [arguments countByEnumeratingWithState:&v35 objects:v46 count:16];
   if (v18)
   {
     v19 = *v36;
@@ -287,15 +287,15 @@
       {
         if (*v36 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(arguments);
         }
 
         v21 = *(*(&v35 + 1) + 8 * i);
         if (![v21 type])
         {
           v44[0] = @"Name";
-          v22 = [v21 name];
-          v45[0] = v22;
+          name = [v21 name];
+          v45[0] = name;
           v44[1] = @"Buffer";
           v42 = @"BindIndex";
           v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v21, "index")}];
@@ -308,7 +308,7 @@
         }
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v35 objects:v46 count:16];
+      v18 = [arguments countByEnumeratingWithState:&v35 objects:v46 count:16];
     }
 
     while (v18);
@@ -320,7 +320,7 @@
   v41[1] = v32;
   v40[2] = @"MetalFunctionName";
   v40[3] = @"Ports";
-  v41[2] = v29;
+  v41[2] = nameCopy;
   v41[3] = v34;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:4];
   [(NSMutableArray *)self->_functions addObject:v26];
@@ -334,92 +334,92 @@
   return v27;
 }
 
-- (void)addPipeline:(id)a3 functionName:(id)a4 withReflection:(id)a5
+- (void)addPipeline:(id)pipeline functionName:(id)name withReflection:(id)reflection
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696B098] valueWithPointer:a3];
-  [(NSMutableDictionary *)self->_pipelineReflectionDictionary setObject:v8 forKeyedSubscript:v9];
-  [(NSMutableDictionary *)self->_pipelineFunctionNameDictionary setObject:v10 forKeyedSubscript:v9];
+  nameCopy = name;
+  reflectionCopy = reflection;
+  v9 = [MEMORY[0x1E696B098] valueWithPointer:pipeline];
+  [(NSMutableDictionary *)self->_pipelineReflectionDictionary setObject:reflectionCopy forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_pipelineFunctionNameDictionary setObject:nameCopy forKeyedSubscript:v9];
 }
 
-- (id)reflectionForPipeline:(id)a3
+- (id)reflectionForPipeline:(id)pipeline
 {
-  v4 = [MEMORY[0x1E696B098] valueWithPointer:a3];
+  v4 = [MEMORY[0x1E696B098] valueWithPointer:pipeline];
   v5 = [(NSMutableDictionary *)self->_pipelineReflectionDictionary objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)functionNameForPipeline:(id)a3
+- (id)functionNameForPipeline:(id)pipeline
 {
-  v4 = [MEMORY[0x1E696B098] valueWithPointer:a3];
+  v4 = [MEMORY[0x1E696B098] valueWithPointer:pipeline];
   v5 = [(NSMutableDictionary *)self->_pipelineFunctionNameDictionary objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)wrapComputeEncoder:(id)a3
+- (id)wrapComputeEncoder:(id)encoder
 {
-  v4 = a3;
-  v5 = [[MPSCaptureCommandEncoder alloc] initWithCommandEncoder:v4 captureContext:self];
+  encoderCopy = encoder;
+  v5 = [[MPSCaptureCommandEncoder alloc] initWithCommandEncoder:encoderCopy captureContext:self];
 
   return v5;
 }
 
-- (void)createNodeWithDispatchInfo:(id)a3 encoderContext:(void *)a4
+- (void)createNodeWithDispatchInfo:(id)info encoderContext:(void *)context
 {
   v159 = *MEMORY[0x1E69E9840];
-  v88 = a3;
+  infoCopy = info;
   v93 = objc_opt_new();
-  v96 = a4;
-  v86 = *(a4 + 3);
+  contextCopy = context;
+  v86 = *(context + 3);
   MPSLibrary::getComputePipelineStateInfo();
   v90 = v122;
   v87 = [MEMORY[0x1E696B098] valueWithPointer:v86];
   v89 = [(NSMutableDictionary *)self->_pipelineFileNameDictionary objectForKeyedSubscript:?];
-  v102 = self;
+  selfCopy = self;
   if (!v89)
   {
     v6 = v121;
     v7 = [(MPSGraphCaptureContext *)self addFunctionWithBitCode:v123 metalFunctionName:v6 reflection:v90];
     [(NSMutableDictionary *)self->_pipelineFileNameDictionary setObject:v7 forKeyedSubscript:v87];
     v89 = v7;
-    v8 = [v90 performanceStatistics];
-    v9 = v8;
-    if (v8)
+    performanceStatistics = [v90 performanceStatistics];
+    v9 = performanceStatistics;
+    if (performanceStatistics)
     {
-      v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E6973FA0]];
+      v10 = [performanceStatistics objectForKeyedSubscript:*MEMORY[0x1E6973FA0]];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 intValue];
-        if (v12 >= 1)
+        intValue = [v10 intValue];
+        if (intValue >= 1)
         {
           v13 = std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(MEMORY[0x1E69E5300], "Function ", 9);
           v14 = v6;
-          v15 = [v6 UTF8String];
-          v16 = strlen(v15);
-          v17 = std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(v13, v15, v16);
+          uTF8String = [v6 UTF8String];
+          v16 = strlen(uTF8String);
+          v17 = std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(v13, uTF8String, v16);
           v18 = std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(v17, " spilled ", 9);
-          v19 = MEMORY[0x1E12E56E0](v18, v12);
+          v19 = MEMORY[0x1E12E56E0](v18, intValue);
           std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(v19, " bytes\n", 7);
-          v102->_doNotWriteJsonFile = 1;
+          selfCopy->_doNotWriteJsonFile = 1;
         }
       }
     }
 
-    self = v102;
+    self = selfCopy;
   }
 
   v20 = [(NSMutableArray *)self->_nodes count];
-  v91 = [MEMORY[0x1E695DF70] array];
-  v94 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v100 = [MEMORY[0x1E696AEC0] stringWithFormat:@"node%u", v20];
   [v93 setObject:? forKeyedSubscript:?];
   [v93 setObject:v89 forKeyedSubscript:@"Function"];
-  [v93 setObject:v91 forKeyedSubscript:@"OutputPortStorage"];
-  [v93 setObject:v88 forKeyedSubscript:@"Dispatch"];
+  [v93 setObject:array forKeyedSubscript:@"OutputPortStorage"];
+  [v93 setObject:infoCopy forKeyedSubscript:@"Dispatch"];
   v119 = 0u;
   v120 = 0u;
   v117 = 0u;
@@ -441,7 +441,7 @@
         v103 = *(*(&v117 + 1) + 8 * i);
         if ([v103 type] == 1)
         {
-          if (*(v96[4] + 8 * [v103 index]))
+          if (*(contextCopy[4] + 8 * [v103 index]))
           {
             v156[0] = @"Size";
             v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -451,21 +451,21 @@
             v157[1] = v23;
             v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v157 forKeys:v156 count:2];
 
-            [v94 addObject:v21];
+            [array2 addObject:v21];
             goto LABEL_12;
           }
         }
 
         else if (![v103 type])
         {
-          v24 = *v96 + 32 * [v103 index];
+          v24 = *contextCopy + 32 * [v103 index];
           v101 = *(v24 + 8);
           if (*(v24 + 16) == 1)
           {
             v154[0] = @"Source";
             v152[0] = @"Data";
-            v25 = [MEMORY[0x1E695DFB0] null];
-            v153[0] = v25;
+            null = [MEMORY[0x1E695DFB0] null];
+            v153[0] = null;
             v152[1] = @"Port";
             v153[1] = *(v24 + 24);
             v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v153 forKeys:v152 count:2];
@@ -477,13 +477,13 @@
             v151[0] = v100;
             v150[0] = @"Node";
             v150[1] = @"Port";
-            v28 = [v103 name];
-            v151[1] = v28;
+            name = [v103 name];
+            v151[1] = name;
             v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v151 forKeys:v150 count:2];
             v155[2] = v29;
             v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v155 forKeys:v154 count:3];
 
-            [(NSMutableArray *)v102->_links addObject:v21];
+            [(NSMutableArray *)selfCopy->_links addObject:v21];
             goto LABEL_12;
           }
 
@@ -501,7 +501,7 @@
               if (v34)
               {
                 v148[0] = @"Source";
-                v147[0] = v102->_graphName;
+                v147[0] = selfCopy->_graphName;
                 v146[0] = @"Graph";
                 v146[1] = @"Port";
                 v35 = [v34 objectForKeyedSubscript:@"Name"];
@@ -515,13 +515,13 @@
                 v145[0] = v100;
                 v144[0] = @"Node";
                 v144[1] = @"Port";
-                v38 = [v103 name];
-                v145[1] = v38;
+                name2 = [v103 name];
+                v145[1] = name2;
                 v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v145 forKeys:v144 count:2];
                 v149[2] = v39;
                 v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v149 forKeys:v148 count:3];
 
-                [(NSMutableArray *)v102->_portLinks addObject:v40];
+                [(NSMutableArray *)selfCopy->_portLinks addObject:v40];
                 v41 = 1;
                 goto LABEL_27;
               }
@@ -536,7 +536,7 @@
 LABEL_27:
             }
 
-            lastNodeWrittingToBuffer = v102->_lastNodeWrittingToBuffer;
+            lastNodeWrittingToBuffer = selfCopy->_lastNodeWrittingToBuffer;
             v43 = [MEMORY[0x1E696B098] valueWithPointer:v106];
             v92 = [(NSMutableDictionary *)lastNodeWrittingToBuffer objectForKeyedSubscript:v43];
 
@@ -563,12 +563,12 @@ LABEL_27:
                     v46 = *(*(&v113 + 1) + 8 * j);
                     v47 = [v46 objectForKeyedSubscript:@"BufferInfo"];
                     v48 = v47;
-                    v49 = [v47 bytes];
+                    bytes = [v47 bytes];
 
-                    v50 = *v49;
+                    v50 = *bytes;
                     if (v50 == [v106 length])
                     {
-                      v51 = v49[1];
+                      v51 = bytes[1];
                       if (v51 == [v106 gpuAddress])
                       {
                         v52 = [v46 objectForKeyedSubscript:@"Node"];
@@ -588,13 +588,13 @@ LABEL_27:
                         v138[0] = v100;
                         v137[0] = @"Node";
                         v137[1] = @"Port";
-                        v57 = [v103 name];
-                        v138[1] = v57;
+                        name3 = [v103 name];
+                        v138[1] = name3;
                         v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v138 forKeys:v137 count:2];
                         v142[2] = v58;
                         v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v142 forKeys:v141 count:3];
 
-                        [(NSMutableArray *)v102->_links addObject:v59];
+                        [(NSMutableArray *)selfCopy->_links addObject:v59];
                         v41 = 1;
                       }
                     }
@@ -610,7 +610,7 @@ LABEL_27:
             v21 = v106;
             if ([v103 access] == 1)
             {
-              v60 = v102->_context;
+              v60 = selfCopy->_context;
               v61 = v106;
               v62 = std::__hash_table<std::__hash_value_type<void *,void *>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,void *>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,void *>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,void *>>>::find<void *>(v60 + 5, v61);
               if (v62)
@@ -620,7 +620,7 @@ LABEL_27:
                 if (v63)
                 {
                   v135[0] = @"Dest";
-                  v134[0] = v102->_graphName;
+                  v134[0] = selfCopy->_graphName;
                   v133[0] = @"Graph";
                   v133[1] = @"Port";
                   v64 = [v63 objectForKeyedSubscript:@"Name"];
@@ -631,13 +631,13 @@ LABEL_27:
                   v132[0] = v100;
                   v131[0] = @"Node";
                   v131[1] = @"Port";
-                  v66 = [v103 name];
-                  v132[1] = v66;
+                  name4 = [v103 name];
+                  v132[1] = name4;
                   v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v132 forKeys:v131 count:2];
                   v136[1] = v67;
                   v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v136 forKeys:v135 count:2];
 
-                  [(NSMutableArray *)v102->_portLinks addObject:v68];
+                  [(NSMutableArray *)selfCopy->_portLinks addObject:v68];
                   goto LABEL_47;
                 }
               }
@@ -650,8 +650,8 @@ LABEL_27:
               {
 LABEL_47:
                 v129[0] = @"Port";
-                v69 = [v103 name];
-                v130[0] = v69;
+                name5 = [v103 name];
+                v130[0] = name5;
                 v129[1] = @"Buffer";
                 v127[0] = @"Size";
                 v70 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v61, "length")}];
@@ -663,7 +663,7 @@ LABEL_47:
                 v130[1] = v72;
                 v73 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v130 forKeys:v129 count:2];
 
-                [v91 addObject:v73];
+                [array addObject:v73];
               }
 
               v21 = v106;
@@ -671,7 +671,7 @@ LABEL_47:
 
 LABEL_12:
 
-            self = v102;
+            self = selfCopy;
             continue;
           }
         }
@@ -683,9 +683,9 @@ LABEL_12:
     while (v98);
   }
 
-  if ([v94 count])
+  if ([array2 count])
   {
-    [v93 setObject:v94 forKeyedSubscript:@"ThreadgroupBuffers"];
+    [v93 setObject:array2 forKeyedSubscript:@"ThreadgroupBuffers"];
   }
 
   v74 = objc_opt_new();
@@ -693,8 +693,8 @@ LABEL_12:
   v112 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v75 = [v90 arguments];
-  v76 = [v75 countByEnumeratingWithState:&v109 objects:v126 count:16];
+  arguments = [v90 arguments];
+  v76 = [arguments countByEnumeratingWithState:&v109 objects:v126 count:16];
   if (v76)
   {
     v77 = *v110;
@@ -704,20 +704,20 @@ LABEL_12:
       {
         if (*v110 != v77)
         {
-          objc_enumerationMutation(v75);
+          objc_enumerationMutation(arguments);
         }
 
         v79 = *(*(&v109 + 1) + 8 * k);
         if (![v79 type] && objc_msgSend(v79, "access") == 1)
         {
-          v80 = *(*v96 + 32 * [v79 index]);
+          v80 = *(*contextCopy + 32 * [v79 index]);
           v108[0] = [v80 length];
           v108[1] = [v80 gpuAddress];
           v125[0] = v93;
           v124[0] = @"Node";
           v124[1] = @"Argument";
-          v81 = [v79 name];
-          v125[1] = v81;
+          name6 = [v79 name];
+          v125[1] = name6;
           v124[2] = @"BufferInfo";
           v82 = [MEMORY[0x1E695DEF0] dataWithBytes:v108 length:16];
           v125[2] = v82;
@@ -735,7 +735,7 @@ LABEL_12:
         }
       }
 
-      v76 = [v75 countByEnumeratingWithState:&v109 objects:v126 count:16];
+      v76 = [arguments countByEnumeratingWithState:&v109 objects:v126 count:16];
     }
 
     while (v76);
@@ -745,12 +745,12 @@ LABEL_12:
   v107[1] = 3221225472;
   v107[2] = __68__MPSGraphCaptureContext_createNodeWithDispatchInfo_encoderContext___block_invoke;
   v107[3] = &unk_1E86D4D58;
-  v107[4] = v102;
+  v107[4] = selfCopy;
   [v74 enumerateKeysAndObjectsUsingBlock:v107];
-  [(NSMutableArray *)v102->_nodes addObject:v93];
+  [(NSMutableArray *)selfCopy->_nodes addObject:v93];
 }
 
-- (void)writeToJsonFile:(__sFILE *)a3
+- (void)writeToJsonFile:(__sFILE *)file
 {
   v31[1] = *MEMORY[0x1E69E9840];
   v30 = @"Graph";
@@ -792,7 +792,7 @@ LABEL_12:
   v16 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v15 options:9 error:&v25];
   v17 = v25;
   v18 = v16;
-  v19 = [v16 bytes];
+  bytes = [v16 bytes];
   v20 = [v16 length];
   v21 = v20;
   if (v20 >= 0x7FFFFFFFFFFFFFF8)
@@ -808,25 +808,25 @@ LABEL_12:
   v24 = v20;
   if (v20)
   {
-    memmove(__dst, v19, v20);
+    memmove(__dst, bytes, v20);
   }
 
   *(__dst + v21) = 0;
   v22 = v16;
-  fwrite([v16 bytes], objc_msgSend(v16, "length"), 1uLL, a3);
+  fwrite([v16 bytes], objc_msgSend(v16, "length"), 1uLL, file);
   if (v24 < 0)
   {
     operator delete(__dst[0]);
   }
 }
 
-- (void)writejsonFile:(id)a3
+- (void)writejsonFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   if (!self->_doNotWriteJsonFile)
   {
-    v5 = [(NSString *)self->_outputFolderPath UTF8String];
-    v6 = strlen(v5);
+    uTF8String = [(NSString *)self->_outputFolderPath UTF8String];
+    v6 = strlen(uTF8String);
     if (v6 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -841,12 +841,12 @@ LABEL_12:
     *(&__dst.__r_.__value_.__s + 23) = v6;
     if (v6)
     {
-      memmove(&__dst, v5, v6);
+      memmove(&__dst, uTF8String, v6);
     }
 
     __dst.__r_.__value_.__s.__data_[v7] = 0;
     std::string::append(&__dst, "/");
-    std::string::append(&__dst, [v4 UTF8String]);
+    std::string::append(&__dst, [fileCopy UTF8String]);
     if ((__dst.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
     {
       p_dst = &__dst;

@@ -1,27 +1,27 @@
 @interface NPTAWDLCollector
 - (id)awdlOpModeString;
 - (id)fetchAWDLData;
-- (void)startCollectingWithCompletion:(id)a3;
+- (void)startCollectingWithCompletion:(id)completion;
 - (void)stopCollecting;
 @end
 
 @implementation NPTAWDLCollector
 
-- (void)startCollectingWithCompletion:(id)a3
+- (void)startCollectingWithCompletion:(id)completion
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [(NPTAWDLCollector *)self setCachedMetadata:v6];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [(NPTAWDLCollector *)self cachedMetadata];
-  [v8 setObject:v7 forKeyedSubscript:@"initial_state"];
+  cachedMetadata = [(NPTAWDLCollector *)self cachedMetadata];
+  [cachedMetadata setObject:v7 forKeyedSubscript:@"initial_state"];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [(NPTAWDLCollector *)self cachedMetadata];
-  [v10 setObject:v9 forKeyedSubscript:@"events"];
+  cachedMetadata2 = [(NPTAWDLCollector *)self cachedMetadata];
+  [cachedMetadata2 setObject:v9 forKeyedSubscript:@"events"];
 
   if (os_variant_has_internal_content())
   {
@@ -29,37 +29,37 @@
     [(NPTAWDLCollector *)self setInterface:v11];
 
     objc_initWeak(&location, self);
-    v12 = [(NPTAWDLCollector *)self interface];
+    interface = [(NPTAWDLCollector *)self interface];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __50__NPTAWDLCollector_startCollectingWithCompletion___block_invoke;
     v26[3] = &unk_2789D4200;
     objc_copyWeak(&v27, &location);
-    [v12 setEventHandler:v26];
+    [interface setEventHandler:v26];
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v14 = [(NPTAWDLCollector *)self interface];
-    [v14 activate];
+    interface2 = [(NPTAWDLCollector *)self interface];
+    [interface2 activate];
 
-    v15 = [(NPTAWDLCollector *)self interface];
+    interface3 = [(NPTAWDLCollector *)self interface];
     v25 = 0;
-    [v15 startMonitoringEventType:17 error:&v25];
+    [interface3 startMonitoringEventType:17 error:&v25];
     v16 = v25;
 
-    v17 = [(NPTAWDLCollector *)self fetchAWDLData];
-    [v5 addEntriesFromDictionary:v17];
-    v18 = [(NPTAWDLCollector *)self cachedMetadata];
-    [v18 setObject:v5 forKeyedSubscript:@"initial_state"];
+    fetchAWDLData = [(NPTAWDLCollector *)self fetchAWDLData];
+    [v5 addEntriesFromDictionary:fetchAWDLData];
+    cachedMetadata3 = [(NPTAWDLCollector *)self cachedMetadata];
+    [cachedMetadata3 setObject:v5 forKeyedSubscript:@"initial_state"];
 
     if (v16)
     {
       [v13 addObject:v16];
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v19 = [v13 copy];
-      v4[2](v4, v5, v19);
+      completionCopy[2](completionCopy, v5, v19);
     }
 
     objc_destroyWeak(&v27);
@@ -68,15 +68,15 @@
 
   else
   {
-    v20 = [MEMORY[0x277CBEB38] dictionary];
-    [v20 setValue:@"AWDL Metrics only available on Internal Builds" forKey:*MEMORY[0x277CCA450]];
-    v21 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPTKit" code:-1 userInfo:v20];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setValue:@"AWDL Metrics only available on Internal Builds" forKey:*MEMORY[0x277CCA450]];
+    v21 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPTKit" code:-1 userInfo:dictionary];
     v22 = v21;
-    if (v4)
+    if (completionCopy)
     {
       v29[0] = v21;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
-      v4[2](v4, v5, v23);
+      completionCopy[2](completionCopy, v5, v23);
     }
   }
 
@@ -149,25 +149,25 @@ LABEL_10:
 
 - (void)stopCollecting
 {
-  v2 = [(NPTAWDLCollector *)self interface];
-  [v2 invalidate];
+  interface = [(NPTAWDLCollector *)self interface];
+  [interface invalidate];
 }
 
 - (id)fetchAWDLData
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(NPTAWDLCollector *)self interface];
-  v6 = [v5 AWDL];
-  v7 = [v4 numberWithBool:{objc_msgSend(v6, "powerOn")}];
+  interface = [(NPTAWDLCollector *)self interface];
+  aWDL = [interface AWDL];
+  v7 = [v4 numberWithBool:{objc_msgSend(aWDL, "powerOn")}];
   [v3 setObject:v7 forKeyedSubscript:@"awdl_power_state"];
 
-  v8 = [(NPTAWDLCollector *)self interface];
-  v9 = [v8 AWDLMasterChannel];
+  interface2 = [(NPTAWDLCollector *)self interface];
+  aWDLMasterChannel = [interface2 AWDLMasterChannel];
 
-  if (v9)
+  if (aWDLMasterChannel)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", *(objc_msgSend(v9, "bytes") + 4)];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", *(objc_msgSend(aWDLMasterChannel, "bytes") + 4)];
     [v3 setObject:v10 forKeyedSubscript:@"awdl_master_channel"];
   }
 
@@ -176,12 +176,12 @@ LABEL_10:
     [v3 setObject:0 forKeyedSubscript:@"awdl_master_channel"];
   }
 
-  v11 = [(NPTAWDLCollector *)self interface];
-  v12 = [v11 AWDLSecondaryMasterChannel];
+  interface3 = [(NPTAWDLCollector *)self interface];
+  aWDLSecondaryMasterChannel = [interface3 AWDLSecondaryMasterChannel];
 
-  if (v12)
+  if (aWDLSecondaryMasterChannel)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", *(objc_msgSend(v12, "bytes") + 4)];
+    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", *(objc_msgSend(aWDLSecondaryMasterChannel, "bytes") + 4)];
     [v3 setObject:v13 forKeyedSubscript:@"awdl_secondary_master_channel"];
   }
 
@@ -190,15 +190,15 @@ LABEL_10:
     [v3 setObject:0 forKeyedSubscript:@"awdl_secondary_master_channel"];
   }
 
-  v14 = [(NPTAWDLCollector *)self awdlOpModeString];
-  [v3 setObject:v14 forKeyedSubscript:@"awdl_op_mode"];
+  awdlOpModeString = [(NPTAWDLCollector *)self awdlOpModeString];
+  [v3 setObject:awdlOpModeString forKeyedSubscript:@"awdl_op_mode"];
 
-  v15 = [(NPTAWDLCollector *)self interface];
-  v16 = [v15 AWDLElectionParameters];
+  interface4 = [(NPTAWDLCollector *)self interface];
+  aWDLElectionParameters = [interface4 AWDLElectionParameters];
 
-  if (v16)
+  if (aWDLElectionParameters)
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", *(objc_msgSend(v16, "bytes") + 32)];
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", *(objc_msgSend(aWDLElectionParameters, "bytes") + 32)];
     [v3 setObject:v17 forKeyedSubscript:@"awdl_election_parameters"];
   }
 
@@ -207,12 +207,12 @@ LABEL_10:
     [v3 setObject:0 forKeyedSubscript:@"awdl_election_parameters"];
   }
 
-  v18 = [(NPTAWDLCollector *)self interface];
-  v19 = [v18 AWDLSyncState];
+  interface5 = [(NPTAWDLCollector *)self interface];
+  aWDLSyncState = [interface5 AWDLSyncState];
 
-  if (v19)
+  if (aWDLSyncState)
   {
-    [v19 bytes];
+    [aWDLSyncState bytes];
     v20 = W5DescriptionForAWDLSyncState();
     [v3 setObject:v20 forKeyedSubscript:@"awdl_sync_state"];
   }
@@ -222,12 +222,12 @@ LABEL_10:
     [v3 setObject:0 forKeyedSubscript:@"awdl_sync_state"];
   }
 
-  v21 = [(NPTAWDLCollector *)self interface];
-  v22 = [v21 AWDLSyncChannelSequence];
+  interface6 = [(NPTAWDLCollector *)self interface];
+  aWDLSyncChannelSequence = [interface6 AWDLSyncChannelSequence];
 
-  if (v22)
+  if (aWDLSyncChannelSequence)
   {
-    [v22 bytes];
+    [aWDLSyncChannelSequence bytes];
     v23 = W5DescriptionForAWDLSyncChannelSequence();
     [v3 setObject:v23 forKeyedSubscript:@"awdl_sync_channel_sequence"];
   }
@@ -237,12 +237,12 @@ LABEL_10:
     [v3 setObject:0 forKeyedSubscript:@"awdl_sync_channel_sequence"];
   }
 
-  v24 = [(NPTAWDLCollector *)self interface];
-  v25 = [v24 AWDLStrategy];
+  interface7 = [(NPTAWDLCollector *)self interface];
+  aWDLStrategy = [interface7 AWDLStrategy];
 
-  if (v25)
+  if (aWDLStrategy)
   {
-    v26 = *([v25 bytes] + 8);
+    v26 = *([aWDLStrategy bytes] + 8);
     v27 = W5DescriptionForAWDLScheduleState();
     [v3 setObject:v27 forKeyedSubscript:@"awdl_schedule"];
   }
@@ -257,15 +257,15 @@ LABEL_10:
 
 - (id)awdlOpModeString
 {
-  v2 = [(NPTAWDLCollector *)self interface];
-  v3 = [v2 AWDLOpMode];
+  interface = [(NPTAWDLCollector *)self interface];
+  aWDLOpMode = [interface AWDLOpMode];
 
-  if (v3)
+  if (aWDLOpMode)
   {
     v4 = MEMORY[0x277CCACA8];
-    if (*([v3 bytes] + 4) <= 2u)
+    if (*([aWDLOpMode bytes] + 4) <= 2u)
     {
-      v5 = awdlOpModeString_modestr[*([v3 bytes] + 4)];
+      v5 = awdlOpModeString_modestr[*([aWDLOpMode bytes] + 4)];
     }
 
     else

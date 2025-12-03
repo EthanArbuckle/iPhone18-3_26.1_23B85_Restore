@@ -1,26 +1,26 @@
 @interface AKDeviceListController
 + (id)sharedController;
-- (AKDeviceListController)initWithAccountManager:(id)a3;
-- (BOOL)shouldSuppressPushMessage:(id)a3;
-- (void)_clearDeviceListForAltDSID:(id)a3;
-- (void)_handleCurrentDeviceTrustStatusChangedWithPayload:(id)a3;
-- (void)_refreshDeviceListForAltDSID:(id)a3;
+- (AKDeviceListController)initWithAccountManager:(id)manager;
+- (BOOL)shouldSuppressPushMessage:(id)message;
+- (void)_clearDeviceListForAltDSID:(id)d;
+- (void)_handleCurrentDeviceTrustStatusChangedWithPayload:(id)payload;
+- (void)_refreshDeviceListForAltDSID:(id)d;
 - (void)_sendTrustedDeviceListChangeNotification;
-- (void)processPushMessage:(id)a3;
+- (void)processPushMessage:(id)message;
 @end
 
 @implementation AKDeviceListController
 
 + (id)sharedController
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000E2A74;
   v8 = &unk_100322AA0;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &unk_100374770;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -35,36 +35,36 @@
   return v2;
 }
 
-- (AKDeviceListController)initWithAccountManager:(id)a3
+- (AKDeviceListController)initWithAccountManager:(id)manager
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, manager);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKDeviceListController;
   v6 = [(AKDeviceListController *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_accountManager, location[0]);
+    objc_storeStrong(&selfCopy->_accountManager, location[0]);
   }
 
-  v5 = _objc_retain(v9);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)processPushMessage:(id)a3
+- (void)processPushMessage:(id)message
 {
-  v57 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   if ([location[0] command] == 1200)
   {
     v55 = _AKLogSystem();
@@ -79,9 +79,9 @@
 
     objc_storeStrong(&v55, 0);
     v52 = 0;
-    v21 = [location[0] userInfo];
-    v51 = [v21 objectForKeyedSubscript:@"tddelta"];
-    _objc_release(v21);
+    userInfo = [location[0] userInfo];
+    v51 = [userInfo objectForKeyedSubscript:@"tddelta"];
+    _objc_release(userInfo);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,9 +89,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v3 = [v50 firstObject];
+        firstObject = [v50 firstObject];
         v4 = v52;
-        v52 = v3;
+        v52 = firstObject;
         _objc_release(v4);
         v49 = [v52 mutableCopy];
         v48 = +[NSMutableArray array];
@@ -133,9 +133,9 @@
 
       objc_storeStrong(&v39, 0);
       v36 = [NSMutableDictionary dictionaryWithDictionary:v52];
-      v17 = [location[0] altDSID];
+      altDSID = [location[0] altDSID];
       [NSMutableDictionary setObject:v36 forKeyedSubscript:"setObject:forKeyedSubscript:"];
-      _objc_release(v17);
+      _objc_release(altDSID);
       objc_storeStrong(&v40, v36);
       objc_storeStrong(&v36, 0);
     }
@@ -158,24 +158,24 @@
     v32 = 0;
     v7 = [AKDeviceListDeltaMessagePayload alloc];
     v31 = [v7 initWithResponseBody:v40];
-    v13 = [v31 serialNumber];
+    serialNumber = [v31 serialNumber];
     v12 = +[AKDevice currentDevice];
-    v11 = [v12 serialNumber];
-    v14 = [v13 isEqualToString:?];
-    _objc_release(v11);
+    serialNumber2 = [v12 serialNumber];
+    v14 = [serialNumber isEqualToString:?];
+    _objc_release(serialNumber2);
     _objc_release(v12);
-    _objc_release(v13);
+    _objc_release(serialNumber);
     if (v14)
     {
       v32 = 1;
-      [(AKDeviceListController *)v57 _handleCurrentDeviceTrustStatusChangedWithPayload:v31];
+      [(AKDeviceListController *)selfCopy _handleCurrentDeviceTrustStatusChangedWithPayload:v31];
     }
 
-    [(AKDeviceListController *)v57 _sendTrustedDeviceListChangeNotification];
+    [(AKDeviceListController *)selfCopy _sendTrustedDeviceListChangeNotification];
     v9 = +[AKFeatureManager sharedManager];
-    v10 = [v9 isDeviceListCacheEnableDryMode];
+    isDeviceListCacheEnableDryMode = [v9 isDeviceListCacheEnableDryMode];
     _objc_release(v9);
-    if ((v10 & 1) != 0 && ((v32 & 1) == 0 || [v31 operation] != 2))
+    if ((isDeviceListCacheEnableDryMode & 1) != 0 && ((v32 & 1) == 0 || [v31 operation] != 2))
     {
       queue = dispatch_get_global_queue(9, 0);
       v24 = _NSConcreteStackBlock;
@@ -183,7 +183,7 @@
       v26 = 0;
       v27 = sub_1000E344C;
       v28 = &unk_10031F078;
-      v29 = _objc_retain(v57);
+      v29 = _objc_retain(selfCopy);
       v30 = _objc_retain(location[0]);
       dispatch_async(queue, &v24);
       _objc_release(queue);
@@ -200,60 +200,60 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)shouldSuppressPushMessage:(id)a3
+- (BOOL)shouldSuppressPushMessage:(id)message
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v4 = [location[0] command] == 1200;
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (void)_handleCurrentDeviceTrustStatusChangedWithPayload:(id)a3
+- (void)_handleCurrentDeviceTrustStatusChangedWithPayload:(id)payload
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  accountManager = v25->_accountManager;
-  v11 = [location[0] altDSID];
+  objc_storeStrong(location, payload);
+  accountManager = selfCopy->_accountManager;
+  altDSID = [location[0] altDSID];
   v23 = [AKAccountManager authKitAccountWithAltDSID:"authKitAccountWithAltDSID:error:" error:?];
-  _objc_release(v11);
-  v12 = [location[0] operation];
-  if (v12 == 1)
+  _objc_release(altDSID);
+  operation = [location[0] operation];
+  if (operation == 1)
   {
-    [(AKAccountManager *)v25->_accountManager clearDeviceRemovalReasonFromAccount:v23];
+    [(AKAccountManager *)selfCopy->_accountManager clearDeviceRemovalReasonFromAccount:v23];
   }
 
-  else if (v12 == 2)
+  else if (operation == 2)
   {
-    v22 = [location[0] removalReason];
-    if (v22 == -1)
+    removalReason = [location[0] removalReason];
+    if (removalReason == -1)
     {
-      v22 = 0;
+      removalReason = 0;
     }
 
     v21 = _AKLogSystem();
     v20 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      sub_100075B68(v26, v25, v23, v22);
+      sub_100075B68(v26, selfCopy, v23, removalReason);
       _os_log_impl(&_mh_execute_header, v21, v20, "%@: Attempting to remove continuation token for account (%@) because (%ld)", v26, 0x20u);
     }
 
     objc_storeStrong(&v21, 0);
-    [(AKAccountManager *)v25->_accountManager setDeviceRemovalReason:v22 onAccount:v23];
-    v6 = v25->_accountManager;
+    [(AKAccountManager *)selfCopy->_accountManager setDeviceRemovalReason:removalReason onAccount:v23];
+    v6 = selfCopy->_accountManager;
     v5 = v23;
     v7 = [NSError ak_errorWithCode:-7090];
     [(AKAccountManager *)v6 removeContinuationTokenForAccount:v5 telemetryFlowID:0 error:?];
     _objc_release(v7);
     v8 = +[AKFeatureManager sharedManager];
-    v9 = [v8 isDeviceListCacheEnableDryMode];
+    isDeviceListCacheEnableDryMode = [v8 isDeviceListCacheEnableDryMode];
     _objc_release(v8);
-    if (v9)
+    if (isDeviceListCacheEnableDryMode)
     {
       queue = dispatch_get_global_queue(9, 0);
       v13 = _NSConcreteStackBlock;
@@ -261,7 +261,7 @@
       v15 = 0;
       v16 = sub_1000E38DC;
       v17 = &unk_10031F078;
-      v18 = _objc_retain(v25);
+      v18 = _objc_retain(selfCopy);
       v19 = _objc_retain(location[0]);
       dispatch_async(queue, &v13);
       _objc_release(queue);
@@ -270,7 +270,7 @@
     }
   }
 
-  [(AKAccountManager *)v25->_accountManager saveAccount:v23 error:&v23];
+  [(AKAccountManager *)selfCopy->_accountManager saveAccount:v23 error:&v23];
   objc_storeStrong(v3, 0);
   objc_storeStrong(location, 0);
 }
@@ -292,16 +292,16 @@
   _objc_release(v2);
 }
 
-- (void)_refreshDeviceListForAltDSID:(id)a3
+- (void)_refreshDeviceListForAltDSID:(id)d
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v4 = [AKDeviceListRequester alloc];
   v6 = +[AKDeviceListStoreManager sharedManager];
   v5 = objc_opt_new();
-  accountManager = v10->_accountManager;
+  accountManager = selfCopy->_accountManager;
   v8 = [AKDeviceListRequester initWithStoreManager:v4 cdpFactory:"initWithStoreManager:cdpFactory:accountManager:client:" accountManager:v6 client:?];
   _objc_release(v5);
   _objc_release(v6);
@@ -315,16 +315,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_clearDeviceListForAltDSID:(id)a3
+- (void)_clearDeviceListForAltDSID:(id)d
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v4 = [AKDeviceListRequester alloc];
   v6 = +[AKDeviceListStoreManager sharedManager];
   v5 = objc_opt_new();
-  accountManager = v17->_accountManager;
+  accountManager = selfCopy->_accountManager;
   v15 = [AKDeviceListRequester initWithStoreManager:v4 cdpFactory:"initWithStoreManager:cdpFactory:accountManager:client:" accountManager:v6 client:?];
   _objc_release(v5);
   _objc_release(v6);

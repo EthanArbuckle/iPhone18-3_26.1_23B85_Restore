@@ -1,6 +1,6 @@
 @interface SFBLEPipe
 - (NSString)description;
-- (SFBLEPipe)initWithPriority:(int64_t)a3;
+- (SFBLEPipe)initWithPriority:(int64_t)priority;
 - (id)_defaultPairedDeviceBluetoothIdentifier;
 - (id)getPeerUUID;
 - (int)_setupIfNeeded;
@@ -10,26 +10,26 @@
 - (void)_activate;
 - (void)_invalidate;
 - (void)_readHandler;
-- (void)_sendFrameType:(unsigned __int8)a3 payload:(id)a4 completion:(id)a5;
+- (void)_sendFrameType:(unsigned __int8)type payload:(id)payload completion:(id)completion;
 - (void)_setupIfNeeded;
-- (void)_setupPipe:(id)a3;
+- (void)_setupPipe:(id)pipe;
 - (void)_tearDownPipe;
 - (void)_writeHandler;
 - (void)activate;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
 - (void)invalidate;
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5;
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5;
-- (void)scalablePipeManagerDidUpdateState:(id)a3;
-- (void)sendFrameType:(unsigned __int8)a3 payload:(id)a4 completion:(id)a5;
-- (void)setDispatchQueue:(id)a3;
-- (void)setIdentifier:(id)a3;
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error;
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint;
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect;
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error;
+- (void)scalablePipeManagerDidUpdateState:(id)state;
+- (void)sendFrameType:(unsigned __int8)type payload:(id)payload completion:(id)completion;
+- (void)setDispatchQueue:(id)queue;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation SFBLEPipe
@@ -41,7 +41,7 @@
   return NSPrintF();
 }
 
-- (SFBLEPipe)initWithPriority:(int64_t)a3
+- (SFBLEPipe)initWithPriority:(int64_t)priority
 {
   v9.receiver = self;
   v9.super_class = SFBLEPipe;
@@ -54,7 +54,7 @@
     v5->_dispatchQueue = v6;
 
     v5->_ucat = &gLogCategory_SFBLEPipe;
-    v5->_btPipePriority = a3;
+    v5->_btPipePriority = priority;
   }
 
   return v5;
@@ -104,21 +104,21 @@
   btPipe = self->_btPipe;
   if (btPipe)
   {
-    v3 = [(CBScalablePipe *)btPipe peer];
-    v4 = [v3 identifier];
+    peer = [(CBScalablePipe *)btPipe peer];
+    identifier = [peer identifier];
   }
 
   else
   {
-    v4 = 0;
+    identifier = 0;
   }
 
-  return v4;
+  return identifier;
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -130,7 +130,7 @@
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
@@ -138,17 +138,17 @@
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_activateCalled = 1;
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __21__SFBLEPipe_activate__block_invoke;
   block[3] = &unk_1E788B198;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)invalidate
@@ -194,7 +194,7 @@ LABEL_6:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v35 = self;
+  selfCopy = self;
   v4 = self->_btWriteQueue;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v5)
@@ -213,11 +213,11 @@ LABEL_6:
         }
 
         v11 = *(*(&v36 + 1) + 8 * i);
-        v12 = [v11 completion];
+        completion = [v11 completion];
 
-        if (v12)
+        if (completion)
         {
-          v13 = [v11 completion];
+          completion2 = [v11 completion];
           v14 = MEMORY[0x1E696ABC0];
           v40 = v9;
           v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:DebugGetErrorString()];
@@ -231,7 +231,7 @@ LABEL_6:
           v41 = v17;
           v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
           v19 = [v14 errorWithDomain:v8 code:-6723 userInfo:v18];
-          (v13)[2](v13, v19);
+          (completion2)[2](completion2, v19);
         }
       }
 
@@ -241,33 +241,33 @@ LABEL_6:
     while (v6);
   }
 
-  [(NSMutableArray *)v35->_btWriteQueue removeAllObjects];
-  btWriteQueue = v35->_btWriteQueue;
-  v35->_btWriteQueue = 0;
+  [(NSMutableArray *)selfCopy->_btWriteQueue removeAllObjects];
+  btWriteQueue = selfCopy->_btWriteQueue;
+  selfCopy->_btWriteQueue = 0;
 
-  v21 = v35->_identifier;
-  [(SFBLEPipe *)v35 _tearDownPipe];
-  if (v21 && (v35->_btEndpointRegistered || v35->_btEndpointRegistering))
+  v21 = selfCopy->_identifier;
+  [(SFBLEPipe *)selfCopy _tearDownPipe];
+  if (v21 && (selfCopy->_btEndpointRegistered || selfCopy->_btEndpointRegistering))
   {
-    [(CBScalablePipeManager *)v35->_btPipeManager unregisterEndpoint:v21];
+    [(CBScalablePipeManager *)selfCopy->_btPipeManager unregisterEndpoint:v21];
   }
 
-  *&v35->_btEndpointRegistering = 0;
-  [(CBScalablePipeManager *)v35->_btPipeManager setDelegate:0];
-  btPipeManager = v35->_btPipeManager;
-  v35->_btPipeManager = 0;
+  *&selfCopy->_btEndpointRegistering = 0;
+  [(CBScalablePipeManager *)selfCopy->_btPipeManager setDelegate:0];
+  btPipeManager = selfCopy->_btPipeManager;
+  selfCopy->_btPipeManager = 0;
 
-  btPipe = v35->_btPipe;
-  v35->_btPipe = 0;
+  btPipe = selfCopy->_btPipe;
+  selfCopy->_btPipe = 0;
 
-  btCentral = v35->_btCentral;
-  v35->_btCentral = 0;
+  btCentral = selfCopy->_btCentral;
+  selfCopy->_btCentral = 0;
 
-  [(NSMutableDictionary *)v35->_frameHandlers removeAllObjects];
-  frameHandlers = v35->_frameHandlers;
-  v35->_frameHandlers = 0;
+  [(NSMutableDictionary *)selfCopy->_frameHandlers removeAllObjects];
+  frameHandlers = selfCopy->_frameHandlers;
+  selfCopy->_frameHandlers = 0;
 
-  v26 = v35->_ucat->var0;
+  v26 = selfCopy->_ucat->var0;
   if (v26 > 30)
   {
     goto LABEL_25;
@@ -280,56 +280,56 @@ LABEL_6:
       goto LABEL_25;
     }
 
-    v34 = v35->_ucat;
+    v34 = selfCopy->_ucat;
   }
 
   LogPrintF();
 LABEL_25:
-  invalidationHandler = v35->_invalidationHandler;
+  invalidationHandler = selfCopy->_invalidationHandler;
   if (invalidationHandler)
   {
     invalidationHandler[2]();
   }
 
-  bluetoothStateChangedHandler = v35->_bluetoothStateChangedHandler;
-  v35->_bluetoothStateChangedHandler = 0;
+  bluetoothStateChangedHandler = selfCopy->_bluetoothStateChangedHandler;
+  selfCopy->_bluetoothStateChangedHandler = 0;
 
-  connectionStateChangedHandler = v35->_connectionStateChangedHandler;
-  v35->_connectionStateChangedHandler = 0;
+  connectionStateChangedHandler = selfCopy->_connectionStateChangedHandler;
+  selfCopy->_connectionStateChangedHandler = 0;
 
-  frameHandler = v35->_frameHandler;
-  v35->_frameHandler = 0;
+  frameHandler = selfCopy->_frameHandler;
+  selfCopy->_frameHandler = 0;
 
-  v31 = v35->_invalidationHandler;
-  v35->_invalidationHandler = 0;
+  v31 = selfCopy->_invalidationHandler;
+  selfCopy->_invalidationHandler = 0;
 
 LABEL_28:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendFrameType:(unsigned __int8)a3 payload:(id)a4 completion:(id)a5
+- (void)sendFrameType:(unsigned __int8)type payload:(id)payload completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  payloadCopy = payload;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __46__SFBLEPipe_sendFrameType_payload_completion___block_invoke;
   v13[3] = &unk_1E788E128;
-  v16 = a3;
+  typeCopy = type;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = payloadCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = payloadCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)_sendFrameType:(unsigned __int8)a3 payload:(id)a4 completion:(id)a5
+- (void)_sendFrameType:(unsigned __int8)type payload:(id)payload completion:(id)completion
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  payloadCopy = payload;
+  completionCopy = completion;
   v32 = 0;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidateCalled)
@@ -345,7 +345,7 @@ LABEL_28:
       if (!_LogCategory_Initialize())
       {
 LABEL_11:
-        if (v9)
+        if (completionCopy)
         {
           v16 = MEMORY[0x1E696ABC0];
           v17 = *MEMORY[0x1E696A768];
@@ -365,7 +365,7 @@ LABEL_11:
           v22 = -6709;
 LABEL_20:
           v27 = [v20 errorWithDomain:v21 code:v22 userInfo:v15];
-          v9[2](v9, v27);
+          completionCopy[2](completionCopy, v27);
 
           goto LABEL_21;
         }
@@ -380,19 +380,19 @@ LABEL_20:
     goto LABEL_11;
   }
 
-  v11 = [v8 length];
+  v11 = [payloadCopy length];
   v12 = v11;
   if (v11 < 0x989681)
   {
-    LOBYTE(v32) = a3;
+    LOBYTE(v32) = type;
     BYTE1(v32) = BYTE2(v11);
     BYTE2(v32) = BYTE1(v11);
     HIBYTE(v32) = v11;
     v14 = [objc_alloc(MEMORY[0x1E695DF88]) initWithBytes:&v32 length:4];
-    [v14 appendData:v8];
+    [v14 appendData:payloadCopy];
     v15 = objc_alloc_init(SFBLEData);
     [(SFBLEData *)v15 setData:v14];
-    [(SFBLEData *)v15 setCompletion:v9];
+    [(SFBLEData *)v15 setCompletion:completionCopy];
     [(NSMutableArray *)self->_btWriteQueue addObject:v15];
     [(SFBLEPipe *)self _writeHandler];
 LABEL_21:
@@ -419,7 +419,7 @@ LABEL_8:
   }
 
 LABEL_16:
-  if (v9)
+  if (completionCopy)
   {
     v23 = MEMORY[0x1E696ABC0];
     v24 = *MEMORY[0x1E696A768];
@@ -490,22 +490,22 @@ LABEL_8:
 LABEL_10:
   if (self->_manualConnect && self->_btEndpointRegistered && self->_btCentral && !self->_btConnected && !self->_btConnecting)
   {
-    v9 = [(SFBLEPipe *)self _defaultPairedDeviceBluetoothIdentifier];
-    v10 = v9;
-    if (!v9)
+    _defaultPairedDeviceBluetoothIdentifier = [(SFBLEPipe *)self _defaultPairedDeviceBluetoothIdentifier];
+    v10 = _defaultPairedDeviceBluetoothIdentifier;
+    if (!_defaultPairedDeviceBluetoothIdentifier)
     {
       [(SFBLEPipe *)self _setupIfNeeded];
       goto LABEL_22;
     }
 
     btCentral = self->_btCentral;
-    v20 = v9;
+    v20 = _defaultPairedDeviceBluetoothIdentifier;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
     v13 = [(CBCentralManager *)btCentral retrievePeripheralsWithIdentifiers:v12];
-    v14 = [v13 firstObject];
+    firstObject = [v13 firstObject];
 
     v15 = self->_ucat->var0;
-    if (!v14)
+    if (!firstObject)
     {
       [(SFBLEPipe *)v15 _setupIfNeeded];
       goto LABEL_22;
@@ -529,7 +529,7 @@ LABEL_10:
 
 LABEL_21:
     kdebug_trace();
-    [(CBCentralManager *)self->_btCentral connectPeripheral:v14 options:0];
+    [(CBCentralManager *)self->_btCentral connectPeripheral:firstObject options:0];
     self->_btConnecting = 1;
 
 LABEL_22:
@@ -539,14 +539,14 @@ LABEL_23:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setupPipe:(id)a3
+- (void)_setupPipe:(id)pipe
 {
-  v5 = a3;
+  pipeCopy = pipe;
   [(SFBLEPipe *)self _tearDownPipe];
-  objc_storeStrong(&self->_btPipe, a3);
-  v6 = [v5 channel];
-  self->_btChannel = v6;
-  if (!v6)
+  objc_storeStrong(&self->_btPipe, pipe);
+  channel = [pipeCopy channel];
+  self->_btChannel = channel;
+  if (!channel)
   {
     [SFBLEPipe _setupPipe:?];
 LABEL_17:
@@ -603,7 +603,7 @@ LABEL_17:
   v30[1] = 3221225472;
   v30[2] = __24__SFBLEPipe__setupPipe___block_invoke_2;
   v30[3] = &unk_1E788B198;
-  v16 = v5;
+  v16 = pipeCopy;
   v31 = v16;
   dispatch_source_set_cancel_handler(v15, v30);
 
@@ -706,11 +706,11 @@ LABEL_6:
   btWriteItem = self->_btWriteItem;
   if (btWriteItem)
   {
-    v11 = [(SFBLEData *)btWriteItem completion];
+    completion = [(SFBLEData *)btWriteItem completion];
 
-    if (v11)
+    if (completion)
     {
-      v12 = [(SFBLEData *)self->_btWriteItem completion];
+      completion2 = [(SFBLEData *)self->_btWriteItem completion];
       v13 = MEMORY[0x1E696ABC0];
       v14 = *MEMORY[0x1E696A768];
       v25 = *MEMORY[0x1E696A578];
@@ -725,7 +725,7 @@ LABEL_6:
       v26[0] = v17;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v19 = [v13 errorWithDomain:v14 code:-6723 userInfo:v18];
-      (v12)[2](v12, v19);
+      (completion2)[2](completion2, v19);
     }
 
     v20 = self->_btWriteItem;
@@ -840,9 +840,9 @@ LABEL_15:
     v28 = 0;
     if (!self->_btWriteItem)
     {
-      v4 = [(NSMutableArray *)self->_btWriteQueue firstObject];
+      firstObject = [(NSMutableArray *)self->_btWriteQueue firstObject];
       btWriteItem = self->_btWriteItem;
-      self->_btWriteItem = v4;
+      self->_btWriteItem = firstObject;
 
       if (!self->_btWriteItem)
       {
@@ -850,9 +850,9 @@ LABEL_15:
       }
 
       [(NSMutableArray *)self->_btWriteQueue removeObjectAtIndex:0];
-      v6 = [(SFBLEData *)self->_btWriteItem data];
+      data = [(SFBLEData *)self->_btWriteItem data];
       btWriteData = self->_btWriteData;
-      self->_btWriteData = v6;
+      self->_btWriteData = data;
 
       self->_btWritePtr = [(NSData *)self->_btWriteData bytes];
       self->_btWriteLen = [(NSData *)self->_btWriteData length];
@@ -963,12 +963,12 @@ LABEL_29:
 
     v20 = self->_btWriteLen;
     kdebug_trace();
-    v21 = [(SFBLEData *)self->_btWriteItem completion];
+    completion = [(SFBLEData *)self->_btWriteItem completion];
 
-    if (v21)
+    if (completion)
     {
-      v22 = [(SFBLEData *)self->_btWriteItem completion];
-      v22[2](v22, 0);
+      completion2 = [(SFBLEData *)self->_btWriteItem completion];
+      completion2[2](completion2, 0);
     }
 
     v23 = self->_btWriteItem;
@@ -1013,8 +1013,8 @@ LABEL_36:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [v2 devices];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  devices = [v2 devices];
+  v4 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1025,22 +1025,22 @@ LABEL_36:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([v8 isDefaultPairedDevice])
         {
-          v9 = [v8 nsuuid];
-          if (v9)
+          nsuuid = [v8 nsuuid];
+          if (nsuuid)
           {
-            v10 = v9;
+            v10 = nsuuid;
             goto LABEL_12;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -1058,9 +1058,9 @@ LABEL_12:
   return v10;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
@@ -1117,14 +1117,14 @@ LABEL_6:
   [(SFBLEPipe *)self _setupIfNeeded];
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v11 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btCentral = self->_btCentral;
   if (btCentral)
   {
-    v5 = btCentral == v11;
+    v5 = btCentral == stateCopy;
   }
 
   else
@@ -1137,7 +1137,7 @@ LABEL_6:
     goto LABEL_19;
   }
 
-  switch([(CBCentralManager *)v11 state])
+  switch([(CBCentralManager *)stateCopy state])
   {
     case 1:
       v6 = 0;
@@ -1192,17 +1192,17 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v14 = a4;
+  peripheralCopy = peripheral;
   dispatchQueue = self->_dispatchQueue;
-  v7 = a3;
+  managerCopy = manager;
   dispatch_assert_queue_V2(dispatchQueue);
   btCentral = self->_btCentral;
 
   if (btCentral)
   {
-    v9 = btCentral == v7;
+    v9 = btCentral == managerCopy;
   }
 
   else
@@ -1232,16 +1232,16 @@ LABEL_19:
 LABEL_11:
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v19 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
-  v10 = a3;
+  managerCopy = manager;
   dispatch_assert_queue_V2(dispatchQueue);
   btCentral = self->_btCentral;
 
-  if (btCentral && btCentral == v10)
+  if (btCentral && btCentral == managerCopy)
   {
     OUTLINED_FUNCTION_1_10();
     if (!(v14 ^ v15 | v13))
@@ -1259,8 +1259,8 @@ LABEL_11:
       ucat = self->_ucat;
     }
 
-    v17 = v19;
-    v18 = v8;
+    v17 = peripheralCopy;
+    v18 = errorCopy;
     LogPrintF();
 LABEL_8:
     *&self->_btConnected = 0;
@@ -1268,16 +1268,16 @@ LABEL_8:
   }
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v20 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
-  v10 = a3;
+  managerCopy = manager;
   dispatch_assert_queue_V2(dispatchQueue);
   btCentral = self->_btCentral;
 
-  if (btCentral && btCentral == v10)
+  if (btCentral && btCentral == managerCopy)
   {
     OUTLINED_FUNCTION_1_10();
     if (!(v14 ^ v15 | v13))
@@ -1299,12 +1299,12 @@ LABEL_10:
     }
 
     v16 = @"success";
-    if (v8)
+    if (errorCopy)
     {
-      v16 = v8;
+      v16 = errorCopy;
     }
 
-    v18 = v20;
+    v18 = peripheralCopy;
     v19 = v16;
     LogPrintF();
     goto LABEL_10;
@@ -1313,15 +1313,15 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)scalablePipeManagerDidUpdateState:(id)a3
+- (void)scalablePipeManagerDidUpdateState:(id)state
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btPipeManager = self->_btPipeManager;
   if (btPipeManager)
   {
-    v6 = btPipeManager == v4;
+    v6 = btPipeManager == stateCopy;
   }
 
   else
@@ -1334,15 +1334,15 @@ LABEL_11:
     goto LABEL_38;
   }
 
-  v7 = [(CBScalablePipeManager *)v4 state];
-  if ((v7 - 1) > 4)
+  state = [(CBScalablePipeManager *)stateCopy state];
+  if ((state - 1) > 4)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = qword_1A998F1F0[v7 - 1];
+    v8 = qword_1A998F1F0[state - 1];
   }
 
   var0 = self->_ucat->var0;
@@ -1371,11 +1371,11 @@ LABEL_13:
     case 5:
       goto LABEL_15;
     case 2:
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v45 = @"SFNotificationKeyConnectionState";
       v46[0] = &unk_1F1D7CDF0;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:&v45 count:1];
-      [v10 postNotificationName:@"SFNotificationNameBTPoweredOff" object:self userInfo:v11];
+      [defaultCenter postNotificationName:@"SFNotificationNameBTPoweredOff" object:self userInfo:v11];
 
 LABEL_15:
       v12 = self->_ucat->var0;
@@ -1399,8 +1399,8 @@ LABEL_17:
 
 LABEL_20:
       v35 = v8;
-      v36 = self;
-      v37 = v4;
+      selfCopy = self;
+      v37 = stateCopy;
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
@@ -1423,11 +1423,11 @@ LABEL_20:
             }
 
             v20 = *(*(&v38 + 1) + 8 * i);
-            v21 = [v20 completion];
+            completion = [v20 completion];
 
-            if (v21)
+            if (completion)
             {
-              v22 = [v20 completion];
+              completion2 = [v20 completion];
               v23 = MEMORY[0x1E696ABC0];
               v42 = v18;
               v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:DebugGetErrorString()];
@@ -1441,7 +1441,7 @@ LABEL_20:
               v43 = v26;
               v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
               v28 = [v23 errorWithDomain:v17 code:-6753 userInfo:v27];
-              (v22)[2](v22, v28);
+              (completion2)[2](completion2, v28);
             }
           }
 
@@ -1451,18 +1451,18 @@ LABEL_20:
         while (v15);
       }
 
-      self = v36;
-      [(NSMutableArray *)v36->_btWriteQueue removeAllObjects];
-      [(SFBLEPipe *)v36 _tearDownPipe];
-      v29 = v36->_identifier;
-      if (v29 && (v36->_btEndpointRegistered || v36->_btEndpointRegistering))
+      self = selfCopy;
+      [(NSMutableArray *)selfCopy->_btWriteQueue removeAllObjects];
+      [(SFBLEPipe *)selfCopy _tearDownPipe];
+      v29 = selfCopy->_identifier;
+      if (v29 && (selfCopy->_btEndpointRegistered || selfCopy->_btEndpointRegistering))
       {
-        [(CBScalablePipeManager *)v36->_btPipeManager unregisterEndpoint:v29, v34];
+        [(CBScalablePipeManager *)selfCopy->_btPipeManager unregisterEndpoint:v29, v34];
       }
 
-      *&v36->_btConnected = 0;
+      *&selfCopy->_btConnected = 0;
 
-      v4 = v37;
+      stateCopy = v37;
       v8 = v35;
 LABEL_36:
       bluetoothStateChangedHandler = self->_bluetoothStateChangedHandler;
@@ -1484,20 +1484,20 @@ LABEL_38:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  endpointCopy = endpoint;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (!v13 || self->_btPipeManager != v13 || ![v8 isEqual:self->_identifier])
+  if (!managerCopy || self->_btPipeManager != managerCopy || ![endpointCopy isEqual:self->_identifier])
   {
     goto LABEL_15;
   }
 
   self->_btEndpointRegistering = 0;
   var0 = self->_ucat->var0;
-  if (!v9)
+  if (!errorCopy)
   {
     if (var0 <= 30)
     {
@@ -1540,12 +1540,12 @@ LABEL_7:
 LABEL_15:
 }
 
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint
 {
-  v12 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  endpointCopy = endpoint;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v12 && self->_btPipeManager == v12 && [v6 isEqual:self->_identifier])
+  if (managerCopy && self->_btPipeManager == managerCopy && [endpointCopy isEqual:self->_identifier])
   {
     OUTLINED_FUNCTION_1_10();
     if (!(v9 ^ v10 | v8))
@@ -1569,11 +1569,11 @@ LABEL_9:
   }
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  connectCopy = connect;
   var0 = self->_ucat->var0;
   if (var0 <= 50)
   {
@@ -1592,35 +1592,35 @@ LABEL_9:
 
 LABEL_5:
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v6 && self->_btPipeManager == v6)
+  if (managerCopy && self->_btPipeManager == managerCopy)
   {
     kdebug_trace();
     *&self->_btConnected = 1;
-    [(SFBLEPipe *)self _setupPipe:v7];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    [(SFBLEPipe *)self _setupPipe:connectCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v14 = @"SFNotificationKeyConnectionState";
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SFBLEPipe connectionState](self, "connectionState")}];
     v15[0] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    [v9 postNotificationName:@"SFNotificationNamePipeConnectionStateChanged" object:self userInfo:v11];
+    [defaultCenter postNotificationName:@"SFNotificationNamePipeConnectionStateChanged" object:self userInfo:v11];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  disconnectCopy = disconnect;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v8)
+  if (managerCopy)
   {
-    if (self->_btPipeManager == v8)
+    if (self->_btPipeManager == managerCopy)
     {
-      v11 = [v9 name];
-      v12 = [v11 isEqual:self->_identifier];
+      name = [disconnectCopy name];
+      v12 = [name isEqual:self->_identifier];
 
       if (v12)
       {
@@ -1631,12 +1631,12 @@ LABEL_5:
           {
 LABEL_6:
             v14 = @"success";
-            if (v10)
+            if (errorCopy)
             {
-              v14 = v10;
+              v14 = errorCopy;
             }
 
-            v20 = v9;
+            v20 = disconnectCopy;
             v21 = v14;
             LogPrintF();
             goto LABEL_10;
@@ -1652,12 +1652,12 @@ LABEL_6:
 LABEL_10:
         [(SFBLEPipe *)self _tearDownPipe:v20];
         *&self->_btConnected = 0;
-        v15 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v22 = @"SFNotificationKeyConnectionState";
         v16 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SFBLEPipe connectionState](self, "connectionState")}];
         v23[0] = v16;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-        [v15 postNotificationName:@"SFNotificationNamePipeConnectionStateChanged" object:self userInfo:v17];
+        [defaultCenter postNotificationName:@"SFNotificationNamePipeConnectionStateChanged" object:self userInfo:v17];
       }
     }
   }
@@ -1667,7 +1667,7 @@ LABEL_10:
 
 - (int)_setupIfNeeded
 {
-  result = *(a1 + 208);
+  result = *(self + 208);
   if (*result <= 90)
   {
     if (*result != -1)
@@ -1678,7 +1678,7 @@ LABEL_10:
     result = _LogCategory_Initialize();
     if (result)
     {
-      v3 = *(a1 + 208);
+      v3 = *(self + 208);
       return LogPrintF();
     }
   }
@@ -1818,7 +1818,7 @@ LABEL_10:
 
 - (uint64_t)_writeHandler
 {
-  result = OUTLINED_FUNCTION_0_12(a1);
+  result = OUTLINED_FUNCTION_0_12(self);
   if (v5 ^ v6 | v4)
   {
     if (v3 == -1)

@@ -1,36 +1,36 @@
 @interface VUISeasonPickerCollectionViewCell
-+ (void)configureSeasonPickerCell:(id)a3 withMedia:(id)a4 traitCollection:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUISeasonPickerCollectionViewCell)initWithFrame:(CGRect)a3;
++ (void)configureSeasonPickerCell:(id)cell withMedia:(id)media traitCollection:(id)collection;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUISeasonPickerCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBottomSeparatorView:(id)a3;
-- (void)setSeasonImageView:(id)a3;
-- (void)setSecondSubtitleLabel:(id)a3;
-- (void)setSubtitleLabel:(id)a3;
-- (void)setTitleLabel:(id)a3;
-- (void)setTopSeparatorView:(id)a3;
+- (void)setBottomSeparatorView:(id)view;
+- (void)setSeasonImageView:(id)view;
+- (void)setSecondSubtitleLabel:(id)label;
+- (void)setSubtitleLabel:(id)label;
+- (void)setTitleLabel:(id)label;
+- (void)setTopSeparatorView:(id)view;
 @end
 
 @implementation VUISeasonPickerCollectionViewCell
 
-+ (void)configureSeasonPickerCell:(id)a3 withMedia:(id)a4 traitCollection:(id)a5
++ (void)configureSeasonPickerCell:(id)cell withMedia:(id)media traitCollection:(id)collection
 {
-  v55 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:v7 imageType:0];
-  v10 = [v55 seasonImageView];
-  if (v10)
+  cellCopy = cell;
+  mediaCopy = media;
+  collectionCopy = collection;
+  v9 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:mediaCopy imageType:0];
+  seasonImageView = [cellCopy seasonImageView];
+  if (seasonImageView)
   {
-    v11 = [v55 seasonImageView];
+    seasonImageView2 = [cellCopy seasonImageView];
   }
 
   else
   {
-    v11 = objc_alloc_init(MEMORY[0x1E69DF740]);
+    seasonImageView2 = objc_alloc_init(MEMORY[0x1E69DF740]);
   }
 
-  v12 = v11;
+  v12 = seasonImageView2;
 
   [v12 setUserInteractionEnabled:0];
   v13 = +[VUILibraryViewFactory tvPlaceholderImage];
@@ -38,8 +38,8 @@
 
   v14 = MEMORY[0x1E69DF728];
   v15 = 0x1E69DC000uLL;
-  v16 = [MEMORY[0x1E69DC888] vui_imageBorderColor];
-  v17 = [v14 decoratorWithOutlineColor:v16 outlineWidths:{1.0, 1.0, 1.0, 1.0}];
+  vui_imageBorderColor = [MEMORY[0x1E69DC888] vui_imageBorderColor];
+  v17 = [v14 decoratorWithOutlineColor:vui_imageBorderColor outlineWidths:{1.0, 1.0, 1.0, 1.0}];
 
   [v17 setScaleToSize:{68.0, 102.0}];
   [VUIUtilities imageCornerRadiusWithStyle:0];
@@ -50,7 +50,7 @@
   v20 = NSSelectorFromString(&cfstr_Artworkurl.isa);
   if (objc_opt_respondsToSelector())
   {
-    v21 = ([v7 methodForSelector:v20])(v7, v20);
+    v21 = ([mediaCopy methodForSelector:v20])(mediaCopy, v20);
     if ([v21 length])
     {
       v22 = [objc_alloc(MEMORY[0x1E69DF770]) initWithSrc:v21 size:{68.0, 102.0}];
@@ -60,12 +60,12 @@
       [MEMORY[0x1E69DF6D0] radiiFromRadius:v19];
       [v22 setBorderRadii:?];
       [v22 setExtension:@"jpeg"];
-      v24 = [MEMORY[0x1E69DC888] vui_imageBorderColor];
-      [v22 setBackgroundColor:v24];
+      vui_imageBorderColor2 = [MEMORY[0x1E69DC888] vui_imageBorderColor];
+      [v22 setBackgroundColor:vui_imageBorderColor2];
 
       v25 = MEMORY[0x1E69DF720];
-      v26 = [v55 seasonImageView];
-      v27 = [v25 makeImageViewWithDescriptor:v22 existingView:v26];
+      seasonImageView3 = [cellCopy seasonImageView];
+      v27 = [v25 makeImageViewWithDescriptor:v22 existingView:seasonImageView3];
 
       v15 = 0x1E69DC000;
       v12 = v27;
@@ -80,8 +80,8 @@
     }
 
     v28 = objc_alloc(MEMORY[0x1E69DF730]);
-    v29 = [v7 mediaLibrary];
-    v21 = [v28 initWithObject:v9 imageLoader:v29 groupType:0];
+    mediaLibrary = [mediaCopy mediaLibrary];
+    v21 = [v28 initWithObject:v9 imageLoader:mediaLibrary groupType:0];
 
     [v21 setDecorator:v54];
     [v12 setImageProxy:v21];
@@ -91,38 +91,38 @@ LABEL_10:
   [VUIUtilities imageCornerRadiusWithStyle:2];
   [v12 setCornerRadius:?];
   [v12 setBorderWidth:1.0];
-  v30 = [*(v15 + 2184) vui_lockupBorderColorOpal];
-  [v12 setBorderColor:v30];
+  vui_lockupBorderColorOpal = [*(v15 + 2184) vui_lockupBorderColorOpal];
+  [v12 setBorderColor:vui_lockupBorderColorOpal];
 
-  [v55 setSeasonImageView:v12];
+  [cellCopy setSeasonImageView:v12];
   v31 = objc_alloc_init(VUITextLayout);
   [(VUITextLayout *)v31 setTextStyle:13];
   [(VUITextLayout *)v31 setFontWeight:0];
-  v32 = [*(v15 + 2184) vui_primaryTextColor];
-  [(VUITextLayout *)v31 setColor:v32];
+  vui_primaryTextColor = [*(v15 + 2184) vui_primaryTextColor];
+  [(VUITextLayout *)v31 setColor:vui_primaryTextColor];
 
   [(VUITextLayout *)v31 setNumberOfLines:1];
-  v33 = [v7 title];
-  v34 = [v55 titleLabel];
-  v35 = [VUILabel labelWithString:v33 textLayout:v31 existingLabel:v34];
-  [v55 setTitleLabel:v35];
+  title = [mediaCopy title];
+  titleLabel = [cellCopy titleLabel];
+  v35 = [VUILabel labelWithString:title textLayout:v31 existingLabel:titleLabel];
+  [cellCopy setTitleLabel:v35];
 
-  LODWORD(v35) = [v8 isAXEnabled];
+  LODWORD(v35) = [collectionCopy isAXEnabled];
   v36 = objc_alloc_init(VUITextLayout);
   [(VUITextLayout *)v36 setTextStyle:21];
   [(VUITextLayout *)v36 setFontWeight:0];
-  v37 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(VUITextLayout *)v36 setColor:v37];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(VUITextLayout *)v36 setColor:systemGrayColor];
 
   if (v35)
   {
     v53 = v9;
     [(VUITextLayout *)v36 setNumberOfLines:0];
-    v38 = [v7 genreTitle];
-    v39 = v38;
-    if (v38)
+    genreTitle = [mediaCopy genreTitle];
+    v39 = genreTitle;
+    if (genreTitle)
     {
-      v40 = v38;
+      v40 = genreTitle;
     }
 
     else
@@ -130,23 +130,23 @@ LABEL_10:
       v40 = &stru_1F5DB25C0;
     }
 
-    v41 = [v55 subtitleLabel];
-    v42 = [VUILabel labelWithString:v40 textLayout:v36 existingLabel:v41];
-    [v55 setSubtitleLabel:v42];
+    subtitleLabel = [cellCopy subtitleLabel];
+    v42 = [VUILabel labelWithString:v40 textLayout:v36 existingLabel:subtitleLabel];
+    [cellCopy setSubtitleLabel:v42];
 
     v43 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v43 setTextStyle:21];
     [(VUITextLayout *)v43 setFontWeight:0];
-    v44 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(VUITextLayout *)v43 setColor:v44];
+    systemGrayColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(VUITextLayout *)v43 setColor:systemGrayColor2];
 
     [(VUITextLayout *)v43 setNumberOfLines:0];
-    v45 = [v7 releaseYear];
-    v46 = [v45 stringValue];
-    v47 = v46;
-    if (v46)
+    releaseYear = [mediaCopy releaseYear];
+    stringValue = [releaseYear stringValue];
+    releaseYear2 = stringValue;
+    if (stringValue)
     {
-      v48 = v46;
+      v48 = stringValue;
     }
 
     else
@@ -154,9 +154,9 @@ LABEL_10:
       v48 = &stru_1F5DB25C0;
     }
 
-    v49 = [v55 secondSubtitleLabel];
-    v50 = [VUILabel labelWithString:v48 textLayout:v43 existingLabel:v49];
-    [v55 setSecondSubtitleLabel:v50];
+    secondSubtitleLabel = [cellCopy secondSubtitleLabel];
+    v50 = [VUILabel labelWithString:v48 textLayout:v43 existingLabel:secondSubtitleLabel];
+    [cellCopy setSecondSubtitleLabel:v50];
 LABEL_27:
 
     v9 = v53;
@@ -164,35 +164,35 @@ LABEL_27:
   }
 
   [(VUITextLayout *)v36 setNumberOfLines:1];
-  v45 = [v7 genreTitle];
-  v47 = [v7 releaseYear];
-  v51 = [v45 length];
-  if (v51 && v47)
+  releaseYear = [mediaCopy genreTitle];
+  releaseYear2 = [mediaCopy releaseYear];
+  v51 = [releaseYear length];
+  if (v51 && releaseYear2)
   {
-    v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@", v45, @"·", v47];
+    stringValue2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@", releaseYear, @"·", releaseYear2];
 LABEL_25:
-    v43 = v52;
-    if (!v52)
+    v43 = stringValue2;
+    if (!stringValue2)
     {
       goto LABEL_28;
     }
 
     v53 = v9;
-    v49 = [v55 subtitleLabel];
-    v50 = [VUILabel labelWithString:v43 textLayout:v36 existingLabel:v49];
-    [v55 setSubtitleLabel:v50];
+    secondSubtitleLabel = [cellCopy subtitleLabel];
+    v50 = [VUILabel labelWithString:v43 textLayout:v36 existingLabel:secondSubtitleLabel];
+    [cellCopy setSubtitleLabel:v50];
     goto LABEL_27;
   }
 
   if (v51)
   {
-    v52 = v45;
+    stringValue2 = releaseYear;
     goto LABEL_25;
   }
 
-  if (v47)
+  if (releaseYear2)
   {
-    v52 = [v47 stringValue];
+    stringValue2 = [releaseYear2 stringValue];
     goto LABEL_25;
   }
 
@@ -200,152 +200,152 @@ LABEL_25:
 LABEL_28:
 }
 
-- (VUISeasonPickerCollectionViewCell)initWithFrame:(CGRect)a3
+- (VUISeasonPickerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = VUISeasonPickerCollectionViewCell;
-  v3 = [(VUISeasonPickerCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUISeasonPickerCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(VUIListCollectionViewCell *)v3 setBackgroundColor:v4];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(VUIListCollectionViewCell *)v3 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
-    v5 = [MEMORY[0x1E69DC888] vui_secondaryFillColor];
-    [(VUIListCollectionViewCell *)v3 setHighlightedBackgroundColor:v5];
+    vui_secondaryFillColor = [MEMORY[0x1E69DC888] vui_secondaryFillColor];
+    [(VUIListCollectionViewCell *)v3 setHighlightedBackgroundColor:vui_secondaryFillColor];
   }
 
   return v3;
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   titleLabel = self->_titleLabel;
-  if (titleLabel != v5)
+  if (titleLabel != labelCopy)
   {
-    v8 = v5;
+    v8 = labelCopy;
     [(VUILabel *)titleLabel removeFromSuperview];
-    objc_storeStrong(&self->_titleLabel, a3);
+    objc_storeStrong(&self->_titleLabel, label);
     if (self->_titleLabel)
     {
-      v7 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_titleLabel];
+      contentView = [(VUISeasonPickerCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_titleLabel];
     }
 
     [(VUISeasonPickerCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    labelCopy = v8;
   }
 }
 
-- (void)setSubtitleLabel:(id)a3
+- (void)setSubtitleLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   subtitleLabel = self->_subtitleLabel;
-  if (subtitleLabel != v5)
+  if (subtitleLabel != labelCopy)
   {
-    v8 = v5;
+    v8 = labelCopy;
     [(VUILabel *)subtitleLabel removeFromSuperview];
-    objc_storeStrong(&self->_subtitleLabel, a3);
+    objc_storeStrong(&self->_subtitleLabel, label);
     if (self->_subtitleLabel)
     {
-      v7 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_subtitleLabel];
+      contentView = [(VUISeasonPickerCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_subtitleLabel];
     }
 
     [(VUISeasonPickerCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    labelCopy = v8;
   }
 }
 
-- (void)setSecondSubtitleLabel:(id)a3
+- (void)setSecondSubtitleLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   secondSubtitleLabel = self->_secondSubtitleLabel;
-  if (secondSubtitleLabel != v5)
+  if (secondSubtitleLabel != labelCopy)
   {
-    v8 = v5;
+    v8 = labelCopy;
     [(VUILabel *)secondSubtitleLabel removeFromSuperview];
-    objc_storeStrong(&self->_secondSubtitleLabel, a3);
+    objc_storeStrong(&self->_secondSubtitleLabel, label);
     if (self->_secondSubtitleLabel)
     {
-      v7 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_secondSubtitleLabel];
+      contentView = [(VUISeasonPickerCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_secondSubtitleLabel];
     }
 
     [(VUISeasonPickerCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    labelCopy = v8;
   }
 }
 
-- (void)setSeasonImageView:(id)a3
+- (void)setSeasonImageView:(id)view
 {
-  v5 = a3;
-  if (self->_seasonImageView != v5)
+  viewCopy = view;
+  if (self->_seasonImageView != viewCopy)
   {
-    v7 = v5;
-    [(VUIImageView *)v5 removeFromSuperview];
-    objc_storeStrong(&self->_seasonImageView, a3);
+    v7 = viewCopy;
+    [(VUIImageView *)viewCopy removeFromSuperview];
+    objc_storeStrong(&self->_seasonImageView, view);
     if (self->_seasonImageView)
     {
-      v6 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-      [v6 addSubview:self->_seasonImageView];
+      contentView = [(VUISeasonPickerCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_seasonImageView];
     }
 
     [(VUISeasonPickerCollectionViewCell *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setTopSeparatorView:(id)a3
+- (void)setTopSeparatorView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   topSeparatorView = self->_topSeparatorView;
-  if (topSeparatorView != v5)
+  if (topSeparatorView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUISeparatorView *)topSeparatorView removeFromSuperview];
-    objc_storeStrong(&self->_topSeparatorView, a3);
+    objc_storeStrong(&self->_topSeparatorView, view);
     if (self->_topSeparatorView)
     {
-      v7 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_topSeparatorView];
+      contentView = [(VUISeasonPickerCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_topSeparatorView];
     }
 
     [(VUISeasonPickerCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setBottomSeparatorView:(id)a3
+- (void)setBottomSeparatorView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bottomSeparatorView = self->_bottomSeparatorView;
-  if (bottomSeparatorView != v5)
+  if (bottomSeparatorView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUISeparatorView *)bottomSeparatorView removeFromSuperview];
-    objc_storeStrong(&self->_bottomSeparatorView, a3);
+    objc_storeStrong(&self->_bottomSeparatorView, view);
     if (self->_bottomSeparatorView)
     {
-      v7 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_bottomSeparatorView];
+      contentView = [(VUISeasonPickerCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_bottomSeparatorView];
     }
 
     [(VUISeasonPickerCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [MEMORY[0x1E69DD2E8] vui_padding];
   v6 = v5;
   v8 = v7;
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
-  v10 = [v9 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  v11 = [MEMORY[0x1E69DF678] contentSizeCategoryIsAccessibility:{objc_msgSend(MEMORY[0x1E69DF6D0], "vuiContentSizeCategoryFor:", v10)}];
+  v11 = [MEMORY[0x1E69DF678] contentSizeCategoryIsAccessibility:{objc_msgSend(MEMORY[0x1E69DF6D0], "vuiContentSizeCategoryFor:", preferredContentSizeCategory)}];
   if (v11)
   {
     v12 = 102.0;
@@ -363,8 +363,8 @@ LABEL_28:
   v17 = v16;
   [(VUILabel *)self->_secondSubtitleLabel sizeThatFits:v13, 1.79769313e308];
   v19 = v18;
-  v20 = [(VUISeasonPickerCollectionViewCell *)self traitCollection];
-  [VUIUtilities scaleContentSizeValue:v20 forTraitCollection:18.0];
+  traitCollection = [(VUISeasonPickerCollectionViewCell *)self traitCollection];
+  [VUIUtilities scaleContentSizeValue:traitCollection forTraitCollection:18.0];
   v22 = v21;
   [(UILabel *)self->_subtitleLabel vui_heightToBaseline];
   v24 = v22 - v23;
@@ -378,43 +378,43 @@ LABEL_28:
   {
     [(UILabel *)secondSubtitleLabel vui_heightToBaseline];
     v31 = v28 + v30;
-    v32 = [(VUISeasonPickerCollectionViewCell *)self traitCollection];
-    [VUIUtilities scaleContentSizeValue:v32 forTraitCollection:18.0];
+    traitCollection2 = [(VUISeasonPickerCollectionViewCell *)self traitCollection];
+    [VUIUtilities scaleContentSizeValue:traitCollection2 forTraitCollection:18.0];
     v34 = v33;
     [(UILabel *)self->_secondSubtitleLabel vui_heightToBaseline];
     v28 = v31 + v34 - v35;
 
-    v36 = [(VUILabel *)self->_secondSubtitleLabel font];
-    [v36 lineHeight];
+    font = [(VUILabel *)self->_secondSubtitleLabel font];
+    [font lineHeight];
     v38 = vcvtad_u64_f64(v19 / v37);
 
     if (v38 >= 2)
     {
-      v39 = [(VUILabel *)self->_secondSubtitleLabel font];
-      [v39 lineHeight];
+      font2 = [(VUILabel *)self->_secondSubtitleLabel font];
+      [font2 lineHeight];
       v28 = v28 + v40 * (v38 - 1);
     }
   }
 
-  v41 = [(VUILabel *)self->_titleLabel font];
-  [v41 lineHeight];
+  font3 = [(VUILabel *)self->_titleLabel font];
+  [font3 lineHeight];
   v43 = vcvtad_u64_f64(v15 / v42);
 
   if (v43 >= 2)
   {
-    v44 = [(VUILabel *)self->_titleLabel font];
-    [v44 lineHeight];
+    font4 = [(VUILabel *)self->_titleLabel font];
+    [font4 lineHeight];
     v28 = v28 + v45 * (v43 - 1);
   }
 
-  v46 = [(VUILabel *)self->_subtitleLabel font];
-  [v46 lineHeight];
+  font5 = [(VUILabel *)self->_subtitleLabel font];
+  [font5 lineHeight];
   v48 = vcvtad_u64_f64(v17 / v47);
 
   if (v48 >= 2)
   {
-    v49 = [(VUILabel *)self->_subtitleLabel font];
-    [v49 lineHeight];
+    font6 = [(VUILabel *)self->_subtitleLabel font];
+    [font6 lineHeight];
     v28 = v28 + v50 * (v48 - 1);
   }
 
@@ -448,28 +448,28 @@ LABEL_28:
   [(VUIBaseView *)bottomSeparatorView sizeThatFits:v12, 1.79769313e308];
   v111 = v13;
   v112 = v14;
-  v15 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-  [v15 bounds];
+  contentView = [(VUISeasonPickerCollectionViewCell *)self contentView];
+  [contentView bounds];
   MaxY = CGRectGetMaxY(v120);
 
   titleLabel = self->_titleLabel;
-  v18 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-  [v18 bounds];
+  contentView2 = [(VUISeasonPickerCollectionViewCell *)self contentView];
+  [contentView2 bounds];
   v19 = v4 + v6;
   [(VUILabel *)titleLabel sizeThatFits:v20 - v19, 1.79769313e308];
   v113 = v21;
   v23 = v22;
 
   subtitleLabel = self->_subtitleLabel;
-  v25 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-  [v25 bounds];
+  contentView3 = [(VUISeasonPickerCollectionViewCell *)self contentView];
+  [contentView3 bounds];
   [(VUILabel *)subtitleLabel sizeThatFits:v26 - v19, 1.79769313e308];
   v115 = v27;
   v118 = v28;
 
   secondSubtitleLabel = self->_secondSubtitleLabel;
-  v30 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-  [v30 bounds];
+  contentView4 = [(VUISeasonPickerCollectionViewCell *)self contentView];
+  [contentView4 bounds];
   [(VUILabel *)secondSubtitleLabel sizeThatFits:v31 - v19, 1.79769313e308];
   v33 = v32;
   v117 = v34;
@@ -478,49 +478,49 @@ LABEL_28:
   v36 = v35;
   [(UILabel *)self->_subtitleLabel vui_heightToBaseline];
   v38 = v37;
-  v39 = [(VUISeasonPickerCollectionViewCell *)self traitCollection];
-  [VUIUtilities scaleContentSizeValue:v39 forTraitCollection:18.0];
+  traitCollection = [(VUISeasonPickerCollectionViewCell *)self traitCollection];
+  [VUIUtilities scaleContentSizeValue:traitCollection forTraitCollection:18.0];
   v41 = v40 - v38;
 
   v42 = v36 + v41;
-  v43 = [(VUISeasonPickerCollectionViewCell *)self traitCollection];
-  LODWORD(v39) = [v43 isAXEnabled];
+  traitCollection2 = [(VUISeasonPickerCollectionViewCell *)self traitCollection];
+  LODWORD(traitCollection) = [traitCollection2 isAXEnabled];
 
   v114 = v23;
-  if (v39)
+  if (traitCollection)
   {
     v44 = v33;
-    v45 = [(VUISeasonPickerCollectionViewCell *)self traitCollection];
-    [VUIUtilities scaleContentSizeValue:v45 forTraitCollection:18.0];
+    traitCollection3 = [(VUISeasonPickerCollectionViewCell *)self traitCollection];
+    [VUIUtilities scaleContentSizeValue:traitCollection3 forTraitCollection:18.0];
     v47 = v46;
     [(UILabel *)self->_secondSubtitleLabel vui_heightToBaseline];
     v49 = v38 + v42 + v47 - v48;
 
-    v50 = [(VUILabel *)self->_titleLabel font];
-    [v50 lineHeight];
+    font = [(VUILabel *)self->_titleLabel font];
+    [font lineHeight];
     v52 = vcvtad_u64_f64(v23 / v51);
 
     if (v52 >= 2)
     {
-      v53 = [(VUILabel *)self->_titleLabel font];
-      [v53 lineHeight];
+      font2 = [(VUILabel *)self->_titleLabel font];
+      [font2 lineHeight];
       v54 = (v52 - 1);
       v42 = v42 + v55 * v54;
 
-      v56 = [(VUILabel *)self->_titleLabel font];
-      [v56 lineHeight];
+      font3 = [(VUILabel *)self->_titleLabel font];
+      [font3 lineHeight];
       v49 = v49 + v57 * v54;
     }
 
-    v58 = [(VUILabel *)self->_subtitleLabel font];
-    [v58 lineHeight];
+    font4 = [(VUILabel *)self->_subtitleLabel font];
+    [font4 lineHeight];
     v60 = vcvtad_u64_f64(v118 / v59);
 
     v61 = v44;
     if (v60 >= 2)
     {
-      v62 = [(VUILabel *)self->_subtitleLabel font];
-      [v62 lineHeight];
+      font5 = [(VUILabel *)self->_subtitleLabel font];
+      [font5 lineHeight];
       v49 = v49 + v63 * (v60 - 1);
     }
 
@@ -539,47 +539,47 @@ LABEL_28:
 
   else
   {
-    v67 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-    [v67 bounds];
+    contentView5 = [(VUISeasonPickerCollectionViewCell *)self contentView];
+    [contentView5 bounds];
     MidY = CGRectGetMidY(v122);
 
     v69 = v36 + 0.0 + v38 + v41;
-    v70 = [(VUILabel *)self->_titleLabel font];
-    [v70 lineHeight];
+    font6 = [(VUILabel *)self->_titleLabel font];
+    [font6 lineHeight];
     v72 = vcvtad_u64_f64(v23 / v71);
 
     if (v72 >= 2)
     {
-      v73 = [(VUILabel *)self->_titleLabel font];
-      [v73 lineHeight];
+      font7 = [(VUILabel *)self->_titleLabel font];
+      [font7 lineHeight];
       v75 = v74;
       v76 = (v72 - 1);
-      v77 = [(VUILabel *)self->_titleLabel font];
-      [v77 descender];
+      font8 = [(VUILabel *)self->_titleLabel font];
+      [font8 descender];
       v69 = v69 + v78 + v75 * v76;
 
-      v79 = [(VUILabel *)self->_titleLabel font];
-      [v79 lineHeight];
+      font9 = [(VUILabel *)self->_titleLabel font];
+      [font9 lineHeight];
       v81 = v80;
-      v82 = [(VUILabel *)self->_titleLabel font];
-      [v82 descender];
+      font10 = [(VUILabel *)self->_titleLabel font];
+      [font10 descender];
       v42 = v42 + v83 + v81 * v76;
     }
 
     v84 = MEMORY[0x1E695F058];
     v116 = MidY + -51.0;
-    v85 = [(VUILabel *)self->_titleLabel font];
-    [v85 lineHeight];
+    font11 = [(VUILabel *)self->_titleLabel font];
+    [font11 lineHeight];
     v87 = vcvtad_u64_f64(v118 / v86);
 
     if (v87 >= 2)
     {
-      v88 = [(VUILabel *)self->_subtitleLabel font];
-      [v88 lineHeight];
+      font12 = [(VUILabel *)self->_subtitleLabel font];
+      [font12 lineHeight];
       v90 = v89;
       v91 = (v87 - 1);
-      v92 = [(VUILabel *)self->_subtitleLabel font];
-      [v92 descender];
+      font13 = [(VUILabel *)self->_subtitleLabel font];
+      [font13 descender];
       v69 = v69 + v93 + v90 * v91;
     }
 
@@ -587,8 +587,8 @@ LABEL_28:
     v108 = *v84;
     v61 = v84[2];
     v117 = v84[3];
-    v94 = [(VUISeasonPickerCollectionViewCell *)self contentView];
-    [v94 bounds];
+    contentView6 = [(VUISeasonPickerCollectionViewCell *)self contentView];
+    [contentView6 bounds];
     v64 = CGRectGetMidY(v123) + v69 * -0.5;
 
     v107 = v42 + v64;

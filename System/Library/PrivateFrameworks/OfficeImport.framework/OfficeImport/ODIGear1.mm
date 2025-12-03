@@ -1,15 +1,15 @@
 @interface ODIGear1
-+ (unint64_t)nodeCountWithState:(id)a3;
++ (unint64_t)nodeCountWithState:(id)state;
 @end
 
 @implementation ODIGear1
 
-+ (unint64_t)nodeCountWithState:(id)a3
++ (unint64_t)nodeCountWithState:(id)state
 {
-  v3 = [a3 diagram];
-  v4 = [v3 documentPoint];
-  v5 = [v4 children];
-  v6 = [v5 count];
+  diagram = [state diagram];
+  documentPoint = [diagram documentPoint];
+  children = [documentPoint children];
+  v6 = [children count];
 
   if (v6 >= 3)
   {

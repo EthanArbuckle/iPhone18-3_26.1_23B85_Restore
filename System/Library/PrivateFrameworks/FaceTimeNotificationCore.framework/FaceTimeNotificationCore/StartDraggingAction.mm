@@ -1,22 +1,22 @@
 @interface StartDraggingAction
 - (_TtC24FaceTimeNotificationCore19StartDraggingAction)init;
-- (_TtC24FaceTimeNotificationCore19StartDraggingAction)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC24FaceTimeNotificationCore19StartDraggingAction)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation StartDraggingAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  StartDraggingAction.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  StartDraggingAction.encode(with:)(coderCopy);
 }
 
-- (_TtC24FaceTimeNotificationCore19StartDraggingAction)initWithCoder:(id)a3
+- (_TtC24FaceTimeNotificationCore19StartDraggingAction)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_24A9E1CB0(v3);
+  coderCopy = coder;
+  v4 = sub_24A9E1CB0(coderCopy);
 
   return v4;
 }

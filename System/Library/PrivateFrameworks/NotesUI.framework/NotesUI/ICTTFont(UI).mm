@@ -9,9 +9,9 @@
 + (id)convertFont:()UI toBold:toItalic:
 {
   v7 = a3;
-  v8 = [v7 fontDescriptor];
-  v9 = [v8 symbolicTraits];
-  if (((v9 ^ a5) & 1) != 0 || a4 != (v9 & 2) >> 1)
+  fontDescriptor = [v7 fontDescriptor];
+  symbolicTraits = [fontDescriptor symbolicTraits];
+  if (((symbolicTraits ^ a5) & 1) != 0 || a4 != (symbolicTraits & 2) >> 1)
   {
     if (a4)
     {
@@ -24,9 +24,9 @@
     }
 
     v11 = v10 | a5;
-    v12 = v9 & 0xFFFFFFFC;
-    v13 = [v7 fontDescriptor];
-    v14 = [v13 fontDescriptorWithSymbolicTraits:v11 | v12];
+    v12 = symbolicTraits & 0xFFFFFFFC;
+    fontDescriptor2 = [v7 fontDescriptor];
+    v14 = [fontDescriptor2 fontDescriptorWithSymbolicTraits:v11 | v12];
 
     v15 = MEMORY[0x1E69DB878];
     [v7 pointSize];
@@ -40,18 +40,18 @@
 
 + (void)font:()UI isBold:isItalic:isMonospace:
 {
-  v9 = [a3 fontDescriptor];
-  *a4 = ([v9 symbolicTraits] & 2) != 0;
-  *a5 = [v9 symbolicTraits] & 1;
-  *a6 = ([v9 symbolicTraits] & 0x400) != 0;
+  fontDescriptor = [a3 fontDescriptor];
+  *a4 = ([fontDescriptor symbolicTraits] & 2) != 0;
+  *a5 = [fontDescriptor symbolicTraits] & 1;
+  *a6 = ([fontDescriptor symbolicTraits] & 0x400) != 0;
 }
 
 - (id)nativeFontForStyle:()UI contentSizeCategory:isForPrint:
 {
   v8 = a4;
-  v9 = [a1 nativeFont];
-  [a1 pointSize];
-  if (!v9)
+  nativeFont = [self nativeFont];
+  [self pointSize];
+  if (!nativeFont)
   {
     v11 = v10;
     v12 = [MEMORY[0x1E69DB878] ic_preferredFontForStyle:a3 contentSizeCategory:v8 isForPrint:a5];
@@ -62,18 +62,18 @@
       v11 = v15;
     }
 
-    v16 = [a1 fontName];
-    if (v16)
+    fontName = [self fontName];
+    if (fontName)
     {
-      v17 = v16;
-      v18 = [a1 fontName];
-      v19 = [v18 hasPrefix:@"."];
+      v17 = fontName;
+      fontName2 = [self fontName];
+      v19 = [fontName2 hasPrefix:@"."];
 
       if ((v19 & 1) == 0)
       {
         v20 = MEMORY[0x1E69DB878];
-        v21 = [a1 fontName];
-        v22 = [v20 fontWithName:v21 size:v11];
+        fontName3 = [self fontName];
+        v22 = [v20 fontWithName:fontName3 size:v11];
 
         if (v22)
         {
@@ -106,11 +106,11 @@
       }
     }
 
-    v28 = [a1 fontHints];
-    v29 = [a1 fontHints];
-    v30 = v29;
-    v31 = [MEMORY[0x1E69B7890] convertFont:v22 toBold:v28 & 1 toItalic:(v29 >> 1) & 1];
-    v32 = (v31 == 0) & v28;
+    fontHints = [self fontHints];
+    fontHints2 = [self fontHints];
+    v30 = fontHints2;
+    v31 = [MEMORY[0x1E69B7890] convertFont:v22 toBold:fontHints & 1 toItalic:(fontHints2 >> 1) & 1];
+    v32 = (v31 == 0) & fontHints;
     if (v32)
     {
       v31 = 0;
@@ -130,9 +130,9 @@
     if (!v31)
     {
 LABEL_25:
-      v9 = [v22 ic_fontWithSingleLineA];
+      nativeFont = [v22 ic_fontWithSingleLineA];
 
-      [a1 setNativeFont:v9];
+      [self setNativeFont:nativeFont];
       goto LABEL_26;
     }
 
@@ -145,7 +145,7 @@ LABEL_24:
 
 LABEL_26:
 
-  return v9;
+  return nativeFont;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface TSCHTextCache
 - (TSCHTextCache)init;
-- (id)columnForKey:(id)a3;
-- (id)equalDigitWidthForFontName:(id)a3;
-- (id)numberStringSizeForKey:(id)a3;
-- (id)textForKey:(id)a3;
+- (id)columnForKey:(id)key;
+- (id)equalDigitWidthForFontName:(id)name;
+- (id)numberStringSizeForKey:(id)key;
+- (id)textForKey:(id)key;
 - (void)clear;
-- (void)setText:(id)a3 textDelegate:(id)a4 forKey:(id)a5;
+- (void)setText:(id)text textDelegate:(id)delegate forKey:(id)key;
 @end
 
 @implementation TSCHTextCache
@@ -47,11 +47,11 @@
   objc_msgSend_removeAllObjects(equalDigitWidthFont, v14, v15, v16, v17);
 }
 
-- (id)textForKey:(id)a3
+- (id)textForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v9 = objc_msgSend_objectForKey_(self->_TSWPTextCache, v5, v6, v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(self->_TSWPTextCache, v5, v6, v7, v8, keyCopy);
   v10 = TSUCheckedDynamicCast();
 
   v15 = objc_msgSend_text(v10, v11, v12, v13, v14);
@@ -59,41 +59,41 @@
   return v15;
 }
 
-- (void)setText:(id)a3 textDelegate:(id)a4 forKey:(id)a5
+- (void)setText:(id)text textDelegate:(id)delegate forKey:(id)key
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  delegateCopy = delegate;
+  keyCopy = key;
   v10 = [TSCHTSWPTextWithDelegate alloc];
-  v15 = objc_msgSend_initWithText_textDelegate_(v10, v11, v12, v13, v14, v20, v8);
-  objc_msgSend_setObject_forKey_(self->_TSWPTextCache, v16, v17, v18, v19, v15, v9);
+  v15 = objc_msgSend_initWithText_textDelegate_(v10, v11, v12, v13, v14, textCopy, delegateCopy);
+  objc_msgSend_setObject_forKey_(self->_TSWPTextCache, v16, v17, v18, v19, v15, keyCopy);
 }
 
-- (id)columnForKey:(id)a3
+- (id)columnForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v9 = objc_msgSend_objectForKey_(self->_TSWPColumnCache, v5, v6, v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(self->_TSWPColumnCache, v5, v6, v7, v8, keyCopy);
   v10 = TSUCheckedDynamicCast();
 
   return v10;
 }
 
-- (id)numberStringSizeForKey:(id)a3
+- (id)numberStringSizeForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v9 = objc_msgSend_objectForKey_(self->_numberWidthCache, v5, v6, v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(self->_numberWidthCache, v5, v6, v7, v8, keyCopy);
   v10 = TSUCheckedDynamicCast();
 
   return v10;
 }
 
-- (id)equalDigitWidthForFontName:(id)a3
+- (id)equalDigitWidthForFontName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_opt_class();
-  v9 = objc_msgSend_objectForKey_(self->_equalDigitWidthFont, v5, v6, v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(self->_equalDigitWidthFont, v5, v6, v7, v8, nameCopy);
   v10 = TSUCheckedDynamicCast();
 
   return v10;

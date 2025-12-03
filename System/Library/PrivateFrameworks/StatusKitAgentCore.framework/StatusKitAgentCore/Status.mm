@@ -1,28 +1,28 @@
 @interface Status
-+ (id)predicateForChannelIdentifier:(id)a3;
-+ (id)predicateForStatusUniqueIdentifier:(id)a3;
++ (id)predicateForChannelIdentifier:(id)identifier;
++ (id)predicateForStatusUniqueIdentifier:(id)identifier;
 @end
 
 @implementation Status
 
-+ (id)predicateForChannelIdentifier:(id)a3
++ (id)predicateForChannelIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[Status channelIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
-+ (id)predicateForStatusUniqueIdentifier:(id)a3
++ (id)predicateForStatusUniqueIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[Status uniqueIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 @end

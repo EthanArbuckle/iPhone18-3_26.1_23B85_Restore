@@ -1,31 +1,31 @@
 @interface CALNSharedCalendarInvitationNotificationSource
 - (CALNNotificationManager)notificationManager;
-- (CALNSharedCalendarInvitationNotificationSource)initWithDataSource:(id)a3 notificationManager:(id)a4 iconIdentifierProvider:(id)a5 sourceEventRepresentationProvider:(id)a6;
+- (CALNSharedCalendarInvitationNotificationSource)initWithDataSource:(id)source notificationManager:(id)manager iconIdentifierProvider:(id)provider sourceEventRepresentationProvider:(id)representationProvider;
 - (NSArray)categories;
-- (id)contentForNotificationWithInfo:(id)a3;
-- (id)contentForNotificationWithSourceClientIdentifier:(id)a3;
-- (void)didReceiveResponse:(id)a3;
-- (void)refreshNotifications:(id)a3;
+- (id)contentForNotificationWithInfo:(id)info;
+- (id)contentForNotificationWithSourceClientIdentifier:(id)identifier;
+- (void)didReceiveResponse:(id)response;
+- (void)refreshNotifications:(id)notifications;
 @end
 
 @implementation CALNSharedCalendarInvitationNotificationSource
 
-- (CALNSharedCalendarInvitationNotificationSource)initWithDataSource:(id)a3 notificationManager:(id)a4 iconIdentifierProvider:(id)a5 sourceEventRepresentationProvider:(id)a6
+- (CALNSharedCalendarInvitationNotificationSource)initWithDataSource:(id)source notificationManager:(id)manager iconIdentifierProvider:(id)provider sourceEventRepresentationProvider:(id)representationProvider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sourceCopy = source;
+  managerCopy = manager;
+  providerCopy = provider;
+  representationProviderCopy = representationProvider;
   v18.receiver = self;
   v18.super_class = CALNSharedCalendarInvitationNotificationSource;
   v15 = [(CALNSharedCalendarInvitationNotificationSource *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_dataSource, a3);
-    objc_storeWeak(&v16->_notificationManager, v12);
-    objc_storeStrong(&v16->_iconIdentifierProvider, a5);
-    objc_storeStrong(&v16->_sourceEventRepresentationProvider, a6);
+    objc_storeStrong(&v15->_dataSource, source);
+    objc_storeWeak(&v16->_notificationManager, managerCopy);
+    objc_storeStrong(&v16->_iconIdentifierProvider, provider);
+    objc_storeStrong(&v16->_sourceEventRepresentationProvider, representationProvider);
   }
 
   return v16;
@@ -72,13 +72,13 @@ void __60__CALNSharedCalendarInvitationNotificationSource_categories__block_invo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshNotifications:(id)a3
+- (void)refreshNotifications:(id)notifications
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
-  v24 = v4;
-  v6 = [v5 fetchSharedCalendarInvitationNotificationSourceClientIdentifiers:v4];
+  notificationsCopy = notifications;
+  dataSource = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
+  v24 = notificationsCopy;
+  v6 = [dataSource fetchSharedCalendarInvitationNotificationSourceClientIdentifiers:notificationsCopy];
 
   v26 = objc_opt_new();
   v27 = 0u;
@@ -106,8 +106,8 @@ void __60__CALNSharedCalendarInvitationNotificationSource_categories__block_invo
         if (v13)
         {
           v14 = [CALNNotificationRecord alloc];
-          v15 = [(CALNSharedCalendarInvitationNotificationSource *)self sourceIdentifier];
-          v16 = [(CALNNotificationRecord *)v14 initWithSourceIdentifier:v15 sourceClientIdentifier:v11 content:v13];
+          sourceIdentifier = [(CALNSharedCalendarInvitationNotificationSource *)self sourceIdentifier];
+          v16 = [(CALNNotificationRecord *)v14 initWithSourceIdentifier:sourceIdentifier sourceClientIdentifier:v11 content:v13];
 
           [v26 addObject:v16];
         }
@@ -145,18 +145,18 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v21 = [(CALNSharedCalendarInvitationNotificationSource *)self notificationManager];
-  v22 = [(CALNSharedCalendarInvitationNotificationSource *)self sourceIdentifier];
-  [CALNNotificationRecordsDiffApplier refreshNotificationManager:v21 withNotificationRecords:v26 forSourceWithIdentifier:v22 filteredBySourceClientIDs:v24];
+  notificationManager = [(CALNSharedCalendarInvitationNotificationSource *)self notificationManager];
+  sourceIdentifier2 = [(CALNSharedCalendarInvitationNotificationSource *)self sourceIdentifier];
+  [CALNNotificationRecordsDiffApplier refreshNotificationManager:notificationManager withNotificationRecords:v26 forSourceWithIdentifier:sourceIdentifier2 filteredBySourceClientIDs:v24];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)contentForNotificationWithSourceClientIdentifier:(id)a3
+- (id)contentForNotificationWithSourceClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
-  v6 = [v5 fetchSharedCalendarInvitationNotificationWithSourceClientIdentifier:v4];
+  identifierCopy = identifier;
+  dataSource = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
+  v6 = [dataSource fetchSharedCalendarInvitationNotificationWithSourceClientIdentifier:identifierCopy];
 
   if (v6)
   {
@@ -168,7 +168,7 @@ LABEL_15:
     v8 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CALNSharedCalendarInvitationResponseNotificationSource *)v4 contentForNotificationWithSourceClientIdentifier:v8];
+      [(CALNSharedCalendarInvitationResponseNotificationSource *)identifierCopy contentForNotificationWithSourceClientIdentifier:v8];
     }
 
     v7 = 0;
@@ -177,35 +177,35 @@ LABEL_15:
   return v7;
 }
 
-- (id)contentForNotificationWithInfo:(id)a3
+- (id)contentForNotificationWithInfo:(id)info
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   v4 = +[CALNBundle bundle];
-  v5 = [v3 calendarNotification];
+  calendarNotification = [infoCopy calendarNotification];
   v38 = [CALNNotificationSound soundWithAlertType:10 alertTopic:@"com.apple.mobilecal.bulletin-subsection.invitations"];
-  v6 = [v5 couldBeJunk];
+  couldBeJunk = [calendarNotification couldBeJunk];
   v7 = @"CALNSharedCalendarInvitationDefaultCategory";
-  if (v6)
+  if (couldBeJunk)
   {
     v7 = @"CALNSharedCalendarInvitationCouldBeJunkCategory";
   }
 
   v8 = v7;
   v9 = objc_opt_new();
-  v10 = [v5 title];
-  if (!v10)
+  title = [calendarNotification title];
+  if (!title)
   {
-    v10 = [v4 localizedStringForKey:@"Shared Calendar Invitation" value:&stru_28551FB98 table:0];
+    title = [v4 localizedStringForKey:@"Shared Calendar Invitation" value:&stru_28551FB98 table:0];
   }
 
   v11 = [v4 localizedStringForKey:@"Invitation to share a calendar with %@." value:&stru_28551FB98 table:0];
   v35 = v11;
   v36 = v4;
-  if ([v5 couldBeJunk])
+  if ([calendarNotification couldBeJunk])
   {
     v12 = [v4 localizedStringForKey:@"Unknown Sender" value:&stru_28551FB98 table:0];
-    v13 = [CALNNotificationSourceUtils displayNameForJunkIdentity:v5];
+    v13 = [CALNNotificationSourceUtils displayNameForJunkIdentity:calendarNotification];
     v14 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v11, v13];
     v15 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%@\n%@", v12, v14];
 
@@ -219,7 +219,7 @@ LABEL_15:
     v15 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v11, v17];
   }
 
-  [v9 setTitle:v10];
+  [v9 setTitle:title];
   [v9 setBody:v15];
   [v9 setCategoryIdentifier:v8];
 
@@ -228,22 +228,22 @@ LABEL_15:
   [v9 setDefaultActionURL:v18];
 
   [v9 setSound:v38];
-  v19 = [(CALNSharedCalendarInvitationNotificationSource *)self iconIdentifierProvider];
-  v20 = [MEMORY[0x277CBEAA8] date];
-  v21 = [MEMORY[0x277CBEA80] currentCalendar];
-  v22 = [v19 identifierForIconWithDate:v20 inCalendar:v21];
+  iconIdentifierProvider = [(CALNSharedCalendarInvitationNotificationSource *)self iconIdentifierProvider];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v22 = [iconIdentifierProvider identifierForIconWithDate:date inCalendar:currentCalendar];
   [v9 setIconIdentifier:v22];
 
   [v9 setInterruptionLevel:1];
-  v23 = [v5 calendar];
-  v24 = [v23 calendarIdentifier];
-  [v9 setFilterCriteria:v24];
+  calendar = [calendarNotification calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
+  [v9 setFilterCriteria:calendarIdentifier];
 
-  if ([v3 isDelegate])
+  if ([infoCopy isDelegate])
   {
-    v25 = [v3 sourceTitle];
-    v26 = [v3 sourceIdentifier];
-    [CALNNotificationSourceUtils updateSubtitleAndThreadIdentifierOnNotificationContent:v9 forDelegateSourceWithTitle:v25 identifier:v26];
+    sourceTitle = [infoCopy sourceTitle];
+    sourceIdentifier = [infoCopy sourceIdentifier];
+    [CALNNotificationSourceUtils updateSubtitleAndThreadIdentifierOnNotificationContent:v9 forDelegateSourceWithTitle:sourceTitle identifier:sourceIdentifier];
   }
 
   if (v16)
@@ -253,22 +253,22 @@ LABEL_15:
     [v9 setPeopleIdentifiers:v27];
   }
 
-  v28 = [(CALNSharedCalendarInvitationNotificationSource *)self sourceEventRepresentationProvider];
-  v29 = [v28 eventRepresentationDictionaryForSharedCalendarInvitationNotificationWithTitle:v10 message:v15];
+  sourceEventRepresentationProvider = [(CALNSharedCalendarInvitationNotificationSource *)self sourceEventRepresentationProvider];
+  v29 = [sourceEventRepresentationProvider eventRepresentationDictionaryForSharedCalendarInvitationNotificationWithTitle:title message:v15];
 
   if (v29)
   {
     [CALNEventRepresentationSourceUtils setEventRepresentationDictionary:v29 onNotificationContent:v9];
   }
 
-  [CALNNotificationFilterUtils setFilterIdentifierForEKCalendarNotification:v5 onNotificationContent:v9];
-  [CALNLegacyIdentifierUtils setLegacyIdentifierForCalendarNotification:v5 onNotificationContent:v9];
+  [CALNNotificationFilterUtils setFilterIdentifierForEKCalendarNotification:calendarNotification onNotificationContent:v9];
+  [CALNLegacyIdentifierUtils setLegacyIdentifierForCalendarNotification:calendarNotification onNotificationContent:v9];
   v30 = +[CALNLogSubsystem calendar];
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v3 sourceClientIdentifier];
+    sourceClientIdentifier = [infoCopy sourceClientIdentifier];
     *buf = 138543618;
-    v40 = v31;
+    v40 = sourceClientIdentifier;
     v41 = 2112;
     v42 = v9;
     _os_log_impl(&dword_242909000, v30, OS_LOG_TYPE_DEFAULT, "Fetched shared calendar invitation notification with sourceClientIdentifier %{public}@. Content: %@", buf, 0x16u);
@@ -280,52 +280,52 @@ LABEL_15:
   return v32;
 }
 
-- (void)didReceiveResponse:(id)a3
+- (void)didReceiveResponse:(id)response
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 actionIdentifier];
-  v6 = [v4 notificationRecord];
+  responseCopy = response;
+  actionIdentifier = [responseCopy actionIdentifier];
+  notificationRecord = [responseCopy notificationRecord];
 
-  v7 = [v6 sourceClientIdentifier];
+  sourceClientIdentifier = [notificationRecord sourceClientIdentifier];
 
   v8 = +[CALNLogSubsystem calendar];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = v7;
+    v12 = sourceClientIdentifier;
     v13 = 2114;
-    v14 = v5;
+    v14 = actionIdentifier;
     _os_log_impl(&dword_242909000, v8, OS_LOG_TYPE_DEFAULT, "Received notification response for shared calendar invitation %{public}@ with actionIdentifier = %{public}@", &v11, 0x16u);
   }
 
-  if (([v5 isEqualToString:@"com.apple.CALNNotificationDefaultActionIdentifier"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"com.apple.CALNNotificationDismissActionIdentifier"))
+  if (([actionIdentifier isEqualToString:@"com.apple.CALNNotificationDefaultActionIdentifier"] & 1) != 0 || objc_msgSend(actionIdentifier, "isEqualToString:", @"com.apple.CALNNotificationDismissActionIdentifier"))
   {
-    v9 = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
-    [v9 clearSharedCalendarInvitationWithSourceClientIdentifier:v7];
+    dataSource = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
+    [dataSource clearSharedCalendarInvitationWithSourceClientIdentifier:sourceClientIdentifier];
   }
 
-  else if ([v5 isEqualToString:@"CALNSharedCalendarInvitationJoinActionIdentifier"])
+  else if ([actionIdentifier isEqualToString:@"CALNSharedCalendarInvitationJoinActionIdentifier"])
   {
-    v9 = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
-    [v9 joinSharedCalendarWithSourceClientIdentifier:v7];
+    dataSource = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
+    [dataSource joinSharedCalendarWithSourceClientIdentifier:sourceClientIdentifier];
   }
 
-  else if ([v5 isEqualToString:@"CALNNotificationDeclineAction"])
+  else if ([actionIdentifier isEqualToString:@"CALNNotificationDeclineAction"])
   {
-    v9 = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
-    [v9 declineSharedCalendarWithSourceClientIdentifier:v7];
+    dataSource = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
+    [dataSource declineSharedCalendarWithSourceClientIdentifier:sourceClientIdentifier];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"CALNNotificationReportJunkCalendarAction"])
+    if (![actionIdentifier isEqualToString:@"CALNNotificationReportJunkCalendarAction"])
     {
       goto LABEL_7;
     }
 
-    v9 = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
-    [v9 reportSharedCalendarAsJunkWithSourceClientIdentifier:v7];
+    dataSource = [(CALNSharedCalendarInvitationNotificationSource *)self dataSource];
+    [dataSource reportSharedCalendarAsJunkWithSourceClientIdentifier:sourceClientIdentifier];
   }
 
 LABEL_7:

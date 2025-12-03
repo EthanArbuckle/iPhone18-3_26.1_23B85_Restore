@@ -1,27 +1,27 @@
 @interface NSEqualityPredicateOperator
-- (BOOL)isEqual:(id)a3;
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4;
-- (NSEqualityPredicateOperator)initWithCoder:(id)a3;
-- (NSEqualityPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 negate:(BOOL)a5;
-- (NSEqualityPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 negate:(BOOL)a5 options:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject;
+- (NSEqualityPredicateOperator)initWithCoder:(id)coder;
+- (NSEqualityPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier negate:(BOOL)negate;
+- (NSEqualityPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier negate:(BOOL)negate options:(unint64_t)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)predicateFormat;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSEqualityPredicateOperator
 
 - (id)predicateFormat
 {
-  v3 = [(NSPredicateOperator *)self symbol];
+  symbol = [(NSPredicateOperator *)self symbol];
   if (self->_options)
   {
-    v4 = [v3 mutableCopy];
+    v4 = [symbol mutableCopy];
   }
 
   else
   {
-    v4 = v3;
+    v4 = symbol;
   }
 
   v5 = v4;
@@ -96,50 +96,50 @@ LABEL_12:
   return v5;
 }
 
-- (NSEqualityPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 negate:(BOOL)a5
+- (NSEqualityPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier negate:(BOOL)negate
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = NSEqualityPredicateOperator;
-  result = [(NSPredicateOperator *)&v7 initWithOperatorType:a3 modifier:a4];
+  result = [(NSPredicateOperator *)&v7 initWithOperatorType:type modifier:modifier];
   if (result)
   {
-    result->_negate = a5;
+    result->_negate = negate;
   }
 
   return result;
 }
 
-- (NSEqualityPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 negate:(BOOL)a5 options:(unint64_t)a6
+- (NSEqualityPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier negate:(BOOL)negate options:(unint64_t)options
 {
-  result = [(NSEqualityPredicateOperator *)self initWithOperatorType:a3 modifier:a4 negate:a5];
+  result = [(NSEqualityPredicateOperator *)self initWithOperatorType:type modifier:modifier negate:negate];
   if (result)
   {
-    result->_options = a6;
+    result->_options = options;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSEqualityPredicateOperator;
-  [(NSPredicateOperator *)&v5 encodeWithCoder:a3];
-  [a3 encodeBool:self->_negate forKey:@"NSNegate"];
-  [a3 encodeInteger:self->_options forKey:@"NSOptions"];
+  [(NSPredicateOperator *)&v5 encodeWithCoder:coder];
+  [coder encodeBool:self->_negate forKey:@"NSNegate"];
+  [coder encodeInteger:self->_options forKey:@"NSOptions"];
 }
 
-- (NSEqualityPredicateOperator)initWithCoder:(id)a3
+- (NSEqualityPredicateOperator)initWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -147,61 +147,61 @@ LABEL_12:
 
   v7.receiver = self;
   v7.super_class = NSEqualityPredicateOperator;
-  v5 = [(NSPredicateOperator *)&v7 initWithCoder:a3];
+  v5 = [(NSPredicateOperator *)&v7 initWithCoder:coder];
   if (v5)
   {
-    v5->_negate = [a3 decodeBoolForKey:@"NSNegate"];
-    v5->_options = [a3 decodeIntegerForKey:@"NSOptions"];
+    v5->_negate = [coder decodeBoolForKey:@"NSNegate"];
+    v5->_options = [coder decodeIntegerForKey:@"NSOptions"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(NSPredicateOperator *)self operatorType];
-  v6 = [(NSPredicateOperator *)self modifier];
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  modifier = [(NSPredicateOperator *)self modifier];
   negate = self->_negate;
   options = self->_options;
 
-  return [v4 initWithOperatorType:v5 modifier:v6 negate:negate options:options];
+  return [v4 initWithOperatorType:operatorType modifier:modifier negate:negate options:options];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSPredicateOperator *)self operatorType];
-  if (v5 != [a3 operatorType])
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  if (operatorType != [equal operatorType])
   {
     return 0;
   }
 
-  v6 = [(NSPredicateOperator *)self modifier];
-  if (v6 != [a3 modifier])
+  modifier = [(NSPredicateOperator *)self modifier];
+  if (modifier != [equal modifier])
   {
     return 0;
   }
 
-  v7 = [(NSEqualityPredicateOperator *)self isNegation];
-  if (v7 != [a3 isNegation])
+  isNegation = [(NSEqualityPredicateOperator *)self isNegation];
+  if (isNegation != [equal isNegation])
   {
     return 0;
   }
 
-  v9 = [(NSEqualityPredicateOperator *)self options];
-  return v9 == [a3 options];
+  options = [(NSEqualityPredicateOperator *)self options];
+  return options == [equal options];
 }
 
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject
 {
-  if (a3 | a4)
+  if (object | andObject)
   {
-    if (a3 && a4)
+    if (object && andObject)
     {
       if (self->_options && _NSIsNSString() && _NSIsNSString())
       {
@@ -235,16 +235,16 @@ LABEL_12:
           v12 = 0;
         }
 
-        v14.length = [a3 length];
+        v14.length = [object length];
         v14.location = 0;
-        v13 = CFStringCompareWithOptionsAndLocale(a3, a4, v14, v10, v12) == kCFCompareEqualTo;
+        v13 = CFStringCompareWithOptionsAndLocale(object, andObject, v14, v10, v12) == kCFCompareEqualTo;
 
         negate = v13 ^ self->_negate;
       }
 
       else
       {
-        negate = [a3 -[NSPredicateOperator selector](self] ^ self->_negate;
+        negate = [object -[NSPredicateOperator selector](self] ^ self->_negate;
       }
     }
 

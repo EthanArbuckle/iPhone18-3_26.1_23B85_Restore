@@ -1,31 +1,31 @@
 @interface IKJSManagedArray
-- (IKJSManagedArray)initWithArray:(id)a3 ownerObject:(id)a4;
-- (id)jsValuesWithContext:(id)a3;
+- (IKJSManagedArray)initWithArray:(id)array ownerObject:(id)object;
+- (id)jsValuesWithContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation IKJSManagedArray
 
-- (IKJSManagedArray)initWithArray:(id)a3 ownerObject:(id)a4
+- (IKJSManagedArray)initWithArray:(id)array ownerObject:(id)object
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  objectCopy = object;
   v29.receiver = self;
   v29.super_class = IKJSManagedArray;
   v8 = [(IKJSManagedArray *)&v29 init];
   v9 = v8;
   if (v8)
   {
-    v23 = v7;
-    objc_storeStrong(&v8->_ownerObject, a4);
-    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v23 = objectCopy;
+    objc_storeStrong(&v8->_ownerObject, object);
+    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v24 = v6;
-    v11 = v6;
+    v24 = arrayCopy;
+    v11 = arrayCopy;
     v12 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v12)
     {
@@ -43,18 +43,18 @@
           v16 = *(*(&v25 + 1) + 8 * i);
           if ([v16 isObject])
           {
-            v17 = [MEMORY[0x277CD4650] managedValueWithValue:v16];
-            v18 = [v16 context];
-            v19 = [v18 virtualMachine];
-            [v19 addManagedReference:v17 withOwner:v9->_ownerObject];
+            toObject = [MEMORY[0x277CD4650] managedValueWithValue:v16];
+            context = [v16 context];
+            virtualMachine = [context virtualMachine];
+            [virtualMachine addManagedReference:toObject withOwner:v9->_ownerObject];
           }
 
           else
           {
-            v17 = [v16 toObject];
+            toObject = [v16 toObject];
           }
 
-          [(NSArray *)v10 addObject:v17];
+          [(NSArray *)v10 addObject:toObject];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -66,8 +66,8 @@
     managedArray = v9->_managedArray;
     v9->_managedArray = v10;
 
-    v7 = v23;
-    v6 = v24;
+    objectCopy = v23;
+    arrayCopy = v24;
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -81,8 +81,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(IKJSManagedArray *)self managedArray];
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  managedArray = [(IKJSManagedArray *)self managedArray];
+  v3 = [managedArray countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
@@ -94,25 +94,25 @@
       {
         if (*v16 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(managedArray);
         }
 
         v7 = *(*(&v15 + 1) + 8 * v6);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v7 value];
-          v9 = [v8 context];
-          v10 = [v9 virtualMachine];
-          v11 = [(IKJSManagedArray *)self ownerObject];
-          [v10 removeManagedReference:v7 withOwner:v11];
+          value = [v7 value];
+          context = [value context];
+          virtualMachine = [context virtualMachine];
+          ownerObject = [(IKJSManagedArray *)self ownerObject];
+          [virtualMachine removeManagedReference:v7 withOwner:ownerObject];
         }
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [managedArray countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);
@@ -125,20 +125,20 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)jsValuesWithContext:(id)a3
+- (id)jsValuesWithContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = MEMORY[0x277CBEB18];
-  v6 = [(IKJSManagedArray *)self managedArray];
-  v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  managedArray = [(IKJSManagedArray *)self managedArray];
+  v7 = [v5 arrayWithCapacity:{objc_msgSend(managedArray, "count")}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(IKJSManagedArray *)self managedArray];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  managedArray2 = [(IKJSManagedArray *)self managedArray];
+  v9 = [managedArray2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -149,7 +149,7 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(managedArray2);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
@@ -161,13 +161,13 @@
 
         else
         {
-          [MEMORY[0x277CD4658] valueWithObject:v13 inContext:v4];
+          [MEMORY[0x277CD4658] valueWithObject:v13 inContext:contextCopy];
         }
         v14 = ;
         [v7 addObject:v14];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [managedArray2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);

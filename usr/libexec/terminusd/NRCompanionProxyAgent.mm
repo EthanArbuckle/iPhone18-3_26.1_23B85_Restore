@@ -47,7 +47,7 @@
 
     v7 = v6;
     v8 = _NRCopyLogObjectForNRUUID();
-    v9 = [(NRCompanionProxyAgent *)self agentDescription];
+    agentDescription = [(NRCompanionProxyAgent *)self agentDescription];
 
     _NRLogWithArgs();
   }

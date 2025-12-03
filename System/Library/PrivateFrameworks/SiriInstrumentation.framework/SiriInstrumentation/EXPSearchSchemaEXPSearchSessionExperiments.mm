@@ -1,27 +1,27 @@
 @interface EXPSearchSchemaEXPSearchSessionExperiments
-- (BOOL)isEqual:(id)a3;
-- (EXPSearchSchemaEXPSearchSessionExperiments)initWithDictionary:(id)a3;
-- (EXPSearchSchemaEXPSearchSessionExperiments)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EXPSearchSchemaEXPSearchSessionExperiments)initWithDictionary:(id)dictionary;
+- (EXPSearchSchemaEXPSearchSessionExperiments)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addActiveExperiments:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveExperiments:(id)experiments;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EXPSearchSchemaEXPSearchSessionExperiments
 
-- (EXPSearchSchemaEXPSearchSessionExperiments)initWithDictionary:(id)a3
+- (EXPSearchSchemaEXPSearchSessionExperiments)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = EXPSearchSchemaEXPSearchSessionExperiments;
   v5 = [(EXPSearchSchemaEXPSearchSessionExperiments *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"searchSessionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"searchSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(EXPSearchSchemaEXPSearchSessionExperiments *)v5 setSearchSessionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"activeExperiments"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"activeExperiments"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (EXPSearchSchemaEXPSearchSessionExperiments)initWithJSON:(id)a3
+- (EXPSearchSchemaEXPSearchSessionExperiments)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(EXPSearchSchemaEXPSearchSessionExperiments *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(EXPSearchSchemaEXPSearchSessionExperiments *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,10 +118,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_activeExperiments count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -141,16 +141,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -160,52 +160,52 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"activeExperiments"];
+    [dictionary setObject:array forKeyedSubscript:@"activeExperiments"];
   }
 
   if (self->_searchSessionId)
   {
-    v12 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    searchSessionId = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
+    dictionaryRepresentation2 = [searchSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"searchSessionId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"searchSessionId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"searchSessionId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"searchSessionId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
-  v6 = [v4 searchSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  searchSessionId = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
+  searchSessionId2 = [equalCopy searchSessionId];
+  if ((searchSessionId != 0) == (searchSessionId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
-  if (v7)
+  searchSessionId3 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
+  if (searchSessionId3)
   {
-    v8 = v7;
-    v9 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
-    v10 = [v4 searchSessionId];
-    v11 = [v9 isEqual:v10];
+    v8 = searchSessionId3;
+    searchSessionId4 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
+    searchSessionId5 = [equalCopy searchSessionId];
+    v11 = [searchSessionId4 isEqual:searchSessionId5];
 
     if (!v11)
     {
@@ -217,12 +217,12 @@
   {
   }
 
-  v5 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self activeExperiments];
-  v6 = [v4 activeExperiments];
-  if ((v5 != 0) != (v6 == 0))
+  searchSessionId = [(EXPSearchSchemaEXPSearchSessionExperiments *)self activeExperiments];
+  searchSessionId2 = [equalCopy activeExperiments];
+  if ((searchSessionId != 0) != (searchSessionId2 == 0))
   {
-    v12 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self activeExperiments];
-    if (!v12)
+    activeExperiments = [(EXPSearchSchemaEXPSearchSessionExperiments *)self activeExperiments];
+    if (!activeExperiments)
     {
 
 LABEL_15:
@@ -230,10 +230,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self activeExperiments];
-    v15 = [v4 activeExperiments];
-    v16 = [v14 isEqual:v15];
+    v13 = activeExperiments;
+    activeExperiments2 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self activeExperiments];
+    activeExperiments3 = [equalCopy activeExperiments];
+    v16 = [activeExperiments2 isEqual:activeExperiments3];
 
     if (v16)
     {
@@ -253,15 +253,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
+  toCopy = to;
+  searchSessionId = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
 
-  if (v5)
+  if (searchSessionId)
   {
-    v6 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
+    searchSessionId2 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -297,41 +297,41 @@ LABEL_13:
   }
 }
 
-- (void)addActiveExperiments:(id)a3
+- (void)addActiveExperiments:(id)experiments
 {
-  v4 = a3;
+  experimentsCopy = experiments;
   activeExperiments = self->_activeExperiments;
-  v8 = v4;
+  v8 = experimentsCopy;
   if (!activeExperiments)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_activeExperiments;
-    self->_activeExperiments = v6;
+    self->_activeExperiments = array;
 
-    v4 = v8;
+    experimentsCopy = v8;
     activeExperiments = self->_activeExperiments;
   }
 
-  [(NSArray *)activeExperiments addObject:v4];
+  [(NSArray *)activeExperiments addObject:experimentsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = EXPSearchSchemaEXPSearchSessionExperiments;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  searchSessionId = [(EXPSearchSchemaEXPSearchSessionExperiments *)self searchSessionId];
+  v7 = [searchSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(EXPSearchSchemaEXPSearchSessionExperiments *)self deleteSearchSessionId];
   }
 
-  v9 = [(EXPSearchSchemaEXPSearchSessionExperiments *)self activeExperiments];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  activeExperiments = [(EXPSearchSchemaEXPSearchSessionExperiments *)self activeExperiments];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:activeExperiments underConditions:policyCopy];
   [(EXPSearchSchemaEXPSearchSessionExperiments *)self setActiveExperiments:v10];
 
   return v5;

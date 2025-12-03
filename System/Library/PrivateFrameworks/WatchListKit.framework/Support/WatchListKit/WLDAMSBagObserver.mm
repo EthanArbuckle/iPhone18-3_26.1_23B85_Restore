@@ -1,7 +1,7 @@
 @interface WLDAMSBagObserver
 + (id)sharedObserver;
 - (WLDAMSBagObserver)init;
-- (void)_amsBagDidChangeNotification:(id)a3;
+- (void)_amsBagDidChangeNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -51,9 +51,9 @@ void __35__WLDAMSBagObserver_sharedObserver__block_invoke(id a1)
   [(WLDAMSBagObserver *)&v4 dealloc];
 }
 
-- (void)_amsBagDidChangeNotification:(id)a3
+- (void)_amsBagDidChangeNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = _BagObserverLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -61,9 +61,9 @@ void __35__WLDAMSBagObserver_sharedObserver__block_invoke(id a1)
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Bag did change notifications", buf, 2u);
   }
 
-  v5 = [v3 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v6 = [v5 objectForKey:AMSBagChangedNotificationUserInfoChangedKeys];
+  v6 = [userInfo objectForKey:AMSBagChangedNotificationUserInfoChangedKeys];
   v7 = +[WLKSettingsAMSBagTracker sharedTracker];
   v8 = dispatch_get_global_queue(0, 0);
   v11[0] = _NSConcreteStackBlock;

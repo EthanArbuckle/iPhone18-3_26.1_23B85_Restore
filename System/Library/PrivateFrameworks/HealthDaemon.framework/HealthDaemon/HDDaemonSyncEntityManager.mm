@@ -1,5 +1,5 @@
 @interface HDDaemonSyncEntityManager
-- (HDDaemonSyncEntityManager)initWithDaemon:(id)a3;
+- (HDDaemonSyncEntityManager)initWithDaemon:(id)daemon;
 - (NSArray)orderedSyncEntities;
 - (NSDictionary)syncEntitiesByIdentifier;
 - (void)_lock_loadSyncEntities;
@@ -7,16 +7,16 @@
 
 @implementation HDDaemonSyncEntityManager
 
-- (HDDaemonSyncEntityManager)initWithDaemon:(id)a3
+- (HDDaemonSyncEntityManager)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v8.receiver = self;
   v8.super_class = HDDaemonSyncEntityManager;
   v5 = [(HDDaemonSyncEntityManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -26,15 +26,15 @@
 - (void)_lock_loadSyncEntities
 {
   v70 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 16));
-    if (!*(a1 + 24))
+    os_unfair_lock_assert_owner((self + 16));
+    if (!*(self + 24))
     {
       v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v4 = [WeakRetained behavior];
-      [v4 futureMigrationsEnabled];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      behavior = [WeakRetained behavior];
+      [behavior futureMigrationsEnabled];
       v5 = HDBuiltinOrderedSyncEntities();
       v6 = [v5 mutableCopy];
 
@@ -58,8 +58,8 @@
             }
 
             v12 = *(*(&v55 + 1) + 8 * i);
-            v13 = [v12 syncEntityIdentifier];
-            [v2 setObject:v12 forKeyedSubscript:v13];
+            syncEntityIdentifier = [v12 syncEntityIdentifier];
+            [v2 setObject:v12 forKeyedSubscript:syncEntityIdentifier];
           }
 
           v9 = [v7 countByEnumeratingWithState:&v55 objects:v69 count:16];
@@ -70,17 +70,17 @@
 
       v43 = v7;
 
-      v42 = a1;
-      v14 = objc_loadWeakRetained((a1 + 8));
-      v15 = [v14 pluginManager];
-      v16 = [v15 pluginsConformingToProtocol:&unk_283CCADE8];
-      v17 = [v16 allValues];
+      selfCopy = self;
+      v14 = objc_loadWeakRetained((self + 8));
+      pluginManager = [v14 pluginManager];
+      v16 = [pluginManager pluginsConformingToProtocol:&unk_283CCADE8];
+      allValues = [v16 allValues];
 
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      obj = v17;
+      obj = allValues;
       v46 = [obj countByEnumeratingWithState:&v51 objects:v68 count:16];
       if (v46)
       {
@@ -96,13 +96,13 @@
             }
 
             v19 = *(*(&v51 + 1) + 8 * v18);
-            v20 = [v19 orderedSyncEntities];
+            orderedSyncEntities = [v19 orderedSyncEntities];
             v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
             v47 = 0u;
             v48 = 0u;
             v49 = 0u;
             v50 = 0u;
-            v22 = v20;
+            v22 = orderedSyncEntities;
             v23 = [v22 countByEnumeratingWithState:&v47 objects:v67 count:16];
             if (v23)
             {
@@ -118,13 +118,13 @@ LABEL_17:
                 }
 
                 v27 = *(*(&v47 + 1) + 8 * v26);
-                v28 = [v27 syncEntityIdentifier];
-                if ([v21 objectForKeyedSubscript:v28])
+                syncEntityIdentifier2 = [v27 syncEntityIdentifier];
+                if ([v21 objectForKeyedSubscript:syncEntityIdentifier2])
                 {
                   break;
                 }
 
-                if ([v2 objectForKeyedSubscript:v28])
+                if ([v2 objectForKeyedSubscript:syncEntityIdentifier2])
                 {
                   _HKInitializeLogging();
                   v34 = *MEMORY[0x277CCC328];
@@ -134,13 +134,13 @@ LABEL_17:
                   }
 
                   v30 = v34;
-                  v35 = [v2 objectForKeyedSubscript:v28];
+                  v35 = [v2 objectForKeyedSubscript:syncEntityIdentifier2];
                   *buf = 138544130;
                   v60 = v19;
                   v61 = 2114;
                   v62 = v27;
                   v63 = 2114;
-                  v64 = v28;
+                  v64 = syncEntityIdentifier2;
                   v65 = 2112;
                   v66 = v35;
                   v32 = v30;
@@ -148,7 +148,7 @@ LABEL_17:
                   goto LABEL_32;
                 }
 
-                [v21 setObject:v27 forKeyedSubscript:v28];
+                [v21 setObject:v27 forKeyedSubscript:syncEntityIdentifier2];
 
                 if (v24 == ++v26)
                 {
@@ -172,7 +172,7 @@ LABEL_28:
               }
 
               v30 = v29;
-              v31 = [v21 objectForKeyedSubscript:v28];
+              v31 = [v21 objectForKeyedSubscript:syncEntityIdentifier2];
               *buf = 138544130;
               v60 = v19;
               v61 = 2114;
@@ -180,7 +180,7 @@ LABEL_28:
               v63 = 2114;
               v64 = v31;
               v65 = 2114;
-              v66 = v28;
+              v66 = syncEntityIdentifier2;
               v32 = v30;
               v33 = "Plugin %{public}@ provides multiple sync entities (%{public}@, %{public}@) for identifier %{public}@. This plugin will be ignored for sync.";
 LABEL_32:
@@ -207,12 +207,12 @@ LABEL_29:
       }
 
       v37 = [v43 copy];
-      v38 = *(v42 + 24);
-      *(v42 + 24) = v37;
+      v38 = *(selfCopy + 24);
+      *(selfCopy + 24) = v37;
 
       v39 = [v2 copy];
-      v40 = *(v42 + 32);
-      *(v42 + 32) = v39;
+      v40 = *(selfCopy + 32);
+      *(selfCopy + 32) = v39;
     }
   }
 

@@ -10,7 +10,7 @@
 - (id)unsnappedPathsInOverlay:()RenderRegion
 {
   v4 = a3;
-  v5 = _unsnappedPaths(*&a1[*MEMORY[0x1E69A2798]], *&a1[*MEMORY[0x1E69A2790]], v4, a1, [a1 lineID]);
+  v5 = _unsnappedPaths(*&self[*MEMORY[0x1E69A2798]], *&self[*MEMORY[0x1E69A2790]], v4, self, [self lineID]);
 
   return v5;
 }
@@ -19,9 +19,9 @@
 {
   v9 = a3;
   v192 = a4;
-  v10 = &a1[*MEMORY[0x1E69A2780]];
-  v195 = a1;
-  v11 = &a1[*MEMORY[0x1E69A2788]];
+  v10 = &self[*MEMORY[0x1E69A2780]];
+  selfCopy = self;
+  v11 = &self[*MEMORY[0x1E69A2788]];
   v12 = *(v10 + 24);
   *v11 = *v10;
   *(v11 + 1) = v12;
@@ -34,10 +34,10 @@
 
   v227 = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
   v228 = vdupq_n_s64(0xFFEFFFFFFFFFFFFFLL);
-  v13 = [v9 routeLineDatas];
-  v14 = *v13;
-  v193 = v13 + 1;
-  if (*v13 != v13 + 1)
+  routeLineDatas = [v9 routeLineDatas];
+  v14 = *routeLineDatas;
+  v193 = routeLineDatas + 1;
+  if (*routeLineDatas != routeLineDatas + 1)
   {
     do
     {
@@ -50,8 +50,8 @@
         if (v202)
         {
           v16 = 0;
-          v200 = &v195[*MEMORY[0x1E69A27A8]];
-          v198 = &v195[*MEMORY[0x1E69A27B0]];
+          v200 = &selfCopy[*MEMORY[0x1E69A27A8]];
+          v198 = &selfCopy[*MEMORY[0x1E69A27B0]];
           while (1)
           {
             v206 = v16;
@@ -387,10 +387,10 @@ LABEL_166:
     goto LABEL_335;
   }
 
-  v197 = [MEMORY[0x1E695DF70] array];
-  v95 = [v191 routeLineDatas];
-  v98 = *v95;
-  v96 = v95 + 1;
+  array = [MEMORY[0x1E695DF70] array];
+  routeLineDatas2 = [v191 routeLineDatas];
+  v98 = *routeLineDatas2;
+  v96 = routeLineDatas2 + 1;
   v97 = v98;
   if (v98 != v96)
   {
@@ -415,8 +415,8 @@ LABEL_166:
       }
 
       v104 = 0;
-      v205 = &v195[*MEMORY[0x1E69A27A8]];
-      v203 = &v195[*MEMORY[0x1E69A27B0]];
+      v205 = &selfCopy[*MEMORY[0x1E69A27A8]];
+      v203 = &selfCopy[*MEMORY[0x1E69A27B0]];
       do
       {
         v209 = v104;
@@ -677,16 +677,16 @@ LABEL_321:
           v223 = vdiv_f32(_D9, vcvt_f32_f64(vmulq_n_f64(vsubq_f64(v228, v227), v167)));
           v224 = COERCE_DOUBLE(vmul_f32(v223, vcvt_f32_f64(vmulq_n_f64(vmlaq_n_f64(vnegq_f64(v227), vcvtq_f64_s64(v168), 1.0 / v167), v167))));
           v169 = [VKTransitPolylinePath alloc];
-          v170 = [v195 startPointIndex];
-          v171 = [v195 endPointIndex];
-          v172 = [v195 lineID];
+          startPointIndex = [selfCopy startPointIndex];
+          endPointIndex = [selfCopy endPointIndex];
+          lineID = [selfCopy lineID];
           v173 = *(v199 + 776);
           v174 = *(v173 + 176);
           v175 = geo::codec::VectorTile::key(v173);
           BYTE4(v188) = *v174;
           LODWORD(v188) = *(v175 + 1) & 0x3F;
-          v176 = [(VKTransitPolylinePath *)v169 initWithOverlay:v192 section:v195 points:v165 pointCount:v164 reversePoints:LineCount == 2 transform:&v223 routeStartIndex:__PAIR64__(v171 routeEndIndex:v170) lineID:v172 tileZ:v188 vertexPrecision:?];
-          [v197 addObject:v176];
+          v176 = [(VKTransitPolylinePath *)v169 initWithOverlay:v192 section:selfCopy points:v165 pointCount:v164 reversePoints:LineCount == 2 transform:&v223 routeStartIndex:__PAIR64__(endPointIndex routeEndIndex:startPointIndex) lineID:lineID tileZ:v188 vertexPrecision:?];
+          [array addObject:v176];
         }
 
 LABEL_323:
@@ -726,10 +726,10 @@ LABEL_324:
     while (v179 != v194);
   }
 
-  if ((a6 & 1) != 0 && ([v195 _validateSnappedPaths:v197 snappedTileBounds:&v227 overlay:v192] & 1) == 0)
+  if ((a6 & 1) != 0 && ([selfCopy _validateSnappedPaths:array snappedTileBounds:&v227 overlay:v192] & 1) == 0)
   {
     v94 = 0;
-    v186 = v197;
+    v186 = array;
   }
 
   else
@@ -744,8 +744,8 @@ LABEL_324:
     *v189 = v182;
     *(v189 + 1) = _D4;
     *(v189 + 1) = v185;
-    v186 = v197;
-    v94 = v197;
+    v186 = array;
+    v94 = array;
   }
 
 LABEL_335:
@@ -758,8 +758,8 @@ LABEL_335:
   v60 = *MEMORY[0x1E69E9840];
   v38 = a3;
   v36 = a5;
-  v7 = [a1 unsnappedPathsInOverlay:?];
-  v8 = &a1[*MEMORY[0x1E69A2780]];
+  v7 = [self unsnappedPathsInOverlay:?];
+  v8 = &self[*MEMORY[0x1E69A2780]];
   v9 = v8[1];
   v10 = *(MEMORY[0x1E69A1688] + 16);
   v11 = *(MEMORY[0x1E69A1688] + 24);
@@ -770,7 +770,7 @@ LABEL_335:
   v56[2] = v13;
   v56[3] = 1.0 - v9 / v11;
   v37 = v7;
-  if (([a1 _getEndPoints:v7 rect:v56 result:v57] & 1) == 0)
+  if (([self _getEndPoints:v7 rect:v56 result:v57] & 1) == 0)
   {
     ConnectedPath = 0;
     goto LABEL_58;
@@ -1009,21 +1009,21 @@ LABEL_58:
     {
       v12 = (v11 & 1) != 0 ? 0 : v10;
       v13 = [v7 objectAtIndex:v12];
-      v14 = [v13 pointCount];
-      if (!v14)
+      pointCount = [v13 pointCount];
+      if (!pointCount)
       {
         break;
       }
 
-      v15 = [v13 points];
-      v16 = v14 - 1;
+      points = [v13 points];
+      v16 = pointCount - 1;
       v17 = v11 & 1;
       if (v11)
       {
         v16 = 0;
       }
 
-      v18 = (v15 + 12 * v16);
+      v18 = (points + 12 * v16);
       v19 = v18[1];
       v20 = *a4 + (a4[2] - *a4) * *v18;
       v21 = (a5 + 16 * v9);

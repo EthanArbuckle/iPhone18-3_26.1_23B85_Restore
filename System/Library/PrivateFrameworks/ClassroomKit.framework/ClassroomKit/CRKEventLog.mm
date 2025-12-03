@@ -1,42 +1,42 @@
 @interface CRKEventLog
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTimeline:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTimeline:(id)timeline;
 - (CRKEventLog)init;
-- (CRKEventLog)initWithCoder:(id)a3;
-- (CRKEventLog)initWithStartDate:(id)a3 endDate:(id)a4;
-- (CRKEventLog)initWithStartDate:(id)a3 endDate:(id)a4 eventDatas:(id)a5;
-- (CRKEventLog)initWithStartDate:(id)a3 endDate:(id)a4 events:(id)a5;
+- (CRKEventLog)initWithCoder:(id)coder;
+- (CRKEventLog)initWithStartDate:(id)date endDate:(id)endDate;
+- (CRKEventLog)initWithStartDate:(id)date endDate:(id)endDate eventDatas:(id)datas;
+- (CRKEventLog)initWithStartDate:(id)date endDate:(id)endDate events:(id)events;
 - (NSSet)events;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKEventLog
 
 - (CRKEventLog)init
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = [MEMORY[0x277CBEB98] set];
-  v5 = [(CRKEventLog *)self initWithStartDate:v3 endDate:v3 events:v4];
+  v5 = [(CRKEventLog *)self initWithStartDate:date endDate:date events:v4];
 
   return v5;
 }
 
-- (CRKEventLog)initWithStartDate:(id)a3 endDate:(id)a4 events:(id)a5
+- (CRKEventLog)initWithStartDate:(id)date endDate:(id)endDate events:(id)events
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  if (!eventsCopy)
   {
     [CRKEventLog initWithStartDate:endDate:events:];
   }
 
-  v11 = [(CRKEventLog *)self initWithStartDate:v8 endDate:v9];
+  v11 = [(CRKEventLog *)self initWithStartDate:dateCopy endDate:endDateCopy];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [eventsCopy copy];
     passedInEvents = v11->_passedInEvents;
     v11->_passedInEvents = v12;
   }
@@ -44,20 +44,20 @@
   return v11;
 }
 
-- (CRKEventLog)initWithStartDate:(id)a3 endDate:(id)a4 eventDatas:(id)a5
+- (CRKEventLog)initWithStartDate:(id)date endDate:(id)endDate eventDatas:(id)datas
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  datasCopy = datas;
+  if (!datasCopy)
   {
     [CRKEventLog initWithStartDate:endDate:eventDatas:];
   }
 
-  v11 = [(CRKEventLog *)self initWithStartDate:v8 endDate:v9];
+  v11 = [(CRKEventLog *)self initWithStartDate:dateCopy endDate:endDateCopy];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [datasCopy copy];
     passedInEventDatas = v11->_passedInEventDatas;
     v11->_passedInEventDatas = v12;
   }
@@ -65,14 +65,14 @@
   return v11;
 }
 
-- (CRKEventLog)initWithStartDate:(id)a3 endDate:(id)a4
+- (CRKEventLog)initWithStartDate:(id)date endDate:(id)endDate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v9 = endDateCopy;
+  if (dateCopy)
   {
-    if (v8)
+    if (endDateCopy)
     {
       goto LABEL_3;
     }
@@ -95,8 +95,8 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_startDate, a3);
-    objc_storeStrong(&v11->_endDate, a4);
+    objc_storeStrong(&v10->_startDate, date);
+    objc_storeStrong(&v11->_endDate, endDate);
   }
 
   return v11;
@@ -104,11 +104,11 @@ LABEL_3:
 
 - (NSSet)events
 {
-  v3 = [(CRKEventLog *)self passedInEvents];
+  passedInEvents = [(CRKEventLog *)self passedInEvents];
 
-  if (v3)
+  if (passedInEvents)
   {
-    v4 = [(CRKEventLog *)self passedInEvents];
+    passedInEvents2 = [(CRKEventLog *)self passedInEvents];
   }
 
   else
@@ -116,18 +116,18 @@ LABEL_3:
     mLazilyLoadedEvents = self->mLazilyLoadedEvents;
     if (!mLazilyLoadedEvents)
     {
-      v6 = [(CRKEventLog *)self passedInEventDatas];
-      v7 = [v6 crk_mapUsingBlock:&__block_literal_global_63];
+      passedInEventDatas = [(CRKEventLog *)self passedInEventDatas];
+      v7 = [passedInEventDatas crk_mapUsingBlock:&__block_literal_global_63];
       v8 = self->mLazilyLoadedEvents;
       self->mLazilyLoadedEvents = v7;
 
       mLazilyLoadedEvents = self->mLazilyLoadedEvents;
     }
 
-    v4 = mLazilyLoadedEvents;
+    passedInEvents2 = mLazilyLoadedEvents;
   }
 
-  return v4;
+  return passedInEvents2;
 }
 
 id __21__CRKEventLog_events__block_invoke(uint64_t a1, void *a2)
@@ -157,36 +157,36 @@ id __21__CRKEventLog_events__block_invoke(uint64_t a1, void *a2)
 
 - (unint64_t)hash
 {
-  v3 = [(CRKEventLog *)self startDate];
-  v4 = [v3 hash];
-  v5 = [(CRKEventLog *)self endDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CRKEventLog *)self passedInEvents];
-  v8 = [v7 hash];
-  v9 = [(CRKEventLog *)self passedInEventDatas];
-  v10 = v8 ^ [v9 hash];
+  startDate = [(CRKEventLog *)self startDate];
+  v4 = [startDate hash];
+  endDate = [(CRKEventLog *)self endDate];
+  v6 = [endDate hash] ^ v4;
+  passedInEvents = [(CRKEventLog *)self passedInEvents];
+  v8 = [passedInEvents hash];
+  passedInEventDatas = [(CRKEventLog *)self passedInEventDatas];
+  v10 = v8 ^ [passedInEventDatas hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRKEventLog *)self isEqualToTimeline:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRKEventLog *)self isEqualToTimeline:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToTimeline:(id)a3
+- (BOOL)isEqualToTimeline:(id)timeline
 {
-  v4 = a3;
-  if (v4)
+  timelineCopy = timeline;
+  if (timelineCopy)
   {
-    v5 = [(CRKEventLog *)self startDate];
-    v6 = [v4 startDate];
-    v7 = v5;
-    v8 = v6;
+    startDate = [(CRKEventLog *)self startDate];
+    startDate2 = [timelineCopy startDate];
+    v7 = startDate;
+    v8 = startDate2;
     if (v7 | v8 && (v9 = [v7 isEqual:v8], v8, v7, !v9))
     {
       v22 = 0;
@@ -194,10 +194,10 @@ id __21__CRKEventLog_events__block_invoke(uint64_t a1, void *a2)
 
     else
     {
-      v10 = [(CRKEventLog *)self endDate];
-      v11 = [v4 endDate];
-      v12 = v10;
-      v13 = v11;
+      endDate = [(CRKEventLog *)self endDate];
+      endDate2 = [timelineCopy endDate];
+      v12 = endDate;
+      v13 = endDate2;
       if (v12 | v13 && (v14 = [v12 isEqual:v13], v13, v12, !v14))
       {
         v22 = 0;
@@ -205,10 +205,10 @@ id __21__CRKEventLog_events__block_invoke(uint64_t a1, void *a2)
 
       else
       {
-        v15 = [(CRKEventLog *)self passedInEvents];
-        v16 = [v4 passedInEvents];
-        v17 = v15;
-        v18 = v16;
+        passedInEvents = [(CRKEventLog *)self passedInEvents];
+        passedInEvents2 = [timelineCopy passedInEvents];
+        v17 = passedInEvents;
+        v18 = passedInEvents2;
         if (v17 | v18 && (v19 = [v17 isEqual:v18], v18, v17, !v19))
         {
           v22 = 0;
@@ -216,11 +216,11 @@ id __21__CRKEventLog_events__block_invoke(uint64_t a1, void *a2)
 
         else
         {
-          v20 = [(CRKEventLog *)self passedInEventDatas];
-          v21 = [v4 passedInEventDatas];
-          if (v20 | v21)
+          passedInEventDatas = [(CRKEventLog *)self passedInEventDatas];
+          passedInEventDatas2 = [timelineCopy passedInEventDatas];
+          if (passedInEventDatas | passedInEventDatas2)
           {
-            v22 = [v20 isEqual:v21];
+            v22 = [passedInEventDatas isEqual:passedInEventDatas2];
           }
 
           else
@@ -244,62 +244,62 @@ id __21__CRKEventLog_events__block_invoke(uint64_t a1, void *a2)
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKEventLog *)self startDate];
-  v6 = [(CRKEventLog *)self endDate];
-  v7 = [(CRKEventLog *)self passedInEvents];
+  startDate = [(CRKEventLog *)self startDate];
+  endDate = [(CRKEventLog *)self endDate];
+  passedInEvents = [(CRKEventLog *)self passedInEvents];
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(CRKEventLog *)self passedInEventDatas];
-  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
-  v11 = [v3 stringWithFormat:@"<%@: %p { startDate = %@, endDate = %@, passedInEvents = %@, passedInEventDatasCount = %@ }>", v4, self, v5, v6, v7, v10];
+  passedInEventDatas = [(CRKEventLog *)self passedInEventDatas];
+  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(passedInEventDatas, "count")}];
+  v11 = [v3 stringWithFormat:@"<%@: %p { startDate = %@, endDate = %@, passedInEvents = %@, passedInEventDatasCount = %@ }>", v4, self, startDate, endDate, passedInEvents, v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKEventLog *)self startDate];
-  [v4 encodeObject:v5 forKey:@"startDate"];
+  coderCopy = coder;
+  startDate = [(CRKEventLog *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
 
-  v6 = [(CRKEventLog *)self endDate];
-  [v4 encodeObject:v6 forKey:@"endDate"];
+  endDate = [(CRKEventLog *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 
-  v7 = [(CRKEventLog *)self passedInEvents];
-  [v4 encodeObject:v7 forKey:@"passedInEvents"];
+  passedInEvents = [(CRKEventLog *)self passedInEvents];
+  [coderCopy encodeObject:passedInEvents forKey:@"passedInEvents"];
 
-  v8 = [(CRKEventLog *)self passedInEventDatas];
-  [v4 encodeObject:v8 forKey:@"passedInEventDatas"];
+  passedInEventDatas = [(CRKEventLog *)self passedInEventDatas];
+  [coderCopy encodeObject:passedInEventDatas forKey:@"passedInEventDatas"];
 }
 
-- (CRKEventLog)initWithCoder:(id)a3
+- (CRKEventLog)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = CRKEventLog;
   v5 = [(CRKEventLog *)&v23 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"startDate"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"endDate"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v10;
 
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"passedInEvents"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"passedInEvents"];
     passedInEvents = v5->_passedInEvents;
     v5->_passedInEvents = v15;
 
     v17 = MEMORY[0x277CBEB98];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"passedInEventDatas"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"passedInEventDatas"];
     passedInEventDatas = v5->_passedInEventDatas;
     v5->_passedInEventDatas = v20;
   }

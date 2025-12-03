@@ -1,20 +1,20 @@
 @interface HDInsertSharedSummaryTransactionOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDInsertSharedSummaryTransactionOperation)initWithCoder:(id)a3;
-- (HDInsertSharedSummaryTransactionOperation)initWithZoneIdentifier:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDInsertSharedSummaryTransactionOperation)initWithCoder:(id)coder;
+- (HDInsertSharedSummaryTransactionOperation)initWithZoneIdentifier:(id)identifier;
 @end
 
 @implementation HDInsertSharedSummaryTransactionOperation
 
-- (HDInsertSharedSummaryTransactionOperation)initWithZoneIdentifier:(id)a3
+- (HDInsertSharedSummaryTransactionOperation)initWithZoneIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HDInsertSharedSummaryTransactionOperation;
   v5 = [(HDInsertSharedSummaryTransactionOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     zoneIdentifier = v5->_zoneIdentifier;
     v5->_zoneIdentifier = v6;
   }
@@ -22,11 +22,11 @@
   return v5;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v125 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v76 = 0;
   v77 = &v76;
   v78 = 0x3032000000;
@@ -48,10 +48,10 @@
   v65 = &v72;
   v66 = &v76;
   v67 = &v68;
-  v55 = v7;
-  v49 = v8;
+  v55 = profileCopy;
+  v49 = transactionCopy;
   v50 = v62;
-  v60 = self;
+  selfCopy = self;
   if (self)
   {
     v103 = 0;
@@ -67,7 +67,7 @@
     v101 = __Block_byref_object_dispose__181;
     v102 = 0;
     v9 = dispatch_semaphore_create(0);
-    v10 = [v55 cloudSyncManager];
+    cloudSyncManager = [v55 cloudSyncManager];
     v93[0] = MEMORY[0x277D85DD0];
     v93[1] = 3221225472;
     v93[2] = __87__HDInsertSharedSummaryTransactionOperation_performWithProfile_transaction_completion___block_invoke;
@@ -76,7 +76,7 @@
     v96 = &v103;
     dsema = v9;
     v94 = dsema;
-    [v10 cloudSyncRepositoriesForClient:0 completion:v93];
+    [cloudSyncManager cloudSyncRepositoriesForClient:0 completion:v93];
 
     v11 = dispatch_time(0, 15000000000);
     if (dispatch_semaphore_wait(dsema, v11))
@@ -86,7 +86,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *v117 = 138543362;
-        v118 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_228986000, v12, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@ Timed out waiting to complete journable operation", v117, 0xCu);
       }
     }
@@ -123,13 +123,13 @@
 
             v16 = *(*(&v87 + 1) + 8 * i);
             [v59 beginTask];
-            v17 = [[HDCloudSyncCachedZone alloc] initForZoneIdentifier:v60->_zoneIdentifier repository:v16 accessibilityAssertion:0];
+            v17 = [[HDCloudSyncCachedZone alloc] initForZoneIdentifier:selfCopy->_zoneIdentifier repository:v16 accessibilityAssertion:0];
             v82[0] = MEMORY[0x277D85DD0];
             v82[1] = 3221225472;
             v83 = __87__HDInsertSharedSummaryTransactionOperation_performWithProfile_transaction_completion___block_invoke_2;
             v84 = &unk_278616020;
             v85 = v59;
-            v86 = v60;
+            v86 = selfCopy;
             v58 = v55;
             v18 = v16;
             v19 = v17;
@@ -167,7 +167,7 @@
                   v109[2] = __105__HDInsertSharedSummaryTransactionOperation__saveRecordsAndFinishWithProfile_repository_zone_completion___block_invoke_305;
                   v109[3] = &unk_27862C168;
                   v114 = v20;
-                  v109[4] = v60;
+                  v109[4] = selfCopy;
                   v110 = 0;
                   v31 = v18;
                   v111 = v31;
@@ -175,9 +175,9 @@
                   v113 = v53;
                   v32 = v109;
                   v33 = v31;
-                  v34 = [v33 cloudSyncShimProvider];
-                  v35 = [v34 sharedSummariesShim];
-                  [v35 fetchAllSharedSummaryTransactionsWithRepository:v33 completion:v32];
+                  cloudSyncShimProvider = [v33 cloudSyncShimProvider];
+                  sharedSummariesShim = [cloudSyncShimProvider sharedSummariesShim];
+                  [sharedSummariesShim fetchAllSharedSummaryTransactionsWithRepository:v33 completion:v32];
                 }
 
                 else
@@ -187,7 +187,7 @@
                   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138543362;
-                    v120 = v60;
+                    v120 = selfCopy;
                     _os_log_error_impl(&dword_228986000, v36, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: No Summary records found.", buf, 0xCu);
                   }
 
@@ -202,11 +202,11 @@
                 if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
                 {
                   v39 = v28;
-                  v40 = [v19 zoneIdentifier];
+                  zoneIdentifier = [v19 zoneIdentifier];
                   *buf = 138543874;
-                  v120 = v60;
+                  v120 = selfCopy;
                   v121 = 2114;
-                  v122 = v40;
+                  v122 = zoneIdentifier;
                   v123 = 2114;
                   v124 = v27;
                   _os_log_error_impl(&dword_228986000, v39, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@ Failed to get summary records for %{public}@, %{public}@", buf, 0x20u);
@@ -223,11 +223,11 @@
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
               {
                 v37 = v29;
-                v38 = [v19 zoneIdentifier];
+                zoneIdentifier2 = [v19 zoneIdentifier];
                 *buf = 138543874;
-                v120 = v60;
+                v120 = selfCopy;
                 v121 = 2114;
-                v122 = v38;
+                v122 = zoneIdentifier2;
                 v123 = 2114;
                 v124 = v61;
                 _os_log_error_impl(&dword_228986000, v37, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@ Failed to get transaction records for %{public}@, %{public}@", buf, 0x20u);
@@ -262,7 +262,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
     {
       *v117 = 138543362;
-      v118 = v60;
+      selfCopy2 = selfCopy;
       _os_log_fault_impl(&dword_228986000, v41, OS_LOG_TYPE_FAULT, "[summary-sharing] %{public}@ Completion block expected to be called synchronously was called asynchronously.", v117, 0xCu);
     }
   }
@@ -271,10 +271,10 @@
   v43 = v42;
   if (v42)
   {
-    if (a5)
+    if (error)
     {
       v44 = v42;
-      *a5 = v43;
+      *error = v43;
     }
 
     else
@@ -826,10 +826,10 @@ uint64_t __119__HDInsertSharedSummaryTransactionOperation__persistRecordsWithRep
   return v5();
 }
 
-- (HDInsertSharedSummaryTransactionOperation)initWithCoder:(id)a3
+- (HDInsertSharedSummaryTransactionOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SharedSummaryTransactionOperationZoneIdentifierKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SharedSummaryTransactionOperationZoneIdentifierKey"];
 
   v6 = [(HDInsertSharedSummaryTransactionOperation *)self initWithZoneIdentifier:v5];
   return v6;

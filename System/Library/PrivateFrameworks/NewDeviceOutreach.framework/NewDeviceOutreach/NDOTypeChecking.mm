@@ -1,25 +1,25 @@
 @interface NDOTypeChecking
-+ (BOOL)isNotEmptyString:(id)a3;
-+ (void)safeAddValue:(id)a3 forKey:(id)a4 toDictionary:(id)a5;
++ (BOOL)isNotEmptyString:(id)string;
++ (void)safeAddValue:(id)value forKey:(id)key toDictionary:(id)dictionary;
 @end
 
 @implementation NDOTypeChecking
 
-+ (BOOL)isNotEmptyString:(id)a3
++ (BOOL)isNotEmptyString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) != 0 && [v3 length] != 0;
+  v4 = (objc_opt_isKindOfClass() & 1) != 0 && [stringCopy length] != 0;
 
   return v4;
 }
 
-+ (void)safeAddValue:(id)a3 forKey:(id)a4 toDictionary:(id)a5
++ (void)safeAddValue:(id)value forKey:(id)key toDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  keyCopy = key;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -32,7 +32,7 @@
     goto LABEL_12;
   }
 
-  if (![NDOTypeChecking isNotEmptyString:v8])
+  if (![NDOTypeChecking isNotEmptyString:keyCopy])
   {
     v10 = _NDOLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -51,7 +51,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!valueCopy)
   {
     v10 = _NDOLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -59,7 +59,7 @@ LABEL_12:
       v15 = 136446466;
       v16 = "+[NDOTypeChecking safeAddValue:forKey:toDictionary:]";
       v17 = 2112;
-      v18 = v8;
+      v18 = keyCopy;
       v11 = "%{public}s got nil value for key: %@";
       v12 = v10;
       v13 = 22;
@@ -69,7 +69,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [v9 setObject:v7 forKey:v8];
+  [dictionaryCopy setObject:valueCopy forKey:keyCopy];
 LABEL_13:
 
   v14 = *MEMORY[0x277D85DE8];

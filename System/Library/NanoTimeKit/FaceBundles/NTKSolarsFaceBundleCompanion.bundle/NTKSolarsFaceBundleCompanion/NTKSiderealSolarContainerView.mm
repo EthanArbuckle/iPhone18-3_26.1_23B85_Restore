@@ -1,5 +1,5 @@
 @interface NTKSiderealSolarContainerView
-- (NTKSiderealSolarContainerView)initWithFrame:(CGRect)a3 orbitDiameter:(double)a4 device:(id)a5;
+- (NTKSiderealSolarContainerView)initWithFrame:(CGRect)frame orbitDiameter:(double)diameter device:(id)device;
 - (double)poseForDayDiskBloomImage;
 - (double)poseForDayDiskImage;
 - (double)poseForDayGnomonImage;
@@ -10,26 +10,26 @@
 - (id)_diskGlow;
 - (id)_newGnomonView;
 - (id)_solarSun;
-- (void)setSolarDayProgress:(double)a3;
+- (void)setSolarDayProgress:(double)progress;
 @end
 
 @implementation NTKSiderealSolarContainerView
 
-- (NTKSiderealSolarContainerView)initWithFrame:(CGRect)a3 orbitDiameter:(double)a4 device:(id)a5
+- (NTKSiderealSolarContainerView)initWithFrame:(CGRect)frame orbitDiameter:(double)diameter device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v79.receiver = self;
   v79.super_class = NTKSiderealSolarContainerView;
-  v13 = [(NTKSiderealSolarContainerView *)&v79 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(NTKSiderealSolarContainerView *)&v79 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_device, a5);
-    v14->_orbitDiameter = a4;
+    objc_storeStrong(&height->_device, device);
+    v14->_orbitDiameter = diameter;
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
@@ -53,9 +53,9 @@
     v14->_nightAccessoryContainerView = v21;
 
     [(UIView *)v14->_nightContainerView addSubview:v14->_nightAccessoryContainerView];
-    v23 = [(NTKSiderealSolarContainerView *)v14 _newGnomonView];
+    _newGnomonView = [(NTKSiderealSolarContainerView *)v14 _newGnomonView];
     nightDiskGnomon = v14->_nightDiskGnomon;
-    v14->_nightDiskGnomon = v23;
+    v14->_nightDiskGnomon = _newGnomonView;
 
     v25 = v14->_nightDiskGnomon;
     SRGB = CGColorCreateSRGB(1.0, 1.0, 1.0, 0.0);
@@ -67,8 +67,8 @@
     v29 = [NSArray arrayWithObjects:v81 count:3];
     [(CAGradientLayer *)v25 setColors:v29];
 
-    v30 = [(UIView *)v14->_nightAccessoryContainerView layer];
-    [v30 addSublayer:v14->_nightDiskGnomon];
+    layer = [(UIView *)v14->_nightAccessoryContainerView layer];
+    [layer addSublayer:v14->_nightDiskGnomon];
 
     v31 = [UIView alloc];
     v32 = *&v76;
@@ -77,8 +77,8 @@
     nightDisk = v14->_nightDisk;
     v14->_nightDisk = v34;
 
-    v36 = [(UIView *)v14->_nightDisk layer];
-    [v36 setCornerRadius:v33 * 0.5];
+    layer2 = [(UIView *)v14->_nightDisk layer];
+    [layer2 setCornerRadius:v33 * 0.5];
 
     v37 = v14->_nightDisk;
     v38 = +[UIColor whiteColor];
@@ -101,8 +101,8 @@
     v14->_nightRing = v43;
 
     [(UIView *)v14->_nightRing setBackgroundColor:0];
-    v45 = [(UIView *)v14->_nightRing layer];
-    [v45 addSublayer:v39];
+    layer3 = [(UIView *)v14->_nightRing layer];
+    [layer3 addSublayer:v39];
 
     [(UIView *)v14->_nightContainerView addSubview:v14->_nightRing];
     v46 = [UIView alloc];
@@ -119,9 +119,9 @@
     v14->_dayAccessoryContainerView = v50;
 
     [(UIView *)v14->_dayContainerView addSubview:v14->_dayAccessoryContainerView];
-    v52 = [(NTKSiderealSolarContainerView *)v14 _newGnomonView];
+    _newGnomonView2 = [(NTKSiderealSolarContainerView *)v14 _newGnomonView];
     dayDiskGnomon = v14->_dayDiskGnomon;
-    v14->_dayDiskGnomon = v52;
+    v14->_dayDiskGnomon = _newGnomonView2;
 
     v54 = v14->_dayDiskGnomon;
     v55 = CGColorCreateSRGB(1.0, 1.0, 1.0, 0.0);
@@ -133,12 +133,12 @@
     v58 = [NSArray arrayWithObjects:v80 count:3];
     [(CAGradientLayer *)v54 setColors:v58];
 
-    v59 = [(UIView *)v14->_dayAccessoryContainerView layer];
-    [v59 addSublayer:v14->_dayDiskGnomon];
+    layer4 = [(UIView *)v14->_dayAccessoryContainerView layer];
+    [layer4 addSublayer:v14->_dayDiskGnomon];
 
     v60 = [UIImageView alloc];
-    v61 = [(NTKSiderealSolarContainerView *)v14 _dayPathGlowImage];
-    v62 = [v60 initWithImage:v61];
+    _dayPathGlowImage = [(NTKSiderealSolarContainerView *)v14 _dayPathGlowImage];
+    v62 = [v60 initWithImage:_dayPathGlowImage];
     dayPathGlow = v14->_dayPathGlow;
     v14->_dayPathGlow = v62;
 
@@ -148,8 +148,8 @@
     [(UIImageView *)v14->_dayPathGlow setCenter:?];
     [(UIView *)v14->_dayAccessoryContainerView addSubview:v14->_dayPathGlow];
     v64 = [UIImageView alloc];
-    v65 = [(NTKSiderealSolarContainerView *)v14 _diskGlow];
-    v66 = [v64 initWithImage:v65];
+    _diskGlow = [(NTKSiderealSolarContainerView *)v14 _diskGlow];
+    v66 = [v64 initWithImage:_diskGlow];
     dayDiskBloom = v14->_dayDiskBloom;
     v14->_dayDiskBloom = v66;
 
@@ -161,8 +161,8 @@
     v14->_dayDisk = v70;
 
     v72 = [[UIImageView alloc] initWithFrame:{0.0, 0.0, v69, v69}];
-    v73 = [(NTKSiderealSolarContainerView *)v14 _solarSun];
-    [v72 setImage:v73];
+    _solarSun = [(NTKSiderealSolarContainerView *)v14 _solarSun];
+    [v72 setImage:_solarSun];
 
     [(UIView *)v14->_dayDisk addSubview:v72];
     [(UIView *)v14->_dayContainerView insertSubview:v14->_dayDisk aboveSubview:v14->_dayAccessoryContainerView];
@@ -351,7 +351,7 @@
   return v3 + 2.0;
 }
 
-- (void)setSolarDayProgress:(double)a3
+- (void)setSolarDayProgress:(double)progress
 {
   CLKDegreesToRadians();
   v5 = v4;

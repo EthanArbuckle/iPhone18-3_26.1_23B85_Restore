@@ -1,16 +1,16 @@
 @interface VCPMADQuickFaceIDAssetBatch
 + (BOOL)_allowConcurrentFaceProcessing;
-+ (id)batchWithAnalysisDatabase:(id)a3 quickFaceIDManager:(id)a4 cancelBlock:(id)a5;
++ (id)batchWithAnalysisDatabase:(id)database quickFaceIDManager:(id)manager cancelBlock:(id)block;
 + (unint64_t)_concurrentQueueCount;
-- (VCPMADQuickFaceIDAssetBatch)initWithAnalysisDatabase:(id)a3 quickFaceIDManager:(id)a4 cancelBlock:(id)a5;
+- (VCPMADQuickFaceIDAssetBatch)initWithAnalysisDatabase:(id)database quickFaceIDManager:(id)manager cancelBlock:(id)block;
 - (int)_propagateAssetProcessingStatus;
-- (int)_publishProcessingStatusForPhotoLibrary:(id)a3;
+- (int)_publishProcessingStatusForPhotoLibrary:(id)library;
 - (int)_publishProcessingStatusToLegacyDatabase;
 - (int)prepare;
 - (int)process;
 - (int)publish;
-- (void)_processAssetEntry:(id)a3;
-- (void)addPhotosAsset:(id)a3 withPreviousStatus:(unint64_t)a4 attempts:(unint64_t)a5 andAttemptDate:(id)a6;
+- (void)_processAssetEntry:(id)entry;
+- (void)addPhotosAsset:(id)asset withPreviousStatus:(unint64_t)status attempts:(unint64_t)attempts andAttemptDate:(id)date;
 @end
 
 @implementation VCPMADQuickFaceIDAssetBatch
@@ -44,11 +44,11 @@
   }
 }
 
-- (VCPMADQuickFaceIDAssetBatch)initWithAnalysisDatabase:(id)a3 quickFaceIDManager:(id)a4 cancelBlock:(id)a5
+- (VCPMADQuickFaceIDAssetBatch)initWithAnalysisDatabase:(id)database quickFaceIDManager:(id)manager cancelBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  managerCopy = manager;
+  blockCopy = block;
   v27.receiver = self;
   v27.super_class = VCPMADQuickFaceIDAssetBatch;
   v12 = [(VCPMADQuickFaceIDAssetBatch *)&v27 init];
@@ -61,9 +61,9 @@
   assetEntries = v12->_assetEntries;
   v12->_assetEntries = v13;
 
-  objc_storeStrong(&v12->_analysisDatabase, a3);
-  objc_storeStrong(&v12->_quickFaceIDManager, a4);
-  v15 = objc_retainBlock(v11);
+  objc_storeStrong(&v12->_analysisDatabase, database);
+  objc_storeStrong(&v12->_quickFaceIDManager, manager);
+  v15 = objc_retainBlock(blockCopy);
   cancelBlock = v12->_cancelBlock;
   v12->_cancelBlock = v15;
 
@@ -85,9 +85,9 @@
   processGroup = v12->_processGroup;
   v12->_processGroup = v19;
 
-  v21 = [v17 getJobScheduler];
+  getJobScheduler = [v17 getJobScheduler];
   scheduler = v12->_scheduler;
-  v12->_scheduler = v21;
+  v12->_scheduler = getJobScheduler;
 
   if (v12->_scheduler)
   {
@@ -113,20 +113,20 @@ LABEL_12:
   return v23;
 }
 
-+ (id)batchWithAnalysisDatabase:(id)a3 quickFaceIDManager:(id)a4 cancelBlock:(id)a5
++ (id)batchWithAnalysisDatabase:(id)database quickFaceIDManager:(id)manager cancelBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithAnalysisDatabase:v8 quickFaceIDManager:v9 cancelBlock:v10];
+  databaseCopy = database;
+  managerCopy = manager;
+  blockCopy = block;
+  v11 = [[self alloc] initWithAnalysisDatabase:databaseCopy quickFaceIDManager:managerCopy cancelBlock:blockCopy];
 
   return v11;
 }
 
-- (void)addPhotosAsset:(id)a3 withPreviousStatus:(unint64_t)a4 attempts:(unint64_t)a5 andAttemptDate:(id)a6
+- (void)addPhotosAsset:(id)asset withPreviousStatus:(unint64_t)status attempts:(unint64_t)attempts andAttemptDate:(id)date
 {
-  v8 = a3;
-  v22 = a6;
+  assetCopy = asset;
+  dateCopy = date;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -145,10 +145,10 @@ LABEL_12:
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v23 + 1) + 8 * i) asset];
-        v14 = [v13 localIdentifier];
-        v15 = [v8 localIdentifier];
-        v16 = [v14 isEqualToString:v15];
+        asset = [*(*(&v23 + 1) + 8 * i) asset];
+        localIdentifier = [asset localIdentifier];
+        localIdentifier2 = [assetCopy localIdentifier];
+        v16 = [localIdentifier isEqualToString:localIdentifier2];
 
         if (v16)
         {
@@ -157,9 +157,9 @@ LABEL_12:
             v18 = VCPLogToOSLogType[4];
             if (os_log_type_enabled(&_os_log_default, v18))
             {
-              v19 = [v8 localIdentifier];
+              localIdentifier3 = [assetCopy localIdentifier];
               *buf = 138412290;
-              v28 = v19;
+              v28 = localIdentifier3;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v18, "[QuickFaceID][%@] Batch already contains asset; ignoring", buf, 0xCu);
             }
           }
@@ -179,7 +179,7 @@ LABEL_12:
   }
 
   assetEntries = self->_assetEntries;
-  v9 = [VCPMADQuickFaceIDAssetEntry entryWithAsset:v8 previousStatus:a4 previousAttempts:a5 andLastAttemptDate:v22];
+  v9 = [VCPMADQuickFaceIDAssetEntry entryWithAsset:assetCopy previousStatus:status previousAttempts:attempts andLastAttemptDate:dateCopy];
   [(NSMutableArray *)assetEntries addObject:v9];
 LABEL_13:
 }
@@ -205,11 +205,11 @@ LABEL_13:
   v7 = +[NSDate now];
   if (+[MADManagedProcessingStatus isMACDPersistEnabled])
   {
-    v8 = [(NSMutableArray *)self->_assetEntries firstObject];
-    v9 = [v8 asset];
-    v10 = [v9 photoLibrary];
+    firstObject = [(NSMutableArray *)self->_assetEntries firstObject];
+    asset = [firstObject asset];
+    photoLibrary = [asset photoLibrary];
 
-    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v10])
+    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:photoLibrary])
     {
       if (!self->_allowBeforeMigration)
       {
@@ -258,7 +258,7 @@ LABEL_13:
       v48[4] = self;
       v49 = v7;
       v47 = 0;
-      v29 = [(NSMutableArray *)v10 mad_performAnalysisDataStoreChanges:v48 error:&v47];
+      v29 = [(NSMutableArray *)photoLibrary mad_performAnalysisDataStoreChanges:v48 error:&v47];
       v30 = v47;
       v31 = v30;
       if (v29)
@@ -320,8 +320,8 @@ LABEL_54:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = self->_assetEntries;
-  v15 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v43 objects:v50 count:16];
+  photoLibrary = self->_assetEntries;
+  v15 = [(NSMutableArray *)photoLibrary countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v15)
   {
     v16 = *v44;
@@ -332,14 +332,14 @@ LABEL_15:
     {
       if (*v44 != v16)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(photoLibrary);
       }
 
       v19 = *(*(&v43 + 1) + 8 * v17);
       analysisDatabase = self->_analysisDatabase;
-      v21 = [v19 previousAttempts];
-      v22 = [v19 asset];
-      v23 = [(VCPDatabaseWriter *)analysisDatabase setAttempts:v21 + 1 asset:v22 taskID:8 status:1 lastAttemptDate:v7];
+      previousAttempts = [v19 previousAttempts];
+      asset2 = [v19 asset];
+      v23 = [(VCPDatabaseWriter *)analysisDatabase setAttempts:previousAttempts + 1 asset:asset2 taskID:8 status:1 lastAttemptDate:v7];
 
       if (v23 == -108)
       {
@@ -370,7 +370,7 @@ LABEL_15:
       v18 = v2;
       if (v15 == v17)
       {
-        v15 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v43 objects:v50 count:16];
+        v15 = [(NSMutableArray *)photoLibrary countByEnumeratingWithState:&v43 objects:v50 count:16];
         if (v15)
         {
           goto LABEL_15;
@@ -381,29 +381,29 @@ LABEL_15:
     }
   }
 
-  v34 = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
-  if (v34 == -108 || v34 == -36)
+  commit = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
+  if (commit == -108 || commit == -36)
   {
-    v35 = v34;
+    v35 = commit;
   }
 
   else
   {
-    v35 = v34;
-    if (v34 != -23)
+    v35 = commit;
+    if (commit != -23)
     {
       v35 = v2;
     }
   }
 
-  if (v34 != -108 && v34 != -36 && v34 != -23)
+  if (commit != -108 && commit != -36 && commit != -23)
   {
     v40 = VCPSignPostLog();
-    v10 = v40;
+    photoLibrary = v40;
     if (v41 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v40))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, &v10->super.super, OS_SIGNPOST_INTERVAL_END, spid, "VCPMADQuickFaceIDAssetBatch_LegacyPrepare", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, &photoLibrary->super.super, OS_SIGNPOST_INTERVAL_END, spid, "VCPMADQuickFaceIDAssetBatch_LegacyPrepare", "", buf, 2u);
     }
 
     goto LABEL_53;
@@ -414,18 +414,18 @@ LABEL_55:
   return v35;
 }
 
-- (void)_processAssetEntry:(id)a3
+- (void)_processAssetEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v5 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      v6 = [v4 asset];
-      v7 = [v6 localIdentifier];
+      asset = [entryCopy asset];
+      localIdentifier = [asset localIdentifier];
       *buf = 138412290;
-      v26 = v7;
+      v26 = localIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[QuickFaceID][%@] Processing asset", buf, 0xCu);
     }
   }
@@ -445,13 +445,13 @@ LABEL_55:
   }
 
   quickFaceIDManager = self->_quickFaceIDManager;
-  v14 = [v4 asset];
+  asset2 = [entryCopy asset];
   v23 = 0;
   v24 = 0;
-  v15 = [(VCPPhotosQuickFaceIdentificationManager *)quickFaceIDManager processAsset:v14 onDemandDetection:1 detectedFaces:&v24 detectedPersons:&v23];
+  v15 = [(VCPPhotosQuickFaceIdentificationManager *)quickFaceIDManager processAsset:asset2 onDemandDetection:1 detectedFaces:&v24 detectedPersons:&v23];
   v16 = v24;
   v17 = v23;
-  [v4 setStatus:v15];
+  [entryCopy setStatus:v15];
 
   v18 = VCPSignPostLog();
   v19 = v18;
@@ -461,17 +461,17 @@ LABEL_55:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_END, v10, "VCPMADQuickFaceIDAssetBatch_ProcessAsset", "", buf, 2u);
   }
 
-  if ([v4 status])
+  if ([entryCopy status])
   {
     if (MediaAnalysisLogLevel() >= 3)
     {
       v20 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v20))
       {
-        v21 = [v4 asset];
-        v22 = [v21 localIdentifier];
+        asset3 = [entryCopy asset];
+        localIdentifier2 = [asset3 localIdentifier];
         *buf = 138412290;
-        v26 = v22;
+        v26 = localIdentifier2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v20, "[QuickFaceID][%@] Failed to process asset", buf, 0xCu);
       }
     }
@@ -479,8 +479,8 @@ LABEL_55:
 
   else
   {
-    [v4 setDetectedFaces:v16];
-    [v4 setDetectedPersons:v17];
+    [entryCopy setDetectedFaces:v16];
+    [entryCopy setDetectedPersons:v17];
   }
 }
 
@@ -530,10 +530,10 @@ LABEL_55:
     {
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, v13))
       {
-        v18 = [v16 asset];
-        v19 = [v18 localIdentifier];
+        asset = [v16 asset];
+        localIdentifier = [asset localIdentifier];
         *buf = v34;
-        v38[0] = v19;
+        v38[0] = localIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[QuickFaceID][%@] Processing canceled; skipping asset", buf, 0xCu);
       }
 
@@ -542,10 +542,10 @@ LABEL_55:
 
     else
     {
-      v20 = [v16 asset];
-      v21 = [v20 vcp_isPano];
+      asset2 = [v16 asset];
+      vcp_isPano = [asset2 vcp_isPano];
 
-      if (v21)
+      if (vcp_isPano)
       {
         [v11 addObject:v16];
       }
@@ -579,10 +579,10 @@ LABEL_55:
     {
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, v13))
       {
-        v28 = [v26 asset];
-        v29 = [v28 localIdentifier];
+        asset3 = [v26 asset];
+        localIdentifier2 = [asset3 localIdentifier];
         *buf = v34;
-        v38[0] = v29;
+        v38[0] = localIdentifier2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[QuickFaceID][%@] Processing canceled; skipping asset", buf, 0xCu);
       }
 
@@ -641,8 +641,8 @@ LABEL_3:
 
       v7 = *(*(&v11 + 1) + 8 * v6);
       v8 = objc_autoreleasePoolPush();
-      v9 = [v7 status];
-      if (v9 == -128)
+      status = [v7 status];
+      if (status == -128)
       {
         v3 = -128;
       }
@@ -653,7 +653,7 @@ LABEL_3:
       }
 
       objc_autoreleasePoolPop(v8);
-      if (v9 == -128)
+      if (status == -128)
       {
         break;
       }
@@ -674,7 +674,7 @@ LABEL_3:
   return v3;
 }
 
-- (int)_publishProcessingStatusForPhotoLibrary:(id)a3
+- (int)_publishProcessingStatusForPhotoLibrary:(id)library
 {
   v8 = 0;
   v9[0] = _NSConcreteStackBlock;
@@ -682,20 +682,20 @@ LABEL_3:
   v9[2] = sub_10005C2EC;
   v9[3] = &unk_100283AD0;
   v9[4] = self;
-  v3 = [a3 mad_performAnalysisDataStoreChanges:v9 error:&v8];
+  v3 = [library mad_performAnalysisDataStoreChanges:v9 error:&v8];
   v4 = v8;
   v5 = v4;
   if (v3)
   {
-    v6 = 0;
+    code = 0;
   }
 
   else
   {
-    v6 = [v4 code];
+    code = [v4 code];
   }
 
-  return v6;
+  return code;
 }
 
 - (int)_publishProcessingStatusToLegacyDatabase
@@ -727,9 +727,9 @@ LABEL_3:
 
       v6 = *(*(&v38 + 1) + 8 * v4);
       v7 = objc_autoreleasePoolPush();
-      v8 = [v6 asset];
-      v9 = [v8 localIdentifier];
-      v10 = [NSString stringWithFormat:@"[QuickFaceID][%@][Legacy]", v9];
+      asset = [v6 asset];
+      localIdentifier = [asset localIdentifier];
+      v10 = [NSString stringWithFormat:@"[QuickFaceID][%@][Legacy]", localIdentifier];
 
       if (![v6 status])
       {
@@ -741,9 +741,9 @@ LABEL_3:
         }
 
         analysisDatabase = self->_analysisDatabase;
-        v18 = [v6 asset];
-        v19 = [v18 localIdentifier];
-        v20 = [(VCPDatabaseWriter *)analysisDatabase removeProcessingStatusForLocalIdentifier:v19 andTaskID:8];
+        asset2 = [v6 asset];
+        localIdentifier2 = [asset2 localIdentifier];
+        v20 = [(VCPDatabaseWriter *)analysisDatabase removeProcessingStatusForLocalIdentifier:localIdentifier2 andTaskID:8];
 
 LABEL_33:
         if (v20 == -108 || v20 == -36)
@@ -781,14 +781,14 @@ LABEL_38:
 
         [v6 status];
         v21 = MADProcessingStatusForOSStatus();
-        v22 = [v6 asset];
-        v23 = [v6 currentAttemptDate];
-        v24 = [v22 mad_nextAttemptDateForStatus:v21 currentAttemptDate:v23 attemptCount:{objc_msgSend(v6, "previousAttempts") + 1}];
+        asset3 = [v6 asset];
+        currentAttemptDate = [v6 currentAttemptDate];
+        v24 = [asset3 mad_nextAttemptDateForStatus:v21 currentAttemptDate:currentAttemptDate attemptCount:{objc_msgSend(v6, "previousAttempts") + 1}];
 
         v25 = self->_analysisDatabase;
-        v26 = [v6 asset];
-        v27 = [v26 localIdentifier];
-        v20 = [(VCPDatabaseWriter *)v25 updateProcessingStatus:v21 andNextAttemptDate:v24 forLocalIdentifier:v27 andTaskID:8];
+        asset4 = [v6 asset];
+        localIdentifier3 = [asset4 localIdentifier];
+        v20 = [(VCPDatabaseWriter *)v25 updateProcessingStatus:v21 andNextAttemptDate:v24 forLocalIdentifier:localIdentifier3 andTaskID:8];
 
         if (v20 == -108 || v20 == -36)
         {
@@ -817,9 +817,9 @@ LABEL_38:
         }
 
         v28 = self->_analysisDatabase;
-        v29 = [v6 asset];
-        v30 = [v29 localIdentifier];
-        v20 = [(VCPDatabaseWriter *)v28 removeProcessingStatusForLocalIdentifier:v30 andTaskID:8];
+        asset5 = [v6 asset];
+        localIdentifier4 = [asset5 localIdentifier];
+        v20 = [(VCPDatabaseWriter *)v28 removeProcessingStatusForLocalIdentifier:localIdentifier4 andTaskID:8];
 
         goto LABEL_33;
       }
@@ -832,11 +832,11 @@ LABEL_38:
       }
 
       v11 = self->_analysisDatabase;
-      v12 = [v6 previousAttempts];
-      v13 = [v6 asset];
-      v14 = [v6 previousStatus];
-      v15 = [v6 lastAttemptDate];
-      v16 = [(VCPDatabaseWriter *)v11 setAttempts:v12 asset:v13 taskID:8 status:v14 lastAttemptDate:v15];
+      previousAttempts = [v6 previousAttempts];
+      asset6 = [v6 asset];
+      previousStatus = [v6 previousStatus];
+      lastAttemptDate = [v6 lastAttemptDate];
+      v16 = [(VCPDatabaseWriter *)v11 setAttempts:previousAttempts asset:asset6 taskID:8 status:previousStatus lastAttemptDate:lastAttemptDate];
 
       if (v16 == -108 || v16 == -36)
       {
@@ -902,11 +902,11 @@ LABEL_52:
     return 0;
   }
 
-  v5 = [(NSMutableArray *)self->_assetEntries firstObject];
-  v6 = [v5 asset];
-  v41 = [v6 photoLibrary];
+  firstObject = [(NSMutableArray *)self->_assetEntries firstObject];
+  asset = [firstObject asset];
+  photoLibrary = [asset photoLibrary];
 
-  v7 = [MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v41];
+  v7 = [MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:photoLibrary];
   if (v7 && !self->_allowBeforeMigration)
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -919,7 +919,7 @@ LABEL_52:
       }
     }
 
-    v11 = -18;
+    _propagateAssetProcessingStatus = -18;
   }
 
   else
@@ -936,14 +936,14 @@ LABEL_52:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, spid, "VCPMADQuickFaceIDAssetBatch_Publish", "", buf, 2u);
     }
 
-    v11 = [(VCPMADQuickFaceIDAssetBatch *)self _propagateAssetProcessingStatus];
+    _propagateAssetProcessingStatus = [(VCPMADQuickFaceIDAssetBatch *)self _propagateAssetProcessingStatus];
     v47[0] = _NSConcreteStackBlock;
     v47[1] = 3221225472;
     v47[2] = sub_10005D450;
     v47[3] = &unk_100282BC8;
-    v37 = v41;
+    v37 = photoLibrary;
     v48 = v37;
-    v49 = self;
+    selfCopy = self;
     v39 = objc_retainBlock(v47);
     cancelBlock = self->_cancelBlock;
     v46 = 0;
@@ -1006,20 +1006,20 @@ LABEL_52:
         while (v17);
       }
 
-      v22 = [v40 code];
-      if (v11)
+      code = [v40 code];
+      if (_propagateAssetProcessingStatus)
       {
         v23 = 1;
       }
 
       else
       {
-        v23 = v22 == 0;
+        v23 = code == 0;
       }
 
       if (!v23)
       {
-        v11 = v22;
+        _propagateAssetProcessingStatus = code;
       }
     }
 
@@ -1041,34 +1041,34 @@ LABEL_52:
       if (+[MADManagedProcessingStatus isMACDPersistEnabled])
       {
         v25 = [(VCPMADQuickFaceIDAssetBatch *)self _publishProcessingStatusForPhotoLibrary:v37];
-        if (!v11 && v25 != 0)
+        if (!_propagateAssetProcessingStatus && v25 != 0)
         {
-          v11 = v25;
+          _propagateAssetProcessingStatus = v25;
         }
       }
 
       if (+[VCPDatabaseWriter isLegacyPersistEnabled])
       {
-        v27 = [(VCPMADQuickFaceIDAssetBatch *)self _publishProcessingStatusToLegacyDatabase];
-        v28 = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
-        if (v11)
+        _publishProcessingStatusToLegacyDatabase = [(VCPMADQuickFaceIDAssetBatch *)self _publishProcessingStatusToLegacyDatabase];
+        commit = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
+        if (_propagateAssetProcessingStatus)
         {
           v29 = 1;
         }
 
         else
         {
-          v29 = v27 == 0;
+          v29 = _publishProcessingStatusToLegacyDatabase == 0;
         }
 
         if (v29)
         {
-          v30 = v11;
+          v30 = _propagateAssetProcessingStatus;
         }
 
         else
         {
-          v30 = v27;
+          v30 = _publishProcessingStatusToLegacyDatabase;
         }
 
         if (v30)
@@ -1078,17 +1078,17 @@ LABEL_52:
 
         else
         {
-          v31 = v28 == 0;
+          v31 = commit == 0;
         }
 
         if (v31)
         {
-          v11 = v30;
+          _propagateAssetProcessingStatus = v30;
         }
 
         else
         {
-          v11 = v28;
+          _propagateAssetProcessingStatus = commit;
         }
       }
     }
@@ -1102,7 +1102,7 @@ LABEL_52:
     }
   }
 
-  return v11;
+  return _propagateAssetProcessingStatus;
 }
 
 @end

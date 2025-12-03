@@ -1,9 +1,9 @@
 @interface LNViewAction
-- (LNViewAction)initWithActionIdentifier:(id)a3 viewIdentifier:(int64_t)a4 location:(LNViewLocation *)a5;
-- (LNViewAction)initWithCoder:(id)a3;
+- (LNViewAction)initWithActionIdentifier:(id)identifier viewIdentifier:(int64_t)viewIdentifier location:(LNViewLocation *)location;
+- (LNViewAction)initWithCoder:(id)coder;
 - (LNViewLocation)location;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNViewAction
@@ -17,27 +17,27 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(LNViewAction *)self actionIdentifier];
-  [v5 encodeObject:v4 forKey:@"actionIdentifier"];
+  coderCopy = coder;
+  actionIdentifier = [(LNViewAction *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 
-  [v5 encodeInteger:-[LNViewAction viewIdentifier](self forKey:{"viewIdentifier"), @"viewIdentifier"}];
-  [v5 encodeBytes:&self->_location length:48 forKey:@"location"];
+  [coderCopy encodeInteger:-[LNViewAction viewIdentifier](self forKey:{"viewIdentifier"), @"viewIdentifier"}];
+  [coderCopy encodeBytes:&self->_location length:48 forKey:@"location"];
 }
 
-- (LNViewAction)initWithCoder:(id)a3
+- (LNViewAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"viewIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"viewIdentifier"];
   if (v5)
   {
     v7 = v6;
     v14 = 0;
-    v8 = [v4 decodeBytesForKey:@"location" returnedLength:&v14];
-    v9 = 0;
+    v8 = [coderCopy decodeBytesForKey:@"location" returnedLength:&v14];
+    selfCopy = 0;
     if (v8 && v14 == 48)
     {
       v10 = *v8;
@@ -46,35 +46,35 @@
       v13[2] = v11;
       v13[0] = v10;
       self = [(LNViewAction *)self initWithActionIdentifier:v5 viewIdentifier:v7 location:v13];
-      v9 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LNViewAction *)self actionIdentifier];
-  v5 = [(LNViewAction *)self viewIdentifier];
+  actionIdentifier = [(LNViewAction *)self actionIdentifier];
+  viewIdentifier = [(LNViewAction *)self viewIdentifier];
   v6 = LNViewLocationAsString(&self->_location);
-  v7 = [v3 stringWithFormat:@"%@(%ld) @ %@", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@(%ld) @ %@", actionIdentifier, viewIdentifier, v6];
 
   return v7;
 }
 
-- (LNViewAction)initWithActionIdentifier:(id)a3 viewIdentifier:(int64_t)a4 location:(LNViewLocation *)a5
+- (LNViewAction)initWithActionIdentifier:(id)identifier viewIdentifier:(int64_t)viewIdentifier location:(LNViewLocation *)location
 {
-  v10 = a3;
-  if (v10)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    if (a4)
+    if (viewIdentifier)
     {
       goto LABEL_3;
     }
@@ -82,17 +82,17 @@
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNViewAction.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNViewAction.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
-    if (a4)
+    if (viewIdentifier)
     {
       goto LABEL_3;
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNViewAction.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"viewIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNViewAction.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"viewIdentifier"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -101,11 +101,11 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_actionIdentifier, a3);
-    v12->_viewIdentifier = a4;
-    v13 = *&a5->x;
-    v14 = *&a5->z;
-    *&v12->_location.height = *&a5->height;
+    objc_storeStrong(&v11->_actionIdentifier, identifier);
+    v12->_viewIdentifier = viewIdentifier;
+    v13 = *&location->x;
+    v14 = *&location->z;
+    *&v12->_location.height = *&location->height;
     *&v12->_location.z = v14;
     *&v12->_location.x = v13;
     v15 = v12;

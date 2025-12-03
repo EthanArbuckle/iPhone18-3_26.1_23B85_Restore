@@ -1,21 +1,21 @@
 @interface SFDefaults
-+ (void)setHasSeenAnnounceNotifications:(BOOL)a3;
-+ (void)setSiriNotificationsPrompted:(unint64_t)a3;
++ (void)setHasSeenAnnounceNotifications:(BOOL)notifications;
++ (void)setSiriNotificationsPrompted:(unint64_t)prompted;
 @end
 
 @implementation SFDefaults
 
-+ (void)setSiriNotificationsPrompted:(unint64_t)a3
++ (void)setSiriNotificationsPrompted:(unint64_t)prompted
 {
   CFPrefs_SetInt64();
 
   CFPreferencesAppSynchronize(@"com.apple.Sharing");
 }
 
-+ (void)setHasSeenAnnounceNotifications:(BOOL)a3
++ (void)setHasSeenAnnounceNotifications:(BOOL)notifications
 {
   v3 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!notifications)
   {
     v3 = MEMORY[0x1E695E4C0];
   }

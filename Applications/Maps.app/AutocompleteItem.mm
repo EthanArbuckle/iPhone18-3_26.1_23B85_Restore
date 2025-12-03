@@ -1,11 +1,11 @@
 @interface AutocompleteItem
-+ (id)keysForServerCompletion:(id)a3;
-- (AutocompleteItem)initWithLocalCompletion:(id)a3 sourceType:(int64_t)a4 sourceSubtype:(int64_t)a5 hasPriorityOverride:(BOOL)a6 priorityOverride:(int64_t)a7 matchInfo:(id)a8;
-- (AutocompleteItem)initWithPersonalizedItem:(id)a3 matchInfo:(id)a4;
-- (AutocompleteItem)initWithServerCompletion:(id)a3 hasPriorityOverride:(BOOL)a4 priorityOverride:(int64_t)a5 serverResultScoreMetadata:(id)a6;
++ (id)keysForServerCompletion:(id)completion;
+- (AutocompleteItem)initWithLocalCompletion:(id)completion sourceType:(int64_t)type sourceSubtype:(int64_t)subtype hasPriorityOverride:(BOOL)override priorityOverride:(int64_t)priorityOverride matchInfo:(id)info;
+- (AutocompleteItem)initWithPersonalizedItem:(id)item matchInfo:(id)info;
+- (AutocompleteItem)initWithServerCompletion:(id)completion hasPriorityOverride:(BOOL)override priorityOverride:(int64_t)priorityOverride serverResultScoreMetadata:(id)metadata;
 - (CLLocationCoordinate2D)coordinate;
 - (PersonalizedItemSource)source;
-- (id)_searchItemForString:(id)a3;
+- (id)_searchItemForString:(id)string;
 - (id)leafPersonalizedAutocompleteItems;
 @end
 
@@ -20,8 +20,8 @@
 
 - (id)leafPersonalizedAutocompleteItems
 {
-  v4 = self;
-  v2 = [NSArray arrayWithObjects:&v4 count:1];
+  selfCopy = self;
+  v2 = [NSArray arrayWithObjects:&selfCopy count:1];
 
   return v2;
 }
@@ -45,11 +45,11 @@
   return result;
 }
 
-- (id)_searchItemForString:(id)a3
+- (id)_searchItemForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(MSPMutableHistoryEntrySearch);
-  [v4 setQuery:v3];
+  [v4 setQuery:stringCopy];
 
   v8 = 0;
   v5 = [v4 transferToImmutableIfValidWithError:&v8];
@@ -58,75 +58,75 @@
   return v6;
 }
 
-- (AutocompleteItem)initWithPersonalizedItem:(id)a3 matchInfo:(id)a4
+- (AutocompleteItem)initWithPersonalizedItem:(id)item matchInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  infoCopy = info;
   v26.receiver = self;
   v26.super_class = AutocompleteItem;
   v8 = [(AutocompleteItem *)&v26 init];
   if (v8)
   {
-    v8->_sourceType = [v6 sourceType];
-    v8->_sourceSubtype = [v6 sourceSubtype];
-    if ([v6 hasPriorityOverride])
+    v8->_sourceType = [itemCopy sourceType];
+    v8->_sourceSubtype = [itemCopy sourceSubtype];
+    if ([itemCopy hasPriorityOverride])
     {
       v8->_hasPriorityOverride = 1;
-      v8->_priorityOverride = [v6 priorityOverride];
+      v8->_priorityOverride = [itemCopy priorityOverride];
     }
 
-    v9 = [v6 serverResultScoreMetadata];
+    serverResultScoreMetadata = [itemCopy serverResultScoreMetadata];
     serverResultScoreMetadata = v8->_serverResultScoreMetadata;
-    v8->_serverResultScoreMetadata = v9;
+    v8->_serverResultScoreMetadata = serverResultScoreMetadata;
 
-    v8->_hidden = [v6 hidden];
-    v11 = [v6 hasServerItemIndex];
-    v8->_hasServerItemIndex = v11;
-    if (v11)
+    v8->_hidden = [itemCopy hidden];
+    hasServerItemIndex = [itemCopy hasServerItemIndex];
+    v8->_hasServerItemIndex = hasServerItemIndex;
+    if (hasServerItemIndex)
     {
-      v8->_serverSectionIndex = [v6 serverSectionIndex];
-      v12 = [v6 serverItemIndexInSection];
+      v8->_serverSectionIndex = [itemCopy serverSectionIndex];
+      serverItemIndexInSection = [itemCopy serverItemIndexInSection];
     }
 
     else
     {
-      v12 = 0x7FFFFFFFFFFFFFFFLL;
+      serverItemIndexInSection = 0x7FFFFFFFFFFFFFFFLL;
       v8->_serverSectionIndex = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v8->_serverItemIndexInSection = v12;
-    v13 = [v6 autocompleteObject];
+    v8->_serverItemIndexInSection = serverItemIndexInSection;
+    autocompleteObject = [itemCopy autocompleteObject];
     object = v8->_object;
-    v8->_object = v13;
+    v8->_object = autocompleteObject;
 
-    v15 = [v6 keys];
+    keys = [itemCopy keys];
     keys = v8->_keys;
-    v8->_keys = v15;
+    v8->_keys = keys;
 
-    v17 = [v6 title];
-    v18 = [v17 value];
+    title = [itemCopy title];
+    value = [title value];
     title = v8->_title;
-    v8->_title = v18;
+    v8->_title = value;
 
-    v20 = [v6 subtitle];
-    v21 = [v20 value];
+    subtitle = [itemCopy subtitle];
+    value2 = [subtitle value];
     subtitle = v8->_subtitle;
-    v8->_subtitle = v21;
+    v8->_subtitle = value2;
 
-    v23 = [v6 mapItem];
+    mapItem = [itemCopy mapItem];
     mapItem = v8->_mapItem;
-    v8->_mapItem = v23;
+    v8->_mapItem = mapItem;
 
-    objc_storeStrong(&v8->_matchInfo, a4);
+    objc_storeStrong(&v8->_matchInfo, info);
   }
 
   return v8;
 }
 
-- (AutocompleteItem)initWithLocalCompletion:(id)a3 sourceType:(int64_t)a4 sourceSubtype:(int64_t)a5 hasPriorityOverride:(BOOL)a6 priorityOverride:(int64_t)a7 matchInfo:(id)a8
+- (AutocompleteItem)initWithLocalCompletion:(id)completion sourceType:(int64_t)type sourceSubtype:(int64_t)subtype hasPriorityOverride:(BOOL)override priorityOverride:(int64_t)priorityOverride matchInfo:(id)info
 {
-  v15 = a3;
-  v16 = a8;
+  completionCopy = completion;
+  infoCopy = info;
   v110.receiver = self;
   v110.super_class = AutocompleteItem;
   v17 = [(AutocompleteItem *)&v110 init];
@@ -136,29 +136,29 @@
     goto LABEL_67;
   }
 
-  objc_storeStrong(&v17->_object, a3);
-  v18->_sourceType = a4;
-  v18->_sourceSubtype = a5;
-  v18->_hasPriorityOverride = a6;
-  v18->_priorityOverride = a7;
+  objc_storeStrong(&v17->_object, completion);
+  v18->_sourceType = type;
+  v18->_sourceSubtype = subtype;
+  v18->_hasPriorityOverride = override;
+  v18->_priorityOverride = priorityOverride;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v27 = v15;
-      v28 = [v27 displayString];
+      v27 = completionCopy;
+      displayString = [v27 displayString];
       title = v18->_title;
-      v18->_title = v28;
+      v18->_title = displayString;
 
       subtitle = v18->_subtitle;
       v18->_subtitle = &stru_1016631F0;
 
-      v31 = [v27 displayString];
-      if (!v16)
+      displayString2 = [v27 displayString];
+      if (!infoCopy)
       {
-        v16 = [AutocompleteMatchInfo matchInfoWithType:1];
+        infoCopy = [AutocompleteMatchInfo matchInfoWithType:1];
       }
 
       goto LABEL_56;
@@ -167,10 +167,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v40 = v15;
-      v41 = [v40 compositeName];
+      v40 = completionCopy;
+      compositeName = [v40 compositeName];
       v42 = v18->_title;
-      v18->_title = v41;
+      v18->_title = compositeName;
 
       goto LABEL_55;
     }
@@ -178,12 +178,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v40 = v15;
-      v63 = [v40 title];
+      v40 = completionCopy;
+      title = [v40 title];
       v64 = v18->_title;
-      v18->_title = v63;
+      v18->_title = title;
 
-      v65 = [v40 subTitle];
+      subTitle = [v40 subTitle];
     }
 
     else
@@ -191,12 +191,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v40 = v15;
-        v73 = [v40 displayName];
+        v40 = completionCopy;
+        displayName = [v40 displayName];
         v74 = v18->_title;
-        v18->_title = v73;
+        v18->_title = displayName;
 
-        v65 = [v40 address];
+        subTitle = [v40 address];
       }
 
       else
@@ -210,13 +210,13 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v31 = v15;
-              objc_storeStrong(&v18->_title, a3);
-              v105 = [(AutocompleteItem *)v18 _searchItemForString:v31];
+              displayString2 = completionCopy;
+              objc_storeStrong(&v18->_title, completion);
+              v105 = [(AutocompleteItem *)v18 _searchItemForString:displayString2];
               object = v18->_object;
               v18->_object = v105;
 
-              if (!v16)
+              if (!infoCopy)
               {
                 v72 = 0;
                 goto LABEL_47;
@@ -228,14 +228,14 @@
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v31 = 0;
+              displayString2 = 0;
               v18->_hidden = 1;
               goto LABEL_56;
             }
 
-            v40 = v15;
-            v107 = [v40 userProvidedName];
-            if ([v107 length])
+            v40 = completionCopy;
+            userProvidedName = [v40 userProvidedName];
+            if ([userProvidedName length])
             {
               [v40 userProvidedName];
             }
@@ -249,43 +249,43 @@
             v18->_title = v108;
 
 LABEL_55:
-            v31 = 0;
+            displayString2 = 0;
             goto LABEL_56;
           }
 
-          v40 = v15;
-          v97 = [v40 mapItem];
+          v40 = completionCopy;
+          mapItem = [v40 mapItem];
           mapItem = v18->_mapItem;
-          v18->_mapItem = v97;
+          v18->_mapItem = mapItem;
 LABEL_53:
 
-          if (!v16)
+          if (!infoCopy)
           {
-            v16 = [AutocompleteMatchInfo matchInfoWithType:0];
+            infoCopy = [AutocompleteMatchInfo matchInfoWithType:0];
           }
 
           goto LABEL_55;
         }
 
-        v40 = v15;
-        v75 = [v40 MKMapItem];
+        v40 = completionCopy;
+        mKMapItem = [v40 MKMapItem];
         v76 = v18->_mapItem;
-        v18->_mapItem = v75;
+        v18->_mapItem = mKMapItem;
 
-        v77 = [v40 title];
+        title2 = [v40 title];
         v78 = v18->_title;
-        v18->_title = v77;
+        v18->_title = title2;
 
-        v65 = [v40 subtitle];
+        subTitle = [v40 subtitle];
       }
     }
 
     mapItem = v18->_subtitle;
-    v18->_subtitle = v65;
+    v18->_subtitle = subTitle;
     goto LABEL_53;
   }
 
-  v19 = v15;
+  v19 = completionCopy;
   v20 = &OBJC_PROTOCOL___MSPHistoryEntryPlaceDisplay;
   objc_opt_class();
   v21 = v19;
@@ -339,14 +339,14 @@ LABEL_53:
       v39 = 0;
     }
 
-    v43 = [v39 historyEntry];
-    v44 = [v43 geoMapItem];
-    v45 = [MKMapItem _itemWithGeoMapItem:v44];
+    historyEntry = [v39 historyEntry];
+    geoMapItem = [historyEntry geoMapItem];
+    v45 = [MKMapItem _itemWithGeoMapItem:geoMapItem];
     v46 = v18->_mapItem;
     v18->_mapItem = v45;
 
-    v31 = 0;
-    if (!v16)
+    displayString2 = 0;
+    if (!infoCopy)
     {
       goto LABEL_46;
     }
@@ -382,9 +382,9 @@ LABEL_53:
 
     if (!v54)
     {
-      v31 = 0;
+      displayString2 = 0;
       v18->_hidden = 1;
-      if (v16)
+      if (infoCopy)
       {
         goto LABEL_56;
       }
@@ -418,24 +418,24 @@ LABEL_53:
       v62 = 0;
     }
 
-    v66 = [v62 historyEntry];
-    v67 = [v66 query];
+    historyEntry2 = [v62 historyEntry];
+    query = [historyEntry2 query];
     v68 = v18->_title;
-    v18->_title = v67;
+    v18->_title = query;
 
-    v69 = [v62 historyEntry];
-    v70 = [v69 locationDisplayString];
+    historyEntry3 = [v62 historyEntry];
+    locationDisplayString = [historyEntry3 locationDisplayString];
     v71 = v18->_subtitle;
-    v18->_subtitle = v70;
+    v18->_subtitle = locationDisplayString;
 
-    v31 = [NSString stringWithFormat:@"%@\n%@", v18->_title, v18->_subtitle];
+    displayString2 = [NSString stringWithFormat:@"%@\n%@", v18->_title, v18->_subtitle];
 
-    if (!v16)
+    if (!infoCopy)
     {
 LABEL_46:
       v72 = 1;
 LABEL_47:
-      v16 = [AutocompleteMatchInfo matchInfoWithType:v72];
+      infoCopy = [AutocompleteMatchInfo matchInfoWithType:v72];
     }
   }
 
@@ -445,15 +445,15 @@ LABEL_56:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v85 = [[AddressBookAddressItemKey alloc] initWithAddressBookAddress:v15];
+      v85 = [[AddressBookAddressItemKey alloc] initWithAddressBookAddress:completionCopy];
 LABEL_62:
       v80 = v85;
       goto LABEL_63;
     }
 
-    if (v31)
+    if (displayString2)
     {
-      v85 = [[AutocompleteStringKey alloc] initWithString:v31];
+      v85 = [[AutocompleteStringKey alloc] initWithString:displayString2];
       goto LABEL_62;
     }
 
@@ -463,12 +463,12 @@ LABEL_62:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v93 = v15;
+        v93 = completionCopy;
         v94 = [AutocompleteStringKey alloc];
-        v95 = [v93 routeID];
+        routeID = [v93 routeID];
 
-        v96 = [v95 UUIDString];
-        v80 = [(AutocompleteStringKey *)v94 initWithString:v96];
+        uUIDString = [routeID UUIDString];
+        v80 = [(AutocompleteStringKey *)v94 initWithString:uUIDString];
 
         goto LABEL_63;
       }
@@ -477,27 +477,27 @@ LABEL_62:
       goto LABEL_62;
     }
 
-    v89 = v15;
-    v90 = [v89 handle];
-    if (v90)
+    v89 = completionCopy;
+    handle = [v89 handle];
+    if (handle)
     {
     }
 
     else
     {
-      v98 = [v89 contact];
-      if (v98)
+      contact = [v89 contact];
+      if (contact)
       {
-        v99 = v98;
-        v100 = [v89 contact];
-        v101 = [v100 postalAddresses];
-        v102 = [v101 count];
+        v99 = contact;
+        contact2 = [v89 contact];
+        postalAddresses = [contact2 postalAddresses];
+        v102 = [postalAddresses count];
 
         if (v102 == 1)
         {
           v103 = [AddressBookAddressItemKey alloc];
-          v92 = [v89 contact];
-          v104 = [AddressBookAddress singleAddressForContact:v92];
+          contact3 = [v89 contact];
+          v104 = [AddressBookAddress singleAddressForContact:contact3];
           v80 = [(AddressBookAddressItemKey *)v103 initWithAddressBookAddress:v104];
 
           goto LABEL_72;
@@ -506,21 +506,21 @@ LABEL_62:
     }
 
     v91 = [AutocompleteStringKey alloc];
-    v92 = [v89 identifier];
-    v80 = [(AutocompleteStringKey *)v91 initWithString:v92];
+    contact3 = [v89 identifier];
+    v80 = [(AutocompleteStringKey *)v91 initWithString:contact3];
 LABEL_72:
 
     goto LABEL_63;
   }
 
   v80 = [[PersonalizedMapItemKey alloc] initWithMapItem:v18->_mapItem];
-  v81 = [(MKMapItem *)v18->_mapItem name];
+  name = [(MKMapItem *)v18->_mapItem name];
   v82 = v18->_title;
-  v18->_title = v81;
+  v18->_title = name;
 
-  v83 = [(MKMapItem *)v18->_mapItem _addressFormattedAsShortenedAddress];
+  _addressFormattedAsShortenedAddress = [(MKMapItem *)v18->_mapItem _addressFormattedAsShortenedAddress];
   v84 = v18->_subtitle;
-  v18->_subtitle = v83;
+  v18->_subtitle = _addressFormattedAsShortenedAddress;
 
 LABEL_63:
   if (v80)
@@ -536,43 +536,43 @@ LABEL_63:
   keys = v18->_keys;
   v18->_keys = v86;
 
-  objc_storeStrong(&v18->_matchInfo, v16);
+  objc_storeStrong(&v18->_matchInfo, infoCopy);
 LABEL_67:
 
   return v18;
 }
 
-- (AutocompleteItem)initWithServerCompletion:(id)a3 hasPriorityOverride:(BOOL)a4 priorityOverride:(int64_t)a5 serverResultScoreMetadata:(id)a6
+- (AutocompleteItem)initWithServerCompletion:(id)completion hasPriorityOverride:(BOOL)override priorityOverride:(int64_t)priorityOverride serverResultScoreMetadata:(id)metadata
 {
-  v11 = a3;
-  v12 = a6;
+  completionCopy = completion;
+  metadataCopy = metadata;
   v26.receiver = self;
   v26.super_class = AutocompleteItem;
   v13 = [(AutocompleteItem *)&v26 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_object, a3);
+    objc_storeStrong(&v13->_object, completion);
     *&v14->_sourceType = xmmword_1011FDDA0;
-    v14->_hasPriorityOverride = a4;
-    v14->_priorityOverride = a5;
-    objc_storeStrong(&v14->_serverResultScoreMetadata, a6);
+    v14->_hasPriorityOverride = override;
+    v14->_priorityOverride = priorityOverride;
+    objc_storeStrong(&v14->_serverResultScoreMetadata, metadata);
     v14->_hasServerItemIndex = 1;
-    v14->_serverSectionIndex = [v11 serverSectionIndex];
-    v14->_serverItemIndexInSection = [v11 serverItemIndexInSection];
-    v15 = [v11 mapItem];
+    v14->_serverSectionIndex = [completionCopy serverSectionIndex];
+    v14->_serverItemIndexInSection = [completionCopy serverItemIndexInSection];
+    mapItem = [completionCopy mapItem];
     mapItem = v14->_mapItem;
-    v14->_mapItem = v15;
+    v14->_mapItem = mapItem;
 
-    v17 = [v11 title];
+    title = [completionCopy title];
     title = v14->_title;
-    v14->_title = v17;
+    v14->_title = title;
 
-    v19 = [v11 subtitle];
+    subtitle = [completionCopy subtitle];
     subtitle = v14->_subtitle;
-    v14->_subtitle = v19;
+    v14->_subtitle = subtitle;
 
-    v21 = [AutocompleteItem keysForServerCompletion:v11];
+    v21 = [AutocompleteItem keysForServerCompletion:completionCopy];
     keys = v14->_keys;
     v14->_keys = v21;
 
@@ -584,22 +584,22 @@ LABEL_67:
   return v14;
 }
 
-+ (id)keysForServerCompletion:(id)a3
++ (id)keysForServerCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NSMutableSet set];
-  v5 = [v3 clientResolved];
+  clientResolved = [completionCopy clientResolved];
 
-  if (v5)
+  if (clientResolved)
   {
-    v6 = [v3 clientResolved];
-    v7 = [v6 itemType];
+    clientResolved2 = [completionCopy clientResolved];
+    itemType = [clientResolved2 itemType];
 
-    if ((v7 - 1) < 2 || v7 == 6)
+    if ((itemType - 1) < 2 || itemType == 6)
     {
       v9 = objc_alloc_init(ClientTypeResolver);
-      v10 = [(ClientTypeResolver *)v9 personalizedItemSource];
-      v11 = [v10 cachedAddressWithType:v7];
+      personalizedItemSource = [(ClientTypeResolver *)v9 personalizedItemSource];
+      v11 = [personalizedItemSource cachedAddressWithType:itemType];
 
       if (v11)
       {
@@ -608,8 +608,8 @@ LABEL_67:
 
       else
       {
-        v12 = [(ClientTypeResolver *)v9 personalizedItemSource];
-        v13 = [v12 cachedLOIWithType:v7];
+        personalizedItemSource2 = [(ClientTypeResolver *)v9 personalizedItemSource];
+        v13 = [personalizedItemSource2 cachedLOIWithType:itemType];
 
         if (v13)
         {
@@ -631,7 +631,7 @@ LABEL_67:
 
     else
     {
-      if (v7 != 3)
+      if (itemType != 3)
       {
         goto LABEL_15;
       }
@@ -647,13 +647,13 @@ LABEL_67:
   }
 
 LABEL_15:
-  v15 = [v3 mapItem];
+  mapItem = [completionCopy mapItem];
 
-  if (v15)
+  if (mapItem)
   {
     v16 = [PersonalizedMapItemKey alloc];
-    v17 = [v3 mapItem];
-    v18 = [(PersonalizedMapItemKey *)v16 initWithMapItem:v17];
+    mapItem2 = [completionCopy mapItem];
+    v18 = [(PersonalizedMapItemKey *)v16 initWithMapItem:mapItem2];
     [v4 addObject:v18];
   }
 
@@ -661,20 +661,20 @@ LABEL_15:
   {
     v33 = 0.0;
     v34 = 0.0;
-    if ([v3 getCoordinate:&v33])
+    if ([completionCopy getCoordinate:&v33])
     {
       v19 = [CLLocation alloc];
       v20 = [v19 initWithLatitude:v33 longitude:v34];
-      v21 = [[MKMapItem alloc] initWithCLLocation:v20 placeType:{objc_msgSend(v3, "_placeType")}];
-      v22 = [v3 title];
-      [v21 setName:v22];
+      v21 = [[MKMapItem alloc] initWithCLLocation:v20 placeType:{objc_msgSend(completionCopy, "_placeType")}];
+      title = [completionCopy title];
+      [v21 setName:title];
 
-      v23 = [v3 _hasDisambiguationRadiusMeters];
+      _hasDisambiguationRadiusMeters = [completionCopy _hasDisambiguationRadiusMeters];
       v24 = [PersonalizedMapItemKey alloc];
       v25 = v24;
-      if (v23)
+      if (_hasDisambiguationRadiusMeters)
       {
-        [v3 _disambiguationRadiusMeters];
+        [completionCopy _disambiguationRadiusMeters];
         v26 = [(PersonalizedMapItemKey *)v25 initWithMapItem:v21 disambiguationRadiusMeters:?];
       }
 
@@ -695,9 +695,9 @@ LABEL_15:
 
   else
   {
-    v29 = [v3 title];
-    v30 = [v3 subtitle];
-    v31 = [NSString stringWithFormat:@"%@\n%@", v29, v30];
+    title2 = [completionCopy title];
+    subtitle = [completionCopy subtitle];
+    v31 = [NSString stringWithFormat:@"%@\n%@", title2, subtitle];
     v28 = [NSSet setWithObject:v31];
   }
 

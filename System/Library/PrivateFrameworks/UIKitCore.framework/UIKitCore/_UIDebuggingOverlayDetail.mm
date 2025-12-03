@@ -1,19 +1,19 @@
 @interface _UIDebuggingOverlayDetail
-+ (id)detailWithTitle:(id)a3 detail:(id)a4;
++ (id)detailWithTitle:(id)title detail:(id)detail;
 @end
 
 @implementation _UIDebuggingOverlayDetail
 
-+ (id)detailWithTitle:(id)a3 detail:(id)a4
++ (id)detailWithTitle:(id)title detail:(id)detail
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  detailCopy = detail;
   v9 = objc_alloc_init(objc_opt_class());
   v10 = v9;
-  if (a1)
+  if (self)
   {
-    objc_storeStrong(v9 + 1, a3);
-    objc_storeStrong(v10 + 2, a4);
+    objc_storeStrong(v9 + 1, title);
+    objc_storeStrong(v10 + 2, detail);
   }
 
   return v10;

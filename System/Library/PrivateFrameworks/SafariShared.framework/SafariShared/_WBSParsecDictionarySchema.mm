@@ -1,23 +1,23 @@
 @interface _WBSParsecDictionarySchema
-- (BOOL)_validateChild:(id)a3 ofParent:(id)a4 withParentAssociatedError:(id)a5 errorHandler:(id)a6;
-- (_WBSParsecDictionarySchema)initWithSchemaDictionary:(id)a3 associatedError:(id)a4 isOptional:(BOOL)a5;
+- (BOOL)_validateChild:(id)child ofParent:(id)parent withParentAssociatedError:(id)error errorHandler:(id)handler;
+- (_WBSParsecDictionarySchema)initWithSchemaDictionary:(id)dictionary associatedError:(id)error isOptional:(BOOL)optional;
 @end
 
 @implementation _WBSParsecDictionarySchema
 
-- (_WBSParsecDictionarySchema)initWithSchemaDictionary:(id)a3 associatedError:(id)a4 isOptional:(BOOL)a5
+- (_WBSParsecDictionarySchema)initWithSchemaDictionary:(id)dictionary associatedError:(id)error isOptional:(BOOL)optional
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  optionalCopy = optional;
+  dictionaryCopy = dictionary;
+  errorCopy = error;
   v10 = objc_opt_class();
   v16.receiver = self;
   v16.super_class = _WBSParsecDictionarySchema;
-  v11 = [(WBSParsecSchema *)&v16 _initWithExpectedClass:v10 associatedError:v9 isOptional:v5];
+  v11 = [(WBSParsecSchema *)&v16 _initWithExpectedClass:v10 associatedError:errorCopy isOptional:optionalCopy];
 
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dictionaryCopy copy];
     keysToSchemata = v11->_keysToSchemata;
     v11->_keysToSchemata = v12;
 
@@ -27,28 +27,28 @@
   return v11;
 }
 
-- (BOOL)_validateChild:(id)a3 ofParent:(id)a4 withParentAssociatedError:(id)a5 errorHandler:(id)a6
+- (BOOL)_validateChild:(id)child ofParent:(id)parent withParentAssociatedError:(id)error errorHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  childCopy = child;
+  parentCopy = parent;
+  errorCopy = error;
+  handlerCopy = handler;
   v31.receiver = self;
   v31.super_class = _WBSParsecDictionarySchema;
-  if ([(WBSParsecSchema *)&v31 _validateChild:v10 ofParent:v11 withParentAssociatedError:v12 errorHandler:v13])
+  if ([(WBSParsecSchema *)&v31 _validateChild:childCopy ofParent:parentCopy withParentAssociatedError:errorCopy errorHandler:handlerCopy])
   {
-    if (v10 || ![(WBSParsecSchema *)self isOptional])
+    if (childCopy || ![(WBSParsecSchema *)self isOptional])
     {
-      v15 = [(WBSParsecSchema *)self associatedError];
-      v16 = v15;
-      if (v15)
+      associatedError = [(WBSParsecSchema *)self associatedError];
+      v16 = associatedError;
+      if (associatedError)
       {
-        v17 = v15;
+        v17 = associatedError;
       }
 
       else
       {
-        v17 = v12;
+        v17 = errorCopy;
       }
 
       v18 = v17;
@@ -61,10 +61,10 @@
       v22[1] = 3221225472;
       v22[2] = __93___WBSParsecDictionarySchema__validateChild_ofParent_withParentAssociatedError_errorHandler___block_invoke;
       v22[3] = &unk_1E7FC9050;
-      v23 = v10;
+      v23 = childCopy;
       v20 = v18;
       v24 = v20;
-      v25 = v13;
+      v25 = handlerCopy;
       v26 = &v27;
       [(NSDictionary *)keysToSchemata enumerateKeysAndObjectsUsingBlock:v22];
       v14 = *(v28 + 24);

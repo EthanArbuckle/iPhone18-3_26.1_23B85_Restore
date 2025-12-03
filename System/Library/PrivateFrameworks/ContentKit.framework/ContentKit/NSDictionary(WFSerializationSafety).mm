@@ -7,7 +7,7 @@
 
 - (id)wfObjectOfClass:()WFSerializationSafety forKeyPath:
 {
-  v5 = [a1 valueForKeyPath:a4];
+  v5 = [self valueForKeyPath:a4];
   v6 = WFTypeCheckObject(v5, a3);
 
   return v6;
@@ -15,7 +15,7 @@
 
 - (id)wfObjectOfClass:()WFSerializationSafety forKey:
 {
-  v5 = [a1 objectForKey:a4];
+  v5 = [self objectForKey:a4];
   v6 = WFTypeCheckObject(v5, a3);
 
   return v6;

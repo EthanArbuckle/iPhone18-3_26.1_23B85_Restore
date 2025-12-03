@@ -1,7 +1,7 @@
 @interface DADeviceWatchProxy
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (DADeviceDelegate)delegate;
-- (DADeviceWatchProxy)initWithNanoDevice:(id)a3;
+- (DADeviceWatchProxy)initWithNanoDevice:(id)device;
 - (NSString)description;
 - (id)_IMEI;
 - (id)_caseSize;
@@ -16,27 +16,27 @@
 - (void)connect;
 - (void)end;
 - (void)idle;
-- (void)requestSuiteFinishWithCompletionHandler:(id)a3;
+- (void)requestSuiteFinishWithCompletionHandler:(id)handler;
 - (void)start;
-- (void)startInOperationMode:(int64_t)a3;
+- (void)startInOperationMode:(int64_t)mode;
 @end
 
 @implementation DADeviceWatchProxy
 
-- (DADeviceWatchProxy)initWithNanoDevice:(id)a3
+- (DADeviceWatchProxy)initWithNanoDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = DADeviceWatchProxy;
   v6 = [(DADeviceWatchProxy *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nrDevice, a3);
-    v8 = [(DADeviceWatchProxy *)v7 _deviceAttributes];
+    objc_storeStrong(&v6->_nrDevice, device);
+    _deviceAttributes = [(DADeviceWatchProxy *)v7 _deviceAttributes];
     v9 = [DADeviceState alloc];
-    v10 = [(DADeviceWatchProxy *)v7 _serialNumber];
-    v11 = [(DADeviceState *)v9 initWithSerialNumber:v10 attributes:v8];
+    _serialNumber = [(DADeviceWatchProxy *)v7 _serialNumber];
+    v11 = [(DADeviceState *)v9 initWithSerialNumber:_serialNumber attributes:_deviceAttributes];
     state = v7->_state;
     v7->_state = v11;
 
@@ -52,20 +52,20 @@
 
 - (void)connect
 {
-  v2 = [(DADeviceWatchProxy *)self connection];
-  [v2 connect];
+  connection = [(DADeviceWatchProxy *)self connection];
+  [connection connect];
 }
 
 - (void)start
 {
-  v2 = [(DADeviceWatchProxy *)self connection];
-  [v2 start];
+  connection = [(DADeviceWatchProxy *)self connection];
+  [connection start];
 }
 
 - (void)idle
 {
-  v2 = [(DADeviceWatchProxy *)self connection];
-  [v2 idle];
+  connection = [(DADeviceWatchProxy *)self connection];
+  [connection idle];
 }
 
 - (void)end
@@ -79,7 +79,7 @@
   dispatch_async(v3, block);
 }
 
-- (void)startInOperationMode:(int64_t)a3
+- (void)startInOperationMode:(int64_t)mode
 {
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -89,15 +89,15 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[DADeviceWatchProxy] %s", buf, 0xCu);
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v6 = [(DADeviceWatchProxy *)self connection];
+    connection = [(DADeviceWatchProxy *)self connection];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10000E6F4;
     v8[3] = &unk_1001BC580;
     v8[4] = self;
-    [v6 startWithCompletion:v8];
+    [connection startWithCompletion:v8];
   }
 
   else
@@ -110,9 +110,9 @@
   }
 }
 
-- (void)requestSuiteFinishWithCompletionHandler:(id)a3
+- (void)requestSuiteFinishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -121,29 +121,29 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[DADeviceWatchProxy] %s", &v7, 0xCu);
   }
 
-  v6 = [(DADeviceWatchProxy *)self connection];
-  [v6 requestSuiteFinishWithCompletionHandler:v4];
+  connection = [(DADeviceWatchProxy *)self connection];
+  [connection requestSuiteFinishWithCompletionHandler:handlerCopy];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(DADeviceWatchProxy *)self state];
-  v3 = [v2 serialNumber];
-  v4 = [v3 hash];
+  state = [(DADeviceWatchProxy *)self state];
+  serialNumber = [state serialNumber];
+  v4 = [serialNumber hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&OBJC_PROTOCOL___DADevice])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&OBJC_PROTOCOL___DADevice])
   {
-    v5 = [(DADeviceWatchProxy *)self state];
-    v6 = [v5 serialNumber];
-    v7 = [v4 state];
-    v8 = [v7 serialNumber];
-    v9 = [v6 isEqualToString:v8];
+    state = [(DADeviceWatchProxy *)self state];
+    serialNumber = [state serialNumber];
+    state2 = [equalCopy state];
+    serialNumber2 = [state2 serialNumber];
+    v9 = [serialNumber isEqualToString:serialNumber2];
   }
 
   else
@@ -158,9 +158,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DADeviceWatchProxy *)self state];
-  v6 = [v5 serialNumber];
-  v7 = [NSString stringWithFormat:@"<%@ %p: %@>", v4, self, v6];;
+  state = [(DADeviceWatchProxy *)self state];
+  serialNumber = [state serialNumber];
+  v7 = [NSString stringWithFormat:@"<%@ %p: %@>", v4, self, serialNumber];;
 
   return v7;
 }
@@ -168,52 +168,52 @@
 - (id)_deviceAttributes
 {
   v26[0] = @"productClass";
-  v3 = [(DADeviceWatchProxy *)self _productClass];
-  v4 = v3;
-  if (!v3)
+  _productClass = [(DADeviceWatchProxy *)self _productClass];
+  v4 = _productClass;
+  if (!_productClass)
   {
-    v3 = +[NSNull null];
+    _productClass = +[NSNull null];
   }
 
-  v22 = v3;
-  v27[0] = v3;
+  v22 = _productClass;
+  v27[0] = _productClass;
   v26[1] = @"IMEI";
-  v5 = [(DADeviceWatchProxy *)self _IMEI];
-  v6 = v5;
-  if (!v5)
+  _IMEI = [(DADeviceWatchProxy *)self _IMEI];
+  v6 = _IMEI;
+  if (!_IMEI)
   {
-    v5 = +[NSNull null];
+    _IMEI = +[NSNull null];
   }
 
-  v21 = v5;
-  v27[1] = v5;
+  v21 = _IMEI;
+  v27[1] = _IMEI;
   v26[2] = @"marketingName";
-  v24 = [(DADeviceWatchProxy *)self _marketingName];
-  v27[2] = v24;
+  _marketingName = [(DADeviceWatchProxy *)self _marketingName];
+  v27[2] = _marketingName;
   v26[3] = @"enclosure";
-  v7 = [(DADeviceWatchProxy *)self _enclosure];
-  v8 = v7;
-  if (!v7)
+  _enclosure = [(DADeviceWatchProxy *)self _enclosure];
+  v8 = _enclosure;
+  if (!_enclosure)
   {
-    v7 = +[NSNull null];
+    _enclosure = +[NSNull null];
   }
 
-  v20 = v7;
-  v27[3] = v7;
+  v20 = _enclosure;
+  v27[3] = _enclosure;
   v26[4] = @"size";
-  v9 = [(DADeviceWatchProxy *)self _caseSize];
-  v10 = v9;
-  if (!v9)
+  _caseSize = [(DADeviceWatchProxy *)self _caseSize];
+  v10 = _caseSize;
+  if (!_caseSize)
   {
-    v9 = +[NSNull null];
+    _caseSize = +[NSNull null];
   }
 
-  v19 = v9;
-  v27[4] = v9;
+  v19 = _caseSize;
+  v27[4] = _caseSize;
   v26[5] = @"deviceType";
-  v11 = [(DADeviceWatchProxy *)self _deviceType];
-  v12 = v11;
-  if (!v11)
+  _deviceType = [(DADeviceWatchProxy *)self _deviceType];
+  v12 = _deviceType;
+  if (!_deviceType)
   {
     v12 = +[NSNull null];
   }
@@ -221,36 +221,36 @@
   v25 = v4;
   v27[5] = v12;
   v26[6] = @"deviceClass";
-  v13 = [(DADeviceWatchProxy *)self _deviceClass];
-  v27[6] = v13;
+  _deviceClass = [(DADeviceWatchProxy *)self _deviceClass];
+  v27[6] = _deviceClass;
   v26[7] = @"deviceEnclosureColor";
-  v14 = [(DADeviceWatchProxy *)self _deviceEnclosureColor];
-  v15 = v14;
-  if (!v14)
+  _deviceEnclosureColor = [(DADeviceWatchProxy *)self _deviceEnclosureColor];
+  v15 = _deviceEnclosureColor;
+  if (!_deviceEnclosureColor)
   {
     v15 = +[NSNull null];
   }
 
   v27[7] = v15;
   v26[8] = @"deviceColor";
-  v16 = [(DADeviceWatchProxy *)self _deviceColor];
-  v17 = v16;
-  if (!v16)
+  _deviceColor = [(DADeviceWatchProxy *)self _deviceColor];
+  v17 = _deviceColor;
+  if (!_deviceColor)
   {
     v17 = +[NSNull null];
   }
 
   v27[8] = v17;
   v23 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:9];
-  if (!v16)
+  if (!_deviceColor)
   {
   }
 
-  if (!v14)
+  if (!_deviceEnclosureColor)
   {
   }
 
-  if (!v11)
+  if (!_deviceType)
   {
   }
 
@@ -275,11 +275,11 @@
 
 - (id)_enclosure
 {
-  v3 = [(DADeviceWatchProxy *)self nrDevice];
-  v4 = [v3 valueForProperty:NRDevicePropertyDeviceHousingColor];
+  nrDevice = [(DADeviceWatchProxy *)self nrDevice];
+  v4 = [nrDevice valueForProperty:NRDevicePropertyDeviceHousingColor];
 
-  v5 = [(DADeviceWatchProxy *)self nrDevice];
-  v6 = [v5 valueForProperty:NRDevicePropertyDmin];
+  nrDevice2 = [(DADeviceWatchProxy *)self nrDevice];
+  v6 = [nrDevice2 valueForProperty:NRDevicePropertyDmin];
 
   if (v4)
   {
@@ -334,10 +334,10 @@ LABEL_21:
     goto LABEL_31;
   }
 
-  v12 = [v10 unsignedIntegerValue];
-  if (v12 <= 4)
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
+  if (unsignedIntegerValue <= 4)
   {
-    if ((v12 - 1) >= 4)
+    if ((unsignedIntegerValue - 1) >= 4)
     {
       v8 = 0;
     }
@@ -350,9 +350,9 @@ LABEL_21:
     goto LABEL_31;
   }
 
-  if (v12 <= 7)
+  if (unsignedIntegerValue <= 7)
   {
-    if (v12 == 5 || v12 == 7)
+    if (unsignedIntegerValue == 5 || unsignedIntegerValue == 7)
     {
       v8 = @"STAINLESS_STEEL";
       goto LABEL_31;
@@ -362,12 +362,12 @@ LABEL_21:
   }
 
   v14 = @"ROSE_GOLD";
-  if (v12 != 9)
+  if (unsignedIntegerValue != 9)
   {
     v14 = 0;
   }
 
-  if (v12 == 8)
+  if (unsignedIntegerValue == 8)
   {
     v8 = @"YELLOW_GOLD";
   }
@@ -384,8 +384,8 @@ LABEL_31:
 
 - (id)_caseSize
 {
-  v2 = [(DADeviceWatchProxy *)self nrDevice];
-  v3 = [v2 valueForProperty:NRDevicePropertyProductType];
+  nrDevice = [(DADeviceWatchProxy *)self nrDevice];
+  v3 = [nrDevice valueForProperty:NRDevicePropertyProductType];
 
   if (v3)
   {
@@ -424,24 +424,24 @@ LABEL_31:
 
 - (id)_serialNumber
 {
-  v2 = [(DADeviceWatchProxy *)self nrDevice];
-  v3 = [v2 valueForProperty:NRDevicePropertySerialNumber];
+  nrDevice = [(DADeviceWatchProxy *)self nrDevice];
+  v3 = [nrDevice valueForProperty:NRDevicePropertySerialNumber];
 
   return v3;
 }
 
 - (id)_productClass
 {
-  v2 = [(DADeviceWatchProxy *)self nrDevice];
-  v3 = [v2 valueForProperty:NRDevicePropertyLocalizedModel];
+  nrDevice = [(DADeviceWatchProxy *)self nrDevice];
+  v3 = [nrDevice valueForProperty:NRDevicePropertyLocalizedModel];
 
   return v3;
 }
 
 - (id)_IMEI
 {
-  v2 = [(DADeviceWatchProxy *)self nrDevice];
-  v3 = [v2 valueForProperty:NRDevicePropertyIMEI];
+  nrDevice = [(DADeviceWatchProxy *)self nrDevice];
+  v3 = [nrDevice valueForProperty:NRDevicePropertyIMEI];
 
   if ([v3 isEqual:@"Unknown"])
   {
@@ -454,16 +454,16 @@ LABEL_31:
 
 - (id)_deviceType
 {
-  v2 = [(DADeviceWatchProxy *)self nrDevice];
-  v3 = [v2 valueForProperty:NRDevicePropertyProductType];
+  nrDevice = [(DADeviceWatchProxy *)self nrDevice];
+  v3 = [nrDevice valueForProperty:NRDevicePropertyProductType];
 
   return v3;
 }
 
 - (id)_deviceColor
 {
-  v2 = [(DADeviceWatchProxy *)self nrDevice];
-  v3 = [v2 valueForProperty:NRDevicePropertyColor];
+  nrDevice = [(DADeviceWatchProxy *)self nrDevice];
+  v3 = [nrDevice valueForProperty:NRDevicePropertyColor];
 
   if ([v3 isEqualToString:@"unknown"])
   {
@@ -480,8 +480,8 @@ LABEL_31:
 
 - (id)_deviceEnclosureColor
 {
-  v2 = [(DADeviceWatchProxy *)self nrDevice];
-  v3 = [v2 valueForProperty:NRDevicePropertyEnclosureColor];
+  nrDevice = [(DADeviceWatchProxy *)self nrDevice];
+  v3 = [nrDevice valueForProperty:NRDevicePropertyEnclosureColor];
 
   if ([v3 isEqualToString:@"unknown"])
   {

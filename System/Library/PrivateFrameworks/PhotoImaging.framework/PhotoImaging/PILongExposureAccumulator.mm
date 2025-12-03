@@ -1,19 +1,19 @@
 @interface PILongExposureAccumulator
-- (BOOL)_accumulate:(id)a3 error:(id *)a4;
-- (BOOL)_exportOutputImage:(id)a3 format:(int)a4 colorSpace:(CGColorSpace *)a5 toURL:(id)a6 uti:(id)a7 error:(id *)a8;
-- (BOOL)_initializeAccumulation:(id *)a3;
-- (BOOL)_initializeStorage:(id)a3 image:(id)a4 error:(id *)a5;
-- (BOOL)accumulate:(id)a3 error:(id *)a4;
+- (BOOL)_accumulate:(id)_accumulate error:(id *)error;
+- (BOOL)_exportOutputImage:(id)image format:(int)format colorSpace:(CGColorSpace *)space toURL:(id)l uti:(id)uti error:(id *)error;
+- (BOOL)_initializeAccumulation:(id *)accumulation;
+- (BOOL)_initializeStorage:(id)storage image:(id)image error:(id *)error;
+- (BOOL)accumulate:(id)accumulate error:(id *)error;
 - (BOOL)isReadyForMoreData;
-- (BOOL)start:(id *)a3;
-- (BOOL)writeLongExposureImage:(id)a3 UTI:(id)a4 colorSpace:(id)a5 error:(id *)a6;
-- (BOOL)writeMaskImage:(id)a3 UTI:(id)a4 error:(id *)a5;
-- (PILongExposureAccumulator)initWithSize:(id)a3 renderer:(id)a4 jobNumber:(unint64_t)a5;
-- (id)_dynamismMapWithMinImage:(id)a3 maxImage:(id)a4 extent:(id *)a5;
+- (BOOL)start:(id *)start;
+- (BOOL)writeLongExposureImage:(id)image UTI:(id)i colorSpace:(id)space error:(id *)error;
+- (BOOL)writeMaskImage:(id)image UTI:(id)i error:(id *)error;
+- (PILongExposureAccumulator)initWithSize:(id)size renderer:(id)renderer jobNumber:(unint64_t)number;
+- (id)_dynamismMapWithMinImage:(id)image maxImage:(id)maxImage extent:(id *)extent;
 - (id)_nextInputFrame;
 - (id)nextInputFrame;
-- (void)_accumulate:(id)a3;
-- (void)_appendInputFrame:(id)a3;
+- (void)_accumulate:(id)_accumulate;
+- (void)_appendInputFrame:(id)frame;
 - (void)_initializeAccumulation;
 - (void)_markAsFinished;
 - (void)_start;
@@ -25,14 +25,14 @@
 
 @implementation PILongExposureAccumulator
 
-- (BOOL)_exportOutputImage:(id)a3 format:(int)a4 colorSpace:(CGColorSpace *)a5 toURL:(id)a6 uti:(id)a7 error:(id *)a8
+- (BOOL)_exportOutputImage:(id)image format:(int)format colorSpace:(CGColorSpace *)space toURL:(id)l uti:(id)uti error:(id *)error
 {
-  v12 = *&a4;
+  v12 = *&format;
   v63 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  if (!v14)
+  imageCopy = image;
+  lCopy = l;
+  utiCopy = uti;
+  if (!imageCopy)
   {
     v26 = NUAssertLogger_15869();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -43,7 +43,7 @@
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v28 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v30 = NUAssertLogger_15869();
     v31 = os_log_type_enabled(v30, OS_LOG_TYPE_ERROR);
@@ -51,11 +51,11 @@
     {
       if (v31)
       {
-        v44 = dispatch_get_specific(*v28);
+        v44 = dispatch_get_specific(*callStackSymbols);
         v45 = MEMORY[0x1E696AF00];
         v46 = v44;
-        v28 = [v45 callStackSymbols];
-        v47 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v45 callStackSymbols];
+        v47 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = v44;
         v61 = 2114;
@@ -66,10 +66,10 @@
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v60 = v28;
+      v60 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -77,7 +77,7 @@
     goto LABEL_31;
   }
 
-  if (!v15)
+  if (!lCopy)
   {
     v33 = NUAssertLogger_15869();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -88,7 +88,7 @@
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v28 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v35 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v30 = NUAssertLogger_15869();
     v36 = os_log_type_enabled(v30, OS_LOG_TYPE_ERROR);
@@ -96,10 +96,10 @@
     {
       if (v36)
       {
-        v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v28 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v60 = v28;
+        v60 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -112,11 +112,11 @@ LABEL_33:
 LABEL_31:
     if (v36)
     {
-      v48 = dispatch_get_specific(*v28);
+      v48 = dispatch_get_specific(*callStackSymbols);
       v49 = MEMORY[0x1E696AF00];
       v50 = v48;
-      v28 = [v49 callStackSymbols];
-      v51 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v49 callStackSymbols];
+      v51 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v60 = v48;
       v61 = 2114;
@@ -127,7 +127,7 @@ LABEL_31:
     goto LABEL_33;
   }
 
-  if (!a8)
+  if (!error)
   {
     v38 = NUAssertLogger_15869();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -138,7 +138,7 @@ LABEL_31:
       _os_log_error_impl(&dword_1C7694000, v38, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v28 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v40 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v30 = NUAssertLogger_15869();
     v41 = os_log_type_enabled(v30, OS_LOG_TYPE_ERROR);
@@ -146,8 +146,8 @@ LABEL_31:
     {
       if (v41)
       {
-        v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v43 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v60 = v43;
         _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -159,11 +159,11 @@ LABEL_31:
 LABEL_34:
     if (v41)
     {
-      v52 = dispatch_get_specific(*v28);
+      v52 = dispatch_get_specific(*callStackSymbols);
       v53 = MEMORY[0x1E696AF00];
       v54 = v52;
-      v55 = [v53 callStackSymbols];
-      v56 = [v55 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v53 callStackSymbols];
+      v56 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v60 = v52;
       v61 = 2114;
@@ -176,14 +176,14 @@ LABEL_36:
     _NUAssertFailHandler();
   }
 
-  v17 = v16;
-  v18 = [(NURenderer *)self->_renderer context];
-  [v14 extent];
-  v19 = [v18 createCGImage:v14 fromRect:v12 format:a5 colorSpace:0 deferred:?];
+  v17 = utiCopy;
+  context = [(NURenderer *)self->_renderer context];
+  [imageCopy extent];
+  v19 = [context createCGImage:imageCopy fromRect:v12 format:space colorSpace:0 deferred:?];
   if (v19)
   {
     v20 = v19;
-    v21 = CGImageDestinationCreateWithURL(v15, v17, 1uLL, 0);
+    v21 = CGImageDestinationCreateWithURL(lCopy, v17, 1uLL, 0);
     if (v21)
     {
       v22 = v21;
@@ -194,7 +194,7 @@ LABEL_36:
       v24 = CGImageDestinationFinalize(v22);
       if (!v24)
       {
-        *a8 = [MEMORY[0x1E69B3A48] failureError:@"Failed to finalize image destination" object:self];
+        *error = [MEMORY[0x1E69B3A48] failureError:@"Failed to finalize image destination" object:self];
       }
 
       CFRelease(v22);
@@ -203,7 +203,7 @@ LABEL_36:
     else
     {
       [MEMORY[0x1E69B3A48] failureError:@"Failed to create CGImageDestinationRef" object:self];
-      *a8 = v24 = 0;
+      *error = v24 = 0;
     }
 
     CFRelease(v20);
@@ -212,30 +212,30 @@ LABEL_36:
   else
   {
     [MEMORY[0x1E69B3A48] failureError:@"Failed to create CGImageRef" object:self];
-    *a8 = v24 = 0;
+    *error = v24 = 0;
   }
 
   return v24;
 }
 
-- (id)_dynamismMapWithMinImage:(id)a3 maxImage:(id)a4 extent:(id *)a5
+- (id)_dynamismMapWithMinImage:(id)image maxImage:(id)maxImage extent:(id *)extent
 {
   v24[4] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  maxImageCopy = maxImage;
+  imageCopy = image;
   v9 = +[PIAutoLoopKernels dynamismMapKernel];
-  v10 = [v8 imageByClampingToExtent];
+  imageByClampingToExtent = [imageCopy imageByClampingToExtent];
 
-  v11 = [v7 imageByClampingToExtent];
+  imageByClampingToExtent2 = [maxImageCopy imageByClampingToExtent];
 
-  v23 = *a5;
+  v23 = *extent;
   NUPixelRectToCGRect();
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v24[0] = v11;
-  v24[1] = v10;
+  v24[0] = imageByClampingToExtent2;
+  v24[1] = imageByClampingToExtent;
   v24[2] = &unk_1F47245D8;
   v24[3] = &unk_1F47245E8;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:{4, *&v23.var0, *&v23.var1}];
@@ -244,12 +244,12 @@ LABEL_36:
   return v21;
 }
 
-- (BOOL)writeMaskImage:(id)a3 UTI:(id)a4 error:(id *)a5
+- (BOOL)writeMaskImage:(id)image UTI:(id)i error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  imageCopy = image;
+  iCopy = i;
+  if (!error)
   {
     v17 = NUAssertLogger_15869();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -271,8 +271,8 @@ LABEL_36:
         v25 = dispatch_get_specific(*v19);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v25;
         *&buf[12] = 2114;
@@ -283,8 +283,8 @@ LABEL_36:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v24;
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -294,14 +294,14 @@ LABEL_36:
     __break(1u);
   }
 
-  v10 = v9;
+  v10 = iCopy;
   [(PILongExposureAccumulator *)self waitUntilDone];
-  v11 = [(PILongExposureAccumulator *)self _accumError];
+  _accumError = [(PILongExposureAccumulator *)self _accumError];
 
-  if (v11)
+  if (_accumError)
   {
     [(PILongExposureAccumulator *)self _accumError];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -327,7 +327,7 @@ LABEL_36:
     v36 = 0;
     v30[4] = self;
     pixelSize = self->_pixelSize;
-    v31 = v8;
+    v31 = imageCopy;
     v33 = &v38;
     v32 = v10;
     v34 = buf;
@@ -339,7 +339,7 @@ LABEL_36:
 
     else
     {
-      *a5 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
       v12 = *(v39 + 24);
     }
 
@@ -411,13 +411,13 @@ void __54__PILongExposureAccumulator_writeMaskImage_UTI_error___block_invoke_2(u
   CGColorSpaceRelease(v8);
 }
 
-- (BOOL)writeLongExposureImage:(id)a3 UTI:(id)a4 colorSpace:(id)a5 error:(id *)a6
+- (BOOL)writeLongExposureImage:(id)image UTI:(id)i colorSpace:(id)space error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!a6)
+  imageCopy = image;
+  iCopy = i;
+  spaceCopy = space;
+  if (!error)
   {
     v20 = NUAssertLogger_15869();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -439,8 +439,8 @@ void __54__PILongExposureAccumulator_writeMaskImage_UTI_error___block_invoke_2(u
         v28 = dispatch_get_specific(*v22);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v28;
         *&buf[12] = 2114;
@@ -451,8 +451,8 @@ void __54__PILongExposureAccumulator_writeMaskImage_UTI_error___block_invoke_2(u
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v27;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -462,14 +462,14 @@ void __54__PILongExposureAccumulator_writeMaskImage_UTI_error___block_invoke_2(u
     __break(1u);
   }
 
-  v13 = v12;
+  v13 = spaceCopy;
   [(PILongExposureAccumulator *)self waitUntilDone];
-  v14 = [(PILongExposureAccumulator *)self _accumError];
+  _accumError = [(PILongExposureAccumulator *)self _accumError];
 
-  if (v14)
+  if (_accumError)
   {
     [(PILongExposureAccumulator *)self _accumError];
-    *a6 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -492,10 +492,10 @@ void __54__PILongExposureAccumulator_writeMaskImage_UTI_error___block_invoke_2(u
     v33[2] = __73__PILongExposureAccumulator_writeLongExposureImage_UTI_colorSpace_error___block_invoke;
     v33[3] = &unk_1E82AB498;
     v38 = &v40;
-    v34 = v10;
-    v35 = self;
+    v34 = imageCopy;
+    selfCopy = self;
     v36 = v13;
-    v37 = v11;
+    v37 = iCopy;
     v39 = buf;
     [(NUSurfaceStorage *)averageAccumulationStorage useAsCIImageWithOptions:imageOptions renderer:renderer block:v33];
     if (v41[3])
@@ -505,7 +505,7 @@ void __54__PILongExposureAccumulator_writeMaskImage_UTI_error___block_invoke_2(u
 
     else
     {
-      *a6 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
       v15 = *(v41 + 24);
     }
 
@@ -546,12 +546,12 @@ void __73__PILongExposureAccumulator_writeLongExposureImage_UTI_colorSpace_error
   *(*(*(a1 + 64) + 8) + 24) = v5;
 }
 
-- (BOOL)_accumulate:(id)a3 error:(id *)a4
+- (BOOL)_accumulate:(id)_accumulate error:(id *)error
 {
   v105[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v65 = a4;
-  if (!a4)
+  _accumulateCopy = _accumulate;
+  errorCopy = error;
+  if (!error)
   {
     v45 = NUAssertLogger_15869();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -573,8 +573,8 @@ void __73__PILongExposureAccumulator_writeLongExposureImage_UTI_colorSpace_error
         v53 = dispatch_get_specific(*v47);
         v54 = MEMORY[0x1E696AF00];
         v55 = v53;
-        v56 = [v54 callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v54 callStackSymbols];
+        v57 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v53;
         *&buf[12] = 2114;
@@ -585,8 +585,8 @@ void __73__PILongExposureAccumulator_writeLongExposureImage_UTI_colorSpace_error
 
     else if (v50)
     {
-      v51 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v52 = [v51 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v52 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v52;
       _os_log_error_impl(&dword_1C7694000, v49, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -597,19 +597,19 @@ void __73__PILongExposureAccumulator_writeLongExposureImage_UTI_colorSpace_error
   }
 
   v7 = MEMORY[0x1E695F658];
-  v59 = v6;
-  v8 = [v6 CVPixelBuffer];
+  v59 = _accumulateCopy;
+  cVPixelBuffer = [_accumulateCopy CVPixelBuffer];
   v104 = *MEMORY[0x1E695F990];
   v105[0] = MEMORY[0x1E695E118];
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:&v104 count:1];
-  v10 = [v7 imageWithCVPixelBuffer:v8 options:v9];
+  v10 = [v7 imageWithCVPixelBuffer:cVPixelBuffer options:v9];
 
-  v11 = [(PILongExposureAccumulator *)self workingColorSpace];
+  workingColorSpace = [(PILongExposureAccumulator *)self workingColorSpace];
   height = self->_pixelSize.height;
   width = self->_pixelSize.width;
   v12 = +[PIAutoLoopKernels alphaCompositingKernel];
-  v60 = [MEMORY[0x1E695F608] componentMax];
-  v61 = [MEMORY[0x1E695F608] componentMin];
+  componentMax = [MEMORY[0x1E695F608] componentMax];
+  componentMin = [MEMORY[0x1E695F608] componentMin];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
@@ -629,13 +629,13 @@ void __73__PILongExposureAccumulator_writeLongExposureImage_UTI_colorSpace_error
   v18 = v10;
   v101 = v14;
   v92 = v18;
-  v93 = self;
-  v19 = v11;
+  selfCopy = self;
+  v19 = workingColorSpace;
   v96 = 0;
   v97 = 0;
   v98 = width;
   v99 = height;
-  v100 = v65;
+  v100 = errorCopy;
   v94 = v19;
   v95 = buf;
   [(NUSurfaceStorage *)averageAccumulationStorage useAsCIImageWithOptions:imageOptions renderer:renderer block:v90];
@@ -644,8 +644,8 @@ void __73__PILongExposureAccumulator_writeLongExposureImage_UTI_colorSpace_error
   temporaryDestinationStorage = self->_temporaryDestinationStorage;
   self->_temporaryDestinationStorage = v20;
 
-  v22 = [v18 imageByClampingToExtent];
-  v23 = [v22 imageByApplyingFilter:@"CIBoxBlur" withInputParameters:&unk_1F4720158];
+  imageByClampingToExtent = [v18 imageByClampingToExtent];
+  v23 = [imageByClampingToExtent imageByApplyingFilter:@"CIBoxBlur" withInputParameters:&unk_1F4720158];
 
   minimumAccumulationStorage = self->_minimumAccumulationStorage;
   v25 = self->_imageOptions;
@@ -654,19 +654,19 @@ void __73__PILongExposureAccumulator_writeLongExposureImage_UTI_colorSpace_error
   v78[1] = 3221225472;
   v78[2] = __47__PILongExposureAccumulator__accumulate_error___block_invoke_50;
   v78[3] = &unk_1E82AB470;
-  v62 = v61;
+  v62 = componentMin;
   v79 = v62;
   v27 = v18;
   v80 = v27;
   v28 = v23;
   v81 = v28;
-  v82 = self;
+  selfCopy2 = self;
   v29 = v19;
   v85 = 0;
   v86 = 0;
   v87 = width;
   v88 = height;
-  v89 = v65;
+  v89 = errorCopy;
   v83 = v29;
   v84 = buf;
   [(NUSurfaceStorage *)minimumAccumulationStorage useAsCIImageWithOptions:v25 renderer:v26 block:v78];
@@ -683,19 +683,19 @@ void __73__PILongExposureAccumulator_writeLongExposureImage_UTI_colorSpace_error
   v66[1] = 3221225472;
   v66[2] = __47__PILongExposureAccumulator__accumulate_error___block_invoke_3;
   v66[3] = &unk_1E82AB470;
-  v36 = v60;
+  v36 = componentMax;
   v67 = v36;
   v37 = v27;
   v68 = v37;
   v38 = v28;
   v69 = v38;
-  v70 = self;
+  selfCopy3 = self;
   v39 = v29;
   v73 = 0;
   v74 = 0;
   v75 = width;
   v76 = height;
-  v77 = v65;
+  v77 = errorCopy;
   v71 = v39;
   v72 = buf;
   [(NUSurfaceStorage *)maximumAccumulationStorage useAsCIImageWithOptions:v34 renderer:v35 block:v66];
@@ -904,11 +904,11 @@ BOOL __47__PILongExposureAccumulator__accumulate_error___block_invoke_2(uint64_t
   return v10 != 0;
 }
 
-- (void)_accumulate:(id)a3
+- (void)_accumulate:(id)_accumulate
 {
-  v4 = a3;
-  v5 = [(PILongExposureAccumulator *)self _accumError];
-  if (v5)
+  _accumulateCopy = _accumulate;
+  _accumError = [(PILongExposureAccumulator *)self _accumError];
+  if (_accumError)
   {
 
     v6 = 0;
@@ -917,7 +917,7 @@ BOOL __47__PILongExposureAccumulator__accumulate_error___block_invoke_2(uint64_t
   else
   {
     v8 = 0;
-    v7 = [(PILongExposureAccumulator *)self _accumulate:v4 error:&v8];
+    v7 = [(PILongExposureAccumulator *)self _accumulate:_accumulateCopy error:&v8];
     v6 = v8;
     if (!v7)
     {
@@ -926,18 +926,18 @@ BOOL __47__PILongExposureAccumulator__accumulate_error___block_invoke_2(uint64_t
   }
 }
 
-- (BOOL)_initializeAccumulation:(id *)a3
+- (BOOL)_initializeAccumulation:(id *)accumulation
 {
-  v5 = [(PILongExposureAccumulator *)self workingColorSpace];
+  workingColorSpace = [(PILongExposureAccumulator *)self workingColorSpace];
   v6 = MEMORY[0x1E695F658];
-  v7 = [MEMORY[0x1E695F610] colorWithRed:objc_msgSend(v5 green:"CGColorSpace") blue:0.0 colorSpace:{0.0, 0.0}];
+  v7 = [MEMORY[0x1E695F610] colorWithRed:objc_msgSend(workingColorSpace green:"CGColorSpace") blue:0.0 colorSpace:{0.0, 0.0}];
   v8 = [v6 imageWithColor:v7];
 
   v9 = MEMORY[0x1E695F658];
-  v10 = [MEMORY[0x1E695F610] colorWithRed:objc_msgSend(v5 green:"CGColorSpace") blue:1.0 colorSpace:{1.0, 1.0}];
+  v10 = [MEMORY[0x1E695F610] colorWithRed:objc_msgSend(workingColorSpace green:"CGColorSpace") blue:1.0 colorSpace:{1.0, 1.0}];
   v11 = [v9 imageWithColor:v10];
 
-  v12 = [(PILongExposureAccumulator *)self _initializeStorage:self->_averageAccumulationStorage image:v8 error:a3]&& [(PILongExposureAccumulator *)self _initializeStorage:self->_minimumAccumulationStorage image:v11 error:a3]&& [(PILongExposureAccumulator *)self _initializeStorage:self->_maximumAccumulationStorage image:v8 error:a3];
+  v12 = [(PILongExposureAccumulator *)self _initializeStorage:self->_averageAccumulationStorage image:v8 error:accumulation]&& [(PILongExposureAccumulator *)self _initializeStorage:self->_minimumAccumulationStorage image:v11 error:accumulation]&& [(PILongExposureAccumulator *)self _initializeStorage:self->_maximumAccumulationStorage image:v8 error:accumulation];
   return v12;
 }
 
@@ -948,9 +948,9 @@ BOOL __47__PILongExposureAccumulator__accumulate_error___block_invoke_2(uint64_t
   v4 = v6;
   if (!v3)
   {
-    v5 = [(PILongExposureAccumulator *)self _accumError];
+    _accumError = [(PILongExposureAccumulator *)self _accumError];
 
-    if (!v5)
+    if (!_accumError)
     {
       [(PILongExposureAccumulator *)self set_accumError:v4];
     }
@@ -964,14 +964,14 @@ BOOL __47__PILongExposureAccumulator__accumulate_error___block_invoke_2(uint64_t
   {
     dispatch_semaphore_wait(self->_accumSemaphore, 0xFFFFFFFFFFFFFFFFLL);
     v3 = objc_autoreleasePoolPush();
-    v4 = [(PILongExposureAccumulator *)self nextInputFrame];
-    if (!v4)
+    nextInputFrame = [(PILongExposureAccumulator *)self nextInputFrame];
+    if (!nextInputFrame)
     {
       break;
     }
 
-    v5 = v4;
-    [(PILongExposureAccumulator *)self _accumulate:v4];
+    v5 = nextInputFrame;
+    [(PILongExposureAccumulator *)self _accumulate:nextInputFrame];
 
     objc_autoreleasePoolPop(v3);
   }
@@ -1028,19 +1028,19 @@ uint64_t __43__PILongExposureAccumulator_nextInputFrame__block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)_appendInputFrame:(id)a3
+- (void)_appendInputFrame:(id)frame
 {
-  [(NSMutableArray *)self->_inputFrames addObject:a3];
+  [(NSMutableArray *)self->_inputFrames addObject:frame];
   accumSemaphore = self->_accumSemaphore;
 
   dispatch_semaphore_signal(accumSemaphore);
 }
 
-- (BOOL)accumulate:(id)a3 error:(id *)a4
+- (BOOL)accumulate:(id)accumulate error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8)
+  accumulateCopy = accumulate;
+  if (!accumulateCopy)
   {
     v16 = NUAssertLogger_15869();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1089,7 +1089,7 @@ uint64_t __43__PILongExposureAccumulator_nextInputFrame__block_invoke(uint64_t a
     goto LABEL_23;
   }
 
-  if (!a4)
+  if (!error)
   {
     v19 = NUAssertLogger_15869();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1145,13 +1145,13 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v9 = v8;
+  v9 = accumulateCopy;
   [(PILongExposureAccumulator *)self _accumError];
   v10 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
   if (v10 != 0.0)
   {
-    *a4 = [(PILongExposureAccumulator *)self _accumError];
+    *error = [(PILongExposureAccumulator *)self _accumError];
     goto LABEL_9;
   }
 
@@ -1241,36 +1241,36 @@ uint64_t __47__PILongExposureAccumulator_isReadyForMoreData__block_invoke(uint64
   return result;
 }
 
-- (BOOL)_initializeStorage:(id)a3 image:(id)a4 error:(id *)a5
+- (BOOL)_initializeStorage:(id)storage image:(id)image error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  storageCopy = storage;
+  imageCopy = image;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v10 = [(PILongExposureAccumulator *)self workingColorSpace];
+  workingColorSpace = [(PILongExposureAccumulator *)self workingColorSpace];
   renderer = self->_renderer;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __60__PILongExposureAccumulator__initializeStorage_image_error___block_invoke;
   v16[3] = &unk_1E82AB420;
   pixelSize = self->_pixelSize;
-  v12 = v10;
+  v12 = workingColorSpace;
   v17 = v12;
-  v18 = self;
-  v13 = v9;
+  selfCopy = self;
+  v13 = imageCopy;
   v21 = 0;
   v22 = 0;
   v23 = pixelSize;
-  v24 = a5;
+  errorCopy = error;
   v19 = v13;
   v20 = &v25;
-  [v8 useAsCIRenderDestinationWithRenderer:renderer block:v16];
-  LOBYTE(a5) = *(v26 + 24);
+  [storageCopy useAsCIRenderDestinationWithRenderer:renderer block:v16];
+  LOBYTE(error) = *(v26 + 24);
 
   _Block_object_dispose(&v25, 8);
-  return (a5 & 1) == 0;
+  return (error & 1) == 0;
 }
 
 BOOL __60__PILongExposureAccumulator__initializeStorage_image_error___block_invoke(uint64_t a1, void *a2)
@@ -1298,7 +1298,7 @@ BOOL __60__PILongExposureAccumulator__initializeStorage_image_error___block_invo
   return v10 != 0;
 }
 
-- (BOOL)start:(id *)a3
+- (BOOL)start:(id *)start
 {
   doneGroup = self->_doneGroup;
   accumQueue = self->_accumQueue;
@@ -1319,13 +1319,13 @@ BOOL __60__PILongExposureAccumulator__initializeStorage_image_error___block_invo
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69B3A58] sharedFactory];
-  v4 = [v3 surfaceStoragePool];
+  mEMORY[0x1E69B3A58] = [MEMORY[0x1E69B3A58] sharedFactory];
+  surfaceStoragePool = [mEMORY[0x1E69B3A58] surfaceStoragePool];
 
-  [v4 returnStorage:self->_temporaryDestinationStorage];
-  [v4 returnStorage:self->_averageAccumulationStorage];
-  [v4 returnStorage:self->_minimumAccumulationStorage];
-  [v4 returnStorage:self->_maximumAccumulationStorage];
+  [surfaceStoragePool returnStorage:self->_temporaryDestinationStorage];
+  [surfaceStoragePool returnStorage:self->_averageAccumulationStorage];
+  [surfaceStoragePool returnStorage:self->_minimumAccumulationStorage];
+  [surfaceStoragePool returnStorage:self->_maximumAccumulationStorage];
   accumSemaphore = self->_accumSemaphore;
   self->_accumSemaphore = 0;
 
@@ -1337,42 +1337,42 @@ BOOL __60__PILongExposureAccumulator__initializeStorage_image_error___block_invo
   [(PILongExposureAccumulator *)&v7 dealloc];
 }
 
-- (PILongExposureAccumulator)initWithSize:(id)a3 renderer:(id)a4 jobNumber:(unint64_t)a5
+- (PILongExposureAccumulator)initWithSize:(id)size renderer:(id)renderer jobNumber:(unint64_t)number
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v48[3] = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  rendererCopy = renderer;
   v46.receiver = self;
   v46.super_class = PILongExposureAccumulator;
   v10 = [(PILongExposureAccumulator *)&v46 init];
   v10->_pixelSize.width = var0;
   v10->_pixelSize.height = var1;
   renderer = v10->_renderer;
-  v10->_renderer = v9;
-  v12 = v9;
+  v10->_renderer = rendererCopy;
+  v12 = rendererCopy;
 
-  v10->_jobNumber = a5;
-  v13 = [MEMORY[0x1E69B3A58] sharedFactory];
-  v14 = [v13 surfaceStoragePool];
+  v10->_jobNumber = number;
+  mEMORY[0x1E69B3A58] = [MEMORY[0x1E69B3A58] sharedFactory];
+  surfaceStoragePool = [mEMORY[0x1E69B3A58] surfaceStoragePool];
 
-  v15 = [MEMORY[0x1E69B3BF0] RGBAh];
-  v16 = [v14 newStorageWithSize:v10->_pixelSize.width format:{v10->_pixelSize.height, v15}];
+  rGBAh = [MEMORY[0x1E69B3BF0] RGBAh];
+  v16 = [surfaceStoragePool newStorageWithSize:v10->_pixelSize.width format:{v10->_pixelSize.height, rGBAh}];
   temporaryDestinationStorage = v10->_temporaryDestinationStorage;
   v10->_temporaryDestinationStorage = v16;
 
-  v18 = [MEMORY[0x1E69B3BF0] RGBAh];
-  v19 = [v14 newStorageWithSize:v10->_pixelSize.width format:{v10->_pixelSize.height, v18}];
+  rGBAh2 = [MEMORY[0x1E69B3BF0] RGBAh];
+  v19 = [surfaceStoragePool newStorageWithSize:v10->_pixelSize.width format:{v10->_pixelSize.height, rGBAh2}];
   averageAccumulationStorage = v10->_averageAccumulationStorage;
   v10->_averageAccumulationStorage = v19;
 
-  v21 = [MEMORY[0x1E69B3BF0] RGBAh];
-  v22 = [v14 newStorageWithSize:v10->_pixelSize.width format:{v10->_pixelSize.height, v21}];
+  rGBAh3 = [MEMORY[0x1E69B3BF0] RGBAh];
+  v22 = [surfaceStoragePool newStorageWithSize:v10->_pixelSize.width format:{v10->_pixelSize.height, rGBAh3}];
   minimumAccumulationStorage = v10->_minimumAccumulationStorage;
   v10->_minimumAccumulationStorage = v22;
 
-  v24 = [MEMORY[0x1E69B3BF0] RGBAh];
-  v25 = [v14 newStorageWithSize:v10->_pixelSize.width format:{v10->_pixelSize.height, v24}];
+  rGBAh4 = [MEMORY[0x1E69B3BF0] RGBAh];
+  v25 = [surfaceStoragePool newStorageWithSize:v10->_pixelSize.width format:{v10->_pixelSize.height, rGBAh4}];
   maximumAccumulationStorage = v10->_maximumAccumulationStorage;
   v10->_maximumAccumulationStorage = v25;
 
@@ -1400,11 +1400,11 @@ BOOL __60__PILongExposureAccumulator__initializeStorage_image_error___block_invo
   doneGroup = v10->_doneGroup;
   v10->_doneGroup = v37;
 
-  v39 = [(PILongExposureAccumulator *)v10 workingColorSpace];
+  workingColorSpace = [(PILongExposureAccumulator *)v10 workingColorSpace];
   v47[0] = *MEMORY[0x1E695F9A8];
-  v40 = [v39 CGColorSpace];
+  cGColorSpace = [workingColorSpace CGColorSpace];
   v41 = *MEMORY[0x1E695F940];
-  v48[0] = v40;
+  v48[0] = cGColorSpace;
   v48[1] = MEMORY[0x1E695E118];
   v42 = *MEMORY[0x1E695F990];
   v47[1] = v41;

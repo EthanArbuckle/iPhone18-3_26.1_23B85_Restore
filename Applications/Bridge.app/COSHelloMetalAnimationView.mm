@@ -1,13 +1,13 @@
 @interface COSHelloMetalAnimationView
-- (_TtC6Bridge26COSHelloMetalAnimationView)initWithCoder:(id)a3;
-- (_TtC6Bridge26COSHelloMetalAnimationView)initWithFrame:(CGRect)a3;
+- (_TtC6Bridge26COSHelloMetalAnimationView)initWithCoder:(id)coder;
+- (_TtC6Bridge26COSHelloMetalAnimationView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation COSHelloMetalAnimationView
 
-- (_TtC6Bridge26COSHelloMetalAnimationView)initWithCoder:(id)a3
+- (_TtC6Bridge26COSHelloMetalAnimationView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = OBJC_IVAR____TtC6Bridge26COSHelloMetalAnimationView_animationFinishedContinuation;
@@ -21,26 +21,26 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10015F514();
   [v3 stopAnimation];
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for COSHelloMetalAnimationView(0);
   [(COSHelloMetalAnimationView *)&v4 dealloc];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for COSHelloMetalAnimationView(0);
-  v4 = a3;
+  superviewCopy = superview;
   v5 = v6.receiver;
-  [(COSHelloMetalAnimationView *)&v6 willMoveToSuperview:v4];
+  [(COSHelloMetalAnimationView *)&v6 willMoveToSuperview:superviewCopy];
   sub_1001608F0();
 }
 
-- (_TtC6Bridge26COSHelloMetalAnimationView)initWithFrame:(CGRect)a3
+- (_TtC6Bridge26COSHelloMetalAnimationView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

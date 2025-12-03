@@ -1,7 +1,7 @@
 @interface JTFrameRateCalculator
-- (JTFrameRateCalculator)initWithWindowSize:(double)a3;
+- (JTFrameRateCalculator)initWithWindowSize:(double)size;
 - (void)JT_restart;
-- (void)log:(id)a3;
+- (void)log:(id)log;
 - (void)tickDropped;
 - (void)tickDroppedDisplay;
 - (void)tickFrameReceived;
@@ -10,7 +10,7 @@
 
 @implementation JTFrameRateCalculator
 
-- (JTFrameRateCalculator)initWithWindowSize:(double)a3
+- (JTFrameRateCalculator)initWithWindowSize:(double)size
 {
   v13.receiver = self;
   v13.super_class = JTFrameRateCalculator;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_windowSize = a3;
+    v4->_windowSize = size;
     v6 = MEMORY[0x277CCACA8];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
@@ -34,17 +34,17 @@
   return v5;
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__JTFrameRateCalculator_log___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = logCopy;
+  v6 = logCopy;
   dispatch_async(queue, v7);
 }
 

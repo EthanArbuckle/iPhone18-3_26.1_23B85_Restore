@@ -1,23 +1,23 @@
 @interface CIMCandidateData
 + (BOOL)shouldShowZhuyinSortingMethod;
-+ (id)sortTitleFromSortingMethod:(int)a3;
++ (id)sortTitleFromSortingMethod:(int)method;
 - (CIMCandidateData)init;
-- (CIMCandidateData)initWithInputMode:(id)a3;
-- (id)candidateGroupsFromDictionary:(id)a3 sortedKeys:(id)a4;
-- (id)candidatesSortedByEmoji:(id)a3;
-- (id)candidatesSortedByFrequency:(id)a3 omittingEmoji:(BOOL)a4;
-- (id)candidatesSortedByWubi:(id)a3 omittingEmoji:(BOOL)a4;
-- (id)wordPropertyDictionaryForCandidates:(id)a3 isSimplified:(BOOL)a4;
+- (CIMCandidateData)initWithInputMode:(id)mode;
+- (id)candidateGroupsFromDictionary:(id)dictionary sortedKeys:(id)keys;
+- (id)candidatesSortedByEmoji:(id)emoji;
+- (id)candidatesSortedByFrequency:(id)frequency omittingEmoji:(BOOL)emoji;
+- (id)candidatesSortedByWubi:(id)wubi omittingEmoji:(BOOL)emoji;
+- (id)wordPropertyDictionaryForCandidates:(id)candidates isSimplified:(BOOL)simplified;
 - (void)clearCache;
-- (void)sortCharactersByStrokeCount:(id)a3 wordPropertiesDictionary:(id)a4;
+- (void)sortCharactersByStrokeCount:(id)count wordPropertiesDictionary:(id)dictionary;
 @end
 
 @implementation CIMCandidateData
 
-- (id)candidatesSortedByWubi:(id)a3 omittingEmoji:(BOOL)a4
+- (id)candidatesSortedByWubi:(id)wubi omittingEmoji:(BOOL)emoji
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (emoji)
   {
     v5 = 0;
   }
@@ -27,7 +27,7 @@
     v5 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [a3 _arrayByFilteringEmojiCandidates:v5];
+  v6 = [wubi _arrayByFilteringEmojiCandidates:v5];
   v7 = objc_alloc(MEMORY[0x277D6F3C8]);
   v8 = [MEMORY[0x277CBEB70] orderedSetWithArray:v6];
   v9 = [v7 initWithTitle:0 candidates:v8];
@@ -76,12 +76,12 @@ uint64_t __57__CIMCandidateData_candidatesSortedByStrokes_simplified___block_inv
   }
 }
 
-- (id)candidatesSortedByEmoji:(id)a3
+- (id)candidatesSortedByEmoji:(id)emoji
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 indexesOfObjectsPassingTest:&__block_literal_global_197];
-  v5 = [v3 objectsAtIndexes:v4];
+  emojiCopy = emoji;
+  v4 = [emojiCopy indexesOfObjectsPassingTest:&__block_literal_global_197];
+  v5 = [emojiCopy objectsAtIndexes:v4];
 
   v6 = objc_alloc(MEMORY[0x277D6F3C8]);
   v7 = [MEMORY[0x277CBEB70] orderedSetWithArray:v5];
@@ -110,13 +110,13 @@ uint64_t __44__CIMCandidateData_candidatesSortedByEmoji___block_invoke(uint64_t 
   return v3;
 }
 
-- (id)candidatesSortedByFrequency:(id)a3 omittingEmoji:(BOOL)a4
+- (id)candidatesSortedByFrequency:(id)frequency omittingEmoji:(BOOL)emoji
 {
-  v4 = a4;
+  emojiCopy = emoji;
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = [a3 _sortedArrayByFrequency];
-  v6 = v5;
-  if (v4)
+  _sortedArrayByFrequency = [frequency _sortedArrayByFrequency];
+  v6 = _sortedArrayByFrequency;
+  if (emojiCopy)
   {
     v7 = 0;
   }
@@ -126,7 +126,7 @@ uint64_t __44__CIMCandidateData_candidatesSortedByEmoji___block_invoke(uint64_t 
     v7 = 4;
   }
 
-  v8 = [v5 _arrayByFilteringEmojiCandidates:v7];
+  v8 = [_sortedArrayByFrequency _arrayByFilteringEmojiCandidates:v7];
   v9 = objc_alloc(MEMORY[0x277D6F3C8]);
   v10 = [MEMORY[0x277CBEB70] orderedSetWithArray:v8];
   v11 = [v9 initWithTitle:0 candidates:v10];
@@ -138,17 +138,17 @@ uint64_t __44__CIMCandidateData_candidatesSortedByEmoji___block_invoke(uint64_t 
   return v12;
 }
 
-- (id)candidateGroupsFromDictionary:(id)a3 sortedKeys:(id)a4
+- (id)candidateGroupsFromDictionary:(id)dictionary sortedKeys:(id)keys
 {
   v36 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v5 = a4;
-  v23 = [MEMORY[0x277CBEB18] array];
+  dictionaryCopy = dictionary;
+  keysCopy = keys;
+  array = [MEMORY[0x277CBEB18] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = keysCopy;
   v6 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v6)
   {
@@ -164,8 +164,8 @@ uint64_t __44__CIMCandidateData_candidatesSortedByEmoji___block_invoke(uint64_t 
         }
 
         v9 = *(*(&v30 + 1) + 8 * i);
-        v10 = [v25 objectForKey:v9];
-        v11 = [MEMORY[0x277CBEB18] array];
+        v10 = [dictionaryCopy objectForKey:v9];
+        array2 = [MEMORY[0x277CBEB18] array];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
@@ -187,7 +187,7 @@ uint64_t __44__CIMCandidateData_candidatesSortedByEmoji___block_invoke(uint64_t 
               v16 = [v10 objectForKey:*(*(&v26 + 1) + 8 * j)];
               if ([v16 count])
               {
-                [v11 addObjectsFromArray:v16];
+                [array2 addObjectsFromArray:v16];
               }
             }
 
@@ -197,13 +197,13 @@ uint64_t __44__CIMCandidateData_candidatesSortedByEmoji___block_invoke(uint64_t 
           while (v13);
         }
 
-        if ([v11 count])
+        if ([array2 count])
         {
           v17 = objc_alloc(MEMORY[0x277D6F3C8]);
-          v18 = [MEMORY[0x277CBEB70] orderedSetWithArray:v11];
+          v18 = [MEMORY[0x277CBEB70] orderedSetWithArray:array2];
           v19 = [v17 initWithTitle:v9 candidates:v18];
 
-          [v23 addObject:v19];
+          [array addObject:v19];
         }
       }
 
@@ -215,20 +215,20 @@ uint64_t __44__CIMCandidateData_candidatesSortedByEmoji___block_invoke(uint64_t 
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return array;
 }
 
-- (void)sortCharactersByStrokeCount:(id)a3 wordPropertiesDictionary:(id)a4
+- (void)sortCharactersByStrokeCount:(id)count wordPropertiesDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  countCopy = count;
+  dictionaryCopy = dictionary;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
-  v16 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  obj = countCopy;
+  v16 = [countCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v16)
   {
     v15 = *v25;
@@ -267,7 +267,7 @@ uint64_t __44__CIMCandidateData_candidatesSortedByEmoji___block_invoke(uint64_t 
               v18[1] = 3221225472;
               v18[2] = __73__CIMCandidateData_sortCharactersByStrokeCount_wordPropertiesDictionary___block_invoke;
               v18[3] = &unk_279D9D340;
-              v19 = v6;
+              v19 = dictionaryCopy;
               [v13 sortUsingComparator:v18];
 
               ++v12;
@@ -317,16 +317,16 @@ uint64_t __73__CIMCandidateData_sortCharactersByStrokeCount_wordPropertiesDictio
   }
 }
 
-- (id)wordPropertyDictionaryForCandidates:(id)a3 isSimplified:(BOOL)a4
+- (id)wordPropertyDictionaryForCandidates:(id)candidates isSimplified:(BOOL)simplified
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  candidatesCopy = candidates;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = candidatesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -341,9 +341,9 @@ uint64_t __73__CIMCandidateData_sortCharactersByStrokeCount_wordPropertiesDictio
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) label];
+        label = [*(*(&v15 + 1) + 8 * i) label];
         v12 = MecabraWordPropertiesCreate();
-        [v5 setObject:v12 forKeyedSubscript:v11];
+        [dictionary setObject:v12 forKeyedSubscript:label];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -354,28 +354,28 @@ uint64_t __73__CIMCandidateData_sortCharactersByStrokeCount_wordPropertiesDictio
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
 - (void)clearCache
 {
-  v2 = [(CIMCandidateData *)self candidateInfoCache];
-  [v2 removeAllObjects];
+  candidateInfoCache = [(CIMCandidateData *)self candidateInfoCache];
+  [candidateInfoCache removeAllObjects];
 }
 
-- (CIMCandidateData)initWithInputMode:(id)a3
+- (CIMCandidateData)initWithInputMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   v10.receiver = self;
   v10.super_class = CIMCandidateData;
   v6 = [(CIMCandidateData *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inputMode, a3);
+    objc_storeStrong(&v6->_inputMode, mode);
     [(CIMCandidateData *)v7 setSortingMethod:1];
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    [(CIMCandidateData *)v7 setCandidateInfoCache:v8];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(CIMCandidateData *)v7 setCandidateInfoCache:dictionary];
   }
 
   return v7;
@@ -391,8 +391,8 @@ uint64_t __73__CIMCandidateData_sortCharactersByStrokeCount_wordPropertiesDictio
 + (BOOL)shouldShowZhuyinSortingMethod
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE690]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
   v4 = [v3 isEqualToString:@"TW"];
 
   if (v4)
@@ -402,14 +402,14 @@ uint64_t __73__CIMCandidateData_sortCharactersByStrokeCount_wordPropertiesDictio
 
   else
   {
-    v6 = [MEMORY[0x277D6F380] sharedInputModeController];
-    v7 = [v6 enabledInputModeIdentifiers];
+    mEMORY[0x277D6F380] = [MEMORY[0x277D6F380] sharedInputModeController];
+    enabledInputModeIdentifiers = [mEMORY[0x277D6F380] enabledInputModeIdentifiers];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v7;
+    v8 = enabledInputModeIdentifiers;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -458,16 +458,16 @@ LABEL_14:
   return v5;
 }
 
-+ (id)sortTitleFromSortingMethod:(int)a3
++ (id)sortTitleFromSortingMethod:(int)method
 {
-  if ((a3 - 1) > 7)
+  if ((method - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_279D9D3A0[a3 - 1];
+    return off_279D9D3A0[method - 1];
   }
 }
 

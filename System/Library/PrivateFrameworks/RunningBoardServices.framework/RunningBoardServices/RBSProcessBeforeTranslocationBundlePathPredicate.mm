@@ -1,16 +1,16 @@
 @interface RBSProcessBeforeTranslocationBundlePathPredicate
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 - (RBSProcessBeforeTranslocationBundlePathPredicate)init;
-- (RBSProcessBeforeTranslocationBundlePathPredicate)initWithIdentifier:(id)a3;
+- (RBSProcessBeforeTranslocationBundlePathPredicate)initWithIdentifier:(id)identifier;
 @end
 
 @implementation RBSProcessBeforeTranslocationBundlePathPredicate
 
-- (RBSProcessBeforeTranslocationBundlePathPredicate)initWithIdentifier:(id)a3
+- (RBSProcessBeforeTranslocationBundlePathPredicate)initWithIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = RBSProcessBeforeTranslocationBundlePathPredicate;
-  result = [(RBSProcessStringPredicate *)&v4 initWithIdentifier:a3];
+  result = [(RBSProcessStringPredicate *)&v4 initWithIdentifier:identifier];
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;
@@ -32,14 +32,14 @@
   return result;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = a3;
-  v5 = [(RBSProcessBeforeTranslocationBundlePathPredicate *)self beforeTranslocationBundlePath];
-  v6 = [v4 beforeTranslocationBundlePath];
+  processCopy = process;
+  beforeTranslocationBundlePath = [(RBSProcessBeforeTranslocationBundlePathPredicate *)self beforeTranslocationBundlePath];
+  beforeTranslocationBundlePath2 = [processCopy beforeTranslocationBundlePath];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(processCopy) = [beforeTranslocationBundlePath isEqualToString:beforeTranslocationBundlePath2];
+  return processCopy;
 }
 
 @end

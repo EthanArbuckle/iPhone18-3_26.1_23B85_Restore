@@ -1,6 +1,6 @@
 @interface LSDatabaseBlockingFetchServer
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_init;
 - (void)startRunningIfNecessary;
 @end
@@ -19,9 +19,9 @@
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     listener = v2->_listener;
-    v2->_listener = v6;
+    v2->_listener = anonymousListener;
 
     [(NSXPCListener *)v2->_listener setDelegate:v2];
     v2->_running = 0;
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __47__LSDatabaseBlockingFetchServer_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -78,16 +78,16 @@ uint64_t __56__LSDatabaseBlockingFetchServer_startRunningIfNecessary__block_invo
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 _setQueue:self->_queue];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  [connectionCopy _setQueue:self->_queue];
   v8 = LSDatabaseBlockingFetchInterface();
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  v9 = [[LSDatabaseBlockingFetchClient alloc] initWithXPCConnection:v7];
-  [v7 setExportedObject:v9];
+  v9 = [[LSDatabaseBlockingFetchClient alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v9];
 
   from = 0;
   v11 = MEMORY[0x1E69E9820];
@@ -95,8 +95,8 @@ uint64_t __56__LSDatabaseBlockingFetchServer_startRunningIfNecessary__block_invo
   v13 = __68__LSDatabaseBlockingFetchServer_listener_shouldAcceptNewConnection___block_invoke;
   v14 = &unk_1E6A19540;
   objc_copyWeak(&v15, &from);
-  [v7 setInvalidationHandler:&v11];
-  [v7 resume];
+  [connectionCopy setInvalidationHandler:&v11];
+  [connectionCopy resume];
   objc_destroyWeak(&v15);
   objc_destroyWeak(&from);
 

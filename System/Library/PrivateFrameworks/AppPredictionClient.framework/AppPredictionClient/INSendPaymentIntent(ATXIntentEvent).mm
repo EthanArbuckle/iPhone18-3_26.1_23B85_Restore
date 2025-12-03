@@ -7,13 +7,13 @@
 - (void)atx_getArgsInto:()ATXIntentEvent
 {
   v4 = a3;
-  v5 = [a1 payee];
-  v6 = [v5 displayName];
-  [v4 setArg1:v6];
+  payee = [self payee];
+  displayName = [payee displayName];
+  [v4 setArg1:displayName];
 
-  v9 = [a1 currencyAmount];
-  v7 = [v9 amount];
-  v8 = roundedDecimal(v7);
+  currencyAmount = [self currencyAmount];
+  amount = [currencyAmount amount];
+  v8 = roundedDecimal(amount);
   [v4 setArg2:v8];
 }
 

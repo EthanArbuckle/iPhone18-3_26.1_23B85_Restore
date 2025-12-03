@@ -1,5 +1,5 @@
 @interface USBHeadphoneLossLessAudioController
-- (_TtC20HeadphoneProxService35USBHeadphoneLossLessAudioController)initWithContentView:(id)a3;
+- (_TtC20HeadphoneProxService35USBHeadphoneLossLessAudioController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B18E4();
 }
 
-- (_TtC20HeadphoneProxService35USBHeadphoneLossLessAudioController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService35USBHeadphoneLossLessAudioController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC20HeadphoneProxService35USBHeadphoneLossLessAudioController_featureManager;
   type metadata accessor for HeadphoneProxFeatureManager();
-  v7 = a3;
+  viewCopy = view;
   *&self->PRXCardContentViewController_opaque[v6] = static HeadphoneProxFeatureManager.shared.getter();
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService35USBHeadphoneLossLessAudioController____lazy_storage___imageView] = 0;
   v8 = OBJC_IVAR____TtC20HeadphoneProxService35USBHeadphoneLossLessAudioController_model;
@@ -27,7 +27,7 @@
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService35USBHeadphoneLossLessAudioController_type] = 36;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(USBHeadphoneLossLessAudioController *)&v12 initWithContentView:v7];
+  v10 = [(USBHeadphoneLossLessAudioController *)&v12 initWithContentView:viewCopy];
 
   return v10;
 }

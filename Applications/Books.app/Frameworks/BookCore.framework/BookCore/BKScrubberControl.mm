@@ -1,66 +1,66 @@
 @interface BKScrubberControl
 - (BKAccessibilityScrubberControlDelegate)bkAccessibilityDelegate;
-- (BKScrubberControl)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (BKScrubberControl)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (BKScrubberTrack)track;
 - (BKShapeView)thumb;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_classicThumbRect;
 - (CGRect)_modernThumbRect;
 - (CGRect)hitRectForThumb;
 - (CGRect)thumbRect;
-- (double)_xPositionFromPercentage:(double)a3;
+- (double)_xPositionFromPercentage:(double)percentage;
 - (double)progress;
 - (double)value;
 - (id)_makeScrollerPartLayer;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (int)orientation;
 - (int64_t)layoutDirection;
-- (int64_t)pageNumberForValue:(double)a3;
-- (int64_t)validateHoverState:(int64_t)a3;
-- (void)_setValue:(double)a3 updateScrollView:(BOOL)a4;
-- (void)_setupCommon:(int64_t)a3;
-- (void)_setupCommonLayerProperties:(id)a3;
-- (void)_touchMovedAtPoint:(CGPoint)a3 refresh:(BOOL)a4;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)_updateScrollviewValue:(double)a3;
+- (int64_t)pageNumberForValue:(double)value;
+- (int64_t)validateHoverState:(int64_t)state;
+- (void)_setValue:(double)value updateScrollView:(BOOL)view;
+- (void)_setupCommon:(int64_t)common;
+- (void)_setupCommonLayerProperties:(id)properties;
+- (void)_touchMovedAtPoint:(CGPoint)point refresh:(BOOL)refresh;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)_updateScrollviewValue:(double)value;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrubToValue:(double)a3 refresh:(BOOL)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHoverState:(int64_t)a3;
-- (void)setLayoutDirection:(int64_t)a3;
-- (void)setOrientation:(int)a3;
-- (void)setPageCount:(unint64_t)a3;
-- (void)setPageCount:(unint64_t)a3 refresh:(BOOL)a4;
-- (void)setPageNumber:(int64_t)a3;
-- (void)setPageNumber:(int64_t)a3 refresh:(BOOL)a4;
-- (void)setProgress:(double)a3;
-- (void)setThemeInterfaceStyle:(int64_t)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrubToValue:(double)value refresh:(BOOL)refresh;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHoverState:(int64_t)state;
+- (void)setLayoutDirection:(int64_t)direction;
+- (void)setOrientation:(int)orientation;
+- (void)setPageCount:(unint64_t)count;
+- (void)setPageCount:(unint64_t)count refresh:(BOOL)refresh;
+- (void)setPageNumber:(int64_t)number;
+- (void)setPageNumber:(int64_t)number refresh:(BOOL)refresh;
+- (void)setProgress:(double)progress;
+- (void)setThemeInterfaceStyle:(int64_t)style;
 - (void)updateHoverState;
 - (void)updateValue;
-- (void)updateValueAndRefresh:(BOOL)a3;
+- (void)updateValueAndRefresh:(BOOL)refresh;
 @end
 
 @implementation BKScrubberControl
 
-- (void)_setupCommon:(int64_t)a3
+- (void)_setupCommon:(int64_t)common
 {
-  self->_isClassic = a3 == 0;
+  self->_isClassic = common == 0;
   [(BKScrubberControl *)self setUserInteractionEnabled:1];
-  v17 = [(BKScrubberControl *)self track];
+  track = [(BKScrubberControl *)self track];
   [(BKScrubberControl *)self bounds];
-  [v17 setFrame:?];
-  [v17 setAutoresizingMask:18];
-  [(BKScrubberControl *)self addSubview:v17];
-  v4 = [(BKScrubberControl *)self thumb];
-  [(BKScrubberControl *)self addSubview:v4];
+  [track setFrame:?];
+  [track setAutoresizingMask:18];
+  [(BKScrubberControl *)self addSubview:track];
+  thumb = [(BKScrubberControl *)self thumb];
+  [(BKScrubberControl *)self addSubview:thumb];
 
   [(BKScrubberControl *)self addTarget:self action:"_updateInteractions:" forControlEvents:4096];
   [(BKScrubberControl *)self addTarget:self action:"_updateInteractions:" forControlEvents:64];
@@ -71,12 +71,12 @@
   [(BKScrubberControl *)self setOrientation:0];
   if (!self->_isClassic)
   {
-    v5 = [(BKScrubberControl *)self _makeScrollerPartLayer];
+    _makeScrollerPartLayer = [(BKScrubberControl *)self _makeScrollerPartLayer];
     modernKnobLayer = self->_modernKnobLayer;
-    self->_modernKnobLayer = v5;
+    self->_modernKnobLayer = _makeScrollerPartLayer;
 
-    v7 = [(BKShapeView *)self->_thumb layer];
-    [v7 addSublayer:self->_modernKnobLayer];
+    layer = [(BKShapeView *)self->_thumb layer];
+    [layer addSublayer:self->_modernKnobLayer];
 
     [(BKScrubberControl *)self _setupCommonLayerProperties:self->_modernKnobLayer];
     v8 = [[BKScrubberLayerImp alloc] initWithLayer:self->_modernKnobLayer orientation:[(BKScrubberControl *)self orientation]];
@@ -84,12 +84,12 @@
     self->_modernKnobImp = v8;
 
     [(BKScrubberLayerImp *)self->_modernKnobImp setIsKnob:1];
-    v10 = [(BKScrubberControl *)self _makeScrollerPartLayer];
+    _makeScrollerPartLayer2 = [(BKScrubberControl *)self _makeScrollerPartLayer];
     modernTrackLayer = self->_modernTrackLayer;
-    self->_modernTrackLayer = v10;
+    self->_modernTrackLayer = _makeScrollerPartLayer2;
 
-    v12 = [(BKScrubberTrack *)self->_track layer];
-    [v12 addSublayer:self->_modernTrackLayer];
+    layer2 = [(BKScrubberTrack *)self->_track layer];
+    [layer2 addSublayer:self->_modernTrackLayer];
 
     [(BKScrubberControl *)self _setupCommonLayerProperties:self->_modernTrackLayer];
     v13 = [[BKScrubberLayerImp alloc] initWithLayer:self->_modernTrackLayer orientation:[(BKScrubberControl *)self orientation]];
@@ -114,35 +114,35 @@
   }
 }
 
-- (void)setThemeInterfaceStyle:(int64_t)a3
+- (void)setThemeInterfaceStyle:(int64_t)style
 {
-  self->_themeInterfaceStyle = a3;
+  self->_themeInterfaceStyle = style;
   [(BKScrubberLayerImp *)self->_modernKnobImp setThemeInterfaceStyle:?];
-  [(BKScrubberLayerImp *)self->_modernTrackImp setThemeInterfaceStyle:a3];
+  [(BKScrubberLayerImp *)self->_modernTrackImp setThemeInterfaceStyle:style];
   [(CALayer *)self->_modernKnobLayer setNeedsDisplay];
   modernTrackLayer = self->_modernTrackLayer;
 
   [(CALayer *)modernTrackLayer setNeedsDisplay];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [(BKScrubberControl *)self traitCollection:a3];
+  v5 = [(BKScrubberControl *)self traitCollection:change];
   [(BKScrubberLayerImp *)self->_modernKnobImp setTraitCollection:v5];
 
-  v6 = [(BKScrubberControl *)self traitCollection];
-  [(BKScrubberLayerImp *)self->_modernTrackImp setTraitCollection:v6];
+  traitCollection = [(BKScrubberControl *)self traitCollection];
+  [(BKScrubberLayerImp *)self->_modernTrackImp setTraitCollection:traitCollection];
 }
 
-- (void)_setupCommonLayerProperties:(id)a3
+- (void)_setupCommonLayerProperties:(id)properties
 {
   y = CGPointZero.y;
-  v5 = a3;
-  [v5 setAnchorPoint:{CGPointZero.x, y}];
-  [v5 setGeometryFlipped:1];
-  v6 = [(BKScrubberTrack *)self->_track layer];
-  [v6 contentsScale];
-  [v5 setContentsScale:?];
+  propertiesCopy = properties;
+  [propertiesCopy setAnchorPoint:{CGPointZero.x, y}];
+  [propertiesCopy setGeometryFlipped:1];
+  layer = [(BKScrubberTrack *)self->_track layer];
+  [layer contentsScale];
+  [propertiesCopy setContentsScale:?];
 }
 
 - (id)_makeScrollerPartLayer
@@ -155,15 +155,15 @@
   return v2;
 }
 
-- (BKScrubberControl)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (BKScrubberControl)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = BKScrubberControl;
-  v5 = [(BKScrubberControl *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(BKScrubberControl *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    [(BKScrubberControl *)v5 _setupCommon:a4];
+    [(BKScrubberControl *)v5 _setupCommon:style];
   }
 
   return v6;
@@ -185,10 +185,10 @@
   [(BKScrubberControl *)&v6 dealloc];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(BKScrubberControl *)self hitRectForThumb];
   v10 = x;
   v11 = y;
@@ -196,39 +196,39 @@
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = BKScrubberControl;
-  v5 = [(BKScrubberControl *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(BKScrubberControl *)&v8 hitTest:event withEvent:test.x, test.y];
   if ([v5 isDescendantOfView:self])
   {
-    v6 = self;
+    selfCopy = self;
 
-    v5 = v6;
+    v5 = selfCopy;
   }
 
   return v5;
 }
 
-- (double)_xPositionFromPercentage:(double)a3
+- (double)_xPositionFromPercentage:(double)percentage
 {
-  v5 = [(BKScrubberControl *)self track];
-  v6 = [v5 layoutDirection];
+  track = [(BKScrubberControl *)self track];
+  layoutDirection = [track layoutDirection];
 
-  if (v6 == &dword_0 + 1)
+  if (layoutDirection == &dword_0 + 1)
   {
     [(BKScrubberControl *)self bounds];
-    return (1.0 - a3) * CGRectGetWidth(v9);
+    return (1.0 - percentage) * CGRectGetWidth(v9);
   }
 
   else
   {
     result = 0.0;
-    if (!v6)
+    if (!layoutDirection)
     {
       [(BKScrubberControl *)self bounds];
-      return CGRectGetWidth(v8) * a3;
+      return CGRectGetWidth(v8) * percentage;
     }
   }
 
@@ -246,11 +246,11 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKScrubberControl *)self track];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  track = [(BKScrubberControl *)self track];
+  [track setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(BKScrubberControl *)self track];
-  [v12 bounds];
+  track2 = [(BKScrubberControl *)self track];
+  [track2 bounds];
   [(CALayer *)self->_modernTrackLayer setFrame:?];
 
   [(BKScrubberControl *)self thumbRect];
@@ -258,18 +258,18 @@
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(BKScrubberControl *)self thumb];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  thumb = [(BKScrubberControl *)self thumb];
+  [thumb setFrame:{v14, v16, v18, v20}];
 
-  v22 = [(BKScrubberControl *)self thumb];
-  [v22 bounds];
+  thumb2 = [(BKScrubberControl *)self thumb];
+  [thumb2 bounds];
   [(CALayer *)self->_modernKnobLayer setFrame:?];
 
-  v23 = [(BKScrubberControl *)self thumb];
+  thumb3 = [(BKScrubberControl *)self thumb];
   [(BKScrubberControl *)self progress];
   if (v24 == 1.0 && [(BKScrubberControl *)self isEnabled]&& ([(BKScrubberControl *)self value], v25 >= 0.0) && ([(BKScrubberControl *)self value], v26 <= 1.0) || [(BKScrubberControl *)self hideThumbView])
   {
-    [v23 bounds];
+    [thumb3 bounds];
     v28 = v27;
     [(BKScrubberControl *)self value];
     [(BKScrubberControl *)self _xPositionFromPercentage:?];
@@ -283,16 +283,16 @@
     v31 = 1;
   }
 
-  [v23 setHidden:v31];
+  [thumb3 setHidden:v31];
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v13.receiver = self;
   v13.super_class = BKScrubberControl;
-  v6 = a3;
-  [(BKScrubberControl *)&v13 beginTrackingWithTouch:v6 withEvent:a4];
-  [v6 locationInView:{self, v13.receiver, v13.super_class}];
+  touchCopy = touch;
+  [(BKScrubberControl *)&v13 beginTrackingWithTouch:touchCopy withEvent:event];
+  [touchCopy locationInView:{self, v13.receiver, v13.super_class}];
   v8 = v7;
   v10 = v9;
 
@@ -308,14 +308,14 @@
   return v11;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v13.receiver = self;
   v13.super_class = BKScrubberControl;
-  v6 = a3;
-  [(BKScrubberControl *)&v13 continueTrackingWithTouch:v6 withEvent:a4];
+  touchCopy = touch;
+  [(BKScrubberControl *)&v13 continueTrackingWithTouch:touchCopy withEvent:event];
   v7 = [(BKScrubberControl *)self track:v13.receiver];
-  [v6 locationInView:v7];
+  [touchCopy locationInView:v7];
   v9 = v8;
   v11 = v10;
 
@@ -323,78 +323,78 @@
   return 1;
 }
 
-- (void)_touchMovedAtPoint:(CGPoint)a3 refresh:(BOOL)a4
+- (void)_touchMovedAtPoint:(CGPoint)point refresh:(BOOL)refresh
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v11 = [(BKScrubberControl *)self track];
+  refreshCopy = refresh;
+  y = point.y;
+  x = point.x;
+  track = [(BKScrubberControl *)self track];
   if ([(BKScrubberControl *)self orientation])
   {
-    v8 = [(BKScrubberControl *)self orientation];
+    orientation = [(BKScrubberControl *)self orientation];
     v9 = 0.0;
-    if (v8 == 1)
+    if (orientation == 1)
     {
-      [v11 frame];
+      [track frame];
       v9 = y / CGRectGetHeight(v13);
     }
   }
 
   else
   {
-    v10 = [(BKScrubberControl *)self layoutDirection];
-    if (v10 == 1)
+    layoutDirection = [(BKScrubberControl *)self layoutDirection];
+    if (layoutDirection == 1)
     {
-      [v11 frame];
+      [track frame];
       v9 = 1.0 - x / CGRectGetWidth(v15);
     }
 
     else
     {
       v9 = 0.0;
-      if (!v10)
+      if (!layoutDirection)
       {
-        [v11 frame];
+        [track frame];
         v9 = x / CGRectGetWidth(v14);
       }
     }
   }
 
-  [(BKScrubberControl *)self scrubToValue:v4 refresh:v9];
+  [(BKScrubberControl *)self scrubToValue:refreshCopy refresh:v9];
   [(BKScrubberControl *)self layoutIfNeeded];
 }
 
-- (int64_t)pageNumberForValue:(double)a3
+- (int64_t)pageNumberForValue:(double)value
 {
-  v4 = [(BKScrubberControl *)self pageCount];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  pageCount = [(BKScrubberControl *)self pageCount];
+  if (pageCount == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 1;
   }
 
-  v6 = v4;
-  if (v4 * a3 <= v4)
+  v6 = pageCount;
+  if (pageCount * value <= pageCount)
   {
-    v6 = v4 * a3;
+    v6 = pageCount * value;
   }
 
   return fmax(v6, 1.0);
 }
 
-- (void)scrubToValue:(double)a3 refresh:(BOOL)a4
+- (void)scrubToValue:(double)value refresh:(BOOL)refresh
 {
-  if (a3 > 1.0)
+  if (value > 1.0)
   {
-    a3 = 1.0;
+    value = 1.0;
   }
 
-  v5 = fmax(a3, 0.0);
+  v5 = fmax(value, 0.0);
   [(BKScrubberControl *)self _setValue:0 updateScrollView:v5];
-  v6 = [(BKScrubberControl *)self pageCount];
+  pageCount = [(BKScrubberControl *)self pageCount];
   v7 = v5 * [(BKScrubberControl *)self pageCount]+ 1.0;
-  if (v7 > v6)
+  if (v7 > pageCount)
   {
-    v7 = v6;
+    v7 = pageCount;
   }
 
   v8 = fmax(v7, 1.0);
@@ -406,23 +406,23 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(BKScrubberControl *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(BKScrubberControl *)self isEnabled]!= enabled)
   {
     v7.receiver = self;
     v7.super_class = BKScrubberControl;
-    [(BKScrubberControl *)&v7 setEnabled:v3];
+    [(BKScrubberControl *)&v7 setEnabled:enabledCopy];
     [(BKScrubberControl *)self setNeedsLayout];
     if (self->_isClassic)
     {
-      v5 = [(BKScrubberControl *)self track];
-      [v5 setHidden:v3 ^ 1];
+      track = [(BKScrubberControl *)self track];
+      [track setHidden:enabledCopy ^ 1];
     }
 
-    v6 = [(BKScrubberControl *)self scrollView];
-    [v6 setHidden:v3 ^ 1];
+    scrollView = [(BKScrubberControl *)self scrollView];
+    [scrollView setHidden:enabledCopy ^ 1];
 
     [(BKScrubberControl *)self updateHoverState];
   }
@@ -430,8 +430,8 @@
 
 - (CGRect)hitRectForThumb
 {
-  v2 = [(BKScrubberControl *)self thumb];
-  [v2 center];
+  thumb = [(BKScrubberControl *)self thumb];
+  [thumb center];
   CGRectMakeWithCenterAndSize();
   v4 = v3;
   v6 = v5;
@@ -449,16 +449,16 @@
   return result;
 }
 
-- (void)_setValue:(double)a3 updateScrollView:(BOOL)a4
+- (void)_setValue:(double)value updateScrollView:(BOOL)view
 {
-  v6 = [(BKScrubberControl *)self track];
-  [v6 readingProgress];
+  track = [(BKScrubberControl *)self track];
+  [track readingProgress];
   v8 = v7;
 
-  if (v8 != a3)
+  if (v8 != value)
   {
-    v9 = [(BKScrubberControl *)self track];
-    [v9 setReadingProgress:a3];
+    track2 = [(BKScrubberControl *)self track];
+    [track2 setReadingProgress:value];
 
     if (![(BKScrubberControl *)self hideThumbView])
     {
@@ -468,50 +468,50 @@
   }
 }
 
-- (void)setPageNumber:(int64_t)a3
+- (void)setPageNumber:(int64_t)number
 {
   v5 = [(BKScrubberControl *)self isTracking]^ 1;
 
-  [(BKScrubberControl *)self setPageNumber:a3 refresh:v5];
+  [(BKScrubberControl *)self setPageNumber:number refresh:v5];
 }
 
-- (void)setPageNumber:(int64_t)a3 refresh:(BOOL)a4
+- (void)setPageNumber:(int64_t)number refresh:(BOOL)refresh
 {
-  v5 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 >= 1)
+  numberCopy = 0x7FFFFFFFFFFFFFFFLL;
+  if (number >= 1)
   {
-    v5 = a3;
+    numberCopy = number;
   }
 
-  if (v5 != self->_pageNumber)
+  if (numberCopy != self->_pageNumber)
   {
-    v6 = a4;
-    self->_pageNumber = v5;
+    refreshCopy = refresh;
+    self->_pageNumber = numberCopy;
     if (![(BKScrubberControl *)self hideThumbView])
     {
       [(BKScrubberControl *)self setNeedsLayout];
     }
 
-    [(BKScrubberControl *)self updateValueAndRefresh:v6];
+    [(BKScrubberControl *)self updateValueAndRefresh:refreshCopy];
   }
 }
 
-- (void)setPageCount:(unint64_t)a3
+- (void)setPageCount:(unint64_t)count
 {
   v5 = [(BKScrubberControl *)self isTracking]^ 1;
 
-  [(BKScrubberControl *)self setPageCount:a3 refresh:v5];
+  [(BKScrubberControl *)self setPageCount:count refresh:v5];
 }
 
-- (void)setPageCount:(unint64_t)a3 refresh:(BOOL)a4
+- (void)setPageCount:(unint64_t)count refresh:(BOOL)refresh
 {
-  if (self->_pageCount != a3)
+  if (self->_pageCount != count)
   {
-    v4 = a4;
-    self->_pageCount = a3;
+    refreshCopy = refresh;
+    self->_pageCount = count;
     [(BKScrubberControl *)self setNeedsLayout];
-    [(BKScrubberControl *)self updateValueAndRefresh:v4];
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    [(BKScrubberControl *)self updateValueAndRefresh:refreshCopy];
+    if (count == 0x7FFFFFFFFFFFFFFFLL)
     {
       height = CGSizeZero.height;
       scrollView = self->_scrollView;
@@ -528,9 +528,9 @@
   [(BKScrubberControl *)self updateValueAndRefresh:v3];
 }
 
-- (void)updateValueAndRefresh:(BOOL)a3
+- (void)updateValueAndRefresh:(BOOL)refresh
 {
-  if (a3)
+  if (refresh)
   {
     pageNumber = self->_pageNumber;
     v4 = 0.0;
@@ -552,30 +552,30 @@
   }
 }
 
-- (void)setLayoutDirection:(int64_t)a3
+- (void)setLayoutDirection:(int64_t)direction
 {
-  v5 = [(BKScrubberControl *)self track];
-  v6 = [v5 layoutDirection];
+  track = [(BKScrubberControl *)self track];
+  layoutDirection = [track layoutDirection];
 
-  if (v6 != a3)
+  if (layoutDirection != direction)
   {
-    v7 = [(BKScrubberControl *)self track];
-    [v7 setLayoutDirection:a3];
+    track2 = [(BKScrubberControl *)self track];
+    [track2 setLayoutDirection:direction];
 
     [(BKScrubberControl *)self setNeedsLayout];
   }
 }
 
-- (void)setOrientation:(int)a3
+- (void)setOrientation:(int)orientation
 {
-  v3 = *&a3;
-  v5 = [(BKScrubberControl *)self track];
-  v6 = [v5 trackOrientation];
+  v3 = *&orientation;
+  track = [(BKScrubberControl *)self track];
+  trackOrientation = [track trackOrientation];
 
-  if (v6 != v3)
+  if (trackOrientation != v3)
   {
-    v7 = [(BKScrubberControl *)self track];
-    [v7 setTrackOrientation:v3];
+    track2 = [(BKScrubberControl *)self track];
+    [track2 setTrackOrientation:v3];
 
     [(BKScrubberLayerImp *)self->_modernKnobImp setOrientation:v3];
     [(BKScrubberLayerImp *)self->_modernTrackImp setOrientation:v3];
@@ -584,16 +584,16 @@
   }
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v5 = [(BKScrubberControl *)self track];
-  [v5 loadingProgress];
+  track = [(BKScrubberControl *)self track];
+  [track loadingProgress];
   v7 = v6;
 
-  if (v7 != a3)
+  if (v7 != progress)
   {
-    v8 = [(BKScrubberControl *)self track];
-    [v8 setLoadingProgress:a3];
+    track2 = [(BKScrubberControl *)self track];
+    [track2 setLoadingProgress:progress];
 
     [(BKScrubberControl *)self setNeedsLayout];
 
@@ -603,8 +603,8 @@
 
 - (CGRect)thumbRect
 {
-  v3 = [(BKScrubberControl *)self track];
-  [v3 loadingProgress];
+  track = [(BKScrubberControl *)self track];
+  [track loadingProgress];
   v5 = v4;
 
   if (v5 == 1.0)
@@ -637,8 +637,8 @@
 
 - (CGRect)_classicThumbRect
 {
-  v3 = [(BKScrubberControl *)self track];
-  [v3 loadingProgress];
+  track = [(BKScrubberControl *)self track];
+  [track loadingProgress];
   v5 = v4;
 
   if (v5 == 1.0)
@@ -655,25 +655,25 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v6 = [(BKScrubberControl *)self track];
-      [v6 frame];
+      track2 = [(BKScrubberControl *)self track];
+      [track2 frame];
       CGRectGetMidX(v14);
 
       [(BKScrubberControl *)self value];
-      v7 = [(BKScrubberControl *)self track];
-      [v7 frame];
+      track3 = [(BKScrubberControl *)self track];
+      [track3 frame];
       CGRectGetHeight(v15);
     }
 
     else
     {
       [(BKScrubberControl *)self value];
-      v12 = [(BKScrubberControl *)self track];
-      [v12 frame];
+      track4 = [(BKScrubberControl *)self track];
+      [track4 frame];
       CGRectGetWidth(v16);
 
-      v7 = [(BKScrubberControl *)self track];
-      [v7 frame];
+      track3 = [(BKScrubberControl *)self track];
+      [track3 frame];
       CGRectGetMidY(v17);
     }
 
@@ -699,12 +699,12 @@ LABEL_9:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKScrubberControl *)self orientation];
+  orientation = [(BKScrubberControl *)self orientation];
   v12 = v4;
   v13 = v6;
   v14 = v8;
   v15 = v10;
-  if (v11)
+  if (orientation)
   {
     v16 = CGRectGetHeight(*&v12) + -2.0;
     [(BKScrubberControl *)self _knobProportion];
@@ -795,16 +795,16 @@ LABEL_9:
 
 - (int64_t)layoutDirection
 {
-  v2 = [(BKScrubberControl *)self track];
-  v3 = [v2 layoutDirection];
+  track = [(BKScrubberControl *)self track];
+  layoutDirection = [track layoutDirection];
 
-  return v3;
+  return layoutDirection;
 }
 
 - (double)progress
 {
-  v2 = [(BKScrubberControl *)self track];
-  [v2 loadingProgress];
+  track = [(BKScrubberControl *)self track];
+  [track loadingProgress];
   v4 = v3;
 
   return v4;
@@ -812,10 +812,10 @@ LABEL_9:
 
 - (double)value
 {
-  v3 = [(BKScrubberControl *)self layoutDirection];
-  v4 = [(BKScrubberControl *)self track];
-  [v4 readingProgress];
-  if (v3)
+  layoutDirection = [(BKScrubberControl *)self layoutDirection];
+  track = [(BKScrubberControl *)self track];
+  [track readingProgress];
+  if (layoutDirection)
   {
     v6 = 1.0 - v5;
   }
@@ -830,26 +830,26 @@ LABEL_9:
 
 - (int)orientation
 {
-  v2 = [(BKScrubberControl *)self track];
-  v3 = [v2 trackOrientation];
+  track = [(BKScrubberControl *)self track];
+  trackOrientation = [track trackOrientation];
 
-  return v3;
+  return trackOrientation;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(BKScrubberControl *)self pointerInteraction];
+  requestCopy = request;
+  interactionCopy = interaction;
+  pointerInteraction = [(BKScrubberControl *)self pointerInteraction];
 
-  if (v9 == v8)
+  if (pointerInteraction == interactionCopy)
   {
     [(BKShapeView *)self->_thumb frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [v7 location];
+    [requestCopy location];
     v24.x = v18;
     v24.y = v19;
     v25.origin.x = v11;
@@ -876,16 +876,16 @@ LABEL_6:
   return v21;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKScrubberControl *)self pointerInteraction];
+  regionCopy = region;
+  interactionCopy = interaction;
+  pointerInteraction = [(BKScrubberControl *)self pointerInteraction];
 
-  if (v8 == v7)
+  if (pointerInteraction == interactionCopy)
   {
-    v10 = [v6 identifier];
-    v11 = [v10 isEqual:@"thumb"];
+    identifier = [regionCopy identifier];
+    v11 = [identifier isEqual:@"thumb"];
 
     if (!v11)
     {
@@ -895,15 +895,15 @@ LABEL_6:
 
     if ([(BKScrubberControl *)self isTracking])
     {
-      v8 = +[UIBezierPath bezierPath];
-      v12 = [UIPointerShape shapeWithPath:v8];
+      pointerInteraction = +[UIBezierPath bezierPath];
+      v12 = [UIPointerShape shapeWithPath:pointerInteraction];
       [UIPointerStyle styleWithShape:v12 constrainedAxes:0];
     }
 
     else
     {
-      v8 = [[UITargetedPreview alloc] initWithView:self->_thumb];
-      v12 = [UIPointerHighlightEffect effectWithPreview:v8];
+      pointerInteraction = [[UITargetedPreview alloc] initWithView:self->_thumb];
+      v12 = [UIPointerHighlightEffect effectWithPreview:pointerInteraction];
       [UIPointerStyle styleWithEffect:v12 shape:0];
     }
     v9 = ;
@@ -931,20 +931,20 @@ LABEL_10:
   hoverController = self->_hoverController;
   if (hoverController)
   {
-    v4 = [(BKScrubberHoverController *)hoverController gestureHoverState];
+    gestureHoverState = [(BKScrubberHoverController *)hoverController gestureHoverState];
   }
 
   else
   {
-    v4 = &dword_0 + 2;
+    gestureHoverState = &dword_0 + 2;
   }
 
-  [(BKScrubberControl *)self setHoverState:v4];
+  [(BKScrubberControl *)self setHoverState:gestureHoverState];
 }
 
-- (void)setHoverState:(int64_t)a3
+- (void)setHoverState:(int64_t)state
 {
-  v4 = [(BKScrubberControl *)self validateHoverState:a3];
+  v4 = [(BKScrubberControl *)self validateHoverState:state];
   hoverState = self->_hoverState;
   if (hoverState != v4)
   {
@@ -1017,7 +1017,7 @@ LABEL_10:
   }
 }
 
-- (int64_t)validateHoverState:(int64_t)a3
+- (int64_t)validateHoverState:(int64_t)state
 {
   if (![(BKScrubberControl *)self isEnabled])
   {
@@ -1030,41 +1030,41 @@ LABEL_10:
     return 0;
   }
 
-  return a3;
+  return state;
 }
 
-- (void)_updateScrollviewValue:(double)a3
+- (void)_updateScrollviewValue:(double)value
 {
   if ([(BKScrubberControl *)self orientation])
   {
     [(UIScrollView *)self->_scrollView contentSize];
-    v6 = v5 * a3;
+    v6 = v5 * value;
     scrollView = self->_scrollView;
     v8 = 0.0;
   }
 
   else
   {
-    v9 = [(BKScrubberControl *)self track];
-    v10 = [v9 layoutDirection];
+    track = [(BKScrubberControl *)self track];
+    layoutDirection = [track layoutDirection];
 
-    if (v10 == &dword_0 + 1)
+    if (layoutDirection == &dword_0 + 1)
     {
       [(UIScrollView *)self->_scrollView contentSize];
       v13 = v12;
       [(UIScrollView *)self->_scrollView contentSize];
-      v8 = v13 - v14 * a3;
+      v8 = v13 - v14 * value;
     }
 
     else
     {
-      if (v10)
+      if (layoutDirection)
       {
         return;
       }
 
       [(UIScrollView *)self->_scrollView contentSize];
-      v8 = v11 * a3;
+      v8 = v11 * value;
     }
 
     scrollView = self->_scrollView;
@@ -1074,21 +1074,21 @@ LABEL_10:
   [(UIScrollView *)scrollView setContentOffset:v8, v6];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   scrollView = self->_scrollView;
-  v5 = a3;
+  scrollCopy = scroll;
   [(UIScrollView *)scrollView frame];
   v7 = v6;
   v9 = v8;
-  v10 = [(BKScrubberControl *)self orientation];
+  orientation = [(BKScrubberControl *)self orientation];
   [(UIScrollView *)self->_scrollView contentOffset];
   v12 = v11;
   v14 = v13;
   [(UIScrollView *)self->_scrollView contentSize];
   v16 = v9 * (v14 / (v15 - v9));
   v18 = v7 * (v12 / (v17 - v7));
-  if (v10)
+  if (orientation)
   {
     v19 = 0.0;
   }
@@ -1098,7 +1098,7 @@ LABEL_10:
     v19 = v18;
   }
 
-  if (v10)
+  if (orientation)
   {
     v20 = v16;
   }
@@ -1108,17 +1108,17 @@ LABEL_10:
     v20 = 0.0;
   }
 
-  v21 = [v5 panGestureRecognizer];
+  panGestureRecognizer = [scrollCopy panGestureRecognizer];
 
-  v22 = [v21 state];
-  if (v22 == &dword_0 + 2)
+  state = [panGestureRecognizer state];
+  if (state == &dword_0 + 2)
   {
 
     [(BKScrubberControl *)self _touchMovedAtPoint:0 refresh:v19, v20];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;

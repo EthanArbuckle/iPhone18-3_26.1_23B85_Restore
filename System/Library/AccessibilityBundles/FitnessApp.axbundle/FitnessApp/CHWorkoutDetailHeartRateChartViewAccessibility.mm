@@ -1,8 +1,8 @@
 @interface CHWorkoutDetailHeartRateChartViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (double)_accessibilityTimeIntervalPerSlice;
-- (float)_decimalForDate:(id)a3;
-- (id)_accessibilityQuantityForSliceAtIndex:(unint64_t)a3;
+- (float)_decimalForDate:(id)date;
+- (id)_accessibilityQuantityForSliceAtIndex:(unint64_t)index;
 - (id)_axDateInterval;
 - (id)accessibilityElements;
 - (unint64_t)_accessibilityHoursPerSlice;
@@ -10,16 +10,16 @@
 
 @implementation CHWorkoutDetailHeartRateChartViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHWorkoutDetailHeartRateChartView" conformsToProtocol:@"FIUIChartDataSource"];
-  [v3 validateClass:@"CHWorkoutDetailHeartRateChartView" hasInstanceVariable:@"_heartRateReadings" withType:"NSArray"];
-  [v3 validateClass:@"CHWorkoutDetailHeartRateChartView" hasInstanceVariable:@"_heartRateChartPoints" withType:"NSMutableArray"];
-  [v3 validateClass:@"CHWorkoutDetailHeartRateChartView" hasInstanceVariable:@"_chartView" withType:"FIUIChartView"];
-  [v3 validateClass:@"CHWorkoutDetailHeartRateChartView" hasInstanceVariable:@"_hasAdequateDataForDisplay" withType:"B"];
-  [v3 validateClass:@"CHWorkoutDetailHeartRateChartView" hasInstanceMethod:@"_dateInterval" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKQuantity" hasInstanceMethod:@"ch_beatsPerMinute" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHWorkoutDetailHeartRateChartView" conformsToProtocol:@"FIUIChartDataSource"];
+  [validationsCopy validateClass:@"CHWorkoutDetailHeartRateChartView" hasInstanceVariable:@"_heartRateReadings" withType:"NSArray"];
+  [validationsCopy validateClass:@"CHWorkoutDetailHeartRateChartView" hasInstanceVariable:@"_heartRateChartPoints" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"CHWorkoutDetailHeartRateChartView" hasInstanceVariable:@"_chartView" withType:"FIUIChartView"];
+  [validationsCopy validateClass:@"CHWorkoutDetailHeartRateChartView" hasInstanceVariable:@"_hasAdequateDataForDisplay" withType:"B"];
+  [validationsCopy validateClass:@"CHWorkoutDetailHeartRateChartView" hasInstanceMethod:@"_dateInterval" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKQuantity" hasInstanceMethod:@"ch_beatsPerMinute" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityElements
@@ -31,25 +31,25 @@
   return v4;
 }
 
-- (id)_accessibilityQuantityForSliceAtIndex:(unint64_t)a3
+- (id)_accessibilityQuantityForSliceAtIndex:(unint64_t)index
 {
-  v5 = [(CHWorkoutDetailHeartRateChartViewAccessibility *)self _axDateInterval];
-  v6 = v5;
-  if (!v5)
+  _axDateInterval = [(CHWorkoutDetailHeartRateChartViewAccessibility *)self _axDateInterval];
+  v6 = _axDateInterval;
+  if (!_axDateInterval)
   {
     v15 = 0;
     goto LABEL_25;
   }
 
-  v7 = [v5 startDate];
+  startDate = [_axDateInterval startDate];
   [(CHWorkoutDetailHeartRateChartViewAccessibility *)self _accessibilityTimeIntervalPerSlice];
-  v9 = [v7 dateByAddingTimeInterval:v8 * a3];
+  index = [startDate dateByAddingTimeInterval:v8 * index];
 
-  v10 = [v6 startDate];
+  startDate2 = [v6 startDate];
   [(CHWorkoutDetailHeartRateChartViewAccessibility *)self _accessibilityTimeIntervalPerSlice];
-  v12 = [v10 dateByAddingTimeInterval:v11 * (a3 + 1)];
+  v12 = [startDate2 dateByAddingTimeInterval:v11 * (index + 1)];
 
-  v13 = [[NSDateInterval alloc] initWithStartDate:v9 endDate:v12];
+  v13 = [[NSDateInterval alloc] initWithStartDate:index endDate:v12];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -61,7 +61,7 @@
     goto LABEL_23;
   }
 
-  v31 = v9;
+  v31 = index;
   v32 = v6;
   v16 = *v34;
   v17 = 2.22507386e-308;
@@ -81,13 +81,13 @@
       v22 = v21;
       if (v21)
       {
-        v23 = [v21 date];
-        v24 = [v13 containsDate:v23];
+        date = [v21 date];
+        v24 = [v13 containsDate:date];
 
         if (v24)
         {
-          v25 = [v22 quantity];
-          [v25 safeDoubleForKey:@"ch_beatsPerMinute"];
+          quantity = [v22 quantity];
+          [quantity safeDoubleForKey:@"ch_beatsPerMinute"];
           v27 = llround(v26);
 
           if (v17 < v27)
@@ -110,13 +110,13 @@
 
   if (v17 == 2.22507386e-308)
   {
-    v9 = v31;
+    index = v31;
     v6 = v32;
   }
 
   else
   {
-    v9 = v31;
+    index = v31;
     v6 = v32;
     if (v18 != 1.79769313e308)
     {
@@ -146,8 +146,8 @@ LABEL_25:
 
 - (double)_accessibilityTimeIntervalPerSlice
 {
-  v3 = [(CHWorkoutDetailHeartRateChartViewAccessibility *)self _axDateInterval];
-  [v3 duration];
+  _axDateInterval = [(CHWorkoutDetailHeartRateChartViewAccessibility *)self _axDateInterval];
+  [_axDateInterval duration];
   v5 = v4 / [(CHWorkoutDetailHeartRateChartViewAccessibility *)self _accessibilityNumberOfSlices];
 
   return v5;
@@ -155,8 +155,8 @@ LABEL_25:
 
 - (unint64_t)_accessibilityHoursPerSlice
 {
-  v3 = [(CHWorkoutDetailHeartRateChartViewAccessibility *)self _axDateInterval];
-  [v3 duration];
+  _axDateInterval = [(CHWorkoutDetailHeartRateChartViewAccessibility *)self _axDateInterval];
+  [_axDateInterval duration];
   v5 = (v4 / 3600.0 / [(CHWorkoutDetailHeartRateChartViewAccessibility *)self _accessibilityNumberOfSlices]);
 
   return v5;
@@ -171,14 +171,14 @@ LABEL_25:
   return v4;
 }
 
-- (float)_decimalForDate:(id)a3
+- (float)_decimalForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSCalendar currentCalendar];
-  v5 = [v4 components:224 fromDate:v3];
+  v5 = [v4 components:224 fromDate:dateCopy];
 
-  v6 = [v5 hour];
-  v7 = ([v5 minute] / 60.0) + v6;
+  hour = [v5 hour];
+  v7 = ([v5 minute] / 60.0) + hour;
   v8 = v7 + ([v5 second] / 3600.0);
 
   return v8;

@@ -1,23 +1,23 @@
 @interface ASCLockupFeatureBuyParams
-- (ASCLockupFeatureBuyParams)initWithAppOffer:(id)a3;
-- (ASCLockupFeatureBuyParams)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureBuyParams)initWithAppOffer:(id)offer;
+- (ASCLockupFeatureBuyParams)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureBuyParams
 
-- (ASCLockupFeatureBuyParams)initWithAppOffer:(id)a3
+- (ASCLockupFeatureBuyParams)initWithAppOffer:(id)offer
 {
-  v4 = a3;
+  offerCopy = offer;
   v9.receiver = self;
   v9.super_class = ASCLockupFeatureBuyParams;
   v5 = [(ASCLockupFeatureBuyParams *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [offerCopy copy];
     appOffer = v5->_appOffer;
     v5->_appOffer = v6;
   }
@@ -25,36 +25,36 @@
   return v5;
 }
 
-- (ASCLockupFeatureBuyParams)initWithCoder:(id)a3
+- (ASCLockupFeatureBuyParams)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appOffer"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appOffer"];
 
   v6 = [(ASCLockupFeatureBuyParams *)self initWithAppOffer:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCLockupFeatureBuyParams *)self appOffer];
-  [v4 encodeObject:v5 forKey:@"appOffer"];
+  coderCopy = coder;
+  appOffer = [(ASCLockupFeatureBuyParams *)self appOffer];
+  [coderCopy encodeObject:appOffer forKey:@"appOffer"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCLockupFeatureBuyParams *)self appOffer];
-  [(ASCHasher *)v3 combineObject:v4];
+  appOffer = [(ASCLockupFeatureBuyParams *)self appOffer];
+  [(ASCHasher *)v3 combineObject:appOffer];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -62,7 +62,7 @@
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -85,17 +85,17 @@
 
     if (v8)
     {
-      v9 = [(ASCLockupFeatureBuyParams *)self appOffer];
-      v10 = [(ASCLockupFeatureBuyParams *)v8 appOffer];
-      v11 = v10;
-      if (v9 && v10)
+      appOffer = [(ASCLockupFeatureBuyParams *)self appOffer];
+      appOffer2 = [(ASCLockupFeatureBuyParams *)v8 appOffer];
+      v11 = appOffer2;
+      if (appOffer && appOffer2)
       {
-        v7 = [v9 isEqual:v10];
+        v7 = [appOffer isEqual:appOffer2];
       }
 
       else
       {
-        v7 = v9 == v10;
+        v7 = appOffer == appOffer2;
       }
     }
 
@@ -111,12 +111,12 @@
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupFeatureBuyParams *)self appOffer];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"appOffer"];
+  appOffer = [(ASCLockupFeatureBuyParams *)self appOffer];
+  [(ASCDescriber *)v3 addObject:appOffer withName:@"appOffer"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 @end

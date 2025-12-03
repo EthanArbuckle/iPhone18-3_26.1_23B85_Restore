@@ -1,21 +1,21 @@
 @interface NMAPISearchResponseParser
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4;
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation NMAPISearchResponseParser
 
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v5 objectForKey:@"results"];
-  v7 = NMAPIDictionaryWithObject(v6, @"results", a4);
+  v6 = [dictionaryCopy objectForKey:@"results"];
+  v7 = NMAPIDictionaryWithObject(v6, @"results", error);
 
   if (v7)
   {
-    v8 = [v5 valueForKeyPath:@"meta.results.order"];
-    v9 = NMAPIArrayWithObject(v8, @"resultsOrder", a4);
+    v8 = [dictionaryCopy valueForKeyPath:@"meta.results.order"];
+    v9 = NMAPIArrayWithObject(v8, @"resultsOrder", error);
 
     if (v9)
     {
@@ -30,7 +30,7 @@
         v29 = *v33;
         v10 = @"data";
         v26 = v9;
-        v27 = v5;
+        v27 = dictionaryCopy;
         while (2)
         {
           for (i = 0; i != v30; ++i)
@@ -40,7 +40,7 @@
               objc_enumerationMutation(obj);
             }
 
-            v12 = NMAPIStringWithObject(*(*(&v32 + 1) + 8 * i), @"resultKey", a4);
+            v12 = NMAPIStringWithObject(*(*(&v32 + 1) + 8 * i), @"resultKey", error);
             if (!v12)
             {
               goto LABEL_18;
@@ -48,7 +48,7 @@
 
             v13 = v12;
             v14 = [v7 objectForKey:v12];
-            v15 = NMAPIDictionaryWithObject(v14, @"section", a4);
+            v15 = NMAPIDictionaryWithObject(v14, @"section", error);
 
             if (!v15)
             {
@@ -56,12 +56,12 @@
 LABEL_18:
               v23 = 0;
               v9 = v26;
-              v5 = v27;
+              dictionaryCopy = v27;
               goto LABEL_19;
             }
 
             v16 = [v15 objectForKey:v10];
-            v17 = NMAPIArrayWithObject(v16, @"items", a4);
+            v17 = NMAPIArrayWithObject(v16, @"items", error);
 
             if (v17)
             {
@@ -78,7 +78,7 @@ LABEL_18:
           }
 
           v9 = v26;
-          v5 = v27;
+          dictionaryCopy = v27;
           v30 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
           if (v30)
           {

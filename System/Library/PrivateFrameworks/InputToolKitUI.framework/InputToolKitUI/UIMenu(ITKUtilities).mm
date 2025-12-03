@@ -31,11 +31,11 @@
 
 - (id)itk_addNonNilItems:()ITKUtilities
 {
-  v4 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if (a3)
   {
-    v6 = [v4 itk_addItems:a3];
+    v6 = [selfCopy itk_addItems:a3];
 
     v5 = v6;
   }
@@ -53,29 +53,29 @@
     v5 = a3;
     v6 = [v4 arrayWithObjects:&v9 count:1];
 
-    v7 = [a1 itk_addItems:{v6, v9, v10}];
+    v7 = [self itk_addItems:{v6, v9, v10}];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)itk_addItems:()ITKUtilities
 {
-  v4 = a1;
+  selfCopy = self;
   v5 = a3;
-  v6 = [v4 children];
-  v7 = v6;
+  children = [selfCopy children];
+  v7 = children;
   v8 = MEMORY[0x277CBEBF8];
-  if (v6)
+  if (children)
   {
-    v8 = v6;
+    v8 = children;
   }
 
   v9 = v8;
 
   v10 = [v9 itk_arrayByAddingObjectsFromNonNilArray:v5];
 
-  v11 = [v4 menuByReplacingChildren:v10];
+  v11 = [selfCopy menuByReplacingChildren:v10];
 
   return v11;
 }

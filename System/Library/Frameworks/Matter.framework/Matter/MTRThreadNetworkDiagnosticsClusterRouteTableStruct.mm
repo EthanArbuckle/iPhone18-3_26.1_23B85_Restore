@@ -1,6 +1,6 @@
 @interface MTRThreadNetworkDiagnosticsClusterRouteTableStruct
 - (MTRThreadNetworkDiagnosticsClusterRouteTableStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -48,38 +48,38 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThreadNetworkDiagnosticsClusterRouteTableStruct);
-  v5 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self extAddress];
-  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setExtAddress:v5];
+  extAddress = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self extAddress];
+  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setExtAddress:extAddress];
 
-  v6 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self rloc16];
-  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setRloc16:v6];
+  rloc16 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self rloc16];
+  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setRloc16:rloc16];
 
-  v7 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self routerId];
-  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setRouterId:v7];
+  routerId = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self routerId];
+  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setRouterId:routerId];
 
-  v8 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self nextHop];
-  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setNextHop:v8];
+  nextHop = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self nextHop];
+  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setNextHop:nextHop];
 
-  v9 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self pathCost];
-  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setPathCost:v9];
+  pathCost = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self pathCost];
+  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setPathCost:pathCost];
 
-  v10 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self lqiIn];
-  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setLqiIn:v10];
+  lqiIn = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self lqiIn];
+  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setLqiIn:lqiIn];
 
-  v11 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self lqiOut];
-  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setLqiOut:v11];
+  lqiOut = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self lqiOut];
+  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setLqiOut:lqiOut];
 
   v12 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self age];
   [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setAge:v12];
 
-  v13 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self allocated];
-  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setAllocated:v13];
+  allocated = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self allocated];
+  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setAllocated:allocated];
 
-  v14 = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self linkEstablished];
-  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setLinkEstablished:v14];
+  linkEstablished = [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)self linkEstablished];
+  [(MTRThreadNetworkDiagnosticsClusterRouteTableStruct *)v4 setLinkEstablished:linkEstablished];
 
   return v4;
 }

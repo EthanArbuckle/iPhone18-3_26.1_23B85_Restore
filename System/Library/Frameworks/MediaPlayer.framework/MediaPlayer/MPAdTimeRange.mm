@@ -1,8 +1,8 @@
 @interface MPAdTimeRange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CMTimeRange)timeRange;
 - (MPAdTimeRange)initWithTimeRange:(CMTimeRange *)timeRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)setTimeRange:(CMTimeRange *)timeRange;
 @end
@@ -40,7 +40,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MPAdTimeRange);
   [(MPAdTimeRange *)self timeRange];
@@ -52,13 +52,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   [(MPAdTimeRange *)self timeRange];
-  if (v4)
+  if (equalCopy)
   {
-    [v4 timeRange];
+    [equalCopy timeRange];
   }
 
   else

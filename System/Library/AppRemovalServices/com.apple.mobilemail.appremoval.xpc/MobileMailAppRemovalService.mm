@@ -1,9 +1,9 @@
 @interface MobileMailAppRemovalService
 - (id)_disableMailAccounts;
 - (id)_recordMailAppUninstalled;
-- (id)_removeContentsOfDirectory:(id)a3;
+- (id)_removeContentsOfDirectory:(id)directory;
 - (id)_removeNanoMailDirectory;
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation MobileMailAppRemovalService
@@ -48,10 +48,10 @@
 
         v7 = *(*(&v23 + 1) + 8 * i);
         v8 = [v2 accountWithIdentifier:v7];
-        v9 = [v8 parentAccount];
+        parentAccount = [v8 parentAccount];
 
         v10 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO);
-        if (v9)
+        if (parentAccount)
         {
           if (v10)
           {
@@ -71,8 +71,8 @@
           }
 
           v11 = +[EFPromise promise];
-          v12 = [v11 future];
-          [v18 addObject:v12];
+          future = [v11 future];
+          [v18 addObject:future];
 
           [v8 setEnabled:0 forDataclass:v17];
           v20[0] = _NSConcreteStackBlock;
@@ -97,13 +97,13 @@
   return v14;
 }
 
-- (id)_removeContentsOfDirectory:(id)a3
+- (id)_removeContentsOfDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v30 = v3;
+    v30 = directoryCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Will remove %@", buf, 0xCu);
   }
 
@@ -111,15 +111,15 @@
   v21 = +[EFPromise promise];
   context = objc_autoreleasePoolPush();
   v27 = 0;
-  v20 = [v4 contentsOfDirectoryAtPath:v3 error:&v27];
+  v20 = [v4 contentsOfDirectoryAtPath:directoryCopy error:&v27];
   v5 = v27;
   if (v5)
   {
     v6 = v5;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v6 ef_publicDescription];
-      sub_100001DB4(v7, buf);
+      ef_publicDescription = [v6 ef_publicDescription];
+      sub_100001DB4(ef_publicDescription, buf);
     }
 
     [v21 finishWithError:v6];
@@ -149,7 +149,7 @@
         objc_enumerationMutation(v8);
       }
 
-      v12 = [v3 stringByAppendingPathComponent:*(*(&v23 + 1) + 8 * i)];
+      v12 = [directoryCopy stringByAppendingPathComponent:*(*(&v23 + 1) + 8 * i)];
       v22 = 0;
       [v4 removeItemAtPath:v12 error:&v22];
       v13 = v22;
@@ -178,8 +178,8 @@ LABEL_16:
     v15 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v6 ef_publicDescription];
-      sub_100001DB4(v16, buf);
+      ef_publicDescription2 = [v6 ef_publicDescription];
+      sub_100001DB4(ef_publicDescription2, buf);
     }
 
     [v21 finishWithError:v6];
@@ -194,13 +194,13 @@ LABEL_23:
   }
 
   v6 = 0;
-  [v21 finishWithResult:v3];
+  [v21 finishWithResult:directoryCopy];
 LABEL_26:
 
   objc_autoreleasePoolPop(context);
-  v17 = [v21 future];
+  future = [v21 future];
 
-  return v17;
+  return future;
 }
 
 - (id)_removeNanoMailDirectory
@@ -229,8 +229,8 @@ LABEL_26:
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v5 = [v3 ef_publicDescription];
-      sub_100001E10(v5, buf);
+      ef_publicDescription = [v3 ef_publicDescription];
+      sub_100001E10(ef_publicDescription, buf);
     }
 
     v4 = [EFFuture futureWithError:v3];
@@ -248,9 +248,9 @@ LABEL_26:
   return [EFFuture futureWithResult:@"_recordMailAppUninstalled"];
 }
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
@@ -272,15 +272,15 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Terminated maild", buf, 2u);
   }
 
-  v6 = [(MobileMailAppRemovalService *)self _disableMailAccounts];
-  v23[0] = v6;
+  _disableMailAccounts = [(MobileMailAppRemovalService *)self _disableMailAccounts];
+  v23[0] = _disableMailAccounts;
   v7 = MFMailDirectory();
   v8 = [(MobileMailAppRemovalService *)self _removeContentsOfDirectory:v7];
   v23[1] = v8;
-  v9 = [(MobileMailAppRemovalService *)self _removeNanoMailDirectory];
-  v23[2] = v9;
-  v10 = [(MobileMailAppRemovalService *)self _recordMailAppUninstalled];
-  v23[3] = v10;
+  _removeNanoMailDirectory = [(MobileMailAppRemovalService *)self _removeNanoMailDirectory];
+  v23[2] = _removeNanoMailDirectory;
+  _recordMailAppUninstalled = [(MobileMailAppRemovalService *)self _recordMailAppUninstalled];
+  v23[3] = _recordMailAppUninstalled;
   v11 = [NSArray arrayWithObjects:v23 count:4];
 
   v12 = [EFFuture sequence:v11];
@@ -305,13 +305,13 @@ LABEL_26:
     v18 = v14;
     if (v17)
     {
-      v19 = [v14 ef_publicDescription];
-      sub_100001EEC(v19, v13, buf);
+      ef_publicDescription = [v14 ef_publicDescription];
+      sub_100001EEC(ef_publicDescription, v13, buf);
       v18 = v14;
     }
   }
 
-  (v4)[2](v4, v18);
+  (replyCopy)[2](replyCopy, v18);
 }
 
 @end

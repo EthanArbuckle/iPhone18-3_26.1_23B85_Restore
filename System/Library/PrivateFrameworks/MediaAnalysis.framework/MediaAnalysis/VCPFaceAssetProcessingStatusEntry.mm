@@ -1,22 +1,22 @@
 @interface VCPFaceAssetProcessingStatusEntry
-+ (id)entryWithPreviousStatus:(unint64_t)a3 previousAttempts:(unint64_t)a4 andLastAttemptDate:(id)a5;
-- (VCPFaceAssetProcessingStatusEntry)initWithPreviousStatus:(unint64_t)a3 previousAttempts:(unint64_t)a4 andLastAttemptDate:(id)a5;
++ (id)entryWithPreviousStatus:(unint64_t)status previousAttempts:(unint64_t)attempts andLastAttemptDate:(id)date;
+- (VCPFaceAssetProcessingStatusEntry)initWithPreviousStatus:(unint64_t)status previousAttempts:(unint64_t)attempts andLastAttemptDate:(id)date;
 @end
 
 @implementation VCPFaceAssetProcessingStatusEntry
 
-- (VCPFaceAssetProcessingStatusEntry)initWithPreviousStatus:(unint64_t)a3 previousAttempts:(unint64_t)a4 andLastAttemptDate:(id)a5
+- (VCPFaceAssetProcessingStatusEntry)initWithPreviousStatus:(unint64_t)status previousAttempts:(unint64_t)attempts andLastAttemptDate:(id)date
 {
-  v9 = a5;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = VCPFaceAssetProcessingStatusEntry;
   v10 = [(VCPFaceAssetProcessingStatusEntry *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_previousStatus = a3;
-    v10->_previousAttempts = a4;
-    objc_storeStrong(&v10->_lastAttemptDate, a5);
+    v10->_previousStatus = status;
+    v10->_previousAttempts = attempts;
+    objc_storeStrong(&v10->_lastAttemptDate, date);
     v12 = +[NSDate now];
     currentAttemptDate = v11->_currentAttemptDate;
     v11->_currentAttemptDate = v12;
@@ -25,10 +25,10 @@
   return v11;
 }
 
-+ (id)entryWithPreviousStatus:(unint64_t)a3 previousAttempts:(unint64_t)a4 andLastAttemptDate:(id)a5
++ (id)entryWithPreviousStatus:(unint64_t)status previousAttempts:(unint64_t)attempts andLastAttemptDate:(id)date
 {
-  v7 = a5;
-  v8 = [[VCPFaceAssetProcessingStatusEntry alloc] initWithPreviousStatus:a3 previousAttempts:a4 andLastAttemptDate:v7];
+  dateCopy = date;
+  v8 = [[VCPFaceAssetProcessingStatusEntry alloc] initWithPreviousStatus:status previousAttempts:attempts andLastAttemptDate:dateCopy];
 
   return v8;
 }

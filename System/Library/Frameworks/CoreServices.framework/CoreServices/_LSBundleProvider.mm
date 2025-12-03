@@ -1,8 +1,8 @@
 @interface _LSBundleProvider
-- (_LSBundleProvider)initWithCFBundle:(__CFBundle *)a3;
-- (_LSBundleProvider)initWithURL:(id)a3 useCacheIfPossible:(BOOL)a4;
-- (__CFBundle)cfBundleRef:(BOOL)a3 reason:(id)a4;
-- (id)bundle:(BOOL)a3 reason:(id)a4;
+- (_LSBundleProvider)initWithCFBundle:(__CFBundle *)bundle;
+- (_LSBundleProvider)initWithURL:(id)l useCacheIfPossible:(BOOL)possible;
+- (__CFBundle)cfBundleRef:(BOOL)ref reason:(id)reason;
+- (id)bundle:(BOOL)bundle reason:(id)reason;
 - (id)bundleIdentifier;
 - (id)bundlePath;
 - (id)bundleURL;
@@ -28,19 +28,19 @@
 
 - (id)bundleIdentifier
 {
-  v2 = [(_LSBundleProvider *)self provider];
+  provider = [(_LSBundleProvider *)self provider];
 
-  return LSBundleProvider::bundleIdentifier(v2);
+  return LSBundleProvider::bundleIdentifier(provider);
 }
 
 - (id)infoDictionary
 {
-  v2 = [(_LSBundleProvider *)self provider];
+  provider = [(_LSBundleProvider *)self provider];
 
-  return LSBundleProvider::infoDictionary(v2);
+  return LSBundleProvider::infoDictionary(provider);
 }
 
-- (_LSBundleProvider)initWithCFBundle:(__CFBundle *)a3
+- (_LSBundleProvider)initWithCFBundle:(__CFBundle *)bundle
 {
   v4.receiver = self;
   v4.super_class = _LSBundleProvider;
@@ -52,9 +52,9 @@
   return 0;
 }
 
-- (_LSBundleProvider)initWithURL:(id)a3 useCacheIfPossible:(BOOL)a4
+- (_LSBundleProvider)initWithURL:(id)l useCacheIfPossible:(BOOL)possible
 {
-  v5 = a3;
+  lCopy = l;
   v7.receiver = self;
   v7.super_class = _LSBundleProvider;
   if ([(_LSBundleProvider *)&v7 init])
@@ -65,23 +65,23 @@
   return 0;
 }
 
-- (__CFBundle)cfBundleRef:(BOOL)a3 reason:(id)a4
+- (__CFBundle)cfBundleRef:(BOOL)ref reason:(id)reason
 {
-  v5 = a4;
-  v6 = [(_LSBundleProvider *)self provider];
-  if (v5)
+  reasonCopy = reason;
+  provider = [(_LSBundleProvider *)self provider];
+  if (reasonCopy)
   {
-    [v5 cStringUsingEncoding:4];
+    [reasonCopy cStringUsingEncoding:4];
   }
 
-  v7 = v6[1];
+  v7 = provider[1];
 
   return v7;
 }
 
-- (id)bundle:(BOOL)a3 reason:(id)a4
+- (id)bundle:(BOOL)bundle reason:(id)reason
 {
-  v4 = [(_LSBundleProvider *)self cfBundleRef:1 reason:a4];
+  v4 = [(_LSBundleProvider *)self cfBundleRef:1 reason:reason];
 
   return v4;
 }

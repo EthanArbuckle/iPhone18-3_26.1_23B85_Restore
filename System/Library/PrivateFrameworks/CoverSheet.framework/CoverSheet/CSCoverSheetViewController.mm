@@ -1,62 +1,62 @@
 @interface CSCoverSheetViewController
 - ($453422EBA70013024ECC637D52E1FF2D)transitionContext;
 - (BOOL)_areComplicationsHidden;
-- (BOOL)_batteryCollection:(id)a3 containsDeviceWithIdentifier:(id)a4;
+- (BOOL)_batteryCollection:(id)collection containsDeviceWithIdentifier:(id)identifier;
 - (BOOL)_canPresentSwipeDismissableModal;
 - (BOOL)_canShowEmbeddedRemoteContent;
-- (BOOL)_complicationsInterpretGestureRecognizerLocationAsContent:(id)a3;
-- (BOOL)_gestureRecognizer:(id)a3 hitContainerWithView:(id)a4 componentType:(int64_t)a5 interpretsViewAsContent:(id)a6;
-- (BOOL)_gestureRecognizer:(id)a3 isLocatedOverHorizontalContentRegionInViewController:(id)a4;
-- (BOOL)_handleEvent:(id)a3;
-- (BOOL)_handleEventType:(int64_t)a3;
-- (BOOL)_isAccessoryAnimationAllowedForAccessory:(id)a3;
-- (BOOL)_isAppleMagSafePack:(id)a3;
+- (BOOL)_complicationsInterpretGestureRecognizerLocationAsContent:(id)content;
+- (BOOL)_gestureRecognizer:(id)recognizer hitContainerWithView:(id)view componentType:(int64_t)type interpretsViewAsContent:(id)content;
+- (BOOL)_gestureRecognizer:(id)recognizer isLocatedOverHorizontalContentRegionInViewController:(id)controller;
+- (BOOL)_handleEvent:(id)event;
+- (BOOL)_handleEventType:(int64_t)type;
+- (BOOL)_isAccessoryAnimationAllowedForAccessory:(id)accessory;
+- (BOOL)_isAppleMagSafePack:(id)pack;
 - (BOOL)_isComplicationContainerVisible;
 - (BOOL)_isFakeStatusBarEnabled;
-- (BOOL)_isKnownTransitionConflictFrom:(id)a3 to:(id)a4;
+- (BOOL)_isKnownTransitionConflictFrom:(id)from to:(id)to;
 - (BOOL)_isMainPageShowing;
 - (BOOL)_isPageContentHidden;
 - (BOOL)_isPresentingModalRemoteContent;
-- (BOOL)_isPresentingModalViewControllerWithIdentifier:(id)a3;
+- (BOOL)_isPresentingModalViewControllerWithIdentifier:(id)identifier;
 - (BOOL)_isPresentingPosterSwitcher;
 - (BOOL)_isRemoteContentPresentedInUnlockMode;
 - (BOOL)_isShowingChargingModal;
-- (BOOL)_isSlideableContentOffsetOnscreen:(CGPoint)a3;
+- (BOOL)_isSlideableContentOffsetOnscreen:(CGPoint)onscreen;
 - (BOOL)_isSlideableContentOnscreen;
-- (BOOL)_isSourceForHorizontalScrolling:(id)a3;
+- (BOOL)_isSourceForHorizontalScrolling:(id)scrolling;
 - (BOOL)_isSpotlightBehaviorRestricted;
 - (BOOL)_isTodayViewOverlayShowing;
-- (BOOL)_overSlidingControlForLocation:(CGPoint)a3 inView:(id)a4;
-- (BOOL)_quickActionButtonInterpretsLocation:(CGPoint)a3 asBesideContentForGestureView:(id)a4;
-- (BOOL)_removeRemoteViewControllerForInvalidatedSession:(id)a3 completion:(id)a4;
+- (BOOL)_overSlidingControlForLocation:(CGPoint)location inView:(id)view;
+- (BOOL)_quickActionButtonInterpretsLocation:(CGPoint)location asBesideContentForGestureView:(id)view;
+- (BOOL)_removeRemoteViewControllerForInvalidatedSession:(id)session completion:(id)completion;
 - (BOOL)_shouldAllowGlassCoverSheet;
 - (BOOL)_shouldLoadComplications;
 - (BOOL)_shouldReduceWhitePoint;
-- (BOOL)_shouldReduceWhitePointForAppearance:(id)a3;
-- (BOOL)_shouldUpdateActiveAppearanceForReason:(id)a3;
+- (BOOL)_shouldReduceWhitePointForAppearance:(id)appearance;
+- (BOOL)_shouldUpdateActiveAppearanceForReason:(id)reason;
 - (BOOL)_showingAccessoryView;
-- (BOOL)_transitionPrototypeChargingViewToVisible:(BOOL)a3 animated:(BOOL)a4;
-- (BOOL)attachedAccessoriesContainsAccessoryType:(int64_t)a3;
-- (BOOL)canBeDeactivatedForUIUnlockFromSource:(int)a3;
+- (BOOL)_transitionPrototypeChargingViewToVisible:(BOOL)visible animated:(BOOL)animated;
+- (BOOL)attachedAccessoriesContainsAccessoryType:(int64_t)type;
+- (BOOL)canBeDeactivatedForUIUnlockFromSource:(int)source;
 - (BOOL)complicationsUsingBottomPosition;
 - (BOOL)containsCenteredDateTimeLayout;
 - (BOOL)contentOccludesBackground;
-- (BOOL)controller:(id)a3 shouldAllowPanScrollingWithSystemGestureRecognizer:(id)a4;
-- (BOOL)dismissNotificationInLongLookAnimated:(BOOL)a3;
+- (BOOL)controller:(id)controller shouldAllowPanScrollingWithSystemGestureRecognizer:(id)recognizer;
+- (BOOL)dismissNotificationInLongLookAnimated:(BOOL)animated;
 - (BOOL)externalLockProvidersRequireUnlock;
 - (BOOL)externalLockProvidersShowPasscode;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
 - (BOOL)hasVisibleContentToReveal;
-- (BOOL)interceptDismissalGestureForOverlayController:(id)a3;
+- (BOOL)interceptDismissalGestureForOverlayController:(id)controller;
 - (BOOL)isHostingAnApp;
 - (BOOL)isInteractingWithNotificationList;
 - (BOOL)isLockScreenShowingDefaultContent;
 - (BOOL)isLockScreenShowingDefaultContentExceptControlCenter;
 - (BOOL)isMainPageVisible;
-- (BOOL)isNotificationContentExtensionVisible:(id)a3;
+- (BOOL)isNotificationContentExtensionVisible:(id)visible;
 - (BOOL)isPasscodeLockVisible;
 - (BOOL)isPresentingNotificationInLongLook;
 - (BOOL)isRestToOpenAvailable;
@@ -64,40 +64,40 @@
 - (BOOL)isShowingModalView;
 - (BOOL)isShowingNonNotificationContent;
 - (BOOL)isShowingTodayView;
-- (BOOL)isTouchLocation:(CGPoint)a3 inRestrictedRectForGestureView:(id)a4;
+- (BOOL)isTouchLocation:(CGPoint)location inRestrictedRectForGestureView:(id)view;
 - (BOOL)isTransitioningInteractively;
 - (BOOL)isUnlockDisabled;
-- (BOOL)passcodeViewControllerShouldHideStatusBar:(id)a3;
-- (BOOL)phoneUnlockWithWatchControllerShowRawErrorCodes:(id)a3;
-- (BOOL)preventsLaunchFromWidgetWithAction:(id)a3;
+- (BOOL)passcodeViewControllerShouldHideStatusBar:(id)bar;
+- (BOOL)phoneUnlockWithWatchControllerShowRawErrorCodes:(id)codes;
+- (BOOL)preventsLaunchFromWidgetWithAction:(id)action;
 - (BOOL)proudLockViewControllerIsCoverSheetVisible;
-- (BOOL)remoteContentSession:(id)a3 dismissWithReason:(int64_t)a4 completion:(id)a5;
-- (BOOL)remoteContentSession:(id)a3 presentViewController:(id)a4;
-- (BOOL)searchGestureShouldRecognize:(id)a3;
-- (BOOL)shouldActivateRemoteContentSession:(id)a3;
-- (BOOL)shouldAutoUnlockForSource:(int)a3;
+- (BOOL)remoteContentSession:(id)session dismissWithReason:(int64_t)reason completion:(id)completion;
+- (BOOL)remoteContentSession:(id)session presentViewController:(id)controller;
+- (BOOL)searchGestureShouldRecognize:(id)recognize;
+- (BOOL)shouldActivateRemoteContentSession:(id)session;
+- (BOOL)shouldAutoUnlockForSource:(int)source;
 - (BOOL)shouldAutorotate;
 - (BOOL)shouldCompletePhoneAutoUnlockWithNotification;
 - (BOOL)shouldModifyPageScrolling;
 - (BOOL)shouldPresentOrDismissCoverSheetSpotlight;
 - (BOOL)shouldShowLockStatusBarTime;
 - (BOOL)shouldUnlockUIOnKeyDownEvent;
-- (BOOL)spotlightPresenterAllowsPullToSearch:(id)a3;
+- (BOOL)spotlightPresenterAllowsPullToSearch:(id)search;
 - (BOOL)suppressesBanners;
 - (BOOL)suppressesControlCenter;
 - (BOOL)suppressesScreenshots;
 - (BOOL)userPresenceDetectedSinceWake;
-- (BOOL)widgetGridViewControllerShouldPreventLaunchFromWidget:(id)a3;
-- (BOOL)willUIUnlockFromSource:(int)a3 isLockScreenDisabledForAssertion:(BOOL)a4;
-- (BOOL)wouldHandleButtonEvent:(id)a3;
+- (BOOL)widgetGridViewControllerShouldPreventLaunchFromWidget:(id)widget;
+- (BOOL)willUIUnlockFromSource:(int)source isLockScreenDisabledForAssertion:(BOOL)assertion;
+- (BOOL)wouldHandleButtonEvent:(id)event;
 - (CAFrameRateRange)presentationPreferredFrameRateRange;
 - (CGPoint)_slideableContentOffset;
 - (CGRect)_effectivePreferredSalientContentRectangle;
-- (CGRect)frameForContentViewForContainerBounds:(CGRect)a3;
+- (CGRect)frameForContentViewForContainerBounds:(CGRect)bounds;
 - (CGRect)posterPreferredSalientContentRectangle;
 - (CSApplicationLaunching)applicationLauncher;
 - (CSCoverSheetSpotlightPresenting)coverSheetSpotlightPresenter;
-- (CSCoverSheetViewController)initWithPageViewControllers:(id)a3 mainPageContentViewController:(id)a4 context:(id)a5;
+- (CSCoverSheetViewController)initWithPageViewControllers:(id)controllers mainPageContentViewController:(id)controller context:(id)context;
 - (CSCoverSheetViewControllerDelegate)delegate;
 - (CSEmergencyCalling)emergencyCaller;
 - (CSIdleTimerControlling)idleTimerController;
@@ -110,13 +110,13 @@
 - (SBFOverlayControlling)overlayController;
 - (double)_adaptiveTimeMaxYFromConfigurationAndPosterPreferences;
 - (double)_dateTimeAlphaForFade;
-- (double)_dateTimeInsetXForPage:(id)a3;
+- (double)_dateTimeInsetXForPage:(id)page;
 - (double)_dateViewAlphaForCurrentWakeState;
-- (double)_listInsetXForPage:(id)a3;
-- (double)_minDateListSpacingForPage:(id)a3;
+- (double)_listInsetXForPage:(id)page;
+- (double)_minDateListSpacingForPage:(id)page;
 - (double)_posterPersistedTimeMaxY;
-- (double)_timeLabelScrollPercentForDateTimeLayout:(unint64_t)a3;
-- (double)_wallpaperLumaFromWallpaperComponent:(id)a3;
+- (double)_timeLabelScrollPercentForDateTimeLayout:(unint64_t)layout;
+- (double)_wallpaperLumaFromWallpaperComponent:(id)component;
 - (double)bottomInsetForBottomComplications;
 - (double)dateTimeMostExtremeLeadingX;
 - (double)dateTimeMostExtremeTrailingX;
@@ -125,43 +125,43 @@
 - (double)prominentBaselineToListY;
 - (double)remoteContentComplicationTopYInset;
 - (double)timeLabelBaselineY;
-- (double)timeLabelOffsetForScrollPercent:(double)a3;
+- (double)timeLabelOffsetForScrollPercent:(double)percent;
 - (double)timeTextHeight;
 - (double)timeToSubtitleLabelBaselineDifferenceY;
 - (double)windowedAccessoryInset;
-- (id)__currentDesiredAppearanceWithStartIndex:(unint64_t *)a3 targetIndex:(unint64_t *)a4 targetAppearance:(id *)a5 targetPresentation:(id *)a6 modalAppearance:(id *)a7 proudLockAppearance:(id *)a8 poseidonAppearance:(id *)a9 backgroundContentAppearance:(id *)a10;
+- (id)__currentDesiredAppearanceWithStartIndex:(unint64_t *)index targetIndex:(unint64_t *)targetIndex targetAppearance:(id *)appearance targetPresentation:(id *)presentation modalAppearance:(id *)modalAppearance proudLockAppearance:(id *)lockAppearance poseidonAppearance:(id *)poseidonAppearance backgroundContentAppearance:(id *)self0;
 - (id)_activeViewControllers;
-- (id)_appearanceForParticipant:(id)a3;
+- (id)_appearanceForParticipant:(id)participant;
 - (id)_averageLockScreenWallpaperColor;
 - (id)_batteryCenterInternalBattery;
-- (id)_behaviorForParticipant:(id)a3;
+- (id)_behaviorForParticipant:(id)participant;
 - (id)_chargingInfo;
 - (id)_coachingStringToUse;
 - (id)_connectedExternalChargers;
 - (id)_createFakeStatusBar;
 - (id)_eligiblePageViewControllers;
 - (id)_fakeStatusBarSettings;
-- (id)_filterValuesForWhitePointReduced:(BOOL)a3 lighterReduction:(BOOL)a4;
-- (id)_fullscreeNotificationViewControllerMatchingNotificationRequest:(id)a3;
+- (id)_filterValuesForWhitePointReduced:(BOOL)reduced lighterReduction:(BOOL)reduction;
+- (id)_fullscreeNotificationViewControllerMatchingNotificationRequest:(id)request;
 - (id)_hostedRemoteContentViewController;
 - (id)_overrideDate;
-- (id)_pageForScrollPercent:(double)a3;
+- (id)_pageForScrollPercent:(double)percent;
 - (id)_passcodeViewController;
-- (id)_presentationForParticipant:(id)a3;
-- (id)_presentedModalViewControllerWithIdentifier:(id)a3;
-- (id)_validatedComplicationDescriptorForDescriptor:(id)a3;
-- (id)_whitePointReductionFilterFromValues:(id)a3;
+- (id)_presentationForParticipant:(id)participant;
+- (id)_presentedModalViewControllerWithIdentifier:(id)identifier;
+- (id)_validatedComplicationDescriptorForDescriptor:(id)descriptor;
+- (id)_whitePointReductionFilterFromValues:(id)values;
 - (id)_whitePointValues;
-- (id)_whitePointValuesForAppearance:(id)a3;
-- (id)_windowsFromViewControllers:(id)a3;
+- (id)_whitePointValuesForAppearance:(id)appearance;
+- (id)_windowsFromViewControllers:(id)controllers;
 - (id)createHomeButtonShowPasscodeRecognizerForHomeButtonPress;
-- (id)createHomeButtonSuppressAfterUnlockRecognizerForUnlockSource:(int)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)displayConfigurationForSpotlightPresenter:(id)a3;
+- (id)createHomeButtonSuppressAfterUnlockRecognizerForUnlockSource:(int)source;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)displayConfigurationForSpotlightPresenter:(id)presenter;
 - (id)hostedAppSceneHandle;
 - (id)hostedAppSceneHandles;
-- (id)pageViewControllerAtIndex:(unint64_t)a3;
+- (id)pageViewControllerAtIndex:(unint64_t)index;
 - (id)posterSwitcherPresentationStatus;
 - (id)sceneHostEnvironmentEntriesForBacklightSession;
 - (id)succinctDescription;
@@ -172,124 +172,124 @@
 - (int64_t)effectiveInterfaceOrientation;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (int64_t)statusBarStyle;
-- (unint64_t)_dateTimeLayoutForPage:(id)a3;
+- (unint64_t)_dateTimeLayoutForPage:(id)page;
 - (unint64_t)_indexOfCameraPage;
 - (unint64_t)_indexOfMainPage;
-- (unint64_t)_indexOfPageViewControllerForRole:(id)a3;
+- (unint64_t)_indexOfPageViewControllerForRole:(id)role;
 - (unint64_t)_pageCapabilities;
 - (unint64_t)supportedInterfaceOrientations;
 - (unint64_t)visibleNotificationCount;
-- (void):(id)a3 withTransition:(int)a4 completion:(id)a5;
-- (void)_activateCameraEntity:(id)a3 animated:(BOOL)a4 actions:(id)a5 completion:(id)a6;
-- (void)_actuallyUpdateUIForIrisPlaying:(BOOL)a3;
-- (void)_addBackgroundContentOccludingViewsForAppearance:(id)a3;
-- (void)_addBackgroundContentViewControllerForAction:(id)a3;
+- (void):(id)a3 withTransition:(int)transition completion:(id)completion;
+- (void)_activateCameraEntity:(id)entity animated:(BOOL)animated actions:(id)actions completion:(id)completion;
+- (void)_actuallyUpdateUIForIrisPlaying:(BOOL)playing;
+- (void)_addBackgroundContentOccludingViewsForAppearance:(id)appearance;
+- (void)_addBackgroundContentViewControllerForAction:(id)action;
 - (void)_addBedtimeGreetingBackgroundView;
-- (void)_addOrRemoveBlockedViewIfNecessaryAnimated:(BOOL)a3;
-- (void)_addOrRemoveRemoteContentViewIfNecessaryMaintainingState:(BOOL)a3;
-- (void)_addOrRemoveResetRestoreViewIfNecessaryAnimated:(BOOL)a3;
-- (void)_addOrRemoveThermalTrapViewIfNecessaryAnimated:(BOOL)a3;
-- (void)_addRemoteViewControllerForAction:(id)a3;
+- (void)_addOrRemoveBlockedViewIfNecessaryAnimated:(BOOL)animated;
+- (void)_addOrRemoveRemoteContentViewIfNecessaryMaintainingState:(BOOL)state;
+- (void)_addOrRemoveResetRestoreViewIfNecessaryAnimated:(BOOL)animated;
+- (void)_addOrRemoveThermalTrapViewIfNecessaryAnimated:(BOOL)animated;
+- (void)_addRemoteViewControllerForAction:(id)action;
 - (void)_addStateCaptureHandlers;
-- (void)_addVisiblePageViewController:(id)a3;
-- (void)_addWhitePointAnimationForKeyPath:(id)a3 onLayer:(id)a4 toValues:(id)a5 withDuration:(double)a6 dispatchGroup:(id)a7;
-- (void)_animateAccessory:(id)a3 toVisibleAnimated:(BOOL)a4;
-- (void)_animateView:(id)a3 toWhitePointReduced:(BOOL)a4 withDuration:(double)a5 withDispatchGroup:(id)a6;
-- (void)_beginAppearanceTransitionForPageViewControllersToVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)_addVisiblePageViewController:(id)controller;
+- (void)_addWhitePointAnimationForKeyPath:(id)path onLayer:(id)layer toValues:(id)values withDuration:(double)duration dispatchGroup:(id)group;
+- (void)_animateAccessory:(id)accessory toVisibleAnimated:(BOOL)animated;
+- (void)_animateView:(id)view toWhitePointReduced:(BOOL)reduced withDuration:(double)duration withDispatchGroup:(id)group;
+- (void)_beginAppearanceTransitionForPageViewControllersToVisible:(BOOL)visible animated:(BOOL)animated;
 - (void)_calculateAppearanceForCurrentOrientation;
-- (void)_cleanupPosterSwitcherPresentationForCompleted:(BOOL)a3 withActivatingTouches:(id)a4;
-- (void)_cleanupStaleRemoteContentWithCompletion:(id)a3;
+- (void)_cleanupPosterSwitcherPresentationForCompleted:(BOOL)completed withActivatingTouches:(id)touches;
+- (void)_cleanupStaleRemoteContentWithCompletion:(id)completion;
 - (void)_clearChargingModalStateIfNecessary;
-- (void)_clearChargingModalTimerPerformingHandler:(BOOL)a3;
-- (void)_complicationSelected:(id)a3;
+- (void)_clearChargingModalTimerPerformingHandler:(BOOL)handler;
+- (void)_complicationSelected:(id)selected;
 - (void)_createStatusBarBackgroundViewIfNeeded;
-- (void)_dismissAccessoryViewController:(id)a3 animated:(BOOL)a4;
-- (void)_dismissAllModalViewControllersExcept:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_dismissHostingModalsAnimated:(BOOL)a3 completion:(id)a4;
+- (void)_dismissAccessoryViewController:(id)controller animated:(BOOL)animated;
+- (void)_dismissAllModalViewControllersExcept:(id)except animated:(BOOL)animated completion:(id)completion;
+- (void)_dismissHostingModalsAnimated:(BOOL)animated completion:(id)completion;
 - (void)_dismissInlineContentOnSignificantScroll;
-- (void)_dismissModalViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_dismissModalViewControllersWithIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_dismissModalViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)_dismissModalViewControllersWithIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion;
 - (void)_dismissPosterSwitcherViewController;
-- (void)_dismissRemoteViewControllerForReason:(int64_t)a3 completion:(id)a4;
-- (void)_dismissToMainPageFromPageViewController:(id)a3;
+- (void)_dismissRemoteViewControllerForReason:(int64_t)reason completion:(id)completion;
+- (void)_dismissToMainPageFromPageViewController:(id)controller;
 - (void)_displayDidDisappearImplementation;
 - (void)_displayWillAppearImplementation;
 - (void)_displayWillDisappearImplementation;
-- (void)_displayWillTurnOnWhileOnCoverSheet:(id)a3;
-- (void)_endAppearanceTransitionForPageViewControllersToVisible:(BOOL)a3;
-- (void)_finishFadeInAnimationForPowerSource:(int)a3 connectedToPower:(BOOL)a4 screenOn:(BOOL)a5;
+- (void)_displayWillTurnOnWhileOnCoverSheet:(id)sheet;
+- (void)_endAppearanceTransitionForPageViewControllersToVisible:(BOOL)visible;
+- (void)_finishFadeInAnimationForPowerSource:(int)source connectedToPower:(BOOL)power screenOn:(BOOL)on;
 - (void)_handleAddedAction;
-- (void)_handleDismissalForAccessoryViewController:(id)a3 animated:(BOOL)a4;
-- (void)_handlePosterSwitcherActivation:(id)a3;
-- (void)_handleQuickNoteLaunch:(id)a3;
+- (void)_handleDismissalForAccessoryViewController:(id)controller animated:(BOOL)animated;
+- (void)_handlePosterSwitcherActivation:(id)activation;
+- (void)_handleQuickNoteLaunch:(id)launch;
 - (void)_invalidateStatusBarAssertions;
-- (void)_listenForDisplayLayoutChanges:(BOOL)a3;
+- (void)_listenForDisplayLayoutChanges:(BOOL)changes;
 - (void)_loadViewsForRestrictedPagesIfPossible;
-- (void)_managedConfigurationEffectiveSettingsDidChange:(id)a3;
+- (void)_managedConfigurationEffectiveSettingsDidChange:(id)change;
 - (void)_migrateNotificationsToHistory;
 - (void)_overrideNotificationDisplayStyleForInlineContent;
-- (void)_overrideNotificationDisplayStyleWithRemotePreference:(int64_t)a3;
-- (void)_performLocalAppearanceUpdatesWithReason:(id)a3 updates:(id)a4;
-- (void)_powerStatusChangedToConnectedState:(BOOL)a3;
+- (void)_overrideNotificationDisplayStyleWithRemotePreference:(int64_t)preference;
+- (void)_performLocalAppearanceUpdatesWithReason:(id)reason updates:(id)updates;
+- (void)_powerStatusChangedToConnectedState:(BOOL)state;
 - (void)_preferredContentSizeDidChange;
 - (void)_prepareForPosterSwitcherPresentation;
 - (void)_prepareForViewWillAppearIfNecessary;
-- (void)_presentInlineViewController:(id)a3;
-- (void)_presentModalViewController:(id)a3 shouldDismissOverlays:(BOOL)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)_removeAllowedPageViewController:(id)a3;
-- (void)_removeBackgroundContentOccludingViewsForAppearance:(id)a3;
+- (void)_presentInlineViewController:(id)controller;
+- (void)_presentModalViewController:(id)controller shouldDismissOverlays:(BOOL)overlays animated:(BOOL)animated completion:(id)completion;
+- (void)_removeAllowedPageViewController:(id)controller;
+- (void)_removeBackgroundContentOccludingViewsForAppearance:(id)appearance;
 - (void)_removeBackgroundContentViewController;
-- (void)_removeBedtimeGreetingBackgroundViewAnimated:(BOOL)a3;
-- (void)_scrollPanGestureBegan:(id)a3;
-- (void)_scrollPanGestureChanged:(id)a3;
-- (void)_scrollPanGestureEnded:(id)a3;
+- (void)_removeBedtimeGreetingBackgroundViewAnimated:(BOOL)animated;
+- (void)_scrollPanGestureBegan:(id)began;
+- (void)_scrollPanGestureChanged:(id)changed;
+- (void)_scrollPanGestureEnded:(id)ended;
 - (void)_sendAuthenticationChangedEvent;
-- (void)_setAppearanceForLandscape:(BOOL)a3;
-- (void)_setDidDismissSinceScreenOn:(BOOL)a3;
-- (void)_setDismissed:(BOOL)a3;
-- (void)_setFakeStatusBarEnabled:(BOOL)a3;
-- (void)_setHasContentAboveCoverSheet:(BOOL)a3 opaque:(BOOL)a4 isSignificantUserInteraction:(BOOL)a5;
-- (void)_setLastSettledPageIndex:(unint64_t)a3;
-- (void)_setLockOrientationWhileTransitioning:(BOOL)a3;
-- (void)_setMainPageContentViewController:(id)a3;
-- (void)_setModalPresentationControllerVisibility:(BOOL)a3 cancelTouches:(BOOL)a4;
-- (void)_setPageViewControllers:(id)a3;
-- (void)_setSuppressChargingUIForAmbient:(BOOL)a3;
+- (void)_setAppearanceForLandscape:(BOOL)landscape;
+- (void)_setDidDismissSinceScreenOn:(BOOL)on;
+- (void)_setDismissed:(BOOL)dismissed;
+- (void)_setFakeStatusBarEnabled:(BOOL)enabled;
+- (void)_setHasContentAboveCoverSheet:(BOOL)sheet opaque:(BOOL)opaque isSignificantUserInteraction:(BOOL)interaction;
+- (void)_setLastSettledPageIndex:(unint64_t)index;
+- (void)_setLockOrientationWhileTransitioning:(BOOL)transitioning;
+- (void)_setMainPageContentViewController:(id)controller;
+- (void)_setModalPresentationControllerVisibility:(BOOL)visibility cancelTouches:(BOOL)touches;
+- (void)_setPageViewControllers:(id)controllers;
+- (void)_setSuppressChargingUIForAmbient:(BOOL)ambient;
 - (void)_setupBackgroundContentGestureRecognizer;
 - (void)_setupComplicationSelectionGestureRecognizer;
 - (void)_setupPosterSwitcherGestureRecognizer;
 - (void)_setupQuickNoteGestureRecognizer;
 - (void)_setupSearchGesture;
 - (void)_setupWallpaperGesture;
-- (void)_showChargingSubtitleWithTimeout:(double)a3;
-- (void)_startFadeInAnimationForSource:(int64_t)a3;
-- (void)_transitionAccessoryChargingViewToVisible:(BOOL)a3;
-- (void)_transitionAccessoryViewToVisible:(BOOL)a3 accessory:(id)a4 animated:(BOOL)a5;
-- (void)_transitionChargingDateSubtitleToVisible:(BOOL)a3 animated:(BOOL)a4 force:(BOOL)a5;
-- (void)_transitionChargingViewToVisible:(BOOL)a3 suppressedByPack:(BOOL)a4 showBattery:(BOOL)a5 animated:(BOOL)a6;
-- (void)_transitionTimerViewToVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)_showChargingSubtitleWithTimeout:(double)timeout;
+- (void)_startFadeInAnimationForSource:(int64_t)source;
+- (void)_transitionAccessoryChargingViewToVisible:(BOOL)visible;
+- (void)_transitionAccessoryViewToVisible:(BOOL)visible accessory:(id)accessory animated:(BOOL)animated;
+- (void)_transitionChargingDateSubtitleToVisible:(BOOL)visible animated:(BOOL)animated force:(BOOL)force;
+- (void)_transitionChargingViewToVisible:(BOOL)visible suppressedByPack:(BOOL)pack showBattery:(BOOL)battery animated:(BOOL)animated;
+- (void)_transitionTimerViewToVisible:(BOOL)visible animated:(BOOL)animated;
 - (void)_updateAccessibilityContentSizesIfNeeded;
-- (void)_updateAccessoryAnimationPresenting:(BOOL)a3 userInteractionDisabled:(BOOL)a4;
-- (void)_updateActiveAppearanceForReason:(id)a3;
-- (void)_updateActiveBehaviorsForReason:(id)a3 updatingAppearanceIfNeeded:(BOOL)a4;
-- (void)_updateAppearance:(id)a3 forComponentType:(int64_t)a4 shouldHide:(BOOL)a5;
-- (void)_updateAppearanceForAODTransitionToInactive:(BOOL)a3;
-- (void)_updateAppearanceForHavingPosterSwitcherTransition:(BOOL)a3;
-- (void)_updateAppearanceForTransitionToOrientation:(int64_t)a3;
+- (void)_updateAccessoryAnimationPresenting:(BOOL)presenting userInteractionDisabled:(BOOL)disabled;
+- (void)_updateActiveAppearanceForReason:(id)reason;
+- (void)_updateActiveBehaviorsForReason:(id)reason updatingAppearanceIfNeeded:(BOOL)needed;
+- (void)_updateAppearance:(id)appearance forComponentType:(int64_t)type shouldHide:(BOOL)hide;
+- (void)_updateAppearanceForAODTransitionToInactive:(BOOL)inactive;
+- (void)_updateAppearanceForHavingPosterSwitcherTransition:(BOOL)transition;
+- (void)_updateAppearanceForTransitionToOrientation:(int64_t)orientation;
 - (void)_updateBackground;
 - (void)_updateBackgroundContentView;
 - (void)_updateBackgroundGlassView;
 - (void)_updateCaptureButtonRestriction;
-- (void)_updateChargingSubtitleWithString:(id)a3 timeout:(double)a4;
-- (void)_updateClockAppearanceForAODTransitionToInactive:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateChargingSubtitleWithString:(id)string timeout:(double)timeout;
+- (void)_updateClockAppearanceForAODTransitionToInactive:(BOOL)inactive animated:(BOOL)animated;
 - (void)_updateCoachingString;
-- (void)_updateCoachingStringWithTimeout:(double)a3;
+- (void)_updateCoachingStringWithTimeout:(double)timeout;
 - (void)_updateComplicationContainerPosition;
 - (void)_updateComplicationSidebar;
 - (void)_updateComplicationsContainerView;
 - (void)_updateContent;
 - (void)_updateControlCenterGrabber;
-- (void)_updateDateSubtitleAppearanceForBattery:(BOOL)a3 animated:(BOOL)a4 chargingVisible:(BOOL)a5;
+- (void)_updateDateSubtitleAppearanceForBattery:(BOOL)battery animated:(BOOL)animated chargingVisible:(BOOL)visible;
 - (void)_updateDateTimeView;
 - (void)_updateDimmingLayer;
 - (void)_updateFixedFooterView;
@@ -297,24 +297,24 @@
 - (void)_updateForSensitiveUI;
 - (void)_updateForegroundView;
 - (void)_updateFullBleedContent;
-- (void)_updateGeneralAppearanceForAODTransitionToInactive:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateGeneralAppearanceForAODTransitionToInactive:(BOOL)inactive animated:(BOOL)animated;
 - (void)_updateGlassContentInterfaceStyle;
 - (void)_updateHomeAffordance;
 - (void)_updateIdleTimerBehavior;
-- (void)_updateIdleTimerForTransitionProgress:(double)a3;
+- (void)_updateIdleTimerForTransitionProgress:(double)progress;
 - (void)_updateLegibilitySettings;
 - (void)_updateLocalAppearanceForPresentation;
-- (void)_updateLocalAppearanceForRequester:(id)a3 animationSettings:(id)a4 actions:(id)a5 completion:(id)a6;
+- (void)_updateLocalAppearanceForRequester:(id)requester animationSettings:(id)settings actions:(id)actions completion:(id)completion;
 - (void)_updateModalContent;
-- (void)_updateModalPresentationControllerVisibility:(id)a3;
-- (void)_updateNotificationClearingTriggerForEvent:(id)a3;
+- (void)_updateModalPresentationControllerVisibility:(id)visibility;
+- (void)_updateNotificationClearingTriggerForEvent:(id)event;
 - (void)_updateNotificationDimmingLayer;
 - (void)_updateOverrideDateIfNeeded;
 - (void)_updatePageContent;
 - (void)_updatePoseidon;
 - (void)_updatePosterSwitcherBackgroundView;
 - (void)_updatePosterSwitcherComplicationRowHidden;
-- (void)_updatePosterSwitcherPresentationWithProgress:(double)a3;
+- (void)_updatePosterSwitcherPresentationWithProgress:(double)progress;
 - (void)_updateProudLockView;
 - (void)_updateProudLockViewUpdateSuspension;
 - (void)_updateQuickActions;
@@ -326,189 +326,189 @@
 - (void)_updateStatusBarBackground;
 - (void)_updateStatusBarGradient;
 - (void)_updateTintingView;
-- (void)_updateUIForPlaying:(BOOL)a3 immediately:(BOOL)a4;
+- (void)_updateUIForPlaying:(BOOL)playing immediately:(BOOL)immediately;
 - (void)_updateVibrancy;
-- (void)_updateVisibilityForPageViewControllersWithVisiblePageViewController:(id)a3;
+- (void)_updateVisibilityForPageViewControllersWithVisiblePageViewController:(id)controller;
 - (void)_updateWallpaper;
 - (void)_updateWallpaperEffectView;
 - (void)_updateWallpaperFloatingLayerContainerView;
 - (void)_updateWhitePoint;
 - (void)_validateAndUpdateInlineComplication;
-- (void)accessoryAnimationStatusChanged:(BOOL)a3;
-- (void)accessoryAttached:(id)a3;
-- (void)accessoryDetached:(id)a3;
-- (void)actionManager:(id)a3 addedAction:(id)a4;
-- (void)actionManager:(id)a3 removedAction:(id)a4;
-- (void)activateCameraWithHostableEntity:(id)a3 animated:(BOOL)a4 sendingActions:(id)a5 completion:(id)a6;
-- (void)activateMainPageWithCompletion:(id)a3;
-- (void)activateOverlayWithViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)activatePage:(unint64_t)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (void)activateTodayViewWithCompletion:(id)a3;
+- (void)accessoryAnimationStatusChanged:(BOOL)changed;
+- (void)accessoryAttached:(id)attached;
+- (void)accessoryDetached:(id)detached;
+- (void)actionManager:(id)manager addedAction:(id)action;
+- (void)actionManager:(id)manager removedAction:(id)action;
+- (void)activateCameraWithHostableEntity:(id)entity animated:(BOOL)animated sendingActions:(id)actions completion:(id)completion;
+- (void)activateMainPageWithCompletion:(id)completion;
+- (void)activateOverlayWithViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)activatePage:(unint64_t)page animated:(BOOL)animated withCompletion:(id)completion;
+- (void)activateTodayViewWithCompletion:(id)completion;
 - (void)activityItemsMayHaveChanged;
-- (void)addCoverSheetObserver:(id)a3;
-- (void)addRemoteContentInlineProvidingManager:(id)a3;
-- (void)ambientPresentationController:(id)a3 didUpdatePresented:(BOOL)a4;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)backgroundContentActionManager:(id)a3 addedAction:(id)a4;
-- (void)backgroundContentActionManager:(id)a3 removedAction:(id)a4;
-- (void)cleanupInterstitialPresentationToPresented:(BOOL)a3 inPlace:(BOOL)a4;
+- (void)addCoverSheetObserver:(id)observer;
+- (void)addRemoteContentInlineProvidingManager:(id)manager;
+- (void)ambientPresentationController:(id)controller didUpdatePresented:(BOOL)presented;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)backgroundContentActionManager:(id)manager addedAction:(id)action;
+- (void)backgroundContentActionManager:(id)manager removedAction:(id)action;
+- (void)cleanupInterstitialPresentationToPresented:(BOOL)presented inPlace:(BOOL)place;
 - (void)cleanupInterstitialWhileOffScreen;
-- (void)combinedListViewController:(id)a3 didChangeVisibleBreakthroughContent:(BOOL)a4;
-- (void)combinedListViewController:(id)a3 didUpdateVisibleNotificationCount:(unint64_t)a4;
-- (void)combinedListViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)a3;
-- (void)connectedDevicesDidChange:(id)a3;
+- (void)combinedListViewController:(id)controller didChangeVisibleBreakthroughContent:(BOOL)content;
+- (void)combinedListViewController:(id)controller didUpdateVisibleNotificationCount:(unint64_t)count;
+- (void)combinedListViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)d;
+- (void)connectedDevicesDidChange:(id)change;
 - (void)contentRequestCancellingGesture;
-- (void)controllerWillCancelHorizontalScrolling:(id)a3;
-- (void)coverSheetNotificationClearingTriggerDidFire:(id)a3;
+- (void)controllerWillCancelHorizontalScrolling:(id)scrolling;
+- (void)coverSheetNotificationClearingTriggerDidFire:(id)fire;
 - (void)createHomeButtonShowPasscodeRecognizerForHomeButtonPress;
-- (void)deactivateTodayViewWithCompletion:(id)a3;
+- (void)deactivateTodayViewWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)didAddNewActivityItemSceneHostEnvironment;
-- (void)didPostNotificationRequest:(id)a3;
+- (void)didPostNotificationRequest:(id)request;
 - (void)dismissHomeScreenOverlay;
-- (void)dismissHostedAppsAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissInterstitialPresentationAnimated:(BOOL)a3;
-- (void)dismissOverlays:(unint64_t)a3 animated:(BOOL)a4;
+- (void)dismissHostedAppsAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissInterstitialPresentationAnimated:(BOOL)animated;
+- (void)dismissOverlays:(unint64_t)overlays animated:(BOOL)animated;
 - (void)endCoverSheetTransition;
-- (void)externalAppearanceProviderBehaviorChanged:(id)a3;
-- (void)externalBehaviorProviderBehaviorChanged:(id)a3;
-- (void)externalLockProviderStateChanged:(id)a3;
-- (void)externalPresentationProviderPresentationChanged:(id)a3;
-- (void)fillRestToOpenWithDuration:(double)a3;
-- (void)finishUIUnlockFromSource:(int)a3;
-- (void)getRotationContentSettings:(id *)a3 forWindow:(id)a4;
-- (void)handleAction:(id)a3 fromSender:(id)a4;
-- (void)handleBiometricEvent:(unint64_t)a3;
+- (void)externalAppearanceProviderBehaviorChanged:(id)changed;
+- (void)externalBehaviorProviderBehaviorChanged:(id)changed;
+- (void)externalLockProviderStateChanged:(id)changed;
+- (void)externalPresentationProviderPresentationChanged:(id)changed;
+- (void)fillRestToOpenWithDuration:(double)duration;
+- (void)finishUIUnlockFromSource:(int)source;
+- (void)getRotationContentSettings:(id *)settings forWindow:(id)window;
+- (void)handleAction:(id)action fromSender:(id)sender;
+- (void)handleBiometricEvent:(unint64_t)event;
 - (void)handleReachabilityAnimationDidEnd;
 - (void)handleReachabilityAnimationWillBegin;
-- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)a3;
+- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)orientation;
 - (void)idleTimerDidExpire;
 - (void)idleTimerDidRefresh;
 - (void)idleTimerDidWarn;
 - (void)idleTimerWillRefresh;
-- (void)irisWallpaperPlayer:(id)a3 didReplaceGestureRecognizer:(id)a4 withGestureRecognizer:(id)a5;
-- (void)irisWallpaperPlayerIsInteractingDidChange:(id)a3;
-- (void)irisWallpaperPlayerPlaybackStateDidChange:(id)a3;
+- (void)irisWallpaperPlayer:(id)player didReplaceGestureRecognizer:(id)recognizer withGestureRecognizer:(id)gestureRecognizer;
+- (void)irisWallpaperPlayerIsInteractingDidChange:(id)change;
+- (void)irisWallpaperPlayerPlaybackStateDidChange:(id)change;
 - (void)isUnlockDisabled;
 - (void)jiggleLockIcon;
 - (void)loadView;
 - (void)noteDeviceBlockedStatusUpdated;
 - (void)noteWillPresentForUserGesture;
-- (void)notificationsLoadedForSectionIdentifier:(id)a3;
-- (void)overlayController:(id)a3 didChangePresentationProgress:(double)a4 newPresentationProgress:(double)a5 fromLeading:(BOOL)a6;
-- (void)overlayControllerDidBeginChangingPresentationProgress:(id)a3;
-- (void)overlayControllerRequestsDismissal:(id)a3;
-- (void)passcodeViewControllerDidCancelPasscodeEntry:(id)a3;
-- (void)performInterstitialPresentationAnimated:(BOOL)a3;
-- (void)phoneUnlockWithVisionController:(id)a3 attemptFailedWithError:(id)a4;
-- (void)phoneUnlockWithVisionControllerAttemptSucceeded:(id)a3;
-- (void)phoneUnlockWithWatchControllerAttemptFailed:(id)a3 withError:(id)a4;
-- (void)phoneUnlockWithWatchControllerAttemptSucceeded:(id)a3;
-- (void)postNotificationRequest:(id)a3;
-- (void)posterSwitcherActivationManager:(id)a3 didChangeToCoachingText:(id)a4;
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier;
+- (void)overlayController:(id)controller didChangePresentationProgress:(double)progress newPresentationProgress:(double)presentationProgress fromLeading:(BOOL)leading;
+- (void)overlayControllerDidBeginChangingPresentationProgress:(id)progress;
+- (void)overlayControllerRequestsDismissal:(id)dismissal;
+- (void)passcodeViewControllerDidCancelPasscodeEntry:(id)entry;
+- (void)performInterstitialPresentationAnimated:(BOOL)animated;
+- (void)phoneUnlockWithVisionController:(id)controller attemptFailedWithError:(id)error;
+- (void)phoneUnlockWithVisionControllerAttemptSucceeded:(id)succeeded;
+- (void)phoneUnlockWithWatchControllerAttemptFailed:(id)failed withError:(id)error;
+- (void)phoneUnlockWithWatchControllerAttemptSucceeded:(id)succeeded;
+- (void)postNotificationRequest:(id)request;
+- (void)posterSwitcherActivationManager:(id)manager didChangeToCoachingText:(id)text;
 - (void)prepareForInterstitialPresentation;
-- (void)prepareForTransitionToPresented:(BOOL)a3 reversingTransition:(BOOL)a4 forUserGesture:(BOOL)a5;
-- (void)presentModalViewController:(id)a3 fromRect:(CGRect)a4 inView:(id)a5 animated:(BOOL)a6;
-- (void)presentModalViewController:(id)a3 withTransition:(int)a4;
-- (void)presentOrDismissCoverSheetSpotlightAnimated:(BOOL)a3;
-- (void)presentationViewController:(id)a3 didTransitionViewController:(id)a4 toPresented:(BOOL)a5;
-- (void)proudLockDidChangeToCoachingText:(id)a3;
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5;
-- (void)registerExternalAppearanceProvider:(id)a3;
-- (void)registerExternalBehaviorProvider:(id)a3;
-- (void)registerExternalPresentationProvider:(id)a3;
+- (void)prepareForTransitionToPresented:(BOOL)presented reversingTransition:(BOOL)transition forUserGesture:(BOOL)gesture;
+- (void)presentModalViewController:(id)controller fromRect:(CGRect)rect inView:(id)view animated:(BOOL)animated;
+- (void)presentModalViewController:(id)controller withTransition:(int)transition;
+- (void)presentOrDismissCoverSheetSpotlightAnimated:(BOOL)animated;
+- (void)presentationViewController:(id)controller didTransitionViewController:(id)viewController toPresented:(BOOL)presented;
+- (void)proudLockDidChangeToCoachingText:(id)text;
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition;
+- (void)registerExternalAppearanceProvider:(id)provider;
+- (void)registerExternalBehaviorProvider:(id)provider;
+- (void)registerExternalPresentationProvider:(id)provider;
 - (void)remoteContentDidUpdateStyle;
-- (void)remoteContentSession:(id)a3 didInvalidateWithError:(id)a4;
-- (void)removeCoverSheetObserver:(id)a3;
-- (void)removeRemoteContentInlineProvidingManager:(id)a3;
+- (void)remoteContentSession:(id)session didInvalidateWithError:(id)error;
+- (void)removeCoverSheetObserver:(id)observer;
+- (void)removeRemoteContentInlineProvidingManager:(id)manager;
 - (void)requestIdleTimerResetForPoster;
 - (void)resetMainPageContentOffset;
 - (void)resetRestToOpen;
-- (void)respondToUIUnlockFromSource:(int)a3;
-- (void)screenSleepCompletedForSource:(int)a3;
-- (void)scrollPanGestureDidUpdate:(id)a3;
-- (void)scrollablePageViewController:(id)a3 scrollViewDidScroll:(id)a4;
-- (void)scrollablePageViewController:(id)a3 scrollViewWillBeginDragging:(id)a4;
-- (void)scrollablePageViewController:(id)a3 scrollViewWillEndDragging:(id)a4 withVelocity:(CGPoint)a5;
-- (void)searchGesture:(id)a3 changedPercentComplete:(double)a4;
-- (void)searchGesture:(id)a3 completedShowing:(BOOL)a4;
-- (void)searchGesture:(id)a3 endedGesture:(BOOL)a4;
-- (void)searchGesture:(id)a3 startedShowing:(BOOL)a4;
-- (void)setAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)a3;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)setBacklightLevel:(double)a3;
-- (void)setCameraPrewarmer:(id)a3;
-- (void)setComplicationContainerUsesBottomPosition:(BOOL)a3;
-- (void)setCoverSheetIsVisible:(BOOL)a3;
-- (void)setCurrentTransitionSource:(id)a3;
-- (void)setEffectiveInterfaceOrientationOverride:(int64_t)a3;
-- (void)setEffectiveVibrancyConfiguration:(id)a3;
-- (void)setHidesDimmingLayer:(BOOL)a3;
-- (void)setInScreenOffMode:(BOOL)a3 forAutoUnlock:(BOOL)a4 fromUnlockSource:(int)a5;
-- (void)setInterstitialTransitionSource:(id)a3;
-- (void)setIrisWallpaperPlayer:(id)a3;
-- (void)setLayoutStrategy:(id)a3;
-- (void)setPartiallyOnScreen:(BOOL)a3;
-- (void)setPasscodeLockVisible:(BOOL)a3 animated:(BOOL)a4 showBackground:(BOOL)a5 forceBiometricPresentation:(BOOL)a6 completion:(id)a7;
-- (void)setPosterPreferredSalientContentRectangle:(CGRect)a3;
-- (void)setPosterSwitcherTransitionSource:(id)a3;
-- (void)setPosterSwitcherViewController:(id)a3;
-- (void)setRestrictsTouchesForRemoteView:(BOOL)a3;
-- (void)setScale:(double)a3 behaviorMode:(int64_t)a4 completion:(id)a5;
-- (void)setSearchGesture:(id)a3;
-- (void)setShowingMediaControls:(BOOL)a3;
-- (void)setVibrancyConfiguration:(id)a3;
-- (void)setVibrancyConfigurationOverride:(id)a3;
-- (void)setWallpaperColorProvider:(id)a3;
-- (void)setWallpaperGestureRecognizer:(id)a3;
-- (void)setYContentOffset:(double)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)spotlightPresenter:(id)a3 dismissDismissableModalViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)spotlightPresenter:(id)a3 presentDismissableModalViewController:(id)a4 completion:(id)a5;
-- (void)spotlightPresenterAddContentView:(id)a3;
-- (void)spotlightPresenterDidDismissSearch:(id)a3;
-- (void)spotlightPresenterDidPresentSearch:(id)a3;
-- (void)spotlightPresenterRemoveContentView:(id)a3;
-- (void)startLockScreenFadeInAnimationForSource:(int)a3;
-- (void)startRestToOpenCoachingWithCompletion:(id)a3;
-- (void)timerControllerDidStartTimer:(id)a3;
-- (void)timerControllerDidStopTimer:(id)a3;
-- (void)timerControllerDidUpdateTimer:(id)a3;
-- (void)transitionSource:(id)a3 didEndWithContext:(id *)a4;
-- (void)transitionSource:(id)a3 didUpdateTransitionWithContext:(id *)a4;
-- (void)transitionSource:(id)a3 willBeginWithType:(int64_t)a4;
-- (void)unregisterExternalAppearanceProvider:(id)a3;
-- (void)unregisterExternalBehaviorProvider:(id)a3;
-- (void)unregisterExternalPresentationProvider:(id)a3;
-- (void)updateAppearanceForController:(id)a3;
-- (void)updateAppearanceForController:(id)a3 withAnimationSettings:(id)a4 completion:(id)a5;
-- (void)updateBackgroundGlassEffectForDraggingProgress:(double)a3 usingGlassEffects:(BOOL)a4;
-- (void)updateBehaviorForController:(id)a3;
-- (void)updateCoverSheetDraggingProgress:(double)a3 forPresentationValue:(BOOL)a4;
-- (void)updateCoverSheetTransitionProgress:(double)a3;
+- (void)respondToUIUnlockFromSource:(int)source;
+- (void)screenSleepCompletedForSource:(int)source;
+- (void)scrollPanGestureDidUpdate:(id)update;
+- (void)scrollablePageViewController:(id)controller scrollViewDidScroll:(id)scroll;
+- (void)scrollablePageViewController:(id)controller scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollablePageViewController:(id)controller scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity;
+- (void)searchGesture:(id)gesture changedPercentComplete:(double)complete;
+- (void)searchGesture:(id)gesture completedShowing:(BOOL)showing;
+- (void)searchGesture:(id)gesture endedGesture:(BOOL)endedGesture;
+- (void)searchGesture:(id)gesture startedShowing:(BOOL)showing;
+- (void)setAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)rectangle;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)setBacklightLevel:(double)level;
+- (void)setCameraPrewarmer:(id)prewarmer;
+- (void)setComplicationContainerUsesBottomPosition:(BOOL)position;
+- (void)setCoverSheetIsVisible:(BOOL)visible;
+- (void)setCurrentTransitionSource:(id)source;
+- (void)setEffectiveInterfaceOrientationOverride:(int64_t)override;
+- (void)setEffectiveVibrancyConfiguration:(id)configuration;
+- (void)setHidesDimmingLayer:(BOOL)layer;
+- (void)setInScreenOffMode:(BOOL)mode forAutoUnlock:(BOOL)unlock fromUnlockSource:(int)source;
+- (void)setInterstitialTransitionSource:(id)source;
+- (void)setIrisWallpaperPlayer:(id)player;
+- (void)setLayoutStrategy:(id)strategy;
+- (void)setPartiallyOnScreen:(BOOL)screen;
+- (void)setPasscodeLockVisible:(BOOL)visible animated:(BOOL)animated showBackground:(BOOL)background forceBiometricPresentation:(BOOL)presentation completion:(id)completion;
+- (void)setPosterPreferredSalientContentRectangle:(CGRect)rectangle;
+- (void)setPosterSwitcherTransitionSource:(id)source;
+- (void)setPosterSwitcherViewController:(id)controller;
+- (void)setRestrictsTouchesForRemoteView:(BOOL)view;
+- (void)setScale:(double)scale behaviorMode:(int64_t)mode completion:(id)completion;
+- (void)setSearchGesture:(id)gesture;
+- (void)setShowingMediaControls:(BOOL)controls;
+- (void)setVibrancyConfiguration:(id)configuration;
+- (void)setVibrancyConfigurationOverride:(id)override;
+- (void)setWallpaperColorProvider:(id)provider;
+- (void)setWallpaperGestureRecognizer:(id)recognizer;
+- (void)setYContentOffset:(double)offset;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)spotlightPresenter:(id)presenter dismissDismissableModalViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)spotlightPresenter:(id)presenter presentDismissableModalViewController:(id)controller completion:(id)completion;
+- (void)spotlightPresenterAddContentView:(id)view;
+- (void)spotlightPresenterDidDismissSearch:(id)search;
+- (void)spotlightPresenterDidPresentSearch:(id)search;
+- (void)spotlightPresenterRemoveContentView:(id)view;
+- (void)startLockScreenFadeInAnimationForSource:(int)source;
+- (void)startRestToOpenCoachingWithCompletion:(id)completion;
+- (void)timerControllerDidStartTimer:(id)timer;
+- (void)timerControllerDidStopTimer:(id)timer;
+- (void)timerControllerDidUpdateTimer:(id)timer;
+- (void)transitionSource:(id)source didEndWithContext:(id *)context;
+- (void)transitionSource:(id)source didUpdateTransitionWithContext:(id *)context;
+- (void)transitionSource:(id)source willBeginWithType:(int64_t)type;
+- (void)unregisterExternalAppearanceProvider:(id)provider;
+- (void)unregisterExternalBehaviorProvider:(id)provider;
+- (void)unregisterExternalPresentationProvider:(id)provider;
+- (void)updateAppearanceForController:(id)controller;
+- (void)updateAppearanceForController:(id)controller withAnimationSettings:(id)settings completion:(id)completion;
+- (void)updateBackgroundGlassEffectForDraggingProgress:(double)progress usingGlassEffects:(BOOL)effects;
+- (void)updateBehaviorForController:(id)controller;
+- (void)updateCoverSheetDraggingProgress:(double)progress forPresentationValue:(BOOL)value;
+- (void)updateCoverSheetTransitionProgress:(double)progress;
 - (void)updateFloatingLayerOrdering;
-- (void)updateFont:(id)a3 preferredTimeMaxYPortrait:(double)a4 preferredTimeMaxYLandscape:(double)a5 vibrancyConfiguration:(id)a6 numberingSystem:(id)a7 contentStyle:(id)a8;
-- (void)updateInterstitialPresentationWithProgress:(double)a3;
-- (void)updateNotificationRequest:(id)a3;
-- (void)updateNotificationSectionSettings:(id)a3 previousSectionSettings:(id)a4;
-- (void)updateNotificationSystemSettings:(id)a3 previousSystemSettings:(id)a4;
+- (void)updateFont:(id)font preferredTimeMaxYPortrait:(double)portrait preferredTimeMaxYLandscape:(double)landscape vibrancyConfiguration:(id)configuration numberingSystem:(id)system contentStyle:(id)style;
+- (void)updateInterstitialPresentationWithProgress:(double)progress;
+- (void)updateNotificationRequest:(id)request;
+- (void)updateNotificationSectionSettings:(id)settings previousSectionSettings:(id)sectionSettings;
+- (void)updateNotificationSystemSettings:(id)settings previousSystemSettings:(id)systemSettings;
 - (void)updateQuickActionsVisibility;
-- (void)updateScaleViewWithScale:(double)a3 withDuration:(double)a4;
+- (void)updateScaleViewWithScale:(double)scale withDuration:(double)duration;
 - (void)updateStatusBarForLockScreenComeback;
 - (void)updateStatusBarForLockScreenTeardown;
-- (void)userPresenceDetectedRecentlyDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)userPresenceDetectedRecentlyDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)wallpaperLegibilityEnvironmentDidChange:(id)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)wallpaperLegibilityEnvironmentDidChange:(id)change;
 - (void)widgetGridViewControllerDidUpdateComplicationDescriptors;
-- (void)withdrawNotificationRequest:(id)a3;
+- (void)withdrawNotificationRequest:(id)request;
 @end
 
 @implementation CSCoverSheetViewController
@@ -576,8 +576,8 @@
 
 - (BOOL)isUnlockDisabled
 {
-  v2 = [(CSCoverSheetViewController *)self activeBehavior];
-  v3 = [v2 areRestrictedCapabilities:56];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v3 = [activeBehavior areRestrictedCapabilities:56];
   if (v3)
   {
     v4 = SBLogDashBoard();
@@ -592,24 +592,24 @@
 
 - (BOOL)isShowingTodayView
 {
-  v3 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-  v4 = v3;
-  if (v3 && ([v3 presentationProgress], v5 > 0.0))
+  overlayControllerIfExists = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+  v4 = overlayControllerIfExists;
+  if (overlayControllerIfExists && ([overlayControllerIfExists presentationProgress], v5 > 0.0))
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(CSCoverSheetViewController *)self _indexOfTodayPage];
+    _indexOfTodayPage = [(CSCoverSheetViewController *)self _indexOfTodayPage];
     if ([(CSCoverSheetViewController *)self isTransitioning])
     {
-      v8 = v7 == self->_transitionContext.interval.end.value;
+      v8 = _indexOfTodayPage == self->_transitionContext.interval.end.value;
     }
 
     else
     {
-      v8 = self->_lastSettledPageIndex == v7;
+      v8 = self->_lastSettledPageIndex == _indexOfTodayPage;
     }
 
     v6 = v8;
@@ -620,17 +620,17 @@
 
 - (BOOL)isShowingModalView
 {
-  v2 = [(CSCoverSheetViewController *)self modalPresentationController];
-  v3 = [v2 isPresentingContent];
+  modalPresentationController = [(CSCoverSheetViewController *)self modalPresentationController];
+  isPresentingContent = [modalPresentationController isPresentingContent];
 
-  return v3;
+  return isPresentingContent;
 }
 
 - (BOOL)externalLockProvidersRequireUnlock
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self delegate];
-  v4 = [v3 coverSheetViewControllerIsTransitioningToSecureApp:self];
+  delegate = [(CSCoverSheetViewController *)self delegate];
+  v4 = [delegate coverSheetViewControllerIsTransitioningToSecureApp:self];
 
   if (v4)
   {
@@ -646,7 +646,7 @@
   if (v7)
   {
     v8 = v7;
-    v5 = 0;
+    isLocked = 0;
     v9 = *v13;
     do
     {
@@ -657,14 +657,14 @@
           objc_enumerationMutation(v6);
         }
 
-        if (v5)
+        if (isLocked)
         {
-          v5 = 1;
+          isLocked = 1;
         }
 
         else
         {
-          v5 = [*(*(&v12 + 1) + 8 * i) isLocked];
+          isLocked = [*(*(&v12 + 1) + 8 * i) isLocked];
         }
       }
 
@@ -676,10 +676,10 @@
 
   else
   {
-    v5 = 0;
+    isLocked = 0;
   }
 
-  return v5;
+  return isLocked;
 }
 
 - (id)_passcodeViewController
@@ -707,8 +707,8 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v4 = [(CSCoverSheetViewController *)self delegate];
-  v5 = [v4 coverSheetViewControllerTraitsArbiterOrientationActuationEnabled:self];
+  delegate = [(CSCoverSheetViewController *)self delegate];
+  v5 = [delegate coverSheetViewControllerTraitsArbiterOrientationActuationEnabled:self];
 
   if (v5)
   {
@@ -716,9 +716,9 @@
     if ([WeakRetained coverSheetViewControllerShouldPreserveOrientationForExternalTransition:self])
     {
 LABEL_3:
-      v7 = [(CSCoverSheetViewController *)self coverSheetView];
-      v8 = [v7 window];
-      [v8 interfaceOrientation];
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+      window = [coverSheetView window];
+      [window interfaceOrientation];
       v9 = XBInterfaceOrientationMaskForInterfaceOrientation();
 
 LABEL_4:
@@ -735,16 +735,16 @@ LABEL_4:
 
     else
     {
-      v15 = [MEMORY[0x277D75418] currentDevice];
-      if ([v15 userInterfaceIdiom] == 1)
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1)
       {
       }
 
       else
       {
-        v2 = [WeakRetained coverSheetViewControllerHasBeenDismissedSinceKeybagLock:self];
+        currentDevice2 = [WeakRetained coverSheetViewControllerHasBeenDismissedSinceKeybagLock:self];
 
-        if ((v2 & 1) == 0)
+        if ((currentDevice2 & 1) == 0)
         {
 LABEL_28:
           v9 = 2;
@@ -765,20 +765,20 @@ LABEL_28:
 
     else
     {
-      v2 = [MEMORY[0x277D75418] currentDevice];
-      if ([v2 userInterfaceIdiom] == 1)
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom] == 1)
       {
 
         goto LABEL_30;
       }
     }
 
-    v18 = [(CSCoverSheetViewController *)self coverSheetView];
-    v19 = [v18 window];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    window2 = [coverSheetView2 window];
 
     if (v17)
     {
-      if (!v19)
+      if (!window2)
       {
         goto LABEL_39;
       }
@@ -787,7 +787,7 @@ LABEL_28:
     else
     {
 
-      if (!v19)
+      if (!window2)
       {
         goto LABEL_39;
       }
@@ -804,16 +804,16 @@ LABEL_30:
 
     else
     {
-      v20 = [MEMORY[0x277D75418] currentDevice];
-      if ([v20 userInterfaceIdiom] == 1)
+      currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice3 userInterfaceIdiom] == 1)
       {
       }
 
       else
       {
-        v21 = [(CSCoverSheetViewController *)self dismissed];
+        dismissed = [(CSCoverSheetViewController *)self dismissed];
 
-        if (!v21)
+        if (!dismissed)
         {
           goto LABEL_3;
         }
@@ -857,16 +857,16 @@ LABEL_39:
 
 - (BOOL)_isPresentingPosterSwitcher
 {
-  v2 = [(CSCoverSheetViewController *)self posterSwitcherViewController];
-  v3 = v2 != 0;
+  posterSwitcherViewController = [(CSCoverSheetViewController *)self posterSwitcherViewController];
+  v3 = posterSwitcherViewController != 0;
 
   return v3;
 }
 
 - (BOOL)shouldModifyPageScrolling
 {
-  v2 = [(CSCoverSheetViewController *)self activeBehavior];
-  v3 = [v2 scrollingStrategy] != 2;
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v3 = [activeBehavior scrollingStrategy] != 2;
 
   return v3;
 }
@@ -876,9 +876,9 @@ LABEL_39:
   v18 = *MEMORY[0x277D85DE8];
   if ([(CSCoverSheetViewController *)self isViewLoaded])
   {
-    v3 = [(CSCoverSheetViewController *)self view];
-    v4 = [v3 window];
-    v5 = [CSPresentation presentationWithCoordinateSpace:v4];
+    view = [(CSCoverSheetViewController *)self view];
+    window = [view window];
+    v5 = [CSPresentation presentationWithCoordinateSpace:window];
 
     v15 = 0u;
     v16 = 0u;
@@ -921,13 +921,13 @@ LABEL_39:
 - (void)_updateScrollingBehavior
 {
   hasContentAboveCoverSheet = self->_hasContentAboveCoverSheet;
-  v4 = [(CSCoverSheetViewController *)self localBehavior];
-  v5 = [v4 scrollingStrategy];
+  localBehavior = [(CSCoverSheetViewController *)self localBehavior];
+  scrollingStrategy = [localBehavior scrollingStrategy];
 
-  if (v5 != hasContentAboveCoverSheet)
+  if (scrollingStrategy != hasContentAboveCoverSheet)
   {
-    v6 = [(CSCoverSheetViewController *)self localBehavior];
-    [v6 setScrollingStrategy:hasContentAboveCoverSheet];
+    localBehavior2 = [(CSCoverSheetViewController *)self localBehavior];
+    [localBehavior2 setScrollingStrategy:hasContentAboveCoverSheet];
   }
 }
 
@@ -935,8 +935,8 @@ LABEL_39:
 {
   if (self->_accessoryViewController)
   {
-    v3 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-    v4 = ([v3 containsObject:self->_accessoryViewController] & 1) != 0 || self->_accessoryViewPresentationDelayed;
+    contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+    v4 = ([contentViewControllers containsObject:self->_accessoryViewController] & 1) != 0 || self->_accessoryViewPresentationDelayed;
   }
 
   else
@@ -949,17 +949,17 @@ LABEL_39:
 
 - (unint64_t)_indexOfMainPage
 {
-  v3 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
-  v4 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-  v5 = [v3 indexOfObject:v4];
+  _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+  mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+  v5 = [_allowedPageViewControllers indexOfObject:mainPageContentViewController];
 
   return v5;
 }
 
 - (id)_whitePointValues
 {
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [(CSCoverSheetViewController *)self _whitePointValuesForAppearance:v3];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [(CSCoverSheetViewController *)self _whitePointValuesForAppearance:activeAppearance];
 
   return v4;
 }
@@ -992,10 +992,10 @@ LABEL_39:
     }
   }
 
-  v5 = [(CSCoverSheetViewController *)self currentTransitionSource];
+  currentTransitionSource = [(CSCoverSheetViewController *)self currentTransitionSource];
 
   localBehavior = self->_localBehavior;
-  if (v5)
+  if (currentTransitionSource)
   {
     [(CSBehavior *)localBehavior addRestrictedCapabilities:4096];
   }
@@ -1022,8 +1022,8 @@ LABEL_39:
 
 - (void)_updateIdleTimerBehavior
 {
-  v3 = [(CSCoverSheetViewController *)self localBehavior];
-  v5 = v3;
+  localBehavior = [(CSCoverSheetViewController *)self localBehavior];
+  v5 = localBehavior;
   if (self->_contentAboveIsSiriOrNotFullScreenOniPad)
   {
     v4 = 6;
@@ -1034,7 +1034,7 @@ LABEL_39:
     v4 = 1;
   }
 
-  [v3 setIdleTimerDuration:v4];
+  [localBehavior setIdleTimerDuration:v4];
 }
 
 - ($453422EBA70013024ECC637D52E1FF2D)transitionContext
@@ -1071,44 +1071,44 @@ uint64_t __46__CSCoverSheetViewController__updateStatusBar__block_invoke_3(uint6
 
 - (void)_updatePageContent
 {
-  v7 = [(CSCoverSheetViewController *)self coverSheetView];
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:4 identifier:@"(active)"];
-  v5 = [v7 scrollView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:4 identifier:@"(active)"];
+  scrollView = [coverSheetView scrollView];
   [v4 alpha];
-  [v5 setAlpha:?];
+  [scrollView setAlpha:?];
 
-  v6 = [v7 scrollView];
+  scrollView2 = [coverSheetView scrollView];
   [v4 flag];
-  [v6 setBouncesHorizontally:BSSettingFlagIsExplicitNo() ^ 1];
+  [scrollView2 setBouncesHorizontally:BSSettingFlagIsExplicitNo() ^ 1];
 }
 
 - (void)_updateHomeAffordance
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:12 identifier:@"(active)"];
-  v5 = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController homeAffordanceViewController];
-  v6 = [v5 homeAffordanceView];
-  [v6 setStyle:{objc_msgSend(v4, "viewStyle")}];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:12 identifier:@"(active)"];
+  homeAffordanceViewController = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController homeAffordanceViewController];
+  homeAffordanceView = [homeAffordanceViewController homeAffordanceView];
+  [homeAffordanceView setStyle:{objc_msgSend(v4, "viewStyle")}];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __51__CSCoverSheetViewController__updateHomeAffordance__block_invoke;
   v32[3] = &unk_27838B838;
   v7 = v4;
   v33 = v7;
-  v34 = self;
+  selfCopy = self;
   v8 = MEMORY[0x223D698D0](v32);
   [v7 suppressTeachableMomentsAnimation];
   [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController setAnimationState:BSSettingFlagIsYes() ^ 1];
   [v7 alpha];
   v10 = v9;
-  [v6 alpha];
+  [homeAffordanceView alpha];
   IsZero = BSFloatIsZero();
-  v12 = [v7 isHidden];
+  isHidden = [v7 isHidden];
   if ([(CSCoverSheetViewController *)self _appearState]== 2)
   {
-    v13 = BSFloatIsOne() & (v12 ^ 1);
+    v13 = BSFloatIsOne() & (isHidden ^ 1);
   }
 
   else
@@ -1116,12 +1116,12 @@ uint64_t __46__CSCoverSheetViewController__updateStatusBar__block_invoke_3(uint6
     v13 = 0;
   }
 
-  v14 = [(CSCoverSheetContextProviding *)self->_coverSheetContext assistantController];
-  v15 = [v14 isHomeAffordanceDoubleTapGestureEnabled];
+  assistantController = [(CSCoverSheetContextProviding *)self->_coverSheetContext assistantController];
+  isHomeAffordanceDoubleTapGestureEnabled = [assistantController isHomeAffordanceDoubleTapGestureEnabled];
 
-  [v5 setHomeAffordanceInteractionEnabled:v13 & v15];
-  [v6 setSystemPointerInteractionEnabled:v13];
-  if (IsZero != v12)
+  [homeAffordanceViewController setHomeAffordanceInteractionEnabled:v13 & isHomeAffordanceDoubleTapGestureEnabled];
+  [homeAffordanceView setSystemPointerInteractionEnabled:v13];
+  if (IsZero != isHidden)
   {
     v16 = SBLogDashBoard();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1129,26 +1129,26 @@ uint64_t __46__CSCoverSheetViewController__updateStatusBar__block_invoke_3(uint6
       *buf = 67109376;
       v36 = IsZero ^ 1;
       v37 = 1024;
-      v38 = v12 ^ 1;
+      v38 = isHidden ^ 1;
       _os_log_impl(&dword_21EB05000, v16, OS_LOG_TYPE_DEFAULT, "DashBoard home affordance transitioning from visible: %{BOOL}d to visible:%{BOOL}d", buf, 0xEu);
     }
   }
 
-  if (!(v12 & 1 | ((IsZero & 1) == 0)))
+  if (!(isHidden & 1 | ((IsZero & 1) == 0)))
   {
-    v17 = [MEMORY[0x277D65E80] rootSettings];
-    v18 = [v17 unhideForHomeGestureOwnershipAnimationSettings];
-    v19 = [v18 BSAnimationSettings];
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
+    unhideForHomeGestureOwnershipAnimationSettings = [rootSettings unhideForHomeGestureOwnershipAnimationSettings];
+    bSAnimationSettings = [unhideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
 
     v20 = MEMORY[0x277CF0D38];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __51__CSCoverSheetViewController__updateHomeAffordance__block_invoke_703;
     v28[3] = &unk_27838C328;
-    v29 = v6;
+    v29 = homeAffordanceView;
     v31 = v10;
     v30 = v8;
-    [v20 animateWithSettings:v19 actions:v28 completion:0];
+    [v20 animateWithSettings:bSAnimationSettings actions:v28 completion:0];
 
     v21 = v29;
 LABEL_13:
@@ -1156,59 +1156,59 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!(IsZero & 1 | ((v12 & 1) == 0)))
+  if (!(IsZero & 1 | ((isHidden & 1) == 0)))
   {
-    v17 = [MEMORY[0x277D65E80] rootSettings];
-    v22 = [v17 hideForHomeGestureOwnershipAnimationSettings];
-    v19 = [v22 BSAnimationSettings];
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
+    hideForHomeGestureOwnershipAnimationSettings = [rootSettings hideForHomeGestureOwnershipAnimationSettings];
+    bSAnimationSettings = [hideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
 
     v23 = MEMORY[0x277CF0D38];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __51__CSCoverSheetViewController__updateHomeAffordance__block_invoke_2;
     v24[3] = &unk_27838C328;
-    v25 = v6;
+    v25 = homeAffordanceView;
     v27 = v10;
     v26 = v8;
-    [v23 animateWithSettings:v19 actions:v24 completion:0];
+    [v23 animateWithSettings:bSAnimationSettings actions:v24 completion:0];
 
     v21 = v25;
     goto LABEL_13;
   }
 
-  [v6 setAlpha:v10];
+  [homeAffordanceView setAlpha:v10];
   v8[2](v8);
 LABEL_14:
 }
 
 - (void)_updateBackground
 {
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  if (v3)
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  if (activeAppearance)
   {
-    v4 = [(CSCoverSheetViewController *)self coverSheetView];
-    v5 = [v4 backgroundView];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    backgroundView = [coverSheetView backgroundView];
 
-    v6 = [(CSCoverSheetViewController *)self _averageLockScreenWallpaperColor];
-    v7 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v7 setReduceTransparencyBackingColor:v6];
+    _averageLockScreenWallpaperColor = [(CSCoverSheetViewController *)self _averageLockScreenWallpaperColor];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView2 setReduceTransparencyBackingColor:_averageLockScreenWallpaperColor];
 
-    [v5 setReduceTransparencyBackingColor:v6];
-    v8 = [v3 componentForType:19 identifier:@"(active)"];
-    v9 = [v8 value];
-    v10 = [v9 integerValue];
+    [backgroundView setReduceTransparencyBackingColor:_averageLockScreenWallpaperColor];
+    v8 = [activeAppearance componentForType:19 identifier:@"(active)"];
+    value = [v8 value];
+    integerValue = [value integerValue];
 
     if ([(CSCoverSheetViewTransitionSource *)self->_currentTransitionSource isTransitioning])
     {
-      [v5 beginTransitionToBackgroundStyle:v10];
+      [backgroundView beginTransitionToBackgroundStyle:integerValue];
       [v8 transitionProgress];
       v12 = v11;
-      [v5 updateBackgroundStyleTransitionProgress:?];
-      if ((v10 == 7) == ([v5 backgroundStyle] == 7))
+      [backgroundView updateBackgroundStyleTransitionProgress:?];
+      if ((integerValue == 7) == ([backgroundView backgroundStyle] == 7))
       {
 LABEL_10:
-        v15 = [v8 color];
-        [v5 setBackgroundColor:v15];
+        color = [v8 color];
+        [backgroundView setBackgroundColor:color];
 
         goto LABEL_11;
       }
@@ -1217,27 +1217,27 @@ LABEL_10:
       v16[1] = 3221225472;
       v16[2] = __47__CSCoverSheetViewController__updateBackground__block_invoke;
       v16[3] = &__block_descriptor_33_e8_d16__0d8l;
-      v17 = v10 == 7;
-      v13 = MEMORY[0x223D698D0](v16);
-      v14 = [v5 backdropView];
-      v13[2](v13, v12);
-      [v14 setAlpha:?];
+      v17 = integerValue == 7;
+      backdropView2 = MEMORY[0x223D698D0](v16);
+      backdropView = [backgroundView backdropView];
+      backdropView2[2](backdropView2, v12);
+      [backdropView setAlpha:?];
     }
 
     else
     {
-      if ([v5 isTransitioningBackgroundStyle])
+      if ([backgroundView isTransitioningBackgroundStyle])
       {
-        [v5 completeTransitionToBackgroundStyle:v10];
+        [backgroundView completeTransitionToBackgroundStyle:integerValue];
       }
 
       else
       {
-        [v5 setBackgroundStyle:v10];
+        [backgroundView setBackgroundStyle:integerValue];
       }
 
-      v13 = [v5 backdropView];
-      [v13 setAlpha:1.0];
+      backdropView2 = [backgroundView backdropView];
+      [backdropView2 setAlpha:1.0];
     }
 
     goto LABEL_10;
@@ -1248,81 +1248,81 @@ LABEL_11:
 
 - (id)_averageLockScreenWallpaperColor
 {
-  v3 = [(CSCoverSheetViewController *)self wallpaperLegibilityEnvironment];
-  v4 = [v3 legibilityEnvironmentContextForVariant:*MEMORY[0x277D3EF20]];
-  v5 = [v4 averageColor];
+  wallpaperLegibilityEnvironment = [(CSCoverSheetViewController *)self wallpaperLegibilityEnvironment];
+  v4 = [wallpaperLegibilityEnvironment legibilityEnvironmentContextForVariant:*MEMORY[0x277D3EF20]];
+  averageColor = [v4 averageColor];
 
-  if (v5)
+  if (averageColor)
   {
-    v6 = v5;
+    whiteColor = averageColor;
 LABEL_3:
-    v7 = v6;
+    averageColorForCurrentWallpaper = whiteColor;
     goto LABEL_5;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_wallpaperColorProvider);
-  v7 = [WeakRetained averageColorForCurrentWallpaper];
+  averageColorForCurrentWallpaper = [WeakRetained averageColorForCurrentWallpaper];
 
-  if (!v7)
+  if (!averageColorForCurrentWallpaper)
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     goto LABEL_3;
   }
 
 LABEL_5:
 
-  return v7;
+  return averageColorForCurrentWallpaper;
 }
 
 - (void)_updateBackgroundContentView
 {
-  v8 = [(CSCoverSheetViewController *)self activeAppearance];
-  v3 = [v8 componentForType:24 identifier:@"(active)"];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v3 = [activeAppearance componentForType:24 identifier:@"(active)"];
   if (v3)
   {
-    v4 = [(CSCoverSheetViewController *)self coverSheetView];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
     [v3 alpha];
-    [v4 setBackgroundContentViewAlpha:?];
+    [coverSheetView setBackgroundContentViewAlpha:?];
 
-    v5 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v5 setBackgroundContentPresentationLevel:{objc_msgSend(v3, "level")}];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView2 setBackgroundContentPresentationLevel:{objc_msgSend(v3, "level")}];
 
     [v3 flag];
     IsYes = BSSettingFlagIsYes();
-    v7 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v7 setBackgroundContentViewDimmed:IsYes];
+    coverSheetView3 = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView3 setBackgroundContentViewDimmed:IsYes];
   }
 }
 
 - (void)_updateComplicationsContainerView
 {
-  v14 = [(CSCoverSheetViewController *)self activeAppearance];
-  v3 = [v14 componentForType:20 identifier:@"(active)"];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v3 = [activeAppearance componentForType:20 identifier:@"(active)"];
   if (v3)
   {
-    v4 = [(CSCoverSheetViewController *)self complicationContainerViewController];
+    complicationContainerViewController = [(CSCoverSheetViewController *)self complicationContainerViewController];
 
-    if (v4)
+    if (complicationContainerViewController)
     {
       v5 = [v3 isHidden] ? 0.0 : 1.0;
-      v6 = [(CSCoverSheetViewController *)self complicationContainerViewController];
-      v7 = [v6 view];
-      [v7 alpha];
+      complicationContainerViewController2 = [(CSCoverSheetViewController *)self complicationContainerViewController];
+      view = [complicationContainerViewController2 view];
+      [view alpha];
       IsZero = BSFloatIsZero();
 
-      v9 = [(CSCoverSheetViewController *)self complicationContainerViewController];
-      v10 = [v9 view];
-      [v10 setAlpha:v5];
+      complicationContainerViewController3 = [(CSCoverSheetViewController *)self complicationContainerViewController];
+      view2 = [complicationContainerViewController3 view];
+      [view2 setAlpha:v5];
 
-      v11 = [(CSCoverSheetViewController *)self coverSheetView];
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
       [v3 scale];
-      [v11 setComplicationContainerViewScale:?];
+      [coverSheetView setComplicationContainerViewScale:?];
 
       if (IsZero != [v3 isHidden])
       {
-        v12 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-        v13 = [v12 combinedListViewController];
-        [v13 layoutListView];
+        mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+        combinedListViewController = [mainPageContentViewController combinedListViewController];
+        [combinedListViewController layoutListView];
 
         [(CSCoverSheetViewController *)self _updateComplicationContainerPosition];
       }
@@ -1334,15 +1334,15 @@ LABEL_5:
 
 - (void)_updatePosterSwitcherComplicationRowHidden
 {
-  v3 = [(CSCoverSheetViewController *)self posterSwitcherViewController];
-  if (v3)
+  posterSwitcherViewController = [(CSCoverSheetViewController *)self posterSwitcherViewController];
+  if (posterSwitcherViewController)
   {
-    v9 = v3;
-    v4 = [(CSCoverSheetViewController *)self localAppearance];
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    v9 = posterSwitcherViewController;
+    localAppearance = [(CSCoverSheetViewController *)self localAppearance];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1 && ([(CSCoverSheetViewController *)self interfaceOrientation]- 3) < 2)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && ([(CSCoverSheetViewController *)self interfaceOrientation]- 3) < 2)
     {
       v7 = 25;
     }
@@ -1352,89 +1352,89 @@ LABEL_5:
       v7 = 20;
     }
 
-    v8 = [v4 componentForType:v7 property:1];
+    v8 = [localAppearance componentForType:v7 property:1];
     [v9 setCoverSheetComplicationRowHidden:{objc_msgSend(v8, "isHidden")}];
 
-    v3 = v9;
+    posterSwitcherViewController = v9;
   }
 }
 
 - (void)_updateComplicationSidebar
 {
-  v13 = [(CSCoverSheetViewController *)self activeAppearance];
-  v3 = [v13 componentForType:25 identifier:@"(active)"];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v3 = [activeAppearance componentForType:25 identifier:@"(active)"];
   if (v3)
   {
-    v4 = [(CSCoverSheetViewController *)self sidebarComplicationContainerViewController];
+    sidebarComplicationContainerViewController = [(CSCoverSheetViewController *)self sidebarComplicationContainerViewController];
 
-    if (v4)
+    if (sidebarComplicationContainerViewController)
     {
       [v3 alpha];
       v6 = v5;
-      v7 = [(CSCoverSheetViewController *)self sidebarComplicationContainerViewController];
-      v8 = [v7 view];
-      [v8 setAlpha:v6];
+      sidebarComplicationContainerViewController2 = [(CSCoverSheetViewController *)self sidebarComplicationContainerViewController];
+      view = [sidebarComplicationContainerViewController2 view];
+      [view setAlpha:v6];
     }
   }
 
   v9 = [(CSWidgetGridViewController *)self->_sidebarComplicationContainerViewController containsIconsInRow:0];
-  v10 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-  [v10 updateContainsFirstRowIcons:v9];
+  poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+  [poseidonContainerViewController updateContainsFirstRowIcons:v9];
 
-  v11 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-  v12 = [(CSWidgetGridViewController *)self->_sidebarComplicationContainerViewController view];
-  [v12 frame];
-  [v11 updateSidebarComplicationFrame:?];
+  poseidonContainerViewController2 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+  view2 = [(CSWidgetGridViewController *)self->_sidebarComplicationContainerViewController view];
+  [view2 frame];
+  [poseidonContainerViewController2 updateSidebarComplicationFrame:?];
 }
 
 - (void)_updateForegroundView
 {
-  v5 = [(CSCoverSheetViewController *)self coverSheetView];
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:5 property:2];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:5 property:2];
 
   [v4 offset];
-  [v5 setForegroundViewPositionOffset:?];
+  [coverSheetView setForegroundViewPositionOffset:?];
 }
 
 - (void)_updateFullBleedContent
 {
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  [v3 flagForComponentType:26];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  [activeAppearance flagForComponentType:26];
   IsYes = BSSettingFlagIsYes();
 
-  v6 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v6 setClipsToBounds:IsYes ^ 1u];
-  v5 = [v6 window];
-  [v5 setClipsToBounds:IsYes ^ 1u];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView setClipsToBounds:IsYes ^ 1u];
+  window = [coverSheetView window];
+  [window setClipsToBounds:IsYes ^ 1u];
 }
 
 - (void)_updateVibrancy
 {
-  v3 = [(CSCoverSheetViewController *)self vibrancyConfigurationOverride];
-  v4 = v3;
-  if (v3)
+  vibrancyConfigurationOverride = [(CSCoverSheetViewController *)self vibrancyConfigurationOverride];
+  v4 = vibrancyConfigurationOverride;
+  if (vibrancyConfigurationOverride)
   {
-    v5 = v3;
+    vibrancyConfiguration = vibrancyConfigurationOverride;
   }
 
   else
   {
-    v5 = [(CSCoverSheetViewController *)self vibrancyConfiguration];
+    vibrancyConfiguration = [(CSCoverSheetViewController *)self vibrancyConfiguration];
   }
 
-  v25 = v5;
+  v25 = vibrancyConfiguration;
 
-  v6 = [(CSCoverSheetViewController *)self effectiveVibrancyConfiguration];
-  v7 = [(CSCoverSheetViewController *)self activeAppearance];
-  v8 = [v7 componentForType:19 identifier:@"(active)"];
+  effectiveVibrancyConfiguration = [(CSCoverSheetViewController *)self effectiveVibrancyConfiguration];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v8 = [activeAppearance componentForType:19 identifier:@"(active)"];
 
   if ([v25 backgroundType] == 1)
   {
     if (v8)
     {
-      v9 = [v8 value];
-      IsDarkAffectingLegibility = CSBackgroundStyleIsDarkAffectingLegibility([v9 integerValue]);
+      value = [v8 value];
+      IsDarkAffectingLegibility = CSBackgroundStyleIsDarkAffectingLegibility([value integerValue]);
 
       if (IsDarkAffectingLegibility)
       {
@@ -1445,14 +1445,14 @@ LABEL_5:
     }
   }
 
-  v12 = [(CSCoverSheetViewController *)self traitCollection];
-  v13 = [v12 _backlightLuminance];
+  traitCollection = [(CSCoverSheetViewController *)self traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  if (v13 == 1)
+  if (_backlightLuminance == 1)
   {
-    v14 = [v25 cs_adjustedForReducedBacklight];
+    cs_adjustedForReducedBacklight = [v25 cs_adjustedForReducedBacklight];
 
-    v15 = v14;
+    v15 = cs_adjustedForReducedBacklight;
   }
 
   else
@@ -1471,12 +1471,12 @@ LABEL_5:
     [v8 transitionProgress];
     v17 = v16;
     v18 = objc_alloc(MEMORY[0x277CF0D90]);
-    v19 = [v6 effectType];
-    v20 = [v6 backgroundType];
-    v21 = [v6 color];
-    v22 = [v6 groupName];
-    v23 = [v26 alternativeVibrancyEffectLUT];
-    v24 = [v18 initWithEffectType:v19 backgroundType:v20 color:v21 groupName:v22 blendConfiguration:v26 blendAmount:v23 alternativeVibrancyEffectLUT:v17];
+    effectType = [effectiveVibrancyConfiguration effectType];
+    backgroundType = [effectiveVibrancyConfiguration backgroundType];
+    color = [effectiveVibrancyConfiguration color];
+    groupName = [effectiveVibrancyConfiguration groupName];
+    alternativeVibrancyEffectLUT = [v26 alternativeVibrancyEffectLUT];
+    v24 = [v18 initWithEffectType:effectType backgroundType:backgroundType color:color groupName:groupName blendConfiguration:v26 blendAmount:alternativeVibrancyEffectLUT alternativeVibrancyEffectLUT:v17];
   }
 
   [(CSCoverSheetViewController *)self setEffectiveVibrancyConfiguration:v24];
@@ -1484,20 +1484,20 @@ LABEL_5:
 
 - (void)_updateLegibilitySettings
 {
-  v5 = [(CSAppearance *)self->_activeAppearance legibilitySettings];
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v3 setLegibilitySettings:v5];
+  legibilitySettings = [(CSAppearance *)self->_activeAppearance legibilitySettings];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView setLegibilitySettings:legibilitySettings];
 
-  [(SBFLockScreenDateViewController *)self->_dateViewController setLegibilitySettings:v5];
+  [(SBFLockScreenDateViewController *)self->_dateViewController setLegibilitySettings:legibilitySettings];
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetSpotlightPresenter);
-  [WeakRetained setLegibilitySettings:v5];
+  [WeakRetained setLegibilitySettings:legibilitySettings];
 }
 
 - (void)_updateWallpaperEffectView
 {
-  v22 = [(CSCoverSheetContextProviding *)self->_coverSheetContext wallpaperProvider];
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:6 identifier:@"(active)"];
+  wallpaperProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext wallpaperProvider];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:6 identifier:@"(active)"];
   v5 = objc_opt_class();
   v6 = v4;
   if (v5)
@@ -1522,55 +1522,55 @@ LABEL_5:
 
   if (v8 && ([v8 isHidden] & 1) == 0)
   {
-    v11 = [(CSCoverSheetViewController *)self coverSheetView];
-    v12 = [v11 wallpaperEffectView];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    wallpaperEffectView = [coverSheetView wallpaperEffectView];
 
-    if (!v12)
+    if (!wallpaperEffectView)
     {
-      v13 = [v22 createCoverSheetWallpaperView];
-      v14 = [(CSCoverSheetViewController *)self suspendWallpaperAnimationAssertion];
-      [v14 invalidate];
+      createCoverSheetWallpaperView = [wallpaperProvider createCoverSheetWallpaperView];
+      suspendWallpaperAnimationAssertion = [(CSCoverSheetViewController *)self suspendWallpaperAnimationAssertion];
+      [suspendWallpaperAnimationAssertion invalidate];
 
-      v15 = [(CSCoverSheetViewController *)self coverSheetIdentifier];
-      v16 = [v22 suspendWallpaperAnimationForReason:v15];
+      coverSheetIdentifier = [(CSCoverSheetViewController *)self coverSheetIdentifier];
+      v16 = [wallpaperProvider suspendWallpaperAnimationForReason:coverSheetIdentifier];
       [(CSCoverSheetViewController *)self setSuspendWallpaperAnimationAssertion:v16];
 
-      v17 = [(CSCoverSheetViewController *)self coverSheetView];
-      [v17 setWallpaperEffectView:v13];
+      coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+      [coverSheetView2 setWallpaperEffectView:createCoverSheetWallpaperView];
     }
 
     if ([v8 shouldMatchBackgroundStyle])
     {
-      v18 = [(CSCoverSheetViewController *)self coverSheetView];
-      v19 = [v18 backgroundView];
-      v20 = [v19 backgroundStyle];
+      coverSheetView3 = [(CSCoverSheetViewController *)self coverSheetView];
+      backgroundView = [coverSheetView3 backgroundView];
+      backgroundStyle = [backgroundView backgroundStyle];
     }
 
     else
     {
-      v20 = 1;
+      backgroundStyle = 1;
     }
 
-    v10 = [(CSCoverSheetViewController *)self coverSheetView];
-    v21 = [v10 wallpaperEffectView];
-    [v21 setBackgroundStyle:v20];
+    coverSheetView4 = [(CSCoverSheetViewController *)self coverSheetView];
+    wallpaperEffectView2 = [coverSheetView4 wallpaperEffectView];
+    [wallpaperEffectView2 setBackgroundStyle:backgroundStyle];
   }
 
   else
   {
-    v9 = [(CSCoverSheetViewController *)self suspendWallpaperAnimationAssertion];
-    [v9 invalidate];
+    suspendWallpaperAnimationAssertion2 = [(CSCoverSheetViewController *)self suspendWallpaperAnimationAssertion];
+    [suspendWallpaperAnimationAssertion2 invalidate];
 
     [(CSCoverSheetViewController *)self setSuspendWallpaperAnimationAssertion:0];
-    v10 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v10 setWallpaperEffectView:0];
+    coverSheetView4 = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView4 setWallpaperEffectView:0];
   }
 }
 
 - (void)_updateWallpaperFloatingLayerContainerView
 {
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:23 identifier:@"(active)"];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:23 identifier:@"(active)"];
   v5 = objc_opt_class();
   v6 = v4;
   if (v5)
@@ -1603,9 +1603,9 @@ LABEL_5:
     v9 = 0;
   }
 
-  v10 = [(CSCoverSheetViewController *)self _appearState];
+  _appearState = [(CSCoverSheetViewController *)self _appearState];
   floatingLayerView = self->_floatingLayerView;
-  if (!v10 || (v9 & 1) != 0)
+  if (!_appearState || (v9 & 1) != 0)
   {
     if (floatingLayerView)
     {
@@ -1640,50 +1640,50 @@ LABEL_5:
     [(BSInvalidatable *)v14 setAlpha:?];
   }
 
-  v15 = [(CSCoverSheetViewController *)self posterSwitcherViewController];
-  [v15 setCoverSheetWallpaperFloatingLayerInlined:{objc_msgSend(v8, "shouldRenderInline")}];
+  posterSwitcherViewController = [(CSCoverSheetViewController *)self posterSwitcherViewController];
+  [posterSwitcherViewController setCoverSheetWallpaperFloatingLayerInlined:{objc_msgSend(v8, "shouldRenderInline")}];
 
-  v16 = [(CSCoverSheetViewController *)self coverSheetView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
   [v8 offset];
   v18 = v17;
   v20 = v19;
   [v8 scale];
-  [v16 setWallpaperFloatingLayerContainerViewOffset:v18 scale:{v20, v21}];
-  [v16 setWallpaperFloatingLayerPresentationLevel:{objc_msgSend(v8, "level")}];
-  [v16 setDateTimePresentationLevel:{objc_msgSend(v8, "level")}];
+  [coverSheetView setWallpaperFloatingLayerContainerViewOffset:v18 scale:{v20, v21}];
+  [coverSheetView setWallpaperFloatingLayerPresentationLevel:{objc_msgSend(v8, "level")}];
+  [coverSheetView setDateTimePresentationLevel:{objc_msgSend(v8, "level")}];
 }
 
 - (void)_updateTintingView
 {
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v8 = [v3 componentForType:7 property:1];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v8 = [activeAppearance componentForType:7 property:1];
 
-  v4 = [(CSCoverSheetViewController *)self coverSheetView];
-  v5 = [v4 tintingView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  tintingView = [coverSheetView tintingView];
 
   if (v8 && ([v8 isHidden] & 1) == 0)
   {
     [v8 alpha];
     v7 = v6;
-    [v5 setHidden:0];
-    [v5 setAlpha:v7];
+    [tintingView setHidden:0];
+    [tintingView setAlpha:v7];
   }
 
   else
   {
-    [v5 setHidden:1];
+    [tintingView setHidden:1];
   }
 }
 
 - (void)_updateStatusBarBackground
 {
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:2 identifier:@"(active)"];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:2 identifier:@"(active)"];
 
-  v5 = [(CSCoverSheetViewController *)self activeAppearance];
-  v6 = [v5 componentForType:8 identifier:@"(active)"];
+  activeAppearance2 = [(CSCoverSheetViewController *)self activeAppearance];
+  v6 = [activeAppearance2 componentForType:8 identifier:@"(active)"];
 
-  v7 = [v4 isHidden];
+  isHidden = [v4 isHidden];
   [v4 flag];
   if (BSSettingFlagIsYes())
   {
@@ -1695,19 +1695,19 @@ LABEL_5:
     hasContentAboveCoverSheet = 1;
   }
 
-  v9 = [v6 value];
-  v10 = [(CSCoverSheetViewController *)self coverSheetView];
-  if (v9)
+  value = [v6 value];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  if (value)
   {
-    v11 = [v9 integerValue];
+    integerValue = [value integerValue];
   }
 
   else
   {
-    v11 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [v10 setStatusBarBackgroundPageAlignment:v11];
+  [coverSheetView setStatusBarBackgroundPageAlignment:integerValue];
 
   currentTransitionSource = self->_currentTransitionSource;
   if (currentTransitionSource)
@@ -1735,7 +1735,7 @@ LABEL_5:
     }
   }
 
-  if (!self->_hasContentAboveCoverSheet && (v7 & hasContentAboveCoverSheet & 1) == 0 && ![(CSCoverSheetViewController *)self _isPresentingPosterSwitcher])
+  if (!self->_hasContentAboveCoverSheet && (isHidden & hasContentAboveCoverSheet & 1) == 0 && ![(CSCoverSheetViewController *)self _isPresentingPosterSwitcher])
   {
     [(CSCoverSheetViewController *)self _createStatusBarBackgroundViewIfNeeded];
     [v6 alpha];
@@ -1748,50 +1748,50 @@ LABEL_19:
 
 - (void)_updateFixedFooterView
 {
-  v19 = [(CSFixedFooterViewController *)self->_fixedFooterViewController fixedFooterView];
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:3 identifier:@"(active)"];
-  v5 = [v19 pageControl];
+  fixedFooterView = [(CSFixedFooterViewController *)self->_fixedFooterViewController fixedFooterView];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:3 identifier:@"(active)"];
+  pageControl = [fixedFooterView pageControl];
   [v4 alpha];
-  [v5 setAlpha:?];
+  [pageControl setAlpha:?];
 
-  v6 = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController teachableMomentsContainerView];
-  v7 = [v6 callToActionLabel];
-  v8 = v7;
-  if (v7)
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController teachableMomentsContainerView];
+  callToActionLabel = [teachableMomentsContainerView callToActionLabel];
+  v8 = callToActionLabel;
+  if (callToActionLabel)
   {
-    v9 = v7;
+    callToActionLabel2 = callToActionLabel;
   }
 
   else
   {
-    v9 = [v19 callToActionLabel];
+    callToActionLabel2 = [fixedFooterView callToActionLabel];
   }
 
-  v10 = v9;
+  v10 = callToActionLabel2;
 
-  v11 = [v3 componentForType:9 identifier:@"(active)"];
+  v11 = [activeAppearance componentForType:9 identifier:@"(active)"];
   [v11 alpha];
   [v10 setAlpha:?];
-  v12 = [v3 componentForType:10 identifier:@"(active)"];
+  v12 = [activeAppearance componentForType:10 identifier:@"(active)"];
   [v12 offset];
   v14 = v13;
   v16 = v15;
   [v12 scale];
-  [v19 setStatusTextViewOffset:v14 scale:{v16, v17}];
-  v18 = [v19 statusTextView];
+  [fixedFooterView setStatusTextViewOffset:v14 scale:{v16, v17}];
+  statusTextView = [fixedFooterView statusTextView];
   [v12 alpha];
-  [v18 setAlpha:?];
+  [statusTextView setAlpha:?];
 }
 
 - (void)_updateProudLockView
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  v4 = [(CSProudLockViewController *)self->_proudLockViewController proudLockView];
-  v5 = [(CSCoverSheetViewController *)self activeAppearance];
-  v6 = [v5 componentForType:11 identifier:@"(active)"];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  proudLockView = [(CSProudLockViewController *)self->_proudLockViewController proudLockView];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v6 = [activeAppearance componentForType:11 identifier:@"(active)"];
   [v6 alpha];
-  [v4 setAlpha:?];
+  [proudLockView setAlpha:?];
   v7 = objc_opt_class();
   v8 = v6;
   if (v7)
@@ -1814,9 +1814,9 @@ LABEL_19:
 
   v10 = v9;
 
-  v11 = [v10 supportsMaterialBackground];
+  supportsMaterialBackground = [v10 supportsMaterialBackground];
   v12 = objc_opt_class();
-  v13 = v4;
+  v13 = proudLockView;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -1837,15 +1837,15 @@ LABEL_19:
 
   v15 = v14;
 
-  v16 = [v15 backgroundMaterialView];
+  backgroundMaterialView = [v15 backgroundMaterialView];
 
   v17 = 0.0;
-  if (v11)
+  if (supportsMaterialBackground)
   {
     v17 = 1.0;
   }
 
-  [v16 setAlpha:v17];
+  [backgroundMaterialView setAlpha:v17];
 
   finalInterfaceOrientationForInProgressTransition = self->_finalInterfaceOrientationForInProgressTransition;
   if ((finalInterfaceOrientationForInProgressTransition - 1) >= 2)
@@ -1859,8 +1859,8 @@ LABEL_19:
 
     else
     {
-      v21 = [(CSProudLockViewController *)self->_proudLockViewController proudLockContainerViewController];
-      [v21 proudLockLandscapeOffset];
+      proudLockContainerViewController = [(CSProudLockViewController *)self->_proudLockViewController proudLockContainerViewController];
+      [proudLockContainerViewController proudLockLandscapeOffset];
       v23 = v22;
 
       [v8 setOffset:{0.0, -v23}];
@@ -1878,7 +1878,7 @@ LABEL_19:
   v39[3] = &unk_27838B838;
   v24 = v8;
   v40 = v24;
-  v25 = v3;
+  v25 = coverSheetView;
   v41 = v25;
   v26 = MEMORY[0x223D698D0](v39);
   if (_os_feature_enabled_impl())
@@ -1907,8 +1907,8 @@ LABEL_19:
 
       v33 = v31;
 
-      v34 = [v33 prefersInlineCoaching];
-      v32 = v34 ^ 1u;
+      prefersInlineCoaching = [v33 prefersInlineCoaching];
+      v32 = prefersInlineCoaching ^ 1u;
     }
 
     else
@@ -1916,8 +1916,8 @@ LABEL_19:
       v32 = 0;
     }
 
-    v35 = [(CSProudLockViewController *)self->_proudLockViewController proudLockContainerViewController];
-    [v35 setSuppressAlongsideCoaching:v32];
+    proudLockContainerViewController2 = [(CSProudLockViewController *)self->_proudLockViewController proudLockContainerViewController];
+    [proudLockContainerViewController2 setSuppressAlongsideCoaching:v32];
   }
 
   [v24 animationDuration];
@@ -1993,24 +1993,24 @@ uint64_t __50__CSCoverSheetViewController__updateProudLockView__block_invoke_2(u
 
 - (void)_updateContent
 {
-  v10 = [(CSCoverSheetViewController *)self activeAppearance];
-  v3 = [v10 componentForType:15 identifier:@"(active)"];
-  v4 = [(CSCoverSheetViewController *)self coverSheetView];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v3 = [activeAppearance componentForType:15 identifier:@"(active)"];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
   [v3 offset];
   v6 = v5;
   v8 = v7;
   [v3 scale];
-  [v4 setContentViewOffset:v6 scale:{v8, v9}];
+  [coverSheetView setContentViewOffset:v6 scale:{v8, v9}];
 }
 
 - (void)_updateControlCenterGrabber
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:13 identifier:@"(active)"];
-  v5 = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController teachableMomentsContainerView];
-  v6 = [v5 controlCenterGlyphView];
-  v7 = [v5 controlCenterGrabberView];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:13 identifier:@"(active)"];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController teachableMomentsContainerView];
+  controlCenterGlyphView = [teachableMomentsContainerView controlCenterGlyphView];
+  controlCenterGrabberView = [teachableMomentsContainerView controlCenterGrabberView];
   [v4 alpha];
   v9 = v8;
   v10 = SBLogDashBoard();
@@ -2028,61 +2028,61 @@ uint64_t __50__CSCoverSheetViewController__updateProudLockView__block_invoke_2(u
     _os_log_impl(&dword_21EB05000, v10, OS_LOG_TYPE_DEFAULT, "Updating control center grabber alpha: %f, scale: %f, and blurRadius: %f", &v16, 0x20u);
   }
 
-  [v7 setAlpha:v9];
-  [v6 setAlpha:v9];
-  v14 = [(CSCoverSheetViewController *)self coverSheetView];
+  [controlCenterGrabberView setAlpha:v9];
+  [controlCenterGlyphView setAlpha:v9];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
   [v4 scale];
-  [v14 setControlCenterGrabberScale:?];
+  [coverSheetView setControlCenterGrabberScale:?];
 
-  v15 = [(CSCoverSheetViewController *)self coverSheetView];
+  coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
   [v4 blurRadius];
-  [v15 setControlCenterGrabberBlurRadius:?];
+  [coverSheetView2 setControlCenterGrabberBlurRadius:?];
 }
 
 - (void)_updateModalContent
 {
-  v5 = [(CSCoverSheetViewController *)self coverSheetView];
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:22 identifier:@"(active)"];
-  [v5 setModalPresentationLevel:{objc_msgSend(v4, "level")}];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:22 identifier:@"(active)"];
+  [coverSheetView setModalPresentationLevel:{objc_msgSend(v4, "level")}];
 }
 
 - (void)_updateWallpaper
 {
-  v5 = [(CSCoverSheetViewController *)self coverSheetView];
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:6 identifier:@"(active)"];
-  [v5 setWallpaperPresentationLevel:{objc_msgSend(v4, "level")}];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:6 identifier:@"(active)"];
+  [coverSheetView setWallpaperPresentationLevel:{objc_msgSend(v4, "level")}];
 }
 
 - (void)_updateQuickActions
 {
-  v20 = [(CSCoverSheetViewController *)self activeAppearance];
-  v3 = [v20 componentForType:14 identifier:@"(active)"];
-  v4 = [v20 componentForType:28 identifier:@"(active)"];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v3 = [activeAppearance componentForType:14 identifier:@"(active)"];
+  v4 = [activeAppearance componentForType:28 identifier:@"(active)"];
   -[CSQuickActionsViewController setSuppressingVisibleChanges:](self->_quickActionsViewController, "setSuppressingVisibleChanges:", [v3 flag] != 0);
-  v5 = [(CSQuickActionsViewController *)self->_quickActionsViewController view];
+  view = [(CSQuickActionsViewController *)self->_quickActionsViewController view];
   [v3 alpha];
-  [v5 setAlpha:?];
+  [view setAlpha:?];
 
-  v6 = [(CSCoverSheetViewController *)self coverSheetView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
   [v3 offset];
   v8 = v7;
   v10 = v9;
   [v3 scale];
-  [v6 setQuickActionsViewOffset:v8 scale:{v10, v11}];
+  [coverSheetView setQuickActionsViewOffset:v8 scale:{v10, v11}];
 
-  v12 = [(CSCoverSheetViewController *)self coverSheetView];
+  coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
   [v3 blurRadius];
-  [v12 setQuickActionsViewBlurRadius:?];
+  [coverSheetView2 setQuickActionsViewBlurRadius:?];
 
-  v13 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  v14 = [v13 notificationListScrollView];
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  notificationListScrollView = [combinedListViewController notificationListScrollView];
 
-  [v14 contentOffset];
+  [notificationListScrollView contentOffset];
   v16 = v15;
-  v17 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
-  [v17 effectiveFadeInThreshold];
+  notificationLegibilityDimController = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
+  [notificationLegibilityDimController effectiveFadeInThreshold];
   if (v16 <= v18)
   {
     v19 = 0;
@@ -2098,35 +2098,35 @@ uint64_t __50__CSCoverSheetViewController__updateProudLockView__block_invoke_2(u
 
 - (void)_updateStatusBarGradient
 {
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:16 property:1];
-  v5 = [v4 isHidden];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:16 property:1];
+  isHidden = [v4 isHidden];
 
-  v6 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v6 updateStatusBarLegibilityForForceLegibilityGradientHidden:v5];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView updateStatusBarLegibilityForForceLegibilityGradientHidden:isHidden];
 }
 
 - (void)_updatePoseidon
 {
-  v5 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonView];
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:17 identifier:@"(active)"];
+  poseidonView = [(CSPoseidonViewController *)self->_poseidonViewController poseidonView];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:17 identifier:@"(active)"];
   [v4 alpha];
-  [v5 setAlpha:?];
+  [poseidonView setAlpha:?];
 }
 
 - (void)_updateWhitePoint
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self previousAppearance];
-  v4 = [(CSCoverSheetViewController *)self _shouldReduceWhitePointForAppearance:v3];
+  previousAppearance = [(CSCoverSheetViewController *)self previousAppearance];
+  v4 = [(CSCoverSheetViewController *)self _shouldReduceWhitePointForAppearance:previousAppearance];
 
-  v5 = [(CSCoverSheetViewController *)self _shouldReduceWhitePoint];
-  if (v4 != v5)
+  _shouldReduceWhitePoint = [(CSCoverSheetViewController *)self _shouldReduceWhitePoint];
+  if (v4 != _shouldReduceWhitePoint)
   {
-    v6 = v5;
-    v7 = [(CSCoverSheetViewController *)self activeAppearance];
-    v8 = [v7 componentForType:18 property:1024];
+    v6 = _shouldReduceWhitePoint;
+    activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+    v8 = [activeAppearance componentForType:18 property:1024];
 
     if (v8)
     {
@@ -2141,40 +2141,40 @@ uint64_t __50__CSCoverSheetViewController__updateProudLockView__block_invoke_2(u
 
     if (v6)
     {
-      v11 = [(CSCoverSheetViewController *)self _whitePointValues];
+      _whitePointValues = [(CSCoverSheetViewController *)self _whitePointValues];
       if (v10 <= 0.0)
       {
-        v12 = [(CSCoverSheetViewController *)self view];
-        v18 = [v12 layer];
-        v19 = [(CSCoverSheetViewController *)self _whitePointReductionFilterFromValues:v11];
+        view = [(CSCoverSheetViewController *)self view];
+        layer = [view layer];
+        v19 = [(CSCoverSheetViewController *)self _whitePointReductionFilterFromValues:_whitePointValues];
         v26[0] = v19;
         v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-        [v18 setFilters:v20];
+        [layer setFilters:v20];
       }
 
       else
       {
-        v12 = dispatch_group_create();
-        v13 = [(CSCoverSheetViewController *)self view];
-        [(CSCoverSheetViewController *)self _animateView:v13 toWhitePointReduced:1 withDuration:v12 withDispatchGroup:v10];
+        view = dispatch_group_create();
+        view2 = [(CSCoverSheetViewController *)self view];
+        [(CSCoverSheetViewController *)self _animateView:view2 toWhitePointReduced:1 withDuration:view withDispatchGroup:v10];
 
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __47__CSCoverSheetViewController__updateWhitePoint__block_invoke;
         block[3] = &unk_27838B838;
         block[4] = self;
-        v25 = v11;
-        dispatch_group_notify(v12, MEMORY[0x277D85CD0], block);
+        v25 = _whitePointValues;
+        dispatch_group_notify(view, MEMORY[0x277D85CD0], block);
       }
     }
 
     else
     {
-      v14 = [(CSCoverSheetViewController *)self view];
-      v15 = [v14 layer];
-      v16 = [v15 filters];
+      view3 = [(CSCoverSheetViewController *)self view];
+      layer2 = [view3 layer];
+      filters = [layer2 filters];
 
-      if (!v16)
+      if (!filters)
       {
 LABEL_14:
 
@@ -2183,23 +2183,23 @@ LABEL_14:
 
       if (v10 <= 0.0)
       {
-        v21 = [(CSCoverSheetViewController *)self view];
-        v22 = [v21 layer];
-        [v22 setFilters:0];
+        view4 = [(CSCoverSheetViewController *)self view];
+        layer3 = [view4 layer];
+        [layer3 setFilters:0];
 
         goto LABEL_14;
       }
 
-      v11 = dispatch_group_create();
-      v17 = [(CSCoverSheetViewController *)self view];
-      [(CSCoverSheetViewController *)self _animateView:v17 toWhitePointReduced:0 withDuration:v11 withDispatchGroup:v10];
+      _whitePointValues = dispatch_group_create();
+      view5 = [(CSCoverSheetViewController *)self view];
+      [(CSCoverSheetViewController *)self _animateView:view5 toWhitePointReduced:0 withDuration:_whitePointValues withDispatchGroup:v10];
 
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __47__CSCoverSheetViewController__updateWhitePoint__block_invoke_2;
       v23[3] = &unk_27838B770;
       v23[4] = self;
-      dispatch_group_notify(v11, MEMORY[0x277D85CD0], v23);
+      dispatch_group_notify(_whitePointValues, MEMORY[0x277D85CD0], v23);
     }
 
     goto LABEL_14;
@@ -2208,42 +2208,42 @@ LABEL_14:
 
 - (BOOL)_shouldReduceWhitePoint
 {
-  v2 = self;
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  LOBYTE(v2) = [(CSCoverSheetViewController *)v2 _shouldReduceWhitePointForAppearance:v3];
+  selfCopy = self;
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  LOBYTE(selfCopy) = [(CSCoverSheetViewController *)selfCopy _shouldReduceWhitePointForAppearance:activeAppearance];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_updateDimmingLayer
 {
-  v8 = [(CSCoverSheetViewController *)self activeAppearance];
-  v3 = [v8 componentForType:27 identifier:@"(active)"];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v3 = [activeAppearance componentForType:27 identifier:@"(active)"];
   if (v3)
   {
-    v4 = [(CSCoverSheetViewController *)self dateViewController];
+    dateViewController = [(CSCoverSheetViewController *)self dateViewController];
 
-    if (v4)
+    if (dateViewController)
     {
       [v3 alpha];
       v6 = v5;
-      v7 = [(CSCoverSheetViewController *)self dateViewController];
-      [v7 setDimmingViewAlpha:v6];
+      dateViewController2 = [(CSCoverSheetViewController *)self dateViewController];
+      [dateViewController2 setDimmingViewAlpha:v6];
     }
   }
 }
 
 - (BOOL)shouldCompletePhoneAutoUnlockWithNotification
 {
-  v3 = [(CSCoverSheetViewController *)self activeBehavior];
-  if ([v3 areRestrictedCapabilities:8])
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  if ([activeBehavior areRestrictedCapabilities:8])
   {
 
     return 0;
   }
 
-  v4 = [(CSCoverSheetViewController *)self activeBehavior];
-  v5 = [v4 areRestrictedCapabilities:56];
+  activeBehavior2 = [(CSCoverSheetViewController *)self activeBehavior];
+  v5 = [activeBehavior2 areRestrictedCapabilities:56];
 
   if (v5)
   {
@@ -2268,28 +2268,28 @@ void __51__CSCoverSheetViewController__updateHomeAffordance__block_invoke(uint64
 
 - (void)_updateDateTimeView
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v3 effectiveContainerBounds];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView effectiveContainerBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CSCoverSheetViewController *)self activeAppearance];
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v15 = (v14 & 0xFFFFFFFFFFFFFFFBLL) != 1 && ([(CSCoverSheetViewController *)self interfaceOrientation]- 3) < 0xFFFFFFFFFFFFFFFELL;
-  v16 = [(CSCoverSheetViewController *)self dateView];
-  [v16 setUseCompactDateFormat:v15];
+  v15 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && ([(CSCoverSheetViewController *)self interfaceOrientation]- 3) < 0xFFFFFFFFFFFFFFFELL;
+  dateView = [(CSCoverSheetViewController *)self dateView];
+  [dateView setUseCompactDateFormat:v15];
 
-  v17 = [(CSCoverSheetViewController *)self dateView];
-  [v17 setUseLandscapeTimeFontSize:v15];
+  dateView2 = [(CSCoverSheetViewController *)self dateView];
+  [dateView2 setUseLandscapeTimeFontSize:v15];
 
-  v18 = [v12 componentForType:1 identifier:@"(active)"];
+  v18 = [activeAppearance componentForType:1 identifier:@"(active)"];
   [v18 vibrantAndCentered];
   IsYes = BSSettingFlagIsYes();
-  LOBYTE(v17) = IsYes;
-  [v3 setDateViewIsVibrant:IsYes];
+  LOBYTE(dateView2) = IsYes;
+  [coverSheetView setDateViewIsVibrant:IsYes];
   objc_initWeak(&location, self);
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
@@ -2297,13 +2297,13 @@ void __51__CSCoverSheetViewController__updateHomeAffordance__block_invoke(uint64
   v56[3] = &unk_27838C288;
   objc_copyWeak(v59, &location);
   v56[4] = self;
-  v20 = v3;
+  v20 = coverSheetView;
   v57 = v20;
   v59[1] = v5;
   v59[2] = v7;
   v59[3] = v9;
   v59[4] = v11;
-  v60 = v17;
+  v60 = dateView2;
   v21 = v18;
   v58 = v21;
   v22 = MEMORY[0x223D698D0](v56);
@@ -2324,12 +2324,12 @@ void __51__CSCoverSheetViewController__updateHomeAffordance__block_invoke(uint64
     goto LABEL_16;
   }
 
-  v24 = [v20 dateView];
-  [v24 timeAlpha];
+  dateView3 = [v20 dateView];
+  [dateView3 timeAlpha];
   if (BSFloatIsZero())
   {
-    v25 = [v20 dateView];
-    [v25 subtitleAlpha];
+    dateView4 = [v20 dateView];
+    [dateView4 subtitleAlpha];
     IsZero = BSFloatIsZero();
   }
 
@@ -2377,11 +2377,11 @@ LABEL_16:
 
   else
   {
-    v36 = [v21 string];
-    if (v36)
+    string = [v21 string];
+    if (string)
     {
-      v37 = [v21 string];
-      v35 = [v37 length] != 0;
+      string2 = [v21 string];
+      v35 = [string2 length] != 0;
     }
 
     else
@@ -2406,20 +2406,20 @@ LABEL_16:
 
   [(SBFLockScreenDateViewController *)self->_dateViewController setTimeAlpha:v39 subtitleAlpha:v38];
   -[SBFLockScreenDateViewController setTimeSupportsStretch:](self->_dateViewController, "setTimeSupportsStretch:", [v21 constrainsTimeHeight] ^ 1);
-  v42 = [(CSCoverSheetViewController *)self traitCollection];
-  v43 = [v42 _backlightLuminance];
+  traitCollection = [(CSCoverSheetViewController *)self traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
   v44 = 0.0;
-  if (v43 != 1)
+  if (_backlightLuminance != 1)
   {
     v44 = 1.0;
   }
 
   [(SBFLockScreenDateViewController *)self->_dateViewController setBackgroundAlpha:v44];
-  v45 = [v21 view];
-  if (v45 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  view = [v21 view];
+  if (view && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [(SBFLockScreenDateViewController *)self->_dateViewController setCustomSubtitleView:v45];
+    [(SBFLockScreenDateViewController *)self->_dateViewController setCustomSubtitleView:view];
   }
 
   else
@@ -2428,9 +2428,9 @@ LABEL_16:
   }
 
   -[SBFLockScreenDateViewController setShowCompactTime:animated:](self->_dateViewController, "setShowCompactTime:animated:", [v21 showCompactTime], -[CSCoverSheetViewController _appearState](self, "_appearState") == 2);
-  v46 = [v20 dateView];
+  dateView5 = [v20 dateView];
   [(CSCoverSheetViewController *)self dateTimeSubtitleMaximumWidth];
-  [v46 setMaximumSubtitleWidth:?];
+  [dateView5 setMaximumSubtitleWidth:?];
 
   objc_destroyWeak(v59);
   objc_destroyWeak(&location);
@@ -4990,8 +4990,8 @@ LABEL_230:
 
 - (double)_adaptiveTimeMaxYFromConfigurationAndPosterPreferences
 {
-  v3 = [(CSCoverSheetContextProviding *)self->_coverSheetContext wallpaperProvider];
-  if (![v3 adaptiveTimeHonorsPreferredSalientContentRectangle])
+  wallpaperProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext wallpaperProvider];
+  if (![wallpaperProvider adaptiveTimeHonorsPreferredSalientContentRectangle])
   {
     [(CSCoverSheetViewController *)self _posterPersistedTimeMaxY];
 LABEL_6:
@@ -5022,15 +5022,15 @@ LABEL_7:
 
 - (double)_posterPersistedTimeMaxY
 {
-  v3 = [(CSCoverSheetViewController *)self interfaceOrientation];
-  if ((v3 - 1) >= 2)
+  interfaceOrientation = [(CSCoverSheetViewController *)self interfaceOrientation];
+  if ((interfaceOrientation - 1) >= 2)
   {
     v5 = 0.0;
-    if ((v3 - 3) > 1)
+    if ((interfaceOrientation - 3) > 1)
     {
 LABEL_6:
-      v6 = [(CSCoverSheetViewController *)self coverSheetView];
-      [v6 effectiveContainerBounds];
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+      [coverSheetView effectiveContainerBounds];
       v5 = v5 * v7;
 
       return v5;
@@ -5055,8 +5055,8 @@ LABEL_6:
 
 - (CGRect)_effectivePreferredSalientContentRectangle
 {
-  v3 = [(CSCoverSheetContextProviding *)self->_coverSheetContext wallpaperProvider];
-  [v3 preferredSalientContentRectangle];
+  wallpaperProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext wallpaperProvider];
+  [wallpaperProvider preferredSalientContentRectangle];
   x = v12.origin.x;
   y = v12.origin.y;
   width = v12.size.width;
@@ -5083,9 +5083,9 @@ LABEL_6:
 - (void)_updateRemoteInlineContentView
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:21 identifier:@"(active)"];
-  v5 = [v4 isHidden];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:21 identifier:@"(active)"];
+  isHidden = [v4 isHidden];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -5106,7 +5106,7 @@ LABEL_6:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) setInlineRemoteContentHidden:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) setInlineRemoteContentHidden:{isHidden, v11}];
       }
 
       while (v8 != v10);
@@ -5120,27 +5120,27 @@ LABEL_6:
 - (void)_updateStatusBar
 {
   fakeStatusBar = self->_fakeStatusBar;
-  v4 = [(CSCoverSheetViewController *)self _fakeStatusBarSettings];
-  [(UIStatusBar *)fakeStatusBar setStyleRequest:v4];
+  _fakeStatusBarSettings = [(CSCoverSheetViewController *)self _fakeStatusBarSettings];
+  [(UIStatusBar *)fakeStatusBar setStyleRequest:_fakeStatusBarSettings];
 
-  v22 = [(CSCoverSheetViewController *)self activeAppearance];
-  v5 = [v22 componentForType:2 identifier:@"(active)"];
-  v6 = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
-  v7 = [v5 legibilitySettings];
-  if (!v7)
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v5 = [activeAppearance componentForType:2 identifier:@"(active)"];
+  statusBarController = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
+  legibilitySettings = [v5 legibilitySettings];
+  if (!legibilitySettings)
   {
-    v7 = [(CSAppearance *)self->_activeAppearance legibilitySettings];
+    legibilitySettings = [(CSAppearance *)self->_activeAppearance legibilitySettings];
   }
 
-  v8 = [v7 style];
-  v9 = [v6 statusBarLegibilitySettings];
-  v10 = [v9 style];
+  style = [legibilitySettings style];
+  statusBarLegibilitySettings = [statusBarController statusBarLegibilitySettings];
+  style2 = [statusBarLegibilitySettings style];
 
   [v5 flag];
   IsYes = BSSettingFlagIsYes();
-  v12 = [(CSCoverSheetViewController *)self _isFakeStatusBarEnabled];
-  v13 = v12 & (IsYes ^ 1);
-  if (v12)
+  _isFakeStatusBarEnabled = [(CSCoverSheetViewController *)self _isFakeStatusBarEnabled];
+  v13 = _isFakeStatusBarEnabled & (IsYes ^ 1);
+  if (_isFakeStatusBarEnabled)
   {
     v14 = IsYes ^ 1;
   }
@@ -5155,12 +5155,12 @@ LABEL_6:
   v27[2] = __46__CSCoverSheetViewController__updateStatusBar__block_invoke;
   v27[3] = &unk_27838C2D8;
   v27[4] = self;
-  v15 = v6;
+  v15 = statusBarController;
   v28 = v15;
   v16 = v5;
   v29 = v16;
-  v31 = v8 != v10;
-  v17 = v7;
+  v31 = style != style2;
+  v17 = legibilitySettings;
   v30 = v17;
   v32 = v13;
   v18 = MEMORY[0x223D698D0](v27);
@@ -5189,7 +5189,7 @@ LABEL_6:
 
   else
   {
-    if (v8 == v10)
+    if (style == style2)
     {
       v21 = 0;
     }
@@ -5205,10 +5205,10 @@ LABEL_6:
 
 - (id)_fakeStatusBarSettings
 {
-  v3 = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
-  v4 = [(CSCoverSheetViewController *)self statusBarStyle];
-  v5 = [(CSCoverSheetViewControllerBase *)self legibilitySettings];
-  v6 = [v3 effectiveStatusBarStyleRequestForAlpha:0 style:v4 legibilitySettings:v5];
+  statusBarController = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
+  statusBarStyle = [(CSCoverSheetViewController *)self statusBarStyle];
+  legibilitySettings = [(CSCoverSheetViewControllerBase *)self legibilitySettings];
+  v6 = [statusBarController effectiveStatusBarStyleRequestForAlpha:0 style:statusBarStyle legibilitySettings:legibilitySettings];
 
   return v6;
 }
@@ -5216,16 +5216,16 @@ LABEL_6:
 - (void)_updateProudLockViewUpdateSuspension
 {
   proudLockViewController = self->_proudLockViewController;
-  v3 = [(CSCoverSheetViewController *)self activeBehavior];
-  -[CSProudLockViewController setSuspendLockUpdates:](proudLockViewController, "setSuspendLockUpdates:", [v3 areRestrictedCapabilities:0x8000]);
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  -[CSProudLockViewController setSuspendLockUpdates:](proudLockViewController, "setSuspendLockUpdates:", [activeBehavior areRestrictedCapabilities:0x8000]);
 }
 
 - (void)_updateLocalAppearanceForPresentation
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  v4 = [(CSCoverSheetViewController *)self activePresentation];
-  v5 = [v3 scrollView];
-  [v5 pageRelativeScrollOffset];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  activePresentation = [(CSCoverSheetViewController *)self activePresentation];
+  scrollView = [coverSheetView scrollView];
+  [scrollView pageRelativeScrollOffset];
   v7 = v6;
 
   if ([(CSCoverSheetViewTransitionSource *)self->_currentTransitionSource isTransitioning]&& [(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:self->_currentTransitionSource])
@@ -5239,51 +5239,51 @@ LABEL_6:
     v7 = 0.0;
   }
 
-  [v3 dateViewPresentationExtentForPageRelativeScrollOffset:v7];
-  v9 = [CSRegion regionForCoordinateSpace:v3 withExtent:?];
-  v10 = [v4 firstRegionIntersectingCoordinateSpace:v9 excludingRegionsWithRole:3];
+  [coverSheetView dateViewPresentationExtentForPageRelativeScrollOffset:v7];
+  v9 = [CSRegion regionForCoordinateSpace:coverSheetView withExtent:?];
+  v10 = [activePresentation firstRegionIntersectingCoordinateSpace:v9 excludingRegionsWithRole:3];
   v11 = v10 != 0;
 
   [(CSCoverSheetViewController *)self _updateAppearance:self->_localAppearance forComponentType:1 shouldHide:v11];
-  v12 = [(CSFixedFooterViewController *)self->_fixedFooterViewController fixedFooterView];
+  fixedFooterView = [(CSFixedFooterViewController *)self->_fixedFooterViewController fixedFooterView];
   localAppearance = self->_localAppearance;
-  v14 = [v12 pageControl];
-  -[CSCoverSheetViewController _updateAppearance:forComponentType:shouldHide:](self, "_updateAppearance:forComponentType:shouldHide:", localAppearance, 3, [v4 intersectsCoordinateSpace:v14]);
+  pageControl = [fixedFooterView pageControl];
+  -[CSCoverSheetViewController _updateAppearance:forComponentType:shouldHide:](self, "_updateAppearance:forComponentType:shouldHide:", localAppearance, 3, [activePresentation intersectsCoordinateSpace:pageControl]);
 
   v15 = self->_localAppearance;
-  v16 = [v12 statusTextView];
-  v17 = [v4 firstRegionIntersectingCoordinateSpace:v16 excludingRegionsWithRole:2];
+  statusTextView = [fixedFooterView statusTextView];
+  v17 = [activePresentation firstRegionIntersectingCoordinateSpace:statusTextView excludingRegionsWithRole:2];
   [(CSCoverSheetViewController *)self _updateAppearance:v15 forComponentType:10 shouldHide:v17 != 0];
 
-  v18 = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController teachableMomentsContainerView];
-  v19 = [v18 callToActionLabelPositionPlaceholderView];
-  v20 = v19;
-  v50 = v12;
-  if (v19)
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController teachableMomentsContainerView];
+  callToActionLabelPositionPlaceholderView = [teachableMomentsContainerView callToActionLabelPositionPlaceholderView];
+  v20 = callToActionLabelPositionPlaceholderView;
+  v50 = fixedFooterView;
+  if (callToActionLabelPositionPlaceholderView)
   {
-    v21 = v19;
+    callToActionLabel = callToActionLabelPositionPlaceholderView;
   }
 
   else
   {
-    v21 = [v12 callToActionLabel];
+    callToActionLabel = [fixedFooterView callToActionLabel];
   }
 
-  v22 = v21;
+  v22 = callToActionLabel;
 
   v49 = v22;
-  -[CSCoverSheetViewController _updateAppearance:forComponentType:shouldHide:](self, "_updateAppearance:forComponentType:shouldHide:", self->_localAppearance, 9, ([v4 intersectsCoordinateSpace:v22] | -[CSCoverSheetViewController isUnlockDisabled](self, "isUnlockDisabled")) & 1);
-  v48 = [(CSWidgetGridViewController *)self->_sidebarComplicationContainerViewController view];
-  v23 = [v4 firstRegionIntersectingCoordinateSpace:? excludingRegionsWithRole:?];
+  -[CSCoverSheetViewController _updateAppearance:forComponentType:shouldHide:](self, "_updateAppearance:forComponentType:shouldHide:", self->_localAppearance, 9, ([activePresentation intersectsCoordinateSpace:v22] | -[CSCoverSheetViewController isUnlockDisabled](self, "isUnlockDisabled")) & 1);
+  view = [(CSWidgetGridViewController *)self->_sidebarComplicationContainerViewController view];
+  v23 = [activePresentation firstRegionIntersectingCoordinateSpace:? excludingRegionsWithRole:?];
   v24 = v23 != 0;
 
   [(CSCoverSheetViewController *)self _updateAppearance:self->_localAppearance forComponentType:25 shouldHide:v24];
-  v25 = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController homeAffordanceViewController];
-  v26 = [v25 homeAffordanceView];
+  homeAffordanceViewController = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController homeAffordanceViewController];
+  homeAffordanceView = [homeAffordanceViewController homeAffordanceView];
 
-  if (v26)
+  if (homeAffordanceView)
   {
-    v27 = [v4 firstRegionIntersectingCoordinateSpace:v26 excludingRegionsWithRole:3];
+    v27 = [activePresentation firstRegionIntersectingCoordinateSpace:homeAffordanceView excludingRegionsWithRole:3];
 
     v28 = [(CSAppearance *)self->_localAppearance componentForType:12 identifier:@"CSPresentation"];
     v29 = v28;
@@ -5298,7 +5298,7 @@ LABEL_6:
       v30 = [CSComponent componentWithType:12];
       v31 = [v30 identifier:@"CSPresentation"];
       [v31 priority:10];
-      v46 = v26;
+      v46 = homeAffordanceView;
       v33 = v32 = v9;
 
       [v33 setHidden:0];
@@ -5306,12 +5306,12 @@ LABEL_6:
       [(CSAppearance *)self->_localAppearance addComponent:v33];
 
       v9 = v32;
-      v26 = v46;
+      homeAffordanceView = v46;
     }
   }
 
-  v34 = [v18 controlCenterGrabberPositionPlaceholderView];
-  v35 = [v4 firstRegionIntersectingCoordinateSpace:v34 excludingRegionsWithRole:3];
+  controlCenterGrabberPositionPlaceholderView = [teachableMomentsContainerView controlCenterGrabberPositionPlaceholderView];
+  v35 = [activePresentation firstRegionIntersectingCoordinateSpace:controlCenterGrabberPositionPlaceholderView excludingRegionsWithRole:3];
 
   v36 = [(CSAppearance *)self->_localAppearance componentForType:13 identifier:@"CSPresentation"];
   v37 = v36;
@@ -5325,18 +5325,18 @@ LABEL_6:
     [CSComponent componentWithType:13];
     v38 = v45 = v9;
     [v38 identifier:@"CSPresentation"];
-    v39 = v47 = v26;
+    v39 = v47 = homeAffordanceView;
     [v39 priority:10];
-    v40 = v4;
-    v41 = v18;
-    v43 = v42 = v3;
+    v40 = activePresentation;
+    v41 = teachableMomentsContainerView;
+    v43 = v42 = coverSheetView;
     v44 = [v43 hidden:v35 != 0];
 
-    v3 = v42;
-    v18 = v41;
-    v4 = v40;
+    coverSheetView = v42;
+    teachableMomentsContainerView = v41;
+    activePresentation = v40;
 
-    v26 = v47;
+    homeAffordanceView = v47;
     v9 = v45;
     [(CSAppearance *)self->_localAppearance addComponent:v44];
   }
@@ -5384,21 +5384,21 @@ LABEL_6:
 - (double)dateTimeSubtitleMaximumWidth
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self view];
-  [v3 bounds];
+  view = [(CSCoverSheetViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v27);
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) != 1 && ([(CSCoverSheetViewController *)self interfaceOrientation]- 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && ([(CSCoverSheetViewController *)self interfaceOrientation]- 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(CSCoverSheetViewController *)self pageViewControllers];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+    v8 = [pageViewControllers countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -5412,7 +5412,7 @@ LABEL_6:
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(pageViewControllers);
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
@@ -5438,7 +5438,7 @@ LABEL_6:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [pageViewControllers countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v9);
@@ -5460,17 +5460,17 @@ LABEL_6:
 
 - (int64_t)statusBarStyle
 {
-  v2 = [(CSCoverSheetViewControllerBase *)self legibilitySettings];
-  v3 = [v2 style] != 2;
+  legibilitySettings = [(CSCoverSheetViewControllerBase *)self legibilitySettings];
+  v3 = [legibilitySettings style] != 2;
 
   return v3;
 }
 
 - (BOOL)_isFakeStatusBarEnabled
 {
-  v2 = [(CSCoverSheetViewController *)self coverSheetView];
-  v3 = [v2 fakeStatusBar];
-  v4 = v3 != 0;
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  fakeStatusBar = [coverSheetView fakeStatusBar];
+  v4 = fakeStatusBar != 0;
 
   return v4;
 }
@@ -5562,20 +5562,20 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
 - (BOOL)isLockScreenShowingDefaultContent
 {
-  v3 = [(CSCoverSheetViewController *)self isMainPageVisible];
-  if (v3)
+  isMainPageVisible = [(CSCoverSheetViewController *)self isMainPageVisible];
+  if (isMainPageVisible)
   {
-    LOBYTE(v3) = ![(CSCoverSheetViewController *)self hasContentAboveCoverSheet];
+    LOBYTE(isMainPageVisible) = ![(CSCoverSheetViewController *)self hasContentAboveCoverSheet];
   }
 
-  return v3;
+  return isMainPageVisible;
 }
 
 - (BOOL)isMainPageVisible
 {
-  v3 = [(CSCoverSheetViewController *)self visiblePageViewController];
-  v4 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-  if (v3 == v4)
+  visiblePageViewController = [(CSCoverSheetViewController *)self visiblePageViewController];
+  mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+  if (visiblePageViewController == mainPageContentViewController)
   {
     v5 = ![(CSCoverSheetViewController *)self _isTodayViewOverlayShowing];
   }
@@ -5590,14 +5590,14 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
 - (id)visiblePageViewController
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  v4 = [v3 scrollView];
-  v5 = [v4 visiblePageRange];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  scrollView = [coverSheetView scrollView];
+  visiblePageRange = [scrollView visiblePageRange];
   v7 = v6;
 
   if (v7 == 1)
   {
-    v8 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:v5];
+    v8 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:visiblePageRange];
   }
 
   else
@@ -5610,18 +5610,18 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
 - (BOOL)_isTodayViewOverlayShowing
 {
-  v2 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-  v3 = [v2 isPresented];
+  overlayControllerIfExists = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+  isPresented = [overlayControllerIfExists isPresented];
 
-  return v3;
+  return isPresented;
 }
 
 - (NSSet)audioCategoriesDisablingVolumeHUD
 {
-  v2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  v3 = [v2 audioCategoriesDisablingVolumeHUD];
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  audioCategoriesDisablingVolumeHUD = [combinedListViewController audioCategoriesDisablingVolumeHUD];
 
-  return v3;
+  return audioCategoriesDisablingVolumeHUD;
 }
 
 - (SBFOverlayControlling)overlayController
@@ -5629,10 +5629,10 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
   overlayController = self->_overlayController;
   if (!overlayController)
   {
-    v4 = [(CSCoverSheetContextProviding *)self->_coverSheetContext homeScreenOverlayProvider];
-    v5 = [v4 newOverlayController];
+    homeScreenOverlayProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext homeScreenOverlayProvider];
+    newOverlayController = [homeScreenOverlayProvider newOverlayController];
     v6 = self->_overlayController;
-    self->_overlayController = v5;
+    self->_overlayController = newOverlayController;
 
     [(SBFOverlayControlling *)self->_overlayController addHomeScreenOverlayObserver:self];
     [(SBFOverlayControlling *)self->_overlayController setDismissalDelegate:self];
@@ -5687,32 +5687,32 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
   if ([v11 isHidden])
   {
-    v5 = 1;
+    hidesTime = 1;
   }
 
   else
   {
-    v5 = [v11 hidesTime];
+    hidesTime = [v11 hidesTime];
   }
 
-  return v5;
+  return hidesTime;
 }
 
 - (id)sceneHostEnvironmentEntriesForBacklightSession
 {
-  v3 = [(CSWidgetGridViewController *)self->_complicationContainerViewController sceneHostEnvironmentEntriesForBacklightSession];
-  v4 = [(CSInlineWidgetContainerViewController *)self->_inlineComplicationContainerViewController sceneHostEnvironmentEntriesForBacklightSession];
-  v5 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  v6 = [v5 sceneHostEnvironmentEntriesForBacklightSession];
+  sceneHostEnvironmentEntriesForBacklightSession = [(CSWidgetGridViewController *)self->_complicationContainerViewController sceneHostEnvironmentEntriesForBacklightSession];
+  sceneHostEnvironmentEntriesForBacklightSession2 = [(CSInlineWidgetContainerViewController *)self->_inlineComplicationContainerViewController sceneHostEnvironmentEntriesForBacklightSession];
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  sceneHostEnvironmentEntriesForBacklightSession3 = [combinedListViewController sceneHostEnvironmentEntriesForBacklightSession];
 
-  v7 = [MEMORY[0x277CBEB58] setWithSet:v3];
-  [v7 unionSet:v6];
-  [v7 unionSet:v4];
+  v7 = [MEMORY[0x277CBEB58] setWithSet:sceneHostEnvironmentEntriesForBacklightSession];
+  [v7 unionSet:sceneHostEnvironmentEntriesForBacklightSession3];
+  [v7 unionSet:sceneHostEnvironmentEntriesForBacklightSession2];
   backgroundContentViewController = self->_backgroundContentViewController;
   if (backgroundContentViewController)
   {
-    v9 = [(CSBackgroundContentViewController *)backgroundContentViewController sceneHostEnvironmentEntriesForBacklightSession];
-    [v7 unionSet:v9];
+    sceneHostEnvironmentEntriesForBacklightSession4 = [(CSBackgroundContentViewController *)backgroundContentViewController sceneHostEnvironmentEntriesForBacklightSession];
+    [v7 unionSet:sceneHostEnvironmentEntriesForBacklightSession4];
   }
 
   return v7;
@@ -5720,17 +5720,17 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
 - (void)updateStatusBarForLockScreenTeardown
 {
-  v3 = [*MEMORY[0x277D76620] statusBar];
-  [v3 setMode:0];
+  statusBar = [*MEMORY[0x277D76620] statusBar];
+  [statusBar setMode:0];
 
   [(UIStatusBar *)self->_fakeStatusBar setMode:0];
-  v6 = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
-  [v6 destroyFakeStatusBar:self->_fakeStatusBar];
+  statusBarController = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
+  [statusBarController destroyFakeStatusBar:self->_fakeStatusBar];
   fakeStatusBar = self->_fakeStatusBar;
   self->_fakeStatusBar = 0;
 
-  v5 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v5 setFakeStatusBar:0];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView setFakeStatusBar:0];
 
   self->_statusBarInLockdownForTeardown = 1;
   [(CSCoverSheetViewController *)self _invalidateStatusBarAssertions];
@@ -5738,22 +5738,22 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
 - (void)_invalidateStatusBarAssertions
 {
-  v2 = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
-  [v2 setStatusBarHidden:0 forReason:@"CSCoverSheetFakeStatusBar"];
-  [v2 clearStatusBarParameters];
+  statusBarController = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
+  [statusBarController setStatusBarHidden:0 forReason:@"CSCoverSheetFakeStatusBar"];
+  [statusBarController clearStatusBarParameters];
 }
 
 - (void)updateStatusBarForLockScreenComeback
 {
-  v3 = [*MEMORY[0x277D76620] statusBar];
-  [v3 setMode:2];
+  statusBar = [*MEMORY[0x277D76620] statusBar];
+  [statusBar setMode:2];
 
   fakeStatusBar = self->_fakeStatusBar;
   if (!fakeStatusBar)
   {
-    v5 = [(CSCoverSheetViewController *)self _createFakeStatusBar];
+    _createFakeStatusBar = [(CSCoverSheetViewController *)self _createFakeStatusBar];
     v6 = self->_fakeStatusBar;
-    self->_fakeStatusBar = v5;
+    self->_fakeStatusBar = _createFakeStatusBar;
 
     fakeStatusBar = self->_fakeStatusBar;
   }
@@ -5761,8 +5761,8 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
   [(UIStatusBar *)fakeStatusBar setMode:2];
   if (self->_wantsStatusBarLockItemDisabled)
   {
-    v7 = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
-    [v7 setStatusBarPart:1 hidden:1 animationDuration:0.0];
+    statusBarController = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
+    [statusBarController setStatusBarPart:1 hidden:1 animationDuration:0.0];
   }
 
   self->_statusBarInLockdownForTeardown = 0;
@@ -5774,8 +5774,8 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
     _os_log_impl(&dword_21EB05000, v8, OS_LOG_TYPE_DEFAULT, "CSTeachableMomentsContainerView needs layout for updateStatusBarForLockScreenComeback", v10, 2u);
   }
 
-  v9 = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController view];
-  [v9 setNeedsLayout];
+  view = [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController view];
+  [view setNeedsLayout];
 }
 
 - (CSCoverSheetSpotlightPresenting)coverSheetSpotlightPresenter
@@ -5806,8 +5806,8 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
 - (void)_updateCoachingString
 {
-  v3 = [(CSCoverSheetViewController *)self _coachingStringToUse];
-  if (v3)
+  _coachingStringToUse = [(CSCoverSheetViewController *)self _coachingStringToUse];
+  if (_coachingStringToUse)
   {
     v4 = 10.0;
   }
@@ -5818,8 +5818,8 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
   }
 
   dateViewController = self->_dateViewController;
-  v6 = [(CSCoverSheetViewController *)self _coachingStringToUse];
-  [(SBFLockScreenDateViewController *)dateViewController setCustomSubtitle:v6 withPriority:1 withTimeout:v4];
+  _coachingStringToUse2 = [(CSCoverSheetViewController *)self _coachingStringToUse];
+  [(SBFLockScreenDateViewController *)dateViewController setCustomSubtitle:_coachingStringToUse2 withPriority:1 withTimeout:v4];
 }
 
 - (id)_coachingStringToUse
@@ -5839,8 +5839,8 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
 - (void)_setupQuickNoteGestureRecognizer
 {
-  v3 = [(CSCoverSheetViewController *)self activeBehavior];
-  v4 = [v3 areRestrictedCapabilities:0x2000];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v4 = [activeBehavior areRestrictedCapabilities:0x2000];
 
   quickNoteGestureRecognizer = self->_quickNoteGestureRecognizer;
   if (v4)
@@ -5857,10 +5857,10 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
   {
     if (quickNoteGestureRecognizer)
     {
-      v6 = [(CSCoverSheetViewController *)self coverSheetView];
-      v7 = [v6 quickNoteGestureRecognizer];
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+      quickNoteGestureRecognizer = [coverSheetView quickNoteGestureRecognizer];
 
-      if (v7)
+      if (quickNoteGestureRecognizer)
       {
         return;
       }
@@ -5879,9 +5879,9 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
     self->_quickNoteGestureRecognizer = v9;
 
     [(UITapGestureRecognizer *)self->_quickNoteGestureRecognizer setDelegate:self];
-    v11 = [(SBLockScreenDefaults *)self->_lockScreenDefaults showQuickNoteFingerGestureRecognizer];
+    showQuickNoteFingerGestureRecognizer = [(SBLockScreenDefaults *)self->_lockScreenDefaults showQuickNoteFingerGestureRecognizer];
     v12 = self->_quickNoteGestureRecognizer;
-    if (v11)
+    if (showQuickNoteFingerGestureRecognizer)
     {
       [(UITapGestureRecognizer *)v12 setNumberOfTouchesRequired:2];
       [(UITapGestureRecognizer *)self->_quickNoteGestureRecognizer setNumberOfTapsRequired:2];
@@ -5894,19 +5894,19 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
     }
   }
 
-  v13 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v13 setQuickNoteGestureRecognizer:self->_quickNoteGestureRecognizer];
+  coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView2 setQuickNoteGestureRecognizer:self->_quickNoteGestureRecognizer];
 }
 
 - (double)listMinY
 {
   v3 = [(CSCoverSheetViewController *)self interfaceOrientation]- 1;
   v4 = v3 > 1;
-  v5 = 0x277D75000;
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice31 = 0x277D75000;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1 || v3 < 2)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || v3 < 2)
   {
     [(CSCoverSheetViewController *)self timeLabelBaselineY];
     v10 = v9;
@@ -5918,10 +5918,10 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
     [(CSCoverSheetViewController *)self prominentBaselineToListY];
     v13 = v12;
-    v14 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-    v15 = [v14 isShowingFocusActivityView];
+    combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+    isShowingFocusActivityView = [combinedListViewController isShowingFocusActivityView];
 
-    if (v15)
+    if (isShowingFocusActivityView)
     {
       v16 = _os_feature_enabled_impl();
       v17 = 0.0;
@@ -5949,8 +5949,8 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
     else
     {
-      v22 = [MEMORY[0x277D75418] currentDevice];
-      v19 = [v22 userInterfaceIdiom] == 1 && v4;
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      v19 = [currentDevice2 userInterfaceIdiom] == 1 && v4;
     }
 
     v23 = 0.0;
@@ -5970,7 +5970,7 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
   }
 
   v20 = __sb__runningInSpringBoard();
-  v21 = &CSListLandscapeTopY;
+  mainScreen27 = &CSListLandscapeTopY;
   if (v20)
   {
     if (SBFEffectiveDeviceClass() != 2)
@@ -5982,8 +5982,8 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
 
   else
   {
-    v141 = [MEMORY[0x277D75418] currentDevice];
-    if ([v141 userInterfaceIdiom] != 1)
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom] != 1)
     {
       v157 = 0x100000000;
       goto LABEL_33;
@@ -5993,19 +5993,19 @@ void __46__CSCoverSheetViewController__updateStatusBar__block_invoke(uint64_t a1
   HIDWORD(v157) = v20 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v142 = [MEMORY[0x277D759A0] mainScreen];
-      [v142 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
-    LODWORD(v157) = v27 ^ 1;
+    LODWORD(v157) = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v44 == *(MEMORY[0x277D66E30] + 288) && v43 == *(MEMORY[0x277D66E30] + 296))
     {
@@ -6053,8 +6053,8 @@ LABEL_33:
 
   else
   {
-    v140 = [MEMORY[0x277D75418] currentDevice];
-    if ([v140 userInterfaceIdiom] != 1)
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom] != 1)
     {
       *(&v156 + 1) = 0x100000000;
       goto LABEL_42;
@@ -6064,19 +6064,19 @@ LABEL_33:
   HIDWORD(v156) = v28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v132 = [MEMORY[0x277D759A0] mainScreen];
-      [v132 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
-    DWORD2(v156) = v27 ^ 1;
+    DWORD2(v156) = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v46 >= *(MEMORY[0x277D66E30] + 440))
     {
@@ -6124,8 +6124,8 @@ LABEL_42:
 
   else
   {
-    v139 = [MEMORY[0x277D75418] currentDevice];
-    if ([v139 userInterfaceIdiom] != 1)
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice5 userInterfaceIdiom] != 1)
     {
       *&v156 = 0x100000000;
       goto LABEL_51;
@@ -6135,19 +6135,19 @@ LABEL_42:
   DWORD1(v156) = v29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v131 = [MEMORY[0x277D759A0] mainScreen];
-      [v131 _referenceBounds];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 _referenceBounds];
     }
 
-    LODWORD(v156) = v27 ^ 1;
+    LODWORD(v156) = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v47 >= *(MEMORY[0x277D66E30] + 376))
     {
@@ -6194,8 +6194,8 @@ LABEL_51:
 
   else
   {
-    v138 = [MEMORY[0x277D75418] currentDevice];
-    if ([v138 userInterfaceIdiom] != 1)
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom] != 1)
     {
       v155 = 0x100000000;
       goto LABEL_60;
@@ -6203,19 +6203,19 @@ LABEL_51:
   }
 
   HIDWORD(v155) = v30 ^ 1;
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v135 = [MEMORY[0x277D759A0] mainScreen];
-    [v135 _referenceBounds];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 _referenceBounds];
   }
 
-  LODWORD(v155) = v27 ^ 1;
+  LODWORD(v155) = mainScreen28 ^ 1;
   BSSizeRoundForScale();
   if (v31 >= *(MEMORY[0x277D66E30] + 280))
   {
@@ -6255,8 +6255,8 @@ LABEL_60:
 
   else
   {
-    v137 = [MEMORY[0x277D75418] currentDevice];
-    if ([v137 userInterfaceIdiom] != 1)
+    currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice7 userInterfaceIdiom] != 1)
     {
       v154 = 0x100000000;
       goto LABEL_70;
@@ -6264,19 +6264,19 @@ LABEL_60:
   }
 
   HIDWORD(v154) = v32 ^ 1;
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v133 = [MEMORY[0x277D759A0] mainScreen];
-    [v133 _referenceBounds];
+    mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen5 _referenceBounds];
   }
 
-  LODWORD(v154) = v27 ^ 1;
+  LODWORD(v154) = mainScreen28 ^ 1;
   BSSizeRoundForScale();
   if (v41 >= *(MEMORY[0x277D66E30] + 264))
   {
@@ -6315,8 +6315,8 @@ LABEL_70:
 
   else
   {
-    v136 = [MEMORY[0x277D75418] currentDevice];
-    if ([v136 userInterfaceIdiom] != 1)
+    currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice8 userInterfaceIdiom] != 1)
     {
       v153 = 0x100000000;
       goto LABEL_209;
@@ -6324,19 +6324,19 @@ LABEL_70:
   }
 
   HIDWORD(v153) = v42 ^ 1;
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v130 = [MEMORY[0x277D759A0] mainScreen];
-    [v130 _referenceBounds];
+    mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen6 _referenceBounds];
   }
 
-  LODWORD(v153) = v27 ^ 1;
+  LODWORD(v153) = mainScreen28 ^ 1;
   BSSizeRoundForScale();
   if (v49 >= *(MEMORY[0x277D66E30] + 248))
   {
@@ -6362,8 +6362,8 @@ LABEL_70:
   }
 
 LABEL_209:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
@@ -6388,18 +6388,18 @@ LABEL_217:
     v38 = 0;
     v39 = 0;
     v40 = &qword_21EC96998;
-    v152 = v27 ^ 1;
+    v152 = mainScreen28 ^ 1;
     goto LABEL_90;
   }
 
-  v134 = [MEMORY[0x277D75418] currentDevice];
-  if ([v134 userInterfaceIdiom] == 1)
+  currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice9 userInterfaceIdiom] == 1)
   {
     goto LABEL_217;
   }
 
 LABEL_211:
-  v152 = v27 ^ 1;
+  v152 = mainScreen28 ^ 1;
   if (!_SBF_Private_IsD94Like())
   {
 LABEL_215:
@@ -6418,8 +6418,8 @@ LABEL_215:
 
   else
   {
-    v128 = [MEMORY[0x277D75418] currentDevice];
-    if ([v128 userInterfaceIdiom])
+    currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice10 userInterfaceIdiom])
     {
       *&v151[76] = 0;
       *&v151[80] = 1;
@@ -6430,19 +6430,19 @@ LABEL_215:
   *&v151[80] = v50 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v121 = [MEMORY[0x277D759A0] mainScreen];
-      [v121 _referenceBounds];
+      mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen7 _referenceBounds];
     }
 
-    *&v151[76] = v27 ^ 1;
+    *&v151[76] = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v53 >= *(MEMORY[0x277D66E30] + 200))
     {
@@ -6473,8 +6473,8 @@ LABEL_215:
   }
 
 LABEL_225:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -6485,8 +6485,8 @@ LABEL_225:
 
   else
   {
-    v129 = [MEMORY[0x277D75418] currentDevice];
-    if ([v129 userInterfaceIdiom])
+    currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice11 userInterfaceIdiom])
     {
       *&v151[68] = 0;
       *&v151[72] = 1;
@@ -6494,22 +6494,22 @@ LABEL_225:
     }
   }
 
-  *&v151[72] = v27 ^ 1;
+  *&v151[72] = mainScreen28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v124 = [MEMORY[0x277D759A0] mainScreen];
-      [v124 _referenceBounds];
+      mainScreen8 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen8 _referenceBounds];
     }
 
-    *&v151[68] = v27 ^ 1;
+    *&v151[68] = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v51 >= *(MEMORY[0x277D66E30] + 200))
     {
@@ -6564,8 +6564,8 @@ LABEL_243:
 
   else
   {
-    v125 = [MEMORY[0x277D75418] currentDevice];
-    if ([v125 userInterfaceIdiom])
+    currentDevice12 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice12 userInterfaceIdiom])
     {
       *&v151[60] = 0;
       *&v151[64] = 1;
@@ -6576,19 +6576,19 @@ LABEL_243:
   *&v151[64] = v52 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v116 = [MEMORY[0x277D759A0] mainScreen];
-      [v116 _referenceBounds];
+      mainScreen9 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen9 _referenceBounds];
     }
 
-    *&v151[60] = v27 ^ 1;
+    *&v151[60] = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v57 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -6619,8 +6619,8 @@ LABEL_243:
   }
 
 LABEL_253:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -6631,8 +6631,8 @@ LABEL_253:
 
   else
   {
-    v127 = [MEMORY[0x277D75418] currentDevice];
-    if ([v127 userInterfaceIdiom])
+    currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice13 userInterfaceIdiom])
     {
       *&v151[52] = 0;
       *&v151[56] = 1;
@@ -6640,22 +6640,22 @@ LABEL_253:
     }
   }
 
-  *&v151[56] = v27 ^ 1;
+  *&v151[56] = mainScreen28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v120 = [MEMORY[0x277D759A0] mainScreen];
-      [v120 _referenceBounds];
+      mainScreen10 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen10 _referenceBounds];
     }
 
-    *&v151[52] = v27 ^ 1;
+    *&v151[52] = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v54 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -6704,8 +6704,8 @@ LABEL_267:
 
   else
   {
-    v126 = [MEMORY[0x277D75418] currentDevice];
-    if ([v126 userInterfaceIdiom])
+    currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice14 userInterfaceIdiom])
     {
       *&v151[44] = 0;
       *&v151[48] = 1;
@@ -6716,19 +6716,19 @@ LABEL_267:
   *&v151[48] = v55 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v117 = [MEMORY[0x277D759A0] mainScreen];
-      [v117 _referenceBounds];
+      mainScreen11 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen11 _referenceBounds];
     }
 
-    *&v151[44] = v27 ^ 1;
+    *&v151[44] = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v56 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -6759,8 +6759,8 @@ LABEL_267:
   }
 
 LABEL_277:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -6771,8 +6771,8 @@ LABEL_277:
 
   else
   {
-    v123 = [MEMORY[0x277D75418] currentDevice];
-    if ([v123 userInterfaceIdiom])
+    currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice15 userInterfaceIdiom])
     {
       *&v151[36] = 0;
       *&v151[40] = 1;
@@ -6780,22 +6780,22 @@ LABEL_277:
     }
   }
 
-  *&v151[40] = v27 ^ 1;
+  *&v151[40] = mainScreen28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v115 = [MEMORY[0x277D759A0] mainScreen];
-      [v115 _referenceBounds];
+      mainScreen12 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen12 _referenceBounds];
     }
 
-    *&v151[36] = v27 ^ 1;
+    *&v151[36] = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v58 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -6844,8 +6844,8 @@ LABEL_297:
 
   else
   {
-    v122 = [MEMORY[0x277D75418] currentDevice];
-    if ([v122 userInterfaceIdiom])
+    currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice16 userInterfaceIdiom])
     {
       *&v151[28] = 0;
       *&v151[32] = 1;
@@ -6864,13 +6864,13 @@ LABEL_297:
 
     else
     {
-      v112 = [MEMORY[0x277D759A0] mainScreen];
-      [v112 _referenceBounds];
+      mainScreen13 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen13 _referenceBounds];
     }
 
-    v27 = v60 ^ 1u;
+    mainScreen28 = v60 ^ 1u;
     BSSizeRoundForScale();
-    *&v151[28] = v27;
+    *&v151[28] = mainScreen28;
     if (v61 >= *(MEMORY[0x277D66E30] + 120) && (_SBF_Private_IsN84OrSimilarDevice() & 1) != 0)
     {
       memset(v151, 0, 28);
@@ -6900,8 +6900,8 @@ LABEL_297:
   }
 
 LABEL_307:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -6912,8 +6912,8 @@ LABEL_307:
 
   else
   {
-    v119 = [MEMORY[0x277D75418] currentDevice];
-    if ([v119 userInterfaceIdiom])
+    currentDevice17 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice17 userInterfaceIdiom])
     {
       *&v151[20] = 0;
       *&v151[24] = 1;
@@ -6921,22 +6921,22 @@ LABEL_307:
     }
   }
 
-  *&v151[24] = v27 ^ 1;
+  *&v151[24] = mainScreen28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v111 = [MEMORY[0x277D759A0] mainScreen];
-      [v111 _referenceBounds];
+      mainScreen14 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen14 _referenceBounds];
     }
 
-    *&v151[20] = v27 ^ 1;
+    *&v151[20] = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v62 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -6991,8 +6991,8 @@ LABEL_330:
 
   else
   {
-    v114 = [MEMORY[0x277D75418] currentDevice];
-    if ([v114 userInterfaceIdiom])
+    currentDevice18 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice18 userInterfaceIdiom])
     {
       *&v151[12] = 0;
       *&v151[16] = 1;
@@ -7011,13 +7011,13 @@ LABEL_330:
 
     else
     {
-      v105 = [MEMORY[0x277D759A0] mainScreen];
-      [v105 _referenceBounds];
+      mainScreen15 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen15 _referenceBounds];
     }
 
-    v27 = v64 ^ 1u;
+    mainScreen28 = v64 ^ 1u;
     BSSizeRoundForScale();
-    *&v151[12] = v27;
+    *&v151[12] = mainScreen28;
     if (v67 >= *(MEMORY[0x277D66E30] + 184))
     {
       *&v151[4] = 0;
@@ -7048,8 +7048,8 @@ LABEL_330:
   }
 
 LABEL_337:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -7060,8 +7060,8 @@ LABEL_337:
 
   else
   {
-    v118 = [MEMORY[0x277D75418] currentDevice];
-    if ([v118 userInterfaceIdiom])
+    currentDevice19 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice19 userInterfaceIdiom])
     {
       *&v151[4] = 0;
       *&v151[8] = 1;
@@ -7069,22 +7069,22 @@ LABEL_337:
     }
   }
 
-  *&v151[8] = v27 ^ 1;
+  *&v151[8] = mainScreen28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v108 = [MEMORY[0x277D759A0] mainScreen];
-      [v108 _referenceBounds];
+      mainScreen16 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen16 _referenceBounds];
     }
 
-    *&v151[4] = v27 ^ 1;
+    *&v151[4] = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v65 >= *(MEMORY[0x277D66E30] + 184))
     {
@@ -7140,8 +7140,8 @@ LABEL_355:
 
   else
   {
-    v110 = [MEMORY[0x277D75418] currentDevice];
-    if ([v110 userInterfaceIdiom])
+    currentDevice20 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice20 userInterfaceIdiom])
     {
       HIDWORD(v150) = 0;
       *v151 = 1;
@@ -7160,13 +7160,13 @@ LABEL_355:
 
     else
     {
-      v101 = [MEMORY[0x277D759A0] mainScreen];
-      [v101 _referenceBounds];
+      mainScreen17 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen17 _referenceBounds];
     }
 
-    v27 = v68 ^ 1u;
+    mainScreen28 = v68 ^ 1u;
     BSSizeRoundForScale();
-    HIDWORD(v150) = v27;
+    HIDWORD(v150) = mainScreen28;
     if (v71 >= *(MEMORY[0x277D66E30] + 104))
     {
       LODWORD(v150) = 0;
@@ -7195,8 +7195,8 @@ LABEL_355:
   }
 
 LABEL_365:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -7208,8 +7208,8 @@ LABEL_365:
 
   else
   {
-    v113 = [MEMORY[0x277D75418] currentDevice];
-    if ([v113 userInterfaceIdiom])
+    currentDevice21 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice21 userInterfaceIdiom])
     {
       HIDWORD(v149) = 0;
       LODWORD(v150) = 1;
@@ -7217,22 +7217,22 @@ LABEL_365:
     }
   }
 
-  LODWORD(v150) = v27 ^ 1;
+  LODWORD(v150) = mainScreen28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v104 = [MEMORY[0x277D759A0] mainScreen];
-      [v104 _referenceBounds];
+      mainScreen18 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen18 _referenceBounds];
     }
 
-    HIDWORD(v149) = v27 ^ 1;
+    HIDWORD(v149) = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v69 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -7286,8 +7286,8 @@ LABEL_383:
 
   else
   {
-    v106 = [MEMORY[0x277D75418] currentDevice];
-    if ([v106 userInterfaceIdiom])
+    currentDevice22 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice22 userInterfaceIdiom])
     {
       HIDWORD(v148) = 0;
       LODWORD(v149) = 1;
@@ -7298,19 +7298,19 @@ LABEL_383:
   LODWORD(v149) = v70 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v97 = [MEMORY[0x277D759A0] mainScreen];
-      [v97 _referenceBounds];
+      mainScreen19 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen19 _referenceBounds];
     }
 
-    HIDWORD(v148) = v27 ^ 1;
+    HIDWORD(v148) = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v76 >= *(MEMORY[0x277D66E30] + 216))
     {
@@ -7338,8 +7338,8 @@ LABEL_383:
   }
 
 LABEL_393:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -7351,8 +7351,8 @@ LABEL_393:
 
   else
   {
-    v109 = [MEMORY[0x277D75418] currentDevice];
-    if ([v109 userInterfaceIdiom])
+    currentDevice23 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice23 userInterfaceIdiom])
     {
       HIDWORD(v147) = 0;
       LODWORD(v148) = 1;
@@ -7360,22 +7360,22 @@ LABEL_393:
     }
   }
 
-  LODWORD(v148) = v27 ^ 1;
+  LODWORD(v148) = mainScreen28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v100 = [MEMORY[0x277D759A0] mainScreen];
-      [v100 _referenceBounds];
+      mainScreen20 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen20 _referenceBounds];
     }
 
-    HIDWORD(v147) = v27 ^ 1;
+    HIDWORD(v147) = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v72 >= *(MEMORY[0x277D66E30] + 216))
     {
@@ -7421,8 +7421,8 @@ LABEL_407:
 
   else
   {
-    v107 = [MEMORY[0x277D75418] currentDevice];
-    if ([v107 userInterfaceIdiom])
+    currentDevice24 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice24 userInterfaceIdiom])
     {
       HIDWORD(v146) = 0;
       LODWORD(v147) = 1;
@@ -7441,13 +7441,13 @@ LABEL_407:
 
     else
     {
-      v98 = [MEMORY[0x277D759A0] mainScreen];
-      [v98 _referenceBounds];
+      mainScreen21 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen21 _referenceBounds];
     }
 
-    v27 = v74 ^ 1u;
+    mainScreen28 = v74 ^ 1u;
     BSSizeRoundForScale();
-    HIDWORD(v146) = v27;
+    HIDWORD(v146) = mainScreen28;
     if (v75 >= *(MEMORY[0x277D66E30] + 120))
     {
       LODWORD(v146) = 0;
@@ -7472,8 +7472,8 @@ LABEL_407:
   }
 
 LABEL_417:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -7485,8 +7485,8 @@ LABEL_417:
 
   else
   {
-    v103 = [MEMORY[0x277D75418] currentDevice];
-    if ([v103 userInterfaceIdiom])
+    currentDevice25 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice25 userInterfaceIdiom])
     {
       HIDWORD(v145) = 0;
       LODWORD(v146) = 1;
@@ -7494,22 +7494,22 @@ LABEL_417:
     }
   }
 
-  LODWORD(v146) = v27 ^ 1;
+  LODWORD(v146) = mainScreen28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v96 = [MEMORY[0x277D759A0] mainScreen];
-      [v96 _referenceBounds];
+      mainScreen22 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen22 _referenceBounds];
     }
 
-    HIDWORD(v145) = v27 ^ 1;
+    HIDWORD(v145) = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v77 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -7553,8 +7553,8 @@ LABEL_437:
 
   else
   {
-    v102 = [MEMORY[0x277D75418] currentDevice];
-    if ([v102 userInterfaceIdiom])
+    currentDevice26 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice26 userInterfaceIdiom])
     {
       HIDWORD(v144) = 0;
       LODWORD(v145) = 1;
@@ -7565,19 +7565,19 @@ LABEL_437:
   LODWORD(v145) = v78 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v95 = [MEMORY[0x277D759A0] mainScreen];
-      [v95 _referenceBounds];
+      mainScreen23 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen23 _referenceBounds];
     }
 
-    HIDWORD(v144) = v27 ^ 1;
+    HIDWORD(v144) = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v79 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -7601,8 +7601,8 @@ LABEL_437:
   }
 
 LABEL_447:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -7614,8 +7614,8 @@ LABEL_447:
 
   else
   {
-    v99 = [MEMORY[0x277D75418] currentDevice];
-    if ([v99 userInterfaceIdiom])
+    currentDevice27 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice27 userInterfaceIdiom])
     {
       HIDWORD(v143) = 0;
       LODWORD(v144) = 1;
@@ -7623,22 +7623,22 @@ LABEL_447:
     }
   }
 
-  LODWORD(v144) = v27 ^ 1;
+  LODWORD(v144) = mainScreen28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v94 = [MEMORY[0x277D759A0] mainScreen];
-      [v94 _referenceBounds];
+      mainScreen24 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen24 _referenceBounds];
     }
 
-    HIDWORD(v143) = v27 ^ 1;
+    HIDWORD(v143) = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v80 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -7736,8 +7736,8 @@ LABEL_464:
 
   else
   {
-    v93 = [MEMORY[0x277D75418] currentDevice];
-    if ([v93 userInterfaceIdiom])
+    currentDevice28 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice28 userInterfaceIdiom])
     {
       v33 = 0;
       LODWORD(v143) = 1;
@@ -7748,19 +7748,19 @@ LABEL_464:
   LODWORD(v143) = v81 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v90 = [MEMORY[0x277D759A0] mainScreen];
-      [v90 _referenceBounds];
+      mainScreen25 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen25 _referenceBounds];
     }
 
-    v33 = v27 ^ 1;
+    v33 = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v85 >= *(MEMORY[0x277D66E30] + 88))
     {
@@ -7794,8 +7794,8 @@ LABEL_484:
 
   else
   {
-    v92 = [MEMORY[0x277D75418] currentDevice];
-    if ([v92 userInterfaceIdiom])
+    currentDevice29 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice29 userInterfaceIdiom])
     {
       v35 = 0;
       v34 = 1;
@@ -7806,19 +7806,19 @@ LABEL_484:
   v34 = v82 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v27 = __sb__runningInSpringBoard();
-    if (v27)
+    mainScreen28 = __sb__runningInSpringBoard();
+    if (mainScreen28)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v89 = [MEMORY[0x277D759A0] mainScreen];
-      [v89 _referenceBounds];
+      mainScreen26 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen26 _referenceBounds];
     }
 
-    v35 = v27 ^ 1;
+    v35 = mainScreen28 ^ 1;
     BSSizeRoundForScale();
     if (v86 >= *(MEMORY[0x277D66E30] + 72))
     {
@@ -7850,8 +7850,8 @@ LABEL_494:
 
   else
   {
-    v91 = [MEMORY[0x277D75418] currentDevice];
-    if ([v91 userInterfaceIdiom])
+    currentDevice30 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice30 userInterfaceIdiom])
     {
       v37 = 0;
       v36 = 1;
@@ -7860,19 +7860,19 @@ LABEL_494:
   }
 
   v36 = v83 ^ 1;
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v21 = [MEMORY[0x277D759A0] mainScreen];
-    [v21 _referenceBounds];
+    mainScreen27 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen27 _referenceBounds];
   }
 
-  v37 = v27 ^ 1;
+  v37 = mainScreen28 ^ 1;
   BSSizeRoundForScale();
   if (v84 >= *(MEMORY[0x277D66E30] + 56))
   {
@@ -7883,8 +7883,8 @@ LABEL_494:
   }
 
 LABEL_504:
-  v27 = __sb__runningInSpringBoard();
-  if (v27)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -7898,8 +7898,8 @@ LABEL_521:
 
   else
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    if ([v5 userInterfaceIdiom])
+    currentDevice31 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice31 userInterfaceIdiom])
     {
       v39 = 0;
       v38 = 1;
@@ -7907,7 +7907,7 @@ LABEL_521:
     }
   }
 
-  v38 = v27 ^ 1;
+  v38 = mainScreen28 ^ 1;
   v87 = __sb__runningInSpringBoard();
   if (v87)
   {
@@ -7916,8 +7916,8 @@ LABEL_521:
 
   else
   {
-    v27 = [MEMORY[0x277D759A0] mainScreen];
-    [v27 _referenceBounds];
+    mainScreen28 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen28 _referenceBounds];
   }
 
   v39 = v87 ^ 1;
@@ -8197,10 +8197,10 @@ LABEL_100:
 {
   if (_os_feature_enabled_impl())
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1 || ([(CSCoverSheetViewController *)self interfaceOrientation]- 1) <= 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || ([(CSCoverSheetViewController *)self interfaceOrientation]- 1) <= 1)
     {
       [getCSProminentLayoutControllerClass() frameForElements:1 variant:1 forcePortraitBounds:1];
       CGRectGetMaxY(v326);
@@ -8225,8 +8225,8 @@ LABEL_419:
 
     else
     {
-      v300 = [MEMORY[0x277D75418] currentDevice];
-      if ([v300 userInterfaceIdiom] != 1)
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom] != 1)
       {
         v324 = 0x100000000;
         goto LABEL_41;
@@ -8236,19 +8236,19 @@ LABEL_419:
     HIDWORD(v324) = v14 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v17 = __sb__runningInSpringBoard();
-      if (v17)
+      currentDevice30 = __sb__runningInSpringBoard();
+      if (currentDevice30)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v303 = [MEMORY[0x277D759A0] mainScreen];
-        [v303 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
-      LODWORD(v324) = v17 ^ 1;
+      LODWORD(v324) = currentDevice30 ^ 1;
       BSSizeRoundForScale();
       if (v52 == *(MEMORY[0x277D66E30] + 288) && v51 == *(MEMORY[0x277D66E30] + 296))
       {
@@ -8291,8 +8291,8 @@ LABEL_41:
 
     else
     {
-      v297 = [MEMORY[0x277D75418] currentDevice];
-      if ([v297 userInterfaceIdiom] != 1)
+      currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice3 userInterfaceIdiom] != 1)
       {
         v323 = 0x100000000;
         goto LABEL_59;
@@ -8302,19 +8302,19 @@ LABEL_41:
     HIDWORD(v323) = v21 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v17 = __sb__runningInSpringBoard();
-      if (v17)
+      currentDevice30 = __sb__runningInSpringBoard();
+      if (currentDevice30)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v289 = [MEMORY[0x277D759A0] mainScreen];
-        [v289 _referenceBounds];
+        mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen2 _referenceBounds];
       }
 
-      LODWORD(v323) = v17 ^ 1;
+      LODWORD(v323) = currentDevice30 ^ 1;
       BSSizeRoundForScale();
       if (v57 >= *(MEMORY[0x277D66E30] + 440))
       {
@@ -8356,8 +8356,8 @@ LABEL_59:
 
     else
     {
-      v296 = [MEMORY[0x277D75418] currentDevice];
-      if ([v296 userInterfaceIdiom] != 1)
+      currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice4 userInterfaceIdiom] != 1)
       {
         v322 = 0x100000000;
         goto LABEL_77;
@@ -8367,19 +8367,19 @@ LABEL_59:
     HIDWORD(v322) = v23 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v17 = __sb__runningInSpringBoard();
-      if (v17)
+      currentDevice30 = __sb__runningInSpringBoard();
+      if (currentDevice30)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v288 = [MEMORY[0x277D759A0] mainScreen];
-        [v288 _referenceBounds];
+        mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen3 _referenceBounds];
       }
 
-      LODWORD(v322) = v17 ^ 1;
+      LODWORD(v322) = currentDevice30 ^ 1;
       BSSizeRoundForScale();
       if (v61 >= *(MEMORY[0x277D66E30] + 376))
       {
@@ -8420,8 +8420,8 @@ LABEL_77:
 
     else
     {
-      v295 = [MEMORY[0x277D75418] currentDevice];
-      if ([v295 userInterfaceIdiom] != 1)
+      currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice5 userInterfaceIdiom] != 1)
       {
         v321[15] = 0x100000000;
         goto LABEL_94;
@@ -8429,19 +8429,19 @@ LABEL_77:
     }
 
     HIDWORD(v321[15]) = v25 ^ 1;
-    v17 = __sb__runningInSpringBoard();
-    if (v17)
+    currentDevice30 = __sb__runningInSpringBoard();
+    if (currentDevice30)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v292 = [MEMORY[0x277D759A0] mainScreen];
-      [v292 _referenceBounds];
+      mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen4 _referenceBounds];
     }
 
-    LODWORD(v321[15]) = v17 ^ 1;
+    LODWORD(v321[15]) = currentDevice30 ^ 1;
     BSSizeRoundForScale();
     if (v28 >= *(MEMORY[0x277D66E30] + 280))
     {
@@ -8476,8 +8476,8 @@ LABEL_94:
 
     else
     {
-      v294 = [MEMORY[0x277D75418] currentDevice];
-      if ([v294 userInterfaceIdiom] != 1)
+      currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice6 userInterfaceIdiom] != 1)
       {
         v321[14] = 0x100000000;
         goto LABEL_114;
@@ -8485,19 +8485,19 @@ LABEL_94:
     }
 
     HIDWORD(v321[14]) = v29 ^ 1;
-    v17 = __sb__runningInSpringBoard();
-    if (v17)
+    currentDevice30 = __sb__runningInSpringBoard();
+    if (currentDevice30)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v290 = [MEMORY[0x277D759A0] mainScreen];
-      [v290 _referenceBounds];
+      mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen5 _referenceBounds];
     }
 
-    LODWORD(v321[14]) = v17 ^ 1;
+    LODWORD(v321[14]) = currentDevice30 ^ 1;
     BSSizeRoundForScale();
     if (v47 >= *(MEMORY[0x277D66E30] + 264))
     {
@@ -8532,8 +8532,8 @@ LABEL_114:
 
     else
     {
-      v293 = [MEMORY[0x277D75418] currentDevice];
-      if ([v293 userInterfaceIdiom] != 1)
+      currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice7 userInterfaceIdiom] != 1)
       {
         v321[13] = 0x100000000;
         goto LABEL_441;
@@ -8541,19 +8541,19 @@ LABEL_114:
     }
 
     HIDWORD(v321[13]) = v48 ^ 1;
-    v17 = __sb__runningInSpringBoard();
-    if (v17)
+    currentDevice30 = __sb__runningInSpringBoard();
+    if (currentDevice30)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v287 = [MEMORY[0x277D759A0] mainScreen];
-      [v287 _referenceBounds];
+      mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen6 _referenceBounds];
     }
 
-    LODWORD(v321[13]) = v17 ^ 1;
+    LODWORD(v321[13]) = currentDevice30 ^ 1;
     BSSizeRoundForScale();
     if (v68 >= *(MEMORY[0x277D66E30] + 248))
     {
@@ -8576,8 +8576,8 @@ LABEL_114:
     }
 
 LABEL_441:
-    v17 = __sb__runningInSpringBoard();
-    if (v17)
+    currentDevice30 = __sb__runningInSpringBoard();
+    if (currentDevice30)
     {
       if (SBFEffectiveDeviceClass() != 2)
       {
@@ -8587,11 +8587,11 @@ LABEL_441:
 
     else
     {
-      v291 = [MEMORY[0x277D75418] currentDevice];
-      if ([v291 userInterfaceIdiom] != 1)
+      currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice8 userInterfaceIdiom] != 1)
       {
 LABEL_443:
-        HIDWORD(v321[12]) = v17 ^ 1;
+        HIDWORD(v321[12]) = currentDevice30 ^ 1;
         if (!_SBF_Private_IsD94Like())
         {
 LABEL_447:
@@ -8610,8 +8610,8 @@ LABEL_447:
 
         else
         {
-          v285 = [MEMORY[0x277D75418] currentDevice];
-          if ([v285 userInterfaceIdiom])
+          currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice9 userInterfaceIdiom])
           {
             HIDWORD(v321[11]) = 0;
             LODWORD(v321[12]) = 1;
@@ -8622,20 +8622,20 @@ LABEL_447:
         LODWORD(v321[12]) = v69 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v278 = [MEMORY[0x277D759A0] mainScreen];
-            [v278 _referenceBounds];
+            mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen7 _referenceBounds];
           }
 
           BSSizeRoundForScale();
-          HIDWORD(v321[11]) = v17 ^ 1;
+          HIDWORD(v321[11]) = currentDevice30 ^ 1;
           if (v111 >= *(MEMORY[0x277D66E30] + 200))
           {
             v32 = 0;
@@ -8663,8 +8663,8 @@ LABEL_447:
         }
 
 LABEL_691:
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -8675,8 +8675,8 @@ LABEL_691:
 
         else
         {
-          v286 = [MEMORY[0x277D75418] currentDevice];
-          if ([v286 userInterfaceIdiom])
+          currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice10 userInterfaceIdiom])
           {
             HIDWORD(v321[10]) = 0;
             LODWORD(v321[11]) = 1;
@@ -8684,22 +8684,22 @@ LABEL_691:
           }
         }
 
-        LODWORD(v321[11]) = v17 ^ 1;
+        LODWORD(v321[11]) = currentDevice30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v281 = [MEMORY[0x277D759A0] mainScreen];
-            [v281 _referenceBounds];
+            mainScreen8 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen8 _referenceBounds];
           }
 
-          HIDWORD(v321[10]) = v17 ^ 1;
+          HIDWORD(v321[10]) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v106 >= *(MEMORY[0x277D66E30] + 200))
           {
@@ -8752,8 +8752,8 @@ LABEL_709:
 
         else
         {
-          v282 = [MEMORY[0x277D75418] currentDevice];
-          if ([v282 userInterfaceIdiom])
+          currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice11 userInterfaceIdiom])
           {
             HIDWORD(v321[9]) = 0;
             LODWORD(v321[10]) = 1;
@@ -8764,20 +8764,20 @@ LABEL_709:
         LODWORD(v321[10]) = v107 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v273 = [MEMORY[0x277D759A0] mainScreen];
-            [v273 _referenceBounds];
+            mainScreen9 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen9 _referenceBounds];
           }
 
           BSSizeRoundForScale();
-          HIDWORD(v321[9]) = v17 ^ 1;
+          HIDWORD(v321[9]) = currentDevice30 ^ 1;
           if (v125 >= *(MEMORY[0x277D66E30] + 136))
           {
             v32 = 0;
@@ -8805,8 +8805,8 @@ LABEL_709:
         }
 
 LABEL_747:
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -8817,8 +8817,8 @@ LABEL_747:
 
         else
         {
-          v284 = [MEMORY[0x277D75418] currentDevice];
-          if ([v284 userInterfaceIdiom])
+          currentDevice12 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice12 userInterfaceIdiom])
           {
             HIDWORD(v321[8]) = 0;
             LODWORD(v321[9]) = 1;
@@ -8826,22 +8826,22 @@ LABEL_747:
           }
         }
 
-        LODWORD(v321[9]) = v17 ^ 1;
+        LODWORD(v321[9]) = currentDevice30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v277 = [MEMORY[0x277D759A0] mainScreen];
-            [v277 _referenceBounds];
+            mainScreen10 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen10 _referenceBounds];
           }
 
-          HIDWORD(v321[8]) = v17 ^ 1;
+          HIDWORD(v321[8]) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v113 >= *(MEMORY[0x277D66E30] + 136))
           {
@@ -8888,8 +8888,8 @@ LABEL_761:
 
         else
         {
-          v283 = [MEMORY[0x277D75418] currentDevice];
-          if ([v283 userInterfaceIdiom])
+          currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice13 userInterfaceIdiom])
           {
             HIDWORD(v321[7]) = 0;
             LODWORD(v321[8]) = 1;
@@ -8900,20 +8900,20 @@ LABEL_761:
         LODWORD(v321[8]) = v114 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v274 = [MEMORY[0x277D759A0] mainScreen];
-            [v274 _referenceBounds];
+            mainScreen11 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen11 _referenceBounds];
           }
 
           BSSizeRoundForScale();
-          HIDWORD(v321[7]) = v17 ^ 1;
+          HIDWORD(v321[7]) = currentDevice30 ^ 1;
           if (v123 >= *(MEMORY[0x277D66E30] + 136))
           {
             v32 = 0;
@@ -8941,8 +8941,8 @@ LABEL_761:
         }
 
 LABEL_771:
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -8953,8 +8953,8 @@ LABEL_771:
 
         else
         {
-          v280 = [MEMORY[0x277D75418] currentDevice];
-          if ([v280 userInterfaceIdiom])
+          currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice14 userInterfaceIdiom])
           {
             HIDWORD(v321[6]) = 0;
             LODWORD(v321[7]) = 1;
@@ -8962,22 +8962,22 @@ LABEL_771:
           }
         }
 
-        LODWORD(v321[7]) = v17 ^ 1;
+        LODWORD(v321[7]) = currentDevice30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v272 = [MEMORY[0x277D759A0] mainScreen];
-            [v272 _referenceBounds];
+            mainScreen12 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen12 _referenceBounds];
           }
 
-          HIDWORD(v321[6]) = v17 ^ 1;
+          HIDWORD(v321[6]) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v129 >= *(MEMORY[0x277D66E30] + 136))
           {
@@ -9024,8 +9024,8 @@ LABEL_893:
 
         else
         {
-          v279 = [MEMORY[0x277D75418] currentDevice];
-          if ([v279 userInterfaceIdiom])
+          currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice15 userInterfaceIdiom])
           {
             HIDWORD(v321[5]) = 0;
             LODWORD(v321[6]) = 1;
@@ -9036,20 +9036,20 @@ LABEL_893:
         LODWORD(v321[6]) = v130 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v269 = [MEMORY[0x277D759A0] mainScreen];
-            [v269 _referenceBounds];
+            mainScreen13 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen13 _referenceBounds];
           }
 
           BSSizeRoundForScale();
-          HIDWORD(v321[5]) = v17 ^ 1;
+          HIDWORD(v321[5]) = currentDevice30 ^ 1;
           if (v142 >= *(MEMORY[0x277D66E30] + 120) && (_SBF_Private_IsN84OrSimilarDevice() & 1) != 0)
           {
             v32 = 0;
@@ -9077,8 +9077,8 @@ LABEL_893:
         }
 
 LABEL_911:
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -9089,8 +9089,8 @@ LABEL_911:
 
         else
         {
-          v276 = [MEMORY[0x277D75418] currentDevice];
-          if ([v276 userInterfaceIdiom])
+          currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice16 userInterfaceIdiom])
           {
             HIDWORD(v321[4]) = 0;
             LODWORD(v321[5]) = 1;
@@ -9098,22 +9098,22 @@ LABEL_911:
           }
         }
 
-        LODWORD(v321[5]) = v17 ^ 1;
+        LODWORD(v321[5]) = currentDevice30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v268 = [MEMORY[0x277D759A0] mainScreen];
-            [v268 _referenceBounds];
+            mainScreen14 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen14 _referenceBounds];
           }
 
-          HIDWORD(v321[4]) = v17 ^ 1;
+          HIDWORD(v321[4]) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v146 >= *(MEMORY[0x277D66E30] + 120))
           {
@@ -9166,8 +9166,8 @@ LABEL_1047:
 
         else
         {
-          v271 = [MEMORY[0x277D75418] currentDevice];
-          if ([v271 userInterfaceIdiom])
+          currentDevice17 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice17 userInterfaceIdiom])
           {
             HIDWORD(v321[3]) = 0;
             LODWORD(v321[4]) = 1;
@@ -9178,19 +9178,19 @@ LABEL_1047:
         LODWORD(v321[4]) = v147 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v262 = [MEMORY[0x277D759A0] mainScreen];
-            [v262 _referenceBounds];
+            mainScreen15 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen15 _referenceBounds];
           }
 
-          HIDWORD(v321[3]) = v17 ^ 1;
+          HIDWORD(v321[3]) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v166 >= *(MEMORY[0x277D66E30] + 184))
           {
@@ -9219,8 +9219,8 @@ LABEL_1047:
         }
 
 LABEL_1113:
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -9231,8 +9231,8 @@ LABEL_1113:
 
         else
         {
-          v275 = [MEMORY[0x277D75418] currentDevice];
-          if ([v275 userInterfaceIdiom])
+          currentDevice18 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice18 userInterfaceIdiom])
           {
             HIDWORD(v321[2]) = 0;
             LODWORD(v321[3]) = 1;
@@ -9240,22 +9240,22 @@ LABEL_1113:
           }
         }
 
-        LODWORD(v321[3]) = v17 ^ 1;
+        LODWORD(v321[3]) = currentDevice30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v265 = [MEMORY[0x277D759A0] mainScreen];
-            [v265 _referenceBounds];
+            mainScreen16 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen16 _referenceBounds];
           }
 
-          HIDWORD(v321[2]) = v17 ^ 1;
+          HIDWORD(v321[2]) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v156 >= *(MEMORY[0x277D66E30] + 184))
           {
@@ -9308,8 +9308,8 @@ LABEL_1131:
 
         else
         {
-          v267 = [MEMORY[0x277D75418] currentDevice];
-          if ([v267 userInterfaceIdiom])
+          currentDevice19 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice19 userInterfaceIdiom])
           {
             HIDWORD(v321[1]) = 0;
             LODWORD(v321[2]) = 1;
@@ -9320,19 +9320,19 @@ LABEL_1131:
         LODWORD(v321[2]) = v157 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v258 = [MEMORY[0x277D759A0] mainScreen];
-            [v258 _referenceBounds];
+            mainScreen17 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen17 _referenceBounds];
           }
 
-          HIDWORD(v321[1]) = v17 ^ 1;
+          HIDWORD(v321[1]) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v176 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -9362,8 +9362,8 @@ LABEL_1131:
         }
 
 LABEL_1195:
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -9374,8 +9374,8 @@ LABEL_1195:
 
         else
         {
-          v270 = [MEMORY[0x277D75418] currentDevice];
-          if ([v270 userInterfaceIdiom])
+          currentDevice20 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice20 userInterfaceIdiom])
           {
             HIDWORD(v321[0]) = 0;
             LODWORD(v321[1]) = 1;
@@ -9383,22 +9383,22 @@ LABEL_1195:
           }
         }
 
-        LODWORD(v321[1]) = v17 ^ 1;
+        LODWORD(v321[1]) = currentDevice30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v261 = [MEMORY[0x277D759A0] mainScreen];
-            [v261 _referenceBounds];
+            mainScreen18 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen18 _referenceBounds];
           }
 
-          HIDWORD(v321[0]) = v17 ^ 1;
+          HIDWORD(v321[0]) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v168 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -9452,8 +9452,8 @@ LABEL_1213:
 
         else
         {
-          v263 = [MEMORY[0x277D75418] currentDevice];
-          if ([v263 userInterfaceIdiom])
+          currentDevice21 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice21 userInterfaceIdiom])
           {
             HIDWORD(v318) = 0;
             LODWORD(v321[0]) = 1;
@@ -9464,19 +9464,19 @@ LABEL_1213:
         LODWORD(v321[0]) = v169 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v254 = [MEMORY[0x277D759A0] mainScreen];
-            [v254 _referenceBounds];
+            mainScreen19 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen19 _referenceBounds];
           }
 
-          HIDWORD(v318) = v17 ^ 1;
+          HIDWORD(v318) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v190 >= *(MEMORY[0x277D66E30] + 216))
           {
@@ -9504,8 +9504,8 @@ LABEL_1213:
         }
 
 LABEL_1307:
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -9517,8 +9517,8 @@ LABEL_1307:
 
         else
         {
-          v266 = [MEMORY[0x277D75418] currentDevice];
-          if ([v266 userInterfaceIdiom])
+          currentDevice22 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice22 userInterfaceIdiom])
           {
             HIDWORD(v315) = 0;
             LODWORD(v318) = 1;
@@ -9526,22 +9526,22 @@ LABEL_1307:
           }
         }
 
-        LODWORD(v318) = v17 ^ 1;
+        LODWORD(v318) = currentDevice30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v257 = [MEMORY[0x277D759A0] mainScreen];
-            [v257 _referenceBounds];
+            mainScreen20 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen20 _referenceBounds];
           }
 
-          HIDWORD(v315) = v17 ^ 1;
+          HIDWORD(v315) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v180 >= *(MEMORY[0x277D66E30] + 216))
           {
@@ -9587,8 +9587,8 @@ LABEL_1321:
 
         else
         {
-          v264 = [MEMORY[0x277D75418] currentDevice];
-          if ([v264 userInterfaceIdiom])
+          currentDevice23 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice23 userInterfaceIdiom])
           {
             HIDWORD(v312) = 0;
             LODWORD(v315) = 1;
@@ -9599,19 +9599,19 @@ LABEL_1321:
         LODWORD(v315) = v181 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v255 = [MEMORY[0x277D759A0] mainScreen];
-            [v255 _referenceBounds];
+            mainScreen21 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen21 _referenceBounds];
           }
 
-          HIDWORD(v312) = v17 ^ 1;
+          HIDWORD(v312) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v188 >= *(MEMORY[0x277D66E30] + 120))
           {
@@ -9637,8 +9637,8 @@ LABEL_1321:
         }
 
 LABEL_1331:
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -9650,8 +9650,8 @@ LABEL_1331:
 
         else
         {
-          v260 = [MEMORY[0x277D75418] currentDevice];
-          if ([v260 userInterfaceIdiom])
+          currentDevice24 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice24 userInterfaceIdiom])
           {
             HIDWORD(v309) = 0;
             LODWORD(v312) = 1;
@@ -9659,22 +9659,22 @@ LABEL_1331:
           }
         }
 
-        LODWORD(v312) = v17 ^ 1;
+        LODWORD(v312) = currentDevice30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v253 = [MEMORY[0x277D759A0] mainScreen];
-            [v253 _referenceBounds];
+            mainScreen22 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen22 _referenceBounds];
           }
 
-          HIDWORD(v309) = v17 ^ 1;
+          HIDWORD(v309) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v194 >= *(MEMORY[0x277D66E30] + 120))
           {
@@ -9718,8 +9718,8 @@ LABEL_1453:
 
         else
         {
-          v259 = [MEMORY[0x277D75418] currentDevice];
-          if ([v259 userInterfaceIdiom])
+          currentDevice25 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice25 userInterfaceIdiom])
           {
             HIDWORD(v306) = 0;
             LODWORD(v309) = 1;
@@ -9730,19 +9730,19 @@ LABEL_1453:
         LODWORD(v309) = v195 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v252 = [MEMORY[0x277D759A0] mainScreen];
-            [v252 _referenceBounds];
+            mainScreen23 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen23 _referenceBounds];
           }
 
-          HIDWORD(v306) = v17 ^ 1;
+          HIDWORD(v306) = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v204 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -9766,8 +9766,8 @@ LABEL_1453:
         }
 
 LABEL_1471:
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -9779,8 +9779,8 @@ LABEL_1471:
 
         else
         {
-          v256 = [MEMORY[0x277D75418] currentDevice];
-          if ([v256 userInterfaceIdiom])
+          currentDevice26 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice26 userInterfaceIdiom])
           {
             v40 = 0;
             LODWORD(v306) = 1;
@@ -9788,22 +9788,22 @@ LABEL_1471:
           }
         }
 
-        LODWORD(v306) = v17 ^ 1;
+        LODWORD(v306) = currentDevice30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v251 = [MEMORY[0x277D759A0] mainScreen];
-            [v251 _referenceBounds];
+            mainScreen24 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen24 _referenceBounds];
           }
 
-          v40 = v17 ^ 1;
+          v40 = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v212 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -9850,8 +9850,8 @@ LABEL_1615:
 
         else
         {
-          v250 = [MEMORY[0x277D75418] currentDevice];
-          if ([v250 userInterfaceIdiom])
+          currentDevice27 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice27 userInterfaceIdiom])
           {
             v38 = 0;
             v39 = 1;
@@ -9862,19 +9862,19 @@ LABEL_1615:
         v39 = v214 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v246 = [MEMORY[0x277D759A0] mainScreen];
-            [v246 _referenceBounds];
+            mainScreen25 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen25 _referenceBounds];
           }
 
-          v38 = v17 ^ 1;
+          v38 = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v227 >= *(MEMORY[0x277D66E30] + 88))
           {
@@ -9907,8 +9907,8 @@ LABEL_1722:
 
         else
         {
-          v249 = [MEMORY[0x277D75418] currentDevice];
-          if ([v249 userInterfaceIdiom])
+          currentDevice28 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice28 userInterfaceIdiom])
           {
             v36 = 0;
             v37 = 1;
@@ -9919,19 +9919,19 @@ LABEL_1722:
         v37 = v222 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v17 = __sb__runningInSpringBoard();
-          if (v17)
+          currentDevice30 = __sb__runningInSpringBoard();
+          if (currentDevice30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v245 = [MEMORY[0x277D759A0] mainScreen];
-            [v245 _referenceBounds];
+            mainScreen26 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen26 _referenceBounds];
           }
 
-          v36 = v17 ^ 1;
+          v36 = currentDevice30 ^ 1;
           BSSizeRoundForScale();
           if (v229 >= *(MEMORY[0x277D66E30] + 72))
           {
@@ -9949,8 +9949,8 @@ LABEL_1722:
         }
 
 LABEL_1742:
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -9962,8 +9962,8 @@ LABEL_1742:
 
         else
         {
-          v248 = [MEMORY[0x277D75418] currentDevice];
-          if ([v248 userInterfaceIdiom])
+          currentDevice29 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice29 userInterfaceIdiom])
           {
             v34 = 0;
             v35 = 1;
@@ -9971,20 +9971,20 @@ LABEL_1742:
           }
         }
 
-        v35 = v17 ^ 1;
-        v17 = __sb__runningInSpringBoard();
-        if (v17)
+        v35 = currentDevice30 ^ 1;
+        currentDevice30 = __sb__runningInSpringBoard();
+        if (currentDevice30)
         {
           __sb__mainScreenReferenceBounds();
         }
 
         else
         {
-          v247 = [MEMORY[0x277D759A0] mainScreen];
-          [v247 _referenceBounds];
+          mainScreen27 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen27 _referenceBounds];
         }
 
-        v34 = v17 ^ 1;
+        v34 = currentDevice30 ^ 1;
         BSSizeRoundForScale();
         if (v224 >= *(MEMORY[0x277D66E30] + 56))
         {
@@ -10002,7 +10002,7 @@ LABEL_1762:
             v32 = 0;
             v33 = 0;
 LABEL_1796:
-            v27 = v244;
+            v27 = mainScreen28;
 LABEL_184:
             if (v32)
             {
@@ -10282,7 +10282,7 @@ LABEL_204:
                   goto LABEL_419;
                 }
 
-                v62 = v300;
+                v62 = currentDevice2;
                 goto LABEL_418;
               }
 
@@ -10299,8 +10299,8 @@ LABEL_187:
 
         else
         {
-          v17 = [MEMORY[0x277D75418] currentDevice];
-          if ([v17 userInterfaceIdiom])
+          currentDevice30 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice30 userInterfaceIdiom])
           {
             v32 = 0;
             v33 = 1;
@@ -10317,8 +10317,8 @@ LABEL_187:
 
         else
         {
-          v244 = [MEMORY[0x277D759A0] mainScreen];
-          [v244 _referenceBounds];
+          mainScreen28 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen28 _referenceBounds];
         }
 
         v32 = v231 ^ 1;
@@ -10342,7 +10342,7 @@ LABEL_187:
     v315 = 0;
     v318 = 0;
     memset(v321, 0, 100);
-    HIDWORD(v321[12]) = v17 ^ 1;
+    HIDWORD(v321[12]) = currentDevice30 ^ 1;
     goto LABEL_184;
   }
 
@@ -10372,8 +10372,8 @@ LABEL_17:
 
     else
     {
-      v295 = [MEMORY[0x277D75418] currentDevice];
-      if ([v295 userInterfaceIdiom] != 1)
+      currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice5 userInterfaceIdiom] != 1)
       {
         v324 = 0x100000000;
         goto LABEL_50;
@@ -10383,19 +10383,19 @@ LABEL_17:
     HIDWORD(v324) = v15 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v18 = __sb__runningInSpringBoard();
-      if (v18)
+      mainScreen30 = __sb__runningInSpringBoard();
+      if (mainScreen30)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v296 = [MEMORY[0x277D759A0] mainScreen];
-        [v296 _referenceBounds];
+        currentDevice4 = [MEMORY[0x277D759A0] mainScreen];
+        [currentDevice4 _referenceBounds];
       }
 
-      LODWORD(v324) = v18 ^ 1;
+      LODWORD(v324) = mainScreen30 ^ 1;
       BSSizeRoundForScale();
       if (v54 == *(MEMORY[0x277D66E30] + 288) && v53 == *(MEMORY[0x277D66E30] + 296))
       {
@@ -10438,8 +10438,8 @@ LABEL_50:
 
     else
     {
-      v294 = [MEMORY[0x277D75418] currentDevice];
-      if ([v294 userInterfaceIdiom] != 1)
+      currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice6 userInterfaceIdiom] != 1)
       {
         v323 = 0x100000000;
         goto LABEL_68;
@@ -10449,19 +10449,19 @@ LABEL_50:
     HIDWORD(v323) = v22 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v18 = __sb__runningInSpringBoard();
-      if (v18)
+      mainScreen30 = __sb__runningInSpringBoard();
+      if (mainScreen30)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v286 = [MEMORY[0x277D759A0] mainScreen];
-        [v286 _referenceBounds];
+        currentDevice10 = [MEMORY[0x277D759A0] mainScreen];
+        [currentDevice10 _referenceBounds];
       }
 
-      LODWORD(v323) = v18 ^ 1;
+      LODWORD(v323) = mainScreen30 ^ 1;
       BSSizeRoundForScale();
       if (v58 >= *(MEMORY[0x277D66E30] + 440))
       {
@@ -10503,8 +10503,8 @@ LABEL_68:
 
     else
     {
-      v293 = [MEMORY[0x277D75418] currentDevice];
-      if ([v293 userInterfaceIdiom] != 1)
+      currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice7 userInterfaceIdiom] != 1)
       {
         v322 = 0x100000000;
         goto LABEL_85;
@@ -10514,19 +10514,19 @@ LABEL_68:
     HIDWORD(v322) = v24 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v18 = __sb__runningInSpringBoard();
-      if (v18)
+      mainScreen30 = __sb__runningInSpringBoard();
+      if (mainScreen30)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v285 = [MEMORY[0x277D759A0] mainScreen];
-        [v285 _referenceBounds];
+        currentDevice9 = [MEMORY[0x277D759A0] mainScreen];
+        [currentDevice9 _referenceBounds];
       }
 
-      LODWORD(v322) = v18 ^ 1;
+      LODWORD(v322) = mainScreen30 ^ 1;
       BSSizeRoundForScale();
       if (v63 >= *(MEMORY[0x277D66E30] + 376))
       {
@@ -10567,8 +10567,8 @@ LABEL_85:
 
     else
     {
-      v292 = [MEMORY[0x277D75418] currentDevice];
-      if ([v292 userInterfaceIdiom] != 1)
+      mainScreen4 = [MEMORY[0x277D75418] currentDevice];
+      if ([mainScreen4 userInterfaceIdiom] != 1)
       {
         v321[15] = 0x100000000;
         goto LABEL_103;
@@ -10576,19 +10576,19 @@ LABEL_85:
     }
 
     HIDWORD(v321[15]) = v26 ^ 1;
-    v18 = __sb__runningInSpringBoard();
-    if (v18)
+    mainScreen30 = __sb__runningInSpringBoard();
+    if (mainScreen30)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v289 = [MEMORY[0x277D759A0] mainScreen];
-      [v289 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
-    LODWORD(v321[15]) = v18 ^ 1;
+    LODWORD(v321[15]) = mainScreen30 ^ 1;
     BSSizeRoundForScale();
     if (v30 >= *(MEMORY[0x277D66E30] + 280))
     {
@@ -10623,8 +10623,8 @@ LABEL_103:
 
     else
     {
-      v291 = [MEMORY[0x277D75418] currentDevice];
-      if ([v291 userInterfaceIdiom] != 1)
+      currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice8 userInterfaceIdiom] != 1)
       {
         v321[14] = 0x100000000;
         goto LABEL_123;
@@ -10632,19 +10632,19 @@ LABEL_103:
     }
 
     HIDWORD(v321[14]) = v31 ^ 1;
-    v18 = __sb__runningInSpringBoard();
-    if (v18)
+    mainScreen30 = __sb__runningInSpringBoard();
+    if (mainScreen30)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v287 = [MEMORY[0x277D759A0] mainScreen];
-      [v287 _referenceBounds];
+      mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen6 _referenceBounds];
     }
 
-    LODWORD(v321[14]) = v18 ^ 1;
+    LODWORD(v321[14]) = mainScreen30 ^ 1;
     BSSizeRoundForScale();
     if (v49 >= *(MEMORY[0x277D66E30] + 264))
     {
@@ -10679,8 +10679,8 @@ LABEL_123:
 
     else
     {
-      v290 = [MEMORY[0x277D75418] currentDevice];
-      if ([v290 userInterfaceIdiom] != 1)
+      mainScreen5 = [MEMORY[0x277D75418] currentDevice];
+      if ([mainScreen5 userInterfaceIdiom] != 1)
       {
         v321[13] = 0x100000000;
         goto LABEL_453;
@@ -10688,19 +10688,19 @@ LABEL_123:
     }
 
     HIDWORD(v321[13]) = v50 ^ 1;
-    v18 = __sb__runningInSpringBoard();
-    if (v18)
+    mainScreen30 = __sb__runningInSpringBoard();
+    if (mainScreen30)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v284 = [MEMORY[0x277D759A0] mainScreen];
-      [v284 _referenceBounds];
+      currentDevice12 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice12 _referenceBounds];
     }
 
-    LODWORD(v321[13]) = v18 ^ 1;
+    LODWORD(v321[13]) = mainScreen30 ^ 1;
     BSSizeRoundForScale();
     if (v70 >= *(MEMORY[0x277D66E30] + 248))
     {
@@ -10723,8 +10723,8 @@ LABEL_123:
     }
 
 LABEL_453:
-    v18 = __sb__runningInSpringBoard();
-    if (v18)
+    mainScreen30 = __sb__runningInSpringBoard();
+    if (mainScreen30)
     {
       if (SBFEffectiveDeviceClass() != 2)
       {
@@ -10734,11 +10734,11 @@ LABEL_453:
 
     else
     {
-      v288 = [MEMORY[0x277D75418] currentDevice];
-      if ([v288 userInterfaceIdiom] != 1)
+      mainScreen3 = [MEMORY[0x277D75418] currentDevice];
+      if ([mainScreen3 userInterfaceIdiom] != 1)
       {
 LABEL_455:
-        HIDWORD(v321[12]) = v18 ^ 1;
+        HIDWORD(v321[12]) = mainScreen30 ^ 1;
         if (!_SBF_Private_IsD94Like())
         {
 LABEL_459:
@@ -10757,8 +10757,8 @@ LABEL_459:
 
         else
         {
-          v282 = [MEMORY[0x277D75418] currentDevice];
-          if ([v282 userInterfaceIdiom])
+          currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice11 userInterfaceIdiom])
           {
             HIDWORD(v321[11]) = 0;
             LODWORD(v321[12]) = 1;
@@ -10777,13 +10777,13 @@ LABEL_459:
 
           else
           {
-            v275 = [MEMORY[0x277D759A0] mainScreen];
-            [v275 _referenceBounds];
+            currentDevice18 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice18 _referenceBounds];
           }
 
-          v18 = v108 ^ 1u;
+          mainScreen30 = v108 ^ 1u;
           BSSizeRoundForScale();
-          HIDWORD(v321[11]) = v18;
+          HIDWORD(v321[11]) = mainScreen30;
           if (v112 >= *(MEMORY[0x277D66E30] + 200))
           {
             memset(v321, 0, 92);
@@ -10811,8 +10811,8 @@ LABEL_459:
         }
 
 LABEL_716:
-        v18 = __sb__runningInSpringBoard();
-        if (v18)
+        mainScreen30 = __sb__runningInSpringBoard();
+        if (mainScreen30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -10823,8 +10823,8 @@ LABEL_716:
 
         else
         {
-          v283 = [MEMORY[0x277D75418] currentDevice];
-          if ([v283 userInterfaceIdiom])
+          currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice13 userInterfaceIdiom])
           {
             HIDWORD(v321[10]) = 0;
             LODWORD(v321[11]) = 1;
@@ -10832,22 +10832,22 @@ LABEL_716:
           }
         }
 
-        LODWORD(v321[11]) = v18 ^ 1;
+        LODWORD(v321[11]) = mainScreen30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v278 = [MEMORY[0x277D759A0] mainScreen];
-            [v278 _referenceBounds];
+            mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen7 _referenceBounds];
           }
 
-          HIDWORD(v321[10]) = v18 ^ 1;
+          HIDWORD(v321[10]) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v109 >= *(MEMORY[0x277D66E30] + 200))
           {
@@ -10900,8 +10900,8 @@ LABEL_734:
 
         else
         {
-          v279 = [MEMORY[0x277D75418] currentDevice];
-          if ([v279 userInterfaceIdiom])
+          currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice15 userInterfaceIdiom])
           {
             HIDWORD(v321[9]) = 0;
             LODWORD(v321[10]) = 1;
@@ -10920,13 +10920,13 @@ LABEL_734:
 
           else
           {
-            v270 = [MEMORY[0x277D759A0] mainScreen];
-            [v270 _referenceBounds];
+            currentDevice20 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice20 _referenceBounds];
           }
 
-          v18 = v115 ^ 1u;
+          mainScreen30 = v115 ^ 1u;
           BSSizeRoundForScale();
-          HIDWORD(v321[9]) = v18;
+          HIDWORD(v321[9]) = mainScreen30;
           if (v126 >= *(MEMORY[0x277D66E30] + 136))
           {
             memset(v321, 0, 76);
@@ -10954,8 +10954,8 @@ LABEL_734:
         }
 
 LABEL_781:
-        v18 = __sb__runningInSpringBoard();
-        if (v18)
+        mainScreen30 = __sb__runningInSpringBoard();
+        if (mainScreen30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -10966,8 +10966,8 @@ LABEL_781:
 
         else
         {
-          v281 = [MEMORY[0x277D75418] currentDevice];
-          if ([v281 userInterfaceIdiom])
+          mainScreen8 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen8 userInterfaceIdiom])
           {
             HIDWORD(v321[8]) = 0;
             LODWORD(v321[9]) = 1;
@@ -10975,22 +10975,22 @@ LABEL_781:
           }
         }
 
-        LODWORD(v321[9]) = v18 ^ 1;
+        LODWORD(v321[9]) = mainScreen30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v274 = [MEMORY[0x277D759A0] mainScreen];
-            [v274 _referenceBounds];
+            mainScreen11 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen11 _referenceBounds];
           }
 
-          HIDWORD(v321[8]) = v18 ^ 1;
+          HIDWORD(v321[8]) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v116 >= *(MEMORY[0x277D66E30] + 136))
           {
@@ -11037,8 +11037,8 @@ LABEL_795:
 
         else
         {
-          v280 = [MEMORY[0x277D75418] currentDevice];
-          if ([v280 userInterfaceIdiom])
+          currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice14 userInterfaceIdiom])
           {
             HIDWORD(v321[7]) = 0;
             LODWORD(v321[8]) = 1;
@@ -11057,13 +11057,13 @@ LABEL_795:
 
           else
           {
-            v271 = [MEMORY[0x277D759A0] mainScreen];
-            [v271 _referenceBounds];
+            currentDevice17 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice17 _referenceBounds];
           }
 
-          v18 = v118 ^ 1u;
+          mainScreen30 = v118 ^ 1u;
           BSSizeRoundForScale();
-          HIDWORD(v321[7]) = v18;
+          HIDWORD(v321[7]) = mainScreen30;
           if (v124 >= *(MEMORY[0x277D66E30] + 136))
           {
             memset(v321, 0, 60);
@@ -11091,8 +11091,8 @@ LABEL_795:
         }
 
 LABEL_805:
-        v18 = __sb__runningInSpringBoard();
-        if (v18)
+        mainScreen30 = __sb__runningInSpringBoard();
+        if (mainScreen30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -11103,8 +11103,8 @@ LABEL_805:
 
         else
         {
-          v277 = [MEMORY[0x277D75418] currentDevice];
-          if ([v277 userInterfaceIdiom])
+          mainScreen10 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen10 userInterfaceIdiom])
           {
             HIDWORD(v321[6]) = 0;
             LODWORD(v321[7]) = 1;
@@ -11112,22 +11112,22 @@ LABEL_805:
           }
         }
 
-        LODWORD(v321[7]) = v18 ^ 1;
+        LODWORD(v321[7]) = mainScreen30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v269 = [MEMORY[0x277D759A0] mainScreen];
-            [v269 _referenceBounds];
+            mainScreen13 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen13 _referenceBounds];
           }
 
-          HIDWORD(v321[6]) = v18 ^ 1;
+          HIDWORD(v321[6]) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v131 >= *(MEMORY[0x277D66E30] + 136))
           {
@@ -11174,8 +11174,8 @@ LABEL_901:
 
         else
         {
-          v276 = [MEMORY[0x277D75418] currentDevice];
-          if ([v276 userInterfaceIdiom])
+          currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice16 userInterfaceIdiom])
           {
             HIDWORD(v321[5]) = 0;
             LODWORD(v321[6]) = 1;
@@ -11194,13 +11194,13 @@ LABEL_901:
 
           else
           {
-            v266 = [MEMORY[0x277D759A0] mainScreen];
-            [v266 _referenceBounds];
+            currentDevice22 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice22 _referenceBounds];
           }
 
-          v18 = v133 ^ 1u;
+          mainScreen30 = v133 ^ 1u;
           BSSizeRoundForScale();
-          HIDWORD(v321[5]) = v18;
+          HIDWORD(v321[5]) = mainScreen30;
           if (v143 >= *(MEMORY[0x277D66E30] + 120) && (_SBF_Private_IsN84OrSimilarDevice() & 1) != 0)
           {
             memset(v321, 0, 44);
@@ -11228,8 +11228,8 @@ LABEL_901:
         }
 
 LABEL_921:
-        v18 = __sb__runningInSpringBoard();
-        if (v18)
+        mainScreen30 = __sb__runningInSpringBoard();
+        if (mainScreen30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -11240,8 +11240,8 @@ LABEL_921:
 
         else
         {
-          v273 = [MEMORY[0x277D75418] currentDevice];
-          if ([v273 userInterfaceIdiom])
+          mainScreen9 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen9 userInterfaceIdiom])
           {
             HIDWORD(v321[4]) = 0;
             LODWORD(v321[5]) = 1;
@@ -11249,22 +11249,22 @@ LABEL_921:
           }
         }
 
-        LODWORD(v321[5]) = v18 ^ 1;
+        LODWORD(v321[5]) = mainScreen30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v265 = [MEMORY[0x277D759A0] mainScreen];
-            [v265 _referenceBounds];
+            mainScreen16 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen16 _referenceBounds];
           }
 
-          HIDWORD(v321[4]) = v18 ^ 1;
+          HIDWORD(v321[4]) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v148 >= *(MEMORY[0x277D66E30] + 120))
           {
@@ -11317,8 +11317,8 @@ LABEL_1056:
 
         else
         {
-          v268 = [MEMORY[0x277D75418] currentDevice];
-          if ([v268 userInterfaceIdiom])
+          mainScreen14 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen14 userInterfaceIdiom])
           {
             HIDWORD(v321[3]) = 0;
             LODWORD(v321[4]) = 1;
@@ -11329,19 +11329,19 @@ LABEL_1056:
         LODWORD(v321[4]) = v149 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v259 = [MEMORY[0x277D759A0] mainScreen];
-            [v259 _referenceBounds];
+            currentDevice25 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice25 _referenceBounds];
           }
 
-          HIDWORD(v321[3]) = v18 ^ 1;
+          HIDWORD(v321[3]) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v167 >= *(MEMORY[0x277D66E30] + 184))
           {
@@ -11370,8 +11370,8 @@ LABEL_1056:
         }
 
 LABEL_1138:
-        v18 = __sb__runningInSpringBoard();
-        if (v18)
+        mainScreen30 = __sb__runningInSpringBoard();
+        if (mainScreen30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -11382,8 +11382,8 @@ LABEL_1138:
 
         else
         {
-          v272 = [MEMORY[0x277D75418] currentDevice];
-          if ([v272 userInterfaceIdiom])
+          mainScreen12 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen12 userInterfaceIdiom])
           {
             HIDWORD(v321[2]) = 0;
             LODWORD(v321[3]) = 1;
@@ -11391,22 +11391,22 @@ LABEL_1138:
           }
         }
 
-        LODWORD(v321[3]) = v18 ^ 1;
+        LODWORD(v321[3]) = mainScreen30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v262 = [MEMORY[0x277D759A0] mainScreen];
-            [v262 _referenceBounds];
+            mainScreen15 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen15 _referenceBounds];
           }
 
-          HIDWORD(v321[2]) = v18 ^ 1;
+          HIDWORD(v321[2]) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v158 >= *(MEMORY[0x277D66E30] + 184))
           {
@@ -11459,8 +11459,8 @@ LABEL_1156:
 
         else
         {
-          v264 = [MEMORY[0x277D75418] currentDevice];
-          if ([v264 userInterfaceIdiom])
+          currentDevice23 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice23 userInterfaceIdiom])
           {
             HIDWORD(v321[1]) = 0;
             LODWORD(v321[2]) = 1;
@@ -11471,19 +11471,19 @@ LABEL_1156:
         LODWORD(v321[2]) = v159 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v255 = [MEMORY[0x277D759A0] mainScreen];
-            [v255 _referenceBounds];
+            mainScreen21 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen21 _referenceBounds];
           }
 
-          HIDWORD(v321[1]) = v18 ^ 1;
+          HIDWORD(v321[1]) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v177 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -11513,8 +11513,8 @@ LABEL_1156:
         }
 
 LABEL_1220:
-        v18 = __sb__runningInSpringBoard();
-        if (v18)
+        mainScreen30 = __sb__runningInSpringBoard();
+        if (mainScreen30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -11525,8 +11525,8 @@ LABEL_1220:
 
         else
         {
-          v267 = [MEMORY[0x277D75418] currentDevice];
-          if ([v267 userInterfaceIdiom])
+          currentDevice19 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice19 userInterfaceIdiom])
           {
             HIDWORD(v321[0]) = 0;
             LODWORD(v321[1]) = 1;
@@ -11534,22 +11534,22 @@ LABEL_1220:
           }
         }
 
-        LODWORD(v321[1]) = v18 ^ 1;
+        LODWORD(v321[1]) = mainScreen30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v258 = [MEMORY[0x277D759A0] mainScreen];
-            [v258 _referenceBounds];
+            mainScreen17 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen17 _referenceBounds];
           }
 
-          HIDWORD(v321[0]) = v18 ^ 1;
+          HIDWORD(v321[0]) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v170 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -11603,8 +11603,8 @@ LABEL_1238:
 
         else
         {
-          v260 = [MEMORY[0x277D75418] currentDevice];
-          if ([v260 userInterfaceIdiom])
+          currentDevice24 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice24 userInterfaceIdiom])
           {
             HIDWORD(v319) = 0;
             LODWORD(v321[0]) = 1;
@@ -11615,19 +11615,19 @@ LABEL_1238:
         LODWORD(v321[0]) = v171 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v251 = [MEMORY[0x277D759A0] mainScreen];
-            [v251 _referenceBounds];
+            mainScreen24 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen24 _referenceBounds];
           }
 
-          HIDWORD(v319) = v18 ^ 1;
+          HIDWORD(v319) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v191 >= *(MEMORY[0x277D66E30] + 216))
           {
@@ -11655,8 +11655,8 @@ LABEL_1238:
         }
 
 LABEL_1341:
-        v18 = __sb__runningInSpringBoard();
-        if (v18)
+        mainScreen30 = __sb__runningInSpringBoard();
+        if (mainScreen30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -11668,8 +11668,8 @@ LABEL_1341:
 
         else
         {
-          v263 = [MEMORY[0x277D75418] currentDevice];
-          if ([v263 userInterfaceIdiom])
+          currentDevice21 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice21 userInterfaceIdiom])
           {
             HIDWORD(v316) = 0;
             LODWORD(v319) = 1;
@@ -11677,22 +11677,22 @@ LABEL_1341:
           }
         }
 
-        LODWORD(v319) = v18 ^ 1;
+        LODWORD(v319) = mainScreen30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v254 = [MEMORY[0x277D759A0] mainScreen];
-            [v254 _referenceBounds];
+            mainScreen19 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen19 _referenceBounds];
           }
 
-          HIDWORD(v316) = v18 ^ 1;
+          HIDWORD(v316) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v182 >= *(MEMORY[0x277D66E30] + 216))
           {
@@ -11738,8 +11738,8 @@ LABEL_1355:
 
         else
         {
-          v261 = [MEMORY[0x277D75418] currentDevice];
-          if ([v261 userInterfaceIdiom])
+          mainScreen18 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen18 userInterfaceIdiom])
           {
             HIDWORD(v313) = 0;
             LODWORD(v316) = 1;
@@ -11750,19 +11750,19 @@ LABEL_1355:
         LODWORD(v316) = v183 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v252 = [MEMORY[0x277D759A0] mainScreen];
-            [v252 _referenceBounds];
+            mainScreen23 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen23 _referenceBounds];
           }
 
-          HIDWORD(v313) = v18 ^ 1;
+          HIDWORD(v313) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v189 >= *(MEMORY[0x277D66E30] + 120))
           {
@@ -11788,8 +11788,8 @@ LABEL_1355:
         }
 
 LABEL_1365:
-        v18 = __sb__runningInSpringBoard();
-        if (v18)
+        mainScreen30 = __sb__runningInSpringBoard();
+        if (mainScreen30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -11801,8 +11801,8 @@ LABEL_1365:
 
         else
         {
-          v257 = [MEMORY[0x277D75418] currentDevice];
-          if ([v257 userInterfaceIdiom])
+          mainScreen20 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen20 userInterfaceIdiom])
           {
             HIDWORD(v310) = 0;
             LODWORD(v313) = 1;
@@ -11810,22 +11810,22 @@ LABEL_1365:
           }
         }
 
-        LODWORD(v313) = v18 ^ 1;
+        LODWORD(v313) = mainScreen30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v250 = [MEMORY[0x277D759A0] mainScreen];
-            [v250 _referenceBounds];
+            currentDevice27 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice27 _referenceBounds];
           }
 
-          HIDWORD(v310) = v18 ^ 1;
+          HIDWORD(v310) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v196 >= *(MEMORY[0x277D66E30] + 120))
           {
@@ -11869,8 +11869,8 @@ LABEL_1461:
 
         else
         {
-          v256 = [MEMORY[0x277D75418] currentDevice];
-          if ([v256 userInterfaceIdiom])
+          currentDevice26 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice26 userInterfaceIdiom])
           {
             HIDWORD(v307) = 0;
             LODWORD(v310) = 1;
@@ -11881,19 +11881,19 @@ LABEL_1461:
         LODWORD(v310) = v197 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v249 = [MEMORY[0x277D759A0] mainScreen];
-            [v249 _referenceBounds];
+            currentDevice28 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice28 _referenceBounds];
           }
 
-          HIDWORD(v307) = v18 ^ 1;
+          HIDWORD(v307) = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v205 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -11917,8 +11917,8 @@ LABEL_1461:
         }
 
 LABEL_1481:
-        v18 = __sb__runningInSpringBoard();
-        if (v18)
+        mainScreen30 = __sb__runningInSpringBoard();
+        if (mainScreen30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -11930,8 +11930,8 @@ LABEL_1481:
 
         else
         {
-          v253 = [MEMORY[0x277D75418] currentDevice];
-          if ([v253 userInterfaceIdiom])
+          mainScreen22 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen22 userInterfaceIdiom])
           {
             v304 = 0;
             LODWORD(v307) = 1;
@@ -11939,22 +11939,22 @@ LABEL_1481:
           }
         }
 
-        LODWORD(v307) = v18 ^ 1;
+        LODWORD(v307) = mainScreen30 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v248 = [MEMORY[0x277D759A0] mainScreen];
-            [v248 _referenceBounds];
+            currentDevice29 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice29 _referenceBounds];
           }
 
-          v304 = v18 ^ 1;
+          v304 = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v213 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -12001,8 +12001,8 @@ LABEL_1626:
 
         else
         {
-          v247 = [MEMORY[0x277D75418] currentDevice];
-          if ([v247 userInterfaceIdiom])
+          mainScreen27 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen27 userInterfaceIdiom])
           {
             v298 = 0;
             v301 = 1;
@@ -12013,19 +12013,19 @@ LABEL_1626:
         v301 = v215 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v245 = [MEMORY[0x277D759A0] mainScreen];
-            [v245 _referenceBounds];
+            mainScreen26 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen26 _referenceBounds];
           }
 
-          v298 = v18 ^ 1;
+          v298 = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v228 >= *(MEMORY[0x277D66E30] + 88))
           {
@@ -12058,8 +12058,8 @@ LABEL_1732:
 
         else
         {
-          v246 = [MEMORY[0x277D75418] currentDevice];
-          if ([v246 userInterfaceIdiom])
+          mainScreen25 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen25 userInterfaceIdiom])
           {
             v42 = 0;
             v41 = 1;
@@ -12070,19 +12070,19 @@ LABEL_1732:
         v41 = v223 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v18 = __sb__runningInSpringBoard();
-          if (v18)
+          mainScreen30 = __sb__runningInSpringBoard();
+          if (mainScreen30)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v244 = [MEMORY[0x277D759A0] mainScreen];
-            [v244 _referenceBounds];
+            mainScreen28 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen28 _referenceBounds];
           }
 
-          v42 = v18 ^ 1;
+          v42 = mainScreen30 ^ 1;
           BSSizeRoundForScale();
           if (v230 >= *(MEMORY[0x277D66E30] + 72))
           {
@@ -12100,16 +12100,16 @@ LABEL_1732:
         }
 
 LABEL_1752:
-        v18 = __sb__runningInSpringBoard();
-        if (v18)
+        mainScreen30 = __sb__runningInSpringBoard();
+        if (mainScreen30)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
             v43 = 0;
             v44 = 0;
 LABEL_1773:
-            v2 = __sb__runningInSpringBoard();
-            if (v2)
+            mainScreen29 = __sb__runningInSpringBoard();
+            if (mainScreen29)
             {
               if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
               {
@@ -12121,8 +12121,8 @@ LABEL_1773:
 
             else
             {
-              v5 = [MEMORY[0x277D75418] currentDevice];
-              if ([v5 userInterfaceIdiom])
+              currentDevice31 = [MEMORY[0x277D75418] currentDevice];
+              if ([currentDevice31 userInterfaceIdiom])
               {
                 v46 = 0;
                 v45 = 1;
@@ -12130,7 +12130,7 @@ LABEL_1773:
               }
             }
 
-            v45 = v2 ^ 1;
+            v45 = mainScreen29 ^ 1;
             v232 = __sb__runningInSpringBoard();
             if (v232)
             {
@@ -12139,8 +12139,8 @@ LABEL_1773:
 
             else
             {
-              v2 = [MEMORY[0x277D759A0] mainScreen];
-              [v2 _referenceBounds];
+              mainScreen29 = [MEMORY[0x277D759A0] mainScreen];
+              [mainScreen29 _referenceBounds];
             }
 
             v46 = v232 ^ 1;
@@ -12173,7 +12173,7 @@ LABEL_306:
               if (!v43)
               {
 LABEL_312:
-                v64 = v296;
+                v64 = currentDevice4;
                 if (v42)
                 {
                 }
@@ -12391,7 +12391,7 @@ LABEL_316:
                   goto LABEL_419;
                 }
 
-                v62 = v295;
+                v62 = currentDevice5;
 LABEL_418:
 
                 goto LABEL_419;
@@ -12414,8 +12414,8 @@ LABEL_310:
 
         else
         {
-          v3 = [MEMORY[0x277D75418] currentDevice];
-          if ([v3 userInterfaceIdiom])
+          currentDevice32 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice32 userInterfaceIdiom])
           {
             v44 = 0;
             v43 = 1;
@@ -12423,20 +12423,20 @@ LABEL_310:
           }
         }
 
-        v43 = v18 ^ 1;
-        v2 = __sb__runningInSpringBoard();
-        if (v2)
+        v43 = mainScreen30 ^ 1;
+        mainScreen29 = __sb__runningInSpringBoard();
+        if (mainScreen29)
         {
           __sb__mainScreenReferenceBounds();
         }
 
         else
         {
-          v18 = [MEMORY[0x277D759A0] mainScreen];
-          [v18 _referenceBounds];
+          mainScreen30 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen30 _referenceBounds];
         }
 
-        v44 = v2 ^ 1;
+        v44 = mainScreen29 ^ 1;
         BSSizeRoundForScale();
         if (v226 >= *(MEMORY[0x277D66E30] + 56))
         {
@@ -12464,14 +12464,14 @@ LABEL_310:
     v44 = 0;
     v45 = 0;
     v46 = 0;
-    HIDWORD(v321[12]) = v18 ^ 1;
+    HIDWORD(v321[12]) = mainScreen30 ^ 1;
     goto LABEL_303;
   }
 
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  mainScreen29 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice32 = [mainScreen29 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (currentDevice32 == 1)
   {
     goto LABEL_17;
   }
@@ -12482,7 +12482,7 @@ LABEL_9:
   v12 = v11;
   if (v10 <= 1)
   {
-    v13 = &CSTimeLabelPortraitBaselineY;
+    mainScreen31 = &CSTimeLabelPortraitBaselineY;
     if (v11)
     {
       if (SBFEffectiveDeviceClass() != 2)
@@ -12494,8 +12494,8 @@ LABEL_9:
 
     else
     {
-      v295 = [MEMORY[0x277D75418] currentDevice];
-      if ([v295 userInterfaceIdiom] != 1)
+      currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice5 userInterfaceIdiom] != 1)
       {
         v324 = 0x100000000;
         goto LABEL_141;
@@ -12505,19 +12505,19 @@ LABEL_9:
     HIDWORD(v324) = v12 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v19 = __sb__runningInSpringBoard();
-      if (v19)
+      mainScreen32 = __sb__runningInSpringBoard();
+      if (mainScreen32)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v296 = [MEMORY[0x277D759A0] mainScreen];
-        [v296 _referenceBounds];
+        currentDevice4 = [MEMORY[0x277D759A0] mainScreen];
+        [currentDevice4 _referenceBounds];
       }
 
-      LODWORD(v324) = v19 ^ 1;
+      LODWORD(v324) = mainScreen32 ^ 1;
       BSSizeRoundForScale();
       if (v94 == *(MEMORY[0x277D66E30] + 288) && v93 == *(MEMORY[0x277D66E30] + 296))
       {
@@ -12560,8 +12560,8 @@ LABEL_141:
 
     else
     {
-      v294 = [MEMORY[0x277D75418] currentDevice];
-      if ([v294 userInterfaceIdiom] != 1)
+      currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice6 userInterfaceIdiom] != 1)
       {
         v323 = 0x100000000;
         goto LABEL_165;
@@ -12571,19 +12571,19 @@ LABEL_141:
     HIDWORD(v323) = v55 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v19 = __sb__runningInSpringBoard();
-      if (v19)
+      mainScreen32 = __sb__runningInSpringBoard();
+      if (mainScreen32)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v286 = [MEMORY[0x277D759A0] mainScreen];
-        [v286 _referenceBounds];
+        currentDevice10 = [MEMORY[0x277D759A0] mainScreen];
+        [currentDevice10 _referenceBounds];
       }
 
-      LODWORD(v323) = v19 ^ 1;
+      LODWORD(v323) = mainScreen32 ^ 1;
       BSSizeRoundForScale();
       if (v97 >= *(MEMORY[0x277D66E30] + 440))
       {
@@ -12625,8 +12625,8 @@ LABEL_165:
 
     else
     {
-      v293 = [MEMORY[0x277D75418] currentDevice];
-      if ([v293 userInterfaceIdiom] != 1)
+      currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice7 userInterfaceIdiom] != 1)
       {
         v322 = 0x100000000;
         goto LABEL_424;
@@ -12636,19 +12636,19 @@ LABEL_165:
     HIDWORD(v322) = v59 ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
-      v19 = __sb__runningInSpringBoard();
-      if (v19)
+      mainScreen32 = __sb__runningInSpringBoard();
+      if (mainScreen32)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v285 = [MEMORY[0x277D759A0] mainScreen];
-        [v285 _referenceBounds];
+        currentDevice9 = [MEMORY[0x277D759A0] mainScreen];
+        [currentDevice9 _referenceBounds];
       }
 
-      LODWORD(v322) = v19 ^ 1;
+      LODWORD(v322) = mainScreen32 ^ 1;
       BSSizeRoundForScale();
       if (v99 >= *(MEMORY[0x277D66E30] + 376))
       {
@@ -12689,8 +12689,8 @@ LABEL_424:
 
     else
     {
-      v292 = [MEMORY[0x277D75418] currentDevice];
-      if ([v292 userInterfaceIdiom] != 1)
+      mainScreen4 = [MEMORY[0x277D75418] currentDevice];
+      if ([mainScreen4 userInterfaceIdiom] != 1)
       {
         v321[15] = 0x100000000;
         goto LABEL_467;
@@ -12698,19 +12698,19 @@ LABEL_424:
     }
 
     HIDWORD(v321[15]) = v66 ^ 1;
-    v19 = __sb__runningInSpringBoard();
-    if (v19)
+    mainScreen32 = __sb__runningInSpringBoard();
+    if (mainScreen32)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v289 = [MEMORY[0x277D759A0] mainScreen];
-      [v289 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
-    LODWORD(v321[15]) = v19 ^ 1;
+    LODWORD(v321[15]) = mainScreen32 ^ 1;
     BSSizeRoundForScale();
     if (v72 >= *(MEMORY[0x277D66E30] + 280))
     {
@@ -12745,8 +12745,8 @@ LABEL_467:
 
     else
     {
-      v291 = [MEMORY[0x277D75418] currentDevice];
-      if ([v291 userInterfaceIdiom] != 1)
+      currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice8 userInterfaceIdiom] != 1)
       {
         v321[14] = 0x100000000;
         goto LABEL_487;
@@ -12754,19 +12754,19 @@ LABEL_467:
     }
 
     HIDWORD(v321[14]) = v73 ^ 1;
-    v19 = __sb__runningInSpringBoard();
-    if (v19)
+    mainScreen32 = __sb__runningInSpringBoard();
+    if (mainScreen32)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v287 = [MEMORY[0x277D759A0] mainScreen];
-      [v287 _referenceBounds];
+      mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen6 _referenceBounds];
     }
 
-    LODWORD(v321[14]) = v19 ^ 1;
+    LODWORD(v321[14]) = mainScreen32 ^ 1;
     BSSizeRoundForScale();
     if (v89 >= *(MEMORY[0x277D66E30] + 264))
     {
@@ -12801,8 +12801,8 @@ LABEL_487:
 
     else
     {
-      v290 = [MEMORY[0x277D75418] currentDevice];
-      if ([v290 userInterfaceIdiom] != 1)
+      mainScreen5 = [MEMORY[0x277D75418] currentDevice];
+      if ([mainScreen5 userInterfaceIdiom] != 1)
       {
         v321[13] = 0x100000000;
         goto LABEL_656;
@@ -12810,19 +12810,19 @@ LABEL_487:
     }
 
     HIDWORD(v321[13]) = v90 ^ 1;
-    v19 = __sb__runningInSpringBoard();
-    if (v19)
+    mainScreen32 = __sb__runningInSpringBoard();
+    if (mainScreen32)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v284 = [MEMORY[0x277D759A0] mainScreen];
-      [v284 _referenceBounds];
+      currentDevice12 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice12 _referenceBounds];
     }
 
-    LODWORD(v321[13]) = v19 ^ 1;
+    LODWORD(v321[13]) = mainScreen32 ^ 1;
     BSSizeRoundForScale();
     if (v102 >= *(MEMORY[0x277D66E30] + 248))
     {
@@ -12845,8 +12845,8 @@ LABEL_487:
     }
 
 LABEL_656:
-    v19 = __sb__runningInSpringBoard();
-    if (v19)
+    mainScreen32 = __sb__runningInSpringBoard();
+    if (mainScreen32)
     {
       if (SBFEffectiveDeviceClass() != 2)
       {
@@ -12856,11 +12856,11 @@ LABEL_656:
 
     else
     {
-      v288 = [MEMORY[0x277D75418] currentDevice];
-      if ([v288 userInterfaceIdiom] != 1)
+      mainScreen3 = [MEMORY[0x277D75418] currentDevice];
+      if ([mainScreen3 userInterfaceIdiom] != 1)
       {
 LABEL_658:
-        HIDWORD(v321[12]) = v19 ^ 1;
+        HIDWORD(v321[12]) = mainScreen32 ^ 1;
         if (!_SBF_Private_IsD94Like())
         {
 LABEL_662:
@@ -12879,8 +12879,8 @@ LABEL_662:
 
         else
         {
-          v282 = [MEMORY[0x277D75418] currentDevice];
-          if ([v282 userInterfaceIdiom])
+          currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice11 userInterfaceIdiom])
           {
             HIDWORD(v321[11]) = 0;
             LODWORD(v321[12]) = 1;
@@ -12891,19 +12891,19 @@ LABEL_662:
         LODWORD(v321[12]) = v103 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v275 = [MEMORY[0x277D759A0] mainScreen];
-            [v275 _referenceBounds];
+            currentDevice18 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice18 _referenceBounds];
           }
 
-          HIDWORD(v321[11]) = v19 ^ 1;
+          HIDWORD(v321[11]) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v127 >= *(MEMORY[0x277D66E30] + 200))
           {
@@ -12932,8 +12932,8 @@ LABEL_662:
         }
 
 LABEL_815:
-        v19 = __sb__runningInSpringBoard();
-        if (v19)
+        mainScreen32 = __sb__runningInSpringBoard();
+        if (mainScreen32)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -12944,8 +12944,8 @@ LABEL_815:
 
         else
         {
-          v283 = [MEMORY[0x277D75418] currentDevice];
-          if ([v283 userInterfaceIdiom])
+          currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice13 userInterfaceIdiom])
           {
             HIDWORD(v321[10]) = 0;
             LODWORD(v321[11]) = 1;
@@ -12953,22 +12953,22 @@ LABEL_815:
           }
         }
 
-        LODWORD(v321[11]) = v19 ^ 1;
+        LODWORD(v321[11]) = mainScreen32 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v278 = [MEMORY[0x277D759A0] mainScreen];
-            [v278 _referenceBounds];
+            mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen7 _referenceBounds];
           }
 
-          HIDWORD(v321[10]) = v19 ^ 1;
+          HIDWORD(v321[10]) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v119 >= *(MEMORY[0x277D66E30] + 200))
           {
@@ -13021,8 +13021,8 @@ LABEL_833:
 
         else
         {
-          v279 = [MEMORY[0x277D75418] currentDevice];
-          if ([v279 userInterfaceIdiom])
+          currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice15 userInterfaceIdiom])
           {
             HIDWORD(v321[9]) = 0;
             LODWORD(v321[10]) = 1;
@@ -13041,13 +13041,13 @@ LABEL_833:
 
           else
           {
-            v270 = [MEMORY[0x277D759A0] mainScreen];
-            [v270 _referenceBounds];
+            currentDevice20 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice20 _referenceBounds];
           }
 
-          v19 = v134 ^ 1u;
+          mainScreen32 = v134 ^ 1u;
           BSSizeRoundForScale();
-          HIDWORD(v321[9]) = v19;
+          HIDWORD(v321[9]) = mainScreen32;
           if (v144 >= *(MEMORY[0x277D66E30] + 136))
           {
             memset(v321, 0, 76);
@@ -13075,8 +13075,8 @@ LABEL_833:
         }
 
 LABEL_931:
-        v19 = __sb__runningInSpringBoard();
-        if (v19)
+        mainScreen32 = __sb__runningInSpringBoard();
+        if (mainScreen32)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -13087,8 +13087,8 @@ LABEL_931:
 
         else
         {
-          v281 = [MEMORY[0x277D75418] currentDevice];
-          if ([v281 userInterfaceIdiom])
+          mainScreen8 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen8 userInterfaceIdiom])
           {
             HIDWORD(v321[8]) = 0;
             LODWORD(v321[9]) = 1;
@@ -13096,22 +13096,22 @@ LABEL_931:
           }
         }
 
-        LODWORD(v321[9]) = v19 ^ 1;
+        LODWORD(v321[9]) = mainScreen32 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v274 = [MEMORY[0x277D759A0] mainScreen];
-            [v274 _referenceBounds];
+            mainScreen11 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen11 _referenceBounds];
           }
 
-          HIDWORD(v321[8]) = v19 ^ 1;
+          HIDWORD(v321[8]) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v135 >= *(MEMORY[0x277D66E30] + 136))
           {
@@ -13158,8 +13158,8 @@ LABEL_945:
 
         else
         {
-          v280 = [MEMORY[0x277D75418] currentDevice];
-          if ([v280 userInterfaceIdiom])
+          currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice14 userInterfaceIdiom])
           {
             HIDWORD(v321[7]) = 0;
             LODWORD(v321[8]) = 1;
@@ -13170,19 +13170,19 @@ LABEL_945:
         LODWORD(v321[8]) = v136 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v271 = [MEMORY[0x277D759A0] mainScreen];
-            [v271 _referenceBounds];
+            currentDevice17 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice17 _referenceBounds];
           }
 
-          HIDWORD(v321[7]) = v19 ^ 1;
+          HIDWORD(v321[7]) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v140 >= *(MEMORY[0x277D66E30] + 136))
           {
@@ -13211,8 +13211,8 @@ LABEL_945:
         }
 
 LABEL_955:
-        v19 = __sb__runningInSpringBoard();
-        if (v19)
+        mainScreen32 = __sb__runningInSpringBoard();
+        if (mainScreen32)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -13223,8 +13223,8 @@ LABEL_955:
 
         else
         {
-          v277 = [MEMORY[0x277D75418] currentDevice];
-          if ([v277 userInterfaceIdiom])
+          mainScreen10 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen10 userInterfaceIdiom])
           {
             HIDWORD(v321[6]) = 0;
             LODWORD(v321[7]) = 1;
@@ -13232,22 +13232,22 @@ LABEL_955:
           }
         }
 
-        LODWORD(v321[7]) = v19 ^ 1;
+        LODWORD(v321[7]) = mainScreen32 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v269 = [MEMORY[0x277D759A0] mainScreen];
-            [v269 _referenceBounds];
+            mainScreen13 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen13 _referenceBounds];
           }
 
-          HIDWORD(v321[6]) = v19 ^ 1;
+          HIDWORD(v321[6]) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v150 >= *(MEMORY[0x277D66E30] + 136))
           {
@@ -13294,8 +13294,8 @@ LABEL_1061:
 
         else
         {
-          v276 = [MEMORY[0x277D75418] currentDevice];
-          if ([v276 userInterfaceIdiom])
+          currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice16 userInterfaceIdiom])
           {
             HIDWORD(v321[5]) = 0;
             LODWORD(v321[6]) = 1;
@@ -13314,13 +13314,13 @@ LABEL_1061:
 
           else
           {
-            v266 = [MEMORY[0x277D759A0] mainScreen];
-            [v266 _referenceBounds];
+            currentDevice22 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice22 _referenceBounds];
           }
 
-          v19 = v154 ^ 1u;
+          mainScreen32 = v154 ^ 1u;
           BSSizeRoundForScale();
-          HIDWORD(v321[5]) = v19;
+          HIDWORD(v321[5]) = mainScreen32;
           if (v160 >= *(MEMORY[0x277D66E30] + 120) && (_SBF_Private_IsN84OrSimilarDevice() & 1) != 0)
           {
             memset(v321, 0, 44);
@@ -13348,8 +13348,8 @@ LABEL_1061:
         }
 
 LABEL_1079:
-        v19 = __sb__runningInSpringBoard();
-        if (v19)
+        mainScreen32 = __sb__runningInSpringBoard();
+        if (mainScreen32)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -13360,8 +13360,8 @@ LABEL_1079:
 
         else
         {
-          v273 = [MEMORY[0x277D75418] currentDevice];
-          if ([v273 userInterfaceIdiom])
+          mainScreen9 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen9 userInterfaceIdiom])
           {
             HIDWORD(v321[4]) = 0;
             LODWORD(v321[5]) = 1;
@@ -13369,22 +13369,22 @@ LABEL_1079:
           }
         }
 
-        LODWORD(v321[5]) = v19 ^ 1;
+        LODWORD(v321[5]) = mainScreen32 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v265 = [MEMORY[0x277D759A0] mainScreen];
-            [v265 _referenceBounds];
+            mainScreen16 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen16 _referenceBounds];
           }
 
-          HIDWORD(v321[4]) = v19 ^ 1;
+          HIDWORD(v321[4]) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v162 >= *(MEMORY[0x277D66E30] + 120))
           {
@@ -13437,8 +13437,8 @@ LABEL_1173:
 
         else
         {
-          v268 = [MEMORY[0x277D75418] currentDevice];
-          if ([v268 userInterfaceIdiom])
+          mainScreen14 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen14 userInterfaceIdiom])
           {
             HIDWORD(v321[3]) = 0;
             LODWORD(v321[4]) = 1;
@@ -13449,19 +13449,19 @@ LABEL_1173:
         LODWORD(v321[4]) = v163 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v259 = [MEMORY[0x277D759A0] mainScreen];
-            [v259 _referenceBounds];
+            currentDevice25 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice25 _referenceBounds];
           }
 
-          HIDWORD(v321[3]) = v19 ^ 1;
+          HIDWORD(v321[3]) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v178 >= *(MEMORY[0x277D66E30] + 184))
           {
@@ -13490,8 +13490,8 @@ LABEL_1173:
         }
 
 LABEL_1245:
-        v19 = __sb__runningInSpringBoard();
-        if (v19)
+        mainScreen32 = __sb__runningInSpringBoard();
+        if (mainScreen32)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -13502,8 +13502,8 @@ LABEL_1245:
 
         else
         {
-          v272 = [MEMORY[0x277D75418] currentDevice];
-          if ([v272 userInterfaceIdiom])
+          mainScreen12 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen12 userInterfaceIdiom])
           {
             HIDWORD(v321[2]) = 0;
             LODWORD(v321[3]) = 1;
@@ -13511,22 +13511,22 @@ LABEL_1245:
           }
         }
 
-        LODWORD(v321[3]) = v19 ^ 1;
+        LODWORD(v321[3]) = mainScreen32 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v262 = [MEMORY[0x277D759A0] mainScreen];
-            [v262 _referenceBounds];
+            mainScreen15 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen15 _referenceBounds];
           }
 
-          HIDWORD(v321[2]) = v19 ^ 1;
+          HIDWORD(v321[2]) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v172 >= *(MEMORY[0x277D66E30] + 184))
           {
@@ -13579,8 +13579,8 @@ LABEL_1263:
 
         else
         {
-          v264 = [MEMORY[0x277D75418] currentDevice];
-          if ([v264 userInterfaceIdiom])
+          currentDevice23 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice23 userInterfaceIdiom])
           {
             HIDWORD(v321[1]) = 0;
             LODWORD(v321[2]) = 1;
@@ -13591,19 +13591,19 @@ LABEL_1263:
         LODWORD(v321[2]) = v173 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v255 = [MEMORY[0x277D759A0] mainScreen];
-            [v255 _referenceBounds];
+            mainScreen21 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen21 _referenceBounds];
           }
 
-          HIDWORD(v321[1]) = v19 ^ 1;
+          HIDWORD(v321[1]) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v192 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -13633,8 +13633,8 @@ LABEL_1263:
         }
 
 LABEL_1375:
-        v19 = __sb__runningInSpringBoard();
-        if (v19)
+        mainScreen32 = __sb__runningInSpringBoard();
+        if (mainScreen32)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -13645,8 +13645,8 @@ LABEL_1375:
 
         else
         {
-          v267 = [MEMORY[0x277D75418] currentDevice];
-          if ([v267 userInterfaceIdiom])
+          currentDevice19 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice19 userInterfaceIdiom])
           {
             HIDWORD(v321[0]) = 0;
             LODWORD(v321[1]) = 1;
@@ -13654,22 +13654,22 @@ LABEL_1375:
           }
         }
 
-        LODWORD(v321[1]) = v19 ^ 1;
+        LODWORD(v321[1]) = mainScreen32 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v258 = [MEMORY[0x277D759A0] mainScreen];
-            [v258 _referenceBounds];
+            mainScreen17 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen17 _referenceBounds];
           }
 
-          HIDWORD(v321[0]) = v19 ^ 1;
+          HIDWORD(v321[0]) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v184 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -13723,8 +13723,8 @@ LABEL_1393:
 
         else
         {
-          v260 = [MEMORY[0x277D75418] currentDevice];
-          if ([v260 userInterfaceIdiom])
+          currentDevice24 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice24 userInterfaceIdiom])
           {
             HIDWORD(v319) = 0;
             LODWORD(v321[0]) = 1;
@@ -13735,19 +13735,19 @@ LABEL_1393:
         LODWORD(v321[0]) = v185 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v251 = [MEMORY[0x277D759A0] mainScreen];
-            [v251 _referenceBounds];
+            mainScreen24 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen24 _referenceBounds];
           }
 
-          HIDWORD(v319) = v19 ^ 1;
+          HIDWORD(v319) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v206 >= *(MEMORY[0x277D66E30] + 216))
           {
@@ -13775,8 +13775,8 @@ LABEL_1393:
         }
 
 LABEL_1491:
-        v19 = __sb__runningInSpringBoard();
-        if (v19)
+        mainScreen32 = __sb__runningInSpringBoard();
+        if (mainScreen32)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -13788,8 +13788,8 @@ LABEL_1491:
 
         else
         {
-          v263 = [MEMORY[0x277D75418] currentDevice];
-          if ([v263 userInterfaceIdiom])
+          currentDevice21 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice21 userInterfaceIdiom])
           {
             HIDWORD(v316) = 0;
             LODWORD(v319) = 1;
@@ -13797,22 +13797,22 @@ LABEL_1491:
           }
         }
 
-        LODWORD(v319) = v19 ^ 1;
+        LODWORD(v319) = mainScreen32 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v254 = [MEMORY[0x277D759A0] mainScreen];
-            [v254 _referenceBounds];
+            mainScreen19 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen19 _referenceBounds];
           }
 
-          HIDWORD(v316) = v19 ^ 1;
+          HIDWORD(v316) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v198 >= *(MEMORY[0x277D66E30] + 216))
           {
@@ -13858,8 +13858,8 @@ LABEL_1505:
 
         else
         {
-          v261 = [MEMORY[0x277D75418] currentDevice];
-          if ([v261 userInterfaceIdiom])
+          mainScreen18 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen18 userInterfaceIdiom])
           {
             HIDWORD(v313) = 0;
             LODWORD(v316) = 1;
@@ -13870,19 +13870,19 @@ LABEL_1505:
         LODWORD(v316) = v199 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v252 = [MEMORY[0x277D759A0] mainScreen];
-            [v252 _referenceBounds];
+            mainScreen23 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen23 _referenceBounds];
           }
 
-          HIDWORD(v313) = v19 ^ 1;
+          HIDWORD(v313) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v202 >= *(MEMORY[0x277D66E30] + 120))
           {
@@ -13908,8 +13908,8 @@ LABEL_1505:
         }
 
 LABEL_1515:
-        v19 = __sb__runningInSpringBoard();
-        if (v19)
+        mainScreen32 = __sb__runningInSpringBoard();
+        if (mainScreen32)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -13921,8 +13921,8 @@ LABEL_1515:
 
         else
         {
-          v257 = [MEMORY[0x277D75418] currentDevice];
-          if ([v257 userInterfaceIdiom])
+          mainScreen20 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen20 userInterfaceIdiom])
           {
             HIDWORD(v310) = 0;
             LODWORD(v313) = 1;
@@ -13930,22 +13930,22 @@ LABEL_1515:
           }
         }
 
-        LODWORD(v313) = v19 ^ 1;
+        LODWORD(v313) = mainScreen32 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v250 = [MEMORY[0x277D759A0] mainScreen];
-            [v250 _referenceBounds];
+            currentDevice27 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice27 _referenceBounds];
           }
 
-          HIDWORD(v310) = v19 ^ 1;
+          HIDWORD(v310) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v208 >= *(MEMORY[0x277D66E30] + 120))
           {
@@ -13989,8 +13989,8 @@ LABEL_1599:
 
         else
         {
-          v256 = [MEMORY[0x277D75418] currentDevice];
-          if ([v256 userInterfaceIdiom])
+          currentDevice26 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice26 userInterfaceIdiom])
           {
             HIDWORD(v307) = 0;
             LODWORD(v310) = 1;
@@ -14001,19 +14001,19 @@ LABEL_1599:
         LODWORD(v310) = v209 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v249 = [MEMORY[0x277D759A0] mainScreen];
-            [v249 _referenceBounds];
+            currentDevice28 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice28 _referenceBounds];
           }
 
-          HIDWORD(v307) = v19 ^ 1;
+          HIDWORD(v307) = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v216 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -14037,8 +14037,8 @@ LABEL_1599:
         }
 
 LABEL_1638:
-        v19 = __sb__runningInSpringBoard();
-        if (v19)
+        mainScreen32 = __sb__runningInSpringBoard();
+        if (mainScreen32)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
@@ -14050,8 +14050,8 @@ LABEL_1638:
 
         else
         {
-          v253 = [MEMORY[0x277D75418] currentDevice];
-          if ([v253 userInterfaceIdiom])
+          mainScreen22 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen22 userInterfaceIdiom])
           {
             v304 = 0;
             LODWORD(v307) = 1;
@@ -14059,22 +14059,22 @@ LABEL_1638:
           }
         }
 
-        LODWORD(v307) = v19 ^ 1;
+        LODWORD(v307) = mainScreen32 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v248 = [MEMORY[0x277D759A0] mainScreen];
-            [v248 _referenceBounds];
+            currentDevice29 = [MEMORY[0x277D759A0] mainScreen];
+            [currentDevice29 _referenceBounds];
           }
 
-          v304 = v19 ^ 1;
+          v304 = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v218 >= *(MEMORY[0x277D66E30] + 104))
           {
@@ -14121,8 +14121,8 @@ LABEL_1682:
 
         else
         {
-          v247 = [MEMORY[0x277D75418] currentDevice];
-          if ([v247 userInterfaceIdiom])
+          mainScreen27 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen27 userInterfaceIdiom])
           {
             v298 = 0;
             v301 = 1;
@@ -14133,19 +14133,19 @@ LABEL_1682:
         v301 = v220 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v245 = [MEMORY[0x277D759A0] mainScreen];
-            [v245 _referenceBounds];
+            mainScreen26 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen26 _referenceBounds];
           }
 
-          v298 = v19 ^ 1;
+          v298 = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v237 >= *(MEMORY[0x277D66E30] + 88))
           {
@@ -14178,8 +14178,8 @@ LABEL_1805:
 
         else
         {
-          v246 = [MEMORY[0x277D75418] currentDevice];
-          if ([v246 userInterfaceIdiom])
+          mainScreen25 = [MEMORY[0x277D75418] currentDevice];
+          if ([mainScreen25 userInterfaceIdiom])
           {
             v77 = 0;
             v76 = 1;
@@ -14190,19 +14190,19 @@ LABEL_1805:
         v76 = v233 ^ 1;
         if (SBFEffectiveHomeButtonType() == 2)
         {
-          v19 = __sb__runningInSpringBoard();
-          if (v19)
+          mainScreen32 = __sb__runningInSpringBoard();
+          if (mainScreen32)
           {
             __sb__mainScreenReferenceBounds();
           }
 
           else
           {
-            v244 = [MEMORY[0x277D759A0] mainScreen];
-            [v244 _referenceBounds];
+            mainScreen28 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen28 _referenceBounds];
           }
 
-          v77 = v19 ^ 1;
+          v77 = mainScreen32 ^ 1;
           BSSizeRoundForScale();
           if (v239 >= *(MEMORY[0x277D66E30] + 72))
           {
@@ -14220,16 +14220,16 @@ LABEL_1805:
         }
 
 LABEL_1825:
-        v19 = __sb__runningInSpringBoard();
-        if (v19)
+        mainScreen32 = __sb__runningInSpringBoard();
+        if (mainScreen32)
         {
           if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
           {
             v78 = 0;
             v79 = 0;
 LABEL_1845:
-            v13 = __sb__runningInSpringBoard();
-            if (v13)
+            mainScreen31 = __sb__runningInSpringBoard();
+            if (mainScreen31)
             {
               if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
               {
@@ -14241,8 +14241,8 @@ LABEL_1845:
 
             else
             {
-              v4 = [MEMORY[0x277D75418] currentDevice];
-              if ([v4 userInterfaceIdiom])
+              currentDevice33 = [MEMORY[0x277D75418] currentDevice];
+              if ([currentDevice33 userInterfaceIdiom])
               {
                 v81 = 0;
                 v80 = 1;
@@ -14250,7 +14250,7 @@ LABEL_1845:
               }
             }
 
-            v80 = v13 ^ 1;
+            v80 = mainScreen31 ^ 1;
             v241 = __sb__runningInSpringBoard();
             if (v241)
             {
@@ -14259,8 +14259,8 @@ LABEL_1845:
 
             else
             {
-              v13 = [MEMORY[0x277D759A0] mainScreen];
-              [v13 _referenceBounds];
+              mainScreen31 = [MEMORY[0x277D759A0] mainScreen];
+              [mainScreen31 _referenceBounds];
             }
 
             v81 = v241 ^ 1;
@@ -14293,7 +14293,7 @@ LABEL_524:
               if (!v78)
               {
 LABEL_530:
-                v64 = v296;
+                v64 = currentDevice4;
                 if (v77)
                 {
                 }
@@ -14323,8 +14323,8 @@ LABEL_528:
 
         else
         {
-          v6 = [MEMORY[0x277D75418] currentDevice];
-          if ([v6 userInterfaceIdiom])
+          currentDevice34 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice34 userInterfaceIdiom])
           {
             v79 = 0;
             v78 = 1;
@@ -14332,20 +14332,20 @@ LABEL_528:
           }
         }
 
-        v78 = v19 ^ 1;
-        v13 = __sb__runningInSpringBoard();
-        if (v13)
+        v78 = mainScreen32 ^ 1;
+        mainScreen31 = __sb__runningInSpringBoard();
+        if (mainScreen31)
         {
           __sb__mainScreenReferenceBounds();
         }
 
         else
         {
-          v19 = [MEMORY[0x277D759A0] mainScreen];
-          [v19 _referenceBounds];
+          mainScreen32 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen32 _referenceBounds];
         }
 
-        v79 = v13 ^ 1;
+        v79 = mainScreen31 ^ 1;
         BSSizeRoundForScale();
         if (v235 >= *(MEMORY[0x277D66E30] + 56))
         {
@@ -14373,11 +14373,11 @@ LABEL_528:
     v79 = 0;
     v80 = 0;
     v81 = 0;
-    HIDWORD(v321[12]) = v19 ^ 1;
+    HIDWORD(v321[12]) = mainScreen32 ^ 1;
     goto LABEL_521;
   }
 
-  v16 = &CSTimeLabelLandscapeBaselineY;
+  mainScreen34 = &CSTimeLabelLandscapeBaselineY;
   if (v11)
   {
     if (SBFEffectiveDeviceClass() != 2)
@@ -14389,8 +14389,8 @@ LABEL_528:
 
   else
   {
-    v295 = [MEMORY[0x277D75418] currentDevice];
-    if ([v295 userInterfaceIdiom] != 1)
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice5 userInterfaceIdiom] != 1)
     {
       v324 = 0x100000000;
       goto LABEL_150;
@@ -14400,19 +14400,19 @@ LABEL_528:
   HIDWORD(v324) = v12 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v296 = [MEMORY[0x277D759A0] mainScreen];
-      [v296 _referenceBounds];
+      currentDevice4 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice4 _referenceBounds];
     }
 
-    LODWORD(v324) = v20 ^ 1;
+    LODWORD(v324) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v96 == *(MEMORY[0x277D66E30] + 288) && v95 == *(MEMORY[0x277D66E30] + 296))
     {
@@ -14456,8 +14456,8 @@ LABEL_150:
 
   else
   {
-    v294 = [MEMORY[0x277D75418] currentDevice];
-    if ([v294 userInterfaceIdiom] != 1)
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom] != 1)
     {
       v323 = 0x100000000;
       goto LABEL_174;
@@ -14467,19 +14467,19 @@ LABEL_150:
   HIDWORD(v323) = v56 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v286 = [MEMORY[0x277D759A0] mainScreen];
-      [v286 _referenceBounds];
+      currentDevice10 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice10 _referenceBounds];
     }
 
-    LODWORD(v323) = v20 ^ 1;
+    LODWORD(v323) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v98 >= *(MEMORY[0x277D66E30] + 440))
     {
@@ -14522,8 +14522,8 @@ LABEL_174:
 
   else
   {
-    v293 = [MEMORY[0x277D75418] currentDevice];
-    if ([v293 userInterfaceIdiom] != 1)
+    currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice7 userInterfaceIdiom] != 1)
     {
       v322 = 0x100000000;
       goto LABEL_432;
@@ -14533,19 +14533,19 @@ LABEL_174:
   HIDWORD(v322) = v60 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v285 = [MEMORY[0x277D759A0] mainScreen];
-      [v285 _referenceBounds];
+      currentDevice9 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice9 _referenceBounds];
     }
 
-    LODWORD(v322) = v20 ^ 1;
+    LODWORD(v322) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v100 >= *(MEMORY[0x277D66E30] + 376))
     {
@@ -14587,8 +14587,8 @@ LABEL_432:
 
   else
   {
-    v292 = [MEMORY[0x277D75418] currentDevice];
-    if ([v292 userInterfaceIdiom] != 1)
+    mainScreen4 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen4 userInterfaceIdiom] != 1)
     {
       v321[15] = 0x100000000;
       goto LABEL_476;
@@ -14596,19 +14596,19 @@ LABEL_432:
   }
 
   HIDWORD(v321[15]) = v67 ^ 1;
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v289 = [MEMORY[0x277D759A0] mainScreen];
-    [v289 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
-  LODWORD(v321[15]) = v20 ^ 1;
+  LODWORD(v321[15]) = mainScreen33 ^ 1;
   BSSizeRoundForScale();
   if (v74 >= *(MEMORY[0x277D66E30] + 280))
   {
@@ -14644,8 +14644,8 @@ LABEL_476:
 
   else
   {
-    v291 = [MEMORY[0x277D75418] currentDevice];
-    if ([v291 userInterfaceIdiom] != 1)
+    currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice8 userInterfaceIdiom] != 1)
     {
       v321[14] = 0x100000000;
       goto LABEL_496;
@@ -14653,19 +14653,19 @@ LABEL_476:
   }
 
   HIDWORD(v321[14]) = v75 ^ 1;
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v287 = [MEMORY[0x277D759A0] mainScreen];
-    [v287 _referenceBounds];
+    mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen6 _referenceBounds];
   }
 
-  LODWORD(v321[14]) = v20 ^ 1;
+  LODWORD(v321[14]) = mainScreen33 ^ 1;
   BSSizeRoundForScale();
   if (v91 >= *(MEMORY[0x277D66E30] + 264))
   {
@@ -14701,8 +14701,8 @@ LABEL_496:
 
   else
   {
-    v290 = [MEMORY[0x277D75418] currentDevice];
-    if ([v290 userInterfaceIdiom] != 1)
+    mainScreen5 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen5 userInterfaceIdiom] != 1)
     {
       v321[13] = 0x100000000;
       goto LABEL_668;
@@ -14710,19 +14710,19 @@ LABEL_496:
   }
 
   HIDWORD(v321[13]) = v92 ^ 1;
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v284 = [MEMORY[0x277D759A0] mainScreen];
-    [v284 _referenceBounds];
+    currentDevice12 = [MEMORY[0x277D759A0] mainScreen];
+    [currentDevice12 _referenceBounds];
   }
 
-  LODWORD(v321[13]) = v20 ^ 1;
+  LODWORD(v321[13]) = mainScreen33 ^ 1;
   BSSizeRoundForScale();
   if (v104 >= *(MEMORY[0x277D66E30] + 248))
   {
@@ -14746,8 +14746,8 @@ LABEL_496:
   }
 
 LABEL_668:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
@@ -14771,18 +14771,18 @@ LABEL_676:
     v86 = 0;
     v87 = 0;
     v88 = &qword_21EC96778;
-    HIDWORD(v321[12]) = v20 ^ 1;
+    HIDWORD(v321[12]) = mainScreen33 ^ 1;
     goto LABEL_537;
   }
 
-  v288 = [MEMORY[0x277D75418] currentDevice];
-  if ([v288 userInterfaceIdiom] == 1)
+  mainScreen3 = [MEMORY[0x277D75418] currentDevice];
+  if ([mainScreen3 userInterfaceIdiom] == 1)
   {
     goto LABEL_676;
   }
 
 LABEL_670:
-  HIDWORD(v321[12]) = v20 ^ 1;
+  HIDWORD(v321[12]) = mainScreen33 ^ 1;
   if (!_SBF_Private_IsD94Like())
   {
 LABEL_674:
@@ -14801,8 +14801,8 @@ LABEL_674:
 
   else
   {
-    v282 = [MEMORY[0x277D75418] currentDevice];
-    if ([v282 userInterfaceIdiom])
+    currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice11 userInterfaceIdiom])
     {
       HIDWORD(v321[11]) = 0;
       LODWORD(v321[12]) = 1;
@@ -14813,19 +14813,19 @@ LABEL_674:
   LODWORD(v321[12]) = v105 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v275 = [MEMORY[0x277D759A0] mainScreen];
-      [v275 _referenceBounds];
+      currentDevice18 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice18 _referenceBounds];
     }
 
-    HIDWORD(v321[11]) = v20 ^ 1;
+    HIDWORD(v321[11]) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v128 >= *(MEMORY[0x277D66E30] + 200))
     {
@@ -14855,8 +14855,8 @@ LABEL_674:
   }
 
 LABEL_840:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -14867,8 +14867,8 @@ LABEL_840:
 
   else
   {
-    v283 = [MEMORY[0x277D75418] currentDevice];
-    if ([v283 userInterfaceIdiom])
+    currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice13 userInterfaceIdiom])
     {
       HIDWORD(v321[10]) = 0;
       LODWORD(v321[11]) = 1;
@@ -14876,22 +14876,22 @@ LABEL_840:
     }
   }
 
-  LODWORD(v321[11]) = v20 ^ 1;
+  LODWORD(v321[11]) = mainScreen33 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v278 = [MEMORY[0x277D759A0] mainScreen];
-      [v278 _referenceBounds];
+      mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen7 _referenceBounds];
     }
 
-    HIDWORD(v321[10]) = v20 ^ 1;
+    HIDWORD(v321[10]) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v121 >= *(MEMORY[0x277D66E30] + 200))
     {
@@ -14945,8 +14945,8 @@ LABEL_858:
 
   else
   {
-    v279 = [MEMORY[0x277D75418] currentDevice];
-    if ([v279 userInterfaceIdiom])
+    currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice15 userInterfaceIdiom])
     {
       HIDWORD(v321[9]) = 0;
       LODWORD(v321[10]) = 1;
@@ -14965,13 +14965,13 @@ LABEL_858:
 
     else
     {
-      v270 = [MEMORY[0x277D759A0] mainScreen];
-      [v270 _referenceBounds];
+      currentDevice20 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice20 _referenceBounds];
     }
 
-    v20 = v137 ^ 1u;
+    mainScreen33 = v137 ^ 1u;
     BSSizeRoundForScale();
-    HIDWORD(v321[9]) = v20;
+    HIDWORD(v321[9]) = mainScreen33;
     if (v145 >= *(MEMORY[0x277D66E30] + 136))
     {
       memset(v321, 0, 76);
@@ -15000,8 +15000,8 @@ LABEL_858:
   }
 
 LABEL_965:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -15012,8 +15012,8 @@ LABEL_965:
 
   else
   {
-    v281 = [MEMORY[0x277D75418] currentDevice];
-    if ([v281 userInterfaceIdiom])
+    mainScreen8 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen8 userInterfaceIdiom])
     {
       HIDWORD(v321[8]) = 0;
       LODWORD(v321[9]) = 1;
@@ -15021,22 +15021,22 @@ LABEL_965:
     }
   }
 
-  LODWORD(v321[9]) = v20 ^ 1;
+  LODWORD(v321[9]) = mainScreen33 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v274 = [MEMORY[0x277D759A0] mainScreen];
-      [v274 _referenceBounds];
+      mainScreen11 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen11 _referenceBounds];
     }
 
-    HIDWORD(v321[8]) = v20 ^ 1;
+    HIDWORD(v321[8]) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v138 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -15084,8 +15084,8 @@ LABEL_979:
 
   else
   {
-    v280 = [MEMORY[0x277D75418] currentDevice];
-    if ([v280 userInterfaceIdiom])
+    currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice14 userInterfaceIdiom])
     {
       HIDWORD(v321[7]) = 0;
       LODWORD(v321[8]) = 1;
@@ -15096,19 +15096,19 @@ LABEL_979:
   LODWORD(v321[8]) = v139 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v271 = [MEMORY[0x277D759A0] mainScreen];
-      [v271 _referenceBounds];
+      currentDevice17 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice17 _referenceBounds];
     }
 
-    HIDWORD(v321[7]) = v20 ^ 1;
+    HIDWORD(v321[7]) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v141 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -15138,8 +15138,8 @@ LABEL_979:
   }
 
 LABEL_989:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -15150,8 +15150,8 @@ LABEL_989:
 
   else
   {
-    v277 = [MEMORY[0x277D75418] currentDevice];
-    if ([v277 userInterfaceIdiom])
+    mainScreen10 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen10 userInterfaceIdiom])
     {
       HIDWORD(v321[6]) = 0;
       LODWORD(v321[7]) = 1;
@@ -15159,22 +15159,22 @@ LABEL_989:
     }
   }
 
-  LODWORD(v321[7]) = v20 ^ 1;
+  LODWORD(v321[7]) = mainScreen33 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v269 = [MEMORY[0x277D759A0] mainScreen];
-      [v269 _referenceBounds];
+      mainScreen13 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen13 _referenceBounds];
     }
 
-    HIDWORD(v321[6]) = v20 ^ 1;
+    HIDWORD(v321[6]) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v152 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -15222,8 +15222,8 @@ LABEL_1069:
 
   else
   {
-    v276 = [MEMORY[0x277D75418] currentDevice];
-    if ([v276 userInterfaceIdiom])
+    currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice16 userInterfaceIdiom])
     {
       HIDWORD(v321[5]) = 0;
       LODWORD(v321[6]) = 1;
@@ -15242,13 +15242,13 @@ LABEL_1069:
 
     else
     {
-      v266 = [MEMORY[0x277D759A0] mainScreen];
-      [v266 _referenceBounds];
+      currentDevice22 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice22 _referenceBounds];
     }
 
-    v20 = v155 ^ 1u;
+    mainScreen33 = v155 ^ 1u;
     BSSizeRoundForScale();
-    HIDWORD(v321[5]) = v20;
+    HIDWORD(v321[5]) = mainScreen33;
     if (v161 >= *(MEMORY[0x277D66E30] + 120) && (_SBF_Private_IsN84OrSimilarDevice() & 1) != 0)
     {
       memset(v321, 0, 44);
@@ -15277,8 +15277,8 @@ LABEL_1069:
   }
 
 LABEL_1089:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -15289,8 +15289,8 @@ LABEL_1089:
 
   else
   {
-    v273 = [MEMORY[0x277D75418] currentDevice];
-    if ([v273 userInterfaceIdiom])
+    mainScreen9 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen9 userInterfaceIdiom])
     {
       HIDWORD(v321[4]) = 0;
       LODWORD(v321[5]) = 1;
@@ -15298,22 +15298,22 @@ LABEL_1089:
     }
   }
 
-  LODWORD(v321[5]) = v20 ^ 1;
+  LODWORD(v321[5]) = mainScreen33 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v265 = [MEMORY[0x277D759A0] mainScreen];
-      [v265 _referenceBounds];
+      mainScreen16 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen16 _referenceBounds];
     }
 
-    HIDWORD(v321[4]) = v20 ^ 1;
+    HIDWORD(v321[4]) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v164 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -15367,8 +15367,8 @@ LABEL_1182:
 
   else
   {
-    v268 = [MEMORY[0x277D75418] currentDevice];
-    if ([v268 userInterfaceIdiom])
+    mainScreen14 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen14 userInterfaceIdiom])
     {
       HIDWORD(v321[3]) = 0;
       LODWORD(v321[4]) = 1;
@@ -15379,19 +15379,19 @@ LABEL_1182:
   LODWORD(v321[4]) = v165 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v259 = [MEMORY[0x277D759A0] mainScreen];
-      [v259 _referenceBounds];
+      currentDevice25 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice25 _referenceBounds];
     }
 
-    HIDWORD(v321[3]) = v20 ^ 1;
+    HIDWORD(v321[3]) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v179 >= *(MEMORY[0x277D66E30] + 184))
     {
@@ -15421,8 +15421,8 @@ LABEL_1182:
   }
 
 LABEL_1270:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -15433,8 +15433,8 @@ LABEL_1270:
 
   else
   {
-    v272 = [MEMORY[0x277D75418] currentDevice];
-    if ([v272 userInterfaceIdiom])
+    mainScreen12 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen12 userInterfaceIdiom])
     {
       HIDWORD(v321[2]) = 0;
       LODWORD(v321[3]) = 1;
@@ -15442,22 +15442,22 @@ LABEL_1270:
     }
   }
 
-  LODWORD(v321[3]) = v20 ^ 1;
+  LODWORD(v321[3]) = mainScreen33 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v262 = [MEMORY[0x277D759A0] mainScreen];
-      [v262 _referenceBounds];
+      mainScreen15 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen15 _referenceBounds];
     }
 
-    HIDWORD(v321[2]) = v20 ^ 1;
+    HIDWORD(v321[2]) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v174 >= *(MEMORY[0x277D66E30] + 184))
     {
@@ -15511,8 +15511,8 @@ LABEL_1288:
 
   else
   {
-    v264 = [MEMORY[0x277D75418] currentDevice];
-    if ([v264 userInterfaceIdiom])
+    currentDevice23 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice23 userInterfaceIdiom])
     {
       HIDWORD(v321[1]) = 0;
       LODWORD(v321[2]) = 1;
@@ -15523,19 +15523,19 @@ LABEL_1288:
   LODWORD(v321[2]) = v175 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v255 = [MEMORY[0x277D759A0] mainScreen];
-      [v255 _referenceBounds];
+      mainScreen21 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen21 _referenceBounds];
     }
 
-    HIDWORD(v321[1]) = v20 ^ 1;
+    HIDWORD(v321[1]) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v193 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -15566,8 +15566,8 @@ LABEL_1288:
   }
 
 LABEL_1400:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -15578,8 +15578,8 @@ LABEL_1400:
 
   else
   {
-    v267 = [MEMORY[0x277D75418] currentDevice];
-    if ([v267 userInterfaceIdiom])
+    currentDevice19 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice19 userInterfaceIdiom])
     {
       HIDWORD(v321[0]) = 0;
       LODWORD(v321[1]) = 1;
@@ -15587,22 +15587,22 @@ LABEL_1400:
     }
   }
 
-  LODWORD(v321[1]) = v20 ^ 1;
+  LODWORD(v321[1]) = mainScreen33 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v258 = [MEMORY[0x277D759A0] mainScreen];
-      [v258 _referenceBounds];
+      mainScreen17 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen17 _referenceBounds];
     }
 
-    HIDWORD(v321[0]) = v20 ^ 1;
+    HIDWORD(v321[0]) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v186 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -15657,8 +15657,8 @@ LABEL_1418:
 
   else
   {
-    v260 = [MEMORY[0x277D75418] currentDevice];
-    if ([v260 userInterfaceIdiom])
+    currentDevice24 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice24 userInterfaceIdiom])
     {
       HIDWORD(v320) = 0;
       LODWORD(v321[0]) = 1;
@@ -15669,19 +15669,19 @@ LABEL_1418:
   LODWORD(v321[0]) = v187 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v251 = [MEMORY[0x277D759A0] mainScreen];
-      [v251 _referenceBounds];
+      mainScreen24 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen24 _referenceBounds];
     }
 
-    HIDWORD(v320) = v20 ^ 1;
+    HIDWORD(v320) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v207 >= *(MEMORY[0x277D66E30] + 216))
     {
@@ -15710,8 +15710,8 @@ LABEL_1418:
   }
 
 LABEL_1525:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -15723,8 +15723,8 @@ LABEL_1525:
 
   else
   {
-    v263 = [MEMORY[0x277D75418] currentDevice];
-    if ([v263 userInterfaceIdiom])
+    currentDevice21 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice21 userInterfaceIdiom])
     {
       HIDWORD(v317) = 0;
       LODWORD(v320) = 1;
@@ -15732,22 +15732,22 @@ LABEL_1525:
     }
   }
 
-  LODWORD(v320) = v20 ^ 1;
+  LODWORD(v320) = mainScreen33 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v254 = [MEMORY[0x277D759A0] mainScreen];
-      [v254 _referenceBounds];
+      mainScreen19 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen19 _referenceBounds];
     }
 
-    HIDWORD(v317) = v20 ^ 1;
+    HIDWORD(v317) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v200 >= *(MEMORY[0x277D66E30] + 216))
     {
@@ -15794,8 +15794,8 @@ LABEL_1539:
 
   else
   {
-    v261 = [MEMORY[0x277D75418] currentDevice];
-    if ([v261 userInterfaceIdiom])
+    mainScreen18 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen18 userInterfaceIdiom])
     {
       HIDWORD(v314) = 0;
       LODWORD(v317) = 1;
@@ -15806,19 +15806,19 @@ LABEL_1539:
   LODWORD(v317) = v201 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v252 = [MEMORY[0x277D759A0] mainScreen];
-      [v252 _referenceBounds];
+      mainScreen23 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen23 _referenceBounds];
     }
 
-    HIDWORD(v314) = v20 ^ 1;
+    HIDWORD(v314) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v203 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -15845,8 +15845,8 @@ LABEL_1539:
   }
 
 LABEL_1549:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -15858,8 +15858,8 @@ LABEL_1549:
 
   else
   {
-    v257 = [MEMORY[0x277D75418] currentDevice];
-    if ([v257 userInterfaceIdiom])
+    mainScreen20 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen20 userInterfaceIdiom])
     {
       HIDWORD(v311) = 0;
       LODWORD(v314) = 1;
@@ -15867,22 +15867,22 @@ LABEL_1549:
     }
   }
 
-  LODWORD(v314) = v20 ^ 1;
+  LODWORD(v314) = mainScreen33 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v250 = [MEMORY[0x277D759A0] mainScreen];
-      [v250 _referenceBounds];
+      currentDevice27 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice27 _referenceBounds];
     }
 
-    HIDWORD(v311) = v20 ^ 1;
+    HIDWORD(v311) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v210 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -15927,8 +15927,8 @@ LABEL_1607:
 
   else
   {
-    v256 = [MEMORY[0x277D75418] currentDevice];
-    if ([v256 userInterfaceIdiom])
+    currentDevice26 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice26 userInterfaceIdiom])
     {
       HIDWORD(v308) = 0;
       LODWORD(v311) = 1;
@@ -15939,19 +15939,19 @@ LABEL_1607:
   LODWORD(v311) = v211 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v249 = [MEMORY[0x277D759A0] mainScreen];
-      [v249 _referenceBounds];
+      currentDevice28 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice28 _referenceBounds];
     }
 
-    HIDWORD(v308) = v20 ^ 1;
+    HIDWORD(v308) = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v217 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -15976,8 +15976,8 @@ LABEL_1607:
   }
 
 LABEL_1648:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -15989,8 +15989,8 @@ LABEL_1648:
 
   else
   {
-    v253 = [MEMORY[0x277D75418] currentDevice];
-    if ([v253 userInterfaceIdiom])
+    mainScreen22 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen22 userInterfaceIdiom])
     {
       v305 = 0;
       LODWORD(v308) = 1;
@@ -15998,22 +15998,22 @@ LABEL_1648:
     }
   }
 
-  LODWORD(v308) = v20 ^ 1;
+  LODWORD(v308) = mainScreen33 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v248 = [MEMORY[0x277D759A0] mainScreen];
-      [v248 _referenceBounds];
+      currentDevice29 = [MEMORY[0x277D759A0] mainScreen];
+      [currentDevice29 _referenceBounds];
     }
 
-    v305 = v20 ^ 1;
+    v305 = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v219 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -16111,8 +16111,8 @@ LABEL_1692:
 
   else
   {
-    v247 = [MEMORY[0x277D75418] currentDevice];
-    if ([v247 userInterfaceIdiom])
+    mainScreen27 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen27 userInterfaceIdiom])
     {
       v299 = 0;
       v302 = 1;
@@ -16123,19 +16123,19 @@ LABEL_1692:
   v302 = v221 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v245 = [MEMORY[0x277D759A0] mainScreen];
-      [v245 _referenceBounds];
+      mainScreen26 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen26 _referenceBounds];
     }
 
-    v299 = v20 ^ 1;
+    v299 = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v238 >= *(MEMORY[0x277D66E30] + 88))
     {
@@ -16169,8 +16169,8 @@ LABEL_1815:
 
   else
   {
-    v246 = [MEMORY[0x277D75418] currentDevice];
-    if ([v246 userInterfaceIdiom])
+    mainScreen25 = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen25 userInterfaceIdiom])
     {
       v83 = 0;
       v82 = 1;
@@ -16181,19 +16181,19 @@ LABEL_1815:
   v82 = v234 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v20 = __sb__runningInSpringBoard();
-    if (v20)
+    mainScreen33 = __sb__runningInSpringBoard();
+    if (mainScreen33)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v244 = [MEMORY[0x277D759A0] mainScreen];
-      [v244 _referenceBounds];
+      mainScreen28 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen28 _referenceBounds];
     }
 
-    v83 = v20 ^ 1;
+    v83 = mainScreen33 ^ 1;
     BSSizeRoundForScale();
     if (v240 >= *(MEMORY[0x277D66E30] + 72))
     {
@@ -16212,8 +16212,8 @@ LABEL_1815:
   }
 
 LABEL_1835:
-  v20 = __sb__runningInSpringBoard();
-  if (v20)
+  mainScreen33 = __sb__runningInSpringBoard();
+  if (mainScreen33)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -16225,8 +16225,8 @@ LABEL_1835:
 
   else
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    if ([v6 userInterfaceIdiom])
+    currentDevice34 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice34 userInterfaceIdiom])
     {
       v85 = 0;
       v84 = 1;
@@ -16234,20 +16234,20 @@ LABEL_1835:
     }
   }
 
-  v84 = v20 ^ 1;
-  v16 = __sb__runningInSpringBoard();
-  if (v16)
+  v84 = mainScreen33 ^ 1;
+  mainScreen34 = __sb__runningInSpringBoard();
+  if (mainScreen34)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 _referenceBounds];
+    mainScreen33 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen33 _referenceBounds];
   }
 
-  v85 = v16 ^ 1;
+  v85 = mainScreen34 ^ 1;
   BSSizeRoundForScale();
   if (v236 >= *(MEMORY[0x277D66E30] + 56))
   {
@@ -16258,8 +16258,8 @@ LABEL_1835:
   }
 
 LABEL_1856:
-  v16 = __sb__runningInSpringBoard();
-  if (v16)
+  mainScreen34 = __sb__runningInSpringBoard();
+  if (mainScreen34)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -16273,8 +16273,8 @@ LABEL_1883:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    if ([v4 userInterfaceIdiom])
+    currentDevice33 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice33 userInterfaceIdiom])
     {
       v87 = 0;
       v86 = 1;
@@ -16282,7 +16282,7 @@ LABEL_1883:
     }
   }
 
-  v86 = v16 ^ 1;
+  v86 = mainScreen34 ^ 1;
   v242 = __sb__runningInSpringBoard();
   if (v242)
   {
@@ -16291,8 +16291,8 @@ LABEL_1883:
 
   else
   {
-    v16 = [MEMORY[0x277D759A0] mainScreen];
-    [v16 _referenceBounds];
+    mainScreen34 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen34 _referenceBounds];
   }
 
   v87 = v242 ^ 1;
@@ -16571,11 +16571,11 @@ LABEL_546:
 
 - (BOOL)_isPageContentHidden
 {
-  v2 = [(CSCoverSheetViewController *)self activeAppearance];
-  v3 = [v2 componentForType:4 property:1];
-  v4 = [v3 isHidden];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v3 = [activeAppearance componentForType:4 property:1];
+  isHidden = [v3 isHidden];
 
-  return v4;
+  return isHidden;
 }
 
 - (BOOL)_isSlideableContentOnscreen
@@ -16587,8 +16587,8 @@ LABEL_546:
 
 - (CGPoint)_slideableContentOffset
 {
-  v2 = [(CSCoverSheetViewController *)self activeAppearance];
-  v3 = [v2 componentForType:5 property:2];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v3 = [activeAppearance componentForType:5 property:2];
   [v3 offset];
   v5 = v4;
   v7 = v6;
@@ -16604,48 +16604,48 @@ LABEL_546:
 {
   if ([(CSCoverSheetViewController *)self _areComplicationsHidden])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(_wouldComplicationsUseBottomPosition) = 0;
   }
 
   else
   {
-    v3 = [(CSCoverSheetViewController *)self _wouldComplicationsUseBottomPosition];
-    if (v3)
+    _wouldComplicationsUseBottomPosition = [(CSCoverSheetViewController *)self _wouldComplicationsUseBottomPosition];
+    if (_wouldComplicationsUseBottomPosition)
     {
-      LOBYTE(v3) = ![(CSWidgetGridViewController *)self->_complicationContainerViewController isEmpty];
+      LOBYTE(_wouldComplicationsUseBottomPosition) = ![(CSWidgetGridViewController *)self->_complicationContainerViewController isEmpty];
     }
   }
 
-  return v3;
+  return _wouldComplicationsUseBottomPosition;
 }
 
 - (void)_displayWillDisappearImplementation
 {
   [(CSCoverSheetViewController *)self _listenForDisplayLayoutChanges:0];
   notificationClearingTrigger = self->_notificationClearingTrigger;
-  v4 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  -[CSNotificationClearingTrigger setHadNotificationContentAtDisappearance:](notificationClearingTrigger, "setHadNotificationContentAtDisappearance:", [v4 hasContent]);
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  -[CSNotificationClearingTrigger setHadNotificationContentAtDisappearance:](notificationClearingTrigger, "setHadNotificationContentAtDisappearance:", [combinedListViewController hasContent]);
 }
 
 - (BOOL)isInteractingWithNotificationList
 {
-  v2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  v3 = [v2 isInteractingWithNotificationList];
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  isInteractingWithNotificationList = [combinedListViewController isInteractingWithNotificationList];
 
-  return v3;
+  return isInteractingWithNotificationList;
 }
 
 - (id)_createFakeStatusBar
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
-  v6 = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
+  statusBarController = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
   v7 = MEMORY[0x277D76620];
   [*MEMORY[0x277D76620] statusBarHeight];
-  v9 = [v6 createFakeStatusBarWithReason:@"SBDashBoardFakeStatusBar" withFrame:{0.0, 0.0, v5, v8}];
+  v9 = [statusBarController createFakeStatusBarWithReason:@"SBDashBoardFakeStatusBar" withFrame:{0.0, 0.0, v5, v8}];
 
   v20 = &unk_28307A4F0;
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[CSCoverSheetViewController shouldShowLockStatusBarTime](self, "shouldShowLockStatusBarTime")}];
@@ -16654,30 +16654,30 @@ LABEL_546:
   [v9 setEnabledCenterItems:v11 duration:0.0];
 
   [v9 setOrientation:{objc_msgSend(*v7, "activeInterfaceOrientation")}];
-  v12 = [(CSCoverSheetViewController *)self _fakeStatusBarSettings];
-  [v9 setStyleRequest:v12];
+  _fakeStatusBarSettings = [(CSCoverSheetViewController *)self _fakeStatusBarSettings];
+  [v9 setStyleRequest:_fakeStatusBarSettings];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = objc_alloc(MEMORY[0x277D6BA48]);
-    v14 = [MEMORY[0x277D6BAF0] disabledEntry];
-    v15 = [v13 initWithEntry:v14 forKey:*MEMORY[0x277D6BE40]];
+    disabledEntry = [MEMORY[0x277D6BAF0] disabledEntry];
+    v15 = [v13 initWithEntry:disabledEntry forKey:*MEMORY[0x277D6BE40]];
 
-    v16 = [v9 statusBar];
-    [v16 setOverlayData:v15];
+    statusBar = [v9 statusBar];
+    [statusBar setOverlayData:v15];
   }
 
   else
   {
     v15 = objc_alloc_init(MEMORY[0x277D76298]);
-    v16 = objc_alloc_init(MEMORY[0x277D76308]);
-    [v16 setEnabled:0];
-    v17 = [MEMORY[0x277D76308] disabledEntry];
-    [v15 setSensorActivityEntry:v17];
+    statusBar = objc_alloc_init(MEMORY[0x277D76308]);
+    [statusBar setEnabled:0];
+    disabledEntry2 = [MEMORY[0x277D76308] disabledEntry];
+    [v15 setSensorActivityEntry:disabledEntry2];
 
-    v18 = [v9 statusBar];
-    [v18 setOverlayData:v15];
+    statusBar2 = [v9 statusBar];
+    [statusBar2 setOverlayData:v15];
   }
 
   return v9;
@@ -16687,8 +16687,8 @@ LABEL_546:
 {
   v21 = *MEMORY[0x277D85DE8];
   [(CSCoverSheetViewController *)self _setHasContentAboveCoverSheet:0];
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v3 resetScrollViewToMainPageAnimated:0 withCompletion:0];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView resetScrollViewToMainPageAnimated:0 withCompletion:0];
 
   [(CSCoverSheetViewController *)self _handleEventType:9];
   [(CSNotificationClearingTrigger *)self->_notificationClearingTrigger setUiLocked:0];
@@ -16696,8 +16696,8 @@ LABEL_546:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CSCoverSheetViewController *)self pageViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+  v5 = [pageViewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -16709,14 +16709,14 @@ LABEL_546:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pageViewControllers);
         }
 
         [*(*(&v16 + 1) + 8 * v8++) dismissPresentationAnimated:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [pageViewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -16729,8 +16729,8 @@ LABEL_546:
 
   [(CSCoverSheetViewController *)self dismissModalPresentationAnimated:0 completion:0];
   [(CSNotificationDispatcher *)self->_notificationDispatcher setActive:0];
-  v9 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v9 viewControllerDidDisappear];
+  coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView2 viewControllerDidDisappear];
 
   [(CSCoverSheetViewController *)self setActiveAppearance:0];
   [(CSScrollGestureController *)self->_scrollGestureController setDelegate:0];
@@ -16738,8 +16738,8 @@ LABEL_546:
   scrollGestureController = self->_scrollGestureController;
   self->_scrollGestureController = 0;
 
-  v11 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v11 setStatusBarBackgroundView:0];
+  coverSheetView3 = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView3 setStatusBarBackgroundView:0];
 
   statusBarBackgroundView = self->_statusBarBackgroundView;
   self->_statusBarBackgroundView = 0;
@@ -16777,12 +16777,12 @@ LABEL_546:
 
 - (void)dismissHomeScreenOverlay
 {
-  v2 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-  if (v2)
+  overlayControllerIfExists = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+  if (overlayControllerIfExists)
   {
-    v3 = v2;
-    [v2 dismissAnimated:1 completionHandler:0];
-    v2 = v3;
+    v3 = overlayControllerIfExists;
+    [overlayControllerIfExists dismissAnimated:1 completionHandler:0];
+    overlayControllerIfExists = v3;
   }
 }
 
@@ -16811,8 +16811,8 @@ LABEL_546:
   chargingViewController = self->_chargingViewController;
   if (chargingViewController)
   {
-    v4 = [(CSCoverSheetViewControllerBase *)chargingViewController coverSheetIdentifier];
-    v5 = [(CSCoverSheetViewController *)self _isPresentingModalViewControllerWithIdentifier:v4];
+    coverSheetIdentifier = [(CSCoverSheetViewControllerBase *)chargingViewController coverSheetIdentifier];
+    v5 = [(CSCoverSheetViewController *)self _isPresentingModalViewControllerWithIdentifier:coverSheetIdentifier];
 
     LOBYTE(chargingViewController) = v5;
   }
@@ -16822,8 +16822,8 @@ LABEL_546:
 
 - (double)_dateTimeAlphaForFade
 {
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:1 identifier:@"(active)"];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:1 identifier:@"(active)"];
 
   v5 = 1.0;
   if (![(CSPresentationViewController *)self->_modalPresentationController isPresentingContent])
@@ -16843,17 +16843,17 @@ LABEL_546:
   }
 
   [(UIGestureRecognizer *)self->_wallpaperGestureRecognizer setDelegate:self];
-  v3 = [(CSCoverSheetViewController *)self irisWallpaperPlayer];
+  irisWallpaperPlayer = [(CSCoverSheetViewController *)self irisWallpaperPlayer];
 
-  if (v3)
+  if (irisWallpaperPlayer)
   {
-    v4 = [(CSCoverSheetViewController *)self activeBehavior];
-    v5 = [v4 areRestrictedCapabilities:256];
+    activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+    v5 = [activeBehavior areRestrictedCapabilities:256];
 
     if (v5)
     {
-      v6 = [(CSCoverSheetViewController *)self coverSheetView];
-      [v6 setWallpaperGestureRecognizer:0];
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+      [coverSheetView setWallpaperGestureRecognizer:0];
 
 LABEL_10:
       userPresenceMonitor = self->_userPresenceMonitor;
@@ -16863,8 +16863,8 @@ LABEL_10:
     }
   }
 
-  v7 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v7 setWallpaperGestureRecognizer:self->_wallpaperGestureRecognizer];
+  coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView2 setWallpaperGestureRecognizer:self->_wallpaperGestureRecognizer];
 
   if (![(CSCoverSheetViewController *)self _wallpaperGestureShouldRequireUserPresence])
   {
@@ -16879,17 +16879,17 @@ LABEL_10:
 - (void)_updateOverrideDateIfNeeded
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self _overrideDate];
+  _overrideDate = [(CSCoverSheetViewController *)self _overrideDate];
   if ((BSEqualObjects() & 1) == 0)
   {
     v4 = SBLogDashBoard();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (_overrideDate)
     {
       if (v5)
       {
         v10 = 138543362;
-        v11 = v3;
+        v11 = _overrideDate;
         v6 = "[Date Override] Adding override for date: %{public}@.";
         v7 = v4;
         v8 = 12;
@@ -16907,9 +16907,9 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    objc_storeStrong(&self->_defaultsDerivedOverrideDate, v3);
-    v9 = [MEMORY[0x277D65E40] sharedInstance];
-    [v9 setOverrideDate:v3];
+    objc_storeStrong(&self->_defaultsDerivedOverrideDate, _overrideDate);
+    mEMORY[0x277D65E40] = [MEMORY[0x277D65E40] sharedInstance];
+    [mEMORY[0x277D65E40] setOverrideDate:_overrideDate];
   }
 }
 
@@ -16920,8 +16920,8 @@ LABEL_7:
     goto LABEL_18;
   }
 
-  v3 = [(SBLockScreenDefaults *)self->_lockScreenDefaults dateTimeOverridesIntervalSince1970];
-  if (!v3)
+  dateTimeOverridesIntervalSince1970 = [(SBLockScreenDefaults *)self->_lockScreenDefaults dateTimeOverridesIntervalSince1970];
+  if (!dateTimeOverridesIntervalSince1970)
   {
     if ([(SBLockScreenDefaults *)self->_lockScreenDefaults overridesDateTimeToDefaultToday])
     {
@@ -16932,18 +16932,18 @@ LABEL_7:
         _os_log_impl(&dword_21EB05000, v7, OS_LOG_TYPE_DEFAULT, "[Date Override] Enforcing Hero override.", v18, 2u);
       }
 
-      v8 = [MEMORY[0x277CBEA80] currentCalendar];
-      v9 = [MEMORY[0x277CBEAA8] date];
-      v6 = [v8 dateBySettingHour:9 minute:41 second:0 ofDate:v9 options:0];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      date = [MEMORY[0x277CBEAA8] date];
+      v6 = [currentCalendar dateBySettingHour:9 minute:41 second:0 ofDate:date options:0];
 
 LABEL_14:
       goto LABEL_19;
     }
 
-    v10 = [(SBLockScreenDefaults *)self->_lockScreenDefaults overridesDateTimeToDefaultPast];
+    overridesDateTimeToDefaultPast = [(SBLockScreenDefaults *)self->_lockScreenDefaults overridesDateTimeToDefaultPast];
     v11 = SBLogDashBoard();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (overridesDateTimeToDefaultPast)
     {
       if (v12)
       {
@@ -16951,9 +16951,9 @@ LABEL_14:
         _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "[Date Override] Enforcing Historical override.", v17, 2u);
       }
 
-      v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:1168335660.0];
-      v13 = [MEMORY[0x277CBEBB0] systemTimeZone];
-      v14 = 1168335660.0 - [v13 secondsFromGMTForDate:v8];
+      currentCalendar = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:1168335660.0];
+      systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+      v14 = 1168335660.0 - [systemTimeZone secondsFromGMTForDate:currentCalendar];
 
       v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v14];
       goto LABEL_14;
@@ -16970,7 +16970,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v4 = v3;
+  v4 = dateTimeOverridesIntervalSince1970;
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -17005,10 +17005,10 @@ void __41__CSCoverSheetViewController_viewDidLoad__block_invoke_7(uint64_t a1, v
 
 - (BOOL)proudLockViewControllerIsCoverSheetVisible
 {
-  v3 = [(CSCoverSheetViewController *)self delegate];
+  delegate = [(CSCoverSheetViewController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) != 0 && !self->_hasContentAboveCoverSheet)
   {
-    v4 = [v3 coverSheetViewControllerIsPasscodeVisible:self] ^ 1;
+    v4 = [delegate coverSheetViewControllerIsPasscodeVisible:self] ^ 1;
   }
 
   else
@@ -17021,18 +17021,18 @@ void __41__CSCoverSheetViewController_viewDidLoad__block_invoke_7(uint64_t a1, v
 
 - (int64_t)backlightLuminance
 {
-  v2 = [(CSCoverSheetViewController *)self traitCollection];
-  v3 = [v2 _backlightLuminance];
+  traitCollection = [(CSCoverSheetViewController *)self traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  return v3;
+  return _backlightLuminance;
 }
 
-- (CSCoverSheetViewController)initWithPageViewControllers:(id)a3 mainPageContentViewController:(id)a4 context:(id)a5
+- (CSCoverSheetViewController)initWithPageViewControllers:(id)controllers mainPageContentViewController:(id)controller context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 containsObject:v9] & 1) == 0)
+  controllersCopy = controllers;
+  controllerCopy = controller;
+  contextCopy = context;
+  if (([controllersCopy containsObject:controllerCopy] & 1) == 0)
   {
     [CSCoverSheetViewController initWithPageViewControllers:mainPageContentViewController:context:];
   }
@@ -17043,7 +17043,7 @@ void __41__CSCoverSheetViewController_viewDidLoad__block_invoke_7(uint64_t a1, v
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_coverSheetContext, a5);
+    objc_storeStrong(&v11->_coverSheetContext, context);
     v13 = +[CSLockScreenDomain rootSettings];
     prototypeSettings = v12->_prototypeSettings;
     v12->_prototypeSettings = v13;
@@ -17061,10 +17061,10 @@ void __41__CSCoverSheetViewController_viewDidLoad__block_invoke_7(uint64_t a1, v
     activityCenter = v12->_activityCenter;
     v12->_activityCenter = v19;
 
-    v212 = v8;
-    [(CSCoverSheetViewController *)v12 _setPageViewControllers:v8];
+    v212 = controllersCopy;
+    [(CSCoverSheetViewController *)v12 _setPageViewControllers:controllersCopy];
     [(CSCoverSheetViewController *)v12 _setAllowedPageViewControllers:MEMORY[0x277CBEBF8]];
-    [(CSCoverSheetViewController *)v12 _setMainPageContentViewController:v9];
+    [(CSCoverSheetViewController *)v12 _setMainPageContentViewController:controllerCopy];
     v21 = [[CSMagSafeAccessoryStatusObserver alloc] initWithCoverSheetContext:v12->_coverSheetContext];
     accessoryAttachmentObserver = v12->_accessoryAttachmentObserver;
     v12->_accessoryAttachmentObserver = v21;
@@ -17219,8 +17219,8 @@ void __41__CSCoverSheetViewController_viewDidLoad__block_invoke_7(uint64_t a1, v
 
     else
     {
-      v110 = [MEMORY[0x277D75418] currentDevice];
-      if ([v110 userInterfaceIdiom] != 1)
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom] != 1)
       {
 LABEL_11:
 
@@ -17232,25 +17232,25 @@ LABEL_11:
       if ((v111 & 1) == 0)
       {
 LABEL_12:
-        v115 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v115 addObserver:v12 selector:sel__displayWillTurnOnWhileOnCoverSheet_ name:*MEMORY[0x277D67A38] object:0];
-        [v115 addObserver:v12 selector:sel__preferredContentSizeDidChange name:*MEMORY[0x277D76810] object:0];
-        [v115 addObserver:v12 selector:sel__reduceMotionDidChange_ name:*MEMORY[0x277D764C0] object:0];
-        [v115 addObserver:v12 selector:sel__liftToWakeGestureDetected name:*MEMORY[0x277D67A78] object:0];
-        [v115 addObserver:v12 selector:sel__managedConfigurationEffectiveSettingsDidChange_ name:*MEMORY[0x277D25CA0] object:0];
-        [v115 addObserver:v12 selector:sel__updateForGlassLegibilitySetting name:*MEMORY[0x277D77258] object:0];
-        [v115 addObserver:v12 selector:sel__updateForGlassLegibilitySetting name:*MEMORY[0x277D764C8] object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter addObserver:v12 selector:sel__displayWillTurnOnWhileOnCoverSheet_ name:*MEMORY[0x277D67A38] object:0];
+        [defaultCenter addObserver:v12 selector:sel__preferredContentSizeDidChange name:*MEMORY[0x277D76810] object:0];
+        [defaultCenter addObserver:v12 selector:sel__reduceMotionDidChange_ name:*MEMORY[0x277D764C0] object:0];
+        [defaultCenter addObserver:v12 selector:sel__liftToWakeGestureDetected name:*MEMORY[0x277D67A78] object:0];
+        [defaultCenter addObserver:v12 selector:sel__managedConfigurationEffectiveSettingsDidChange_ name:*MEMORY[0x277D25CA0] object:0];
+        [defaultCenter addObserver:v12 selector:sel__updateForGlassLegibilitySetting name:*MEMORY[0x277D77258] object:0];
+        [defaultCenter addObserver:v12 selector:sel__updateForGlassLegibilitySetting name:*MEMORY[0x277D764C8] object:0];
         [(CSCoverSheetViewController *)v12 _updateForGlassLegibilitySetting];
         v116 = [CSPowerChangeObserver alloc];
-        v117 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext powerStatusProvider];
-        v118 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext powerStatusChangeNotificationName];
+        powerStatusProvider = [(CSCoverSheetContextProviding *)v12->_coverSheetContext powerStatusProvider];
+        powerStatusChangeNotificationName = [(CSCoverSheetContextProviding *)v12->_coverSheetContext powerStatusChangeNotificationName];
         v219[0] = MEMORY[0x277D85DD0];
         v219[1] = 3221225472;
         v219[2] = __96__CSCoverSheetViewController_initWithPageViewControllers_mainPageContentViewController_context___block_invoke;
         v219[3] = &unk_27838B9B8;
         v119 = v12;
         v220 = v119;
-        v120 = [(CSPowerChangeObserver *)v116 initWithStatusProvider:v117 notificationName:v118 updateBlock:v219];
+        v120 = [(CSPowerChangeObserver *)v116 initWithStatusProvider:powerStatusProvider notificationName:powerStatusChangeNotificationName updateBlock:v219];
         powerChangeObserver = v119->_powerChangeObserver;
         v119->_powerChangeObserver = v120;
 
@@ -17263,8 +17263,8 @@ LABEL_12:
         v119->_embeddedContentActionManager = v124;
 
         v126 = v119->_embeddedContentActionManager;
-        v127 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext contentActionProvider];
-        [(CSEmbeddedContentActionManager *)v126 setContentActionProvider:v127];
+        contentActionProvider = [(CSCoverSheetContextProviding *)v12->_coverSheetContext contentActionProvider];
+        [(CSEmbeddedContentActionManager *)v126 setContentActionProvider:contentActionProvider];
 
         v128 = objc_alloc_init(CSBackgroundPresentationManager);
         backgroundPresentationManager = v119->_backgroundPresentationManager;
@@ -17275,12 +17275,12 @@ LABEL_12:
         v119->_backgroundContentActionManager = v130;
 
         v132 = v119->_backgroundContentActionManager;
-        v133 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext contentActionProvider];
-        [(CSBackgroundContentActionManager *)v132 setContentActionProvider:v133];
+        contentActionProvider2 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext contentActionProvider];
+        [(CSBackgroundContentActionManager *)v132 setContentActionProvider:contentActionProvider2];
 
         v134 = [CSRemoteContentSessionManager alloc];
-        v135 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext authenticationStatusProvider];
-        v136 = [(CSRemoteContentSessionManager *)v134 initWithAuthenticationStatusProvider:v135];
+        authenticationStatusProvider = [(CSCoverSheetContextProviding *)v12->_coverSheetContext authenticationStatusProvider];
+        v136 = [(CSRemoteContentSessionManager *)v134 initWithAuthenticationStatusProvider:authenticationStatusProvider];
         remoteContentSessionManager = v119->_remoteContentSessionManager;
         v119->_remoteContentSessionManager = v136;
 
@@ -17289,13 +17289,13 @@ LABEL_12:
         remoteContentInlineProvidingManagers = v119->_remoteContentInlineProvidingManagers;
         v119->_remoteContentInlineProvidingManagers = v138;
 
-        v140 = [v9 combinedListViewController];
-        [v140 setRemoteContentInlineProvider:v119];
+        combinedListViewController = [controllerCopy combinedListViewController];
+        [combinedListViewController setRemoteContentInlineProvider:v119];
 
-        v141 = [v9 combinedListViewController];
-        [v141 setCoverSheetGestureHandling:v119];
-        [v141 setActivityItemObserver:v119];
-        [v141 setAudioCategoriesObserver:v119];
+        combinedListViewController2 = [controllerCopy combinedListViewController];
+        [combinedListViewController2 setCoverSheetGestureHandling:v119];
+        [combinedListViewController2 setActivityItemObserver:v119];
+        [combinedListViewController2 setAudioCategoriesObserver:v119];
         v142 = objc_alloc_init(CSModalPresentationViewController);
         modalPresentationController = v119->_modalPresentationController;
         v119->_modalPresentationController = v142;
@@ -17317,22 +17317,22 @@ LABEL_12:
 
         [(CSNotificationDispatcher *)v119->_notificationDispatcher setModalDestination:v119];
         v150 = v119->_notificationDispatcher;
-        v151 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext carPlayStatusProvider];
-        [(CSNotificationDispatcher *)v150 setCarPlayStatusProvider:v151];
+        carPlayStatusProvider = [(CSCoverSheetContextProviding *)v12->_coverSheetContext carPlayStatusProvider];
+        [(CSNotificationDispatcher *)v150 setCarPlayStatusProvider:carPlayStatusProvider];
 
-        [(CSNotificationDispatcher *)v119->_notificationDispatcher setListDestination:v9];
-        [v9 setDispatcher:v119->_notificationDispatcher];
-        v152 = [v9 combinedListViewController];
-        v153 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext contentActionProvider];
-        [v152 setContentActionProvider:v153];
+        [(CSNotificationDispatcher *)v119->_notificationDispatcher setListDestination:controllerCopy];
+        [controllerCopy setDispatcher:v119->_notificationDispatcher];
+        combinedListViewController3 = [controllerCopy combinedListViewController];
+        contentActionProvider3 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext contentActionProvider];
+        [combinedListViewController3 setContentActionProvider:contentActionProvider3];
 
-        v154 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext legibilityProvider];
+        legibilityProvider = [(CSCoverSheetContextProviding *)v12->_coverSheetContext legibilityProvider];
         legibilityProvider = v119->_legibilityProvider;
-        v119->_legibilityProvider = v154;
+        v119->_legibilityProvider = legibilityProvider;
 
         [(CSLegibilityProviding *)v119->_legibilityProvider setLegibilityProviderDelegate:v119];
-        v156 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext lockOutStatusProvider];
-        [(CSCoverSheetViewController *)v119 _setLockOutController:v156];
+        lockOutStatusProvider = [(CSCoverSheetContextProviding *)v12->_coverSheetContext lockOutStatusProvider];
+        [(CSCoverSheetViewController *)v119 _setLockOutController:lockOutStatusProvider];
 
         v157 = objc_alloc_init(CSLayoutStrategy);
         [(CSLayoutStrategy *)v157 setPersistentLayout:v119];
@@ -17341,37 +17341,37 @@ LABEL_12:
         exemptFromInactiveAppearanceParticipants = v119->_exemptFromInactiveAppearanceParticipants;
         v119->_exemptFromInactiveAppearanceParticipants = v158;
 
-        v160 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         externalAppearanceProviders = v119->_externalAppearanceProviders;
-        v119->_externalAppearanceProviders = v160;
+        v119->_externalAppearanceProviders = weakObjectsHashTable;
 
-        v162 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         externalBehaviorProviders = v119->_externalBehaviorProviders;
-        v119->_externalBehaviorProviders = v162;
+        v119->_externalBehaviorProviders = weakObjectsHashTable2;
 
-        v164 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         externalEventHandlers = v119->_externalEventHandlers;
-        v119->_externalEventHandlers = v164;
+        v119->_externalEventHandlers = weakObjectsHashTable3;
 
-        v166 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         externalLockProviders = v119->_externalLockProviders;
-        v119->_externalLockProviders = v166;
+        v119->_externalLockProviders = weakObjectsHashTable4;
 
-        v168 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         externalPresentationProviders = v119->_externalPresentationProviders;
-        v119->_externalPresentationProviders = v168;
+        v119->_externalPresentationProviders = weakObjectsHashTable5;
 
-        v170 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         applicationHosters = v119->_applicationHosters;
-        v119->_applicationHosters = v170;
+        v119->_applicationHosters = weakObjectsHashTable6;
 
         v172 = [[CSNotificationClearingTrigger alloc] initWithDelegate:v119];
         notificationClearingTrigger = v119->_notificationClearingTrigger;
         v119->_notificationClearingTrigger = v172;
 
-        v174 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext screenWakeAnimationController];
+        screenWakeAnimationController = [(CSCoverSheetContextProviding *)v12->_coverSheetContext screenWakeAnimationController];
         screenWakeAnimationController = v119->_screenWakeAnimationController;
-        v119->_screenWakeAnimationController = v174;
+        v119->_screenWakeAnimationController = screenWakeAnimationController;
 
         v176 = objc_alloc_init(MEMORY[0x277D65E88]);
         legacyWallpaperWakeAnimator = v119->_legacyWallpaperWakeAnimator;
@@ -17385,28 +17385,28 @@ LABEL_12:
         v119->_lastAppearState = 0;
         [(CSCoverSheetViewController *)v119 _preferredContentSizeDidChange];
         [(CSCoverSheetViewController *)v119 _addStateCaptureHandlers];
-        v180 = [MEMORY[0x277D67D40] sharedInstance];
+        mEMORY[0x277D67D40] = [MEMORY[0x277D67D40] sharedInstance];
         phoneUnlockWithWatchController = v119->_phoneUnlockWithWatchController;
-        v119->_phoneUnlockWithWatchController = v180;
+        v119->_phoneUnlockWithWatchController = mEMORY[0x277D67D40];
 
         [(SBUIPhoneUnlockWithWatchController *)v119->_phoneUnlockWithWatchController setDelegate:v119];
         v182 = v119->_phoneUnlockWithWatchController;
-        v183 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext biometricResource];
-        [(SBUIPhoneUnlockWithWatchController *)v182 setBiometricResource:v183];
+        biometricResource = [(CSCoverSheetContextProviding *)v12->_coverSheetContext biometricResource];
+        [(SBUIPhoneUnlockWithWatchController *)v182 setBiometricResource:biometricResource];
 
         [(SBUIPhoneUnlockWithWatchController *)v119->_phoneUnlockWithWatchController addObserver:v119];
-        v184 = [MEMORY[0x277D67D38] sharedInstance];
+        mEMORY[0x277D67D38] = [MEMORY[0x277D67D38] sharedInstance];
         phoneUnlockWithVisionController = v119->_phoneUnlockWithVisionController;
-        v119->_phoneUnlockWithVisionController = v184;
+        v119->_phoneUnlockWithVisionController = mEMORY[0x277D67D38];
 
         [(SBUIPhoneUnlockWithVisionController *)v119->_phoneUnlockWithVisionController addObserver:v119];
-        v186 = [MEMORY[0x277D67D30] sharedInstance];
+        mEMORY[0x277D67D30] = [MEMORY[0x277D67D30] sharedInstance];
         phoneUnlockWithRemoteDeviceCoordinator = v119->_phoneUnlockWithRemoteDeviceCoordinator;
-        v119->_phoneUnlockWithRemoteDeviceCoordinator = v186;
+        v119->_phoneUnlockWithRemoteDeviceCoordinator = mEMORY[0x277D67D30];
 
         v188 = v119->_phoneUnlockWithRemoteDeviceCoordinator;
-        v189 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext biometricResource];
-        [(SBUIPhoneUnlockWithRemoteDeviceCoordinator *)v188 setBiometricResource:v189];
+        biometricResource2 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext biometricResource];
+        [(SBUIPhoneUnlockWithRemoteDeviceCoordinator *)v188 setBiometricResource:biometricResource2];
 
         [(SBUIPhoneUnlockWithRemoteDeviceCoordinator *)v119->_phoneUnlockWithRemoteDeviceCoordinator addRemoteUnlockHandler:v119->_phoneUnlockWithWatchController];
         [(SBUIPhoneUnlockWithRemoteDeviceCoordinator *)v119->_phoneUnlockWithRemoteDeviceCoordinator addRemoteUnlockHandler:v119->_phoneUnlockWithVisionController];
@@ -17415,16 +17415,16 @@ LABEL_12:
         v119->_appearanceResolver = v190;
 
         v192 = [CSPosterSwitcherActivationManager alloc];
-        v193 = [(CSCoverSheetContextProviding *)v12->_coverSheetContext unlockRequester];
-        v194 = [(CSPosterSwitcherActivationManager *)v192 initWithSource:v119 delegate:v119 unlockRequester:v193];
+        unlockRequester = [(CSCoverSheetContextProviding *)v12->_coverSheetContext unlockRequester];
+        v194 = [(CSPosterSwitcherActivationManager *)v192 initWithSource:v119 delegate:v119 unlockRequester:unlockRequester];
         posterSwitcherActivationManager = v119->_posterSwitcherActivationManager;
         v119->_posterSwitcherActivationManager = v194;
 
         v196 = *(MEMORY[0x277CBF398] + 16);
         v119->_posterPreferredSalientContentRectangle.origin = *MEMORY[0x277CBF398];
         v119->_posterPreferredSalientContentRectangle.size = v196;
-        v197 = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
-        v198 = [v197 addMonitor:v119 subjectMask:1 subscriptionOptions:1];
+        subjectMonitorRegistry = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
+        v198 = [subjectMonitorRegistry addMonitor:v119 subjectMask:1 subscriptionOptions:1];
         appProtectionSubjectMonitorSubscription = v119->_appProtectionSubjectMonitorSubscription;
         v119->_appProtectionSubjectMonitorSubscription = v198;
 
@@ -17460,14 +17460,14 @@ LABEL_12:
         objc_destroyWeak(&v217);
         objc_destroyWeak(&location);
 
-        v8 = v212;
+        controllersCopy = v212;
         goto LABEL_13;
       }
     }
 
     v112 = v12->_localAppearance;
-    v110 = +[CSComponent fullBleedContent];
-    v113 = [v110 priority:40];
+    currentDevice = +[CSComponent fullBleedContent];
+    v113 = [currentDevice priority:40];
     v114 = [v113 flag:1];
     [(CSAppearance *)v112 addComponent:v114];
 
@@ -17624,33 +17624,33 @@ id __54__CSCoverSheetViewController__addStateCaptureHandlers__block_invoke_3(uin
   return v6;
 }
 
-- (void)setIrisWallpaperPlayer:(id)a3
+- (void)setIrisWallpaperPlayer:(id)player
 {
-  v5 = a3;
-  if (self->_irisWallpaperPlayer != v5)
+  playerCopy = player;
+  if (self->_irisWallpaperPlayer != playerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_irisWallpaperPlayer, a3);
+    v6 = playerCopy;
+    objc_storeStrong(&self->_irisWallpaperPlayer, player);
     [(PBUIIrisWallpaperPlaying *)self->_irisWallpaperPlayer setIrisDelegate:self];
-    v5 = v6;
+    playerCopy = v6;
   }
 }
 
-- (void)setWallpaperGestureRecognizer:(id)a3
+- (void)setWallpaperGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  if (self->_wallpaperGestureRecognizer != v5)
+  recognizerCopy = recognizer;
+  if (self->_wallpaperGestureRecognizer != recognizerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_wallpaperGestureRecognizer, a3);
+    v6 = recognizerCopy;
+    objc_storeStrong(&self->_wallpaperGestureRecognizer, recognizer);
     [(CSCoverSheetViewController *)self _setupWallpaperGesture];
-    v5 = v6;
+    recognizerCopy = v6;
   }
 }
 
-- (void)setWallpaperColorProvider:(id)a3
+- (void)setWallpaperColorProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_wallpaperColorProvider);
 
   if (WeakRetained != obj)
@@ -17660,63 +17660,63 @@ id __54__CSCoverSheetViewController__addStateCaptureHandlers__block_invoke_3(uin
   }
 }
 
-- (void)setCameraPrewarmer:(id)a3
+- (void)setCameraPrewarmer:(id)prewarmer
 {
-  v5 = a3;
-  if (self->_cameraPrewarmer != v5)
+  prewarmerCopy = prewarmer;
+  if (self->_cameraPrewarmer != prewarmerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cameraPrewarmer, a3);
+    v6 = prewarmerCopy;
+    objc_storeStrong(&self->_cameraPrewarmer, prewarmer);
     [(CSQuickActionsViewController *)self->_quickActionsViewController setCameraPrewarmer:self->_cameraPrewarmer];
-    v5 = v6;
+    prewarmerCopy = v6;
   }
 }
 
-- (void)setEffectiveInterfaceOrientationOverride:(int64_t)a3
+- (void)setEffectiveInterfaceOrientationOverride:(int64_t)override
 {
-  if (self->_effectiveInterfaceOrientationOverride != a3)
+  if (self->_effectiveInterfaceOrientationOverride != override)
   {
-    self->_effectiveInterfaceOrientationOverride = a3;
-    v4 = [(CSCoverSheetViewController *)self view];
-    [v4 setNeedsLayout];
+    self->_effectiveInterfaceOrientationOverride = override;
+    view = [(CSCoverSheetViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)activateTodayViewWithCompletion:(id)a3
+- (void)activateTodayViewWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self activeBehavior];
-  v6 = [v5 areRestrictedCapabilities:64];
+  completionCopy = completion;
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v6 = [activeBehavior areRestrictedCapabilities:64];
 
-  if (v4 && v6)
+  if (completionCopy && v6)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
-  v7 = [(CSCoverSheetViewController *)self overlayController];
-  if (v7)
+  overlayController = [(CSCoverSheetViewController *)self overlayController];
+  if (overlayController)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __62__CSCoverSheetViewController_activateTodayViewWithCompletion___block_invoke;
     v14[3] = &unk_27838BAC0;
     v8 = &v15;
-    v15 = v4;
-    v9 = v4;
-    [v7 setPresentationProgress:0 interactive:1 animated:v14 completionHandler:1.0];
+    v15 = completionCopy;
+    v9 = completionCopy;
+    [overlayController setPresentationProgress:0 interactive:1 animated:v14 completionHandler:1.0];
   }
 
   else
   {
-    v10 = [(CSCoverSheetViewController *)self _indexOfTodayPage];
+    _indexOfTodayPage = [(CSCoverSheetViewController *)self _indexOfTodayPage];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __62__CSCoverSheetViewController_activateTodayViewWithCompletion___block_invoke_2;
     v12[3] = &unk_27838BB18;
     v8 = &v13;
-    v13 = v4;
-    v11 = v4;
-    [(CSCoverSheetViewController *)self activatePage:v10 animated:1 withCompletion:v12];
+    v13 = completionCopy;
+    v11 = completionCopy;
+    [(CSCoverSheetViewController *)self activatePage:_indexOfTodayPage animated:1 withCompletion:v12];
   }
 }
 
@@ -17742,26 +17742,26 @@ uint64_t __62__CSCoverSheetViewController_activateTodayViewWithCompletion___bloc
   return result;
 }
 
-- (void)deactivateTodayViewWithCompletion:(id)a3
+- (void)deactivateTodayViewWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  overlayControllerIfExists = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+  v6 = overlayControllerIfExists;
+  if (overlayControllerIfExists)
   {
-    if ([v5 isPresented])
+    if ([overlayControllerIfExists isPresented])
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __64__CSCoverSheetViewController_deactivateTodayViewWithCompletion___block_invoke;
       v7[3] = &unk_27838BAC0;
-      v8 = v4;
+      v8 = completionCopy;
       [v6 setPresentationProgress:0 interactive:1 animated:v7 completionHandler:0.0];
     }
 
-    else if (v4)
+    else if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -17777,37 +17777,37 @@ uint64_t __64__CSCoverSheetViewController_deactivateTodayViewWithCompletion___bl
   return result;
 }
 
-- (void)activateMainPageWithCompletion:(id)a3
+- (void)activateMainPageWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(CSCoverSheetViewController *)self activatePage:[(CSCoverSheetViewController *)self _indexOfMainPage] animated:1 withCompletion:v4];
+  completionCopy = completion;
+  [(CSCoverSheetViewController *)self activatePage:[(CSCoverSheetViewController *)self _indexOfMainPage] animated:1 withCompletion:completionCopy];
 }
 
-- (void)activateCameraWithHostableEntity:(id)a3 animated:(BOOL)a4 sendingActions:(id)a5 completion:(id)a6
+- (void)activateCameraWithHostableEntity:(id)entity animated:(BOOL)animated sendingActions:(id)actions completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  entityCopy = entity;
+  actionsCopy = actions;
+  completionCopy = completion;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __98__CSCoverSheetViewController_activateCameraWithHostableEntity_animated_sendingActions_completion___block_invoke;
   v28[3] = &unk_27838BB68;
   v28[4] = self;
-  v13 = v10;
+  v13 = entityCopy;
   v29 = v13;
-  v32 = a4;
-  v14 = v11;
+  animatedCopy = animated;
+  v14 = actionsCopy;
   v30 = v14;
-  v15 = v12;
+  v15 = completionCopy;
   v31 = v15;
   v16 = MEMORY[0x223D698D0](v28);
   v19 = 0;
   if ([(CSCoverSheetViewTransitionSource *)self->_currentTransitionSource isTransitioning])
   {
     currentTransitionSource = self->_currentTransitionSource;
-    v18 = [(CSCoverSheetViewController *)self coverSheetView];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
 
-    if (currentTransitionSource == v18)
+    if (currentTransitionSource == coverSheetView)
     {
       v21 = self->_currentTransitionSource;
       if (v21)
@@ -17917,21 +17917,21 @@ void __98__CSCoverSheetViewController_activateCameraWithHostableEntity_animated_
   }
 }
 
-- (void)setCoverSheetIsVisible:(BOOL)a3
+- (void)setCoverSheetIsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if ([(CSCoverSheetViewController *)self isShowingTodayView])
   {
     v5 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:[(CSCoverSheetViewController *)self _indexOfTodayPage]];
-    if (!v3)
+    if (!visibleCopy)
     {
       [(CSCoverSheetViewController *)self dismissHomeScreenOverlay];
     }
 
-    [v5 setDisplayLayoutElementActive:v3];
+    [v5 setDisplayLayoutElementActive:visibleCopy];
   }
 
-  if (v3)
+  if (visibleCopy)
   {
     if ([(CSCoverSheetViewController *)self _isShowingInlineContent])
     {
@@ -17963,13 +17963,13 @@ void __98__CSCoverSheetViewController_activateCameraWithHostableEntity_animated_
 
 - (BOOL)isShowingNonNotificationContent
 {
-  v3 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-  v4 = [v3 isShowingNonNotificationContent];
+  mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+  isShowingNonNotificationContent = [mainPageContentViewController isShowingNonNotificationContent];
 
-  v5 = [(CSCoverSheetViewController *)self modalPresentationController];
-  LOBYTE(v3) = [v5 isPresentingContent];
+  modalPresentationController = [(CSCoverSheetViewController *)self modalPresentationController];
+  LOBYTE(mainPageContentViewController) = [modalPresentationController isPresentingContent];
 
-  return (v4 | v3) & 1;
+  return (isShowingNonNotificationContent | mainPageContentViewController) & 1;
 }
 
 - (BOOL)shouldPresentOrDismissCoverSheetSpotlight
@@ -18001,31 +18001,31 @@ void __98__CSCoverSheetViewController_activateCameraWithHostableEntity_animated_
   return v2;
 }
 
-- (void)presentOrDismissCoverSheetSpotlightAnimated:(BOOL)a3
+- (void)presentOrDismissCoverSheetSpotlightAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CSCoverSheetViewController *)self shouldPresentOrDismissCoverSheetSpotlight])
   {
     WeakRetained = objc_loadWeakRetained(&self->_coverSheetSpotlightPresenter);
     v6 = WeakRetained;
     if (self->_spotlightModalViewController)
     {
-      [WeakRetained dismissSpotlightAnimated:v3];
+      [WeakRetained dismissSpotlightAnimated:animatedCopy];
     }
 
     else
     {
-      [WeakRetained presentSpotlightAnimated:v3];
+      [WeakRetained presentSpotlightAnimated:animatedCopy];
     }
   }
 }
 
-- (void)updateScaleViewWithScale:(double)a3 withDuration:(double)a4
+- (void)updateScaleViewWithScale:(double)scale withDuration:(double)duration
 {
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
-  CSComponentTransitionInputsMake(0, &v32, a4, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), a3, 0.0);
+  CSComponentTransitionInputsMake(0, &v32, duration, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), scale, 0.0);
   localAppearance = self->_localAppearance;
   v6 = [(CSAppearance *)localAppearance componentForType:1 identifier:@"Spotlight"];
   [(CSAppearance *)localAppearance removeComponent:v6];
@@ -18084,7 +18084,7 @@ void __98__CSCoverSheetViewController_activateCameraWithHostableEntity_animated_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 67109120;
-    v9 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+    _isShowingChargingModal = [(CSCoverSheetViewController *)self _isShowingChargingModal];
     _os_log_impl(&dword_21EB05000, v3, OS_LOG_TYPE_DEFAULT, "[Charge UI][User Gesture] visible NO, showBattery NO – isAlreadyShowingChargingModal: %d", &v8, 8u);
   }
 
@@ -18092,36 +18092,36 @@ void __98__CSCoverSheetViewController_activateCameraWithHostableEntity_animated_
   v4 = SBLogDashBoard();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+    _isShowingChargingModal2 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
     v8 = 67109120;
-    v9 = v5;
+    _isShowingChargingModal = _isShowingChargingModal2;
     _os_log_impl(&dword_21EB05000, v4, OS_LOG_TYPE_DEFAULT, "[Charge UI][User Gesture] – endedShowingChargingModal: %d", &v8, 8u);
   }
 
-  v6 = [(SBFLockScreenDateViewController *)self->_dateViewController dateViewIfExists];
-  [v6 setAlpha:1.0];
+  dateViewIfExists = [(SBFLockScreenDateViewController *)self->_dateViewController dateViewIfExists];
+  [dateViewIfExists setAlpha:1.0];
 
   [(CSCoverSheetViewController *)self _addOrRemoveRemoteContentViewIfNecessaryMaintainingState:1];
   v7 = [CSEvent eventWithType:36];
   [(CSCoverSheetViewController *)self _handleEvent:v7];
 }
 
-- (void)setLayoutStrategy:(id)a3
+- (void)setLayoutStrategy:(id)strategy
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_layoutStrategy != v5)
+  strategyCopy = strategy;
+  if (self->_layoutStrategy != strategyCopy)
   {
-    objc_storeStrong(&self->_layoutStrategy, a3);
-    v6 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v6 setLayoutStrategy:v5];
+    objc_storeStrong(&self->_layoutStrategy, strategy);
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView setLayoutStrategy:strategyCopy];
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(CSCoverSheetViewController *)self pageViewControllers];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+    v8 = [pageViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -18133,14 +18133,14 @@ void __98__CSCoverSheetViewController_activateCameraWithHostableEntity_animated_
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(pageViewControllers);
           }
 
-          [*(*(&v12 + 1) + 8 * v11++) setLayoutStrategy:v5];
+          [*(*(&v12 + 1) + 8 * v11++) setLayoutStrategy:strategyCopy];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [pageViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -18160,10 +18160,10 @@ void __98__CSCoverSheetViewController_activateCameraWithHostableEntity_animated_
     return 0;
   }
 
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 0;
   }
@@ -18180,64 +18180,64 @@ LABEL_3:
 
 - (void)resetMainPageContentOffset
 {
-  v2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  [v2 resetContentOffset];
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  [combinedListViewController resetContentOffset];
 }
 
-- (void)setPartiallyOnScreen:(BOOL)a3
+- (void)setPartiallyOnScreen:(BOOL)screen
 {
-  if (self->_partiallyOnScreen != a3)
+  if (self->_partiallyOnScreen != screen)
   {
-    self->_partiallyOnScreen = a3;
+    self->_partiallyOnScreen = screen;
     [(CSCoverSheetViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
   }
 }
 
-- (void)updateFont:(id)a3 preferredTimeMaxYPortrait:(double)a4 preferredTimeMaxYLandscape:(double)a5 vibrancyConfiguration:(id)a6 numberingSystem:(id)a7 contentStyle:(id)a8
+- (void)updateFont:(id)font preferredTimeMaxYPortrait:(double)portrait preferredTimeMaxYLandscape:(double)landscape vibrancyConfiguration:(id)configuration numberingSystem:(id)system contentStyle:(id)style
 {
-  v23 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  fontCopy = font;
+  configurationCopy = configuration;
+  systemCopy = system;
+  styleCopy = style;
   if (_os_feature_enabled_impl())
   {
-    [(CSCoverSheetViewController *)self setVibrancyConfiguration:v14];
-    v17 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-    [v17 setCustomTimeFont:v23];
+    [(CSCoverSheetViewController *)self setVibrancyConfiguration:configurationCopy];
+    dateView = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+    [dateView setCustomTimeFont:fontCopy];
 
-    v18 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-    [v18 setCustomTimeNumberingSystem:v15];
+    dateView2 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+    [dateView2 setCustomTimeNumberingSystem:systemCopy];
 
-    v19 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-    [v19 setContentStyle:v16];
+    dateView3 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+    [dateView3 setContentStyle:styleCopy];
 
-    [(CSWidgetGridViewController *)self->_complicationContainerViewController setContentStyle:v16];
-    [(CSWidgetGridViewController *)self->_sidebarComplicationContainerViewController setContentStyle:v16];
+    [(CSWidgetGridViewController *)self->_complicationContainerViewController setContentStyle:styleCopy];
+    [(CSWidgetGridViewController *)self->_sidebarComplicationContainerViewController setContentStyle:styleCopy];
   }
 
   else
   {
     [(CSCoverSheetViewController *)self setVibrancyConfiguration:0];
-    v20 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-    [v20 setCustomTimeFont:0];
+    dateView4 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+    [dateView4 setCustomTimeFont:0];
 
-    v21 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-    [v21 setTextColor:0];
+    dateView5 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+    [dateView5 setTextColor:0];
 
-    v22 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-    [v22 setCustomTimeNumberingSystem:0];
+    dateView6 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+    [dateView6 setCustomTimeNumberingSystem:0];
   }
 
-  self->_posterPreferredTimeMaxYPortrait = a4;
-  self->_posterPreferredTimeMaxYLandscape = a5;
+  self->_posterPreferredTimeMaxYPortrait = portrait;
+  self->_posterPreferredTimeMaxYLandscape = landscape;
 }
 
-- (void)setVibrancyConfiguration:(id)a3
+- (void)setVibrancyConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v9 = [v4 copyWithGroupName:v6];
+  v9 = [configurationCopy copyWithGroupName:v6];
 
   if ((BSEqualObjects() & 1) == 0)
   {
@@ -18249,12 +18249,12 @@ LABEL_3:
   }
 }
 
-- (void)setVibrancyConfigurationOverride:(id)a3
+- (void)setVibrancyConfigurationOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v9 = [v4 copyWithGroupName:v6];
+  v9 = [overrideCopy copyWithGroupName:v6];
 
   if ((BSEqualObjects() & 1) == 0)
   {
@@ -18266,17 +18266,17 @@ LABEL_3:
   }
 }
 
-- (void)setEffectiveVibrancyConfiguration:(id)a3
+- (void)setEffectiveVibrancyConfiguration:(id)configuration
 {
-  v7 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [configurationCopy copy];
     effectiveVibrancyConfiguration = self->_effectiveVibrancyConfiguration;
     self->_effectiveVibrancyConfiguration = v4;
 
-    v6 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-    [v6 setVibrancyConfiguration:self->_effectiveVibrancyConfiguration];
+    dateView = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+    [dateView setVibrancyConfiguration:self->_effectiveVibrancyConfiguration];
 
     [(CSWidgetGridViewController *)self->_complicationContainerViewController setVibrancyConfiguration:self->_effectiveVibrancyConfiguration];
     [(CSWidgetGridViewController *)self->_sidebarComplicationContainerViewController setVibrancyConfiguration:self->_effectiveVibrancyConfiguration];
@@ -18300,14 +18300,14 @@ LABEL_3:
 
 - (void)handleReachabilityAnimationWillBegin
 {
-  v3 = [(CSCoverSheetViewController *)self _appearState];
-  v4 = [(CSCoverSheetContextProviding *)self->_coverSheetContext reachabilityController];
-  [v4 effectiveReachabilityYOffset];
+  _appearState = [(CSCoverSheetViewController *)self _appearState];
+  reachabilityController = [(CSCoverSheetContextProviding *)self->_coverSheetContext reachabilityController];
+  [reachabilityController effectiveReachabilityYOffset];
   IsZero = BSFloatIsZero();
 
   if (IsZero)
   {
-    v6 = v3 == 0;
+    v6 = _appearState == 0;
   }
 
   else
@@ -18341,8 +18341,8 @@ LABEL_3:
 
   if (v3)
   {
-    v4 = [(CSCoverSheetContextProviding *)self->_coverSheetContext reachabilityController];
-    [v4 effectiveReachabilityYOffset];
+    reachabilityController = [(CSCoverSheetContextProviding *)self->_coverSheetContext reachabilityController];
+    [reachabilityController effectiveReachabilityYOffset];
     IsZero = BSFloatIsZero();
 
     if (IsZero)
@@ -18356,27 +18356,27 @@ LABEL_3:
 
 - (void)requestIdleTimerResetForPoster
 {
-  v4 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationStatusProvider];
-  if ([v4 hasPasscodeSet])
+  authenticationStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationStatusProvider];
+  if ([authenticationStatusProvider hasPasscodeSet])
   {
-    v3 = [(CSCoverSheetViewController *)self isAuthenticated];
+    isAuthenticated = [(CSCoverSheetViewController *)self isAuthenticated];
 
-    if (!v3)
+    if (!isAuthenticated)
     {
       return;
     }
 
-    v4 = [CSAction actionWithType:3];
+    authenticationStatusProvider = [CSAction actionWithType:3];
     [CSCoverSheetViewController handleAction:"handleAction:fromSender:" fromSender:?];
   }
 }
 
-- (void)_setLastSettledPageIndex:(unint64_t)a3
+- (void)_setLastSettledPageIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x277D85DE8];
-  self->_lastSettledPageIndex = a3;
+  self->_lastSettledPageIndex = index;
   v4 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:?];
-  v5 = [(CSCoverSheetViewController *)self mainPageContentViewController];
+  mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
 
   v14 = 0u;
   v15 = 0u;
@@ -18401,7 +18401,7 @@ LABEL_3:
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 coverSheetViewControllerDidSettleOnPage:self mainPage:v4 == v5];
+          [v11 coverSheetViewControllerDidSettleOnPage:self mainPage:v4 == mainPageContentViewController];
         }
 
         ++v10;
@@ -18415,30 +18415,30 @@ LABEL_3:
   }
 }
 
-- (void)prepareForTransitionToPresented:(BOOL)a3 reversingTransition:(BOOL)a4 forUserGesture:(BOOL)a5
+- (void)prepareForTransitionToPresented:(BOOL)presented reversingTransition:(BOOL)transition forUserGesture:(BOOL)gesture
 {
-  if (!a3 && !a4 && [(CSCoverSheetViewController *)self _isShowingChargingModal])
+  if (!presented && !transition && [(CSCoverSheetViewController *)self _isShowingChargingModal])
   {
 
     [(CSCoverSheetViewController *)self _transitionChargingViewToVisible:0 showBattery:0 animated:1];
   }
 }
 
-- (void)updateCoverSheetTransitionProgress:(double)a3
+- (void)updateCoverSheetTransitionProgress:(double)progress
 {
   if (CSFeatureEnabled(12))
   {
-    v5 = 1.0 - a3;
-    v6 = [(CSBackgroundContentViewController *)self->_backgroundContentViewController view];
-    [v6 setAlpha:v5];
+    v5 = 1.0 - progress;
+    view = [(CSBackgroundContentViewController *)self->_backgroundContentViewController view];
+    [view setAlpha:v5];
 
-    v7 = [(CSCoverSheetViewController *)self coverSheetView];
-    v8 = [v7 backgroundView];
-    [v8 setAlpha:v5];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    backgroundView = [coverSheetView backgroundView];
+    [backgroundView setAlpha:v5];
 
-    v10 = [(CSCoverSheetViewController *)self coverSheetView];
-    v9 = [v10 bedtimeGreetingViewBackgroundView];
-    [v9 setAlpha:v5];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    bedtimeGreetingViewBackgroundView = [coverSheetView2 bedtimeGreetingViewBackgroundView];
+    [bedtimeGreetingViewBackgroundView setAlpha:v5];
   }
 }
 
@@ -18446,33 +18446,33 @@ LABEL_3:
 {
   if (CSFeatureEnabled(12))
   {
-    v3 = [(CSBackgroundContentViewController *)self->_backgroundContentViewController view];
-    [v3 setAlpha:1.0];
+    view = [(CSBackgroundContentViewController *)self->_backgroundContentViewController view];
+    [view setAlpha:1.0];
 
-    v4 = [(CSCoverSheetViewController *)self coverSheetView];
-    v5 = [v4 backgroundView];
-    [v5 setAlpha:1.0];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    backgroundView = [coverSheetView backgroundView];
+    [backgroundView setAlpha:1.0];
 
-    v7 = [(CSCoverSheetViewController *)self coverSheetView];
-    v6 = [v7 bedtimeGreetingViewBackgroundView];
-    [v6 setAlpha:1.0];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    bedtimeGreetingViewBackgroundView = [coverSheetView2 bedtimeGreetingViewBackgroundView];
+    [bedtimeGreetingViewBackgroundView setAlpha:1.0];
   }
 }
 
-- (void)updateCoverSheetDraggingProgress:(double)a3 forPresentationValue:(BOOL)a4
+- (void)updateCoverSheetDraggingProgress:(double)progress forPresentationValue:(BOOL)value
 {
-  v4 = a4;
-  v6 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v6 setCoverSheetPresentationProgress:v4 forPresentationValue:a3];
+  valueCopy = value;
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView setCoverSheetPresentationProgress:valueCopy forPresentationValue:progress];
 }
 
-- (void)updateBackgroundGlassEffectForDraggingProgress:(double)a3 usingGlassEffects:(BOOL)a4
+- (void)updateBackgroundGlassEffectForDraggingProgress:(double)progress usingGlassEffects:(BOOL)effects
 {
-  v4 = a4;
+  effectsCopy = effects;
   v26 = *MEMORY[0x277D85DE8];
   if (CSFeatureEnabled(12))
   {
-    v7 = fmin(fmax(a3, 0.0), 0.25) * 4.0 + 0.0;
+    v7 = fmin(fmax(progress, 0.0), 0.25) * 4.0 + 0.0;
     v8 = SBLogDashBoard();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -18481,10 +18481,10 @@ LABEL_3:
       _os_log_impl(&dword_21EB05000, v8, OS_LOG_TYPE_DEFAULT, "AC*** - progress: %f", &v24, 0xCu);
     }
 
-    v9 = [(CSCoverSheetViewController *)self coverSheetView];
-    v10 = [v9 backgroundGlassView];
-    v11 = v10;
-    if (v4)
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    backgroundGlassView = [coverSheetView backgroundGlassView];
+    v11 = backgroundGlassView;
+    if (effectsCopy)
     {
       v12 = v7;
     }
@@ -18494,20 +18494,20 @@ LABEL_3:
       v12 = 0.0;
     }
 
-    [v10 setEffectMultiplier:v12];
+    [backgroundGlassView setEffectMultiplier:v12];
 
     IsZero = BSFloatIsZero();
-    v14 = [(CSCoverSheetViewController *)self coverSheetView];
-    v15 = [v14 backgroundGlassView];
-    [v15 setHidden:IsZero | !v4];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    backgroundGlassView2 = [coverSheetView2 backgroundGlassView];
+    [backgroundGlassView2 setHidden:IsZero | !effectsCopy];
 
-    v16 = [(CSCoverSheetViewController *)self traitCollection];
-    [v16 displayCornerRadius];
+    traitCollection = [(CSCoverSheetViewController *)self traitCollection];
+    [traitCollection displayCornerRadius];
     v18 = v17;
 
     v19 = v18 > 0.0;
-    v20 = [(CSCoverSheetViewController *)self coverSheetView];
-    v21 = v20;
+    coverSheetView3 = [(CSCoverSheetViewController *)self coverSheetView];
+    v21 = coverSheetView3;
     if ((v19 & ~IsZero) != 0)
     {
       v22 = 12;
@@ -18528,31 +18528,31 @@ LABEL_3:
       v23 = 0.0;
     }
 
-    [v20 setClipping:v19 & ~IsZero corners:v22 radius:v23];
+    [coverSheetView3 setClipping:v19 & ~IsZero corners:v22 radius:v23];
   }
 }
 
 - (void)cleanupInterstitialWhileOffScreen
 {
-  v3 = [(CSCoverSheetViewController *)self _passcodeViewController];
-  [v3 commitingToEndTransitionToPresented:1 forInitialTransition:0];
+  _passcodeViewController = [(CSCoverSheetViewController *)self _passcodeViewController];
+  [_passcodeViewController commitingToEndTransitionToPresented:1 forInitialTransition:0];
 
-  v4 = [(CSCoverSheetViewController *)self _passcodeViewController];
-  [v4 endInteractiveTransitionToPresented:1 forInitialTransition:0];
+  _passcodeViewController2 = [(CSCoverSheetViewController *)self _passcodeViewController];
+  [_passcodeViewController2 endInteractiveTransitionToPresented:1 forInitialTransition:0];
 }
 
-- (void)setScale:(double)a3 behaviorMode:(int64_t)a4 completion:(id)a5
+- (void)setScale:(double)scale behaviorMode:(int64_t)mode completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = [(CSAppearance *)self->_localAppearance componentForType:15 identifier:@"SwitcherZoomingPresentation"];
   v10 = v9;
   if (!v9 || ([v9 transitionInputs], (BSFloatEqualToFloat() & 1) == 0))
   {
-    v11 = [(CSLockScreenSettings *)self->_prototypeSettings cameraExtensionSettings];
-    v12 = [v11 coverSheetContentScaleSettings];
+    cameraExtensionSettings = [(CSLockScreenSettings *)self->_prototypeSettings cameraExtensionSettings];
+    coverSheetContentScaleSettings = [cameraExtensionSettings coverSheetContentScaleSettings];
 
     v13 = 0.0;
-    if ((a4 - 3) <= 2)
+    if ((mode - 3) <= 2)
     {
       [MEMORY[0x277D75D18] inheritedAnimationDuration];
     }
@@ -18560,12 +18560,12 @@ LABEL_3:
     v47 = 0u;
     v48 = 0u;
     v46 = 0u;
-    CSComponentTransitionInputsMake(0, &v46, v13, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), a3, 0.0);
+    CSComponentTransitionInputsMake(0, &v46, v13, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), scale, 0.0);
     IsOne = BSFloatIsOne();
     [(CSAppearance *)self->_localAppearance removeAllComponentsWithIdentifier:@"SwitcherZoomingPresentation"];
     if ((IsOne & 1) == 0)
     {
-      v40 = v12;
+      v40 = coverSheetContentScaleSettings;
       localAppearance = self->_localAppearance;
       v16 = objc_opt_new();
       v17 = [v16 identifier:@"SwitcherZoomingPresentation"];
@@ -18610,16 +18610,16 @@ LABEL_3:
       v38 = [v37 transitionInputs:&v43];
       [(CSAppearance *)v33 addComponent:v38];
 
-      v12 = v40;
+      coverSheetContentScaleSettings = v40;
     }
 
-    v39 = [v12 BSAnimationSettings];
+    bSAnimationSettings = [coverSheetContentScaleSettings BSAnimationSettings];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __63__CSCoverSheetViewController_setScale_behaviorMode_completion___block_invoke;
     v41[3] = &unk_27838BAC0;
-    v42 = v8;
-    [(CSCoverSheetViewController *)self updateAppearanceForController:self withAnimationSettings:v39 completion:v41];
+    v42 = completionCopy;
+    [(CSCoverSheetViewController *)self updateAppearanceForController:self withAnimationSettings:bSAnimationSettings completion:v41];
   }
 }
 
@@ -18634,66 +18634,66 @@ uint64_t __63__CSCoverSheetViewController_setScale_behaviorMode_completion___blo
   return result;
 }
 
-- (void)registerExternalAppearanceProvider:(id)a3
+- (void)registerExternalAppearanceProvider:(id)provider
 {
   externalAppearanceProviders = self->_externalAppearanceProviders;
-  v5 = a3;
-  [(NSHashTable *)externalAppearanceProviders addObject:v5];
-  v6 = [v5 coverSheetIdentifier];
+  providerCopy = provider;
+  [(NSHashTable *)externalAppearanceProviders addObject:providerCopy];
+  coverSheetIdentifier = [providerCopy coverSheetIdentifier];
 
-  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:v6];
+  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:coverSheetIdentifier];
 }
 
-- (void)externalAppearanceProviderBehaviorChanged:(id)a3
+- (void)externalAppearanceProviderBehaviorChanged:(id)changed
 {
-  v4 = [a3 coverSheetIdentifier];
-  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:v4];
+  coverSheetIdentifier = [changed coverSheetIdentifier];
+  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:coverSheetIdentifier];
 }
 
-- (void)unregisterExternalAppearanceProvider:(id)a3
+- (void)unregisterExternalAppearanceProvider:(id)provider
 {
   externalAppearanceProviders = self->_externalAppearanceProviders;
-  v5 = a3;
-  [(NSHashTable *)externalAppearanceProviders removeObject:v5];
-  v6 = [v5 coverSheetIdentifier];
+  providerCopy = provider;
+  [(NSHashTable *)externalAppearanceProviders removeObject:providerCopy];
+  coverSheetIdentifier = [providerCopy coverSheetIdentifier];
 
-  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:v6];
+  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:coverSheetIdentifier];
 }
 
-- (void)registerExternalBehaviorProvider:(id)a3
+- (void)registerExternalBehaviorProvider:(id)provider
 {
   externalBehaviorProviders = self->_externalBehaviorProviders;
-  v5 = a3;
-  [(NSHashTable *)externalBehaviorProviders addObject:v5];
-  v6 = [v5 coverSheetIdentifier];
+  providerCopy = provider;
+  [(NSHashTable *)externalBehaviorProviders addObject:providerCopy];
+  coverSheetIdentifier = [providerCopy coverSheetIdentifier];
 
-  [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:v6];
+  [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:coverSheetIdentifier];
 }
 
-- (void)externalBehaviorProviderBehaviorChanged:(id)a3
+- (void)externalBehaviorProviderBehaviorChanged:(id)changed
 {
-  v4 = [a3 coverSheetIdentifier];
-  [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:v4];
+  coverSheetIdentifier = [changed coverSheetIdentifier];
+  [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:coverSheetIdentifier];
 }
 
-- (void)unregisterExternalBehaviorProvider:(id)a3
+- (void)unregisterExternalBehaviorProvider:(id)provider
 {
   externalBehaviorProviders = self->_externalBehaviorProviders;
-  v5 = a3;
-  [(NSHashTable *)externalBehaviorProviders removeObject:v5];
-  v6 = [v5 coverSheetIdentifier];
+  providerCopy = provider;
+  [(NSHashTable *)externalBehaviorProviders removeObject:providerCopy];
+  coverSheetIdentifier = [providerCopy coverSheetIdentifier];
 
-  [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:v6];
+  [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:coverSheetIdentifier];
 }
 
-- (void)externalLockProviderStateChanged:(id)a3
+- (void)externalLockProviderStateChanged:(id)changed
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:changed];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -18726,94 +18726,94 @@ uint64_t __63__CSCoverSheetViewController_setScale_behaviorMode_completion___blo
   }
 }
 
-- (void)registerExternalPresentationProvider:(id)a3
+- (void)registerExternalPresentationProvider:(id)provider
 {
   externalPresentationProviders = self->_externalPresentationProviders;
-  v5 = a3;
-  [(NSHashTable *)externalPresentationProviders addObject:v5];
-  v6 = [(CSCoverSheetViewController *)self visiblePageViewController];
-  [v6 updatePresentationAnimated:1];
+  providerCopy = provider;
+  [(NSHashTable *)externalPresentationProviders addObject:providerCopy];
+  visiblePageViewController = [(CSCoverSheetViewController *)self visiblePageViewController];
+  [visiblePageViewController updatePresentationAnimated:1];
 
-  v7 = [v5 coverSheetIdentifier];
+  coverSheetIdentifier = [providerCopy coverSheetIdentifier];
 
-  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:v7];
+  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:coverSheetIdentifier];
 }
 
-- (void)externalPresentationProviderPresentationChanged:(id)a3
+- (void)externalPresentationProviderPresentationChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self visiblePageViewController];
-  [v5 updatePresentationAnimated:1];
+  changedCopy = changed;
+  visiblePageViewController = [(CSCoverSheetViewController *)self visiblePageViewController];
+  [visiblePageViewController updatePresentationAnimated:1];
 
-  v6 = [v4 coverSheetIdentifier];
+  coverSheetIdentifier = [changedCopy coverSheetIdentifier];
 
-  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:v6];
+  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:coverSheetIdentifier];
 }
 
-- (void)unregisterExternalPresentationProvider:(id)a3
+- (void)unregisterExternalPresentationProvider:(id)provider
 {
   externalPresentationProviders = self->_externalPresentationProviders;
-  v5 = a3;
-  [(NSHashTable *)externalPresentationProviders removeObject:v5];
-  v6 = [(CSCoverSheetViewController *)self visiblePageViewController];
-  [v6 updatePresentationAnimated:1];
+  providerCopy = provider;
+  [(NSHashTable *)externalPresentationProviders removeObject:providerCopy];
+  visiblePageViewController = [(CSCoverSheetViewController *)self visiblePageViewController];
+  [visiblePageViewController updatePresentationAnimated:1];
 
-  v7 = [v5 coverSheetIdentifier];
+  coverSheetIdentifier = [providerCopy coverSheetIdentifier];
 
-  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:v7];
+  [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:coverSheetIdentifier];
 }
 
-- (void)addCoverSheetObserver:(id)a3
+- (void)addCoverSheetObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   if (![(NSHashTable *)self->_observers containsObject:?])
   {
     observers = self->_observers;
     if (!observers)
     {
-      v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v6 = self->_observers;
-      self->_observers = v5;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
-    [(NSHashTable *)observers addObject:v7];
+    [(NSHashTable *)observers addObject:observerCopy];
   }
 }
 
-- (void)removeCoverSheetObserver:(id)a3
+- (void)removeCoverSheetObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if ([(NSHashTable *)self->_observers containsObject:?])
   {
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
   }
 }
 
 - (void)loadView
 {
   v3 = [CSCoverSheetView alloc];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v11 = [(CSCoverSheetView *)v3 initWithFrame:?];
 
   [(CSCoverSheetView *)v11 setAutoresizingMask:18];
   [(CSCoverSheetView *)v11 setAutoresizesSubviews:1];
   LODWORD(v3) = CSFeatureEnabled(12);
-  v5 = [(CSCoverSheetView *)v11 layer];
-  [v5 setHitTestsAsOpaque:v3 ^ 1];
+  layer = [(CSCoverSheetView *)v11 layer];
+  [layer setHitTestsAsOpaque:v3 ^ 1];
 
   [(CSCoverSheetView *)v11 setLayoutStrategy:self->_layoutStrategy];
   [(CSCoverSheetView *)v11 _setLockScreenDefaults:self->_lockScreenDefaults];
-  v6 = [(CSCoverSheetContextProviding *)self->_coverSheetContext homeScreenOverlayProvider];
-  LODWORD(v5) = [v6 wantsHomeScreenOverlay];
+  homeScreenOverlayProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext homeScreenOverlayProvider];
+  LODWORD(layer) = [homeScreenOverlayProvider wantsHomeScreenOverlay];
 
-  if (v5)
+  if (layer)
   {
-    v7 = [(CSCoverSheetView *)v11 scrollView];
-    v8 = [v7 panGestureRecognizer];
-    [v8 addTarget:self action:sel_scrollPanGestureDidUpdate_];
+    scrollView = [(CSCoverSheetView *)v11 scrollView];
+    panGestureRecognizer = [scrollView panGestureRecognizer];
+    [panGestureRecognizer addTarget:self action:sel_scrollPanGestureDidUpdate_];
 
     [(CSCoverSheetView *)v11 setIgnoresOverscrollOnMainPage:1];
   }
@@ -18834,7 +18834,7 @@ uint64_t __63__CSCoverSheetViewController_setScale_behaviorMode_completion___blo
 - (void)viewDidLoad
 {
   OUTLINED_FUNCTION_7();
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_5();
   [v1 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -19025,10 +19025,10 @@ void __41__CSCoverSheetViewController_viewDidLoad__block_invoke_6(uint64_t a1, v
   v10.receiver = self;
   v10.super_class = CSCoverSheetViewController;
   [(CSCoverSheetViewControllerBase *)&v10 viewDidLayoutSubviews];
-  v3 = [(CSCoverSheetViewController *)self interfaceOrientation];
-  if (v3 != self->_appearanceOrientation)
+  interfaceOrientation = [(CSCoverSheetViewController *)self interfaceOrientation];
+  if (interfaceOrientation != self->_appearanceOrientation)
   {
-    v4 = v3;
+    v4 = interfaceOrientation;
     v5 = SBLogDashBoard();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -19044,11 +19044,11 @@ void __41__CSCoverSheetViewController_viewDidLoad__block_invoke_6(uint64_t a1, v
     [(CSCoverSheetViewController *)self _updateAppearanceForTransitionToOrientation:v4];
     [(CSCoverSheetViewController *)self _calculateAppearanceForCurrentOrientation];
     [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:@"Forced Orientation Update"];
-    v8 = [(CSCoverSheetViewController *)self complicationContainerViewController];
-    [v8 updatePresentationStyleForNewOrientation:v4];
+    complicationContainerViewController = [(CSCoverSheetViewController *)self complicationContainerViewController];
+    [complicationContainerViewController updatePresentationStyleForNewOrientation:v4];
 
-    v9 = [(CSCoverSheetViewController *)self sidebarComplicationContainerViewController];
-    [v9 updatePresentationStyleForNewOrientation:v4];
+    sidebarComplicationContainerViewController = [(CSCoverSheetViewController *)self sidebarComplicationContainerViewController];
+    [sidebarComplicationContainerViewController updatePresentationStyleForNewOrientation:v4];
 
     self->_appearanceOrientation = v4;
   }
@@ -19060,8 +19060,8 @@ void __41__CSCoverSheetViewController_viewDidLoad__block_invoke_6(uint64_t a1, v
   {
     if ([(CSCoverSheetViewController *)self _quickActionsSupported])
     {
-      v3 = [(CSCoverSheetViewController *)self childViewControllers];
-      v4 = [v3 containsObject:self->_quickActionsViewController];
+      childViewControllers = [(CSCoverSheetViewController *)self childViewControllers];
+      v4 = [childViewControllers containsObject:self->_quickActionsViewController];
 
       if ((v4 & 1) == 0)
       {
@@ -19077,9 +19077,9 @@ void __41__CSCoverSheetViewController_viewDidLoad__block_invoke_6(uint64_t a1, v
 
     else
     {
-      v6 = [(CSQuickActionsViewController *)self->_quickActionsViewController parentViewController];
+      parentViewController = [(CSQuickActionsViewController *)self->_quickActionsViewController parentViewController];
 
-      if (v6)
+      if (parentViewController)
       {
         v7 = self->_quickActionsViewController;
 
@@ -19104,49 +19104,49 @@ uint64_t __58__CSCoverSheetViewController_updateQuickActionsVisibility__block_in
 {
   if (!self->_lastAppearState)
   {
-    v4 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v4 viewControllerWillAppear];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView viewControllerWillAppear];
 
     [(CSCoverSheetViewController *)self setActiveAppearance:0];
     [(CSCoverSheetViewTransitionSource *)self->_currentTransitionSource cancelTransition];
     self->_transitionType = 0;
     [(CSCoverSheetViewController *)self setCurrentTransitionSource:0];
-    v7 = [(CSCoverSheetViewController *)self coverSheetView];
-    v5 = [[CSScrollGestureController alloc] initWithScrollableView:v7];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    v5 = [[CSScrollGestureController alloc] initWithScrollableView:coverSheetView2];
     scrollGestureController = self->_scrollGestureController;
     self->_scrollGestureController = v5;
 
     [(CSScrollGestureController *)self->_scrollGestureController setDelegate:self];
     [(CSCoverSheetViewController *)self _loadViewsForRestrictedPagesIfPossible];
-    [v7 resetScrollViewToMainPageAnimated:0 withCompletion:0];
+    [coverSheetView2 resetScrollViewToMainPageAnimated:0 withCompletion:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(CSCoverSheetViewController *)self _prepareForViewWillAppearIfNecessary];
   v6.receiver = self;
   v6.super_class = CSCoverSheetViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewWillAppear:v3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewWillAppear:appearCopy];
   [(CSCoverSheetViewController *)self _handleEventType:3];
   [(CSCoverSheetViewController *)self updateQuickActionsVisibility];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_dateViewController toVisible:1 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_fixedFooterViewController toVisible:1 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_teachableMomentsContainerViewController toVisible:1 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_inlineComplicationContainerViewController toVisible:1 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_landscapeInlineComplicationContainerViewController toVisible:1 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_complicationContainerViewController toVisible:1 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_sidebarComplicationContainerViewController toVisible:1 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_backgroundContentViewController toVisible:1 animated:v3];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_dateViewController toVisible:1 animated:appearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_fixedFooterViewController toVisible:1 animated:appearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_teachableMomentsContainerViewController toVisible:1 animated:appearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_inlineComplicationContainerViewController toVisible:1 animated:appearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_landscapeInlineComplicationContainerViewController toVisible:1 animated:appearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_complicationContainerViewController toVisible:1 animated:appearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_sidebarComplicationContainerViewController toVisible:1 animated:appearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_backgroundContentViewController toVisible:1 animated:appearCopy];
   if ([(CSCoverSheetViewController *)self _quickActionsSupported])
   {
-    [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_quickActionsViewController toVisible:1 animated:v3];
+    [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_quickActionsViewController toVisible:1 animated:appearCopy];
   }
 
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_proudLockViewController toVisible:1 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_poseidonViewController toVisible:1 animated:v3];
-  [(CSCoverSheetViewController *)self _beginAppearanceTransitionForPageViewControllersToVisible:1 animated:v3];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_proudLockViewController toVisible:1 animated:appearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_poseidonViewController toVisible:1 animated:appearCopy];
+  [(CSCoverSheetViewController *)self _beginAppearanceTransitionForPageViewControllersToVisible:1 animated:appearCopy];
   [(CSCoverSheetViewController *)self noteDeviceBlockedStatusUpdated];
   [(CSCoverSheetViewController *)self _updateScrollingBehavior];
   [(CSCoverSheetViewController *)self _updateAppearanceForTransitionToOrientation:[(CSCoverSheetViewController *)self interfaceOrientation]];
@@ -19156,20 +19156,20 @@ uint64_t __58__CSCoverSheetViewController_updateQuickActionsVisibility__block_in
   [(CSCoverSheetViewController *)self _addOrRemoveRemoteContentViewIfNecessaryMaintainingState:1];
   [(CSCoverSheetViewController *)self _displayWillAppearImplementation];
   [(CSCoverSheetViewController *)self _sendAuthenticationChangedEvent];
-  [(CSCoverSheetViewController *)self setPasscodeLockVisible:0 animated:v3];
+  [(CSCoverSheetViewController *)self setPasscodeLockVisible:0 animated:appearCopy];
   self->_lastAppearState = [(CSCoverSheetViewController *)self _appearState];
   [(CSCoverSheetViewController *)self _setDismissed:0];
-  v5 = [(CSRemoteContentInlineViewController *)self->_remoteContentInlineViewController hostViewController];
-  [v5 hostDidChangeContentBounds];
+  hostViewController = [(CSRemoteContentInlineViewController *)self->_remoteContentInlineViewController hostViewController];
+  [hostViewController hostDidChangeContentBounds];
 
   [(CSCoverSheetViewController *)self _updateRemoteContentInlineHorizontalMargin];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSCoverSheetViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidAppear:appear];
   [(CSCoverSheetViewController *)self _handleEventType:4];
   [(CSCoverSheetViewController *)self _setupWallpaperGesture];
   [(CSCoverSheetViewController *)self _setupBackgroundContentGestureRecognizer];
@@ -19198,40 +19198,40 @@ uint64_t __58__CSCoverSheetViewController_updateQuickActionsVisibility__block_in
   self->_lastAppearState = [(CSCoverSheetViewController *)self _appearState];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = CSCoverSheetViewController;
   [(CSCoverSheetViewControllerBase *)&v5 viewWillDisappear:?];
   [(CSCoverSheetViewController *)self _handleEventType:5];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_dateViewController toVisible:0 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_fixedFooterViewController toVisible:0 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_teachableMomentsContainerViewController toVisible:0 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_inlineComplicationContainerViewController toVisible:0 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_landscapeInlineComplicationContainerViewController toVisible:0 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_complicationContainerViewController toVisible:0 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_sidebarComplicationContainerViewController toVisible:0 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_backgroundContentViewController toVisible:0 animated:v3];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_dateViewController toVisible:0 animated:disappearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_fixedFooterViewController toVisible:0 animated:disappearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_teachableMomentsContainerViewController toVisible:0 animated:disappearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_inlineComplicationContainerViewController toVisible:0 animated:disappearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_landscapeInlineComplicationContainerViewController toVisible:0 animated:disappearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_complicationContainerViewController toVisible:0 animated:disappearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_sidebarComplicationContainerViewController toVisible:0 animated:disappearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_backgroundContentViewController toVisible:0 animated:disappearCopy];
   if ([(CSCoverSheetViewController *)self _quickActionsSupported])
   {
-    [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_quickActionsViewController toVisible:0 animated:v3];
+    [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_quickActionsViewController toVisible:0 animated:disappearCopy];
   }
 
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_proudLockViewController toVisible:0 animated:v3];
-  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_poseidonViewController toVisible:0 animated:v3];
-  [(CSCoverSheetViewController *)self _beginAppearanceTransitionForPageViewControllersToVisible:0 animated:v3];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_proudLockViewController toVisible:0 animated:disappearCopy];
+  [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_poseidonViewController toVisible:0 animated:disappearCopy];
+  [(CSCoverSheetViewController *)self _beginAppearanceTransitionForPageViewControllersToVisible:0 animated:disappearCopy];
   [(CSCoverSheetViewController *)self _displayWillDisappearImplementation];
   self->_lastAppearState = [(CSCoverSheetViewController *)self _appearState];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(CSCoverSheetViewTransitionSource *)self->_currentTransitionSource cancelTransition];
   v6.receiver = self;
   v6.super_class = CSCoverSheetViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:v3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:disappearCopy];
   [(CSCoverSheetViewController *)self _handleEventType:6];
   [(CSCoverSheetViewController *)self bs_endAppearanceTransitionForChildViewController:self->_dateViewController];
   [(CSCoverSheetViewController *)self bs_endAppearanceTransitionForChildViewController:self->_fixedFooterViewController];
@@ -19251,8 +19251,8 @@ uint64_t __58__CSCoverSheetViewController_updateQuickActionsVisibility__block_in
   [(CSCoverSheetViewController *)self _endAppearanceTransitionForPageViewControllersToVisible:0];
   [(BCBatteryDeviceController *)self->_batteryDeviceController removeBatteryDeviceObserver:self];
   [(CSCoverSheetViewController *)self _displayDidDisappearImplementation];
-  v5 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v5 removeContentView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView removeContentView];
 
   [(CSCoverSheetViewController *)self _clearChargingModalStateIfNecessary];
   [(CSCoverSheetViewController *)self _updateWallpaperFloatingLayerContainerView];
@@ -19270,22 +19270,22 @@ uint64_t __58__CSCoverSheetViewController_updateQuickActionsVisibility__block_in
   }
 }
 
-- (void)presentModalViewController:(id)a3 fromRect:(CGRect)a4 inView:(id)a5 animated:(BOOL)a6
+- (void)presentModalViewController:(id)controller fromRect:(CGRect)rect inView:(id)view animated:(BOOL)animated
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"CSCoverSheetViewController.m" lineNumber:1929 description:@"DashBoard does not support modal view controller presentations."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CSCoverSheetViewController.m" lineNumber:1929 description:@"DashBoard does not support modal view controller presentations."];
 }
 
-- (void)presentModalViewController:(id)a3 withTransition:(int)a4
+- (void)presentModalViewController:(id)controller withTransition:(int)transition
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"CSCoverSheetViewController.m" lineNumber:1933 description:@"DashBoard does not support modal view controller presentations."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CSCoverSheetViewController.m" lineNumber:1933 description:@"DashBoard does not support modal view controller presentations."];
 }
 
-- (void):(id)a3 withTransition:(int)a4 completion:(id)a5
+- (void):(id)a3 withTransition:(int)transition completion:(id)completion
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"CSCoverSheetViewController.m" lineNumber:1937 description:@"DashBoard does not support modal view controller presentations."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CSCoverSheetViewController.m" lineNumber:1937 description:@"DashBoard does not support modal view controller presentations."];
 }
 
 - (BOOL)_shouldLoadComplications
@@ -19300,14 +19300,14 @@ uint64_t __58__CSCoverSheetViewController_updateQuickActionsVisibility__block_in
   return v2;
 }
 
-- (void)setHidesDimmingLayer:(BOOL)a3
+- (void)setHidesDimmingLayer:(BOOL)layer
 {
-  if (self->_hidesDimmingLayer != a3)
+  if (self->_hidesDimmingLayer != layer)
   {
-    v4 = a3;
-    self->_hidesDimmingLayer = a3;
+    layerCopy = layer;
+    self->_hidesDimmingLayer = layer;
     [(CSAppearance *)self->_localAppearance removeAllComponentsWithIdentifier:@"HidesDimmingLayer"];
-    if (v4)
+    if (layerCopy)
     {
       v6 = +[CSComponent dimmingLayer];
       v7 = [v6 identifier:@"HidesDimmingLayer"];
@@ -19320,13 +19320,13 @@ uint64_t __58__CSCoverSheetViewController_updateQuickActionsVisibility__block_in
   }
 }
 
-- (void)setPosterPreferredSalientContentRectangle:(CGRect)a3
+- (void)setPosterPreferredSalientContentRectangle:(CGRect)rectangle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  if (CGRectIsEmpty(rectangle))
   {
     x = *MEMORY[0x277CBF398];
     y = *(MEMORY[0x277CBF398] + 8);
@@ -19349,32 +19349,32 @@ uint64_t __58__CSCoverSheetViewController_updateQuickActionsVisibility__block_in
   }
 }
 
-- (void)setAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)a3
+- (void)setAdaptiveTimeHonorsPreferredSalientContentRectangle:(BOOL)rectangle
 {
-  if (self->_adaptiveTimeHonorsPreferredSalientContentRectangle != a3)
+  if (self->_adaptiveTimeHonorsPreferredSalientContentRectangle != rectangle)
   {
-    self->_adaptiveTimeHonorsPreferredSalientContentRectangle = a3;
+    self->_adaptiveTimeHonorsPreferredSalientContentRectangle = rectangle;
     [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:@"PosterAdaptiveTimeModeUpdate"];
   }
 }
 
-- (void)_updateAppearanceForAODTransitionToInactive:(BOOL)a3
+- (void)_updateAppearanceForAODTransitionToInactive:(BOOL)inactive
 {
-  v3 = a3;
-  [(CSCoverSheetViewController *)self _updateClockAppearanceForAODTransitionToInactive:a3 animated:1];
+  inactiveCopy = inactive;
+  [(CSCoverSheetViewController *)self _updateClockAppearanceForAODTransitionToInactive:inactive animated:1];
 
-  [(CSCoverSheetViewController *)self _updateGeneralAppearanceForAODTransitionToInactive:v3 animated:1];
+  [(CSCoverSheetViewController *)self _updateGeneralAppearanceForAODTransitionToInactive:inactiveCopy animated:1];
 }
 
-- (void)_updateGeneralAppearanceForAODTransitionToInactive:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateGeneralAppearanceForAODTransitionToInactive:(BOOL)inactive animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(CSLockScreenSettings *)self->_prototypeSettings aodTransitionSettings:a3];
+  inactiveCopy = inactive;
+  v6 = [(CSLockScreenSettings *)self->_prototypeSettings aodTransitionSettings:inactive];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __90__CSCoverSheetViewController__updateGeneralAppearanceForAODTransitionToInactive_animated___block_invoke;
   v20 = &unk_27838BC70;
-  if (v4)
+  if (inactiveCopy)
   {
     v7 = 96;
   }
@@ -19384,8 +19384,8 @@ uint64_t __58__CSCoverSheetViewController_updateQuickActionsVisibility__block_in
     v7 = 98;
   }
 
-  v21 = self;
-  v22 = v4;
+  selfCopy = self;
+  v22 = inactiveCopy;
   v8 = MEMORY[0x223D698D0](&v17);
   [v6 aodGeneralResponse];
   v10 = [objc_alloc(MEMORY[0x277D75A60]) initWithDuration:v9 bounce:0.0];
@@ -19616,15 +19616,15 @@ void __90__CSCoverSheetViewController__updateGeneralAppearanceForAODTransitionTo
   }
 }
 
-- (void)_updateClockAppearanceForAODTransitionToInactive:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateClockAppearanceForAODTransitionToInactive:(BOOL)inactive animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(CSLockScreenSettings *)self->_prototypeSettings aodTransitionSettings:a3];
+  inactiveCopy = inactive;
+  v6 = [(CSLockScreenSettings *)self->_prototypeSettings aodTransitionSettings:inactive];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __88__CSCoverSheetViewController__updateClockAppearanceForAODTransitionToInactive_animated___block_invoke;
   v20 = &unk_27838BC70;
-  if (v4)
+  if (inactiveCopy)
   {
     v7 = 96;
   }
@@ -19634,8 +19634,8 @@ void __90__CSCoverSheetViewController__updateGeneralAppearanceForAODTransitionTo
     v7 = 98;
   }
 
-  v22 = v4;
-  v21 = self;
+  v22 = inactiveCopy;
+  selfCopy = self;
   v8 = MEMORY[0x223D698D0](&v17);
   [v6 aodClockResponse];
   v10 = [objc_alloc(MEMORY[0x277D75A60]) initWithDuration:v9 bounce:0.0];
@@ -19677,25 +19677,25 @@ uint64_t __88__CSCoverSheetViewController__updateClockAppearanceForAODTransition
   return [*(a1 + 32) _updateActiveAppearanceForReason:@"_UIBacklightLuminance-Clock"];
 }
 
-- (void)getRotationContentSettings:(id *)a3 forWindow:(id)a4
+- (void)getRotationContentSettings:(id *)settings forWindow:(id)window
 {
-  v5 = [(CSCoverSheetViewController *)self activeAppearance:a3];
+  v5 = [(CSCoverSheetViewController *)self activeAppearance:settings];
   [v5 flagForComponentType:26];
   IsYes = BSSettingFlagIsYes();
 
-  if (a3)
+  if (settings)
   {
     if (IsYes)
     {
-      a3->var6 = 0;
+      settings->var6 = 0;
     }
   }
 }
 
 - (BOOL)shouldAutorotate
 {
-  v3 = [(CSCoverSheetViewController *)self delegate];
-  v4 = [v3 coverSheetViewControllerTraitsArbiterOrientationActuationEnabled:self];
+  delegate = [(CSCoverSheetViewController *)self delegate];
+  v4 = [delegate coverSheetViewControllerTraitsArbiterOrientationActuationEnabled:self];
 
   if (v4)
   {
@@ -19712,10 +19712,10 @@ uint64_t __88__CSCoverSheetViewController__updateClockAppearanceForAODTransition
 
   else
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v7 != 1)
+    if (userInterfaceIdiom != 1)
     {
       return 0;
     }
@@ -19736,25 +19736,25 @@ uint64_t __88__CSCoverSheetViewController__updateClockAppearanceForAODTransition
   return [(CSCoverSheetViewController *)&v4 preferredInterfaceOrientationForPresentation];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v8 setSuppressesBackgroundContentMatchMove:1 forReason:@"CoverSheetRotation"];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView setSuppressesBackgroundContentMatchMove:1 forReason:@"CoverSheetRotation"];
 
   v9 = SBFWindowForViewControllerTransition();
-  v10 = [v9 _fromWindowOrientation];
+  _fromWindowOrientation = [v9 _fromWindowOrientation];
 
   v11 = SBFWindowForViewControllerTransition();
-  v12 = [v11 _toWindowOrientation];
+  _toWindowOrientation = [v11 _toWindowOrientation];
 
-  self->_appearanceOrientation = v12;
-  v13 = [(CSCoverSheetViewController *)self visiblePageViewController];
-  v14 = [(CSCoverSheetViewController *)self coverSheetView];
-  v15 = [v14 scrollView];
-  [v15 contentOffset];
+  self->_appearanceOrientation = _toWindowOrientation;
+  visiblePageViewController = [(CSCoverSheetViewController *)self visiblePageViewController];
+  coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+  scrollView = [coverSheetView2 scrollView];
+  [scrollView contentOffset];
   v17 = v16;
   v19 = v18;
 
@@ -19764,27 +19764,27 @@ uint64_t __88__CSCoverSheetViewController__updateClockAppearanceForAODTransition
   self->_preventAppearanceUpdatesForRotation = 1;
   if ([(CSCoverSheetViewController *)self _appearState]== 2)
   {
-    [v7 transitionDuration];
-    [(CSOrientationUpdateControlling *)self->_orientationUpdateController noteInterfaceOrientationChanged:v12 duration:@"Cover Sheet is transitioning" logMessage:?];
+    [coordinatorCopy transitionDuration];
+    [(CSOrientationUpdateControlling *)self->_orientationUpdateController noteInterfaceOrientationChanged:_toWindowOrientation duration:@"Cover Sheet is transitioning" logMessage:?];
   }
 
   v42.receiver = self;
   v42.super_class = CSCoverSheetViewController;
-  [(CSCoverSheetViewControllerBase *)&v42 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  [v7 transitionDuration];
+  [(CSCoverSheetViewControllerBase *)&v42 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  [coordinatorCopy transitionDuration];
   v22 = v21;
-  v23 = [(CSCoverSheetContextProviding *)self->_coverSheetContext wallpaperProvider];
-  [v23 wallpaperClientWillRotateToInterfaceOrientation:v12 duration:v22];
-  if ((v10 - 3) > 1)
+  wallpaperProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext wallpaperProvider];
+  [wallpaperProvider wallpaperClientWillRotateToInterfaceOrientation:_toWindowOrientation duration:v22];
+  if ((_fromWindowOrientation - 3) > 1)
   {
     v25 = 0;
-    v24 = (v10 - 1) <= 1 && (v12 - 1) < 2;
+    v24 = (_fromWindowOrientation - 1) <= 1 && (_toWindowOrientation - 1) < 2;
   }
 
   else
   {
     v24 = 0;
-    v25 = (v12 - 3) < 2;
+    v25 = (_toWindowOrientation - 3) < 2;
   }
 
   v36[0] = MEMORY[0x277D85DD0];
@@ -19794,23 +19794,23 @@ uint64_t __88__CSCoverSheetViewController__updateClockAppearanceForAODTransition
   v40 = v24;
   v41 = v25;
   v36[4] = self;
-  v38 = v12;
-  v37 = v23;
+  v38 = _toWindowOrientation;
+  v37 = wallpaperProvider;
   v39 = v22;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __81__CSCoverSheetViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v28[3] = &unk_27838BCE0;
   v29 = v37;
-  v30 = self;
-  v32 = v10;
-  v33 = v12;
-  v31 = v13;
+  selfCopy = self;
+  v32 = _fromWindowOrientation;
+  v33 = _toWindowOrientation;
+  v31 = visiblePageViewController;
   v34 = v17;
   v35 = v19;
-  v26 = v13;
+  v26 = visiblePageViewController;
   v27 = v37;
-  [v7 animateAlongsideTransition:v36 completion:v28];
+  [coordinatorCopy animateAlongsideTransition:v36 completion:v28];
 }
 
 void __81__CSCoverSheetViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -19899,20 +19899,20 @@ void __81__CSCoverSheetViewController_viewWillTransitionToSize_withTransitionCoo
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = CSCoverSheetViewController;
-  [(CSCoverSheetViewController *)&v9 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  v5 = [(CSCoverSheetViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 _windowInterfaceOrientation];
+  [(CSCoverSheetViewController *)&v9 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  view = [(CSCoverSheetViewController *)self view];
+  window = [view window];
+  _windowInterfaceOrientation = [window _windowInterfaceOrientation];
 
-  v8 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v8 updateContainerOrientationForBackgroundViews:v7];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView updateContainerOrientationForBackgroundViews:_windowInterfaceOrientation];
 }
 
-- (void)_updateAppearanceForTransitionToOrientation:(int64_t)a3
+- (void)_updateAppearanceForTransitionToOrientation:(int64_t)orientation
 {
   if (__sb__runningInSpringBoard())
   {
@@ -19924,10 +19924,10 @@ void __81__CSCoverSheetViewController_viewWillTransitionToSize_withTransitionCoo
 
   else
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v6 != 1)
+    if (userInterfaceIdiom != 1)
     {
       return;
     }
@@ -19936,7 +19936,7 @@ void __81__CSCoverSheetViewController_viewWillTransitionToSize_withTransitionCoo
   if (_os_feature_enabled_impl())
   {
     [(CSAppearance *)self->_localAppearance removeAllComponentsWithIdentifier:@"ActiveComplicationContainer"];
-    if ((a3 - 3) > 1)
+    if ((orientation - 3) > 1)
     {
       +[CSComponent complicationSidebar];
     }
@@ -19952,15 +19952,15 @@ void __81__CSCoverSheetViewController_viewWillTransitionToSize_withTransitionCoo
     [(CSAppearance *)self->_localAppearance addComponent:v8];
   }
 
-  self->_appearanceOrientation = a3;
-  self->_finalInterfaceOrientationForInProgressTransition = a3;
+  self->_appearanceOrientation = orientation;
+  self->_finalInterfaceOrientationForInProgressTransition = orientation;
 }
 
-- (void)_setAppearanceForLandscape:(BOOL)a3
+- (void)_setAppearanceForLandscape:(BOOL)landscape
 {
-  v3 = self;
+  selfCopy = self;
   v57 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (landscape)
   {
     if (__sb__runningInSpringBoard())
     {
@@ -19974,10 +19974,10 @@ LABEL_4:
 
     else
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v6 == 1)
+      if (userInterfaceIdiom == 1)
       {
         goto LABEL_4;
       }
@@ -20015,27 +20015,27 @@ LABEL_13:
             objc_enumerationMutation(v4);
           }
 
-          v13 = [*(*(&v52 + 1) + 8 * i) integerValue];
+          integerValue = [*(*(&v52 + 1) + 8 * i) integerValue];
           v14 = *(v10 + 1604);
-          v15 = [*(&v3->super.super.super.super.isa + v14) componentForType:v13 identifier:v11];
+          v15 = [*(&selfCopy->super.super.super.super.isa + v14) componentForType:integerValue identifier:v11];
 
           if (!v15)
           {
-            v16 = [CSComponent componentWithType:v13];
+            v16 = [CSComponent componentWithType:integerValue];
             v17 = [v16 identifier:v11];
             [v17 priority:20];
             v18 = v8;
             v19 = v11;
             v20 = v9;
-            v22 = v21 = v3;
+            v22 = v21 = selfCopy;
             v23 = [v22 hidden:1];
 
-            v3 = v21;
+            selfCopy = v21;
             v9 = v20;
             v11 = v19;
             v8 = v18;
 
-            [*(&v3->super.super.super.super.isa + v14) addComponent:v23];
+            [*(&selfCopy->super.super.super.super.isa + v14) addComponent:v23];
             v4 = v50;
             v10 = 0x27CEDF000;
           }
@@ -20067,8 +20067,8 @@ LABEL_36:
 
             else
             {
-              v39 = [MEMORY[0x277D75418] currentDevice];
-              if ([v39 userInterfaceIdiom] == 1)
+              currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+              if ([currentDevice2 userInterfaceIdiom] == 1)
               {
 LABEL_47:
 
@@ -20086,24 +20086,24 @@ LABEL_47:
             v41 = objc_opt_new();
             v42 = [v41 identifier:@"SBDashBoardThingsToHideInLandscape"];
             v43 = [v42 priority:20];
-            v39 = [v43 shouldRenderInline:1];
+            currentDevice2 = [v43 shouldRenderInline:1];
 
-            [(CSAppearance *)v3->_localAppearance addComponent:v39];
-            [(SBFLockScreenDateViewController *)v3->_dateViewController setDateTimeAlignment:0];
-            [(CSBehavior *)v3->_landscapeBehavior setRestrictedCapabilities:2097220];
-            v44 = [(SBFLockScreenDateViewController *)v3->_dateViewController inlineComplicationViewController];
+            [(CSAppearance *)selfCopy->_localAppearance addComponent:currentDevice2];
+            [(SBFLockScreenDateViewController *)selfCopy->_dateViewController setDateTimeAlignment:0];
+            [(CSBehavior *)selfCopy->_landscapeBehavior setRestrictedCapabilities:2097220];
+            inlineComplicationViewController = [(SBFLockScreenDateViewController *)selfCopy->_dateViewController inlineComplicationViewController];
             LOBYTE(v42) = BSEqualObjects();
 
             if ((v42 & 1) == 0)
             {
-              [(SBFLockScreenDateViewController *)v3->_dateViewController setInlineComplicationViewController:v3->_landscapeInlineComplicationContainerViewController];
+              [(SBFLockScreenDateViewController *)selfCopy->_dateViewController setInlineComplicationViewController:selfCopy->_landscapeInlineComplicationContainerViewController];
             }
 
-            if ([(CSCoverSheetViewController *)v3 _isShowingInlineContent])
+            if ([(CSCoverSheetViewController *)selfCopy _isShowingInlineContent])
             {
-              if ([(CSCoverSheetViewController *)v3 isShowingMediaControls])
+              if ([(CSCoverSheetViewController *)selfCopy isShowingMediaControls])
               {
-                [(CSCoverSheetViewController *)v3 _dismissRemoteViewControllerForReason:4];
+                [(CSCoverSheetViewController *)selfCopy _dismissRemoteViewControllerForReason:4];
               }
             }
 
@@ -20113,41 +20113,41 @@ LABEL_47:
 
         else
         {
-          v30 = [MEMORY[0x277D75418] currentDevice];
-          v31 = [v30 userInterfaceIdiom];
+          currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+          userInterfaceIdiom2 = [currentDevice3 userInterfaceIdiom];
 
-          if (v31 == 1)
+          if (userInterfaceIdiom2 == 1)
           {
             goto LABEL_36;
           }
         }
 
-        localAppearance = v3->_localAppearance;
+        localAppearance = selfCopy->_localAppearance;
         v33 = +[CSComponent wallpaper];
         v34 = [v33 identifier:@"SBDashBoardLandscapeDateComponentIdentifier"];
         v35 = [v34 priority:20];
-        v36 = [MEMORY[0x277D75348] blackColor];
-        [v35 color:v36];
-        v38 = v37 = v3;
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [v35 color:blackColor];
+        v38 = v37 = selfCopy;
         [(CSAppearance *)localAppearance addComponent:v38];
 
-        v3 = v37;
+        selfCopy = v37;
         goto LABEL_36;
       }
     }
 
     else
     {
-      v24 = [MEMORY[0x277D75418] currentDevice];
-      v25 = [v24 userInterfaceIdiom];
+      currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom3 = [currentDevice4 userInterfaceIdiom];
 
-      if (v25 == 1)
+      if (userInterfaceIdiom3 == 1)
       {
         goto LABEL_31;
       }
     }
 
-    v26 = v3->_localAppearance;
+    v26 = selfCopy->_localAppearance;
     v27 = objc_opt_new();
     v28 = [v27 identifier:@"SBDashBoardLandscapeDateComponentIdentifier"];
     v29 = [v28 constrainsTimeHeight:1];
@@ -20157,7 +20157,7 @@ LABEL_47:
   }
 
   [(CSAppearance *)self->_localAppearance removeAllComponentsWithIdentifier:@"SBDashBoardThingsToHideInLandscape"];
-  [(CSAppearance *)v3->_localAppearance removeAllComponentsWithIdentifier:@"SBDashBoardLandscapeDateComponentIdentifier"];
+  [(CSAppearance *)selfCopy->_localAppearance removeAllComponentsWithIdentifier:@"SBDashBoardLandscapeDateComponentIdentifier"];
   if (__sb__runningInSpringBoard())
   {
     if (SBFEffectiveDeviceClass() == 2 || !_os_feature_enabled_impl())
@@ -20168,8 +20168,8 @@ LABEL_47:
     goto LABEL_50;
   }
 
-  v51 = [MEMORY[0x277D75418] currentDevice];
-  if ([v51 userInterfaceIdiom] != 1)
+  currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice5 userInterfaceIdiom] != 1)
   {
     v45 = _os_feature_enabled_impl();
 
@@ -20179,15 +20179,15 @@ LABEL_47:
     }
 
 LABEL_50:
-    [(SBFLockScreenDateViewController *)v3->_dateViewController setDateTimeAlignment:1];
-    [(CSBehavior *)v3->_landscapeBehavior setRestrictedCapabilities:0];
-    v46 = [(SBFLockScreenDateViewController *)v3->_dateViewController inlineComplicationViewController];
+    [(SBFLockScreenDateViewController *)selfCopy->_dateViewController setDateTimeAlignment:1];
+    [(CSBehavior *)selfCopy->_landscapeBehavior setRestrictedCapabilities:0];
+    inlineComplicationViewController2 = [(SBFLockScreenDateViewController *)selfCopy->_dateViewController inlineComplicationViewController];
     v47 = BSEqualObjects();
 
     if ((v47 & 1) == 0)
     {
-      dateViewController = v3->_dateViewController;
-      inlineComplicationContainerViewController = v3->_inlineComplicationContainerViewController;
+      dateViewController = selfCopy->_dateViewController;
+      inlineComplicationContainerViewController = selfCopy->_inlineComplicationContainerViewController;
 
       [(SBFLockScreenDateViewController *)dateViewController setInlineComplicationViewController:inlineComplicationContainerViewController];
     }
@@ -20210,8 +20210,8 @@ LABEL_50:
 
   else
   {
-    v14 = [MEMORY[0x277D75418] currentDevice];
-    if ([v14 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
       v4 = 1;
       goto LABEL_8;
@@ -20231,7 +20231,7 @@ LABEL_8:
     if (!SBFEffectiveDeviceClass() || SBFEffectiveDeviceClass() == 1)
     {
       v5 = SBFEffectiveHomeButtonType() == 2;
-      v6 = v14;
+      v6 = currentDevice;
       if (!v4)
       {
         goto LABEL_12;
@@ -20252,11 +20252,11 @@ LABEL_20:
 
   else
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    if ([v7 userInterfaceIdiom])
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom])
     {
 
-      v8 = v14;
+      v8 = currentDevice;
       if ((v4 & 1) == 0)
       {
         return;
@@ -20269,7 +20269,7 @@ LABEL_20:
   }
 
 LABEL_19:
-  v6 = v14;
+  v6 = currentDevice;
   if (v4)
   {
     goto LABEL_20;
@@ -20285,8 +20285,8 @@ LABEL_21:
   v9 = ([(CSCoverSheetViewController *)self interfaceOrientation]- 3) < 2;
   [(CSCoverSheetViewController *)self _setAppearanceForLandscape:v9];
   v15 = [(CSAppearance *)self->_localAppearance componentForType:2 identifier:@"D22_OVERRIDE"];
-  v10 = [(CSCoverSheetViewController *)self traitCollection];
-  if ([v10 verticalSizeClass] != 1)
+  traitCollection = [(CSCoverSheetViewController *)self traitCollection];
+  if ([traitCollection verticalSizeClass] != 1)
   {
     LODWORD(v9) = 0;
   }
@@ -20327,40 +20327,40 @@ LABEL_29:
   }
 
   self->_participantState = 2;
-  v4 = [(CSCoverSheetViewController *)self view];
+  view = [(CSCoverSheetViewController *)self view];
   [(CSCoverSheetViewController *)self _setHasContentAboveCoverSheet:0];
   [(CSCoverSheetViewController *)self _listenForDisplayLayoutChanges:1];
   [(CSNotificationDispatcher *)self->_notificationDispatcher setActive:1];
   [(CSCoverSheetViewController *)self _handleEventType:8];
 }
 
-- (void)_listenForDisplayLayoutChanges:(BOOL)a3
+- (void)_listenForDisplayLayoutChanges:(BOOL)changes
 {
-  if (self->_listeningForDisplayLayoutChanges != a3)
+  if (self->_listeningForDisplayLayoutChanges != changes)
   {
-    v4 = a3;
-    self->_listeningForDisplayLayoutChanges = a3;
-    v6 = [(CSCoverSheetViewControllerBase *)self _displayLayoutPublisher];
-    v7 = v6;
-    if (v4)
+    changesCopy = changes;
+    self->_listeningForDisplayLayoutChanges = changes;
+    _displayLayoutPublisher = [(CSCoverSheetViewControllerBase *)self _displayLayoutPublisher];
+    v7 = _displayLayoutPublisher;
+    if (changesCopy)
     {
-      [v6 addObserver:self];
+      [_displayLayoutPublisher addObserver:self];
     }
 
     else
     {
-      [v6 removeObserver:self];
+      [_displayLayoutPublisher removeObserver:self];
     }
   }
 }
 
-- (void)coverSheetNotificationClearingTriggerDidFire:(id)a3
+- (void)coverSheetNotificationClearingTriggerDidFire:(id)fire
 {
   v4 = [CSEvent eventWithType:35];
   [(CSCoverSheetViewController *)self _handleEvent:v4];
 }
 
-- (void)passcodeViewControllerDidCancelPasscodeEntry:(id)a3
+- (void)passcodeViewControllerDidCancelPasscodeEntry:(id)entry
 {
   if ([(CSInterstitialTransitionSource *)self->_interstitialTransitionSource isTransitioning])
   {
@@ -20398,12 +20398,12 @@ LABEL_29:
   }
 }
 
-- (BOOL)passcodeViewControllerShouldHideStatusBar:(id)a3
+- (BOOL)passcodeViewControllerShouldHideStatusBar:(id)bar
 {
-  v3 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-  v4 = [v3 coachingActive];
+  poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+  coachingActive = [poseidonContainerViewController coachingActive];
 
-  if (v4)
+  if (coachingActive)
   {
     return 1;
   }
@@ -20418,8 +20418,8 @@ LABEL_29:
     return 0;
   }
 
-  v2 = [(CSCoverSheetViewController *)self activeBehavior];
-  v3 = [v2 notificationBehavior] != 2;
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v3 = [activeBehavior notificationBehavior] != 2;
 
   return v3;
 }
@@ -20431,23 +20431,23 @@ LABEL_29:
     return 0;
   }
 
-  v2 = [(CSCoverSheetViewController *)self activeBehavior];
-  v3 = [v2 areRestrictedCapabilities:128];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v3 = [activeBehavior areRestrictedCapabilities:128];
 
   return v3;
 }
 
 - (BOOL)suppressesScreenshots
 {
-  v2 = [(CSCoverSheetViewController *)self activeBehavior];
-  v3 = [v2 areRestrictedCapabilities:0x4000];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v3 = [activeBehavior areRestrictedCapabilities:0x4000];
 
   return v3;
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
-  if (a3)
+  if (press)
   {
     v3 = 33;
   }
@@ -20463,8 +20463,8 @@ LABEL_29:
 - (BOOL)externalLockProvidersShowPasscode
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self delegate];
-  v4 = [v3 coverSheetViewControllerIsTransitioningToSecureApp:self];
+  delegate = [(CSCoverSheetViewController *)self delegate];
+  v4 = [delegate coverSheetViewControllerIsTransitioningToSecureApp:self];
 
   if (v4)
   {
@@ -20515,28 +20515,28 @@ LABEL_15:
   return v5;
 }
 
-- (void)setPasscodeLockVisible:(BOOL)a3 animated:(BOOL)a4 showBackground:(BOOL)a5 forceBiometricPresentation:(BOOL)a6 completion:(id)a7
+- (void)setPasscodeLockVisible:(BOOL)visible animated:(BOOL)animated showBackground:(BOOL)background forceBiometricPresentation:(BOOL)presentation completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  backgroundCopy = background;
+  animatedCopy = animated;
+  visibleCopy = visible;
   v62 = *MEMORY[0x277D85DE8];
-  v12 = a7;
+  completionCopy = completion;
   v13 = +[(CSCoverSheetViewControllerBase *)CSPasscodeViewController];
-  v14 = [(CSCoverSheetViewController *)self delegate];
+  delegate = [(CSCoverSheetViewController *)self delegate];
   v15 = [(CSCoverSheetViewController *)self _isPresentingModalViewControllerWithIdentifier:v13];
   v16 = v15;
-  if (v10)
+  if (visibleCopy)
   {
     if (!v15 && ![(CSCoverSheetViewController *)self isUnlockDisabled])
     {
-      v17 = [(CSCoverSheetViewController *)self activeAppearance];
-      v18 = [v17 componentForType:19 property:64];
-      v45 = [v18 color];
+      activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+      v18 = [activeAppearance componentForType:19 property:64];
+      color = [v18 color];
 
-      v19 = [(CSCoverSheetViewController *)self _customLockScreenActionContext];
+      _customLockScreenActionContext = [(CSCoverSheetViewController *)self _customLockScreenActionContext];
       v20 = [CSPasscodeViewController alloc];
-      if (v8)
+      if (backgroundCopy)
       {
         v21 = 0;
       }
@@ -20551,24 +20551,24 @@ LABEL_15:
       WeakRetained = objc_loadWeakRetained(&self->_wallpaperColorProvider);
       [(CSPasscodeViewController *)v22 setWallpaperColorProvider:WeakRetained];
 
-      [(CSPasscodeViewController *)v22 setWallpaperAverageColorOverride:v45];
-      if (a6)
+      [(CSPasscodeViewController *)v22 setWallpaperAverageColorOverride:color];
+      if (presentation)
       {
-        v24 = 1;
+        wantsBiometricPresentation = 1;
       }
 
       else
       {
-        v24 = [v19 wantsBiometricPresentation];
+        wantsBiometricPresentation = [_customLockScreenActionContext wantsBiometricPresentation];
       }
 
-      v32 = v19;
-      [(CSPasscodeViewController *)v22 setUseBiometricPresentation:v24];
+      v32 = _customLockScreenActionContext;
+      [(CSPasscodeViewController *)v22 setUseBiometricPresentation:wantsBiometricPresentation];
       [(CSPasscodeViewController *)v22 setFaceOcclusionMonitor:self->_faceOcclusionMonitor];
       [(CSPasscodeViewController *)v22 setDelegate:self];
-      v43 = [MEMORY[0x277D67C98] sharedInstance];
-      v48 = v14;
-      if ([v43 hasPearlSupport])
+      mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+      v48 = delegate;
+      if ([mEMORY[0x277D67C98] hasPearlSupport])
       {
         v33 = 0;
       }
@@ -20579,22 +20579,22 @@ LABEL_15:
       }
 
       [(CSPasscodeViewController *)v22 setBiometricButtonsInitiallyVisible:v33];
-      v34 = 1;
+      confirmedNotInPocket = 1;
       [(CSPasscodeViewController *)v22 setShowProudLock:1];
-      v35 = [(CSProudLockViewController *)self->_proudLockViewController proudLockContainerViewController];
-      [(CSPasscodeViewController *)v22 setProudLockContainerViewControllerToUpdate:v35];
+      proudLockContainerViewController = [(CSProudLockViewController *)self->_proudLockViewController proudLockContainerViewController];
+      [(CSPasscodeViewController *)v22 setProudLockContainerViewControllerToUpdate:proudLockContainerViewController];
 
-      v36 = [v32 unlockDestination];
-      [(CSPasscodeViewController *)v22 setUnlockDestination:v36];
+      unlockDestination = [v32 unlockDestination];
+      [(CSPasscodeViewController *)v22 setUnlockDestination:unlockDestination];
 
-      if (!a6)
+      if (!presentation)
       {
-        v34 = [v32 confirmedNotInPocket];
+        confirmedNotInPocket = [v32 confirmedNotInPocket];
       }
 
       v44 = v32;
-      [(CSPasscodeViewController *)v22 setConfirmedNotInPocket:v34];
-      [(CSCoverSheetViewController *)self _presentModalViewController:v22 animated:v9 completion:v12];
+      [(CSPasscodeViewController *)v22 setConfirmedNotInPocket:confirmedNotInPocket];
+      [(CSCoverSheetViewController *)self _presentModalViewController:v22 animated:animatedCopy completion:completionCopy];
       v58 = 0u;
       v59 = 0u;
       v56 = 0u;
@@ -20627,13 +20627,13 @@ LABEL_15:
         while (v39);
       }
 
-      v14 = v48;
+      delegate = v48;
     }
   }
 
   else
   {
-    v47 = v14;
+    v47 = delegate;
     v25 = CSFeatureEnabled(12);
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
@@ -20641,9 +20641,9 @@ LABEL_15:
     v53[3] = &unk_27838BD30;
     v55 = v25;
     v53[4] = self;
-    v46 = v12;
-    v54 = v12;
-    [(CSCoverSheetViewController *)self _dismissModalViewControllersWithIdentifier:v13 animated:v9 completion:v53];
+    v46 = completionCopy;
+    v54 = completionCopy;
+    [(CSCoverSheetViewController *)self _dismissModalViewControllersWithIdentifier:v13 animated:animatedCopy completion:v53];
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
@@ -20676,13 +20676,13 @@ LABEL_15:
       while (v28);
     }
 
-    v14 = v47;
+    delegate = v47;
     if (v16 || (v25 & 1) == 0)
     {
       [v47 coverSheetViewControllerDidDismissInlinePasscode:self];
     }
 
-    v12 = v46;
+    completionCopy = v46;
   }
 }
 
@@ -20708,14 +20708,14 @@ uint64_t __115__CSCoverSheetViewController_setPasscodeLockVisible_animated_showB
   return result;
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
-  v3 = a3;
-  if ([(CSCoverSheetViewController *)self isAuthenticated]!= a3)
+  authenticatedCopy = authenticated;
+  if ([(CSCoverSheetViewController *)self isAuthenticated]!= authenticated)
   {
-    self->_authenticated = v3;
+    self->_authenticated = authenticatedCopy;
     [(CSCoverSheetViewController *)self _sendAuthenticationChangedEvent];
-    if (v3)
+    if (authenticatedCopy)
     {
       [(CSCoverSheetViewController *)self _updateCoachingString];
     }
@@ -20736,33 +20736,33 @@ uint64_t __115__CSCoverSheetViewController_setPasscodeLockVisible_animated_showB
     }
   }
 
-  [(CSHomeButtonShowPasscodeRecognizer *)self->_homeButtonShowPasscodeRecognizer noteAuthenticated:v3];
-  v6 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v6 updateUIForAuthenticated:v3];
+  [(CSHomeButtonShowPasscodeRecognizer *)self->_homeButtonShowPasscodeRecognizer noteAuthenticated:authenticatedCopy];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView updateUIForAuthenticated:authenticatedCopy];
 
-  if (v3)
+  if (authenticatedCopy)
   {
     [(CSCoverSheetViewController *)self _setupQuickNoteGestureRecognizer];
   }
 
   [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:@"UserAuthenticationChanged"];
-  [(CSNotificationClearingTrigger *)self->_notificationClearingTrigger setAuthenticated:v3];
+  [(CSNotificationClearingTrigger *)self->_notificationClearingTrigger setAuthenticated:authenticatedCopy];
 }
 
-- (void)respondToUIUnlockFromSource:(int)a3
+- (void)respondToUIUnlockFromSource:(int)source
 {
-  v4 = a3 - 1;
-  if (a3 - 1) <= 0x28 && ((0x11101010297uLL >> v4))
+  v4 = source - 1;
+  if (source - 1) <= 0x28 && ((0x11101010297uLL >> v4))
   {
     v5 = 0xFFFEFFFD79uLL >> v4;
-    v6 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-    [v6 handleDisplayWake:v5 & 1];
+    combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+    [combinedListViewController handleDisplayWake:v5 & 1];
   }
 }
 
-- (BOOL)willUIUnlockFromSource:(int)a3 isLockScreenDisabledForAssertion:(BOOL)a4
+- (BOOL)willUIUnlockFromSource:(int)source isLockScreenDisabledForAssertion:(BOOL)assertion
 {
-  v5 = *&a3;
+  v5 = *&source;
   v45 = *MEMORY[0x277D85DE8];
   v7 = SBLogDashBoard();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -20774,11 +20774,11 @@ uint64_t __115__CSCoverSheetViewController_setPasscodeLockVisible_animated_showB
 
   if ([(CSCoverSheetViewController *)self isUnlockDisabled])
   {
-    v8 = SBLogDashBoard();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    delegate = SBLogDashBoard();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_21EB05000, v8, OS_LOG_TYPE_DEFAULT, "[UIUnlock] Returning NO because unlock is disabled.", buf, 2u);
+      _os_log_impl(&dword_21EB05000, delegate, OS_LOG_TYPE_DEFAULT, "[UIUnlock] Returning NO because unlock is disabled.", buf, 2u);
     }
 
     v9 = 0;
@@ -20786,8 +20786,8 @@ uint64_t __115__CSCoverSheetViewController_setPasscodeLockVisible_animated_showB
 
   else
   {
-    v8 = [(CSCoverSheetViewController *)self delegate];
-    v10 = [v8 coverSheetViewControllerIsTransitioningToSecureApp:self];
+    delegate = [(CSCoverSheetViewController *)self delegate];
+    v10 = [delegate coverSheetViewControllerIsTransitioningToSecureApp:self];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
@@ -20830,14 +20830,14 @@ uint64_t __115__CSCoverSheetViewController_setPasscodeLockVisible_animated_showB
                   v32 = __86__CSCoverSheetViewController_willUIUnlockFromSource_isLockScreenDisabledForAssertion___block_invoke;
                   v33 = &unk_27838BD58;
                   objc_copyWeak(&v35, buf);
-                  v34 = v8;
+                  v34 = delegate;
                   [v22 setAlertDismissalHandler:&v30];
 
                   objc_destroyWeak(&v35);
                   objc_destroyWeak(buf);
                 }
 
-                [v8 coverSheetViewControllerRequestsTranslationToPresentedForExternalLockProvider:0 animated:1, v30, v31, v32, v33];
+                [delegate coverSheetViewControllerRequestsTranslationToPresentedForExternalLockProvider:0 animated:1, v30, v31, v32, v33];
               }
 
               v9 = 0;
@@ -20856,9 +20856,9 @@ uint64_t __115__CSCoverSheetViewController_setPasscodeLockVisible_animated_showB
       }
     }
 
-    v16 = [(CSCoverSheetViewController *)self isPasscodeLockVisible];
-    v17 = [(CSCoverSheetViewController *)self activeBehavior];
-    v11 = v17;
+    isPasscodeLockVisible = [(CSCoverSheetViewController *)self isPasscodeLockVisible];
+    activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+    v11 = activeBehavior;
     v18 = v5 - 1;
     v9 = 1;
     switch(v18)
@@ -20867,9 +20867,9 @@ uint64_t __115__CSCoverSheetViewController_setPasscodeLockVisible_animated_showB
       case 4:
       case 16:
         v24 = +[CSLockScreenDomain rootSettings];
-        v25 = [v24 autoDismissUnlockedLockScreen];
+        autoDismissUnlockedLockScreen = [v24 autoDismissUnlockedLockScreen];
 
-        v9 = v25 | a4;
+        v9 = autoDismissUnlockedLockScreen | assertion;
         goto LABEL_19;
       case 1:
       case 2:
@@ -20903,14 +20903,14 @@ uint64_t __115__CSCoverSheetViewController_setPasscodeLockVisible_animated_showB
         v28 = @"the home button is being handled manually";
         goto LABEL_39;
       case 22:
-        if (v16)
+        if (isPasscodeLockVisible)
         {
           v28 = @"we're showing the passcode UI";
         }
 
         else
         {
-          if (([(NSHashTable *)v17 areRestrictedCapabilities:8]& 1) == 0)
+          if (([(NSHashTable *)activeBehavior areRestrictedCapabilities:8]& 1) == 0)
           {
 LABEL_19:
             v19 = SBLogDashBoard();
@@ -20965,10 +20965,10 @@ void __86__CSCoverSheetViewController_willUIUnlockFromSource_isLockScreenDisable
   }
 }
 
-- (void)finishUIUnlockFromSource:(int)a3
+- (void)finishUIUnlockFromSource:(int)source
 {
-  v5 = [(CSCoverSheetViewController *)self activeBehavior];
-  v6 = [v5 areRestrictedCapabilities:56];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v6 = [activeBehavior areRestrictedCapabilities:56];
 
   if (v6)
   {
@@ -20978,11 +20978,11 @@ void __86__CSCoverSheetViewController_willUIUnlockFromSource_isLockScreenDisable
   [(CSCoverSheetViewController *)self _handleEventType:12];
 }
 
-- (void)_setDidDismissSinceScreenOn:(BOOL)a3
+- (void)_setDidDismissSinceScreenOn:(BOOL)on
 {
-  if (self->_didDismissSinceScreenOn != a3)
+  if (self->_didDismissSinceScreenOn != on)
   {
-    self->_didDismissSinceScreenOn = a3;
+    self->_didDismissSinceScreenOn = on;
     [(CSAppearance *)self->_localAppearance removeAllComponentsWithIdentifier:@"didDismissSinceScreenOn"];
     v5 = [CSComponent componentWithType:12];
     v6 = [v5 identifier:@"didDismissSinceScreenOn"];
@@ -20994,12 +20994,12 @@ void __86__CSCoverSheetViewController_willUIUnlockFromSource_isLockScreenDisable
   }
 }
 
-- (void)_setDismissed:(BOOL)a3
+- (void)_setDismissed:(BOOL)dismissed
 {
-  if (self->_dismissed != a3)
+  if (self->_dismissed != dismissed)
   {
-    self->_dismissed = a3;
-    if (a3)
+    self->_dismissed = dismissed;
+    if (dismissed)
     {
       [(CSCoverSheetViewController *)self _setDidDismissSinceScreenOn:1];
     }
@@ -21008,10 +21008,10 @@ void __86__CSCoverSheetViewController_willUIUnlockFromSource_isLockScreenDisable
   }
 }
 
-- (BOOL)canBeDeactivatedForUIUnlockFromSource:(int)a3
+- (BOOL)canBeDeactivatedForUIUnlockFromSource:(int)source
 {
-  v4 = [(CSCoverSheetViewController *)self activeBehavior];
-  v5 = [v4 areRestrictedCapabilities:56];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v5 = [activeBehavior areRestrictedCapabilities:56];
 
   if (v5)
   {
@@ -21026,8 +21026,8 @@ void __86__CSCoverSheetViewController_willUIUnlockFromSource_isLockScreenDisable
 
 - (void)jiggleLockIcon
 {
-  v3 = [*MEMORY[0x277D76620] statusBar];
-  [v3 jiggleLockIcon];
+  statusBar = [*MEMORY[0x277D76620] statusBar];
+  [statusBar jiggleLockIcon];
 
   proudLockViewController = self->_proudLockViewController;
 
@@ -21036,35 +21036,35 @@ void __86__CSCoverSheetViewController_willUIUnlockFromSource_isLockScreenDisable
 
 - (unint64_t)visibleNotificationCount
 {
-  v2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  v3 = [v2 visibleNotificationCount];
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  visibleNotificationCount = [combinedListViewController visibleNotificationCount];
 
-  return v3;
+  return visibleNotificationCount;
 }
 
 - (BOOL)contentOccludesBackground
 {
-  v3 = [(CSCoverSheetViewController *)self isPasscodeLockVisible];
-  if (v3)
+  isPasscodeLockVisible = [(CSCoverSheetViewController *)self isPasscodeLockVisible];
+  if (isPasscodeLockVisible)
   {
-    LOBYTE(v3) = ![(CSInterstitialTransitionSource *)self->_interstitialTransitionSource isTransitioning];
+    LOBYTE(isPasscodeLockVisible) = ![(CSInterstitialTransitionSource *)self->_interstitialTransitionSource isTransitioning];
   }
 
-  return v3;
+  return isPasscodeLockVisible;
 }
 
-- (void)setYContentOffset:(double)a3
+- (void)setYContentOffset:(double)offset
 {
-  v4 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v4 setModalPresentationViewOffset:a3];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView setModalPresentationViewOffset:offset];
 }
 
-- (CGRect)frameForContentViewForContainerBounds:(CGRect)a3
+- (CGRect)frameForContentViewForContainerBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (CSFeatureEnabled(12))
   {
     v7 = height + height;
@@ -21087,66 +21087,66 @@ void __86__CSCoverSheetViewController_willUIUnlockFromSource_isLockScreenDisable
 
 - (void)prepareForInterstitialPresentation
 {
-  v3 = [(CSCoverSheetViewController *)self currentTransitionSource];
-  v4 = [v3 isTransitioning];
+  currentTransitionSource = [(CSCoverSheetViewController *)self currentTransitionSource];
+  isTransitioning = [currentTransitionSource isTransitioning];
 
-  if ((v4 & 1) == 0)
+  if ((isTransitioning & 1) == 0)
   {
-    v5 = [(CSCoverSheetViewController *)self _passcodeViewController];
-    self->_interstitialTransitionStartedFromPasscodePresented = v5 != 0;
+    _passcodeViewController = [(CSCoverSheetViewController *)self _passcodeViewController];
+    self->_interstitialTransitionStartedFromPasscodePresented = _passcodeViewController != 0;
     v6 = objc_alloc_init(CSInterstitialTransitionSource);
     [(CSInterstitialTransitionSource *)v6 setTransitioningDelegate:self];
     [(CSCoverSheetViewController *)self setInterstitialTransitionSource:v6];
     [(CSInterstitialTransitionSource *)v6 prepareForPresentation];
     [(SBUIPhoneUnlockWithRemoteDeviceCoordinator *)self->_phoneUnlockWithRemoteDeviceCoordinator attemptPhoneUnlockWithRemoteDevice];
     [(CSCoverSheetViewController *)self setPasscodeLockVisible:1 animated:0 showBackground:CSFeatureEnabled(12) ^ 1 forceBiometricPresentation:1 completion:0];
-    if (!v5)
+    if (!_passcodeViewController)
     {
-      v5 = [(CSCoverSheetViewController *)self _passcodeViewController];
+      _passcodeViewController = [(CSCoverSheetViewController *)self _passcodeViewController];
     }
 
-    [v5 beginInteractivePresentationTransitionForInitialTransition:!self->_interstitialTransitionStartedFromPasscodePresented];
+    [_passcodeViewController beginInteractivePresentationTransitionForInitialTransition:!self->_interstitialTransitionStartedFromPasscodePresented];
     v7 = MEMORY[0x277D75D18];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __64__CSCoverSheetViewController_prepareForInterstitialPresentation__block_invoke;
     v9[3] = &unk_27838B838;
-    v10 = v5;
-    v11 = self;
-    v8 = v5;
+    v10 = _passcodeViewController;
+    selfCopy = self;
+    v8 = _passcodeViewController;
     [v7 _performWithoutRetargetingAnimations:v9];
     self->_initialInterstitialTransitionProgress = -1.0;
   }
 }
 
-- (void)updateInterstitialPresentationWithProgress:(double)a3
+- (void)updateInterstitialPresentationWithProgress:(double)progress
 {
   initialInterstitialTransitionProgress = self->_initialInterstitialTransitionProgress;
   if (initialInterstitialTransitionProgress < 0.0)
   {
-    self->_initialInterstitialTransitionProgress = a3;
-    initialInterstitialTransitionProgress = a3;
+    self->_initialInterstitialTransitionProgress = progress;
+    initialInterstitialTransitionProgress = progress;
   }
 
-  v6 = [(CSCoverSheetViewController *)self interstitialTransitionSource];
-  if ([v6 isTransitioning])
+  interstitialTransitionSource = [(CSCoverSheetViewController *)self interstitialTransitionSource];
+  if ([interstitialTransitionSource isTransitioning])
   {
-    [v6 updatePresentationWithProgress:a3 - initialInterstitialTransitionProgress + a3 - initialInterstitialTransitionProgress];
+    [interstitialTransitionSource updatePresentationWithProgress:progress - initialInterstitialTransitionProgress + progress - initialInterstitialTransitionProgress];
     v7 = *(MEMORY[0x277CF0B28] + 16);
     v17 = *MEMORY[0x277CF0B28];
     v18 = v7;
     BSUIConstrainValueToIntervalWithRubberBand();
     v9 = v8;
-    v10 = [(CSCoverSheetViewController *)self _passcodeViewController];
+    _passcodeViewController = [(CSCoverSheetViewController *)self _passcodeViewController];
     v11 = MEMORY[0x277D75D18];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __73__CSCoverSheetViewController_updateInterstitialPresentationWithProgress___block_invoke;
     v13[3] = &unk_27838BD80;
     v16 = v9;
-    v14 = v10;
-    v15 = self;
-    v12 = v10;
+    v14 = _passcodeViewController;
+    selfCopy = self;
+    v12 = _passcodeViewController;
     [v11 _animateUsingSpringWithTension:0 friction:v13 interactive:&__block_literal_global_355 animations:9300.0 completion:196.0];
   }
 }
@@ -21172,14 +21172,14 @@ void __73__CSCoverSheetViewController_updateInterstitialPresentationWithProgress
   [v2 sb_modifyAnimationsWithPreferredFrameRateRange:1114125 updateReason:v10 animations:{COERCE_DOUBLE(__PAIR64__(HIDWORD(v13), LODWORD(minimum))), v8, v9}];
 }
 
-- (void)cleanupInterstitialPresentationToPresented:(BOOL)a3 inPlace:(BOOL)a4
+- (void)cleanupInterstitialPresentationToPresented:(BOOL)presented inPlace:(BOOL)place
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CSCoverSheetViewController *)self interstitialTransitionSource];
-  if ([v7 isTransitioning])
+  placeCopy = place;
+  presentedCopy = presented;
+  interstitialTransitionSource = [(CSCoverSheetViewController *)self interstitialTransitionSource];
+  if ([interstitialTransitionSource isTransitioning])
   {
-    if (v5)
+    if (presentedCopy)
     {
       v8 = 1.0;
     }
@@ -21189,27 +21189,27 @@ void __73__CSCoverSheetViewController_updateInterstitialPresentationWithProgress
       v8 = 0.0;
     }
 
-    if (v5 && !self->_hasPresentedForInterstitialTransitionSource)
+    if (presentedCopy && !self->_hasPresentedForInterstitialTransitionSource)
     {
       self->_hasPresentedForInterstitialTransitionSource = 1;
-      v9 = [(CSCoverSheetViewController *)self delegate];
-      [v9 coverSheetViewControllerWillPresentInlinePasscode:self];
+      delegate = [(CSCoverSheetViewController *)self delegate];
+      [delegate coverSheetViewControllerWillPresentInlinePasscode:self];
     }
 
-    v10 = [(CSCoverSheetViewController *)self _passcodeViewController];
+    _passcodeViewController = [(CSCoverSheetViewController *)self _passcodeViewController];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __81__CSCoverSheetViewController_cleanupInterstitialPresentationToPresented_inPlace___block_invoke;
     v22[3] = &unk_27838BDC8;
-    v11 = v7;
+    v11 = interstitialTransitionSource;
     v23 = v11;
-    v24 = self;
-    v12 = v10;
+    selfCopy = self;
+    v12 = _passcodeViewController;
     v25 = v12;
-    v26 = v5;
+    v26 = presentedCopy;
     v13 = MEMORY[0x223D698D0](v22);
-    [v12 commitingToEndTransitionToPresented:v5 forInitialTransition:!self->_interstitialTransitionStartedFromPasscodePresented];
-    if (v4)
+    [v12 commitingToEndTransitionToPresented:presentedCopy forInitialTransition:!self->_interstitialTransitionStartedFromPasscodePresented];
+    if (placeCopy)
     {
       v13[2](v13);
     }
@@ -21223,7 +21223,7 @@ void __73__CSCoverSheetViewController_updateInterstitialPresentationWithProgress
       v17[3] = &unk_27838B690;
       v21 = v8;
       v18 = v12;
-      v19 = self;
+      selfCopy2 = self;
       v20 = v11;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -21286,14 +21286,14 @@ uint64_t __81__CSCoverSheetViewController_cleanupInterstitialPresentationToPrese
   return [v2 updatePresentationWithProgress:v3];
 }
 
-- (void)setInterstitialTransitionSource:(id)a3
+- (void)setInterstitialTransitionSource:(id)source
 {
-  v5 = a3;
-  if (self->_interstitialTransitionSource != v5)
+  sourceCopy = source;
+  if (self->_interstitialTransitionSource != sourceCopy)
   {
     [(CSCoverSheetViewController *)self unregisterExternalAppearanceProvider:?];
     [(CSCoverSheetViewController *)self unregisterExternalBehaviorProvider:self->_interstitialTransitionSource];
-    objc_storeStrong(&self->_interstitialTransitionSource, a3);
+    objc_storeStrong(&self->_interstitialTransitionSource, source);
     self->_hasPresentedForInterstitialTransitionSource = 0;
     if (self->_interstitialTransitionSource)
     {
@@ -21303,22 +21303,22 @@ uint64_t __81__CSCoverSheetViewController_cleanupInterstitialPresentationToPrese
   }
 }
 
-- (void)performInterstitialPresentationAnimated:(BOOL)a3
+- (void)performInterstitialPresentationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (CSFeatureEnabled(12))
   {
-    v5 = [(CSCoverSheetViewController *)self currentTransitionSource];
-    v6 = [v5 isTransitioning];
+    currentTransitionSource = [(CSCoverSheetViewController *)self currentTransitionSource];
+    isTransitioning = [currentTransitionSource isTransitioning];
 
-    if ((v6 & 1) == 0)
+    if ((isTransitioning & 1) == 0)
     {
-      v9 = [(CSCoverSheetViewController *)self _passcodeViewController];
-      self->_interstitialTransitionStartedFromPasscodePresented = v9 != 0;
+      _passcodeViewController = [(CSCoverSheetViewController *)self _passcodeViewController];
+      self->_interstitialTransitionStartedFromPasscodePresented = _passcodeViewController != 0;
       [(SBUIPhoneUnlockWithRemoteDeviceCoordinator *)self->_phoneUnlockWithRemoteDeviceCoordinator attemptPhoneUnlockWithRemoteDevice];
-      [(CSCoverSheetViewController *)self setPasscodeLockVisible:1 animated:v3 showBackground:0 forceBiometricPresentation:1 completion:0];
-      v7 = [(CSCoverSheetViewController *)self delegate];
-      [v7 coverSheetViewControllerWillPresentInlinePasscode:self];
+      [(CSCoverSheetViewController *)self setPasscodeLockVisible:1 animated:animatedCopy showBackground:0 forceBiometricPresentation:1 completion:0];
+      delegate = [(CSCoverSheetViewController *)self delegate];
+      [delegate coverSheetViewControllerWillPresentInlinePasscode:self];
     }
   }
 
@@ -21332,18 +21332,18 @@ uint64_t __81__CSCoverSheetViewController_cleanupInterstitialPresentationToPrese
   }
 }
 
-- (void)dismissInterstitialPresentationAnimated:(BOOL)a3
+- (void)dismissInterstitialPresentationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (CSFeatureEnabled(12))
   {
-    v7 = [(CSCoverSheetViewController *)self delegate];
-    v5 = [(CSCoverSheetViewController *)self _passcodeViewController];
+    delegate = [(CSCoverSheetViewController *)self delegate];
+    _passcodeViewController = [(CSCoverSheetViewController *)self _passcodeViewController];
 
-    if (v5)
+    if (_passcodeViewController)
     {
-      [(CSCoverSheetViewController *)self setPasscodeLockVisible:0 animated:v3];
-      [v7 coverSheetViewControllerDidCancelInlinePasscode:self];
+      [(CSCoverSheetViewController *)self setPasscodeLockVisible:0 animated:animatedCopy];
+      [delegate coverSheetViewControllerDidCancelInlinePasscode:self];
     }
   }
 
@@ -21357,35 +21357,35 @@ uint64_t __81__CSCoverSheetViewController_cleanupInterstitialPresentationToPrese
   }
 }
 
-- (void)setBacklightLevel:(double)a3
+- (void)setBacklightLevel:(double)level
 {
   [(CSCoverSheetViewController *)self backlightLevel];
-  if (v5 != a3)
+  if (v5 != level)
   {
     v7 = [CSEvent eventWithType:16];
-    v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithDouble:level];
     [v7 setValue:v6];
 
     [(CSCoverSheetViewController *)self _handleEvent:v7];
-    self->_backlightLevel = a3;
+    self->_backlightLevel = level;
   }
 }
 
-- (void)setInScreenOffMode:(BOOL)a3 forAutoUnlock:(BOOL)a4 fromUnlockSource:(int)a5
+- (void)setInScreenOffMode:(BOOL)mode forAutoUnlock:(BOOL)unlock fromUnlockSource:(int)source
 {
   v44 = *MEMORY[0x277D85DE8];
-  if (self->_screenOffMode == a3)
+  if (self->_screenOffMode == mode)
   {
     return;
   }
 
-  v5 = *&a5;
-  v6 = a3;
-  self->_screenOffMode = a3;
+  v5 = *&source;
+  modeCopy = mode;
+  self->_screenOffMode = mode;
   v8 = 0x27CEDF000uLL;
-  if (a3)
+  if (mode)
   {
-    [(CSCoverSheetViewController *)self _setDidDismissSinceScreenOn:0, a4];
+    [(CSCoverSheetViewController *)self _setDidDismissSinceScreenOn:0, unlock];
     [(CSOrientationUpdateControlling *)self->_orientationUpdateController deferOrientationUpdatesWithReason:@"CSCoverSheetScreenOffReason"];
     [(SBUIPhoneUnlockWithRemoteDeviceCoordinator *)self->_phoneUnlockWithRemoteDeviceCoordinator handleScreenOff:1];
     [(CSCoverSheetViewController *)self _clearChargingModalTimerPerformingHandler:1];
@@ -21419,7 +21419,7 @@ uint64_t __81__CSCoverSheetViewController_cleanupInterstitialPresentationToPrese
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v43 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+      _isShowingChargingModal = [(CSCoverSheetViewController *)self _isShowingChargingModal];
       _os_log_impl(&dword_21EB05000, v15, OS_LOG_TYPE_DEFAULT, "[Charge UI][Screen Off Mode] visible NO, showBattery NO – isAlreadyShowingChargingModal: %d", buf, 8u);
     }
 
@@ -21427,14 +21427,14 @@ uint64_t __81__CSCoverSheetViewController_cleanupInterstitialPresentationToPrese
     v16 = SBLogDashBoard();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+      _isShowingChargingModal2 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
       *buf = 67109120;
-      v43 = v17;
+      _isShowingChargingModal = _isShowingChargingModal2;
       _os_log_impl(&dword_21EB05000, v16, OS_LOG_TYPE_DEFAULT, "[Charge UI][Screen Off Mode] – endedShowingChargingModal: %d", buf, 8u);
     }
 
-    v18 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v18 resetScrollViewToMainPageAnimated:0 withCompletion:0];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView resetScrollViewToMainPageAnimated:0 withCompletion:0];
 
     [(CSCoverSheetViewTransitionSource *)self->_currentTransitionSource cancelTransition];
     [(CSTimerViewController *)self->_timerViewController setEnabled:0];
@@ -21444,7 +21444,7 @@ uint64_t __81__CSCoverSheetViewController_cleanupInterstitialPresentationToPrese
 
   else
   {
-    [(CSCoverSheetViewController *)self _updateOverrideDateIfNeeded:a3];
+    [(CSCoverSheetViewController *)self _updateOverrideDateIfNeeded:mode];
     [(CSOrientationUpdateControlling *)self->_orientationUpdateController cancelOrientationUpdateDeferral];
     if (([(SBFScreenWakeAnimationControlling *)self->_screenWakeAnimationController isWakeAnimationInProgress]& 1) == 0)
     {
@@ -21459,16 +21459,16 @@ uint64_t __81__CSCoverSheetViewController_cleanupInterstitialPresentationToPrese
   }
 
   v20 = 0x277CF0000uLL;
-  v21 = [MEMORY[0x277CF0880] sharedBacklight];
-  if ([v21 backlightState] != 1)
+  mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+  if ([mEMORY[0x277CF0880] backlightState] != 1)
   {
 
     goto LABEL_21;
   }
 
-  v22 = [(CSCoverSheetViewController *)self _appearState];
+  _appearState = [(CSCoverSheetViewController *)self _appearState];
 
-  if (v22 == 2)
+  if (_appearState == 2)
   {
 LABEL_21:
     [(CSAppearance *)self->_localAppearance removeAllComponentsWithIdentifier:@"HiddenAODTransitionElement"];
@@ -21498,15 +21498,15 @@ LABEL_22:
   v33 = *(v8 + 1816);
   [*(&self->super.super.super.super.isa + v33) setScreenOff:self->_screenOffMode];
   v34 = *(&self->super.super.super.super.isa + v33);
-  v35 = [(CSLockScreenSettings *)self->_prototypeSettings aodTransitionSettings];
-  [v35 aodClockResponse];
+  aodTransitionSettings = [(CSLockScreenSettings *)self->_prototypeSettings aodTransitionSettings];
+  [aodTransitionSettings aodClockResponse];
   [v34 setLuminanceChangeAnimationResponse:?];
 
   [(CSInlineWidgetContainerViewController *)self->_inlineComplicationContainerViewController setScreenOff:self->_screenOffMode];
   [(CSInlineWidgetContainerViewController *)self->_landscapeInlineComplicationContainerViewController setScreenOff:self->_screenOffMode];
   [(CSWidgetGridViewController *)self->_complicationContainerViewController setScreenOff:self->_screenOffMode];
   [(CSWidgetGridViewController *)self->_sidebarComplicationContainerViewController setScreenOff:self->_screenOffMode];
-  if (v6)
+  if (modeCopy)
   {
     v36 = @"ScreenOff";
   }
@@ -21531,10 +21531,10 @@ LABEL_22:
   }
 
   [(CSCoverSheetViewController *)self _handleEvent:v37];
-  [(CSNotificationClearingTrigger *)self->_notificationClearingTrigger setScreenOff:v6];
+  [(CSNotificationClearingTrigger *)self->_notificationClearingTrigger setScreenOff:modeCopy];
   notificationClearingTrigger = self->_notificationClearingTrigger;
-  v40 = [*(v20 + 2176) sharedBacklight];
-  -[CSNotificationClearingTrigger setScreenInactive:](notificationClearingTrigger, "setScreenInactive:", [v40 backlightState] == 1);
+  sharedBacklight = [*(v20 + 2176) sharedBacklight];
+  -[CSNotificationClearingTrigger setScreenInactive:](notificationClearingTrigger, "setScreenInactive:", [sharedBacklight backlightState] == 1);
 }
 
 - (BOOL)shouldUnlockUIOnKeyDownEvent
@@ -21544,10 +21544,10 @@ LABEL_22:
     return 0;
   }
 
-  v3 = [(CSCoverSheetViewController *)self modalPresentationController];
-  v4 = [v3 isPresentingContent];
+  modalPresentationController = [(CSCoverSheetViewController *)self modalPresentationController];
+  isPresentingContent = [modalPresentationController isPresentingContent];
 
-  if (v4)
+  if (isPresentingContent)
   {
     return 0;
   }
@@ -21560,49 +21560,49 @@ LABEL_22:
 
 - (BOOL)isShowingMediaControls
 {
-  v2 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-  v3 = [v2 isShowingMediaControls];
+  mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+  isShowingMediaControls = [mainPageContentViewController isShowingMediaControls];
 
-  return v3;
+  return isShowingMediaControls;
 }
 
-- (void)setShowingMediaControls:(BOOL)a3
+- (void)setShowingMediaControls:(BOOL)controls
 {
-  if (a3 && [(CSRemoteContentInlineViewController *)self->_remoteContentInlineViewController shouldDismissInlineContentForNowPlaying])
+  if (controls && [(CSRemoteContentInlineViewController *)self->_remoteContentInlineViewController shouldDismissInlineContentForNowPlaying])
   {
 
     [(CSCoverSheetViewController *)self _dismissRemoteViewControllerForReason:4];
   }
 }
 
-- (void)_activateCameraEntity:(id)a3 animated:(BOOL)a4 actions:(id)a5 completion:(id)a6
+- (void)_activateCameraEntity:(id)entity animated:(BOOL)animated actions:(id)actions completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(CSCoverSheetViewController *)self coverSheetView];
-  v14 = [(CSCoverSheetViewController *)self _indexOfCameraPage];
-  if (v14 == 0x7FFFFFFFFFFFFFFFLL)
+  animatedCopy = animated;
+  entityCopy = entity;
+  actionsCopy = actions;
+  completionCopy = completion;
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  _indexOfCameraPage = [(CSCoverSheetViewController *)self _indexOfCameraPage];
+  if (_indexOfCameraPage == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12[2](v12, 5, @"Camera page not accessible");
+    completionCopy[2](completionCopy, 5, @"Camera page not accessible");
     goto LABEL_20;
   }
 
-  v15 = v14;
-  v27 = v8;
-  v16 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:v14];
-  v28 = v11;
-  if (v10)
+  v15 = _indexOfCameraPage;
+  v27 = animatedCopy;
+  v16 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:_indexOfCameraPage];
+  v28 = actionsCopy;
+  if (entityCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v16 hostedEntity];
-      v18 = [v17 applicationBundleIdentifier];
-      v19 = [v10 applicationBundleIdentifier];
-      v20 = [v18 isEqualToString:v19];
+      hostedEntity = [v16 hostedEntity];
+      applicationBundleIdentifier = [hostedEntity applicationBundleIdentifier];
+      applicationBundleIdentifier2 = [entityCopy applicationBundleIdentifier];
+      v20 = [applicationBundleIdentifier isEqualToString:applicationBundleIdentifier2];
 
-      v11 = v28;
+      actionsCopy = v28;
       if (!v20)
       {
         v21 = 0;
@@ -21614,7 +21614,7 @@ LABEL_22:
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v21 = 0;
-    if (!v10)
+    if (!entityCopy)
     {
       goto LABEL_14;
     }
@@ -21622,14 +21622,14 @@ LABEL_22:
 LABEL_12:
     if (objc_opt_respondsToSelector())
     {
-      [v16 setHostedEntity:v10];
+      [v16 setHostedEntity:entityCopy];
     }
 
     goto LABEL_14;
   }
 
   v21 = [v16 acquireLiveContentAssertionForReason:@"Camera Activation"];
-  if (v10)
+  if (entityCopy)
   {
     goto LABEL_12;
   }
@@ -21638,7 +21638,7 @@ LABEL_14:
   v22 = objc_opt_respondsToSelector() & 1;
   if (v22)
   {
-    [v16 setActionsToDeliver:v11];
+    [v16 setActionsToDeliver:actionsCopy];
   }
 
   objc_initWeak(location, self);
@@ -21647,16 +21647,16 @@ LABEL_14:
   v34[2] = __80__CSCoverSheetViewController__activateCameraEntity_animated_actions_completion___block_invoke;
   v34[3] = &unk_27838BE18;
   objc_copyWeak(v40, location);
-  v23 = v13;
+  v23 = coverSheetView;
   v40[1] = v15;
   v35 = v23;
-  v36 = self;
+  selfCopy = self;
   v41 = v22;
   v24 = v16;
   v37 = v24;
   v25 = v21;
   v38 = v25;
-  v39 = v12;
+  v39 = completionCopy;
   v26 = MEMORY[0x223D698D0](v34);
   if ([(CSCoverSheetViewController *)self isPasscodeLockVisible])
   {
@@ -21679,7 +21679,7 @@ LABEL_14:
   objc_destroyWeak(v40);
   objc_destroyWeak(location);
 
-  v11 = v28;
+  actionsCopy = v28;
 LABEL_20:
 }
 
@@ -21723,17 +21723,17 @@ void __80__CSCoverSheetViewController__activateCameraEntity_animated_actions_com
   }
 }
 
-- (void)activateOverlayWithViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)activateOverlayWithViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   v10 = SBLogDashBoard();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v8;
+    v20 = controllerCopy;
     _os_log_impl(&dword_21EB05000, v10, OS_LOG_TYPE_DEFAULT, "Attempt to activate overlay with view controller: %@", buf, 0xCu);
   }
 
@@ -21743,18 +21743,18 @@ void __80__CSCoverSheetViewController__activateCameraEntity_animated_actions_com
     [WeakRetained dismissSpotlightAnimated:1];
   }
 
-  v12 = [(CSCoverSheetViewController *)self _indexOfMainPage];
+  _indexOfMainPage = [(CSCoverSheetViewController *)self _indexOfMainPage];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__CSCoverSheetViewController_activateOverlayWithViewController_animated_completion___block_invoke;
   v15[3] = &unk_27838BE68;
   v15[4] = self;
-  v16 = v8;
-  v18 = v6;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
-  [(CSCoverSheetViewController *)self activatePage:v12 animated:v6 withCompletion:v15];
+  v16 = controllerCopy;
+  v18 = animatedCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = controllerCopy;
+  [(CSCoverSheetViewController *)self activatePage:_indexOfMainPage animated:animatedCopy withCompletion:v15];
 }
 
 void __84__CSCoverSheetViewController_activateOverlayWithViewController_animated_completion___block_invoke(uint64_t a1)
@@ -21801,13 +21801,13 @@ uint64_t __84__CSCoverSheetViewController_activateOverlayWithViewController_anim
   return result;
 }
 
-- (void)dismissHostedAppsAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissHostedAppsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(CSCoverSheetViewController *)self isMainPageVisible])
   {
-    [(CSCoverSheetViewController *)self _dismissHostingModalsAnimated:v4 completion:v6];
+    [(CSCoverSheetViewController *)self _dismissHostingModalsAnimated:animatedCopy completion:completionCopy];
   }
 
   else
@@ -21817,8 +21817,8 @@ uint64_t __84__CSCoverSheetViewController_activateOverlayWithViewController_anim
     v7[2] = __67__CSCoverSheetViewController_dismissHostedAppsAnimated_completion___block_invoke;
     v7[3] = &unk_27838BD30;
     v7[4] = self;
-    v9 = v4;
-    v8 = v6;
+    v9 = animatedCopy;
+    v8 = completionCopy;
     [(CSCoverSheetViewController *)self _dismissHostingModalsAnimated:0 completion:v7];
   }
 }
@@ -21833,26 +21833,26 @@ uint64_t __67__CSCoverSheetViewController_dismissHostedAppsAnimated_completion__
   return [v2 activatePage:v3 animated:v4 withCompletion:v5];
 }
 
-- (void)_dismissHostingModalsAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissHostingModalsAnimated:(BOOL)animated completion:(id)completion
 {
-  v16 = a3;
+  animatedCopy = animated;
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = dispatch_group_create();
   dispatch_group_enter(v6);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__CSCoverSheetViewController__dismissHostingModalsAnimated_completion___block_invoke;
   block[3] = &unk_27838BB18;
-  v15 = v5;
+  v15 = completionCopy;
   v24 = v15;
   dispatch_group_notify(v6, MEMORY[0x277D85CD0], block);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v8 = [contentViewControllers countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -21863,7 +21863,7 @@ uint64_t __67__CSCoverSheetViewController_dismissHostedAppsAnimated_completion__
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(contentViewControllers);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
@@ -21879,12 +21879,12 @@ uint64_t __67__CSCoverSheetViewController_dismissHostedAppsAnimated_completion__
             v17[2] = __71__CSCoverSheetViewController__dismissHostingModalsAnimated_completion___block_invoke_2;
             v17[3] = &unk_27838B770;
             v18 = v6;
-            [(CSPresentationViewController *)modalPresentationController dismissContentViewController:v13 animated:v16 completion:v17];
+            [(CSPresentationViewController *)modalPresentationController dismissContentViewController:v13 animated:animatedCopy completion:v17];
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v9 = [contentViewControllers countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v9);
@@ -21916,65 +21916,65 @@ uint64_t __71__CSCoverSheetViewController__dismissHostingModalsAnimated_completi
   [(CSCoverSheetViewController *)self _handleEvent:v3];
 }
 
-- (void)scrollPanGestureDidUpdate:(id)a3
+- (void)scrollPanGestureDidUpdate:(id)update
 {
-  v8 = a3;
-  v4 = [(CSCoverSheetViewController *)self activeBehavior];
-  v5 = [v4 areRestrictedCapabilities:64];
+  updateCopy = update;
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v5 = [activeBehavior areRestrictedCapabilities:64];
 
-  v7 = v8;
+  v7 = updateCopy;
   if ((v5 & 1) == 0)
   {
-    v6 = [v8 state];
-    if (v6 > 3)
+    state = [updateCopy state];
+    if (state > 3)
     {
-      v7 = v8;
-      if ((v6 - 4) >= 2)
+      v7 = updateCopy;
+      if ((state - 4) >= 2)
       {
         goto LABEL_12;
       }
 
       [(CSCoverSheetViewController *)self dismissHomeScreenOverlay];
-      v6 = [(CSWidgetGridViewController *)self->_complicationContainerViewController endCancellingTouches];
+      state = [(CSWidgetGridViewController *)self->_complicationContainerViewController endCancellingTouches];
       goto LABEL_11;
     }
 
-    if (v6 == 1)
+    if (state == 1)
     {
-      [(CSCoverSheetViewController *)self _scrollPanGestureBegan:v8];
+      [(CSCoverSheetViewController *)self _scrollPanGestureBegan:updateCopy];
     }
 
-    else if (v6 != 2)
+    else if (state != 2)
     {
-      v7 = v8;
-      if (v6 != 3)
+      v7 = updateCopy;
+      if (state != 3)
       {
         goto LABEL_12;
       }
 
-      v6 = [(CSCoverSheetViewController *)self _scrollPanGestureEnded:v8];
+      state = [(CSCoverSheetViewController *)self _scrollPanGestureEnded:updateCopy];
       goto LABEL_11;
     }
 
-    v6 = [(CSCoverSheetViewController *)self _scrollPanGestureChanged:v8];
+    state = [(CSCoverSheetViewController *)self _scrollPanGestureChanged:updateCopy];
 LABEL_11:
-    v7 = v8;
+    v7 = updateCopy;
   }
 
 LABEL_12:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](state, v7);
 }
 
-- (void)_scrollPanGestureBegan:(id)a3
+- (void)_scrollPanGestureBegan:(id)began
 {
   [(CSWidgetGridViewController *)self->_complicationContainerViewController beginCancellingTouches];
-  v4 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+  overlayControllerIfExists = [(CSCoverSheetViewController *)self overlayControllerIfExists];
 
-  if (v4)
+  if (overlayControllerIfExists)
   {
-    v6 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-    [v6 layerPresentationProgress];
+    overlayControllerIfExists2 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+    [overlayControllerIfExists2 layerPresentationProgress];
     self->_initialOverlayPresentationProgress = v5;
   }
 
@@ -21984,16 +21984,16 @@ LABEL_12:
   }
 }
 
-- (void)_scrollPanGestureChanged:(id)a3
+- (void)_scrollPanGestureChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v4 translationInView:v5];
+  changedCopy = changed;
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [changedCopy translationInView:coverSheetView];
   v7 = v6;
 
-  v8 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
   v9 = v7 > 0.0;
-  if (v8 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v9 = v7 < 0.0;
   }
@@ -22006,10 +22006,10 @@ LABEL_12:
       [CSCoverSheetViewController _scrollPanGestureChanged:];
     }
 
-    v11 = [(CSCoverSheetViewController *)self overlayController];
-    [v11 presentationProgressForTranslation:1 initialPresentationProgress:v7 fromLeading:self->_initialOverlayPresentationProgress];
+    overlayController = [(CSCoverSheetViewController *)self overlayController];
+    [overlayController presentationProgressForTranslation:1 initialPresentationProgress:v7 fromLeading:self->_initialOverlayPresentationProgress];
     v13 = v12;
-    [v11 setPresentationProgress:1 interactive:1 animated:0 completionHandler:?];
+    [overlayController setPresentationProgress:1 interactive:1 animated:0 completionHandler:?];
     if (__sb__runningInSpringBoard())
     {
       if (SBFEffectiveDeviceClass() == 2)
@@ -22020,10 +22020,10 @@ LABEL_12:
 
     else
     {
-      v14 = [MEMORY[0x277D75418] currentDevice];
-      v15 = [v14 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v15 == 1)
+      if (userInterfaceIdiom == 1)
       {
 LABEL_11:
 
@@ -22036,21 +22036,21 @@ LABEL_11:
   }
 }
 
-- (void)_scrollPanGestureEnded:(id)a3
+- (void)_scrollPanGestureEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   [(CSWidgetGridViewController *)self->_complicationContainerViewController endCancellingTouches];
-  v5 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-  v6 = v5;
-  if (v5)
+  overlayControllerIfExists = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+  v6 = overlayControllerIfExists;
+  if (overlayControllerIfExists)
   {
-    [v5 presentationProgress];
-    v7 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v4 velocityInView:v7];
+    [overlayControllerIfExists presentationProgress];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    [endedCopy velocityInView:coverSheetView];
     v9 = v8;
 
-    v10 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v4 translationInView:v10];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    [endedCopy translationInView:coverSheetView2];
     v12 = v11;
 
     [v6 finalPresentationProgressForTranslation:1 velocity:v12 initialPresentationProgress:v9 fromLeading:self->_initialOverlayPresentationProgress];
@@ -22075,7 +22075,7 @@ LABEL_11:
   }
 }
 
-- (void)overlayControllerDidBeginChangingPresentationProgress:(id)a3
+- (void)overlayControllerDidBeginChangingPresentationProgress:(id)progress
 {
   if ([(CSCoverSheetViewController *)self bs_isAppearingOrAppeared])
   {
@@ -22084,29 +22084,29 @@ LABEL_11:
   }
 }
 
-- (void)overlayController:(id)a3 didChangePresentationProgress:(double)a4 newPresentationProgress:(double)a5 fromLeading:(BOOL)a6
+- (void)overlayController:(id)controller didChangePresentationProgress:(double)progress newPresentationProgress:(double)presentationProgress fromLeading:(BOOL)leading
 {
-  v8 = a3;
-  v11 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+  controllerCopy = controller;
+  overlayControllerIfExists = [(CSCoverSheetViewController *)self overlayControllerIfExists];
 
-  v9 = v11;
-  if (v11 == v8)
+  v9 = overlayControllerIfExists;
+  if (overlayControllerIfExists == controllerCopy)
   {
-    [v11 presentationProgress];
-    if (a4 <= 0.0 && v10 > 0.0)
+    [overlayControllerIfExists presentationProgress];
+    if (progress <= 0.0 && v10 > 0.0)
     {
-      [(CSCoverSheetViewController *)self registerExternalBehaviorProvider:v11];
-      [(CSCoverSheetViewController *)self registerExternalEventHandler:v11];
+      [(CSCoverSheetViewController *)self registerExternalBehaviorProvider:overlayControllerIfExists];
+      [(CSCoverSheetViewController *)self registerExternalEventHandler:overlayControllerIfExists];
 LABEL_8:
-      v9 = v11;
+      v9 = overlayControllerIfExists;
       goto LABEL_9;
     }
 
-    v9 = v11;
-    if (a4 > 0.0 && v10 <= 0.0)
+    v9 = overlayControllerIfExists;
+    if (progress > 0.0 && v10 <= 0.0)
     {
-      [(CSCoverSheetViewController *)self unregisterExternalBehaviorProvider:v11];
-      [(CSCoverSheetViewController *)self unregisterExternalEventHandler:v11];
+      [(CSCoverSheetViewController *)self unregisterExternalBehaviorProvider:overlayControllerIfExists];
+      [(CSCoverSheetViewController *)self unregisterExternalEventHandler:overlayControllerIfExists];
       goto LABEL_8;
     }
   }
@@ -22114,22 +22114,22 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)interceptDismissalGestureForOverlayController:(id)a3
+- (BOOL)interceptDismissalGestureForOverlayController:(id)controller
 {
-  if (self->_overlayController != a3)
+  if (self->_overlayController != controller)
   {
     return 0;
   }
 
-  v4 = [(CSCoverSheetContextProviding *)self->_coverSheetContext homeScreenOverlayProvider];
-  v5 = [v4 dismissModalContentIfVisibleAnimated:1];
+  homeScreenOverlayProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext homeScreenOverlayProvider];
+  v5 = [homeScreenOverlayProvider dismissModalContentIfVisibleAnimated:1];
 
   return v5;
 }
 
-- (void)overlayControllerRequestsDismissal:(id)a3
+- (void)overlayControllerRequestsDismissal:(id)dismissal
 {
-  if (self->_overlayController == a3)
+  if (self->_overlayController == dismissal)
   {
     [(CSCoverSheetViewController *)self dismissHomeScreenOverlay];
   }
@@ -22150,16 +22150,16 @@ LABEL_9:
 
 - (id)createHomeButtonShowPasscodeRecognizerForHomeButtonPress
 {
-  v3 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationStatusProvider];
-  v4 = [v3 isAuthenticated];
+  authenticationStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationStatusProvider];
+  isAuthenticated = [authenticationStatusProvider isAuthenticated];
 
-  if (v4)
+  if (isAuthenticated)
   {
     [CSCoverSheetViewController createHomeButtonShowPasscodeRecognizerForHomeButtonPress];
   }
 
-  v5 = [(CSCoverSheetContextProviding *)self->_coverSheetContext biometricResource];
-  if (([v5 hasBiometricAuthenticationCapabilityEnabled] & 1) == 0)
+  biometricResource = [(CSCoverSheetContextProviding *)self->_coverSheetContext biometricResource];
+  if (([biometricResource hasBiometricAuthenticationCapabilityEnabled] & 1) == 0)
   {
     v6 = SBLogLockScreenMesaHomeButtonPasscodeRecognizer();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -22176,7 +22176,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v5 biometricLockoutState])
+  if ([biometricResource biometricLockoutState])
   {
     v6 = SBLogLockScreenMesaHomeButtonPasscodeRecognizer();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -22192,14 +22192,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = -[CSHomeButtonShowPasscodeRecognizer initWithFingerOn:]([CSHomeButtonShowPasscodeRecognizer alloc], "initWithFingerOn:", [v5 isFingerOn]);
+  v9 = -[CSHomeButtonShowPasscodeRecognizer initWithFingerOn:]([CSHomeButtonShowPasscodeRecognizer alloc], "initWithFingerOn:", [biometricResource isFingerOn]);
 LABEL_11:
   objc_storeStrong(&self->_homeButtonShowPasscodeRecognizer, v9);
 
   return v9;
 }
 
-- (id)createHomeButtonSuppressAfterUnlockRecognizerForUnlockSource:(int)a3
+- (id)createHomeButtonSuppressAfterUnlockRecognizerForUnlockSource:(int)source
 {
   v4 = objc_alloc_init(CSHomeButtonSuppressAfterUnlockRecognizer);
   objc_storeWeak(&self->_homeButtonSuppressAfterUnlockRecognizer, v4);
@@ -22219,13 +22219,13 @@ LABEL_11:
   return v2;
 }
 
-- (id)_validatedComplicationDescriptorForDescriptor:(id)a3
+- (id)_validatedComplicationDescriptorForDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 widget];
-  v6 = [v5 containerBundleIdentifier];
+  descriptorCopy = descriptor;
+  widget = [descriptorCopy widget];
+  containerBundleIdentifier = [widget containerBundleIdentifier];
 
-  v7 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v6];
+  v7 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:containerBundleIdentifier];
   if ([v7 isLocked] & 1) != 0 || (objc_msgSend(v7, "isHidden"))
   {
     v8 = 0;
@@ -22233,12 +22233,12 @@ LABEL_11:
 
   else
   {
-    v9 = [(CSCoverSheetContextProviding *)self->_coverSheetContext applicationInformer];
-    v10 = [v9 isInstallingApplicationWithBundleIdentifier:v6];
-    v11 = [v9 applicationExistsForBundleIdentifier:v6];
+    applicationInformer = [(CSCoverSheetContextProviding *)self->_coverSheetContext applicationInformer];
+    v10 = [applicationInformer isInstallingApplicationWithBundleIdentifier:containerBundleIdentifier];
+    v11 = [applicationInformer applicationExistsForBundleIdentifier:containerBundleIdentifier];
     if ((v10 & 1) != 0 || v11)
     {
-      v8 = v4;
+      v8 = descriptorCopy;
     }
 
     else
@@ -22254,7 +22254,7 @@ LABEL_11:
 {
   v18 = [(CSCoverSheetViewController *)self _validatedComplicationDescriptorForDescriptor:self->_posterPortraitDescriptor];
   v3 = [(CSCoverSheetViewController *)self _validatedComplicationDescriptorForDescriptor:self->_posterLandscapeDescriptor];
-  v4 = [(CSInlineWidgetContainerViewController *)self->_inlineComplicationContainerViewController widgetDescriptor];
+  widgetDescriptor = [(CSInlineWidgetContainerViewController *)self->_inlineComplicationContainerViewController widgetDescriptor];
   v5 = BSEqualObjects();
 
   if (!v5 || ([(CSInlineWidgetContainerViewController *)self->_landscapeInlineComplicationContainerViewController widgetDescriptor], v6 = objc_claimAutoreleasedReturnValue(), v7 = BSEqualObjects(), v6, (v7 & 1) == 0))
@@ -22275,8 +22275,8 @@ LABEL_11:
       [(CSInlineWidgetContainerViewController *)inlineComplicationContainerViewController setWidgetDescriptor:v18];
       if (!__sb__runningInSpringBoard())
       {
-        v12 = [MEMORY[0x277D75418] currentDevice];
-        if ([v12 userInterfaceIdiom] == 1)
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice userInterfaceIdiom] == 1)
         {
         }
 
@@ -22368,32 +22368,32 @@ LABEL_29:
 
 - (id)succinctDescription
 {
-  v2 = [(CSCoverSheetViewController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSCoverSheetViewController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSCoverSheetViewController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSCoverSheetViewController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(CSCoverSheetViewController *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__CSCoverSheetViewController_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_27838B838;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;
@@ -22491,37 +22491,37 @@ id __68__CSCoverSheetViewController_descriptionBuilderWithMultilinePrefix___bloc
   return NSStringFromClass(v2);
 }
 
-- (void)updateBehaviorForController:(id)a3
+- (void)updateBehaviorForController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [CSCoverSheetViewController updateBehaviorForController:v4];
+    [CSCoverSheetViewController updateBehaviorForController:controllerCopy];
   }
 
-  if ([v4 participantState] == 2)
+  if ([controllerCopy participantState] == 2)
   {
-    v6 = [v4 coverSheetIdentifier];
-    [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:v6];
+    coverSheetIdentifier = [controllerCopy coverSheetIdentifier];
+    [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:coverSheetIdentifier];
   }
 
   else
   {
-    v6 = SBLogDashBoard();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    coverSheetIdentifier = SBLogDashBoard();
+    if (os_log_type_enabled(coverSheetIdentifier, OS_LOG_TYPE_DEBUG))
     {
       [CSCoverSheetViewController updateBehaviorForController:];
     }
   }
 }
 
-- (void)updateAppearanceForController:(id)a3
+- (void)updateAppearanceForController:(id)controller
 {
-  if (a3 == self)
+  if (controller == self)
   {
-    v4 = [(CSCoverSheetViewController *)self coverSheetIdentifier];
-    [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:v4];
+    coverSheetIdentifier = [(CSCoverSheetViewController *)self coverSheetIdentifier];
+    [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:coverSheetIdentifier];
   }
 
   else
@@ -22531,27 +22531,27 @@ id __68__CSCoverSheetViewController_descriptionBuilderWithMultilinePrefix___bloc
   }
 }
 
-- (void)updateAppearanceForController:(id)a3 withAnimationSettings:(id)a4 completion:(id)a5
+- (void)updateAppearanceForController:(id)controller withAnimationSettings:(id)settings completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  settingsCopy = settings;
+  completionCopy = completion;
   v11 = SBLogDashBoard();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [CSCoverSheetViewController updateAppearanceForController:v8 withAnimationSettings:? completion:?];
+    [CSCoverSheetViewController updateAppearanceForController:controllerCopy withAnimationSettings:? completion:?];
   }
 
   v12 = MEMORY[0x277CCACA8];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [v12 stringWithFormat:@"%@:%p", v14, v8];
+  controllerCopy = [v12 stringWithFormat:@"%@:%p", v14, controllerCopy];
 
-  if ([v8 participantState] == 2 || (-[NSMutableArray containsObject:](self->_exemptFromInactiveAppearanceParticipants, "containsObject:", v8) & 1) != 0)
+  if ([controllerCopy participantState] == 2 || (-[NSMutableArray containsObject:](self->_exemptFromInactiveAppearanceParticipants, "containsObject:", controllerCopy) & 1) != 0)
   {
     if (![(CSCoverSheetViewController *)self isTransitioning])
     {
-      if ([MEMORY[0x277D75D18] _isInAnimationBlock] && (!v9 || (objc_msgSend(MEMORY[0x277D75D18], "_currentAnimationSettings"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v9, "isEqual:", v16), v16, v17)))
+      if ([MEMORY[0x277D75D18] _isInAnimationBlock] && (!settingsCopy || (objc_msgSend(MEMORY[0x277D75D18], "_currentAnimationSettings"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(settingsCopy, "isEqual:", v16), v16, v17)))
       {
         v18 = MEMORY[0x277CF0D38];
         v24[0] = MEMORY[0x277D85DD0];
@@ -22559,8 +22559,8 @@ id __68__CSCoverSheetViewController_descriptionBuilderWithMultilinePrefix___bloc
         v24[2] = __93__CSCoverSheetViewController_updateAppearanceForController_withAnimationSettings_completion___block_invoke;
         v24[3] = &unk_27838B838;
         v24[4] = self;
-        v25 = v15;
-        [v18 addAlongsideAnimations:v24 completion:v10];
+        v25 = controllerCopy;
+        [v18 addAlongsideAnimations:v24 completion:completionCopy];
         v19 = v25;
       }
 
@@ -22572,8 +22572,8 @@ id __68__CSCoverSheetViewController_descriptionBuilderWithMultilinePrefix___bloc
         v22[2] = __93__CSCoverSheetViewController_updateAppearanceForController_withAnimationSettings_completion___block_invoke_2;
         v22[3] = &unk_27838B838;
         v22[4] = self;
-        v23 = v15;
-        [v21 animateWithSettings:v9 actions:v22 completion:v10];
+        v23 = controllerCopy;
+        [v21 animateWithSettings:settingsCopy actions:v22 completion:completionCopy];
         v19 = v23;
       }
 
@@ -22590,9 +22590,9 @@ id __68__CSCoverSheetViewController_descriptionBuilderWithMultilinePrefix___bloc
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_17:
@@ -22609,61 +22609,61 @@ LABEL_17:
   return result;
 }
 
-- (void)handleAction:(id)a3 fromSender:(id)a4
+- (void)handleAction:(id)action fromSender:(id)sender
 {
   v78 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  senderCopy = sender;
   if ([(CSCoverSheetViewController *)self participantState]== 2)
   {
     v8 = SBLogDashBoard();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v46 = _SBFLoggingMethodProem();
-      v47 = [MEMORY[0x277CF0C00] descriptionForObject:v7];
+      v47 = [MEMORY[0x277CF0C00] descriptionForObject:senderCopy];
       *buf = 138412802;
       v73 = v46;
       v74 = 2112;
-      v75 = v6;
+      v75 = actionCopy;
       v76 = 2112;
       v77 = v47;
       _os_log_debug_impl(&dword_21EB05000, v8, OS_LOG_TYPE_DEBUG, "%@ %@ fromSender: %@", buf, 0x20u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_idleTimerController);
-    switch([v6 type])
+    switch([actionCopy type])
     {
       case 0:
-        v10 = [v6 context];
-        v11 = v10;
-        if (v10 && [v10 intent])
+        context = [actionCopy context];
+        windowScene = context;
+        if (context && [context intent])
         {
-          v12 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
-          v13 = [v12 createUnlockRequestForActionContext:v11];
+          unlockRequester = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
+          action2 = [unlockRequester createUnlockRequestForActionContext:windowScene];
 
-          [(CSCoverSheetViewController *)self setCustomLockScreenActionContext:v11];
-          v14 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
+          [(CSCoverSheetViewController *)self setCustomLockScreenActionContext:windowScene];
+          unlockRequester2 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
           v70[0] = MEMORY[0x277D85DD0];
           v70[1] = 3221225472;
           v70[2] = __54__CSCoverSheetViewController_handleAction_fromSender___block_invoke;
           v70[3] = &unk_27838BEB0;
           v70[4] = self;
-          v71 = v11;
-          [v14 unlockWithRequest:v13 completion:v70];
+          v71 = windowScene;
+          [unlockRequester2 unlockWithRequest:action2 completion:v70];
 
           v15 = v71;
           goto LABEL_57;
         }
 
-        v48 = [v11 action];
+        action = [windowScene action];
 
-        if (!v48)
+        if (!action)
         {
           goto LABEL_39;
         }
 
-        v13 = [v11 action];
-        v13[2]();
+        action2 = [windowScene action];
+        action2[2]();
         goto LABEL_58;
       case 1:
         objc_opt_class();
@@ -22672,40 +22672,40 @@ LABEL_17:
           goto LABEL_68;
         }
 
-        if (self->_modalPresentationController == v7)
+        if (self->_modalPresentationController == senderCopy)
         {
           [(CSCoverSheetViewController *)self _setModalPresentationControllerVisibility:0];
         }
 
-        else if (self->_posterSwitcherViewController == v7)
+        else if (self->_posterSwitcherViewController == senderCopy)
         {
           [(CSCoverSheetViewController *)self _dismissPosterSwitcherViewController];
         }
 
-        else if (self->_remoteContentModalViewController == v7 || self->_remoteContentInlineViewController == v7)
+        else if (self->_remoteContentModalViewController == senderCopy || self->_remoteContentInlineViewController == senderCopy)
         {
           [(CSCoverSheetViewController *)self _dismissRemoteViewControllerForReason:2];
         }
 
         else
         {
-          v27 = [(CSCoverSheetViewController *)self pageViewControllers];
-          v28 = [v27 containsObject:v7];
+          pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+          v28 = [pageViewControllers containsObject:senderCopy];
 
           if (v28)
           {
             v29 = objc_opt_class();
-            v11 = __BSSafeCast(v7, v29);
-            [(CSCoverSheetViewController *)self _dismissToMainPageFromPageViewController:v11];
+            windowScene = __BSSafeCast(senderCopy, v29);
+            [(CSCoverSheetViewController *)self _dismissToMainPageFromPageViewController:windowScene];
 LABEL_39:
           }
 
           else
           {
-            v64 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-            [v64 dismissContentViewController:v7 animated:1];
+            mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+            [mainPageContentViewController dismissContentViewController:senderCopy animated:1];
 
-            [(CSCoverSheetViewController *)self _dismissModalViewController:v7 animated:1 completion:0];
+            [(CSCoverSheetViewController *)self _dismissModalViewController:senderCopy animated:1 completion:0];
           }
         }
 
@@ -22713,18 +22713,18 @@ LABEL_68:
 
         break;
       case 2:
-        v26 = objc_loadWeakRetained(&self->_emergencyCaller);
-        [v26 launchEmergencyDialer];
+        reachabilityController = objc_loadWeakRetained(&self->_emergencyCaller);
+        [reachabilityController launchEmergencyDialer];
         goto LABEL_41;
       case 3:
         [WeakRetained resetIdleTimerIfTopMost];
         goto LABEL_68;
       case 4:
         [(SBUIPhoneUnlockWithRemoteDeviceCoordinator *)self->_phoneUnlockWithRemoteDeviceCoordinator handleSignificantUserInteractionOccurred];
-        v19 = [(CSLockScreenSettings *)self->_prototypeSettings idleTimerSettings];
-        v20 = [v19 increaseNotificationScrollLogging];
+        idleTimerSettings = [(CSLockScreenSettings *)self->_prototypeSettings idleTimerSettings];
+        increaseNotificationScrollLogging = [idleTimerSettings increaseNotificationScrollLogging];
 
-        if (v20)
+        if (increaseNotificationScrollLogging)
         {
           v21 = SBLogIdleTimer();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -22747,33 +22747,33 @@ LABEL_68:
         [(CSCoverSheetViewController *)self _addBedtimeGreetingBackgroundView];
         goto LABEL_68;
       case 8:
-        -[CSCoverSheetViewController _removeBedtimeGreetingBackgroundViewAnimated:](self, "_removeBedtimeGreetingBackgroundViewAnimated:", [v6 animated]);
+        -[CSCoverSheetViewController _removeBedtimeGreetingBackgroundViewAnimated:](self, "_removeBedtimeGreetingBackgroundViewAnimated:", [actionCopy animated]);
         goto LABEL_68;
       case 9:
         v22 = 37;
 LABEL_38:
-        v11 = [CSEvent eventWithType:v22];
-        [(CSCoverSheetViewController *)self _handleEvent:v11];
+        windowScene = [CSEvent eventWithType:v22];
+        [(CSCoverSheetViewController *)self _handleEvent:windowScene];
         goto LABEL_39;
       case 10:
-        v26 = [(CSCoverSheetContextProviding *)self->_coverSheetContext reachabilityController];
-        [v26 deactivateReachability];
+        reachabilityController = [(CSCoverSheetContextProviding *)self->_coverSheetContext reachabilityController];
+        [reachabilityController deactivateReachability];
 LABEL_41:
 
         goto LABEL_68;
       case 11:
-        v16 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
-        v17 = [v16 createUnlockRequest];
+        unlockRequester3 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
+        createUnlockRequest = [unlockRequester3 createUnlockRequest];
 
-        [v17 setIntent:3];
-        [v17 setSource:15];
-        v18 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
-        [v18 unlockWithRequest:v17 completion:0];
+        [createUnlockRequest setIntent:3];
+        [createUnlockRequest setSource:15];
+        unlockRequester4 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
+        [unlockRequester4 unlockWithRequest:createUnlockRequest completion:0];
 
         goto LABEL_68;
       case 12:
         v23 = objc_opt_class();
-        v24 = v7;
+        v24 = senderCopy;
         if (v23)
         {
           if (objc_opt_isKindOfClass())
@@ -22797,27 +22797,27 @@ LABEL_41:
         activityViewController = self->_activityViewController;
         self->_activityViewController = v49;
 
-        v51 = [MEMORY[0x277D75418] currentDevice];
-        v52 = [v51 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        v53 = (v52 & 0xFFFFFFFFFFFFFFFBLL) == 1 || ![(CSUserPresenceMonitor *)self->_userPresenceMonitor isUserPresenceDetectionSupported]|| [(CSUserPresenceMonitor *)self->_userPresenceMonitor userPresenceDetectedSinceWake];
+        v53 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || ![(CSUserPresenceMonitor *)self->_userPresenceMonitor isUserPresenceDetectionSupported]|| [(CSUserPresenceMonitor *)self->_userPresenceMonitor userPresenceDetectedSinceWake];
         if (!self->_activityViewController || ![(CSCoverSheetViewController *)self _canPresentSwipeDismissableModal]|| !v53)
         {
           goto LABEL_68;
         }
 
-        v54 = [(CSCoverSheetViewController *)self activeBehavior];
-        v55 = [v54 areRestrictedCapabilities:0x400000];
+        activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+        v55 = [activeBehavior areRestrictedCapabilities:0x400000];
 
-        v56 = [MEMORY[0x277D75418] currentDevice];
-        v57 = [v56 userInterfaceIdiom];
+        currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-        v58 = (v57 & 0xFFFFFFFFFFFFFFFBLL) != 1;
-        if ((v57 & 0xFFFFFFFFFFFFFFFBLL) == 1 && v55)
+        requiresAuthWithoutControlCenterAccess = (userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1;
+        if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1 && v55)
         {
           v59 = +[CSLockScreenDomain rootSettings];
-          v60 = [v59 focusSettings];
-          v58 = [v60 requiresAuthWithoutControlCenterAccess];
+          focusSettings = [v59 focusSettings];
+          requiresAuthWithoutControlCenterAccess = [focusSettings requiresAuthWithoutControlCenterAccess];
         }
 
         v69[0] = MEMORY[0x277D85DD0];
@@ -22826,24 +22826,24 @@ LABEL_41:
         v69[3] = &unk_27838B770;
         v69[4] = self;
         v61 = MEMORY[0x223D698D0](v69);
-        v11 = v61;
-        if (v58)
+        windowScene = v61;
+        if (requiresAuthWithoutControlCenterAccess)
         {
-          v62 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
-          v13 = [v62 createUnlockRequest];
+          unlockRequester5 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
+          action2 = [unlockRequester5 createUnlockRequest];
 
-          [v13 setIntent:2];
-          [v13 setSource:24];
-          [v13 setName:@"FocusPicker"];
-          [v13 setWantsBiometricPresentation:1];
-          [v13 setConfirmedNotInPocket:1];
-          v63 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
+          [action2 setIntent:2];
+          [action2 setSource:24];
+          [action2 setName:@"FocusPicker"];
+          [action2 setWantsBiometricPresentation:1];
+          [action2 setConfirmedNotInPocket:1];
+          unlockRequester6 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
           v67[0] = MEMORY[0x277D85DD0];
           v67[1] = 3221225472;
           v67[2] = __54__CSCoverSheetViewController_handleAction_fromSender___block_invoke_2;
           v67[3] = &unk_27838BAC0;
-          v68 = v11;
-          [v63 unlockWithRequest:v13 completion:v67];
+          v68 = windowScene;
+          [unlockRequester6 unlockWithRequest:action2 completion:v67];
 
           v15 = v68;
 LABEL_57:
@@ -22858,41 +22858,41 @@ LABEL_58:
 
         goto LABEL_39;
       case 13:
-        v30 = [(CSCoverSheetViewController *)self viewIfLoaded];
-        v31 = [v30 window];
-        v11 = [v31 windowScene];
+        viewIfLoaded = [(CSCoverSheetViewController *)self viewIfLoaded];
+        window = [viewIfLoaded window];
+        windowScene = [window windowScene];
 
         v32 = objc_loadWeakRetained(&self->_delegate);
-        LOBYTE(v31) = [v32 coverSheetViewControllerIsShowingSecureApp:self];
+        LOBYTE(window) = [v32 coverSheetViewControllerIsShowingSecureApp:self];
 
-        if ((v31 & 1) == 0)
+        if ((window & 1) == 0)
         {
-          if (v11)
+          if (windowScene)
           {
-            v33 = [(CSCoverSheetViewController *)self traitCollection];
-            v34 = [v33 _backlightLuminance];
+            traitCollection = [(CSCoverSheetViewController *)self traitCollection];
+            _backlightLuminance = [traitCollection _backlightLuminance];
 
-            if (v34 == 1)
+            if (_backlightLuminance == 1)
             {
               v35 = MEMORY[0x277CCACA8];
               v36 = objc_opt_class();
               v37 = NSStringFromClass(v36);
-              v38 = [v35 stringWithFormat:@"Inactive content update from <%@: %p>", v37, v7];
+              senderCopy = [v35 stringWithFormat:@"Inactive content update from <%@: %p>", v37, senderCopy];
 
-              v39 = [v6 animated];
+              animated = [actionCopy animated];
               v40 = SBLogLiveRendering();
               v41 = os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT);
-              if (v39)
+              if (animated)
               {
                 if (v41)
                 {
                   *buf = 138412290;
-                  v73 = v38;
+                  v73 = senderCopy;
                   _os_log_impl(&dword_21EB05000, v40, OS_LOG_TYPE_DEFAULT, "Will request live-rendering assertion with reason: '%@'", buf, 0xCu);
                 }
 
-                v42 = [MEMORY[0x277D65DC0] sharedInstance];
-                v43 = [v42 acquireLiveRenderingAssertionForUIScene:v11 reason:v38];
+                mEMORY[0x277D65DC0] = [MEMORY[0x277D65DC0] sharedInstance];
+                v43 = [mEMORY[0x277D65DC0] acquireLiveRenderingAssertionForUIScene:windowScene reason:senderCopy];
 
                 v44 = dispatch_time(0, 1000000000);
                 block[0] = MEMORY[0x277D85DD0];
@@ -22900,7 +22900,7 @@ LABEL_58:
                 block[2] = __54__CSCoverSheetViewController_handleAction_fromSender___block_invoke_480;
                 block[3] = &unk_27838B770;
                 v66 = v43;
-                v45 = v43;
+                _backlightSceneEnvironment = v43;
                 dispatch_after(v44, MEMORY[0x277D85CD0], block);
               }
 
@@ -22909,12 +22909,12 @@ LABEL_58:
                 if (v41)
                 {
                   *buf = 138412290;
-                  v73 = v38;
+                  v73 = senderCopy;
                   _os_log_impl(&dword_21EB05000, v40, OS_LOG_TYPE_DEFAULT, "Will invalidate timelines with reason '%@'", buf, 0xCu);
                 }
 
-                v45 = [v11 _backlightSceneEnvironment];
-                [v45 invalidateAllTimelinesForReason:v38];
+                _backlightSceneEnvironment = [windowScene _backlightSceneEnvironment];
+                [_backlightSceneEnvironment invalidateAllTimelinesForReason:senderCopy];
               }
             }
           }
@@ -22984,22 +22984,22 @@ uint64_t __54__CSCoverSheetViewController_handleAction_fromSender___block_invoke
 
 - (void)_addBedtimeGreetingBackgroundView
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  v4 = [v3 bedtimeGreetingViewBackgroundView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  bedtimeGreetingViewBackgroundView = [coverSheetView bedtimeGreetingViewBackgroundView];
 
-  if (!v4)
+  if (!bedtimeGreetingViewBackgroundView)
   {
     v5 = objc_alloc(MEMORY[0x277D67998]);
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v13 = [v5 initWithFrame:?];
 
     [v13 setAutoresizingMask:18];
-    v7 = [(CSCoverSheetViewController *)self activeAppearance];
-    v8 = [v7 legibilitySettings];
-    v9 = [v8 style];
+    activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+    legibilitySettings = [activeAppearance legibilitySettings];
+    style = [legibilitySettings style];
 
-    if (v9 == 1)
+    if (style == 1)
     {
       v10 = 5;
     }
@@ -23010,35 +23010,35 @@ uint64_t __54__CSCoverSheetViewController_handleAction_fromSender___block_invoke
     }
 
     [v13 setBackgroundStyle:v10];
-    v11 = [(CSCoverSheetViewController *)self _averageLockScreenWallpaperColor];
-    [v13 setReduceTransparencyBackingColor:v11];
+    _averageLockScreenWallpaperColor = [(CSCoverSheetViewController *)self _averageLockScreenWallpaperColor];
+    [v13 setReduceTransparencyBackingColor:_averageLockScreenWallpaperColor];
 
-    v12 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v12 setBedtimeGreetingViewBackgroundView:v13];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView2 setBedtimeGreetingViewBackgroundView:v13];
   }
 }
 
-- (void)_removeBedtimeGreetingBackgroundViewAnimated:(BOOL)a3
+- (void)_removeBedtimeGreetingBackgroundViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(CSCoverSheetViewController *)self coverSheetView];
-  v6 = [v5 bedtimeGreetingViewBackgroundView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  bedtimeGreetingViewBackgroundView = [coverSheetView bedtimeGreetingViewBackgroundView];
 
-  if (v6)
+  if (bedtimeGreetingViewBackgroundView)
   {
     v7 = SBLogDoNotDisturbBedtime();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CSCoverSheetViewController *)self coverSheetView];
-      v9 = [v8 bedtimeGreetingViewBackgroundView];
+      coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+      bedtimeGreetingViewBackgroundView2 = [coverSheetView2 bedtimeGreetingViewBackgroundView];
       *buf = 138543362;
-      v14 = v9;
+      v14 = bedtimeGreetingViewBackgroundView2;
       _os_log_impl(&dword_21EB05000, v7, OS_LOG_TYPE_DEFAULT, "Removing greeting view background: %{public}@", buf, 0xCu);
     }
 
     v10 = 0.6;
-    if (!v3)
+    if (!animatedCopy)
     {
       v10 = 0.0;
     }
@@ -23070,12 +23070,12 @@ void __75__CSCoverSheetViewController__removeBedtimeGreetingBackgroundViewAnimat
   [v1 setBedtimeGreetingViewBackgroundView:0];
 }
 
-- (BOOL)wouldHandleButtonEvent:(id)a3
+- (BOOL)wouldHandleButtonEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(CSPresentationViewController *)self->_modalPresentationController participantState]== 2)
   {
-    if ([(CSPresentationViewController *)self->_modalPresentationController wouldHandleButtonEvent:v4])
+    if ([(CSPresentationViewController *)self->_modalPresentationController wouldHandleButtonEvent:eventCopy])
     {
       v5 = self->_modalPresentationController;
       if (v5)
@@ -23088,7 +23088,7 @@ void __75__CSCoverSheetViewController__removeBedtimeGreetingBackgroundViewAnimat
   else
   {
     v6 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:self->_lastSettledPageIndex];
-    if ([v6 wouldHandleButtonEvent:v4])
+    if ([v6 wouldHandleButtonEvent:eventCopy])
     {
       v5 = v6;
     }
@@ -23104,9 +23104,9 @@ void __75__CSCoverSheetViewController__removeBedtimeGreetingBackgroundViewAnimat
     }
   }
 
-  v7 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-  v5 = v7;
-  if (!v7 || ([(CSModalPresentationViewController *)v7 presentationProgress], v8 <= 0.0) || ![(CSPresentationViewController *)v5 wouldHandleButtonEvent:v4])
+  overlayControllerIfExists = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+  v5 = overlayControllerIfExists;
+  if (!overlayControllerIfExists || ([(CSModalPresentationViewController *)overlayControllerIfExists presentationProgress], v8 <= 0.0) || ![(CSPresentationViewController *)v5 wouldHandleButtonEvent:eventCopy])
   {
 
     v10 = 0;
@@ -23117,7 +23117,7 @@ LABEL_12:
   v9 = SBLogDashBoard();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(CSCoverSheetViewController *)v5 wouldHandleButtonEvent:v4];
+    [(CSCoverSheetViewController *)v5 wouldHandleButtonEvent:eventCopy];
   }
 
   v10 = 1;
@@ -23126,20 +23126,20 @@ LABEL_16:
   return v10;
 }
 
-- (void)wallpaperLegibilityEnvironmentDidChange:(id)a3
+- (void)wallpaperLegibilityEnvironmentDidChange:(id)change
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(CSCoverSheetViewController *)self setWallpaperLegibilityEnvironment:v4];
+  changeCopy = change;
+  [(CSCoverSheetViewController *)self setWallpaperLegibilityEnvironment:changeCopy];
   [(CSAppearance *)self->_localAppearance removeAllComponentsWithIdentifier:@"legibilityEnvironment"];
-  v5 = [(CSCoverSheetViewController *)self _averageLockScreenWallpaperColor];
+  _averageLockScreenWallpaperColor = [(CSCoverSheetViewController *)self _averageLockScreenWallpaperColor];
   v6 = +[CSComponent wallpaper];
   v7 = [v6 identifier:@"legibilityEnvironment"];
   v8 = [v7 priority:10];
-  v9 = [v8 color:v5];
+  v9 = [v8 color:_averageLockScreenWallpaperColor];
 
   [(CSAppearance *)self->_localAppearance addComponent:v9];
-  v10 = [v4 legibilityEnvironmentContextForVariant:*MEMORY[0x277D3EF20]];
+  v10 = [changeCopy legibilityEnvironmentContextForVariant:*MEMORY[0x277D3EF20]];
 
   [v10 luma];
   v12 = v11;
@@ -23154,7 +23154,7 @@ LABEL_16:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412546;
-    v19 = v5;
+    v19 = _averageLockScreenWallpaperColor;
     v20 = 2048;
     v21 = v12;
     _os_log_impl(&dword_21EB05000, v17, OS_LOG_TYPE_DEFAULT, "Received PLKLegibilityEnvironment update with new average color: %@, wallpaper luminance: %.2f", &v18, 0x16u);
@@ -23175,16 +23175,16 @@ LABEL_16:
   return currentTransitionSource;
 }
 
-- (BOOL)isTouchLocation:(CGPoint)a3 inRestrictedRectForGestureView:(id)a4
+- (BOOL)isTouchLocation:(CGPoint)location inRestrictedRectForGestureView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  v9 = [v8 isTouchLocationInRestrictedRect:{x, y}];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  v9 = [combinedListViewController isTouchLocationInRestrictedRect:{x, y}];
 
-  v10 = [(CSCoverSheetViewController *)self view];
-  [v10 bounds];
+  view = [(CSCoverSheetViewController *)self view];
+  [view bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -23200,15 +23200,15 @@ LABEL_16:
   v36.size.width = v16;
   v36.size.height = v18;
   Height = CGRectGetHeight(v36);
-  v21 = [(CSCoverSheetViewController *)self view];
-  [v21 safeAreaInsets];
+  view2 = [(CSCoverSheetViewController *)self view];
+  [view2 safeAreaInsets];
   v23 = v22;
   v25 = v24;
 
-  v26 = [MEMORY[0x277D75418] currentDevice];
-  v27 = [v26 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v27 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     LOBYTE(v28) = 0;
   }
@@ -23231,7 +23231,7 @@ LABEL_16:
     v28 = v29 | CGRectContainsPoint(v38, v34);
   }
 
-  v30 = [(CSCoverSheetViewController *)self _quickActionButtonInterpretsLocation:v7 asBesideContentForGestureView:x, y];
+  v30 = [(CSCoverSheetViewController *)self _quickActionButtonInterpretsLocation:viewCopy asBesideContentForGestureView:x, y];
   if (v9)
   {
     v31 = 1;
@@ -23245,18 +23245,18 @@ LABEL_16:
   return v31 & 1;
 }
 
-- (void)setRestrictsTouchesForRemoteView:(BOOL)a3
+- (void)setRestrictsTouchesForRemoteView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  [v4 setRestrictsTouchesForRemoteView:v3];
+  viewCopy = view;
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  [combinedListViewController setRestrictsTouchesForRemoteView:viewCopy];
 }
 
-- (void)transitionSource:(id)a3 willBeginWithType:(int64_t)a4
+- (void)transitionSource:(id)source willBeginWithType:(int64_t)type
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (self->_transitionType && ![(CSCoverSheetViewController *)self _isKnownTransitionConflictFrom:self->_currentTransitionSource to:v6])
+  sourceCopy = source;
+  if (self->_transitionType && ![(CSCoverSheetViewController *)self _isKnownTransitionConflictFrom:self->_currentTransitionSource to:sourceCopy])
   {
     v7 = SBLogDashBoard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -23266,7 +23266,7 @@ LABEL_16:
       v31 = NSStringFromCoverSheetTransitionType(self->_transitionType);
       v32 = objc_opt_class();
       v33 = NSStringFromClass(v32);
-      NSStringFromCoverSheetTransitionType(a4);
+      NSStringFromCoverSheetTransitionType(type);
       *buf = 138413058;
       *&buf[4] = v35;
       *&buf[12] = 2112;
@@ -23282,7 +23282,7 @@ LABEL_16:
   currentTransitionSource = self->_currentTransitionSource;
   if (currentTransitionSource)
   {
-    v9 = currentTransitionSource == v6;
+    v9 = currentTransitionSource == sourceCopy;
   }
 
   else
@@ -23292,7 +23292,7 @@ LABEL_16:
 
   if (v9)
   {
-    if (!a4)
+    if (!type)
     {
       [CSCoverSheetViewController transitionSource:willBeginWithType:];
     }
@@ -23309,17 +23309,17 @@ LABEL_16:
 
     if (!self->_currentTransitionSource)
     {
-      v13 = [(CSCoverSheetViewController *)self activeAppearance];
-      [(CSCoverSheetViewController *)self setPreviousAppearance:v13];
+      activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+      [(CSCoverSheetViewController *)self setPreviousAppearance:activeAppearance];
 
       v14 = MEMORY[0x277CCACA8];
-      v15 = [(CSCoverSheetViewTransitionSource *)v6 coverSheetIdentifier];
-      v16 = [v14 stringWithFormat:@"beginTransition-%@", v15];
+      coverSheetIdentifier = [(CSCoverSheetViewTransitionSource *)sourceCopy coverSheetIdentifier];
+      v16 = [v14 stringWithFormat:@"beginTransition-%@", coverSheetIdentifier];
 
       [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:v16 updatingAppearanceIfNeeded:0];
-      [(CSCoverSheetViewController *)self setCurrentTransitionSource:v6];
-      self->_transitionType = a4;
-      if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:v6])
+      [(CSCoverSheetViewController *)self setCurrentTransitionSource:sourceCopy];
+      self->_transitionType = type;
+      if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:sourceCopy])
       {
         v17 = self->_currentTransitionSource;
         if (v17)
@@ -23342,7 +23342,7 @@ LABEL_16:
       [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:v16];
     }
 
-    if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:v6])
+    if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:sourceCopy])
     {
       v25 = @"com.apple.springboard.lock-screen.scroll";
     }
@@ -23352,8 +23352,8 @@ LABEL_16:
       v25 = @"CSCoverSheetViewController";
     }
 
-    v18 = [(CSCoverSheetViewControllerBase *)self _displayLayoutPublisher];
-    if (!v18)
+    _displayLayoutPublisher = [(CSCoverSheetViewControllerBase *)self _displayLayoutPublisher];
+    if (!_displayLayoutPublisher)
     {
       [CSCoverSheetViewController transitionSource:willBeginWithType:];
     }
@@ -23366,15 +23366,15 @@ LABEL_16:
       self->_displayLayoutTransitionAssertion = 0;
     }
 
-    v28 = [v18 transitionAssertionWithReason:v25];
+    v28 = [_displayLayoutPublisher transitionAssertionWithReason:v25];
     v29 = self->_displayLayoutTransitionAssertion;
     self->_displayLayoutTransitionAssertion = v28;
   }
 
   else
   {
-    v18 = SBLogDashBoard();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    _displayLayoutPublisher = SBLogDashBoard();
+    if (os_log_type_enabled(_displayLayoutPublisher, OS_LOG_TYPE_DEFAULT))
     {
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
@@ -23384,28 +23384,28 @@ LABEL_16:
       *&buf[4] = v21;
       *&buf[12] = 2112;
       *&buf[14] = v23;
-      _os_log_impl(&dword_21EB05000, v18, OS_LOG_TYPE_DEFAULT, "[Transition] Ignoring transition began from %@ since there is an active transition from %@", buf, 0x16u);
+      _os_log_impl(&dword_21EB05000, _displayLayoutPublisher, OS_LOG_TYPE_DEFAULT, "[Transition] Ignoring transition began from %@ since there is an active transition from %@", buf, 0x16u);
     }
   }
 }
 
-- (void)transitionSource:(id)a3 didUpdateTransitionWithContext:(id *)a4
+- (void)transitionSource:(id)source didUpdateTransitionWithContext:(id *)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sourceCopy = source;
   currentTransitionSource = self->_currentTransitionSource;
   v8 = SBLogDashBoard();
   v9 = v8;
-  if (currentTransitionSource == v6)
+  if (currentTransitionSource == sourceCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v27 = objc_opt_class();
       v28 = NSStringFromClass(v27);
-      v29 = *&a4->var1.var0.var1;
-      *buf = *&a4->var0;
+      v29 = *&context->var1.var0.var1;
+      *buf = *&context->var0;
       *&buf[16] = v29;
-      v38 = *&a4->var1.var1.var1;
+      v38 = *&context->var1.var1.var1;
       v30 = NSStringFromCoverSheetTransitionContext(buf);
       *buf = 138412546;
       *&buf[4] = v28;
@@ -23414,30 +23414,30 @@ LABEL_16:
       _os_log_debug_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEBUG, "[Transition] Update from %@ with context %@", buf, 0x16u);
     }
 
-    var1 = a4->var1.var1;
-    *buf = a4->var1.var0;
+    var1 = context->var1.var1;
+    *buf = context->var1.var0;
     *&buf[16] = var1;
     if (BSIntervalOrder() || self->_transitionContext.mode && (end = self->_transitionContext.interval.end, *buf = self->_transitionContext.interval.start, *&buf[16] = end, BSIntervalOrder()))
     {
-      v15 = a4->var1.var1;
-      *buf = a4->var1.var0;
+      v15 = context->var1.var1;
+      *buf = context->var1.var0;
       *&buf[16] = v15;
       BSIntervalFractionForValue();
       v17 = v16;
-      if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:v6])
+      if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:sourceCopy])
       {
-        v19 = *&a4->var1.var0.var1;
-        v18 = *&a4->var1.var1.var1;
-        *&self->_transitionContext.value = *&a4->var0;
+        v19 = *&context->var1.var0.var1;
+        v18 = *&context->var1.var1.var1;
+        *&self->_transitionContext.value = *&context->var0;
         *&self->_transitionContext.interval.start.inclusive = v19;
         *&self->_transitionContext.interval.end.inclusive = v18;
-        var0 = a4->var1.var1.var0;
-        v21 = (a4->var2 & 0xFFFFFFFFFFFFFFFELL) == 2;
-        v22 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+        var0 = context->var1.var1.var0;
+        v21 = (context->var2 & 0xFFFFFFFFFFFFFFFELL) == 2;
+        _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
-        v23 = *&a4->var1.var0.var1;
-        v32 = *&a4->var0;
+        v23 = *&context->var1.var0.var1;
+        v32 = *&context->var0;
         v33 = v23;
         v31[2] = __78__CSCoverSheetViewController_transitionSource_didUpdateTransitionWithContext___block_invoke_2;
         v31[3] = &unk_27838BEF8;
@@ -23445,24 +23445,24 @@ LABEL_16:
         v31[5] = var0;
         v35 = v21;
         *&v31[6] = v17;
-        v34 = *&a4->var1.var1.var1;
-        [v22 enumerateObjectsUsingBlock:v31];
+        v34 = *&context->var1.var1.var1;
+        [_allowedPageViewControllers enumerateObjectsUsingBlock:v31];
       }
 
       [(CSCoverSheetViewController *)self _updateIdleTimerForTransitionProgress:v17];
       [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:@"TransitionSourceDidUpdate"];
     }
 
-    else if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:v6])
+    else if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:sourceCopy])
     {
-      v25 = a4->var1.var1.var0;
-      v26 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+      v25 = context->var1.var1.var0;
+      _allowedPageViewControllers2 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __78__CSCoverSheetViewController_transitionSource_didUpdateTransitionWithContext___block_invoke;
       v36[3] = &__block_descriptor_40_e37_v32__0__CSPageViewController_8Q16_B24l;
       v36[4] = v25;
-      [v26 enumerateObjectsUsingBlock:v36];
+      [_allowedPageViewControllers2 enumerateObjectsUsingBlock:v36];
     }
   }
 
@@ -23526,11 +23526,11 @@ void __78__CSCoverSheetViewController_transitionSource_didUpdateTransitionWithCo
   }
 }
 
-- (void)transitionSource:(id)a3 didEndWithContext:(id *)a4
+- (void)transitionSource:(id)source didEndWithContext:(id *)context
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = self->_currentTransitionSource == v6;
+  sourceCopy = source;
+  v7 = self->_currentTransitionSource == sourceCopy;
   v8 = SBLogDashBoard();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
   if (v7)
@@ -23539,10 +23539,10 @@ void __78__CSCoverSheetViewController_transitionSource_didUpdateTransitionWithCo
     {
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
-      v16 = *&a4->var1.var0.var1;
-      *buf = *&a4->var0;
+      v16 = *&context->var1.var0.var1;
+      *buf = *&context->var0;
       *&buf[16] = v16;
-      v58 = *&a4->var1.var1.var1;
+      v58 = *&context->var1.var1.var1;
       v17 = NSStringFromCoverSheetTransitionContext(buf);
       *buf = 138412546;
       *&buf[4] = v15;
@@ -23551,49 +23551,49 @@ void __78__CSCoverSheetViewController_transitionSource_didUpdateTransitionWithCo
       _os_log_impl(&dword_21EB05000, v8, OS_LOG_TYPE_DEFAULT, "[Transition] Will end from %@ with context %@", buf, 0x16u);
     }
 
-    var1 = a4->var1.var1;
-    *buf = a4->var1.var0;
+    var1 = context->var1.var1;
+    *buf = context->var1.var0;
     *&buf[16] = var1;
     if (!BSIntervalOrder())
     {
       if (!self->_transitionContext.mode || (end = self->_transitionContext.interval.end, *buf = self->_transitionContext.interval.start, *&buf[16] = end, !BSIntervalOrder()))
       {
-        if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:v6])
+        if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:sourceCopy])
         {
-          var0 = a4->var1.var1.var0;
-          v30 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+          var0 = context->var1.var1.var0;
+          _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
           v56[0] = MEMORY[0x277D85DD0];
           v56[1] = 3221225472;
           v56[2] = __65__CSCoverSheetViewController_transitionSource_didEndWithContext___block_invoke;
           v56[3] = &__block_descriptor_40_e37_v32__0__CSPageViewController_8Q16_B24l;
           v56[4] = var0;
-          [v30 enumerateObjectsUsingBlock:v56];
+          [_allowedPageViewControllers enumerateObjectsUsingBlock:v56];
         }
       }
     }
 
-    if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:v6])
+    if ([(CSCoverSheetViewController *)self _isSourceForHorizontalScrolling:sourceCopy])
     {
-      v19 = [(CSCoverSheetViewController *)self coverSheetView];
-      v20 = [v19 scrollView];
-      v21 = [v20 visiblePageRange];
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+      scrollView = [coverSheetView scrollView];
+      visiblePageRange = [scrollView visiblePageRange];
       v23 = v22;
 
       v24 = SBLogDashBoard();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        *&buf[4] = v21;
+        *&buf[4] = visiblePageRange;
         *&buf[12] = 2048;
-        *&buf[14] = v21 + v23;
+        *&buf[14] = visiblePageRange + v23;
         _os_log_impl(&dword_21EB05000, v24, OS_LOG_TYPE_DEFAULT, "[Transition] New visible pages indexes: [%lu..%lu]", buf, 0x16u);
       }
 
       if (v23 == 1)
       {
-        v25 = [(CSCoverSheetViewController *)self coverSheetView];
-        v26 = [v25 scrollView];
-        -[CSCoverSheetViewController _setLastSettledPageIndex:](self, "_setLastSettledPageIndex:", [v26 currentPageIndex]);
+        coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+        scrollView2 = [coverSheetView2 scrollView];
+        -[CSCoverSheetViewController _setLastSettledPageIndex:](self, "_setLastSettledPageIndex:", [scrollView2 currentPageIndex]);
 
         lastSettledPageIndex = self->_lastSettledPageIndex;
         v54 = *&lastSettledPageIndex;
@@ -23608,9 +23608,9 @@ void __78__CSCoverSheetViewController_transitionSource_didUpdateTransitionWithCo
 
       else
       {
-        v32 = *&a4->var1.var0.var1;
-        v31 = *&a4->var1.var1.var1;
-        *&self->_transitionContext.value = *&a4->var0;
+        v32 = *&context->var1.var0.var1;
+        v31 = *&context->var1.var1.var1;
+        *&self->_transitionContext.value = *&context->var0;
         *&self->_transitionContext.interval.start.inclusive = v32;
         *&self->_transitionContext.interval.end.inclusive = v31;
       }
@@ -23640,8 +23640,8 @@ void __78__CSCoverSheetViewController_transitionSource_didUpdateTransitionWithCo
       start = self->_transitionContext.interval.start;
       v51 = v36;
       v37 = BSIntervalOrder();
-      v38 = a4->var1.var1.var0;
-      v39 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+      v38 = context->var1.var1.var0;
+      _allowedPageViewControllers2 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
       v48[2] = __65__CSCoverSheetViewController_transitionSource_didEndWithContext___block_invoke_510;
@@ -23651,7 +23651,7 @@ void __78__CSCoverSheetViewController_transitionSource_didUpdateTransitionWithCo
       v48[5] = buf;
       v48[6] = &lastSettledPageIndex;
       v48[7] = v38;
-      [v39 enumerateObjectsUsingBlock:v48];
+      [_allowedPageViewControllers2 enumerateObjectsUsingBlock:v48];
 
       _Block_object_dispose(&lastSettledPageIndex, 8);
       _Block_object_dispose(buf, 8);
@@ -23683,8 +23683,8 @@ void __78__CSCoverSheetViewController_transitionSource_didUpdateTransitionWithCo
 
     [v8 removeIdleTimerDisabledAssertionReason:@"CSCoverSheetTransitioningReason"];
     v45 = MEMORY[0x277CCACA8];
-    v46 = [(CSCoverSheetViewTransitionSource *)v6 coverSheetIdentifier];
-    v47 = [v45 stringWithFormat:@"endTransition-%@", v46];
+    coverSheetIdentifier = [(CSCoverSheetViewTransitionSource *)sourceCopy coverSheetIdentifier];
+    v47 = [v45 stringWithFormat:@"endTransition-%@", coverSheetIdentifier];
 
     [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:v47];
     [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:v47];
@@ -23772,61 +23772,61 @@ uint64_t __65__CSCoverSheetViewController_transitionSource_didEndWithContext___b
   return MEMORY[0x2821F9730](v9);
 }
 
-- (void)irisWallpaperPlayerPlaybackStateDidChange:(id)a3
+- (void)irisWallpaperPlayerPlaybackStateDidChange:(id)change
 {
-  v5 = [a3 irisPlaybackState];
-  if (v5 <= 0)
+  irisPlaybackState = [change irisPlaybackState];
+  if (irisPlaybackState <= 0)
   {
-    if (v5 == -1)
+    if (irisPlaybackState == -1)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"CSCoverSheetViewController.m" lineNumber:4558 description:@"unknown is not a valid state"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CSCoverSheetViewController.m" lineNumber:4558 description:@"unknown is not a valid state"];
 
       goto LABEL_16;
     }
 
-    if (v5)
+    if (irisPlaybackState)
     {
       goto LABEL_16;
     }
 
-    v7 = [(CSCoverSheetViewController *)self delegate];
+    delegate = [(CSCoverSheetViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 coverSheetViewControllerIrisPlayingDidFinish:self];
+      [delegate coverSheetViewControllerIrisPlayingDidFinish:self];
     }
 
     goto LABEL_12;
   }
 
-  if ((v5 - 1) < 3)
+  if ((irisPlaybackState - 1) < 3)
   {
-    v6 = [(CSCoverSheetViewController *)self irisBehavior];
-    [v6 setIdleTimerMode:3];
+    irisBehavior = [(CSCoverSheetViewController *)self irisBehavior];
+    [irisBehavior setIdleTimerMode:3];
 
     goto LABEL_16;
   }
 
-  if (v5 == 4)
+  if (irisPlaybackState == 4)
   {
-    v11 = [(CSCoverSheetViewController *)self irisBehavior];
-    [v11 setIdleTimerMode:3];
+    irisBehavior2 = [(CSCoverSheetViewController *)self irisBehavior];
+    [irisBehavior2 setIdleTimerMode:3];
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = 1;
     goto LABEL_14;
   }
 
-  if (v5 == 5)
+  if (irisPlaybackState == 5)
   {
 LABEL_12:
-    v8 = [(CSCoverSheetViewController *)self irisBehavior];
-    [v8 setIdleTimerMode:0];
+    irisBehavior3 = [(CSCoverSheetViewController *)self irisBehavior];
+    [irisBehavior3 setIdleTimerMode:0];
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
 LABEL_14:
-    [(CSCoverSheetViewController *)v9 _updateUIForPlaying:v10 immediately:1];
+    [(CSCoverSheetViewController *)selfCopy2 _updateUIForPlaying:v10 immediately:1];
   }
 
 LABEL_16:
@@ -23834,12 +23834,12 @@ LABEL_16:
   [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:@"iris"];
 }
 
-- (void)irisWallpaperPlayerIsInteractingDidChange:(id)a3
+- (void)irisWallpaperPlayerIsInteractingDidChange:(id)change
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 irisPlaybackState];
-  v6 = [v4 isIrisInteracting];
+  changeCopy = change;
+  irisPlaybackState = [changeCopy irisPlaybackState];
+  isIrisInteracting = [changeCopy isIrisInteracting];
 
   v7 = SBLogDashBoard();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -23847,7 +23847,7 @@ LABEL_16:
     irisPlayerIsInteracting = self->_irisPlayerIsInteracting;
     v9 = PBUIIrisWallpaperPlaybackStateDescription();
     v13[0] = 67109634;
-    v13[1] = v6;
+    v13[1] = isIrisInteracting;
     v14 = 1024;
     v15 = irisPlayerIsInteracting;
     v16 = 2112;
@@ -23855,46 +23855,46 @@ LABEL_16:
     _os_log_impl(&dword_21EB05000, v7, OS_LOG_TYPE_DEFAULT, "Iris wallpaper view interaction changed: isIrisInteracting: %{BOOL}u, wasInteracting: %{BOOL}u, playbackState: %@", v13, 0x18u);
   }
 
-  if (v5 == 4)
+  if (irisPlaybackState == 4)
   {
-    if (self->_irisPlayerIsInteracting || !v6)
+    if (self->_irisPlayerIsInteracting || !isIrisInteracting)
     {
-      if (!self->_irisPlayerIsInteracting || (v6 & 1) != 0)
+      if (!self->_irisPlayerIsInteracting || (isIrisInteracting & 1) != 0)
       {
         goto LABEL_11;
       }
 
-      v10 = self;
+      selfCopy2 = self;
       v11 = 0;
       v12 = 0;
     }
 
     else
     {
-      v10 = self;
+      selfCopy2 = self;
       v11 = 1;
       v12 = 1;
     }
 
-    [(CSCoverSheetViewController *)v10 _updateUIForPlaying:v11 immediately:v12];
+    [(CSCoverSheetViewController *)selfCopy2 _updateUIForPlaying:v11 immediately:v12];
 LABEL_11:
-    self->_irisPlayerIsInteracting = v6;
+    self->_irisPlayerIsInteracting = isIrisInteracting;
   }
 }
 
-- (void)irisWallpaperPlayer:(id)a3 didReplaceGestureRecognizer:(id)a4 withGestureRecognizer:(id)a5
+- (void)irisWallpaperPlayer:(id)player didReplaceGestureRecognizer:(id)recognizer withGestureRecognizer:(id)gestureRecognizer
 {
-  v13 = a4;
-  v7 = a5;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   if ([(CSCoverSheetViewController *)self _shouldSetUpWallpaperGesture])
   {
-    [v13 setDelegate:0];
-    [v7 setDelegate:self];
-    v8 = [(CSCoverSheetViewController *)self irisBehavior];
-    v9 = [v8 areRestrictedCapabilities:256];
+    [recognizerCopy setDelegate:0];
+    [gestureRecognizerCopy setDelegate:self];
+    irisBehavior = [(CSCoverSheetViewController *)self irisBehavior];
+    v9 = [irisBehavior areRestrictedCapabilities:256];
 
-    v10 = [(CSCoverSheetViewController *)self coverSheetView];
-    v11 = v10;
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    v11 = coverSheetView;
     if (v9)
     {
       v12 = 0;
@@ -23902,35 +23902,35 @@ LABEL_11:
 
     else
     {
-      v12 = v7;
+      v12 = gestureRecognizerCopy;
     }
 
-    [v10 setWallpaperGestureRecognizer:v12];
+    [coverSheetView setWallpaperGestureRecognizer:v12];
   }
 }
 
-- (void)addRemoteContentInlineProvidingManager:(id)a3
+- (void)addRemoteContentInlineProvidingManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   BSDispatchQueueAssertMain();
-  [(NSMutableSet *)self->_remoteContentInlineProvidingManagers addObject:v4];
+  [(NSMutableSet *)self->_remoteContentInlineProvidingManagers addObject:managerCopy];
 }
 
-- (void)removeRemoteContentInlineProvidingManager:(id)a3
+- (void)removeRemoteContentInlineProvidingManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   BSDispatchQueueAssertMain();
-  [(NSMutableSet *)self->_remoteContentInlineProvidingManagers removeObject:v4];
+  [(NSMutableSet *)self->_remoteContentInlineProvidingManagers removeObject:managerCopy];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self _complicationsInterpretGestureRecognizerLocationAsContent:v4];
-  if (self->_wallpaperGestureRecognizer != v4 || (_os_feature_enabled_impl() & v5 & 1) == 0)
+  beginCopy = begin;
+  v5 = [(CSCoverSheetViewController *)self _complicationsInterpretGestureRecognizerLocationAsContent:beginCopy];
+  if (self->_wallpaperGestureRecognizer != beginCopy || (_os_feature_enabled_impl() & v5 & 1) == 0)
   {
-    v7 = [(CSCoverSheetViewController *)self view];
-    [(UITapGestureRecognizer *)v4 locationInView:v7];
+    view = [(CSCoverSheetViewController *)self view];
+    [(UITapGestureRecognizer *)beginCopy locationInView:view];
     v9 = v8;
     v11 = v10;
 
@@ -23952,16 +23952,16 @@ LABEL_11:
     v63[3] = &unk_27838BF48;
     v63[4] = self;
     v14 = MEMORY[0x223D698D0](v63);
-    v15 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-    v16 = [v15 hasUserInteraction];
+    combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+    hasUserInteraction = [combinedListViewController hasUserInteraction];
 
-    if (self->_wallpaperGestureRecognizer != v4 || !CSAutobahnEnabledForPlatform() || ((v12[2](v12, v9, v11) | v16) & 1) != 0)
+    if (self->_wallpaperGestureRecognizer != beginCopy || !CSAutobahnEnabledForPlatform() || ((v12[2](v12, v9, v11) | hasUserInteraction) & 1) != 0)
     {
-      if (self->_backgroundContentGestureRecognizer == v4)
+      if (self->_backgroundContentGestureRecognizer == beginCopy)
       {
         if (self->_backgroundContentViewController != 0 && !v5)
         {
-          v6 = (v14[2](v14, v9, v11) | v16) ^ 1;
+          v6 = (v14[2](v14, v9, v11) | hasUserInteraction) ^ 1;
 LABEL_38:
 
           goto LABEL_39;
@@ -23970,13 +23970,13 @@ LABEL_38:
         goto LABEL_37;
       }
 
-      if ([(UITapGestureRecognizer *)v4 isEqual:self->_wallpaperGestureRecognizer])
+      if ([(UITapGestureRecognizer *)beginCopy isEqual:self->_wallpaperGestureRecognizer])
       {
         if (([(CSCoverSheetViewController *)self interfaceOrientation]- 3) >= 2)
         {
           if (![(CSCoverSheetViewController *)self _wallpaperGestureShouldRequireUserPresence]|| ![(CSUserPresenceMonitor *)self->_userPresenceMonitor isUserPresenceDetectionSupported]|| [(CSUserPresenceMonitor *)self->_userPresenceMonitor userPresenceDetectedSinceWake])
           {
-            if ((v12[2](v12, v9, v11) | v16))
+            if ((v12[2](v12, v9, v11) | hasUserInteraction))
             {
               goto LABEL_37;
             }
@@ -23984,15 +23984,15 @@ LABEL_38:
             goto LABEL_22;
           }
 
-          v19 = SBLogDashBoard();
-          if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+          sidebarComplicationContainerViewController = SBLogDashBoard();
+          if (!os_log_type_enabled(sidebarComplicationContainerViewController, OS_LOG_TYPE_INFO))
           {
             goto LABEL_36;
           }
 
           *v62 = 0;
           v20 = "Live wallpaper gesture not beginning due to no user presence.";
-          v47 = v19;
+          v47 = sidebarComplicationContainerViewController;
           v48 = OS_LOG_TYPE_INFO;
           goto LABEL_35;
         }
@@ -24002,20 +24002,20 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      if ([(UITapGestureRecognizer *)v4 isEqual:self->_posterSwitcherGestureRecognizer])
+      if ([(UITapGestureRecognizer *)beginCopy isEqual:self->_posterSwitcherGestureRecognizer])
       {
-        v17 = [(CSCoverSheetViewController *)self activeBehavior];
-        v18 = [v17 areRestrictedCapabilities:0x800000];
+        activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+        v18 = [activeBehavior areRestrictedCapabilities:0x800000];
 
         if (v18)
         {
-          v19 = SBLogDashBoard();
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          sidebarComplicationContainerViewController = SBLogDashBoard();
+          if (os_log_type_enabled(sidebarComplicationContainerViewController, OS_LOG_TYPE_DEFAULT))
           {
             *v62 = 0;
             v20 = "Rejecting Poster Switcher gesture – capability is restricted.";
 LABEL_34:
-            v47 = v19;
+            v47 = sidebarComplicationContainerViewController;
             v48 = OS_LOG_TYPE_DEFAULT;
 LABEL_35:
             _os_log_impl(&dword_21EB05000, v47, v48, v20, v62, 2u);
@@ -24025,8 +24025,8 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v21 = [(CSCoverSheetViewController *)self view];
-        [v21 bounds];
+        view2 = [(CSCoverSheetViewController *)self view];
+        [view2 bounds];
         v23 = v22;
         v25 = v24;
         v27 = v26;
@@ -24042,15 +24042,15 @@ LABEL_35:
         v71.size.width = v27;
         v71.size.height = v29;
         Height = CGRectGetHeight(v71);
-        v32 = [(CSCoverSheetViewController *)self view];
-        [v32 safeAreaInsets];
+        view3 = [(CSCoverSheetViewController *)self view];
+        [view3 safeAreaInsets];
         v34 = v33;
         v36 = v35;
 
-        v37 = [MEMORY[0x277D75418] currentDevice];
-        v38 = [v37 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if ((v38 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
         {
           v72.origin.x = 0.0;
           v72.origin.y = 0.0;
@@ -24068,8 +24068,8 @@ LABEL_35:
           v40 = CGRectContainsPoint(v73, v67);
           if (v39 || v40)
           {
-            v19 = SBLogDashBoard();
-            if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+            sidebarComplicationContainerViewController = SBLogDashBoard();
+            if (!os_log_type_enabled(sidebarComplicationContainerViewController, OS_LOG_TYPE_DEFAULT))
             {
               goto LABEL_36;
             }
@@ -24080,13 +24080,13 @@ LABEL_35:
           }
         }
 
-        v41 = [MEMORY[0x277D75418] currentDevice];
-        v42 = [v41 userInterfaceIdiom];
+        currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-        if ((v42 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+        if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
         {
-          v43 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-          [v43 horizontalInsetMargin];
+          combinedListViewController2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+          [combinedListViewController2 horizontalInsetMargin];
           v45 = v44;
 
           v74.origin.x = 0.0;
@@ -24095,7 +24095,7 @@ LABEL_35:
           v74.size.height = Height;
           v68.x = v9;
           v68.y = v11;
-          LOBYTE(v43) = CGRectContainsPoint(v74, v68);
+          LOBYTE(combinedListViewController2) = CGRectContainsPoint(v74, v68);
           v75.origin.x = Width - v45;
           v75.origin.y = 0.0;
           v75.size.width = v45;
@@ -24103,10 +24103,10 @@ LABEL_35:
           v69.x = v9;
           v69.y = v11;
           v46 = CGRectContainsPoint(v75, v69);
-          if ((v43 & 1) != 0 || v46)
+          if ((combinedListViewController2 & 1) != 0 || v46)
           {
-            v19 = SBLogDashBoard();
-            if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+            sidebarComplicationContainerViewController = SBLogDashBoard();
+            if (!os_log_type_enabled(sidebarComplicationContainerViewController, OS_LOG_TYPE_DEFAULT))
             {
               goto LABEL_36;
             }
@@ -24119,8 +24119,8 @@ LABEL_35:
 
         if (v12[2](v12, v9, v11))
         {
-          v19 = SBLogDashBoard();
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          sidebarComplicationContainerViewController = SBLogDashBoard();
+          if (os_log_type_enabled(sidebarComplicationContainerViewController, OS_LOG_TYPE_DEFAULT))
           {
             *v62 = 0;
             v20 = "Rejecting Poster Switcher gesture – location is in combined list";
@@ -24132,13 +24132,13 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        v50 = [(UITapGestureRecognizer *)v4 view];
-        v51 = (v13)[2](v13, v50, v9, v11);
+        view4 = [(UITapGestureRecognizer *)beginCopy view];
+        v51 = (v13)[2](v13, view4, v9, v11);
 
         if (v51)
         {
-          v19 = SBLogDashBoard();
-          if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          sidebarComplicationContainerViewController = SBLogDashBoard();
+          if (!os_log_type_enabled(sidebarComplicationContainerViewController, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_36;
           }
@@ -24148,13 +24148,13 @@ LABEL_36:
           goto LABEL_34;
         }
 
-        v52 = [(UITapGestureRecognizer *)v4 view];
-        v53 = [(CSCoverSheetViewController *)self _quickActionButtonInterpretsLocation:v52 asBesideContentForGestureView:v9, v11];
+        view5 = [(UITapGestureRecognizer *)beginCopy view];
+        v53 = [(CSCoverSheetViewController *)self _quickActionButtonInterpretsLocation:view5 asBesideContentForGestureView:v9, v11];
 
         if (v53)
         {
-          v19 = SBLogDashBoard();
-          if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          sidebarComplicationContainerViewController = SBLogDashBoard();
+          if (!os_log_type_enabled(sidebarComplicationContainerViewController, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_36;
           }
@@ -24166,8 +24166,8 @@ LABEL_36:
 
         if (v5)
         {
-          v19 = SBLogDashBoard();
-          if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          sidebarComplicationContainerViewController = SBLogDashBoard();
+          if (!os_log_type_enabled(sidebarComplicationContainerViewController, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_36;
           }
@@ -24177,16 +24177,16 @@ LABEL_36:
           goto LABEL_34;
         }
 
-        v19 = [(CSCoverSheetViewController *)self sidebarComplicationContainerViewController];
-        v54 = [v19 view];
-        [(UITapGestureRecognizer *)v4 locationInView:v54];
+        sidebarComplicationContainerViewController = [(CSCoverSheetViewController *)self sidebarComplicationContainerViewController];
+        view6 = [sidebarComplicationContainerViewController view];
+        [(UITapGestureRecognizer *)beginCopy locationInView:view6];
         v56 = v55;
         v58 = v57;
 
-        v59 = [v19 view];
-        v60 = [v59 hitTest:0 forEvent:{v56, v58}];
+        view7 = [sidebarComplicationContainerViewController view];
+        v60 = [view7 hitTest:0 forEvent:{v56, v58}];
 
-        if (([v19 interpretsViewAsContent:v60]& 1) != 0)
+        if (([sidebarComplicationContainerViewController interpretsViewAsContent:v60]& 1) != 0)
         {
           v61 = SBLogDashBoard();
           if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
@@ -24199,10 +24199,10 @@ LABEL_36:
         }
       }
 
-      else if (!(v5 | (([(UITapGestureRecognizer *)v4 isEqual:self->_complicationSelectionRecognizer]& 1) == 0)))
+      else if (!(v5 | (([(UITapGestureRecognizer *)beginCopy isEqual:self->_complicationSelectionRecognizer]& 1) == 0)))
       {
-        v19 = SBLogDashBoard();
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+        sidebarComplicationContainerViewController = SBLogDashBoard();
+        if (os_log_type_enabled(sidebarComplicationContainerViewController, OS_LOG_TYPE_DEFAULT))
         {
           *v62 = 0;
           v20 = "Complication Selection gesture not beginning because location for the gesture is not in a complication";
@@ -24265,52 +24265,52 @@ uint64_t __59__CSCoverSheetViewController_gestureRecognizerShouldBegin___block_i
   return v9;
 }
 
-- (BOOL)_complicationsInterpretGestureRecognizerLocationAsContent:(id)a3
+- (BOOL)_complicationsInterpretGestureRecognizerLocationAsContent:(id)content
 {
-  v3 = self;
+  selfCopy = self;
   inlineComplicationContainerViewController = self->_inlineComplicationContainerViewController;
-  v5 = a3;
-  v6 = [(CSInlineWidgetContainerViewController *)inlineComplicationContainerViewController view];
+  contentCopy = content;
+  view = [(CSInlineWidgetContainerViewController *)inlineComplicationContainerViewController view];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __88__CSCoverSheetViewController__complicationsInterpretGestureRecognizerLocationAsContent___block_invoke;
   v13[3] = &unk_27838BF98;
-  v13[4] = v3;
-  LOBYTE(inlineComplicationContainerViewController) = [(CSCoverSheetViewController *)v3 _gestureRecognizer:v5 hitContainerWithView:v6 componentType:21 interpretsViewAsContent:v13];
+  v13[4] = selfCopy;
+  LOBYTE(inlineComplicationContainerViewController) = [(CSCoverSheetViewController *)selfCopy _gestureRecognizer:contentCopy hitContainerWithView:view componentType:21 interpretsViewAsContent:v13];
 
-  v7 = [(CSWidgetGridViewController *)v3->_complicationContainerViewController widgetGridContentView];
+  widgetGridContentView = [(CSWidgetGridViewController *)selfCopy->_complicationContainerViewController widgetGridContentView];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __88__CSCoverSheetViewController__complicationsInterpretGestureRecognizerLocationAsContent___block_invoke_2;
   v12[3] = &unk_27838BF98;
-  v12[4] = v3;
-  v8 = [(CSCoverSheetViewController *)v3 _gestureRecognizer:v5 hitContainerWithView:v7 componentType:20 interpretsViewAsContent:v12];
+  v12[4] = selfCopy;
+  v8 = [(CSCoverSheetViewController *)selfCopy _gestureRecognizer:contentCopy hitContainerWithView:widgetGridContentView componentType:20 interpretsViewAsContent:v12];
 
-  v9 = [(CSWidgetGridViewController *)v3->_sidebarComplicationContainerViewController widgetGridContentView];
+  widgetGridContentView2 = [(CSWidgetGridViewController *)selfCopy->_sidebarComplicationContainerViewController widgetGridContentView];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __88__CSCoverSheetViewController__complicationsInterpretGestureRecognizerLocationAsContent___block_invoke_3;
   v11[3] = &unk_27838BF98;
-  v11[4] = v3;
-  LOBYTE(v3) = [(CSCoverSheetViewController *)v3 _gestureRecognizer:v5 hitContainerWithView:v9 componentType:25 interpretsViewAsContent:v11];
+  v11[4] = selfCopy;
+  LOBYTE(selfCopy) = [(CSCoverSheetViewController *)selfCopy _gestureRecognizer:contentCopy hitContainerWithView:widgetGridContentView2 componentType:25 interpretsViewAsContent:v11];
 
-  return (inlineComplicationContainerViewController | v8 | v3) & 1;
+  return (inlineComplicationContainerViewController | v8 | selfCopy) & 1;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 hitContainerWithView:(id)a4 componentType:(int64_t)a5 interpretsViewAsContent:(id)a6
+- (BOOL)_gestureRecognizer:(id)recognizer hitContainerWithView:(id)view componentType:(int64_t)type interpretsViewAsContent:(id)content
 {
-  v10 = a6;
+  contentCopy = content;
   activeAppearance = self->_activeAppearance;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CSAppearance *)activeAppearance componentForType:a5 property:1];
+  viewCopy = view;
+  recognizerCopy = recognizer;
+  v14 = [(CSAppearance *)activeAppearance componentForType:type property:1];
   LOBYTE(activeAppearance) = [v14 isHidden];
 
-  [v13 locationInView:v12];
+  [recognizerCopy locationInView:viewCopy];
   v16 = v15;
   v18 = v17;
 
-  v19 = [v12 hitTest:0 withEvent:{v16, v18}];
+  v19 = [viewCopy hitTest:0 withEvent:{v16, v18}];
 
   if (activeAppearance)
   {
@@ -24319,23 +24319,23 @@ uint64_t __59__CSCoverSheetViewController_gestureRecognizerShouldBegin___block_i
 
   else
   {
-    v20 = v10[2](v10, v19);
+    v20 = contentCopy[2](contentCopy, v19);
   }
 
   return v20;
 }
 
-- (BOOL)_quickActionButtonInterpretsLocation:(CGPoint)a3 asBesideContentForGestureView:(id)a4
+- (BOOL)_quickActionButtonInterpretsLocation:(CGPoint)location asBesideContentForGestureView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
   if ([(CSCoverSheetViewController *)self _quickActionsSupported])
   {
-    v8 = [(CSCoverSheetViewController *)self activeAppearance];
-    v9 = [v8 componentForType:14 identifier:@"(active)"];
+    activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+    v9 = [activeAppearance componentForType:14 identifier:@"(active)"];
 
-    v10 = ([v9 isHidden] & 1) == 0 && (objc_msgSend(v9, "alpha"), (BSFloatIsZero() & 1) == 0) && -[CSQuickActionsViewController interpretsLocationAsBesideButtons:inView:](self->_quickActionsViewController, "interpretsLocationAsBesideButtons:inView:", v7, x, y);
+    v10 = ([v9 isHidden] & 1) == 0 && (objc_msgSend(v9, "alpha"), (BSFloatIsZero() & 1) == 0) && -[CSQuickActionsViewController interpretsLocationAsBesideButtons:inView:](self->_quickActionsViewController, "interpretsLocationAsBesideButtons:inView:", viewCopy, x, y);
   }
 
   else
@@ -24346,27 +24346,27 @@ uint64_t __59__CSCoverSheetViewController_gestureRecognizerShouldBegin___block_i
   return v10;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = ([(UILongPressGestureRecognizer *)v5 isEqual:self->_quickNoteGestureRecognizer]& 1) == 0 && (self->_wallpaperGestureRecognizer != v5 || (CSAutobahnEnabledForPlatform() & 1) == 0) && self->_posterSwitcherGestureRecognizer != v5;
+  recognizerCopy = recognizer;
+  v6 = ([(UILongPressGestureRecognizer *)recognizerCopy isEqual:self->_quickNoteGestureRecognizer]& 1) == 0 && (self->_wallpaperGestureRecognizer != recognizerCopy || (CSAutobahnEnabledForPlatform() & 1) == 0) && self->_posterSwitcherGestureRecognizer != recognizerCopy;
 
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self->_wallpaperGestureRecognizer == v6 && (CSAutobahnEnabledForPlatform() & 1) != 0 || self->_backgroundContentGestureRecognizer == v6 && self->_posterSwitcherGestureRecognizer == v7;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = self->_wallpaperGestureRecognizer == recognizerCopy && (CSAutobahnEnabledForPlatform() & 1) != 0 || self->_backgroundContentGestureRecognizer == recognizerCopy && self->_posterSwitcherGestureRecognizer == gestureRecognizerCopy;
 
   return v8;
 }
 
-- (void)postNotificationRequest:(id)a3
+- (void)postNotificationRequest:(id)request
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x277D77DB0];
   v6 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
@@ -24374,16 +24374,16 @@ uint64_t __59__CSCoverSheetViewController_gestureRecognizerShouldBegin___block_i
     v7 = v6;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v4 notificationIdentifier];
-    v11 = [v10 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v30 = 138543618;
     v31 = v9;
     v32 = 2114;
-    v33 = v11;
+    v33 = un_logDigest;
     _os_log_impl(&dword_21EB05000, v7, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ posting notification %{public}@", &v30, 0x16u);
   }
 
-  v12 = [(CSCoverSheetViewController *)self _fullscreeNotificationViewControllerMatchingNotificationRequest:v4];
+  v12 = [(CSCoverSheetViewController *)self _fullscreeNotificationViewControllerMatchingNotificationRequest:requestCopy];
   if (v12)
   {
     v13 = *v5;
@@ -24392,41 +24392,41 @@ uint64_t __59__CSCoverSheetViewController_gestureRecognizerShouldBegin___block_i
       v14 = v13;
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [v4 notificationIdentifier];
-      v18 = [v17 un_logDigest];
+      notificationIdentifier2 = [requestCopy notificationIdentifier];
+      un_logDigest2 = [notificationIdentifier2 un_logDigest];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       v30 = 138543874;
       v31 = v16;
       v32 = 2114;
-      v33 = v18;
+      v33 = un_logDigest2;
       v34 = 2114;
       v35 = v20;
       _os_log_impl(&dword_21EB05000, v14, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ updating notification %{public}@ to %{public}@", &v30, 0x20u);
     }
 
-    [v12 updateNotificationRequest:v4];
+    [v12 updateNotificationRequest:requestCopy];
   }
 
   else
   {
     v21 = objc_alloc_init(CSFullscreenNotificationViewController);
     [(CSFullscreenNotificationViewController *)v21 setDispatcher:self->_notificationDispatcher];
-    [(CSFullscreenNotificationViewController *)v21 postNotificationRequest:v4];
+    [(CSFullscreenNotificationViewController *)v21 postNotificationRequest:requestCopy];
     v22 = *v5;
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v22;
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
-      v26 = [v4 notificationIdentifier];
-      v27 = [v26 un_logDigest];
+      notificationIdentifier3 = [requestCopy notificationIdentifier];
+      un_logDigest3 = [notificationIdentifier3 un_logDigest];
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
       v30 = 138543874;
       v31 = v25;
       v32 = 2114;
-      v33 = v27;
+      v33 = un_logDigest3;
       v34 = 2114;
       v35 = v29;
       _os_log_impl(&dword_21EB05000, v23, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ presenting notification %{public}@ to %{public}@", &v30, 0x20u);
@@ -24436,35 +24436,35 @@ uint64_t __59__CSCoverSheetViewController_gestureRecognizerShouldBegin___block_i
   }
 }
 
-- (void)updateNotificationRequest:(id)a3
+- (void)updateNotificationRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v4 notificationIdentifier];
-    v10 = [v9 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v12 = 138543618;
     v13 = v8;
     v14 = 2114;
-    v15 = v10;
+    v15 = un_logDigest;
     _os_log_impl(&dword_21EB05000, v6, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ updating notification %{public}@", &v12, 0x16u);
   }
 
-  v11 = [(CSCoverSheetViewController *)self _fullscreeNotificationViewControllerMatchingNotificationRequest:v4];
-  [v11 updateNotificationRequest:v4];
+  v11 = [(CSCoverSheetViewController *)self _fullscreeNotificationViewControllerMatchingNotificationRequest:requestCopy];
+  [v11 updateNotificationRequest:requestCopy];
 }
 
-- (id)_fullscreeNotificationViewControllerMatchingNotificationRequest:(id)a3
+- (id)_fullscreeNotificationViewControllerMatchingNotificationRequest:(id)request
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v6 = [v5 bs_objectsOfClass:objc_opt_class()];
+  requestCopy = request;
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v6 = [contentViewControllers bs_objectsOfClass:objc_opt_class()];
 
   v24 = 0u;
   v25 = 0u;
@@ -24485,19 +24485,19 @@ uint64_t __59__CSCoverSheetViewController_gestureRecognizerShouldBegin___block_i
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 notificationRequest];
-        v12 = [v11 sectionIdentifier];
-        v13 = [v4 sectionIdentifier];
-        if ([v12 isEqualToString:v13])
+        notificationRequest = [v10 notificationRequest];
+        sectionIdentifier = [notificationRequest sectionIdentifier];
+        sectionIdentifier2 = [requestCopy sectionIdentifier];
+        if ([sectionIdentifier isEqualToString:sectionIdentifier2])
         {
-          v14 = [v11 notificationIdentifier];
-          [v4 notificationIdentifier];
+          notificationIdentifier = [notificationRequest notificationIdentifier];
+          [requestCopy notificationIdentifier];
           v15 = v7;
           v16 = v8;
-          v18 = v17 = v4;
-          v21 = [v14 isEqualToString:v18];
+          v18 = v17 = requestCopy;
+          v21 = [notificationIdentifier isEqualToString:v18];
 
-          v4 = v17;
+          requestCopy = v17;
           v8 = v16;
           v7 = v15;
 
@@ -24525,28 +24525,28 @@ LABEL_12:
   return v7;
 }
 
-- (void)withdrawNotificationRequest:(id)a3
+- (void)withdrawNotificationRequest:(id)request
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v4 notificationIdentifier];
-    v10 = [v9 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543618;
     v30 = v8;
     v31 = 2114;
-    v32 = v10;
+    v32 = un_logDigest;
     _os_log_impl(&dword_21EB05000, v6, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ withdrawing notification %{public}@", buf, 0x16u);
   }
 
-  v23 = self;
-  v11 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v12 = [v11 bs_objectsOfClass:objc_opt_class()];
+  selfCopy = self;
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v12 = [contentViewControllers bs_objectsOfClass:objc_opt_class()];
 
   v26 = 0u;
   v27 = 0u;
@@ -24568,15 +24568,15 @@ LABEL_12:
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        v19 = [v18 notificationRequest];
-        v20 = [v19 notificationIdentifier];
-        v21 = [v4 notificationIdentifier];
-        v22 = [v20 isEqualToString:v21];
+        notificationRequest = [v18 notificationRequest];
+        notificationIdentifier2 = [notificationRequest notificationIdentifier];
+        notificationIdentifier3 = [requestCopy notificationIdentifier];
+        v22 = [notificationIdentifier2 isEqualToString:notificationIdentifier3];
 
         if (v22)
         {
-          [v18 withdrawNotificationRequest:v4];
-          [(CSCoverSheetViewController *)v23 _dismissModalViewController:v18 animated:1 completion:0];
+          [v18 withdrawNotificationRequest:requestCopy];
+          [(CSCoverSheetViewController *)selfCopy _dismissModalViewController:v18 animated:1 completion:0];
           goto LABEL_13;
         }
       }
@@ -24594,13 +24594,13 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)updateNotificationSectionSettings:(id)a3 previousSectionSettings:(id)a4
+- (void)updateNotificationSectionSettings:(id)settings previousSectionSettings:(id)sectionSettings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v9 = [v8 bs_objectsOfClass:objc_opt_class()];
+  settingsCopy = settings;
+  sectionSettingsCopy = sectionSettings;
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v9 = [contentViewControllers bs_objectsOfClass:objc_opt_class()];
 
   v17 = 0u;
   v18 = 0u;
@@ -24622,7 +24622,7 @@ LABEL_13:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v14++) updateNotificationSectionSettings:v6 previousSectionSettings:{v7, v15}];
+        [*(*(&v15 + 1) + 8 * v14++) updateNotificationSectionSettings:settingsCopy previousSectionSettings:{sectionSettingsCopy, v15}];
       }
 
       while (v12 != v14);
@@ -24633,13 +24633,13 @@ LABEL_13:
   }
 }
 
-- (void)updateNotificationSystemSettings:(id)a3 previousSystemSettings:(id)a4
+- (void)updateNotificationSystemSettings:(id)settings previousSystemSettings:(id)systemSettings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v9 = [v8 bs_objectsOfClass:objc_opt_class()];
+  settingsCopy = settings;
+  systemSettingsCopy = systemSettings;
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v9 = [contentViewControllers bs_objectsOfClass:objc_opt_class()];
 
   v17 = 0u;
   v18 = 0u;
@@ -24661,7 +24661,7 @@ LABEL_13:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v14++) updateNotificationSystemSettings:v6 previousSystemSettings:{v7, v15}];
+        [*(*(&v15 + 1) + 8 * v14++) updateNotificationSystemSettings:settingsCopy previousSystemSettings:{systemSettingsCopy, v15}];
       }
 
       while (v12 != v14);
@@ -24672,12 +24672,12 @@ LABEL_13:
   }
 }
 
-- (void)notificationsLoadedForSectionIdentifier:(id)a3
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v6 = [v5 bs_objectsOfClass:objc_opt_class()];
+  identifierCopy = identifier;
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v6 = [contentViewControllers bs_objectsOfClass:objc_opt_class()];
 
   v14 = 0u;
   v15 = 0u;
@@ -24699,7 +24699,7 @@ LABEL_13:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) notificationsLoadedForSectionIdentifier:{v4, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) notificationsLoadedForSectionIdentifier:{identifierCopy, v12}];
       }
 
       while (v9 != v11);
@@ -24710,30 +24710,30 @@ LABEL_13:
   }
 }
 
-- (BOOL)isNotificationContentExtensionVisible:(id)a3
+- (BOOL)isNotificationContentExtensionVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self notificationDestination];
-  v6 = [v5 isNotificationContentExtensionVisible:v4];
+  visibleCopy = visible;
+  notificationDestination = [(CSCoverSheetViewController *)self notificationDestination];
+  v6 = [notificationDestination isNotificationContentExtensionVisible:visibleCopy];
 
   return v6;
 }
 
 - (BOOL)isPresentingNotificationInLongLook
 {
-  v2 = [(CSCoverSheetViewController *)self notificationDestination];
-  v3 = [v2 isPresentingNotificationInLongLook];
+  notificationDestination = [(CSCoverSheetViewController *)self notificationDestination];
+  isPresentingNotificationInLongLook = [notificationDestination isPresentingNotificationInLongLook];
 
-  return v3;
+  return isPresentingNotificationInLongLook;
 }
 
-- (BOOL)dismissNotificationInLongLookAnimated:(BOOL)a3
+- (BOOL)dismissNotificationInLongLookAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(CSCoverSheetViewController *)self notificationDestination];
-  LOBYTE(v3) = [v4 dismissNotificationInLongLookAnimated:v3];
+  animatedCopy = animated;
+  notificationDestination = [(CSCoverSheetViewController *)self notificationDestination];
+  LOBYTE(animatedCopy) = [notificationDestination dismissNotificationInLongLookAnimated:animatedCopy];
 
-  return v3;
+  return animatedCopy;
 }
 
 - (id)hostedAppSceneHandle
@@ -24758,10 +24758,10 @@ LABEL_13:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) hostedAppSceneHandle];
-        if (v8)
+        hostedAppSceneHandle = [*(*(&v11 + 1) + 8 * i) hostedAppSceneHandle];
+        if (hostedAppSceneHandle)
         {
-          v9 = v8;
+          hostedAppSceneHandle2 = hostedAppSceneHandle;
 
           goto LABEL_11;
         }
@@ -24777,10 +24777,10 @@ LABEL_13:
     }
   }
 
-  v9 = [(CSPresentationViewController *)self->_modalPresentationController hostedAppSceneHandle];
+  hostedAppSceneHandle2 = [(CSPresentationViewController *)self->_modalPresentationController hostedAppSceneHandle];
 LABEL_11:
 
-  return v9;
+  return hostedAppSceneHandle2;
 }
 
 - (id)hostedAppSceneHandles
@@ -24806,10 +24806,10 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) hostedAppSceneHandles];
-        if (v9)
+        hostedAppSceneHandles = [*(*(&v14 + 1) + 8 * i) hostedAppSceneHandles];
+        if (hostedAppSceneHandles)
         {
-          [v3 addObjectsFromArray:v9];
+          [v3 addObjectsFromArray:hostedAppSceneHandles];
         }
       }
 
@@ -24819,11 +24819,11 @@ LABEL_11:
     while (v6);
   }
 
-  v10 = [(CSPresentationViewController *)self->_modalPresentationController hostedAppSceneHandles];
-  v11 = v10;
-  if (v10)
+  hostedAppSceneHandles2 = [(CSPresentationViewController *)self->_modalPresentationController hostedAppSceneHandles];
+  v11 = hostedAppSceneHandles2;
+  if (hostedAppSceneHandles2)
   {
-    v12 = v10;
+    v12 = hostedAppSceneHandles2;
   }
 
   else
@@ -24836,10 +24836,10 @@ LABEL_11:
   return v3;
 }
 
-- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)a3
+- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)orientation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(CSCoverSheetViewController *)self supportedInterfaceOrientations];
+  supportedInterfaceOrientations = [(CSCoverSheetViewController *)self supportedInterfaceOrientations];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -24849,7 +24849,7 @@ LABEL_11:
   if (v7)
   {
     v8 = v7;
-    v9 = v5 & (1 << a3);
+    v9 = supportedInterfaceOrientations & (1 << orientation);
     v10 = *v18;
     do
     {
@@ -24861,8 +24861,8 @@ LABEL_11:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 isHostingAnApp];
-        v14 = [v12 handlesRotationIndependentOfCoverSheet];
+        isHostingAnApp = [v12 isHostingAnApp];
+        handlesRotationIndependentOfCoverSheet = [v12 handlesRotationIndependentOfCoverSheet];
         if (v9)
         {
           v15 = 1;
@@ -24870,10 +24870,10 @@ LABEL_11:
 
         else
         {
-          v15 = v14;
+          v15 = handlesRotationIndependentOfCoverSheet;
         }
 
-        if (v13)
+        if (isHostingAnApp)
         {
           v16 = v15 == 0;
         }
@@ -24885,7 +24885,7 @@ LABEL_11:
 
         if (!v16)
         {
-          [v12 hostedAppWillRotateToInterfaceOrientation:a3];
+          [v12 hostedAppWillRotateToInterfaceOrientation:orientation];
         }
       }
 
@@ -24902,7 +24902,7 @@ LABEL_11:
   v3 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:self->_lastSettledPageIndex];
   if ([v3 participantState] == 2 && objc_msgSend(v3, "conformsToProtocol:", &unk_2830EF220))
   {
-    v4 = [v3 hostedEntity];
+    hostedEntity = [v3 hostedEntity];
   }
 
   else
@@ -24911,8 +24911,8 @@ LABEL_11:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+    v6 = [contentViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -24923,19 +24923,19 @@ LABEL_11:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(contentViewControllers);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
           if ([v10 conformsToProtocol:&unk_2830EF220])
           {
-            v4 = [v10 hostedEntity];
+            hostedEntity = [v10 hostedEntity];
 
             goto LABEL_14;
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [contentViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           continue;
@@ -24945,31 +24945,31 @@ LABEL_11:
       }
     }
 
-    v4 = 0;
+    hostedEntity = 0;
   }
 
 LABEL_14:
 
-  return v4;
+  return hostedEntity;
 }
 
-- (BOOL)shouldAutoUnlockForSource:(int)a3
+- (BOOL)shouldAutoUnlockForSource:(int)source
 {
-  v6 = 1;
-  if (a3 != 3 && a3 != 41)
+  autoDismissUnlockedLockScreen = 1;
+  if (source != 3 && source != 41)
   {
     v3 = +[CSLockScreenDomain rootSettings];
-    v6 = [v3 autoDismissUnlockedLockScreen];
+    autoDismissUnlockedLockScreen = [v3 autoDismissUnlockedLockScreen];
   }
 
-  if (a3 != 3 && a3 != 41)
+  if (source != 3 && source != 41)
   {
   }
 
-  if (v6 && ![(CSPresentationViewController *)self->_modalPresentationController isPresentingContent])
+  if (autoDismissUnlockedLockScreen && ![(CSPresentationViewController *)self->_modalPresentationController isPresentingContent])
   {
-    v8 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-    v7 = [v8 hasContent] ^ 1;
+    combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+    v7 = [combinedListViewController hasContent] ^ 1;
   }
 
   else
@@ -24980,18 +24980,18 @@ LABEL_14:
   return v7;
 }
 
-- (void)startRestToOpenCoachingWithCompletion:(id)a3
+- (void)startRestToOpenCoachingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_hasContentAboveCoverSheet)
   {
-    v5 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+    poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __68__CSCoverSheetViewController_startRestToOpenCoachingWithCompletion___block_invoke;
     v6[3] = &unk_27838BAC0;
-    v7 = v4;
-    [v5 startRestToOpenCoaching:1 withCompletion:v6];
+    v7 = completionCopy;
+    [poseidonContainerViewController startRestToOpenCoaching:1 withCompletion:v6];
   }
 }
 
@@ -25006,16 +25006,16 @@ uint64_t __68__CSCoverSheetViewController_startRestToOpenCoachingWithCompletion_
   return result;
 }
 
-- (void)fillRestToOpenWithDuration:(double)a3
+- (void)fillRestToOpenWithDuration:(double)duration
 {
-  v4 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-  [v4 fillRestToOpenWithDuration:a3];
+  poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+  [poseidonContainerViewController fillRestToOpenWithDuration:duration];
 }
 
 - (void)resetRestToOpen
 {
-  v2 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-  [v2 resetRestToOpen];
+  poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+  [poseidonContainerViewController resetRestToOpen];
 }
 
 - (BOOL)isRestToOpenAvailable
@@ -25064,32 +25064,32 @@ LABEL_12:
 
 - (BOOL)hasVisibleContentToReveal
 {
-  v2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  v3 = [v2 hasVisibleContentToReveal];
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  hasVisibleContentToReveal = [combinedListViewController hasVisibleContentToReveal];
 
-  return v3;
+  return hasVisibleContentToReveal;
 }
 
-- (BOOL)phoneUnlockWithWatchControllerShowRawErrorCodes:(id)a3
+- (BOOL)phoneUnlockWithWatchControllerShowRawErrorCodes:(id)codes
 {
   v3 = +[CSLockScreenDomain rootSettings];
-  v4 = [v3 showRawErrorCodes];
+  showRawErrorCodes = [v3 showRawErrorCodes];
 
-  return v4;
+  return showRawErrorCodes;
 }
 
-- (void)phoneUnlockWithWatchControllerAttemptSucceeded:(id)a3
+- (void)phoneUnlockWithWatchControllerAttemptSucceeded:(id)succeeded
 {
-  v4 = [(CSCoverSheetViewController *)self delegate];
-  if (([v4 coverSheetViewControllerIsPasscodeVisible:self] & 1) == 0)
+  delegate = [(CSCoverSheetViewController *)self delegate];
+  if (([delegate coverSheetViewControllerIsPasscodeVisible:self] & 1) == 0)
   {
-    [v4 coverSheetViewControllerHandleUnlockAttemptSucceeded:self];
+    [delegate coverSheetViewControllerHandleUnlockAttemptSucceeded:self];
   }
 }
 
-- (void)phoneUnlockWithWatchControllerAttemptFailed:(id)a3 withError:(id)a4
+- (void)phoneUnlockWithWatchControllerAttemptFailed:(id)failed withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if ([(SBUIPhoneUnlockWithVisionController *)self->_phoneUnlockWithVisionController isPhoneUnlockEnabledAndRequirementsMet])
   {
     [(SBUIPhoneUnlockWithVisionController *)self->_phoneUnlockWithVisionController attemptUnlock];
@@ -25097,105 +25097,105 @@ LABEL_12:
 
   else if ([(CSCoverSheetViewController *)self proudLockViewControllerIsCoverSheetVisible])
   {
-    v5 = [(CSProudLockViewController *)self->_proudLockViewController proudLockContainerViewController];
-    [v5 handlePhoneUnlockWithWatchError:v6];
+    proudLockContainerViewController = [(CSProudLockViewController *)self->_proudLockViewController proudLockContainerViewController];
+    [proudLockContainerViewController handlePhoneUnlockWithWatchError:errorCopy];
   }
 }
 
-- (void)phoneUnlockWithVisionControllerAttemptSucceeded:(id)a3
+- (void)phoneUnlockWithVisionControllerAttemptSucceeded:(id)succeeded
 {
-  v4 = [(CSCoverSheetViewController *)self delegate];
-  if (([v4 coverSheetViewControllerIsPasscodeVisible:self] & 1) == 0)
+  delegate = [(CSCoverSheetViewController *)self delegate];
+  if (([delegate coverSheetViewControllerIsPasscodeVisible:self] & 1) == 0)
   {
-    [v4 coverSheetViewControllerHandleUnlockAttemptSucceeded:self];
+    [delegate coverSheetViewControllerHandleUnlockAttemptSucceeded:self];
   }
 }
 
-- (void)phoneUnlockWithVisionController:(id)a3 attemptFailedWithError:(id)a4
+- (void)phoneUnlockWithVisionController:(id)controller attemptFailedWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if ([(CSCoverSheetViewController *)self proudLockViewControllerIsCoverSheetVisible])
   {
-    v5 = [(CSProudLockViewController *)self->_proudLockViewController proudLockContainerViewController];
-    [v5 handlePhoneUnlockWithVisionError:v6];
+    proudLockContainerViewController = [(CSProudLockViewController *)self->_proudLockViewController proudLockContainerViewController];
+    [proudLockContainerViewController handlePhoneUnlockWithVisionError:errorCopy];
   }
 }
 
-- (void)handleBiometricEvent:(unint64_t)a3
+- (void)handleBiometricEvent:(unint64_t)event
 {
-  if (a3 <= 0x21)
+  if (event <= 0x21)
   {
-    if (((1 << a3) & 0x2070009E0) != 0)
+    if (((1 << event) & 0x2070009E0) != 0)
     {
       v5 = [CSEvent eventWithType:14];
       [(CSCoverSheetViewController *)self _handleEvent:v5];
 
-      if (a3 != 13)
+      if (event != 13)
       {
         goto LABEL_6;
       }
 
 LABEL_4:
-      v6 = [CSAction actionWithType:4];
-      [(CSCoverSheetViewController *)self handleAction:v6 fromSender:self];
+      poseidonContainerViewController = [CSAction actionWithType:4];
+      [(CSCoverSheetViewController *)self handleAction:poseidonContainerViewController fromSender:self];
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    if (a3 == 1)
+    if (event == 1)
     {
       v9 = [CSAction actionWithType:3];
       [(CSCoverSheetViewController *)self handleAction:v9 fromSender:self];
 
-      v6 = [CSEvent eventWithType:34];
-      [(CSCoverSheetViewController *)self _handleEvent:v6];
+      poseidonContainerViewController = [CSEvent eventWithType:34];
+      [(CSCoverSheetViewController *)self _handleEvent:poseidonContainerViewController];
       goto LABEL_5;
     }
 
-    if (a3 == 13)
+    if (event == 13)
     {
       goto LABEL_4;
     }
   }
 
-  if (!a3)
+  if (!event)
   {
-    v6 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-    [v6 setFingerOffSinceWake:1];
+    poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+    [poseidonContainerViewController setFingerOffSinceWake:1];
     goto LABEL_5;
   }
 
 LABEL_6:
   v10 = [CSEvent eventWithType:15];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:event];
   [v10 setValue:v7];
 
   [(CSCoverSheetViewController *)self _handleEvent:v10];
-  [(CSHomeButtonShowPasscodeRecognizer *)self->_homeButtonShowPasscodeRecognizer handleBiometricEvent:a3];
+  [(CSHomeButtonShowPasscodeRecognizer *)self->_homeButtonShowPasscodeRecognizer handleBiometricEvent:event];
   WeakRetained = objc_loadWeakRetained(&self->_homeButtonSuppressAfterUnlockRecognizer);
-  [WeakRetained handleBiometricEvent:a3];
+  [WeakRetained handleBiometricEvent:event];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   [(CSCoverSheetViewController *)self noteDeviceBlockedStatusUpdated];
-  v6 = [v5 isEqualToString:@"showRegionsDebugView"];
+  v6 = [keyCopy isEqualToString:@"showRegionsDebugView"];
 
   if (v6)
   {
     if ([(CSLockScreenSettings *)self->_prototypeSettings showRegionsDebugView])
     {
-      v7 = objc_alloc_init(CSRegionsDebugView);
-      v8 = [(CSCoverSheetViewController *)self coverSheetView];
-      [v8 setRegionsDebugView:v7];
+      coverSheetView2 = objc_alloc_init(CSRegionsDebugView);
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+      [coverSheetView setRegionsDebugView:coverSheetView2];
     }
 
     else
     {
-      v7 = [(CSCoverSheetViewController *)self coverSheetView];
-      [(CSRegionsDebugView *)v7 setRegionsDebugView:0];
+      coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+      [(CSRegionsDebugView *)coverSheetView2 setRegionsDebugView:0];
     }
   }
 
@@ -25204,10 +25204,10 @@ LABEL_6:
   [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:@"PrototypeSettingsChanged"];
 }
 
-- (BOOL)controller:(id)a3 shouldAllowPanScrollingWithSystemGestureRecognizer:(id)a4
+- (BOOL)controller:(id)controller shouldAllowPanScrollingWithSystemGestureRecognizer:(id)recognizer
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  recognizerCopy = recognizer;
   [(CSCoverSheetViewController *)self _activeViewControllers];
   v18 = 0u;
   v19 = 0u;
@@ -25228,19 +25228,19 @@ LABEL_3:
       }
 
       v11 = *(*(&v18 + 1) + 8 * v10);
-      if ([(CSCoverSheetViewController *)self _gestureRecognizer:v5 isLocatedOverHorizontalContentRegionInViewController:v11, v18])
+      if ([(CSCoverSheetViewController *)self _gestureRecognizer:recognizerCopy isLocatedOverHorizontalContentRegionInViewController:v11, v18])
       {
         break;
       }
 
-      v12 = [v11 viewIfLoaded];
+      viewIfLoaded = [v11 viewIfLoaded];
       _UISystemGestureLocationInView();
-      if ([(CSCoverSheetViewController *)self _overSlidingControlForLocation:v12 inView:?])
+      if ([(CSCoverSheetViewController *)self _overSlidingControlForLocation:viewIfLoaded inView:?])
       {
         v15 = SBLogDashBoard();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v12 description];
+          v16 = [viewIfLoaded description];
           *buf = 138412290;
           v23 = v16;
           _os_log_impl(&dword_21EB05000, v15, OS_LOG_TYPE_DEFAULT, "Preventing panning scroll for sliding control in view: %@", buf, 0xCu);
@@ -25263,62 +25263,62 @@ LABEL_15:
       }
     }
 
-    v12 = SBLogDashBoard();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    viewIfLoaded = SBLogDashBoard();
+    if (os_log_type_enabled(viewIfLoaded, OS_LOG_TYPE_DEFAULT))
     {
       v15 = [v11 description];
       *buf = 138412290;
       v23 = v15;
-      _os_log_impl(&dword_21EB05000, v12, OS_LOG_TYPE_DEFAULT, "Preventing panning scroll for horizontal content region in view controller: %@", buf, 0xCu);
+      _os_log_impl(&dword_21EB05000, viewIfLoaded, OS_LOG_TYPE_DEFAULT, "Preventing panning scroll for horizontal content region in view controller: %@", buf, 0xCu);
       goto LABEL_15;
     }
 
 LABEL_16:
 
     LOBYTE(v14) = 0;
-    v13 = v6;
+    viewIfLoaded2 = v6;
     goto LABEL_17;
   }
 
 LABEL_10:
 
-  v13 = [(CSCoverSheetViewController *)self viewIfLoaded];
+  viewIfLoaded2 = [(CSCoverSheetViewController *)self viewIfLoaded];
   _UISystemGestureLocationInView();
-  v14 = ![(CSCoverSheetViewController *)self _overSlidingControlForLocation:v13 inView:?];
+  v14 = ![(CSCoverSheetViewController *)self _overSlidingControlForLocation:viewIfLoaded2 inView:?];
 LABEL_17:
 
   return v14;
 }
 
-- (void)controllerWillCancelHorizontalScrolling:(id)a3
+- (void)controllerWillCancelHorizontalScrolling:(id)scrolling
 {
-  v4 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v4 setTargetPageIndexForDraggingEnded:{-[CSCoverSheetViewController _lastSettledPageIndex](self, "_lastSettledPageIndex")}];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView setTargetPageIndexForDraggingEnded:{-[CSCoverSheetViewController _lastSettledPageIndex](self, "_lastSettledPageIndex")}];
 }
 
-- (void)presentationViewController:(id)a3 didTransitionViewController:(id)a4 toPresented:(BOOL)a5
+- (void)presentationViewController:(id)controller didTransitionViewController:(id)viewController toPresented:(BOOL)presented
 {
-  v5 = a5;
-  v23 = a3;
-  v8 = a4;
-  v9 = [v8 coverSheetIdentifier];
+  presentedCopy = presented;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  coverSheetIdentifier = [viewControllerCopy coverSheetIdentifier];
   v10 = +[(CSCoverSheetViewControllerBase *)CSDismissableModalViewController];
-  v11 = [v9 isEqualToString:v10];
+  v11 = [coverSheetIdentifier isEqualToString:v10];
 
   if (v11)
   {
-    v12 = v8;
-    v13 = [v12 contentViewControllers];
-    v14 = v13;
-    if (v5)
+    v12 = viewControllerCopy;
+    contentViewControllers = [v12 contentViewControllers];
+    v14 = contentViewControllers;
+    if (presentedCopy)
     {
-      v15 = [v13 containsObject:self->_remoteContentModalViewController];
+      v15 = [contentViewControllers containsObject:self->_remoteContentModalViewController];
 
       if (v15)
       {
-        v16 = [(CSCoverSheetViewController *)self coverSheetView];
-        v17 = [v23 view];
-        [v16 addContentViewWithCustomContentView:v17];
+        coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+        view = [controllerCopy view];
+        [coverSheetView addContentViewWithCustomContentView:view];
 
 LABEL_10:
       }
@@ -25326,13 +25326,13 @@ LABEL_10:
 
     else
     {
-      v19 = [(CSCoverSheetViewController *)self posterSwitcherViewController];
-      v20 = [v14 containsObject:v19];
+      posterSwitcherViewController = [(CSCoverSheetViewController *)self posterSwitcherViewController];
+      v20 = [v14 containsObject:posterSwitcherViewController];
 
       if (v20)
       {
-        v16 = [(CSCoverSheetViewController *)self coverSheetView];
-        [v16 removeContentView];
+        coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+        [coverSheetView removeContentView];
         goto LABEL_10;
       }
     }
@@ -25342,26 +25342,26 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![v8 needsContentView])
+  if (![viewControllerCopy needsContentView])
   {
     goto LABEL_12;
   }
 
-  v18 = [(CSCoverSheetViewController *)self coverSheetView];
-  v12 = v18;
-  if (v5)
+  coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+  v12 = coverSheetView2;
+  if (presentedCopy)
   {
-    [v18 addContentView];
+    [coverSheetView2 addContentView];
     goto LABEL_11;
   }
 
-  [v18 foregroundViewPositionOffset];
+  [coverSheetView2 foregroundViewPositionOffset];
   IsZero = BSFloatIsZero();
 
   if (IsZero)
   {
-    v22 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v22 removeContentView];
+    coverSheetView3 = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView3 removeContentView];
   }
 
   else
@@ -25374,12 +25374,12 @@ LABEL_12:
 
 - (double)bottomInsetForBottomComplications
 {
-  v2 = [(CSCoverSheetViewController *)self complicationsUsingBottomPosition];
+  complicationsUsingBottomPosition = [(CSCoverSheetViewController *)self complicationsUsingBottomPosition];
   result = 0.0;
-  if (v2)
+  if (complicationsUsingBottomPosition)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v6 = v5;
 
     [getCSProminentLayoutControllerClass() frameForElements:32];
@@ -25392,16 +25392,16 @@ LABEL_12:
 - (BOOL)_areComplicationsHidden
 {
   v2 = [(CSAppearance *)self->_activeAppearance componentForType:20 property:1];
-  v3 = [v2 isHidden];
+  isHidden = [v2 isHidden];
 
-  return v3;
+  return isHidden;
 }
 
 - (double)timeTextHeight
 {
-  v2 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-  v3 = [v2 prominentDisplayViewController];
-  [v3 adaptiveTimeTextHeight];
+  dateView = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+  prominentDisplayViewController = [dateView prominentDisplayViewController];
+  [prominentDisplayViewController adaptiveTimeTextHeight];
   v5 = v4;
 
   return v5;
@@ -25409,23 +25409,23 @@ LABEL_12:
 
 - (void)contentRequestCancellingGesture
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  v4 = [v3 scrollView];
-  v5 = [v4 panGestureRecognizer];
-  [v5 setEnabled:0];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  scrollView = [coverSheetView scrollView];
+  panGestureRecognizer = [scrollView panGestureRecognizer];
+  [panGestureRecognizer setEnabled:0];
 
-  v8 = [(CSCoverSheetViewController *)self coverSheetView];
-  v6 = [v8 scrollView];
-  v7 = [v6 panGestureRecognizer];
-  [v7 setEnabled:1];
+  coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+  scrollView2 = [coverSheetView2 scrollView];
+  panGestureRecognizer2 = [scrollView2 panGestureRecognizer];
+  [panGestureRecognizer2 setEnabled:1];
 }
 
-- (void)_addBackgroundContentViewControllerForAction:(id)a3
+- (void)_addBackgroundContentViewControllerForAction:(id)action
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = [a3 configurationObject];
+  configurationObject = [action configurationObject];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = configurationObject;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -25446,13 +25446,13 @@ LABEL_12:
 
   v9 = v8;
 
-  if (a3)
+  if (action)
   {
     if (!self->_backgroundContentViewController && v9 != 0)
     {
-      v11 = [(CSCoverSheetViewController *)self coverSheetView];
-      v12 = [v11 effectiveContentsContainerView];
-      [v12 bounds];
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+      effectiveContentsContainerView = [coverSheetView effectiveContentsContainerView];
+      [effectiveContentsContainerView bounds];
       v14 = v13;
       v16 = v15;
       v18 = v17;
@@ -25649,24 +25649,24 @@ void __68__CSCoverSheetViewController__removeBackgroundContentViewController__bl
   v4[2]();
 }
 
-- (void)_performLocalAppearanceUpdatesWithReason:(id)a3 updates:(id)a4
+- (void)_performLocalAppearanceUpdatesWithReason:(id)reason updates:(id)updates
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSCoverSheetViewController *)self localAppearance];
+  reasonCopy = reason;
+  updatesCopy = updates;
+  localAppearance = [(CSCoverSheetViewController *)self localAppearance];
   v9 = MEMORY[0x277CF0D38];
   v10 = [MEMORY[0x277CF0B70] settingsWithDuration:0.4];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __79__CSCoverSheetViewController__performLocalAppearanceUpdatesWithReason_updates___block_invoke;
   v14[3] = &unk_27838BFE8;
-  v15 = v8;
-  v16 = self;
-  v17 = v6;
-  v18 = v7;
-  v11 = v6;
-  v12 = v8;
-  v13 = v7;
+  v15 = localAppearance;
+  selfCopy = self;
+  v17 = reasonCopy;
+  v18 = updatesCopy;
+  v11 = reasonCopy;
+  v12 = localAppearance;
+  v13 = updatesCopy;
   [v9 animateWithSettings:v10 actions:v14 completion:0];
 }
 
@@ -25679,24 +25679,24 @@ uint64_t __79__CSCoverSheetViewController__performLocalAppearanceUpdatesWithReas
   return [v2 _updateActiveAppearanceForReason:v3];
 }
 
-- (void)_addBackgroundContentOccludingViewsForAppearance:(id)a3
+- (void)_addBackgroundContentOccludingViewsForAppearance:(id)appearance
 {
   if (self->_backgroundContentViewController)
   {
-    [a3 removeAllComponentsWithIdentifier:@"BackgroundContent"];
+    [appearance removeAllComponentsWithIdentifier:@"BackgroundContent"];
   }
 }
 
-- (void)_removeBackgroundContentOccludingViewsForAppearance:(id)a3
+- (void)_removeBackgroundContentOccludingViewsForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   if (self->_backgroundContentViewController)
   {
-    v19 = v4;
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    v19 = appearanceCopy;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       v7 = +[CSComponent complicationContainer];
       v8 = [v7 identifier:@"BackgroundContent"];
@@ -25717,7 +25717,7 @@ uint64_t __79__CSCoverSheetViewController__performLocalAppearanceUpdatesWithReas
     v18 = [v17 shouldRenderInline:1];
     [v19 addComponent:v18];
 
-    v4 = v19;
+    appearanceCopy = v19;
   }
 }
 
@@ -25730,22 +25730,22 @@ uint64_t __79__CSCoverSheetViewController__performLocalAppearanceUpdatesWithReas
     self->_backgroundContentGestureRecognizer = v5;
 
     [(UITapGestureRecognizer *)self->_backgroundContentGestureRecognizer setDelegate:self];
-    v7 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v7 setBackgroundContentGestureRecognizer:self->_backgroundContentGestureRecognizer];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView setBackgroundContentGestureRecognizer:self->_backgroundContentGestureRecognizer];
   }
 }
 
-- (void)_addOrRemoveRemoteContentViewIfNecessaryMaintainingState:(BOOL)a3
+- (void)_addOrRemoveRemoteContentViewIfNecessaryMaintainingState:(BOOL)state
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = [(CSCoverSheetViewController *)self _activeRemoteContentAssertion];
-  if (v5)
+  _activeRemoteContentAssertion = [(CSCoverSheetViewController *)self _activeRemoteContentAssertion];
+  if (_activeRemoteContentAssertion)
   {
-    self->_suppressModalRemotePresentation = a3;
-    v6 = [(CSCoverSheetViewController *)self _canShowEmbeddedRemoteContent];
+    self->_suppressModalRemotePresentation = state;
+    _canShowEmbeddedRemoteContent = [(CSCoverSheetViewController *)self _canShowEmbeddedRemoteContent];
     v7 = SBLogDashBoard();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    if (_canShowEmbeddedRemoteContent)
     {
       if (v8)
       {
@@ -25753,7 +25753,7 @@ uint64_t __79__CSCoverSheetViewController__performLocalAppearanceUpdatesWithReas
         _os_log_impl(&dword_21EB05000, v7, OS_LOG_TYPE_DEFAULT, "[CSCSVC][RemoteContent] Reinstating content", v9, 2u);
       }
 
-      [(CSCoverSheetViewController *)self _addRemoteViewControllerForAction:v5];
+      [(CSCoverSheetViewController *)self _addRemoteViewControllerForAction:_activeRemoteContentAssertion];
     }
 
     else
@@ -25773,10 +25773,10 @@ uint64_t __79__CSCoverSheetViewController__performLocalAppearanceUpdatesWithReas
   }
 }
 
-- (void)_cleanupStaleRemoteContentWithCompletion:(id)a3
+- (void)_cleanupStaleRemoteContentWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -25812,8 +25812,8 @@ uint64_t __79__CSCoverSheetViewController__performLocalAppearanceUpdatesWithReas
   v11[2] = __71__CSCoverSheetViewController__cleanupStaleRemoteContentWithCompletion___block_invoke;
   v11[3] = &unk_27838BA98;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v11);
 }
 
@@ -25870,11 +25870,11 @@ void __71__CSCoverSheetViewController__cleanupStaleRemoteContentWithCompletion__
 
 - (BOOL)_canShowEmbeddedRemoteContent
 {
-  v3 = [*MEMORY[0x277D76620] activeInterfaceOrientation];
-  v4 = [(CSCoverSheetViewController *)self bs_isAppearingOrAppeared];
-  if (!v4 || (v3 - 3) >= 0xFFFFFFFFFFFFFFFELL)
+  activeInterfaceOrientation = [*MEMORY[0x277D76620] activeInterfaceOrientation];
+  bs_isAppearingOrAppeared = [(CSCoverSheetViewController *)self bs_isAppearingOrAppeared];
+  if (!bs_isAppearingOrAppeared || (activeInterfaceOrientation - 3) >= 0xFFFFFFFFFFFFFFFELL)
   {
-    if ((v4 & 1) == 0)
+    if ((bs_isAppearingOrAppeared & 1) == 0)
     {
       goto LABEL_15;
     }
@@ -25884,17 +25884,17 @@ void __71__CSCoverSheetViewController__cleanupStaleRemoteContentWithCompletion__
 
   if ((__sb__runningInSpringBoard() & 1) == 0)
   {
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v13 != 1)
+    if (userInterfaceIdiom != 1)
     {
       goto LABEL_15;
     }
 
 LABEL_7:
-    v5 = [(CSCoverSheetViewController *)self activeBehavior];
-    v6 = [v5 areRestrictedCapabilities:0x80000];
+    activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+    v6 = [activeBehavior areRestrictedCapabilities:0x80000];
 
     if (v6)
     {
@@ -25997,12 +25997,12 @@ LABEL_18:
   return 0;
 }
 
-- (void)_addRemoteViewControllerForAction:(id)a3
+- (void)_addRemoteViewControllerForAction:(id)action
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [a3 configurationObject];
+  configurationObject = [action configurationObject];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = configurationObject;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -26030,8 +26030,8 @@ LABEL_18:
 
   else
   {
-    v10 = [(CSCoverSheetViewController *)self _hostedRemoteContentViewController];
-    if (!a3 || v10)
+    _hostedRemoteContentViewController = [(CSCoverSheetViewController *)self _hostedRemoteContentViewController];
+    if (!action || _hostedRemoteContentViewController)
     {
     }
 
@@ -26074,9 +26074,9 @@ LABEL_13:
           }
         }
 
-        v17 = [v16 sessionID];
+        sessionID = [v16 sessionID];
 
-        if (!v17)
+        if (!sessionID)
         {
           goto LABEL_24;
         }
@@ -26085,7 +26085,7 @@ LABEL_13:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v25 = v17;
+          v25 = sessionID;
           _os_log_impl(&dword_21EB05000, v18, OS_LOG_TYPE_DEFAULT, "Already have valid existing session ID %{public}@; not adding remote VC", buf, 0xCu);
         }
       }
@@ -26097,7 +26097,7 @@ LABEL_19:
 LABEL_24:
         v19 = [(CSRemoteContentSessionManager *)self->_remoteContentSessionManager createSessionWithDefinition:v9];
         [v19 setHostDelegate:self];
-        v17 = v19;
+        sessionID = v19;
         BSDispatchMain();
         v18 = v19;
       }
@@ -26105,21 +26105,21 @@ LABEL_24:
   }
 }
 
-- (void)_dismissRemoteViewControllerForReason:(int64_t)a3 completion:(id)a4
+- (void)_dismissRemoteViewControllerForReason:(int64_t)reason completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __79__CSCoverSheetViewController__dismissRemoteViewControllerForReason_completion___block_invoke;
   v20[3] = &unk_27838C010;
   v20[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   v21 = v7;
   v8 = MEMORY[0x223D698D0](v20);
-  v9 = [(CSCoverSheetViewController *)self _hostedRemoteContentViewController];
-  if (v9)
+  _hostedRemoteContentViewController = [(CSCoverSheetViewController *)self _hostedRemoteContentViewController];
+  if (_hostedRemoteContentViewController)
   {
     v10 = SBLogDashBoard();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -26128,7 +26128,7 @@ LABEL_24:
       *buf = 138543618;
       v23 = v11;
       v24 = 2114;
-      v25 = v9;
+      v25 = _hostedRemoteContentViewController;
       _os_log_impl(&dword_21EB05000, v10, OS_LOG_TYPE_DEFAULT, "[CSCSVC][RemoteContent] Dismissing remote content because of %{public}@: %{public}@", buf, 0x16u);
     }
 
@@ -26137,11 +26137,11 @@ LABEL_24:
     v16 = __79__CSCoverSheetViewController__dismissRemoteViewControllerForReason_completion___block_invoke_607;
     v17 = &unk_27838C038;
     v12 = v8;
-    v18 = self;
+    selfCopy = self;
     v19 = v12;
     v13 = MEMORY[0x223D698D0](&v14);
     self->_isRemovingLockScreenContentAction = 1;
-    if (([v9 dismissForDismissType:a3 completion:{v13, v14, v15, v16, v17}] & 1) == 0)
+    if (([_hostedRemoteContentViewController dismissForDismissType:reason completion:{v13, v14, v15, v16, v17}] & 1) == 0)
     {
       (*(v12 + 2))(v12, 0);
     }
@@ -26196,16 +26196,16 @@ void __79__CSCoverSheetViewController__dismissRemoteViewControllerForReason_comp
   }
 }
 
-- (BOOL)_removeRemoteViewControllerForInvalidatedSession:(id)a3 completion:(id)a4
+- (BOOL)_removeRemoteViewControllerForInvalidatedSession:(id)session completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __90__CSCoverSheetViewController__removeRemoteViewControllerForInvalidatedSession_completion___block_invoke;
   v35[3] = &unk_27838BB18;
-  v8 = v7;
+  v8 = completionCopy;
   v36 = v8;
   v9 = MEMORY[0x223D698D0](v35);
   v10 = v9;
@@ -26214,10 +26214,10 @@ void __79__CSCoverSheetViewController__dismissRemoteViewControllerForReason_comp
     v11 = SBLogDashBoard();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 sessionID];
+      sessionID = [sessionCopy sessionID];
       remoteContentModalViewController = self->_remoteContentModalViewController;
       *buf = 138543618;
-      v39 = v12;
+      v39 = sessionID;
       v40 = 2114;
       v41 = remoteContentModalViewController;
       _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "[CSCSVC][RemoteContent] Removing content for session %{public}@: %{public}@", buf, 0x16u);
@@ -26229,8 +26229,8 @@ void __79__CSCoverSheetViewController__dismissRemoteViewControllerForReason_comp
     v31[1] = 3221225472;
     v31[2] = __90__CSCoverSheetViewController__removeRemoteViewControllerForInvalidatedSession_completion___block_invoke_608;
     v31[3] = &unk_27838C060;
-    v32 = v6;
-    v33 = self;
+    v32 = sessionCopy;
+    selfCopy = self;
     v34 = v10;
     v16 = 1;
     [(CSCoverSheetViewController *)self _dismissModalViewController:v15 animated:1 completion:v31];
@@ -26241,10 +26241,10 @@ void __79__CSCoverSheetViewController__dismissRemoteViewControllerForReason_comp
     v17 = SBLogDashBoard();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v6 sessionID];
+      sessionID2 = [sessionCopy sessionID];
       remoteContentInlineViewController = self->_remoteContentInlineViewController;
       *buf = 138543618;
-      v39 = v18;
+      v39 = sessionID2;
       v40 = 2114;
       v41 = remoteContentInlineViewController;
       _os_log_impl(&dword_21EB05000, v17, OS_LOG_TYPE_DEFAULT, "[CSCSVC][RemoteContent] Removing content for session %{public}@: %{public}@", buf, 0x16u);
@@ -26355,9 +26355,9 @@ void __90__CSCoverSheetViewController__removeRemoteViewControllerForInvalidatedS
 
   v8 = v7;
 
-  v9 = [v8 presentedViewControllers];
+  presentedViewControllers = [v8 presentedViewControllers];
 
-  v10 = [v9 containsObject:self->_remoteContentModalViewController];
+  v10 = [presentedViewControllers containsObject:self->_remoteContentModalViewController];
   if (v10)
   {
     remoteContentModalViewController = self->_remoteContentModalViewController;
@@ -26391,18 +26391,18 @@ void __90__CSCoverSheetViewController__removeRemoteViewControllerForInvalidatedS
 {
   if ([(CSCoverSheetViewController *)self didDismissSinceScreenOn])
   {
-    v3 = 0;
+    preferredNotificationListMode = 0;
   }
 
   else
   {
-    v3 = [(CSRemoteContentInlineViewController *)self->_remoteContentInlineViewController preferredNotificationListMode];
+    preferredNotificationListMode = [(CSRemoteContentInlineViewController *)self->_remoteContentInlineViewController preferredNotificationListMode];
   }
 
-  [(CSCoverSheetViewController *)self _overrideNotificationDisplayStyleWithRemotePreference:v3];
+  [(CSCoverSheetViewController *)self _overrideNotificationDisplayStyleWithRemotePreference:preferredNotificationListMode];
 }
 
-- (void)_overrideNotificationDisplayStyleWithRemotePreference:(int64_t)a3
+- (void)_overrideNotificationDisplayStyleWithRemotePreference:(int64_t)preference
 {
   v20 = *MEMORY[0x277D85DE8];
   remoteOverrideNotificationDisplayStyleAssertion = self->_remoteOverrideNotificationDisplayStyleAssertion;
@@ -26413,13 +26413,13 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v6 = [(CSOverrideNotificationListDisplayStyleAssertion *)remoteOverrideNotificationDisplayStyleAssertion hideNotificationCount];
-  v7 = [(CSOverrideNotificationListDisplayStyleAssertion *)self->_remoteOverrideNotificationDisplayStyleAssertion displayStyle];
-  switch(v7)
+  hideNotificationCount = [(CSOverrideNotificationListDisplayStyleAssertion *)remoteOverrideNotificationDisplayStyleAssertion hideNotificationCount];
+  displayStyle = [(CSOverrideNotificationListDisplayStyleAssertion *)self->_remoteOverrideNotificationDisplayStyleAssertion displayStyle];
+  switch(displayStyle)
   {
     case 2:
       v8 = 3;
-      if (!v6)
+      if (!hideNotificationCount)
       {
         v8 = 4;
       }
@@ -26436,7 +26436,7 @@ LABEL_6:
   }
 
 LABEL_10:
-  if (v8 == a3)
+  if (v8 == preference)
   {
     return;
   }
@@ -26450,46 +26450,46 @@ LABEL_10:
     _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "[CSCSVC][RemoteContent] Setting notification list display style override: %{public}@", &v18, 0xCu);
   }
 
-  if (a3 <= 1)
+  if (preference <= 1)
   {
-    if (!a3)
+    if (!preference)
     {
       v12 = self->_remoteOverrideNotificationDisplayStyleAssertion;
       self->_remoteOverrideNotificationDisplayStyleAssertion = 0;
       goto LABEL_25;
     }
 
-    if (a3 != 1)
+    if (preference != 1)
     {
       return;
     }
 
-    v11 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-    v12 = v11;
+    combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+    v12 = combinedListViewController;
     v13 = *MEMORY[0x277D78020];
     v14 = 0;
   }
 
   else
   {
-    switch(a3)
+    switch(preference)
     {
       case 2:
-        v11 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-        v12 = v11;
+        combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+        v12 = combinedListViewController;
         v13 = *MEMORY[0x277D78020];
         v14 = 1;
         break;
       case 3:
-        v11 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-        v12 = v11;
+        combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+        v12 = combinedListViewController;
         v13 = *MEMORY[0x277D78020];
         v14 = 2;
         v15 = 1;
         goto LABEL_24;
       case 4:
-        v11 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-        v12 = v11;
+        combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+        v12 = combinedListViewController;
         v13 = *MEMORY[0x277D78020];
         v14 = 2;
         break;
@@ -26500,7 +26500,7 @@ LABEL_10:
 
   v15 = 0;
 LABEL_24:
-  v16 = [(CSOverrideNotificationListDisplayStyleAssertion *)v11 acquireOverrideNotificationListDisplayStyleAssertionWithStyle:v14 hideNotificationCount:v15 reason:v13];
+  v16 = [(CSOverrideNotificationListDisplayStyleAssertion *)combinedListViewController acquireOverrideNotificationListDisplayStyleAssertionWithStyle:v14 hideNotificationCount:v15 reason:v13];
   v17 = self->_remoteOverrideNotificationDisplayStyleAssertion;
   self->_remoteOverrideNotificationDisplayStyleAssertion = v16;
 
@@ -26522,15 +26522,15 @@ LABEL_25:
   }
 }
 
-- (BOOL)shouldActivateRemoteContentSession:(id)a3
+- (BOOL)shouldActivateRemoteContentSession:(id)session
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self activeBehavior];
-  v6 = [v5 areRestrictedCapabilities:0x80000];
+  sessionCopy = session;
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v6 = [activeBehavior areRestrictedCapabilities:0x80000];
 
-  v7 = [(CSCoverSheetViewController *)self _hostedRemoteContentViewController];
-  if (v7)
+  _hostedRemoteContentViewController = [(CSCoverSheetViewController *)self _hostedRemoteContentViewController];
+  if (_hostedRemoteContentViewController)
   {
     v8 = 1;
   }
@@ -26545,11 +26545,11 @@ LABEL_25:
     v9 = SBLogDashBoard();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 sessionID];
+      sessionID = [sessionCopy sessionID];
       v12 = 138543874;
-      v13 = v10;
+      v13 = sessionID;
       v14 = 2114;
-      v15 = v7;
+      v15 = _hostedRemoteContentViewController;
       v16 = 1026;
       v17 = v6;
       _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "[CSCSVC][RemoteContent] Should not activate for session: %{public}@, controller: %{public}@, restricted: %{public}d", &v12, 0x1Cu);
@@ -26559,15 +26559,15 @@ LABEL_25:
   return v8 ^ 1;
 }
 
-- (void)_presentInlineViewController:(id)a3
+- (void)_presentInlineViewController:(id)controller
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    objc_storeStrong(&self->_remoteContentInlineViewController, a3);
+    objc_storeStrong(&self->_remoteContentInlineViewController, controller);
     [(CSCoverSheetViewController *)self _updateRemoteContentInlineHorizontalMargin];
-    v6 = [(CSCoverSheetViewController *)self _isMainPageShowing];
+    _isMainPageShowing = [(CSCoverSheetViewController *)self _isMainPageShowing];
     v7 = SBLogDashBoard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -26595,7 +26595,7 @@ LABEL_25:
             objc_enumerationMutation(v8);
           }
 
-          [*(*(&v15 + 1) + 8 * v12++) presentInlineRemoteContent:v5 animatePresentation:{v6, v15}];
+          [*(*(&v15 + 1) + 8 * v12++) presentInlineRemoteContent:controllerCopy animatePresentation:{_isMainPageShowing, v15}];
         }
 
         while (v10 != v12);
@@ -26608,14 +26608,14 @@ LABEL_25:
     v13 = [CSAction actionWithType:3];
     [(CSCoverSheetViewController *)self handleAction:v13 fromSender:self];
 
-    [v5 setPresenter:self];
-    if (self->_lastAppearState == 2 && [v5 presentationCancelsTouches])
+    [controllerCopy setPresenter:self];
+    if (self->_lastAppearState == 2 && [controllerCopy presentationCancelsTouches])
     {
       BKSHIDServicesCancelTouchesOnMainDisplay();
     }
 
-    v14 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-    [v14 addInlineContentSupportForDelegate:v5];
+    mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+    [mainPageContentViewController addInlineContentSupportForDelegate:controllerCopy];
 
     [(CSCoverSheetViewController *)self _overrideNotificationDisplayStyleForInlineContent];
     [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:@"PresentedInlineContentViewController"];
@@ -26623,15 +26623,15 @@ LABEL_25:
   }
 }
 
-- (BOOL)remoteContentSession:(id)a3 presentViewController:(id)a4
+- (BOOL)remoteContentSession:(id)session presentViewController:(id)controller
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  controllerCopy = controller;
   if (*&self->_remoteContentModalViewController == 0)
   {
-    v12 = [(CSCoverSheetViewController *)self activeBehavior];
-    v13 = [v12 areRestrictedCapabilities:0x80000];
+    activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+    v13 = [activeBehavior areRestrictedCapabilities:0x80000];
 
     v8 = SBLogDashBoard();
     v14 = os_log_type_enabled(&v8->super.super.super.super.super, OS_LOG_TYPE_DEFAULT);
@@ -26653,17 +26653,17 @@ LABEL_25:
       _os_log_impl(&dword_21EB05000, &v8->super.super.super.super.super, OS_LOG_TYPE_DEFAULT, "[CSCSVS][RemoteContent] Being asked to present remote session", &v31, 2u);
     }
 
-    v15 = [v7 contentPresentationType];
-    if (v15)
+    contentPresentationType = [controllerCopy contentPresentationType];
+    if (contentPresentationType)
     {
-      if (v15 != 1)
+      if (contentPresentationType != 1)
       {
         v10 = 1;
         goto LABEL_7;
       }
 
       v16 = objc_opt_class();
-      v17 = v7;
+      v17 = controllerCopy;
       if (v16)
       {
         if (objc_opt_isKindOfClass())
@@ -26700,10 +26700,10 @@ LABEL_25:
       v22 = SBLogDashBoard();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v6 sessionID];
+        sessionID = [sessionCopy sessionID];
         remoteContentInlineViewController = self->_remoteContentInlineViewController;
         v31 = 138543618;
-        v32 = v23;
+        v32 = sessionID;
         v33 = 2114;
         v34 = remoteContentInlineViewController;
 LABEL_40:
@@ -26726,10 +26726,10 @@ LABEL_40:
         goto LABEL_4;
       }
 
-      v19 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-      v20 = [v19 hasVisibleBreakthroughContent];
+      mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+      hasVisibleBreakthroughContent = [mainPageContentViewController hasVisibleBreakthroughContent];
 
-      if (v20)
+      if (hasVisibleBreakthroughContent)
       {
         v8 = SBLogDashBoard();
         if (!os_log_type_enabled(&v8->super.super.super.super.super, OS_LOG_TYPE_DEFAULT))
@@ -26743,7 +26743,7 @@ LABEL_40:
       }
 
       v25 = objc_opt_class();
-      v26 = __BSSafeCast(v7, v25);
+      v26 = __BSSafeCast(controllerCopy, v25);
       remoteContentModalViewController = self->_remoteContentModalViewController;
       self->_remoteContentModalViewController = v26;
 
@@ -26758,8 +26758,8 @@ LABEL_40:
           _os_log_impl(&dword_21EB05000, v28, OS_LOG_TYPE_DEFAULT, "[ZStack-Participant] adding remote content modal home affordance", &v31, 2u);
         }
 
-        v29 = [(CSCoverSheetContextProviding *)self->_coverSheetContext modalHomeAffordanceController];
-        [(CSDismissableModalViewController *)v8 setHomeAffordanceController:v29];
+        modalHomeAffordanceController = [(CSCoverSheetContextProviding *)self->_coverSheetContext modalHomeAffordanceController];
+        [(CSDismissableModalViewController *)v8 setHomeAffordanceController:modalHomeAffordanceController];
       }
 
       [(CSDismissableModalViewController *)v8 setDelegate:self->_remoteContentModalViewController];
@@ -26767,10 +26767,10 @@ LABEL_40:
       v22 = SBLogDashBoard();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v6 sessionID];
+        sessionID = [sessionCopy sessionID];
         v30 = self->_remoteContentModalViewController;
         v31 = 138543618;
-        v32 = v23;
+        v32 = sessionID;
         v33 = 2114;
         v34 = v30;
         goto LABEL_40;
@@ -26798,60 +26798,60 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)remoteContentSession:(id)a3 dismissWithReason:(int64_t)a4 completion:(id)a5
+- (BOOL)remoteContentSession:(id)session dismissWithReason:(int64_t)reason completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  sessionCopy = session;
+  completionCopy = completion;
   v9 = SBLogDashBoard();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v7 sessionID];
+    sessionID = [sessionCopy sessionID];
     v11 = NSStringFromSBSRemoteContentDismissType();
     v16 = 138543618;
-    v17 = v10;
+    v17 = sessionID;
     v18 = 2112;
     v19 = v11;
     _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_INFO, "[CSCSVC][RemoteContent] Dismiss remote content session %{public}@ for reason %{pubic}@", &v16, 0x16u);
   }
 
   remoteContentSessionManager = self->_remoteContentSessionManager;
-  v13 = [v7 sessionID];
-  [(CSRemoteContentSessionManager *)remoteContentSessionManager didInvalidateSessionWithSessionID:v13];
+  sessionID2 = [sessionCopy sessionID];
+  [(CSRemoteContentSessionManager *)remoteContentSessionManager didInvalidateSessionWithSessionID:sessionID2];
 
-  v14 = [(CSCoverSheetViewController *)self _removeRemoteViewControllerForInvalidatedSession:v7 completion:v8];
+  v14 = [(CSCoverSheetViewController *)self _removeRemoteViewControllerForInvalidatedSession:sessionCopy completion:completionCopy];
   return v14;
 }
 
-- (void)remoteContentSession:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteContentSession:(id)session didInvalidateWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v8 = SBLogDashBoard();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 sessionID];
-    v10 = [v7 descriptionWithMultilinePrefix:0];
+    sessionID = [sessionCopy sessionID];
+    v10 = [errorCopy descriptionWithMultilinePrefix:0];
     *buf = 138543618;
-    v18 = v9;
+    v18 = sessionID;
     v19 = 2112;
     v20 = v10;
     _os_log_impl(&dword_21EB05000, v8, OS_LOG_TYPE_INFO, "[CSCSVC][RemoteContent] Invalidate remote content session %{public}@ for error: %{pubic}@", buf, 0x16u);
   }
 
   remoteContentSessionManager = self->_remoteContentSessionManager;
-  v12 = [v6 sessionID];
-  [(CSRemoteContentSessionManager *)remoteContentSessionManager didInvalidateSessionWithSessionID:v12];
+  sessionID2 = [sessionCopy sessionID];
+  [(CSRemoteContentSessionManager *)remoteContentSessionManager didInvalidateSessionWithSessionID:sessionID2];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __74__CSCoverSheetViewController_remoteContentSession_didInvalidateWithError___block_invoke;
   v14[3] = &unk_27838B838;
-  v15 = v7;
-  v16 = self;
-  v13 = v7;
-  [(CSCoverSheetViewController *)self _removeRemoteViewControllerForInvalidatedSession:v6 completion:v14];
+  v15 = errorCopy;
+  selfCopy = self;
+  v13 = errorCopy;
+  [(CSCoverSheetViewController *)self _removeRemoteViewControllerForInvalidatedSession:sessionCopy completion:v14];
 }
 
 void __74__CSCoverSheetViewController_remoteContentSession_didInvalidateWithError___block_invoke(uint64_t a1)
@@ -26906,10 +26906,10 @@ void __74__CSCoverSheetViewController_remoteContentSession_didInvalidateWithErro
 
   if (v8)
   {
-    v9 = [(CSRemoteContentModalViewController *)self->_remoteContentModalViewController shouldCaptureHomeGesture];
+    shouldCaptureHomeGesture = [(CSRemoteContentModalViewController *)self->_remoteContentModalViewController shouldCaptureHomeGesture];
     v10 = SBLogDashBoard();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (shouldCaptureHomeGesture)
     {
       if (v11)
       {
@@ -26917,8 +26917,8 @@ void __74__CSCoverSheetViewController_remoteContentSession_didInvalidateWithErro
         _os_log_impl(&dword_21EB05000, v10, OS_LOG_TYPE_DEFAULT, "[ZStack-Participant] adding remote content modal home affordance for style update", buf, 2u);
       }
 
-      v12 = [(CSCoverSheetContextProviding *)self->_coverSheetContext modalHomeAffordanceController];
-      [v8 setHomeAffordanceController:v12];
+      modalHomeAffordanceController = [(CSCoverSheetContextProviding *)self->_coverSheetContext modalHomeAffordanceController];
+      [v8 setHomeAffordanceController:modalHomeAffordanceController];
     }
 
     else
@@ -26950,9 +26950,9 @@ void __74__CSCoverSheetViewController_remoteContentSession_didInvalidateWithErro
 
 - (double)remoteContentComplicationTopYInset
 {
-  v3 = [(CSCoverSheetViewController *)self _wouldComplicationsUseBottomPosition];
+  _wouldComplicationsUseBottomPosition = [(CSCoverSheetViewController *)self _wouldComplicationsUseBottomPosition];
   result = 0.0;
-  if (!v3)
+  if (!_wouldComplicationsUseBottomPosition)
   {
     return self->_portraitComplicationContainerHeight;
   }
@@ -26960,14 +26960,14 @@ void __74__CSCoverSheetViewController_remoteContentSession_didInvalidateWithErro
   return result;
 }
 
-- (void)combinedListViewController:(id)a3 didChangeVisibleBreakthroughContent:(BOOL)a4
+- (void)combinedListViewController:(id)controller didChangeVisibleBreakthroughContent:(BOOL)content
 {
-  v6 = [(CSCoverSheetViewController *)self _activeRemoteContentAssertion];
+  _activeRemoteContentAssertion = [(CSCoverSheetViewController *)self _activeRemoteContentAssertion];
 
-  if (v6 && !a4)
+  if (_activeRemoteContentAssertion && !content)
   {
-    v7 = [(CSCoverSheetViewController *)self _hostedRemoteContentViewController];
-    if (v7)
+    _hostedRemoteContentViewController = [(CSCoverSheetViewController *)self _hostedRemoteContentViewController];
+    if (_hostedRemoteContentViewController)
     {
     }
 
@@ -27065,33 +27065,33 @@ void __74__CSCoverSheetViewController_remoteContentSession_didInvalidateWithErro
   }
 }
 
-- (BOOL)preventsLaunchFromWidgetWithAction:(id)a3
+- (BOOL)preventsLaunchFromWidgetWithAction:(id)action
 {
-  v3 = [(CSCoverSheetViewController *)self activeBehavior];
-  v4 = [v3 areRestrictedCapabilities:0x1000000];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v4 = [activeBehavior areRestrictedCapabilities:0x1000000];
 
   return v4;
 }
 
-- (BOOL)widgetGridViewControllerShouldPreventLaunchFromWidget:(id)a3
+- (BOOL)widgetGridViewControllerShouldPreventLaunchFromWidget:(id)widget
 {
-  v3 = [(CSCoverSheetViewController *)self activeBehavior];
-  v4 = [v3 areRestrictedCapabilities:0x1000000];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v4 = [activeBehavior areRestrictedCapabilities:0x1000000];
 
   return v4;
 }
 
 - (void)widgetGridViewControllerDidUpdateComplicationDescriptors
 {
-  v2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  [v2 invalidateContentInsets];
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  [combinedListViewController invalidateContentInsets];
 }
 
-- (void)actionManager:(id)a3 addedAction:(id)a4
+- (void)actionManager:(id)manager addedAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_embeddedContentActionManager == v6)
+  managerCopy = manager;
+  actionCopy = action;
+  if (self->_embeddedContentActionManager == managerCopy)
   {
     if (self->_isRemovingLockScreenContentAction)
     {
@@ -27113,43 +27113,43 @@ void __74__CSCoverSheetViewController_remoteContentSession_didInvalidateWithErro
 - (void)_handleAddedAction
 {
   [(CSCoverSheetViewController *)self _addOrRemoveRemoteContentViewIfNecessary];
-  v4 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-  v3 = [v4 combinedListViewController];
-  [v3 addVisibleBreakthroughContentObserver:self];
+  mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+  combinedListViewController = [mainPageContentViewController combinedListViewController];
+  [combinedListViewController addVisibleBreakthroughContentObserver:self];
 }
 
-- (void)actionManager:(id)a3 removedAction:(id)a4
+- (void)actionManager:(id)manager removedAction:(id)action
 {
-  if (self->_embeddedContentActionManager == a3)
+  if (self->_embeddedContentActionManager == manager)
   {
-    v6 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-    v7 = [v6 combinedListViewController];
-    [v7 removeVisibleBreakthroughContentObserver:self];
+    mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+    combinedListViewController = [mainPageContentViewController combinedListViewController];
+    [combinedListViewController removeVisibleBreakthroughContentObserver:self];
 
     [(CSCoverSheetViewController *)self _addOrRemoveRemoteContentViewIfNecessary];
   }
 }
 
-- (void)backgroundContentActionManager:(id)a3 addedAction:(id)a4
+- (void)backgroundContentActionManager:(id)manager addedAction:(id)action
 {
-  if (self->_backgroundContentActionManager == a3)
+  if (self->_backgroundContentActionManager == manager)
   {
-    [(CSCoverSheetViewController *)self _addBackgroundContentViewControllerForAction:a4];
+    [(CSCoverSheetViewController *)self _addBackgroundContentViewControllerForAction:action];
   }
 }
 
-- (void)backgroundContentActionManager:(id)a3 removedAction:(id)a4
+- (void)backgroundContentActionManager:(id)manager removedAction:(id)action
 {
-  if (self->_backgroundContentActionManager == a3)
+  if (self->_backgroundContentActionManager == manager)
   {
     [(CSCoverSheetViewController *)self _removeBackgroundContentViewController];
   }
 }
 
-- (void)didPostNotificationRequest:(id)a3
+- (void)didPostNotificationRequest:(id)request
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = +[(CSCoverSheetViewControllerBase *)CSDismissableModalViewController];
   v6 = [(CSCoverSheetViewController *)self _presentedModalViewControllerWithIdentifier:v5];
   v7 = objc_opt_class();
@@ -27174,21 +27174,21 @@ void __74__CSCoverSheetViewController_remoteContentSession_didInvalidateWithErro
 
   v10 = v9;
 
-  v11 = [v10 presentedViewControllers];
+  presentedViewControllers = [v10 presentedViewControllers];
 
-  v12 = [v11 containsObject:self->_remoteContentModalViewController];
+  v12 = [presentedViewControllers containsObject:self->_remoteContentModalViewController];
   if (v12)
   {
-    v13 = [v4 sectionIdentifier];
-    v14 = [v13 isEqualToString:@"com.apple.cmas"];
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    v14 = [sectionIdentifier isEqualToString:@"com.apple.cmas"];
 
-    v15 = [v4 interruptionLevel];
-    if ([v4 isCriticalAlert])
+    interruptionLevel = [requestCopy interruptionLevel];
+    if ([requestCopy isCriticalAlert])
     {
       v16 = 1;
     }
 
-    else if (v15 > 1)
+    else if (interruptionLevel > 1)
     {
       v16 = 1;
     }
@@ -27198,9 +27198,9 @@ void __74__CSCoverSheetViewController_remoteContentSession_didInvalidateWithErro
       v16 = v14;
     }
 
-    v22 = [(CSRemoteContentModalViewController *)self->_remoteContentModalViewController suppressesDismissalForNotification];
-    v23 = v22;
-    if ((v16 & 1) != 0 || !v22)
+    suppressesDismissalForNotification = [(CSRemoteContentModalViewController *)self->_remoteContentModalViewController suppressesDismissalForNotification];
+    v23 = suppressesDismissalForNotification;
+    if ((v16 & 1) != 0 || !suppressesDismissalForNotification)
     {
       v18 = SBLogDashBoard();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -27242,14 +27242,14 @@ LABEL_21:
   }
 }
 
-- (void)combinedListViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)a3
+- (void)combinedListViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:d];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -27282,16 +27282,16 @@ LABEL_21:
   }
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v42 = [MEMORY[0x277CBEB18] array];
+  changeCopy = change;
+  array = [MEMORY[0x277CBEB18] array];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v4;
+  obj = changeCopy;
   v5 = [(NSArray *)obj countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v5)
   {
@@ -27314,12 +27314,12 @@ LABEL_21:
           {
             if ([(CSCoverSheetViewController *)self _isAppleMagSafePack:v10])
             {
-              v11 = [v10 identifier];
-              v12 = [(CSCoverSheetViewController *)self _containsCachedBatteryDeviceWithIdenfifier:v11];
+              identifier = [v10 identifier];
+              v12 = [(CSCoverSheetViewController *)self _containsCachedBatteryDeviceWithIdenfifier:identifier];
 
               if (!v12)
               {
-                [v42 addObject:v10];
+                [array addObject:v10];
               }
             }
           }
@@ -27349,13 +27349,13 @@ LABEL_21:
                 v18 = *(*(&v48 + 1) + 8 * j);
                 if ([v18 isInternal])
                 {
-                  v19 = [v18 percentCharge];
-                  v20 = [v10 percentCharge];
+                  percentCharge = [v18 percentCharge];
+                  percentCharge2 = [v10 percentCharge];
 
-                  if (v19 != v20)
+                  if (percentCharge != percentCharge2)
                   {
-                    v21 = [(BSAbsoluteMachTimer *)self->_chargingViewControllerTimer identifier];
-                    v22 = [v21 isEqualToString:@"CSCoverSheetViewController.chargingViewControllerTimer.subtitleOnly"];
+                    identifier2 = [(BSAbsoluteMachTimer *)self->_chargingViewControllerTimer identifier];
+                    v22 = [identifier2 isEqualToString:@"CSCoverSheetViewController.chargingViewControllerTimer.subtitleOnly"];
 
                     if (v22)
                     {
@@ -27388,14 +27388,14 @@ LABEL_24:
     while (v6);
   }
 
-  if ([v42 count])
+  if ([array count])
   {
     v23 = SBLogDashBoard();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+      _isShowingChargingModal = [(CSCoverSheetViewController *)self _isShowingChargingModal];
       *buf = 67109120;
-      v58 = v24;
+      v58 = _isShowingChargingModal;
       _os_log_impl(&dword_21EB05000, v23, OS_LOG_TYPE_DEFAULT, "[Charge UI][Novel Packs] visible YES, showBattery YES – isAlreadyShowingChargingModal: %d", buf, 8u);
     }
 
@@ -27403,15 +27403,15 @@ LABEL_24:
     v25 = SBLogDashBoard();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+      _isShowingChargingModal2 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
       *buf = 67109120;
-      v58 = v26;
+      v58 = _isShowingChargingModal2;
       _os_log_impl(&dword_21EB05000, v25, OS_LOG_TYPE_DEFAULT, "[Charge UI][Novel Packs] – endedShowingChargingModal: %d", buf, 8u);
     }
   }
 
-  v27 = [MEMORY[0x277CBEB18] array];
-  v28 = [(BCBatteryDeviceController *)self->_batteryDeviceController connectedDevices];
+  array2 = [MEMORY[0x277CBEB18] array];
+  connectedDevices = [(BCBatteryDeviceController *)self->_batteryDeviceController connectedDevices];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -27434,12 +27434,12 @@ LABEL_24:
         v34 = *(*(&v44 + 1) + 8 * k);
         if ([(CSCoverSheetViewController *)self _isAppleMagSafePack:v34])
         {
-          v35 = [v34 identifier];
-          v36 = [(CSCoverSheetViewController *)self _batteryCollection:v28 containsDeviceWithIdentifier:v35];
+          identifier3 = [v34 identifier];
+          v36 = [(CSCoverSheetViewController *)self _batteryCollection:connectedDevices containsDeviceWithIdentifier:identifier3];
 
           if (!v36)
           {
-            [v27 addObject:v34];
+            [array2 addObject:v34];
           }
         }
       }
@@ -27450,14 +27450,14 @@ LABEL_24:
     while (v31);
   }
 
-  if ([v27 count])
+  if ([array2 count])
   {
     v37 = SBLogDashBoard();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+      _isShowingChargingModal3 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
       *buf = 67109120;
-      v58 = v38;
+      v58 = _isShowingChargingModal3;
       _os_log_impl(&dword_21EB05000, v37, OS_LOG_TYPE_DEFAULT, "[Charge UI][Removed Packs] visible YES, showBattery NO – isAlreadyShowingChargingModal: %d", buf, 8u);
     }
 
@@ -27465,9 +27465,9 @@ LABEL_24:
     v39 = SBLogDashBoard();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+      _isShowingChargingModal4 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
       *buf = 67109120;
-      v58 = v40;
+      v58 = _isShowingChargingModal4;
       _os_log_impl(&dword_21EB05000, v39, OS_LOG_TYPE_DEFAULT, "[Charge UI][Removed Packs] – endedShowingChargingModal: %d", buf, 8u);
     }
   }
@@ -27476,16 +27476,16 @@ LABEL_24:
   self->_cachedBatteryDevices = obj;
 }
 
-- (BOOL)_batteryCollection:(id)a3 containsDeviceWithIdentifier:(id)a4
+- (BOOL)_batteryCollection:(id)collection containsDeviceWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  collectionCopy = collection;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = collectionCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -27499,8 +27499,8 @@ LABEL_24:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) identifier];
-        v12 = [v11 isEqualToString:v6];
+        identifier = [*(*(&v14 + 1) + 8 * i) identifier];
+        v12 = [identifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -27524,47 +27524,47 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_isAppleMagSafePack:(id)a3
+- (BOOL)_isAppleMagSafePack:(id)pack
 {
-  if (!a3)
+  if (!pack)
   {
     return 0;
   }
 
-  v3 = [a3 productIdentifier];
-  return v3 == *MEMORY[0x277CF0DB8] || v3 == *MEMORY[0x277CF0DC0];
+  productIdentifier = [pack productIdentifier];
+  return productIdentifier == *MEMORY[0x277CF0DB8] || productIdentifier == *MEMORY[0x277CF0DC0];
 }
 
-- (void)proudLockDidChangeToCoachingText:(id)a3
+- (void)proudLockDidChangeToCoachingText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   currentCoachingString = self->_currentCoachingString;
   self->_currentCoachingString = v4;
 
   [(CSCoverSheetViewController *)self _updateCoachingString];
 }
 
-- (void)_updateCoachingStringWithTimeout:(double)a3
+- (void)_updateCoachingStringWithTimeout:(double)timeout
 {
   dateViewController = self->_dateViewController;
-  v5 = [(CSCoverSheetViewController *)self _coachingStringToUse];
-  [(SBFLockScreenDateViewController *)dateViewController setCustomSubtitle:v5 withPriority:1 withTimeout:a3];
+  _coachingStringToUse = [(CSCoverSheetViewController *)self _coachingStringToUse];
+  [(SBFLockScreenDateViewController *)dateViewController setCustomSubtitle:_coachingStringToUse withPriority:1 withTimeout:timeout];
 }
 
-- (void)scrollablePageViewController:(id)a3 scrollViewWillBeginDragging:(id)a4
+- (void)scrollablePageViewController:(id)controller scrollViewWillBeginDragging:(id)dragging
 {
-  v6 = a4;
-  v7 = a3;
+  draggingCopy = dragging;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetSpotlightPresenter);
-  [WeakRetained scrollViewWillBeginDragging:v6];
+  [WeakRetained scrollViewWillBeginDragging:draggingCopy];
 
-  v11 = [(CSCoverSheetViewController *)self mainPageContentViewController];
+  mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
 
-  if (v11 == v7)
+  if (mainPageContentViewController == controllerCopy)
   {
-    v9 = [(CSCoverSheetViewController *)self _isShowingInlineContent];
+    _isShowingInlineContent = [(CSCoverSheetViewController *)self _isShowingInlineContent];
 
-    if (v9)
+    if (_isShowingInlineContent)
     {
       remoteContentInlineViewController = self->_remoteContentInlineViewController;
 
@@ -27577,32 +27577,32 @@ LABEL_11:
   }
 }
 
-- (void)scrollablePageViewController:(id)a3 scrollViewDidScroll:(id)a4
+- (void)scrollablePageViewController:(id)controller scrollViewDidScroll:(id)scroll
 {
-  v5 = a4;
+  scrollCopy = scroll;
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetSpotlightPresenter);
-  [WeakRetained scrollViewDidScroll:v5];
+  [WeakRetained scrollViewDidScroll:scrollCopy];
 }
 
-- (void)scrollablePageViewController:(id)a3 scrollViewWillEndDragging:(id)a4 withVelocity:(CGPoint)a5
+- (void)scrollablePageViewController:(id)controller scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
-  v10 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetSpotlightPresenter);
-  [WeakRetained scrollViewWillEndDragging:v9 withVelocity:{x, y}];
+  [WeakRetained scrollViewWillEndDragging:draggingCopy withVelocity:{x, y}];
 
   mainPageContentViewController = self->_mainPageContentViewController;
-  if (mainPageContentViewController == v10)
+  if (mainPageContentViewController == controllerCopy)
   {
     if ([(CSCoverSheetViewController *)self _isShowingInlineContent])
     {
       [(CSRemoteContentInlineViewController *)self->_remoteContentInlineViewController endCancelTouchesForCurrentEventInHostedContent];
-      v13 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-      v14 = [v13 isNotificationListSignificantlyScrolled];
+      combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+      isNotificationListSignificantlyScrolled = [combinedListViewController isNotificationListSignificantlyScrolled];
 
-      if (v14)
+      if (isNotificationListSignificantlyScrolled)
       {
 
         [(CSCoverSheetViewController *)self _dismissInlineContentOnSignificantScroll];
@@ -27611,7 +27611,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)spotlightPresenterAllowsPullToSearch:(id)a3
+- (BOOL)spotlightPresenterAllowsPullToSearch:(id)search
 {
   if ([(CSCoverSheetViewController *)self _canPresentSwipeDismissableModal])
   {
@@ -27630,10 +27630,10 @@ LABEL_7:
 
     else
     {
-      v8 = [(CSCoverSheetContextProviding *)self->_coverSheetContext screenStateProvider];
-      v9 = [v8 screenIsOn];
+      screenStateProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext screenStateProvider];
+      screenIsOn = [screenStateProvider screenIsOn];
 
-      if ((v9 & 1) == 0)
+      if ((screenIsOn & 1) == 0)
       {
         v4 = SBLogSpotlight();
         if (!os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -27647,10 +27647,10 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      v10 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-      v11 = [v10 isScrollingListContent];
+      combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+      isScrollingListContent = [combinedListViewController isScrollingListContent];
 
-      if (v11)
+      if (isScrollingListContent)
       {
         v4 = SBLogSpotlight();
         if (!os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -27664,10 +27664,10 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      v12 = [MEMORY[0x277D262A0] sharedConnection];
-      v13 = [v12 isSpotlightAllowed];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      isSpotlightAllowed = [mEMORY[0x277D262A0] isSpotlightAllowed];
 
-      if (v13)
+      if (isSpotlightAllowed)
       {
         return 1;
       }
@@ -27702,16 +27702,16 @@ LABEL_8:
 
 - (BOOL)_isSpotlightBehaviorRestricted
 {
-  v2 = [(CSCoverSheetViewController *)self activeBehavior];
-  v3 = [v2 areRestrictedCapabilities:0x200000];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v3 = [activeBehavior areRestrictedCapabilities:0x200000];
 
   return v3;
 }
 
-- (void)spotlightPresenter:(id)a3 presentDismissableModalViewController:(id)a4 completion:(id)a5
+- (void)spotlightPresenter:(id)presenter presentDismissableModalViewController:(id)controller completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   [(NSMutableArray *)self->_exemptFromInactiveAppearanceParticipants addObject:self->_mainPageContentViewController];
   if (!self->_spotlightModalViewController)
   {
@@ -27719,7 +27719,7 @@ LABEL_8:
     spotlightModalViewController = self->_spotlightModalViewController;
     self->_spotlightModalViewController = v9;
 
-    [(CSPresentationViewController *)self->_spotlightModalViewController presentContentViewController:v7 animated:0];
+    [(CSPresentationViewController *)self->_spotlightModalViewController presentContentViewController:controllerCopy animated:0];
     v11 = SBLogDashBoard();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -27728,22 +27728,22 @@ LABEL_8:
     }
 
     v12 = self->_spotlightModalViewController;
-    v13 = [(CSCoverSheetContextProviding *)self->_coverSheetContext modalHomeAffordanceController];
-    [(CSDismissableModalViewController *)v12 setHomeAffordanceController:v13];
+    modalHomeAffordanceController = [(CSCoverSheetContextProviding *)self->_coverSheetContext modalHomeAffordanceController];
+    [(CSDismissableModalViewController *)v12 setHomeAffordanceController:modalHomeAffordanceController];
 
-    [(CSDismissableModalViewController *)self->_spotlightModalViewController setDelegate:v7];
-    [(CSCoverSheetViewController *)self _presentModalViewController:self->_spotlightModalViewController animated:0 completion:v8];
+    [(CSDismissableModalViewController *)self->_spotlightModalViewController setDelegate:controllerCopy];
+    [(CSCoverSheetViewController *)self _presentModalViewController:self->_spotlightModalViewController animated:0 completion:completionCopy];
   }
 }
 
-- (void)spotlightPresenterDidPresentSearch:(id)a3
+- (void)spotlightPresenterDidPresentSearch:(id)search
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:search];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -27776,12 +27776,12 @@ LABEL_8:
   }
 }
 
-- (void)spotlightPresenter:(id)a3 dismissDismissableModalViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)spotlightPresenter:(id)presenter dismissDismissableModalViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  animatedCopy = animated;
+  presenterCopy = presenter;
+  controllerCopy = controller;
+  completionCopy = completion;
   [(NSMutableArray *)self->_exemptFromInactiveAppearanceParticipants removeObject:self->_mainPageContentViewController];
   [(CSDismissableModalViewController *)self->_spotlightModalViewController setHomeAffordanceController:0];
   objc_initWeak(&location, self);
@@ -27790,10 +27790,10 @@ LABEL_8:
   v15[1] = 3221225472;
   v15[2] = __107__CSCoverSheetViewController_spotlightPresenter_dismissDismissableModalViewController_animated_completion___block_invoke;
   v15[3] = &unk_27838C088;
-  v14 = v12;
+  v14 = completionCopy;
   v16 = v14;
   objc_copyWeak(&v17, &location);
-  [(CSCoverSheetViewController *)self _dismissModalViewController:spotlightModalViewController animated:v7 completion:v15];
+  [(CSCoverSheetViewController *)self _dismissModalViewController:spotlightModalViewController animated:animatedCopy completion:v15];
   objc_destroyWeak(&v17);
 
   objc_destroyWeak(&location);
@@ -27818,14 +27818,14 @@ void __107__CSCoverSheetViewController_spotlightPresenter_dismissDismissableModa
   }
 }
 
-- (void)spotlightPresenterDidDismissSearch:(id)a3
+- (void)spotlightPresenterDidDismissSearch:(id)search
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:search];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -27858,69 +27858,69 @@ void __107__CSCoverSheetViewController_spotlightPresenter_dismissDismissableModa
   }
 }
 
-- (void)spotlightPresenterAddContentView:(id)a3
+- (void)spotlightPresenterAddContentView:(id)view
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v3 addContentView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView addContentView];
 }
 
-- (void)spotlightPresenterRemoveContentView:(id)a3
+- (void)spotlightPresenterRemoveContentView:(id)view
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v3 removeContentView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView removeContentView];
 }
 
-- (id)displayConfigurationForSpotlightPresenter:(id)a3
+- (id)displayConfigurationForSpotlightPresenter:(id)presenter
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  v4 = [v3 _sbDisplayConfiguration];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  _sbDisplayConfiguration = [coverSheetView _sbDisplayConfiguration];
 
-  return v4;
+  return _sbDisplayConfiguration;
 }
 
-- (void)searchGesture:(id)a3 startedShowing:(BOOL)a4
+- (void)searchGesture:(id)gesture startedShowing:(BOOL)showing
 {
-  if (a4)
+  if (showing)
   {
-    v5 = a3;
-    v6 = [(CSCoverSheetViewController *)self delegate];
-    [v6 coverSheetViewController:self startSpotlightInteractiveGestureTransactionForGesture:v5];
+    gestureCopy = gesture;
+    delegate = [(CSCoverSheetViewController *)self delegate];
+    [delegate coverSheetViewController:self startSpotlightInteractiveGestureTransactionForGesture:gestureCopy];
   }
 
-  v7 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v7 addContentView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView addContentView];
 
-  v8 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-  [v8 setResignActive:1];
+  poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+  [poseidonContainerViewController setResignActive:1];
 }
 
-- (void)searchGesture:(id)a3 changedPercentComplete:(double)a4
+- (void)searchGesture:(id)gesture changedPercentComplete:(double)complete
 {
-  v8 = a3;
-  if ([v8 isTracking])
+  gestureCopy = gesture;
+  if ([gestureCopy isTracking])
   {
-    if (self->_spotlightInteractiveGestureTransaction || (-[CSCoverSheetViewController delegate](self, "delegate"), v6 = objc_claimAutoreleasedReturnValue(), [v6 coverSheetViewController:self startSpotlightInteractiveGestureTransactionForGesture:v8], v6, self->_spotlightInteractiveGestureTransaction))
+    if (self->_spotlightInteractiveGestureTransaction || (-[CSCoverSheetViewController delegate](self, "delegate"), v6 = objc_claimAutoreleasedReturnValue(), [v6 coverSheetViewController:self startSpotlightInteractiveGestureTransactionForGesture:gestureCopy], v6, self->_spotlightInteractiveGestureTransaction))
     {
       [objc_opt_class() searchHeaderHeight];
-      [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self->_spotlightInteractiveGestureTransaction updatePresentationWithProgress:a4 translation:v7 * a4];
+      [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self->_spotlightInteractiveGestureTransaction updatePresentationWithProgress:complete translation:v7 * complete];
     }
   }
 }
 
-- (void)searchGesture:(id)a3 endedGesture:(BOOL)a4
+- (void)searchGesture:(id)gesture endedGesture:(BOOL)endedGesture
 {
   spotlightInteractiveGestureTransaction = self->_spotlightInteractiveGestureTransaction;
   if (spotlightInteractiveGestureTransaction)
   {
-    [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)spotlightInteractiveGestureTransaction endPresentation:a4];
+    [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)spotlightInteractiveGestureTransaction endPresentation:endedGesture];
   }
 }
 
-- (void)searchGesture:(id)a3 completedShowing:(BOOL)a4
+- (void)searchGesture:(id)gesture completedShowing:(BOOL)showing
 {
-  [a3 resetAnimated:{0, a4}];
-  v5 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v5 removeContentView];
+  [gesture resetAnimated:{0, showing}];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView removeContentView];
 
   localAppearance = self->_localAppearance;
   v7 = [(CSAppearance *)localAppearance componentForType:1 identifier:@"Spotlight"];
@@ -27934,48 +27934,48 @@ void __107__CSCoverSheetViewController_spotlightPresenter_dismissDismissableModa
   v11 = [(CSAppearance *)v10 componentForType:15 identifier:@"Spotlight"];
   [(CSAppearance *)v10 removeComponent:v11];
 
-  v12 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-  [v12 setResignActive:0];
+  poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+  [poseidonContainerViewController setResignActive:0];
 }
 
-- (void)setSearchGesture:(id)a3
+- (void)setSearchGesture:(id)gesture
 {
-  objc_storeStrong(&self->_searchGesture, a3);
-  v5 = a3;
-  [v5 addObserver:self];
+  objc_storeStrong(&self->_searchGesture, gesture);
+  gestureCopy = gesture;
+  [gestureCopy addObserver:self];
 }
 
 - (void)_setupSearchGesture
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v3 setSearchGesture:self->_searchGesture];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView setSearchGesture:self->_searchGesture];
 }
 
-- (BOOL)searchGestureShouldRecognize:(id)a3
+- (BOOL)searchGestureShouldRecognize:(id)recognize
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1 && _os_feature_enabled_impl())
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && _os_feature_enabled_impl())
   {
-    v6 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-    v7 = [v6 isScrollingListContent];
+    combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+    isScrollingListContent = [combinedListViewController isScrollingListContent];
   }
 
   else
   {
-    v7 = 0;
+    isScrollingListContent = 0;
   }
 
   result = 0;
-  if (![(CSCoverSheetViewController *)self _isSpotlightBehaviorRestricted]&& (v7 & 1) == 0)
+  if (![(CSCoverSheetViewController *)self _isSpotlightBehaviorRestricted]&& (isScrollingListContent & 1) == 0)
   {
-    v8 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-    v9 = [v8 notificationListScrollView];
+    combinedListViewController2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+    notificationListScrollView = [combinedListViewController2 notificationListScrollView];
 
-    [v9 contentOffset];
+    [notificationListScrollView contentOffset];
     v11 = v10;
-    [v9 contentInset];
+    [notificationListScrollView contentInset];
     v13 = fabs(v11 + v12);
 
     if (v13 <= 1.0)
@@ -27987,14 +27987,14 @@ void __107__CSCoverSheetViewController_spotlightPresenter_dismissDismissableModa
   return result;
 }
 
-- (void)combinedListViewController:(id)a3 didUpdateVisibleNotificationCount:(unint64_t)a4
+- (void)combinedListViewController:(id)controller didUpdateVisibleNotificationCount:(unint64_t)count
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(NSHashTable *)self->_observers copy:a3];
+  v6 = [(NSHashTable *)self->_observers copy:controller];
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -28013,7 +28013,7 @@ void __107__CSCoverSheetViewController_spotlightPresenter_dismissDismissableModa
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 coverSheetViewController:self didUpdateVisibleNotificationCount:a4];
+          [v11 coverSheetViewController:self didUpdateVisibleNotificationCount:count];
         }
 
         ++v10;
@@ -28027,40 +28027,40 @@ void __107__CSCoverSheetViewController_spotlightPresenter_dismissDismissableModa
   }
 }
 
-- (void)ambientPresentationController:(id)a3 didUpdatePresented:(BOOL)a4
+- (void)ambientPresentationController:(id)controller didUpdatePresented:(BOOL)presented
 {
-  v4 = a4;
-  if (self->_isAmbientOverlayPresented != a4)
+  presentedCopy = presented;
+  if (self->_isAmbientOverlayPresented != presented)
   {
-    self->_isAmbientOverlayPresented = a4;
-    if (!a4)
+    self->_isAmbientOverlayPresented = presented;
+    if (!presented)
     {
       remoteContentInlineViewController = self->_remoteContentInlineViewController;
       if (remoteContentInlineViewController)
       {
-        v7 = [(CSRemoteContentInlineViewController *)remoteContentInlineViewController hostViewController];
-        [v7 hostDidChangeContentBounds];
+        hostViewController = [(CSRemoteContentInlineViewController *)remoteContentInlineViewController hostViewController];
+        [hostViewController hostDidChangeContentBounds];
 
         [(CSCoverSheetViewController *)self _updateRemoteContentInlineHorizontalMargin];
       }
     }
   }
 
-  [(CSNotificationDispatcher *)self->_notificationDispatcher setBannerDestinationUnavailable:v4 forReason:@"CSCoverSheetViewController-Ambient"];
+  [(CSNotificationDispatcher *)self->_notificationDispatcher setBannerDestinationUnavailable:presentedCopy forReason:@"CSCoverSheetViewController-Ambient"];
 
-  [(CSCoverSheetViewController *)self _setSuppressChargingUIForAmbient:v4];
+  [(CSCoverSheetViewController *)self _setSuppressChargingUIForAmbient:presentedCopy];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v5 = a4;
+  subscriptionCopy = subscription;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__CSCoverSheetViewController_appProtectionSubjectsChanged_forSubscription___block_invoke;
   v7[3] = &unk_27838B838;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = subscriptionCopy;
+  selfCopy = self;
+  v6 = subscriptionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -28077,15 +28077,15 @@ uint64_t __75__CSCoverSheetViewController_appProtectionSubjectsChanged_forSubscr
   return result;
 }
 
-- (id)_windowsFromViewControllers:(id)a3
+- (id)_windowsFromViewControllers:(id)controllers
 {
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(CSCoverSheetViewController *)self viewIfLoaded];
-  v6 = [v5 window];
+  viewIfLoaded = [(CSCoverSheetViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v6)
+  if (window)
   {
-    [v4 addObject:v6];
+    [v4 addObject:window];
   }
 
   return v4;
@@ -28108,12 +28108,12 @@ uint64_t __75__CSCoverSheetViewController_appProtectionSubjectsChanged_forSubscr
   return v3;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 isLocatedOverHorizontalContentRegionInViewController:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer isLocatedOverHorizontalContentRegionInViewController:(id)controller
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 view];
+  recognizerCopy = recognizer;
+  controllerCopy = controller;
+  view = [controllerCopy view];
   _UISystemGestureLocationInView();
   v9 = v8;
   v11 = v10;
@@ -28121,8 +28121,8 @@ uint64_t __75__CSCoverSheetViewController_appProtectionSubjectsChanged_forSubscr
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = [v6 presentationRegions];
-  v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  presentationRegions = [controllerCopy presentationRegions];
+  v13 = [presentationRegions countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
     v14 = *v23;
@@ -28132,13 +28132,13 @@ uint64_t __75__CSCoverSheetViewController_appProtectionSubjectsChanged_forSubscr
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(presentationRegions);
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
         if ([v16 isReservedForHorizontalScrolling])
         {
-          [v16 convertPoint:v7 fromCoordinateSpace:{v9, v11}];
+          [v16 convertPoint:view fromCoordinateSpace:{v9, v11}];
           v18 = v17;
           v20 = v19;
           [v16 extent];
@@ -28152,7 +28152,7 @@ uint64_t __75__CSCoverSheetViewController_appProtectionSubjectsChanged_forSubscr
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v13 = [presentationRegions countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v13)
       {
         continue;
@@ -28167,9 +28167,9 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)_overSlidingControlForLocation:(CGPoint)a3 inView:(id)a4
+- (BOOL)_overSlidingControlForLocation:(CGPoint)location inView:(id)view
 {
-  v4 = [a4 hitTest:0 withEvent:{a3.x, a3.y}];
+  v4 = [view hitTest:0 withEvent:{location.x, location.y}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -28185,41 +28185,41 @@ LABEL_12:
   return isKindOfClass & 1;
 }
 
-- (BOOL)_isSourceForHorizontalScrolling:(id)a3
+- (BOOL)_isSourceForHorizontalScrolling:(id)scrolling
 {
-  if (a3 == self)
+  if (scrolling == self)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self coverSheetView];
-  v6 = v5 == v4;
+  scrollingCopy = scrolling;
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  v6 = coverSheetView == scrollingCopy;
 
   return v6;
 }
 
-- (BOOL)_isSlideableContentOffsetOnscreen:(CGPoint)a3
+- (BOOL)_isSlideableContentOffsetOnscreen:(CGPoint)onscreen
 {
-  y = a3.y;
-  v4 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v4 bounds];
+  y = onscreen.y;
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView bounds];
   v6 = v5;
 
   return y > -v6;
 }
 
-- (void)_beginAppearanceTransitionForPageViewControllersToVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_beginAppearanceTransitionForPageViewControllersToVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v7 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+  _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __97__CSCoverSheetViewController__beginAppearanceTransitionForPageViewControllersToVisible_animated___block_invoke;
   v8[3] = &unk_27838C0B0;
   v8[4] = self;
-  v9 = a3;
-  v10 = a4;
-  [v7 enumerateObjectsUsingBlock:v8];
+  visibleCopy = visible;
+  animatedCopy = animated;
+  [_allowedPageViewControllers enumerateObjectsUsingBlock:v8];
 }
 
 uint64_t __97__CSCoverSheetViewController__beginAppearanceTransitionForPageViewControllersToVisible_animated___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -28238,16 +28238,16 @@ uint64_t __97__CSCoverSheetViewController__beginAppearanceTransitionForPageViewC
   return [v4 bs_beginAppearanceTransitionForChildViewController:a2 toVisible:v5 & 1 animated:*(a1 + 41)];
 }
 
-- (void)_endAppearanceTransitionForPageViewControllersToVisible:(BOOL)a3
+- (void)_endAppearanceTransitionForPageViewControllersToVisible:(BOOL)visible
 {
-  v5 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+  _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __86__CSCoverSheetViewController__endAppearanceTransitionForPageViewControllersToVisible___block_invoke;
   v6[3] = &unk_27838C0D8;
   v6[4] = self;
-  v7 = a3;
-  [v5 enumerateObjectsUsingBlock:v6];
+  visibleCopy = visible;
+  [_allowedPageViewControllers enumerateObjectsUsingBlock:v6];
 }
 
 void __86__CSCoverSheetViewController__endAppearanceTransitionForPageViewControllersToVisible___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -28270,43 +28270,43 @@ void __86__CSCoverSheetViewController__endAppearanceTransitionForPageViewControl
 
 - (double)_dateViewAlphaForCurrentWakeState
 {
-  v2 = [MEMORY[0x277D65FB8] rootSettings];
-  [v2 awakeDateAlpha];
+  rootSettings = [MEMORY[0x277D65FB8] rootSettings];
+  [rootSettings awakeDateAlpha];
   v4 = v3;
 
   return v4;
 }
 
-- (BOOL)_isKnownTransitionConflictFrom:(id)a3 to:(id)a4
+- (BOOL)_isKnownTransitionConflictFrom:(id)from to:(id)to
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 isMemberOfClass:objc_opt_class()];
+  toCopy = to;
+  fromCopy = from;
+  v7 = [fromCopy isMemberOfClass:objc_opt_class()];
 
-  v8 = v7 && ([v5 isMemberOfClass:objc_opt_class()] & 1) != 0;
+  v8 = v7 && ([toCopy isMemberOfClass:objc_opt_class()] & 1) != 0;
   return v8;
 }
 
 - (BOOL)_canPresentSwipeDismissableModal
 {
-  v3 = [(CSCoverSheetViewController *)self visiblePageViewController];
+  visiblePageViewController = [(CSCoverSheetViewController *)self visiblePageViewController];
 
-  if (!v3)
+  if (!visiblePageViewController)
   {
     return 0;
   }
 
-  v4 = [(CSCoverSheetViewController *)self modalPresentationController];
-  v5 = [v4 _appearState] == 0;
+  modalPresentationController = [(CSCoverSheetViewController *)self modalPresentationController];
+  v5 = [modalPresentationController _appearState] == 0;
 
   return v5;
 }
 
-- (double)_wallpaperLumaFromWallpaperComponent:(id)a3
+- (double)_wallpaperLumaFromWallpaperComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self wallpaperLegibilityEnvironment];
-  v6 = [v5 legibilityEnvironmentContextForVariant:*MEMORY[0x277D3EF20]];
+  componentCopy = component;
+  wallpaperLegibilityEnvironment = [(CSCoverSheetViewController *)self wallpaperLegibilityEnvironment];
+  v6 = [wallpaperLegibilityEnvironment legibilityEnvironmentContextForVariant:*MEMORY[0x277D3EF20]];
 
   if (v6)
   {
@@ -28316,8 +28316,8 @@ void __86__CSCoverSheetViewController__endAppearanceTransitionForPageViewControl
 
   else
   {
-    v9 = [v4 color];
-    [v9 _luminance];
+    color = [componentCopy color];
+    [color _luminance];
     v8 = v10;
   }
 
@@ -28326,8 +28326,8 @@ void __86__CSCoverSheetViewController__endAppearanceTransitionForPageViewControl
 
 - (void)_updateGlassContentInterfaceStyle
 {
-  v19 = [(CSCoverSheetViewController *)self activeAppearance];
-  v3 = [v19 componentForType:6 identifier:@"(active)"];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v3 = [activeAppearance componentForType:6 identifier:@"(active)"];
   if (v3)
   {
     [(CSCoverSheetViewController *)self _wallpaperLumaFromWallpaperComponent:v3];
@@ -28353,42 +28353,42 @@ void __86__CSCoverSheetViewController__endAppearanceTransitionForPageViewControl
       v8 = v6;
     }
 
-    v9 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-    v10 = [v9 combinedListViewController];
-    [v10 updateGlassContentInterfaceStyle:v8 glassLuminanceValue:v7 wallpaperLuminanceValue:v5];
+    mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+    combinedListViewController = [mainPageContentViewController combinedListViewController];
+    [combinedListViewController updateGlassContentInterfaceStyle:v8 glassLuminanceValue:v7 wallpaperLuminanceValue:v5];
 
-    v11 = [(CSQuickActionsViewController *)self->_quickActionsViewController quickActionsView];
-    [v11 setGlassLuminanceValue:v7];
+    quickActionsView = [(CSQuickActionsViewController *)self->_quickActionsViewController quickActionsView];
+    [quickActionsView setGlassLuminanceValue:v7];
 
-    v12 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-    v13 = [v12 prominentDisplayViewController];
+    dateView = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+    prominentDisplayViewController = [dateView prominentDisplayViewController];
 
-    v14 = [v13 titleContentStyle];
-    v15 = [v14 type];
+    titleContentStyle = [prominentDisplayViewController titleContentStyle];
+    type = [titleContentStyle type];
     v16 = 2;
-    if (v15 == 5)
+    if (type == 5)
     {
       v16 = v6;
     }
 
-    if ((v15 - 4) < 0xFFFFFFFFFFFFFFFELL)
+    if ((type - 4) < 0xFFFFFFFFFFFFFFFELL)
     {
       v6 = v16;
     }
 
-    v17 = [(CSCoverSheetViewController *)self coverSheetView];
-    v18 = [v17 dateView];
-    [v18 setTimeGlassInterfaceStyle:v6];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    dateView2 = [coverSheetView dateView];
+    [dateView2 setTimeGlassInterfaceStyle:v6];
   }
 }
 
-- (void)_setPageViewControllers:(id)a3
+- (void)_setPageViewControllers:(id)controllers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_pageViewControllers != v5)
+  controllersCopy = controllers;
+  if (self->_pageViewControllers != controllersCopy)
   {
-    objc_storeStrong(&self->_pageViewControllers, a3);
+    objc_storeStrong(&self->_pageViewControllers, controllers);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -28421,70 +28421,70 @@ void __86__CSCoverSheetViewController__endAppearanceTransitionForPageViewControl
   }
 }
 
-- (void)_setMainPageContentViewController:(id)a3
+- (void)_setMainPageContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   mainPageContentViewController = self->_mainPageContentViewController;
-  if (mainPageContentViewController != v5)
+  if (mainPageContentViewController != controllerCopy)
   {
-    v28 = v5;
-    v7 = [(CSMainPageContentViewController *)mainPageContentViewController combinedListViewController];
-    [(CSCoverSheetViewController *)self removeCoverSheetObserver:v7];
+    v28 = controllerCopy;
+    combinedListViewController = [(CSMainPageContentViewController *)mainPageContentViewController combinedListViewController];
+    [(CSCoverSheetViewController *)self removeCoverSheetObserver:combinedListViewController];
 
-    objc_storeStrong(&self->_mainPageContentViewController, a3);
+    objc_storeStrong(&self->_mainPageContentViewController, controller);
     [(CSMainPageContentViewController *)self->_mainPageContentViewController setUserPresenceMonitor:self->_userPresenceMonitor];
     v8 = self->_mainPageContentViewController;
-    v9 = [(CSCoverSheetContextProviding *)self->_coverSheetContext touchEnvironmentStatusProvider];
-    [(CSMainPageContentViewController *)v8 setTouchEnvironmentStatusProvider:v9];
+    touchEnvironmentStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext touchEnvironmentStatusProvider];
+    [(CSMainPageContentViewController *)v8 setTouchEnvironmentStatusProvider:touchEnvironmentStatusProvider];
 
     v10 = self->_mainPageContentViewController;
-    v11 = [(CSCoverSheetContextProviding *)self->_coverSheetContext userSessionController];
-    [(CSMainPageContentViewController *)v10 setUserSessionController:v11];
+    userSessionController = [(CSCoverSheetContextProviding *)self->_coverSheetContext userSessionController];
+    [(CSMainPageContentViewController *)v10 setUserSessionController:userSessionController];
 
     v12 = self->_mainPageContentViewController;
     WeakRetained = objc_loadWeakRetained(&self->_wallpaperColorProvider);
     [(CSMainPageContentViewController *)v12 setWallpaperColorProvider:WeakRetained];
 
     v14 = self->_mainPageContentViewController;
-    v15 = [(CSCoverSheetContextProviding *)self->_coverSheetContext wallpaperProvider];
-    [(CSMainPageContentViewController *)v14 setWallpaperProvider:v15];
+    wallpaperProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext wallpaperProvider];
+    [(CSMainPageContentViewController *)v14 setWallpaperProvider:wallpaperProvider];
 
     [(CSMainPageContentViewController *)self->_mainPageContentViewController setMediaControlsObserver:self];
     [(CSMainPageContentViewController *)self->_mainPageContentViewController setNotificationObserver:self];
     [(CSMainPageContentViewController *)self->_mainPageContentViewController setComplicationGridLayoutMetricsProvider:self];
     [(CSMainPageContentViewController *)self->_mainPageContentViewController setDiagnosticsProvider:self];
     [(CSMainPageContentViewController *)self->_mainPageContentViewController setDelegate:self];
-    v16 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-    v17 = [(CSCoverSheetContextProviding *)self->_coverSheetContext applicationInformer];
-    [v16 setApplicationInformer:v17];
+    combinedListViewController2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+    applicationInformer = [(CSCoverSheetContextProviding *)self->_coverSheetContext applicationInformer];
+    [combinedListViewController2 setApplicationInformer:applicationInformer];
 
-    v18 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationStatusProvider];
-    [v16 setAuthenticationStatusProvider:v18];
+    authenticationStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationStatusProvider];
+    [combinedListViewController2 setAuthenticationStatusProvider:authenticationStatusProvider];
 
-    v19 = [(CSCoverSheetContextProviding *)self->_coverSheetContext homeAffordanceController];
-    [v16 setHomeAffordanceController:v19];
+    homeAffordanceController = [(CSCoverSheetContextProviding *)self->_coverSheetContext homeAffordanceController];
+    [combinedListViewController2 setHomeAffordanceController:homeAffordanceController];
 
-    v20 = [(CSCoverSheetContextProviding *)self->_coverSheetContext platterHomeGestureManager];
-    [v16 setPlatterHomeGestureManager:v20];
+    platterHomeGestureManager = [(CSCoverSheetContextProviding *)self->_coverSheetContext platterHomeGestureManager];
+    [combinedListViewController2 setPlatterHomeGestureManager:platterHomeGestureManager];
 
-    v21 = [(CSCoverSheetContextProviding *)self->_coverSheetContext notificationPresenter];
-    [v16 setNotificationPresenter:v21];
+    notificationPresenter = [(CSCoverSheetContextProviding *)self->_coverSheetContext notificationPresenter];
+    [combinedListViewController2 setNotificationPresenter:notificationPresenter];
 
-    v22 = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
-    [v16 setUnlockRequester:v22];
+    unlockRequester = [(CSCoverSheetContextProviding *)self->_coverSheetContext unlockRequester];
+    [combinedListViewController2 setUnlockRequester:unlockRequester];
 
-    v23 = [(CSCoverSheetContextProviding *)self->_coverSheetContext contentActionProvider];
-    [v16 setContentActionProvider:v23];
+    contentActionProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext contentActionProvider];
+    [combinedListViewController2 setContentActionProvider:contentActionProvider];
 
-    v24 = [(CSCoverSheetContextProviding *)self->_coverSheetContext proximitySensorProvider];
-    [v16 setProximitySensorProvider:v24];
+    proximitySensorProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext proximitySensorProvider];
+    [combinedListViewController2 setProximitySensorProvider:proximitySensorProvider];
 
-    v25 = [(CSCoverSheetContextProviding *)self->_coverSheetContext deviceOrientationProvider];
-    [v16 setDeviceOrientationProvider:v25];
+    deviceOrientationProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext deviceOrientationProvider];
+    [combinedListViewController2 setDeviceOrientationProvider:deviceOrientationProvider];
 
-    [v16 setRemoteContentInlineProvider:self];
-    [v16 setCoverSheetViewPresenting:self];
-    [v16 setNotificationObserver:self];
+    [combinedListViewController2 setRemoteContentInlineProvider:self];
+    [combinedListViewController2 setCoverSheetViewPresenting:self];
+    [combinedListViewController2 setNotificationObserver:self];
     if ([(CSCoverSheetViewController *)self isInScreenOffMode])
     {
       v26 = 25;
@@ -28496,41 +28496,41 @@ void __86__CSCoverSheetViewController__endAppearanceTransitionForPageViewControl
     }
 
     v27 = [CSEvent eventWithType:v26];
-    [v16 handleEvent:v27];
-    [(CSCoverSheetViewController *)self addCoverSheetObserver:v16];
+    [combinedListViewController2 handleEvent:v27];
+    [(CSCoverSheetViewController *)self addCoverSheetObserver:combinedListViewController2];
 
-    v5 = v28;
+    controllerCopy = v28;
   }
 
-  MEMORY[0x2821F96F8](mainPageContentViewController, v5);
+  MEMORY[0x2821F96F8](mainPageContentViewController, controllerCopy);
 }
 
-- (void)setCurrentTransitionSource:(id)a3
+- (void)setCurrentTransitionSource:(id)source
 {
-  v5 = a3;
-  if (self->_currentTransitionSource != v5)
+  sourceCopy = source;
+  if (self->_currentTransitionSource != sourceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentTransitionSource, a3);
+    v6 = sourceCopy;
+    objc_storeStrong(&self->_currentTransitionSource, source);
     [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:@"setCurrentTransitionSource"];
     [(CSCoverSheetViewController *)self _setLockOrientationWhileTransitioning:self->_currentTransitionSource != 0];
-    v5 = v6;
+    sourceCopy = v6;
   }
 }
 
-- (void)_setLockOrientationWhileTransitioning:(BOOL)a3
+- (void)_setLockOrientationWhileTransitioning:(BOOL)transitioning
 {
-  if (self->_lockOrientationWhileTransitioning != a3)
+  if (self->_lockOrientationWhileTransitioning != transitioning)
   {
-    self->_lockOrientationWhileTransitioning = a3;
+    self->_lockOrientationWhileTransitioning = transitioning;
     [(CSCoverSheetViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
   }
 }
 
-- (void)_setSuppressChargingUIForAmbient:(BOOL)a3
+- (void)_setSuppressChargingUIForAmbient:(BOOL)ambient
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (self->_suppressChargingUIForAmbient != a3)
+  if (self->_suppressChargingUIForAmbient != ambient)
   {
     v5 = SBLogDashBoard();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -28541,20 +28541,20 @@ void __86__CSCoverSheetViewController__endAppearanceTransitionForPageViewControl
       _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "Updating charging UI suppression for ambient presentation [ suppressed : %{BOOL}d ]", v7, 8u);
     }
 
-    self->_suppressChargingUIForAmbient = a3;
+    self->_suppressChargingUIForAmbient = ambient;
   }
 }
 
-- (void)activatePage:(unint64_t)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)activatePage:(unint64_t)page animated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  animatedCopy = animated;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (page == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -28564,14 +28564,14 @@ void __86__CSCoverSheetViewController__endAppearanceTransitionForPageViewControl
     v12 = 3221225472;
     v13 = __67__CSCoverSheetViewController_activatePage_animated_withCompletion___block_invoke;
     v14 = &unk_27838BE40;
-    v15 = self;
-    v17 = a3;
-    v18 = v5;
-    v16 = v8;
+    selfCopy = self;
+    pageCopy = page;
+    v18 = animatedCopy;
+    v16 = completionCopy;
     v10 = MEMORY[0x223D698D0](&v11);
     if ([(CSCoverSheetViewController *)self isPasscodeLockVisible:v11])
     {
-      [(CSCoverSheetViewController *)self setPasscodeLockVisible:0 animated:v5 completion:v10];
+      [(CSCoverSheetViewController *)self setPasscodeLockVisible:0 animated:animatedCopy completion:v10];
     }
 
     else
@@ -28587,17 +28587,17 @@ void __67__CSCoverSheetViewController_activatePage_animated_withCompletion___blo
   [v2 scrollToPageAtIndex:*(a1 + 48) animated:*(a1 + 56) withCompletion:*(a1 + 40)];
 }
 
-- (id)pageViewControllerAtIndex:(unint64_t)a3
+- (id)pageViewControllerAtIndex:(unint64_t)index
 {
-  v4 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
-  if ([v4 count] <= a3)
+  _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+  if ([_allowedPageViewControllers count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndex:a3];
+    v5 = [_allowedPageViewControllers objectAtIndex:index];
   }
 
   return v5;
@@ -28606,85 +28606,85 @@ void __67__CSCoverSheetViewController_activatePage_animated_withCompletion___blo
 - (void)_loadViewsForRestrictedPagesIfPossible
 {
   OUTLINED_FUNCTION_7();
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_5();
   [v1 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (void)_addVisiblePageViewController:(id)a3
+- (void)_addVisiblePageViewController:(id)controller
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+    _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
     v22 = 138543362;
-    v23 = v6;
+    v23 = _allowedPageViewControllers;
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "Adding visible page view controller, current allowed page view controllers: %{public}@", &v22, 0xCu);
   }
 
-  v7 = [(CSCoverSheetViewController *)self pageViewControllers];
-  v8 = [v7 indexOfObject:v4];
+  pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+  v8 = [pageViewControllers indexOfObject:controllerCopy];
 
   v9 = 0;
   if (v8)
   {
     for (i = 0; i != v8; ++i)
     {
-      v11 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
-      v12 = [(CSCoverSheetViewController *)self pageViewControllers];
-      v13 = [v12 objectAtIndex:i];
-      v14 = [v11 containsObject:v13];
+      _allowedPageViewControllers2 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+      pageViewControllers2 = [(CSCoverSheetViewController *)self pageViewControllers];
+      v13 = [pageViewControllers2 objectAtIndex:i];
+      v14 = [_allowedPageViewControllers2 containsObject:v13];
 
       v9 += v14;
     }
   }
 
   v15 = MEMORY[0x277CBEB18];
-  v16 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
-  v17 = [v15 arrayWithArray:v16];
+  _allowedPageViewControllers3 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+  v17 = [v15 arrayWithArray:_allowedPageViewControllers3];
 
-  [v17 insertObject:v4 atIndex:v9];
+  [v17 insertObject:controllerCopy atIndex:v9];
   [(CSCoverSheetViewController *)self _setAllowedPageViewControllers:v17];
-  [(CSCoverSheetViewController *)self addChildViewController:v4];
-  v18 = [(CSCoverSheetViewController *)self view];
-  v19 = [v4 view];
-  [v18 addSubview:v19];
+  [(CSCoverSheetViewController *)self addChildViewController:controllerCopy];
+  view = [(CSCoverSheetViewController *)self view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  [v4 didMoveToParentViewController:self];
-  [v4 setCoverSheetViewController:self];
-  [v4 setLayoutStrategy:self->_layoutStrategy];
+  [controllerCopy didMoveToParentViewController:self];
+  [controllerCopy setCoverSheetViewController:self];
+  [controllerCopy setLayoutStrategy:self->_layoutStrategy];
   if (objc_opt_respondsToSelector())
   {
-    [(NSHashTable *)self->_applicationHosters addObject:v4];
+    [(NSHashTable *)self->_applicationHosters addObject:controllerCopy];
   }
 
   v20 = SBLogDashBoard();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+    _allowedPageViewControllers4 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
     v22 = 138543362;
-    v23 = v21;
+    v23 = _allowedPageViewControllers4;
     _os_log_impl(&dword_21EB05000, v20, OS_LOG_TYPE_DEFAULT, "Finished adding visible page view controller, current allowed page view controllers: %{public}@", &v22, 0xCu);
   }
 }
 
-- (void)_removeAllowedPageViewController:(id)a3
+- (void)_removeAllowedPageViewController:(id)controller
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+    _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
     v14 = 138543362;
-    v15 = v6;
+    v15 = _allowedPageViewControllers;
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "Removing allowed page view controller, current allowed page view controllers: %{public}@", &v14, 0xCu);
   }
 
-  v7 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
-  v8 = [v7 indexOfObject:v4];
+  _allowedPageViewControllers2 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+  v8 = [_allowedPageViewControllers2 indexOfObject:controllerCopy];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -28698,25 +28698,25 @@ void __67__CSCoverSheetViewController_activatePage_animated_withCompletion___blo
   else
   {
     v10 = MEMORY[0x277CBEB18];
-    v11 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
-    v9 = [v10 arrayWithArray:v11];
+    _allowedPageViewControllers3 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+    v9 = [v10 arrayWithArray:_allowedPageViewControllers3];
 
     [v9 removeObjectAtIndex:v8];
     [(CSCoverSheetViewController *)self _setAllowedPageViewControllers:v9];
-    [(CSCoverSheetViewController *)self bs_removeChildViewController:v4];
-    [v4 setCoverSheetViewController:0];
-    [v4 setLayoutStrategy:0];
+    [(CSCoverSheetViewController *)self bs_removeChildViewController:controllerCopy];
+    [controllerCopy setCoverSheetViewController:0];
+    [controllerCopy setLayoutStrategy:0];
     if (objc_opt_respondsToSelector())
     {
-      [(NSHashTable *)self->_applicationHosters removeObject:v4];
+      [(NSHashTable *)self->_applicationHosters removeObject:controllerCopy];
     }
 
     v12 = SBLogDashBoard();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+      _allowedPageViewControllers4 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
       v14 = 138543362;
-      v15 = v13;
+      v15 = _allowedPageViewControllers4;
       _os_log_impl(&dword_21EB05000, v12, OS_LOG_TYPE_DEFAULT, "Finished removing allowed page view controller, current allowed page view controllers: %{public}@", &v14, 0xCu);
     }
   }
@@ -28725,13 +28725,13 @@ void __67__CSCoverSheetViewController_activatePage_animated_withCompletion___blo
 - (id)_eligiblePageViewControllers
 {
   v32 = *MEMORY[0x277D85DE8];
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(CSCoverSheetViewController *)self pageViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v31 count:16];
+  pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+  v4 = [pageViewControllers countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
@@ -28743,15 +28743,15 @@ void __67__CSCoverSheetViewController_activatePage_animated_withCompletion___blo
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pageViewControllers);
         }
 
         v8 = *(*(&v21 + 1) + 8 * v7);
-        v9 = [objc_opt_class() isAvailableForConfiguration];
-        v10 = [objc_opt_class() requiredCapabilities];
-        if (v9 && (v11 = v10, -[CSCoverSheetViewController activeBehavior](self, "activeBehavior"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 restrictedCapabilities] & v11, v12, !v13))
+        isAvailableForConfiguration = [objc_opt_class() isAvailableForConfiguration];
+        requiredCapabilities = [objc_opt_class() requiredCapabilities];
+        if (isAvailableForConfiguration && (v11 = requiredCapabilities, -[CSCoverSheetViewController activeBehavior](self, "activeBehavior"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 restrictedCapabilities] & v11, v12, !v13))
         {
-          [v20 addObject:v8];
+          [array addObject:v8];
         }
 
         else
@@ -28759,15 +28759,15 @@ void __67__CSCoverSheetViewController_activatePage_animated_withCompletion___blo
           v14 = SBLogDashBoard();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v8 pageRole];
-            v16 = [(CSCoverSheetViewController *)self activeBehavior];
-            v17 = [v16 restrictedCapabilities];
+            pageRole = [v8 pageRole];
+            activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+            restrictedCapabilities = [activeBehavior restrictedCapabilities];
             *buf = 138412802;
-            v26 = v15;
+            v26 = pageRole;
             v27 = 1024;
-            v28 = v9;
+            v28 = isAvailableForConfiguration;
             v29 = 2048;
-            v30 = v17;
+            v30 = restrictedCapabilities;
             _os_log_impl(&dword_21EB05000, v14, OS_LOG_TYPE_DEFAULT, "Not including page: %@, visibleRegardless: %d, restrictedCapabilities: %lu", buf, 0x1Cu);
           }
         }
@@ -28776,38 +28776,38 @@ void __67__CSCoverSheetViewController_activatePage_animated_withCompletion___blo
       }
 
       while (v5 != v7);
-      v18 = [v3 countByEnumeratingWithState:&v21 objects:v31 count:16];
+      v18 = [pageViewControllers countByEnumeratingWithState:&v21 objects:v31 count:16];
       v5 = v18;
     }
 
     while (v18);
   }
 
-  return v20;
+  return array;
 }
 
-- (void)_updateVisibilityForPageViewControllersWithVisiblePageViewController:(id)a3
+- (void)_updateVisibilityForPageViewControllersWithVisiblePageViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if ([(CSCoverSheetViewController *)self isTransitioning])
   {
     [CSCoverSheetViewController _updateVisibilityForPageViewControllersWithVisiblePageViewController:a2];
   }
 
-  v6 = [(CSCoverSheetViewController *)self coverSheetView];
-  v7 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
-  v8 = [v7 indexOfObject:v5];
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+  _indexOfMainPage = [_allowedPageViewControllers indexOfObject:controllerCopy];
+  if (_indexOfMainPage == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(CSCoverSheetViewController *)self _indexOfMainPage];
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    _indexOfMainPage = [(CSCoverSheetViewController *)self _indexOfMainPage];
+    if (_indexOfMainPage == 0x7FFFFFFFFFFFFFFFLL)
     {
       [CSCoverSheetViewController _updateVisibilityForPageViewControllersWithVisiblePageViewController:a2];
     }
   }
 
-  v9 = v8;
-  [(CSCoverSheetViewController *)self _setLastSettledPageIndex:v8];
+  v9 = _indexOfMainPage;
+  [(CSCoverSheetViewController *)self _setLastSettledPageIndex:_indexOfMainPage];
   v10 = SBLogDashBoard();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -28822,15 +28822,15 @@ void __67__CSCoverSheetViewController_activatePage_animated_withCompletion___blo
   v22[3] = &unk_27838C100;
   v12 = v11;
   v23 = v12;
-  [v7 enumerateObjectsUsingBlock:v22];
-  [v6 setPageViews:v12];
-  v13 = [(CSPageViewController *)self->_mainPageContentViewController view];
-  [v6 setMainPageView:v13];
+  [_allowedPageViewControllers enumerateObjectsUsingBlock:v22];
+  [coverSheetView setPageViews:v12];
+  view = [(CSPageViewController *)self->_mainPageContentViewController view];
+  [coverSheetView setMainPageView:view];
 
-  [v6 scrollToPageAtIndex:v9 animated:0 withCompletion:0];
-  v14 = [(CSFixedFooterViewController *)self->_fixedFooterViewController fixedFooterView];
-  v15 = [v14 pageControl];
-  [v15 setCameraPageIndex:{-[CSCoverSheetViewController _indexOfCameraPage](self, "_indexOfCameraPage")}];
+  [coverSheetView scrollToPageAtIndex:v9 animated:0 withCompletion:0];
+  fixedFooterView = [(CSFixedFooterViewController *)self->_fixedFooterViewController fixedFooterView];
+  pageControl = [fixedFooterView pageControl];
+  [pageControl setCameraPageIndex:{-[CSCoverSheetViewController _indexOfCameraPage](self, "_indexOfCameraPage")}];
 
   if (![(CSCoverSheetViewController *)self isTransitioning])
   {
@@ -28874,8 +28874,8 @@ void __99__CSCoverSheetViewController__updateVisibilityForPageViewControllersWit
 
 - (unint64_t)_indexOfCameraPage
 {
-  v3 = [(CSCoverSheetViewController *)self activeBehavior];
-  v4 = [v3 areRestrictedCapabilities:4];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v4 = [activeBehavior areRestrictedCapabilities:4];
 
   if (v4)
   {
@@ -28885,22 +28885,22 @@ void __99__CSCoverSheetViewController__updateVisibilityForPageViewControllersWit
   return [(CSCoverSheetViewController *)self _indexOfPageViewControllerForRole:@"CSPageViewControllerRoleCamera"];
 }
 
-- (unint64_t)_indexOfPageViewControllerForRole:(id)a3
+- (unint64_t)_indexOfPageViewControllerForRole:(id)role
 {
-  v4 = a3;
+  roleCopy = role;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+  _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__CSCoverSheetViewController__indexOfPageViewControllerForRole___block_invoke;
   v9[3] = &unk_27838C128;
-  v6 = v4;
+  v6 = roleCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [_allowedPageViewControllers enumerateObjectsUsingBlock:v9];
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -28924,27 +28924,27 @@ void __64__CSCoverSheetViewController__indexOfPageViewControllerForRole___block_
   }
 }
 
-- (BOOL)_handleEventType:(int64_t)a3
+- (BOOL)_handleEventType:(int64_t)type
 {
-  if (CSEventIsButtonType(a3) && !CSCoverSheetEventIsVolumeOrHeadsetButtonType(a3) && ([(CSCoverSheetViewController *)self isInScreenOffMode]|| [(CSCoverSheetViewController *)self _isWakeAnimationInProgress]|| [(CSCoverSheetViewController *)self isTransitioningInteractively]))
+  if (CSEventIsButtonType(type) && !CSCoverSheetEventIsVolumeOrHeadsetButtonType(type) && ([(CSCoverSheetViewController *)self isInScreenOffMode]|| [(CSCoverSheetViewController *)self _isWakeAnimationInProgress]|| [(CSCoverSheetViewController *)self isTransitioningInteractively]))
   {
     return 0;
   }
 
-  v5 = [CSEvent eventWithType:a3];
+  v5 = [CSEvent eventWithType:type];
   v6 = [(CSCoverSheetViewController *)self _handleEvent:v5];
 
   return v6;
 }
 
-- (BOOL)_handleEvent:(id)a3
+- (BOOL)_handleEvent:(id)event
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isStateless] & 1) == 0 && -[CSCoverSheetViewController participantState](self, "participantState") != 2)
+  eventCopy = event;
+  if (([eventCopy isStateless] & 1) == 0 && -[CSCoverSheetViewController participantState](self, "participantState") != 2)
   {
 LABEL_43:
-    v36 = 0;
+    isConsumable = 0;
     goto LABEL_44;
   }
 
@@ -28955,32 +28955,32 @@ LABEL_43:
     *buf = 138412546;
     v49 = v6;
     v50 = 2112;
-    v51 = v4;
+    v51 = eventCopy;
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "%@ Sending event: %@", buf, 0x16u);
   }
 
-  if (![v4 isConsumable])
+  if (![eventCopy isConsumable])
   {
-    [(CSCoverSheetViewController *)self _updateNotificationClearingTriggerForEvent:v4];
-    [(CSScrollGestureController *)self->_scrollGestureController handleEvent:v4];
-    [(CSPresentationViewController *)self->_modalPresentationController handleEvent:v4];
-    [(CSFixedFooterViewController *)self->_fixedFooterViewController handleEvent:v4];
-    [(CSQuickActionsViewController *)self->_quickActionsViewController handleEvent:v4];
-    [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController handleEvent:v4];
-    [(CSProudLockViewController *)self->_proudLockViewController handleEvent:v4];
-    [(CSPoseidonViewController *)self->_poseidonViewController handleEvent:v4];
-    [(CSUserPresenceMonitor *)self->_userPresenceMonitor handleEvent:v4];
-    [(CSFaceOcclusionMonitor *)self->_faceOcclusionMonitor handleEvent:v4];
-    [(CSPosterSwitcherActivationManager *)self->_posterSwitcherActivationManager handleEvent:v4];
-    [(CSBackgroundContentViewController *)self->_backgroundContentViewController handleEvent:v4];
+    [(CSCoverSheetViewController *)self _updateNotificationClearingTriggerForEvent:eventCopy];
+    [(CSScrollGestureController *)self->_scrollGestureController handleEvent:eventCopy];
+    [(CSPresentationViewController *)self->_modalPresentationController handleEvent:eventCopy];
+    [(CSFixedFooterViewController *)self->_fixedFooterViewController handleEvent:eventCopy];
+    [(CSQuickActionsViewController *)self->_quickActionsViewController handleEvent:eventCopy];
+    [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController handleEvent:eventCopy];
+    [(CSProudLockViewController *)self->_proudLockViewController handleEvent:eventCopy];
+    [(CSPoseidonViewController *)self->_poseidonViewController handleEvent:eventCopy];
+    [(CSUserPresenceMonitor *)self->_userPresenceMonitor handleEvent:eventCopy];
+    [(CSFaceOcclusionMonitor *)self->_faceOcclusionMonitor handleEvent:eventCopy];
+    [(CSPosterSwitcherActivationManager *)self->_posterSwitcherActivationManager handleEvent:eventCopy];
+    [(CSBackgroundContentViewController *)self->_backgroundContentViewController handleEvent:eventCopy];
     if ([(CSCoverSheetViewController *)self _isPresentingPosterSwitcher])
     {
-      v7 = [(CSCoverSheetViewControllerBase *)self->_posterSwitcherViewController coverSheetIdentifier];
-      v8 = [(CSCoverSheetViewController *)self _isPresentingModalViewControllerWithIdentifier:v7];
+      coverSheetIdentifier = [(CSCoverSheetViewControllerBase *)self->_posterSwitcherViewController coverSheetIdentifier];
+      v8 = [(CSCoverSheetViewController *)self _isPresentingModalViewControllerWithIdentifier:coverSheetIdentifier];
 
       if (!v8)
       {
-        [(CSPosterSwitcherViewController *)self->_posterSwitcherViewController handleEvent:v4];
+        [(CSPosterSwitcherViewController *)self->_posterSwitcherViewController handleEvent:eventCopy];
       }
     }
 
@@ -28988,8 +28988,8 @@ LABEL_43:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v9 = [(CSCoverSheetViewController *)self pageViewControllers];
-    v10 = [v9 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+    v10 = [pageViewControllers countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v10)
     {
       v11 = v10;
@@ -29000,16 +29000,16 @@ LABEL_43:
         {
           if (*v43 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(pageViewControllers);
           }
 
           v14 = *(*(&v42 + 1) + 8 * i);
           v15 = objc_autoreleasePoolPush();
-          [v14 handleEvent:v4];
+          [v14 handleEvent:eventCopy];
           objc_autoreleasePoolPop(v15);
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        v11 = [pageViewControllers countByEnumeratingWithState:&v42 objects:v47 count:16];
       }
 
       while (v11);
@@ -29039,7 +29039,7 @@ LABEL_43:
           v23 = objc_autoreleasePoolPush();
           if ([v22 participantState] == 2)
           {
-            [v22 handleEvent:v4];
+            [v22 handleEvent:eventCopy];
           }
 
           objc_autoreleasePoolPop(v23);
@@ -29072,7 +29072,7 @@ LABEL_43:
     }
 
     v27 = v26;
-    v28 = [v26 handleEvent:v4];
+    v28 = [v26 handleEvent:eventCopy];
 
     if ((v28 & 1) == 0)
     {
@@ -29084,17 +29084,17 @@ LABEL_33:
     goto LABEL_39;
   }
 
-  if ([(CSPresentationViewController *)self->_modalPresentationController handleEvent:v4])
+  if ([(CSPresentationViewController *)self->_modalPresentationController handleEvent:eventCopy])
   {
     goto LABEL_33;
   }
 
 LABEL_34:
-  v30 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-  v31 = v30;
-  if (v30 && ([v30 presentationProgress], v32 > 0.0))
+  overlayControllerIfExists = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+  v31 = overlayControllerIfExists;
+  if (overlayControllerIfExists && ([overlayControllerIfExists presentationProgress], v32 > 0.0))
   {
-    v29 = [v31 handleEvent:v4];
+    v29 = [v31 handleEvent:eventCopy];
   }
 
   else
@@ -29120,15 +29120,15 @@ LABEL_39:
     goto LABEL_43;
   }
 
-  v36 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_44:
 
-  return v36;
+  return isConsumable;
 }
 
-- (void)_updateNotificationClearingTriggerForEvent:(id)a3
+- (void)_updateNotificationClearingTriggerForEvent:(id)event
 {
-  if ([a3 type] == 37)
+  if ([event type] == 37)
   {
     notificationClearingTrigger = self->_notificationClearingTrigger;
 
@@ -29136,28 +29136,28 @@ LABEL_44:
   }
 }
 
-- (void)_updateLocalAppearanceForRequester:(id)a3 animationSettings:(id)a4 actions:(id)a5 completion:(id)a6
+- (void)_updateLocalAppearanceForRequester:(id)requester animationSettings:(id)settings actions:(id)actions completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  requesterCopy = requester;
+  actionsCopy = actions;
+  completionCopy = completion;
   v13 = MEMORY[0x277CF0D38];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __102__CSCoverSheetViewController__updateLocalAppearanceForRequester_animationSettings_actions_completion___block_invoke;
   v19[3] = &unk_27838C150;
-  v21 = self;
-  v22 = v11;
-  v20 = v10;
+  selfCopy = self;
+  v22 = actionsCopy;
+  v20 = requesterCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __102__CSCoverSheetViewController__updateLocalAppearanceForRequester_animationSettings_actions_completion___block_invoke_2;
   v17[3] = &unk_27838BAC0;
-  v18 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  [v13 animateWithSettings:a4 actions:v19 completion:v17];
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = requesterCopy;
+  v16 = actionsCopy;
+  [v13 animateWithSettings:settings actions:v19 completion:v17];
 }
 
 uint64_t __102__CSCoverSheetViewController__updateLocalAppearanceForRequester_animationSettings_actions_completion___block_invoke(uint64_t a1)
@@ -29212,12 +29212,12 @@ uint64_t __102__CSCoverSheetViewController__updateLocalAppearanceForRequester_an
   return result;
 }
 
-- (id)_behaviorForParticipant:(id)a3
+- (id)_behaviorForParticipant:(id)participant
 {
-  v3 = a3;
-  if ([v3 participantState] == 2)
+  participantCopy = participant;
+  if ([participantCopy participantState] == 2)
   {
-    v4 = [CSBehavior behaviorForProvider:v3];
+    v4 = [CSBehavior behaviorForProvider:participantCopy];
   }
 
   else
@@ -29228,12 +29228,12 @@ uint64_t __102__CSCoverSheetViewController__updateLocalAppearanceForRequester_an
   return v4;
 }
 
-- (id)_appearanceForParticipant:(id)a3
+- (id)_appearanceForParticipant:(id)participant
 {
-  v3 = a3;
-  if ([v3 participantState] == 2)
+  participantCopy = participant;
+  if ([participantCopy participantState] == 2)
   {
-    v4 = [CSAppearance appearanceForProvider:v3];
+    v4 = [CSAppearance appearanceForProvider:participantCopy];
   }
 
   else
@@ -29244,12 +29244,12 @@ uint64_t __102__CSCoverSheetViewController__updateLocalAppearanceForRequester_an
   return v4;
 }
 
-- (id)_presentationForParticipant:(id)a3
+- (id)_presentationForParticipant:(id)participant
 {
-  v3 = a3;
-  if ([v3 participantState] == 2)
+  participantCopy = participant;
+  if ([participantCopy participantState] == 2)
   {
-    v4 = [CSPresentation presentationForProvider:v3];
+    v4 = [CSPresentation presentationForProvider:participantCopy];
   }
 
   else
@@ -29260,14 +29260,14 @@ uint64_t __102__CSCoverSheetViewController__updateLocalAppearanceForRequester_an
   return v4;
 }
 
-- (void)_updateAppearance:(id)a3 forComponentType:(int64_t)a4 shouldHide:(BOOL)a5
+- (void)_updateAppearance:(id)appearance forComponentType:(int64_t)type shouldHide:(BOOL)hide
 {
-  v5 = a5;
-  v14 = a3;
-  v7 = [v14 componentForType:a4 identifier:@"CSPresentation"];
+  hideCopy = hide;
+  appearanceCopy = appearance;
+  v7 = [appearanceCopy componentForType:type identifier:@"CSPresentation"];
   v8 = v7;
-  v9 = !v5;
-  if (!v5 || v7)
+  v9 = !hideCopy;
+  if (!hideCopy || v7)
   {
     if (!v7)
     {
@@ -29276,27 +29276,27 @@ uint64_t __102__CSCoverSheetViewController__updateLocalAppearanceForRequester_an
 
     if (v9 == 1)
     {
-      [v14 removeComponent:v7];
+      [appearanceCopy removeComponent:v7];
     }
   }
 
   else
   {
-    v10 = [CSComponent componentWithType:a4];
+    v10 = [CSComponent componentWithType:type];
     v11 = [v10 identifier:@"CSPresentation"];
     v12 = [v11 priority:10];
     v13 = [v12 hidden:1];
 
-    [v14 addComponent:v13];
+    [appearanceCopy addComponent:v13];
   }
 }
 
-- (BOOL)_shouldUpdateActiveAppearanceForReason:(id)a3
+- (BOOL)_shouldUpdateActiveAppearanceForReason:(id)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self coverSheetView];
-  if (-[CSCoverSheetViewController _appearState](self, "_appearState") && v5 && ([v5 scrollView], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "visiblePageRange"), v8 = v7, v6, v8))
+  reasonCopy = reason;
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  if (-[CSCoverSheetViewController _appearState](self, "_appearState") && coverSheetView && ([coverSheetView scrollView], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "visiblePageRange"), v8 = v7, v6, v8))
   {
     if (!self->_preventAppearanceUpdatesForRotation)
     {
@@ -29308,7 +29308,7 @@ uint64_t __102__CSCoverSheetViewController__updateLocalAppearanceForRequester_an
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = reasonCopy;
       v10 = "Ignoring appearance update for %@ because we are in a rotation.";
 LABEL_9:
       _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, v10, &v13, 0xCu);
@@ -29321,7 +29321,7 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = reasonCopy;
       v10 = "Ignoring appearance update for %@ because we have no view.";
       goto LABEL_9;
     }
@@ -29333,10 +29333,10 @@ LABEL_11:
   return v11;
 }
 
-- (id)__currentDesiredAppearanceWithStartIndex:(unint64_t *)a3 targetIndex:(unint64_t *)a4 targetAppearance:(id *)a5 targetPresentation:(id *)a6 modalAppearance:(id *)a7 proudLockAppearance:(id *)a8 poseidonAppearance:(id *)a9 backgroundContentAppearance:(id *)a10
+- (id)__currentDesiredAppearanceWithStartIndex:(unint64_t *)index targetIndex:(unint64_t *)targetIndex targetAppearance:(id *)appearance targetPresentation:(id *)presentation modalAppearance:(id *)modalAppearance proudLockAppearance:(id *)lockAppearance poseidonAppearance:(id *)poseidonAppearance backgroundContentAppearance:(id *)self0
 {
   v67 = *MEMORY[0x277D85DE8];
-  v14 = [(CSCoverSheetViewController *)self coverSheetView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
   v64 = 0u;
   v65 = 0u;
   v63 = 0u;
@@ -29344,50 +29344,50 @@ LABEL_11:
   v15 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:0.0];
   if (v15)
   {
-    v52 = a3;
+    indexCopy = index;
     v16 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:0.0];
     if (v16)
     {
       v49 = v16;
       v50 = v15;
-      v48 = a7;
+      modalAppearanceCopy = modalAppearance;
       v58 = [CSAppearance appearanceForProvider:v15];
       v19 = [CSPresentation presentationForProvider:v15];
-      v20 = [v14 window];
+      window = [coverSheetView window];
 
       v54 = v19;
-      if (v20)
+      if (window)
       {
-        v21 = [(CSCoverSheetViewController *)self view];
-        v22 = [v21 window];
-        v23 = [CSPresentation presentationWithCoordinateSpace:v22];
+        view = [(CSCoverSheetViewController *)self view];
+        window2 = [view window];
+        v23 = [CSPresentation presentationWithCoordinateSpace:window2];
 
         [v23 setIdentifier:@"CSPresentation"];
         v24 = [(CSCoverSheetViewController *)self _presentationForParticipant:self->_modalPresentationController];
         [v23 unionPresentation:v24];
 
         [v23 unionPresentation:v19];
-        v25 = [(CSCoverSheetViewController *)self externalPresentation];
-        [v23 unionPresentation:v25];
+        externalPresentation = [(CSCoverSheetViewController *)self externalPresentation];
+        [v23 unionPresentation:externalPresentation];
 
-        v26 = [(CSCoverSheetViewController *)self activePresentation];
-        LOBYTE(v22) = [v23 isEqual:v26];
+        activePresentation = [(CSCoverSheetViewController *)self activePresentation];
+        LOBYTE(window2) = [v23 isEqual:activePresentation];
 
-        if ((v22 & 1) == 0)
+        if ((window2 & 1) == 0)
         {
           [(CSCoverSheetViewController *)self setActivePresentation:v23];
           [(CSCoverSheetViewController *)self _updateLocalAppearanceForPresentation];
-          v27 = [(CSCoverSheetViewController *)self coverSheetView];
-          v28 = [v27 regionsDebugView];
+          coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+          regionsDebugView = [coverSheetView2 regionsDebugView];
           [v23 regions];
-          v30 = v29 = a6;
-          [v28 setRegions:v30];
+          v30 = v29 = presentation;
+          [regionsDebugView setRegions:v30];
 
-          a6 = v29;
+          presentation = v29;
           v31 = SBLogDashBoard();
-          LODWORD(v28) = os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG);
+          LODWORD(regionsDebugView) = os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG);
 
-          if (v28)
+          if (regionsDebugView)
           {
             v32 = SBLogDashBoard();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -29398,15 +29398,15 @@ LABEL_11:
         }
       }
 
-      v51 = v14;
+      v51 = coverSheetView;
       v17 = [CSAppearance appearanceWithIdentifier:@"(active)"];
       v33 = [(CSCoverSheetViewController *)self _appearanceForParticipant:self->_modalPresentationController];
       v34 = [(CSCoverSheetViewController *)self _appearanceForParticipant:self->_proudLockViewController];
       v35 = [(CSCoverSheetViewController *)self _appearanceForParticipant:self->_poseidonViewController];
       v36 = [(CSCoverSheetViewController *)self _appearanceForParticipant:self->_backgroundContentViewController];
       [v17 unionAppearance:v58];
-      v37 = [(CSCoverSheetViewController *)self localAppearance];
-      [v17 unionAppearance:v37];
+      localAppearance = [(CSCoverSheetViewController *)self localAppearance];
+      [v17 unionAppearance:localAppearance];
 
       v53 = v33;
       [v17 unionAppearance:v33];
@@ -29446,49 +29446,49 @@ LABEL_11:
         while (v40);
       }
 
-      if (v52)
+      if (indexCopy)
       {
-        *v52 = 0.0;
+        *indexCopy = 0.0;
       }
 
       v16 = v49;
-      if (a4)
+      if (targetIndex)
       {
-        *a4 = 0.0;
+        *targetIndex = 0.0;
       }
 
-      if (a5)
+      if (appearance)
       {
-        *a5 = v58;
+        *appearance = v58;
       }
 
-      v14 = v51;
-      if (a6)
+      coverSheetView = v51;
+      if (presentation)
       {
-        *a6 = v54;
+        *presentation = v54;
       }
 
-      if (v48)
+      if (modalAppearanceCopy)
       {
-        *v48 = v53;
+        *modalAppearanceCopy = v53;
       }
 
-      if (a8)
+      if (lockAppearance)
       {
         v44 = v34;
-        *a8 = v34;
+        *lockAppearance = v34;
       }
 
-      if (a9)
+      if (poseidonAppearance)
       {
         v45 = v35;
-        *a9 = v35;
+        *poseidonAppearance = v35;
       }
 
-      if (a10)
+      if (contentAppearance)
       {
         v46 = v36;
-        *a10 = v36;
+        *contentAppearance = v36;
       }
 
       v15 = v50;
@@ -29521,18 +29521,18 @@ LABEL_11:
   return v17;
 }
 
-- (void)_updateActiveAppearanceForReason:(id)a3
+- (void)_updateActiveAppearanceForReason:(id)reason
 {
   v108 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
-  if ([(CSCoverSheetViewController *)self _shouldUpdateActiveAppearanceForReason:v4])
+  if ([(CSCoverSheetViewController *)self _shouldUpdateActiveAppearanceForReason:reasonCopy])
   {
     v5 = SBLogDashBoard();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = reasonCopy;
       _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_INFO, "Beginning appearance update for %@... --------", buf, 0xCu);
     }
 
@@ -29555,67 +29555,67 @@ LABEL_11:
     {
       v90 = v9;
       v83 = v8;
-      v13 = [(CSCoverSheetViewController *)self previousAppearance];
-      v14 = v13;
+      previousAppearance = [(CSCoverSheetViewController *)self previousAppearance];
+      v14 = previousAppearance;
       v87 = v10;
-      if (v13)
+      if (previousAppearance)
       {
-        v15 = v13;
+        activeAppearance = previousAppearance;
       }
 
       else
       {
-        v15 = [(CSCoverSheetViewController *)self activeAppearance];
+        activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
       }
 
-      v91 = v15;
+      v91 = activeAppearance;
 
       v81 = [CSAppearance appearanceWithIdentifier:@"(active)"];
       currentTransitionSource = self->_currentTransitionSource;
-      v17 = [(CSCoverSheetViewController *)self coverSheetView];
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
       v88 = v6;
       v89 = v7;
       v85 = v12;
       v86 = v11;
-      v84 = v4;
-      v80 = currentTransitionSource == v17 || [(CSCoverSheetViewController *)self _isPresentingPosterSwitcher];
+      v84 = reasonCopy;
+      v80 = currentTransitionSource == coverSheetView || [(CSCoverSheetViewController *)self _isPresentingPosterSwitcher];
 
       appearanceResolver = self->_appearanceResolver;
-      v19 = [(CSCoverSheetViewController *)self activeBehavior];
+      activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
       v20 = v106;
       v78 = *buf;
-      v21 = [(CSCoverSheetViewController *)self _indexOfMainPage];
+      _indexOfMainPage = [(CSCoverSheetViewController *)self _indexOfMainPage];
       v22 = self->_currentTransitionSource;
       legibilityProvider = self->_legibilityProvider;
-      v24 = [(CSCoverSheetViewController *)self view];
-      [v24 bounds];
+      view = [(CSCoverSheetViewController *)self view];
+      [view bounds];
       v26 = v25;
       v28 = v27;
       v30 = v29;
       v32 = v31;
-      v33 = [(CSCoverSheetViewController *)self _whitePointValues];
+      _whitePointValues = [(CSCoverSheetViewController *)self _whitePointValues];
       LOBYTE(v76) = self->_hasContentAboveCoverSheet;
       v75 = legibilityProvider;
       LOBYTE(v74) = v80;
       v7 = v89;
-      v73 = v21;
+      v73 = _indexOfMainPage;
       v6 = v88;
-      v34 = [(CSCoverSheetAppearanceResolver *)appearanceResolver newActiveAppearanceGivenDesiredAppearance:v88 oldAppearance:v91 activeAppearance:v81 activeBehavior:v19 startIndex:v78 targetIndex:v20 indexOfMainPage:v26 targetAppearance:v28 modalAppearance:v30 currentTransitionSource:v32 contentTransitionIsAtCoverSheetLevel:v73 legibilityProvider:v89 bounds:v90 whitePointValues:v22 hasContentAboveCoverSheet:v74, v75, v33, v76];
+      v34 = [(CSCoverSheetAppearanceResolver *)appearanceResolver newActiveAppearanceGivenDesiredAppearance:v88 oldAppearance:v91 activeAppearance:v81 activeBehavior:activeBehavior startIndex:v78 targetIndex:v20 indexOfMainPage:v26 targetAppearance:v28 modalAppearance:v30 currentTransitionSource:v32 contentTransitionIsAtCoverSheetLevel:v73 legibilityProvider:v89 bounds:v90 whitePointValues:v22 hasContentAboveCoverSheet:v74, v75, _whitePointValues, v76];
 
       [v34 setTransitional:{-[CSCoverSheetViewTransitionSource isTransitioning](self->_currentTransitionSource, "isTransitioning")}];
-      v35 = [(CSCoverSheetViewController *)self previousAppearance];
-      v36 = v35;
-      if (v35)
+      previousAppearance2 = [(CSCoverSheetViewController *)self previousAppearance];
+      v36 = previousAppearance2;
+      if (previousAppearance2)
       {
-        v37 = v35;
+        activeAppearance2 = previousAppearance2;
       }
 
       else
       {
-        v37 = [(CSCoverSheetViewController *)self activeAppearance];
+        activeAppearance2 = [(CSCoverSheetViewController *)self activeAppearance];
       }
 
-      v38 = v37;
+      v38 = activeAppearance2;
       v11 = v86;
       v10 = v87;
       v12 = v85;
@@ -29629,16 +29629,16 @@ LABEL_11:
         if (v40)
         {
           v41 = MEMORY[0x277CBEB58];
-          v42 = [v38 components];
-          v43 = [v41 setWithSet:v42];
+          components = [v38 components];
+          v43 = [v41 setWithSet:components];
 
           v44 = MEMORY[0x277CBEB58];
-          v45 = [v34 components];
-          v46 = [v44 setWithSet:v45];
+          components2 = [v34 components];
+          v46 = [v44 setWithSet:components2];
 
           [(__CFString *)v46 minusSet:v43];
-          v47 = [v34 components];
-          [(__CFString *)v43 minusSet:v47];
+          components3 = [v34 components];
+          [(__CFString *)v43 minusSet:components3];
 
           v48 = SBLogDashBoard();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
@@ -29661,7 +29661,7 @@ LABEL_11:
 
         v82 = v38;
         [(CSCoverSheetViewController *)self _handleEventType:1];
-        v51 = [MEMORY[0x277D75D18] _isInAnimationBlock];
+        _isInAnimationBlock = [MEMORY[0x277D75D18] _isInAnimationBlock];
         v52 = [v91 componentForType:4 identifier:@"(active)"];
         v53 = [v34 componentForType:4 identifier:@"(active)"];
         v54 = [v91 componentForType:4 identifier:@"(active)"];
@@ -29672,17 +29672,17 @@ LABEL_11:
         v59 = v58;
         [v55 offset];
         v62 = v59 != v61 || v57 != v60;
-        v63 = [v52 isHidden];
-        v64 = v63 ^ [v53 isHidden];
-        v65 = [(CSPresentationViewController *)self->_modalPresentationController isTransitioning];
-        if (![(CSCoverSheetViewController *)self isTransitioning]&& ((v64 | v65 | v62) & 1) != 0)
+        isHidden = [v52 isHidden];
+        v64 = isHidden ^ [v53 isHidden];
+        isTransitioning = [(CSPresentationViewController *)self->_modalPresentationController isTransitioning];
+        if (![(CSCoverSheetViewController *)self isTransitioning]&& ((v64 | isTransitioning | v62) & 1) != 0)
         {
-          v77 = v51;
-          v66 = [v53 isHidden];
+          v77 = _isInAnimationBlock;
+          isHidden2 = [v53 isHidden];
           [v55 offset];
           v67 = [(CSCoverSheetViewController *)self _isSlideableContentOffsetOnscreen:?];
-          v68 = [(CSPresentationViewController *)self->_modalPresentationController isPresentingContent];
-          v69 = (v66 & 1) == 0 && v67 && !v68;
+          isPresentingContent = [(CSPresentationViewController *)self->_modalPresentationController isPresentingContent];
+          v69 = (isHidden2 & 1) == 0 && v67 && !isPresentingContent;
           [(CSCoverSheetViewController *)self _beginAppearanceTransitionForPageViewControllersToVisible:v69 animated:v77];
         }
 
@@ -29703,7 +29703,7 @@ LABEL_11:
         v94 = v53;
         v97 = v62;
         v95 = v55;
-        v98 = v65;
+        v98 = isTransitioning;
         v71 = v55;
         v72 = v53;
         [v70 addAlongsideAnimations:v99 completion:v92];
@@ -29717,7 +29717,7 @@ LABEL_11:
       }
 
       v8 = v83;
-      v4 = v84;
+      reasonCopy = v84;
       v9 = v90;
     }
   }
@@ -29819,20 +29819,20 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
   return result;
 }
 
-- (void)_updateActiveBehaviorsForReason:(id)a3 updatingAppearanceIfNeeded:(BOOL)a4
+- (void)_updateActiveBehaviorsForReason:(id)reason updatingAppearanceIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v105 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  reasonCopy = reason;
   if ([(CSCoverSheetViewController *)self isViewLoaded]&& ![(CSCoverSheetViewController *)self isTransitioning]&& [(CSCoverSheetViewController *)self participantState]== 2)
   {
-    v80 = v4;
-    v81 = v6;
+    v80 = neededCopy;
+    v81 = reasonCopy;
     [(CSCoverSheetViewController *)self _updateScrollingBehavior];
     [(CSCoverSheetViewController *)self _updateRestrictedBehavior];
     [(CSCoverSheetViewController *)self _updateIdleTimerBehavior];
-    v87 = self;
-    v85 = [(CSCoverSheetViewController *)self activeBehavior];
+    selfCopy = self;
+    activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
     v7 = +[CSBehavior behavior];
     v8 = SBLogDashBoard();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -29842,12 +29842,12 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
     }
 
     v83 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:self->_lastSettledPageIndex];
-    v9 = [v83 participantState];
-    v10 = [(CSPresentationViewController *)self->_modalPresentationController participantState];
+    participantState = [v83 participantState];
+    participantState2 = [(CSPresentationViewController *)self->_modalPresentationController participantState];
     v82 = [(CSCoverSheetViewController *)self _behaviorForParticipant:self->_modalPresentationController];
-    if (v10 != 2 || v9 != 2)
+    if (participantState2 != 2 || participantState != 2)
     {
-      if (v9 == 2 && v10 != 2)
+      if (participantState == 2 && participantState2 != 2)
       {
         [v7 unionBehavior:v83];
         v11 = SBLogDashBoard();
@@ -29867,8 +29867,8 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
 
     else if ([v82 areRestrictedCapabilities:0x10000000])
     {
-      v15 = [v83 activeBehavior];
-      [v7 setRestrictedCapabilities:{objc_msgSend(v15, "restrictedCapabilities")}];
+      activeBehavior2 = [v83 activeBehavior];
+      [v7 setRestrictedCapabilities:{objc_msgSend(activeBehavior2, "restrictedCapabilities")}];
 
       [v7 addRestrictedCapabilities:{objc_msgSend(v82, "restrictedCapabilities") - 0x10000000}];
     }
@@ -29880,17 +29880,17 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
     v86 = v7;
     v100 = v86;
     v84 = MEMORY[0x223D698D0](v99);
-    (v84)[2](v84, v87->_irisBehavior, @"iris");
-    (v84)[2](v84, v87->_localBehavior, @"local");
-    (v84)[2](v84, v87->_landscapeBehavior, @"landscape");
-    (v84)[2](v84, v87->_screenOffBehavior, @"screenOff");
-    (v84)[2](v84, v87->_posterBoardBehavior, @"posterBoard");
-    (v84)[2](v84, v87->_accessoryBehavior, @"accessory");
-    if (v10 == 2)
+    (v84)[2](v84, selfCopy->_irisBehavior, @"iris");
+    (v84)[2](v84, selfCopy->_localBehavior, @"local");
+    (v84)[2](v84, selfCopy->_landscapeBehavior, @"landscape");
+    (v84)[2](v84, selfCopy->_screenOffBehavior, @"screenOff");
+    (v84)[2](v84, selfCopy->_posterBoardBehavior, @"posterBoard");
+    (v84)[2](v84, selfCopy->_accessoryBehavior, @"accessory");
+    if (participantState2 == 2)
     {
       [v86 unionBehavior:v82];
-      v16 = [(CSPresentationViewController *)v87->_modalPresentationController presentedViewControllers];
-      v17 = [v16 count] == 0;
+      presentedViewControllers = [(CSPresentationViewController *)selfCopy->_modalPresentationController presentedViewControllers];
+      v17 = [presentedViewControllers count] == 0;
 
       v18 = SBLogDashBoard();
       v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -29898,7 +29898,7 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
       {
         if (v19)
         {
-          v25 = NSStringFromCoverSheetCapability([(CSCoverSheetViewControllerBase *)v87->_modalPresentationController restrictedCapabilities]);
+          v25 = NSStringFromCoverSheetCapability([(CSCoverSheetViewControllerBase *)selfCopy->_modalPresentationController restrictedCapabilities]);
           *buf = 138543362;
           *&buf[4] = v25;
           _os_log_impl(&dword_21EB05000, v18, OS_LOG_TYPE_DEFAULT, "[Behavior] Restricted capabilities: %{public}@ from modal", buf, 0xCu);
@@ -29907,9 +29907,9 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
 
       else if (v19)
       {
-        v20 = NSStringFromCoverSheetCapability([(CSCoverSheetViewControllerBase *)v87->_modalPresentationController restrictedCapabilities]);
-        v21 = [(CSPresentationViewController *)v87->_modalPresentationController presentedViewControllers];
-        v22 = [v21 objectAtIndexedSubscript:0];
+        v20 = NSStringFromCoverSheetCapability([(CSCoverSheetViewControllerBase *)selfCopy->_modalPresentationController restrictedCapabilities]);
+        presentedViewControllers2 = [(CSPresentationViewController *)selfCopy->_modalPresentationController presentedViewControllers];
+        v22 = [presentedViewControllers2 objectAtIndexedSubscript:0];
         v23 = objc_opt_class();
         *buf = 138543618;
         *&buf[4] = v20;
@@ -29924,7 +29924,7 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v26 = v87->_externalBehaviorProviders;
+    v26 = selfCopy->_externalBehaviorProviders;
     v27 = [(NSHashTable *)v26 countByEnumeratingWithState:&v95 objects:v104 count:16];
     if (v27)
     {
@@ -29939,7 +29939,7 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
           }
 
           v30 = *(*(&v95 + 1) + 8 * i);
-          v31 = [(CSCoverSheetViewController *)v87 _behaviorForParticipant:v30];
+          v31 = [(CSCoverSheetViewController *)selfCopy _behaviorForParticipant:v30];
           if (v31)
           {
             [v86 unionBehavior:v31];
@@ -29964,7 +29964,7 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
       while (v27);
     }
 
-    [(CSCoverSheetViewController *)v87 setActiveBehavior:v86];
+    [(CSCoverSheetViewController *)selfCopy setActiveBehavior:v86];
     v36 = SBLogDashBoard();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
@@ -29974,22 +29974,22 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
       _os_log_impl(&dword_21EB05000, v36, OS_LOG_TYPE_DEFAULT, "[Behavior] Restricted capabilities: setting active - %{public}@", buf, 0xCu);
     }
 
-    -[CSScrollGestureController setScrollingStrategy:](v87->_scrollGestureController, "setScrollingStrategy:", [v86 scrollingStrategy]);
-    v38 = [(CSCoverSheetViewController *)v87 coverSheetView];
-    v39 = [v38 scrollView];
+    -[CSScrollGestureController setScrollingStrategy:](selfCopy->_scrollGestureController, "setScrollingStrategy:", [v86 scrollingStrategy]);
+    coverSheetView = [(CSCoverSheetViewController *)selfCopy coverSheetView];
+    scrollView = [coverSheetView scrollView];
 
-    if ([v86 scrollingStrategy] == 3 && objc_msgSend(v39, "isScrolling"))
+    if ([v86 scrollingStrategy] == 3 && objc_msgSend(scrollView, "isScrolling"))
     {
-      [v39 _stopScrollingAndZoomingAnimations];
+      [scrollView _stopScrollingAndZoomingAnimations];
     }
 
-    v40 = [v86 notificationBehavior];
-    if (v40 != [v85 notificationBehavior])
+    notificationBehavior = [v86 notificationBehavior];
+    if (notificationBehavior != [activeBehavior notificationBehavior])
     {
       v41 = SBLogDashBoard();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
-        v42 = NSStringFromCoverSheetNotificationBehavior([v85 notificationBehavior]);
+        v42 = NSStringFromCoverSheetNotificationBehavior([activeBehavior notificationBehavior]);
         v43 = NSStringFromCoverSheetNotificationBehavior([v86 notificationBehavior]);
         *buf = 138543874;
         *&buf[4] = v42;
@@ -30000,16 +30000,16 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
         _os_log_impl(&dword_21EB05000, v41, OS_LOG_TYPE_DEFAULT, "[Behavior] Notification behavior changed from %{public}@ to %{public}@ for reason: %{public}@", buf, 0x20u);
       }
 
-      [(CSNotificationDispatcher *)v87->_notificationDispatcher setActiveBehavior:v86];
+      [(CSNotificationDispatcher *)selfCopy->_notificationDispatcher setActiveBehavior:v86];
     }
 
-    v44 = [v86 restrictedCapabilities];
-    if (v44 != [v85 restrictedCapabilities])
+    restrictedCapabilities = [v86 restrictedCapabilities];
+    if (restrictedCapabilities != [activeBehavior restrictedCapabilities])
     {
       v45 = SBLogDashBoard();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
-        v46 = NSStringFromCoverSheetCapability([v85 restrictedCapabilities]);
+        v46 = NSStringFromCoverSheetCapability([activeBehavior restrictedCapabilities]);
         v47 = NSStringFromCoverSheetCapability([v86 restrictedCapabilities]);
         *buf = 138543874;
         *&buf[4] = v46;
@@ -30020,11 +30020,11 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
         _os_log_impl(&dword_21EB05000, v45, OS_LOG_TYPE_DEFAULT, "[Behavior] Restricted capabilities changed from %{public}@ to %{public}@ for reason: %{public}@", buf, 0x20u);
       }
 
-      WeakRetained = objc_loadWeakRetained(&v87->_delegate);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
       v49 = [v86 areRestrictedCapabilities:8];
-      v50 = [v85 areRestrictedCapabilities:8];
+      v50 = [activeBehavior areRestrictedCapabilities:8];
       v51 = [v86 areRestrictedCapabilities:56];
-      v52 = v51 ^ [v85 areRestrictedCapabilities:56];
+      v52 = v51 ^ [activeBehavior areRestrictedCapabilities:56];
       if ((v49 ^ v50 | v52))
       {
         if ([v86 areRestrictedCapabilities:8])
@@ -30037,61 +30037,61 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
           v53 = [v86 areRestrictedCapabilities:56];
         }
 
-        [WeakRetained coverSheetViewController:v87 requestsTouchIDDisabled:v53 forReason:@"CSActiveBehavior"];
+        [WeakRetained coverSheetViewController:selfCopy requestsTouchIDDisabled:v53 forReason:@"CSActiveBehavior"];
       }
 
       v54 = [v86 areRestrictedCapabilities:16];
-      if (v54 != [v85 areRestrictedCapabilities:16])
+      if (v54 != [activeBehavior areRestrictedCapabilities:16])
       {
-        [WeakRetained coverSheetViewController:v87 requestsPreArmDisabled:v54 forReason:@"CSActiveBehavior"];
+        [WeakRetained coverSheetViewController:selfCopy requestsPreArmDisabled:v54 forReason:@"CSActiveBehavior"];
       }
 
-      v55 = [v85 restrictedCapabilities];
-      v56 = [(CSCoverSheetViewController *)v87 _pageCapabilities];
-      v57 = [v86 restrictedCapabilities];
-      if (([(CSCoverSheetViewController *)v87 _pageCapabilities]& v57) != (v56 & v55))
+      restrictedCapabilities2 = [activeBehavior restrictedCapabilities];
+      _pageCapabilities = [(CSCoverSheetViewController *)selfCopy _pageCapabilities];
+      restrictedCapabilities3 = [v86 restrictedCapabilities];
+      if (([(CSCoverSheetViewController *)selfCopy _pageCapabilities]& restrictedCapabilities3) != (_pageCapabilities & restrictedCapabilities2))
       {
-        [(CSCoverSheetViewController *)v87 _loadViewsForRestrictedPagesIfPossible];
+        [(CSCoverSheetViewController *)selfCopy _loadViewsForRestrictedPagesIfPossible];
       }
 
       v58 = [v86 areRestrictedCapabilities:0x2000];
-      if (v58 != [v85 areRestrictedCapabilities:0x2000])
+      if (v58 != [activeBehavior areRestrictedCapabilities:0x2000])
       {
-        [(CSCoverSheetViewController *)v87 _setupQuickNoteGestureRecognizer];
+        [(CSCoverSheetViewController *)selfCopy _setupQuickNoteGestureRecognizer];
       }
 
       v59 = [v86 areRestrictedCapabilities:256];
-      if (v59 != [v85 areRestrictedCapabilities:256])
+      if (v59 != [activeBehavior areRestrictedCapabilities:256])
       {
-        [(CSCoverSheetViewController *)v87 _setupWallpaperGesture];
+        [(CSCoverSheetViewController *)selfCopy _setupWallpaperGesture];
       }
 
       v60 = [v86 areRestrictedCapabilities:0x8000];
-      if (v60 != [v85 areRestrictedCapabilities:0x8000])
+      if (v60 != [activeBehavior areRestrictedCapabilities:0x8000])
       {
-        [(CSCoverSheetViewController *)v87 _updateProudLockViewUpdateSuspension];
+        [(CSCoverSheetViewController *)selfCopy _updateProudLockViewUpdateSuspension];
       }
 
       v61 = [v86 areRestrictedCapabilities:0x800000];
-      if (v61 != [v85 areRestrictedCapabilities:0x800000])
+      if (v61 != [activeBehavior areRestrictedCapabilities:0x800000])
       {
-        [(CSCoverSheetViewController *)v87 _setupPosterSwitcherGestureRecognizer];
+        [(CSCoverSheetViewController *)selfCopy _setupPosterSwitcherGestureRecognizer];
       }
 
-      if ([v86 areRestrictedCapabilities:64] && (objc_msgSend(v85, "areRestrictedCapabilities:", 64) & 1) == 0 && -[CSCoverSheetViewController isShowingTodayView](v87, "isShowingTodayView"))
+      if ([v86 areRestrictedCapabilities:64] && (objc_msgSend(activeBehavior, "areRestrictedCapabilities:", 64) & 1) == 0 && -[CSCoverSheetViewController isShowingTodayView](selfCopy, "isShowingTodayView"))
       {
-        [(CSCoverSheetViewController *)v87 deactivateTodayViewWithCompletion:0];
+        [(CSCoverSheetViewController *)selfCopy deactivateTodayViewWithCompletion:0];
       }
 
       v62 = [v86 areRestrictedCapabilities:0x4000000];
-      if (v62 != [v85 areRestrictedCapabilities:0x4000000])
+      if (v62 != [activeBehavior areRestrictedCapabilities:0x4000000])
       {
-        [(CSCoverSheetViewController *)v87 _updateCaptureButtonRestriction];
+        [(CSCoverSheetViewController *)selfCopy _updateCaptureButtonRestriction];
       }
 
       v63 = [v86 areRestrictedCapabilities:0x8000000];
-      v64 = [(CSCoverSheetViewController *)v87 coverSheetView];
-      [v64 setCameraSwipeBlocked:v63];
+      coverSheetView2 = [(CSCoverSheetViewController *)selfCopy coverSheetView];
+      [coverSheetView2 setCameraSwipeBlocked:v63];
 
       if (v80)
       {
@@ -30109,13 +30109,13 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
         v93 = v66;
         v67 = MEMORY[0x223D698D0](v92);
         v68 = [v86 areRestrictedCapabilities:128];
-        if (v68 != [v85 areRestrictedCapabilities:128])
+        if (v68 != [activeBehavior areRestrictedCapabilities:128])
         {
           (v67)[2](v67, @"Control Center Capability Changed");
         }
 
         v69 = [v86 areRestrictedCapabilities:4096];
-        if (v69 != [v85 areRestrictedCapabilities:4096])
+        if (v69 != [activeBehavior areRestrictedCapabilities:4096])
         {
           (v67)[2](v67, @"Dismiss CoverSheet Capability Changed");
         }
@@ -30127,20 +30127,20 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
 
         if (*(*&buf[8] + 24) == 1)
         {
-          [(CSCoverSheetViewController *)v87 _updateActiveAppearanceForReason:v66];
+          [(CSCoverSheetViewController *)selfCopy _updateActiveAppearanceForReason:v66];
         }
 
         _Block_object_dispose(buf, 8);
       }
     }
 
-    v70 = [v86 proximityDetectionMode];
-    if (v70 != [v85 proximityDetectionMode])
+    proximityDetectionMode = [v86 proximityDetectionMode];
+    if (proximityDetectionMode != [activeBehavior proximityDetectionMode])
     {
       v71 = SBLogDashBoard();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
       {
-        v72 = NSStringFromCoverSheetProximityDetectionMode([v85 proximityDetectionMode]);
+        v72 = NSStringFromCoverSheetProximityDetectionMode([activeBehavior proximityDetectionMode]);
         v73 = NSStringFromCoverSheetProximityDetectionMode([v86 proximityDetectionMode]);
         *buf = 138412802;
         *&buf[4] = v72;
@@ -30152,7 +30152,7 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
       }
     }
 
-    if (([v85 isEqual:v86] & 1) == 0)
+    if (([activeBehavior isEqual:v86] & 1) == 0)
     {
       v74 = SBLogDashBoard();
       if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
@@ -30164,12 +30164,12 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
         _os_log_impl(&dword_21EB05000, v74, OS_LOG_TYPE_DEFAULT, "[Behavior] Aggregate behavior did change: %@ for reason: %@", buf, 0x16u);
       }
 
-      [(CSCoverSheetViewController *)v87 _handleEventType:2];
+      [(CSCoverSheetViewController *)selfCopy _handleEventType:2];
       v90 = 0u;
       v91 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v75 = [(NSHashTable *)v87->_observers copy];
+      v75 = [(NSHashTable *)selfCopy->_observers copy];
       v76 = [v75 countByEnumeratingWithState:&v88 objects:v101 count:16];
       if (v76)
       {
@@ -30186,7 +30186,7 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
             v79 = *(*(&v88 + 1) + 8 * j);
             if (objc_opt_respondsToSelector())
             {
-              [v79 coverSheetViewController:v87 didChangeActiveBehavior:v86];
+              [v79 coverSheetViewController:selfCopy didChangeActiveBehavior:v86];
             }
           }
 
@@ -30197,7 +30197,7 @@ uint64_t __63__CSCoverSheetViewController__updateActiveAppearanceForReason___blo
       }
     }
 
-    v6 = v81;
+    reasonCopy = v81;
   }
 }
 
@@ -30272,20 +30272,20 @@ double __47__CSCoverSheetViewController__updateBackground__block_invoke(uint64_t
 
 - (void)_updateBackgroundGlassView
 {
-  v3 = [(CSCoverSheetViewController *)self _shouldAllowGlassCoverSheet];
-  v7 = [(CSCoverSheetViewController *)self coverSheetView];
-  if (v3)
+  _shouldAllowGlassCoverSheet = [(CSCoverSheetViewController *)self _shouldAllowGlassCoverSheet];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  if (_shouldAllowGlassCoverSheet)
   {
     v4 = [CSCoverSheetSDFView alloc];
-    v5 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v5 bounds];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView2 bounds];
     v6 = [(CSCoverSheetSDFView *)v4 initWithFrame:?];
-    [v7 setBackgroundGlassView:v6];
+    [coverSheetView setBackgroundGlassView:v6];
   }
 
   else
   {
-    [v7 setBackgroundGlassView:0];
+    [coverSheetView setBackgroundGlassView:0];
   }
 }
 
@@ -30325,22 +30325,22 @@ void __49__CSCoverSheetViewController__updateDateTimeView__block_invoke_4(uint64
 
 - (void)_updateRemoteContentInlineHorizontalMargin
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 0.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     if (self->_remoteContentInlineViewController)
     {
-      v6 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-      [v6 horizontalInsetMargin];
+      combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+      [combinedListViewController horizontalInsetMargin];
       v5 = v7;
 
       if ([(CSCoverSheetViewController *)self interfaceOrientation]- 1) >= 2 && (objc_opt_respondsToSelector())
       {
-        v8 = [(CSCoverSheetViewController *)self viewIfLoaded];
-        [v8 bounds];
+        viewIfLoaded = [(CSCoverSheetViewController *)self viewIfLoaded];
+        [viewIfLoaded bounds];
         v10 = v9;
         v12 = v11;
 
@@ -30373,16 +30373,16 @@ uint64_t __51__CSCoverSheetViewController__updateHomeAffordance__block_invoke_2(
 
 - (void)_updateCaptureButtonRestriction
 {
-  v11 = [(CSCoverSheetViewController *)self activeBehavior];
-  v3 = [v11 areRestrictedCapabilities:0x4000000];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v3 = [activeBehavior areRestrictedCapabilities:0x4000000];
   inhibitCaptureButtonActionAssertion = self->_inhibitCaptureButtonActionAssertion;
   if (v3 && !inhibitCaptureButtonActionAssertion)
   {
-    v5 = [(CSCoverSheetViewController *)self coverSheetContext];
-    v6 = [v5 captureButtonRestrictionController];
+    coverSheetContext = [(CSCoverSheetViewController *)self coverSheetContext];
+    captureButtonRestrictionController = [coverSheetContext captureButtonRestrictionController];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v6 inhibitCaptureButtonActionAssertionWithReason:v8];
+    v9 = [captureButtonRestrictionController inhibitCaptureButtonActionAssertionWithReason:v8];
     v10 = self->_inhibitCaptureButtonActionAssertion;
     self->_inhibitCaptureButtonActionAssertion = v9;
 
@@ -30398,7 +30398,7 @@ LABEL_8:
   if ((v3 & 1) == 0)
   {
     [(BSInvalidatable *)inhibitCaptureButtonActionAssertion invalidate];
-    v5 = self->_inhibitCaptureButtonActionAssertion;
+    coverSheetContext = self->_inhibitCaptureButtonActionAssertion;
     self->_inhibitCaptureButtonActionAssertion = 0;
     goto LABEL_8;
   }
@@ -30470,89 +30470,89 @@ void __47__CSCoverSheetViewController__updateWhitePoint__block_invoke_2(uint64_t
 
 - (void)_updateNotificationDimmingLayer
 {
-  v3 = [(CSCoverSheetViewController *)self activeAppearance];
-  v4 = [v3 componentForType:28 identifier:@"(active)"];
+  activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+  v4 = [activeAppearance componentForType:28 identifier:@"(active)"];
   if (v4)
   {
-    v5 = [(CSCoverSheetViewController *)self traitCollection];
-    v6 = [v5 userInterfaceIdiom];
+    traitCollection = [(CSCoverSheetViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    LODWORD(v5) = [v4 isHidden];
-    v7 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
-    [v7 setDimVisible:v5 ^ 1];
+    LODWORD(traitCollection) = [v4 isHidden];
+    notificationLegibilityDimController = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
+    [notificationLegibilityDimController setDimVisible:traitCollection ^ 1];
 
     [v4 animationDuration];
     v9 = v8;
-    v10 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
-    [v10 setShouldAnimate:v9 != 0.0];
+    notificationLegibilityDimController2 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
+    [notificationLegibilityDimController2 setShouldAnimate:v9 != 0.0];
 
     [v4 offset];
     v12 = v11;
-    v13 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
-    [v13 setFadeAnchorY:v12];
+    notificationLegibilityDimController3 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
+    [notificationLegibilityDimController3 setFadeAnchorY:v12];
 
-    v14 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v14 bounds];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView bounds];
     v16 = 1.0;
-    if (v6 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v16 = 2.0;
     }
 
     v17 = v15 / v16;
 
-    v18 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
-    [v18 setFadeWidth:v17];
+    notificationLegibilityDimController4 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
+    [notificationLegibilityDimController4 setFadeWidth:v17];
 
-    v19 = [v4 value];
-    v20 = [v19 integerValue];
+    value = [v4 value];
+    integerValue = [value integerValue];
 
-    v21 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
-    [v21 setLocalizedDimMode:v20];
+    notificationLegibilityDimController5 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
+    [notificationLegibilityDimController5 setLocalizedDimMode:integerValue];
 
-    if (v20 == 1)
+    if (integerValue == 1)
     {
-      v22 = [(CSCoverSheetViewController *)self coverSheetView];
-      v23 = [v22 wallpaperFloatingLayerContainerView];
-      [v23 frame];
+      coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+      wallpaperFloatingLayerContainerView = [coverSheetView2 wallpaperFloatingLayerContainerView];
+      [wallpaperFloatingLayerContainerView frame];
       v25 = v24;
       v27 = v26;
       v29 = v28;
       v31 = v30;
 
-      v32 = [(CSCoverSheetViewController *)self coverSheetView];
-      v33 = [v32 notificationLegibilityDynamicDimView];
-      [v33 layoutInsetsForSize:v29 fadeAnchorY:{v31, v12}];
+      coverSheetView3 = [(CSCoverSheetViewController *)self coverSheetView];
+      notificationLegibilityDynamicDimView = [coverSheetView3 notificationLegibilityDynamicDimView];
+      [notificationLegibilityDynamicDimView layoutInsetsForSize:v29 fadeAnchorY:{v31, v12}];
       v35 = v34;
       v37 = v36;
       v39 = v38;
       v41 = v40;
 
-      v42 = [(CSCoverSheetViewController *)self coverSheetView];
-      v43 = [v42 notificationLegibilityDynamicDimView];
-      [v43 setFrame:{v25 + v37, v27 + v35, v29 - (v37 + v41), v31 - (v35 + v39)}];
+      coverSheetView4 = [(CSCoverSheetViewController *)self coverSheetView];
+      notificationLegibilityDynamicDimView2 = [coverSheetView4 notificationLegibilityDynamicDimView];
+      [notificationLegibilityDynamicDimView2 setFrame:{v25 + v37, v27 + v35, v29 - (v37 + v41), v31 - (v35 + v39)}];
     }
 
-    v44 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-    v45 = [v44 view];
+    combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+    view = [combinedListViewController view];
 
-    [v45 bounds];
+    [view bounds];
     v47 = v46;
-    v48 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
-    [v48 setFullDimHeight:v47];
+    notificationLegibilityDimController6 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
+    [notificationLegibilityDimController6 setFullDimHeight:v47];
 
-    v49 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
-    v50 = v49;
+    notificationLegibilityDimController7 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
+    v50 = notificationLegibilityDimController7;
     v51 = 12.0;
-    if (v6 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v51 = 6.0;
     }
 
-    [v49 setFadeRadiusY:v47 / v51];
+    [notificationLegibilityDimController7 setFadeRadiusY:v47 / v51];
 
-    v52 = [v45 traitCollection];
-    v53 = [v3 componentForType:6 identifier:@"(active)"];
+    traitCollection2 = [view traitCollection];
+    v53 = [activeAppearance componentForType:6 identifier:@"(active)"];
     [(CSCoverSheetViewController *)self _wallpaperLumaFromWallpaperComponent:v53];
     v54 = SBUIGlassContentInterfaceStyleFromLuminance();
     v58[0] = MEMORY[0x277D85DD0];
@@ -30560,51 +30560,51 @@ void __47__CSCoverSheetViewController__updateWhitePoint__block_invoke_2(uint64_t
     v58[2] = __61__CSCoverSheetViewController__updateNotificationDimmingLayer__block_invoke;
     v58[3] = &__block_descriptor_40_e27_v16__0___UIMutableTraits__8l;
     v58[4] = v54;
-    v55 = [v52 traitCollectionByModifyingTraits:v58];
+    v55 = [traitCollection2 traitCollectionByModifyingTraits:v58];
 
-    v56 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
-    [v56 setTraitCollection:v55];
+    notificationLegibilityDimController8 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
+    [notificationLegibilityDimController8 setTraitCollection:v55];
 
-    v57 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
-    [v57 updateDimViews];
+    notificationLegibilityDimController9 = [(CSCoverSheetViewController *)self notificationLegibilityDimController];
+    [notificationLegibilityDimController9 updateDimViews];
   }
 }
 
-- (void)_animateView:(id)a3 toWhitePointReduced:(BOOL)a4 withDuration:(double)a5 withDispatchGroup:(id)a6
+- (void)_animateView:(id)view toWhitePointReduced:(BOOL)reduced withDuration:(double)duration withDispatchGroup:(id)group
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  v10 = [a3 layer];
-  if (v10)
+  groupCopy = group;
+  layer = [view layer];
+  if (layer)
   {
-    v11 = [(CSCoverSheetViewController *)self _whitePointValues];
-    [(CSCoverSheetViewController *)self _addWhitePointAnimationForKeyPath:@"filters.curves.inputRedValues" onLayer:v10 toValues:v11 withDuration:v9 dispatchGroup:a5];
-    [(CSCoverSheetViewController *)self _addWhitePointAnimationForKeyPath:@"filters.curves.inputGreenValues" onLayer:v10 toValues:v11 withDuration:v9 dispatchGroup:a5];
-    [(CSCoverSheetViewController *)self _addWhitePointAnimationForKeyPath:@"filters.curves.inputBlueValues" onLayer:v10 toValues:v11 withDuration:v9 dispatchGroup:a5];
-    v12 = [(CSCoverSheetViewController *)self view];
-    v13 = [v12 layer];
-    v14 = [(CSCoverSheetViewController *)self _whitePointReductionFilterFromValues:v11];
+    _whitePointValues = [(CSCoverSheetViewController *)self _whitePointValues];
+    [(CSCoverSheetViewController *)self _addWhitePointAnimationForKeyPath:@"filters.curves.inputRedValues" onLayer:layer toValues:_whitePointValues withDuration:groupCopy dispatchGroup:duration];
+    [(CSCoverSheetViewController *)self _addWhitePointAnimationForKeyPath:@"filters.curves.inputGreenValues" onLayer:layer toValues:_whitePointValues withDuration:groupCopy dispatchGroup:duration];
+    [(CSCoverSheetViewController *)self _addWhitePointAnimationForKeyPath:@"filters.curves.inputBlueValues" onLayer:layer toValues:_whitePointValues withDuration:groupCopy dispatchGroup:duration];
+    view = [(CSCoverSheetViewController *)self view];
+    layer2 = [view layer];
+    v14 = [(CSCoverSheetViewController *)self _whitePointReductionFilterFromValues:_whitePointValues];
     v16[0] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-    [v13 setFilters:v15];
+    [layer2 setFilters:v15];
   }
 }
 
-- (BOOL)_shouldReduceWhitePointForAppearance:(id)a3
+- (BOOL)_shouldReduceWhitePointForAppearance:(id)appearance
 {
-  v3 = [a3 componentForType:18 property:1];
-  v4 = [v3 isHidden];
+  v3 = [appearance componentForType:18 property:1];
+  isHidden = [v3 isHidden];
 
-  return v4 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (id)_whitePointValuesForAppearance:(id)a3
+- (id)_whitePointValuesForAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self _shouldReduceWhitePointForAppearance:v4];
+  appearanceCopy = appearance;
+  v5 = [(CSCoverSheetViewController *)self _shouldReduceWhitePointForAppearance:appearanceCopy];
   if (v5)
   {
-    v6 = [v4 componentForType:18 identifier:@"(active)"];
+    v6 = [appearanceCopy componentForType:18 identifier:@"(active)"];
     if (UIAccessibilityDarkerSystemColorsEnabled())
     {
       v7 = 1;
@@ -30629,18 +30629,18 @@ void __47__CSCoverSheetViewController__updateWhitePoint__block_invoke_2(uint64_t
   return v9;
 }
 
-- (id)_filterValuesForWhitePointReduced:(BOOL)a3 lighterReduction:(BOOL)a4
+- (id)_filterValuesForWhitePointReduced:(BOOL)reduced lighterReduction:(BOOL)reduction
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (reduced)
   {
-    v4 = a4;
-    v5 = [(CSLockScreenSettings *)self->_prototypeSettings dashBoardRemoteContentSettings];
-    v6 = v5;
+    reductionCopy = reduction;
+    dashBoardRemoteContentSettings = [(CSLockScreenSettings *)self->_prototypeSettings dashBoardRemoteContentSettings];
+    v6 = dashBoardRemoteContentSettings;
     v7 = MEMORY[0x277CCABB0];
-    if (v4)
+    if (reductionCopy)
     {
-      [v5 lighterBottomLuminanceValue];
+      [dashBoardRemoteContentSettings lighterBottomLuminanceValue];
       v8 = [v7 numberWithDouble:?];
       v22[0] = v8;
       v9 = MEMORY[0x277CCABB0];
@@ -30660,7 +30660,7 @@ void __47__CSCoverSheetViewController__updateWhitePoint__block_invoke_2(uint64_t
 
     else
     {
-      [v5 bottomLuminanceValue];
+      [dashBoardRemoteContentSettings bottomLuminanceValue];
       v8 = [v7 numberWithDouble:?];
       v21[0] = v8;
       v17 = MEMORY[0x277CCABB0];
@@ -30689,18 +30689,18 @@ void __47__CSCoverSheetViewController__updateWhitePoint__block_invoke_2(uint64_t
   return v16;
 }
 
-- (void)_addWhitePointAnimationForKeyPath:(id)a3 onLayer:(id)a4 toValues:(id)a5 withDuration:(double)a6 dispatchGroup:(id)a7
+- (void)_addWhitePointAnimationForKeyPath:(id)path onLayer:(id)layer toValues:(id)values withDuration:(double)duration dispatchGroup:(id)group
 {
-  v19 = a3;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = [v14 presentationLayer];
-  v16 = [v15 valueForKeyPath:v19];
+  pathCopy = path;
+  groupCopy = group;
+  valuesCopy = values;
+  layerCopy = layer;
+  presentationLayer = [layerCopy presentationLayer];
+  v16 = [presentationLayer valueForKeyPath:pathCopy];
 
-  if (v12)
+  if (groupCopy)
   {
-    dispatch_group_enter(v12);
+    dispatch_group_enter(groupCopy);
   }
 
   if (!v16)
@@ -30708,37 +30708,37 @@ void __47__CSCoverSheetViewController__updateWhitePoint__block_invoke_2(uint64_t
     v16 = &unk_2830798A8;
   }
 
-  v17 = [MEMORY[0x277CD9E10] animationWithKeyPath:v19];
-  [v17 setDuration:a6];
+  v17 = [MEMORY[0x277CD9E10] animationWithKeyPath:pathCopy];
+  [v17 setDuration:duration];
   v18 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v17 setTimingFunction:v18];
 
   [v17 setFromValue:v16];
-  [v17 setToValue:v13];
+  [v17 setToValue:valuesCopy];
 
-  [v17 setValue:v12 forKey:@"CSCoverSheetWhitePointDispatchGroup"];
+  [v17 setValue:groupCopy forKey:@"CSCoverSheetWhitePointDispatchGroup"];
   [v17 setDelegate:self];
-  [v14 removeAnimationForKey:v19];
-  [v14 addAnimation:v17 forKey:v19];
+  [layerCopy removeAnimationForKey:pathCopy];
+  [layerCopy addAnimation:v17 forKey:pathCopy];
 }
 
-- (id)_whitePointReductionFilterFromValues:(id)a3
+- (id)_whitePointReductionFilterFromValues:(id)values
 {
   v3 = MEMORY[0x277CD9EA0];
-  v4 = a3;
+  valuesCopy = values;
   v5 = [v3 alloc];
   v6 = [v5 initWithType:*MEMORY[0x277CDA2E8]];
-  [v6 setValue:v4 forKey:@"inputRedValues"];
-  [v6 setValue:v4 forKey:@"inputGreenValues"];
-  [v6 setValue:v4 forKey:@"inputBlueValues"];
+  [v6 setValue:valuesCopy forKey:@"inputRedValues"];
+  [v6 setValue:valuesCopy forKey:@"inputGreenValues"];
+  [v6 setValue:valuesCopy forKey:@"inputBlueValues"];
 
   return v6;
 }
 
-- (void)_updateIdleTimerForTransitionProgress:(double)a3
+- (void)_updateIdleTimerForTransitionProgress:(double)progress
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = [(CSCoverSheetViewController *)self _appearState];
+  _appearState = [(CSCoverSheetViewController *)self _appearState];
   screenOffMode = self->_screenOffMode;
   v8 = __sb__runningInSpringBoard();
   v9 = v8;
@@ -30747,23 +30747,23 @@ void __47__CSCoverSheetViewController__updateWhitePoint__block_invoke_2(uint64_t
     if (SBFEffectiveDeviceClass() != 2)
     {
 LABEL_3:
-      v10 = [(CSLockScreenSettings *)self->_prototypeSettings idleTimerSettings];
-      [v10 unlockSlideForIdleTimerDisabledPercentage];
+      idleTimerSettings = [(CSLockScreenSettings *)self->_prototypeSettings idleTimerSettings];
+      [idleTimerSettings unlockSlideForIdleTimerDisabledPercentage];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    if ([v3 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [(CSLockScreenSettings *)self->_prototypeSettings idleTimerSettings];
-  [v10 unlockSlideForIdleTimerDisabledPercentageIPad];
+  idleTimerSettings = [(CSLockScreenSettings *)self->_prototypeSettings idleTimerSettings];
+  [idleTimerSettings unlockSlideForIdleTimerDisabledPercentageIPad];
 LABEL_6:
   v12 = v11;
 
@@ -30775,13 +30775,13 @@ LABEL_6:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v16 = 134218240;
-    v17 = a3;
+    progressCopy = progress;
     v18 = 2048;
     v19 = v12;
     _os_log_impl(&dword_21EB05000, v13, OS_LOG_TYPE_INFO, "transitionProgress: %f, percentThreshold: %f", &v16, 0x16u);
   }
 
-  if (!screenOffMode && (v6 - 3) >= 0xFFFFFFFE && v12 < a3 && !self->_transitionDisabledIdleTimer)
+  if (!screenOffMode && (_appearState - 3) >= 0xFFFFFFFE && v12 < progress && !self->_transitionDisabledIdleTimer)
   {
     v14 = [CSAction actionWithType:4];
     [(CSCoverSheetViewController *)self handleAction:v14 fromSender:self];
@@ -30793,9 +30793,9 @@ LABEL_6:
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = [a3 valueForKey:{@"CSCoverSheetWhitePointDispatchGroup", a4}];
+  v4 = [stop valueForKey:{@"CSCoverSheetWhitePointDispatchGroup", finished}];
   if (v4)
   {
     v5 = v4;
@@ -30804,46 +30804,46 @@ LABEL_6:
   }
 }
 
-- (void)_setFakeStatusBarEnabled:(BOOL)a3
+- (void)_setFakeStatusBarEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v13 = [(CSCoverSheetViewController *)self coverSheetView];
-  v5 = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
-  v6 = [v13 fakeStatusBar];
-  v7 = v6;
-  v8 = !v3;
-  if (v6)
+  enabledCopy = enabled;
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  statusBarController = [(CSCoverSheetContextProviding *)self->_coverSheetContext statusBarController];
+  fakeStatusBar = [coverSheetView fakeStatusBar];
+  v7 = fakeStatusBar;
+  v8 = !enabledCopy;
+  if (fakeStatusBar)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = !v3;
+    v9 = !enabledCopy;
   }
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(CSCoverSheetViewController *)self coverSheetView];
-    v11 = v10;
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    v11 = coverSheetView2;
     fakeStatusBar = self->_fakeStatusBar;
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!fakeStatusBar)
   {
     v8 = 0;
   }
 
   if (v8 == 1)
   {
-    v10 = [(CSCoverSheetViewController *)self coverSheetView];
-    v11 = v10;
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    v11 = coverSheetView2;
     fakeStatusBar = 0;
 LABEL_10:
-    [v10 setFakeStatusBar:fakeStatusBar];
+    [coverSheetView2 setFakeStatusBar:fakeStatusBar];
 
-    [v5 setStatusBarHidden:v9 ^ 1u forReason:@"CSCoverSheetFakeStatusBar"];
+    [statusBarController setStatusBarHidden:v9 ^ 1u forReason:@"CSCoverSheetFakeStatusBar"];
   }
 }
 
@@ -30886,7 +30886,7 @@ uint64_t __68__CSCoverSheetViewController__createStatusBarBackgroundViewIfNeeded
   return [v3 layoutIfNeeded];
 }
 
-- (void)_handleQuickNoteLaunch:(id)a3
+- (void)_handleQuickNoteLaunch:(id)launch
 {
   v4 = SBLogDashBoard();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -30901,18 +30901,18 @@ uint64_t __68__CSCoverSheetViewController__createStatusBarBackgroundViewIfNeeded
 
 - (void)_setupPosterSwitcherGestureRecognizer
 {
-  v3 = [(CSCoverSheetViewController *)self activeBehavior];
-  v4 = [v3 areRestrictedCapabilities:0x800000];
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v4 = [activeBehavior areRestrictedCapabilities:0x800000];
 
   posterSwitcherGestureRecognizer = self->_posterSwitcherGestureRecognizer;
   if ((v4 & 1) == 0)
   {
     if (posterSwitcherGestureRecognizer)
     {
-      v10 = [(CSCoverSheetViewController *)self coverSheetView];
-      v11 = [v10 dateViewGestureRecognizer];
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+      dateViewGestureRecognizer = [coverSheetView dateViewGestureRecognizer];
 
-      if (v11)
+      if (dateViewGestureRecognizer)
       {
 LABEL_13:
         if (self->_posterSwitcherFeedbackGenerator)
@@ -30920,9 +30920,9 @@ LABEL_13:
           return;
         }
 
-        v8 = objc_alloc_init(MEMORY[0x277D757B8]);
+        isActive = objc_alloc_init(MEMORY[0x277D757B8]);
         posterSwitcherFeedbackGenerator = self->_posterSwitcherFeedbackGenerator;
-        self->_posterSwitcherFeedbackGenerator = v8;
+        self->_posterSwitcherFeedbackGenerator = isActive;
         goto LABEL_16;
       }
 
@@ -30941,8 +30941,8 @@ LABEL_13:
 
     [(UILongPressGestureRecognizer *)self->_posterSwitcherGestureRecognizer setMinimumPressDuration:0.3];
     [(UILongPressGestureRecognizer *)self->_posterSwitcherGestureRecognizer setDelegate:self];
-    v15 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v15 setDateViewGestureRecognizer:self->_posterSwitcherGestureRecognizer];
+    coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView2 setDateViewGestureRecognizer:self->_posterSwitcherGestureRecognizer];
 
     goto LABEL_13;
   }
@@ -30951,31 +30951,31 @@ LABEL_13:
   {
     self->_posterSwitcherGestureRecognizer = 0;
 
-    v6 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v6 setDateViewGestureRecognizer:self->_posterSwitcherGestureRecognizer];
+    coverSheetView3 = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView3 setDateViewGestureRecognizer:self->_posterSwitcherGestureRecognizer];
   }
 
   v7 = self->_posterSwitcherFeedbackGenerator;
   if (v7)
   {
-    v8 = [(UINotificationFeedbackGenerator *)v7 isActive];
-    if (v8)
+    isActive = [(UINotificationFeedbackGenerator *)v7 isActive];
+    if (isActive)
     {
-      v8 = [(UINotificationFeedbackGenerator *)self->_posterSwitcherFeedbackGenerator deactivate];
+      isActive = [(UINotificationFeedbackGenerator *)self->_posterSwitcherFeedbackGenerator deactivate];
     }
 
     posterSwitcherFeedbackGenerator = self->_posterSwitcherFeedbackGenerator;
     self->_posterSwitcherFeedbackGenerator = 0;
 LABEL_16:
 
-    MEMORY[0x2821F96F8](v8, posterSwitcherFeedbackGenerator);
+    MEMORY[0x2821F96F8](isActive, posterSwitcherFeedbackGenerator);
   }
 }
 
-- (void)_handlePosterSwitcherActivation:(id)a3
+- (void)_handlePosterSwitcherActivation:(id)activation
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  activationCopy = activation;
+  if ([activationCopy state] == 1)
   {
     v5 = SBLogDashBoard();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -30992,8 +30992,8 @@ LABEL_16:
     }
 
     kdebug_trace();
-    v7 = [v4 touches];
-    v8 = [v7 copy];
+    touches = [activationCopy touches];
+    v8 = [touches copy];
 
     posterSwitcherActivationManager = self->_posterSwitcherActivationManager;
     v12[0] = MEMORY[0x277D85DD0];
@@ -31072,13 +31072,13 @@ uint64_t __62__CSCoverSheetViewController__handlePosterSwitcherActivation___bloc
 
 - (void)_prepareForPosterSwitcherPresentation
 {
-  v3 = [(CSCoverSheetViewController *)self currentTransitionSource];
-  v4 = [v3 isTransitioning];
+  currentTransitionSource = [(CSCoverSheetViewController *)self currentTransitionSource];
+  isTransitioning = [currentTransitionSource isTransitioning];
 
-  if ((v4 & 1) == 0)
+  if ((isTransitioning & 1) == 0)
   {
-    v5 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v5 addContentView];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView addContentView];
 
     v6 = objc_alloc_init(CSPosterSwitcherTransitionSource);
     [(CSPosterSwitcherTransitionSource *)v6 setTransitioningDelegate:self];
@@ -31087,36 +31087,36 @@ uint64_t __62__CSCoverSheetViewController__handlePosterSwitcherActivation___bloc
   }
 }
 
-- (void)_updatePosterSwitcherPresentationWithProgress:(double)a3
+- (void)_updatePosterSwitcherPresentationWithProgress:(double)progress
 {
-  v4 = [(CSCoverSheetViewController *)self posterSwitcherTransitionSource];
-  if ([v4 isTransitioning])
+  posterSwitcherTransitionSource = [(CSCoverSheetViewController *)self posterSwitcherTransitionSource];
+  if ([posterSwitcherTransitionSource isTransitioning])
   {
-    [v4 updatePresentationWithProgress:a3];
+    [posterSwitcherTransitionSource updatePresentationWithProgress:progress];
   }
 }
 
-- (void)_cleanupPosterSwitcherPresentationForCompleted:(BOOL)a3 withActivatingTouches:(id)a4
+- (void)_cleanupPosterSwitcherPresentationForCompleted:(BOOL)completed withActivatingTouches:(id)touches
 {
-  v4 = a3;
+  completedCopy = completed;
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CSCoverSheetViewController *)self posterSwitcherTransitionSource];
-  v8 = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationStatusProvider];
-  v9 = [v8 isAuthenticated];
+  touchesCopy = touches;
+  posterSwitcherTransitionSource = [(CSCoverSheetViewController *)self posterSwitcherTransitionSource];
+  authenticationStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext authenticationStatusProvider];
+  isAuthenticated = [authenticationStatusProvider isAuthenticated];
 
-  if ([v7 isTransitioning])
+  if ([posterSwitcherTransitionSource isTransitioning])
   {
     v10 = 0.0;
-    if (v4)
+    if (completedCopy)
     {
       v10 = 1.0;
     }
 
-    [v7 updatePresentationWithProgress:v10];
+    [posterSwitcherTransitionSource updatePresentationWithProgress:v10];
     v11 = SBLogDashBoard();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if ((v4 & v9) != 0)
+    if ((completedCopy & isAuthenticated) != 0)
     {
       if (v12)
       {
@@ -31125,8 +31125,8 @@ uint64_t __62__CSCoverSheetViewController__handlePosterSwitcherActivation___bloc
       }
 
       v13 = objc_alloc_init(CSDismissableModalViewController);
-      v39 = [(CSCoverSheetViewController *)self activeAppearance];
-      v14 = [v39 componentForType:23 identifier:@"(active)"];
+      activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+      v14 = [activeAppearance componentForType:23 identifier:@"(active)"];
       v15 = objc_opt_class();
       v16 = v14;
       if (v15)
@@ -31150,22 +31150,22 @@ uint64_t __62__CSCoverSheetViewController__handlePosterSwitcherActivation___bloc
       v19 = v17;
 
       v20 = objc_alloc_init(CSPosterSwitcherViewController);
-      [(CSPosterSwitcherViewController *)v20 setActivatingTouches:v6];
-      v21 = [(CSCoverSheetViewController *)self view];
-      v22 = [v21 window];
-      [(CSPosterSwitcherViewController *)v20 setTargetWindow:v22];
+      [(CSPosterSwitcherViewController *)v20 setActivatingTouches:touchesCopy];
+      view = [(CSCoverSheetViewController *)self view];
+      window = [view window];
+      [(CSPosterSwitcherViewController *)v20 setTargetWindow:window];
 
-      v23 = [(CSCoverSheetViewController *)self coverSheetView];
-      v24 = [v23 wallpaperEffectView];
-      [(CSPosterSwitcherViewController *)v20 setCoverSheetWallpaperView:v24];
+      coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+      wallpaperEffectView = [coverSheetView wallpaperEffectView];
+      [(CSPosterSwitcherViewController *)v20 setCoverSheetWallpaperView:wallpaperEffectView];
 
-      v25 = [(CSCoverSheetViewController *)self coverSheetView];
-      v26 = [v25 wallpaperFloatingLayerContainerView];
-      [(CSPosterSwitcherViewController *)v20 setCoverSheetFloatingView:v26];
+      coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+      wallpaperFloatingLayerContainerView = [coverSheetView2 wallpaperFloatingLayerContainerView];
+      [(CSPosterSwitcherViewController *)v20 setCoverSheetFloatingView:wallpaperFloatingLayerContainerView];
 
       -[CSPosterSwitcherViewController setCoverSheetWallpaperFloatingLayerInlined:](v20, "setCoverSheetWallpaperFloatingLayerInlined:", [v19 shouldRenderInline]);
-      v27 = [(CSCoverSheetViewController *)self effectiveVibrancyConfiguration];
-      [(CSPosterSwitcherViewController *)v20 setVibrancyConfiguration:v27];
+      effectiveVibrancyConfiguration = [(CSCoverSheetViewController *)self effectiveVibrancyConfiguration];
+      [(CSPosterSwitcherViewController *)v20 setVibrancyConfiguration:effectiveVibrancyConfiguration];
 
       [(SBFLockScreenDateViewController *)self->_dateViewController adaptiveTextHeight];
       [(CSPosterSwitcherViewController *)v20 setLastAdaptiveTimeTextHeight:?];
@@ -31182,7 +31182,7 @@ uint64_t __62__CSCoverSheetViewController__handlePosterSwitcherActivation___bloc
       [(CSPosterSwitcherViewController *)v20 setInvalidationHandler:v45];
       v36 = v19;
       v37 = v13;
-      v38 = v6;
+      v38 = touchesCopy;
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
@@ -31214,10 +31214,10 @@ uint64_t __62__CSCoverSheetViewController__handlePosterSwitcherActivation___bloc
         while (v29);
       }
 
-      v6 = v38;
-      v18 = v37;
-      v33 = [(CSCoverSheetContextProviding *)self->_coverSheetContext traitsAwareAppHosting];
-      [(CSPosterSwitcherViewController *)v20 setAppHostConfiguring:v33];
+      touchesCopy = v38;
+      coverSheetView3 = v37;
+      traitsAwareAppHosting = [(CSCoverSheetContextProviding *)self->_coverSheetContext traitsAwareAppHosting];
+      [(CSPosterSwitcherViewController *)v20 setAppHostConfiguring:traitsAwareAppHosting];
 
       [(CSDismissableModalViewController *)v37 setDelegate:v20];
       [(CSPresentationViewController *)v37 presentContentViewController:v20 animated:0];
@@ -31229,8 +31229,8 @@ uint64_t __62__CSCoverSheetViewController__handlePosterSwitcherActivation___bloc
         _os_log_impl(&dword_21EB05000, v34, OS_LOG_TYPE_DEFAULT, "[ZStack-Participant] adding poster switcher home affordance", v40, 2u);
       }
 
-      v35 = [(CSCoverSheetContextProviding *)self->_coverSheetContext modalHomeAffordanceController];
-      [(CSDismissableModalViewController *)v37 setHomeAffordanceController:v35];
+      modalHomeAffordanceController = [(CSCoverSheetContextProviding *)self->_coverSheetContext modalHomeAffordanceController];
+      [(CSDismissableModalViewController *)v37 setHomeAffordanceController:modalHomeAffordanceController];
 
       objc_destroyWeak(&v46);
       objc_destroyWeak(&buf);
@@ -31241,17 +31241,17 @@ uint64_t __62__CSCoverSheetViewController__handlePosterSwitcherActivation___bloc
       if (v12)
       {
         LODWORD(buf) = 67109376;
-        HIDWORD(buf) = v4;
+        HIDWORD(buf) = completedCopy;
         v48 = 1024;
-        v49 = v9;
+        v49 = isAuthenticated;
         _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "Poster Switcher gesture ended in failure. Not presenting Poster Switcher. Interaction completed: %{BOOL}d. Device authenticated: %{BOOL}d", &buf, 0xEu);
       }
 
-      v18 = [(CSCoverSheetViewController *)self coverSheetView];
-      [v18 removeContentView];
+      coverSheetView3 = [(CSCoverSheetViewController *)self coverSheetView];
+      [coverSheetView3 removeContentView];
     }
 
-    [v7 cleanupPresentation];
+    [posterSwitcherTransitionSource cleanupPresentation];
     [(CSCoverSheetViewController *)self setPosterSwitcherTransitionSource:0];
   }
 }
@@ -31262,14 +31262,14 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
   [WeakRetained setPosterSwitcherViewController:0];
 }
 
-- (void)setPosterSwitcherTransitionSource:(id)a3
+- (void)setPosterSwitcherTransitionSource:(id)source
 {
-  v5 = a3;
-  if (self->_posterSwitcherTransitionSource != v5)
+  sourceCopy = source;
+  if (self->_posterSwitcherTransitionSource != sourceCopy)
   {
     [(CSCoverSheetViewController *)self unregisterExternalAppearanceProvider:?];
     [(CSCoverSheetViewController *)self unregisterExternalBehaviorProvider:self->_posterSwitcherTransitionSource];
-    objc_storeStrong(&self->_posterSwitcherTransitionSource, a3);
+    objc_storeStrong(&self->_posterSwitcherTransitionSource, source);
     if (self->_posterSwitcherTransitionSource)
     {
       [(CSCoverSheetViewController *)self registerExternalAppearanceProvider:?];
@@ -31278,59 +31278,59 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
   }
 }
 
-- (void)setPosterSwitcherViewController:(id)a3
+- (void)setPosterSwitcherViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_posterSwitcherViewController != v5)
+  controllerCopy = controller;
+  if (self->_posterSwitcherViewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_posterSwitcherViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_posterSwitcherViewController, controller);
     self->_preventStatusBarDateTimeUpdates = [(CSCoverSheetViewController *)self _isPresentingPosterSwitcher];
     [(CSCoverSheetViewController *)self _updateAppearanceForHavingPosterSwitcherTransition:self->_posterSwitcherViewController != 0];
     [(CSCoverSheetViewController *)self _updateStatusBarBackground];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
 - (void)_updatePosterSwitcherBackgroundView
 {
-  v3 = [(CSCoverSheetViewController *)self posterSwitcherViewController];
-  if (v3)
+  posterSwitcherViewController = [(CSCoverSheetViewController *)self posterSwitcherViewController];
+  if (posterSwitcherViewController)
   {
-    v9 = v3;
-    v4 = [(CSCoverSheetViewController *)self coverSheetView];
-    v5 = [v4 backgroundContentView];
-    v6 = [v4 backgroundView];
-    v7 = v6;
-    if (v5)
+    v9 = posterSwitcherViewController;
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    backgroundContentView = [coverSheetView backgroundContentView];
+    backgroundView = [coverSheetView backgroundView];
+    v7 = backgroundView;
+    if (backgroundContentView)
     {
-      v8 = v5;
+      v8 = backgroundContentView;
     }
 
     else
     {
-      v8 = v6;
+      v8 = backgroundView;
     }
 
     [v9 setCoverSheetBackgroundView:v8];
 
-    v3 = v9;
+    posterSwitcherViewController = v9;
   }
 }
 
 - (void)_dismissPosterSwitcherViewController
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v3 removeContentView];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView removeContentView];
 
   v5 = +[(CSCoverSheetViewControllerBase *)CSDismissableModalViewController];
   v4 = [(CSCoverSheetViewController *)self _presentedModalViewControllerWithIdentifier:v5];
   [(CSCoverSheetViewController *)self _dismissModalViewController:v4 animated:0 completion:0];
 }
 
-- (void)_updateAppearanceForHavingPosterSwitcherTransition:(BOOL)a3
+- (void)_updateAppearanceForHavingPosterSwitcherTransition:(BOOL)transition
 {
-  if (a3)
+  if (transition)
   {
     v4 = +[CSComponent notificationDimmingLayer];
     v5 = [v4 identifier:@"PosterSwitcherTransition"];
@@ -31349,9 +31349,9 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
   [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:@"PosterSwitcherTransition"];
 }
 
-- (void)posterSwitcherActivationManager:(id)a3 didChangeToCoachingText:(id)a4
+- (void)posterSwitcherActivationManager:(id)manager didChangeToCoachingText:(id)text
 {
-  v5 = [a4 copy];
+  v5 = [text copy];
   currentCoachingString = self->_currentCoachingString;
   self->_currentCoachingString = v5;
 
@@ -31360,15 +31360,15 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
 
 - (BOOL)userPresenceDetectedSinceWake
 {
-  v3 = [(CSUserPresenceMonitor *)self->_userPresenceMonitor isUserPresenceDetectionSupported];
-  if (v3)
+  isUserPresenceDetectionSupported = [(CSUserPresenceMonitor *)self->_userPresenceMonitor isUserPresenceDetectionSupported];
+  if (isUserPresenceDetectionSupported)
   {
     userPresenceMonitor = self->_userPresenceMonitor;
 
-    LOBYTE(v3) = [(CSUserPresenceMonitor *)userPresenceMonitor userPresenceDetectedSinceWake];
+    LOBYTE(isUserPresenceDetectionSupported) = [(CSUserPresenceMonitor *)userPresenceMonitor userPresenceDetectedSinceWake];
   }
 
-  return v3;
+  return isUserPresenceDetectionSupported;
 }
 
 - (id)posterSwitcherPresentationStatus
@@ -31381,15 +31381,15 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
 
   else
   {
-    v5 = [MEMORY[0x277D262A0] sharedConnection];
-    v6 = [v5 isWallpaperModificationAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isWallpaperModificationAllowed = [mEMORY[0x277D262A0] isWallpaperModificationAllowed];
 
-    if (v6)
+    if (isWallpaperModificationAllowed)
     {
-      v7 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-      v8 = [v7 hasUserInteraction];
+      combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+      hasUserInteraction = [combinedListViewController hasUserInteraction];
 
-      if (v8)
+      if (hasUserInteraction)
       {
         v4 = 0;
         v3 = 1;
@@ -31397,10 +31397,10 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
 
       else if ([(CSCoverSheetViewController *)self isAuthenticated])
       {
-        v11 = [(CSCoverSheetContextProviding *)self->_coverSheetContext proximitySensorProvider];
-        v12 = [v11 isObjectInProximity];
+        proximitySensorProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext proximitySensorProvider];
+        isObjectInProximity = [proximitySensorProvider isObjectInProximity];
 
-        if (v12)
+        if (isObjectInProximity)
         {
           v4 = 0;
           v3 = 3;
@@ -31408,10 +31408,10 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
 
         else
         {
-          v13 = [MEMORY[0x277D75418] currentDevice];
-          v14 = [v13 userInterfaceIdiom];
+          currentDevice = [MEMORY[0x277D75418] currentDevice];
+          userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-          if ((v14 & 0xFFFFFFFFFFFFFFFBLL) == 1 || ([(CSCoverSheetViewController *)self interfaceOrientation]- 3) >= 2)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || ([(CSCoverSheetViewController *)self interfaceOrientation]- 3) >= 2)
           {
             v3 = 0;
             v4 = 1;
@@ -31444,11 +31444,11 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
   return v9;
 }
 
-- (void)setComplicationContainerUsesBottomPosition:(BOOL)a3
+- (void)setComplicationContainerUsesBottomPosition:(BOOL)position
 {
-  if (self->_complicationContainerUsesBottomPosition != a3)
+  if (self->_complicationContainerUsesBottomPosition != position)
   {
-    self->_complicationContainerUsesBottomPosition = a3;
+    self->_complicationContainerUsesBottomPosition = position;
     [(CSCoverSheetViewController *)self _updateComplicationContainerPosition];
   }
 }
@@ -31456,13 +31456,13 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
 - (void)_updateComplicationContainerPosition
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self _wouldComplicationsUseBottomPosition];
+  _wouldComplicationsUseBottomPosition = [(CSCoverSheetViewController *)self _wouldComplicationsUseBottomPosition];
   v4 = SBLogDashBoard();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     complicationContainerUsesBottomPosition = self->_complicationContainerUsesBottomPosition;
     *buf = 67109632;
-    v18 = v3;
+    v18 = _wouldComplicationsUseBottomPosition;
     v19 = 1024;
     v20 = complicationContainerUsesBottomPosition;
     v21 = 1024;
@@ -31470,11 +31470,11 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
     _os_log_impl(&dword_21EB05000, v4, OS_LOG_TYPE_DEFAULT, "[Widget Row] Widget row using bottom position: %{BOOL}u for poster configuration requested bottom position: %{BOOL}u, depth effect enabled: %{BOOL}u", buf, 0x14u);
   }
 
-  v6 = [(CSWidgetGridViewController *)self->_complicationContainerViewController parentViewController];
-  v7 = v6;
-  if (v3)
+  parentViewController = [(CSWidgetGridViewController *)self->_complicationContainerViewController parentViewController];
+  v7 = parentViewController;
+  if (_wouldComplicationsUseBottomPosition)
   {
-    if (v6 == self)
+    if (parentViewController == self)
     {
       goto LABEL_12;
     }
@@ -31496,7 +31496,7 @@ void __99__CSCoverSheetViewController__cleanupPosterSwitcherPresentationForCompl
     [(CSCoverSheetViewController *)v7 bs_removeChildViewController:complicationContainerViewController animated:0 transitionBlock:v16];
   }
 
-  if (v3)
+  if (_wouldComplicationsUseBottomPosition)
   {
     v9 = self->_complicationContainerViewController;
     v15[0] = MEMORY[0x277D85DD0];
@@ -31518,11 +31518,11 @@ LABEL_12:
   [getCSProminentLayoutControllerClass() boundsForElements:8];
   self->_portraitComplicationContainerHeight = v11 + v12;
   [(CSRemoteContentInlineViewController *)self->_remoteContentInlineViewController hostDidChangeContentBounds];
-  v13 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  [v13 layoutListView];
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  [combinedListViewController layoutListView];
 
-  v14 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  [v14 invalidateContentInsets];
+  combinedListViewController2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  [combinedListViewController2 invalidateContentInsets];
 }
 
 void __66__CSCoverSheetViewController__updateComplicationContainerPosition__block_invoke(uint64_t a1, void *a2)
@@ -31549,14 +31549,14 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
 
 - (BOOL)_shouldAllowGlassCoverSheet
 {
-  v2 = [(SBLockScreenDefaults *)self->_lockScreenDefaults disallowGlassLockScreen];
+  disallowGlassLockScreen = [(SBLockScreenDefaults *)self->_lockScreenDefaults disallowGlassLockScreen];
   v3 = SBLogCommon();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     [CSCoverSheetViewController _shouldAllowGlassCoverSheet];
   }
 
-  return ((UIAccessibilityIsReduceMotionEnabled() | v2) & 1) == 0;
+  return ((UIAccessibilityIsReduceMotionEnabled() | disallowGlassLockScreen) & 1) == 0;
 }
 
 - (void)_updateForSensitiveUI
@@ -31566,13 +31566,13 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
   [(CSCoverSheetViewController *)self _updateBackgroundGlassView];
 }
 
-- (void)_complicationSelected:(id)a3
+- (void)_complicationSelected:(id)selected
 {
   dateViewController = self->_dateViewController;
-  v5 = a3;
-  v6 = [(SBFLockScreenDateViewController *)dateViewController inlineComplicationViewController];
+  selectedCopy = selected;
+  inlineComplicationViewController = [(SBFLockScreenDateViewController *)dateViewController inlineComplicationViewController];
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = inlineComplicationViewController;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -31593,22 +31593,22 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
 
   v10 = v9;
 
-  [v10 handleComplicationSelectionGesture:v5];
-  v11 = [(CSCoverSheetViewController *)self complicationContainerViewController];
-  [v11 handleComplicationSelectionGesture:v5];
+  [v10 handleComplicationSelectionGesture:selectedCopy];
+  complicationContainerViewController = [(CSCoverSheetViewController *)self complicationContainerViewController];
+  [complicationContainerViewController handleComplicationSelectionGesture:selectedCopy];
 
-  v12 = [(CSCoverSheetViewController *)self sidebarComplicationContainerViewController];
-  [v12 handleComplicationSelectionGesture:v5];
+  sidebarComplicationContainerViewController = [(CSCoverSheetViewController *)self sidebarComplicationContainerViewController];
+  [sidebarComplicationContainerViewController handleComplicationSelectionGesture:selectedCopy];
 }
 
 - (void)_setupComplicationSelectionGestureRecognizer
 {
   if (self->_complicationSelectionRecognizer)
   {
-    v3 = [(CSCoverSheetViewController *)self coverSheetView];
-    v4 = [v3 complicationGestureRecognizer];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    complicationGestureRecognizer = [coverSheetView complicationGestureRecognizer];
 
-    if (v4)
+    if (complicationGestureRecognizer)
     {
       return;
     }
@@ -31628,23 +31628,23 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
 
   [(UILongPressGestureRecognizer *)self->_complicationSelectionRecognizer setMinimumPressDuration:0.01];
   [(UILongPressGestureRecognizer *)self->_complicationSelectionRecognizer setDelegate:self];
-  v8 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v8 setComplicationGestureRecognizer:self->_complicationSelectionRecognizer];
+  coverSheetView2 = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView2 setComplicationGestureRecognizer:self->_complicationSelectionRecognizer];
 }
 
-- (void)_updateUIForPlaying:(BOOL)a3 immediately:(BOOL)a4
+- (void)_updateUIForPlaying:(BOOL)playing immediately:(BOOL)immediately
 {
-  v4 = a4;
-  v5 = a3;
+  immediatelyCopy = immediately;
+  playingCopy = playing;
   v8[1] = *MEMORY[0x277D85DE8];
   [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self selector:sel__actuallyUpdateUIForIrisNotPlaying object:0];
-  if (v4)
+  if (immediatelyCopy)
   {
 
-    [(CSCoverSheetViewController *)self _actuallyUpdateUIForIrisPlaying:v5];
+    [(CSCoverSheetViewController *)self _actuallyUpdateUIForIrisPlaying:playingCopy];
   }
 
-  else if (!v5)
+  else if (!playingCopy)
   {
     v8[0] = *MEMORY[0x277CBE738];
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
@@ -31652,12 +31652,12 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
   }
 }
 
-- (void)_actuallyUpdateUIForIrisPlaying:(BOOL)a3
+- (void)_actuallyUpdateUIForIrisPlaying:(BOOL)playing
 {
-  v3 = a3;
-  v5 = [(CSCoverSheetViewController *)self irisBehavior];
-  v6 = v5;
-  if (v3)
+  playingCopy = playing;
+  irisBehavior = [(CSCoverSheetViewController *)self irisBehavior];
+  v6 = irisBehavior;
+  if (playingCopy)
   {
     v7 = 3;
   }
@@ -31667,7 +31667,7 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
     v7 = 0;
   }
 
-  [v5 setScrollingStrategy:v7];
+  [irisBehavior setScrollingStrategy:v7];
 
   v8 = MEMORY[0x277CCACA8];
   v10 = NSStringFromBOOL();
@@ -31675,11 +31675,11 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
   [(CSCoverSheetViewController *)self _updateActiveBehaviorsForReason:v9];
 }
 
-- (void)startLockScreenFadeInAnimationForSource:(int)a3
+- (void)startLockScreenFadeInAnimationForSource:(int)source
 {
-  v3 = *&a3;
+  v3 = *&source;
   v31 = *MEMORY[0x277D85DE8];
-  self->_wakeSource = a3;
+  self->_wakeSource = source;
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -31689,8 +31689,8 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "wake source: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
-  [v7 setUnlockSource:v3];
+  poseidonContainerViewController = [(CSPoseidonViewController *)self->_poseidonViewController poseidonContainerViewController];
+  [poseidonContainerViewController setUnlockSource:v3];
 
   if (SBUIUnlockSourceIsUserAction())
   {
@@ -31734,8 +31734,8 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
   }
 
   [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:@"StartFadeInAnimation"];
-  v14 = [(CSCoverSheetContextProviding *)self->_coverSheetContext screenStateProvider];
-  v15 = [v14 screenIsOn];
+  screenStateProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext screenStateProvider];
+  screenIsOn = [screenStateProvider screenIsOn];
 
   v16 = SBLogDashBoard();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -31749,31 +31749,31 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
   self->_blockingPowerStatusTriggeredChargingUI = 1;
   [(CSPowerChangeObserver *)self->_powerChangeObserver update];
   self->_blockingPowerStatusTriggeredChargingUI = 0;
-  v18 = [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToPower];
+  isConnectedToPower = [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToPower];
   if ((v3 - 21) > 1)
   {
     v19 = SBLogDashBoard();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+      _isShowingChargingModal = [(CSCoverSheetViewController *)self _isShowingChargingModal];
       *buf = 67109376;
-      *v29 = v18;
+      *v29 = isConnectedToPower;
       *&v29[4] = 1024;
-      *&v29[6] = v20;
+      *&v29[6] = _isShowingChargingModal;
       _os_log_impl(&dword_21EB05000, v19, OS_LOG_TYPE_DEFAULT, "[Charge UI] visible %d, showBattery NO – isAlreadyShowingChargingModal: %d", buf, 0xEu);
     }
 
-    [(CSCoverSheetViewController *)self _transitionChargingViewToVisible:v18 suppressedByPack:0 showBattery:0 animated:v15];
+    [(CSCoverSheetViewController *)self _transitionChargingViewToVisible:isConnectedToPower suppressedByPack:0 showBattery:0 animated:screenIsOn];
     v21 = SBLogDashBoard();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+      _isShowingChargingModal2 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
       *buf = 67109120;
-      *v29 = v22;
+      *v29 = _isShowingChargingModal2;
       _os_log_impl(&dword_21EB05000, v21, OS_LOG_TYPE_DEFAULT, "[Charge UI] – endedShowingChargingModal: %d", buf, 8u);
     }
 
-    if ((v15 & 1) == 0)
+    if ((screenIsOn & 1) == 0)
     {
       [(CSCoverSheetViewController *)self _startFadeInAnimationForSource:SBUIConvertUnlockSourceToBacklightChangeSource()];
     }
@@ -31781,7 +31781,7 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
 
   else
   {
-    [(CSCoverSheetViewController *)self _finishFadeInAnimationForPowerSource:v3 connectedToPower:v18 screenOn:v15];
+    [(CSCoverSheetViewController *)self _finishFadeInAnimationForPowerSource:v3 connectedToPower:isConnectedToPower screenOn:screenIsOn];
   }
 
   if (SBUIUnlockSourceIsUserAction())
@@ -31793,14 +31793,14 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
   [(CSTeachableMomentsContainerViewController *)self->_teachableMomentsContainerViewController setAnimationState:1];
 }
 
-- (void)_finishFadeInAnimationForPowerSource:(int)a3 connectedToPower:(BOOL)a4 screenOn:(BOOL)a5
+- (void)_finishFadeInAnimationForPowerSource:(int)source connectedToPower:(BOOL)power screenOn:(BOOL)on
 {
-  v5 = a5;
-  v6 = a4;
+  onCopy = on;
+  powerCopy = power;
   *&v16[5] = *MEMORY[0x277D85DE8];
   if ([(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalChargingAccessory])
   {
-    if (v5)
+    if (onCopy)
     {
       return;
     }
@@ -31827,24 +31827,24 @@ void __66__CSCoverSheetViewController__updateComplicationContainerPosition__bloc
     if (v10)
     {
       v15 = 67109376;
-      v16[0] = v6;
+      v16[0] = powerCopy;
       LOWORD(v16[1]) = 1024;
       *(&v16[1] + 2) = [(CSCoverSheetViewController *)self _isShowingChargingModal];
       _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "[Charge UI][Finish Fade] visible YES, showBattery %d – isAlreadyShowingChargingModal: %d", &v15, 0xEu);
     }
 
-    [(CSCoverSheetViewController *)self _transitionChargingViewToVisible:1 showBattery:v6 animated:v5];
+    [(CSCoverSheetViewController *)self _transitionChargingViewToVisible:1 showBattery:powerCopy animated:onCopy];
     v9 = SBLogDashBoard();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+      _isShowingChargingModal = [(CSCoverSheetViewController *)self _isShowingChargingModal];
       v15 = 67109120;
-      v16[0] = v12;
+      v16[0] = _isShowingChargingModal;
       _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "[Charge UI][Finish Fade] – endedShowingChargingModal: %d", &v15, 8u);
     }
   }
 
-  if (!v5)
+  if (!onCopy)
   {
 LABEL_12:
     v13 = SBLogDashBoard();
@@ -31860,7 +31860,7 @@ LABEL_12:
   }
 }
 
-- (void)_startFadeInAnimationForSource:(int64_t)a3
+- (void)_startFadeInAnimationForSource:(int64_t)source
 {
   if (![(CSCoverSheetViewController *)self _isWakeAnimationInProgress]&& [(CSCoverSheetViewController *)self isViewLoaded])
   {
@@ -31872,22 +31872,22 @@ LABEL_12:
     }
 
     kdebug_trace();
-    v6 = [(CSCoverSheetViewController *)self activeAppearance];
-    v7 = [v6 componentForType:2 identifier:@"(active)"];
+    activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+    v7 = [activeAppearance componentForType:2 identifier:@"(active)"];
 
     [(CSCoverSheetViewController *)self _dateTimeAlphaForFade];
     v9 = v8;
     [v7 alpha];
     v11 = v10;
     screenWakeAnimationController = self->_screenWakeAnimationController;
-    v13 = [(CSCoverSheetViewController *)self legacyWallpaperWakeAnimator];
-    v14 = [(SBFLockScreenDateViewController *)self->_dateViewController dateViewIfExists];
+    legacyWallpaperWakeAnimator = [(CSCoverSheetViewController *)self legacyWallpaperWakeAnimator];
+    dateViewIfExists = [(SBFLockScreenDateViewController *)self->_dateViewController dateViewIfExists];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __61__CSCoverSheetViewController__startFadeInAnimationForSource___block_invoke;
     v15[3] = &unk_27838B770;
     v15[4] = self;
-    [(SBFScreenWakeAnimationControlling *)screenWakeAnimationController prepareToWakeForSource:a3 timeAlpha:v13 statusBarAlpha:v14 target:v15 dateView:v9 completion:v11];
+    [(SBFScreenWakeAnimationControlling *)screenWakeAnimationController prepareToWakeForSource:source timeAlpha:legacyWallpaperWakeAnimator statusBarAlpha:dateViewIfExists target:v15 dateView:v9 completion:v11];
   }
 }
 
@@ -31907,15 +31907,15 @@ void __61__CSCoverSheetViewController__startFadeInAnimationForSource___block_inv
   [*(a1 + 32) _handleEvent:v3];
 }
 
-- (void)screenSleepCompletedForSource:(int)a3
+- (void)screenSleepCompletedForSource:(int)source
 {
   v4 = [CSEvent eventWithType:39];
   [(CSCoverSheetViewController *)self _handleEvent:v4];
 }
 
-- (void)timerControllerDidStartTimer:(id)a3
+- (void)timerControllerDidStartTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -31927,23 +31927,23 @@ void __61__CSCoverSheetViewController__startFadeInAnimationForSource___block_inv
   if (([(ACActivityCenter *)self->_activityCenter areActivitiesEnabled]& 1) == 0)
   {
     dateViewController = self->_dateViewController;
-    v7 = [v4 timerText];
-    [(SBFLockScreenDateViewController *)dateViewController setTimerWithText:v7];
+    timerText = [timerCopy timerText];
+    [(SBFLockScreenDateViewController *)dateViewController setTimerWithText:timerText];
   }
 }
 
-- (void)timerControllerDidUpdateTimer:(id)a3
+- (void)timerControllerDidUpdateTimer:(id)timer
 {
-  v6 = a3;
+  timerCopy = timer;
   if (([(ACActivityCenter *)self->_activityCenter areActivitiesEnabled]& 1) == 0)
   {
     dateViewController = self->_dateViewController;
-    v5 = [v6 timerText];
-    [(SBFLockScreenDateViewController *)dateViewController updateTimerWithText:v5];
+    timerText = [timerCopy timerText];
+    [(SBFLockScreenDateViewController *)dateViewController updateTimerWithText:timerText];
   }
 }
 
-- (void)timerControllerDidStopTimer:(id)a3
+- (void)timerControllerDidStopTimer:(id)timer
 {
   v4 = SBLogDashBoard();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -31959,14 +31959,14 @@ void __61__CSCoverSheetViewController__startFadeInAnimationForSource___block_inv
   }
 }
 
-- (void)_transitionTimerViewToVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_transitionTimerViewToVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CSCoverSheetViewController *)self localAppearance];
-  v8 = [v7 componentForType:1 identifier:@"TimerView"];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  localAppearance = [(CSCoverSheetViewController *)self localAppearance];
+  v8 = [localAppearance componentForType:1 identifier:@"TimerView"];
 
-  if ((v8 != 0) != v5)
+  if ((v8 != 0) != visibleCopy)
   {
     if (![(CSTimerViewController *)self->_timerViewController isEndDateValid])
     {
@@ -31977,10 +31977,10 @@ void __61__CSCoverSheetViewController__startFadeInAnimationForSource___block_inv
         _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "Timer end date is invalid or nil.", buf, 2u);
       }
 
-      v5 = 0;
+      visibleCopy = 0;
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       v10 = [MEMORY[0x277CF0B70] settingsWithDuration:0.4];
     }
@@ -31995,23 +31995,23 @@ void __61__CSCoverSheetViewController__startFadeInAnimationForSource___block_inv
     v12[2] = __69__CSCoverSheetViewController__transitionTimerViewToVisible_animated___block_invoke;
     v12[3] = &unk_27838C398;
     v12[4] = self;
-    v13 = v5;
+    v13 = visibleCopy;
     [(CSCoverSheetViewController *)self _updateLocalAppearanceForRequester:@"TimerView" animationSettings:v10 actions:v12 completion:0];
-    if (v4)
+    if (animatedCopy)
     {
     }
 
-    if (v5)
+    if (visibleCopy)
     {
-      v11 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
 
-    [(CSCoverSheetViewControllerBase *)self->_timerViewController setPresenter:v11];
+    [(CSCoverSheetViewControllerBase *)self->_timerViewController setPresenter:selfCopy];
   }
 }
 
@@ -32039,21 +32039,21 @@ id __69__CSCoverSheetViewController__transitionTimerViewToVisible_animated___blo
   return v7;
 }
 
-- (void)accessoryAttached:(id)a3
+- (void)accessoryAttached:(id)attached
 {
-  v4 = a3;
+  attachedCopy = attached;
   v5 = +[CSLockScreenDomain rootSettings];
-  v6 = [v5 chargingSettings];
+  chargingSettings = [v5 chargingSettings];
 
-  [v6 omniAccessoryAnimationDelayInMilliseconds];
+  [chargingSettings omniAccessoryAnimationDelayInMilliseconds];
   v8 = dispatch_time(0, (v7 / 1000.0 * 1000000000.0));
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__CSCoverSheetViewController_accessoryAttached___block_invoke;
   v10[3] = &unk_27838B838;
-  v11 = v4;
-  v12 = self;
-  v9 = v4;
+  v11 = attachedCopy;
+  selfCopy = self;
+  v9 = attachedCopy;
   dispatch_after(v8, MEMORY[0x277D85CD0], v10);
 }
 
@@ -32076,16 +32076,16 @@ uint64_t __48__CSCoverSheetViewController_accessoryAttached___block_invoke(uint6
   return [*(a1 + 40) _transitionAccessoryViewToVisible:1 accessory:*(a1 + 32) animated:v5];
 }
 
-- (void)accessoryDetached:(id)a3
+- (void)accessoryDetached:(id)detached
 {
-  v4 = a3;
+  detachedCopy = detached;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__CSCoverSheetViewController_accessoryDetached___block_invoke;
   v6[3] = &unk_27838B838;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = detachedCopy;
+  selfCopy = self;
+  v5 = detachedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -32165,13 +32165,13 @@ uint64_t __48__CSCoverSheetViewController_accessoryDetached___block_invoke_804(u
   return v5;
 }
 
-- (void)accessoryAnimationStatusChanged:(BOOL)a3
+- (void)accessoryAnimationStatusChanged:(BOOL)changed
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __62__CSCoverSheetViewController_accessoryAnimationStatusChanged___block_invoke;
   v3[3] = &unk_27838BC70;
-  v4 = a3;
+  changedCopy = changed;
   v3[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
@@ -32191,14 +32191,14 @@ void __62__CSCoverSheetViewController_accessoryAnimationStatusChanged___block_in
   *(*(a1 + 32) + 1328) = *(a1 + 40);
 }
 
-- (void)_updateAccessoryAnimationPresenting:(BOOL)a3 userInteractionDisabled:(BOOL)a4
+- (void)_updateAccessoryAnimationPresenting:(BOOL)presenting userInteractionDisabled:(BOOL)disabled
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __90__CSCoverSheetViewController__updateAccessoryAnimationPresenting_userInteractionDisabled___block_invoke;
   v4[3] = &unk_27838C3E8;
-  v5 = a3;
-  v6 = a4;
+  presentingCopy = presenting;
+  disabledCopy = disabled;
   v4[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
@@ -32267,7 +32267,7 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)attachedAccessoriesContainsAccessoryType:(int64_t)a3
+- (BOOL)attachedAccessoriesContainsAccessoryType:(int64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -32289,7 +32289,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) type] == a3)
+        if ([*(*(&v11 + 1) + 8 * i) type] == type)
         {
           v9 = 1;
           goto LABEL_11;
@@ -32312,45 +32312,45 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)_isAccessoryAnimationAllowedForAccessory:(id)a3
+- (BOOL)_isAccessoryAnimationAllowedForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self activeBehavior];
-  v6 = [v5 areRestrictedCapabilities:0x100000];
+  accessoryCopy = accessory;
+  activeBehavior = [(CSCoverSheetViewController *)self activeBehavior];
+  v6 = [activeBehavior areRestrictedCapabilities:0x100000];
 
   if (v6)
   {
-    v7 = 0;
+    hasStaticView = 0;
   }
 
   else if (self->_isAccessoryAnimationAllowed && ![(CSCoverSheetViewController *)self _isShowingNonStaticAccessoryBlockingUI])
   {
-    v7 = 1;
+    hasStaticView = 1;
   }
 
   else
   {
-    v7 = [v4 hasStaticView];
+    hasStaticView = [accessoryCopy hasStaticView];
   }
 
-  return v7;
+  return hasStaticView;
 }
 
-- (void)_transitionAccessoryViewToVisible:(BOOL)a3 accessory:(id)a4 animated:(BOOL)a5
+- (void)_transitionAccessoryViewToVisible:(BOOL)visible accessory:(id)accessory animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
+  animatedCopy = animated;
+  visibleCopy = visible;
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(CSCoverSheetViewController *)self _showingAccessoryView];
-  v10 = v9;
-  if (v6 && v9)
+  accessoryCopy = accessory;
+  _showingAccessoryView = [(CSCoverSheetViewController *)self _showingAccessoryView];
+  v10 = _showingAccessoryView;
+  if (visibleCopy && _showingAccessoryView)
   {
     v11 = SBLogDashBoard();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CSMagSafeAccessoryViewController *)self->_accessoryViewController accessory];
-      v13 = [v12 description];
+      accessory = [(CSMagSafeAccessoryViewController *)self->_accessoryViewController accessory];
+      v13 = [accessory description];
       *buf = 138412290;
       v37 = v13;
       _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "Showing an accessory view already: %@.", buf, 0xCu);
@@ -32361,15 +32361,15 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v6)
+  if (visibleCopy)
   {
-    if (![(CSCoverSheetViewController *)self _isAccessoryAnimationAllowedForAccessory:v8])
+    if (![(CSCoverSheetViewController *)self _isAccessoryAnimationAllowedForAccessory:accessoryCopy])
     {
       v11 = SBLogDashBoard();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(CSMagSafeAccessoryViewController *)self->_accessoryViewController accessory];
-        v21 = [v20 description];
+        accessory2 = [(CSMagSafeAccessoryViewController *)self->_accessoryViewController accessory];
+        v21 = [accessory2 description];
         *buf = 138412290;
         v37 = v21;
         _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "Accessory animation is not allowed. Not showing accessory animation for accessory: %@", buf, 0xCu);
@@ -32378,7 +32378,7 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    if (v8)
+    if (accessoryCopy)
     {
       v14 = v10;
     }
@@ -32392,20 +32392,20 @@ LABEL_5:
     {
       if ([(CSCoverSheetViewController *)self isMainPageVisible])
       {
-        [(CSCoverSheetViewController *)self _animateAccessory:v8 toVisibleAnimated:v5];
+        [(CSCoverSheetViewController *)self _animateAccessory:accessoryCopy toVisibleAnimated:animatedCopy];
       }
 
       else
       {
-        v22 = [v8 type];
-        v23 = [(CSCoverSheetViewController *)self visiblePageViewController];
-        v24 = [(CSCoverSheetViewController *)self mainPageContentViewController];
+        type = [accessoryCopy type];
+        visiblePageViewController = [(CSCoverSheetViewController *)self visiblePageViewController];
+        mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
 
-        v25 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-        if (v25)
+        overlayControllerIfExists = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+        if (overlayControllerIfExists)
         {
-          v26 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-          [v26 presentationProgress];
+          overlayControllerIfExists2 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+          [overlayControllerIfExists2 presentationProgress];
           IsZero = BSFloatIsZero();
         }
 
@@ -32414,11 +32414,11 @@ LABEL_5:
           IsZero = 1;
         }
 
-        v28 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-        if (v28)
+        overlayControllerIfExists3 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+        if (overlayControllerIfExists3)
         {
-          v29 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
-          [v29 presentationProgress];
+          overlayControllerIfExists4 = [(CSCoverSheetViewController *)self overlayControllerIfExists];
+          [overlayControllerIfExists4 presentationProgress];
           v30 = BSFloatLessThanFloat();
         }
 
@@ -32427,19 +32427,19 @@ LABEL_5:
           v30 = 0;
         }
 
-        v31 = v23 == v24;
+        v31 = visiblePageViewController == mainPageContentViewController;
 
-        if (v22 == 6 || (v31 & IsZero & 1) != 0 || v30)
+        if (type == 6 || (v31 & IsZero & 1) != 0 || v30)
         {
-          v32 = [(CSCoverSheetViewController *)self _indexOfMainPage];
+          _indexOfMainPage = [(CSCoverSheetViewController *)self _indexOfMainPage];
           v33[0] = MEMORY[0x277D85DD0];
           v33[1] = 3221225472;
           v33[2] = __83__CSCoverSheetViewController__transitionAccessoryViewToVisible_accessory_animated___block_invoke;
           v33[3] = &unk_27838C410;
           v33[4] = self;
-          v34 = v8;
-          v35 = v5;
-          [(CSCoverSheetViewController *)self activatePage:v32 animated:0 withCompletion:v33];
+          v34 = accessoryCopy;
+          v35 = animatedCopy;
+          [(CSCoverSheetViewController *)self activatePage:_indexOfMainPage animated:0 withCompletion:v33];
         }
       }
     }
@@ -32447,11 +32447,11 @@ LABEL_5:
 
   else
   {
-    v15 = [(CSMagSafeAccessoryViewController *)self->_accessoryViewController accessory];
-    v16 = [v15 endpointUUID];
-    v17 = [v8 endpointUUID];
+    accessory3 = [(CSMagSafeAccessoryViewController *)self->_accessoryViewController accessory];
+    endpointUUID = [accessory3 endpointUUID];
+    endpointUUID2 = [accessoryCopy endpointUUID];
 
-    if (v16 == v17)
+    if (endpointUUID == endpointUUID2)
     {
       [(BSAbsoluteMachTimer *)self->_accessoryViewControllerTimer invalidate];
       accessoryViewControllerTimer = self->_accessoryViewControllerTimer;
@@ -32460,37 +32460,37 @@ LABEL_5:
       accessoryViewControllerTimerHandler = self->_accessoryViewControllerTimerHandler;
       self->_accessoryViewControllerTimerHandler = 0;
 
-      [(CSCoverSheetViewController *)self _dismissAccessoryViewController:self->_accessoryViewController animated:v5];
+      [(CSCoverSheetViewController *)self _dismissAccessoryViewController:self->_accessoryViewController animated:animatedCopy];
     }
   }
 
 LABEL_6:
 }
 
-- (void)_animateAccessory:(id)a3 toVisibleAnimated:(BOOL)a4
+- (void)_animateAccessory:(id)accessory toVisibleAnimated:(BOOL)animated
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CSCoverSheetContextProviding *)self->_coverSheetContext reachabilityController];
-  [v7 deactivateReachability];
+  accessoryCopy = accessory;
+  reachabilityController = [(CSCoverSheetContextProviding *)self->_coverSheetContext reachabilityController];
+  [reachabilityController deactivateReachability];
 
-  v8 = [(CSCoverSheetViewController *)self isShowingModalView];
-  v9 = [v6 shouldLockScreenWhenAttached];
+  isShowingModalView = [(CSCoverSheetViewController *)self isShowingModalView];
+  shouldLockScreenWhenAttached = [accessoryCopy shouldLockScreenWhenAttached];
   v10 = SBLogDashBoard();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 description];
+    v11 = [accessoryCopy description];
     *buf = 138412290;
     v35 = v11;
     _os_log_impl(&dword_21EB05000, v10, OS_LOG_TYPE_DEFAULT, "Presenting accessory (%@) view.", buf, 0xCu);
   }
 
-  v12 = [v6 type];
-  if (v12 <= 0xB)
+  type = [accessoryCopy type];
+  if (type <= 0xB)
   {
-    if (((1 << v12) & 0x8BC) != 0)
+    if (((1 << type) & 0x8BC) != 0)
     {
-      if (v8)
+      if (isShowingModalView)
       {
 LABEL_6:
         accessoryViewController = self->_accessoryViewController;
@@ -32503,27 +32503,27 @@ LABEL_6:
 
     else
     {
-      if (v12 == 6)
+      if (type == 6)
       {
-        v16 = [[CSMagSafeAccessorySleeveViewController alloc] initWithAccessory:v6];
-        v17 = [(CSCoverSheetContextProviding *)self->_coverSheetContext dateProvider];
-        [(CSMagSafeAccessorySleeveViewController *)v16 setDateProvider:v17];
+        v16 = [[CSMagSafeAccessorySleeveViewController alloc] initWithAccessory:accessoryCopy];
+        dateProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext dateProvider];
+        [(CSMagSafeAccessorySleeveViewController *)v16 setDateProvider:dateProvider];
 
-        [v6 visibleScreenCoordinates];
+        [accessoryCopy visibleScreenCoordinates];
         [(CSMagSafeAccessorySleeveViewController *)v16 setVisibleBounds:?];
-        v18 = [(CSCoverSheetViewController *)self activeAppearance];
-        [v18 legibilitySettings];
-        v19 = v27 = a4;
+        activeAppearance = [(CSCoverSheetViewController *)self activeAppearance];
+        [activeAppearance legibilitySettings];
+        v19 = v27 = animated;
         [(CSMagSafeAccessorySleeveViewController *)v16 setLegibilitySettings:v19];
 
         accessoryViewController = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-        v20 = [accessoryViewController customTimeFont];
-        v21 = [accessoryViewController textColor];
-        v22 = [accessoryViewController vibrancyConfiguration];
-        v23 = [accessoryViewController customTimeNumberingSystem];
-        [(CSMagSafeAccessorySleeveViewController *)v16 updateFont:v20 textColor:v21 vibrancyConfiguration:v22 numberingSystem:v23];
+        customTimeFont = [accessoryViewController customTimeFont];
+        textColor = [accessoryViewController textColor];
+        vibrancyConfiguration = [accessoryViewController vibrancyConfiguration];
+        customTimeNumberingSystem = [accessoryViewController customTimeNumberingSystem];
+        [(CSMagSafeAccessorySleeveViewController *)v16 updateFont:customTimeFont textColor:textColor vibrancyConfiguration:vibrancyConfiguration numberingSystem:customTimeNumberingSystem];
 
-        a4 = v27;
+        animated = v27;
         v24 = self->_accessoryViewController;
         self->_accessoryViewController = &v16->super;
 
@@ -32534,12 +32534,12 @@ LABEL_14:
           v30[1] = 3221225472;
           v30[2] = __66__CSCoverSheetViewController__animateAccessory_toVisibleAnimated___block_invoke;
           v30[3] = &unk_27838C410;
-          v31 = v6;
-          v32 = self;
-          v33 = a4;
+          v31 = accessoryCopy;
+          selfCopy = self;
+          animatedCopy = animated;
           v25 = MEMORY[0x223D698D0](v30);
           v26 = v25;
-          if ((v9 & v8) != 0)
+          if ((shouldLockScreenWhenAttached & isShowingModalView) != 0)
           {
             v28[0] = MEMORY[0x277D85DD0];
             v28[1] = 3221225472;
@@ -32558,12 +32558,12 @@ LABEL_14:
         goto LABEL_19;
       }
 
-      if (v12 != 8)
+      if (type != 8)
       {
         goto LABEL_19;
       }
 
-      if (v8)
+      if (isShowingModalView)
       {
         goto LABEL_6;
       }
@@ -32571,7 +32571,7 @@ LABEL_14:
       v14 = CSMagSafeAccessoryWalletViewController;
     }
 
-    v15 = [[v14 alloc] initWithAccessory:v6];
+    v15 = [[v14 alloc] initWithAccessory:accessoryCopy];
     accessoryViewController = self->_accessoryViewController;
     self->_accessoryViewController = v15;
     goto LABEL_14;
@@ -32727,14 +32727,14 @@ void __66__CSCoverSheetViewController__animateAccessory_toVisibleAnimated___bloc
   }
 }
 
-- (void)_dismissAccessoryViewController:(id)a3 animated:(BOOL)a4
+- (void)_dismissAccessoryViewController:(id)controller animated:(BOOL)animated
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v7 = [(CSPresentationViewController *)self->_modalPresentationController presentedViewControllers];
-    v8 = [v7 containsObject:v6];
+    presentedViewControllers = [(CSPresentationViewController *)self->_modalPresentationController presentedViewControllers];
+    v8 = [presentedViewControllers containsObject:controllerCopy];
 
     v9 = SBLogDashBoard();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -32742,8 +32742,8 @@ void __66__CSCoverSheetViewController__animateAccessory_toVisibleAnimated___bloc
     {
       if (v10)
       {
-        v11 = [v6 accessory];
-        v12 = [v11 description];
+        accessory = [controllerCopy accessory];
+        v12 = [accessory description];
         *buf = 138412290;
         v19 = v12;
         _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "Dismissing accessory (%@) UI.", buf, 0xCu);
@@ -32754,8 +32754,8 @@ void __66__CSCoverSheetViewController__animateAccessory_toVisibleAnimated___bloc
       v15[2] = __71__CSCoverSheetViewController__dismissAccessoryViewController_animated___block_invoke;
       v15[3] = &unk_27838C410;
       v15[4] = self;
-      v16 = v6;
-      v17 = a4;
+      v16 = controllerCopy;
+      animatedCopy = animated;
       [v16 performDismissalAnimationWithCompletionHandler:v15];
     }
 
@@ -32763,23 +32763,23 @@ void __66__CSCoverSheetViewController__animateAccessory_toVisibleAnimated___bloc
     {
       if (v10)
       {
-        v13 = [v6 accessory];
-        v14 = [v13 description];
+        accessory2 = [controllerCopy accessory];
+        v14 = [accessory2 description];
         *buf = 138412290;
         v19 = v14;
         _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "Dismissing non-presented accessory (%@) UI.", buf, 0xCu);
       }
 
-      [(CSCoverSheetViewController *)self _handleDismissalForAccessoryViewController:v6 animated:0];
+      [(CSCoverSheetViewController *)self _handleDismissalForAccessoryViewController:controllerCopy animated:0];
     }
   }
 }
 
-- (void)_handleDismissalForAccessoryViewController:(id)a3 animated:(BOOL)a4
+- (void)_handleDismissalForAccessoryViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if (animatedCopy)
   {
     v7 = SBLogDashBoardTelemetrySignposts();
     if (os_signpost_enabled(v7))
@@ -32795,11 +32795,11 @@ void __66__CSCoverSheetViewController__animateAccessory_toVisibleAnimated___bloc
   v9[1] = 3221225472;
   v9[2] = __82__CSCoverSheetViewController__handleDismissalForAccessoryViewController_animated___block_invoke;
   v9[3] = &unk_27838C410;
-  v11 = v4;
+  v11 = animatedCopy;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(CSCoverSheetViewController *)self _dismissModalViewController:v8 animated:v4 completion:v9];
+  v10 = controllerCopy;
+  v8 = controllerCopy;
+  [(CSCoverSheetViewController *)self _dismissModalViewController:v8 animated:animatedCopy completion:v9];
 }
 
 void __82__CSCoverSheetViewController__handleDismissalForAccessoryViewController_animated___block_invoke(uint64_t a1)
@@ -32834,30 +32834,30 @@ void __82__CSCoverSheetViewController__handleDismissalForAccessoryViewController
   }
 }
 
-- (void)_powerStatusChangedToConnectedState:(BOOL)a3
+- (void)_powerStatusChangedToConnectedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v18 = *MEMORY[0x277D85DE8];
   if (![(CSCoverSheetViewController *)self _isWakeAnimationInProgress])
   {
-    v5 = [(CSCoverSheetContextProviding *)self->_coverSheetContext screenStateProvider];
-    v6 = [v5 screenIsOn];
+    screenStateProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext screenStateProvider];
+    screenIsOn = [screenStateProvider screenIsOn];
 
     [(CSPowerChangeObserver *)self->_powerChangeObserver update];
     if ([(CSCoverSheetViewController *)self _showingAccessoryView]&& [(CSMagSafeAccessoryViewController *)self->_accessoryViewController hasChargingAnimation])
     {
-      v7 = [(CSMagSafeAccessoryViewController *)self->_accessoryViewController showingChargingAnimation];
-      v8 = v7;
-      if (v3 && !v7)
+      showingChargingAnimation = [(CSMagSafeAccessoryViewController *)self->_accessoryViewController showingChargingAnimation];
+      v8 = showingChargingAnimation;
+      if (stateCopy && !showingChargingAnimation)
       {
         v9 = [CSAction actionWithType:3];
         [(CSCoverSheetViewController *)self handleAction:v9 fromSender:self];
       }
 
-      if (!v3 || !v8)
+      if (!stateCopy || !v8)
       {
 
-        [(CSCoverSheetViewController *)self _transitionAccessoryChargingViewToVisible:v3];
+        [(CSCoverSheetViewController *)self _transitionAccessoryChargingViewToVisible:stateCopy];
       }
     }
 
@@ -32867,9 +32867,9 @@ void __82__CSCoverSheetViewController__handleDismissalForAccessoryViewController
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 67109376;
-        v15 = v3;
+        v15 = stateCopy;
         v16 = 1024;
-        v17 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+        _isShowingChargingModal = [(CSCoverSheetViewController *)self _isShowingChargingModal];
         _os_log_impl(&dword_21EB05000, v10, OS_LOG_TYPE_DEFAULT, "[Charge UI][Power Status] visible YES, showBattery %d – isAlreadyShowingChargingModal: %d", &v14, 0xEu);
       }
 
@@ -32888,33 +32888,33 @@ void __82__CSCoverSheetViewController__handleDismissalForAccessoryViewController
 
       else
       {
-        [(CSCoverSheetViewController *)self _transitionChargingViewToVisible:1 showBattery:v3 animated:v6];
+        [(CSCoverSheetViewController *)self _transitionChargingViewToVisible:1 showBattery:stateCopy animated:screenIsOn];
       }
 
       v12 = SBLogDashBoard();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+        _isShowingChargingModal2 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
         v14 = 67109120;
-        v15 = v13;
+        v15 = _isShowingChargingModal2;
         _os_log_impl(&dword_21EB05000, v12, OS_LOG_TYPE_DEFAULT, "[Charge UI][Power Status] – endedShowingChargingModal: %d", &v14, 8u);
       }
     }
   }
 }
 
-- (BOOL)_transitionPrototypeChargingViewToVisible:(BOOL)a3 animated:(BOOL)a4
+- (BOOL)_transitionPrototypeChargingViewToVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v5 = a3;
-  v7 = [(CSLockScreenSettings *)self->_prototypeSettings chargingSettings];
-  if (![v7 showWirelessAndAccessoryAnimations])
+  visibleCopy = visible;
+  chargingSettings = [(CSLockScreenSettings *)self->_prototypeSettings chargingSettings];
+  if (![chargingSettings showWirelessAndAccessoryAnimations])
   {
     goto LABEL_12;
   }
 
   if (!self->_accessoryViewController)
   {
-    if (!v5)
+    if (!visibleCopy)
     {
       goto LABEL_12;
     }
@@ -32926,15 +32926,15 @@ LABEL_7:
     v15[2] = __81__CSCoverSheetViewController__transitionPrototypeChargingViewToVisible_animated___block_invoke;
     v15[3] = &unk_27838C4B0;
     objc_copyWeak(&v18, &location);
-    v10 = v7;
+    v10 = chargingSettings;
     v16 = v10;
-    v17 = self;
-    v19 = a4;
+    selfCopy = self;
+    animatedCopy = animated;
     v11 = MEMORY[0x223D698D0](v15);
     if ([(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToQiPower]|| [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalChargingAccessory]|| [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalCharger])
     {
-      v12 = [v10 wirelessChargingAnimationType];
-      if (v12 == 1)
+      wirelessChargingAnimationType = [v10 wirelessChargingAnimationType];
+      if (wirelessChargingAnimationType == 1)
       {
 LABEL_11:
 
@@ -32946,14 +32946,14 @@ LABEL_11:
 
     else
     {
-      v12 = [v10 wiredChargingAnimationType];
-      if (!v12)
+      wirelessChargingAnimationType = [v10 wiredChargingAnimationType];
+      if (!wirelessChargingAnimationType)
       {
         goto LABEL_11;
       }
     }
 
-    v11[2](v11, v5, v12);
+    v11[2](v11, visibleCopy, wirelessChargingAnimationType);
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -32962,10 +32962,10 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v8 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v9 = [v8 containsObject:self->_accessoryViewController];
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v9 = [contentViewControllers containsObject:self->_accessoryViewController];
 
-  if (v9 != v5)
+  if (v9 != visibleCopy)
   {
     goto LABEL_7;
   }
@@ -33005,24 +33005,24 @@ void __81__CSCoverSheetViewController__transitionPrototypeChargingViewToVisible_
   }
 }
 
-- (void)_transitionAccessoryChargingViewToVisible:(BOOL)a3
+- (void)_transitionAccessoryChargingViewToVisible:(BOOL)visible
 {
   v40 = *MEMORY[0x277D85DE8];
   if (self->_accessoryViewController)
   {
-    v3 = a3;
-    v5 = [(CSCoverSheetViewController *)self _chargingInfo];
-    v6 = [(CSCoverSheetViewController *)self _batteryCenterInternalBattery];
-    [v5 setInternalBatteryDevice:v6];
+    visibleCopy = visible;
+    _chargingInfo = [(CSCoverSheetViewController *)self _chargingInfo];
+    _batteryCenterInternalBattery = [(CSCoverSheetViewController *)self _batteryCenterInternalBattery];
+    [_chargingInfo setInternalBatteryDevice:_batteryCenterInternalBattery];
 
-    if (v3)
+    if (visibleCopy)
     {
-      v7 = [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalCharger];
+      isConnectedToWirelessInternalCharger = [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalCharger];
       if ([(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalChargingAccessory])
       {
-        v8 = [v5 externalBatteryDevice];
+        externalBatteryDevice = [_chargingInfo externalBatteryDevice];
 
-        if (v8)
+        if (externalBatteryDevice)
         {
           goto LABEL_22;
         }
@@ -33049,8 +33049,8 @@ void __81__CSCoverSheetViewController__transitionPrototypeChargingViewToVisible_
             v13 = *(*(&v32 + 1) + 8 * i);
             if ([v13 isPowerSource] && -[CSCoverSheetViewController _isAppleMagSafePack:](self, "_isAppleMagSafePack:", v13))
             {
-              [v5 setChargingWithInternalWirelessAccessory:1];
-              [v5 setExternalBatteryDevice:v13];
+              [_chargingInfo setChargingWithInternalWirelessAccessory:1];
+              [_chargingInfo setExternalBatteryDevice:v13];
 
               goto LABEL_22;
             }
@@ -33066,7 +33066,7 @@ void __81__CSCoverSheetViewController__transitionPrototypeChargingViewToVisible_
         }
       }
 
-      if (v7)
+      if (isConnectedToWirelessInternalCharger)
       {
 LABEL_22:
         v18 = [CSAction actionWithType:3];
@@ -33079,7 +33079,7 @@ LABEL_22:
           _os_log_impl(&dword_21EB05000, v19, OS_LOG_TYPE_DEFAULT, "Showing accessory charging UI", &buf, 2u);
         }
 
-        [(CSMagSafeAccessoryViewController *)self->_accessoryViewController transitionChargingViewVisible:1 chargingInfo:v5];
+        [(CSMagSafeAccessoryViewController *)self->_accessoryViewController transitionChargingViewVisible:1 chargingInfo:_chargingInfo];
         objc_initWeak(&buf, self);
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
@@ -33139,7 +33139,7 @@ LABEL_22:
       v17 = self->_accessoryViewControllerChargingTimer;
       self->_accessoryViewControllerChargingTimer = 0;
 
-      [(CSMagSafeAccessoryViewController *)self->_accessoryViewController transitionChargingViewVisible:0 chargingInfo:v5];
+      [(CSMagSafeAccessoryViewController *)self->_accessoryViewController transitionChargingViewVisible:0 chargingInfo:_chargingInfo];
     }
   }
 }
@@ -33163,17 +33163,17 @@ void __72__CSCoverSheetViewController__transitionAccessoryChargingViewToVisible_
 
 - (id)_batteryCenterInternalBattery
 {
-  v2 = [(BCBatteryDeviceController *)self->_batteryDeviceController connectedDevices];
-  v3 = [v2 bs_filter:&__block_literal_global_833];
-  v4 = [v3 firstObject];
+  connectedDevices = [(BCBatteryDeviceController *)self->_batteryDeviceController connectedDevices];
+  v3 = [connectedDevices bs_filter:&__block_literal_global_833];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)_connectedExternalChargers
 {
-  v2 = [(BCBatteryDeviceController *)self->_batteryDeviceController connectedDevices];
-  v3 = [v2 bs_filter:&__block_literal_global_835];
+  connectedDevices = [(BCBatteryDeviceController *)self->_batteryDeviceController connectedDevices];
+  v3 = [connectedDevices bs_filter:&__block_literal_global_835];
 
   return v3;
 }
@@ -33189,38 +33189,38 @@ BOOL __56__CSCoverSheetViewController__connectedExternalChargers__block_invoke(u
 - (id)_chargingInfo
 {
   v3 = objc_opt_new();
-  v4 = [(BCBatteryDeviceController *)self->_batteryDeviceController sb_deviceInternalBattery];
-  [v3 setInternalBatteryDevice:v4];
+  sb_deviceInternalBattery = [(BCBatteryDeviceController *)self->_batteryDeviceController sb_deviceInternalBattery];
+  [v3 setInternalBatteryDevice:sb_deviceInternalBattery];
 
-  v5 = [(CSCoverSheetViewController *)self _connectedExternalChargers];
-  v6 = [v5 firstObject];
-  [v3 setExternalBatteryDevice:v6];
+  _connectedExternalChargers = [(CSCoverSheetViewController *)self _connectedExternalChargers];
+  firstObject = [_connectedExternalChargers firstObject];
+  [v3 setExternalBatteryDevice:firstObject];
 
-  v7 = [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalChargingAccessory]|| [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalCharger];
-  [v3 setChargingWithInternalWirelessAccessory:v7];
+  isConnectedToWirelessInternalCharger = [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalChargingAccessory]|| [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalCharger];
+  [v3 setChargingWithInternalWirelessAccessory:isConnectedToWirelessInternalCharger];
 
   return v3;
 }
 
-- (void)_transitionChargingViewToVisible:(BOOL)a3 suppressedByPack:(BOOL)a4 showBattery:(BOOL)a5 animated:(BOOL)a6
+- (void)_transitionChargingViewToVisible:(BOOL)visible suppressedByPack:(BOOL)pack showBattery:(BOOL)battery animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a3;
+  animatedCopy = animated;
+  batteryCopy = battery;
+  visibleCopy = visible;
   v73 = *MEMORY[0x277D85DE8];
-  v10 = !a3;
-  if ((!a3 || !a4 || ![(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalChargingAccessory]) && ![(CSCoverSheetViewController *)self _transitionPrototypeChargingViewToVisible:v7 animated:v6])
+  v10 = !visible;
+  if ((!visible || !pack || ![(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalChargingAccessory]) && ![(CSCoverSheetViewController *)self _transitionPrototypeChargingViewToVisible:batteryCopy animated:animatedCopy])
   {
-    v57 = v7;
-    v11 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
-    if (!v10 && v11)
+    v57 = batteryCopy;
+    _isShowingChargingModal = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+    if (!v10 && _isShowingChargingModal)
     {
       v12 = SBLogDashBoard();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v56 = self->_chargingViewController != 0;
-        v13 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-        v14 = [v13 containsObject:self->_chargingViewController];
+        contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+        v14 = [contentViewControllers containsObject:self->_chargingViewController];
         v15 = [(NSMutableSet *)self->_pendingModalViewControllers containsObject:self->_chargingViewController];
         LODWORD(buf) = 67109632;
         HIDWORD(buf) = v56;
@@ -33232,9 +33232,9 @@ BOOL __56__CSCoverSheetViewController__connectedExternalChargers__block_invoke(u
       }
     }
 
-    if (v10 || v11)
+    if (v10 || _isShowingChargingModal)
     {
-      if (!v8 && v11)
+      if (!visibleCopy && _isShowingChargingModal)
       {
         v16 = SBLogDashBoard();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -33250,7 +33250,7 @@ BOOL __56__CSCoverSheetViewController__connectedExternalChargers__block_invoke(u
         v58[2] = __101__CSCoverSheetViewController__transitionChargingViewToVisible_suppressedByPack_showBattery_animated___block_invoke_843;
         v58[3] = &unk_27838BC70;
         v58[4] = self;
-        v59 = v6;
+        v59 = animatedCopy;
         [(CSChargingViewController *)chargingViewController performDismissalAnimationWithCompletionHandler:v58];
       }
     }
@@ -33268,21 +33268,21 @@ BOOL __56__CSCoverSheetViewController__connectedExternalChargers__block_invoke(u
       v20 = [WeakRetained coverSheetViewControllerIsShowingSecureApp:self];
 
       v21 = [(CSCoverSheetViewController *)self _appearState]== 2;
-      v22 = [(CSCoverSheetViewController *)self isMainPageVisible];
-      v23 = [(CSCoverSheetViewController *)self isShowingModalView];
+      isMainPageVisible = [(CSCoverSheetViewController *)self isMainPageVisible];
+      isShowingModalView = [(CSCoverSheetViewController *)self isShowingModalView];
       v24 = v21 & (v20 ^ 1);
-      if (v23 || (v24 & v22 & 1) == 0)
+      if (isShowingModalView || (v24 & isMainPageVisible & 1) == 0)
       {
-        v25 = SBLogDashBoard();
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        _chargingInfo = SBLogDashBoard();
+        if (os_log_type_enabled(_chargingInfo, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(buf) = 67109632;
           HIDWORD(buf) = v24;
           v69 = 1024;
-          v70 = v22;
+          v70 = isMainPageVisible;
           v71 = 1024;
-          v72 = v23;
-          _os_log_impl(&dword_21EB05000, v25, OS_LOG_TYPE_DEFAULT, "Refused to create charging VC because of factors: visible: %d, mainPage: %d, showingModal: %d", &buf, 0x14u);
+          v72 = isShowingModalView;
+          _os_log_impl(&dword_21EB05000, _chargingInfo, OS_LOG_TYPE_DEFAULT, "Refused to create charging VC because of factors: visible: %d, mainPage: %d, showingModal: %d", &buf, 0x14u);
         }
       }
 
@@ -33291,7 +33291,7 @@ BOOL __56__CSCoverSheetViewController__connectedExternalChargers__block_invoke(u
         v26 = [CSAction actionWithType:3];
         [(CSCoverSheetViewController *)self handleAction:v26 fromSender:self];
 
-        v25 = [(CSCoverSheetViewController *)self _chargingInfo];
+        _chargingInfo = [(CSCoverSheetViewController *)self _chargingInfo];
         v27 = self->_chargingViewController;
         v28 = SBSIsSystemApertureAvailable();
         if ([(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalCharger]|| [(CSPowerChangeObserver *)self->_powerChangeObserver isConnectedToWirelessInternalChargingAccessory])
@@ -33301,9 +33301,9 @@ BOOL __56__CSCoverSheetViewController__connectedExternalChargers__block_invoke(u
 
         else
         {
-          v30 = [v25 externalBatteryDevice];
-          v31 = v30;
-          v29 = !v30 || [v30 accessoryCategory] != 4 || objc_msgSend(v31, "vendor") != 1;
+          externalBatteryDevice = [_chargingInfo externalBatteryDevice];
+          v31 = externalBatteryDevice;
+          v29 = !externalBatteryDevice || [externalBatteryDevice accessoryCategory] != 4 || objc_msgSend(v31, "vendor") != 1;
         }
 
         if (!v27 && v57 && (v28 & v29 & 1) == 0)
@@ -33312,15 +33312,15 @@ BOOL __56__CSCoverSheetViewController__connectedExternalChargers__block_invoke(u
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
           {
             v33 = self->_chargingViewController != 0;
-            v34 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
+            _isShowingChargingModal2 = [(CSCoverSheetViewController *)self _isShowingChargingModal];
             LODWORD(buf) = 67109376;
             HIDWORD(buf) = v33;
             v69 = 1024;
-            v70 = v34;
+            v70 = _isShowingChargingModal2;
             _os_log_impl(&dword_21EB05000, v32, OS_LOG_TYPE_DEFAULT, "Creating charging VC. alreadyExisted: %d alreadyPresented: %d", &buf, 0xEu);
           }
 
-          v35 = [[CSChargingViewController alloc] initWithChargingInfo:v25];
+          v35 = [[CSChargingViewController alloc] initWithChargingInfo:_chargingInfo];
           v36 = self->_chargingViewController;
           self->_chargingViewController = v35;
 
@@ -33338,7 +33338,7 @@ BOOL __56__CSCoverSheetViewController__connectedExternalChargers__block_invoke(u
           v67[2] = __101__CSCoverSheetViewController__transitionChargingViewToVisible_suppressedByPack_showBattery_animated___block_invoke;
           v67[3] = &unk_27838B770;
           v67[4] = self;
-          [(CSCoverSheetViewController *)self _presentModalViewController:v38 animated:v6 completion:v67];
+          [(CSCoverSheetViewController *)self _presentModalViewController:v38 animated:animatedCopy completion:v67];
         }
 
         v39 = SBLogDashBoard();
@@ -33352,15 +33352,15 @@ BOOL __56__CSCoverSheetViewController__connectedExternalChargers__block_invoke(u
           }
 
           objc_initWeak(&buf, self);
-          v41 = [(CSCoverSheetContextProviding *)self->_coverSheetContext powerStatusProvider];
+          powerStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext powerStatusProvider];
           v63[0] = MEMORY[0x277D85DD0];
           v63[1] = 3221225472;
           v63[2] = __101__CSCoverSheetViewController__transitionChargingViewToVisible_suppressedByPack_showBattery_animated___block_invoke_838;
           v63[3] = &unk_27838C4F8;
           objc_copyWeak(&v66, &buf);
-          v42 = v41;
+          v42 = powerStatusProvider;
           v64 = v42;
-          v65 = self;
+          selfCopy = self;
           [v42 fetchFormattedChargeTimeEstimateWithCompletion:v63];
 
           objc_destroyWeak(&v66);
@@ -33375,7 +33375,7 @@ BOOL __56__CSCoverSheetViewController__connectedExternalChargers__block_invoke(u
             _os_log_impl(&dword_21EB05000, v39, OS_LOG_TYPE_DEFAULT, "About to create date subtitle for charge.", &buf, 2u);
           }
 
-          [(CSCoverSheetViewController *)self _updateDateSubtitleAppearanceForBattery:0 animated:v6 chargingVisible:1];
+          [(CSCoverSheetViewController *)self _updateDateSubtitleAppearanceForBattery:0 animated:animatedCopy chargingVisible:1];
         }
       }
 
@@ -33540,11 +33540,11 @@ void __101__CSCoverSheetViewController__transitionChargingViewToVisible_suppress
   *(v3 + 1336) = 0;
 }
 
-- (void)_clearChargingModalTimerPerformingHandler:(BOOL)a3
+- (void)_clearChargingModalTimerPerformingHandler:(BOOL)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   [(BSAbsoluteMachTimer *)self->_chargingViewControllerTimer invalidate];
-  if (v3)
+  if (handlerCopy)
   {
     chargingViewTimerHandler = self->_chargingViewTimerHandler;
     if (chargingViewTimerHandler)
@@ -33560,14 +33560,14 @@ void __101__CSCoverSheetViewController__transitionChargingViewToVisible_suppress
   self->_chargingViewTimerHandler = 0;
 }
 
-- (void)_updateDateSubtitleAppearanceForBattery:(BOOL)a3 animated:(BOOL)a4 chargingVisible:(BOOL)a5
+- (void)_updateDateSubtitleAppearanceForBattery:(BOOL)battery animated:(BOOL)animated chargingVisible:(BOOL)visible
 {
-  if (!a3)
+  if (!battery)
   {
-    v5 = a5;
+    visibleCopy = visible;
     if ([(CSCoverSheetViewController *)self _isMainPageShowing])
     {
-      if (v5)
+      if (visibleCopy)
       {
         v7 = *MEMORY[0x277D66EE0];
 
@@ -33577,29 +33577,29 @@ void __101__CSCoverSheetViewController__transitionChargingViewToVisible_suppress
   }
 }
 
-- (void)_showChargingSubtitleWithTimeout:(double)a3
+- (void)_showChargingSubtitleWithTimeout:(double)timeout
 {
-  v5 = [(BCBatteryDeviceController *)self->_batteryDeviceController sb_deviceInternalBattery];
-  v6 = CSChargePercentageLabelForBattery(v5);
+  sb_deviceInternalBattery = [(BCBatteryDeviceController *)self->_batteryDeviceController sb_deviceInternalBattery];
+  v6 = CSChargePercentageLabelForBattery(sb_deviceInternalBattery);
 
   if (CSFeatureEnabled(10) && ([MEMORY[0x277D75418] currentDevice], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "userInterfaceIdiom"), v7, (v8 & 0xFFFFFFFFFFFFFFFBLL) != 1))
   {
-    v9 = [(CSCoverSheetContextProviding *)self->_coverSheetContext powerStatusProvider];
+    powerStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext powerStatusProvider];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __63__CSCoverSheetViewController__showChargingSubtitleWithTimeout___block_invoke;
     v11[3] = &unk_27838C520;
-    v12 = v9;
-    v15 = a3;
+    v12 = powerStatusProvider;
+    timeoutCopy = timeout;
     v13 = v6;
-    v14 = self;
-    v10 = v9;
+    selfCopy = self;
+    v10 = powerStatusProvider;
     [v10 fetchFormattedChargeTimeEstimateWithCompletion:v11];
   }
 
   else
   {
-    [(CSCoverSheetViewController *)self _updateChargingSubtitleWithString:v6 timeout:a3];
+    [(CSCoverSheetViewController *)self _updateChargingSubtitleWithString:v6 timeout:timeout];
   }
 }
 
@@ -33624,10 +33624,10 @@ void __63__CSCoverSheetViewController__showChargingSubtitleWithTimeout___block_i
   [*(a1 + 48) _updateChargingSubtitleWithString:v5 timeout:v4];
 }
 
-- (void)_updateChargingSubtitleWithString:(id)a3 timeout:(double)a4
+- (void)_updateChargingSubtitleWithString:(id)string timeout:(double)timeout
 {
-  v6 = a3;
-  [(SBFLockScreenDateViewController *)self->_dateViewController setCustomSubtitle:v6 withPriority:0 withTimeout:a4];
+  stringCopy = string;
+  [(SBFLockScreenDateViewController *)self->_dateViewController setCustomSubtitle:stringCopy withPriority:0 withTimeout:timeout];
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -33651,7 +33651,7 @@ void __63__CSCoverSheetViewController__showChargingSubtitleWithTimeout___block_i
   v14[2] = __72__CSCoverSheetViewController__updateChargingSubtitleWithString_timeout___block_invoke_2;
   v14[3] = &unk_27838C488;
   v14[4] = self;
-  [(BSAbsoluteMachTimer *)v11 scheduleWithFireInterval:v12 leewayInterval:v14 queue:a4 handler:a4 * 0.15];
+  [(BSAbsoluteMachTimer *)v11 scheduleWithFireInterval:v12 leewayInterval:v14 queue:timeout handler:timeout * 0.15];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -33663,13 +33663,13 @@ void __72__CSCoverSheetViewController__updateChargingSubtitleWithString_timeout_
   [WeakRetained _clearChargingModalTimerPerformingHandler:0];
 }
 
-- (void)_transitionChargingDateSubtitleToVisible:(BOOL)a3 animated:(BOOL)a4 force:(BOOL)a5
+- (void)_transitionChargingDateSubtitleToVisible:(BOOL)visible animated:(BOOL)animated force:(BOOL)force
 {
-  v5 = a4;
-  v6 = a3;
-  if (a5 || (-[CSCoverSheetViewController localAppearance](self, "localAppearance"), v8 = objc_claimAutoreleasedReturnValue(), [v8 componentForType:1 identifier:@"ChargingView"], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, (((v9 == 0) ^ v6) & 1) == 0))
+  animatedCopy = animated;
+  visibleCopy = visible;
+  if (force || (-[CSCoverSheetViewController localAppearance](self, "localAppearance"), v8 = objc_claimAutoreleasedReturnValue(), [v8 componentForType:1 identifier:@"ChargingView"], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, (((v9 == 0) ^ visibleCopy) & 1) == 0))
   {
-    if (v5)
+    if (animatedCopy)
     {
       v10 = [MEMORY[0x277CF0B70] settingsWithDuration:0.4];
     }
@@ -33685,9 +33685,9 @@ void __72__CSCoverSheetViewController__updateChargingSubtitleWithString_timeout_
     v11[3] = &unk_27838C548;
     v11[4] = self;
     v12 = @"ChargingView";
-    v13 = v6;
+    v13 = visibleCopy;
     [(CSCoverSheetViewController *)self _updateLocalAppearanceForRequester:@"ChargingView" animationSettings:v10 actions:v11 completion:0];
-    if (v5)
+    if (animatedCopy)
     {
     }
   }
@@ -33733,13 +33733,13 @@ id __86__CSCoverSheetViewController__transitionChargingDateSubtitleToVisible_ani
   return [(CSCoverSheetViewController *)self isMainPageVisible];
 }
 
-- (void)_displayWillTurnOnWhileOnCoverSheet:(id)a3
+- (void)_displayWillTurnOnWhileOnCoverSheet:(id)sheet
 {
-  v3 = [(CSCoverSheetViewController *)self coverSheetView];
-  [v3 resetScrollViewToMainPageAnimated:0 withCompletion:0];
+  coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+  [coverSheetView resetScrollViewToMainPageAnimated:0 withCompletion:0];
 }
 
-- (void)_managedConfigurationEffectiveSettingsDidChange:(id)a3
+- (void)_managedConfigurationEffectiveSettingsDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -33786,12 +33786,12 @@ void __78__CSCoverSheetViewController__managedConfigurationEffectiveSettingsDidC
   [(CSCoverSheetViewController *)self _updateActiveAppearanceForReason:@"GlassLegibilitySetting"];
 }
 
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v24 = a5;
+  publisherCopy = publisher;
+  layoutCopy = layout;
+  transitionCopy = transition;
   v51[0] = 0;
   v51[1] = v51;
   v51[2] = 0x3032000000;
@@ -33822,7 +33822,7 @@ void __78__CSCoverSheetViewController__managedConfigurationEffectiveSettingsDidC
   v34 = __Block_byref_object_copy_;
   v35 = __Block_byref_object_dispose_;
   v36 = 0;
-  v10 = [v9 elements];
+  elements = [layoutCopy elements];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __71__CSCoverSheetViewController_publisher_didUpdateLayout_withTransition___block_invoke;
@@ -33833,13 +33833,13 @@ void __78__CSCoverSheetViewController__managedConfigurationEffectiveSettingsDidC
   v30[7] = &v41;
   v30[8] = v37;
   v30[9] = &v31;
-  [v10 enumerateObjectsWithOptions:2 usingBlock:v30];
+  [elements enumerateObjectsWithOptions:2 usingBlock:v30];
 
-  v11 = [v46[5] identifier];
+  identifier = [v46[5] identifier];
   [CSCoverSheetViewController _setHasContentAboveCoverSheet:"_setHasContentAboveCoverSheet:opaque:isSignificantUserInteraction:" opaque:? isSignificantUserInteraction:?];
-  self->_contentAboveIsControlCenter = [v11 isEqualToString:*MEMORY[0x277D0AB88]];
+  self->_contentAboveIsControlCenter = [identifier isEqualToString:*MEMORY[0x277D0AB88]];
   v12 = v32[5];
-  v13 = [v11 isEqualToString:*MEMORY[0x277D0ABC0]];
+  v13 = [identifier isEqualToString:*MEMORY[0x277D0ABC0]];
   if (v12)
   {
     v14 = 0;
@@ -33855,12 +33855,12 @@ void __78__CSCoverSheetViewController__managedConfigurationEffectiveSettingsDidC
     v15 = 1;
   }
 
-  else if ([v11 isEqualToString:*MEMORY[0x277D66F50]])
+  else if ([identifier isEqualToString:*MEMORY[0x277D66F50]])
   {
-    v16 = [MEMORY[0x277D75418] currentDevice];
-    v17 = [v16 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v15 = (v17 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v15 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
   }
 
   else
@@ -33868,7 +33868,7 @@ void __78__CSCoverSheetViewController__managedConfigurationEffectiveSettingsDidC
     v15 = 0;
   }
 
-  v23 = v8;
+  v23 = publisherCopy;
   self->_contentAboveIsSiriOrNotFullScreenOniPad = v15;
   self->_standByPresentedAboveCoverSheet = *(v42 + 24);
   block[0] = MEMORY[0x277D85DD0];
@@ -33898,7 +33898,7 @@ void __78__CSCoverSheetViewController__managedConfigurationEffectiveSettingsDidC
         v22 = *(*(&v25 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v22 coverSheetViewController:self didUpdateLayout:v9];
+          [v22 coverSheetViewController:self didUpdateLayout:layoutCopy];
         }
       }
 
@@ -34007,17 +34007,17 @@ uint64_t __71__CSCoverSheetViewController_publisher_didUpdateLayout_withTransiti
   return [v2 _updateActiveAppearanceForReason:@"CSCSVC – displayLayoutDidUpdateLayout"];
 }
 
-- (void)_setHasContentAboveCoverSheet:(BOOL)a3 opaque:(BOOL)a4 isSignificantUserInteraction:(BOOL)a5
+- (void)_setHasContentAboveCoverSheet:(BOOL)sheet opaque:(BOOL)opaque isSignificantUserInteraction:(BOOL)interaction
 {
-  v5 = a4;
+  opaqueCopy = opaque;
   v27 = *MEMORY[0x277D85DE8];
-  if (self->_hasContentAboveCoverSheet == a3)
+  if (self->_hasContentAboveCoverSheet == sheet)
   {
     goto LABEL_19;
   }
 
-  v7 = a5;
-  self->_hasContentAboveCoverSheet = a3;
+  interactionCopy = interaction;
+  self->_hasContentAboveCoverSheet = sheet;
   v8 = SBLogDashBoard();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -34025,14 +34025,14 @@ uint64_t __71__CSCoverSheetViewController_publisher_didUpdateLayout_withTransiti
     *buf = 138543618;
     v24 = v9;
     v25 = 1024;
-    v26 = v7;
+    v26 = interactionCopy;
     _os_log_impl(&dword_21EB05000, v8, OS_LOG_TYPE_DEFAULT, "Display layout did change - has content above coversheet? %{public}@ [ isSignificantUserInteraction:%{BOOL}d ]", buf, 0x12u);
   }
 
   if (self->_hasContentAboveCoverSheet)
   {
     [(CSCoverSheetViewController *)self _handleEventType:10];
-    if (!v7)
+    if (!interactionCopy)
     {
       goto LABEL_9;
     }
@@ -34041,7 +34041,7 @@ uint64_t __71__CSCoverSheetViewController_publisher_didUpdateLayout_withTransiti
   }
 
   [(CSCoverSheetViewController *)self _handleEventType:11];
-  if (v7)
+  if (interactionCopy)
   {
 LABEL_8:
     v10 = [CSAction actionWithType:4];
@@ -34082,28 +34082,28 @@ LABEL_9:
   }
 
 LABEL_19:
-  if (self->_hasOpaqueContentAboveCoverSheet != v5)
+  if (self->_hasOpaqueContentAboveCoverSheet != opaqueCopy)
   {
-    self->_hasOpaqueContentAboveCoverSheet = v5;
-    v17 = [(CSCoverSheetViewController *)self traitOverrides];
-    [v17 setNSIntegerValue:v5 - 1 forTrait:objc_opt_class()];
+    self->_hasOpaqueContentAboveCoverSheet = opaqueCopy;
+    traitOverrides = [(CSCoverSheetViewController *)self traitOverrides];
+    [traitOverrides setNSIntegerValue:opaqueCopy - 1 forTrait:objc_opt_class()];
   }
 }
 
-- (void)_updateModalPresentationControllerVisibility:(id)a3
+- (void)_updateModalPresentationControllerVisibility:(id)visibility
 {
-  v4 = [a3 hasContent];
+  hasContent = [visibility hasContent];
 
-  [(CSCoverSheetViewController *)self _setModalPresentationControllerVisibility:v4 cancelTouches:1];
+  [(CSCoverSheetViewController *)self _setModalPresentationControllerVisibility:hasContent cancelTouches:1];
 }
 
-- (void)_setModalPresentationControllerVisibility:(BOOL)a3 cancelTouches:(BOOL)a4
+- (void)_setModalPresentationControllerVisibility:(BOOL)visibility cancelTouches:(BOOL)touches
 {
   v21 = *MEMORY[0x277D85DE8];
   modalPresentationController = self->_modalPresentationController;
-  if (a3)
+  if (visibility)
   {
-    v6 = a4;
+    touchesCopy = touches;
     [(CSCoverSheetViewControllerBase *)self->_modalPresentationController setPresenter:self];
     v7 = self->_modalPresentationController;
     v19[0] = MEMORY[0x277D85DD0];
@@ -34145,7 +34145,7 @@ LABEL_19:
         while (v10);
       }
 
-      if (v6)
+      if (touchesCopy)
       {
         BKSHIDServicesCancelTouchesOnMainDisplay();
       }
@@ -34187,16 +34187,16 @@ void __86__CSCoverSheetViewController__setModalPresentationControllerVisibility_
   v4[2]();
 }
 
-- (BOOL)_isPresentingModalViewControllerWithIdentifier:(id)a3
+- (BOOL)_isPresentingModalViewControllerWithIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v6 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v6 = [(NSMutableSet *)contentViewControllers countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -34207,10 +34207,10 @@ LABEL_3:
     {
       if (*v23 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(contentViewControllers);
       }
 
-      v10 = [*(*(&v22 + 1) + 8 * v9) coverSheetIdentifier];
+      coverSheetIdentifier = [*(*(&v22 + 1) + 8 * v9) coverSheetIdentifier];
       v11 = BSEqualStrings();
 
       if (v11)
@@ -34220,7 +34220,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v7 = [(NSMutableSet *)contentViewControllers countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -34235,8 +34235,8 @@ LABEL_3:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = self->_pendingModalViewControllers;
-  v12 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  contentViewControllers = self->_pendingModalViewControllers;
+  v12 = [(NSMutableSet *)contentViewControllers countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v12)
   {
     v13 = *v19;
@@ -34246,10 +34246,10 @@ LABEL_11:
     {
       if (*v19 != v13)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(contentViewControllers);
       }
 
-      v15 = [*(*(&v18 + 1) + 8 * v14) coverSheetIdentifier];
+      coverSheetIdentifier2 = [*(*(&v18 + 1) + 8 * v14) coverSheetIdentifier];
       v16 = BSEqualStrings();
 
       if (v16)
@@ -34259,7 +34259,7 @@ LABEL_11:
 
       if (v12 == ++v14)
       {
-        v12 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v12 = [(NSMutableSet *)contentViewControllers countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v12)
         {
           goto LABEL_11;
@@ -34278,16 +34278,16 @@ LABEL_19:
   return v12;
 }
 
-- (id)_presentedModalViewControllerWithIdentifier:(id)a3
+- (id)_presentedModalViewControllerWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v6 = [contentViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -34297,11 +34297,11 @@ LABEL_19:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contentViewControllers);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 coverSheetIdentifier];
+        coverSheetIdentifier = [v9 coverSheetIdentifier];
         v11 = BSEqualStrings();
 
         if (v11)
@@ -34311,7 +34311,7 @@ LABEL_19:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [contentViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -34326,40 +34326,40 @@ LABEL_11:
   return v6;
 }
 
-- (void)_presentModalViewController:(id)a3 shouldDismissOverlays:(BOOL)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_presentModalViewController:(id)controller shouldDismissOverlays:(BOOL)overlays animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  if (v10)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (controllerCopy)
   {
-    v13 = [v10 appearanceIdentifier];
-    v14 = [v13 containsString:@"SBDashBoardEmergencyDialerViewController"];
+    appearanceIdentifier = [controllerCopy appearanceIdentifier];
+    v14 = [appearanceIdentifier containsString:@"SBDashBoardEmergencyDialerViewController"];
 
     if (v14)
     {
-      v15 = [(CSCoverSheetViewController *)self delegate];
-      [v15 coverSheetViewController:self requestsTransientOverlaysDismissedAnimated:v7];
+      delegate = [(CSCoverSheetViewController *)self delegate];
+      [delegate coverSheetViewController:self requestsTransientOverlaysDismissedAnimated:animatedCopy];
     }
 
-    [(NSMutableSet *)self->_pendingModalViewControllers addObject:v10];
+    [(NSMutableSet *)self->_pendingModalViewControllers addObject:controllerCopy];
     v16 = [CSAction actionWithType:3];
     [(CSCoverSheetViewController *)self handleAction:v16 fromSender:self];
 
-    v17 = [CSAction actionWithType:13 animated:v7];
+    v17 = [CSAction actionWithType:13 animated:animatedCopy];
     [(CSCoverSheetViewController *)self handleAction:v17 fromSender:self];
 
-    -[CSCoverSheetViewController _setModalPresentationControllerVisibility:cancelTouches:](self, "_setModalPresentationControllerVisibility:cancelTouches:", 1, [v10 presentationCancelsTouches]);
+    -[CSCoverSheetViewController _setModalPresentationControllerVisibility:cancelTouches:](self, "_setModalPresentationControllerVisibility:cancelTouches:", 1, [controllerCopy presentationCancelsTouches]);
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __100__CSCoverSheetViewController__presentModalViewController_shouldDismissOverlays_animated_completion___block_invoke;
     v26 = &unk_27838C5C0;
-    v27 = self;
-    v30 = v7;
-    v28 = v10;
+    selfCopy = self;
+    v30 = animatedCopy;
+    v28 = controllerCopy;
     v29 = v12;
-    v31 = a4;
+    overlaysCopy = overlays;
     v18 = MEMORY[0x223D698D0](&v23);
     v19 = [(CSCoverSheetViewController *)self overlayControllerIfExists:v23];
     if (v19 && (v20 = v19, -[CSCoverSheetViewController overlayControllerIfExists](self, "overlayControllerIfExists"), v21 = objc_claimAutoreleasedReturnValue(), [v21 presentationProgress], IsZero = BSFloatIsZero(), v21, v20, (IsZero & 1) == 0))
@@ -34373,9 +34373,9 @@ LABEL_11:
     }
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
@@ -34429,18 +34429,18 @@ uint64_t __100__CSCoverSheetViewController__presentModalViewController_shouldDis
   return [v3 _handleEventType:40];
 }
 
-- (void)_dismissModalViewControllersWithIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_dismissModalViewControllersWithIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v17 = a4;
+  animatedCopy = animated;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v18 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v9 = [contentViewControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -34452,21 +34452,21 @@ uint64_t __100__CSCoverSheetViewController__presentModalViewController_shouldDis
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(contentViewControllers);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 coverSheetIdentifier];
+        coverSheetIdentifier = [v14 coverSheetIdentifier];
         v16 = BSEqualStrings();
 
         if (v16)
         {
-          [(CSCoverSheetViewController *)self _dismissModalViewController:v14 animated:v17 completion:v18];
+          [(CSCoverSheetViewController *)self _dismissModalViewController:v14 animated:animatedCopy completion:completionCopy];
           v11 = 1;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [contentViewControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -34477,22 +34477,22 @@ uint64_t __100__CSCoverSheetViewController__presentModalViewController_shouldDis
     v11 = 0;
   }
 
-  if (v18 && (v11 & 1) == 0)
+  if (completionCopy && (v11 & 1) == 0)
   {
-    v18[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)_dismissAllModalViewControllersExcept:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_dismissAllModalViewControllersExcept:(id)except animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-  v11 = [v10 mutableCopy];
+  exceptCopy = except;
+  completionCopy = completion;
+  contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+  v11 = [contentViewControllers mutableCopy];
 
-  [v11 removeObject:v8];
+  [v11 removeObject:exceptCopy];
   if ([v11 count])
   {
     v12 = MEMORY[0x277CF0BA0];
@@ -34501,7 +34501,7 @@ uint64_t __100__CSCoverSheetViewController__presentModalViewController_shouldDis
     v27[1] = 3221225472;
     v27[2] = __88__CSCoverSheetViewController__dismissAllModalViewControllersExcept_animated_completion___block_invoke;
     v27[3] = &unk_27838C5E8;
-    v28 = v9;
+    v28 = completionCopy;
     v14 = [v12 sentinelWithSignalCount:v13 + 1 signalHandler:v27];
     v23 = 0u;
     v24 = 0u;
@@ -34529,7 +34529,7 @@ uint64_t __100__CSCoverSheetViewController__presentModalViewController_shouldDis
           v21[3] = &unk_27838B838;
           v21[4] = v19;
           v22 = v14;
-          [(CSCoverSheetViewController *)self _dismissModalViewController:v19 animated:v6 completion:v21];
+          [(CSCoverSheetViewController *)self _dismissModalViewController:v19 animated:animatedCopy completion:v21];
         }
 
         v16 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
@@ -34541,9 +34541,9 @@ uint64_t __100__CSCoverSheetViewController__presentModalViewController_shouldDis
     [v14 signal];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -34594,26 +34594,26 @@ void __88__CSCoverSheetViewController__dismissAllModalViewControllersExcept_anim
   [*(a1 + 40) signal];
 }
 
-- (void)_dismissModalViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_dismissModalViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (controllerCopy)
   {
-    [(NSMutableSet *)self->_pendingModalViewControllers removeObject:v8];
+    [(NSMutableSet *)self->_pendingModalViewControllers removeObject:controllerCopy];
     v11 = [CSAction actionWithType:3];
     [(CSCoverSheetViewController *)self handleAction:v11 fromSender:self];
 
-    v12 = [CSAction actionWithType:13 animated:v6];
+    v12 = [CSAction actionWithType:13 animated:animatedCopy];
     [(CSCoverSheetViewController *)self handleAction:v12 fromSender:self];
 
-    v13 = [(CSPresentationViewController *)self->_modalPresentationController presentedViewControllers];
-    if ([v13 containsObject:v8])
+    presentedViewControllers = [(CSPresentationViewController *)self->_modalPresentationController presentedViewControllers];
+    if ([presentedViewControllers containsObject:controllerCopy])
     {
-      v14 = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
-      v15 = [v14 count] == 1;
+      contentViewControllers = [(CSPresentationViewController *)self->_modalPresentationController contentViewControllers];
+      v15 = [contentViewControllers count] == 1;
     }
 
     else
@@ -34624,7 +34624,7 @@ void __88__CSCoverSheetViewController__dismissAllModalViewControllersExcept_anim
     v16 = [(CSCoverSheetViewController *)self pageViewControllerAtIndex:self->_lastSettledPageIndex];
     if (v15)
     {
-      [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:v16 toVisible:1 animated:v6];
+      [(CSCoverSheetViewController *)self bs_beginAppearanceTransitionForChildViewController:v16 toVisible:1 animated:animatedCopy];
     }
 
     modalPresentationController = self->_modalPresentationController;
@@ -34637,12 +34637,12 @@ void __88__CSCoverSheetViewController__dismissAllModalViewControllersExcept_anim
     v20 = v16;
     v21 = v10;
     v18 = v16;
-    [(CSPresentationViewController *)modalPresentationController dismissContentViewController:v8 animated:v6 completion:v19];
+    [(CSPresentationViewController *)modalPresentationController dismissContentViewController:controllerCopy animated:animatedCopy completion:v19];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
@@ -34666,26 +34666,26 @@ uint64_t __78__CSCoverSheetViewController__dismissModalViewController_animated_c
   return result;
 }
 
-- (void)_dismissToMainPageFromPageViewController:(id)a3
+- (void)_dismissToMainPageFromPageViewController:(id)controller
 {
-  v7 = a3;
-  v4 = [v7 requestedDismissalType];
-  if (v4 == 1)
+  controllerCopy = controller;
+  requestedDismissalType = [controllerCopy requestedDismissalType];
+  if (requestedDismissalType == 1)
   {
-    v5 = [v7 requestedDismissalSettings];
-    v6 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v6 resetScrollViewToMainPageAnimated:1 withAnimationSettings:v5 withCompletion:0];
+    requestedDismissalSettings = [controllerCopy requestedDismissalSettings];
+    coverSheetView = [(CSCoverSheetViewController *)self coverSheetView];
+    [coverSheetView resetScrollViewToMainPageAnimated:1 withAnimationSettings:requestedDismissalSettings withCompletion:0];
   }
 
   else
   {
-    if (v4)
+    if (requestedDismissalType)
     {
       goto LABEL_6;
     }
 
-    v5 = [(CSCoverSheetViewController *)self coverSheetView];
-    [v5 resetScrollViewToMainPageAnimated:1 withCompletion:0];
+    requestedDismissalSettings = [(CSCoverSheetViewController *)self coverSheetView];
+    [requestedDismissalSettings resetScrollViewToMainPageAnimated:1 withCompletion:0];
   }
 
 LABEL_6:
@@ -34693,13 +34693,13 @@ LABEL_6:
 
 - (void)_migrateNotificationsToHistory
 {
-  v2 = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
-  [v2 migrateIncomingNotificationsToNotificationCenter];
+  combinedListViewController = [(CSMainPageContentViewController *)self->_mainPageContentViewController combinedListViewController];
+  [combinedListViewController migrateIncomingNotificationsToNotificationCenter];
 }
 
-- (void)_addOrRemoveThermalTrapViewIfNecessaryAnimated:(BOOL)a3
+- (void)_addOrRemoveThermalTrapViewIfNecessaryAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (([(SBFLockOutStatusProvider *)self->_lockOutController isThermallyBlocked]& 1) != 0 || [(CSLockScreenSettings *)self->_prototypeSettings showThermalTrap])
   {
     v5 = +[(CSCoverSheetViewControllerBase *)CSTemperatureWarningViewController];
@@ -34711,19 +34711,19 @@ LABEL_6:
     }
 
     v7 = [CSTemperatureWarningViewController alloc];
-    v9 = [(CSCoverSheetContextProviding *)self->_coverSheetContext thermalStatusProvider];
+    thermalStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext thermalStatusProvider];
     v8 = [(CSTemperatureWarningViewController *)v7 initWithThermalStatusProvider:?];
-    [(CSCoverSheetViewController *)self _presentModalViewController:v8 animated:v3 completion:0];
+    [(CSCoverSheetViewController *)self _presentModalViewController:v8 animated:animatedCopy completion:0];
   }
 
   else
   {
-    v9 = +[(CSCoverSheetViewControllerBase *)CSTemperatureWarningViewController];
+    thermalStatusProvider = +[(CSCoverSheetViewControllerBase *)CSTemperatureWarningViewController];
     [CSCoverSheetViewController _dismissModalViewControllersWithIdentifier:"_dismissModalViewControllersWithIdentifier:animated:completion:" animated:? completion:?];
   }
 }
 
-- (void)_addOrRemoveBlockedViewIfNecessaryAnimated:(BOOL)a3
+- (void)_addOrRemoveBlockedViewIfNecessaryAnimated:(BOOL)animated
 {
   if ([(SBFLockOutStatusProvider *)self->_lockOutController isBlocked]&& ![(SBFLockOutStatusProvider *)self->_lockOutController isThermallyBlocked]|| [(CSLockScreenSettings *)self->_prototypeSettings showBlockedUI])
   {
@@ -34735,8 +34735,8 @@ LABEL_6:
       return;
     }
 
-    v6 = [(CSCoverSheetContextProviding *)self->_coverSheetContext mediaController];
-    [v6 stopMediaPlaybackForSource:1];
+    mediaController = [(CSCoverSheetContextProviding *)self->_coverSheetContext mediaController];
+    [mediaController stopMediaPlaybackForSource:1];
 
     v7 = [[CSDeviceBlockViewController alloc] initWithDeviceBlockStatusProvider:self->_lockOutController];
     [CSCoverSheetViewController _presentModalViewController:"_presentModalViewController:animated:completion:" animated:? completion:?];
@@ -34749,11 +34749,11 @@ LABEL_6:
   }
 }
 
-- (void)_addOrRemoveResetRestoreViewIfNecessaryAnimated:(BOOL)a3
+- (void)_addOrRemoveResetRestoreViewIfNecessaryAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v8 = [(CSCoverSheetContextProviding *)self->_coverSheetContext resetRestoreStatusProvider];
-  if (([v8 isRestoring] & 1) != 0 || (objc_msgSend(v8, "isResetting") & 1) != 0 || -[CSLockScreenSettings showResetRestore](self->_prototypeSettings, "showResetRestore"))
+  animatedCopy = animated;
+  resetRestoreStatusProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext resetRestoreStatusProvider];
+  if (([resetRestoreStatusProvider isRestoring] & 1) != 0 || (objc_msgSend(resetRestoreStatusProvider, "isResetting") & 1) != 0 || -[CSLockScreenSettings showResetRestore](self->_prototypeSettings, "showResetRestore"))
   {
     v5 = +[(CSCoverSheetViewControllerBase *)CSResetRestoreViewController];
     v6 = [(CSCoverSheetViewController *)self _isPresentingModalViewControllerWithIdentifier:v5];
@@ -34763,28 +34763,28 @@ LABEL_6:
       goto LABEL_8;
     }
 
-    v7 = [[CSResetRestoreViewController alloc] initWithStatusProvider:v8];
-    [(CSCoverSheetViewController *)self _presentModalViewController:v7 animated:v3 completion:0];
+    v7 = [[CSResetRestoreViewController alloc] initWithStatusProvider:resetRestoreStatusProvider];
+    [(CSCoverSheetViewController *)self _presentModalViewController:v7 animated:animatedCopy completion:0];
   }
 
   else
   {
     v7 = +[(CSCoverSheetViewControllerBase *)CSResetRestoreViewController];
-    [(CSCoverSheetViewController *)self _dismissModalViewControllersWithIdentifier:v7 animated:v3 completion:0];
+    [(CSCoverSheetViewController *)self _dismissModalViewControllersWithIdentifier:v7 animated:animatedCopy completion:0];
   }
 
 LABEL_8:
 }
 
-- (void)dismissOverlays:(unint64_t)a3 animated:(BOOL)a4
+- (void)dismissOverlays:(unint64_t)overlays animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CSCoverSheetContextProviding *)self->_coverSheetContext dismissableOverlaysOutOf:a3, 0];
+  v5 = [(CSCoverSheetContextProviding *)self->_coverSheetContext dismissableOverlaysOutOf:overlays, 0];
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -34800,7 +34800,7 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) dismissOverlayForDashBoardAnimated:v4];
+        [*(*(&v10 + 1) + 8 * v9++) dismissOverlayForDashBoardAnimated:animatedCopy];
       }
 
       while (v7 != v9);
@@ -34811,10 +34811,10 @@ LABEL_8:
   }
 }
 
-- (void)userPresenceDetectedRecentlyDidChange:(id)a3
+- (void)userPresenceDetectedRecentlyDidChange:(id)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -34838,7 +34838,7 @@ LABEL_8:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 coverSheetViewControllerDidChangeUserPresence:{objc_msgSend(v4, "userPresenceDetectedRecently")}];
+          [v10 coverSheetViewControllerDidChangeUserPresence:{objc_msgSend(changeCopy, "userPresenceDetectedRecently")}];
         }
 
         ++v9;
@@ -34909,8 +34909,8 @@ LABEL_8:
 
 - (void)_preferredContentSizeDidChange
 {
-  v3 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  self->_wantsAccessibilityContentSizes = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  self->_wantsAccessibilityContentSizes = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   self->_needsAccessibilityContentSizesUpdate = self->_wantsAccessibilityContentSizes;
 }
@@ -34930,12 +34930,12 @@ LABEL_8:
 - (double)windowedAccessoryInset
 {
   v3 = __sb__runningInSpringBoard();
-  v4 = &CSWindowedAccessoryInset;
+  mainScreen27 = &CSWindowedAccessoryInset;
   if (v3)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
-      v5 = 0;
+      currentDevice28 = 0;
       v6 = 0;
       goto LABEL_10;
     }
@@ -34943,10 +34943,10 @@ LABEL_8:
 
   else
   {
-    v127 = [MEMORY[0x277D75418] currentDevice];
-    if ([v127 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
-      v5 = 0;
+      currentDevice28 = 0;
       v6 = 1;
       goto LABEL_10;
     }
@@ -34955,23 +34955,23 @@ LABEL_8:
   v6 = v3 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v118 = [MEMORY[0x277D759A0] mainScreen];
-      [v118 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
-    v5 = v7 ^ 1;
+    currentDevice28 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v28 == *(MEMORY[0x277D66E30] + 288) && v27 == *(MEMORY[0x277D66E30] + 296))
     {
-      v156 = v7 ^ 1;
+      v156 = currentDevice29 ^ 1;
       v157 = v6;
       v144 = 0;
       v145 = 0;
@@ -35014,12 +35014,12 @@ LABEL_8:
 
   else
   {
-    v5 = 0;
+    currentDevice28 = 0;
   }
 
 LABEL_10:
   v8 = __sb__runningInSpringBoard();
-  v156 = v5;
+  v156 = currentDevice28;
   v157 = v6;
   if (v8)
   {
@@ -35033,8 +35033,8 @@ LABEL_10:
 
   else
   {
-    v126 = [MEMORY[0x277D75418] currentDevice];
-    if ([v126 userInterfaceIdiom] != 1)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] != 1)
     {
       v9 = 0;
       v10 = 1;
@@ -35045,23 +35045,23 @@ LABEL_10:
   v10 = v8 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v117 = [MEMORY[0x277D759A0] mainScreen];
-      [v117 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
-    v9 = v7 ^ 1;
+    v9 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v30 >= *(MEMORY[0x277D66E30] + 440))
     {
-      v154 = v7 ^ 1;
+      v154 = currentDevice29 ^ 1;
       v155 = v10;
       v144 = 0;
       v145 = 0;
@@ -35121,8 +35121,8 @@ LABEL_19:
 
   else
   {
-    v125 = [MEMORY[0x277D75418] currentDevice];
-    if ([v125 userInterfaceIdiom] != 1)
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom] != 1)
     {
       v12 = 0;
       v13 = 1;
@@ -35133,23 +35133,23 @@ LABEL_19:
   v13 = v11 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v116 = [MEMORY[0x277D759A0] mainScreen];
-      [v116 _referenceBounds];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 _referenceBounds];
     }
 
-    v12 = v7 ^ 1;
+    v12 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v31 >= *(MEMORY[0x277D66E30] + 376))
     {
-      v152 = v7 ^ 1;
+      v152 = currentDevice29 ^ 1;
       v153 = v13;
       v144 = 0;
       v145 = 0;
@@ -35199,7 +35199,7 @@ LABEL_28:
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
-      v2 = 0;
+      mainScreen28 = 0;
       v15 = 0;
       goto LABEL_37;
     }
@@ -35207,33 +35207,33 @@ LABEL_28:
 
   else
   {
-    v124 = [MEMORY[0x277D75418] currentDevice];
-    if ([v124 userInterfaceIdiom] != 1)
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom] != 1)
     {
-      v2 = 0;
+      mainScreen28 = 0;
       v15 = 1;
       goto LABEL_37;
     }
   }
 
   v15 = v14 ^ 1;
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v121 = [MEMORY[0x277D759A0] mainScreen];
-    [v121 _referenceBounds];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 _referenceBounds];
   }
 
-  v2 = v7 ^ 1;
+  mainScreen28 = currentDevice29 ^ 1;
   BSSizeRoundForScale();
   if (v16 >= *(MEMORY[0x277D66E30] + 280))
   {
-    v150 = v7 ^ 1;
+    v150 = currentDevice29 ^ 1;
     v151 = v15;
     v144 = 0;
     v145 = 0;
@@ -35269,47 +35269,47 @@ LABEL_28:
 
 LABEL_37:
   v17 = __sb__runningInSpringBoard();
-  v150 = v2;
+  v150 = mainScreen28;
   v151 = v15;
   if (v17)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
       HIDWORD(v148) = 0;
-      v4 = 0;
+      mainScreen27 = 0;
       goto LABEL_47;
     }
   }
 
   else
   {
-    v123 = [MEMORY[0x277D75418] currentDevice];
-    if ([v123 userInterfaceIdiom] != 1)
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice5 userInterfaceIdiom] != 1)
     {
       HIDWORD(v148) = 0;
-      v4 = 1;
+      mainScreen27 = 1;
       goto LABEL_47;
     }
   }
 
-  v4 = v17 ^ 1u;
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  mainScreen27 = v17 ^ 1u;
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v119 = [MEMORY[0x277D759A0] mainScreen];
-    [v119 _referenceBounds];
+    mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen5 _referenceBounds];
   }
 
-  HIDWORD(v148) = v7 ^ 1;
+  HIDWORD(v148) = currentDevice29 ^ 1;
   BSSizeRoundForScale();
   if (v25 >= *(MEMORY[0x277D66E30] + 264))
   {
-    v149 = v4;
+    v149 = mainScreen27;
     v144 = 0;
     v145 = 0;
     v143 = 0;
@@ -35344,7 +35344,7 @@ LABEL_37:
 
 LABEL_47:
   v26 = __sb__runningInSpringBoard();
-  v149 = v4;
+  v149 = mainScreen27;
   if (v26)
   {
     if (SBFEffectiveDeviceClass() != 2)
@@ -35356,8 +35356,8 @@ LABEL_47:
 
   else
   {
-    v122 = [MEMORY[0x277D75418] currentDevice];
-    if ([v122 userInterfaceIdiom] != 1)
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom] != 1)
     {
       *(&v148 + 4) = 0x100000000;
       goto LABEL_186;
@@ -35365,19 +35365,19 @@ LABEL_47:
   }
 
   DWORD2(v148) = v26 ^ 1;
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v115 = [MEMORY[0x277D759A0] mainScreen];
-    [v115 _referenceBounds];
+    mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen6 _referenceBounds];
   }
 
-  DWORD1(v148) = v7 ^ 1;
+  DWORD1(v148) = currentDevice29 ^ 1;
   BSSizeRoundForScale();
   if (v34 >= *(MEMORY[0x277D66E30] + 248))
   {
@@ -35413,8 +35413,8 @@ LABEL_47:
   }
 
 LABEL_186:
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
@@ -35449,18 +35449,18 @@ LABEL_194:
     v22 = 0;
     v23 = 0;
     v24 = &qword_21EC96AA8;
-    LODWORD(v148) = v7 ^ 1;
+    LODWORD(v148) = currentDevice29 ^ 1;
     goto LABEL_67;
   }
 
-  v120 = [MEMORY[0x277D75418] currentDevice];
-  if ([v120 userInterfaceIdiom] == 1)
+  currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice7 userInterfaceIdiom] == 1)
   {
     goto LABEL_194;
   }
 
 LABEL_188:
-  LODWORD(v148) = v7 ^ 1;
+  LODWORD(v148) = currentDevice29 ^ 1;
   if (!_SBF_Private_IsD94Like())
   {
 LABEL_192:
@@ -35479,8 +35479,8 @@ LABEL_192:
 
   else
   {
-    v113 = [MEMORY[0x277D75418] currentDevice];
-    if ([v113 userInterfaceIdiom])
+    currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice8 userInterfaceIdiom])
     {
       v147 = 0x100000000;
       goto LABEL_202;
@@ -35490,19 +35490,19 @@ LABEL_192:
   HIDWORD(v147) = v35 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v106 = [MEMORY[0x277D759A0] mainScreen];
-      [v106 _referenceBounds];
+      mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen7 _referenceBounds];
     }
 
-    LODWORD(v147) = v7 ^ 1;
+    LODWORD(v147) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v38 >= *(MEMORY[0x277D66E30] + 200))
     {
@@ -35542,8 +35542,8 @@ LABEL_192:
   }
 
 LABEL_202:
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -35554,30 +35554,30 @@ LABEL_202:
 
   else
   {
-    v114 = [MEMORY[0x277D75418] currentDevice];
-    if ([v114 userInterfaceIdiom])
+    currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice9 userInterfaceIdiom])
     {
       v146 = 0x100000000;
       goto LABEL_212;
     }
   }
 
-  HIDWORD(v146) = v7 ^ 1;
+  HIDWORD(v146) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v109 = [MEMORY[0x277D759A0] mainScreen];
-      [v109 _referenceBounds];
+      mainScreen8 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen8 _referenceBounds];
     }
 
-    LODWORD(v146) = v7 ^ 1;
+    LODWORD(v146) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v36 >= *(MEMORY[0x277D66E30] + 200))
     {
@@ -35640,8 +35640,8 @@ LABEL_220:
 
   else
   {
-    v110 = [MEMORY[0x277D75418] currentDevice];
-    if ([v110 userInterfaceIdiom])
+    currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice10 userInterfaceIdiom])
     {
       v145 = 0x100000000;
       goto LABEL_230;
@@ -35651,19 +35651,19 @@ LABEL_220:
   HIDWORD(v145) = v37 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v101 = [MEMORY[0x277D759A0] mainScreen];
-      [v101 _referenceBounds];
+      mainScreen9 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen9 _referenceBounds];
     }
 
-    LODWORD(v145) = v7 ^ 1;
+    LODWORD(v145) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v43 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -35701,8 +35701,8 @@ LABEL_220:
   }
 
 LABEL_230:
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -35713,30 +35713,30 @@ LABEL_230:
 
   else
   {
-    v112 = [MEMORY[0x277D75418] currentDevice];
-    if ([v112 userInterfaceIdiom])
+    currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice11 userInterfaceIdiom])
     {
       v144 = 0x100000000;
       goto LABEL_240;
     }
   }
 
-  HIDWORD(v144) = v7 ^ 1;
+  HIDWORD(v144) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v105 = [MEMORY[0x277D759A0] mainScreen];
-      [v105 _referenceBounds];
+      mainScreen10 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen10 _referenceBounds];
     }
 
-    LODWORD(v144) = v7 ^ 1;
+    LODWORD(v144) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v39 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -35791,8 +35791,8 @@ LABEL_244:
 
   else
   {
-    v111 = [MEMORY[0x277D75418] currentDevice];
-    if ([v111 userInterfaceIdiom])
+    currentDevice12 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice12 userInterfaceIdiom])
     {
       v143 = 0x100000000;
       goto LABEL_254;
@@ -35810,13 +35810,13 @@ LABEL_244:
 
     else
     {
-      v102 = [MEMORY[0x277D759A0] mainScreen];
-      [v102 _referenceBounds];
+      mainScreen11 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen11 _referenceBounds];
     }
 
-    v7 = v41 ^ 1u;
+    currentDevice29 = v41 ^ 1u;
     BSSizeRoundForScale();
-    LODWORD(v143) = v7;
+    LODWORD(v143) = currentDevice29;
     if (v42 >= *(MEMORY[0x277D66E30] + 136))
     {
       v142 = 0;
@@ -35851,8 +35851,8 @@ LABEL_244:
   }
 
 LABEL_254:
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -35863,30 +35863,30 @@ LABEL_254:
 
   else
   {
-    v108 = [MEMORY[0x277D75418] currentDevice];
-    if ([v108 userInterfaceIdiom])
+    currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice13 userInterfaceIdiom])
     {
       v142 = 0x100000000;
       goto LABEL_264;
     }
   }
 
-  HIDWORD(v142) = v7 ^ 1;
+  HIDWORD(v142) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v100 = [MEMORY[0x277D759A0] mainScreen];
-      [v100 _referenceBounds];
+      mainScreen12 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen12 _referenceBounds];
     }
 
-    LODWORD(v142) = v7 ^ 1;
+    LODWORD(v142) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v44 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -35939,8 +35939,8 @@ LABEL_274:
 
   else
   {
-    v107 = [MEMORY[0x277D75418] currentDevice];
-    if ([v107 userInterfaceIdiom])
+    currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice14 userInterfaceIdiom])
     {
       v141 = 0x100000000;
       goto LABEL_284;
@@ -35958,13 +35958,13 @@ LABEL_274:
 
     else
     {
-      v97 = [MEMORY[0x277D759A0] mainScreen];
-      [v97 _referenceBounds];
+      mainScreen13 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen13 _referenceBounds];
     }
 
-    v7 = v46 ^ 1u;
+    currentDevice29 = v46 ^ 1u;
     BSSizeRoundForScale();
-    LODWORD(v141) = v7;
+    LODWORD(v141) = currentDevice29;
     if (v47 >= *(MEMORY[0x277D66E30] + 120) && (_SBF_Private_IsN84OrSimilarDevice() & 1) != 0)
     {
       v140 = 0;
@@ -35997,8 +35997,8 @@ LABEL_274:
   }
 
 LABEL_284:
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -36009,30 +36009,30 @@ LABEL_284:
 
   else
   {
-    v104 = [MEMORY[0x277D75418] currentDevice];
-    if ([v104 userInterfaceIdiom])
+    currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice15 userInterfaceIdiom])
     {
       v140 = 0x100000000;
       goto LABEL_294;
     }
   }
 
-  HIDWORD(v140) = v7 ^ 1;
+  HIDWORD(v140) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v96 = [MEMORY[0x277D759A0] mainScreen];
-      [v96 _referenceBounds];
+      mainScreen14 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen14 _referenceBounds];
     }
 
-    LODWORD(v140) = v7 ^ 1;
+    LODWORD(v140) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v48 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -36089,8 +36089,8 @@ LABEL_307:
 
   else
   {
-    v99 = [MEMORY[0x277D75418] currentDevice];
-    if ([v99 userInterfaceIdiom])
+    currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice16 userInterfaceIdiom])
     {
       v139 = 0x100000000;
       goto LABEL_314;
@@ -36100,19 +36100,19 @@ LABEL_307:
   HIDWORD(v139) = v49 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v90 = [MEMORY[0x277D759A0] mainScreen];
-      [v90 _referenceBounds];
+      mainScreen15 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen15 _referenceBounds];
     }
 
-    LODWORD(v139) = v7 ^ 1;
+    LODWORD(v139) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v52 >= *(MEMORY[0x277D66E30] + 184))
     {
@@ -36144,8 +36144,8 @@ LABEL_307:
   }
 
 LABEL_314:
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -36156,30 +36156,30 @@ LABEL_314:
 
   else
   {
-    v103 = [MEMORY[0x277D75418] currentDevice];
-    if ([v103 userInterfaceIdiom])
+    currentDevice17 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice17 userInterfaceIdiom])
     {
       v138 = 0x100000000;
       goto LABEL_324;
     }
   }
 
-  HIDWORD(v138) = v7 ^ 1;
+  HIDWORD(v138) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v93 = [MEMORY[0x277D759A0] mainScreen];
-      [v93 _referenceBounds];
+      mainScreen16 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen16 _referenceBounds];
     }
 
-    LODWORD(v138) = v7 ^ 1;
+    LODWORD(v138) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v50 >= *(MEMORY[0x277D66E30] + 184))
     {
@@ -36234,8 +36234,8 @@ LABEL_332:
 
   else
   {
-    v95 = [MEMORY[0x277D75418] currentDevice];
-    if ([v95 userInterfaceIdiom])
+    currentDevice18 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice18 userInterfaceIdiom])
     {
       v137 = 0x100000000;
       goto LABEL_342;
@@ -36245,19 +36245,19 @@ LABEL_332:
   HIDWORD(v137) = v51 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v86 = [MEMORY[0x277D759A0] mainScreen];
-      [v86 _referenceBounds];
+      mainScreen17 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen17 _referenceBounds];
     }
 
-    LODWORD(v137) = v7 ^ 1;
+    LODWORD(v137) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v57 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -36293,17 +36293,17 @@ LABEL_342:
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
       HIDWORD(v136) = 0;
-      v7 = 0;
+      currentDevice29 = 0;
       goto LABEL_352;
     }
   }
 
   else
   {
-    v98 = [MEMORY[0x277D75418] currentDevice];
-    if ([v98 userInterfaceIdiom])
+    currentDevice19 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice19 userInterfaceIdiom])
     {
-      v7 = 0;
+      currentDevice29 = 0;
       HIDWORD(v136) = 1;
       goto LABEL_352;
     }
@@ -36320,11 +36320,11 @@ LABEL_342:
 
     else
     {
-      v89 = [MEMORY[0x277D759A0] mainScreen];
-      [v89 _referenceBounds];
+      mainScreen18 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen18 _referenceBounds];
     }
 
-    v7 = v54 ^ 1u;
+    currentDevice29 = v54 ^ 1u;
     BSSizeRoundForScale();
     if (v55 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -36334,14 +36334,14 @@ LABEL_342:
 
   else
   {
-    v7 = 0;
+    currentDevice29 = 0;
   }
 
 LABEL_352:
   if (_SBF_Private_IsD63Like())
   {
     v135 = 0;
-    LODWORD(v136) = v7;
+    LODWORD(v136) = currentDevice29;
     v133 = 0;
     v134 = 0;
     v131 = 0;
@@ -36360,7 +36360,7 @@ LABEL_352:
   }
 
 LABEL_356:
-  LODWORD(v136) = v7;
+  LODWORD(v136) = currentDevice29;
   if (!_SBF_Private_IsD23Like())
   {
 LABEL_360:
@@ -36380,8 +36380,8 @@ LABEL_360:
 
   else
   {
-    v91 = [MEMORY[0x277D75418] currentDevice];
-    if ([v91 userInterfaceIdiom])
+    currentDevice20 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice20 userInterfaceIdiom])
     {
       HIDWORD(v134) = 0;
       v135 = 1;
@@ -36392,19 +36392,19 @@ LABEL_360:
   v135 = v56 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v82 = [MEMORY[0x277D759A0] mainScreen];
-      [v82 _referenceBounds];
+      mainScreen19 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen19 _referenceBounds];
     }
 
-    HIDWORD(v134) = v7 ^ 1;
+    HIDWORD(v134) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v61 >= *(MEMORY[0x277D66E30] + 216))
     {
@@ -36432,8 +36432,8 @@ LABEL_360:
   }
 
 LABEL_370:
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -36445,8 +36445,8 @@ LABEL_370:
 
   else
   {
-    v94 = [MEMORY[0x277D75418] currentDevice];
-    if ([v94 userInterfaceIdiom])
+    currentDevice21 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice21 userInterfaceIdiom])
     {
       HIDWORD(v133) = 0;
       LODWORD(v134) = 1;
@@ -36454,22 +36454,22 @@ LABEL_370:
     }
   }
 
-  LODWORD(v134) = v7 ^ 1;
+  LODWORD(v134) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v85 = [MEMORY[0x277D759A0] mainScreen];
-      [v85 _referenceBounds];
+      mainScreen20 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen20 _referenceBounds];
     }
 
-    HIDWORD(v133) = v7 ^ 1;
+    HIDWORD(v133) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v58 >= *(MEMORY[0x277D66E30] + 216))
     {
@@ -36515,8 +36515,8 @@ LABEL_384:
 
   else
   {
-    v92 = [MEMORY[0x277D75418] currentDevice];
-    if ([v92 userInterfaceIdiom])
+    currentDevice22 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice22 userInterfaceIdiom])
     {
       HIDWORD(v132) = 0;
       LODWORD(v133) = 1;
@@ -36527,19 +36527,19 @@ LABEL_384:
   LODWORD(v133) = v59 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v83 = [MEMORY[0x277D759A0] mainScreen];
-      [v83 _referenceBounds];
+      mainScreen21 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen21 _referenceBounds];
     }
 
-    HIDWORD(v132) = v7 ^ 1;
+    HIDWORD(v132) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v60 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -36565,8 +36565,8 @@ LABEL_384:
   }
 
 LABEL_394:
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -36578,8 +36578,8 @@ LABEL_394:
 
   else
   {
-    v88 = [MEMORY[0x277D75418] currentDevice];
-    if ([v88 userInterfaceIdiom])
+    currentDevice23 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice23 userInterfaceIdiom])
     {
       HIDWORD(v131) = 0;
       LODWORD(v132) = 1;
@@ -36587,22 +36587,22 @@ LABEL_394:
     }
   }
 
-  LODWORD(v132) = v7 ^ 1;
+  LODWORD(v132) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v81 = [MEMORY[0x277D759A0] mainScreen];
-      [v81 _referenceBounds];
+      mainScreen22 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen22 _referenceBounds];
     }
 
-    HIDWORD(v131) = v7 ^ 1;
+    HIDWORD(v131) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v62 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -36646,8 +36646,8 @@ LABEL_414:
 
   else
   {
-    v87 = [MEMORY[0x277D75418] currentDevice];
-    if ([v87 userInterfaceIdiom])
+    currentDevice24 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice24 userInterfaceIdiom])
     {
       HIDWORD(v130) = 0;
       LODWORD(v131) = 1;
@@ -36658,19 +36658,19 @@ LABEL_414:
   LODWORD(v131) = v63 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v80 = [MEMORY[0x277D759A0] mainScreen];
-      [v80 _referenceBounds];
+      mainScreen23 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen23 _referenceBounds];
     }
 
-    HIDWORD(v130) = v7 ^ 1;
+    HIDWORD(v130) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v66 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -36700,17 +36700,17 @@ LABEL_424:
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
       LODWORD(v130) = 0;
-      v7 = 0;
+      currentDevice29 = 0;
       goto LABEL_434;
     }
   }
 
   else
   {
-    v84 = [MEMORY[0x277D75418] currentDevice];
-    if ([v84 userInterfaceIdiom])
+    currentDevice25 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice25 userInterfaceIdiom])
     {
-      v7 = 0;
+      currentDevice29 = 0;
       LODWORD(v130) = 1;
       goto LABEL_434;
     }
@@ -36727,11 +36727,11 @@ LABEL_424:
 
     else
     {
-      v79 = [MEMORY[0x277D759A0] mainScreen];
-      [v79 _referenceBounds];
+      mainScreen24 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen24 _referenceBounds];
     }
 
-    v7 = v65 ^ 1u;
+    currentDevice29 = v65 ^ 1u;
     BSSizeRoundForScale();
     if (v67 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -36741,13 +36741,13 @@ LABEL_424:
 
   else
   {
-    v7 = 0;
+    currentDevice29 = 0;
   }
 
 LABEL_434:
   if (_SBF_Private_IsD53())
   {
-    HIDWORD(v129) = v7;
+    HIDWORD(v129) = currentDevice29;
     LODWORD(v129) = 0;
     v128 = 0;
     v18 = 0;
@@ -36761,7 +36761,7 @@ LABEL_434:
   }
 
 LABEL_441:
-  HIDWORD(v129) = v7;
+  HIDWORD(v129) = currentDevice29;
   if (_SBF_Private_IsD16() && (_SBF_Private_IsD52OrSimilarDevice() & 1) != 0)
   {
     LODWORD(v129) = 0;
@@ -36831,8 +36831,8 @@ LABEL_441:
 
   else
   {
-    v78 = [MEMORY[0x277D75418] currentDevice];
-    if ([v78 userInterfaceIdiom])
+    currentDevice26 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice26 userInterfaceIdiom])
     {
       v128 = 0;
       LODWORD(v129) = 1;
@@ -36843,19 +36843,19 @@ LABEL_441:
   LODWORD(v129) = v68 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v76 = [MEMORY[0x277D759A0] mainScreen];
-      [v76 _referenceBounds];
+      mainScreen25 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen25 _referenceBounds];
     }
 
-    v128 = v7 ^ 1;
+    v128 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v71 >= *(MEMORY[0x277D66E30] + 88))
     {
@@ -36889,8 +36889,8 @@ LABEL_461:
 
   else
   {
-    v77 = [MEMORY[0x277D75418] currentDevice];
-    if ([v77 userInterfaceIdiom])
+    currentDevice27 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice27 userInterfaceIdiom])
     {
       v19 = 0;
       v18 = 1;
@@ -36901,19 +36901,19 @@ LABEL_461:
   v18 = v69 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v7 = __sb__runningInSpringBoard();
-    if (v7)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v75 = [MEMORY[0x277D759A0] mainScreen];
-      [v75 _referenceBounds];
+      mainScreen26 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen26 _referenceBounds];
     }
 
-    v19 = v7 ^ 1;
+    v19 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v72 >= *(MEMORY[0x277D66E30] + 72))
     {
@@ -36932,8 +36932,8 @@ LABEL_461:
   }
 
 LABEL_471:
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -36945,8 +36945,8 @@ LABEL_471:
 
   else
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    if ([v5 userInterfaceIdiom])
+    currentDevice28 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice28 userInterfaceIdiom])
     {
       v21 = 0;
       v20 = 1;
@@ -36954,20 +36954,20 @@ LABEL_471:
     }
   }
 
-  v20 = v7 ^ 1;
-  v7 = __sb__runningInSpringBoard();
-  if (v7)
+  v20 = currentDevice29 ^ 1;
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 _referenceBounds];
+    mainScreen27 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen27 _referenceBounds];
   }
 
-  v21 = v7 ^ 1;
+  v21 = currentDevice29 ^ 1;
   BSSizeRoundForScale();
   if (v70 >= *(MEMORY[0x277D66E30] + 56))
   {
@@ -36978,8 +36978,8 @@ LABEL_471:
   }
 
 LABEL_481:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -36993,8 +36993,8 @@ LABEL_498:
 
   else
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    if ([v7 userInterfaceIdiom])
+    currentDevice29 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice29 userInterfaceIdiom])
     {
       v23 = 0;
       v22 = 1;
@@ -37002,7 +37002,7 @@ LABEL_498:
     }
   }
 
-  v22 = v2 ^ 1;
+  v22 = mainScreen28 ^ 1;
   v73 = __sb__runningInSpringBoard();
   if (v73)
   {
@@ -37011,8 +37011,8 @@ LABEL_498:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen28 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen28 _referenceBounds];
   }
 
   v23 = v73 ^ 1;
@@ -37340,13 +37340,13 @@ LABEL_181:
     return self->_accessibilityTimeSubtitleBaselineY;
   }
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v7 = (v6 & 0xFFFFFFFFFFFFFFFBLL);
+  currentDevice2 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL);
   v8 = __sb__runningInSpringBoard();
   v9 = v8;
-  if (v7 == 1)
+  if (currentDevice2 == 1)
   {
     if (v8)
     {
@@ -37359,8 +37359,8 @@ LABEL_181:
       goto LABEL_13;
     }
 
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    if ([v7 userInterfaceIdiom] == 1)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] == 1)
     {
 LABEL_13:
       v11 = __sb__runningInSpringBoard();
@@ -37372,8 +37372,8 @@ LABEL_13:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -37402,8 +37402,8 @@ LABEL_31:
 
   else
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    if ([v7 userInterfaceIdiom])
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom])
     {
       v13 = 0x4041000000000000;
       goto LABEL_18;
@@ -37419,8 +37419,8 @@ LABEL_31:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -37450,36 +37450,36 @@ LABEL_25:
   return v4;
 }
 
-- (double)timeLabelOffsetForScrollPercent:(double)a3
+- (double)timeLabelOffsetForScrollPercent:(double)percent
 {
-  v5 = [(CSCoverSheetViewController *)self mainPageContentViewController];
-  [(CSCoverSheetViewController *)self _timeLabelScrollPercentForDateTimeLayout:[(CSCoverSheetViewController *)self _dateTimeLayoutForPage:v5]];
+  mainPageContentViewController = [(CSCoverSheetViewController *)self mainPageContentViewController];
+  [(CSCoverSheetViewController *)self _timeLabelScrollPercentForDateTimeLayout:[(CSCoverSheetViewController *)self _dateTimeLayoutForPage:mainPageContentViewController]];
   v7 = v6;
   if ((BSFloatIsZero() & 1) == 0)
   {
-    v8 = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
-    v9 = [v8 count];
+    _allowedPageViewControllers = [(CSCoverSheetViewController *)self _allowedPageViewControllers];
+    v9 = [_allowedPageViewControllers count];
 
     if (v9)
     {
-      v10 = [(CSCoverSheetViewController *)self _pageForScrollPercent:a3];
+      v10 = [(CSCoverSheetViewController *)self _pageForScrollPercent:percent];
       [(CSCoverSheetViewController *)self _timeLabelScrollPercentForDateTimeLayout:[(CSCoverSheetViewController *)self _dateTimeLayoutForPage:v10]];
-      v12 = -a3;
-      if (a3 >= 0.0)
+      percentCopy = -percent;
+      if (percent >= 0.0)
       {
-        v12 = a3;
+        percentCopy = percent;
       }
 
-      v7 = v7 + v12 * (v11 - v7);
+      v7 = v7 + percentCopy * (v11 - v7);
     }
   }
 
   return v7;
 }
 
-- (double)_timeLabelScrollPercentForDateTimeLayout:(unint64_t)a3
+- (double)_timeLabelScrollPercentForDateTimeLayout:(unint64_t)layout
 {
-  if (a3 == 3)
+  if (layout == 3)
   {
     v4 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1;
     result = 1.0;
@@ -37489,7 +37489,7 @@ LABEL_25:
   else
   {
     result = 0.0;
-    if (a3 != 2)
+    if (layout != 2)
     {
       return result;
     }
@@ -39874,16 +39874,16 @@ LABEL_181:
 - (double)dateTimeMostExtremeLeadingX
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self view];
-  [v3 bounds];
+  view = [(CSCoverSheetViewController *)self view];
+  [view bounds];
   MidX = CGRectGetMidX(v26);
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(CSCoverSheetViewController *)self pageViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+  v6 = [pageViewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -39894,21 +39894,21 @@ LABEL_181:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pageViewControllers);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
         if ([(CSCoverSheetViewController *)self _dateTimeLayoutForPage:v10]== 2)
         {
-          v11 = [MEMORY[0x277D75418] currentDevice];
-          v12 = [v11 userInterfaceIdiom];
+          currentDevice = [MEMORY[0x277D75418] currentDevice];
+          userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-          if ((v12 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
           {
             [MEMORY[0x277D67DA0] idealSearchPlatterWidth];
             v14 = v13;
-            v15 = [(CSCoverSheetViewController *)self view];
-            [v15 bounds];
+            view2 = [(CSCoverSheetViewController *)self view];
+            [view2 bounds];
             v16 = (CGRectGetWidth(v27) - v14) * 0.5;
 
             [(CSCoverSheetViewController *)self _dateTimeInsetXForPage:v10];
@@ -39927,7 +39927,7 @@ LABEL_181:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [pageViewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v7);
@@ -39939,16 +39939,16 @@ LABEL_181:
 - (double)dateTimeMostExtremeTrailingX
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetViewController *)self view];
-  [v3 bounds];
+  view = [(CSCoverSheetViewController *)self view];
+  [view bounds];
   MidX = CGRectGetMidX(v26);
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(CSCoverSheetViewController *)self pageViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+  v6 = [pageViewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -39959,21 +39959,21 @@ LABEL_181:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pageViewControllers);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
         if ([(CSCoverSheetViewController *)self _dateTimeLayoutForPage:v10]== 3)
         {
-          v11 = [MEMORY[0x277D75418] currentDevice];
-          v12 = [v11 userInterfaceIdiom];
+          currentDevice = [MEMORY[0x277D75418] currentDevice];
+          userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-          if ((v12 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
           {
             [MEMORY[0x277D67DA0] idealSearchPlatterWidth];
             v14 = v13;
-            v15 = [(CSCoverSheetViewController *)self view];
-            [v15 bounds];
+            view2 = [(CSCoverSheetViewController *)self view];
+            [view2 bounds];
             v16 = (CGRectGetWidth(v27) - v14) * 0.5;
 
             [(CSCoverSheetViewController *)self _dateTimeInsetXForPage:v10];
@@ -39992,7 +39992,7 @@ LABEL_181:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [pageViewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v7);
@@ -40008,8 +40008,8 @@ LABEL_181:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CSCoverSheetViewController *)self pageViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+  v4 = [pageViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -40020,7 +40020,7 @@ LABEL_181:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pageViewControllers);
         }
 
         if ([(CSCoverSheetViewController *)self _dateTimeLayoutForPage:*(*(&v10 + 1) + 8 * i)]== 1)
@@ -40030,7 +40030,7 @@ LABEL_181:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [pageViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -40046,54 +40046,54 @@ LABEL_11:
   return v8;
 }
 
-- (double)_dateTimeInsetXForPage:(id)a3
+- (double)_dateTimeInsetXForPage:(id)page
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewController *)self view];
-  [v5 bounds];
+  pageCopy = page;
+  view = [(CSCoverSheetViewController *)self view];
+  [view bounds];
   MidX = CGRectGetMidX(v9);
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 dateTimeInsetX];
+    [pageCopy dateTimeInsetX];
     MidX = v7;
   }
 
   return MidX;
 }
 
-- (double)_listInsetXForPage:(id)a3
+- (double)_listInsetXForPage:(id)page
 {
-  v3 = a3;
+  pageCopy = page;
   v4 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v3 listInsetX];
+    [pageCopy listInsetX];
     v4 = v5;
   }
 
   return v4;
 }
 
-- (double)_minDateListSpacingForPage:(id)a3
+- (double)_minDateListSpacingForPage:(id)page
 {
-  v3 = a3;
+  pageCopy = page;
   v4 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v3 minimumDateToListSpacing];
+    [pageCopy minimumDateToListSpacing];
     v4 = v5;
   }
 
   return v4;
 }
 
-- (id)_pageForScrollPercent:(double)a3
+- (id)_pageForScrollPercent:(double)percent
 {
-  v5 = [(CSCoverSheetViewController *)self pageViewControllers];
-  v6 = [(CSCoverSheetViewController *)self _indexOfMainPage];
-  v7 = [(CSCoverSheetViewController *)self pageViewControllers];
-  v8 = [v7 objectAtIndex:v6];
+  pageViewControllers = [(CSCoverSheetViewController *)self pageViewControllers];
+  _indexOfMainPage = [(CSCoverSheetViewController *)self _indexOfMainPage];
+  pageViewControllers2 = [(CSCoverSheetViewController *)self pageViewControllers];
+  v8 = [pageViewControllers2 objectAtIndex:_indexOfMainPage];
 
   if (BSFloatIsZero())
   {
@@ -40102,20 +40102,20 @@ LABEL_11:
 
   else
   {
-    v10 = [v5 count] - 1;
-    if (a3 >= 0.0)
+    v10 = [pageViewControllers count] - 1;
+    if (percent >= 0.0)
     {
-      v11 = a3;
+      percentCopy = percent;
     }
 
     else
     {
-      v11 = -a3;
+      percentCopy = -percent;
     }
 
     v12 = BSFloatLessThanFloat();
-    v13 = ceil(v11);
-    v14 = round(v11);
+    v13 = ceil(percentCopy);
+    v14 = round(percentCopy);
     if (!v12)
     {
       v13 = v14;
@@ -40132,7 +40132,7 @@ LABEL_11:
       v16 = -v15;
     }
 
-    v17 = v16 + v6;
+    v17 = v16 + _indexOfMainPage;
     if (v10 >= v17)
     {
       v18 = v17;
@@ -40143,7 +40143,7 @@ LABEL_11:
       v18 = v10;
     }
 
-    v9 = [v5 objectAtIndex:v18];
+    v9 = [pageViewControllers objectAtIndex:v18];
   }
 
   v19 = v9;
@@ -40151,20 +40151,20 @@ LABEL_11:
   return v19;
 }
 
-- (unint64_t)_dateTimeLayoutForPage:(id)a3
+- (unint64_t)_dateTimeLayoutForPage:(id)page
 {
-  v3 = a3;
+  pageCopy = page;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 dateTimeLayout];
+    dateTimeLayout = [pageCopy dateTimeLayout];
   }
 
   else
   {
-    v4 = 0;
+    dateTimeLayout = 0;
   }
 
-  return v4;
+  return dateTimeLayout;
 }
 
 - (void)initWithPageViewControllers:mainPageContentViewController:context:.cold.1()
@@ -40216,7 +40216,7 @@ void __98__CSCoverSheetViewController_activateCameraWithHostableEntity_animated_
 - (void)createHomeButtonShowPasscodeRecognizerForHomeButtonPress
 {
   OUTLINED_FUNCTION_7();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_5();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

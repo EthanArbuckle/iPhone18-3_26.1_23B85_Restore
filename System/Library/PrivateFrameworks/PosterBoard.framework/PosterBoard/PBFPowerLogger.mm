@@ -1,62 +1,62 @@
 @interface PBFPowerLogger
-+ (void)logUpdate:(int64_t)a3 reason:(int64_t)a4 inServiceOfBundleIdentifier:(id)a5;
++ (void)logUpdate:(int64_t)update reason:(int64_t)reason inServiceOfBundleIdentifier:(id)identifier;
 @end
 
 @implementation PBFPowerLogger
 
-+ (void)logUpdate:(int64_t)a3 reason:(int64_t)a4 inServiceOfBundleIdentifier:(id)a5
++ (void)logUpdate:(int64_t)update reason:(int64_t)reason inServiceOfBundleIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [PBFPowerLogger logUpdate:a2 reason:a1 inServiceOfBundleIdentifier:?];
+      [PBFPowerLogger logUpdate:a2 reason:self inServiceOfBundleIdentifier:?];
     }
   }
 
   v10 = objc_opt_new();
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:update];
   [v10 setObject:v11 forKeyedSubscript:@"updateType"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:reason];
   [v10 setObject:v12 forKeyedSubscript:@"Reason"];
 
-  if (![v9 length])
+  if (![identifierCopy length])
   {
-    v13 = [MEMORY[0x277CCA8D8] mainBundle];
-    v14 = [v13 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v9 = v14;
+    identifierCopy = bundleIdentifier;
   }
 
-  [v10 setObject:v9 forKeyedSubscript:@"BundleID"];
+  [v10 setObject:identifierCopy forKeyedSubscript:@"BundleID"];
   v15 = PBFLogPower();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a3 - 1) > 3)
+    if ((update - 1) > 3)
     {
       v16 = @"PBFPowerLogUpdateTypeStaticDescriptors";
     }
 
     else
     {
-      v16 = off_2782C79E8[a3 - 1];
+      v16 = off_2782C79E8[update - 1];
     }
 
-    v17 = NSStringFromPBFPowerLogReason(a4);
+    v17 = NSStringFromPBFPowerLogReason(reason);
     *buf = 138543874;
     *&buf[4] = v16;
     *&buf[12] = 2114;
     *&buf[14] = v17;
     *&buf[22] = 2112;
-    v25 = v9;
+    v25 = identifierCopy;
     _os_log_impl(&dword_21B526000, v15, OS_LOG_TYPE_DEFAULT, "logUpdate:%{public}@ reason:%{public}@ inServiceOfBundleIdentifier:%@", buf, 0x20u);
   }
 
-  v18 = [a1 powerLogClientIdentifier];
+  powerLogClientIdentifier = [self powerLogClientIdentifier];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -79,7 +79,7 @@
     +[PBFPowerLogger logUpdate:reason:inServiceOfBundleIdentifier:];
   }
 
-  v19(v18, @"PosterUpdates", v10, 0);
+  v19(powerLogClientIdentifier, @"PosterUpdates", v10, 0);
 }
 
 + (void)logUpdate:(const char *)a1 reason:(uint64_t)a2 inServiceOfBundleIdentifier:.cold.1(const char *a1, uint64_t a2)

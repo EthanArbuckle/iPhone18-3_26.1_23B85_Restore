@@ -14,16 +14,16 @@
 - (BOOL)shouldPresentPersonalizedAdsOnboarding;
 - (BOOL)shouldShowPersonalizedAdsToggle;
 - (NSArray)adSwitchDisabledReasons;
-- (id)appTrackingXPCConnection:(id)a3 withInvalidation:(id)a4;
+- (id)appTrackingXPCConnection:(id)connection withInvalidation:(id)invalidation;
 - (int64_t)accountLevelSwitchDisabledReason;
 - (int64_t)accountRestrictionReason;
 - (int64_t)acknowledgedVersionForPersonalizedAds;
 - (int64_t)crossAppTrackingAllowedSwitchDisabledReason;
 - (int64_t)latestVersionForPersonalizedAdsConsent;
 - (int64_t)personalizedAdsSwitchDisabledReason;
-- (void)personalizedAdsAvailable:(id)a3;
-- (void)setAcknowledgedVersionForPersonalizedAds:(int64_t)a3;
-- (void)setCrossAppTrackingAllowed:(BOOL)a3;
+- (void)personalizedAdsAvailable:(id)available;
+- (void)setAcknowledgedVersionForPersonalizedAds:(int64_t)ads;
+- (void)setCrossAppTrackingAllowed:(BOOL)allowed;
 @end
 
 @implementation ADTrackingTransparency
@@ -35,8 +35,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25D28]] == 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25D28]] == 1;
 
   return v3;
 }
@@ -48,9 +48,9 @@
     return 0;
   }
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   v5 = *MEMORY[0x277D25D28];
-  v6 = [v4 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D28]];
+  v6 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D28]];
 
   if (v6)
   {
@@ -60,8 +60,8 @@
       _os_log_impl(&dword_255F62000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "The device has a profile installed that has a restriction on Personalized Advertising. Personalized Ads switch will be disabled and locked.", buf, 2u);
     }
 
-    v7 = [MEMORY[0x277D262A0] sharedConnection];
-    v8 = [v7 effectiveBoolValueForSetting:v5];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    v8 = [mEMORY[0x277D262A0]2 effectiveBoolValueForSetting:v5];
 
     if (v8 != 2)
     {
@@ -71,8 +71,8 @@
         _os_log_impl(&dword_255F62000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "There is a profile installed that has a restriction on Limit Ad Tracking Forced AND tracking is still enabled. Correcting config value.", v10, 2u);
       }
 
-      v9 = [MEMORY[0x277D262A0] sharedConnection];
-      [v9 setBoolValue:0 forSetting:v5];
+      mEMORY[0x277D262A0]3 = [MEMORY[0x277D262A0] sharedConnection];
+      [mEMORY[0x277D262A0]3 setBoolValue:0 forSetting:v5];
     }
 
     return 0;
@@ -141,8 +141,8 @@ LABEL_13:
   {
     if (![(ADTrackingTransparency *)self _isUserProtoTeenState])
     {
-      v9 = [MEMORY[0x277D262A0] sharedConnection];
-      v6 = [v9 effectiveBoolValueForSetting:*MEMORY[0x277D25F28]] == 1;
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      v6 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F28]] == 1;
 
       goto LABEL_15;
     }
@@ -166,37 +166,37 @@ LABEL_15:
 
 - (BOOL)_isUserEDURestricted
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 isSharedIPad];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  isSharedIPad = [mEMORY[0x277D77BF8] isSharedIPad];
 
-  if (v3)
+  if (isSharedIPad)
   {
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    [v4 setBoolValue:0 forSetting:*MEMORY[0x277D25F28]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] setBoolValue:0 forSetting:*MEMORY[0x277D25F28]];
   }
 
-  return v3;
+  return isSharedIPad;
 }
 
 - (BOOL)_isUserManagedRestricted
 {
-  v2 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-  v4 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v5 = [v4 ams_activeiCloudAccount];
+  ams_sharedAccountStore2 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiCloudAccount = [ams_sharedAccountStore2 ams_activeiCloudAccount];
 
-  if ([v3 ams_isManagedAppleID])
+  if ([ams_activeiTunesAccount ams_isManagedAppleID])
   {
-    v6 = 1;
+    ams_isManagedAppleID = 1;
   }
 
   else
   {
-    v6 = [v5 ams_isManagedAppleID];
+    ams_isManagedAppleID = [ams_activeiCloudAccount ams_isManagedAppleID];
   }
 
-  return v6;
+  return ams_isManagedAppleID;
 }
 
 - (int64_t)acknowledgedVersionForPersonalizedAds
@@ -214,9 +214,9 @@ LABEL_15:
 
 - (BOOL)crossAppTrackingAllowedSwitchEnabled
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   v4 = *MEMORY[0x277D25F40];
-  v5 = [v3 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F40]];
+  v5 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F40]];
 
   if (v5)
   {
@@ -226,8 +226,8 @@ LABEL_15:
       _os_log_impl(&dword_255F62000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "The device has a profile installed that has a restriction on Limit Ad Tracking Forced  Cross App Tracking switch will be disabled and locked.", buf, 2u);
     }
 
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    v7 = [v6 effectiveBoolValueForSetting:v4];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    v7 = [mEMORY[0x277D262A0]2 effectiveBoolValueForSetting:v4];
 
     if (v7 != 1)
     {
@@ -237,8 +237,8 @@ LABEL_15:
         _os_log_impl(&dword_255F62000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "There is a profile installed that has a restriction on Limit Ad Tracking Forced AND tracking is still enabled. Correcting config value.", v10, 2u);
       }
 
-      v8 = [MEMORY[0x277D262A0] sharedConnection];
-      [v8 setBoolValue:1 forSetting:v4];
+      mEMORY[0x277D262A0]3 = [MEMORY[0x277D262A0] sharedConnection];
+      [mEMORY[0x277D262A0]3 setBoolValue:1 forSetting:v4];
     }
 
     return 0;
@@ -472,60 +472,60 @@ LABEL_17:
 
 - (NSArray)adSwitchDisabledReasons
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(ADTrackingTransparency *)self isPersonalizedAdsScreenTimeRestricted])
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInteger:8];
-    [v3 addObject:v4];
+    [array addObject:v4];
   }
 
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D28]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v6 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D28]];
 
   if (v6)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInteger:7];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
   if ([(ADTrackingTransparency *)self _isUserEDURestricted])
   {
     v8 = [MEMORY[0x277CCABB0] numberWithInteger:3];
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
   if ([(ADTrackingTransparency *)self _isUserManagedRestricted])
   {
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:4];
-    [v3 addObject:v9];
+    [array addObject:v9];
   }
 
   if ([(ADTrackingTransparency *)self _isUserProtoU13State])
   {
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:9];
-    [v3 addObject:v10];
+    [array addObject:v10];
   }
 
   if ([(ADTrackingTransparency *)self _isUserProtoTeenState])
   {
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:10];
-    [v3 addObject:v11];
+    [array addObject:v11];
   }
 
-  v12 = [(ADTrackingTransparency *)self accountLevelSwitchDisabledReason];
-  if (v12)
+  accountLevelSwitchDisabledReason = [(ADTrackingTransparency *)self accountLevelSwitchDisabledReason];
+  if (accountLevelSwitchDisabledReason)
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
-    [v3 addObject:v13];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:accountLevelSwitchDisabledReason];
+    [array addObject:v13];
   }
 
-  if (![v3 count])
+  if (![array count])
   {
     v14 = [MEMORY[0x277CCABB0] numberWithInteger:0];
-    [v3 addObject:v14];
+    [array addObject:v14];
   }
 
-  v15 = [v3 copy];
+  v15 = [array copy];
 
   return v15;
 }
@@ -533,8 +533,8 @@ LABEL_17:
 - (int64_t)crossAppTrackingAllowedSwitchDisabledReason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F40]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F40]];
 
   if (v4)
   {
@@ -565,17 +565,17 @@ LABEL_17:
     return 0;
   }
 
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25F40]] != 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F40]] != 1;
 
   return v3;
 }
 
-- (void)setCrossAppTrackingAllowed:(BOOL)a3
+- (void)setCrossAppTrackingAllowed:(BOOL)allowed
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  [v4 setBoolValue:!v3 forSetting:*MEMORY[0x277D25F40]];
+  allowedCopy = allowed;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] setBoolValue:!allowedCopy forSetting:*MEMORY[0x277D25F40]];
 }
 
 - (int64_t)personalizedAdsSwitchDisabledReason
@@ -597,8 +597,8 @@ LABEL_9:
     return result;
   }
 
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D28]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v6 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D28]];
 
   if (v6)
   {
@@ -622,11 +622,11 @@ LABEL_9:
 - (BOOL)personalizedAdsAvailable
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [(ADTrackingTransparency *)self shouldDisplayPAUI];
+  shouldDisplayPAUI = [(ADTrackingTransparency *)self shouldDisplayPAUI];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v3 = @"will NOT";
-    if (v2)
+    if (shouldDisplayPAUI)
     {
       v3 = @"will";
     }
@@ -637,12 +637,12 @@ LABEL_9:
   }
 
   v4 = *MEMORY[0x277D85DE8];
-  return v2;
+  return shouldDisplayPAUI;
 }
 
-- (void)personalizedAdsAvailable:(id)a3
+- (void)personalizedAdsAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   v5 = [(ADTrackingTransparency *)self appTrackingXPCConnection:&__block_literal_global_50 withInvalidation:&__block_literal_global_53];
   if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -664,7 +664,7 @@ LABEL_9:
     v8[1] = 3221225472;
     v8[2] = __51__ADTrackingTransparency_personalizedAdsAvailable___block_invoke_58;
     v8[3] = &unk_279817728;
-    v10 = v4;
+    v10 = availableCopy;
     v9 = v5;
     [v6 shouldDisplayPersonalizedAdsUI:v8];
   }
@@ -677,9 +677,9 @@ LABEL_9:
       _os_log_impl(&dword_255F62000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "The remote proxy is nil. Unable to get DisplayPersonalizedAdsUI", buf, 2u);
     }
 
-    if (v4)
+    if (availableCopy)
     {
-      (*(v4 + 2))(v4, 1);
+      (*(availableCopy + 2))(availableCopy, 1);
     }
 
     [v5 invalidate];
@@ -768,12 +768,12 @@ uint64_t __51__ADTrackingTransparency_personalizedAdsAvailable___block_invoke_58
   return v4;
 }
 
-- (void)setAcknowledgedVersionForPersonalizedAds:(int64_t)a3
+- (void)setAcknowledgedVersionForPersonalizedAds:(int64_t)ads
 {
   v5 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.AdPlatforms"];
-  [v5 setInteger:a3 forKey:@"acknowledgedPersonalizedAdsVersion"];
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 postNotificationName:@"PersonalizedAdsPreferenceDidChange" object:0];
+  [v5 setInteger:ads forKey:@"acknowledgedPersonalizedAdsVersion"];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:@"PersonalizedAdsPreferenceDidChange" object:0];
 }
 
 - (int64_t)latestVersionForPersonalizedAdsConsent
@@ -800,8 +800,8 @@ uint64_t __51__ADTrackingTransparency_personalizedAdsAvailable___block_invoke_58
   {
     v3 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.AdPlatforms"];
     v4 = [v3 BOOLForKey:@"personalizedAdsDefaulted"];
-    v5 = [(ADTrackingTransparency *)self acknowledgedVersionForPersonalizedAds];
-    v6 = (v5 >= [(ADTrackingTransparency *)self latestVersionForPersonalizedAdsConsent]) | v4 ^ 1;
+    acknowledgedVersionForPersonalizedAds = [(ADTrackingTransparency *)self acknowledgedVersionForPersonalizedAds];
+    v6 = (acknowledgedVersionForPersonalizedAds >= [(ADTrackingTransparency *)self latestVersionForPersonalizedAdsConsent]) | v4 ^ 1;
   }
 
   else
@@ -848,8 +848,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v3 = [(ADTrackingTransparency *)self acknowledgedVersionForPersonalizedAds];
-  if (v3 >= [(ADTrackingTransparency *)self latestVersionForPersonalizedAdsConsent])
+  acknowledgedVersionForPersonalizedAds = [(ADTrackingTransparency *)self acknowledgedVersionForPersonalizedAds];
+  if (acknowledgedVersionForPersonalizedAds >= [(ADTrackingTransparency *)self latestVersionForPersonalizedAdsConsent])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -868,8 +868,8 @@ LABEL_17:
 
   v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.AdPlatforms"];
   v5 = [v4 BOOLForKey:@"personalizedAdsDefaulted"];
-  v6 = [(ADTrackingTransparency *)self acknowledgedVersionForPersonalizedAds];
-  if (v6 >= [(ADTrackingTransparency *)self latestVersionForPersonalizedAdsConsent]|| (([(ADTrackingTransparency *)self personalizedAds]| v5) & 1) != 0)
+  acknowledgedVersionForPersonalizedAds2 = [(ADTrackingTransparency *)self acknowledgedVersionForPersonalizedAds];
+  if (acknowledgedVersionForPersonalizedAds2 >= [(ADTrackingTransparency *)self latestVersionForPersonalizedAdsConsent]|| (([(ADTrackingTransparency *)self personalizedAds]| v5) & 1) != 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -965,18 +965,18 @@ uint64_t __45__ADTrackingTransparency_setPersonalizedAds___block_invoke_71(uint6
   return result;
 }
 
-- (id)appTrackingXPCConnection:(id)a3 withInvalidation:(id)a4
+- (id)appTrackingXPCConnection:(id)connection withInvalidation:(id)invalidation
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  invalidationCopy = invalidation;
   v7 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.ap.adprivacyd.opt-out" options:4096];
   if (v7)
   {
     v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2868090D0];
     [v7 setRemoteObjectInterface:v8];
 
-    [v7 setInvalidationHandler:v6];
-    [v7 setInterruptionHandler:v5];
+    [v7 setInvalidationHandler:invalidationCopy];
+    [v7 setInterruptionHandler:connectionCopy];
     [v7 resume];
     v9 = v7;
   }

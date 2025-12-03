@@ -1,100 +1,100 @@
 @interface PNPersonSuggester
-+ (BOOL)_isMePersonWithLocalIdentifier:(id)a3 inPhotoLibrary:(id)a4 error:(id *)a5;
++ (BOOL)_isMePersonWithLocalIdentifier:(id)identifier inPhotoLibrary:(id)library error:(id *)error;
 + (id)_logger;
-+ (id)_meContactIdentifierWithError:(id *)a3;
-+ (id)fetchAutonamingSuggestionForPerson:(id)a3 checkIsMe:(BOOL)a4 withError:(id *)a5;
-+ (void)_logIntelligencePlatformUserFeedback:(int64_t)a3 forSuggestion:(id)a4;
-+ (void)logUserFeedback:(int64_t)a3 forSuggestion:(id)a4;
++ (id)_meContactIdentifierWithError:(id *)error;
++ (id)fetchAutonamingSuggestionForPerson:(id)person checkIsMe:(BOOL)me withError:(id *)error;
++ (void)_logIntelligencePlatformUserFeedback:(int64_t)feedback forSuggestion:(id)suggestion;
++ (void)logUserFeedback:(int64_t)feedback forSuggestion:(id)suggestion;
 @end
 
 @implementation PNPersonSuggester
 
-+ (void)_logIntelligencePlatformUserFeedback:(int64_t)a3 forSuggestion:(id)a4
++ (void)_logIntelligencePlatformUserFeedback:(int64_t)feedback forSuggestion:(id)suggestion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a1 _logger];
-  v8 = [getGDViewServiceClass() clientService];
+  suggestionCopy = suggestion;
+  _logger = [self _logger];
+  clientService = [getGDViewServiceClass() clientService];
   v9 = getGDAutonamingViewPhotosAutonamingViewName();
   v16 = 0;
-  v10 = [v8 autonamingViewWithViewName:v9 error:&v16];
+  v10 = [clientService autonamingViewWithViewName:v9 error:&v16];
   v11 = v16;
 
   if (v10)
   {
-    v12 = [v6 personLocalIdentifier];
-    v13 = [v10 personForIdentifier:v12];
+    personLocalIdentifier = [suggestionCopy personLocalIdentifier];
+    v13 = [v10 personForIdentifier:personLocalIdentifier];
 
     if (v13)
     {
-      if (a3 == 1)
+      if (feedback == 1)
       {
-        v14 = [v6 personLocalIdentifier];
-        [v10 rejectWithIdentifier:v14 person:v13 confirmationType:1];
+        personLocalIdentifier2 = [suggestionCopy personLocalIdentifier];
+        [v10 rejectWithIdentifier:personLocalIdentifier2 person:v13 confirmationType:1];
       }
 
       else
       {
-        if (a3)
+        if (feedback)
         {
 LABEL_12:
 
           goto LABEL_13;
         }
 
-        v14 = [v6 personLocalIdentifier];
-        [v10 confirmWithIdentifier:v14 person:v13 confirmationType:1];
+        personLocalIdentifier2 = [suggestionCopy personLocalIdentifier];
+        [v10 confirmWithIdentifier:personLocalIdentifier2 person:v13 confirmationType:1];
       }
     }
 
     else
     {
-      v14 = v7;
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      personLocalIdentifier2 = _logger;
+      if (os_log_type_enabled(personLocalIdentifier2, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v6 personLocalIdentifier];
+        personLocalIdentifier3 = [suggestionCopy personLocalIdentifier];
         *buf = 138543362;
-        v18 = v15;
-        _os_log_error_impl(&dword_1C6F5C000, v14, OS_LOG_TYPE_ERROR, "Failed to get graph person view for logging user action on suggestion for person %{public}@", buf, 0xCu);
+        v18 = personLocalIdentifier3;
+        _os_log_error_impl(&dword_1C6F5C000, personLocalIdentifier2, OS_LOG_TYPE_ERROR, "Failed to get graph person view for logging user action on suggestion for person %{public}@", buf, 0xCu);
       }
     }
 
     goto LABEL_12;
   }
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(_logger, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v18 = v11;
-    _os_log_error_impl(&dword_1C6F5C000, v7, OS_LOG_TYPE_ERROR, "Failed to get autonaming view with error %@", buf, 0xCu);
+    _os_log_error_impl(&dword_1C6F5C000, _logger, OS_LOG_TYPE_ERROR, "Failed to get autonaming view with error %@", buf, 0xCu);
   }
 
 LABEL_13:
 }
 
-+ (void)logUserFeedback:(int64_t)a3 forSuggestion:(id)a4
++ (void)logUserFeedback:(int64_t)feedback forSuggestion:(id)suggestion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a1 _logger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  suggestionCopy = suggestion;
+  _logger = [self _logger];
+  if (os_log_type_enabled(_logger, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = a3;
+    feedbackCopy = feedback;
     v10 = 2114;
-    v11 = v6;
-    _os_log_impl(&dword_1C6F5C000, v7, OS_LOG_TYPE_DEFAULT, "Logging feedback %ld for suggestion %{public}@", &v8, 0x16u);
+    v11 = suggestionCopy;
+    _os_log_impl(&dword_1C6F5C000, _logger, OS_LOG_TYPE_DEFAULT, "Logging feedback %ld for suggestion %{public}@", &v8, 0x16u);
   }
 
-  if ([v6 suggestionSource] == 1)
+  if ([suggestionCopy suggestionSource] == 1)
   {
-    [a1 _logIntelligencePlatformUserFeedback:a3 forSuggestion:v6];
+    [self _logIntelligencePlatformUserFeedback:feedback forSuggestion:suggestionCopy];
   }
 }
 
-+ (id)_meContactIdentifierWithError:(id *)a3
++ (id)_meContactIdentifierWithError:(id *)error
 {
-  v4 = [MEMORY[0x1E69789A8] sharedContactStore];
+  mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedContactStore];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -111,14 +111,14 @@ LABEL_13:
   v8[1] = 3221225472;
   v8[2] = __51__PNPersonSuggester__meContactIdentifierWithError___block_invoke;
   v8[3] = &unk_1E82A1FF8;
-  v5 = v4;
+  v5 = mEMORY[0x1E69789A8];
   v9 = v5;
   v10 = &v18;
   v11 = &v12;
   [v5 requestAccessForEntityType:0 completionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   v6 = v19[5];
@@ -172,14 +172,14 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (BOOL)_isMePersonWithLocalIdentifier:(id)a3 inPhotoLibrary:(id)a4 error:(id *)a5
++ (BOOL)_isMePersonWithLocalIdentifier:(id)identifier inPhotoLibrary:(id)library error:(id *)error
 {
-  v7 = a3;
-  v8 = [a4 suggestedMePersonIdentifierWithError:a5];
+  identifierCopy = identifier;
+  v8 = [library suggestedMePersonIdentifierWithError:error];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 isEqualToString:v7];
+    v10 = [v8 isEqualToString:identifierCopy];
   }
 
   else
@@ -190,13 +190,13 @@ LABEL_9:
   return v10;
 }
 
-+ (id)fetchAutonamingSuggestionForPerson:(id)a3 checkIsMe:(BOOL)a4 withError:(id *)a5
++ (id)fetchAutonamingSuggestionForPerson:(id)person checkIsMe:(BOOL)me withError:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [a1 _logger];
-  v10 = os_signpost_id_generate(v9);
-  v11 = v9;
+  meCopy = me;
+  personCopy = person;
+  _logger = [self _logger];
+  v10 = os_signpost_id_generate(_logger);
+  v11 = _logger;
   v12 = v11;
   v13 = v10 - 1;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
@@ -208,15 +208,15 @@ LABEL_9:
   spid = v10;
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (!v6)
+  if (!meCopy)
   {
     goto LABEL_10;
   }
 
-  v15 = [v8 localIdentifier];
-  v16 = [v8 photoLibrary];
+  localIdentifier = [personCopy localIdentifier];
+  photoLibrary = [personCopy photoLibrary];
   v37 = 0;
-  v17 = [a1 _isMePersonWithLocalIdentifier:v15 inPhotoLibrary:v16 error:&v37];
+  v17 = [self _isMePersonWithLocalIdentifier:localIdentifier inPhotoLibrary:photoLibrary error:&v37];
   v18 = v37;
 
   if (v18)
@@ -227,21 +227,21 @@ LABEL_9:
   if (!v17)
   {
 LABEL_10:
-    v22 = [getGDViewServiceClass() clientService];
+    clientService = [getGDViewServiceClass() clientService];
     v23 = getGDAutonamingViewPhotosAutonamingViewName();
     v35 = 0;
-    v19 = [v22 autonamingViewWithViewName:v23 error:&v35];
+    v19 = [clientService autonamingViewWithViewName:v23 error:&v35];
     v21 = v35;
 
     if (v19)
     {
-      v24 = [v8 localIdentifier];
-      v25 = [v19 personForIdentifier:v24];
+      localIdentifier2 = [personCopy localIdentifier];
+      v25 = [v19 personForIdentifier:localIdentifier2];
 
       if (v25)
       {
-        v26 = [v8 localIdentifier];
-        v27 = [PNPersonSuggestion suggestionWithPersonLocalIdentifier:v26 personView:v25];
+        localIdentifier3 = [personCopy localIdentifier];
+        v27 = [PNPersonSuggestion suggestionWithPersonLocalIdentifier:localIdentifier3 personView:v25];
 
         goto LABEL_18;
       }
@@ -267,7 +267,7 @@ LABEL_10:
   }
 
   v36 = 0;
-  v19 = [a1 _meContactIdentifierWithError:&v36];
+  v19 = [self _meContactIdentifierWithError:&v36];
   v20 = v36;
   if (v20)
   {
@@ -284,25 +284,25 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v33 = [v8 localIdentifier];
-  v27 = [PNPersonSuggestion suggestionWithPersonLocalIdentifier:v33 meContactIdentifier:v19];
+  localIdentifier4 = [personCopy localIdentifier];
+  v27 = [PNPersonSuggestion suggestionWithPersonLocalIdentifier:localIdentifier4 meContactIdentifier:v19];
 
   v21 = 0;
 LABEL_18:
 
-  if (a5)
+  if (error)
   {
     if ([v14 count] == 1)
     {
-      v29 = [v14 firstObject];
+      firstObject = [v14 firstObject];
 LABEL_23:
-      *a5 = v29;
+      *error = firstObject;
       goto LABEL_24;
     }
 
     if ([v14 count] >= 2)
     {
-      v29 = [MEMORY[0x1E696ABC0] pn_genericErrorWithMultipleUnderlyingErrors:v14 localizedDescription:@"Multiple errors occured during autonaming suggestion"];
+      firstObject = [MEMORY[0x1E696ABC0] pn_genericErrorWithMultipleUnderlyingErrors:v14 localizedDescription:@"Multiple errors occured during autonaming suggestion"];
       goto LABEL_23;
     }
   }

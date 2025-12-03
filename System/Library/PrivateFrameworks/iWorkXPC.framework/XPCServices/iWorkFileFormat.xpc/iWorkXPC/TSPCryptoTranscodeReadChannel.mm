@@ -1,8 +1,8 @@
 @interface TSPCryptoTranscodeReadChannel
 - (TSPCryptoTranscodeReadChannel)init;
-- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)a3 decryptionInfo:(id)a4 encryptionInfo:(id)a5;
+- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)channel decryptionInfo:(id)info encryptionInfo:(id)encryptionInfo;
 - (void)close;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation TSPCryptoTranscodeReadChannel
@@ -41,34 +41,34 @@
   objc_exception_throw(v7);
 }
 
-- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)a3 decryptionInfo:(id)a4 encryptionInfo:(id)a5
+- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)channel decryptionInfo:(id)info encryptionInfo:(id)encryptionInfo
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  channelCopy = channel;
+  infoCopy = info;
+  encryptionInfoCopy = encryptionInfo;
   v19.receiver = self;
   v19.super_class = TSPCryptoTranscodeReadChannel;
   v11 = [(TSPCryptoTranscodeReadChannel *)&v19 init];
   if (v11)
   {
-    if (v9)
+    if (infoCopy)
     {
       v12 = [TSPCryptoReadChannel alloc];
-      v13 = [v9 cryptoKey];
-      v14 = [v9 blockInfos];
-      v15 = [(TSPCryptoReadChannel *)v12 initWithReadChannel:v8 decryptionKey:v13 blockInfos:v14];
+      cryptoKey = [infoCopy cryptoKey];
+      blockInfos = [infoCopy blockInfos];
+      v15 = [(TSPCryptoReadChannel *)v12 initWithReadChannel:channelCopy decryptionKey:cryptoKey blockInfos:blockInfos];
       readChannel = v11->_readChannel;
       v11->_readChannel = v15;
     }
 
     else
     {
-      v17 = v8;
-      v13 = v11->_readChannel;
+      v17 = channelCopy;
+      cryptoKey = v11->_readChannel;
       v11->_readChannel = v17;
     }
 
-    objc_storeStrong(&v11->_encryptionInfo, a5);
+    objc_storeStrong(&v11->_encryptionInfo, encryptionInfo);
     if (!v11->_readChannel)
     {
 
@@ -79,13 +79,13 @@
   return v11;
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_encryptionInfo)
   {
-    v6 = [[TSPIOHandlerWriteChannelAdapter alloc] initWithHandler:v4];
+    v6 = [[TSPIOHandlerWriteChannelAdapter alloc] initWithHandler:handlerCopy];
     v7 = [[TSPCryptoComponentWriteChannel alloc] initWithWriteChannel:v6 encryptionInfo:self->_encryptionInfo];
     v18[0] = 0;
     v18[1] = v18;
@@ -113,7 +113,7 @@
     v12[1] = 3221225472;
     v12[2] = sub_10002B4C8;
     v12[3] = &unk_1001C7410;
-    v13 = v4;
+    v13 = handlerCopy;
     [(TSUStreamReadChannel *)v11 readWithHandler:v12];
     v9 = v13;
   }

@@ -1,20 +1,20 @@
 @interface BKPageThumbnailView
-- (BKPageThumbnailView)initWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BKPageThumbnailView)initWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setPageNumber:(int64_t)a3;
-- (void)setPageTitle:(id)a3;
-- (void)setShowsPageNumber:(BOOL)a3;
+- (void)setImage:(id)image;
+- (void)setPageNumber:(int64_t)number;
+- (void)setPageTitle:(id)title;
+- (void)setShowsPageNumber:(BOOL)number;
 @end
 
 @implementation BKPageThumbnailView
 
-- (BKPageThumbnailView)initWithFrame:(CGRect)a3
+- (BKPageThumbnailView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = BKPageThumbnailView;
-  v3 = [(BKPageThumbnailView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKPageThumbnailView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -64,16 +64,16 @@
   [UIView performWithoutAnimation:v3];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(BKPageThumbnailView *)self image];
+  height = fits.height;
+  width = fits.width;
+  image = [(BKPageThumbnailView *)self image];
 
-  if (v6)
+  if (image)
   {
-    v7 = [(BKPageThumbnailView *)self image];
-    [v7 size];
+    image2 = [(BKPageThumbnailView *)self image];
+    [image2 size];
     CGSizeScaledToFitInSize();
     width = v8;
     height = v9;
@@ -86,45 +86,45 @@
   return result;
 }
 
-- (void)setShowsPageNumber:(BOOL)a3
+- (void)setShowsPageNumber:(BOOL)number
 {
-  if (self->_showsPageNumber != a3)
+  if (self->_showsPageNumber != number)
   {
-    self->_showsPageNumber = a3;
+    self->_showsPageNumber = number;
     [(BKPageThumbnailView *)self setNeedsLayout];
   }
 }
 
-- (void)setPageNumber:(int64_t)a3
+- (void)setPageNumber:(int64_t)number
 {
-  if (self->_pageNumber != a3)
+  if (self->_pageNumber != number)
   {
     pageTitle = self->_pageTitle;
     self->_pageTitle = 0;
 
-    self->_pageNumber = a3;
+    self->_pageNumber = number;
 
     [(BKPageThumbnailView *)self setNeedsLayout];
   }
 }
 
-- (void)setPageTitle:(id)a3
+- (void)setPageTitle:(id)title
 {
-  v5 = a3;
-  if (self->_pageTitle != v5)
+  titleCopy = title;
+  if (self->_pageTitle != titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pageTitle, a3);
+    v6 = titleCopy;
+    objc_storeStrong(&self->_pageTitle, title);
     [(BKPageThumbnailView *)self setNeedsLayout];
-    v5 = v6;
+    titleCopy = v6;
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(BKPageThumbnailView *)self imageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  imageView = [(BKPageThumbnailView *)self imageView];
+  [imageView setImage:imageCopy];
 
   [(BKPageThumbnailView *)self setNeedsLayout];
 }

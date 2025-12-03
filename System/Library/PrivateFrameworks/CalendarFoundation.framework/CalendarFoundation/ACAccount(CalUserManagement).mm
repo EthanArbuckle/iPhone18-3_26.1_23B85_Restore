@@ -6,10 +6,10 @@
 
 - (id)cal_personaIdentifier
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v2 = v1;
+    v2 = selfCopy;
     v3 = *MEMORY[0x1E69597A0];
     while (1)
     {
@@ -22,10 +22,10 @@
         break;
       }
 
-      v6 = [v2 parentAccount];
+      parentAccount = [v2 parentAccount];
 
-      v2 = v6;
-      if (!v6)
+      v2 = parentAccount;
+      if (!parentAccount)
       {
         goto LABEL_8;
       }

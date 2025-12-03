@@ -1,85 +1,85 @@
 @interface SBDeckSwitcherModifier
-- (BOOL)_isIndexVisible:(unint64_t)a3;
-- (BOOL)_priorIndex:(unint64_t)a3 fullyObscuresCardForIndex:(unint64_t)a4;
-- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)a3;
-- (CGPoint)_adjustedOffsetForIndex:(int64_t)a3 offset:(CGPoint)a4 start:(CGPoint)a5 originalLocationInView:(CGPoint)a6 locationInView:(CGPoint)a7;
-- (CGPoint)_contentOffsetForScrollProgress:(double)a3;
-- (CGPoint)adjustedOffsetForOffset:(CGPoint)a3 translation:(CGPoint)a4 startPoint:(CGPoint)a5 locationInView:(CGPoint)a6 horizontalVelocity:(double *)a7 verticalVelocity:(double *)a8;
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (CGPoint)restingOffsetForScrollOffset:(CGPoint)a3 velocity:(CGPoint)a4;
-- (CGRect)_frameForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 scrollProgress:(double)a5 ignoringScrollOffset:(BOOL)a6;
-- (CGRect)_scaleTransformedFrameForIndex:(unint64_t)a3 withUntransformedFrame:(CGRect)a4 scrollProgress:(double)a5;
-- (CGRect)clippingFrameForIndex:(unint64_t)a3 withBounds:(CGRect)a4;
-- (CGRect)clippingFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5 withBounds:(CGRect)a6;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForShelf:(id)a3;
+- (BOOL)_isIndexVisible:(unint64_t)visible;
+- (BOOL)_priorIndex:(unint64_t)index fullyObscuresCardForIndex:(unint64_t)forIndex;
+- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)layout;
+- (CGPoint)_adjustedOffsetForIndex:(int64_t)index offset:(CGPoint)offset start:(CGPoint)start originalLocationInView:(CGPoint)view locationInView:(CGPoint)inView;
+- (CGPoint)_contentOffsetForScrollProgress:(double)progress;
+- (CGPoint)adjustedOffsetForOffset:(CGPoint)offset translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)view horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (CGPoint)restingOffsetForScrollOffset:(CGPoint)offset velocity:(CGPoint)velocity;
+- (CGRect)_frameForIndex:(unint64_t)index displayItemsCount:(unint64_t)count scrollProgress:(double)progress ignoringScrollOffset:(BOOL)offset;
+- (CGRect)_scaleTransformedFrameForIndex:(unint64_t)index withUntransformedFrame:(CGRect)frame scrollProgress:(double)progress;
+- (CGRect)clippingFrameForIndex:(unint64_t)index withBounds:(CGRect)bounds;
+- (CGRect)clippingFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index withBounds:(CGRect)bounds;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForShelf:(id)shelf;
 - (CGRect)shelfBackgroundBlurFrame;
 - (CGSize)_contentSize;
 - (SBDeckSwitcherModifier)init;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)a3;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)offset;
 - (double)_cardCornerRadiusInSwitcher;
-- (double)_counteractScrollingForOffset:(double)a3 scrollProgress:(double)a4;
-- (double)_depthForFrameOrigin:(double)a3;
+- (double)_counteractScrollingForOffset:(double)offset scrollProgress:(double)progress;
+- (double)_depthForFrameOrigin:(double)origin;
 - (double)_preferredVisibleMarginForTopPage;
-- (double)_restingScrollProgressForProgress:(double)a3 velocity:(CGPoint)a4;
-- (double)_scaleInSwitcherViewForIndex:(unint64_t)a3 scrollProgress:(double)a4;
-- (double)_scaleTransformedXOrigin:(double)a3 scrollProgress:(double)a4;
+- (double)_restingScrollProgressForProgress:(double)progress velocity:(CGPoint)velocity;
+- (double)_scaleInSwitcherViewForIndex:(unint64_t)index scrollProgress:(double)progress;
+- (double)_scaleTransformedXOrigin:(double)origin scrollProgress:(double)progress;
 - (double)_scrollMin;
 - (double)_scrollProgress;
-- (double)_scrollProgressForContentOffset:(CGPoint)a3;
-- (double)_scrollProgressForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 depth:(double)a5;
+- (double)_scrollProgressForContentOffset:(CGPoint)offset;
+- (double)_scrollProgressForIndex:(unint64_t)index displayItemsCount:(unint64_t)count depth:(double)depth;
 - (double)_switcherCardScale;
 - (double)_unscaledCardCornerRadius;
-- (double)depthForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 scrollProgress:(double)a5;
+- (double)depthForIndex:(unint64_t)index displayItemsCount:(unint64_t)count scrollProgress:(double)progress;
 - (double)desiredXOriginForQuantizedTopPage;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)a3;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)search;
 - (double)homeScreenAlpha;
 - (double)homeScreenBackdropBlurProgress;
 - (double)homeScreenDimmingAlpha;
 - (double)homeScreenScale;
-- (double)leadingOffsetForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 scrollProgress:(double)a5;
-- (double)lighteningAlphaForIndex:(unint64_t)a3;
-- (double)minimumTranslationToKillIndex:(unint64_t)a3;
-- (double)opacityForIndex:(unint64_t)a3 scrollProgress:(double)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)scrollProgressForIndex:(unint64_t)a3;
-- (double)scrollProgressForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 frameOrigin:(double)a5;
+- (double)leadingOffsetForIndex:(unint64_t)index displayItemsCount:(unint64_t)count scrollProgress:(double)progress;
+- (double)lighteningAlphaForIndex:(unint64_t)index;
+- (double)minimumTranslationToKillIndex:(unint64_t)index;
+- (double)opacityForIndex:(unint64_t)index scrollProgress:(double)progress;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)scrollProgressForIndex:(unint64_t)index;
+- (double)scrollProgressForIndex:(unint64_t)index displayItemsCount:(unint64_t)count frameOrigin:(double)origin;
 - (double)scrollRange;
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (double)titleOpacityForIndex:(unint64_t)a3;
-- (double)titleOpacityForIndex:(unint64_t)a3 scrollProgress:(double)a4;
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3;
-- (double)wallpaperOverlayAlphaForIndex:(unint64_t)a3;
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (double)titleOpacityForIndex:(unint64_t)index;
+- (double)titleOpacityForIndex:(unint64_t)index scrollProgress:(double)progress;
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index;
+- (double)wallpaperOverlayAlphaForIndex:(unint64_t)index;
 - (double)wallpaperScale;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToCacheSnapshots;
 - (id)appLayoutsToResignActive;
 - (id)debugDescription;
-- (id)handleRemovalEvent:(id)a3;
-- (id)handleScrollEvent:(id)a3;
-- (id)handleSwitcherSettingsChangedEvent:(id)a3;
-- (id)handleTapAppLayoutEvent:(id)a3;
-- (id)handleTapOutsideToDismissEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleRemovalEvent:(id)event;
+- (id)handleScrollEvent:(id)event;
+- (id)handleSwitcherSettingsChangedEvent:(id)event;
+- (id)handleTapAppLayoutEvent:(id)event;
+- (id)handleTapOutsideToDismissEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)scrollViewAttributes;
 - (id)visibleAppLayouts;
-- (int64_t)_topIndexForLocationInContainerCoordinateSpace:(CGPoint)a3;
-- (unint64_t)_directionForRemovingIndex:(unint64_t)a3 centeredIndex:(unint64_t)a4;
-- (unint64_t)_indexForContentOffset:(CGPoint)a3;
-- (unint64_t)_indexForScrollProgress:(double)a3 displayItemsCount:(unint64_t)a4 depth:(double)a5;
+- (int64_t)_topIndexForLocationInContainerCoordinateSpace:(CGPoint)space;
+- (unint64_t)_directionForRemovingIndex:(unint64_t)index centeredIndex:(unint64_t)centeredIndex;
+- (unint64_t)_indexForContentOffset:(CGPoint)offset;
+- (unint64_t)_indexForScrollProgress:(double)progress displayItemsCount:(unint64_t)count depth:(double)depth;
 - (unint64_t)_indexOfCurrentCenteredCard;
-- (unint64_t)_newIndexOfItemAtIndex:(unint64_t)a3 afterRemovingItemAtIndex:(unint64_t)a4;
-- (unint64_t)indexForScrollProgress:(double)a3 displayItemsCount:(unint64_t)a4 frameOrigin:(double)a5;
-- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)a3;
-- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)a3;
+- (unint64_t)_newIndexOfItemAtIndex:(unint64_t)index afterRemovingItemAtIndex:(unint64_t)atIndex;
+- (unint64_t)indexForScrollProgress:(double)progress displayItemsCount:(unint64_t)count frameOrigin:(double)origin;
+- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)index;
+- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)index;
 - (unint64_t)numberOfItems;
 - (unint64_t)transactionCompletionOptions;
 - (void)_applyPrototypeSettings;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBDeckSwitcherModifier
@@ -100,9 +100,9 @@
     v7 = v6 / v4;
   }
 
-  v8 = [(SBDeckSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBDeckSwitcherModifier *)self isRTLEnabled];
   result = 1.0 - v7;
-  if (v8)
+  if (isRTLEnabled)
   {
     return v7;
   }
@@ -131,8 +131,8 @@
 
 - (unint64_t)numberOfItems
 {
-  v2 = [(SBDeckSwitcherModifier *)self appLayouts];
-  v3 = [v2 count];
+  appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+  v3 = [appLayouts count];
 
   return v3;
 }
@@ -147,8 +147,8 @@
 
 - (double)_switcherCardScale
 {
-  v2 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  [v2 deckSwitcherPageScale];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  [switcherSettings deckSwitcherPageScale];
   v4 = v3;
 
   return v4;
@@ -194,9 +194,9 @@
   v5 = (Width - Width * v4) * 0.5;
   [(SBDeckSwitcherModifier *)self _preferredVisibleMarginForTopPage];
   v7 = v6;
-  v8 = [(SBDeckSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBDeckSwitcherModifier *)self isRTLEnabled];
   result = Width - v5 - v7;
-  if (v8)
+  if (isRTLEnabled)
   {
     return v7 + v5;
   }
@@ -214,25 +214,25 @@
 
 - (void)_applyPrototypeSettings
 {
-  v11 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  [v11 aExpLayoutCoeff];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  [switcherSettings aExpLayoutCoeff];
   kExponentialLayoutTranslation = v3;
-  [v11 bExpLayoutCoeff];
+  [switcherSettings bExpLayoutCoeff];
   kExponentialLayoutCurveExponent = v4;
-  [v11 depthPadding];
+  [switcherSettings depthPadding];
   kDepthPadding = v5;
-  [v11 deckSwitcherDecelerationRate];
+  [switcherSettings deckSwitcherDecelerationRate];
   kDecelerationFactor = v6;
-  if ([v11 useTitleOpacityPrototypeSettings])
+  if ([switcherSettings useTitleOpacityPrototypeSettings])
   {
     self->_useTitleOpacityPrototypeSettings = 1;
-    [v11 titleOpacityACoeff];
+    [switcherSettings titleOpacityACoeff];
     kATitleOpacityCoefficient = v7;
-    [v11 titleOpacityBCoeff];
+    [switcherSettings titleOpacityBCoeff];
     kBTitleOpacityCoefficient = v8;
-    [v11 titleOpacityCCoeff];
+    [switcherSettings titleOpacityCCoeff];
     kCTitleOpacityCoefficient = v9;
-    [v11 titleOpacityDCoeff];
+    [switcherSettings titleOpacityDCoeff];
     kDTitleOpacityCoefficient = v10;
   }
 
@@ -247,12 +247,12 @@
   [(SBDeckSwitcherModifier *)self scrollViewContentOffset];
   v3 = [(SBDeckSwitcherModifier *)self _visibleAppLayoutRangeForContentOffset:?];
   v5 = v4;
-  v6 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  v7 = [v6 numberOfSnapshotsToCacheInSwitcher];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  numberOfSnapshotsToCacheInSwitcher = [switcherSettings numberOfSnapshotsToCacheInSwitcher];
 
   isScrollingForward = self->_isScrollingForward;
 
-  return [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v3 numberOfSnapshotsToCache:v5 biasForward:v7, isScrollingForward];
+  return [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v3 numberOfSnapshotsToCache:v5 biasForward:numberOfSnapshotsToCacheInSwitcher, isScrollingForward];
 }
 
 - (id)visibleAppLayouts
@@ -261,8 +261,8 @@
   v3 = [(SBDeckSwitcherModifier *)self _visibleAppLayoutRangeForContentOffset:?];
   v5 = v4;
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(SBDeckSwitcherModifier *)self appLayouts];
-  v8 = [v7 subarrayWithRange:{v3, v5}];
+  appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts subarrayWithRange:{v3, v5}];
   v9 = [v6 setWithArray:v8];
 
   return v9;
@@ -270,12 +270,12 @@
 
 - (unint64_t)transactionCompletionOptions
 {
-  v3 = [(SBDeckSwitcherModifier *)self appLayouts];
-  if ([v3 count])
+  appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+  if ([appLayouts count])
   {
-    v4 = [(SBDeckSwitcherModifier *)self isReduceMotionEnabled];
+    isReduceMotionEnabled = [(SBDeckSwitcherModifier *)self isReduceMotionEnabled];
 
-    if (v4)
+    if (isReduceMotionEnabled)
     {
       return 6;
     }
@@ -320,9 +320,9 @@
 
 - (double)wallpaperScale
 {
-  v2 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  [v3 wallpaperScaleForMode:2];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings wallpaperScaleForMode:2];
   v5 = v4;
 
   return v5;
@@ -330,9 +330,9 @@
 
 - (double)homeScreenScale
 {
-  v2 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  [v3 homeScreenScaleForMode:2];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings homeScreenScaleForMode:2];
   v5 = v4;
 
   return v5;
@@ -350,9 +350,9 @@
     v3 = 2;
   }
 
-  v4 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  v5 = [v4 animationSettings];
-  [v5 homeScreenAlphaForMode:v3];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings homeScreenAlphaForMode:v3];
   v7 = v6;
 
   return v7;
@@ -360,9 +360,9 @@
 
 - (double)homeScreenDimmingAlpha
 {
-  v2 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  [v3 homeScreenDimmingAlphaForMode:2];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings homeScreenDimmingAlphaForMode:2];
   v5 = v4;
 
   return v5;
@@ -370,9 +370,9 @@
 
 - (double)homeScreenBackdropBlurProgress
 {
-  v2 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  [v3 homeScreenBlurProgressForMode:2];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings homeScreenBlurProgressForMode:2];
   v5 = v4;
 
   return v5;
@@ -382,52 +382,52 @@
 {
   v2 = MEMORY[0x277CBEAC0];
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(SBDeckSwitcherModifier *)self appLayouts];
-  v5 = [v3 setWithArray:v4];
+  appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+  v5 = [v3 setWithArray:appLayouts];
   v6 = [v2 dictionaryWithObject:v5 forKey:&unk_283372110];
 
   return v6;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v5.receiver = self;
   v5.super_class = SBDeckSwitcherModifier;
   [(SBChainableModifier *)&v5 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     [(SBDeckSwitcherModifier *)self _applyPrototypeSettings];
   }
 }
 
-- (id)handleSwitcherSettingsChangedEvent:(id)a3
+- (id)handleSwitcherSettingsChangedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(SBDeckSwitcherModifier *)self _applyPrototypeSettings];
   v7.receiver = self;
   v7.super_class = SBDeckSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleSwitcherSettingsChangedEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleSwitcherSettingsChangedEvent:eventCopy];
 
   return v5;
 }
 
-- (id)handleRemovalEvent:(id)a3
+- (id)handleRemovalEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = SBDeckSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v16 handleRemovalEvent:v4];
-  if ([v4 phase] == 1)
+  v5 = [(SBSwitcherModifier *)&v16 handleRemovalEvent:eventCopy];
+  if ([eventCopy phase] == 1)
   {
     ++self->_ongoingAppLayoutRemovals;
     goto LABEL_13;
   }
 
-  if ([v4 phase] == 2)
+  if ([eventCopy phase] == 2)
   {
     --self->_ongoingAppLayoutRemovals;
-    v6 = [(SBDeckSwitcherModifier *)self appLayouts];
-    if ([v6 count])
+    appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+    if ([appLayouts count])
     {
     }
 
@@ -451,7 +451,7 @@ LABEL_12:
       }
     }
 
-    v8 = [v4 appLayout];
+    appLayout = [eventCopy appLayout];
     if (!BSEqualObjects())
     {
 
@@ -478,30 +478,30 @@ LABEL_13:
   return v5;
 }
 
-- (id)handleTapAppLayoutEvent:(id)a3
+- (id)handleTapAppLayoutEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:v4];
+  eventCopy = event;
+  v5 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:eventCopy];
   [v5 setRetainsSiri:{-[SBDeckSwitcherModifier isSystemAssistantExperiencePersistentSiriEnabled](self, "isSystemAssistantExperiencePersistentSiriEnabled")}];
   v6 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v5 gestureInitiated:0];
   v10.receiver = self;
   v10.super_class = SBDeckSwitcherModifier;
-  v7 = [(SBSwitcherModifier *)&v10 handleTapAppLayoutEvent:v4];
+  v7 = [(SBSwitcherModifier *)&v10 handleTapAppLayoutEvent:eventCopy];
 
   v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:v7];
 
   return v8;
 }
 
-- (id)handleTapOutsideToDismissEvent:(id)a3
+- (id)handleTapOutsideToDismissEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBDeckSwitcherModifier;
-  v3 = a3;
-  v4 = [(SBSwitcherModifier *)&v11 handleTapOutsideToDismissEvent:v3];
-  v5 = [v3 isHandled];
+  eventCopy = event;
+  v4 = [(SBSwitcherModifier *)&v11 handleTapOutsideToDismissEvent:eventCopy];
+  isHandled = [eventCopy isHandled];
 
-  if ((v5 & 1) == 0)
+  if ((isHandled & 1) == 0)
   {
     v6 = [SBPerformTransitionSwitcherEventResponse alloc];
     v7 = +[SBSwitcherTransitionRequest requestForActivatingHomeScreen];
@@ -515,10 +515,10 @@ LABEL_13:
   return v4;
 }
 
-- (id)handleScrollEvent:(id)a3
+- (id)handleScrollEvent:(id)event
 {
-  v4 = a3;
-  [v4 contentOffset];
+  eventCopy = event;
+  [eventCopy contentOffset];
   x = self->_previousContentOffset.x;
   if (x != 1.79769313e308 || self->_previousContentOffset.y != 1.79769313e308)
   {
@@ -529,42 +529,42 @@ LABEL_13:
   self->_previousContentOffset.y = v6;
   v11.receiver = self;
   v11.super_class = SBDeckSwitcherModifier;
-  v9 = [(SBSwitcherModifier *)&v11 handleScrollEvent:v4];
+  v9 = [(SBSwitcherModifier *)&v11 handleScrollEvent:eventCopy];
 
   return v9;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 toEnvironmentMode] == 2 && objc_msgSend(v4, "fromEnvironmentMode") != 2)
+  eventCopy = event;
+  if ([eventCopy toEnvironmentMode] == 2 && objc_msgSend(eventCopy, "fromEnvironmentMode") != 2)
   {
     self->_previousContentOffset = SBInvalidPoint;
     self->_isScrollingForward = 1;
   }
 
-  v5 = [v4 toAppLayout];
+  toAppLayout = [eventCopy toAppLayout];
   currentAppLayout = self->_currentAppLayout;
-  self->_currentAppLayout = v5;
+  self->_currentAppLayout = toAppLayout;
 
   v9.receiver = self;
   v9.super_class = SBDeckSwitcherModifier;
-  v7 = [(SBSwitcherModifier *)&v9 handleTransitionEvent:v4];
+  v7 = [(SBSwitcherModifier *)&v9 handleTransitionEvent:eventCopy];
 
   return v7;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   [(SBDeckSwitcherModifier *)self _scrollProgress];
   v7 = v6;
-  [(SBDeckSwitcherModifier *)self _frameForIndex:a3 displayItemsCount:[(SBDeckSwitcherModifier *)self numberOfItems] scrollProgress:1 ignoringScrollOffset:v6];
+  [(SBDeckSwitcherModifier *)self _frameForIndex:index displayItemsCount:[(SBDeckSwitcherModifier *)self numberOfItems] scrollProgress:1 ignoringScrollOffset:v6];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  [v16 switcherCenterYOffsetPercentOfScreenHeight];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  [switcherSettings switcherCenterYOffsetPercentOfScreenHeight];
 
   [(SBDeckSwitcherModifier *)self containerViewBounds];
   [(SBDeckSwitcherModifier *)self screenScale];
@@ -581,7 +581,7 @@ LABEL_13:
   height = v38.size.height;
   if ((UIRectIsDiscrete() & 1) == 0)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v39.origin.x = x;
     v39.origin.y = y;
     v39.size.width = width;
@@ -589,11 +589,11 @@ LABEL_13:
     v31 = NSStringFromCGRect(v39);
     [(SBDeckSwitcherModifier *)self containerViewBounds];
     v32 = NSStringFromCGRect(v40);
-    v33 = [(SBDeckSwitcherModifier *)self numberOfItems];
+    numberOfItems = [(SBDeckSwitcherModifier *)self numberOfItems];
     [(SBDeckSwitcherModifier *)self scrollViewContentOffset];
     v35 = v34;
     [(SBDeckSwitcherModifier *)self scrollRange];
-    [v30 handleFailureInMethod:a2 object:self file:@"SBDeckSwitcherModifier.m" lineNumber:230 description:{@"Deck switcher computed an invalid frame:%@ based on containerFrame:%@ scrollProgress:%.2f index:%lu numItems:%lu scrollViewXoffset: %.2f scrollRange :%.2f", v31, v32, *&v7, a3, v33, v35, v36}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBDeckSwitcherModifier.m" lineNumber:230 description:{@"Deck switcher computed an invalid frame:%@ based on containerFrame:%@ scrollProgress:%.2f index:%lu numItems:%lu scrollViewXoffset: %.2f scrollRange :%.2f", v31, v32, *&v7, index, numberOfItems, v35, v36}];
   }
 
   [(SBDeckSwitcherModifier *)self screenScale];
@@ -611,24 +611,24 @@ LABEL_13:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   [(SBDeckSwitcherModifier *)self _scrollProgress];
-  [(SBDeckSwitcherModifier *)self _scaleForTransformForIndex:a3 scrollProgress:?];
+  [(SBDeckSwitcherModifier *)self _scaleForTransformForIndex:index scrollProgress:?];
   v6 = v5;
   [(SBDeckSwitcherModifier *)self _switcherCardScale];
   return v6 * v7;
 }
 
-- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)a3
+- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)layout
 {
-  v3 = [(SBDeckSwitcherModifier *)self homeGrabberSettings];
-  v4 = [v3 isEnabled];
+  homeGrabberSettings = [(SBDeckSwitcherModifier *)self homeGrabberSettings];
+  isEnabled = [homeGrabberSettings isEnabled];
 
-  return v4;
+  return isEnabled;
 }
 
-- (CGRect)frameForShelf:(id)a3
+- (CGRect)frameForShelf:(id)shelf
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -641,14 +641,14 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)_isIndexVisible:(unint64_t)a3
+- (BOOL)_isIndexVisible:(unint64_t)visible
 {
-  v5 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  [v5 switcherCardShadowRadius];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  [switcherSettings switcherCardShadowRadius];
   v7 = v6;
-  [v5 deckSwitcherPageScale];
+  [switcherSettings deckSwitcherPageScale];
   v9 = v7 / v8;
-  [(SBDeckSwitcherModifier *)self scaleForIndex:a3];
+  [(SBDeckSwitcherModifier *)self scaleForIndex:visible];
   v11 = v9 * v10;
   [(SBDeckSwitcherModifier *)self containerViewBounds];
   v26 = CGRectInset(v25, v11 * -2.8, v11 * -2.8);
@@ -658,8 +658,8 @@ LABEL_13:
   height = v26.size.height;
   [(SBDeckSwitcherModifier *)self _scrollProgress];
   v17 = v16;
-  [(SBDeckSwitcherModifier *)self frameForIndex:a3];
-  [SBDeckSwitcherModifier _scaleTransformedFrameForIndex:"_scaleTransformedFrameForIndex:withUntransformedFrame:scrollProgress:" withUntransformedFrame:a3 scrollProgress:?];
+  [(SBDeckSwitcherModifier *)self frameForIndex:visible];
+  [SBDeckSwitcherModifier _scaleTransformedFrameForIndex:"_scaleTransformedFrameForIndex:withUntransformedFrame:scrollProgress:" withUntransformedFrame:visible scrollProgress:?];
   v28.origin.x = v18;
   v28.origin.y = v19;
   v28.size.width = v20;
@@ -670,7 +670,7 @@ LABEL_13:
   v27.size.height = height;
   if (CGRectIntersectsRect(v27, v28))
   {
-    [(SBDeckSwitcherModifier *)self opacityForIndex:a3 scrollProgress:v17];
+    [(SBDeckSwitcherModifier *)self opacityForIndex:visible scrollProgress:v17];
     v23 = v22 > 0.01;
   }
 
@@ -682,23 +682,23 @@ LABEL_13:
   return v23;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v3 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   v5 = objc_alloc_init(SBMutableSwitcherAnimationAttributes);
   [(SBSwitcherAnimationAttributes *)v5 setUpdateMode:1];
-  v6 = [v4 layoutSettings];
-  [(SBSwitcherAnimationAttributes *)v5 setLayoutSettings:v6];
+  layoutSettings = [animationSettings layoutSettings];
+  [(SBSwitcherAnimationAttributes *)v5 setLayoutSettings:layoutSettings];
 
-  v7 = [v4 opacitySettings];
-  [(SBSwitcherAnimationAttributes *)v5 setOpacitySettings:v7];
+  opacitySettings = [animationSettings opacitySettings];
+  [(SBSwitcherAnimationAttributes *)v5 setOpacitySettings:opacitySettings];
 
   return v5;
 }
 
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index
 {
   [(SBDeckSwitcherModifier *)self frameForIndex:?];
   x = v23.origin.x;
@@ -706,10 +706,10 @@ LABEL_13:
   width = v23.size.width;
   height = v23.size.height;
   v9 = CGRectGetWidth(v23);
-  if ([(SBDeckSwitcherModifier *)self clipsToUnobscuredMarginAtIndex:a3])
+  if ([(SBDeckSwitcherModifier *)self clipsToUnobscuredMarginAtIndex:index])
   {
     v10 = 1;
-    while (![(SBDeckSwitcherModifier *)self _priorIndex:v10 fullyObscuresCardForIndex:a3])
+    while (![(SBDeckSwitcherModifier *)self _priorIndex:v10 fullyObscuresCardForIndex:index])
     {
       if (++v10 == 5)
       {
@@ -719,14 +719,14 @@ LABEL_13:
 
     [(SBDeckSwitcherModifier *)self _cardCornerRadiusInSwitcher];
     v12 = v11;
-    [(SBDeckSwitcherModifier *)self scaleForIndex:a3];
+    [(SBDeckSwitcherModifier *)self scaleForIndex:index];
     v14 = v13;
-    [(SBDeckSwitcherModifier *)self frameForIndex:a3 - v10];
+    [(SBDeckSwitcherModifier *)self frameForIndex:index - v10];
     v16 = v15;
     v18 = v17;
-    v19 = [(SBDeckSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled = [(SBDeckSwitcherModifier *)self isRTLEnabled];
     v20 = x + width - (v16 + v18);
-    if (!v19)
+    if (!isRTLEnabled)
     {
       v20 = v16 - x;
     }
@@ -747,19 +747,19 @@ LABEL_9:
   return v9;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  [(SBDeckSwitcherModifier *)self _scrollProgress:a3];
+  [(SBDeckSwitcherModifier *)self _scrollProgress:role];
 
-  [(SBDeckSwitcherModifier *)self opacityForIndex:a5 scrollProgress:?];
+  [(SBDeckSwitcherModifier *)self opacityForIndex:index scrollProgress:?];
   return result;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v5 = a4;
-  v6 = [(SBDeckSwitcherModifier *)self appLayouts];
-  v7 = [v6 indexOfObject:v5];
+  layoutCopy = layout;
+  appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+  v7 = [appLayouts indexOfObject:layoutCopy];
 
   if (!v7)
   {
@@ -772,43 +772,43 @@ LABEL_9:
   return result;
 }
 
-- (double)wallpaperOverlayAlphaForIndex:(unint64_t)a3
+- (double)wallpaperOverlayAlphaForIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!index)
   {
     return 0.0;
   }
 
   [(SBDeckSwitcherModifier *)self _scrollProgress];
 
-  [SBDeckSwitcherModifier _valueAlongDepthCurveForIndex:"_valueAlongDepthCurveForIndex:scrollProgress:aCoefficient:bCoefficient:" scrollProgress:a3 aCoefficient:? bCoefficient:?];
+  [SBDeckSwitcherModifier _valueAlongDepthCurveForIndex:"_valueAlongDepthCurveForIndex:scrollProgress:aCoefficient:bCoefficient:" scrollProgress:index aCoefficient:? bCoefficient:?];
   return result;
 }
 
-- (double)lighteningAlphaForIndex:(unint64_t)a3
+- (double)lighteningAlphaForIndex:(unint64_t)index
 {
-  v5 = [(SBDeckSwitcherModifier *)self numberOfItems];
+  numberOfItems = [(SBDeckSwitcherModifier *)self numberOfItems];
   [(SBDeckSwitcherModifier *)self _scrollProgress];
-  [(SBDeckSwitcherModifier *)self depthForIndex:a3 displayItemsCount:v5 scrollProgress:?];
+  [(SBDeckSwitcherModifier *)self depthForIndex:index displayItemsCount:numberOfItems scrollProgress:?];
   return fmin(fmax((v6 + 0.144) * 0.75, 0.0), 1.0);
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
   [(SBDeckSwitcherModifier *)self _scrollProgress];
-  [SBDeckSwitcherModifier _valueAlongDepthCurveForIndex:"_valueAlongDepthCurveForIndex:scrollProgress:aCoefficient:bCoefficient:" scrollProgress:a3 aCoefficient:? bCoefficient:?];
+  [SBDeckSwitcherModifier _valueAlongDepthCurveForIndex:"_valueAlongDepthCurveForIndex:scrollProgress:aCoefficient:bCoefficient:" scrollProgress:index aCoefficient:? bCoefficient:?];
   return 1.0 - v5;
 }
 
-- (double)titleOpacityForIndex:(unint64_t)a3
+- (double)titleOpacityForIndex:(unint64_t)index
 {
   [(SBDeckSwitcherModifier *)self _scrollProgress];
 
-  [(SBDeckSwitcherModifier *)self titleOpacityForIndex:a3 scrollProgress:?];
+  [(SBDeckSwitcherModifier *)self titleOpacityForIndex:index scrollProgress:?];
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   [(SBDeckSwitcherModifier *)self _unscaledCardCornerRadius];
 
@@ -820,7 +820,7 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)clippingFrameForIndex:(unint64_t)a3 withBounds:(CGRect)a4
+- (CGRect)clippingFrameForIndex:(unint64_t)index withBounds:(CGRect)bounds
 {
   v4 = *MEMORY[0x277CBF398];
   v5 = *(MEMORY[0x277CBF398] + 8);
@@ -833,7 +833,7 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)clippingFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5 withBounds:(CGRect)a6
+- (CGRect)clippingFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index withBounds:(CGRect)bounds
 {
   v6 = *MEMORY[0x277CBF398];
   v7 = *(MEMORY[0x277CBF398] + 8);
@@ -846,10 +846,10 @@ LABEL_9:
   return result;
 }
 
-- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)a3
+- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)index
 {
   result = [(SBDeckSwitcherModifier *)self _indexOfCurrentCenteredCard];
-  if (result < a3)
+  if (result < index)
   {
     v5 = result;
   }
@@ -867,24 +867,24 @@ LABEL_9:
   return result;
 }
 
-- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)a3
+- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)index
 {
-  v5 = [(SBDeckSwitcherModifier *)self _indexOfCurrentCenteredCard];
-  if (![(SBDeckSwitcherModifier *)self _isIndexVisible:a3])
+  _indexOfCurrentCenteredCard = [(SBDeckSwitcherModifier *)self _indexOfCurrentCenteredCard];
+  if (![(SBDeckSwitcherModifier *)self _isIndexVisible:index])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [(SBDeckSwitcherModifier *)self appLayouts];
-  v7 = [v6 count];
+  appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+  v7 = [appLayouts count];
 
-  if (![(SBDeckSwitcherModifier *)self _directionForRemovingIndex:a3 centeredIndex:v5])
+  if (![(SBDeckSwitcherModifier *)self _directionForRemovingIndex:index centeredIndex:_indexOfCurrentCenteredCard])
   {
-    if (!a3)
+    if (!index)
     {
-      if (v5 <= 1)
+      if (_indexOfCurrentCenteredCard <= 1)
       {
-        v5 = 1;
+        _indexOfCurrentCenteredCard = 1;
       }
 
       if (v7 <= 1)
@@ -895,7 +895,7 @@ LABEL_9:
       goto LABEL_13;
     }
 
-    if (v5 != a3)
+    if (_indexOfCurrentCenteredCard != index)
     {
       goto LABEL_13;
     }
@@ -903,11 +903,11 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (v7 - 1 != a3)
+  if (v7 - 1 != index)
   {
 LABEL_8:
-    v5 = a3 + 1;
-    if (a3 + 1 >= v7)
+    _indexOfCurrentCenteredCard = index + 1;
+    if (index + 1 >= v7)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -920,19 +920,19 @@ LABEL_8:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 -= v5 == a3;
+  _indexOfCurrentCenteredCard -= _indexOfCurrentCenteredCard == index;
 LABEL_13:
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (_indexOfCurrentCenteredCard == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return [(SBDeckSwitcherModifier *)self _newIndexOfItemAtIndex:v5 afterRemovingItemAtIndex:a3];
+  return [(SBDeckSwitcherModifier *)self _newIndexOfItemAtIndex:_indexOfCurrentCenteredCard afterRemovingItemAtIndex:index];
 }
 
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  [(SBDeckSwitcherModifier *)self _switcherCardScale:a3];
+  [(SBDeckSwitcherModifier *)self _switcherCardScale:role];
   v8 = v7;
   if (__sb__runningInSpringBoard())
   {
@@ -946,11 +946,11 @@ LABEL_13:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v11 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     result = 0.5;
-    if (v11 == 1)
+    if (userInterfaceIdiom == 1)
     {
       return result;
     }
@@ -966,8 +966,8 @@ LABEL_13:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    if ([v4 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
 
       goto LABEL_16;
@@ -990,8 +990,8 @@ LABEL_16:
 
       else
       {
-        v4 = [MEMORY[0x277D75418] currentDevice];
-        if (![v4 userInterfaceIdiom])
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        if (![currentDevice userInterfaceIdiom])
         {
 LABEL_23:
           v15 = __sb__runningInSpringBoard();
@@ -1003,8 +1003,8 @@ LABEL_23:
 
           else
           {
-            v5 = [MEMORY[0x277D759A0] mainScreen];
-            [v5 _referenceBounds];
+            mainScreen = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen _referenceBounds];
           }
 
           BSSizeRoundForScale();
@@ -1044,10 +1044,10 @@ LABEL_23:
   return result;
 }
 
-- (double)minimumTranslationToKillIndex:(unint64_t)a3
+- (double)minimumTranslationToKillIndex:(unint64_t)index
 {
   [(SBDeckSwitcherModifier *)self frameForIndex:?];
-  [(SBDeckSwitcherModifier *)self scaleForIndex:a3];
+  [(SBDeckSwitcherModifier *)self scaleForIndex:index];
   SBTransformedRectWithScale();
 
   return CGRectGetMinY(*&v5);
@@ -1061,9 +1061,9 @@ LABEL_23:
   return v4 * v5;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
-  [(SBDeckSwitcherModifier *)self scrollProgressForIndex:a3, a4];
+  [(SBDeckSwitcherModifier *)self scrollProgressForIndex:index, alignment];
 
   [(SBDeckSwitcherModifier *)self _contentOffsetForScrollProgress:?];
   result.y = v6;
@@ -1071,9 +1071,9 @@ LABEL_23:
   return result;
 }
 
-- (CGPoint)restingOffsetForScrollOffset:(CGPoint)a3 velocity:(CGPoint)a4
+- (CGPoint)restingOffsetForScrollOffset:(CGPoint)offset velocity:(CGPoint)velocity
 {
-  [(SBDeckSwitcherModifier *)self _scrollProgressForContentOffset:a3.x, a3.y];
+  [(SBDeckSwitcherModifier *)self _scrollProgressForContentOffset:offset.x, offset.y];
   [SBDeckSwitcherModifier _restingScrollProgressForProgress:"_restingScrollProgressForProgress:velocity:" velocity:?];
 
   [(SBDeckSwitcherModifier *)self _contentOffsetForScrollProgress:?];
@@ -1082,33 +1082,33 @@ LABEL_23:
   return result;
 }
 
-- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)a3
+- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)search
 {
-  v5 = [(SBDeckSwitcherModifier *)self switcherSettings];
-  [v5 switcherCardShadowRadius];
+  switcherSettings = [(SBDeckSwitcherModifier *)self switcherSettings];
+  [switcherSettings switcherCardShadowRadius];
   v7 = v6;
-  [v5 deckSwitcherPageScale];
+  [switcherSettings deckSwitcherPageScale];
   v9 = v7 / v8;
-  [(SBDeckSwitcherModifier *)self scaleForIndex:a3];
-  [(SBSwitcherModifier *)self distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:a3 numberOfRows:1 padding:0 layoutDirection:v9 * v10 * 2.8];
+  [(SBDeckSwitcherModifier *)self scaleForIndex:search];
+  [(SBSwitcherModifier *)self distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:search numberOfRows:1 padding:0 layoutDirection:v9 * v10 * 2.8];
   v12 = v11;
 
   return v12;
 }
 
-- (CGPoint)adjustedOffsetForOffset:(CGPoint)a3 translation:(CGPoint)a4 startPoint:(CGPoint)a5 locationInView:(CGPoint)a6 horizontalVelocity:(double *)a7 verticalVelocity:(double *)a8
+- (CGPoint)adjustedOffsetForOffset:(CGPoint)offset translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)view horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity
 {
-  y = a6.y;
-  x = a6.x;
-  v12 = a5.y;
-  v13 = a5.x;
-  v14 = a4.y;
-  v15 = a4.x;
-  v16 = a3.y;
-  v17 = a3.x;
-  if (a7)
+  y = view.y;
+  x = view.x;
+  v12 = point.y;
+  v13 = point.x;
+  v14 = translation.y;
+  v15 = translation.x;
+  v16 = offset.y;
+  v17 = offset.x;
+  if (velocity)
   {
-    if (a8)
+    if (verticalVelocity)
     {
       goto LABEL_3;
     }
@@ -1117,7 +1117,7 @@ LABEL_23:
   else
   {
     [SBDeckSwitcherModifier adjustedOffsetForOffset:a2 translation:self startPoint:? locationInView:? horizontalVelocity:? verticalVelocity:?];
-    if (a8)
+    if (verticalVelocity)
     {
       goto LABEL_3;
     }
@@ -1181,14 +1181,14 @@ LABEL_3:
 
     v17 = v30 - outputContentOffsetAdjustmentForIndexChange;
     [(SBDeckSwitcherModifier *)self scrollableQueryModifier:self contentOffsetVelocityConsideringNextContentOffset:v30 - outputContentOffsetAdjustmentForIndexChange, v16];
-    if (a7 && v36 * *a7 > 0.0)
+    if (velocity && v36 * *velocity > 0.0)
     {
-      *a7 = v36;
+      *velocity = v36;
     }
 
-    if (a8 && v37 * *a8 > 0.0)
+    if (verticalVelocity && v37 * *verticalVelocity > 0.0)
     {
-      *a8 = v37;
+      *verticalVelocity = v37;
     }
   }
 
@@ -1199,12 +1199,12 @@ LABEL_3:
   return result;
 }
 
-- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)a3
+- (_NSRange)_visibleAppLayoutRangeForContentOffset:(CGPoint)offset
 {
-  [(SBDeckSwitcherModifier *)self scrollViewContentOffset:a3.x];
+  [(SBDeckSwitcherModifier *)self scrollViewContentOffset:offset.x];
   v4 = [(SBDeckSwitcherModifier *)self _indexForContentOffset:?];
-  v5 = [(SBDeckSwitcherModifier *)self appLayouts];
-  v6 = [v5 count];
+  appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts count];
   v7 = 0x7FFFFFFFFFFFFFFFLL;
   v8 = 0x7FFFFFFFFFFFFFFFLL;
   v9 = v4 - v6;
@@ -1284,12 +1284,12 @@ LABEL_15:
   return result;
 }
 
-- (unint64_t)_indexForContentOffset:(CGPoint)a3
+- (unint64_t)_indexForContentOffset:(CGPoint)offset
 {
-  [(SBDeckSwitcherModifier *)self _scrollProgressForContentOffset:a3.x, a3.y];
+  [(SBDeckSwitcherModifier *)self _scrollProgressForContentOffset:offset.x, offset.y];
   v5 = v4;
-  v6 = [(SBDeckSwitcherModifier *)self appLayouts];
-  v7 = [v6 count];
+  appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+  v7 = [appLayouts count];
   [(SBDeckSwitcherModifier *)self desiredXOriginForQuantizedTopPage];
   v9 = [(SBDeckSwitcherModifier *)self indexForScrollProgress:v7 displayItemsCount:v5 frameOrigin:v8];
 
@@ -1349,8 +1349,8 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
 
 - (unint64_t)_indexOfCurrentCenteredCard
 {
-  v3 = [(SBDeckSwitcherModifier *)self appLayouts];
-  v4 = [v3 count];
+  appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+  v4 = [appLayouts count];
 
   if (!v4)
   {
@@ -1393,8 +1393,8 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
     }
 
     ++v5;
-    v24 = [(SBDeckSwitcherModifier *)self appLayouts];
-    v25 = [v24 count];
+    appLayouts2 = [(SBDeckSwitcherModifier *)self appLayouts];
+    v25 = [appLayouts2 count];
 
     if (v5 >= v25)
     {
@@ -1405,40 +1405,40 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   return v5;
 }
 
-- (unint64_t)_directionForRemovingIndex:(unint64_t)a3 centeredIndex:(unint64_t)a4
+- (unint64_t)_directionForRemovingIndex:(unint64_t)index centeredIndex:(unint64_t)centeredIndex
 {
-  if (!a3)
+  if (!index)
   {
     return 0;
   }
 
-  v6 = [(SBDeckSwitcherModifier *)self appLayouts];
-  v7 = [v6 count] - 1;
+  appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+  v7 = [appLayouts count] - 1;
 
-  return v7 == a3 || a3 < a4;
+  return v7 == index || index < centeredIndex;
 }
 
-- (unint64_t)_newIndexOfItemAtIndex:(unint64_t)a3 afterRemovingItemAtIndex:(unint64_t)a4
+- (unint64_t)_newIndexOfItemAtIndex:(unint64_t)index afterRemovingItemAtIndex:(unint64_t)atIndex
 {
-  if (a4 < a3)
+  if (atIndex < index)
   {
-    return a3 - 1;
+    return index - 1;
   }
 
-  v5 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a4 > a3)
+  indexCopy = 0x7FFFFFFFFFFFFFFFLL;
+  if (atIndex > index)
   {
-    v6 = [(SBDeckSwitcherModifier *)self appLayouts];
-    if ([v6 count] > a3)
+    appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+    if ([appLayouts count] > index)
     {
-      v5 = a3;
+      indexCopy = index;
     }
   }
 
-  return v5;
+  return indexCopy;
 }
 
-- (CGPoint)_contentOffsetForScrollProgress:(double)a3
+- (CGPoint)_contentOffsetForScrollProgress:(double)progress
 {
   [(SBDeckSwitcherModifier *)self scrollRange];
   [(SBDeckSwitcherModifier *)self isRTLEnabled];
@@ -1450,10 +1450,10 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (double)_scrollProgressForContentOffset:(CGPoint)a3
+- (double)_scrollProgressForContentOffset:(CGPoint)offset
 {
-  x = a3.x;
-  [(SBDeckSwitcherModifier *)self scrollRange:a3.x];
+  x = offset.x;
+  [(SBDeckSwitcherModifier *)self scrollRange:offset.x];
   v6 = v5;
   if (BSFloatIsZero())
   {
@@ -1465,9 +1465,9 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
     v7 = x / v6;
   }
 
-  v8 = [(SBDeckSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBDeckSwitcherModifier *)self isRTLEnabled];
   result = 1.0 - v7;
-  if (v8)
+  if (isRTLEnabled)
   {
     return v7;
   }
@@ -1475,19 +1475,19 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (double)_restingScrollProgressForProgress:(double)a3 velocity:(CGPoint)a4
+- (double)_restingScrollProgressForProgress:(double)progress velocity:(CGPoint)velocity
 {
-  x = a4.x;
-  v7 = [(SBDeckSwitcherModifier *)self numberOfItems:a3];
-  if (a3 > 1.0)
+  x = velocity.x;
+  v7 = [(SBDeckSwitcherModifier *)self numberOfItems:progress];
+  if (progress > 1.0)
   {
-    return a3;
+    return progress;
   }
 
   v8 = v7;
-  if (a3 < 0.0 || v7 < 2)
+  if (progress < 0.0 || v7 < 2)
   {
-    return a3;
+    return progress;
   }
 
   [(SBDeckSwitcherModifier *)self desiredXOriginForQuantizedTopPage];
@@ -1500,12 +1500,12 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   {
     [(SBDeckSwitcherModifier *)self scrollProgressForIndex:v14 displayItemsCount:v8 frameOrigin:v11];
     v17 = v16;
-    v18 = vabdd_f64(a3, v16);
-    v19 = [(SBDeckSwitcherModifier *)self isRTLEnabled];
+    v18 = vabdd_f64(progress, v16);
+    isRTLEnabled = [(SBDeckSwitcherModifier *)self isRTLEnabled];
     if (v18 < v15)
     {
-      v20 = v19 ? -x : x;
-      if ((a3 - v17) * v20 >= 0.0)
+      v20 = isRTLEnabled ? -x : x;
+      if ((progress - v17) * v20 >= 0.0)
       {
         v13 = 1;
         v15 = v18;
@@ -1517,7 +1517,7 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   }
 
   while (v8 != v14);
-  if ((fabs(a3) >= v15) | v13 & 1)
+  if ((fabs(progress) >= v15) | v13 & 1)
   {
 
     [(SBDeckSwitcherModifier *)self scrollProgressForIndex:v12 displayItemsCount:v8 frameOrigin:v11];
@@ -1527,13 +1527,13 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   {
     if (v12)
     {
-      return a3;
+      return progress;
     }
 
     [(SBDeckSwitcherModifier *)self scrollProgressForIndex:0 displayItemsCount:v8 frameOrigin:v11];
-    if (a3 <= 0.0 || v22 <= a3)
+    if (progress <= 0.0 || v22 <= progress)
     {
-      return a3;
+      return progress;
     }
 
     [(SBDeckSwitcherModifier *)self scrollProgressForIndex:0];
@@ -1542,39 +1542,39 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (double)depthForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 scrollProgress:(double)a5
+- (double)depthForIndex:(unint64_t)index displayItemsCount:(unint64_t)count scrollProgress:(double)progress
 {
-  v7 = -(*&kDepthPadding - a4 * *&kDepthPadding);
+  v7 = -(*&kDepthPadding - count * *&kDepthPadding);
   [(SBDeckSwitcherModifier *)self _scrollMin];
-  return v8 + v7 * a5 - *&kDepthPadding * a3;
+  return v8 + v7 * progress - *&kDepthPadding * index;
 }
 
-- (double)_scrollProgressForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 depth:(double)a5
+- (double)_scrollProgressForIndex:(unint64_t)index displayItemsCount:(unint64_t)count depth:(double)depth
 {
-  if (a4 == 1)
+  if (count == 1)
   {
 
-    [(SBDeckSwitcherModifier *)self _scrollMin:a3];
+    [(SBDeckSwitcherModifier *)self _scrollMin:index];
   }
 
   else
   {
-    v8 = a5 + *&kDepthPadding * a3;
+    v8 = depth + *&kDepthPadding * index;
     [(SBDeckSwitcherModifier *)self _scrollMin];
-    return (v8 - v9) / -(*&kDepthPadding - a4 * *&kDepthPadding);
+    return (v8 - v9) / -(*&kDepthPadding - count * *&kDepthPadding);
   }
 
   return result;
 }
 
-- (unint64_t)_indexForScrollProgress:(double)a3 displayItemsCount:(unint64_t)a4 depth:(double)a5
+- (unint64_t)_indexForScrollProgress:(double)progress displayItemsCount:(unint64_t)count depth:(double)depth
 {
-  if (a4 < 2)
+  if (count < 2)
   {
     return 0;
   }
 
-  v5 = -(a5 - *&kDepthPadding * (a4 - 1) * a3);
+  v5 = -(depth - *&kDepthPadding * (count - 1) * progress);
   [(SBDeckSwitcherModifier *)self _scrollMin];
   v7 = (v6 + v5) / *&kDepthPadding;
   v8 = BSFloatLessThanOrEqualToFloat();
@@ -1590,41 +1590,41 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   }
 }
 
-- (double)scrollProgressForIndex:(unint64_t)a3
+- (double)scrollProgressForIndex:(unint64_t)index
 {
-  v5 = [(SBDeckSwitcherModifier *)self numberOfItems];
-  if (!a3)
+  numberOfItems = [(SBDeckSwitcherModifier *)self numberOfItems];
+  if (!index)
   {
     return 0.0;
   }
 
-  v6 = v5;
-  if (v5 > 2 || (result = 1.0, v5 - 1 != a3))
+  v6 = numberOfItems;
+  if (numberOfItems > 2 || (result = 1.0, numberOfItems - 1 != index))
   {
     [(SBDeckSwitcherModifier *)self desiredXOriginForQuantizedTopPage];
 
-    [(SBDeckSwitcherModifier *)self scrollProgressForIndex:a3 - 1 displayItemsCount:v6 frameOrigin:?];
+    [(SBDeckSwitcherModifier *)self scrollProgressForIndex:index - 1 displayItemsCount:v6 frameOrigin:?];
   }
 
   return result;
 }
 
-- (CGRect)_frameForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 scrollProgress:(double)a5 ignoringScrollOffset:(BOOL)a6
+- (CGRect)_frameForIndex:(unint64_t)index displayItemsCount:(unint64_t)count scrollProgress:(double)progress ignoringScrollOffset:(BOOL)offset
 {
   [(SBDeckSwitcherModifier *)self containerViewBounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(SBDeckSwitcherModifier *)self isRTLEnabled];
-  [(SBDeckSwitcherModifier *)self leadingOffsetForIndex:a3 displayItemsCount:a4 scrollProgress:a5];
-  if (v17)
+  isRTLEnabled = [(SBDeckSwitcherModifier *)self isRTLEnabled];
+  [(SBDeckSwitcherModifier *)self leadingOffsetForIndex:index displayItemsCount:count scrollProgress:progress];
+  if (isRTLEnabled)
   {
     v18 = -v18;
   }
 
-  if (!a6)
+  if (!offset)
   {
-    [(SBDeckSwitcherModifier *)self _counteractScrollingForOffset:v18 scrollProgress:a5];
+    [(SBDeckSwitcherModifier *)self _counteractScrollingForOffset:v18 scrollProgress:progress];
   }
 
   v19 = v12;
@@ -1637,28 +1637,28 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (double)scrollProgressForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 frameOrigin:(double)a5
+- (double)scrollProgressForIndex:(unint64_t)index displayItemsCount:(unint64_t)count frameOrigin:(double)origin
 {
-  [(SBDeckSwitcherModifier *)self _depthForFrameOrigin:a5];
+  [(SBDeckSwitcherModifier *)self _depthForFrameOrigin:origin];
 
-  [(SBDeckSwitcherModifier *)self _scrollProgressForIndex:a3 displayItemsCount:a4 depth:?];
+  [(SBDeckSwitcherModifier *)self _scrollProgressForIndex:index displayItemsCount:count depth:?];
   return result;
 }
 
-- (unint64_t)indexForScrollProgress:(double)a3 displayItemsCount:(unint64_t)a4 frameOrigin:(double)a5
+- (unint64_t)indexForScrollProgress:(double)progress displayItemsCount:(unint64_t)count frameOrigin:(double)origin
 {
-  [(SBDeckSwitcherModifier *)self _depthForFrameOrigin:a5];
+  [(SBDeckSwitcherModifier *)self _depthForFrameOrigin:origin];
 
-  return [(SBDeckSwitcherModifier *)self _indexForScrollProgress:a4 displayItemsCount:a3 depth:v8];
+  return [(SBDeckSwitcherModifier *)self _indexForScrollProgress:count displayItemsCount:progress depth:v8];
 }
 
-- (double)_depthForFrameOrigin:(double)a3
+- (double)_depthForFrameOrigin:(double)origin
 {
   [(SBDeckSwitcherModifier *)self containerViewBounds];
   Width = CGRectGetWidth(v12);
   if ([(SBDeckSwitcherModifier *)self isRTLEnabled])
   {
-    a3 = Width - a3;
+    origin = Width - origin;
   }
 
   [(SBDeckSwitcherModifier *)self _switcherCardScale];
@@ -1666,7 +1666,7 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   result = 0.0;
   if (Width > 0.0)
   {
-    v9 = a3 + Width * ((1.0 - v7) * 0.5);
+    v9 = origin + Width * ((1.0 - v7) * 0.5);
     v11 = *&kExponentialLayoutCurveExponent;
     if (v9 <= *&kExponentialLayoutTranslation + 1.0)
     {
@@ -1683,22 +1683,22 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (double)_counteractScrollingForOffset:(double)a3 scrollProgress:(double)a4
+- (double)_counteractScrollingForOffset:(double)offset scrollProgress:(double)progress
 {
   if (![(SBDeckSwitcherModifier *)self isRTLEnabled])
   {
-    a4 = 1.0 - a4;
+    progress = 1.0 - progress;
   }
 
   [(SBDeckSwitcherModifier *)self scrollRange];
-  return a3 + a4 * v7;
+  return offset + progress * v7;
 }
 
-- (double)leadingOffsetForIndex:(unint64_t)a3 displayItemsCount:(unint64_t)a4 scrollProgress:(double)a5
+- (double)leadingOffsetForIndex:(unint64_t)index displayItemsCount:(unint64_t)count scrollProgress:(double)progress
 {
   [(SBDeckSwitcherModifier *)self containerViewBounds];
   Width = CGRectGetWidth(v21);
-  [(SBDeckSwitcherModifier *)self depthForIndex:a3 displayItemsCount:a4 scrollProgress:a5];
+  [(SBDeckSwitcherModifier *)self depthForIndex:index displayItemsCount:count scrollProgress:progress];
   v10 = *&kExponentialLayoutTranslation;
   v12 = v10 + Width * exp(v11 * *&kExponentialLayoutCurveExponent);
   [(SBDeckSwitcherModifier *)self _switcherCardScale];
@@ -1711,9 +1711,9 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
     [(SBDeckSwitcherModifier *)self _scrollProgress];
     if (BSFloatEqualToFloat())
     {
-      v17 = [(SBDeckSwitcherModifier *)self isRTLEnabled];
+      isRTLEnabled = [(SBDeckSwitcherModifier *)self isRTLEnabled];
       [(SBDeckSwitcherModifier *)self scrollViewContentOffset];
-      if (v17)
+      if (isRTLEnabled)
       {
         v18 = -v18;
       }
@@ -1722,14 +1722,14 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
     }
   }
 
-  [(SBDeckSwitcherModifier *)self scaleForIndex:a3];
+  [(SBDeckSwitcherModifier *)self scaleForIndex:index];
   return v16 * v19;
 }
 
-- (int64_t)_topIndexForLocationInContainerCoordinateSpace:(CGPoint)a3
+- (int64_t)_topIndexForLocationInContainerCoordinateSpace:(CGPoint)space
 {
-  x = a3.x;
-  v5 = [(SBDeckSwitcherModifier *)self numberOfItems:a3.x];
+  x = space.x;
+  v5 = [(SBDeckSwitcherModifier *)self numberOfItems:space.x];
   if (v5 <= 0)
   {
     v6 = 0;
@@ -1781,13 +1781,13 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (CGPoint)_adjustedOffsetForIndex:(int64_t)a3 offset:(CGPoint)a4 start:(CGPoint)a5 originalLocationInView:(CGPoint)a6 locationInView:(CGPoint)a7
+- (CGPoint)_adjustedOffsetForIndex:(int64_t)index offset:(CGPoint)offset start:(CGPoint)start originalLocationInView:(CGPoint)view locationInView:(CGPoint)inView
 {
-  x = a6.x;
-  y = a4.y;
-  v7 = a5.x;
-  v35 = a4.x;
-  [(SBDeckSwitcherModifier *)self containerViewBounds:a4.x];
+  x = view.x;
+  y = offset.y;
+  v7 = start.x;
+  v35 = offset.x;
+  [(SBDeckSwitcherModifier *)self containerViewBounds:offset.x];
   Width = CGRectGetWidth(v40);
   [(SBDeckSwitcherModifier *)self _contentSize];
   v12 = v11;
@@ -1808,7 +1808,7 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
     }
   }
 
-  [(SBDeckSwitcherModifier *)self _scaleTransformedXOrigin:a3 scrollProgress:v15];
+  [(SBDeckSwitcherModifier *)self _scaleTransformedXOrigin:index scrollProgress:v15];
   v17 = v16;
   initialTranslationAdjustment = self->_initialTranslationAdjustment;
   inputContentOffsetAdjustmentForIndexChange = self->_inputContentOffsetAdjustmentForIndexChange;
@@ -1827,9 +1827,9 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
 
   v20 = x + v7 - v35 - initialTranslationAdjustment - inputContentOffsetAdjustmentForIndexChange;
   v21 = v7 + x - v17;
-  [(SBDeckSwitcherModifier *)self _scaleInSwitcherViewForIndex:a3 scrollProgress:v15];
+  [(SBDeckSwitcherModifier *)self _scaleInSwitcherViewForIndex:index scrollProgress:v15];
   v23 = v22;
-  [(SBDeckSwitcherModifier *)self _scaleInSwitcherViewForIndex:a3 scrollProgress:v14];
+  [(SBDeckSwitcherModifier *)self _scaleInSwitcherViewForIndex:index scrollProgress:v14];
   v25 = v24;
   v26 = v21 / v23 * v24;
   v27 = Width * 0.5 * (v24 + -1.0);
@@ -1843,11 +1843,11 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
     v28 = v20 - v26 + v27;
   }
 
-  [(SBDeckSwitcherModifier *)self scrollProgressForIndex:a3 displayItemsCount:[(SBDeckSwitcherModifier *)self numberOfItems] frameOrigin:v28];
+  [(SBDeckSwitcherModifier *)self scrollProgressForIndex:index displayItemsCount:[(SBDeckSwitcherModifier *)self numberOfItems] frameOrigin:v28];
   v30 = v29;
-  v31 = [(SBDeckSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBDeckSwitcherModifier *)self isRTLEnabled];
   v32 = 1.0 - v30;
-  if (v31)
+  if (isRTLEnabled)
   {
     v32 = v30;
   }
@@ -1859,22 +1859,22 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (double)_scaleTransformedXOrigin:(double)a3 scrollProgress:(double)a4
+- (double)_scaleTransformedXOrigin:(double)origin scrollProgress:(double)progress
 {
-  v5 = a3;
-  [(SBDeckSwitcherModifier *)self _frameForIndex:a3 displayItemsCount:[(SBDeckSwitcherModifier *)self numberOfItems] scrollProgress:0 ignoringScrollOffset:a4];
-  [SBDeckSwitcherModifier _scaleTransformedFrameForIndex:"_scaleTransformedFrameForIndex:withUntransformedFrame:scrollProgress:" withUntransformedFrame:v5 scrollProgress:?];
+  originCopy = origin;
+  [(SBDeckSwitcherModifier *)self _frameForIndex:origin displayItemsCount:[(SBDeckSwitcherModifier *)self numberOfItems] scrollProgress:0 ignoringScrollOffset:progress];
+  [SBDeckSwitcherModifier _scaleTransformedFrameForIndex:"_scaleTransformedFrameForIndex:withUntransformedFrame:scrollProgress:" withUntransformedFrame:originCopy scrollProgress:?];
 
   return CGRectGetMinX(*&v6);
 }
 
-- (CGRect)_scaleTransformedFrameForIndex:(unint64_t)a3 withUntransformedFrame:(CGRect)a4 scrollProgress:(double)a5
+- (CGRect)_scaleTransformedFrameForIndex:(unint64_t)index withUntransformedFrame:(CGRect)frame scrollProgress:(double)progress
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [(SBDeckSwitcherModifier *)self _scaleForTransformForIndex:a3 scrollProgress:a5];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(SBDeckSwitcherModifier *)self _scaleForTransformForIndex:index scrollProgress:progress];
   v11 = v10 + -1.0;
   [(SBDeckSwitcherModifier *)self _switcherCardScale];
   v13 = v11 + v12;
@@ -1909,47 +1909,47 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (double)_scaleInSwitcherViewForIndex:(unint64_t)a3 scrollProgress:(double)a4
+- (double)_scaleInSwitcherViewForIndex:(unint64_t)index scrollProgress:(double)progress
 {
-  [(SBDeckSwitcherModifier *)self _scaleForTransformForIndex:a3 scrollProgress:a4];
+  [(SBDeckSwitcherModifier *)self _scaleForTransformForIndex:index scrollProgress:progress];
   v6 = v5 + -1.0;
   [(SBDeckSwitcherModifier *)self _switcherCardScale];
   return v6 + v7;
 }
 
-- (double)opacityForIndex:(unint64_t)a3 scrollProgress:(double)a4
+- (double)opacityForIndex:(unint64_t)index scrollProgress:(double)progress
 {
-  if (!a3)
+  if (!index)
   {
     return 1.0;
   }
 
-  [(SBDeckSwitcherModifier *)self _valueAlongDepthCurveForIndex:a4 scrollProgress:0.41 aCoefficient:8.0 bCoefficient:?];
+  [(SBDeckSwitcherModifier *)self _valueAlongDepthCurveForIndex:progress scrollProgress:0.41 aCoefficient:8.0 bCoefficient:?];
   return 1.0 - v4;
 }
 
-- (BOOL)_priorIndex:(unint64_t)a3 fullyObscuresCardForIndex:(unint64_t)a4
+- (BOOL)_priorIndex:(unint64_t)index fullyObscuresCardForIndex:(unint64_t)forIndex
 {
-  v7 = [(SBDeckSwitcherModifier *)self numberOfItems];
+  numberOfItems = [(SBDeckSwitcherModifier *)self numberOfItems];
   v8 = 0;
-  v9 = a4 - a3;
-  if (a4 >= a3 && a4 != 0x7FFFFFFFFFFFFFFFLL && v7 > a3)
+  v9 = forIndex - index;
+  if (forIndex >= index && forIndex != 0x7FFFFFFFFFFFFFFFLL && numberOfItems > index)
   {
-    v10 = [(SBDeckSwitcherModifier *)self appLayouts];
-    v11 = [v10 objectAtIndex:a4 - a3];
+    appLayouts = [(SBDeckSwitcherModifier *)self appLayouts];
+    index = [appLayouts objectAtIndex:forIndex - index];
 
-    [(SBDeckSwitcherModifier *)self opacityForLayoutRole:1 inAppLayout:v11 atIndex:v9];
+    [(SBDeckSwitcherModifier *)self opacityForLayoutRole:1 inAppLayout:index atIndex:v9];
     v8 = v12 >= 1.0;
   }
 
   return v8;
 }
 
-- (double)titleOpacityForIndex:(unint64_t)a3 scrollProgress:(double)a4
+- (double)titleOpacityForIndex:(unint64_t)index scrollProgress:(double)progress
 {
-  [(SBDeckSwitcherModifier *)self depthForIndex:a3 displayItemsCount:[(SBDeckSwitcherModifier *)self numberOfItems] scrollProgress:a4];
+  [(SBDeckSwitcherModifier *)self depthForIndex:index displayItemsCount:[(SBDeckSwitcherModifier *)self numberOfItems] scrollProgress:progress];
   v7 = -v6;
-  if (a3)
+  if (index)
   {
     v8 = 1.0 - fmin(fmax((v7 - *&kATitleOpacityCoefficient) * *&kBTitleOpacityCoefficient, 0.0), 1.0);
   }
@@ -1967,10 +1967,10 @@ void __42__SBDeckSwitcherModifier_debugDescription__block_invoke(uint64_t a1, vo
 
   else
   {
-    v11 = [(SBDeckSwitcherModifier *)self switcherInterfaceOrientation];
-    v9 = dbl_21F8A8620[(v11 - 1) < 2];
+    switcherInterfaceOrientation = [(SBDeckSwitcherModifier *)self switcherInterfaceOrientation];
+    v9 = dbl_21F8A8620[(switcherInterfaceOrientation - 1) < 2];
     v10 = 75.0;
-    if ((v11 - 1) < 2)
+    if ((switcherInterfaceOrientation - 1) < 2)
     {
       v10 = 40.0;
     }

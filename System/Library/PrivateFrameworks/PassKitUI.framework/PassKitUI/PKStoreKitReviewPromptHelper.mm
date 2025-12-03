@@ -1,45 +1,45 @@
 @interface PKStoreKitReviewPromptHelper
 - (BOOL)_hasBeenPromptedRecently;
 - (BOOL)_hasViewedFrontOfCard;
-- (void)requestReviewInScene:(id)a3 trigger:(unint64_t)a4;
-- (void)requestReviewInSceneIfEligible:(id)a3 trigger:(unint64_t)a4;
+- (void)requestReviewInScene:(id)scene trigger:(unint64_t)trigger;
+- (void)requestReviewInSceneIfEligible:(id)eligible trigger:(unint64_t)trigger;
 @end
 
 @implementation PKStoreKitReviewPromptHelper
 
-- (void)requestReviewInScene:(id)a3 trigger:(unint64_t)a4
+- (void)requestReviewInScene:(id)scene trigger:(unint64_t)trigger
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sceneCopy = scene;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a4;
+    triggerCopy = trigger;
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Requesting Store Kit review for reason: %lu", &v8, 0xCu);
   }
 
   v7 = [MEMORY[0x1E695DF00] now];
   PKSetLastReviewPromptDate();
 
-  [MEMORY[0x1E697BAA8] requestReviewInScene:v5];
+  [MEMORY[0x1E697BAA8] requestReviewInScene:sceneCopy];
 }
 
-- (void)requestReviewInSceneIfEligible:(id)a3 trigger:(unint64_t)a4
+- (void)requestReviewInSceneIfEligible:(id)eligible trigger:(unint64_t)trigger
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  eligibleCopy = eligible;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a4;
+    triggerCopy = trigger;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Requesting Store Kit review if eligible for reason: %lu", &v8, 0xCu);
   }
 
   if ([(PKStoreKitReviewPromptHelper *)self isEligibleForReviewPrompt])
   {
-    [(PKStoreKitReviewPromptHelper *)self requestReviewInScene:v6 trigger:a4];
+    [(PKStoreKitReviewPromptHelper *)self requestReviewInScene:eligibleCopy trigger:trigger];
   }
 }
 

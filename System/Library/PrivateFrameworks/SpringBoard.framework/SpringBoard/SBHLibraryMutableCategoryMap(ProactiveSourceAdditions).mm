@@ -14,8 +14,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [a1 categoryIdentifiers];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  categoryIdentifiers = [self categoryIdentifiers];
+  v3 = [categoryIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -26,14 +26,14 @@
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(categoryIdentifiers);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [v7 predictionCategoryID];
-        if (v8 > 7 || ((1 << v8) & 0x98) == 0)
+        predictionCategoryID = [v7 predictionCategoryID];
+        if (predictionCategoryID > 7 || ((1 << predictionCategoryID) & 0x98) == 0)
         {
-          v10 = [a1 sortedApplicationIdentifiersForCategoryIdentifier:v7];
+          v10 = [self sortedApplicationIdentifiersForCategoryIdentifier:v7];
           v11 = [v10 count];
 
           if (v11)
@@ -44,7 +44,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [categoryIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v4)
       {
         continue;
@@ -67,8 +67,8 @@ LABEL_16:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a1 categoryIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  categoryIdentifiers = [self categoryIdentifiers];
+  v5 = [categoryIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -79,7 +79,7 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(categoryIdentifiers);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -90,7 +90,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [categoryIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -113,8 +113,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [a1 categoryIdentifiers];
-  v3 = [v2 copy];
+  categoryIdentifiers = [self categoryIdentifiers];
+  v3 = [categoryIdentifiers copy];
 
   v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
@@ -131,10 +131,10 @@ LABEL_11:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 predictionCategoryID];
-        if (v9 > 7 || ((1 << v9) & 0x98) == 0)
+        predictionCategoryID = [v8 predictionCategoryID];
+        if (predictionCategoryID > 7 || ((1 << predictionCategoryID) & 0x98) == 0)
         {
-          [a1 removeCategoryIdentifier:v8];
+          [self removeCategoryIdentifier:v8];
         }
       }
 
@@ -152,8 +152,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a1 categoryIdentifiers];
-  v6 = [v5 copy];
+  categoryIdentifiers = [self categoryIdentifiers];
+  v6 = [categoryIdentifiers copy];
 
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
@@ -172,7 +172,7 @@ LABEL_11:
         v11 = *(*(&v12 + 1) + 8 * i);
         if ([v11 predictionCategoryID] == a3)
         {
-          [a1 removeCategoryIdentifier:v11];
+          [self removeCategoryIdentifier:v11];
         }
       }
 

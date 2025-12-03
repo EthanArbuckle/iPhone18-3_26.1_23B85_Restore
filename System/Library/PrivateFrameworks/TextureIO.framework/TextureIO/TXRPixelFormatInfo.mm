@@ -1,22 +1,22 @@
 @interface TXRPixelFormatInfo
-+ (BOOL)hasAlpha:(unint64_t)a3;
-+ (BOOL)isCompressed:(unint64_t)a3;
-+ (BOOL)isFloat:(unint64_t)a3;
-+ (BOOL)isInteger:(unint64_t)a3;
-+ (BOOL)isSRGB:(unint64_t)a3;
-+ (TXRImageMemoryLayout)packedMemoryLayoutForFormat:(unint64_t)a3 dimensions:;
-+ (unsigned)componentsPerPixel:(unint64_t)a3;
-+ (unsigned)pixelBytes:(unint64_t)a3;
++ (BOOL)hasAlpha:(unint64_t)alpha;
++ (BOOL)isCompressed:(unint64_t)compressed;
++ (BOOL)isFloat:(unint64_t)float;
++ (BOOL)isInteger:(unint64_t)integer;
++ (BOOL)isSRGB:(unint64_t)b;
++ (TXRImageMemoryLayout)packedMemoryLayoutForFormat:(unint64_t)format dimensions:;
++ (unsigned)componentsPerPixel:(unint64_t)pixel;
++ (unsigned)pixelBytes:(unint64_t)bytes;
 @end
 
 @implementation TXRPixelFormatInfo
 
-+ (unsigned)pixelBytes:(unint64_t)a3
++ (unsigned)pixelBytes:(unint64_t)bytes
 {
-  if (a3 <= 551)
+  if (bytes <= 551)
   {
     result = 1;
-    switch(a3)
+    switch(bytes)
     {
       case 1uLL:
       case 0xAuLL:
@@ -78,17 +78,17 @@
     }
   }
 
-  if (a3 - 552 < 2)
+  if (bytes - 552 < 2)
   {
     return 8;
   }
 
-  if (a3 - 554 < 2)
+  if (bytes - 554 < 2)
   {
     return 4;
   }
 
-  if (a3 - 2147483649u >= 2)
+  if (bytes - 2147483649u >= 2)
   {
 LABEL_11:
     pixelBytes_cold_1();
@@ -97,10 +97,10 @@ LABEL_11:
   return 3;
 }
 
-+ (BOOL)isInteger:(unint64_t)a3
++ (BOOL)isInteger:(unint64_t)integer
 {
   result = 1;
-  if ((a3 - 13 > 0x3D || ((1 << (a3 - 13)) & 0x300C030000300C03) == 0) && (a3 - 103 > 0x15 || ((1 << (a3 - 103)) & 0x300C03) == 0))
+  if ((integer - 13 > 0x3D || ((1 << (integer - 13)) & 0x300C030000300C03) == 0) && (integer - 103 > 0x15 || ((1 << (integer - 103)) & 0x300C03) == 0))
   {
     return 0;
   }
@@ -108,18 +108,18 @@ LABEL_11:
   return result;
 }
 
-+ (BOOL)isFloat:(unint64_t)a3
++ (BOOL)isFloat:(unint64_t)float
 {
   result = 1;
-  if (a3 <= 91)
+  if (float <= 91)
   {
-    if (a3 - 25 > 0x28 || ((1 << (a3 - 25)) & 0x10040000001) == 0)
+    if (float - 25 > 0x28 || ((1 << (float - 25)) & 0x10040000001) == 0)
     {
       return 0;
     }
   }
 
-  else if ((a3 - 92 > 0x3A || ((1 << (a3 - 92)) & 0x400000200800003) == 0) && a3 != 2147483670 && a3 != 2147483686)
+  else if ((float - 92 > 0x3A || ((1 << (float - 92)) & 0x400000200800003) == 0) && float != 2147483670 && float != 2147483686)
   {
     return 0;
   }
@@ -127,23 +127,23 @@ LABEL_11:
   return result;
 }
 
-+ (BOOL)isSRGB:(unint64_t)a3
++ (BOOL)isSRGB:(unint64_t)b
 {
-  if (isGammaEncoded(a3))
+  if (isGammaEncoded(b))
   {
     return 1;
   }
 
   result = 1;
-  if (a3 <= 91)
+  if (b <= 91)
   {
-    if (a3 - 25 > 0x28 || ((1 << (a3 - 25)) & 0x10040000001) == 0)
+    if (b - 25 > 0x28 || ((1 << (b - 25)) & 0x10040000001) == 0)
     {
       return 0;
     }
   }
 
-  else if ((a3 - 92 > 0x3A || ((1 << (a3 - 92)) & 0x400000200800003) == 0) && a3 != 2147483670 && a3 != 2147483686)
+  else if ((b - 92 > 0x3A || ((1 << (b - 92)) & 0x400000200800003) == 0) && b != 2147483670 && b != 2147483686)
   {
     return 0;
   }
@@ -151,22 +151,22 @@ LABEL_11:
   return result;
 }
 
-+ (BOOL)isCompressed:(unint64_t)a3
++ (BOOL)isCompressed:(unint64_t)compressed
 {
-  if (a3 - 130 < 0xE && ((0x3C3Fu >> (a3 + 126)) & 1) != 0)
+  if (compressed - 130 < 0xE && ((0x3C3Fu >> (compressed + 126)) & 1) != 0)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = 0x1FF7C7FDF3F55uLL >> (a3 + 86);
-    if (a3 - 170 >= 0x31)
+    v4 = 0x1FF7C7FDF3F55uLL >> (compressed + 86);
+    if (compressed - 170 >= 0x31)
     {
       LOBYTE(v4) = 0;
     }
 
-    if ((a3 & 0xFFFFFFFFFFFFFFF8) == 0xA0)
+    if ((compressed & 0xFFFFFFFFFFFFFFF8) == 0xA0)
     {
       v5 = 1;
     }
@@ -176,7 +176,7 @@ LABEL_11:
       v5 = v4;
     }
 
-    if (a3 - 150 >= 4)
+    if (compressed - 150 >= 4)
     {
       v3 = v5;
     }
@@ -190,18 +190,18 @@ LABEL_11:
   return v3 & 1;
 }
 
-+ (BOOL)hasAlpha:(unint64_t)a3
++ (BOOL)hasAlpha:(unint64_t)alpha
 {
   result = 1;
-  if (a3 > 129)
+  if (alpha > 129)
   {
-    if ((a3 - 130 > 0x35 || ((1 << (a3 + 126)) & 0x30003C00C0003FLL) == 0) && a3 - 552 >= 2)
+    if ((alpha - 130 > 0x35 || ((1 << (alpha + 126)) & 0x30003C00C0003FLL) == 0) && alpha - 552 >= 2)
     {
       return 0;
     }
   }
 
-  else if ((a3 - 65 > 0x3C || ((1 << (a3 - 65)) & 0x1C07A000060183E1) == 0) && (a3 > 0x2B || ((1 << a3) & 0xE0000000002) == 0))
+  else if ((alpha - 65 > 0x3C || ((1 << (alpha - 65)) & 0x1C07A000060183E1) == 0) && (alpha > 0x2B || ((1 << alpha) & 0xE0000000002) == 0))
   {
     return 0;
   }
@@ -209,13 +209,13 @@ LABEL_11:
   return result;
 }
 
-+ (TXRImageMemoryLayout)packedMemoryLayoutForFormat:(unint64_t)a3 dimensions:
++ (TXRImageMemoryLayout)packedMemoryLayoutForFormat:(unint64_t)format dimensions:
 {
-  v4 = a3 - 130 > 0xD || ((1 << (a3 + 126)) & 0x3C3F) == 0;
-  if (!v4 || a3 - 150 < 4 || (a3 & 0xFFFFFFFFFFFFFFF8) == 0xA0 || a3 - 170 <= 0x30 && ((1 << (a3 + 86)) & 0x1FF7C7FDF3F55) != 0)
+  v4 = format - 130 > 0xD || ((1 << (format + 126)) & 0x3C3F) == 0;
+  if (!v4 || format - 150 < 4 || (format & 0xFFFFFFFFFFFFFFF8) == 0xA0 || format - 170 <= 0x30 && ((1 << (format + 86)) & 0x1FF7C7FDF3F55) != 0)
   {
     v5 = 17040392;
-    switch(a3)
+    switch(format)
     {
       case 0x82uLL:
       case 0x83uLL:
@@ -322,7 +322,7 @@ LABEL_15:
   else
   {
     v9 = DWORD1(v3);
-    v6 = (pixelBytes_0)(a3, a2) * v3;
+    v6 = (pixelBytes_0)(format, a2) * v3;
     v7 = v6 * v9;
   }
 
@@ -331,12 +331,12 @@ LABEL_15:
   return result;
 }
 
-+ (unsigned)componentsPerPixel:(unint64_t)a3
++ (unsigned)componentsPerPixel:(unint64_t)pixel
 {
-  if (a3 <= 551)
+  if (pixel <= 551)
   {
     result = 1;
-    switch(a3)
+    switch(pixel)
     {
       case 1uLL:
       case 0xAuLL:
@@ -397,12 +397,12 @@ LABEL_15:
     }
   }
 
-  if (a3 - 552 < 2)
+  if (pixel - 552 < 2)
   {
     return 4;
   }
 
-  if (a3 - 554 >= 2 && a3 - 2147483649u >= 2)
+  if (pixel - 554 >= 2 && pixel - 2147483649u >= 2)
   {
 LABEL_9:
     componentsPerPixel_cold_1();

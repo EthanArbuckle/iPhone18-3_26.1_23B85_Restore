@@ -1,50 +1,50 @@
 @interface UserRegistryStats
-- (UserRegistryStats)initWithCoder:(id)a3;
+- (UserRegistryStats)initWithCoder:(id)coder;
 - (id)getUserRegistryStats;
-- (void)encodeWithCoder:(id)a3;
-- (void)printUserRegistryStats:(__sFILE *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)printUserRegistryStats:(__sFILE *)stats;
 @end
 
 @implementation UserRegistryStats
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[UserRegistryStats fetchRecordZoneChanges](self forKey:{"fetchRecordZoneChanges"), @"fetchRecordZoneChanges"}];
-  [v4 encodeInt64:-[UserRegistryStats lastfetchRecordZoneChangesAtStart](self forKey:{"lastfetchRecordZoneChangesAtStart"), @"lastfetchRecordZoneChangesAtStart"}];
-  [v4 encodeInt64:-[UserRegistryStats pushNotifications](self forKey:{"pushNotifications"), @"pushNotifications"}];
-  [v4 encodeInt64:-[UserRegistryStats zoneReset](self forKey:{"zoneReset"), @"zoneReset"}];
-  [v4 encodeInt64:-[UserRegistryStats recordFetch](self forKey:{"recordFetch"), @"recordFetch"}];
-  [v4 encodeInt64:-[UserRegistryStats recordModify](self forKey:{"recordModify"), @"recordModify"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[UserRegistryStats fetchRecordZoneChanges](self forKey:{"fetchRecordZoneChanges"), @"fetchRecordZoneChanges"}];
+  [coderCopy encodeInt64:-[UserRegistryStats lastfetchRecordZoneChangesAtStart](self forKey:{"lastfetchRecordZoneChangesAtStart"), @"lastfetchRecordZoneChangesAtStart"}];
+  [coderCopy encodeInt64:-[UserRegistryStats pushNotifications](self forKey:{"pushNotifications"), @"pushNotifications"}];
+  [coderCopy encodeInt64:-[UserRegistryStats zoneReset](self forKey:{"zoneReset"), @"zoneReset"}];
+  [coderCopy encodeInt64:-[UserRegistryStats recordFetch](self forKey:{"recordFetch"), @"recordFetch"}];
+  [coderCopy encodeInt64:-[UserRegistryStats recordModify](self forKey:{"recordModify"), @"recordModify"}];
 }
 
-- (UserRegistryStats)initWithCoder:(id)a3
+- (UserRegistryStats)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = UserRegistryStats;
   v5 = [(UserRegistryStats *)&v7 init];
   if (v5)
   {
-    -[UserRegistryStats setFetchRecordZoneChanges:](v5, "setFetchRecordZoneChanges:", [v4 decodeInt64ForKey:@"fetchRecordZoneChanges"]);
-    -[UserRegistryStats setLastfetchRecordZoneChangesAtStart:](v5, "setLastfetchRecordZoneChangesAtStart:", [v4 decodeInt64ForKey:@"lastfetchRecordZoneChangesAtStart"]);
-    -[UserRegistryStats setPushNotifications:](v5, "setPushNotifications:", [v4 decodeInt64ForKey:@"pushNotifications"]);
-    -[UserRegistryStats setZoneReset:](v5, "setZoneReset:", [v4 decodeInt64ForKey:@"zoneReset"]);
-    -[UserRegistryStats setRecordFetch:](v5, "setRecordFetch:", [v4 decodeInt64ForKey:@"recordFetch"]);
-    -[UserRegistryStats setRecordModify:](v5, "setRecordModify:", [v4 decodeInt64ForKey:@"recordModify"]);
+    -[UserRegistryStats setFetchRecordZoneChanges:](v5, "setFetchRecordZoneChanges:", [coderCopy decodeInt64ForKey:@"fetchRecordZoneChanges"]);
+    -[UserRegistryStats setLastfetchRecordZoneChangesAtStart:](v5, "setLastfetchRecordZoneChangesAtStart:", [coderCopy decodeInt64ForKey:@"lastfetchRecordZoneChangesAtStart"]);
+    -[UserRegistryStats setPushNotifications:](v5, "setPushNotifications:", [coderCopy decodeInt64ForKey:@"pushNotifications"]);
+    -[UserRegistryStats setZoneReset:](v5, "setZoneReset:", [coderCopy decodeInt64ForKey:@"zoneReset"]);
+    -[UserRegistryStats setRecordFetch:](v5, "setRecordFetch:", [coderCopy decodeInt64ForKey:@"recordFetch"]);
+    -[UserRegistryStats setRecordModify:](v5, "setRecordModify:", [coderCopy decodeInt64ForKey:@"recordModify"]);
   }
 
   return v5;
 }
 
-- (void)printUserRegistryStats:(__sFILE *)a3
+- (void)printUserRegistryStats:(__sFILE *)stats
 {
   v9 = *MEMORY[0x1E69E9840];
-  v7 = [(UserRegistryStats *)self lastfetchRecordZoneChangesAtStart];
-  if (v7)
+  lastfetchRecordZoneChangesAtStart = [(UserRegistryStats *)self lastfetchRecordZoneChangesAtStart];
+  if (lastfetchRecordZoneChangesAtStart)
   {
     memset(&v6, 0, sizeof(v6));
-    localtime_r(&v7, &v6);
+    localtime_r(&lastfetchRecordZoneChangesAtStart, &v6);
     strftime(v8, 0x80uLL, "%Y-%m-%d-%H:%M:%S", &v6);
   }
 
@@ -53,14 +53,14 @@
     __strlcpy_chk();
   }
 
-  fwrite("UserRegistryStats:\n\n", 0x14uLL, 1uLL, a3);
-  fprintf(a3, "\tfetchRecordZoneChanges: %lld\n", [(UserRegistryStats *)self fetchRecordZoneChanges]);
-  fprintf(a3, "\tlastfetchRecordZoneChangesAtStart: %s\n", v8);
-  fprintf(a3, "\tpushNotifications: %lld\n", [(UserRegistryStats *)self pushNotifications]);
-  fprintf(a3, "\tzoneReset: %lld\n", [(UserRegistryStats *)self zoneReset]);
-  fprintf(a3, "\trecordFetch: %lld\n", [(UserRegistryStats *)self recordFetch]);
-  fprintf(a3, "\trecordModify: %lld\n", [(UserRegistryStats *)self recordModify]);
-  fputc(10, a3);
+  fwrite("UserRegistryStats:\n\n", 0x14uLL, 1uLL, stats);
+  fprintf(stats, "\tfetchRecordZoneChanges: %lld\n", [(UserRegistryStats *)self fetchRecordZoneChanges]);
+  fprintf(stats, "\tlastfetchRecordZoneChangesAtStart: %s\n", v8);
+  fprintf(stats, "\tpushNotifications: %lld\n", [(UserRegistryStats *)self pushNotifications]);
+  fprintf(stats, "\tzoneReset: %lld\n", [(UserRegistryStats *)self zoneReset]);
+  fprintf(stats, "\trecordFetch: %lld\n", [(UserRegistryStats *)self recordFetch]);
+  fprintf(stats, "\trecordModify: %lld\n", [(UserRegistryStats *)self recordModify]);
+  fputc(10, stats);
   v5 = *MEMORY[0x1E69E9840];
 }
 
@@ -68,11 +68,11 @@
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v13 = [(UserRegistryStats *)self lastfetchRecordZoneChangesAtStart];
-  if (v13)
+  lastfetchRecordZoneChangesAtStart = [(UserRegistryStats *)self lastfetchRecordZoneChangesAtStart];
+  if (lastfetchRecordZoneChangesAtStart)
   {
     memset(&v12, 0, sizeof(v12));
-    localtime_r(&v13, &v12);
+    localtime_r(&lastfetchRecordZoneChangesAtStart, &v12);
     strftime(v14, 0x80uLL, "%Y-%m-%d-%H:%M:%S", &v12);
   }
 

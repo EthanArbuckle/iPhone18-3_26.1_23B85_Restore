@@ -1,7 +1,7 @@
 @interface BlockableScrollView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BlockableScrollViewDelegate)blockableDelegate;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation BlockableScrollView
@@ -13,12 +13,12 @@
   return WeakRetained;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(BlockableScrollView *)self frame];
   if (vabdd_f64(v8, width) >= 2.22044605e-16 || ([(BlockableScrollView *)self frame], vabdd_f64(v9, height) >= 2.22044605e-16))
   {
@@ -27,8 +27,8 @@
     v11.super_class = BlockableScrollView;
     [(BlockableScrollView *)&v11 setFrame:x, y, width, height];
     [(BlockableScrollView *)self setIsResizing:0];
-    v10 = [(BlockableScrollView *)self blockableDelegate];
-    [v10 blockableScrollViewDidChangeFrameSize];
+    blockableDelegate = [(BlockableScrollView *)self blockableDelegate];
+    [blockableDelegate blockableScrollViewDidChangeFrameSize];
   }
 
   else
@@ -41,16 +41,16 @@
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v10.receiver = self;
   v10.super_class = BlockableScrollView;
   if ([(BlockableScrollView *)&v10 respondsToSelector:sel_gestureRecognizerShouldBegin_])
   {
     v9.receiver = self;
     v9.super_class = BlockableScrollView;
-    v5 = [(BlockableScrollView *)&v9 gestureRecognizerShouldBegin:v4];
+    v5 = [(BlockableScrollView *)&v9 gestureRecognizerShouldBegin:beginCopy];
   }
 
   else
@@ -58,12 +58,12 @@
     v5 = 1;
   }
 
-  v6 = [(BlockableScrollView *)self blockableDelegate];
+  blockableDelegate = [(BlockableScrollView *)self blockableDelegate];
 
-  if (v6)
+  if (blockableDelegate)
   {
-    v7 = [(BlockableScrollView *)self blockableDelegate];
-    v5 &= [v7 blockableScrollViewShouldAllowScrolling];
+    blockableDelegate2 = [(BlockableScrollView *)self blockableDelegate];
+    v5 &= [blockableDelegate2 blockableScrollViewShouldAllowScrolling];
   }
 
   return v5;

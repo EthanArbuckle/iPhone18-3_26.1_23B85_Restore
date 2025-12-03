@@ -1,7 +1,7 @@
 @interface RequestPartOutputStreamBridge
 - (_TtC31GRPCURLSessionTransportInternal29RequestPartOutputStreamBridge)init;
 - (void)dealloc;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation RequestPartOutputStreamBridge
@@ -10,9 +10,9 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC31GRPCURLSessionTransportInternal29RequestPartOutputStreamBridge_outputStream);
-  v5 = self;
+  selfCopy = self;
   [v4 setDelegate_];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(RequestPartOutputStreamBridge *)&v6 dealloc];
 }
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = self;
-  RequestPartOutputStreamBridge.stream(_:handle:)(v6, a4);
+  streamCopy = stream;
+  selfCopy = self;
+  RequestPartOutputStreamBridge.stream(_:handle:)(streamCopy, event);
 }
 
 @end

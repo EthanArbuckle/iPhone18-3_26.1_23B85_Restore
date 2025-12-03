@@ -7,13 +7,13 @@
 
 - (void)tapStopRecording
 {
-  v2 = self;
+  selfCopy = self;
   CallRecordingViewModel.tapStopRecording()();
 }
 
 - (void)tapContainer
 {
-  v2 = self;
+  selfCopy = self;
   CallRecordingViewModel.tapContainer()();
 }
 

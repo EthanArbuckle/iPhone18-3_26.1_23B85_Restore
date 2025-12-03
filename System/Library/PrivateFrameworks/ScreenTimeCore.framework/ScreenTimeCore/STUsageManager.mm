@@ -1,48 +1,48 @@
 @interface STUsageManager
 + (id)usageGenesisDate;
-+ (int64_t)_notificationDelayForDateComponentForDSID:(id)a3 maximumDelay:(unsigned int)a4;
-- (BOOL)_updateContext:(id)a3 lastWeekScreenTime:(double)a4 weekBeforeLastScreenTime:(double)a5;
-- (STUsageManager)initWithPersistenceController:(id)a3;
-- (STUsageManager)initWithPersistenceController:(id)a3 usageReporter:(id)a4;
++ (int64_t)_notificationDelayForDateComponentForDSID:(id)d maximumDelay:(unsigned int)delay;
+- (BOOL)_updateContext:(id)context lastWeekScreenTime:(double)time weekBeforeLastScreenTime:(double)screenTime;
+- (STUsageManager)initWithPersistenceController:(id)controller;
+- (STUsageManager)initWithPersistenceController:(id)controller usageReporter:(id)reporter;
 - (id)_dateComponentsForNextWeeklyNotification;
 - (void)_addDuetNotificationObservers;
-- (void)_duetKnowledgeStorageDidTombstoneEventsNotification:(id)a3;
-- (void)_postNotification:(id)a3 rollupError:(id)a4 calendar:(id)a5 startOfLastWeek:(id)a6 completionHandler:(id)a7;
-- (void)_purgeUsageOperation:(id)a3 cancelledDidChange:(BOOL)a4;
-- (void)_purgeUsageOperation:(id)a3 executingDidChange:(BOOL)a4;
-- (void)_purgeUsageOperation:(id)a3 finishedDidChange:(BOOL)a4;
+- (void)_duetKnowledgeStorageDidTombstoneEventsNotification:(id)notification;
+- (void)_postNotification:(id)notification rollupError:(id)error calendar:(id)calendar startOfLastWeek:(id)week completionHandler:(id)handler;
+- (void)_purgeUsageOperation:(id)operation cancelledDidChange:(BOOL)change;
+- (void)_purgeUsageOperation:(id)operation executingDidChange:(BOOL)change;
+- (void)_purgeUsageOperation:(id)operation finishedDidChange:(BOOL)change;
 - (void)_removeDuetNotificationObservers;
-- (void)_resetUsageAndRollupWithCompletionHandler:(id)a3;
+- (void)_resetUsageAndRollupWithCompletionHandler:(id)handler;
 - (void)_rollupIfNeeded;
-- (void)_rollupOperation:(id)a3 cancelledDidChange:(BOOL)a4;
-- (void)_rollupOperation:(id)a3 executingDidChange:(BOOL)a4;
-- (void)_rollupOperation:(id)a3 finishedDidChange:(BOOL)a4;
-- (void)_rollupUsageWithOperation:(id)a3 completionHandler:(id)a4;
-- (void)_scheduleNextWeeklyReportNotificationAfterRollup:(BOOL)a3;
+- (void)_rollupOperation:(id)operation cancelledDidChange:(BOOL)change;
+- (void)_rollupOperation:(id)operation executingDidChange:(BOOL)change;
+- (void)_rollupOperation:(id)operation finishedDidChange:(BOOL)change;
+- (void)_rollupUsageWithOperation:(id)operation completionHandler:(id)handler;
+- (void)_scheduleNextWeeklyReportNotificationAfterRollup:(BOOL)rollup;
 - (void)_unscheduleNextWeeklyReportNotification;
-- (void)_usageOperationDidFinish:(id)a3 completion:(id)a4;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performWeeklyRollupWithCompletionHandler:(id)a3;
+- (void)_usageOperationDidFinish:(id)finish completion:(id)completion;
+- (void)controllerDidChangeContent:(id)content;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performWeeklyRollupWithCompletionHandler:(id)handler;
 - (void)resume;
-- (void)setScreenTimeEnabled:(BOOL)a3;
-- (void)setUsageGenesisDate:(id)a3;
+- (void)setScreenTimeEnabled:(BOOL)enabled;
+- (void)setUsageGenesisDate:(id)date;
 @end
 
 @implementation STUsageManager
 
-- (STUsageManager)initWithPersistenceController:(id)a3 usageReporter:(id)a4
+- (STUsageManager)initWithPersistenceController:(id)controller usageReporter:(id)reporter
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  reporterCopy = reporter;
   v27.receiver = self;
   v27.super_class = STUsageManager;
   v9 = [(STUsageManager *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_usageReporter, a4);
-    objc_storeStrong(&v10->_persistenceController, a3);
+    objc_storeStrong(&v9->_usageReporter, reporter);
+    objc_storeStrong(&v10->_persistenceController, controller);
     v11 = [[NSBackgroundActivityScheduler alloc] initWithIdentifier:@"com.apple.ScreenTimeAgent.activity.hourly-usage-rollup"];
     hourlyUsageRollupActivity = v10->_hourlyUsageRollupActivity;
     v10->_hourlyUsageRollupActivity = v11;
@@ -81,11 +81,11 @@
   return v10;
 }
 
-- (STUsageManager)initWithPersistenceController:(id)a3
+- (STUsageManager)initWithPersistenceController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_opt_new();
-  v6 = [(STUsageManager *)self initWithPersistenceController:v4 usageReporter:v5];
+  v6 = [(STUsageManager *)self initWithPersistenceController:controllerCopy usageReporter:v5];
 
   return v6;
 }
@@ -109,14 +109,14 @@
   return v4;
 }
 
-- (void)setUsageGenesisDate:(id)a3
+- (void)setUsageGenesisDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = v3;
-  if (v5)
+  if (dateCopy)
   {
-    [v3 setObject:v5 forKey:@"UsageGenesisDate"];
+    [v3 setObject:dateCopy forKey:@"UsageGenesisDate"];
   }
 
   else
@@ -125,34 +125,34 @@
   }
 }
 
-- (void)setScreenTimeEnabled:(BOOL)a3
+- (void)setScreenTimeEnabled:(BOOL)enabled
 {
-  if (self->_screenTimeEnabled != a3)
+  if (self->_screenTimeEnabled != enabled)
   {
     v10 = v3;
     v11 = v4;
-    self->_screenTimeEnabled = a3;
-    v7 = [(STUsageManager *)self rollupQueue];
+    self->_screenTimeEnabled = enabled;
+    rollupQueue = [(STUsageManager *)self rollupQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100098630;
     v8[3] = &unk_1001A6230;
     v8[4] = self;
-    v9 = a3;
-    dispatch_async(v7, v8);
+    enabledCopy = enabled;
+    dispatch_async(rollupQueue, v8);
   }
 }
 
 - (void)resume
 {
-  v3 = [(STUsageManager *)self persistenceController];
-  v4 = [v3 viewContext];
+  persistenceController = [(STUsageManager *)self persistenceController];
+  viewContext = [persistenceController viewContext];
 
   if (_os_feature_enabled_impl())
   {
     v24 = 0;
-    v5 = [_TtC15ScreenTimeAgent28LegacyUsageShutdownScheduler isLegacyUsageDisabledWithContext:v4 error:&v24];
-    v6 = v24;
+    v5 = [_TtC15ScreenTimeAgent28LegacyUsageShutdownScheduler isLegacyUsageDisabledWithContext:viewContext error:&v24];
+    hourlyUsageRollupActivity = v24;
     if (v5)
     {
       if ([v5 BOOLValue])
@@ -179,14 +179,14 @@
     }
   }
 
-  v9 = [(STUsageManager *)self usageRequestsFetchedResultsController];
+  usageRequestsFetchedResultsController = [(STUsageManager *)self usageRequestsFetchedResultsController];
 
-  if (!v9)
+  if (!usageRequestsFetchedResultsController)
   {
     v10 = +[STUsageRequest fetchRequestForLocalUsageRequests];
     v11 = [NSPredicate predicateWithFormat:@"%K != %K", @"requestedDate", @"acknowledgedDate"];
-    v12 = [v10 predicate];
-    v26[0] = v12;
+    predicate = [v10 predicate];
+    v26[0] = predicate;
     v26[1] = v11;
     v13 = [NSArray arrayWithObjects:v26 count:2];
     v14 = [NSCompoundPredicate andPredicateWithSubpredicates:v13];
@@ -197,12 +197,12 @@
     v16 = [NSArray arrayWithObjects:&v25 count:1];
     [v10 setSortDescriptors:v16];
 
-    v17 = [[NSFetchedResultsController alloc] initWithFetchRequest:v10 managedObjectContext:v4 sectionNameKeyPath:0 cacheName:0];
+    v17 = [[NSFetchedResultsController alloc] initWithFetchRequest:v10 managedObjectContext:viewContext sectionNameKeyPath:0 cacheName:0];
     [(STUsageManager *)self setUsageRequestsFetchedResultsController:v17];
     [v17 setDelegate:self];
-    v18 = [(STUsageManager *)self usageRequestsFetchedResultsController];
+    usageRequestsFetchedResultsController2 = [(STUsageManager *)self usageRequestsFetchedResultsController];
     v22 = 0;
-    LODWORD(v13) = [v18 performFetch:&v22];
+    LODWORD(v13) = [usageRequestsFetchedResultsController2 performFetch:&v22];
     v19 = v22;
 
     if (v13)
@@ -220,30 +220,30 @@
     }
   }
 
-  v6 = [(STUsageManager *)self hourlyUsageRollupActivity];
-  [v6 setRepeats:1];
-  [v6 setInterval:XPC_ACTIVITY_INTERVAL_1_HOUR];
+  hourlyUsageRollupActivity = [(STUsageManager *)self hourlyUsageRollupActivity];
+  [hourlyUsageRollupActivity setRepeats:1];
+  [hourlyUsageRollupActivity setInterval:XPC_ACTIVITY_INTERVAL_1_HOUR];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100098C84;
   v21[3] = &unk_1001A6258;
   v21[4] = self;
-  [v6 scheduleWithBlock:v21];
+  [hourlyUsageRollupActivity scheduleWithBlock:v21];
 LABEL_19:
 }
 
-- (void)_rollupUsageWithOperation:(id)a3 completionHandler:(id)a4
+- (void)_rollupUsageWithOperation:(id)operation completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
-    v8 = [(STUsageManager *)self persistenceController];
-    v9 = [v8 newBackgroundContext];
+    persistenceController = [(STUsageManager *)self persistenceController];
+    newBackgroundContext = [persistenceController newBackgroundContext];
 
     v22 = 0;
-    v10 = [_TtC15ScreenTimeAgent28LegacyUsageShutdownScheduler isLegacyUsageDisabledWithContext:v9 error:&v22];
-    v11 = v22;
+    v10 = [_TtC15ScreenTimeAgent28LegacyUsageShutdownScheduler isLegacyUsageDisabledWithContext:newBackgroundContext error:&v22];
+    rollupOperationQueue = v22;
     if (v10)
     {
       if ([v10 BOOLValue])
@@ -255,9 +255,9 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "_rollupUsageWithOperation :: Legacy usage is disabled skipping usage rollup", buf, 2u);
         }
 
-        if (v7)
+        if (handlerCopy)
         {
-          v7[2](v7, 0);
+          handlerCopy[2](handlerCopy, 0);
         }
 
         goto LABEL_21;
@@ -273,7 +273,7 @@ LABEL_19:
       }
     }
 
-    v20 = v11;
+    v20 = rollupOperationQueue;
     v14 = [_TtC15ScreenTimeAgent28LegacyUsageShutdownScheduler scheduleSystemTaskAndReturnError:&v20];
     v15 = v20;
 
@@ -294,31 +294,31 @@ LABEL_19:
     }
   }
 
-  [v6 addObserver:self forKeyPath:@"cancelled" options:1 context:"KVOContextSTUsageManager"];
-  [v6 addObserver:self forKeyPath:@"executing" options:1 context:"KVOContextSTUsageManager"];
-  [v6 addObserver:self forKeyPath:@"finished" options:1 context:"KVOContextSTUsageManager"];
-  if (v7)
+  [operationCopy addObserver:self forKeyPath:@"cancelled" options:1 context:"KVOContextSTUsageManager"];
+  [operationCopy addObserver:self forKeyPath:@"executing" options:1 context:"KVOContextSTUsageManager"];
+  [operationCopy addObserver:self forKeyPath:@"finished" options:1 context:"KVOContextSTUsageManager"];
+  if (handlerCopy)
   {
-    v18 = objc_retainBlock(v7);
-    v19 = [(STUsageManager *)self rollupQueue];
-    [v6 addTarget:self selector:"_usageOperationDidFinish:completion:" forOperationEvents:6 userInfo:v18 delegateQueue:v19];
+    v18 = objc_retainBlock(handlerCopy);
+    rollupQueue = [(STUsageManager *)self rollupQueue];
+    [operationCopy addTarget:self selector:"_usageOperationDidFinish:completion:" forOperationEvents:6 userInfo:v18 delegateQueue:rollupQueue];
   }
 
-  v11 = [(STUsageManager *)self rollupOperationQueue];
-  [v11 addOperation:v6];
+  rollupOperationQueue = [(STUsageManager *)self rollupOperationQueue];
+  [rollupOperationQueue addOperation:operationCopy];
 LABEL_21:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == "KVOContextSTUsageManager")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == "KVOContextSTUsageManager")
   {
-    if ([v10 isEqualToString:@"cancelled"])
+    if ([pathCopy isEqualToString:@"cancelled"])
     {
-      v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
       v14 = +[NSNull null];
 
       if (v13 == v14)
@@ -330,7 +330,7 @@ LABEL_21:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        -[STUsageManager _rollupOperation:cancelledDidChange:](self, "_rollupOperation:cancelledDidChange:", v11, [v13 BOOLValue]);
+        -[STUsageManager _rollupOperation:cancelledDidChange:](self, "_rollupOperation:cancelledDidChange:", objectCopy, [v13 BOOLValue]);
       }
 
       else
@@ -341,13 +341,13 @@ LABEL_21:
           sub_100120F58();
         }
 
-        -[STUsageManager _purgeUsageOperation:cancelledDidChange:](self, "_purgeUsageOperation:cancelledDidChange:", v11, [v13 BOOLValue]);
+        -[STUsageManager _purgeUsageOperation:cancelledDidChange:](self, "_purgeUsageOperation:cancelledDidChange:", objectCopy, [v13 BOOLValue]);
       }
     }
 
-    else if ([v10 isEqualToString:@"executing"])
+    else if ([pathCopy isEqualToString:@"executing"])
     {
-      v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
       v15 = +[NSNull null];
 
       if (v13 == v15)
@@ -359,7 +359,7 @@ LABEL_21:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        -[STUsageManager _rollupOperation:executingDidChange:](self, "_rollupOperation:executingDidChange:", v11, [v13 BOOLValue]);
+        -[STUsageManager _rollupOperation:executingDidChange:](self, "_rollupOperation:executingDidChange:", objectCopy, [v13 BOOLValue]);
       }
 
       else
@@ -370,18 +370,18 @@ LABEL_21:
           sub_100120EE0();
         }
 
-        -[STUsageManager _purgeUsageOperation:executingDidChange:](self, "_purgeUsageOperation:executingDidChange:", v11, [v13 BOOLValue]);
+        -[STUsageManager _purgeUsageOperation:executingDidChange:](self, "_purgeUsageOperation:executingDidChange:", objectCopy, [v13 BOOLValue]);
       }
     }
 
     else
     {
-      if (![v10 isEqualToString:@"finished"])
+      if (![pathCopy isEqualToString:@"finished"])
       {
         goto LABEL_28;
       }
 
-      v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
       v16 = +[NSNull null];
 
       if (v13 == v16)
@@ -393,7 +393,7 @@ LABEL_21:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        -[STUsageManager _rollupOperation:finishedDidChange:](self, "_rollupOperation:finishedDidChange:", v11, [v13 BOOLValue]);
+        -[STUsageManager _rollupOperation:finishedDidChange:](self, "_rollupOperation:finishedDidChange:", objectCopy, [v13 BOOLValue]);
       }
 
       else
@@ -404,7 +404,7 @@ LABEL_21:
           sub_100120E68();
         }
 
-        -[STUsageManager _purgeUsageOperation:finishedDidChange:](self, "_purgeUsageOperation:finishedDidChange:", v11, [v13 BOOLValue]);
+        -[STUsageManager _purgeUsageOperation:finishedDidChange:](self, "_purgeUsageOperation:finishedDidChange:", objectCopy, [v13 BOOLValue]);
       }
     }
 
@@ -413,56 +413,56 @@ LABEL_21:
 
   v17.receiver = self;
   v17.super_class = STUsageManager;
-  [(STUsageManager *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(STUsageManager *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_28:
 }
 
-- (void)_rollupOperation:(id)a3 cancelledDidChange:(BOOL)a4
+- (void)_rollupOperation:(id)operation cancelledDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  changeCopy = change;
+  operationCopy = operation;
+  if (changeCopy)
   {
-    v8 = v6;
+    v8 = operationCopy;
     v7 = self->_queuedRollupOperations;
     objc_sync_enter(v7);
     [(NSMutableArray *)self->_queuedRollupOperations removeObject:v8];
     objc_sync_exit(v7);
 
-    v6 = v8;
+    operationCopy = v8;
   }
 }
 
-- (void)_rollupOperation:(id)a3 executingDidChange:(BOOL)a4
+- (void)_rollupOperation:(id)operation executingDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  changeCopy = change;
+  operationCopy = operation;
+  if (changeCopy)
   {
-    v8 = v6;
+    v8 = operationCopy;
     v7 = self->_queuedRollupOperations;
     objc_sync_enter(v7);
     [(NSMutableArray *)self->_queuedRollupOperations removeObject:v8];
     objc_sync_exit(v7);
 
-    v6 = v8;
+    operationCopy = v8;
   }
 }
 
-- (void)_rollupOperation:(id)a3 finishedDidChange:(BOOL)a4
+- (void)_rollupOperation:(id)operation finishedDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  changeCopy = change;
+  operationCopy = operation;
+  if (changeCopy)
   {
     v7 = self->_queuedRollupOperations;
     objc_sync_enter(v7);
-    [(NSMutableArray *)self->_queuedRollupOperations removeObject:v6];
+    [(NSMutableArray *)self->_queuedRollupOperations removeObject:operationCopy];
     objc_sync_exit(v7);
 
-    [v6 removeObserver:self forKeyPath:@"cancelled" context:"KVOContextSTUsageManager"];
-    [v6 removeObserver:self forKeyPath:@"executing" context:"KVOContextSTUsageManager"];
-    [v6 removeObserver:self forKeyPath:@"finished" context:"KVOContextSTUsageManager"];
+    [operationCopy removeObserver:self forKeyPath:@"cancelled" context:"KVOContextSTUsageManager"];
+    [operationCopy removeObserver:self forKeyPath:@"executing" context:"KVOContextSTUsageManager"];
+    [operationCopy removeObserver:self forKeyPath:@"finished" context:"KVOContextSTUsageManager"];
     if ([(STUsageManager *)self resetTimelinesOnNextRollup])
     {
       [(STUsageManager *)self setResetTimelinesOnNextRollup:0];
@@ -487,45 +487,45 @@ LABEL_28:
   }
 }
 
-- (void)_purgeUsageOperation:(id)a3 cancelledDidChange:(BOOL)a4
+- (void)_purgeUsageOperation:(id)operation cancelledDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  changeCopy = change;
+  operationCopy = operation;
+  if (changeCopy)
   {
-    v8 = v6;
+    v8 = operationCopy;
     v7 = self->_queuedPurgeUsageOperations;
     objc_sync_enter(v7);
     [(NSMutableArray *)self->_queuedPurgeUsageOperations removeObject:v8];
     objc_sync_exit(v7);
 
-    v6 = v8;
+    operationCopy = v8;
   }
 }
 
-- (void)_purgeUsageOperation:(id)a3 executingDidChange:(BOOL)a4
+- (void)_purgeUsageOperation:(id)operation executingDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  changeCopy = change;
+  operationCopy = operation;
+  if (changeCopy)
   {
-    v8 = v6;
+    v8 = operationCopy;
     v7 = self->_queuedPurgeUsageOperations;
     objc_sync_enter(v7);
     [(NSMutableArray *)self->_queuedPurgeUsageOperations removeObject:v8];
     objc_sync_exit(v7);
 
-    v6 = v8;
+    operationCopy = v8;
   }
 }
 
-- (void)_purgeUsageOperation:(id)a3 finishedDidChange:(BOOL)a4
+- (void)_purgeUsageOperation:(id)operation finishedDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  changeCopy = change;
+  operationCopy = operation;
+  if (changeCopy)
   {
-    v8 = v6;
+    v8 = operationCopy;
     v7 = self->_queuedPurgeUsageOperations;
     objc_sync_enter(v7);
     [(NSMutableArray *)self->_queuedPurgeUsageOperations removeObject:v8];
@@ -534,24 +534,24 @@ LABEL_28:
     [v8 removeObserver:self forKeyPath:@"cancelled" context:"KVOContextSTUsageManager"];
     [v8 removeObserver:self forKeyPath:@"executing" context:"KVOContextSTUsageManager"];
     [v8 removeObserver:self forKeyPath:@"finished" context:"KVOContextSTUsageManager"];
-    v6 = v8;
+    operationCopy = v8;
   }
 }
 
-- (void)_usageOperationDidFinish:(id)a3 completion:(id)a4
+- (void)_usageOperationDidFinish:(id)finish completion:(id)completion
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = [v12 error];
-  v7 = [v6 domain];
-  if ([v7 isEqualToString:CATErrorDomain])
+  finishCopy = finish;
+  completionCopy = completion;
+  error = [finishCopy error];
+  domain = [error domain];
+  if ([domain isEqualToString:CATErrorDomain])
   {
-    v8 = [v12 error];
-    v9 = [v8 code];
+    error2 = [finishCopy error];
+    code = [error2 code];
 
-    if (v9 == 404)
+    if (code == 404)
     {
-      v10 = [NSError errorWithDomain:STErrorDomain code:7 userInfo:0];
+      error3 = [NSError errorWithDomain:STErrorDomain code:7 userInfo:0];
       goto LABEL_6;
     }
   }
@@ -560,10 +560,10 @@ LABEL_28:
   {
   }
 
-  v10 = [v12 error];
+  error3 = [finishCopy error];
 LABEL_6:
-  v11 = v10;
-  v5[2](v5, v10);
+  v11 = error3;
+  completionCopy[2](completionCopy, error3);
 }
 
 - (void)_addDuetNotificationObservers
@@ -571,18 +571,18 @@ LABEL_6:
   v3 = +[NSDistributedNotificationCenter defaultCenter];
   v4 = _DKKnowledgeStorageDidTombstoneEventsNotification;
   v5 = +[_DKSystemEventStreams appUsageStream];
-  v6 = [v5 name];
-  [v3 addObserver:self selector:"_duetKnowledgeStorageDidTombstoneEventsNotification:" name:v4 object:v6];
+  name = [v5 name];
+  [v3 addObserver:self selector:"_duetKnowledgeStorageDidTombstoneEventsNotification:" name:v4 object:name];
 
   v7 = +[NSDistributedNotificationCenter defaultCenter];
   v8 = +[_DKSystemEventStreams appWebUsageStream];
-  v9 = [v8 name];
-  [v7 addObserver:self selector:"_duetKnowledgeStorageDidTombstoneEventsNotification:" name:v4 object:v9];
+  name2 = [v8 name];
+  [v7 addObserver:self selector:"_duetKnowledgeStorageDidTombstoneEventsNotification:" name:v4 object:name2];
 
   v12 = +[NSDistributedNotificationCenter defaultCenter];
   v10 = +[_DKSystemEventStreams notificationUsageStream];
-  v11 = [v10 name];
-  [v12 addObserver:self selector:"_duetKnowledgeStorageDidTombstoneEventsNotification:" name:v4 object:v11];
+  name3 = [v10 name];
+  [v12 addObserver:self selector:"_duetKnowledgeStorageDidTombstoneEventsNotification:" name:v4 object:name3];
 }
 
 - (void)_removeDuetNotificationObservers
@@ -590,55 +590,55 @@ LABEL_6:
   v3 = +[NSDistributedNotificationCenter defaultCenter];
   v4 = _DKKnowledgeStorageDidTombstoneEventsNotification;
   v5 = +[_DKSystemEventStreams appUsageStream];
-  v6 = [v5 name];
-  [v3 removeObserver:self name:v4 object:v6];
+  name = [v5 name];
+  [v3 removeObserver:self name:v4 object:name];
 
   v7 = +[NSDistributedNotificationCenter defaultCenter];
   v8 = +[_DKSystemEventStreams appWebUsageStream];
-  v9 = [v8 name];
-  [v7 removeObserver:self name:v4 object:v9];
+  name2 = [v8 name];
+  [v7 removeObserver:self name:v4 object:name2];
 
   v12 = +[NSDistributedNotificationCenter defaultCenter];
   v10 = +[_DKSystemEventStreams notificationUsageStream];
-  v11 = [v10 name];
-  [v12 removeObserver:self name:v4 object:v11];
+  name3 = [v10 name];
+  [v12 removeObserver:self name:v4 object:name3];
 }
 
-- (void)_duetKnowledgeStorageDidTombstoneEventsNotification:(id)a3
+- (void)_duetKnowledgeStorageDidTombstoneEventsNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = +[STLog usage];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100120FD0(v4);
+    sub_100120FD0(notificationCopy);
   }
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009A540;
   v7[3] = &unk_1001A4048;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   [(STUsageManager *)self _resetUsageAndRollupWithCompletionHandler:v7];
 }
 
-- (void)_resetUsageAndRollupWithCompletionHandler:(id)a3
+- (void)_resetUsageAndRollupWithCompletionHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10009A62C;
   v4[3] = &unk_1001A62A0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(STUsageManager *)v5 _purgeAllUsage:0 completionHandler:v4];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(STUsageManager *)selfCopy _purgeAllUsage:0 completionHandler:v4];
 }
 
-- (void)performWeeklyRollupWithCompletionHandler:(id)a3
+- (void)performWeeklyRollupWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STUsageManager *)self usageGenesisDate];
-  if (v5)
+  handlerCopy = handler;
+  usageGenesisDate = [(STUsageManager *)self usageGenesisDate];
+  if (usageGenesisDate)
   {
     v6 = [NSUserDefaults alloc];
     v7 = [v6 initWithSuiteName:STScreenTimeAppGroupName];
@@ -651,7 +651,7 @@ LABEL_6:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Weekly report notification is disabled", buf, 2u);
       }
 
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -661,7 +661,7 @@ LABEL_6:
       v22 = objc_opt_new();
       v23 = [v9 startOfDayForDate:?];
       v10 = [v9 nextDateAfterDate:v23 matchingUnit:512 value:objc_msgSend(v9 options:{"firstWeekday"), 260}];
-      v11 = v5;
+      v11 = usageGenesisDate;
       if ([v11 compare:v10] == -1)
       {
         v12 = v10;
@@ -671,8 +671,8 @@ LABEL_6:
 
       v13 = os_transaction_create();
       v14 = [STRollupUsageOperation alloc];
-      v15 = [(STUsageManager *)self persistenceController];
-      v16 = [(STRollupUsageOperation *)v14 initWithPersistenceController:v15 genesisDate:v11 duration:60 isBackgroundTask:0 isRecomputingUsage:0];
+      persistenceController = [(STUsageManager *)self persistenceController];
+      v16 = [(STRollupUsageOperation *)v14 initWithPersistenceController:persistenceController genesisDate:v11 duration:60 isBackgroundTask:0 isRecomputingUsage:0];
 
       v17 = self->_queuedRollupOperations;
       objc_sync_enter(v17);
@@ -688,7 +688,7 @@ LABEL_6:
       v27 = v22;
       v28 = v10;
       v29 = v13;
-      v30 = v4;
+      v30 = handlerCopy;
       v18 = v13;
       v19 = v10;
       v20 = v22;
@@ -702,55 +702,55 @@ LABEL_6:
   else
   {
     v7 = [NSError errorWithDomain:STErrorDomain code:7 userInfo:0];
-    (v4)[2](v4, v7);
+    (handlerCopy)[2](handlerCopy, v7);
   }
 }
 
-- (void)_scheduleNextWeeklyReportNotificationAfterRollup:(BOOL)a3
+- (void)_scheduleNextWeeklyReportNotificationAfterRollup:(BOOL)rollup
 {
-  v3 = a3;
+  rollupCopy = rollup;
   v5 = +[NSCalendar currentCalendar];
   v6 = objc_opt_new();
-  if (v3)
+  if (rollupCopy)
   {
     v7 = [v5 dateByAddingUnit:16 value:1 toDate:v6 options:0];
 
     v6 = v7;
   }
 
-  v8 = [(STUsageManager *)self _dateComponentsForNextWeeklyNotification];
+  _dateComponentsForNextWeeklyNotification = [(STUsageManager *)self _dateComponentsForNextWeeklyNotification];
   v9 = +[NSUserDefaults standardUserDefaults];
   v10 = [v9 objectForKey:@"TestForceRescheduleWeeklyReport"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
   }
 
   else
   {
-    v11 = 0;
+    bOOLValue = 0;
   }
 
-  v12 = [v5 nextDateAfterDate:v6 matchingComponents:v8 options:1024];
+  v12 = [v5 nextDateAfterDate:v6 matchingComponents:_dateComponentsForNextWeeklyNotification options:1024];
   v13 = [NSDate dateWithTimeInterval:v12 sinceDate:(-300 - arc4random_uniform(0x6F54u))];
 
-  v14 = [(STUsageManager *)self weeklyAlarmObserver];
-  v15 = [v14 configuration];
+  weeklyAlarmObserver = [(STUsageManager *)self weeklyAlarmObserver];
+  configuration = [weeklyAlarmObserver configuration];
 
-  v16 = [v15 objectForKeyedSubscript:@"Date"];
+  v16 = [configuration objectForKeyedSubscript:@"Date"];
   if (v16)
   {
     if ([v5 isDate:v16 inSameDayAsDate:v13])
     {
-      if (!v11)
+      if (!bOOLValue)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!(([v16 compare:v13] == -1) | v11 & 1))
+    else if (!(([v16 compare:v13] == -1) | bOOLValue & 1))
     {
 LABEL_9:
       v17 = +[STLog usage];
@@ -766,8 +766,8 @@ LABEL_9:
   v27 = @"Date";
   v28 = v13;
   v18 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-  v19 = [(STUsageManager *)self weeklyAlarmObserver];
-  [v19 setConfiguration:v18];
+  weeklyAlarmObserver2 = [(STUsageManager *)self weeklyAlarmObserver];
+  [weeklyAlarmObserver2 setConfiguration:v18];
 
   v17 = +[STLog usage];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -785,17 +785,17 @@ LABEL_9:
 LABEL_14:
 }
 
-+ (int64_t)_notificationDelayForDateComponentForDSID:(id)a3 maximumDelay:(unsigned int)a4
++ (int64_t)_notificationDelayForDateComponentForDSID:(id)d maximumDelay:(unsigned int)delay
 {
-  v5 = [a3 unsignedIntegerValue];
-  if (v5)
+  unsignedIntegerValue = [d unsignedIntegerValue];
+  if (unsignedIntegerValue)
   {
-    return v5 % a4;
+    return unsignedIntegerValue % delay;
   }
 
   else
   {
-    return arc4random_uniform(a4);
+    return arc4random_uniform(delay);
   }
 }
 
@@ -829,8 +829,8 @@ LABEL_14:
 
 - (void)_unscheduleNextWeeklyReportNotification
 {
-  v2 = [(STUsageManager *)self weeklyAlarmObserver];
-  [v2 setConfiguration:0];
+  weeklyAlarmObserver = [(STUsageManager *)self weeklyAlarmObserver];
+  [weeklyAlarmObserver setConfiguration:0];
 
   v3 = +[STLog usage];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -840,34 +840,34 @@ LABEL_14:
   }
 }
 
-- (void)_postNotification:(id)a3 rollupError:(id)a4 calendar:(id)a5 startOfLastWeek:(id)a6 completionHandler:(id)a7
+- (void)_postNotification:(id)notification rollupError:(id)error calendar:(id)calendar startOfLastWeek:(id)week completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  notificationCopy = notification;
+  errorCopy = error;
+  handlerCopy = handler;
   v13 = [STUsageDetailsViewModelCoordinator alloc];
-  v14 = [(STUsageManager *)self persistenceController];
-  v15 = [v13 initForLocalDeviceWithPersistenceController:v14 selectedUsageReportType:0 usageContext:2];
+  persistenceController = [(STUsageManager *)self persistenceController];
+  v15 = [v13 initForLocalDeviceWithPersistenceController:persistenceController selectedUsageReportType:0 usageContext:2];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10009B320;
   v20[3] = &unk_1001A62F0;
   v21 = v15;
-  v22 = v11;
-  v23 = v10;
-  v24 = v12;
-  v16 = v10;
-  v17 = v11;
+  v22 = errorCopy;
+  v23 = notificationCopy;
+  v24 = handlerCopy;
+  v16 = notificationCopy;
+  v17 = errorCopy;
   v18 = v15;
-  v19 = v12;
+  v19 = handlerCopy;
   [v18 loadViewModelWithCompletionHandler:v20];
 }
 
-- (BOOL)_updateContext:(id)a3 lastWeekScreenTime:(double)a4 weekBeforeLastScreenTime:(double)a5
+- (BOOL)_updateContext:(id)context lastWeekScreenTime:(double)time weekBeforeLastScreenTime:(double)screenTime
 {
-  v7 = a3;
-  if (a4 <= 1.0)
+  contextCopy = context;
+  if (time <= 1.0)
   {
     v9 = +[STLog userNotifications];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -879,29 +879,29 @@ LABEL_14:
 
   else
   {
-    if (a4 - a5 == 0.0)
+    if (time - screenTime == 0.0)
     {
       v8 = 0.0;
     }
 
     else
     {
-      v8 = (a4 - a5) / a5;
+      v8 = (time - screenTime) / screenTime;
     }
 
-    v9 = [NSNumber numberWithDouble:a4];
-    [v7 setDeltaScreenTimeUsage:v9 totalUsage:v8];
+    v9 = [NSNumber numberWithDouble:time];
+    [contextCopy setDeltaScreenTimeUsage:v9 totalUsage:v8];
   }
 
-  return a4 > 1.0;
+  return time > 1.0;
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = a3;
-  v5 = [(STUsageManager *)self usageRequestsFetchedResultsController];
+  contentCopy = content;
+  usageRequestsFetchedResultsController = [(STUsageManager *)self usageRequestsFetchedResultsController];
 
-  if (v5 == v4)
+  if (usageRequestsFetchedResultsController == contentCopy)
   {
 
     [(STUsageManager *)self _rollupIfNeeded];
@@ -910,21 +910,21 @@ LABEL_14:
 
 - (void)_rollupIfNeeded
 {
-  v3 = [(STUsageManager *)self usageRequestsFetchedResultsController];
-  v4 = [v3 fetchedObjects];
-  v5 = [v4 firstObject];
-  v6 = [v5 objectID];
+  usageRequestsFetchedResultsController = [(STUsageManager *)self usageRequestsFetchedResultsController];
+  fetchedObjects = [usageRequestsFetchedResultsController fetchedObjects];
+  firstObject = [fetchedObjects firstObject];
+  objectID = [firstObject objectID];
 
-  if (v6)
+  if (objectID)
   {
-    v7 = [(STUsageManager *)self persistenceController];
+    persistenceController = [(STUsageManager *)self persistenceController];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10009B7E4;
     v8[3] = &unk_1001A3DE0;
-    v9 = v6;
-    v10 = self;
-    [v7 performBackgroundTaskAndWait:v8];
+    v9 = objectID;
+    selfCopy = self;
+    [persistenceController performBackgroundTaskAndWait:v8];
   }
 }
 

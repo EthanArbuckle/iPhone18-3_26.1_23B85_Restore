@@ -1,70 +1,70 @@
 @interface UIDropShadowView
 - (BOOL)_effectiveInsetsContentViewForGrabber;
-- (BOOL)_isGrabber:(id)a3;
+- (BOOL)_isGrabber:(id)grabber;
 - (CGRect)_contentViewFrame;
 - (CGSize)_grabberPreferredSize;
-- (UIDropShadowView)initWithFrame:(CGRect)a3 independentCorners:(int64_t)a4 supportsShadow:(BOOL)a5 stylesSheetsAsCards:(BOOL)a6;
+- (UIDropShadowView)initWithFrame:(CGRect)frame independentCorners:(int64_t)corners supportsShadow:(BOOL)shadow stylesSheetsAsCards:(BOOL)cards;
 - (UIDropShadowViewDelegate)_delegate;
 - (UIEdgeInsets)contentTouchInsets;
 - (UIRectCornerRadii)environmentMatchingCornerRadii;
 - (UIView)deepestClippingView;
 - (UIView)firstCornerClippingDescendant;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_grabberPrimaryAction;
 - (void)_layoutGrabbers;
-- (void)_setGrabberAlpha:(double)a3;
-- (void)_setGrabberBlurEnabled:(BOOL)a3;
-- (void)_setGrabberEdge:(int64_t)a3;
-- (void)_setGrabberLumaTrackingEnabled:(BOOL)a3;
-- (void)_setGrabberPreferredSize:(CGSize)a3;
-- (void)_setGrabberSpacing:(double)a3;
-- (void)_setHasGrabber:(BOOL)a3;
-- (void)_setInsetsContentViewForGrabber:(BOOL)a3;
+- (void)_setGrabberAlpha:(double)alpha;
+- (void)_setGrabberBlurEnabled:(BOOL)enabled;
+- (void)_setGrabberEdge:(int64_t)edge;
+- (void)_setGrabberLumaTrackingEnabled:(BOOL)enabled;
+- (void)_setGrabberPreferredSize:(CGSize)size;
+- (void)_setGrabberSpacing:(double)spacing;
+- (void)_setHasGrabber:(BOOL)grabber;
+- (void)_setInsetsContentViewForGrabber:(BOOL)grabber;
 - (void)didFinishRotation;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
-- (void)setEnvironmentMatchingCornerRadii:(UIRectCornerRadii)a3;
-- (void)setMagicShadowAlpha:(double)a3;
-- (void)setMasksTopCornersOnly:(BOOL)a3;
-- (void)setOverlayView:(id)a3;
-- (void)updateBackgroundCornerRadii:(UIRectCornerRadii)a3;
+- (void)setContentView:(id)view;
+- (void)setEnvironmentMatchingCornerRadii:(UIRectCornerRadii)radii;
+- (void)setMagicShadowAlpha:(double)alpha;
+- (void)setMasksTopCornersOnly:(BOOL)only;
+- (void)setOverlayView:(id)view;
+- (void)updateBackgroundCornerRadii:(UIRectCornerRadii)radii;
 - (void)updateCornerClippingViews;
-- (void)willBeginRotationWithOriginalBounds:(CGRect)a3 newBounds:(CGRect)a4;
+- (void)willBeginRotationWithOriginalBounds:(CGRect)bounds newBounds:(CGRect)newBounds;
 @end
 
 @implementation UIDropShadowView
 
-- (void)updateBackgroundCornerRadii:(UIRectCornerRadii)a3
+- (void)updateBackgroundCornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a3.topRight;
-  bottomRight = a3.bottomRight;
-  bottomLeft = a3.bottomLeft;
-  topLeft = a3.topLeft;
-  v7 = self;
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  selfCopy = self;
   sub_188AE1CF0(topLeft, bottomLeft, bottomRight, topRight);
 }
 
 - (void)updateCornerClippingViews
 {
-  v3 = [(UIView *)self window];
-  v4 = [v3 windowScene];
-  v5 = [v4 _effectiveUISettings];
-  v47 = [v5 cornerRadiusConfiguration];
+  window = [(UIView *)self window];
+  windowScene = [window windowScene];
+  _effectiveUISettings = [windowScene _effectiveUISettings];
+  cornerRadiusConfiguration = [_effectiveUISettings cornerRadiusConfiguration];
 
-  if (!v47)
+  if (!cornerRadiusConfiguration)
   {
     if (_UISolariumEnabled() && _UIApplicationProcessIsSpringBoard())
     {
       v6 = objc_alloc(MEMORY[0x1E698E668]);
-      v7 = [(UIView *)self traitCollection];
-      [v7 displayCornerRadius];
-      v47 = [v6 initWithCornerRadius:?];
+      traitCollection = [(UIView *)self traitCollection];
+      [traitCollection displayCornerRadius];
+      cornerRadiusConfiguration = [v6 initWithCornerRadius:?];
     }
 
     else
     {
-      v47 = 0;
+      cornerRadiusConfiguration = 0;
     }
   }
 
@@ -72,13 +72,13 @@
   {
     if (self->_environmentMatchingCornerRadii.topLeft == 1.79769313e308)
     {
-      [v47 topLeft];
+      [cornerRadiusConfiguration topLeft];
     }
 
     v8 = [UICornerRadius fixedRadius:?];
     if (self->_environmentMatchingCornerRadii.topRight == 1.79769313e308)
     {
-      [v47 topRight];
+      [cornerRadiusConfiguration topRight];
     }
 
     v9 = [UICornerRadius fixedRadius:?];
@@ -92,13 +92,13 @@
     {
       if (self->_environmentMatchingCornerRadii.bottomLeft == 1.79769313e308)
       {
-        [v47 bottomLeft];
+        [cornerRadiusConfiguration bottomLeft];
       }
 
       v10 = [UICornerRadius fixedRadius:?];
       if (self->_environmentMatchingCornerRadii.bottomRight == 1.79769313e308)
       {
-        [v47 bottomRight];
+        [cornerRadiusConfiguration bottomRight];
       }
 
       v11 = [UICornerRadius fixedRadius:?];
@@ -107,60 +107,60 @@
     }
   }
 
-  v13 = [(UIDropShadowView *)self independentCorners];
-  if (v13 > 1)
+  independentCorners = [(UIDropShadowView *)self independentCorners];
+  if (independentCorners > 1)
   {
-    if (v13 == 2)
+    if (independentCorners == 2)
     {
-      v42 = [(UIDropShadowView *)self firstCornerClippingDescendant];
+      firstCornerClippingDescendant = [(UIDropShadowView *)self firstCornerClippingDescendant];
       topLeft = self->_environmentMatchingCornerRadii.topLeft;
-      [v47 topLeft];
-      setEnvironmentMatchingCornerRadius(v42, self, &self->_environmentMatchingCornerRadii, 3, topLeft, v44);
+      [cornerRadiusConfiguration topLeft];
+      setEnvironmentMatchingCornerRadius(firstCornerClippingDescendant, self, &self->_environmentMatchingCornerRadii, 3, topLeft, v44);
 
-      v17 = [(UIDropShadowView *)self cornerClippingDescendants];
-      v18 = [v17 objectAtIndexedSubscript:0];
+      cornerClippingDescendants = [(UIDropShadowView *)self cornerClippingDescendants];
+      v18 = [cornerClippingDescendants objectAtIndexedSubscript:0];
       bottomRight = self->_environmentMatchingCornerRadii.bottomRight;
-      [v47 bottomRight];
+      [cornerRadiusConfiguration bottomRight];
       v21 = v46;
       v22 = v18;
       v23 = bottomRight;
-      v24 = self;
+      selfCopy3 = self;
       p_bottomRight = &self->_environmentMatchingCornerRadii.bottomRight;
       v26 = 12;
     }
 
     else
     {
-      if (v13 != 3)
+      if (independentCorners != 3)
       {
         goto LABEL_30;
       }
 
-      v27 = [(UIDropShadowView *)self firstCornerClippingDescendant];
+      firstCornerClippingDescendant2 = [(UIDropShadowView *)self firstCornerClippingDescendant];
       v28 = self->_environmentMatchingCornerRadii.topLeft;
-      [v47 topLeft];
-      setEnvironmentMatchingCornerRadius(v27, self, &self->_environmentMatchingCornerRadii, 1, v28, v29);
+      [cornerRadiusConfiguration topLeft];
+      setEnvironmentMatchingCornerRadius(firstCornerClippingDescendant2, self, &self->_environmentMatchingCornerRadii, 1, v28, v29);
 
-      v30 = [(UIDropShadowView *)self cornerClippingDescendants];
-      v31 = [v30 objectAtIndexedSubscript:0];
+      cornerClippingDescendants2 = [(UIDropShadowView *)self cornerClippingDescendants];
+      v31 = [cornerClippingDescendants2 objectAtIndexedSubscript:0];
       bottomLeft = self->_environmentMatchingCornerRadii.bottomLeft;
-      [v47 bottomLeft];
+      [cornerRadiusConfiguration bottomLeft];
       setEnvironmentMatchingCornerRadius(v31, self, &self->_environmentMatchingCornerRadii.bottomLeft, 4, bottomLeft, v33);
 
-      v34 = [(UIDropShadowView *)self cornerClippingDescendants];
-      v35 = [v34 objectAtIndexedSubscript:1];
+      cornerClippingDescendants3 = [(UIDropShadowView *)self cornerClippingDescendants];
+      v35 = [cornerClippingDescendants3 objectAtIndexedSubscript:1];
       v36 = self->_environmentMatchingCornerRadii.bottomRight;
-      [v47 bottomRight];
+      [cornerRadiusConfiguration bottomRight];
       setEnvironmentMatchingCornerRadius(v35, self, &self->_environmentMatchingCornerRadii.bottomRight, 8, v36, v37);
 
-      v17 = [(UIDropShadowView *)self cornerClippingDescendants];
-      v18 = [v17 objectAtIndexedSubscript:2];
+      cornerClippingDescendants = [(UIDropShadowView *)self cornerClippingDescendants];
+      v18 = [cornerClippingDescendants objectAtIndexedSubscript:2];
       topRight = self->_environmentMatchingCornerRadii.topRight;
-      [v47 topRight];
+      [cornerRadiusConfiguration topRight];
       v21 = v39;
       v22 = v18;
       v23 = topRight;
-      v24 = self;
+      selfCopy3 = self;
       p_bottomRight = &self->_environmentMatchingCornerRadii.topRight;
       v26 = 2;
     }
@@ -168,38 +168,38 @@
     goto LABEL_28;
   }
 
-  if (v13)
+  if (independentCorners)
   {
-    if (v13 != 1)
+    if (independentCorners != 1)
     {
       goto LABEL_30;
     }
 
-    v14 = [(UIDropShadowView *)self firstCornerClippingDescendant];
+    firstCornerClippingDescendant3 = [(UIDropShadowView *)self firstCornerClippingDescendant];
     v15 = self->_environmentMatchingCornerRadii.topLeft;
-    [v47 topLeft];
-    setEnvironmentMatchingCornerRadius(v14, self, &self->_environmentMatchingCornerRadii, 5, v15, v16);
+    [cornerRadiusConfiguration topLeft];
+    setEnvironmentMatchingCornerRadius(firstCornerClippingDescendant3, self, &self->_environmentMatchingCornerRadii, 5, v15, v16);
 
-    v17 = [(UIDropShadowView *)self cornerClippingDescendants];
-    v18 = [v17 objectAtIndexedSubscript:0];
+    cornerClippingDescendants = [(UIDropShadowView *)self cornerClippingDescendants];
+    v18 = [cornerClippingDescendants objectAtIndexedSubscript:0];
     v19 = self->_environmentMatchingCornerRadii.bottomRight;
-    [v47 bottomRight];
+    [cornerRadiusConfiguration bottomRight];
     v21 = v20;
     v22 = v18;
     v23 = v19;
-    v24 = self;
+    selfCopy3 = self;
     p_bottomRight = &self->_environmentMatchingCornerRadii.bottomRight;
     v26 = 10;
 LABEL_28:
-    setEnvironmentMatchingCornerRadius(v22, v24, p_bottomRight, v26, v23, v21);
+    setEnvironmentMatchingCornerRadius(v22, selfCopy3, p_bottomRight, v26, v23, v21);
 
     goto LABEL_29;
   }
 
-  v17 = [(UIDropShadowView *)self firstCornerClippingDescendant];
+  cornerClippingDescendants = [(UIDropShadowView *)self firstCornerClippingDescendant];
   v40 = self->_environmentMatchingCornerRadii.topLeft;
-  [v47 topLeft];
-  setEnvironmentMatchingCornerRadius(v17, self, &self->_environmentMatchingCornerRadii, -1, v40, v41);
+  [cornerRadiusConfiguration topLeft];
+  setEnvironmentMatchingCornerRadius(cornerClippingDescendants, self, &self->_environmentMatchingCornerRadii, -1, v40, v41);
 LABEL_29:
 
 LABEL_30:
@@ -214,20 +214,20 @@ LABEL_30:
 
 - (UIView)deepestClippingView
 {
-  v3 = [(UIDropShadowView *)self cornerClippingDescendants];
-  v4 = [v3 lastObject];
-  v5 = v4;
-  if (v4)
+  cornerClippingDescendants = [(UIDropShadowView *)self cornerClippingDescendants];
+  lastObject = [cornerClippingDescendants lastObject];
+  v5 = lastObject;
+  if (lastObject)
   {
-    v6 = v4;
+    firstCornerClippingDescendant = lastObject;
   }
 
   else
   {
-    v6 = [(UIDropShadowView *)self firstCornerClippingDescendant];
+    firstCornerClippingDescendant = [(UIDropShadowView *)self firstCornerClippingDescendant];
   }
 
-  v7 = v6;
+  v7 = firstCornerClippingDescendant;
 
   return v7;
 }
@@ -253,12 +253,12 @@ LABEL_30:
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(UIDropShadowView *)self contentView];
-    [v11 _setFrameIgnoringLayerTransform:{v4, v6, v8, v10}];
+    contentView = [(UIDropShadowView *)self contentView];
+    [contentView _setFrameIgnoringLayerTransform:{v4, v6, v8, v10}];
   }
 
-  v12 = [(UIDropShadowView *)self _effectiveInsetsContentViewForGrabber];
-  if (v12)
+  _effectiveInsetsContentViewForGrabber = [(UIDropShadowView *)self _effectiveInsetsContentViewForGrabber];
+  if (_effectiveInsetsContentViewForGrabber)
   {
     v13 = +[UIColor systemBackgroundColor];
   }
@@ -268,24 +268,24 @@ LABEL_30:
     v13 = 0;
   }
 
-  v14 = [(UIDropShadowView *)self deepestClippingView];
-  [v14 setBackgroundColor:v13];
+  deepestClippingView = [(UIDropShadowView *)self deepestClippingView];
+  [deepestClippingView setBackgroundColor:v13];
 
-  if (v12)
+  if (_effectiveInsetsContentViewForGrabber)
   {
   }
 }
 
 - (BOOL)_effectiveInsetsContentViewForGrabber
 {
-  v3 = [(UIDropShadowView *)self _insetsContentViewForGrabber];
-  if (v3)
+  _insetsContentViewForGrabber = [(UIDropShadowView *)self _insetsContentViewForGrabber];
+  if (_insetsContentViewForGrabber)
   {
 
-    LOBYTE(v3) = [(UIDropShadowView *)self _hasGrabber];
+    LOBYTE(_insetsContentViewForGrabber) = [(UIDropShadowView *)self _hasGrabber];
   }
 
-  return v3;
+  return _insetsContentViewForGrabber;
 }
 
 - (void)_layoutGrabbers
@@ -300,7 +300,7 @@ LABEL_30:
     v8 = v7;
     rect = v7;
     v10 = v9;
-    v11 = [(UIDropShadowView *)self _grabberEdge];
+    _grabberEdge = [(UIDropShadowView *)self _grabberEdge];
     [(UIDropShadowView *)self _grabberAlpha];
     v13 = v12;
     [(UIDropShadowView *)self _grabberSpacing];
@@ -310,20 +310,20 @@ LABEL_30:
     v40.size.width = v8;
     v40.size.height = v10;
     MidX = CGRectGetMidX(v40);
-    v17 = [(UIDropShadowView *)self _isGrabberLumaTrackingEnabled];
-    v18 = [(UIDropShadowView *)self _isGrabberBlurEnabled];
+    _isGrabberLumaTrackingEnabled = [(UIDropShadowView *)self _isGrabberLumaTrackingEnabled];
+    _isGrabberBlurEnabled = [(UIDropShadowView *)self _isGrabberBlurEnabled];
     [(UIDropShadowView *)self _grabberPreferredSize];
     v20 = v19;
     v22 = v21;
-    v23 = [(UIDropShadowView *)self _topGrabber];
-    v38 = v23;
+    _topGrabber = [(UIDropShadowView *)self _topGrabber];
+    v38 = _topGrabber;
     v24 = 0.0;
-    if (!v11)
+    if (!_grabberEdge)
     {
       v24 = v13;
     }
 
-    [v23 setAlpha:v24];
+    [_topGrabber setAlpha:v24];
     [v38 sizeToFit];
     [v38 bounds];
     if (v20 > 0.0)
@@ -341,17 +341,17 @@ LABEL_30:
     [v38 setBounds:{*MEMORY[0x1E695EFF8], v28, v25, v26}];
     [v38 bounds];
     [v38 setCenter:{MidX, v15 + CGRectGetHeight(v41) * 0.5}];
-    [v38 _setLumaTrackingEnabled:v17];
-    [v38 _setBlurEnabled:v18];
-    v29 = [(UIDropShadowView *)self _bottomGrabber];
-    v30 = v29;
+    [v38 _setLumaTrackingEnabled:_isGrabberLumaTrackingEnabled];
+    [v38 _setBlurEnabled:_isGrabberBlurEnabled];
+    _bottomGrabber = [(UIDropShadowView *)self _bottomGrabber];
+    v30 = _bottomGrabber;
     v31 = 0.0;
-    if (v11 == 1)
+    if (_grabberEdge == 1)
     {
       v31 = v13;
     }
 
-    [v29 setAlpha:v31];
+    [_bottomGrabber setAlpha:v31];
     [v30 sizeToFit];
     [v30 bounds];
     if (v20 > 0.0)
@@ -372,8 +372,8 @@ LABEL_30:
     v34 = CGRectGetHeight(v42) - v15;
     [v30 bounds];
     [v30 setCenter:{MidX, v34 - CGRectGetHeight(v43) * 0.5}];
-    [v30 _setLumaTrackingEnabled:v17];
-    [v30 _setBlurEnabled:v18];
+    [v30 _setLumaTrackingEnabled:_isGrabberLumaTrackingEnabled];
+    [v30 _setBlurEnabled:_isGrabberBlurEnabled];
   }
 }
 
@@ -399,36 +399,36 @@ LABEL_30:
   return result;
 }
 
-- (UIDropShadowView)initWithFrame:(CGRect)a3 independentCorners:(int64_t)a4 supportsShadow:(BOOL)a5 stylesSheetsAsCards:(BOOL)a6
+- (UIDropShadowView)initWithFrame:(CGRect)frame independentCorners:(int64_t)corners supportsShadow:(BOOL)shadow stylesSheetsAsCards:(BOOL)cards
 {
-  v7 = a5;
+  shadowCopy = shadow;
   v62[1] = *MEMORY[0x1E69E9840];
   v59.receiver = self;
   v59.super_class = UIDropShadowView;
-  v9 = [(UIView *)&v59 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(UIView *)&v59 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v10 = v9;
   if (!v9)
   {
     return v10;
   }
 
-  v9->_supportsShadow = v7;
-  v9->_independentCorners = a4;
+  v9->_supportsShadow = shadowCopy;
+  v9->_independentCorners = corners;
   v9->__grabberSpacing = 5.0;
   v9->__grabberBlurEnabled = 1;
   v11 = *MEMORY[0x1E69796E8];
-  v12 = [(UIView *)v9 layer];
-  [v12 setCornerCurve:v11];
+  layer = [(UIView *)v9 layer];
+  [layer setCornerCurve:v11];
 
-  if (v7)
+  if (shadowCopy)
   {
     v13 = [[_UIRoundedRectShadowView alloc] initWithCornerRadius:10.0];
     magicShadowView = v10->_magicShadowView;
     v10->_magicShadowView = v13;
 
     [(UIView *)v10->_magicShadowView setUserInteractionEnabled:0];
-    v15 = [(UIView *)v10->_magicShadowView layer];
-    [v15 setAllowsHitTesting:0];
+    layer2 = [(UIView *)v10->_magicShadowView layer];
+    [layer2 setAllowsHitTesting:0];
 
     [(_UIShadowView *)v10->_magicShadowView setUseLowerIntensity:1];
     v16 = v10->_magicShadowView;
@@ -439,8 +439,8 @@ LABEL_30:
     [(UIView *)v10 addSubview:v10->_magicShadowView];
     v17 = objc_alloc_init(UIView);
     [(UIView *)v17 setAutoresizingMask:18];
-    v18 = [(UIView *)v17 layer];
-    [v18 setCornerCurve:v11];
+    layer3 = [(UIView *)v17 layer];
+    [layer3 setCornerCurve:v11];
 
     [(UIView *)v10 addSubview:v17];
     objc_storeWeak(&v10->_firstCornerClippingDescendant, v17);
@@ -451,39 +451,39 @@ LABEL_30:
     objc_storeWeak(&v10->_firstCornerClippingDescendant, v10);
   }
 
-  if (a4 == 3)
+  if (corners == 3)
   {
     WeakRetained = objc_loadWeakRetained(&v10->_firstCornerClippingDescendant);
-    v35 = [WeakRetained layer];
-    [v35 setMaskedCorners:1];
+    layer4 = [WeakRetained layer];
+    [layer4 setMaskedCorners:1];
 
     v21 = objc_alloc_init(UIView);
     [(UIView *)v21 setAutoresizingMask:18];
-    v36 = [(UIView *)v21 layer];
-    [v36 setCornerCurve:v11];
+    layer5 = [(UIView *)v21 layer];
+    [layer5 setCornerCurve:v11];
 
-    v37 = [(UIView *)v21 layer];
-    [v37 setMaskedCorners:4];
+    layer6 = [(UIView *)v21 layer];
+    [layer6 setMaskedCorners:4];
 
     v38 = objc_loadWeakRetained(&v10->_firstCornerClippingDescendant);
     [v38 addSubview:v21];
 
     v33 = objc_alloc_init(UIView);
     [(UIView *)v33 setAutoresizingMask:18];
-    v39 = [(UIView *)v33 layer];
-    [v39 setCornerCurve:v11];
+    layer7 = [(UIView *)v33 layer];
+    [layer7 setCornerCurve:v11];
 
-    v40 = [(UIView *)v33 layer];
-    [v40 setMaskedCorners:8];
+    layer8 = [(UIView *)v33 layer];
+    [layer8 setMaskedCorners:8];
 
     [(UIView *)v21 addSubview:v33];
     v41 = objc_alloc_init(UIView);
     [(UIView *)v41 setAutoresizingMask:18];
-    v42 = [(UIView *)v41 layer];
-    [v42 setCornerCurve:v11];
+    layer9 = [(UIView *)v41 layer];
+    [layer9 setCornerCurve:v11];
 
-    v43 = [(UIView *)v41 layer];
-    [v43 setMaskedCorners:2];
+    layer10 = [(UIView *)v41 layer];
+    [layer10 setMaskedCorners:2];
 
     [(UIView *)v33 addSubview:v41];
     v60[0] = v21;
@@ -496,19 +496,19 @@ LABEL_30:
 
   else
   {
-    if (a4 == 2)
+    if (corners == 2)
     {
       v27 = objc_loadWeakRetained(&v10->_firstCornerClippingDescendant);
-      v28 = [v27 layer];
-      [v28 setMaskedCorners:3];
+      layer11 = [v27 layer];
+      [layer11 setMaskedCorners:3];
 
       v21 = objc_alloc_init(UIView);
       [(UIView *)v21 setAutoresizingMask:18];
-      v29 = [(UIView *)v21 layer];
-      [v29 setCornerCurve:v11];
+      layer12 = [(UIView *)v21 layer];
+      [layer12 setCornerCurve:v11];
 
-      v30 = [(UIView *)v21 layer];
-      [v30 setMaskedCorners:12];
+      layer13 = [(UIView *)v21 layer];
+      [layer13 setMaskedCorners:12];
 
       v31 = objc_loadWeakRetained(&v10->_firstCornerClippingDescendant);
       [v31 addSubview:v21];
@@ -520,22 +520,22 @@ LABEL_30:
 
     else
     {
-      if (a4 != 1)
+      if (corners != 1)
       {
         goto LABEL_13;
       }
 
       v19 = objc_loadWeakRetained(&v10->_firstCornerClippingDescendant);
-      v20 = [v19 layer];
-      [v20 setMaskedCorners:5];
+      layer14 = [v19 layer];
+      [layer14 setMaskedCorners:5];
 
       v21 = objc_alloc_init(UIView);
       [(UIView *)v21 setAutoresizingMask:18];
-      v22 = [(UIView *)v21 layer];
-      [v22 setCornerCurve:v11];
+      layer15 = [(UIView *)v21 layer];
+      [layer15 setCornerCurve:v11];
 
-      v23 = [(UIView *)v21 layer];
-      [v23 setMaskedCorners:10];
+      layer16 = [(UIView *)v21 layer];
+      [layer16 setMaskedCorners:10];
 
       v24 = objc_loadWeakRetained(&v10->_firstCornerClippingDescendant);
       [v24 addSubview:v21];
@@ -553,30 +553,30 @@ LABEL_30:
 LABEL_13:
   v46 = *MEMORY[0x1E695F060];
   v47 = *(MEMORY[0x1E695F060] + 8);
-  v48 = [(UIView *)v10 layer];
-  [v48 setShadowOffset:{v46, v47}];
+  layer17 = [(UIView *)v10 layer];
+  [layer17 setShadowOffset:{v46, v47}];
 
-  v49 = [(UIView *)v10 layer];
-  [v49 setShadowRadius:2.0];
+  layer18 = [(UIView *)v10 layer];
+  [layer18 setShadowRadius:2.0];
 
-  v50 = [(UIView *)v10 layer];
-  [v50 setShadowPathIsBounds:1];
+  layer19 = [(UIView *)v10 layer];
+  [layer19 setShadowPathIsBounds:1];
 
-  v51 = [(UIView *)v10 layer];
-  [v51 setPunchoutShadow:1];
+  layer20 = [(UIView *)v10 layer];
+  [layer20 setPunchoutShadow:1];
 
   v52 = +[UIColor _dimmingViewColor];
-  v53 = [v52 CGColor];
-  v54 = [(UIView *)v10 layer];
-  [v54 setShadowColor:v53];
+  cGColor = [v52 CGColor];
+  layer21 = [(UIView *)v10 layer];
+  [layer21 setShadowColor:cGColor];
 
-  if (!a6)
+  if (!cards)
   {
     v55 = 13.0;
     if ((dyld_program_sdk_at_least() & 1) != 0 || (v55 = 6.0, dyld_program_sdk_at_least()))
     {
-      v56 = [(UIView *)v10 layer];
-      [v56 setCornerRadius:v55];
+      layer22 = [(UIView *)v10 layer];
+      [layer22 setCornerRadius:v55];
     }
 
     [(UIView *)v10 setClipsToBounds:dyld_program_sdk_at_least()];
@@ -601,11 +601,11 @@ LABEL_13:
     [(UIView *)self safeAreaInsets];
     v14 = v13;
     v16 = v15;
-    v17 = [(UIDropShadowView *)self _grabberEdge];
-    if (v17 == 1)
+    _grabberEdge = [(UIDropShadowView *)self _grabberEdge];
+    if (_grabberEdge == 1)
     {
-      v20 = [(UIDropShadowView *)self _bottomGrabber];
-      [v20 bounds];
+      _bottomGrabber = [(UIDropShadowView *)self _bottomGrabber];
+      [_bottomGrabber bounds];
       v18 = v12 + v16 + CGRectGetHeight(v26);
       v19 = 0.0;
     }
@@ -614,7 +614,7 @@ LABEL_13:
     {
       v18 = 0.0;
       v19 = 0.0;
-      if (v17)
+      if (_grabberEdge)
       {
 LABEL_7:
         v4 = v4 + 0.0;
@@ -623,8 +623,8 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v20 = [(UIDropShadowView *)self _topGrabber];
-      [v20 bounds];
+      _bottomGrabber = [(UIDropShadowView *)self _topGrabber];
+      [_bottomGrabber bounds];
       v19 = v12 + v14 + CGRectGetHeight(v25);
     }
 
@@ -643,19 +643,19 @@ LABEL_8:
   return result;
 }
 
-- (void)setEnvironmentMatchingCornerRadii:(UIRectCornerRadii)a3
+- (void)setEnvironmentMatchingCornerRadii:(UIRectCornerRadii)radii
 {
   p_environmentMatchingCornerRadii = &self->_environmentMatchingCornerRadii;
-  v4.f64[0] = a3.topLeft;
-  v4.f64[1] = a3.bottomLeft;
-  v5.f64[0] = a3.bottomRight;
-  v5.f64[1] = a3.topRight;
+  v4.f64[0] = radii.topLeft;
+  v4.f64[1] = radii.bottomLeft;
+  v5.f64[0] = radii.bottomRight;
+  v5.f64[1] = radii.topRight;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_environmentMatchingCornerRadii.topLeft, v4), vceqq_f64(*&self->_environmentMatchingCornerRadii.bottomRight, v5)))) & 1) == 0)
   {
-    p_environmentMatchingCornerRadii->topLeft = a3.topLeft;
-    self->_environmentMatchingCornerRadii.bottomLeft = a3.bottomLeft;
-    self->_environmentMatchingCornerRadii.bottomRight = a3.bottomRight;
-    self->_environmentMatchingCornerRadii.topRight = a3.topRight;
+    p_environmentMatchingCornerRadii->topLeft = radii.topLeft;
+    self->_environmentMatchingCornerRadii.bottomLeft = radii.bottomLeft;
+    self->_environmentMatchingCornerRadii.bottomRight = radii.bottomRight;
+    self->_environmentMatchingCornerRadii.topRight = radii.topRight;
     [(UIDropShadowView *)self updateCornerClippingViews];
     topLeft = p_environmentMatchingCornerRadii->topLeft;
     bottomLeft = p_environmentMatchingCornerRadii->bottomLeft;
@@ -666,26 +666,26 @@ LABEL_8:
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v24[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = [(UIView *)contentView superview];
-    v8 = [(UIDropShadowView *)self deepestClippingView];
+    superview = [(UIView *)contentView superview];
+    deepestClippingView = [(UIDropShadowView *)self deepestClippingView];
 
-    if (v7 == v8)
+    if (superview == deepestClippingView)
     {
       [(UIView *)self->_contentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     if (self->_contentView)
     {
-      v9 = [(UIDropShadowView *)self deepestClippingView];
-      [v9 insertSubview:self->_contentView atIndex:0];
+      deepestClippingView2 = [(UIDropShadowView *)self deepestClippingView];
+      [deepestClippingView2 insertSubview:self->_contentView atIndex:0];
 
       if ([(UIView *)self->_contentView translatesAutoresizingMaskIntoConstraints])
       {
@@ -697,21 +697,21 @@ LABEL_8:
       else
       {
         v19 = MEMORY[0x1E69977A0];
-        v23 = [(UIView *)self->_contentView leftAnchor];
-        v22 = [(UIView *)self leftAnchor];
-        v21 = [v23 constraintEqualToAnchor:v22];
+        leftAnchor = [(UIView *)self->_contentView leftAnchor];
+        leftAnchor2 = [(UIView *)self leftAnchor];
+        v21 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
         v24[0] = v21;
-        v20 = [(UIView *)self->_contentView rightAnchor];
-        v10 = [(UIView *)self rightAnchor];
-        v11 = [v20 constraintEqualToAnchor:v10];
+        rightAnchor = [(UIView *)self->_contentView rightAnchor];
+        rightAnchor2 = [(UIView *)self rightAnchor];
+        v11 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
         v24[1] = v11;
-        v12 = [(UIView *)self->_contentView topAnchor];
-        v13 = [(UIView *)self topAnchor];
-        v14 = [v12 constraintEqualToAnchor:v13];
+        topAnchor = [(UIView *)self->_contentView topAnchor];
+        topAnchor2 = [(UIView *)self topAnchor];
+        v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v24[2] = v14;
-        v15 = [(UIView *)self->_contentView bottomAnchor];
-        v16 = [(UIView *)self bottomAnchor];
-        v17 = [v15 constraintEqualToAnchor:v16];
+        bottomAnchor = [(UIView *)self->_contentView bottomAnchor];
+        bottomAnchor2 = [(UIView *)self bottomAnchor];
+        v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v24[3] = v17;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
         [v19 activateConstraints:v18];
@@ -720,26 +720,26 @@ LABEL_8:
   }
 }
 
-- (void)setOverlayView:(id)a3
+- (void)setOverlayView:(id)view
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   overlayView = self->_overlayView;
-  if (overlayView != v5)
+  if (overlayView != viewCopy)
   {
-    v7 = [(UIView *)overlayView superview];
-    v8 = [(UIDropShadowView *)self deepestClippingView];
+    superview = [(UIView *)overlayView superview];
+    deepestClippingView = [(UIDropShadowView *)self deepestClippingView];
 
-    if (v7 == v8)
+    if (superview == deepestClippingView)
     {
       [(UIView *)self->_overlayView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_overlayView, a3);
+    objc_storeStrong(&self->_overlayView, view);
     if (self->_overlayView)
     {
-      v9 = [(UIDropShadowView *)self deepestClippingView];
-      [v9 addSubview:self->_overlayView];
+      deepestClippingView2 = [(UIDropShadowView *)self deepestClippingView];
+      [deepestClippingView2 addSubview:self->_overlayView];
 
       if ([(UIView *)self->_overlayView translatesAutoresizingMaskIntoConstraints])
       {
@@ -766,21 +766,21 @@ LABEL_8:
       else
       {
         v25 = MEMORY[0x1E69977A0];
-        v29 = [(UIView *)self->_overlayView centerXAnchor];
-        v28 = [(UIView *)self centerXAnchor];
-        v27 = [v29 constraintEqualToAnchor:v28];
+        centerXAnchor = [(UIView *)self->_overlayView centerXAnchor];
+        centerXAnchor2 = [(UIView *)self centerXAnchor];
+        v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v30[0] = v27;
-        v26 = [(UIView *)self->_overlayView centerYAnchor];
-        v16 = [(UIView *)self centerYAnchor];
-        v17 = [v26 constraintEqualToAnchor:v16];
+        centerYAnchor = [(UIView *)self->_overlayView centerYAnchor];
+        centerYAnchor2 = [(UIView *)self centerYAnchor];
+        v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v30[1] = v17;
-        v18 = [(UIView *)self->_overlayView widthAnchor];
-        v19 = [(UIView *)self widthAnchor];
-        v20 = [v18 constraintEqualToAnchor:v19 multiplier:3.0];
+        widthAnchor = [(UIView *)self->_overlayView widthAnchor];
+        widthAnchor2 = [(UIView *)self widthAnchor];
+        v20 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:3.0];
         v30[2] = v20;
-        v21 = [(UIView *)self->_overlayView heightAnchor];
-        v22 = [(UIView *)self heightAnchor];
-        v23 = [v21 constraintEqualToAnchor:v22 multiplier:3.0];
+        heightAnchor = [(UIView *)self->_overlayView heightAnchor];
+        heightAnchor2 = [(UIView *)self heightAnchor];
+        v23 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:3.0];
         v30[3] = v23;
         v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
         [v25 activateConstraints:v24];
@@ -789,11 +789,11 @@ LABEL_8:
   }
 }
 
-- (void)_setHasGrabber:(BOOL)a3
+- (void)_setHasGrabber:(BOOL)grabber
 {
-  if (self->__hasGrabber != a3)
+  if (self->__hasGrabber != grabber)
   {
-    self->__hasGrabber = a3;
+    self->__hasGrabber = grabber;
     [(UIView *)self setNeedsLayout];
     if (self->__hasGrabber && ![(UIDropShadowView *)self _hasCreatedGrabbers])
     {
@@ -819,82 +819,82 @@ LABEL_8:
   }
 }
 
-- (void)_setGrabberAlpha:(double)a3
+- (void)_setGrabberAlpha:(double)alpha
 {
-  if (self->__grabberAlpha != a3)
+  if (self->__grabberAlpha != alpha)
   {
-    self->__grabberAlpha = a3;
+    self->__grabberAlpha = alpha;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)_setGrabberSpacing:(double)a3
+- (void)_setGrabberSpacing:(double)spacing
 {
-  if (self->__grabberSpacing != a3)
+  if (self->__grabberSpacing != spacing)
   {
-    self->__grabberSpacing = a3;
+    self->__grabberSpacing = spacing;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)_setGrabberEdge:(int64_t)a3
+- (void)_setGrabberEdge:(int64_t)edge
 {
-  if (self->__grabberEdge != a3)
+  if (self->__grabberEdge != edge)
   {
-    self->__grabberEdge = a3;
+    self->__grabberEdge = edge;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)_setGrabberPreferredSize:(CGSize)a3
+- (void)_setGrabberPreferredSize:(CGSize)size
 {
-  if (self->__grabberPreferredSize.width != a3.width || self->__grabberPreferredSize.height != a3.height)
+  if (self->__grabberPreferredSize.width != size.width || self->__grabberPreferredSize.height != size.height)
   {
-    self->__grabberPreferredSize = a3;
+    self->__grabberPreferredSize = size;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)_setInsetsContentViewForGrabber:(BOOL)a3
+- (void)_setInsetsContentViewForGrabber:(BOOL)grabber
 {
-  if (self->__insetsContentViewForGrabber != a3)
+  if (self->__insetsContentViewForGrabber != grabber)
   {
-    self->__insetsContentViewForGrabber = a3;
+    self->__insetsContentViewForGrabber = grabber;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)_setGrabberLumaTrackingEnabled:(BOOL)a3
+- (void)_setGrabberLumaTrackingEnabled:(BOOL)enabled
 {
-  if (self->__grabberLumaTrackingEnabled != a3)
+  if (self->__grabberLumaTrackingEnabled != enabled)
   {
-    self->__grabberLumaTrackingEnabled = a3;
+    self->__grabberLumaTrackingEnabled = enabled;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)_setGrabberBlurEnabled:(BOOL)a3
+- (void)_setGrabberBlurEnabled:(BOOL)enabled
 {
-  if (self->__grabberBlurEnabled != a3)
+  if (self->__grabberBlurEnabled != enabled)
   {
-    self->__grabberBlurEnabled = a3;
+    self->__grabberBlurEnabled = enabled;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)_isGrabber:(id)a3
+- (BOOL)_isGrabber:(id)grabber
 {
-  v4 = a3;
-  v5 = [(UIDropShadowView *)self _topGrabber];
-  if (v5 == v4)
+  grabberCopy = grabber;
+  _topGrabber = [(UIDropShadowView *)self _topGrabber];
+  if (_topGrabber == grabberCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = [(UIDropShadowView *)self _bottomGrabber];
-    v7 = v6 == v4;
+    _bottomGrabber = [(UIDropShadowView *)self _bottomGrabber];
+    v7 = _bottomGrabber == grabberCopy;
   }
 
   return v7;
@@ -902,27 +902,27 @@ LABEL_8:
 
 - (void)_grabberPrimaryAction
 {
-  v3 = [(UIDropShadowView *)self _delegate];
+  _delegate = [(UIDropShadowView *)self _delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 _dropShadowViewGrabberDidTriggerPrimaryAction:self];
+    [_delegate _dropShadowViewGrabberDidTriggerPrimaryAction:self];
   }
 }
 
-- (void)setMagicShadowAlpha:(double)a3
+- (void)setMagicShadowAlpha:(double)alpha
 {
-  v4 = [(UIDropShadowView *)self magicShadowView];
-  [v4 setAlpha:a3];
+  magicShadowView = [(UIDropShadowView *)self magicShadowView];
+  [magicShadowView setAlpha:alpha];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIDropShadowView *)self _topGrabber];
-  [(UIView *)self convertPoint:v8 toView:x, y];
-  v9 = [v8 hitTest:v7 withEvent:?];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  _topGrabber = [(UIDropShadowView *)self _topGrabber];
+  [(UIView *)self convertPoint:_topGrabber toView:x, y];
+  v9 = [_topGrabber hitTest:eventCopy withEvent:?];
   v10 = v9;
   if (v9)
   {
@@ -930,19 +930,19 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v12 = [(UIDropShadowView *)self _bottomGrabber];
-  [(UIView *)self convertPoint:v12 toView:x, y];
-  v13 = [v12 hitTest:v7 withEvent:?];
+  _bottomGrabber = [(UIDropShadowView *)self _bottomGrabber];
+  [(UIView *)self convertPoint:_bottomGrabber toView:x, y];
+  v13 = [_bottomGrabber hitTest:eventCopy withEvent:?];
   v14 = v13;
   if (!v13)
   {
     v33.receiver = self;
     v33.super_class = UIDropShadowView;
-    v15 = [(UIView *)&v33 hitTest:v7 withEvent:x, y];
+    v15 = [(UIView *)&v33 hitTest:eventCopy withEvent:x, y];
     if (v15 != self)
     {
-      v16 = [(UIDropShadowView *)self contentView];
-      if ([(UIView *)v15 isDescendantOfView:v16])
+      contentView = [(UIDropShadowView *)self contentView];
+      if ([(UIView *)v15 isDescendantOfView:contentView])
       {
         [(UIView *)self bounds];
         v18 = v17;
@@ -989,10 +989,10 @@ LABEL_13:
   return v11;
 }
 
-- (void)setMasksTopCornersOnly:(BOOL)a3
+- (void)setMasksTopCornersOnly:(BOOL)only
 {
-  self->_masksTopCornersOnly = a3;
-  if (a3)
+  self->_masksTopCornersOnly = only;
+  if (only)
   {
     v3 = 3;
   }
@@ -1002,22 +1002,22 @@ LABEL_13:
     v3 = 15;
   }
 
-  v4 = [(UIView *)self layer];
-  [v4 setMaskedCorners:v3];
+  layer = [(UIView *)self layer];
+  [layer setMaskedCorners:v3];
 }
 
-- (void)willBeginRotationWithOriginalBounds:(CGRect)a3 newBounds:(CGRect)a4
+- (void)willBeginRotationWithOriginalBounds:(CGRect)bounds newBounds:(CGRect)newBounds
 {
-  if (a3.size.width == a4.size.width && a3.size.height == a4.size.height)
+  if (bounds.size.width == newBounds.size.width && bounds.size.height == newBounds.size.height)
   {
-    v9 = [(UIView *)self->_contentView layer:a3.origin.x];
+    v9 = [(UIView *)self->_contentView layer:bounds.origin.x];
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 _graphicsQuality];
+    _graphicsQuality = [v6 _graphicsQuality];
 
-    if (v7 != 100)
+    if (_graphicsQuality != 100)
     {
-      v8 = [objc_opt_self() mainScreen];
-      [v8 scale];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen scale];
       [v9 setRasterizationScale:?];
 
       [v9 setShouldRasterize:1];
@@ -1029,9 +1029,9 @@ LABEL_13:
 
 - (void)didFinishRotation
 {
-  v2 = [(UIView *)self->_contentView layer];
-  [v2 setFrozen:0];
-  [v2 setShouldRasterize:0];
+  layer = [(UIView *)self->_contentView layer];
+  [layer setFrozen:0];
+  [layer setShouldRasterize:0];
 }
 
 - (UIRectCornerRadii)environmentMatchingCornerRadii

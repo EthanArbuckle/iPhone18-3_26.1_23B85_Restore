@@ -1,12 +1,12 @@
 @interface RadioRecentStationsRequest
-- (RadioRecentStationsRequest)initWithCurrentStation:(id)a3;
-- (RadioRecentStationsRequest)initWithCurrentStationStringID:(id)a3;
-- (id)_newRecentStationsURLRequestPropertiesWithBaseURL:(id)a3;
-- (id)_recentStationsResponseWithConnectionResponse:(id)a3 returningError:(id *)a4;
-- (void)_configureRequestPropertiesForCaching:(id)a3 returningCacheKey:(id *)a4;
+- (RadioRecentStationsRequest)initWithCurrentStation:(id)station;
+- (RadioRecentStationsRequest)initWithCurrentStationStringID:(id)d;
+- (id)_newRecentStationsURLRequestPropertiesWithBaseURL:(id)l;
+- (id)_recentStationsResponseWithConnectionResponse:(id)response returningError:(id *)error;
+- (void)_configureRequestPropertiesForCaching:(id)caching returningCacheKey:(id *)key;
 - (void)cancel;
-- (void)getCachedRecentStationsResponseWithCompletionHandler:(id)a3;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)getCachedRecentStationsResponseWithCompletionHandler:(id)handler;
+- (void)startWithCompletionHandler:(id)handler;
 @end
 
 @implementation RadioRecentStationsRequest
@@ -19,15 +19,15 @@
   [(SSURLConnectionRequest *)self->_request cancel];
 }
 
-- (id)_recentStationsResponseWithConnectionResponse:(id)a3 returningError:(id *)a4
+- (id)_recentStationsResponseWithConnectionResponse:(id)response returningError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [a3 radio_decompressedBodyData];
-  if (![v6 length])
+  radio_decompressedBodyData = [response radio_decompressedBodyData];
+  if (![radio_decompressedBodyData length])
   {
     v11 = 0;
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -37,7 +37,7 @@
 
   v18 = 0;
   v19 = 0;
-  v7 = [v6 propertyListForRadioResponseReturningError:&v19 unparsedResponseDictionary:&v18];
+  v7 = [radio_decompressedBodyData propertyListForRadioResponseReturningError:&v19 unparsedResponseDictionary:&v18];
   v8 = v19;
   v9 = v18;
   objc_opt_class();
@@ -65,11 +65,11 @@
 
   [(RadioRequest *)self setStatus:v12];
 
-  if (a4)
+  if (error)
   {
 LABEL_10:
     v14 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_11:
@@ -79,9 +79,9 @@ LABEL_11:
   return v10;
 }
 
-- (id)_newRecentStationsURLRequestPropertiesWithBaseURL:(id)a3
+- (id)_newRecentStationsURLRequestPropertiesWithBaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
   if (self->_stationCount)
   {
@@ -96,10 +96,10 @@ LABEL_11:
   }
 
   v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
-  v9 = [(RadioStation *)self->_currentStation stationStringID];
-  if (v9)
+  stationStringID = [(RadioStation *)self->_currentStation stationStringID];
+  if (stationStringID)
   {
-    v10 = v9;
+    v10 = stationStringID;
   }
 
   else
@@ -113,17 +113,17 @@ LABEL_11:
 
   [v8 setObject:v10 forKey:@"radio-station-id"];
 LABEL_9:
-  v11 = [(RadioStation *)self->_currentStation stationID];
-  if (v11)
+  stationID = [(RadioStation *)self->_currentStation stationID];
+  if (stationID)
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithLongLong:v11];
+    v12 = [MEMORY[0x277CCABB0] numberWithLongLong:stationID];
     [v8 setObject:v12 forKey:@"station-id"];
   }
 
-  v13 = [(RadioStation *)self->_currentStation stationHash];
-  if (v13)
+  stationHash = [(RadioStation *)self->_currentStation stationHash];
+  if (stationHash)
   {
-    [v8 setObject:v13 forKey:@"station-hash"];
+    [v8 setObject:stationHash forKey:@"station-hash"];
   }
 
   if ([v8 count])
@@ -131,7 +131,7 @@ LABEL_9:
     [v5 setObject:v8 forKey:@"station-info"];
   }
 
-  v14 = [v4 URLByAppendingPathComponent:@"recentStations"];
+  v14 = [lCopy URLByAppendingPathComponent:@"recentStations"];
   v15 = [MEMORY[0x277D69BD0] newForRadioRequestURL:v14];
   v16 = [MEMORY[0x277CBEA90] dataForRadioRequestParameters:v5 isAsynchronousBackgroundRequest:-[RadioRequest isAsynchronousBackgroundRequest](self error:{"isAsynchronousBackgroundRequest"), 0}];
   [v15 setHTTPBody:v16];
@@ -139,15 +139,15 @@ LABEL_9:
   return v15;
 }
 
-- (void)_configureRequestPropertiesForCaching:(id)a3 returningCacheKey:(id *)a4
+- (void)_configureRequestPropertiesForCaching:(id)caching returningCacheKey:(id *)key
 {
-  v8 = a3;
-  [v8 setHTTPMethod:@"GET"];
-  if (a4)
+  cachingCopy = caching;
+  [cachingCopy setHTTPMethod:@"GET"];
+  if (key)
   {
-    v5 = [v8 HTTPBody];
-    [v5 bytes];
-    [v5 length];
+    hTTPBody = [cachingCopy HTTPBody];
+    [hTTPBody bytes];
+    [hTTPBody length];
     v6 = ISMD5StringForBytes();
     v7 = v6;
     if (!v6)
@@ -155,26 +155,26 @@ LABEL_9:
       v6 = &stru_287401C08;
     }
 
-    *a4 = v6;
+    *key = v6;
   }
 
-  [v8 setHTTPBody:0];
+  [cachingCopy setHTTPBody:0];
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RadioRequest *)self requestContext];
+  handlerCopy = handler;
+  requestContext = [(RadioRequest *)self requestContext];
   v6 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__RadioRecentStationsRequest_startWithCompletionHandler___block_invoke;
   block[3] = &unk_279AEAC00;
-  v10 = v5;
-  v11 = v4;
+  v10 = requestContext;
+  v11 = handlerCopy;
   block[4] = self;
-  v7 = v5;
-  v8 = v4;
+  v7 = requestContext;
+  v8 = handlerCopy;
   dispatch_async(v6, block);
 }
 
@@ -440,16 +440,16 @@ void __57__RadioRecentStationsRequest_startWithCompletionHandler___block_invoke_
   [v3 postNotificationName:@"RadioRequestDidFinishNotification" object:a1[6]];
 }
 
-- (void)getCachedRecentStationsResponseWithCompletionHandler:(id)a3
+- (void)getCachedRecentStationsResponseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __83__RadioRecentStationsRequest_getCachedRecentStationsResponseWithCompletionHandler___block_invoke;
   v6[3] = &unk_279AEAB60;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(RadioRequest *)self _loadRadioStoreBagWithCompletionHandler:v6];
 }
 
@@ -486,13 +486,13 @@ void __83__RadioRecentStationsRequest_getCachedRecentStationsResponseWithComplet
   }
 }
 
-- (RadioRecentStationsRequest)initWithCurrentStationStringID:(id)a3
+- (RadioRecentStationsRequest)initWithCurrentStationStringID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(RadioRequest *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     currentStationStringID = v5->_currentStationStringID;
     v5->_currentStationStringID = v6;
   }
@@ -500,14 +500,14 @@ void __83__RadioRecentStationsRequest_getCachedRecentStationsResponseWithComplet
   return v5;
 }
 
-- (RadioRecentStationsRequest)initWithCurrentStation:(id)a3
+- (RadioRecentStationsRequest)initWithCurrentStation:(id)station
 {
-  v5 = a3;
+  stationCopy = station;
   v6 = [(RadioRequest *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_currentStation, a3);
+    objc_storeStrong(&v6->_currentStation, station);
   }
 
   return v7;

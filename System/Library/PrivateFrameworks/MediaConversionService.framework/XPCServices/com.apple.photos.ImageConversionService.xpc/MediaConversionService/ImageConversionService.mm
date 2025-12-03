@@ -1,37 +1,37 @@
 @interface ImageConversionService
-+ (id)adjustmentInformationForComposition:(id)a3 error:(id *)a4;
-+ (void)configureCompositionController:(id)a3 sourceURLCollection:(id)a4;
++ (id)adjustmentInformationForComposition:(id)composition error:(id *)error;
++ (void)configureCompositionController:(id)controller sourceURLCollection:(id)collection;
 + (void)run;
-- (BOOL)convertImageWithOptions:(id)a3 sourceURLCollection:(id)a4 outputURLCollection:(id)a5 outputData:(id *)a6 outputFileType:(id *)a7 outputImageInfo:(id *)a8 error:(id *)a9;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)setupSourceAndDestinationForRequestTracker:(id)a3 imageConversionOptions:(id)a4 error:(id *)a5;
-- (BOOL)validatePhotosAdjustmentsCalculationRequestOptions:(id)a3 error:(id *)a4;
-- (BOOL)validateRequestIdentifier:(id)a3 replyHandler:(id)a4;
-- (BOOL)validateRequestOptions:(id)a3 error:(id *)a4;
+- (BOOL)convertImageWithOptions:(id)options sourceURLCollection:(id)collection outputURLCollection:(id)lCollection outputData:(id *)data outputFileType:(id *)type outputImageInfo:(id *)info error:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)setupSourceAndDestinationForRequestTracker:(id)tracker imageConversionOptions:(id)options error:(id *)error;
+- (BOOL)validatePhotosAdjustmentsCalculationRequestOptions:(id)options error:(id *)error;
+- (BOOL)validateRequestIdentifier:(id)identifier replyHandler:(id)handler;
+- (BOOL)validateRequestOptions:(id)options error:(id *)error;
 - (ImageConversionService)init;
-- (id)adjustmentInformationForCropAdjustmentInformation:(id)a3 sourceURLCollection:(id)a4 error:(id *)a5;
-- (id)urlCollectionForBookmarkDictionaryKey:(id)a3 inOptions:(id)a4 removeExistingEmptyFiles:(BOOL)a5 error:(id *)a6;
-- (int64_t)incrementPendingRequestCountWithRequestIdentifier:(id)a3;
-- (void)conversionQueue:(id)a3 processNextEntry:(id)a4;
-- (void)conversionQueueDidFinishProcessingEntry:(id)a3;
-- (void)convertImageWithOptions:(id)a3 reply:(id)a4;
-- (void)decrementPendingRequestCountWithRequestIdentifier:(id)a3;
-- (void)enumerateEnvironmentVariablePairsInRequestOptions:(id)a3 block:(id)a4;
-- (void)performBeginRequestActionsForUnitTestSupportOptions:(id)a3;
-- (void)performEndRequestActionsForUnitTestSupportOptions:(id)a3;
-- (void)replyToCompletionHandler:(id)a3 requestIdentifier:(id)a4 resultData:(id)a5 resultImageInformation:(id)a6 signpostID:(unint64_t)a7 error:(id)a8;
-- (void)requestStatusWithReply:(id)a3;
+- (id)adjustmentInformationForCropAdjustmentInformation:(id)information sourceURLCollection:(id)collection error:(id *)error;
+- (id)urlCollectionForBookmarkDictionaryKey:(id)key inOptions:(id)options removeExistingEmptyFiles:(BOOL)files error:(id *)error;
+- (int64_t)incrementPendingRequestCountWithRequestIdentifier:(id)identifier;
+- (void)conversionQueue:(id)queue processNextEntry:(id)entry;
+- (void)conversionQueueDidFinishProcessingEntry:(id)entry;
+- (void)convertImageWithOptions:(id)options reply:(id)reply;
+- (void)decrementPendingRequestCountWithRequestIdentifier:(id)identifier;
+- (void)enumerateEnvironmentVariablePairsInRequestOptions:(id)options block:(id)block;
+- (void)performBeginRequestActionsForUnitTestSupportOptions:(id)options;
+- (void)performEndRequestActionsForUnitTestSupportOptions:(id)options;
+- (void)replyToCompletionHandler:(id)handler requestIdentifier:(id)identifier resultData:(id)data resultImageInformation:(id)information signpostID:(unint64_t)d error:(id)error;
+- (void)requestStatusWithReply:(id)reply;
 - (void)run;
 @end
 
 @implementation ImageConversionService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = +[NSUUID UUID];
-  v6 = [v4 _xpcConnection];
-  pid = xpc_connection_get_pid(v6);
+  _xpcConnection = [connectionCopy _xpcConnection];
+  pid = xpc_connection_get_pid(_xpcConnection);
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -46,7 +46,7 @@
   v24 = v5;
   v21 = v5;
   v8 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-  [v4 setUserInfo:v8];
+  [connectionCopy setUserInfo:v8];
 
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ImageConversionService];
   v20 = objc_opt_class();
@@ -60,19 +60,19 @@
   v17 = objc_opt_class();
   v18 = [NSSet setWithObjects:v20, v10, v11, v12, v13, v14, v15, v16, v17, objc_opt_class(), 0];
   [v9 setClasses:v18 forSelector:"convertImageWithOptions:reply:" argumentIndex:0 ofReply:0];
-  [v4 setExportedInterface:v9];
-  [v4 setExportedObject:self];
-  [v4 resume];
+  [connectionCopy setExportedInterface:v9];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)conversionQueueDidFinishProcessingEntry:(id)a3
+- (void)conversionQueueDidFinishProcessingEntry:(id)entry
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_pendingRequestCount)
+  entryCopy = entry;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_pendingRequestCount)
   {
     CMPhotoReleaseHardwareResources();
     +[NUFactory reset];
@@ -97,20 +97,20 @@
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)conversionQueue:(id)a3 processNextEntry:(id)a4
+- (void)conversionQueue:(id)queue processNextEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 initialRequestConversionOptions];
-  v45 = self;
-  [(ImageConversionService *)self performBeginRequestActionsForUnitTestSupportOptions:v8];
-  v9 = [v6 anyDestinationURLCollectionForQueueEntry:v7];
-  v41 = v6;
+  queueCopy = queue;
+  entryCopy = entry;
+  initialRequestConversionOptions = [entryCopy initialRequestConversionOptions];
+  selfCopy = self;
+  [(ImageConversionService *)self performBeginRequestActionsForUnitTestSupportOptions:initialRequestConversionOptions];
+  v9 = [queueCopy anyDestinationURLCollectionForQueueEntry:entryCopy];
+  v41 = queueCopy;
   v38 = v9;
-  v39 = v8;
+  v39 = initialRequestConversionOptions;
   if (!v9)
   {
     v14 = 0;
@@ -119,24 +119,24 @@
   }
 
   v10 = v9;
-  v11 = [v7 identifier];
+  identifier = [entryCopy identifier];
   v54 = 0;
-  v12 = [PAMediaConversionServiceSharedUtilitiesServiceSide temporaryFilesDirectoryURLForConversionTaskIdentifier:v11 error:&v54];
+  v12 = [PAMediaConversionServiceSharedUtilitiesServiceSide temporaryFilesDirectoryURLForConversionTaskIdentifier:identifier error:&v54];
   v13 = v54;
 
   if (v12)
   {
     v14 = [PAMediaConversionServiceSharedUtilitiesServiceSide temporaryDestinationURLCollectionForFinalDestinationURLCollection:v10 inParentDirectoryURL:v12];
-    [v7 setTemporaryFilesParentDirectoryURL:v12];
+    [entryCopy setTemporaryFilesParentDirectoryURL:v12];
 
 LABEL_5:
     v15 = objc_autoreleasePoolPush();
-    v16 = [v7 sourceURLCollection];
+    sourceURLCollection = [entryCopy sourceURLCollection];
     v52 = 0;
     v53 = 0;
     v50 = v13;
     v51 = 0;
-    v17 = [(ImageConversionService *)v45 convertImageWithOptions:v8 sourceURLCollection:v16 outputURLCollection:v14 outputData:&v53 outputFileType:&v52 outputImageInfo:&v51 error:&v50];
+    v17 = [(ImageConversionService *)selfCopy convertImageWithOptions:initialRequestConversionOptions sourceURLCollection:sourceURLCollection outputURLCollection:v14 outputData:&v53 outputFileType:&v52 outputImageInfo:&v51 error:&v50];
     v18 = v53;
     v19 = v52;
     v20 = v51;
@@ -146,14 +146,14 @@ LABEL_5:
     v22 = v20;
     v23 = v17;
     v13 = v21;
-    v6 = v41;
+    queueCopy = v41;
     goto LABEL_9;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v57 = v7;
+    v57 = entryCopy;
     v58 = 2112;
     v59 = v13;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to create temporary files directory for request %{public}@: %@", buf, 0x16u);
@@ -167,10 +167,10 @@ LABEL_5:
 LABEL_9:
   v44 = v13;
   v35 = v22;
-  v40 = v7;
+  v40 = entryCopy;
   v36 = v19;
   v37 = v14;
-  [v6 markCompletionAndRetrieveClientRequestsForQueueEntry:v7 resultURLCollection:v14 didConvertSuccessfully:v23 conversionOutputInformation:v13 conversionOutputData:? conversionOutputFileType:? conversionError:?];
+  [queueCopy markCompletionAndRetrieveClientRequestsForQueueEntry:entryCopy resultURLCollection:v14 didConvertSuccessfully:v23 conversionOutputInformation:v13 conversionOutputData:? conversionOutputFileType:? conversionError:?];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -191,22 +191,22 @@ LABEL_9:
 
         v27 = *(*(&v46 + 1) + 8 * i);
         v28 = objc_autoreleasePoolPush();
-        v29 = [v27 requestTracker];
-        v30 = v29;
+        requestTracker = [v27 requestTracker];
+        v30 = requestTracker;
         v31 = v23;
         if (v23)
         {
-          v32 = [v29 outputInformation];
+          outputInformation = [requestTracker outputInformation];
         }
 
         else
         {
-          v32 = 0;
+          outputInformation = 0;
         }
 
-        v33 = [v27 imageClientReplyHandler];
-        v34 = [v27 identifier];
-        -[ImageConversionService replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:](v45, "replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:", v33, v34, v18, v32, [v27 signpostID], v44);
+        imageClientReplyHandler = [v27 imageClientReplyHandler];
+        identifier2 = [v27 identifier];
+        -[ImageConversionService replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:](selfCopy, "replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:", imageClientReplyHandler, identifier2, v18, outputInformation, [v27 signpostID], v44);
 
         objc_autoreleasePoolPop(v28);
         v23 = v31;
@@ -218,15 +218,15 @@ LABEL_9:
     while (v25);
   }
 
-  [(ImageConversionService *)v45 performEndRequestActionsForUnitTestSupportOptions:v39];
+  [(ImageConversionService *)selfCopy performEndRequestActionsForUnitTestSupportOptions:v39];
 }
 
-- (id)adjustmentInformationForCropAdjustmentInformation:(id)a3 sourceURLCollection:(id)a4 error:(id *)a5
+- (id)adjustmentInformationForCropAdjustmentInformation:(id)information sourceURLCollection:(id)collection error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:@"PAMediaConversionServiceAdjustmentCropKey"];
-  v10 = [v8 objectForKeyedSubscript:@"PAMediaConversionServiceAdjustmentOrientationKey"];
+  collectionCopy = collection;
+  informationCopy = information;
+  v9 = [informationCopy objectForKeyedSubscript:@"PAMediaConversionServiceAdjustmentCropKey"];
+  v10 = [informationCopy objectForKeyedSubscript:@"PAMediaConversionServiceAdjustmentOrientationKey"];
 
   if (v9)
   {
@@ -235,42 +235,42 @@ LABEL_9:
     {
       if (v10)
       {
-        v11 = [v10 integerValue];
+        integerValue = [v10 integerValue];
         v12 = +[PIPhotoEditHelper newComposition];
         v13 = [PIPhotoEditHelper newCompositionControllerWithComposition:v12];
 
-        [objc_opt_class() configureCompositionController:v13 sourceURLCollection:v7];
-        v14 = [v13 adjustmentConstants];
-        v15 = [v14 PICropAdjustmentKey];
+        [objc_opt_class() configureCompositionController:v13 sourceURLCollection:collectionCopy];
+        adjustmentConstants = [v13 adjustmentConstants];
+        pICropAdjustmentKey = [adjustmentConstants PICropAdjustmentKey];
         v25[0] = _NSConcreteStackBlock;
         v25[1] = 3221225472;
         v25[2] = sub_100019BEC;
         v25[3] = &unk_10003DA90;
         v26 = v9;
-        [v13 modifyAdjustmentWithKey:v15 modificationBlock:v25];
+        [v13 modifyAdjustmentWithKey:pICropAdjustmentKey modificationBlock:v25];
 
-        v16 = [v14 PIOrientationAdjustmentKey];
+        pIOrientationAdjustmentKey = [adjustmentConstants PIOrientationAdjustmentKey];
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_100019C4C;
         v24[3] = &unk_10003DAB0;
-        v24[4] = v11;
-        [v13 modifyAdjustmentWithKey:v16 modificationBlock:v24];
+        v24[4] = integerValue;
+        [v13 modifyAdjustmentWithKey:pIOrientationAdjustmentKey modificationBlock:v24];
 
         v17 = objc_opt_class();
-        v18 = [v13 composition];
+        composition = [v13 composition];
         v23 = 0;
-        v19 = [v17 adjustmentInformationForComposition:v18 error:&v23];
+        v19 = [v17 adjustmentInformationForComposition:composition error:&v23];
         v20 = v23;
 
-        if (a5 && !v19)
+        if (error && !v19)
         {
           v27[0] = NSLocalizedDescriptionKey;
           v27[1] = NSUnderlyingErrorKey;
           v28[0] = @"Error creating adjustment from crop adjustment.";
           v28[1] = v20;
           v21 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
-          *a5 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v21];
+          *error = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v21];
         }
 
         goto LABEL_10;
@@ -278,13 +278,13 @@ LABEL_9:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v29 = NSLocalizedDescriptionKey;
     v30 = @"Crop adjustment missing PAMediaConversionServiceAdjustmentCropKey and/or PAMediaConversionServiceAdjustmentOrientationKey";
     v13 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v13];
-    *a5 = v19 = 0;
+    *error = v19 = 0;
 LABEL_10:
 
     goto LABEL_12;
@@ -296,17 +296,17 @@ LABEL_12:
   return v19;
 }
 
-- (id)urlCollectionForBookmarkDictionaryKey:(id)a3 inOptions:(id)a4 removeExistingEmptyFiles:(BOOL)a5 error:(id *)a6
+- (id)urlCollectionForBookmarkDictionaryKey:(id)key inOptions:(id)options removeExistingEmptyFiles:(BOOL)files error:(id *)error
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 objectForKeyedSubscript:v9];
+  filesCopy = files;
+  keyCopy = key;
+  optionsCopy = options;
+  v11 = [optionsCopy objectForKeyedSubscript:keyCopy];
   if (v11)
   {
-    if ([v9 isEqualToString:@"PAMediaConversionServiceSourceBookmarkCollectionKey"])
+    if ([keyCopy isEqualToString:@"PAMediaConversionServiceSourceBookmarkCollectionKey"])
     {
-      v12 = [[PAMediaConversionServiceResourceURLCollectionAccessProvider alloc] initWithOptions:v10];
+      v12 = [[PAMediaConversionServiceResourceURLCollectionAccessProvider alloc] initWithOptions:optionsCopy];
     }
 
     else
@@ -314,13 +314,13 @@ LABEL_12:
       v12 = 0;
     }
 
-    v15 = [PAMediaConversionServiceResourceURLCollection collectionForBookmarkDataDictionaryRepresentation:v11 accessProvider:v12 error:a6];
+    v15 = [PAMediaConversionServiceResourceURLCollection collectionForBookmarkDataDictionaryRepresentation:v11 accessProvider:v12 error:error];
     if (!v15)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v25 = v9;
+        v25 = keyCopy;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to create URL collection for key %{public}@", buf, 0xCu);
       }
 
@@ -332,7 +332,7 @@ LABEL_12:
     v13 = v15;
     if ([v15 urlCount])
     {
-      if (v7)
+      if (filesCopy)
       {
         v21 = 0;
         v16 = [v13 removeExistingEmptyFilesWithError:&v21];
@@ -341,14 +341,14 @@ LABEL_12:
         if ((v16 & 1) == 0)
         {
           v14 = 0;
-          if (a6 && v17)
+          if (error && v17)
           {
             v26[0] = @"PAMediaConversionServiceErrorOffendingItemNameKey";
             v26[1] = NSUnderlyingErrorKey;
-            v27[0] = v9;
+            v27[0] = keyCopy;
             v27[1] = v17;
             v19 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
-            *a6 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:4 userInfo:v19];
+            *error = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:4 userInfo:v19];
 
             v14 = 0;
           }
@@ -371,11 +371,11 @@ LABEL_25:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v25 = v9;
+      v25 = keyCopy;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Empty url collection for key %{public}@", buf, 0xCu);
     }
 
-    if (!a6)
+    if (!error)
     {
 LABEL_22:
       v14 = 0;
@@ -388,22 +388,22 @@ LABEL_22:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v25 = v9;
+      v25 = keyCopy;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Nil %{public}@ URL collection bookmark dictionary in options", buf, 0xCu);
     }
 
     v13 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_22;
     }
   }
 
   v22 = @"PAMediaConversionServiceErrorOffendingItemNameKey";
-  v23 = v9;
+  v23 = keyCopy;
   v12 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:1 userInfo:v12];
-  *a6 = v14 = 0;
+  *error = v14 = 0;
 LABEL_26:
 
 LABEL_27:
@@ -411,44 +411,44 @@ LABEL_27:
   return v14;
 }
 
-- (BOOL)convertImageWithOptions:(id)a3 sourceURLCollection:(id)a4 outputURLCollection:(id)a5 outputData:(id *)a6 outputFileType:(id *)a7 outputImageInfo:(id *)a8 error:(id *)a9
+- (BOOL)convertImageWithOptions:(id)options sourceURLCollection:(id)collection outputURLCollection:(id)lCollection outputData:(id *)data outputFileType:(id *)type outputImageInfo:(id *)info error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v136 = a5;
-  v133 = a8;
-  if (!a8)
+  optionsCopy = options;
+  collectionCopy = collection;
+  lCollectionCopy = lCollection;
+  infoCopy = info;
+  if (!info)
   {
     v119 = +[NSAssertionHandler currentHandler];
     [v119 handleFailureInMethod:a2 object:self file:@"ImageConversionService.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"outputImageInfo"}];
   }
 
-  if (!v136)
+  if (!lCollectionCopy)
   {
-    v16 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionWantsResultAsDataKey"];
-    v17 = [v16 BOOLValue];
+    v16 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionWantsResultAsDataKey"];
+    bOOLValue = [v16 BOOLValue];
 
-    if ((v17 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v18 = +[NSAssertionHandler currentHandler];
       [v18 handleFailureInMethod:a2 object:self file:@"ImageConversionService.m" lineNumber:344 description:{@"Neither destination URL collection nor NSData output option, should have been rejected at request enqueue time"}];
     }
   }
 
-  v19 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionIsPassthroughConversionKey"];
-  v20 = [v19 BOOLValue];
+  v19 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionIsPassthroughConversionKey"];
+  bOOLValue2 = [v19 BOOLValue];
 
-  v21 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionIsPhotosAdjustmentsCalculationKey"];
-  v22 = [v21 BOOLValue];
+  v21 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionIsPhotosAdjustmentsCalculationKey"];
+  bOOLValue3 = [v21 BOOLValue];
 
-  v23 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAlchemistConversionKey"];
-  v24 = [v23 BOOLValue];
+  v23 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionAlchemistConversionKey"];
+  bOOLValue4 = [v23 BOOLValue];
 
-  v25 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOutputFileTypeKey"];
-  if (!v25)
+  identifier = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionOutputFileTypeKey"];
+  if (!identifier)
   {
-    v25 = [v136 typeIdentifierForResourceURLWithRole:@"PAMediaConversionResourceRoleMainResource"];
-    if (!v25)
+    identifier = [lCollectionCopy typeIdentifierForResourceURLWithRole:@"PAMediaConversionResourceRoleMainResource"];
+    if (!identifier)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -456,15 +456,15 @@ LABEL_27:
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to determine output file type from destination URL, defaulting to JPEG.", buf, 2u);
       }
 
-      v25 = [UTTypeJPEG identifier];
+      identifier = [UTTypeJPEG identifier];
     }
   }
 
-  v26 = v25;
-  v134 = v15;
+  v26 = identifier;
+  v134 = collectionCopy;
   v141 = CGSizeZero;
   v27 = +[NSMutableDictionary dictionary];
-  v135 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMetadataPolicyKey"];
+  v135 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionMetadataPolicyKey"];
   if (v135)
   {
     v28 = 1;
@@ -472,7 +472,7 @@ LABEL_27:
 
   else
   {
-    v28 = v22;
+    v28 = bOOLValue3;
   }
 
   if ((v28 & 1) == 0)
@@ -482,8 +482,8 @@ LABEL_27:
   }
 
   v129 = a2;
-  v130 = self;
-  v29 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionRequiresBlastDoorAccessKey"];
+  selfCopy = self;
+  v29 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionRequiresBlastDoorAccessKey"];
   if ([v29 BOOLValue])
   {
     v30 = +[NSUserDefaults standardUserDefaults];
@@ -495,36 +495,36 @@ LABEL_27:
     v31 = 1;
   }
 
-  if ((v20 & v31) != 1)
+  if ((bOOLValue2 & v31) != 1)
   {
     v32 = v134;
-    if (v22)
+    if (bOOLValue3)
     {
       v40 = [v134 resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
-      v41 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceInputFileTypeKey"];
+      v41 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceInputFileTypeKey"];
       v42 = [PFUniformTypeUtilities typeWithIdentifier:v41];
 
-      v43 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOrientationKey"];
-      v44 = [v43 unsignedIntValue];
+      v43 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionOrientationKey"];
+      unsignedIntValue = [v43 unsignedIntValue];
 
       v140 = 0;
-      v45 = [(ImageConversionService *)v130 performPhotosPortraitAdjustmentsCalculationForURL:v40 contentType:v42 orientation:v44 error:&v140];
+      v45 = [(ImageConversionService *)selfCopy performPhotosPortraitAdjustmentsCalculationForURL:v40 contentType:v42 orientation:unsignedIntValue error:&v140];
       v36 = v140;
       if (v45)
       {
         [v27 setObject:v45 forKeyedSubscript:@"PAMediaConversionServiceCalculatedAdjustmentInformationKey"];
 
-        v35 = 0;
+        destinationData2 = 0;
         v38 = 1;
-        v46 = a9;
+        errorCopy7 = error;
         v32 = v134;
 LABEL_72:
         v75 = v27;
-        *v133 = v27;
+        *infoCopy = v27;
         goto LABEL_73;
       }
 
-      v46 = a9;
+      errorCopy7 = error;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
@@ -534,24 +534,24 @@ LABEL_72:
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to calculate photos adjustments information for %@: %@", buf, 0x16u);
       }
 
-      v35 = 0;
+      destinationData2 = 0;
       v38 = 0;
       v32 = v134;
       goto LABEL_73;
     }
 
-    if (v24)
+    if (bOOLValue4)
     {
       v47 = [v134 resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
-      v48 = [v136 resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
-      v49 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
+      v48 = [lCollectionCopy resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
+      v49 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
 
       if (v49)
       {
-        v49 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
-        v50 = [v49 integerValue];
+        v49 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
+        integerValue = [v49 integerValue];
 
-        LODWORD(v49) = v50 == 0;
+        LODWORD(v49) = integerValue == 0;
       }
 
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -578,7 +578,7 @@ LABEL_72:
         v139 = 0;
         v69 = [_TtC39com_apple_photos_ImageConversionService16AlchemistWrapper generateAlchemistResultWithSourceURL:v47 outputURL:v48 outputColorSpace:v51 error:&v139];
         v70 = v139;
-        v46 = a9;
+        errorCopy7 = error;
         if (v51)
         {
           CGColorSpaceRelease(v51);
@@ -594,8 +594,8 @@ LABEL_72:
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Alchemist successful", buf, 2u);
           }
 
-          v35 = 0;
-          v39 = 0;
+          destinationData2 = 0;
+          blastDoorError = 0;
           v38 = 1;
           goto LABEL_69;
         }
@@ -611,7 +611,7 @@ LABEL_72:
 
       else
       {
-        v46 = a9;
+        errorCopy7 = error;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
@@ -619,30 +619,30 @@ LABEL_72:
         }
       }
 
-      v35 = 0;
+      destinationData2 = 0;
       v36 = 0;
       v38 = 0;
       goto LABEL_73;
     }
 
     v52 = [PAMediaConversionServiceImageConversionJob alloc];
-    v53 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
+    v53 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
     v54 = [(PAMediaConversionServiceImageConversionJob *)v52 initWithRequestIdentifier:v53 sourceResourceURLCollection:v134 outputFileType:v26];
 
     v55 = v54;
-    [(PAMediaConversionServiceImageConversionJob *)v54 setDestinationResourceURLCollection:v136];
+    [(PAMediaConversionServiceImageConversionJob *)v54 setDestinationResourceURLCollection:lCollectionCopy];
     [(PAMediaConversionServiceImageConversionJob *)v54 setMetadataPolicy:v135];
-    v56 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOrientationKey"];
+    v56 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionOrientationKey"];
 
     if (v56)
     {
-      v57 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOrientationKey"];
-      v58 = [v57 integerValue];
+      v57 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionOrientationKey"];
+      integerValue2 = [v57 integerValue];
     }
 
     else
     {
-      v60 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionRotationAngleDegreesKey"];
+      v60 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionRotationAngleDegreesKey"];
 
       if (!v60)
       {
@@ -650,45 +650,45 @@ LABEL_72:
         goto LABEL_53;
       }
 
-      v57 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionRotationAngleDegreesKey"];
+      v57 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionRotationAngleDegreesKey"];
       [v57 integerValue];
-      v58 = IPAOrientationFromClockwiseRotation();
+      integerValue2 = IPAOrientationFromClockwiseRotation();
     }
 
-    [(PAMediaConversionServiceImageConversionJob *)v55 setOrientation:v58];
+    [(PAMediaConversionServiceImageConversionJob *)v55 setOrientation:integerValue2];
 
 LABEL_53:
-    v61 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
+    integerValue3 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
 
-    if (v61)
+    if (integerValue3)
     {
-      [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
+      [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
       v63 = v62 = v55;
-      v61 = [v63 integerValue];
+      integerValue3 = [v63 integerValue];
 
       v55 = v62;
-      if (v61 >= 3)
+      if (integerValue3 >= 3)
       {
-        if (a9)
+        if (error)
         {
           v142 = NSLocalizedDescriptionKey;
           v143 = @"Illegal ColorSpace option";
           v67 = [NSDictionary dictionaryWithObjects:&v143 forKeys:&v142 count:1];
-          *a9 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v67];
+          *error = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:2 userInfo:v67];
 
           v55 = v62;
         }
 
         v68 = 0;
-        v35 = 0;
+        destinationData2 = 0;
         goto LABEL_79;
       }
     }
 
-    [(PAMediaConversionServiceImageConversionJob *)v55 setColorspaceMode:v61];
-    v64 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionScaleFactorKey"];
-    v65 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumPixelCountKey"];
-    v66 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumLongSideLengthKey"];
+    [(PAMediaConversionServiceImageConversionJob *)v55 setColorspaceMode:integerValue3];
+    v64 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionScaleFactorKey"];
+    v65 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumPixelCountKey"];
+    v66 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumLongSideLengthKey"];
     v128 = v66;
     if (v64)
     {
@@ -706,55 +706,55 @@ LABEL_53:
       if (!v66)
       {
         v127 = +[NSAssertionHandler currentHandler];
-        [v127 handleFailureInMethod:v129 object:v130 file:@"ImageConversionService.m" lineNumber:462 description:@"Missing scale parameters"];
-        LODWORD(v92) = 0;
+        [v127 handleFailureInMethod:v129 object:selfCopy file:@"ImageConversionService.m" lineNumber:462 description:@"Missing scale parameters"];
+        LODWORD(adjustmentInformation) = 0;
         goto LABEL_90;
       }
 
       -[PAMediaConversionServiceImageConversionJob setRequestedMaximumLongSideLength:](v55, "setRequestedMaximumLongSideLength:", [v66 integerValue]);
     }
 
-    v88 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionApplyOrientationTransformKey"];
+    v88 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionApplyOrientationTransformKey"];
     -[PAMediaConversionServiceImageConversionJob setApplySourceOrientationTransform:](v55, "setApplySourceOrientationTransform:", [v88 BOOLValue]);
 
-    v89 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionFormatConversionOnlyKey"];
+    v89 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionFormatConversionOnlyKey"];
     -[PAMediaConversionServiceImageConversionJob setFormatConversionOnly:](v55, "setFormatConversionOnly:", [v89 BOOLValue]);
 
-    v90 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionCropAdjustmentInformationKey"];
+    v90 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionCropAdjustmentInformationKey"];
     v127 = v90;
     if (v90)
     {
-      v91 = [(ImageConversionService *)v130 adjustmentInformationForCropAdjustmentInformation:v90 sourceURLCollection:v134 error:a9];
+      v91 = [(ImageConversionService *)selfCopy adjustmentInformationForCropAdjustmentInformation:v90 sourceURLCollection:v134 error:error];
       [(PAMediaConversionServiceImageConversionJob *)v55 setAdjustmentInformation:v91];
 
-      v92 = [(PAMediaConversionServiceImageConversionJob *)v55 adjustmentInformation];
+      adjustmentInformation = [(PAMediaConversionServiceImageConversionJob *)v55 adjustmentInformation];
 
-      if (!v92)
+      if (!adjustmentInformation)
       {
 LABEL_90:
-        v39 = 0;
+        blastDoorError = 0;
         v93 = 0;
-        v35 = 0;
+        destinationData2 = 0;
 LABEL_118:
 
-        if (!v92)
+        if (!adjustmentInformation)
         {
           v38 = 0;
           v32 = v134;
-          v36 = v39;
+          v36 = blastDoorError;
           goto LABEL_80;
         }
 
-        v36 = v39;
+        v36 = blastDoorError;
         if (!v93)
         {
           v38 = 0;
-          v46 = a9;
+          errorCopy7 = error;
           v32 = v134;
           goto LABEL_73;
         }
 
-        if (!v35)
+        if (!destinationData2)
         {
           v38 = 1;
           goto LABEL_27;
@@ -762,34 +762,34 @@ LABEL_118:
 
         v32 = v134;
 LABEL_22:
-        if (!v136)
+        if (!lCollectionCopy)
         {
-          if (a6)
+          if (data)
           {
-            v59 = v35;
-            *a6 = v35;
+            v59 = destinationData2;
+            *data = destinationData2;
           }
 
           else
           {
             v121 = +[NSAssertionHandler currentHandler];
-            [v121 handleFailureInMethod:v129 object:v130 file:@"ImageConversionService.m" lineNumber:522 description:{@"Invalid request output configuration, missing both destination URL collection and data pointer"}];
+            [v121 handleFailureInMethod:v129 object:selfCopy file:@"ImageConversionService.m" lineNumber:522 description:{@"Invalid request output configuration, missing both destination URL collection and data pointer"}];
           }
 
           v38 = 1;
-          v39 = v36;
+          blastDoorError = v36;
           goto LABEL_69;
         }
 
-        v37 = [v136 resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
+        v37 = [lCollectionCopy resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
         v137 = v36;
-        v38 = [v35 writeToURL:v37 options:0 error:&v137];
-        v39 = v137;
+        v38 = [destinationData2 writeToURL:v37 options:0 error:&v137];
+        blastDoorError = v137;
 
         if ((v38 & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v145 = v39;
+          v145 = blastDoorError;
           _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Error writing result image data to URL passed in destination URL collection: %{public}@", buf, 0xCu);
         }
 
@@ -802,98 +802,98 @@ LABEL_69:
         v73 = [NSNumber numberWithDouble:v141.height];
         [v27 setObject:v73 forKeyedSubscript:@"PAMediaConversionServicePixelHeightKey"];
 
-        if (a7)
+        if (type)
         {
           v74 = v26;
-          *a7 = v26;
+          *type = v26;
         }
 
-        v46 = a9;
-        v36 = v39;
+        errorCopy7 = error;
+        v36 = blastDoorError;
         goto LABEL_72;
       }
     }
 
     else
     {
-      v94 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAdjustmentInformationKey"];
+      v94 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionAdjustmentInformationKey"];
       [(PAMediaConversionServiceImageConversionJob *)v55 setAdjustmentInformation:v94];
     }
 
-    v95 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionEnableOutputCorruptionDetectionHeuristicsKey"];
+    v95 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionEnableOutputCorruptionDetectionHeuristicsKey"];
     -[PAMediaConversionServiceImageConversionJob setShouldCheckForOutputCorruption:](v55, "setShouldCheckForOutputCorruption:", [v95 BOOLValue]);
 
-    v96 = [v14 objectForKeyedSubscript:@"PAMediaConversionServiceOptionUseEmbeddedImageAsSourceKey"];
+    v96 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionUseEmbeddedImageAsSourceKey"];
     -[PAMediaConversionServiceImageConversionJob setShouldUseEmbeddedImageAsSource:](v55, "setShouldUseEmbeddedImageAsSource:", [v96 BOOLValue]);
 
     [PAMediaConversionServiceSharedUtilitiesServiceSide executeConversionJob:v55];
     if (![(PAMediaConversionServiceImageConversionJob *)v55 status])
     {
       v122 = +[NSAssertionHandler currentHandler];
-      [v122 handleFailureInMethod:v129 object:v130 file:@"ImageConversionService.m" lineNumber:484 description:@"Unexpected unknown image conversion job state after execution"];
+      [v122 handleFailureInMethod:v129 object:selfCopy file:@"ImageConversionService.m" lineNumber:484 description:@"Unexpected unknown image conversion job state after execution"];
     }
 
     v85 = [(PAMediaConversionServiceImageConversionJob *)v55 status]== 1;
     v93 = v85;
     if (!v85)
     {
-      v98 = [(PAMediaConversionServiceImageConversionJob *)v55 error];
-      if (v98)
+      error = [(PAMediaConversionServiceImageConversionJob *)v55 error];
+      if (error)
       {
-        v39 = v98;
+        blastDoorError = error;
         v93 = 0;
-        v35 = 0;
+        destinationData2 = 0;
 LABEL_117:
-        LODWORD(v92) = 1;
+        LODWORD(adjustmentInformation) = 1;
         goto LABEL_118;
       }
 
       v126 = v65;
-      v117 = [(PAMediaConversionServiceImageConversionJob *)v55 sourceResourceURLCollection];
+      sourceResourceURLCollection = [(PAMediaConversionServiceImageConversionJob *)v55 sourceResourceURLCollection];
       v104 = v55;
-      v118 = [v117 isBlastDoorAccessRequired];
+      isBlastDoorAccessRequired = [sourceResourceURLCollection isBlastDoorAccessRequired];
 
-      if (v118)
+      if (isBlastDoorAccessRequired)
       {
-        v101 = [(PAMediaConversionServiceImageConversionJob *)v104 sourceResourceURLCollection];
-        v39 = [v101 blastDoorError];
-        v35 = 0;
+        sourceResourceURLCollection2 = [(PAMediaConversionServiceImageConversionJob *)v104 sourceResourceURLCollection];
+        blastDoorError = [sourceResourceURLCollection2 blastDoorError];
+        destinationData2 = 0;
         v55 = v104;
         v65 = v126;
         goto LABEL_116;
       }
 
-      v39 = 0;
+      blastDoorError = 0;
       v93 = 0;
-      v35 = 0;
-      LODWORD(v92) = 1;
+      destinationData2 = 0;
+      LODWORD(adjustmentInformation) = 1;
 LABEL_111:
       v55 = v104;
       v65 = v126;
       goto LABEL_118;
     }
 
-    v97 = [(PAMediaConversionServiceImageConversionJob *)v55 destinationData];
+    destinationData = [(PAMediaConversionServiceImageConversionJob *)v55 destinationData];
 
-    if (v97)
+    if (destinationData)
     {
-      v35 = [(PAMediaConversionServiceImageConversionJob *)v55 destinationData];
+      destinationData2 = [(PAMediaConversionServiceImageConversionJob *)v55 destinationData];
     }
 
     else
     {
-      v35 = 0;
+      destinationData2 = 0;
     }
 
     [(PAMediaConversionServiceImageConversionJob *)v55 outputImageSize];
     v141.width = v99;
     v141.height = v100;
-    v101 = [(PAMediaConversionServiceImageConversionJob *)v55 sourceResourceURLCollection];
-    if ([v101 isBlastDoorAccessRequired])
+    sourceResourceURLCollection2 = [(PAMediaConversionServiceImageConversionJob *)v55 sourceResourceURLCollection];
+    if ([sourceResourceURLCollection2 isBlastDoorAccessRequired])
     {
       v126 = v65;
       [(PAMediaConversionServiceImageConversionJob *)v55 sourceResourceURLCollection];
-      v103 = v102 = v101;
+      v103 = v102 = sourceResourceURLCollection2;
       [v103 blastDoorMainSourceProperties];
       v105 = v104 = v55;
 
@@ -902,42 +902,42 @@ LABEL_111:
         goto LABEL_109;
       }
 
-      v106 = [(PAMediaConversionServiceImageConversionJob *)v104 sourceResourceURLCollection];
-      v107 = [v106 blastDoorMainSourceProperties];
-      [v27 setObject:v107 forKeyedSubscript:@"PAMediaConversionServiceBlastDoorSourcePropertiesKey"];
+      sourceResourceURLCollection3 = [(PAMediaConversionServiceImageConversionJob *)v104 sourceResourceURLCollection];
+      blastDoorMainSourceProperties = [sourceResourceURLCollection3 blastDoorMainSourceProperties];
+      [v27 setObject:blastDoorMainSourceProperties forKeyedSubscript:@"PAMediaConversionServiceBlastDoorSourcePropertiesKey"];
 
-      v108 = [(PAMediaConversionServiceImageConversionJob *)v104 sourceResourceURLCollection];
-      v109 = [v108 blastDoorVideoComplementProperties];
-      [v27 setObject:v109 forKeyedSubscript:@"PAMediaConversionServiceBlastDoorVideoComplementSourcePropertiesKey"];
+      sourceResourceURLCollection4 = [(PAMediaConversionServiceImageConversionJob *)v104 sourceResourceURLCollection];
+      blastDoorVideoComplementProperties = [sourceResourceURLCollection4 blastDoorVideoComplementProperties];
+      [v27 setObject:blastDoorVideoComplementProperties forKeyedSubscript:@"PAMediaConversionServiceBlastDoorVideoComplementSourcePropertiesKey"];
 
-      v110 = [(PAMediaConversionServiceImageConversionJob *)v104 sourceResourceURLCollection];
-      v111 = [v110 blastDoorSourceURL];
+      sourceResourceURLCollection5 = [(PAMediaConversionServiceImageConversionJob *)v104 sourceResourceURLCollection];
+      blastDoorSourceURL = [sourceResourceURLCollection5 blastDoorSourceURL];
 
-      if (!v111)
+      if (!blastDoorSourceURL)
       {
 LABEL_109:
-        v39 = 0;
-        LODWORD(v92) = 1;
+        blastDoorError = 0;
+        LODWORD(adjustmentInformation) = 1;
         v93 = 1;
         goto LABEL_111;
       }
 
       v124 = v64;
-      v125 = v35;
+      v125 = destinationData2;
       v112 = +[NSFileManager defaultManager];
       v113 = v104;
-      v114 = [(PAMediaConversionServiceImageConversionJob *)v104 sourceResourceURLCollection];
-      v115 = [v114 blastDoorSourceURL];
+      sourceResourceURLCollection6 = [(PAMediaConversionServiceImageConversionJob *)v104 sourceResourceURLCollection];
+      blastDoorSourceURL2 = [sourceResourceURLCollection6 blastDoorSourceURL];
       v138 = 0;
-      v116 = [v112 removeItemAtURL:v115 error:&v138];
+      v116 = [v112 removeItemAtURL:blastDoorSourceURL2 error:&v138];
       v123 = v138;
 
       if (v116)
       {
-        v39 = 0;
+        blastDoorError = 0;
         v55 = v104;
         v64 = v124;
-        v35 = v125;
+        destinationData2 = v125;
         v65 = v126;
       }
 
@@ -947,28 +947,28 @@ LABEL_109:
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v101 = v123;
+          sourceResourceURLCollection2 = v123;
           v145 = v123;
           _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "[BlastDoor] Failed to remove temporary blast door source file: %{public}@", buf, 0xCu);
-          v39 = 0;
+          blastDoorError = 0;
           v55 = v113;
           v64 = v124;
-          v35 = v125;
+          destinationData2 = v125;
           goto LABEL_116;
         }
 
-        v39 = 0;
+        blastDoorError = 0;
         v55 = v113;
         v64 = v124;
-        v35 = v125;
+        destinationData2 = v125;
       }
 
-      v101 = v123;
+      sourceResourceURLCollection2 = v123;
     }
 
     else
     {
-      v39 = 0;
+      blastDoorError = 0;
     }
 
 LABEL_116:
@@ -980,39 +980,39 @@ LABEL_116:
   v33 = [v134 resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
   v34 = [PAMediaConversionServiceImagingUtilities imageDataForPassthroughConversionForSourceURL:v33 metadataPolicy:v135 outResultImageSize:&v141];
 
-  v35 = 0;
+  destinationData2 = 0;
   if (v34)
   {
     v36 = 0;
-    v35 = v34;
+    destinationData2 = v34;
     goto LABEL_22;
   }
 
   v38 = 0;
   v36 = 0;
-  v46 = a9;
+  errorCopy7 = error;
 LABEL_73:
-  if (v46 && (v38 & 1) == 0)
+  if (errorCopy7 && (v38 & 1) == 0)
   {
     +[NSMutableDictionary dictionary];
-    v76 = v14;
-    v78 = v77 = v35;
+    v76 = optionsCopy;
+    v78 = v77 = destinationData2;
     [v32 logMessageSummary];
     v79 = v26;
-    v81 = v80 = v46;
+    v81 = v80 = errorCopy7;
     [(PAMediaConversionServiceImageConversionJob *)v78 setObject:v81 forKeyedSubscript:@"PAMediaConversionServiceErrorSourceResourceSummaryKey"];
 
     v82 = [v36 description];
     [(PAMediaConversionServiceImageConversionJob *)v78 setObject:v82 forKeyedSubscript:@"PAMediaConversionServiceErrorUnderlyingErrorDescriptionKey"];
 
     v68 = v36;
-    v83 = [v36 domain];
-    v84 = [v83 isEqualToString:@"BlastDoor.Explosion"];
+    domain = [v36 domain];
+    v84 = [domain isEqualToString:@"BlastDoor.Explosion"];
 
     v85 = v84 == 0;
     v55 = v78;
-    v35 = v77;
-    v14 = v76;
+    destinationData2 = v77;
+    optionsCopy = v76;
     if (v85)
     {
       v86 = 2;
@@ -1036,10 +1036,10 @@ LABEL_80:
   return v38;
 }
 
-- (void)enumerateEnvironmentVariablePairsInRequestOptions:(id)a3 block:(id)a4
+- (void)enumerateEnvironmentVariablePairsInRequestOptions:(id)options block:(id)block
 {
-  v5 = a4;
-  obj = [a3 objectForKeyedSubscript:@"PAMediaConversionServiceOptionUnitTestSupportExtraEnvironmentVariablesKey"];
+  blockCopy = block;
+  obj = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionUnitTestSupportExtraEnvironmentVariablesKey"];
   if (obj)
   {
     v20 = 0u;
@@ -1093,7 +1093,7 @@ LABEL_80:
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Setting environment variable '%@' to '%@' because %@ request option is set", buf, 0x20u);
             }
 
-            v5[2](v5, v12, v13);
+            blockCopy[2](blockCopy, v12, v13);
           }
         }
 
@@ -1105,27 +1105,27 @@ LABEL_80:
   }
 }
 
-- (void)performEndRequestActionsForUnitTestSupportOptions:(id)a3
+- (void)performEndRequestActionsForUnitTestSupportOptions:(id)options
 {
-  v4 = a3;
-  [(ImageConversionService *)self enumerateEnvironmentVariablePairsInRequestOptions:v4 block:&stru_10003DA68];
-  v5 = [v4 objectForKeyedSubscript:@"PAMediaConversionServiceOptionUnitTestSupportServiceShouldExitAfterRequestKey"];
+  optionsCopy = options;
+  [(ImageConversionService *)self enumerateEnvironmentVariablePairsInRequestOptions:optionsCopy block:&stru_10003DA68];
+  v5 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionUnitTestSupportServiceShouldExitAfterRequestKey"];
 
-  LODWORD(v4) = [v5 BOOLValue];
-  if (v4)
+  LODWORD(optionsCopy) = [v5 BOOLValue];
+  if (optionsCopy)
   {
 
     _xpc_transaction_exit_clean();
   }
 }
 
-- (void)performBeginRequestActionsForUnitTestSupportOptions:(id)a3
+- (void)performBeginRequestActionsForUnitTestSupportOptions:(id)options
 {
-  v6 = a3;
-  v4 = [v6 objectForKeyedSubscript:@"PAMediaConversionServiceOptionUnitTestSupportServiceShouldExitDuringRequestKey"];
-  v5 = [v4 BOOLValue];
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionUnitTestSupportServiceShouldExitDuringRequestKey"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -1137,80 +1137,80 @@ LABEL_80:
     exit(1);
   }
 
-  [(ImageConversionService *)self enumerateEnvironmentVariablePairsInRequestOptions:v6 block:&stru_10003DA48];
+  [(ImageConversionService *)self enumerateEnvironmentVariablePairsInRequestOptions:optionsCopy block:&stru_10003DA48];
 }
 
-- (void)decrementPendingRequestCountWithRequestIdentifier:(id)a3
+- (void)decrementPendingRequestCountWithRequestIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_pendingRequestCount - 1;
-  v5->_pendingRequestCount = v6;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_pendingRequestCount - 1;
+  selfCopy->_pendingRequestCount = v6;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v7 = 138543618;
-    v8 = v4;
+    v8 = identifierCopy;
     v9 = 2048;
     v10 = v6;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Sent reply for image conversion request %{public}@, pending request count now %ld", &v7, 0x16u);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)replyToCompletionHandler:(id)a3 requestIdentifier:(id)a4 resultData:(id)a5 resultImageInformation:(id)a6 signpostID:(unint64_t)a7 error:(id)a8
+- (void)replyToCompletionHandler:(id)handler requestIdentifier:(id)identifier resultData:(id)data resultImageInformation:(id)information signpostID:(unint64_t)d error:(id)error
 {
-  v14 = *(a3 + 2);
-  v15 = a4;
-  v14(a3, a5, a6, a8);
+  v14 = *(handler + 2);
+  identifierCopy = identifier;
+  v14(handler, data, information, error);
   v16 = &_os_log_default;
-  if (a7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(&_os_log_default))
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(&_os_log_default))
   {
     *v17 = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, &_os_log_default, OS_SIGNPOST_INTERVAL_END, a7, "com.apple.photos.mediaconversion.service", "", v17, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, &_os_log_default, OS_SIGNPOST_INTERVAL_END, d, "com.apple.photos.mediaconversion.service", "", v17, 2u);
   }
 
-  [(ImageConversionService *)self decrementPendingRequestCountWithRequestIdentifier:v15];
+  [(ImageConversionService *)self decrementPendingRequestCountWithRequestIdentifier:identifierCopy];
 }
 
-- (int64_t)incrementPendingRequestCountWithRequestIdentifier:(id)a3
+- (int64_t)incrementPendingRequestCountWithRequestIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  pendingRequestCount = v6->_pendingRequestCount;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingRequestCount = selfCopy->_pendingRequestCount;
   if (pendingRequestCount < 0)
   {
     v10 = +[NSAssertionHandler currentHandler];
-    [v10 handleFailureInMethod:a2 object:v6 file:@"ImageConversionService.m" lineNumber:262 description:@"Pending request count underflow"];
+    [v10 handleFailureInMethod:a2 object:selfCopy file:@"ImageConversionService.m" lineNumber:262 description:@"Pending request count underflow"];
 
-    pendingRequestCount = v6->_pendingRequestCount;
+    pendingRequestCount = selfCopy->_pendingRequestCount;
   }
 
   v8 = pendingRequestCount + 1;
-  v6->_pendingRequestCount = pendingRequestCount + 1;
-  objc_sync_exit(v6);
+  selfCopy->_pendingRequestCount = pendingRequestCount + 1;
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (BOOL)validatePhotosAdjustmentsCalculationRequestOptions:(id)a3 error:(id *)a4
+- (BOOL)validatePhotosAdjustmentsCalculationRequestOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceInputFileTypeKey"];
+  optionsCopy = options;
+  v6 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceInputFileTypeKey"];
   v7 = [PFUniformTypeUtilities typeWithIdentifier:v6];
   if (v7)
   {
-    v8 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionOrientationKey"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionOrientationKey"];
     v9 = [v8 unsignedIntValue] - 1;
     v10 = v9 < 8;
-    if (a4 && v9 >= 8)
+    if (error && v9 >= 8)
     {
       v13 = @"PAMediaConversionServiceErrorOffendingItemNameKey";
       v14 = @"PAMediaConversionServiceOptionOrientationKey";
       v11 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-      *a4 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:1 userInfo:v11];
+      *error = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:1 userInfo:v11];
 
       v10 = 0;
     }
@@ -1218,7 +1218,7 @@ LABEL_80:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_8;
@@ -1228,38 +1228,38 @@ LABEL_80:
     v16 = @"PAMediaConversionServiceInputFileTypeKey";
     v8 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:1 userInfo:v8];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
 LABEL_8:
   return v10;
 }
 
-- (BOOL)validateRequestOptions:(id)a3 error:(id *)a4
+- (BOOL)validateRequestOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"PAMediaConversionServiceOptionIsPhotosAdjustmentsCalculationKey"];
-  v8 = [v7 BOOLValue];
+  optionsCopy = options;
+  v7 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionIsPhotosAdjustmentsCalculationKey"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v9 = [(ImageConversionService *)self validatePhotosAdjustmentsCalculationRequestOptions:v6 error:a4];
+    v9 = [(ImageConversionService *)self validatePhotosAdjustmentsCalculationRequestOptions:optionsCopy error:error];
     goto LABEL_17;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"PAMediaConversionServiceOptionApplyOrientationTransformKey"];
-  v11 = [v10 BOOLValue];
+  v10 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionApplyOrientationTransformKey"];
+  bOOLValue2 = [v10 BOOLValue];
 
-  v12 = [v6 objectForKeyedSubscript:@"PAMediaConversionServiceOptionEnableOutputCorruptionDetectionHeuristicsKey"];
-  v13 = [v12 BOOLValue];
+  v12 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionEnableOutputCorruptionDetectionHeuristicsKey"];
+  bOOLValue3 = [v12 BOOLValue];
 
-  if (!v13 || !v11)
+  if (!bOOLValue3 || !bOOLValue2)
   {
-    v16 = [v6 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMetadataPolicyKey"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionMetadataPolicyKey"];
     if (v16)
     {
-      v17 = [v6 allKeys];
-      v18 = [NSMutableSet setWithArray:v17];
+      allKeys = [optionsCopy allKeys];
+      v18 = [NSMutableSet setWithArray:allKeys];
 
       v27[0] = @"PAMediaConversionServiceOptionScaleFactorKey";
       v27[1] = @"PAMediaConversionServiceOptionMaximumPixelCountKey";
@@ -1270,19 +1270,19 @@ LABEL_8:
       [v18 intersectSet:v20];
       v21 = [v18 count];
       v9 = v21 == 1;
-      if (a4 && v21 != 1)
+      if (error && v21 != 1)
       {
         v25 = NSDebugDescriptionErrorKey;
         v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Expected exactly one scaling request option but received %lu: %@", [v18 count], v18);
         v26 = v22;
         v23 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-        *a4 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:6 userInfo:v23];
+        *error = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:6 userInfo:v23];
       }
     }
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v9 = 0;
         goto LABEL_16;
@@ -1292,20 +1292,20 @@ LABEL_8:
       v29 = @"PAMediaConversionServiceOptionMetadataPolicyKey";
       v18 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
       [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:1 userInfo:v18];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  if (a4)
+  if (error)
   {
     v30 = NSDebugDescriptionErrorKey;
     v14 = [NSString stringWithFormat:@"Invalid combination of %@ and %@ request options", @"PAMediaConversionServiceOptionApplyOrientationTransformKey", @"PAMediaConversionServiceOptionEnableOutputCorruptionDetectionHeuristicsKey"];
     v31 = v14;
     v15 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    *a4 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:6 userInfo:v15];
+    *error = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:6 userInfo:v15];
   }
 
   v9 = 0;
@@ -1314,25 +1314,25 @@ LABEL_17:
   return v9;
 }
 
-- (BOOL)setupSourceAndDestinationForRequestTracker:(id)a3 imageConversionOptions:(id)a4 error:(id *)a5
+- (BOOL)setupSourceAndDestinationForRequestTracker:(id)tracker imageConversionOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ImageConversionService *)self urlCollectionForBookmarkDictionaryKey:@"PAMediaConversionServiceSourceBookmarkCollectionKey" inOptions:v9 removeExistingEmptyFiles:0 error:a5];
+  trackerCopy = tracker;
+  optionsCopy = options;
+  v10 = [(ImageConversionService *)self urlCollectionForBookmarkDictionaryKey:@"PAMediaConversionServiceSourceBookmarkCollectionKey" inOptions:optionsCopy removeExistingEmptyFiles:0 error:error];
   if (!v10)
   {
     goto LABEL_11;
   }
 
-  [v8 setSourceURLCollection:v10];
-  v11 = [v9 objectForKeyedSubscript:@"PAMediaConversionServiceDestinationBookmarkCollectionKey"];
+  [trackerCopy setSourceURLCollection:v10];
+  v11 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceDestinationBookmarkCollectionKey"];
 
   if (!v11)
   {
-    v14 = [v9 objectForKeyedSubscript:@"PAMediaConversionServiceOptionWantsResultAsDataKey"];
-    v15 = [v14 BOOLValue];
+    v14 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionWantsResultAsDataKey"];
+    bOOLValue = [v14 BOOLValue];
 
-    if (v15)
+    if (bOOLValue)
     {
       goto LABEL_6;
     }
@@ -1341,23 +1341,23 @@ LABEL_17:
     {
       *v18 = 0;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Neither destination URL collection nor wants-data option specified", v18, 2u);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
       goto LABEL_11;
     }
 
     [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:4 userInfo:0];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_12;
   }
 
-  v12 = [(ImageConversionService *)self urlCollectionForBookmarkDictionaryKey:@"PAMediaConversionServiceDestinationBookmarkCollectionKey" inOptions:v9 removeExistingEmptyFiles:1 error:a5];
+  v12 = [(ImageConversionService *)self urlCollectionForBookmarkDictionaryKey:@"PAMediaConversionServiceDestinationBookmarkCollectionKey" inOptions:optionsCopy removeExistingEmptyFiles:1 error:error];
   if (!v12)
   {
 LABEL_11:
@@ -1366,7 +1366,7 @@ LABEL_11:
   }
 
   v13 = v12;
-  [v8 setDestinationURLCollection:v12];
+  [trackerCopy setDestinationURLCollection:v12];
 
 LABEL_6:
   v16 = 1;
@@ -1375,29 +1375,29 @@ LABEL_12:
   return v16;
 }
 
-- (void)requestStatusWithReply:(id)a3
+- (void)requestStatusWithReply:(id)reply
 {
   v7 = @"PAMediaConversionServiceProcessIdentifierKey";
-  v4 = a3;
+  replyCopy = reply;
   v5 = [NSNumber numberWithInt:getpid()];
   v8 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
-  (*(a3 + 2))(v4, v6, 0);
+  (*(reply + 2))(replyCopy, v6, 0);
 }
 
-- (void)convertImageWithOptions:(id)a3 reply:(id)a4
+- (void)convertImageWithOptions:(id)options reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
-  if ([(ImageConversionService *)self validateRequestIdentifier:v8 replyHandler:v7])
+  optionsCopy = options;
+  replyCopy = reply;
+  v8 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceJobIdentifierKey"];
+  if ([(ImageConversionService *)self validateRequestIdentifier:v8 replyHandler:replyCopy])
   {
     v9 = objc_opt_new();
     [v9 setSignpostID:{os_signpost_id_make_with_pointer(&_os_log_default, v8)}];
-    v10 = [v9 signpostID];
-    if ((v10 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostID = [v9 signpostID];
+    if ((signpostID - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v11 = v10;
+      v11 = signpostID;
       if (os_signpost_enabled(&_os_log_default))
       {
         *buf = 0;
@@ -1406,23 +1406,23 @@ LABEL_12:
     }
 
     v34 = [(ImageConversionService *)self incrementPendingRequestCountWithRequestIdentifier:v8];
-    v37 = [v6 objectForKeyedSubscript:@"PAMediaConversionServiceOptionRequestReasonKey"];
+    v37 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionRequestReasonKey"];
     v38 = +[NSXPCConnection currentConnection];
-    v36 = [v38 userInfo];
-    v39 = [v36 objectForKeyedSubscript:@"PAMCS_CONNECTION_USER_INFO_CONNECTION_IDENTIFIER_KEY"];
+    userInfo = [v38 userInfo];
+    v39 = [userInfo objectForKeyedSubscript:@"PAMCS_CONNECTION_USER_INFO_CONNECTION_IDENTIFIER_KEY"];
     context = objc_autoreleasePoolPush();
-    v12 = [(MediaConversionQueue *)self->_requestQueue nextRequestNumber];
-    v13 = [[MediaConversionRequestTracker alloc] initWithRequestOptions:v6 requestNumber:v12];
-    v14 = [(MediaConversionQueue *)self->_requestQueue queueEntryWithConversionOptions:v6];
+    nextRequestNumber = [(MediaConversionQueue *)self->_requestQueue nextRequestNumber];
+    v13 = [[MediaConversionRequestTracker alloc] initWithRequestOptions:optionsCopy requestNumber:nextRequestNumber];
+    v14 = [(MediaConversionQueue *)self->_requestQueue queueEntryWithConversionOptions:optionsCopy];
     [v14 setTaskTypeSupportsDeduplication:1];
     v42 = 0;
-    v15 = [(ImageConversionService *)self validateRequestOptions:v6 error:&v42];
+    v15 = [(ImageConversionService *)self validateRequestOptions:optionsCopy error:&v42];
     v16 = v42;
     v17 = v16;
     if (v15)
     {
       v41 = v16;
-      v18 = [(ImageConversionService *)self setupSourceAndDestinationForRequestTracker:v13 imageConversionOptions:v6 error:&v41];
+      v18 = [(ImageConversionService *)self setupSourceAndDestinationForRequestTracker:v13 imageConversionOptions:optionsCopy error:&v41];
       v33 = v41;
 
       if ((v18 & 1) == 0)
@@ -1430,38 +1430,38 @@ LABEL_12:
         v25 = v37;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          v28 = [(MediaConversionRequestTracker *)v13 clientProcessIdentifier];
+          clientProcessIdentifier = [(MediaConversionRequestTracker *)v13 clientProcessIdentifier];
           *buf = 138543618;
           v44 = v14;
           v45 = 1024;
-          LODWORD(v46) = v28;
+          LODWORD(v46) = clientProcessIdentifier;
           _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Rejecting conversion request (image) %{public}@ from [%d] because source or destination URLs are invalid", buf, 0x12u);
         }
 
         v17 = v33;
         [(MediaConversionRequestTracker *)v13 setError:v33];
         [(MediaConversionRequestTracker *)v13 markAsCompletedWithInitialRequestIdentifier:0];
-        v21 = [(MediaConversionRequestTracker *)v13 requestIdentifier];
-        -[ImageConversionService replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:](self, "replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:", v7, v21, 0, 0, [v9 signpostID], v33);
+        requestIdentifier = [(MediaConversionRequestTracker *)v13 requestIdentifier];
+        -[ImageConversionService replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:](self, "replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:", replyCopy, requestIdentifier, 0, 0, [v9 signpostID], v33);
         goto LABEL_23;
       }
 
-      v19 = [(MediaConversionRequestTracker *)v13 sourceURLCollection];
-      [v14 setSourceURLCollection:v19];
+      sourceURLCollection = [(MediaConversionRequestTracker *)v13 sourceURLCollection];
+      [v14 setSourceURLCollection:sourceURLCollection];
 
-      [v9 setImageClientReplyHandler:v7];
+      [v9 setImageClientReplyHandler:replyCopy];
       [v9 setRequestTracker:v13];
       [v9 setConnection:v38];
       [v9 setConnectionIdentifier:v39];
       requestQueue = self->_requestQueue;
       v40 = 0;
       [(MediaConversionQueue *)requestQueue enqueueEntry:v14 clientRequest:v9 isDuplicateOfOriginalQueueEntry:&v40];
-      v21 = v40;
+      requestIdentifier = v40;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
-        if (v21)
+        if (requestIdentifier)
         {
-          v22 = v21;
+          v22 = requestIdentifier;
         }
 
         else
@@ -1470,23 +1470,23 @@ LABEL_12:
         }
 
         v32 = v22;
-        v23 = [(MediaConversionRequestTracker *)v13 effectivePriority];
-        if (v23 > 4)
+        effectivePriority = [(MediaConversionRequestTracker *)v13 effectivePriority];
+        if (effectivePriority > 4)
         {
           v24 = 0;
         }
 
         else
         {
-          v24 = off_10003DAF8[v23];
+          v24 = off_10003DAF8[effectivePriority];
         }
 
         v31 = v24;
-        v29 = [(MediaConversionRequestTracker *)v13 requestOptionsSignatureString];
-        v30 = [(MediaConversionRequestTracker *)v13 sourceURLFilenameOnlySummary];
-        v26 = [v32 identifier];
+        requestOptionsSignatureString = [(MediaConversionRequestTracker *)v13 requestOptionsSignatureString];
+        sourceURLFilenameOnlySummary = [(MediaConversionRequestTracker *)v13 sourceURLFilenameOnlySummary];
+        identifier = [v32 identifier];
         *buf = 134220291;
-        v44 = v12;
+        v44 = nextRequestNumber;
         v45 = 2114;
         v46 = v8;
         v47 = 2112;
@@ -1495,14 +1495,14 @@ LABEL_12:
         v25 = v37;
         v50 = v37;
         v51 = 2114;
-        v52 = v29;
+        v52 = requestOptionsSignatureString;
         v53 = 2113;
-        v54 = v30;
+        v54 = sourceURLFilenameOnlySummary;
         v55 = 2114;
-        v56 = v26;
-        v27 = v26;
+        v56 = identifier;
+        v27 = identifier;
         v57 = 1024;
-        v58 = v21 != 0;
+        v58 = requestIdentifier != 0;
         v59 = 2114;
         v60 = v39;
         v61 = 2048;
@@ -1527,8 +1527,8 @@ LABEL_12:
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Invalid request options for %{public}@: %{public}@", buf, 0x16u);
       }
 
-      v21 = [(MediaConversionRequestTracker *)v13 requestIdentifier];
-      -[ImageConversionService replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:](self, "replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:", v7, v21, 0, 0, [v9 signpostID], v17);
+      requestIdentifier = [(MediaConversionRequestTracker *)v13 requestIdentifier];
+      -[ImageConversionService replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:](self, "replyToCompletionHandler:requestIdentifier:resultData:resultImageInformation:signpostID:error:", replyCopy, requestIdentifier, 0, 0, [v9 signpostID], v17);
     }
 
     v25 = v37;
@@ -1538,13 +1538,13 @@ LABEL_23:
   }
 }
 
-- (BOOL)validateRequestIdentifier:(id)a3 replyHandler:(id)a4
+- (BOOL)validateRequestIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v9 = v7;
+    v9 = identifierCopy;
   }
 
   else
@@ -1563,7 +1563,7 @@ LABEL_23:
     v11 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v12 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:6 userInfo:v11];
 
-    (*(v8 + 2))(v8, 0, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v12);
   }
 
   return v10 != 0x7FFFFFFFFFFFFFFFLL;
@@ -1574,11 +1574,11 @@ LABEL_23:
   v3 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.photos.ImageConversionService"];
   [(ImageConversionService *)self setListener:v3];
 
-  v4 = [(ImageConversionService *)self listener];
-  [v4 setDelegate:self];
+  listener = [(ImageConversionService *)self listener];
+  [listener setDelegate:self];
 
-  v5 = [(ImageConversionService *)self listener];
-  [v5 resume];
+  listener2 = [(ImageConversionService *)self listener];
+  [listener2 resume];
 
   dispatch_main();
 }
@@ -1606,9 +1606,9 @@ LABEL_23:
   return v2;
 }
 
-+ (id)adjustmentInformationForComposition:(id)a3 error:(id *)a4
++ (id)adjustmentInformationForComposition:(id)composition error:(id *)error
 {
-  v4 = [PICompositionSerializer adjustmentInformationForComposition:a3 error:a4];
+  v4 = [PICompositionSerializer adjustmentInformationForComposition:composition error:error];
   v5 = [v4 mutableCopy];
 
   v6 = PIAssetAdjustmentsDataBlobKey;
@@ -1632,22 +1632,22 @@ LABEL_23:
   return v5;
 }
 
-+ (void)configureCompositionController:(id)a3 sourceURLCollection:(id)a4
++ (void)configureCompositionController:(id)controller sourceURLCollection:(id)collection
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
+  collectionCopy = collection;
+  controllerCopy = controller;
+  v7 = [collectionCopy resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
   v16 = @"PAMediaConversionResourceRoleVideoComplement";
   v8 = 1;
   v9 = [NSArray arrayWithObjects:&v16 count:1];
-  v10 = [v5 containsAnyRole:v9];
+  v10 = [collectionCopy containsAnyRole:v9];
 
-  v11 = [v5 typeIdentifierForResourceURLWithRole:@"PAMediaConversionResourceRoleMainResource"];
+  v11 = [collectionCopy typeIdentifierForResourceURLWithRole:@"PAMediaConversionResourceRoleMainResource"];
   v12 = [PIPhotoEditHelper imageSourceWithURL:v7 type:v11 useEmbeddedPreview:0];
 
   if (v10)
   {
-    v13 = [v5 resourceURLForRole:@"PAMediaConversionResourceRoleVideoComplement"];
+    v13 = [collectionCopy resourceURLForRole:@"PAMediaConversionResourceRoleVideoComplement"];
     v14 = [PIPhotoEditHelper videoSourceWithURL:v13];
     v15 = [PIPhotoEditHelper livePhotoSourceWithPhotoSource:v12 videoSource:v14];
 
@@ -1655,12 +1655,12 @@ LABEL_23:
     v12 = v15;
   }
 
-  [v6 setSource:v12 mediaType:v8];
+  [controllerCopy setSource:v12 mediaType:v8];
 }
 
 + (void)run
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 run];
 }
 

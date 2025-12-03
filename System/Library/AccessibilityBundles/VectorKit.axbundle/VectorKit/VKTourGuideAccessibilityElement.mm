@@ -1,7 +1,7 @@
 @interface VKTourGuideAccessibilityElement
-- (BOOL)pointInside:(CGPoint)a3;
+- (BOOL)pointInside:(CGPoint)inside;
 - (CGRect)accessibilityFrame;
-- (VKTourGuideAccessibilityElement)initWithAccessibilityContainer:(id)a3 userLocationMarker:(id)a4;
+- (VKTourGuideAccessibilityElement)initWithAccessibilityContainer:(id)container userLocationMarker:(id)marker;
 - (id)_accessibilityScrollStatus;
 - (id)accessibilityLabel;
 - (id)accessibilityPath;
@@ -11,8 +11,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(VKTourGuideAccessibilityElement *)self userLocationMarker];
-  [v2 accessibilityFrame];
+  userLocationMarker = [(VKTourGuideAccessibilityElement *)self userLocationMarker];
+  [userLocationMarker accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -40,10 +40,10 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(VKTourGuideAccessibilityElement *)self accessibilityContainer];
-  v3 = [v2 accessibilityTourStatus];
+  accessibilityContainer = [(VKTourGuideAccessibilityElement *)self accessibilityContainer];
+  accessibilityTourStatus = [accessibilityContainer accessibilityTourStatus];
 
-  return v3;
+  return accessibilityTourStatus;
 }
 
 - (id)accessibilityPath
@@ -69,21 +69,21 @@
   return [v6 bezierPathWithArcCenter:1 radius:MidX startAngle:MidY endAngle:v9 clockwise:{0.0, 6.28318531}];
 }
 
-- (BOOL)pointInside:(CGPoint)a3
+- (BOOL)pointInside:(CGPoint)inside
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(VKTourGuideAccessibilityElement *)self accessibilityFrame];
   v11.x = x;
   v11.y = y;
   result = 0;
   if (CGRectContainsPoint(v12, v11))
   {
-    v6 = [(VKTourGuideAccessibilityElement *)self accessibilityPath];
-    v7 = [v6 CGPath];
+    accessibilityPath = [(VKTourGuideAccessibilityElement *)self accessibilityPath];
+    cGPath = [accessibilityPath CGPath];
     v10.x = x;
     v10.y = y;
-    v8 = CGPathContainsPoint(v7, 0, v10, 0);
+    v8 = CGPathContainsPoint(cGPath, 0, v10, 0);
 
     if (v8)
     {
@@ -96,22 +96,22 @@
 
 - (id)_accessibilityScrollStatus
 {
-  v2 = [(VKTourGuideAccessibilityElement *)self accessibilityContainer];
-  v3 = [v2 _accessibilityScrollStatus];
+  accessibilityContainer = [(VKTourGuideAccessibilityElement *)self accessibilityContainer];
+  _accessibilityScrollStatus = [accessibilityContainer _accessibilityScrollStatus];
 
-  return v3;
+  return _accessibilityScrollStatus;
 }
 
-- (VKTourGuideAccessibilityElement)initWithAccessibilityContainer:(id)a3 userLocationMarker:(id)a4
+- (VKTourGuideAccessibilityElement)initWithAccessibilityContainer:(id)container userLocationMarker:(id)marker
 {
-  v7 = a4;
+  markerCopy = marker;
   v11.receiver = self;
   v11.super_class = VKTourGuideAccessibilityElement;
-  v8 = [(VKTourGuideAccessibilityElement *)&v11 initWithAccessibilityContainer:a3];
+  v8 = [(VKTourGuideAccessibilityElement *)&v11 initWithAccessibilityContainer:container];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_userLocationMarker, a4);
+    objc_storeStrong(&v8->_userLocationMarker, marker);
   }
 
   return v9;

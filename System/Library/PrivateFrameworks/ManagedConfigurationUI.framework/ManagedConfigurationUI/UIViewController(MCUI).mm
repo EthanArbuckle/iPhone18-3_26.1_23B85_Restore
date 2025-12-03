@@ -10,25 +10,25 @@
 
 - (void)MCUIShowProgressInNavBar
 {
-  v8 = [MEMORY[0x277CCACA8] MCMakeUUID];
-  v2 = [MEMORY[0x277CCAE60] valueWithPointer:a1];
+  mCMakeUUID = [MEMORY[0x277CCACA8] MCMakeUUID];
+  v2 = [MEMORY[0x277CCAE60] valueWithPointer:self];
   v3 = viewControllerPointerToIdentifierMap();
-  [v3 setObject:v8 forKeyedSubscript:v2];
+  [v3 setObject:mCMakeUUID forKeyedSubscript:v2];
 
-  v4 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  v5 = [a1 navigationItem];
-  [v4 startAnimatingInNavItem:v5 forIdentifier:v8 hideBackButton:1];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  navigationItem = [self navigationItem];
+  [mEMORY[0x277D3FA90] startAnimatingInNavItem:navigationItem forIdentifier:mCMakeUUID hideBackButton:1];
 
-  v6 = [a1 view];
-  [v6 setUserInteractionEnabled:0];
+  view = [self view];
+  [view setUserInteractionEnabled:0];
 
-  v7 = [a1 navigationItem];
+  navigationItem2 = [self navigationItem];
   DMCSendNavUIUpdatedNotification();
 }
 
 - (void)MCUIHideProgressInNavBarShowBackButton:()MCUI
 {
-  v12 = [MEMORY[0x277CCAE60] valueWithPointer:a1];
+  v12 = [MEMORY[0x277CCAE60] valueWithPointer:self];
   v5 = viewControllerPointerToIdentifierMap();
   v6 = [v5 objectForKeyedSubscript:v12];
 
@@ -37,26 +37,26 @@
     v7 = viewControllerPointerToIdentifierMap();
     [v7 removeObjectForKey:v12];
 
-    v8 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-    [v8 stopAnimatingForIdentifier:v6];
+    mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+    [mEMORY[0x277D3FA90] stopAnimatingForIdentifier:v6];
 
     if (a3)
     {
-      v9 = [a1 navigationItem];
-      [v9 setHidesBackButton:0 animated:1];
+      navigationItem = [self navigationItem];
+      [navigationItem setHidesBackButton:0 animated:1];
     }
   }
 
-  v10 = [a1 view];
-  [v10 setUserInteractionEnabled:1];
+  view = [self view];
+  [view setUserInteractionEnabled:1];
 
-  v11 = [a1 navigationItem];
+  navigationItem2 = [self navigationItem];
   DMCSendNavUIUpdatedNotification();
 }
 
 - (BOOL)MCUIIsShowingProgress
 {
-  v1 = [MEMORY[0x277CCAE60] valueWithPointer:a1];
+  v1 = [MEMORY[0x277CCAE60] valueWithPointer:self];
   v2 = viewControllerPointerToIdentifierMap();
   v3 = [v2 objectForKeyedSubscript:v1];
   v4 = v3 != 0;
@@ -75,13 +75,13 @@
     v6[2](v6, v8);
     if ((v8 & 1) == 0)
     {
-      v9 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+      serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __98__UIViewController_MCUI__MCUIReturnToSender_returnToAccountSettings_viewControllerDismissalBlock___block_invoke;
       v12[3] = &unk_2798622E0;
       v13 = v7;
-      [v9 openApplication:v13 withOptions:0 completion:v12];
+      [serviceWithDefaultShellEndpoint openApplication:v13 withOptions:0 completion:v12];
 
       goto LABEL_8;
     }
@@ -94,9 +94,9 @@
 
   if (a4)
   {
-    v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v11 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=ACCOUNT_SETTINGS"];
-    [v10 openSensitiveURL:v11 withOptions:0];
+    [defaultWorkspace openSensitiveURL:v11 withOptions:0];
   }
 
 LABEL_8:
@@ -108,18 +108,18 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v3 visibleViewController], (v4 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(v3, "selectedViewController"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
+    presentedViewController2 = v4;
 LABEL_8:
-    v7 = [MCUIViewController _MCUIUnwrapViewController:v5];
+    v7 = [MCUIViewController _MCUIUnwrapViewController:presentedViewController2];
 
     goto LABEL_9;
   }
 
-  v6 = [v3 presentedViewController];
+  presentedViewController = [v3 presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
-    v5 = [v3 presentedViewController];
+    presentedViewController2 = [v3 presentedViewController];
     goto LABEL_8;
   }
 

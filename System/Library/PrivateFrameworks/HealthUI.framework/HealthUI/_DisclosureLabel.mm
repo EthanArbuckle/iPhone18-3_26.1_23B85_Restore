@@ -1,19 +1,19 @@
 @interface _DisclosureLabel
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)edgeInsets;
-- (_DisclosureLabel)initWithFrame:(CGRect)a3;
-- (void)drawTextInRect:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
+- (_DisclosureLabel)initWithFrame:(CGRect)frame;
+- (void)drawTextInRect:(CGRect)rect;
+- (void)setBounds:(CGRect)bounds;
 - (void)updateConstraints;
 @end
 
 @implementation _DisclosureLabel
 
-- (_DisclosureLabel)initWithFrame:(CGRect)a3
+- (_DisclosureLabel)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = _DisclosureLabel;
-  v3 = [(_DisclosureLabel *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_DisclosureLabel *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD08]];
@@ -30,8 +30,8 @@
     [(_DisclosureLabel *)v3 setText:v9];
 
     [(_DisclosureLabel *)v3 setNumberOfLines:0];
-    v10 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(_DisclosureLabel *)v3 setBackgroundColor:v10];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(_DisclosureLabel *)v3 setBackgroundColor:systemBackgroundColor];
 
     v11 = HKHealthKeyColor();
     [(_DisclosureLabel *)v3 setTextColor:v11];
@@ -40,15 +40,15 @@
   return v3;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
   top = self->_edgeInsets.top;
   left = self->_edgeInsets.left;
-  v5 = a3.size.width - (left + self->_edgeInsets.right);
-  v6 = a3.size.height - (top + self->_edgeInsets.bottom);
+  v5 = rect.size.width - (left + self->_edgeInsets.right);
+  v6 = rect.size.height - (top + self->_edgeInsets.bottom);
   v7.receiver = self;
   v7.super_class = _DisclosureLabel;
-  [(_DisclosureLabel *)&v7 drawTextInRect:a3.origin.x + left, a3.origin.y + top, v5, v6];
+  [(_DisclosureLabel *)&v7 drawTextInRect:rect.origin.x + left, rect.origin.y + top, v5, v6];
 }
 
 - (CGSize)intrinsicContentSize
@@ -63,12 +63,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(_DisclosureLabel *)self bounds];
   if (width != v8)
   {

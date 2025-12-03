@@ -1,6 +1,6 @@
 @interface SUUITextLayoutRequest
 - (SUUITextLayoutRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SUUITextLayoutRequest
@@ -18,17 +18,17 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSAttributedString *)self->_attributedText copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSAttributedString *)self->_attributedText copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
   *(v5 + 24) = self->_fontWeight;
   *(v5 + 16) = self->_fontSize;
   *(v5 + 32) = self->_numberOfLines;
-  v8 = [(NSString *)self->_text copyWithZone:a3];
+  v8 = [(NSString *)self->_text copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 

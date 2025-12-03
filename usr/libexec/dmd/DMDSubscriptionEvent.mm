@@ -1,5 +1,5 @@
 @interface DMDSubscriptionEvent
-+ (id)fetchRequestMatchingEventsFromOrganizationWithIdentifier:(id)a3;
++ (id)fetchRequestMatchingEventsFromOrganizationWithIdentifier:(id)identifier;
 - (id)dictionaryRepresentation;
 @end
 
@@ -8,50 +8,50 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(DMDSubscriptionEvent *)self payloadIdentifier];
+  payloadIdentifier = [(DMDSubscriptionEvent *)self payloadIdentifier];
 
-  if (v4)
+  if (payloadIdentifier)
   {
-    v5 = [(DMDSubscriptionEvent *)self payloadIdentifier];
-    [v3 setObject:v5 forKeyedSubscript:DMFDeclarationEventsMessageInReplyToKey];
+    payloadIdentifier2 = [(DMDSubscriptionEvent *)self payloadIdentifier];
+    [v3 setObject:payloadIdentifier2 forKeyedSubscript:DMFDeclarationEventsMessageInReplyToKey];
   }
 
-  v6 = [(DMDSubscriptionEvent *)self eventType];
+  eventType = [(DMDSubscriptionEvent *)self eventType];
 
-  if (v6)
+  if (eventType)
   {
-    v7 = [(DMDSubscriptionEvent *)self eventType];
-    [v3 setObject:v7 forKeyedSubscript:DMFDeclarationEventsMessageEventTypeKey];
+    eventType2 = [(DMDSubscriptionEvent *)self eventType];
+    [v3 setObject:eventType2 forKeyedSubscript:DMFDeclarationEventsMessageEventTypeKey];
   }
 
-  v8 = [(DMDSubscriptionEvent *)self date];
+  date = [(DMDSubscriptionEvent *)self date];
 
-  if (v8)
+  if (date)
   {
-    v9 = [(DMDSubscriptionEvent *)self date];
-    [v3 setObject:v9 forKeyedSubscript:DMFDeclarationEventsMessageEventTimestampKey];
+    date2 = [(DMDSubscriptionEvent *)self date];
+    [v3 setObject:date2 forKeyedSubscript:DMFDeclarationEventsMessageEventTimestampKey];
   }
 
-  v10 = [(DMDSubscriptionEvent *)self details];
+  details = [(DMDSubscriptionEvent *)self details];
 
-  if (v10)
+  if (details)
   {
-    v11 = [(DMDSubscriptionEvent *)self details];
-    [v3 setObject:v11 forKeyedSubscript:DMFDeclarationEventsMessageEventPayloadKey];
+    details2 = [(DMDSubscriptionEvent *)self details];
+    [v3 setObject:details2 forKeyedSubscript:DMFDeclarationEventsMessageEventPayloadKey];
   }
 
   return v3;
 }
 
-+ (id)fetchRequestMatchingEventsFromOrganizationWithIdentifier:(id)a3
++ (id)fetchRequestMatchingEventsFromOrganizationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 fetchRequest];
-  v6 = [NSPredicate predicateWithFormat:@"organization.identifier = %@", v4];
+  identifierCopy = identifier;
+  fetchRequest = [self fetchRequest];
+  identifierCopy = [NSPredicate predicateWithFormat:@"organization.identifier = %@", identifierCopy];
 
-  [v5 setPredicate:v6];
+  [fetchRequest setPredicate:identifierCopy];
 
-  return v5;
+  return fetchRequest;
 }
 
 @end

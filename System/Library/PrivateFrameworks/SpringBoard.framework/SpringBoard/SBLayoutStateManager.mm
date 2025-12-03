@@ -1,21 +1,21 @@
 @interface SBLayoutStateManager
-- (id)_layoutStateForApplicationTransitionContext:(id)a3;
-- (id)layoutStateForApplicationTransitionContext:(id)a3;
+- (id)_layoutStateForApplicationTransitionContext:(id)context;
+- (id)layoutStateForApplicationTransitionContext:(id)context;
 @end
 
 @implementation SBLayoutStateManager
 
-- (id)layoutStateForApplicationTransitionContext:(id)a3
+- (id)layoutStateForApplicationTransitionContext:(id)context
 {
-  v33 = self;
+  selfCopy = self;
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v36 = [v3 previousLayoutState];
+  contextCopy = context;
+  previousLayoutState = [contextCopy previousLayoutState];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = [v3 previousEntities];
+  obj = [contextCopy previousEntities];
   v4 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v4)
   {
@@ -31,25 +31,25 @@
         }
 
         v8 = *(*(&v43 + 1) + 8 * i);
-        v9 = [v8 layoutRole];
+        layoutRole = [v8 layoutRole];
         v10 = v8;
-        v11 = [v36 elements];
-        v12 = [v36 elementWithRole:v9];
+        elements = [previousLayoutState elements];
+        v12 = [previousLayoutState elementWithRole:layoutRole];
         if (v12)
         {
-          v13 = [v10 uniqueIdentifier];
-          v14 = [v12 uniqueIdentifier];
-          v15 = [v13 isEqualToString:v14];
+          uniqueIdentifier = [v10 uniqueIdentifier];
+          uniqueIdentifier2 = [v12 uniqueIdentifier];
+          v15 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
 
           if ((v15 & 1) == 0)
           {
-            v16 = [v12 workspaceEntity];
+            workspaceEntity = [v12 workspaceEntity];
 
-            v10 = v16;
+            v10 = workspaceEntity;
           }
         }
 
-        [v3 setPreviousEntity:v10 forLayoutRole:v9];
+        [contextCopy setPreviousEntity:v10 forLayoutRole:layoutRole];
       }
 
       v5 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
@@ -62,8 +62,8 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v17 = [v36 elements];
-  v18 = [v17 countByEnumeratingWithState:&v39 objects:v47 count:16];
+  elements2 = [previousLayoutState elements];
+  v18 = [elements2 countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (v18)
   {
     v19 = v18;
@@ -74,52 +74,52 @@
       {
         if (*v40 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(elements2);
         }
 
         v22 = *(*(&v39 + 1) + 8 * j);
-        v23 = [v22 layoutRole];
-        v24 = [v3 previousEntityForLayoutRole:v23];
+        layoutRole2 = [v22 layoutRole];
+        v24 = [contextCopy previousEntityForLayoutRole:layoutRole2];
 
         if (!v24)
         {
-          v25 = [v22 workspaceEntity];
-          [v3 setPreviousEntity:v25 forLayoutRole:v23];
+          workspaceEntity2 = [v22 workspaceEntity];
+          [contextCopy setPreviousEntity:workspaceEntity2 forLayoutRole:layoutRole2];
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v39 objects:v47 count:16];
+      v19 = [elements2 countByEnumeratingWithState:&v39 objects:v47 count:16];
     }
 
     while (v19);
   }
 
-  v26 = [v3 previousEntityForLayoutRole:1];
+  v26 = [contextCopy previousEntityForLayoutRole:1];
 
   if (!v26)
   {
     v27 = +[(SBWorkspaceEntity *)SBHomeScreenEntity];
-    [v3 setPreviousEntity:v27 forLayoutRole:1];
+    [contextCopy setPreviousEntity:v27 forLayoutRole:1];
   }
 
-  if (([v3 _alreadyPopulatedRequestedWorkspaceEntities] & 1) == 0)
+  if (([contextCopy _alreadyPopulatedRequestedWorkspaceEntities] & 1) == 0)
   {
-    v28 = [v3 activatingEntity];
-    [v3 _setRequestedActivatingWorkspaceEntity:v28];
+    activatingEntity = [contextCopy activatingEntity];
+    [contextCopy _setRequestedActivatingWorkspaceEntity:activatingEntity];
 
-    v29 = [v3 entitiesByKey];
+    entitiesByKey = [contextCopy entitiesByKey];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __67__SBLayoutStateManager_layoutStateForApplicationTransitionContext___block_invoke;
     v37[3] = &unk_2783BA1B8;
-    v30 = v3;
+    v30 = contextCopy;
     v38 = v30;
-    [v29 enumerateKeysAndObjectsUsingBlock:v37];
+    [entitiesByKey enumerateKeysAndObjectsUsingBlock:v37];
 
     [v30 _setAlreadyPopulatedRequestedWorkspaceEntities:1];
   }
 
-  v31 = [v34 _layoutStateForApplicationTransitionContext:v3];
+  v31 = [v34 _layoutStateForApplicationTransitionContext:contextCopy];
 
   return v31;
 }
@@ -134,24 +134,24 @@ void __67__SBLayoutStateManager_layoutStateForApplicationTransitionContext___blo
   }
 }
 
-- (id)_layoutStateForApplicationTransitionContext:(id)a3
+- (id)_layoutStateForApplicationTransitionContext:(id)context
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 previousLayoutState];
-  if ([v5 isBackground])
+  contextCopy = context;
+  previousLayoutState = [contextCopy previousLayoutState];
+  if ([contextCopy isBackground])
   {
-    v7 = v6;
+    v7 = previousLayoutState;
     goto LABEL_38;
   }
 
-  v8 = [v5 activatingEntity];
-  v9 = [v5 entityForLayoutRole:1];
-  v10 = [v5 previousEntityForLayoutRole:1];
-  v11 = [v6 interfaceOrientation];
+  activatingEntity = [contextCopy activatingEntity];
+  v9 = [contextCopy entityForLayoutRole:1];
+  v10 = [contextCopy previousEntityForLayoutRole:1];
+  interfaceOrientation = [previousLayoutState interfaceOrientation];
   if (!v9)
   {
-    v12 = v8;
+    v12 = activatingEntity;
     if (v12)
     {
       v9 = v12;
@@ -206,11 +206,11 @@ LABEL_14:
     [(SBLayoutStateManager *)a2 _layoutStateForApplicationTransitionContext:?];
   }
 
-  [v5 setActivatingEntity:0];
-  [v5 setEntity:v9 forLayoutRole:1];
-  [v5 setEntity:0 forLayoutRole:2];
-  [v5 setEntity:0 forLayoutRole:3];
-  [v5 setEntity:0 forLayoutRole:4];
+  [contextCopy setActivatingEntity:0];
+  [contextCopy setEntity:v9 forLayoutRole:1];
+  [contextCopy setEntity:0 forLayoutRole:2];
+  [contextCopy setEntity:0 forLayoutRole:3];
+  [contextCopy setEntity:0 forLayoutRole:4];
   v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v17 = v16;
   if (v9)
@@ -233,10 +233,10 @@ LABEL_14:
   }
 
   v20 = v19;
-  v21 = [v5 interfaceOrientation];
-  if (v21)
+  interfaceOrientation2 = [contextCopy interfaceOrientation];
+  if (interfaceOrientation2)
   {
-    v11 = v21;
+    interfaceOrientation = interfaceOrientation2;
   }
 
   if ([v20 count])
@@ -244,9 +244,9 @@ LABEL_14:
     v32 = v17;
     v33 = v13;
     v34 = v9;
-    v35 = v8;
-    v36 = v6;
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    v35 = activatingEntity;
+    v36 = previousLayoutState;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -268,8 +268,8 @@ LABEL_14:
           }
 
           v28 = *(*(&v38 + 1) + 8 * i);
-          v29 = [MEMORY[0x277CCABB0] numberWithInteger:{v11, v31}];
-          [v22 setObject:v29 forKey:v28];
+          v29 = [MEMORY[0x277CCABB0] numberWithInteger:{interfaceOrientation, v31}];
+          [dictionary setObject:v29 forKey:v28];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v38 objects:v44 count:16];
@@ -278,8 +278,8 @@ LABEL_14:
       while (v25);
     }
 
-    v8 = v35;
-    v6 = v36;
+    activatingEntity = v35;
+    previousLayoutState = v36;
     v9 = v34;
     v17 = v32;
     v13 = v33;
@@ -288,7 +288,7 @@ LABEL_14:
 
   else
   {
-    v22 = 0;
+    dictionary = 0;
   }
 
   v7 = [objc_alloc(objc_msgSend(objc_opt_class() "_layoutStateClass"))];

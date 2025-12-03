@@ -1,10 +1,10 @@
 @interface UIColor
-- (id)fallback_debugHierarchyValueWithOutOptions:(id *)a3 outError:(id *)a4;
+- (id)fallback_debugHierarchyValueWithOutOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UIColor
 
-- (id)fallback_debugHierarchyValueWithOutOptions:(id *)a3 outError:(id *)a4
+- (id)fallback_debugHierarchyValueWithOutOptions:(id *)options outError:(id *)error
 {
   v6 = objc_opt_class();
   if (!v6 || (v7 = v6, !object_isClass(v6)))
@@ -33,15 +33,15 @@ LABEL_7:
   v46[1] = v12;
   v13 = DebugHierarchyTargetHub_ptr;
   v14 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:2];
-  *a3 = v14;
-  v15 = [(UIColor *)self CGColor];
-  if (v15)
+  *options = v14;
+  cGColor = [(UIColor *)self CGColor];
+  if (cGColor)
   {
     v44 = v14;
     Mutable = CFDictionaryCreateMutable(0, 20, &kCFCopyStringDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    space = CGColorGetColorSpace(v15);
+    space = CGColorGetColorSpace(cGColor);
     v16 = CGColorSpaceCopyName(space);
-    NumberOfComponents = CGColorGetNumberOfComponents(v15);
+    NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
     v18 = NumberOfComponents << 32;
     v19 = NumberOfComponents;
     if (NumberOfComponents << 32)
@@ -83,7 +83,7 @@ LABEL_7:
       v21 = &stru_3C768;
     }
 
-    Components = CGColorGetComponents(v15);
+    Components = CGColorGetComponents(cGColor);
     v25 = malloc_type_malloc(v18 >> 29, 0x6004044C4A2DFuLL);
     if (v18)
     {
@@ -123,7 +123,7 @@ LABEL_7:
 
     free(v25);
     CGColorSpaceGetModel(space);
-    v15 = Mutable;
+    cGColor = Mutable;
     v14 = v44;
     if (v28)
     {
@@ -158,47 +158,47 @@ LABEL_7:
 
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v31 = [(UIColor *)self _debugName];
-    if (v31)
+    _debugName = [(UIColor *)self _debugName];
+    if (_debugName)
     {
     }
 
     else
     {
-      v32 = [(UIColor *)self _debugCatalogBundleIdentifier];
+      _debugCatalogBundleIdentifier = [(UIColor *)self _debugCatalogBundleIdentifier];
 
-      if (!v32)
+      if (!_debugCatalogBundleIdentifier)
       {
         goto LABEL_48;
       }
     }
 
     v33 = v13;
-    v34 = [(CGColor *)v15 mutableCopy];
-    v35 = [(UIColor *)self _debugCatalogBundleIdentifier];
+    v34 = [(CGColor *)cGColor mutableCopy];
+    _debugCatalogBundleIdentifier2 = [(UIColor *)self _debugCatalogBundleIdentifier];
 
-    if (v35)
+    if (_debugCatalogBundleIdentifier2)
     {
-      v36 = [(UIColor *)self _debugCatalogBundleIdentifier];
-      [v34 setObject:v36 forKeyedSubscript:@"catalogBundleID"];
+      _debugCatalogBundleIdentifier3 = [(UIColor *)self _debugCatalogBundleIdentifier];
+      [v34 setObject:_debugCatalogBundleIdentifier3 forKeyedSubscript:@"catalogBundleID"];
     }
 
-    v37 = [(UIColor *)self _debugName];
+    _debugName2 = [(UIColor *)self _debugName];
 
-    if (v37)
+    if (_debugName2)
     {
-      v38 = [(UIColor *)self _debugName];
-      [v34 setObject:v38 forKeyedSubscript:@"colorName"];
+      _debugName3 = [(UIColor *)self _debugName];
+      [v34 setObject:_debugName3 forKeyedSubscript:@"colorName"];
     }
 
     v39 = [v33[37] dictionaryWithDictionary:v34];
 
-    v15 = v39;
+    cGColor = v39;
   }
 
 LABEL_48:
 
-  return v15;
+  return cGColor;
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface CKDXPCConnection
-- (BOOL)systemAvailabilityChanged:(unint64_t)a3;
-- (CKDXPCConnection)initWithXPCConnection:(id)a3;
+- (BOOL)systemAvailabilityChanged:(unint64_t)changed;
+- (CKDXPCConnection)initWithXPCConnection:(id)connection;
 - (id)CKStatusReportArray;
-- (id)containerProxyFromSetupInfo:(id)a3 containerScopedClientProxy:(id)a4 outError:(id *)a5;
-- (id)logicalDeviceScopedClientProxyForDeviceContext:(id)a3;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (id)containerProxyFromSetupInfo:(id)info containerScopedClientProxy:(id)proxy outError:(id *)error;
+- (id)logicalDeviceScopedClientProxyForDeviceContext:(id)context;
+- (void)CKDescribePropertiesUsing:(id)using;
 - (void)dealloc;
-- (void)enumerateContainersUsingBlock:(id)a3;
-- (void)enumerateContainersWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getAdopterProcessScopedDaemonProxyCreatorWithCompletionHandler:(id)a3;
-- (void)getContainerScopedDaemonProxyCreatorForSetupInfo:(id)a3 containerScopedClientProxy:(id)a4 completionHandler:(id)a5;
-- (void)getDaemonTestServerManagerProxyCreatorWithCompletionHandler:(id)a3;
-- (void)getLogicalDeviceScopedClientProxyCreatorForTestDeviceReference:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5;
-- (void)getLogicalDeviceScopedDaemonProxyCreatorForTestDeviceReferenceProtocol:(id)a3 completionHandler:(id)a4;
-- (void)getProcessScopedClientProxyCreatorSynchronous:(BOOL)a3 completionHandler:(id)a4;
-- (void)getProcessScopedDaemonProxyCreatorWithCompletionHandler:(id)a3;
-- (void)getSessionAcquisitionDaemonProxyCreatorForSessionAcquisitionSetupInfo:(id)a3 sessionAcquisitionClientProxy:(id)a4 completionHandler:(id)a5;
+- (void)enumerateContainersUsingBlock:(id)block;
+- (void)enumerateContainersWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getAdopterProcessScopedDaemonProxyCreatorWithCompletionHandler:(id)handler;
+- (void)getContainerScopedDaemonProxyCreatorForSetupInfo:(id)info containerScopedClientProxy:(id)proxy completionHandler:(id)handler;
+- (void)getDaemonTestServerManagerProxyCreatorWithCompletionHandler:(id)handler;
+- (void)getLogicalDeviceScopedClientProxyCreatorForTestDeviceReference:(id)reference synchronous:(BOOL)synchronous completionHandler:(id)handler;
+- (void)getLogicalDeviceScopedDaemonProxyCreatorForTestDeviceReferenceProtocol:(id)protocol completionHandler:(id)handler;
+- (void)getProcessScopedClientProxyCreatorSynchronous:(BOOL)synchronous completionHandler:(id)handler;
+- (void)getProcessScopedDaemonProxyCreatorWithCompletionHandler:(id)handler;
+- (void)getSessionAcquisitionDaemonProxyCreatorForSessionAcquisitionSetupInfo:(id)info sessionAcquisitionClientProxy:(id)proxy completionHandler:(id)handler;
 - (void)invalidate;
-- (void)noteClientProcessScopedMetadata:(id)a3;
+- (void)noteClientProcessScopedMetadata:(id)metadata;
 @end
 
 @implementation CKDXPCConnection
 
-- (CKDXPCConnection)initWithXPCConnection:(id)a3
+- (CKDXPCConnection)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v43.receiver = self;
   v43.super_class = CKDXPCConnection;
   v6 = [(CKDXPCConnection *)&v43 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpcConnection, a3);
+    objc_storeStrong(&v6->_xpcConnection, connection);
     v10 = objc_msgSend_now(MEMORY[0x277CBEAA8], v8, v9);
     connectionDate = v7->_connectionDate;
     v7->_connectionDate = v10;
@@ -95,21 +95,21 @@
   [(CKDXPCConnection *)&v4 dealloc];
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v11 = objc_msgSend_processScopedClientProxy(self, v5, v6);
   v9 = objc_msgSend_procName(v11, v7, v8);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v10, @"client", v9, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v10, @"client", v9, 0);
 }
 
-- (void)enumerateContainersUsingBlock:(id)a3
+- (void)enumerateContainersUsingBlock:(id)block
 {
-  v5 = a3;
-  v9 = v5;
-  if (v5)
+  blockCopy = block;
+  v9 = blockCopy;
+  if (blockCopy)
   {
-    objc_msgSend_enumerateContainersWithOptions_usingBlock_(self, v5, 0, v5);
+    objc_msgSend_enumerateContainersWithOptions_usingBlock_(self, blockCopy, 0, blockCopy);
   }
 
   else
@@ -121,16 +121,16 @@
   }
 }
 
-- (void)enumerateContainersWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateContainersWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v9 = a4;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v28 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v28, v29, a2, self, @"CKDXPCConnection.m", 126, @"Invalid parameter not satisfying: %@", @"block");
   }
 
-  if ((a3 & 4) != 0)
+  if ((options & 4) != 0)
   {
     v20 = objc_msgSend_sharedContainers(self, v7, v8);
     objc_sync_enter(v20);
@@ -143,9 +143,9 @@
     v32[2] = sub_225191E04;
     v32[3] = &unk_2785482D0;
     v17 = &v33;
-    v33 = v9;
-    v26 = v9;
-    objc_msgSend_enumerateObjectsWithOptions_usingBlock_(v16, v27, a3, v32);
+    v33 = blockCopy;
+    v26 = blockCopy;
+    objc_msgSend_enumerateObjectsWithOptions_usingBlock_(v16, v27, options, v32);
   }
 
   else
@@ -161,17 +161,17 @@
     v30[2] = sub_225191E18;
     v30[3] = &unk_2785482F8;
     v17 = &v31;
-    v31 = v9;
-    v18 = v9;
-    objc_msgSend_enumerateObjectsWithOptions_usingBlock_(v16, v19, a3, v30);
+    v31 = blockCopy;
+    v18 = blockCopy;
+    objc_msgSend_enumerateObjectsWithOptions_usingBlock_(v16, v19, options, v30);
   }
 }
 
-- (id)containerProxyFromSetupInfo:(id)a3 containerScopedClientProxy:(id)a4 outError:(id *)a5
+- (id)containerProxyFromSetupInfo:(id)info containerScopedClientProxy:(id)proxy outError:(id *)error
 {
   v304 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v259 = a4;
+  infoCopy = info;
+  proxyCopy = proxy;
   v295 = 0;
   v296 = &v295;
   v297 = 0x2020000000;
@@ -188,11 +188,11 @@
   v286 = sub_225073FA0;
   v287 = sub_22507355C;
   v288 = 0;
-  v265 = v6;
-  v262 = objc_msgSend_containerID(v6, v7, v8);
+  v265 = infoCopy;
+  v262 = objc_msgSend_containerID(infoCopy, v7, v8);
   v260 = objc_msgSend_currentPersona(MEMORY[0x277CBC558], v9, v10);
   v13 = objc_msgSend_processScopedClientProxy(self, v11, v12);
-  v16 = objc_msgSend_containerOptions(v6, v14, v15);
+  v16 = objc_msgSend_containerOptions(infoCopy, v14, v15);
   v266 = objc_msgSend_clientEntitlementsWithContainerOptions_(v13, v17, v16);
 
   v20 = objc_msgSend_containerOptions(v265, v18, v19);
@@ -221,7 +221,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v300 = self;
+        selfCopy10 = self;
         _os_log_error_impl(&dword_22506F000, v37, OS_LOG_TYPE_ERROR, "Client Proxy %@ is not entitled to use fake entitlements.", buf, 0xCu);
       }
     }
@@ -269,7 +269,7 @@
 
   v73 = objc_msgSend_processScopedClientProxy(self, v42, v43);
   v76 = objc_msgSend_clientSDKVersion(v73, v74, v75);
-  v78 = objc_msgSend_validateEntitlementsWithSDKVersion_error_(v266, v77, v76, a5);
+  v78 = objc_msgSend_validateEntitlementsWithSDKVersion_error_(v266, v77, v76, error);
 
   if ((v78 & 1) == 0)
   {
@@ -282,7 +282,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v300 = self;
+      selfCopy10 = self;
       _os_log_error_impl(&dword_22506F000, v92, OS_LOG_TYPE_ERROR, "Connection %@ has invalid client entitlements.", buf, 0xCu);
     }
 
@@ -307,14 +307,14 @@ LABEL_26:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v300 = self;
+        selfCopy10 = self;
         _os_log_error_impl(&dword_22506F000, v89, OS_LOG_TYPE_ERROR, "Connection %@ is not allowed to use the system cloudd.", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v90, *MEMORY[0x277CBBF50], 8, @"Connection %@ is not allowed to use the system cloudd.", self);
-        *a5 = v91 = 0;
+        *error = v91 = 0;
         goto LABEL_153;
       }
 
@@ -338,16 +338,16 @@ LABEL_26:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v300 = self;
+      selfCopy10 = self;
       _os_log_error_impl(&dword_22506F000, v200, OS_LOG_TYPE_ERROR, "The application on the other end of %@ is trying to use a custom account but it doesn't have the right entitlement. Denying connection.", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v202 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v201, *MEMORY[0x277CBBF50], 8, @"Connection %@ is not allowed to set custom account info", self);
 LABEL_96:
       v91 = 0;
-      *a5 = v202;
+      *error = v202;
       goto LABEL_152;
     }
 
@@ -367,7 +367,7 @@ LABEL_107:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v300 = self;
+      selfCopy10 = self;
       _os_log_impl(&dword_22506F000, v97, OS_LOG_TYPE_INFO, "Giving %@ blanket access to any container", buf, 0xCu);
     }
 
@@ -448,7 +448,7 @@ LABEL_107:
         if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v300 = self;
+          selfCopy10 = self;
           v141 = v140;
           v142 = "Giving %@ access to container because it's a data repair proxy";
           v143 = 12;
@@ -474,7 +474,7 @@ LABEL_60:
         }
 
         *buf = 138412546;
-        v300 = self;
+        selfCopy10 = self;
         v301 = 2114;
         v302 = v132;
         v206 = "Connection %@ specified bundle identifier override '%{public}@', but it has no prefix entitlement";
@@ -497,7 +497,7 @@ LABEL_60:
         }
 
         *buf = 138412546;
-        v300 = self;
+        selfCopy10 = self;
         v301 = 2114;
         v302 = v132;
         v206 = "Connection %@ specified bundle identifier override '%{public}@', but it didn't match the prefix";
@@ -505,9 +505,9 @@ LABEL_125:
         _os_log_fault_impl(&dword_22506F000, v205, OS_LOG_TYPE_FAULT, v206, buf, 0x16u);
 LABEL_104:
 
-        if (a5)
+        if (error)
         {
-          *a5 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v207, *MEMORY[0x277CBBF50], 8, @"Connection %@ is not allowed to set its application bundle identifier without the %@ entitlement", self, *MEMORY[0x277CBC898]);
+          *error = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v207, *MEMORY[0x277CBBF50], 8, @"Connection %@ is not allowed to set its application bundle identifier without the %@ entitlement", self, *MEMORY[0x277CBC898]);
         }
 
         goto LABEL_107;
@@ -522,7 +522,7 @@ LABEL_104:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v300 = self;
+        selfCopy10 = self;
         v301 = 2114;
         v302 = v132;
         v141 = v147;
@@ -570,11 +570,11 @@ LABEL_64:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v300 = self;
+      selfCopy10 = self;
       _os_log_error_impl(&dword_22506F000, v203, OS_LOG_TYPE_ERROR, "Connection %@ is not entitled to use CloudKit", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v202 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v204, *MEMORY[0x277CBBF50], 8, @"Connection %@ is not entitled to use CloudKit", self);
       goto LABEL_96;
@@ -605,7 +605,7 @@ LABEL_67:
       {
         v231 = objc_msgSend_ckShortDescription(v260, v168, v169);
         *buf = 138412290;
-        v300 = v231;
+        selfCopy10 = v231;
         _os_log_debug_impl(&dword_22506F000, v167, OS_LOG_TYPE_DEBUG, "Verifying current persona %@ can access container", buf, 0xCu);
       }
 
@@ -627,13 +627,13 @@ LABEL_67:
         if (os_log_type_enabled(*v166, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v300 = v176;
+          selfCopy10 = v176;
           _os_log_error_impl(&dword_22506F000, v208, OS_LOG_TYPE_ERROR, "Failed to resolve the proximate persona with error: %@", buf, 0xCu);
         }
 
-        if (a5)
+        if (error)
         {
-          *a5 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v209, *MEMORY[0x277CBBF50], 5, v176, @"Invalid persona for container");
+          *error = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v209, *MEMORY[0x277CBBF50], 5, v176, @"Invalid persona for container");
         }
 
         goto LABEL_149;
@@ -662,13 +662,13 @@ LABEL_67:
         {
           v234 = objc_msgSend_ckShortDescription(v284[5], v211, v212);
           *buf = 138412290;
-          v300 = v234;
+          selfCopy10 = v234;
           _os_log_error_impl(&dword_22506F000, v210, OS_LOG_TYPE_ERROR, "Detected that the client did not adopt or propagate the persona %@", buf, 0xCu);
         }
 
-        if (a5)
+        if (error)
         {
-          *a5 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v213, *MEMORY[0x277CBBF50], 5, @"Invalid persona for container");
+          *error = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v213, *MEMORY[0x277CBBF50], 5, @"Invalid persona for container");
         }
 
         v214 = objc_alloc(MEMORY[0x277CBC6B0]);
@@ -717,13 +717,13 @@ LABEL_67:
             if (os_log_type_enabled(*v166, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v300 = v196;
+              selfCopy10 = v196;
               _os_log_error_impl(&dword_22506F000, v232, OS_LOG_TYPE_ERROR, "Failed to fetch personal persona with error: %@", buf, 0xCu);
             }
 
-            if (a5)
+            if (error)
             {
-              *a5 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v233, *MEMORY[0x277CBBF50], 5, @"Invalid persona for container");
+              *error = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v233, *MEMORY[0x277CBBF50], 5, @"Invalid persona for container");
             }
 
 LABEL_148:
@@ -780,15 +780,15 @@ LABEL_136:
           {
             v256 = v284[5];
             *buf = 138412546;
-            v300 = v256;
+            selfCopy10 = v256;
             v301 = 2112;
             v302 = v196;
             _os_log_error_impl(&dword_22506F000, v252, OS_LOG_TYPE_ERROR, "Failed to adopt persona %@ with error: %@", buf, 0x16u);
           }
 
-          if (a5)
+          if (error)
           {
-            *a5 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v253, *MEMORY[0x277CBBF50], 5, @"Invalid persona for container");
+            *error = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v253, *MEMORY[0x277CBBF50], 5, @"Invalid persona for container");
           }
 
           goto LABEL_148;
@@ -802,7 +802,7 @@ LABEL_136:
     v239 = objc_msgSend_initWithApplicationID_containerID_persona_(v237, v238, v263, v162, v284[5]);
     v240 = [CKDContainerProxy alloc];
     v243 = objc_msgSend_containerOptions(v265, v241, v242);
-    v91 = objc_msgSend_initWithAppContainerTuple_entitlements_options_distantContainer_connection_(v240, v244, v239, v266, v243, v259, self);
+    v91 = objc_msgSend_initWithAppContainerTuple_entitlements_options_distantContainer_connection_(v240, v244, v239, v266, v243, proxyCopy, self);
 
     v247 = objc_msgSend_containerProxies(self, v245, v246);
     objc_sync_enter(v247);
@@ -815,13 +815,13 @@ LABEL_136:
     goto LABEL_151;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_150;
   }
 
   objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v163, *MEMORY[0x277CBBF50], 8, @"Trying to initialize a container without an application ID");
-  *a5 = v91 = 0;
+  *error = v91 = 0;
 LABEL_151:
 
 LABEL_152:
@@ -836,24 +836,24 @@ LABEL_153:
   return v91;
 }
 
-- (BOOL)systemAvailabilityChanged:(unint64_t)a3
+- (BOOL)systemAvailabilityChanged:(unint64_t)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v91 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_processScopedClientProxy(v4, v5, v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_processScopedClientProxy(selfCopy, v5, v6);
   v10 = objc_msgSend_clientEntitlements(v7, v8, v9);
   hasAllowAccessDuringBuddyEntitlement = objc_msgSend_hasAllowAccessDuringBuddyEntitlement(v10, v11, v12);
 
-  v16 = objc_msgSend_processScopedClientProxy(v4, v14, v15);
+  v16 = objc_msgSend_processScopedClientProxy(selfCopy, v14, v15);
   v19 = objc_msgSend_processBinaryName(v16, v17, v18);
 
-  v22 = objc_msgSend_processScopedClientProxy(v4, v20, v21);
+  v22 = objc_msgSend_processScopedClientProxy(selfCopy, v20, v21);
   v25 = objc_msgSend_procName(v22, v23, v24);
-  v26 = v3 | hasAllowAccessDuringBuddyEntitlement;
+  v26 = changedCopy | hasAllowAccessDuringBuddyEntitlement;
 
-  if ((v3 | hasAllowAccessDuringBuddyEntitlement))
+  if ((changedCopy | hasAllowAccessDuringBuddyEntitlement))
   {
     v29 = objc_msgSend_sharedConnectionManager(CKDXPCConnectionManager, v27, v28);
     v31 = objc_msgSend_previousProcTearDownOperations_(v29, v30, v19);
@@ -864,7 +864,7 @@ LABEL_153:
     v31 = 0;
   }
 
-  if ((v3 & 2) == 0)
+  if ((changedCopy & 2) == 0)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -887,7 +887,7 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v34 = objc_msgSend_unlockedSinceBootQueue(v4, v27, v28);
+  v34 = objc_msgSend_unlockedSinceBootQueue(selfCopy, v27, v28);
   isSuspended = objc_msgSend_isSuspended(v34, v35, v36);
 
   v38 = MEMORY[0x277CBC880];
@@ -907,7 +907,7 @@ LABEL_41:
       _os_log_impl(&dword_22506F000, v40, OS_LOG_TYPE_INFO, "Connection from client %{public}@ is past unlock check", buf, 0xCu);
     }
 
-    v43 = objc_msgSend_unlockedSinceBootQueue(v4, v41, v42);
+    v43 = objc_msgSend_unlockedSinceBootQueue(selfCopy, v41, v42);
     objc_msgSend_setSuspended_(v43, v44, 0);
   }
 
@@ -952,7 +952,7 @@ LABEL_41:
   v79[2] = sub_225193F14;
   v79[3] = &unk_278545898;
   v80 = v25;
-  v81 = v4;
+  v81 = selfCopy;
   v51 = objc_msgSend_blockOperationWithBlock_(v49, v50, v79);
   if (objc_msgSend_count(v31, v52, v53))
   {
@@ -968,7 +968,7 @@ LABEL_41:
       v62 = objc_msgSend_count(v31, v60, v61);
       v63 = @"s";
       *buf = 138413058;
-      v84 = v4;
+      v84 = selfCopy;
       v85 = 2112;
       if (v62 == 1)
       {
@@ -1011,26 +1011,26 @@ LABEL_41:
     }
   }
 
-  v70 = objc_msgSend_unlockedSinceBootQueue(v4, v54, v55, v75);
+  v70 = objc_msgSend_unlockedSinceBootQueue(selfCopy, v54, v55, v75);
   objc_msgSend_addOperation_(v70, v71, v51);
 
   v72 = 0;
 LABEL_42:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v73 = *MEMORY[0x277D85DE8];
   return v72;
 }
 
-- (void)noteClientProcessScopedMetadata:(id)a3
+- (void)noteClientProcessScopedMetadata:(id)metadata
 {
-  v4 = a3;
-  v7 = objc_msgSend_clientSDKVersion(v4, v5, v6);
+  metadataCopy = metadata;
+  v7 = objc_msgSend_clientSDKVersion(metadataCopy, v5, v6);
   v10 = objc_msgSend_processScopedClientProxy(self, v8, v9);
   objc_msgSend_setClientSDKVersion_(v10, v11, v7);
 
   v12 = objc_opt_new();
-  v15 = objc_msgSend_frameworkFingerprint(v4, v13, v14);
+  v15 = objc_msgSend_frameworkFingerprint(metadataCopy, v13, v14);
   isLikelyEqual = objc_msgSend_isLikelyEqual_(v15, v16, v12);
 
   if ((isLikelyEqual & 1) == 0)
@@ -1038,7 +1038,7 @@ LABEL_42:
     v18 = objc_alloc(MEMORY[0x277CBC6B0]);
     v19 = objc_alloc(MEMORY[0x277CBC6C8]);
     v21 = objc_msgSend_initWithFilePath_lineNumber_(v19, v20, @"/Library/Caches/com.apple.xbs/Sources/CloudKitTools/Sources/CloudKitDaemon/IPCMessaging/CKDXPCConnection.m", 481);
-    v24 = objc_msgSend_frameworkFingerprint(v4, v22, v23);
+    v24 = objc_msgSend_frameworkFingerprint(metadataCopy, v22, v23);
     v26 = objc_msgSend_initWithSourceCodeLocation_format_(v18, v25, v21, @"Client and daemon processes have different versions of CloudKit.framework in memory: <%@> vs. <%@>", v24, v12);
 
     v27 = CKGetGlobalQueue();
@@ -1056,13 +1056,13 @@ LABEL_42:
   }
 }
 
-- (void)getContainerScopedDaemonProxyCreatorForSetupInfo:(id)a3 containerScopedClientProxy:(id)a4 completionHandler:(id)a5
+- (void)getContainerScopedDaemonProxyCreatorForSetupInfo:(id)info containerScopedClientProxy:(id)proxy completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   v13 = objc_msgSend_containerAvailableQueue(self, v11, v12);
-  v16 = objc_msgSend_containerOptions(v8, v14, v15);
+  v16 = objc_msgSend_containerOptions(infoCopy, v14, v15);
   isCloudCoreSession = objc_msgSend_isCloudCoreSession(v16, v17, v18);
 
   if (isCloudCoreSession)
@@ -1078,11 +1078,11 @@ LABEL_42:
   v27[2] = sub_22519443C;
   v27[3] = &unk_278545808;
   objc_copyWeak(&v31, &location);
-  v23 = v8;
+  v23 = infoCopy;
   v28 = v23;
-  v24 = v9;
+  v24 = proxyCopy;
   v29 = v24;
-  v25 = v10;
+  v25 = handlerCopy;
   v30 = v25;
   objc_msgSend_addOperationWithBlock_(v13, v26, v27);
 
@@ -1090,52 +1090,52 @@ LABEL_42:
   objc_destroyWeak(&location);
 }
 
-- (void)getLogicalDeviceScopedDaemonProxyCreatorForTestDeviceReferenceProtocol:(id)a3 completionHandler:(id)a4
+- (void)getLogicalDeviceScopedDaemonProxyCreatorForTestDeviceReferenceProtocol:(id)protocol completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  protocolCopy = protocol;
+  handlerCopy = handler;
   v10 = objc_msgSend_unlockedSinceBootQueue(self, v8, v9);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_2251945C4;
   v14[3] = &unk_278546550;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
+  v15 = protocolCopy;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = protocolCopy;
   objc_msgSend_addOperationWithBlock_(v10, v13, v14);
 }
 
-- (void)getProcessScopedDaemonProxyCreatorWithCompletionHandler:(id)a3
+- (void)getProcessScopedDaemonProxyCreatorWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_unlockedSinceBootQueue(self, v5, v6);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_2251946E8;
   v10[3] = &unk_2785456A0;
-  v11 = v4;
-  v8 = v4;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   objc_msgSend_addOperationWithBlock_(v7, v9, v10);
 }
 
-- (void)getAdopterProcessScopedDaemonProxyCreatorWithCompletionHandler:(id)a3
+- (void)getAdopterProcessScopedDaemonProxyCreatorWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_unlockedSinceBootQueue(self, v5, v6);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_225194800;
   v10[3] = &unk_2785456C8;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   objc_msgSend_addOperationWithBlock_(v7, v9, v10);
 }
 
-- (void)getDaemonTestServerManagerProxyCreatorWithCompletionHandler:(id)a3
+- (void)getDaemonTestServerManagerProxyCreatorWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_currentProcess(CKDDaemonProcess, v5, v6);
   v10 = objc_msgSend_processType(v7, v8, v9);
 
@@ -1146,21 +1146,21 @@ LABEL_42:
     v15[1] = 3221225472;
     v15[2] = sub_22519494C;
     v15[3] = &unk_2785456A0;
-    v16 = v4;
+    v16 = handlerCopy;
     objc_msgSend_addOperationWithBlock_(v13, v14, v15);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (id)logicalDeviceScopedClientProxyForDeviceContext:(id)a3
+- (id)logicalDeviceScopedClientProxyForDeviceContext:(id)context
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_testDeviceReference(v4, v5, v6);
+  contextCopy = context;
+  v7 = objc_msgSend_testDeviceReference(contextCopy, v5, v6);
   v10 = objc_msgSend_deviceID(v7, v8, v9);
   v13 = v10;
   v14 = @"NO_DEVICE_ID";
@@ -1170,7 +1170,7 @@ LABEL_42:
   }
 
   v39[0] = v14;
-  v15 = objc_msgSend_testDeviceReference(v4, v11, v12);
+  v15 = objc_msgSend_testDeviceReference(contextCopy, v11, v12);
   v18 = objc_msgSend_serverReferenceProtocol(v15, v16, v17);
   v22 = objc_msgSend_dataDirectory(v18, v19, v20);
   v23 = v22;
@@ -1185,38 +1185,38 @@ LABEL_42:
   {
   }
 
-  v25 = self;
-  objc_sync_enter(v25);
-  v28 = objc_msgSend_logicalDeviceScopedClientProxiesByDeviceReference(v25, v26, v27);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v28 = objc_msgSend_logicalDeviceScopedClientProxiesByDeviceReference(selfCopy, v26, v27);
   v30 = objc_msgSend_objectForKeyedSubscript_(v28, v29, v24);
 
   if (!v30)
   {
     v31 = [CKDLogicalDeviceScopedClientProxy alloc];
-    v30 = objc_msgSend_initWithClientConnection_deviceContext_(v31, v32, v25, v4);
-    v35 = objc_msgSend_logicalDeviceScopedClientProxiesByDeviceReference(v25, v33, v34);
+    v30 = objc_msgSend_initWithClientConnection_deviceContext_(v31, v32, selfCopy, contextCopy);
+    v35 = objc_msgSend_logicalDeviceScopedClientProxiesByDeviceReference(selfCopy, v33, v34);
     objc_msgSend_setObject_forKeyedSubscript_(v35, v36, v30, v24);
   }
 
-  objc_sync_exit(v25);
+  objc_sync_exit(selfCopy);
 
   v37 = *MEMORY[0x277D85DE8];
 
   return v30;
 }
 
-- (void)getProcessScopedClientProxyCreatorSynchronous:(BOOL)a3 completionHandler:(id)a4
+- (void)getProcessScopedClientProxyCreatorSynchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_225194D34;
   aBlock[3] = &unk_278548238;
-  v7 = v6;
+  v7 = handlerCopy;
   v15 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = sub_225194D4C(self, v4, v8);
+  v9 = sub_225194D4C(self, synchronousCopy, v8);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_225194EB0;
@@ -1226,39 +1226,39 @@ LABEL_42:
   objc_msgSend_getProcessScopedClientProxyCreatorWithCompletionHandler_(v9, v11, v12);
 }
 
-- (void)getSessionAcquisitionDaemonProxyCreatorForSessionAcquisitionSetupInfo:(id)a3 sessionAcquisitionClientProxy:(id)a4 completionHandler:(id)a5
+- (void)getSessionAcquisitionDaemonProxyCreatorForSessionAcquisitionSetupInfo:(id)info sessionAcquisitionClientProxy:(id)proxy completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  proxyCopy = proxy;
+  infoCopy = info;
   v11 = [_TtC14CloudKitDaemon18CKDSessionAcquirer alloc];
   v15 = 0;
-  v13 = objc_msgSend_initWithSessionAcquisitionSetupInfo_sessionAcquisitionClientProxy_clientConnection_error_(v11, v12, v10, v9, self, &v15);
+  v13 = objc_msgSend_initWithSessionAcquisitionSetupInfo_sessionAcquisitionClientProxy_clientConnection_error_(v11, v12, infoCopy, proxyCopy, self, &v15);
 
   v14 = v15;
-  v8[2](v8, v13, v14);
+  handlerCopy[2](handlerCopy, v13, v14);
 }
 
-- (void)getLogicalDeviceScopedClientProxyCreatorForTestDeviceReference:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5
+- (void)getLogicalDeviceScopedClientProxyCreatorForTestDeviceReference:(id)reference synchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_2251950C0;
   aBlock[3] = &unk_278548238;
-  v9 = v8;
+  v9 = handlerCopy;
   v18 = v9;
-  v10 = a3;
+  referenceCopy = reference;
   v11 = _Block_copy(aBlock);
-  v12 = sub_225194D4C(self, v5, v11);
+  v12 = sub_225194D4C(self, synchronousCopy, v11);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2251950D8;
   v15[3] = &unk_278548370;
   v16 = v9;
   v13 = v9;
-  objc_msgSend_getLogicalDeviceScopedClientProxyCreatorForTestDeviceReferenceProtocol_completionHandler_(v12, v14, v10, v15);
+  objc_msgSend_getLogicalDeviceScopedClientProxyCreatorForTestDeviceReferenceProtocol_completionHandler_(v12, v14, referenceCopy, v15);
 }
 
 - (id)CKStatusReportArray

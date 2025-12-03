@@ -1,18 +1,18 @@
 @interface PAEColorCurveChannelData
-+ (id)channelDataWithRed:(double)a3 green:(double)a4 blue:(double)a5;
-+ (id)channelDataWithRed:(double)a3 green:(double)a4 blue:(double)a5 curve:(const void *)a6;
++ (id)channelDataWithRed:(double)red green:(double)green blue:(double)blue;
++ (id)channelDataWithRed:(double)red green:(double)green blue:(double)blue curve:(const void *)curve;
 - (BOOL)isAtDefaults;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PAEColorCurveChannelData)init;
-- (PAEColorCurveChannelData)initWithCoder:(id)a3;
-- (PAEColorCurveChannelData)initWithRed:(double)a3 green:(double)a4 blue:(double)a5;
-- (PAEColorCurveChannelData)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 curve:(const void *)a6;
-- (double)evaluate:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PAEColorCurveChannelData)initWithCoder:(id)coder;
+- (PAEColorCurveChannelData)initWithRed:(double)red green:(double)green blue:(double)blue;
+- (PAEColorCurveChannelData)initWithRed:(double)red green:(double)green blue:(double)blue curve:(const void *)curve;
+- (double)evaluate:(double)evaluate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)interpolateBetween:(id)a3 withWeight:(float)a4;
+- (id)interpolateBetween:(id)between withWeight:(float)weight;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
 @end
 
@@ -30,7 +30,7 @@
   return 0;
 }
 
-- (PAEColorCurveChannelData)initWithRed:(double)a3 green:(double)a4 blue:(double)a5
+- (PAEColorCurveChannelData)initWithRed:(double)red green:(double)green blue:(double)blue
 {
   v6.receiver = self;
   v6.super_class = PAEColorCurveChannelData;
@@ -42,14 +42,14 @@
   return 0;
 }
 
-+ (id)channelDataWithRed:(double)a3 green:(double)a4 blue:(double)a5
++ (id)channelDataWithRed:(double)red green:(double)green blue:(double)blue
 {
-  v5 = [[a1 alloc] initWithRed:a3 green:a4 blue:a5];
+  v5 = [[self alloc] initWithRed:red green:green blue:blue];
 
   return v5;
 }
 
-- (PAEColorCurveChannelData)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 curve:(const void *)a6
+- (PAEColorCurveChannelData)initWithRed:(double)red green:(double)green blue:(double)blue curve:(const void *)curve
 {
   v7.receiver = self;
   v7.super_class = PAEColorCurveChannelData;
@@ -61,9 +61,9 @@
   return 0;
 }
 
-+ (id)channelDataWithRed:(double)a3 green:(double)a4 blue:(double)a5 curve:(const void *)a6
++ (id)channelDataWithRed:(double)red green:(double)green blue:(double)blue curve:(const void *)curve
 {
-  v6 = [[a1 alloc] initWithRed:a6 green:a3 blue:a4 curve:a5];
+  v6 = [[self alloc] initWithRed:curve green:red blue:green curve:blue];
 
   return v6;
 }
@@ -186,60 +186,60 @@
   std::vector<cc::point_t<double,false,false>>::__insert_with_size[abi:ne200100]<std::__wrap_iter<cc::point_t<double,false,false> const*>,std::__wrap_iter<cc::point_t<double,false,false> const*>>(curve_private + 9, v14, v19, v20, 0xAAAAAAAAAAAAAAABLL * ((v20 - v19) >> 3));
 }
 
-- (double)evaluate:(double)a3
+- (double)evaluate:(double)evaluate
 {
-  v4 = a3;
-  (*(*self->_curve_private + 24))(self->_curve_private, &v4);
+  evaluateCopy = evaluate;
+  (*(*self->_curve_private + 24))(self->_curve_private, &evaluateCopy);
   return result;
 }
 
-- (PAEColorCurveChannelData)initWithCoder:(id)a3
+- (PAEColorCurveChannelData)initWithCoder:(id)coder
 {
   v6 = *MEMORY[0x277D85DE8];
   v5.receiver = self;
   v5.super_class = PAEColorCurveChannelData;
   if ([(PAEColorCurveChannelData *)&v5 init])
   {
-    [a3 decodeDoubleForKey:@"defaultRed"];
-    [a3 decodeDoubleForKey:@"defaultGreen"];
-    [a3 decodeDoubleForKey:@"defaultBlue"];
+    [coder decodeDoubleForKey:@"defaultRed"];
+    [coder decodeDoubleForKey:@"defaultGreen"];
+    [coder decodeDoubleForKey:@"defaultBlue"];
     operator new();
   }
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   curve_private = self->_curve_private;
   if (curve_private[5] != 0.0)
   {
-    [a3 encodeDouble:@"red" forKey:?];
+    [coder encodeDouble:@"red" forKey:?];
   }
 
   if (curve_private[6] != 0.0)
   {
-    [a3 encodeDouble:@"green" forKey:?];
+    [coder encodeDouble:@"green" forKey:?];
   }
 
   if (curve_private[7] != 0.0)
   {
-    [a3 encodeDouble:@"blue" forKey:?];
+    [coder encodeDouble:@"blue" forKey:?];
   }
 
   if (curve_private[20] != 0.0)
   {
-    [a3 encodeDouble:@"defaultRed" forKey:?];
+    [coder encodeDouble:@"defaultRed" forKey:?];
   }
 
   if (curve_private[21] != 0.0)
   {
-    [a3 encodeDouble:@"defaultGreen" forKey:?];
+    [coder encodeDouble:@"defaultGreen" forKey:?];
   }
 
   if (curve_private[22] != 0.0)
   {
-    [a3 encodeDouble:@"defaultBlue" forKey:?];
+    [coder encodeDouble:@"defaultBlue" forKey:?];
   }
 
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(curve_private + 2) - *(curve_private + 1)) >> 3)];
@@ -248,10 +248,10 @@
     [v6 addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGPoint:", *(i + 8), *(i + 16))}];
   }
 
-  [a3 encodeObject:v6 forKey:@"points"];
+  [coder encodeObject:v6 forKey:@"points"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   curve_private = self->_curve_private;
   v4 = objc_alloc(objc_opt_class());
@@ -276,16 +276,16 @@
   return [v6 stringByAppendingString:@"}"];
 }
 
-- (id)interpolateBetween:(id)a3 withWeight:(float)a4
+- (id)interpolateBetween:(id)between withWeight:(float)weight
 {
   curve_private = self->_curve_private;
   v6 = *(curve_private + 7);
   v82 = *(curve_private + 40);
-  v7 = [a3 curveRef];
+  curveRef = [between curveRef];
   v8 = 0;
   v9 = 0;
-  v10 = *(v7 + 40);
-  v11 = *(v7 + 56);
+  v10 = *(curveRef + 40);
+  v11 = *(curveRef + 56);
   v85 = 0;
   v86 = 0;
   v83 = &unk_2871D8940;
@@ -304,8 +304,8 @@
   v96 = 0;
   v17 = *(curve_private + 1);
   v16 = *(curve_private + 2);
-  v18 = *(v7 + 8);
-  if (v16 - v17 == *(v7 + 16) - v18)
+  v18 = *(curveRef + 8);
+  if (v16 - v17 == *(curveRef + 16) - v18)
   {
     v100 = &unk_2871D0EF8;
     if (v17 == v16)
@@ -320,7 +320,7 @@
       v19 = (v18 + 8);
       do
       {
-        v101 = vaddq_f64(vmulq_n_f64(*v19, a4), vmulq_n_f64(*(v17 + 8), (1.0 - a4)));
+        v101 = vaddq_f64(vmulq_n_f64(*v19, weight), vmulq_n_f64(*(v17 + 8), (1.0 - weight)));
         std::vector<cc::point_t<double,false,false>>::push_back[abi:ne200100](&v84, &v100);
         v17 += 24;
         v19 = (v19 + 24);
@@ -333,9 +333,9 @@
     }
   }
 
-  v20 = (1.0 - a4);
-  v88 = vaddq_f64(vmulq_n_f64(v82, v20), vmulq_n_f64(v10, a4));
-  v89 = v6 * v20 + v11 * a4;
+  v20 = (1.0 - weight);
+  v88 = vaddq_f64(vmulq_n_f64(v82, v20), vmulq_n_f64(v10, weight));
+  v89 = v6 * v20 + v11 * weight;
   v21 = 0xAAAAAAAAAAAAAAABLL * ((v9 - v8) >> 3);
   if (v21 <= 1)
   {
@@ -649,15 +649,15 @@ LABEL_81:
   return v79;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = [(PAEColorCurveChannelData *)self curveRef];
-  v5 = v4[5];
-  v6 = v4[6];
-  v7 = v4[7];
-  v8 = [a3 curveRef];
-  v10 = v5 == *(v8 + 40) && v6 == *(v8 + 48) && v7 == *(v8 + 56);
-  if (v10 && (v12 = *(v4 + 1), v11 = *(v4 + 2), v13 = *(v8 + 8), v11 - v12 == *(v8 + 16) - v13))
+  curveRef = [(PAEColorCurveChannelData *)self curveRef];
+  v5 = curveRef[5];
+  v6 = curveRef[6];
+  v7 = curveRef[7];
+  curveRef2 = [equal curveRef];
+  v10 = v5 == *(curveRef2 + 40) && v6 == *(curveRef2 + 48) && v7 == *(curveRef2 + 56);
+  if (v10 && (v12 = *(curveRef + 1), v11 = *(curveRef + 2), v13 = *(curveRef2 + 8), v11 - v12 == *(curveRef2 + 16) - v13))
   {
     if (v12 == v11)
     {

@@ -11,13 +11,13 @@
   v13[1] = 3221225472;
   v13[2] = sub_100375F08;
   v13[3] = &unk_100480578;
-  v13[4] = a1;
+  v13[4] = self;
   v3 = objc_retainBlock(v13);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100376030;
   block[3] = &unk_10047E780;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1004EA1A0 != -1)
   {
     dispatch_once(&qword_1004EA1A0, block);
@@ -57,8 +57,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a1 registrationTokens];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  registrationTokens = [self registrationTokens];
+  v4 = [registrationTokens countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -70,22 +70,22 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(registrationTokens);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
         v9 = +[MetricsModule storage];
-        v10 = [v9 notificationRegistrar];
-        [v10 removeHandlerWithIdentifier:{objc_msgSend(v8, "longValue")}];
+        notificationRegistrar = [v9 notificationRegistrar];
+        [notificationRegistrar removeHandlerWithIdentifier:{objc_msgSend(v8, "longValue")}];
 
-        v11 = [a1 registrationTokens];
-        [v11 removeObject:v8];
+        registrationTokens2 = [self registrationTokens];
+        [registrationTokens2 removeObject:v8];
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [registrationTokens countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

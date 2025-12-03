@@ -1,25 +1,25 @@
 @interface AVPlayerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (AVPlayerAccessibility)init;
 - (void)_accessibilityAsyncObserveAVPlayerIfNeeded;
-- (void)_advanceCurrentItemAccordingToFigPlaybackItem:(OpaqueFigPlaybackItem *)a3;
-- (void)willChangeValueForKey:(id)a3;
+- (void)_advanceCurrentItemAccordingToFigPlaybackItem:(OpaqueFigPlaybackItem *)item;
+- (void)willChangeValueForKey:(id)key;
 @end
 
 @implementation AVPlayerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVPlayer" hasInstanceMethod:@"_advanceCurrentItemAccordingToFigPlaybackItem:" withFullSignature:{"v", "^{OpaqueFigPlaybackItem=}", 0}];
-  [v3 validateClass:@"AVPlayer" hasInstanceMethod:@"actionAtItemEnd" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVPlayer" hasInstanceMethod:@"_advanceCurrentItemAccordingToFigPlaybackItem:" withFullSignature:{"v", "^{OpaqueFigPlaybackItem=}", 0}];
+  [validationsCopy validateClass:@"AVPlayer" hasInstanceMethod:@"actionAtItemEnd" withFullSignature:{"q", 0}];
 }
 
-- (void)_advanceCurrentItemAccordingToFigPlaybackItem:(OpaqueFigPlaybackItem *)a3
+- (void)_advanceCurrentItemAccordingToFigPlaybackItem:(OpaqueFigPlaybackItem *)item
 {
   v3.receiver = self;
   v3.super_class = AVPlayerAccessibility;
-  [(AVPlayerAccessibility *)&v3 _advanceCurrentItemAccordingToFigPlaybackItem:a3];
+  [(AVPlayerAccessibility *)&v3 _advanceCurrentItemAccordingToFigPlaybackItem:item];
 }
 
 - (AVPlayerAccessibility)init
@@ -36,13 +36,13 @@
   return v3;
 }
 
-- (void)willChangeValueForKey:(id)a3
+- (void)willChangeValueForKey:(id)key
 {
   v6.receiver = self;
   v6.super_class = AVPlayerAccessibility;
-  v4 = a3;
-  [(AVPlayerAccessibility *)&v6 willChangeValueForKey:v4];
-  v5 = [v4 isEqualToString:{@"currentItem", v6.receiver, v6.super_class}];
+  keyCopy = key;
+  [(AVPlayerAccessibility *)&v6 willChangeValueForKey:keyCopy];
+  v5 = [keyCopy isEqualToString:{@"currentItem", v6.receiver, v6.super_class}];
 
   if (v5)
   {

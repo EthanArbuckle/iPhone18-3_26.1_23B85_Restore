@@ -1,16 +1,16 @@
 @interface CRLUSDRenderingCoreRESharedTextureHandle
 - (CRLUSDRenderingCoreRESharedTextureHandle)init;
-- (CRLUSDRenderingCoreRESharedTextureHandle)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CRLUSDRenderingCoreRESharedTextureHandle)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRLUSDRenderingCoreRESharedTextureHandle
 
-- (CRLUSDRenderingCoreRESharedTextureHandle)initWithCoder:(id)a3
+- (CRLUSDRenderingCoreRESharedTextureHandle)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_10096AC24();
-  v6 = a3;
+  coderCopy = coder;
   v7 = NSCoder.decodeObject<A>(of:forKey:)();
   if (v7)
   {
@@ -30,13 +30,13 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CRLUSDRenderingCoreRESharedTextureHandle_handle);
-  v7 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = String._bridgeToObjectiveC()();
-  [v7 encodeObject:v4 forKey:v6];
+  [coderCopy encodeObject:v4 forKey:v6];
 }
 
 - (CRLUSDRenderingCoreRESharedTextureHandle)init

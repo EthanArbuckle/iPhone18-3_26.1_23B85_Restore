@@ -1,7 +1,7 @@
 @interface OPTTSTextToSpeechRequestExperiment
 - (NSString)experiment_identifier;
-- (OPTTSTextToSpeechRequestExperiment)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestExperiment *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestExperiment>)addObjectToBuffer:(void *)a3;
+- (OPTTSTextToSpeechRequestExperiment)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestExperiment *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestExperiment>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
@@ -36,26 +36,26 @@ flatbuffers::DetachedBuffer *__50__OPTTSTextToSpeechRequestExperiment_flatbuffDa
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestExperiment>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestExperiment>)addObjectToBuffer:(void *)buffer
 {
-  v4 = [(OPTTSTextToSpeechRequestExperiment *)self experiment_identifier];
-  v5 = v4;
-  if (!v4)
+  experiment_identifier = [(OPTTSTextToSpeechRequestExperiment *)self experiment_identifier];
+  v5 = experiment_identifier;
+  if (!experiment_identifier)
   {
-    v4 = &stru_2881CBD18;
+    experiment_identifier = &stru_2881CBD18;
   }
 
-  v6 = [(__CFString *)v4 UTF8String];
-  v7 = strlen(v6);
-  LODWORD(v6) = flatbuffers::FlatBufferBuilder::CreateString(a3, v6, v7);
+  uTF8String = [(__CFString *)experiment_identifier UTF8String];
+  v7 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v7);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v8 = *(a3 + 10);
-  v9 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 4, v6);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v8 = *(buffer + 10);
+  v9 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 4, uTF8String);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v9 + v8);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v9 + v8);
 }
 
 - (NSString)experiment_identifier
@@ -81,42 +81,42 @@ flatbuffers::DetachedBuffer *__50__OPTTSTextToSpeechRequestExperiment_flatbuffDa
   return v6;
 }
 
-- (OPTTSTextToSpeechRequestExperiment)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestExperiment *)a4 verify:(BOOL)a5
+- (OPTTSTextToSpeechRequestExperiment)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestExperiment *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = OPTTSTextToSpeechRequestExperiment;
   v10 = [(OPTTSTextToSpeechRequestExperiment *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_2728326B0;
       v27 = 0;
@@ -138,9 +138,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

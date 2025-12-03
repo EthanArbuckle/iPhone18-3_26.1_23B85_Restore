@@ -2,7 +2,7 @@
 - (id)headerLabelText;
 - (id)setupContentView;
 - (void)observedPropertiesChanged;
-- (void)setHeaderText:(id)a3;
+- (void)setHeaderText:(id)text;
 @end
 
 @implementation TLKSectionHeaderView
@@ -40,10 +40,10 @@
   return v15;
 }
 
-- (void)setHeaderText:(id)a3
+- (void)setHeaderText:(id)text
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  textCopy = text;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_headerText setObserver:0];
@@ -54,7 +54,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = textCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -87,11 +87,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      textCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_headerText, a3);
+  objc_storeStrong(&self->_headerText, text);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_headerText setObserver:self];
@@ -136,47 +136,47 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
 - (void)observedPropertiesChanged
 {
-  v3 = [(TLKSectionHeaderView *)self headerText];
-  v4 = [(TLKSectionHeaderView *)self headerTextLabel];
-  [v4 setMultilineText:v3];
+  headerText = [(TLKSectionHeaderView *)self headerText];
+  headerTextLabel = [(TLKSectionHeaderView *)self headerTextLabel];
+  [headerTextLabel setMultilineText:headerText];
 
-  v5 = [(TLKSectionHeaderView *)self headerText];
-  v6 = [v5 text];
-  v7 = [v6 length];
+  headerText2 = [(TLKSectionHeaderView *)self headerText];
+  text = [headerText2 text];
+  v7 = [text length];
 
-  v8 = [(TLKSectionHeaderView *)self headerTextLabel];
-  LODWORD(v6) = [v8 isHidden];
+  headerTextLabel2 = [(TLKSectionHeaderView *)self headerTextLabel];
+  LODWORD(text) = [headerTextLabel2 isHidden];
 
-  if ((v7 == 0) != v6)
+  if ((v7 == 0) != text)
   {
-    v9 = [(TLKSectionHeaderView *)self headerTextLabel];
-    [v9 setHidden:v7 == 0];
+    headerTextLabel3 = [(TLKSectionHeaderView *)self headerTextLabel];
+    [headerTextLabel3 setHidden:v7 == 0];
   }
 }
 
 - (id)headerLabelText
 {
-  v2 = [(TLKSectionHeaderView *)self headerTextLabel];
-  v3 = [v2 text];
+  headerTextLabel = [(TLKSectionHeaderView *)self headerTextLabel];
+  text = [headerTextLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

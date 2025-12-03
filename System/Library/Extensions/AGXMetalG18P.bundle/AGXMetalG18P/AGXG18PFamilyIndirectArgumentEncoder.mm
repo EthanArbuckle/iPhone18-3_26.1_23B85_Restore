@@ -1,30 +1,30 @@
 @interface AGXG18PFamilyIndirectArgumentEncoder
-- (AGXG18PFamilyIndirectArgumentEncoder)initWithLayout:(id)a3 device:(id)a4;
+- (AGXG18PFamilyIndirectArgumentEncoder)initWithLayout:(id)layout device:(id)device;
 - (id).cxx_construct;
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3;
-- (void)constantDataAtIndex:(unint64_t)a3;
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4;
-- (void)setArgumentBuffer:(id)a3 offset:(unint64_t)a4;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setDepthStencilState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setDepthStencilStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFunctionTable:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFunctionTables:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index;
+- (void)constantDataAtIndex:(unint64_t)index;
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index;
+- (void)setArgumentBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setDepthStencilState:(id)state atIndex:(unint64_t)index;
+- (void)setDepthStencilStates:(const void *)states withRange:(_NSRange)range;
+- (void)setFunctionTable:(id)table atIndex:(unint64_t)index;
+- (void)setFunctionTables:(const void *)tables withRange:(_NSRange)range;
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index;
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range;
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
 @end
 
 @implementation AGXG18PFamilyIndirectArgumentEncoder
@@ -36,17 +36,17 @@
   return self;
 }
 
-- (void)setDepthStencilStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setDepthStencilStates:(const void *)states withRange:(_NSRange)range
 {
-  length_low = LODWORD(a4.length);
-  if (LODWORD(a4.length))
+  length_low = LODWORD(range.length);
+  if (LODWORD(range.length))
   {
     v5 = 0;
     layout = self->_impl.layout;
     arguments = self->_impl.arguments;
     do
     {
-      v9 = a3[v5];
+      v9 = states[v5];
       if (v9)
       {
         v10 = v9[18] & 0x8FFFFFFF | (((v9[16] >> 19) & 1) << 28) & 0x9FFFFFFF | (((v9[16] >> 18) & 1) << 29) & 0xBFFFFFFF | (((v9[17] >> 21) & 1) << 30) | ((v9[19] & 0x8FFFFFFF | ((HIBYTE(v9[17]) & 7) << 28)) << 32);
@@ -75,9 +75,9 @@
       }
 
       v13 = v11 - 1;
-      v14 = (v11 - 1) & (37 * (v5 + LODWORD(a4.location)));
-      v15 = *&v12[16 * (v13 & (37 * (v5 + LODWORD(a4.location))))];
-      if (v15 == v5 + LODWORD(a4.location))
+      v14 = (v11 - 1) & (37 * (v5 + LODWORD(range.location)));
+      v15 = *&v12[16 * (v13 & (37 * (v5 + LODWORD(range.location))))];
+      if (v15 == v5 + LODWORD(range.location))
       {
 LABEL_13:
         v8 = *&v12[16 * v14 + 8];
@@ -90,7 +90,7 @@ LABEL_13:
         v17 = v14 + v16++;
         v14 = v17 & v13;
         v15 = *&v12[16 * v14];
-        if (v15 == v5 + LODWORD(a4.location))
+        if (v15 == v5 + LODWORD(range.location))
         {
           goto LABEL_13;
         }
@@ -107,7 +107,7 @@ LABEL_4:
   }
 }
 
-- (void)setDepthStencilState:(id)a3 atIndex:(unint64_t)a4
+- (void)setDepthStencilState:(id)state atIndex:(unint64_t)index
 {
   layout = self->_impl.layout;
   v5 = layout + 8;
@@ -128,9 +128,9 @@ LABEL_4:
   }
 
   v7 = v6 - 1;
-  v8 = (v6 - 1) & (37 * a4);
+  v8 = (v6 - 1) & (37 * index);
   v9 = *&v5[16 * v8];
-  if (v9 == a4)
+  if (v9 == index)
   {
 LABEL_6:
     v10 = *&v5[16 * v8 + 8];
@@ -143,7 +143,7 @@ LABEL_6:
     v13 = v8 + v12++;
     v8 = v13 & v7;
     v9 = *&v5[16 * v8];
-    if (v9 == a4)
+    if (v9 == index)
     {
       goto LABEL_6;
     }
@@ -152,8 +152,8 @@ LABEL_6:
 LABEL_14:
   v10 = 0;
 LABEL_7:
-  v11 = *(a3 + 18) & 0x8FFFFFFF | (((*(a3 + 16) >> 19) & 1) << 28) & 0x9FFFFFFF | (((*(a3 + 16) >> 18) & 1) << 29) & 0xBFFFFFFF | (((*(a3 + 17) >> 21) & 1) << 30) | ((*(a3 + 19) & 0x8FFFFFFF | ((HIBYTE(*(a3 + 17)) & 7) << 28)) << 32);
-  if (!a3)
+  v11 = *(state + 18) & 0x8FFFFFFF | (((*(state + 16) >> 19) & 1) << 28) & 0x9FFFFFFF | (((*(state + 16) >> 18) & 1) << 29) & 0xBFFFFFFF | (((*(state + 17) >> 21) & 1) << 30) | ((*(state + 19) & 0x8FFFFFFF | ((HIBYTE(*(state + 17)) & 7) << 28)) << 32);
+  if (!state)
   {
     v11 = 0;
   }
@@ -161,15 +161,15 @@ LABEL_7:
   *&self->_impl.arguments[v10] = v11;
 }
 
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *buffers++;
       [(AGXG18PFamilyIndirectArgumentEncoder *)self setIndirectCommandBuffer:v8 atIndex:location++];
       --length;
     }
@@ -178,9 +178,9 @@ LABEL_7:
   }
 }
 
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!buffer)
   {
     layout = self->_impl.layout;
     v11 = layout + 8;
@@ -201,9 +201,9 @@ LABEL_7:
     }
 
     v15 = v12 - 1;
-    v16 = (v12 - 1) & (37 * a4);
+    v16 = (v12 - 1) & (37 * index);
     v17 = *&v11[16 * v16];
-    if (v17 == a4)
+    if (v17 == index)
     {
 LABEL_15:
       v18 = *&v11[16 * v16 + 8];
@@ -218,7 +218,7 @@ LABEL_16:
       v27 = v16 + v26++;
       v16 = v27 & v15;
       v17 = *&v11[16 * v16];
-      if (v17 == a4)
+      if (v17 == index)
       {
         goto LABEL_15;
       }
@@ -229,10 +229,10 @@ LABEL_31:
     goto LABEL_16;
   }
 
-  v4 = *(a3 + 102);
+  v4 = *(buffer + 102);
   if (v4 == 1)
   {
-    v5 = *(*(a3 + 53) + 408);
+    v5 = *(*(buffer + 53) + 408);
     v13 = self->_impl.layout;
     arguments = self->_impl.arguments;
     v8 = v13 + 8;
@@ -253,9 +253,9 @@ LABEL_31:
     }
 
     v24 = v14 - 1;
-    v20 = (v14 - 1) & (37 * a4);
+    v20 = (v14 - 1) & (37 * index);
     v25 = *&v8[16 * v20];
-    if (v25 != a4)
+    if (v25 != index)
     {
       v28 = 1;
       while (v25 != -1)
@@ -263,7 +263,7 @@ LABEL_31:
         v29 = v20 + v28++;
         v20 = v29 & v24;
         v25 = *&v8[16 * v20];
-        if (v25 == a4)
+        if (v25 == index)
         {
           goto LABEL_26;
         }
@@ -277,7 +277,7 @@ LABEL_31:
 
   if (!v4)
   {
-    v5 = *(*(a3 + 53) + 136);
+    v5 = *(*(buffer + 53) + 136);
     v7 = self->_impl.layout;
     arguments = self->_impl.arguments;
     v8 = v7 + 8;
@@ -286,9 +286,9 @@ LABEL_31:
       v9 = 16;
 LABEL_19:
       v19 = v9 - 1;
-      v20 = (v9 - 1) & (37 * a4);
+      v20 = (v9 - 1) & (37 * index);
       v21 = *&v8[16 * v20];
-      if (v21 != a4)
+      if (v21 != index)
       {
         v22 = 1;
         while (v21 != -1)
@@ -296,7 +296,7 @@ LABEL_19:
           v23 = v20 + v22++;
           v20 = v23 & v19;
           v21 = *&v8[16 * v20];
-          if (v21 == a4)
+          if (v21 == index)
           {
             goto LABEL_26;
           }
@@ -322,17 +322,17 @@ LABEL_36:
   }
 }
 
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  length_low = LODWORD(a4.length);
-  if (LODWORD(a4.length))
+  length_low = LODWORD(range.length);
+  if (LODWORD(range.length))
   {
     v5 = 0;
     layout = self->_impl.layout;
     arguments = self->_impl.arguments;
     do
     {
-      v9 = a3[v5];
+      v9 = states[v5];
       if (v9)
       {
         v9 = v9[310];
@@ -356,9 +356,9 @@ LABEL_36:
       }
 
       v12 = v10 - 1;
-      v13 = (v10 - 1) & (37 * (v5 + LODWORD(a4.location)));
-      v14 = *&v11[16 * (v12 & (37 * (v5 + LODWORD(a4.location))))];
-      if (v14 == v5 + LODWORD(a4.location))
+      v13 = (v10 - 1) & (37 * (v5 + LODWORD(range.location)));
+      v14 = *&v11[16 * (v12 & (37 * (v5 + LODWORD(range.location))))];
+      if (v14 == v5 + LODWORD(range.location))
       {
 LABEL_12:
         v8 = *&v11[16 * v13 + 8];
@@ -371,7 +371,7 @@ LABEL_12:
         v16 = v13 + v15++;
         v13 = v16 & v12;
         v14 = *&v11[16 * v13];
-        if (v14 == v5 + LODWORD(a4.location))
+        if (v14 == v5 + LODWORD(range.location))
         {
           goto LABEL_12;
         }
@@ -388,11 +388,11 @@ LABEL_4:
   }
 }
 
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index
 {
-  if (a3)
+  if (state)
   {
-    v4 = *(a3 + 310);
+    v4 = *(state + 310);
   }
 
   else
@@ -420,9 +420,9 @@ LABEL_4:
   }
 
   v9 = v8 - 1;
-  v10 = (v8 - 1) & (37 * a4);
+  v10 = (v8 - 1) & (37 * index);
   v11 = *&v7[16 * v10];
-  if (v11 == a4)
+  if (v11 == index)
   {
 LABEL_9:
     *&arguments[*&v7[16 * v10 + 8]] = v4;
@@ -435,7 +435,7 @@ LABEL_9:
     v13 = v10 + v12++;
     v10 = v13 & v9;
     v11 = *&v7[16 * v10];
-    if (v11 == a4)
+    if (v11 == index)
     {
       goto LABEL_9;
     }
@@ -445,17 +445,17 @@ LABEL_14:
   *arguments = v4;
 }
 
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  length_low = LODWORD(a4.length);
-  if (LODWORD(a4.length))
+  length_low = LODWORD(range.length);
+  if (LODWORD(range.length))
   {
     v5 = 0;
     layout = self->_impl.layout;
     arguments = self->_impl.arguments;
     do
     {
-      v9 = a3[v5];
+      v9 = states[v5];
       if (v9)
       {
         v9 = v9[50];
@@ -479,9 +479,9 @@ LABEL_14:
       }
 
       v12 = v10 - 1;
-      v13 = (v10 - 1) & (37 * (v5 + LODWORD(a4.location)));
-      v14 = *&v11[16 * (v12 & (37 * (v5 + LODWORD(a4.location))))];
-      if (v14 == v5 + LODWORD(a4.location))
+      v13 = (v10 - 1) & (37 * (v5 + LODWORD(range.location)));
+      v14 = *&v11[16 * (v12 & (37 * (v5 + LODWORD(range.location))))];
+      if (v14 == v5 + LODWORD(range.location))
       {
 LABEL_12:
         v8 = *&v11[16 * v13 + 8];
@@ -494,7 +494,7 @@ LABEL_12:
         v16 = v13 + v15++;
         v13 = v16 & v12;
         v14 = *&v11[16 * v13];
-        if (v14 == v5 + LODWORD(a4.location))
+        if (v14 == v5 + LODWORD(range.location))
         {
           goto LABEL_12;
         }
@@ -511,11 +511,11 @@ LABEL_4:
   }
 }
 
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index
 {
-  if (a3)
+  if (state)
   {
-    v4 = *(a3 + 50);
+    v4 = *(state + 50);
   }
 
   else
@@ -543,9 +543,9 @@ LABEL_4:
   }
 
   v9 = v8 - 1;
-  v10 = (v8 - 1) & (37 * a4);
+  v10 = (v8 - 1) & (37 * index);
   v11 = *&v7[16 * v10];
-  if (v11 == a4)
+  if (v11 == index)
   {
 LABEL_9:
     *&arguments[*&v7[16 * v10 + 8]] = v4;
@@ -558,7 +558,7 @@ LABEL_9:
     v13 = v10 + v12++;
     v10 = v13 & v9;
     v11 = *&v7[16 * v10];
-    if (v11 == a4)
+    if (v11 == index)
     {
       goto LABEL_9;
     }
@@ -568,14 +568,14 @@ LABEL_14:
   *arguments = v4;
 }
 
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index
 {
   v4.receiver = self;
   v4.super_class = AGXG18PFamilyIndirectArgumentEncoder;
-  return [(_MTLIndirectArgumentEncoder *)&v4 newArgumentEncoderForBufferAtIndex:a3];
+  return [(_MTLIndirectArgumentEncoder *)&v4 newArgumentEncoderForBufferAtIndex:index];
 }
 
-- (void)constantDataAtIndex:(unint64_t)a3
+- (void)constantDataAtIndex:(unint64_t)index
 {
   layout = self->_impl.layout;
   v4 = layout + 8;
@@ -596,9 +596,9 @@ LABEL_14:
   }
 
   v6 = v5 - 1;
-  v7 = (v5 - 1) & (37 * a3);
+  v7 = (v5 - 1) & (37 * index);
   v8 = *&v4[16 * v7];
-  if (v8 == a3)
+  if (v8 == index)
   {
     return &self->_impl.arguments[*&v4[16 * v7 + 8] & 0xFFFFFFFFFFFFFFLL];
   }
@@ -609,7 +609,7 @@ LABEL_14:
     v11 = v7 + v10++;
     v7 = v11 & v6;
     v8 = *&v4[16 * v7];
-    if (v8 == a3)
+    if (v8 == index)
     {
       return &self->_impl.arguments[*&v4[16 * v7 + 8] & 0xFFFFFFFFFFFFFFLL];
     }
@@ -618,17 +618,17 @@ LABEL_14:
   return self->_impl.arguments;
 }
 
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length_low = LODWORD(a4.length);
-  if (LODWORD(a4.length))
+  length_low = LODWORD(range.length);
+  if (LODWORD(range.length))
   {
     v5 = 0;
     layout = self->_impl.layout;
     arguments = self->_impl.arguments;
     do
     {
-      v9 = a3[v5];
+      v9 = states[v5];
       if (v9)
       {
         v9 = v9[36];
@@ -652,9 +652,9 @@ LABEL_14:
       }
 
       v12 = v10 - 1;
-      v13 = (v10 - 1) & (37 * (v5 + LODWORD(a4.location)));
-      v14 = *&v11[16 * (v12 & (37 * (v5 + LODWORD(a4.location))))];
-      if (v14 == v5 + LODWORD(a4.location))
+      v13 = (v10 - 1) & (37 * (v5 + LODWORD(range.location)));
+      v14 = *&v11[16 * (v12 & (37 * (v5 + LODWORD(range.location))))];
+      if (v14 == v5 + LODWORD(range.location))
       {
 LABEL_12:
         v8 = *&v11[16 * v13 + 8];
@@ -667,7 +667,7 @@ LABEL_12:
         v16 = v13 + v15++;
         v13 = v16 & v12;
         v14 = *&v11[16 * v13];
-        if (v14 == v5 + LODWORD(a4.location))
+        if (v14 == v5 + LODWORD(range.location))
         {
           goto LABEL_12;
         }
@@ -684,11 +684,11 @@ LABEL_4:
   }
 }
 
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index
 {
-  if (a3)
+  if (state)
   {
-    v4 = *(a3 + 36);
+    v4 = *(state + 36);
   }
 
   else
@@ -716,9 +716,9 @@ LABEL_4:
   }
 
   v9 = v8 - 1;
-  v10 = (v8 - 1) & (37 * a4);
+  v10 = (v8 - 1) & (37 * index);
   v11 = *&v7[16 * v10];
-  if (v11 == a4)
+  if (v11 == index)
   {
 LABEL_9:
     *&arguments[*&v7[16 * v10 + 8]] = v4;
@@ -731,7 +731,7 @@ LABEL_9:
     v13 = v10 + v12++;
     v10 = v13 & v9;
     v11 = *&v7[16 * v10];
-    if (v11 == a4)
+    if (v11 == index)
     {
       goto LABEL_9;
     }
@@ -741,17 +741,17 @@ LABEL_14:
   *arguments = v4;
 }
 
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length_low = LODWORD(a4.length);
-  if (LODWORD(a4.length))
+  length_low = LODWORD(range.length);
+  if (LODWORD(range.length))
   {
     v5 = 0;
     layout = self->_impl.layout;
     arguments = self->_impl.arguments;
     do
     {
-      v9 = a3[v5];
+      v9 = textures[v5];
       if (v9)
       {
         v9 = *(v9[74] + 120);
@@ -775,9 +775,9 @@ LABEL_14:
       }
 
       v12 = v10 - 1;
-      v13 = (v10 - 1) & (37 * (v5 + LODWORD(a4.location)));
-      v14 = *&v11[16 * (v12 & (37 * (v5 + LODWORD(a4.location))))];
-      if (v14 == v5 + LODWORD(a4.location))
+      v13 = (v10 - 1) & (37 * (v5 + LODWORD(range.location)));
+      v14 = *&v11[16 * (v12 & (37 * (v5 + LODWORD(range.location))))];
+      if (v14 == v5 + LODWORD(range.location))
       {
 LABEL_12:
         v8 = *&v11[16 * v13 + 8];
@@ -790,7 +790,7 @@ LABEL_12:
         v16 = v13 + v15++;
         v13 = v16 & v12;
         v14 = *&v11[16 * v13];
-        if (v14 == v5 + LODWORD(a4.location))
+        if (v14 == v5 + LODWORD(range.location))
         {
           goto LABEL_12;
         }
@@ -807,11 +807,11 @@ LABEL_4:
   }
 }
 
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(id)texture atIndex:(unint64_t)index
 {
-  if (a3)
+  if (texture)
   {
-    v4 = *(*(a3 + 74) + 120);
+    v4 = *(*(texture + 74) + 120);
   }
 
   else
@@ -839,9 +839,9 @@ LABEL_4:
   }
 
   v9 = v8 - 1;
-  v10 = (v8 - 1) & (37 * a4);
+  v10 = (v8 - 1) & (37 * index);
   v11 = *&v7[16 * v10];
-  if (v11 == a4)
+  if (v11 == index)
   {
 LABEL_9:
     *&arguments[*&v7[16 * v10 + 8]] = v4;
@@ -854,7 +854,7 @@ LABEL_9:
     v13 = v10 + v12++;
     v10 = v13 & v9;
     v11 = *&v7[16 * v10];
-    if (v11 == a4)
+    if (v11 == index)
     {
       goto LABEL_9;
     }
@@ -864,14 +864,14 @@ LABEL_14:
   *arguments = v4;
 }
 
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   if (![(MTLDevice *)[(_MTLIndirectArgumentEncoder *)self device] requiresRaytracingEmulation])
   {
-    if (a3)
+    if (structure)
     {
-      v7 = *(a3 + 90);
+      v7 = *(structure + 90);
     }
 
     else
@@ -899,9 +899,9 @@ LABEL_14:
     }
 
     v19 = v18 - 1;
-    v13 = (v18 - 1) & (37 * v4);
+    v13 = (v18 - 1) & (37 * indexCopy);
     v20 = *&v10[16 * v13];
-    if (v20 != v4)
+    if (v20 != indexCopy)
     {
       v22 = 1;
       while (v20 != -1)
@@ -909,7 +909,7 @@ LABEL_14:
         v23 = v13 + v22++;
         v13 = v23 & v19;
         v20 = *&v10[16 * v13];
-        if (v20 == v4)
+        if (v20 == indexCopy)
         {
           goto LABEL_22;
         }
@@ -921,9 +921,9 @@ LABEL_14:
     goto LABEL_22;
   }
 
-  if (a3)
+  if (structure)
   {
-    v7 = *(a3 + 84);
+    v7 = *(structure + 84);
   }
 
   else
@@ -951,9 +951,9 @@ LABEL_28:
   v11 = 16;
 LABEL_11:
   v12 = v11 - 1;
-  v13 = (v11 - 1) & (37 * v4);
+  v13 = (v11 - 1) & (37 * indexCopy);
   v14 = *&v10[16 * v13];
-  if (v14 != v4)
+  if (v14 != indexCopy)
   {
     v15 = 1;
     while (v14 != -1)
@@ -961,7 +961,7 @@ LABEL_11:
       v16 = v13 + v15++;
       v13 = v16 & v12;
       v14 = *&v10[16 * v13];
-      if (v14 == v4)
+      if (v14 == indexCopy)
       {
         goto LABEL_22;
       }
@@ -976,15 +976,15 @@ LABEL_23:
   *&arguments[v21] = v7;
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (([(MTLDevice *)[(_MTLIndirectArgumentEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
     v20.receiver = self;
     v20.super_class = AGXG18PFamilyIndirectArgumentEncoder;
-    [(IOGPUMetalIndirectArgumentEncoder *)&v20 setIntersectionFunctionTables:a3 withBufferRange:location, length];
+    [(IOGPUMetalIndirectArgumentEncoder *)&v20 setIntersectionFunctionTables:tables withBufferRange:location, length];
     return;
   }
 
@@ -995,7 +995,7 @@ LABEL_23:
     arguments = self->_impl.arguments;
     do
     {
-      v12 = a3[v8];
+      v12 = tables[v8];
       if (v12)
       {
         v12 = *(v12[39] + 112);
@@ -1051,19 +1051,19 @@ LABEL_6:
   }
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ([(MTLDevice *)[(_MTLIndirectArgumentEncoder *)self device] requiresRaytracingEmulation])
   {
     v17.receiver = self;
     v17.super_class = AGXG18PFamilyIndirectArgumentEncoder;
-    [(IOGPUMetalIndirectArgumentEncoder *)&v17 setIntersectionFunctionTable:a3 atBufferIndex:a4];
+    [(IOGPUMetalIndirectArgumentEncoder *)&v17 setIntersectionFunctionTable:table atBufferIndex:index];
     return;
   }
 
-  if (a3)
+  if (table)
   {
-    v7 = *(*(a3 + 39) + 112);
+    v7 = *(*(table + 39) + 112);
   }
 
   else
@@ -1092,9 +1092,9 @@ LABEL_18:
   }
 
   v11 = v10 - 1;
-  v12 = (v10 - 1) & (37 * a4);
+  v12 = (v10 - 1) & (37 * index);
   v13 = *&v9[16 * v12];
-  if (v13 != a4)
+  if (v13 != index)
   {
     v15 = 1;
     while (v13 != -1)
@@ -1102,7 +1102,7 @@ LABEL_18:
       v16 = v12 + v15++;
       v12 = v16 & v11;
       v13 = *&v9[16 * v12];
-      if (v13 == a4)
+      if (v13 == index)
       {
         goto LABEL_11;
       }
@@ -1117,16 +1117,16 @@ LABEL_12:
   *&self->_impl.arguments[v14] = v7;
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
     v4 = 0;
     layout = self->_impl.layout;
     arguments = self->_impl.arguments;
     do
     {
-      v8 = a3[v4];
+      v8 = tables[v4];
       if (v8)
       {
         v8 = v8[94];
@@ -1150,9 +1150,9 @@ LABEL_12:
       }
 
       v11 = v9 - 1;
-      v12 = (v9 - 1) & (37 * (v4 + LODWORD(a4.location)));
-      v13 = *&v10[16 * (v11 & (37 * (v4 + LODWORD(a4.location))))];
-      if (v13 == v4 + LODWORD(a4.location))
+      v12 = (v9 - 1) & (37 * (v4 + LODWORD(range.location)));
+      v13 = *&v10[16 * (v11 & (37 * (v4 + LODWORD(range.location))))];
+      if (v13 == v4 + LODWORD(range.location))
       {
 LABEL_12:
         v7 = *&v10[16 * v12 + 8];
@@ -1165,7 +1165,7 @@ LABEL_12:
         v15 = v12 + v14++;
         v12 = v15 & v11;
         v13 = *&v10[16 * v12];
-        if (v13 == v4 + LODWORD(a4.location))
+        if (v13 == v4 + LODWORD(range.location))
         {
           goto LABEL_12;
         }
@@ -1178,15 +1178,15 @@ LABEL_4:
       ++v4;
     }
 
-    while (v4 != a4.length);
+    while (v4 != range.length);
   }
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  if (a3)
+  if (table)
   {
-    v4 = *(a3 + 94);
+    v4 = *(table + 94);
   }
 
   else
@@ -1214,9 +1214,9 @@ LABEL_4:
   }
 
   v9 = v8 - 1;
-  v10 = (v8 - 1) & (37 * a4);
+  v10 = (v8 - 1) & (37 * index);
   v11 = *&v7[16 * v10];
-  if (v11 == a4)
+  if (v11 == index)
   {
 LABEL_9:
     *&arguments[*&v7[16 * v10 + 8]] = v4;
@@ -1229,7 +1229,7 @@ LABEL_9:
     v13 = v10 + v12++;
     v10 = v13 & v9;
     v11 = *&v7[16 * v10];
-    if (v11 == a4)
+    if (v11 == index)
     {
       goto LABEL_9;
     }
@@ -1239,16 +1239,16 @@ LABEL_14:
   *arguments = v4;
 }
 
-- (void)setFunctionTables:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFunctionTables:(const void *)tables withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
     v4 = 0;
     layout = self->_impl.layout;
     arguments = self->_impl.arguments;
     do
     {
-      v8 = a3[v4];
+      v8 = tables[v4];
       if (v8)
       {
         v8 = v8[94];
@@ -1272,9 +1272,9 @@ LABEL_14:
       }
 
       v11 = v9 - 1;
-      v12 = (v9 - 1) & (37 * (v4 + LODWORD(a4.location)));
-      v13 = *&v10[16 * (v11 & (37 * (v4 + LODWORD(a4.location))))];
-      if (v13 == v4 + LODWORD(a4.location))
+      v12 = (v9 - 1) & (37 * (v4 + LODWORD(range.location)));
+      v13 = *&v10[16 * (v11 & (37 * (v4 + LODWORD(range.location))))];
+      if (v13 == v4 + LODWORD(range.location))
       {
 LABEL_12:
         v7 = *&v10[16 * v12 + 8];
@@ -1287,7 +1287,7 @@ LABEL_12:
         v15 = v12 + v14++;
         v12 = v15 & v11;
         v13 = *&v10[16 * v12];
-        if (v13 == v4 + LODWORD(a4.location))
+        if (v13 == v4 + LODWORD(range.location))
         {
           goto LABEL_12;
         }
@@ -1300,15 +1300,15 @@ LABEL_4:
       ++v4;
     }
 
-    while (v4 != a4.length);
+    while (v4 != range.length);
   }
 }
 
-- (void)setFunctionTable:(id)a3 atIndex:(unint64_t)a4
+- (void)setFunctionTable:(id)table atIndex:(unint64_t)index
 {
-  if (a3)
+  if (table)
   {
-    v4 = *(a3 + 94);
+    v4 = *(table + 94);
   }
 
   else
@@ -1336,9 +1336,9 @@ LABEL_4:
   }
 
   v9 = v8 - 1;
-  v10 = (v8 - 1) & (37 * a4);
+  v10 = (v8 - 1) & (37 * index);
   v11 = *&v7[16 * v10];
-  if (v11 == a4)
+  if (v11 == index)
   {
 LABEL_9:
     *&arguments[*&v7[16 * v10 + 8]] = v4;
@@ -1351,7 +1351,7 @@ LABEL_9:
     v13 = v10 + v12++;
     v10 = v13 & v9;
     v11 = *&v7[16 * v10];
-    if (v11 == a4)
+    if (v11 == index)
     {
       goto LABEL_9;
     }
@@ -1361,10 +1361,10 @@ LABEL_14:
   *arguments = v4;
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length_low = LODWORD(a5.length);
-  if (LODWORD(a5.length))
+  length_low = LODWORD(range.length);
+  if (LODWORD(range.length))
   {
     v6 = 0;
     layout = self->_impl.layout;
@@ -1372,10 +1372,10 @@ LABEL_14:
     v9 = MEMORY[0x29EDC5638];
     do
     {
-      v11 = a3[v6];
+      v11 = buffers[v6];
       if (v11)
       {
-        v11 = (a4[v6] + *&v11[*v9 + 8]);
+        v11 = (offsets[v6] + *&v11[*v9 + 8]);
       }
 
       if (*layout)
@@ -1396,9 +1396,9 @@ LABEL_14:
       }
 
       v14 = v12 - 1;
-      v15 = (v12 - 1) & (37 * (v6 + LODWORD(a5.location)));
-      v16 = *&v13[16 * (v14 & (37 * (v6 + LODWORD(a5.location))))];
-      if (v16 == v6 + LODWORD(a5.location))
+      v15 = (v12 - 1) & (37 * (v6 + LODWORD(range.location)));
+      v16 = *&v13[16 * (v14 & (37 * (v6 + LODWORD(range.location))))];
+      if (v16 == v6 + LODWORD(range.location))
       {
 LABEL_12:
         v10 = *&v13[16 * v15 + 8];
@@ -1411,7 +1411,7 @@ LABEL_12:
         v18 = v15 + v17++;
         v15 = v18 & v14;
         v16 = *&v13[16 * v15];
-        if (v16 == v6 + LODWORD(a5.location))
+        if (v16 == v6 + LODWORD(range.location))
         {
           goto LABEL_12;
         }
@@ -1428,11 +1428,11 @@ LABEL_4:
   }
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  if (a3)
+  if (buffer)
   {
-    v5 = *(a3 + *MEMORY[0x29EDC5638] + 8) + a4;
+    v5 = *(buffer + *MEMORY[0x29EDC5638] + 8) + offset;
   }
 
   else
@@ -1460,9 +1460,9 @@ LABEL_4:
   }
 
   v10 = v9 - 1;
-  v11 = (v9 - 1) & (37 * a5);
+  v11 = (v9 - 1) & (37 * index);
   v12 = *&v8[16 * v11];
-  if (v12 == a5)
+  if (v12 == index)
   {
 LABEL_9:
     *&arguments[*&v8[16 * v11 + 8]] = v5;
@@ -1475,7 +1475,7 @@ LABEL_9:
     v14 = v11 + v13++;
     v11 = v14 & v10;
     v12 = *&v8[16 * v11];
-    if (v12 == a5)
+    if (v12 == index)
     {
       goto LABEL_9;
     }
@@ -1485,19 +1485,19 @@ LABEL_14:
   *arguments = v5;
 }
 
-- (void)setArgumentBuffer:(id)a3 offset:(unint64_t)a4
+- (void)setArgumentBuffer:(id)buffer offset:(unint64_t)offset
 {
   p_impl = &self->_impl;
-  if (self->_impl.current_argument_buffer != a3)
+  if (self->_impl.current_argument_buffer != buffer)
   {
-    v7 = a3;
+    bufferCopy = buffer;
 
-    p_impl->current_argument_buffer = a3;
+    p_impl->current_argument_buffer = buffer;
   }
 
-  if (a3)
+  if (buffer)
   {
-    v8 = *(a3 + *MEMORY[0x29EDC5638] + 24) + a4;
+    v8 = *(buffer + *MEMORY[0x29EDC5638] + 24) + offset;
   }
 
   else
@@ -1508,17 +1508,17 @@ LABEL_14:
   p_impl->arguments = v8;
 }
 
-- (AGXG18PFamilyIndirectArgumentEncoder)initWithLayout:(id)a3 device:(id)a4
+- (AGXG18PFamilyIndirectArgumentEncoder)initWithLayout:(id)layout device:(id)device
 {
   v8.receiver = self;
   v8.super_class = AGXG18PFamilyIndirectArgumentEncoder;
   result = [_MTLIndirectArgumentEncoder initWithLayout:sel_initWithLayout_device_ device:?];
   if (result)
   {
-    v7 = *(a3 + 2);
-    result->_impl.device = a4;
+    v7 = *(layout + 2);
+    result->_impl.device = device;
     result->_impl.layout = v7;
-    atomic_fetch_or(a4 + 108, 0x100000uLL);
+    atomic_fetch_or(device + 108, 0x100000uLL);
   }
 
   return result;

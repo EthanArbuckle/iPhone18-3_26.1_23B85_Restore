@@ -1,17 +1,17 @@
 @interface BMLighthouseDeviceTelemetry
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLighthouseDeviceTelemetry)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMLighthouseDeviceTelemetry)initWithVersion:(id)a3 bucketStart:(id)a4 bucketEnd:(id)a5 tasksCount:(id)a6 tasksRun:(id)a7 tasksDeferred:(id)a8 tasksFailed:(id)a9 tasksCompleted:(id)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMLighthouseDeviceTelemetry)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMLighthouseDeviceTelemetry)initWithVersion:(id)version bucketStart:(id)start bucketEnd:(id)end tasksCount:(id)count tasksRun:(id)run tasksDeferred:(id)deferred tasksFailed:(id)failed tasksCompleted:(id)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)bucketEnd;
 - (NSDate)bucketStart;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLighthouseDeviceTelemetry
@@ -42,13 +42,13 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMLighthouseDeviceTelemetry hasVersion](self, "hasVersion") || [v5 hasVersion])
     {
       if (![(BMLighthouseDeviceTelemetry *)self hasVersion])
@@ -61,25 +61,25 @@
         goto LABEL_41;
       }
 
-      v6 = [(BMLighthouseDeviceTelemetry *)self version];
-      if (v6 != [v5 version])
+      version = [(BMLighthouseDeviceTelemetry *)self version];
+      if (version != [v5 version])
       {
         goto LABEL_41;
       }
     }
 
-    v7 = [(BMLighthouseDeviceTelemetry *)self bucketStart];
-    v8 = [v5 bucketStart];
-    v9 = v8;
-    if (v7 == v8)
+    bucketStart = [(BMLighthouseDeviceTelemetry *)self bucketStart];
+    bucketStart2 = [v5 bucketStart];
+    v9 = bucketStart2;
+    if (bucketStart == bucketStart2)
     {
     }
 
     else
     {
-      v10 = [(BMLighthouseDeviceTelemetry *)self bucketStart];
-      v11 = [v5 bucketStart];
-      v12 = [v10 isEqual:v11];
+      bucketStart3 = [(BMLighthouseDeviceTelemetry *)self bucketStart];
+      bucketStart4 = [v5 bucketStart];
+      v12 = [bucketStart3 isEqual:bucketStart4];
 
       if (!v12)
       {
@@ -87,18 +87,18 @@
       }
     }
 
-    v14 = [(BMLighthouseDeviceTelemetry *)self bucketEnd];
-    v15 = [v5 bucketEnd];
-    v16 = v15;
-    if (v14 == v15)
+    bucketEnd = [(BMLighthouseDeviceTelemetry *)self bucketEnd];
+    bucketEnd2 = [v5 bucketEnd];
+    v16 = bucketEnd2;
+    if (bucketEnd == bucketEnd2)
     {
     }
 
     else
     {
-      v17 = [(BMLighthouseDeviceTelemetry *)self bucketEnd];
-      v18 = [v5 bucketEnd];
-      v19 = [v17 isEqual:v18];
+      bucketEnd3 = [(BMLighthouseDeviceTelemetry *)self bucketEnd];
+      bucketEnd4 = [v5 bucketEnd];
+      v19 = [bucketEnd3 isEqual:bucketEnd4];
 
       if (!v19)
       {
@@ -122,8 +122,8 @@
 
             if (-[BMLighthouseDeviceTelemetry hasTasksCompleted](self, "hasTasksCompleted") && [v5 hasTasksCompleted])
             {
-              v24 = [(BMLighthouseDeviceTelemetry *)self tasksCompleted];
-              v13 = v24 == [v5 tasksCompleted];
+              tasksCompleted = [(BMLighthouseDeviceTelemetry *)self tasksCompleted];
+              v13 = tasksCompleted == [v5 tasksCompleted];
 LABEL_42:
 
               goto LABEL_43;
@@ -191,12 +191,12 @@ LABEL_43:
     v3 = 0;
   }
 
-  v4 = [(BMLighthouseDeviceTelemetry *)self bucketStart];
-  if (v4)
+  bucketStart = [(BMLighthouseDeviceTelemetry *)self bucketStart];
+  if (bucketStart)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(BMLighthouseDeviceTelemetry *)self bucketStart];
-    [v6 timeIntervalSince1970];
+    bucketStart2 = [(BMLighthouseDeviceTelemetry *)self bucketStart];
+    [bucketStart2 timeIntervalSince1970];
     v7 = [v5 numberWithDouble:?];
   }
 
@@ -205,12 +205,12 @@ LABEL_43:
     v7 = 0;
   }
 
-  v8 = [(BMLighthouseDeviceTelemetry *)self bucketEnd];
-  if (v8)
+  bucketEnd = [(BMLighthouseDeviceTelemetry *)self bucketEnd];
+  if (bucketEnd)
   {
     v9 = MEMORY[0x1E696AD98];
-    v10 = [(BMLighthouseDeviceTelemetry *)self bucketEnd];
-    [v10 timeIntervalSince1970];
+    bucketEnd2 = [(BMLighthouseDeviceTelemetry *)self bucketEnd];
+    [bucketEnd2 timeIntervalSince1970];
     v11 = [v9 numberWithDouble:?];
   }
 
@@ -270,75 +270,75 @@ LABEL_43:
   }
 
   v34[0] = @"version";
-  v15 = v3;
+  null = v3;
   if (!v3)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v15;
-  v35[0] = v15;
+  v29 = null;
+  v35[0] = null;
   v34[1] = @"bucketStart";
-  v16 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v16;
-  v35[1] = v16;
+  v28 = null2;
+  v35[1] = null2;
   v34[2] = @"bucketEnd";
-  v17 = v11;
+  null3 = v11;
   if (!v11)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v31 = v3;
-  v27 = v17;
-  v35[2] = v17;
+  v27 = null3;
+  v35[2] = null3;
   v34[3] = @"tasksCount";
-  v18 = v33;
+  null4 = v33;
   if (!v33)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v7;
-  v35[3] = v18;
+  v35[3] = null4;
   v34[4] = @"tasksRun";
-  v19 = v32;
+  null5 = v32;
   if (!v32)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v20 = v11;
-  v35[4] = v19;
+  v35[4] = null5;
   v34[5] = @"tasksDeferred";
-  v21 = v12;
+  null6 = v12;
   if (!v12)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[5] = v21;
+  v35[5] = null6;
   v34[6] = @"tasksFailed";
-  v22 = v13;
+  null7 = v13;
   if (!v13)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[6] = v22;
+  v35[6] = null7;
   v34[7] = @"tasksCompleted";
-  v23 = v14;
+  null8 = v14;
   if (!v14)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[7] = v23;
+  v35[7] = null8;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:8];
   if (v14)
   {
@@ -415,16 +415,16 @@ LABEL_51:
   return v24;
 }
 
-- (BMLighthouseDeviceTelemetry)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLighthouseDeviceTelemetry)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v106[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"version"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"bucketStart"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"bucketStart"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -441,7 +441,7 @@ LABEL_4:
 
       else
       {
-        v25 = a4;
+        errorCopy = error;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -454,10 +454,10 @@ LABEL_4:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v90 = 0;
-              a4 = 0;
+              error = 0;
               goto LABEL_49;
             }
 
@@ -474,8 +474,8 @@ LABEL_4:
             v9 = v61;
             v10 = v64;
             v90 = 0;
-            a4 = 0;
-            *v25 = [v60 initWithDomain:v65 code:2 userInfo:v64];
+            error = 0;
+            *errorCopy = [v60 initWithDomain:v65 code:2 userInfo:v64];
             goto LABEL_48;
           }
 
@@ -489,7 +489,7 @@ LABEL_4:
       v90 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"bucketEnd"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"bucketEnd"];
     v85 = v9;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -520,14 +520,14 @@ LABEL_4:
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             v66 = v10;
-            if (!a4)
+            if (!error)
             {
               v88 = 0;
-              a4 = 0;
+              error = 0;
               goto LABEL_48;
             }
 
-            v67 = a4;
+            errorCopy2 = error;
             v89 = objc_alloc(MEMORY[0x1E696ABC0]);
             v68 = v8;
             v69 = *MEMORY[0x1E698F240];
@@ -541,8 +541,8 @@ LABEL_4:
             v9 = v85;
             v72 = [v89 initWithDomain:v71 code:2 userInfo:v28];
             v88 = 0;
-            a4 = 0;
-            *v67 = v72;
+            error = 0;
+            *errorCopy2 = v72;
             v10 = v70;
 LABEL_47:
 
@@ -560,14 +560,14 @@ LABEL_48:
       v88 = 0;
     }
 
-    v28 = [v6 objectForKeyedSubscript:@"tasksCount"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"tasksCount"];
     v84 = v10;
     if (v28 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v87 = 0;
           goto LABEL_47;
@@ -577,7 +577,7 @@ LABEL_48:
         v41 = v8;
         v42 = *MEMORY[0x1E698F240];
         v99 = *MEMORY[0x1E696A578];
-        v75 = a4;
+        errorCopy3 = error;
         v86 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"tasksCount"];
         v100 = v86;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v100 forKeys:&v99 count:1];
@@ -585,8 +585,8 @@ LABEL_48:
         v8 = v41;
         v10 = v84;
         v87 = 0;
-        a4 = 0;
-        *v75 = [v40 initWithDomain:v43 code:2 userInfo:v29];
+        error = 0;
+        *errorCopy3 = [v40 initWithDomain:v43 code:2 userInfo:v29];
         goto LABEL_46;
       }
 
@@ -598,13 +598,13 @@ LABEL_48:
       v87 = 0;
     }
 
-    v29 = [v6 objectForKeyedSubscript:@"tasksRun"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"tasksRun"];
     if (v29 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v86 = 0;
           goto LABEL_46;
@@ -614,7 +614,7 @@ LABEL_48:
         v45 = v8;
         v46 = *MEMORY[0x1E698F240];
         v97 = *MEMORY[0x1E696A578];
-        v76 = a4;
+        errorCopy4 = error;
         v47 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"tasksRun"];
         v98 = v47;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
@@ -624,8 +624,8 @@ LABEL_48:
         v8 = v45;
         v10 = v84;
         v86 = 0;
-        a4 = 0;
-        *v76 = [v48 initWithDomain:v49 code:2 userInfo:v30];
+        error = 0;
+        *errorCopy4 = [v48 initWithDomain:v49 code:2 userInfo:v30];
 LABEL_45:
 
 LABEL_46:
@@ -643,34 +643,34 @@ LABEL_46:
       v86 = 0;
     }
 
-    v30 = [v6 objectForKeyedSubscript:@"tasksDeferred"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"tasksDeferred"];
     v83 = v8;
     if (v30 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v37 = 0;
           goto LABEL_44;
         }
 
-        v77 = a4;
+        errorCopy5 = error;
         v50 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v51 = self;
+        selfCopy = self;
         v52 = *MEMORY[0x1E698F240];
         v95 = *MEMORY[0x1E696A578];
         v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"tasksDeferred"];
         v96 = v34;
         v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v96 forKeys:&v95 count:1];
         v53 = v52;
-        self = v51;
+        self = selfCopy;
         v10 = v84;
         v54 = [v50 initWithDomain:v53 code:2 userInfo:v32];
         v37 = 0;
-        a4 = 0;
-        *v77 = v54;
+        error = 0;
+        *errorCopy5 = v54;
 LABEL_43:
 
         v8 = v83;
@@ -689,14 +689,14 @@ LABEL_44:
       v31 = 0;
     }
 
-    v32 = [v6 objectForKeyedSubscript:@"tasksFailed"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"tasksFailed"];
     v80 = v7;
     if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v34 = 0;
           v37 = v31;
@@ -704,9 +704,9 @@ LABEL_44:
           goto LABEL_43;
         }
 
-        v33 = self;
+        errorCopy8 = self;
         v78 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v55 = a4;
+        errorCopy6 = error;
         v56 = *MEMORY[0x1E698F240];
         v93 = *MEMORY[0x1E696A578];
         v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"tasksFailed"];
@@ -714,24 +714,24 @@ LABEL_44:
         v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
         v57 = [v78 initWithDomain:v56 code:2 userInfo:v35];
         v34 = 0;
-        a4 = 0;
-        *v55 = v57;
+        error = 0;
+        *errorCopy6 = v57;
         v37 = v31;
         v29 = v81;
         goto LABEL_42;
       }
 
-      v33 = self;
+      errorCopy8 = self;
       v34 = v32;
     }
 
     else
     {
-      v33 = self;
+      errorCopy8 = self;
       v34 = 0;
     }
 
-    v35 = [v6 objectForKeyedSubscript:@"tasksCompleted"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"tasksCompleted"];
     if (v35 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -739,19 +739,19 @@ LABEL_44:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v29 = v81;
-        if (a4)
+        if (error)
         {
           v74 = objc_alloc(MEMORY[0x1E696ABC0]);
           v73 = *MEMORY[0x1E698F240];
           v91 = *MEMORY[0x1E696A578];
-          v79 = a4;
+          errorCopy7 = error;
           v58 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"tasksCompleted"];
           v92 = v58;
           v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
-          *v79 = [v74 initWithDomain:v73 code:2 userInfo:v59];
+          *errorCopy7 = [v74 initWithDomain:v73 code:2 userInfo:v59];
 
           v36 = 0;
-          a4 = 0;
+          error = 0;
         }
 
         else
@@ -772,11 +772,11 @@ LABEL_44:
     }
 
     v29 = v81;
-    a4 = [(BMLighthouseDeviceTelemetry *)v33 initWithVersion:v83 bucketStart:v90 bucketEnd:v88 tasksCount:v87 tasksRun:v86 tasksDeferred:v37 tasksFailed:v34 tasksCompleted:v36];
-    v33 = a4;
+    error = [(BMLighthouseDeviceTelemetry *)errorCopy8 initWithVersion:v83 bucketStart:v90 bucketEnd:v88 tasksCount:v87 tasksRun:v86 tasksDeferred:v37 tasksFailed:v34 tasksCompleted:v36];
+    errorCopy8 = error;
 LABEL_42:
 
-    self = v33;
+    self = errorCopy8;
     v7 = v80;
     v10 = v84;
     goto LABEL_43;
@@ -789,7 +789,7 @@ LABEL_42:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     goto LABEL_50;
@@ -798,33 +798,33 @@ LABEL_42:
   v21 = objc_alloc(MEMORY[0x1E696ABC0]);
   v22 = *MEMORY[0x1E698F240];
   v105 = *MEMORY[0x1E696A578];
-  v23 = a4;
+  errorCopy9 = error;
   v90 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"version"];
   v106[0] = v90;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:&v105 count:1];
   v24 = [v21 initWithDomain:v22 code:2 userInfo:v9];
   v8 = 0;
-  a4 = 0;
-  *v23 = v24;
+  error = 0;
+  *errorCopy9 = v24;
 LABEL_49:
 
 LABEL_50:
   v38 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMLighthouseDeviceTelemetry *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_hasVersion)
   {
     version = self->_version;
@@ -874,9 +874,9 @@ LABEL_50:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v65.receiver = self;
   v65.super_class = BMLighthouseDeviceTelemetry;
   v5 = [(BMEventBase *)&v65 init];
@@ -885,12 +885,12 @@ LABEL_50:
     goto LABEL_124;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -901,18 +901,18 @@ LABEL_50:
       while (1)
       {
         LOBYTE(v66) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v66 & 0x7F) << v7;
@@ -930,9 +930,9 @@ LABEL_50:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -951,18 +951,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v66) = 0;
-              v54 = [v4 position] + 1;
-              if (v54 >= [v4 position] && (v55 = objc_msgSend(v4, "position") + 1, v55 <= objc_msgSend(v4, "length")))
+              v54 = [fromCopy position] + 1;
+              if (v54 >= [fromCopy position] && (v55 = objc_msgSend(fromCopy, "position") + 1, v55 <= objc_msgSend(fromCopy, "length")))
               {
-                v56 = [v4 data];
-                [v56 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v53 |= (v66 & 0x7F) << v51;
@@ -980,7 +980,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v24 = 0;
             }
@@ -1014,18 +1014,18 @@ LABEL_89:
             while (1)
             {
               LOBYTE(v66) = 0;
-              v34 = [v4 position] + 1;
-              if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 1, v35 <= objc_msgSend(v4, "length")))
+              v34 = [fromCopy position] + 1;
+              if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 1, v35 <= objc_msgSend(fromCopy, "length")))
               {
-                v36 = [v4 data];
-                [v36 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v33 |= (v66 & 0x7F) << v31;
@@ -1043,7 +1043,7 @@ LABEL_89:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v24 = 0;
             }
@@ -1067,18 +1067,18 @@ LABEL_114:
           while (1)
           {
             LOBYTE(v66) = 0;
-            v46 = [v4 position] + 1;
-            if (v46 >= [v4 position] && (v47 = objc_msgSend(v4, "position") + 1, v47 <= objc_msgSend(v4, "length")))
+            v46 = [fromCopy position] + 1;
+            if (v46 >= [fromCopy position] && (v47 = objc_msgSend(fromCopy, "position") + 1, v47 <= objc_msgSend(fromCopy, "length")))
             {
-              v48 = [v4 data];
-              [v48 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v45 |= (v66 & 0x7F) << v43;
@@ -1096,7 +1096,7 @@ LABEL_114:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v24 = 0;
           }
@@ -1124,18 +1124,18 @@ LABEL_98:
           while (1)
           {
             LOBYTE(v66) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v66 & 0x7F) << v18;
@@ -1153,7 +1153,7 @@ LABEL_98:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v24 = 0;
           }
@@ -1174,18 +1174,18 @@ LABEL_106:
         {
           v5->_hasRaw_bucketEnd = 1;
           v66 = 0;
-          v49 = [v4 position] + 8;
-          if (v49 >= [v4 position] && (v50 = objc_msgSend(v4, "position") + 8, v50 <= objc_msgSend(v4, "length")))
+          v49 = [fromCopy position] + 8;
+          if (v49 >= [fromCopy position] && (v50 = objc_msgSend(fromCopy, "position") + 8, v50 <= objc_msgSend(fromCopy, "length")))
           {
-            v58 = [v4 data];
-            [v58 getBytes:&v66 range:{objc_msgSend(v4, "position"), 8}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v59 = v66;
@@ -1207,18 +1207,18 @@ LABEL_120:
         while (1)
         {
           LOBYTE(v66) = 0;
-          v28 = [v4 position] + 1;
-          if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+          v28 = [fromCopy position] + 1;
+          if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v27 |= (v66 & 0x7F) << v25;
@@ -1236,7 +1236,7 @@ LABEL_120:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v24 = 0;
         }
@@ -1261,18 +1261,18 @@ LABEL_110:
 
           v5->_hasRaw_bucketStart = 1;
           v66 = 0;
-          v16 = [v4 position] + 8;
-          if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+          v16 = [fromCopy position] + 8;
+          if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
           {
-            v61 = [v4 data];
-            [v61 getBytes:&v66 range:{objc_msgSend(v4, "position"), 8}];
+            data8 = [fromCopy data];
+            [data8 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v59 = v66;
@@ -1287,18 +1287,18 @@ LABEL_110:
         while (1)
         {
           LOBYTE(v66) = 0;
-          v40 = [v4 position] + 1;
-          if (v40 >= [v4 position] && (v41 = objc_msgSend(v4, "position") + 1, v41 <= objc_msgSend(v4, "length")))
+          v40 = [fromCopy position] + 1;
+          if (v40 >= [fromCopy position] && (v41 = objc_msgSend(fromCopy, "position") + 1, v41 <= objc_msgSend(fromCopy, "length")))
           {
-            v42 = [v4 data];
-            [v42 getBytes:&v66 range:{objc_msgSend(v4, "position"), 1}];
+            data9 = [fromCopy data];
+            [data9 getBytes:&v66 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v39 |= (v66 & 0x7F) << v37;
@@ -1316,7 +1316,7 @@ LABEL_110:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v24 = 0;
         }
@@ -1332,13 +1332,13 @@ LABEL_94:
 
       *(&v5->super.super.isa + v57) = v24;
 LABEL_121:
-      v62 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v62 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_123:
     v63 = 0;
@@ -1357,51 +1357,51 @@ LABEL_124:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLighthouseDeviceTelemetry version](self, "version")}];
-  v5 = [(BMLighthouseDeviceTelemetry *)self bucketStart];
-  v6 = [(BMLighthouseDeviceTelemetry *)self bucketEnd];
+  bucketStart = [(BMLighthouseDeviceTelemetry *)self bucketStart];
+  bucketEnd = [(BMLighthouseDeviceTelemetry *)self bucketEnd];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLighthouseDeviceTelemetry tasksCount](self, "tasksCount")}];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLighthouseDeviceTelemetry tasksRun](self, "tasksRun")}];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLighthouseDeviceTelemetry tasksDeferred](self, "tasksDeferred")}];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLighthouseDeviceTelemetry tasksFailed](self, "tasksFailed")}];
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLighthouseDeviceTelemetry tasksCompleted](self, "tasksCompleted")}];
-  v12 = [v3 initWithFormat:@"BMLighthouseDeviceTelemetry with version: %@, bucketStart: %@, bucketEnd: %@, tasksCount: %@, tasksRun: %@, tasksDeferred: %@, tasksFailed: %@, tasksCompleted: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  v12 = [v3 initWithFormat:@"BMLighthouseDeviceTelemetry with version: %@, bucketStart: %@, bucketEnd: %@, tasksCount: %@, tasksRun: %@, tasksDeferred: %@, tasksFailed: %@, tasksCompleted: %@", v4, bucketStart, bucketEnd, v7, v8, v9, v10, v11];
 
   return v12;
 }
 
-- (BMLighthouseDeviceTelemetry)initWithVersion:(id)a3 bucketStart:(id)a4 bucketEnd:(id)a5 tasksCount:(id)a6 tasksRun:(id)a7 tasksDeferred:(id)a8 tasksFailed:(id)a9 tasksCompleted:(id)a10
+- (BMLighthouseDeviceTelemetry)initWithVersion:(id)version bucketStart:(id)start bucketEnd:(id)end tasksCount:(id)count tasksRun:(id)run tasksDeferred:(id)deferred tasksFailed:(id)failed tasksCompleted:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  versionCopy = version;
+  startCopy = start;
+  endCopy = end;
+  countCopy = count;
+  runCopy = run;
+  deferredCopy = deferred;
+  failedCopy = failed;
+  completedCopy = completed;
   v34.receiver = self;
   v34.super_class = BMLighthouseDeviceTelemetry;
   v24 = [(BMEventBase *)&v34 init];
   if (v24)
   {
     v24->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v16)
+    if (versionCopy)
     {
       v24->_hasVersion = 1;
-      v25 = [v16 intValue];
+      intValue = [versionCopy intValue];
     }
 
     else
     {
       v24->_hasVersion = 0;
-      v25 = -1;
+      intValue = -1;
     }
 
-    v24->_version = v25;
-    if (v17)
+    v24->_version = intValue;
+    if (startCopy)
     {
       v24->_hasRaw_bucketStart = 1;
-      [v17 timeIntervalSince1970];
+      [startCopy timeIntervalSince1970];
     }
 
     else
@@ -1411,10 +1411,10 @@ LABEL_124:
     }
 
     v24->_raw_bucketStart = v26;
-    if (v18)
+    if (endCopy)
     {
       v24->_hasRaw_bucketEnd = 1;
-      [v18 timeIntervalSince1970];
+      [endCopy timeIntervalSince1970];
     }
 
     else
@@ -1424,71 +1424,71 @@ LABEL_124:
     }
 
     v24->_raw_bucketEnd = v27;
-    if (v19)
+    if (countCopy)
     {
       v24->_hasTasksCount = 1;
-      v28 = [v19 intValue];
+      intValue2 = [countCopy intValue];
     }
 
     else
     {
       v24->_hasTasksCount = 0;
-      v28 = -1;
+      intValue2 = -1;
     }
 
-    v24->_tasksCount = v28;
-    if (v20)
+    v24->_tasksCount = intValue2;
+    if (runCopy)
     {
       v24->_hasTasksRun = 1;
-      v29 = [v20 intValue];
+      intValue3 = [runCopy intValue];
     }
 
     else
     {
       v24->_hasTasksRun = 0;
-      v29 = -1;
+      intValue3 = -1;
     }
 
-    v24->_tasksRun = v29;
-    if (v21)
+    v24->_tasksRun = intValue3;
+    if (deferredCopy)
     {
       v24->_hasTasksDeferred = 1;
-      v30 = [v21 intValue];
+      intValue4 = [deferredCopy intValue];
     }
 
     else
     {
       v24->_hasTasksDeferred = 0;
-      v30 = -1;
+      intValue4 = -1;
     }
 
-    v24->_tasksDeferred = v30;
-    if (v22)
+    v24->_tasksDeferred = intValue4;
+    if (failedCopy)
     {
       v24->_hasTasksFailed = 1;
-      v31 = [v22 intValue];
+      intValue5 = [failedCopy intValue];
     }
 
     else
     {
       v24->_hasTasksFailed = 0;
-      v31 = -1;
+      intValue5 = -1;
     }
 
-    v24->_tasksFailed = v31;
-    if (v23)
+    v24->_tasksFailed = intValue5;
+    if (completedCopy)
     {
       v24->_hasTasksCompleted = 1;
-      v32 = [v23 intValue];
+      intValue6 = [completedCopy intValue];
     }
 
     else
     {
       v24->_hasTasksCompleted = 0;
-      v32 = -1;
+      intValue6 = -1;
     }
 
-    v24->_tasksCompleted = v32;
+    v24->_tasksCompleted = intValue6;
   }
 
   return v24;
@@ -1520,9 +1520,9 @@ LABEL_124:
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1530,8 +1530,8 @@ LABEL_124:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLighthouseDeviceTelemetry alloc] initByReadFrom:v7];
     v4 = v8;

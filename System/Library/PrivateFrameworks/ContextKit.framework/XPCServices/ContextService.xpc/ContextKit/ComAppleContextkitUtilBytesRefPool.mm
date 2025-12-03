@@ -1,9 +1,9 @@
 @interface ComAppleContextkitUtilBytesRefPool
 + (void)initialize;
-- (BOOL)reclaimSpaceWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (id)tryAppendWithJavaLangCharSequence:(id)a3;
-- (id)tryAppendWithJavaLangCharSequence:(id)a3 withChar:(unsigned __int16)a4 withJavaLangCharSequence:(id)a5;
-- (id)tryAppendWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (BOOL)reclaimSpaceWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (id)tryAppendWithJavaLangCharSequence:(id)sequence;
+- (id)tryAppendWithJavaLangCharSequence:(id)sequence withChar:(unsigned __int16)char withJavaLangCharSequence:(id)charSequence;
+- (id)tryAppendWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
 - (void)nextBuffer;
 @end
@@ -47,14 +47,14 @@ LABEL_8:
   self->byteOffset_ += self->blockSize_;
 }
 
-- (id)tryAppendWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)tryAppendWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 5);
+  v4 = *(ref + 5);
   if (!v4)
   {
     return qword_100554238;
@@ -63,9 +63,9 @@ LABEL_8:
   blockSize = self->blockSize_;
   v7 = __OFSUB__(v4, blockSize);
   v8 = v4 - blockSize;
-  if ((v8 < 0) ^ v7 | (v8 == 0) && ((v9 = *(a3 + 4), byteUpto = self->byteUpto_, v8 + byteUpto < 1) || ([(ComAppleContextkitUtilBytesRefPool *)self nextBuffer], byteUpto = self->byteUpto_, byteUpto + v4 - self->blockSize_ < 1)))
+  if ((v8 < 0) ^ v7 | (v8 == 0) && ((v9 = *(ref + 4), byteUpto = self->byteUpto_, v8 + byteUpto < 1) || ([(ComAppleContextkitUtilBytesRefPool *)self nextBuffer], byteUpto = self->byteUpto_, byteUpto + v4 - self->blockSize_ < 1)))
   {
-    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a3 + 1), v9, self->buffer_, byteUpto, v4);
+    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(ref + 1), v9, self->buffer_, byteUpto, v4);
     result = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(self->buffer_, self->byteUpto_, v4);
     self->byteUpto_ += v4;
   }
@@ -73,21 +73,21 @@ LABEL_8:
   else
   {
 
-    return OrgApacheLuceneUtilBytesRef_deepCopyOfWithOrgApacheLuceneUtilBytesRef_(a3);
+    return OrgApacheLuceneUtilBytesRef_deepCopyOfWithOrgApacheLuceneUtilBytesRef_(ref);
   }
 
   return result;
 }
 
-- (id)tryAppendWithJavaLangCharSequence:(id)a3
+- (id)tryAppendWithJavaLangCharSequence:(id)sequence
 {
-  if (!a3)
+  if (!sequence)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = a3;
-  v5 = [a3 length];
+  sequenceCopy = sequence;
+  v5 = [sequence length];
   if (!v5)
   {
     return qword_100554238;
@@ -95,39 +95,39 @@ LABEL_8:
 
   v6 = 3 * v5;
   blockSize = self->blockSize_;
-  if ((self->byteUpto_ + 3 * v5 - blockSize) < 1 || v6 <= blockSize && ([(ComAppleContextkitUtilBytesRefPool *)self nextBuffer], self->byteUpto_ + v6 - self->blockSize_ < 1) || (result = new_OrgApacheLuceneUtilBytesRef_initWithJavaLangCharSequence_(v3)) == 0)
+  if ((self->byteUpto_ + 3 * v5 - blockSize) < 1 || v6 <= blockSize && ([(ComAppleContextkitUtilBytesRefPool *)self nextBuffer], self->byteUpto_ + v6 - self->blockSize_ < 1) || (result = new_OrgApacheLuceneUtilBytesRef_initWithJavaLangCharSequence_(sequenceCopy)) == 0)
   {
-    LODWORD(v3) = OrgApacheLuceneUtilUnicodeUtil_UTF16toUTF8WithJavaLangCharSequence_withInt_withInt_withByteArray_withInt_(v3, 0, [v3 length], self->buffer_, self->byteUpto_);
+    LODWORD(sequenceCopy) = OrgApacheLuceneUtilUnicodeUtil_UTF16toUTF8WithJavaLangCharSequence_withInt_withInt_withByteArray_withInt_(sequenceCopy, 0, [sequenceCopy length], self->buffer_, self->byteUpto_);
     goto LABEL_10;
   }
 
-  v3 = *(result + 5);
+  sequenceCopy = *(result + 5);
   byteUpto = self->byteUpto_;
-  if (byteUpto + v3 - self->blockSize_ <= 0)
+  if (byteUpto + sequenceCopy - self->blockSize_ <= 0)
   {
-    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(result + 1), 0, self->buffer_, byteUpto, v3);
+    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(result + 1), 0, self->buffer_, byteUpto, sequenceCopy);
 LABEL_10:
-    result = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(self->buffer_, self->byteUpto_, v3);
-    self->byteUpto_ += v3;
+    result = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(self->buffer_, self->byteUpto_, sequenceCopy);
+    self->byteUpto_ += sequenceCopy;
   }
 
   return result;
 }
 
-- (id)tryAppendWithJavaLangCharSequence:(id)a3 withChar:(unsigned __int16)a4 withJavaLangCharSequence:(id)a5
+- (id)tryAppendWithJavaLangCharSequence:(id)sequence withChar:(unsigned __int16)char withJavaLangCharSequence:(id)charSequence
 {
-  if (!a3)
+  if (!sequence)
   {
     goto LABEL_24;
   }
 
-  v9 = [a3 length];
-  if (!a5)
+  v9 = [sequence length];
+  if (!charSequence)
   {
     goto LABEL_24;
   }
 
-  v10 = 3 * ([a5 length] + v9) + 3;
+  v10 = 3 * ([charSequence length] + v9) + 3;
   byteUpto = self->byteUpto_;
   blockSize = self->blockSize_;
   v13 = self->byteUpto_;
@@ -154,10 +154,10 @@ LABEL_10:
   v16 = 1;
 LABEL_10:
   v18 = *p_bytes;
-  v19 = OrgApacheLuceneUtilUnicodeUtil_UTF16toUTF8WithJavaLangCharSequence_withInt_withInt_withByteArray_withInt_(a3, 0, [a3 length], *p_bytes, v13);
-  if ((a4 - 127) <= 0xFF81u)
+  v19 = OrgApacheLuceneUtilUnicodeUtil_UTF16toUTF8WithJavaLangCharSequence_withInt_withInt_withByteArray_withInt_(sequence, 0, [sequence length], *p_bytes, v13);
+  if ((char - 127) <= 0xFF81u)
   {
-    v20 = JavaLangCharacter_toStringWithChar_(a4);
+    v20 = JavaLangCharacter_toStringWithChar_(char);
     if (v20)
     {
       v21 = OrgApacheLuceneUtilUnicodeUtil_UTF16toUTF8WithJavaLangCharSequence_withInt_withInt_withByteArray_withInt_(v20, 0, [(NSString *)v20 length], v18, v19 + v13);
@@ -180,10 +180,10 @@ LABEL_24:
     IOSArray_throwOutOfBoundsWithMsg(v22, v23);
   }
 
-  *(v18 + 12 + v19 + v13) = a4;
+  *(v18 + 12 + v19 + v13) = char;
   v21 = 1;
 LABEL_17:
-  v24 = OrgApacheLuceneUtilUnicodeUtil_UTF16toUTF8WithJavaLangCharSequence_withInt_withInt_withByteArray_withInt_(a5, 0, [a5 length], v18, v21 + v19 + v13) + v21 + v19;
+  v24 = OrgApacheLuceneUtilUnicodeUtil_UTF16toUTF8WithJavaLangCharSequence_withInt_withInt_withByteArray_withInt_(charSequence, 0, [charSequence length], v18, v21 + v19 + v13) + v21 + v19;
   if ((v16 & 1) == 0)
   {
     v15->length_ = v24;
@@ -201,14 +201,14 @@ LABEL_17:
   return v26;
 }
 
-- (BOOL)reclaimSpaceWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)reclaimSpaceWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 1) == self->buffer_ && (v4 = *(a3 + 5), byteUpto = self->byteUpto_, byteUpto == *(a3 + 4) + v4))
+  if (*(ref + 1) == self->buffer_ && (v4 = *(ref + 5), byteUpto = self->byteUpto_, byteUpto == *(ref + 4) + v4))
   {
     v6 = byteUpto - v4;
     v7 = v6 >= 0;
@@ -225,9 +225,9 @@ LABEL_17:
     v7 = 0;
   }
 
-  JreStrongAssign(a3 + 1, 0);
-  *(a3 + 5) = 0;
-  *(a3 + 4) = 0;
+  JreStrongAssign(ref + 1, 0);
+  *(ref + 5) = 0;
+  *(ref + 4) = 0;
   return v7;
 }
 
@@ -240,7 +240,7 @@ LABEL_17:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_OrgApacheLuceneUtilBytesRef_initWithInt_(0);
     JreStrongAssignAndConsume(&qword_100554238, v2);

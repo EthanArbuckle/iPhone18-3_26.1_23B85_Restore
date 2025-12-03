@@ -1,19 +1,19 @@
 @interface DIShadowChain
-- (BOOL)addShadowNodes:(id)a3 wrapReadOnly:(BOOL)a4 error:(id *)a5;
-- (BOOL)addShadowURLs:(id)a3 error:(id *)a4;
+- (BOOL)addShadowNodes:(id)nodes wrapReadOnly:(BOOL)only error:(id *)error;
+- (BOOL)addShadowURLs:(id)ls error:(id *)error;
 - (BOOL)hasBaseImageCache;
 - (BOOL)isEmpty;
-- (BOOL)verifyNodes:(id)a3 error:(id *)a4;
+- (BOOL)verifyNodes:(id)nodes error:(id *)error;
 - (DIShadowChain)init;
-- (DIShadowChain)initWithCoder:(id)a3;
+- (DIShadowChain)initWithCoder:(id)coder;
 - (NSArray)mountPoints;
 - (NSArray)nonCacheNodes;
 - (NSURL)activeShadowURL;
 - (id)description;
-- (id)statWithError:(id *)a3;
+- (id)statWithError:(id *)error;
 - (int64_t)topDiskImageNumBlocks;
-- (void)encodeWithCoder:(id)a3;
-- (void)openWritable:(BOOL)a3 createNonExisting:(BOOL)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)openWritable:(BOOL)writable createNonExisting:(BOOL)existing;
 @end
 
 @implementation DIShadowChain
@@ -39,15 +39,15 @@
   return v2;
 }
 
-- (BOOL)addShadowURLs:(id)a3 error:(id *)a4
+- (BOOL)addShadowURLs:(id)ls error:(id *)error
 {
-  v6 = a3;
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  lsCopy = ls;
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [lsCopy count]);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v6;
+  v8 = lsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -77,18 +77,18 @@
     while (v9);
   }
 
-  v15 = [(DIShadowChain *)self addShadowNodes:v7 error:a4];
+  v15 = [(DIShadowChain *)self addShadowNodes:v7 error:error];
   return v15;
 }
 
-- (BOOL)verifyNodes:(id)a3 error:(id *)a4
+- (BOOL)verifyNodes:(id)nodes error:(id *)error
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  nodesCopy = nodes;
+  v7 = [nodesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v7)
   {
     v15 = 1;
@@ -102,35 +102,35 @@
     {
       if (*v20 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(nodesCopy);
       }
 
       v10 = *(*(&v19 + 1) + 8 * i);
       v11 = [v10 URL];
-      v12 = [v11 isFileURL];
+      isFileURL = [v11 isFileURL];
 
-      if ((v12 & 1) == 0)
+      if ((isFileURL & 1) == 0)
       {
         v16 = [NSString stringWithFormat:@"Shadow path %@ is not a valid file", v10];
-        v17 = [DIError failWithPOSIXCode:22 verboseInfo:v16 error:a4];
+        v17 = [DIError failWithPOSIXCode:22 verboseInfo:v16 error:error];
 LABEL_14:
         v15 = v17;
 
         goto LABEL_15;
       }
 
-      v13 = [(DIShadowChain *)self nodes];
-      v14 = [v13 containsObject:v10];
+      nodes = [(DIShadowChain *)self nodes];
+      v14 = [nodes containsObject:v10];
 
       if (v14)
       {
         v16 = [NSString stringWithFormat:@"Duplicate shadow values for: %@", v10];
-        v17 = [DIError failWithPOSIXCode:22 verboseInfo:v16 error:a4];
+        v17 = [DIError failWithPOSIXCode:22 verboseInfo:v16 error:error];
         goto LABEL_14;
       }
     }
 
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v7 = [nodesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     v15 = 1;
     if (v7)
     {
@@ -145,10 +145,10 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)addShadowNodes:(id)a3 wrapReadOnly:(BOOL)a4 error:(id *)a5
+- (BOOL)addShadowNodes:(id)nodes wrapReadOnly:(BOOL)only error:(id *)error
 {
-  v5 = a4;
-  v26 = a3;
+  onlyCopy = only;
+  nodesCopy = nodes;
   v25 = [DIShadowChain verifyNodes:"verifyNodes:error:" error:?];
   if (v25)
   {
@@ -156,7 +156,7 @@ LABEL_15:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v26;
+    obj = nodesCopy;
     v7 = [obj countByEnumeratingWithState:&v28 objects:v35 count:16];
     if (v7)
     {
@@ -171,13 +171,13 @@ LABEL_15:
           }
 
           v10 = *(*(&v28 + 1) + 8 * i);
-          if (v5)
+          if (onlyCopy)
           {
-            v11 = [*(*(&v28 + 1) + 8 * i) fileBackend];
-            v12 = v11;
-            if (v11)
+            fileBackend = [*(*(&v28 + 1) + 8 * i) fileBackend];
+            v12 = fileBackend;
+            if (fileBackend)
             {
-              [v11 backend];
+              [fileBackend backend];
               v13 = *buf;
             }
 
@@ -234,18 +234,18 @@ LABEL_15:
 
               *__error() = v15;
               v21 = [FileLocalXPC alloc];
-              v22 = [v10 fileBackend];
-              if (v22)
+              fileBackend2 = [v10 fileBackend];
+              if (fileBackend2)
               {
-                [v22 backend];
+                [fileBackend2 backend];
               }
 
               sub_1000D7C64();
             }
           }
 
-          v23 = [(DIShadowChain *)self nodes];
-          [v23 addObject:v10];
+          nodes = [(DIShadowChain *)self nodes];
+          [nodes addObject:v10];
         }
 
         v7 = [obj countByEnumeratingWithState:&v28 objects:v35 count:16];
@@ -258,28 +258,28 @@ LABEL_15:
   return v25;
 }
 
-- (void)openWritable:(BOOL)a3 createNonExisting:(BOOL)a4
+- (void)openWritable:(BOOL)writable createNonExisting:(BOOL)existing
 {
-  v7 = [(DIShadowChain *)self nodes];
+  nodes = [(DIShadowChain *)self nodes];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000D63AC;
   v8[3] = &unk_10021AB60;
-  v9 = a3;
-  v10 = a4;
+  writableCopy = writable;
+  existingCopy = existing;
   v8[4] = self;
-  [v7 enumerateObjectsUsingBlock:v8];
+  [nodes enumerateObjectsUsingBlock:v8];
 }
 
-- (id)statWithError:(id *)a3
+- (id)statWithError:(id *)error
 {
   shadowStats = +[NSMutableArray array];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(DIShadowChain *)self nodes];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  nodes = [(DIShadowChain *)self nodes];
+  v6 = [nodes countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
     v7 = *v25;
@@ -289,23 +289,23 @@ LABEL_3:
     {
       if (*v25 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(nodes);
       }
 
       v9 = *(*(&v24 + 1) + 8 * v8);
-      v10 = [v9 fileBackend];
-      v11 = v10 == 0;
+      fileBackend = [v9 fileBackend];
+      v11 = fileBackend == 0;
 
       if (v11)
       {
         break;
       }
 
-      v12 = [v9 fileBackend];
-      v13 = v12;
-      if (v12)
+      fileBackend2 = [v9 fileBackend];
+      v13 = fileBackend2;
+      if (fileBackend2)
       {
-        [v12 backend];
+        [fileBackend2 backend];
       }
 
       else
@@ -328,15 +328,15 @@ LABEL_3:
 
       if ((v14 & 0x80000000) != 0)
       {
-        [DIError failWithEnumValue:150 verboseInfo:@"Unexpected backend type for shadow file" error:a3];
+        [DIError failWithEnumValue:150 verboseInfo:@"Unexpected backend type for shadow file" error:error];
         goto LABEL_22;
       }
 
-      v15 = [[DIStatFS alloc] initWithFileDescriptor:v14 error:a3];
+      v15 = [[DIStatFS alloc] initWithFileDescriptor:v14 error:error];
       v16 = v15;
       if (!v15)
       {
-        [DIError failWithEnumValue:150 verboseInfo:@"Could not stat shadow file" error:a3];
+        [DIError failWithEnumValue:150 verboseInfo:@"Could not stat shadow file" error:error];
         goto LABEL_22;
       }
 
@@ -345,7 +345,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v6 = [nodes countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -355,7 +355,7 @@ LABEL_3:
       }
     }
 
-    [DIError failWithEnumValue:150 verboseInfo:@"Bakcend not initialized for file" error:a3];
+    [DIError failWithEnumValue:150 verboseInfo:@"Bakcend not initialized for file" error:error];
 LABEL_22:
 
     v17 = 0;
@@ -379,8 +379,8 @@ LABEL_23:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(DIShadowChain *)self shadowStats];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  shadowStats = [(DIShadowChain *)self shadowStats];
+  v5 = [shadowStats countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -390,14 +390,14 @@ LABEL_23:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(shadowStats);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) mountedOnURL];
-        [v3 addObject:v8];
+        mountedOnURL = [*(*(&v10 + 1) + 8 * i) mountedOnURL];
+        [v3 addObject:mountedOnURL];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [shadowStats countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -408,8 +408,8 @@ LABEL_23:
 
 - (BOOL)isEmpty
 {
-  v2 = [(DIShadowChain *)self nodes];
-  v3 = [v2 count] == 0;
+  nodes = [(DIShadowChain *)self nodes];
+  v3 = [nodes count] == 0;
 
   return v3;
 }
@@ -423,9 +423,9 @@ LABEL_23:
 
   else
   {
-    v7 = [(DIShadowChain *)self nodes];
-    v8 = [v7 lastObject];
-    v6 = [v8 URL];
+    nodes = [(DIShadowChain *)self nodes];
+    lastObject = [nodes lastObject];
+    v6 = [lastObject URL];
   }
 
   return v6;
@@ -438,18 +438,18 @@ LABEL_23:
     return 0;
   }
 
-  v4 = [(DIShadowChain *)self nodes];
-  v5 = [v4 firstObject];
-  v3 = [v5 isCache];
+  nodes = [(DIShadowChain *)self nodes];
+  firstObject = [nodes firstObject];
+  isCache = [firstObject isCache];
 
-  return v3;
+  return isCache;
 }
 
 - (NSArray)nonCacheNodes
 {
   v3 = [NSPredicate predicateWithBlock:&stru_10021ABA0];
-  v4 = [(DIShadowChain *)self nodes];
-  v5 = [v4 filteredArrayUsingPredicate:v3];
+  nodes = [(DIShadowChain *)self nodes];
+  v5 = [nodes filteredArrayUsingPredicate:v3];
 
   return v5;
 }
@@ -458,14 +458,14 @@ LABEL_23:
 {
   if (![(DIShadowChain *)self isEmpty])
   {
-    v6 = [(DIShadowChain *)self nodes];
-    v7 = [v6 lastObject];
+    nodes = [(DIShadowChain *)self nodes];
+    lastObject = [nodes lastObject];
 
-    v8 = [v7 fileBackend];
-    v9 = v8;
-    if (v8)
+    fileBackend = [lastObject fileBackend];
+    v9 = fileBackend;
+    if (fileBackend)
     {
-      [v8 backend];
+      [fileBackend backend];
       v10 = *buf;
     }
 
@@ -517,9 +517,9 @@ LABEL_23:
   return -22;
 }
 
-- (DIShadowChain)initWithCoder:(id)a3
+- (DIShadowChain)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = DIShadowChain;
   v5 = [(DIShadowChain *)&v15 init];
@@ -527,38 +527,38 @@ LABEL_23:
   {
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"nodes"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"nodes"];
     nodes = v5->_nodes;
     v5->_nodes = v8;
 
     v10 = objc_opt_class();
     v11 = [NSSet setWithObjects:v10, objc_opt_class(), 0];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"shadowStats"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"shadowStats"];
     shadowStats = v5->_shadowStats;
     v5->_shadowStats = v12;
 
-    v5->_shouldValidate = [v4 decodeBoolForKey:@"shouldValidate"];
+    v5->_shouldValidate = [coderCopy decodeBoolForKey:@"shouldValidate"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(DIShadowChain *)self nodes];
-  [v6 encodeObject:v4 forKey:@"nodes"];
+  coderCopy = coder;
+  nodes = [(DIShadowChain *)self nodes];
+  [coderCopy encodeObject:nodes forKey:@"nodes"];
 
-  v5 = [(DIShadowChain *)self shadowStats];
-  [v6 encodeObject:v5 forKey:@"shadowStats"];
+  shadowStats = [(DIShadowChain *)self shadowStats];
+  [coderCopy encodeObject:shadowStats forKey:@"shadowStats"];
 
-  [v6 encodeBool:-[DIShadowChain shouldValidate](self forKey:{"shouldValidate"), @"shouldValidate"}];
+  [coderCopy encodeBool:-[DIShadowChain shouldValidate](self forKey:{"shouldValidate"), @"shouldValidate"}];
 }
 
 - (id)description
 {
-  v2 = [(DIShadowChain *)self nodes];
-  v3 = [NSString stringWithFormat:@"ShadowChain: %@", v2];
+  nodes = [(DIShadowChain *)self nodes];
+  v3 = [NSString stringWithFormat:@"ShadowChain: %@", nodes];
 
   return v3;
 }

@@ -1,35 +1,35 @@
 @interface _SBDisplayItemFixedAspectGrid
 - (BOOL)_allowFullScreen;
-- (CGSize)nearestGridSizeForSize:(CGSize)a3 countOnStage:(unint64_t)a4;
-- (_SBDisplayItemFixedAspectGrid)initWithBounds:(CGRect)a3 fixedSize:(CGSize)a4 screenScale:(double)a5 supportsOrthogonalSizes:(BOOL)a6 windowingConfiguration:(id)a7 allowsLetterboxing:(BOOL)a8;
+- (CGSize)nearestGridSizeForSize:(CGSize)size countOnStage:(unint64_t)stage;
+- (_SBDisplayItemFixedAspectGrid)initWithBounds:(CGRect)bounds fixedSize:(CGSize)size screenScale:(double)scale supportsOrthogonalSizes:(BOOL)sizes windowingConfiguration:(id)configuration allowsLetterboxing:(BOOL)letterboxing;
 - (id)allHeights;
 - (id)allWidths;
-- (void)_buildFixedGridWithScreenScale:(double)a3;
+- (void)_buildFixedGridWithScreenScale:(double)scale;
 @end
 
 @implementation _SBDisplayItemFixedAspectGrid
 
-- (_SBDisplayItemFixedAspectGrid)initWithBounds:(CGRect)a3 fixedSize:(CGSize)a4 screenScale:(double)a5 supportsOrthogonalSizes:(BOOL)a6 windowingConfiguration:(id)a7 allowsLetterboxing:(BOOL)a8
+- (_SBDisplayItemFixedAspectGrid)initWithBounds:(CGRect)bounds fixedSize:(CGSize)size screenScale:(double)scale supportsOrthogonalSizes:(BOOL)sizes windowingConfiguration:(id)configuration allowsLetterboxing:(BOOL)letterboxing
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v16.receiver = self;
   v16.super_class = _SBDisplayItemFixedAspectGrid;
-  v13 = [(_SBDisplayItemFlexibleGrid *)&v16 initWithBounds:a7 screenScale:a3.origin.x windowingConfiguration:a3.origin.y, a3.size.width, a3.size.height, a5];
-  v14 = v13;
-  if (v13)
+  scale = [(_SBDisplayItemFlexibleGrid *)&v16 initWithBounds:configuration screenScale:bounds.origin.x windowingConfiguration:bounds.origin.y, bounds.size.width, bounds.size.height, scale];
+  v14 = scale;
+  if (scale)
   {
-    v13->_fixedSize.width = width;
-    v13->_fixedSize.height = height;
-    v13->_supportsOrthogonalSizes = a6;
-    v13->_allowsLetterboxing = a8;
-    [(_SBDisplayItemFixedAspectGrid *)v13 _buildFixedGridWithScreenScale:a5];
+    scale->_fixedSize.width = width;
+    scale->_fixedSize.height = height;
+    scale->_supportsOrthogonalSizes = sizes;
+    scale->_allowsLetterboxing = letterboxing;
+    [(_SBDisplayItemFixedAspectGrid *)scale _buildFixedGridWithScreenScale:scale];
   }
 
   return v14;
 }
 
-- (void)_buildFixedGridWithScreenScale:(double)a3
+- (void)_buildFixedGridWithScreenScale:(double)scale
 {
   v100 = *MEMORY[0x277D85DE8];
   [(SBSwitcherWindowingConfiguration *)self->super._windowingConfiguration screenEdgePadding];
@@ -58,7 +58,7 @@
   v93 = 0x3032000000;
   v94 = __Block_byref_object_copy__134;
   v95 = __Block_byref_object_dispose__134;
-  v96 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v90[0] = MEMORY[0x277D85DD0];
   v90[1] = 3221225472;
   v90[2] = __64___SBDisplayItemFixedAspectGrid__buildFixedGridWithScreenScale___block_invoke;
@@ -128,7 +128,7 @@
     }
 
     (v15)[2](v15, v25 != v20, v29, v28);
-    v30 = [v27 lastObject];
+    lastObject = [v27 lastObject];
     v88 = 0u;
     v89 = 0u;
     v86 = 0u;
@@ -148,7 +148,7 @@
           }
 
           v35 = *(*(&v86 + 1) + 8 * i);
-          if (v35 != v30)
+          if (v35 != lastObject)
           {
             [v35 doubleValue];
             if (v20 + 44.0 <= v36)
@@ -258,7 +258,7 @@
   }
 
   (v15)[2](v15, v46 != v40, v49, v50);
-  v51 = [v48 lastObject];
+  lastObject2 = [v48 lastObject];
   v84 = 0u;
   v85 = 0u;
   v82 = 0u;
@@ -278,7 +278,7 @@
         }
 
         v56 = *(*(&v82 + 1) + 8 * j);
-        if (v56 != v51)
+        if (v56 != lastObject2)
         {
           [v56 doubleValue];
           if (v40 + 44.0 <= v57.n128_f64[0])
@@ -367,10 +367,10 @@ LABEL_79:
   _Block_object_dispose(&v91, 8);
 }
 
-- (CGSize)nearestGridSizeForSize:(CGSize)a3 countOnStage:(unint64_t)a4
+- (CGSize)nearestGridSizeForSize:(CGSize)size countOnStage:(unint64_t)stage
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = *MEMORY[0x277CBF3A8];
   v8 = *(MEMORY[0x277CBF3A8] + 8);
   if ([(NSArray *)self->super._widths count])
@@ -447,10 +447,10 @@ LABEL_79:
   }
 
   v3 = +[SBAppSwitcherDomain rootSettings];
-  v4 = [v3 windowingSettings];
-  v5 = [v4 allowTrueMaximizeForAllApps];
+  windowingSettings = [v3 windowingSettings];
+  allowTrueMaximizeForAllApps = [windowingSettings allowTrueMaximizeForAllApps];
 
-  return v5;
+  return allowTrueMaximizeForAllApps;
 }
 
 @end

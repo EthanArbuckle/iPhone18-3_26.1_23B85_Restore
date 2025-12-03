@@ -8,34 +8,34 @@
 
 - (uint64_t)stocks_generateFeldsparIDIfNeeded
 {
-  v2 = [a1 feldsparID];
+  feldsparID = [self feldsparID];
 
-  if (!v2)
+  if (!feldsparID)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
-    [a1 setFeldsparID:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [self setFeldsparID:uUIDString];
   }
 
-  return [a1 feldsparID];
+  return [self feldsparID];
 }
 
 - (uint64_t)stocks_resetFeldsparID
 {
-  v2 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v2 UUIDString];
-  [a1 setFeldsparID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [self setFeldsparID:uUIDString];
 
-  return [a1 feldsparID];
+  return [self feldsparID];
 }
 
 - (uint64_t)stocks_resetAdsUserID
 {
-  v2 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v2 UUIDString];
-  [a1 setAdsUserID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [self setAdsUserID:uUIDString];
 
-  return [a1 adsUserID];
+  return [self adsUserID];
 }
 
 @end

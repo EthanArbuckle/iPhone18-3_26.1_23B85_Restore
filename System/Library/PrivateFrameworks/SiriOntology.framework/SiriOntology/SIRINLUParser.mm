@@ -1,43 +1,43 @@
 @interface SIRINLUParser
 - (SIRINLUParser)init;
-- (SIRINLUParser)initWithAlgorithmType:(int)a3 parserIdentifier:(int)a4;
-- (SIRINLUParser)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SIRINLUParser)initWithAlgorithmType:(int)type parserIdentifier:(int)identifier;
+- (SIRINLUParser)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLUParser
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[SIRINLUParser algorithmType](self forKey:{"algorithmType"), @"algorithmType"}];
-  [v4 encodeInt:-[SIRINLUParser parserIdentifier](self forKey:{"parserIdentifier"), @"parserIdentifier"}];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[SIRINLUParser algorithmType](self forKey:{"algorithmType"), @"algorithmType"}];
+  [coderCopy encodeInt:-[SIRINLUParser parserIdentifier](self forKey:{"parserIdentifier"), @"parserIdentifier"}];
 }
 
-- (SIRINLUParser)initWithCoder:(id)a3
+- (SIRINLUParser)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SIRINLUParser;
   v5 = [(SIRINLUParser *)&v7 init];
   if (v5)
   {
-    v5->_algorithmType = [v4 decodeIntForKey:@"algorithmType"];
-    v5->_parserIdentifier = [v4 decodeIntForKey:@"parserIdentifier"];
+    v5->_algorithmType = [coderCopy decodeIntForKey:@"algorithmType"];
+    v5->_parserIdentifier = [coderCopy decodeIntForKey:@"parserIdentifier"];
   }
 
   return v5;
 }
 
-- (SIRINLUParser)initWithAlgorithmType:(int)a3 parserIdentifier:(int)a4
+- (SIRINLUParser)initWithAlgorithmType:(int)type parserIdentifier:(int)identifier
 {
   v7.receiver = self;
   v7.super_class = SIRINLUParser;
   result = [(SIRINLUParser *)&v7 init];
   if (result)
   {
-    result->_algorithmType = a3;
-    result->_parserIdentifier = a4;
+    result->_algorithmType = type;
+    result->_parserIdentifier = identifier;
   }
 
   return result;

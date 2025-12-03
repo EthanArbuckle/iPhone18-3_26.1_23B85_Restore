@@ -2,28 +2,28 @@
 - (AWAttentionAwarenessClient)init;
 - (AWAttentionAwarenessConfiguration)configuration;
 - (AWAttentionEvent)lastEvent;
-- (BOOL)_invokeRequiringClient:(BOOL)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)cancelFaceDetectStreamWithError:(id *)a3;
-- (BOOL)cancelPollForAttentionWithError:(id *)a3;
-- (BOOL)invalidateRemoteClientWithError:(id *)a3;
-- (BOOL)invalidateWithError:(id *)a3;
-- (BOOL)invokeRequiringClient:(BOOL)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)pollForAttentionWithTimeout:(double)a3 event:(id *)a4 error:(id *)a5;
-- (BOOL)pollForAttentionWithTimeout:(double)a3 queue:(id)a4 block:(id)a5 error:(id *)a6;
-- (BOOL)resumeWithError:(id *)a3;
-- (BOOL)setConfiguration:(id)a3 shouldReset:(BOOL)a4 error:(id *)a5;
-- (BOOL)suspendWithError:(id *)a3;
-- (id)connect:(BOOL)a3;
+- (BOOL)_invokeRequiringClient:(BOOL)client error:(id *)error block:(id)block;
+- (BOOL)cancelFaceDetectStreamWithError:(id *)error;
+- (BOOL)cancelPollForAttentionWithError:(id *)error;
+- (BOOL)invalidateRemoteClientWithError:(id *)error;
+- (BOOL)invalidateWithError:(id *)error;
+- (BOOL)invokeRequiringClient:(BOOL)client error:(id *)error block:(id)block;
+- (BOOL)pollForAttentionWithTimeout:(double)timeout event:(id *)event error:(id *)error;
+- (BOOL)pollForAttentionWithTimeout:(double)timeout queue:(id)queue block:(id)block error:(id *)error;
+- (BOOL)resumeWithError:(id *)error;
+- (BOOL)setConfiguration:(id)configuration shouldReset:(BOOL)reset error:(id *)error;
+- (BOOL)suspendWithError:(id *)error;
+- (id)connect:(BOOL)connect;
 - (id)startStream;
-- (void)notify:(unint64_t)a3;
-- (void)notifyEvent:(id)a3;
-- (void)notifyPollEventType:(unint64_t)a3 event:(id)a4;
-- (void)notifyStreamingEvent:(id)a3;
+- (void)notify:(unint64_t)notify;
+- (void)notifyEvent:(id)event;
+- (void)notifyPollEventType:(unint64_t)type event:(id)event;
+- (void)notifyStreamingEvent:(id)event;
 - (void)serviceInterrupted;
-- (void)setEventHandlerWithQueue:(id)a3 block:(id)a4;
-- (void)setEventStreamerWithQueue:(id)a3 block:(id)a4;
-- (void)setNotificationHandlerWithQueue:(id)a3 block:(id)a4;
-- (void)setUnitTestMode:(BOOL)a3;
+- (void)setEventHandlerWithQueue:(id)queue block:(id)block;
+- (void)setEventStreamerWithQueue:(id)queue block:(id)block;
+- (void)setNotificationHandlerWithQueue:(id)queue block:(id)block;
+- (void)setUnitTestMode:(BOOL)mode;
 @end
 
 @implementation AWAttentionAwarenessClient
@@ -46,9 +46,9 @@
     v3->_configuration = v6;
 
     v3->_clientIndex = -1;
-    v8 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     clientId = v3->_clientId;
-    v3->_clientId = v8;
+    v3->_clientId = uUID;
   }
 
   return v3;
@@ -258,14 +258,14 @@ LABEL_22:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUnitTestMode:(BOOL)a3
+- (void)setUnitTestMode:(BOOL)mode
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __46__AWAttentionAwarenessClient_setUnitTestMode___block_invoke;
   v4[3] = &unk_1E7F37FC8;
-  v5 = a3;
+  modeCopy = mode;
   v4[4] = self;
   dispatch_sync(queue, v4);
 }
@@ -282,10 +282,10 @@ uint64_t __46__AWAttentionAwarenessClient_setUnitTestMode___block_invoke(uint64_
   return result;
 }
 
-- (void)notifyStreamingEvent:(id)a3
+- (void)notifyStreamingEvent:(id)event
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   if (currentLogLevel < 7)
   {
     goto LABEL_14;
@@ -321,7 +321,7 @@ LABEL_8:
     v9 = v8 / 1000000000.0;
   }
 
-  v10 = [(AWAttentionAwarenessConfiguration *)self->_configuration identifier];
+  identifier = [(AWAttentionAwarenessConfiguration *)self->_configuration identifier];
   *buf = 136315906;
   v16 = v6;
   v17 = 1024;
@@ -329,7 +329,7 @@ LABEL_8:
   v19 = 2048;
   v20 = v9;
   v21 = 2112;
-  v22 = v10;
+  v22 = identifier;
   _os_log_impl(&dword_1BB2EF000, v5, OS_LOG_TYPE_DEFAULT, "%30s:%-4d: %13.5f: Delivering event to client %@", buf, 0x26u);
 
 LABEL_13:
@@ -344,7 +344,7 @@ LABEL_14:
       v13[2] = __51__AWAttentionAwarenessClient_notifyStreamingEvent___block_invoke;
       v13[3] = &unk_1E7F38060;
       v13[4] = self;
-      v14 = v4;
+      v14 = eventCopy;
       dispatch_async(queue, v13);
       self->_eventDelivered = 1;
     }
@@ -370,18 +370,18 @@ void __51__AWAttentionAwarenessClient_notifyStreamingEvent___block_invoke(uint64
   }
 }
 
-- (void)notifyPollEventType:(unint64_t)a3 event:(id)a4
+- (void)notifyPollEventType:(unint64_t)type event:(id)event
 {
-  v6 = a4;
+  eventCopy = event;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__AWAttentionAwarenessClient_notifyPollEventType_event___block_invoke;
   block[3] = &unk_1E7F37FA0;
-  v10 = v6;
-  v11 = a3;
+  v10 = eventCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = eventCopy;
   dispatch_async(queue, block);
 }
 
@@ -409,17 +409,17 @@ void __56__AWAttentionAwarenessClient_notifyPollEventType_event___block_invoke(v
   }
 }
 
-- (void)notifyEvent:(id)a3
+- (void)notifyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__AWAttentionAwarenessClient_notifyEvent___block_invoke;
   v7[3] = &unk_1E7F38060;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 
@@ -452,7 +452,7 @@ void __42__AWAttentionAwarenessClient_notifyEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)notify:(unint64_t)a3
+- (void)notify:(unint64_t)notify
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -460,7 +460,7 @@ void __42__AWAttentionAwarenessClient_notifyEvent___block_invoke(uint64_t a1)
   v4[2] = __37__AWAttentionAwarenessClient_notify___block_invoke;
   v4[3] = &unk_1E7F37F50;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = notify;
   dispatch_async(queue, v4);
 }
 
@@ -486,7 +486,7 @@ void __37__AWAttentionAwarenessClient_notify___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)invalidateWithError:(id *)a3
+- (BOOL)invalidateWithError:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -503,9 +503,9 @@ void __37__AWAttentionAwarenessClient_notify___block_invoke(uint64_t a1)
   v8[5] = &v9;
   dispatch_sync(queue, v8);
   v5 = v10[5];
-  if (a3 && v5)
+  if (error && v5)
   {
-    *a3 = v5;
+    *error = v5;
     v5 = v10[5];
   }
 
@@ -556,14 +556,14 @@ LABEL_6:
   }
 }
 
-- (BOOL)suspendWithError:(id *)a3
+- (BOOL)suspendWithError:(id *)error
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __47__AWAttentionAwarenessClient_suspendWithError___block_invoke;
   v4[3] = &unk_1E7F37E88;
   v4[4] = self;
-  return [(AWAttentionAwarenessClient *)self invokeRequiringClient:0 error:a3 block:v4];
+  return [(AWAttentionAwarenessClient *)self invokeRequiringClient:0 error:error block:v4];
 }
 
 id __47__AWAttentionAwarenessClient_suspendWithError___block_invoke(uint64_t a1)
@@ -589,7 +589,7 @@ id __47__AWAttentionAwarenessClient_suspendWithError___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)invalidateRemoteClientWithError:(id *)a3
+- (BOOL)invalidateRemoteClientWithError:(id *)error
 {
   dispatch_assert_queue_V2(self->_queue);
   v6[0] = MEMORY[0x1E69E9820];
@@ -597,7 +597,7 @@ id __47__AWAttentionAwarenessClient_suspendWithError___block_invoke(uint64_t a1)
   v6[2] = __62__AWAttentionAwarenessClient_invalidateRemoteClientWithError___block_invoke;
   v6[3] = &unk_1E7F37E88;
   v6[4] = self;
-  return [(AWAttentionAwarenessClient *)self _invokeRequiringClient:1 error:a3 block:v6];
+  return [(AWAttentionAwarenessClient *)self _invokeRequiringClient:1 error:error block:v6];
 }
 
 uint64_t __62__AWAttentionAwarenessClient_invalidateRemoteClientWithError___block_invoke(uint64_t a1, void *a2)
@@ -612,14 +612,14 @@ uint64_t __62__AWAttentionAwarenessClient_invalidateRemoteClientWithError___bloc
   return 0;
 }
 
-- (BOOL)cancelFaceDetectStreamWithError:(id *)a3
+- (BOOL)cancelFaceDetectStreamWithError:(id *)error
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __62__AWAttentionAwarenessClient_cancelFaceDetectStreamWithError___block_invoke;
   v4[3] = &unk_1E7F37E88;
   v4[4] = self;
-  return [(AWAttentionAwarenessClient *)self invokeRequiringClient:1 error:a3 block:v4];
+  return [(AWAttentionAwarenessClient *)self invokeRequiringClient:1 error:error block:v4];
 }
 
 id __62__AWAttentionAwarenessClient_cancelFaceDetectStreamWithError___block_invoke(uint64_t a1, void *a2)
@@ -651,14 +651,14 @@ id __62__AWAttentionAwarenessClient_cancelFaceDetectStreamWithError___block_invo
   return v8;
 }
 
-- (BOOL)resumeWithError:(id *)a3
+- (BOOL)resumeWithError:(id *)error
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __46__AWAttentionAwarenessClient_resumeWithError___block_invoke;
   v4[3] = &unk_1E7F37E88;
   v4[4] = self;
-  return [(AWAttentionAwarenessClient *)self invokeRequiringClient:0 error:a3 block:v4];
+  return [(AWAttentionAwarenessClient *)self invokeRequiringClient:0 error:error block:v4];
 }
 
 id __46__AWAttentionAwarenessClient_resumeWithError___block_invoke(uint64_t a1, uint64_t a2)
@@ -754,7 +754,7 @@ id __46__AWAttentionAwarenessClient_resumeWithError___block_invoke(uint64_t a1, 
   return v6;
 }
 
-- (id)connect:(BOOL)a3
+- (id)connect:(BOOL)connect
 {
   dispatch_assert_queue_V2(self->_queue);
   v7[0] = MEMORY[0x1E69E9820];
@@ -762,7 +762,7 @@ id __46__AWAttentionAwarenessClient_resumeWithError___block_invoke(uint64_t a1, 
   v7[2] = __38__AWAttentionAwarenessClient_connect___block_invoke;
   v7[3] = &unk_1E7F37ED8;
   v7[4] = self;
-  v8 = a3;
+  connectCopy = connect;
   v5 = [AWServiceManager invokeWithService:v7];
 
   return v5;
@@ -840,14 +840,14 @@ void __38__AWAttentionAwarenessClient_connect___block_invoke_2(uint64_t a1, void
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)cancelPollForAttentionWithError:(id *)a3
+- (BOOL)cancelPollForAttentionWithError:(id *)error
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __62__AWAttentionAwarenessClient_cancelPollForAttentionWithError___block_invoke;
   v4[3] = &unk_1E7F37E88;
   v4[4] = self;
-  return [(AWAttentionAwarenessClient *)self invokeRequiringClient:1 error:a3 block:v4];
+  return [(AWAttentionAwarenessClient *)self invokeRequiringClient:1 error:error block:v4];
 }
 
 id __62__AWAttentionAwarenessClient_cancelPollForAttentionWithError___block_invoke(uint64_t a1, void *a2)
@@ -880,7 +880,7 @@ id __62__AWAttentionAwarenessClient_cancelPollForAttentionWithError___block_invo
   return v7;
 }
 
-- (BOOL)pollForAttentionWithTimeout:(double)a3 event:(id *)a4 error:(id *)a5
+- (BOOL)pollForAttentionWithTimeout:(double)timeout event:(id *)event error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
   v27 = 0;
@@ -903,7 +903,7 @@ id __62__AWAttentionAwarenessClient_cancelPollForAttentionWithError___block_invo
   v22 = &v23;
   v11 = v10;
   v20 = v11;
-  if (![(AWAttentionAwarenessClient *)self pollForAttentionWithTimeout:v9 queue:&v16 block:a5 error:a3])
+  if (![(AWAttentionAwarenessClient *)self pollForAttentionWithTimeout:v9 queue:&v16 block:error error:timeout])
   {
     goto LABEL_5;
   }
@@ -911,34 +911,34 @@ id __62__AWAttentionAwarenessClient_cancelPollForAttentionWithError___block_invo
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   if (*(v24 + 24) == 1)
   {
-    if (a5)
+    if (error)
     {
       v12 = MEMORY[0x1E696ABC0];
       v33 = *MEMORY[0x1E696A578];
       v34[0] = @" Polling was cancelled";
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:{1, v16, v17, v18, v19}];
-      *a5 = [v12 errorWithDomain:*MEMORY[0x1E696A798] code:89 userInfo:v13];
+      *error = [v12 errorWithDomain:*MEMORY[0x1E696A798] code:89 userInfo:v13];
 
 LABEL_5:
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    if (a4)
+    if (event)
     {
-      *a4 = v28[5];
+      *event = v28[5];
     }
 
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
   }
 
   _Block_object_dispose(&v23, 8);
   _Block_object_dispose(&v27, 8);
 
   v14 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
 void __70__AWAttentionAwarenessClient_pollForAttentionWithTimeout_event_error___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -969,41 +969,41 @@ void __70__AWAttentionAwarenessClient_pollForAttentionWithTimeout_event_error___
 LABEL_7:
 }
 
-- (BOOL)pollForAttentionWithTimeout:(double)a3 queue:(id)a4 block:(id)a5 error:(id *)a6
+- (BOOL)pollForAttentionWithTimeout:(double)timeout queue:(id)queue block:(id)block error:(id *)error
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  queueCopy = queue;
+  blockCopy = block;
+  if (!queueCopy)
   {
     __assert_rtn("[AWAttentionAwarenessClient pollForAttentionWithTimeout:queue:block:error:]", "FrameworkClient.m", 279, "queue");
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = blockCopy;
+  if (!blockCopy)
   {
     __assert_rtn("[AWAttentionAwarenessClient pollForAttentionWithTimeout:queue:block:error:]", "FrameworkClient.m", 280, "block");
   }
 
-  v13 = 3153600000.0;
-  if (a3 <= 3153600000.0)
+  timeoutCopy = 3153600000.0;
+  if (timeout <= 3153600000.0)
   {
-    v13 = a3;
+    timeoutCopy = timeout;
   }
 
-  if (v13 > 1.84467441e19)
+  if (timeoutCopy > 1.84467441e19)
   {
     v14 = -1;
   }
 
   else
   {
-    v14 = (v13 * 1000000000.0);
+    v14 = (timeoutCopy * 1000000000.0);
   }
 
   if (v14 <= 0)
   {
-    if (!a6)
+    if (!error)
     {
       v17 = 0;
       goto LABEL_17;
@@ -1014,12 +1014,12 @@ LABEL_7:
     v33[0] = @" Timeout less than 0 is invalid";
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     [v19 errorWithDomain:*MEMORY[0x1E696A798] code:34 userInfo:v16];
-    *a6 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
   {
-    v15 = [[AWClientPollWaiter alloc] initWithClient:self timeout:v14 queue:v10 block:v11];
+    v15 = [[AWClientPollWaiter alloc] initWithClient:self timeout:v14 queue:queueCopy block:blockCopy];
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
@@ -1033,7 +1033,7 @@ LABEL_7:
     v25 = v16;
     v26 = &v28;
     v27 = v14;
-    v17 = [(AWAttentionAwarenessClient *)self invokeRequiringClient:1 error:a6 block:v24];
+    v17 = [(AWAttentionAwarenessClient *)self invokeRequiringClient:1 error:error block:v24];
     if (!v17)
     {
       if (*(v29 + 24) == 1)
@@ -1112,16 +1112,16 @@ void __76__AWAttentionAwarenessClient_pollForAttentionWithTimeout_queue_block_er
   }
 }
 
-- (void)setEventStreamerWithQueue:(id)a3 block:(id)a4
+- (void)setEventStreamerWithQueue:(id)queue block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  queueCopy = queue;
+  blockCopy = block;
+  if (!queueCopy)
   {
     __assert_rtn("[AWAttentionAwarenessClient setEventStreamerWithQueue:block:]", "FrameworkClient.m", 263, "queue");
   }
 
-  if (!v7)
+  if (!blockCopy)
   {
     __assert_rtn("[AWAttentionAwarenessClient setEventStreamerWithQueue:block:]", "FrameworkClient.m", 264, "block");
   }
@@ -1132,10 +1132,10 @@ void __76__AWAttentionAwarenessClient_pollForAttentionWithTimeout_queue_block_er
   block[2] = __62__AWAttentionAwarenessClient_setEventStreamerWithQueue_block___block_invoke;
   block[3] = &unk_1E7F37E10;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = queueCopy;
   dispatch_sync(queue, block);
 }
 
@@ -1155,16 +1155,16 @@ uint64_t __62__AWAttentionAwarenessClient_setEventStreamerWithQueue_block___bloc
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (void)setEventHandlerWithQueue:(id)a3 block:(id)a4
+- (void)setEventHandlerWithQueue:(id)queue block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  queueCopy = queue;
+  blockCopy = block;
+  if (!queueCopy)
   {
     __assert_rtn("[AWAttentionAwarenessClient setEventHandlerWithQueue:block:]", "FrameworkClient.m", 248, "queue");
   }
 
-  if (!v7)
+  if (!blockCopy)
   {
     __assert_rtn("[AWAttentionAwarenessClient setEventHandlerWithQueue:block:]", "FrameworkClient.m", 249, "block");
   }
@@ -1175,10 +1175,10 @@ uint64_t __62__AWAttentionAwarenessClient_setEventStreamerWithQueue_block___bloc
   block[2] = __61__AWAttentionAwarenessClient_setEventHandlerWithQueue_block___block_invoke;
   block[3] = &unk_1E7F37E10;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = queueCopy;
   dispatch_sync(queue, block);
 }
 
@@ -1204,16 +1204,16 @@ uint64_t __61__AWAttentionAwarenessClient_setEventHandlerWithQueue_block___block
   return result;
 }
 
-- (void)setNotificationHandlerWithQueue:(id)a3 block:(id)a4
+- (void)setNotificationHandlerWithQueue:(id)queue block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  queueCopy = queue;
+  blockCopy = block;
+  if (!queueCopy)
   {
     __assert_rtn("[AWAttentionAwarenessClient setNotificationHandlerWithQueue:block:]", "FrameworkClient.m", 233, "queue");
   }
 
-  if (!v7)
+  if (!blockCopy)
   {
     __assert_rtn("[AWAttentionAwarenessClient setNotificationHandlerWithQueue:block:]", "FrameworkClient.m", 234, "block");
   }
@@ -1224,10 +1224,10 @@ uint64_t __61__AWAttentionAwarenessClient_setEventHandlerWithQueue_block___block
   block[2] = __68__AWAttentionAwarenessClient_setNotificationHandlerWithQueue_block___block_invoke;
   block[3] = &unk_1E7F37E10;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = queueCopy;
   dispatch_sync(queue, block);
 }
 
@@ -1307,9 +1307,9 @@ uint64_t __39__AWAttentionAwarenessClient_lastEvent__block_invoke(uint64_t a1, v
   return 0;
 }
 
-- (BOOL)invokeRequiringClient:(BOOL)a3 error:(id *)a4 block:(id)a5
+- (BOOL)invokeRequiringClient:(BOOL)client error:(id *)error block:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1328,16 +1328,16 @@ uint64_t __39__AWAttentionAwarenessClient_lastEvent__block_invoke(uint64_t a1, v
   v16 = &v25;
   v17 = &v19;
   block[4] = self;
-  v18 = a3;
-  v10 = v8;
+  clientCopy = client;
+  v10 = blockCopy;
   v15 = v10;
   dispatch_sync(queue, block);
-  if (a4)
+  if (error)
   {
     v11 = v20[5];
     if (v11)
     {
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -1359,11 +1359,11 @@ void __64__AWAttentionAwarenessClient_invokeRequiringClient_error_block___block_
   *(*(*(a1 + 48) + 8) + 24) = v4;
 }
 
-- (BOOL)_invokeRequiringClient:(BOOL)a3 error:(id *)a4 block:(id)a5
+- (BOOL)_invokeRequiringClient:(BOOL)client error:(id *)error block:(id)block
 {
-  v6 = a3;
+  clientCopy = client;
   v50[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_invalidated)
   {
@@ -1376,7 +1376,7 @@ void __64__AWAttentionAwarenessClient_invokeRequiringClient_error_block___block_
     goto LABEL_3;
   }
 
-  if (v6)
+  if (clientCopy)
   {
     v37 = 0;
     v38 = &v37;
@@ -1398,7 +1398,7 @@ void __64__AWAttentionAwarenessClient_invokeRequiringClient_error_block___block_
         v36[3] = &unk_1E7F37D00;
         v36[4] = &v37;
         v15 = [(NSXPCProxyCreating *)remoteClientProxy synchronousRemoteObjectProxyWithErrorHandler:v36];
-        v11 = v8[2](v8, v15);
+        v11 = blockCopy[2](blockCopy, v15);
         if (v11)
         {
           break;
@@ -1437,8 +1437,8 @@ void __64__AWAttentionAwarenessClient_invokeRequiringClient_error_block___block_
           v16 = v38[5];
         }
 
-        v18 = [v16 domain];
-        if (v18 != v35 || [v38[5] code] != 4099)
+        domain = [v16 domain];
+        if (domain != v35 || [v38[5] code] != 4099)
         {
 
 LABEL_38:
@@ -1527,7 +1527,7 @@ LABEL_39:
     _Block_object_dispose(&v37, 8);
 
 LABEL_3:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_34;
     }
@@ -1535,12 +1535,12 @@ LABEL_3:
     goto LABEL_33;
   }
 
-  v11 = v8[2](v8, 0);
-  if (a4)
+  v11 = blockCopy[2](blockCopy, 0);
+  if (error)
   {
 LABEL_33:
     v28 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_34:
@@ -1549,11 +1549,11 @@ LABEL_34:
   return v11 == 0;
 }
 
-- (BOOL)setConfiguration:(id)a3 shouldReset:(BOOL)a4 error:(id *)a5
+- (BOOL)setConfiguration:(id)configuration shouldReset:(BOOL)reset error:(id *)error
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
+  configurationCopy = configuration;
+  v9 = configurationCopy;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -1564,10 +1564,10 @@ LABEL_34:
   v29 = __Block_byref_object_copy__2313;
   v30 = __Block_byref_object_dispose__2314;
   v31 = 0;
-  if (v8)
+  if (configurationCopy)
   {
     obj = 0;
-    v10 = [v8 validateWithError:&obj];
+    v10 = [configurationCopy validateWithError:&obj];
     objc_storeStrong(&v31, obj);
     if (v10)
     {
@@ -1579,7 +1579,7 @@ LABEL_34:
       block[4] = self;
       v21 = v9;
       v22 = &v26;
-      v24 = a4;
+      resetCopy = reset;
       v23 = &v32;
       dispatch_sync(queue, block);
     }
@@ -1596,12 +1596,12 @@ LABEL_34:
     v27[5] = v14;
   }
 
-  if (a5)
+  if (error)
   {
     v16 = v27[5];
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
     }
   }
 

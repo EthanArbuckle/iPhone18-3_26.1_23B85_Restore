@@ -1,22 +1,22 @@
 @interface ADHomeAnnouncementContextAdaptor
-- (ADHomeAnnouncementContextAdaptor)initWithInstanceContext:(id)a3;
+- (ADHomeAnnouncementContextAdaptor)initWithInstanceContext:(id)context;
 - (void)_invalidate;
-- (void)_processAndEvaluateSnapshot:(id)a3;
-- (void)_setSnapshot:(id)a3;
-- (void)getSnapshotWithCompletion:(id)a3;
-- (void)homeAnnouncementObserver:(id)a3 snapshotDidUpdateFrom:(id)a4 to:(id)a5;
+- (void)_processAndEvaluateSnapshot:(id)snapshot;
+- (void)_setSnapshot:(id)snapshot;
+- (void)getSnapshotWithCompletion:(id)completion;
+- (void)homeAnnouncementObserver:(id)observer snapshotDidUpdateFrom:(id)from to:(id)to;
 - (void)invalidate;
-- (void)registerSnapshotUpdater:(id)a3;
+- (void)registerSnapshotUpdater:(id)updater;
 - (void)unregisterSnapshotUpdater;
 @end
 
 @implementation ADHomeAnnouncementContextAdaptor
 
-- (void)_setSnapshot:(id)a3
+- (void)_setSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   snapshot = self->_snapshot;
-  if (snapshot != v4 && ([(AFHomeAnnouncementSnapshot *)snapshot isEqual:v4]& 1) == 0)
+  if (snapshot != snapshotCopy && ([(AFHomeAnnouncementSnapshot *)snapshot isEqual:snapshotCopy]& 1) == 0)
   {
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -25,15 +25,15 @@
       v11 = 136315906;
       v12 = "[ADHomeAnnouncementContextAdaptor _setSnapshot:]";
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       v16 = v7;
       v17 = 2112;
-      v18 = v4;
+      v18 = snapshotCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %p %@ -> %@", &v11, 0x2Au);
     }
 
-    v8 = [(AFHomeAnnouncementSnapshot *)v4 copy];
+    v8 = [(AFHomeAnnouncementSnapshot *)snapshotCopy copy];
     v9 = self->_snapshot;
     self->_snapshot = v8;
 
@@ -45,9 +45,9 @@
   }
 }
 
-- (void)_processAndEvaluateSnapshot:(id)a3
+- (void)_processAndEvaluateSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -56,13 +56,13 @@
     *&buf[12] = 2048;
     *&buf[14] = self;
     *&buf[22] = 2112;
-    v45 = v4;
+    v45 = snapshotCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s %p snapshot = %@", buf, 0x20u);
   }
 
-  v6 = [v4 lastPlayedAnnouncement];
+  lastPlayedAnnouncement = [snapshotCopy lastPlayedAnnouncement];
   expirationDuration = self->_expirationDuration;
-  v8 = v6;
+  v8 = lastPlayedAnnouncement;
   v9 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -92,8 +92,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v10 = [v8 identifier];
-  v11 = v10 == 0;
+  identifier = [v8 identifier];
+  v11 = identifier == 0;
 
   if (v11)
   {
@@ -110,10 +110,10 @@ LABEL_19:
   }
 
   v12 = +[NSDate date];
-  v13 = [v8 finishedDate];
-  if (v13)
+  finishedDate = [v8 finishedDate];
+  if (finishedDate)
   {
-    [v12 timeIntervalSinceDate:v13];
+    [v12 timeIntervalSinceDate:finishedDate];
     v15 = v14;
     v16 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -151,7 +151,7 @@ LABEL_36:
         _os_log_debug_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "%s lastPlayedAnnouncement %@ is valid with %f seconds until expiration.", buf, 0x20u);
       }
 
-      [(ADHomeAnnouncementContextAdaptor *)self _setSnapshot:v4];
+      [(ADHomeAnnouncementContextAdaptor *)self _setSnapshot:snapshotCopy];
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x3032000000;
@@ -166,7 +166,7 @@ LABEL_36:
       v38 = sub_1002C531C;
       v39 = &unk_10051A6D8;
       objc_copyWeak(&v42, &location);
-      v40 = v4;
+      v40 = snapshotCopy;
       v41 = buf;
       v34 = [v32 initWithTimeoutInterval:queue onQueue:&v36 timeoutHandler:v17 + 0.005];
       v35 = *(*&buf[8] + 40);
@@ -192,10 +192,10 @@ LABEL_36:
     }
   }
 
-  v24 = [v8 startedDate];
-  if (v24)
+  startedDate = [v8 startedDate];
+  if (startedDate)
   {
-    [v12 timeIntervalSinceDate:v24];
+    [v12 timeIntervalSinceDate:startedDate];
     v26 = v25;
     v27 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -259,7 +259,7 @@ LABEL_20:
     _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%s lastPlayedAnnouncement %@ is invalid.", buf, 0x16u);
   }
 
-  v22 = [v4 mutatedCopyWithMutator:&stru_100519F98];
+  v22 = [snapshotCopy mutatedCopyWithMutator:&stru_100519F98];
   [(ADHomeAnnouncementContextAdaptor *)self _setSnapshot:v22];
 
 LABEL_39:
@@ -273,7 +273,7 @@ LABEL_39:
     v7 = 136315394;
     v8 = "[ADHomeAnnouncementContextAdaptor _invalidate]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%s %p", &v7, 0x16u);
   }
 
@@ -288,17 +288,17 @@ LABEL_39:
   self->_snapshot = 0;
 }
 
-- (void)homeAnnouncementObserver:(id)a3 snapshotDidUpdateFrom:(id)a4 to:(id)a5
+- (void)homeAnnouncementObserver:(id)observer snapshotDidUpdateFrom:(id)from to:(id)to
 {
-  v6 = a5;
+  toCopy = to;
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1002C55DC;
   v9[3] = &unk_10051E010;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = toCopy;
+  v8 = toCopy;
   dispatch_async(queue, v9);
 }
 
@@ -313,11 +313,11 @@ LABEL_39:
   dispatch_async(queue, block);
 }
 
-- (void)getSnapshotWithCompletion:(id)a3
+- (void)getSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     group = self->_group;
@@ -326,7 +326,7 @@ LABEL_39:
     v8[2] = sub_1002C5714;
     v8[3] = &unk_10051E038;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_group_notify(group, queue, v8);
   }
 }
@@ -339,7 +339,7 @@ LABEL_39:
     *buf = 136315394;
     v7 = "[ADHomeAnnouncementContextAdaptor unregisterSnapshotUpdater]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%s %p", buf, 0x16u);
   }
 
@@ -353,16 +353,16 @@ LABEL_39:
   dispatch_async(queue, block);
 }
 
-- (void)registerSnapshotUpdater:(id)a3
+- (void)registerSnapshotUpdater:(id)updater
 {
-  v4 = a3;
+  updaterCopy = updater;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v11 = "[ADHomeAnnouncementContextAdaptor registerSnapshotUpdater:]";
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s %p", buf, 0x16u);
   }
 
@@ -373,22 +373,22 @@ LABEL_39:
   v8[2] = sub_1002C5AE8;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = updaterCopy;
+  v7 = updaterCopy;
   dispatch_async(queue, v8);
 }
 
-- (ADHomeAnnouncementContextAdaptor)initWithInstanceContext:(id)a3
+- (ADHomeAnnouncementContextAdaptor)initWithInstanceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = ADHomeAnnouncementContextAdaptor;
   v5 = [(ADHomeAnnouncementContextAdaptor *)&v19 init];
   if (v5)
   {
-    if (v4)
+    if (contextCopy)
     {
-      v6 = v4;
+      v6 = contextCopy;
     }
 
     else

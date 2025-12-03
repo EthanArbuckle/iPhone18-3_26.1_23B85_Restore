@@ -1,22 +1,22 @@
 @interface AMSUIWebFamilyAction
-- (AMSUIWebFamilyAction)initWithJSObject:(id)a3 context:(id)a4;
-- (id)_dictionaryFromLookupResult:(id)a3;
+- (AMSUIWebFamilyAction)initWithJSObject:(id)object context:(id)context;
+- (id)_dictionaryFromLookupResult:(id)result;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebFamilyAction
 
-- (AMSUIWebFamilyAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebFamilyAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = AMSUIWebFamilyAction;
-  v8 = [(AMSUIWebAction *)&v13 initWithJSObject:v6 context:v7];
+  v8 = [(AMSUIWebAction *)&v13 initWithJSObject:objectCopy context:contextCopy];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"account"];
-    v10 = [v7 iTunesAccountFromJSAccount:v9];
+    v9 = [objectCopy objectForKeyedSubscript:@"account"];
+    v10 = [contextCopy iTunesAccountFromJSAccount:v9];
     account = v8->_account;
     v8->_account = v10;
   }
@@ -29,15 +29,15 @@
   v24 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = AMSUIWebFamilyAction;
-  v3 = [(AMSUIWebAction *)&v19 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v19 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -45,25 +45,25 @@
     v21 = v6;
     v22 = 2114;
     v23 = v7;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing family lookup", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing family lookup", buf, 0x16u);
   }
 
   v8 = objc_alloc(MEMORY[0x1E698C920]);
-  v9 = [(AMSUIWebFamilyAction *)self account];
-  v10 = [(AMSUIWebAction *)self context];
-  v11 = [v10 bag];
-  v12 = [v8 initWithAccount:v9 bag:v11];
+  account = [(AMSUIWebFamilyAction *)self account];
+  context = [(AMSUIWebAction *)self context];
+  v11 = [context bag];
+  v12 = [v8 initWithAccount:account bag:v11];
 
   v13 = AMSLogKey();
   [v12 setLogKey:v13];
 
-  v14 = [v12 performFamilyInfoLookup];
+  performFamilyInfoLookup = [v12 performFamilyInfoLookup];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __33__AMSUIWebFamilyAction_runAction__block_invoke;
   v18[3] = &unk_1E7F26110;
   v18[4] = self;
-  v15 = [v14 thenWithBlock:v18];
+  v15 = [performFamilyInfoLookup thenWithBlock:v18];
 
   v16 = *MEMORY[0x1E69E9840];
 
@@ -79,12 +79,12 @@ id __33__AMSUIWebFamilyAction_runAction__block_invoke(uint64_t a1, uint64_t a2)
   return v4;
 }
 
-- (id)_dictionaryFromLookupResult:(id)a3
+- (id)_dictionaryFromLookupResult:(id)result
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isHeadOfHouseholdSharingPayment")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(resultCopy, "isHeadOfHouseholdSharingPayment")}];
   v27 = v4;
   [v4 setObject:v5 forKeyedSubscript:@"sharedPaymentMethod"];
 
@@ -93,8 +93,8 @@ id __33__AMSUIWebFamilyAction_runAction__block_invoke(uint64_t a1, uint64_t a2)
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v26 = v3;
-  obj = [v3 familyMembers];
+  v26 = resultCopy;
+  obj = [resultCopy familyMembers];
   v7 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v7)
   {
@@ -117,25 +117,25 @@ id __33__AMSUIWebFamilyAction_runAction__block_invoke(uint64_t a1, uint64_t a2)
         v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v11, "isCurrentSignedInUser")}];
         [v12 setObject:v14 forKeyedSubscript:@"currentSignedInUser"];
 
-        v15 = [v11 firstName];
-        [v12 setObject:v15 forKeyedSubscript:@"firstName"];
+        firstName = [v11 firstName];
+        [v12 setObject:firstName forKeyedSubscript:@"firstName"];
 
-        v16 = [v11 iCloudDSID];
-        v17 = [v16 stringValue];
-        [v12 setObject:v17 forKeyedSubscript:@"iCloudDSID"];
+        iCloudDSID = [v11 iCloudDSID];
+        stringValue = [iCloudDSID stringValue];
+        [v12 setObject:stringValue forKeyedSubscript:@"iCloudDSID"];
 
-        v18 = [v11 iCloudUsername];
-        [v12 setObject:v18 forKeyedSubscript:@"iCloudUsername"];
+        iCloudUsername = [v11 iCloudUsername];
+        [v12 setObject:iCloudUsername forKeyedSubscript:@"iCloudUsername"];
 
-        v19 = [v11 iTunesDSID];
-        v20 = [v19 stringValue];
-        [v12 setObject:v20 forKeyedSubscript:@"iTunesDSID"];
+        iTunesDSID = [v11 iTunesDSID];
+        stringValue2 = [iTunesDSID stringValue];
+        [v12 setObject:stringValue2 forKeyedSubscript:@"iTunesDSID"];
 
-        v21 = [v11 iTunesUsername];
-        [v12 setObject:v21 forKeyedSubscript:@"iTunesUsername"];
+        iTunesUsername = [v11 iTunesUsername];
+        [v12 setObject:iTunesUsername forKeyedSubscript:@"iTunesUsername"];
 
-        v22 = [v11 lastName];
-        [v12 setObject:v22 forKeyedSubscript:@"lastName"];
+        lastName = [v11 lastName];
+        [v12 setObject:lastName forKeyedSubscript:@"lastName"];
 
         v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v11, "isSharingPurchases")}];
         [v12 setObject:v23 forKeyedSubscript:@"sharingPurchases"];

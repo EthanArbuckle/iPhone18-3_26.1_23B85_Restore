@@ -1,6 +1,6 @@
 @interface MTRChannelClusterChannelPagingStruct
 - (MTRChannelClusterChannelPagingStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterChannelPagingStruct);
-  v5 = [(MTRChannelClusterChannelPagingStruct *)self previousToken];
-  [(MTRChannelClusterChannelPagingStruct *)v4 setPreviousToken:v5];
+  previousToken = [(MTRChannelClusterChannelPagingStruct *)self previousToken];
+  [(MTRChannelClusterChannelPagingStruct *)v4 setPreviousToken:previousToken];
 
-  v6 = [(MTRChannelClusterChannelPagingStruct *)self nextToken];
-  [(MTRChannelClusterChannelPagingStruct *)v4 setNextToken:v6];
+  nextToken = [(MTRChannelClusterChannelPagingStruct *)self nextToken];
+  [(MTRChannelClusterChannelPagingStruct *)v4 setNextToken:nextToken];
 
   return v4;
 }

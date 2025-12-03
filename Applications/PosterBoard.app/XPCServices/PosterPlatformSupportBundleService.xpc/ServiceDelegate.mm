@@ -1,21 +1,21 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC34PosterPlatformSupportBundleService15ServiceDelegate)init;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = objc_opt_self();
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&OBJC_PROTOCOL___PPSBundleServiceProtocol];
-  [v6 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
   v8 = [objc_allocWithZone(type metadata accessor for PPSBundleService()) init];
-  [v6 setExportedObject:v8];
+  [connectionCopy setExportedObject:v8];
 
-  [v6 resume];
+  [connectionCopy resume];
   return 1;
 }
 

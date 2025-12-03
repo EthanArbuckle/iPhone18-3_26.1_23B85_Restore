@@ -1,17 +1,17 @@
 @interface RotationTestProcessor
-- (BOOL)performActionForPage:(id)a3;
-- (BOOL)startPageAction:(id)a3;
-- (RotationTestProcessor)initWithTestName:(id)a3 browserController:(id)a4;
+- (BOOL)performActionForPage:(id)page;
+- (BOOL)startPageAction:(id)action;
+- (RotationTestProcessor)initWithTestName:(id)name browserController:(id)controller;
 - (void)startRotation;
 @end
 
 @implementation RotationTestProcessor
 
-- (RotationTestProcessor)initWithTestName:(id)a3 browserController:(id)a4
+- (RotationTestProcessor)initWithTestName:(id)name browserController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = RotationTestProcessor;
-  v4 = [(ContentInteractionTestRunner *)&v8 initWithTestName:a3 browserController:a4];
+  v4 = [(ContentInteractionTestRunner *)&v8 initWithTestName:name browserController:controller];
   v5 = v4;
   if (v4)
   {
@@ -22,24 +22,24 @@
   return v5;
 }
 
-- (BOOL)startPageAction:(id)a3
+- (BOOL)startPageAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(RotationTestProcessor *)self setIterationsRemaining:[(ContentInteractionTestRunner *)self iterations]];
   [(RotationTestProcessor *)self setTestState:1];
   v6.receiver = self;
   v6.super_class = RotationTestProcessor;
-  LOBYTE(self) = [(ContentInteractionTestRunner *)&v6 startPageAction:v4];
+  LOBYTE(self) = [(ContentInteractionTestRunner *)&v6 startPageAction:actionCopy];
 
   return self;
 }
 
 - (void)startRotation
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 statusBarOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-  if (v4 == 3)
+  if (statusBarOrientation == 3)
   {
     v5 = 1;
   }
@@ -49,7 +49,7 @@
     v5 = 3;
   }
 
-  v6 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
   v7[4] = self;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -60,7 +60,7 @@
   v7[1] = 3221225472;
   v7[2] = __38__RotationTestProcessor_startRotation__block_invoke_2;
   v7[3] = &unk_2781D4B18;
-  [v6 rotateIfNeeded:v5 before:v8 after:v7];
+  [mEMORY[0x277D75128]2 rotateIfNeeded:v5 before:v8 after:v7];
   [(RotationTestProcessor *)self setTestState:2];
 }
 
@@ -72,7 +72,7 @@ uint64_t __38__RotationTestProcessor_startRotation__block_invoke_2(uint64_t a1)
   return [v2 setTestState:4];
 }
 
-- (BOOL)performActionForPage:(id)a3
+- (BOOL)performActionForPage:(id)page
 {
   if ([(RotationTestProcessor *)self testState]== 1)
   {

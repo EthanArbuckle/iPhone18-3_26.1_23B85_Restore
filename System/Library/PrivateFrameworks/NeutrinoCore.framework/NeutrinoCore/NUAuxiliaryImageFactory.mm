@@ -1,23 +1,23 @@
 @interface NUAuxiliaryImageFactory
-+ (id)auxiliaryImageFromCoreGraphicsInfoDictionary:(id)a3 forCGAuxiliaryImageTypeString:(id)a4 error:(id *)a5;
-+ (id)auxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 auxiliaryImageType:(int64_t)a4 identifier:(id)a5 metadata:(CGImageMetadata *)a6;
-+ (id)auxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 auxiliaryImageType:(int64_t)a4 identifier:(id)a5 originalProperties:(id)a6 error:(id *)a7;
++ (id)auxiliaryImageFromCoreGraphicsInfoDictionary:(id)dictionary forCGAuxiliaryImageTypeString:(id)string error:(id *)error;
++ (id)auxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer auxiliaryImageType:(int64_t)type identifier:(id)identifier metadata:(CGImageMetadata *)metadata;
++ (id)auxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer auxiliaryImageType:(int64_t)type identifier:(id)identifier originalProperties:(id)properties error:(id *)error;
 @end
 
 @implementation NUAuxiliaryImageFactory
 
-+ (id)auxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 auxiliaryImageType:(int64_t)a4 identifier:(id)a5 originalProperties:(id)a6 error:(id *)a7
++ (id)auxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer auxiliaryImageType:(int64_t)type identifier:(id)identifier originalProperties:(id)properties error:(id *)error
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (a4 == 2)
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  v14 = propertiesCopy;
+  if (type == 2)
   {
-    v15 = [v13 auxiliaryImage:a7];
+    v15 = [propertiesCopy auxiliaryImage:error];
 
     if (v15)
     {
-      v16 = [v15 auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:a3 error:a7];
+      v16 = [v15 auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:buffer error:error];
     }
 
     else
@@ -28,34 +28,34 @@
 
   else
   {
-    v16 = [a1 auxiliaryImageWithPixelBuffer:a3 auxiliaryImageType:a4 identifier:v12 metadata:{objc_msgSend(v13, "auxiliaryDataInfoMetadata")}];
-    v17 = [v14 colorSpace];
-    [v16 setColorSpace:v17];
+    v16 = [self auxiliaryImageWithPixelBuffer:buffer auxiliaryImageType:type identifier:identifierCopy metadata:{objc_msgSend(propertiesCopy, "auxiliaryDataInfoMetadata")}];
+    colorSpace = [v14 colorSpace];
+    [v16 setColorSpace:colorSpace];
 
-    v18 = [v14 compatibilityMetadata];
-    [v16 setCompatibilityMetadata:v18];
+    compatibilityMetadata = [v14 compatibilityMetadata];
+    [v16 setCompatibilityMetadata:compatibilityMetadata];
   }
 
   return v16;
 }
 
-+ (id)auxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 auxiliaryImageType:(int64_t)a4 identifier:(id)a5 metadata:(CGImageMetadata *)a6
++ (id)auxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer auxiliaryImageType:(int64_t)type identifier:(id)identifier metadata:(CGImageMetadata *)metadata
 {
-  v9 = a5;
-  v10 = [[NUAuxiliaryImageRawBuffer alloc] initWithPixelBuffer:a3 auxiliaryImageType:a4 identifier:v9];
+  identifierCopy = identifier;
+  v10 = [[NUAuxiliaryImageRawBuffer alloc] initWithPixelBuffer:buffer auxiliaryImageType:type identifier:identifierCopy];
 
-  [(NUAuxiliaryImageRawBuffer *)v10 setMetadata:a6];
+  [(NUAuxiliaryImageRawBuffer *)v10 setMetadata:metadata];
 
   return v10;
 }
 
-+ (id)auxiliaryImageFromCoreGraphicsInfoDictionary:(id)a3 forCGAuxiliaryImageTypeString:(id)a4 error:(id *)a5
++ (id)auxiliaryImageFromCoreGraphicsInfoDictionary:(id)dictionary forCGAuxiliaryImageTypeString:(id)string error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isEqualToString:*MEMORY[0x1E696D260]])
+  dictionaryCopy = dictionary;
+  stringCopy = string;
+  if ([stringCopy isEqualToString:*MEMORY[0x1E696D260]])
   {
-    v10 = [MEMORY[0x1E6987198] depthDataFromDictionaryRepresentation:v8 error:a5];
+    v10 = [MEMORY[0x1E6987198] depthDataFromDictionaryRepresentation:dictionaryCopy error:error];
     if (v10)
     {
       v11 = [[NUAuxiliaryImageAVDepthData alloc] initAuxiliaryImageFromAVDepthData:v10];
@@ -69,9 +69,9 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  if ([v9 isEqualToString:*MEMORY[0x1E696D288]])
+  if ([stringCopy isEqualToString:*MEMORY[0x1E696D288]])
   {
-    v10 = [MEMORY[0x1E6987208] portraitEffectsMatteFromDictionaryRepresentation:v8 error:a5];
+    v10 = [MEMORY[0x1E6987208] portraitEffectsMatteFromDictionaryRepresentation:dictionaryCopy error:error];
     if (v10)
     {
       v11 = [[NUAuxiliaryImageAVPortraitEffectsMatte alloc] initAuxiliaryImageFromAVPortraitEffectMatte:v10];
@@ -83,9 +83,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (([v9 isEqualToString:*MEMORY[0x1E696D2A0]] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E696D2B0]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E696D298]) & 1) != 0 || objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E696D290]))
+  if (([stringCopy isEqualToString:*MEMORY[0x1E696D2A0]] & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", *MEMORY[0x1E696D2B0]) & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", *MEMORY[0x1E696D298]) & 1) != 0 || objc_msgSend(stringCopy, "isEqualToString:", *MEMORY[0x1E696D290]))
   {
-    v10 = [MEMORY[0x1E6987210] semanticSegmentationMatteFromImageSourceAuxiliaryDataType:v9 dictionaryRepresentation:v8 error:a5];
+    v10 = [MEMORY[0x1E6987210] semanticSegmentationMatteFromImageSourceAuxiliaryDataType:stringCopy dictionaryRepresentation:dictionaryCopy error:error];
     if (v10)
     {
       v11 = [[NUAuxiliaryImageAVSemanticSegmentationMatte alloc] initAuxiliaryImageFromAVSemanticSegmentationMatte:v10];
@@ -95,70 +95,70 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ([v9 isEqualToString:*MEMORY[0x1E696D2A8]])
+  if ([stringCopy isEqualToString:*MEMORY[0x1E696D2A8]])
   {
-    v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696D220]];
+    v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E696D220]];
     v14 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696D430]];
-    v15 = [v14 unsignedLongValue];
+    unsignedLongValue = [v14 unsignedLongValue];
 
     v16 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696DFB8]];
-    v17 = [v16 unsignedLongValue];
+    unsignedLongValue2 = [v16 unsignedLongValue];
 
     v18 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696DD58]];
-    v19 = [v18 unsignedLongValue];
+    unsignedLongValue3 = [v18 unsignedLongValue];
 
     v20 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696DEC0]];
-    v21 = [v20 unsignedIntValue];
+    unsignedIntValue = [v20 unsignedIntValue];
 
     pixelBuffer = 0;
-    v22 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696D218]];
+    v22 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E696D218]];
     v23 = *MEMORY[0x1E695E480];
-    v24 = [v22 bytes];
+    bytes = [v22 bytes];
     v25 = v22;
-    CVPixelBufferCreateWithBytes(v23, v17, v19, v21, v24, v15, _NUAuxiliaryImageCVPixelBufferReleaseBytesCallback, v25, 0, &pixelBuffer);
+    CVPixelBufferCreateWithBytes(v23, unsignedLongValue2, unsignedLongValue3, unsignedIntValue, bytes, unsignedLongValue, _NUAuxiliaryImageCVPixelBufferReleaseBytesCallback, v25, 0, &pixelBuffer);
     v26 = pixelBuffer;
     v27 = *MEMORY[0x1E6965CE8];
     v28 = +[NUColorSpace genericGrayColorSpace];
     CVBufferSetAttachment(v26, v27, [v28 CGColorSpace], kCVAttachmentMode_ShouldPropagate);
 
     v29 = [NUAuxiliaryImageRawBuffer alloc];
-    v12 = [(NUAuxiliaryImageRawBuffer *)v29 initWithPixelBuffer:pixelBuffer auxiliaryImageType:9 identifier:v9];
-    v30 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696D228]];
+    v12 = [(NUAuxiliaryImageRawBuffer *)v29 initWithPixelBuffer:pixelBuffer auxiliaryImageType:9 identifier:stringCopy];
+    v30 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E696D228]];
     [(NUAuxiliaryImageRawBuffer *)v12 setMetadata:v30];
     goto LABEL_39;
   }
 
   v31 = *MEMORY[0x1E696D270];
-  v32 = [v9 isEqualToString:*MEMORY[0x1E696D270]];
+  v32 = [stringCopy isEqualToString:*MEMORY[0x1E696D270]];
   v33 = MEMORY[0x1E696D280];
-  if ((v32 & 1) != 0 || [v9 isEqualToString:*MEMORY[0x1E696D280]])
+  if ((v32 & 1) != 0 || [stringCopy isEqualToString:*MEMORY[0x1E696D280]])
   {
     pixelBuffer = 0;
-    if (!ImageIOLibraryCore_16784() || !getkCGImageAuxiliaryDataInfoPixelBufferSymbolLoc() || (getkCGImageAuxiliaryDataInfoPixelBuffer(), [v8 objectForKeyedSubscript:v34], (pixelBuffer = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!ImageIOLibraryCore_16784() || !getkCGImageAuxiliaryDataInfoPixelBufferSymbolLoc() || (getkCGImageAuxiliaryDataInfoPixelBuffer(), [dictionaryCopy objectForKeyedSubscript:v34], (pixelBuffer = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v68 = v31;
-      v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696D220]];
+      v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E696D220]];
       v35 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696D430]];
       bytesPerRow = [v35 unsignedLongValue];
 
       v36 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696DFB8]];
-      v37 = [v36 unsignedLongValue];
+      unsignedLongValue4 = [v36 unsignedLongValue];
 
       v38 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696DD58]];
-      v39 = [v38 unsignedLongValue];
+      unsignedLongValue5 = [v38 unsignedLongValue];
 
       v40 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696DEC0]];
-      v41 = [v40 unsignedIntValue];
+      unsignedIntValue2 = [v40 unsignedIntValue];
 
-      v42 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696D218]];
+      v42 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E696D218]];
       v43 = *MEMORY[0x1E695E480];
-      v44 = [v42 bytes];
+      bytes2 = [v42 bytes];
       v25 = v42;
-      CVPixelBufferCreateWithBytes(v43, v37, v39, v41, v44, bytesPerRow, _NUAuxiliaryImageCVPixelBufferReleaseBytesCallback, v25, 0, &pixelBuffer);
+      CVPixelBufferCreateWithBytes(v43, unsignedLongValue4, unsignedLongValue5, unsignedIntValue2, bytes2, bytesPerRow, _NUAuxiliaryImageCVPixelBufferReleaseBytesCallback, v25, 0, &pixelBuffer);
       if (!pixelBuffer)
       {
-        [NUError failureError:@"Failed to create pixel buffer from auxiliary info" object:v8];
-        *a5 = v12 = 0;
+        [NUError failureError:@"Failed to create pixel buffer from auxiliary info" object:dictionaryCopy];
+        *error = v12 = 0;
         goto LABEL_41;
       }
 
@@ -167,7 +167,7 @@ LABEL_14:
     }
 
     v10 = +[NUColorSpace linearGrayColorSpace];
-    if ([v9 isEqualToString:v31] && !+[NUGlobalSettings forceMeteorPlusLinear](NUGlobalSettings, "forceMeteorPlusLinear"))
+    if ([stringCopy isEqualToString:v31] && !+[NUGlobalSettings forceMeteorPlusLinear](NUGlobalSettings, "forceMeteorPlusLinear"))
     {
       v45 = +[NUColorSpace genericGrayGamma2_2ColorSpace];
 
@@ -177,12 +177,12 @@ LABEL_14:
     PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
     v25 = CVPixelFormatDescriptionCreateWithPixelFormatType(0, PixelFormatType);
     v47 = [(__CFDictionary *)v25 objectForKeyedSubscript:*MEMORY[0x1E69662A8]];
-    v48 = [v47 BOOLValue];
+    bOOLValue = [v47 BOOLValue];
 
     v49 = [(__CFDictionary *)v25 objectForKeyedSubscript:*MEMORY[0x1E69662B8]];
-    v50 = [v49 BOOLValue];
+    bOOLValue2 = [v49 BOOLValue];
 
-    if ((v48 & 1) != 0 || v50)
+    if ((bOOLValue & 1) != 0 || bOOLValue2)
     {
       CVBufferRemoveAttachment(pixelBuffer, *MEMORY[0x1E6965CE8]);
     }
@@ -193,11 +193,11 @@ LABEL_14:
     }
 
     v51 = [NUAuxiliaryImageRawBuffer alloc];
-    v12 = [(NUAuxiliaryImageRawBuffer *)v51 initWithPixelBuffer:pixelBuffer auxiliaryImageType:7 identifier:v9];
-    v52 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696D228]];
+    v12 = [(NUAuxiliaryImageRawBuffer *)v51 initWithPixelBuffer:pixelBuffer auxiliaryImageType:7 identifier:stringCopy];
+    v52 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E696D228]];
     [(NUAuxiliaryImageRawBuffer *)v12 setMetadata:v52];
 
-    v53 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696D210]];
+    v53 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E696D210]];
 
     if (v53)
     {
@@ -205,7 +205,7 @@ LABEL_14:
       [(NUAuxiliaryImageRawBuffer *)v12 setColorSpace:v54];
     }
 
-    if (![v9 isEqualToString:*v33])
+    if (![stringCopy isEqualToString:*v33])
     {
 LABEL_40:
       CVPixelBufferRelease(pixelBuffer);
@@ -214,35 +214,35 @@ LABEL_41:
       goto LABEL_15;
     }
 
-    v30 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696D230]];
+    v30 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E696D230]];
     [(NUAuxiliaryImageRawBuffer *)v12 setCompatibilityMetadata:v30];
 LABEL_39:
 
     goto LABEL_40;
   }
 
-  if (([v9 isEqualToString:{@"tag:apple.com, 2023:photo:aux:linearthumbnail"}] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"tag:apple.com,2023:photo:aux:styledeltamap"))
+  if (([stringCopy isEqualToString:{@"tag:apple.com, 2023:photo:aux:linearthumbnail"}] & 1) != 0 || objc_msgSend(stringCopy, "isEqualToString:", @"tag:apple.com,2023:photo:aux:styledeltamap"))
   {
-    v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696D220]];
+    v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E696D220]];
     v55 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696D430]];
     bytesPerRowa = [v55 unsignedLongValue];
 
     v56 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696DFB8]];
-    v57 = [v56 unsignedLongValue];
+    unsignedLongValue6 = [v56 unsignedLongValue];
 
     v58 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696DD58]];
-    v59 = [v58 unsignedLongValue];
+    unsignedLongValue7 = [v58 unsignedLongValue];
 
     v60 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696DEC0]];
-    v61 = [v60 unsignedIntValue];
+    unsignedIntValue3 = [v60 unsignedIntValue];
 
     pixelBuffer = 0;
-    v62 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696D218]];
+    v62 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E696D218]];
     v63 = *MEMORY[0x1E695E480];
-    v64 = [v62 bytes];
+    bytes3 = [v62 bytes];
     v65 = v62;
-    CVPixelBufferCreateWithBytes(v63, v57, v59, v61, v64, bytesPerRowa, _NUAuxiliaryImageCVPixelBufferReleaseBytesCallback, v65, 0, &pixelBuffer);
-    if ([v9 isEqualToString:{@"tag:apple.com, 2023:photo:aux:styledeltamap"}])
+    CVPixelBufferCreateWithBytes(v63, unsignedLongValue6, unsignedLongValue7, unsignedIntValue3, bytes3, bytesPerRowa, _NUAuxiliaryImageCVPixelBufferReleaseBytesCallback, v65, 0, &pixelBuffer);
+    if ([stringCopy isEqualToString:{@"tag:apple.com, 2023:photo:aux:styledeltamap"}])
     {
       v66 = 11;
     }
@@ -253,14 +253,14 @@ LABEL_39:
     }
 
     v67 = [NUAuxiliaryImageRawBuffer alloc];
-    v12 = [(NUAuxiliaryImageRawBuffer *)v67 initWithPixelBuffer:pixelBuffer auxiliaryImageType:v66 identifier:v9];
+    v12 = [(NUAuxiliaryImageRawBuffer *)v67 initWithPixelBuffer:pixelBuffer auxiliaryImageType:v66 identifier:stringCopy];
     CVPixelBufferRelease(pixelBuffer);
 
     goto LABEL_15;
   }
 
-  [NUError errorWithCode:7 reason:@"Unable to convert auxiliary data to NUAuxiliaryImage" object:a1 underlyingError:*a5];
-  *a5 = v12 = 0;
+  [NUError errorWithCode:7 reason:@"Unable to convert auxiliary data to NUAuxiliaryImage" object:self underlyingError:*error];
+  *error = v12 = 0;
 LABEL_16:
 
   return v12;

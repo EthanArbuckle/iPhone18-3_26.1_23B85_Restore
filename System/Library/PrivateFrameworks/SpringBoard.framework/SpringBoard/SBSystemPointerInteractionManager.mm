@@ -1,22 +1,22 @@
 @interface SBSystemPointerInteractionManager
-- (BOOL)isViewRegistered:(id)a3;
-- (SBSystemPointerInteractionManager)initWithMultiDisplayUserInteractionCoordinator:(id)a3;
-- (id)pointerInteraction:(id)a3 window:(id)a4 regionForRequest:(id)a5 defaultRegion:(id)a6;
-- (id)pointerInteraction:(id)a3 window:(id)a4 styleForRegion:(id)a5;
-- (void)addObserver:(id)a3;
+- (BOOL)isViewRegistered:(id)registered;
+- (SBSystemPointerInteractionManager)initWithMultiDisplayUserInteractionCoordinator:(id)coordinator;
+- (id)pointerInteraction:(id)interaction window:(id)window regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction window:(id)window styleForRegion:(id)region;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)pointerDidMoveToFromWindowScene:(id)a3 toWindowScene:(id)a4;
-- (void)pointerInteraction:(id)a3 window:(id)a4 willEnterRegion:(id)a5 animator:(id)a6;
-- (void)pointerInteraction:(id)a3 window:(id)a4 willExitRegion:(id)a5 animator:(id)a6;
-- (void)registerView:(id)a3 delegate:(id)a4;
+- (void)pointerDidMoveToFromWindowScene:(id)scene toWindowScene:(id)windowScene;
+- (void)pointerInteraction:(id)interaction window:(id)window willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction window:(id)window willExitRegion:(id)region animator:(id)animator;
+- (void)registerView:(id)view delegate:(id)delegate;
 @end
 
 @implementation SBSystemPointerInteractionManager
 
-- (SBSystemPointerInteractionManager)initWithMultiDisplayUserInteractionCoordinator:(id)a3
+- (SBSystemPointerInteractionManager)initWithMultiDisplayUserInteractionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  if (!v6)
+  coordinatorCopy = coordinator;
+  if (!coordinatorCopy)
   {
     [(SBSystemPointerInteractionManager *)a2 initWithMultiDisplayUserInteractionCoordinator:?];
   }
@@ -26,55 +26,55 @@
   v7 = [(SBSystemPointerInteractionManager *)&v11 init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     registeredViewsToDelegates = v7->_registeredViewsToDelegates;
-    v7->_registeredViewsToDelegates = v8;
+    v7->_registeredViewsToDelegates = weakToWeakObjectsMapTable;
 
-    objc_storeStrong(&v7->_multiDisplayUserInteractionCoordinator, a3);
-    [v6 addPointerInteractionObserver:v7];
+    objc_storeStrong(&v7->_multiDisplayUserInteractionCoordinator, coordinator);
+    [coordinatorCopy addPointerInteractionObserver:v7];
   }
 
   return v7;
 }
 
-- (void)registerView:(id)a3 delegate:(id)a4
+- (void)registerView:(id)view delegate:(id)delegate
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_registeredViewsToDelegates objectForKey:v9];
+  viewCopy = view;
+  delegateCopy = delegate;
+  v8 = [(NSMapTable *)self->_registeredViewsToDelegates objectForKey:viewCopy];
 
   if (v8)
   {
-    [(SBSystemPointerInteractionManager *)a2 registerView:v9 delegate:?];
+    [(SBSystemPointerInteractionManager *)a2 registerView:viewCopy delegate:?];
   }
 
-  [(NSMapTable *)self->_registeredViewsToDelegates setObject:v7 forKey:v9];
+  [(NSMapTable *)self->_registeredViewsToDelegates setObject:delegateCopy forKey:viewCopy];
 }
 
-- (BOOL)isViewRegistered:(id)a3
+- (BOOL)isViewRegistered:(id)registered
 {
-  v3 = [(NSMapTable *)self->_registeredViewsToDelegates objectForKey:a3];
+  v3 = [(NSMapTable *)self->_registeredViewsToDelegates objectForKey:registered];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 - (void)dealloc
@@ -85,11 +85,11 @@
   [(SBSystemPointerInteractionManager *)&v3 dealloc];
 }
 
-- (void)pointerDidMoveToFromWindowScene:(id)a3 toWindowScene:(id)a4
+- (void)pointerDidMoveToFromWindowScene:(id)scene toWindowScene:(id)windowScene
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  windowSceneCopy = windowScene;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -110,7 +110,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) pointerDidMoveToFromWindowScene:v6 toWindowScene:v7];
+        [*(*(&v13 + 1) + 8 * v12++) pointerDidMoveToFromWindowScene:sceneCopy toWindowScene:windowSceneCopy];
       }
 
       while (v10 != v12);
@@ -121,18 +121,18 @@
   }
 }
 
-- (id)pointerInteraction:(id)a3 window:(id)a4 regionForRequest:(id)a5 defaultRegion:(id)a6
+- (id)pointerInteraction:(id)interaction window:(id)window regionForRequest:(id)request defaultRegion:(id)region
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  windowCopy = window;
+  requestCopy = request;
+  if (windowCopy)
   {
-    v10 = [v8 screen];
-    v11 = [v10 fixedCoordinateSpace];
+    screen = [windowCopy screen];
+    fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-    [v9 location];
-    [v8 convertPoint:v11 toCoordinateSpace:?];
+    [requestCopy location];
+    [windowCopy convertPoint:fixedCoordinateSpace toCoordinateSpace:?];
     v53 = v13;
     v54 = v12;
     v14 = self->_registeredViewsToDelegates;
@@ -144,7 +144,7 @@
     v16 = [(NSMapTable *)v15 countByEnumeratingWithState:&v55 objects:v59 count:16];
     if (v16)
     {
-      v50 = v8;
+      v50 = windowCopy;
       v17 = *v56;
       v51 = *(MEMORY[0x277D768C8] + 8);
       v52 = *MEMORY[0x277D768C8];
@@ -164,7 +164,7 @@
 
           v23 = *(*(&v55 + 1) + 8 * v21);
           v24 = [(NSMapTable *)v15 objectForKey:v23];
-          [v23 convertPoint:v11 fromCoordinateSpace:{v54, v53}];
+          [v23 convertPoint:fixedCoordinateSpace fromCoordinateSpace:{v54, v53}];
           v26 = v25;
           v28 = v27;
           v29 = v19;
@@ -189,7 +189,7 @@
           v63.size.height = v42 - v41;
           v62.x = v26;
           v62.y = v28;
-          if (CGRectContainsPoint(v63, v62) && [v24 shouldBeginPointerInteractionRequest:v9 atLocation:v23 forView:{v26, v28}])
+          if (CGRectContainsPoint(v63, v62) && [v24 shouldBeginPointerInteractionRequest:requestCopy atLocation:v23 forView:{v26, v28}])
           {
             if (objc_opt_respondsToSelector())
             {
@@ -204,7 +204,7 @@
               v16 = [v44 regionWithRect:v43 identifier:{v32 + v45, v31 + v46, v47 - v39, v48 - v41}];
             }
 
-            v8 = v50;
+            windowCopy = v50;
             [v16 setReferenceView:v23];
 
             goto LABEL_21;
@@ -224,7 +224,7 @@
         break;
       }
 
-      v8 = v50;
+      windowCopy = v50;
     }
 
 LABEL_21:
@@ -232,10 +232,10 @@ LABEL_21:
 
   else
   {
-    v11 = SBLogSystemGesture();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    fixedCoordinateSpace = SBLogSystemGesture();
+    if (os_log_type_enabled(fixedCoordinateSpace, OS_LOG_TYPE_FAULT))
     {
-      [SBSystemPointerInteractionManager pointerInteraction:v11 window:? regionForRequest:? defaultRegion:?];
+      [SBSystemPointerInteractionManager pointerInteraction:fixedCoordinateSpace window:? regionForRequest:? defaultRegion:?];
     }
 
     v16 = 0;
@@ -244,19 +244,19 @@ LABEL_21:
   return v16;
 }
 
-- (id)pointerInteraction:(id)a3 window:(id)a4 styleForRegion:(id)a5
+- (id)pointerInteraction:(id)interaction window:(id)window styleForRegion:(id)region
 {
-  v6 = a5;
-  v7 = [v6 referenceView];
-  v8 = [(NSMapTable *)self->_registeredViewsToDelegates objectForKey:v7];
+  regionCopy = region;
+  referenceView = [regionCopy referenceView];
+  v8 = [(NSMapTable *)self->_registeredViewsToDelegates objectForKey:referenceView];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 styleForRegion:v6 forView:v7];
+    v9 = [v8 styleForRegion:regionCopy forView:referenceView];
   }
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v7];
+    v10 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:referenceView];
     v11 = [MEMORY[0x277D75858] effectWithPreview:v10];
     v9 = [MEMORY[0x277D75890] styleWithEffect:v11 shape:0];
   }
@@ -264,22 +264,22 @@ LABEL_21:
   return v9;
 }
 
-- (void)pointerInteraction:(id)a3 window:(id)a4 willEnterRegion:(id)a5 animator:(id)a6
+- (void)pointerInteraction:(id)interaction window:(id)window willEnterRegion:(id)region animator:(id)animator
 {
-  v7 = [a5 referenceView];
+  referenceView = [region referenceView];
   activePointerRegionView = self->_activePointerRegionView;
-  self->_activePointerRegionView = v7;
+  self->_activePointerRegionView = referenceView;
 }
 
-- (void)pointerInteraction:(id)a3 window:(id)a4 willExitRegion:(id)a5 animator:(id)a6
+- (void)pointerInteraction:(id)interaction window:(id)window willExitRegion:(id)region animator:(id)animator
 {
   activePointerRegionView = self->_activePointerRegionView;
   self->_activePointerRegionView = 0;
-  v8 = a5;
+  regionCopy = region;
 
-  v10 = [v8 referenceView];
+  referenceView = [regionCopy referenceView];
 
-  v9 = [(NSMapTable *)self->_registeredViewsToDelegates objectForKey:v10];
+  v9 = [(NSMapTable *)self->_registeredViewsToDelegates objectForKey:referenceView];
   if (objc_opt_respondsToSelector())
   {
     [v9 pointerWillExitRegion];

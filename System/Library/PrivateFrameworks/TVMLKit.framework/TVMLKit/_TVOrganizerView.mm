@@ -1,40 +1,40 @@
 @interface _TVOrganizerView
-- (CGSize)_contentSizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UIEdgeInsets)tv_alignmentInsetsForExpectedWidth:(double)a3;
+- (CGSize)_contentSizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UIEdgeInsets)tv_alignmentInsetsForExpectedWidth:(double)width;
 - (UIView)preferredFocusedComponent;
-- (_TVOrganizerView)initWithFrame:(CGRect)a3;
+- (_TVOrganizerView)initWithFrame:(CGRect)frame;
 - (double)cornerRadius;
-- (id)impressionableElementsContainedInDocument:(id)a3;
+- (id)impressionableElementsContainedInDocument:(id)document;
 - (id)preferredFocusEnvironments;
-- (int64_t)_positionFromView:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (int64_t)_positionFromView:(id)view;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setBackgroundImageView:(id)a3;
-- (void)setColumnDividersEnabled:(BOOL)a3;
-- (void)setComponents:(id)a3;
+- (void)setBackgroundImageView:(id)view;
+- (void)setColumnDividersEnabled:(BOOL)enabled;
+- (void)setComponents:(id)components;
 - (void)setComponentsNeedUpdate;
-- (void)setCornerRadius:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRemembersLastFocusedItem:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5;
+- (void)setCornerRadius:(double)radius;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRemembersLastFocusedItem:(BOOL)item;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation _TVOrganizerView
 
-- (_TVOrganizerView)initWithFrame:(CGRect)a3
+- (_TVOrganizerView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _TVOrganizerView;
-  v3 = [(_TVFocusRedirectView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVFocusRedirectView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(_TVOrganizerView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(_TVOrganizerView *)v3 setBackgroundColor:clearColor];
 
     [(_TVOrganizerView *)v3 setOpaque:0];
-    v5 = [(_TVFocusRedirectView *)v3 containerGuide];
-    [v5 setEnabled:0];
+    containerGuide = [(_TVFocusRedirectView *)v3 containerGuide];
+    [containerGuide setEnabled:0];
 
     v3->_remembersLastFocusedItem = 0;
   }
@@ -52,10 +52,10 @@
 - (void)setComponentsNeedUpdate
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVOrganizerView *)self divsByPosition];
+  divsByPosition = [(_TVOrganizerView *)self divsByPosition];
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:6];
   v5 = MEMORY[0x277CCAE60];
-  v6 = [v3 objectForKeyedSubscript:&unk_287E47F58];
+  v6 = [divsByPosition objectForKeyedSubscript:&unk_287E47F58];
   v7 = *MEMORY[0x277CBF3A8];
   v8 = *(MEMORY[0x277CBF3A8] + 8);
   [v6 sizeThatFits:{*MEMORY[0x277CBF3A8], v8}];
@@ -63,31 +63,31 @@
   [v4 setObject:v9 forKeyedSubscript:&unk_287E47F58];
 
   v10 = MEMORY[0x277CCAE60];
-  v11 = [v3 objectForKeyedSubscript:&unk_287E47F70];
+  v11 = [divsByPosition objectForKeyedSubscript:&unk_287E47F70];
   [v11 sizeThatFits:{v7, v8}];
   v12 = [v10 valueWithCGSize:?];
   [v4 setObject:v12 forKeyedSubscript:&unk_287E47F70];
 
   v13 = MEMORY[0x277CCAE60];
-  v14 = [v3 objectForKeyedSubscript:&unk_287E47F88];
+  v14 = [divsByPosition objectForKeyedSubscript:&unk_287E47F88];
   [v14 sizeThatFits:{v7, v8}];
   v15 = [v13 valueWithCGSize:?];
   [v4 setObject:v15 forKeyedSubscript:&unk_287E47F88];
 
   v16 = MEMORY[0x277CCAE60];
-  v17 = [v3 objectForKeyedSubscript:&unk_287E47FA0];
+  v17 = [divsByPosition objectForKeyedSubscript:&unk_287E47FA0];
   [v17 sizeThatFits:{v7, v8}];
   v18 = [v16 valueWithCGSize:?];
   [v4 setObject:v18 forKeyedSubscript:&unk_287E47FA0];
 
   v19 = MEMORY[0x277CCAE60];
-  v20 = [v3 objectForKeyedSubscript:&unk_287E47FB8];
+  v20 = [divsByPosition objectForKeyedSubscript:&unk_287E47FB8];
   [v20 sizeThatFits:{v7, v8}];
   v21 = [v19 valueWithCGSize:?];
   [v4 setObject:v21 forKeyedSubscript:&unk_287E47FB8];
 
   v22 = MEMORY[0x277CCAE60];
-  v23 = [v3 objectForKeyedSubscript:&unk_287E47FD0];
+  v23 = [divsByPosition objectForKeyedSubscript:&unk_287E47FD0];
   [v23 sizeThatFits:{v7, v8}];
   v24 = [v22 valueWithCGSize:?];
   [v4 setObject:v24 forKeyedSubscript:&unk_287E47FD0];
@@ -97,8 +97,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v25 = [v3 allValues];
-  v26 = [v25 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  allValues = [divsByPosition allValues];
+  v26 = [allValues countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v26)
   {
     v27 = v26;
@@ -109,13 +109,13 @@
       {
         if (*v31 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v30 + 1) + 8 * i) setComponentsNeedUpdate];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v27 = [allValues countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v27);
@@ -126,28 +126,28 @@
 
 - (double)cornerRadius
 {
-  v2 = [(_TVOrganizerView *)self layer];
-  [v2 cornerRadius];
+  layer = [(_TVOrganizerView *)self layer];
+  [layer cornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(_TVOrganizerView *)self layer];
-  [v4 setCornerRadius:a3];
+  layer = [(_TVOrganizerView *)self layer];
+  [layer setCornerRadius:radius];
 }
 
-- (void)setBackgroundImageView:(id)a3
+- (void)setBackgroundImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundImageView = self->_backgroundImageView;
-  v8 = v5;
-  if (backgroundImageView != v5)
+  v8 = viewCopy;
+  if (backgroundImageView != viewCopy)
   {
     [(UIView *)backgroundImageView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundImageView, a3);
+    objc_storeStrong(&self->_backgroundImageView, view);
     v7 = self->_backgroundImageView;
     if (v7)
     {
@@ -158,31 +158,31 @@
   [(_TVOrganizerView *)self setNeedsLayout];
 }
 
-- (void)setRemembersLastFocusedItem:(BOOL)a3
+- (void)setRemembersLastFocusedItem:(BOOL)item
 {
-  v3 = a3;
-  self->_remembersLastFocusedItem = a3;
-  v4 = [(_TVFocusRedirectView *)self containerGuide];
-  [v4 setEnabled:v3];
+  itemCopy = item;
+  self->_remembersLastFocusedItem = item;
+  containerGuide = [(_TVFocusRedirectView *)self containerGuide];
+  [containerGuide setEnabled:itemCopy];
 }
 
-- (void)setComponents:(id)a3
+- (void)setComponents:(id)components
 {
   v79 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_components, a3);
+  componentsCopy = components;
+  objc_storeStrong(&self->_components, components);
   v68 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:9];
   v6 = MEMORY[0x277CBEB18];
-  v66 = self;
-  v7 = [(_TVOrganizerView *)self divsByPosition];
-  v8 = [v7 allKeys];
-  v9 = [v6 arrayWithArray:v8];
+  selfCopy = self;
+  divsByPosition = [(_TVOrganizerView *)self divsByPosition];
+  allKeys = [divsByPosition allKeys];
+  v9 = [v6 arrayWithArray:allKeys];
 
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obj = v5;
+  obj = componentsCopy;
   v10 = [obj countByEnumeratingWithState:&v73 objects:v78 count:16];
   if (v10)
   {
@@ -202,7 +202,7 @@
         if (objc_opt_isKindOfClass())
         {
           v15 = v14;
-          v16 = [(_TVOrganizerView *)v66 _positionFromView:v15];
+          v16 = [(_TVOrganizerView *)selfCopy _positionFromView:v15];
           v17 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
           v18 = [v68 objectForKeyedSubscript:v17];
 
@@ -230,8 +230,8 @@
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v21 = [v68 allKeys];
-  v22 = [v21 countByEnumeratingWithState:&v69 objects:v77 count:16];
+  allKeys2 = [v68 allKeys];
+  v22 = [allKeys2 countByEnumeratingWithState:&v69 objects:v77 count:16];
   if (v22)
   {
     v23 = v22;
@@ -241,14 +241,14 @@
     v27 = *(MEMORY[0x277CBF3A0] + 8);
     v28 = *(MEMORY[0x277CBF3A0] + 16);
     v29 = *(MEMORY[0x277CBF3A0] + 24);
-    v30 = v66;
+    v30 = selfCopy;
     do
     {
       for (j = 0; j != v23; ++j)
       {
         if (*v70 != v25)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allKeys2);
         }
 
         v32 = *(*(&v69 + 1) + 8 * j);
@@ -261,13 +261,13 @@
 
           else
           {
-            v35 = [(_TVOrganizerView *)v30 divsByPosition];
+            divsByPosition2 = [(_TVOrganizerView *)v30 divsByPosition];
             v36 = v24 + 1;
             v37 = [v9 objectAtIndexedSubscript:v24];
-            v34 = [v35 objectForKeyedSubscript:v37];
+            v34 = [divsByPosition2 objectForKeyedSubscript:v37];
 
             v24 = v36;
-            v30 = v66;
+            v30 = selfCopy;
           }
         }
 
@@ -283,7 +283,7 @@
         [v67 setObject:v34 forKeyedSubscript:v32];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v69 objects:v77 count:16];
+      v23 = [allKeys2 countByEnumeratingWithState:&v69 objects:v77 count:16];
     }
 
     while (v23);
@@ -292,7 +292,7 @@
   else
   {
     v24 = 0;
-    v30 = v66;
+    v30 = selfCopy;
   }
 
   v40 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:6];
@@ -336,27 +336,27 @@
 
   while (v24 < [v9 count])
   {
-    v61 = [(_TVOrganizerView *)v30 divsByPosition];
+    divsByPosition3 = [(_TVOrganizerView *)v30 divsByPosition];
     v62 = [v9 objectAtIndexedSubscript:v24];
-    v63 = [v61 objectForKeyedSubscript:v62];
+    v63 = [divsByPosition3 objectForKeyedSubscript:v62];
     [v63 removeFromSuperview];
 
     ++v24;
   }
 
-  v64 = [(_TVOrganizerView *)v30 constraints];
-  [(_TVOrganizerView *)v30 removeConstraints:v64];
+  constraints = [(_TVOrganizerView *)v30 constraints];
+  [(_TVOrganizerView *)v30 removeConstraints:constraints];
 
   [(_TVOrganizerView *)v30 setDivsByPosition:v67];
   [(_TVOrganizerView *)v30 setDivSizesByPosition:v40];
   [(_TVOrganizerView *)v30 setNeedsLayout];
 }
 
-- (void)setColumnDividersEnabled:(BOOL)a3
+- (void)setColumnDividersEnabled:(BOOL)enabled
 {
-  self->_columnDividersEnabled = a3;
+  self->_columnDividersEnabled = enabled;
   rightColumnDivider = self->_rightColumnDivider;
-  if (a3)
+  if (enabled)
   {
     if (rightColumnDivider)
     {
@@ -386,7 +386,7 @@
   MEMORY[0x2821F96F8](v6, v7);
 }
 
-- (UIEdgeInsets)tv_alignmentInsetsForExpectedWidth:(double)a3
+- (UIEdgeInsets)tv_alignmentInsetsForExpectedWidth:(double)width
 {
   v152[3] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D768C8];
@@ -395,48 +395,48 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = a3 - (v8 + v12);
-  v15 = [(_TVOrganizerView *)self divsByPosition];
-  v16 = [v15 objectForKeyedSubscript:&unk_287E47FE8];
+  v14 = width - (v8 + v12);
+  divsByPosition = [(_TVOrganizerView *)self divsByPosition];
+  v16 = [divsByPosition objectForKeyedSubscript:&unk_287E47FE8];
 
-  v17 = [(_TVOrganizerView *)self divsByPosition];
-  v18 = [v17 objectForKeyedSubscript:&unk_287E47F58];
+  divsByPosition2 = [(_TVOrganizerView *)self divsByPosition];
+  v18 = [divsByPosition2 objectForKeyedSubscript:&unk_287E47F58];
 
-  v19 = [(_TVOrganizerView *)self divsByPosition];
-  v20 = [v19 objectForKeyedSubscript:&unk_287E48000];
+  divsByPosition3 = [(_TVOrganizerView *)self divsByPosition];
+  v20 = [divsByPosition3 objectForKeyedSubscript:&unk_287E48000];
 
-  v21 = [(_TVOrganizerView *)self divsByPosition];
-  v22 = [v21 objectForKeyedSubscript:&unk_287E47FA0];
+  divsByPosition4 = [(_TVOrganizerView *)self divsByPosition];
+  v22 = [divsByPosition4 objectForKeyedSubscript:&unk_287E47FA0];
 
-  v23 = [(_TVOrganizerView *)self divsByPosition];
-  v145 = [v23 objectForKeyedSubscript:&unk_287E47F70];
+  divsByPosition5 = [(_TVOrganizerView *)self divsByPosition];
+  v145 = [divsByPosition5 objectForKeyedSubscript:&unk_287E47F70];
 
-  v24 = [(_TVOrganizerView *)self divsByPosition];
-  v25 = [v24 objectForKeyedSubscript:&unk_287E48018];
+  divsByPosition6 = [(_TVOrganizerView *)self divsByPosition];
+  v25 = [divsByPosition6 objectForKeyedSubscript:&unk_287E48018];
 
-  v26 = [(_TVOrganizerView *)self divsByPosition];
-  v144 = [v26 objectForKeyedSubscript:&unk_287E47FB8];
+  divsByPosition7 = [(_TVOrganizerView *)self divsByPosition];
+  v144 = [divsByPosition7 objectForKeyedSubscript:&unk_287E47FB8];
 
-  v27 = [(_TVOrganizerView *)self divsByPosition];
-  v143 = [v27 objectForKeyedSubscript:&unk_287E47F88];
+  divsByPosition8 = [(_TVOrganizerView *)self divsByPosition];
+  v143 = [divsByPosition8 objectForKeyedSubscript:&unk_287E47F88];
 
-  v28 = [(_TVOrganizerView *)self divsByPosition];
-  v146 = [v28 objectForKeyedSubscript:&unk_287E48030];
+  divsByPosition9 = [(_TVOrganizerView *)self divsByPosition];
+  v146 = [divsByPosition9 objectForKeyedSubscript:&unk_287E48030];
 
-  v29 = [(_TVOrganizerView *)self divsByPosition];
-  v142 = [v29 objectForKeyedSubscript:&unk_287E47FD0];
+  divsByPosition10 = [(_TVOrganizerView *)self divsByPosition];
+  v142 = [divsByPosition10 objectForKeyedSubscript:&unk_287E47FD0];
 
-  v30 = [(_TVOrganizerView *)self divsByPosition];
-  v31 = [v30 objectForKeyedSubscript:&unk_287E48048];
+  divsByPosition11 = [(_TVOrganizerView *)self divsByPosition];
+  v31 = [divsByPosition11 objectForKeyedSubscript:&unk_287E48048];
 
   if (v16)
   {
-    v32 = [v16 components];
-    v33 = [v32 firstObject];
+    components = [v16 components];
+    firstObject = [components firstObject];
 
-    [v33 tv_alignmentInsetsForExpectedWidth:v14];
+    [firstObject tv_alignmentInsetsForExpectedWidth:v14];
     v35 = v34;
-    [v33 tv_margin];
+    [firstObject tv_margin];
     v37 = v35 + v36;
   }
 
@@ -454,34 +454,34 @@
     v135 = v9;
     v136 = v7;
     v137 = v11;
-    v44 = [(_TVOrganizerView *)self divSizesByPosition];
-    v45 = [v44 objectForKeyedSubscript:&unk_287E47F58];
+    divSizesByPosition = [(_TVOrganizerView *)self divSizesByPosition];
+    v45 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47F58];
     [v45 CGSizeValue];
     v47 = v46;
     v129 = v48;
 
-    v49 = [v44 objectForKeyedSubscript:&unk_287E47F70];
+    v49 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47F70];
     [v49 CGSizeValue];
     v141 = v50;
     v127 = v51;
 
-    v52 = [v44 objectForKeyedSubscript:&unk_287E47F88];
+    v52 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47F88];
     [v52 CGSizeValue];
     v139 = v53;
     v128 = v54;
 
-    v55 = [v44 objectForKeyedSubscript:&unk_287E47FD0];
+    v55 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47FD0];
     [v55 CGSizeValue];
     v56 = v14;
     v58 = v57;
     v60 = v59;
 
-    v61 = [v44 objectForKeyedSubscript:&unk_287E47FB8];
+    v61 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47FB8];
     [v61 CGSizeValue];
     v63 = v62;
     v65 = v64;
 
-    v66 = [v44 objectForKeyedSubscript:&unk_287E47FA0];
+    v66 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47FA0];
     [v66 CGSizeValue];
     v68 = v67;
     v70 = v69;
@@ -511,8 +511,8 @@
     v125 = v72;
     v126 = v65;
     v82 = fmax(v129 + v127 + v128, fmax(v79 + v80, v72 + v65 + v70));
-    v83 = [MEMORY[0x277CBEB68] null];
-    v84 = v83;
+    null = [MEMORY[0x277CBEB68] null];
+    v84 = null;
     v138 = v22;
     v140 = v20;
     v133 = v18;
@@ -525,13 +525,13 @@
 
       else
       {
-        v86 = v83;
+        v86 = null;
       }
 
       v87 = v145;
       if (!v145)
       {
-        v87 = v83;
+        v87 = null;
       }
 
       v152[0] = v86;
@@ -539,7 +539,7 @@
       v88 = v143;
       if (!v143)
       {
-        v88 = v83;
+        v88 = null;
       }
 
       v152[2] = v88;
@@ -690,10 +690,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIView *)self tv_itemWidth];
   v7 = v6;
   [(UIView *)self tv_itemHeight];
@@ -708,12 +708,12 @@
     height = v8;
   }
 
-  v10 = [(_TVOrganizerView *)self backgroundImageView];
+  backgroundImageView = [(_TVOrganizerView *)self backgroundImageView];
 
-  if (v10)
+  if (backgroundImageView)
   {
-    v11 = [(_TVOrganizerView *)self backgroundImageView];
-    [v11 sizeThatFits:{width, height}];
+    backgroundImageView2 = [(_TVOrganizerView *)self backgroundImageView];
+    [backgroundImageView2 sizeThatFits:{width, height}];
     v28 = v13;
     v30 = v12;
   }
@@ -769,26 +769,26 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_TVOrganizerView *)self divsByPosition];
-  v12 = [(_TVOrganizerView *)self divSizesByPosition];
-  v13 = [(_TVOrganizerView *)self backgroundImageView];
+  divsByPosition = [(_TVOrganizerView *)self divsByPosition];
+  divSizesByPosition = [(_TVOrganizerView *)self divSizesByPosition];
+  backgroundImageView = [(_TVOrganizerView *)self backgroundImageView];
   v104 = v6;
   v106 = v4;
   v98 = v8;
-  [v13 setFrame:{v4, v6, v8, v10}];
+  [backgroundImageView setFrame:{v4, v6, v8, v10}];
 
-  v14 = self;
-  v15 = [(_TVOrganizerView *)v14 backgroundImageView];
+  selfCopy = self;
+  backgroundImageView2 = [(_TVOrganizerView *)selfCopy backgroundImageView];
   v16 = objc_opt_respondsToSelector();
 
-  v17 = v14;
+  contentView = selfCopy;
   if (v16)
   {
-    v18 = [(_TVOrganizerView *)v14 backgroundImageView];
-    v17 = [v18 contentView];
+    backgroundImageView3 = [(_TVOrganizerView *)selfCopy backgroundImageView];
+    contentView = [backgroundImageView3 contentView];
   }
 
-  [(UIView *)v14 tv_padding];
+  [(UIView *)selfCopy tv_padding];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -796,8 +796,8 @@
   v27 = v8 - (v21 + v25);
   v99 = v10;
   v28 = v10 - (v19 + v23);
-  v29 = [v11 objectForKeyedSubscript:&unk_287E47FE8];
-  v30 = [v11 objectForKeyedSubscript:&unk_287E48048];
+  v29 = [divsByPosition objectForKeyedSubscript:&unk_287E47FE8];
+  v30 = [divsByPosition objectForKeyedSubscript:&unk_287E48048];
   v97 = v27;
   if (v29)
   {
@@ -809,7 +809,7 @@
     v122 = CGRectIntegral(v121);
     height = v122.size.height;
     [v29 setFrame:{v122.origin.x, v122.origin.y, v122.size.width}];
-    [v17 addSubview:v29];
+    [contentView addSubview:v29];
     v20 = v20 + height;
     v28 = v28 - height;
   }
@@ -826,7 +826,7 @@
     v124 = CGRectIntegral(v123);
     v34 = v124.size.height;
     [v30 setFrame:{v124.origin.x, v124.origin.y, v124.size.width}];
-    [v17 addSubview:v30];
+    [contentView addSubview:v30];
     v24 = v24 + v34;
     v28 = v28 - v34;
   }
@@ -843,7 +843,7 @@
   v110[1] = 3221225472;
   v110[2] = __34___TVOrganizerView_layoutSubviews__block_invoke;
   v110[3] = &unk_279D6FD20;
-  v96 = v17;
+  v96 = contentView;
   v111 = v96;
   v35 = MEMORY[0x26D6AFBB0](v110);
   v109[0] = MEMORY[0x277D85DD0];
@@ -882,41 +882,41 @@
   *&v108[16] = (v22 - v26) * 0.5;
   *&v108[17] = (v20 - v24) * 0.5;
   v37 = MEMORY[0x26D6AFBB0](v108);
-  v38 = [v11 objectForKeyedSubscript:&unk_287E47F58];
-  v39 = [v11 objectForKeyedSubscript:&unk_287E48000];
-  v105 = [v11 objectForKeyedSubscript:&unk_287E47FA0];
-  v103 = [v11 objectForKeyedSubscript:&unk_287E47F70];
-  v107 = [v11 objectForKeyedSubscript:&unk_287E48018];
-  v102 = [v11 objectForKeyedSubscript:&unk_287E47FB8];
-  v101 = [v11 objectForKeyedSubscript:&unk_287E47F88];
-  v40 = [v11 objectForKeyedSubscript:&unk_287E48030];
-  v100 = [v11 objectForKeyedSubscript:&unk_287E47FD0];
-  v41 = [v12 objectForKeyedSubscript:&unk_287E47F58];
+  v38 = [divsByPosition objectForKeyedSubscript:&unk_287E47F58];
+  v39 = [divsByPosition objectForKeyedSubscript:&unk_287E48000];
+  v105 = [divsByPosition objectForKeyedSubscript:&unk_287E47FA0];
+  v103 = [divsByPosition objectForKeyedSubscript:&unk_287E47F70];
+  v107 = [divsByPosition objectForKeyedSubscript:&unk_287E48018];
+  v102 = [divsByPosition objectForKeyedSubscript:&unk_287E47FB8];
+  v101 = [divsByPosition objectForKeyedSubscript:&unk_287E47F88];
+  v40 = [divsByPosition objectForKeyedSubscript:&unk_287E48030];
+  v100 = [divsByPosition objectForKeyedSubscript:&unk_287E47FD0];
+  v41 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47F58];
   [v41 CGSizeValue];
   v43 = v42;
   v45 = v44;
 
-  v46 = [v12 objectForKeyedSubscript:&unk_287E47FA0];
+  v46 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47FA0];
   [v46 CGSizeValue];
   v48 = v47;
   v50 = v49;
 
-  v51 = [v12 objectForKeyedSubscript:&unk_287E47F70];
+  v51 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47F70];
   [v51 CGSizeValue];
   v93 = v52;
   v54 = v53;
 
-  v55 = [v12 objectForKeyedSubscript:&unk_287E47FB8];
+  v55 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47FB8];
   [v55 CGSizeValue];
   v92 = v56;
   v58 = v57;
 
-  v59 = [v12 objectForKeyedSubscript:&unk_287E47F88];
+  v59 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47F88];
   [v59 CGSizeValue];
   v91 = v60;
   v62 = v61;
 
-  v63 = [v12 objectForKeyedSubscript:&unk_287E47FD0];
+  v63 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47FD0];
   [v63 CGSizeValue];
   v90 = v64;
   v66 = v65;
@@ -925,14 +925,14 @@
   v117[3] = fmax(v43, fmax(v54, v62));
   v68 = fmax(v48, fmax(v58, v66));
   v113[3] = v68;
-  if (v14->_rightColumnDivider)
+  if (selfCopy->_rightColumnDivider)
   {
-    [(UIView *)v14->_leftColumnDivider setFrame:v67[3], v14->_columnDividerPadding, 1.0, v99 + v14->_columnDividerPadding * -2.0];
-    [(UIView *)v14->_rightColumnDivider setFrame:v98 - v113[3], v14->_columnDividerPadding, 1.0, v99 + v14->_columnDividerPadding * -2.0];
-    [(UIView *)v14->_rightColumnDivider setBackgroundColor:v14->_columnDividerColor];
-    [(UIView *)v14->_leftColumnDivider setBackgroundColor:v14->_columnDividerColor];
-    [v96 addSubview:v14->_leftColumnDivider];
-    [v96 addSubview:v14->_rightColumnDivider];
+    [(UIView *)selfCopy->_leftColumnDivider setFrame:v67[3], selfCopy->_columnDividerPadding, 1.0, v99 + selfCopy->_columnDividerPadding * -2.0];
+    [(UIView *)selfCopy->_rightColumnDivider setFrame:v98 - v113[3], selfCopy->_columnDividerPadding, 1.0, v99 + selfCopy->_columnDividerPadding * -2.0];
+    [(UIView *)selfCopy->_rightColumnDivider setBackgroundColor:selfCopy->_columnDividerColor];
+    [(UIView *)selfCopy->_leftColumnDivider setBackgroundColor:selfCopy->_columnDividerColor];
+    [v96 addSubview:selfCopy->_leftColumnDivider];
+    [v96 addSubview:selfCopy->_rightColumnDivider];
     v69 = v50;
     v67 = v117;
     v68 = v113[3];
@@ -997,20 +997,20 @@
   _Block_object_dispose(&v116, 8);
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  coordinatorCopy = coordinator;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __66___TVOrganizerView_setSelected_animated_withAnimationCoordinator___block_invoke;
   v23[3] = &unk_279D6FD90;
-  v9 = v8;
+  v9 = coordinatorCopy;
   v24 = v9;
-  v25 = v5;
-  v26 = v6;
+  v25 = animatedCopy;
+  v26 = selectedCopy;
   v10 = MEMORY[0x26D6AFBB0](v23);
   if ([(UIView *)self->_backgroundImageView tv_showOnHighlight])
   {
@@ -1038,7 +1038,7 @@
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        [v15 setHighlighted:v6 animated:v5 withAnimationCoordinator:{v9, v17}];
+        [v15 setHighlighted:selectedCopy animated:animatedCopy withAnimationCoordinator:{v9, v17}];
         if ([v15 tv_showOnHighlight])
         {
           (v10)[2](v10, v15);
@@ -1047,13 +1047,13 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v15 setHighlighted:v6];
+          [v15 setHighlighted:selectedCopy];
           v16 = [v15 valueForTVViewStyle:@"tv-text-highlight-style"];
           if ([v16 isEqualToString:v17])
           {
-            [v15 setMarqueeEnabled:v6];
-            [v15 setMarqueeRunning:v6];
-            if (!v6)
+            [v15 setMarqueeEnabled:selectedCopy];
+            [v15 setMarqueeRunning:selectedCopy];
+            if (!selectedCopy)
             {
               [v15 setLineBreakMode:4];
             }
@@ -1065,7 +1065,7 @@
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            [v15 setSelected:v6 animated:v5];
+            [v15 setSelected:selectedCopy animated:animatedCopy];
           }
         }
       }
@@ -1077,9 +1077,9 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
@@ -1105,7 +1105,7 @@
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
-          [v9 setHighlighted:{v3, v10}];
+          [v9 setHighlighted:{highlightedCopy, v10}];
         }
 
         ++v8;
@@ -1132,8 +1132,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(_TVOrganizerView *)self components];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  components = [(_TVOrganizerView *)self components];
+  v6 = [components countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1144,20 +1144,20 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(components);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) preferredFocusEnvironments];
-        v11 = [v10 firstObject];
+        preferredFocusEnvironments = [*(*(&v13 + 1) + 8 * i) preferredFocusEnvironments];
+        firstObject = [preferredFocusEnvironments firstObject];
 
-        if ([v11 canBecomeFocused])
+        if ([firstObject canBecomeFocused])
         {
 
           goto LABEL_13;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v7 = [components countByEnumeratingWithState:&v13 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -1167,11 +1167,11 @@
     }
   }
 
-  v11 = 0;
+  firstObject = 0;
 LABEL_13:
 
-  WeakRetained = v11;
-  if (v11)
+  WeakRetained = firstObject;
+  if (firstObject)
   {
 LABEL_2:
     v17 = WeakRetained;
@@ -1186,19 +1186,19 @@ LABEL_2:
   return v4;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  obj = [a3 nextFocusedView];
+  obj = [context nextFocusedView];
   if ([obj isDescendantOfView:self])
   {
-    v5 = [obj superview];
+    superview = [obj superview];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [obj superview];
-      objc_storeWeak(&self->_lastFocusedView, v7);
+      superview2 = [obj superview];
+      objc_storeWeak(&self->_lastFocusedView, superview2);
     }
 
     else
@@ -1208,37 +1208,37 @@ LABEL_2:
   }
 }
 
-- (CGSize)_contentSizeThatFits:(CGSize)a3
+- (CGSize)_contentSizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(_TVOrganizerView *)self divsByPosition:a3.width];
-  v6 = [(_TVOrganizerView *)self divSizesByPosition];
-  v7 = [v6 objectForKeyedSubscript:&unk_287E47F58];
+  width = fits.width;
+  v5 = [(_TVOrganizerView *)self divsByPosition:fits.width];
+  divSizesByPosition = [(_TVOrganizerView *)self divSizesByPosition];
+  v7 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47F58];
   [v7 CGSizeValue];
   v9 = v8;
   v66 = v10;
 
-  v11 = [v6 objectForKeyedSubscript:&unk_287E47F70];
+  v11 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47F70];
   [v11 CGSizeValue];
   v13 = v12;
   v65 = v14;
 
-  v15 = [v6 objectForKeyedSubscript:&unk_287E47F88];
+  v15 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47F88];
   [v15 CGSizeValue];
   v17 = v16;
   v64 = v18;
 
-  v19 = [v6 objectForKeyedSubscript:&unk_287E47FD0];
+  v19 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47FD0];
   [v19 CGSizeValue];
   v21 = v20;
   v63 = v22;
 
-  v23 = [v6 objectForKeyedSubscript:&unk_287E47FB8];
+  v23 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47FB8];
   [v23 CGSizeValue];
   v25 = v24;
   v62 = v26;
 
-  v27 = [v6 objectForKeyedSubscript:&unk_287E47FA0];
+  v27 = [divSizesByPosition objectForKeyedSubscript:&unk_287E47FA0];
   [v27 CGSizeValue];
   v29 = v28;
   v61 = v30;
@@ -1292,9 +1292,9 @@ LABEL_2:
   return result;
 }
 
-- (int64_t)_positionFromView:(id)a3
+- (int64_t)_positionFromView:(id)view
 {
-  result = [a3 tv_position];
+  result = [view tv_position];
   if (result <= 1)
   {
     return 1;
@@ -1303,23 +1303,23 @@ LABEL_2:
   return result;
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [self tv_associatedIKViewElement];
-  v6 = [v5 appDocument];
-  v7 = [v6 isEqual:v4];
+  documentCopy = document;
+  tv_associatedIKViewElement = [self tv_associatedIKViewElement];
+  appDocument = [tv_associatedIKViewElement appDocument];
+  v7 = [appDocument isEqual:documentCopy];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [(_TVOrganizerView *)self components];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    components = [(_TVOrganizerView *)self components];
+    v10 = [components countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1330,22 +1330,22 @@ LABEL_2:
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(components);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) tv_impressionableElementsForDocument:v4];
-          [v8 addObjectsFromArray:v14];
+          v14 = [*(*(&v17 + 1) + 8 * i) tv_impressionableElementsForDocument:documentCopy];
+          [array addObjectsFromArray:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [components countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
     }
 
-    if ([v8 count])
+    if ([array count])
     {
-      v15 = [MEMORY[0x277CBEA60] arrayWithArray:v8];
+      v15 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     }
 
     else

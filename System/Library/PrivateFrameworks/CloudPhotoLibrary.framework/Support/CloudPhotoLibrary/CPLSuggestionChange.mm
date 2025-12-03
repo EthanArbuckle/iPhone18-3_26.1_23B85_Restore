@@ -1,131 +1,131 @@
 @interface CPLSuggestionChange
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4;
-- (void)fillWithCKRecord:(id)a3;
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider;
+- (void)fillWithCKRecord:(id)record;
 @end
 
 @implementation CPLSuggestionChange
 
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider
 {
-  v24 = a3;
-  v6 = self;
-  v7 = [a4 fingerprintContext];
-  if ([(CPLSuggestionChange *)v6 hasChangeType:2])
+  builderCopy = builder;
+  selfCopy = self;
+  fingerprintContext = [provider fingerprintContext];
+  if ([(CPLSuggestionChange *)selfCopy hasChangeType:2])
   {
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"title")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"title")])
     {
-      v8 = [(CPLSuggestionChange *)v6 title];
-      if (v8)
+      title = [(CPLSuggestionChange *)selfCopy title];
+      if (title)
       {
-        [v24 setLegacyEncryptedObject:v8 forKey:@"title"];
+        [builderCopy setLegacyEncryptedObject:title forKey:@"title"];
       }
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"subtitle")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"subtitle")])
     {
-      v9 = [(CPLSuggestionChange *)v6 subtitle];
-      if (v9)
+      subtitle = [(CPLSuggestionChange *)selfCopy subtitle];
+      if (subtitle)
       {
-        [v24 setLegacyEncryptedObject:v9 forKey:@"subtitle"];
+        [builderCopy setLegacyEncryptedObject:subtitle forKey:@"subtitle"];
       }
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"activationDate")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"activationDate")])
     {
-      v10 = [(CPLSuggestionChange *)v6 activationDate];
-      if (v10)
+      activationDate = [(CPLSuggestionChange *)selfCopy activationDate];
+      if (activationDate)
       {
-        [v24 setObject:v10 forKey:@"activationDate"];
+        [builderCopy setObject:activationDate forKey:@"activationDate"];
       }
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"relevantUntilDate")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"relevantUntilDate")])
     {
-      v11 = [(CPLSuggestionChange *)v6 relevantUntilDate];
-      if (v11)
+      relevantUntilDate = [(CPLSuggestionChange *)selfCopy relevantUntilDate];
+      if (relevantUntilDate)
       {
-        [v24 setObject:v11 forKey:@"relevantUntilDate"];
+        [builderCopy setObject:relevantUntilDate forKey:@"relevantUntilDate"];
       }
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"expungeDate")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"expungeDate")])
     {
-      v12 = [(CPLSuggestionChange *)v6 expungeDate];
-      if (v12)
+      expungeDate = [(CPLSuggestionChange *)selfCopy expungeDate];
+      if (expungeDate)
       {
-        [v24 setObject:v12 forKey:@"expungeDate"];
+        [builderCopy setObject:expungeDate forKey:@"expungeDate"];
       }
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"state")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"state")])
     {
-      v13 = [NSNumber numberWithUnsignedShort:[(CPLSuggestionChange *)v6 state]];
-      [v24 setObject:v13 forKey:@"state"];
+      v13 = [NSNumber numberWithUnsignedShort:[(CPLSuggestionChange *)selfCopy state]];
+      [builderCopy setObject:v13 forKey:@"state"];
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"type")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"type")])
     {
-      v14 = [NSNumber numberWithUnsignedShort:[(CPLSuggestionChange *)v6 type]];
-      [v24 setObject:v14 forKey:@"type"];
+      v14 = [NSNumber numberWithUnsignedShort:[(CPLSuggestionChange *)selfCopy type]];
+      [builderCopy setObject:v14 forKey:@"type"];
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"subtype")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"subtype")])
     {
-      v15 = [NSNumber numberWithUnsignedShort:[(CPLSuggestionChange *)v6 subtype]];
-      [v24 setObject:v15 forKey:@"subtype"];
+      v15 = [NSNumber numberWithUnsignedShort:[(CPLSuggestionChange *)selfCopy subtype]];
+      [builderCopy setObject:v15 forKey:@"subtype"];
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"creationDate")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"creationDate")])
     {
-      v16 = [(CPLSuggestionChange *)v6 creationDate];
-      [v24 setObject:v16 forKey:@"createDate"];
+      creationDate = [(CPLSuggestionChange *)selfCopy creationDate];
+      [builderCopy setObject:creationDate forKey:@"createDate"];
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"version")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"version")])
     {
-      v17 = [NSNumber numberWithInteger:[(CPLSuggestionChange *)v6 version]];
-      [v24 setObject:v17 forKey:@"version"];
+      v17 = [NSNumber numberWithInteger:[(CPLSuggestionChange *)selfCopy version]];
+      [builderCopy setObject:v17 forKey:@"version"];
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"actionData")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"actionData")])
     {
-      v18 = [(CPLSuggestionChange *)v6 actionData];
-      if (v18)
+      actionData = [(CPLSuggestionChange *)selfCopy actionData];
+      if (actionData)
       {
-        [v24 setLegacyEncryptedObject:v18 forKey:@"action"];
+        [builderCopy setLegacyEncryptedObject:actionData forKey:@"action"];
       }
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"featuresData")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"featuresData")])
     {
-      v19 = [(CPLSuggestionChange *)v6 featuresData];
-      if (v19)
+      featuresData = [(CPLSuggestionChange *)selfCopy featuresData];
+      if (featuresData)
       {
-        [v24 setLegacyEncryptedObject:v19 forKey:@"features"];
+        [builderCopy setLegacyEncryptedObject:featuresData forKey:@"features"];
       }
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"recordList")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"recordList")])
     {
-      v20 = [(CPLSuggestionChange *)v6 recordList];
-      v21 = v20;
-      if (v20)
+      recordList = [(CPLSuggestionChange *)selfCopy recordList];
+      v21 = recordList;
+      if (recordList)
       {
-        [v20 setVersion:kCPLSuggestionListCurrentVersion];
-        v22 = [v21 data];
-        [v24 setObject:v22 forKey:@"assetList"];
+        [recordList setVersion:kCPLSuggestionListCurrentVersion];
+        data = [v21 data];
+        [builderCopy setObject:data forKey:@"assetList"];
       }
     }
 
-    if ([(CPLSuggestionChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"notificationState")])
+    if ([(CPLSuggestionChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"notificationState")])
     {
-      v23 = [NSNumber numberWithUnsignedShort:[(CPLSuggestionChange *)v6 notificationState]];
-      [v24 setObject:v23 forKey:@"notificationState"];
+      v23 = [NSNumber numberWithUnsignedShort:[(CPLSuggestionChange *)selfCopy notificationState]];
+      [builderCopy setObject:v23 forKey:@"notificationState"];
     }
   }
 }
 
-- (void)fillWithCKRecord:(id)a3
+- (void)fillWithCKRecord:(id)record
 {
   sub_10002B0F4();
   v5 = v4;

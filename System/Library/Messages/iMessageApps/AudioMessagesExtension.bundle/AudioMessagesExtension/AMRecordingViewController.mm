@@ -1,10 +1,10 @@
 @interface AMRecordingViewController
-- (_TtC22AudioMessagesExtension25AMRecordingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)controlButtonLongPress:(id)a3;
-- (void)controllButtonTouchDown:(id)a3;
-- (void)controllButtonTouchUpInside:(id)a3;
-- (void)controllButtonTouchUpOutside:(id)a3;
-- (void)handlePan:(id)a3;
+- (_TtC22AudioMessagesExtension25AMRecordingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)controlButtonLongPress:(id)press;
+- (void)controllButtonTouchDown:(id)down;
+- (void)controllButtonTouchUpInside:(id)inside;
+- (void)controllButtonTouchUpOutside:(id)outside;
+- (void)handlePan:(id)pan;
 - (void)viewDidLoad;
 @end
 
@@ -12,11 +12,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_3F124();
 }
 
-- (void)controllButtonTouchDown:(id)a3
+- (void)controllButtonTouchDown:(id)down
 {
   sub_2D124(&qword_82010);
   v3 = swift_allocObject();
@@ -27,15 +27,15 @@
   sub_42BF8();
 }
 
-- (void)controllButtonTouchUpInside:(id)a3
+- (void)controllButtonTouchUpInside:(id)inside
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_41BA4();
   swift_unknownObjectRelease();
 }
 
-- (void)controllButtonTouchUpOutside:(id)a3
+- (void)controllButtonTouchUpOutside:(id)outside
 {
   sub_2D124(&qword_82010);
   v3 = swift_allocObject();
@@ -46,23 +46,23 @@
   sub_42BF8();
 }
 
-- (void)controlButtonLongPress:(id)a3
+- (void)controlButtonLongPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  sub_3F964(v4);
+  pressCopy = press;
+  selfCopy = self;
+  sub_3F964(pressCopy);
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = self;
-  sub_40090(v4);
+  panCopy = pan;
+  selfCopy = self;
+  sub_40090(panCopy);
 }
 
-- (_TtC22AudioMessagesExtension25AMRecordingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22AudioMessagesExtension25AMRecordingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_42978();
     v7 = v6;
@@ -74,8 +74,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_403EC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_403EC(v5, v7, bundle);
 }
 
 @end

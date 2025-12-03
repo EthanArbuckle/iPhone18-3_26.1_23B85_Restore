@@ -1,7 +1,7 @@
 @interface CKBrowserAppInstallCell
 - (id)iconView;
 - (void)layoutSubviews;
-- (void)setInstallation:(id)a3;
+- (void)setInstallation:(id)installation;
 @end
 
 @implementation CKBrowserAppInstallCell
@@ -11,15 +11,15 @@
   v4.receiver = self;
   v4.super_class = CKBrowserAppInstallCell;
   [(CKBrowserCell *)&v4 layoutSubviews];
-  v3 = [(CKBrowserCell *)self badgeView];
-  [v3 setHidden:1];
+  badgeView = [(CKBrowserCell *)self badgeView];
+  [badgeView setHidden:1];
 }
 
 - (id)iconView
 {
-  v3 = [(CKBrowserAppInstallCell *)self browserIconView];
+  browserIconView = [(CKBrowserAppInstallCell *)self browserIconView];
 
-  if (!v3)
+  if (!browserIconView)
   {
     v4 = [CKBrowserIconView alloc];
     v5 = [(CKBrowserIconView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -29,22 +29,22 @@
   return [(CKBrowserAppInstallCell *)self browserIconView];
 }
 
-- (void)setInstallation:(id)a3
+- (void)setInstallation:(id)installation
 {
-  v5 = a3;
-  if (self->_installation != v5)
+  installationCopy = installation;
+  if (self->_installation != installationCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_installation, a3);
-    v6 = [(CKAppInstallation *)v12 icon];
-    v7 = [(CKBrowserAppInstallCell *)self browserIconView];
-    [v7 setIconImage:v6];
+    v12 = installationCopy;
+    objc_storeStrong(&self->_installation, installation);
+    icon = [(CKAppInstallation *)v12 icon];
+    browserIconView = [(CKBrowserAppInstallCell *)self browserIconView];
+    [browserIconView setIconImage:icon];
 
-    v8 = [(CKAppInstallation *)v12 localizedDisplayName];
-    v9 = [(CKBrowserCell *)self browserLabel];
-    [v9 setText:v8];
+    localizedDisplayName = [(CKAppInstallation *)v12 localizedDisplayName];
+    browserLabel = [(CKBrowserCell *)self browserLabel];
+    [browserLabel setText:localizedDisplayName];
 
-    v10 = [(CKBrowserAppInstallCell *)self browserIconView];
+    browserIconView2 = [(CKBrowserAppInstallCell *)self browserIconView];
     if ([(CKAppInstallation *)v12 installed])
     {
       v11 = 100.0;
@@ -55,10 +55,10 @@
       [(CKAppInstallation *)v12 percentComplete];
     }
 
-    [v10 setPercentComplete:1 animated:v11];
+    [browserIconView2 setPercentComplete:1 animated:v11];
 
     [(CKBrowserAppInstallCell *)self setNeedsLayout];
-    v5 = v12;
+    installationCopy = v12;
   }
 }
 

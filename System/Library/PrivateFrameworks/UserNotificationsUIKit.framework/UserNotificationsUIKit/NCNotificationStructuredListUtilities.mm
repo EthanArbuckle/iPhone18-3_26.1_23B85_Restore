@@ -1,36 +1,36 @@
 @interface NCNotificationStructuredListUtilities
-+ (BOOL)_isNotificationListBaseComponentDelegateMethod:(SEL)a3;
-+ (BOOL)_isNotificationListComponentDelegateMethod:(SEL)a3;
-+ (BOOL)isNotificationListComponentDelegateMethod:(SEL)a3;
-+ (id)_selectorsForProtocol:(id)a3;
++ (BOOL)_isNotificationListBaseComponentDelegateMethod:(SEL)method;
++ (BOOL)_isNotificationListComponentDelegateMethod:(SEL)method;
++ (BOOL)isNotificationListComponentDelegateMethod:(SEL)method;
++ (id)_selectorsForProtocol:(id)protocol;
 @end
 
 @implementation NCNotificationStructuredListUtilities
 
-+ (BOOL)isNotificationListComponentDelegateMethod:(SEL)a3
++ (BOOL)isNotificationListComponentDelegateMethod:(SEL)method
 {
-  if ([a1 _isNotificationListComponentDelegateMethod:?])
+  if ([self _isNotificationListComponentDelegateMethod:?])
   {
     return 1;
   }
 
-  return [a1 _isNotificationListBaseComponentDelegateMethod:a3];
+  return [self _isNotificationListBaseComponentDelegateMethod:method];
 }
 
-+ (BOOL)_isNotificationListComponentDelegateMethod:(SEL)a3
++ (BOOL)_isNotificationListComponentDelegateMethod:(SEL)method
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__NCNotificationStructuredListUtilities__isNotificationListComponentDelegateMethod___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_isNotificationListComponentDelegateMethod__onceToken != -1)
   {
     dispatch_once(&_isNotificationListComponentDelegateMethod__onceToken, block);
   }
 
   v4 = _isNotificationListComponentDelegateMethod____notificationListComponentDelegateSelectors;
-  v5 = NSStringFromSelector(a3);
+  v5 = NSStringFromSelector(method);
   LOBYTE(v4) = [v4 containsObject:v5];
 
   return v4;
@@ -44,20 +44,20 @@ uint64_t __84__NCNotificationStructuredListUtilities__isNotificationListComponen
   return MEMORY[0x2821F96F8](v1);
 }
 
-+ (BOOL)_isNotificationListBaseComponentDelegateMethod:(SEL)a3
++ (BOOL)_isNotificationListBaseComponentDelegateMethod:(SEL)method
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__NCNotificationStructuredListUtilities__isNotificationListBaseComponentDelegateMethod___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_isNotificationListBaseComponentDelegateMethod__onceToken != -1)
   {
     dispatch_once(&_isNotificationListBaseComponentDelegateMethod__onceToken, block);
   }
 
   v4 = _isNotificationListBaseComponentDelegateMethod____notificationListBaseComponentDelegateSelectors;
-  v5 = NSStringFromSelector(a3);
+  v5 = NSStringFromSelector(method);
   LOBYTE(v4) = [v4 containsObject:v5];
 
   return v4;
@@ -71,14 +71,14 @@ uint64_t __88__NCNotificationStructuredListUtilities__isNotificationListBaseComp
   return MEMORY[0x2821F96F8](v1);
 }
 
-+ (id)_selectorsForProtocol:(id)a3
++ (id)_selectorsForProtocol:(id)protocol
 {
-  v3 = a3;
+  protocolCopy = protocol;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   outCount = 0;
-  v5 = protocol_copyMethodDescriptionList(v3, 1, 1, &outCount);
+  v5 = protocol_copyMethodDescriptionList(protocolCopy, 1, 1, &outCount);
   v12 = 0;
-  v6 = protocol_copyMethodDescriptionList(v3, 0, 1, &v12);
+  v6 = protocol_copyMethodDescriptionList(protocolCopy, 0, 1, &v12);
   v7 = outCount;
   if (v12 + outCount)
   {

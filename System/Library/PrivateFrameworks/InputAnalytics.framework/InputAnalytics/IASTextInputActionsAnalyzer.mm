@@ -1,26 +1,26 @@
 @interface IASTextInputActionsAnalyzer
-+ (IASTextInputActionsAnalyzer)analyzerWithName:(id)a3;
-+ (id)getOrInitializeArrayFromArray:(id)a3 forKey:(unint64_t)a4 initCapacity:(unint64_t)a5;
-+ (id)getOrInitializeArrayFromDictionary:(id)a3 forKey:(id)a4 initCapacity:(unint64_t)a5;
-+ (id)getOrInitializeDictionaryFrom:(id)a3 forKey:(unint64_t)a4 initCapacity:(int64_t)a5;
++ (IASTextInputActionsAnalyzer)analyzerWithName:(id)name;
++ (id)getOrInitializeArrayFromArray:(id)array forKey:(unint64_t)key initCapacity:(unint64_t)capacity;
++ (id)getOrInitializeArrayFromDictionary:(id)dictionary forKey:(id)key initCapacity:(unint64_t)capacity;
++ (id)getOrInitializeDictionaryFrom:(id)from forKey:(unint64_t)key initCapacity:(int64_t)capacity;
 - (BOOL)shouldBeGarbageCollected;
-- (IASTextInputActionsAnalyzer)initWithAnalyzerSessionId:(id)a3 sessionManagerDelegate:(id)a4 queue:(id)a5;
-- (IASTextInputActionsAnalyzer)initWithAnalyzerSessionId:(id)a3 sessionManagerDelegate:(id)a4 queue:(id)a5 eventHandler:(id)a6;
-- (id)computeSessionActionsStringOnSession:(id)a3;
-- (void)consumeAction:(id)a3;
+- (IASTextInputActionsAnalyzer)initWithAnalyzerSessionId:(id)id sessionManagerDelegate:(id)delegate queue:(id)queue;
+- (IASTextInputActionsAnalyzer)initWithAnalyzerSessionId:(id)id sessionManagerDelegate:(id)delegate queue:(id)queue eventHandler:(id)handler;
+- (id)computeSessionActionsStringOnSession:(id)session;
+- (void)consumeAction:(id)action;
 - (void)enumerateAnalytics;
-- (void)enumerateTextInputActionsAnalytics:(id)a3;
-- (void)increaseCountForAppBundleId:(id)a3 forSource:(int64_t)a4 forActionType:(int64_t)a5 forFlagOptions:(int64_t)a6 forInputModeKey:(id)a7 byAnalyzerEntry:(id)a8;
+- (void)enumerateTextInputActionsAnalytics:(id)analytics;
+- (void)increaseCountForAppBundleId:(id)id forSource:(int64_t)source forActionType:(int64_t)type forFlagOptions:(int64_t)options forInputModeKey:(id)key byAnalyzerEntry:(id)entry;
 - (void)reset;
 @end
 
 @implementation IASTextInputActionsAnalyzer
 
-- (IASTextInputActionsAnalyzer)initWithAnalyzerSessionId:(id)a3 sessionManagerDelegate:(id)a4 queue:(id)a5
+- (IASTextInputActionsAnalyzer)initWithAnalyzerSessionId:(id)id sessionManagerDelegate:(id)delegate queue:(id)queue
 {
   v15.receiver = self;
   v15.super_class = IASTextInputActionsAnalyzer;
-  v5 = [(IASDailyGarbageCollectionAnalyzer *)&v15 initWithAnalyzerSessionId:a3 sessionManagerDelegate:a4 queue:a5];
+  v5 = [(IASDailyGarbageCollectionAnalyzer *)&v15 initWithAnalyzerSessionId:id sessionManagerDelegate:delegate queue:queue];
   v6 = v5;
   if (v5)
   {
@@ -43,11 +43,11 @@
   return v6;
 }
 
-- (IASTextInputActionsAnalyzer)initWithAnalyzerSessionId:(id)a3 sessionManagerDelegate:(id)a4 queue:(id)a5 eventHandler:(id)a6
+- (IASTextInputActionsAnalyzer)initWithAnalyzerSessionId:(id)id sessionManagerDelegate:(id)delegate queue:(id)queue eventHandler:(id)handler
 {
   v15.receiver = self;
   v15.super_class = IASTextInputActionsAnalyzer;
-  v6 = [(IASDailyGarbageCollectionAnalyzer *)&v15 initWithAnalyzerSessionId:a3 sessionManagerDelegate:a4 queue:a5 eventHandler:a6];
+  v6 = [(IASDailyGarbageCollectionAnalyzer *)&v15 initWithAnalyzerSessionId:id sessionManagerDelegate:delegate queue:queue eventHandler:handler];
   v7 = v6;
   if (v6)
   {
@@ -69,11 +69,11 @@
   return v7;
 }
 
-+ (IASTextInputActionsAnalyzer)analyzerWithName:(id)a3
++ (IASTextInputActionsAnalyzer)analyzerWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(objc_opt_class());
-  v7 = objc_msgSend_copy(v3, v5, v6);
+  v7 = objc_msgSend_copy(nameCopy, v5, v6);
 
   v8 = v4[17];
   v4[17] = v7;
@@ -83,30 +83,30 @@
   return v4;
 }
 
-+ (id)getOrInitializeArrayFromDictionary:(id)a3 forKey:(id)a4 initCapacity:(unint64_t)a5
++ (id)getOrInitializeArrayFromDictionary:(id)dictionary forKey:(id)key initCapacity:(unint64_t)capacity
 {
-  v7 = a3;
-  v8 = a4;
-  v10 = objc_msgSend_valueForKey_(v7, v9, v8);
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v10 = objc_msgSend_valueForKey_(dictionaryCopy, v9, keyCopy);
   if (!v10)
   {
     v11 = objc_alloc(MEMORY[0x1E695DF70]);
-    v10 = objc_msgSend_initWithCapacity_(v11, v12, a5);
-    if (a5)
+    v10 = objc_msgSend_initWithCapacity_(v11, v12, capacity);
+    if (capacity)
     {
-      v15 = a5;
+      capacityCopy = capacity;
       do
       {
         v16 = objc_msgSend_null(MEMORY[0x1E695DFB0], v13, v14);
         objc_msgSend_addObject_(v10, v17, v16);
 
-        --v15;
+        --capacityCopy;
       }
 
-      while (v15);
+      while (capacityCopy);
     }
 
-    objc_msgSend_setObject_forKey_(v7, v13, v10, v8);
+    objc_msgSend_setObject_forKey_(dictionaryCopy, v13, v10, keyCopy);
     v18 = sub_1D4620410();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -117,10 +117,10 @@
   return v10;
 }
 
-+ (id)getOrInitializeArrayFromArray:(id)a3 forKey:(unint64_t)a4 initCapacity:(unint64_t)a5
++ (id)getOrInitializeArrayFromArray:(id)array forKey:(unint64_t)key initCapacity:(unint64_t)capacity
 {
-  v7 = a3;
-  if (objc_msgSend_count(v7, v8, v9) <= a4)
+  arrayCopy = array;
+  if (objc_msgSend_count(arrayCopy, v8, v9) <= key)
   {
     v11 = sub_1D4620410();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -128,41 +128,41 @@
       sub_1D462D78C();
     }
 
-    if (a4 >= 0x14)
+    if (key >= 0x14)
     {
       sub_1D462D814();
     }
 
-    while (objc_msgSend_count(v7, v12, v13) <= a4)
+    while (objc_msgSend_count(arrayCopy, v12, v13) <= key)
     {
       v14 = objc_msgSend_null(MEMORY[0x1E695DFB0], v10, v16);
-      objc_msgSend_addObject_(v7, v15, v14);
+      objc_msgSend_addObject_(arrayCopy, v15, v14);
     }
   }
 
-  v17 = objc_msgSend_objectAtIndexedSubscript_(v7, v10, a4);
+  v17 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v10, key);
   v20 = objc_msgSend_null(MEMORY[0x1E695DFB0], v18, v19);
   isEqual = objc_msgSend_isEqual_(v17, v21, v20);
 
   if (isEqual)
   {
     v24 = objc_alloc(MEMORY[0x1E695DF70]);
-    v28 = objc_msgSend_initWithCapacity_(v24, v25, a5);
-    if (a5)
+    v28 = objc_msgSend_initWithCapacity_(v24, v25, capacity);
+    if (capacity)
     {
-      v29 = a5;
+      capacityCopy = capacity;
       do
       {
         v30 = objc_msgSend_null(MEMORY[0x1E695DFB0], v26, v27);
         objc_msgSend_addObject_(v28, v31, v30);
 
-        --v29;
+        --capacityCopy;
       }
 
-      while (v29);
+      while (capacityCopy);
     }
 
-    objc_msgSend_setObject_atIndexedSubscript_(v7, v26, v28, a4);
+    objc_msgSend_setObject_atIndexedSubscript_(arrayCopy, v26, v28, key);
     v32 = sub_1D4620410();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
@@ -172,25 +172,25 @@
 
   else
   {
-    v28 = objc_msgSend_objectAtIndexedSubscript_(v7, v23, a4);
+    v28 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v23, key);
   }
 
   return v28;
 }
 
-+ (id)getOrInitializeDictionaryFrom:(id)a3 forKey:(unint64_t)a4 initCapacity:(int64_t)a5
++ (id)getOrInitializeDictionaryFrom:(id)from forKey:(unint64_t)key initCapacity:(int64_t)capacity
 {
-  v7 = a3;
-  v9 = objc_msgSend_objectAtIndexedSubscript_(v7, v8, a4);
+  fromCopy = from;
+  v9 = objc_msgSend_objectAtIndexedSubscript_(fromCopy, v8, key);
   v12 = objc_msgSend_null(MEMORY[0x1E695DFB0], v10, v11);
   isEqual = objc_msgSend_isEqual_(v9, v13, v12);
 
   if (isEqual)
   {
     v15 = objc_alloc(MEMORY[0x1E695DF90]);
-    v17 = objc_msgSend_initWithCapacity_(v15, v16, a5);
+    v17 = objc_msgSend_initWithCapacity_(v15, v16, capacity);
 
-    objc_msgSend_setObject_atIndexedSubscript_(v7, v18, v17, a4);
+    objc_msgSend_setObject_atIndexedSubscript_(fromCopy, v18, v17, key);
     v19 = sub_1D4620410();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -203,30 +203,30 @@
   return v9;
 }
 
-- (void)increaseCountForAppBundleId:(id)a3 forSource:(int64_t)a4 forActionType:(int64_t)a5 forFlagOptions:(int64_t)a6 forInputModeKey:(id)a7 byAnalyzerEntry:(id)a8
+- (void)increaseCountForAppBundleId:(id)id forSource:(int64_t)source forActionType:(int64_t)type forFlagOptions:(int64_t)options forInputModeKey:(id)key byAnalyzerEntry:(id)entry
 {
   v81 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
-  if ((objc_msgSend_isAllZeroes(v16, v17, v18) & 1) == 0)
+  idCopy = id;
+  keyCopy = key;
+  entryCopy = entry;
+  if ((objc_msgSend_isAllZeroes(entryCopy, v17, v18) & 1) == 0)
   {
-    if (v15)
+    if (keyCopy)
     {
-      if (!v14)
+      if (!idCopy)
       {
-        v14 = &stru_1F4FDAA18;
+        idCopy = &stru_1F4FDAA18;
       }
 
-      v20 = objc_msgSend_getOrInitializeArrayFromDictionary_forKey_initCapacity_(IASTextInputActionsAnalyzer, v19, self->_entries, v14, 15);
-      v59 = objc_msgSend_getOrInitializeArrayFromArray_forKey_initCapacity_(IASTextInputActionsAnalyzer, v21, v20, a4, 20);
-      v58 = objc_msgSend_getOrInitializeArrayFromArray_forKey_initCapacity_(IASTextInputActionsAnalyzer, v22, v59, a5, 8);
-      v60 = objc_msgSend_getOrInitializeDictionaryFrom_forKey_initCapacity_(IASTextInputActionsAnalyzer, v23, v58, a6, 1);
-      v26 = objc_msgSend_objectForKeyedSubscript_(v60, v24, v15);
+      v20 = objc_msgSend_getOrInitializeArrayFromDictionary_forKey_initCapacity_(IASTextInputActionsAnalyzer, v19, self->_entries, idCopy, 15);
+      v59 = objc_msgSend_getOrInitializeArrayFromArray_forKey_initCapacity_(IASTextInputActionsAnalyzer, v21, v20, source, 20);
+      v58 = objc_msgSend_getOrInitializeArrayFromArray_forKey_initCapacity_(IASTextInputActionsAnalyzer, v22, v59, type, 8);
+      v60 = objc_msgSend_getOrInitializeDictionaryFrom_forKey_initCapacity_(IASTextInputActionsAnalyzer, v23, v58, options, 1);
+      v26 = objc_msgSend_objectForKeyedSubscript_(v60, v24, keyCopy);
       if (!v26)
       {
         v26 = objc_alloc_init(IASTextInputActionsAnalyzerEntry);
-        objc_msgSend_setObject_forKeyedSubscript_(v60, v27, v26, v15);
+        objc_msgSend_setObject_forKeyedSubscript_(v60, v27, v26, keyCopy);
         v28 = sub_1D4620410();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
         {
@@ -235,38 +235,38 @@
           *buf = 138478851;
           v62 = v55;
           v63 = 2048;
-          v64 = a4;
+          sourceCopy2 = source;
           v65 = 2048;
-          v66 = a5;
+          typeCopy2 = type;
           v67 = 2048;
-          v68 = a6;
+          optionsCopy2 = options;
           v69 = 2113;
-          v70 = v15;
+          v70 = keyCopy;
           _os_log_debug_impl(&dword_1D460F000, v28, OS_LOG_TYPE_DEBUG, "[%{private}@][IASTextInputActionsAnalyzer] New input mode key found - initializing new entry for source:%lu actionType:%lu flagOptions%lu inputMode:%{private}@", buf, 0x34u);
         }
       }
 
-      objc_msgSend_increaseWithEntry_(v26, v25, v16);
+      objc_msgSend_increaseWithEntry_(v26, v25, entryCopy);
       v31 = sub_1D4620410();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
         v56 = objc_msgSend_analyzerSessionId(self, v32, v33);
         v37 = objc_msgSend_description(v56, v35, v36);
-        v54 = objc_msgSend_netCharacters(v16, v38, v39);
-        v53 = objc_msgSend_userRemovedCharacters(v16, v40, v41);
-        v52 = objc_msgSend_netEmojiCharacters(v16, v42, v43);
-        v51 = objc_msgSend_userRemovedEmojiCharacters(v16, v44, v45);
-        v48 = objc_msgSend_inputActions(v16, v46, v47);
+        v54 = objc_msgSend_netCharacters(entryCopy, v38, v39);
+        v53 = objc_msgSend_userRemovedCharacters(entryCopy, v40, v41);
+        v52 = objc_msgSend_netEmojiCharacters(entryCopy, v42, v43);
+        v51 = objc_msgSend_userRemovedEmojiCharacters(entryCopy, v44, v45);
+        v48 = objc_msgSend_inputActions(entryCopy, v46, v47);
         *buf = 138480131;
         v62 = v37;
         v63 = 2048;
-        v64 = a4;
+        sourceCopy2 = source;
         v65 = 2048;
-        v66 = a5;
+        typeCopy2 = type;
         v67 = 2048;
-        v68 = a6;
+        optionsCopy2 = options;
         v69 = 2113;
-        v70 = v15;
+        v70 = keyCopy;
         v71 = 2048;
         v72 = v54;
         v73 = 2048;
@@ -294,11 +294,11 @@
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)consumeAction:(id)a3
+- (void)consumeAction:(id)action
 {
   v247 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  actionCopy = action;
+  if (!actionCopy)
   {
     sub_1D462D994(a2, self, v5);
   }
@@ -306,7 +306,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = actionCopy;
   }
 
   else
@@ -598,7 +598,7 @@ LABEL_46:
 
     v225.receiver = self;
     v225.super_class = IASTextInputActionsAnalyzer;
-    [(IASDailyGarbageCollectionAnalyzer *)&v225 consumeAction:v6];
+    [(IASDailyGarbageCollectionAnalyzer *)&v225 consumeAction:actionCopy];
   }
 
   v171 = *MEMORY[0x1E69E9840];
@@ -624,9 +624,9 @@ LABEL_46:
   }
 }
 
-- (id)computeSessionActionsStringOnSession:(id)a3
+- (id)computeSessionActionsStringOnSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = objc_alloc_init(IATextInputActionsSessionActionInformation);
   v7 = 13;
   v10 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v8, 13);
@@ -647,7 +647,7 @@ LABEL_46:
   v54[4] = self;
   v13 = v10;
   v55 = v13;
-  objc_msgSend_enumerateObjectsUsingBlock_(v5, v14, v54);
+  objc_msgSend_enumerateObjectsUsingBlock_(sessionCopy, v14, v54);
   objc_msgSend_setSessionActionsString_(v6, v15, &stru_1F4FDAA18);
   v49 = MEMORY[0x1E69E9820];
   v50 = 3221225472;
@@ -712,12 +712,12 @@ LABEL_46:
   objc_msgSend_enumerateTextInputActionsAnalytics_(self, v4, v5);
 }
 
-- (void)enumerateTextInputActionsAnalytics:(id)a3
+- (void)enumerateTextInputActionsAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   v5 = sub_1D4620410();
   v6 = v5;
-  if (v4)
+  if (analyticsCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -752,7 +752,7 @@ LABEL_46:
     v15[4] = self;
     v17 = v21;
     v18 = v19;
-    v16 = v4;
+    v16 = analyticsCopy;
     objc_msgSend_enumerateKeysAndObjectsUsingBlock_(entries, v14, v15);
 
     _Block_object_dispose(v19, 8);
@@ -772,8 +772,8 @@ LABEL_46:
 {
   v11.receiver = self;
   v11.super_class = IASTextInputActionsAnalyzer;
-  v5 = [(IASDailyGarbageCollectionAnalyzer *)&v11 shouldBeGarbageCollected];
-  if (v5)
+  shouldBeGarbageCollected = [(IASDailyGarbageCollectionAnalyzer *)&v11 shouldBeGarbageCollected];
+  if (shouldBeGarbageCollected)
   {
     v6 = objc_msgSend_sessionErrors(self, v3, v4);
     objc_msgSend_logErrorCodeIfNotNil_(v6, v7, 0x1F4FDDE78);
@@ -781,7 +781,7 @@ LABEL_46:
     objc_msgSend_enumerateAnalytics(self, v8, v9);
   }
 
-  return v5;
+  return shouldBeGarbageCollected;
 }
 
 @end

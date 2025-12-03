@@ -1,30 +1,30 @@
 @interface VolumeEQPresetManager
-- (DictionaryRef)getPreset:(int64_t)a3;
+- (DictionaryRef)getPreset:(int64_t)preset;
 - (id).cxx_construct;
-- (id)init:(id)a3;
-- (void)loadVolumeBasedEQPresets:(id)a3;
-- (void)setCurrentRoute:(RouteChangeInfo)a3;
+- (id)init:(id)init;
+- (void)loadVolumeBasedEQPresets:(id)presets;
+- (void)setCurrentRoute:(RouteChangeInfo)route;
 @end
 
 @implementation VolumeEQPresetManager
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v4 = a3;
+  initCopy = init;
   v8.receiver = self;
   v8.super_class = VolumeEQPresetManager;
   v5 = [(VolumeEQPresetManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(VolumeEQPresetManager *)v5 loadVolumeBasedEQPresets:v4];
+    [(VolumeEQPresetManager *)v5 loadVolumeBasedEQPresets:initCopy];
     [(VolumeEQPresetManager *)v6 setCurrentRoute:0, 0];
   }
 
   return v6;
 }
 
-- (DictionaryRef)getPreset:(int64_t)a3
+- (DictionaryRef)getPreset:(int64_t)preset
 {
   v4 = v3;
   _X4 = 0;
@@ -115,19 +115,19 @@ LABEL_16:
   v21.i16[0] = vaddlv_u8(v21);
   if (v21.u32[0] > 1uLL)
   {
-    v22 = a3;
-    if (v20 <= a3)
+    presetCopy = preset;
+    if (v20 <= preset)
     {
-      v22 = a3 % v20;
+      presetCopy = preset % v20;
     }
   }
 
   else
   {
-    v22 = (v20 - 1) & a3;
+    presetCopy = (v20 - 1) & preset;
   }
 
-  v23 = *(v17[3] + 8 * v22);
+  v23 = *(v17[3] + 8 * presetCopy);
   if (!v23 || (v24 = *v23) == 0)
   {
 LABEL_17:
@@ -138,7 +138,7 @@ LABEL_17:
   while (1)
   {
     v25 = v24[1];
-    if (v25 == a3)
+    if (v25 == preset)
     {
       break;
     }
@@ -156,7 +156,7 @@ LABEL_17:
       v25 &= v20 - 1;
     }
 
-    if (v25 != v22)
+    if (v25 != presetCopy)
     {
       goto LABEL_17;
     }
@@ -170,7 +170,7 @@ LABEL_34:
     }
   }
 
-  if (v24[2] != a3)
+  if (v24[2] != preset)
   {
     goto LABEL_34;
   }
@@ -186,7 +186,7 @@ LABEL_18:
   return self;
 }
 
-- (void)setCurrentRoute:(RouteChangeInfo)a3
+- (void)setCurrentRoute:(RouteChangeInfo)route
 {
   v3 = *&self->_currentRoute.__a_.__a_value.var0;
   do
@@ -201,11 +201,11 @@ LABEL_18:
   while (!_ZF);
 }
 
-- (void)loadVolumeBasedEQPresets:(id)a3
+- (void)loadVolumeBasedEQPresets:(id)presets
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = **(Phase::Logger::GetInstance(v4) + 1216);
+  presetsCopy = presets;
+  v5 = **(Phase::Logger::GetInstance(presetsCopy) + 1216);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
@@ -213,28 +213,28 @@ LABEL_18:
     v60 = 1024;
     *v61 = 62;
     *&v61[4] = 2112;
-    *&v61[6] = v4;
+    *&v61[6] = presetsCopy;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Volume EQ: Searching for presets at %@", buf, 0x1Cu);
   }
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 enumeratorAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager enumeratorAtPath:presetsCopy];
   v8 = 0;
   p_vEQPresets = &self->_vEQPresets;
-  v55 = self;
+  selfCopy = self;
   while (1)
   {
-    v9 = [v7 nextObject];
+    nextObject = [v7 nextObject];
 
-    if (!v9)
+    if (!nextObject)
     {
       break;
     }
 
-    v10 = [v9 lastPathComponent];
-    if ([v10 hasSuffix:@".aupreset"] && objc_msgSend(v10, "hasPrefix:", @"aufx-tmst-appl-veq"))
+    lastPathComponent = [nextObject lastPathComponent];
+    if ([lastPathComponent hasSuffix:@".aupreset"] && objc_msgSend(lastPathComponent, "hasPrefix:", @"aufx-tmst-appl-veq"))
     {
-      v11 = [v10 componentsSeparatedByString:@"-"];
+      v11 = [lastPathComponent componentsSeparatedByString:@"-"];
       v12 = v11;
       if (v11 && [v11 count] >= 5 && objc_msgSend(v12, "count") <= 6)
       {
@@ -242,22 +242,22 @@ LABEL_18:
         v14 = [v12 count];
         if (v13 == 5)
         {
-          v15 = 0;
+          intValue = 0;
         }
 
         else
         {
-          v15 = -1;
+          intValue = -1;
         }
 
         if (v14 == 6)
         {
           v16 = [v12 objectAtIndexedSubscript:5];
-          v17 = [v16 stringByDeletingPathExtension];
-          v15 = [v17 intValue];
+          stringByDeletingPathExtension = [v16 stringByDeletingPathExtension];
+          intValue = [stringByDeletingPathExtension intValue];
         }
 
-        if (v15 == -1)
+        if (intValue == -1)
         {
           v20 = **(Phase::Logger::GetInstance(v14) + 1216);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -273,17 +273,17 @@ LABEL_18:
         }
 
         v18 = [v12 objectAtIndexedSubscript:4];
-        v19 = [v18 stringByDeletingPathExtension];
-        if (([v19 isEqualToString:@"vo08"] & 1) == 0)
+        stringByDeletingPathExtension2 = [v18 stringByDeletingPathExtension];
+        if (([stringByDeletingPathExtension2 isEqualToString:@"vo08"] & 1) == 0)
         {
-          if ([v19 isEqualToString:@"vo16"])
+          if ([stringByDeletingPathExtension2 isEqualToString:@"vo16"])
           {
             v21 = 1;
           }
 
           else
           {
-            v22 = [v19 isEqualToString:@"vo24"];
+            v22 = [stringByDeletingPathExtension2 isEqualToString:@"vo24"];
             if ((v22 & 1) == 0)
             {
               v36 = **(Phase::Logger::GetInstance(v22) + 1216);
@@ -294,7 +294,7 @@ LABEL_18:
                 v60 = 1024;
                 *v61 = 81;
                 *&v61[4] = 2112;
-                *&v61[6] = v19;
+                *&v61[6] = stringByDeletingPathExtension2;
                 _os_log_impl(&dword_23A302000, v36, OS_LOG_TYPE_ERROR, "%25s:%-5d Volume EQ: Unsupported bandwith token %@", buf, 0x1Cu);
               }
 
@@ -311,23 +311,23 @@ LABEL_18:
         v56 = 0;
 LABEL_25:
 
-        v23 = [(Phase::Logger *)v4 stringByAppendingPathComponent:v9];
-        v24 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v23];
-        v25 = v24;
-        v53 = v24;
-        if (v24)
+        v23 = [(Phase::Logger *)presetsCopy stringByAppendingPathComponent:nextObject];
+        bytes = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v23];
+        v25 = bytes;
+        v53 = bytes;
+        if (bytes)
         {
-          v24 = [v24 length];
-          if (v24)
+          bytes = [bytes length];
+          if (bytes)
           {
             v26 = v25;
-            v24 = [v25 bytes];
-            if (v24)
+            bytes = [v25 bytes];
+            if (bytes)
             {
               v58 = 0;
               v27 = v25;
               v50 = v23;
-              v51 = v4;
+              v51 = presetsCopy;
               v28 = CFDataCreate(0, [v25 bytes], objc_msgSend(v53, "length"));
               if (!v28)
               {
@@ -361,31 +361,31 @@ LABEL_25:
                 v60 = 1024;
                 *v61 = 151;
                 *&v61[4] = 2112;
-                *&v61[6] = v9;
+                *&v61[6] = nextObject;
                 v62 = 1024;
-                v63 = v15;
+                v63 = intValue;
                 v64 = 2048;
                 v65 = v56;
                 _os_log_impl(&dword_23A302000, v31, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Volume EQ: Adding preset at %@ for product ID %d and bandwidth Type %ld", buf, 0x2Cu);
               }
 
-              size = v55->_vEQPresets.__table_.__bucket_list_.__deleter_.__size_;
+              size = selfCopy->_vEQPresets.__table_.__bucket_list_.__deleter_.__size_;
               if (size)
               {
                 v33 = vcnt_s8(size);
                 v33.i16[0] = vaddlv_u8(v33);
                 if (v33.u32[0] > 1uLL)
                 {
-                  v34 = v15;
-                  if (size <= v15)
+                  v34 = intValue;
+                  if (size <= intValue)
                   {
-                    v34 = v15 % size;
+                    v34 = intValue % size;
                   }
                 }
 
                 else
                 {
-                  v34 = (size - 1) & v15;
+                  v34 = (size - 1) & intValue;
                 }
 
                 v37 = p_vEQPresets->__table_.__bucket_list_.__ptr_[v34];
@@ -394,12 +394,12 @@ LABEL_25:
                   for (i = *v37; i; i = *i)
                   {
                     v39 = i[1];
-                    if (v39 == v15)
+                    if (v39 == intValue)
                     {
-                      if (i[2].i32[0] == v15)
+                      if (i[2].i32[0] == intValue)
                       {
                         v40 = i[4];
-                        v52 = v6;
+                        v52 = defaultManager;
                         if (!*&v40)
                         {
                           goto LABEL_72;
@@ -436,7 +436,7 @@ LABEL_72:
                             if (v44[2] == v56)
                             {
                               v23 = v50;
-                              v4 = v51;
+                              presetsCopy = v51;
                               v46 = v44[3];
                               v44[3] = v49;
                               if (v49)
@@ -444,7 +444,7 @@ LABEL_72:
                                 CFRetain(v49);
                               }
 
-                              v6 = v52;
+                              defaultManager = v52;
                               if (v46)
                               {
                                 CFRelease(v46);
@@ -518,7 +518,7 @@ LABEL_72:
           }
         }
 
-        v35 = **(Phase::Logger::GetInstance(v24) + 1216);
+        v35 = **(Phase::Logger::GetInstance(bytes) + 1216);
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315650;
@@ -536,7 +536,7 @@ LABEL_79:
 LABEL_80:
     }
 
-    v8 = v9;
+    v8 = nextObject;
   }
 }
 

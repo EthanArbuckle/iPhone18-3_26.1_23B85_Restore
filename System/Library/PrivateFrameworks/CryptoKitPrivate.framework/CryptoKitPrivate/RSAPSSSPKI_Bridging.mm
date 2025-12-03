@@ -1,20 +1,20 @@
 @interface RSAPSSSPKI_Bridging
-+ (id)serializeWithKeyBytes:(id)a3 error:(id *)a4;
++ (id)serializeWithKeyBytes:(id)bytes error:(id *)error;
 - (_TtC16CryptoKitPrivate19RSAPSSSPKI_Bridging)init;
-- (_TtC16CryptoKitPrivate19RSAPSSSPKI_Bridging)initWithData:(id)a3 error:(id *)a4;
+- (_TtC16CryptoKitPrivate19RSAPSSSPKI_Bridging)initWithData:(id)data error:(id *)error;
 - (id)publicKeyBytes;
 @end
 
 @implementation RSAPSSSPKI_Bridging
 
-- (_TtC16CryptoKitPrivate19RSAPSSSPKI_Bridging)initWithData:(id)a3 error:(id *)a4
+- (_TtC16CryptoKitPrivate19RSAPSSSPKI_Bridging)initWithData:(id)data error:(id *)error
 {
   v6 = sub_1C0D785FC();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v18 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = a3;
+  dataCopy = data;
   v12 = sub_1C0D7832C();
   v14 = v13;
 
@@ -31,7 +31,7 @@
 
 - (id)publicKeyBytes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C0D785CC();
   v5 = v4;
 
@@ -41,9 +41,9 @@
   return v6;
 }
 
-+ (id)serializeWithKeyBytes:(id)a3 error:(id *)a4
++ (id)serializeWithKeyBytes:(id)bytes error:(id *)error
 {
-  v4 = a3;
+  bytesCopy = bytes;
   v5 = sub_1C0D7832C();
   v7 = v6;
 

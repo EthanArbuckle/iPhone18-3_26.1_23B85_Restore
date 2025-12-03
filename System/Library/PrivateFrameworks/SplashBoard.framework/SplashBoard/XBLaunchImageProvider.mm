@@ -1,11 +1,11 @@
 @interface XBLaunchImageProvider
 + (id)sharedInstance;
 - (XBLaunchImageProvider)init;
-- (id)createLaunchImageGeneratorWithContext:(id)a3 asyncImageData:(BOOL)a4 error:(id *)a5;
-- (void)_addBadLaunchInterfaceToDenyList:(id)a3 forError:(id)a4;
-- (void)_generateImageForSnapshot:(id)a3 inManifest:(id)a4 withContext:(id)a5 asyncImageData:(BOOL)a6 dataProvider:(id)a7 scheduleAsyncGeneration:(BOOL)a8 completion:(id)a9;
-- (void)_resetBadLaunchInterfaceCount:(id)a3;
-- (void)captureLaunchImageForManifest:(id)a3 withCompatibilityInfo:(id)a4 launchRequests:(id)a5 createCaptureInfo:(BOOL)a6 firstImageIsReady:(id)a7 withCompletionHandler:(id)a8;
+- (id)createLaunchImageGeneratorWithContext:(id)context asyncImageData:(BOOL)data error:(id *)error;
+- (void)_addBadLaunchInterfaceToDenyList:(id)list forError:(id)error;
+- (void)_generateImageForSnapshot:(id)snapshot inManifest:(id)manifest withContext:(id)context asyncImageData:(BOOL)data dataProvider:(id)provider scheduleAsyncGeneration:(BOOL)generation completion:(id)completion;
+- (void)_resetBadLaunchInterfaceCount:(id)count;
+- (void)captureLaunchImageForManifest:(id)manifest withCompatibilityInfo:(id)info launchRequests:(id)requests createCaptureInfo:(BOOL)captureInfo firstImageIsReady:(id)ready withCompletionHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -60,22 +60,22 @@ uint64_t __39__XBLaunchImageProvider_sharedInstance__block_invoke()
   [(XBLaunchImageProvider *)&v5 dealloc];
 }
 
-- (id)createLaunchImageGeneratorWithContext:(id)a3 asyncImageData:(BOOL)a4 error:(id *)a5
+- (id)createLaunchImageGeneratorWithContext:(id)context asyncImageData:(BOOL)data error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [v9 launchRequest];
-  v11 = [v9 applicationCompatibilityInfo];
-  if (v9)
+  contextCopy = context;
+  launchRequest = [contextCopy launchRequest];
+  applicationCompatibilityInfo = [contextCopy applicationCompatibilityInfo];
+  if (contextCopy)
   {
-    if (v10)
+    if (launchRequest)
     {
       goto LABEL_3;
     }
 
 LABEL_22:
     [XBLaunchImageProvider createLaunchImageGeneratorWithContext:asyncImageData:error:];
-    if (v11)
+    if (applicationCompatibilityInfo)
     {
       goto LABEL_4;
     }
@@ -84,13 +84,13 @@ LABEL_22:
   }
 
   [XBLaunchImageProvider createLaunchImageGeneratorWithContext:asyncImageData:error:];
-  if (!v10)
+  if (!launchRequest)
   {
     goto LABEL_22;
   }
 
 LABEL_3:
-  if (v11)
+  if (applicationCompatibilityInfo)
   {
     goto LABEL_4;
   }
@@ -98,12 +98,12 @@ LABEL_3:
 LABEL_23:
   [XBLaunchImageProvider createLaunchImageGeneratorWithContext:asyncImageData:error:];
 LABEL_4:
-  if ([v11 hasKnownBadLaunchImage])
+  if ([applicationCompatibilityInfo hasKnownBadLaunchImage])
   {
-    v12 = XBLogCapture();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    date = XBLogCapture();
+    if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
-      [XBLaunchImageProvider createLaunchImageGeneratorWithContext:v11 asyncImageData:v12 error:?];
+      [XBLaunchImageProvider createLaunchImageGeneratorWithContext:applicationCompatibilityInfo asyncImageData:date error:?];
     }
 
     v13 = 0;
@@ -111,30 +111,30 @@ LABEL_4:
 
   else
   {
-    v25 = a4;
-    v12 = [MEMORY[0x277CBEAA8] date];
+    dataCopy = data;
+    date = [MEMORY[0x277CBEAA8] date];
     v14 = XBLogCapture();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v10;
+      v35 = launchRequest;
       _os_log_impl(&dword_26B5EF000, v14, OS_LOG_TYPE_DEFAULT, "Synchronously generating image for request: %@", buf, 0xCu);
     }
 
-    v15 = [[XBLaunchImageProviderClient alloc] initWithApplicationInfo:v11];
+    v15 = [[XBLaunchImageProviderClient alloc] initWithApplicationInfo:applicationCompatibilityInfo];
     v33 = 0;
-    v16 = [(XBLaunchImageProviderClient *)v15 generateImageWithContext:v9 captureInfo:0 error:&v33];
+    v16 = [(XBLaunchImageProviderClient *)v15 generateImageWithContext:contextCopy captureInfo:0 error:&v33];
     v17 = v33;
     v18 = v17;
     if (v17)
     {
-      if (a5)
+      if (error)
       {
         v19 = v17;
-        *a5 = v18;
+        *error = v18;
       }
 
-      [(XBLaunchImageProvider *)self _addBadLaunchInterfaceToDenyList:v11 forError:v18];
+      [(XBLaunchImageProvider *)self _addBadLaunchInterfaceToDenyList:applicationCompatibilityInfo forError:v18];
       v20 = 0;
     }
 
@@ -143,20 +143,20 @@ LABEL_4:
       v20 = 0;
       if (v16 && v16 != -1)
       {
-        [(XBLaunchImageProvider *)self _resetBadLaunchInterfaceCount:v11];
-        v21 = -[XBLaunchImageDataProvider initWithRequest:contextID:opaque:]([XBLaunchImageDataProvider alloc], "initWithRequest:contextID:opaque:", v10, v16, [v11 launchesOpaque]);
-        v22 = [(XBLaunchImageDataProvider *)v21 fetchImage];
+        [(XBLaunchImageProvider *)self _resetBadLaunchInterfaceCount:applicationCompatibilityInfo];
+        v21 = -[XBLaunchImageDataProvider initWithRequest:contextID:opaque:]([XBLaunchImageDataProvider alloc], "initWithRequest:contextID:opaque:", launchRequest, v16, [applicationCompatibilityInfo launchesOpaque]);
+        fetchImage = [(XBLaunchImageDataProvider *)v21 fetchImage];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __84__XBLaunchImageProvider_createLaunchImageGeneratorWithContext_asyncImageData_error___block_invoke;
         v26[3] = &unk_279CF9C38;
         v31 = a2;
         v26[4] = self;
-        v27 = v11;
-        v32 = v25;
-        v28 = v9;
+        v27 = applicationCompatibilityInfo;
+        v32 = dataCopy;
+        v28 = contextCopy;
         v29 = v21;
-        v30 = v12;
+        v30 = date;
         v23 = v21;
         v20 = MEMORY[0x26D67C6A0](v26);
       }
@@ -195,27 +195,27 @@ void __84__XBLaunchImageProvider_createLaunchImageGeneratorWithContext_asyncImag
   }
 }
 
-- (void)captureLaunchImageForManifest:(id)a3 withCompatibilityInfo:(id)a4 launchRequests:(id)a5 createCaptureInfo:(BOOL)a6 firstImageIsReady:(id)a7 withCompletionHandler:(id)a8
+- (void)captureLaunchImageForManifest:(id)manifest withCompatibilityInfo:(id)info launchRequests:(id)requests createCaptureInfo:(BOOL)captureInfo firstImageIsReady:(id)ready withCompletionHandler:(id)handler
 {
-  v46 = a6;
+  captureInfoCopy = captureInfo;
   v97 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v39 = a7;
-  v15 = a8;
-  v45 = v12;
-  if (!v12)
+  manifestCopy = manifest;
+  infoCopy = info;
+  requestsCopy = requests;
+  readyCopy = ready;
+  handlerCopy = handler;
+  v45 = manifestCopy;
+  if (!manifestCopy)
   {
     [XBLaunchImageProvider captureLaunchImageForManifest:withCompatibilityInfo:launchRequests:createCaptureInfo:firstImageIsReady:withCompletionHandler:];
   }
 
-  if (([v13 allowsSavingLaunchImages] & 1) == 0)
+  if (([infoCopy allowsSavingLaunchImages] & 1) == 0)
   {
     [XBLaunchImageProvider captureLaunchImageForManifest:withCompatibilityInfo:launchRequests:createCaptureInfo:firstImageIsReady:withCompletionHandler:];
   }
 
-  if (![v14 count])
+  if (![requestsCopy count])
   {
     [XBLaunchImageProvider captureLaunchImageForManifest:withCompatibilityInfo:launchRequests:createCaptureInfo:firstImageIsReady:withCompletionHandler:];
   }
@@ -238,9 +238,9 @@ void __84__XBLaunchImageProvider_createLaunchImageGeneratorWithContext_asyncImag
   v77 = __Block_byref_object_copy__3;
   v78 = __Block_byref_object_dispose__3;
   v79 = 0;
-  if (v15 && v46)
+  if (handlerCopy && captureInfoCopy)
   {
-    v16 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:v14];
+    v16 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:requestsCopy];
     v17 = v87[5];
     v87[5] = v16;
 
@@ -254,8 +254,8 @@ void __84__XBLaunchImageProvider_createLaunchImageGeneratorWithContext_asyncImag
     v75[5] = v21;
   }
 
-  v23 = [[XBLaunchImageProviderClient alloc] initWithApplicationInfo:v13];
-  if (v39)
+  v23 = [[XBLaunchImageProviderClient alloc] initWithApplicationInfo:infoCopy];
+  if (readyCopy)
   {
     v24 = [MEMORY[0x277CF0BA0] sentinelWithQueue:0 signalCount:1 completion:?];
   }
@@ -266,15 +266,15 @@ void __84__XBLaunchImageProvider_createLaunchImageGeneratorWithContext_asyncImag
   }
 
   v25 = MEMORY[0x277CF0BA0];
-  v26 = [v14 count];
+  v26 = [requestsCopy count];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __150__XBLaunchImageProvider_captureLaunchImageForManifest_withCompatibilityInfo_launchRequests_createCaptureInfo_firstImageIsReady_withCompletionHandler___block_invoke;
   v66[3] = &unk_279CF9C60;
   v44 = v24;
   v67 = v44;
-  v73 = v46;
-  v38 = v15;
+  v73 = captureInfoCopy;
+  v38 = handlerCopy;
   v69 = v38;
   v70 = &v86;
   v71 = &v80;
@@ -290,7 +290,7 @@ void __84__XBLaunchImageProvider_createLaunchImageGeneratorWithContext_asyncImag
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v14;
+  obj = requestsCopy;
   v28 = [obj countByEnumeratingWithState:&v60 objects:v96 count:16];
   v42 = v27;
   if (v28)
@@ -310,15 +310,15 @@ void __84__XBLaunchImageProvider_createLaunchImageGeneratorWithContext_asyncImag
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           v33 = [MEMORY[0x277CF0C00] descriptionForObject:{v31, v38}];
-          v34 = [v13 bundleIdentifier];
+          bundleIdentifier = [infoCopy bundleIdentifier];
           *buf = 138412546;
           v93 = v33;
           v94 = 2112;
-          v95 = v34;
+          v95 = bundleIdentifier;
           _os_log_impl(&dword_26B5EF000, v32, OS_LOG_TYPE_DEFAULT, "Processing launch request %@ for app: %@.", buf, 0x16u);
         }
 
-        v35 = [[XBApplicationSnapshotGenerationContext alloc] initWithApplicationCompatibilityInfo:v13 launchRequest:v31 timeout:0.0];
+        v35 = [[XBApplicationSnapshotGenerationContext alloc] initWithApplicationCompatibilityInfo:infoCopy launchRequest:v31 timeout:0.0];
         workQueue = self->_workQueue;
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
@@ -326,12 +326,12 @@ void __84__XBLaunchImageProvider_createLaunchImageGeneratorWithContext_asyncImag
         block[3] = &unk_279CF9CB0;
         block[4] = v31;
         v55 = v64;
-        v48 = v13;
+        v48 = infoCopy;
         v49 = v43;
         v50 = v35;
-        v59 = v46;
+        v59 = captureInfoCopy;
         v51 = v45;
-        v52 = self;
+        selfCopy = self;
         v53 = v44;
         v56 = &v86;
         v57 = &v80;
@@ -573,22 +573,22 @@ intptr_t __150__XBLaunchImageProvider_captureLaunchImageForManifest_withCompatib
   return dispatch_semaphore_signal(*(a1 + 64));
 }
 
-- (void)_generateImageForSnapshot:(id)a3 inManifest:(id)a4 withContext:(id)a5 asyncImageData:(BOOL)a6 dataProvider:(id)a7 scheduleAsyncGeneration:(BOOL)a8 completion:(id)a9
+- (void)_generateImageForSnapshot:(id)snapshot inManifest:(id)manifest withContext:(id)context asyncImageData:(BOOL)data dataProvider:(id)provider scheduleAsyncGeneration:(BOOL)generation completion:(id)completion
 {
-  LODWORD(v26) = a6;
-  HIDWORD(v26) = a8;
-  v29 = a4;
-  v12 = a9;
-  v13 = a7;
-  v14 = a5;
-  v15 = a3;
-  v16 = [v14 launchRequest];
-  v17 = [v14 applicationCompatibilityInfo];
+  LODWORD(v26) = data;
+  HIDWORD(v26) = generation;
+  manifestCopy = manifest;
+  completionCopy = completion;
+  providerCopy = provider;
+  contextCopy = context;
+  snapshotCopy = snapshot;
+  launchRequest = [contextCopy launchRequest];
+  applicationCompatibilityInfo = [contextCopy applicationCompatibilityInfo];
 
-  v18 = [v16 groupID];
-  if (v29)
+  groupID = [launchRequest groupID];
+  if (manifestCopy)
   {
-    if (v14)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -597,10 +597,10 @@ intptr_t __150__XBLaunchImageProvider_captureLaunchImageForManifest_withCompatib
   else
   {
     [XBLaunchImageProvider _generateImageForSnapshot:inManifest:withContext:asyncImageData:dataProvider:scheduleAsyncGeneration:completion:];
-    if (v14)
+    if (contextCopy)
     {
 LABEL_3:
-      if (v17)
+      if (applicationCompatibilityInfo)
       {
         goto LABEL_4;
       }
@@ -610,17 +610,17 @@ LABEL_3:
   }
 
   [XBLaunchImageProvider _generateImageForSnapshot:inManifest:withContext:asyncImageData:dataProvider:scheduleAsyncGeneration:completion:];
-  if (v17)
+  if (applicationCompatibilityInfo)
   {
 LABEL_4:
-    if (v13)
+    if (providerCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_19:
     [XBLaunchImageProvider _generateImageForSnapshot:inManifest:withContext:asyncImageData:dataProvider:scheduleAsyncGeneration:completion:];
-    if (v18)
+    if (groupID)
     {
       goto LABEL_6;
     }
@@ -630,13 +630,13 @@ LABEL_19:
 
 LABEL_18:
   [XBLaunchImageProvider _generateImageForSnapshot:inManifest:withContext:asyncImageData:dataProvider:scheduleAsyncGeneration:completion:];
-  if (!v13)
+  if (!providerCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_5:
-  if (v18)
+  if (groupID)
   {
     goto LABEL_6;
   }
@@ -644,23 +644,23 @@ LABEL_5:
 LABEL_20:
   [XBLaunchImageProvider _generateImageForSnapshot:inManifest:withContext:asyncImageData:dataProvider:scheduleAsyncGeneration:completion:];
 LABEL_6:
-  v19 = [XBApplicationSnapshotManifestImpl _snapshotPredicateForRequest:v16, v26];
-  v20 = [v29 snapshotsForGroupID:v18 matchingPredicate:v19];
+  v19 = [XBApplicationSnapshotManifestImpl _snapshotPredicateForRequest:launchRequest, v26];
+  v20 = [manifestCopy snapshotsForGroupID:groupID matchingPredicate:v19];
 
   v21 = [v20 indexesOfObjectsPassingTest:&__block_literal_global_60];
   v22 = [v20 objectsAtIndexes:v21];
 
   if ([v22 count])
   {
-    [v29 deleteSnapshots:v22];
+    [manifestCopy deleteSnapshots:v22];
   }
 
-  [XBApplicationSnapshotManifestImpl _configureSnapshot:v15 withCompatibilityInfo:v17 forLaunchRequest:v16];
-  v23 = [v17 allowsSavingLaunchImages];
-  v24 = v23;
+  [XBApplicationSnapshotManifestImpl _configureSnapshot:snapshotCopy withCompatibilityInfo:applicationCompatibilityInfo forLaunchRequest:launchRequest];
+  allowsSavingLaunchImages = [applicationCompatibilityInfo allowsSavingLaunchImages];
+  v24 = allowsSavingLaunchImages;
   if (v27)
   {
-    v24 = v23 | 2;
+    v24 = allowsSavingLaunchImages | 2;
   }
 
   if (v28)
@@ -673,7 +673,7 @@ LABEL_6:
     v25 = v24 | 4;
   }
 
-  [v29 generateImageForSnapshot:v15 dataProvider:v13 options:v25 imageGeneratedHandler:v12 imageDataSavedHandler:0];
+  [manifestCopy generateImageForSnapshot:snapshotCopy dataProvider:providerCopy options:v25 imageGeneratedHandler:completionCopy imageDataSavedHandler:0];
 }
 
 BOOL __137__XBLaunchImageProvider__generateImageForSnapshot_inManifest_withContext_asyncImageData_dataProvider_scheduleAsyncGeneration_completion___block_invoke(uint64_t a1, void *a2)
@@ -684,68 +684,68 @@ BOOL __137__XBLaunchImageProvider__generateImageForSnapshot_inManifest_withConte
   return v3;
 }
 
-- (void)_addBadLaunchInterfaceToDenyList:(id)a3 forError:(id)a4
+- (void)_addBadLaunchInterfaceToDenyList:(id)list forError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 code];
-  v9 = [v6 bundleIdentifier];
+  listCopy = list;
+  errorCopy = error;
+  code = [errorCopy code];
+  bundleIdentifier = [listCopy bundleIdentifier];
   v10 = XBLogCapture();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [(XBLaunchImageProvider *)v7 _addBadLaunchInterfaceToDenyList:v9 forError:v10];
+    [(XBLaunchImageProvider *)errorCopy _addBadLaunchInterfaceToDenyList:bundleIdentifier forError:v10];
   }
 
-  if (v8 != 10 && ([v6 hasKnownBadLaunchImage] & 1) == 0)
+  if (code != 10 && ([listCopy hasKnownBadLaunchImage] & 1) == 0)
   {
-    if ((v8 & 0xFFFFFFFFFFFFFFFELL) != 8)
+    if ((code & 0xFFFFFFFFFFFFFFFELL) != 8)
     {
       goto LABEL_12;
     }
 
-    v11 = [v6 badLaunchImageCandidateCount];
-    if ((v11 & 0x8000000000000000) != 0)
+    badLaunchImageCandidateCount = [listCopy badLaunchImageCandidateCount];
+    if ((badLaunchImageCandidateCount & 0x8000000000000000) != 0)
     {
       [XBLaunchImageProvider _addBadLaunchInterfaceToDenyList:a2 forError:?];
     }
 
-    if (v11 >= 4)
+    if (badLaunchImageCandidateCount >= 4)
     {
       [XBLaunchImageProvider _addBadLaunchInterfaceToDenyList:a2 forError:?];
     }
 
-    v12 = v11 + 1;
-    v13 = v11 + 1 >= 3 ? 3 : v11 + 1;
-    [v6 setBadLaunchImageCandidateCount:v13];
+    v12 = badLaunchImageCandidateCount + 1;
+    v13 = badLaunchImageCandidateCount + 1 >= 3 ? 3 : badLaunchImageCandidateCount + 1;
+    [listCopy setBadLaunchImageCandidateCount:v13];
     if (v12 == 3)
     {
 LABEL_12:
-      [v6 setHasKnownBadLaunchImage:1];
+      [listCopy setHasKnownBadLaunchImage:1];
     }
 
-    if ([v6 hasKnownBadLaunchImage])
+    if ([listCopy hasKnownBadLaunchImage])
     {
       v14 = XBLogCapture();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(XBLaunchImageProvider *)v9 _addBadLaunchInterfaceToDenyList:v14 forError:v15];
+        [(XBLaunchImageProvider *)bundleIdentifier _addBadLaunchInterfaceToDenyList:v14 forError:v15];
       }
 
       v16 = +[XBApplicationDataStore sharedInstance];
-      [v16 _persistCompatibilityInfo:v6 forBundleIdentifier:v9];
+      [v16 _persistCompatibilityInfo:listCopy forBundleIdentifier:bundleIdentifier];
     }
   }
 }
 
-- (void)_resetBadLaunchInterfaceCount:(id)a3
+- (void)_resetBadLaunchInterfaceCount:(id)count
 {
-  v5 = a3;
-  if ([v5 badLaunchImageCandidateCount])
+  countCopy = count;
+  if ([countCopy badLaunchImageCandidateCount])
   {
-    [v5 setBadLaunchImageCandidateCount:0];
-    v3 = [v5 bundleIdentifier];
+    [countCopy setBadLaunchImageCandidateCount:0];
+    bundleIdentifier = [countCopy bundleIdentifier];
     v4 = +[XBApplicationDataStore sharedInstance];
-    [v4 _persistCompatibilityInfo:v5 forBundleIdentifier:v3];
+    [v4 _persistCompatibilityInfo:countCopy forBundleIdentifier:bundleIdentifier];
   }
 }
 

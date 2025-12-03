@@ -1,5 +1,5 @@
 @interface MRAVDistantOutputDeviceDescriptionImpl
-- (MRAVDistantOutputDeviceDescriptionImpl)initWithDescriptor:(id)a3;
+- (MRAVDistantOutputDeviceDescriptionImpl)initWithDescriptor:(id)descriptor;
 - (NSArray)subComponents;
 @end
 
@@ -7,22 +7,22 @@
 
 - (NSArray)subComponents
 {
-  v2 = [(_MRAVOutputDeviceDescriptorProtobuf *)self->_descriptor allClusterMembers];
-  v3 = [v2 msv_map:&__block_literal_global_129];
+  allClusterMembers = [(_MRAVOutputDeviceDescriptorProtobuf *)self->_descriptor allClusterMembers];
+  v3 = [allClusterMembers msv_map:&__block_literal_global_129];
 
   return v3;
 }
 
-- (MRAVDistantOutputDeviceDescriptionImpl)initWithDescriptor:(id)a3
+- (MRAVDistantOutputDeviceDescriptionImpl)initWithDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v9.receiver = self;
   v9.super_class = MRAVDistantOutputDeviceDescriptionImpl;
   v6 = [(MRAVDistantOutputDeviceDescriptionImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_descriptor, a3);
+    objc_storeStrong(&v6->_descriptor, descriptor);
   }
 
   return v7;

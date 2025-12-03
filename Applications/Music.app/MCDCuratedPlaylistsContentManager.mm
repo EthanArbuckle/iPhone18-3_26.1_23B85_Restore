@@ -1,17 +1,17 @@
 @interface MCDCuratedPlaylistsContentManager
 - (id)_modelRequest;
-- (id)itemAtIndexPath:(id)a3;
-- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)a3 inSection:(int64_t)a4;
-- (void)_initiatePlaybackForItem:(id)a3;
+- (id)itemAtIndexPath:(id)path;
+- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)response inSection:(int64_t)section;
+- (void)_initiatePlaybackForItem:(id)item;
 @end
 
 @implementation MCDCuratedPlaylistsContentManager
 
-- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)a3 inSection:(int64_t)a4
+- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)response inSection:(int64_t)section
 {
-  v6 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v7 = [v6 results];
-  v8 = [v7 numberOfItemsInSection:a4];
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v8 = [results numberOfItemsInSection:section];
 
   if (v8 < [(MCDGroupingsContentManager *)self maximumNumberOfItemsForDisplay])
   {
@@ -21,30 +21,30 @@
   return [(MCDGroupingsContentManager *)self maximumNumberOfItemsForDisplay];
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v6 = [v5 results];
-  v7 = [v6 itemsInSectionAtIndex:0];
-  v8 = [v4 row];
+  pathCopy = path;
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v7 = [results itemsInSectionAtIndex:0];
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8];
 
   return v9;
 }
 
-- (void)_initiatePlaybackForItem:(id)a3
+- (void)_initiatePlaybackForItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(MCDFuseContentManager *)self playbackManager];
-    v5 = [v8 playlist];
-    v6 = [(MCDFuseContentManager *)self viewController];
-    v7 = [v6 combinedPlayActivityFeatureName];
-    [v4 initiatePlaybackForPlaylist:v5 lastResponse:0 shuffled:0 playActivityFeatureName:v7];
+    playbackManager = [(MCDFuseContentManager *)self playbackManager];
+    playlist = [itemCopy playlist];
+    viewController = [(MCDFuseContentManager *)self viewController];
+    combinedPlayActivityFeatureName = [viewController combinedPlayActivityFeatureName];
+    [playbackManager initiatePlaybackForPlaylist:playlist lastResponse:0 shuffled:0 playActivityFeatureName:combinedPlayActivityFeatureName];
   }
 
   else
@@ -55,10 +55,10 @@
       goto LABEL_6;
     }
 
-    v4 = [(MCDFuseContentManager *)self playbackManager];
-    v5 = [(MCDFuseContentManager *)self viewController];
-    v6 = [v5 combinedPlayActivityFeatureName];
-    [v4 initiatePlaybackForPlaylist:v8 lastResponse:0 shuffled:0 playActivityFeatureName:v6];
+    playbackManager = [(MCDFuseContentManager *)self playbackManager];
+    playlist = [(MCDFuseContentManager *)self viewController];
+    viewController = [playlist combinedPlayActivityFeatureName];
+    [playbackManager initiatePlaybackForPlaylist:itemCopy lastResponse:0 shuffled:0 playActivityFeatureName:viewController];
   }
 
 LABEL_6:
@@ -67,13 +67,13 @@ LABEL_6:
 - (id)_modelRequest
 {
   v3 = objc_alloc_init(MusicStoreCuratorPlaylistsRequest);
-  v4 = [(MCDFuseContentManager *)self dataSource];
+  dataSource = [(MCDFuseContentManager *)self dataSource];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MCDFuseContentManager *)self dataSource];
-    -[MusicStoreCuratorPlaylistsRequest setCuratorStoreAdamID:](v3, "setCuratorStoreAdamID:", [v6 curatorID]);
+    dataSource2 = [(MCDFuseContentManager *)self dataSource];
+    -[MusicStoreCuratorPlaylistsRequest setCuratorStoreAdamID:](v3, "setCuratorStoreAdamID:", [dataSource2 curatorID]);
   }
 
   return v3;

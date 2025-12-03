@@ -1,12 +1,12 @@
 @interface SHHapticsSpatialTrackParser
-+ (id)spatialTrackInformationFromAttributes:(id)a3;
++ (id)spatialTrackInformationFromAttributes:(id)attributes;
 @end
 
 @implementation SHHapticsSpatialTrackParser
 
-+ (id)spatialTrackInformationFromAttributes:(id)a3
++ (id)spatialTrackInformationFromAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = sh_log_object();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -14,9 +14,9 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Parsing spatial track information", buf, 2u);
   }
 
-  if ([v3 count])
+  if ([attributesCopy count])
   {
-    v5 = [v3 objectForKeyedSubscript:@"offsets"];
+    v5 = [attributesCopy objectForKeyedSubscript:@"offsets"];
     v29 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
     v30 = 0u;
     v31 = 0u;
@@ -53,13 +53,13 @@
       while (v8);
     }
 
-    v18 = [v3 objectForKeyedSubscript:@"startOffsetInMilliseconds"];
-    v19 = [v3 objectForKeyedSubscript:@"timeDrift"];
+    v18 = [attributesCopy objectForKeyedSubscript:@"startOffsetInMilliseconds"];
+    v19 = [attributesCopy objectForKeyedSubscript:@"timeDrift"];
     [v18 doubleValue];
     v21 = v20 / 1000.0;
     [v19 doubleValue];
     v23 = v22 / 1000.0;
-    v24 = [v3 objectForKeyedSubscript:@"isCloseMatch"];
+    v24 = [attributesCopy objectForKeyedSubscript:@"isCloseMatch"];
     v25 = [[SHHapticSpatialTrackInformation alloc] initWithSpatialStartOffset:v29 offsets:objc_msgSend(v24 timeDrift:"BOOLValue") matchesStereo:{v21, v23}];
     v26 = sh_log_object();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))

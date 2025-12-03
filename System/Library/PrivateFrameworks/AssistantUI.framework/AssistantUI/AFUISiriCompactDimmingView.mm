@@ -1,37 +1,37 @@
 @interface AFUISiriCompactDimmingView
-- (AFUISiriCompactDimmingView)initWithFrame:(CGRect)a3;
+- (AFUISiriCompactDimmingView)initWithFrame:(CGRect)frame;
 - (BOOL)_isInAmbient;
 - (id)ambientFadeToBlackView;
 - (id)ambientMaterialView;
 - (void)layoutSubviews;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation AFUISiriCompactDimmingView
 
-- (AFUISiriCompactDimmingView)initWithFrame:(CGRect)a3
+- (AFUISiriCompactDimmingView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = AFUISiriCompactDimmingView;
-  v3 = [(AFUISiriCompactDimmingView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AFUISiriCompactDimmingView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(AFUISiriCompactDimmingView *)v3 setAlpha:1.0];
     [(AFUISiriCompactDimmingView *)v4 setOpaque:0];
     [(AFUISiriCompactDimmingView *)v4 setUserInteractionEnabled:0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(AFUISiriCompactDimmingView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(AFUISiriCompactDimmingView *)v4 setBackgroundColor:clearColor];
   }
 
   return v4;
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  self->_isVisible = a3;
+  animatedCopy = animated;
+  visibleCopy = visible;
+  self->_isVisible = visible;
   if ([(AFUISiriCompactDimmingView *)self _isInAmbient])
   {
     [MEMORY[0x277D75348] blackColor];
@@ -43,52 +43,52 @@
   }
   v7 = ;
   v8 = v7;
-  if (v5)
+  if (visibleCopy)
   {
-    v9 = v7;
+    clearColor = v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  v10 = v9;
-  v11 = [(AFUISiriCompactDimmingView *)self _isInAmbient];
-  if (!v4)
+  v10 = clearColor;
+  _isInAmbient = [(AFUISiriCompactDimmingView *)self _isInAmbient];
+  if (!animatedCopy)
   {
     [(AFUISiriCompactDimmingView *)self _isInAmbient];
     v13 = 0.0;
 LABEL_14:
-    v21 = [MEMORY[0x277CD9FA0] animation];
-    [v21 setKeyPath:@"backgroundColor"];
-    v23 = [(AFUISiriCompactDimmingView *)self backgroundColor];
-    [v21 setFromValue:v23];
+    animation = [MEMORY[0x277CD9FA0] animation];
+    [animation setKeyPath:@"backgroundColor"];
+    backgroundColor = [(AFUISiriCompactDimmingView *)self backgroundColor];
+    [animation setFromValue:backgroundColor];
 
-    [v21 setToValue:v10];
-    [v21 setMass:*MEMORY[0x277D60160]];
-    [v21 setStiffness:*MEMORY[0x277D60168]];
-    [v21 setDamping:*MEMORY[0x277D60158]];
-    v24 = [MEMORY[0x277D60100] defaultTimingFunction];
-    [v21 setTimingFunction:v24];
+    [animation setToValue:v10];
+    [animation setMass:*MEMORY[0x277D60160]];
+    [animation setStiffness:*MEMORY[0x277D60168]];
+    [animation setDamping:*MEMORY[0x277D60158]];
+    defaultTimingFunction = [MEMORY[0x277D60100] defaultTimingFunction];
+    [animation setTimingFunction:defaultTimingFunction];
 
-    [v21 setDuration:v13];
-    [(AFUISiriCompactDimmingView *)self addAnimation:v21 forKey:0];
+    [animation setDuration:v13];
+    [(AFUISiriCompactDimmingView *)self addAnimation:animation forKey:0];
     [(AFUISiriCompactDimmingView *)self setBackgroundColor:v10];
     goto LABEL_15;
   }
 
-  [MEMORY[0x277D60100] animationDurationForStyle:0 presentationType:v11];
+  [MEMORY[0x277D60100] animationDurationForStyle:0 presentationType:_isInAmbient];
   v13 = v12;
-  if (![(AFUISiriCompactDimmingView *)self _isInAmbient]|| !v5 || !v4 || [(AFUISiriCompactDimmingView *)self accessibilityReduceMotionEnabled])
+  if (![(AFUISiriCompactDimmingView *)self _isInAmbient]|| !visibleCopy || !animatedCopy || [(AFUISiriCompactDimmingView *)self accessibilityReduceMotionEnabled])
   {
     goto LABEL_14;
   }
 
-  v14 = [(AFUISiriCompactDimmingView *)self ambientMaterialView];
-  [(AFUISiriCompactDimmingView *)self insertSubview:v14 atIndex:0];
-  v15 = [(AFUISiriCompactDimmingView *)self ambientFadeToBlackView];
-  [(AFUISiriCompactDimmingView *)self insertSubview:v15 atIndex:0];
+  ambientMaterialView = [(AFUISiriCompactDimmingView *)self ambientMaterialView];
+  [(AFUISiriCompactDimmingView *)self insertSubview:ambientMaterialView atIndex:0];
+  ambientFadeToBlackView = [(AFUISiriCompactDimmingView *)self ambientFadeToBlackView];
+  [(AFUISiriCompactDimmingView *)self insertSubview:ambientFadeToBlackView atIndex:0];
   self->_isAnimatingBlur = 1;
   objc_initWeak(&location, self);
   v16 = *MEMORY[0x277D60148];
@@ -98,9 +98,9 @@ LABEL_14:
   v30[1] = 3221225472;
   v30[2] = __50__AFUISiriCompactDimmingView_setVisible_animated___block_invoke;
   v30[3] = &unk_278CD6418;
-  v19 = v14;
+  v19 = ambientMaterialView;
   v31 = v19;
-  v20 = v15;
+  v20 = ambientFadeToBlackView;
   v32 = v20;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -108,8 +108,8 @@ LABEL_14:
   v25[3] = &unk_278CD6A50;
   objc_copyWeak(&v29, &location);
   v26 = v10;
-  v21 = v19;
-  v27 = v21;
+  animation = v19;
+  v27 = animation;
   v22 = v20;
   v28 = v22;
   [AFUIUtilities animateUsingSpringWithMass:v30 stiffness:v25 damping:v16 animations:v17 completion:v18];
@@ -146,8 +146,8 @@ void __50__AFUISiriCompactDimmingView_setVisible_animated___block_invoke_2(uint6
   v3 = objc_alloc(MEMORY[0x277D75D18]);
   [(AFUISiriCompactDimmingView *)self bounds];
   v4 = [v3 initWithFrame:?];
-  v5 = [MEMORY[0x277D75348] blackColor];
-  [v4 setBackgroundColor:v5];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v4 setBackgroundColor:blackColor];
 
   [v4 setAlpha:0.0];
 
@@ -169,10 +169,10 @@ void __50__AFUISiriCompactDimmingView_setVisible_animated___block_invoke_2(uint6
 
 - (BOOL)_isInAmbient
 {
-  v2 = [(AFUISiriCompactDimmingView *)self traitCollection];
-  v3 = [v2 isAmbientPresented];
+  traitCollection = [(AFUISiriCompactDimmingView *)self traitCollection];
+  isAmbientPresented = [traitCollection isAmbientPresented];
 
-  return v3;
+  return isAmbientPresented;
 }
 
 - (void)layoutSubviews
@@ -190,18 +190,18 @@ void __50__AFUISiriCompactDimmingView_setVisible_animated___block_invoke_2(uint6
   v6 = v3;
   if (self->_isVisible)
   {
-    v4 = v3;
+    clearColor = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  v5 = v4;
+  v5 = clearColor;
   if (!self->_isAnimatingBlur)
   {
-    [(AFUISiriCompactDimmingView *)self setBackgroundColor:v4];
+    [(AFUISiriCompactDimmingView *)self setBackgroundColor:clearColor];
   }
 }
 

@@ -1,23 +1,23 @@
 @interface SUPurchaseBatch
-- (SUPurchaseBatch)initWithItems:(id)a3 offers:(id)a4;
-- (id)_copyModifiedErrorsFromDictionary:(__CFDictionary *)a3;
-- (id)_copyUniqueErrorsFromErrors:(id)a3;
-- (id)_copyValidPurchasesForItems:(id)a3;
+- (SUPurchaseBatch)initWithItems:(id)items offers:(id)offers;
+- (id)_copyModifiedErrorsFromDictionary:(__CFDictionary *)dictionary;
+- (id)_copyUniqueErrorsFromErrors:(id)errors;
+- (id)_copyValidPurchasesForItems:(id)items;
 - (void)_validateItems;
 - (void)dealloc;
-- (void)setDocumentTargetIdentifier:(id)a3;
-- (void)setPurchasesAndContinuationsFromPurchases:(id)a3;
+- (void)setDocumentTargetIdentifier:(id)identifier;
+- (void)setPurchasesAndContinuationsFromPurchases:(id)purchases;
 @end
 
 @implementation SUPurchaseBatch
 
-- (SUPurchaseBatch)initWithItems:(id)a3 offers:(id)a4
+- (SUPurchaseBatch)initWithItems:(id)items offers:(id)offers
 {
   v6 = [(SUPurchaseBatch *)self init];
   if (v6)
   {
-    v6->_items = [a3 copy];
-    v6->_offers = [a4 copy];
+    v6->_items = [items copy];
+    v6->_offers = [offers copy];
     [(SUPurchaseBatch *)v6 _validateItems];
   }
 
@@ -31,15 +31,15 @@
   [(SUPurchaseBatch *)&v3 dealloc];
 }
 
-- (void)setDocumentTargetIdentifier:(id)a3
+- (void)setDocumentTargetIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [(SUPurchaseBatch *)self validPurchases];
+  validPurchases = [(SUPurchaseBatch *)self validPurchases];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [(NSArray *)validPurchases countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -52,36 +52,36 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(validPurchases);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v10 setValue:a3 forDownloadProperty:v8];
+          [v10 setValue:identifier forDownloadProperty:v8];
         }
 
         else
         {
-          [v10 setValue:a3 forProperty:v8];
+          [v10 setValue:identifier forProperty:v8];
         }
 
         ++v9;
       }
 
       while (v6 != v9);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSArray *)validPurchases countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setPurchasesAndContinuationsFromPurchases:(id)a3
+- (void)setPurchasesAndContinuationsFromPurchases:(id)purchases
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [a3 mutableCopy];
+  v4 = [purchases mutableCopy];
   v5 = [(SUPurchaseBatch *)self copyContinuationsForPurchases:v4];
   v11 = 0u;
   v12 = 0u;
@@ -102,10 +102,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) purchase];
-        if (v10)
+        purchase = [*(*(&v11 + 1) + 8 * v9) purchase];
+        if (purchase)
         {
-          [v4 removeObject:v10];
+          [v4 removeObject:purchase];
         }
 
         ++v9;
@@ -122,16 +122,16 @@
   [(SUPurchaseBatch *)self setValidPurchases:v4];
 }
 
-- (id)_copyModifiedErrorsFromDictionary:(__CFDictionary *)a3
+- (id)_copyModifiedErrorsFromDictionary:(__CFDictionary *)dictionary
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7[0] = v5;
   v7[1] = self;
-  CFDictionaryApplyFunction(a3, __SUPurchaseBatchAddModifiedError, v7);
+  CFDictionaryApplyFunction(dictionary, __SUPurchaseBatchAddModifiedError, v7);
   return v5;
 }
 
-- (id)_copyUniqueErrorsFromErrors:(id)a3
+- (id)_copyUniqueErrorsFromErrors:(id)errors
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = *(MEMORY[0x1E695E9D8] + 16);
@@ -150,7 +150,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  v8 = [errors countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -161,7 +161,7 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(errors);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -169,7 +169,7 @@
         CFDictionarySetValue(v7, v12, Value + 1);
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v9 = [errors countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v9);
@@ -180,7 +180,7 @@
   return v14;
 }
 
-- (id)_copyValidPurchasesForItems:(id)a3
+- (id)_copyValidPurchasesForItems:(id)items
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -190,8 +190,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a3;
-  v8 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = items;
+  v8 = [items countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -206,17 +206,17 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 defaultStoreOffer];
+        defaultStoreOffer = [v12 defaultStoreOffer];
         if (v7 >= 1)
         {
           v14 = [(NSArray *)self->_items indexOfObjectIdenticalTo:v12];
           if (v14 < v7)
           {
-            v13 = [(NSArray *)self->_offers objectAtIndex:v14];
+            defaultStoreOffer = [(NSArray *)self->_offers objectAtIndex:v14];
           }
         }
 
-        v15 = [v6 newExternalDownloadWithItem:v12 storeOffer:v13];
+        v15 = [v6 newExternalDownloadWithItem:v12 storeOffer:defaultStoreOffer];
         if (v15)
         {
           v16 = v15;
@@ -224,7 +224,7 @@
 
         else
         {
-          v16 = [v6 newPurchaseWithItem:v12 storeOffer:v13];
+          v16 = [v6 newPurchaseWithItem:v12 storeOffer:defaultStoreOffer];
           if (!v16)
           {
             goto LABEL_13;

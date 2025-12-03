@@ -1,31 +1,31 @@
 @interface REIdentifier
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToString:(id)a3;
-- (REIdentifier)initWithDataSource:(id)a3 section:(id)a4 identifier:(id)a5;
-- (unsigned)characterAtIndex:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToString:(id)string;
+- (REIdentifier)initWithDataSource:(id)source section:(id)section identifier:(id)identifier;
+- (unsigned)characterAtIndex:(unint64_t)index;
 @end
 
 @implementation REIdentifier
 
-- (REIdentifier)initWithDataSource:(id)a3 section:(id)a4 identifier:(id)a5
+- (REIdentifier)initWithDataSource:(id)source section:(id)section identifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  sectionCopy = section;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = REIdentifier;
   v11 = [(REIdentifier *)&v23 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [sourceCopy copy];
     dataSource = v11->_dataSource;
     v11->_dataSource = v12;
 
-    v14 = [v9 copy];
+    v14 = [sectionCopy copy];
     section = v11->_section;
     v11->_section = v14;
 
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v16;
 
@@ -40,10 +40,10 @@
   return v11;
 }
 
-- (BOOL)isEqualToString:(id)a3
+- (BOOL)isEqualToString:(id)string
 {
-  v4 = a3;
-  if (self == v4)
+  stringCopy = string;
+  if (self == stringCopy)
   {
     v10 = 1;
   }
@@ -53,7 +53,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = stringCopy;
       identifier = v5->_identifier;
       v7 = self->_identifier;
       v8 = v7;
@@ -111,7 +111,7 @@ LABEL_17:
 
     v20.receiver = self;
     v20.super_class = REIdentifier;
-    v10 = [(REIdentifier *)&v20 isEqualToString:v4];
+    v10 = [(REIdentifier *)&v20 isEqualToString:stringCopy];
   }
 
 LABEL_18:
@@ -119,10 +119,10 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -130,28 +130,28 @@ LABEL_18:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(REIdentifier *)self isEqualToString:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(REIdentifier *)self isEqualToString:equalCopy];
   }
 
   return v5;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   v5 = [(NSString *)self->_dataSource length];
   dataSource = self->_dataSource;
-  if (v5 <= a3 && (a3 -= [(NSString *)dataSource length], v7 = [(NSString *)self->_section length], dataSource = self->_section, a3 >= v7))
+  if (v5 <= index && (index -= [(NSString *)dataSource length], v7 = [(NSString *)self->_section length], dataSource = self->_section, index >= v7))
   {
-    v8 = a3 - [(NSString *)dataSource length];
+    indexCopy = index - [(NSString *)dataSource length];
     dataSource = self->_identifier;
   }
 
   else
   {
-    v8 = a3;
+    indexCopy = index;
   }
 
-  return [(NSString *)dataSource characterAtIndex:v8];
+  return [(NSString *)dataSource characterAtIndex:indexCopy];
 }
 
 @end

@@ -2,9 +2,9 @@
 - (CGSize)pixelSize;
 - (NSString)description;
 - (PXGMetalImageTexture)init;
-- (PXGMetalImageTexture)initWithTexture:(id)a3 chromaTexture:(id)a4 colorProgram:(id)a5 isOpaque:(BOOL)a6 shaderFlags:(int)a7 orientationTransform:(float)a8 alpha:(float)a9 suppressContentsRect:(unsigned __int8)a10 presentationType:;
+- (PXGMetalImageTexture)initWithTexture:(id)texture chromaTexture:(id)chromaTexture colorProgram:(id)program isOpaque:(BOOL)opaque shaderFlags:(int)flags orientationTransform:(float)transform alpha:(float)alpha suppressContentsRect:(unsigned __int8)self0 presentationType:;
 - (PXGMetalTextureCache)textureCache;
-- (id)copyWithOrientationTransform:(float)a3 alpha:(float)a4 suppressContentsRect:;
+- (id)copyWithOrientationTransform:(float)transform alpha:(float)alpha suppressContentsRect:;
 - (void)dealloc;
 @end
 
@@ -12,10 +12,10 @@
 
 - (CGSize)pixelSize
 {
-  v3 = [(MTLTexture *)self->_texture width];
-  v4 = [(MTLTexture *)self->_texture height];
-  v5 = v3;
-  result.height = v4;
+  width = [(MTLTexture *)self->_texture width];
+  height = [(MTLTexture *)self->_texture height];
+  v5 = width;
+  result.height = height;
   result.width = v5;
   return result;
 }
@@ -27,10 +27,10 @@
   return WeakRetained;
 }
 
-- (id)copyWithOrientationTransform:(float)a3 alpha:(float)a4 suppressContentsRect:
+- (id)copyWithOrientationTransform:(float)transform alpha:(float)alpha suppressContentsRect:
 {
   v5 = v4;
-  if ((vmaxv_u16(vmovn_s32(vmvnq_s8(vceqq_f32(*self->_orientationTransform, *&a3)))) & 1) == 0 && self->_alpha == a4 && self->_suppressContentsRect == v4)
+  if ((vmaxv_u16(vmovn_s32(vmvnq_s8(vceqq_f32(*self->_orientationTransform, *&transform)))) & 1) == 0 && self->_alpha == alpha && self->_suppressContentsRect == v4)
   {
 
     return self;
@@ -38,9 +38,9 @@
 
   else
   {
-    v12 = *&a3;
+    v12 = *&transform;
     v7 = objc_alloc(objc_opt_class());
-    *&v8 = a4;
+    *&v8 = alpha;
     *&v9 = v5;
     v10 = [v7 initWithTexture:self->_texture chromaTexture:self->_chromaTexture colorProgram:self->_colorProgram isOpaque:self->_isContentOpaque shaderFlags:self->_shaderFlags orientationTransform:self->_presentationType alpha:v12 suppressContentsRect:v8 presentationType:v9];
     [v10 setSourceCGImage:{-[PXGImageTexture sourceCGImage](self, "sourceCGImage")}];
@@ -72,61 +72,61 @@
 
 - (PXGMetalImageTexture)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGMetalImageTexture.m" lineNumber:58 description:{@"%s is not available as initializer", "-[PXGMetalImageTexture init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalImageTexture.m" lineNumber:58 description:{@"%s is not available as initializer", "-[PXGMetalImageTexture init]"}];
 
   abort();
 }
 
-- (PXGMetalImageTexture)initWithTexture:(id)a3 chromaTexture:(id)a4 colorProgram:(id)a5 isOpaque:(BOOL)a6 shaderFlags:(int)a7 orientationTransform:(float)a8 alpha:(float)a9 suppressContentsRect:(unsigned __int8)a10 presentationType:
+- (PXGMetalImageTexture)initWithTexture:(id)texture chromaTexture:(id)chromaTexture colorProgram:(id)program isOpaque:(BOOL)opaque shaderFlags:(int)flags orientationTransform:(float)transform alpha:(float)alpha suppressContentsRect:(unsigned __int8)self0 presentationType:
 {
   v12 = v10;
-  v30 = *&a8;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
+  v30 = *&transform;
+  textureCopy = texture;
+  chromaTextureCopy = chromaTexture;
+  programCopy = program;
   v31.receiver = self;
   v31.super_class = PXGMetalImageTexture;
   v23 = [(PXGImageTexture *)&v31 init];
   if (v23)
   {
-    if (!v20)
+    if (!textureCopy)
     {
-      v26 = [MEMORY[0x277CCA890] currentHandler];
-      [v26 handleFailureInMethod:a2 object:v23 file:@"PXGMetalImageTexture.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"texture != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v23 file:@"PXGMetalImageTexture.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"texture != nil"}];
     }
 
-    if (a7 >= 0x10000)
+    if (flags >= 0x10000)
     {
-      v27 = [MEMORY[0x277CCA890] currentHandler];
-      v25 = PXGShaderFlagsDescription(a7);
-      [v27 handleFailureInMethod:a2 object:v23 file:@"PXGMetalImageTexture.m" lineNumber:42 description:{@"Only allowed to set shader flags in the block PXGShaderFlagPerTexture, %@", v25}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      v25 = PXGShaderFlagsDescription(flags);
+      [currentHandler2 handleFailureInMethod:a2 object:v23 file:@"PXGMetalImageTexture.m" lineNumber:42 description:{@"Only allowed to set shader flags in the block PXGShaderFlagPerTexture, %@", v25}];
 
-      if (v21)
+      if (chromaTextureCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (v21)
+    else if (chromaTextureCopy)
     {
 LABEL_6:
-      if ((a7 & 0xF00) == 0 || (a7 & 0x3000) == 0)
+      if ((flags & 0xF00) == 0 || (flags & 0x3000) == 0)
       {
-        v28 = [MEMORY[0x277CCA890] currentHandler];
-        [v28 handleFailureInMethod:a2 object:v23 file:@"PXGMetalImageTexture.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"!chromaTexture || ((shaderFlags & PXGShaderFlagYCbCrMatrixMask) != 0 && (shaderFlags & PXGShaderFlagYCbCrBitDepthMask) != 0)"}];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:v23 file:@"PXGMetalImageTexture.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"!chromaTexture || ((shaderFlags & PXGShaderFlagYCbCrMatrixMask) != 0 && (shaderFlags & PXGShaderFlagYCbCrBitDepthMask) != 0)"}];
       }
     }
 
-    objc_storeStrong(&v23->_texture, a3);
-    objc_storeStrong(&v23->_chromaTexture, a4);
-    objc_storeStrong(&v23->_colorProgram, a5);
+    objc_storeStrong(&v23->_texture, texture);
+    objc_storeStrong(&v23->_chromaTexture, chromaTexture);
+    objc_storeStrong(&v23->_colorProgram, program);
     *v23->_orientationTransform = v30;
-    v23->_alpha = a9;
+    v23->_alpha = alpha;
     v23->_suppressContentsRect = v12;
-    v23->_isContentOpaque = a6;
-    v23->_shaderFlags = a7;
-    v23->_presentationType = a10;
+    v23->_isContentOpaque = opaque;
+    v23->_shaderFlags = flags;
+    v23->_presentationType = rect;
   }
 
   return v23;

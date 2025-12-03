@@ -1,14 +1,14 @@
 @interface TUIElementAXActions
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5;
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementAXActions
 
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context
 {
-  v6 = a4;
-  v7 = [a3 finalizeAXActions];
-  [v6 setAXActions:v7];
+  builderCopy = builder;
+  finalizeAXActions = [object finalizeAXActions];
+  [builderCopy setAXActions:finalizeAXActions];
 }
 
 @end

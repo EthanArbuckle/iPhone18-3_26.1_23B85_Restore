@@ -1,51 +1,51 @@
 @interface TSWPText
-+ (void)renderColumn:(id)a3 selection:(id)a4 inContext:(CGContext *)a5 isFlipped:(BOOL)a6 viewScale:(double)a7;
-+ (void)renderColumns:(id)a3 selection:(id)a4 inContext:(CGContext *)a5 isFlipped:(BOOL)a6 viewScale:(double)a7;
++ (void)renderColumn:(id)column selection:(id)selection inContext:(CGContext *)context isFlipped:(BOOL)flipped viewScale:(double)scale;
++ (void)renderColumns:(id)columns selection:(id)selection inContext:(CGContext *)context isFlipped:(BOOL)flipped viewScale:(double)scale;
 - (BOOL)adjustColumnOriginForAlignment;
 - (BOOL)forceWesternLineBreaking;
 - (CGPoint)anchorPoint;
 - (CGPoint)position;
-- (CGRect)targetRectForCanvasRect:(CGRect)a3;
+- (CGRect)targetRectForCanvasRect:(CGRect)rect;
 - (CGSize)adjustedInsets;
 - (CGSize)currentSize;
 - (CGSize)maxSize;
-- (CGSize)measureStorage:(id)a3;
-- (CGSize)measureText:(id)a3;
+- (CGSize)measureStorage:(id)storage;
+- (CGSize)measureText:(id)text;
 - (CGSize)minSize;
-- (TSWPText)initWithParagraphStyle:(id)a3 listStyle:(id)a4 columnStyle:(id)a5 alignmentForNaturalAlignment:(unsigned int)a6 naturalDirection:(int)a7;
+- (TSWPText)initWithParagraphStyle:(id)style listStyle:(id)listStyle columnStyle:(id)columnStyle alignmentForNaturalAlignment:(unsigned int)alignment naturalDirection:(int)direction;
 - (double)maxAnchorY;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6;
-- (id)layoutMultiColumnTextStorage:(id)a3 minSize:(CGSize)a4 maxSize:(CGSize)a5 anchor:(CGPoint)a6 pageNumber:(unint64_t)a7 pageCount:(unint64_t)a8 flags:(int)a9;
-- (id)layoutText:(id)a3 kind:(int)a4 minSize:(CGSize)a5 maxSize:(CGSize)a6 anchor:(CGPoint)a7 flags:(int)a8;
-- (id)layoutTextStorage:(id)a3 minSize:(CGSize)a4 maxSize:(CGSize)a5 anchor:(CGPoint)a6 pageNumber:(unint64_t)a7 pageCount:(unint64_t)a8 flags:(int)a9;
-- (id)validatedLayoutForAnchoredDrawable:(id)a3;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap;
+- (id)layoutMultiColumnTextStorage:(id)storage minSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor pageNumber:(unint64_t)number pageCount:(unint64_t)count flags:(int)flags;
+- (id)layoutText:(id)text kind:(int)kind minSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor flags:(int)flags;
+- (id)layoutTextStorage:(id)storage minSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor pageNumber:(unint64_t)number pageCount:(unint64_t)count flags:(int)flags;
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable;
 - (unsigned)verticalAlignment;
-- (void)addAttachmentLayout:(id)a3;
+- (void)addAttachmentLayout:(id)layout;
 - (void)dealloc;
-- (void)drawColumn:(id)a3 selection:(id)a4 inContext:(CGContext *)a5 isFlipped:(BOOL)a6 viewScale:(double)a7;
-- (void)drawText:(id)a3 inContext:(CGContext *)a4 minSize:(CGSize)a5 maxSize:(CGSize)a6 anchor:(CGPoint)a7 flags:(int)a8 viewScale:(double)a9;
+- (void)drawColumn:(id)column selection:(id)selection inContext:(CGContext *)context isFlipped:(BOOL)flipped viewScale:(double)scale;
+- (void)drawText:(id)text inContext:(CGContext *)context minSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor flags:(int)flags viewScale:(double)scale;
 @end
 
 @implementation TSWPText
 
-- (TSWPText)initWithParagraphStyle:(id)a3 listStyle:(id)a4 columnStyle:(id)a5 alignmentForNaturalAlignment:(unsigned int)a6 naturalDirection:(int)a7
+- (TSWPText)initWithParagraphStyle:(id)style listStyle:(id)listStyle columnStyle:(id)columnStyle alignmentForNaturalAlignment:(unsigned int)alignment naturalDirection:(int)direction
 {
   v14.receiver = self;
   v14.super_class = TSWPText;
   v12 = [(TSWPText *)&v14 init];
   if (v12)
   {
-    v12->_paragraphStyle = a3;
-    v12->_listStyle = a4;
-    if (!a5)
+    v12->_paragraphStyle = style;
+    v12->_listStyle = listStyle;
+    if (!columnStyle)
     {
-      a5 = +[TSWPColumnStyle defaultStyleWithContext:](TSWPColumnStyle, "defaultStyleWithContext:", [a3 context]);
+      columnStyle = +[TSWPColumnStyle defaultStyleWithContext:](TSWPColumnStyle, "defaultStyleWithContext:", [style context]);
     }
 
-    v12->_columnStyle = a5;
+    v12->_columnStyle = columnStyle;
     v12->_columns = objc_opt_new();
-    v12->_naturalAlignment = a6;
-    v12->_naturalDirection = a7;
+    v12->_naturalAlignment = alignment;
+    v12->_naturalDirection = direction;
   }
 
   return v12;
@@ -68,56 +68,56 @@
   [(TSWPText *)&v3 dealloc];
 }
 
-- (id)layoutTextStorage:(id)a3 minSize:(CGSize)a4 maxSize:(CGSize)a5 anchor:(CGPoint)a6 pageNumber:(unint64_t)a7 pageCount:(unint64_t)a8 flags:(int)a9
+- (id)layoutTextStorage:(id)storage minSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor pageNumber:(unint64_t)number pageCount:(unint64_t)count flags:(int)flags
 {
-  v9 = [(TSWPText *)self layoutMultiColumnTextStorage:a3 minSize:a7 maxSize:a8 anchor:*&a9 pageNumber:a4.width pageCount:a4.height flags:a5.width, a5.height, a6.x, a6.y];
+  v9 = [(TSWPText *)self layoutMultiColumnTextStorage:storage minSize:number maxSize:count anchor:*&flags pageNumber:size.width pageCount:size.height flags:maxSize.width, maxSize.height, anchor.x, anchor.y];
   if ([v9 count] != 1)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText layoutTextStorage:minSize:maxSize:anchor:pageNumber:pageCount:flags:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 140, @"Invalid column count"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 140, @"Invalid column count"}];
   }
 
-  v12 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)layoutMultiColumnTextStorage:(id)a3 minSize:(CGSize)a4 maxSize:(CGSize)a5 anchor:(CGPoint)a6 pageNumber:(unint64_t)a7 pageCount:(unint64_t)a8 flags:(int)a9
+- (id)layoutMultiColumnTextStorage:(id)storage minSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor pageNumber:(unint64_t)number pageCount:(unint64_t)count flags:(int)flags
 {
-  y = a6.y;
-  x = a6.x;
-  height = a5.height;
-  width = a5.width;
-  v16 = a4.height;
-  v17 = a4.width;
+  y = anchor.y;
+  x = anchor.x;
+  height = maxSize.height;
+  width = maxSize.width;
+  v16 = size.height;
+  v17 = size.width;
   if (self->_storage)
   {
-    v20 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText layoutMultiColumnTextStorage:minSize:maxSize:anchor:pageNumber:pageCount:flags:]"];
-    [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 149, @"Storage should be nil"}];
+    [currentHandler handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 149, @"Storage should be nil"}];
   }
 
-  if (!a3)
+  if (!storage)
   {
-    v22 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText layoutMultiColumnTextStorage:minSize:maxSize:anchor:pageNumber:pageCount:flags:]"];
-    [v22 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 150, @"Should probably pass some actual text to layout - it is nil"}];
+    [currentHandler2 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 150, @"Should probably pass some actual text to layout - it is nil"}];
   }
 
-  result = [a3 length];
+  result = [storage length];
   if (result)
   {
     self->_minSize.width = v17;
     self->_maxSize.width = width;
     self->_minSize.height = v16;
     self->_maxSize.height = height;
-    self->_flags = a9;
+    self->_flags = flags;
     self->_anchor.x = x;
     self->_anchor.y = y;
-    self->_pageNumber = a7;
-    self->_pageCount = a8;
-    self->_storage = a3;
+    self->_pageNumber = number;
+    self->_pageCount = count;
+    self->_storage = storage;
     v25 = [[TSWPLayoutManager alloc] initWithStorage:self->_storage owner:self];
     v26 = [(TSWPLayoutManager *)v25 layoutIntoTarget:self withLayoutState:0 outSync:0];
     if (v26)
@@ -140,37 +140,37 @@
   return result;
 }
 
-- (id)layoutText:(id)a3 kind:(int)a4 minSize:(CGSize)a5 maxSize:(CGSize)a6 anchor:(CGPoint)a7 flags:(int)a8
+- (id)layoutText:(id)text kind:(int)kind minSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor flags:(int)flags
 {
-  y = a7.y;
-  x = a7.x;
-  height = a6.height;
-  width = a6.width;
-  v13 = a5.height;
-  v14 = a5.width;
-  v15 = *&a4;
+  y = anchor.y;
+  x = anchor.x;
+  height = maxSize.height;
+  width = maxSize.width;
+  v13 = size.height;
+  v14 = size.width;
+  v15 = *&kind;
   if (!self->_paragraphStyle)
   {
-    v18 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText layoutText:kind:minSize:maxSize:anchor:flags:]"];
-    [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 208, @"Paragraph style is required"}];
+    [currentHandler handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 208, @"Paragraph style is required"}];
   }
 
   if (self->_storage)
   {
-    v20 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText layoutText:kind:minSize:maxSize:anchor:flags:]"];
-    [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 209, @"Storage should be nil"}];
+    [currentHandler2 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 209, @"Storage should be nil"}];
   }
 
-  if (!a3)
+  if (!text)
   {
-    v22 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText layoutText:kind:minSize:maxSize:anchor:flags:]"];
-    [v22 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 210, @"Should probably pass some actual text to layout - it is nil"}];
+    [currentHandler3 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 210, @"Should probably pass some actual text to layout - it is nil"}];
   }
 
-  if (![a3 length])
+  if (![text length])
   {
     return 0;
   }
@@ -179,14 +179,14 @@
   self->_minSize.height = v13;
   self->_maxSize.width = width;
   self->_maxSize.height = height;
-  self->_flags = a8;
+  self->_flags = flags;
   self->_anchor.x = x;
   self->_anchor.y = y;
   v24 = [TSWPStorage alloc];
-  v25 = [(TSPObject *)self->_paragraphStyle context];
-  v26 = [(TSSStyle *)self->_paragraphStyle stylesheet];
+  context = [(TSPObject *)self->_paragraphStyle context];
+  stylesheet = [(TSSStyle *)self->_paragraphStyle stylesheet];
   LODWORD(v35) = self->_naturalDirection;
-  v27 = [(TSWPStorage *)v24 initWithContext:v25 string:a3 kind:v15 stylesheet:v26 paragraphStyle:self->_paragraphStyle listStyle:self->_listStyle section:0 columnStyle:0 paragraphDirection:v35];
+  v27 = [(TSWPStorage *)v24 initWithContext:context string:text kind:v15 stylesheet:stylesheet paragraphStyle:self->_paragraphStyle listStyle:self->_listStyle section:0 columnStyle:0 paragraphDirection:v35];
   self->_storage = v27;
   if (!v27)
   {
@@ -197,12 +197,12 @@
   v29 = [(TSWPLayoutManager *)v28 layoutIntoTarget:self withLayoutState:0 outSync:0];
   if ([(NSMutableArray *)[(TSWPText *)self columns] count]!= 1)
   {
-    v30 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
     v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText layoutText:kind:minSize:maxSize:anchor:flags:]"];
-    [v30 handleFailureInFunction:v31 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 244, @"Invalid column count"}];
+    [currentHandler4 handleFailureInFunction:v31 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 244, @"Invalid column count"}];
   }
 
-  v32 = [(NSMutableArray *)[(TSWPText *)self columns] firstObject];
+  firstObject = [(NSMutableArray *)[(TSWPText *)self columns] firstObject];
   if (v29)
   {
     (*(*v29 + 8))(v29);
@@ -217,16 +217,16 @@
   self->_anchor = *MEMORY[0x277CBF348];
 
   self->_storage = 0;
-  return v32;
+  return firstObject;
 }
 
-- (CGSize)measureText:(id)a3
+- (CGSize)measureText:(id)text
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  if (a3)
+  if (text)
   {
-    [-[TSWPText layoutText:minSize:maxSize:anchor:flags:](self layoutText:a3 minSize:4111 maxSize:v3 anchor:v4 flags:{4294967300.0, 4294967300.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)), "frameBounds"}];
+    [-[TSWPText layoutText:minSize:maxSize:anchor:flags:](self layoutText:text minSize:4111 maxSize:v3 anchor:v4 flags:{4294967300.0, 4294967300.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)), "frameBounds"}];
     v3 = v5;
     v4 = v6;
   }
@@ -236,13 +236,13 @@
   return result;
 }
 
-- (CGSize)measureStorage:(id)a3
+- (CGSize)measureStorage:(id)storage
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  if (a3)
+  if (storage)
   {
-    [-[TSWPText layoutTextStorage:minSize:maxSize:anchor:flags:](self layoutTextStorage:a3 minSize:4111 maxSize:v3 anchor:v4 flags:{4294967300.0, 4294967300.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)), "frameBounds"}];
+    [-[TSWPText layoutTextStorage:minSize:maxSize:anchor:flags:](self layoutTextStorage:storage minSize:4111 maxSize:v3 anchor:v4 flags:{4294967300.0, 4294967300.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)), "frameBounds"}];
     v3 = v5;
     v4 = v6;
   }
@@ -252,30 +252,30 @@
   return result;
 }
 
-- (void)drawColumn:(id)a3 selection:(id)a4 inContext:(CGContext *)a5 isFlipped:(BOOL)a6 viewScale:(double)a7
+- (void)drawColumn:(id)column selection:(id)selection inContext:(CGContext *)context isFlipped:(BOOL)flipped viewScale:(double)scale
 {
-  v8 = a6;
-  if (!a3 || !a5)
+  flippedCopy = flipped;
+  if (!column || !context)
   {
-    v13 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText drawColumn:selection:inContext:isFlipped:viewScale:]"];
-    [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 306, @"Invalid arguments"}];
+    [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 306, @"Invalid arguments"}];
   }
 
   v23 = 0;
   v24 = 0;
   v25 = 0;
-  v15 = [[TSWPRenderer alloc] initWithContext:a5];
-  [(TSWPRenderer *)v15 setFlipShadows:v8];
-  [(TSWPRenderer *)v15 setViewScale:a7];
+  v15 = [[TSWPRenderer alloc] initWithContext:context];
+  [(TSWPRenderer *)v15 setFlipShadows:flippedCopy];
+  [(TSWPRenderer *)v15 setViewScale:scale];
   v16 = MEMORY[0x277D6C268];
   v17 = *MEMORY[0x277D6C268];
   v18 = *(MEMORY[0x277D6C268] + 8);
   LOBYTE(v22) = 0;
   LODWORD(v21) = 3;
-  LOBYTE(v20) = TSDCGContextHasBackgroundsSuppressed(a5);
+  LOBYTE(v20) = TSDCGContextHasBackgroundsSuppressed(context);
   LOBYTE(v19) = 0;
-  [a3 renderWithRenderer:v15 currentSelection:0 limitSelection:a4 listRange:v17 rubyGlyphRange:v18 isCanvasInteractive:v17 spellChecker:v18 suppressedMisspellingRange:v19 blackAndWhite:0 dictationInterpretations:v17 autocorrections:v18 markedRange:v20 markedText:&v23 renderMode:&v23 pageCount:*v16 suppressInvisibles:v16[1] currentCanvasSelection:{0, v21, -[TSWPText pageCount](self, "pageCount"), v22, 0}];
+  [column renderWithRenderer:v15 currentSelection:0 limitSelection:selection listRange:v17 rubyGlyphRange:v18 isCanvasInteractive:v17 spellChecker:v18 suppressedMisspellingRange:v19 blackAndWhite:0 dictationInterpretations:v17 autocorrections:v18 markedRange:v20 markedText:&v23 renderMode:&v23 pageCount:*v16 suppressInvisibles:v16[1] currentCanvasSelection:{0, v21, -[TSWPText pageCount](self, "pageCount"), v22, 0}];
 
   if (v23)
   {
@@ -284,31 +284,31 @@
   }
 }
 
-+ (void)renderColumn:(id)a3 selection:(id)a4 inContext:(CGContext *)a5 isFlipped:(BOOL)a6 viewScale:(double)a7
++ (void)renderColumn:(id)column selection:(id)selection inContext:(CGContext *)context isFlipped:(BOOL)flipped viewScale:(double)scale
 {
-  v8 = a6;
-  if (!a3 || !a5)
+  flippedCopy = flipped;
+  if (!column || !context)
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPText renderColumn:selection:inContext:isFlipped:viewScale:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 427, @"Invalid arguments"}];
+    [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 427, @"Invalid arguments"}];
   }
 
   v22 = 0;
   v23 = 0;
   v24 = 0;
-  v14 = [[TSWPRenderer alloc] initWithContext:a5];
-  [(TSWPRenderer *)v14 setFlipShadows:v8];
-  [(TSWPRenderer *)v14 setViewScale:a7];
+  v14 = [[TSWPRenderer alloc] initWithContext:context];
+  [(TSWPRenderer *)v14 setFlipShadows:flippedCopy];
+  [(TSWPRenderer *)v14 setViewScale:scale];
   [(TSWPRenderer *)v14 setPreventClipToColumn:1];
   v15 = MEMORY[0x277D6C268];
   v16 = *MEMORY[0x277D6C268];
   v17 = *(MEMORY[0x277D6C268] + 8);
   LOBYTE(v21) = 0;
   LODWORD(v20) = 3;
-  LOBYTE(v19) = TSDCGContextHasBackgroundsSuppressed(a5);
+  LOBYTE(v19) = TSDCGContextHasBackgroundsSuppressed(context);
   LOBYTE(v18) = 0;
-  [a3 renderWithRenderer:v14 currentSelection:0 limitSelection:a4 listRange:v16 rubyGlyphRange:v17 isCanvasInteractive:v16 spellChecker:v17 suppressedMisspellingRange:v18 blackAndWhite:0 dictationInterpretations:v16 autocorrections:v17 markedRange:v19 markedText:&v22 renderMode:&v22 pageCount:*v15 suppressInvisibles:v15[1] currentCanvasSelection:{0, v20, 0x7FFFFFFFFFFFFFFFLL, v21, 0}];
+  [column renderWithRenderer:v14 currentSelection:0 limitSelection:selection listRange:v16 rubyGlyphRange:v17 isCanvasInteractive:v16 spellChecker:v17 suppressedMisspellingRange:v18 blackAndWhite:0 dictationInterpretations:v16 autocorrections:v17 markedRange:v19 markedText:&v22 renderMode:&v22 pageCount:*v15 suppressInvisibles:v15[1] currentCanvasSelection:{0, v20, 0x7FFFFFFFFFFFFFFFLL, v21, 0}];
 
   if (v22)
   {
@@ -317,15 +317,15 @@
   }
 }
 
-+ (void)renderColumns:(id)a3 selection:(id)a4 inContext:(CGContext *)a5 isFlipped:(BOOL)a6 viewScale:(double)a7
++ (void)renderColumns:(id)columns selection:(id)selection inContext:(CGContext *)context isFlipped:(BOOL)flipped viewScale:(double)scale
 {
-  v8 = a6;
+  flippedCopy = flipped;
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v11 = [columns countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -337,33 +337,33 @@
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(columns);
         }
 
-        [TSWPText renderColumn:*(*(&v15 + 1) + 8 * v14++) selection:0 inContext:a5 isFlipped:v8 viewScale:a7];
+        [TSWPText renderColumn:*(*(&v15 + 1) + 8 * v14++) selection:0 inContext:context isFlipped:flippedCopy viewScale:scale];
       }
 
       while (v12 != v14);
-      v12 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [columns countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)drawText:(id)a3 inContext:(CGContext *)a4 minSize:(CGSize)a5 maxSize:(CGSize)a6 anchor:(CGPoint)a7 flags:(int)a8 viewScale:(double)a9
+- (void)drawText:(id)text inContext:(CGContext *)context minSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor flags:(int)flags viewScale:(double)scale
 {
-  y = a7.y;
-  x = a7.x;
-  v14 = [(TSWPText *)self layoutText:a3 minSize:*&a8 maxSize:a5.width anchor:a5.height flags:a6.width, a6.height];
+  y = anchor.y;
+  x = anchor.x;
+  v14 = [(TSWPText *)self layoutText:text minSize:*&flags maxSize:size.width anchor:size.height flags:maxSize.width, maxSize.height];
   if (v14)
   {
     v15 = v14;
-    CGContextSaveGState(a4);
-    CGContextTranslateCTM(a4, x, y);
-    [(TSWPText *)self drawColumn:v15 inContext:a4 isFlipped:0 viewScale:a9];
+    CGContextSaveGState(context);
+    CGContextTranslateCTM(context, x, y);
+    [(TSWPText *)self drawColumn:v15 inContext:context isFlipped:0 viewScale:scale];
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
@@ -372,10 +372,10 @@
   delegate = self->_delegate;
   if (delegate)
   {
-    v5 = [(TSWPTextDelegate *)delegate padding];
-    [v5 leftInset];
+    padding = [(TSWPTextDelegate *)delegate padding];
+    [padding leftInset];
     v7 = v6;
-    [v5 topInset];
+    [padding topInset];
     v9 = v8;
     v10 = v7;
   }
@@ -392,28 +392,28 @@
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap
 {
   if (self->_delegate)
   {
     [(TSWPColumnStyle *)self->_columnStyle adjustedInsets];
     if (v12 != *MEMORY[0x277CBF3A8] || v11 != *(MEMORY[0x277CBF3A8] + 8))
     {
-      v14 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText positionForColumnIndex:bodyWidth:outWidth:outGap:]"];
-      [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 532, @"if a delegate provides padding, column style must not have a non-zero adjusted inset"}];
+      [currentHandler handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 532, @"if a delegate provides padding, column style must not have a non-zero adjusted inset"}];
     }
 
     [(TSWPText *)self adjustedInsets];
-    v17 = 10.0;
-    if (a4 <= 10.0)
+    widthCopy = 10.0;
+    if (width <= 10.0)
     {
-      v17 = a4;
+      widthCopy = width;
     }
 
-    if (v16 >= (a4 - v17) * 0.5)
+    if (v16 >= (width - widthCopy) * 0.5)
     {
-      v18 = (a4 - v17) * 0.5;
+      v18 = (width - widthCopy) * 0.5;
     }
 
     else
@@ -421,12 +421,12 @@
       v18 = v16;
     }
 
-    a4 = a4 + v18 * -2.0;
-    if (a4 < v17)
+    width = width + v18 * -2.0;
+    if (width < widthCopy)
     {
-      v19 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText positionForColumnIndex:bodyWidth:outWidth:outGap:]"];
-      [v19 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 541, @"created an undersized column"}];
+      [currentHandler2 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 541, @"created an undersized column"}];
     }
   }
 
@@ -435,7 +435,7 @@
     v18 = 0.0;
   }
 
-  [(TSWPColumnStyle *)self->_columnStyle positionForColumnIndex:a3 bodyWidth:a5 outWidth:a6 outGap:a4];
+  [(TSWPColumnStyle *)self->_columnStyle positionForColumnIndex:index bodyWidth:outWidth outWidth:gap outGap:width];
   return v18 + v21;
 }
 
@@ -467,9 +467,9 @@
     [(TSWPText *)self maxSize];
     if (v4 != v8 || v6 != v7)
     {
-      v10 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText currentSize]"];
-      [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 630, @"autosizeFlags set to no autosize but min and max sizes are unequal. They should be the same."}];
+      [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 630, @"autosizeFlags set to no autosize but min and max sizes are unequal. They should be the same."}];
     }
   }
 
@@ -511,7 +511,7 @@
   }
 }
 
-- (CGRect)targetRectForCanvasRect:(CGRect)a3
+- (CGRect)targetRectForCanvasRect:(CGRect)rect
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -524,21 +524,21 @@
   return result;
 }
 
-- (id)validatedLayoutForAnchoredDrawable:(id)a3
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText validatedLayoutForAnchoredDrawable:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 699, @"Anchored attachments not yet supported in TSWPText."}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 699, @"Anchored attachments not yet supported in TSWPText."}];
   return 0;
 }
 
-- (void)addAttachmentLayout:(id)a3
+- (void)addAttachmentLayout:(id)layout
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPText addAttachmentLayout:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:725 description:@"Partitioned attachments not yet supported in TSWPTableText."];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:725 description:@"Partitioned attachments not yet supported in TSWPTableText."];
 }
 
 - (double)maxAnchorY

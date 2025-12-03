@@ -1,9 +1,9 @@
 @interface RBSRunningReasonAttribute
-+ (id)withReason:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (RBSRunningReasonAttribute)initWithRBSXPCCoder:(id)a3;
++ (id)withReason:(unint64_t)reason;
+- (BOOL)isEqual:(id)equal;
+- (RBSRunningReasonAttribute)initWithRBSXPCCoder:(id)coder;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSRunningReasonAttribute
@@ -17,40 +17,40 @@
   return v5;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSRunningReasonAttribute;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeUInt64:self->_runningReason forKey:{@"_runningReason", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeUInt64:self->_runningReason forKey:{@"_runningReason", v5.receiver, v5.super_class}];
 }
 
-- (RBSRunningReasonAttribute)initWithRBSXPCCoder:(id)a3
+- (RBSRunningReasonAttribute)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSRunningReasonAttribute;
-  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_runningReason = [v4 decodeUInt64ForKey:@"_runningReason"];
+    v5->_runningReason = [coderCopy decodeUInt64ForKey:@"_runningReason"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RBSRunningReasonAttribute;
-  v5 = [(RBSAttribute *)&v7 isEqual:v4]&& self->_runningReason == v4[1];
+  v5 = [(RBSAttribute *)&v7 isEqual:equalCopy]&& self->_runningReason == equalCopy[1];
 
   return v5;
 }
 
-+ (id)withReason:(unint64_t)a3
++ (id)withReason:(unint64_t)reason
 {
   v4 = [RBSRunningReasonAttribute alloc];
   if (v4)
@@ -60,7 +60,7 @@
     v4 = objc_msgSendSuper2(&v6, sel__init);
     if (v4)
     {
-      v4->_runningReason = a3;
+      v4->_runningReason = reason;
     }
   }
 

@@ -10,16 +10,16 @@
 - (MRDTimingEvent)sourceOutputContext;
 - (NSString)modelID;
 - (unsigned)clusterType;
-- (void)setAddLocalDevice:(id)a3;
-- (void)setClusterType:(unsigned int)a3;
-- (void)setDiscoverableGroupLeader:(BOOL)a3;
-- (void)setFindEndpoint:(id)a3;
-- (void)setInterruptions:(id)a3;
-- (void)setModelID:(id)a3;
-- (void)setOriginForward:(id)a3;
-- (void)setReloadDeviceInfo:(id)a3;
-- (void)setRemoveLocalDevice:(id)a3;
-- (void)setSourceOutputContext:(id)a3;
+- (void)setAddLocalDevice:(id)device;
+- (void)setClusterType:(unsigned int)type;
+- (void)setDiscoverableGroupLeader:(BOOL)leader;
+- (void)setFindEndpoint:(id)endpoint;
+- (void)setInterruptions:(id)interruptions;
+- (void)setModelID:(id)d;
+- (void)setOriginForward:(id)forward;
+- (void)setReloadDeviceInfo:(id)info;
+- (void)setRemoveLocalDevice:(id)device;
+- (void)setSourceOutputContext:(id)context;
 @end
 
 @implementation MRDNowPlayingAirPlaySessionEvents
@@ -31,11 +31,11 @@
   return *(self + v3);
 }
 
-- (void)setDiscoverableGroupLeader:(BOOL)a3
+- (void)setDiscoverableGroupLeader:(BOOL)leader
 {
   v5 = OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents_discoverableGroupLeader;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = leader;
 }
 
 - (unsigned)clusterType
@@ -45,11 +45,11 @@
   return *(self + v3);
 }
 
-- (void)setClusterType:(unsigned int)a3
+- (void)setClusterType:(unsigned int)type
 {
   v5 = OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents_clusterType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (NSString)modelID
@@ -64,7 +64,7 @@
   return v5;
 }
 
-- (void)setModelID:(id)a3
+- (void)setModelID:(id)d
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -77,107 +77,107 @@
 
 - (MRDTimingEvent)sourceOutputContext
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022EDC8();
 
   return v3;
 }
 
-- (void)setSourceOutputContext:(id)a3
+- (void)setSourceOutputContext:(id)context
 {
   v4 = *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___sourceOutputContext);
-  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___sourceOutputContext) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___sourceOutputContext) = context;
+  contextCopy = context;
 }
 
 - (MRDTimingEvent)removeLocalDevice
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022EE50();
 
   return v3;
 }
 
-- (void)setRemoveLocalDevice:(id)a3
+- (void)setRemoveLocalDevice:(id)device
 {
   v4 = *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___removeLocalDevice);
-  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___removeLocalDevice) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___removeLocalDevice) = device;
+  deviceCopy = device;
 }
 
 - (MRDTimingEvent)addLocalDevice
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022EED8();
 
   return v3;
 }
 
-- (void)setAddLocalDevice:(id)a3
+- (void)setAddLocalDevice:(id)device
 {
   v4 = *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___addLocalDevice);
-  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___addLocalDevice) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___addLocalDevice) = device;
+  deviceCopy = device;
 }
 
 - (MRDTimingEvent)reloadDeviceInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022EF60();
 
   return v3;
 }
 
-- (void)setReloadDeviceInfo:(id)a3
+- (void)setReloadDeviceInfo:(id)info
 {
   v4 = *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___reloadDeviceInfo);
-  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___reloadDeviceInfo) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___reloadDeviceInfo) = info;
+  infoCopy = info;
 }
 
 - (MRDTimingEvent)originForward
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022EFE8();
 
   return v3;
 }
 
-- (void)setOriginForward:(id)a3
+- (void)setOriginForward:(id)forward
 {
   v4 = *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___originForward);
-  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___originForward) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___originForward) = forward;
+  forwardCopy = forward;
 }
 
 - (MRDTimingEvent)findEndpoint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022F070();
 
   return v3;
 }
 
-- (void)setFindEndpoint:(id)a3
+- (void)setFindEndpoint:(id)endpoint
 {
   v4 = *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___findEndpoint);
-  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___findEndpoint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___findEndpoint) = endpoint;
+  endpointCopy = endpoint;
 }
 
 - (MRDTimingEvent)interruptions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022F0F8();
 
   return v3;
 }
 
-- (void)setInterruptions:(id)a3
+- (void)setInterruptions:(id)interruptions
 {
   v4 = *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___interruptions);
-  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___interruptions) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDNowPlayingAirPlaySessionEvents____lazy_storage___interruptions) = interruptions;
+  interruptionsCopy = interruptions;
 }
 
 - (MRDNowPlayingAirPlaySessionEvents)init

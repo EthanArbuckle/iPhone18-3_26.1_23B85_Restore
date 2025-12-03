@@ -1,49 +1,49 @@
 @interface NUANFAssetLoader
-- (NUANFAssetLoader)initWithContext:(id)a3 flintResourceManager:(id)a4;
-- (id)assetDownloadOperationForResource:(id)a3 completion:(id)a4;
-- (id)asyncLoadAssetURLsOnceWithCompletion:(id)a3;
-- (id)asyncLoadAssetsOnceWithCompletion:(id)a3;
-- (id)fallbackResourceForID:(id)a3;
-- (id)loadAssetURLsWithCompletion:(id)a3;
-- (id)loadAssetWithURL:(id)a3 completion:(id)a4;
-- (id)loadAssetsWithCompletion:(id)a3;
-- (id)resourceForID:(id)a3;
-- (id)resourceIDForResourceURL:(id)a3;
-- (void)setRelativePriority:(int64_t)a3;
+- (NUANFAssetLoader)initWithContext:(id)context flintResourceManager:(id)manager;
+- (id)assetDownloadOperationForResource:(id)resource completion:(id)completion;
+- (id)asyncLoadAssetURLsOnceWithCompletion:(id)completion;
+- (id)asyncLoadAssetsOnceWithCompletion:(id)completion;
+- (id)fallbackResourceForID:(id)d;
+- (id)loadAssetURLsWithCompletion:(id)completion;
+- (id)loadAssetWithURL:(id)l completion:(id)completion;
+- (id)loadAssetsWithCompletion:(id)completion;
+- (id)resourceForID:(id)d;
+- (id)resourceIDForResourceURL:(id)l;
+- (void)setRelativePriority:(int64_t)priority;
 @end
 
 @implementation NUANFAssetLoader
 
-- (NUANFAssetLoader)initWithContext:(id)a3 flintResourceManager:(id)a4
+- (NUANFAssetLoader)initWithContext:(id)context flintResourceManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  managerCopy = manager;
   v27.receiver = self;
   v27.super_class = NUANFAssetLoader;
   v9 = [(NUANFAssetLoader *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_flintResourceManager, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_flintResourceManager, manager);
     v10->_relativePriority = 0;
     v11 = objc_opt_new();
     fetchedResourceIDs = v10->_fetchedResourceIDs;
     v10->_fetchedResourceIDs = v11;
 
-    v13 = [v7 documentController];
-    v14 = [v13 requiredResourceURLs];
+    documentController = [contextCopy documentController];
+    requiredResourceURLs = [documentController requiredResourceURLs];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __57__NUANFAssetLoader_initWithContext_flintResourceManager___block_invoke;
     v25[3] = &unk_2799A4708;
     v15 = v10;
     v26 = v15;
-    v16 = [v14 fc_arrayByTransformingWithBlock:v25];
+    v16 = [requiredResourceURLs fc_arrayByTransformingWithBlock:v25];
     resourceIDs = v15->_resourceIDs;
     v15->_resourceIDs = v16;
 
-    v18 = [v8 cachedResourcesWithIdentifiers:v15->_resourceIDs];
+    v18 = [managerCopy cachedResourcesWithIdentifiers:v15->_resourceIDs];
     v19 = [v18 fc_dictionaryWithKeySelector:sel_resourceID];
 
     [(NSMutableDictionary *)v10->_fetchedResourceIDs addEntriesFromDictionary:v19];
@@ -59,38 +59,38 @@
   return v10;
 }
 
-- (void)setRelativePriority:(int64_t)a3
+- (void)setRelativePriority:(int64_t)priority
 {
-  self->_relativePriority = a3;
-  v5 = [(NUANFAssetLoader *)self assetURLsOperation];
-  [v5 setRelativePriority:a3];
+  self->_relativePriority = priority;
+  assetURLsOperation = [(NUANFAssetLoader *)self assetURLsOperation];
+  [assetURLsOperation setRelativePriority:priority];
 
-  v6 = [(NUANFAssetLoader *)self assetsOperation];
-  [v6 setRelativePriority:a3];
+  assetsOperation = [(NUANFAssetLoader *)self assetsOperation];
+  [assetsOperation setRelativePriority:priority];
 }
 
-- (id)loadAssetURLsWithCompletion:(id)a3
+- (id)loadAssetURLsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NUANFAssetLoader *)self assetURLsOperation];
-  v6 = [v5 executeWithCompletionHandler:v4];
+  completionCopy = completion;
+  assetURLsOperation = [(NUANFAssetLoader *)self assetURLsOperation];
+  v6 = [assetURLsOperation executeWithCompletionHandler:completionCopy];
 
   return v6;
 }
 
-- (id)loadAssetsWithCompletion:(id)a3
+- (id)loadAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NUANFAssetLoader *)self assetsOperation];
-  v6 = [v5 executeWithCompletionHandler:v4];
+  completionCopy = completion;
+  assetsOperation = [(NUANFAssetLoader *)self assetsOperation];
+  v6 = [assetsOperation executeWithCompletionHandler:completionCopy];
 
   return v6;
 }
 
-- (id)loadAssetWithURL:(id)a3 completion:(id)a4
+- (id)loadAssetWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
@@ -103,9 +103,9 @@
   v18[2] = __48__NUANFAssetLoader_loadAssetWithURL_completion___block_invoke;
   v18[3] = &unk_2799A4730;
   objc_copyWeak(&v22, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v20 = v8;
-  v9 = v6;
+  v9 = lCopy;
   v19 = v9;
   v21 = v24;
   v10 = [(NUANFAssetLoader *)self loadAssetURLsWithCompletion:v18];
@@ -204,55 +204,55 @@ uint64_t __48__NUANFAssetLoader_loadAssetWithURL_completion___block_invoke_5(uin
   return [v2 cancel];
 }
 
-- (id)resourceIDForResourceURL:(id)a3
+- (id)resourceIDForResourceURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"asset"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"asset"])
   {
-    v5 = [v3 host];
+    host = [lCopy host];
   }
 
   else
   {
-    v5 = 0;
+    host = 0;
   }
 
-  return v5;
+  return host;
 }
 
-- (id)resourceForID:(id)a3
+- (id)resourceForID:(id)d
 {
-  v4 = a3;
-  v5 = [(NUANFAssetLoader *)self fetchedResourceIDs];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  fetchedResourceIDs = [(NUANFAssetLoader *)self fetchedResourceIDs];
+  v6 = [fetchedResourceIDs objectForKey:dCopy];
 
   return v6;
 }
 
-- (id)fallbackResourceForID:(id)a3
+- (id)fallbackResourceForID:(id)d
 {
-  v4 = a3;
-  v5 = [(NUANFAssetLoader *)self flintResourceManager];
-  v6 = [v5 cachedResourceWithIdentifier:v4];
+  dCopy = d;
+  flintResourceManager = [(NUANFAssetLoader *)self flintResourceManager];
+  v6 = [flintResourceManager cachedResourceWithIdentifier:dCopy];
 
   return v6;
 }
 
-- (id)asyncLoadAssetURLsOnceWithCompletion:(id)a3
+- (id)asyncLoadAssetURLsOnceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NUANFAssetLoader *)self flintResourceManager];
-  v6 = [(NUANFAssetLoader *)self resourceIDs];
-  v7 = [(NUANFAssetLoader *)self relativePriority];
+  completionCopy = completion;
+  flintResourceManager = [(NUANFAssetLoader *)self flintResourceManager];
+  resourceIDs = [(NUANFAssetLoader *)self resourceIDs];
+  relativePriority = [(NUANFAssetLoader *)self relativePriority];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__NUANFAssetLoader_asyncLoadAssetURLsOnceWithCompletion___block_invoke;
   v11[3] = &unk_2799A4780;
   v11[4] = self;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v5 fetchResourcesWithIdentifiers:v6 downloadAssets:0 relativePriority:v7 callBackQueue:MEMORY[0x277D85CD0] completionBlock:v11];
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = [flintResourceManager fetchResourcesWithIdentifiers:resourceIDs downloadAssets:0 relativePriority:relativePriority callBackQueue:MEMORY[0x277D85CD0] completionBlock:v11];
 
   return v9;
 }
@@ -274,13 +274,13 @@ uint64_t __57__NUANFAssetLoader_asyncLoadAssetURLsOnceWithCompletion___block_inv
   return v7();
 }
 
-- (id)asyncLoadAssetsOnceWithCompletion:(id)a3
+- (id)asyncLoadAssetsOnceWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NUANFAssetLoader *)self fetchedResourceIDs];
-  v6 = [(NUANFAssetLoader *)self resourceIDs];
-  v7 = [v5 nf_objectsForKeysWithoutMarker:v6];
+  completionCopy = completion;
+  fetchedResourceIDs = [(NUANFAssetLoader *)self fetchedResourceIDs];
+  resourceIDs = [(NUANFAssetLoader *)self resourceIDs];
+  v7 = [fetchedResourceIDs nf_objectsForKeysWithoutMarker:resourceIDs];
 
   v8 = [v7 fc_subarrayWithMaxCount:50];
   v9 = [v8 fc_arrayByTransformingWithBlock:&__block_literal_global_12];
@@ -293,18 +293,18 @@ uint64_t __57__NUANFAssetLoader_asyncLoadAssetURLsOnceWithCompletion___block_inv
   v17[1] = 3221225472;
   v17[2] = __54__NUANFAssetLoader_asyncLoadAssetsOnceWithCompletion___block_invoke_2;
   v17[3] = &unk_2799A47C8;
-  v11 = v4;
+  v11 = completionCopy;
   v18 = v11;
   [v10 setFetchCompletionBlock:v17];
-  v12 = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
-  [v12 addOperation:v10];
+  fc_sharedConcurrentQueue = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
+  [fc_sharedConcurrentQueue addOperation:v10];
 
   v13 = NUArticleLoadLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 shortOperationDescription];
+    shortOperationDescription = [v10 shortOperationDescription];
     *buf = 138543362;
-    v20 = v14;
+    v20 = shortOperationDescription;
     _os_log_impl(&dword_25C2D6000, v13, OS_LOG_TYPE_DEFAULT, "Article data loader will prefetch assets with operation=%{public}@", buf, 0xCu);
   }
 
@@ -322,11 +322,11 @@ uint64_t __54__NUANFAssetLoader_asyncLoadAssetsOnceWithCompletion___block_invoke
   return v4(v2, v3);
 }
 
-- (id)assetDownloadOperationForResource:(id)a3 completion:(id)a4
+- (id)assetDownloadOperationForResource:(id)resource completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 assetHandle];
-  v8 = [v7 downloadIfNeededWithPriority:-[NUANFAssetLoader relativePriority](self completion:{"relativePriority"), v6}];
+  completionCopy = completion;
+  assetHandle = [resource assetHandle];
+  v8 = [assetHandle downloadIfNeededWithPriority:-[NUANFAssetLoader relativePriority](self completion:{"relativePriority"), completionCopy}];
 
   return v8;
 }

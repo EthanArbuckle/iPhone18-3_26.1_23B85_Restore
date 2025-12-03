@@ -4,41 +4,41 @@
 - (MapsARSessionManager)init;
 - (id)allSessionOwners;
 - (id)currentSessionOwner;
-- (void)requestSessionWithOwner:(id)a3;
-- (void)resignSessionWithOwner:(id)a3;
+- (void)requestSessionWithOwner:(id)owner;
+- (void)resignSessionWithOwner:(id)owner;
 @end
 
 @implementation MapsARSessionManager
 
 - (id)currentSessionOwner
 {
-  v3 = [(MapsARSessionManager *)self sessionOwners];
-  objc_sync_enter(v3);
-  v4 = [(MapsARSessionManager *)self sessionOwners];
-  v5 = [v4 _maps_lastObject];
+  sessionOwners = [(MapsARSessionManager *)self sessionOwners];
+  objc_sync_enter(sessionOwners);
+  sessionOwners2 = [(MapsARSessionManager *)self sessionOwners];
+  _maps_lastObject = [sessionOwners2 _maps_lastObject];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(sessionOwners);
 
-  return v5;
+  return _maps_lastObject;
 }
 
 - (id)allSessionOwners
 {
-  v3 = [(MapsARSessionManager *)self sessionOwners];
-  objc_sync_enter(v3);
+  sessionOwners = [(MapsARSessionManager *)self sessionOwners];
+  objc_sync_enter(sessionOwners);
   v4 = +[NSMutableArray array];
   for (i = 0; ; ++i)
   {
-    v6 = [(MapsARSessionManager *)self sessionOwners];
-    v7 = [v6 count];
+    sessionOwners2 = [(MapsARSessionManager *)self sessionOwners];
+    v7 = [sessionOwners2 count];
 
     if (i >= v7)
     {
       break;
     }
 
-    v8 = [(MapsARSessionManager *)self sessionOwners];
-    objc_initWeak(&location, [v8 pointerAtIndex:i]);
+    sessionOwners3 = [(MapsARSessionManager *)self sessionOwners];
+    objc_initWeak(&location, [sessionOwners3 pointerAtIndex:i]);
 
     v9 = objc_loadWeakRetained(&location);
     if (v9)
@@ -51,154 +51,154 @@
 
   v10 = [v4 copy];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(sessionOwners);
 
   return v10;
 }
 
-- (void)resignSessionWithOwner:(id)a3
+- (void)resignSessionWithOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v5 = sub_100C98900();
-  v6 = v5;
-  if (v4)
+  sessionOwners = v5;
+  if (ownerCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v4;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ is resigning session ownership", &v18, 0xCu);
+      v19 = ownerCopy;
+      _os_log_impl(&_mh_execute_header, sessionOwners, OS_LOG_TYPE_DEFAULT, "%@ is resigning session ownership", &v18, 0xCu);
     }
 
-    v6 = [(MapsARSessionManager *)self sessionOwners];
-    objc_sync_enter(v6);
-    v7 = [(MapsARSessionManager *)self sessionOwners];
-    v8 = [v7 _maps_containsObject:v4];
+    sessionOwners = [(MapsARSessionManager *)self sessionOwners];
+    objc_sync_enter(sessionOwners);
+    sessionOwners2 = [(MapsARSessionManager *)self sessionOwners];
+    v8 = [sessionOwners2 _maps_containsObject:ownerCopy];
 
     if (v8)
     {
-      v9 = [(MapsARSessionManager *)self sessionOwners];
-      v10 = [v9 _maps_lastObject];
+      sessionOwners3 = [(MapsARSessionManager *)self sessionOwners];
+      _maps_lastObject = [sessionOwners3 _maps_lastObject];
 
-      v11 = [(MapsARSessionManager *)self sessionOwners];
-      [v11 _maps_removeObject:v4];
+      sessionOwners4 = [(MapsARSessionManager *)self sessionOwners];
+      [sessionOwners4 _maps_removeObject:ownerCopy];
 
-      v12 = [(MapsARSessionManager *)self sessionOwners];
-      v13 = [v12 _maps_lastObject];
+      sessionOwners5 = [(MapsARSessionManager *)self sessionOwners];
+      _maps_lastObject2 = [sessionOwners5 _maps_lastObject];
 
       v14 = sub_100C98900();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412546;
-        v19 = v10;
+        v19 = _maps_lastObject;
         v20 = 2112;
-        v21 = v13;
+        v21 = _maps_lastObject2;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Session ownership transitioned from %@ to %@", &v18, 0x16u);
       }
 
-      if (v10 == v4)
+      if (_maps_lastObject == ownerCopy)
       {
-        v15 = [(MapsARSessionManager *)self session];
-        [v4 sessionManager:self didResignSessionOwnership:v15];
+        session = [(MapsARSessionManager *)self session];
+        [ownerCopy sessionManager:self didResignSessionOwnership:session];
       }
 
-      if (v13 != v10)
+      if (_maps_lastObject2 != _maps_lastObject)
       {
-        v16 = [(MapsARSessionManager *)self session];
-        [v13 sessionManager:self didGainSessionOwnership:v16];
+        session2 = [(MapsARSessionManager *)self session];
+        [_maps_lastObject2 sessionManager:self didGainSessionOwnership:session2];
       }
 
-      if (!v13)
+      if (!_maps_lastObject2)
       {
-        v17 = [(MapsARSessionManager *)self session];
-        [v17 pause];
+        session3 = [(MapsARSessionManager *)self session];
+        [session3 pause];
       }
     }
 
     else
     {
-      v10 = sub_100C98900();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      _maps_lastObject = sub_100C98900();
+      if (os_log_type_enabled(_maps_lastObject, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v4;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Resigning session owner (%@) isn't part of the current session owners; ignoring", &v18, 0xCu);
+        v19 = ownerCopy;
+        _os_log_impl(&_mh_execute_header, _maps_lastObject, OS_LOG_TYPE_DEFAULT, "Resigning session owner (%@) isn't part of the current session owners; ignoring", &v18, 0xCu);
       }
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(sessionOwners);
   }
 
   else if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v18 = 136315138;
     v19 = "[MapsARSessionManager resignSessionWithOwner:]";
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%s cannot be called with a nil owner", &v18, 0xCu);
+    _os_log_impl(&_mh_execute_header, sessionOwners, OS_LOG_TYPE_ERROR, "%s cannot be called with a nil owner", &v18, 0xCu);
   }
 }
 
-- (void)requestSessionWithOwner:(id)a3
+- (void)requestSessionWithOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v5 = sub_100C98900();
-  v6 = v5;
-  if (v4)
+  sessionOwners = v5;
+  if (ownerCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ is requesting session ownership", &v13, 0xCu);
+      v14 = ownerCopy;
+      _os_log_impl(&_mh_execute_header, sessionOwners, OS_LOG_TYPE_DEFAULT, "%@ is requesting session ownership", &v13, 0xCu);
     }
 
-    v6 = [(MapsARSessionManager *)self sessionOwners];
-    objc_sync_enter(v6);
-    v7 = [(MapsARSessionManager *)self sessionOwners];
-    v8 = [v7 _maps_lastObject];
+    sessionOwners = [(MapsARSessionManager *)self sessionOwners];
+    objc_sync_enter(sessionOwners);
+    sessionOwners2 = [(MapsARSessionManager *)self sessionOwners];
+    _maps_lastObject = [sessionOwners2 _maps_lastObject];
 
-    if (v8 == v4)
+    if (_maps_lastObject == ownerCopy)
     {
-      v12 = sub_100C98900();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      session2 = sub_100C98900();
+      if (os_log_type_enabled(session2, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412546;
-        v14 = v4;
+        v14 = ownerCopy;
         v15 = 2112;
-        v16 = v4;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Current session owner (%@) is equal to the requesting session owner (%@); ignoring", &v13, 0x16u);
+        v16 = ownerCopy;
+        _os_log_impl(&_mh_execute_header, session2, OS_LOG_TYPE_DEFAULT, "Current session owner (%@) is equal to the requesting session owner (%@); ignoring", &v13, 0x16u);
       }
     }
 
     else
     {
-      v9 = [(MapsARSessionManager *)self sessionOwners];
-      [v9 _maps_moveOrAddObjectToTop:v4];
+      sessionOwners3 = [(MapsARSessionManager *)self sessionOwners];
+      [sessionOwners3 _maps_moveOrAddObjectToTop:ownerCopy];
 
       v10 = sub_100C98900();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412546;
-        v14 = v8;
+        v14 = _maps_lastObject;
         v15 = 2112;
-        v16 = v4;
+        v16 = ownerCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Session ownership transitioned from %@ to %@", &v13, 0x16u);
       }
 
-      v11 = [(MapsARSessionManager *)self session];
-      [v8 sessionManager:self didResignSessionOwnership:v11];
+      session = [(MapsARSessionManager *)self session];
+      [_maps_lastObject sessionManager:self didResignSessionOwnership:session];
 
-      v12 = [(MapsARSessionManager *)self session];
-      [v4 sessionManager:self didGainSessionOwnership:v12];
+      session2 = [(MapsARSessionManager *)self session];
+      [ownerCopy sessionManager:self didGainSessionOwnership:session2];
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(sessionOwners);
   }
 
   else if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v13 = 136315138;
     v14 = "[MapsARSessionManager requestSessionWithOwner:]";
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%s cannot be called with a nil owner", &v13, 0xCu);
+    _os_log_impl(&_mh_execute_header, sessionOwners, OS_LOG_TYPE_ERROR, "%s cannot be called with a nil owner", &v13, 0xCu);
   }
 }
 

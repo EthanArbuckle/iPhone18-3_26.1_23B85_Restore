@@ -1,19 +1,19 @@
 @interface SFDomainLabel
-- (SFDomainLabel)initWithCoder:(id)a3;
-- (SFDomainLabel)initWithFrame:(CGRect)a3;
-- (SFDomainLabel)initWithText:(id)a3 isSecure:(BOOL)a4;
+- (SFDomainLabel)initWithCoder:(id)coder;
+- (SFDomainLabel)initWithFrame:(CGRect)frame;
+- (SFDomainLabel)initWithText:(id)text isSecure:(BOOL)secure;
 - (id)_makeAttributedString;
 - (void)_commonInit;
-- (void)setText:(id)a3 isSecure:(BOOL)a4;
+- (void)setText:(id)text isSecure:(BOOL)secure;
 @end
 
 @implementation SFDomainLabel
 
-- (SFDomainLabel)initWithFrame:(CGRect)a3
+- (SFDomainLabel)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SFDomainLabel;
-  v3 = [(SFDomainLabel *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFDomainLabel *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (SFDomainLabel)initWithCoder:(id)a3
+- (SFDomainLabel)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SFDomainLabel;
-  v3 = [(SFDomainLabel *)&v7 initWithCoder:a3];
+  v3 = [(SFDomainLabel *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -39,17 +39,17 @@
   return v4;
 }
 
-- (SFDomainLabel)initWithText:(id)a3 isSecure:(BOOL)a4
+- (SFDomainLabel)initWithText:(id)text isSecure:(BOOL)secure
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 bounds];
+  secureCopy = secure;
+  textCopy = text;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v8 = [(SFDomainLabel *)self initWithFrame:?];
 
   if (v8)
   {
-    [(SFDomainLabel *)v8 setText:v6 isSecure:v4];
+    [(SFDomainLabel *)v8 setText:textCopy isSecure:secureCopy];
     v9 = v8;
   }
 
@@ -77,45 +77,45 @@
   [(UILabel *)self->_label setContentHuggingPriority:1 forAxis:v7];
   [(SFDomainLabel *)self addSubview:self->_label];
   v18 = MEMORY[0x1E696ACD8];
-  v21 = [(UILabel *)self->_label centerXAnchor];
-  v20 = [(SFDomainLabel *)self centerXAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  centerXAnchor = [(UILabel *)self->_label centerXAnchor];
+  centerXAnchor2 = [(SFDomainLabel *)self centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v22[0] = v19;
-  v8 = [(UILabel *)self->_label leadingAnchor];
-  v9 = [(SFDomainLabel *)self leadingAnchor];
-  v10 = [v8 constraintEqualToSystemSpacingAfterAnchor:v9 multiplier:1.0];
+  leadingAnchor = [(UILabel *)self->_label leadingAnchor];
+  leadingAnchor2 = [(SFDomainLabel *)self leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:1.0];
   v22[1] = v10;
-  v11 = [(UILabel *)self->_label topAnchor];
-  v12 = [(SFDomainLabel *)self topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor = [(UILabel *)self->_label topAnchor];
+  topAnchor2 = [(SFDomainLabel *)self topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v22[2] = v13;
-  v14 = [(SFDomainLabel *)self bottomAnchor];
-  v15 = [(UILabel *)self->_label bottomAnchor];
-  v16 = [v14 constraintEqualToSystemSpacingBelowAnchor:v15 multiplier:1.0];
+  bottomAnchor = [(SFDomainLabel *)self bottomAnchor];
+  bottomAnchor2 = [(UILabel *)self->_label bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
   v22[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
   [v18 activateConstraints:v17];
 }
 
-- (void)setText:(id)a3 isSecure:(BOOL)a4
+- (void)setText:(id)text isSecure:(BOOL)secure
 {
-  v4 = a4;
-  v6 = &stru_1F4FE9E38;
-  if (a3)
+  secureCopy = secure;
+  textCopy = &stru_1F4FE9E38;
+  if (text)
   {
-    v6 = a3;
+    textCopy = text;
   }
 
-  v10 = v6;
-  if (![(NSString *)self->_text isEqualToString:?]|| self->_secure != v4)
+  v10 = textCopy;
+  if (![(NSString *)self->_text isEqualToString:?]|| self->_secure != secureCopy)
   {
     v7 = [(__CFString *)v10 copy];
     text = self->_text;
     self->_text = v7;
 
-    self->_secure = v4;
-    v9 = [(SFDomainLabel *)self _makeAttributedString];
-    [(UILabel *)self->_label setAttributedText:v9];
+    self->_secure = secureCopy;
+    _makeAttributedString = [(SFDomainLabel *)self _makeAttributedString];
+    [(UILabel *)self->_label setAttributedText:_makeAttributedString];
   }
 }
 
@@ -123,12 +123,12 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:self->_text];
   [v3 appendAttributedString:v5];
 
   v8 = *MEMORY[0x1E69DB650];
-  v9[0] = v4;
+  v9[0] = whiteColor;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   [v3 addAttributes:v6 range:{0, objc_msgSend(v3, "length")}];
 

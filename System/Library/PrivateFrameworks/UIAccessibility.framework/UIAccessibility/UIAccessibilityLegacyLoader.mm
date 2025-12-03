@@ -1,11 +1,11 @@
 @interface UIAccessibilityLegacyLoader
-+ (id)_accessibilityBundlesForBundle:(id)a3;
-+ (id)_axBundleForBundle:(id)a3;
-+ (int64_t)_accessibilityLoadingPriorityForBundle:(id)a3;
-+ (void)_accessibilityLoadSubbundles:(id)a3;
++ (id)_accessibilityBundlesForBundle:(id)bundle;
++ (id)_axBundleForBundle:(id)bundle;
++ (int64_t)_accessibilityLoadingPriorityForBundle:(id)bundle;
++ (void)_accessibilityLoadSubbundles:(id)subbundles;
 + (void)initialize;
-+ (void)loadAccessibilityBundle:(id)a3 didLoadCallback:(id)a4 loadSubbundles:(BOOL)a5;
-+ (void)loadAccessibilityBundleForBundle:(id)a3 didLoadCallback:(id)a4 forceLoad:(BOOL)a5 loadSubbundles:(BOOL)a6 loadAllAccessibilityInfo:(BOOL)a7;
++ (void)loadAccessibilityBundle:(id)bundle didLoadCallback:(id)callback loadSubbundles:(BOOL)subbundles;
++ (void)loadAccessibilityBundleForBundle:(id)bundle didLoadCallback:(id)callback forceLoad:(BOOL)load loadSubbundles:(BOOL)subbundles loadAllAccessibilityInfo:(BOOL)info;
 + (void)loadExtendedAccessibilityBundles;
 @end
 
@@ -46,26 +46,26 @@ void __41__UIAccessibilityLegacyLoader_initialize__block_invoke()
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [a1 _axBundleForBundle:v4];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v5 = [self _axBundleForBundle:mainBundle];
   v6 = AXLogLoading();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v4 bundleIdentifier];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     *buf = 138543618;
-    v24 = v7;
+    v24 = bundleIdentifier;
     v25 = 2114;
     v26 = v5;
     _os_log_impl(&dword_1A9B83000, v6, OS_LOG_TYPE_DEBUG, "Loading AX for '%{public}@'. AXBundle '%{public}@'", buf, 0x16u);
   }
 
-  v8 = [v5 infoDictionary];
-  v9 = [v8 objectForKey:@"SupportsAsynchronousLoad"];
-  v10 = [v9 BOOLValue];
+  infoDictionary = [v5 infoDictionary];
+  v9 = [infoDictionary objectForKey:@"SupportsAsynchronousLoad"];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = AXLogLoading();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-  if (v10)
+  if (bOOLValue)
   {
     if (v12)
     {
@@ -74,14 +74,14 @@ void __41__UIAccessibilityLegacyLoader_initialize__block_invoke()
     }
 
     UIAccessibilityPostNotification(0xFA0u, 0);
-    [a1 loadAccessibilityBundleForBundle:v4 didLoadCallback:&__block_literal_global_303];
+    [self loadAccessibilityBundleForBundle:mainBundle didLoadCallback:&__block_literal_global_303];
     v21[2] = MEMORY[0x1E69E9820];
     v21[3] = 3221225472;
     v21[4] = __63__UIAccessibilityLegacyLoader_loadExtendedAccessibilityBundles__block_invoke_309;
     v21[5] = &unk_1E78AB890;
     v13 = v22;
     v22[0] = v5;
-    v22[1] = a1;
+    v22[1] = self;
     v14 = v5;
     AXPerformBlockOnMainThreadAfterDelay();
   }
@@ -90,20 +90,20 @@ void __41__UIAccessibilityLegacyLoader_initialize__block_invoke()
   {
     if (v12)
     {
-      v15 = [v5 bundleIdentifier];
+      bundleIdentifier2 = [v5 bundleIdentifier];
       *buf = 138543362;
-      v24 = v15;
+      v24 = bundleIdentifier2;
       _os_log_impl(&dword_1A9B83000, v11, OS_LOG_TYPE_INFO, "%{public}@: Loading synchronously", buf, 0xCu);
     }
 
-    [a1 loadAccessibilityBundleForBundle:v4 didLoadCallback:&__block_literal_global_303];
+    [self loadAccessibilityBundleForBundle:mainBundle didLoadCallback:&__block_literal_global_303];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __63__UIAccessibilityLegacyLoader_loadExtendedAccessibilityBundles__block_invoke_311;
     v20[3] = &unk_1E78AB890;
     v13 = v21;
     v21[0] = v5;
-    v21[1] = a1;
+    v21[1] = self;
     v16 = v5;
     v17 = _Block_copy(v20);
     if (_UIApplicationIsExtension())
@@ -166,11 +166,11 @@ void __63__UIAccessibilityLegacyLoader_loadExtendedAccessibilityBundles__block_i
   UIAccessibilityPostNotification(0xFA1u, 0);
 }
 
-+ (id)_axBundleForBundle:(id)a3
++ (id)_axBundleForBundle:(id)bundle
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 isLoaded])
+  bundleCopy = bundle;
+  if (![bundleCopy isLoaded])
   {
     v8 = 0;
 LABEL_27:
@@ -179,33 +179,33 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  v4 = [v3 accessibilityBundlePath];
-  v5 = [v4 lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
+  accessibilityBundlePath = [bundleCopy accessibilityBundlePath];
+  lastPathComponent = [accessibilityBundlePath lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v7 = [v4 pathExtension];
-  if ([v7 isEqualToString:@"assistantUIBundle"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"siriUIBundle"))
+  pathExtension = [accessibilityBundlePath pathExtension];
+  if ([pathExtension isEqualToString:@"assistantUIBundle"] & 1) != 0 || (objc_msgSend(pathExtension, "isEqualToString:", @"siriUIBundle"))
   {
     v30 = 1;
   }
 
   else
   {
-    v30 = [v7 isEqualToString:@"siriUIPresentationBundle"];
+    v30 = [pathExtension isEqualToString:@"siriUIPresentationBundle"];
   }
 
-  v9 = [v7 isEqualToString:@"uibundle"];
-  v10 = [v7 isEqualToString:@"app"];
-  v11 = [v7 isEqualToString:@"qldisplay"];
-  v12 = [v7 isEqualToString:@"framework"];
-  v13 = [v7 isEqualToString:@"bundle"];
-  v14 = [v7 isEqualToString:@"appex"];
-  v15 = [v7 isEqualToString:@"fpenroll"];
+  v9 = [pathExtension isEqualToString:@"uibundle"];
+  v10 = [pathExtension isEqualToString:@"app"];
+  v11 = [pathExtension isEqualToString:@"qldisplay"];
+  v12 = [pathExtension isEqualToString:@"framework"];
+  v13 = [pathExtension isEqualToString:@"bundle"];
+  v14 = [pathExtension isEqualToString:@"appex"];
+  v15 = [pathExtension isEqualToString:@"fpenroll"];
   if (v12)
   {
     v16 = @"Framework";
 LABEL_19:
-    v17 = [v6 stringByAppendingString:v16];
+    v17 = [stringByDeletingPathExtension stringByAppendingString:v16];
     v18 = [v17 stringByAppendingPathExtension:kUIAccessibilityBundleExtension];
 
     goto LABEL_20;
@@ -243,7 +243,7 @@ LABEL_19:
 
   if (v13 || v15)
   {
-    v18 = [v6 stringByAppendingPathExtension:kUIAccessibilityBundleExtension];
+    v18 = [stringByDeletingPathExtension stringByAppendingPathExtension:kUIAccessibilityBundleExtension];
 LABEL_20:
     v19 = [MEMORY[0x1E696AAE8] accessibilityLocalBundleWithLastPathComponent:v18];
     if (v19 || ([MEMORY[0x1E696AAE8] accessibilityBundleWithLastPathComponent:v18], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -266,14 +266,14 @@ LABEL_20:
       if (!((v8 != 0) | v30 & 1))
       {
         v24 = @"~ipad";
-        if (([v6 hasSuffix:@"~ipad"] & 1) != 0 || (v24 = @"~iphone", objc_msgSend(v6, "hasSuffix:", @"~iphone")))
+        if (([stringByDeletingPathExtension hasSuffix:@"~ipad"] & 1) != 0 || (v24 = @"~iphone", objc_msgSend(stringByDeletingPathExtension, "hasSuffix:", @"~iphone")))
         {
-          v25 = [v6 stringByReplacingOccurrencesOfString:v24 withString:&stru_1F1DB9E20];
+          v25 = [stringByDeletingPathExtension stringByReplacingOccurrencesOfString:v24 withString:&stru_1F1DB9E20];
 
-          v6 = v25;
+          stringByDeletingPathExtension = v25;
         }
 
-        v26 = [v6 stringByAppendingPathExtension:kUIAccessibilityBundleExtension];
+        v26 = [stringByDeletingPathExtension stringByAppendingPathExtension:kUIAccessibilityBundleExtension];
 
         v8 = [MEMORY[0x1E696AAE8] accessibilityBundleWithLastPathComponent:v26];
         v18 = v26;
@@ -281,12 +281,12 @@ LABEL_20:
 
       if (!v8)
       {
-        v27 = [v3 bundleIdentifier];
+        bundleIdentifier = [bundleCopy bundleIdentifier];
 
-        if (v27)
+        if (bundleIdentifier)
         {
-          v28 = [v3 bundleIdentifier];
-          v29 = [v28 stringByAppendingPathExtension:kUIAccessibilityBundleExtension];
+          bundleIdentifier2 = [bundleCopy bundleIdentifier];
+          v29 = [bundleIdentifier2 stringByAppendingPathExtension:kUIAccessibilityBundleExtension];
 
           v8 = [MEMORY[0x1E696AAE8] accessibilityBundleWithLastPathComponent:v29];
         }
@@ -304,7 +304,7 @@ LABEL_20:
       *buf = 67109634;
       *v32 = v8 != 0;
       *&v32[4] = 2114;
-      *&v32[6] = v3;
+      *&v32[6] = bundleCopy;
       v33 = 2114;
       v34 = v18;
       _os_log_debug_impl(&dword_1A9B83000, v20, OS_LOG_TYPE_DEBUG, "Loading Sub-bundle [%d]: %{public}@ [%{public}@]", buf, 0x1Cu);
@@ -318,7 +318,7 @@ LABEL_20:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    *v32 = v4;
+    *v32 = accessibilityBundlePath;
     _os_log_impl(&dword_1A9B83000, v18, OS_LOG_TYPE_INFO, "Not servicing %@ because it's not a known type of bundle", buf, 0xCu);
   }
 
@@ -337,30 +337,30 @@ LABEL_29:
   return v22;
 }
 
-+ (void)_accessibilityLoadSubbundles:(id)a3
++ (void)_accessibilityLoadSubbundles:(id)subbundles
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subbundlesCopy = subbundles;
   v5 = AXLogLoading();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 bundleIdentifier];
+    bundleIdentifier = [subbundlesCopy bundleIdentifier];
     *buf = 138543362;
-    v13 = v6;
+    v13 = bundleIdentifier;
     _os_log_impl(&dword_1A9B83000, v5, OS_LOG_TYPE_DEBUG, "Loading sub-bundles from %{public}@", buf, 0xCu);
   }
 
-  v7 = [a1 _accessibilityBundlesForBundle:v4];
+  v7 = [self _accessibilityBundlesForBundle:subbundlesCopy];
   v8 = [v7 count];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__UIAccessibilityLegacyLoader__accessibilityLoadSubbundles___block_invoke;
   v11[3] = &__block_descriptor_48_e25_v32__0__NSBundle_8Q16_B24l;
-  v11[4] = a1;
+  v11[4] = self;
   v11[5] = v8;
   [v7 enumerateObjectsUsingBlock:v11];
-  v10 = v4;
-  v9 = v4;
+  v10 = subbundlesCopy;
+  v9 = subbundlesCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
@@ -431,14 +431,14 @@ void __60__UIAccessibilityLegacyLoader__accessibilityLoadSubbundles___block_invo
   }
 }
 
-+ (int64_t)_accessibilityLoadingPriorityForBundle:(id)a3
++ (int64_t)_accessibilityLoadingPriorityForBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [v3 _accessibilityIntegerValueForKey:@"axBundlePriority"];
+  bundleCopy = bundle;
+  v4 = [bundleCopy _accessibilityIntegerValueForKey:@"axBundlePriority"];
   if (!v4)
   {
     v4 = AXBundleLoadingPriorityDefault;
-    v5 = [v3 safeStringForKey:@"_resolvedPath"];
+    v5 = [bundleCopy safeStringForKey:@"_resolvedPath"];
     if ([v5 hasSuffix:@"UIKit.framework"])
     {
       v4 = AXBundleLoadingPriorityUIKit;
@@ -474,27 +474,27 @@ void __60__UIAccessibilityLegacyLoader__accessibilityLoadSubbundles___block_invo
       v4 = AXBundleLoadingPriorityBundle;
     }
 
-    [v3 _accessibilitySetIntegerValue:v4 forKey:@"axBundlePriority"];
+    [bundleCopy _accessibilitySetIntegerValue:v4 forKey:@"axBundlePriority"];
   }
 
   return v4;
 }
 
-+ (void)loadAccessibilityBundleForBundle:(id)a3 didLoadCallback:(id)a4 forceLoad:(BOOL)a5 loadSubbundles:(BOOL)a6 loadAllAccessibilityInfo:(BOOL)a7
++ (void)loadAccessibilityBundleForBundle:(id)bundle didLoadCallback:(id)callback forceLoad:(BOOL)load loadSubbundles:(BOOL)subbundles loadAllAccessibilityInfo:(BOOL)info
 {
-  v8 = a6;
-  v9 = a5;
+  subbundlesCopy = subbundles;
+  loadCopy = load;
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  bundleCopy = bundle;
+  callbackCopy = callback;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v12 accessibilityBundlePath];
+    accessibilityBundlePath = [bundleCopy accessibilityBundlePath];
     [_BundleLock lock];
     v15 = _DeniedBundles;
-    v16 = [v14 lastPathComponent];
-    LODWORD(v15) = [v15 containsObject:v16];
+    lastPathComponent = [accessibilityBundlePath lastPathComponent];
+    LODWORD(v15) = [v15 containsObject:lastPathComponent];
 
     [_BundleLock unlock];
     if (v15)
@@ -503,54 +503,54 @@ void __60__UIAccessibilityLegacyLoader__accessibilityLoadSubbundles___block_invo
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v35 = v12;
+        v35 = bundleCopy;
         v18 = "Bundle in deny list: %{public}@";
 LABEL_12:
         _os_log_impl(&dword_1A9B83000, v17, OS_LOG_TYPE_DEBUG, v18, buf, 0xCu);
       }
     }
 
-    else if ((AXProcessIsSystemApplication() & 1) != 0 || ([v14 lastPathComponent], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "hasPrefix:", @"Assistant"), v19, !v20))
+    else if ((AXProcessIsSystemApplication() & 1) != 0 || ([accessibilityBundlePath lastPathComponent], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "hasPrefix:", @"Assistant"), v19, !v20))
     {
-      v21 = [v14 lastPathComponent];
-      v22 = [v21 hasSuffix:@"axbundle"];
+      lastPathComponent2 = [accessibilityBundlePath lastPathComponent];
+      v22 = [lastPathComponent2 hasSuffix:@"axbundle"];
 
       if (!v22)
       {
         [_BundleLock lock];
-        v23 = [_LoadedBundles containsObject:v14];
+        v23 = [_LoadedBundles containsObject:accessibilityBundlePath];
         [_BundleLock unlock];
-        if (!v23 || v9)
+        if (!v23 || loadCopy)
         {
           v24 = AXLogLoading();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138543362;
-            v35 = v12;
+            v35 = bundleCopy;
             _os_log_impl(&dword_1A9B83000, v24, OS_LOG_TYPE_DEBUG, "Attempting to load: %{public}@", buf, 0xCu);
           }
 
-          [v12 _cfBundle];
-          if (([v12 isLoaded] & 1) != 0 || v9)
+          [bundleCopy _cfBundle];
+          if (([bundleCopy isLoaded] & 1) != 0 || loadCopy)
           {
             [_BundleLock lock];
-            [_LoadedBundles addObject:v14];
+            [_LoadedBundles addObject:accessibilityBundlePath];
             [_BundleLock unlock];
-            v26 = [a1 _axBundleForBundle:v12];
+            v26 = [self _axBundleForBundle:bundleCopy];
             v25 = v26;
-            if (v13 && !v26)
+            if (callbackCopy && !v26)
             {
-              (*(v13 + 2))(v13, 0, 0, 0);
+              (*(callbackCopy + 2))(callbackCopy, 0, 0, 0);
             }
 
             v28 = MEMORY[0x1E69E9820];
             v29 = 3221225472;
             v30 = __130__UIAccessibilityLegacyLoader_loadAccessibilityBundleForBundle_didLoadCallback_forceLoad_loadSubbundles_loadAllAccessibilityInfo___block_invoke;
             v31 = &unk_1E78AB900;
-            v32 = v13;
-            v33 = a7;
+            v32 = callbackCopy;
+            infoCopy = info;
             v27 = _Block_copy(&v28);
-            [a1 loadAccessibilityBundle:v25 didLoadCallback:v27 loadSubbundles:{v8, v28, v29, v30, v31}];
+            [self loadAccessibilityBundle:v25 didLoadCallback:v27 loadSubbundles:{subbundlesCopy, v28, v29, v30, v31}];
           }
 
           else
@@ -559,7 +559,7 @@ LABEL_12:
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138543362;
-              v35 = v12;
+              v35 = bundleCopy;
               _os_log_impl(&dword_1A9B83000, v25, OS_LOG_TYPE_DEBUG, "Bundle not loaded? %{public}@", buf, 0xCu);
             }
           }
@@ -568,9 +568,9 @@ LABEL_12:
         }
 
 LABEL_14:
-        if (v13)
+        if (callbackCopy)
         {
-          (*(v13 + 2))(v13, 0, 0, 0);
+          (*(callbackCopy + 2))(callbackCopy, 0, 0, 0);
         }
 
 LABEL_16:
@@ -582,7 +582,7 @@ LABEL_16:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v35 = v12;
+        v35 = bundleCopy;
         v18 = "Bundle is an axbundle, don't load again: %{public}@";
         goto LABEL_12;
       }
@@ -594,7 +594,7 @@ LABEL_16:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v35 = v12;
+        v35 = bundleCopy;
         v18 = "Bundle is assistant not inside system app: %{public}@";
         goto LABEL_12;
       }
@@ -631,42 +631,42 @@ void __130__UIAccessibilityLegacyLoader_loadAccessibilityBundleForBundle_didLoad
   }
 }
 
-+ (void)loadAccessibilityBundle:(id)a3 didLoadCallback:(id)a4 loadSubbundles:(BOOL)a5
++ (void)loadAccessibilityBundle:(id)bundle didLoadCallback:(id)callback loadSubbundles:(BOOL)subbundles
 {
-  v5 = a5;
+  subbundlesCopy = subbundles;
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  bundleCopy = bundle;
+  callbackCopy = callback;
+  if (!bundleCopy)
   {
     goto LABEL_16;
   }
 
-  if (([v7 isLoaded] & 1) == 0)
+  if (([bundleCopy isLoaded] & 1) == 0)
   {
     v18 = 0;
-    v10 = [v7 loadAndReturnError:&v18];
+    v10 = [bundleCopy loadAndReturnError:&v18];
     v11 = v18;
     if (v10)
     {
-      v12 = [v7 principalClass];
+      principalClass = [bundleCopy principalClass];
       v13 = AXLogLoading();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543618;
-        v20 = v7;
+        v20 = bundleCopy;
         v21 = 2114;
-        v22 = v12;
+        v22 = principalClass;
         _os_log_impl(&dword_1A9B83000, v13, OS_LOG_TYPE_DEBUG, "AX Bundle principal class: %{public}@ %{public}@", buf, 0x16u);
       }
 
-      if (!v12)
+      if (!principalClass)
       {
         goto LABEL_15;
       }
 
-      v17 = v8;
-      v16 = v7;
+      v17 = callbackCopy;
+      v16 = bundleCopy;
       AXPerformBlockOnMainThread();
 
       v14 = v17;
@@ -677,7 +677,7 @@ void __130__UIAccessibilityLegacyLoader_loadAccessibilityBundleForBundle_didLoad
       v14 = AXLogLoading();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [UIAccessibilityLegacyLoader loadAccessibilityBundle:v7 didLoadCallback:v11 loadSubbundles:v14];
+        [UIAccessibilityLegacyLoader loadAccessibilityBundle:bundleCopy didLoadCallback:v11 loadSubbundles:v14];
       }
     }
 
@@ -685,16 +685,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v5)
+  if (subbundlesCopy)
   {
-    v15 = [UIAccessibilityLoader _accessibilityBundlesForBundle:v7];
+    v15 = [UIAccessibilityLoader _accessibilityBundlesForBundle:bundleCopy];
     v9 = v15;
     AXPerformBlockOnMainThread();
   }
 
-  if (v8)
+  if (callbackCopy)
   {
-    (*(v8 + 2))(v8, 1, v7, 1);
+    (*(callbackCopy + 2))(callbackCopy, 1, bundleCopy, 1);
   }
 
 LABEL_16:
@@ -748,19 +748,19 @@ void __86__UIAccessibilityLegacyLoader_loadAccessibilityBundle_didLoadCallback_l
   }
 }
 
-+ (id)_accessibilityBundlesForBundle:(id)a3
++ (id)_accessibilityBundlesForBundle:(id)bundle
 {
-  v3 = a3;
-  [v3 principalClass];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([objc_msgSend(v3 "principalClass")], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  bundleCopy = bundle;
+  [bundleCopy principalClass];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([objc_msgSend(bundleCopy "principalClass")], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [MEMORY[0x1E696AAE8] allFrameworks];
-    v6 = [MEMORY[0x1E696AAE8] allBundles];
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count") + objc_msgSend(v5, "count")}];
-    [v7 axSafelyAddObjectsFromArray:v6];
-    [v7 axSafelyAddObjectsFromArray:v5];
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    [v7 removeObject:v8];
+    allFrameworks = [MEMORY[0x1E696AAE8] allFrameworks];
+    allBundles = [MEMORY[0x1E696AAE8] allBundles];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allBundles, "count") + objc_msgSend(allFrameworks, "count")}];
+    [v7 axSafelyAddObjectsFromArray:allBundles];
+    [v7 axSafelyAddObjectsFromArray:allFrameworks];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    [v7 removeObject:mainBundle];
 
     v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     [v7 removeObject:v9];

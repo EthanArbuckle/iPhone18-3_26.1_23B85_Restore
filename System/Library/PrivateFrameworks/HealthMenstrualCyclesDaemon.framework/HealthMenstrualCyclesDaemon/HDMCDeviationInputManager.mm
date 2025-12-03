@@ -1,25 +1,25 @@
 @interface HDMCDeviationInputManager
-- (BOOL)clearStateIfNecessaryFromSettings:(id)a3 usageRequirementsSatisfied:(BOOL)a4 error:(id *)a5;
-- (HDMCDeviationInputManager)initWithProfile:(id)a3;
+- (BOOL)clearStateIfNecessaryFromSettings:(id)settings usageRequirementsSatisfied:(BOOL)satisfied error:(id *)error;
+- (HDMCDeviationInputManager)initWithProfile:(id)profile;
 @end
 
 @implementation HDMCDeviationInputManager
 
-- (HDMCDeviationInputManager)initWithProfile:(id)a3
+- (HDMCDeviationInputManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDMCDeviationInputManager;
   v5 = [(HDMCDeviationInputManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
-    v7 = [MEMORY[0x277D10718] hdmc_syncedMenstrualCyclesDefaultsDomainWithProfile:v4];
+    objc_storeWeak(&v5->_profile, profileCopy);
+    v7 = [MEMORY[0x277D10718] hdmc_syncedMenstrualCyclesDefaultsDomainWithProfile:profileCopy];
     keyValueDomain = v6->_keyValueDomain;
     v6->_keyValueDomain = v7;
 
-    v9 = [MEMORY[0x277D10718] hdmc_deviationDetectionAnalyticsProtectedDomainWithProfile:v4];
+    v9 = [MEMORY[0x277D10718] hdmc_deviationDetectionAnalyticsProtectedDomainWithProfile:profileCopy];
     analyticsKeyValueDomain = v6->_analyticsKeyValueDomain;
     v6->_analyticsKeyValueDomain = v9;
   }
@@ -27,10 +27,10 @@
   return v6;
 }
 
-- (BOOL)clearStateIfNecessaryFromSettings:(id)a3 usageRequirementsSatisfied:(BOOL)a4 error:(id *)a5
+- (BOOL)clearStateIfNecessaryFromSettings:(id)settings usageRequirementsSatisfied:(BOOL)satisfied error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  if (![a3 deviationDetectionEnabledForAnyType] || !a4)
+  if (![settings deviationDetectionEnabledForAnyType] || !satisfied)
   {
     keyValueDomain = self->_keyValueDomain;
     v42 = 0;
@@ -47,7 +47,7 @@
       if (v13)
       {
         WeakRetained = objc_loadWeakRetained(&self->_profile);
-        v16 = [WeakRetained cloudSyncManager];
+        cloudSyncManager = [WeakRetained cloudSyncManager];
         v17 = objc_alloc(MEMORY[0x277CCD140]);
         v18 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:0 lite:1];
         v19 = [v17 initWithChangesSyncRequest:v18];
@@ -58,17 +58,17 @@
         v40[2] = __96__HDMCDeviationInputManager_clearStateIfNecessaryFromSettings_usageRequirementsSatisfied_error___block_invoke;
         v40[3] = &unk_27865A7A0;
         v40[4] = self;
-        [v16 syncWithRequest:v19 reason:v21 completion:v40];
+        [cloudSyncManager syncWithRequest:v19 reason:v21 completion:v40];
 
         analyticsKeyValueDomain = self->_analyticsKeyValueDomain;
         v39 = v14;
-        LOBYTE(v16) = [(HDKeyValueDomain *)analyticsKeyValueDomain setValueForAllKeys:0 error:&v39];
+        LOBYTE(cloudSyncManager) = [(HDKeyValueDomain *)analyticsKeyValueDomain setValueForAllKeys:0 error:&v39];
         v23 = v39;
 
         _HKInitializeLogging();
         v24 = *MEMORY[0x277CCC2E8];
         v25 = *MEMORY[0x277CCC2E8];
-        if (v16)
+        if (cloudSyncManager)
         {
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
@@ -106,10 +106,10 @@
       v32 = v31;
       if (v31)
       {
-        if (a5)
+        if (error)
         {
           v33 = v31;
-          *a5 = v32;
+          *error = v32;
         }
 
         else
@@ -138,10 +138,10 @@
         goto LABEL_3;
       }
 
-      if (a5)
+      if (error)
       {
         v29 = v11;
-        *a5 = v11;
+        *error = v11;
       }
 
       else

@@ -1,16 +1,16 @@
 @interface SIPolarisGraphTester
-- (BOOL)addGraphInputResourceStreamWithParameters:(id)a3;
+- (BOOL)addGraphInputResourceStreamWithParameters:(id)parameters;
 - (BOOL)commitInputResourceGraphs;
-- (BOOL)commitTargetGraph:(id)a3;
+- (BOOL)commitTargetGraph:(id)graph;
 - (BOOL)finalizeAndSubmitGraphs;
 - (BOOL)runGraph;
-- (BOOL)setDataInputForResourceKey:(id)a3 data:(void *)a4;
-- (BOOL)setupResourceStreamsByAttributes:(id)a3;
+- (BOOL)setDataInputForResourceKey:(id)key data:(void *)data;
+- (BOOL)setupResourceStreamsByAttributes:(id)attributes;
 - (SIPolarisGraphTester)init;
-- (ps_resource)getResourceForName:(id)a3;
-- (void)copyData:(void *)a3 toResource:(ps_resource *)a4;
+- (ps_resource)getResourceForName:(id)name;
+- (void)copyData:(void *)data toResource:(ps_resource *)resource;
 - (void)dealloc;
-- (void)setupTargetGraphWithGraphProvider:(id)a3;
+- (void)setupTargetGraphWithGraphProvider:(id)provider;
 @end
 
 @implementation SIPolarisGraphTester
@@ -22,13 +22,13 @@
   v2 = [(SIPolarisGraphTester *)&v15 init];
   if (v2)
   {
-    v3 = [objc_alloc(MEMORY[0x277D3E660]) initForLocalReplay];
+    initForLocalReplay = [objc_alloc(MEMORY[0x277D3E660]) initForLocalReplay];
     session = v2->_session;
-    v2->_session = v3;
+    v2->_session = initForLocalReplay;
 
-    v5 = [(PSExecutionSession *)v2->_session context];
+    context = [(PSExecutionSession *)v2->_session context];
     context = v2->_context;
-    v2->_context = v5;
+    v2->_context = context;
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     inputResourceSetters = v2->_inputResourceSetters;
@@ -49,9 +49,9 @@
   return v2;
 }
 
-- (void)setupTargetGraphWithGraphProvider:(id)a3
+- (void)setupTargetGraphWithGraphProvider:(id)provider
 {
-  v4 = [a3 graphWithContext:self->_context];
+  v4 = [provider graphWithContext:self->_context];
   graph = self->_graph;
   self->_graph = v4;
 
@@ -61,10 +61,10 @@
   [(PSGraph *)v6 setCriticalityCPU:2];
 }
 
-- (BOOL)setupResourceStreamsByAttributes:(id)a3
+- (BOOL)setupResourceStreamsByAttributes:(id)attributes
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"input_resource"];
+  v3 = [attributes objectForKey:@"input_resource"];
   v4 = v3;
   if (v3)
   {
@@ -151,27 +151,27 @@
   return v4 != 0;
 }
 
-- (BOOL)addGraphInputResourceStreamWithParameters:(id)a3
+- (BOOL)addGraphInputResourceStreamWithParameters:(id)parameters
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 resourceKey];
+  parametersCopy = parameters;
+  resourceKey = [parametersCopy resourceKey];
   context = self->_context;
-  v7 = [v4 streamFromParameters];
+  streamFromParameters = [parametersCopy streamFromParameters];
 
-  [(PSContext *)context addResourceStream:v7];
+  [(PSContext *)context addResourceStream:streamFromParameters];
   v8 = objc_alloc_init(SIPolarisGraphTesterInputResourceSetter);
-  v9 = [objc_alloc(MEMORY[0x277D3E6E0]) initWithResourceKey:v5];
+  v9 = [objc_alloc(MEMORY[0x277D3E6E0]) initWithResourceKey:resourceKey];
   v10 = objc_alloc(MEMORY[0x277D3E6E8]);
-  v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"producer_writer_%@", v5];
+  v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"producer_writer_%@", resourceKey];
   v12 = [v10 initWithName:v11 withOutput:v9];
   [(SIPolarisGraphTesterInputResourceSetter *)v8 setWriter:v12];
 
-  v13 = [(SIPolarisGraphTesterInputResourceSetter *)v8 writer];
+  writer = [(SIPolarisGraphTesterInputResourceSetter *)v8 writer];
 
-  if (v13)
+  if (writer)
   {
-    [(NSMutableDictionary *)self->_inputResourceSetters setObject:v8 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_inputResourceSetters setObject:v8 forKeyedSubscript:resourceKey];
   }
 
   else
@@ -188,7 +188,7 @@
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v13 != 0;
+  return writer != 0;
 }
 
 - (BOOL)finalizeAndSubmitGraphs
@@ -219,8 +219,8 @@
         }
 
         v9 = [(NSMutableDictionary *)self->_inputResourceSetters objectForKeyedSubscript:*(*(&v46 + 1) + 8 * v8)];
-        v10 = [v9 writer];
-        [v3 addWriter:v10];
+        writer = [v9 writer];
+        [v3 addWriter:writer];
 
         ++v8;
       }
@@ -241,7 +241,7 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v33 = self;
+  selfCopy = self;
   obj = [(PSGraph *)self->_graph tasks];
   v12 = [obj countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (v12)
@@ -263,8 +263,8 @@
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v16 = [v15 outputs];
-        v17 = [v16 countByEnumeratingWithState:&v38 objects:v51 count:16];
+        outputs = [v15 outputs];
+        v17 = [outputs countByEnumeratingWithState:&v38 objects:v51 count:16];
         if (v17)
         {
           v18 = v17;
@@ -276,20 +276,20 @@
             {
               if (*v39 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(outputs);
               }
 
               v21 = *(*(&v38 + 1) + 8 * v20);
               v22 = objc_alloc(MEMORY[0x277D3E6D8]);
-              v23 = [v21 resourceKey];
-              v24 = [v22 initWithResourceKey:v23 type:0 capacity:1];
+              resourceKey = [v21 resourceKey];
+              v24 = [v22 initWithResourceKey:resourceKey type:0 capacity:1];
 
               [v11 addInput:v24];
               ++v20;
             }
 
             while (v18 != v20);
-            v18 = [v16 countByEnumeratingWithState:&v38 objects:v51 count:16];
+            v18 = [outputs countByEnumeratingWithState:&v38 objects:v51 count:16];
           }
 
           while (v18);
@@ -305,16 +305,16 @@
     while (v13);
   }
 
-  [v11 setFunction:tester_probe_task userdata:v33->_probeData];
+  [v11 setFunction:tester_probe_task userdata:selfCopy->_probeData];
   [v32 addTask:v11];
   v25 = objc_alloc(MEMORY[0x277CBEB98]);
-  v50[0] = v33->_graph;
+  v50[0] = selfCopy->_graph;
   v50[1] = v34;
   v50[2] = v32;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:3];
   v27 = [v25 initWithArray:v26];
 
-  session = v33->_session;
+  session = selfCopy->_session;
   v37 = 0;
   v29 = [(PSExecutionSession *)session commitAddedGraphs:v27 removedGraphs:0 option:1 error:&v37];
 
@@ -322,19 +322,19 @@
   return v29;
 }
 
-- (BOOL)commitTargetGraph:(id)a3
+- (BOOL)commitTargetGraph:(id)graph
 {
-  v25 = self;
+  selfCopy = self;
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  graphCopy = graph;
   v26 = [objc_alloc(MEMORY[0x277D3E698]) initWithName:@"verification_prober"];
-  [v26 setFrequency:{objc_msgSend(v3, "frequency")}];
+  [v26 setFrequency:{objc_msgSend(graphCopy, "frequency")}];
   v4 = [objc_alloc(MEMORY[0x277D3E6D0]) initWithName:@"probeTask"];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = [v3 tasks];
+  obj = [graphCopy tasks];
   v5 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v5)
   {
@@ -354,8 +354,8 @@
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v9 = [v8 outputs];
-        v10 = [v9 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        outputs = [v8 outputs];
+        v10 = [outputs countByEnumeratingWithState:&v30 objects:v39 count:16];
         if (v10)
         {
           v11 = v10;
@@ -366,18 +366,18 @@
             {
               if (*v31 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(outputs);
               }
 
               v14 = *(*(&v30 + 1) + 8 * j);
               v15 = objc_alloc(MEMORY[0x277D3E6D8]);
-              v16 = [v14 resourceKey];
-              v17 = [v15 initWithResourceKey:v16 type:0 capacity:1];
+              resourceKey = [v14 resourceKey];
+              v17 = [v15 initWithResourceKey:resourceKey type:0 capacity:1];
 
               [v4 addInput:v17];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v30 objects:v39 count:16];
+            v11 = [outputs countByEnumeratingWithState:&v30 objects:v39 count:16];
           }
 
           while (v11);
@@ -390,15 +390,15 @@
     while (v6);
   }
 
-  [v4 setFunction:tester_probe_task userdata:v25->_probeData];
+  [v4 setFunction:tester_probe_task userdata:selfCopy->_probeData];
   [v26 addTask:v4];
   v18 = objc_alloc(MEMORY[0x277CBEB98]);
-  v38[0] = v3;
+  v38[0] = graphCopy;
   v38[1] = v26;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
   v20 = [v18 initWithArray:v19];
 
-  session = v25->_session;
+  session = selfCopy->_session;
   v29 = 0;
   v22 = [(PSExecutionSession *)session commitAddedGraphs:v20 removedGraphs:0 option:1 error:&v29];
 
@@ -431,8 +431,8 @@
         }
 
         v9 = [(NSMutableDictionary *)self->_inputResourceSetters objectForKeyedSubscript:*(*(&v19 + 1) + 8 * v8)];
-        v10 = [v9 writer];
-        [v3 addWriter:v10];
+        writer = [v9 writer];
+        [v3 addWriter:writer];
 
         ++v8;
       }
@@ -460,15 +460,15 @@
   return v15;
 }
 
-- (BOOL)setDataInputForResourceKey:(id)a3 data:(void *)a4
+- (BOOL)setDataInputForResourceKey:(id)key data:(void *)data
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_inputResourceSetters objectForKey:v6];
+  keyCopy = key;
+  v7 = [(NSMutableDictionary *)self->_inputResourceSetters objectForKey:keyCopy];
 
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_inputResourceSetters objectForKeyedSubscript:v6];
-    [v8 setData:a4];
+    v8 = [(NSMutableDictionary *)self->_inputResourceSetters objectForKeyedSubscript:keyCopy];
+    [v8 setData:data];
   }
 
   return v7 != 0;
@@ -499,22 +499,22 @@
 
         v8 = *(*(&v20 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_inputResourceSetters objectForKeyedSubscript:v8, v20];
-        v10 = [v9 writer];
-        [v10 context];
+        writer = [v9 writer];
+        [writer context];
         ps_writer_acquire();
 
         v11 = [(NSMutableDictionary *)self->_inputResourceSetters objectForKeyedSubscript:v8];
-        v12 = [v11 data];
-        [(SIPolarisGraphTester *)self copyData:v12 toResource:v24];
+        data = [v11 data];
+        [(SIPolarisGraphTester *)self copyData:data toResource:v24];
 
         v13 = [(NSMutableDictionary *)self->_inputResourceSetters objectForKeyedSubscript:v8];
-        v14 = [v13 writer];
-        [v14 context];
+        writer2 = [v13 writer];
+        [writer2 context];
         ps_writer_relinquish();
 
         v15 = [(NSMutableDictionary *)self->_inputResourceSetters objectForKeyedSubscript:v8];
-        v16 = [v15 writer];
-        [v16 context];
+        writer3 = [v15 writer];
+        [writer3 context];
         ++self->_surfaceSerialCount;
         ps_writer_publish();
       }
@@ -525,17 +525,17 @@
     while (v5);
   }
 
-  v17 = [(SIPolarisGraphTesterProbeData *)self->_probeData probeGraphSem];
-  dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
+  probeGraphSem = [(SIPolarisGraphTesterProbeData *)self->_probeData probeGraphSem];
+  dispatch_semaphore_wait(probeGraphSem, 0xFFFFFFFFFFFFFFFFLL);
 
   v18 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)copyData:(void *)a3 toResource:(ps_resource *)a4
+- (void)copyData:(void *)data toResource:(ps_resource *)resource
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!data)
   {
     v8 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -567,7 +567,7 @@
       pixelbuffer = ps_resource_get_pixelbuffer();
       v7 = *MEMORY[0x277D85DE8];
 
-      SIPixelBufferCopy(a3, pixelbuffer);
+      SIPixelBufferCopy(data, pixelbuffer);
       return;
     }
 
@@ -580,13 +580,13 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = a3;
+    dataCopy = data;
     v10 = v21;
-    SIPixelBufferCopy([v9 depthMap], objc_msgSend(v10, "depthMap"));
-    SIPixelBufferCopy([v9 normalsBuffer], objc_msgSend(v10, "normalsBuffer"));
-    [v9 deviceTransform];
+    SIPixelBufferCopy([dataCopy depthMap], objc_msgSend(v10, "depthMap"));
+    SIPixelBufferCopy([dataCopy normalsBuffer], objc_msgSend(v10, "normalsBuffer"));
+    [dataCopy deviceTransform];
     [v10 setDeviceTransform:?];
-    [v9 extrinsicsToAppNode];
+    [dataCopy extrinsicsToAppNode];
     v19 = v12;
     v20 = v11;
     v17 = v14;
@@ -598,15 +598,15 @@ LABEL_17:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (ps_resource)getResourceForName:(id)a3
+- (ps_resource)getResourceForName:(id)name
 {
   probeData = self->_probeData;
-  v4 = a3;
-  v5 = [(SIPolarisGraphTesterProbeData *)probeData resourceData];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  resourceData = [(SIPolarisGraphTesterProbeData *)probeData resourceData];
+  v6 = [resourceData objectForKeyedSubscript:nameCopy];
 
-  v7 = [v6 resource];
-  return v7;
+  resource = [v6 resource];
+  return resource;
 }
 
 - (void)dealloc

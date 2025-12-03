@@ -1,29 +1,29 @@
 @interface GEOAPLogMsgQueueElem
-- (BOOL)isEqual:(id)a3;
-- (GEOAPLogMsgQueueElem)initWithLogMsg:(id)a3 uploadBatchId:(unint64_t)a4 expireTime:(id)a5 createTime:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (GEOAPLogMsgQueueElem)initWithLogMsg:(id)msg uploadBatchId:(unint64_t)id expireTime:(id)time createTime:(id)createTime;
 - (id)copy;
 - (unint64_t)hash;
 @end
 
 @implementation GEOAPLogMsgQueueElem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     uploadBatchId = self->_uploadBatchId;
     if (uploadBatchId == [v5 uploadBatchId])
     {
       logMsg = self->_logMsg;
-      v8 = [v5 logMsg];
-      if ([(NSData *)logMsg isEqual:v8])
+      logMsg = [v5 logMsg];
+      if ([(NSData *)logMsg isEqual:logMsg])
       {
         expireTime = self->_expireTime;
-        v10 = [v5 expireTime];
-        v11 = [(NSDate *)expireTime isEqualToDate:v10];
+        expireTime = [v5 expireTime];
+        v11 = [(NSDate *)expireTime isEqualToDate:expireTime];
       }
 
       else
@@ -64,21 +64,21 @@
   return [(GEOAPLogMsgQueueElem *)v3 initWithLogMsg:logMsg uploadBatchId:uploadBatchId expireTime:expireTime createTime:createTime];
 }
 
-- (GEOAPLogMsgQueueElem)initWithLogMsg:(id)a3 uploadBatchId:(unint64_t)a4 expireTime:(id)a5 createTime:(id)a6
+- (GEOAPLogMsgQueueElem)initWithLogMsg:(id)msg uploadBatchId:(unint64_t)id expireTime:(id)time createTime:(id)createTime
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  msgCopy = msg;
+  timeCopy = time;
+  createTimeCopy = createTime;
   v17.receiver = self;
   v17.super_class = GEOAPLogMsgQueueElem;
   v14 = [(GEOAPQueueElem *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_logMsg, a3);
-    v15->_uploadBatchId = a4;
-    objc_storeStrong(&v15->_expireTime, a5);
-    objc_storeStrong(&v15->super._createTime, a6);
+    objc_storeStrong(&v14->_logMsg, msg);
+    v15->_uploadBatchId = id;
+    objc_storeStrong(&v15->_expireTime, time);
+    objc_storeStrong(&v15->super._createTime, createTime);
   }
 
   return v15;

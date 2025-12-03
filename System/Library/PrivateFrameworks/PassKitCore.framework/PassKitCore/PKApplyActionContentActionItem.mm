@@ -1,22 +1,22 @@
 @interface PKApplyActionContentActionItem
 - (NSCopying)identifier;
-- (PKApplyActionContentActionItem)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKApplyActionContentActionItem)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)odiAttributesDictionary;
 @end
 
 @implementation PKApplyActionContentActionItem
 
-- (PKApplyActionContentActionItem)initWithDictionary:(id)a3
+- (PKApplyActionContentActionItem)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = PKApplyActionContentActionItem;
   v5 = [(PKApplyActionContentActionItem *)&v25 init];
   if (v5)
   {
-    v6 = [v4 PKArrayContaining:objc_opt_class() forKey:@"items"];
+    v6 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"items"];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v21 = 0u;
     v22 = 0u;
@@ -57,7 +57,7 @@
     items = v5->_items;
     v5->_items = v16;
 
-    v18 = [v4 PKStringForKey:@"contextPrimaryActionIdentifier"];
+    v18 = [dictionaryCopy PKStringForKey:@"contextPrimaryActionIdentifier"];
     contextPrimaryActionIdentifier = v5->_contextPrimaryActionIdentifier;
     v5->_contextPrimaryActionIdentifier = v18;
   }
@@ -88,8 +88,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) odiAttributesDictionary];
-        [v3 addEntriesFromDictionary:v9];
+        odiAttributesDictionary = [*(*(&v11 + 1) + 8 * i) odiAttributesDictionary];
+        [v3 addEntriesFromDictionary:odiAttributesDictionary];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -128,8 +128,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) identifier];
-        [v3 appendString:v11];
+        identifier = [*(*(&v14 + 1) + 8 * i) identifier];
+        [v3 appendString:identifier];
       }
 
       v8 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -148,14 +148,14 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKApplyActionContentActionItem allocWithZone:](PKApplyActionContentActionItem init];
-  v6 = [(NSArray *)self->_items copyWithZone:a3];
+  v6 = [(NSArray *)self->_items copyWithZone:zone];
   items = v5->_items;
   v5->_items = v6;
 
-  v8 = [(NSString *)self->_contextPrimaryActionIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_contextPrimaryActionIdentifier copyWithZone:zone];
   contextPrimaryActionIdentifier = v5->_contextPrimaryActionIdentifier;
   v5->_contextPrimaryActionIdentifier = v8;
 

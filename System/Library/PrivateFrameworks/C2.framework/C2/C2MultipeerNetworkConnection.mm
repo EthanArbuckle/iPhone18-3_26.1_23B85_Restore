@@ -1,6 +1,6 @@
 @interface C2MultipeerNetworkConnection
 - (void)receiveNextMessage;
-- (void)sendMessageWithData:(id)a3 completionHandler:(id)a4;
+- (void)sendMessageWithData:(id)data completionHandler:(id)handler;
 - (void)startConnection;
 - (void)stopConnection;
 @end
@@ -20,8 +20,8 @@
   v6[4] = self;
   MEMORY[0x245D09820](connection, v6);
   v4 = self->_connection;
-  v5 = [(C2MultipeerConnection *)self queue];
-  nw_connection_set_queue(v4, v5);
+  queue = [(C2MultipeerConnection *)self queue];
+  nw_connection_set_queue(v4, queue);
 
   nw_connection_start(self->_connection);
 }
@@ -216,8 +216,8 @@ uint64_t __47__C2MultipeerNetworkConnection_startConnection__block_invoke_143()
 
 - (void)receiveNextMessage
 {
-  v3 = [(C2MultipeerConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(C2MultipeerConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_initWeak(&location, self);
   connection = self->_connection;
@@ -458,19 +458,19 @@ uint64_t __50__C2MultipeerNetworkConnection_receiveNextMessage__block_invoke_164
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)sendMessageWithData:(id)a3 completionHandler:(id)a4
+- (void)sendMessageWithData:(id)data completionHandler:(id)handler
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(C2MultipeerConnection *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dataCopy = data;
+  handlerCopy = handler;
+  queue = [(C2MultipeerConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->_connectionState == 3)
   {
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
-    v11 = nw_content_context_create([v10 UTF8String]);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v11 = nw_content_context_create([uUIDString UTF8String]);
 
     if (C2_MULTIPEER_LOG_BLOCK_0 != -1)
     {
@@ -495,17 +495,17 @@ uint64_t __50__C2MultipeerNetworkConnection_receiveNextMessage__block_invoke_164
       v28 = 2080;
       v29 = identifier;
       v30 = 2048;
-      v31 = [v6 length];
+      v31 = [dataCopy length];
       _os_log_impl(&dword_242158000, v12, OS_LOG_TYPE_DEFAULT, "[%@ sendMessageWithData] - sending message %s with length %llu", buf, 0x20u);
     }
 
     *buf = 0;
-    [v6 length];
+    [dataCopy length];
     alloc = dispatch_data_create_alloc();
-    v19 = [v6 length];
+    v19 = [dataCopy length];
     **buf = v19;
     *buf += 8;
-    memcpy(*buf, [v6 bytes], objc_msgSend(v6, "length"));
+    memcpy(*buf, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
     connection = self->_connection;
     v21 = *MEMORY[0x277CD9218];
     completion[0] = MEMORY[0x277D85DD0];
@@ -514,7 +514,7 @@ uint64_t __50__C2MultipeerNetworkConnection_receiveNextMessage__block_invoke_164
     completion[3] = &unk_278D40288;
     completion[4] = self;
     v25 = v11;
-    v26 = v7;
+    v26 = handlerCopy;
     v22 = v11;
     nw_connection_send(connection, alloc, v21, 1, completion);
   }
@@ -539,7 +539,7 @@ uint64_t __50__C2MultipeerNetworkConnection_receiveNextMessage__block_invoke_164
     v33[0] = @"peer connection not ready";
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v17 = [v15 errorWithDomain:@"C2MultipeerErrorDomain" code:300 userInfo:v16];
-    (*(v7 + 2))(v7, v17);
+    (*(handlerCopy + 2))(handlerCopy, v17);
   }
 
   v23 = *MEMORY[0x277D85DE8];

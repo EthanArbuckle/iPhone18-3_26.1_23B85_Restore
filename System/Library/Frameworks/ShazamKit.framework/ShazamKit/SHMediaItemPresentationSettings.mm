@@ -1,40 +1,40 @@
 @interface SHMediaItemPresentationSettings
-- (SHMediaItemPresentationSettings)initWithCoder:(id)a3;
-- (SHMediaItemPresentationSettings)initWithSettings:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SHMediaItemPresentationSettings)initWithCoder:(id)coder;
+- (SHMediaItemPresentationSettings)initWithSettings:(id)settings;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHMediaItemPresentationSettings
 
-- (SHMediaItemPresentationSettings)initWithSettings:(id)a3
+- (SHMediaItemPresentationSettings)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v8.receiver = self;
   v8.super_class = SHMediaItemPresentationSettings;
   v5 = [(SHMediaItemPresentationSettings *)&v8 init];
   if (v5)
   {
-    v6 = [v4 valueForKey:@"openResultInBrowserOnFailure"];
+    v6 = [settingsCopy valueForKey:@"openResultInBrowserOnFailure"];
     v5->_openResultInBrowserOnFailure = [v6 BOOLValue];
   }
 
   return v5;
 }
 
-- (SHMediaItemPresentationSettings)initWithCoder:(id)a3
+- (SHMediaItemPresentationSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SHMediaItemPresentationSettings *)self initWithSettings:MEMORY[0x277CBEC10]];
-  v6 = [v4 decodeBoolForKey:@"openResultInBrowserOnFailure"];
+  v6 = [coderCopy decodeBoolForKey:@"openResultInBrowserOnFailure"];
 
   v5->_openResultInBrowserOnFailure = v6;
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[SHMediaItemPresentationSettings openResultInBrowserOnFailure](self forKey:{"openResultInBrowserOnFailure"), @"openResultInBrowserOnFailure"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SHMediaItemPresentationSettings openResultInBrowserOnFailure](self forKey:{"openResultInBrowserOnFailure"), @"openResultInBrowserOnFailure"}];
 }
 
 @end

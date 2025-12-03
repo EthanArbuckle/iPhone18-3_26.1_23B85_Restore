@@ -1,46 +1,46 @@
 @interface GIFBuilder
-+ (id)builderWithContext:(id)a3 forURL:(id)a4 maxRes:(unint64_t)a5 fps:(float)a6;
-- (BOOL)addImage:(id)a3;
++ (id)builderWithContext:(id)context forURL:(id)l maxRes:(unint64_t)res fps:(float)fps;
+- (BOOL)addImage:(id)image;
 - (BOOL)finish;
-- (GIFBuilder)initWithContext:(id)a3 forURL:(id)a4 maxRes:(unint64_t)a5 fps:(float)a6;
+- (GIFBuilder)initWithContext:(id)context forURL:(id)l maxRes:(unint64_t)res fps:(float)fps;
 - (void)dealloc;
 @end
 
 @implementation GIFBuilder
 
-+ (id)builderWithContext:(id)a3 forURL:(id)a4 maxRes:(unint64_t)a5 fps:(float)a6
++ (id)builderWithContext:(id)context forURL:(id)l maxRes:(unint64_t)res fps:(float)fps
 {
-  v9 = a4;
-  v10 = a3;
+  lCopy = l;
+  contextCopy = context;
   v11 = [GIFBuilder alloc];
-  *&v12 = a6;
-  v13 = [(GIFBuilder *)v11 initWithContext:v10 forURL:v9 maxRes:a5 fps:v12];
+  *&v12 = fps;
+  v13 = [(GIFBuilder *)v11 initWithContext:contextCopy forURL:lCopy maxRes:res fps:v12];
 
   return v13;
 }
 
-- (GIFBuilder)initWithContext:(id)a3 forURL:(id)a4 maxRes:(unint64_t)a5 fps:(float)a6
+- (GIFBuilder)initWithContext:(id)context forURL:(id)l maxRes:(unint64_t)res fps:(float)fps
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (!v11)
+  contextCopy = context;
+  lCopy = l;
+  v13 = lCopy;
+  if (!contextCopy)
   {
     NSLog(&cfstr_GifbuilderNilC.isa);
 LABEL_7:
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  if (!v12)
+  if (!lCopy)
   {
     NSLog(&cfstr_GifbuilderNilG.isa);
     goto LABEL_7;
   }
 
-  objc_storeStrong(&self->_ciCtx, a3);
-  self->_maxRes = a5;
+  objc_storeStrong(&self->_ciCtx, context);
+  self->_maxRes = res;
   v14 = *MEMORY[0x277CD31C8];
   v32 = *MEMORY[0x277CD31C8];
   v15 = *MEMORY[0x277CD31D8];
@@ -59,7 +59,7 @@ LABEL_7:
     CGImageDestinationSetProperties(v18, v17);
     v28 = v14;
     v26 = *MEMORY[0x277CD31C0];
-    *&v19 = 1.0 / a6;
+    *&v19 = 1.0 / fps;
     v20 = [MEMORY[0x277CCABB0] numberWithFloat:v19];
     v27 = v20;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
@@ -68,17 +68,17 @@ LABEL_7:
     frameProperties = self->_frameProperties;
     self->_frameProperties = v22;
 
-    v24 = self;
+    selfCopy = self;
   }
 
   else
   {
     NSLog(&cfstr_GifbuilderCgim.isa);
-    v24 = 0;
+    selfCopy = 0;
   }
 
 LABEL_10:
-  return v24;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -94,13 +94,13 @@ LABEL_10:
   [(GIFBuilder *)&v4 dealloc];
 }
 
-- (BOOL)addImage:(id)a3
+- (BOOL)addImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy)
   {
-    [v4 extent];
+    [imageCopy extent];
     v7 = v6;
     [v5 extent];
     maxRes = self->_maxRes;
@@ -143,8 +143,8 @@ LABEL_10:
     [v17 setValue:v5 forKey:*MEMORY[0x277CBFAF0]];
     v18 = [MEMORY[0x277CCABB0] numberWithDouble:v16];
     [v17 setValue:v18 forKey:*MEMORY[0x277CBFB18]];
-    v19 = [v17 outputImage];
-    v20 = [(CIContext *)self->_ciCtx createCGImage:v19 fromRect:0.0, 0.0, v11, v13];
+    outputImage = [v17 outputImage];
+    v20 = [(CIContext *)self->_ciCtx createCGImage:outputImage fromRect:0.0, 0.0, v11, v13];
     v14 = v20 != 0;
     if (v20)
     {

@@ -1,14 +1,14 @@
 @interface AuthenticationClientProxy
-- (void)didFinishOnboardingWithError:(id)a3;
+- (void)didFinishOnboardingWithError:(id)error;
 @end
 
 @implementation AuthenticationClientProxy
 
-- (void)didFinishOnboardingWithError:(id)a3
+- (void)didFinishOnboardingWithError:(id)error
 {
-  v5 = a3;
-  v6 = self;
-  AuthenticationClientProxy.didFinishOnboarding(error:)(a3);
+  errorCopy = error;
+  selfCopy = self;
+  AuthenticationClientProxy.didFinishOnboarding(error:)(error);
 }
 
 @end

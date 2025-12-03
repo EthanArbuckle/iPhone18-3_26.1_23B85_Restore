@@ -1,34 +1,34 @@
 @interface _DPSymmetricRAPPORInternalBuildBudgetAuditor
-- (_DPSymmetricRAPPORInternalBuildBudgetAuditor)initWithMetadata:(id)a3 plistParameters:(id)a4 error:(id *)a5;
+- (_DPSymmetricRAPPORInternalBuildBudgetAuditor)initWithMetadata:(id)metadata plistParameters:(id)parameters error:(id *)error;
 @end
 
 @implementation _DPSymmetricRAPPORInternalBuildBudgetAuditor
 
-- (_DPSymmetricRAPPORInternalBuildBudgetAuditor)initWithMetadata:(id)a3 plistParameters:(id)a4 error:(id *)a5
+- (_DPSymmetricRAPPORInternalBuildBudgetAuditor)initWithMetadata:(id)metadata plistParameters:(id)parameters error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  metadataCopy = metadata;
+  parametersCopy = parameters;
+  v9 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
   v10 = [v9 objectForKeyedSubscript:?];
-  v11 = [v10 unsignedIntValue];
+  unsignedIntValue = [v10 unsignedIntValue];
 
-  if (v11 <= 1)
+  if (unsignedIntValue <= 1)
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = v11;
+    v12 = unsignedIntValue;
   }
 
-  v39 = v8;
-  v13 = [v8 objectForKeyedSubscript:@"epsilon"];
+  v39 = parametersCopy;
+  v13 = [parametersCopy objectForKeyedSubscript:@"epsilon"];
   [v13 doubleValue];
   v15 = v14;
 
-  v16 = [v7 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v16 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
   v17 = [v16 objectForKeyedSubscript:@"DPConfig"];
   v38 = v16;
   v36 = v17;
@@ -37,7 +37,7 @@
     v35 = 0;
     v21 = v15;
 LABEL_11:
-    v25 = [v7 mutableCopy];
+    v25 = [metadataCopy mutableCopy];
     v26 = [v16 mutableCopy];
     v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v12];
     [v26 setObject:v27 forKeyedSubscript:@"MinBatchSize"];
@@ -49,7 +49,7 @@ LABEL_11:
     [v26 setObject:v29 forKeyedSubscript:@"DPConfig"];
 
     [v25 setObject:v26 forKeyedSubscript:@"DediscoTaskConfig"];
-    v7 = v25;
+    metadataCopy = v25;
     goto LABEL_12;
   }
 
@@ -58,22 +58,22 @@ LABEL_11:
   [v19 doubleValue];
   v21 = v20;
 
-  if (![_DPBudgetAuditor checkMetadataLocalEpsilon:a5 defaultLocalEpsilon:v21 error:v15]|| ([_DPBudgetAuditor targetApproximateDPFromDPConfig:v18 error:a5], (v22 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![_DPBudgetAuditor checkMetadataLocalEpsilon:error defaultLocalEpsilon:v21 error:v15]|| ([_DPBudgetAuditor targetApproximateDPFromDPConfig:v18 error:error], (v22 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v23 = 0;
-    v24 = self;
+    selfCopy2 = self;
     goto LABEL_18;
   }
 
   v35 = v22;
-  if (!v11)
+  if (!unsignedIntValue)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
-  v24 = self;
-  v30 = [[_DPSymmetricRAPPORWithOHE alloc] initWithBatchSize:v12 localEpsilon:a5 error:v21];
+  selfCopy2 = self;
+  v30 = [[_DPSymmetricRAPPORWithOHE alloc] initWithBatchSize:v12 localEpsilon:error error:v21];
   if (v30)
   {
     v31 = +[_DPLog framework];
@@ -85,8 +85,8 @@ LABEL_12:
 
     v40.receiver = self;
     v40.super_class = _DPSymmetricRAPPORInternalBuildBudgetAuditor;
-    v24 = [(_DPBudgetAuditor *)&v40 initWithMetadata:v7 plistParameters:v39 targetADP:v35 maxADP:0 analysis:v30 error:a5];
-    v23 = v24;
+    selfCopy2 = [(_DPBudgetAuditor *)&v40 initWithMetadata:metadataCopy plistParameters:v39 targetADP:v35 maxADP:0 analysis:v30 error:error];
+    v23 = selfCopy2;
   }
 
   else

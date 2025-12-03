@@ -1,10 +1,10 @@
 @interface _TVControllerFactory
 - (_TVControllerFactory)init;
-- (id)_carouselControllerForElement:(id)a3 layout:(id)a4 existingController:(id)a5;
-- (id)_gridControllerForElement:(id)a3 existingController:(id)a4;
-- (id)_listControllerForElement:(id)a3 existingController:(id)a4;
-- (id)_shelfControllerForElement:(id)a3 existingController:(id)a4;
-- (id)_textFieldControllerForElement:(id)a3 existingController:(id)a4;
+- (id)_carouselControllerForElement:(id)element layout:(id)layout existingController:(id)controller;
+- (id)_gridControllerForElement:(id)element existingController:(id)controller;
+- (id)_listControllerForElement:(id)element existingController:(id)controller;
+- (id)_shelfControllerForElement:(id)element existingController:(id)controller;
+- (id)_textFieldControllerForElement:(id)element existingController:(id)controller;
 - (void)_registerControllerCreators;
 @end
 
@@ -70,15 +70,15 @@
   [v8 _registerViewControllerCreator:&__block_literal_global_9 withType:52];
 }
 
-- (id)_carouselControllerForElement:(id)a3 layout:(id)a4 existingController:(id)a5
+- (id)_carouselControllerForElement:(id)element layout:(id)layout existingController:(id)controller
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  layoutCopy = layout;
+  controllerCopy = controller;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
+    v10 = controllerCopy;
   }
 
   else
@@ -87,27 +87,27 @@
   }
 
   v11 = v10;
-  v12 = [TVCarouselLayout layoutWithLayout:v7 element:v9];
-  [(_TVCarouselViewController *)v11 updateWithViewElement:v9 layout:v12];
+  v12 = [TVCarouselLayout layoutWithLayout:layoutCopy element:elementCopy];
+  [(_TVCarouselViewController *)v11 updateWithViewElement:elementCopy layout:v12];
 
-  v13 = [(_TVCarouselViewController *)v11 view];
-  [v13 tv_setLayout:v12];
+  view = [(_TVCarouselViewController *)v11 view];
+  [view tv_setLayout:v12];
 
   return v11;
 }
 
-- (id)_shelfControllerForElement:(id)a3 existingController:(id)a4
+- (id)_shelfControllerForElement:(id)element existingController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 attributes];
-  v8 = [v7 objectForKeyedSubscript:@"centered"];
-  v9 = [v8 BOOLValue];
+  controllerCopy = controller;
+  elementCopy = element;
+  attributes = [elementCopy attributes];
+  v8 = [attributes objectForKeyedSubscript:@"centered"];
+  bOOLValue = [v8 BOOLValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v5;
+    v10 = controllerCopy;
   }
 
   else
@@ -116,23 +116,23 @@
   }
 
   v11 = v10;
-  [_TVLockupFactory cellMetricsForCollectionElement:v6];
-  [(_TVShelfViewController *)v11 updateWithViewElement:v6 cellMetrics:&v14];
+  [_TVLockupFactory cellMetricsForCollectionElement:elementCopy];
+  [(_TVShelfViewController *)v11 updateWithViewElement:elementCopy cellMetrics:&v14];
 
-  [(_TVShelfViewController *)v11 setCentered:v9];
+  [(_TVShelfViewController *)v11 setCentered:bOOLValue];
   v12 = v11;
 
   return v11;
 }
 
-- (id)_gridControllerForElement:(id)a3 existingController:(id)a4
+- (id)_gridControllerForElement:(id)element existingController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
+  controllerCopy = controller;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = controllerCopy;
   }
 
   else
@@ -141,20 +141,20 @@
   }
 
   v8 = v7;
-  [_TVLockupFactory cellMetricsForCollectionElement:v6];
-  [(_TVGridViewController *)v8 updateWithViewElement:v6 cellMetrics:&v10];
+  [_TVLockupFactory cellMetricsForCollectionElement:elementCopy];
+  [(_TVGridViewController *)v8 updateWithViewElement:elementCopy cellMetrics:&v10];
 
   return v8;
 }
 
-- (id)_listControllerForElement:(id)a3 existingController:(id)a4
+- (id)_listControllerForElement:(id)element existingController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = controllerCopy;
   }
 
   else
@@ -164,19 +164,19 @@
 
   v8 = v7;
   memset(v10, 0, sizeof(v10));
-  [(_TVListViewController *)v7 updateWithViewElement:v5 cellMetrics:v10];
+  [(_TVListViewController *)v7 updateWithViewElement:elementCopy cellMetrics:v10];
 
   return v8;
 }
 
-- (id)_textFieldControllerForElement:(id)a3 existingController:(id)a4
+- (id)_textFieldControllerForElement:(id)element existingController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = controllerCopy;
   }
 
   else
@@ -185,7 +185,7 @@
   }
 
   v8 = v7;
-  [(_TVTextFieldViewController *)v7 updateWithViewElement:v5];
+  [(_TVTextFieldViewController *)v7 updateWithViewElement:elementCopy];
 
   return v8;
 }

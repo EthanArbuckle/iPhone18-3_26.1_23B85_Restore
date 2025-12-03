@@ -2,7 +2,7 @@
 - (id)currentStateDictionary;
 - (void)connect;
 - (void)dealloc;
-- (void)submitSample:(id)a3;
+- (void)submitSample:(id)sample;
 @end
 
 @implementation CLHarvester
@@ -40,7 +40,7 @@
   }
 }
 
-- (void)submitSample:(id)a3
+- (void)submitSample:(id)sample
 {
   connection = self->_connection;
   if (!connection)
@@ -49,9 +49,9 @@
     connection = self->_connection;
   }
 
-  v5 = [(NSXPCConnection *)connection remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
 
-  MEMORY[0x1EEE66B58](v5, sel_submitSample_);
+  MEMORY[0x1EEE66B58](remoteObjectProxy, sel_submitSample_);
 }
 
 - (id)currentStateDictionary

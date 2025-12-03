@@ -28,9 +28,9 @@
   }
 
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isSafetyDataSubmissionAllowed];
+  isSafetyDataSubmissionAllowed = [v2 isSafetyDataSubmissionAllowed];
 
-  return v3;
+  return isSafetyDataSubmissionAllowed;
 }
 
 - (BOOL)firstOrThirdPartyEnabled
@@ -113,10 +113,10 @@
     }
 
     v9 = +[CSPermissions sharedInstance];
-    v10 = [v9 isAuthorizedForIS];
+    isAuthorizedForIS = [v9 isAuthorizedForIS];
     if (v2)
     {
-      LOBYTE(v6) = v10;
+      LOBYTE(v6) = isAuthorizedForIS;
     }
 
     else
@@ -131,9 +131,9 @@
 - (BOOL)isAuthorizedToCollectDataIgneous
 {
   v2 = +[CSPermissions sharedInstance];
-  v3 = [v2 isAuthorizedForIS];
+  isAuthorizedForIS = [v2 isAuthorizedForIS];
 
-  return v3;
+  return isAuthorizedForIS;
 }
 
 @end

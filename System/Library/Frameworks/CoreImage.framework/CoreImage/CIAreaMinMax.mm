@@ -1,16 +1,16 @@
 @interface CIAreaMinMax
 + (id)customAttributes;
 - (id)outputImage;
-- (id)outputImageMPS:(id)a3;
+- (id)outputImageMPS:(id)s;
 - (id)outputImageNonMPS;
 @end
 
 @implementation CIAreaMinMax
 
-- (id)outputImageMPS:(id)a3
+- (id)outputImageMPS:(id)s
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  [a3 extent];
+  [s extent];
   v8 = v7;
   v10 = v9;
   *&v7 = v5;
@@ -55,7 +55,7 @@
   __src = v13;
   XXH64_update(v16, &__src, 8uLL);
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CIAreaMinMax %@", self->super.inputExtent];
-  return [a3 imageWithExtent:v15 processorDescription:XXH64_digest(v16) argumentDigest:kCIFormatAllowSRGB inputFormat:kCIFormatAllowSRGB outputFormat:v14 options:v17 roiCallback:0.0 processor:0.0, 2.0, 1.0, v18];
+  return [s imageWithExtent:v15 processorDescription:XXH64_digest(v16) argumentDigest:kCIFormatAllowSRGB inputFormat:kCIFormatAllowSRGB outputFormat:v14 options:v17 roiCallback:0.0 processor:0.0, 2.0, 1.0, v18];
 }
 
 void __36__CIAreaMinMax_MPS__outputImageMPS___block_invoke(double *a1, void *a2, void *a3)
@@ -243,19 +243,19 @@ void __36__CIAreaMinMax_MPS__outputImageMPS___block_invoke(double *a1, void *a2,
 
 - (id)outputImage
 {
-  v3 = [(CIReductionFilter *)self offsetAndCrop];
-  if (v3 && (v4 = v3, [v3 extent], !CGRectIsEmpty(v10)))
+  offsetAndCrop = [(CIReductionFilter *)self offsetAndCrop];
+  if (offsetAndCrop && (v4 = offsetAndCrop, [offsetAndCrop extent], !CGRectIsEmpty(v10)))
   {
-    v6 = [(CIAreaMinMax *)self outputImageNonMPS];
+    outputImageNonMPS = [(CIAreaMinMax *)self outputImageNonMPS];
     if (CI_ENABLE_MPS() && (v7 = -[CIAreaMinMax outputImageMPS:](self, "outputImageMPS:", v4)) != 0 && (v8 = v7, [v7 extent], !CGRectIsEmpty(v11)))
     {
 
-      return [CIImage imageForRenderingWithMPS:v8 orNonMPS:v6];
+      return [CIImage imageForRenderingWithMPS:v8 orNonMPS:outputImageNonMPS];
     }
 
     else
     {
-      return v6;
+      return outputImageNonMPS;
     }
   }
 

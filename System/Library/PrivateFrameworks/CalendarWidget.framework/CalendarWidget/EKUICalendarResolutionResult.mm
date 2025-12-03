@@ -1,25 +1,25 @@
 @interface EKUICalendarResolutionResult
-+ (id)confirmationRequiredWithEKUICalendarToConfirm:(id)a3;
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)disambiguationWithEKUICalendarsToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedEKUICalendar:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
-- (EKUICalendarResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)confirmationRequiredWithEKUICalendarToConfirm:(id)confirm;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)disambiguationWithEKUICalendarsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedEKUICalendar:(id)calendar;
++ (id)successWithResolvedObject:(id)object;
+- (EKUICalendarResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation EKUICalendarResolutionResult
 
-+ (id)successWithResolvedEKUICalendar:(id)a3
++ (id)successWithResolvedEKUICalendar:(id)calendar
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_1E48768CC(v4);
+  calendarCopy = calendar;
+  v5 = sub_1E48768CC(calendarCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithEKUICalendarsToDisambiguate:(id)a3
++ (id)disambiguationWithEKUICalendarsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for EKUICalendar();
   v3 = sub_1E4878CAC();
@@ -29,45 +29,45 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithEKUICalendarToConfirm:(id)a3
++ (id)confirmationRequiredWithEKUICalendarToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_1E4876B30(a3);
+  confirmCopy = confirm;
+  v5 = sub_1E4876B30(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
   result = sub_1E487903C();
   __break(1u);
   return result;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   result = sub_1E487903C();
   __break(1u);
   return result;
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
   result = sub_1E487903C();
   __break(1u);
   return result;
 }
 
-- (EKUICalendarResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (EKUICalendarResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_1E4878A8C();
-  v6 = a4;
+  intentCopy = intent;
   v7 = sub_1E4878A7C();
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for EKUICalendarResolutionResult();
-  v8 = [(EKUICalendarResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:v6];
+  v8 = [(EKUICalendarResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:intentCopy];
 
   if (v8)
   {

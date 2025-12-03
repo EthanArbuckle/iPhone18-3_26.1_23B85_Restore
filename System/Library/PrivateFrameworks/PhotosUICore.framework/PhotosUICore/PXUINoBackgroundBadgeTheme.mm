@@ -18,9 +18,9 @@
     *(v2 + 1) = v4;
 
     *(v2 + 2) = 0x3FF0000000000000;
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     v7 = *(v2 + 3);
-    *(v2 + 3) = v6;
+    *(v2 + 3) = whiteColor;
 
     objc_storeStrong(v2 + 4, *(v2 + 3));
     v8 = *(v2 + 5);
@@ -31,9 +31,9 @@
     v10 = v3;
 
     *(v2 + 7) = 0x3FF0000000000000;
-    v11 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
     v12 = *(v2 + 8);
-    *(v2 + 8) = v11;
+    *(v2 + 8) = whiteColor2;
 
     v13 = *(v2 + 9);
     *(v2 + 9) = 0;

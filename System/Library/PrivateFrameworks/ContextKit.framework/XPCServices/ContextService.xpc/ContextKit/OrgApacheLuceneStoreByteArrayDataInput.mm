@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneStoreByteArrayDataInput
-- (OrgApacheLuceneStoreByteArrayDataInput)initWithByteArray:(id)a3;
+- (OrgApacheLuceneStoreByteArrayDataInput)initWithByteArray:(id)array;
 - (char)readByte;
 - (int)readInt;
 - (int)readVInt;
@@ -7,36 +7,36 @@
 - (int64_t)readVLong;
 - (signed)readShort;
 - (void)dealloc;
-- (void)resetWithByteArray:(id)a3;
-- (void)resetWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (void)resetWithByteArray:(id)array;
+- (void)resetWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation OrgApacheLuceneStoreByteArrayDataInput
 
-- (OrgApacheLuceneStoreByteArrayDataInput)initWithByteArray:(id)a3
+- (OrgApacheLuceneStoreByteArrayDataInput)initWithByteArray:(id)array
 {
   OrgApacheLuceneStoreDataInput_init(self, a2);
-  [(OrgApacheLuceneStoreByteArrayDataInput *)self resetWithByteArray:a3];
+  [(OrgApacheLuceneStoreByteArrayDataInput *)self resetWithByteArray:array];
   return self;
 }
 
-- (void)resetWithByteArray:(id)a3
+- (void)resetWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  [(OrgApacheLuceneStoreByteArrayDataInput *)self resetWithByteArray:a3 withInt:0 withInt:v4];
+  [(OrgApacheLuceneStoreByteArrayDataInput *)self resetWithByteArray:array withInt:0 withInt:v4];
 }
 
-- (void)resetWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)resetWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->bytes_, a3);
-  self->pos_ = a4;
-  self->limit_ = a5 + a4;
+  JreStrongAssign(&self->bytes_, array);
+  self->pos_ = int;
+  self->limit_ = withInt + int;
 }
 
 - (signed)readShort

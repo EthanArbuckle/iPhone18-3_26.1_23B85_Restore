@@ -1,32 +1,32 @@
 @interface BuddyStoreRenewController
 - (BFFFlowItemDelegate)delegate;
-- (BOOL)_canSkipAccount:(id)a3;
-- (BOOL)_isActiveBuddyStoreAccount:(id)a3;
-- (BOOL)_isActiveBuddyStoreAccountWithUsername:(id)a3 orAltDSID:(id)a4;
-- (BOOL)_isPrimaryAccount:(id)a3;
-- (BOOL)_isPrimaryAccountWithUsername:(id)a3 orAltDSID:(id)a4;
+- (BOOL)_canSkipAccount:(id)account;
+- (BOOL)_isActiveBuddyStoreAccount:(id)account;
+- (BOOL)_isActiveBuddyStoreAccountWithUsername:(id)username orAltDSID:(id)d;
+- (BOOL)_isPrimaryAccount:(id)account;
+- (BOOL)_isPrimaryAccountWithUsername:(id)username orAltDSID:(id)d;
 - (BOOL)controllerNeedsToRun;
 - (BuddyStoreRenewController)init;
-- (id)_amsStoreAccountForUsername:(id)a3 altDSID:(id)a4;
-- (id)_localizedExtraStoresSignInTextForStoreContentMap:(id)a3;
-- (id)_localizedExtraStoresSignInTextKeyForStoreContentMap:(id)a3;
+- (id)_amsStoreAccountForUsername:(id)username altDSID:(id)d;
+- (id)_localizedExtraStoresSignInTextForStoreContentMap:(id)map;
+- (id)_localizedExtraStoresSignInTextKeyForStoreContentMap:(id)map;
 - (id)_primaryAccount;
-- (void)_authenticateAccount:(id)a3;
+- (void)_authenticateAccount:(id)account;
 - (void)_authenticateNextAccount;
 - (void)_authenticateThenSignInNextAccount;
-- (void)_didAuthenticateWithAuthenticationResults:(id)a3;
-- (void)_didSignInUsername:(id)a3 altDSID:(id)a4;
-- (void)_familyMembersForAccount:(id)a3 completion:(id)a4;
-- (void)_fetchAccountsWithCompletion:(id)a3;
-- (void)_fetchMediaLinkedAccountDSIDWithCompletion:(id)a3;
-- (void)_makeStoreAccountActiveForAccount:(id)a3 completion:(id)a4;
-- (void)_removeAccountsToSignIn:(id)a3;
-- (void)_startSpinningWithIdentifier:(id)a3;
-- (void)_stopSpinningForIdentifier:(id)a3;
-- (void)appleIDController:(id)a3 didAuthenticateForCredentialRecovery:(id)a4;
-- (void)appleIDControllerFinished:(id)a3;
-- (void)fetchAccounts:(id)a3;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)_didAuthenticateWithAuthenticationResults:(id)results;
+- (void)_didSignInUsername:(id)username altDSID:(id)d;
+- (void)_familyMembersForAccount:(id)account completion:(id)completion;
+- (void)_fetchAccountsWithCompletion:(id)completion;
+- (void)_fetchMediaLinkedAccountDSIDWithCompletion:(id)completion;
+- (void)_makeStoreAccountActiveForAccount:(id)account completion:(id)completion;
+- (void)_removeAccountsToSignIn:(id)in;
+- (void)_startSpinningWithIdentifier:(id)identifier;
+- (void)_stopSpinningForIdentifier:(id)identifier;
+- (void)appleIDController:(id)controller didAuthenticateForCredentialRecovery:(id)recovery;
+- (void)appleIDControllerFinished:(id)finished;
+- (void)fetchAccounts:(id)accounts;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyStoreRenewController
@@ -49,37 +49,37 @@
   return v2;
 }
 
-- (void)fetchAccounts:(id)a3
+- (void)fetchAccounts:(id)accounts
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accounts);
   objc_storeStrong(location, 0);
 }
 
 - (void)_authenticateThenSignInNextAccount
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyStoreRenewController *)self storeAccountsToSignIn];
-  location[0] = [(NSMutableArray *)v2 firstObject];
+  storeAccountsToSignIn = [(BuddyStoreRenewController *)self storeAccountsToSignIn];
+  location[0] = [(NSMutableArray *)storeAccountsToSignIn firstObject];
 
   if (location[0])
   {
-    if ([(BuddyStoreRenewController *)v19 shouldOnlySetActiveStoreAccount]&& [(BuddyStoreRenewController *)v19 _isActiveBuddyStoreAccount:location[0]])
+    if ([(BuddyStoreRenewController *)selfCopy shouldOnlySetActiveStoreAccount]&& [(BuddyStoreRenewController *)selfCopy _isActiveBuddyStoreAccount:location[0]])
     {
       v12 = _NSConcreteStackBlock;
       v13 = -1073741824;
       v14 = 0;
       v15 = sub_1001E912C;
       v16 = &unk_10032B6F0;
-      v17 = v19;
-      [(BuddyStoreRenewController *)v19 _makeStoreAccountActiveForAccount:location[0] completion:&v12];
+      v17 = selfCopy;
+      [(BuddyStoreRenewController *)selfCopy _makeStoreAccountActiveForAccount:location[0] completion:&v12];
       objc_storeStrong(&v17, 0);
     }
 
-    else if ([(BuddyStoreRenewController *)v19 _canSkipAccount:location[0]])
+    else if ([(BuddyStoreRenewController *)selfCopy _canSkipAccount:location[0]])
     {
       oslog = _BYLoggingFacility();
       v10 = OS_LOG_TYPE_DEFAULT;
@@ -90,15 +90,15 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      v3 = [(BuddyStoreRenewController *)v19 storeAccountsToSignIn];
-      [(NSMutableArray *)v3 removeObjectAtIndex:0];
+      storeAccountsToSignIn2 = [(BuddyStoreRenewController *)selfCopy storeAccountsToSignIn];
+      [(NSMutableArray *)storeAccountsToSignIn2 removeObjectAtIndex:0];
 
-      [(BuddyStoreRenewController *)v19 _authenticateThenSignInNextAccount];
+      [(BuddyStoreRenewController *)selfCopy _authenticateThenSignInNextAccount];
     }
 
     else
     {
-      [(BuddyStoreRenewController *)v19 _authenticateNextAccount];
+      [(BuddyStoreRenewController *)selfCopy _authenticateNextAccount];
     }
   }
 
@@ -115,22 +115,22 @@
     }
 
     objc_storeStrong(&v9, 0);
-    [(BuddyStoreRenewController *)v19 setStoreAccountsToSignIn:0];
-    v6 = [(BuddyStoreRenewController *)v19 delegate];
-    [(BFFFlowItemDelegate *)v6 flowItemDone:v19];
+    [(BuddyStoreRenewController *)selfCopy setStoreAccountsToSignIn:0];
+    delegate = [(BuddyStoreRenewController *)selfCopy delegate];
+    [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_canSkipAccount:(id)a3
+- (BOOL)_canSkipAccount:(id)account
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = [(BuddyStoreRenewController *)v19 _isActiveBuddyStoreAccount:location[0]];
-  v16 = [(BuddyStoreRenewController *)v19 _isPrimaryAccount:location[0]];
+  objc_storeStrong(location, account);
+  v17 = [(BuddyStoreRenewController *)selfCopy _isActiveBuddyStoreAccount:location[0]];
+  v16 = [(BuddyStoreRenewController *)selfCopy _isPrimaryAccount:location[0]];
   if (!v16 || (v17 & 1) != 0)
   {
     v14 = 0;
@@ -138,14 +138,14 @@
     v7 = 0;
     if ((v16 & 1) == 0)
     {
-      v15 = [(BuddyStoreRenewController *)v19 mediaLinkedAccountDSID];
+      mediaLinkedAccountDSID = [(BuddyStoreRenewController *)selfCopy mediaLinkedAccountDSID];
       v14 = 1;
       v7 = 0;
-      if (v15)
+      if (mediaLinkedAccountDSID)
       {
-        v13 = [location[0] dsid];
+        dsid = [location[0] dsid];
         v12 = 1;
-        v7 = v13 != 0;
+        v7 = dsid != 0;
       }
     }
 
@@ -159,10 +159,10 @@
 
     if (v7)
     {
-      v8 = [(BuddyStoreRenewController *)v19 mediaLinkedAccountDSID];
-      v9 = [(NSNumber *)v8 stringValue];
-      v10 = [location[0] dsid];
-      v20 = [(NSString *)v9 isEqualToString:v10];
+      mediaLinkedAccountDSID2 = [(BuddyStoreRenewController *)selfCopy mediaLinkedAccountDSID];
+      stringValue = [(NSNumber *)mediaLinkedAccountDSID2 stringValue];
+      dsid2 = [location[0] dsid];
+      v20 = [(NSString *)stringValue isEqualToString:dsid2];
     }
 
     else
@@ -173,10 +173,10 @@
 
   else
   {
-    v3 = v19;
-    v4 = [location[0] username];
-    v5 = [location[0] altDSID];
-    v6 = [(BuddyStoreRenewController *)v3 _amsStoreAccountForUsername:v4 altDSID:v5];
+    v3 = selfCopy;
+    username = [location[0] username];
+    altDSID = [location[0] altDSID];
+    v6 = [(BuddyStoreRenewController *)v3 _amsStoreAccountForUsername:username altDSID:altDSID];
     v20 = ([v6 isActive] ^ 1) & 1;
   }
 
@@ -184,36 +184,36 @@
   return v20 & 1;
 }
 
-- (void)_makeStoreAccountActiveForAccount:(id)a3 completion:(id)a4
+- (void)_makeStoreAccountActiveForAccount:(id)account completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
-  v5 = v25;
-  v6 = [location[0] username];
-  v7 = [location[0] altDSID];
-  v22 = [(BuddyStoreRenewController *)v5 _amsStoreAccountForUsername:v6 altDSID:v7];
+  objc_storeStrong(&v23, completion);
+  v5 = selfCopy;
+  username = [location[0] username];
+  altDSID = [location[0] altDSID];
+  v22 = [(BuddyStoreRenewController *)v5 _amsStoreAccountForUsername:username altDSID:altDSID];
 
   if (v22)
   {
     [v22 setActive:1];
-    v18 = [(BuddyStoreRenewController *)v25 _amsAccountStore];
+    _amsAccountStore = [(BuddyStoreRenewController *)selfCopy _amsAccountStore];
     v10 = _NSConcreteStackBlock;
     v11 = -1073741824;
     v12 = 0;
     v13 = sub_1001E96D4;
     v14 = &unk_10032E570;
-    v15 = v25;
+    v15 = selfCopy;
     v16 = v22;
     v17 = v23;
-    [v18 saveAccount:v22 withCompletionHandler:&v10];
+    [_amsAccountStore saveAccount:v22 withCompletionHandler:&v10];
     objc_storeStrong(&v17, 0);
     objc_storeStrong(&v16, 0);
     objc_storeStrong(&v15, 0);
-    objc_storeStrong(&v18, 0);
+    objc_storeStrong(&_amsAccountStore, 0);
     v19 = 0;
   }
 
@@ -243,14 +243,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_removeAccountsToSignIn:(id)a3
+- (void)_removeAccountsToSignIn:(id)in
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyStoreRenewController *)v16 storeAccountsToSignIn];
-  v4 = [(NSMutableArray *)v3 count];
+  objc_storeStrong(location, in);
+  storeAccountsToSignIn = [(BuddyStoreRenewController *)selfCopy storeAccountsToSignIn];
+  v4 = [(NSMutableArray *)storeAccountsToSignIn count];
 
   if (v4)
   {
@@ -272,8 +272,8 @@
           v13 = *(__b[1] + 8 * i);
           v9 = [BuddyStoreAccount alloc];
           v11 = [(BuddyStoreAccount *)v9 initWithUsername:v13 dsid:0 altDSID:0];
-          v10 = [(BuddyStoreRenewController *)v16 storeAccountsToSignIn];
-          [(NSMutableArray *)v10 removeObject:v11];
+          storeAccountsToSignIn2 = [(BuddyStoreRenewController *)selfCopy storeAccountsToSignIn];
+          [(NSMutableArray *)storeAccountsToSignIn2 removeObject:v11];
 
           objc_storeStrong(&v11, 0);
         }
@@ -295,14 +295,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_familyMembersForAccount:(id)a3 completion:(id)a4
+- (void)_familyMembersForAccount:(id)account completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, completion);
   v5 = +[AMSFamilyInfoLookupTask bagKeySet];
   v6 = +[AMSFamilyInfoLookupTask bagSubProfile];
   v7 = +[AMSFamilyInfoLookupTask bagSubProfileVersion];
@@ -314,16 +314,16 @@
 
   v10 = [AMSFamilyInfoLookupTask alloc];
   v18 = [v10 initWithAccount:location[0] bag:v19];
-  v17 = [v18 performFamilyInfoLookup];
+  performFamilyInfoLookup = [v18 performFamilyInfoLookup];
   v11 = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
   v14 = sub_1001E9DC8;
   v15 = &unk_10032ED08;
   v16 = v20;
-  [v17 addFinishBlock:&v11];
+  [performFamilyInfoLookup addFinishBlock:&v11];
   objc_storeStrong(&v16, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&performFamilyInfoLookup, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
@@ -332,78 +332,78 @@
 
 - (void)_authenticateNextAccount
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyStoreRenewController *)self storeAccountsToSignIn];
-  location[0] = [(NSMutableArray *)v2 firstObject];
+  storeAccountsToSignIn = [(BuddyStoreRenewController *)self storeAccountsToSignIn];
+  location[0] = [(NSMutableArray *)storeAccountsToSignIn firstObject];
 
-  [(BuddyStoreRenewController *)v4 _authenticateAccount:location[0]];
+  [(BuddyStoreRenewController *)selfCopy _authenticateAccount:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_authenticateAccount:(id)a3
+- (void)_authenticateAccount:(id)account
 {
-  v65 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v3 = [BuddyAppleIDController alloc];
-  v4 = [(BuddyStoreRenewController *)v65 passcodeCacheManager];
-  v5 = [(BuddyStoreRenewController *)v65 analyticsManager];
-  v6 = [(BuddyStoreRenewController *)v65 runState];
-  v7 = [(BuddyStoreRenewController *)v65 featureFlags];
-  v8 = [(BuddyAppleIDController *)v3 initWithAccount:0 passcodeCacheManager:v4 analyticsManager:v5 runState:v6 featureFlags:v7];
-  [(BuddyStoreRenewController *)v65 setStoreAppleIDController:v8];
+  passcodeCacheManager = [(BuddyStoreRenewController *)selfCopy passcodeCacheManager];
+  analyticsManager = [(BuddyStoreRenewController *)selfCopy analyticsManager];
+  runState = [(BuddyStoreRenewController *)selfCopy runState];
+  featureFlags = [(BuddyStoreRenewController *)selfCopy featureFlags];
+  v8 = [(BuddyAppleIDController *)v3 initWithAccount:0 passcodeCacheManager:passcodeCacheManager analyticsManager:analyticsManager runState:runState featureFlags:featureFlags];
+  [(BuddyStoreRenewController *)selfCopy setStoreAppleIDController:v8];
 
-  v9 = [(BuddyStoreRenewController *)v65 storeAppleIDController];
-  [(BuddyAppleIDController *)v9 setDelegate:v65];
+  storeAppleIDController = [(BuddyStoreRenewController *)selfCopy storeAppleIDController];
+  [(BuddyAppleIDController *)storeAppleIDController setDelegate:selfCopy];
 
-  v10 = [(BuddyStoreRenewController *)v65 delegate];
-  v11 = [(BuddyStoreRenewController *)v65 storeAppleIDController];
-  [(BuddyAppleIDController *)v11 setFlowItemDelegate:v10];
+  delegate = [(BuddyStoreRenewController *)selfCopy delegate];
+  storeAppleIDController2 = [(BuddyStoreRenewController *)selfCopy storeAppleIDController];
+  [(BuddyAppleIDController *)storeAppleIDController2 setFlowItemDelegate:delegate];
 
-  v12 = [(BuddyStoreRenewController *)v65 storeAppleIDController];
-  v13 = [(BuddyStoreRenewController *)v65 navigationController];
-  [(BuddyAppleIDController *)v12 setNavigationController:v13];
+  storeAppleIDController3 = [(BuddyStoreRenewController *)selfCopy storeAppleIDController];
+  navigationController = [(BuddyStoreRenewController *)selfCopy navigationController];
+  [(BuddyAppleIDController *)storeAppleIDController3 setNavigationController:navigationController];
 
-  v14 = [(BuddyStoreRenewController *)v65 proximitySetupController];
-  LOBYTE(v13) = [(ProximitySetupController *)v14 hasConnection];
-  v15 = [(BuddyStoreRenewController *)v65 storeAppleIDController];
-  [(BuddyAppleIDController *)v15 setHasProximityConnection:v13 & 1];
+  proximitySetupController = [(BuddyStoreRenewController *)selfCopy proximitySetupController];
+  LOBYTE(navigationController) = [(ProximitySetupController *)proximitySetupController hasConnection];
+  storeAppleIDController4 = [(BuddyStoreRenewController *)selfCopy storeAppleIDController];
+  [(BuddyAppleIDController *)storeAppleIDController4 setHasProximityConnection:navigationController & 1];
 
-  v16 = [(BuddyStoreRenewController *)v65 navigationController];
-  v17 = [(BuddyStoreRenewController *)v65 passcodeCacheManager];
-  v18 = [(BuddyStoreRenewController *)v65 featureFlags];
-  v19 = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:v16 mode:6 passcodeCacheManager:v17 featureFlags:v18];
-  [(BuddyStoreRenewController *)v65 setSignInController:v19];
+  navigationController2 = [(BuddyStoreRenewController *)selfCopy navigationController];
+  passcodeCacheManager2 = [(BuddyStoreRenewController *)selfCopy passcodeCacheManager];
+  featureFlags2 = [(BuddyStoreRenewController *)selfCopy featureFlags];
+  v19 = [BuddyAppleIDSignInController federatedAuthSignInControllerInNavigationController:navigationController2 mode:6 passcodeCacheManager:passcodeCacheManager2 featureFlags:featureFlags2];
+  [(BuddyStoreRenewController *)selfCopy setSignInController:v19];
 
-  v20 = [(BuddyStoreRenewController *)v65 signInController];
-  v21 = [location[0] username];
-  [(BuddyAppleIDSignInController *)v20 setUsername:v21];
+  signInController = [(BuddyStoreRenewController *)selfCopy signInController];
+  username = [location[0] username];
+  [(BuddyAppleIDSignInController *)signInController setUsername:username];
 
-  v22 = v65;
-  v23 = [(BuddyStoreRenewController *)v65 storeAccountMap];
-  v24 = [location[0] username];
-  v25 = [(NSDictionary *)v23 objectForKeyedSubscript:v24];
+  v22 = selfCopy;
+  storeAccountMap = [(BuddyStoreRenewController *)selfCopy storeAccountMap];
+  username2 = [location[0] username];
+  v25 = [(NSDictionary *)storeAccountMap objectForKeyedSubscript:username2];
   v63 = [(BuddyStoreRenewController *)v22 _localizedExtraStoresSignInTextForStoreContentMap:v25];
 
   if (v63)
   {
     v26 = +[NSBundle mainBundle];
     v27 = [(NSBundle *)v26 localizedStringForKey:@"STORE_ACCOUNT_UPGRADE_TEXT_%@" value:&stru_10032F900 table:@"RestoreFromBackup"];
-    v28 = [(BuddyStoreRenewController *)v65 signInController];
-    v29 = [(BuddyAppleIDSignInController *)v28 username];
-    v30 = [AKUsernameFormatter formattedUsernameFromUsername:v29];
+    signInController2 = [(BuddyStoreRenewController *)selfCopy signInController];
+    username3 = [(BuddyAppleIDSignInController *)signInController2 username];
+    v30 = [AKUsernameFormatter formattedUsernameFromUsername:username3];
     v62 = [NSString localizedStringWithFormat:v27, v30];
 
     v31 = [NSString localizedStringWithFormat:@"%@\n\n%@", v63, v62];
-    v32 = [(BuddyStoreRenewController *)v65 signInController];
-    [(BuddyAppleIDSignInController *)v32 setDetailText:v31];
+    signInController3 = [(BuddyStoreRenewController *)selfCopy signInController];
+    [(BuddyAppleIDSignInController *)signInController3 setDetailText:v31];
 
     objc_storeStrong(&v62, 0);
   }
 
-  v33 = [(BuddyStoreRenewController *)v65 signInController];
+  signInController4 = [(BuddyStoreRenewController *)selfCopy signInController];
   v34 = +[NSBundle mainBundle];
   v35 = [(NSBundle *)v34 localizedStringForKey:@"FORGOT_PASSWORD_QUESTION" value:&stru_10032F900 table:@"Localizable"];
   v56 = _NSConcreteStackBlock;
@@ -411,20 +411,20 @@
   v58 = 0;
   v59 = sub_1001EAAD4;
   v60 = &unk_10032B0D0;
-  v61 = v65;
-  [(BuddyAppleIDSignInController *)v33 setiForgotText:v35 handler:&v56];
+  v61 = selfCopy;
+  [(BuddyAppleIDSignInController *)signInController4 setiForgotText:v35 handler:&v56];
 
-  objc_initWeak(&from, v65);
-  v36 = [(BuddyStoreRenewController *)v65 signInController];
+  objc_initWeak(&from, selfCopy);
+  signInController5 = [(BuddyStoreRenewController *)selfCopy signInController];
   v49 = _NSConcreteStackBlock;
   v50 = -1073741824;
   v51 = 0;
   v52 = sub_1001EAB98;
   v53 = &unk_10032AF58;
   objc_copyWeak(&v54, &from);
-  [(BuddyAppleIDSignInController *)v36 setAppearanceHandler:&v49];
+  [(BuddyAppleIDSignInController *)signInController5 setAppearanceHandler:&v49];
 
-  v37 = [(BuddyStoreRenewController *)v65 signInController];
+  signInController6 = [(BuddyStoreRenewController *)selfCopy signInController];
   v42 = _NSConcreteStackBlock;
   v43 = -1073741824;
   v44 = 0;
@@ -432,20 +432,20 @@
   v46 = &unk_10032ED30;
   objc_copyWeak(&v48, &from);
   v47 = location[0];
-  [(BuddyAppleIDSignInController *)v37 setHandler:&v42];
+  [(BuddyAppleIDSignInController *)signInController6 setHandler:&v42];
 
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [location[0] username];
-    sub_10006AE18(buf, v38);
+    username4 = [location[0] username];
+    sub_10006AE18(buf, username4);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Showing sign-in for %@...", buf, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  v39 = [(BuddyStoreRenewController *)v65 navigationController];
-  v40 = [(BuddyStoreRenewController *)v65 signInController];
-  [(BFFNavigationController *)v39 pushViewController:v40 animated:1];
+  navigationController3 = [(BuddyStoreRenewController *)selfCopy navigationController];
+  signInController7 = [(BuddyStoreRenewController *)selfCopy signInController];
+  [(BFFNavigationController *)navigationController3 pushViewController:signInController7 animated:1];
 
   objc_storeStrong(&v47, 0);
   objc_destroyWeak(&v48);
@@ -456,33 +456,33 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_didAuthenticateWithAuthenticationResults:(id)a3
+- (void)_didAuthenticateWithAuthenticationResults:(id)results
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v41 = [location[0] objectForKeyedSubscript:AKAuthenticationUsernameKey];
   v40 = [location[0] objectForKeyedSubscript:AKAuthenticationAlternateDSIDKey];
   v3 = [CDPUIController alloc];
-  v4 = [(BuddyStoreRenewController *)v43 navigationController];
-  v5 = [v3 initWithPresentingViewController:v4];
-  [(BuddyStoreRenewController *)v43 setCdpUIController:v5];
+  navigationController = [(BuddyStoreRenewController *)selfCopy navigationController];
+  v5 = [v3 initWithPresentingViewController:navigationController];
+  [(BuddyStoreRenewController *)selfCopy setCdpUIController:v5];
 
-  v6 = [(BuddyStoreRenewController *)v43 cdpUIController];
-  [(CDPUIController *)v6 setForceInlinePresentation:1];
+  cdpUIController = [(BuddyStoreRenewController *)selfCopy cdpUIController];
+  [(CDPUIController *)cdpUIController setForceInlinePresentation:1];
 
   v7 = [AAUISignInFlowControllerDelegate alloc];
-  v8 = [(BuddyStoreRenewController *)v43 navigationController];
-  v9 = [v7 initWithPresentingViewController:v8];
-  [(BuddyStoreRenewController *)v43 setFlowControllerDelegate:v9];
+  navigationController2 = [(BuddyStoreRenewController *)selfCopy navigationController];
+  v9 = [v7 initWithPresentingViewController:navigationController2];
+  [(BuddyStoreRenewController *)selfCopy setFlowControllerDelegate:v9];
 
-  v10 = [(BuddyStoreRenewController *)v43 flowControllerDelegate];
-  [(AAUISignInFlowControllerDelegate *)v10 setShouldStashLoginResponse:1];
+  flowControllerDelegate = [(BuddyStoreRenewController *)selfCopy flowControllerDelegate];
+  [(AAUISignInFlowControllerDelegate *)flowControllerDelegate setShouldStashLoginResponse:1];
 
   v39 = objc_alloc_init(AMSSignInContext);
-  v38 = [(BuddyStoreRenewController *)v43 _isActiveBuddyStoreAccountWithUsername:v41 orAltDSID:v40];
-  v37 = [(BuddyStoreRenewController *)v43 _isPrimaryAccountWithUsername:v41 orAltDSID:v40];
+  v38 = [(BuddyStoreRenewController *)selfCopy _isActiveBuddyStoreAccountWithUsername:v41 orAltDSID:v40];
+  v37 = [(BuddyStoreRenewController *)selfCopy _isPrimaryAccountWithUsername:v41 orAltDSID:v40];
   [v39 setIgnoreAccountConversion:1];
   [v39 setCanMakeAccountActive:v38 & 1];
   v11 = 0;
@@ -495,17 +495,17 @@
   [v39 setDebugReason:@"Setup Assistant"];
   v36 = objc_alloc_init(AIDAMutableServiceContext);
   [v36 setAuthenticationResults:location[0]];
-  v12 = [(BuddyStoreRenewController *)v43 navigationController];
-  [v36 setViewController:v12];
+  navigationController3 = [(BuddyStoreRenewController *)selfCopy navigationController];
+  [v36 setViewController:navigationController3];
 
-  v13 = [(BuddyStoreRenewController *)v43 cdpUIController];
-  [v36 setCdpUiProvider:v13];
+  cdpUIController2 = [(BuddyStoreRenewController *)selfCopy cdpUIController];
+  [v36 setCdpUiProvider:cdpUIController2];
 
   [v36 setShouldForceOperation:0];
   [v36 setOperationUIPermissions:1];
   v44[0] = AIDAServiceTypeCloud;
-  v14 = [(BuddyStoreRenewController *)v43 flowControllerDelegate];
-  v45[0] = v14;
+  flowControllerDelegate2 = [(BuddyStoreRenewController *)selfCopy flowControllerDelegate];
+  v45[0] = flowControllerDelegate2;
   v44[1] = AIDAServiceTypeStore;
   v45[1] = v39;
   v15 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:2];
@@ -526,7 +526,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyStoreRenewController *)v43 _startSpinningWithIdentifier:@"signin"];
+  [(BuddyStoreRenewController *)selfCopy _startSpinningWithIdentifier:@"signin"];
   v20 = v35;
   v21 = AIDAServiceTypeStore;
   v22 = v36;
@@ -535,7 +535,7 @@
   v25 = 0;
   v26 = sub_1001EB930;
   v27 = &unk_10032ED80;
-  v28 = v43;
+  v28 = selfCopy;
   v29 = v35;
   v30 = v41;
   v31 = v40;
@@ -552,22 +552,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_didSignInUsername:(id)a3 altDSID:(id)a4
+- (void)_didSignInUsername:(id)username altDSID:(id)d
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
-  v5 = [(BuddyStoreRenewController *)v31 storeAccountsToSignIn];
-  [(NSMutableArray *)v5 removeObjectAtIndex:0];
+  objc_storeStrong(&v29, d);
+  storeAccountsToSignIn = [(BuddyStoreRenewController *)selfCopy storeAccountsToSignIn];
+  [(NSMutableArray *)storeAccountsToSignIn removeObjectAtIndex:0];
 
-  if ([(BuddyStoreRenewController *)v31 _isActiveBuddyStoreAccountWithUsername:location[0] orAltDSID:v29])
+  if ([(BuddyStoreRenewController *)selfCopy _isActiveBuddyStoreAccountWithUsername:location[0] orAltDSID:v29])
   {
     v28 = 1;
-    v6 = [(BuddyStoreRenewController *)v31 activeStoreAccount];
-    v7 = v6 == 0;
+    activeStoreAccount = [(BuddyStoreRenewController *)selfCopy activeStoreAccount];
+    v7 = activeStoreAccount == 0;
 
     if (v7)
     {
@@ -585,8 +585,8 @@
       v28 = 0;
     }
 
-    v10 = [(BuddyStoreRenewController *)v31 storeAccountsToSignIn];
-    v11 = [(NSMutableArray *)v10 count];
+    storeAccountsToSignIn2 = [(BuddyStoreRenewController *)selfCopy storeAccountsToSignIn];
+    v11 = [(NSMutableArray *)storeAccountsToSignIn2 count];
 
     if (!v11)
     {
@@ -606,42 +606,42 @@
 
     if (v28)
     {
-      [(BuddyStoreRenewController *)v31 _startSpinningWithIdentifier:@"family"];
-      v14 = v31;
-      v15 = [(BuddyStoreRenewController *)v31 activeStoreAccount];
+      [(BuddyStoreRenewController *)selfCopy _startSpinningWithIdentifier:@"family"];
+      v14 = selfCopy;
+      activeStoreAccount2 = [(BuddyStoreRenewController *)selfCopy activeStoreAccount];
       v16 = _NSConcreteStackBlock;
       v17 = -1073741824;
       v18 = 0;
       v19 = sub_1001EC0A0;
       v20 = &unk_10032EDA8;
-      v21 = v31;
-      [(BuddyStoreRenewController *)v14 _familyMembersForAccount:v15 completion:&v16];
+      v21 = selfCopy;
+      [(BuddyStoreRenewController *)v14 _familyMembersForAccount:activeStoreAccount2 completion:&v16];
 
       objc_storeStrong(&v21, 0);
     }
 
     else
     {
-      [(BuddyStoreRenewController *)v31 _authenticateThenSignInNextAccount];
+      [(BuddyStoreRenewController *)selfCopy _authenticateThenSignInNextAccount];
     }
   }
 
   else
   {
-    [(BuddyStoreRenewController *)v31 _authenticateThenSignInNextAccount];
+    [(BuddyStoreRenewController *)selfCopy _authenticateThenSignInNextAccount];
   }
 
   objc_storeStrong(&v29, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_localizedExtraStoresSignInTextForStoreContentMap:(id)a3
+- (id)_localizedExtraStoresSignInTextForStoreContentMap:(id)map
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(BuddyStoreRenewController *)v8 _localizedExtraStoresSignInTextKeyForStoreContentMap:location[0]];
+  objc_storeStrong(location, map);
+  v6 = [(BuddyStoreRenewController *)selfCopy _localizedExtraStoresSignInTextKeyForStoreContentMap:location[0]];
   if (v6)
   {
     v3 = +[NSBundle mainBundle];
@@ -660,12 +660,12 @@
   return v4;
 }
 
-- (id)_localizedExtraStoresSignInTextKeyForStoreContentMap:(id)a3
+- (id)_localizedExtraStoresSignInTextKeyForStoreContentMap:(id)map
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, map);
   v6 = [location[0] objectForKeyedSubscript:@"dataClasses"];
   v5 = [NSMutableString stringWithString:@"EXTRA_STORES"];
   if ([v6 containsObject:@"Book"])
@@ -690,36 +690,36 @@
   return v3;
 }
 
-- (void)_startSpinningWithIdentifier:(id)a3
+- (void)_startSpinningWithIdentifier:(id)identifier
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyStoreRenewController *)v10 navigationController];
-  v4 = [(BFFNavigationController *)v3 topViewController];
-  v5 = [v4 view];
-  v6 = [v5 window];
-  [v6 setUserInteractionEnabled:0];
+  objc_storeStrong(location, identifier);
+  navigationController = [(BuddyStoreRenewController *)selfCopy navigationController];
+  topViewController = [(BFFNavigationController *)navigationController topViewController];
+  view = [topViewController view];
+  window = [view window];
+  [window setUserInteractionEnabled:0];
 
-  v7 = [(BuddyStoreRenewController *)v10 navigationController];
-  v8 = [(BFFNavigationController *)v7 topViewController];
-  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v8 identifier:location[0]];
+  navigationController2 = [(BuddyStoreRenewController *)selfCopy navigationController];
+  topViewController2 = [(BFFNavigationController *)navigationController2 topViewController];
+  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:topViewController2 identifier:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_stopSpinningForIdentifier:(id)a3
+- (void)_stopSpinningForIdentifier:(id)identifier
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyStoreRenewController *)v8 navigationController];
-  v4 = [(BFFNavigationController *)v3 topViewController];
-  v5 = [v4 view];
-  v6 = [v5 window];
-  [v6 setUserInteractionEnabled:1];
+  objc_storeStrong(location, identifier);
+  navigationController = [(BuddyStoreRenewController *)selfCopy navigationController];
+  topViewController = [(BFFNavigationController *)navigationController topViewController];
+  view = [topViewController view];
+  window = [view window];
+  [window setUserInteractionEnabled:1];
 
   [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:location[0]];
   objc_storeStrong(location, 0);
@@ -727,17 +727,17 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v2 = [(BuddyStoreRenewController *)self buddyPreferencesInternal];
+  buddyPreferencesInternal = [(BuddyStoreRenewController *)self buddyPreferencesInternal];
   v17 = 0;
   v15 = 0;
   v3 = 0;
-  if (v2)
+  if (buddyPreferencesInternal)
   {
-    v18 = [(BuddyStoreRenewController *)v20 buddyPreferencesInternal];
+    buddyPreferencesInternal2 = [(BuddyStoreRenewController *)selfCopy buddyPreferencesInternal];
     v17 = 1;
-    v16 = [(BYPreferencesController *)v18 objectForKey:@"ams-force-run" includeCache:0];
+    v16 = [(BYPreferencesController *)buddyPreferencesInternal2 objectForKey:@"ams-force-run" includeCache:0];
     v15 = 1;
     v3 = v16 != 0;
   }
@@ -768,15 +768,15 @@
 
   else
   {
-    v6 = [(BuddyStoreRenewController *)v20 networkProvider];
-    v7 = [(BuddyNetworkProvider *)v6 networkReachable];
+    networkProvider = [(BuddyStoreRenewController *)selfCopy networkProvider];
+    networkReachable = [(BuddyNetworkProvider *)networkProvider networkReachable];
     v10 = 0;
     v8 = 1;
-    if ((v7 & 1) == 0)
+    if ((networkReachable & 1) == 0)
     {
-      v11 = [(BuddyStoreRenewController *)v20 miscState];
+      miscState = [(BuddyStoreRenewController *)selfCopy miscState];
       v10 = 1;
-      v8 = ![(BuddyMiscState *)v11 userSkippedWiFi];
+      v8 = ![(BuddyMiscState *)miscState userSkippedWiFi];
     }
 
     v21 = v8 & 1;
@@ -788,15 +788,15 @@
   return v21;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v27 = dispatch_group_create();
   dispatch_group_enter(v27);
-  v3 = v29;
+  v3 = selfCopy;
   v21 = _NSConcreteStackBlock;
   v22 = -1073741824;
   v23 = 0;
@@ -805,13 +805,13 @@
   v26 = v27;
   [(BuddyStoreRenewController *)v3 _fetchAccountsWithCompletion:&v21];
   dispatch_group_enter(v27);
-  v4 = v29;
+  v4 = selfCopy;
   v14 = _NSConcreteStackBlock;
   v15 = -1073741824;
   v16 = 0;
   v17 = sub_1001ECC00;
   v18 = &unk_10032EDD0;
-  v19 = v29;
+  v19 = selfCopy;
   v20 = v27;
   [(BuddyStoreRenewController *)v4 _fetchMediaLinkedAccountDSIDWithCompletion:&v14];
   v5 = v27;
@@ -822,7 +822,7 @@
   v10 = sub_1001ECC5C;
   v11 = &unk_10032BCA0;
   v13 = location[0];
-  v12 = v29;
+  v12 = selfCopy;
   dispatch_group_notify(v5, v6, &block);
 
   objc_storeStrong(&v12, 0);
@@ -834,19 +834,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchAccountsWithCompletion:(id)a3
+- (void)_fetchAccountsWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
+  objc_storeStrong(location, completion);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001ECDF0;
   v8 = &unk_10032EE48;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   [(BuddyStoreRenewController *)v3 fetchAccounts:&v4];
   objc_storeStrong(&v10, 0);
@@ -854,32 +854,32 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchMediaLinkedAccountDSIDWithCompletion:(id)a3
+- (void)_fetchMediaLinkedAccountDSIDWithCompletion:(id)completion
 {
-  v66 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v64 = [(BuddyStoreRenewController *)v66 _primaryAccount];
-  v3 = [v64 ams_DSID];
+  objc_storeStrong(location, completion);
+  _primaryAccount = [(BuddyStoreRenewController *)selfCopy _primaryAccount];
+  ams_DSID = [_primaryAccount ams_DSID];
 
-  if (v3)
+  if (ams_DSID)
   {
     v63 = _BYLoggingFacility();
     v62 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [v64 username];
-      v5 = [v64 ams_DSID];
-      sub_10010DD40(buf, v4, v5);
+      username = [_primaryAccount username];
+      ams_DSID2 = [_primaryAccount ams_DSID];
+      sub_10010DD40(buf, username, ams_DSID2);
       _os_log_impl(&_mh_execute_header, v63, v62, "Fetching media link account DSID for %@: %{public}@", buf, 0x16u);
     }
 
     objc_storeStrong(&v63, 0);
     v6 = [AMSAccountIdentity alloc];
-    v7 = [v64 ams_DSID];
-    v8 = [v64 ams_altDSID];
-    v61 = [v6 initWithDSID:v7 altDSID:v8];
+    ams_DSID3 = [_primaryAccount ams_DSID];
+    ams_altDSID = [_primaryAccount ams_altDSID];
+    v61 = [v6 initWithDSID:ams_DSID3 altDSID:ams_altDSID];
 
     v54 = 0;
     v55 = &v54;
@@ -957,8 +957,8 @@
     oslog = _BYLoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v64 username];
-      sub_10006AE18(v67, v16);
+      username2 = [_primaryAccount username];
+      sub_10006AE18(v67, username2);
       _os_log_error_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_ERROR, "Skip fetch media linked account. Failed to determine DSID for primary account: %@", v67, 0xCu);
     }
 
@@ -969,68 +969,68 @@
     }
   }
 
-  objc_storeStrong(&v64, 0);
+  objc_storeStrong(&_primaryAccount, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)appleIDControllerFinished:(id)a3
+- (void)appleIDControllerFinished:(id)finished
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, finished);
   objc_storeStrong(location, 0);
 }
 
-- (void)appleIDController:(id)a3 didAuthenticateForCredentialRecovery:(id)a4
+- (void)appleIDController:(id)controller didAuthenticateForCredentialRecovery:(id)recovery
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(BuddyStoreRenewController *)v7 _didAuthenticateWithAuthenticationResults:v5];
+  objc_storeStrong(&v5, recovery);
+  [(BuddyStoreRenewController *)selfCopy _didAuthenticateWithAuthenticationResults:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_isActiveBuddyStoreAccount:(id)a3
+- (BOOL)_isActiveBuddyStoreAccount:(id)account
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v4 = [location[0] username];
-  v5 = [location[0] altDSID];
-  LOBYTE(v3) = [(BuddyStoreRenewController *)v3 _isActiveBuddyStoreAccountWithUsername:v4 orAltDSID:v5];
+  objc_storeStrong(location, account);
+  v3 = selfCopy;
+  username = [location[0] username];
+  altDSID = [location[0] altDSID];
+  LOBYTE(v3) = [(BuddyStoreRenewController *)v3 _isActiveBuddyStoreAccountWithUsername:username orAltDSID:altDSID];
 
   objc_storeStrong(location, 0);
   return v3 & 1;
 }
 
-- (BOOL)_isActiveBuddyStoreAccountWithUsername:(id)a3 orAltDSID:(id)a4
+- (BOOL)_isActiveBuddyStoreAccountWithUsername:(id)username orAltDSID:(id)d
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, d);
   v5 = location[0];
-  v6 = [(BuddyStoreRenewController *)v18 activeBuddyStoreAccount];
-  v7 = [(BuddyStoreAccount *)v6 username];
-  v8 = [v5 isEqualToString:v7];
+  activeBuddyStoreAccount = [(BuddyStoreRenewController *)selfCopy activeBuddyStoreAccount];
+  username = [(BuddyStoreAccount *)activeBuddyStoreAccount username];
+  v8 = [v5 isEqualToString:username];
   v14 = 0;
   v12 = 0;
   v9 = 1;
   if ((v8 & 1) == 0)
   {
     v10 = v16;
-    v15 = [(BuddyStoreRenewController *)v18 activeBuddyStoreAccount];
+    activeBuddyStoreAccount2 = [(BuddyStoreRenewController *)selfCopy activeBuddyStoreAccount];
     v14 = 1;
-    v13 = [(BuddyStoreAccount *)v15 altDSID];
+    altDSID = [(BuddyStoreAccount *)activeBuddyStoreAccount2 altDSID];
     v12 = 1;
     v9 = [v10 isEqualToString:?];
   }
@@ -1049,42 +1049,42 @@
   return v19 & 1;
 }
 
-- (BOOL)_isPrimaryAccount:(id)a3
+- (BOOL)_isPrimaryAccount:(id)account
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v4 = [location[0] username];
-  v5 = [location[0] altDSID];
-  LOBYTE(v3) = [(BuddyStoreRenewController *)v3 _isPrimaryAccountWithUsername:v4 orAltDSID:v5];
+  objc_storeStrong(location, account);
+  v3 = selfCopy;
+  username = [location[0] username];
+  altDSID = [location[0] altDSID];
+  LOBYTE(v3) = [(BuddyStoreRenewController *)v3 _isPrimaryAccountWithUsername:username orAltDSID:altDSID];
 
   objc_storeStrong(location, 0);
   return v3 & 1;
 }
 
-- (BOOL)_isPrimaryAccountWithUsername:(id)a3 orAltDSID:(id)a4
+- (BOOL)_isPrimaryAccountWithUsername:(id)username orAltDSID:(id)d
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, d);
   v5 = location[0];
-  v6 = [(BuddyStoreRenewController *)v18 _primaryAccountInfo];
-  v7 = [v6 username];
-  v8 = [v5 isEqualToString:v7];
+  _primaryAccountInfo = [(BuddyStoreRenewController *)selfCopy _primaryAccountInfo];
+  username = [_primaryAccountInfo username];
+  v8 = [v5 isEqualToString:username];
   v14 = 0;
   v12 = 0;
   v9 = 1;
   if ((v8 & 1) == 0)
   {
     v10 = v16;
-    v15 = [(BuddyStoreRenewController *)v18 _primaryAccountInfo];
+    _primaryAccountInfo2 = [(BuddyStoreRenewController *)selfCopy _primaryAccountInfo];
     v14 = 1;
-    v13 = [v15 altDSID];
+    altDSID = [_primaryAccountInfo2 altDSID];
     v12 = 1;
     v9 = [v10 isEqualToString:?];
   }
@@ -1103,26 +1103,26 @@
   return v19 & 1;
 }
 
-- (id)_amsStoreAccountForUsername:(id)a3 altDSID:(id)a4
+- (id)_amsStoreAccountForUsername:(id)username altDSID:(id)d
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(BuddyStoreRenewController *)v10 _amsAccountStore];
+  objc_storeStrong(&v8, d);
+  _amsAccountStore = [(BuddyStoreRenewController *)selfCopy _amsAccountStore];
   if (v8)
   {
-    v11 = [v7 ams_iTunesAccountWithAltDSID:v8];
+    v11 = [_amsAccountStore ams_iTunesAccountWithAltDSID:v8];
   }
 
   else
   {
-    v11 = [v7 ams_iTunesAccountWithUsername:location[0]];
+    v11 = [_amsAccountStore ams_iTunesAccountWithUsername:location[0]];
   }
 
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&_amsAccountStore, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
   v5 = v11;
@@ -1133,9 +1133,9 @@
 - (id)_primaryAccount
 {
   v2 = [ACAccountStore defaultStore:a2];
-  v3 = [v2 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
 
-  return v3;
+  return aa_primaryAppleAccount;
 }
 
 - (BFFFlowItemDelegate)delegate

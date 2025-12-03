@@ -1,21 +1,21 @@
 @interface CalloutViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (NSString)axCalloutText;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateIsVisible;
-- (void)axDidUpdateFromPreviousCalloutText:(id)a3;
-- (void)setAlpha:(double)a3;
+- (void)axDidUpdateFromPreviousCalloutText:(id)text;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation CalloutViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.CalloutView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"setAlpha:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"Measure.CalloutViewSpatial" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Measure.CalloutViewRegular" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.CalloutView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"setAlpha:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"Measure.CalloutViewSpatial" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Measure.CalloutViewRegular" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
 }
 
 - (NSString)axCalloutText
@@ -24,18 +24,18 @@
   v3 = [(CalloutViewAccessibility *)self safeValueForKey:@"label"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
 
-  return v5;
+  return text;
 }
 
-- (void)axDidUpdateFromPreviousCalloutText:(id)a3
+- (void)axDidUpdateFromPreviousCalloutText:(id)text
 {
-  v5 = a3;
-  v4 = [(CalloutViewAccessibility *)self axCalloutText];
-  if (-[CalloutViewAccessibility _axIsActuallyVisible](self, "_axIsActuallyVisible") && ([v5 isEqualToString:v4] & 1) == 0 && objc_msgSend(v4, "length"))
+  textCopy = text;
+  axCalloutText = [(CalloutViewAccessibility *)self axCalloutText];
+  if (-[CalloutViewAccessibility _axIsActuallyVisible](self, "_axIsActuallyVisible") && ([textCopy isEqualToString:axCalloutText] & 1) == 0 && objc_msgSend(axCalloutText, "length"))
   {
-    AXMeasureSpeakMeasurementAnnouncement(v4);
+    AXMeasureSpeakMeasurementAnnouncement(axCalloutText);
   }
 }
 
@@ -66,7 +66,7 @@
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v10 = 0;
   objc_opt_class();
@@ -75,7 +75,7 @@
   v7 = v6;
   v9.receiver = self;
   v9.super_class = CalloutViewAccessibility;
-  [(CalloutViewAccessibility *)&v9 setAlpha:a3];
+  [(CalloutViewAccessibility *)&v9 setAlpha:alpha];
   [v5 alpha];
   if (vabdd_f64(v7, v8) >= 2.22044605e-16)
   {

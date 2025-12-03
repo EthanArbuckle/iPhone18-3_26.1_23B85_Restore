@@ -1,16 +1,16 @@
 @interface PBAApplication
 + (id)_newApplicationInitializationContext;
-- (BOOL)__handleHIDEvent:(__IOHIDEvent *)a3;
-- (BOOL)_handlePhysicalButtonEvent:(id)a3;
+- (BOOL)__handleHIDEvent:(__IOHIDEvent *)event;
+- (BOOL)_handlePhysicalButtonEvent:(id)event;
 - (PBAApplication)init;
-- (void)_handleHIDEvent:(__IOHIDEvent *)a3;
+- (void)_handleHIDEvent:(__IOHIDEvent *)event;
 - (void)_lockButtonDown;
 - (void)_lockButtonLongPress;
 - (void)_lockButtonUp;
 - (void)_smartCoverClosed;
 - (void)_smartCoverOpen;
 - (void)_startLockButtonTimer;
-- (void)setLockButtonTimer:(id)a3;
+- (void)setLockButtonTimer:(id)timer;
 @end
 
 @implementation PBAApplication
@@ -33,14 +33,14 @@
 {
   v2 = +[UISMutableApplicationInitializationContext defaultContext];
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [FBSceneWorkspace sceneIdentityTokenForIdentifier:v4 workspaceIdentifier:@"com.apple.preboard"];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = [FBSceneWorkspace sceneIdentityTokenForIdentifier:bundleIdentifier workspaceIdentifier:@"com.apple.preboard"];
 
   [v2 setDefaultSceneToken:v5];
   return v2;
 }
 
-- (BOOL)__handleHIDEvent:(__IOHIDEvent *)a3
+- (BOOL)__handleHIDEvent:(__IOHIDEvent *)event
 {
   if (IOHIDEventGetType() != 3)
   {
@@ -94,22 +94,22 @@
   return 1;
 }
 
-- (void)_handleHIDEvent:(__IOHIDEvent *)a3
+- (void)_handleHIDEvent:(__IOHIDEvent *)event
 {
   if (![(PBAApplication *)self __handleHIDEvent:?])
   {
     v5.receiver = self;
     v5.super_class = PBAApplication;
-    [(PBAApplication *)&v5 _handleHIDEvent:a3];
+    [(PBAApplication *)&v5 _handleHIDEvent:event];
   }
 }
 
-- (BOOL)_handlePhysicalButtonEvent:(id)a3
+- (BOOL)_handlePhysicalButtonEvent:(id)event
 {
-  v4 = [a3 _hidEvent];
-  if (v4)
+  _hidEvent = [event _hidEvent];
+  if (_hidEvent)
   {
-    return ![(PBAApplication *)self __handleHIDEvent:v4];
+    return ![(PBAApplication *)self __handleHIDEvent:_hidEvent];
   }
 
   else
@@ -178,27 +178,27 @@
   [(PBAApplication *)self setLockButtonTimer:v3];
 }
 
-- (void)setLockButtonTimer:(id)a3
+- (void)setLockButtonTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   lockButtonTimer = self->_lockButtonTimer;
-  if (lockButtonTimer != v5)
+  if (lockButtonTimer != timerCopy)
   {
-    v7 = v5;
+    v7 = timerCopy;
     [(NSTimer *)lockButtonTimer invalidate];
-    objc_storeStrong(&self->_lockButtonTimer, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_lockButtonTimer, timer);
+    timerCopy = v7;
   }
 
-  _objc_release_x1(lockButtonTimer, v5);
+  _objc_release_x1(lockButtonTimer, timerCopy);
 }
 
 - (void)_lockButtonUp
 {
-  v3 = [(PBAApplication *)self lockButtonTimer];
+  lockButtonTimer = [(PBAApplication *)self lockButtonTimer];
 
   [(PBAApplication *)self _cancelLockButtonTimer];
-  if (v3)
+  if (lockButtonTimer)
   {
     idleSleepController = self->_idleSleepController;
 

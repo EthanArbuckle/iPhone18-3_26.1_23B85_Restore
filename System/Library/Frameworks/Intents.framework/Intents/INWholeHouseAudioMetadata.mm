@@ -1,13 +1,13 @@
 @interface INWholeHouseAudioMetadata
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INWholeHouseAudioMetadata)initWithCoder:(id)a3;
-- (INWholeHouseAudioMetadata)initWithSpeakerNames:(id)a3 speakerRooms:(id)a4 permanentNames:(id)a5 intentSpeakerNames:(id)a6 intentSpeakerRooms:(id)a7 intentDestinationSpeakers:(id)a8 intentPermanentNames:(id)a9 spokenEntityTypes:(id)a10 spokenEntityNames:(id)a11 numberOfHomeAutomationWords:(id)a12 isAllSpeakers:(id)a13 isPauseOrStop:(id)a14 isWholeHouseAudioCommand:(id)a15 isInHere:(id)a16 hasExcept:(id)a17 isParticipatingSpeaker:(id)a18;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INWholeHouseAudioMetadata)initWithCoder:(id)coder;
+- (INWholeHouseAudioMetadata)initWithSpeakerNames:(id)names speakerRooms:(id)rooms permanentNames:(id)permanentNames intentSpeakerNames:(id)speakerNames intentSpeakerRooms:(id)speakerRooms intentDestinationSpeakers:(id)speakers intentPermanentNames:(id)intentPermanentNames spokenEntityTypes:(id)self0 spokenEntityNames:(id)self1 numberOfHomeAutomationWords:(id)self2 isAllSpeakers:(id)self3 isPauseOrStop:(id)self4 isWholeHouseAudioCommand:(id)self5 isInHere:(id)self6 hasExcept:(id)self7 isParticipatingSpeaker:(id)self8;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INWholeHouseAudioMetadata
@@ -16,14 +16,14 @@
 {
   v52[16] = *MEMORY[0x1E69E9840];
   speakerNames = self->_speakerNames;
-  v3 = speakerNames;
+  null = speakerNames;
   v51[0] = @"speakerNames";
   if (!speakerNames)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52[0] = v3;
+  v52[0] = null;
   v51[1] = @"speakerRooms";
   speakerRooms = self->_speakerRooms;
   v48 = speakerRooms;
@@ -110,68 +110,68 @@
   v52[9] = numberOfHomeAutomationWords;
   v51[10] = @"isAllSpeakers";
   isAllSpeakers = self->_isAllSpeakers;
-  v14 = isAllSpeakers;
+  null2 = isAllSpeakers;
   if (!isAllSpeakers)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v43 = intentSpeakerNames;
-  v49 = v3;
-  v30 = v14;
-  v52[10] = v14;
+  v49 = null;
+  v30 = null2;
+  v52[10] = null2;
   v51[11] = @"isPauseOrStop";
   isPauseOrStop = self->_isPauseOrStop;
-  v16 = isPauseOrStop;
+  null3 = isPauseOrStop;
   if (!isPauseOrStop)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v36 = spokenEntityTypes;
   v41 = intentSpeakerRooms;
-  v29 = v16;
-  v52[11] = v16;
+  v29 = null3;
+  v52[11] = null3;
   v51[12] = @"isWholeHouseAudioCommand";
   isWholeHouseAudioCommand = self->_isWholeHouseAudioCommand;
-  v18 = isWholeHouseAudioCommand;
+  null4 = isWholeHouseAudioCommand;
   if (!isWholeHouseAudioCommand)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v34 = spokenEntityNames;
   v39 = intentDestinationSpeakers;
-  v28 = v18;
-  v52[12] = v18;
+  v28 = null4;
+  v52[12] = null4;
   v51[13] = @"isInHere";
   isInHere = self->_isInHere;
-  v20 = isInHere;
+  null5 = isInHere;
   if (!isInHere)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v21 = intentPermanentNames;
-  v52[13] = v20;
+  v52[13] = null5;
   v51[14] = @"hasExcept";
   hasExcept = self->_hasExcept;
-  v23 = hasExcept;
+  null6 = hasExcept;
   if (!hasExcept)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52[14] = v23;
+  v52[14] = null6;
   v51[15] = @"isParticipatingSpeaker";
   isParticipatingSpeaker = self->_isParticipatingSpeaker;
-  v25 = isParticipatingSpeaker;
+  null7 = isParticipatingSpeaker;
   if (!isParticipatingSpeaker)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52[15] = v25;
+  v52[15] = null7;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:16];
   if (isParticipatingSpeaker)
   {
@@ -252,182 +252,182 @@ LABEL_35:
   return v32;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INWholeHouseAudioMetadata;
   v6 = [(INWholeHouseAudioMetadata *)&v11 description];
-  v7 = [(INWholeHouseAudioMetadata *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INWholeHouseAudioMetadata *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_speakerNames];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"speakerNames"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_speakerNames];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"speakerNames"];
 
-  v9 = [v6 encodeObject:self->_speakerRooms];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"speakerRooms"];
+  v9 = [encoderCopy encodeObject:self->_speakerRooms];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"speakerRooms"];
 
-  v10 = [v6 encodeObject:self->_permanentNames];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"permanentNames"];
+  v10 = [encoderCopy encodeObject:self->_permanentNames];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"permanentNames"];
 
-  v11 = [v6 encodeObject:self->_intentSpeakerNames];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"intentSpeakerNames"];
+  v11 = [encoderCopy encodeObject:self->_intentSpeakerNames];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"intentSpeakerNames"];
 
-  v12 = [v6 encodeObject:self->_intentSpeakerRooms];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"intentSpeakerRooms"];
+  v12 = [encoderCopy encodeObject:self->_intentSpeakerRooms];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"intentSpeakerRooms"];
 
-  v13 = [v6 encodeObject:self->_intentDestinationSpeakers];
-  [v7 if_setObjectIfNonNil:v13 forKey:@"intentDestinationSpeakers"];
+  v13 = [encoderCopy encodeObject:self->_intentDestinationSpeakers];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"intentDestinationSpeakers"];
 
-  v14 = [v6 encodeObject:self->_intentPermanentNames];
-  [v7 if_setObjectIfNonNil:v14 forKey:@"intentPermanentNames"];
+  v14 = [encoderCopy encodeObject:self->_intentPermanentNames];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"intentPermanentNames"];
 
-  v15 = [v6 encodeObject:self->_spokenEntityTypes];
-  [v7 if_setObjectIfNonNil:v15 forKey:@"spokenEntityTypes"];
+  v15 = [encoderCopy encodeObject:self->_spokenEntityTypes];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"spokenEntityTypes"];
 
-  v16 = [v6 encodeObject:self->_spokenEntityNames];
-  [v7 if_setObjectIfNonNil:v16 forKey:@"spokenEntityNames"];
+  v16 = [encoderCopy encodeObject:self->_spokenEntityNames];
+  [dictionary if_setObjectIfNonNil:v16 forKey:@"spokenEntityNames"];
 
-  v17 = [v6 encodeObject:self->_numberOfHomeAutomationWords];
-  [v7 if_setObjectIfNonNil:v17 forKey:@"numberOfHomeAutomationWords"];
+  v17 = [encoderCopy encodeObject:self->_numberOfHomeAutomationWords];
+  [dictionary if_setObjectIfNonNil:v17 forKey:@"numberOfHomeAutomationWords"];
 
-  v18 = [v6 encodeObject:self->_isAllSpeakers];
-  [v7 if_setObjectIfNonNil:v18 forKey:@"isAllSpeakers"];
+  v18 = [encoderCopy encodeObject:self->_isAllSpeakers];
+  [dictionary if_setObjectIfNonNil:v18 forKey:@"isAllSpeakers"];
 
-  v19 = [v6 encodeObject:self->_isPauseOrStop];
-  [v7 if_setObjectIfNonNil:v19 forKey:@"isPauseOrStop"];
+  v19 = [encoderCopy encodeObject:self->_isPauseOrStop];
+  [dictionary if_setObjectIfNonNil:v19 forKey:@"isPauseOrStop"];
 
-  v20 = [v6 encodeObject:self->_isWholeHouseAudioCommand];
-  [v7 if_setObjectIfNonNil:v20 forKey:@"isWholeHouseAudioCommand"];
+  v20 = [encoderCopy encodeObject:self->_isWholeHouseAudioCommand];
+  [dictionary if_setObjectIfNonNil:v20 forKey:@"isWholeHouseAudioCommand"];
 
-  v21 = [v6 encodeObject:self->_isInHere];
-  [v7 if_setObjectIfNonNil:v21 forKey:@"isInHere"];
+  v21 = [encoderCopy encodeObject:self->_isInHere];
+  [dictionary if_setObjectIfNonNil:v21 forKey:@"isInHere"];
 
-  v22 = [v6 encodeObject:self->_hasExcept];
-  [v7 if_setObjectIfNonNil:v22 forKey:@"hasExcept"];
+  v22 = [encoderCopy encodeObject:self->_hasExcept];
+  [dictionary if_setObjectIfNonNil:v22 forKey:@"hasExcept"];
 
-  v23 = [v6 encodeObject:self->_isParticipatingSpeaker];
+  v23 = [encoderCopy encodeObject:self->_isParticipatingSpeaker];
 
-  [v7 if_setObjectIfNonNil:v23 forKey:@"isParticipatingSpeaker"];
+  [dictionary if_setObjectIfNonNil:v23 forKey:@"isParticipatingSpeaker"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   speakerNames = self->_speakerNames;
-  v5 = a3;
-  [v5 encodeObject:speakerNames forKey:@"speakerNames"];
-  [v5 encodeObject:self->_speakerRooms forKey:@"speakerRooms"];
-  [v5 encodeObject:self->_permanentNames forKey:@"permanentNames"];
-  [v5 encodeObject:self->_intentSpeakerNames forKey:@"intentSpeakerNames"];
-  [v5 encodeObject:self->_intentSpeakerRooms forKey:@"intentSpeakerRooms"];
-  [v5 encodeObject:self->_intentDestinationSpeakers forKey:@"intentDestinationSpeakers"];
-  [v5 encodeObject:self->_intentPermanentNames forKey:@"intentPermanentNames"];
-  [v5 encodeObject:self->_spokenEntityTypes forKey:@"spokenEntityTypes"];
-  [v5 encodeObject:self->_spokenEntityNames forKey:@"spokenEntityNames"];
-  [v5 encodeObject:self->_numberOfHomeAutomationWords forKey:@"numberOfHomeAutomationWords"];
-  [v5 encodeObject:self->_isAllSpeakers forKey:@"isAllSpeakers"];
-  [v5 encodeObject:self->_isPauseOrStop forKey:@"isPauseOrStop"];
-  [v5 encodeObject:self->_isWholeHouseAudioCommand forKey:@"isWholeHouseAudioCommand"];
-  [v5 encodeObject:self->_isInHere forKey:@"isInHere"];
-  [v5 encodeObject:self->_hasExcept forKey:@"hasExcept"];
-  [v5 encodeObject:self->_isParticipatingSpeaker forKey:@"isParticipatingSpeaker"];
+  coderCopy = coder;
+  [coderCopy encodeObject:speakerNames forKey:@"speakerNames"];
+  [coderCopy encodeObject:self->_speakerRooms forKey:@"speakerRooms"];
+  [coderCopy encodeObject:self->_permanentNames forKey:@"permanentNames"];
+  [coderCopy encodeObject:self->_intentSpeakerNames forKey:@"intentSpeakerNames"];
+  [coderCopy encodeObject:self->_intentSpeakerRooms forKey:@"intentSpeakerRooms"];
+  [coderCopy encodeObject:self->_intentDestinationSpeakers forKey:@"intentDestinationSpeakers"];
+  [coderCopy encodeObject:self->_intentPermanentNames forKey:@"intentPermanentNames"];
+  [coderCopy encodeObject:self->_spokenEntityTypes forKey:@"spokenEntityTypes"];
+  [coderCopy encodeObject:self->_spokenEntityNames forKey:@"spokenEntityNames"];
+  [coderCopy encodeObject:self->_numberOfHomeAutomationWords forKey:@"numberOfHomeAutomationWords"];
+  [coderCopy encodeObject:self->_isAllSpeakers forKey:@"isAllSpeakers"];
+  [coderCopy encodeObject:self->_isPauseOrStop forKey:@"isPauseOrStop"];
+  [coderCopy encodeObject:self->_isWholeHouseAudioCommand forKey:@"isWholeHouseAudioCommand"];
+  [coderCopy encodeObject:self->_isInHere forKey:@"isInHere"];
+  [coderCopy encodeObject:self->_hasExcept forKey:@"hasExcept"];
+  [coderCopy encodeObject:self->_isParticipatingSpeaker forKey:@"isParticipatingSpeaker"];
 }
 
-- (INWholeHouseAudioMetadata)initWithCoder:(id)a3
+- (INWholeHouseAudioMetadata)initWithCoder:(id)coder
 {
   v59[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  coderCopy = coder;
   v59[0] = objc_opt_class();
   v59[1] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:2];
   v6 = [v3 setWithArray:v5];
-  v50 = [v4 decodeObjectOfClasses:v6 forKey:@"speakerNames"];
+  v50 = [coderCopy decodeObjectOfClasses:v6 forKey:@"speakerNames"];
 
   v7 = MEMORY[0x1E695DFD8];
   v58[0] = objc_opt_class();
   v58[1] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
   v9 = [v7 setWithArray:v8];
-  v49 = [v4 decodeObjectOfClasses:v9 forKey:@"speakerRooms"];
+  v49 = [coderCopy decodeObjectOfClasses:v9 forKey:@"speakerRooms"];
 
   v10 = MEMORY[0x1E695DFD8];
   v57[0] = objc_opt_class();
   v57[1] = objc_opt_class();
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
   v12 = [v10 setWithArray:v11];
-  v48 = [v4 decodeObjectOfClasses:v12 forKey:@"permanentNames"];
+  v48 = [coderCopy decodeObjectOfClasses:v12 forKey:@"permanentNames"];
 
   v13 = MEMORY[0x1E695DFD8];
   v56[0] = objc_opt_class();
   v56[1] = objc_opt_class();
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
   v15 = [v13 setWithArray:v14];
-  v47 = [v4 decodeObjectOfClasses:v15 forKey:@"intentSpeakerNames"];
+  v47 = [coderCopy decodeObjectOfClasses:v15 forKey:@"intentSpeakerNames"];
 
   v16 = MEMORY[0x1E695DFD8];
   v55[0] = objc_opt_class();
   v55[1] = objc_opt_class();
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
   v18 = [v16 setWithArray:v17];
-  v46 = [v4 decodeObjectOfClasses:v18 forKey:@"intentSpeakerRooms"];
+  v46 = [coderCopy decodeObjectOfClasses:v18 forKey:@"intentSpeakerRooms"];
 
   v19 = MEMORY[0x1E695DFD8];
   v54[0] = objc_opt_class();
   v54[1] = objc_opt_class();
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
   v21 = [v19 setWithArray:v20];
-  v45 = [v4 decodeObjectOfClasses:v21 forKey:@"intentDestinationSpeakers"];
+  v45 = [coderCopy decodeObjectOfClasses:v21 forKey:@"intentDestinationSpeakers"];
 
   v22 = MEMORY[0x1E695DFD8];
   v53[0] = objc_opt_class();
   v53[1] = objc_opt_class();
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
   v24 = [v22 setWithArray:v23];
-  v42 = [v4 decodeObjectOfClasses:v24 forKey:@"intentPermanentNames"];
+  v42 = [coderCopy decodeObjectOfClasses:v24 forKey:@"intentPermanentNames"];
 
   v25 = MEMORY[0x1E695DFD8];
   v52[0] = objc_opt_class();
   v52[1] = objc_opt_class();
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:2];
   v27 = [v25 setWithArray:v26];
-  v28 = [v4 decodeObjectOfClasses:v27 forKey:@"spokenEntityTypes"];
+  v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"spokenEntityTypes"];
 
   v29 = MEMORY[0x1E695DFD8];
   v51[0] = objc_opt_class();
   v51[1] = objc_opt_class();
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
   v31 = [v29 setWithArray:v30];
-  v41 = [v4 decodeObjectOfClasses:v31 forKey:@"spokenEntityNames"];
+  v41 = [coderCopy decodeObjectOfClasses:v31 forKey:@"spokenEntityNames"];
 
-  v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberOfHomeAutomationWords"];
-  v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isAllSpeakers"];
-  v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isPauseOrStop"];
-  v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isWholeHouseAudioCommand"];
-  v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isInHere"];
-  v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasExcept"];
-  v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isParticipatingSpeaker"];
+  v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberOfHomeAutomationWords"];
+  v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isAllSpeakers"];
+  v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isPauseOrStop"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isWholeHouseAudioCommand"];
+  v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isInHere"];
+  v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasExcept"];
+  v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isParticipatingSpeaker"];
 
   v44 = [(INWholeHouseAudioMetadata *)self initWithSpeakerNames:v50 speakerRooms:v49 permanentNames:v48 intentSpeakerNames:v47 intentSpeakerRooms:v46 intentDestinationSpeakers:v45 intentPermanentNames:v42 spokenEntityTypes:v28 spokenEntityNames:v41 numberOfHomeAutomationWords:v40 isAllSpeakers:v39 isPauseOrStop:v38 isWholeHouseAudioCommand:v32 isInHere:v33 hasExcept:v34 isParticipatingSpeaker:v35];
   v36 = *MEMORY[0x1E69E9840];
   return v44;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v22 = 1;
   }
@@ -437,7 +437,7 @@ LABEL_35:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       speakerNames = self->_speakerNames;
       if (speakerNames != v5->_speakerNames && ![(NSArray *)speakerNames isEqual:?])
       {
@@ -533,32 +533,32 @@ LABEL_38:
   return v13 ^ v17 ^ [(NSNumber *)self->_isParticipatingSpeaker hash];
 }
 
-- (INWholeHouseAudioMetadata)initWithSpeakerNames:(id)a3 speakerRooms:(id)a4 permanentNames:(id)a5 intentSpeakerNames:(id)a6 intentSpeakerRooms:(id)a7 intentDestinationSpeakers:(id)a8 intentPermanentNames:(id)a9 spokenEntityTypes:(id)a10 spokenEntityNames:(id)a11 numberOfHomeAutomationWords:(id)a12 isAllSpeakers:(id)a13 isPauseOrStop:(id)a14 isWholeHouseAudioCommand:(id)a15 isInHere:(id)a16 hasExcept:(id)a17 isParticipatingSpeaker:(id)a18
+- (INWholeHouseAudioMetadata)initWithSpeakerNames:(id)names speakerRooms:(id)rooms permanentNames:(id)permanentNames intentSpeakerNames:(id)speakerNames intentSpeakerRooms:(id)speakerRooms intentDestinationSpeakers:(id)speakers intentPermanentNames:(id)intentPermanentNames spokenEntityTypes:(id)self0 spokenEntityNames:(id)self1 numberOfHomeAutomationWords:(id)self2 isAllSpeakers:(id)self3 isPauseOrStop:(id)self4 isWholeHouseAudioCommand:(id)self5 isInHere:(id)self6 hasExcept:(id)self7 isParticipatingSpeaker:(id)self8
 {
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v75 = a6;
-  v74 = a7;
-  v73 = a8;
-  v72 = a9;
-  v26 = v25;
-  v71 = a10;
-  v27 = v24;
-  v70 = a11;
-  v69 = a12;
-  v28 = a13;
-  v29 = a14;
-  v30 = a15;
-  v31 = a16;
-  v32 = a17;
-  v33 = a18;
+  namesCopy = names;
+  roomsCopy = rooms;
+  permanentNamesCopy = permanentNames;
+  speakerNamesCopy = speakerNames;
+  speakerRoomsCopy = speakerRooms;
+  speakersCopy = speakers;
+  intentPermanentNamesCopy = intentPermanentNames;
+  v26 = permanentNamesCopy;
+  typesCopy = types;
+  v27 = roomsCopy;
+  entityNamesCopy = entityNames;
+  wordsCopy = words;
+  allSpeakersCopy = allSpeakers;
+  stopCopy = stop;
+  commandCopy = command;
+  hereCopy = here;
+  exceptCopy = except;
+  speakerCopy = speaker;
   v76.receiver = self;
   v76.super_class = INWholeHouseAudioMetadata;
   v34 = [(INWholeHouseAudioMetadata *)&v76 init];
   if (v34)
   {
-    v35 = [v23 copy];
+    v35 = [namesCopy copy];
     speakerNames = v34->_speakerNames;
     v34->_speakerNames = v35;
 
@@ -570,55 +570,55 @@ LABEL_38:
     permanentNames = v34->_permanentNames;
     v34->_permanentNames = v39;
 
-    v41 = [v75 copy];
+    v41 = [speakerNamesCopy copy];
     intentSpeakerNames = v34->_intentSpeakerNames;
     v34->_intentSpeakerNames = v41;
 
-    v43 = [v74 copy];
+    v43 = [speakerRoomsCopy copy];
     intentSpeakerRooms = v34->_intentSpeakerRooms;
     v34->_intentSpeakerRooms = v43;
 
-    v45 = [v73 copy];
+    v45 = [speakersCopy copy];
     intentDestinationSpeakers = v34->_intentDestinationSpeakers;
     v34->_intentDestinationSpeakers = v45;
 
-    v47 = [v72 copy];
+    v47 = [intentPermanentNamesCopy copy];
     intentPermanentNames = v34->_intentPermanentNames;
     v34->_intentPermanentNames = v47;
 
-    v49 = [v71 copy];
+    v49 = [typesCopy copy];
     spokenEntityTypes = v34->_spokenEntityTypes;
     v34->_spokenEntityTypes = v49;
 
-    v51 = [v70 copy];
+    v51 = [entityNamesCopy copy];
     spokenEntityNames = v34->_spokenEntityNames;
     v34->_spokenEntityNames = v51;
 
-    v53 = [v69 copy];
+    v53 = [wordsCopy copy];
     numberOfHomeAutomationWords = v34->_numberOfHomeAutomationWords;
     v34->_numberOfHomeAutomationWords = v53;
 
-    v55 = [v28 copy];
+    v55 = [allSpeakersCopy copy];
     isAllSpeakers = v34->_isAllSpeakers;
     v34->_isAllSpeakers = v55;
 
-    v57 = [v29 copy];
+    v57 = [stopCopy copy];
     isPauseOrStop = v34->_isPauseOrStop;
     v34->_isPauseOrStop = v57;
 
-    v59 = [v30 copy];
+    v59 = [commandCopy copy];
     isWholeHouseAudioCommand = v34->_isWholeHouseAudioCommand;
     v34->_isWholeHouseAudioCommand = v59;
 
-    v61 = [v31 copy];
+    v61 = [hereCopy copy];
     isInHere = v34->_isInHere;
     v34->_isInHere = v61;
 
-    v63 = [v32 copy];
+    v63 = [exceptCopy copy];
     hasExcept = v34->_hasExcept;
     v34->_hasExcept = v63;
 
-    v65 = [v33 copy];
+    v65 = [speakerCopy copy];
     isParticipatingSpeaker = v34->_isParticipatingSpeaker;
     v34->_isParticipatingSpeaker = v65;
   }
@@ -626,58 +626,58 @@ LABEL_38:
   return v34;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v41 = a1;
+    selfCopy = self;
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"speakerNames"];
-    v44 = [v7 decodeObjectsOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"speakerNames"];
+    v44 = [decoderCopy decodeObjectsOfClass:v9 from:v10];
 
     v11 = objc_opt_class();
-    v12 = [v8 objectForKeyedSubscript:@"speakerRooms"];
-    v45 = [v7 decodeObjectsOfClass:v11 from:v12];
+    v12 = [fromCopy objectForKeyedSubscript:@"speakerRooms"];
+    v45 = [decoderCopy decodeObjectsOfClass:v11 from:v12];
 
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"permanentNames"];
-    v40 = [v7 decodeObjectsOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"permanentNames"];
+    v40 = [decoderCopy decodeObjectsOfClass:v13 from:v14];
 
     v15 = objc_opt_class();
-    v16 = [v8 objectForKeyedSubscript:@"intentSpeakerNames"];
-    v39 = [v7 decodeObjectsOfClass:v15 from:v16];
+    v16 = [fromCopy objectForKeyedSubscript:@"intentSpeakerNames"];
+    v39 = [decoderCopy decodeObjectsOfClass:v15 from:v16];
 
     v17 = objc_opt_class();
-    v18 = [v8 objectForKeyedSubscript:@"intentSpeakerRooms"];
-    v38 = [v7 decodeObjectsOfClass:v17 from:v18];
+    v18 = [fromCopy objectForKeyedSubscript:@"intentSpeakerRooms"];
+    v38 = [decoderCopy decodeObjectsOfClass:v17 from:v18];
 
     v19 = objc_opt_class();
-    v20 = [v8 objectForKeyedSubscript:@"intentDestinationSpeakers"];
-    v37 = [v7 decodeObjectsOfClass:v19 from:v20];
+    v20 = [fromCopy objectForKeyedSubscript:@"intentDestinationSpeakers"];
+    v37 = [decoderCopy decodeObjectsOfClass:v19 from:v20];
 
     v21 = objc_opt_class();
-    v22 = [v8 objectForKeyedSubscript:@"intentPermanentNames"];
-    v43 = [v7 decodeObjectsOfClass:v21 from:v22];
+    v22 = [fromCopy objectForKeyedSubscript:@"intentPermanentNames"];
+    v43 = [decoderCopy decodeObjectsOfClass:v21 from:v22];
 
     v23 = objc_opt_class();
-    v24 = [v8 objectForKeyedSubscript:@"spokenEntityTypes"];
-    v42 = [v7 decodeObjectsOfClass:v23 from:v24];
+    v24 = [fromCopy objectForKeyedSubscript:@"spokenEntityTypes"];
+    v42 = [decoderCopy decodeObjectsOfClass:v23 from:v24];
 
     v25 = objc_opt_class();
-    v26 = [v8 objectForKeyedSubscript:@"spokenEntityNames"];
-    v36 = [v7 decodeObjectsOfClass:v25 from:v26];
+    v26 = [fromCopy objectForKeyedSubscript:@"spokenEntityNames"];
+    v36 = [decoderCopy decodeObjectsOfClass:v25 from:v26];
 
-    v35 = [v8 objectForKeyedSubscript:@"numberOfHomeAutomationWords"];
-    v34 = [v8 objectForKeyedSubscript:@"isAllSpeakers"];
-    v33 = [v8 objectForKeyedSubscript:@"isPauseOrStop"];
-    v27 = [v8 objectForKeyedSubscript:@"isWholeHouseAudioCommand"];
-    v28 = [v8 objectForKeyedSubscript:@"isInHere"];
-    v29 = [v8 objectForKeyedSubscript:@"hasExcept"];
-    v30 = [v8 objectForKeyedSubscript:@"isParticipatingSpeaker"];
-    v31 = [[v41 alloc] initWithSpeakerNames:v44 speakerRooms:v45 permanentNames:v40 intentSpeakerNames:v39 intentSpeakerRooms:v38 intentDestinationSpeakers:v37 intentPermanentNames:v43 spokenEntityTypes:v42 spokenEntityNames:v36 numberOfHomeAutomationWords:v35 isAllSpeakers:v34 isPauseOrStop:v33 isWholeHouseAudioCommand:v27 isInHere:v28 hasExcept:v29 isParticipatingSpeaker:v30];
+    v35 = [fromCopy objectForKeyedSubscript:@"numberOfHomeAutomationWords"];
+    v34 = [fromCopy objectForKeyedSubscript:@"isAllSpeakers"];
+    v33 = [fromCopy objectForKeyedSubscript:@"isPauseOrStop"];
+    v27 = [fromCopy objectForKeyedSubscript:@"isWholeHouseAudioCommand"];
+    v28 = [fromCopy objectForKeyedSubscript:@"isInHere"];
+    v29 = [fromCopy objectForKeyedSubscript:@"hasExcept"];
+    v30 = [fromCopy objectForKeyedSubscript:@"isParticipatingSpeaker"];
+    v31 = [[selfCopy alloc] initWithSpeakerNames:v44 speakerRooms:v45 permanentNames:v40 intentSpeakerNames:v39 intentSpeakerRooms:v38 intentDestinationSpeakers:v37 intentPermanentNames:v43 spokenEntityTypes:v42 spokenEntityNames:v36 numberOfHomeAutomationWords:v35 isAllSpeakers:v34 isPauseOrStop:v33 isWholeHouseAudioCommand:v27 isInHere:v28 hasExcept:v29 isParticipatingSpeaker:v30];
   }
 
   else

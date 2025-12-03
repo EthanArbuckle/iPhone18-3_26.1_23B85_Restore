@@ -6,9 +6,9 @@
 
 - (BOOL)_isUsingInMemoryDatabase
 {
-  v2 = [(WBSSQLiteStore *)self->_metadataDatabase databaseURL];
-  v3 = [MEMORY[0x1E69C89E8] inMemoryDatabaseURL];
-  v4 = [v2 isEqual:v3];
+  databaseURL = [(WBSSQLiteStore *)self->_metadataDatabase databaseURL];
+  inMemoryDatabaseURL = [MEMORY[0x1E69C89E8] inMemoryDatabaseURL];
+  v4 = [databaseURL isEqual:inMemoryDatabaseURL];
 
   return v4;
 }

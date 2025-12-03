@@ -1,82 +1,82 @@
 @interface PXAddAssetsToLastUsedAssetCollectionAction
-+ (id)commandTitleWithPhotoLibrary:(id)a3;
-+ (id)targetAssetCollectionInPhotoLibrary:(id)a3 error:(id *)a4;
-+ (void)configureToast:(id)a3 withAlbumName:(id)a4;
-+ (void)userDidAddAssetsToAssetCollection:(id)a3;
-- (PXAddAssetsToLastUsedAssetCollectionAction)initWithAssets:(id)a3 error:(id *)a4;
++ (id)commandTitleWithPhotoLibrary:(id)library;
++ (id)targetAssetCollectionInPhotoLibrary:(id)library error:(id *)error;
++ (void)configureToast:(id)toast withAlbumName:(id)name;
++ (void)userDidAddAssetsToAssetCollection:(id)collection;
+- (PXAddAssetsToLastUsedAssetCollectionAction)initWithAssets:(id)assets error:(id *)error;
 - (id)localizedActionName;
-- (void)performAction:(id)a3;
-- (void)performRedo:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performRedo:(id)redo;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXAddAssetsToLastUsedAssetCollectionAction
 
-- (void)performRedo:(id)a3
+- (void)performRedo:(id)redo
 {
-  v4 = a3;
-  v5 = [(PXAddAssetsToLastUsedAssetCollectionAction *)self underlyingAction];
-  v6 = v5;
-  if (v5)
+  redoCopy = redo;
+  underlyingAction = [(PXAddAssetsToLastUsedAssetCollectionAction *)self underlyingAction];
+  v6 = underlyingAction;
+  if (underlyingAction)
   {
-    [v5 performRedo:v4];
+    [underlyingAction performRedo:redoCopy];
   }
 
   else
   {
-    v4[2](v4, 1, 0);
+    redoCopy[2](redoCopy, 1, 0);
   }
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXAddAssetsToLastUsedAssetCollectionAction *)self underlyingAction];
-  v6 = v5;
-  if (v5)
+  undoCopy = undo;
+  underlyingAction = [(PXAddAssetsToLastUsedAssetCollectionAction *)self underlyingAction];
+  v6 = underlyingAction;
+  if (underlyingAction)
   {
-    [v5 performUndo:v4];
+    [underlyingAction performUndo:undoCopy];
   }
 
   else
   {
-    v4[2](v4, 1, 0);
+    undoCopy[2](undoCopy, 1, 0);
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXAddAssetsToLastUsedAssetCollectionAction *)self underlyingAction];
-  v6 = v5;
-  if (v5)
+  actionCopy = action;
+  underlyingAction = [(PXAddAssetsToLastUsedAssetCollectionAction *)self underlyingAction];
+  v6 = underlyingAction;
+  if (underlyingAction)
   {
-    [v5 performAction:v4];
+    [underlyingAction performAction:actionCopy];
   }
 
   else
   {
-    v4[2](v4, 1, 0);
+    actionCopy[2](actionCopy, 1, 0);
   }
 }
 
 - (id)localizedActionName
 {
   v3 = objc_opt_class();
-  v4 = [(PXPhotosAction *)self photoLibrary];
-  v5 = [v3 commandTitleWithPhotoLibrary:v4];
+  photoLibrary = [(PXPhotosAction *)self photoLibrary];
+  v5 = [v3 commandTitleWithPhotoLibrary:photoLibrary];
 
   return v5;
 }
 
-- (PXAddAssetsToLastUsedAssetCollectionAction)initWithAssets:(id)a3 error:(id *)a4
+- (PXAddAssetsToLastUsedAssetCollectionAction)initWithAssets:(id)assets error:(id *)error
 {
-  v6 = a3;
+  assetsCopy = assets;
   v7 = objc_opt_class();
-  v8 = [v6 firstObject];
+  firstObject = [assetsCopy firstObject];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v9 = v8;
+    v9 = firstObject;
   }
 
   else
@@ -84,17 +84,17 @@
     v9 = 0;
   }
 
-  v10 = [v9 photoLibrary];
-  v11 = [v7 targetAssetCollectionInPhotoLibrary:v10 error:a4];
+  photoLibrary = [v9 photoLibrary];
+  v11 = [v7 targetAssetCollectionInPhotoLibrary:photoLibrary error:error];
 
   if (v11)
   {
     v17.receiver = self;
     v17.super_class = PXAddAssetsToLastUsedAssetCollectionAction;
-    v12 = [(PXAssetsAction *)&v17 initWithAssets:v6];
+    v12 = [(PXAssetsAction *)&v17 initWithAssets:assetsCopy];
     if (v12)
     {
-      v13 = [[PXAddAssetsToAssetCollectionAction alloc] initWithAssets:v6 assetCollection:v11];
+      v13 = [[PXAddAssetsToAssetCollectionAction alloc] initWithAssets:assetsCopy assetCollection:v11];
       underlyingAction = v12->_underlyingAction;
       v12->_underlyingAction = v13;
 
@@ -102,35 +102,35 @@
     }
 
     self = v12;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-+ (void)configureToast:(id)a3 withAlbumName:(id)a4
++ (void)configureToast:(id)toast withAlbumName:(id)name
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v9 = a3;
+  nameCopy = name;
+  toastCopy = toast;
   v7 = PXLocalizedStringFromTable(@"ADDED_TO_LAST_ALBUM_%@_TOAST_MESSAGE_FORMAT", @"PhotosUICore");
-  v8 = [v5 localizedStringWithFormat:v7, v6];
+  nameCopy = [v5 localizedStringWithFormat:v7, nameCopy];
 
-  [v9 setMessage:v8];
-  [v9 setIconSystemImageName:@"rectangle.stack"];
-  [v9 setAutoDismissalDelay:1.0];
+  [toastCopy setMessage:nameCopy];
+  [toastCopy setIconSystemImageName:@"rectangle.stack"];
+  [toastCopy setAutoDismissalDelay:1.0];
 }
 
-+ (id)commandTitleWithPhotoLibrary:(id)a3
++ (id)commandTitleWithPhotoLibrary:(id)library
 {
   v12 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v4 = [a1 targetAssetCollectionInPhotoLibrary:a3 error:&v9];
+  v4 = [self targetAssetCollectionInPhotoLibrary:library error:&v9];
   v5 = v9;
   if (v4)
   {
@@ -149,25 +149,25 @@
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_ERROR, "command title for 'add to last used asset collection' couldn't be determined because destination is missing: %@", buf, 0xCu);
   }
 
-  v7 = [a1 placeholderCommandTitle];
+  placeholderCommandTitle = [self placeholderCommandTitle];
 
-  return v7;
+  return placeholderCommandTitle;
 }
 
-+ (id)targetAssetCollectionInPhotoLibrary:(id)a3 error:(id *)a4
++ (id)targetAssetCollectionInPhotoLibrary:(id)library error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  libraryCopy = library;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"PXAddAssetsToLastUsedAssetCollectionAction.m" lineNumber:59 description:{@"%s must be called on the main thread", "+[PXAddAssetsToLastUsedAssetCollectionAction targetAssetCollectionInPhotoLibrary:error:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAddAssetsToLastUsedAssetCollectionAction.m" lineNumber:59 description:{@"%s must be called on the main thread", "+[PXAddAssetsToLastUsedAssetCollectionAction targetAssetCollectionInPhotoLibrary:error:]"}];
   }
 
   if (targetAssetCollectionInPhotoLibrary_error__targetAssetCollection)
   {
-    v8 = [targetAssetCollectionInPhotoLibrary_error__targetAssetCollection photoLibrary];
-    v9 = [v7 isEqual:v8];
+    photoLibrary = [targetAssetCollectionInPhotoLibrary_error__targetAssetCollection photoLibrary];
+    v9 = [libraryCopy isEqual:photoLibrary];
 
     if (v9)
     {
@@ -176,10 +176,10 @@
     }
   }
 
-  if (!v7)
+  if (!libraryCopy)
   {
     v23 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"target asset collection for 'add to last used asset collection' couldn't be determined because the photo library is missing"];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -187,15 +187,15 @@
     goto LABEL_20;
   }
 
-  v11 = [v7 px_localDefaults];
-  v12 = [v11 dateForKey:@"LastAddToDestinationDate"];
+  px_localDefaults = [libraryCopy px_localDefaults];
+  v12 = [px_localDefaults dateForKey:@"LastAddToDestinationDate"];
   if (!v12 || ([MEMORY[0x1E695DF00] now], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "px_isWithinTimeInterval:sinceDate:", v12, 2592000.0), v13, !v14))
   {
     v23 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"target asset collection for 'add to last used asset collection' couldn't be determined because the date is too old or missing"];
     goto LABEL_19;
   }
 
-  v15 = [v11 stringForKey:@"LastAddToDestination"];
+  v15 = [px_localDefaults stringForKey:@"LastAddToDestination"];
   v16 = v15;
   if (!v15)
   {
@@ -209,11 +209,11 @@ LABEL_17:
   v17 = MEMORY[0x1E6978650];
   v32[0] = v15;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
-  v19 = [v7 librarySpecificFetchOptions];
-  v20 = [v17 fetchAssetCollectionsWithLocalIdentifiers:v18 options:v19];
-  v21 = [v20 firstObject];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v20 = [v17 fetchAssetCollectionsWithLocalIdentifiers:v18 options:librarySpecificFetchOptions];
+  firstObject = [v20 firstObject];
   v22 = targetAssetCollectionInPhotoLibrary_error__targetAssetCollection;
-  targetAssetCollectionInPhotoLibrary_error__targetAssetCollection = v21;
+  targetAssetCollectionInPhotoLibrary_error__targetAssetCollection = firstObject;
 
   if (!targetAssetCollectionInPhotoLibrary_error__targetAssetCollection)
   {
@@ -227,19 +227,19 @@ LABEL_17:
 LABEL_18:
 
 LABEL_19:
-  if (a4)
+  if (error)
   {
 LABEL_20:
     v26 = v23;
-    *a4 = v23;
+    *error = v23;
   }
 
 LABEL_21:
   v27 = targetAssetCollectionInPhotoLibrary_error__targetAssetCollection;
   if (targetAssetCollectionInPhotoLibrary_error__targetAssetCollection)
   {
-    v28 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v28 performBlock:&__block_literal_global_51117];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop performBlock:&__block_literal_global_51117];
 
     v27 = targetAssetCollectionInPhotoLibrary_error__targetAssetCollection;
   }
@@ -257,17 +257,17 @@ void __88__PXAddAssetsToLastUsedAssetCollectionAction_targetAssetCollectionInPho
   targetAssetCollectionInPhotoLibrary_error__targetAssetCollection = 0;
 }
 
-+ (void)userDidAddAssetsToAssetCollection:(id)a3
++ (void)userDidAddAssetsToAssetCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 px_localDefaults];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
+  px_localDefaults = [photoLibrary px_localDefaults];
 
-  v6 = [v3 localIdentifier];
+  localIdentifier = [collectionCopy localIdentifier];
 
-  [v5 setString:v6 forKey:@"LastAddToDestination"];
-  v7 = [MEMORY[0x1E695DF00] date];
-  [v5 setDate:v7 forKey:@"LastAddToDestinationDate"];
+  [px_localDefaults setString:localIdentifier forKey:@"LastAddToDestination"];
+  date = [MEMORY[0x1E695DF00] date];
+  [px_localDefaults setDate:date forKey:@"LastAddToDestinationDate"];
 
   px_dispatch_on_main_queue();
 }

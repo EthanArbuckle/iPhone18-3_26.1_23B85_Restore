@@ -1,15 +1,15 @@
 @interface ManagedAppsAppConfigRecordRef
 - (_TtC20ManagedAppsInterface29ManagedAppsAppConfigRecordRef)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ManagedAppsAppConfigRecordRef
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_258060E10(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_258060E10(coderCopy);
 }
 
 - (_TtC20ManagedAppsInterface29ManagedAppsAppConfigRecordRef)init

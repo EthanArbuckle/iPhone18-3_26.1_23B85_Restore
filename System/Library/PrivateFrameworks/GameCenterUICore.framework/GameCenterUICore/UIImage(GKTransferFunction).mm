@@ -14,7 +14,7 @@
     v15 = v14;
     CFRetain(v13);
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
-    v17 = CGImageCreate((a1 * a3), (a2 * a3), 8uLL, 0x20uLL, a7, DeviceRGB, a8, v15, 0, 1, kCGRenderingIntentDefault);
+    v17 = CGImageCreate((self * a3), (a2 * a3), 8uLL, 0x20uLL, a7, DeviceRGB, a8, v15, 0, 1, kCGRenderingIntentDefault);
     v18 = [MEMORY[0x277D755B8] imageWithCGImage:v17 scale:0 orientation:a3];
     CFRelease(DeviceRGB);
     CFRelease(v17);
@@ -49,7 +49,7 @@
   v11[3] = &unk_27967F278;
   v13 = a2;
   v14 = a3;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = v8;
   v9 = v8;
   v10 = [GKImageContext imageDrawnWithSize:0 scale:v11 options:a2 usingBlock:a3, 1.0];

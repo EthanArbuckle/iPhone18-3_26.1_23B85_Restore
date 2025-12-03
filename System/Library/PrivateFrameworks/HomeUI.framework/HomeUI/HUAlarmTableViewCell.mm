@@ -1,46 +1,46 @@
 @interface HUAlarmTableViewCell
 + (id)timeFormatter;
-- (HUAlarmTableViewCell)initWithMobileTimerObject:(id)a3 roomName:(id)a4;
-- (HUAlarmTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUAlarmTableViewCell)initWithMobileTimerObject:(id)object roomName:(id)name;
+- (HUAlarmTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUAlarmTableViewCellDelegate)delegate;
 - (id)_alarmBackgroundColor;
-- (void)_alarmActiveChanged:(id)a3;
+- (void)_alarmActiveChanged:(id)changed;
 - (void)_createSubviews;
-- (void)_setTimeLabelToHour:(int64_t)a3 minute:(int64_t)a4;
+- (void)_setTimeLabelToHour:(int64_t)hour minute:(int64_t)minute;
 - (void)_setupConstraints;
 - (void)layoutSubviews;
-- (void)refreshUI:(id)a3 roomName:(id)a4 animated:(BOOL)a5;
-- (void)setDisabled:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)refreshUI:(id)i roomName:(id)name animated:(BOOL)animated;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation HUAlarmTableViewCell
 
-- (HUAlarmTableViewCell)initWithMobileTimerObject:(id)a3 roomName:(id)a4
+- (HUAlarmTableViewCell)initWithMobileTimerObject:(id)object roomName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 alarm];
+  objectCopy = object;
+  nameCopy = name;
+  alarm = [objectCopy alarm];
 
-  if (!v9)
+  if (!alarm)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HUAlarmTableViewCell.m" lineNumber:70 description:@"HUMobileTimerObject must wrap an alarm"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAlarmTableViewCell.m" lineNumber:70 description:@"HUMobileTimerObject must wrap an alarm"];
   }
 
   v10 = [(HUAlarmTableViewCell *)self init];
   if (v10)
   {
-    v11 = [v7 alarm];
+    alarm2 = [objectCopy alarm];
     alarm = v10->_alarm;
-    v10->_alarm = v11;
+    v10->_alarm = alarm2;
 
-    v13 = [v7 alarm];
-    [(HUAlarmTableViewCell *)v10 refreshUI:v13 roomName:v8 animated:1];
+    alarm3 = [objectCopy alarm];
+    [(HUAlarmTableViewCell *)v10 refreshUI:alarm3 roomName:nameCopy animated:1];
   }
 
   return v10;
@@ -66,21 +66,21 @@ void __37__HUAlarmTableViewCell_timeFormatter__block_invoke()
   _MergedGlobals_1_5 = v0;
 }
 
-- (HUAlarmTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUAlarmTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v18.receiver = self;
   v18.super_class = HUAlarmTableViewCell;
-  v4 = [(HUAlarmTableViewCell *)&v18 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUAlarmTableViewCell *)&v18 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
     {
-      v5 = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
-      [(HUAlarmTableViewCell *)v4 setBackgroundView:v5];
+      controlCenterTertiaryMaterial = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
+      [(HUAlarmTableViewCell *)v4 setBackgroundView:controlCenterTertiaryMaterial];
 
-      v6 = [(HUAlarmTableViewCell *)v4 backgroundView];
-      v7 = [v6 layer];
-      [v7 setCornerRadius:8.0];
+      backgroundView = [(HUAlarmTableViewCell *)v4 backgroundView];
+      layer = [backgroundView layer];
+      [layer setCornerRadius:8.0];
     }
 
     [(HUAlarmTableViewCell *)v4 setAccessoryType:1];
@@ -89,12 +89,12 @@ void __37__HUAlarmTableViewCell_timeFormatter__block_invoke()
     v10 = [v8 initWithImage:v9];
     [(HUAlarmTableViewCell *)v4 setEditingAccessoryView:v10];
 
-    v11 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     calendar = v4->_calendar;
-    v4->_calendar = v11;
+    v4->_calendar = autoupdatingCurrentCalendar;
 
-    v13 = [MEMORY[0x277CBEBB0] localTimeZone];
-    [(NSCalendar *)v4->_calendar setTimeZone:v13];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    [(NSCalendar *)v4->_calendar setTimeZone:localTimeZone];
 
     v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
     baseDate = v4->_baseDate;
@@ -107,10 +107,10 @@ void __37__HUAlarmTableViewCell_timeFormatter__block_invoke()
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(HUAlarmTableViewCell *)self _alarmBackgroundColor];
-  [(HUAlarmTableViewCell *)self setBackgroundColor:v4];
+  _alarmBackgroundColor = [(HUAlarmTableViewCell *)self _alarmBackgroundColor];
+  [(HUAlarmTableViewCell *)self setBackgroundColor:_alarmBackgroundColor];
 }
 
 - (id)_alarmBackgroundColor
@@ -135,122 +135,122 @@ void __37__HUAlarmTableViewCell_timeFormatter__block_invoke()
   v3 = objc_opt_new();
   [(HUAlarmTableViewCell *)self setEnabledSwitch:v3];
 
-  v4 = [MEMORY[0x277D75348] systemGreenColor];
-  v5 = [(HUAlarmTableViewCell *)self enabledSwitch];
-  [v5 setOnTintColor:v4];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  enabledSwitch = [(HUAlarmTableViewCell *)self enabledSwitch];
+  [enabledSwitch setOnTintColor:systemGreenColor];
 
-  v6 = [(HUAlarmTableViewCell *)self enabledSwitch];
-  [v6 addTarget:self action:sel__alarmActiveChanged_ forControlEvents:4096];
+  enabledSwitch2 = [(HUAlarmTableViewCell *)self enabledSwitch];
+  [enabledSwitch2 addTarget:self action:sel__alarmActiveChanged_ forControlEvents:4096];
 
-  v7 = [(HUAlarmTableViewCell *)self enabledSwitch];
-  [v7 sizeToFit];
+  enabledSwitch3 = [(HUAlarmTableViewCell *)self enabledSwitch];
+  [enabledSwitch3 sizeToFit];
 
   v8 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HUAlarmTableViewCell *)self setNameAndDescriptionLabel:v8];
 
   v9 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76968] variant:1024];
-  v10 = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
-  [v10 setFont:v9];
+  nameAndDescriptionLabel = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
+  [nameAndDescriptionLabel setFont:v9];
 
-  v11 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v12 = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
-  [v12 setTextColor:v11];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  nameAndDescriptionLabel2 = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
+  [nameAndDescriptionLabel2 setTextColor:secondaryLabelColor];
 
-  v13 = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
-  [v13 setNumberOfLines:0];
+  nameAndDescriptionLabel3 = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
+  [nameAndDescriptionLabel3 setNumberOfLines:0];
 
   v14 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HUAlarmTableViewCell *)self setTimeLabel:v14];
 
   v15 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76A08] variant:1024];
   v16 = MEMORY[0x277D180C8];
-  v17 = [v15 fontDescriptor];
-  v18 = [v16 fontDescriptorWithMonospacedDigitsForFontDescriptor:v17];
+  fontDescriptor = [v15 fontDescriptor];
+  v18 = [v16 fontDescriptorWithMonospacedDigitsForFontDescriptor:fontDescriptor];
 
   v19 = [MEMORY[0x277D74300] fontWithDescriptor:v18 size:0.0];
-  v20 = [(HUAlarmTableViewCell *)self timeLabel];
-  [v20 setFont:v19];
+  timeLabel = [(HUAlarmTableViewCell *)self timeLabel];
+  [timeLabel setFont:v19];
 
-  v21 = [MEMORY[0x277D75348] labelColor];
-  v22 = [(HUAlarmTableViewCell *)self timeLabel];
-  [v22 setTextColor:v21];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  timeLabel2 = [(HUAlarmTableViewCell *)self timeLabel];
+  [timeLabel2 setTextColor:labelColor];
 
   v23 = objc_alloc(MEMORY[0x277D75A68]);
-  v24 = [(HUAlarmTableViewCell *)self timeLabel];
-  v38[0] = v24;
-  v25 = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
-  v38[1] = v25;
+  timeLabel3 = [(HUAlarmTableViewCell *)self timeLabel];
+  v38[0] = timeLabel3;
+  nameAndDescriptionLabel4 = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
+  v38[1] = nameAndDescriptionLabel4;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
   v27 = [v23 initWithArrangedSubviews:v26];
   [(HUAlarmTableViewCell *)self setLabelsStackView:v27];
 
-  v28 = [(HUAlarmTableViewCell *)self labelsStackView];
-  [v28 setAxis:1];
+  labelsStackView = [(HUAlarmTableViewCell *)self labelsStackView];
+  [labelsStackView setAxis:1];
 
-  v29 = [(HUAlarmTableViewCell *)self labelsStackView];
-  [v29 setAlignment:1];
+  labelsStackView2 = [(HUAlarmTableViewCell *)self labelsStackView];
+  [labelsStackView2 setAlignment:1];
 
-  v30 = [(HUAlarmTableViewCell *)self labelsStackView];
-  [v30 setDistribution:4];
+  labelsStackView3 = [(HUAlarmTableViewCell *)self labelsStackView];
+  [labelsStackView3 setDistribution:4];
 
-  v31 = [(HUAlarmTableViewCell *)self labelsStackView];
-  [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
+  labelsStackView4 = [(HUAlarmTableViewCell *)self labelsStackView];
+  [labelsStackView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v32 = [(HUAlarmTableViewCell *)self contentView];
-  v33 = [(HUAlarmTableViewCell *)self labelsStackView];
-  [v32 addSubview:v33];
+  contentView = [(HUAlarmTableViewCell *)self contentView];
+  labelsStackView5 = [(HUAlarmTableViewCell *)self labelsStackView];
+  [contentView addSubview:labelsStackView5];
 
-  v34 = [(HUAlarmTableViewCell *)self _alarmBackgroundColor];
-  [(HUAlarmTableViewCell *)self setBackgroundColor:v34];
+  _alarmBackgroundColor = [(HUAlarmTableViewCell *)self _alarmBackgroundColor];
+  [(HUAlarmTableViewCell *)self setBackgroundColor:_alarmBackgroundColor];
 
-  v35 = [(HUAlarmTableViewCell *)self enabledSwitch];
-  [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
+  enabledSwitch4 = [(HUAlarmTableViewCell *)self enabledSwitch];
+  [enabledSwitch4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v36 = [(HUAlarmTableViewCell *)self contentView];
-  v37 = [(HUAlarmTableViewCell *)self enabledSwitch];
-  [v36 addSubview:v37];
+  contentView2 = [(HUAlarmTableViewCell *)self contentView];
+  enabledSwitch5 = [(HUAlarmTableViewCell *)self enabledSwitch];
+  [contentView2 addSubview:enabledSwitch5];
 
   [(HUAlarmTableViewCell *)self _setupConstraints];
 }
 
-- (void)refreshUI:(id)a3 roomName:(id)a4 animated:(BOOL)a5
+- (void)refreshUI:(id)i roomName:(id)name animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  self->_enabled = [v9 isEnabled];
-  [v9 repeatSchedule];
+  animatedCopy = animated;
+  nameCopy = name;
+  iCopy = i;
+  self->_enabled = [iCopy isEnabled];
+  [iCopy repeatSchedule];
   v10 = DetailDateMaskToString();
-  -[HUAlarmTableViewCell _setTimeLabelToHour:minute:](self, "_setTimeLabelToHour:minute:", [v9 hour], objc_msgSend(v9, "minute"));
-  v11 = [v9 displayTitle];
+  -[HUAlarmTableViewCell _setTimeLabelToHour:minute:](self, "_setTimeLabelToHour:minute:", [iCopy hour], objc_msgSend(iCopy, "minute"));
+  displayTitle = [iCopy displayTitle];
 
-  if ([v8 length])
+  if ([nameCopy length])
   {
-    v18 = HULocalizedStringWithFormat(@"HUAlarmTextLabelAdditionalInfoFormat", @"%@", v12, v13, v14, v15, v16, v17, v8);
-    v19 = [v11 stringByAppendingString:v18];
+    v18 = HULocalizedStringWithFormat(@"HUAlarmTextLabelAdditionalInfoFormat", @"%@", v12, v13, v14, v15, v16, v17, nameCopy);
+    v19 = [displayTitle stringByAppendingString:v18];
 
-    v11 = v19;
+    displayTitle = v19;
   }
 
   if ([v10 length])
   {
     v26 = HULocalizedStringWithFormat(@"HUAlarmTextLabelAdditionalInfoFormat", @"%@", v20, v21, v22, v23, v24, v25, v10);
-    v27 = [v11 stringByAppendingString:v26];
+    v27 = [displayTitle stringByAppendingString:v26];
 
-    v11 = v27;
+    displayTitle = v27;
   }
 
-  v28 = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
-  [v28 setText:v11];
+  nameAndDescriptionLabel = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
+  [nameAndDescriptionLabel setText:displayTitle];
 
-  v29 = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
-  [v29 sizeToFit];
+  nameAndDescriptionLabel2 = [(HUAlarmTableViewCell *)self nameAndDescriptionLabel];
+  [nameAndDescriptionLabel2 sizeToFit];
 
-  v30 = [(HUAlarmTableViewCell *)self timeLabel];
-  [v30 sizeToFit];
+  timeLabel = [(HUAlarmTableViewCell *)self timeLabel];
+  [timeLabel sizeToFit];
 
-  v31 = [(HUAlarmTableViewCell *)self enabledSwitch];
-  [v31 setOn:self->_enabled animated:0];
+  enabledSwitch = [(HUAlarmTableViewCell *)self enabledSwitch];
+  [enabledSwitch setOn:self->_enabled animated:0];
 
   if (self->_enabled)
   {
@@ -277,7 +277,7 @@ void __37__HUAlarmTableViewCell_timeFormatter__block_invoke()
   v38[0] = MEMORY[0x277D85DD0];
   v38[2] = __52__HUAlarmTableViewCell_refreshUI_roomName_animated___block_invoke;
   v38[3] = &unk_277DB8810;
-  if (v5)
+  if (animatedCopy)
   {
     v35 = 0.2;
   }
@@ -309,69 +309,69 @@ void __52__HUAlarmTableViewCell_refreshUI_roomName_animated___block_invoke(uint6
 - (void)_setupConstraints
 {
   v33 = objc_opt_new();
-  v3 = [(HUAlarmTableViewCell *)self labelsStackView];
-  v4 = [v3 topAnchor];
-  v5 = [(HUAlarmTableViewCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:20.0];
+  labelsStackView = [(HUAlarmTableViewCell *)self labelsStackView];
+  topAnchor = [labelsStackView topAnchor];
+  contentView = [(HUAlarmTableViewCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   [v33 addObject:v7];
 
-  v8 = [(HUAlarmTableViewCell *)self labelsStackView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(HUAlarmTableViewCell *)self contentView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:-10.0];
+  labelsStackView2 = [(HUAlarmTableViewCell *)self labelsStackView];
+  bottomAnchor = [labelsStackView2 bottomAnchor];
+  contentView2 = [(HUAlarmTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView2 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
   [v33 addObject:v12];
 
-  v13 = [(HUAlarmTableViewCell *)self labelsStackView];
-  v14 = [v13 leadingAnchor];
-  v15 = [(HUAlarmTableViewCell *)self contentView];
-  v16 = [v15 leadingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:20.0];
+  labelsStackView3 = [(HUAlarmTableViewCell *)self labelsStackView];
+  leadingAnchor = [labelsStackView3 leadingAnchor];
+  contentView3 = [(HUAlarmTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   [v33 addObject:v17];
 
-  v18 = [(HUAlarmTableViewCell *)self labelsStackView];
-  v19 = [v18 trailingAnchor];
-  v20 = [(HUAlarmTableViewCell *)self enabledSwitch];
-  v21 = [v20 leadingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:-20.0];
+  labelsStackView4 = [(HUAlarmTableViewCell *)self labelsStackView];
+  trailingAnchor = [labelsStackView4 trailingAnchor];
+  enabledSwitch = [(HUAlarmTableViewCell *)self enabledSwitch];
+  leadingAnchor3 = [enabledSwitch leadingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-20.0];
   [v33 addObject:v22];
 
-  v23 = [(HUAlarmTableViewCell *)self enabledSwitch];
-  v24 = [v23 trailingAnchor];
-  v25 = [(HUAlarmTableViewCell *)self contentView];
-  v26 = [v25 trailingAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:-12.0];
+  enabledSwitch2 = [(HUAlarmTableViewCell *)self enabledSwitch];
+  trailingAnchor2 = [enabledSwitch2 trailingAnchor];
+  contentView4 = [(HUAlarmTableViewCell *)self contentView];
+  trailingAnchor3 = [contentView4 trailingAnchor];
+  v27 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-12.0];
   [v33 addObject:v27];
 
-  v28 = [(HUAlarmTableViewCell *)self enabledSwitch];
-  v29 = [v28 centerYAnchor];
-  v30 = [(HUAlarmTableViewCell *)self contentView];
-  v31 = [v30 centerYAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  enabledSwitch3 = [(HUAlarmTableViewCell *)self enabledSwitch];
+  centerYAnchor = [enabledSwitch3 centerYAnchor];
+  contentView5 = [(HUAlarmTableViewCell *)self contentView];
+  centerYAnchor2 = [contentView5 centerYAnchor];
+  v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v33 addObject:v32];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v33];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    v4 = a3;
-    v6 = [(HUAlarmTableViewCell *)self enabledSwitch];
-    [v6 setEnabled:!v4];
+    disabledCopy = disabled;
+    enabledSwitch = [(HUAlarmTableViewCell *)self enabledSwitch];
+    [enabledSwitch setEnabled:!disabledCopy];
 
-    v7 = [(HUAlarmTableViewCell *)self timeLabel];
-    [v7 setEnabled:!v4];
+    timeLabel = [(HUAlarmTableViewCell *)self timeLabel];
+    [timeLabel setEnabled:!disabledCopy];
   }
 }
 
-- (void)_alarmActiveChanged:(id)a3
+- (void)_alarmActiveChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(HUAlarmTableViewCell *)self window];
-  [v5 setUserInteractionEnabled:0];
+  changedCopy = changed;
+  window = [(HUAlarmTableViewCell *)self window];
+  [window setUserInteractionEnabled:0];
 
   [MEMORY[0x277CD9FF0] animationDuration];
   v7 = dispatch_time(0, (v6 * 1000000000.0));
@@ -380,8 +380,8 @@ void __52__HUAlarmTableViewCell_refreshUI_roomName_animated___block_invoke(uint6
   v9[2] = __44__HUAlarmTableViewCell__alarmActiveChanged___block_invoke;
   v9[3] = &unk_277DB7558;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = changedCopy;
+  v8 = changedCopy;
   dispatch_after(v7, MEMORY[0x277D85CD0], v9);
 }
 
@@ -409,50 +409,50 @@ void __44__HUAlarmTableViewCell__alarmActiveChanged___block_invoke(uint64_t a1)
   [v6 setAlarmEnabled:objc_msgSend(*(a1 + 40) forCell:{"isOn"), *(a1 + 32)}];
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
   v4.receiver = self;
   v4.super_class = HUAlarmTableViewCell;
-  [(HUAlarmTableViewCell *)&v4 willTransitionToState:a3];
+  [(HUAlarmTableViewCell *)&v4 willTransitionToState:state];
   [(HUAlarmTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = HUAlarmTableViewCell;
-  [(HUAlarmTableViewCell *)&v5 setSelected:a3 animated:a4];
+  [(HUAlarmTableViewCell *)&v5 setSelected:selected animated:animated];
   [(HUAlarmTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = HUAlarmTableViewCell;
-  [(HUAlarmTableViewCell *)&v5 setHighlighted:a3 animated:a4];
+  [(HUAlarmTableViewCell *)&v5 setHighlighted:highlighted animated:animated];
   [(HUAlarmTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v7 = 0.2;
   v9[1] = 3221225472;
   v9[0] = MEMORY[0x277D85DD0];
   v9[2] = __44__HUAlarmTableViewCell_setEditing_animated___block_invoke;
   v9[3] = &unk_277DB7EE0;
-  if (!a4)
+  if (!animated)
   {
     v7 = 0.0;
   }
 
   v9[4] = self;
-  v10 = a3;
+  editingCopy2 = editing;
   [MEMORY[0x277D75D18] animateWithDuration:v9 animations:v7];
   v8.receiver = self;
   v8.super_class = HUAlarmTableViewCell;
-  [(HUAlarmTableViewCell *)&v8 setEditing:v5 animated:v4];
+  [(HUAlarmTableViewCell *)&v8 setEditing:editingCopy animated:animatedCopy];
 }
 
 uint64_t __44__HUAlarmTableViewCell_setEditing_animated___block_invoke(uint64_t a1)
@@ -471,30 +471,30 @@ uint64_t __44__HUAlarmTableViewCell_setEditing_animated___block_invoke(uint64_t 
   v6.receiver = self;
   v6.super_class = HUAlarmTableViewCell;
   [(HUAlarmTableViewCell *)&v6 layoutSubviews];
-  v3 = [(HUAlarmTableViewCell *)self _alarmBackgroundColor];
-  [(HUAlarmTableViewCell *)self setBackgroundColor:v3];
+  _alarmBackgroundColor = [(HUAlarmTableViewCell *)self _alarmBackgroundColor];
+  [(HUAlarmTableViewCell *)self setBackgroundColor:_alarmBackgroundColor];
 
-  v4 = [(HUAlarmTableViewCell *)self layer];
-  [v4 setCornerRadius:8.0];
+  layer = [(HUAlarmTableViewCell *)self layer];
+  [layer setCornerRadius:8.0];
 
-  v5 = [(HUAlarmTableViewCell *)self layer];
-  [v5 setMasksToBounds:1];
+  layer2 = [(HUAlarmTableViewCell *)self layer];
+  [layer2 setMasksToBounds:1];
 }
 
-- (void)_setTimeLabelToHour:(int64_t)a3 minute:(int64_t)a4
+- (void)_setTimeLabelToHour:(int64_t)hour minute:(int64_t)minute
 {
-  v13 = [objc_opt_class() timeFormatter];
-  v7 = [(HUAlarmTableViewCell *)self calendar];
-  v8 = [v7 components:1644 fromDate:self->_baseDate];
+  timeFormatter = [objc_opt_class() timeFormatter];
+  calendar = [(HUAlarmTableViewCell *)self calendar];
+  v8 = [calendar components:1644 fromDate:self->_baseDate];
 
-  [v8 setHour:a3];
-  [v8 setMinute:a4];
-  v9 = [(HUAlarmTableViewCell *)self calendar];
-  v10 = [v9 dateFromComponents:v8];
+  [v8 setHour:hour];
+  [v8 setMinute:minute];
+  calendar2 = [(HUAlarmTableViewCell *)self calendar];
+  v10 = [calendar2 dateFromComponents:v8];
 
-  v11 = [v13 stringFromDate:v10];
-  v12 = [(HUAlarmTableViewCell *)self timeLabel];
-  [v12 setText:v11];
+  v11 = [timeFormatter stringFromDate:v10];
+  timeLabel = [(HUAlarmTableViewCell *)self timeLabel];
+  [timeLabel setText:v11];
 }
 
 - (HUAlarmTableViewCellDelegate)delegate

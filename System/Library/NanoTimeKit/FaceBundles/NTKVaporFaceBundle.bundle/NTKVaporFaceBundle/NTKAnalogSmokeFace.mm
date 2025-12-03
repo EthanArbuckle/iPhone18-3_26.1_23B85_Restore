@@ -1,14 +1,14 @@
 @interface NTKAnalogSmokeFace
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (BOOL)_hasOptionsForCustomEditMode:(int64_t)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (BOOL)_hasOptionsForCustomEditMode:(int64_t)mode;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)editOptionThatHidesAllComplications;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKAnalogSmokeFace
@@ -44,23 +44,23 @@
   return v2;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 10)
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v9 = [(NTKAnalogSmokeFace *)self device];
-    v10 = [NTKSmokeColorEditOption optionWithColor:0 forDevice:v9];
+    device = [(NTKAnalogSmokeFace *)self device];
+    v10 = [NTKSmokeColorEditOption optionWithColor:0 forDevice:device];
     goto LABEL_5;
   }
 
-  if (a3 == 15)
+  if (mode == 15)
   {
-    v7 = [(NTKAnalogSmokeFace *)self device];
-    v8 = [v7 deviceCategory] != &dword_0 + 1;
+    device2 = [(NTKAnalogSmokeFace *)self device];
+    v8 = [device2 deviceCategory] != &dword_0 + 1;
 
-    v9 = [(NTKAnalogSmokeFace *)self device];
-    v10 = [NTKAnalogDialShapeEditOption optionWithShape:v8 forDevice:v9];
+    device = [(NTKAnalogSmokeFace *)self device];
+    v10 = [NTKAnalogDialShapeEditOption optionWithShape:v8 forDevice:device];
 LABEL_5:
     v11 = v10;
 
@@ -73,55 +73,55 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)_hasOptionsForCustomEditMode:(int64_t)a3
+- (BOOL)_hasOptionsForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     return 1;
   }
 
-  if (a3 != 15)
+  if (mode != 15)
   {
     return 0;
   }
 
-  v3 = [(NTKAnalogSmokeFace *)self device];
-  v4 = [v3 deviceCategory] != &dword_0 + 1;
+  device = [(NTKAnalogSmokeFace *)self device];
+  v4 = [device deviceCategory] != &dword_0 + 1;
 
   return v4;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKAnalogSmokeFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKAnalogSmokeFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKAnalogSmokeFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKAnalogSmokeFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKAnalogSmokeFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKAnalogSmokeFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKAnalogSmokeFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKAnalogSmokeFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKAnalogSmokeFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKAnalogSmokeFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKAnalogSmokeFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKAnalogSmokeFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = &off_8150;
 LABEL_5:
@@ -131,7 +131,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 15)
+  if (mode == 15)
   {
     v4 = NTKAnalogDialShapeEditOption_ptr;
     goto LABEL_5;
@@ -142,11 +142,11 @@ LABEL_5:
   return v6;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
-    v4 = [@"EDIT_MODE_LABEL_DIAL" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_LABEL_DIAL" stringByAppendingString:{@"_COMPANION", device}];
     v5 = NTKCompanionClockFaceLocalizedString();
   }
 
@@ -160,18 +160,18 @@ LABEL_5:
 
 - (id)editOptionThatHidesAllComplications
 {
-  v3 = [(NTKAnalogSmokeFace *)self device];
-  v4 = [v3 deviceCategory];
+  device = [(NTKAnalogSmokeFace *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v4 == &dword_0 + 1)
+  if (deviceCategory == &dword_0 + 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(NTKAnalogSmokeFace *)self device];
-    v5 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:v6];
+    device2 = [(NTKAnalogSmokeFace *)self device];
+    v5 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:device2];
   }
 
   return v5;

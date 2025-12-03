@@ -1,16 +1,16 @@
 @interface KNBuildIris
-- (CGRect)frameOfEffectWithContext:(id)a3;
-- (void)animationWillBeginWithContext:(id)a3;
-- (void)metalAnimationWillBeginWithContext:(id)a3;
-- (void)metalPrepareAnimationWithContext:(id)a3;
-- (void)renderFrameWithContext:(id)a3;
+- (CGRect)frameOfEffectWithContext:(id)context;
+- (void)animationWillBeginWithContext:(id)context;
+- (void)metalAnimationWillBeginWithContext:(id)context;
+- (void)metalPrepareAnimationWithContext:(id)context;
+- (void)renderFrameWithContext:(id)context;
 @end
 
 @implementation KNBuildIris
 
-- (CGRect)frameOfEffectWithContext:(id)a3
+- (CGRect)frameOfEffectWithContext:(id)context
 {
-  [a3 drawableFrame];
+  [context drawableFrame];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -18,32 +18,32 @@
   return result;
 }
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 animatedBuild];
-  self->super._isBuildOut = [v5 isBuildIn] ^ 1;
+  contextCopy = context;
+  animatedBuild = [contextCopy animatedBuild];
+  self->super._isBuildOut = [animatedBuild isBuildIn] ^ 1;
 
   v6.receiver = self;
   v6.super_class = KNBuildIris;
-  [(KNIrisBase *)&v6 animationWillBeginWithContext:v4];
-  [(KNBuildIris *)self metalAnimationWillBeginWithContext:v4];
+  [(KNIrisBase *)&v6 animationWillBeginWithContext:contextCopy];
+  [(KNBuildIris *)self metalAnimationWillBeginWithContext:contextCopy];
 }
 
-- (void)metalPrepareAnimationWithContext:(id)a3
+- (void)metalPrepareAnimationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 animatedBuild];
-  self->super._isBuildOut = [v5 isBuildIn] ^ 1;
+  contextCopy = context;
+  animatedBuild = [contextCopy animatedBuild];
+  self->super._isBuildOut = [animatedBuild isBuildIn] ^ 1;
 
   v6.receiver = self;
   v6.super_class = KNBuildIris;
-  [(KNIrisBase *)&v6 animationWillBeginWithContext:v4];
+  [(KNIrisBase *)&v6 animationWillBeginWithContext:contextCopy];
 }
 
-- (void)metalAnimationWillBeginWithContext:(id)a3
+- (void)metalAnimationWillBeginWithContext:(id)context
 {
-  [(KNAnimationEffect *)self mvpMatrixWithContext:a3];
+  [(KNAnimationEffect *)self mvpMatrixWithContext:context];
   v4 = vcvt_hight_f32_f64(vcvt_f32_f64(0), 0);
   v5 = &self->super._anon_40[32];
   v6 = &self->super._anon_130[32];
@@ -70,11 +70,11 @@
   *&self->super._anon_280[48] = v4;
 }
 
-- (void)renderFrameWithContext:(id)a3
+- (void)renderFrameWithContext:(id)context
 {
   v3.receiver = self;
   v3.super_class = KNBuildIris;
-  [(KNIrisBase *)&v3 renderFrameWithContext:a3];
+  [(KNIrisBase *)&v3 renderFrameWithContext:context];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface HFResidentDeviceStatusDetailsItemProvider
 - (HFResidentDeviceStatusDetailsItemProvider)init;
-- (HFResidentDeviceStatusDetailsItemProvider)initWithHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFResidentDeviceStatusDetailsItemProvider)initWithHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
@@ -10,16 +10,16 @@
 
 - (HFResidentDeviceStatusDetailsItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFResidentDeviceStatusDetailsItemProvider.m" lineNumber:24 description:{@"%s is unavailable; use %@ instead", "-[HFResidentDeviceStatusDetailsItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFResidentDeviceStatusDetailsItemProvider.m" lineNumber:24 description:{@"%s is unavailable; use %@ instead", "-[HFResidentDeviceStatusDetailsItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HFResidentDeviceStatusDetailsItemProvider)initWithHome:(id)a3
+- (HFResidentDeviceStatusDetailsItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v10.receiver = self;
   v10.super_class = HFResidentDeviceStatusDetailsItemProvider;
   v6 = [(HFItemProvider *)&v10 init];
@@ -29,17 +29,17 @@
     residentDeviceItems = v6->_residentDeviceItems;
     v6->_residentDeviceItems = v7;
 
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFResidentDeviceStatusDetailsItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFResidentDeviceStatusDetailsItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -47,15 +47,15 @@
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HFResidentDeviceStatusDetailsItemProvider *)self home];
-  v4 = [v3 residentDevices];
-  v5 = [(HFResidentDeviceStatusDetailsItemProvider *)self filter];
+  home = [(HFResidentDeviceStatusDetailsItemProvider *)self home];
+  residentDevices = [home residentDevices];
+  filter = [(HFResidentDeviceStatusDetailsItemProvider *)self filter];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__HFResidentDeviceStatusDetailsItemProvider_reloadItems__block_invoke;
   v11[3] = &unk_277DF3090;
   v11[4] = self;
-  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v4 filter:v5 itemMap:v11];
+  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:residentDevices filter:filter itemMap:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__HFResidentDeviceStatusDetailsItemProvider_reloadItems__block_invoke_2;
@@ -100,8 +100,8 @@ id __56__HFResidentDeviceStatusDetailsItemProvider_reloadItems__block_invoke_2(u
 {
   v5.receiver = self;
   v5.super_class = HFResidentDeviceStatusDetailsItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"residentDevice"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"residentDevice"];
 
   return v3;
 }

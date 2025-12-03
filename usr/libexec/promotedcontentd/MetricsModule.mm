@@ -352,95 +352,95 @@
   v37 = APLogForCategory();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
   {
-    v38 = [v91 name];
+    name = [v91 name];
     *buf = 138543618;
-    v100 = v38;
+    v100 = name;
     v101 = 2050;
-    v102 = [v91 purpose];
+    purpose = [v91 purpose];
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "Registered purpose %{public}@ (%{public}ld)!", buf, 0x16u);
   }
 
   v39 = APLogForCategory();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
   {
-    v40 = [v90 name];
-    v41 = [v90 purpose];
+    name2 = [v90 name];
+    purpose2 = [v90 purpose];
     *buf = 138543618;
-    v100 = v40;
+    v100 = name2;
     v101 = 2050;
-    v102 = v41;
+    purpose = purpose2;
     _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "Registered purpose %{public}@ (%{public}ld)!", buf, 0x16u);
   }
 
   v42 = APLogForCategory();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
   {
-    v43 = [v31 name];
-    v44 = [v31 purpose];
+    name3 = [v31 name];
+    purpose3 = [v31 purpose];
     *buf = 138543618;
-    v100 = v43;
+    v100 = name3;
     v101 = 2050;
-    v102 = v44;
+    purpose = purpose3;
     _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "Registered purpose %{public}@ (%{public}ld)!", buf, 0x16u);
   }
 
   v45 = APLogForCategory();
   if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
   {
-    v46 = [v32 name];
-    v47 = [v32 purpose];
+    name4 = [v32 name];
+    purpose4 = [v32 purpose];
     *buf = 138543618;
-    v100 = v46;
+    v100 = name4;
     v101 = 2050;
-    v102 = v47;
+    purpose = purpose4;
     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "Registered purpose %{public}@ (%{public}ld)!", buf, 0x16u);
   }
 
   v48 = APLogForCategory();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
   {
-    v49 = [v33 name];
-    v50 = [v33 purpose];
+    name5 = [v33 name];
+    purpose5 = [v33 purpose];
     *buf = 138543618;
-    v100 = v49;
+    v100 = name5;
     v101 = 2050;
-    v102 = v50;
+    purpose = purpose5;
     _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "Registered purpose %{public}@ (%{public}ld)!", buf, 0x16u);
   }
 
   v51 = APLogForCategory();
   if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
   {
-    v52 = [v34 name];
-    v53 = [v34 purpose];
+    name6 = [v34 name];
+    purpose6 = [v34 purpose];
     *buf = 138543618;
-    v100 = v52;
+    v100 = name6;
     v101 = 2050;
-    v102 = v53;
+    purpose = purpose6;
     _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_INFO, "Registered purpose %{public}@ (%{public}ld)!", buf, 0x16u);
   }
 
   v54 = APLogForCategory();
   if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
   {
-    v55 = [v35 name];
-    v56 = [v35 purpose];
+    name7 = [v35 name];
+    purpose7 = [v35 purpose];
     *buf = 138543618;
-    v100 = v55;
+    v100 = name7;
     v101 = 2050;
-    v102 = v56;
+    purpose = purpose7;
     _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "Registered purpose %{public}@ (%{public}ld)!", buf, 0x16u);
   }
 
   v57 = APLogForCategory();
   if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
   {
-    v58 = [v36 name];
-    v59 = [v36 purpose];
+    name8 = [v36 name];
+    purpose8 = [v36 purpose];
     *buf = 138543618;
-    v100 = v58;
+    v100 = name8;
     v101 = 2050;
-    v102 = v59;
+    purpose = purpose8;
     _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "Registered purpose %{public}@ (%{public}ld)!", buf, 0x16u);
   }
 }
@@ -451,7 +451,7 @@
   block[1] = 3221225472;
   block[2] = sub_1003329A4;
   block[3] = &unk_10047E780;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1004E6E00 != -1)
   {
     dispatch_once(&qword_1004E6E00, block);
@@ -470,9 +470,9 @@
 + (void)start
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isRunningTests];
+  isRunningTests = [v2 isRunningTests];
 
-  if ((v3 & 1) == 0 && !qword_1004E6DF0)
+  if ((isRunningTests & 1) == 0 && !qword_1004E6DF0)
   {
     qword_1004E6DF0 = objc_alloc_init(APMetricListener);
 
@@ -483,9 +483,9 @@
 + (void)clearStorage
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isRunningTests];
+  isRunningTests = [v2 isRunningTests];
 
-  if (v3)
+  if (isRunningTests)
   {
     v4 = qword_1004E6DE8;
     qword_1004E6DE8 = 0;

@@ -1,6 +1,6 @@
 @interface PGGraphMonthDayNodeCollection
-+ (id)monthDayNodesForLocalDate:(id)a3 inGraph:(id)a4;
-+ (id)monthDayNodesForMonth:(int64_t)a3 day:(int64_t)a4 inGraph:(id)a5;
++ (id)monthDayNodesForLocalDate:(id)date inGraph:(id)graph;
++ (id)monthDayNodesForMonth:(int64_t)month day:(int64_t)day inGraph:(id)graph;
 - (PGGraphPersonNodeCollection)anniversaryPersonNodes;
 - (PGGraphPersonNodeCollection)birthdayPersonNodes;
 @end
@@ -10,8 +10,8 @@
 - (PGGraphPersonNodeCollection)anniversaryPersonNodes
 {
   v3 = +[PGGraphAnniversaryMonthDayEdge filter];
-  v4 = [v3 inRelation];
-  v5 = [(MANodeCollection *)PGGraphPersonNodeCollection nodesRelatedToNodes:self withRelation:v4];
+  inRelation = [v3 inRelation];
+  v5 = [(MANodeCollection *)PGGraphPersonNodeCollection nodesRelatedToNodes:self withRelation:inRelation];
 
   return v5;
 }
@@ -19,26 +19,26 @@
 - (PGGraphPersonNodeCollection)birthdayPersonNodes
 {
   v3 = +[PGGraphBirthdayMonthDayEdge filter];
-  v4 = [v3 inRelation];
-  v5 = [(MANodeCollection *)PGGraphPersonNodeCollection nodesRelatedToNodes:self withRelation:v4];
+  inRelation = [v3 inRelation];
+  v5 = [(MANodeCollection *)PGGraphPersonNodeCollection nodesRelatedToNodes:self withRelation:inRelation];
 
   return v5;
 }
 
-+ (id)monthDayNodesForLocalDate:(id)a3 inGraph:(id)a4
++ (id)monthDayNodesForLocalDate:(id)date inGraph:(id)graph
 {
   v6 = MEMORY[0x277D27690];
-  v7 = a4;
-  v8 = [v6 components:24 fromDate:a3];
-  v9 = [a1 calendarUnitNodesForUnitValue:+[PGGraphCalendarUnitNode encodedMonthDayForMonth:day:](PGGraphCalendarUnitNode inGraph:{"encodedMonthDayForMonth:day:", objc_msgSend(v8, "month"), objc_msgSend(v8, "day")), v7}];
+  graphCopy = graph;
+  v8 = [v6 components:24 fromDate:date];
+  v9 = [self calendarUnitNodesForUnitValue:+[PGGraphCalendarUnitNode encodedMonthDayForMonth:day:](PGGraphCalendarUnitNode inGraph:{"encodedMonthDayForMonth:day:", objc_msgSend(v8, "month"), objc_msgSend(v8, "day")), graphCopy}];
 
   return v9;
 }
 
-+ (id)monthDayNodesForMonth:(int64_t)a3 day:(int64_t)a4 inGraph:(id)a5
++ (id)monthDayNodesForMonth:(int64_t)month day:(int64_t)day inGraph:(id)graph
 {
-  v8 = a5;
-  v9 = [a1 calendarUnitNodesForUnitValue:+[PGGraphCalendarUnitNode encodedMonthDayForMonth:day:](PGGraphCalendarUnitNode inGraph:{"encodedMonthDayForMonth:day:", a3, a4), v8}];
+  graphCopy = graph;
+  v9 = [self calendarUnitNodesForUnitValue:+[PGGraphCalendarUnitNode encodedMonthDayForMonth:day:](PGGraphCalendarUnitNode inGraph:{"encodedMonthDayForMonth:day:", month, day), graphCopy}];
 
   return v9;
 }

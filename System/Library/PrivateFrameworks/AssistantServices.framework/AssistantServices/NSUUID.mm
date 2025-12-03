@@ -1,15 +1,15 @@
 @interface NSUUID
-+ (id)ad_createV5UUIDWithNamespace:(id)a3;
++ (id)ad_createV5UUIDWithNamespace:(id)namespace;
 @end
 
 @implementation NSUUID
 
-+ (id)ad_createV5UUIDWithNamespace:(id)a3
++ (id)ad_createV5UUIDWithNamespace:(id)namespace
 {
-  v3 = a3;
+  namespaceCopy = namespace;
   memset(&c, 0, sizeof(c));
   CC_SHA1_Init(&c);
-  sub_10001BB8C(&c, v3);
+  sub_10001BB8C(&c, namespaceCopy);
   v8 = &v15;
   v4 = v14;
   if (v14)

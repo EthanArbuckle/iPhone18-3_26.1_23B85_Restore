@@ -1,20 +1,20 @@
 @interface WLKFavoritesRequestOperation
-- (WLKFavoritesRequestOperation)initWithCaller:(id)a3;
-- (void)prepareURLRequest:(id)a3;
+- (WLKFavoritesRequestOperation)initWithCaller:(id)caller;
+- (void)prepareURLRequest:(id)request;
 - (void)processResponse;
 @end
 
 @implementation WLKFavoritesRequestOperation
 
-- (WLKFavoritesRequestOperation)initWithCaller:(id)a3
+- (WLKFavoritesRequestOperation)initWithCaller:(id)caller
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v12 = @"type";
   v13[0] = @"Team";
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  callerCopy = caller;
   v6 = [v4 dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v7 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"favorites" queryParameters:v6 httpMethod:0 headers:0 caller:v5 timeout:0 options:0];
+  v7 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"favorites" queryParameters:v6 httpMethod:0 headers:0 caller:callerCopy timeout:0 options:0];
 
   v11.receiver = self;
   v11.super_class = WLKFavoritesRequestOperation;
@@ -24,18 +24,18 @@
   return v8;
 }
 
-- (void)prepareURLRequest:(id)a3
+- (void)prepareURLRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__WLKFavoritesRequestOperation_prepareURLRequest___block_invoke;
   v7[3] = &unk_279E5E7D8;
   v7[4] = self;
-  v8 = v4;
+  v8 = requestCopy;
   v6.receiver = self;
   v6.super_class = WLKFavoritesRequestOperation;
-  v5 = v4;
+  v5 = requestCopy;
   [(WLKUTSNetworkRequestOperation *)&v6 prepareURLRequest:v7];
 }
 
@@ -123,9 +123,9 @@ void __50__WLKFavoritesRequestOperation_prepareURLRequest___block_invoke_2(void 
 - (void)processResponse
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(WLKUTSNetworkRequestOperation *)self responseDictionary];
+  responseDictionary = [(WLKUTSNetworkRequestOperation *)self responseDictionary];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [v3 objectForKeyedSubscript:@"data"];
+  v5 = [responseDictionary objectForKeyedSubscript:@"data"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;

@@ -1,34 +1,34 @@
 @interface HMXPCEventRouterClient
 + (id)logCategory;
 - (BOOL)isActive;
-- (HMXPCEventRouterClient)initWithMessageTargetUUID:(id)a3 queue:(id)a4 messageDispatcher:(id)a5 changeRegistrationsMessageName:(id)a6 updateMessageName:(id)a7 notificationCenter:(id)a8 useBackgroundTaskAssertion:(BOOL)a9 eventRouterClientFactory:(id)a10;
-- (HMXPCEventRouterClient)initWithMessageTargetUUID:(id)a3 queue:(id)a4 messageDispatcher:(id)a5 changeRegistrationsMessageName:(id)a6 updateMessageName:(id)a7 storeReadHandle:(id)a8 storeWriteHandle:(id)a9 useBackgroundTaskAssertion:(BOOL)a10;
+- (HMXPCEventRouterClient)initWithMessageTargetUUID:(id)d queue:(id)queue messageDispatcher:(id)dispatcher changeRegistrationsMessageName:(id)name updateMessageName:(id)messageName notificationCenter:(id)center useBackgroundTaskAssertion:(BOOL)assertion eventRouterClientFactory:(id)self0;
+- (HMXPCEventRouterClient)initWithMessageTargetUUID:(id)d queue:(id)queue messageDispatcher:(id)dispatcher changeRegistrationsMessageName:(id)name updateMessageName:(id)messageName storeReadHandle:(id)handle storeWriteHandle:(id)writeHandle useBackgroundTaskAssertion:(BOOL)self0;
 - (id)logIdentifier;
 - (id)messageDestination;
 - (unint64_t)willWriteToStore;
-- (void)_handleUpdateEventsMessage:(id)a3;
+- (void)_handleUpdateEventsMessage:(id)message;
 - (void)configure;
-- (void)finishedWritingToStore:(unint64_t)a3;
-- (void)handleActiveAssertionSendState:(id)a3;
-- (void)handleDidBecomeActive:(id)a3;
-- (void)handleWillResignActive:(id)a3;
-- (void)processReceivedOutOfBandCachedEvents:(id)a3;
+- (void)finishedWritingToStore:(unint64_t)store;
+- (void)handleActiveAssertionSendState:(id)state;
+- (void)handleDidBecomeActive:(id)active;
+- (void)handleWillResignActive:(id)active;
+- (void)processReceivedOutOfBandCachedEvents:(id)events;
 - (void)reconnect;
-- (void)sendChangeRegistrationsMessageWithAddedFilters:(id)a3 removedFilters:(id)a4 completion:(id)a5;
-- (void)setIsActive:(BOOL)a3;
+- (void)sendChangeRegistrationsMessageWithAddedFilters:(id)filters removedFilters:(id)removedFilters completion:(id)completion;
+- (void)setIsActive:(BOOL)active;
 @end
 
 @implementation HMXPCEventRouterClient
 
 - (void)configure
 {
-  v3 = [(HMXPCEventRouterClient *)self workQueue];
+  workQueue = [(HMXPCEventRouterClient *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__HMXPCEventRouterClient_configure__block_invoke;
   block[3] = &unk_1E754E2A8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __35__HMXPCEventRouterClient_configure__block_invoke(uint64_t a1)
@@ -98,15 +98,15 @@ void __35__HMXPCEventRouterClient_configure__block_invoke_2(uint64_t a1)
 
 - (void)reconnect
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 workQueue];
+    workQueue = [self workQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __35__HMXPCEventRouterClient_reconnect__block_invoke;
     block[3] = &unk_1E754E2A8;
-    block[4] = a1;
-    dispatch_async(v2, block);
+    block[4] = self;
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -154,14 +154,14 @@ LABEL_9:
   return isActive;
 }
 
-- (void)handleDidBecomeActive:(id)a3
+- (void)handleDidBecomeActive:(id)active
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activeCopy = active;
   if (![(HMXPCEventRouterClient *)self isActive])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -172,19 +172,19 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v5);
-    [(HMXPCEventRouterClient *)v6 setIsActive:1];
-    [(HMXPCEventRouterClient *)v6 reconnect];
+    [(HMXPCEventRouterClient *)selfCopy setIsActive:1];
+    [(HMXPCEventRouterClient *)selfCopy reconnect];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleWillResignActive:(id)a3
+- (void)handleWillResignActive:(id)active
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activeCopy = active;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -195,20 +195,20 @@ LABEL_9:
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMXPCEventRouterClient *)v6 setIsActive:0];
+  [(HMXPCEventRouterClient *)selfCopy setIsActive:0];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleActiveAssertionSendState:(id)a3
+- (void)handleActiveAssertionSendState:(id)state
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = v5;
-  if (v5)
+  stateCopy = state;
+  userInfo = [stateCopy userInfo];
+  v6 = userInfo;
+  if (userInfo)
   {
-    v7 = [v5 objectForKeyedSubscript:@"HMActiveAssertionActiveStateNotificationKey"];
+    v7 = [userInfo objectForKeyedSubscript:@"HMActiveAssertionActiveStateNotificationKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -224,12 +224,12 @@ LABEL_9:
 
     if (v9)
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
-      if (v10)
+      if (bOOLValue)
       {
         if (v14)
         {
@@ -240,7 +240,7 @@ LABEL_9:
         }
 
         objc_autoreleasePoolPop(v11);
-        [(HMXPCEventRouterClient *)v12 handleDidBecomeActive:v4];
+        [(HMXPCEventRouterClient *)selfCopy handleDidBecomeActive:stateCopy];
       }
 
       else
@@ -254,7 +254,7 @@ LABEL_9:
         }
 
         objc_autoreleasePoolPop(v11);
-        [(HMXPCEventRouterClient *)v12 handleWillResignActive:v4];
+        [(HMXPCEventRouterClient *)selfCopy handleWillResignActive:stateCopy];
       }
     }
   }
@@ -262,18 +262,18 @@ LABEL_9:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processReceivedOutOfBandCachedEvents:(id)a3
+- (void)processReceivedOutOfBandCachedEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(HMXPCEventRouterClient *)self workQueue];
+  eventsCopy = events;
+  workQueue = [(HMXPCEventRouterClient *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__HMXPCEventRouterClient_processReceivedOutOfBandCachedEvents___block_invoke;
   v7[3] = &unk_1E754E5C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventsCopy;
+  v6 = eventsCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __63__HMXPCEventRouterClient_processReceivedOutOfBandCachedEvents___block_invoke(uint64_t a1)
@@ -282,62 +282,62 @@ void __63__HMXPCEventRouterClient_processReceivedOutOfBandCachedEvents___block_i
   [v2 processReceivedCachedEventsFromMessage:*(a1 + 40)];
 }
 
-- (void)_handleUpdateEventsMessage:(id)a3
+- (void)_handleUpdateEventsMessage:(id)message
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMXPCEventRouterClient *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMXPCEventRouterClient *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMXPCEventRouterClient *)self isActive])
   {
-    v6 = [v4 messagePayload];
-    v7 = [v6 hmf_dataForKey:@"HM.subbroker.events"];
+    messagePayload = [messageCopy messagePayload];
+    v7 = [messagePayload hmf_dataForKey:@"HM.subbroker.events"];
 
     if (v7)
     {
       v8 = [[HMXPCEventRouterProtoEventsMessage alloc] initWithData:v7];
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = HMFGetLogIdentifier();
-        v13 = [(HMXPCEventRouterProtoEventsMessage *)v8 events];
-        v14 = [v13 count];
-        v15 = [(HMXPCEventRouterProtoEventsMessage *)v8 cachedEvents];
+        events = [(HMXPCEventRouterProtoEventsMessage *)v8 events];
+        v14 = [events count];
+        cachedEvents = [(HMXPCEventRouterProtoEventsMessage *)v8 cachedEvents];
         v31 = 138543874;
         v32 = v12;
         v33 = 2048;
         v34 = v14;
         v35 = 2048;
-        v36 = [v15 count];
+        v36 = [cachedEvents count];
         _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Received updated events: %lu cached: %lu", &v31, 0x20u);
       }
 
       objc_autoreleasePoolPop(v9);
-      v16 = [(HMXPCEventRouterProtoEventsMessage *)v8 events];
-      v17 = [v16 count];
+      events2 = [(HMXPCEventRouterProtoEventsMessage *)v8 events];
+      v17 = [events2 count];
 
       if (v17)
       {
-        v18 = [(HMXPCEventRouterProtoEventsMessage *)v8 events];
-        v19 = [v18 na_map:&__block_literal_global_28];
+        events3 = [(HMXPCEventRouterProtoEventsMessage *)v8 events];
+        v19 = [events3 na_map:&__block_literal_global_28];
 
-        v20 = [(HMXPCEventRouterClient *)v10 eventRouterClient];
-        [v20 processReceivedEventsFromMessage:v19];
+        eventRouterClient = [(HMXPCEventRouterClient *)selfCopy eventRouterClient];
+        [eventRouterClient processReceivedEventsFromMessage:v19];
       }
 
-      v21 = [(HMXPCEventRouterProtoEventsMessage *)v8 cachedEvents];
-      v22 = [v21 count];
+      cachedEvents2 = [(HMXPCEventRouterProtoEventsMessage *)v8 cachedEvents];
+      v22 = [cachedEvents2 count];
 
       if (v22)
       {
-        v23 = [(HMXPCEventRouterProtoEventsMessage *)v8 cachedEvents];
-        v24 = [v23 na_map:&__block_literal_global_30];
+        cachedEvents3 = [(HMXPCEventRouterProtoEventsMessage *)v8 cachedEvents];
+        v24 = [cachedEvents3 na_map:&__block_literal_global_30];
 
-        v25 = [(HMXPCEventRouterClient *)v10 eventRouterClient];
-        [v25 processReceivedCachedEventsFromMessage:v24];
+        eventRouterClient2 = [(HMXPCEventRouterClient *)selfCopy eventRouterClient];
+        [eventRouterClient2 processReceivedCachedEventsFromMessage:v24];
       }
     }
   }
@@ -345,7 +345,7 @@ void __63__HMXPCEventRouterClient_processReceivedOutOfBandCachedEvents___block_i
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -357,26 +357,26 @@ void __63__HMXPCEventRouterClient_processReceivedOutOfBandCachedEvents___block_i
 
     objc_autoreleasePoolPop(v26);
     v7 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-    [v4 respondWithError:v7];
+    [messageCopy respondWithError:v7];
   }
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
   os_unfair_lock_lock_with_options();
-  self->_isActive = a3;
+  self->_isActive = active;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)finishedWritingToStore:(unint64_t)a3
+- (void)finishedWritingToStore:(unint64_t)store
 {
   if ([(HMXPCEventRouterClient *)self useBackgroundTaskAssertion])
   {
-    v4 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v4 endBackgroundTask:a3];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] endBackgroundTask:store];
   }
 }
 
@@ -385,19 +385,19 @@ void __63__HMXPCEventRouterClient_processReceivedOutOfBandCachedEvents___block_i
   v14 = *MEMORY[0x1E69E9840];
   if ([(HMXPCEventRouterClient *)self useBackgroundTaskAssertion])
   {
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __42__HMXPCEventRouterClient_willWriteToStore__block_invoke;
     v11[3] = &unk_1E7546BB8;
     v11[4] = self;
     v11[5] = 0;
-    v4 = [v3 beginBackgroundTaskWithName:@"HomeKitEventStore" expirationHandler:v11];
+    v4 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithName:@"HomeKitEventStore" expirationHandler:v11];
 
     if (v4 == *MEMORY[0x1E69DDBE8])
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
@@ -441,35 +441,35 @@ void __42__HMXPCEventRouterClient_willWriteToStore__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendChangeRegistrationsMessageWithAddedFilters:(id)a3 removedFilters:(id)a4 completion:(id)a5
+- (void)sendChangeRegistrationsMessageWithAddedFilters:(id)filters removedFilters:(id)removedFilters completion:(id)completion
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  filtersCopy = filters;
+  removedFiltersCopy = removedFilters;
+  completionCopy = completion;
   v11 = objc_alloc_init(HMXPCEventRouterProtoChangeRegistrationsMessage);
-  if ([v8 count])
+  if ([filtersCopy count])
   {
-    v12 = [v8 mutableCopy];
+    v12 = [filtersCopy mutableCopy];
     [(HMXPCEventRouterProtoChangeRegistrationsMessage *)v11 setTopicFilterAdditions:v12];
   }
 
-  if ([v9 count])
+  if ([removedFiltersCopy count])
   {
-    v13 = [v9 mutableCopy];
+    v13 = [removedFiltersCopy mutableCopy];
     [(HMXPCEventRouterProtoChangeRegistrationsMessage *)v11 setTopicFilterRemovals:v13];
   }
 
-  if ([v8 count] || objc_msgSend(v9, "count"))
+  if ([filtersCopy count] || objc_msgSend(removedFiltersCopy, "count"))
   {
     v14 = MEMORY[0x1E69A2A10];
-    v15 = [(HMXPCEventRouterClient *)self changeRegistrationsMessageName];
-    v16 = [(HMXPCEventRouterClient *)self messageDestination];
+    changeRegistrationsMessageName = [(HMXPCEventRouterClient *)self changeRegistrationsMessageName];
+    messageDestination = [(HMXPCEventRouterClient *)self messageDestination];
     v32 = @"HM.subbroker.payload";
-    v17 = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)v11 data];
-    v33 = v17;
+    data = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)v11 data];
+    v33 = data;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-    v19 = [v14 messageWithName:v15 destination:v16 payload:v18];
+    v19 = [v14 messageWithName:changeRegistrationsMessageName destination:messageDestination payload:v18];
 
     objc_initWeak(location, self);
     v26 = MEMORY[0x1E69E9820];
@@ -477,7 +477,7 @@ void __42__HMXPCEventRouterClient_willWriteToStore__block_invoke(uint64_t a1)
     v28 = __99__HMXPCEventRouterClient_sendChangeRegistrationsMessageWithAddedFilters_removedFilters_completion___block_invoke;
     v29 = &unk_1E754CFF8;
     objc_copyWeak(&v31, location);
-    v30 = v10;
+    v30 = completionCopy;
     [v19 setResponseHandler:&v26];
     v20 = [(HMXPCEventRouterClient *)self messageDispatcher:v26];
     [v20 sendMessage:v19 completionHandler:0];
@@ -489,7 +489,7 @@ void __42__HMXPCEventRouterClient_willWriteToStore__block_invoke(uint64_t a1)
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -501,7 +501,7 @@ void __42__HMXPCEventRouterClient_willWriteToStore__block_invoke(uint64_t a1)
 
     objc_autoreleasePoolPop(v22);
     v19 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    (*(v10 + 2))(v10, MEMORY[0x1E695E0F8], v19);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F8], v19);
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -592,30 +592,30 @@ void __99__HMXPCEventRouterClient_sendChangeRegistrationsMessageWithAddedFilters
 
 - (id)logIdentifier
 {
-  v2 = [(HMXPCEventRouterClient *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMXPCEventRouterClient *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v4 = [(HMXPCEventRouterClient *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMXPCEventRouterClient *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
 
-- (HMXPCEventRouterClient)initWithMessageTargetUUID:(id)a3 queue:(id)a4 messageDispatcher:(id)a5 changeRegistrationsMessageName:(id)a6 updateMessageName:(id)a7 notificationCenter:(id)a8 useBackgroundTaskAssertion:(BOOL)a9 eventRouterClientFactory:(id)a10
+- (HMXPCEventRouterClient)initWithMessageTargetUUID:(id)d queue:(id)queue messageDispatcher:(id)dispatcher changeRegistrationsMessageName:(id)name updateMessageName:(id)messageName notificationCenter:(id)center useBackgroundTaskAssertion:(BOOL)assertion eventRouterClientFactory:(id)self0
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a10;
+  dCopy = d;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
+  nameCopy = name;
+  messageNameCopy = messageName;
+  centerCopy = center;
+  factoryCopy = factory;
   v29.receiver = self;
   v29.super_class = HMXPCEventRouterClient;
   v20 = [(HMXPCEventRouterClient *)&v29 init];
@@ -623,47 +623,47 @@ void __99__HMXPCEventRouterClient_sendChangeRegistrationsMessageWithAddedFilters
   if (v20)
   {
     v20->_lock._os_unfair_lock_opaque = 0;
-    v20->_useBackgroundTaskAssertion = a9;
+    v20->_useBackgroundTaskAssertion = assertion;
     v20->_isActive = 1;
-    objc_storeStrong(&v20->_identifier, a3);
-    objc_storeStrong(&v21->_workQueue, a4);
-    objc_storeStrong(&v21->_messageDispatcher, a5);
-    objc_storeStrong(&v21->_changeRegistrationsMessageName, a6);
-    objc_storeStrong(&v21->_updateMessageName, a7);
-    objc_storeStrong(&v21->_notificationCenter, a8);
-    v22 = v19[2](v19);
+    objc_storeStrong(&v20->_identifier, d);
+    objc_storeStrong(&v21->_workQueue, queue);
+    objc_storeStrong(&v21->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v21->_changeRegistrationsMessageName, name);
+    objc_storeStrong(&v21->_updateMessageName, messageName);
+    objc_storeStrong(&v21->_notificationCenter, center);
+    v22 = factoryCopy[2](factoryCopy);
     eventRouterClient = v21->_eventRouterClient;
     v21->_eventRouterClient = v22;
 
-    [(HMEPersistentConnectionClient *)v21->_eventRouterClient setDelegate:v21, v25, v26, v27, v28];
+    [(HMEPersistentConnectionClient *)v21->_eventRouterClient setDelegate:v21, nameCopy, dispatcherCopy, queueCopy, dCopy];
   }
 
   return v21;
 }
 
-- (HMXPCEventRouterClient)initWithMessageTargetUUID:(id)a3 queue:(id)a4 messageDispatcher:(id)a5 changeRegistrationsMessageName:(id)a6 updateMessageName:(id)a7 storeReadHandle:(id)a8 storeWriteHandle:(id)a9 useBackgroundTaskAssertion:(BOOL)a10
+- (HMXPCEventRouterClient)initWithMessageTargetUUID:(id)d queue:(id)queue messageDispatcher:(id)dispatcher changeRegistrationsMessageName:(id)name updateMessageName:(id)messageName storeReadHandle:(id)handle storeWriteHandle:(id)writeHandle useBackgroundTaskAssertion:(BOOL)self0
 {
-  v15 = a4;
-  v16 = a8;
-  v17 = a9;
+  queueCopy = queue;
+  handleCopy = handle;
+  writeHandleCopy = writeHandle;
   v18 = MEMORY[0x1E696AD88];
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a3;
-  v23 = [v18 defaultCenter];
+  messageNameCopy = messageName;
+  nameCopy = name;
+  dispatcherCopy = dispatcher;
+  dCopy = d;
+  defaultCenter = [v18 defaultCenter];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __185__HMXPCEventRouterClient_initWithMessageTargetUUID_queue_messageDispatcher_changeRegistrationsMessageName_updateMessageName_storeReadHandle_storeWriteHandle_useBackgroundTaskAssertion___block_invoke;
   v31[3] = &unk_1E7546B60;
-  v32 = v15;
-  v33 = v16;
-  v34 = v17;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
-  LOBYTE(v29) = a10;
-  v27 = [(HMXPCEventRouterClient *)self initWithMessageTargetUUID:v22 queue:v26 messageDispatcher:v21 changeRegistrationsMessageName:v20 updateMessageName:v19 notificationCenter:v23 useBackgroundTaskAssertion:v29 eventRouterClientFactory:v31];
+  v32 = queueCopy;
+  v33 = handleCopy;
+  v34 = writeHandleCopy;
+  v24 = writeHandleCopy;
+  v25 = handleCopy;
+  v26 = queueCopy;
+  LOBYTE(v29) = assertion;
+  v27 = [(HMXPCEventRouterClient *)self initWithMessageTargetUUID:dCopy queue:v26 messageDispatcher:dispatcherCopy changeRegistrationsMessageName:nameCopy updateMessageName:messageNameCopy notificationCenter:defaultCenter useBackgroundTaskAssertion:v29 eventRouterClientFactory:v31];
 
   return v27;
 }

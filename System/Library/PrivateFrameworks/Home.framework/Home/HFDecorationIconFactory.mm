@@ -1,25 +1,25 @@
 @interface HFDecorationIconFactory
-+ (id)iconDescriptorForCharacteristicType:(id)a3 effectiveServiceType:(id)a4 primaryState:(int64_t)a5;
++ (id)iconDescriptorForCharacteristicType:(id)type effectiveServiceType:(id)serviceType primaryState:(int64_t)state;
 @end
 
 @implementation HFDecorationIconFactory
 
-+ (id)iconDescriptorForCharacteristicType:(id)a3 effectiveServiceType:(id)a4 primaryState:(int64_t)a5
++ (id)iconDescriptorForCharacteristicType:(id)type effectiveServiceType:(id)serviceType primaryState:(int64_t)state
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isEqualToString:*MEMORY[0x277CCF788]])
+  typeCopy = type;
+  serviceTypeCopy = serviceType;
+  if ([typeCopy isEqualToString:*MEMORY[0x277CCF788]])
   {
     goto LABEL_2;
   }
 
   v9 = HFSymbolIconIdentifierDecorationFan;
-  if (([v7 isEqualToString:*MEMORY[0x277CCFA20]] & 1) == 0)
+  if (([typeCopy isEqualToString:*MEMORY[0x277CCFA20]] & 1) == 0)
   {
-    if ([v7 isEqualToString:*MEMORY[0x277CCF9F0]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CCF9F0]])
     {
-      if ([v8 isEqualToString:*MEMORY[0x277CD0EA0]])
+      if ([serviceTypeCopy isEqualToString:*MEMORY[0x277CD0EA0]])
       {
 LABEL_2:
         v9 = HFSymbolIconIdentifierDecorationLightbulb;
@@ -30,9 +30,9 @@ LABEL_2:
       goto LABEL_7;
     }
 
-    if ([v7 isEqualToString:*MEMORY[0x277CCFB08]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CCFB08]])
     {
-      v11 = [v8 isEqualToString:*MEMORY[0x277CD0E58]];
+      v11 = [serviceTypeCopy isEqualToString:*MEMORY[0x277CD0E58]];
       v12 = HFSymbolIconIdentifierDecorationGarageDoor;
 LABEL_12:
       if (v11)
@@ -48,42 +48,42 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    if ([v7 isEqualToString:*MEMORY[0x277CCFB50]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CCFB50]])
     {
-      if ([v8 isEqualToString:*MEMORY[0x277CD0F58]])
+      if ([serviceTypeCopy isEqualToString:*MEMORY[0x277CD0F58]])
       {
         v9 = HFSymbolIconIdentifierDecorationWindow;
         goto LABEL_15;
       }
 
-      v11 = [v8 isEqualToString:*MEMORY[0x277CD0F60]];
+      v11 = [serviceTypeCopy isEqualToString:*MEMORY[0x277CD0F60]];
       v12 = HFSymbolIconIdentifierDecorationWindowCovering;
       goto LABEL_12;
     }
 
-    if ([v7 isEqualToString:*MEMORY[0x277CCFB40]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CCFB40]])
     {
       v9 = HFSymbolIconIdentifierDecorationLock;
       goto LABEL_15;
     }
 
-    if ([v7 isEqualToString:*MEMORY[0x277CCFA18]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CCFA18]])
     {
       v9 = HFSymbolIconIdentifierDecorationRotationDirection;
       goto LABEL_15;
     }
 
-    if ([v7 isEqualToString:*MEMORY[0x277CCFAF8]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CCFAF8]])
     {
       v9 = HFImageIconIdentifierDecorationSwing;
       goto LABEL_15;
     }
 
-    if ([v7 isEqualToString:*MEMORY[0x277CCF748]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CCF748]])
     {
       v10 = MEMORY[0x277CD0F40];
 LABEL_7:
-      if (![v8 isEqualToString:*v10])
+      if (![serviceTypeCopy isEqualToString:*v10])
       {
         v9 = HFSymbolIconIdentifierDecorationPower;
       }
@@ -91,14 +91,14 @@ LABEL_7:
       goto LABEL_15;
     }
 
-    if ([v7 isEqualToString:*MEMORY[0x277CCFB20]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CCFB20]])
     {
       v9 = HFSymbolIconIdentifierDecorationPower;
     }
 
     else
     {
-      if (![v7 isEqualToString:*MEMORY[0x277CCFB60]])
+      if (![typeCopy isEqualToString:*MEMORY[0x277CCFB60]])
       {
         goto LABEL_39;
       }
@@ -148,7 +148,7 @@ LABEL_39:
     }
   }
 
-  v22 = [(HFMultistateImageIconDescriptor *)v16 iconDescriptorForPrimaryState:a5];
+  v22 = [(HFMultistateImageIconDescriptor *)v16 iconDescriptorForPrimaryState:state];
 
 LABEL_40:
   v23 = *MEMORY[0x277D85DE8];

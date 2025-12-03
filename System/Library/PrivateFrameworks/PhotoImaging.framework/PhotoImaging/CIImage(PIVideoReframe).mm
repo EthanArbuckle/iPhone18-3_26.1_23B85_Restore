@@ -11,7 +11,7 @@
     dispatch_once(&pi_imageByApplyingStabilizationWatermark_onceToken, &__block_literal_global_26466);
   }
 
-  [a1 extent];
+  [self extent];
   v3 = v2;
   v5 = v4;
   v7 = v6;
@@ -30,7 +30,7 @@
   CGAffineTransformMakeTranslation(&v16, v11, Height * 0.5);
   v13 = [v10 imageByApplyingTransform:&v16];
 
-  v14 = [v13 imageByCompositingOverImage:a1];
+  v14 = [v13 imageByCompositingOverImage:self];
 
   return v14;
 }

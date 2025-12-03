@@ -1,12 +1,12 @@
 @interface STRPSampleByteEncodable
-- (BOOL)isEqual:(id)a3;
-- (STRPSampleByteEncodable)initWithCoder:(id)a3;
-- (STRPSampleByteEncodable)initWithStruct:(MyCoolStruct *)a3;
+- (BOOL)isEqual:(id)equal;
+- (STRPSampleByteEncodable)initWithCoder:(id)coder;
+- (STRPSampleByteEncodable)initWithStruct:(MyCoolStruct *)struct;
 @end
 
 @implementation STRPSampleByteEncodable
 
-- (STRPSampleByteEncodable)initWithStruct:(MyCoolStruct *)a3
+- (STRPSampleByteEncodable)initWithStruct:(MyCoolStruct *)struct
 {
   v4 = v3;
   v7.receiver = self;
@@ -14,7 +14,7 @@
   result = [(STRPSampleByteEncodable *)&v7 init];
   if (result)
   {
-    *&result->_aStruct.aBool = a3;
+    *&result->_aStruct.aBool = struct;
     *&result->_aStruct.someOptions = v4;
     *(&result->_aStruct.someOptions + 2) = WORD2(v4);
   }
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -35,9 +35,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(STRPSampleByteEncodable *)self aStruct];
-      if ((([(STRPSampleByteEncodable *)v5 aStruct]^ v6) & 1) != 0 || (*&v16 = [(STRPSampleByteEncodable *)self aStruct], DWORD2(v16) = v7, WORD6(v16) = v8, *&v15 = [(STRPSampleByteEncodable *)v5 aStruct], DWORD2(v15) = v9, WORD6(v15) = v10, *(&v16 + 6) != *(&v15 + 6)) || (v11 = [(STRPSampleByteEncodable *)self aStruct], (([(STRPSampleByteEncodable *)v5 aStruct]^ v11) & 0xFF0000000000) != 0))
+      v5 = equalCopy;
+      aStruct = [(STRPSampleByteEncodable *)self aStruct];
+      if ((([(STRPSampleByteEncodable *)v5 aStruct]^ aStruct) & 1) != 0 || (*&v16 = [(STRPSampleByteEncodable *)self aStruct], DWORD2(v16) = v7, WORD6(v16) = v8, *&v15 = [(STRPSampleByteEncodable *)v5 aStruct], DWORD2(v15) = v9, WORD6(v15) = v10, *(&v16 + 6) != *(&v15 + 6)) || (v11 = [(STRPSampleByteEncodable *)self aStruct], (([(STRPSampleByteEncodable *)v5 aStruct]^ v11) & 0xFF0000000000) != 0))
       {
         v12 = 0;
       }
@@ -58,23 +58,23 @@
   return v12;
 }
 
-- (STRPSampleByteEncodable)initWithCoder:(id)a3
+- (STRPSampleByteEncodable)initWithCoder:(id)coder
 {
   v9 = 0;
-  v5 = a3;
-  v6 = [a3 decodeBytesForKey:@"aStruct" returnedLength:&v9];
+  coderCopy = coder;
+  v6 = [coder decodeBytesForKey:@"aStruct" returnedLength:&v9];
   if (v9 == 14)
   {
     self = [(STRPSampleByteEncodable *)self initWithStruct:*v6, *(v6 + 8) | (*(v6 + 12) << 32)];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

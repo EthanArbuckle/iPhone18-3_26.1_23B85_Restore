@@ -1,20 +1,20 @@
 @interface HDDataSyncUtilities
-+ (BOOL)insertDeletedObjectsFromCodableObjectCollection:(id)a3 syncEntityClass:(Class)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)insertObjectsFromCodableObjectCollection:(id)a3 syncEntityClass:(Class)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (id)generateCodableObjectCollectionsForEntityClass:(Class)a3 predicate:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)provenanceFromCollection:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)insertDeletedObjectsFromCodableObjectCollection:(id)collection syncEntityClass:(Class)class syncStore:(id)store profile:(id)profile error:(id *)error;
++ (BOOL)insertObjectsFromCodableObjectCollection:(id)collection syncEntityClass:(Class)class syncStore:(id)store profile:(id)profile error:(id *)error;
++ (id)generateCodableObjectCollectionsForEntityClass:(Class)class predicate:(id)predicate profile:(id)profile error:(id *)error;
++ (id)provenanceFromCollection:(id)collection syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDDataSyncUtilities
 
-+ (BOOL)insertObjectsFromCodableObjectCollection:(id)a3 syncEntityClass:(Class)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)insertObjectsFromCodableObjectCollection:(id)collection syncEntityClass:(Class)class syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  collectionCopy = collection;
+  storeCopy = store;
+  profileCopy = profile;
   v14 = objc_autoreleasePoolPush();
-  v15 = [objc_opt_class() objectsFromCodableObjectsInCollection:v11];
+  v15 = [objc_opt_class() objectsFromCodableObjectsInCollection:collectionCopy];
   if (![v15 count])
   {
 
@@ -25,7 +25,7 @@ LABEL_10:
   }
 
   v36 = 0;
-  v16 = [HDDataSyncUtilities provenanceFromCollection:v11 syncStore:v12 profile:v13 error:&v36];
+  v16 = [HDDataSyncUtilities provenanceFromCollection:collectionCopy syncStore:storeCopy profile:profileCopy error:&v36];
   v17 = v36;
   if (!v16)
   {
@@ -34,24 +34,24 @@ LABEL_10:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v38 = v12;
+      v38 = storeCopy;
       v39 = 2114;
       v40 = v17;
       _os_log_impl(&dword_228986000, v21, OS_LOG_TYPE_DEFAULT, "Failed to create provenance for codable object collection from store %{public}@: %{public}@", buf, 0x16u);
     }
 
-    v22 = [v13 daemon];
-    v23 = [v22 autoBugCaptureReporter];
-    [v23 reportApplyDataFailure:a4 duringSyncFromStore:v12 error:v17];
+    daemon = [profileCopy daemon];
+    autoBugCaptureReporter = [daemon autoBugCaptureReporter];
+    [autoBugCaptureReporter reportApplyDataFailure:class duringSyncFromStore:storeCopy error:v17];
 
     goto LABEL_9;
   }
 
-  v33 = a7;
+  errorCopy = error;
   context = v14;
-  v18 = [v13 dataManager];
+  dataManager = [profileCopy dataManager];
   v35 = v17;
-  v19 = [v18 insertDataObjects:v15 withProvenance:v16 creationDate:1 skipInsertionFilter:0 updateSourceOrder:0 resolveAssociations:&v35 error:2.22507386e-308];
+  v19 = [dataManager insertDataObjects:v15 withProvenance:v16 creationDate:1 skipInsertionFilter:0 updateSourceOrder:0 resolveAssociations:&v35 error:2.22507386e-308];
   v20 = v35;
 
   if (v19)
@@ -69,25 +69,25 @@ LABEL_9:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v38 = v12;
+    v38 = storeCopy;
     v39 = 2114;
     v40 = v20;
     _os_log_error_impl(&dword_228986000, v27, OS_LOG_TYPE_ERROR, "failed to insert objects synced from store %{public}@: %{public}@", buf, 0x16u);
   }
 
-  v28 = [v13 daemon];
-  v29 = [v28 autoBugCaptureReporter];
-  [v29 reportApplyDataFailure:a4 duringSyncFromStore:v12 error:v20];
+  daemon2 = [profileCopy daemon];
+  autoBugCaptureReporter2 = [daemon2 autoBugCaptureReporter];
+  [autoBugCaptureReporter2 reportApplyDataFailure:class duringSyncFromStore:storeCopy error:v20];
 
   objc_autoreleasePoolPop(context);
   v30 = v20;
   v31 = v30;
   if (v30)
   {
-    if (v33)
+    if (errorCopy)
     {
       v32 = v30;
-      *v33 = v31;
+      *errorCopy = v31;
     }
 
     else
@@ -103,32 +103,32 @@ LABEL_11:
   return v24;
 }
 
-+ (id)provenanceFromCollection:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)provenanceFromCollection:(id)collection syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v98 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v82 = a4;
-  v81 = a5;
-  v79 = v8;
-  v9 = [v8 provenance];
-  if (v9)
+  collectionCopy = collection;
+  storeCopy = store;
+  profileCopy = profile;
+  v79 = collectionCopy;
+  provenance = [collectionCopy provenance];
+  if (provenance)
   {
-    v78 = [v8 source];
-    if (v82)
+    source = [collectionCopy source];
+    if (storeCopy)
     {
-      v10 = [v82 syncProvenance];
+      syncProvenance = [storeCopy syncProvenance];
     }
 
     else
     {
-      v10 = 0;
+      syncProvenance = 0;
     }
 
-    v71 = [v9 decodedSourceUUID];
-    v75 = [v9 decodedDeviceUUID];
+    decodedSourceUUID = [provenance decodedSourceUUID];
+    decodedDeviceUUID = [provenance decodedDeviceUUID];
     v13 = MEMORY[0x277CCAD78];
-    v14 = [v9 contributorUUID];
-    v72 = [v13 hk_UUIDWithData:v14];
+    contributorUUID = [provenance contributorUUID];
+    v72 = [v13 hk_UUIDWithData:contributorUUID];
 
     if (v72)
     {
@@ -140,62 +140,62 @@ LABEL_11:
       +[HDContributorReference contributorReferenceForNoContributor];
     }
     v15 = ;
-    if (!v78)
+    if (!source)
     {
       _HKInitializeLogging();
       v19 = *MEMORY[0x277CCC328];
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        *&buf[4] = v82;
+        *&buf[4] = storeCopy;
         _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "missing source for object collection received from %{public}@", buf, 0xCu);
       }
 
-      v80 = 0;
+      daemon = 0;
       v20 = 0;
 LABEL_29:
-      if (v75)
+      if (decodedDeviceUUID)
       {
-        v29 = [v81 database];
+        database = [profileCopy database];
         v90 = v20;
-        v76 = [HDDeviceEntity deviceEntityWithUUID:v75 healthDatabase:v29 error:&v90];
+        v76 = [HDDeviceEntity deviceEntityWithUUID:decodedDeviceUUID healthDatabase:database error:&v90];
         v74 = v90;
 
         if (v76)
         {
 LABEL_35:
-          v77 = [v9 originProductType];
-          if (!v77)
+          originProductType = [provenance originProductType];
+          if (!originProductType)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v77 = [v82 remoteProductType];
+              originProductType = [storeCopy remoteProductType];
             }
 
             else
             {
-              v77 = @"UnknownDevice";
+              originProductType = @"UnknownDevice";
             }
           }
 
-          if (v80 && v76)
+          if (daemon && v76)
           {
-            if ([v9 hasOriginMajorVersion])
+            if ([provenance hasOriginMajorVersion])
             {
-              v35 = [v9 originMajorVersion];
-              v68 = [v9 originMinorVersion];
-              v69 = v35;
-              v67 = [v9 originPatchVersion];
+              originMajorVersion = [provenance originMajorVersion];
+              originMinorVersion = [provenance originMinorVersion];
+              v69 = originMajorVersion;
+              originPatchVersion = [provenance originPatchVersion];
             }
 
             else
             {
-              v40 = [v9 originBuild];
-              HDVersionFromBuildStringForProductType(v40, v77, buf);
-              v68 = *&buf[8];
+              originBuild = [provenance originBuild];
+              HDVersionFromBuildStringForProductType(originBuild, originProductType, buf);
+              originMinorVersion = *&buf[8];
               v69 = *buf;
-              v67 = *&buf[16];
+              originPatchVersion = *&buf[16];
             }
 
             *buf = 0;
@@ -203,30 +203,30 @@ LABEL_35:
             *&buf[16] = 0x3032000000;
             v95 = __Block_byref_object_copy__6;
             v96 = __Block_byref_object_dispose__6;
-            v41 = [v81 syncIdentityManager];
-            v97 = [v41 legacySyncIdentity];
+            syncIdentityManager = [profileCopy syncIdentityManager];
+            legacySyncIdentity = [syncIdentityManager legacySyncIdentity];
 
-            v66 = v10;
+            v66 = syncProvenance;
             v70 = v15;
             if ([v79 hasSyncIdentity])
             {
-              v42 = [v79 syncIdentity];
+              syncIdentity = [v79 syncIdentity];
               v88 = 0;
-              v43 = [HDSyncIdentity syncIdentityWithCodable:v42 error:&v88];
+              v43 = [HDSyncIdentity syncIdentityWithCodable:syncIdentity error:&v88];
               v44 = v88;
 
               if (v43)
               {
-                v45 = [v81 database];
+                database2 = [profileCopy database];
                 v83[0] = MEMORY[0x277D85DD0];
                 v83[1] = 3221225472;
                 v83[2] = __72__HDDataSyncUtilities_provenanceFromCollection_syncStore_profile_error___block_invoke;
                 v83[3] = &unk_278614288;
                 v86 = buf;
                 v87 = v44;
-                v84 = v81;
+                v84 = profileCopy;
                 v85 = v43;
-                v46 = [(HDHealthEntity *)HDSyncIdentityEntity performWriteTransactionWithHealthDatabase:v45 error:&v87 block:v83];
+                v46 = [(HDHealthEntity *)HDSyncIdentityEntity performWriteTransactionWithHealthDatabase:database2 error:&v87 block:v83];
                 v47 = v87;
 
                 if (!v46)
@@ -257,14 +257,14 @@ LABEL_35:
               }
             }
 
-            v50 = [*(*&buf[8] + 40) entity];
-            v51 = [v50 persistentID];
-            v52 = [v9 originBuild];
-            v53 = [v9 sourceVersion];
-            v54 = v53;
-            if (v53)
+            entity = [*(*&buf[8] + 40) entity];
+            persistentID = [entity persistentID];
+            originBuild2 = [provenance originBuild];
+            sourceVersion = [provenance sourceVersion];
+            v54 = sourceVersion;
+            if (sourceVersion)
             {
-              v55 = v53;
+              v55 = sourceVersion;
             }
 
             else
@@ -272,11 +272,11 @@ LABEL_35:
               v55 = &stru_283BF39C8;
             }
 
-            v56 = [v9 timeZoneName];
-            v57 = v56;
-            if (v56)
+            timeZoneName = [provenance timeZoneName];
+            v57 = timeZoneName;
+            if (timeZoneName)
             {
-              v58 = v56;
+              v58 = timeZoneName;
             }
 
             else
@@ -284,12 +284,12 @@ LABEL_35:
               v58 = &stru_283BF39C8;
             }
 
-            v59 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v80, "persistentID")}];
+            v59 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(daemon, "persistentID")}];
             v60 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v76, "persistentID")}];
             *&v92 = v69;
-            *(&v92 + 1) = v68;
-            v93 = v67;
-            v12 = [HDDataOriginProvenance dataProvenanceWithSyncProvenance:v66 syncIdentity:v51 productType:v77 systemBuild:v52 operatingSystemVersion:&v92 sourceVersion:v55 timeZoneName:v58 sourceID:v59 deviceID:v60 contributorReference:v70];
+            *(&v92 + 1) = originMinorVersion;
+            v93 = originPatchVersion;
+            v12 = [HDDataOriginProvenance dataProvenanceWithSyncProvenance:v66 syncIdentity:persistentID productType:originProductType systemBuild:originBuild2 operatingSystemVersion:&v92 sourceVersion:v55 timeZoneName:v58 sourceID:v59 deviceID:v60 contributorReference:v70];
 
             v15 = v70;
             _Block_object_dispose(buf, 8);
@@ -302,14 +302,14 @@ LABEL_35:
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
             {
               v37 = v36;
-              v38 = [v71 UUIDString];
-              v39 = [v75 UUIDString];
+              uUIDString = [decodedSourceUUID UUIDString];
+              uUIDString2 = [decodedDeviceUUID UUIDString];
               *buf = 138543874;
-              *&buf[4] = v82;
+              *&buf[4] = storeCopy;
               *&buf[12] = 2114;
-              *&buf[14] = v38;
+              *&buf[14] = uUIDString;
               *&buf[22] = 2114;
-              v95 = v39;
+              v95 = uUIDString2;
               _os_log_impl(&dword_228986000, v37, OS_LOG_TYPE_INFO, "missing source/device provenance for object collection received from %{public}@, %{public}@/%{public}@.", buf, 0x20u);
             }
 
@@ -320,10 +320,10 @@ LABEL_35:
           v62 = v61;
           if (v61)
           {
-            if (a6)
+            if (error)
             {
               v63 = v61;
-              *a6 = v62;
+              *error = v62;
             }
 
             else
@@ -340,9 +340,9 @@ LABEL_35:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
         {
           v31 = v30;
-          v32 = [v75 UUIDString];
+          uUIDString3 = [decodedDeviceUUID UUIDString];
           *buf = 138543618;
-          *&buf[4] = v32;
+          *&buf[4] = uUIDString3;
           *&buf[12] = 2114;
           *&buf[14] = v74;
           _os_log_impl(&dword_228986000, v31, OS_LOG_TYPE_INFO, "failed to find expected device %{public}@: %{public}@", buf, 0x16u);
@@ -354,20 +354,20 @@ LABEL_35:
         v74 = v20;
       }
 
-      v33 = [v81 deviceManager];
+      deviceManager = [profileCopy deviceManager];
       v89 = v74;
-      v76 = [v33 deviceEntityForNoDeviceWithError:&v89];
+      v76 = [deviceManager deviceEntityForNoDeviceWithError:&v89];
       v34 = v89;
 
       v74 = v34;
       goto LABEL_35;
     }
 
-    v16 = [v78 bundleIdentifier];
-    if (v82)
+    bundleIdentifier = [source bundleIdentifier];
+    if (storeCopy)
     {
-      v17 = [v82 syncStoreDefaultSourceBundleIdentifier];
-      v18 = [v16 isEqualToString:v17];
+      syncStoreDefaultSourceBundleIdentifier = [storeCopy syncStoreDefaultSourceBundleIdentifier];
+      v18 = [bundleIdentifier isEqualToString:syncStoreDefaultSourceBundleIdentifier];
     }
 
     else
@@ -376,12 +376,12 @@ LABEL_35:
     }
 
     LOBYTE(v92) = 0;
-    v21 = [v81 sourceManager];
+    sourceManager = [profileCopy sourceManager];
     v91 = 0;
-    v80 = [v21 sourceForCodableSource:v78 provenance:v10 createIfNecessary:v18 isDeleted:&v92 error:&v91];
+    daemon = [sourceManager sourceForCodableSource:source provenance:syncProvenance createIfNecessary:v18 isDeleted:&v92 error:&v91];
     v20 = v91;
 
-    if (v80)
+    if (daemon)
     {
       if (v92 != 1)
       {
@@ -391,9 +391,9 @@ LABEL_28:
       }
 
       v22 = MEMORY[0x277CCA9B8];
-      v23 = [v78 decodedUUID];
-      [v22 hk_error:100 format:{@"Source %@ is deleted", v23}];
-      v20 = v24 = v20;
+      decodedUUID = [source decodedUUID];
+      [v22 hk_error:100 format:{@"Source %@ is deleted", decodedUUID}];
+      v20 = bundleIdentifier2 = v20;
     }
 
     else
@@ -413,23 +413,23 @@ LABEL_28:
         }
 
         v27 = v25;
-        v28 = [v78 decodedUUID];
+        decodedUUID2 = [source decodedUUID];
         *buf = 136315650;
         *&buf[4] = v26;
         *&buf[12] = 2114;
-        *&buf[14] = v28;
+        *&buf[14] = decodedUUID2;
         *&buf[22] = 2114;
         v95 = v20;
         _os_log_impl(&dword_228986000, v27, OS_LOG_TYPE_DEFAULT, "failed to look-up%s source %{public}@: %{public}@", buf, 0x20u);
       }
 
-      v80 = [v81 daemon];
-      v23 = [v80 autoBugCaptureReporter];
-      v24 = [v78 bundleIdentifier];
-      [v23 reportMissingSource:v24 duringSyncFromStore:v82];
+      daemon = [profileCopy daemon];
+      decodedUUID = [daemon autoBugCaptureReporter];
+      bundleIdentifier2 = [source bundleIdentifier];
+      [decodedUUID reportMissingSource:bundleIdentifier2 duringSyncFromStore:storeCopy];
     }
 
-    v80 = 0;
+    daemon = 0;
     goto LABEL_28;
   }
 
@@ -438,11 +438,11 @@ LABEL_28:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    *&buf[4] = v82;
+    *&buf[4] = storeCopy;
     _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "No provenance information on codable object collection received from %{public}@", buf, 0xCu);
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a6 code:3 format:{@"No provenance information on codable object collection received from %@", v82}];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"No provenance information on codable object collection received from %@", storeCopy}];
   v12 = 0;
 LABEL_68:
 
@@ -465,39 +465,39 @@ BOOL __72__HDDataSyncUtilities_provenanceFromCollection_syncStore_profile_error_
   return *(*(a1[6] + 8) + 40) != 0;
 }
 
-+ (BOOL)insertDeletedObjectsFromCodableObjectCollection:(id)a3 syncEntityClass:(Class)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)insertDeletedObjectsFromCodableObjectCollection:(id)collection syncEntityClass:(Class)class syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 deletedSamples];
-  v15 = [v14 count];
+  collectionCopy = collection;
+  storeCopy = store;
+  profileCopy = profile;
+  deletedSamples = [collectionCopy deletedSamples];
+  v15 = [deletedSamples count];
 
   if (v15)
   {
     v36 = 0;
-    v16 = [HDDataSyncUtilities provenanceFromCollection:v11 syncStore:v12 profile:v13 error:&v36];
+    v16 = [HDDataSyncUtilities provenanceFromCollection:collectionCopy syncStore:storeCopy profile:profileCopy error:&v36];
     v17 = v36;
     if (v16)
     {
-      v34 = a4;
-      v18 = [v11 deletedSamples];
-      v19 = [v13 daemon];
-      v20 = [v19 behavior];
-      v21 = [v20 shouldReceiveECGSamples];
+      classCopy = class;
+      deletedSamples2 = [collectionCopy deletedSamples];
+      daemon = [profileCopy daemon];
+      behavior = [daemon behavior];
+      shouldReceiveECGSamples = [behavior shouldReceiveECGSamples];
 
-      if (v21)
+      if (shouldReceiveECGSamples)
       {
-        v22 = v18;
+        daemon3 = deletedSamples2;
       }
 
       else
       {
-        v27 = [v11 deletedSamples];
-        v22 = [v27 hk_filter:&__block_literal_global_7];
+        deletedSamples3 = [collectionCopy deletedSamples];
+        daemon3 = [deletedSamples3 hk_filter:&__block_literal_global_7];
 
-        if (![v22 count])
+        if (![daemon3 count])
         {
           v23 = 1;
 LABEL_26:
@@ -507,7 +507,7 @@ LABEL_26:
       }
 
       v35 = v17;
-      v28 = [HDDeletedSampleEntity insertCodableDeletedSamples:v22 provenance:v16 profile:v13 error:&v35];
+      v28 = [HDDeletedSampleEntity insertCodableDeletedSamples:daemon3 provenance:v16 profile:profileCopy error:&v35];
       v26 = v35;
 
       if (v28)
@@ -520,14 +520,14 @@ LABEL_25:
 
       if ([v26 hk_isHealthKitErrorWithCode:123])
       {
-        v25 = v26;
-        if (v25)
+        daemon2 = v26;
+        if (daemon2)
         {
-          if (a7)
+          if (error)
           {
-            v29 = v25;
+            v29 = daemon2;
             v23 = 0;
-            *a7 = v25;
+            *error = daemon2;
           }
 
           else
@@ -536,7 +536,7 @@ LABEL_25:
             v23 = 0;
           }
 
-          v26 = v25;
+          v26 = daemon2;
         }
 
         else
@@ -553,15 +553,15 @@ LABEL_25:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v38 = v12;
+          v38 = storeCopy;
           v39 = 2114;
           v40 = v26;
           _os_log_error_impl(&dword_228986000, v30, OS_LOG_TYPE_ERROR, "Failed to insert deleted samples during sync for store %{public}@: %{public}@", buf, 0x16u);
         }
 
-        v25 = [v13 daemon];
-        v31 = [v25 autoBugCaptureReporter];
-        [v31 reportApplyDataFailure:v34 duringSyncFromStore:v12 error:v26];
+        daemon2 = [profileCopy daemon];
+        autoBugCaptureReporter = [daemon2 autoBugCaptureReporter];
+        [autoBugCaptureReporter reportApplyDataFailure:classCopy duringSyncFromStore:storeCopy error:v26];
 
         v23 = 1;
       }
@@ -576,7 +576,7 @@ LABEL_24:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v38 = v12;
+      v38 = storeCopy;
       v39 = 2114;
       v40 = v17;
       _os_log_error_impl(&dword_228986000, v24, OS_LOG_TYPE_ERROR, "Failed to look up provenance for deleted samples from store %{public}@: %{public}@", buf, 0x16u);
@@ -589,9 +589,9 @@ LABEL_24:
     else if (v17)
     {
 LABEL_9:
-      v22 = [v13 daemon];
-      v25 = [v22 autoBugCaptureReporter];
-      [v25 reportApplyDataFailure:a4 duringSyncFromStore:v12 error:v17];
+      daemon3 = [profileCopy daemon];
+      daemon2 = [daemon3 autoBugCaptureReporter];
+      [daemon2 reportApplyDataFailure:class duringSyncFromStore:storeCopy error:v17];
       v23 = 1;
       v26 = v17;
       goto LABEL_24;
@@ -625,11 +625,11 @@ BOOL __111__HDDataSyncUtilities_insertDeletedObjectsFromCodableObjectCollection_
   return v4;
 }
 
-+ (id)generateCodableObjectCollectionsForEntityClass:(Class)a3 predicate:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)generateCodableObjectCollectionsForEntityClass:(Class)class predicate:(id)predicate profile:(id)profile error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 database];
+  predicateCopy = predicate;
+  profileCopy = profile;
+  database = [profileCopy database];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -640,14 +640,14 @@ BOOL __111__HDDataSyncUtilities_insertDeletedObjectsFromCodableObjectCollection_
   v18[1] = 3221225472;
   v18[2] = __94__HDDataSyncUtilities_generateCodableObjectCollectionsForEntityClass_predicate_profile_error___block_invoke;
   v18[3] = &unk_278614320;
-  v13 = v11;
+  v13 = profileCopy;
   v19 = v13;
-  v22 = a3;
-  v14 = v10;
-  v23 = a1;
+  classCopy = class;
+  v14 = predicateCopy;
+  selfCopy = self;
   v20 = v14;
   v21 = &v24;
-  if ([(objc_class *)a3 performReadTransactionWithHealthDatabase:v12 error:a6 block:v18])
+  if ([(objc_class *)class performReadTransactionWithHealthDatabase:database error:error block:v18])
   {
     v15 = v25[5];
   }

@@ -1,17 +1,17 @@
 @interface SUUISeparatorView
-- (void)drawRect:(CGRect)a3;
-- (void)setColor1:(id)a3;
-- (void)setColor2:(id)a3;
-- (void)setSeparatorStyle:(int64_t)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setColor1:(id)color1;
+- (void)setColor2:(id)color2;
+- (void)setSeparatorStyle:(int64_t)style;
 @end
 
 @implementation SUUISeparatorView
 
-- (void)setColor1:(id)a3
+- (void)setColor1:(id)color1
 {
-  if (self->_color1 != a3)
+  if (self->_color1 != color1)
   {
-    v4 = [a3 copy];
+    v4 = [color1 copy];
     color1 = self->_color1;
     self->_color1 = v4;
 
@@ -19,11 +19,11 @@
   }
 }
 
-- (void)setColor2:(id)a3
+- (void)setColor2:(id)color2
 {
-  if (self->_color2 != a3)
+  if (self->_color2 != color2)
   {
-    v4 = [a3 copy];
+    v4 = [color2 copy];
     color2 = self->_color2;
     self->_color2 = v4;
 
@@ -31,18 +31,18 @@
   }
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
-  if (self->_separatorStyle != a3)
+  if (self->_separatorStyle != style)
   {
-    self->_separatorStyle = a3;
+    self->_separatorStyle = style;
     [(SUUISeparatorView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(SUUISeparatorView *)self bounds:a3.origin.x];
+  [(SUUISeparatorView *)self bounds:rect.origin.x];
   v6 = v4;
   v7 = v5;
   separatorStyle = self->_separatorStyle;

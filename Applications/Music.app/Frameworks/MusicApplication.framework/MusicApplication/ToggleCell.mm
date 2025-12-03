@@ -1,12 +1,12 @@
 @interface ToggleCell
-- (_TtC16MusicApplication10ToggleCell)initWithCoder:(id)a3;
+- (_TtC16MusicApplication10ToggleCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)switchValueChanged:(id)a3;
+- (void)switchValueChanged:(id)changed;
 @end
 
 @implementation ToggleCell
 
-- (_TtC16MusicApplication10ToggleCell)initWithCoder:(id)a3
+- (_TtC16MusicApplication10ToggleCell)initWithCoder:(id)coder
 {
   *&self->_TtC16MusicApplication15MultiChoiceCell_opaque[OBJC_IVAR____TtC16MusicApplication10ToggleCell_delegate + 8] = 0;
   swift_unknownObjectWeakInit();
@@ -19,15 +19,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_155E70();
 }
 
-- (void)switchValueChanged:(id)a3
+- (void)switchValueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_156440(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_156440(changedCopy);
 }
 
 @end

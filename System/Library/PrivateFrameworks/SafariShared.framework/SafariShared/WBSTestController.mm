@@ -1,16 +1,16 @@
 @interface WBSTestController
 - (NSArray)bundles;
-- (WBSTestController)initWithSuiteURL:(id)a3 bundleNames:(id)a4;
-- (void)_runTestsAndStoreResultsIn:(id)a3 completionBlock:(id)a4;
-- (void)runTestsAndStoreResultsIn:(id)a3 completionHandler:(id)a4;
+- (WBSTestController)initWithSuiteURL:(id)l bundleNames:(id)names;
+- (void)_runTestsAndStoreResultsIn:(id)in completionBlock:(id)block;
+- (void)runTestsAndStoreResultsIn:(id)in completionHandler:(id)handler;
 @end
 
 @implementation WBSTestController
 
-- (WBSTestController)initWithSuiteURL:(id)a3 bundleNames:(id)a4
+- (WBSTestController)initWithSuiteURL:(id)l bundleNames:(id)names
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  namesCopy = names;
   result = [MEMORY[0x1E69C8880] isInternalInstall];
   if (result)
   {
@@ -24,18 +24,18 @@
       internalQueue = v9->_internalQueue;
       v9->_internalQueue = v11;
 
-      if (v6)
+      if (lCopy)
       {
-        v13 = [v7 copy];
+        v13 = [namesCopy copy];
 
         v14 = v9->_internalQueue;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __50__WBSTestController_initWithSuiteURL_bundleNames___block_invoke;
         block[3] = &unk_1E7FB7258;
-        v7 = v13;
-        v19 = v7;
-        v20 = v6;
+        namesCopy = v13;
+        v19 = namesCopy;
+        v20 = lCopy;
         v15 = v9;
         v21 = v15;
         dispatch_async(v14, block);
@@ -118,19 +118,19 @@ uint64_t __50__WBSTestController_initWithSuiteURL_bundleNames___block_invoke_3(u
   return v9;
 }
 
-- (void)_runTestsAndStoreResultsIn:(id)a3 completionBlock:(id)a4
+- (void)_runTestsAndStoreResultsIn:(id)in completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__WBSTestController__runTestsAndStoreResultsIn_completionBlock___block_invoke;
   v10[3] = &unk_1E7FCB0C8;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = blockCopy;
+  v11 = inCopy;
+  v8 = blockCopy;
+  v9 = inCopy;
   [(WBSTestController *)self prepareSuiteWithCompletionHandler:v10];
 }
 
@@ -402,20 +402,20 @@ uint64_t __64__WBSTestController__runTestsAndStoreResultsIn_completionBlock___bl
   return v3();
 }
 
-- (void)runTestsAndStoreResultsIn:(id)a3 completionHandler:(id)a4
+- (void)runTestsAndStoreResultsIn:(id)in completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__WBSTestController_runTestsAndStoreResultsIn_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7378;
-  v12 = v6;
-  v13 = v7;
+  v12 = inCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = inCopy;
+  v10 = handlerCopy;
   dispatch_async(internalQueue, block);
 }
 

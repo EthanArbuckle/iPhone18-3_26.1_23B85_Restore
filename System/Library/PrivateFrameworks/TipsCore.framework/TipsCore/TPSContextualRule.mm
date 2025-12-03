@@ -1,28 +1,28 @@
 @interface TPSContextualRule
-+ (id)eventsForRuleDictionary:(id)a3;
-- (TPSContextualRule)initWithCoder:(id)a3;
-- (TPSContextualRule)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)eventsForRuleDictionary:(id)dictionary;
+- (TPSContextualRule)initWithCoder:(id)coder;
+- (TPSContextualRule)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)restartTracking;
 @end
 
 @implementation TPSContextualRule
 
-+ (id)eventsForRuleDictionary:(id)a3
++ (id)eventsForRuleDictionary:(id)dictionary
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 TPSSafeArrayForKey:@"events"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy TPSSafeArrayForKey:@"events"];
   if (!v4)
   {
-    v5 = [v3 TPSSafeArrayForKey:@"conditions"];
+    v5 = [dictionaryCopy TPSSafeArrayForKey:@"conditions"];
     v6 = [v5 count];
 
     if (v6)
     {
-      v10[0] = v3;
+      v10[0] = dictionaryCopy;
       v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     }
 
@@ -47,19 +47,19 @@
   return v7;
 }
 
-- (TPSContextualRule)initWithDictionary:(id)a3
+- (TPSContextualRule)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = TPSContextualRule;
-  v5 = [(TPSSerializableObject *)&v27 initWithDictionary:v4];
+  v5 = [(TPSSerializableObject *)&v27 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_17;
   }
 
-  v6 = [v4 TPSSafeStringForKey:@"id"];
+  v6 = [dictionaryCopy TPSSafeStringForKey:@"id"];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
@@ -68,7 +68,7 @@
     goto LABEL_18;
   }
 
-  v8 = [v4 TPSSafeArrayForKey:@"events"];
+  v8 = [dictionaryCopy TPSSafeArrayForKey:@"events"];
   v9 = 0x1EBE05000;
   if ([v8 count])
   {
@@ -136,26 +136,26 @@ LABEL_18:
   return v20;
 }
 
-- (TPSContextualRule)initWithCoder:(id)a3
+- (TPSContextualRule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = TPSContextualRule;
-  v5 = [(TPSSerializableObject *)&v17 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"eventIdentifiers"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"eventIdentifiers"];
     eventIdentifiers = v5->_eventIdentifiers;
     v5->_eventIdentifiers = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchedDate"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchedDate"];
     matchedDate = v5->_matchedDate;
     v5->_matchedDate = v13;
 
@@ -172,22 +172,22 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TPSContextualRule;
-  v4 = a3;
-  [(TPSSerializableObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_identifier forKey:{@"id", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_eventIdentifiers forKey:@"eventIdentifiers"];
-  [v4 encodeObject:self->_matchedDate forKey:@"matchedDate"];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_identifier forKey:{@"id", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_eventIdentifiers forKey:@"eventIdentifiers"];
+  [coderCopy encodeObject:self->_matchedDate forKey:@"matchedDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TPSContextualRule;
-  v4 = [(TPSSerializableObject *)&v6 copyWithZone:a3];
+  v4 = [(TPSSerializableObject *)&v6 copyWithZone:zone];
   [v4 setIdentifier:self->_identifier];
   [v4 setEventIdentifiers:self->_eventIdentifiers];
   [v4 setMatchedDate:self->_matchedDate];

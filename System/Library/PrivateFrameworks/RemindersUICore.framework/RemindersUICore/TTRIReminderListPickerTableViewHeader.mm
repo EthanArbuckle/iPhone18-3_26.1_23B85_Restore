@@ -1,13 +1,13 @@
 @interface TTRIReminderListPickerTableViewHeader
-- (_TtC15RemindersUICore37TTRIReminderListPickerTableViewHeader)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore37TTRIReminderListPickerTableViewHeader)initWithReuseIdentifier:(id)a3;
+- (_TtC15RemindersUICore37TTRIReminderListPickerTableViewHeader)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore37TTRIReminderListPickerTableViewHeader)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation TTRIReminderListPickerTableViewHeader
 
-- (_TtC15RemindersUICore37TTRIReminderListPickerTableViewHeader)initWithReuseIdentifier:(id)a3
+- (_TtC15RemindersUICore37TTRIReminderListPickerTableViewHeader)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_21DBFA16C();
   }
@@ -21,7 +21,7 @@
   return sub_21D1B2B68(v3, v4);
 }
 
-- (_TtC15RemindersUICore37TTRIReminderListPickerTableViewHeader)initWithCoder:(id)a3
+- (_TtC15RemindersUICore37TTRIReminderListPickerTableViewHeader)initWithCoder:(id)coder
 {
   result = sub_21DBFC31C();
   __break(1u);

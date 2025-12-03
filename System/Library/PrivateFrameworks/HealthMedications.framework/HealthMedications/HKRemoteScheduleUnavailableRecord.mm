@@ -1,13 +1,13 @@
 @interface HKRemoteScheduleUnavailableRecord
-+ (id)_createDevicesByIdentifier:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
++ (id)_createDevicesByIdentifier:(uint64_t)identifier;
+- (BOOL)isEqual:(id)equal;
 - (HKRemoteScheduleUnavailableRecord)init;
-- (HKRemoteScheduleUnavailableRecord)initWithCoder:(id)a3;
-- (HKRemoteScheduleUnavailableRecord)initWithMedication:(id)a3 schedule:(id)a4 devices:(id)a5;
+- (HKRemoteScheduleUnavailableRecord)initWithCoder:(id)coder;
+- (HKRemoteScheduleUnavailableRecord)initWithMedication:(id)medication schedule:(id)schedule devices:(id)devices;
 - (id)description;
 - (id)dismissedRecord;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKRemoteScheduleUnavailableRecord
@@ -22,21 +22,21 @@
   return 0;
 }
 
-- (HKRemoteScheduleUnavailableRecord)initWithMedication:(id)a3 schedule:(id)a4 devices:(id)a5
+- (HKRemoteScheduleUnavailableRecord)initWithMedication:(id)medication schedule:(id)schedule devices:(id)devices
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  medicationCopy = medication;
+  scheduleCopy = schedule;
+  devicesCopy = devices;
+  if (medicationCopy)
   {
-    if (v10)
+    if (scheduleCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [HKRemoteScheduleUnavailableRecord initWithMedication:schedule:devices:];
-    if (v11)
+    if (devicesCopy)
     {
       goto LABEL_4;
     }
@@ -45,13 +45,13 @@ LABEL_8:
   }
 
   [HKRemoteScheduleUnavailableRecord initWithMedication:schedule:devices:];
-  if (!v10)
+  if (!scheduleCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (devicesCopy)
   {
     goto LABEL_4;
   }
@@ -65,10 +65,10 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_medication, a3);
-    objc_storeStrong(&v13->_schedule, a4);
-    objc_storeStrong(&v13->_devices, a5);
-    v14 = [HKRemoteScheduleUnavailableRecord _createDevicesByIdentifier:v11];
+    objc_storeStrong(&v12->_medication, medication);
+    objc_storeStrong(&v13->_schedule, schedule);
+    objc_storeStrong(&v13->_devices, devices);
+    v14 = [HKRemoteScheduleUnavailableRecord _createDevicesByIdentifier:devicesCopy];
     devicesByIdentifier = v13->_devicesByIdentifier;
     v13->_devicesByIdentifier = v14;
   }
@@ -76,7 +76,7 @@ LABEL_4:
   return v13;
 }
 
-+ (id)_createDevicesByIdentifier:(uint64_t)a1
++ (id)_createDevicesByIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
@@ -89,10 +89,10 @@ LABEL_4:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HKMedicationUserDomainConcept *)self->_medication firstConceptIdentifier];
-  v6 = [v5 rawIdentifier];
+  firstConceptIdentifier = [(HKMedicationUserDomainConcept *)self->_medication firstConceptIdentifier];
+  rawIdentifier = [firstConceptIdentifier rawIdentifier];
   v7 = HKStringFromMedicationScheduleType([(HKMedicationSchedule *)self->_schedule scheduleType]);
-  v8 = [v3 stringWithFormat:@"<%@:%p (Concept ID: %ld, Schedule Type: %@, Schedule Compatibility Version: v%ld, Devices: %@)>", v4, self, v6, v7, -[HKMedicationSchedule compatibilityRange](self->_schedule, "compatibilityRange"), self->_devices];
+  v8 = [v3 stringWithFormat:@"<%@:%p (Concept ID: %ld, Schedule Type: %@, Schedule Compatibility Version: v%ld, Devices: %@)>", v4, self, rawIdentifier, v7, -[HKMedicationSchedule compatibilityRange](self->_schedule, "compatibilityRange"), self->_devices];
 
   return v8;
 }
@@ -101,12 +101,12 @@ LABEL_4:
 {
   v3 = [(NSArray *)self->_devices hk_map:&__block_literal_global_5];
   v4 = [HKDismissedRemoteScheduleUnavailableRecord alloc];
-  v5 = [(HKMedicationUserDomainConcept *)self->_medication semanticIdentifier];
-  v6 = [v5 stringValue];
-  v7 = [(HKMedicationSchedule *)self->_schedule scheduleType];
-  v8 = [(HKMedicationSchedule *)self->_schedule compatibilityRange];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [(HKDismissedRemoteScheduleUnavailableRecord *)v4 _initWithMedicationIdentifier:v6 scheduleType:v7 scheduleCompatibilityVersion:v8 deviceIdentifiers:v3 creationDate:v9];
+  semanticIdentifier = [(HKMedicationUserDomainConcept *)self->_medication semanticIdentifier];
+  stringValue = [semanticIdentifier stringValue];
+  scheduleType = [(HKMedicationSchedule *)self->_schedule scheduleType];
+  compatibilityRange = [(HKMedicationSchedule *)self->_schedule compatibilityRange];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [(HKDismissedRemoteScheduleUnavailableRecord *)v4 _initWithMedicationIdentifier:stringValue scheduleType:scheduleType scheduleCompatibilityVersion:compatibilityRange deviceIdentifiers:v3 creationDate:date];
 
   return v10;
 }
@@ -126,10 +126,10 @@ void __64__HKRemoteScheduleUnavailableRecord__createDevicesByIdentifier___block_
   return v4 ^ [(NSArray *)self->_devices hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -139,7 +139,7 @@ void __64__HKRemoteScheduleUnavailableRecord__createDevicesByIdentifier___block_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       medication = self->_medication;
       v7 = v5->_medication;
       if (medication != v7 && (!v7 || ![(HKMedicationUserDomainConcept *)medication isEqual:?]))
@@ -186,32 +186,32 @@ LABEL_16:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   medication = self->_medication;
-  v5 = a3;
-  [v5 encodeObject:medication forKey:@"Medication"];
-  [v5 encodeObject:self->_schedule forKey:@"Schedule"];
-  [v5 encodeObject:self->_devices forKey:@"Devices"];
+  coderCopy = coder;
+  [coderCopy encodeObject:medication forKey:@"Medication"];
+  [coderCopy encodeObject:self->_schedule forKey:@"Schedule"];
+  [coderCopy encodeObject:self->_devices forKey:@"Devices"];
 }
 
-- (HKRemoteScheduleUnavailableRecord)initWithCoder:(id)a3
+- (HKRemoteScheduleUnavailableRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HKRemoteScheduleUnavailableRecord;
   v5 = [(HKRemoteScheduleUnavailableRecord *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Medication"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Medication"];
     medication = v5->_medication;
     v5->_medication = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Schedule"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Schedule"];
     schedule = v5->_schedule;
     v5->_schedule = v8;
 
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"Devices"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"Devices"];
     devices = v5->_devices;
     v5->_devices = v10;
 

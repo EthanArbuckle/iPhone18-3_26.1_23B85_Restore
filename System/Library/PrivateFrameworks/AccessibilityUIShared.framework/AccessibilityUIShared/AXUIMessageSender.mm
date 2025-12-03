@@ -1,13 +1,13 @@
 @interface AXUIMessageSender
 - (AXUIMessageSender)init;
 - (AXUIMessageSenderDelegate)delegate;
-- (id)sendSynchronousMessage:(id)a3 withIdentifier:(unint64_t)a4 context:(void *)a5 error:(id *)a6;
-- (void)_didFinishSendingXPCMessage:(id)a3 replyCustomData:(void *)a4;
-- (void)_performBlock:(id)a3 inAccessQueue:(id)a4 treatAsWritingBlock:(BOOL)a5;
-- (void)_sendLaunchAngelMessage:(id)a3 context:(void *)a4 remainingAttempts:(unint64_t)a5 previousError:(id)a6 completion:(id)a7;
-- (void)_sendXPCMessage:(id)a3 context:(void *)a4 completionBlock:(id)a5 completionRequiresWritingBlock:(BOOL)a6 targetAccessQueue:(id)a7 timeout:(double)a8;
-- (void)sendAsynchronousMessage:(id)a3 withIdentifier:(unint64_t)a4 context:(void *)a5 targetAccessQueue:(id)a6 completionRequiresWritingBlock:(BOOL)a7 completion:(id)a8 timeout:(double)a9;
-- (void)setDelegate:(id)a3;
+- (id)sendSynchronousMessage:(id)message withIdentifier:(unint64_t)identifier context:(void *)context error:(id *)error;
+- (void)_didFinishSendingXPCMessage:(id)message replyCustomData:(void *)data;
+- (void)_performBlock:(id)block inAccessQueue:(id)queue treatAsWritingBlock:(BOOL)writingBlock;
+- (void)_sendLaunchAngelMessage:(id)message context:(void *)context remainingAttempts:(unint64_t)attempts previousError:(id)error completion:(id)completion;
+- (void)_sendXPCMessage:(id)message context:(void *)context completionBlock:(id)block completionRequiresWritingBlock:(BOOL)writingBlock targetAccessQueue:(id)queue timeout:(double)timeout;
+- (void)sendAsynchronousMessage:(id)message withIdentifier:(unint64_t)identifier context:(void *)context targetAccessQueue:(id)queue completionRequiresWritingBlock:(BOOL)block completion:(id)completion timeout:(double)timeout;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation AXUIMessageSender
@@ -62,33 +62,33 @@ uint64_t __29__AXUIMessageSender_delegate__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v3 = v4;
+  delegateCopy = delegate;
+  v3 = delegateCopy;
   AX_PERFORM_WITH_LOCK();
 }
 
-- (void)_sendLaunchAngelMessage:(id)a3 context:(void *)a4 remainingAttempts:(unint64_t)a5 previousError:(id)a6 completion:(id)a7
+- (void)_sendLaunchAngelMessage:(id)message context:(void *)context remainingAttempts:(unint64_t)attempts previousError:(id)error completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (a5)
+  messageCopy = message;
+  errorCopy = error;
+  completionCopy = completion;
+  if (attempts)
   {
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __96__AXUIMessageSender__sendLaunchAngelMessage_context_remainingAttempts_previousError_completion___block_invoke;
     v31[3] = &unk_278BF5208;
     v31[4] = self;
-    v15 = v12;
+    v15 = messageCopy;
     v32 = v15;
-    v34 = a4;
-    v35 = a5;
-    v16 = v14;
+    contextCopy = context;
+    attemptsCopy = attempts;
+    v16 = completionCopy;
     v33 = v16;
     v17 = MEMORY[0x23EEF9640](v31);
-    v18 = [(AXUIMessageSender *)self delegate];
+    delegate = [(AXUIMessageSender *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       v24[0] = MEMORY[0x277D85DD0];
@@ -97,11 +97,11 @@ uint64_t __29__AXUIMessageSender_delegate__block_invoke(uint64_t a1)
       v24[3] = &unk_278BF5258;
       v29 = v17;
       v25 = v15;
-      v26 = v18;
-      v27 = self;
+      v26 = delegate;
+      selfCopy = self;
       v30 = v16;
-      v28 = v13;
-      [v26 messageSender:self accessLaunchAngelConnectionForMessageWithContext:a4 usingBlock:v24];
+      v28 = errorCopy;
+      [v26 messageSender:self accessLaunchAngelConnectionForMessageWithContext:context usingBlock:v24];
 
       v19 = v29;
     }
@@ -115,12 +115,12 @@ uint64_t __29__AXUIMessageSender_delegate__block_invoke(uint64_t a1)
 
   else
   {
-    v20 = [MEMORY[0x277CE69B8] dictionaryFromXPCMessage:v12 error:0];
+    v20 = [MEMORY[0x277CE69B8] dictionaryFromXPCMessage:messageCopy error:0];
     v21 = MEMORY[0x277CCA9B8];
-    v22 = [v13 ax_nonRedundantDescription];
-    v23 = [v21 ax_errorWithDomain:@"AXUIErrorDomainCommunication" description:{@"Failed to send message %@ to the %@. Last encountered error: %@.", v20, @"Accessibility UI Server", v22}];
+    ax_nonRedundantDescription = [errorCopy ax_nonRedundantDescription];
+    v23 = [v21 ax_errorWithDomain:@"AXUIErrorDomainCommunication" description:{@"Failed to send message %@ to the %@. Last encountered error: %@.", v20, @"Accessibility UI Server", ax_nonRedundantDescription}];
 
-    (*(v14 + 2))(v14, 0, 0, v23);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v23);
   }
 }
 
@@ -273,35 +273,35 @@ LABEL_3:
 LABEL_6:
 }
 
-- (void)_didFinishSendingXPCMessage:(id)a3 replyCustomData:(void *)a4
+- (void)_didFinishSendingXPCMessage:(id)message replyCustomData:(void *)data
 {
-  v6 = a3;
+  messageCopy = message;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v7 = [(AXUIMessageSender *)self messageSchedulingSerializationQueue];
+  messageSchedulingSerializationQueue = [(AXUIMessageSender *)self messageSchedulingSerializationQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __65__AXUIMessageSender__didFinishSendingXPCMessage_replyCustomData___block_invoke;
   v14[3] = &unk_278BF5280;
   v14[5] = &v15;
-  v14[6] = a4;
+  v14[6] = data;
   v14[4] = self;
-  [v7 performSynchronousWritingBlock:v14];
+  [messageSchedulingSerializationQueue performSynchronousWritingBlock:v14];
 
   v8 = v16[5];
   if (v8)
   {
-    v9 = [v8 xpcMessage];
-    v10 = [v16[5] context];
-    v11 = [v16[5] completion];
-    v12 = [v16[5] completionRequiresWritingBlock];
-    v13 = [v16[5] targetAccessQueue];
+    xpcMessage = [v8 xpcMessage];
+    context = [v16[5] context];
+    completion = [v16[5] completion];
+    completionRequiresWritingBlock = [v16[5] completionRequiresWritingBlock];
+    targetAccessQueue = [v16[5] targetAccessQueue];
     [v16[5] timeout];
-    [(AXUIMessageSender *)self _sendXPCMessage:v9 context:v10 completionBlock:v11 completionRequiresWritingBlock:v12 targetAccessQueue:v13 timeout:?];
+    [(AXUIMessageSender *)self _sendXPCMessage:xpcMessage context:context completionBlock:completion completionRequiresWritingBlock:completionRequiresWritingBlock targetAccessQueue:targetAccessQueue timeout:?];
   }
 
   _Block_object_dispose(&v15, 8);
@@ -346,26 +346,26 @@ void __65__AXUIMessageSender__didFinishSendingXPCMessage_replyCustomData___block
   }
 }
 
-- (void)_sendXPCMessage:(id)a3 context:(void *)a4 completionBlock:(id)a5 completionRequiresWritingBlock:(BOOL)a6 targetAccessQueue:(id)a7 timeout:(double)a8
+- (void)_sendXPCMessage:(id)message context:(void *)context completionBlock:(id)block completionRequiresWritingBlock:(BOOL)writingBlock targetAccessQueue:(id)queue timeout:(double)timeout
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
+  messageCopy = message;
+  blockCopy = block;
+  queueCopy = queue;
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __118__AXUIMessageSender__sendXPCMessage_context_completionBlock_completionRequiresWritingBlock_targetAccessQueue_timeout___block_invoke;
   v44[3] = &unk_278BF52D0;
   v44[4] = self;
-  v17 = v14;
+  v17 = messageCopy;
   v45 = v17;
-  v18 = v15;
+  v18 = blockCopy;
   v47 = v18;
-  v19 = v16;
+  v19 = queueCopy;
   v46 = v19;
-  v48 = a6;
+  writingBlockCopy = writingBlock;
   v20 = MEMORY[0x23EEF9640](v44);
   sendingTimer = self->_sendingTimer;
-  if (a8 <= 0.0)
+  if (timeout <= 0.0)
   {
     if (sendingTimer)
     {
@@ -387,7 +387,7 @@ void __65__AXUIMessageSender__didFinishSendingXPCMessage_replyCustomData___block
     v36[3] = &unk_278BF5348;
     v37 = v20;
     v33 = v20;
-    [(AXUIMessageSender *)self _sendXPCMessage:v17 context:a4 remainingAttempts:10 previousError:0 completion:v36];
+    [(AXUIMessageSender *)self _sendXPCMessage:v17 context:context remainingAttempts:10 previousError:0 completion:v36];
     v32 = v37;
   }
 
@@ -418,8 +418,8 @@ void __65__AXUIMessageSender__didFinishSendingXPCMessage_replyCustomData___block
     }
 
     v27 = [AXUIMessageSendHandler alloc];
-    v28 = [(AXUIMessageSender *)self delegate];
-    v29 = [(AXUIMessageSendHandler *)v27 initWithMessageSender:self delegate:v28];
+    delegate = [(AXUIMessageSender *)self delegate];
+    v29 = [(AXUIMessageSendHandler *)v27 initWithMessageSender:self delegate:delegate];
 
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
@@ -428,8 +428,8 @@ void __65__AXUIMessageSender__didFinishSendingXPCMessage_replyCustomData___block
     v41[4] = self;
     v30 = v20;
     v42 = v30;
-    [(AXUIMessageSendHandler *)v29 sendXPCMessage:v17 context:a4 completion:v41];
-    v31 = [(AXUIMessageSender *)self sendingTimer];
+    [(AXUIMessageSendHandler *)v29 sendXPCMessage:v17 context:context completion:v41];
+    sendingTimer = [(AXUIMessageSender *)self sendingTimer];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __118__AXUIMessageSender__sendXPCMessage_context_completionBlock_completionRequiresWritingBlock_targetAccessQueue_timeout___block_invoke_35;
@@ -439,7 +439,7 @@ void __65__AXUIMessageSender__didFinishSendingXPCMessage_replyCustomData___block
     v40 = v30;
     v32 = v30;
     v33 = v29;
-    [v31 afterDelay:v38 processBlock:a8];
+    [sendingTimer afterDelay:v38 processBlock:timeout];
   }
 }
 
@@ -512,27 +512,27 @@ void __118__AXUIMessageSender__sendXPCMessage_context_completionBlock_completion
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performBlock:(id)a3 inAccessQueue:(id)a4 treatAsWritingBlock:(BOOL)a5
+- (void)_performBlock:(id)block inAccessQueue:(id)queue treatAsWritingBlock:(BOOL)writingBlock
 {
-  if (a5)
+  if (writingBlock)
   {
-    [a4 performAsynchronousWritingBlock:a3];
+    [queue performAsynchronousWritingBlock:block];
   }
 
   else
   {
-    [a4 performAsynchronousReadingBlock:a3];
+    [queue performAsynchronousReadingBlock:block];
   }
 }
 
-- (void)sendAsynchronousMessage:(id)a3 withIdentifier:(unint64_t)a4 context:(void *)a5 targetAccessQueue:(id)a6 completionRequiresWritingBlock:(BOOL)a7 completion:(id)a8 timeout:(double)a9
+- (void)sendAsynchronousMessage:(id)message withIdentifier:(unint64_t)identifier context:(void *)context targetAccessQueue:(id)queue completionRequiresWritingBlock:(BOOL)block completion:(id)completion timeout:(double)timeout
 {
-  v27 = a7;
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
-  v17 = v16;
-  if (!v15 && v16)
+  blockCopy = block;
+  messageCopy = message;
+  queueCopy = queue;
+  completionCopy = completion;
+  v17 = completionCopy;
+  if (!queueCopy && completionCopy)
   {
     v18 = AXLogUI();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -541,10 +541,10 @@ void __118__AXUIMessageSender__sendXPCMessage_context_completionBlock_completion
     }
   }
 
-  if (v14)
+  if (messageCopy)
   {
     v40[0] = 0;
-    v19 = [MEMORY[0x277CE69B8] copyXPCMessageFromDictionary:v14 inReplyToXPCMessage:0 error:v40];
+    v19 = [MEMORY[0x277CE69B8] copyXPCMessageFromDictionary:messageCopy inReplyToXPCMessage:0 error:v40];
     v20 = v40[0];
     if (v20)
     {
@@ -569,12 +569,12 @@ void __118__AXUIMessageSender__sendXPCMessage_context_completionBlock_completion
     if (v19)
     {
 LABEL_12:
-      xpc_dictionary_set_uint64(v19, _AXUIServiceMessageKeyMessageIdentifier[0], a4);
+      xpc_dictionary_set_uint64(v19, _AXUIServiceMessageKeyMessageIdentifier[0], identifier);
       v36 = 0;
       v37 = &v36;
       v38 = 0x2020000000;
       v39 = 0;
-      v22 = [(AXUIMessageSender *)self messageSchedulingSerializationQueue];
+      messageSchedulingSerializationQueue = [(AXUIMessageSender *)self messageSchedulingSerializationQueue];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __136__AXUIMessageSender_sendAsynchronousMessage_withIdentifier_context_targetAccessQueue_completionRequiresWritingBlock_completion_timeout___block_invoke;
@@ -583,18 +583,18 @@ LABEL_12:
       v28[4] = self;
       v23 = v19;
       v29 = v23;
-      v33 = a5;
-      v24 = v15;
+      contextCopy = context;
+      v24 = queueCopy;
       v30 = v24;
-      v35 = v27;
+      v35 = blockCopy;
       v25 = v17;
       v31 = v25;
-      v34 = a9;
-      [v22 performSynchronousWritingBlock:v28];
+      timeoutCopy = timeout;
+      [messageSchedulingSerializationQueue performSynchronousWritingBlock:v28];
 
       if (*(v37 + 24) == 1)
       {
-        [(AXUIMessageSender *)self _sendXPCMessage:v23 context:a5 completionBlock:v25 completionRequiresWritingBlock:v27 targetAccessQueue:v24 timeout:a9];
+        [(AXUIMessageSender *)self _sendXPCMessage:v23 context:context completionBlock:v25 completionRequiresWritingBlock:blockCopy targetAccessQueue:v24 timeout:timeout];
       }
 
       _Block_object_dispose(&v36, 8);
@@ -606,7 +606,7 @@ LABEL_12:
   {
     if (!v20)
     {
-      v20 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"AXUIErrorDomainCommunication" description:{@"Failed to convert message %@ to its XPC representation.", v14}];
+      v20 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"AXUIErrorDomainCommunication" description:{@"Failed to convert message %@ to its XPC representation.", messageCopy}];
     }
 
     (v17)[2](v17, 0, v20);
@@ -650,9 +650,9 @@ void __136__AXUIMessageSender_sendAsynchronousMessage_withIdentifier_context_tar
   }
 }
 
-- (id)sendSynchronousMessage:(id)a3 withIdentifier:(unint64_t)a4 context:(void *)a5 error:(id *)a6
+- (id)sendSynchronousMessage:(id)message withIdentifier:(unint64_t)identifier context:(void *)context error:(id *)error
 {
-  v10 = a3;
+  messageCopy = message;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -674,9 +674,9 @@ void __136__AXUIMessageSender_sendAsynchronousMessage_withIdentifier_context_tar
 
   if (v14)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"AXUIErrorDomainCommunication" description:@"Failed to initialize structures necessary for synchronous message send."];
+      *error = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"AXUIErrorDomainCommunication" description:@"Failed to initialize structures necessary for synchronous message send."];
     }
   }
 
@@ -687,10 +687,10 @@ void __136__AXUIMessageSender_sendAsynchronousMessage_withIdentifier_context_tar
     v18[2] = __73__AXUIMessageSender_sendSynchronousMessage_withIdentifier_context_error___block_invoke;
     v18[3] = &unk_278BF5398;
     v20 = &v22;
-    v21 = a6;
+    errorCopy = error;
     v15 = v12;
     v19 = v15;
-    [(AXUIMessageSender *)self sendAsynchronousMessage:v10 withIdentifier:a4 context:a5 targetAccessQueue:v11 completionRequiresWritingBlock:1 completion:v18];
+    [(AXUIMessageSender *)self sendAsynchronousMessage:messageCopy withIdentifier:identifier context:context targetAccessQueue:v11 completionRequiresWritingBlock:1 completion:v18];
     dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
   }
 

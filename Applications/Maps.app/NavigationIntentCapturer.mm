@@ -1,20 +1,20 @@
 @interface NavigationIntentCapturer
-- (NavigationIntentCapturer)initWithMapService:(id)a3;
+- (NavigationIntentCapturer)initWithMapService:(id)service;
 - (void)captureStartNavigationIntent;
-- (void)captureUserAction:(int)a3;
-- (void)mapsSession:(id)a3 didChangeState:(unint64_t)a4;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)setNavigationSession:(id)a3;
+- (void)captureUserAction:(int)action;
+- (void)mapsSession:(id)session didChangeState:(unint64_t)state;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)setNavigationSession:(id)session;
 @end
 
 @implementation NavigationIntentCapturer
 
-- (void)mapsSession:(id)a3 didChangeState:(unint64_t)a4
+- (void)mapsSession:(id)session didChangeState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(NavigationIntentCapturer *)self navigationSession];
+  sessionCopy = session;
+  navigationSession = [(NavigationIntentCapturer *)self navigationSession];
 
-  if (a4 == 1 && v7 == v6)
+  if (state == 1 && navigationSession == sessionCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -25,13 +25,13 @@
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v8 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v8;
+    v6 = toSessionCopy;
   }
 
   else
@@ -43,88 +43,88 @@
   [(NavigationIntentCapturer *)self setNavigationSession:v7];
 }
 
-- (void)setNavigationSession:(id)a3
+- (void)setNavigationSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   navigationSession = self->_navigationSession;
-  if (navigationSession != v5)
+  if (navigationSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(NavigationSession *)navigationSession unregisterObserver:self];
-    objc_storeStrong(&self->_navigationSession, a3);
+    objc_storeStrong(&self->_navigationSession, session);
     [(NavigationSession *)self->_navigationSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)captureUserAction:(int)a3
+- (void)captureUserAction:(int)action
 {
-  v3 = *&a3;
-  if (a3 == 9016 || a3 == 3001)
+  v3 = *&action;
+  if (action == 9016 || action == 3001)
   {
-    v5 = [(NavigationIntentCapturer *)self navigationSession];
-    v6 = [v5 configuration];
-    v7 = [v6 startNavigationDetails];
-    v8 = [v7 selectedRouteIndex];
+    navigationSession = [(NavigationIntentCapturer *)self navigationSession];
+    configuration = [navigationSession configuration];
+    startNavigationDetails = [configuration startNavigationDetails];
+    selectedRouteIndex = [startNavigationDetails selectedRouteIndex];
   }
 
   else
   {
-    v8 = 0xFFFFFFFFLL;
+    selectedRouteIndex = 0xFFFFFFFFLL;
   }
 
-  v9 = [(NavigationIntentCapturer *)self navigationSession];
-  v10 = [v9 sessionInitiator];
+  navigationSession2 = [(NavigationIntentCapturer *)self navigationSession];
+  sessionInitiator = [navigationSession2 sessionInitiator];
 
-  if (v10 == 2)
+  if (sessionInitiator == 2)
   {
     v15 = +[CarDisplayController sharedInstance];
-    v11 = [v15 chromeViewController];
-    [v11 captureUserAction:v3 selectedRouteIndex:v8];
+    chromeViewController = [v15 chromeViewController];
+    [chromeViewController captureUserAction:v3 selectedRouteIndex:selectedRouteIndex];
   }
 
   else
   {
-    v15 = [GEORouteDetails routeDetailsWithResultIndex:v8];
-    v11 = [(NavigationIntentCapturer *)self mapService];
-    v12 = [(NavigationIntentCapturer *)self navigationSession];
-    v13 = [v12 currentTransportType];
-    if ((v13 - 1) >= 5)
+    v15 = [GEORouteDetails routeDetailsWithResultIndex:selectedRouteIndex];
+    chromeViewController = [(NavigationIntentCapturer *)self mapService];
+    navigationSession3 = [(NavigationIntentCapturer *)self navigationSession];
+    currentTransportType = [navigationSession3 currentTransportType];
+    if ((currentTransportType - 1) >= 5)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = (v13 + 300);
+      v14 = (currentTransportType + 300);
     }
 
-    [v11 captureUserAction:v3 onTarget:v14 eventValue:0 routeDetails:v15];
+    [chromeViewController captureUserAction:v3 onTarget:v14 eventValue:0 routeDetails:v15];
   }
 }
 
 - (void)captureStartNavigationIntent
 {
-  v3 = [(NavigationIntentCapturer *)self navigationSession];
-  v4 = [v3 currentRouteCollection];
-  v16 = [v4 currentRoute];
+  navigationSession = [(NavigationIntentCapturer *)self navigationSession];
+  currentRouteCollection = [navigationSession currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
 
-  if ([v16 source] != 2 && objc_msgSend(v16, "source") != 3)
+  if ([currentRoute source] != 2 && objc_msgSend(currentRoute, "source") != 3)
   {
-    v5 = [v16 origin];
-    v6 = [v16 destination];
-    v7 = [v5 geoMapItem];
-    v8 = [CLPlacemark placemarkWithGEOMapItem:v7];
+    origin = [currentRoute origin];
+    destination = [currentRoute destination];
+    geoMapItem = [origin geoMapItem];
+    v8 = [CLPlacemark placemarkWithGEOMapItem:geoMapItem];
 
-    v9 = [v6 geoMapItem];
-    v10 = [CLPlacemark placemarkWithGEOMapItem:v9];
+    geoMapItem2 = [destination geoMapItem];
+    v10 = [CLPlacemark placemarkWithGEOMapItem:geoMapItem2];
 
-    v11 = [v8 location];
-    [v11 coordinate];
+    location = [v8 location];
+    [location coordinate];
     if (CLLocationCoordinate2DIsValid(v18))
     {
-      v12 = [v10 location];
-      [v12 coordinate];
+      location2 = [v10 location];
+      [location2 coordinate];
       v13 = CLLocationCoordinate2DIsValid(v19);
 
       if (!v13)
@@ -134,9 +134,9 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v11 = [(NavigationIntentCapturer *)self navigationSession];
-      v14 = [v11 configuration];
-      if ([v14 isETAOnlyMode])
+      location = [(NavigationIntentCapturer *)self navigationSession];
+      configuration = [location configuration];
+      if ([configuration isETAOnlyMode])
       {
         v15 = 9016;
       }
@@ -155,16 +155,16 @@ LABEL_10:
 LABEL_11:
 }
 
-- (NavigationIntentCapturer)initWithMapService:(id)a3
+- (NavigationIntentCapturer)initWithMapService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = NavigationIntentCapturer;
   v6 = [(NavigationIntentCapturer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapService, a3);
+    objc_storeStrong(&v6->_mapService, service);
   }
 
   return v7;

@@ -1,12 +1,12 @@
 @interface NCMotionClassificationManager
 - (NCMotionClassificationManager)init;
 - (void)_computeStatus;
-- (void)_housekeepingWith:(id)a3;
+- (void)_housekeepingWith:(id)with;
 - (void)_startMotionActivityUpdate;
-- (void)_updateMotionActivity:(id)a3;
-- (void)_updateMotionType:(int64_t)a3 isDeviceStationary:(BOOL)a4;
+- (void)_updateMotionActivity:(id)activity;
+- (void)_updateMotionType:(int64_t)type isDeviceStationary:(BOOL)stationary;
 - (void)_updateStatusFromPedometer;
-- (void)startMotionActivityUpdatesWithHandler:(id)a3;
+- (void)startMotionActivityUpdatesWithHandler:(id)handler;
 - (void)stopMotionActivityUpdates;
 @end
 
@@ -34,16 +34,16 @@
   return v2;
 }
 
-- (void)startMotionActivityUpdatesWithHandler:(id)a3
+- (void)startMotionActivityUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_23BD59B24;
   v6[3] = &unk_278B94718;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -80,11 +80,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_updateMotionActivity:(id)a3
+- (void)_updateMotionActivity:(id)activity
 {
-  v4 = a3;
-  isMoving = objc_msgSend_nc_isMoving(v4, v5, v6, v7);
-  v12 = objc_msgSend_nc_motionType(v4, v9, v10, v11);
+  activityCopy = activity;
+  isMoving = objc_msgSend_nc_isMoving(activityCopy, v5, v6, v7);
+  v12 = objc_msgSend_nc_motionType(activityCopy, v9, v10, v11);
   v19 = objc_msgSend_now(MEMORY[0x277CBEAA8], v13, v14, v15);
   if (isMoving)
   {
@@ -95,7 +95,7 @@
     goto LABEL_8;
   }
 
-  if (objc_msgSend_stationary(v4, v16, v17, v18))
+  if (objc_msgSend_stationary(activityCopy, v16, v17, v18))
   {
     v23 = NCLogForCategory(1uLL);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -140,11 +140,11 @@ LABEL_8:
   objc_msgSend_queryPedometerDataFromDate_toDate_withHandler_(pedometer, v11, v9, v5, v12);
 }
 
-- (void)_housekeepingWith:(id)a3
+- (void)_housekeepingWith:(id)with
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v8 = objc_msgSend_timestamp(v4, v5, v6, v7);
+  withCopy = with;
+  v8 = objc_msgSend_timestamp(withCopy, v5, v6, v7);
   v12 = objc_msgSend_array(MEMORY[0x277CBEB18], v9, v10, v11);
   v65 = 0u;
   v66 = 0u;
@@ -200,7 +200,7 @@ LABEL_11:
   v50 = objc_msgSend_allObjects(v46, v47, v48, v49);
   v54 = objc_msgSend_mutableCopy(v50, v51, v52, v53);
 
-  objc_msgSend_addObject_(v54, v55, v4, v56);
+  objc_msgSend_addObject_(v54, v55, withCopy, v56);
   v60 = objc_msgSend_copy(v54, v57, v58, v59);
   motionEventQueue = self->_motionEventQueue;
   self->_motionEventQueue = v60;
@@ -226,7 +226,7 @@ LABEL_11:
   {
     v21 = 0;
 LABEL_14:
-    v50 = self;
+    selfCopy2 = self;
     v51 = v21;
     v52 = 0;
     goto LABEL_15;
@@ -263,23 +263,23 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v50 = self;
+  selfCopy2 = self;
   v51 = 0;
   v52 = 1;
 LABEL_15:
 
-  objc_msgSend__updateMotionType_isDeviceStationary_(v50, v19, v51, v52);
+  objc_msgSend__updateMotionType_isDeviceStationary_(selfCopy2, v19, v51, v52);
 }
 
-- (void)_updateMotionType:(int64_t)a3 isDeviceStationary:(BOOL)a4
+- (void)_updateMotionType:(int64_t)type isDeviceStationary:(BOOL)stationary
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23BD5A778;
   block[3] = &unk_278B94AA8;
   block[4] = self;
-  block[5] = a3;
-  v5 = a4;
+  block[5] = type;
+  stationaryCopy = stationary;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

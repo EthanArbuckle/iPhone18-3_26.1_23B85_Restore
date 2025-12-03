@@ -1,67 +1,67 @@
 @interface SBHLibraryCategoriesFolderDataSource
-- (BOOL)containsIcon:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDataSource:(id)a3;
+- (BOOL)containsIcon:(id)icon;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDataSource:(id)source;
 - (NSArray)categoryIdentifiers;
-- (SBHLibraryCategoriesFolderDataSource)initWithCategoriesFolder:(id)a3;
-- (id)categoryForIdentifier:(id)a3;
+- (SBHLibraryCategoriesFolderDataSource)initWithCategoriesFolder:(id)folder;
+- (id)categoryForIdentifier:(id)identifier;
 - (id)reloadData;
-- (id)reloadDataSourceUsingIcons:(id)a3 categoryMap:(id)a4;
-- (id)reloadDataWithCategoryMap:(id)a3;
+- (id)reloadDataSourceUsingIcons:(id)icons categoryMap:(id)map;
+- (id)reloadDataWithCategoryMap:(id)map;
 - (unint64_t)categoryIdentifiersCount;
-- (void)_noteDidAddIcon:(id)a3;
-- (void)_noteDidReplaceIcon:(id)a3;
-- (void)_noteIconVisibilityDidChange:(id)a3;
-- (void)_noteWillLayoutIconState:(id)a3;
-- (void)_noteWillRemoveIcon:(id)a3;
+- (void)_noteDidAddIcon:(id)icon;
+- (void)_noteDidReplaceIcon:(id)icon;
+- (void)_noteIconVisibilityDidChange:(id)change;
+- (void)_noteWillLayoutIconState:(id)state;
+- (void)_noteWillRemoveIcon:(id)icon;
 - (void)_regenerateCategoriesFolder;
-- (void)setMaximumNumberOfDisplayedCategories:(int64_t)a3;
+- (void)setMaximumNumberOfDisplayedCategories:(int64_t)categories;
 @end
 
 @implementation SBHLibraryCategoriesFolderDataSource
 
-- (SBHLibraryCategoriesFolderDataSource)initWithCategoriesFolder:(id)a3
+- (SBHLibraryCategoriesFolderDataSource)initWithCategoriesFolder:(id)folder
 {
-  v5 = a3;
-  v6 = [v5 model];
+  folderCopy = folder;
+  model = [folderCopy model];
   v13.receiver = self;
   v13.super_class = SBHLibraryCategoriesFolderDataSource;
   v7 = [(SBHLibraryCategoriesFolderDataSource *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_iconModel, v6);
-    objc_storeStrong(&v8->_categoriesFolder, a3);
+    objc_storeStrong(&v7->_iconModel, model);
+    objc_storeStrong(&v8->_categoriesFolder, folder);
     v8->_maximumNumberOfDisplayedCategories = -1;
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v8->_observers;
-    v8->_observers = v9;
+    v8->_observers = weakObjectsHashTable;
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v8 selector:sel__noteDidAddIcon_ name:@"SBIconModelDidAddIconNotification" object:v8->_iconModel];
-    [v11 addObserver:v8 selector:sel__noteDidReplaceIcon_ name:@"SBIconModelDidReplaceIconNotification" object:v8->_iconModel];
-    [v11 addObserver:v8 selector:sel__noteWillRemoveIcon_ name:@"SBIconModelWillRemoveIconNotification" object:v8->_iconModel];
-    [v11 addObserver:v8 selector:sel__noteIconVisibilityDidChange_ name:@"SBIconModelVisibilityDidChangeNotification" object:v8->_iconModel];
-    [v11 addObserver:v8 selector:sel__noteWillLayoutIconState_ name:@"SBIconModelWillLayoutIconStateNotification" object:v8->_iconModel];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__noteDidAddIcon_ name:@"SBIconModelDidAddIconNotification" object:v8->_iconModel];
+    [defaultCenter addObserver:v8 selector:sel__noteDidReplaceIcon_ name:@"SBIconModelDidReplaceIconNotification" object:v8->_iconModel];
+    [defaultCenter addObserver:v8 selector:sel__noteWillRemoveIcon_ name:@"SBIconModelWillRemoveIconNotification" object:v8->_iconModel];
+    [defaultCenter addObserver:v8 selector:sel__noteIconVisibilityDidChange_ name:@"SBIconModelVisibilityDidChangeNotification" object:v8->_iconModel];
+    [defaultCenter addObserver:v8 selector:sel__noteWillLayoutIconState_ name:@"SBIconModelWillLayoutIconStateNotification" object:v8->_iconModel];
   }
 
   return v8;
 }
 
-- (BOOL)isEqualToDataSource:(id)a3
+- (BOOL)isEqualToDataSource:(id)source
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sourceCopy = source;
+  v5 = sourceCopy;
+  if (sourceCopy)
   {
-    if (self == v4)
+    if (self == sourceCopy)
     {
       v15 = 1;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+      v6 = [MEMORY[0x1E698E6A0] builderWithObject:sourceCopy ofExpectedClass:objc_opt_class()];
       mappedIcons = self->_mappedIcons;
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
@@ -97,48 +97,48 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBHLibraryCategoriesFolderDataSource *)self isEqualToDataSource:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBHLibraryCategoriesFolderDataSource *)self isEqualToDataSource:equalCopy];
 
   return v5;
 }
 
 - (id)reloadData
 {
-  v3 = [(SBHLibraryCategoriesFolderDataSource *)self iconModel];
-  v4 = [v3 leafIcons];
-  v5 = [(SBHLibraryCategoriesFolderDataSource *)self reloadDataSourceUsingIcons:v4 categoryMap:self->_categoryMap];
+  iconModel = [(SBHLibraryCategoriesFolderDataSource *)self iconModel];
+  leafIcons = [iconModel leafIcons];
+  v5 = [(SBHLibraryCategoriesFolderDataSource *)self reloadDataSourceUsingIcons:leafIcons categoryMap:self->_categoryMap];
 
   return v5;
 }
 
-- (id)reloadDataWithCategoryMap:(id)a3
+- (id)reloadDataWithCategoryMap:(id)map
 {
-  v4 = a3;
-  v5 = [(SBHLibraryCategoriesFolderDataSource *)self iconModel];
-  v6 = [v5 leafIcons];
+  mapCopy = map;
+  iconModel = [(SBHLibraryCategoriesFolderDataSource *)self iconModel];
+  leafIcons = [iconModel leafIcons];
 
-  v7 = [(SBHLibraryCategoriesFolderDataSource *)self reloadDataSourceUsingIcons:v6 categoryMap:v4];
+  v7 = [(SBHLibraryCategoriesFolderDataSource *)self reloadDataSourceUsingIcons:leafIcons categoryMap:mapCopy];
 
   return v7;
 }
 
-- (id)reloadDataSourceUsingIcons:(id)a3 categoryMap:(id)a4
+- (id)reloadDataSourceUsingIcons:(id)icons categoryMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 isEqual:self->_mappedIcons] || (objc_msgSend(v7, "isEqualToCategoryMap:", self->_categoryMap) & 1) == 0)
+  iconsCopy = icons;
+  mapCopy = map;
+  if (![iconsCopy isEqual:self->_mappedIcons] || (objc_msgSend(mapCopy, "isEqualToCategoryMap:", self->_categoryMap) & 1) == 0)
   {
-    v8 = [v6 copy];
+    v8 = [iconsCopy copy];
     mappedIcons = self->_mappedIcons;
     self->_mappedIcons = v8;
 
-    objc_storeStrong(&self->_categoryMap, a4);
+    objc_storeStrong(&self->_categoryMap, map);
     [(SBHLibraryCategoriesFolderDataSource *)self _regenerateCategoriesFolder];
-    objc_storeStrong(&self->_categoryMap, a4);
+    objc_storeStrong(&self->_categoryMap, map);
   }
 
   categoriesFolder = self->_categoriesFolder;
@@ -147,27 +147,27 @@
   return categoriesFolder;
 }
 
-- (void)setMaximumNumberOfDisplayedCategories:(int64_t)a3
+- (void)setMaximumNumberOfDisplayedCategories:(int64_t)categories
 {
-  if (self->_maximumNumberOfDisplayedCategories != a3)
+  if (self->_maximumNumberOfDisplayedCategories != categories)
   {
-    self->_maximumNumberOfDisplayedCategories = a3;
+    self->_maximumNumberOfDisplayedCategories = categories;
     [(SBHLibraryCategoriesFolderDataSource *)self _regenerateCategoriesFolder];
   }
 }
 
-- (BOOL)containsIcon:(id)a3
+- (BOOL)containsIcon:(id)icon
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iconCopy = icon;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SBHLibraryCategoriesFolderDataSource *)self categoriesFolder];
-  v6 = [v5 icons];
+  categoriesFolder = [(SBHLibraryCategoriesFolderDataSource *)self categoriesFolder];
+  icons = [categoriesFolder icons];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [icons countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -177,12 +177,12 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(icons);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) category];
-        v11 = [v10 icons];
-        v12 = [v11 containsObject:v4];
+        category = [*(*(&v14 + 1) + 8 * i) category];
+        icons2 = [category icons];
+        v12 = [icons2 containsObject:iconCopy];
 
         if (v12)
         {
@@ -191,7 +191,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [icons countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -206,44 +206,44 @@ LABEL_11:
   return v7;
 }
 
-- (id)categoryForIdentifier:(id)a3
+- (id)categoryForIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(SBHLibraryCategoriesFolderDataSource *)self categoriesFolder];
-  v6 = [v5 icons];
+  categoriesFolder = [(SBHLibraryCategoriesFolderDataSource *)self categoriesFolder];
+  icons = [categoriesFolder icons];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v7)
+  category2 = [icons countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (category2)
   {
     v8 = *v16;
     while (2)
     {
-      for (i = 0; i != v7; i = i + 1)
+      for (i = 0; i != category2; i = i + 1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(icons);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 category];
-        v12 = [v11 categoryIdentifier];
-        v13 = [v12 isEqual:v4];
+        category = [v10 category];
+        categoryIdentifier = [category categoryIdentifier];
+        v13 = [categoryIdentifier isEqual:identifierCopy];
 
         if (v13)
         {
-          v7 = [v10 category];
+          category2 = [v10 category];
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v7)
+      category2 = [icons countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (category2)
       {
         continue;
       }
@@ -254,7 +254,7 @@ LABEL_11:
 
 LABEL_11:
 
-  return v7;
+  return category2;
 }
 
 - (NSArray)categoryIdentifiers
@@ -265,10 +265,10 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SBHLibraryCategoriesFolderDataSource *)self categoriesFolder];
-  v5 = [v4 icons];
+  categoriesFolder = [(SBHLibraryCategoriesFolderDataSource *)self categoriesFolder];
+  icons = [categoriesFolder icons];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [icons countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -279,15 +279,15 @@ LABEL_11:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(icons);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) category];
-        v11 = [v10 categoryIdentifier];
-        [v3 addObject:v11];
+        category = [*(*(&v13 + 1) + 8 * i) category];
+        categoryIdentifier = [category categoryIdentifier];
+        [v3 addObject:categoryIdentifier];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [icons countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -298,9 +298,9 @@ LABEL_11:
 
 - (unint64_t)categoryIdentifiersCount
 {
-  v2 = [(SBHLibraryCategoriesFolderDataSource *)self categoriesFolder];
-  v3 = [v2 icons];
-  v4 = [v3 count];
+  categoriesFolder = [(SBHLibraryCategoriesFolderDataSource *)self categoriesFolder];
+  icons = [categoriesFolder icons];
+  v4 = [icons count];
 
   return v4;
 }
@@ -308,22 +308,22 @@ LABEL_11:
 - (void)_regenerateCategoriesFolder
 {
   v184 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHLibraryCategoriesFolderDataSource *)self iconModel];
+  iconModel = [(SBHLibraryCategoriesFolderDataSource *)self iconModel];
   v4 = objc_opt_new();
   mappedIcons = self->_mappedIcons;
   v170[0] = MEMORY[0x1E69E9820];
   v170[1] = 3221225472;
   v170[2] = __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder__block_invoke;
   v170[3] = &unk_1E808CB00;
-  v104 = v3;
+  v104 = iconModel;
   v171 = v104;
   v6 = v4;
   v172 = v6;
   [(NSSet *)mappedIcons enumerateObjectsUsingBlock:v170];
   v7 = MEMORY[0x1E695DFD8];
   v118 = v6;
-  v8 = [v6 allKeys];
-  v114 = [v7 setWithArray:v8];
+  allKeys = [v6 allKeys];
+  v114 = [v7 setWithArray:allKeys];
 
   v110 = objc_opt_new();
   v9 = objc_opt_new();
@@ -331,9 +331,9 @@ LABEL_11:
   v167 = 0u;
   v168 = 0u;
   v169 = 0u;
-  v120 = self;
-  v10 = [(SBRootFolder *)self->_categoriesFolder icons];
-  v11 = [v10 countByEnumeratingWithState:&v166 objects:v183 count:16];
+  selfCopy = self;
+  icons = [(SBRootFolder *)self->_categoriesFolder icons];
+  v11 = [icons countByEnumeratingWithState:&v166 objects:v183 count:16];
   v121 = v9;
   if (v11)
   {
@@ -345,24 +345,24 @@ LABEL_11:
       {
         if (*v167 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(icons);
         }
 
         v15 = *(*(&v166 + 1) + 8 * i);
-        v16 = [v15 category];
-        v17 = [v15 category];
-        v18 = [v17 categoryIdentifier];
+        category = [v15 category];
+        category2 = [v15 category];
+        categoryIdentifier = [category2 categoryIdentifier];
 
-        v19 = [v9 objectForKey:v18];
+        v19 = [v9 objectForKey:categoryIdentifier];
 
         if (v19)
         {
           v20 = SBLogProactiveAppLibrary();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
-            v21 = [v9 objectForKey:v18];
+            v21 = [v9 objectForKey:categoryIdentifier];
             *buf = 138412546;
-            v180 = v16;
+            v180 = category;
             v181 = 2112;
             v182 = v21;
             _os_log_error_impl(&dword_1BEB18000, v20, OS_LOG_TYPE_ERROR, "Error; duplicate category: %@ / %@", buf, 0x16u);
@@ -373,23 +373,23 @@ LABEL_11:
 
         else
         {
-          [v9 bs_setSafeObject:v16 forKey:v18];
+          [v9 bs_setSafeObject:category forKey:categoryIdentifier];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v166 objects:v183 count:16];
+      v12 = [icons countByEnumeratingWithState:&v166 objects:v183 count:16];
     }
 
     while (v12);
   }
 
-  v22 = [(SBFolder *)v120->_categoriesFolder firstList];
-  v23 = [(SBHLibraryCategoryMap *)v120->_categoryMap categoryIdentifiers];
-  v24 = [v23 count];
-  maximumNumberOfDisplayedCategories = v120->_maximumNumberOfDisplayedCategories;
+  firstList = [(SBFolder *)selfCopy->_categoriesFolder firstList];
+  categoryIdentifiers = [(SBHLibraryCategoryMap *)selfCopy->_categoryMap categoryIdentifiers];
+  v24 = [categoryIdentifiers count];
+  maximumNumberOfDisplayedCategories = selfCopy->_maximumNumberOfDisplayedCategories;
   if (v24 >= maximumNumberOfDisplayedCategories)
   {
-    v26 = v120->_maximumNumberOfDisplayedCategories;
+    v26 = selfCopy->_maximumNumberOfDisplayedCategories;
   }
 
   else
@@ -407,7 +407,7 @@ LABEL_11:
     v27 = v24;
   }
 
-  v28 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:v23 range:0 copyItems:{v27, 0}];
+  v28 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:categoryIdentifiers range:0 copyItems:{v27, 0}];
 
   v29 = objc_opt_new();
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -416,7 +416,7 @@ LABEL_11:
   aBlock[3] = &unk_1E808CB70;
   v107 = v29;
   v162 = v107;
-  v163 = v120;
+  v163 = selfCopy;
   v103 = v114;
   v164 = v103;
   v165 = &__block_literal_global_47;
@@ -425,8 +425,8 @@ LABEL_11:
   v158 = 0u;
   v159 = 0u;
   v160 = 0u;
-  v108 = v22;
-  obj = [v22 icons];
+  v108 = firstList;
+  obj = [firstList icons];
   v31 = [obj countByEnumeratingWithState:&v157 objects:v178 count:16];
   v119 = v30;
   if (v31)
@@ -444,17 +444,17 @@ LABEL_11:
         }
 
         v34 = *(*(&v157 + 1) + 8 * j);
-        v35 = [v34 category];
-        v36 = [v35 categoryIdentifier];
+        category3 = [v34 category];
+        categoryIdentifier2 = [category3 categoryIdentifier];
         v155[0] = MEMORY[0x1E69E9820];
         v155[1] = 3221225472;
         v155[2] = __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder__block_invoke_4;
         v155[3] = &unk_1E808CB98;
-        v37 = v36;
+        v37 = categoryIdentifier2;
         v156 = v37;
         v38 = [v28 bs_firstObjectPassingTest:v155];
         v39 = v38;
-        if (v38 && v37 && ([v38 isEqualToCategoryIdentifier:v37] & 1) == 0 && objc_msgSend(v35, "updateCategoryIdentifier:", v39))
+        if (v38 && v37 && ([v38 isEqualToCategoryIdentifier:v37] & 1) == 0 && objc_msgSend(category3, "updateCategoryIdentifier:", v39))
         {
           v40 = v39;
 
@@ -462,14 +462,14 @@ LABEL_11:
           v37 = v40;
         }
 
-        v41 = [v37 predictionCategoryID];
+        predictionCategoryID = [v37 predictionCategoryID];
         v42 = v30[2](v30, v37);
-        if (v41 != 7)
+        if (predictionCategoryID != 7)
         {
-          if (![v28 containsObject:v37] || !objc_msgSend(v42, "count") || (objc_msgSend(v35, "icons"), v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "count"), v43, !v44))
+          if (![v28 containsObject:v37] || !objc_msgSend(v42, "count") || (objc_msgSend(category3, "icons"), v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "count"), v43, !v44))
           {
-            v45 = [v34 category];
-            [v45 updateCategoryWithIcons:MEMORY[0x1E695E0F0]];
+            category4 = [v34 category];
+            [category4 updateCategoryWithIcons:MEMORY[0x1E695E0F0]];
 
             [v108 removeIcon:v34];
             [v121 removeObjectForKey:v37];
@@ -539,8 +539,8 @@ LABEL_11:
         if ([v56 predictionCategoryID] != 7)
         {
           v57 = [v54 objectForKey:v56];
-          v58 = [v57 leafIdentifier];
-          v59 = [v106 objectForKey:v58];
+          leafIdentifier = [v57 leafIdentifier];
+          v59 = [v106 objectForKey:leafIdentifier];
 
           v60 = v119[2](v119, v56);
           v143[0] = MEMORY[0x1E69E9820];
@@ -584,8 +584,8 @@ LABEL_11:
   v140 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v65 = [obja icons];
-  v66 = [v65 countByEnumeratingWithState:&v139 objects:v176 count:16];
+  icons2 = [obja icons];
+  v66 = [icons2 countByEnumeratingWithState:&v139 objects:v176 count:16];
   if (v66)
   {
     v67 = v66;
@@ -596,15 +596,15 @@ LABEL_11:
       {
         if (*v140 != v68)
         {
-          objc_enumerationMutation(v65);
+          objc_enumerationMutation(icons2);
         }
 
         v70 = *(*(&v139 + 1) + 8 * m);
-        v71 = [v70 leafIdentifier];
-        [v64 setObject:v70 forKey:v71];
+        leafIdentifier2 = [v70 leafIdentifier];
+        [v64 setObject:v70 forKey:leafIdentifier2];
       }
 
-      v67 = [v65 countByEnumeratingWithState:&v139 objects:v176 count:16];
+      v67 = [icons2 countByEnumeratingWithState:&v139 objects:v176 count:16];
     }
 
     while (v67);
@@ -641,14 +641,14 @@ LABEL_11:
       v76 = *(*(&v135 + 1) + 8 * v75);
       v77 = objc_autoreleasePoolPush();
       v78 = [v121 objectForKey:v76];
-      v79 = [(SBHLibraryCategory *)v78 leafIdentifier];
-      if (v79)
+      leafIdentifier3 = [(SBHLibraryCategory *)v78 leafIdentifier];
+      if (leafIdentifier3)
       {
-        v80 = [(SBFolder *)v120->_categoriesFolder iconWithIdentifier:v79];
+        v80 = [(SBFolder *)selfCopy->_categoriesFolder iconWithIdentifier:leafIdentifier3];
         if (!v80)
         {
-          v80 = [v105 objectForKey:v79];
-          [v105 removeObjectForKey:v79];
+          v80 = [v105 objectForKey:leafIdentifier3];
+          [v105 removeObjectForKey:leafIdentifier3];
         }
       }
 
@@ -665,7 +665,7 @@ LABEL_11:
       v133 = v118;
       v134 = &__block_literal_global_47;
       v82 = [v81 bs_mapNoNulls:v132];
-      v83 = [v76 predictionCategoryID];
+      predictionCategoryID2 = [v76 predictionCategoryID];
       if ([v82 count])
       {
         v84 = 1;
@@ -673,7 +673,7 @@ LABEL_11:
 
       else
       {
-        v84 = v83 == 7;
+        v84 = predictionCategoryID2 == 7;
       }
 
       if (!v84)
@@ -706,8 +706,8 @@ LABEL_11:
       {
         v78 = objc_alloc_init(SBHLibraryCategory);
         [(SBHLibraryCategory *)v78 setCategoryIdentifier:v76];
-        v89 = [(SBHLibraryCategoriesFolderDataSource *)v120 iconModel];
-        [(SBHLibraryCategory *)v78 setIconDelegate:v89];
+        iconModel2 = [(SBHLibraryCategoriesFolderDataSource *)selfCopy iconModel];
+        [(SBHLibraryCategory *)v78 setIconDelegate:iconModel2];
 
         [v121 setObject:v78 forKey:v76];
         v111 = 1;
@@ -725,14 +725,14 @@ LABEL_87:
         [v110 addObject:v76];
       }
 
-      v86 = [(SBHLibraryCategory *)v78 compactPodAdditionalItemsFolder];
-      SBTreeNodeSetParent(v86, v120->_categoriesFolder);
+      compactPodAdditionalItemsFolder = [(SBHLibraryCategory *)v78 compactPodAdditionalItemsFolder];
+      SBTreeNodeSetParent(compactPodAdditionalItemsFolder, selfCopy->_categoriesFolder);
 
-      v87 = [(SBHLibraryCategory *)v78 compactPodFolder];
-      SBTreeNodeSetParent(v87, v120->_categoriesFolder);
+      compactPodFolder = [(SBHLibraryCategory *)v78 compactPodFolder];
+      SBTreeNodeSetParent(compactPodFolder, selfCopy->_categoriesFolder);
 
-      v88 = [(SBHLibraryCategory *)v78 expandedPodFolder];
-      SBTreeNodeSetParent(v88, v120->_categoriesFolder);
+      expandedPodFolder = [(SBHLibraryCategory *)v78 expandedPodFolder];
+      SBTreeNodeSetParent(expandedPodFolder, selfCopy->_categoriesFolder);
 
       v74 = v119;
 LABEL_84:
@@ -763,7 +763,7 @@ LABEL_91:
     v129 = 0u;
     v126 = 0u;
     v127 = 0u;
-    v92 = [(NSHashTable *)v120->_observers copy];
+    v92 = [(NSHashTable *)selfCopy->_observers copy];
     v93 = [v92 countByEnumeratingWithState:&v126 objects:v174 count:16];
     if (v93)
     {
@@ -778,7 +778,7 @@ LABEL_91:
             objc_enumerationMutation(v92);
           }
 
-          [*(*(&v126 + 1) + 8 * n) categoriesDataSourceNeedsAnimatedReload:v120];
+          [*(*(&v126 + 1) + 8 * n) categoriesDataSourceNeedsAnimatedReload:selfCopy];
         }
 
         v94 = [v92 countByEnumeratingWithState:&v126 objects:v174 count:16];
@@ -796,7 +796,7 @@ LABEL_91:
     v125 = 0u;
     v122 = 0u;
     v123 = 0u;
-    v97 = [(NSHashTable *)v120->_observers copy];
+    v97 = [(NSHashTable *)selfCopy->_observers copy];
     v98 = [v97 countByEnumeratingWithState:&v122 objects:v173 count:16];
     if (v98)
     {
@@ -811,7 +811,7 @@ LABEL_91:
             objc_enumerationMutation(v97);
           }
 
-          [*(*(&v122 + 1) + 8 * ii) categoriesDataSource:v120 shouldAnimateLayoutForCategories:v110];
+          [*(*(&v122 + 1) + 8 * ii) categoriesDataSource:selfCopy shouldAnimateLayoutForCategories:v110];
         }
 
         v99 = [v97 countByEnumeratingWithState:&v122 objects:v173 count:16];
@@ -975,21 +975,21 @@ uint64_t __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder_
   }
 }
 
-- (void)_noteDidAddIcon:(id)a3
+- (void)_noteDidAddIcon:(id)icon
 {
   if (self->_categoryMap)
   {
-    v4 = [a3 userInfo];
-    v9 = [v4 objectForKey:@"icon"];
+    userInfo = [icon userInfo];
+    v9 = [userInfo objectForKey:@"icon"];
 
     v6 = v9;
     if (v9)
     {
-      v5 = [v9 isWidgetIcon];
+      isWidgetIcon = [v9 isWidgetIcon];
       v6 = v9;
-      if ((v5 & 1) == 0)
+      if ((isWidgetIcon & 1) == 0)
       {
-        if (![v9 isApplicationIcon] || (v5 = objc_msgSend(v9, "leafIdentifierAndApplicationBundleIDMatches"), v6 = v9, v5))
+        if (![v9 isApplicationIcon] || (isWidgetIcon = objc_msgSend(v9, "leafIdentifierAndApplicationBundleIDMatches"), v6 = v9, isWidgetIcon))
         {
           v7 = [(NSSet *)self->_mappedIcons mutableCopy];
           [v7 bs_safeAddObject:v9];
@@ -1003,17 +1003,17 @@ uint64_t __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder_
       }
     }
 
-    MEMORY[0x1EEE66BB8](v5, v6);
+    MEMORY[0x1EEE66BB8](isWidgetIcon, v6);
   }
 }
 
-- (void)_noteDidReplaceIcon:(id)a3
+- (void)_noteDidReplaceIcon:(id)icon
 {
   v23 = *MEMORY[0x1E69E9840];
   if (self->_categoryMap)
   {
-    v4 = [a3 userInfo];
-    v5 = [v4 objectForKey:@"icon"];
+    userInfo = [icon userInfo];
+    v5 = [userInfo objectForKey:@"icon"];
 
     if ([v5 isLeafIcon])
     {
@@ -1022,7 +1022,7 @@ uint64_t __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder_
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v17 = self;
+      selfCopy = self;
       v7 = self->_mappedIcons;
       v8 = [(NSSet *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
@@ -1039,9 +1039,9 @@ uint64_t __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder_
             }
 
             v12 = *(*(&v18 + 1) + 8 * i);
-            v13 = [v5 leafIdentifier];
-            v14 = [v12 leafIdentifier];
-            v15 = [v13 isEqualToString:v14];
+            leafIdentifier = [v5 leafIdentifier];
+            leafIdentifier2 = [v12 leafIdentifier];
+            v15 = [leafIdentifier isEqualToString:leafIdentifier2];
 
             if (v15)
             {
@@ -1055,21 +1055,21 @@ uint64_t __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder_
         while (v9);
       }
 
-      if (([v6 isEqualToSet:v17->_mappedIcons] & 1) == 0)
+      if (([v6 isEqualToSet:selfCopy->_mappedIcons] & 1) == 0)
       {
-        v16 = [(SBHLibraryCategoriesFolderDataSource *)v17 reloadDataSourceUsingIcons:v6 categoryMap:v17->_categoryMap];
+        v16 = [(SBHLibraryCategoriesFolderDataSource *)selfCopy reloadDataSourceUsingIcons:v6 categoryMap:selfCopy->_categoryMap];
       }
     }
   }
 }
 
-- (void)_noteWillRemoveIcon:(id)a3
+- (void)_noteWillRemoveIcon:(id)icon
 {
   v23 = *MEMORY[0x1E69E9840];
   if (self->_categoryMap)
   {
-    v4 = [a3 userInfo];
-    v5 = [v4 objectForKey:@"icon"];
+    userInfo = [icon userInfo];
+    v5 = [userInfo objectForKey:@"icon"];
 
     if ([v5 isLeafIcon] && (objc_msgSend(v5, "isWidgetIcon") & 1) == 0)
     {
@@ -1078,7 +1078,7 @@ uint64_t __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder_
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v17 = self;
+      selfCopy = self;
       v7 = self->_mappedIcons;
       v8 = [(NSSet *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
@@ -1095,9 +1095,9 @@ uint64_t __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder_
             }
 
             v12 = *(*(&v18 + 1) + 8 * i);
-            v13 = [v5 leafIdentifier];
-            v14 = [v12 leafIdentifier];
-            v15 = [v13 isEqualToString:v14];
+            leafIdentifier = [v5 leafIdentifier];
+            leafIdentifier2 = [v12 leafIdentifier];
+            v15 = [leafIdentifier isEqualToString:leafIdentifier2];
 
             if (v15)
             {
@@ -1111,15 +1111,15 @@ uint64_t __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder_
         while (v9);
       }
 
-      if (([v6 isEqualToSet:v17->_mappedIcons] & 1) == 0)
+      if (([v6 isEqualToSet:selfCopy->_mappedIcons] & 1) == 0)
       {
-        v16 = [(SBHLibraryCategoriesFolderDataSource *)v17 reloadDataSourceUsingIcons:v6 categoryMap:v17->_categoryMap];
+        v16 = [(SBHLibraryCategoriesFolderDataSource *)selfCopy reloadDataSourceUsingIcons:v6 categoryMap:selfCopy->_categoryMap];
       }
     }
   }
 }
 
-- (void)_noteIconVisibilityDidChange:(id)a3
+- (void)_noteIconVisibilityDidChange:(id)change
 {
   if (self->_categoryMap)
   {
@@ -1127,7 +1127,7 @@ uint64_t __67__SBHLibraryCategoriesFolderDataSource__regenerateCategoriesFolder_
   }
 }
 
-- (void)_noteWillLayoutIconState:(id)a3
+- (void)_noteWillLayoutIconState:(id)state
 {
   if (self->_categoryMap)
   {

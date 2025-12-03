@@ -2,9 +2,9 @@
 - (CGSize)_imageSize;
 - (CGSize)intrinsicContentSize;
 - (_MKResultView)init;
-- (_MKResultView)initWithFrame:(CGRect)a3 highlightsOnTouch:(BOOL)a4;
-- (_MKResultView)initWithMapItem:(id)a3;
-- (_MKResultView)initWithMapItems:(id)a3 primaryLabelText:(id)a4;
+- (_MKResultView)initWithFrame:(CGRect)frame highlightsOnTouch:(BOOL)touch;
+- (_MKResultView)initWithMapItem:(id)item;
+- (_MKResultView)initWithMapItems:(id)items primaryLabelText:(id)text;
 - (_MKResultViewDelegate)delegate;
 - (_MKUILabel)nameLabel;
 - (_MKUILabel)secondaryLabel;
@@ -13,9 +13,9 @@
 - (double)preferredHeight;
 - (id)_defaultPrimaryLabel;
 - (id)_defaultSecondaryCategoryLabel;
-- (id)_labelWithFontSize:(double)a3;
-- (unint64_t)_maxNameLengthForEndingString:(id)a3;
-- (unint64_t)_maxSecondaryStringLengthForEndingString:(id)a3;
+- (id)_labelWithFontSize:(double)size;
+- (unint64_t)_maxNameLengthForEndingString:(id)string;
+- (unint64_t)_maxSecondaryStringLengthForEndingString:(id)string;
 - (void)_cancelReferenceLocationTimer;
 - (void)_commonInit;
 - (void)_fireReferenceLocationTimer;
@@ -26,23 +26,23 @@
 - (void)_updateLayoutForBusinessOrCategory;
 - (void)_updatePrimaryColors;
 - (void)_updateSecondaryColors;
-- (void)addLabelIfNecessary:(id)a3;
+- (void)addLabelIfNecessary:(id)necessary;
 - (void)dealloc;
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 - (void)layoutSubviews;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)setIconFormat:(int)a3;
-- (void)setImageView:(id)a3;
-- (void)setMapItem:(id)a3;
-- (void)setMapItems:(id)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)setIconFormat:(int)format;
+- (void)setImageView:(id)view;
+- (void)setMapItem:(id)item;
+- (void)setMapItems:(id)items;
 - (void)setNeedsUpdateConstraints;
-- (void)setPrimaryLabelText:(id)a3;
-- (void)setPrimaryTextColor:(id)a3;
-- (void)setReferenceLocation:(id)a3;
-- (void)setSecondaryLabelText:(id)a3;
-- (void)setSecondaryTextColor:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowsDistance:(BOOL)a3;
+- (void)setPrimaryLabelText:(id)text;
+- (void)setPrimaryTextColor:(id)color;
+- (void)setReferenceLocation:(id)location;
+- (void)setSecondaryLabelText:(id)text;
+- (void)setSecondaryTextColor:(id)color;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowsDistance:(BOOL)distance;
 - (void)updateConstraints;
 - (void)updateImageView;
 - (void)updateLayout;
@@ -58,17 +58,17 @@
   return WeakRetained;
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v11 = a3;
-  v4 = [v11 lastLocation];
-  [v4 horizontalAccuracy];
+  locationCopy = location;
+  lastLocation = [locationCopy lastLocation];
+  [lastLocation horizontalAccuracy];
   if (v5 > 0.0)
   {
-    v6 = [v11 lastLocation];
-    [v6 horizontalAccuracy];
+    lastLocation2 = [locationCopy lastLocation];
+    [lastLocation2 horizontalAccuracy];
     v8 = v7;
-    [v11 distanceFilter];
+    [locationCopy distanceFilter];
     v10 = v9;
 
     if (v8 >= v10)
@@ -76,8 +76,8 @@
       goto LABEL_5;
     }
 
-    v4 = [v11 lastLocation];
-    [(_MKResultView *)self setReferenceLocation:v4];
+    lastLocation = [locationCopy lastLocation];
+    [(_MKResultView *)self setReferenceLocation:lastLocation];
   }
 
 LABEL_5:
@@ -100,28 +100,28 @@ LABEL_5:
   }
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
-    v4 = [(_MKResultView *)self delegate];
+    delegate = [(_MKResultView *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(_MKResultView *)self delegate];
-      [v6 resultViewWasSelected:self];
+      delegate2 = [(_MKResultView *)self delegate];
+      [delegate2 resultViewWasSelected:self];
     }
   }
 }
 
-- (void)setReferenceLocation:(id)a3
+- (void)setReferenceLocation:(id)location
 {
-  v5 = a3;
-  if (v5 && (referenceLocation = self->_referenceLocation) != 0)
+  locationCopy = location;
+  if (locationCopy && (referenceLocation = self->_referenceLocation) != 0)
   {
     [(CLLocation *)referenceLocation coordinate];
-    [(CLLocation *)v5 coordinate];
+    [(CLLocation *)locationCopy coordinate];
     CLLocationCoordinate2DGetDistanceFrom();
     v8 = v7 <= 100.0;
   }
@@ -131,9 +131,9 @@ LABEL_5:
     v8 = 0;
   }
 
-  if (self->_referenceLocation != v5 && !v8)
+  if (self->_referenceLocation != locationCopy && !v8)
   {
-    objc_storeStrong(&self->_referenceLocation, a3);
+    objc_storeStrong(&self->_referenceLocation, location);
     [(_MKResultView *)self updateSubviews];
     [(_MKResultView *)self updateConstraints];
     if (self->_referenceLocation)
@@ -160,13 +160,13 @@ LABEL_5:
   [(_MKResultView *)self _cancelReferenceLocationTimer];
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_imageView] & 1) == 0)
+  viewCopy = view;
+  if (([viewCopy isEqual:self->_imageView] & 1) == 0)
   {
     [(UIImageView *)self->_imageView removeFromSuperview];
-    objc_storeStrong(&self->_imageView, a3);
+    objc_storeStrong(&self->_imageView, view);
     [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_MKResultView *)self addSubview:self->_imageView];
     [(_MKResultView *)self updateSubviews];
@@ -174,33 +174,33 @@ LABEL_5:
   }
 }
 
-- (void)setSecondaryLabelText:(id)a3
+- (void)setSecondaryLabelText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (![(NSString *)self->_secondaryLabelText isEqualToString:?])
   {
-    objc_storeStrong(&self->_secondaryLabelText, a3);
+    objc_storeStrong(&self->_secondaryLabelText, text);
     [(_MKResultView *)self updateSubviews];
   }
 }
 
-- (void)setPrimaryLabelText:(id)a3
+- (void)setPrimaryLabelText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (![(NSString *)self->_primaryLabelText isEqualToString:?])
   {
-    objc_storeStrong(&self->_primaryLabelText, a3);
+    objc_storeStrong(&self->_primaryLabelText, text);
     [(_MKResultView *)self updateSubviews];
   }
 }
 
-- (void)setMapItems:(id)a3
+- (void)setMapItems:(id)items
 {
-  v5 = a3;
-  if (self->_mapItems != v5)
+  itemsCopy = items;
+  if (self->_mapItems != itemsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_mapItems, a3);
+    v7 = itemsCopy;
+    objc_storeStrong(&self->_mapItems, items);
     if ([(NSArray *)self->_mapItems count]>= 2)
     {
       self->_layoutType = 2;
@@ -208,35 +208,35 @@ LABEL_5:
 
     else
     {
-      v6 = [(_MKResultView *)self mapItem];
-      self->_layoutType = [v6 _hasMUID] ^ 1;
+      mapItem = [(_MKResultView *)self mapItem];
+      self->_layoutType = [mapItem _hasMUID] ^ 1;
     }
 
     [(_MKResultView *)self updateLayout];
-    v5 = v7;
+    itemsCopy = v7;
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_MKResultView *)self mapItem];
-  v6 = v5;
-  if (v5 == v4)
+  itemCopy = item;
+  mapItem = [(_MKResultView *)self mapItem];
+  v6 = mapItem;
+  if (mapItem == itemCopy)
   {
   }
 
   else
   {
-    v7 = [(_MKResultView *)self mapItem];
-    v8 = [v7 isEqual:v4];
+    mapItem2 = [(_MKResultView *)self mapItem];
+    v8 = [mapItem2 isEqual:itemCopy];
 
     if ((v8 & 1) == 0)
     {
-      if (v4)
+      if (itemCopy)
       {
-        v10[0] = v4;
+        v10[0] = itemCopy;
         v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
       }
 
@@ -246,11 +246,11 @@ LABEL_5:
       }
 
       objc_storeStrong(&self->_mapItems, v9);
-      if (v4)
+      if (itemCopy)
       {
       }
 
-      self->_layoutType = [v4 _hasMUID] ^ 1;
+      self->_layoutType = [itemCopy _hasMUID] ^ 1;
       [(_MKResultView *)self updateLayout];
     }
   }
@@ -268,65 +268,65 @@ LABEL_5:
 - (void)updateSubviews
 {
   layoutType = self->_layoutType;
-  v4 = [(_MKResultView *)self mapItem];
-  v5 = [(_MKResultView *)self _defaultPrimaryLabel];
+  mapItem = [(_MKResultView *)self mapItem];
+  _defaultPrimaryLabel = [(_MKResultView *)self _defaultPrimaryLabel];
   v6 = 0x1E696A000uLL;
   if (layoutType == 2)
   {
     v11 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v12 = [(_MKResultView *)self _defaultSecondaryCategoryLabel];
-    v10 = [v11 initWithString:v12];
+    _defaultSecondaryCategoryLabel = [(_MKResultView *)self _defaultSecondaryCategoryLabel];
+    attributedText = [v11 initWithString:_defaultSecondaryCategoryLabel];
     v13 = 0;
   }
 
   else
   {
-    if ([v4 _hasTransitLabels])
+    if ([mapItem _hasTransitLabels])
     {
-      v7 = [[MKTransitInfoLabelView alloc] initWithMapItem:v4];
-      v8 = [(_MKResultView *)self secondaryLabel];
-      v9 = [v8 font];
-      [(MKTransitInfoLabelView *)v7 setFont:v9];
+      _addressFormattedAsShortenedAddress = [[MKTransitInfoLabelView alloc] initWithMapItem:mapItem];
+      secondaryLabel = [(_MKResultView *)self secondaryLabel];
+      font = [secondaryLabel font];
+      [(MKTransitInfoLabelView *)_addressFormattedAsShortenedAddress setFont:font];
 
-      v10 = [(MKTransitInfoLabelView *)v7 attributedText];
+      attributedText = [(MKTransitInfoLabelView *)_addressFormattedAsShortenedAddress attributedText];
     }
 
     else
     {
-      v7 = [v4 _addressFormattedAsShortenedAddress];
-      if (v7)
+      _addressFormattedAsShortenedAddress = [mapItem _addressFormattedAsShortenedAddress];
+      if (_addressFormattedAsShortenedAddress)
       {
         v14 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v15 = [v4 _addressFormattedAsShortenedAddress];
-        v10 = [v14 initWithString:v15];
+        _addressFormattedAsShortenedAddress2 = [mapItem _addressFormattedAsShortenedAddress];
+        attributedText = [v14 initWithString:_addressFormattedAsShortenedAddress2];
       }
 
       else
       {
-        v10 = 0;
+        attributedText = 0;
       }
     }
 
-    if (![v4 _hasMUID])
+    if (![mapItem _hasMUID])
     {
       v13 = 0;
       goto LABEL_14;
     }
 
-    v16 = v5;
-    v12 = [[_MKLocalizedHoursBuilder alloc] initWithMapItem:v4 localizedHoursStringOptions:0];
+    v16 = _defaultPrimaryLabel;
+    _defaultSecondaryCategoryLabel = [[_MKLocalizedHoursBuilder alloc] initWithMapItem:mapItem localizedHoursStringOptions:0];
     v17 = MEMORY[0x1E696AEC0];
     v18 = _MKLocalizedStringFromThisBundle(@"Hours %@");
-    v19 = [(_MKLocalizedHoursBuilder *)v12 localizedOperatingHours];
-    v20 = [v17 stringWithFormat:v18, v19];
+    localizedOperatingHours = [(_MKLocalizedHoursBuilder *)_defaultSecondaryCategoryLabel localizedOperatingHours];
+    v20 = [v17 stringWithFormat:v18, localizedOperatingHours];
 
     v13 = 0;
-    if ([v4 _hasBusinessHours])
+    if ([mapItem _hasBusinessHours])
     {
       v13 = v20;
     }
 
-    v5 = v16;
+    _defaultPrimaryLabel = v16;
     v6 = 0x1E696A000;
   }
 
@@ -346,13 +346,13 @@ LABEL_14:
     goto LABEL_23;
   }
 
-  v22 = [(_MKResultView *)self referenceLocation];
+  referenceLocation = [(_MKResultView *)self referenceLocation];
 
-  if (v22)
+  if (referenceLocation)
   {
-    v23 = [v4 location];
-    v24 = [(_MKResultView *)self referenceLocation];
-    [v23 distanceFromLocation:v24];
+    location = [mapItem location];
+    referenceLocation2 = [(_MKResultView *)self referenceLocation];
+    [location distanceFromLocation:referenceLocation2];
     v26 = v25;
 
     v27 = [MEMORY[0x1E696AEC0] _mapkit_localizedDistanceStringWithMeters:v26 abbreviated:0];
@@ -375,34 +375,34 @@ LABEL_23:
   }
 
 LABEL_24:
-  primaryLabelText = v5;
+  primaryLabelText = _defaultPrimaryLabel;
   if ([(NSString *)self->_primaryLabelText length])
   {
     primaryLabelText = self->_primaryLabelText;
   }
 
-  v32 = [(_MKResultView *)self nameLabel];
-  [v32 setText:primaryLabelText];
+  nameLabel = [(_MKResultView *)self nameLabel];
+  [nameLabel setText:primaryLabelText];
 
   if ([(NSString *)self->_secondaryLabelText length])
   {
     v33 = [objc_alloc(*(v6 + 2736)) initWithString:self->_secondaryLabelText];
-    v34 = [(_MKResultView *)self secondaryLabel];
-    [v34 setAttributedText:v33];
+    secondaryLabel2 = [(_MKResultView *)self secondaryLabel];
+    [secondaryLabel2 setAttributedText:v33];
   }
 
   else if (layoutType != 2 && -[_MKResultView showsDistance](self, "showsDistance") && [v27 length])
   {
-    if ([v10 length])
+    if ([attributedText length])
     {
-      v62 = v5;
+      v62 = _defaultPrimaryLabel;
       v35 = MEMORY[0x1E696AEC0];
       v36 = _MKLocalizedStringFromThisBundle(@"RESULTVIEW_CITY_DISTANCE_TEXT");
-      v37 = [v10 string];
-      v38 = [v35 stringWithFormat:v36, v27, v37];
+      string = [attributedText string];
+      v38 = [v35 stringWithFormat:v36, v27, string];
 
-      v39 = [v10 string];
-      v40 = [v38 rangeOfString:v39];
+      string2 = [attributedText string];
+      v40 = [v38 rangeOfString:string2];
       v42 = v41;
 
       v61 = v38;
@@ -414,7 +414,7 @@ LABEL_24:
         {
           v63 = 0;
           v64 = 0;
-          v45 = [v10 attributesAtIndex:v44 effectiveRange:&v63];
+          v45 = [attributedText attributesAtIndex:v44 effectiveRange:&v63];
           [v43 addAttributes:v45 range:{v44 + v40, v64}];
           v44 += v64;
         }
@@ -422,10 +422,10 @@ LABEL_24:
         while (v44 < v42);
       }
 
-      v46 = [(_MKResultView *)self secondaryLabel];
-      [v46 setAttributedText:v43];
+      secondaryLabel3 = [(_MKResultView *)self secondaryLabel];
+      [secondaryLabel3 setAttributedText:v43];
 
-      v5 = v62;
+      _defaultPrimaryLabel = v62;
     }
 
     else
@@ -440,8 +440,8 @@ LABEL_24:
         v59 = 0;
       }
 
-      v60 = [(_MKResultView *)self secondaryLabel];
-      [v60 setAttributedText:v59];
+      secondaryLabel4 = [(_MKResultView *)self secondaryLabel];
+      [secondaryLabel4 setAttributedText:v59];
 
       if (v27)
       {
@@ -451,13 +451,13 @@ LABEL_24:
 
   else
   {
-    v47 = [(_MKResultView *)self secondaryLabel];
-    [v47 setAttributedText:v10];
+    secondaryLabel5 = [(_MKResultView *)self secondaryLabel];
+    [secondaryLabel5 setAttributedText:attributedText];
   }
 
   v48 = [v13 length];
-  v49 = [(_MKResultView *)self tertiaryLabel];
-  v50 = v49;
+  tertiaryLabel = [(_MKResultView *)self tertiaryLabel];
+  v50 = tertiaryLabel;
   if (v48)
   {
     v51 = v13;
@@ -468,35 +468,35 @@ LABEL_24:
     v51 = 0;
   }
 
-  [v49 setText:v51];
+  [tertiaryLabel setText:v51];
 
   v52 = self->_layoutType;
   switch(v52)
   {
     case 0:
-      v58 = [(_MKResultView *)self nameLabel];
-      [v58 setNumberOfLines:1];
+      nameLabel2 = [(_MKResultView *)self nameLabel];
+      [nameLabel2 setNumberOfLines:1];
 
-      v53 = [(_MKResultView *)self secondaryLabel];
-      v56 = v53;
+      secondaryLabel6 = [(_MKResultView *)self secondaryLabel];
+      v56 = secondaryLabel6;
       v57 = 1;
       goto LABEL_47;
     case 2:
-      v54 = [(_MKResultView *)self tertiaryLabel];
-      [v54 setText:0];
+      tertiaryLabel2 = [(_MKResultView *)self tertiaryLabel];
+      [tertiaryLabel2 setText:0];
 
-      v55 = [(_MKResultView *)self nameLabel];
-      [v55 setNumberOfLines:1];
+      nameLabel3 = [(_MKResultView *)self nameLabel];
+      [nameLabel3 setNumberOfLines:1];
 
-      v53 = [(_MKResultView *)self secondaryLabel];
+      secondaryLabel6 = [(_MKResultView *)self secondaryLabel];
       goto LABEL_45;
     case 1:
-      v53 = [(_MKResultView *)self nameLabel];
+      secondaryLabel6 = [(_MKResultView *)self nameLabel];
 LABEL_45:
-      v56 = v53;
+      v56 = secondaryLabel6;
       v57 = 2;
 LABEL_47:
-      [v53 setNumberOfLines:v57];
+      [secondaryLabel6 setNumberOfLines:v57];
 
       v52 = self->_layoutType;
       break;
@@ -517,42 +517,42 @@ LABEL_47:
 
 - (double)_expectedHeightForLabels
 {
-  v4 = [(_MKResultView *)self nameLabel];
-  v5 = [v4 font];
-  [v5 _scaledValueForValue:24.0];
+  nameLabel = [(_MKResultView *)self nameLabel];
+  font = [nameLabel font];
+  [font _scaledValueForValue:24.0];
   v7 = round(v6) + 0.0;
 
-  v8 = [(_MKResultView *)self secondaryLabel];
-  v9 = [v8 attributedText];
-  if ([v9 length])
+  secondaryLabel = [(_MKResultView *)self secondaryLabel];
+  attributedText = [secondaryLabel attributedText];
+  if ([attributedText length])
   {
-    v2 = [(_MKResultView *)self secondaryLabel];
-    v10 = [v2 font];
-    [v10 _scaledValueForValue:20.0];
+    secondaryLabel2 = [(_MKResultView *)self secondaryLabel];
+    font2 = [secondaryLabel2 font];
+    [font2 _scaledValueForValue:20.0];
     v7 = v7 + round(v11);
   }
 
   v12 = [(NSArray *)self->_mapItems count];
   if (v12 >= 2)
   {
-    v8 = [(_MKResultView *)self secondaryLabel];
-    v2 = [v8 attributedText];
-    if ([v2 length])
+    secondaryLabel = [(_MKResultView *)self secondaryLabel];
+    secondaryLabel2 = [secondaryLabel attributedText];
+    if ([secondaryLabel2 length])
     {
 
 LABEL_9:
-      v16 = [(_MKResultView *)self tertiaryLabel];
-      v17 = [v16 font];
-      [v17 _scaledValueForValue:17.0];
+      tertiaryLabel = [(_MKResultView *)self tertiaryLabel];
+      font3 = [tertiaryLabel font];
+      [font3 _scaledValueForValue:17.0];
       v7 = v7 + round(v18);
 
       return v7;
     }
   }
 
-  v13 = [(_MKResultView *)self tertiaryLabel];
-  v14 = [v13 text];
-  v15 = [v14 length];
+  tertiaryLabel2 = [(_MKResultView *)self tertiaryLabel];
+  text = [tertiaryLabel2 text];
+  v15 = [text length];
 
   if (v12 >= 2)
   {
@@ -595,25 +595,25 @@ LABEL_9:
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v29 + 1) + 8 * i) name];
-        if (([v6 containsObject:v12] & 1) == 0)
+        name = [*(*(&v29 + 1) + 8 * i) name];
+        if (([v6 containsObject:name] & 1) == 0)
         {
           if ([v9 length])
           {
             v13 = MEMORY[0x1E696AEC0];
             v14 = _MKLocalizedStringFromThisBundle(@"MKRESULTVIEW_NAME_STRING");
-            v15 = [v13 stringWithFormat:v14, v9, v27, v12];
+            v15 = [v13 stringWithFormat:v14, v9, v27, name];
 
             v9 = v14;
           }
 
           else
           {
-            v15 = v12;
+            v15 = name;
           }
 
           --v3;
-          [v6 addObject:v12];
+          [v6 addObject:name];
           v9 = v15;
         }
 
@@ -662,49 +662,49 @@ LABEL_19:
   return v9;
 }
 
-- (unint64_t)_maxNameLengthForEndingString:(id)a3
+- (unint64_t)_maxNameLengthForEndingString:(id)string
 {
-  v4 = a3;
-  v5 = [(_MKResultView *)self _maxSecondaryStringLengthForEndingString:v4];
-  v6 = [v4 length];
+  stringCopy = string;
+  v5 = [(_MKResultView *)self _maxSecondaryStringLengthForEndingString:stringCopy];
+  v6 = [stringCopy length];
 
   return v5 - v6;
 }
 
-- (unint64_t)_maxSecondaryStringLengthForEndingString:(id)a3
+- (unint64_t)_maxSecondaryStringLengthForEndingString:(id)string
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"W", a3];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"W", string];
   v23 = *MEMORY[0x1E69DB648];
-  v5 = [(_MKResultView *)self secondaryLabel];
-  v6 = [v5 font];
-  v24[0] = v6;
+  secondaryLabel = [(_MKResultView *)self secondaryLabel];
+  font = [secondaryLabel font];
+  v24[0] = font;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
 
   v8 = objc_alloc_init(MEMORY[0x1E69DB7E0]);
-  v9 = [(_MKResultView *)self secondaryLabel];
-  [v9 minimumScaleFactor];
+  secondaryLabel2 = [(_MKResultView *)self secondaryLabel];
+  [secondaryLabel2 minimumScaleFactor];
   [v8 setMinimumScaleFactor:?];
 
-  [v4 boundingRectWithSize:0 options:v7 attributes:v8 context:{1.79769313e308, 1.79769313e308}];
+  [string boundingRectWithSize:0 options:v7 attributes:v8 context:{1.79769313e308, 1.79769313e308}];
   v11 = v10;
-  v12 = [(_MKResultView *)self secondaryLabel];
-  [v12 bounds];
+  secondaryLabel3 = [(_MKResultView *)self secondaryLabel];
+  [secondaryLabel3 bounds];
   v14 = v13 + v13;
 
   if (v11 <= v14)
   {
     do
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"W", v4];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"W", string];
 
       [v15 boundingRectWithSize:0 options:v7 attributes:v8 context:{1.79769313e308, 1.79769313e308}];
       v17 = v16;
-      v18 = [(_MKResultView *)self secondaryLabel];
-      [v18 bounds];
+      secondaryLabel4 = [(_MKResultView *)self secondaryLabel];
+      [secondaryLabel4 bounds];
       v20 = v19 + v19;
 
-      v4 = v15;
+      string = v15;
     }
 
     while (v17 <= v20);
@@ -712,7 +712,7 @@ LABEL_19:
 
   else
   {
-    v15 = v4;
+    v15 = string;
   }
 
   v21 = [v15 length];
@@ -732,30 +732,30 @@ LABEL_19:
   {
     if (layoutType == 1)
     {
-      v4 = [(_MKResultView *)self mapItem];
-      v5 = [v4 _addressFormattedAsSinglelineAddress];
+      mapItem = [(_MKResultView *)self mapItem];
+      _addressFormattedAsSinglelineAddress = [mapItem _addressFormattedAsSinglelineAddress];
     }
 
     else
     {
-      v7 = [(_MKResultView *)self mapItem];
-      v8 = [v7 _hasTransitDisplayName];
+      mapItem2 = [(_MKResultView *)self mapItem];
+      _hasTransitDisplayName = [mapItem2 _hasTransitDisplayName];
 
-      v9 = [(_MKResultView *)self mapItem];
-      v4 = v9;
-      if (v8)
+      mapItem3 = [(_MKResultView *)self mapItem];
+      mapItem = mapItem3;
+      if (_hasTransitDisplayName)
       {
-        [v9 _transitDisplayName];
+        [mapItem3 _transitDisplayName];
       }
 
       else
       {
-        [v9 name];
+        [mapItem3 name];
       }
-      v5 = ;
+      _addressFormattedAsSinglelineAddress = ;
     }
 
-    v6 = v5;
+    v6 = _addressFormattedAsSinglelineAddress;
   }
 
   return v6;
@@ -763,52 +763,52 @@ LABEL_19:
 
 - (void)_updateLayoutForAddress
 {
-  v3 = [(_MKResultView *)self secondaryLabel];
-  [v3 removeFromSuperview];
+  secondaryLabel = [(_MKResultView *)self secondaryLabel];
+  [secondaryLabel removeFromSuperview];
 
-  v4 = [(_MKResultView *)self tertiaryLabel];
-  [v4 removeFromSuperview];
+  tertiaryLabel = [(_MKResultView *)self tertiaryLabel];
+  [tertiaryLabel removeFromSuperview];
 }
 
 - (void)_updateLayoutForBusinessOrCategory
 {
-  v3 = [(_MKResultView *)self secondaryLabel];
-  [(_MKResultView *)self addLabelIfNecessary:v3];
+  secondaryLabel = [(_MKResultView *)self secondaryLabel];
+  [(_MKResultView *)self addLabelIfNecessary:secondaryLabel];
 
-  v4 = [(_MKResultView *)self tertiaryLabel];
-  [(_MKResultView *)self addLabelIfNecessary:v4];
+  tertiaryLabel = [(_MKResultView *)self tertiaryLabel];
+  [(_MKResultView *)self addLabelIfNecessary:tertiaryLabel];
 
-  v5 = [(_MKResultView *)self nameLabel];
-  [v5 setNumberOfLines:1];
+  nameLabel = [(_MKResultView *)self nameLabel];
+  [nameLabel setNumberOfLines:1];
 }
 
-- (void)addLabelIfNecessary:(id)a3
+- (void)addLabelIfNecessary:(id)necessary
 {
-  v12 = a3;
-  v4 = self;
-  v5 = v12;
-  v6 = v4;
-  if (v4->_secondaryLabel == v12 || v4->_tertiaryLabel == v12)
+  necessaryCopy = necessary;
+  selfCopy = self;
+  v5 = necessaryCopy;
+  v6 = selfCopy;
+  if (selfCopy->_secondaryLabel == necessaryCopy || selfCopy->_tertiaryLabel == necessaryCopy)
   {
-    v7 = [(_MKResultView *)v4 useSpotlightVibrancy];
-    v5 = v12;
-    if (v7)
+    useSpotlightVibrancy = [(_MKResultView *)selfCopy useSpotlightVibrancy];
+    v5 = necessaryCopy;
+    if (useSpotlightVibrancy)
     {
-      [(_MKUILabel *)v12 setAlpha:0.375];
+      [(_MKUILabel *)necessaryCopy setAlpha:0.375];
       v8 = *MEMORY[0x1E6979C60];
-      v9 = [(_MKUILabel *)v12 layer];
-      [v9 setCompositingFilter:v8];
+      layer = [(_MKUILabel *)necessaryCopy layer];
+      [layer setCompositingFilter:v8];
 
-      v5 = v12;
+      v5 = necessaryCopy;
     }
   }
 
-  v10 = [(_MKUILabel *)v5 text];
-  v11 = [v10 length];
+  text = [(_MKUILabel *)v5 text];
+  v11 = [text length];
 
   if (v11)
   {
-    [(_MKResultView *)v6 addSubview:v12];
+    [(_MKResultView *)v6 addSubview:necessaryCopy];
   }
 }
 
@@ -819,12 +819,12 @@ LABEL_19:
   [(_MKResultView *)&v13 intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(_MKResultView *)self superview];
+  superview = [(_MKResultView *)self superview];
 
-  if (v7)
+  if (superview)
   {
-    v8 = [(_MKResultView *)self superview];
-    [v8 bounds];
+    superview2 = [(_MKResultView *)self superview];
+    [superview2 bounds];
     v4 = v9;
 
     [(_MKResultView *)self preferredHeight];
@@ -868,13 +868,13 @@ LABEL_19:
 
 - (CGSize)_imageSize
 {
-  v3 = [(_MKResultView *)self imageView];
-  v4 = [v3 image];
-  if (v4)
+  imageView = [(_MKResultView *)self imageView];
+  image = [imageView image];
+  if (image)
   {
-    v5 = [(_MKResultView *)self imageView];
-    v6 = [v5 image];
-    [v6 size];
+    imageView2 = [(_MKResultView *)self imageView];
+    image2 = [imageView2 image];
+    [image2 size];
     v8 = v7;
     v10 = v9;
   }
@@ -892,28 +892,28 @@ LABEL_19:
   return result;
 }
 
-- (void)setSecondaryTextColor:(id)a3
+- (void)setSecondaryTextColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_secondaryTextColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_secondaryTextColor, a3);
-    v5 = [(_MKResultView *)self secondaryLabel];
-    [v5 setTextColor:v7];
+    objc_storeStrong(&self->_secondaryTextColor, color);
+    secondaryLabel = [(_MKResultView *)self secondaryLabel];
+    [secondaryLabel setTextColor:colorCopy];
 
-    v6 = [(_MKResultView *)self tertiaryLabel];
-    [v6 setTextColor:v7];
+    tertiaryLabel = [(_MKResultView *)self tertiaryLabel];
+    [tertiaryLabel setTextColor:colorCopy];
   }
 }
 
-- (void)setPrimaryTextColor:(id)a3
+- (void)setPrimaryTextColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_primaryTextColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_primaryTextColor, a3);
-    v5 = [(_MKResultView *)self nameLabel];
-    [v5 setTextColor:v6];
+    objc_storeStrong(&self->_primaryTextColor, color);
+    nameLabel = [(_MKResultView *)self nameLabel];
+    [nameLabel setTextColor:colorCopy];
   }
 }
 
@@ -924,9 +924,9 @@ LABEL_19:
   [(_MKResultView *)&v6 layoutSubviews];
   if ([(NSArray *)self->_mapItems count])
   {
-    v3 = [(_MKResultView *)self nameLabel];
-    v4 = [v3 text];
-    v5 = [v4 length];
+    nameLabel = [(_MKResultView *)self nameLabel];
+    text = [nameLabel text];
+    v5 = [text length];
 
     if (!v5)
     {
@@ -940,11 +940,11 @@ LABEL_19:
   v103[4] = *MEMORY[0x1E69E9840];
   [(_MKResultView *)self removeConstraints:self->_resultConstraints];
   [(NSMutableArray *)self->_resultConstraints removeAllObjects];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
   v5 = 1;
-  if (v4 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v6 = 2;
   }
@@ -955,28 +955,28 @@ LABEL_19:
   }
 
   v95 = v6;
-  if (v4 != 1)
+  if (userInterfaceLayoutDirection != 1)
   {
     v5 = 2;
   }
 
-  v92 = v4;
+  v92 = userInterfaceLayoutDirection;
   v93 = v5;
   [(_MKResultView *)self _imageSize];
   v8 = v7;
   v10 = v9;
-  v11 = [(_MKResultView *)self secondaryLabel];
-  v12 = [v11 attributedText];
-  v96 = [v12 length];
+  secondaryLabel = [(_MKResultView *)self secondaryLabel];
+  attributedText = [secondaryLabel attributedText];
+  v96 = [attributedText length];
 
-  v13 = [(_MKResultView *)self tertiaryLabel];
-  v14 = [v13 text];
-  v94 = [v14 length];
+  tertiaryLabel = [(_MKResultView *)self tertiaryLabel];
+  text = [tertiaryLabel text];
+  v94 = [text length];
 
   resultConstraints = self->_resultConstraints;
   v16 = MEMORY[0x1E696ACD8];
-  v17 = [(_MKResultView *)self nameLabel];
-  v18 = [v16 constraintWithItem:v17 attribute:7 relatedBy:-1 toItem:self attribute:7 multiplier:1.0 constant:-(v8 + 45.0)];
+  nameLabel = [(_MKResultView *)self nameLabel];
+  v18 = [v16 constraintWithItem:nameLabel attribute:7 relatedBy:-1 toItem:self attribute:7 multiplier:1.0 constant:-(v8 + 45.0)];
   [(NSMutableArray *)resultConstraints addObject:v18];
 
   layoutType = self->_layoutType;
@@ -986,23 +986,23 @@ LABEL_19:
     {
       v48 = self->_resultConstraints;
       v59 = MEMORY[0x1E696ACD8];
-      v20 = [(_MKResultView *)self nameLabel];
-      v60 = [(_MKResultView *)self imageView];
-      v50 = v60;
-      if (v60)
+      nameLabel2 = [(_MKResultView *)self nameLabel];
+      imageView = [(_MKResultView *)self imageView];
+      tertiaryLabel4 = imageView;
+      if (imageView)
       {
-        v56 = v60;
+        selfCopy2 = imageView;
       }
 
       else
       {
-        v56 = self;
+        selfCopy2 = self;
       }
 
       v51 = 1.0;
       v58 = 0.0;
       v52 = v59;
-      v53 = v20;
+      v53 = nameLabel2;
       v54 = 10;
       v55 = 0;
       v57 = 10;
@@ -1015,39 +1015,39 @@ LABEL_19:
     }
   }
 
-  v20 = [(_MKResultView *)self nameLabel];
+  nameLabel2 = [(_MKResultView *)self nameLabel];
   if (v96)
   {
     v21 = self->_resultConstraints;
     v22 = MEMORY[0x1E696ACD8];
-    v23 = [(_MKResultView *)self secondaryLabel];
-    v24 = [v22 constraintWithItem:v23 attribute:7 relatedBy:-1 toItem:self attribute:7 multiplier:1.0 constant:-(v8 + 45.0)];
+    secondaryLabel2 = [(_MKResultView *)self secondaryLabel];
+    v24 = [v22 constraintWithItem:secondaryLabel2 attribute:7 relatedBy:-1 toItem:self attribute:7 multiplier:1.0 constant:-(v8 + 45.0)];
     [(NSMutableArray *)v21 addObject:v24];
 
-    v25 = [(_MKResultView *)self secondaryLabel];
+    secondaryLabel3 = [(_MKResultView *)self secondaryLabel];
 
-    v20 = v25;
+    nameLabel2 = secondaryLabel3;
   }
 
   v26 = self->_resultConstraints;
   v27 = MEMORY[0x1E696ACD8];
-  v28 = [(_MKResultView *)self nameLabel];
-  v29 = [(_MKResultView *)self nameLabel];
-  v30 = [v29 font];
-  [v30 _scaledValueForValue:24.0];
-  v32 = [v27 constraintWithItem:v28 attribute:12 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:round(v31)];
+  nameLabel3 = [(_MKResultView *)self nameLabel];
+  nameLabel4 = [(_MKResultView *)self nameLabel];
+  font = [nameLabel4 font];
+  [font _scaledValueForValue:24.0];
+  v32 = [v27 constraintWithItem:nameLabel3 attribute:12 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:round(v31)];
   [(NSMutableArray *)v26 addObject:v32];
 
   if (v96)
   {
     v33 = self->_resultConstraints;
     v34 = MEMORY[0x1E696ACD8];
-    v35 = [(_MKResultView *)self secondaryLabel];
-    v36 = [(_MKResultView *)self nameLabel];
-    v37 = [(_MKResultView *)self secondaryLabel];
-    v38 = [v37 font];
-    [v38 _scaledValueForValue:20.0];
-    v40 = [v34 constraintWithItem:v35 attribute:12 relatedBy:0 toItem:v36 attribute:11 multiplier:1.0 constant:round(v39)];
+    secondaryLabel4 = [(_MKResultView *)self secondaryLabel];
+    nameLabel5 = [(_MKResultView *)self nameLabel];
+    secondaryLabel5 = [(_MKResultView *)self secondaryLabel];
+    font2 = [secondaryLabel5 font];
+    [font2 _scaledValueForValue:20.0];
+    v40 = [v34 constraintWithItem:secondaryLabel4 attribute:12 relatedBy:0 toItem:nameLabel5 attribute:11 multiplier:1.0 constant:round(v39)];
     [(NSMutableArray *)v33 addObject:v40];
   }
 
@@ -1058,33 +1058,33 @@ LABEL_19:
 
   v41 = self->_resultConstraints;
   v42 = MEMORY[0x1E696ACD8];
-  v43 = [(_MKResultView *)self tertiaryLabel];
-  v44 = [(_MKResultView *)self tertiaryLabel];
-  v45 = [v44 font];
-  [v45 _scaledValueForValue:17.0];
-  v47 = [v42 constraintWithItem:v43 attribute:11 relatedBy:0 toItem:v20 attribute:11 multiplier:1.0 constant:round(v46)];
+  tertiaryLabel2 = [(_MKResultView *)self tertiaryLabel];
+  tertiaryLabel3 = [(_MKResultView *)self tertiaryLabel];
+  font3 = [tertiaryLabel3 font];
+  [font3 _scaledValueForValue:17.0];
+  v47 = [v42 constraintWithItem:tertiaryLabel2 attribute:11 relatedBy:0 toItem:nameLabel2 attribute:11 multiplier:1.0 constant:round(v46)];
   [(NSMutableArray *)v41 addObject:v47];
 
   v48 = self->_resultConstraints;
   v49 = MEMORY[0x1E696ACD8];
-  v50 = [(_MKResultView *)self tertiaryLabel];
+  tertiaryLabel4 = [(_MKResultView *)self tertiaryLabel];
   v51 = 1.0;
   v52 = v49;
-  v53 = v50;
+  v53 = tertiaryLabel4;
   v54 = 7;
   v55 = -1;
-  v56 = self;
+  selfCopy2 = self;
   v57 = 7;
   v58 = -(v8 + 45.0);
 LABEL_19:
-  v61 = [v52 constraintWithItem:v53 attribute:v54 relatedBy:v55 toItem:v56 attribute:v57 multiplier:v51 constant:v58];
+  v61 = [v52 constraintWithItem:v53 attribute:v54 relatedBy:v55 toItem:selfCopy2 attribute:v57 multiplier:v51 constant:v58];
   [(NSMutableArray *)v48 addObject:v61];
 
 LABEL_20:
 LABEL_21:
-  v62 = [(_MKResultView *)self imageView];
+  imageView2 = [(_MKResultView *)self imageView];
 
-  if (v62)
+  if (imageView2)
   {
     v102[0] = @"LabelsLeftMargin";
     v102[1] = @"ImageTopInset";
@@ -1101,8 +1101,8 @@ LABEL_21:
     v66 = self->_resultConstraints;
     v67 = MEMORY[0x1E696ACD8];
     v100 = @"imageView";
-    v68 = [(_MKResultView *)self imageView];
-    v101 = v68;
+    imageView3 = [(_MKResultView *)self imageView];
+    v101 = imageView3;
     v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
     v70 = [v67 constraintsWithVisualFormat:@"H:|-LabelsLeftMargin-[imageView(==imageWidth)]" options:0 metrics:v65 views:v69];
     [(NSMutableArray *)v66 addObjectsFromArray:v70];
@@ -1110,16 +1110,16 @@ LABEL_21:
     v71 = self->_resultConstraints;
     v72 = MEMORY[0x1E696ACD8];
     v98 = @"imageView";
-    v73 = [(_MKResultView *)self imageView];
-    v99 = v73;
+    imageView4 = [(_MKResultView *)self imageView];
+    v99 = imageView4;
     v74 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v99 forKeys:&v98 count:1];
     v75 = [v72 constraintsWithVisualFormat:@"V:|-ImageTopInset-[imageView(==imageHeight)]" options:0 metrics:v65 views:v74];
     [(NSMutableArray *)v71 addObjectsFromArray:v75];
 
     v76 = self->_resultConstraints;
     v77 = MEMORY[0x1E696ACD8];
-    v78 = [(_MKResultView *)self nameLabel];
-    v79 = [(_MKResultView *)self imageView];
+    nameLabel6 = [(_MKResultView *)self nameLabel];
+    imageView5 = [(_MKResultView *)self imageView];
     if (v92 == 1)
     {
       v80 = -15.0;
@@ -1130,7 +1130,7 @@ LABEL_21:
       v80 = 15.0;
     }
 
-    v81 = [v77 constraintWithItem:v78 attribute:v95 relatedBy:0 toItem:v79 attribute:v93 multiplier:1.0 constant:v80];
+    v81 = [v77 constraintWithItem:nameLabel6 attribute:v95 relatedBy:0 toItem:imageView5 attribute:v93 multiplier:1.0 constant:v80];
     [(NSMutableArray *)v76 addObject:v81];
 
     if ((self->_layoutType | 2) == 2)
@@ -1139,9 +1139,9 @@ LABEL_21:
       {
         v82 = self->_resultConstraints;
         v83 = MEMORY[0x1E696ACD8];
-        v84 = [(_MKResultView *)self secondaryLabel];
-        v85 = [(_MKResultView *)self imageView];
-        v86 = [v83 constraintWithItem:v84 attribute:v95 relatedBy:0 toItem:v85 attribute:v93 multiplier:1.0 constant:v80];
+        secondaryLabel6 = [(_MKResultView *)self secondaryLabel];
+        imageView6 = [(_MKResultView *)self imageView];
+        v86 = [v83 constraintWithItem:secondaryLabel6 attribute:v95 relatedBy:0 toItem:imageView6 attribute:v93 multiplier:1.0 constant:v80];
         [(NSMutableArray *)v82 addObject:v86];
       }
 
@@ -1149,9 +1149,9 @@ LABEL_21:
       {
         v87 = self->_resultConstraints;
         v88 = MEMORY[0x1E696ACD8];
-        v89 = [(_MKResultView *)self tertiaryLabel];
-        v90 = [(_MKResultView *)self imageView];
-        v91 = [v88 constraintWithItem:v89 attribute:v95 relatedBy:0 toItem:v90 attribute:v93 multiplier:1.0 constant:v80];
+        tertiaryLabel5 = [(_MKResultView *)self tertiaryLabel];
+        imageView7 = [(_MKResultView *)self imageView];
+        v91 = [v88 constraintWithItem:tertiaryLabel5 attribute:v95 relatedBy:0 toItem:imageView7 attribute:v93 multiplier:1.0 constant:v80];
         [(NSMutableArray *)v87 addObject:v91];
       }
     }
@@ -1177,17 +1177,17 @@ LABEL_21:
   v5 = v4;
 
   v6 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  v9 = [(_MKResultView *)self mapItem];
-  v7 = [MKIconManager imageForMapItem:v9 size:4 forScale:[(_MKResultView *)self iconFormat] format:v5];
+  mapItem = [(_MKResultView *)self mapItem];
+  v7 = [MKIconManager imageForMapItem:mapItem size:4 forScale:[(_MKResultView *)self iconFormat] format:v5];
   v8 = [v6 initWithImage:v7];
   [(_MKResultView *)self setImageView:v8];
 }
 
-- (void)setIconFormat:(int)a3
+- (void)setIconFormat:(int)format
 {
-  if (self->_iconFormat != a3)
+  if (self->_iconFormat != format)
   {
-    self->_iconFormat = a3;
+    self->_iconFormat = format;
     [(_MKResultView *)self updateLayout];
   }
 }
@@ -1195,26 +1195,26 @@ LABEL_21:
 - (void)_updateFontSizing
 {
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v4 = [(_MKResultView *)self nameLabel];
-  [v4 setFont:v3];
+  nameLabel = [(_MKResultView *)self nameLabel];
+  [nameLabel setFont:v3];
 
   v5 = *MEMORY[0x1E69DDD08];
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD08]];
-  v7 = [(_MKResultView *)self secondaryLabel];
-  [v7 setFont:v6];
+  secondaryLabel = [(_MKResultView *)self secondaryLabel];
+  [secondaryLabel setFont:v6];
 
   v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v5];
-  v8 = [(_MKResultView *)self tertiaryLabel];
-  [v8 setFont:v9];
+  tertiaryLabel = [(_MKResultView *)self tertiaryLabel];
+  [tertiaryLabel setFont:v9];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:MKLocationManagerApprovalDidChangeNotification object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:MKLocationManagerApprovalDidChangeNotification object:0];
 
   [(MKLocationManager *)self->_locManager stopLocationUpdateWithObserver:self];
   v5.receiver = self;
@@ -1226,22 +1226,22 @@ LABEL_21:
 {
   if (self->_selected)
   {
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    v3 = [(_MKResultView *)self secondaryLabel];
-    [v3 setTextColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    secondaryLabel = [(_MKResultView *)self secondaryLabel];
+    [secondaryLabel setTextColor:whiteColor];
   }
 
   else
   {
-    v4 = [(_MKResultView *)self secondaryTextColor];
-    v5 = [(_MKResultView *)self secondaryLabel];
-    [v5 setTextColor:v4];
+    secondaryTextColor = [(_MKResultView *)self secondaryTextColor];
+    secondaryLabel2 = [(_MKResultView *)self secondaryLabel];
+    [secondaryLabel2 setTextColor:secondaryTextColor];
 
-    v7 = [(_MKResultView *)self secondaryTextColor];
+    whiteColor = [(_MKResultView *)self secondaryTextColor];
   }
 
-  v6 = [(_MKResultView *)self tertiaryLabel];
-  [v6 setTextColor:v7];
+  tertiaryLabel = [(_MKResultView *)self tertiaryLabel];
+  [tertiaryLabel setTextColor:whiteColor];
 }
 
 - (void)_updatePrimaryColors
@@ -1256,8 +1256,8 @@ LABEL_21:
     [(_MKResultView *)self primaryTextColor];
   }
   v4 = ;
-  v3 = [(_MKResultView *)self nameLabel];
-  [v3 setTextColor:v4];
+  nameLabel = [(_MKResultView *)self nameLabel];
+  [nameLabel setTextColor:v4];
 }
 
 - (void)_updateColors
@@ -1267,13 +1267,13 @@ LABEL_21:
   [(_MKResultView *)self _updateSecondaryColors];
 }
 
-- (void)setShowsDistance:(BOOL)a3
+- (void)setShowsDistance:(BOOL)distance
 {
-  if (self->_showsDistance != a3)
+  if (self->_showsDistance != distance)
   {
-    self->_showsDistance = a3;
+    self->_showsDistance = distance;
     locManager = self->_locManager;
-    if (a3)
+    if (distance)
     {
       if (locManager)
       {
@@ -1302,11 +1302,11 @@ LABEL_21:
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(_MKResultView *)self _updateColors];
   }
 }
@@ -1356,14 +1356,14 @@ LABEL_21:
   return nameLabel;
 }
 
-- (id)_labelWithFontSize:(double)a3
+- (id)_labelWithFontSize:(double)size
 {
   v4 = objc_alloc_init(_MKUILabel);
-  v5 = [MEMORY[0x1E69DB878] systemFontOfSize:a3];
+  v5 = [MEMORY[0x1E69DB878] systemFontOfSize:size];
   [(_MKUILabel *)v4 setFont:v5];
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(_MKUILabel *)v4 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(_MKUILabel *)v4 setBackgroundColor:clearColor];
 
   [(_MKUILabel *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v7) = 1132068864;
@@ -1376,57 +1376,57 @@ LABEL_21:
 
 - (void)_commonInit
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
   v17 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleTap_];
   [(_MKResultView *)self addGestureRecognizer:?];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [(_MKResultView *)self setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(_MKResultView *)self setBackgroundColor:clearColor];
 
   [(_MKResultView *)self setOpaque:0];
   [(_MKResultView *)self setIconFormat:2];
   [(_MKResultView *)self _updateFontSizing];
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.Spotlight"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.Spotlight"];
 
   if (v7)
   {
     [(_MKResultView *)self setUseSpotlightVibrancy:1];
-    v8 = [(_MKResultView *)self layer];
-    [v8 setAllowsGroupBlending:0];
+    layer = [(_MKResultView *)self layer];
+    [layer setAllowsGroupBlending:0];
   }
 
-  v9 = [MEMORY[0x1E69DC888] blackColor];
-  [(_MKResultView *)self setPrimaryTextColor:v9];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(_MKResultView *)self setPrimaryTextColor:blackColor];
 
   v10 = [MEMORY[0x1E69DC888] colorWithWhite:0.400000006 alpha:1.0];
   [(_MKResultView *)self setSecondaryTextColor:v10];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:self selector:sel__locationApprovalDidChange name:MKLocationManagerApprovalDidChangeNotification object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__locationApprovalDidChange name:MKLocationManagerApprovalDidChangeNotification object:0];
 
   [(_MKResultView *)self setShowsDistance:1];
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   resultConstraints = self->_resultConstraints;
-  self->_resultConstraints = v12;
+  self->_resultConstraints = array;
 
-  v14 = [(_MKResultView *)self nameLabel];
-  [(_MKResultView *)self addSubview:v14];
+  nameLabel = [(_MKResultView *)self nameLabel];
+  [(_MKResultView *)self addSubview:nameLabel];
 
-  v15 = [(_MKResultView *)self secondaryLabel];
-  [(_MKResultView *)self addSubview:v15];
+  secondaryLabel = [(_MKResultView *)self secondaryLabel];
+  [(_MKResultView *)self addSubview:secondaryLabel];
 
-  v16 = [(_MKResultView *)self tertiaryLabel];
-  [(_MKResultView *)self addSubview:v16];
+  tertiaryLabel = [(_MKResultView *)self tertiaryLabel];
+  [(_MKResultView *)self addSubview:tertiaryLabel];
 }
 
-- (_MKResultView)initWithFrame:(CGRect)a3 highlightsOnTouch:(BOOL)a4
+- (_MKResultView)initWithFrame:(CGRect)frame highlightsOnTouch:(BOOL)touch
 {
   v7.receiver = self;
   v7.super_class = _MKResultView;
-  v4 = [(_MKResultView *)&v7 initWithFrame:a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(_MKResultView *)&v7 initWithFrame:touch, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -1436,10 +1436,10 @@ LABEL_21:
   return v5;
 }
 
-- (_MKResultView)initWithMapItems:(id)a3 primaryLabelText:(id)a4
+- (_MKResultView)initWithMapItems:(id)items primaryLabelText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  textCopy = text;
   v11.receiver = self;
   v11.super_class = _MKResultView;
   v8 = [(_MKResultView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -1447,17 +1447,17 @@ LABEL_21:
   if (v8)
   {
     [(_MKResultView *)v8 _commonInit];
-    [(_MKResultView *)v9 setMapItems:v6];
-    [(_MKResultView *)v9 setPrimaryLabelText:v7];
+    [(_MKResultView *)v9 setMapItems:itemsCopy];
+    [(_MKResultView *)v9 setPrimaryLabelText:textCopy];
   }
 
   return v9;
 }
 
-- (_MKResultView)initWithMapItem:(id)a3
+- (_MKResultView)initWithMapItem:(id)item
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = _MKResultView;
   v5 = [(_MKResultView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -1465,7 +1465,7 @@ LABEL_21:
   if (v5)
   {
     [(_MKResultView *)v5 _commonInit];
-    v10[0] = v4;
+    v10[0] = itemCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     [(_MKResultView *)v6 setMapItems:v7];
   }

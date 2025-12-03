@@ -18,8 +18,8 @@
   v4 = MEMORY[0x1E6977E30];
   v5 = endpoint;
   v6 = [v4 alloc];
-  v7 = [(NEHotspotHelperCommand *)self interfaceName];
-  v8 = [v6 initWithInterfaceName:v7];
+  interfaceName = [(NEHotspotHelperCommand *)self interfaceName];
+  v8 = [v6 initWithInterfaceName:interfaceName];
 
   v9 = objc_alloc_init(MEMORY[0x1E6977E40]);
   [v9 setRequiredInterface:v8];
@@ -30,14 +30,14 @@
 
 - (void)interfaceName
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[1];
-    a1 = CNPluginCommandGetInterfaceName();
+    v2 = self[1];
+    self = CNPluginCommandGetInterfaceName();
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (NWTCPConnection)createTCPConnection:(NWEndpoint *)endpoint
@@ -45,8 +45,8 @@
   v4 = MEMORY[0x1E6977E30];
   v5 = endpoint;
   v6 = [v4 alloc];
-  v7 = [(NEHotspotHelperCommand *)self interfaceName];
-  v8 = [v6 initWithInterfaceName:v7];
+  interfaceName = [(NEHotspotHelperCommand *)self interfaceName];
+  v8 = [v6 initWithInterfaceName:interfaceName];
 
   v9 = objc_alloc_init(MEMORY[0x1E6977E40]);
   [v9 setRequiredInterface:v8];
@@ -57,8 +57,8 @@
 
 - (OS_nw_interface)interface
 {
-  v2 = [(NEHotspotHelperCommand *)self interfaceName];
-  [v2 UTF8String];
+  interfaceName = [(NEHotspotHelperCommand *)self interfaceName];
+  [interfaceName UTF8String];
   v3 = nw_interface_create_with_name();
 
   return v3;

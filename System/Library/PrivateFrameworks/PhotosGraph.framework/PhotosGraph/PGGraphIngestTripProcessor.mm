@@ -1,37 +1,37 @@
 @interface PGGraphIngestTripProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestTripProcessor)initWithGraphBuilder:(id)a3;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestTripProcessor)initWithGraphBuilder:(id)builder;
 - (id)allTripNodes;
 - (id)featuredLocationNodesByHighlightGroupNode;
 - (id)tripsMissingFeaturedLocations;
-- (void)ingestLocationFeaturesForTripNodes:(id)a3 graph:(id)a4 loggingConnection:(id)a5 progressBlock:(id)a6 isResumingFullAnalysis:(BOOL)a7;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (void)ingestLocationFeaturesForTripNodes:(id)nodes graph:(id)graph loggingConnection:(id)connection progressBlock:(id)block isResumingFullAnalysis:(BOOL)analysis;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestTripProcessor
 
-- (void)ingestLocationFeaturesForTripNodes:(id)a3 graph:(id)a4 loggingConnection:(id)a5 progressBlock:(id)a6 isResumingFullAnalysis:(BOOL)a7
+- (void)ingestLocationFeaturesForTripNodes:(id)nodes graph:(id)graph loggingConnection:(id)connection progressBlock:(id)block isResumingFullAnalysis:(BOOL)analysis
 {
   v56 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v12 targets];
-  v17 = [v16 count];
+  nodesCopy = nodes;
+  graphCopy = graph;
+  connectionCopy = connection;
+  blockCopy = block;
+  targets = [nodesCopy targets];
+  v17 = [targets count];
 
   if (v17)
   {
-    v18 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:v15];
+    v18 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:blockCopy];
     v19 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:v18];
     *buf = 0;
     v49 = buf;
     v50 = 0x2020000000;
     v51 = 0;
-    v20 = [v12 targets];
-    v21 = [v20 count];
+    targets2 = [nodesCopy targets];
+    v21 = [targets2 count];
 
-    v22 = [[PGGraphLocationHelper alloc] initWithGraph:v13];
+    v22 = [[PGGraphLocationHelper alloc] initWithGraph:graphCopy];
     v23 = v18;
     v44 = 0;
     v45 = &v44;
@@ -45,16 +45,16 @@
     v34 = v24;
     v40 = buf;
     v42 = 1.0 / v21;
-    v35 = v13;
+    v35 = graphCopy;
     v25 = v22;
     v36 = v25;
-    v37 = v14;
+    v37 = connectionCopy;
     v41 = &v44;
     v26 = v23;
-    v43 = a7;
+    analysisCopy = analysis;
     v38 = v26;
-    v39 = self;
-    [v12 enumerateTargetsBySourceWithBlock:&v30];
+    selfCopy = self;
+    [nodesCopy enumerateTargetsBySourceWithBlock:&v30];
     if (*(v45 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -94,10 +94,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_INFO, "[PGGraphIngestTripProcessor] No highlight to be ingest.", buf, 2u);
+    _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_INFO, "[PGGraphIngestTripProcessor] No highlight to be ingest.", buf, 2u);
   }
 
 LABEL_12:
@@ -295,15 +295,15 @@ void __126__PGGraphIngestTripProcessor_ingestLocationFeaturesForTripNodes_graph_
   [*(a1 + 40) addEdge:v4];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v39 = a4;
-  v40 = [(PGGraphBuilder *)self->_graphBuilder graph];
-  v7 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v8 = os_signpost_id_generate(v7);
-  v9 = v7;
+  updateCopy = update;
+  blockCopy = block;
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v8 = os_signpost_id_generate(loggingConnection);
+  v9 = loggingConnection;
   v10 = v9;
   v11 = v8 - 1;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
@@ -315,36 +315,36 @@ void __126__PGGraphIngestTripProcessor_ingestLocationFeaturesForTripNodes_graph_
   info = 0;
   mach_timebase_info(&info);
   v38 = mach_absolute_time();
-  v12 = [v6 isResumingFullAnalysis];
-  if (v12)
+  isResumingFullAnalysis = [updateCopy isResumingFullAnalysis];
+  if (isResumingFullAnalysis)
   {
-    v13 = [(PGGraphIngestTripProcessor *)self allTripNodes];
+    allTripNodes = [(PGGraphIngestTripProcessor *)self allTripNodes];
   }
 
   else
   {
-    v14 = [v6 momentNodesToProcessInGraph:v40 forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
-    v13 = [(PGGraphIngestTripProcessor *)self tripsMissingFeaturedLocations];
+    v14 = [updateCopy momentNodesToProcessInGraph:graph forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
+    allTripNodes = [(PGGraphIngestTripProcessor *)self tripsMissingFeaturedLocations];
     if ([v14 count])
     {
       [v14 highlightNodes];
-      v15 = v34 = v13;
+      v15 = v34 = allTripNodes;
       [v15 highlightGroupNodes];
       v16 = v35 = v8 - 1;
       [(PGGraphIngestTripProcessor *)self allTripNodes];
-      v18 = v17 = v6;
+      v18 = v17 = updateCopy;
       [v16 collectionByIntersecting:v18];
       v19 = spida = v8;
 
-      v6 = v17;
-      v13 = [v34 collectionByFormingUnionWith:v19];
+      updateCopy = v17;
+      allTripNodes = [v34 collectionByFormingUnionWith:v19];
 
       v11 = v35;
       v8 = spida;
     }
   }
 
-  if ([v13 isEmpty])
+  if ([allTripNodes isEmpty])
   {
     v20 = mach_absolute_time();
     numer = info.numer;
@@ -372,9 +372,9 @@ void __126__PGGraphIngestTripProcessor_ingestLocationFeaturesForTripNodes_graph_
     spid = v8;
     v25 = MEMORY[0x277D22BF8];
     v26 = +[PGGraphHighlightGroupNode momentInHighlight];
-    v27 = [v25 adjacencyWithSources:v13 relation:v26 targetsClass:objc_opt_class()];
+    v27 = [v25 adjacencyWithSources:allTripNodes relation:v26 targetsClass:objc_opt_class()];
 
-    [(PGGraphIngestTripProcessor *)self ingestLocationFeaturesForTripNodes:v27 graph:v40 loggingConnection:v10 progressBlock:v39 isResumingFullAnalysis:v12];
+    [(PGGraphIngestTripProcessor *)self ingestLocationFeaturesForTripNodes:v27 graph:graph loggingConnection:v10 progressBlock:blockCopy isResumingFullAnalysis:isResumingFullAnalysis];
     v28 = mach_absolute_time();
     v30 = info.numer;
     v29 = info.denom;
@@ -399,10 +399,10 @@ void __126__PGGraphIngestTripProcessor_ingestLocationFeaturesForTripNodes_graph_
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v4 = a3;
-  if ([v4 isResumingFullAnalysis] & 1) != 0 || (-[PGGraphIngestTripProcessor tripsMissingFeaturedLocations](self, "tripsMissingFeaturedLocations"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEmpty"), v5, (objc_msgSend(v4, "hasMomentsToInsert")))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (-[PGGraphIngestTripProcessor tripsMissingFeaturedLocations](self, "tripsMissingFeaturedLocations"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEmpty"), v5, (objc_msgSend(updateCopy, "hasMomentsToInsert")))
   {
     v7 = 1;
   }
@@ -410,8 +410,8 @@ void __126__PGGraphIngestTripProcessor_ingestLocationFeaturesForTripNodes_graph_
   else
   {
     v8 = v6 ^ 1;
-    v9 = [v4 momentUpdateTypes];
-    v7 = (([objc_opt_class() requiredMomentUpdateTypes] & v9) != 0) | v8;
+    momentUpdateTypes = [updateCopy momentUpdateTypes];
+    v7 = (([objc_opt_class() requiredMomentUpdateTypes] & momentUpdateTypes) != 0) | v8;
   }
 
   return v7 & 1;
@@ -422,10 +422,10 @@ void __126__PGGraphIngestTripProcessor_ingestLocationFeaturesForTripNodes_graph_
   tripsMissingFeaturedLocations = self->_tripsMissingFeaturedLocations;
   if (!tripsMissingFeaturedLocations)
   {
-    v4 = [(PGGraphIngestTripProcessor *)self allTripNodes];
-    v5 = [(PGGraphIngestTripProcessor *)self featuredLocationNodesByHighlightGroupNode];
-    v6 = [v5 sources];
-    v7 = [v4 collectionBySubtracting:v6];
+    allTripNodes = [(PGGraphIngestTripProcessor *)self allTripNodes];
+    featuredLocationNodesByHighlightGroupNode = [(PGGraphIngestTripProcessor *)self featuredLocationNodesByHighlightGroupNode];
+    sources = [featuredLocationNodesByHighlightGroupNode sources];
+    v7 = [allTripNodes collectionBySubtracting:sources];
     v8 = self->_tripsMissingFeaturedLocations;
     self->_tripsMissingFeaturedLocations = v7;
 
@@ -441,9 +441,9 @@ void __126__PGGraphIngestTripProcessor_ingestLocationFeaturesForTripNodes_graph_
   if (!featuredLocationNodesByHighlightGroupNode)
   {
     v4 = MEMORY[0x277D22BF8];
-    v5 = [(PGGraphIngestTripProcessor *)self allTripNodes];
+    allTripNodes = [(PGGraphIngestTripProcessor *)self allTripNodes];
     v6 = +[PGGraphHighlightGroupNodeCollection locationFeatureOfHighlightGroup];
-    v7 = [v4 adjacencyWithSources:v5 relation:v6 targetsClass:objc_opt_class()];
+    v7 = [v4 adjacencyWithSources:allTripNodes relation:v6 targetsClass:objc_opt_class()];
     v8 = self->_featuredLocationNodesByHighlightGroupNode;
     self->_featuredLocationNodesByHighlightGroupNode = v7;
 
@@ -458,11 +458,11 @@ void __126__PGGraphIngestTripProcessor_ingestLocationFeaturesForTripNodes_graph_
   allTripNodes = self->_allTripNodes;
   if (!allTripNodes)
   {
-    v4 = [(PGGraphBuilder *)self->_graphBuilder graph];
-    v5 = [PGGraphHighlightTypeNodeCollection tripTypeNodesInGraph:v4];
-    v6 = [v5 highlightGroupNodes];
+    graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+    v5 = [PGGraphHighlightTypeNodeCollection tripTypeNodesInGraph:graph];
+    highlightGroupNodes = [v5 highlightGroupNodes];
     v7 = self->_allTripNodes;
-    self->_allTripNodes = v6;
+    self->_allTripNodes = highlightGroupNodes;
 
     allTripNodes = self->_allTripNodes;
   }
@@ -470,16 +470,16 @@ void __126__PGGraphIngestTripProcessor_ingestLocationFeaturesForTripNodes_graph_
   return allTripNodes;
 }
 
-- (PGGraphIngestTripProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestTripProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestTripProcessor;
   v6 = [(PGGraphIngestTripProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

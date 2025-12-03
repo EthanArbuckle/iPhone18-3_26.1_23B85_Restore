@@ -1,36 +1,36 @@
 @interface BWDeferredCaptureController
-- (BWDeferredCaptureController)initWithConfiguration:(id)a3;
-- (id)requestForInput:(id)a3 delegate:(id)a4 errOut:(int *)a5;
+- (BWDeferredCaptureController)initWithConfiguration:(id)configuration;
+- (id)requestForInput:(id)input delegate:(id)delegate errOut:(int *)out;
 - (int)process;
 - (void)_addInferences;
 - (void)cancelProcessing;
-- (void)input:(id)a3 encounteredProcessingError:(int)a4;
+- (void)input:(id)input encounteredProcessingError:(int)error;
 @end
 
 @implementation BWDeferredCaptureController
 
-- (BWDeferredCaptureController)initWithConfiguration:(id)a3
+- (BWDeferredCaptureController)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = BWDeferredCaptureController;
-  return [(BWStillImageProcessorController *)&v4 initWithName:@"DeferredCapture" type:14 configuration:a3];
+  return [(BWStillImageProcessorController *)&v4 initWithName:@"DeferredCapture" type:14 configuration:configuration];
 }
 
-- (void)input:(id)a3 encounteredProcessingError:(int)a4
+- (void)input:(id)input encounteredProcessingError:(int)error
 {
-  [(BWStillImageProcessorControllerRequest *)[(BWStillImageProcessorController *)self currentRequest] setErr:*&a4];
+  [(BWStillImageProcessorControllerRequest *)[(BWStillImageProcessorController *)self currentRequest] setErr:*&error];
 
   [(BWDeferredCaptureController *)self cancelProcessing];
 }
 
 - (void)cancelProcessing
 {
-  v3 = [(BWStillImageProcessorController *)self currentRequest];
+  currentRequest = [(BWStillImageProcessorController *)self currentRequest];
   v4 = [(BWStillImageProcessorControllerRequest *)[(BWStillImageProcessorController *)self currentRequest] err];
-  v5 = [(FigCaptureStillImageSettings *)[(BWStillImageProcessorControllerInput *)[(BWStillImageProcessorControllerRequest *)v3 input] settings] captureRequestIdentifier];
-  if (v5)
+  captureRequestIdentifier = [(FigCaptureStillImageSettings *)[(BWStillImageProcessorControllerInput *)[(BWStillImageProcessorControllerRequest *)currentRequest input] settings] captureRequestIdentifier];
+  if (captureRequestIdentifier)
   {
-    v6 = v5;
+    v6 = captureRequestIdentifier;
     if ([+[BWDeferredCaptureContainerManager lookupCaptureContainer:"lookupCaptureContainer:"]
     {
       [+[BWDeferredCaptureContainerManager sharedInstance](BWDeferredCaptureContainerManager abortContainer:"abortContainer:error:" error:v6, v4];
@@ -42,9 +42,9 @@
   [(BWStillImageProcessorController *)&v7 cancelProcessing];
 }
 
-- (id)requestForInput:(id)a3 delegate:(id)a4 errOut:(int *)a5
+- (id)requestForInput:(id)input delegate:(id)delegate errOut:(int *)out
 {
-  v6 = [(BWStillImageProcessorControllerRequest *)[BWDeferredCaptureControllerRequest alloc] initWithInput:a3 delegate:a4];
+  v6 = [(BWStillImageProcessorControllerRequest *)[BWDeferredCaptureControllerRequest alloc] initWithInput:input delegate:delegate];
   if (v6)
   {
     v7 = 0;
@@ -55,9 +55,9 @@
     v7 = -12786;
   }
 
-  if (a5)
+  if (out)
   {
-    *a5 = v7;
+    *out = v7;
   }
 
   return v6;
@@ -65,28 +65,28 @@
 
 - (int)process
 {
-  v3 = [(BWStillImageProcessorControllerRequest *)[(BWStillImageProcessorController *)self currentRequest] input];
+  input = [(BWStillImageProcessorControllerRequest *)[(BWStillImageProcessorController *)self currentRequest] input];
   [(BWDeferredCaptureController *)self _addInferences];
   v4 = +[BWDeferredCaptureContainerManager sharedInstance];
-  v5 = [(FigCaptureStillImageSettings *)[(BWStillImageProcessorControllerInput *)v3 settings] captureRequestIdentifier];
+  captureRequestIdentifier = [(FigCaptureStillImageSettings *)[(BWStillImageProcessorControllerInput *)input settings] captureRequestIdentifier];
 
-  return [(BWDeferredCaptureContainerManager *)v4 commitContainer:v5];
+  return [(BWDeferredCaptureContainerManager *)v4 commitContainer:captureRequestIdentifier];
 }
 
 - (void)_addInferences
 {
-  v3 = [(BWStillImageProcessorControllerRequest *)[(BWStillImageProcessorController *)self currentRequest] input];
-  if (([(BWStillImageProcessorControllerInput *)v3 skipInferences]& 1) != 0)
+  input = [(BWStillImageProcessorControllerRequest *)[(BWStillImageProcessorController *)self currentRequest] input];
+  if (([(BWStillImageProcessorControllerInput *)input skipInferences]& 1) != 0)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [(BWStillImageProcessorControllerDelegate *)[(BWStillImageProcessorControllerRequest *)[(BWStillImageProcessorController *)self currentRequest] delegate] processorController:self newInferencesForProcessorInput:v3];
+    v4 = [(BWStillImageProcessorControllerDelegate *)[(BWStillImageProcessorControllerRequest *)[(BWStillImageProcessorController *)self currentRequest] delegate] processorController:self newInferencesForProcessorInput:input];
     if (v4)
     {
-      v5 = [(BWStillImageProcessorControllerInput *)v3 portType];
+      portType = [(BWStillImageProcessorControllerInput *)input portType];
       v32[0] = @"PersonSemanticsSkin";
       v32[1] = @"PersonSemanticsHair";
       v32[2] = 0x1F21AAD30;
@@ -116,7 +116,7 @@
             v12 = [v4 inferenceBufferForAttachedMediaKey:v11];
             if (v12)
             {
-              -[BWStillImageProcessorControllerInput _addInferenceBuffer:metadata:inferenceAttachedMediaKey:portType:](v3, "_addInferenceBuffer:metadata:inferenceAttachedMediaKey:portType:", v12, [v4 metadataForAttachedMediaKey:v11], v11, v5);
+              -[BWStillImageProcessorControllerInput _addInferenceBuffer:metadata:inferenceAttachedMediaKey:portType:](input, "_addInferenceBuffer:metadata:inferenceAttachedMediaKey:portType:", v12, [v4 metadataForAttachedMediaKey:v11], v11, portType);
             }
           }
 
@@ -154,7 +154,7 @@
             v19 = [v4 inferenceForAttachmentKey:v18];
             if (v19)
             {
-              [(BWStillImageProcessorControllerInput *)v3 _addInference:v19 inferenceAttachmentKey:v18 portType:v5];
+              [(BWStillImageProcessorControllerInput *)input _addInference:v19 inferenceAttachmentKey:v18 portType:portType];
             }
           }
 
@@ -166,8 +166,8 @@
 
       if ([v4 inferenceAttachedMediaMetadata])
       {
-        v20 = [v4 inferenceAttachedMediaMetadata];
-        -[BWStillImageProcessorControllerInput _addDictionary:tag:](v3, "_addDictionary:tag:", v20, [MEMORY[0x1E696AEC0] stringWithFormat:@"InferenceAttachedMediaMeta-%@", v5]);
+        inferenceAttachedMediaMetadata = [v4 inferenceAttachedMediaMetadata];
+        -[BWStillImageProcessorControllerInput _addDictionary:tag:](input, "_addDictionary:tag:", inferenceAttachedMediaMetadata, [MEMORY[0x1E696AEC0] stringWithFormat:@"InferenceAttachedMediaMeta-%@", portType]);
       }
     }
   }

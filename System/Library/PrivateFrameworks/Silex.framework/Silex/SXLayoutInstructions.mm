@@ -1,9 +1,9 @@
 @interface SXLayoutInstructions
 + (id)defaultInstructions;
-- (BOOL)areFulfilledForBlueprint:(id)a3;
-- (SXLayoutInstructions)initWithInstructions:(id)a3;
+- (BOOL)areFulfilledForBlueprint:(id)blueprint;
+- (SXLayoutInstructions)initWithInstructions:(id)instructions;
 - (id)description;
-- (void)didLayoutComponentBlueprint:(id)a3 blueprint:(id)a4;
+- (void)didLayoutComponentBlueprint:(id)blueprint blueprint:(id)a4;
 @end
 
 @implementation SXLayoutInstructions
@@ -20,25 +20,25 @@
   return v5;
 }
 
-- (SXLayoutInstructions)initWithInstructions:(id)a3
+- (SXLayoutInstructions)initWithInstructions:(id)instructions
 {
-  v5 = a3;
+  instructionsCopy = instructions;
   v9.receiver = self;
   v9.super_class = SXLayoutInstructions;
   v6 = [(SXLayoutInstructions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_instructions, a3);
+    objc_storeStrong(&v6->_instructions, instructions);
   }
 
   return v7;
 }
 
-- (void)didLayoutComponentBlueprint:(id)a3 blueprint:(id)a4
+- (void)didLayoutComponentBlueprint:(id)blueprint blueprint:(id)a4
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  blueprintCopy = blueprint;
   v7 = a4;
   v14 = 0u;
   v15 = 0u;
@@ -63,7 +63,7 @@
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 didLayoutComponentBlueprint:v6 blueprint:{v7, v14}];
+          [v13 didLayoutComponentBlueprint:blueprintCopy blueprint:{v7, v14}];
         }
 
         ++v12;
@@ -77,10 +77,10 @@
   }
 }
 
-- (BOOL)areFulfilledForBlueprint:(id)a3
+- (BOOL)areFulfilledForBlueprint:(id)blueprint
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blueprintCopy = blueprint;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -100,7 +100,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if (![*(*(&v12 + 1) + 8 * i) isFulfilledForBlueprint:{v4, v12}])
+        if (![*(*(&v12 + 1) + 8 * i) isFulfilledForBlueprint:{blueprintCopy, v12}])
         {
           v10 = 0;
           goto LABEL_11;
@@ -125,8 +125,8 @@ LABEL_11:
 
 - (id)description
 {
-  v2 = [(SXLayoutInstructions *)self instructions];
-  v3 = [v2 description];
+  instructions = [(SXLayoutInstructions *)self instructions];
+  v3 = [instructions description];
 
   return v3;
 }

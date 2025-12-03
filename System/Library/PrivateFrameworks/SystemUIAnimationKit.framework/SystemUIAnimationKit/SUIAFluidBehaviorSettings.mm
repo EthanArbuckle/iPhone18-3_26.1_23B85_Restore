@@ -1,8 +1,8 @@
 @interface SUIAFluidBehaviorSettings
-+ (id)_moduleWithSectionTitle:(id)a3;
++ (id)_moduleWithSectionTitle:(id)title;
 + (id)settingsControllerModule;
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4;
-- (BOOL)isEqual:(id)a3;
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)smoothingAndProjectionEnabled;
 - (CAFrameRateRange)frameRateRange;
 - (NSString)description;
@@ -25,25 +25,25 @@
 - (int64_t)behaviorType;
 - (int64_t)hash;
 - (unsigned)highFrameRateReason;
-- (void)setBehaviorType:(int64_t)a3;
-- (void)setDampingRatio:(double)a3;
-- (void)setDampingRatioSmoothing:(double)a3;
+- (void)setBehaviorType:(int64_t)type;
+- (void)setDampingRatio:(double)ratio;
+- (void)setDampingRatioSmoothing:(double)smoothing;
 - (void)setDefaultCriticallyDampedValues;
 - (void)setDefaultValues;
-- (void)setFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4;
-- (void)setInertialProjectionDeceleration:(double)a3;
-- (void)setInertialTargetSmoothingRatio:(double)a3;
-- (void)setName:(id)a3;
-- (void)setPreferredFrameRateRange:(id)a3;
-- (void)setResponse:(double)a3;
-- (void)setResponseSmoothing:(double)a3;
-- (void)setRetargetImpulse:(double)a3;
-- (void)setSmoothingAndProjectionEnabled:(BOOL)a3;
-- (void)setTrackingDampingRatio:(double)a3;
-- (void)setTrackingDampingRatioSmoothing:(double)a3;
-- (void)setTrackingResponse:(double)a3;
-- (void)setTrackingResponseSmoothing:(double)a3;
-- (void)setTrackingRetargetImpulse:(double)a3;
+- (void)setFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason;
+- (void)setInertialProjectionDeceleration:(double)deceleration;
+- (void)setInertialTargetSmoothingRatio:(double)ratio;
+- (void)setName:(id)name;
+- (void)setPreferredFrameRateRange:(id)range;
+- (void)setResponse:(double)response;
+- (void)setResponseSmoothing:(double)smoothing;
+- (void)setRetargetImpulse:(double)impulse;
+- (void)setSmoothingAndProjectionEnabled:(BOOL)enabled;
+- (void)setTrackingDampingRatio:(double)ratio;
+- (void)setTrackingDampingRatioSmoothing:(double)smoothing;
+- (void)setTrackingResponse:(double)response;
+- (void)setTrackingResponseSmoothing:(double)smoothing;
+- (void)setTrackingRetargetImpulse:(double)impulse;
 @end
 
 @implementation SUIAFluidBehaviorSettings
@@ -55,11 +55,11 @@
   return *(self + v3);
 }
 
-- (void)setBehaviorType:(int64_t)a3
+- (void)setBehaviorType:(int64_t)type
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_behaviorType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (NSString)name
@@ -80,9 +80,9 @@
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_26C614E48();
     v6 = v5;
@@ -107,11 +107,11 @@
   return *(self + v3);
 }
 
-- (void)setDampingRatio:(double)a3
+- (void)setDampingRatio:(double)ratio
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_dampingRatio;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ratio;
 }
 
 - (double)response
@@ -121,11 +121,11 @@
   return *(self + v3);
 }
 
-- (void)setResponse:(double)a3
+- (void)setResponse:(double)response
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_response;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = response;
 }
 
 - (double)retargetImpulse
@@ -135,11 +135,11 @@
   return *(self + v3);
 }
 
-- (void)setRetargetImpulse:(double)a3
+- (void)setRetargetImpulse:(double)impulse
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_retargetImpulse;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = impulse;
 }
 
 - (double)trackingDampingRatio
@@ -149,11 +149,11 @@
   return *(self + v3);
 }
 
-- (void)setTrackingDampingRatio:(double)a3
+- (void)setTrackingDampingRatio:(double)ratio
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_trackingDampingRatio;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ratio;
 }
 
 - (double)trackingResponse
@@ -163,11 +163,11 @@
   return *(self + v3);
 }
 
-- (void)setTrackingResponse:(double)a3
+- (void)setTrackingResponse:(double)response
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_trackingResponse;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = response;
 }
 
 - (double)trackingRetargetImpulse
@@ -177,11 +177,11 @@
   return *(self + v3);
 }
 
-- (void)setTrackingRetargetImpulse:(double)a3
+- (void)setTrackingRetargetImpulse:(double)impulse
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_trackingRetargetImpulse;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = impulse;
 }
 
 - (BOOL)smoothingAndProjectionEnabled
@@ -191,11 +191,11 @@
   return *(self + v3);
 }
 
-- (void)setSmoothingAndProjectionEnabled:(BOOL)a3
+- (void)setSmoothingAndProjectionEnabled:(BOOL)enabled
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_smoothingAndProjectionEnabled;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = enabled;
 }
 
 - (double)dampingRatioSmoothing
@@ -205,11 +205,11 @@
   return *(self + v3);
 }
 
-- (void)setDampingRatioSmoothing:(double)a3
+- (void)setDampingRatioSmoothing:(double)smoothing
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_dampingRatioSmoothing;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = smoothing;
 }
 
 - (double)responseSmoothing
@@ -219,11 +219,11 @@
   return *(self + v3);
 }
 
-- (void)setResponseSmoothing:(double)a3
+- (void)setResponseSmoothing:(double)smoothing
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_responseSmoothing;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = smoothing;
 }
 
 - (double)trackingDampingRatioSmoothing
@@ -233,11 +233,11 @@
   return *(self + v3);
 }
 
-- (void)setTrackingDampingRatioSmoothing:(double)a3
+- (void)setTrackingDampingRatioSmoothing:(double)smoothing
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_trackingDampingRatioSmoothing;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = smoothing;
 }
 
 - (double)trackingResponseSmoothing
@@ -247,11 +247,11 @@
   return *(self + v3);
 }
 
-- (void)setTrackingResponseSmoothing:(double)a3
+- (void)setTrackingResponseSmoothing:(double)smoothing
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_trackingResponseSmoothing;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = smoothing;
 }
 
 - (double)inertialTargetSmoothingRatio
@@ -261,11 +261,11 @@
   return *(self + v3);
 }
 
-- (void)setInertialTargetSmoothingRatio:(double)a3
+- (void)setInertialTargetSmoothingRatio:(double)ratio
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_inertialTargetSmoothingRatio;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ratio;
 }
 
 - (double)inertialProjectionDeceleration
@@ -275,11 +275,11 @@
   return *(self + v3);
 }
 
-- (void)setInertialProjectionDeceleration:(double)a3
+- (void)setInertialProjectionDeceleration:(double)deceleration
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_inertialProjectionDeceleration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = deceleration;
 }
 
 - (PTFrameRateRangeSettings)preferredFrameRateRange
@@ -289,35 +289,35 @@
   return *(self + v3);
 }
 
-- (void)setPreferredFrameRateRange:(id)a3
+- (void)setPreferredFrameRateRange:(id)range
 {
   v5 = OBJC_IVAR___SUIAFluidBehaviorSettings_preferredFrameRateRange;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = range;
+  rangeCopy = range;
 }
 
 - (void)setDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   SUIAFluidBehaviorSettings.setDefaultValues()();
 }
 
 - (void)setDefaultCriticallyDampedValues
 {
-  v2 = self;
-  [(SUIAFluidBehaviorSettings *)v2 setDefaultValues];
-  [(SUIAFluidBehaviorSettings *)v2 setDampingRatio:1.0];
-  [(SUIAFluidBehaviorSettings *)v2 setResponse:0.336];
+  selfCopy = self;
+  [(SUIAFluidBehaviorSettings *)selfCopy setDefaultValues];
+  [(SUIAFluidBehaviorSettings *)selfCopy setDampingRatio:1.0];
+  [(SUIAFluidBehaviorSettings *)selfCopy setResponse:0.336];
 }
 
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState
 {
-  v8 = self;
-  SUIAFluidBehaviorSettings.parametersForTransition(from:to:)(a4, a5, &v14);
+  selfCopy = self;
+  SUIAFluidBehaviorSettings.parametersForTransition(from:to:)(toState, a5, &v14);
   LOBYTE(a5) = v15;
-  LOBYTE(a4) = v16;
+  LOBYTE(toState) = v16;
   v9 = v20;
 
   v11 = v17;
@@ -325,7 +325,7 @@
   v13 = v19;
   *&retstr->var0 = v14;
   retstr->var2 = a5 & 1;
-  retstr->var3 = a4 & 1;
+  retstr->var3 = toState & 1;
   *&retstr->var4 = v11;
   *&retstr->var6 = v12;
   *&retstr->var8 = v13;
@@ -338,31 +338,31 @@
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = 0.0;
   v9[0] = 0.0;
-  v2 = self;
-  [(SUIAFluidBehaviorSettings *)v2 dampingRatio];
+  selfCopy = self;
+  [(SUIAFluidBehaviorSettings *)selfCopy dampingRatio];
   v4 = v3;
-  [(SUIAFluidBehaviorSettings *)v2 response];
+  [(SUIAFluidBehaviorSettings *)selfCopy response];
   SUIAConvertDampingRatioAndResponseToTensionAndFriction(v9, &v8, v4, v5);
   v6 = [objc_opt_self() settingsWithMass:1.0 stiffness:v9[0] damping:v8];
 
   return v6;
 }
 
-- (void)setFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4
+- (void)setFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason
 {
-  v4 = *&a4;
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
-  v13 = self;
-  v8 = [(SUIAFluidBehaviorSettings *)v13 preferredFrameRateRange];
-  if (v8)
+  v4 = *&reason;
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
+  selfCopy = self;
+  preferredFrameRateRange = [(SUIAFluidBehaviorSettings *)selfCopy preferredFrameRateRange];
+  if (preferredFrameRateRange)
   {
-    v12 = v8;
+    v12 = preferredFrameRateRange;
     *&v9 = minimum;
     *&v10 = maximum;
     *&v11 = preferred;
-    [(PTFrameRateRangeSettings *)v8 setFrameRateRange:v4 highFrameRateReason:v9, v10, v11];
+    [(PTFrameRateRangeSettings *)preferredFrameRateRange setFrameRateRange:v4 highFrameRateReason:v9, v10, v11];
   }
 
   else
@@ -373,12 +373,12 @@
 
 - (CAFrameRateRange)frameRateRange
 {
-  v2 = self;
-  v3 = [(SUIAFluidBehaviorSettings *)v2 preferredFrameRateRange];
-  if (v3)
+  selfCopy = self;
+  preferredFrameRateRange = [(SUIAFluidBehaviorSettings *)selfCopy preferredFrameRateRange];
+  if (preferredFrameRateRange)
   {
-    v7 = v3;
-    [(PTFrameRateRangeSettings *)v3 frameRateRange];
+    v7 = preferredFrameRateRange;
+    [(PTFrameRateRangeSettings *)preferredFrameRateRange frameRateRange];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -401,14 +401,14 @@
 
 - (unsigned)highFrameRateReason
 {
-  v2 = self;
-  v3 = [(SUIAFluidBehaviorSettings *)v2 preferredFrameRateRange];
-  if (v3)
+  selfCopy = self;
+  preferredFrameRateRange = [(SUIAFluidBehaviorSettings *)selfCopy preferredFrameRateRange];
+  if (preferredFrameRateRange)
   {
-    v4 = v3;
-    v5 = [(PTFrameRateRangeSettings *)v3 highFrameRateReason];
+    v4 = preferredFrameRateRange;
+    highFrameRateReason = [(PTFrameRateRangeSettings *)preferredFrameRateRange highFrameRateReason];
 
-    LODWORD(v3) = v5;
+    LODWORD(preferredFrameRateRange) = highFrameRateReason;
   }
 
   else
@@ -416,20 +416,20 @@
     __break(1u);
   }
 
-  return v3;
+  return preferredFrameRateRange;
 }
 
 + (id)settingsControllerModule
 {
   v3 = sub_26C614E38();
-  v4 = [a1 _moduleWithSectionTitle_];
+  _moduleWithSectionTitle_ = [self _moduleWithSectionTitle_];
 
-  return v4;
+  return _moduleWithSectionTitle_;
 }
 
-+ (id)_moduleWithSectionTitle:(id)a3
++ (id)_moduleWithSectionTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     sub_26C614E48();
   }
@@ -442,7 +442,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SUIAFluidBehaviorSettings.description.getter();
 
   v3 = sub_26C614E38();
@@ -452,7 +452,7 @@
 
 - (id)copy
 {
-  v2 = self;
+  selfCopy = self;
   SUIAFluidBehaviorSettings.copy()(v5);
 
   __swift_project_boxed_opaque_existential_0(v5, v5[3]);
@@ -461,11 +461,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_26C614FE8();
     swift_unknownObjectRelease();
@@ -474,7 +474,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SUIAFluidBehaviorSettings.isEqual(_:)(v8);
@@ -485,7 +485,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   SUIAFluidBehaviorSettings.hash.getter();
   v4 = v3;
 

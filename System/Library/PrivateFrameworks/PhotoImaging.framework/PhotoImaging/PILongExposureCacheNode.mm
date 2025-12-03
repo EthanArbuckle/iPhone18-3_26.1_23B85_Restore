@@ -1,30 +1,30 @@
 @interface PILongExposureCacheNode
-- (BOOL)tryLoadPersistentURL:(id)a3 error:(id *)a4;
-- (PILongExposureCacheNode)initWithAutoLoopCacheNode:(id)a3 urlKey:(id)a4;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)evaluateRenderDependenciesWithRequest:(id)a3 error:(id *)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (BOOL)tryLoadPersistentURL:(id)l error:(id *)error;
+- (PILongExposureCacheNode)initWithAutoLoopCacheNode:(id)node urlKey:(id)key;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)evaluateRenderDependenciesWithRequest:(id)request error:(id *)error;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 - (id)persistentURL;
-- (id)resolvedSourceNode:(id *)a3;
+- (id)resolvedSourceNode:(id *)node;
 @end
 
 @implementation PILongExposureCacheNode
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
-  v4 = [(PILongExposureCacheNode *)self autoLoopCacheNode];
-  v5 = [v4 outputImageGeometry:a3];
+  autoLoopCacheNode = [(PILongExposureCacheNode *)self autoLoopCacheNode];
+  v5 = [autoLoopCacheNode outputImageGeometry:geometry];
 
   return v5;
 }
 
-- (id)resolvedSourceNode:(id *)a3
+- (id)resolvedSourceNode:(id *)node
 {
-  if ([(NUCacheNode *)self isResolved]|| ([(PILongExposureCacheNode *)self persistentURL], v5 = objc_claimAutoreleasedReturnValue(), v6 = [(PILongExposureCacheNode *)self tryLoadPersistentURL:v5 error:a3], v5, v6))
+  if ([(NUCacheNode *)self isResolved]|| ([(PILongExposureCacheNode *)self persistentURL], v5 = objc_claimAutoreleasedReturnValue(), v6 = [(PILongExposureCacheNode *)self tryLoadPersistentURL:v5 error:node], v5, v6))
   {
     v9.receiver = self;
     v9.super_class = PILongExposureCacheNode;
-    v7 = [(NUCacheNode *)&v9 resolvedSourceNode:a3];
+    v7 = [(NUCacheNode *)&v9 resolvedSourceNode:node];
   }
 
   else
@@ -35,21 +35,21 @@
   return v7;
 }
 
-- (id)evaluateRenderDependenciesWithRequest:(id)a3 error:(id *)a4
+- (id)evaluateRenderDependenciesWithRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PILongExposureCacheNode *)self autoLoopCacheNode];
-  v8 = [v7 evaluateRenderDependenciesWithRequest:v6 error:a4];
+  requestCopy = request;
+  autoLoopCacheNode = [(PILongExposureCacheNode *)self autoLoopCacheNode];
+  v8 = [autoLoopCacheNode evaluateRenderDependenciesWithRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v16 = NUAssertLogger_8835();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -71,8 +71,8 @@
         v24 = dispatch_get_specific(*v18);
         v25 = MEMORY[0x1E696AF00];
         v26 = v24;
-        v27 = [v25 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v25 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v24;
         v32 = 2114;
@@ -83,8 +83,8 @@
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v23;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -93,15 +93,15 @@
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  if ([v9 evaluationMode] == 1 || !objc_msgSend(v10, "evaluationMode"))
+  v10 = stateCopy;
+  if ([stateCopy evaluationMode] == 1 || !objc_msgSend(v10, "evaluationMode"))
   {
     v12 = [v10 copy];
     [v12 setMediaComponentType:2];
     [v12 setScale:{*MEMORY[0x1E69B3918], *(MEMORY[0x1E69B3918] + 8)}];
     v29.receiver = self;
     v29.super_class = PILongExposureCacheNode;
-    v13 = [(NUCacheNode *)&v29 nodeByReplayingAgainstCache:v8 pipelineState:v12 error:a5];
+    v13 = [(NUCacheNode *)&v29 nodeByReplayingAgainstCache:cacheCopy pipelineState:v12 error:error];
     v11 = v13;
     if (v13)
     {
@@ -112,21 +112,21 @@
   else
   {
     [MEMORY[0x1E69B3A48] invalidError:@"Cannot evaluate cache node" object:self];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   return v11;
 }
 
-- (BOOL)tryLoadPersistentURL:(id)a3 error:(id *)a4
+- (BOOL)tryLoadPersistentURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x1E69B39A8];
-  v7 = a3;
+  lCopy = l;
   v8 = [v6 alloc];
-  v9 = [*MEMORY[0x1E6982E58] identifier];
-  v10 = [v8 initWithURL:v7 UTI:v9 identifier:@"cache"];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v10 = [v8 initWithURL:lCopy UTI:identifier identifier:@"cache"];
 
-  v11 = [v10 load:a4];
+  v11 = [v10 load:error];
   if (v11)
   {
     [(NUCacheNode *)self resolveWithSourceNode:v10 error:0];
@@ -137,20 +137,20 @@
 
 - (id)persistentURL
 {
-  v3 = [(PILongExposureCacheNode *)self autoLoopCacheNode];
-  v4 = [(NURenderNode *)self settings];
-  v5 = [v4 objectForKeyedSubscript:@"key"];
-  v6 = [v3 valueForKey:v5];
+  autoLoopCacheNode = [(PILongExposureCacheNode *)self autoLoopCacheNode];
+  settings = [(NURenderNode *)self settings];
+  v5 = [settings objectForKeyedSubscript:@"key"];
+  v6 = [autoLoopCacheNode valueForKey:v5];
 
   return v6;
 }
 
-- (PILongExposureCacheNode)initWithAutoLoopCacheNode:(id)a3 urlKey:(id)a4
+- (PILongExposureCacheNode)initWithAutoLoopCacheNode:(id)node urlKey:(id)key
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  nodeCopy = node;
+  keyCopy = key;
+  if (!nodeCopy)
   {
     v13 = NUAssertLogger_8835();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -161,7 +161,7 @@
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v15 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v17 = NUAssertLogger_8835();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
@@ -169,11 +169,11 @@
     {
       if (v18)
       {
-        v26 = dispatch_get_specific(*v15);
+        v26 = dispatch_get_specific(*callStackSymbols);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v15 = [v27 callStackSymbols];
-        v29 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v41 = v26;
         v42 = 2114;
@@ -184,10 +184,10 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v41 = v15;
+      v41 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -195,8 +195,8 @@
     goto LABEL_17;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = keyCopy;
+  if (!keyCopy)
   {
     v20 = NUAssertLogger_8835();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -207,7 +207,7 @@
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v15 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v22 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v17 = NUAssertLogger_8835();
     v23 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
@@ -215,8 +215,8 @@
     {
       if (v23)
       {
-        v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v25 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v41 = v25;
         _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -228,11 +228,11 @@
 LABEL_17:
     if (v23)
     {
-      v30 = dispatch_get_specific(*v15);
+      v30 = dispatch_get_specific(*callStackSymbols);
       v31 = MEMORY[0x1E696AF00];
       v32 = v30;
-      v33 = [v31 callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v31 callStackSymbols];
+      v34 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v41 = v30;
       v42 = 2114;
@@ -246,7 +246,7 @@ LABEL_19:
   }
 
   v38 = *MEMORY[0x1E69B38E0];
-  v39 = v6;
+  v39 = nodeCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
   v36 = @"key";
   v37 = v8;

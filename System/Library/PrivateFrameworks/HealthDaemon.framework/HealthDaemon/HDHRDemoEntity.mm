@@ -3,7 +3,7 @@
 + (id)defaultForeignKey;
 + (id)foreignKeys;
 - (_TtC12HealthDaemon14HDHRDemoEntity)init;
-- (_TtC12HealthDaemon14HDHRDemoEntity)initWithPersistentID:(int64_t)a3;
+- (_TtC12HealthDaemon14HDHRDemoEntity)initWithPersistentID:(int64_t)d;
 @end
 
 @implementation HDHRDemoEntity
@@ -44,11 +44,11 @@
   return v4;
 }
 
-- (_TtC12HealthDaemon14HDHRDemoEntity)initWithPersistentID:(int64_t)a3
+- (_TtC12HealthDaemon14HDHRDemoEntity)initWithPersistentID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for HDHRDemoEntity();
-  return [(HDSQLiteEntity *)&v5 initWithPersistentID:a3];
+  return [(HDSQLiteEntity *)&v5 initWithPersistentID:d];
 }
 
 - (_TtC12HealthDaemon14HDHRDemoEntity)init

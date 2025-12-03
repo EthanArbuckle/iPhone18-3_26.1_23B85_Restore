@@ -5,7 +5,7 @@
 + (id)allowedTextResultClasses;
 + (id)allowedVideoRequestClasses;
 + (id)allowedVideoResultClasses;
-+ (void)configureServerInterface:(id)a3;
++ (void)configureServerInterface:(id)interface;
 @end
 
 @implementation MADServicePrivate
@@ -92,47 +92,47 @@
   return v4;
 }
 
-+ (void)configureServerInterface:(id)a3
++ (void)configureServerInterface:(id)interface
 {
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___MADServicePrivate;
-  v3 = a3;
-  objc_msgSendSuper2(&v16, sel_configureServerInterface_, v3);
-  v4 = [objc_opt_class() allowedClasses];
-  [v3 setClasses:v4 forSelector:sel_requestImageProcessing_forAssetWithIdentifier_identifierType_fromPhotoLibraryWithURL_requestID_andReply_ argumentIndex:0 ofReply:0];
+  interfaceCopy = interface;
+  objc_msgSendSuper2(&v16, sel_configureServerInterface_, interfaceCopy);
+  allowedClasses = [objc_opt_class() allowedClasses];
+  [interfaceCopy setClasses:allowedClasses forSelector:sel_requestImageProcessing_forAssetWithIdentifier_identifierType_fromPhotoLibraryWithURL_requestID_andReply_ argumentIndex:0 ofReply:0];
 
-  v5 = [objc_opt_class() allowedClasses];
-  [v3 setClasses:v5 forSelector:sel_requestImageProcessing_forAssetWithIdentifier_identifierType_fromPhotoLibraryWithURL_requestID_andReply_ argumentIndex:0 ofReply:1];
+  allowedClasses2 = [objc_opt_class() allowedClasses];
+  [interfaceCopy setClasses:allowedClasses2 forSelector:sel_requestImageProcessing_forAssetWithIdentifier_identifierType_fromPhotoLibraryWithURL_requestID_andReply_ argumentIndex:0 ofReply:1];
 
-  v6 = [objc_opt_class() allowedClasses];
-  [v3 setClasses:v6 forSelector:sel_requestImageProcessing_forIOSurface_withOrientation_assetLocalIdentifier_photoLibraryURL_requestID_andReply_ argumentIndex:0 ofReply:0];
+  allowedClasses3 = [objc_opt_class() allowedClasses];
+  [interfaceCopy setClasses:allowedClasses3 forSelector:sel_requestImageProcessing_forIOSurface_withOrientation_assetLocalIdentifier_photoLibraryURL_requestID_andReply_ argumentIndex:0 ofReply:0];
 
-  v7 = [objc_opt_class() allowedClasses];
-  [v3 setClasses:v7 forSelector:sel_requestImageProcessing_forIOSurface_withOrientation_assetLocalIdentifier_photoLibraryURL_requestID_andReply_ argumentIndex:0 ofReply:1];
+  allowedClasses4 = [objc_opt_class() allowedClasses];
+  [interfaceCopy setClasses:allowedClasses4 forSelector:sel_requestImageProcessing_forIOSurface_withOrientation_assetLocalIdentifier_photoLibraryURL_requestID_andReply_ argumentIndex:0 ofReply:1];
 
-  v8 = [objc_opt_class() allowedClasses];
-  [v3 setClasses:v8 forSelector:sel_requestImageProcessing_forAssetWithCloudIdentifier_requestID_andReply_ argumentIndex:0 ofReply:0];
+  allowedClasses5 = [objc_opt_class() allowedClasses];
+  [interfaceCopy setClasses:allowedClasses5 forSelector:sel_requestImageProcessing_forAssetWithCloudIdentifier_requestID_andReply_ argumentIndex:0 ofReply:0];
 
-  v9 = [objc_opt_class() allowedClasses];
-  [v3 setClasses:v9 forSelector:sel_requestImageProcessing_forAssetWithCloudIdentifier_requestID_andReply_ argumentIndex:0 ofReply:1];
+  allowedClasses6 = [objc_opt_class() allowedClasses];
+  [interfaceCopy setClasses:allowedClasses6 forSelector:sel_requestImageProcessing_forAssetWithCloudIdentifier_requestID_andReply_ argumentIndex:0 ofReply:1];
 
-  v10 = [objc_opt_class() allowedClasses];
-  [v3 setClasses:v10 forSelector:sel_requestImageProcessingWithCloudIdentifierRequests_requestID_andReply_ argumentIndex:0 ofReply:0];
+  allowedClasses7 = [objc_opt_class() allowedClasses];
+  [interfaceCopy setClasses:allowedClasses7 forSelector:sel_requestImageProcessingWithCloudIdentifierRequests_requestID_andReply_ argumentIndex:0 ofReply:0];
 
-  v11 = [objc_opt_class() allowedClasses];
-  [v3 setClasses:v11 forSelector:sel_requestImageProcessingWithCloudIdentifierRequests_requestID_andReply_ argumentIndex:0 ofReply:1];
+  allowedClasses8 = [objc_opt_class() allowedClasses];
+  [interfaceCopy setClasses:allowedClasses8 forSelector:sel_requestImageProcessingWithCloudIdentifierRequests_requestID_andReply_ argumentIndex:0 ofReply:1];
 
-  v12 = [objc_opt_class() allowedClasses];
-  [v3 setClasses:v12 forSelector:sel_requestImageProcessing_forImageData_withUniformTypeIdentifier_identifier_requestID_andReply_ argumentIndex:0 ofReply:0];
+  allowedClasses9 = [objc_opt_class() allowedClasses];
+  [interfaceCopy setClasses:allowedClasses9 forSelector:sel_requestImageProcessing_forImageData_withUniformTypeIdentifier_identifier_requestID_andReply_ argumentIndex:0 ofReply:0];
 
-  v13 = [objc_opt_class() allowedClasses];
-  [v3 setClasses:v13 forSelector:sel_requestImageProcessing_forImageData_withUniformTypeIdentifier_identifier_requestID_andReply_ argumentIndex:0 ofReply:1];
+  allowedClasses10 = [objc_opt_class() allowedClasses];
+  [interfaceCopy setClasses:allowedClasses10 forSelector:sel_requestImageProcessing_forImageData_withUniformTypeIdentifier_identifier_requestID_andReply_ argumentIndex:0 ofReply:1];
 
-  v14 = [objc_opt_class() allowedVideoRequestClasses];
-  [v3 setClasses:v14 forSelector:sel_requestVideoProcessing_assetIdentifier_identifierType_photoLibraryURL_requestID_isIncremental_reply_ argumentIndex:0 ofReply:0];
+  allowedVideoRequestClasses = [objc_opt_class() allowedVideoRequestClasses];
+  [interfaceCopy setClasses:allowedVideoRequestClasses forSelector:sel_requestVideoProcessing_assetIdentifier_identifierType_photoLibraryURL_requestID_isIncremental_reply_ argumentIndex:0 ofReply:0];
 
-  v15 = [objc_opt_class() allowedVideoResultClasses];
-  [v3 setClasses:v15 forSelector:sel_requestVideoProcessing_assetIdentifier_identifierType_photoLibraryURL_requestID_isIncremental_reply_ argumentIndex:0 ofReply:1];
+  allowedVideoResultClasses = [objc_opt_class() allowedVideoResultClasses];
+  [interfaceCopy setClasses:allowedVideoResultClasses forSelector:sel_requestVideoProcessing_assetIdentifier_identifierType_photoLibraryURL_requestID_isIncremental_reply_ argumentIndex:0 ofReply:1];
 }
 
 @end

@@ -18,8 +18,8 @@
   v6 = CAMLocalizedFrameworkString(@"SEMANTIC_STYLES_SETTINGS_CANCEL", 0);
   v8 = [v5 initWithTitle:v6 style:2 target:self action:sel__dismiss];
 
-  v7 = [(CAMSemanticStyleSettingsRootController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v8];
+  navigationItem = [(CAMSemanticStyleSettingsRootController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v8];
 }
 
 - (void)viewWillLayoutSubviews
@@ -27,8 +27,8 @@
   v9.receiver = self;
   v9.super_class = CAMSemanticStyleSettingsRootController;
   [(CAMSemanticStyleSettingsRootController *)&v9 viewWillLayoutSubviews];
-  v3 = [(CAMSemanticStyleSettingsRootController *)self _settingsView];
-  [v3 bounds];
+  _settingsView = [(CAMSemanticStyleSettingsRootController *)self _settingsView];
+  [_settingsView bounds];
   v6 = v4 / v5;
   if (v4 / v5 > 0.5615)
   {
@@ -40,28 +40,28 @@
     v7 = 0;
   }
 
-  v8 = [(CAMSemanticStyleSettingsRootController *)self navigationItem];
-  [v8 setTitle:v7];
+  navigationItem = [(CAMSemanticStyleSettingsRootController *)self navigationItem];
+  [navigationItem setTitle:v7];
 
   if (v6 > 0.5615)
   {
   }
 
-  [v3 setShowsTitle:v6 <= 0.5615];
+  [_settingsView setShowsTitle:v6 <= 0.5615];
 }
 
 - (void)_dismiss
 {
-  v3 = [(CAMSemanticStyleSettingsRootController *)self completionBlock];
+  completionBlock = [(CAMSemanticStyleSettingsRootController *)self completionBlock];
 
-  if (v3)
+  if (completionBlock)
   {
-    v4 = [(CAMSemanticStyleSettingsRootController *)self completionBlock];
-    v4[2]();
+    completionBlock2 = [(CAMSemanticStyleSettingsRootController *)self completionBlock];
+    completionBlock2[2]();
   }
 
-  v5 = [(CAMSemanticStyleSettingsRootController *)self navigationController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(CAMSemanticStyleSettingsRootController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface CalOpenFileURLWrapper
-- (BOOL)isEqual:(id)a3;
-- (CalOpenFileURLWrapper)initWithCoder:(id)a3;
-- (CalOpenFileURLWrapper)initWithURL:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CalOpenFileURLWrapper)initWithCoder:(id)coder;
+- (CalOpenFileURLWrapper)initWithURL:(id)l;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CalOpenFileURLWrapper
 
-- (CalOpenFileURLWrapper)initWithURL:(id)a3
+- (CalOpenFileURLWrapper)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = CalOpenFileURLWrapper;
   v6 = [(CalOpenFileURLWrapper *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
-    v8 = [v5 startAccessingSecurityScopedResource];
-    v9 = [v5 path];
-    v10 = open([v9 fileSystemRepresentation], 0);
+    objc_storeStrong(&v6->_url, l);
+    startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
+    path = [lCopy path];
+    v10 = open([path fileSystemRepresentation], 0);
 
     if (v10 == -1)
     {
@@ -31,9 +31,9 @@
     file = v7->_file;
     v7->_file = v11;
 
-    if (v8)
+    if (startAccessingSecurityScopedResource)
     {
-      [v5 stopAccessingSecurityScopedResource];
+      [lCopy stopAccessingSecurityScopedResource];
     }
   }
 
@@ -43,19 +43,19 @@ LABEL_7:
   return v13;
 }
 
-- (CalOpenFileURLWrapper)initWithCoder:(id)a3
+- (CalOpenFileURLWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CalOpenFileURLWrapper;
   v5 = [(CalOpenFileURLWrapper *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"file"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"file"];
     file = v5->_file;
     v5->_file = v8;
   }
@@ -63,21 +63,21 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   url = self->_url;
-  v5 = a3;
-  [v5 encodeObject:url forKey:@"url"];
-  [v5 encodeObject:self->_file forKey:@"file"];
+  coderCopy = coder;
+  [coderCopy encodeObject:url forKey:@"url"];
+  [coderCopy encodeObject:self->_file forKey:@"file"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [v4[1] isEqual:self->_url];
+    v6 = [equalCopy[1] isEqual:self->_url];
   }
 
   else

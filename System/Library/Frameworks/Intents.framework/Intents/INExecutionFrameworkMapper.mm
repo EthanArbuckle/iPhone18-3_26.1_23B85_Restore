@@ -1,13 +1,13 @@
 @interface INExecutionFrameworkMapper
 + (void)initialize;
 - (INExecutionFrameworkMapper)init;
-- (id)appBundleIdentifierForSystemExtensionBundleIdentifier:(id)a3;
-- (id)displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:(id)a3;
-- (id)extensionBundleIdentifiersForSystemAppIdentifier:(id)a3;
-- (id)launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:(id)a3;
-- (void)_addExtensionBundleIdentifier:(id)a3 forAppBundleIdentifier:(id)a4;
+- (id)appBundleIdentifierForSystemExtensionBundleIdentifier:(id)identifier;
+- (id)displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:(id)identifier;
+- (id)extensionBundleIdentifiersForSystemAppIdentifier:(id)identifier;
+- (id)launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:(id)identifier;
+- (void)_addExtensionBundleIdentifier:(id)identifier forAppBundleIdentifier:(id)bundleIdentifier;
 - (void)dealloc;
-- (void)installedApplicationsDidChange:(id)a3;
+- (void)installedApplicationsDidChange:(id)change;
 - (void)loadSystemExtensionInformation;
 - (void)reset;
 @end
@@ -23,9 +23,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v4 addObserver:v3 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-    [v4 addObserver:v3 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+    [defaultCenter addObserver:v3 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
     [(INExecutionFrameworkMapper *)v3 reset];
     v5 = v3;
   }
@@ -35,9 +35,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-  [v3 removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+  [defaultCenter removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
 
   v4.receiver = self;
   v4.super_class = INExecutionFrameworkMapper;
@@ -46,7 +46,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);
@@ -82,10 +82,10 @@
   v3[2](v3);
 }
 
-- (id)appBundleIdentifierForSystemExtensionBundleIdentifier:(id)a3
+- (id)appBundleIdentifierForSystemExtensionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INExecutionFrameworkMapper *)self launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(INExecutionFrameworkMapper *)self launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -94,7 +94,7 @@
 
   else
   {
-    v7 = [(INExecutionFrameworkMapper *)self displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:v4];
+    v7 = [(INExecutionFrameworkMapper *)self displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:identifierCopy];
   }
 
   v8 = v7;
@@ -102,12 +102,12 @@
   return v8;
 }
 
-- (id)displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:(id)a3
+- (id)displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v4 = [&unk_1F02E0D50 objectForKey:v3];
+    v4 = [&unk_1F02E0D50 objectForKey:identifierCopy];
     v5 = v4;
     if (v4)
     {
@@ -116,12 +116,12 @@
 
     else if (INThisProcessCanMapLSDatabase(0))
     {
-      v7 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v3 error:0];
+      v7 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:identifierCopy error:0];
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 infoDictionary];
-        v6 = [v9 objectForKey:@"INDisplayableApplicationBundleIdentifier" ofClass:objc_opt_class()];
+        infoDictionary = [v7 infoDictionary];
+        v6 = [infoDictionary objectForKey:@"INDisplayableApplicationBundleIdentifier" ofClass:objc_opt_class()];
       }
 
       else
@@ -144,42 +144,42 @@
   return v6;
 }
 
-- (id)launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:(id)a3
+- (id)launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (!v3)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     goto LABEL_9;
   }
 
-  v4 = [&unk_1F02E0D28 objectForKey:v3];
-  if (v4)
+  containingBundleRecord = [&unk_1F02E0D28 objectForKey:identifierCopy];
+  if (containingBundleRecord)
   {
     goto LABEL_10;
   }
 
   if (INThisProcessCanMapLSDatabase(0))
   {
-    v5 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v3 error:0];
+    v5 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:identifierCopy error:0];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 infoDictionary];
-      v4 = [v7 objectForKey:@"INLaunchableApplicationBundleIdentifier" ofClass:objc_opt_class()];
+      infoDictionary = [v5 infoDictionary];
+      containingBundleRecord = [infoDictionary objectForKey:@"INLaunchableApplicationBundleIdentifier" ofClass:objc_opt_class()];
 
-      if (!v4)
+      if (!containingBundleRecord)
       {
-        v8 = [v6 infoDictionary];
-        v4 = [v8 objectForKey:@"INLaunchableAApplicationBundleIdentifier" ofClass:objc_opt_class()];
+        infoDictionary2 = [v6 infoDictionary];
+        containingBundleRecord = [infoDictionary2 objectForKey:@"INLaunchableAApplicationBundleIdentifier" ofClass:objc_opt_class()];
 
-        if (!v4)
+        if (!containingBundleRecord)
         {
-          v4 = [v6 containingBundleRecord];
+          containingBundleRecord = [v6 containingBundleRecord];
 
-          if (v4)
+          if (containingBundleRecord)
           {
-            v9 = [v6 containingBundleRecord];
-            v4 = [v9 bundleIdentifier];
+            containingBundleRecord2 = [v6 containingBundleRecord];
+            containingBundleRecord = [containingBundleRecord2 bundleIdentifier];
           }
         }
       }
@@ -187,28 +187,28 @@
 
     else
     {
-      v4 = 0;
+      containingBundleRecord = 0;
     }
   }
 
   else
   {
 LABEL_9:
-    v4 = 0;
+    containingBundleRecord = 0;
   }
 
 LABEL_10:
 
-  return v4;
+  return containingBundleRecord;
 }
 
-- (id)extensionBundleIdentifiersForSystemAppIdentifier:(id)a3
+- (id)extensionBundleIdentifiersForSystemAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
-  v6 = [v5 compatibilityObject];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:0];
+  compatibilityObject = [v5 compatibilityObject];
   v7 = 0;
-  if ([v6 if_isSystem])
+  if ([compatibilityObject if_isSystem])
   {
     [(INExecutionFrameworkMapper *)self loadSystemExtensionInformation];
     os_unfair_lock_lock(&self->_lock);
@@ -218,11 +218,11 @@ LABEL_10:
     v14[3] = &unk_1E72882F8;
     v14[4] = self;
     v8 = MEMORY[0x193AD7780](v14);
-    v9 = [v5 applicationExtensionRecords];
-    v10 = [v9 if_compactMap:&__block_literal_global_119894];
+    applicationExtensionRecords = [v5 applicationExtensionRecords];
+    v10 = [applicationExtensionRecords if_compactMap:&__block_literal_global_119894];
 
-    v11 = [(INExecutionFrameworkMapper *)self _appToExtensionIdentifiers];
-    v12 = [v11 objectForKey:v4];
+    _appToExtensionIdentifiers = [(INExecutionFrameworkMapper *)self _appToExtensionIdentifiers];
+    v12 = [_appToExtensionIdentifiers objectForKey:identifierCopy];
 
     v7 = [v10 setByAddingObjectsFromSet:v12];
 
@@ -240,7 +240,7 @@ LABEL_10:
   v23[1] = 3221225472;
   v23[2] = __60__INExecutionFrameworkMapper_loadSystemExtensionInformation__block_invoke;
   v23[3] = &unk_1E72882F8;
-  v3 = self;
+  selfCopy = self;
   v23[4] = self;
   v17 = MEMORY[0x193AD7780](v23);
   if (!self->_filled)
@@ -266,31 +266,31 @@ LABEL_10:
 
           v7 = *(*(&v19 + 1) + 8 * v6);
           v8 = objc_autoreleasePoolPush();
-          v9 = [v7 bundleIdentifier];
-          if (v9)
+          bundleIdentifier = [v7 bundleIdentifier];
+          if (bundleIdentifier)
           {
-            v10 = [v7 infoDictionary];
-            v11 = [v10 objectForKey:@"INLaunchableApplicationBundleIdentifier" ofClass:objc_opt_class()];
+            infoDictionary = [v7 infoDictionary];
+            v11 = [infoDictionary objectForKey:@"INLaunchableApplicationBundleIdentifier" ofClass:objc_opt_class()];
 
             if (v11)
             {
-              [(INExecutionFrameworkMapper *)v3 _addExtensionBundleIdentifier:v9 forAppBundleIdentifier:v11];
+              [(INExecutionFrameworkMapper *)selfCopy _addExtensionBundleIdentifier:bundleIdentifier forAppBundleIdentifier:v11];
             }
 
-            v12 = [v7 infoDictionary];
-            v13 = [v12 objectForKey:@"INLaunchableAApplicationBundleIdentifier" ofClass:objc_opt_class()];
+            infoDictionary2 = [v7 infoDictionary];
+            v13 = [infoDictionary2 objectForKey:@"INLaunchableAApplicationBundleIdentifier" ofClass:objc_opt_class()];
 
             if (v13)
             {
-              [(INExecutionFrameworkMapper *)v3 _addExtensionBundleIdentifier:v9 forAppBundleIdentifier:v13];
+              [(INExecutionFrameworkMapper *)selfCopy _addExtensionBundleIdentifier:bundleIdentifier forAppBundleIdentifier:v13];
             }
 
-            v14 = [v7 infoDictionary];
-            v15 = [v14 objectForKey:@"INDisplayableApplicationBundleIdentifier" ofClass:objc_opt_class()];
+            infoDictionary3 = [v7 infoDictionary];
+            v15 = [infoDictionary3 objectForKey:@"INDisplayableApplicationBundleIdentifier" ofClass:objc_opt_class()];
 
             if (v15)
             {
-              [(INExecutionFrameworkMapper *)v3 _addExtensionBundleIdentifier:v9 forAppBundleIdentifier:v15];
+              [(INExecutionFrameworkMapper *)selfCopy _addExtensionBundleIdentifier:bundleIdentifier forAppBundleIdentifier:v15];
             }
           }
 
@@ -305,7 +305,7 @@ LABEL_10:
       while (v4);
     }
 
-    v3->_filled = 1;
+    selfCopy->_filled = 1;
   }
 
   v17[2]();
@@ -313,24 +313,24 @@ LABEL_10:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addExtensionBundleIdentifier:(id)a3 forAppBundleIdentifier:(id)a4
+- (void)_addExtensionBundleIdentifier:(id)identifier forAppBundleIdentifier:(id)bundleIdentifier
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_appToExtensionIdentifiers objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  v7 = [(NSMutableDictionary *)self->_appToExtensionIdentifiers objectForKeyedSubscript:bundleIdentifierCopy];
   if (!v7)
   {
     v7 = objc_opt_new();
-    [(NSMutableDictionary *)self->_appToExtensionIdentifiers setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_appToExtensionIdentifiers setObject:v7 forKeyedSubscript:bundleIdentifierCopy];
   }
 
-  [v7 addObject:v8];
+  [v7 addObject:identifierCopy];
 }
 
-- (void)installedApplicationsDidChange:(id)a3
+- (void)installedApplicationsDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"isPlaceholder"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"isPlaceholder"];
 
   if (v5)
   {
@@ -353,8 +353,8 @@ LABEL_10:
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  if ((v8 & 1) == 0)
+  bOOLValue = [v7 BOOLValue];
+  if ((bOOLValue & 1) == 0)
   {
 
     [(INExecutionFrameworkMapper *)self reset];

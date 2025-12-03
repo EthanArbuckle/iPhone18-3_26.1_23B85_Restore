@@ -1,13 +1,13 @@
 @interface CSProminentTextElementView
 + (Class)textLabelClass;
-- (CSProminentTextElementView)initWithDate:(id)a3 font:(id)a4 textColor:(id)a5;
+- (CSProminentTextElementView)initWithDate:(id)date font:(id)font textColor:(id)color;
 - (UIView)contentView;
-- (void)insertPrefixViews:(id)a3 animated:(BOOL)a4;
+- (void)insertPrefixViews:(id)views animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setOverrideString:(id)a3;
-- (void)setPrimaryFont:(id)a3;
-- (void)setPrimaryTextColor:(id)a3;
-- (void)setUsesGlassMaterial:(BOOL)a3;
+- (void)setOverrideString:(id)string;
+- (void)setPrimaryFont:(id)font;
+- (void)setPrimaryTextColor:(id)color;
+- (void)setUsesGlassMaterial:(BOOL)material;
 @end
 
 @implementation CSProminentTextElementView
@@ -17,27 +17,27 @@
   v7.receiver = self;
   v7.super_class = CSProminentTextElementView;
   [(CSProminentTextElementView *)&v7 layoutSubviews];
-  v3 = [(CSProminentTextElementView *)self contentView];
+  contentView = [(CSProminentTextElementView *)self contentView];
   [(CSProminentTextElementView *)self bounds];
-  [(UIStackView *)v3 sizeThatFits:v4, v5];
-  if (v3 == self->_stackView)
+  [(UIStackView *)contentView sizeThatFits:v4, v5];
+  if (contentView == self->_stackView)
   {
-    [(UIStackView *)v3 systemLayoutSizeFittingSize:*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)];
+    [(UIStackView *)contentView systemLayoutSizeFittingSize:*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)];
   }
 
-  v6 = [(CSProminentTextElementView *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(CSProminentTextElementView *)self traitCollection];
+  [traitCollection displayScale];
 
   [(CSProminentTitleLabelDefining *)self->_textLabel textAlignment];
   BSPointRoundForScale();
-  [(UIStackView *)v3 setFrame:?];
+  [(UIStackView *)contentView setFrame:?];
 }
 
-- (CSProminentTextElementView)initWithDate:(id)a3 font:(id)a4 textColor:(id)a5
+- (CSProminentTextElementView)initWithDate:(id)date font:(id)font textColor:(id)color
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  fontCopy = font;
+  colorCopy = color;
   +[CSProminentLayoutController frameForElements:](CSProminentLayoutController, "frameForElements:", [objc_opt_class() elementType]);
   x = v26.origin.x;
   y = v26.origin.y;
@@ -53,22 +53,22 @@
 
   v25.receiver = self;
   v25.super_class = CSProminentTextElementView;
-  v16 = [(CSProminentTextElementView *)&v25 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(CSProminentTextElementView *)&v25 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    objc_storeStrong(&v16->_date, a3);
+    objc_storeStrong(&height->_date, date);
     overrideString = v17->_overrideString;
     v17->_overrideString = 0;
 
-    objc_storeStrong(&v17->_primaryFont, a4);
-    objc_storeStrong(&v17->_primaryTextColor, a5);
+    objc_storeStrong(&v17->_primaryFont, font);
+    objc_storeStrong(&v17->_primaryTextColor, color);
     v19 = objc_alloc([objc_opt_class() textLabelClass]);
     [(CSProminentTextElementView *)v17 bounds];
     v20 = [v19 initWithFrame:?];
     [v20 setTextAlignment:1];
-    [v20 setTextColor:v11];
-    [v20 setFont:v10];
+    [v20 setTextColor:colorCopy];
+    [v20 setFont:fontCopy];
     if (objc_opt_respondsToSelector())
     {
       [v20 setClipsToBounds:0];
@@ -78,9 +78,9 @@
     v17->_textLabel = v20;
     v22 = v20;
 
-    v23 = [(CSProminentTitleLabelDefining *)v17->_textLabel view];
+    view = [(CSProminentTitleLabelDefining *)v17->_textLabel view];
 
-    [(CSProminentTextElementView *)v17 addSubview:v23];
+    [(CSProminentTextElementView *)v17 addSubview:view];
   }
 
   return v17;
@@ -98,38 +98,38 @@
   return v2;
 }
 
-- (void)setPrimaryFont:(id)a3
+- (void)setPrimaryFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_primaryFont, a3);
-    [(CSProminentTitleLabelDefining *)self->_textLabel setFont:v5];
+    objc_storeStrong(&self->_primaryFont, font);
+    [(CSProminentTitleLabelDefining *)self->_textLabel setFont:fontCopy];
     [(CSProminentTextElementView *)self setNeedsLayout];
   }
 }
 
-- (void)setPrimaryTextColor:(id)a3
+- (void)setPrimaryTextColor:(id)color
 {
-  objc_storeStrong(&self->_primaryTextColor, a3);
-  v5 = a3;
-  [(CSProminentTitleLabelDefining *)self->_textLabel setTextColor:v5];
+  objc_storeStrong(&self->_primaryTextColor, color);
+  colorCopy = color;
+  [(CSProminentTitleLabelDefining *)self->_textLabel setTextColor:colorCopy];
 }
 
-- (void)setOverrideString:(id)a3
+- (void)setOverrideString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   if ((BSEqualStrings() & 1) == 0)
   {
-    objc_storeStrong(&self->_overrideString, a3);
+    objc_storeStrong(&self->_overrideString, string);
     [(CSProminentTitleLabelDefining *)self->_textLabel setText:self->_overrideString];
     [(CSProminentTextElementView *)self setNeedsLayout];
   }
 }
 
-- (void)setUsesGlassMaterial:(BOOL)a3
+- (void)setUsesGlassMaterial:(BOOL)material
 {
-  self->_usesGlassMaterial = a3;
+  self->_usesGlassMaterial = material;
   if (objc_opt_respondsToSelector())
   {
     textLabel = self->_textLabel;
@@ -139,10 +139,10 @@
   }
 }
 
-- (void)insertPrefixViews:(id)a3 animated:(BOOL)a4
+- (void)insertPrefixViews:(id)views animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  viewsCopy = views;
   if (!self->_stackView)
   {
     v20[0] = MEMORY[0x1E69E9820];
@@ -158,9 +158,9 @@
   v17[1] = 3221225472;
   v17[2] = __57__CSProminentTextElementView_insertPrefixViews_animated___block_invoke_2;
   v17[3] = &unk_1E76BA200;
-  v8 = v6;
+  v8 = viewsCopy;
   v18 = v8;
-  v19 = self;
+  selfCopy = self;
   [v7 performWithoutAnimation:v17];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
@@ -170,7 +170,7 @@
   v16 = v9;
   v10 = _Block_copy(&v12);
   v11 = v10;
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v10 animations:{0.25, v12, v13, v14, v15}];
   }
@@ -280,15 +280,15 @@ void __57__CSProminentTextElementView_insertPrefixViews_animated___block_invoke_
   stackView = self->_stackView;
   if (stackView)
   {
-    v3 = stackView;
+    view = stackView;
   }
 
   else
   {
-    v3 = [(CSProminentTitleLabelDefining *)self->_textLabel view];
+    view = [(CSProminentTitleLabelDefining *)self->_textLabel view];
   }
 
-  return v3;
+  return view;
 }
 
 @end

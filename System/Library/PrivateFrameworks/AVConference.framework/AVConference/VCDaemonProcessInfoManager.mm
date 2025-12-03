@@ -31,9 +31,9 @@ void __43__VCDaemonProcessInfoManager_sharedManager__block_invoke()
 
 + (id)copyProcessInfo
 {
-  v2 = [objc_opt_class() sharedManager];
+  sharedManager = [objc_opt_class() sharedManager];
 
-  return [v2 copyUniquePidInfo];
+  return [sharedManager copyUniquePidInfo];
 }
 
 - (VCDaemonProcessInfoManager)init
@@ -151,7 +151,7 @@ uint64_t __54__VCDaemonProcessInfoManager_registerBlocksForService__block_invoke
           v22 = 2112;
           v23 = v6;
           v24 = 2048;
-          v25 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to fetch unique pid", buf, 0x30u);
         }
       }
@@ -217,7 +217,7 @@ LABEL_8:
 {
   v8 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   v4 = 2080;
   v5 = "[VCDaemonProcessInfoManager copyUniquePidInfo]";
   v6 = 1024;

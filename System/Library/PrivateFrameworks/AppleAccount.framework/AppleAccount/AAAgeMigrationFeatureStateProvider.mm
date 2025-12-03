@@ -13,8 +13,8 @@
   v2 = [(AAAgeMigrationFeatureStateProvider *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E698DD70] sharedManager];
-    v2->_ageMigrationFeatureEnabled = [v3 isAgeMigrationEnabled];
+    mEMORY[0x1E698DD70] = [MEMORY[0x1E698DD70] sharedManager];
+    v2->_ageMigrationFeatureEnabled = [mEMORY[0x1E698DD70] isAgeMigrationEnabled];
   }
 
   return v2;
@@ -34,7 +34,7 @@
 - (void)ageMigrationFeatureEnabled
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     v2 = @"YES";
   }

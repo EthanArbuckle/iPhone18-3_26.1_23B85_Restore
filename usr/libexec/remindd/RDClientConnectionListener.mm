@@ -1,17 +1,17 @@
 @interface RDClientConnectionListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC7remindd26RDClientConnectionListener)init;
 - (void)dealloc;
 @end
 
 @implementation RDClientConnectionListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1000033A4(v6, v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_1000033A4(listenerCopy, connectionCopy);
 
   return v9 & 1;
 }
@@ -19,10 +19,10 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC7remindd26RDClientConnectionListener_xpcListener);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  [*(&v3->super.isa + OBJC_IVAR____TtC7remindd26RDClientConnectionListener_xpcListenerUserInteractive) invalidate];
-  v4.receiver = v3;
+  [*(&selfCopy->super.isa + OBJC_IVAR____TtC7remindd26RDClientConnectionListener_xpcListenerUserInteractive) invalidate];
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for RDClientConnectionListener();
   [(RDClientConnectionListener *)&v4 dealloc];
 }

@@ -3,14 +3,14 @@
 - (BOOL)initGL;
 - (CGRect)bounds;
 - (CGRect)getVertexBounds;
-- (CGRect)regionWithVertices:()vector<Vertex withInflationAmount:(std:(float)a4 :allocator<Vertex>> *)a3;
+- (CGRect)regionWithVertices:()vector<Vertex withInflationAmount:(std:(float)amount :allocator<Vertex>> *)a3;
 - (CGSize)contentSize;
 - (DKOpenGLRenderer)init;
-- (DKOpenGLRenderer)initWithBounds:(CGRect)a3 scale:(double)a4 bufferSize:(int)a5 sharedContext:(BOOL)a6;
+- (DKOpenGLRenderer)initWithBounds:(CGRect)bounds scale:(double)scale bufferSize:(int)size sharedContext:(BOOL)context;
 - (DKOpenGLRendererDelegate)delegate;
 - (id).cxx_construct;
 - (id)snapshotImage;
-- (void)addPoints:(id)a3 withSegmentLength:(unint64_t)a4;
+- (void)addPoints:(id)points withSegmentLength:(unint64_t)length;
 - (void)appendVertexHistoryElement;
 - (void)clear;
 - (void)clearComposite;
@@ -22,36 +22,36 @@
 - (void)didResize;
 - (void)draw;
 - (void)drawComposite;
-- (void)drawContiguousVertexStorageImmediatelyWithLayeredBlending:(BOOL)a3;
+- (void)drawContiguousVertexStorageImmediatelyWithLayeredBlending:(BOOL)blending;
 - (void)initializeFrameBuffers;
 - (void)removeVertexHistoryElement;
-- (void)renderToComposite:(BOOL)a3;
+- (void)renderToComposite:(BOOL)composite;
 - (void)renderToDryPaintBuffer;
-- (void)renderToWetPaintBufferWithRange:(_NSRange)a3;
+- (void)renderToWetPaintBufferWithRange:(_NSRange)range;
 - (void)resetRendererState;
-- (void)setAllowWetComposite:(BOOL)a3;
-- (void)setBackingScale:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setDrawingEnabled:(BOOL)a3;
-- (void)setInkColor:(id)a3;
-- (void)setNumPages:(int64_t)a3;
+- (void)setAllowWetComposite:(BOOL)composite;
+- (void)setBackingScale:(double)scale;
+- (void)setBounds:(CGRect)bounds;
+- (void)setDrawingEnabled:(BOOL)enabled;
+- (void)setInkColor:(id)color;
+- (void)setNumPages:(int64_t)pages;
 - (void)teardown;
 - (void)undo;
 - (void)update;
-- (void)updateDryCycleIncludingComposite:(BOOL)a3;
+- (void)updateDryCycleIncludingComposite:(BOOL)composite;
 - (void)updateDryForcefully;
-- (void)updateVertexControllerWithData:()vector<Vertex range:(std:(_NSRange)a4 :(BOOL)a5 allocator<Vertex>> *)a3 allowWet:;
-- (void)updateVertexControllerWithDataRange:(_NSRange)a3 allowWet:(BOOL)a4;
+- (void)updateVertexControllerWithData:()vector<Vertex range:(std:(_NSRange)range :(BOOL)a5 allocator<Vertex>> *)a3 allowWet:;
+- (void)updateVertexControllerWithDataRange:(_NSRange)range allowWet:(BOOL)wet;
 @end
 
 @implementation DKOpenGLRenderer
 
-- (DKOpenGLRenderer)initWithBounds:(CGRect)a3 scale:(double)a4 bufferSize:(int)a5 sharedContext:(BOOL)a6
+- (DKOpenGLRenderer)initWithBounds:(CGRect)bounds scale:(double)scale bufferSize:(int)size sharedContext:(BOOL)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v17.receiver = self;
   v17.super_class = DKOpenGLRenderer;
   v13 = [(DKOpenGLRenderer *)&v17 init];
@@ -62,26 +62,26 @@
     v13->_bounds.origin.y = y;
     v13->_bounds.size.width = width;
     v13->_bounds.size.height = height;
-    v13->_backingScale = a4;
+    v13->_backingScale = scale;
     v13->_lineWidthScale = 1.0;
     v13->_didNotifyRendererDelegate = 0;
-    v13->mSharedContext = a6;
-    if (a5 <= 8000)
+    v13->mSharedContext = context;
+    if (size <= 8000)
     {
-      v15 = 8000;
+      sizeCopy = 8000;
     }
 
     else
     {
-      v15 = a5;
+      sizeCopy = size;
     }
 
-    if (v15 >= 65534)
+    if (sizeCopy >= 65534)
     {
-      v15 = 65534;
+      sizeCopy = 65534;
     }
 
-    v13->mBufferSize = v15;
+    v13->mBufferSize = sizeCopy;
     [(DKOpenGLRenderer *)v13 initGL];
   }
 
@@ -90,8 +90,8 @@
 
 - (DKOpenGLRenderer)init
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
   return [(DKOpenGLRenderer *)self initWithBounds:*MEMORY[0x277CBF3A0] scale:*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), v5];
@@ -141,9 +141,9 @@
   [(DKOpenGLRenderer *)self setNumPages:1];
   *self->mCanvasSize = *self->mWinSize;
   *self->mCanvasOffset = 0;
-  v4 = [(DKOpenGLRenderer *)self numPages];
+  numPages = [(DKOpenGLRenderer *)self numPages];
   v5 = *self->mCanvasSize;
-  self->_contentSize.width = (v4 * v5);
+  self->_contentSize.width = (numPages * v5);
   self->_contentSize.height = SHIDWORD(v5);
   self->mTime = 0.0;
   [(DKOpenGLRenderer *)self setDrawingEnabled:1];
@@ -223,15 +223,15 @@ LABEL_5:
   return v25;
 }
 
-- (void)setInkColor:(id)a3
+- (void)setInkColor:(id)color
 {
-  objc_storeStrong(&self->_inkColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_inkColor, color);
+  colorCopy = color;
   v10 = 0.0;
   v11 = 0.0;
   v8 = 0.0;
   v9 = 0.0;
-  [v5 getRed:&v11 green:&v10 blue:&v9 alpha:&v8];
+  [colorCopy getRed:&v11 green:&v10 blue:&v9 alpha:&v8];
 
   v6.f64[0] = v11;
   v6.f64[1] = v10;
@@ -240,29 +240,29 @@ LABEL_5:
   *self->U_COLOR = vcvt_hight_f32_f64(vcvt_f32_f64(v6), v7);
 }
 
-- (void)setNumPages:(int64_t)a3
+- (void)setNumPages:(int64_t)pages
 {
-  if (self->_numPages != a3)
+  if (self->_numPages != pages)
   {
-    std::vector<Page>::resize(&self->mPages.__begin_, a3);
-    self->_numPages = a3;
+    std::vector<Page>::resize(&self->mPages.__begin_, pages);
+    self->_numPages = pages;
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  if (self->_bounds.size.width != a3.size.width || self->_bounds.size.height != a3.size.height)
+  if (self->_bounds.size.width != bounds.size.width || self->_bounds.size.height != bounds.size.height)
   {
-    self->_bounds = a3;
+    self->_bounds = bounds;
     [(DKOpenGLRenderer *)self didResize];
   }
 }
 
-- (void)setBackingScale:(double)a3
+- (void)setBackingScale:(double)scale
 {
-  if (self->_backingScale != a3)
+  if (self->_backingScale != scale)
   {
-    self->_backingScale = a3;
+    self->_backingScale = scale;
     [(DKOpenGLRenderer *)self didResize];
   }
 }
@@ -348,28 +348,28 @@ LABEL_5:
   glUniformMatrix4fv(v19, 1, 0, value);
 }
 
-- (void)setDrawingEnabled:(BOOL)a3
+- (void)setDrawingEnabled:(BOOL)enabled
 {
-  if (self->_drawingEnabled != a3)
+  if (self->_drawingEnabled != enabled)
   {
-    if (!a3)
+    if (!enabled)
     {
       [(DKOpenGLRenderer *)self updateDryForcefully];
     }
 
-    self->_drawingEnabled = a3;
+    self->_drawingEnabled = enabled;
   }
 }
 
-- (void)setAllowWetComposite:(BOOL)a3
+- (void)setAllowWetComposite:(BOOL)composite
 {
-  if (self->_allowWetComposite != a3)
+  if (self->_allowWetComposite != composite)
   {
-    v3 = a3;
+    compositeCopy = composite;
     glUseProgram(self->mCompositeProg);
     UniformLocation = glGetUniformLocation(self->mCompositeProg, "uIncludeWetPass");
-    glUniform1f(UniformLocation, v3);
-    self->_allowWetComposite = v3;
+    glUniform1f(UniformLocation, compositeCopy);
+    self->_allowWetComposite = compositeCopy;
   }
 }
 
@@ -406,15 +406,15 @@ LABEL_5:
   }
 }
 
-- (void)addPoints:(id)a3 withSegmentLength:(unint64_t)a4
+- (void)addPoints:(id)points withSegmentLength:(unint64_t)length
 {
   v81 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pointsCopy = points;
   begin = self->mContiguousVertexStorage.__begin_;
   p_mContiguousVertexStorage = &self->mContiguousVertexStorage;
   end = self->mContiguousVertexStorage.__end_;
-  v67 = v5;
-  if ([v5 count])
+  v67 = pointsCopy;
+  if ([pointsCopy count])
   {
     v69 = end;
     v70 = begin;
@@ -553,25 +553,25 @@ LABEL_5:
       while (v11);
     }
 
-    v32 = vcvtas_u32_f32([v10 count] / a4);
+    v32 = vcvtas_u32_f32([v10 count] / length);
     if (v32)
     {
       v33 = 0;
-      v34 = (24 * a4 - 24) / 0x18uLL;
+      v34 = (24 * length - 24) / 0x18uLL;
       v35 = (v34 + 4) & 0x1FFFFFFFFFFFFFFCLL;
       v72 = vdupq_n_s64(v34);
       do
       {
-        v36 = v33 * a4;
-        v37 = [v10 count] - v33 * a4;
-        if (v37 >= a4)
+        v36 = v33 * length;
+        v37 = [v10 count] - v33 * length;
+        if (v37 >= length)
         {
-          v38 = a4;
+          lengthCopy = length;
         }
 
         else
         {
-          v38 = v37;
+          lengthCopy = v37;
         }
 
         v74 = 0u;
@@ -588,7 +588,7 @@ LABEL_5:
         }
 
         v73 = 0u;
-        v41 = [v10 objectAtIndexedSubscript:v36 + v38 - 1];
+        v41 = [v10 objectAtIndexedSubscript:v36 + lengthCopy - 1];
         v42 = v41;
         if (v41)
         {
@@ -607,9 +607,9 @@ LABEL_5:
         v46 = *(&v73 + 1);
         *(&v45 + 1) = v46;
         v47 = [(DKOpenGLRenderer *)self detectCollision:v43];
-        v48 = -1431655765 * ((v69 - v70) >> 3) - a4 - 20 + v36;
+        v48 = -1431655765 * ((v69 - v70) >> 3) - length - 20 + v36;
         v49 = !v47 || v48 < 1;
-        if (!v49 && a4 << 32)
+        if (!v49 && length << 32)
         {
           v50 = 0;
           v51 = (p_mContiguousVertexStorage->__begin_ + 24 * v48 + 68);
@@ -814,10 +814,10 @@ LABEL_7:
     if (self->mVertexRange.location && !self->_didNotifyRendererDelegate)
     {
       self->_didNotifyRendererDelegate = 1;
-      v3 = [(DKOpenGLRenderer *)self delegate];
+      delegate = [(DKOpenGLRenderer *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v3 rendererDidFinishAnimatingDrawing:self];
+        [delegate rendererDidFinishAnimatingDrawing:self];
       }
     }
   }
@@ -882,9 +882,9 @@ LABEL_7:
   }
 }
 
-- (CGRect)regionWithVertices:()vector<Vertex withInflationAmount:(std:(float)a4 :allocator<Vertex>> *)a3
+- (CGRect)regionWithVertices:()vector<Vertex withInflationAmount:(std:(float)amount :allocator<Vertex>> *)a3
 {
-  v4 = a4;
+  amountCopy = amount;
   v6 = *MEMORY[0x277CBF398];
   v5 = *(MEMORY[0x277CBF398] + 8);
   v8 = *(MEMORY[0x277CBF398] + 16);
@@ -981,8 +981,8 @@ LABEL_7:
         v47.origin.y = v5;
         v47.size.width = v8;
         v47.size.height = v7;
-        *&a4 = CGRectUnion(v42, v47);
-        v24 = *&a4;
+        *&amount = CGRectUnion(v42, v47);
+        v24 = *&amount;
         v25 = v27;
         v26 = v28;
         v7 = v29;
@@ -1015,7 +1015,7 @@ LABEL_7:
     v44.origin.y = v25;
     v44.size.width = v26;
     v44.size.height = v7;
-    v45 = CGRectInset(v44, -v4, -v4);
+    v45 = CGRectInset(v44, -amountCopy, -amountCopy);
     x = v45.origin.x;
     y = v45.origin.y;
     width = v45.size.width;
@@ -1068,21 +1068,21 @@ LABEL_7:
   return result;
 }
 
-- (void)updateDryCycleIncludingComposite:(BOOL)a3
+- (void)updateDryCycleIncludingComposite:(BOOL)composite
 {
-  v3 = a3;
+  compositeCopy = composite;
   [(DKOpenGLRenderer *)self renderToDryPaintBuffer];
-  if (v3)
+  if (compositeCopy)
   {
 
     [(DKOpenGLRenderer *)self renderToComposite:1];
   }
 }
 
-- (void)renderToWetPaintBufferWithRange:(_NSRange)a3
+- (void)renderToWetPaintBufferWithRange:(_NSRange)range
 {
-  length = a3.length;
-  v5 = SLODWORD(a3.location) % self->mBufferSize;
+  length = range.length;
+  v5 = SLODWORD(range.location) % self->mBufferSize;
   params = 0;
   glGetIntegerv(0x8CA6u, &params);
   glBindFramebuffer(0x8D40u, self->mWetPaintBufferFBO);
@@ -1163,12 +1163,12 @@ LABEL_7:
   }
 }
 
-- (void)renderToComposite:(BOOL)a3
+- (void)renderToComposite:(BOOL)composite
 {
   begin = self->mPages.__begin_;
   if ((-858993459 * ((self->mPages.__end_ - begin) >> 3)) >= 1)
   {
-    v4 = a3;
+    compositeCopy = composite;
     v6 = 0;
     v7 = 0;
     do
@@ -1178,14 +1178,14 @@ LABEL_7:
       params = 0;
       glGetIntegerv(0x8CA6u, &params);
       glBindFramebuffer(0x8D40u, *(begin + v6 + 16));
-      if (!v4)
+      if (!compositeCopy)
       {
         glClearColor(0.0, 0.0, 0.0, 0.0);
         glClear(0x4000u);
       }
 
       glViewport(0, 0, *(v8 + 3), HIDWORD(*(v8 + 3)));
-      if (v4)
+      if (compositeCopy)
       {
         glEnable(0xC11u);
         backingScale = self->_backingScale;
@@ -1208,7 +1208,7 @@ LABEL_7:
       *&v16 = v15;
       *&v17 = SHIDWORD(v15);
       [DKGLUtilities drawQuadAtX:0.0 Y:0.0 width:v16 height:v17];
-      if (v4)
+      if (compositeCopy)
       {
         glDisable(0xC11u);
       }
@@ -1351,9 +1351,9 @@ LABEL_7:
   }
 }
 
-- (void)drawContiguousVertexStorageImmediatelyWithLayeredBlending:(BOOL)a3
+- (void)drawContiguousVertexStorageImmediatelyWithLayeredBlending:(BOOL)blending
 {
-  v3 = a3;
+  blendingCopy = blending;
   glEnable(0xBE2u);
   glBlendFunc(1u, 0x303u);
   +[DKGLUtilities setCurrentClearColor];
@@ -1368,7 +1368,7 @@ LABEL_7:
   if (v5)
   {
     v25 = vcvtps_u32_f32(v6 / self->mBufferSize);
-    if (v3)
+    if (blendingCopy)
     {
       glUseProgram(self->mWetPaintProg);
       glUniform1i(self->mWetPaintProgSubtractEndPointsOnlyUniformLocation, 1);
@@ -1434,7 +1434,7 @@ LABEL_24:
       while (1)
       {
         v15 = (v15 + 1);
-        if (v12 == v16 || !v3)
+        if (v12 == v16 || !blendingCopy)
         {
           if (v12 == v16)
           {
@@ -1485,7 +1485,7 @@ LABEL_27:
     [(DKOpenGLRenderer *)self renderToComposite:0];
   }
 
-  if (v3)
+  if (blendingCopy)
   {
     glUseProgram(self->mWetPaintProg);
     glUniform1i(self->mWetPaintProgSubtractEndPointsOnlyUniformLocation, 0);
@@ -1589,18 +1589,18 @@ LABEL_27:
   }
 }
 
-- (void)updateVertexControllerWithDataRange:(_NSRange)a3 allowWet:(BOOL)a4
+- (void)updateVertexControllerWithDataRange:(_NSRange)range allowWet:(BOOL)wet
 {
-  v4 = a4;
-  length = a3.length;
-  v7 = a3.location % self->mBufferSize;
+  wetCopy = wet;
+  length = range.length;
+  v7 = range.location % self->mBufferSize;
   mTime = self->mTime;
-  v9 = self->mContiguousVertexStorage.__begin_ + 24 * a3.location;
+  v9 = self->mContiguousVertexStorage.__begin_ + 24 * range.location;
   v18 = 0;
   v19 = 0;
   data = 0;
-  std::vector<Vertex>::__init_with_size[abi:ne200100]<std::__wrap_iter<Vertex*>,std::__wrap_iter<Vertex*>>(&data, v9, &v9[24 * a3.length], a3.length);
-  if (v4 && data != v18)
+  std::vector<Vertex>::__init_with_size[abi:ne200100]<std::__wrap_iter<Vertex*>,std::__wrap_iter<Vertex*>>(&data, v9, &v9[24 * range.length], range.length);
+  if (wetCopy && data != v18)
   {
     v10 = 0;
     v11 = v18 - data - 24;
@@ -1654,18 +1654,18 @@ LABEL_27:
   }
 }
 
-- (void)updateVertexControllerWithData:()vector<Vertex range:(std:(_NSRange)a4 :(BOOL)a5 allocator<Vertex>> *)a3 allowWet:
+- (void)updateVertexControllerWithData:()vector<Vertex range:(std:(_NSRange)range :(BOOL)a5 allocator<Vertex>> *)a3 allowWet:
 {
   v5 = a5;
-  length = a4.length;
-  v8 = a4.location % self->mBufferSize;
+  length = range.length;
+  v8 = range.location % self->mBufferSize;
   mTime = self->mTime;
-  v10 = a3->__begin_ + 24 * a4.location;
-  v11 = a3->__begin_ + 24 * a4.location + 24 * a4.length;
+  v10 = a3->__begin_ + 24 * range.location;
+  v11 = a3->__begin_ + 24 * range.location + 24 * range.length;
   v20 = 0;
   v21 = 0;
   data = 0;
-  std::vector<Vertex>::__init_with_size[abi:ne200100]<std::__wrap_iter<Vertex*>,std::__wrap_iter<Vertex*>>(&data, v10, v11, 0xAAAAAAAAAAAAAAABLL * ((24 * a4.length) >> 3));
+  std::vector<Vertex>::__init_with_size[abi:ne200100]<std::__wrap_iter<Vertex*>,std::__wrap_iter<Vertex*>>(&data, v10, v11, 0xAAAAAAAAAAAAAAABLL * ((24 * range.length) >> 3));
   if (v5 && data != v20)
   {
     v12 = 0;

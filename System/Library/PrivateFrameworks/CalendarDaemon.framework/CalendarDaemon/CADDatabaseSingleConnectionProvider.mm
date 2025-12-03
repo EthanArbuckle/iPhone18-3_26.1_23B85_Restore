@@ -1,31 +1,31 @@
 @interface CADDatabaseSingleConnectionProvider
-- (CADDatabaseSingleConnectionProvider)initWithConfiguration:(id)a3;
+- (CADDatabaseSingleConnectionProvider)initWithConfiguration:(id)configuration;
 - (id)_databases;
 - (int)databaseRestoreGeneration;
 - (void)_closeDatabases;
-- (void)_prepareDatabase:(CalDatabase *)a3 withConfiguration:(id)a4;
-- (void)addCreatedAuxDatabase:(CalDatabase *)a3;
-- (void)addDelegate:(id)a3;
+- (void)_prepareDatabase:(CalDatabase *)database withConfiguration:(id)configuration;
+- (void)addCreatedAuxDatabase:(CalDatabase *)database;
+- (void)addDelegate:(id)delegate;
 - (void)closeDatabases;
 - (void)dealloc;
-- (void)performWithAllDatabasesWithConfiguration:(id)a3 priority:(unint64_t)a4 block:(id)a5;
-- (void)removeDelegate:(id)a3;
-- (void)reportIntegrityErrors:(id)a3;
+- (void)performWithAllDatabasesWithConfiguration:(id)configuration priority:(unint64_t)priority block:(id)block;
+- (void)removeDelegate:(id)delegate;
+- (void)reportIntegrityErrors:(id)errors;
 - (void)validateAuxDatabases;
 @end
 
 @implementation CADDatabaseSingleConnectionProvider
 
-- (CADDatabaseSingleConnectionProvider)initWithConfiguration:(id)a3
+- (CADDatabaseSingleConnectionProvider)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = CADDatabaseSingleConnectionProvider;
   v6 = [(CADDatabaseSingleConnectionProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_initOptions, a3);
+    objc_storeStrong(&v6->_initOptions, configuration);
   }
 
   return v7;
@@ -39,28 +39,28 @@
   [(CADDatabaseSingleConnectionProvider *)&v3 dealloc];
 }
 
-- (void)_prepareDatabase:(CalDatabase *)a3 withConfiguration:(id)a4
+- (void)_prepareDatabase:(CalDatabase *)database withConfiguration:(id)configuration
 {
-  v4 = a4;
-  v5 = [v4 clientIdentifier];
+  configurationCopy = configuration;
+  clientIdentifier = [configurationCopy clientIdentifier];
   CalDatabaseSetClientIdentifier();
 
-  v6 = [v4 clientName];
+  clientName = [configurationCopy clientName];
   CalDatabaseSetClientName();
 
-  [v4 inMemoryChangeTrackingClientID];
+  [configurationCopy inMemoryChangeTrackingClientID];
 
   CalDatabaseSetInMemoryChangeTrackingID();
 }
 
-- (void)performWithAllDatabasesWithConfiguration:(id)a3 priority:(unint64_t)a4 block:(id)a5
+- (void)performWithAllDatabasesWithConfiguration:(id)configuration priority:(unint64_t)priority block:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  configurationCopy = configuration;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(CADDatabaseSingleConnectionProvider *)self _databases];
-  v10 = [v9 copy];
+  _databases = [(CADDatabaseSingleConnectionProvider *)self _databases];
+  v10 = [_databases copy];
 
   os_unfair_lock_unlock(&self->_lock);
   v23 = 0u;
@@ -83,12 +83,12 @@ LABEL_3:
       }
 
       v16 = *(*(&v21 + 1) + 8 * v15);
-      v17 = [v16 intValue];
+      intValue = [v16 intValue];
       v18 = [v11 objectForKeyedSubscript:v16];
 
-      [(CADDatabaseSingleConnectionProvider *)self _prepareDatabase:v18 withConfiguration:v7];
+      [(CADDatabaseSingleConnectionProvider *)self _prepareDatabase:v18 withConfiguration:configurationCopy];
       v20 = 0;
-      v8[2](v8, v17, v18, &v20);
+      blockCopy[2](blockCopy, intValue, v18, &v20);
       if (v20)
       {
         break;
@@ -113,9 +113,9 @@ LABEL_3:
 - (int)databaseRestoreGeneration
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(CADDatabaseSingleConnectionProvider *)self _databases];
+  _databases = [(CADDatabaseSingleConnectionProvider *)self _databases];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:*MEMORY[0x277CF7570]];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [_databases objectForKeyedSubscript:v4];
 
   if (v5)
   {
@@ -131,7 +131,7 @@ LABEL_3:
   return RestoreGeneration;
 }
 
-- (void)addCreatedAuxDatabase:(CalDatabase *)a3
+- (void)addCreatedAuxDatabase:(CalDatabase *)database
 {
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -157,17 +157,17 @@ LABEL_3:
     {
       v11 = self->_databases;
       v12 = [MEMORY[0x277CCABB0] numberWithInt:AuxilliaryDatabaseID];
-      [(NSMutableDictionary *)v11 setObject:a3 forKeyedSubscript:v12];
+      [(NSMutableDictionary *)v11 setObject:database forKeyedSubscript:v12];
 
       v13 = MEMORY[0x277CF7518];
-      v14 = [(NSMutableDictionary *)self->_databases allValues];
-      [v13 setInterestedDatabases:v14 forContext:self];
+      allValues = [(NSMutableDictionary *)self->_databases allValues];
+      [v13 setInterestedDatabases:allValues forContext:self];
     }
   }
 
   else
   {
-    v10 = [(CADDatabaseSingleConnectionProvider *)self _databases];
+    _databases = [(CADDatabaseSingleConnectionProvider *)self _databases];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -209,21 +209,21 @@ LABEL_3:
     }
 
     v6 = objc_alloc(MEMORY[0x277CF7520]);
-    v7 = [(CADDatabaseInitializationOptions *)self->_initOptions databaseDirectory];
-    v8 = [v6 initWithDirectoryURL:v7];
+    databaseDirectory = [(CADDatabaseInitializationOptions *)self->_initOptions databaseDirectory];
+    v8 = [v6 initWithDirectoryURL:databaseDirectory];
 
     [v8 setOptions:{-[CADDatabaseInitializationOptions databaseInitOptions](self->_initOptions, "databaseInitOptions")}];
-    v9 = [(CADDatabaseInitializationOptions *)self->_initOptions calendarDataContainerProvider];
-    if (v9)
+    calendarDataContainerProvider = [(CADDatabaseInitializationOptions *)self->_initOptions calendarDataContainerProvider];
+    if (calendarDataContainerProvider)
     {
-      [v8 setDataContainerProvider:v9];
+      [v8 setDataContainerProvider:calendarDataContainerProvider];
     }
 
     v10 = CalDatabaseCreateWithConfiguration();
     if (v10)
     {
       v11 = v10;
-      v46 = v9;
+      v46 = calendarDataContainerProvider;
       v47 = v8;
       self->_auxDatabaseSequence = CalDatabaseGetAuxDatabaseChangesSequence();
       v12 = CalDatabaseCopyAllAuxDatabases();
@@ -275,11 +275,11 @@ LABEL_3:
               {
                 v29 = v28;
                 UID = CalAuxDatabaseGetUID();
-                v31 = [(CADDatabaseInitializationOptions *)self->_initOptions databaseDirectory];
+                databaseDirectory2 = [(CADDatabaseInitializationOptions *)self->_initOptions databaseDirectory];
                 *buf = 67109378;
                 *v58 = UID;
                 *&v58[4] = 2112;
-                *&v58[6] = v31;
+                *&v58[6] = databaseDirectory2;
                 _os_log_impl(&dword_22430B000, v29, OS_LOG_TYPE_ERROR, "Unable to create auxiliary database %i with main database path %@", buf, 0x12u);
               }
             }
@@ -329,15 +329,15 @@ LABEL_3:
         while (v34);
       }
 
-      v37 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v37 addObserver:self selector:sel_handleDatabaseChangedExternally name:*MEMORY[0x277CF7658] object:v11];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_handleDatabaseChangedExternally name:*MEMORY[0x277CF7658] object:v11];
 
       CFRelease(v11);
       v38 = MEMORY[0x277CF7518];
-      v39 = [(NSMutableDictionary *)self->_databases allValues];
-      [v38 setInterestedDatabases:v39 forContext:self];
+      allValues = [(NSMutableDictionary *)self->_databases allValues];
+      [v38 setInterestedDatabases:allValues forContext:self];
 
-      v9 = v46;
+      calendarDataContainerProvider = v46;
       v8 = v47;
     }
 
@@ -348,9 +348,9 @@ LABEL_3:
       {
         v41 = self->_initOptions;
         v42 = v40;
-        v43 = [(CADDatabaseInitializationOptions *)v41 databaseDirectory];
+        databaseDirectory3 = [(CADDatabaseInitializationOptions *)v41 databaseDirectory];
         *buf = 138412290;
-        *v58 = v43;
+        *v58 = databaseDirectory3;
         _os_log_impl(&dword_22430B000, v42, OS_LOG_TYPE_ERROR, "Unable to create main database for path %@", buf, 0xCu);
       }
     }
@@ -384,29 +384,29 @@ LABEL_3:
 - (void)_closeDatabases
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CF7658] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CF7658] object:0];
 
   databases = self->_databases;
   self->_databases = 0;
 }
 
-- (void)reportIntegrityErrors:(id)a3
+- (void)reportIntegrityErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained reportIntegrityErrors:v4];
+  [WeakRetained reportIntegrityErrors:errorsCopy];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    if (WeakRetained != v4)
+    if (WeakRetained != delegateCopy)
     {
       v7 = CADLogHandle;
       if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
@@ -414,7 +414,7 @@ LABEL_3:
         v9 = 138412546;
         v10 = v6;
         v11 = 2112;
-        v12 = v4;
+        v12 = delegateCopy;
         _os_log_impl(&dword_22430B000, v7, OS_LOG_TYPE_ERROR, "Only a single delegate is supported by single connection pools. Current delegate = %@, new delegate = %@", &v9, 0x16u);
       }
     }
@@ -422,18 +422,18 @@ LABEL_3:
 
   else
   {
-    objc_storeWeak(&self->_delegate, v4);
+    objc_storeWeak(&self->_delegate, delegateCopy);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == delegateCopy)
   {
 
     objc_storeWeak(&self->_delegate, 0);

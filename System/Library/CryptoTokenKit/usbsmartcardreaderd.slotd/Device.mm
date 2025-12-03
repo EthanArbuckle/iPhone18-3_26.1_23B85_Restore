@@ -1,8 +1,8 @@
 @interface Device
 + (NSMutableDictionary)devices;
 + (Synchronize)synchronize;
-+ (void)registerService:(id)a3;
-- (Device)initWithService:(id)a3;
++ (void)registerService:(id)service;
+- (Device)initWithService:(id)service;
 - (NSNumber)locationId;
 - (NSNumber)productId;
 - (NSNumber)vendorId;
@@ -10,10 +10,10 @@
 - (NSString)productName;
 - (NSString)vendorName;
 - (id)description;
-- (id)deviceAccessBlock:(id)a3;
+- (id)deviceAccessBlock:(id)block;
 - (unint64_t)handleEANotification;
 - (void)terminate;
-- (void)watchInterruptPipe:(id)a3;
+- (void)watchInterruptPipe:(id)pipe;
 @end
 
 @implementation Device
@@ -44,72 +44,72 @@
 
 - (NSString)productName
 {
-  v3 = [(IOUSBHostInterface *)self->_interface properties];
-  v4 = [v3 get:@"kUSBProductString"];
+  properties = [(IOUSBHostInterface *)self->_interface properties];
+  stringValue = [properties get:@"kUSBProductString"];
 
-  if (!v4)
+  if (!stringValue)
   {
-    v5 = [(IOUSBHostInterface *)self->_interface properties];
-    v4 = [v5 get:@"USB Product Name"];
+    properties2 = [(IOUSBHostInterface *)self->_interface properties];
+    stringValue = [properties2 get:@"USB Product Name"];
 
-    if (!v4)
+    if (!stringValue)
     {
-      v6 = [(Device *)self productId];
-      v4 = [v6 stringValue];
+      productId = [(Device *)self productId];
+      stringValue = [productId stringValue];
     }
   }
 
-  return v4;
+  return stringValue;
 }
 
 - (NSString)vendorName
 {
-  v3 = [(IOUSBHostInterface *)self->_interface properties];
-  v4 = [v3 get:@"kUSBVendorString"];
+  properties = [(IOUSBHostInterface *)self->_interface properties];
+  stringValue = [properties get:@"kUSBVendorString"];
 
-  if (!v4)
+  if (!stringValue)
   {
-    v5 = [(IOUSBHostInterface *)self->_interface properties];
-    v4 = [v5 get:@"USB Vendor Name"];
+    properties2 = [(IOUSBHostInterface *)self->_interface properties];
+    stringValue = [properties2 get:@"USB Vendor Name"];
 
-    if (!v4)
+    if (!stringValue)
     {
-      v6 = [(Device *)self vendorId];
-      v4 = [v6 stringValue];
+      vendorId = [(Device *)self vendorId];
+      stringValue = [vendorId stringValue];
     }
   }
 
-  return v4;
+  return stringValue;
 }
 
 - (NSString)interfaceName
 {
-  v2 = [(IOUSBHostInterface *)self->_interface properties];
-  v3 = [v2 get:@"kUSBString"];
+  properties = [(IOUSBHostInterface *)self->_interface properties];
+  v3 = [properties get:@"kUSBString"];
 
   return v3;
 }
 
 - (NSNumber)productId
 {
-  v2 = [(IOUSBHostInterface *)self->_interface properties];
-  v3 = [v2 get:@"idProduct"];
+  properties = [(IOUSBHostInterface *)self->_interface properties];
+  v3 = [properties get:@"idProduct"];
 
   return v3;
 }
 
 - (NSNumber)vendorId
 {
-  v2 = [(IOUSBHostInterface *)self->_interface properties];
-  v3 = [v2 get:@"idVendor"];
+  properties = [(IOUSBHostInterface *)self->_interface properties];
+  v3 = [properties get:@"idVendor"];
 
   return v3;
 }
 
 - (NSNumber)locationId
 {
-  v2 = [(IOUSBHostInterface *)self->_interface properties];
-  v3 = [v2 get:@"locationID"];
+  properties = [(IOUSBHostInterface *)self->_interface properties];
+  v3 = [properties get:@"locationID"];
 
   return v3;
 }
@@ -118,25 +118,25 @@
 {
   v3 = +[NSMutableString string];
   [v3 appendString:@"{\n"];
-  v4 = [(Device *)self productName];
-  [v3 appendFormat:@"    productName: %@\n", v4];
+  productName = [(Device *)self productName];
+  [v3 appendFormat:@"    productName: %@\n", productName];
 
-  v5 = [(Device *)self interfaceName];
+  interfaceName = [(Device *)self interfaceName];
 
-  if (v5)
+  if (interfaceName)
   {
-    v6 = [(Device *)self interfaceName];
-    [v3 appendFormat:@"    interfaceName: %@\n\n", v6];
+    interfaceName2 = [(Device *)self interfaceName];
+    [v3 appendFormat:@"    interfaceName: %@\n\n", interfaceName2];
   }
 
-  v7 = [(Device *)self vendorName];
-  [v3 appendFormat:@"    vendorName: %@\n", v7];
+  vendorName = [(Device *)self vendorName];
+  [v3 appendFormat:@"    vendorName: %@\n", vendorName];
 
-  v8 = [(Device *)self productId];
-  [v3 appendFormat:@"    productId: %@\n", v8];
+  productId = [(Device *)self productId];
+  [v3 appendFormat:@"    productId: %@\n", productId];
 
-  v9 = [(Device *)self vendorId];
-  [v3 appendFormat:@"    vendorId: %@\n}", v9];
+  vendorId = [(Device *)self vendorId];
+  [v3 appendFormat:@"    vendorId: %@\n}", vendorId];
 
   return v3;
 }
@@ -215,8 +215,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [(IOUSBHostInterface *)self->_interface pipes];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v28 count:16];
+  pipes = [(IOUSBHostInterface *)self->_interface pipes];
+  v13 = [pipes countByEnumeratingWithState:&v19 objects:v28 count:16];
   if (v13)
   {
     v14 = v13;
@@ -228,7 +228,7 @@
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(pipes);
         }
 
         [*(*(&v19 + 1) + 8 * v16) abortWithOption:1 error:0];
@@ -236,7 +236,7 @@
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v28 count:16];
+      v14 = [pipes countByEnumeratingWithState:&v19 objects:v28 count:16];
     }
 
     while (v14);
@@ -273,14 +273,14 @@
     if (!v4)
     {
       v6 = +[Device synchronize];
-      v7 = [v6 queue];
+      queue = [v6 queue];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_10000E820;
       v9[3] = &unk_100024990;
       v10 = v5;
       objc_copyWeak(&v11, &location);
-      notify_register_dispatch("com.apple.accessories.ea.sessionStatusChanged", &self->_notificationDispatchToken, v7, v9);
+      notify_register_dispatch("com.apple.accessories.ea.sessionStatusChanged", &self->_notificationDispatchToken, queue, v9);
 
       objc_destroyWeak(&v11);
     }
@@ -291,9 +291,9 @@
   return v4;
 }
 
-- (Device)initWithService:(id)a3
+- (Device)initWithService:(id)service
 {
-  v82 = a3;
+  serviceCopy = service;
   v94.receiver = self;
   v94.super_class = Device;
   v6 = [(Device *)&v94 init];
@@ -305,7 +305,7 @@
     interruptionSync = val->_interruptionSync;
     val->_interruptionSync = v7;
 
-    v77 = [[Properties alloc] initWithService:v82];
+    v77 = [[Properties alloc] initWithService:serviceCopy];
     v76 = [(Properties *)v77 get:@"idProduct"];
     v75 = [(Properties *)v77 get:@"idVendor"];
     v9 = sub_10000D560();
@@ -315,17 +315,17 @@
     }
 
     AnalyticsSendEventLazy();
-    val->_entryID = sub_100001BA8(v82);
+    val->_entryID = sub_100001BA8(serviceCopy);
     objc_initWeak(&location, val);
     v10 = [IOUSBHostInterface alloc];
-    v11 = [v82 holder];
+    holder = [serviceCopy holder];
     v92 = 0;
     v90[0] = _NSConcreteStackBlock;
     v90[1] = 3221225472;
     v90[2] = sub_10000F39C;
     v90[3] = &unk_1000249F8;
     objc_copyWeak(&v91, &location);
-    v12 = [v10 initWithIOService:v11 options:0 queue:0 error:&v92 interestHandler:v90];
+    v12 = [v10 initWithIOService:holder options:0 queue:0 error:&v92 interestHandler:v90];
     v74 = v92;
     interface = val->_interface;
     val->_interface = v12;
@@ -355,36 +355,36 @@ LABEL_6:
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v67 = [(Device *)val productId];
-      v84 = [v67 unsignedIntValue];
-      v68 = [(Device *)val vendorId];
-      v4 = [v68 unsignedIntValue];
-      v3 = [(Device *)val locationId];
-      v69 = [v3 unsignedIntValue];
-      v70 = [(Device *)val entryID];
-      v71 = [(Device *)val vendorName];
-      v72 = [(Device *)val productName];
-      v73 = [(Device *)val interfaceName];
+      productId = [(Device *)val productId];
+      unsignedIntValue = [productId unsignedIntValue];
+      vendorId = [(Device *)val vendorId];
+      unsignedIntValue2 = [vendorId unsignedIntValue];
+      locationId = [(Device *)val locationId];
+      unsignedIntValue3 = [locationId unsignedIntValue];
+      entryID = [(Device *)val entryID];
+      vendorName = [(Device *)val vendorName];
+      productName = [(Device *)val productName];
+      interfaceName = [(Device *)val interfaceName];
       *buf = 67110658;
-      v97 = v84;
+      v97 = unsignedIntValue;
       v98 = 1024;
-      v99 = v4;
+      v99 = unsignedIntValue2;
       v100 = 1024;
-      v101 = v69;
+      v101 = unsignedIntValue3;
       v102 = 2048;
-      v103 = v70;
+      v103 = entryID;
       v104 = 2114;
-      v105 = v71;
+      v105 = vendorName;
       v106 = 2114;
-      v107 = v72;
+      v107 = productName;
       v108 = 2114;
-      v109 = v73;
+      v109 = interfaceName;
       _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "new device arrival: %04x:%04x %x (entryId=%llx) (%{public}@ %{public}@ %{public}@)", buf, 0x3Cu);
     }
 
-    v18 = [(IOUSBHostInterface *)val->_interface CCIDDescriptor];
+    cCIDDescriptor = [(IOUSBHostInterface *)val->_interface CCIDDescriptor];
     CCIDDescriptor = val->_CCIDDescriptor;
-    val->_CCIDDescriptor = v18;
+    val->_CCIDDescriptor = cCIDDescriptor;
 
     v20 = objc_opt_new();
     slots = val->_slots;
@@ -419,21 +419,21 @@ LABEL_6:
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v26 = [p_isa[2] pipes];
+    pipes = [p_isa[2] pipes];
     v27 = 0;
-    v28 = [v26 countByEnumeratingWithState:&v86 objects:v95 count:16];
+    v28 = [pipes countByEnumeratingWithState:&v86 objects:v95 count:16];
     if (v28)
     {
       v83 = 0;
       v29 = 0;
-      v3 = *v87;
+      locationId = *v87;
       do
       {
         for (i = 0; i != v28; i = i + 1)
         {
-          if (*v87 != v3)
+          if (*v87 != locationId)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(pipes);
           }
 
           v31 = *(*(&v86 + 1) + 8 * i);
@@ -468,7 +468,7 @@ LABEL_6:
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v86 objects:v95 count:16];
+        v28 = [pipes countByEnumeratingWithState:&v86 objects:v95 count:16];
       }
 
       while (v28);
@@ -493,54 +493,54 @@ LABEL_6:
     }
 
     v40 = v38 || v37 != 0;
-    LODWORD(v81) = v40;
+    LODWORD(productName2) = v40;
     while (1)
     {
-      v41 = [(Device *)val CCIDDescriptor];
-      v42 = v36 > [v41 bMaxSlotIndex];
+      cCIDDescriptor2 = [(Device *)val CCIDDescriptor];
+      v42 = v36 > [cCIDDescriptor2 bMaxSlotIndex];
 
       if (v42)
       {
         break;
       }
 
-      v43 = [(Device *)val vendorName];
-      v44 = [(Device *)val interfaceName];
-      if (v44)
+      vendorName2 = [(Device *)val vendorName];
+      interfaceName2 = [(Device *)val interfaceName];
+      if (interfaceName2)
       {
-        v3 = [(Device *)val interfaceName];
-        v26 = [(Device *)val productName];
-        if ([v3 containsString:v26])
+        locationId = [(Device *)val interfaceName];
+        pipes = [(Device *)val productName];
+        if ([locationId containsString:pipes])
         {
-          v45 = [(Device *)val interfaceName];
-          v4 = 0;
+          interfaceName3 = [(Device *)val interfaceName];
+          unsignedIntValue2 = 0;
           v46 = 1;
-          v79 = v45;
+          v79 = interfaceName3;
         }
 
         else
         {
-          v45 = [(Device *)val productName];
+          interfaceName3 = [(Device *)val productName];
           v46 = 0;
-          v4 = 1;
-          v80 = v45;
+          unsignedIntValue2 = 1;
+          v80 = interfaceName3;
         }
       }
 
       else
       {
-        v45 = [(Device *)val productName];
+        interfaceName3 = [(Device *)val productName];
         v46 = 0;
-        v4 = 0;
-        v78 = v45;
+        unsignedIntValue2 = 0;
+        v78 = interfaceName3;
       }
 
-      v47 = [NSMutableString stringWithFormat:@"%@ %@", v43, v45];
-      if (!v44)
+      v47 = [NSMutableString stringWithFormat:@"%@ %@", vendorName2, interfaceName3];
+      if (!interfaceName2)
       {
       }
 
-      if (v4)
+      if (unsignedIntValue2)
       {
       }
 
@@ -548,7 +548,7 @@ LABEL_6:
       {
       }
 
-      if (v44)
+      if (interfaceName2)
       {
       }
 
@@ -559,19 +559,19 @@ LABEL_6:
 
       if (byte_10002C030 == 1)
       {
-        v48 = [(Device *)val locationId];
-        [v47 appendFormat:@"[%@]", v48];
+        locationId2 = [(Device *)val locationId];
+        [v47 appendFormat:@"[%@]", locationId2];
       }
 
-      v49 = [(Device *)val CCIDDescriptor];
-      v50 = [v49 bMaxSlotIndex] == 0;
+      cCIDDescriptor3 = [(Device *)val CCIDDescriptor];
+      v50 = [cCIDDescriptor3 bMaxSlotIndex] == 0;
 
       if (!v50)
       {
         [v47 appendFormat:@"(%d)", v36 + 1];
       }
 
-      if (v81)
+      if (productName2)
       {
         v51 = 0;
       }
@@ -596,22 +596,22 @@ LABEL_6:
         [(Device *)val watchInterruptPipe:v27];
       }
 
-      v53 = [(Device *)val vendorName];
-      v54 = [(Device *)val interfaceName];
-      if (v54)
+      vendorName3 = [(Device *)val vendorName];
+      interfaceName4 = [(Device *)val interfaceName];
+      if (interfaceName4)
       {
-        v4 = [(Device *)val interfaceName];
-        v81 = [(Device *)val productName];
-        if ([v4 containsString:v81])
+        unsignedIntValue2 = [(Device *)val interfaceName];
+        productName2 = [(Device *)val productName];
+        if ([unsignedIntValue2 containsString:productName2])
         {
-          v55 = [(Device *)val interfaceName];
+          interfaceName5 = [(Device *)val interfaceName];
           v56 = 0;
           v57 = 1;
         }
 
         else
         {
-          v55 = [(Device *)val productName];
+          interfaceName5 = [(Device *)val productName];
           v57 = 0;
           v56 = 1;
         }
@@ -619,13 +619,13 @@ LABEL_6:
 
       else
       {
-        v55 = [(Device *)val productName];
+        interfaceName5 = [(Device *)val productName];
         v57 = 0;
         v56 = 0;
       }
 
-      v58 = [NSMutableString stringWithFormat:@"%@ %@", v53, v55];
-      if (!v54)
+      v58 = [NSMutableString stringWithFormat:@"%@ %@", vendorName3, interfaceName5];
+      if (!interfaceName4)
       {
       }
 
@@ -637,7 +637,7 @@ LABEL_6:
       {
       }
 
-      if (v54)
+      if (interfaceName4)
       {
       }
 
@@ -687,55 +687,55 @@ LABEL_102:
   return v14;
 }
 
-- (void)watchInterruptPipe:(id)a3
+- (void)watchInterruptPipe:(id)pipe
 {
-  v4 = a3;
+  pipeCopy = pipe;
   objc_initWeak(&location, self);
-  v5 = [(Device *)self interruptionSync];
-  v6 = [v5 queue];
+  interruptionSync = [(Device *)self interruptionSync];
+  queue = [interruptionSync queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000F5E8;
   v8[3] = &unk_100024A48;
   objc_copyWeak(&v11, &location);
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = pipeCopy;
+  selfCopy = self;
+  v7 = pipeCopy;
+  dispatch_async(queue, v8);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-+ (void)registerService:(id)a3
++ (void)registerService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[Device synchronize];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000F8A0;
   v6[3] = &unk_1000244F0;
-  v7 = v3;
-  v5 = v3;
+  v7 = serviceCopy;
+  v5 = serviceCopy;
   [v4 sync:v6];
 }
 
-- (id)deviceAccessBlock:(id)a3
+- (id)deviceAccessBlock:(id)block
 {
   slotSemaphore = self->_slotSemaphore;
   if (slotSemaphore)
   {
-    v5 = a3;
+    blockCopy = block;
     dispatch_semaphore_wait(slotSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-    v6 = v5[2](v5);
+    v6 = blockCopy[2](blockCopy);
 
     dispatch_semaphore_signal(self->_slotSemaphore);
   }
 
   else
   {
-    v7 = *(a3 + 2);
-    v8 = a3;
+    v7 = *(block + 2);
+    blockCopy2 = block;
     v6 = v7();
   }
 

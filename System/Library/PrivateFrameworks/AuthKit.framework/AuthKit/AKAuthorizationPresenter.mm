@@ -1,38 +1,38 @@
 @interface AKAuthorizationPresenter
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_callCompletionBlockWithAuthorization:(id)a3 error:(id)a4;
-- (void)_frontBoardServices_presentAuthorizationWithContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)_remoteListener_presentAuthorizationWithContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)authorizationRequestFinishedWithAuthorization:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)authorizationRequestInitiatedWithUserProvidedInformation:(id)a3 completion:(id)a4;
-- (void)continueFetchingIconWithCompletion:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_callCompletionBlockWithAuthorization:(id)authorization error:(id)error;
+- (void)_frontBoardServices_presentAuthorizationWithContext:(id)context client:(id)client completion:(id)completion;
+- (void)_remoteListener_presentAuthorizationWithContext:(id)context client:(id)client completion:(id)completion;
+- (void)authorizationRequestFinishedWithAuthorization:(id)authorization error:(id)error completion:(id)completion;
+- (void)authorizationRequestInitiatedWithUserProvidedInformation:(id)information completion:(id)completion;
+- (void)continueFetchingIconWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)presentAuthorizationWithContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)presentAuthorizationWithContext:(id)context client:(id)client completion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation AKAuthorizationPresenter
 
-- (void)presentAuthorizationWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)presentAuthorizationWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, client);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
+  objc_storeStrong(&v7, completion);
   if (+[AKRemoteViewServiceController shouldUseFrontBoardServicesForAuthorization])
   {
-    [(AKAuthorizationPresenter *)v10 _frontBoardServices_presentAuthorizationWithContext:location[0] client:v8 completion:v7];
+    [(AKAuthorizationPresenter *)selfCopy _frontBoardServices_presentAuthorizationWithContext:location[0] client:v8 completion:v7];
   }
 
   else
   {
-    [(AKAuthorizationPresenter *)v10 _remoteListener_presentAuthorizationWithContext:location[0] client:v8 completion:v7];
+    [(AKAuthorizationPresenter *)selfCopy _remoteListener_presentAuthorizationWithContext:location[0] client:v8 completion:v7];
   }
 
   objc_storeStrong(&v7, 0);
@@ -40,16 +40,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_remoteListener_presentAuthorizationWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_remoteListener_presentAuthorizationWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, client);
   v40 = 0;
-  objc_storeStrong(&v40, a5);
+  objc_storeStrong(&v40, completion);
   v39 = 0;
   v37 = 0;
   v22 = [NSKeyedArchiver archivedDataWithRootObject:location[0] requiringSecureCoding:1 error:&v37];
@@ -71,16 +71,16 @@
   v34 = objc_alloc_init(NSMutableDictionary);
   [v34 setObject:v38 forKeyedSubscript:@"context"];
   v5 = +[NSXPCListener anonymousListener];
-  remoteListener = v43->_remoteListener;
-  v43->_remoteListener = v5;
+  remoteListener = selfCopy->_remoteListener;
+  selfCopy->_remoteListener = v5;
   _objc_release(remoteListener);
-  [(NSXPCListener *)v43->_remoteListener setDelegate:v43];
-  [(NSXPCListener *)v43->_remoteListener resume];
-  [(AKAuthorizationPresenter *)v43 setPresentationCompletion:v40];
-  v18 = [location[0] credentialRequestContext];
-  v19 = [v18 _isRapportLogin];
-  _objc_release(v18);
-  v33 = v19;
+  [(NSXPCListener *)selfCopy->_remoteListener setDelegate:selfCopy];
+  [(NSXPCListener *)selfCopy->_remoteListener resume];
+  [(AKAuthorizationPresenter *)selfCopy setPresentationCompletion:v40];
+  credentialRequestContext = [location[0] credentialRequestContext];
+  _isRapportLogin = [credentialRequestContext _isRapportLogin];
+  _objc_release(credentialRequestContext);
+  v33 = _isRapportLogin;
   v32 = _AKLogSiwa();
   v31 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -95,32 +95,32 @@
     v7 = [SBSRemoteAlertDefinition alloc];
     v26 = [v7 initWithServiceName:off_1003714B8 viewControllerClassName:off_1003714B0];
     v25 = objc_opt_new();
-    v11 = [(NSXPCListener *)v43->_remoteListener endpoint];
-    v10 = [(NSXPCListenerEndpoint *)v11 _endpoint];
+    endpoint = [(NSXPCListener *)selfCopy->_remoteListener endpoint];
+    _endpoint = [(NSXPCListenerEndpoint *)endpoint _endpoint];
     [v25 setXpcEndpoint:?];
-    _objc_release(v10);
-    _objc_release(v11);
+    _objc_release(_endpoint);
+    _objc_release(endpoint);
     [v25 setUserInfo:v34];
     v24 = objc_opt_new();
     v12 = [SBSRemoteAlertHandle newHandleWithDefinition:v26 configurationContext:v25];
-    [(AKAuthorizationPresenter *)v43 setRemoteAlertHandle:?];
+    [(AKAuthorizationPresenter *)selfCopy setRemoteAlertHandle:?];
     _objc_release(v12);
-    v13 = [(AKAuthorizationPresenter *)v43 remoteAlertHandle];
-    [(SBSRemoteAlertHandle *)v13 registerObserver:v43];
-    _objc_release(v13);
+    remoteAlertHandle = [(AKAuthorizationPresenter *)selfCopy remoteAlertHandle];
+    [(SBSRemoteAlertHandle *)remoteAlertHandle registerObserver:selfCopy];
+    _objc_release(remoteAlertHandle);
     v23 = _AKLogSystem();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(AKAuthorizationPresenter *)v43 remoteAlertHandle];
-      sub_1000194D4(v44, v9);
+      remoteAlertHandle2 = [(AKAuthorizationPresenter *)selfCopy remoteAlertHandle];
+      sub_1000194D4(v44, remoteAlertHandle2);
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Activating handle: %@", v44, 0xCu);
-      _objc_release(v9);
+      _objc_release(remoteAlertHandle2);
     }
 
     objc_storeStrong(&v23, 0);
-    v8 = [(AKAuthorizationPresenter *)v43 remoteAlertHandle];
-    [(SBSRemoteAlertHandle *)v8 activateWithContext:v24];
-    _objc_release(v8);
+    remoteAlertHandle3 = [(AKAuthorizationPresenter *)selfCopy remoteAlertHandle];
+    [(SBSRemoteAlertHandle *)remoteAlertHandle3 activateWithContext:v24];
+    _objc_release(remoteAlertHandle3);
     objc_storeStrong(&v24, 0);
     objc_storeStrong(&v25, 0);
     objc_storeStrong(&v26, 0);
@@ -155,34 +155,34 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, connection);
   v6 = +[AKAuthorizationPresenterHostInterface XPCInterface];
   [v7 setExportedInterface:?];
   _objc_release(v6);
-  [v7 setExportedObject:v9];
+  [v7 setExportedObject:selfCopy];
   [v7 resume];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (void)authorizationRequestFinishedWithAuthorization:(id)a3 error:(id)a4 completion:(id)a5
+- (void)authorizationRequestFinishedWithAuthorization:(id)authorization error:(id)error completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, authorization);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, error);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, completion);
   v11 = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -194,21 +194,21 @@
   }
 
   objc_storeStrong(&v11, 0);
-  [(AKAuthorizationPresenter *)v15 _callCompletionBlockWithAuthorization:location[0] error:v13];
+  [(AKAuthorizationPresenter *)selfCopy _callCompletionBlockWithAuthorization:location[0] error:v13];
   (*(v12 + 2))(v12, 1, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)authorizationRequestInitiatedWithUserProvidedInformation:(id)a3 completion:(id)a4
+- (void)authorizationRequestInitiatedWithUserProvidedInformation:(id)information completion:(id)completion
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, information);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, completion);
   v6 = _AKLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -217,26 +217,26 @@
   }
 
   objc_storeStrong(&v6, 0);
-  v4 = [(AKAuthorizationPresenter *)v9 authorizationResponseValidator];
-  v4[2](v4, location[0], v7);
-  _objc_release(v4);
+  authorizationResponseValidator = [(AKAuthorizationPresenter *)selfCopy authorizationResponseValidator];
+  authorizationResponseValidator[2](authorizationResponseValidator, location[0], v7);
+  _objc_release(authorizationResponseValidator);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)continueFetchingIconWithCompletion:(id)a3
+- (void)continueFetchingIconWithCompletion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKAuthorizationPresenter *)v8 fetchIconBlock];
-  _objc_release(v6);
-  if (v6)
+  objc_storeStrong(location, completion);
+  fetchIconBlock = [(AKAuthorizationPresenter *)selfCopy fetchIconBlock];
+  _objc_release(fetchIconBlock);
+  if (fetchIconBlock)
   {
-    v5 = [(AKAuthorizationPresenter *)v8 fetchIconBlock];
-    v5[2](v5, location[0]);
-    _objc_release(v5);
+    fetchIconBlock2 = [(AKAuthorizationPresenter *)selfCopy fetchIconBlock];
+    fetchIconBlock2[2](fetchIconBlock2, location[0]);
+    _objc_release(fetchIconBlock2);
   }
 
   else
@@ -250,34 +250,34 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_callCompletionBlockWithAuthorization:(id)a3 error:(id)a4
+- (void)_callCompletionBlockWithAuthorization:(id)authorization error:(id)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, authorization);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6 = [(AKAuthorizationPresenter *)v9 presentationCompletion];
-  _objc_release(v6);
-  if (v6)
+  objc_storeStrong(&v7, error);
+  presentationCompletion = [(AKAuthorizationPresenter *)selfCopy presentationCompletion];
+  _objc_release(presentationCompletion);
+  if (presentationCompletion)
   {
-    v4 = [(AKAuthorizationPresenter *)v9 presentationCompletion];
-    v4[2](v4, location[0], v7);
-    _objc_release(v4);
+    presentationCompletion2 = [(AKAuthorizationPresenter *)selfCopy presentationCompletion];
+    presentationCompletion2[2](presentationCompletion2, location[0], v7);
+    _objc_release(presentationCompletion2);
   }
 
-  [(AKAuthorizationPresenter *)v9 setPresentationCompletion:?];
+  [(AKAuthorizationPresenter *)selfCopy setPresentationCompletion:?];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, activate);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -289,12 +289,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, deactivate);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -303,24 +303,24 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v3 = v7;
+  v3 = selfCopy;
   v4 = [NSError ak_errorWithCode:-7034];
   [(AKAuthorizationPresenter *)v3 _callCompletionBlockWithAuthorization:0 error:?];
   _objc_release(v4);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handle);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v10 = [v15 domain];
+  objc_storeStrong(&v15, error);
+  domain = [v15 domain];
   v11 = 0;
-  if ([v10 isEqualToString:SBSRemoteAlertHandleInvalidationErrorDomain])
+  if ([domain isEqualToString:SBSRemoteAlertHandleInvalidationErrorDomain])
   {
     v8 = 1;
     if ([v15 code] != 4)
@@ -331,7 +331,7 @@
     v11 = v8;
   }
 
-  _objc_release(v10);
+  _objc_release(domain);
   if (v11)
   {
     v14 = _AKLogSystem();
@@ -343,7 +343,7 @@
     }
 
     objc_storeStrong(&v14, 0);
-    v6 = v17;
+    v6 = selfCopy;
     v7 = [NSError ak_errorWithCode:-7003];
     [(AKAuthorizationPresenter *)v6 _callCompletionBlockWithAuthorization:0 error:?];
     _objc_release(v7);
@@ -359,7 +359,7 @@
     }
 
     objc_storeStrong(&v12, 0);
-    v4 = v17;
+    v4 = selfCopy;
     v5 = [NSError ak_errorWithCode:-7034 underlyingError:v15];
     [(AKAuthorizationPresenter *)v4 _callCompletionBlockWithAuthorization:0 error:?];
     _objc_release(v5);
@@ -371,71 +371,71 @@
 
 - (void)dealloc
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v5 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEBUG))
   {
-    sub_1000194D4(v8, v7);
+    sub_1000194D4(v8, selfCopy);
     _os_log_debug_impl(&_mh_execute_header, location[0], v5, "%@ deallocated.", v8, 0xCu);
   }
 
   objc_storeStrong(location, 0);
-  v2 = [(AKAuthorizationPresenter *)v7 remoteAlertHandle];
-  [(SBSRemoteAlertHandle *)v2 unregisterObserver:v7];
-  _objc_release(v2);
-  v3 = [(AKAuthorizationPresenter *)v7 remoteAlertHandle];
-  [(SBSRemoteAlertHandle *)v3 invalidate];
-  _objc_release(v3);
-  v4.receiver = v7;
+  remoteAlertHandle = [(AKAuthorizationPresenter *)selfCopy remoteAlertHandle];
+  [(SBSRemoteAlertHandle *)remoteAlertHandle unregisterObserver:selfCopy];
+  _objc_release(remoteAlertHandle);
+  remoteAlertHandle2 = [(AKAuthorizationPresenter *)selfCopy remoteAlertHandle];
+  [(SBSRemoteAlertHandle *)remoteAlertHandle2 invalidate];
+  _objc_release(remoteAlertHandle2);
+  v4.receiver = selfCopy;
   v4.super_class = AKAuthorizationPresenter;
   [(AKAuthorizationPresenter *)&v4 dealloc];
 }
 
-- (void)_frontBoardServices_presentAuthorizationWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_frontBoardServices_presentAuthorizationWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, client);
   v36 = 0;
-  objc_storeStrong(&v36, a5);
+  objc_storeStrong(&v36, completion);
   v35 = 0;
-  v21 = [location[0] credentialRequestContext];
-  v22 = [v21 _isWebLogin];
-  _objc_release(v21);
-  if (v22)
+  credentialRequestContext = [location[0] credentialRequestContext];
+  _isWebLogin = [credentialRequestContext _isWebLogin];
+  _objc_release(credentialRequestContext);
+  if (_isWebLogin)
   {
-    v18 = [location[0] credentialRequestContext];
-    v5 = [v18 _callerBundleID];
+    credentialRequestContext2 = [location[0] credentialRequestContext];
+    _callerBundleID = [credentialRequestContext2 _callerBundleID];
     v6 = v35;
-    v35 = v5;
+    v35 = _callerBundleID;
     _objc_release(v6);
-    _objc_release(v18);
+    _objc_release(credentialRequestContext2);
   }
 
   else
   {
-    v7 = [location[0] bundleID];
+    bundleID = [location[0] bundleID];
     v8 = v35;
-    v35 = v7;
+    v35 = bundleID;
     _objc_release(v8);
   }
 
   v34 = 0;
   if (v35)
   {
-    v17 = [location[0] credentialRequestContext];
-    v16 = [v17 _callerSceneID];
+    credentialRequestContext3 = [location[0] credentialRequestContext];
+    _callerSceneID = [credentialRequestContext3 _callerSceneID];
     v9 = [AKRemoteViewServiceConfiguration configurationForHostWithBundleID:v35 sceneID:?];
     v10 = v34;
     v34 = v9;
     _objc_release(v10);
-    _objc_release(v16);
-    _objc_release(v17);
+    _objc_release(_callerSceneID);
+    _objc_release(credentialRequestContext3);
   }
 
   else
@@ -450,10 +450,10 @@
   v32 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v34 hostBundleID];
-    sub_1000194D4(v40, v15);
+    hostBundleID = [v34 hostBundleID];
+    sub_1000194D4(v40, hostBundleID);
     _os_log_impl(&_mh_execute_header, v33, v32, "Launching remote view service for authorization with host bundle ID: %@", v40, 0xCu);
-    _objc_release(v15);
+    _objc_release(hostBundleID);
   }
 
   objc_storeStrong(&v33, 0);
@@ -467,7 +467,7 @@
   v27 = &unk_1003238E8;
   v28 = _objc_retain(location[0]);
   v30 = _objc_retain(v36);
-  v29 = _objc_retain(v39);
+  v29 = _objc_retain(selfCopy);
   [(AKRemoteViewServiceController *)v14 launchViewServiceForAuthorizationWithCompletionHandler:&v23];
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);

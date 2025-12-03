@@ -1,25 +1,25 @@
 @interface NCNotificationUpcomingSummaryContentProvider
-- (id)_summaryStringForNotificationRequest:(id)a3;
+- (id)_summaryStringForNotificationRequest:(id)request;
 @end
 
 @implementation NCNotificationUpcomingSummaryContentProvider
 
-- (id)_summaryStringForNotificationRequest:(id)a3
+- (id)_summaryStringForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NCNotificationSummaryContentProvider *)self _summaryStringForCommunicationNotificationRequest:v4];
-  if ([(NCNotificationSummaryContentProvider *)self _shouldShowContentForNotificationRequest:v4]&& v5)
+  requestCopy = request;
+  v5 = [(NCNotificationSummaryContentProvider *)self _summaryStringForCommunicationNotificationRequest:requestCopy];
+  if ([(NCNotificationSummaryContentProvider *)self _shouldShowContentForNotificationRequest:requestCopy]&& v5)
   {
-    v6 = v5;
+    defaultHeader = v5;
   }
 
   else
   {
-    v7 = [v4 content];
-    v6 = [v7 defaultHeader];
+    content = [requestCopy content];
+    defaultHeader = [content defaultHeader];
   }
 
-  return v6;
+  return defaultHeader;
 }
 
 @end

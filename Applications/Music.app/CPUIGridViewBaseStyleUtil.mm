@@ -1,11 +1,11 @@
 @interface CPUIGridViewBaseStyleUtil
-+ (id)nameFor:(unint64_t)a3;
++ (id)nameFor:(unint64_t)for;
 - (_TtC5Music25CPUIGridViewBaseStyleUtil)init;
 @end
 
 @implementation CPUIGridViewBaseStyleUtil
 
-+ (id)nameFor:(unint64_t)a3
++ (id)nameFor:(unint64_t)for
 {
   v3 = String._bridgeToObjectiveC()();
 

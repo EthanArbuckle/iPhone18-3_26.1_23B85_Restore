@@ -1,11 +1,11 @@
 @interface AMSBagValueDataSourceValueFetcher
-+ (id)_valueFromDictionary:(id)a3 forBagKey:(id)a4;
++ (id)_valueFromDictionary:(id)dictionary forBagKey:(id)key;
 - (AMSBagDataSourceProtocol)dataSource;
-- (AMSBagValueDataSourceValueFetcher)initWithDataSource:(id)a3 key:(id)a4 valueType:(unint64_t)a5 account:(id)a6;
+- (AMSBagValueDataSourceValueFetcher)initWithDataSource:(id)source key:(id)key valueType:(unint64_t)type account:(id)account;
 - (BOOL)isLoaded;
-- (id)_processedDefaultValuePromise:(id)a3;
-- (void)loadWithCompletion:(id)a3;
-- (void)processedDefaultValueWithCompletion:(id)a3;
+- (id)_processedDefaultValuePromise:(id)promise;
+- (void)loadWithCompletion:(id)completion;
+- (void)processedDefaultValueWithCompletion:(id)completion;
 @end
 
 @implementation AMSBagValueDataSourceValueFetcher
@@ -19,47 +19,47 @@
 
 - (BOOL)isLoaded
 {
-  v2 = [(AMSBagValueDataSourceValueFetcher *)self dataSource];
-  v3 = [v2 isLoaded];
+  dataSource = [(AMSBagValueDataSourceValueFetcher *)self dataSource];
+  isLoaded = [dataSource isLoaded];
 
-  return v3;
+  return isLoaded;
 }
 
-- (AMSBagValueDataSourceValueFetcher)initWithDataSource:(id)a3 key:(id)a4 valueType:(unint64_t)a5 account:(id)a6
+- (AMSBagValueDataSourceValueFetcher)initWithDataSource:(id)source key:(id)key valueType:(unint64_t)type account:(id)account
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  sourceCopy = source;
+  keyCopy = key;
+  accountCopy = account;
   v18.receiver = self;
   v18.super_class = AMSBagValueDataSourceValueFetcher;
   v13 = [(AMSBagValueDataSourceValueFetcher *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_dataSource, v10);
-    v15 = [v11 copy];
+    objc_storeWeak(&v13->_dataSource, sourceCopy);
+    v15 = [keyCopy copy];
     key = v14->_key;
     v14->_key = v15;
 
-    v14->_valueType = a5;
-    objc_storeStrong(&v14->_account, a6);
+    v14->_valueType = type;
+    objc_storeStrong(&v14->_account, account);
   }
 
   return v14;
 }
 
-- (void)loadWithCompletion:(id)a3
+- (void)loadWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AMSBagValueDataSourceValueFetcher *)self dataSource];
+  completionCopy = completion;
+  dataSource = [(AMSBagValueDataSourceValueFetcher *)self dataSource];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__AMSBagValueDataSourceValueFetcher_loadWithCompletion___block_invoke;
   v7[3] = &unk_1E73B4E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 loadWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [dataSource loadWithCompletion:v7];
 }
 
 void __56__AMSBagValueDataSourceValueFetcher_loadWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -155,24 +155,24 @@ id __56__AMSBagValueDataSourceValueFetcher_loadWithCompletion___block_invoke_4(u
   return v5;
 }
 
-- (void)processedDefaultValueWithCompletion:(id)a3
+- (void)processedDefaultValueWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AMSBagValueDataSourceValueFetcher *)self dataSource];
+  completionCopy = completion;
+  dataSource = [(AMSBagValueDataSourceValueFetcher *)self dataSource];
   v6 = [(AMSBagValueDataSourceValueFetcher *)self key];
-  v8 = [v5 defaultValueForKey:v6];
+  v8 = [dataSource defaultValueForKey:v6];
 
   v7 = [(AMSBagValueDataSourceValueFetcher *)self _processedDefaultValuePromise:v8];
-  [v7 addFinishBlock:v4];
+  [v7 addFinishBlock:completionCopy];
 }
 
-- (id)_processedDefaultValuePromise:(id)a3
+- (id)_processedDefaultValuePromise:(id)promise
 {
-  v4 = a3;
+  promiseCopy = promise;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = promiseCopy;
   }
 
   else
@@ -180,8 +180,8 @@ id __56__AMSBagValueDataSourceValueFetcher_loadWithCompletion___block_invoke_4(u
     v5 = 0;
   }
 
-  v6 = [(AMSBagValueDataSourceValueFetcher *)self valueType];
-  if (v5 && v6 == 5)
+  valueType = [(AMSBagValueDataSourceValueFetcher *)self valueType];
+  if (v5 && valueType == 5)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -194,7 +194,7 @@ id __56__AMSBagValueDataSourceValueFetcher_loadWithCompletion___block_invoke_4(u
 
   else
   {
-    v7 = [[AMSOptional alloc] initWithValue:v4];
+    v7 = [[AMSOptional alloc] initWithValue:promiseCopy];
     v8 = [AMSPromise promiseWithResult:v7];
   }
 
@@ -237,29 +237,29 @@ id __67__AMSBagValueDataSourceValueFetcher__processedDefaultValuePromise___block
   return v3;
 }
 
-+ (id)_valueFromDictionary:(id)a3 forBagKey:(id)a4
++ (id)_valueFromDictionary:(id)dictionary forBagKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
   v7 = objc_autoreleasePoolPush();
-  v8 = [v5 allKeys];
-  v9 = [v8 containsObject:v6];
+  allKeys = [dictionaryCopy allKeys];
+  v9 = [allKeys containsObject:keyCopy];
 
   if (v9)
   {
-    v10 = [v5 objectForKeyedSubscript:v6];
+    v10 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   }
 
   else
   {
-    v11 = [v6 componentsSeparatedByString:@"/"];
+    v11 = [keyCopy componentsSeparatedByString:@"/"];
     v12 = 0;
     if ([v11 count])
     {
       while (1)
       {
         v13 = [v11 objectAtIndexedSubscript:v12];
-        v14 = [v5 objectForKeyedSubscript:v13];
+        v14 = [dictionaryCopy objectForKeyedSubscript:v13];
         if (!v14)
         {
 LABEL_9:
@@ -279,11 +279,11 @@ LABEL_9:
         }
 
         ++v12;
-        v5 = v14;
+        dictionaryCopy = v14;
         if (v12 >= [v11 count])
         {
           v12 = 0;
-          v5 = v14;
+          dictionaryCopy = v14;
           goto LABEL_12;
         }
       }

@@ -7,30 +7,30 @@
 - (id)hd_sqlPredicateForSelect
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [a1 subpredicates];
-  v3 = [v2 count];
+  subpredicates = [self subpredicates];
+  v3 = [subpredicates count];
 
   if (v3)
   {
-    v4 = [a1 compoundPredicateType];
-    if (!v4)
+    compoundPredicateType = [self compoundPredicateType];
+    if (!compoundPredicateType)
     {
       v14 = MEMORY[0x277D10B20];
-      v15 = [a1 subpredicates];
-      v16 = [v15 objectAtIndexedSubscript:0];
+      subpredicates2 = [self subpredicates];
+      v16 = [subpredicates2 objectAtIndexedSubscript:0];
       v3 = [v14 negatedPredicate:v16];
 
       goto LABEL_19;
     }
 
-    v5 = v4;
-    v6 = [MEMORY[0x277CBEB18] array];
+    v5 = compoundPredicateType;
+    array = [MEMORY[0x277CBEB18] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [a1 subpredicates];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    subpredicates3 = [self subpredicates];
+    v8 = [subpredicates3 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -41,17 +41,17 @@
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subpredicates3);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) hd_sqlPredicateForSelect];
-          if (v12)
+          hd_sqlPredicateForSelect = [*(*(&v19 + 1) + 8 * i) hd_sqlPredicateForSelect];
+          if (hd_sqlPredicateForSelect)
           {
-            [v6 addObject:v12];
+            [array addObject:hd_sqlPredicateForSelect];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [subpredicates3 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
@@ -59,13 +59,13 @@
 
     if (v5 == 2)
     {
-      v13 = [MEMORY[0x277D10B20] predicateMatchingAnyPredicates:v6];
+      v13 = [MEMORY[0x277D10B20] predicateMatchingAnyPredicates:array];
       goto LABEL_17;
     }
 
     if (v5 == 1)
     {
-      v13 = [MEMORY[0x277D10B20] predicateMatchingAllPredicates:v6];
+      v13 = [MEMORY[0x277D10B20] predicateMatchingAllPredicates:array];
 LABEL_17:
       v3 = v13;
 

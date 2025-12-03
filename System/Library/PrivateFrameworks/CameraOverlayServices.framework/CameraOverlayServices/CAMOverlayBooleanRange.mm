@@ -1,11 +1,11 @@
 @interface CAMOverlayBooleanRange
-- (BOOL)containsValue:(id)a3;
-- (BOOL)isEqualToRange:(id)a3;
-- (BOOL)isValueExpectedType:(id)a3;
+- (BOOL)containsValue:(id)value;
+- (BOOL)isEqualToRange:(id)range;
+- (BOOL)isValueExpectedType:(id)type;
 - (NSString)description;
-- (id)valueAtIndex:(unint64_t)a3;
+- (id)valueAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (unint64_t)indexOfValue:(id)a3;
+- (unint64_t)indexOfValue:(id)value;
 @end
 
 @implementation CAMOverlayBooleanRange
@@ -22,52 +22,52 @@
 
 - (unint64_t)count
 {
-  v2 = [objc_opt_class() _values];
-  v3 = [v2 count];
+  _values = [objc_opt_class() _values];
+  v3 = [_values count];
 
   return v3;
 }
 
-- (BOOL)containsValue:(id)a3
+- (BOOL)containsValue:(id)value
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _values];
-  v5 = [v4 containsObject:v3];
+  valueCopy = value;
+  _values = [objc_opt_class() _values];
+  v5 = [_values containsObject:valueCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToRange:(id)a3
+- (BOOL)isEqualToRange:(id)range
 {
-  v3 = a3;
+  rangeCopy = range;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)isValueExpectedType:(id)a3
+- (BOOL)isValueExpectedType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (unint64_t)indexOfValue:(id)a3
+- (unint64_t)indexOfValue:(id)value
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _values];
-  v5 = [v4 indexOfObject:v3];
+  valueCopy = value;
+  _values = [objc_opt_class() _values];
+  v5 = [_values indexOfObject:valueCopy];
 
   return v5;
 }
 
-- (id)valueAtIndex:(unint64_t)a3
+- (id)valueAtIndex:(unint64_t)index
 {
-  v4 = [objc_opt_class() _values];
-  v5 = [v4 objectAtIndex:a3];
+  _values = [objc_opt_class() _values];
+  v5 = [_values objectAtIndex:index];
 
   return v5;
 }

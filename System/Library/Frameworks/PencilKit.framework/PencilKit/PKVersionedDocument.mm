@@ -1,16 +1,16 @@
 @interface PKVersionedDocument
-- (BOOL)loadData:(id)a3;
-- (BOOL)loadDocumentArchive:(void *)a3;
-- (BOOL)loadUnzippedData:(id)a3;
+- (BOOL)loadData:(id)data;
+- (BOOL)loadDocumentArchive:(void *)archive;
+- (BOOL)loadUnzippedData:(id)data;
 - (PKVersionedDocument)init;
-- (PKVersionedDocument)initWithArchive:(const void *)a3;
-- (PKVersionedDocument)initWithData:(id)a3;
-- (PKVersionedDocument)initWithUnzippedData:(id)a3;
+- (PKVersionedDocument)initWithArchive:(const void *)archive;
+- (PKVersionedDocument)initWithData:(id)data;
+- (PKVersionedDocument)initWithUnzippedData:(id)data;
 - (id)serialize;
 - (unsigned)maxDocumentVersion;
 - (void)dealloc;
-- (void)saveCurrentVersion:(void *)a3;
-- (void)saveToArchive:(void *)a3;
+- (void)saveCurrentVersion:(void *)version;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation PKVersionedDocument
@@ -27,37 +27,37 @@
   return 0;
 }
 
-- (PKVersionedDocument)initWithData:(id)a3
+- (PKVersionedDocument)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = PKVersionedDocument;
   v5 = [(PKVersionedDocument *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PKVersionedDocument *)v5 loadData:v4];
+    [(PKVersionedDocument *)v5 loadData:dataCopy];
   }
 
   return v6;
 }
 
-- (PKVersionedDocument)initWithUnzippedData:(id)a3
+- (PKVersionedDocument)initWithUnzippedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = PKVersionedDocument;
   v5 = [(PKVersionedDocument *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PKVersionedDocument *)v5 loadUnzippedData:v4];
+    [(PKVersionedDocument *)v5 loadUnzippedData:dataCopy];
   }
 
   return v6;
 }
 
-- (PKVersionedDocument)initWithArchive:(const void *)a3
+- (PKVersionedDocument)initWithArchive:(const void *)archive
 {
   v7.receiver = self;
   v7.super_class = PKVersionedDocument;
@@ -65,15 +65,15 @@
   v5 = v4;
   if (v4)
   {
-    [(PKVersionedDocument *)v4 loadArchive:a3];
+    [(PKVersionedDocument *)v4 loadArchive:archive];
   }
 
   return v5;
 }
 
-- (BOOL)loadData:(id)a3
+- (BOOL)loadData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -82,10 +82,10 @@
   activity_block[1] = 3221225472;
   activity_block[2] = __32__PKVersionedDocument_loadData___block_invoke;
   activity_block[3] = &unk_1E82DBA90;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  v9 = v4;
-  v5 = v4;
+  v9 = dataCopy;
+  v5 = dataCopy;
   _os_activity_initiate(&dword_1C7CCA000, "Unzipping versioned document", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v6 = *(v13 + 24);
@@ -111,9 +111,9 @@ void __32__PKVersionedDocument_loadData___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)loadUnzippedData:(id)a3
+- (BOOL)loadUnzippedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -123,9 +123,9 @@ void __32__PKVersionedDocument_loadData___block_invoke(uint64_t a1)
   activity_block[2] = __40__PKVersionedDocument_loadUnzippedData___block_invoke;
   activity_block[3] = &unk_1E82DA298;
   activity_block[4] = self;
-  v9 = v4;
+  v9 = dataCopy;
   v10 = &v11;
-  v5 = v4;
+  v5 = dataCopy;
   _os_activity_initiate(&dword_1C7CCA000, "Loading versioned document", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v6 = *(v12 + 24);
@@ -169,26 +169,26 @@ uint64_t __40__PKVersionedDocument_loadUnzippedData___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)loadDocumentArchive:(void *)a3
+- (BOOL)loadDocumentArchive:(void *)archive
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = [objc_opt_class() serializationVersion];
-  v7 = *(a3 + 1);
-  v8 = *(a3 + 2) - v7;
+  serializationVersion = [objc_opt_class() serializationVersion];
+  v7 = *(archive + 1);
+  v8 = *(archive + 2) - v7;
   v9 = v8 >> 3;
   if (!(v8 >> 3))
   {
     goto LABEL_27;
   }
 
-  v10 = v5;
+  v10 = serializationVersion;
   v11 = 0;
   v12 = (v8 >> 3);
   v13 = -1;
   do
   {
     v14 = *(v7 + 8 * v11);
-    if (*(v14 + 20) < v5)
+    if (*(v14 + 20) < serializationVersion)
     {
       if (v13 < 0)
       {
@@ -212,10 +212,10 @@ LABEL_8:
       v18 = 0x1E695D000uLL;
       *&v6 = 67109632;
       v36 = v6;
-      v37 = a3;
+      archiveCopy = archive;
       while (1)
       {
-        v19 = *(*(a3 + 1) + v16);
+        v19 = *(*(archive + 1) + v16);
         v20 = [*(v18 + 3824) dataWithBytesNoCopy:**(v19 + 8) length:*(*(v19 + 8) + 8) freeWhenDone:{0, v36}];
         v21 = *(v19 + 20);
         if (v21 >= v10)
@@ -236,7 +236,7 @@ LABEL_8:
 
           else
           {
-            v27 = self;
+            selfCopy = self;
             v28 = v18;
             v29 = v17;
             v30 = *(v19 + 16);
@@ -269,8 +269,8 @@ LABEL_8:
 
             v17 = v31;
             v18 = v28;
-            self = v27;
-            a3 = v37;
+            self = selfCopy;
+            archive = archiveCopy;
           }
         }
 
@@ -301,7 +301,7 @@ LABEL_17:
       }
     }
 
-    if (*(v14 + 16) <= v5)
+    if (*(v14 + 16) <= serializationVersion)
     {
       v13 = v11;
     }
@@ -341,29 +341,29 @@ LABEL_29:
   [(PKVersionedDocument *)&v4 dealloc];
 }
 
-- (void)saveCurrentVersion:(void *)a3
+- (void)saveCurrentVersion:(void *)version
 {
-  v5 = [objc_opt_class() minimumSupportedVersion];
+  minimumSupportedVersion = [objc_opt_class() minimumSupportedVersion];
   v10 = 0;
   v6 = [(PKVersionedDocument *)self serializeCurrentVersion:&v10];
   v7 = v10;
-  *(a3 + 24) |= 3u;
-  *(a3 + 4) = v5;
-  *(a3 + 5) = v7;
-  v8 = [v6 bytes];
-  v9 = *(a3 + 1);
+  *(version + 24) |= 3u;
+  *(version + 4) = minimumSupportedVersion;
+  *(version + 5) = v7;
+  bytes = [v6 bytes];
+  v9 = *(version + 1);
   if (!v9)
   {
     operator new();
   }
 
-  PB::Data::assign(v9, v8, &v8[[v6 length]]);
+  PB::Data::assign(v9, bytes, &bytes[[v6 length]]);
 }
 
 - (unsigned)maxDocumentVersion
 {
-  v3 = [(PKVersionedDocument *)self documentArchive];
-  if (v3[2] != v3[1])
+  documentArchive = [(PKVersionedDocument *)self documentArchive];
+  if (documentArchive[2] != documentArchive[1])
   {
     return *(**([(PKVersionedDocument *)self documentArchive]+ 8) + 20);
   }
@@ -379,46 +379,46 @@ LABEL_29:
   v3 = os_log_create("com.apple.pencilkit", "");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [objc_opt_class() serializationVersion];
-    v7 = [(PKVersionedDocument *)self documentArchive];
-    v8 = (v7[2] - v7[1]) >> 3;
+    serializationVersion = [objc_opt_class() serializationVersion];
+    documentArchive = [(PKVersionedDocument *)self documentArchive];
+    v8 = (documentArchive[2] - documentArchive[1]) >> 3;
     v10[0] = 67109376;
-    v10[1] = v6;
+    v10[1] = serializationVersion;
     v11[0] = 2048;
     *&v11[1] = v8;
     _os_log_debug_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_DEBUG, "Saving versioned document %d with %ld future versions.", v10, 0x12u);
   }
 
-  v4 = [(PKVersionedDocument *)self documentArchive];
+  documentArchive2 = [(PKVersionedDocument *)self documentArchive];
   v5 = +[PKVersionedDocument versionedDocumentSerializationVersion];
-  v4[36] |= 1u;
-  *(v4 + 8) = v5;
+  documentArchive2[36] |= 1u;
+  *(documentArchive2 + 8) = v5;
   [(PKVersionedDocument *)self documentArchive];
   PB::PtrVector<versioned_document::Version>::emplace_back<>();
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.pencilkit", "");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [objc_opt_class() serializationVersion];
-    v8 = [(PKVersionedDocument *)self documentArchive];
-    v9 = (v8[2] - v8[1]) >> 3;
+    serializationVersion = [objc_opt_class() serializationVersion];
+    documentArchive = [(PKVersionedDocument *)self documentArchive];
+    v9 = (documentArchive[2] - documentArchive[1]) >> 3;
     *buf = 67109376;
-    *&buf[4] = v7;
+    *&buf[4] = serializationVersion;
     v12 = 2048;
     v13 = v9;
     _os_log_debug_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEBUG, "Saving versioned document %d with %ld future versions.", buf, 0x12u);
   }
 
-  versioned_document::Document::operator=(a3, self->_documentArchive);
+  versioned_document::Document::operator=(archive, self->_documentArchive);
   v5 = +[PKVersionedDocument versionedDocumentSerializationVersion];
-  *(a3 + 36) |= 1u;
-  *(a3 + 8) = v5;
-  v6 = [(PKVersionedDocument *)self documentArchive];
-  if (v6[1] != v6[2])
+  *(archive + 36) |= 1u;
+  *(archive + 8) = v5;
+  documentArchive2 = [(PKVersionedDocument *)self documentArchive];
+  if (documentArchive2[1] != documentArchive2[2])
   {
     operator new();
   }

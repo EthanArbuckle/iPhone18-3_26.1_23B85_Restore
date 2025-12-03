@@ -1,7 +1,7 @@
 @interface TagImageShareAttributeProvider
 - (_TtC8NewsFeed30TagImageShareAttributeProvider)init;
-- (void)createShareSportsEventImageFor:(id)a3 size:(CGSize)a4 logoWidth:(double)a5 completion:(id)a6;
-- (void)createSportsShareImageFor:(id)a3 completion:(id)a4;
+- (void)createShareSportsEventImageFor:(id)for size:(CGSize)size logoWidth:(double)width completion:(id)completion;
+- (void)createSportsShareImageFor:(id)for completion:(id)completion;
 @end
 
 @implementation TagImageShareAttributeProvider
@@ -13,27 +13,27 @@
   return [(TagImageShareAttributeProvider *)&v3 init];
 }
 
-- (void)createSportsShareImageFor:(id)a3 completion:(id)a4
+- (void)createSportsShareImageFor:(id)for completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1D6BEB0EC(a3, v6);
+  selfCopy = self;
+  sub_1D6BEB0EC(for, v6);
   _Block_release(v6);
   _Block_release(v6);
   swift_unknownObjectRelease();
 }
 
-- (void)createShareSportsEventImageFor:(id)a3 size:(CGSize)a4 logoWidth:(double)a5 completion:(id)a6
+- (void)createShareSportsEventImageFor:(id)for size:(CGSize)size logoWidth:(double)width completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = _Block_copy(a6);
+  height = size.height;
+  width = size.width;
+  v11 = _Block_copy(completion);
   _Block_copy(v11);
   swift_unknownObjectRetain();
-  v12 = self;
-  sub_1D6BEB728(a3, width, height, a5, v12, v11);
+  selfCopy = self;
+  sub_1D6BEB728(for, width, height, width, selfCopy, v11);
   _Block_release(v11);
   _Block_release(v11);
   swift_unknownObjectRelease();

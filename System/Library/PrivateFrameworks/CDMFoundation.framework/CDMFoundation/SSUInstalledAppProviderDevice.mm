@@ -1,21 +1,21 @@
 @interface SSUInstalledAppProviderDevice
-- (SSUInstalledAppProviderDevice)initWithLocale:(id)a3;
-- (id)applicationInfoFromAppRecord:(id)a3;
+- (SSUInstalledAppProviderDevice)initWithLocale:(id)locale;
+- (id)applicationInfoFromAppRecord:(id)record;
 - (id)lookupAllSSUEnabledApps;
-- (id)lookupSSUEnabledAppByBundleId:(id)a3;
+- (id)lookupSSUEnabledAppByBundleId:(id)id;
 @end
 
 @implementation SSUInstalledAppProviderDevice
 
-- (id)applicationInfoFromAppRecord:(id)a3
+- (id)applicationInfoFromAppRecord:(id)record
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  if (v5 && ([v4 isPlaceholder] & 1) == 0)
+  recordCopy = record;
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  if (bundleIdentifier && ([recordCopy isPlaceholder] & 1) == 0)
   {
     v7 = objc_alloc(MEMORY[0x1E696AAE8]);
-    v8 = [v4 URL];
+    v8 = [recordCopy URL];
     v9 = [v7 _initUniqueWithURL:v8];
     v10 = [v9 SSUAssetPathForLocale:self->_locale];
 
@@ -23,7 +23,7 @@
     {
       locale = self->_locale;
       v20 = 0;
-      v6 = [MEMORY[0x1E69D1480] applicationInfoWithBundleIdentifier:v5 assetURL:v10 forLocale:locale error:&v20];
+      v6 = [MEMORY[0x1E69D1480] applicationInfoWithBundleIdentifier:bundleIdentifier assetURL:v10 forLocale:locale error:&v20];
       v12 = v20;
       v13 = CDMOSLoggerForCategory(0);
       v14 = v13;
@@ -31,11 +31,11 @@
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
-          v18 = [v6 bundleIdentifier];
+          bundleIdentifier2 = [v6 bundleIdentifier];
           *buf = 136315394;
           v22 = "[SSUInstalledAppProviderDevice applicationInfoFromAppRecord:]";
           v23 = 2112;
-          v24 = v18;
+          v24 = bundleIdentifier2;
           _os_log_debug_impl(&dword_1DC287000, v14, OS_LOG_TYPE_DEBUG, "%s Found SSU-enabled app: %@", buf, 0x16u);
         }
 
@@ -50,7 +50,7 @@
           *buf = 136315906;
           v22 = "[SSUInstalledAppProviderDevice applicationInfoFromAppRecord:]";
           v23 = 2112;
-          v24 = v5;
+          v24 = bundleIdentifier;
           v25 = 2112;
           v26 = v10;
           v27 = 2112;
@@ -87,7 +87,7 @@
     _os_log_debug_impl(&dword_1DC287000, v3, OS_LOG_TYPE_DEBUG, "%s Looking up all installed SSU-enabled apps.", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [MEMORY[0x1E69635F8] enumeratorWithOptions:0];
   v21 = 0u;
   v22 = 0u;
@@ -116,19 +116,19 @@
           v12 = CDMOSLoggerForCategory(0);
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
-            v13 = [v11 bundleIdentifier];
-            v20 = [v11 assetURL];
-            v14 = [v20 path];
+            bundleIdentifier = [v11 bundleIdentifier];
+            assetURL = [v11 assetURL];
+            path = [assetURL path];
             *buf = v19;
             v26 = "[SSUInstalledAppProviderDevice lookupAllSSUEnabledApps]";
             v27 = 2112;
-            v28 = v13;
+            v28 = bundleIdentifier;
             v29 = 2112;
-            v30 = v14;
+            v30 = path;
             _os_log_debug_impl(&dword_1DC287000, v12, OS_LOG_TYPE_DEBUG, "%s Found SSU app %@ with asset URL %@", buf, 0x20u);
           }
 
-          [v4 addObject:v11];
+          [array addObject:v11];
         }
 
         ++v10;
@@ -144,7 +144,7 @@
   v15 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [v4 count];
+    v18 = [array count];
     *buf = 136315394;
     v26 = "[SSUInstalledAppProviderDevice lookupAllSSUEnabledApps]";
     v27 = 2048;
@@ -154,15 +154,15 @@
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-- (id)lookupSSUEnabledAppByBundleId:(id)a3
+- (id)lookupSSUEnabledAppByBundleId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v12 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v12];
+  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:idCopy allowPlaceholder:0 error:&v12];
   v6 = v12;
   if (v5)
   {
@@ -174,13 +174,13 @@
     v8 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v6 localizedDescription];
+      localizedDescription = [v6 localizedDescription];
       *buf = 136315650;
       v14 = "[SSUInstalledAppProviderDevice lookupSSUEnabledAppByBundleId:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = idCopy;
       v17 = 2112;
-      v18 = v11;
+      v18 = localizedDescription;
       _os_log_debug_impl(&dword_1DC287000, v8, OS_LOG_TYPE_DEBUG, "%s Could not lookup app with bundle ID: %@. Error: %@", buf, 0x20u);
     }
 
@@ -192,14 +192,14 @@
   return v7;
 }
 
-- (SSUInstalledAppProviderDevice)initWithLocale:(id)a3
+- (SSUInstalledAppProviderDevice)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v8.receiver = self;
   v8.super_class = SSUInstalledAppProviderDevice;
   v5 = [(SSUInstalledAppProviderDevice *)&v8 init];
   locale = v5->_locale;
-  v5->_locale = v4;
+  v5->_locale = localeCopy;
 
   return v5;
 }

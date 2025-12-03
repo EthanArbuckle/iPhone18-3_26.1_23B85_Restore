@@ -1,26 +1,26 @@
 @interface CAMSchemaCAMAutoSendFeaturesGenerated
-- (BOOL)isEqual:(id)a3;
-- (CAMSchemaCAMAutoSendFeaturesGenerated)initWithDictionary:(id)a3;
-- (CAMSchemaCAMAutoSendFeaturesGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAMSchemaCAMAutoSendFeaturesGenerated)initWithDictionary:(id)dictionary;
+- (CAMSchemaCAMAutoSendFeaturesGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAMSchemaCAMAutoSendFeaturesGenerated
 
-- (CAMSchemaCAMAutoSendFeaturesGenerated)initWithDictionary:(id)a3
+- (CAMSchemaCAMAutoSendFeaturesGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = CAMSchemaCAMAutoSendFeaturesGenerated;
   v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)&v46 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"userAsrScore"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"userAsrScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(CAMSchemaCAMAutoSendFeaturesGenerated *)v5 setUserAsrScore:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"userAsrScoreWhenCompleted"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"userAsrScoreWhenCompleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(CAMSchemaCAMAutoSendFeaturesGenerated *)v5 setUserAsrScoreWhenCompleted:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"userAsrScoreWhenRejected"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"userAsrScoreWhenRejected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(CAMSchemaCAMAutoSendFeaturesGenerated *)v5 setUserAsrScoreWhenRejected:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"userAsrScoreTargetContact"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"userAsrScoreTargetContact"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(CAMSchemaCAMAutoSendFeaturesGenerated *)v5 setUserAsrScoreTargetContact:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"userAsrScoreTargetApp"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"userAsrScoreTargetApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(CAMSchemaCAMAutoSendFeaturesGenerated *)v5 setUserAsrScoreTargetApp:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"userRejectRate"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"userRejectRate"];
     objc_opt_class();
     v45 = v16;
     if (objc_opt_isKindOfClass())
@@ -69,7 +69,7 @@
       [(CAMSchemaCAMAutoSendFeaturesGenerated *)v5 setUserRejectRate:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"userRejectRateTargetContact"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"userRejectRateTargetContact"];
     objc_opt_class();
     v44 = v18;
     if (objc_opt_isKindOfClass())
@@ -79,7 +79,7 @@
     }
 
     v43 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"userRejectRateTargetApp"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"userRejectRateTargetApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
 
     v38 = v20;
     v42 = v8;
-    v22 = [v4 objectForKeyedSubscript:@"userRejectRateWhenSkipDecision"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"userRejectRateWhenSkipDecision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
     }
 
     v41 = v10;
-    v24 = [v4 objectForKeyedSubscript:@"userRejectRateWhenConfirmDecision"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"userRejectRateWhenConfirmDecision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,7 +107,7 @@
     }
 
     v40 = v12;
-    v26 = [v4 objectForKeyedSubscript:@"userPayloadLengthInCharacters"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"userPayloadLengthInCharacters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,7 +116,7 @@
     }
 
     v39 = v14;
-    v28 = [v4 objectForKeyedSubscript:@"userPayloadLengthInCharactersTargetContact"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"userPayloadLengthInCharactersTargetContact"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,7 +124,7 @@
       [(CAMSchemaCAMAutoSendFeaturesGenerated *)v5 setUserPayloadLengthInCharactersTargetContact:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"userPayloadLengthInCharactersTargetApp"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"userPayloadLengthInCharactersTargetApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
       [(CAMSchemaCAMAutoSendFeaturesGenerated *)v5 setUserPayloadLengthInCharactersTargetApp:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"userPayloadLengthInCharactersWhenCompleted"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"userPayloadLengthInCharactersWhenCompleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,7 +140,7 @@
       [(CAMSchemaCAMAutoSendFeaturesGenerated *)v5 setUserPayloadLengthInCharactersWhenCompleted:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"userPayloadLengthInCharactersWhenRejected"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"userPayloadLengthInCharactersWhenRejected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,30 +154,30 @@
   return v5;
 }
 
-- (CAMSchemaCAMAutoSendFeaturesGenerated)initWithJSON:(id)a3
+- (CAMSchemaCAMAutoSendFeaturesGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -190,250 +190,250 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_userAsrScore)
   {
-    v4 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
+    dictionaryRepresentation = [userAsrScore dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"userAsrScore"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"userAsrScore"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"userAsrScore"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"userAsrScore"];
     }
   }
 
   if (self->_userAsrScoreTargetApp)
   {
-    v7 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    userAsrScoreTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
+    dictionaryRepresentation2 = [userAsrScoreTargetApp dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"userAsrScoreTargetApp"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"userAsrScoreTargetApp"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"userAsrScoreTargetApp"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"userAsrScoreTargetApp"];
     }
   }
 
   if (self->_userAsrScoreTargetContact)
   {
-    v10 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    userAsrScoreTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
+    dictionaryRepresentation3 = [userAsrScoreTargetContact dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"userAsrScoreTargetContact"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"userAsrScoreTargetContact"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"userAsrScoreTargetContact"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"userAsrScoreTargetContact"];
     }
   }
 
   if (self->_userAsrScoreWhenCompleted)
   {
-    v13 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    userAsrScoreWhenCompleted = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
+    dictionaryRepresentation4 = [userAsrScoreWhenCompleted dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"userAsrScoreWhenCompleted"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"userAsrScoreWhenCompleted"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"userAsrScoreWhenCompleted"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"userAsrScoreWhenCompleted"];
     }
   }
 
   if (self->_userAsrScoreWhenRejected)
   {
-    v16 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    userAsrScoreWhenRejected = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
+    dictionaryRepresentation5 = [userAsrScoreWhenRejected dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"userAsrScoreWhenRejected"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"userAsrScoreWhenRejected"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"userAsrScoreWhenRejected"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"userAsrScoreWhenRejected"];
     }
   }
 
   if (self->_userPayloadLengthInCharacters)
   {
-    v19 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    userPayloadLengthInCharacters = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
+    dictionaryRepresentation6 = [userPayloadLengthInCharacters dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"userPayloadLengthInCharacters"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"userPayloadLengthInCharacters"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"userPayloadLengthInCharacters"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"userPayloadLengthInCharacters"];
     }
   }
 
   if (self->_userPayloadLengthInCharactersTargetApp)
   {
-    v22 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    userPayloadLengthInCharactersTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
+    dictionaryRepresentation7 = [userPayloadLengthInCharactersTargetApp dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"userPayloadLengthInCharactersTargetApp"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"userPayloadLengthInCharactersTargetApp"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"userPayloadLengthInCharactersTargetApp"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"userPayloadLengthInCharactersTargetApp"];
     }
   }
 
   if (self->_userPayloadLengthInCharactersTargetContact)
   {
-    v25 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    userPayloadLengthInCharactersTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
+    dictionaryRepresentation8 = [userPayloadLengthInCharactersTargetContact dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"userPayloadLengthInCharactersTargetContact"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"userPayloadLengthInCharactersTargetContact"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"userPayloadLengthInCharactersTargetContact"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"userPayloadLengthInCharactersTargetContact"];
     }
   }
 
   if (self->_userPayloadLengthInCharactersWhenCompleted)
   {
-    v28 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    userPayloadLengthInCharactersWhenCompleted = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
+    dictionaryRepresentation9 = [userPayloadLengthInCharactersWhenCompleted dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"userPayloadLengthInCharactersWhenCompleted"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"userPayloadLengthInCharactersWhenCompleted"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"userPayloadLengthInCharactersWhenCompleted"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"userPayloadLengthInCharactersWhenCompleted"];
     }
   }
 
   if (self->_userPayloadLengthInCharactersWhenRejected)
   {
-    v31 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    userPayloadLengthInCharactersWhenRejected = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
+    dictionaryRepresentation10 = [userPayloadLengthInCharactersWhenRejected dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"userPayloadLengthInCharactersWhenRejected"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"userPayloadLengthInCharactersWhenRejected"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"userPayloadLengthInCharactersWhenRejected"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"userPayloadLengthInCharactersWhenRejected"];
     }
   }
 
   if (self->_userRejectRate)
   {
-    v34 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    userRejectRate = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
+    dictionaryRepresentation11 = [userRejectRate dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"userRejectRate"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"userRejectRate"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"userRejectRate"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"userRejectRate"];
     }
   }
 
   if (self->_userRejectRateTargetApp)
   {
-    v37 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    userRejectRateTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
+    dictionaryRepresentation12 = [userRejectRateTargetApp dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"userRejectRateTargetApp"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"userRejectRateTargetApp"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"userRejectRateTargetApp"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"userRejectRateTargetApp"];
     }
   }
 
   if (self->_userRejectRateTargetContact)
   {
-    v40 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    userRejectRateTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
+    dictionaryRepresentation13 = [userRejectRateTargetContact dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"userRejectRateTargetContact"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"userRejectRateTargetContact"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"userRejectRateTargetContact"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"userRejectRateTargetContact"];
     }
   }
 
   if (self->_userRejectRateWhenConfirmDecision)
   {
-    v43 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    userRejectRateWhenConfirmDecision = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
+    dictionaryRepresentation14 = [userRejectRateWhenConfirmDecision dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"userRejectRateWhenConfirmDecision"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"userRejectRateWhenConfirmDecision"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"userRejectRateWhenConfirmDecision"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"userRejectRateWhenConfirmDecision"];
     }
   }
 
   if (self->_userRejectRateWhenSkipDecision)
   {
-    v46 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    userRejectRateWhenSkipDecision = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
+    dictionaryRepresentation15 = [userRejectRateWhenSkipDecision dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"userRejectRateWhenSkipDecision"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"userRejectRateWhenSkipDecision"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"userRejectRateWhenSkipDecision"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"userRejectRateWhenSkipDecision"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -455,28 +455,28 @@
   return v13 ^ v16 ^ [(CAMSchemaCAMAggregateFeatureValue *)self->_userPayloadLengthInCharactersWhenRejected hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_77;
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
-  v6 = [v4 userAsrScore];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
+  userAsrScore2 = [equalCopy userAsrScore];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v7 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
-  if (v7)
+  userAsrScore3 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
+  if (userAsrScore3)
   {
-    v8 = v7;
-    v9 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
-    v10 = [v4 userAsrScore];
-    v11 = [v9 isEqual:v10];
+    v8 = userAsrScore3;
+    userAsrScore4 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
+    userAsrScore5 = [equalCopy userAsrScore];
+    v11 = [userAsrScore4 isEqual:userAsrScore5];
 
     if (!v11)
     {
@@ -488,20 +488,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
-  v6 = [v4 userAsrScoreWhenCompleted];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
+  userAsrScore2 = [equalCopy userAsrScoreWhenCompleted];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v12 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
-  if (v12)
+  userAsrScoreWhenCompleted = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
+  if (userAsrScoreWhenCompleted)
   {
-    v13 = v12;
-    v14 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
-    v15 = [v4 userAsrScoreWhenCompleted];
-    v16 = [v14 isEqual:v15];
+    v13 = userAsrScoreWhenCompleted;
+    userAsrScoreWhenCompleted2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
+    userAsrScoreWhenCompleted3 = [equalCopy userAsrScoreWhenCompleted];
+    v16 = [userAsrScoreWhenCompleted2 isEqual:userAsrScoreWhenCompleted3];
 
     if (!v16)
     {
@@ -513,20 +513,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
-  v6 = [v4 userAsrScoreWhenRejected];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
+  userAsrScore2 = [equalCopy userAsrScoreWhenRejected];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v17 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
-  if (v17)
+  userAsrScoreWhenRejected = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
+  if (userAsrScoreWhenRejected)
   {
-    v18 = v17;
-    v19 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
-    v20 = [v4 userAsrScoreWhenRejected];
-    v21 = [v19 isEqual:v20];
+    v18 = userAsrScoreWhenRejected;
+    userAsrScoreWhenRejected2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
+    userAsrScoreWhenRejected3 = [equalCopy userAsrScoreWhenRejected];
+    v21 = [userAsrScoreWhenRejected2 isEqual:userAsrScoreWhenRejected3];
 
     if (!v21)
     {
@@ -538,20 +538,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
-  v6 = [v4 userAsrScoreTargetContact];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
+  userAsrScore2 = [equalCopy userAsrScoreTargetContact];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v22 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
-  if (v22)
+  userAsrScoreTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
+  if (userAsrScoreTargetContact)
   {
-    v23 = v22;
-    v24 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
-    v25 = [v4 userAsrScoreTargetContact];
-    v26 = [v24 isEqual:v25];
+    v23 = userAsrScoreTargetContact;
+    userAsrScoreTargetContact2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
+    userAsrScoreTargetContact3 = [equalCopy userAsrScoreTargetContact];
+    v26 = [userAsrScoreTargetContact2 isEqual:userAsrScoreTargetContact3];
 
     if (!v26)
     {
@@ -563,20 +563,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
-  v6 = [v4 userAsrScoreTargetApp];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
+  userAsrScore2 = [equalCopy userAsrScoreTargetApp];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v27 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
-  if (v27)
+  userAsrScoreTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
+  if (userAsrScoreTargetApp)
   {
-    v28 = v27;
-    v29 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
-    v30 = [v4 userAsrScoreTargetApp];
-    v31 = [v29 isEqual:v30];
+    v28 = userAsrScoreTargetApp;
+    userAsrScoreTargetApp2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
+    userAsrScoreTargetApp3 = [equalCopy userAsrScoreTargetApp];
+    v31 = [userAsrScoreTargetApp2 isEqual:userAsrScoreTargetApp3];
 
     if (!v31)
     {
@@ -588,20 +588,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
-  v6 = [v4 userRejectRate];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
+  userAsrScore2 = [equalCopy userRejectRate];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v32 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
-  if (v32)
+  userRejectRate = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
+  if (userRejectRate)
   {
-    v33 = v32;
-    v34 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
-    v35 = [v4 userRejectRate];
-    v36 = [v34 isEqual:v35];
+    v33 = userRejectRate;
+    userRejectRate2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
+    userRejectRate3 = [equalCopy userRejectRate];
+    v36 = [userRejectRate2 isEqual:userRejectRate3];
 
     if (!v36)
     {
@@ -613,20 +613,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
-  v6 = [v4 userRejectRateTargetContact];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
+  userAsrScore2 = [equalCopy userRejectRateTargetContact];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v37 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
-  if (v37)
+  userRejectRateTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
+  if (userRejectRateTargetContact)
   {
-    v38 = v37;
-    v39 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
-    v40 = [v4 userRejectRateTargetContact];
-    v41 = [v39 isEqual:v40];
+    v38 = userRejectRateTargetContact;
+    userRejectRateTargetContact2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
+    userRejectRateTargetContact3 = [equalCopy userRejectRateTargetContact];
+    v41 = [userRejectRateTargetContact2 isEqual:userRejectRateTargetContact3];
 
     if (!v41)
     {
@@ -638,20 +638,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
-  v6 = [v4 userRejectRateTargetApp];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
+  userAsrScore2 = [equalCopy userRejectRateTargetApp];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v42 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
-  if (v42)
+  userRejectRateTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
+  if (userRejectRateTargetApp)
   {
-    v43 = v42;
-    v44 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
-    v45 = [v4 userRejectRateTargetApp];
-    v46 = [v44 isEqual:v45];
+    v43 = userRejectRateTargetApp;
+    userRejectRateTargetApp2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
+    userRejectRateTargetApp3 = [equalCopy userRejectRateTargetApp];
+    v46 = [userRejectRateTargetApp2 isEqual:userRejectRateTargetApp3];
 
     if (!v46)
     {
@@ -663,20 +663,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
-  v6 = [v4 userRejectRateWhenSkipDecision];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
+  userAsrScore2 = [equalCopy userRejectRateWhenSkipDecision];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v47 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
-  if (v47)
+  userRejectRateWhenSkipDecision = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
+  if (userRejectRateWhenSkipDecision)
   {
-    v48 = v47;
-    v49 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
-    v50 = [v4 userRejectRateWhenSkipDecision];
-    v51 = [v49 isEqual:v50];
+    v48 = userRejectRateWhenSkipDecision;
+    userRejectRateWhenSkipDecision2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
+    userRejectRateWhenSkipDecision3 = [equalCopy userRejectRateWhenSkipDecision];
+    v51 = [userRejectRateWhenSkipDecision2 isEqual:userRejectRateWhenSkipDecision3];
 
     if (!v51)
     {
@@ -688,20 +688,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
-  v6 = [v4 userRejectRateWhenConfirmDecision];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
+  userAsrScore2 = [equalCopy userRejectRateWhenConfirmDecision];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v52 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
-  if (v52)
+  userRejectRateWhenConfirmDecision = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
+  if (userRejectRateWhenConfirmDecision)
   {
-    v53 = v52;
-    v54 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
-    v55 = [v4 userRejectRateWhenConfirmDecision];
-    v56 = [v54 isEqual:v55];
+    v53 = userRejectRateWhenConfirmDecision;
+    userRejectRateWhenConfirmDecision2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
+    userRejectRateWhenConfirmDecision3 = [equalCopy userRejectRateWhenConfirmDecision];
+    v56 = [userRejectRateWhenConfirmDecision2 isEqual:userRejectRateWhenConfirmDecision3];
 
     if (!v56)
     {
@@ -713,20 +713,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
-  v6 = [v4 userPayloadLengthInCharacters];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
+  userAsrScore2 = [equalCopy userPayloadLengthInCharacters];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v57 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
-  if (v57)
+  userPayloadLengthInCharacters = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
+  if (userPayloadLengthInCharacters)
   {
-    v58 = v57;
-    v59 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
-    v60 = [v4 userPayloadLengthInCharacters];
-    v61 = [v59 isEqual:v60];
+    v58 = userPayloadLengthInCharacters;
+    userPayloadLengthInCharacters2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
+    userPayloadLengthInCharacters3 = [equalCopy userPayloadLengthInCharacters];
+    v61 = [userPayloadLengthInCharacters2 isEqual:userPayloadLengthInCharacters3];
 
     if (!v61)
     {
@@ -738,20 +738,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
-  v6 = [v4 userPayloadLengthInCharactersTargetContact];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
+  userAsrScore2 = [equalCopy userPayloadLengthInCharactersTargetContact];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v62 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
-  if (v62)
+  userPayloadLengthInCharactersTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
+  if (userPayloadLengthInCharactersTargetContact)
   {
-    v63 = v62;
-    v64 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
-    v65 = [v4 userPayloadLengthInCharactersTargetContact];
-    v66 = [v64 isEqual:v65];
+    v63 = userPayloadLengthInCharactersTargetContact;
+    userPayloadLengthInCharactersTargetContact2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
+    userPayloadLengthInCharactersTargetContact3 = [equalCopy userPayloadLengthInCharactersTargetContact];
+    v66 = [userPayloadLengthInCharactersTargetContact2 isEqual:userPayloadLengthInCharactersTargetContact3];
 
     if (!v66)
     {
@@ -763,20 +763,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
-  v6 = [v4 userPayloadLengthInCharactersTargetApp];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
+  userAsrScore2 = [equalCopy userPayloadLengthInCharactersTargetApp];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v67 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
-  if (v67)
+  userPayloadLengthInCharactersTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
+  if (userPayloadLengthInCharactersTargetApp)
   {
-    v68 = v67;
-    v69 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
-    v70 = [v4 userPayloadLengthInCharactersTargetApp];
-    v71 = [v69 isEqual:v70];
+    v68 = userPayloadLengthInCharactersTargetApp;
+    userPayloadLengthInCharactersTargetApp2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
+    userPayloadLengthInCharactersTargetApp3 = [equalCopy userPayloadLengthInCharactersTargetApp];
+    v71 = [userPayloadLengthInCharactersTargetApp2 isEqual:userPayloadLengthInCharactersTargetApp3];
 
     if (!v71)
     {
@@ -788,20 +788,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
-  v6 = [v4 userPayloadLengthInCharactersWhenCompleted];
-  if ((v5 != 0) == (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
+  userAsrScore2 = [equalCopy userPayloadLengthInCharactersWhenCompleted];
+  if ((userAsrScore != 0) == (userAsrScore2 == 0))
   {
     goto LABEL_76;
   }
 
-  v72 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
-  if (v72)
+  userPayloadLengthInCharactersWhenCompleted = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
+  if (userPayloadLengthInCharactersWhenCompleted)
   {
-    v73 = v72;
-    v74 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
-    v75 = [v4 userPayloadLengthInCharactersWhenCompleted];
-    v76 = [v74 isEqual:v75];
+    v73 = userPayloadLengthInCharactersWhenCompleted;
+    userPayloadLengthInCharactersWhenCompleted2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
+    userPayloadLengthInCharactersWhenCompleted3 = [equalCopy userPayloadLengthInCharactersWhenCompleted];
+    v76 = [userPayloadLengthInCharactersWhenCompleted2 isEqual:userPayloadLengthInCharactersWhenCompleted3];
 
     if (!v76)
     {
@@ -813,12 +813,12 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
-  v6 = [v4 userPayloadLengthInCharactersWhenRejected];
-  if ((v5 != 0) != (v6 == 0))
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
+  userAsrScore2 = [equalCopy userPayloadLengthInCharactersWhenRejected];
+  if ((userAsrScore != 0) != (userAsrScore2 == 0))
   {
-    v77 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
-    if (!v77)
+    userPayloadLengthInCharactersWhenRejected = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
+    if (!userPayloadLengthInCharactersWhenRejected)
     {
 
 LABEL_80:
@@ -826,10 +826,10 @@ LABEL_80:
       goto LABEL_78;
     }
 
-    v78 = v77;
-    v79 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
-    v80 = [v4 userPayloadLengthInCharactersWhenRejected];
-    v81 = [v79 isEqual:v80];
+    v78 = userPayloadLengthInCharactersWhenRejected;
+    userPayloadLengthInCharactersWhenRejected2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
+    userPayloadLengthInCharactersWhenRejected3 = [equalCopy userPayloadLengthInCharactersWhenRejected];
+    v81 = [userPayloadLengthInCharactersWhenRejected2 isEqual:userPayloadLengthInCharactersWhenRejected3];
 
     if (v81)
     {
@@ -849,270 +849,270 @@ LABEL_78:
   return v82;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v35 = a3;
-  v4 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
+  toCopy = to;
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
 
-  if (v4)
+  if (userAsrScore)
   {
-    v5 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
+    userAsrScore2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
+  userAsrScoreWhenCompleted = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
 
-  if (v6)
+  if (userAsrScoreWhenCompleted)
   {
-    v7 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
+    userAsrScoreWhenCompleted2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
+  userAsrScoreWhenRejected = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
 
-  if (v8)
+  if (userAsrScoreWhenRejected)
   {
-    v9 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
+    userAsrScoreWhenRejected2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
+  userAsrScoreTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
 
-  if (v10)
+  if (userAsrScoreTargetContact)
   {
-    v11 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
+    userAsrScoreTargetContact2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
+  userAsrScoreTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
 
-  if (v12)
+  if (userAsrScoreTargetApp)
   {
-    v13 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
+    userAsrScoreTargetApp2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
+  userRejectRate = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
 
-  if (v14)
+  if (userRejectRate)
   {
-    v15 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
+    userRejectRate2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
+  userRejectRateTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
 
-  if (v16)
+  if (userRejectRateTargetContact)
   {
-    v17 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
+    userRejectRateTargetContact2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
+  userRejectRateTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
 
-  if (v18)
+  if (userRejectRateTargetApp)
   {
-    v19 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
+    userRejectRateTargetApp2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
+  userRejectRateWhenSkipDecision = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
 
-  if (v20)
+  if (userRejectRateWhenSkipDecision)
   {
-    v21 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
+    userRejectRateWhenSkipDecision2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
+  userRejectRateWhenConfirmDecision = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
 
-  if (v22)
+  if (userRejectRateWhenConfirmDecision)
   {
-    v23 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
+    userRejectRateWhenConfirmDecision2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
+  userPayloadLengthInCharacters = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
 
-  if (v24)
+  if (userPayloadLengthInCharacters)
   {
-    v25 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
+    userPayloadLengthInCharacters2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
+  userPayloadLengthInCharactersTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
 
-  if (v26)
+  if (userPayloadLengthInCharactersTargetContact)
   {
-    v27 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
+    userPayloadLengthInCharactersTargetContact2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
+  userPayloadLengthInCharactersTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
 
-  if (v28)
+  if (userPayloadLengthInCharactersTargetApp)
   {
-    v29 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
+    userPayloadLengthInCharactersTargetApp2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
+  userPayloadLengthInCharactersWhenCompleted = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
 
-  if (v30)
+  if (userPayloadLengthInCharactersWhenCompleted)
   {
-    v31 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
+    userPayloadLengthInCharactersWhenCompleted2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
+  userPayloadLengthInCharactersWhenRejected = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
 
-  v33 = v35;
-  if (v32)
+  v33 = toCopy;
+  if (userPayloadLengthInCharactersWhenRejected)
   {
-    v34 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
+    userPayloadLengthInCharactersWhenRejected2 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
     PBDataWriterWriteSubmessage();
 
-    v33 = v35;
+    v33 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v52.receiver = self;
   v52.super_class = CAMSchemaCAMAutoSendFeaturesGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v52 applySensitiveConditionsPolicy:v4];
-  v6 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v52 applySensitiveConditionsPolicy:policyCopy];
+  userAsrScore = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScore];
+  v7 = [userAsrScore applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserAsrScore];
   }
 
-  v9 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  userAsrScoreWhenCompleted = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenCompleted];
+  v10 = [userAsrScoreWhenCompleted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserAsrScoreWhenCompleted];
   }
 
-  v12 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  userAsrScoreWhenRejected = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreWhenRejected];
+  v13 = [userAsrScoreWhenRejected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserAsrScoreWhenRejected];
   }
 
-  v15 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  userAsrScoreTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetContact];
+  v16 = [userAsrScoreTargetContact applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserAsrScoreTargetContact];
   }
 
-  v18 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  userAsrScoreTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userAsrScoreTargetApp];
+  v19 = [userAsrScoreTargetApp applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserAsrScoreTargetApp];
   }
 
-  v21 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  userRejectRate = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRate];
+  v22 = [userRejectRate applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserRejectRate];
   }
 
-  v24 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  userRejectRateTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetContact];
+  v25 = [userRejectRateTargetContact applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserRejectRateTargetContact];
   }
 
-  v27 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  userRejectRateTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateTargetApp];
+  v28 = [userRejectRateTargetApp applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserRejectRateTargetApp];
   }
 
-  v30 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  userRejectRateWhenSkipDecision = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenSkipDecision];
+  v31 = [userRejectRateWhenSkipDecision applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserRejectRateWhenSkipDecision];
   }
 
-  v33 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  userRejectRateWhenConfirmDecision = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userRejectRateWhenConfirmDecision];
+  v34 = [userRejectRateWhenConfirmDecision applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserRejectRateWhenConfirmDecision];
   }
 
-  v36 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  userPayloadLengthInCharacters = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharacters];
+  v37 = [userPayloadLengthInCharacters applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserPayloadLengthInCharacters];
   }
 
-  v39 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  userPayloadLengthInCharactersTargetContact = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetContact];
+  v40 = [userPayloadLengthInCharactersTargetContact applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserPayloadLengthInCharactersTargetContact];
   }
 
-  v42 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  userPayloadLengthInCharactersTargetApp = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersTargetApp];
+  v43 = [userPayloadLengthInCharactersTargetApp applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserPayloadLengthInCharactersTargetApp];
   }
 
-  v45 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  userPayloadLengthInCharactersWhenCompleted = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenCompleted];
+  v46 = [userPayloadLengthInCharactersWhenCompleted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserPayloadLengthInCharactersWhenCompleted];
   }
 
-  v48 = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  userPayloadLengthInCharactersWhenRejected = [(CAMSchemaCAMAutoSendFeaturesGenerated *)self userPayloadLengthInCharactersWhenRejected];
+  v49 = [userPayloadLengthInCharactersWhenRejected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(CAMSchemaCAMAutoSendFeaturesGenerated *)self deleteUserPayloadLengthInCharactersWhenRejected];
   }

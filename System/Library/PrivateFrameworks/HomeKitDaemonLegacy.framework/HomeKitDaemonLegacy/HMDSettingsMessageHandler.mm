@@ -2,10 +2,10 @@
 + (id)logCategory;
 - (HMDSettingsMessageController)privateMessageController;
 - (HMDSettingsMessageController)sharedMessageController;
-- (HMDSettingsMessageHandler)initWithQueue:(id)a3;
+- (HMDSettingsMessageHandler)initWithQueue:(id)queue;
 - (OS_dispatch_queue)messageReceiveQueue;
-- (void)_handleUpdateValue:(id)a3;
-- (void)configureWithMessageDispatcher:(id)a3 home:(id)a4;
+- (void)_handleUpdateValue:(id)value;
+- (void)configureWithMessageDispatcher:(id)dispatcher home:(id)home;
 @end
 
 @implementation HMDSettingsMessageHandler
@@ -35,15 +35,15 @@
   return self;
 }
 
-- (void)_handleUpdateValue:(id)a3
+- (void)_handleUpdateValue:(id)value
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [v5 hmf_stringForKey:*MEMORY[0x277CD0F90]];
+  valueCopy = value;
+  messagePayload = [valueCopy messagePayload];
+  v6 = [messagePayload hmf_stringForKey:*MEMORY[0x277CD0F90]];
   if ([v6 isEqualToString:*MEMORY[0x277CD14C0]])
   {
-    v7 = [(HMDSettingsMessageHandler *)self sharedMessageController];
+    sharedMessageController = [(HMDSettingsMessageHandler *)self sharedMessageController];
   }
 
   else
@@ -51,7 +51,7 @@
     if (![v6 isEqualToString:*MEMORY[0x277CD1418]])
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -69,14 +69,14 @@
       goto LABEL_22;
     }
 
-    v7 = [(HMDSettingsMessageHandler *)self privateMessageController];
+    sharedMessageController = [(HMDSettingsMessageHandler *)self privateMessageController];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = sharedMessageController;
+  if (!sharedMessageController)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -84,7 +84,7 @@
       *buf = 138543618;
       v50 = v24;
       v51 = 2112;
-      v52 = v5;
+      v52 = messagePayload;
       _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_ERROR, "%{public}@No message controller to update value for message payload: %@", buf, 0x16u);
     }
 
@@ -93,19 +93,19 @@
     v26 = 2;
 LABEL_22:
     v31 = [v25 hmErrorWithCode:v26];
-    [v4 respondWithError:v31];
+    [valueCopy respondWithError:v31];
     v11 = 0;
     goto LABEL_36;
   }
 
-  v9 = v4;
+  v9 = valueCopy;
   v10 = v8;
   v11 = v10;
   if (self)
   {
     v11 = v10;
-    v12 = [v9 messagePayload];
-    v13 = [v12 hmf_UUIDForKey:@"kUserUUIDKey"];
+    messagePayload2 = [v9 messagePayload];
+    v13 = [messagePayload2 hmf_UUIDForKey:@"kUserUUIDKey"];
 
     if (v13 && ([v11 userUUID], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "hmf_isEqualToUUID:", v13), v14, (v15 & 1) != 0))
     {
@@ -120,7 +120,7 @@ LABEL_22:
     if (v16)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy3 = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -136,14 +136,14 @@ LABEL_22:
       goto LABEL_15;
     }
 
-    v31 = [v5 hmf_dataForKey:*MEMORY[0x277CCEDA8]];
+    v31 = [messagePayload hmf_dataForKey:*MEMORY[0x277CCEDA8]];
     if (v31)
     {
-      v32 = [v9 messagePayload];
-      v33 = [v32 hmf_stringForKey:*MEMORY[0x277CD0F88]];
+      messagePayload3 = [v9 messagePayload];
+      v33 = [messagePayload3 hmf_stringForKey:*MEMORY[0x277CD0F88]];
 
       v34 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy4 = self;
       v36 = HMFGetOSLogHandle();
       v37 = v36;
       if (v33)
@@ -177,7 +177,7 @@ LABEL_22:
           *buf = 138543618;
           v50 = v46;
           v51 = 2112;
-          v52 = v5;
+          v52 = messagePayload;
           _os_log_impl(&dword_2531F8000, v37, OS_LOG_TYPE_ERROR, "%{public}@Missing key path from user settings update message payload: %@", buf, 0x16u);
         }
 
@@ -190,7 +190,7 @@ LABEL_22:
     else
     {
       v40 = objc_autoreleasePoolPush();
-      v41 = self;
+      selfCopy5 = self;
       v42 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
@@ -198,7 +198,7 @@ LABEL_22:
         *buf = 138543618;
         v50 = v43;
         v51 = 2112;
-        v52 = v5;
+        v52 = messagePayload;
         _os_log_impl(&dword_2531F8000, v42, OS_LOG_TYPE_ERROR, "%{public}@Missing updated serialized value from payload: %@", buf, 0x16u);
       }
 
@@ -217,26 +217,26 @@ LABEL_37:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithMessageDispatcher:(id)a3 home:(id)a4
+- (void)configureWithMessageDispatcher:(id)dispatcher home:(id)home
 {
   v25 = *MEMORY[0x277D85DE8];
-  newValue = a3;
-  v7 = a4;
+  newValue = dispatcher;
+  homeCopy = home;
   if (self)
   {
     objc_setProperty_atomic(self, v6, newValue, 16);
   }
 
-  v8 = [v7 uuid];
-  [(HMDSettingsMessageHandler *)self setMessageTargetUUID:v8];
+  uuid = [homeCopy uuid];
+  [(HMDSettingsMessageHandler *)self setMessageTargetUUID:uuid];
 
-  v10 = [HMDUserMessagePolicy userMessagePolicyWithHome:v7 userPrivilege:0 remoteAccessRequired:0];
+  v10 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:0 remoteAccessRequired:0];
   if (self)
   {
     objc_setProperty_atomic(self, v9, v10, 32);
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -250,28 +250,28 @@ LABEL_37:
     v10 = [HMDConfigurationMessagePolicy policyWithOperationTypes:2];
     v15 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     *&buf = v15;
-    *(&buf + 1) = objc_getProperty(v12, v16, 32, 1);
+    *(&buf + 1) = objc_getProperty(selfCopy, v16, 32, 1);
     v24 = v10;
     v17 = MEMORY[0x277CBEA60];
     v18 = *(&buf + 1);
     v19 = [v17 arrayWithObjects:&buf count:3];
 
-    [objc_getProperty(v12 v20];
+    [objc_getProperty(selfCopy v20];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDSettingsMessageHandler)initWithQueue:(id)a3
+- (HMDSettingsMessageHandler)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = HMDSettingsMessageHandler;
   v6 = [(HMDSettingsMessageHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

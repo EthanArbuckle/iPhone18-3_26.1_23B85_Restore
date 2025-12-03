@@ -3,35 +3,35 @@
 + (id)shortDescription;
 - (BOOL)containsHomeTheaterSupportedOptions;
 - (BOOL)containsMediaSystemSupportedOptions;
-- (BOOL)isEqual:(id)a3;
-- (HMMediaDestination)initWithCoder:(id)a3;
-- (HMMediaDestination)initWithProtoBufferData:(id)a3;
-- (HMMediaDestination)initWithUniqueIdentifier:(id)a3 parentIdentifier:(id)a4 supportedOptions:(unint64_t)a5 audioGroupIdentifier:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMMediaDestination)initWithCoder:(id)coder;
+- (HMMediaDestination)initWithProtoBufferData:(id)data;
+- (HMMediaDestination)initWithUniqueIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier supportedOptions:(unint64_t)options audioGroupIdentifier:(id)groupIdentifier;
 - (NSArray)attributeDescriptions;
 - (NSString)identifier;
 - (NSString)shortDescription;
 - (id)attributeDescriptionForAudioGroupIdentifier;
 - (id)encodeToProtoBufferData;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMMediaDestination
 
-- (HMMediaDestination)initWithProtoBufferData:(id)a3
+- (HMMediaDestination)initWithProtoBufferData:(id)data
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[HMMediaGroupProtoMediaDestination alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[HMMediaGroupProtoMediaDestination alloc] initWithData:dataCopy];
   v6 = v5;
   if (v5)
   {
     if ([(HMMediaGroupProtoMediaDestination *)v5 hasIdentifier])
     {
       v7 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v8 = [(HMMediaGroupProtoMediaDestination *)v6 identifier];
-      v9 = [v7 initWithUUIDString:v8];
+      identifier = [(HMMediaGroupProtoMediaDestination *)v6 identifier];
+      v9 = [v7 initWithUUIDString:identifier];
 
       if (![(HMMediaGroupProtoMediaDestination *)v6 hasParentIdentifier])
       {
@@ -48,21 +48,21 @@
         }
 
         objc_autoreleasePoolPop(v24);
-        v23 = 0;
+        selfCopy = 0;
         goto LABEL_26;
       }
 
       v10 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v11 = [(HMMediaGroupProtoMediaDestination *)v6 parentIdentifier];
-      v12 = [v10 initWithUUIDString:v11];
+      parentIdentifier = [(HMMediaGroupProtoMediaDestination *)v6 parentIdentifier];
+      v12 = [v10 initWithUUIDString:parentIdentifier];
 
       if ([(HMMediaGroupProtoMediaDestination *)v6 hasSupportedOptions])
       {
-        v13 = [(HMMediaGroupProtoMediaDestination *)v6 supportedOptions];
+        supportedOptions = [(HMMediaGroupProtoMediaDestination *)v6 supportedOptions];
         if ([(HMMediaGroupProtoMediaDestination *)v6 hasAudioGroupIdentifier])
         {
-          v14 = [(HMMediaGroupProtoMediaDestination *)v6 audioGroupIdentifier];
-          v15 = [v14 isEqual:@"00000000-0000-0000-0000-000000000000"];
+          audioGroupIdentifier = [(HMMediaGroupProtoMediaDestination *)v6 audioGroupIdentifier];
+          v15 = [audioGroupIdentifier isEqual:@"00000000-0000-0000-0000-000000000000"];
 
           if (v15)
           {
@@ -72,13 +72,13 @@
           else
           {
             v31 = objc_alloc(MEMORY[0x1E696AFB0]);
-            v32 = [(HMMediaGroupProtoMediaDestination *)v6 audioGroupIdentifier];
-            v16 = [v31 initWithUUIDString:v32];
+            audioGroupIdentifier2 = [(HMMediaGroupProtoMediaDestination *)v6 audioGroupIdentifier];
+            v16 = [v31 initWithUUIDString:audioGroupIdentifier2];
           }
 
-          self = [(HMMediaDestination *)self initWithUniqueIdentifier:v9 parentIdentifier:v12 supportedOptions:v13 audioGroupIdentifier:v16];
+          self = [(HMMediaDestination *)self initWithUniqueIdentifier:v9 parentIdentifier:v12 supportedOptions:supportedOptions audioGroupIdentifier:v16];
 
-          v23 = self;
+          selfCopy = self;
           goto LABEL_25;
         }
 
@@ -114,7 +114,7 @@ LABEL_21:
       }
 
       objc_autoreleasePoolPop(v27);
-      v23 = 0;
+      selfCopy = 0;
 LABEL_25:
 
 LABEL_26:
@@ -155,31 +155,31 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v17);
-  v23 = 0;
+  selfCopy = 0;
 LABEL_27:
 
   v33 = *MEMORY[0x1E69E9840];
-  return v23;
+  return selfCopy;
 }
 
 - (id)encodeToProtoBufferData
 {
   v3 = objc_alloc_init(HMMediaGroupProtoMediaDestination);
-  v4 = [(HMMediaDestination *)self uniqueIdentifier];
-  v5 = [v4 UUIDString];
-  [(HMMediaGroupProtoMediaDestination *)v3 setIdentifier:v5];
+  uniqueIdentifier = [(HMMediaDestination *)self uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  [(HMMediaGroupProtoMediaDestination *)v3 setIdentifier:uUIDString];
 
-  v6 = [(HMMediaDestination *)self parentIdentifier];
-  v7 = [v6 UUIDString];
-  [(HMMediaGroupProtoMediaDestination *)v3 setParentIdentifier:v7];
+  parentIdentifier = [(HMMediaDestination *)self parentIdentifier];
+  uUIDString2 = [parentIdentifier UUIDString];
+  [(HMMediaGroupProtoMediaDestination *)v3 setParentIdentifier:uUIDString2];
 
   [(HMMediaGroupProtoMediaDestination *)v3 setSupportedOptions:[(HMMediaDestination *)self supportedOptions]];
-  v8 = [(HMMediaDestination *)self audioGroupIdentifier];
-  if (v8)
+  audioGroupIdentifier = [(HMMediaDestination *)self audioGroupIdentifier];
+  if (audioGroupIdentifier)
   {
-    v9 = [(HMMediaDestination *)self audioGroupIdentifier];
-    v10 = [v9 UUIDString];
-    [(HMMediaGroupProtoMediaDestination *)v3 setAudioGroupIdentifier:v10];
+    audioGroupIdentifier2 = [(HMMediaDestination *)self audioGroupIdentifier];
+    uUIDString3 = [audioGroupIdentifier2 UUIDString];
+    [(HMMediaGroupProtoMediaDestination *)v3 setAudioGroupIdentifier:uUIDString3];
   }
 
   else
@@ -187,38 +187,38 @@ LABEL_27:
     [(HMMediaGroupProtoMediaDestination *)v3 setAudioGroupIdentifier:@"00000000-0000-0000-0000-000000000000"];
   }
 
-  v11 = [(HMMediaGroupProtoMediaDestination *)v3 data];
+  data = [(HMMediaGroupProtoMediaDestination *)v3 data];
 
-  return v11;
+  return data;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMMediaDestination *)self uniqueIdentifier];
-  [v4 encodeObject:v5 forKey:@"HMMediaDestinationIdentifierCodingKey"];
+  coderCopy = coder;
+  uniqueIdentifier = [(HMMediaDestination *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"HMMediaDestinationIdentifierCodingKey"];
 
-  v6 = [(HMMediaDestination *)self parentIdentifier];
-  [v4 encodeObject:v6 forKey:@"HMMediaDestinationParentIdentifierCodingKey"];
+  parentIdentifier = [(HMMediaDestination *)self parentIdentifier];
+  [coderCopy encodeObject:parentIdentifier forKey:@"HMMediaDestinationParentIdentifierCodingKey"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMMediaDestination supportedOptions](self, "supportedOptions")}];
-  [v4 encodeObject:v7 forKey:@"HMMediaDestinationSupportedOptionsNumberCodingKey"];
+  [coderCopy encodeObject:v7 forKey:@"HMMediaDestinationSupportedOptionsNumberCodingKey"];
 
-  v8 = [(HMMediaDestination *)self audioGroupIdentifier];
-  [v4 encodeObject:v8 forKey:@"HMMediaDestinationAudioGroupIdentifierCodingKey"];
+  audioGroupIdentifier = [(HMMediaDestination *)self audioGroupIdentifier];
+  [coderCopy encodeObject:audioGroupIdentifier forKey:@"HMMediaDestinationAudioGroupIdentifierCodingKey"];
 }
 
-- (HMMediaDestination)initWithCoder:(id)a3
+- (HMMediaDestination)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationIdentifierCodingKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationParentIdentifierCodingKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationAudioGroupIdentifierCodingKey"];
-  if ([v4 containsValueForKey:@"HMMediaDestinationSupportedOptionsCodingKey"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationIdentifierCodingKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationParentIdentifierCodingKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationAudioGroupIdentifierCodingKey"];
+  if ([coderCopy containsValueForKey:@"HMMediaDestinationSupportedOptionsCodingKey"])
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -229,7 +229,7 @@ LABEL_27:
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [v4 decodeIntegerForKey:@"HMMediaDestinationSupportedOptionsCodingKey"];
+    unsignedIntegerValue = [coderCopy decodeIntegerForKey:@"HMMediaDestinationSupportedOptionsCodingKey"];
     if (!v5)
     {
       goto LABEL_8;
@@ -245,8 +245,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationSupportedOptionsNumberCodingKey"];
-  v12 = [v13 unsignedIntegerValue];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationSupportedOptionsNumberCodingKey"];
+  unsignedIntegerValue = [v13 unsignedIntegerValue];
 
   if (v5)
   {
@@ -255,7 +255,7 @@ LABEL_7:
 
 LABEL_8:
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy2 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
@@ -266,7 +266,7 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationIdentifierCodingKey"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMediaDestinationIdentifierCodingKey"];
   v19 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v18];
 
   v5 = v19;
@@ -274,7 +274,7 @@ LABEL_11:
   if (!v6)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy3 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -288,7 +288,7 @@ LABEL_11:
     v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"00000000-0000-0000-0000-000000000000"];
   }
 
-  v24 = [(HMMediaDestination *)self initWithUniqueIdentifier:v5 parentIdentifier:v6 supportedOptions:v12 audioGroupIdentifier:v7];
+  v24 = [(HMMediaDestination *)self initWithUniqueIdentifier:v5 parentIdentifier:v6 supportedOptions:unsignedIntegerValue audioGroupIdentifier:v7];
 
   v25 = *MEMORY[0x1E69E9840];
   return v24;
@@ -296,16 +296,16 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(HMMediaDestination *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMMediaDestination *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -315,7 +315,7 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -326,16 +326,16 @@ LABEL_11:
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMMediaDestination *)self uniqueIdentifier];
-      v8 = [(HMMediaDestination *)v6 uniqueIdentifier];
-      if ([v7 hmf_isEqualToUUID:v8])
+      uniqueIdentifier = [(HMMediaDestination *)self uniqueIdentifier];
+      uniqueIdentifier2 = [(HMMediaDestination *)v6 uniqueIdentifier];
+      if ([uniqueIdentifier hmf_isEqualToUUID:uniqueIdentifier2])
       {
-        v9 = [(HMMediaDestination *)self parentIdentifier];
-        v10 = [(HMMediaDestination *)v6 parentIdentifier];
-        if ([v9 hmf_isEqualToUUID:v10] && (v11 = -[HMMediaDestination supportedOptions](self, "supportedOptions"), v11 == -[HMMediaDestination supportedOptions](v6, "supportedOptions")))
+        parentIdentifier = [(HMMediaDestination *)self parentIdentifier];
+        parentIdentifier2 = [(HMMediaDestination *)v6 parentIdentifier];
+        if ([parentIdentifier hmf_isEqualToUUID:parentIdentifier2] && (v11 = -[HMMediaDestination supportedOptions](self, "supportedOptions"), v11 == -[HMMediaDestination supportedOptions](v6, "supportedOptions")))
         {
-          v12 = [(HMMediaDestination *)self audioGroupIdentifier];
-          v13 = [(HMMediaDestination *)v6 audioGroupIdentifier];
+          audioGroupIdentifier = [(HMMediaDestination *)self audioGroupIdentifier];
+          audioGroupIdentifier2 = [(HMMediaDestination *)v6 audioGroupIdentifier];
           v14 = HMFEqualObjects();
         }
 
@@ -360,14 +360,14 @@ LABEL_11:
   return v14;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMMutableMediaDestination alloc];
-  v5 = [(HMMediaDestination *)self uniqueIdentifier];
-  v6 = [(HMMediaDestination *)self parentIdentifier];
-  v7 = [(HMMediaDestination *)self supportedOptions];
-  v8 = [(HMMediaDestination *)self audioGroupIdentifier];
-  v9 = [(HMMediaDestination *)v4 initWithUniqueIdentifier:v5 parentIdentifier:v6 supportedOptions:v7 audioGroupIdentifier:v8];
+  uniqueIdentifier = [(HMMediaDestination *)self uniqueIdentifier];
+  parentIdentifier = [(HMMediaDestination *)self parentIdentifier];
+  supportedOptions = [(HMMediaDestination *)self supportedOptions];
+  audioGroupIdentifier = [(HMMediaDestination *)self audioGroupIdentifier];
+  v9 = [(HMMediaDestination *)v4 initWithUniqueIdentifier:uniqueIdentifier parentIdentifier:parentIdentifier supportedOptions:supportedOptions audioGroupIdentifier:audioGroupIdentifier];
 
   return v9;
 }
@@ -401,39 +401,39 @@ uint64_t __33__HMMediaDestination_logCategory__block_invoke()
 
 - (id)attributeDescriptionForAudioGroupIdentifier
 {
-  v2 = [(HMMediaDestination *)self audioGroupIdentifier];
-  v3 = v2;
-  if (v2)
+  audioGroupIdentifier = [(HMMediaDestination *)self audioGroupIdentifier];
+  v3 = audioGroupIdentifier;
+  if (audioGroupIdentifier)
   {
-    v4 = [v2 UUIDString];
+    uUIDString = [audioGroupIdentifier UUIDString];
   }
 
   else
   {
-    v4 = @"Not Set";
+    uUIDString = @"Not Set";
   }
 
-  return v4;
+  return uUIDString;
 }
 
 - (NSArray)attributeDescriptions
 {
   v18[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMMediaDestination *)self identifier];
-  v5 = [v3 initWithName:@"identifier" value:v4];
+  identifier = [(HMMediaDestination *)self identifier];
+  v5 = [v3 initWithName:@"identifier" value:identifier];
   v18[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMMediaDestination *)self parentIdentifier];
-  v8 = [v6 initWithName:@"parentIdentifier" value:v7];
+  parentIdentifier = [(HMMediaDestination *)self parentIdentifier];
+  v8 = [v6 initWithName:@"parentIdentifier" value:parentIdentifier];
   v18[1] = v8;
   v9 = objc_alloc(MEMORY[0x1E69A29C8]);
   v10 = HMMediaDestinationSupportOptionsAsString([(HMMediaDestination *)self supportedOptions]);
   v11 = [v9 initWithName:@"supportOptions" value:v10];
   v18[2] = v11;
   v12 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v13 = [(HMMediaDestination *)self attributeDescriptionForAudioGroupIdentifier];
-  v14 = [v12 initWithName:@"audioGroupIdentifier" value:v13];
+  attributeDescriptionForAudioGroupIdentifier = [(HMMediaDestination *)self attributeDescriptionForAudioGroupIdentifier];
+  v14 = [v12 initWithName:@"audioGroupIdentifier" value:attributeDescriptionForAudioGroupIdentifier];
   v18[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:4];
 
@@ -471,41 +471,41 @@ uint64_t __33__HMMediaDestination_logCategory__block_invoke()
 
 - (NSString)identifier
 {
-  v2 = [(HMMediaDestination *)self uniqueIdentifier];
-  v3 = [v2 UUIDString];
+  uniqueIdentifier = [(HMMediaDestination *)self uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (HMMediaDestination)initWithUniqueIdentifier:(id)a3 parentIdentifier:(id)a4 supportedOptions:(unint64_t)a5 audioGroupIdentifier:(id)a6
+- (HMMediaDestination)initWithUniqueIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier supportedOptions:(unint64_t)options audioGroupIdentifier:(id)groupIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  parentIdentifierCopy = parentIdentifier;
+  groupIdentifierCopy = groupIdentifier;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v12)
+  if (!parentIdentifierCopy)
   {
 LABEL_7:
     v18 = _HMFPreconditionFailure();
     return [(HMMediaDestination *)v18 initWithUniqueIdentifier:v19 parentIdentifier:v20 supportedOptions:v21, v22];
   }
 
-  v14 = v13;
+  v14 = groupIdentifierCopy;
   v23.receiver = self;
   v23.super_class = HMMediaDestination;
   v15 = [(HMMediaDestination *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_uniqueIdentifier, a3);
-    objc_storeStrong(&v16->_parentIdentifier, a4);
-    v16->_supportedOptions = a5;
-    objc_storeStrong(&v16->_audioGroupIdentifier, a6);
+    objc_storeStrong(&v15->_uniqueIdentifier, identifier);
+    objc_storeStrong(&v16->_parentIdentifier, parentIdentifier);
+    v16->_supportedOptions = options;
+    objc_storeStrong(&v16->_audioGroupIdentifier, groupIdentifier);
   }
 
   return v16;

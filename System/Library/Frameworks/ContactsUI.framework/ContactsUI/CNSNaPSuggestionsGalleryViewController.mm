@@ -1,17 +1,17 @@
 @interface CNSNaPSuggestionsGalleryViewController
-- (CNSNaPSuggestionsGalleryViewController)initWithMode:(int64_t)a3 contact:(id)a4 isEditingSNaP:(BOOL)a5 isOnboarding:(BOOL)a6 photoLibraryAssetID:(id)a7;
+- (CNSNaPSuggestionsGalleryViewController)initWithMode:(int64_t)mode contact:(id)contact isEditingSNaP:(BOOL)p isOnboarding:(BOOL)onboarding photoLibraryAssetID:(id)d;
 - (CNSNaPSuggestionsGalleryViewControllerDelegate)delegate;
-- (int64_t)sourceTypeFromString:(id)a3;
+- (int64_t)sourceTypeFromString:(id)string;
 - (void)setupNavBarAppearance;
 - (void)skipStep;
 - (void)suggestionsGalleryDidCancel;
-- (void)suggestionsGalleryDidFinishWithPosterConfiguration:(id)a3 posterType:(id)a4 withGivenName:(id)a5 familyName:(id)a6;
-- (void)suggestionsGalleryDidRequestPresentationOfImagePickerController:(id)a3;
-- (void)suggestionsGalleryDidRequestPresentationOfPosterEditingViewController:(id)a3;
-- (void)suggestionsGalleryDidSelectAvatarSourceType:(id)a3 withGivenName:(id)a4 familyName:(id)a5;
-- (void)suggestionsGalleryDidSelectSuggestedAvatar:(id)a3 withGivenName:(id)a4 familyName:(id)a5;
+- (void)suggestionsGalleryDidFinishWithPosterConfiguration:(id)configuration posterType:(id)type withGivenName:(id)name familyName:(id)familyName;
+- (void)suggestionsGalleryDidRequestPresentationOfImagePickerController:(id)controller;
+- (void)suggestionsGalleryDidRequestPresentationOfPosterEditingViewController:(id)controller;
+- (void)suggestionsGalleryDidSelectAvatarSourceType:(id)type withGivenName:(id)name familyName:(id)familyName;
+- (void)suggestionsGalleryDidSelectSuggestedAvatar:(id)avatar withGivenName:(id)name familyName:(id)familyName;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation CNSNaPSuggestionsGalleryViewController
@@ -23,18 +23,18 @@
   return WeakRetained;
 }
 
-- (void)suggestionsGalleryDidRequestPresentationOfImagePickerController:(id)a3
+- (void)suggestionsGalleryDidRequestPresentationOfImagePickerController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CNSNaPSuggestionsGalleryViewController *)self navigationController];
-  [v5 presentViewController:v4 animated:1 completion:0];
+  controllerCopy = controller;
+  navigationController = [(CNSNaPSuggestionsGalleryViewController *)self navigationController];
+  [navigationController presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (void)suggestionsGalleryDidRequestPresentationOfPosterEditingViewController:(id)a3
+- (void)suggestionsGalleryDidRequestPresentationOfPosterEditingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
-  v5 = v4;
+  v5 = controllerCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -50,75 +50,75 @@
   if (v7)
   {
     [v7 setModalPresentationStyle:6];
-    v8 = [(CNSNaPSuggestionsGalleryViewController *)self navigationController];
+    navigationController = [(CNSNaPSuggestionsGalleryViewController *)self navigationController];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __112__CNSNaPSuggestionsGalleryViewController_suggestionsGalleryDidRequestPresentationOfPosterEditingViewController___block_invoke;
     v9[3] = &unk_1E74E6A88;
     v10 = v7;
-    [v8 presentViewController:v10 animated:1 completion:v9];
+    [navigationController presentViewController:v10 animated:1 completion:v9];
   }
 }
 
 - (void)suggestionsGalleryDidCancel
 {
-  v3 = [(CNSNaPSuggestionsGalleryViewController *)self delegate];
-  [v3 suggestionsGalleryViewControllerDidCancel:self];
+  delegate = [(CNSNaPSuggestionsGalleryViewController *)self delegate];
+  [delegate suggestionsGalleryViewControllerDidCancel:self];
 }
 
-- (void)suggestionsGalleryDidFinishWithPosterConfiguration:(id)a3 posterType:(id)a4 withGivenName:(id)a5 familyName:(id)a6
+- (void)suggestionsGalleryDidFinishWithPosterConfiguration:(id)configuration posterType:(id)type withGivenName:(id)name familyName:(id)familyName
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v13 = [(CNSNaPSuggestionsGalleryViewController *)self delegate];
-  v12 = [[CNSNaPSuggestionsGalleryName alloc] initWithGivenName:v10 familyName:v9];
+  familyNameCopy = familyName;
+  nameCopy = name;
+  configurationCopy = configuration;
+  delegate = [(CNSNaPSuggestionsGalleryViewController *)self delegate];
+  v12 = [[CNSNaPSuggestionsGalleryName alloc] initWithGivenName:nameCopy familyName:familyNameCopy];
 
-  [v13 suggestionsGalleryViewController:self didFinishWithPosterConfiguration:v11 name:v12];
+  [delegate suggestionsGalleryViewController:self didFinishWithPosterConfiguration:configurationCopy name:v12];
 }
 
-- (void)suggestionsGalleryDidSelectSuggestedAvatar:(id)a3 withGivenName:(id)a4 familyName:(id)a5
+- (void)suggestionsGalleryDidSelectSuggestedAvatar:(id)avatar withGivenName:(id)name familyName:(id)familyName
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(CNSNaPSuggestionsGalleryViewController *)self delegate];
-  v11 = [[CNSNaPSuggestionsGalleryName alloc] initWithGivenName:v9 familyName:v8];
+  familyNameCopy = familyName;
+  nameCopy = name;
+  avatarCopy = avatar;
+  delegate = [(CNSNaPSuggestionsGalleryViewController *)self delegate];
+  v11 = [[CNSNaPSuggestionsGalleryName alloc] initWithGivenName:nameCopy familyName:familyNameCopy];
 
-  [v12 suggestionsGalleryViewController:self didSelectSuggestedAvatar:v10 name:v11];
+  [delegate suggestionsGalleryViewController:self didSelectSuggestedAvatar:avatarCopy name:v11];
 }
 
-- (void)suggestionsGalleryDidSelectAvatarSourceType:(id)a3 withGivenName:(id)a4 familyName:(id)a5
+- (void)suggestionsGalleryDidSelectAvatarSourceType:(id)type withGivenName:(id)name familyName:(id)familyName
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v13 = [(CNSNaPSuggestionsGalleryViewController *)self delegate];
-  v11 = [(CNSNaPSuggestionsGalleryViewController *)self sourceTypeFromString:v10];
+  familyNameCopy = familyName;
+  nameCopy = name;
+  typeCopy = type;
+  delegate = [(CNSNaPSuggestionsGalleryViewController *)self delegate];
+  v11 = [(CNSNaPSuggestionsGalleryViewController *)self sourceTypeFromString:typeCopy];
 
-  v12 = [[CNSNaPSuggestionsGalleryName alloc] initWithGivenName:v9 familyName:v8];
-  [v13 suggestionsGalleryViewController:self didSelectAvatarSourceType:v11 name:v12];
+  v12 = [[CNSNaPSuggestionsGalleryName alloc] initWithGivenName:nameCopy familyName:familyNameCopy];
+  [delegate suggestionsGalleryViewController:self didSelectAvatarSourceType:v11 name:v12];
 }
 
-- (int64_t)sourceTypeFromString:(id)a3
+- (int64_t)sourceTypeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"camera"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"camera"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"photos"])
+  else if ([stringCopy isEqualToString:@"photos"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"memoji"])
+  else if ([stringCopy isEqualToString:@"memoji"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"emoji"])
+  else if ([stringCopy isEqualToString:@"emoji"])
   {
     v4 = 4;
   }
@@ -133,67 +133,67 @@
 
 - (void)skipStep
 {
-  v3 = [(CNSNaPSuggestionsGalleryViewController *)self delegate];
-  [v3 suggestionsGalleryViewControllerDidSelectCustomizeLater:self];
+  delegate = [(CNSNaPSuggestionsGalleryViewController *)self delegate];
+  [delegate suggestionsGalleryViewControllerDidSelectCustomizeLater:self];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v41[4] = *MEMORY[0x1E69E9840];
   v40.receiver = self;
   v40.super_class = CNSNaPSuggestionsGalleryViewController;
-  [(CNSNaPSuggestionsGalleryViewController *)&v40 viewIsAppearing:a3];
+  [(CNSNaPSuggestionsGalleryViewController *)&v40 viewIsAppearing:appearing];
   v4 = [_TtC10ContactsUI40CNWallpaperSuggestionsGalleryViewWrapper alloc];
-  v5 = [(CNSNaPSuggestionsGalleryViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [(CNSNaPSuggestionsGalleryViewController *)self mode];
-  v9 = [(CNSNaPSuggestionsGalleryViewController *)self contact];
-  v10 = [(CNSNaPSuggestionsGalleryViewController *)self isEditingSNaP];
-  v11 = [(CNSNaPSuggestionsGalleryViewController *)self isOnboarding];
-  v12 = [(CNSNaPSuggestionsGalleryViewController *)self photoLibraryAssetID];
-  v13 = [(CNWallpaperSuggestionsGalleryViewWrapper *)v4 initWithDelegate:self windowScene:v7 mode:v8 contact:v9 isEditingSNaP:v10 isOnboarding:v11 photoLibraryAssetID:v12];
+  view = [(CNSNaPSuggestionsGalleryViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  mode = [(CNSNaPSuggestionsGalleryViewController *)self mode];
+  contact = [(CNSNaPSuggestionsGalleryViewController *)self contact];
+  isEditingSNaP = [(CNSNaPSuggestionsGalleryViewController *)self isEditingSNaP];
+  isOnboarding = [(CNSNaPSuggestionsGalleryViewController *)self isOnboarding];
+  photoLibraryAssetID = [(CNSNaPSuggestionsGalleryViewController *)self photoLibraryAssetID];
+  v13 = [(CNWallpaperSuggestionsGalleryViewWrapper *)v4 initWithDelegate:self windowScene:windowScene mode:mode contact:contact isEditingSNaP:isEditingSNaP isOnboarding:isOnboarding photoLibraryAssetID:photoLibraryAssetID];
 
-  v14 = [(CNWallpaperSuggestionsGalleryViewWrapper *)v13 hostingController];
-  v15 = [v14 view];
+  hostingController = [(CNWallpaperSuggestionsGalleryViewWrapper *)v13 hostingController];
+  view2 = [hostingController view];
 
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [(CNWallpaperSuggestionsGalleryViewWrapper *)v13 hostingController];
-  [v16 willMoveToParentViewController:self];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  hostingController2 = [(CNWallpaperSuggestionsGalleryViewWrapper *)v13 hostingController];
+  [hostingController2 willMoveToParentViewController:self];
 
   v39 = v13;
-  v17 = [(CNWallpaperSuggestionsGalleryViewWrapper *)v13 hostingController];
-  [(CNSNaPSuggestionsGalleryViewController *)self addChildViewController:v17];
+  hostingController3 = [(CNWallpaperSuggestionsGalleryViewWrapper *)v13 hostingController];
+  [(CNSNaPSuggestionsGalleryViewController *)self addChildViewController:hostingController3];
 
-  v18 = [(CNSNaPSuggestionsGalleryViewController *)self view];
-  [v18 addSubview:v15];
+  view3 = [(CNSNaPSuggestionsGalleryViewController *)self view];
+  [view3 addSubview:view2];
 
-  v19 = [(CNWallpaperSuggestionsGalleryViewWrapper *)v13 hostingController];
-  [v19 didMoveToParentViewController:self];
+  hostingController4 = [(CNWallpaperSuggestionsGalleryViewWrapper *)v13 hostingController];
+  [hostingController4 didMoveToParentViewController:self];
 
-  v20 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v15 setBackgroundColor:v20];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view2 setBackgroundColor:systemBackgroundColor];
 
   v31 = MEMORY[0x1E696ACD8];
-  v37 = [v15 leadingAnchor];
-  v38 = [(CNSNaPSuggestionsGalleryViewController *)self view];
-  v36 = [v38 leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  leadingAnchor = [view2 leadingAnchor];
+  view4 = [(CNSNaPSuggestionsGalleryViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v41[0] = v35;
-  v33 = [v15 trailingAnchor];
-  v34 = [(CNSNaPSuggestionsGalleryViewController *)self view];
-  v32 = [v34 trailingAnchor];
-  v30 = [v33 constraintEqualToAnchor:v32];
+  trailingAnchor = [view2 trailingAnchor];
+  view5 = [(CNSNaPSuggestionsGalleryViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[1] = v30;
-  v21 = [v15 topAnchor];
-  v22 = [(CNSNaPSuggestionsGalleryViewController *)self view];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  topAnchor = [view2 topAnchor];
+  view6 = [(CNSNaPSuggestionsGalleryViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v41[2] = v24;
-  v25 = [v15 bottomAnchor];
-  v26 = [(CNSNaPSuggestionsGalleryViewController *)self view];
-  v27 = [v26 bottomAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  bottomAnchor = [view2 bottomAnchor];
+  view7 = [(CNSNaPSuggestionsGalleryViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v41[3] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
   [v31 activateConstraints:v29];
@@ -205,20 +205,20 @@
   [v8 configureWithDefaultBackground];
   if (CNUIIsMessages())
   {
-    v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v8 setBackgroundColor:v3];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [v8 setBackgroundColor:systemBackgroundColor];
 
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [v8 setShadowColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v8 setShadowColor:clearColor];
   }
 
-  v5 = [(CNSNaPSuggestionsGalleryViewController *)self navigationItem];
-  [v5 setStandardAppearance:v8];
+  navigationItem = [(CNSNaPSuggestionsGalleryViewController *)self navigationItem];
+  [navigationItem setStandardAppearance:v8];
 
   v6 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v6 configureWithTransparentBackground];
-  v7 = [(CNSNaPSuggestionsGalleryViewController *)self navigationItem];
-  [v7 setScrollEdgeAppearance:v6];
+  navigationItem2 = [(CNSNaPSuggestionsGalleryViewController *)self navigationItem];
+  [navigationItem2 setScrollEdgeAppearance:v6];
 }
 
 - (void)viewDidLoad
@@ -226,46 +226,46 @@
   v12.receiver = self;
   v12.super_class = CNSNaPSuggestionsGalleryViewController;
   [(CNSNaPSuggestionsGalleryViewController *)&v12 viewDidLoad];
-  v3 = [(CNSNaPSuggestionsGalleryViewController *)self navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 firstObject];
+  navigationController = [(CNSNaPSuggestionsGalleryViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
   v6 = objc_alloc(MEMORY[0x1E69DC708]);
   v7 = v6;
-  if (v5 == self)
+  if (firstObject == self)
   {
     v8 = [v6 initWithBarButtonSystemItem:1 target:self action:sel_suggestionsGalleryDidCancel];
-    v9 = [(CNSNaPSuggestionsGalleryViewController *)self navigationItem];
-    [v9 setLeftBarButtonItem:v8];
+    navigationItem = [(CNSNaPSuggestionsGalleryViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v8];
   }
 
   else
   {
     v8 = CNContactsUIBundle();
-    v9 = [v8 localizedStringForKey:@"SNAP_POSTER_PREVIEW_SKIP" value:&stru_1F0CE7398 table:@"Localized"];
-    v10 = [v7 initWithTitle:v9 style:0 target:self action:sel_skipStep];
-    v11 = [(CNSNaPSuggestionsGalleryViewController *)self navigationItem];
-    [v11 setRightBarButtonItem:v10];
+    navigationItem = [v8 localizedStringForKey:@"SNAP_POSTER_PREVIEW_SKIP" value:&stru_1F0CE7398 table:@"Localized"];
+    v10 = [v7 initWithTitle:navigationItem style:0 target:self action:sel_skipStep];
+    navigationItem2 = [(CNSNaPSuggestionsGalleryViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v10];
   }
 
   [(CNSNaPSuggestionsGalleryViewController *)self setupNavBarAppearance];
 }
 
-- (CNSNaPSuggestionsGalleryViewController)initWithMode:(int64_t)a3 contact:(id)a4 isEditingSNaP:(BOOL)a5 isOnboarding:(BOOL)a6 photoLibraryAssetID:(id)a7
+- (CNSNaPSuggestionsGalleryViewController)initWithMode:(int64_t)mode contact:(id)contact isEditingSNaP:(BOOL)p isOnboarding:(BOOL)onboarding photoLibraryAssetID:(id)d
 {
-  v13 = a4;
-  v14 = a7;
+  contactCopy = contact;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = CNSNaPSuggestionsGalleryViewController;
   v15 = [(CNSNaPSuggestionsGalleryViewController *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    v15->_mode = a3;
-    objc_storeStrong(&v15->_contact, a4);
-    v16->_isEditingSNaP = a5;
-    v16->_isOnboarding = a6;
-    objc_storeStrong(&v16->_photoLibraryAssetID, a7);
+    v15->_mode = mode;
+    objc_storeStrong(&v15->_contact, contact);
+    v16->_isEditingSNaP = p;
+    v16->_isOnboarding = onboarding;
+    objc_storeStrong(&v16->_photoLibraryAssetID, d);
     v17 = v16;
   }
 

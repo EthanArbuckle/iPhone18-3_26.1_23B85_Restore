@@ -1,27 +1,27 @@
 @interface InstructionList
-- (_TtC11Diagnostics15InstructionList)initWithFrame:(CGRect)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (_TtC11Diagnostics15InstructionList)initWithFrame:(CGRect)frame;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)invalidateIntrinsicContentSize;
 @end
 
 @implementation InstructionList
 
-- (_TtC11Diagnostics15InstructionList)initWithFrame:(CGRect)a3
+- (_TtC11Diagnostics15InstructionList)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC11Diagnostics15InstructionList_tableView;
   *(&self->super.super.super.isa + v8) = [objc_allocWithZone(type metadata accessor for IntrinsicSizeAdjustingTableView()) initWithFrame:1 style:{0.0, 0.0, 0.0, 0.0}];
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11Diagnostics15InstructionList_instructions) = _swiftEmptyArrayStorage;
   v11.receiver = self;
   v11.super_class = type metadata accessor for InstructionList();
-  v9 = [(InstructionList *)&v11 initWithFrame:x, y, width, height];
+  height = [(InstructionList *)&v11 initWithFrame:x, y, width, height];
   sub_100101044();
 
-  return v9;
+  return height;
 }
 
 - (void)invalidateIntrinsicContentSize
@@ -33,32 +33,32 @@
   [*&v2[OBJC_IVAR____TtC11Diagnostics15InstructionList_tableView] invalidateIntrinsicContentSize];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1001014F8(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1001014F8(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10010181C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10010181C(viewCopy);
   v13 = v12;
 
   (*(v7 + 8))(v9, v6);

@@ -1,18 +1,18 @@
 @interface TUPhoneNumber
-+ (BOOL)areDigits:(id)a3 equalToDigits:(id)a4 usingCountryCode:(id)a5;
-+ (TUPhoneNumber)phoneNumberWithCFPhoneNumberRef:(__CFPhoneNumber *)a3;
-+ (TUPhoneNumber)phoneNumberWithDigits:(id)a3 countryCode:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)areDigits:(id)digits equalToDigits:(id)toDigits usingCountryCode:(id)code;
++ (TUPhoneNumber)phoneNumberWithCFPhoneNumberRef:(__CFPhoneNumber *)ref;
++ (TUPhoneNumber)phoneNumberWithDigits:(id)digits countryCode:(id)code;
+- (BOOL)isEqual:(id)equal;
 - (NSString)countryCode;
 - (NSString)digits;
 - (NSString)formattedInternationalRepresentation;
 - (NSString)formattedRepresentation;
 - (NSString)unformattedInternationalRepresentation;
-- (TUPhoneNumber)initWithCFPhoneNumberRef:(__CFPhoneNumber *)a3;
-- (TUPhoneNumber)initWithCoder:(id)a3;
-- (TUPhoneNumber)initWithDigits:(id)a3 countryCode:(id)a4;
+- (TUPhoneNumber)initWithCFPhoneNumberRef:(__CFPhoneNumber *)ref;
+- (TUPhoneNumber)initWithCoder:(id)coder;
+- (TUPhoneNumber)initWithDigits:(id)digits countryCode:(id)code;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUPhoneNumber
@@ -39,7 +39,7 @@
   [(TUPhoneNumber *)&v4 dealloc];
 }
 
-- (TUPhoneNumber)initWithCFPhoneNumberRef:(__CFPhoneNumber *)a3
+- (TUPhoneNumber)initWithCFPhoneNumberRef:(__CFPhoneNumber *)ref
 {
   v7.receiver = self;
   v7.super_class = TUPhoneNumber;
@@ -47,10 +47,10 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (ref)
     {
-      CFRetain(a3);
-      v5->_phoneNumberRef = a3;
+      CFRetain(ref);
+      v5->_phoneNumberRef = ref;
     }
 
     else
@@ -63,7 +63,7 @@
   return v5;
 }
 
-- (TUPhoneNumber)initWithDigits:(id)a3 countryCode:(id)a4
+- (TUPhoneNumber)initWithDigits:(id)digits countryCode:(id)code
 {
   v5 = CFPhoneNumberCreate();
   v6 = [(TUPhoneNumber *)self initWithCFPhoneNumberRef:v5];
@@ -75,40 +75,40 @@
   return v6;
 }
 
-+ (TUPhoneNumber)phoneNumberWithCFPhoneNumberRef:(__CFPhoneNumber *)a3
++ (TUPhoneNumber)phoneNumberWithCFPhoneNumberRef:(__CFPhoneNumber *)ref
 {
-  v3 = [[TUPhoneNumber alloc] initWithCFPhoneNumberRef:a3];
+  v3 = [[TUPhoneNumber alloc] initWithCFPhoneNumberRef:ref];
 
   return v3;
 }
 
-+ (TUPhoneNumber)phoneNumberWithDigits:(id)a3 countryCode:(id)a4
++ (TUPhoneNumber)phoneNumberWithDigits:(id)digits countryCode:(id)code
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TUPhoneNumber alloc] initWithDigits:v6 countryCode:v5];
+  codeCopy = code;
+  digitsCopy = digits;
+  v7 = [[TUPhoneNumber alloc] initWithDigits:digitsCopy countryCode:codeCopy];
 
   return v7;
 }
 
-- (TUPhoneNumber)initWithCoder:(id)a3
+- (TUPhoneNumber)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Digits"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CountryCode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Digits"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CountryCode"];
 
   v7 = [(TUPhoneNumber *)self initWithDigits:v5 countryCode:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUPhoneNumber *)self digits];
-  [v4 encodeObject:v5 forKey:@"Digits"];
+  coderCopy = coder;
+  digits = [(TUPhoneNumber *)self digits];
+  [coderCopy encodeObject:digits forKey:@"Digits"];
 
-  v6 = [(TUPhoneNumber *)self countryCode];
-  [v4 encodeObject:v6 forKey:@"CountryCode"];
+  countryCode = [(TUPhoneNumber *)self countryCode];
+  [coderCopy encodeObject:countryCode forKey:@"CountryCode"];
 }
 
 - (NSString)digits
@@ -147,18 +147,18 @@
   return String;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(TUPhoneNumber *)self phoneNumberRef];
-    v6 = [v4 phoneNumberRef];
+    phoneNumberRef = [(TUPhoneNumber *)self phoneNumberRef];
+    phoneNumberRef2 = [equalCopy phoneNumberRef];
     v7 = 0;
-    if (v5 && v6)
+    if (phoneNumberRef && phoneNumberRef2)
     {
-      v7 = CFEqual(v5, v6) != 0;
+      v7 = CFEqual(phoneNumberRef, phoneNumberRef2) != 0;
     }
   }
 
@@ -170,15 +170,15 @@
   return v7;
 }
 
-+ (BOOL)areDigits:(id)a3 equalToDigits:(id)a4 usingCountryCode:(id)a5
++ (BOOL)areDigits:(id)digits equalToDigits:(id)toDigits usingCountryCode:(id)code
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 phoneNumberWithDigits:a3 countryCode:v8];
-  v11 = [a1 phoneNumberWithDigits:v9 countryCode:v8];
+  codeCopy = code;
+  toDigitsCopy = toDigits;
+  v10 = [self phoneNumberWithDigits:digits countryCode:codeCopy];
+  v11 = [self phoneNumberWithDigits:toDigitsCopy countryCode:codeCopy];
 
-  LOBYTE(v9) = [v10 isEqual:v11];
-  return v9;
+  LOBYTE(toDigitsCopy) = [v10 isEqual:v11];
+  return toDigitsCopy;
 }
 
 @end

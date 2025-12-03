@@ -1,44 +1,44 @@
 @interface SUUIURLResolver
-+ (id)tabIdentifierForURL:(id)a3;
-+ (void)isLegacyWebViewForURL:(id)a3 bag:(id)a4 completion:(id)a5;
-- (SUUIURLResolver)initWithClientContext:(id)a3;
++ (id)tabIdentifierForURL:(id)l;
++ (void)isLegacyWebViewForURL:(id)l bag:(id)bag completion:(id)completion;
+- (SUUIURLResolver)initWithClientContext:(id)context;
 - (SUUIURLResolverDelegate)delegate;
 - (UINavigationControllerDelegate)navigationControllerDelegate;
-- (id)_newLegacyHTMLViewControllerWithSection:(id)a3;
-- (id)presentationViewControllerForPassbookLoader:(id)a3;
-- (void)_addPassbookPassWithURL:(id)a3;
-- (void)_handleSafariScriptDataUpdate:(id)a3;
-- (void)_performLookupWithURL:(id)a3;
-- (void)_presentViewController:(id)a3;
-- (void)_resolveURLRequest:(id)a3 withOriginURL:(id)a4;
-- (void)_selectTabWithIdentifier:(id)a3;
-- (void)_sendDidFinishWithResult:(BOOL)a3;
-- (void)_showAccountViewControllerWithURL:(id)a3;
-- (void)_showBagURLWithURL:(id)a3;
-- (void)_showDonationViewControllerWithURL:(id)a3;
-- (void)_showGiftViewControllerWithURL:(id)a3;
+- (id)_newLegacyHTMLViewControllerWithSection:(id)section;
+- (id)presentationViewControllerForPassbookLoader:(id)loader;
+- (void)_addPassbookPassWithURL:(id)l;
+- (void)_handleSafariScriptDataUpdate:(id)update;
+- (void)_performLookupWithURL:(id)l;
+- (void)_presentViewController:(id)controller;
+- (void)_resolveURLRequest:(id)request withOriginURL:(id)l;
+- (void)_selectTabWithIdentifier:(id)identifier;
+- (void)_sendDidFinishWithResult:(BOOL)result;
+- (void)_showAccountViewControllerWithURL:(id)l;
+- (void)_showBagURLWithURL:(id)l;
+- (void)_showDonationViewControllerWithURL:(id)l;
+- (void)_showGiftViewControllerWithURL:(id)l;
 - (void)_showPlaceholderViewController;
-- (void)_showRedeemViewControllerWithURL:(id)a3;
-- (void)_showSearchWithURL:(id)a3;
-- (void)_showViewControllerWithResponse:(id)a3 fromOperation:(id)a4;
-- (void)amsResolveURL:(id)a3 forURLType:(int64_t)a4;
+- (void)_showRedeemViewControllerWithURL:(id)l;
+- (void)_showSearchWithURL:(id)l;
+- (void)_showViewControllerWithResponse:(id)response fromOperation:(id)operation;
+- (void)amsResolveURL:(id)l forURLType:(int64_t)type;
 - (void)dealloc;
-- (void)passbookLoaderDidFinish:(id)a3;
-- (void)resolveURL:(id)a3;
+- (void)passbookLoaderDidFinish:(id)finish;
+- (void)resolveURL:(id)l;
 @end
 
 @implementation SUUIURLResolver
 
-- (SUUIURLResolver)initWithClientContext:(id)a3
+- (SUUIURLResolver)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SUUIURLResolver;
   v6 = [(SUUIURLResolver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
   }
 
   return v7;
@@ -52,43 +52,43 @@
   [(SUUIURLResolver *)&v3 dealloc];
 }
 
-+ (id)tabIdentifierForURL:(id)a3
++ (id)tabIdentifierForURL:(id)l
 {
-  v3 = [a3 actionString];
-  if ([v3 isEqualToString:@"audiobooks"])
+  actionString = [l actionString];
+  if ([actionString isEqualToString:@"audiobooks"])
   {
     v4 = @"audiobooks";
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"books"])
+  if ([actionString isEqualToString:@"books"])
   {
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:@"movies"])
+  if ([actionString isEqualToString:@"movies"])
   {
     v4 = @"movies";
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"music"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"music-videos"))
+  if ([actionString isEqualToString:@"music"] & 1) != 0 || (objc_msgSend(actionString, "isEqualToString:", @"music-videos"))
   {
     v4 = @"music";
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"podcasts"])
+  if ([actionString isEqualToString:@"podcasts"])
   {
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:@"ringtones"])
+  if ([actionString isEqualToString:@"ringtones"])
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v7 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v4 = 0;
     }
@@ -101,29 +101,29 @@
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"software"])
+  if ([actionString isEqualToString:@"software"])
   {
 LABEL_4:
     v4 = @"featured";
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"tv-shows"])
+  if ([actionString isEqualToString:@"tv-shows"])
   {
     v4 = @"tv";
   }
 
-  else if ([v3 isEqualToString:@"updates"])
+  else if ([actionString isEqualToString:@"updates"])
   {
     v4 = @"updates";
   }
 
-  else if ([v3 isEqualToString:@"purchased"])
+  else if ([actionString isEqualToString:@"purchased"])
   {
     v4 = @"purchased";
   }
 
-  else if ([v3 isEqualToString:@"manage"])
+  else if ([actionString isEqualToString:@"manage"])
   {
     v4 = @"managed";
   }
@@ -138,80 +138,80 @@ LABEL_10:
   return v4;
 }
 
-- (void)resolveURL:(id)a3
+- (void)resolveURL:(id)l
 {
-  v10 = a3;
-  v4 = [v10 actionString];
-  v5 = [objc_opt_class() tabIdentifierForURL:v10];
-  if ([v4 isEqualToString:@"accessory-lookup"])
+  lCopy = l;
+  actionString = [lCopy actionString];
+  v5 = [objc_opt_class() tabIdentifierForURL:lCopy];
+  if ([actionString isEqualToString:@"accessory-lookup"])
   {
     goto LABEL_2;
   }
 
-  if ([v4 isEqualToString:@"addpassbookpass"])
+  if ([actionString isEqualToString:@"addpassbookpass"])
   {
-    [(SUUIURLResolver *)self _addPassbookPassWithURL:v10];
+    [(SUUIURLResolver *)self _addPassbookPassWithURL:lCopy];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"donate"])
+  if ([actionString isEqualToString:@"donate"])
   {
-    [(SUUIURLResolver *)self _showDonationViewControllerWithURL:v10];
+    [(SUUIURLResolver *)self _showDonationViewControllerWithURL:lCopy];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"gift"])
+  if ([actionString isEqualToString:@"gift"])
   {
-    [(SUUIURLResolver *)self _showGiftViewControllerWithURL:v10];
+    [(SUUIURLResolver *)self _showGiftViewControllerWithURL:lCopy];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"library-link"])
+  if ([actionString isEqualToString:@"library-link"])
   {
     goto LABEL_2;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277D6A598]])
+  if ([actionString isEqualToString:*MEMORY[0x277D6A598]])
   {
-    [(SUUIURLResolver *)self _handleSafariScriptDataUpdate:v10];
+    [(SUUIURLResolver *)self _handleSafariScriptDataUpdate:lCopy];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"lookup"])
+  if ([actionString isEqualToString:@"lookup"])
   {
-    [(SUUIURLResolver *)self _performLookupWithURL:v10];
+    [(SUUIURLResolver *)self _performLookupWithURL:lCopy];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"redeem"])
+  if ([actionString isEqualToString:@"redeem"])
   {
-    [(SUUIURLResolver *)self _showRedeemViewControllerWithURL:v10];
+    [(SUUIURLResolver *)self _showRedeemViewControllerWithURL:lCopy];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"search"])
+  if ([actionString isEqualToString:@"search"])
   {
-    [(SUUIURLResolver *)self _showSearchWithURL:v10];
+    [(SUUIURLResolver *)self _showSearchWithURL:lCopy];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"bagurl"] || objc_msgSend(v4, "isEqualToString:", @"newsstand") || objc_msgSend(v4, "isEqualToString:", @"passbook"))
+  if ([actionString isEqualToString:@"bagurl"] || objc_msgSend(actionString, "isEqualToString:", @"newsstand") || objc_msgSend(actionString, "isEqualToString:", @"passbook"))
   {
     goto LABEL_2;
   }
 
-  if (![v4 isEqualToString:@"ringtones"])
+  if (![actionString isEqualToString:@"ringtones"])
   {
     if (![v5 length])
     {
-      v6 = [v10 underlyingURL];
-      v7 = [v6 host];
-      v8 = [v7 length];
+      underlyingURL = [lCopy underlyingURL];
+      host = [underlyingURL host];
+      v8 = [host length];
 
       if (v8)
       {
-        v9 = [v10 newURLRequest];
-        [(SUUIURLResolver *)self _resolveURLRequest:v9 withOriginURL:v10];
+        newURLRequest = [lCopy newURLRequest];
+        [(SUUIURLResolver *)self _resolveURLRequest:newURLRequest withOriginURL:lCopy];
       }
 
       else
@@ -228,7 +228,7 @@ LABEL_10:
   if (SUUIUserInterfaceIdiom(self->_clientContext) == 1)
   {
 LABEL_2:
-    [(SUUIURLResolver *)self _showBagURLWithURL:v10];
+    [(SUUIURLResolver *)self _showBagURLWithURL:lCopy];
     goto LABEL_9;
   }
 
@@ -241,16 +241,16 @@ LABEL_29:
 LABEL_9:
 }
 
-- (void)amsResolveURL:(id)a3 forURLType:(int64_t)a4
+- (void)amsResolveURL:(id)l forURLType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [v6 underlyingURL];
+  lCopy = l;
+  underlyingURL = [lCopy underlyingURL];
   v8 = +[SUUIClientContext amsBag];
-  switch(a4)
+  switch(type)
   {
     case 0:
-      v14 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-      v11 = [v14 ams_activeiTunesAccount];
+      ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+      ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
       v26 = 0;
       v27 = &v26;
@@ -271,17 +271,17 @@ LABEL_9:
       v16 = v15;
       _Block_object_dispose(&v26, 8);
       v17 = [v15 alloc];
-      v18 = [MEMORY[0x277CEE620] currentProcess];
-      v12 = [v17 initWithBag:v8 account:v11 clientInfo:v18];
+      currentProcess = [MEMORY[0x277CEE620] currentProcess];
+      v12 = [v17 initWithBag:v8 account:ams_activeiTunesAccount clientInfo:currentProcess];
 
-      v19 = [v12 loadURL:v7];
+      v19 = [v12 loadURL:underlyingURL];
       v20 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v12];
       [(SUUIURLResolver *)self _presentViewController:v20];
       [(SUUIURLResolver *)self _sendDidFinishWithResult:1];
 
       goto LABEL_11;
     case 1:
-      [(SUUIURLResolver *)self _showAccountViewControllerWithURL:v6];
+      [(SUUIURLResolver *)self _showAccountViewControllerWithURL:lCopy];
       break;
     case 2:
       v26 = 0;
@@ -302,8 +302,8 @@ LABEL_9:
 
       v10 = v9;
       _Block_object_dispose(&v26, 8);
-      v11 = [[v9 alloc] initWithBag:v8 URL:v7];
-      v12 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v11];
+      ams_activeiTunesAccount = [[v9 alloc] initWithBag:v8 URL:underlyingURL];
+      v12 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:ams_activeiTunesAccount];
       WeakRetained = objc_loadWeakRetained(&self->_navigationControllerDelegate);
       [v12 setDelegate:WeakRetained];
 
@@ -316,26 +316,26 @@ LABEL_11:
   }
 }
 
-+ (void)isLegacyWebViewForURL:(id)a3 bag:(id)a4 completion:(id)a5
++ (void)isLegacyWebViewForURL:(id)l bag:(id)bag completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D69B38] sharedConfig];
-  v11 = [v10 shouldLog];
-  if ([v10 shouldLogToDisk])
+  lCopy = l;
+  bagCopy = bag;
+  completionCopy = completion;
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog;
   }
 
-  v13 = [v10 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v12;
   }
@@ -348,7 +348,7 @@ LABEL_11:
   if (v14)
   {
     LODWORD(v29) = 138412290;
-    *(&v29 + 4) = v7;
+    *(&v29 + 4) = lCopy;
     LODWORD(v22) = 12;
     v15 = _os_log_send_and_compose_impl();
 
@@ -364,9 +364,9 @@ LABEL_11:
   {
   }
 
-  if (!v7)
+  if (!lCopy)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v25 = 0;
@@ -387,14 +387,14 @@ LABEL_11:
 
   v18 = v17;
   _Block_object_dispose(&v25, 8);
-  v19 = [[v17 alloc] initWithBag:v8];
-  v20 = [v19 typeForURL:v7];
+  v19 = [[v17 alloc] initWithBag:bagCopy];
+  v20 = [v19 typeForURL:lCopy];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __56__SUUIURLResolver_isLegacyWebViewForURL_bag_completion___block_invoke;
   v23[3] = &unk_2798FDAF0;
-  v24 = v9;
-  v21 = v9;
+  v24 = completionCopy;
+  v21 = completionCopy;
   [v20 addFinishBlock:v23];
 }
 
@@ -474,7 +474,7 @@ LABEL_21:
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)passbookLoaderDidFinish:(id)a3
+- (void)passbookLoaderDidFinish:(id)finish
 {
   [(SUUIPassbookLoader *)self->_passbookLoader setDelegate:0];
   passbookLoader = self->_passbookLoader;
@@ -483,7 +483,7 @@ LABEL_21:
   [(SUUIURLResolver *)self _sendDidFinishWithResult:1];
 }
 
-- (id)presentationViewControllerForPassbookLoader:(id)a3
+- (id)presentationViewControllerForPassbookLoader:(id)loader
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained presentationViewControllerForURLResolver:self];
@@ -491,11 +491,11 @@ LABEL_21:
   return v5;
 }
 
-- (void)_addPassbookPassWithURL:(id)a3
+- (void)_addPassbookPassWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   passbookLoader = self->_passbookLoader;
-  v9 = v4;
+  v9 = lCopy;
   if (!passbookLoader)
   {
     v6 = [[SUUIPassbookLoader alloc] initWithClientContext:self->_clientContext];
@@ -503,61 +503,61 @@ LABEL_21:
     self->_passbookLoader = v6;
 
     [(SUUIPassbookLoader *)self->_passbookLoader setDelegate:self];
-    v4 = v9;
+    lCopy = v9;
     passbookLoader = self->_passbookLoader;
   }
 
-  v8 = [v4 underlyingURL];
-  [(SUUIPassbookLoader *)passbookLoader loadPassWithURL:v8];
+  underlyingURL = [lCopy underlyingURL];
+  [(SUUIPassbookLoader *)passbookLoader loadPassWithURL:underlyingURL];
 }
 
-- (void)_handleSafariScriptDataUpdate:(id)a3
+- (void)_handleSafariScriptDataUpdate:(id)update
 {
-  v4 = [a3 underlyingURL];
+  underlyingURL = [update underlyingURL];
   if ([MEMORY[0x277D69C60] shouldHandleSafariScriptURL:?])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:*MEMORY[0x277D6A590] object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D6A590] object:underlyingURL];
   }
 }
 
-- (id)_newLegacyHTMLViewControllerWithSection:(id)a3
+- (id)_newLegacyHTMLViewControllerWithSection:(id)section
 {
-  v4 = a3;
-  v5 = [(SUUIClientContext *)self->_clientContext clientInterface];
-  v6 = [v5 viewControllerFactory];
-  v7 = [v6 newStorePageViewControllerWithSection:v4];
+  sectionCopy = section;
+  clientInterface = [(SUUIClientContext *)self->_clientContext clientInterface];
+  viewControllerFactory = [clientInterface viewControllerFactory];
+  v7 = [viewControllerFactory newStorePageViewControllerWithSection:sectionCopy];
 
   if (!v7)
   {
-    v7 = [objc_alloc(MEMORY[0x277D7FE88]) initWithSection:v4];
+    v7 = [objc_alloc(MEMORY[0x277D7FE88]) initWithSection:sectionCopy];
   }
 
   [v7 setCanMoveToOverlay:0];
-  [v7 setClientInterface:v5];
+  [v7 setClientInterface:clientInterface];
   [v7 setExternalRequest:1];
 
   return v7;
 }
 
-- (void)_performLookupWithURL:(id)a3
+- (void)_performLookupWithURL:(id)l
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 valueForQueryParameter:@"ids"];
-  v6 = [v5 longLongValue];
+  lCopy = l;
+  v5 = [lCopy valueForQueryParameter:@"ids"];
+  longLongValue = [v5 longLongValue];
 
-  if (v6)
+  if (longLongValue)
   {
     v7 = objc_alloc(MEMORY[0x277D69CF0]);
-    v8 = [(SUUIClientContext *)self->_clientContext platformContext];
-    v9 = [v7 initWithPlatformContext:v8];
+    platformContext = [(SUUIClientContext *)self->_clientContext platformContext];
+    v9 = [v7 initWithPlatformContext:platformContext];
 
     [v9 setKeyProfile:*MEMORY[0x277D6A2D8]];
     v10 = [(SUUIClientContext *)self->_clientContext valueForConfigurationKey:@"sfsuffix"];
     [v9 setStoreFrontSuffix:v10];
 
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", v6];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", longLongValue];
     v19[0] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
     [v9 setItemIdentifiers:v12];
@@ -570,7 +570,7 @@ LABEL_21:
     v13 = v11;
     v15 = v13;
     objc_copyWeak(&v17, &location);
-    v16 = v4;
+    v16 = lCopy;
     [v9 setResponseBlock:v14];
     [(SUUIURLResolver *)self _showPlaceholderViewController];
     [(NSOperationQueue *)self->_operationQueue addOperation:v9];
@@ -622,9 +622,9 @@ void __41__SUUIURLResolver__performLookupWithURL___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained presentationViewControllerForURLResolver:self];
 
@@ -634,8 +634,8 @@ void __41__SUUIURLResolver__performLookupWithURL___block_invoke_2(uint64_t a1)
   v10[2] = __42__SUUIURLResolver__presentViewController___block_invoke;
   v10[3] = &unk_2798F5AF8;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = controllerCopy;
+  v8 = controllerCopy;
   v9 = v6;
   dispatch_after(v7, MEMORY[0x277D85CD0], v10);
 }
@@ -669,22 +669,22 @@ void __42__SUUIURLResolver__presentViewController___block_invoke(uint64_t a1)
   [v5 presentViewController:*(a1 + 40) animated:1 completion:0];
 }
 
-- (void)_resolveURLRequest:(id)a3 withOriginURL:(id)a4
+- (void)_resolveURLRequest:(id)request withOriginURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIURLResolver *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v9 = [SUUIURL alloc], [v6 URL], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[SUUIURL initWithURL:](v9, "initWithURL:", v10), v10, objc_msgSend(v7, "referrerApplicationName"), v12 = objc_claimAutoreleasedReturnValue(), -[SUUIURL setReferrerApplicationName:](v11, "setReferrerApplicationName:", v12), v12, objc_msgSend(v7, "referrerURLString"), v13 = objc_claimAutoreleasedReturnValue(), -[SUUIURL setReferrerURLString:](v11, "setReferrerURLString:", v13), v13, LODWORD(v13) = objc_msgSend(v8, "URLResolver:shouldPerformDefaultActionForURL:", self, v11), v11, v13))
+  requestCopy = request;
+  lCopy = l;
+  delegate = [(SUUIURLResolver *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v9 = [SUUIURL alloc], [requestCopy URL], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[SUUIURL initWithURL:](v9, "initWithURL:", v10), v10, objc_msgSend(lCopy, "referrerApplicationName"), v12 = objc_claimAutoreleasedReturnValue(), -[SUUIURL setReferrerApplicationName:](v11, "setReferrerApplicationName:", v12), v12, objc_msgSend(lCopy, "referrerURLString"), v13 = objc_claimAutoreleasedReturnValue(), -[SUUIURL setReferrerURLString:](v11, "setReferrerURLString:", v13), v13, LODWORD(v13) = objc_msgSend(delegate, "URLResolver:shouldPerformDefaultActionForURL:", self, v11), v11, v13))
   {
-    v14 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURLRequest:v6];
+    v14 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURLRequest:requestCopy];
     v15 = +[(SSVURLDataConsumer *)SUUIURLResolverDataConsumer];
     [v14 setDataConsumer:v15];
 
-    v16 = [v7 referrerApplicationName];
-    [v14 setReferrerApplicationName:v16];
+    referrerApplicationName = [lCopy referrerApplicationName];
+    [v14 setReferrerApplicationName:referrerApplicationName];
 
-    v17 = [v7 referrerURLString];
-    [v14 setReferrerURLString:v17];
+    referrerURLString = [lCopy referrerURLString];
+    [v14 setReferrerURLString:referrerURLString];
 
     v18 = [(SUUIClientContext *)self->_clientContext valueForConfigurationKey:@"sfsuffix"];
     [v14 setStoreFrontSuffix:v18];
@@ -740,47 +740,47 @@ void __52__SUUIURLResolver__resolveURLRequest_withOriginURL___block_invoke_2(uin
   }
 }
 
-- (void)_selectTabWithIdentifier:(id)a3
+- (void)_selectTabWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained URLResolver:self showURL:0 withTabIdentifier:v4];
+  [WeakRetained URLResolver:self showURL:0 withTabIdentifier:identifierCopy];
 
   [(SUUIURLResolver *)self _sendDidFinishWithResult:1];
 }
 
-- (void)_sendDidFinishWithResult:(BOOL)a3
+- (void)_sendDidFinishWithResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 URLResolver:self didFinishWithResult:v3];
+    [v7 URLResolver:self didFinishWithResult:resultCopy];
   }
 }
 
-- (void)_showAccountViewControllerWithURL:(id)a3
+- (void)_showAccountViewControllerWithURL:(id)l
 {
   clientContext = self->_clientContext;
-  v5 = a3;
-  v6 = [(SUUIClientContext *)clientContext clientInterface];
-  v7 = [MEMORY[0x277D69B38] sharedConfig];
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  lCopy = l;
+  clientInterface = [(SUUIClientContext *)clientContext clientInterface];
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v9;
   }
@@ -801,18 +801,18 @@ void __52__SUUIURLResolver__resolveURLRequest_withOriginURL___block_invoke_2(uin
 
   if (v12)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithCString:v12 encoding:{4, v19, v18}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v12 encoding:{4, v19, v18}];
     free(v12);
     SSFileLog();
 LABEL_10:
   }
 
   v13 = objc_alloc(MEMORY[0x277D7FD90]);
-  v14 = [v5 underlyingURL];
+  underlyingURL = [lCopy underlyingURL];
 
-  v15 = [v13 initWithExternalAccountURL:v14];
+  v15 = [v13 initWithExternalAccountURL:underlyingURL];
   [v15 setCanMoveToOverlay:0];
-  [v15 setClientInterface:v6];
+  [v15 setClientInterface:clientInterface];
   v16 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v15];
   WeakRetained = objc_loadWeakRetained(&self->_navigationControllerDelegate);
   [v16 setDelegate:WeakRetained];
@@ -822,21 +822,21 @@ LABEL_10:
   [(SUUIURLResolver *)self _sendDidFinishWithResult:1];
 }
 
-- (void)_showBagURLWithURL:(id)a3
+- (void)_showBagURLWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 URLBagKey];
-  if (v5)
+  lCopy = l;
+  uRLBagKey = [lCopy URLBagKey];
+  if (uRLBagKey)
   {
     objc_initWeak(&location, self);
-    v6 = [(SUUIClientContext *)self->_clientContext URLBag];
+    uRLBag = [(SUUIClientContext *)self->_clientContext URLBag];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__SUUIURLResolver__showBagURLWithURL___block_invoke;
     v7[3] = &unk_2798FDB90;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
-    [v6 loadValueForKey:v5 completionBlock:v7];
+    v8 = lCopy;
+    [uRLBag loadValueForKey:uRLBagKey completionBlock:v7];
 
     [(SUUIURLResolver *)self _showPlaceholderViewController];
     objc_destroyWeak(&v9);
@@ -882,17 +882,17 @@ void __38__SUUIURLResolver__showBagURLWithURL___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_showDonationViewControllerWithURL:(id)a3
+- (void)_showDonationViewControllerWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[SUUIDonationViewController alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[SUUIDonationViewController alloc] initWithURL:lCopy];
 
   [(SUUIDonationViewController *)v5 setClientContext:self->_clientContext];
   [(SUUIURLResolver *)self _presentViewController:v5];
   [(SUUIURLResolver *)self _sendDidFinishWithResult:1];
 }
 
-- (void)_showGiftViewControllerWithURL:(id)a3
+- (void)_showGiftViewControllerWithURL:(id)l
 {
   v5 = [[SUUIGift alloc] initWithGiftCategory:0];
   v4 = [[SUUIGiftViewController alloc] initWithGift:v5];
@@ -907,60 +907,60 @@ void __38__SUUIURLResolver__showBagURLWithURL___block_invoke_2(uint64_t a1)
   [WeakRetained URLResolver:self showTransientViewController:0];
 }
 
-- (void)_showRedeemViewControllerWithURL:(id)a3
+- (void)_showRedeemViewControllerWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v6 = [[SUUIRedeemViewController alloc] initWithRedeemCategory:0];
   [(SUUIRedeemViewController *)v6 setAttempsAutomaticRedeem:1];
   [(SUUIRedeemViewController *)v6 setClientContext:self->_clientContext];
-  v5 = [v4 redeemCode];
+  redeemCode = [lCopy redeemCode];
 
-  [(SUUIRedeemViewController *)v6 setInitialCode:v5];
+  [(SUUIRedeemViewController *)v6 setInitialCode:redeemCode];
   [(SUUIURLResolver *)self _presentViewController:v6];
   [(SUUIURLResolver *)self _sendDidFinishWithResult:1];
 }
 
-- (void)_showSearchWithURL:(id)a3
+- (void)_showSearchWithURL:(id)l
 {
-  v8 = a3;
-  v4 = [v8 underlyingURL];
-  v5 = [v4 host];
-  v6 = [v5 length];
+  lCopy = l;
+  underlyingURL = [lCopy underlyingURL];
+  host = [underlyingURL host];
+  v6 = [host length];
 
   if (v6)
   {
-    v7 = [v8 newURLRequest];
-    [(SUUIURLResolver *)self _resolveURLRequest:v7 withOriginURL:v8];
+    newURLRequest = [lCopy newURLRequest];
+    [(SUUIURLResolver *)self _resolveURLRequest:newURLRequest withOriginURL:lCopy];
   }
 
   else
   {
-    [(SUUIURLResolver *)self _showBagURLWithURL:v8];
+    [(SUUIURLResolver *)self _showBagURLWithURL:lCopy];
   }
 }
 
-- (void)_showViewControllerWithResponse:(id)a3 fromOperation:(id)a4
+- (void)_showViewControllerWithResponse:(id)response fromOperation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URLResponse];
-  v9 = [v8 MIMEType];
+  responseCopy = response;
+  operationCopy = operation;
+  uRLResponse = [responseCopy URLResponse];
+  mIMEType = [uRLResponse MIMEType];
 
-  if ([v9 rangeOfString:@"application/json" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([mIMEType rangeOfString:@"application/json" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v9 rangeOfString:@"html" options:1] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([mIMEType rangeOfString:@"html" options:1] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = objc_opt_class();
-      v11 = [v6 URLResponse];
-      v12 = [v11 URL];
+      uRLResponse2 = [responseCopy URLResponse];
+      v12 = [uRLResponse2 URL];
       v13 = +[SUUIClientContext amsBag];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __65__SUUIURLResolver__showViewControllerWithResponse_fromOperation___block_invoke;
       v18[3] = &unk_2798FAC50;
       v18[4] = self;
-      v19 = v6;
-      v20 = v7;
+      v19 = responseCopy;
+      v20 = operationCopy;
       [v10 isLegacyWebViewForURL:v12 bag:v13 completion:v18];
     }
   }
@@ -968,8 +968,8 @@ void __38__SUUIURLResolver__showBagURLWithURL___block_invoke_2(uint64_t a1)
   else
   {
     v14 = [SUUILegacyNativeViewController alloc];
-    v15 = [v6 data];
-    v16 = [(SUUILegacyNativeViewController *)v14 initWithData:v15 fromOperation:v7];
+    data = [responseCopy data];
+    v16 = [(SUUILegacyNativeViewController *)v14 initWithData:data fromOperation:operationCopy];
 
     [(SUUIViewController *)v16 setClientContext:self->_clientContext];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);

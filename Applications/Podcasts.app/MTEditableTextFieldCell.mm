@@ -1,14 +1,14 @@
 @interface MTEditableTextFieldCell
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (BOOL)textFieldShouldEndEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (BOOL)textFieldShouldEndEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (UITextFieldDelegate)delegate;
 - (void)layoutSubviews;
 - (void)setupCell;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)updateFonts;
 @end
 
@@ -16,9 +16,9 @@
 
 - (void)updateFonts
 {
-  v4 = [objc_opt_class() textFont];
-  v3 = [(MTEditableTextFieldCell *)self textField];
-  [v3 setFont:v4];
+  textFont = [objc_opt_class() textFont];
+  textField = [(MTEditableTextFieldCell *)self textField];
+  [textField setFont:textFont];
 }
 
 - (void)setupCell
@@ -43,8 +43,8 @@
   [(UITextField *)v11 setTextColor:v12];
 
   [(UITextField *)self->_textField setDelegate:self];
-  v13 = [(MTEditableTextFieldCell *)self contentView];
-  [v13 addSubview:self->_textField];
+  contentView = [(MTEditableTextFieldCell *)self contentView];
+  [contentView addSubview:self->_textField];
 
   [(MTEditableTextFieldCell *)self updateFonts];
 }
@@ -55,8 +55,8 @@
   v15.super_class = MTEditableTextFieldCell;
   [(MTTableViewCell *)&v15 layoutSubviews];
   [(MTEditableTextFieldCell *)self updateFonts];
-  v3 = [(MTEditableTextFieldCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MTEditableTextFieldCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -69,16 +69,16 @@
   [(UITextField *)self->_textField setFrame:v11, v5, v7 - (v13 + v14), v9];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 textFieldShouldBeginEditing:v4];
+    v8 = [v7 textFieldShouldBeginEditing:editingCopy];
   }
 
   else
@@ -89,29 +89,29 @@
   return v8;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v7 = a3;
+  editingCopy = editing;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 textFieldDidBeginEditing:v7];
+    [v6 textFieldDidBeginEditing:editingCopy];
   }
 }
 
-- (BOOL)textFieldShouldEndEditing:(id)a3
+- (BOOL)textFieldShouldEndEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 textFieldShouldEndEditing:v4];
+    v8 = [v7 textFieldShouldEndEditing:editingCopy];
   }
 
   else
@@ -122,12 +122,12 @@
   return v8;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v9 = a3;
-  v4 = [(MTEditableTextFieldCell *)self textChanged];
-  v5 = [v9 text];
-  (v4)[2](v4, v5);
+  editingCopy = editing;
+  textChanged = [(MTEditableTextFieldCell *)self textChanged];
+  text = [editingCopy text];
+  (textChanged)[2](textChanged, text);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
@@ -135,23 +135,23 @@
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 textFieldDidEndEditing:v9];
+    [v8 textFieldDidEndEditing:editingCopy];
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
     v13 = objc_loadWeakRetained(&self->_delegate);
-    v14 = [v13 textField:v9 shouldChangeCharactersInRange:location replacementString:{length, v10}];
+    v14 = [v13 textField:fieldCopy shouldChangeCharactersInRange:location replacementString:{length, stringCopy}];
   }
 
   else
@@ -162,16 +162,16 @@
   return v14;
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
-  v4 = a3;
+  clearCopy = clear;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 textFieldShouldClear:v4];
+    v8 = [v7 textFieldShouldClear:clearCopy];
   }
 
   else
@@ -182,16 +182,16 @@
   return v8;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
+  returnCopy = return;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 textFieldShouldReturn:v4];
+    v8 = [v7 textFieldShouldReturn:returnCopy];
   }
 
   else

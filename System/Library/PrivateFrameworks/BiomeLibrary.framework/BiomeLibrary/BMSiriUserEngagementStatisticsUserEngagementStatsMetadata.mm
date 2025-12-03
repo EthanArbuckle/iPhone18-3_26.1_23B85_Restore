@@ -1,38 +1,38 @@
 @interface BMSiriUserEngagementStatisticsUserEngagementStatsMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriUserEngagementStatisticsUserEngagementStatsMetadata)initWithDeviceFamily:(id)a3 siriInputLocale:(id)a4 systemBuild:(id)a5 audioInputRoute:(id)a6 invocationSource:(id)a7 waitTime:(id)a8;
-- (BMSiriUserEngagementStatisticsUserEngagementStatsMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriUserEngagementStatisticsUserEngagementStatsMetadata)initWithDeviceFamily:(id)family siriInputLocale:(id)locale systemBuild:(id)build audioInputRoute:(id)route invocationSource:(id)source waitTime:(id)time;
+- (BMSiriUserEngagementStatisticsUserEngagementStatsMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriUserEngagementStatisticsUserEngagementStatsMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self deviceFamily];
-    v7 = [v5 deviceFamily];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    deviceFamily = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self deviceFamily];
+    deviceFamily2 = [v5 deviceFamily];
+    v8 = deviceFamily2;
+    if (deviceFamily == deviceFamily2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self deviceFamily];
-      v10 = [v5 deviceFamily];
-      v11 = [v9 isEqual:v10];
+      deviceFamily3 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self deviceFamily];
+      deviceFamily4 = [v5 deviceFamily];
+      v11 = [deviceFamily3 isEqual:deviceFamily4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self siriInputLocale];
-    v14 = [v5 siriInputLocale];
-    v15 = v14;
-    if (v13 == v14)
+    siriInputLocale = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self siriInputLocale];
+    siriInputLocale2 = [v5 siriInputLocale];
+    v15 = siriInputLocale2;
+    if (siriInputLocale == siriInputLocale2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self siriInputLocale];
-      v17 = [v5 siriInputLocale];
-      v18 = [v16 isEqual:v17];
+      siriInputLocale3 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self siriInputLocale];
+      siriInputLocale4 = [v5 siriInputLocale];
+      v18 = [siriInputLocale3 isEqual:siriInputLocale4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self systemBuild];
-    v20 = [v5 systemBuild];
-    v21 = v20;
-    if (v19 == v20)
+    systemBuild = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self systemBuild];
+    systemBuild2 = [v5 systemBuild];
+    v21 = systemBuild2;
+    if (systemBuild == systemBuild2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self systemBuild];
-      v23 = [v5 systemBuild];
-      v24 = [v22 isEqual:v23];
+      systemBuild3 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self systemBuild];
+      systemBuild4 = [v5 systemBuild];
+      v24 = [systemBuild3 isEqual:systemBuild4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self audioInputRoute];
-    v26 = [v5 audioInputRoute];
-    v27 = v26;
-    if (v25 == v26)
+    audioInputRoute = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self audioInputRoute];
+    audioInputRoute2 = [v5 audioInputRoute];
+    v27 = audioInputRoute2;
+    if (audioInputRoute == audioInputRoute2)
     {
     }
 
     else
     {
-      v28 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self audioInputRoute];
-      v29 = [v5 audioInputRoute];
-      v30 = [v28 isEqual:v29];
+      audioInputRoute3 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self audioInputRoute];
+      audioInputRoute4 = [v5 audioInputRoute];
+      v30 = [audioInputRoute3 isEqual:audioInputRoute4];
 
       if (!v30)
       {
@@ -97,18 +97,18 @@
       }
     }
 
-    v31 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self invocationSource];
-    v32 = [v5 invocationSource];
-    v33 = v32;
-    if (v31 == v32)
+    invocationSource = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self invocationSource];
+    invocationSource2 = [v5 invocationSource];
+    v33 = invocationSource2;
+    if (invocationSource == invocationSource2)
     {
     }
 
     else
     {
-      v34 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self invocationSource];
-      v35 = [v5 invocationSource];
-      v36 = [v34 isEqual:v35];
+      invocationSource3 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self invocationSource];
+      invocationSource4 = [v5 invocationSource];
+      v36 = [invocationSource3 isEqual:invocationSource4];
 
       if (!v36)
       {
@@ -124,8 +124,8 @@
 
     if (-[BMSiriUserEngagementStatisticsUserEngagementStatsMetadata hasWaitTime](self, "hasWaitTime") && [v5 hasWaitTime])
     {
-      v37 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self waitTime];
-      v12 = v37 == [v5 waitTime];
+      waitTime = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self waitTime];
+      v12 = waitTime == [v5 waitTime];
 LABEL_29:
 
       goto LABEL_30;
@@ -145,11 +145,11 @@ LABEL_30:
 - (id)jsonDictionary
 {
   v24[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self deviceFamily];
-  v4 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self siriInputLocale];
-  v5 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self systemBuild];
-  v6 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self audioInputRoute];
-  v7 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self invocationSource];
+  deviceFamily = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self deviceFamily];
+  siriInputLocale = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self siriInputLocale];
+  systemBuild = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self systemBuild];
+  audioInputRoute = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self audioInputRoute];
+  invocationSource = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self invocationSource];
   if ([(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self hasWaitTime])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriUserEngagementStatisticsUserEngagementStatsMetadata waitTime](self, "waitTime")}];
@@ -161,61 +161,61 @@ LABEL_30:
   }
 
   v23[0] = @"deviceFamily";
-  v9 = v3;
-  if (!v3)
+  null = deviceFamily;
+  if (!deviceFamily)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v9;
-  v22 = v4;
-  v24[0] = v9;
+  v21 = null;
+  v22 = siriInputLocale;
+  v24[0] = null;
   v23[1] = @"siriInputLocale";
-  v10 = v4;
-  if (!v4)
+  null2 = siriInputLocale;
+  if (!siriInputLocale)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v10;
-  v24[1] = v10;
+  v19 = null2;
+  v24[1] = null2;
   v23[2] = @"systemBuild";
-  v11 = v5;
-  if (!v5)
+  null3 = systemBuild;
+  if (!systemBuild)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[2] = v11;
+  v24[2] = null3;
   v23[3] = @"audioInputRoute";
-  v12 = v6;
-  if (!v6)
+  null4 = audioInputRoute;
+  if (!audioInputRoute)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13 = v3;
-  v24[3] = v12;
+  v13 = deviceFamily;
+  v24[3] = null4;
   v23[4] = @"invocationSource";
-  v14 = v7;
-  if (!v7)
+  null5 = invocationSource;
+  if (!invocationSource)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[4] = v14;
+  v24[4] = null5;
   v23[5] = @"waitTime";
-  v15 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[5] = v15;
+  v24[5] = null6;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:{6, v19}];
   if (v8)
   {
-    if (v7)
+    if (invocationSource)
     {
       goto LABEL_18;
     }
@@ -224,17 +224,17 @@ LABEL_30:
   else
   {
 
-    if (v7)
+    if (invocationSource)
     {
 LABEL_18:
-      if (v6)
+      if (audioInputRoute)
       {
         goto LABEL_19;
       }
 
 LABEL_27:
 
-      if (v5)
+      if (systemBuild)
       {
         goto LABEL_20;
       }
@@ -243,13 +243,13 @@ LABEL_27:
     }
   }
 
-  if (!v6)
+  if (!audioInputRoute)
   {
     goto LABEL_27;
   }
 
 LABEL_19:
-  if (v5)
+  if (systemBuild)
   {
     goto LABEL_20;
   }
@@ -280,22 +280,22 @@ LABEL_22:
   return v16;
 }
 
-- (BMSiriUserEngagementStatisticsUserEngagementStatsMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriUserEngagementStatisticsUserEngagementStatsMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"deviceFamily"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"deviceFamily"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"siriInputLocale"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"siriInputLocale"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v17 = 0;
           v16 = 0;
@@ -304,7 +304,7 @@ LABEL_4:
 
         v24 = v8;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v44 = a4;
+        errorCopy = error;
         v26 = *MEMORY[0x1E698F240];
         v62 = *MEMORY[0x1E696A578];
         v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"siriInputLocale"];
@@ -313,10 +313,10 @@ LABEL_4:
         v28 = v25;
         v8 = v24;
         v29 = v26;
-        a4 = v27;
+        error = v27;
         v17 = 0;
         v16 = 0;
-        *v44 = [v28 initWithDomain:v29 code:2 userInfo:v10];
+        *errorCopy = [v28 initWithDomain:v29 code:2 userInfo:v10];
         goto LABEL_24;
       }
 
@@ -328,14 +328,14 @@ LABEL_4:
       v52 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"systemBuild"];
-    v53 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"systemBuild"];
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v16 = 0;
           v17 = v52;
@@ -344,7 +344,7 @@ LABEL_4:
 
         v30 = v8;
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v45 = a4;
+        errorCopy2 = error;
         v32 = *MEMORY[0x1E698F240];
         v60 = *MEMORY[0x1E696A578];
         v51 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"systemBuild"];
@@ -353,9 +353,9 @@ LABEL_4:
         v33 = v31;
         v8 = v30;
         v34 = [v33 initWithDomain:v32 code:2 userInfo:v11];
-        a4 = 0;
+        error = 0;
         v16 = 0;
-        *v45 = v34;
+        *errorCopy2 = v34;
         goto LABEL_22;
       }
 
@@ -367,7 +367,7 @@ LABEL_4:
       v48 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"audioInputRoute"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"audioInputRoute"];
     v49 = v7;
     v50 = v8;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -375,12 +375,12 @@ LABEL_4:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v51 = 0;
           v16 = 0;
           v17 = v52;
-          a4 = v48;
+          error = v48;
           goto LABEL_23;
         }
 
@@ -393,7 +393,7 @@ LABEL_4:
         v37 = [v35 initWithDomain:v36 code:2 userInfo:v12];
         v51 = 0;
         v16 = 0;
-        *a4 = v37;
+        *error = v37;
         goto LABEL_57;
       }
 
@@ -405,7 +405,7 @@ LABEL_4:
       v51 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"invocationSource"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"invocationSource"];
     if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v13 = 0;
@@ -417,13 +417,13 @@ LABEL_4:
     {
       v13 = v12;
 LABEL_16:
-      v14 = [v6 objectForKeyedSubscript:@"waitTime"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"waitTime"];
       if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v47 = objc_alloc(MEMORY[0x1E696ABC0]);
             v43 = *MEMORY[0x1E698F240];
@@ -431,12 +431,12 @@ LABEL_16:
             v41 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"waitTime"];
             v55 = v41;
             v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-            *a4 = [v47 initWithDomain:v43 code:2 userInfo:v42];
+            *error = [v47 initWithDomain:v43 code:2 userInfo:v42];
           }
 
           v15 = 0;
           v16 = 0;
-          a4 = v48;
+          error = v48;
           goto LABEL_20;
         }
 
@@ -448,9 +448,9 @@ LABEL_16:
         v15 = 0;
       }
 
-      a4 = v48;
-      v16 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)v53 initWithDeviceFamily:v50 siriInputLocale:v52 systemBuild:v48 audioInputRoute:v51 invocationSource:v13 waitTime:v15];
-      v53 = v16;
+      error = v48;
+      v16 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)selfCopy initWithDeviceFamily:v50 siriInputLocale:v52 systemBuild:v48 audioInputRoute:v51 invocationSource:v13 waitTime:v15];
+      selfCopy = v16;
 LABEL_20:
 
 LABEL_21:
@@ -460,15 +460,15 @@ LABEL_22:
       v17 = v52;
 LABEL_23:
 
-      self = v53;
+      self = selfCopy;
 LABEL_24:
 
       goto LABEL_25;
     }
 
-    if (a4)
+    if (error)
     {
-      v46 = a4;
+      errorCopy3 = error;
       v38 = objc_alloc(MEMORY[0x1E696ABC0]);
       v39 = *MEMORY[0x1E698F240];
       v56 = *MEMORY[0x1E696A578];
@@ -478,15 +478,15 @@ LABEL_24:
       v40 = [v38 initWithDomain:v39 code:2 userInfo:v14];
       v13 = 0;
       v16 = 0;
-      a4 = v48;
-      *v46 = v40;
+      error = v48;
+      *errorCopy3 = v40;
       goto LABEL_20;
     }
 
     v13 = 0;
     v16 = 0;
 LABEL_57:
-    a4 = v48;
+    error = v48;
     goto LABEL_21;
   }
 
@@ -497,7 +497,7 @@ LABEL_57:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
@@ -505,7 +505,7 @@ LABEL_57:
   }
 
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v21 = a4;
+  errorCopy4 = error;
   v22 = *MEMORY[0x1E698F240];
   v64 = *MEMORY[0x1E696A578];
   v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"deviceFamily"];
@@ -514,7 +514,7 @@ LABEL_57:
   v23 = [v20 initWithDomain:v22 code:2 userInfo:v9];
   v8 = 0;
   v16 = 0;
-  *v21 = v23;
+  *errorCopy4 = v23;
 LABEL_25:
 
 LABEL_26:
@@ -526,56 +526,56 @@ LABEL_26:
 {
   v3 = objc_opt_new();
   [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_deviceFamily)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_siriInputLocale)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_systemBuild)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_audioInputRoute)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_invocationSource)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hasWaitTime)
   {
     waitTime = self->_waitTime;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMSiriUserEngagementStatisticsUserEngagementStatsMetadata;
   v5 = [(BMEventBase *)&v29 init];
@@ -584,12 +584,12 @@ LABEL_26:
     goto LABEL_50;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -600,18 +600,18 @@ LABEL_26:
       while (1)
       {
         v30 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v30 & 0x7F) << v7;
@@ -629,9 +629,9 @@ LABEL_26:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -653,18 +653,18 @@ LABEL_16:
             while (1)
             {
               v30 = 0;
-              v23 = [v4 position] + 1;
-              if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+              v23 = [fromCopy position] + 1;
+              if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
               {
-                v25 = [v4 data];
-                [v25 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v22 |= (v30 & 0x7F) << v20;
@@ -682,7 +682,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v26 = 0;
             }
@@ -735,13 +735,13 @@ LABEL_29:
       *(&v5->super.super.isa + v17) = v16;
 
 LABEL_33:
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_49:
     v27 = 0;
@@ -759,49 +759,49 @@ LABEL_50:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self deviceFamily];
-  v5 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self siriInputLocale];
-  v6 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self systemBuild];
-  v7 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self audioInputRoute];
-  v8 = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self invocationSource];
+  deviceFamily = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self deviceFamily];
+  siriInputLocale = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self siriInputLocale];
+  systemBuild = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self systemBuild];
+  audioInputRoute = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self audioInputRoute];
+  invocationSource = [(BMSiriUserEngagementStatisticsUserEngagementStatsMetadata *)self invocationSource];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriUserEngagementStatisticsUserEngagementStatsMetadata waitTime](self, "waitTime")}];
-  v10 = [v3 initWithFormat:@"BMSiriUserEngagementStatisticsUserEngagementStatsMetadata with deviceFamily: %@, siriInputLocale: %@, systemBuild: %@, audioInputRoute: %@, invocationSource: %@, waitTime: %@", v4, v5, v6, v7, v8, v9];
+  v10 = [v3 initWithFormat:@"BMSiriUserEngagementStatisticsUserEngagementStatsMetadata with deviceFamily: %@, siriInputLocale: %@, systemBuild: %@, audioInputRoute: %@, invocationSource: %@, waitTime: %@", deviceFamily, siriInputLocale, systemBuild, audioInputRoute, invocationSource, v9];
 
   return v10;
 }
 
-- (BMSiriUserEngagementStatisticsUserEngagementStatsMetadata)initWithDeviceFamily:(id)a3 siriInputLocale:(id)a4 systemBuild:(id)a5 audioInputRoute:(id)a6 invocationSource:(id)a7 waitTime:(id)a8
+- (BMSiriUserEngagementStatisticsUserEngagementStatsMetadata)initWithDeviceFamily:(id)family siriInputLocale:(id)locale systemBuild:(id)build audioInputRoute:(id)route invocationSource:(id)source waitTime:(id)time
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  familyCopy = family;
+  localeCopy = locale;
+  buildCopy = build;
+  routeCopy = route;
+  sourceCopy = source;
+  timeCopy = time;
   v24.receiver = self;
   v24.super_class = BMSiriUserEngagementStatisticsUserEngagementStatsMetadata;
   v18 = [(BMEventBase *)&v24 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_deviceFamily, a3);
-    objc_storeStrong(&v18->_siriInputLocale, a4);
-    objc_storeStrong(&v18->_systemBuild, a5);
-    objc_storeStrong(&v18->_audioInputRoute, a6);
-    objc_storeStrong(&v18->_invocationSource, a7);
-    if (v17)
+    objc_storeStrong(&v18->_deviceFamily, family);
+    objc_storeStrong(&v18->_siriInputLocale, locale);
+    objc_storeStrong(&v18->_systemBuild, build);
+    objc_storeStrong(&v18->_audioInputRoute, route);
+    objc_storeStrong(&v18->_invocationSource, source);
+    if (timeCopy)
     {
       v18->_hasWaitTime = 1;
-      v19 = [v17 intValue];
+      intValue = [timeCopy intValue];
     }
 
     else
     {
       v18->_hasWaitTime = 0;
-      v19 = -1;
+      intValue = -1;
     }
 
-    v18->_waitTime = v19;
+    v18->_waitTime = intValue;
   }
 
   return v18;
@@ -851,9 +851,9 @@ LABEL_50:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -861,8 +861,8 @@ LABEL_50:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriUserEngagementStatisticsUserEngagementStatsMetadata alloc] initByReadFrom:v7];
     v4 = v8;

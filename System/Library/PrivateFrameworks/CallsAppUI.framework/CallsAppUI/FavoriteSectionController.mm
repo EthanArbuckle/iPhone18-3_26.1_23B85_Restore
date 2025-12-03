@@ -1,14 +1,14 @@
 @interface FavoriteSectionController
-- (void)handleLongPress:(id)a3;
+- (void)handleLongPress:(id)press;
 @end
 
 @implementation FavoriteSectionController
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v3 = a3;
+  pressCopy = press;
 
-  if ([v3 state] == 3)
+  if ([pressCopy state] == 3)
   {
     sub_1CFBCD8F8();
   }

@@ -1,18 +1,18 @@
 @interface CellularLoggingViewController
-- (_TtC11FTMInternal29CellularLoggingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)didChangedChunkFileSliderValue:(id)a3;
-- (void)didChangedMaxLogsSlider:(id)a3;
+- (_TtC11FTMInternal29CellularLoggingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)didChangedChunkFileSliderValue:(id)value;
+- (void)didChangedMaxLogsSlider:(id)slider;
 - (void)didTapConfig;
 - (void)didTapReset;
 - (void)didTapStart;
 - (void)didTapStop;
 - (void)endAppearanceTransition;
-- (void)sliderValueChangedSinope:(id)a3;
+- (void)sliderValueChangedSinope:(id)sinope;
 - (void)viewDidLoad;
 @end
 
@@ -20,7 +20,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10027D5B0();
 }
 
@@ -33,24 +33,24 @@
 
 - (void)didTapStart
 {
-  v2 = self;
+  selfCopy = self;
   sub_10027D8EC();
 }
 
 - (void)didTapStop
 {
   v2 = qword_100375018;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
-    v6 = v3;
+    v6 = selfCopy;
     swift_once();
-    v3 = v6;
+    selfCopy = v6;
   }
 
   if (*(qword_100382500 + 154) == 1)
   {
-    v5 = v3;
+    v5 = selfCopy;
     v4 = sub_10027CD44();
     sub_1001D54B4();
 
@@ -62,46 +62,46 @@
     static os_log_type_t.default.getter();
     os_log(_:dso:log:type:_:)();
     sub_10027E0C4();
-    v3 = v5;
+    selfCopy = v5;
   }
 }
 
 - (void)didTapReset
 {
-  v2 = self;
+  selfCopy = self;
   sub_10027E5A0();
 }
 
 - (void)didTapConfig
 {
-  v2 = self;
+  selfCopy = self;
   sub_10027EA60();
 }
 
-- (void)sliderValueChangedSinope:(id)a3
+- (void)sliderValueChangedSinope:(id)sinope
 {
-  v4 = a3;
-  v6 = self;
-  sub_10027EBA8(v4, v5);
+  sinopeCopy = sinope;
+  selfCopy = self;
+  sub_10027EBA8(sinopeCopy, v5);
 }
 
-- (void)didChangedChunkFileSliderValue:(id)a3
+- (void)didChangedChunkFileSliderValue:(id)value
 {
-  v4 = a3;
-  v5 = self;
-  sub_10027EE00(v4);
+  valueCopy = value;
+  selfCopy = self;
+  sub_10027EE00(valueCopy);
 }
 
-- (void)didChangedMaxLogsSlider:(id)a3
+- (void)didChangedMaxLogsSlider:(id)slider
 {
-  v4 = a3;
-  v5 = self;
-  sub_10027F0F4(v4);
+  sliderCopy = slider;
+  selfCopy = self;
+  sub_10027F0F4(sliderCopy);
 }
 
-- (_TtC11FTMInternal29CellularLoggingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11FTMInternal29CellularLoggingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -113,11 +113,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100280D60(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100280D60(v5, v7, bundle);
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -129,7 +129,7 @@
   return 60.0;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v5 = OBJC_IVAR____TtC11FTMInternal29CellularLoggingViewController_cellularData;
   swift_beginAccess();
@@ -152,7 +152,7 @@
   return _CocoaArrayWrapper.endIndex.getter();
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -160,31 +160,31 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_100281FB8(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_100281FB8(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
+  selfCopy = self;
   v12 = sub_100282C78(0);
   swift_unknownObjectRetain();
 
   return v12;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_100282C78(1);
   swift_unknownObjectRetain();
 

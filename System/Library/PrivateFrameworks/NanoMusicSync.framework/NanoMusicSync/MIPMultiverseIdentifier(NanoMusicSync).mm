@@ -15,9 +15,9 @@
 + (id)midDataArrayFromAlbumSyncIDs:()NanoMusicSync
 {
   v4 = a3;
-  v5 = [a1 _pidsFromSyncIDs:v4 containerClass:objc_opt_class()];
+  v5 = [self _pidsFromSyncIDs:v4 containerClass:objc_opt_class()];
 
-  v6 = [a1 _multiverseIdentifiersWithPIDs:v5 groupingType:1];
+  v6 = [self _multiverseIdentifiersWithPIDs:v5 groupingType:1];
 
   return v6;
 }
@@ -25,9 +25,9 @@
 + (id)midDataArrayFromPlaylistSyncIDs:()NanoMusicSync
 {
   v4 = a3;
-  v5 = [a1 _pidsFromSyncIDs:v4 containerClass:objc_opt_class()];
+  v5 = [self _pidsFromSyncIDs:v4 containerClass:objc_opt_class()];
 
-  v6 = [a1 _multiverseIdentifiersWithPIDs:v5 groupingType:6];
+  v6 = [self _multiverseIdentifiersWithPIDs:v5 groupingType:6];
 
   return v6;
 }
@@ -48,12 +48,12 @@
     v6 = MEMORY[0x277CBEBF8];
   }
 
-  v7 = [a1 midDataArrayFromPlaylistSyncIDs:{v6, v11, v12}];
-  v8 = [v7 firstObject];
+  v7 = [self midDataArrayFromPlaylistSyncIDs:{v6, v11, v12}];
+  firstObject = [v7 firstObject];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
 + (id)midDataFromAlbumPID:()NanoMusicSync
@@ -72,12 +72,12 @@
     v6 = MEMORY[0x277CBEBF8];
   }
 
-  v7 = [a1 _multiverseIdentifiersWithPIDs:v6 groupingType:{1, v11, v12}];
-  v8 = [v7 firstObject];
+  v7 = [self _multiverseIdentifiersWithPIDs:v6 groupingType:{1, v11, v12}];
+  firstObject = [v7 firstObject];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
 + (id)midDataFromPlaylistPID:()NanoMusicSync
@@ -96,12 +96,12 @@
     v6 = MEMORY[0x277CBEBF8];
   }
 
-  v7 = [a1 _multiverseIdentifiersWithPIDs:v6 groupingType:{6, v11, v12}];
-  v8 = [v7 firstObject];
+  v7 = [self _multiverseIdentifiersWithPIDs:v6 groupingType:{6, v11, v12}];
+  firstObject = [v7 firstObject];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
 + (id)pidFromMIDData:()NanoMusicSync
@@ -120,12 +120,12 @@
     v6 = MEMORY[0x277CBEBF8];
   }
 
-  v7 = [a1 pidsFromMIDDataArray:{v6, v11, v12}];
-  v8 = [v7 firstObject];
+  v7 = [self pidsFromMIDDataArray:{v6, v11, v12}];
+  firstObject = [v7 firstObject];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
 + (id)pidsFromMIDDataArray:()NanoMusicSync
@@ -154,20 +154,20 @@
         }
 
         v10 = [objc_alloc(MEMORY[0x277D2B598]) initWithData:*(*(&v19 + 1) + 8 * v9)];
-        v11 = [MEMORY[0x277CD5E10] defaultMediaLibrary];
-        v12 = [v11 entityWithMultiverseIdentifier:v10];
+        defaultMediaLibrary = [MEMORY[0x277CD5E10] defaultMediaLibrary];
+        v12 = [defaultMediaLibrary entityWithMultiverseIdentifier:v10];
 
         if (v12)
         {
-          v13 = [v12 persistentID];
-          v14 = [MEMORY[0x277CCABB0] numberWithLongLong:v13];
+          persistentID = [v12 persistentID];
+          v14 = [MEMORY[0x277CCABB0] numberWithLongLong:persistentID];
           [v4 addObject:v14];
 
           v15 = NMLogForCategory(5);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
             *buf = 134218242;
-            v24 = v13;
+            v24 = persistentID;
             v25 = 2114;
             v26 = v10;
             _os_log_impl(&dword_25B27B000, v15, OS_LOG_TYPE_INFO, "[NMSyncDefaults] Found PID %lld which matches MID %{public}@", buf, 0x16u);
@@ -229,13 +229,13 @@
         }
 
         v13 = *(*(&v22 + 1) + 8 * v12);
-        v14 = [MEMORY[0x277CD5E10] defaultMediaLibrary];
-        v15 = [v14 multiverseIdentifierForCollectionWithPersistentID:objc_msgSend(v13 groupingType:{"longLongValue"), a4}];
+        defaultMediaLibrary = [MEMORY[0x277CD5E10] defaultMediaLibrary];
+        v15 = [defaultMediaLibrary multiverseIdentifierForCollectionWithPersistentID:objc_msgSend(v13 groupingType:{"longLongValue"), a4}];
 
         if (v15)
         {
-          v16 = [v15 data];
-          [v6 addObject:v16];
+          data = [v15 data];
+          [v6 addObject:data];
 
           v17 = NMLogForCategory(5);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -306,9 +306,9 @@ LABEL_7:
   {
     v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
     v11 = [MEMORY[0x277D2B5D8] predicateWithProperty:v6 values:v5];
-    v12 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
+    autoupdatingSharedLibrary = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
     v25 = v11;
-    v13 = [a4 unrestrictedQueryWithLibrary:v12 predicate:v11 orderingTerms:0];
+    v13 = [a4 unrestrictedQueryWithLibrary:autoupdatingSharedLibrary predicate:v11 orderingTerms:0];
 
     v33[0] = v6;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];

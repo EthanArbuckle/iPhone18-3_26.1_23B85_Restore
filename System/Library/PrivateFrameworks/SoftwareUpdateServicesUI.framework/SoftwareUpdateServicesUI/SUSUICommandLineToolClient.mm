@@ -1,9 +1,9 @@
 @interface SUSUICommandLineToolClient
 - (SUSUICommandLineToolClient)init;
-- (SUSUICommandLineToolClient)initWithDelegate:(id)a3;
+- (SUSUICommandLineToolClient)initWithDelegate:(id)delegate;
 - (SUSUICommandLineToolClientDelegate)delegate;
-- (id)URLForType:(unint64_t)a3;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3;
+- (id)URLForType:(unint64_t)type;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler;
 - (void)_connectToServerIfNecessary;
 - (void)_invalidateConnection;
 - (void)_noteConnectionDropped;
@@ -12,22 +12,22 @@
 - (void)destroyInstallationKeybag;
 - (void)dismissAllAlerts;
 - (void)downloadDidFinish;
-- (void)getAlertStatus:(id)a3;
-- (void)getDDMAlertStatus:(id)a3;
-- (void)reboot:(BOOL)a3;
-- (void)setInstallOperation:(id)a3;
-- (void)setPasscodePolicy:(unint64_t)a3;
-- (void)setRestartCountdownOverrideIntervalSeconds:(id)a3;
-- (void)setUpdateToInstall:(id)a3;
-- (void)showAuthenticationUIWithOptions:(unint64_t)a3 result:(id)a4;
-- (void)showDDMAlert:(int64_t)a3 install:(BOOL)a4;
-- (void)showEmergencyCallUIWithOptions:(unint64_t)a3 result:(id)a4;
-- (void)showFollowUp:(unint64_t)a3;
-- (void)showLaggardsUi:(unint64_t)a3 usingFakeData:(BOOL)a4 result:(id)a5;
-- (void)showMiniAlertWithDescriptors:(unint64_t)a3 errorCode:(id)a4 downloadDescriptor:(id)a5 scanResultsDescriptor:(id)a6 autoInstallForecast:(id)a7 andRollbackDescriptor:(id)a8 result:(id)a9;
-- (void)showMiniAlertWithScan:(unint64_t)a3 errorCode:(id)a4 result:(id)a5;
+- (void)getAlertStatus:(id)status;
+- (void)getDDMAlertStatus:(id)status;
+- (void)reboot:(BOOL)reboot;
+- (void)setInstallOperation:(id)operation;
+- (void)setPasscodePolicy:(unint64_t)policy;
+- (void)setRestartCountdownOverrideIntervalSeconds:(id)seconds;
+- (void)setUpdateToInstall:(id)install;
+- (void)showAuthenticationUIWithOptions:(unint64_t)options result:(id)result;
+- (void)showDDMAlert:(int64_t)alert install:(BOOL)install;
+- (void)showEmergencyCallUIWithOptions:(unint64_t)options result:(id)result;
+- (void)showFollowUp:(unint64_t)up;
+- (void)showLaggardsUi:(unint64_t)ui usingFakeData:(BOOL)data result:(id)result;
+- (void)showMiniAlertWithDescriptors:(unint64_t)descriptors errorCode:(id)code downloadDescriptor:(id)descriptor scanResultsDescriptor:(id)resultsDescriptor autoInstallForecast:(id)forecast andRollbackDescriptor:(id)rollbackDescriptor result:(id)result;
+- (void)showMiniAlertWithScan:(unint64_t)scan errorCode:(id)code result:(id)result;
 - (void)simulateComingFromOTAUpdate;
-- (void)toggleSettingsBadge:(BOOL)a3;
+- (void)toggleSettingsBadge:(BOOL)badge;
 @end
 
 @implementation SUSUICommandLineToolClient
@@ -41,52 +41,52 @@
   return v3;
 }
 
-- (SUSUICommandLineToolClient)initWithDelegate:(id)a3
+- (SUSUICommandLineToolClient)initWithDelegate:(id)delegate
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, delegate);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = SUSUICommandLineToolClient;
   v6 = [(SUSUICommandLineToolClient *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    [(SUSUICommandLineToolClient *)v9 setDelegate:location[0]];
-    [(SUSUICommandLineToolClient *)v9 _connectToServerIfNecessary];
+    [(SUSUICommandLineToolClient *)selfCopy setDelegate:location[0]];
+    [(SUSUICommandLineToolClient *)selfCopy _connectToServerIfNecessary];
   }
 
-  v5 = MEMORY[0x277D82BE0](v9);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   objc_storeWeak(&self->_delegate, 0);
-  [(SUSUICommandLineToolClient *)v4 _invalidateConnection];
-  v2.receiver = v4;
+  [(SUSUICommandLineToolClient *)selfCopy _invalidateConnection];
+  v2.receiver = selfCopy;
   v2.super_class = SUSUICommandLineToolClient;
   [(SUSUICommandLineToolClient *)&v2 dealloc];
 }
 
-- (void)showMiniAlertWithScan:(unint64_t)a3 errorCode:(id)a4 result:(id)a5
+- (void)showMiniAlertWithScan:(unint64_t)scan errorCode:(id)code result:(id)result
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
+  scanCopy = scan;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, code);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
-  v6 = v25;
+  objc_storeStrong(&v21, result);
+  v6 = selfCopy;
   v15[1] = MEMORY[0x277D85DD0];
   v16 = -1073741824;
   v17 = 0;
@@ -94,7 +94,7 @@
   v19 = &unk_279CB4858;
   v20 = MEMORY[0x277D82BE0](v21);
   v9 = [(SUSUICommandLineToolClient *)v6 _remoteInterfaceWithErrorHandler:?];
-  v7 = v23;
+  v7 = scanCopy;
   v8 = location;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
@@ -141,24 +141,24 @@ void __69__SUSUICommandLineToolClient_showMiniAlertWithScan_errorCode_result___b
   objc_storeStrong(location, 0);
 }
 
-- (void)showMiniAlertWithDescriptors:(unint64_t)a3 errorCode:(id)a4 downloadDescriptor:(id)a5 scanResultsDescriptor:(id)a6 autoInstallForecast:(id)a7 andRollbackDescriptor:(id)a8 result:(id)a9
+- (void)showMiniAlertWithDescriptors:(unint64_t)descriptors errorCode:(id)code downloadDescriptor:(id)descriptor scanResultsDescriptor:(id)resultsDescriptor autoInstallForecast:(id)forecast andRollbackDescriptor:(id)rollbackDescriptor result:(id)result
 {
-  v36 = self;
+  selfCopy = self;
   v35 = a2;
-  v34 = a3;
+  descriptorsCopy = descriptors;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, code);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
+  objc_storeStrong(&v32, descriptor);
   v31 = 0;
-  objc_storeStrong(&v31, a6);
+  objc_storeStrong(&v31, resultsDescriptor);
   v30 = 0;
-  objc_storeStrong(&v30, a7);
+  objc_storeStrong(&v30, forecast);
   v29 = 0;
-  objc_storeStrong(&v29, a8);
+  objc_storeStrong(&v29, rollbackDescriptor);
   v28 = 0;
-  objc_storeStrong(&v28, a9);
-  v13 = v36;
+  objc_storeStrong(&v28, result);
+  v13 = selfCopy;
   v22[1] = MEMORY[0x277D85DD0];
   v23 = -1073741824;
   v24 = 0;
@@ -166,7 +166,7 @@ void __69__SUSUICommandLineToolClient_showMiniAlertWithScan_errorCode_result___b
   v26 = &unk_279CB4858;
   v27 = MEMORY[0x277D82BE0](v28);
   v20 = [(SUSUICommandLineToolClient *)v13 _remoteInterfaceWithErrorHandler:?];
-  v14 = v34;
+  v14 = descriptorsCopy;
   v15 = location;
   v16 = v32;
   v17 = v31;
@@ -222,40 +222,40 @@ void __159__SUSUICommandLineToolClient_showMiniAlertWithDescriptors_errorCode_do
 
 - (void)dismissAllAlerts
 {
-  v2 = [(SUSUICommandLineToolClient *)self _remoteInterface];
-  [v2 dismissAllAlerts];
-  MEMORY[0x277D82BD8](v2);
+  _remoteInterface = [(SUSUICommandLineToolClient *)self _remoteInterface];
+  [_remoteInterface dismissAllAlerts];
+  MEMORY[0x277D82BD8](_remoteInterface);
 }
 
-- (void)showFollowUp:(unint64_t)a3
+- (void)showFollowUp:(unint64_t)up
 {
-  v3 = [(SUSUICommandLineToolClient *)self _remoteInterface];
-  [v3 showFollowUp:a3];
-  MEMORY[0x277D82BD8](v3);
+  _remoteInterface = [(SUSUICommandLineToolClient *)self _remoteInterface];
+  [_remoteInterface showFollowUp:up];
+  MEMORY[0x277D82BD8](_remoteInterface);
 }
 
-- (void)showLaggardsUi:(unint64_t)a3 usingFakeData:(BOOL)a4 result:(id)a5
+- (void)showLaggardsUi:(unint64_t)ui usingFakeData:(BOOL)data result:(id)result
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  uiCopy = ui;
+  dataCopy = data;
   location = 0;
-  objc_storeStrong(&location, a5);
-  v5 = [(SUSUICommandLineToolClient *)v10 _remoteInterface];
-  [v5 showLaggardsUi:v8 usingFakeData:v7 result:location];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&location, result);
+  _remoteInterface = [(SUSUICommandLineToolClient *)selfCopy _remoteInterface];
+  [_remoteInterface showLaggardsUi:uiCopy usingFakeData:dataCopy result:location];
+  MEMORY[0x277D82BD8](_remoteInterface);
   objc_storeStrong(&location, 0);
 }
 
-- (void)showAuthenticationUIWithOptions:(unint64_t)a3 result:(id)a4
+- (void)showAuthenticationUIWithOptions:(unint64_t)options result:(id)result
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  optionsCopy = options;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v21;
+  objc_storeStrong(&location, result);
+  v4 = selfCopy;
   v12[1] = MEMORY[0x277D85DD0];
   v13 = -1073741824;
   v14 = 0;
@@ -263,7 +263,7 @@ void __159__SUSUICommandLineToolClient_showMiniAlertWithDescriptors_errorCode_do
   v16 = &unk_279CB4858;
   v17 = MEMORY[0x277D82BE0](location);
   v6 = [(SUSUICommandLineToolClient *)v4 _remoteInterfaceWithErrorHandler:?];
-  v5 = v19;
+  v5 = optionsCopy;
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
@@ -306,14 +306,14 @@ void __69__SUSUICommandLineToolClient_showAuthenticationUIWithOptions_result___b
   objc_storeStrong(&location, 0);
 }
 
-- (void)showEmergencyCallUIWithOptions:(unint64_t)a3 result:(id)a4
+- (void)showEmergencyCallUIWithOptions:(unint64_t)options result:(id)result
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  optionsCopy = options;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v21;
+  objc_storeStrong(&location, result);
+  v4 = selfCopy;
   v12[1] = MEMORY[0x277D85DD0];
   v13 = -1073741824;
   v14 = 0;
@@ -321,7 +321,7 @@ void __69__SUSUICommandLineToolClient_showAuthenticationUIWithOptions_result___b
   v16 = &unk_279CB4858;
   v17 = MEMORY[0x277D82BE0](location);
   v6 = [(SUSUICommandLineToolClient *)v4 _remoteInterfaceWithErrorHandler:?];
-  v5 = v19;
+  v5 = optionsCopy;
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
@@ -364,56 +364,56 @@ void __68__SUSUICommandLineToolClient_showEmergencyCallUIWithOptions_result___bl
   objc_storeStrong(&location, 0);
 }
 
-- (void)toggleSettingsBadge:(BOOL)a3
+- (void)toggleSettingsBadge:(BOOL)badge
 {
-  v3 = [(SUSUICommandLineToolClient *)self _remoteInterface];
-  [v3 toggleSettingsBadge:a3];
-  MEMORY[0x277D82BD8](v3);
+  _remoteInterface = [(SUSUICommandLineToolClient *)self _remoteInterface];
+  [_remoteInterface toggleSettingsBadge:badge];
+  MEMORY[0x277D82BD8](_remoteInterface);
 }
 
-- (void)reboot:(BOOL)a3
+- (void)reboot:(BOOL)reboot
 {
-  v3 = [(SUSUICommandLineToolClient *)self _remoteInterface];
-  [v3 reboot:a3];
-  MEMORY[0x277D82BD8](v3);
+  _remoteInterface = [(SUSUICommandLineToolClient *)self _remoteInterface];
+  [_remoteInterface reboot:reboot];
+  MEMORY[0x277D82BD8](_remoteInterface);
 }
 
 - (void)simulateComingFromOTAUpdate
 {
-  v2 = [(SUSUICommandLineToolClient *)self _remoteInterface];
-  [v2 simulateComingFromOTAUpdate];
-  MEMORY[0x277D82BD8](v2);
+  _remoteInterface = [(SUSUICommandLineToolClient *)self _remoteInterface];
+  [_remoteInterface simulateComingFromOTAUpdate];
+  MEMORY[0x277D82BD8](_remoteInterface);
 }
 
 - (void)downloadDidFinish
 {
-  v2 = [(SUSUICommandLineToolClient *)self _remoteInterface];
-  [v2 downloadDidFinish];
-  MEMORY[0x277D82BD8](v2);
+  _remoteInterface = [(SUSUICommandLineToolClient *)self _remoteInterface];
+  [_remoteInterface downloadDidFinish];
+  MEMORY[0x277D82BD8](_remoteInterface);
 }
 
-- (void)setPasscodePolicy:(unint64_t)a3
+- (void)setPasscodePolicy:(unint64_t)policy
 {
-  v3 = [(SUSUICommandLineToolClient *)self _remoteInterface];
-  [v3 setPasscodePolicy:a3];
-  MEMORY[0x277D82BD8](v3);
+  _remoteInterface = [(SUSUICommandLineToolClient *)self _remoteInterface];
+  [_remoteInterface setPasscodePolicy:policy];
+  MEMORY[0x277D82BD8](_remoteInterface);
 }
 
 - (void)destroyInstallationKeybag
 {
-  v2 = [(SUSUICommandLineToolClient *)self _remoteInterface];
-  [v2 destroyInstallationKeybag];
-  MEMORY[0x277D82BD8](v2);
+  _remoteInterface = [(SUSUICommandLineToolClient *)self _remoteInterface];
+  [_remoteInterface destroyInstallationKeybag];
+  MEMORY[0x277D82BD8](_remoteInterface);
 }
 
-- (id)URLForType:(unint64_t)a3
+- (id)URLForType:(unint64_t)type
 {
   v12 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  typeCopy = type;
   location = 0;
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
       objc_storeStrong(&location, @"prefs:root=General&path=SOFTWARE_UPDATE_LINK");
@@ -434,7 +434,7 @@ LABEL_13:
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_8_0(v11, v7);
+    __os_log_helper_16_0_1_8_0(v11, typeCopy);
     _os_log_impl(&dword_26AC54000, oslog, OS_LOG_TYPE_DEFAULT, "Unsupported Preference pane: %lu", v11, 0xCu);
   }
 
@@ -448,14 +448,14 @@ LABEL_14:
   return v3;
 }
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3
+- (id)_remoteInterfaceWithErrorHandler:(id)handler
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUICommandLineToolClient *)v6 _connectToServerIfNecessary];
-  v4 = [(NSXPCConnection *)v6->_serverConnection remoteObjectProxyWithErrorHandler:location[0]];
+  objc_storeStrong(location, handler);
+  [(SUSUICommandLineToolClient *)selfCopy _connectToServerIfNecessary];
+  v4 = [(NSXPCConnection *)selfCopy->_serverConnection remoteObjectProxyWithErrorHandler:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
@@ -476,7 +476,7 @@ LABEL_14:
 - (void)_connectToServerIfNecessary
 {
   v33 = *MEMORY[0x277D85DE8];
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_connected)
   {
@@ -484,31 +484,31 @@ LABEL_14:
     v28 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_8_0(v32, v30);
+      __os_log_helper_16_0_1_8_0(v32, selfCopy);
       _os_log_impl(&dword_26AC54000, location[0], v28, "Client <%p>: establishing connection to softwareupdateservicesui plugin.", v32, 0xCu);
     }
 
     objc_storeStrong(location, 0);
-    [(SUSUICommandLineToolClient *)v30 _invalidateConnection];
+    [(SUSUICommandLineToolClient *)selfCopy _invalidateConnection];
     v11 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.softwareupdateservicesui.tool" options:4096];
-    serverConnection = v30->_serverConnection;
-    v30->_serverConnection = v11;
+    serverConnection = selfCopy->_serverConnection;
+    selfCopy->_serverConnection = v11;
     MEMORY[0x277D82BD8](serverConnection);
-    v10 = v30->_serverConnection;
+    v10 = selfCopy->_serverConnection;
     v3 = MEMORY[0x277D85CD0];
     v9 = MEMORY[0x277D85CD0];
     [(NSXPCConnection *)v10 _setQueue:?];
     MEMORY[0x277D82BD8](v9);
-    v8 = v30->_serverConnection;
+    v8 = selfCopy->_serverConnection;
     v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287B7DAE8];
     [(NSXPCConnection *)v8 setRemoteObjectInterface:?];
     MEMORY[0x277D82BD8](v7);
-    v6 = v30->_serverConnection;
+    v6 = selfCopy->_serverConnection;
     v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287B79198];
     [(NSXPCConnection *)v6 setExportedInterface:?];
     MEMORY[0x277D82BD8](v5);
-    [(NSXPCConnection *)v30->_serverConnection setExportedObject:v30];
-    objc_initWeak(&from, v30);
+    [(NSXPCConnection *)selfCopy->_serverConnection setExportedObject:selfCopy];
+    objc_initWeak(&from, selfCopy);
     v20 = MEMORY[0x277D85DD0];
     v21 = -1073741824;
     v22 = 0;
@@ -516,8 +516,8 @@ LABEL_14:
     v24 = &unk_279CB48D0;
     objc_copyWeak(&v25, &from);
     v26 = MEMORY[0x26D669210](&v20);
-    [(NSXPCConnection *)v30->_serverConnection setInvalidationHandler:v26];
-    v4 = v30->_serverConnection;
+    [(NSXPCConnection *)selfCopy->_serverConnection setInvalidationHandler:v26];
+    v4 = selfCopy->_serverConnection;
     v13 = MEMORY[0x277D85DD0];
     v14 = -1073741824;
     v15 = 0;
@@ -526,13 +526,13 @@ LABEL_14:
     objc_copyWeak(&v19, &from);
     v18 = MEMORY[0x277D82BE0](v26);
     [(NSXPCConnection *)v4 setInterruptionHandler:&v13];
-    [(NSXPCConnection *)v30->_serverConnection resume];
-    v30->_connected = 1;
-    v30->_serverIsExiting = 0;
+    [(NSXPCConnection *)selfCopy->_serverConnection resume];
+    selfCopy->_connected = 1;
+    selfCopy->_serverIsExiting = 0;
     oslog = SUSUILog();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_8_0(v31, v30);
+      __os_log_helper_16_0_1_8_0(v31, selfCopy);
       _os_log_impl(&dword_26AC54000, oslog, OS_LOG_TYPE_DEFAULT, "Client <%p>: connection established to softwareupdateservicesui plugin.", v31, 0xCu);
     }
 
@@ -578,35 +578,35 @@ uint64_t __57__SUSUICommandLineToolClient__connectToServerIfNecessary__block_inv
 - (void)_noteConnectionDropped
 {
   v5 = *MEMORY[0x277D85DE8];
-  v3 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = SUSUILog();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_8_0(v4, v3);
+    __os_log_helper_16_0_1_8_0(v4, selfCopy);
     _os_log_impl(&dword_26AC54000, oslog[0], OS_LOG_TYPE_DEFAULT, "Client <%p>: disconnected from softwareupdateservicesui plugin.", v4, 0xCu);
   }
 
   objc_storeStrong(oslog, 0);
-  v3->_connected = 0;
+  selfCopy->_connected = 0;
   *MEMORY[0x277D85DE8];
 }
 
-- (void)getDDMAlertStatus:(id)a3
+- (void)getDDMAlertStatus:(id)status
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(SUSUICommandLineToolClient *)v11 _remoteInterface];
+  objc_storeStrong(location, status);
+  _remoteInterface = [(SUSUICommandLineToolClient *)selfCopy _remoteInterface];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __48__SUSUICommandLineToolClient_getDDMAlertStatus___block_invoke;
   v8 = &unk_279CB4920;
   v9 = MEMORY[0x277D82BE0](location[0]);
-  [v3 getDDMAlertStatus:?];
-  MEMORY[0x277D82BD8](v3);
+  [_remoteInterface getDDMAlertStatus:?];
+  MEMORY[0x277D82BD8](_remoteInterface);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
@@ -620,35 +620,35 @@ void __48__SUSUICommandLineToolClient_getDDMAlertStatus___block_invoke(void *a1,
   objc_storeStrong(location, 0);
 }
 
-- (void)showDDMAlert:(int64_t)a3 install:(BOOL)a4
+- (void)showDDMAlert:(int64_t)alert install:(BOOL)install
 {
-  v4 = [(SUSUICommandLineToolClient *)self _remoteInterface];
-  [v4 showDDMAlert:a3 install:a4];
-  MEMORY[0x277D82BD8](v4);
+  _remoteInterface = [(SUSUICommandLineToolClient *)self _remoteInterface];
+  [_remoteInterface showDDMAlert:alert install:install];
+  MEMORY[0x277D82BD8](_remoteInterface);
 }
 
 - (void)ddmInstallNow
 {
-  v2 = [(SUSUICommandLineToolClient *)self _remoteInterface];
-  [v2 ddmInstallNow];
-  MEMORY[0x277D82BD8](v2);
+  _remoteInterface = [(SUSUICommandLineToolClient *)self _remoteInterface];
+  [_remoteInterface ddmInstallNow];
+  MEMORY[0x277D82BD8](_remoteInterface);
 }
 
-- (void)getAlertStatus:(id)a3
+- (void)getAlertStatus:(id)status
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(SUSUICommandLineToolClient *)v11 _remoteInterface];
+  objc_storeStrong(location, status);
+  _remoteInterface = [(SUSUICommandLineToolClient *)selfCopy _remoteInterface];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __45__SUSUICommandLineToolClient_getAlertStatus___block_invoke;
   v8 = &unk_279CB4920;
   v9 = MEMORY[0x277D82BE0](location[0]);
-  [v3 getAlertStatus:?];
-  MEMORY[0x277D82BD8](v3);
+  [_remoteInterface getAlertStatus:?];
+  MEMORY[0x277D82BD8](_remoteInterface);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
@@ -662,39 +662,39 @@ void __45__SUSUICommandLineToolClient_getAlertStatus___block_invoke(void *a1, vo
   objc_storeStrong(location, 0);
 }
 
-- (void)setRestartCountdownOverrideIntervalSeconds:(id)a3
+- (void)setRestartCountdownOverrideIntervalSeconds:(id)seconds
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(SUSUICommandLineToolClient *)v5 _remoteInterface];
-  [v3 setRestartCountdownOverrideIntervalSeconds:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, seconds);
+  _remoteInterface = [(SUSUICommandLineToolClient *)selfCopy _remoteInterface];
+  [_remoteInterface setRestartCountdownOverrideIntervalSeconds:location[0]];
+  MEMORY[0x277D82BD8](_remoteInterface);
   objc_storeStrong(location, 0);
 }
 
-- (void)setInstallOperation:(id)a3
+- (void)setInstallOperation:(id)operation
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(SUSUICommandLineToolClient *)v5 _remoteInterface];
-  [v3 setInstallOperation:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, operation);
+  _remoteInterface = [(SUSUICommandLineToolClient *)selfCopy _remoteInterface];
+  [_remoteInterface setInstallOperation:location[0]];
+  MEMORY[0x277D82BD8](_remoteInterface);
   objc_storeStrong(location, 0);
 }
 
-- (void)setUpdateToInstall:(id)a3
+- (void)setUpdateToInstall:(id)install
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(SUSUICommandLineToolClient *)v5 _remoteInterface];
-  [v3 setUpdateToInstall:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, install);
+  _remoteInterface = [(SUSUICommandLineToolClient *)selfCopy _remoteInterface];
+  [_remoteInterface setUpdateToInstall:location[0]];
+  MEMORY[0x277D82BD8](_remoteInterface);
   objc_storeStrong(location, 0);
 }
 

@@ -1,36 +1,36 @@
 @interface HUHomeTheaterAudioItemModule
 - (HFItem)selectedUncommittedItem;
-- (HUHomeTheaterAudioItemModule)initWithItemUpdater:(id)a3 mediaProfileContainer:(id)a4 includeLocalDestinations:(BOOL)a5;
+- (HUHomeTheaterAudioItemModule)initWithItemUpdater:(id)updater mediaProfileContainer:(id)container includeLocalDestinations:(BOOL)destinations;
 - (HUHomeTheaterAudioItemModuleAlertDelegate)alertDelegate;
 - (HUHomeTheaterAudioItemModuleOnboardingDelegate)onboardingDelegate;
-- (id)_updateDestinationToIdentifier:(id)a3;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)_updateDestinationToIdentifier:(id)identifier;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)commitConfiguration;
 - (void)_createItemProviders;
-- (void)_selectItem:(id)a3;
-- (void)selectItem:(id)a3;
+- (void)_selectItem:(id)item;
+- (void)selectItem:(id)item;
 @end
 
 @implementation HUHomeTheaterAudioItemModule
 
-- (HUHomeTheaterAudioItemModule)initWithItemUpdater:(id)a3 mediaProfileContainer:(id)a4 includeLocalDestinations:(BOOL)a5
+- (HUHomeTheaterAudioItemModule)initWithItemUpdater:(id)updater mediaProfileContainer:(id)container includeLocalDestinations:(BOOL)destinations
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  updaterCopy = updater;
+  containerCopy = container;
+  if (!containerCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HUHomeTheaterAudioItemModule.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeTheaterAudioItemModule.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
   }
 
   v15.receiver = self;
   v15.super_class = HUHomeTheaterAudioItemModule;
-  v11 = [(HFItemModule *)&v15 initWithItemUpdater:v9];
+  v11 = [(HFItemModule *)&v15 initWithItemUpdater:updaterCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mediaProfileContainer, a4);
-    v12->_includeLocalDestinations = a5;
+    objc_storeStrong(&v11->_mediaProfileContainer, container);
+    v12->_includeLocalDestinations = destinations;
     v12->_disableAutomaticCommit = 0;
     objc_storeWeak(&v12->_selectedUncommittedItem, 0);
     [(HUHomeTheaterAudioItemModule *)v12 _createItemProviders];
@@ -48,26 +48,26 @@
 
   else
   {
-    v3 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     if ([(HUHomeTheaterAudioItemModule *)self includeLocalDestinations])
     {
       v4 = [[HUMediaDestinationItem alloc] initWithDestination:0 withModule:self];
-      [v3 addObject:v4];
+      [orderedSet addObject:v4];
     }
 
-    v5 = [(HUHomeTheaterAudioItemModule *)self mediaProfileContainer];
-    v6 = [v5 hf_backingAccessory];
-    v7 = [v6 audioDestinationController];
-    v8 = [v7 availableDestinations];
+    mediaProfileContainer = [(HUHomeTheaterAudioItemModule *)self mediaProfileContainer];
+    hf_backingAccessory = [mediaProfileContainer hf_backingAccessory];
+    audioDestinationController = [hf_backingAccessory audioDestinationController];
+    availableDestinations = [audioDestinationController availableDestinations];
 
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __52__HUHomeTheaterAudioItemModule__createItemProviders__block_invoke;
     v18 = &unk_277DBE9C8;
-    v19 = self;
-    v20 = v3;
-    v9 = v3;
-    [v8 na_each:&v15];
+    selfCopy = self;
+    v20 = orderedSet;
+    v9 = orderedSet;
+    [availableDestinations na_each:&v15];
     v10 = objc_alloc(MEMORY[0x277D14B40]);
     v11 = [v9 set];
     v12 = [v10 initWithItems:v11];
@@ -86,11 +86,11 @@ void __52__HUHomeTheaterAudioItemModule__createItemProviders__block_invoke(uint6
   [*(a1 + 40) addObject:v4];
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"HomeTheaterAudio"];
   if ([(HUHomeTheaterAudioItemModule *)self includeLocalDestinations])
   {
@@ -98,16 +98,16 @@ void __52__HUHomeTheaterAudioItemModule__createItemProviders__block_invoke(uint6
     [v6 setFooterTitle:v7];
   }
 
-  v8 = [(HFItemModule *)self allItems];
-  v9 = [v8 na_setByIntersectingWithSet:v5];
+  allItems = [(HFItemModule *)self allItems];
+  v9 = [allItems na_setByIntersectingWithSet:itemsCopy];
 
-  v10 = [v9 allObjects];
+  allObjects = [v9 allObjects];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__HUHomeTheaterAudioItemModule_buildSectionsWithDisplayedItems___block_invoke_2;
   v14[3] = &unk_277DBE9F0;
   v15 = &__block_literal_global_137;
-  v11 = [v10 sortedArrayUsingComparator:v14];
+  v11 = [allObjects sortedArrayUsingComparator:v14];
   [v6 setItems:v11];
 
   v16[0] = v6;
@@ -165,45 +165,45 @@ uint64_t __64__HUHomeTheaterAudioItemModule_buildSectionsWithDisplayedItems___bl
 
 - (id)commitConfiguration
 {
-  v3 = [(HUHomeTheaterAudioItemModule *)self selectedUncommittedItem];
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13FF8]];
+  selectedUncommittedItem = [(HUHomeTheaterAudioItemModule *)self selectedUncommittedItem];
+  latestResults = [selectedUncommittedItem latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FF8]];
 
   v6 = [(HUHomeTheaterAudioItemModule *)self _updateDestinationToIdentifier:v5];
 
   return v6;
 }
 
-- (void)selectItem:(id)a3
+- (void)selectItem:(id)item
 {
-  v7 = a3;
-  v4 = [v7 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
-  v6 = [v5 BOOLValue];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    [(HUHomeTheaterAudioItemModule *)self _selectItem:v7];
+    [(HUHomeTheaterAudioItemModule *)self _selectItem:itemCopy];
   }
 }
 
-- (void)_selectItem:(id)a3
+- (void)_selectItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if ([(HUHomeTheaterAudioItemModule *)self disableAutomaticCommit])
   {
-    objc_storeWeak(&self->_selectedUncommittedItem, v5);
+    objc_storeWeak(&self->_selectedUncommittedItem, itemCopy);
   }
 
   else
   {
-    v6 = [v5 latestResults];
+    latestResults = [itemCopy latestResults];
 
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13FF8]];
+    v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FF8]];
     [(HUHomeTheaterAudioItemModule *)self setTappedDestinationIdentifier:v7];
 
-    v5 = [(HUHomeTheaterAudioItemModule *)self tappedDestinationIdentifier];
-    v8 = [(HUHomeTheaterAudioItemModule *)self _updateDestinationToIdentifier:v5];
+    itemCopy = [(HUHomeTheaterAudioItemModule *)self tappedDestinationIdentifier];
+    v8 = [(HUHomeTheaterAudioItemModule *)self _updateDestinationToIdentifier:itemCopy];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __44__HUHomeTheaterAudioItemModule__selectItem___block_invoke;
@@ -213,20 +213,20 @@ uint64_t __64__HUHomeTheaterAudioItemModule_buildSectionsWithDisplayedItems___bl
     v9 = [v8 addCompletionBlock:v17];
   }
 
-  v10 = [(HUHomeTheaterAudioItemModule *)self onboardingDelegate];
+  onboardingDelegate = [(HUHomeTheaterAudioItemModule *)self onboardingDelegate];
 
-  if (v10)
+  if (onboardingDelegate)
   {
-    v11 = [(HUHomeTheaterAudioItemModule *)self onboardingDelegate];
-    [v11 homeTheaterItemModuleDidChangeSelectedDestination:self];
+    onboardingDelegate2 = [(HUHomeTheaterAudioItemModule *)self onboardingDelegate];
+    [onboardingDelegate2 homeTheaterItemModuleDidChangeSelectedDestination:self];
   }
 
   v12 = MEMORY[0x277D14788];
-  v13 = [(HUHomeTheaterAudioItemModule *)self itemProviders];
-  v14 = [v12 requestToReloadItemProviders:v13 senderSelector:a2];
+  itemProviders = [(HUHomeTheaterAudioItemModule *)self itemProviders];
+  v14 = [v12 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v15 = [(HFItemModule *)self itemUpdater];
-  v16 = [v15 performItemUpdateRequest:v14];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v16 = [itemUpdater performItemUpdateRequest:v14];
 }
 
 void __44__HUHomeTheaterAudioItemModule__selectItem___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -243,34 +243,34 @@ void __44__HUHomeTheaterAudioItemModule__selectItem___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)_updateDestinationToIdentifier:(id)a3
+- (id)_updateDestinationToIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUHomeTheaterAudioItemModule *)self mediaProfileContainer];
-  v7 = [v6 hf_backingAccessory];
-  v8 = [v7 audioDestinationController];
-  v9 = [v8 availableDestinations];
+  identifierCopy = identifier;
+  mediaProfileContainer = [(HUHomeTheaterAudioItemModule *)self mediaProfileContainer];
+  hf_backingAccessory = [mediaProfileContainer hf_backingAccessory];
+  audioDestinationController = [hf_backingAccessory audioDestinationController];
+  availableDestinations = [audioDestinationController availableDestinations];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __63__HUHomeTheaterAudioItemModule__updateDestinationToIdentifier___block_invoke;
   v22[3] = &unk_277DBEA18;
-  v23 = v5;
-  v10 = v5;
-  v11 = [v9 na_firstObjectPassingTest:v22];
+  v23 = identifierCopy;
+  v10 = identifierCopy;
+  v11 = [availableDestinations na_firstObjectPassingTest:v22];
   v12 = HFLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = NSStringFromSelector(a2);
     *buf = 138413058;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v13;
     v28 = 2112;
     v29 = v11;
     v30 = 2112;
-    v31 = v9;
+    v31 = availableDestinations;
     _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@:%@ setting destination to %@ from possible destinations %@", buf, 0x2Au);
   }
 

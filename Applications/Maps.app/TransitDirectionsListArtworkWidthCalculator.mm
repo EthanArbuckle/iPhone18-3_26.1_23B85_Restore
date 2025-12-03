@@ -1,7 +1,7 @@
 @interface TransitDirectionsListArtworkWidthCalculator
 - (ArtworkWidthCalculatorSizeParameter)sizeParameter;
-- (TransitDirectionsListArtworkWidthCalculator)initWithSizedArtworks:(id)a3 sizeParameter:(ArtworkWidthCalculatorSizeParameter *)a4;
-- (id)calculateArtworkViewWidthAndArtworkSizes:(double *)a3;
+- (TransitDirectionsListArtworkWidthCalculator)initWithSizedArtworks:(id)artworks sizeParameter:(ArtworkWidthCalculatorSizeParameter *)parameter;
+- (id)calculateArtworkViewWidthAndArtworkSizes:(double *)sizes;
 @end
 
 @implementation TransitDirectionsListArtworkWidthCalculator
@@ -15,7 +15,7 @@
   return self;
 }
 
-- (id)calculateArtworkViewWidthAndArtworkSizes:(double *)a3
+- (id)calculateArtworkViewWidthAndArtworkSizes:(double *)sizes
 {
   v5 = +[NSMapTable strongToStrongObjectsMapTable];
   v6 = +[UIScreen mainScreen];
@@ -30,8 +30,8 @@
   v39 = v9;
   v40 = v8;
   v10 = objc_retainBlock(v38);
-  v11 = [(TransitDirectionsListArtworkWidthCalculator *)self artworks];
-  v12 = [v11 mutableCopy];
+  artworks = [(TransitDirectionsListArtworkWidthCalculator *)self artworks];
+  v12 = [artworks mutableCopy];
 
   v36 = v10;
   [v12 sortUsingComparator:v10];
@@ -40,7 +40,7 @@
   v15 = v14 - 1;
   if (v14 >= 1)
   {
-    v35 = a3;
+    sizesCopy = sizes;
     v16 = 0;
     while (1)
     {
@@ -77,14 +77,14 @@
         [v16 artwork];
         v27 = v37 = v15;
         [v16 artworkCache];
-        v28 = self;
+        selfCopy = self;
         v29 = v12;
         v31 = v30 = v9;
         v32 = [v26 initWithArtwork:v27 shieldSize:v25 artworkCache:v31];
 
         v9 = v30;
         v12 = v29;
-        self = v28;
+        self = selfCopy;
 
         v15 = v37;
         [v9 setObject:v32 forKey:v18];
@@ -103,12 +103,12 @@ LABEL_14:
     defaultArtworkViewWidth = v24;
 LABEL_15:
 
-    a3 = v35;
+    sizes = sizesCopy;
   }
 
-  if (a3)
+  if (sizes)
   {
-    *a3 = defaultArtworkViewWidth;
+    *sizes = defaultArtworkViewWidth;
   }
 
   v33 = v9;
@@ -116,37 +116,37 @@ LABEL_15:
   return v9;
 }
 
-- (TransitDirectionsListArtworkWidthCalculator)initWithSizedArtworks:(id)a3 sizeParameter:(ArtworkWidthCalculatorSizeParameter *)a4
+- (TransitDirectionsListArtworkWidthCalculator)initWithSizedArtworks:(id)artworks sizeParameter:(ArtworkWidthCalculatorSizeParameter *)parameter
 {
-  v6 = a3;
+  artworksCopy = artworks;
   v16.receiver = self;
   v16.super_class = TransitDirectionsListArtworkWidthCalculator;
   v7 = [(TransitDirectionsListArtworkWidthCalculator *)&v16 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [artworksCopy copy];
     artworks = v7->_artworks;
     v7->_artworks = v8;
 
-    defaultArtworkViewWidth = a4->defaultArtworkViewWidth;
-    maxArtworkViewWidth = a4->maxArtworkViewWidth;
-    if (maxArtworkViewWidth < a4->defaultArtworkViewWidth || defaultArtworkViewWidth <= 0.0)
+    defaultArtworkViewWidth = parameter->defaultArtworkViewWidth;
+    maxArtworkViewWidth = parameter->maxArtworkViewWidth;
+    if (maxArtworkViewWidth < parameter->defaultArtworkViewWidth || defaultArtworkViewWidth <= 0.0)
     {
       if (defaultArtworkViewWidth < 0.0)
       {
-        a4->defaultArtworkViewWidth = 50.0;
+        parameter->defaultArtworkViewWidth = 50.0;
         defaultArtworkViewWidth = 50.0;
       }
 
       if (maxArtworkViewWidth < defaultArtworkViewWidth)
       {
-        a4->maxArtworkViewWidth = defaultArtworkViewWidth;
+        parameter->maxArtworkViewWidth = defaultArtworkViewWidth;
       }
     }
 
-    v12 = *&a4->defaultArtworkViewWidth;
-    v13 = *&a4->artworkInsets.bottom;
-    *&v7->_sizeParameter.artworkInsets.top = *&a4->artworkInsets.top;
+    v12 = *&parameter->defaultArtworkViewWidth;
+    v13 = *&parameter->artworkInsets.bottom;
+    *&v7->_sizeParameter.artworkInsets.top = *&parameter->artworkInsets.top;
     *&v7->_sizeParameter.artworkInsets.bottom = v13;
     *&v7->_sizeParameter.defaultArtworkViewWidth = v12;
     v14 = v7;

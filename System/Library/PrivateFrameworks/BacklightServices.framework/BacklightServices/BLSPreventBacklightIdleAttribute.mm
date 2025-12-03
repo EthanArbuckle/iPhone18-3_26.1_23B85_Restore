@@ -2,48 +2,48 @@
 + (id)preventIdle;
 + (id)preventIdleAndRestartTimerOnInvalidation;
 + (id)preventIdleClearUserInteractionAndRestartTimerOnInvalidation;
-- (BLSPreventBacklightIdleAttribute)initWithCoder:(id)a3;
-- (BLSPreventBacklightIdleAttribute)initWithRestartTimerOnInvalidation:(BOOL)a3 clearUserInteraction:(BOOL)a4;
-- (BLSPreventBacklightIdleAttribute)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLSPreventBacklightIdleAttribute)initWithCoder:(id)coder;
+- (BLSPreventBacklightIdleAttribute)initWithRestartTimerOnInvalidation:(BOOL)invalidation clearUserInteraction:(BOOL)interaction;
+- (BLSPreventBacklightIdleAttribute)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSPreventBacklightIdleAttribute
 
 + (id)preventIdle
 {
-  v2 = [[a1 alloc] initWithRestartTimerOnInvalidation:0 clearUserInteraction:0];
+  v2 = [[self alloc] initWithRestartTimerOnInvalidation:0 clearUserInteraction:0];
 
   return v2;
 }
 
 + (id)preventIdleAndRestartTimerOnInvalidation
 {
-  v2 = [[a1 alloc] initWithRestartTimerOnInvalidation:1 clearUserInteraction:0];
+  v2 = [[self alloc] initWithRestartTimerOnInvalidation:1 clearUserInteraction:0];
 
   return v2;
 }
 
 + (id)preventIdleClearUserInteractionAndRestartTimerOnInvalidation
 {
-  v2 = [[a1 alloc] initWithRestartTimerOnInvalidation:1 clearUserInteraction:1];
+  v2 = [[self alloc] initWithRestartTimerOnInvalidation:1 clearUserInteraction:1];
 
   return v2;
 }
 
-- (BLSPreventBacklightIdleAttribute)initWithRestartTimerOnInvalidation:(BOOL)a3 clearUserInteraction:(BOOL)a4
+- (BLSPreventBacklightIdleAttribute)initWithRestartTimerOnInvalidation:(BOOL)invalidation clearUserInteraction:(BOOL)interaction
 {
   v7.receiver = self;
   v7.super_class = BLSPreventBacklightIdleAttribute;
   result = [(BLSAttribute *)&v7 init];
   if (result)
   {
-    result->_restartTimerOnInvalidation = a3;
-    result->_clearUserInteraction = a4;
+    result->_restartTimerOnInvalidation = invalidation;
+    result->_clearUserInteraction = interaction;
   }
 
   return result;
@@ -54,25 +54,25 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:self->_restartTimerOnInvalidation withName:@"restart"];
   v5 = [v3 appendBool:self->_clearUserInteraction withName:@"clearInteraction"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:self->_restartTimerOnInvalidation];
-  v5 = [v3 appendBool:self->_clearUserInteraction];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:self->_restartTimerOnInvalidation];
+  v5 = [builder appendBool:self->_clearUserInteraction];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -82,7 +82,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       restartTimerOnInvalidation = self->_restartTimerOnInvalidation;
       if (restartTimerOnInvalidation == [(BLSPreventBacklightIdleAttribute *)v5 restartTimerOnInvalidation])
       {
@@ -105,41 +105,41 @@
   return v8;
 }
 
-- (BLSPreventBacklightIdleAttribute)initWithXPCDictionary:(id)a3
+- (BLSPreventBacklightIdleAttribute)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [@"restart" UTF8String];
-  v6 = [@"clearInteraction" UTF8String];
-  v7 = xpc_dictionary_get_BOOL(v4, v5);
-  v8 = xpc_dictionary_get_BOOL(v4, v6);
+  dictionaryCopy = dictionary;
+  uTF8String = [@"restart" UTF8String];
+  uTF8String2 = [@"clearInteraction" UTF8String];
+  v7 = xpc_dictionary_get_BOOL(dictionaryCopy, uTF8String);
+  v8 = xpc_dictionary_get_BOOL(dictionaryCopy, uTF8String2);
 
   return [(BLSPreventBacklightIdleAttribute *)self initWithRestartTimerOnInvalidation:v7 clearUserInteraction:v8];
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
-  v4 = [@"restart" UTF8String];
-  v5 = [@"clearInteraction" UTF8String];
-  xpc_dictionary_set_BOOL(xdict, v4, self->_restartTimerOnInvalidation);
-  xpc_dictionary_set_BOOL(xdict, v5, self->_clearUserInteraction);
+  xdict = dictionary;
+  uTF8String = [@"restart" UTF8String];
+  uTF8String2 = [@"clearInteraction" UTF8String];
+  xpc_dictionary_set_BOOL(xdict, uTF8String, self->_restartTimerOnInvalidation);
+  xpc_dictionary_set_BOOL(xdict, uTF8String2, self->_clearUserInteraction);
 }
 
-- (BLSPreventBacklightIdleAttribute)initWithCoder:(id)a3
+- (BLSPreventBacklightIdleAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"restart"];
-  v6 = [v4 decodeBoolForKey:@"clearInteraction"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"restart"];
+  v6 = [coderCopy decodeBoolForKey:@"clearInteraction"];
 
   return [(BLSPreventBacklightIdleAttribute *)self initWithRestartTimerOnInvalidation:v5 clearUserInteraction:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   restartTimerOnInvalidation = self->_restartTimerOnInvalidation;
-  v5 = a3;
-  [v5 encodeBool:restartTimerOnInvalidation forKey:@"restart"];
-  [v5 encodeBool:self->_clearUserInteraction forKey:@"clearInteraction"];
+  coderCopy = coder;
+  [coderCopy encodeBool:restartTimerOnInvalidation forKey:@"restart"];
+  [coderCopy encodeBool:self->_clearUserInteraction forKey:@"clearInteraction"];
 }
 
 @end

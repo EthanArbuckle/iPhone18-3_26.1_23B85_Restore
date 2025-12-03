@@ -39,21 +39,21 @@ void __32__EKDataProtectionObserver_init__block_invoke(uint64_t a1)
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AD98];
-  v4 = a1;
+  selfCopy = self;
   v5 = [v3 numberWithBool:{objc_msgSend(a2, "dataIsAccessible")}];
   v7 = 138412290;
   v8 = v5;
-  _os_log_debug_impl(&dword_1A805E000, v4, OS_LOG_TYPE_DEBUG, "Data protection state changed.  New 'dataIsAccessible' state: [%@].", &v7, 0xCu);
+  _os_log_debug_impl(&dword_1A805E000, selfCopy, OS_LOG_TYPE_DEBUG, "Data protection state changed.  New 'dataIsAccessible' state: [%@].", &v7, 0xCu);
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
 - (BOOL)dataIsAccessible
 {
-  v2 = [(EKDataProtectionObserver *)self dataProtectionObserver];
-  v3 = [v2 dataIsAccessible];
+  dataProtectionObserver = [(EKDataProtectionObserver *)self dataProtectionObserver];
+  dataIsAccessible = [dataProtectionObserver dataIsAccessible];
 
-  return v3;
+  return dataIsAccessible;
 }
 
 @end

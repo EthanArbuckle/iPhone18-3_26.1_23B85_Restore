@@ -1,69 +1,69 @@
 @interface CMLUseCaseStatus
-+ (id)statusForClientConfig:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-+ (void)requestStatusForClientConfig:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-+ (void)requestStatusForClientConfig:(id)a3 options:(unint64_t)a4 dispatchQueue:(id)a5 completionHandler:(id)a6;
-- (CMLUseCaseStatus)initWithCoder:(id)a3;
-- (CMLUseCaseStatus)initWithUseCase:(id)a3 serializedDynamicConfig:(id)a4 serializedEvaluationKeyConfig:(id)a5 lastUsed:(id)a6 keyGenerationTime:(id)a7 keyExpirationTime:(id)a8 cacheCapacity:(int64_t)a9 cacheElementCount:(int64_t)a10 cacheEntryMinutesToLive:(int64_t)a11 cacheEvictionPolicy:(int64_t)a12 status:(unint64_t)a13;
-- (void)encodeWithCoder:(id)a3;
++ (id)statusForClientConfig:(id)config options:(unint64_t)options error:(id *)error;
++ (void)requestStatusForClientConfig:(id)config options:(unint64_t)options completionHandler:(id)handler;
++ (void)requestStatusForClientConfig:(id)config options:(unint64_t)options dispatchQueue:(id)queue completionHandler:(id)handler;
+- (CMLUseCaseStatus)initWithCoder:(id)coder;
+- (CMLUseCaseStatus)initWithUseCase:(id)case serializedDynamicConfig:(id)config serializedEvaluationKeyConfig:(id)keyConfig lastUsed:(id)used keyGenerationTime:(id)time keyExpirationTime:(id)expirationTime cacheCapacity:(int64_t)capacity cacheElementCount:(int64_t)self0 cacheEntryMinutesToLive:(int64_t)self1 cacheEvictionPolicy:(int64_t)self2 status:(unint64_t)self3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMLUseCaseStatus
 
-- (CMLUseCaseStatus)initWithUseCase:(id)a3 serializedDynamicConfig:(id)a4 serializedEvaluationKeyConfig:(id)a5 lastUsed:(id)a6 keyGenerationTime:(id)a7 keyExpirationTime:(id)a8 cacheCapacity:(int64_t)a9 cacheElementCount:(int64_t)a10 cacheEntryMinutesToLive:(int64_t)a11 cacheEvictionPolicy:(int64_t)a12 status:(unint64_t)a13
+- (CMLUseCaseStatus)initWithUseCase:(id)case serializedDynamicConfig:(id)config serializedEvaluationKeyConfig:(id)keyConfig lastUsed:(id)used keyGenerationTime:(id)time keyExpirationTime:(id)expirationTime cacheCapacity:(int64_t)capacity cacheElementCount:(int64_t)self0 cacheEntryMinutesToLive:(int64_t)self1 cacheEvictionPolicy:(int64_t)self2 status:(unint64_t)self3
 {
-  v20 = a3;
-  v21 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a7;
-  v22 = a8;
+  caseCopy = case;
+  configCopy = config;
+  keyConfigCopy = keyConfig;
+  usedCopy = used;
+  timeCopy = time;
+  expirationTimeCopy = expirationTime;
   v29.receiver = self;
   v29.super_class = CMLUseCaseStatus;
   v23 = [(CMLUseCaseStatus *)&v29 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_useCase, a3);
-    objc_storeStrong(&v24->_serializedDynamicConfig, a4);
-    objc_storeStrong(&v24->_serializedEvaluationKeyConfig, a5);
-    objc_storeStrong(&v24->_lastUsed, a6);
-    objc_storeStrong(&v24->_keyGenerationTime, a7);
-    objc_storeStrong(&v24->_keyExpirationTime, a8);
-    v24->_cacheCapacity = a9;
-    v24->_cacheElementCount = a10;
-    v24->_cacheEntryMinutesToLive = a11;
-    v24->_cacheEvictionPolicy = a12;
-    v24->_status = a13;
+    objc_storeStrong(&v23->_useCase, case);
+    objc_storeStrong(&v24->_serializedDynamicConfig, config);
+    objc_storeStrong(&v24->_serializedEvaluationKeyConfig, keyConfig);
+    objc_storeStrong(&v24->_lastUsed, used);
+    objc_storeStrong(&v24->_keyGenerationTime, time);
+    objc_storeStrong(&v24->_keyExpirationTime, expirationTime);
+    v24->_cacheCapacity = capacity;
+    v24->_cacheElementCount = count;
+    v24->_cacheEntryMinutesToLive = live;
+    v24->_cacheEvictionPolicy = policy;
+    v24->_status = status;
   }
 
   return v24;
 }
 
-+ (void)requestStatusForClientConfig:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
++ (void)requestStatusForClientConfig:(id)config options:(unint64_t)options completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
+  handlerCopy = handler;
+  configCopy = config;
   v9 = dispatch_queue_create("com.apple.CipherML.CMLUseCaseStatus", 0);
-  [objc_opt_class() requestStatusForClientConfig:v8 options:a4 dispatchQueue:v9 completionHandler:v7];
+  [objc_opt_class() requestStatusForClientConfig:configCopy options:options dispatchQueue:v9 completionHandler:handlerCopy];
 }
 
-+ (void)requestStatusForClientConfig:(id)a3 options:(unint64_t)a4 dispatchQueue:(id)a5 completionHandler:(id)a6
++ (void)requestStatusForClientConfig:(id)config options:(unint64_t)options dispatchQueue:(id)queue completionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
+  queueCopy = queue;
+  handlerCopy = handler;
+  configCopy = config;
   v13 = +[CMLXPC createConnection];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__CMLUseCaseStatus_requestStatusForClientConfig_options_dispatchQueue_completionHandler___block_invoke;
   aBlock[3] = &unk_2785418E8;
-  v14 = v11;
+  v14 = handlerCopy;
   v31 = v14;
   v15 = v13;
   v30 = v15;
   v16 = _Block_copy(aBlock);
-  v17 = [CMLXPC asyncProxyToConnection:v15 dispatchQueue:v10 errorHandler:v16];
+  v17 = [CMLXPC asyncProxyToConnection:v15 dispatchQueue:queueCopy errorHandler:v16];
   v18 = +[CMLLog client];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -79,12 +79,12 @@
   v24[3] = &unk_278541938;
   v27 = v14;
   v28 = a2;
-  v25 = v10;
+  v25 = queueCopy;
   v26 = v15;
   v20 = v15;
   v21 = v14;
-  v22 = v10;
-  [v17 queryStatusForClientConfig:v12 options:a4 reply:v24];
+  v22 = queueCopy;
+  [v17 queryStatusForClientConfig:configCopy options:options reply:v24];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -151,10 +151,10 @@ uint64_t __89__CMLUseCaseStatus_requestStatusForClientConfig_options_dispatchQue
   return [v4 invalidate];
 }
 
-+ (id)statusForClientConfig:(id)a3 options:(unint64_t)a4 error:(id *)a5
++ (id)statusForClientConfig:(id)config options:(unint64_t)options error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  configCopy = config;
   v9 = +[CMLXPC createConnection];
   v34 = 0;
   v10 = [CMLXPC syncProxyToConnection:v9 error:&v34];
@@ -186,8 +186,8 @@ uint64_t __89__CMLUseCaseStatus_requestStatusForClientConfig_options_dispatchQue
   v21[4] = &v22;
   v21[5] = &v28;
   v21[6] = a2;
-  [v10 queryStatusForClientConfig:v8 options:a4 reply:v21];
-  if (a5)
+  [v10 queryStatusForClientConfig:configCopy options:options reply:v21];
+  if (error)
   {
     v13 = v34;
     if (!v34)
@@ -195,7 +195,7 @@ uint64_t __89__CMLUseCaseStatus_requestStatusForClientConfig_options_dispatchQue
       v13 = v29[5];
     }
 
-    *a5 = v13;
+    *error = v13;
   }
 
   v14 = +[CMLLog client];
@@ -253,51 +253,51 @@ void __56__CMLUseCaseStatus_statusForClientConfig_options_error___block_invoke(u
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (CMLUseCaseStatus)initWithCoder:(id)a3
+- (CMLUseCaseStatus)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"useCase"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"serializedDynamicConfig"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"serializedEvaluationKeyConfig"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"lastUsed"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"keyGenerationTime"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"keyExpirationTime"];
-  v8 = [v3 decodeIntegerForKey:@"cacheCapacity"];
-  v9 = [v3 decodeIntegerForKey:@"cacheElementCount"];
-  v10 = [v3 decodeIntegerForKey:@"cacheEntryMinutesToLive"];
-  v11 = [v3 decodeInt64ForKey:@"cacheEvictionPolicy"];
-  v12 = [v3 decodeInt64ForKey:@"status"];
+  coderCopy = coder;
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"useCase"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedDynamicConfig"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedEvaluationKeyConfig"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUsed"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyGenerationTime"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyExpirationTime"];
+  v8 = [coderCopy decodeIntegerForKey:@"cacheCapacity"];
+  v9 = [coderCopy decodeIntegerForKey:@"cacheElementCount"];
+  v10 = [coderCopy decodeIntegerForKey:@"cacheEntryMinutesToLive"];
+  v11 = [coderCopy decodeInt64ForKey:@"cacheEvictionPolicy"];
+  v12 = [coderCopy decodeInt64ForKey:@"status"];
 
   v13 = [(CMLUseCaseStatus *)self initWithUseCase:v16 serializedDynamicConfig:v15 serializedEvaluationKeyConfig:v4 lastUsed:v5 keyGenerationTime:v6 keyExpirationTime:v7 cacheCapacity:v8 cacheElementCount:v9 cacheEntryMinutesToLive:v10 cacheEvictionPolicy:v11 status:v12];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(CMLUseCaseStatus *)self useCase];
-  [v10 encodeObject:v4 forKey:@"useCase"];
+  coderCopy = coder;
+  useCase = [(CMLUseCaseStatus *)self useCase];
+  [coderCopy encodeObject:useCase forKey:@"useCase"];
 
-  v5 = [(CMLUseCaseStatus *)self serializedDynamicConfig];
-  [v10 encodeObject:v5 forKey:@"serializedDynamicConfig"];
+  serializedDynamicConfig = [(CMLUseCaseStatus *)self serializedDynamicConfig];
+  [coderCopy encodeObject:serializedDynamicConfig forKey:@"serializedDynamicConfig"];
 
-  v6 = [(CMLUseCaseStatus *)self serializedEvaluationKeyConfig];
-  [v10 encodeObject:v6 forKey:@"serializedEvaluationKeyConfig"];
+  serializedEvaluationKeyConfig = [(CMLUseCaseStatus *)self serializedEvaluationKeyConfig];
+  [coderCopy encodeObject:serializedEvaluationKeyConfig forKey:@"serializedEvaluationKeyConfig"];
 
-  v7 = [(CMLUseCaseStatus *)self lastUsed];
-  [v10 encodeObject:v7 forKey:@"lastUsed"];
+  lastUsed = [(CMLUseCaseStatus *)self lastUsed];
+  [coderCopy encodeObject:lastUsed forKey:@"lastUsed"];
 
-  v8 = [(CMLUseCaseStatus *)self keyGenerationTime];
-  [v10 encodeObject:v8 forKey:@"keyGenerationTime"];
+  keyGenerationTime = [(CMLUseCaseStatus *)self keyGenerationTime];
+  [coderCopy encodeObject:keyGenerationTime forKey:@"keyGenerationTime"];
 
-  v9 = [(CMLUseCaseStatus *)self keyExpirationTime];
-  [v10 encodeObject:v9 forKey:@"keyExpirationTime"];
+  keyExpirationTime = [(CMLUseCaseStatus *)self keyExpirationTime];
+  [coderCopy encodeObject:keyExpirationTime forKey:@"keyExpirationTime"];
 
-  [v10 encodeInteger:-[CMLUseCaseStatus cacheCapacity](self forKey:{"cacheCapacity"), @"cacheCapacity"}];
-  [v10 encodeInteger:-[CMLUseCaseStatus cacheElementCount](self forKey:{"cacheElementCount"), @"cacheElementCount"}];
-  [v10 encodeInteger:-[CMLUseCaseStatus cacheEntryMinutesToLive](self forKey:{"cacheEntryMinutesToLive"), @"cacheEntryMinutesToLive"}];
-  [v10 encodeInt64:-[CMLUseCaseStatus cacheEvictionPolicy](self forKey:{"cacheEvictionPolicy"), @"cacheEvictionPolicy"}];
-  [v10 encodeInt64:-[CMLUseCaseStatus status](self forKey:{"status"), @"status"}];
+  [coderCopy encodeInteger:-[CMLUseCaseStatus cacheCapacity](self forKey:{"cacheCapacity"), @"cacheCapacity"}];
+  [coderCopy encodeInteger:-[CMLUseCaseStatus cacheElementCount](self forKey:{"cacheElementCount"), @"cacheElementCount"}];
+  [coderCopy encodeInteger:-[CMLUseCaseStatus cacheEntryMinutesToLive](self forKey:{"cacheEntryMinutesToLive"), @"cacheEntryMinutesToLive"}];
+  [coderCopy encodeInt64:-[CMLUseCaseStatus cacheEvictionPolicy](self forKey:{"cacheEvictionPolicy"), @"cacheEvictionPolicy"}];
+  [coderCopy encodeInt64:-[CMLUseCaseStatus status](self forKey:{"status"), @"status"}];
 }
 
 @end

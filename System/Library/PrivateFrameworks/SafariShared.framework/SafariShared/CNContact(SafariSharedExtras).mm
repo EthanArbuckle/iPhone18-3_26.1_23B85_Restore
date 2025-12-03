@@ -92,15 +92,15 @@
 {
   if ([a3 isEqualToString:*MEMORY[0x1E69C8AD8]])
   {
-    v4 = [a1 safari_fullName];
+    safari_fullName = [self safari_fullName];
   }
 
   else
   {
-    v4 = 0;
+    safari_fullName = 0;
   }
 
-  return v4;
+  return safari_fullName;
 }
 
 - (uint64_t)safari_indexOfIdentifier:()SafariSharedExtras forWBSProperty:
@@ -109,7 +109,7 @@
   v7 = a4;
   if ([v6 length] && objc_msgSend(v7, "length") && objc_msgSend(objc_opt_class(), "safari_wbsPropertySupportsMultipleValues:", v7))
   {
-    v8 = [a1 safari_valueForWBSABProperty:v7];
+    v8 = [self safari_valueForWBSABProperty:v7];
     if (v8)
     {
       v9 = [objc_opt_class() safari_indexForIdentifier:v6 inValues:v8];
@@ -158,9 +158,9 @@
 - (id)safari_valueForWBSABProperty:()SafariSharedExtras
 {
   v2 = [WBSContactsHelper CNContactKeyFromWBSABKey:?];
-  if ([v2 length] && objc_msgSend(a1, "isKeyAvailable:", v2))
+  if ([v2 length] && objc_msgSend(self, "isKeyAvailable:", v2))
   {
-    v3 = [a1 valueForKey:v2];
+    v3 = [self valueForKey:v2];
   }
 
   else
@@ -175,7 +175,7 @@
 {
   v8 = a4;
   v9 = a5;
-  v10 = [a1 safari_indexOfIdentifier:a3 forWBSProperty:v8];
+  v10 = [self safari_indexOfIdentifier:a3 forWBSProperty:v8];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = 0;
@@ -183,7 +183,7 @@
 
   else
   {
-    v11 = [a1 safari_valueStringForWBSProperty:v8 wbsComponent:v9 atIndex:v10];
+    v11 = [self safari_valueStringForWBSProperty:v8 wbsComponent:v9 atIndex:v10];
   }
 
   return v11;
@@ -226,7 +226,7 @@
     v12 = v13;
   }
 
-  v14 = [a1 safari_valueStringForValue:v12 wbsProperty:v10 wbsComponent:v11];
+  v14 = [self safari_valueStringForValue:v12 wbsProperty:v10 wbsComponent:v11];
 
   return v14;
 }
@@ -251,16 +251,16 @@
 {
   v8 = a3;
   v9 = a4;
-  if ([v8 length] && objc_msgSend(a1, "safari_numberOfValuesForWBSProperty:", v8) > a5)
+  if ([v8 length] && objc_msgSend(self, "safari_numberOfValuesForWBSProperty:", v8) > a5)
   {
     if ([objc_opt_class() safari_isWBSProxyProperty:v8])
     {
-      v10 = [a1 safari_valueForWBSProxyProperty:v8];
+      v10 = [self safari_valueForWBSProxyProperty:v8];
     }
 
     else
     {
-      v12 = [a1 safari_valueForWBSABProperty:v8];
+      v12 = [self safari_valueForWBSABProperty:v8];
       v10 = [objc_opt_class() safari_valueStringForValue:v12 wbsProperty:v8 wbsComponent:v9 atIndex:a5];
     }
   }
@@ -280,15 +280,15 @@
   v7 = [WBSContactsHelper CNContactKeyFromWBSABKey:v5];
   if ([v7 isEqualToString:*MEMORY[0x1E695C460]])
   {
-    v8 = [v6 service];
+    service = [v6 service];
 LABEL_5:
-    v9 = v8;
+    v9 = service;
     goto LABEL_9;
   }
 
   if ([v7 isEqualToString:*MEMORY[0x1E695C468]])
   {
-    v8 = [v6 username];
+    service = [v6 username];
     goto LABEL_5;
   }
 
@@ -311,39 +311,39 @@ LABEL_9:
   v7 = [WBSContactsHelper CNContactKeyFromWBSABKey:v5];
   if ([v7 isEqualToString:*MEMORY[0x1E695CC30]])
   {
-    v8 = [v6 street];
+    street = [v6 street];
 LABEL_13:
-    v9 = v8;
+    v9 = street;
     goto LABEL_14;
   }
 
   if ([v7 isEqualToString:*MEMORY[0x1E695CC00]])
   {
-    v8 = [v6 city];
+    street = [v6 city];
     goto LABEL_13;
   }
 
   if ([v7 isEqualToString:*MEMORY[0x1E695CC28]])
   {
-    v8 = [v6 state];
+    street = [v6 state];
     goto LABEL_13;
   }
 
   if ([v7 isEqualToString:*MEMORY[0x1E695CC08]])
   {
-    v8 = [v6 country];
+    street = [v6 country];
     goto LABEL_13;
   }
 
   if ([v7 isEqualToString:*MEMORY[0x1E695CC18]])
   {
-    v8 = [v6 postalCode];
+    street = [v6 postalCode];
     goto LABEL_13;
   }
 
   if ([v7 isEqualToString:*MEMORY[0x1E695CC10]])
   {
-    v8 = [v6 ISOCountryCode];
+    street = [v6 ISOCountryCode];
     goto LABEL_13;
   }
 
@@ -367,74 +367,74 @@ LABEL_14:
   v11 = [WBSContactsHelper CNContactKeyFromWBSABKey:v9];
   if ([v11 isEqualToString:*MEMORY[0x1E695C360]])
   {
-    v12 = v8;
+    currentCalendar = v8;
     if ([v10 length])
     {
-      v13 = [v12 value];
-      [a1 safari_valueStringForWBSComponent:v10 inAddress:v13];
+      value = [currentCalendar value];
+      [self safari_valueStringForWBSComponent:v10 inAddress:value];
     }
 
     else
     {
       v17 = MEMORY[0x1E695CF68];
-      v13 = [v12 value];
-      [v17 stringFromPostalAddress:v13 style:0];
+      value = [currentCalendar value];
+      [v17 stringFromPostalAddress:value style:0];
     }
 
     v14 = LABEL_4:;
-    v18 = v14;
+    stringValue = v14;
 LABEL_11:
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  if ([a1 safari_isValueAStringForContactsProperty:v11])
+  if ([self safari_isValueAStringForContactsProperty:v11])
   {
-    v15 = v8;
+    value2 = v8;
 LABEL_7:
-    v18 = v15;
+    stringValue = value2;
     goto LABEL_13;
   }
 
   if ([v11 isEqualToString:*MEMORY[0x1E695C1D0]])
   {
-    v12 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v13 = [v12 dateFromComponents:v8];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    value = [currentCalendar dateFromComponents:v8];
     v16 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v16 setLocalizedDateFormatFromTemplate:@"dMy"];
-    v18 = [v16 stringFromDate:v13];
+    stringValue = [v16 stringFromDate:value];
 
     goto LABEL_11;
   }
 
   if ([v11 isEqualToString:*MEMORY[0x1E695C330]])
   {
-    v12 = [v8 value];
-    v18 = [v12 stringValue];
+    currentCalendar = [v8 value];
+    stringValue = [currentCalendar stringValue];
     goto LABEL_12;
   }
 
   if ([v11 isEqualToString:*MEMORY[0x1E695C208]] || objc_msgSend(v11, "isEqualToString:", *MEMORY[0x1E695C418]))
   {
-    v15 = [v8 value];
+    value2 = [v8 value];
     goto LABEL_7;
   }
 
   if ([v11 isEqualToString:*MEMORY[0x1E695C2B0]])
   {
-    v12 = v8;
+    currentCalendar = v8;
     v20 = [v10 length];
-    v21 = [v12 value];
-    v13 = v21;
+    value3 = [currentCalendar value];
+    value = value3;
     if (v20)
     {
-      [a1 safari_valueStringForWBSComponent:v10 inInstantMessageAddress:v21];
+      [self safari_valueStringForWBSComponent:v10 inInstantMessageAddress:value3];
     }
 
     else
     {
-      [v21 username];
+      [value3 username];
     }
 
     goto LABEL_4;
@@ -446,10 +446,10 @@ LABEL_7:
     [(CNContact(SafariSharedExtras) *)v9 safari_valueStringForValue:v22 wbsProperty:v23 wbsComponent:v24, v25, v26, v27, v28];
   }
 
-  v18 = 0;
+  stringValue = 0;
 LABEL_13:
 
-  return v18;
+  return stringValue;
 }
 
 - (uint64_t)safari_numberOfValuesForWBSProperty:()SafariSharedExtras
@@ -462,7 +462,7 @@ LABEL_13:
 
   else
   {
-    v6 = [a1 safari_valueForWBSABProperty:v4];
+    v6 = [self safari_valueForWBSABProperty:v4];
     if (v6)
     {
       objc_opt_class();

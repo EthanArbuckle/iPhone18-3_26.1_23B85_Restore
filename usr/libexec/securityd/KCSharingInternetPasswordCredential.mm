@@ -1,89 +1,89 @@
 @interface KCSharingInternetPasswordCredential
 + (NSSet)requiredAttributeKeys;
-- (BOOL)isEqual:(id)a3;
-- (KCSharingInternetPasswordCredential)initWithAttributes:(id)a3 error:(id *)a4;
-- (KCSharingInternetPasswordCredential)initWithDatabaseItem:(SecDbItem *)a3 error:(id *)a4;
-- (KCSharingInternetPasswordCredential)initWithProto:(id)a3 sharingGroup:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (KCSharingInternetPasswordCredential)initWithAttributes:(id)attributes error:(id *)error;
+- (KCSharingInternetPasswordCredential)initWithDatabaseItem:(SecDbItem *)item error:(id *)error;
+- (KCSharingInternetPasswordCredential)initWithProto:(id)proto sharingGroup:(id)group error:(id *)error;
 - (NSString)description;
-- (id)attributesWithAccessGroups:(id)a3 error:(id *)a4;
+- (id)attributesWithAccessGroups:(id)groups error:(id *)error;
 - (id)proto;
 - (unint64_t)hash;
 @end
 
 @implementation KCSharingInternetPasswordCredential
 
-- (id)attributesWithAccessGroups:(id)a3 error:(id *)a4
+- (id)attributesWithAccessGroups:(id)groups error:(id *)error
 {
   v38[0] = kSecAttrSharingGroup;
-  v37 = [(KCSharingInternetPasswordCredential *)self sharingGroup:a3];
+  v37 = [(KCSharingInternetPasswordCredential *)self sharingGroup:groups];
   v39[0] = v37;
   v38[1] = kSecAttrAccount;
-  v36 = [(KCSharingInternetPasswordCredential *)self account];
-  v39[1] = v36;
+  account = [(KCSharingInternetPasswordCredential *)self account];
+  v39[1] = account;
   v38[2] = kSecAttrProtocol;
-  v35 = [(KCSharingInternetPasswordCredential *)self protocol];
-  v39[2] = v35;
+  protocol = [(KCSharingInternetPasswordCredential *)self protocol];
+  v39[2] = protocol;
   v38[3] = kSecAttrServer;
-  v34 = [(KCSharingInternetPasswordCredential *)self server];
-  v39[3] = v34;
+  server = [(KCSharingInternetPasswordCredential *)self server];
+  v39[3] = server;
   v38[4] = kSecAttrPort;
-  v33 = [(KCSharingInternetPasswordCredential *)self port];
-  v39[4] = v33;
+  port = [(KCSharingInternetPasswordCredential *)self port];
+  v39[4] = port;
   v38[5] = kSecAttrPath;
-  v32 = [(KCSharingInternetPasswordCredential *)self path];
-  v39[5] = v32;
+  path = [(KCSharingInternetPasswordCredential *)self path];
+  v39[5] = path;
   v38[6] = kSecAttrAuthenticationType;
-  v5 = [(KCSharingInternetPasswordCredential *)self authenticationType];
-  v39[6] = v5;
+  authenticationType = [(KCSharingInternetPasswordCredential *)self authenticationType];
+  v39[6] = authenticationType;
   v38[7] = kSecValueData;
-  v6 = [(KCSharingInternetPasswordCredential *)self data];
-  v39[7] = v6;
+  data = [(KCSharingInternetPasswordCredential *)self data];
+  v39[7] = data;
   v38[8] = kSecAttrCreationDate;
-  v7 = [(KCSharingInternetPasswordCredential *)self creationDate];
-  v39[8] = v7;
+  creationDate = [(KCSharingInternetPasswordCredential *)self creationDate];
+  v39[8] = creationDate;
   v38[9] = kSecAttrModificationDate;
-  v8 = [(KCSharingInternetPasswordCredential *)self modificationDate];
-  v39[9] = v8;
+  modificationDate = [(KCSharingInternetPasswordCredential *)self modificationDate];
+  v39[9] = modificationDate;
   v38[10] = kSecAttrSecurityDomain;
-  v9 = [(KCSharingInternetPasswordCredential *)self securityDomain];
-  v39[10] = v9;
+  securityDomain = [(KCSharingInternetPasswordCredential *)self securityDomain];
+  v39[10] = securityDomain;
   v39[11] = &__kCFBooleanFalse;
   v38[11] = kSecAttrSynchronizable;
   v38[12] = kSecAttrAccessible;
-  v10 = [(KCSharingInternetPasswordCredential *)self accessibility];
-  v39[12] = v10;
+  accessibility = [(KCSharingInternetPasswordCredential *)self accessibility];
+  v39[12] = accessibility;
   v38[13] = kSecAttrAccessGroup;
-  v11 = [(KCSharingInternetPasswordCredential *)self accessGroup];
-  v39[13] = v11;
+  accessGroup = [(KCSharingInternetPasswordCredential *)self accessGroup];
+  v39[13] = accessGroup;
   v12 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:14];
   v13 = [v12 mutableCopy];
 
-  v14 = [(KCSharingInternetPasswordCredential *)self comment];
-  [v13 setObject:v14 forKeyedSubscript:kSecAttrComment];
+  comment = [(KCSharingInternetPasswordCredential *)self comment];
+  [v13 setObject:comment forKeyedSubscript:kSecAttrComment];
 
-  v15 = [(KCSharingInternetPasswordCredential *)self label];
-  [v13 setObject:v15 forKeyedSubscript:kSecAttrLabel];
+  label = [(KCSharingInternetPasswordCredential *)self label];
+  [v13 setObject:label forKeyedSubscript:kSecAttrLabel];
 
-  v16 = [(KCSharingInternetPasswordCredential *)self viewHint];
-  [v13 setObject:v16 forKeyedSubscript:kSecAttrSyncViewHint];
+  viewHint = [(KCSharingInternetPasswordCredential *)self viewHint];
+  [v13 setObject:viewHint forKeyedSubscript:kSecAttrSyncViewHint];
 
-  v17 = [(KCSharingInternetPasswordCredential *)self notes];
-  [v13 setObject:v17 forKeyedSubscript:kSecDataInetExtraNotes];
+  notes = [(KCSharingInternetPasswordCredential *)self notes];
+  [v13 setObject:notes forKeyedSubscript:kSecDataInetExtraNotes];
 
-  v18 = [(KCSharingInternetPasswordCredential *)self history];
-  [v13 setObject:v18 forKeyedSubscript:kSecDataInetExtraHistory];
+  history = [(KCSharingInternetPasswordCredential *)self history];
+  [v13 setObject:history forKeyedSubscript:kSecDataInetExtraHistory];
 
-  v19 = [(KCSharingInternetPasswordCredential *)self clientDefined0];
-  [v13 setObject:v19 forKeyedSubscript:kSecDataInetExtraClientDefined0];
+  clientDefined0 = [(KCSharingInternetPasswordCredential *)self clientDefined0];
+  [v13 setObject:clientDefined0 forKeyedSubscript:kSecDataInetExtraClientDefined0];
 
-  v20 = [(KCSharingInternetPasswordCredential *)self clientDefined1];
-  [v13 setObject:v20 forKeyedSubscript:kSecDataInetExtraClientDefined1];
+  clientDefined1 = [(KCSharingInternetPasswordCredential *)self clientDefined1];
+  [v13 setObject:clientDefined1 forKeyedSubscript:kSecDataInetExtraClientDefined1];
 
-  v21 = [(KCSharingInternetPasswordCredential *)self clientDefined2];
-  [v13 setObject:v21 forKeyedSubscript:kSecDataInetExtraClientDefined2];
+  clientDefined2 = [(KCSharingInternetPasswordCredential *)self clientDefined2];
+  [v13 setObject:clientDefined2 forKeyedSubscript:kSecDataInetExtraClientDefined2];
 
-  v22 = [(KCSharingInternetPasswordCredential *)self clientDefined3];
-  [v13 setObject:v22 forKeyedSubscript:kSecDataInetExtraClientDefined3];
+  clientDefined3 = [(KCSharingInternetPasswordCredential *)self clientDefined3];
+  [v13 setObject:clientDefined3 forKeyedSubscript:kSecDataInetExtraClientDefined3];
 
   v23 = [NSNumber numberWithInteger:[(KCSharingInternetPasswordCredential *)self creator]];
   [v13 setObject:v23 forKeyedSubscript:kSecAttrCreator];
@@ -91,11 +91,11 @@
   v24 = [NSNumber numberWithInteger:[(KCSharingInternetPasswordCredential *)self type]];
   [v13 setObject:v24 forKeyedSubscript:kSecAttrType];
 
-  v25 = [(KCSharingInternetPasswordCredential *)self itemDescription];
-  [v13 setObject:v25 forKeyedSubscript:kSecAttrDescription];
+  itemDescription = [(KCSharingInternetPasswordCredential *)self itemDescription];
+  [v13 setObject:itemDescription forKeyedSubscript:kSecAttrDescription];
 
-  v26 = [(KCSharingInternetPasswordCredential *)self alias];
-  [v13 setObject:v26 forKeyedSubscript:kSecAttrAlias];
+  alias = [(KCSharingInternetPasswordCredential *)self alias];
+  [v13 setObject:alias forKeyedSubscript:kSecAttrAlias];
 
   v27 = [NSNumber numberWithInteger:[(KCSharingInternetPasswordCredential *)self isInvisible]];
   [v13 setObject:v27 forKeyedSubscript:kSecAttrIsInvisible];
@@ -115,78 +115,78 @@
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(KCSharingInternetPasswordCredential *)self accessGroup];
-  [v3 setAccessGroup:v4];
+  accessGroup = [(KCSharingInternetPasswordCredential *)self accessGroup];
+  [v3 setAccessGroup:accessGroup];
 
-  v5 = [(KCSharingInternetPasswordCredential *)self account];
-  [v3 setAccount:v5];
+  account = [(KCSharingInternetPasswordCredential *)self account];
+  [v3 setAccount:account];
 
-  v6 = [(KCSharingInternetPasswordCredential *)self protocol];
-  [v3 setProtocol:v6];
+  protocol = [(KCSharingInternetPasswordCredential *)self protocol];
+  [v3 setProtocol:protocol];
 
-  v7 = [(KCSharingInternetPasswordCredential *)self server];
-  [v3 setServer:v7];
+  server = [(KCSharingInternetPasswordCredential *)self server];
+  [v3 setServer:server];
 
-  v8 = [(KCSharingInternetPasswordCredential *)self port];
-  [v3 setPort:{objc_msgSend(v8, "intValue")}];
+  port = [(KCSharingInternetPasswordCredential *)self port];
+  [v3 setPort:{objc_msgSend(port, "intValue")}];
 
-  v9 = [(KCSharingInternetPasswordCredential *)self path];
-  [v3 setPath:v9];
+  path = [(KCSharingInternetPasswordCredential *)self path];
+  [v3 setPath:path];
 
-  v10 = [(KCSharingInternetPasswordCredential *)self authenticationType];
-  [v3 setAuthenticationType:v10];
+  authenticationType = [(KCSharingInternetPasswordCredential *)self authenticationType];
+  [v3 setAuthenticationType:authenticationType];
 
-  v11 = [(KCSharingInternetPasswordCredential *)self data];
-  [v3 setData:v11];
+  data = [(KCSharingInternetPasswordCredential *)self data];
+  [v3 setData:data];
 
-  v12 = [(KCSharingInternetPasswordCredential *)self creationDate];
-  [v12 timeIntervalSinceReferenceDate];
+  creationDate = [(KCSharingInternetPasswordCredential *)self creationDate];
+  [creationDate timeIntervalSinceReferenceDate];
   [v3 setCreationDate:?];
 
-  v13 = [(KCSharingInternetPasswordCredential *)self modificationDate];
-  [v13 timeIntervalSinceReferenceDate];
+  modificationDate = [(KCSharingInternetPasswordCredential *)self modificationDate];
+  [modificationDate timeIntervalSinceReferenceDate];
   [v3 setModificationDate:?];
 
-  v14 = [(KCSharingInternetPasswordCredential *)self comment];
-  [v3 setComment:v14];
+  comment = [(KCSharingInternetPasswordCredential *)self comment];
+  [v3 setComment:comment];
 
-  v15 = [(KCSharingInternetPasswordCredential *)self label];
-  [v3 setLabel:v15];
+  label = [(KCSharingInternetPasswordCredential *)self label];
+  [v3 setLabel:label];
 
-  v16 = [(KCSharingInternetPasswordCredential *)self accessibility];
-  [v3 setAccessibility:v16];
+  accessibility = [(KCSharingInternetPasswordCredential *)self accessibility];
+  [v3 setAccessibility:accessibility];
 
-  v17 = [(KCSharingInternetPasswordCredential *)self viewHint];
-  [v3 setViewHint:v17];
+  viewHint = [(KCSharingInternetPasswordCredential *)self viewHint];
+  [v3 setViewHint:viewHint];
 
-  v18 = [(KCSharingInternetPasswordCredential *)self securityDomain];
-  [v3 setSecurityDomain:v18];
+  securityDomain = [(KCSharingInternetPasswordCredential *)self securityDomain];
+  [v3 setSecurityDomain:securityDomain];
 
-  v19 = [(KCSharingInternetPasswordCredential *)self notes];
-  [v3 setNotes:v19];
+  notes = [(KCSharingInternetPasswordCredential *)self notes];
+  [v3 setNotes:notes];
 
-  v20 = [(KCSharingInternetPasswordCredential *)self history];
-  [v3 setHistory:v20];
+  history = [(KCSharingInternetPasswordCredential *)self history];
+  [v3 setHistory:history];
 
-  v21 = [(KCSharingInternetPasswordCredential *)self clientDefined0];
-  [v3 setClientDefined0:v21];
+  clientDefined0 = [(KCSharingInternetPasswordCredential *)self clientDefined0];
+  [v3 setClientDefined0:clientDefined0];
 
-  v22 = [(KCSharingInternetPasswordCredential *)self clientDefined1];
-  [v3 setClientDefined1:v22];
+  clientDefined1 = [(KCSharingInternetPasswordCredential *)self clientDefined1];
+  [v3 setClientDefined1:clientDefined1];
 
-  v23 = [(KCSharingInternetPasswordCredential *)self clientDefined2];
-  [v3 setClientDefined2:v23];
+  clientDefined2 = [(KCSharingInternetPasswordCredential *)self clientDefined2];
+  [v3 setClientDefined2:clientDefined2];
 
-  v24 = [(KCSharingInternetPasswordCredential *)self clientDefined3];
-  [v3 setClientDefined3:v24];
+  clientDefined3 = [(KCSharingInternetPasswordCredential *)self clientDefined3];
+  [v3 setClientDefined3:clientDefined3];
 
   [v3 setCreator:{-[KCSharingInternetPasswordCredential creator](self, "creator")}];
   [v3 setType:{-[KCSharingInternetPasswordCredential type](self, "type")}];
-  v25 = [(KCSharingInternetPasswordCredential *)self itemDescription];
-  [v3 setItemDescription:v25];
+  itemDescription = [(KCSharingInternetPasswordCredential *)self itemDescription];
+  [v3 setItemDescription:itemDescription];
 
-  v26 = [(KCSharingInternetPasswordCredential *)self alias];
-  [v3 setAlias:v26];
+  alias = [(KCSharingInternetPasswordCredential *)self alias];
+  [v3 setAlias:alias];
 
   [v3 setIsInvisible:{-[KCSharingInternetPasswordCredential isInvisible](self, "isInvisible")}];
   [v3 setIsNegative:{-[KCSharingInternetPasswordCredential isNegative](self, "isNegative")}];
@@ -198,175 +198,175 @@
 
 - (NSString)description
 {
-  v27 = [(KCSharingInternetPasswordCredential *)self sharingGroup];
-  v23 = [(KCSharingInternetPasswordCredential *)self accessGroup];
-  v22 = [(KCSharingInternetPasswordCredential *)self account];
-  v21 = [(KCSharingInternetPasswordCredential *)self protocol];
-  v26 = [(KCSharingInternetPasswordCredential *)self server];
-  v20 = [(KCSharingInternetPasswordCredential *)self port];
-  v25 = [(KCSharingInternetPasswordCredential *)self path];
-  v19 = [(KCSharingInternetPasswordCredential *)self authenticationType];
-  v18 = [(KCSharingInternetPasswordCredential *)self type];
-  v17 = [(KCSharingInternetPasswordCredential *)self creator];
-  v13 = [(KCSharingInternetPasswordCredential *)self itemDescription];
-  v16 = [(KCSharingInternetPasswordCredential *)self alias];
-  v15 = [(KCSharingInternetPasswordCredential *)self isInvisible];
-  v14 = [(KCSharingInternetPasswordCredential *)self isNegative];
-  v3 = [(KCSharingInternetPasswordCredential *)self customIcon];
-  v4 = [(KCSharingInternetPasswordCredential *)self scriptCode];
-  v12 = [(KCSharingInternetPasswordCredential *)self creationDate];
-  v11 = [(KCSharingInternetPasswordCredential *)self modificationDate];
-  v10 = [(KCSharingInternetPasswordCredential *)self comment];
-  v5 = [(KCSharingInternetPasswordCredential *)self label];
-  v6 = [(KCSharingInternetPasswordCredential *)self accessibility];
-  v7 = [(KCSharingInternetPasswordCredential *)self viewHint];
-  v8 = [(KCSharingInternetPasswordCredential *)self securityDomain];
-  v24 = [NSString stringWithFormat:@"KCSharingInternetPasswordCredential(sharingGroup:%@ accessGroup:%@ account:%@ protocol:%@ server:%@ port:%@ path:%@ authenticationType:%@ type:%ld creator:%ld description:%@ alias:%@ visibility:%ld negative:%ld icon:%ld scriptCode:%ld creationDate:%@ modificationDate:%@ comment:%@ label:%@ accessibility:%@ viewHint:%@ securityDomain:%@)", v27, v23, v22, v21, v26, v20, v25, v19, v18, v17, v13, v16, v15, v14, v3, v4, v12, v11, v10, v5, v6, v7, v8];
+  sharingGroup = [(KCSharingInternetPasswordCredential *)self sharingGroup];
+  accessGroup = [(KCSharingInternetPasswordCredential *)self accessGroup];
+  account = [(KCSharingInternetPasswordCredential *)self account];
+  protocol = [(KCSharingInternetPasswordCredential *)self protocol];
+  server = [(KCSharingInternetPasswordCredential *)self server];
+  port = [(KCSharingInternetPasswordCredential *)self port];
+  path = [(KCSharingInternetPasswordCredential *)self path];
+  authenticationType = [(KCSharingInternetPasswordCredential *)self authenticationType];
+  type = [(KCSharingInternetPasswordCredential *)self type];
+  creator = [(KCSharingInternetPasswordCredential *)self creator];
+  itemDescription = [(KCSharingInternetPasswordCredential *)self itemDescription];
+  alias = [(KCSharingInternetPasswordCredential *)self alias];
+  isInvisible = [(KCSharingInternetPasswordCredential *)self isInvisible];
+  isNegative = [(KCSharingInternetPasswordCredential *)self isNegative];
+  customIcon = [(KCSharingInternetPasswordCredential *)self customIcon];
+  scriptCode = [(KCSharingInternetPasswordCredential *)self scriptCode];
+  creationDate = [(KCSharingInternetPasswordCredential *)self creationDate];
+  modificationDate = [(KCSharingInternetPasswordCredential *)self modificationDate];
+  comment = [(KCSharingInternetPasswordCredential *)self comment];
+  label = [(KCSharingInternetPasswordCredential *)self label];
+  accessibility = [(KCSharingInternetPasswordCredential *)self accessibility];
+  viewHint = [(KCSharingInternetPasswordCredential *)self viewHint];
+  securityDomain = [(KCSharingInternetPasswordCredential *)self securityDomain];
+  v24 = [NSString stringWithFormat:@"KCSharingInternetPasswordCredential(sharingGroup:%@ accessGroup:%@ account:%@ protocol:%@ server:%@ port:%@ path:%@ authenticationType:%@ type:%ld creator:%ld description:%@ alias:%@ visibility:%ld negative:%ld icon:%ld scriptCode:%ld creationDate:%@ modificationDate:%@ comment:%@ label:%@ accessibility:%@ viewHint:%@ securityDomain:%@)", sharingGroup, accessGroup, account, protocol, server, port, path, authenticationType, type, creator, itemDescription, alias, isInvisible, isNegative, customIcon, scriptCode, creationDate, modificationDate, comment, label, accessibility, viewHint, securityDomain];
 
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v28 = 1;
   }
 
-  else if ([(KCSharingInternetPasswordCredential *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(KCSharingInternetPasswordCredential *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(KCSharingInternetPasswordCredential *)self sharingGroup];
-    v123 = [(KCSharingInternetPasswordCredential *)v5 sharingGroup];
-    v124 = v6;
-    v122 = [v6 isEqualToString:?];
+    v5 = equalCopy;
+    sharingGroup = [(KCSharingInternetPasswordCredential *)self sharingGroup];
+    sharingGroup2 = [(KCSharingInternetPasswordCredential *)v5 sharingGroup];
+    v124 = sharingGroup;
+    v122 = [sharingGroup isEqualToString:?];
     if (v122 && (-[KCSharingInternetPasswordCredential accessGroup](self, "accessGroup"), v8 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential accessGroup](v5, "accessGroup"), v118 = objc_claimAutoreleasedReturnValue(), v119 = v8, [v8 isEqualToString:?]))
     {
-      v9 = [(KCSharingInternetPasswordCredential *)self account];
-      v116 = [(KCSharingInternetPasswordCredential *)v5 account];
-      v117 = v9;
-      if ([v9 isEqualToString:?])
+      account = [(KCSharingInternetPasswordCredential *)self account];
+      account2 = [(KCSharingInternetPasswordCredential *)v5 account];
+      v117 = account;
+      if ([account isEqualToString:?])
       {
-        v10 = [(KCSharingInternetPasswordCredential *)self protocol];
-        v114 = [(KCSharingInternetPasswordCredential *)v5 protocol];
-        v115 = v10;
-        if ([v10 isEqualToString:?])
+        protocol = [(KCSharingInternetPasswordCredential *)self protocol];
+        protocol2 = [(KCSharingInternetPasswordCredential *)v5 protocol];
+        v115 = protocol;
+        if ([protocol isEqualToString:?])
         {
-          v11 = [(KCSharingInternetPasswordCredential *)self server];
-          v112 = [(KCSharingInternetPasswordCredential *)v5 server];
-          v113 = v11;
-          if ([v11 isEqualToString:?])
+          server = [(KCSharingInternetPasswordCredential *)self server];
+          server2 = [(KCSharingInternetPasswordCredential *)v5 server];
+          v113 = server;
+          if ([server isEqualToString:?])
           {
-            v12 = [(KCSharingInternetPasswordCredential *)self port];
-            v110 = [(KCSharingInternetPasswordCredential *)v5 port];
-            v111 = v12;
-            if ([v12 isEqualToNumber:?])
+            port = [(KCSharingInternetPasswordCredential *)self port];
+            port2 = [(KCSharingInternetPasswordCredential *)v5 port];
+            v111 = port;
+            if ([port isEqualToNumber:?])
             {
-              v13 = [(KCSharingInternetPasswordCredential *)self path];
-              v108 = [(KCSharingInternetPasswordCredential *)v5 path];
-              v109 = v13;
-              if ([v13 isEqualToString:?])
+              path = [(KCSharingInternetPasswordCredential *)self path];
+              path2 = [(KCSharingInternetPasswordCredential *)v5 path];
+              v109 = path;
+              if ([path isEqualToString:?])
               {
-                v14 = [(KCSharingInternetPasswordCredential *)self authenticationType];
-                v106 = [(KCSharingInternetPasswordCredential *)v5 authenticationType];
-                v107 = v14;
-                if ([v14 isEqualToString:?])
+                authenticationType = [(KCSharingInternetPasswordCredential *)self authenticationType];
+                authenticationType2 = [(KCSharingInternetPasswordCredential *)v5 authenticationType];
+                v107 = authenticationType;
+                if ([authenticationType isEqualToString:?])
                 {
-                  v15 = [(KCSharingInternetPasswordCredential *)self data];
-                  v104 = [(KCSharingInternetPasswordCredential *)v5 data];
-                  v105 = v15;
-                  if ([v15 isEqualToData:?])
+                  data = [(KCSharingInternetPasswordCredential *)self data];
+                  data2 = [(KCSharingInternetPasswordCredential *)v5 data];
+                  v105 = data;
+                  if ([data isEqualToData:?])
                   {
-                    v16 = [(KCSharingInternetPasswordCredential *)self creationDate];
-                    v102 = [(KCSharingInternetPasswordCredential *)v5 creationDate];
-                    v103 = v16;
-                    if ([v16 isEqualToDate:?])
+                    creationDate = [(KCSharingInternetPasswordCredential *)self creationDate];
+                    creationDate2 = [(KCSharingInternetPasswordCredential *)v5 creationDate];
+                    v103 = creationDate;
+                    if ([creationDate isEqualToDate:?])
                     {
-                      v17 = [(KCSharingInternetPasswordCredential *)self modificationDate];
-                      v100 = [(KCSharingInternetPasswordCredential *)v5 modificationDate];
-                      v101 = v17;
-                      if ([v17 isEqualToDate:?])
+                      modificationDate = [(KCSharingInternetPasswordCredential *)self modificationDate];
+                      modificationDate2 = [(KCSharingInternetPasswordCredential *)v5 modificationDate];
+                      v101 = modificationDate;
+                      if ([modificationDate isEqualToDate:?])
                       {
-                        v18 = [(KCSharingInternetPasswordCredential *)self comment];
-                        v98 = [(KCSharingInternetPasswordCredential *)v5 comment];
-                        v99 = v18;
-                        LODWORD(v125[4]) = v18 != v98;
-                        if (v18 == v98 || (-[KCSharingInternetPasswordCredential comment](self, "comment"), v19 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential comment](v5, "comment"), v94 = objc_claimAutoreleasedReturnValue(), v95 = v19, [v19 isEqualToString:?]))
+                        comment = [(KCSharingInternetPasswordCredential *)self comment];
+                        comment2 = [(KCSharingInternetPasswordCredential *)v5 comment];
+                        v99 = comment;
+                        LODWORD(v125[4]) = comment != comment2;
+                        if (comment == comment2 || (-[KCSharingInternetPasswordCredential comment](self, "comment"), v19 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential comment](v5, "comment"), v94 = objc_claimAutoreleasedReturnValue(), v95 = v19, [v19 isEqualToString:?]))
                         {
-                          v30 = [(KCSharingInternetPasswordCredential *)self label];
-                          v96 = [(KCSharingInternetPasswordCredential *)v5 label];
-                          v97 = v30;
-                          HIDWORD(v125[3]) = v30 != v96;
-                          if (v30 == v96 || (-[KCSharingInternetPasswordCredential label](self, "label"), v31 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential label](v5, "label"), v90 = objc_claimAutoreleasedReturnValue(), v91 = v31, [v31 isEqualToString:?]))
+                          label = [(KCSharingInternetPasswordCredential *)self label];
+                          label2 = [(KCSharingInternetPasswordCredential *)v5 label];
+                          v97 = label;
+                          HIDWORD(v125[3]) = label != label2;
+                          if (label == label2 || (-[KCSharingInternetPasswordCredential label](self, "label"), v31 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential label](v5, "label"), v90 = objc_claimAutoreleasedReturnValue(), v91 = v31, [v31 isEqualToString:?]))
                           {
-                            v32 = [(KCSharingInternetPasswordCredential *)self accessibility];
-                            v92 = [(KCSharingInternetPasswordCredential *)v5 accessibility];
-                            v93 = v32;
-                            if ([v32 isEqualToString:?])
+                            accessibility = [(KCSharingInternetPasswordCredential *)self accessibility];
+                            accessibility2 = [(KCSharingInternetPasswordCredential *)v5 accessibility];
+                            v93 = accessibility;
+                            if ([accessibility isEqualToString:?])
                             {
-                              v33 = [(KCSharingInternetPasswordCredential *)self viewHint];
-                              v88 = [(KCSharingInternetPasswordCredential *)v5 viewHint];
-                              v89 = v33;
-                              LODWORD(v125[3]) = v33 != v88;
-                              if (v33 == v88 || (-[KCSharingInternetPasswordCredential viewHint](self, "viewHint"), v34 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential viewHint](v5, "viewHint"), v84 = objc_claimAutoreleasedReturnValue(), v85 = v34, [v34 isEqualToString:?]))
+                              viewHint = [(KCSharingInternetPasswordCredential *)self viewHint];
+                              viewHint2 = [(KCSharingInternetPasswordCredential *)v5 viewHint];
+                              v89 = viewHint;
+                              LODWORD(v125[3]) = viewHint != viewHint2;
+                              if (viewHint == viewHint2 || (-[KCSharingInternetPasswordCredential viewHint](self, "viewHint"), v34 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential viewHint](v5, "viewHint"), v84 = objc_claimAutoreleasedReturnValue(), v85 = v34, [v34 isEqualToString:?]))
                               {
-                                v35 = [(KCSharingInternetPasswordCredential *)self securityDomain];
-                                v86 = [(KCSharingInternetPasswordCredential *)v5 securityDomain];
-                                v87 = v35;
-                                if ([v35 isEqualToString:?])
+                                securityDomain = [(KCSharingInternetPasswordCredential *)self securityDomain];
+                                securityDomain2 = [(KCSharingInternetPasswordCredential *)v5 securityDomain];
+                                v87 = securityDomain;
+                                if ([securityDomain isEqualToString:?])
                                 {
-                                  v36 = [(KCSharingInternetPasswordCredential *)self notes];
-                                  v82 = [(KCSharingInternetPasswordCredential *)v5 notes];
-                                  v83 = v36;
-                                  HIDWORD(v125[2]) = v36 != v82;
-                                  if (v36 == v82 || (-[KCSharingInternetPasswordCredential notes](self, "notes"), v37 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential notes](v5, "notes"), v78 = objc_claimAutoreleasedReturnValue(), v79 = v37, [v37 isEqualToData:?]))
+                                  notes = [(KCSharingInternetPasswordCredential *)self notes];
+                                  notes2 = [(KCSharingInternetPasswordCredential *)v5 notes];
+                                  v83 = notes;
+                                  HIDWORD(v125[2]) = notes != notes2;
+                                  if (notes == notes2 || (-[KCSharingInternetPasswordCredential notes](self, "notes"), v37 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential notes](v5, "notes"), v78 = objc_claimAutoreleasedReturnValue(), v79 = v37, [v37 isEqualToData:?]))
                                   {
-                                    v38 = [(KCSharingInternetPasswordCredential *)self history];
-                                    v80 = [(KCSharingInternetPasswordCredential *)v5 history];
-                                    v81 = v38;
-                                    LODWORD(v125[2]) = v38 != v80;
-                                    if (v38 == v80 || (-[KCSharingInternetPasswordCredential history](self, "history"), v39 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential history](v5, "history"), v74 = objc_claimAutoreleasedReturnValue(), v75 = v39, [v39 isEqualToData:?]))
+                                    history = [(KCSharingInternetPasswordCredential *)self history];
+                                    history2 = [(KCSharingInternetPasswordCredential *)v5 history];
+                                    v81 = history;
+                                    LODWORD(v125[2]) = history != history2;
+                                    if (history == history2 || (-[KCSharingInternetPasswordCredential history](self, "history"), v39 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential history](v5, "history"), v74 = objc_claimAutoreleasedReturnValue(), v75 = v39, [v39 isEqualToData:?]))
                                     {
-                                      v40 = [(KCSharingInternetPasswordCredential *)self clientDefined0];
-                                      v76 = [(KCSharingInternetPasswordCredential *)v5 clientDefined0];
-                                      v77 = v40;
-                                      HIDWORD(v125[1]) = v40 != v76;
-                                      if (v40 == v76 || (-[KCSharingInternetPasswordCredential clientDefined0](self, "clientDefined0"), v41 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential clientDefined0](v5, "clientDefined0"), v70 = objc_claimAutoreleasedReturnValue(), v71 = v41, [v41 isEqualToData:?]))
+                                      clientDefined0 = [(KCSharingInternetPasswordCredential *)self clientDefined0];
+                                      clientDefined02 = [(KCSharingInternetPasswordCredential *)v5 clientDefined0];
+                                      v77 = clientDefined0;
+                                      HIDWORD(v125[1]) = clientDefined0 != clientDefined02;
+                                      if (clientDefined0 == clientDefined02 || (-[KCSharingInternetPasswordCredential clientDefined0](self, "clientDefined0"), v41 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential clientDefined0](v5, "clientDefined0"), v70 = objc_claimAutoreleasedReturnValue(), v71 = v41, [v41 isEqualToData:?]))
                                       {
-                                        v42 = [(KCSharingInternetPasswordCredential *)self clientDefined1];
-                                        v72 = [(KCSharingInternetPasswordCredential *)v5 clientDefined1];
-                                        v73 = v42;
-                                        LODWORD(v125[1]) = v42 != v72;
-                                        if (v42 == v72 || (-[KCSharingInternetPasswordCredential clientDefined1](self, "clientDefined1"), v43 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential clientDefined1](v5, "clientDefined1"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v43, [v43 isEqualToData:?]))
+                                        clientDefined1 = [(KCSharingInternetPasswordCredential *)self clientDefined1];
+                                        clientDefined12 = [(KCSharingInternetPasswordCredential *)v5 clientDefined1];
+                                        v73 = clientDefined1;
+                                        LODWORD(v125[1]) = clientDefined1 != clientDefined12;
+                                        if (clientDefined1 == clientDefined12 || (-[KCSharingInternetPasswordCredential clientDefined1](self, "clientDefined1"), v43 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential clientDefined1](v5, "clientDefined1"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v43, [v43 isEqualToData:?]))
                                         {
-                                          v44 = [(KCSharingInternetPasswordCredential *)self clientDefined2];
-                                          v68 = [(KCSharingInternetPasswordCredential *)v5 clientDefined2];
-                                          v69 = v44;
-                                          HIDWORD(v125[0]) = v44 != v68;
-                                          if (v44 == v68 || (-[KCSharingInternetPasswordCredential clientDefined2](self, "clientDefined2"), v45 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential clientDefined2](v5, "clientDefined2"), v62 = objc_claimAutoreleasedReturnValue(), v63 = v45, [v45 isEqualToData:?]))
+                                          clientDefined2 = [(KCSharingInternetPasswordCredential *)self clientDefined2];
+                                          clientDefined22 = [(KCSharingInternetPasswordCredential *)v5 clientDefined2];
+                                          v69 = clientDefined2;
+                                          HIDWORD(v125[0]) = clientDefined2 != clientDefined22;
+                                          if (clientDefined2 == clientDefined22 || (-[KCSharingInternetPasswordCredential clientDefined2](self, "clientDefined2"), v45 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential clientDefined2](v5, "clientDefined2"), v62 = objc_claimAutoreleasedReturnValue(), v63 = v45, [v45 isEqualToData:?]))
                                           {
-                                            v46 = [(KCSharingInternetPasswordCredential *)self clientDefined3];
-                                            v64 = [(KCSharingInternetPasswordCredential *)v5 clientDefined3];
-                                            v65 = v46;
-                                            LODWORD(v125[0]) = v46 != v64;
-                                            if (v46 == v64 || (-[KCSharingInternetPasswordCredential clientDefined3](self, "clientDefined3"), v47 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential clientDefined3](v5, "clientDefined3"), v60 = objc_claimAutoreleasedReturnValue(), v61 = v47, [v47 isEqualToData:?]))
+                                            clientDefined3 = [(KCSharingInternetPasswordCredential *)self clientDefined3];
+                                            clientDefined32 = [(KCSharingInternetPasswordCredential *)v5 clientDefined3];
+                                            v65 = clientDefined3;
+                                            LODWORD(v125[0]) = clientDefined3 != clientDefined32;
+                                            if (clientDefined3 == clientDefined32 || (-[KCSharingInternetPasswordCredential clientDefined3](self, "clientDefined3"), v47 = objc_claimAutoreleasedReturnValue(), -[KCSharingInternetPasswordCredential clientDefined3](v5, "clientDefined3"), v60 = objc_claimAutoreleasedReturnValue(), v61 = v47, [v47 isEqualToData:?]))
                                             {
-                                              v48 = [(KCSharingInternetPasswordCredential *)self creator];
-                                              if (v48 == [(KCSharingInternetPasswordCredential *)v5 creator]&& (v49 = [(KCSharingInternetPasswordCredential *)self type], v49 == [(KCSharingInternetPasswordCredential *)v5 type]))
+                                              creator = [(KCSharingInternetPasswordCredential *)self creator];
+                                              if (creator == [(KCSharingInternetPasswordCredential *)v5 creator]&& (v49 = [(KCSharingInternetPasswordCredential *)self type], v49 == [(KCSharingInternetPasswordCredential *)v5 type]))
                                               {
-                                                v50 = [(KCSharingInternetPasswordCredential *)self itemDescription];
-                                                v58 = [(KCSharingInternetPasswordCredential *)v5 itemDescription];
-                                                v59 = v50;
-                                                if ([v50 isEqualToString:?])
+                                                itemDescription = [(KCSharingInternetPasswordCredential *)self itemDescription];
+                                                itemDescription2 = [(KCSharingInternetPasswordCredential *)v5 itemDescription];
+                                                v59 = itemDescription;
+                                                if ([itemDescription isEqualToString:?])
                                                 {
-                                                  v51 = [(KCSharingInternetPasswordCredential *)self alias];
-                                                  v56 = [(KCSharingInternetPasswordCredential *)v5 alias];
-                                                  v57 = v51;
-                                                  if ([v51 isEqualToData:?] && (v52 = -[KCSharingInternetPasswordCredential isInvisible](self, "isInvisible"), v52 == -[KCSharingInternetPasswordCredential isInvisible](v5, "isInvisible")) && (v53 = -[KCSharingInternetPasswordCredential isNegative](self, "isNegative"), v53 == -[KCSharingInternetPasswordCredential isNegative](v5, "isNegative")) && (v54 = -[KCSharingInternetPasswordCredential customIcon](self, "customIcon"), v54 == -[KCSharingInternetPasswordCredential customIcon](v5, "customIcon")))
+                                                  alias = [(KCSharingInternetPasswordCredential *)self alias];
+                                                  alias2 = [(KCSharingInternetPasswordCredential *)v5 alias];
+                                                  v57 = alias;
+                                                  if ([alias isEqualToData:?] && (v52 = -[KCSharingInternetPasswordCredential isInvisible](self, "isInvisible"), v52 == -[KCSharingInternetPasswordCredential isInvisible](v5, "isInvisible")) && (v53 = -[KCSharingInternetPasswordCredential isNegative](self, "isNegative"), v53 == -[KCSharingInternetPasswordCredential isNegative](v5, "isNegative")) && (v54 = -[KCSharingInternetPasswordCredential customIcon](self, "customIcon"), v54 == -[KCSharingInternetPasswordCredential customIcon](v5, "customIcon")))
                                                   {
-                                                    v55 = [(KCSharingInternetPasswordCredential *)self scriptCode];
-                                                    v28 = v55 == [(KCSharingInternetPasswordCredential *)v5 scriptCode];
+                                                    scriptCode = [(KCSharingInternetPasswordCredential *)self scriptCode];
+                                                    v28 = scriptCode == [(KCSharingInternetPasswordCredential *)v5 scriptCode];
                                                   }
 
                                                   else
@@ -389,7 +389,7 @@
                                                   v24 = 1;
                                                   v25 = 1;
                                                   v26 = 1;
-                                                  v7 = v56;
+                                                  v7 = alias2;
                                                 }
 
                                                 else
@@ -1019,76 +1019,76 @@
 
 - (unint64_t)hash
 {
-  v3 = [(KCSharingInternetPasswordCredential *)self sharingGroup];
-  v4 = [v3 hash];
+  sharingGroup = [(KCSharingInternetPasswordCredential *)self sharingGroup];
+  v4 = [sharingGroup hash];
 
-  v5 = [(KCSharingInternetPasswordCredential *)self accessGroup];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  accessGroup = [(KCSharingInternetPasswordCredential *)self accessGroup];
+  v6 = [accessGroup hash] - v4 + 32 * v4;
 
-  v7 = [(KCSharingInternetPasswordCredential *)self account];
-  v8 = [v7 hash] + 32 * v6 - v6;
+  account = [(KCSharingInternetPasswordCredential *)self account];
+  v8 = [account hash] + 32 * v6 - v6;
 
-  v9 = [(KCSharingInternetPasswordCredential *)self protocol];
-  v10 = [v9 hash] + 32 * v8 - v8;
+  protocol = [(KCSharingInternetPasswordCredential *)self protocol];
+  v10 = [protocol hash] + 32 * v8 - v8;
 
-  v11 = [(KCSharingInternetPasswordCredential *)self server];
-  v12 = [v11 hash] + 32 * v10 - v10;
+  server = [(KCSharingInternetPasswordCredential *)self server];
+  v12 = [server hash] + 32 * v10 - v10;
 
-  v13 = [(KCSharingInternetPasswordCredential *)self port];
-  v14 = [v13 hash] + 32 * v12 - v12;
+  port = [(KCSharingInternetPasswordCredential *)self port];
+  v14 = [port hash] + 32 * v12 - v12;
 
-  v15 = [(KCSharingInternetPasswordCredential *)self path];
-  v16 = [v15 hash] + 32 * v14 - v14;
+  path = [(KCSharingInternetPasswordCredential *)self path];
+  v16 = [path hash] + 32 * v14 - v14;
 
-  v17 = [(KCSharingInternetPasswordCredential *)self authenticationType];
-  v18 = [v17 hash] + 32 * v16 - v16;
+  authenticationType = [(KCSharingInternetPasswordCredential *)self authenticationType];
+  v18 = [authenticationType hash] + 32 * v16 - v16;
 
-  v19 = [(KCSharingInternetPasswordCredential *)self data];
-  v20 = [v19 hash] + 32 * v18 - v18;
+  data = [(KCSharingInternetPasswordCredential *)self data];
+  v20 = [data hash] + 32 * v18 - v18;
 
-  v21 = [(KCSharingInternetPasswordCredential *)self creationDate];
-  v22 = [v21 hash] + 32 * v20 - v20;
+  creationDate = [(KCSharingInternetPasswordCredential *)self creationDate];
+  v22 = [creationDate hash] + 32 * v20 - v20;
 
-  v23 = [(KCSharingInternetPasswordCredential *)self modificationDate];
-  v24 = [v23 hash] + 32 * v22 - v22;
+  modificationDate = [(KCSharingInternetPasswordCredential *)self modificationDate];
+  v24 = [modificationDate hash] + 32 * v22 - v22;
 
-  v25 = [(KCSharingInternetPasswordCredential *)self comment];
-  v26 = [v25 hash] + 32 * v24 - v24;
+  comment = [(KCSharingInternetPasswordCredential *)self comment];
+  v26 = [comment hash] + 32 * v24 - v24;
 
-  v27 = [(KCSharingInternetPasswordCredential *)self label];
-  v28 = [v27 hash] + 32 * v26 - v26;
+  label = [(KCSharingInternetPasswordCredential *)self label];
+  v28 = [label hash] + 32 * v26 - v26;
 
-  v29 = [(KCSharingInternetPasswordCredential *)self accessibility];
-  v30 = [v29 hash] + 32 * v28 - v28;
+  accessibility = [(KCSharingInternetPasswordCredential *)self accessibility];
+  v30 = [accessibility hash] + 32 * v28 - v28;
 
-  v31 = [(KCSharingInternetPasswordCredential *)self viewHint];
-  v32 = [v31 hash] + 32 * v30 - v30;
+  viewHint = [(KCSharingInternetPasswordCredential *)self viewHint];
+  v32 = [viewHint hash] + 32 * v30 - v30;
 
-  v33 = [(KCSharingInternetPasswordCredential *)self securityDomain];
-  v34 = [v33 hash] + 32 * v32 - v32;
+  securityDomain = [(KCSharingInternetPasswordCredential *)self securityDomain];
+  v34 = [securityDomain hash] + 32 * v32 - v32;
 
-  v35 = [(KCSharingInternetPasswordCredential *)self notes];
-  v36 = [v35 hash] + 32 * v34 - v34;
+  notes = [(KCSharingInternetPasswordCredential *)self notes];
+  v36 = [notes hash] + 32 * v34 - v34;
 
-  v37 = [(KCSharingInternetPasswordCredential *)self history];
-  v38 = [v37 hash] + 32 * v36 - v36;
+  history = [(KCSharingInternetPasswordCredential *)self history];
+  v38 = [history hash] + 32 * v36 - v36;
 
-  v39 = [(KCSharingInternetPasswordCredential *)self clientDefined0];
-  v40 = [v39 hash] + 32 * v38 - v38;
+  clientDefined0 = [(KCSharingInternetPasswordCredential *)self clientDefined0];
+  v40 = [clientDefined0 hash] + 32 * v38 - v38;
 
-  v41 = [(KCSharingInternetPasswordCredential *)self clientDefined1];
-  v42 = [v41 hash] + 32 * v40 - v40;
+  clientDefined1 = [(KCSharingInternetPasswordCredential *)self clientDefined1];
+  v42 = [clientDefined1 hash] + 32 * v40 - v40;
 
-  v43 = [(KCSharingInternetPasswordCredential *)self clientDefined2];
-  v44 = [v43 hash] + 32 * v42 - v42;
+  clientDefined2 = [(KCSharingInternetPasswordCredential *)self clientDefined2];
+  v44 = [clientDefined2 hash] + 32 * v42 - v42;
 
-  v45 = [(KCSharingInternetPasswordCredential *)self clientDefined3];
-  v46 = [v45 hash] + 32 * v44 - v44;
+  clientDefined3 = [(KCSharingInternetPasswordCredential *)self clientDefined3];
+  v46 = [clientDefined3 hash] + 32 * v44 - v44;
 
   v47 = [(KCSharingInternetPasswordCredential *)self creator]+ 32 * v46 - v46;
   v48 = [(KCSharingInternetPasswordCredential *)self type]+ 32 * v47 - v47;
-  v49 = [(KCSharingInternetPasswordCredential *)self itemDescription];
-  v50 = [v49 hash] + 32 * v48 - v48;
+  itemDescription = [(KCSharingInternetPasswordCredential *)self itemDescription];
+  v50 = [itemDescription hash] + 32 * v48 - v48;
 
   v51 = [(KCSharingInternetPasswordCredential *)self isInvisible]+ 32 * v50 - v50;
   v52 = [(KCSharingInternetPasswordCredential *)self isNegative]+ 32 * v51 - v51;
@@ -1096,9 +1096,9 @@
   return [(KCSharingInternetPasswordCredential *)self scriptCode]+ 32 * v53 - v53;
 }
 
-- (KCSharingInternetPasswordCredential)initWithAttributes:(id)a3 error:(id *)a4
+- (KCSharingInternetPasswordCredential)initWithAttributes:(id)attributes error:(id *)error
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v143.receiver = self;
   v143.super_class = KCSharingInternetPasswordCredential;
   v7 = [(KCSharingInternetPasswordCredential *)&v143 init];
@@ -1108,13 +1108,13 @@
   }
 
   v8 = kSecAttrSharingGroup;
-  v9 = [v6 objectForKeyedSubscript:kSecAttrSharingGroup];
+  v9 = [attributesCopy objectForKeyedSubscript:kSecAttrSharingGroup];
   if (!v9)
   {
     v256 = @"KCSharingMissingAttribute";
     v257 = v8;
     v10 = [NSDictionary dictionaryWithObjects:&v257 forKeys:&v256 count:1];
-    sub_100061E2C(a4, 22, v10);
+    sub_100061E2C(error, 22, v10);
 LABEL_33:
 
     goto LABEL_34;
@@ -1129,22 +1129,22 @@ LABEL_33:
     v11 = [NSDictionary dictionaryWithObjects:&v253 forKeys:&v252 count:1];
     v255 = v11;
     v12 = [NSDictionary dictionaryWithObjects:&v255 forKeys:&v254 count:1];
-    v16 = a4;
+    errorCopy3 = error;
     v17 = 1;
 LABEL_17:
-    sub_100061E2C(v16, v17, v12);
+    sub_100061E2C(errorCopy3, v17, v12);
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v10 = [v6 objectForKeyedSubscript:kSecAttrAccessGroup];
+  v10 = [attributesCopy objectForKeyedSubscript:kSecAttrAccessGroup];
   if (!v10)
   {
     v250 = @"KCSharingMissingAttribute";
     v251 = kSecAttrAccessGroup;
     v11 = [NSDictionary dictionaryWithObjects:&v251 forKeys:&v250 count:1];
-    sub_100061E2C(a4, 22, v11);
+    sub_100061E2C(error, 22, v11);
 LABEL_32:
 
     goto LABEL_33;
@@ -1159,22 +1159,22 @@ LABEL_32:
     v12 = [NSDictionary dictionaryWithObjects:&v247 forKeys:&v246 count:1];
     v249 = v12;
     v13 = [NSDictionary dictionaryWithObjects:&v249 forKeys:&v248 count:1];
-    v18 = a4;
+    errorCopy5 = error;
     v19 = 1;
 LABEL_20:
-    sub_100061E2C(v18, v19, v13);
+    sub_100061E2C(errorCopy5, v19, v13);
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v11 = [v6 objectForKeyedSubscript:kSecAttrAccount];
+  v11 = [attributesCopy objectForKeyedSubscript:kSecAttrAccount];
   if (!v11)
   {
     v244 = @"KCSharingMissingAttribute";
     v245 = kSecAttrAccount;
     v12 = [NSDictionary dictionaryWithObjects:&v245 forKeys:&v244 count:1];
-    v16 = a4;
+    errorCopy3 = error;
     v17 = 22;
     goto LABEL_17;
   }
@@ -1188,22 +1188,22 @@ LABEL_30:
     v13 = [NSDictionary dictionaryWithObjects:&v241 forKeys:&v240 count:1];
     v243 = v13;
     v15 = [NSDictionary dictionaryWithObjects:&v243 forKeys:&v242 count:1];
-    v20 = a4;
+    errorCopy6 = error;
     v21 = 1;
 LABEL_23:
-    sub_100061E2C(v20, v21, v15);
+    sub_100061E2C(errorCopy6, v21, v15);
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  v12 = [v6 objectForKeyedSubscript:kSecAttrProtocol];
+  v12 = [attributesCopy objectForKeyedSubscript:kSecAttrProtocol];
   if (!v12)
   {
     v238 = @"KCSharingMissingAttribute";
     v239 = kSecAttrProtocol;
     v13 = [NSDictionary dictionaryWithObjects:&v239 forKeys:&v238 count:1];
-    v18 = a4;
+    errorCopy5 = error;
     v19 = 22;
     goto LABEL_20;
   }
@@ -1217,19 +1217,19 @@ LABEL_29:
     v15 = [NSDictionary dictionaryWithObjects:&v235 forKeys:&v234 count:1];
     v237 = v15;
     v22 = [NSDictionary dictionaryWithObjects:&v237 forKeys:&v236 count:1];
-    sub_100061E2C(a4, 1, v22);
+    sub_100061E2C(error, 1, v22);
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v13 = [v6 objectForKeyedSubscript:kSecAttrServer];
+  v13 = [attributesCopy objectForKeyedSubscript:kSecAttrServer];
   if (!v13)
   {
     v232 = @"KCSharingMissingAttribute";
     v233 = kSecAttrServer;
     v15 = [NSDictionary dictionaryWithObjects:&v233 forKeys:&v232 count:1];
-    v20 = a4;
+    errorCopy6 = error;
     v21 = 22;
     goto LABEL_23;
   }
@@ -1245,14 +1245,14 @@ LABEL_28:
     v22 = [NSDictionary dictionaryWithObjects:&v229 forKeys:&v228 count:1];
     v231 = v22;
     v24 = [NSDictionary dictionaryWithObjects:&v231 forKeys:&v230 count:1];
-    sub_100061E2C(a4, 1, v24);
+    sub_100061E2C(error, 1, v24);
 
     v13 = v23;
     v12 = v140;
     goto LABEL_28;
   }
 
-  v14 = [v6 objectForKeyedSubscript:kSecAttrPort];
+  v14 = [attributesCopy objectForKeyedSubscript:kSecAttrPort];
   if (!v14)
   {
     v226 = @"KCSharingMissingAttribute";
@@ -1260,7 +1260,7 @@ LABEL_28:
     [NSDictionary dictionaryWithObjects:&v227 forKeys:&v226 count:1];
     v26 = v12;
     v28 = v27 = v13;
-    sub_100061E2C(a4, 22, v28);
+    sub_100061E2C(error, 22, v28);
 
     goto LABEL_32;
   }
@@ -1284,7 +1284,7 @@ LABEL_28:
       v59 = [NSDictionary dictionaryWithObjects:&v223 forKeys:&v222 count:1];
       v225 = v59;
       v60 = [NSDictionary dictionaryWithObjects:&v225 forKeys:&v224 count:1];
-      sub_100061E2C(a4, 1, v60);
+      sub_100061E2C(error, 1, v60);
 
       goto LABEL_31;
     }
@@ -1292,13 +1292,13 @@ LABEL_28:
     v138 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v15 intValue]);
   }
 
-  v139 = [v6 objectForKeyedSubscript:kSecAttrPath];
+  v139 = [attributesCopy objectForKeyedSubscript:kSecAttrPath];
   if (!v139)
   {
     v220 = @"KCSharingMissingAttribute";
     v221 = kSecAttrPath;
     v57 = [NSDictionary dictionaryWithObjects:&v221 forKeys:&v220 count:1];
-    sub_100061E2C(a4, 22, v57);
+    sub_100061E2C(error, 22, v57);
 LABEL_82:
 
 LABEL_86:
@@ -1317,7 +1317,7 @@ LABEL_86:
     v62 = v61 = v13;
     v219 = v62;
     v63 = [NSDictionary dictionaryWithObjects:&v219 forKeys:&v218 count:1];
-    sub_100061E2C(a4, 1, v63);
+    sub_100061E2C(error, 1, v63);
 
     v15 = v135;
     v13 = v61;
@@ -1325,13 +1325,13 @@ LABEL_86:
     goto LABEL_82;
   }
 
-  v132 = [v6 objectForKeyedSubscript:kSecAttrAuthenticationType];
+  v132 = [attributesCopy objectForKeyedSubscript:kSecAttrAuthenticationType];
   if (!v132)
   {
     v214 = @"KCSharingMissingAttribute";
     v215 = kSecAttrAuthenticationType;
     v64 = [NSDictionary dictionaryWithObjects:&v215 forKeys:&v214 count:1];
-    sub_100061E2C(a4, 22, v64);
+    sub_100061E2C(error, 22, v64);
 LABEL_85:
 
     goto LABEL_86;
@@ -1348,7 +1348,7 @@ LABEL_85:
     v65 = [NSDictionary dictionaryWithObjects:&v211 forKeys:&v210 count:1];
     v213 = v65;
     v66 = [NSDictionary dictionaryWithObjects:&v213 forKeys:&v212 count:1];
-    sub_100061E2C(a4, 1, v66);
+    sub_100061E2C(error, 1, v66);
 
     v15 = v133;
     v13 = v137;
@@ -1356,14 +1356,14 @@ LABEL_85:
   }
 
   v141 = v12;
-  v29 = [v6 objectForKeyedSubscript:kSecValueData];
+  v29 = [attributesCopy objectForKeyedSubscript:kSecValueData];
   if (!v29)
   {
     v30 = 0;
     v208 = @"KCSharingMissingAttribute";
     v209 = kSecValueData;
     v67 = [NSDictionary dictionaryWithObjects:&v209 forKeys:&v208 count:1];
-    sub_100061E2C(a4, 22, v67);
+    sub_100061E2C(error, 22, v67);
 LABEL_89:
 
     goto LABEL_32;
@@ -1379,18 +1379,18 @@ LABEL_89:
     v68 = [NSDictionary dictionaryWithObjects:&v205 forKeys:&v204 count:1];
     v207 = v68;
     v69 = [NSDictionary dictionaryWithObjects:&v207 forKeys:&v206 count:1];
-    sub_100061E2C(a4, 1, v69);
+    sub_100061E2C(error, 1, v69);
 
     goto LABEL_89;
   }
 
-  v131 = [v6 objectForKeyedSubscript:kSecAttrCreationDate];
+  v131 = [attributesCopy objectForKeyedSubscript:kSecAttrCreationDate];
   if (!v131)
   {
     v202 = @"KCSharingMissingAttribute";
     v203 = kSecAttrCreationDate;
     v130 = [NSDictionary dictionaryWithObjects:&v203 forKeys:&v202 count:1];
-    sub_100061E2C(a4, 22, v130);
+    sub_100061E2C(error, 22, v130);
 LABEL_92:
     v72 = 0;
     goto LABEL_101;
@@ -1405,24 +1405,24 @@ LABEL_92:
     v70 = [NSDictionary dictionaryWithObjects:&v199 forKeys:&v198 count:1];
     v201 = v70;
     v71 = [NSDictionary dictionaryWithObjects:&v201 forKeys:&v200 count:1];
-    sub_100061E2C(a4, 1, v71);
+    sub_100061E2C(error, 1, v71);
 
     goto LABEL_92;
   }
 
-  v130 = [v6 objectForKeyedSubscript:kSecAttrModificationDate];
+  v130 = [attributesCopy objectForKeyedSubscript:kSecAttrModificationDate];
   if (v130)
   {
     if (_NSIsNSDate())
     {
-      v129 = [v6 objectForKeyedSubscript:kSecAttrComment];
-      v126 = [v6 objectForKeyedSubscript:kSecAttrLabel];
-      v128 = [v6 objectForKeyedSubscript:kSecAttrAccessible];
+      v129 = [attributesCopy objectForKeyedSubscript:kSecAttrComment];
+      v126 = [attributesCopy objectForKeyedSubscript:kSecAttrLabel];
+      v128 = [attributesCopy objectForKeyedSubscript:kSecAttrAccessible];
       if (v128)
       {
         if (_NSIsNSString() && [v128 length])
         {
-          v127 = [v6 objectForKeyedSubscript:kSecAttrSyncViewHint];
+          v127 = [attributesCopy objectForKeyedSubscript:kSecAttrSyncViewHint];
           if (v127 && (_NSIsNSString() & 1) == 0)
           {
             v184 = @"KCSharingInvalidAttribute";
@@ -1432,18 +1432,18 @@ LABEL_92:
             v124 = [NSDictionary dictionaryWithObjects:&v183 forKeys:&v182 count:1];
             v185 = v124;
             v78 = [NSDictionary dictionaryWithObjects:&v185 forKeys:&v184 count:1];
-            sub_100061E2C(a4, 1, v78);
+            sub_100061E2C(error, 1, v78);
           }
 
           else
           {
-            v125 = [v6 objectForKeyedSubscript:kSecAttrSecurityDomain];
+            v125 = [attributesCopy objectForKeyedSubscript:kSecAttrSecurityDomain];
             if (!v125)
             {
               v180 = @"KCSharingMissingAttribute";
               v181 = kSecAttrSecurityDomain;
               v124 = [NSDictionary dictionaryWithObjects:&v181 forKeys:&v180 count:1];
-              sub_100061E2C(a4, 22, v124);
+              sub_100061E2C(error, 22, v124);
               v125 = 0;
 LABEL_108:
               v72 = 0;
@@ -1454,19 +1454,19 @@ LABEL_148:
 
             if (_NSIsNSString())
             {
-              v124 = [v6 objectForKeyedSubscript:kSecDataInetExtraNotes];
-              v119 = [v6 objectForKeyedSubscript:kSecDataInetExtraHistory];
-              v118 = [v6 objectForKeyedSubscript:kSecDataInetExtraClientDefined0];
-              v117 = [v6 objectForKeyedSubscript:kSecDataInetExtraClientDefined1];
-              v116 = [v6 objectForKeyedSubscript:kSecDataInetExtraClientDefined2];
-              v115 = [v6 objectForKeyedSubscript:kSecDataInetExtraClientDefined3];
-              v123 = [v6 objectForKeyedSubscript:kSecAttrCreator];
+              v124 = [attributesCopy objectForKeyedSubscript:kSecDataInetExtraNotes];
+              v119 = [attributesCopy objectForKeyedSubscript:kSecDataInetExtraHistory];
+              v118 = [attributesCopy objectForKeyedSubscript:kSecDataInetExtraClientDefined0];
+              v117 = [attributesCopy objectForKeyedSubscript:kSecDataInetExtraClientDefined1];
+              v116 = [attributesCopy objectForKeyedSubscript:kSecDataInetExtraClientDefined2];
+              v115 = [attributesCopy objectForKeyedSubscript:kSecDataInetExtraClientDefined3];
+              v123 = [attributesCopy objectForKeyedSubscript:kSecAttrCreator];
               if (!v123 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
               {
-                v122 = [v6 objectForKeyedSubscript:kSecAttrType];
+                v122 = [attributesCopy objectForKeyedSubscript:kSecAttrType];
                 if (!v122 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
                 {
-                  v121 = [v6 objectForKeyedSubscript:kSecAttrDescription];
+                  v121 = [attributesCopy objectForKeyedSubscript:kSecAttrDescription];
                   if (v121 && (_NSIsNSString() & 1) == 0)
                   {
                     v166 = @"KCSharingInvalidAttribute";
@@ -1476,7 +1476,7 @@ LABEL_148:
                     v113 = [NSDictionary dictionaryWithObjects:&v165 forKeys:&v164 count:1];
                     v167 = v113;
                     v112 = [NSDictionary dictionaryWithObjects:&v167 forKeys:&v166 count:1];
-                    sub_100061E2C(a4, 1, v112);
+                    sub_100061E2C(error, 1, v112);
                     v72 = 0;
 
 LABEL_146:
@@ -1484,7 +1484,7 @@ LABEL_146:
                   }
 
                   v31 = kSecAttrAlias;
-                  v120 = [v6 objectForKeyedSubscript:kSecAttrAlias];
+                  v120 = [attributesCopy objectForKeyedSubscript:kSecAttrAlias];
                   if (v120 && (_NSIsNSData() & 1) == 0)
                   {
                     v162 = @"KCSharingInvalidAttribute";
@@ -1494,25 +1494,25 @@ LABEL_146:
                     v111 = [NSDictionary dictionaryWithObjects:&v161 forKeys:&v160 count:1];
                     v163 = v111;
                     v110 = [NSDictionary dictionaryWithObjects:&v163 forKeys:&v162 count:1];
-                    sub_100061E2C(a4, 1, v110);
+                    sub_100061E2C(error, 1, v110);
                     v72 = 0;
 
 LABEL_145:
                     goto LABEL_146;
                   }
 
-                  v113 = [v6 objectForKeyedSubscript:kSecAttrIsInvisible];
+                  v113 = [attributesCopy objectForKeyedSubscript:kSecAttrIsInvisible];
                   if (!v113 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
                   {
-                    v111 = [v6 objectForKeyedSubscript:kSecAttrIsNegative];
+                    v111 = [attributesCopy objectForKeyedSubscript:kSecAttrIsNegative];
                     if (!v111 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
                     {
                       v32 = kSecAttrHasCustomIcon;
-                      v109 = [v6 objectForKeyedSubscript:kSecAttrHasCustomIcon];
+                      v109 = [attributesCopy objectForKeyedSubscript:kSecAttrHasCustomIcon];
                       if (!v109 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
                       {
                         v33 = kSecAttrScriptCode;
-                        v108 = [v6 objectForKeyedSubscript:kSecAttrScriptCode];
+                        v108 = [attributesCopy objectForKeyedSubscript:kSecAttrScriptCode];
                         if (!v108 || (_NSIsNSNumber() & 1) != 0 || (_NSIsNSString() & 1) != 0)
                         {
                           v34 = [v9 copy];
@@ -1700,7 +1700,7 @@ LABEL_145:
                         v106 = [NSDictionary dictionaryWithObjects:&v145 forKeys:&v144 count:1];
                         v147 = v106;
                         v107 = [NSDictionary dictionaryWithObjects:&v147 forKeys:&v146 count:1];
-                        sub_100061E2C(a4, 1, v107);
+                        sub_100061E2C(error, 1, v107);
                       }
 
                       else
@@ -1712,7 +1712,7 @@ LABEL_145:
                         v105 = [NSDictionary dictionaryWithObjects:&v149 forKeys:&v148 count:1];
                         v151 = v105;
                         v106 = [NSDictionary dictionaryWithObjects:&v151 forKeys:&v150 count:1];
-                        sub_100061E2C(a4, 1, v106);
+                        sub_100061E2C(error, 1, v106);
                       }
                     }
 
@@ -1725,7 +1725,7 @@ LABEL_145:
                       v108 = [NSDictionary dictionaryWithObjects:&v153 forKeys:&v152 count:1];
                       v155 = v108;
                       v105 = [NSDictionary dictionaryWithObjects:&v155 forKeys:&v154 count:1];
-                      sub_100061E2C(a4, 1, v105);
+                      sub_100061E2C(error, 1, v105);
                     }
                   }
 
@@ -1738,7 +1738,7 @@ LABEL_145:
                     v109 = [NSDictionary dictionaryWithObjects:&v157 forKeys:&v156 count:1];
                     v159 = v109;
                     v108 = [NSDictionary dictionaryWithObjects:&v159 forKeys:&v158 count:1];
-                    sub_100061E2C(a4, 1, v108);
+                    sub_100061E2C(error, 1, v108);
                   }
 
                   v72 = 0;
@@ -1754,7 +1754,7 @@ LABEL_143:
                 v120 = [NSDictionary dictionaryWithObjects:&v169 forKeys:&v168 count:1];
                 v171 = v120;
                 v114 = [NSDictionary dictionaryWithObjects:&v171 forKeys:&v170 count:1];
-                sub_100061E2C(a4, 1, v114);
+                sub_100061E2C(error, 1, v114);
                 v72 = 0;
               }
 
@@ -1767,7 +1767,7 @@ LABEL_143:
                 v121 = [NSDictionary dictionaryWithObjects:&v173 forKeys:&v172 count:1];
                 v175 = v121;
                 v120 = [NSDictionary dictionaryWithObjects:&v175 forKeys:&v174 count:1];
-                sub_100061E2C(a4, 1, v120);
+                sub_100061E2C(error, 1, v120);
                 v72 = 0;
               }
 
@@ -1783,7 +1783,7 @@ LABEL_147:
             v78 = [NSDictionary dictionaryWithObjects:&v177 forKeys:&v176 count:1];
             v179 = v78;
             v79 = [NSDictionary dictionaryWithObjects:&v179 forKeys:&v178 count:1];
-            sub_100061E2C(a4, 1, v79);
+            sub_100061E2C(error, 1, v79);
           }
 
           goto LABEL_108;
@@ -1796,7 +1796,7 @@ LABEL_147:
         v75 = [NSDictionary dictionaryWithObjects:&v187 forKeys:&v186 count:1];
         v189 = v75;
         v76 = [NSDictionary dictionaryWithObjects:&v189 forKeys:&v188 count:1];
-        sub_100061E2C(a4, 1, v76);
+        sub_100061E2C(error, 1, v76);
       }
 
       else
@@ -1804,7 +1804,7 @@ LABEL_147:
         v190 = @"KCSharingMissingAttribute";
         v191 = kSecAttrAccessible;
         v127 = [NSDictionary dictionaryWithObjects:&v191 forKeys:&v190 count:1];
-        sub_100061E2C(a4, 22, v127);
+        sub_100061E2C(error, 22, v127);
       }
 
       v72 = 0;
@@ -1820,7 +1820,7 @@ LABEL_99:
     v73 = [NSDictionary dictionaryWithObjects:&v193 forKeys:&v192 count:1];
     v195 = v73;
     v74 = [NSDictionary dictionaryWithObjects:&v195 forKeys:&v194 count:1];
-    sub_100061E2C(a4, 1, v74);
+    sub_100061E2C(error, 1, v74);
   }
 
   else
@@ -1828,7 +1828,7 @@ LABEL_99:
     v196 = @"KCSharingMissingAttribute";
     v197 = kSecAttrModificationDate;
     v129 = [NSDictionary dictionaryWithObjects:&v197 forKeys:&v196 count:1];
-    sub_100061E2C(a4, 22, v129);
+    sub_100061E2C(error, 22, v129);
   }
 
   v72 = 0;
@@ -1849,45 +1849,45 @@ LABEL_103:
   return v25;
 }
 
-- (KCSharingInternetPasswordCredential)initWithProto:(id)a3 sharingGroup:(id)a4 error:(id *)a5
+- (KCSharingInternetPasswordCredential)initWithProto:(id)proto sharingGroup:(id)group error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  protoCopy = proto;
+  groupCopy = group;
   v82.receiver = self;
   v82.super_class = KCSharingInternetPasswordCredential;
   v9 = [(KCSharingInternetPasswordCredential *)&v82 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [groupCopy copy];
     sharingGroup = v9->_sharingGroup;
     v9->_sharingGroup = v10;
 
-    v12 = [v7 accessGroup];
-    v13 = [v12 copy];
+    accessGroup = [protoCopy accessGroup];
+    v13 = [accessGroup copy];
     accessGroup = v9->_accessGroup;
     v9->_accessGroup = v13;
 
-    v15 = [v7 account];
-    v16 = [v15 copy];
+    account = [protoCopy account];
+    v16 = [account copy];
     account = v9->_account;
     v9->_account = v16;
 
-    v18 = [v7 protocol];
-    v19 = [v18 copy];
+    protocol = [protoCopy protocol];
+    v19 = [protocol copy];
     protocol = v9->_protocol;
     v9->_protocol = v19;
 
-    v21 = [v7 server];
-    v22 = [v21 copy];
+    server = [protoCopy server];
+    v22 = [server copy];
     server = v9->_server;
     v9->_server = v22;
 
-    v24 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 port]);
+    v24 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [protoCopy port]);
     port = v9->_port;
     v9->_port = v24;
 
-    v26 = [v7 path];
-    v27 = [v26 copy];
+    path = [protoCopy path];
+    v27 = [path copy];
     v28 = v27;
     if (v27)
     {
@@ -1901,38 +1901,38 @@ LABEL_103:
 
     objc_storeStrong(&v9->_path, v29);
 
-    v30 = [v7 authenticationType];
-    v31 = [v30 copy];
+    authenticationType = [protoCopy authenticationType];
+    v31 = [authenticationType copy];
     authenticationType = v9->_authenticationType;
     v9->_authenticationType = v31;
 
-    v33 = [v7 data];
-    v34 = [v33 copy];
+    data = [protoCopy data];
+    v34 = [data copy];
     data = v9->_data;
     v9->_data = v34;
 
-    [v7 creationDate];
+    [protoCopy creationDate];
     v36 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     creationDate = v9->_creationDate;
     v9->_creationDate = v36;
 
-    [v7 modificationDate];
+    [protoCopy modificationDate];
     v38 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     modificationDate = v9->_modificationDate;
     v9->_modificationDate = v38;
 
-    v40 = [v7 comment];
-    v41 = [v40 copy];
+    comment = [protoCopy comment];
+    v41 = [comment copy];
     comment = v9->_comment;
     v9->_comment = v41;
 
-    v43 = [v7 label];
-    v44 = [v43 copy];
+    label = [protoCopy label];
+    v44 = [label copy];
     label = v9->_label;
     v9->_label = v44;
 
-    v46 = [v7 accessibility];
-    v47 = [v46 copy];
+    accessibility = [protoCopy accessibility];
+    v47 = [accessibility copy];
     v48 = v47;
     if (v47)
     {
@@ -1946,13 +1946,13 @@ LABEL_103:
 
     objc_storeStrong(&v9->_accessibility, v49);
 
-    v50 = [v7 viewHint];
-    v51 = [v50 copy];
+    viewHint = [protoCopy viewHint];
+    v51 = [viewHint copy];
     viewHint = v9->_viewHint;
     v9->_viewHint = v51;
 
-    v53 = [v7 securityDomain];
-    v54 = [v53 copy];
+    securityDomain = [protoCopy securityDomain];
+    v54 = [securityDomain copy];
     v55 = v54;
     if (v54)
     {
@@ -1966,74 +1966,74 @@ LABEL_103:
 
     objc_storeStrong(&v9->_securityDomain, v56);
 
-    v57 = [v7 notes];
-    v58 = [v57 copy];
+    notes = [protoCopy notes];
+    v58 = [notes copy];
     notes = v9->_notes;
     v9->_notes = v58;
 
-    v60 = [v7 history];
-    v61 = [v60 copy];
+    history = [protoCopy history];
+    v61 = [history copy];
     history = v9->_history;
     v9->_history = v61;
 
-    v63 = [v7 clientDefined0];
-    v64 = [v63 copy];
+    clientDefined0 = [protoCopy clientDefined0];
+    v64 = [clientDefined0 copy];
     clientDefined0 = v9->_clientDefined0;
     v9->_clientDefined0 = v64;
 
-    v66 = [v7 clientDefined1];
-    v67 = [v66 copy];
+    clientDefined1 = [protoCopy clientDefined1];
+    v67 = [clientDefined1 copy];
     clientDefined1 = v9->_clientDefined1;
     v9->_clientDefined1 = v67;
 
-    v69 = [v7 clientDefined2];
-    v70 = [v69 copy];
+    clientDefined2 = [protoCopy clientDefined2];
+    v70 = [clientDefined2 copy];
     clientDefined2 = v9->_clientDefined2;
     v9->_clientDefined2 = v70;
 
-    v72 = [v7 clientDefined3];
-    v73 = [v72 copy];
+    clientDefined3 = [protoCopy clientDefined3];
+    v73 = [clientDefined3 copy];
     clientDefined3 = v9->_clientDefined3;
     v9->_clientDefined3 = v73;
 
-    v9->_creator = [v7 creator];
-    v9->_type = [v7 type];
-    v75 = [v7 itemDescription];
-    v76 = [v75 copy];
+    v9->_creator = [protoCopy creator];
+    v9->_type = [protoCopy type];
+    itemDescription = [protoCopy itemDescription];
+    v76 = [itemDescription copy];
     itemDescription = v9->_itemDescription;
     v9->_itemDescription = v76;
 
-    v78 = [v7 alias];
-    v79 = [v78 copy];
+    alias = [protoCopy alias];
+    v79 = [alias copy];
     alias = v9->_alias;
     v9->_alias = v79;
 
-    v9->_isInvisible = [v7 isInvisible];
-    v9->_isNegative = [v7 isNegative];
-    v9->_customIcon = [v7 customIcon];
-    v9->_scriptCode = [v7 scriptCode];
+    v9->_isInvisible = [protoCopy isInvisible];
+    v9->_isNegative = [protoCopy isNegative];
+    v9->_customIcon = [protoCopy customIcon];
+    v9->_scriptCode = [protoCopy scriptCode];
   }
 
   return v9;
 }
 
-- (KCSharingInternetPasswordCredential)initWithDatabaseItem:(SecDbItem *)a3 error:(id *)a4
+- (KCSharingInternetPasswordCredential)initWithDatabaseItem:(SecDbItem *)item error:(id *)error
 {
-  v7 = [objc_opt_class() requiredAttributeKeys];
-  v8 = sub_100017964(a3, v7, a4);
+  requiredAttributeKeys = [objc_opt_class() requiredAttributeKeys];
+  v8 = sub_100017964(item, requiredAttributeKeys, error);
 
   if (v8)
   {
-    self = [(KCSharingInternetPasswordCredential *)self initWithAttributes:v8 error:a4];
-    v9 = self;
+    self = [(KCSharingInternetPasswordCredential *)self initWithAttributes:v8 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 + (NSSet)requiredAttributeKeys

@@ -1,11 +1,11 @@
 @interface IDSAuthenticateUsersMessage
 - (IDSAuthenticateUsersMessage)init;
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)_addRequestWithID:(id)a3 cert:(id)a4 sig:(id)a5 csr:(id)a6 tag:(id)a7;
-- (void)handleResponseDictionary:(id)a3;
+- (void)_addRequestWithID:(id)d cert:(id)cert sig:(id)sig csr:(id)csr tag:(id)tag;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSAuthenticateUsersMessage
@@ -19,8 +19,8 @@
   {
     IMGetConferenceSettings();
     v3 = 0;
-    v4 = [v3 lastObject];
-    [(IDSAuthenticateUsersMessage *)v2 setTopic:v4];
+    lastObject = [v3 lastObject];
+    [(IDSAuthenticateUsersMessage *)v2 setTopic:lastObject];
 
     [(IDSAuthenticateUsersMessage *)v2 setWantsResponse:1];
   }
@@ -28,20 +28,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = IDSAuthenticateUsersMessage;
-  v4 = [(IDSAuthenticateUsersMessage *)&v11 copyWithZone:a3];
-  v5 = [(IDSAuthenticateUsersMessage *)self realm];
-  [v4 setRealm:v5];
+  v4 = [(IDSAuthenticateUsersMessage *)&v11 copyWithZone:zone];
+  realm = [(IDSAuthenticateUsersMessage *)self realm];
+  [v4 setRealm:realm];
 
-  v6 = [(IDSAuthenticateUsersMessage *)self requests];
-  v7 = [v6 copy];
+  requests = [(IDSAuthenticateUsersMessage *)self requests];
+  v7 = [requests copy];
   [v4 setRequests:v7];
 
-  v8 = [(IDSAuthenticateUsersMessage *)self authenticationResponses];
-  v9 = [v8 copy];
+  authenticationResponses = [(IDSAuthenticateUsersMessage *)self authenticationResponses];
+  v9 = [authenticationResponses copy];
   [v4 setAuthenticationResponses:v9];
 
   return v4;
@@ -60,18 +60,18 @@
 {
   v8.receiver = self;
   v8.super_class = IDSAuthenticateUsersMessage;
-  v3 = [(IDSAuthenticateUsersMessage *)&v8 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSAuthenticateUsersMessage *)&v8 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSAuthenticateUsersMessage *)self requests];
-  if (v5)
+  requests = [(IDSAuthenticateUsersMessage *)self requests];
+  if (requests)
   {
-    CFDictionarySetValue(Mutable, @"authentication-requests", v5);
+    CFDictionarySetValue(Mutable, @"authentication-requests", requests);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -79,10 +79,10 @@
     sub_100927EE4();
   }
 
-  v6 = [(IDSAuthenticateUsersMessage *)self pushToken];
-  if (v6)
+  pushToken = [(IDSAuthenticateUsersMessage *)self pushToken];
+  if (pushToken)
   {
-    CFDictionarySetValue(Mutable, @"push-token", v6);
+    CFDictionarySetValue(Mutable, @"push-token", pushToken);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -97,8 +97,8 @@
 {
   v10.receiver = self;
   v10.super_class = IDSAuthenticateUsersMessage;
-  v3 = [(IDSAuthenticateUsersMessage *)&v10 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSAuthenticateUsersMessage *)&v10 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
@@ -106,11 +106,11 @@
   }
 
   v5 = _IDSIDProtocolVersionNumber();
-  v6 = [v5 stringValue];
+  stringValue = [v5 stringValue];
 
-  if (v6)
+  if (stringValue)
   {
-    CFDictionarySetValue(Mutable, @"x-protocol-version", v6);
+    CFDictionarySetValue(Mutable, @"x-protocol-version", stringValue);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -118,24 +118,24 @@
     sub_100927FF4();
   }
 
-  v7 = [(IDSAuthenticateUsersMessage *)self pushToken];
-  v8 = [v7 _FTStringFromBaseData];
+  pushToken = [(IDSAuthenticateUsersMessage *)self pushToken];
+  _FTStringFromBaseData = [pushToken _FTStringFromBaseData];
 
-  if (v8)
+  if (_FTStringFromBaseData)
   {
-    CFDictionarySetValue(Mutable, @"x-push-token", v8);
+    CFDictionarySetValue(Mutable, @"x-push-token", _FTStringFromBaseData);
   }
 
   return Mutable;
 }
 
-- (void)_addRequestWithID:(id)a3 cert:(id)a4 sig:(id)a5 csr:(id)a6 tag:(id)a7
+- (void)_addRequestWithID:(id)d cert:(id)cert sig:(id)sig csr:(id)csr tag:(id)tag
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  certCopy = cert;
+  sigCopy = sig;
+  csrCopy = csr;
+  tagCopy = tag;
   if (!self->_requests)
   {
     v17 = objc_alloc_init(NSMutableArray);
@@ -144,7 +144,7 @@
   }
 
   v19 = objc_alloc_init(NSMutableDictionary);
-  v20 = v12;
+  v20 = dCopy;
   if (v20)
   {
     CFDictionarySetValue(v19, @"user-id", v20);
@@ -155,7 +155,7 @@
     sub_10092807C();
   }
 
-  v21 = v15;
+  v21 = csrCopy;
   if (v21)
   {
     CFDictionarySetValue(v19, @"csr", v21);
@@ -166,34 +166,34 @@
     sub_100928104();
   }
 
-  if (v14)
+  if (sigCopy)
   {
-    CFDictionarySetValue(v19, @"sig", v14);
+    CFDictionarySetValue(v19, @"sig", sigCopy);
   }
 
-  if (v13)
+  if (certCopy)
   {
-    CFDictionarySetValue(v19, @"auth-cert", v13);
+    CFDictionarySetValue(v19, @"auth-cert", certCopy);
   }
 
-  if (v16)
+  if (tagCopy)
   {
-    CFDictionarySetValue(v19, @"tag", v16);
+    CFDictionarySetValue(v19, @"tag", tagCopy);
   }
 
   [(NSMutableArray *)self->_requests addObject:v19];
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v15 = v3;
-  obj = [v3 _arrayForKey:@"authentication-responses"];
+  v15 = dictionaryCopy;
+  obj = [dictionaryCopy _arrayForKey:@"authentication-responses"];
   v5 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {

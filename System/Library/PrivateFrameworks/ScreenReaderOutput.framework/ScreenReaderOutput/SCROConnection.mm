@@ -1,16 +1,16 @@
 @interface SCROConnection
 + (BOOL)inUnitTests;
-+ (void)_addConnectionToRunLoop:(id)a3;
++ (void)_addConnectionToRunLoop:(id)loop;
 + (void)_configServer;
-+ (void)_configServerWithMachServiceName:(char *)a3;
++ (void)_configServerWithMachServiceName:(char *)name;
 + (void)_createConnectionRunLoop;
-+ (void)_unconfigServerAndRetry:(BOOL)a3;
++ (void)_unconfigServerAndRetry:(BOOL)retry;
 + (void)initialize;
-- (SCROConnection)initWithCoder:(id)a3;
-- (SCROConnection)initWithHandlerType:(int)a3 delegate:(id)a4;
-- (int)performHandlerActionForKey:(int)a3;
-- (int)registerHandlerCallbackForKey:(int)a3;
-- (int)sendEvent:(id)a3;
+- (SCROConnection)initWithCoder:(id)coder;
+- (SCROConnection)initWithHandlerType:(int)type delegate:(id)delegate;
+- (int)performHandlerActionForKey:(int)key;
+- (int)registerHandlerCallbackForKey:(int)key;
+- (int)sendEvent:(id)event;
 - (void)_ping;
 - (void)_startConnection;
 - (void)_stopConnection;
@@ -21,7 +21,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     v4 = _Lock_0;
@@ -36,7 +36,7 @@
     _ActiveConnections = CFSetCreateMutable(0, 0, v7);
     v8 = MEMORY[0x277CCACC8];
 
-    [v8 detachNewThreadSelector:sel__createConnectionRunLoop toTarget:a1 withObject:0];
+    [v8 detachNewThreadSelector:sel__createConnectionRunLoop toTarget:self withObject:0];
   }
 }
 
@@ -47,7 +47,7 @@
   v3 = CFRunLoopSourceCreate(0, 0, &context);
   v8.version = 0;
   memset(&v8.retain, 0, 24);
-  v8.info = a1;
+  v8.info = self;
   Current = CFAbsoluteTimeGetCurrent();
   v5 = CFRunLoopTimerCreate(0, Current + 630720000.0, 630720000.0, 0, 0, _retryHandler, &v8);
   [_Lock_0 lock];
@@ -63,7 +63,7 @@
   CFRunLoopWakeUp(_ConnectionRunLoop);
   [_Lock_0 unlock];
   v6 = objc_autoreleasePoolPush();
-  [a1 _configServer];
+  [self _configServer];
   objc_autoreleasePoolPop(v6);
   while (1)
   {
@@ -102,10 +102,10 @@ Class __29__SCROConnection_inUnitTests__block_invoke()
     v3 = "com.apple.scrod";
   }
 
-  [a1 _configServerWithMachServiceName:v3];
+  [self _configServerWithMachServiceName:v3];
 }
 
-+ (void)_configServerWithMachServiceName:(char *)a3
++ (void)_configServerWithMachServiceName:(char *)name
 {
   if ([_ConfigLock tryLock])
   {
@@ -121,7 +121,7 @@ Class __29__SCROConnection_inUnitTests__block_invoke()
       {
         v6 = *MEMORY[0x277D85F48];
         HIDWORD(v14) = 0;
-        v7 = bootstrap_look_up(*MEMORY[0x277D85F18], a3, &v14 + 1);
+        v7 = bootstrap_look_up(*MEMORY[0x277D85F18], name, &v14 + 1);
         [_Lock_0 lock];
         _ServerPort = HIDWORD(v14);
         [_Lock_0 unlock];
@@ -132,7 +132,7 @@ Class __29__SCROConnection_inUnitTests__block_invoke()
             v8 = _SCROD_LOG();
             if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
             {
-              [(SCROConnection *)a3 _configServerWithMachServiceName:v8];
+              [(SCROConnection *)name _configServerWithMachServiceName:v8];
             }
           }
         }
@@ -176,7 +176,7 @@ LABEL_19:
     [_ConfigLock unlock];
     if (v5)
     {
-      [a1 _unconfigServerAndRetry:1];
+      [self _unconfigServerAndRetry:1];
     }
 
     return;
@@ -189,14 +189,14 @@ LABEL_19:
     block[1] = 3221225472;
     block[2] = __51__SCROConnection__configServerWithMachServiceName___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_after(v9, MEMORY[0x277D85CD0], block);
   }
 }
 
-+ (void)_unconfigServerAndRetry:(BOOL)a3
++ (void)_unconfigServerAndRetry:(BOOL)retry
 {
-  v3 = a3;
+  retryCopy = retry;
   [_ConfigLock lock];
   if (_IsServerConfigured == 1)
   {
@@ -219,7 +219,7 @@ LABEL_19:
   }
 
   [_Lock_0 unlock];
-  if (v3)
+  if (retryCopy)
   {
     Current = CFAbsoluteTimeGetCurrent();
     if (Current - *&_RetryState_2 <= 60.0)
@@ -264,12 +264,12 @@ LABEL_12:
   [_ConfigLock unlock];
 }
 
-+ (void)_addConnectionToRunLoop:(id)a3
++ (void)_addConnectionToRunLoop:(id)loop
 {
-  v4 = a3;
-  [a1 _configServer];
+  loopCopy = loop;
+  [self _configServer];
   [_Lock_0 lock];
-  CFSetSetValue(_PendingConnections, v4);
+  CFSetSetValue(_PendingConnections, loopCopy);
 
   if (_ConnectionRunLoop)
   {
@@ -282,17 +282,17 @@ LABEL_12:
   [v5 unlock];
 }
 
-- (SCROConnection)initWithHandlerType:(int)a3 delegate:(id)a4
+- (SCROConnection)initWithHandlerType:(int)type delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = SCROConnection;
   v7 = [(SCROConnection *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_handlerType = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_handlerType = type;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     [objc_opt_class() _addConnectionToRunLoop:v8];
   }
 
@@ -440,10 +440,10 @@ void __34__SCROConnection__startConnection__block_invoke(uint64_t a1)
   }
 }
 
-- (int)sendEvent:(id)a3
+- (int)sendEvent:(id)event
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   memset(v20, 0, 512);
   v18 = 0;
   *&v17[1] = 0;
@@ -452,8 +452,8 @@ void __34__SCROConnection__startConnection__block_invoke(uint64_t a1)
   v16 = 0;
   v14 = 0;
   v15 = 0;
-  v5 = [v4 mainDictionary];
-  v6 = v5;
+  mainDictionary = [eventCopy mainDictionary];
+  v6 = mainDictionary;
   v7 = atomic_load(&self->_isConnectionStarted);
   if ((v7 & 1) == 0)
   {
@@ -461,7 +461,7 @@ void __34__SCROConnection__startConnection__block_invoke(uint64_t a1)
     goto LABEL_28;
   }
 
-  v8 = SCROSerializeWrapper(v5, 4096, v20, &v18, &v17[1], v17);
+  v8 = SCROSerializeWrapper(mainDictionary, 4096, v20, &v18, &v17[1], v17);
   LODWORD(v14) = v8;
   if (v8)
   {
@@ -544,7 +544,7 @@ LABEL_28:
   return v9;
 }
 
-- (int)registerHandlerCallbackForKey:(int)a3
+- (int)registerHandlerCallbackForKey:(int)key
 {
   v8 = 0;
   v3 = atomic_load(&self->_isConnectionStarted);
@@ -560,7 +560,7 @@ LABEL_28:
     return 1;
   }
 
-  v6 = _SCRORegisterForCallback(_ServerPort, 0x1770u, self->_identifier, self->_handlerType, a3, &v8);
+  v6 = _SCRORegisterForCallback(_ServerPort, 0x1770u, self->_identifier, self->_handlerType, key, &v8);
   [_Lock_0 unlock];
   if (v6)
   {
@@ -577,7 +577,7 @@ LABEL_28:
   return v8;
 }
 
-- (int)performHandlerActionForKey:(int)a3
+- (int)performHandlerActionForKey:(int)key
 {
   v8 = 0;
   v3 = atomic_load(&self->_isConnectionStarted);
@@ -593,7 +593,7 @@ LABEL_28:
     return 1;
   }
 
-  v6 = _SCROPerformAction(_ServerPort, 0x1770u, self->_identifier, self->_handlerType, a3, &v8);
+  v6 = _SCROPerformAction(_ServerPort, 0x1770u, self->_identifier, self->_handlerType, key, &v8);
   [_Lock_0 unlock];
   if (v6)
   {
@@ -672,11 +672,11 @@ LABEL_28:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (SCROConnection)initWithCoder:(id)a3
+- (SCROConnection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   NSLog(&cfstr_NoteSecureCodi.isa);
-  v5 = -[SCROConnection initWithHandlerType:delegate:](self, "initWithHandlerType:delegate:", [v4 decodeIntegerForKey:@"handlerType"], 0);
+  v5 = -[SCROConnection initWithHandlerType:delegate:](self, "initWithHandlerType:delegate:", [coderCopy decodeIntegerForKey:@"handlerType"], 0);
 
   return v5;
 }

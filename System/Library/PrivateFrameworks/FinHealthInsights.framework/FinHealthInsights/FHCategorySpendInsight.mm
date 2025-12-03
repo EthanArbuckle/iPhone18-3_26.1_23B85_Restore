@@ -1,29 +1,29 @@
 @interface FHCategorySpendInsight
-- (FHCategorySpendInsight)initWithCoder:(id)a3;
+- (FHCategorySpendInsight)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHCategorySpendInsight
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FHCategorySpendInsight;
-  v4 = a3;
-  [(FHFeatureInsight *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[FHCategorySpendInsight merchantCategory](self forKey:{"merchantCategory", v5.receiver, v5.super_class), @"merchantCategory"}];
+  coderCopy = coder;
+  [(FHFeatureInsight *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[FHCategorySpendInsight merchantCategory](self forKey:{"merchantCategory", v5.receiver, v5.super_class), @"merchantCategory"}];
 }
 
-- (FHCategorySpendInsight)initWithCoder:(id)a3
+- (FHCategorySpendInsight)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = FHCategorySpendInsight;
-  v5 = [(FHFeatureInsight *)&v7 initWithCoder:v4];
+  v5 = [(FHFeatureInsight *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->merchantCategory = [v4 decodeIntegerForKey:@"merchantCategory"];
+    v5->merchantCategory = [coderCopy decodeIntegerForKey:@"merchantCategory"];
   }
 
   return v5;

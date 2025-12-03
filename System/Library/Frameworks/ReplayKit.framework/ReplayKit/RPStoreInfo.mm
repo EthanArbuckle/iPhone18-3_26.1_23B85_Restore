@@ -6,12 +6,12 @@
 
 - (id)dictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKeyedSubscript:@"RPStoreInfoBundleIDKey"];
+    [dictionary setObject:bundleID forKeyedSubscript:@"RPStoreInfoBundleIDKey"];
   }
 
   appName = self->_appName;

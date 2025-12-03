@@ -1,11 +1,11 @@
 @interface LanguageDetectionHelper
-+ (BOOL)isCategorizationSupportedFor:(id)a3;
++ (BOOL)isCategorizationSupportedFor:(id)for;
 - (_TtC12icloudMCCKit23LanguageDetectionHelper)init;
 @end
 
 @implementation LanguageDetectionHelper
 
-+ (BOOL)isCategorizationSupportedFor:(id)a3
++ (BOOL)isCategorizationSupportedFor:(id)for
 {
   v3 = sub_1D373777C();
   v4 = *(v3 - 8);

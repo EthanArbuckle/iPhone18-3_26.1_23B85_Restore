@@ -1,7 +1,7 @@
 @interface BKSSystemService
 - (BKSSystemService)init;
-- (BOOL)canOpenApplication:(id)a3 reason:(int *)a4;
-- (void)openApplication:(id)a3 options:(id)a4 withResult:(id)a5;
+- (BOOL)canOpenApplication:(id)application reason:(int *)reason;
+- (void)openApplication:(id)application options:(id)options withResult:(id)result;
 @end
 
 @implementation BKSSystemService
@@ -61,17 +61,17 @@ uint64_t __66__BKSSystemService_openApplication_options_clientPort_withResult___
   return result;
 }
 
-- (void)openApplication:(id)a3 options:(id)a4 withResult:(id)a5
+- (void)openApplication:(id)application options:(id)options withResult:(id)result
 {
-  v8 = a5;
+  resultCopy = result;
   fbsSystemService = self->_fbsSystemService;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__BKSSystemService_openApplication_options_withResult___block_invoke;
   v11[3] = &unk_1E6F46F00;
-  v12 = v8;
-  v10 = v8;
-  [(FBSSystemService *)fbsSystemService openApplication:a3 options:a4 withResult:v11];
+  v12 = resultCopy;
+  v10 = resultCopy;
+  [(FBSSystemService *)fbsSystemService openApplication:application options:options withResult:v11];
 }
 
 uint64_t __55__BKSSystemService_openApplication_options_withResult___block_invoke(uint64_t a1)
@@ -85,19 +85,19 @@ uint64_t __55__BKSSystemService_openApplication_options_withResult___block_invok
   return result;
 }
 
-- (BOOL)canOpenApplication:(id)a3 reason:(int *)a4
+- (BOOL)canOpenApplication:(id)application reason:(int *)reason
 {
-  if (a4)
+  if (reason)
   {
-    v6 = *a4;
-    result = [(FBSSystemService *)self->_fbsSystemService canOpenApplication:a3 reason:&v6];
-    *a4 = v6;
+    v6 = *reason;
+    result = [(FBSSystemService *)self->_fbsSystemService canOpenApplication:application reason:&v6];
+    *reason = v6;
   }
 
   else
   {
     v6 = 0;
-    return [(FBSSystemService *)self->_fbsSystemService canOpenApplication:a3 reason:&v6];
+    return [(FBSSystemService *)self->_fbsSystemService canOpenApplication:application reason:&v6];
   }
 
   return result;

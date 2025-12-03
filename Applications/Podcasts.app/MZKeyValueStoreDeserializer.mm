@@ -1,21 +1,21 @@
 @interface MZKeyValueStoreDeserializer
-+ (BOOL)validateDataFromSuccessfulSetTransaction:(id)a3 forKey:(id)a4;
-+ (unint64_t)responseTypeForTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 mismatch:(BOOL)a6;
++ (BOOL)validateDataFromSuccessfulSetTransaction:(id)transaction forKey:(id)key;
++ (unint64_t)responseTypeForTransaction:(id)transaction withData:(id)data forKey:(id)key mismatch:(BOOL)mismatch;
 - (MZKeyValueStoreDeserializeOperationDelegate)delegate;
-- (MZKeyValueStoreDeserializer)initWithTransaction:(id)a3 response:(id)a4;
+- (MZKeyValueStoreDeserializer)initWithTransaction:(id)transaction response:(id)response;
 - (NSError)requestError;
 - (void)_delegateOperationDidFinish;
 - (void)deserialize;
-- (void)finishedDeserializationForKey:(id)a3;
-- (void)mergeData:(id)a3 forKey:(id)a4 version:(id)a5 mismatch:(BOOL)a6 finishedBlock:(id)a7;
+- (void)finishedDeserializationForKey:(id)key;
+- (void)mergeData:(id)data forKey:(id)key version:(id)version mismatch:(BOOL)mismatch finishedBlock:(id)block;
 @end
 
 @implementation MZKeyValueStoreDeserializer
 
-- (MZKeyValueStoreDeserializer)initWithTransaction:(id)a3 response:(id)a4
+- (MZKeyValueStoreDeserializer)initWithTransaction:(id)transaction response:(id)response
 {
-  v7 = a3;
-  v8 = a4;
+  transactionCopy = transaction;
+  responseCopy = response;
   v17.receiver = self;
   v17.super_class = MZKeyValueStoreDeserializer;
   v9 = [(MZKeyValueStoreDeserializer *)&v17 init];
@@ -25,17 +25,17 @@
     pendingDeserializations = v9->_pendingDeserializations;
     v9->_pendingDeserializations = v10;
 
-    objc_storeStrong(&v9->_transaction, a3);
-    objc_storeStrong(&v9->_serverResponse, a4);
-    v12 = [v8 valueForKey:@"status"];
+    objc_storeStrong(&v9->_transaction, transaction);
+    objc_storeStrong(&v9->_serverResponse, response);
+    v12 = [responseCopy valueForKey:@"status"];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 integerValue];
-      v9->_status = v14;
-      if (v14 == 1197)
+      integerValue = [v12 integerValue];
+      v9->_status = integerValue;
+      if (integerValue == 1197)
       {
-        v15 = [v8 objectForKey:@"retry-seconds"];
+        v15 = [responseCopy objectForKey:@"retry-seconds"];
         v9->_retrySeconds = [v15 unsignedIntegerValue];
       }
     }
@@ -52,17 +52,17 @@
 - (void)deserialize
 {
   self->_isDirty = 0;
-  v3 = [(MZKeyValueStoreDeserializer *)self serverResponse];
-  v4 = [v3 valueForKey:@"values"];
+  serverResponse = [(MZKeyValueStoreDeserializer *)self serverResponse];
+  v4 = [serverResponse valueForKey:@"values"];
 
-  v5 = [(MZKeyValueStoreDeserializer *)self serverResponse];
-  v6 = [v5 valueForKey:@"domain-version"];
+  serverResponse2 = [(MZKeyValueStoreDeserializer *)self serverResponse];
+  v6 = [serverResponse2 valueForKey:@"domain-version"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_respondsToSelector())
   {
-    v7 = [v6 stringValue];
+    stringValue = [v6 stringValue];
 
-    v6 = v7;
+    v6 = stringValue;
   }
 
   v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
@@ -96,10 +96,10 @@
   }
 
   [(MZKeyValueStoreDeserializer *)self setPendingDeserializations:v8];
-  v15 = [(MZKeyValueStoreDeserializer *)self transaction];
-  v16 = [v15 processor];
-  v17 = [(MZKeyValueStoreDeserializer *)self transaction];
-  [v16 transaction:v17 willProcessResponseWithDomainVersion:v6];
+  transaction = [(MZKeyValueStoreDeserializer *)self transaction];
+  processor = [transaction processor];
+  transaction2 = [(MZKeyValueStoreDeserializer *)self transaction];
+  [processor transaction:transaction2 willProcessResponseWithDomainVersion:v6];
 
   v43 = 0u;
   v44 = 0u;
@@ -128,14 +128,14 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_respondsToSelector())
         {
-          v26 = [v25 stringValue];
+          stringValue2 = [v25 stringValue];
 
-          v25 = v26;
+          v25 = stringValue2;
         }
 
         v27 = [v23 valueForKey:@"value"];
-        v28 = [v27 MZDataByInflatingWithGZip];
-        v29 = [(MZKeyValueStoreDeserializer *)self versionMismatch];
+        mZDataByInflatingWithGZip = [v27 MZDataByInflatingWithGZip];
+        versionMismatch = [(MZKeyValueStoreDeserializer *)self versionMismatch];
         v39[0] = _NSConcreteStackBlock;
         v39[1] = 3221225472;
         v39[2] = sub_1000A1C2C;
@@ -143,7 +143,7 @@
         v39[4] = self;
         v40 = v24;
         v30 = v24;
-        [(MZKeyValueStoreDeserializer *)self mergeData:v28 forKey:v30 version:v25 mismatch:v29 finishedBlock:v39];
+        [(MZKeyValueStoreDeserializer *)self mergeData:mZDataByInflatingWithGZip forKey:v30 version:v25 mismatch:versionMismatch finishedBlock:v39];
       }
 
       v18 = obj;
@@ -152,10 +152,10 @@
 
     while (v21);
 
-    v31 = [(MZKeyValueStoreDeserializer *)self transaction];
-    v32 = [v31 processor];
-    v33 = [(MZKeyValueStoreDeserializer *)self transaction];
-    [v32 transaction:v33 didProcessResponseWithDomainVersion:v6];
+    transaction3 = [(MZKeyValueStoreDeserializer *)self transaction];
+    processor2 = [transaction3 processor];
+    transaction4 = [(MZKeyValueStoreDeserializer *)self transaction];
+    [processor2 transaction:transaction4 didProcessResponseWithDomainVersion:v6];
 
     v8 = v37;
   }
@@ -163,43 +163,43 @@
   else
   {
 
-    v34 = [(MZKeyValueStoreDeserializer *)self transaction];
-    v35 = [v34 processor];
-    v36 = [(MZKeyValueStoreDeserializer *)self transaction];
-    [v35 transaction:v36 didProcessResponseWithDomainVersion:v6];
+    transaction5 = [(MZKeyValueStoreDeserializer *)self transaction];
+    processor3 = [transaction5 processor];
+    transaction6 = [(MZKeyValueStoreDeserializer *)self transaction];
+    [processor3 transaction:transaction6 didProcessResponseWithDomainVersion:v6];
 
     [(MZKeyValueStoreDeserializer *)self _delegateOperationDidFinish];
   }
 }
 
-- (void)mergeData:(id)a3 forKey:(id)a4 version:(id)a5 mismatch:(BOOL)a6 finishedBlock:(id)a7
+- (void)mergeData:(id)data forKey:(id)key version:(id)version mismatch:(BOOL)mismatch finishedBlock:(id)block
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  mismatchCopy = mismatch;
+  dataCopy = data;
+  keyCopy = key;
+  versionCopy = version;
+  blockCopy = block;
   v16 = objc_opt_class();
-  v17 = [(MZKeyValueStoreDeserializer *)self transaction];
-  v18 = [v16 responseTypeForTransaction:v17 withData:v12 forKey:v13 mismatch:v8];
+  transaction = [(MZKeyValueStoreDeserializer *)self transaction];
+  v18 = [v16 responseTypeForTransaction:transaction withData:dataCopy forKey:keyCopy mismatch:mismatchCopy];
 
   if (v18 <= 1)
   {
     if (!v18)
     {
-      v19 = [(MZKeyValueStoreDeserializer *)self transaction];
-      v20 = [v19 processor];
-      v21 = [(MZKeyValueStoreDeserializer *)self transaction];
-      [v20 successfulGetTransaction:v21 withData:v12 forKey:v13 version:v14 finishedBlock:v15];
+      transaction2 = [(MZKeyValueStoreDeserializer *)self transaction];
+      processor = [transaction2 processor];
+      transaction3 = [(MZKeyValueStoreDeserializer *)self transaction];
+      [processor successfulGetTransaction:transaction3 withData:dataCopy forKey:keyCopy version:versionCopy finishedBlock:blockCopy];
       goto LABEL_12;
     }
 
     if (v18 == 1)
     {
-      v19 = [(MZKeyValueStoreDeserializer *)self transaction];
-      v20 = [v19 processor];
-      v21 = [(MZKeyValueStoreDeserializer *)self transaction];
-      [v20 successfulSetTransaction:v21 withData:v12 forKey:v13 version:v14 finishedBlock:v15];
+      transaction2 = [(MZKeyValueStoreDeserializer *)self transaction];
+      processor = [transaction2 processor];
+      transaction3 = [(MZKeyValueStoreDeserializer *)self transaction];
+      [processor successfulSetTransaction:transaction3 withData:dataCopy forKey:keyCopy version:versionCopy finishedBlock:blockCopy];
       goto LABEL_12;
     }
   }
@@ -208,10 +208,10 @@
   {
     if ((v18 - 2) < 2)
     {
-      v19 = [(MZKeyValueStoreDeserializer *)self transaction];
-      v20 = [v19 processor];
-      v21 = [(MZKeyValueStoreDeserializer *)self transaction];
-      [v20 conflictForSetTransaction:v21 withData:v12 forKey:v13 version:v14 finishedBlock:v15];
+      transaction2 = [(MZKeyValueStoreDeserializer *)self transaction];
+      processor = [transaction2 processor];
+      transaction3 = [(MZKeyValueStoreDeserializer *)self transaction];
+      [processor conflictForSetTransaction:transaction3 withData:dataCopy forKey:keyCopy version:versionCopy finishedBlock:blockCopy];
 LABEL_12:
 
       goto LABEL_13;
@@ -222,41 +222,41 @@ LABEL_12:
       v22 = _MTLogCategoryCloudSync();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
-        v23 = [(MZKeyValueStoreDeserializer *)self transaction];
+        transaction4 = [(MZKeyValueStoreDeserializer *)self transaction];
         v24[0] = 67109376;
-        v24[1] = [v23 type];
+        v24[1] = [transaction4 type];
         v25 = 1024;
-        v26 = v8;
+        v26 = mismatchCopy;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_FAULT, "Unacceptable combination of transaction type (%d) and mismatch (%d). Shouldn't reach this branch.", v24, 0xEu);
       }
 
-      v15[2](v15, 0);
+      blockCopy[2](blockCopy, 0);
     }
   }
 
 LABEL_13:
 }
 
-+ (unint64_t)responseTypeForTransaction:(id)a3 withData:(id)a4 forKey:(id)a5 mismatch:(BOOL)a6
++ (unint64_t)responseTypeForTransaction:(id)transaction withData:(id)data forKey:(id)key mismatch:(BOOL)mismatch
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 type];
-  v13 = [v11 type];
-  v14 = [v11 type];
+  mismatchCopy = mismatch;
+  dataCopy = data;
+  keyCopy = key;
+  transactionCopy = transaction;
+  type = [transactionCopy type];
+  type2 = [transactionCopy type];
+  type3 = [transactionCopy type];
 
-  if (v13 != 2 || v6)
+  if (type2 != 2 || mismatchCopy)
   {
     v15 = 4;
-    if (v14 == 2 && v6)
+    if (type3 == 2 && mismatchCopy)
     {
       v15 = 2;
     }
   }
 
-  else if ([objc_opt_class() validateDataFromSuccessfulSetTransaction:v9 forKey:v10])
+  else if ([objc_opt_class() validateDataFromSuccessfulSetTransaction:dataCopy forKey:keyCopy])
   {
     v15 = 1;
   }
@@ -266,7 +266,7 @@ LABEL_13:
     v15 = 3;
   }
 
-  if (v12 != 1 || v6)
+  if (type != 1 || mismatchCopy)
   {
     v17 = v15;
   }
@@ -279,9 +279,9 @@ LABEL_13:
   return v17;
 }
 
-+ (BOOL)validateDataFromSuccessfulSetTransaction:(id)a3 forKey:(id)a4
++ (BOOL)validateDataFromSuccessfulSetTransaction:(id)transaction forKey:(id)key
 {
-  v4 = [a3 length];
+  v4 = [transaction length];
   if (v4)
   {
     v5 = _MTLogCategoryCloudSync();
@@ -295,16 +295,16 @@ LABEL_13:
   return v4 == 0;
 }
 
-- (void)finishedDeserializationForKey:(id)a3
+- (void)finishedDeserializationForKey:(id)key
 {
-  v8 = a3;
+  keyCopy = key;
   v4 = self->_pendingDeserializations;
   objc_sync_enter(v4);
-  v5 = [(MZKeyValueStoreDeserializer *)self pendingDeserializations];
-  [v5 removeObjectIdenticalTo:v8];
+  pendingDeserializations = [(MZKeyValueStoreDeserializer *)self pendingDeserializations];
+  [pendingDeserializations removeObjectIdenticalTo:keyCopy];
 
-  v6 = [(MZKeyValueStoreDeserializer *)self pendingDeserializations];
-  v7 = [v6 count];
+  pendingDeserializations2 = [(MZKeyValueStoreDeserializer *)self pendingDeserializations];
+  v7 = [pendingDeserializations2 count];
 
   if (!v7)
   {
@@ -316,26 +316,26 @@ LABEL_13:
 
 - (void)_delegateOperationDidFinish
 {
-  v7 = self;
-  if ([(MZKeyValueStoreDeserializer *)v7 versionMismatch])
+  selfCopy = self;
+  if ([(MZKeyValueStoreDeserializer *)selfCopy versionMismatch])
   {
-    v2 = v7;
-    if (!v7->_isDirty)
+    v2 = selfCopy;
+    if (!selfCopy->_isDirty)
     {
       v4 = 0;
       goto LABEL_10;
     }
 
-    v3 = [(MZKeyValueStoreDeserializer *)v7 transaction];
-    if ([v3 type] == 2)
+    transaction = [(MZKeyValueStoreDeserializer *)selfCopy transaction];
+    if ([transaction type] == 2)
     {
       v4 = 1;
     }
 
     else
     {
-      v5 = [(MZKeyValueStoreDeserializer *)v7 transaction];
-      v4 = [v5 type] == 3;
+      transaction2 = [(MZKeyValueStoreDeserializer *)selfCopy transaction];
+      v4 = [transaction2 type] == 3;
     }
   }
 
@@ -344,10 +344,10 @@ LABEL_13:
     v4 = 0;
   }
 
-  v2 = v7;
+  v2 = selfCopy;
 LABEL_10:
-  v6 = [(MZKeyValueStoreDeserializer *)v2 delegate];
-  [v6 deserializeOperationDidFinish:v7 shouldReschedule:v4];
+  delegate = [(MZKeyValueStoreDeserializer *)v2 delegate];
+  [delegate deserializeOperationDidFinish:selfCopy shouldReschedule:v4];
 }
 
 - (NSError)requestError

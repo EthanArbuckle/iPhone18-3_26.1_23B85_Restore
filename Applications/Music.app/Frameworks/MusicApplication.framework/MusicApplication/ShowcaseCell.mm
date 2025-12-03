@@ -3,22 +3,22 @@
 - (NSString)accessibilitySubtitle;
 - (NSString)accessibilityTitle;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ShowcaseCell
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_BAE44();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_BBD48(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_BBD48(change);
 }
 
 - (NSString)accessibilityHeadline

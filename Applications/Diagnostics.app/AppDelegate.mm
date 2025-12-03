@@ -1,58 +1,58 @@
 @interface AppDelegate
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (id)sceneDidDisconnect:;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
 - (void)applicationWillTerminate:;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)setWindow:(id)window;
 @end
 
 @implementation AppDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC11Diagnostics11AppDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC11Diagnostics11AppDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC11Diagnostics11AppDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1000F82D4(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1000F82D4(sceneCopy, optionsCopy);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_10003E110(0, &qword_100201298);
   sub_1000AC8BC(&qword_1002012A0, &qword_100201298);
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_1000F9680(v6);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
+  foregroundCopy = foreground;
+  selfCopy = self;
   sub_1000F994C();
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
+  backgroundCopy = background;
+  selfCopy = self;
   sub_1000F9B80();
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
   if (qword_1001FC7B0 != -1)
   {
@@ -70,11 +70,11 @@
   os_log(_:dso:log:type:_:)();
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 role];
-  v7 = [objc_allocWithZone(UISceneConfiguration) initWithName:0 sessionRole:v6];
+  sessionCopy = session;
+  role = [sessionCopy role];
+  v7 = [objc_allocWithZone(UISceneConfiguration) initWithName:0 sessionRole:role];
 
   type metadata accessor for AppDelegate();
   [v7 setDelegateClass:swift_getObjCClassFromMetadata()];
@@ -147,8 +147,8 @@
   }
 
   sub_10009E188();
-  v5 = [objc_opt_self() sharedApplication];
-  [v5 setIdleTimerDisabled:0];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  [sharedApplication setIdleTimerDisabled:0];
 
   if (qword_1001FC6B8 != -1)
   {
@@ -242,8 +242,8 @@ LABEL_23:
   v23 = v17[OBJC_IVAR____TtC11Diagnostics10Assertions_voiceOverCaptionsUserSetting];
   if (v23 != 2)
   {
-    v24 = [objc_opt_self() sharedInstance];
-    [v24 setEnableVoiceOverCaptions:v23 & 1];
+    sharedInstance = [objc_opt_self() sharedInstance];
+    [sharedInstance setEnableVoiceOverCaptions:v23 & 1];
   }
 
   if ((v17[OBJC_IVAR____TtC11Diagnostics10Assertions_motionCuesUserSetting + 4] & 1) == 0)

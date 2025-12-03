@@ -1,8 +1,8 @@
 @interface ICCalculateDocumentController.Highlighter
-- (void)calculateDocumentControllerDidUpdateDocument:(id)a3;
-- (void)noteDidChangeCalculatePreviewBehavior:(id)a3;
+- (void)calculateDocumentControllerDidUpdateDocument:(id)document;
+- (void)noteDidChangeCalculatePreviewBehavior:(id)behavior;
 - (void)performHighlightsUpdate;
-- (void)textStorageDidProcessEndEditing:(id)a3;
+- (void)textStorageDidProcessEndEditing:(id)editing;
 @end
 
 @implementation ICCalculateDocumentController.Highlighter
@@ -13,7 +13,7 @@
   sub_1D440837C();
 }
 
-- (void)textStorageDidProcessEndEditing:(id)a3
+- (void)textStorageDidProcessEndEditing:(id)editing
 {
   v3 = sub_1D4416E94();
   v4 = *(v3 - 8);
@@ -26,7 +26,7 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)calculateDocumentControllerDidUpdateDocument:(id)a3
+- (void)calculateDocumentControllerDidUpdateDocument:(id)document
 {
   v3 = sub_1D4416E94();
   v4 = *(v3 - 8);
@@ -40,7 +40,7 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)noteDidChangeCalculatePreviewBehavior:(id)a3
+- (void)noteDidChangeCalculatePreviewBehavior:(id)behavior
 {
   v3 = sub_1D4416E94();
   v4 = *(v3 - 8);

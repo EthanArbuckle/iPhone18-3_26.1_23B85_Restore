@@ -1,35 +1,35 @@
 @interface PXDedupingBadgeView
-- (PXDedupingBadgeView)initWithDedupingType:(id)a3;
-- (id)symbolWithDedupingType:(id)a3;
-- (void)setDedupingType:(id)a3;
+- (PXDedupingBadgeView)initWithDedupingType:(id)type;
+- (id)symbolWithDedupingType:(id)type;
+- (void)setDedupingType:(id)type;
 @end
 
 @implementation PXDedupingBadgeView
 
-- (id)symbolWithDedupingType:(id)a3
+- (id)symbolWithDedupingType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SimilarStacking"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SimilarStacking"])
   {
     v4 = @"⏏️";
   }
 
-  else if ([v3 isEqualToString:@"Semantic"])
+  else if ([typeCopy isEqualToString:@"Semantic"])
   {
     v4 = @"🔀";
   }
 
-  else if ([v3 isEqualToString:@"SDOFOrHDR"])
+  else if ([typeCopy isEqualToString:@"SDOFOrHDR"])
   {
     v4 = @"⤴️";
   }
 
-  else if ([v3 isEqualToString:@"Timing"])
+  else if ([typeCopy isEqualToString:@"Timing"])
   {
     v4 = @"🔃";
   }
 
-  else if ([v3 isEqualToString:@"SimilarVideo"])
+  else if ([typeCopy isEqualToString:@"SimilarVideo"])
   {
     v4 = @"🎦";
   }
@@ -42,15 +42,15 @@
   return v4;
 }
 
-- (void)setDedupingType:(id)a3
+- (void)setDedupingType:(id)type
 {
-  v4 = [(PXDedupingBadgeView *)self symbolWithDedupingType:a3];
+  v4 = [(PXDedupingBadgeView *)self symbolWithDedupingType:type];
   [(PXTextSymbolView *)self setSymbol:v4];
 }
 
-- (PXDedupingBadgeView)initWithDedupingType:(id)a3
+- (PXDedupingBadgeView)initWithDedupingType:(id)type
 {
-  v4 = [(PXDedupingBadgeView *)self symbolWithDedupingType:a3];
+  v4 = [(PXDedupingBadgeView *)self symbolWithDedupingType:type];
   v7.receiver = self;
   v7.super_class = PXDedupingBadgeView;
   v5 = [(PXTextSymbolView *)&v7 initWithSymbol:v4];

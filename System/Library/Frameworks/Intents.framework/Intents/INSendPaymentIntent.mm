@@ -7,31 +7,31 @@
 - (id)_metadata;
 - (id)_redactedDictionaryRepresentation;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setCurrencyAmount:(id)a3;
-- (void)setNote:(id)a3;
-- (void)setPayee:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setCurrencyAmount:(id)amount;
+- (void)setNote:(id)note;
+- (void)setPayee:(id)payee;
 @end
 
 @implementation INSendPaymentIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSendPaymentIntent *)self _typedBackingStore];
-  v15 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 payee];
-  v10 = INIntentSlotValueRedactedContactFromContact(v9, a3, v15);
+  idCopy = id;
+  _typedBackingStore = [(INSendPaymentIntent *)self _typedBackingStore];
+  v15 = idCopy;
+  v8 = [_typedBackingStore copy];
+  payee = [_typedBackingStore payee];
+  v10 = INIntentSlotValueRedactedContactFromContact(payee, options, v15);
   [v8 setPayee:v10];
 
-  v11 = [v7 currencyAmount];
-  v12 = INIntentSlotValueRedactedCurrencyAmountFromCurrencyAmount(v11, a3, v15);
+  currencyAmount = [_typedBackingStore currencyAmount];
+  v12 = INIntentSlotValueRedactedCurrencyAmountFromCurrencyAmount(currencyAmount, options, v15);
   [v8 setCurrencyAmount:v12];
 
-  v13 = [v7 note];
-  v14 = INIntentSlotValueRedactedStringFromString(v13, a3, v15);
+  note = [_typedBackingStore note];
+  v14 = INIntentSlotValueRedactedStringFromString(note, options, v15);
 
   [v8 setNote:v14];
   [(INIntent *)self setBackingStore:v8];
@@ -41,42 +41,42 @@
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"payee";
-  v3 = [(INSendPaymentIntent *)self payee];
-  v4 = v3;
-  if (!v3)
+  payee = [(INSendPaymentIntent *)self payee];
+  null = payee;
+  if (!payee)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"currencyAmount";
-  v5 = [(INSendPaymentIntent *)self currencyAmount];
-  v6 = v5;
-  if (!v5)
+  currencyAmount = [(INSendPaymentIntent *)self currencyAmount];
+  null2 = currencyAmount;
+  if (!currencyAmount)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"note";
-  v7 = [(INSendPaymentIntent *)self note];
-  v8 = v7;
-  if (!v7)
+  note = [(INSendPaymentIntent *)self note];
+  null3 = note;
+  if (!note)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (!v7)
+  if (!note)
   {
   }
 
-  if (!v5)
+  if (!currencyAmount)
   {
   }
 
-  if (!v3)
+  if (!payee)
   {
   }
 
@@ -87,64 +87,64 @@
 
 - (id)_redactedDictionaryRepresentation
 {
-  v2 = [(INSendPaymentIntent *)self _dictionaryRepresentation];
-  v3 = [v2 mutableCopy];
+  _dictionaryRepresentation = [(INSendPaymentIntent *)self _dictionaryRepresentation];
+  v3 = [_dictionaryRepresentation mutableCopy];
 
   [v3 setObject:@"<redacted>" forKey:@"note"];
 
   return v3;
 }
 
-- (void)setNote:(id)a3
+- (void)setNote:(id)note
 {
-  v4 = a3;
-  v6 = [(INSendPaymentIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToString(v4);
+  noteCopy = note;
+  _typedBackingStore = [(INSendPaymentIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToString(noteCopy);
 
-  [v6 setNote:v5];
+  [_typedBackingStore setNote:v5];
 }
 
 - (NSString)note
 {
-  v2 = [(INSendPaymentIntent *)self _typedBackingStore];
-  v3 = [v2 note];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _typedBackingStore = [(INSendPaymentIntent *)self _typedBackingStore];
+  note = [_typedBackingStore note];
+  v4 = INIntentSlotValueTransformFromString(note);
 
   return v4;
 }
 
-- (void)setCurrencyAmount:(id)a3
+- (void)setCurrencyAmount:(id)amount
 {
-  v4 = a3;
-  v6 = [(INSendPaymentIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToCurrencyAmount(v4);
+  amountCopy = amount;
+  _typedBackingStore = [(INSendPaymentIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToCurrencyAmount(amountCopy);
 
-  [v6 setCurrencyAmount:v5];
+  [_typedBackingStore setCurrencyAmount:v5];
 }
 
 - (INCurrencyAmount)currencyAmount
 {
-  v2 = [(INSendPaymentIntent *)self _typedBackingStore];
-  v3 = [v2 currencyAmount];
-  v4 = INIntentSlotValueTransformFromCurrencyAmount(v3);
+  _typedBackingStore = [(INSendPaymentIntent *)self _typedBackingStore];
+  currencyAmount = [_typedBackingStore currencyAmount];
+  v4 = INIntentSlotValueTransformFromCurrencyAmount(currencyAmount);
 
   return v4;
 }
 
-- (void)setPayee:(id)a3
+- (void)setPayee:(id)payee
 {
-  v4 = a3;
-  v6 = [(INSendPaymentIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToContact(v4);
+  payeeCopy = payee;
+  _typedBackingStore = [(INSendPaymentIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToContact(payeeCopy);
 
-  [v6 setPayee:v5];
+  [_typedBackingStore setPayee:v5];
 }
 
 - (INPerson)payee
 {
-  v2 = [(INSendPaymentIntent *)self _typedBackingStore];
-  v3 = [v2 payee];
-  v4 = INIntentSlotValueTransformFromContact(v3);
+  _typedBackingStore = [(INSendPaymentIntent *)self _typedBackingStore];
+  payee = [_typedBackingStore payee];
+  v4 = INIntentSlotValueTransformFromContact(payee);
 
   return v4;
 }
@@ -168,28 +168,28 @@
   return v12;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSendPaymentIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSendPaymentIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSendPaymentIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSendPaymentIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

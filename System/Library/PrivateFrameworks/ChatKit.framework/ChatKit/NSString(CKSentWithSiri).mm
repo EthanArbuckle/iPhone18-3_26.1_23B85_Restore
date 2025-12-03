@@ -11,14 +11,14 @@
   v4 = objc_alloc_init(MEMORY[0x1E696AD48]);
   if (v3)
   {
-    v5 = [v3 exemplarCharacterSet];
-    [v4 formUnionWithCharacterSet:v5];
+    exemplarCharacterSet = [v3 exemplarCharacterSet];
+    [v4 formUnionWithCharacterSet:exemplarCharacterSet];
   }
 
-  v6 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  [v4 formUnionWithCharacterSet:v6];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  [v4 formUnionWithCharacterSet:whitespaceCharacterSet];
 
-  v7 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:a1];
+  v7 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:self];
   v8 = [v4 isSupersetOfSet:v7];
 
   return v8;

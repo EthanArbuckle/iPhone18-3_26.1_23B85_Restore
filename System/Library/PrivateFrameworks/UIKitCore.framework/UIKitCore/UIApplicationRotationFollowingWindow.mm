@@ -1,18 +1,18 @@
 @interface UIApplicationRotationFollowingWindow
-- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (BOOL)isInterfaceAutorotationDisabled;
 - (UIApplicationRotationFollowingWindow)init;
-- (UIApplicationRotationFollowingWindow)initWithWindowScene:(id)a3;
-- (id)__autorotationSanityCheckObjectFromSource:(id)a3 selector:(SEL)a4;
-- (id)_initWithFrame:(CGRect)a3 attached:(BOOL)a4;
-- (id)_initWithFrame:(CGRect)a3 debugName:(id)a4 attached:(BOOL)a5;
-- (id)_initWithFrame:(CGRect)a3 debugName:(id)a4 displayConfiguration:(id)a5;
-- (id)_initWithFrame:(CGRect)a3 debugName:(id)a4 scene:(id)a5 attached:(BOOL)a6;
-- (id)_initWithFrame:(CGRect)a3 debugName:(id)a4 windowScene:(id)a5;
+- (UIApplicationRotationFollowingWindow)initWithWindowScene:(id)scene;
+- (id)__autorotationSanityCheckObjectFromSource:(id)source selector:(SEL)selector;
+- (id)_initWithFrame:(CGRect)frame attached:(BOOL)attached;
+- (id)_initWithFrame:(CGRect)frame debugName:(id)name attached:(BOOL)attached;
+- (id)_initWithFrame:(CGRect)frame debugName:(id)name displayConfiguration:(id)configuration;
+- (id)_initWithFrame:(CGRect)frame debugName:(id)name scene:(id)scene attached:(BOOL)attached;
+- (id)_initWithFrame:(CGRect)frame debugName:(id)name windowScene:(id)scene;
 - (id)_topMostWindow;
 - (void)_commonApplicationRotationFollowingWindowInit;
-- (void)applicationWindow:(id)a3 didRotateWithOrientation:(int64_t)a4 duration:(double)a5;
-- (void)setPriorityLevel:(int64_t)a3;
+- (void)applicationWindow:(id)window didRotateWithOrientation:(int64_t)orientation duration:(double)duration;
+- (void)setPriorityLevel:(int64_t)level;
 @end
 
 @implementation UIApplicationRotationFollowingWindow
@@ -26,12 +26,12 @@
     return 1;
   }
 
-  v4 = [(UIWindow *)self rootViewController];
-  v5 = [(UIApplicationRotationFollowingWindow *)self _topMostWindow];
-  v6 = [v4 _safeWindowForAutorotationBelowWindow:v5];
-  v3 = [v6 isInterfaceAutorotationDisabled];
+  rootViewController = [(UIWindow *)self rootViewController];
+  _topMostWindow = [(UIApplicationRotationFollowingWindow *)self _topMostWindow];
+  v6 = [rootViewController _safeWindowForAutorotationBelowWindow:_topMostWindow];
+  isInterfaceAutorotationDisabled = [v6 isInterfaceAutorotationDisabled];
 
-  return v3;
+  return isInterfaceAutorotationDisabled;
 }
 
 - (void)_commonApplicationRotationFollowingWindowInit
@@ -65,11 +65,11 @@
   return v3;
 }
 
-- (id)_initWithFrame:(CGRect)a3 attached:(BOOL)a4
+- (id)_initWithFrame:(CGRect)frame attached:(BOOL)attached
 {
   v7.receiver = self;
   v7.super_class = UIApplicationRotationFollowingWindow;
-  v4 = [(UIWindow *)&v7 _initWithFrame:a4 attached:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UIWindow *)&v7 _initWithFrame:attached attached:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -79,11 +79,11 @@
   return v5;
 }
 
-- (id)_initWithFrame:(CGRect)a3 debugName:(id)a4 attached:(BOOL)a5
+- (id)_initWithFrame:(CGRect)frame debugName:(id)name attached:(BOOL)attached
 {
   v8.receiver = self;
   v8.super_class = UIApplicationRotationFollowingWindow;
-  v5 = [(UIWindow *)&v8 _initWithFrame:a4 debugName:a5 attached:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIWindow *)&v8 _initWithFrame:name debugName:attached attached:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -93,11 +93,11 @@
   return v6;
 }
 
-- (id)_initWithFrame:(CGRect)a3 debugName:(id)a4 scene:(id)a5 attached:(BOOL)a6
+- (id)_initWithFrame:(CGRect)frame debugName:(id)name scene:(id)scene attached:(BOOL)attached
 {
   v9.receiver = self;
   v9.super_class = UIApplicationRotationFollowingWindow;
-  v6 = [(UIWindow *)&v9 _initWithFrame:a4 debugName:a5 scene:a6 attached:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v6 = [(UIWindow *)&v9 _initWithFrame:name debugName:scene scene:attached attached:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   if (v6)
   {
@@ -107,11 +107,11 @@
   return v7;
 }
 
-- (id)_initWithFrame:(CGRect)a3 debugName:(id)a4 displayConfiguration:(id)a5
+- (id)_initWithFrame:(CGRect)frame debugName:(id)name displayConfiguration:(id)configuration
 {
   v8.receiver = self;
   v8.super_class = UIApplicationRotationFollowingWindow;
-  v5 = [(UIWindow *)&v8 _initWithFrame:a4 debugName:a5 displayConfiguration:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIWindow *)&v8 _initWithFrame:name debugName:configuration displayConfiguration:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -121,11 +121,11 @@
   return v6;
 }
 
-- (id)_initWithFrame:(CGRect)a3 debugName:(id)a4 windowScene:(id)a5
+- (id)_initWithFrame:(CGRect)frame debugName:(id)name windowScene:(id)scene
 {
   v8.receiver = self;
   v8.super_class = UIApplicationRotationFollowingWindow;
-  v5 = [(UIWindow *)&v8 _initWithFrame:a4 debugName:a5 windowScene:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIWindow *)&v8 _initWithFrame:name debugName:scene windowScene:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -135,11 +135,11 @@
   return v6;
 }
 
-- (UIApplicationRotationFollowingWindow)initWithWindowScene:(id)a3
+- (UIApplicationRotationFollowingWindow)initWithWindowScene:(id)scene
 {
   v6.receiver = self;
   v6.super_class = UIApplicationRotationFollowingWindow;
-  v3 = [(UIWindow *)&v6 initWithWindowScene:a3];
+  v3 = [(UIWindow *)&v6 initWithWindowScene:scene];
   v4 = v3;
   if (v3)
   {
@@ -149,11 +149,11 @@
   return v4;
 }
 
-- (void)setPriorityLevel:(int64_t)a3
+- (void)setPriorityLevel:(int64_t)level
 {
   v16 = *MEMORY[0x1E69E9840];
-  self->_priorityLevel = a3;
-  v3 = self;
+  self->_priorityLevel = level;
+  selfCopy = self;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -176,7 +176,7 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      if (*(*(&v11 + 1) + 8 * v9) == v3)
+      if (*(*(&v11 + 1) + 8 * v9) == selfCopy)
       {
         break;
       }
@@ -206,15 +206,15 @@ LABEL_3:
 LABEL_12:
 
 LABEL_13:
-  InsertWindow(v3);
+  InsertWindow(selfCopy);
 }
 
-- (void)applicationWindow:(id)a3 didRotateWithOrientation:(int64_t)a4 duration:(double)a5
+- (void)applicationWindow:(id)window didRotateWithOrientation:(int64_t)orientation duration:(double)duration
 {
-  v16 = a3;
-  v8 = [(UIWindow *)self rootViewController];
+  windowCopy = window;
+  rootViewController = [(UIWindow *)self rootViewController];
 
-  if (!v8 || [(UIWindow *)self _isHostedInAnotherProcess])
+  if (!rootViewController || [(UIWindow *)self _isHostedInAnotherProcess])
   {
     goto LABEL_3;
   }
@@ -228,9 +228,9 @@ LABEL_13:
       goto LABEL_3;
     }
 
-    v10 = [(UIWindow *)self screen];
+    screen = [(UIWindow *)self screen];
 
-    if (v10 != v16)
+    if (screen != windowCopy)
     {
       goto LABEL_3;
     }
@@ -238,7 +238,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [(UIWindow *)self windowScene];
+  windowScene = [(UIWindow *)self windowScene];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -246,56 +246,56 @@ LABEL_13:
 
   else
   {
-    v11 = [v16 windowScene];
-    v12 = [(UIWindow *)self windowScene];
+    windowScene2 = [windowCopy windowScene];
+    windowScene3 = [(UIWindow *)self windowScene];
 
-    if (v11 != v12)
+    if (windowScene2 != windowScene3)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [v16 screen];
-  v14 = [(UIWindow *)self screen];
+  screen2 = [windowCopy screen];
+  screen3 = [(UIWindow *)self screen];
 
-  if (v13 == v14)
+  if (screen2 == screen3)
   {
 LABEL_14:
-    if ([(UIApplicationRotationFollowingWindow *)self _shouldAutorotateToInterfaceOrientation:a4])
+    if ([(UIApplicationRotationFollowingWindow *)self _shouldAutorotateToInterfaceOrientation:orientation])
     {
-      v15 = [(UIWindow *)self rootViewController];
-      [(UIWindow *)self _setRotatableClient:v15 toOrientation:a4 updateStatusBar:0 duration:0 force:1 isRotating:a5];
+      rootViewController2 = [(UIWindow *)self rootViewController];
+      [(UIWindow *)self _setRotatableClient:rootViewController2 toOrientation:orientation updateStatusBar:0 duration:0 force:1 isRotating:duration];
     }
   }
 
 LABEL_3:
 }
 
-- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   if (self->super._viewOrientation)
   {
-    v5 = [(UIWindow *)self rootViewController];
-    v6 = [(UIApplicationRotationFollowingWindow *)self _topMostWindow];
-    v7 = [v5 _safeWindowForAutorotationBelowWindow:v6];
+    rootViewController = [(UIWindow *)self rootViewController];
+    _topMostWindow = [(UIApplicationRotationFollowingWindow *)self _topMostWindow];
+    v7 = [rootViewController _safeWindowForAutorotationBelowWindow:_topMostWindow];
 
-    v8 = [v7 rootViewController];
-    v9 = [v8 _safeViewControllerForRotationWithDismissCheck:1];
+    rootViewController2 = [v7 rootViewController];
+    v9 = [rootViewController2 _safeViewControllerForRotationWithDismissCheck:1];
 
     if (v9)
     {
-      if (a3 && [v9 _overrideInterfaceOrientationMechanics] == a3)
+      if (orientation && [v9 _overrideInterfaceOrientationMechanics] == orientation)
       {
         v10 = 1;
         goto LABEL_14;
       }
 
       v16 = 0;
-      v11 = [v7 _shouldAutorotateToInterfaceOrientation:a3 checkForDismissal:1 isRotationDisabled:&v16];
-      v12 = [v9 _existingView];
-      v13 = [v12 _window];
+      v11 = [v7 _shouldAutorotateToInterfaceOrientation:orientation checkForDismissal:1 isRotationDisabled:&v16];
+      _existingView = [v9 _existingView];
+      _window = [_existingView _window];
 
-      v10 = [v13 interfaceOrientation] == a3;
+      v10 = [_window interfaceOrientation] == orientation;
       if ((v16 & 1) == 0)
       {
         if ((v11 & 1) != 0 || [v9 __supportedInterfaceOrientations])
@@ -306,7 +306,7 @@ LABEL_3:
         goto LABEL_14;
       }
 
-      if (v13)
+      if (_window)
       {
 LABEL_14:
 
@@ -316,18 +316,18 @@ LABEL_14:
 
     v15.receiver = self;
     v15.super_class = UIApplicationRotationFollowingWindow;
-    v10 = [(UIWindow *)&v15 _shouldAutorotateToInterfaceOrientation:a3];
+    v10 = [(UIWindow *)&v15 _shouldAutorotateToInterfaceOrientation:orientation];
     goto LABEL_14;
   }
 
   return 1;
 }
 
-- (id)__autorotationSanityCheckObjectFromSource:(id)a3 selector:(SEL)a4
+- (id)__autorotationSanityCheckObjectFromSource:(id)source selector:(SEL)selector
 {
-  v6 = a3;
-  v7 = NSStringFromSelector(a4);
-  NSLog(&cfstr_RotationErrorR_0.isa, v6, v7, self);
+  sourceCopy = source;
+  v7 = NSStringFromSelector(selector);
+  NSLog(&cfstr_RotationErrorR_0.isa, sourceCopy, v7, self);
 
   return 0;
 }

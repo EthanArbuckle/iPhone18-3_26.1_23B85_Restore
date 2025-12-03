@@ -1,13 +1,13 @@
 @interface _GCSteeringWheelElementParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_GCSteeringWheelElementParameters)init;
 - (double)maximumDegreesOfRotation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sources;
 - (uint64_t)eventRotationValueField;
 - (uint64_t)setEventRotationValueField:(uint64_t)result;
 - (uint64_t)setMaximumDegreesOfRotation:(uint64_t)result;
-- (void)setSources:(void *)a1;
+- (void)setSources:(void *)sources;
 @end
 
 @implementation _GCSteeringWheelElementParameters
@@ -21,61 +21,61 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _GCSteeringWheelElementParameters;
-  v4 = [(_GCDevicePhysicalInputElementParameters *)&v6 copyWithZone:a3];
+  v4 = [(_GCDevicePhysicalInputElementParameters *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 6, self->_sources);
   *(v4 + 10) = LODWORD(self->_maximumDegreesOfRotation);
   v4[7] = self->_eventRotationValueField;
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = _GCSteeringWheelElementParameters;
-  v6 = [(_GCDevicePhysicalInputElementParameters *)&v8 isEqual:v4]&& ((sources = self->_sources, sources == v4[6]) || [(NSSet *)sources isEqual:?]) && self->_maximumDegreesOfRotation == *(v4 + 10) && self->_eventRotationValueField == v4[7];
+  v6 = [(_GCDevicePhysicalInputElementParameters *)&v8 isEqual:equalCopy]&& ((sources = self->_sources, sources == equalCopy[6]) || [(NSSet *)sources isEqual:?]) && self->_maximumDegreesOfRotation == *(equalCopy + 10) && self->_eventRotationValueField == equalCopy[7];
 
   return v6;
 }
 
 - (id)sources
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[6];
+    v2 = self[6];
     if (v2)
     {
-      v1 = v2;
+      selfCopy = v2;
     }
 
     else
     {
       v3 = MEMORY[0x1E695DFD8];
       v4 = MEMORY[0x1E69A06B8];
-      v5 = [(_GCDevicePhysicalInputElementParameters *)a1 aliases];
-      v6 = [(_GCDevicePhysicalInputElementParameters *)v1 localizedName];
-      v7 = [(_GCDevicePhysicalInputElementParameters *)v1 symbol];
-      v8 = [v4 sourceWithElementAliases:v5 localizedName:v6 symbol:v7];
-      v1 = [v3 setWithObject:v8];
+      aliases = [(_GCDevicePhysicalInputElementParameters *)self aliases];
+      localizedName = [(_GCDevicePhysicalInputElementParameters *)selfCopy localizedName];
+      symbol = [(_GCDevicePhysicalInputElementParameters *)selfCopy symbol];
+      v8 = [v4 sourceWithElementAliases:aliases localizedName:localizedName symbol:symbol];
+      selfCopy = [v3 setWithObject:v8];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (double)maximumDegreesOfRotation
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 40);
+  LODWORD(result) = *(self + 40);
   return result;
 }
 
@@ -89,11 +89,11 @@
   return result;
 }
 
-- (void)setSources:(void *)a1
+- (void)setSources:(void *)sources
 {
-  if (a1)
+  if (sources)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 48);
+    objc_setProperty_nonatomic_copy(sources, newValue, newValue, 48);
   }
 }
 

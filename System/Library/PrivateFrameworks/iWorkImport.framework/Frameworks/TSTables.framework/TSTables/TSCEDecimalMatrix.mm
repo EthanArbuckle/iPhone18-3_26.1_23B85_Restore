@@ -1,29 +1,29 @@
 @interface TSCEDecimalMatrix
-+ (id)identityMatrixOfSize:(unsigned int)a3;
++ (id)identityMatrixOfSize:(unsigned int)size;
 - (TSCEDecimalMatrix)init;
-- (TSCEDecimalMatrix)initWithDimensions:(const TSCEGridDimensions *)a3;
-- (TSUDecimal)cofactorAtCoord:(TSCEGridCoord)a3;
-- (TSUDecimal)determinantWithError:(id *)a3;
+- (TSCEDecimalMatrix)initWithDimensions:(const TSCEGridDimensions *)dimensions;
+- (TSUDecimal)cofactorAtCoord:(TSCEGridCoord)coord;
+- (TSUDecimal)determinantWithError:(id *)error;
 - (TSUDecimal)productOfDiagonal;
 - (TSUDecimal)simpleRecursiveDeterminant;
-- (TSUDecimal)valueAt1DIndex:(unint64_t)a3;
-- (TSUDecimal)valueAtCoord:(const TSCEGridCoord *)a3;
+- (TSUDecimal)valueAt1DIndex:(unint64_t)index;
+- (TSUDecimal)valueAtCoord:(const TSCEGridCoord *)coord;
 - (id).cxx_construct;
 - (id)adjointMatrix;
 - (id)cofactorMatrix;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)inverseWithError:(id *)a3;
-- (id)multiplyBy:(id)a3 outError:(id *)a4;
-- (id)pivotMatrixOutDet:(TSUDecimal *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)inverseWithError:(id *)error;
+- (id)multiplyBy:(id)by outError:(id *)error;
+- (id)pivotMatrixOutDet:(TSUDecimal *)det;
 - (id)transpose;
 - (unint64_t)classifyMatrix;
 - (vector<TSCEDecimalMatrix)pluDecompositionWithPivotDet:(TSCEDecimalMatrix *)self;
-- (void)enumerateValuesUsingBlock:(id)a3;
-- (void)multiplyByScalar:(const TSUDecimal *)a3;
-- (void)setValue:(const TSUDecimal *)a3 atCoord:(const TSCEGridCoord *)a4;
-- (void)swapColumnAtIndex:(unsigned int)a3 withColumnAtIndex:(unsigned int)a4;
-- (void)swapRowAtIndex:(unsigned int)a3 withRowAtIndex:(unsigned int)a4;
-- (void)swapValueAtCoord:(const TSCEGridCoord *)a3 withCoord:(const TSCEGridCoord *)a4;
+- (void)enumerateValuesUsingBlock:(id)block;
+- (void)multiplyByScalar:(const TSUDecimal *)scalar;
+- (void)setValue:(const TSUDecimal *)value atCoord:(const TSCEGridCoord *)coord;
+- (void)swapColumnAtIndex:(unsigned int)index withColumnAtIndex:(unsigned int)atIndex;
+- (void)swapRowAtIndex:(unsigned int)index withRowAtIndex:(unsigned int)atIndex;
+- (void)swapValueAtCoord:(const TSCEGridCoord *)coord withCoord:(const TSCEGridCoord *)withCoord;
 @end
 
 @implementation TSCEDecimalMatrix
@@ -41,7 +41,7 @@
   return result;
 }
 
-- (TSCEDecimalMatrix)initWithDimensions:(const TSCEGridDimensions *)a3
+- (TSCEDecimalMatrix)initWithDimensions:(const TSCEGridDimensions *)dimensions
 {
   v7.receiver = self;
   v7.super_class = TSCEDecimalMatrix;
@@ -49,14 +49,14 @@
   v5 = v4;
   if (v4)
   {
-    v4->_dimensions = *a3;
-    sub_2215A4C10(&v4->_values.__begin_, a3->height * a3->width);
+    v4->_dimensions = *dimensions;
+    sub_2215A4C10(&v4->_values.__begin_, dimensions->height * dimensions->width);
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSCEDecimalMatrix alloc];
   v8 = objc_msgSend_initWithDimensions_(v4, v5, &self->_dimensions, v6, v7);
@@ -69,14 +69,14 @@
   return v9;
 }
 
-+ (id)identityMatrixOfSize:(unsigned int)a3
++ (id)identityMatrixOfSize:(unsigned int)size
 {
   v4 = [TSCEDecimalMatrix alloc];
-  v14[0] = a3;
-  v14[1] = a3;
+  v14[0] = size;
+  v14[1] = size;
   v8 = objc_msgSend_initWithDimensions_(v4, v5, v14, v6, v7);
   TSUDecimal::operator=();
-  if (a3)
+  if (size)
   {
     v11 = 0;
     do
@@ -87,18 +87,18 @@
       ++v11;
     }
 
-    while (a3 != v11);
+    while (size != v11);
   }
 
   return v8;
 }
 
-- (TSUDecimal)valueAtCoord:(const TSCEGridCoord *)a3
+- (TSUDecimal)valueAtCoord:(const TSCEGridCoord *)coord
 {
   TSUDecimal::operator=();
-  if (a3->row < self->_dimensions.height && a3->column < self->_dimensions.width)
+  if (coord->row < self->_dimensions.height && coord->column < self->_dimensions.width)
   {
-    v8 = TSCEGridDimensions::oneDIndexForCoord(&self->_dimensions, a3);
+    v8 = TSCEGridDimensions::oneDIndexForCoord(&self->_dimensions, coord);
     begin = self->_values.__begin_;
     if (v8 >= self->_values.__end_ - begin)
     {
@@ -121,21 +121,21 @@
   return result;
 }
 
-- (TSUDecimal)valueAt1DIndex:(unint64_t)a3
+- (TSUDecimal)valueAt1DIndex:(unint64_t)index
 {
   begin = self->_values.__begin_;
-  if (a3 >= self->_values.__end_ - begin)
+  if (index >= self->_values.__end_ - begin)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEDecimalMatrix valueAt1DIndex:]", v3, v4);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEDecimalMatrix.mm", v11, v12);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 99, 0, "Vector index exceeds current size: %lu", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 99, 0, "Vector index exceeds current size: %lu", index);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16, v17, v18);
     begin = self->_values.__begin_;
   }
 
-  v19 = &begin[a3];
+  v19 = &begin[index];
   v20 = v19->_decimal.w[0];
   v21 = v19->_decimal.w[1];
   result._decimal.w[1] = v21;
@@ -143,14 +143,14 @@
   return result;
 }
 
-- (void)setValue:(const TSUDecimal *)a3 atCoord:(const TSCEGridCoord *)a4
+- (void)setValue:(const TSUDecimal *)value atCoord:(const TSCEGridCoord *)coord
 {
-  if (a4->row >= self->_dimensions.height || a4->column >= self->_dimensions.width)
+  if (coord->row >= self->_dimensions.height || coord->column >= self->_dimensions.width)
   {
     v10 = MEMORY[0x277D81150];
-    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEDecimalMatrix setValue:atCoord:]", a4, v4);
+    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEDecimalMatrix setValue:atCoord:]", coord, v4);
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEDecimalMatrix.mm", v13, v14);
-    v20 = sub_2211786FC(a4, v16, v17, v18, v19);
+    v20 = sub_2211786FC(coord, v16, v17, v18, v19);
     v25 = TSCEGridDimensions::description(&self->_dimensions, v21, v22, v23, v24);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v26, v11, v15, 112, 0, "ERROR: Can't set at %@, outside matrix dimensions: %@", v20, v25);
 
@@ -161,18 +161,18 @@
 
   else
   {
-    v8 = TSCEGridDimensions::oneDIndexForCoord(&self->_dimensions, a4);
+    v8 = TSCEGridDimensions::oneDIndexForCoord(&self->_dimensions, coord);
     begin = self->_values.__begin_;
     if (v8 < self->_values.__end_ - begin)
     {
-      begin[v8] = *a3;
+      begin[v8] = *value;
     }
   }
 }
 
-- (void)enumerateValuesUsingBlock:(id)a3
+- (void)enumerateValuesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   if (objc_msgSend_area(self, v5, v6, v7, v8))
   {
@@ -181,7 +181,7 @@
     {
       v14[0] = objc_msgSend_valueAtCoord_(self, v9, &v15, v10, v11);
       v14[1] = v12;
-      v4[2](v4, &v15, v14, &v16);
+      blockCopy[2](blockCopy, &v15, v14, &v16);
       v13 = TSCEGridDimensions::nextCoordRowMajorOrder(&self->_dimensions, &v15);
       v15 = v13;
     }
@@ -190,28 +190,28 @@
   }
 }
 
-- (void)swapValueAtCoord:(const TSCEGridCoord *)a3 withCoord:(const TSCEGridCoord *)a4
+- (void)swapValueAtCoord:(const TSCEGridCoord *)coord withCoord:(const TSCEGridCoord *)withCoord
 {
-  if (*a3 != *a4)
+  if (*coord != *withCoord)
   {
-    v16[0] = objc_msgSend_valueAtCoord_(self, a2, a4, a4, v4);
+    v16[0] = objc_msgSend_valueAtCoord_(self, a2, withCoord, withCoord, v4);
     v16[1] = v8;
-    v15[0] = objc_msgSend_valueAtCoord_(self, v8, a3, v9, v10);
+    v15[0] = objc_msgSend_valueAtCoord_(self, v8, coord, v9, v10);
     v15[1] = v11;
-    objc_msgSend_setValue_atCoord_(self, v11, v15, a4, v12);
-    objc_msgSend_setValue_atCoord_(self, v13, v16, a3, v14);
+    objc_msgSend_setValue_atCoord_(self, v11, v15, withCoord, v12);
+    objc_msgSend_setValue_atCoord_(self, v13, v16, coord, v14);
   }
 }
 
-- (void)swapRowAtIndex:(unsigned int)a3 withRowAtIndex:(unsigned int)a4
+- (void)swapRowAtIndex:(unsigned int)index withRowAtIndex:(unsigned int)atIndex
 {
-  if (a3 != a4)
+  if (index != atIndex)
   {
     v12 = v5;
     v13 = v6;
     v8 = 0;
-    v11[1] = a3;
-    v10[1] = a4;
+    v11[1] = index;
+    v10[1] = atIndex;
     v9 = self->_dimensions.width - 1;
     do
     {
@@ -225,15 +225,15 @@
   }
 }
 
-- (void)swapColumnAtIndex:(unsigned int)a3 withColumnAtIndex:(unsigned int)a4
+- (void)swapColumnAtIndex:(unsigned int)index withColumnAtIndex:(unsigned int)atIndex
 {
-  if (a3 != a4)
+  if (index != atIndex)
   {
     v12 = v5;
     v13 = v6;
     v8 = 0;
-    v11[0] = a3;
-    v10[0] = a4;
+    v11[0] = index;
+    v10[0] = atIndex;
     v9 = self->_dimensions.height - 1;
     do
     {
@@ -340,11 +340,11 @@
   return v11;
 }
 
-- (id)multiplyBy:(id)a3 outError:(id *)a4
+- (id)multiplyBy:(id)by outError:(id *)error
 {
-  v6 = a3;
+  byCopy = by;
   dimensions = self->_dimensions;
-  v12 = objc_msgSend_dimensions(v6, v8, v9, v10, v11);
+  v12 = objc_msgSend_dimensions(byCopy, v8, v9, v10, v11);
   v17 = v12;
   if (dimensions.height * dimensions.width)
   {
@@ -361,7 +361,7 @@
     v19 = objc_msgSend_emptyArrayError(TSCEError, v13, v14, v15, v16);
 LABEL_19:
     v24 = 0;
-    *a4 = v19;
+    *error = v19;
     goto LABEL_20;
   }
 
@@ -396,7 +396,7 @@ LABEL_19:
               v38._decimal.w[1] = v31;
               v36[0] = i;
               v36[1] = v30;
-              v37._decimal.w[0] = objc_msgSend_valueAtCoord_(v6, v31, v36, v32, v33);
+              v37._decimal.w[0] = objc_msgSend_valueAtCoord_(byCopy, v31, v36, v32, v33);
               v37._decimal.w[1] = v34;
               TSUDecimal::multiply(&v38, &v37, &v40);
               TSUDecimal::operator+=();
@@ -422,7 +422,7 @@ LABEL_20:
   return v24;
 }
 
-- (void)multiplyByScalar:(const TSUDecimal *)a3
+- (void)multiplyByScalar:(const TSUDecimal *)scalar
 {
   v13 = 0;
   do
@@ -430,7 +430,7 @@ LABEL_20:
     v12._decimal.w[0] = objc_msgSend_valueAtCoord_(self, a2, &v13, v3, v4);
     v12._decimal.w[1] = v7;
     TSUDecimal::operator=();
-    TSUDecimal::multiply(&v12, a3, &v11);
+    TSUDecimal::multiply(&v12, scalar, &v11);
     objc_msgSend_setValue_atCoord_(self, v8, &v11, &v13, v9);
     v10 = TSCEGridDimensions::nextCoordRowMajorOrder(&self->_dimensions, &v13);
     v13 = v10;
@@ -439,7 +439,7 @@ LABEL_20:
   while (v10 != 0x7FFFFFFF && (v10 & 0xFFFFFFFF00000000) != 0x7FFFFFFF00000000);
 }
 
-- (id)pivotMatrixOutDet:(TSUDecimal *)a3
+- (id)pivotMatrixOutDet:(TSUDecimal *)det
 {
   v6 = objc_msgSend_identityMatrixOfSize_(TSCEDecimalMatrix, a2, self->_dimensions.width, v3, v4);
   TSUDecimal::operator=();
@@ -515,18 +515,18 @@ LABEL_20:
 
 - (vector<TSCEDecimalMatrix)pluDecompositionWithPivotDet:(TSCEDecimalMatrix *)self
 {
-  v6 = self;
-  v11 = objc_msgSend_dimensions(v6, v7, v8, v9, v10);
-  v80 = objc_msgSend_pivotMatrixOutDet_(v6, v12, a4, v13, v14);
+  selfCopy = self;
+  v11 = objc_msgSend_dimensions(selfCopy, v7, v8, v9, v10);
+  v80 = objc_msgSend_pivotMatrixOutDet_(selfCopy, v12, a4, v13, v14);
   v79 = 0;
-  v68 = v6;
-  v17 = objc_msgSend_multiplyBy_outError_(v80, v15, v6, &v79, v16);
+  v68 = selfCopy;
+  v17 = objc_msgSend_multiplyBy_outError_(v80, v15, selfCopy, &v79, v16);
   v67 = v79;
   v21 = objc_msgSend_identityMatrixOfSize_(TSCEDecimalMatrix, v18, v11, v19, v20);
   v66 = retstr;
   v78 = v21;
   v22 = [TSCEDecimalMatrix alloc];
-  v81 = objc_msgSend_dimensions(v6, v23, v24, v25, v26);
+  v81 = objc_msgSend_dimensions(selfCopy, v23, v24, v25, v26);
   v30 = objc_msgSend_initWithDimensions_(v22, v27, &v81, v28, v29);
   v77 = v30;
   if (v11)
@@ -628,11 +628,11 @@ LABEL_20:
   return result;
 }
 
-- (TSUDecimal)determinantWithError:(id *)a3
+- (TSUDecimal)determinantWithError:(id *)error
 {
-  if ((objc_msgSend_isSquareMatrix(self, a2, a3, v3, v4) & 1) == 0)
+  if ((objc_msgSend_isSquareMatrix(self, a2, error, v3, v4) & 1) == 0)
   {
-    *a3 = objc_msgSend_matrixNotSquareError(TSCEError, v7, v8, v9, v10);
+    *error = objc_msgSend_matrixNotSquareError(TSCEError, v7, v8, v9, v10);
     goto LABEL_8;
   }
 
@@ -1123,12 +1123,12 @@ LABEL_17:
   return result;
 }
 
-- (TSUDecimal)cofactorAtCoord:(TSCEGridCoord)a3
+- (TSUDecimal)cofactorAtCoord:(TSCEGridCoord)coord
 {
-  column = a3.column;
-  row = a3.row;
+  column = coord.column;
+  row = coord.row;
   p_dimensions = &self->_dimensions;
-  v7 = LOBYTE(a3.row) + LOBYTE(a3.column);
+  v7 = LOBYTE(coord.row) + LOBYTE(coord.column);
   v31.width = self->_dimensions.width - 1;
   v31.height = v31.width;
   v8 = [TSCEDecimalMatrix alloc];
@@ -1210,11 +1210,11 @@ LABEL_17:
   return v10;
 }
 
-- (id)inverseWithError:(id *)a3
+- (id)inverseWithError:(id *)error
 {
   if (self->_dimensions.height * self->_dimensions.width)
   {
-    v23._decimal.w[0] = objc_msgSend_determinantWithError_(self, a2, a3, v3, v4);
+    v23._decimal.w[0] = objc_msgSend_determinantWithError_(self, a2, error, v3, v4);
     v23._decimal.w[1] = v7;
     if (!TSUDecimal::isZero(&v23))
     {
@@ -1225,7 +1225,7 @@ LABEL_17:
       goto LABEL_9;
     }
 
-    if (*a3)
+    if (*error)
     {
       v12 = 0;
       goto LABEL_9;
@@ -1236,11 +1236,11 @@ LABEL_17:
 
   else
   {
-    v13 = objc_msgSend_emptyArrayError(TSCEError, a2, a3, v3, v4);
+    v13 = objc_msgSend_emptyArrayError(TSCEError, a2, error, v3, v4);
   }
 
   v12 = 0;
-  *a3 = v13;
+  *error = v13;
 LABEL_9:
 
   return v12;

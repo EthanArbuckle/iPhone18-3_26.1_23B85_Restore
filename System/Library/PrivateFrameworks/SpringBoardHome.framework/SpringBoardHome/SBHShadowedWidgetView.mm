@@ -1,32 +1,32 @@
 @interface SBHShadowedWidgetView
 - (CGAffineTransform)contentTransform;
 - (CGAffineTransform)shadowSupplementalTransform;
-- (SBHShadowedWidgetView)initWithContentView:(id)a3 shadowView:(id)a4 perspectiveEnabled:(BOOL)a5;
+- (SBHShadowedWidgetView)initWithContentView:(id)view shadowView:(id)shadowView perspectiveEnabled:(BOOL)enabled;
 - (void)_layoutShadowView;
 - (void)_updateZPositions;
 - (void)layoutSubviews;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setContentView:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setPerspectiveEnabled:(BOOL)a3;
-- (void)setShadowSupplementalTransform:(CGAffineTransform *)a3;
-- (void)setShadowView:(id)a3;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setContentView:(id)view;
+- (void)setCornerRadius:(double)radius;
+- (void)setPerspectiveEnabled:(BOOL)enabled;
+- (void)setShadowSupplementalTransform:(CGAffineTransform *)transform;
+- (void)setShadowView:(id)view;
 @end
 
 @implementation SBHShadowedWidgetView
 
-- (SBHShadowedWidgetView)initWithContentView:(id)a3 shadowView:(id)a4 perspectiveEnabled:(BOOL)a5
+- (SBHShadowedWidgetView)initWithContentView:(id)view shadowView:(id)shadowView perspectiveEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  enabledCopy = enabled;
+  viewCopy = view;
+  shadowViewCopy = shadowView;
   v30.receiver = self;
   v30.super_class = SBHShadowedWidgetView;
   v10 = [(SBHShadowedWidgetView *)&v30 init];
   v11 = v10;
   if (v10)
   {
-    v12 = [(SBHShadowedWidgetView *)v10 layer];
+    layer = [(SBHShadowedWidgetView *)v10 layer];
     v13 = *(MEMORY[0x1E69792E8] + 48);
     v23 = *(MEMORY[0x1E69792E8] + 32);
     v24 = v13;
@@ -40,10 +40,10 @@
     v16 = *(MEMORY[0x1E69792E8] + 112);
     v28 = *(MEMORY[0x1E69792E8] + 96);
     v29 = v16;
-    [v12 setTransform:&v21];
+    [layer setTransform:&v21];
 
-    [(SBHShadowedWidgetView *)v11 setContentView:v8];
-    [(SBHShadowedWidgetView *)v11 setShadowView:v9];
+    [(SBHShadowedWidgetView *)v11 setContentView:viewCopy];
+    [(SBHShadowedWidgetView *)v11 setShadowView:shadowViewCopy];
     v19 = *(MEMORY[0x1E695EFD0] + 16);
     v21 = *MEMORY[0x1E695EFD0];
     v20 = v21;
@@ -55,7 +55,7 @@
     v22 = v19;
     v23 = v18;
     [(SBHShadowedWidgetView *)v11 setShadowSupplementalTransform:&v21];
-    [(SBHShadowedWidgetView *)v11 setPerspectiveEnabled:v5];
+    [(SBHShadowedWidgetView *)v11 setPerspectiveEnabled:enabledCopy];
   }
 
   return v11;
@@ -79,22 +79,22 @@
   [(SBHShadowedWidgetView *)self bringSubviewToFront:self->_contentView];
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
   p_contentTransform = &self->_contentTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_contentTransform.c;
   *&v10.a = *&self->_contentTransform.a;
   *&v10.c = v7;
   *&v10.tx = *&self->_contentTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_contentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_contentTransform->c = *&transform->c;
     *&p_contentTransform->tx = v9;
     *&p_contentTransform->a = v8;
     [(SBHShadowedWidgetView *)self setNeedsLayout];
@@ -105,22 +105,22 @@
   }
 }
 
-- (void)setShadowSupplementalTransform:(CGAffineTransform *)a3
+- (void)setShadowSupplementalTransform:(CGAffineTransform *)transform
 {
   p_shadowSupplementalTransform = &self->_shadowSupplementalTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_shadowSupplementalTransform.c;
   *&v10.a = *&self->_shadowSupplementalTransform.a;
   *&v10.c = v7;
   *&v10.tx = *&self->_shadowSupplementalTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_shadowSupplementalTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_shadowSupplementalTransform->c = *&transform->c;
     *&p_shadowSupplementalTransform->tx = v9;
     *&p_shadowSupplementalTransform->a = v8;
     [(SBHShadowedWidgetView *)self setNeedsLayout];
@@ -131,28 +131,28 @@
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(SBHShadowedWidgetView *)self addSubview:self->_contentView];
     contentView = [(SBHShadowedWidgetView *)self _updateZPositions];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](contentView, v5);
+  MEMORY[0x1EEE66BB8](contentView, viewCopy);
 }
 
-- (void)setShadowView:(id)a3
+- (void)setShadowView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   shadowView = self->_shadowView;
-  if (shadowView != v5)
+  if (shadowView != viewCopy)
   {
     [(UIView *)shadowView removeFromSuperview];
     v7 = self->_shadowView;
@@ -161,30 +161,30 @@
     v9[1] = v8;
     v9[2] = *(MEMORY[0x1E695EFD0] + 32);
     [(UIView *)v7 setTransform:v9];
-    objc_storeStrong(&self->_shadowView, a3);
+    objc_storeStrong(&self->_shadowView, view);
     [(SBHShadowedWidgetView *)self addSubview:self->_shadowView];
     [(SBHShadowedWidgetView *)self _updateZPositions];
   }
 }
 
-- (void)setPerspectiveEnabled:(BOOL)a3
+- (void)setPerspectiveEnabled:(BOOL)enabled
 {
-  if (self->_perspectiveEnabled != a3)
+  if (self->_perspectiveEnabled != enabled)
   {
-    self->_perspectiveEnabled = a3;
+    self->_perspectiveEnabled = enabled;
     [(SBHShadowedWidgetView *)self _updateZPositions];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_cornerRadius = a3;
-    [(SBHShadowedWidgetView *)self _setContinuousCornerRadius:a3];
+    self->_cornerRadius = radius;
+    [(SBHShadowedWidgetView *)self _setContinuousCornerRadius:radius];
     shadowView = self->_shadowView;
 
-    [(UIView *)shadowView _setContinuousCornerRadius:a3];
+    [(UIView *)shadowView _setContinuousCornerRadius:radius];
   }
 }
 
@@ -225,8 +225,8 @@
 - (void)_updateZPositions
 {
   perspectiveEnabled = self->_perspectiveEnabled;
-  v4 = [(UIView *)self->_shadowView layer];
-  v5 = v4;
+  layer = [(UIView *)self->_shadowView layer];
+  v5 = layer;
   v6 = -80.0;
   if (perspectiveEnabled)
   {
@@ -239,10 +239,10 @@
     v7 = 0.0;
   }
 
-  [v4 setZPosition:v6];
+  [layer setZPosition:v6];
 
-  v8 = [(UIView *)self->_contentView layer];
-  [v8 setZPosition:v7];
+  layer2 = [(UIView *)self->_contentView layer];
+  [layer2 setZPosition:v7];
 
   [(SBHShadowedWidgetView *)self setNeedsLayout];
 }

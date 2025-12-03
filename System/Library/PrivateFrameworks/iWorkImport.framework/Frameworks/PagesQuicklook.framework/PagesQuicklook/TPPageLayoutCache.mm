@@ -1,30 +1,30 @@
 @interface TPPageLayoutCache
 - (NSString)description;
 - (id)pageLayouts;
-- (id)pageLayoutsFromStartIndex:(unint64_t)a3;
-- (id)pageLayoutsFromStartIndex:(unint64_t)a3 toEndIndex:(unint64_t)a4;
-- (id)pageLayoutsInRange:(_NSRange)a3;
-- (id)pageLayoutsUpToPageIndex:(unint64_t)a3;
-- (id)pageLayoutsWithPageIndex:(unint64_t)a3;
+- (id)pageLayoutsFromStartIndex:(unint64_t)index;
+- (id)pageLayoutsFromStartIndex:(unint64_t)index toEndIndex:(unint64_t)endIndex;
+- (id)pageLayoutsInRange:(_NSRange)range;
+- (id)pageLayoutsUpToPageIndex:(unint64_t)index;
+- (id)pageLayoutsWithPageIndex:(unint64_t)index;
 - (void)coalesce;
-- (void)enqueueInsertion:(id)a3;
-- (void)enqueueRemoval:(id)a3;
+- (void)enqueueInsertion:(id)insertion;
+- (void)enqueueRemoval:(id)removal;
 @end
 
 @implementation TPPageLayoutCache
 
-- (void)enqueueInsertion:(id)a3
+- (void)enqueueInsertion:(id)insertion
 {
-  v4 = a3;
-  v5 = self;
-  sub_27602FEAC(v4);
+  insertionCopy = insertion;
+  selfCopy = self;
+  sub_27602FEAC(insertionCopy);
 }
 
-- (void)enqueueRemoval:(id)a3
+- (void)enqueueRemoval:(id)removal
 {
-  v4 = a3;
-  v5 = self;
-  sub_2760301B4(v4);
+  removalCopy = removal;
+  selfCopy = self;
+  sub_2760301B4(removalCopy);
 }
 
 - (void)coalesce
@@ -42,7 +42,7 @@
   v8[2] = sub_276030124;
   v8[3] = &unk_288501560;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   dispatch_sync(v3, v6);
   _Block_release(v6);
@@ -57,7 +57,7 @@
 - (id)pageLayouts
 {
   swift_beginAccess();
-  v3 = self;
+  selfCopy = self;
 
   v7 = sub_276031D10(v4);
   sub_276031C94(&v7);
@@ -68,9 +68,9 @@
   return v5;
 }
 
-- (id)pageLayoutsWithPageIndex:(unint64_t)a3
+- (id)pageLayoutsWithPageIndex:(unint64_t)index
 {
-  if (a3 == -1)
+  if (index == -1)
   {
     __break(1u);
   }
@@ -90,9 +90,9 @@
   return self;
 }
 
-- (id)pageLayoutsUpToPageIndex:(unint64_t)a3
+- (id)pageLayoutsUpToPageIndex:(unint64_t)index
 {
-  v3 = self;
+  selfCopy = self;
   sub_27602B4C8(&qword_280A40190);
   sub_2760385D4();
 
@@ -102,9 +102,9 @@
   return v4;
 }
 
-- (id)pageLayoutsFromStartIndex:(unint64_t)a3
+- (id)pageLayoutsFromStartIndex:(unint64_t)index
 {
-  v3 = self;
+  selfCopy = self;
   sub_27602B4C8(&qword_280A40190);
   sub_2760385D4();
 
@@ -114,9 +114,9 @@
   return v4;
 }
 
-- (id)pageLayoutsFromStartIndex:(unint64_t)a3 toEndIndex:(unint64_t)a4
+- (id)pageLayoutsFromStartIndex:(unint64_t)index toEndIndex:(unint64_t)endIndex
 {
-  if (a4 < a3)
+  if (endIndex < index)
   {
     __break(1u);
   }
@@ -136,11 +136,11 @@
   return self;
 }
 
-- (id)pageLayoutsInRange:(_NSRange)a3
+- (id)pageLayoutsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   sub_276031158(location, length);
 
   sub_27602FD90(0, &qword_280A401A0);
@@ -151,7 +151,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   TPPageLayoutCache.description.getter();
 
   v3 = sub_276038504();

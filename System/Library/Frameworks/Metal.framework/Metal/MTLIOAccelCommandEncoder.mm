@@ -1,15 +1,15 @@
 @interface MTLIOAccelCommandEncoder
-- (MTLIOAccelCommandEncoder)initWithCommandBuffer:(id)a3;
+- (MTLIOAccelCommandEncoder)initWithCommandBuffer:(id)buffer;
 - (unint64_t)globalTraceObjectID;
 - (void)endEncoding;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTLIOAccelCommandEncoder
 
-- (MTLIOAccelCommandEncoder)initWithCommandBuffer:(id)a3
+- (MTLIOAccelCommandEncoder)initWithCommandBuffer:(id)buffer
 {
   v7.receiver = self;
   v7.super_class = MTLIOAccelCommandEncoder;
@@ -18,7 +18,7 @@
   if (**MEMORY[0x1E69A8488])
   {
     [(MTLDevice *)v4->super._device deviceRef];
-    [a3 globalTraceObjectID];
+    [buffer globalTraceObjectID];
     [(MTLIOAccelCommandEncoder *)v5 globalTraceObjectID];
     [(_MTLCommandEncoder *)v5 getType];
     IOAccelDeviceTraceEvent();
@@ -43,7 +43,7 @@
   [(_MTLCommandEncoder *)&v3 endEncoding];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v6.receiver = self;
   v6.super_class = MTLIOAccelCommandEncoder;
@@ -53,24 +53,24 @@
     [(MTLDevice *)self->super._device deviceRef];
     [(MTLIOAccelCommandEncoder *)self globalTraceObjectID];
     labelTraceID = self->super._labelTraceID;
-    [a3 cStringUsingEncoding:1];
+    [label cStringUsingEncoding:1];
     self->super._labelTraceID = IOAccelDeviceTraceObjectLabel();
   }
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
   if (**MEMORY[0x1E69A8488])
   {
     [(MTLDevice *)self->super._device deviceRef];
     [(MTLIOAccelCommandEncoder *)self globalTraceObjectID];
-    [a3 cStringUsingEncoding:1];
+    [group cStringUsingEncoding:1];
     IOAccelDeviceTraceObjectLabel();
   }
 
   v5.receiver = self;
   v5.super_class = MTLIOAccelCommandEncoder;
-  [(_MTLCommandEncoder *)&v5 pushDebugGroup:a3];
+  [(_MTLCommandEncoder *)&v5 pushDebugGroup:group];
 }
 
 - (void)popDebugGroup

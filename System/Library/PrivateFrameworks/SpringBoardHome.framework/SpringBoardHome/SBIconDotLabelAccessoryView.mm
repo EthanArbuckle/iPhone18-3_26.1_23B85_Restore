@@ -1,8 +1,8 @@
 @interface SBIconDotLabelAccessoryView
 + (CAColorMatrix)_vibrantColorMatrixInput;
 - (CGSize)intrinsicContentSize;
-- (SBIconDotLabelAccessoryView)initWithFrame:(CGRect)a3;
-- (void)updateWithLegibilitySettings:(id)a3 labelFont:(id)a4;
+- (SBIconDotLabelAccessoryView)initWithFrame:(CGRect)frame;
+- (void)updateWithLegibilitySettings:(id)settings labelFont:(id)font;
 @end
 
 @implementation SBIconDotLabelAccessoryView
@@ -17,40 +17,40 @@
   return result;
 }
 
-- (void)updateWithLegibilitySettings:(id)a3 labelFont:(id)a4
+- (void)updateWithLegibilitySettings:(id)settings labelFont:(id)font
 {
-  v5 = [objc_opt_class() _cachedDotImage];
-  if (!v5)
+  _cachedDotImage = [objc_opt_class() _cachedDotImage];
+  if (!_cachedDotImage)
   {
     v6 = MEMORY[0x1E69DCAB8];
-    v7 = [objc_opt_class() labelAccessorySystemImageName];
-    v8 = [v6 systemImageNamed:v7];
+    labelAccessorySystemImageName = [objc_opt_class() labelAccessorySystemImageName];
+    v8 = [v6 systemImageNamed:labelAccessorySystemImageName];
 
     [(SBIconDotLabelAccessoryView *)self intrinsicContentSize];
     v9 = [v8 sbf_resizeImageToSize:?];
-    v10 = [objc_opt_class() _dotColor];
-    v11 = [v9 _flatImageWithColor:v10];
+    _dotColor = [objc_opt_class() _dotColor];
+    v11 = [v9 _flatImageWithColor:_dotColor];
 
     [objc_opt_class() _setCachedDotImage:v11];
-    v5 = v11;
+    _cachedDotImage = v11;
   }
 
-  v12 = v5;
-  [(UIImageView *)self->_imageView setImage:v5];
+  v12 = _cachedDotImage;
+  [(UIImageView *)self->_imageView setImage:_cachedDotImage];
   [(UIImageView *)self->_imageView sizeToFit];
 }
 
-- (SBIconDotLabelAccessoryView)initWithFrame:(CGRect)a3
+- (SBIconDotLabelAccessoryView)initWithFrame:(CGRect)frame
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = SBIconDotLabelAccessoryView;
-  v3 = [(SBIconDotLabelAccessoryView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBIconDotLabelAccessoryView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SBIconDotLabelAccessoryView *)v3 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(SBIconDotLabelAccessoryView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     imageView = v4->_imageView;
@@ -72,10 +72,10 @@
     v11 = [v9 valueWithCAColorMatrix:v15];
     [v8 setValue:v11 forKey:@"inputColorMatrix"];
 
-    v12 = [(UIImageView *)v4->_imageView layer];
+    layer2 = [(UIImageView *)v4->_imageView layer];
     v17[0] = v8;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-    [v12 setFilters:v13];
+    [layer2 setFilters:v13];
 
     [(SBIconDotLabelAccessoryView *)v4 addSubview:v4->_imageView];
   }

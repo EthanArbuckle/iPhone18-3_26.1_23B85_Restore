@@ -1,20 +1,20 @@
 @interface CMAPencilFusionResult
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation CMAPencilFusionResult
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   v12 = objc_msgSend_init(v8, v9, v10, v11);
   *(v12 + 12) = self->_altitudeAngle;
   *(v12 + 16) = self->_azimuthAngle;
   *(v12 + 20) = self->_rollAngle;
   *(v12 + 48) = *self->_position;
-  *(v12 + 24) = objc_msgSend_copyWithZone_(self->_estimationUpdateIndex, v13, a3, v14);
+  *(v12 + 24) = objc_msgSend_copyWithZone_(self->_estimationUpdateIndex, v13, zone, v14);
   *(v12 + 8) = self->_estimated;
   *(v12 + 32) = self->_timestamp;
   return v12;

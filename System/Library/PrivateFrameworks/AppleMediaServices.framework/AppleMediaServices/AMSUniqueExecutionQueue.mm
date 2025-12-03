@@ -1,22 +1,22 @@
 @interface AMSUniqueExecutionQueue
-- (AMSUniqueExecutionQueue)initWithBlock:(id)a3;
+- (AMSUniqueExecutionQueue)initWithBlock:(id)block;
 - (id)_createExecutionPromise;
-- (void)_beginExecutingBlockWithPromise:(id)a3;
-- (void)addCompletionBlock:(id)a3;
-- (void)addCompletionBlockForSubsequentExecution:(id)a3;
+- (void)_beginExecutingBlockWithPromise:(id)promise;
+- (void)addCompletionBlock:(id)block;
+- (void)addCompletionBlockForSubsequentExecution:(id)execution;
 @end
 
 @implementation AMSUniqueExecutionQueue
 
-- (AMSUniqueExecutionQueue)initWithBlock:(id)a3
+- (AMSUniqueExecutionQueue)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = AMSUniqueExecutionQueue;
   v5 = [(AMSUniqueExecutionQueue *)&v18 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
 
@@ -39,12 +39,12 @@
   return v5;
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = AMSLogKey();
   objc_initWeak(&location, self);
-  v6 = [(AMSUniqueExecutionQueue *)self executionPromiseAccessQueue];
+  executionPromiseAccessQueue = [(AMSUniqueExecutionQueue *)self executionPromiseAccessQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __46__AMSUniqueExecutionQueue_addCompletionBlock___block_invoke;
@@ -52,10 +52,10 @@
   objc_copyWeak(&v16, &location);
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = blockCopy;
   v15 = v8;
   v9 = v13;
-  v10 = v6;
+  v10 = executionPromiseAccessQueue;
   v11 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -223,12 +223,12 @@ void __46__AMSUniqueExecutionQueue_addCompletionBlock___block_invoke_2(uint64_t 
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)addCompletionBlockForSubsequentExecution:(id)a3
+- (void)addCompletionBlockForSubsequentExecution:(id)execution
 {
-  v4 = a3;
+  executionCopy = execution;
   v5 = AMSLogKey();
   objc_initWeak(&location, self);
-  v6 = [(AMSUniqueExecutionQueue *)self executionPromiseAccessQueue];
+  executionPromiseAccessQueue = [(AMSUniqueExecutionQueue *)self executionPromiseAccessQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__AMSUniqueExecutionQueue_addCompletionBlockForSubsequentExecution___block_invoke;
@@ -236,10 +236,10 @@ void __46__AMSUniqueExecutionQueue_addCompletionBlock___block_invoke_2(uint64_t 
   objc_copyWeak(&v16, &location);
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = executionCopy;
   v15 = v8;
   v9 = v13;
-  v10 = v6;
+  v10 = executionPromiseAccessQueue;
   v11 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -472,15 +472,15 @@ void __68__AMSUniqueExecutionQueue_addCompletionBlockForSubsequentExecution___bl
   [WeakRetained addCompletionBlock:*(a1 + 40)];
 }
 
-- (void)_beginExecutingBlockWithPromise:(id)a3
+- (void)_beginExecutingBlockWithPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [(AMSUniqueExecutionQueue *)self executeBlockQueue];
-  dispatch_assert_queue_not_V2(v5);
+  promiseCopy = promise;
+  executeBlockQueue = [(AMSUniqueExecutionQueue *)self executeBlockQueue];
+  dispatch_assert_queue_not_V2(executeBlockQueue);
 
   v6 = AMSLogKey();
   objc_initWeak(&location, self);
-  v7 = [(AMSUniqueExecutionQueue *)self executeBlockQueue];
+  executeBlockQueue2 = [(AMSUniqueExecutionQueue *)self executeBlockQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __59__AMSUniqueExecutionQueue__beginExecutingBlockWithPromise___block_invoke;
@@ -488,10 +488,10 @@ void __68__AMSUniqueExecutionQueue_addCompletionBlockForSubsequentExecution___bl
   objc_copyWeak(&v17, &location);
   v8 = v6;
   v15 = v8;
-  v9 = v4;
+  v9 = promiseCopy;
   v16 = v9;
   v10 = v14;
-  v11 = v7;
+  v11 = executeBlockQueue2;
   v12 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -578,20 +578,20 @@ void __59__AMSUniqueExecutionQueue__beginExecutingBlockWithPromise___block_invok
 
 - (id)_createExecutionPromise
 {
-  v3 = [(AMSUniqueExecutionQueue *)self executionPromiseAccessQueue];
-  dispatch_assert_queue_V2(v3);
+  executionPromiseAccessQueue = [(AMSUniqueExecutionQueue *)self executionPromiseAccessQueue];
+  dispatch_assert_queue_V2(executionPromiseAccessQueue);
 
   v4 = objc_alloc_init(AMSMutablePromise);
   [(AMSUniqueExecutionQueue *)self setExecutionPromise:v4];
 
   objc_initWeak(&location, self);
-  v5 = [(AMSUniqueExecutionQueue *)self executionPromise];
+  executionPromise = [(AMSUniqueExecutionQueue *)self executionPromise];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __50__AMSUniqueExecutionQueue__createExecutionPromise__block_invoke;
   v11 = &unk_1E73BCD18;
   objc_copyWeak(&v12, &location);
-  [v5 addFinishBlock:&v8];
+  [executionPromise addFinishBlock:&v8];
 
   v6 = [(AMSUniqueExecutionQueue *)self executionPromise:v8];
   objc_destroyWeak(&v12);

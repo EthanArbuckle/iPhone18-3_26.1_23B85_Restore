@@ -1,21 +1,21 @@
 @interface RPImageUtility
-+ (id)getImageDataFromExtensionContainingAppBundleUrl:(id)a3;
++ (id)getImageDataFromExtensionContainingAppBundleUrl:(id)url;
 @end
 
 @implementation RPImageUtility
 
-+ (id)getImageDataFromExtensionContainingAppBundleUrl:(id)a3
++ (id)getImageDataFromExtensionContainingAppBundleUrl:(id)url
 {
-  v3 = a3;
-  v4 = [[ISIcon alloc] initWithURL:v3];
+  urlCopy = url;
+  v4 = [[ISIcon alloc] initWithURL:urlCopy];
 
   v5 = objc_opt_new();
   v6 = [v4 imageForImageDescriptor:v5];
-  v7 = [v6 CGImage];
-  if (v7)
+  cGImage = [v6 CGImage];
+  if (cGImage)
   {
     v12 = 0;
-    v8 = sub_10004F710(v7, 0, @"public.png", &v12);
+    v8 = sub_10004F710(cGImage, 0, @"public.png", &v12);
     v9 = v8;
     if (v12)
     {

@@ -1,20 +1,20 @@
 @interface PGFeatureExtractorViewCount
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorViewCount
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = [a3 assetUserActivityProperties];
-  v6 = [v5 viewCount];
+  assetUserActivityProperties = [entity assetUserActivityProperties];
+  viewCount = [assetUserActivityProperties viewCount];
 
   v7 = MEMORY[0x277D22C40];
-  v8 = [(PGFeatureExtractorViewCount *)self featureLength];
-  *&v9 = v6;
+  featureLength = [(PGFeatureExtractorViewCount *)self featureLength];
+  *&v9 = viewCount;
 
-  return [v7 vectorRepeatingFloat:v8 count:v9];
+  return [v7 vectorRepeatingFloat:featureLength count:v9];
 }
 
 - (id)featureNames

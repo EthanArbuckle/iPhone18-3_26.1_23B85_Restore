@@ -1,18 +1,18 @@
 @interface PKPaymentAuthorizationOnboardingInterface
-- (PKPaymentAuthorizationOnboardingInterface)initWithOnboardingContext:(int64_t)a3 supportedInterfaceOrientations:(unint64_t)a4 configuration:(id)a5 delegate:(id)a6;
+- (PKPaymentAuthorizationOnboardingInterface)initWithOnboardingContext:(int64_t)context supportedInterfaceOrientations:(unint64_t)orientations configuration:(id)configuration delegate:(id)delegate;
 - (PKPaymentProvisioningController)provisioningController;
-- (id)_createBindRequestForFeatureApplication:(id)a3;
+- (id)_createBindRequestForFeatureApplication:(id)application;
 - (id)_createPrimaryViewController;
-- (id)_setupErrorUserInfoWithBindToken:(id)a3;
+- (id)_setupErrorUserInfoWithBindToken:(id)token;
 - (id)applyWelcomeCardExperiment;
-- (void)_bindFeatureApplication:(id)a3 completion:(id)a4;
-- (void)_getAugmentedProduct:(id)a3;
-- (void)_getProduct:(id)a3;
-- (void)_loadFeatureOnboardingViewControllerForProduct:(id)a3 completion:(id)a4;
-- (void)loadingViewControllerDidCancel:(id)a3;
-- (void)viewController:(id)a3 canProceedWithInstallment:(BOOL)a4 featureApplication:(id)a5 completion:(id)a6;
-- (void)viewControllerDidCancelSetupFlow:(id)a3;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (void)_bindFeatureApplication:(id)application completion:(id)completion;
+- (void)_getAugmentedProduct:(id)product;
+- (void)_getProduct:(id)product;
+- (void)_loadFeatureOnboardingViewControllerForProduct:(id)product completion:(id)completion;
+- (void)loadingViewControllerDidCancel:(id)cancel;
+- (void)viewController:(id)controller canProceedWithInstallment:(BOOL)installment featureApplication:(id)application completion:(id)completion;
+- (void)viewControllerDidCancelSetupFlow:(id)flow;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 - (void)willAppear;
 @end
 
@@ -49,16 +49,16 @@
   if (!provisioningController)
   {
     v4 = objc_alloc(MEMORY[0x1E69B8D48]);
-    v5 = [MEMORY[0x1E69B8EF8] sharedService];
-    v6 = [v4 initWithWebService:v5];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    v6 = [v4 initWithWebService:mEMORY[0x1E69B8EF8]];
     v7 = self->_provisioningController;
     self->_provisioningController = v6;
 
     v8 = self->_provisioningController;
-    v9 = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration request];
-    v10 = [v9 installmentConfiguration];
-    v11 = [v10 referrerIdentifier];
-    [(PKPaymentProvisioningController *)v8 setReferrerIdentifier:v11];
+    request = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration request];
+    installmentConfiguration = [request installmentConfiguration];
+    referrerIdentifier = [installmentConfiguration referrerIdentifier];
+    [(PKPaymentProvisioningController *)v8 setReferrerIdentifier:referrerIdentifier];
 
     v12 = self->_provisioningController;
     v13 = MEMORY[0x1E695DFD8];
@@ -72,23 +72,23 @@
   return provisioningController;
 }
 
-- (PKPaymentAuthorizationOnboardingInterface)initWithOnboardingContext:(int64_t)a3 supportedInterfaceOrientations:(unint64_t)a4 configuration:(id)a5 delegate:(id)a6
+- (PKPaymentAuthorizationOnboardingInterface)initWithOnboardingContext:(int64_t)context supportedInterfaceOrientations:(unint64_t)orientations configuration:(id)configuration delegate:(id)delegate
 {
-  v11 = a5;
-  v12 = a6;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = PKPaymentAuthorizationOnboardingInterface;
   v13 = [(PKPaymentAuthorizationOnboardingInterface *)&v21 init];
   v14 = v13;
   if (v13)
   {
-    v13->_onboardingContext = a3;
-    objc_storeStrong(&v13->_configuration, a5);
-    v14->_supportedInterfaceOrientations = a4;
-    objc_storeWeak(&v14->_delegate, v12);
-    v15 = [v11 request];
-    v16 = [v15 installmentConfiguration];
-    [v16 feature];
+    v13->_onboardingContext = context;
+    objc_storeStrong(&v13->_configuration, configuration);
+    v14->_supportedInterfaceOrientations = orientations;
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    request = [configurationCopy request];
+    installmentConfiguration = [request installmentConfiguration];
+    [installmentConfiguration feature];
     v14->_feature = PKFeatureIdentifierFromPaymentSetupFeatureType();
 
     if (!v14->_feature)
@@ -97,9 +97,9 @@
       goto LABEL_6;
     }
 
-    v17 = [(PKPaymentAuthorizationOnboardingInterface *)v14 _createPrimaryViewController];
+    _createPrimaryViewController = [(PKPaymentAuthorizationOnboardingInterface *)v14 _createPrimaryViewController];
     primaryViewController = v14->_primaryViewController;
-    v14->_primaryViewController = v17;
+    v14->_primaryViewController = _createPrimaryViewController;
   }
 
   v19 = v14;
@@ -116,11 +116,11 @@ LABEL_6:
   if ([(UIViewController *)v3 pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
     [(PKNavigationController *)v4 setModalPresentationStyle:16];
-    v5 = [(PKNavigationController *)v4 view];
-    v6 = [v5 layer];
+    view = [(PKNavigationController *)v4 view];
+    layer = [view layer];
 
-    [v6 setMasksToBounds:1];
-    [v6 setCornerRadius:6.0];
+    [layer setMasksToBounds:1];
+    [layer setCornerRadius:6.0];
   }
 
   else
@@ -216,18 +216,18 @@ void __55__PKPaymentAuthorizationOnboardingInterface_willAppear__block_invoke_19
   [v7 setDelegate:v5];
 }
 
-- (void)_getProduct:(id)a3
+- (void)_getProduct:(id)product
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationOnboardingInterface *)self provisioningController];
+  productCopy = product;
+  provisioningController = [(PKPaymentAuthorizationOnboardingInterface *)self provisioningController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__PKPaymentAuthorizationOnboardingInterface__getProduct___block_invoke;
   v7[3] = &unk_1E8015170;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 preflightWithCompletion:v7];
+  v8 = productCopy;
+  v6 = productCopy;
+  [provisioningController preflightWithCompletion:v7];
 }
 
 void __57__PKPaymentAuthorizationOnboardingInterface__getProduct___block_invoke(uint64_t a1, char a2)
@@ -264,9 +264,9 @@ void __57__PKPaymentAuthorizationOnboardingInterface__getProduct___block_invoke_
   }
 }
 
-- (void)_getAugmentedProduct:(id)a3
+- (void)_getAugmentedProduct:(id)product
 {
-  v4 = a3;
+  productCopy = product;
   v5 = PKLogFacilityTypeGetObject();
   v6 = os_signpost_id_make_with_pointer(v5, self);
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -279,19 +279,19 @@ void __57__PKPaymentAuthorizationOnboardingInterface__getProduct___block_invoke_
     }
   }
 
-  v8 = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration request];
-  v9 = [(PKPaymentAuthorizationOnboardingInterface *)self applyWelcomeCardExperiment];
-  v10 = [MEMORY[0x1E69B8DB8] paymentService];
-  v11 = [v8 installmentConfiguration];
-  v12 = [v9 experimentDetails];
+  request = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration request];
+  applyWelcomeCardExperiment = [(PKPaymentAuthorizationOnboardingInterface *)self applyWelcomeCardExperiment];
+  paymentService = [MEMORY[0x1E69B8DB8] paymentService];
+  installmentConfiguration = [request installmentConfiguration];
+  experimentDetails = [applyWelcomeCardExperiment experimentDetails];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__PKPaymentAuthorizationOnboardingInterface__getAugmentedProduct___block_invoke;
   v14[3] = &unk_1E8015198;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
-  [v10 augmentedProductForInstallmentConfiguration:v11 experimentDetails:v12 withCompletion:v14];
+  v15 = productCopy;
+  v13 = productCopy;
+  [paymentService augmentedProductForInstallmentConfiguration:installmentConfiguration experimentDetails:experimentDetails withCompletion:v14];
 }
 
 void __66__PKPaymentAuthorizationOnboardingInterface__getAugmentedProduct___block_invoke(uint64_t a1, void *a2)
@@ -328,30 +328,30 @@ void __66__PKPaymentAuthorizationOnboardingInterface__getAugmentedProduct___bloc
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_loadFeatureOnboardingViewControllerForProduct:(id)a3 completion:(id)a4
+- (void)_loadFeatureOnboardingViewControllerForProduct:(id)product completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  productCopy = product;
   v8 = [PKFeatureOnBoardingViewController alloc];
   onboardingContext = self->_onboardingContext;
   feature = self->_feature;
-  v11 = [(PKPaymentAuthorizationOnboardingInterface *)self provisioningController];
-  v12 = [v7 onboardingItems];
-  v13 = [v12 firstObject];
-  v14 = [(PKFeatureOnBoardingViewController *)v8 initWithParentFlowController:0 setupDelegate:self setupContext:8 onboardingContext:onboardingContext featureIdentifier:feature provisioningController:v11 paymentSetupProduct:v7 currentPage:v13];
+  provisioningController = [(PKPaymentAuthorizationOnboardingInterface *)self provisioningController];
+  onboardingItems = [productCopy onboardingItems];
+  firstObject = [onboardingItems firstObject];
+  v14 = [(PKFeatureOnBoardingViewController *)v8 initWithParentFlowController:0 setupDelegate:self setupContext:8 onboardingContext:onboardingContext featureIdentifier:feature provisioningController:provisioningController paymentSetupProduct:productCopy currentPage:firstObject];
 
-  v15 = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration request];
-  v16 = [v15 installmentConfiguration];
-  [(PKFeatureOnBoardingViewController *)v14 setInstallmentConfiguration:v16];
+  request = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration request];
+  installmentConfiguration = [request installmentConfiguration];
+  [(PKFeatureOnBoardingViewController *)v14 setInstallmentConfiguration:installmentConfiguration];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __103__PKPaymentAuthorizationOnboardingInterface__loadFeatureOnboardingViewControllerForProduct_completion___block_invoke;
   v19[3] = &unk_1E80109C0;
   v20 = v14;
-  v21 = v6;
+  v21 = completionCopy;
   v17 = v14;
-  v18 = v6;
+  v18 = completionCopy;
   [(PKFeatureOnBoardingViewController *)v17 preflightWithCompletion:v19];
 }
 
@@ -366,30 +366,30 @@ void __103__PKPaymentAuthorizationOnboardingInterface__loadFeatureOnboardingView
   dispatch_async(MEMORY[0x1E69E96A0], v2);
 }
 
-- (void)loadingViewControllerDidCancel:(id)a3
+- (void)loadingViewControllerDidCancel:(id)cancel
 {
-  v3 = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration presenter];
-  [v3 dismissWithReason:3 completion:0];
+  presenter = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration presenter];
+  [presenter dismissWithReason:3 completion:0];
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained paymentAuthorizationOnboardingDidFinishWithError:self->_setupError];
 }
 
-- (void)viewController:(id)a3 canProceedWithInstallment:(BOOL)a4 featureApplication:(id)a5 completion:(id)a6
+- (void)viewController:(id)controller canProceedWithInstallment:(BOOL)installment featureApplication:(id)application completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v8)
+  installmentCopy = installment;
+  controllerCopy = controller;
+  applicationCopy = application;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (installmentCopy)
   {
-    if (v12)
+    if (completionCopy)
     {
-      (*(v12 + 2))(v12);
+      (*(completionCopy + 2))(completionCopy);
     }
   }
 
@@ -409,7 +409,7 @@ void __103__PKPaymentAuthorizationOnboardingInterface__loadFeatureOnboardingView
     v15[3] = &unk_1E80151C0;
     objc_copyWeak(&v17, buf);
     v16 = v13;
-    [(PKPaymentAuthorizationOnboardingInterface *)self _bindFeatureApplication:v11 completion:v15];
+    [(PKPaymentAuthorizationOnboardingInterface *)self _bindFeatureApplication:applicationCopy completion:v15];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
@@ -437,15 +437,15 @@ void __116__PKPaymentAuthorizationOnboardingInterface_viewController_canProceedW
   }
 }
 
-- (id)_setupErrorUserInfoWithBindToken:(id)a3
+- (id)_setupErrorUserInfoWithBindToken:(id)token
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (token)
   {
     v7 = *MEMORY[0x1E69BC078];
-    v8[0] = a3;
+    v8[0] = token;
     v3 = MEMORY[0x1E695DF20];
-    v4 = a3;
+    tokenCopy = token;
     v5 = [v3 dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 
@@ -457,18 +457,18 @@ void __116__PKPaymentAuthorizationOnboardingInterface_viewController_canProceedW
   return v5;
 }
 
-- (void)_bindFeatureApplication:(id)a3 completion:(id)a4
+- (void)_bindFeatureApplication:(id)application completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PKPaymentAuthorizationOnboardingInterface *)self _createBindRequestForFeatureApplication:a3];
-  v8 = [MEMORY[0x1E69B8EF8] sharedService];
+  completionCopy = completion;
+  v7 = [(PKPaymentAuthorizationOnboardingInterface *)self _createBindRequestForFeatureApplication:application];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__PKPaymentAuthorizationOnboardingInterface__bindFeatureApplication_completion___block_invoke;
   v10[3] = &unk_1E80151E8;
-  v11 = v6;
-  v9 = v6;
-  [v8 performInstallmentBindWithRequest:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [mEMORY[0x1E69B8EF8] performInstallmentBindWithRequest:v7 completion:v10];
 }
 
 void __80__PKPaymentAuthorizationOnboardingInterface__bindFeatureApplication_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -501,50 +501,50 @@ void __80__PKPaymentAuthorizationOnboardingInterface__bindFeatureApplication_com
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_createBindRequestForFeatureApplication:(id)a3
+- (id)_createBindRequestForFeatureApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration request];
+  applicationCopy = application;
+  request = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration request];
   v6 = objc_alloc_init(MEMORY[0x1E69B84B8]);
-  v7 = [v4 applicationIdentifier];
-  [v6 setApplicationIdentifier:v7];
+  applicationIdentifier = [applicationCopy applicationIdentifier];
+  [v6 setApplicationIdentifier:applicationIdentifier];
 
-  v8 = [v5 installmentConfiguration];
-  v9 = [v8 bindingTotalAmount];
-  [v6 setBindingAmount:v9];
+  installmentConfiguration = [request installmentConfiguration];
+  bindingTotalAmount = [installmentConfiguration bindingTotalAmount];
+  [v6 setBindingAmount:bindingTotalAmount];
 
-  v10 = [v5 merchantIdentifier];
-  if (v10)
+  merchantIdentifier = [request merchantIdentifier];
+  if (merchantIdentifier)
   {
-    [v6 setMerchantIdentifier:v10];
+    [v6 setMerchantIdentifier:merchantIdentifier];
   }
 
   else
   {
-    v11 = [v5 installmentConfiguration];
-    v12 = [v11 installmentMerchantIdentifier];
-    [v6 setMerchantIdentifier:v12];
+    installmentConfiguration2 = [request installmentConfiguration];
+    installmentMerchantIdentifier = [installmentConfiguration2 installmentMerchantIdentifier];
+    [v6 setMerchantIdentifier:installmentMerchantIdentifier];
   }
 
-  v13 = [v4 applicationBaseURL];
-  [v6 setBaseURL:v13];
+  applicationBaseURL = [applicationCopy applicationBaseURL];
+  [v6 setBaseURL:applicationBaseURL];
 
   return v6;
 }
 
-- (void)viewControllerDidCancelSetupFlow:(id)a3
+- (void)viewControllerDidCancelSetupFlow:(id)flow
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "PKPaymentAuthorizationOnboardingInterface (%{public}p): Dismissing because setup was cancelled", &v6, 0xCu);
   }
 
-  v5 = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration presenter];
-  [v5 dismissWithReason:3 completion:0];
+  presenter = [(PKPaymentRequestViewInterfaceConfiguration *)self->_configuration presenter];
+  [presenter dismissWithReason:3 completion:0];
 }
 
 @end

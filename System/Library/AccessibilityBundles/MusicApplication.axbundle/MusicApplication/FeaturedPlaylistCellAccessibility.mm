@@ -1,16 +1,16 @@
 @interface FeaturedPlaylistCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation FeaturedPlaylistCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.FeaturedPlaylistCell" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.FeaturedPlaylistCell" hasInstanceMethod:@"descriptionText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.FeaturedPlaylistCell" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.FeaturedPlaylistCell" hasInstanceMethod:@"descriptionText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

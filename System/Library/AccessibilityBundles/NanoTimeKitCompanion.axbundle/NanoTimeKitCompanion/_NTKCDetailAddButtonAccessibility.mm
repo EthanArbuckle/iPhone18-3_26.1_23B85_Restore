@@ -9,16 +9,16 @@
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   v3 = [v2 titleForState:0];
-  v4 = [v3 localizedLowercaseString];
+  localizedLowercaseString = [v3 localizedLowercaseString];
 
-  if (!v4)
+  if (!localizedLowercaseString)
   {
-    v5 = [v2 titleLabel];
-    v6 = [v5 text];
-    v4 = [v6 localizedLowercaseString];
+    titleLabel = [v2 titleLabel];
+    text = [titleLabel text];
+    localizedLowercaseString = [text localizedLowercaseString];
   }
 
-  return v4;
+  return localizedLowercaseString;
 }
 
 @end

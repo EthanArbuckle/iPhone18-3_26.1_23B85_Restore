@@ -12,11 +12,11 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithString:v5];
 
-  v7 = [(SSHBHIDCurrentSensorSample *)self identifier];
-  [v6 appendFormat:@"\nidentifier: %@", v7];
+  identifier = [(SSHBHIDCurrentSensorSample *)self identifier];
+  [v6 appendFormat:@"\nidentifier: %@", identifier];
 
-  v8 = [(SSHBHIDCurrentSensorSample *)self name];
-  [v6 appendFormat:@"\nname: %@", v8];
+  name = [(SSHBHIDCurrentSensorSample *)self name];
+  [v6 appendFormat:@"\nname: %@", name];
 
   [(SSHBHIDCurrentSensorSample *)self current];
   [v6 appendFormat:@"\ncurrent: %f", v9];
@@ -26,10 +26,10 @@
 
 - (id)csv
 {
-  v3 = [(SSHBHIDCurrentSensorSample *)self identifier];
-  v4 = [(SSHBHIDCurrentSensorSample *)self name];
+  identifier = [(SSHBHIDCurrentSensorSample *)self identifier];
+  name = [(SSHBHIDCurrentSensorSample *)self name];
   [(SSHBHIDCurrentSensorSample *)self current];
-  v6 = [NSString stringWithFormat:@"%@, %@, %f", v3, v4, v5];
+  v6 = [NSString stringWithFormat:@"%@, %@, %f", identifier, name, v5];
 
   return v6;
 }

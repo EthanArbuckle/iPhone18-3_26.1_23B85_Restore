@@ -1,15 +1,15 @@
 @interface ANSTObject
 + (id)new;
 - (ANSTObject)init;
-- (ANSTObject)initWithAcObject:(id *)a3;
-- (ANSTObject)initWithCoder:(id)a3;
-- (ANSTObject)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8;
-- (BOOL)isEqual:(id)a3;
+- (ANSTObject)initWithAcObject:(id *)object;
+- (ANSTObject)initWithCoder:(id)coder;
+- (ANSTObject)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)boundingBox;
 - (id)debugJSONDictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSTObject
@@ -23,35 +23,35 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTObject)initWithAcObject:(id *)a3
+- (ANSTObject)initWithAcObject:(id *)object
 {
-  var0 = a3->var0;
-  var1 = a3->var1;
-  v7 = ANSTObjectCategoryFromAcDetCategory(a3->var2);
-  *&v8 = a3->var5;
-  v10 = objc_msgSend_initWithObjectID_groupID_category_boundingBox_confidence_distance_(self, v9, var0, var1, v7, a3->var4, a3->var3.var0, a3->var3.var1, a3->var3.var2, a3->var3.var3, v8);
+  var0 = object->var0;
+  var1 = object->var1;
+  v7 = ANSTObjectCategoryFromAcDetCategory(object->var2);
+  *&v8 = object->var5;
+  v10 = objc_msgSend_initWithObjectID_groupID_category_boundingBox_confidence_distance_(self, v9, var0, var1, v7, object->var4, object->var3.var0, object->var3.var1, object->var3.var2, object->var3.var3, v8);
 
   return v10;
 }
 
-- (ANSTObject)initWithObjectID:(unint64_t)a3 groupID:(unint64_t)a4 category:(id)a5 boundingBox:(CGRect)a6 confidence:(unint64_t)a7 distance:(float)a8
+- (ANSTObject)initWithObjectID:(unint64_t)d groupID:(unint64_t)iD category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence distance:(float)distance
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v23.receiver = self;
   v23.super_class = ANSTObject;
-  v16 = a5;
+  categoryCopy = category;
   v17 = [(ANSTObject *)&v23 init];
-  v17->_objectID = a3;
-  v17->_groupID = a4;
-  v20 = objc_msgSend_copy(v16, v18, v19, v23.receiver, v23.super_class);
+  v17->_objectID = d;
+  v17->_groupID = iD;
+  v20 = objc_msgSend_copy(categoryCopy, v18, v19, v23.receiver, v23.super_class);
 
   category = v17->_category;
   v17->_category = v20;
@@ -60,18 +60,18 @@
   v17->_boundingBox.origin.y = y;
   v17->_boundingBox.size.width = width;
   v17->_boundingBox.size.height = height;
-  v17->_confidence = a7;
-  v17->_distance = a8;
+  v17->_confidence = confidence;
+  v17->_distance = distance;
   return v17;
 }
 
-- (ANSTObject)initWithCoder:(id)a3
+- (ANSTObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = ANSTObject;
   v5 = [(ANSTObject *)&v42 init];
-  v6 = v4;
+  v6 = coderCopy;
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(sel_objectID);
   v10 = objc_msgSend_decodeObjectOfClass_forKey_(v6, v9, v7, v8);
@@ -145,16 +145,16 @@ LABEL_8:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v5, self->_objectID);
   v7 = NSStringFromSelector(sel_objectID);
-  objc_msgSend_encodeObject_forKey_(v4, v8, v6, v7);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v6, v7);
 
   groupID = self->_groupID;
   v10 = MEMORY[0x277CCABB0];
-  v11 = v4;
+  v11 = coderCopy;
   v13 = objc_msgSend_numberWithUnsignedInteger_(v10, v12, groupID);
   v14 = NSStringFromSelector(sel_groupID);
   objc_msgSend_encodeObject_forKey_(v11, v15, v13, v14);
@@ -181,10 +181,10 @@ LABEL_8:
   objc_msgSend_encodeObject_forKey_(v35, v34, v32, v33);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqualToString = 1;
   }
@@ -194,7 +194,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (objc_msgSend_objectID(v5, v6, v7) == self->_objectID && objc_msgSend_groupID(v5, v8, v9) == self->_groupID && objc_msgSend_confidence(v5, v10, v11) == self->_confidence && (objc_msgSend_distance(v5, v12, v13), v16 == self->_distance) && (objc_msgSend_boundingBox(v5, v14, v15), CGRectEqualToRect(v23, self->_boundingBox)))
       {
         v19 = objc_msgSend_category(v5, v17, v18);

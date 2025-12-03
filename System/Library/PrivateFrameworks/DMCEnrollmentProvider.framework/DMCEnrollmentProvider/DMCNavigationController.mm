@@ -1,20 +1,20 @@
 @interface DMCNavigationController
-- (DMCNavigationController)initWithRootViewController:(id)a3;
+- (DMCNavigationController)initWithRootViewController:(id)controller;
 - (id)rootViewController;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
-- (void)dmc_presentAlert:(id)a3 completion:(id)a4;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
+- (void)dmc_presentAlert:(id)alert completion:(id)completion;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
 - (void)unblockNavigationPush;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation DMCNavigationController
 
-- (DMCNavigationController)initWithRootViewController:(id)a3
+- (DMCNavigationController)initWithRootViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = DMCNavigationController;
-  v3 = [(DMCNavigationController *)&v6 initWithRootViewController:a3];
+  v3 = [(DMCNavigationController *)&v6 initWithRootViewController:controller];
   v4 = v3;
   if (v3)
   {
@@ -24,22 +24,22 @@
   return v4;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = DMCNavigationController;
-  [(DMCNavigationController *)&v16 viewDidDisappear:a3];
-  v4 = [(DMCNavigationController *)self presentingViewController];
+  [(DMCNavigationController *)&v16 viewDidDisappear:disappear];
+  presentingViewController = [(DMCNavigationController *)self presentingViewController];
 
-  if (!v4)
+  if (!presentingViewController)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(DMCNavigationController *)self viewControllers];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    viewControllers = [(DMCNavigationController *)self viewControllers];
+    v6 = [viewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -50,7 +50,7 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(viewControllers);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
@@ -60,7 +60,7 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [viewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v7);
@@ -74,19 +74,19 @@
   }
 }
 
-- (void)dmc_presentAlert:(id)a3 completion:(id)a4
+- (void)dmc_presentAlert:(id)alert completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  alertCopy = alert;
+  completionCopy = completion;
   if (([(DMCNavigationController *)self _isTransitioning]& 1) != 0 || ([(DMCNavigationController *)self disappearingViewController], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __55__DMCNavigationController_dmc_presentAlert_completion___block_invoke;
     v20[3] = &unk_278EE7EA0;
-    v21 = v6;
-    v22 = v7;
-    v9 = v6;
+    v21 = alertCopy;
+    v22 = completionCopy;
+    v9 = alertCopy;
     [(DMCNavigationController *)self setTransitionCompletionBlock:v20];
 
     v10 = v21;
@@ -95,23 +95,23 @@
   else
   {
     [(DMCNavigationController *)self setIsPresentingAlert:1];
-    [(DMCNavigationController *)self setAlertCompletionBlock:v7];
+    [(DMCNavigationController *)self setAlertCompletionBlock:completionCopy];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __55__DMCNavigationController_dmc_presentAlert_completion___block_invoke_2;
     aBlock[3] = &unk_278EE77B8;
     aBlock[4] = self;
-    v19 = v6;
-    v11 = v6;
+    v19 = alertCopy;
+    v11 = alertCopy;
     v12 = _Block_copy(aBlock);
-    v13 = [(DMCNavigationController *)self topViewController];
+    topViewController = [(DMCNavigationController *)self topViewController];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __55__DMCNavigationController_dmc_presentAlert_completion___block_invoke_3;
     v16[3] = &unk_278EE7808;
     v17 = v12;
     v14 = v12;
-    [v13 presentViewController:v11 animated:1 completion:v16];
+    [topViewController presentViewController:v11 animated:1 completion:v16];
 
     v15 = dispatch_time(0, 1000000000);
     dispatch_after(v15, MEMORY[0x277D85CD0], v14);
@@ -159,16 +159,16 @@ void __55__DMCNavigationController_dmc_presentAlert_completion___block_invoke_3(
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllersCopy = controllers;
   if ([(DMCNavigationController *)self isPushBlocked])
   {
-    v7 = [v6 copy];
+    v7 = [controllersCopy copy];
     [(DMCNavigationController *)self setPendingViewControllers:v7];
 
-    [(DMCNavigationController *)self setPendingPushAnimated:v4];
+    [(DMCNavigationController *)self setPendingPushAnimated:animatedCopy];
   }
 
   else if ([(DMCNavigationController *)self isPresentingAlert])
@@ -179,8 +179,8 @@ void __55__DMCNavigationController_dmc_presentAlert_completion___block_invoke_3(
     v9[2] = __55__DMCNavigationController_setViewControllers_animated___block_invoke;
     v9[3] = &unk_278EE7EC8;
     objc_copyWeak(&v11, &location);
-    v10 = v6;
-    v12 = v4;
+    v10 = controllersCopy;
+    v12 = animatedCopy;
     [(DMCNavigationController *)self setTransitionCompletionBlock:v9];
 
     objc_destroyWeak(&v11);
@@ -191,7 +191,7 @@ void __55__DMCNavigationController_dmc_presentAlert_completion___block_invoke_3(
   {
     v8.receiver = self;
     v8.super_class = DMCNavigationController;
-    [(DMCNavigationController *)&v8 setViewControllers:v6 animated:v4];
+    [(DMCNavigationController *)&v8 setViewControllers:controllersCopy animated:animatedCopy];
   }
 }
 
@@ -201,20 +201,20 @@ void __55__DMCNavigationController_setViewControllers_animated___block_invoke(ui
   [WeakRetained setViewControllers:*(a1 + 32) animated:*(a1 + 48)];
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = DMCNavigationController;
-  [(DMCNavigationController *)&v10 didShowViewController:v6 animated:v4];
+  [(DMCNavigationController *)&v10 didShowViewController:controllerCopy animated:animatedCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__DMCNavigationController_didShowViewController_animated___block_invoke;
   v8[3] = &unk_278EE77B8;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = controllerCopy;
+  v7 = controllerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
@@ -235,8 +235,8 @@ void __58__DMCNavigationController_didShowViewController_animated___block_invoke
 
 - (id)rootViewController
 {
-  v2 = [(DMCNavigationController *)self viewControllers];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  viewControllers = [(DMCNavigationController *)self viewControllers];
+  v3 = [viewControllers objectAtIndexedSubscript:0];
 
   return v3;
 }
@@ -244,12 +244,12 @@ void __58__DMCNavigationController_didShowViewController_animated___block_invoke
 - (void)unblockNavigationPush
 {
   [(DMCNavigationController *)self setIsPushBlocked:0];
-  v3 = [(DMCNavigationController *)self pendingViewControllers];
+  pendingViewControllers = [(DMCNavigationController *)self pendingViewControllers];
 
-  if (v3)
+  if (pendingViewControllers)
   {
-    v4 = [(DMCNavigationController *)self pendingViewControllers];
-    [(DMCNavigationController *)self setViewControllers:v4 animated:[(DMCNavigationController *)self pendingPushAnimated]];
+    pendingViewControllers2 = [(DMCNavigationController *)self pendingViewControllers];
+    [(DMCNavigationController *)self setViewControllers:pendingViewControllers2 animated:[(DMCNavigationController *)self pendingPushAnimated]];
 
     [(DMCNavigationController *)self setPendingViewControllers:0];
   }

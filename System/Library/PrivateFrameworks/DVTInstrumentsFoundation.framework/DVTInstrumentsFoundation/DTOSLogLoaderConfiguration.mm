@@ -1,39 +1,39 @@
 @interface DTOSLogLoaderConfiguration
-- (DTOSLogLoaderConfiguration)initWithFilterPredicate:(id)a3 signpostConfig:(unint64_t)a4 loaderExclusions:(unint64_t)a5 columnInclusions:(unint64_t)a6 mode:(unint64_t)a7 enableBacktraceReplacement:(BOOL)a8 machTimebase:(mach_timebase_info)a9 machContinuousStart:(unint64_t)a10 importedFileURL:(id)a11 importForcedStartDate:(id)a12 importForcedEndDate:(id)a13 trackPidToExecNameMapping:(BOOL)a14 dynamicTracingEnabledSubsystems:(id)a15 logSubsystemCategoryPairsToEnable:(id)a16 signpostSubsystemCategoryPairsToEnable:(id)a17;
+- (DTOSLogLoaderConfiguration)initWithFilterPredicate:(id)predicate signpostConfig:(unint64_t)config loaderExclusions:(unint64_t)exclusions columnInclusions:(unint64_t)inclusions mode:(unint64_t)mode enableBacktraceReplacement:(BOOL)replacement machTimebase:(mach_timebase_info)timebase machContinuousStart:(unint64_t)self0 importedFileURL:(id)self1 importForcedStartDate:(id)self2 importForcedEndDate:(id)self3 trackPidToExecNameMapping:(BOOL)self4 dynamicTracingEnabledSubsystems:(id)self5 logSubsystemCategoryPairsToEnable:(id)self6 signpostSubsystemCategoryPairsToEnable:(id)self7;
 @end
 
 @implementation DTOSLogLoaderConfiguration
 
-- (DTOSLogLoaderConfiguration)initWithFilterPredicate:(id)a3 signpostConfig:(unint64_t)a4 loaderExclusions:(unint64_t)a5 columnInclusions:(unint64_t)a6 mode:(unint64_t)a7 enableBacktraceReplacement:(BOOL)a8 machTimebase:(mach_timebase_info)a9 machContinuousStart:(unint64_t)a10 importedFileURL:(id)a11 importForcedStartDate:(id)a12 importForcedEndDate:(id)a13 trackPidToExecNameMapping:(BOOL)a14 dynamicTracingEnabledSubsystems:(id)a15 logSubsystemCategoryPairsToEnable:(id)a16 signpostSubsystemCategoryPairsToEnable:(id)a17
+- (DTOSLogLoaderConfiguration)initWithFilterPredicate:(id)predicate signpostConfig:(unint64_t)config loaderExclusions:(unint64_t)exclusions columnInclusions:(unint64_t)inclusions mode:(unint64_t)mode enableBacktraceReplacement:(BOOL)replacement machTimebase:(mach_timebase_info)timebase machContinuousStart:(unint64_t)self0 importedFileURL:(id)self1 importForcedStartDate:(id)self2 importForcedEndDate:(id)self3 trackPidToExecNameMapping:(BOOL)self4 dynamicTracingEnabledSubsystems:(id)self5 logSubsystemCategoryPairsToEnable:(id)self6 signpostSubsystemCategoryPairsToEnable:(id)self7
 {
-  v19 = a3;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = a15;
-  v33 = a16;
-  v32 = a17;
+  predicateCopy = predicate;
+  lCopy = l;
+  dateCopy = date;
+  endDateCopy = endDate;
+  subsystemsCopy = subsystems;
+  enableCopy = enable;
+  toEnableCopy = toEnable;
   v34.receiver = self;
   v34.super_class = DTOSLogLoaderConfiguration;
   v24 = [(DTOSLogLoaderConfiguration *)&v34 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_filterPredicate, a3);
-    v25->_signpostConfig = a4;
-    v25->_loaderExclusions = a5;
-    v25->_columnInclusions = a6;
-    v25->_mode = a7;
-    v25->_enableBacktraceReplacement = a8;
-    v25->_machTimebase = a9;
-    v25->_machContinuousStart = a10;
-    objc_storeStrong(&v25->_importedFileURL, a11);
-    objc_storeStrong(&v25->_importForcedStartDate, a12);
-    objc_storeStrong(&v25->_importForcedEndDate, a13);
-    v25->_trackPidToExecNameMapping = a14;
-    objc_storeStrong(&v25->_dynamicTracingEnabledSubsystems, a15);
-    objc_storeStrong(&v25->_logSubsystemCategoryPairsToEnable, a16);
-    objc_storeStrong(&v25->_signpostSubsystemCategoryPairsToEnable, a17);
+    objc_storeStrong(&v24->_filterPredicate, predicate);
+    v25->_signpostConfig = config;
+    v25->_loaderExclusions = exclusions;
+    v25->_columnInclusions = inclusions;
+    v25->_mode = mode;
+    v25->_enableBacktraceReplacement = replacement;
+    v25->_machTimebase = timebase;
+    v25->_machContinuousStart = start;
+    objc_storeStrong(&v25->_importedFileURL, l);
+    objc_storeStrong(&v25->_importForcedStartDate, date);
+    objc_storeStrong(&v25->_importForcedEndDate, endDate);
+    v25->_trackPidToExecNameMapping = mapping;
+    objc_storeStrong(&v25->_dynamicTracingEnabledSubsystems, subsystems);
+    objc_storeStrong(&v25->_logSubsystemCategoryPairsToEnable, enable);
+    objc_storeStrong(&v25->_signpostSubsystemCategoryPairsToEnable, toEnable);
   }
 
   return v25;

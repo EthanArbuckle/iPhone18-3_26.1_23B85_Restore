@@ -1,5 +1,5 @@
 @interface BuyMicroPaymentOperation
-- (BOOL)purchaseOperation:(id)a3 shouldContinueWithNewStorefront:(id)a4;
+- (BOOL)purchaseOperation:(id)operation shouldContinueWithNewStorefront:(id)storefront;
 - (BOOL)simulatesAskToBuyInSandbox;
 - (MicroPaymentQueueResponse)response;
 - (NSData)clientAuditTokenData;
@@ -11,19 +11,19 @@
 - (NSString)productIdentifier;
 - (StoreKitClientIdentity)clientIdentity;
 - (id)_appProxy;
-- (id)_fullBuyParametersWithAppProxy:(id)a3;
+- (id)_fullBuyParametersWithAppProxy:(id)proxy;
 - (int64_t)quantity;
 - (void)run;
-- (void)setApplicationUsername:(id)a3;
-- (void)setBuyParameters:(id)a3;
-- (void)setClientAuditTokenData:(id)a3;
-- (void)setClientIdentity:(id)a3;
-- (void)setPartnerIdentifier:(id)a3;
-- (void)setPartnerTransactionIdentifier:(id)a3;
-- (void)setProductIdentifier:(id)a3;
-- (void)setQuantity:(int64_t)a3;
-- (void)setRequestData:(id)a3;
-- (void)setSimulatesAskToBuyInSandbox:(BOOL)a3;
+- (void)setApplicationUsername:(id)username;
+- (void)setBuyParameters:(id)parameters;
+- (void)setClientAuditTokenData:(id)data;
+- (void)setClientIdentity:(id)identity;
+- (void)setPartnerIdentifier:(id)identifier;
+- (void)setPartnerTransactionIdentifier:(id)identifier;
+- (void)setProductIdentifier:(id)identifier;
+- (void)setQuantity:(int64_t)quantity;
+- (void)setRequestData:(id)data;
+- (void)setSimulatesAskToBuyInSandbox:(BOOL)sandbox;
 @end
 
 @implementation BuyMicroPaymentOperation
@@ -125,13 +125,13 @@
   return simulatesAskToBuyInSandbox;
 }
 
-- (void)setApplicationUsername:(id)a3
+- (void)setApplicationUsername:(id)username
 {
-  v6 = a3;
+  usernameCopy = username;
   [(BuyMicroPaymentOperation *)self lock];
-  if (self->_applicationUsername != v6)
+  if (self->_applicationUsername != usernameCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)usernameCopy copy];
     applicationUsername = self->_applicationUsername;
     self->_applicationUsername = v4;
   }
@@ -139,13 +139,13 @@
   [(BuyMicroPaymentOperation *)self unlock];
 }
 
-- (void)setBuyParameters:(id)a3
+- (void)setBuyParameters:(id)parameters
 {
-  v6 = a3;
+  parametersCopy = parameters;
   [(BuyMicroPaymentOperation *)self lock];
-  if (self->_buyParameters != v6)
+  if (self->_buyParameters != parametersCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)parametersCopy copy];
     buyParameters = self->_buyParameters;
     self->_buyParameters = v4;
   }
@@ -153,37 +153,37 @@
   [(BuyMicroPaymentOperation *)self unlock];
 }
 
-- (void)setClientAuditTokenData:(id)a3
+- (void)setClientAuditTokenData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   [(BuyMicroPaymentOperation *)self lock];
-  if (self->_clientAuditTokenData != v5)
+  if (self->_clientAuditTokenData != dataCopy)
   {
-    objc_storeStrong(&self->_clientAuditTokenData, a3);
+    objc_storeStrong(&self->_clientAuditTokenData, data);
   }
 
   [(BuyMicroPaymentOperation *)self unlock];
 }
 
-- (void)setClientIdentity:(id)a3
+- (void)setClientIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   [(BuyMicroPaymentOperation *)self lock];
-  if (self->_clientIdentity != v5)
+  if (self->_clientIdentity != identityCopy)
   {
-    objc_storeStrong(&self->_clientIdentity, a3);
+    objc_storeStrong(&self->_clientIdentity, identity);
   }
 
   [(BuyMicroPaymentOperation *)self unlock];
 }
 
-- (void)setPartnerIdentifier:(id)a3
+- (void)setPartnerIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(BuyMicroPaymentOperation *)self lock];
-  if (self->_partnerIdentifier != v6)
+  if (self->_partnerIdentifier != identifierCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)identifierCopy copy];
     partnerIdentifier = self->_partnerIdentifier;
     self->_partnerIdentifier = v4;
   }
@@ -191,13 +191,13 @@
   [(BuyMicroPaymentOperation *)self unlock];
 }
 
-- (void)setPartnerTransactionIdentifier:(id)a3
+- (void)setPartnerTransactionIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(BuyMicroPaymentOperation *)self lock];
-  if (self->_partnerTransactionIdentifier != v6)
+  if (self->_partnerTransactionIdentifier != identifierCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)identifierCopy copy];
     partnerTransactionIdentifier = self->_partnerTransactionIdentifier;
     self->_partnerTransactionIdentifier = v4;
   }
@@ -205,13 +205,13 @@
   [(BuyMicroPaymentOperation *)self unlock];
 }
 
-- (void)setProductIdentifier:(id)a3
+- (void)setProductIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(BuyMicroPaymentOperation *)self lock];
-  if (self->_productIdentifier != v6)
+  if (self->_productIdentifier != identifierCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)identifierCopy copy];
     productIdentifier = self->_productIdentifier;
     self->_productIdentifier = v4;
   }
@@ -219,21 +219,21 @@
   [(BuyMicroPaymentOperation *)self unlock];
 }
 
-- (void)setQuantity:(int64_t)a3
+- (void)setQuantity:(int64_t)quantity
 {
   [(BuyMicroPaymentOperation *)self lock];
-  self->_quantity = a3;
+  self->_quantity = quantity;
 
   [(BuyMicroPaymentOperation *)self unlock];
 }
 
-- (void)setRequestData:(id)a3
+- (void)setRequestData:(id)data
 {
-  v6 = a3;
+  dataCopy = data;
   [(BuyMicroPaymentOperation *)self lock];
-  if (self->_requestData != v6)
+  if (self->_requestData != dataCopy)
   {
-    v4 = [(NSData *)v6 copy];
+    v4 = [(NSData *)dataCopy copy];
     requestData = self->_requestData;
     self->_requestData = v4;
   }
@@ -241,22 +241,22 @@
   [(BuyMicroPaymentOperation *)self unlock];
 }
 
-- (void)setSimulatesAskToBuyInSandbox:(BOOL)a3
+- (void)setSimulatesAskToBuyInSandbox:(BOOL)sandbox
 {
   [(BuyMicroPaymentOperation *)self lock];
-  self->_simulatesAskToBuyInSandbox = a3;
+  self->_simulatesAskToBuyInSandbox = sandbox;
 
   [(BuyMicroPaymentOperation *)self unlock];
 }
 
-- (BOOL)purchaseOperation:(id)a3 shouldContinueWithNewStorefront:(id)a4
+- (BOOL)purchaseOperation:(id)operation shouldContinueWithNewStorefront:(id)storefront
 {
-  v5 = a4;
-  v6 = [(BuyMicroPaymentOperation *)self delegate];
-  if (v6 && (v7 = v6, [(BuyMicroPaymentOperation *)self delegate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, v7, (v9 & 1) != 0))
+  storefrontCopy = storefront;
+  delegate = [(BuyMicroPaymentOperation *)self delegate];
+  if (delegate && (v7 = delegate, [(BuyMicroPaymentOperation *)self delegate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, v7, (v9 & 1) != 0))
   {
-    v10 = [(BuyMicroPaymentOperation *)self delegate];
-    v11 = [v10 buyMicroPaymentOperation:self shouldContinueWithNewStorefront:v5];
+    delegate2 = [(BuyMicroPaymentOperation *)self delegate];
+    v11 = [delegate2 buyMicroPaymentOperation:self shouldContinueWithNewStorefront:storefrontCopy];
   }
 
   else
@@ -269,21 +269,21 @@
 
 - (void)run
 {
-  v3 = [(BuyMicroPaymentOperation *)self clientIdentity];
-  v4 = [[ClaimStoreKitClientOperation alloc] initWithClientIdentity:v3];
-  v5 = [(BuyMicroPaymentOperation *)self clientAuditTokenData];
-  [(ClaimStoreKitClientOperation *)v4 setClientAuditTokenData:v5];
+  clientIdentity = [(BuyMicroPaymentOperation *)self clientIdentity];
+  v4 = [[ClaimStoreKitClientOperation alloc] initWithClientIdentity:clientIdentity];
+  clientAuditTokenData = [(BuyMicroPaymentOperation *)self clientAuditTokenData];
+  [(ClaimStoreKitClientOperation *)v4 setClientAuditTokenData:clientAuditTokenData];
 
   if ([(BuyMicroPaymentOperation *)self runSubOperation:v4 returningError:0])
   {
-    v6 = [(ClaimStoreKitClientOperation *)v4 clientIdentity];
+    clientIdentity2 = [(ClaimStoreKitClientOperation *)v4 clientIdentity];
 
-    [(BuyMicroPaymentOperation *)self setClientIdentity:v6];
-    v3 = v6;
+    [(BuyMicroPaymentOperation *)self setClientIdentity:clientIdentity2];
+    clientIdentity = clientIdentity2;
   }
 
-  v7 = [(BuyMicroPaymentOperation *)self _appProxy];
-  v8 = [(BuyMicroPaymentOperation *)self _fullBuyParametersWithAppProxy:v7];
+  _appProxy = [(BuyMicroPaymentOperation *)self _appProxy];
+  v8 = [(BuyMicroPaymentOperation *)self _fullBuyParametersWithAppProxy:_appProxy];
   if (!v8)
   {
     v15 = +[SSLogConfig sharedDaemonConfig];
@@ -292,19 +292,19 @@
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v15 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 &= 2u;
     }
@@ -326,7 +326,7 @@ LABEL_18:
         goto LABEL_63;
       }
 
-      v18 = [NSString stringWithCString:v20 encoding:4, &v60, v53];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, &v60, v53];
       free(v20);
       SSFileLog();
     }
@@ -337,23 +337,23 @@ LABEL_18:
   v9 = v8;
   v10 = objc_alloc_init(PurchaseOperation);
   [(PurchaseOperation *)v10 setMicroPayment:1];
-  v11 = [(BuyMicroPaymentOperation *)self clientAuditTokenData];
-  [(PurchaseOperation *)v10 setClientAuditTokenData:v11];
+  clientAuditTokenData2 = [(BuyMicroPaymentOperation *)self clientAuditTokenData];
+  [(PurchaseOperation *)v10 setClientAuditTokenData:clientAuditTokenData2];
 
-  if ([v3 usesIdentityAttributes])
+  if ([clientIdentity usesIdentityAttributes])
   {
     goto LABEL_23;
   }
 
-  v12 = [v3 bundleIdentifier];
-  v13 = [LSApplicationProxy applicationProxyForIdentifier:v12];
+  bundleIdentifier = [clientIdentity bundleIdentifier];
+  v13 = [LSApplicationProxy applicationProxyForIdentifier:bundleIdentifier];
   if (v13)
   {
     v14 = v13;
     goto LABEL_20;
   }
 
-  v14 = [AppExtensionSupport supportedProxyExtensionForBundleIdentifier:v12];
+  v14 = [AppExtensionSupport supportedProxyExtensionForBundleIdentifier:bundleIdentifier];
   if (v14)
   {
 LABEL_20:
@@ -364,17 +364,17 @@ LABEL_20:
   }
 
 LABEL_23:
-  v22 = [v3 bundleIdentifier];
-  v23 = [v22 length];
+  bundleIdentifier2 = [clientIdentity bundleIdentifier];
+  v23 = [bundleIdentifier2 length];
 
   if (v23)
   {
-    v24 = [v3 bundleIdentifier];
+    bundleIdentifier3 = [clientIdentity bundleIdentifier];
     v25 = ISClientIdentifierForBundleIdentifier();
     [(PurchaseOperation *)v10 setClientIdentifierHeader:v25];
 
-    v26 = [v3 bundleIdentifier];
-    v27 = [NSURL escapedStringForString:v26];
+    bundleIdentifier4 = [clientIdentity bundleIdentifier];
+    v27 = [NSURL escapedStringForString:bundleIdentifier4];
 
     v28 = [v9 stringByAppendingFormat:@"&%@=%@", @"originatingBundleID", v27];
 
@@ -382,34 +382,34 @@ LABEL_23:
   }
 
   [(PurchaseOperation *)v10 setBuyParameters:v9];
-  v29 = [(BuyMicroPaymentOperation *)self originatingStorefront];
-  [(PurchaseOperation *)v10 setOriginatingStorefront:v29];
+  originatingStorefront = [(BuyMicroPaymentOperation *)self originatingStorefront];
+  [(PurchaseOperation *)v10 setOriginatingStorefront:originatingStorefront];
 
   [(PurchaseOperation *)v10 setShouldSendKeyBagSyncData:1];
   [(PurchaseOperation *)v10 setUrlBagKey:@"p2-in-app-buy"];
-  if ([v3 allowsBootstrapCellularData])
+  if ([clientIdentity allowsBootstrapCellularData])
   {
     [(PurchaseOperation *)v10 setAllowsBootstrapCellularData:1];
   }
 
-  if ([v3 hidesConfirmationDialogs])
+  if ([clientIdentity hidesConfirmationDialogs])
   {
     [(PurchaseOperation *)v10 setSkipsConfirmationDialogs:1];
   }
 
-  v57 = v7;
-  if ([v7 isBetaApp])
+  v57 = _appProxy;
+  if ([_appProxy isBetaApp])
   {
     [(PurchaseOperation *)v10 setBagType:1];
     v30 = [ACAccountStore ams_sharedAccountStoreForMediaType:AMSAccountMediaTypeAppStoreBeta];
-    v31 = [v30 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v30 ams_activeiTunesAccount];
 
-    if (!v31)
+    if (!ams_activeiTunesAccount)
     {
       v32 = [ACAccountStore ams_sharedAccountStoreForMediaType:AMSAccountMediaTypeAppStore];
-      v31 = [v32 ams_activeiTunesAccount];
+      ams_activeiTunesAccount = [v32 ams_activeiTunesAccount];
 
-      if (!v31)
+      if (!ams_activeiTunesAccount)
       {
         v33 = 0;
         goto LABEL_39;
@@ -419,40 +419,40 @@ LABEL_23:
 
   else
   {
-    if (![v3 isSandboxed])
+    if (![clientIdentity isSandboxed])
     {
-      v31 = +[SSAccountStore defaultStore];
-      v35 = [v31 activeAccount];
+      ams_activeiTunesAccount = +[SSAccountStore defaultStore];
+      activeAccount = [ams_activeiTunesAccount activeAccount];
       goto LABEL_37;
     }
 
     [(PurchaseOperation *)v10 setBagType:1];
     v34 = [ACAccountStore ams_sharedAccountStoreForMediaType:AMSAccountMediaTypeAppStoreSandbox];
-    v31 = [v34 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v34 ams_activeiTunesAccount];
 
-    if (!v31)
+    if (!ams_activeiTunesAccount)
     {
       v33 = 0;
       goto LABEL_38;
     }
   }
 
-  v35 = [[SSAccount alloc] initWithBackingAccount:v31];
+  activeAccount = [[SSAccount alloc] initWithBackingAccount:ams_activeiTunesAccount];
 LABEL_37:
-  v33 = v35;
+  v33 = activeAccount;
 LABEL_38:
 
 LABEL_39:
   v36 = [[SSMutableAuthenticationContext alloc] initWithAccount:v33];
   [v36 setShouldCreateNewSession:1];
   [v36 setTokenType:1];
-  if ([v3 allowsBootstrapCellularData])
+  if ([clientIdentity allowsBootstrapCellularData])
   {
     [v36 setAllowsBootstrapCellularData:1];
   }
 
   v56 = v9;
-  if ([v3 requiresAuthenticationForPayment])
+  if ([clientIdentity requiresAuthenticationForPayment])
   {
     [v36 setPromptStyle:1];
     [(PurchaseOperation *)v10 setRequiresAuthentication:1];
@@ -464,16 +464,16 @@ LABEL_39:
   v37 = [(BuyMicroPaymentOperation *)self runSubOperation:v10 returningError:&v59];
   v38 = v59;
   v39 = objc_alloc_init(MicroPaymentQueueResponse);
-  v40 = [(PurchaseOperation *)v10 authenticatedAccountDSID];
-  if (!v40)
+  authenticatedAccountDSID = [(PurchaseOperation *)v10 authenticatedAccountDSID];
+  if (!authenticatedAccountDSID)
   {
-    v40 = [v33 uniqueIdentifier];
+    authenticatedAccountDSID = [v33 uniqueIdentifier];
   }
 
   v55 = v33;
-  [(MicroPaymentQueueResponse *)v39 setUserIdentifier:v40];
-  v41 = [(PurchaseOperation *)v10 rawOutput];
-  v42 = ![(MicroPaymentQueueResponse *)v39 loadFromPropertyList:v41]& v37;
+  [(MicroPaymentQueueResponse *)v39 setUserIdentifier:authenticatedAccountDSID];
+  rawOutput = [(PurchaseOperation *)v10 rawOutput];
+  v42 = ![(MicroPaymentQueueResponse *)v39 loadFromPropertyList:rawOutput]& v37;
 
   if (v42 == 1)
   {
@@ -483,19 +483,19 @@ LABEL_39:
       v43 = +[SSLogConfig sharedConfig];
     }
 
-    v44 = [v43 shouldLog];
+    shouldLog2 = [v43 shouldLog];
     if ([v43 shouldLogToDisk])
     {
-      v44 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v45 = [v43 OSLogObject];
-    if (!os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v43 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v44 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v44)
+    if (shouldLog2)
     {
       v46 = objc_opt_class();
       v60 = 138412290;
@@ -510,11 +510,11 @@ LABEL_56:
 
         ISError();
         v37 = 0;
-        v38 = v48 = v38;
+        v38 = appReceipt = v38;
         goto LABEL_58;
       }
 
-      v45 = [NSString stringWithCString:v47 encoding:4, &v60, v53];
+      oSLogObject2 = [NSString stringWithCString:v47 encoding:4, &v60, v53];
       free(v47);
       SSFileLog();
     }
@@ -522,8 +522,8 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  v48 = [(MicroPaymentQueueResponse *)v39 appReceipt];
-  [AppReceipt writeReceipt:v48 forStoreKitClient:v3];
+  appReceipt = [(MicroPaymentQueueResponse *)v39 appReceipt];
+  [AppReceipt writeReceipt:appReceipt forStoreKitClient:clientIdentity];
 LABEL_58:
   v4 = v58;
 
@@ -545,25 +545,25 @@ LABEL_58:
   }
 
   v21 = v56;
-  v7 = v57;
+  _appProxy = v57;
 LABEL_63:
 }
 
 - (id)_appProxy
 {
-  v2 = [(BuyMicroPaymentOperation *)self clientIdentity];
-  if ([v2 usesIdentityAttributes])
+  clientIdentity = [(BuyMicroPaymentOperation *)self clientIdentity];
+  if ([clientIdentity usesIdentityAttributes])
   {
     v3 = 0;
     goto LABEL_30;
   }
 
-  v4 = [v2 bundleIdentifier];
-  v3 = [LSApplicationProxy applicationProxyForIdentifier:v4];
-  v5 = [v3 appState];
-  v6 = [v5 isValid];
+  bundleIdentifier = [clientIdentity bundleIdentifier];
+  v3 = [LSApplicationProxy applicationProxyForIdentifier:bundleIdentifier];
+  appState = [v3 appState];
+  isValid = [appState isValid];
 
-  if ((v6 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
     v7 = +[SSLogConfig sharedDaemonConfig];
     if (!v7)
@@ -571,19 +571,19 @@ LABEL_63:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 &= 2u;
     }
@@ -593,7 +593,7 @@ LABEL_63:
       *v24 = 138543618;
       *&v24[4] = objc_opt_class();
       *&v24[12] = 2114;
-      *&v24[14] = v4;
+      *&v24[14] = bundleIdentifier;
       v11 = *&v24[4];
       LODWORD(v23) = 22;
       v22 = v24;
@@ -603,15 +603,15 @@ LABEL_63:
       {
 LABEL_15:
 
-        v13 = [AppExtensionSupport supportedProxyExtensionForBundleIdentifier:v4];
+        v13 = [AppExtensionSupport supportedProxyExtensionForBundleIdentifier:bundleIdentifier];
 
         v3 = v13;
         goto LABEL_16;
       }
 
-      v10 = [NSString stringWithCString:v12 encoding:4, v24, v23, *v24, *&v24[16]];
+      oSLogObject = [NSString stringWithCString:v12 encoding:4, v24, v23, *v24, *&v24[16]];
       free(v12);
-      v22 = v10;
+      v22 = oSLogObject;
       SSFileLog();
     }
 
@@ -627,19 +627,19 @@ LABEL_16:
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog2 = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog2 | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog2;
     }
 
-    v17 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v14 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v16 &= 2u;
     }
@@ -650,7 +650,7 @@ LABEL_16:
       *v24 = 138412546;
       *&v24[4] = v18;
       *&v24[12] = 2112;
-      *&v24[14] = v4;
+      *&v24[14] = bundleIdentifier;
       v19 = v18;
       LODWORD(v23) = 22;
       v20 = _os_log_send_and_compose_impl();
@@ -662,7 +662,7 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v17 = [NSString stringWithCString:v20 encoding:4, v24, v23];
+      oSLogObject2 = [NSString stringWithCString:v20 encoding:4, v24, v23];
       free(v20);
       SSFileLog();
     }
@@ -677,15 +677,15 @@ LABEL_30:
   return v3;
 }
 
-- (id)_fullBuyParametersWithAppProxy:(id)a3
+- (id)_fullBuyParametersWithAppProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [(BuyMicroPaymentOperation *)self clientIdentity];
-  v6 = [v5 copy];
+  proxyCopy = proxy;
+  clientIdentity = [(BuyMicroPaymentOperation *)self clientIdentity];
+  v6 = [clientIdentity copy];
 
-  if (v4)
+  if (proxyCopy)
   {
-    [v6 setValuesWithSoftwareApplicationProxy:v4];
+    [v6 setValuesWithSoftwareApplicationProxy:proxyCopy];
   }
 
   v7 = sub_1000E3A24(v6);
@@ -694,11 +694,11 @@ LABEL_30:
   v8 = [NSString stringWithFormat:@"%ld", [(BuyMicroPaymentOperation *)self quantity]];
   [v7 setObject:v8 forKey:@"quantity"];
 
-  v9 = [(BuyMicroPaymentOperation *)self productIdentifier];
-  if (v9)
+  productIdentifier = [(BuyMicroPaymentOperation *)self productIdentifier];
+  if (productIdentifier)
   {
-    v10 = v9;
-    v11 = [v9 copyUTF8StringOfLength:100];
+    v10 = productIdentifier;
+    v11 = [productIdentifier copyUTF8StringOfLength:100];
 
     if (v11)
     {
@@ -706,24 +706,24 @@ LABEL_30:
     }
   }
 
-  v12 = [(BuyMicroPaymentOperation *)self buyParameters];
-  if (v12)
+  buyParameters = [(BuyMicroPaymentOperation *)self buyParameters];
+  if (buyParameters)
   {
-    v13 = [NSURL copyDictionaryForQueryString:v12 unescapedValues:1];
+    v13 = [NSURL copyDictionaryForQueryString:buyParameters unescapedValues:1];
     if (v13)
     {
       [v7 addEntriesFromDictionary:v13];
     }
   }
 
-  v47 = v12;
+  v47 = buyParameters;
   v48 = v7;
   v14 = [NSURL queryStringForDictionary:v7 escapedValues:0];
-  v50 = [(BuyMicroPaymentOperation *)self requestData];
-  if ([v50 length])
+  requestData = [(BuyMicroPaymentOperation *)self requestData];
+  if ([requestData length])
   {
-    [v50 bytes];
-    [v50 length];
+    [requestData bytes];
+    [requestData length];
     v15 = ISCopyEncodedBase64();
     if (v15)
     {
@@ -740,18 +740,18 @@ LABEL_30:
     }
   }
 
-  v20 = [v4 purchaserDSID];
-  if ([v20 integerValue])
+  purchaserDSID = [proxyCopy purchaserDSID];
+  if ([purchaserDSID integerValue])
   {
-    v21 = [v20 stringValue];
-    [v14 appendFormat:@"&%@=%@", @"appDsid", v21];
+    stringValue = [purchaserDSID stringValue];
+    [v14 appendFormat:@"&%@=%@", @"appDsid", stringValue];
   }
 
-  v22 = [v4 storeCohortMetadata];
+  storeCohortMetadata = [proxyCopy storeCohortMetadata];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = [NSURL escapedStringForString:v22];
+    v23 = [NSURL escapedStringForString:storeCohortMetadata];
     v24 = v23;
     if (v23)
     {
@@ -759,26 +759,26 @@ LABEL_30:
     }
   }
 
-  v46 = v20;
-  v25 = [v6 vendorIdentifier];
-  v26 = v25;
-  if (v25)
+  v46 = purchaserDSID;
+  vendorIdentifier = [v6 vendorIdentifier];
+  v26 = vendorIdentifier;
+  if (vendorIdentifier)
   {
-    [v14 appendFormat:@"&%@=%@", @"vid", v25];
+    [v14 appendFormat:@"&%@=%@", @"vid", vendorIdentifier];
   }
 
-  if ([v4 isBetaApp])
+  if ([proxyCopy isBetaApp])
   {
     [v14 appendString:@"&beta=true"];
   }
 
-  v49 = v4;
+  v49 = proxyCopy;
   if ([v6 isSandboxed] && -[BuyMicroPaymentOperation simulatesAskToBuyInSandbox](self, "simulatesAskToBuyInSandbox"))
   {
     [v14 appendString:@"&requiresAskToBuy=true"];
   }
 
-  v45 = v22;
+  v45 = storeCohortMetadata;
   [(BuyMicroPaymentOperation *)self lock];
   v27 = 0;
   applicationUsername = self->_applicationUsername;

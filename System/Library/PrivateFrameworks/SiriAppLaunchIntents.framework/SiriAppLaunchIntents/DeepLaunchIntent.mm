@@ -1,13 +1,13 @@
 @interface DeepLaunchIntent
-- (DeepLaunchIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (DeepLaunchIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (DeepLaunchIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (DeepLaunchIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation DeepLaunchIntent
 
-- (DeepLaunchIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (DeepLaunchIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_26618C8B0();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return DeepLaunchIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return DeepLaunchIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (DeepLaunchIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (DeepLaunchIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_26618C8B0();
   sub_26618C8B0();
-  if (a5)
+  if (name)
   {
     sub_26618C840();
   }

@@ -1,9 +1,9 @@
 @interface AXBuddyBundleTitleCell
-- (AXBuddyBundleTitleCell)initWithCoder:(id)a3;
-- (AXBuddyBundleTitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AXBuddyBundleTitleCell)initWithCoder:(id)coder;
+- (AXBuddyBundleTitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_commonInit;
-- (void)setSeparatorStyle:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSeparatorStyle:(int64_t)style;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AXBuddyBundleTitleCell
@@ -25,8 +25,8 @@
   v6 = sub_3BD8();
   [v6 applyThemeToTitleLabel:self->_titleLabel];
 
-  v7 = [(AXBuddyBundleTitleCell *)self contentView];
-  [v7 addSubview:self->_titleLabel];
+  contentView = [(AXBuddyBundleTitleCell *)self contentView];
+  [contentView addSubview:self->_titleLabel];
 
   v8 = objc_opt_new();
   subtitleLabel = self->_subtitleLabel;
@@ -43,8 +43,8 @@
   [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
   [(UILabel *)self->_subtitleLabel setTextAlignment:_UISolariumEnabled() ^ 1];
   [(UILabel *)self->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(AXBuddyBundleTitleCell *)self contentView];
-  [v13 addSubview:self->_subtitleLabel];
+  contentView2 = [(AXBuddyBundleTitleCell *)self contentView];
+  [contentView2 addSubview:self->_subtitleLabel];
 
   v14 = _NSDictionaryOfVariableBindings(@"_titleLabel, _subtitleLabel", self->_titleLabel, self->_subtitleLabel, 0);
   v15 = +[NSMutableArray array];
@@ -59,46 +59,46 @@
 
   [NSLayoutConstraint activateConstraints:v15];
   v19 = sub_3BD8();
-  v20 = [v19 backgroundColor];
-  [(AXBuddyBundleTitleCell *)self setBackgroundColor:v20];
+  backgroundColor = [v19 backgroundColor];
+  [(AXBuddyBundleTitleCell *)self setBackgroundColor:backgroundColor];
 
   return self;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4 = sub_3BD8();
   [v4 applyThemeToTitleLabel:self->_titleLabel];
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   if (!self->_separatorStyleLocked)
   {
     v3.receiver = self;
     v3.super_class = AXBuddyBundleTitleCell;
-    [(AXBuddyBundleTitleCell *)&v3 setSeparatorStyle:a3];
+    [(AXBuddyBundleTitleCell *)&v3 setSeparatorStyle:style];
   }
 }
 
-- (AXBuddyBundleTitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXBuddyBundleTitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AXBuddyBundleTitleCell;
-  v4 = [(AXBuddyBundleTitleCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
-  v5 = [(AXBuddyBundleTitleCell *)v4 _commonInit];
+  v4 = [(AXBuddyBundleTitleCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
+  _commonInit = [(AXBuddyBundleTitleCell *)v4 _commonInit];
 
-  return v5;
+  return _commonInit;
 }
 
-- (AXBuddyBundleTitleCell)initWithCoder:(id)a3
+- (AXBuddyBundleTitleCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AXBuddyBundleTitleCell;
-  v3 = [(AXBuddyBundleTitleCell *)&v6 initWithCoder:a3];
-  v4 = [(AXBuddyBundleTitleCell *)v3 _commonInit];
+  v3 = [(AXBuddyBundleTitleCell *)&v6 initWithCoder:coder];
+  _commonInit = [(AXBuddyBundleTitleCell *)v3 _commonInit];
 
-  return v4;
+  return _commonInit;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface PLCrowdSourcedThemesAssetEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (PLCrowdSourcedThemesAssetEvent)initWithUUID:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (PLCrowdSourcedThemesAssetEvent)initWithUUID:(id)d;
 - (id)serialize;
 @end
 
@@ -8,21 +8,21 @@
 
 - (id)serialize
 {
-  v2 = [(PLCrowdSourcedThemesAssetEvent *)self uuid];
-  v3 = [v2 dataUsingEncoding:4];
+  uuid = [(PLCrowdSourcedThemesAssetEvent *)self uuid];
+  v3 = [uuid dataUsingEncoding:4];
 
   return v3;
 }
 
-- (PLCrowdSourcedThemesAssetEvent)initWithUUID:(id)a3
+- (PLCrowdSourcedThemesAssetEvent)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = PLCrowdSourcedThemesAssetEvent;
   v5 = [(PLCrowdSourcedThemesAssetEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     uuid = v5->_uuid;
     v5->_uuid = v6;
   }
@@ -30,17 +30,17 @@
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v7 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PLCrowdSourcedThemesAssetEvent.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"dataVersion == 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCrowdSourcedThemesAssetEvent.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"dataVersion == 0"}];
   }
 
-  v8 = [a1 alloc];
-  v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v7 encoding:4];
+  v8 = [self alloc];
+  v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
   v10 = [v8 initWithUUID:v9];
 
   return v10;

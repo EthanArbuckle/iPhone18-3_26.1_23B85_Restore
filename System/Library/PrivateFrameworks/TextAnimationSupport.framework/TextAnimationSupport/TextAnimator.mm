@@ -10,11 +10,11 @@
 - (void)invalidate;
 - (void)pause;
 - (void)resume;
-- (void)setConfiguration:(id)a3;
-- (void)setStateSnapshot:(id)a3;
-- (void)setToPhase:(id)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setStateSnapshot:(id)snapshot;
+- (void)setToPhase:(id)phase;
 - (void)start;
-- (void)startWithDuration:(double)a3;
+- (void)startWithDuration:(double)duration;
 @end
 
 @implementation TextAnimator
@@ -28,37 +28,37 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   TextAnimator.start()();
 }
 
-- (void)startWithDuration:(double)a3
+- (void)startWithDuration:(double)duration
 {
-  v4 = self;
-  TextAnimator.start(duration:)(a3);
+  selfCopy = self;
+  TextAnimator.start(duration:)(duration);
 }
 
 - (void)pause
 {
-  v2 = self;
+  selfCopy = self;
   TextAnimator.pause()();
 }
 
 - (void)resume
 {
-  v2 = self;
+  selfCopy = self;
   TextAnimator.resume()();
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   TextAnimator.invalidate()();
 }
 
 - (double)duration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TextAnimator.duration.getter();
 
   return v3;
@@ -66,15 +66,15 @@
 
 - (NSString)toPhase
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TextAnimator.toPhase.getter();
 
   return v3;
 }
 
-- (void)setToPhase:(id)a3
+- (void)setToPhase:(id)phase
 {
-  if (a3)
+  if (phase)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -92,7 +92,7 @@
 
 - (NSString)fromPhase
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TextAnimator.fromPhase.getter();
 
   return v3;
@@ -116,9 +116,9 @@
   return v2.super.isa;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
     v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -133,22 +133,22 @@
 
 - (_NSTextAnimatorStateSnapshot)stateSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TextAnimator.stateSnapshot.getter();
 
   return v3;
 }
 
-- (void)setStateSnapshot:(id)a3
+- (void)setStateSnapshot:(id)snapshot
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  TextAnimator.stateSnapshot.setter(a3);
+  selfCopy = self;
+  TextAnimator.stateSnapshot.setter(snapshot);
 }
 
 - (double)nextAnimationTriggerDelay
 {
-  v2 = self;
+  selfCopy = self;
   TextAnimator.nextAnimationTriggerDelay.getter();
   v4 = v3;
 
@@ -157,7 +157,7 @@
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   TextAnimator.cancel()();
 }
 

@@ -1,7 +1,7 @@
 @interface IIPaths
 + (id)resourcesDirectory;
-+ (id)topDirectoryCreateIfNeeded:(BOOL)a3;
-+ (id)topDirectoryWithName:(id)a3 createIfNeeded:(BOOL)a4;
++ (id)topDirectoryCreateIfNeeded:(BOOL)needed;
++ (id)topDirectoryWithName:(id)name createIfNeeded:(BOOL)needed;
 @end
 
 @implementation IIPaths
@@ -11,32 +11,32 @@
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   objc_autoreleasePoolPop(v4);
-  v6 = [v5 resourcePath];
-  if (!v6)
+  resourcePath = [v5 resourcePath];
+  if (!resourcePath)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"IIPaths.m" lineNumber:161 description:@"Error: Unable to find resource directory"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"IIPaths.m" lineNumber:161 description:@"Error: Unable to find resource directory"];
   }
 
-  return v6;
+  return resourcePath;
 }
 
-+ (id)topDirectoryWithName:(id)a3 createIfNeeded:(BOOL)a4
++ (id)topDirectoryWithName:(id)name createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  nameCopy = name;
   v8 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   v9 = [v8 objectAtIndexedSubscript:0];
 
   if (!v9 || ![v9 length])
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"IIPaths.m" lineNumber:47 description:@"failed to construct the root path"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"IIPaths.m" lineNumber:47 description:@"failed to construct the root path"];
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = [v9 stringByAppendingPathComponent:v7];
+  v11 = [v9 stringByAppendingPathComponent:nameCopy];
   objc_autoreleasePoolPop(v10);
   v12 = topDirectoryWithName_createIfNeeded__dir;
   topDirectoryWithName_createIfNeeded__dir = v11;
@@ -49,19 +49,19 @@
     _os_log_debug_impl(&dword_231C94000, v13, OS_LOG_TYPE_DEBUG, "using top directory: %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (neededCopy)
   {
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v27 = 0;
-    [v14 createDirectoryAtPath:topDirectoryWithName_createIfNeeded__dir withIntermediateDirectories:1 attributes:0 error:&v27];
+    [defaultManager createDirectoryAtPath:topDirectoryWithName_createIfNeeded__dir withIntermediateDirectories:1 attributes:0 error:&v27];
     v15 = v27;
     v16 = v15;
     if (v15)
     {
       if ([v15 code] == 640)
       {
-        v17 = [v16 domain];
-        v18 = [v17 isEqualToString:*MEMORY[0x277CCA050]];
+        domain = [v16 domain];
+        v18 = [domain isEqualToString:*MEMORY[0x277CCA050]];
 
         if (v18)
         {
@@ -90,8 +90,8 @@
         IIExit(4003);
       }
 
-      v19 = [MEMORY[0x277CCA890] currentHandler];
-      [v19 handleFailureInMethod:a2 object:a1 file:@"IIPaths.m" lineNumber:65 description:{@"Error creating directory for %@: %@", v7, v16}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"IIPaths.m" lineNumber:65 description:{@"Error creating directory for %@: %@", nameCopy, v16}];
     }
   }
 
@@ -102,14 +102,14 @@
   return v20;
 }
 
-+ (id)topDirectoryCreateIfNeeded:(BOOL)a3
++ (id)topDirectoryCreateIfNeeded:(BOOL)needed
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__IIPaths_topDirectoryCreateIfNeeded___block_invoke;
   v5[3] = &__block_descriptor_41_e5_v8__0l;
-  v5[4] = a1;
-  v6 = a3;
+  v5[4] = self;
+  neededCopy = needed;
   if (topDirectoryCreateIfNeeded___pasOnceToken2 != -1)
   {
     dispatch_once(&topDirectoryCreateIfNeeded___pasOnceToken2, v5);

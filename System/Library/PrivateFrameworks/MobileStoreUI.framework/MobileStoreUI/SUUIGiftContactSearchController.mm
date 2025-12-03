@@ -3,13 +3,13 @@
 - (CNAutocompleteResultsTableViewController)searchResultsViewController;
 - (SUUIGiftContactSearchDelegate)delegate;
 - (UIView)searchResultsView;
-- (void)_finishSearchWithResults:(id)a3;
-- (void)_setResults:(id)a3;
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5;
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4;
+- (void)_finishSearchWithResults:(id)results;
+- (void)_setResults:(id)results;
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d;
 - (void)dealloc;
 - (void)resetSearch;
-- (void)searchForText:(id)a3;
+- (void)searchForText:(id)text;
 @end
 
 @implementation SUUIGiftContactSearchController
@@ -47,9 +47,9 @@
   [(SUUIGiftContactSearchController *)self _setResults:0];
 }
 
-- (void)searchForText:(id)a3
+- (void)searchForText:(id)text
 {
-  v12 = a3;
+  textCopy = text;
   if (!self->_autocompleteSearchResults)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -59,7 +59,7 @@
 
   [(SUUIGiftContactSearchController *)self cancelSearch];
   [(NSMutableArray *)self->_autocompleteSearchResults removeAllObjects];
-  if ([v12 length])
+  if ([textCopy length])
   {
     searchManager = self->_searchManager;
     if (!searchManager)
@@ -73,7 +73,7 @@
       searchManager = self->_searchManager;
     }
 
-    v10 = [(CNAutocompleteSearchManager *)searchManager searchForText:v12 withAutocompleteFetchContext:0 consumer:self];
+    v10 = [(CNAutocompleteSearchManager *)searchManager searchForText:textCopy withAutocompleteFetchContext:0 consumer:self];
     searchTaskIdentifier = self->_searchTaskIdentifier;
     self->_searchTaskIdentifier = v10;
   }
@@ -93,20 +93,20 @@
     v5 = self->_searchResultsView;
     self->_searchResultsView = v4;
 
-    v6 = [(SUUIGiftContactSearchController *)self searchResultsViewController];
-    v7 = [v6 tableView];
+    searchResultsViewController = [(SUUIGiftContactSearchController *)self searchResultsViewController];
+    tableView = [searchResultsViewController tableView];
 
     v8 = self->_searchResultsView;
-    [v7 frame];
+    [tableView frame];
     [(UIView *)v8 setFrame:?];
     [(UIView *)self->_searchResultsView bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    [v7 setAutoresizingMask:18];
-    [v7 setFrame:{v10, v12, v14, v16}];
-    [(UIView *)self->_searchResultsView addSubview:v7];
+    [tableView setAutoresizingMask:18];
+    [tableView setFrame:{v10, v12, v14, v16}];
+    [(UIView *)self->_searchResultsView addSubview:tableView];
 
     searchResultsView = self->_searchResultsView;
   }
@@ -130,39 +130,39 @@
   return searchResultsViewController;
 }
 
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d
 {
-  v6 = a3;
-  if ([a4 isEqualToNumber:self->_searchTaskIdentifier])
+  resultsCopy = results;
+  if ([d isEqualToNumber:self->_searchTaskIdentifier])
   {
-    [(NSMutableArray *)self->_autocompleteSearchResults addObjectsFromArray:v6];
+    [(NSMutableArray *)self->_autocompleteSearchResults addObjectsFromArray:resultsCopy];
   }
 }
 
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
-  v13 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  recipientCopy = recipient;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 searchController:self didSelectRecipient:v8];
+    tableView = objc_loadWeakRetained(&self->_delegate);
+    [tableView searchController:self didSelectRecipient:recipientCopy];
   }
 
   else
   {
-    v11 = [v13 tableView];
-    v12 = [MEMORY[0x277CCAA70] indexPathWithIndex:a5];
-    [v11 deselectRowAtIndexPath:v12 animated:1];
+    tableView = [controllerCopy tableView];
+    v12 = [MEMORY[0x277CCAA70] indexPathWithIndex:index];
+    [tableView deselectRowAtIndexPath:v12 animated:1];
   }
 }
 
-- (void)_finishSearchWithResults:(id)a3
+- (void)_finishSearchWithResults:(id)results
 {
-  [(SUUIGiftContactSearchController *)self _setResults:a3];
+  [(SUUIGiftContactSearchController *)self _setResults:results];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
@@ -173,20 +173,20 @@
   }
 }
 
-- (void)_setResults:(id)a3
+- (void)_setResults:(id)results
 {
-  if (self->_results != a3)
+  if (self->_results != results)
   {
-    v5 = [a3 copy];
+    v5 = [results copy];
     results = self->_results;
     self->_results = v5;
 
     v7 = self->_results;
-    v8 = [(SUUIGiftContactSearchController *)self searchResultsViewController];
-    [v8 setRecipients:v7];
+    searchResultsViewController = [(SUUIGiftContactSearchController *)self searchResultsViewController];
+    [searchResultsViewController setRecipients:v7];
 
-    v9 = [(CNAutocompleteResultsTableViewController *)self->_searchResultsViewController tableView];
-    [v9 reloadData];
+    tableView = [(CNAutocompleteResultsTableViewController *)self->_searchResultsViewController tableView];
+    [tableView reloadData];
   }
 }
 

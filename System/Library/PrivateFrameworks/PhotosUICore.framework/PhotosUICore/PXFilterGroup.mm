@@ -1,20 +1,20 @@
 @interface PXFilterGroup
-+ (id)groupWithName:(id)a3 filterIdentifiers:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)groupWithName:(id)name filterIdentifiers:(id)identifiers;
+- (BOOL)isEqual:(id)equal;
 - (PXFilterGroup)init;
-- (PXFilterGroup)initWithName:(id)a3 filterIdentifiers:(id)a4;
+- (PXFilterGroup)initWithName:(id)name filterIdentifiers:(id)identifiers;
 - (unint64_t)hash;
 @end
 
 @implementation PXFilterGroup
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v5)
+    if (self == equalCopy)
     {
       v14 = 1;
       goto LABEL_14;
@@ -24,29 +24,29 @@
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
-      v8 = [(PXFilterGroup *)self name];
-      if (!v8)
+      name = [(PXFilterGroup *)self name];
+      if (!name)
       {
-        v3 = [(PXFilterGroup *)v7 name];
-        if (!v3)
+        name2 = [(PXFilterGroup *)v7 name];
+        if (!name2)
         {
           goto LABEL_8;
         }
       }
 
-      v9 = [(PXFilterGroup *)self name];
-      v10 = [(PXFilterGroup *)v7 name];
-      v11 = [v9 isEqualToString:v10];
+      name3 = [(PXFilterGroup *)self name];
+      name4 = [(PXFilterGroup *)v7 name];
+      v11 = [name3 isEqualToString:name4];
 
-      if (v8)
+      if (name)
       {
 
         if (v11)
         {
 LABEL_8:
-          v12 = [(PXFilterGroup *)self filterIdentifiers];
-          v13 = [(PXFilterGroup *)v7 filterIdentifiers];
-          v14 = [v12 isEqual:v13];
+          filterIdentifiers = [(PXFilterGroup *)self filterIdentifiers];
+          filterIdentifiers2 = [(PXFilterGroup *)v7 filterIdentifiers];
+          v14 = [filterIdentifiers isEqual:filterIdentifiers2];
 
 LABEL_13:
           goto LABEL_14;
@@ -80,8 +80,8 @@ LABEL_14:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(PXFilterGroup *)self filterIdentifiers];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  filterIdentifiers = [(PXFilterGroup *)self filterIdentifiers];
+  v4 = [filterIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -93,13 +93,13 @@ LABEL_14:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(filterIdentifiers);
         }
 
         v6 ^= [*(*(&v12 + 1) + 8 * i) hash];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [filterIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -110,20 +110,20 @@ LABEL_14:
     v6 = 0;
   }
 
-  v9 = [(PXFilterGroup *)self name];
-  v10 = [v9 hash];
+  name = [(PXFilterGroup *)self name];
+  v10 = [name hash];
 
   return v10 ^ v6;
 }
 
-- (PXFilterGroup)initWithName:(id)a3 filterIdentifiers:(id)a4
+- (PXFilterGroup)initWithName:(id)name filterIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  nameCopy = name;
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXFilterGroup.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"filterIdentifiers"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFilterGroup.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"filterIdentifiers"}];
   }
 
   v16.receiver = self;
@@ -131,11 +131,11 @@ LABEL_14:
   v9 = [(PXFilterGroup *)&v16 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     name = v9->_name;
     v9->_name = v10;
 
-    v12 = [v8 copy];
+    v12 = [identifiersCopy copy];
     filterIdentifiers = v9->_filterIdentifiers;
     v9->_filterIdentifiers = v12;
   }
@@ -145,17 +145,17 @@ LABEL_14:
 
 - (PXFilterGroup)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFilterGroup.m" lineNumber:22 description:{@"%s is not available as initializer", "-[PXFilterGroup init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFilterGroup.m" lineNumber:22 description:{@"%s is not available as initializer", "-[PXFilterGroup init]"}];
 
   abort();
 }
 
-+ (id)groupWithName:(id)a3 filterIdentifiers:(id)a4
++ (id)groupWithName:(id)name filterIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 filterIdentifiers:v6];
+  identifiersCopy = identifiers;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy filterIdentifiers:identifiersCopy];
 
   return v8;
 }

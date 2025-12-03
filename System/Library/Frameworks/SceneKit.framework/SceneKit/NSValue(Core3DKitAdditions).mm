@@ -13,7 +13,7 @@
 
 + (uint64_t)SCN_valueWithCGPoint:()Core3DKitAdditions
 {
-  *v3 = a1;
+  *v3 = self;
   *&v3[1] = a2;
   return [MEMORY[0x277CCAE60] valueWithBytes:v3 objCType:"{CGPoint=dd}"];
 }
@@ -22,24 +22,24 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2 size:16];
+  [self getValue:v2 size:16];
   return *v2;
 }
 
 - (float32_t)SCNVector3Value
 {
-  if (!strcmp([a1 objCType], "{SCNVector3=fff}"))
+  if (!strcmp([self objCType], "{SCNVector3=fff}"))
   {
     v7 = 0.0;
     v6 = 0;
-    [a1 getValue:&v6 size:12];
+    [self getValue:&v6 size:12];
   }
 
-  else if (!strcmp([a1 objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+  else if (!strcmp([self objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}"))
   {
     v4 = 0u;
     v5 = 0u;
-    [a1 getValue:&v4 size:32];
+    [self getValue:&v4 size:32];
     v2 = *&v5;
     v6 = vcvt_f32_f64(v4);
     v7 = v2;
@@ -56,17 +56,17 @@
 
 - (float)SCNVector4Value
 {
-  if (!strcmp([a1 objCType], "{SCNVector4=ffff}"))
+  if (!strcmp([self objCType], "{SCNVector4=ffff}"))
   {
     v5 = 0;
-    [a1 getValue:&v5 size:16];
+    [self getValue:&v5 size:16];
   }
 
-  else if (!strcmp([a1 objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+  else if (!strcmp([self objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}"))
   {
     v3 = 0u;
     v4 = 0u;
-    [a1 getValue:&v3 size:32];
+    [self getValue:&v3 size:32];
     v5 = vcvt_hight_f32_f64(vcvt_f32_f64(v3), v4);
   }
 
@@ -92,27 +92,27 @@
   v6 = vcvtq_f64_f32(a3[7]);
   v8[6] = vcvtq_f64_f32(a3[6]);
   v8[7] = v6;
-  return [a1 valueWithCATransform3D:v8];
+  return [self valueWithCATransform3D:v8];
 }
 
 - (uint64_t)SCNMatrix4Value
 {
-  if (!strcmp([a1 objCType], "{SCNMatrix4=ffffffffffffffff}"))
+  if (!strcmp([self objCType], "{SCNMatrix4=ffffffffffffffff}"))
   {
     a2[2] = 0u;
     a2[3] = 0u;
     *a2 = 0u;
     a2[1] = 0u;
 
-    return [a1 getValue:a2 size:64];
+    return [self getValue:a2 size:64];
   }
 
   else
   {
-    result = strcmp([a1 objCType], "{CATransform3D=dddddddddddddddd}");
+    result = strcmp([self objCType], "{CATransform3D=dddddddddddddddd}");
     if (result)
     {
-      result = strcmp([a1 objCType], "{?=[4]}");
+      result = strcmp([self objCType], "{?=[4]}");
       if (result)
       {
         *a2->f32 = SCNMatrix4Identity;
@@ -123,7 +123,7 @@
       v12 = 0u;
       v9 = 0u;
       v10 = 0u;
-      result = [a1 getValue:&v9 size:64];
+      result = [self getValue:&v9 size:64];
       v5 = v9;
       v6 = v10;
       v7 = v11;
@@ -144,9 +144,9 @@
       v8 = 0uLL;
       v9 = 0u;
       v10 = 0u;
-      if (a1)
+      if (self)
       {
-        result = [a1 CATransform3DValue];
+        result = [self CATransform3DValue];
         v5 = vcvt_hight_f32_f64(vcvt_f32_f64(v9), v10);
         v6 = vcvt_hight_f32_f64(vcvt_f32_f64(v11), v12);
         v7 = vcvt_hight_f32_f64(vcvt_f32_f64(v13), v14);
@@ -173,38 +173,38 @@
   v6[5] = vcvt_hight_f64_f32(a4);
   v6[6] = vcvtq_f64_f32(*a5.f32);
   v6[7] = vcvt_hight_f64_f32(a5);
-  return [a1 valueWithCATransform3D:v6];
+  return [self valueWithCATransform3D:v6];
 }
 
 - (float64_t)SCN_simdMatrix4Value
 {
-  if (!strcmp([a1 objCType], "{?=[4]}"))
+  if (!strcmp([self objCType], "{?=[4]}"))
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    [a1 getValue:&v17 size:64];
+    [self getValue:&v17 size:64];
   }
 
-  else if (!strcmp([a1 objCType], "{SCNMatrix4=ffffffffffffffff}"))
+  else if (!strcmp([self objCType], "{SCNMatrix4=ffffffffffffffff}"))
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    [a1 getValue:&v9 size:64];
+    [self getValue:&v9 size:64];
     v17 = v9;
     v18 = v10;
     v19 = v11;
     v20 = v12;
   }
 
-  else if (!strcmp([a1 objCType], "{CATransform3D=dddddddddddddddd}"))
+  else if (!strcmp([self objCType], "{CATransform3D=dddddddddddddddd}"))
   {
-    if (a1)
+    if (self)
     {
-      [a1 CATransform3DValue];
+      [self CATransform3DValue];
       v4 = vcvt_hight_f32_f64(vcvt_f32_f64(v15), v16);
       v5 = vcvt_hight_f32_f64(vcvt_f32_f64(v13), v14);
       v6 = vcvt_hight_f32_f64(vcvt_f32_f64(v11), v12);

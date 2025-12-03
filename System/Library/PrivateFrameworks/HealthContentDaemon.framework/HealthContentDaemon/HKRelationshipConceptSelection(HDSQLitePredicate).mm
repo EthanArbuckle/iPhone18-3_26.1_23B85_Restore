@@ -11,13 +11,13 @@
   v5 = a3;
   v6 = objc_alloc_init(v4);
   [v6 setEntityClass:objc_opt_class()];
-  v7 = [a1 selection];
-  v8 = [v7 predicateWithProfile:v5];
+  selection = [self selection];
+  v8 = [selection predicateWithProfile:v5];
 
   [v6 setPredicate:v8];
-  v9 = [a1 direction];
+  direction = [self direction];
   v10 = HDSimpleGraphDatabaseRelationshipEntityPropertySubjectIdentifier;
-  if (v9 != 1)
+  if (direction != 1)
   {
     v10 = &HDSimpleGraphDatabaseRelationshipEntityPropertyObjectIdentifier;
   }
@@ -28,7 +28,7 @@
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
   v14 = [v12 predicateWithProperty:v11 comparisonType:7 subqueryDescriptor:v6 subqueryProperties:v13];
 
-  if ([a1 type] == -1)
+  if ([self type] == -1)
   {
     v18 = v14;
   }
@@ -36,7 +36,7 @@
   else
   {
     v15 = MEMORY[0x277D10B20];
-    v16 = HDSimpleGraphDatabaseNodeEntityPredicateForNodesWithRelationshipType([a1 type]);
+    v16 = HDSimpleGraphDatabaseNodeEntityPredicateForNodesWithRelationshipType([self type]);
     v21[0] = v16;
     v21[1] = v14;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];

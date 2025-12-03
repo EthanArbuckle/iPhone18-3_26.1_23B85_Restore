@@ -1,15 +1,15 @@
 @interface IXSPendingOperationsTracker
 + (id)sharedInstance;
-- (BOOL)_deserializeKeyedArchiveFromData:(id)a3 atURL:(id)a4;
-- (BOOL)_deserializePlistFormatFromData:(id)a3 atURL:(id)a4;
-- (IXSPendingOperationsTracker)initWithSentinelPathOverride:(id)a3;
+- (BOOL)_deserializeKeyedArchiveFromData:(id)data atURL:(id)l;
+- (BOOL)_deserializePlistFormatFromData:(id)data atURL:(id)l;
+- (IXSPendingOperationsTracker)initWithSentinelPathOverride:(id)override;
 - (NSSet)pendingWorkIdentities;
 - (NSURL)sentinelPath;
 - (void)_deserializePendingOperationIdentities;
 - (void)_onQueue_writePendingWork;
-- (void)beginPendingOperationForIdentity:(id)a3;
+- (void)beginPendingOperationForIdentity:(id)identity;
 - (void)clearAllPendingOperations;
-- (void)endPendingOperationForIdentity:(id)a3;
+- (void)endPendingOperationForIdentity:(id)identity;
 @end
 
 @implementation IXSPendingOperationsTracker
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003C94C;
   block[3] = &unk_100100D40;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100121DA8 != -1)
   {
     dispatch_once(&qword_100121DA8, block);
@@ -42,19 +42,19 @@
   else
   {
     v4 = +[IXGlobalConfiguration sharedInstance];
-    v5 = [v4 dataDirectoryAbortingOnError];
+    dataDirectoryAbortingOnError = [v4 dataDirectoryAbortingOnError];
 
-    v3 = [v5 URLByAppendingPathComponent:@"PendingWork.plist" isDirectory:0];
+    v3 = [dataDirectoryAbortingOnError URLByAppendingPathComponent:@"PendingWork.plist" isDirectory:0];
   }
 
   return v3;
 }
 
-- (BOOL)_deserializePlistFormatFromData:(id)a3 atURL:(id)a4
+- (BOOL)_deserializePlistFormatFromData:(id)data atURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   v16 = 0;
-  v7 = [NSPropertyListSerialization propertyListWithData:a3 options:0 format:0 error:&v16];
+  v7 = [NSPropertyListSerialization propertyListWithData:data options:0 format:0 error:&v16];
   v8 = v16;
   if (!v7)
   {
@@ -96,12 +96,12 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)_deserializeKeyedArchiveFromData:(id)a3 atURL:(id)a4
+- (BOOL)_deserializeKeyedArchiveFromData:(id)data atURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
+  lCopy = l;
+  dataCopy = data;
   v13 = 0;
-  v8 = [NSKeyedUnarchiver unarchivedArrayOfObjectsOfClass:objc_opt_class() fromData:v7 error:&v13];
+  v8 = [NSKeyedUnarchiver unarchivedArrayOfObjectsOfClass:objc_opt_class() fromData:dataCopy error:&v13];
 
   v9 = v13;
   if (v8)
@@ -125,19 +125,19 @@ LABEL_11:
 
 - (void)_deserializePendingOperationIdentities
 {
-  v3 = [(IXSPendingOperationsTracker *)self sentinelPath];
+  sentinelPath = [(IXSPendingOperationsTracker *)self sentinelPath];
   v13 = 0;
-  v4 = [NSData dataWithContentsOfURL:v3 options:3 error:&v13];
+  v4 = [NSData dataWithContentsOfURL:sentinelPath options:3 error:&v13];
   v5 = v13;
   v6 = v5;
   if (!v4)
   {
-    v7 = [v5 domain];
-    if ([v7 isEqualToString:NSCocoaErrorDomain])
+    domain = [v5 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v8 = [v6 code];
+      code = [v6 code];
 
-      if (v8 == 260)
+      if (code == 260)
       {
         v9 = sub_1000031B0(off_100121958);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -155,7 +155,7 @@ LABEL_13:
         self->_pendingOperationIdentities = v10;
 
         v12 = +[IXFileManager defaultManager];
-        [v12 removeItemAtURL:v3 error:0];
+        [v12 removeItemAtURL:sentinelPath error:0];
 
         goto LABEL_14;
       }
@@ -174,7 +174,7 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  if (![(IXSPendingOperationsTracker *)self _deserializePlistFormatFromData:v4 atURL:v3]&& ![(IXSPendingOperationsTracker *)self _deserializeKeyedArchiveFromData:v4 atURL:v3])
+  if (![(IXSPendingOperationsTracker *)self _deserializePlistFormatFromData:v4 atURL:sentinelPath]&& ![(IXSPendingOperationsTracker *)self _deserializeKeyedArchiveFromData:v4 atURL:sentinelPath])
   {
     goto LABEL_13;
   }
@@ -182,9 +182,9 @@ LABEL_13:
 LABEL_14:
 }
 
-- (IXSPendingOperationsTracker)initWithSentinelPathOverride:(id)a3
+- (IXSPendingOperationsTracker)initWithSentinelPathOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   v11.receiver = self;
   v11.super_class = IXSPendingOperationsTracker;
   v6 = [(IXSPendingOperationsTracker *)&v11 init];
@@ -195,7 +195,7 @@ LABEL_14:
     internalQueue = v6->_internalQueue;
     v6->_internalQueue = v8;
 
-    objc_storeStrong(&v6->_sentinelPath, a3);
+    objc_storeStrong(&v6->_sentinelPath, override);
     [(IXSPendingOperationsTracker *)v6 _deserializePendingOperationIdentities];
   }
 
@@ -204,25 +204,25 @@ LABEL_14:
 
 - (void)_onQueue_writePendingWork
 {
-  v3 = [(IXSPendingOperationsTracker *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(IXSPendingOperationsTracker *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v4 = [(IXSPendingOperationsTracker *)self sentinelPath];
-  v5 = [(IXSPendingOperationsTracker *)self pendingOperationIdentities];
-  v6 = [v5 count];
+  sentinelPath = [(IXSPendingOperationsTracker *)self sentinelPath];
+  pendingOperationIdentities = [(IXSPendingOperationsTracker *)self pendingOperationIdentities];
+  v6 = [pendingOperationIdentities count];
 
   if (v6)
   {
-    v7 = [(IXSPendingOperationsTracker *)self pendingOperationIdentities];
-    v8 = [v7 allObjects];
+    pendingOperationIdentities2 = [(IXSPendingOperationsTracker *)self pendingOperationIdentities];
+    allObjects = [pendingOperationIdentities2 allObjects];
     v23 = 0;
-    v9 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v23];
+    v9 = [NSKeyedArchiver archivedDataWithRootObject:allObjects requiringSecureCoding:1 error:&v23];
     v10 = v23;
 
     if (v9)
     {
       v22 = v10;
-      v11 = [v9 writeToURL:v4 options:268435457 error:&v22];
+      v11 = [v9 writeToURL:sentinelPath options:268435457 error:&v22];
       v12 = v22;
 
       if (v11)
@@ -256,7 +256,7 @@ LABEL_13:
 
   v14 = +[IXFileManager defaultManager];
   v24 = 0;
-  v15 = [v14 removeItemAtURL:v4 error:&v24];
+  v15 = [v14 removeItemAtURL:sentinelPath error:&v24];
   v12 = v24;
 
   if ((v15 & 1) == 0)
@@ -273,32 +273,32 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)beginPendingOperationForIdentity:(id)a3
+- (void)beginPendingOperationForIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [(IXSPendingOperationsTracker *)self internalQueue];
+  identityCopy = identity;
+  internalQueue = [(IXSPendingOperationsTracker *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003D208;
   v7[3] = &unk_100100ED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identityCopy;
+  v6 = identityCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)endPendingOperationForIdentity:(id)a3
+- (void)endPendingOperationForIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [(IXSPendingOperationsTracker *)self internalQueue];
+  identityCopy = identity;
+  internalQueue = [(IXSPendingOperationsTracker *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003D3FC;
   v7[3] = &unk_100100ED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identityCopy;
+  v6 = identityCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 - (NSSet)pendingWorkIdentities
@@ -309,14 +309,14 @@ LABEL_14:
   v10 = sub_10003D658;
   v11 = sub_10003D668;
   v12 = 0;
-  v3 = [(IXSPendingOperationsTracker *)self internalQueue];
+  internalQueue = [(IXSPendingOperationsTracker *)self internalQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10003D670;
   v6[3] = &unk_100101268;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -326,13 +326,13 @@ LABEL_14:
 
 - (void)clearAllPendingOperations
 {
-  v3 = [(IXSPendingOperationsTracker *)self internalQueue];
+  internalQueue = [(IXSPendingOperationsTracker *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003D75C;
   block[3] = &unk_1001010A0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(internalQueue, block);
 }
 
 @end

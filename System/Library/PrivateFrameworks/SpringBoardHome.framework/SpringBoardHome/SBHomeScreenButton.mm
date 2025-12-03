@@ -1,33 +1,33 @@
 @interface SBHomeScreenButton
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (UIEdgeInsets)backgroundInsets;
-- (id)_initWithFrame:(CGRect)a3 backgroundView:(id)a4 material:(int64_t)a5 wantsGlass:(BOOL)a6 wantsRimHighlight:(BOOL)a7;
+- (id)_initWithFrame:(CGRect)frame backgroundView:(id)view material:(int64_t)material wantsGlass:(BOOL)glass wantsRimHighlight:(BOOL)highlight;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLegibilitySettings:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLegibilitySettings:(id)settings;
 @end
 
 @implementation SBHomeScreenButton
 
-- (id)_initWithFrame:(CGRect)a3 backgroundView:(id)a4 material:(int64_t)a5 wantsGlass:(BOOL)a6 wantsRimHighlight:(BOOL)a7
+- (id)_initWithFrame:(CGRect)frame backgroundView:(id)view material:(int64_t)material wantsGlass:(BOOL)glass wantsRimHighlight:(BOOL)highlight
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v27[3] = *MEMORY[0x1E69E9840];
-  v16 = a4;
+  viewCopy = view;
   v26.receiver = self;
   v26.super_class = SBHomeScreenButton;
-  v17 = [(SBHomeScreenButton *)&v26 initWithFrame:x, y, width, height];
-  v18 = v17;
-  if (v17)
+  height = [(SBHomeScreenButton *)&v26 initWithFrame:x, y, width, height];
+  v18 = height;
+  if (height)
   {
-    objc_storeStrong(&v17->_backgroundView, a4);
-    v18->_material = a5;
-    v18->_wantsGlass = a6;
-    v18->_wantsRimHighlight = a7;
+    objc_storeStrong(&height->_backgroundView, view);
+    v18->_material = material;
+    v18->_wantsGlass = glass;
+    v18->_wantsRimHighlight = highlight;
     v19 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979848]];
     [v19 setName:@"highlightBrightness"];
     [v19 setValue:&unk_1F3DB2AA8 forKey:@"inputAmount"];
@@ -36,15 +36,15 @@
     [v20 setValue:&unk_1F3DB2AB8 forKey:@"inputAmount"];
     v21 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CB0]];
     [v21 setName:@"enabledMultiplyColor"];
-    v22 = [MEMORY[0x1E69DC888] whiteColor];
-    [v21 setValue:objc_msgSend(v22 forKeyPath:{"CGColor"), @"inputColor"}];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v21 setValue:objc_msgSend(whiteColor forKeyPath:{"CGColor"), @"inputColor"}];
 
-    v23 = [(SBHomeScreenButton *)v18 layer];
+    layer = [(SBHomeScreenButton *)v18 layer];
     v27[0] = v19;
     v27[1] = v20;
     v27[2] = v21;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:3];
-    [v23 setFilters:v24];
+    [layer setFilters:v24];
   }
 
   return v18;
@@ -77,17 +77,17 @@ LABEL_8:
 
       v10 = [SBHomeScreenMaterialView alloc];
       material = self->_material;
-      v7 = [(SBHomeScreenButton *)self defaultContentImage];
-      v9 = [(SBHomeScreenMaterialView *)v10 initWithFrame:material material:v7 foregroundImage:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+      defaultContentImage = [(SBHomeScreenButton *)self defaultContentImage];
+      v9 = [(SBHomeScreenMaterialView *)v10 initWithFrame:material material:defaultContentImage foregroundImage:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     }
 
     else
     {
       v5 = [SBHomeScreenMaterialView alloc];
       backgroundView = self->_backgroundView;
-      v7 = [(SBHomeScreenButton *)self defaultContentImage];
-      v8 = [(SBHomeScreenButton *)self wantsRimHighlight];
-      v9 = [(SBHomeScreenMaterialView *)v5 initWithFrame:backgroundView backgroundView:v7 foregroundImage:v8 wantsRimHighlight:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+      defaultContentImage = [(SBHomeScreenButton *)self defaultContentImage];
+      wantsRimHighlight = [(SBHomeScreenButton *)self wantsRimHighlight];
+      v9 = [(SBHomeScreenMaterialView *)v5 initWithFrame:backgroundView backgroundView:defaultContentImage foregroundImage:wantsRimHighlight wantsRimHighlight:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     }
 
     v12 = self->_materialView;
@@ -101,24 +101,24 @@ LABEL_9:
   [(SBHomeScreenMaterialView *)materialView setFrame:?];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(SBHomeScreenButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(SBHomeScreenButton *)self isHighlighted];
   v13.receiver = self;
   v13.super_class = SBHomeScreenButton;
-  [(SBHomeScreenButton *)&v13 setHighlighted:v3];
-  if (v5 != v3)
+  [(SBHomeScreenButton *)&v13 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
-    v6 = [(SBHomeScreenButton *)self layer];
-    v7 = v6;
-    if (v3)
+    layer = [(SBHomeScreenButton *)self layer];
+    v7 = layer;
+    if (highlightedCopy)
     {
-      [v6 setValue:&unk_1F3DB2AC8 forKeyPath:@"filters.highlightBrightness.inputAmount"];
-      v8 = [(SBHomeScreenButton *)self traitCollection];
-      v9 = [v8 userInterfaceStyle];
+      [layer setValue:&unk_1F3DB2AC8 forKeyPath:@"filters.highlightBrightness.inputAmount"];
+      traitCollection = [(SBHomeScreenButton *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v9 == 2)
+      if (userInterfaceStyle == 2)
       {
         [v7 setValue:&unk_1F3DB2AD8 forKeyPath:@"filters.highlightSaturation.inputAmount"];
       }
@@ -131,7 +131,7 @@ LABEL_9:
       v11[1] = 3221225472;
       v11[2] = __37__SBHomeScreenButton_setHighlighted___block_invoke;
       v11[3] = &unk_1E8088C90;
-      v12 = v6;
+      v12 = layer;
       [v10 animateWithDuration:2 delay:v11 options:0 animations:0.3 completion:0.0];
     }
   }
@@ -145,18 +145,18 @@ uint64_t __37__SBHomeScreenButton_setHighlighted___block_invoke(uint64_t a1)
   return [v2 setValue:&unk_1F3DB2AB8 forKeyPath:@"filters.highlightSaturation.inputAmount"];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SBHomeScreenButton *)self isEnabled];
+  enabledCopy = enabled;
+  isEnabled = [(SBHomeScreenButton *)self isEnabled];
   v15.receiver = self;
   v15.super_class = SBHomeScreenButton;
-  [(SBHomeScreenButton *)&v15 setEnabled:v3];
-  if (v5 != v3)
+  [(SBHomeScreenButton *)&v15 setEnabled:enabledCopy];
+  if (isEnabled != enabledCopy)
   {
-    v6 = [(SBHomeScreenButton *)self layer];
+    layer = [(SBHomeScreenButton *)self layer];
     v7 = 0.5;
-    if (v3)
+    if (enabledCopy)
     {
       v7 = 1.0;
     }
@@ -167,10 +167,10 @@ uint64_t __37__SBHomeScreenButton_setHighlighted___block_invoke(uint64_t a1)
     v12[1] = 3221225472;
     v12[2] = __33__SBHomeScreenButton_setEnabled___block_invoke;
     v12[3] = &unk_1E8088F18;
-    v13 = v6;
+    v13 = layer;
     v14 = v8;
     v10 = v8;
-    v11 = v6;
+    v11 = layer;
     [v9 animateWithDuration:2 delay:v12 options:0 animations:0.3 completion:0.0];
   }
 }
@@ -183,10 +183,10 @@ uint64_t __33__SBHomeScreenButton_setEnabled___block_invoke(uint64_t a1)
   return [v1 setValue:v2 forKeyPath:@"filters.enabledMultiplyColor.inputColor"];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.highlightBrightness.inputAmount"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"filters.highlightSaturation.inputAmount") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"filters.enabledMultiplyColor.inputColor"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.highlightBrightness.inputAmount"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"filters.highlightSaturation.inputAmount") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"filters.enabledMultiplyColor.inputColor"))
   {
     v5 = 1;
   }
@@ -195,7 +195,7 @@ uint64_t __33__SBHomeScreenButton_setEnabled___block_invoke(uint64_t a1)
   {
     v7.receiver = self;
     v7.super_class = SBHomeScreenButton;
-    v5 = [(SBHomeScreenButton *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBHomeScreenButton *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -214,15 +214,15 @@ uint64_t __33__SBHomeScreenButton_setEnabled___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  settingsCopy = settings;
+  if (self->_legibilitySettings != settingsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    v6 = settingsCopy;
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBHomeScreenMaterialView *)self->_materialView setLegibilitySettings:self->_legibilitySettings];
-    v5 = v6;
+    settingsCopy = v6;
   }
 }
 

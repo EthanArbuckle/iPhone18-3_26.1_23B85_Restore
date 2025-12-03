@@ -1,21 +1,21 @@
 @interface INDeleteEventIntent
-- (INDeleteEventIntent)initWithTargetEventIdentifier:(id)a3 deleteAllOccurrences:(id)a4;
+- (INDeleteEventIntent)initWithTargetEventIdentifier:(id)identifier deleteAllOccurrences:(id)occurrences;
 - (NSNumber)deleteAllOccurrences;
 - (NSString)targetEventIdentifier;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setDeleteAllOccurrences:(id)a3;
-- (void)setTargetEventIdentifier:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setDeleteAllOccurrences:(id)occurrences;
+- (void)setTargetEventIdentifier:(id)identifier;
 @end
 
 @implementation INDeleteEventIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INDeleteEventIntent *)self _typedBackingStore:a3];
+  v6 = [(INDeleteEventIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,29 +24,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"targetEventIdentifier";
-  v3 = [(INDeleteEventIntent *)self targetEventIdentifier];
-  v4 = v3;
-  if (!v3)
+  targetEventIdentifier = [(INDeleteEventIntent *)self targetEventIdentifier];
+  null = targetEventIdentifier;
+  if (!targetEventIdentifier)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"deleteAllOccurrences";
-  v11[0] = v4;
-  v5 = [(INDeleteEventIntent *)self deleteAllOccurrences];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  deleteAllOccurrences = [(INDeleteEventIntent *)self deleteAllOccurrences];
+  null2 = deleteAllOccurrences;
+  if (!deleteAllOccurrences)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!deleteAllOccurrences)
   {
   }
 
-  if (!v3)
+  if (!targetEventIdentifier)
   {
   }
 
@@ -55,29 +55,29 @@
   return v7;
 }
 
-- (void)setDeleteAllOccurrences:(id)a3
+- (void)setDeleteAllOccurrences:(id)occurrences
 {
-  v5 = a3;
-  v4 = [(INDeleteEventIntent *)self _typedBackingStore];
-  if (v5)
+  occurrencesCopy = occurrences;
+  _typedBackingStore = [(INDeleteEventIntent *)self _typedBackingStore];
+  if (occurrencesCopy)
   {
-    [v4 setDeleteAllOccurrences:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setDeleteAllOccurrences:{objc_msgSend(occurrencesCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasDeleteAllOccurrences:0];
+    [_typedBackingStore setHasDeleteAllOccurrences:0];
   }
 }
 
 - (NSNumber)deleteAllOccurrences
 {
-  v3 = [(INDeleteEventIntent *)self _typedBackingStore];
-  if ([v3 hasDeleteAllOccurrences])
+  _typedBackingStore = [(INDeleteEventIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasDeleteAllOccurrences])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INDeleteEventIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "deleteAllOccurrences")}];
+    _typedBackingStore2 = [(INDeleteEventIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "deleteAllOccurrences")}];
   }
 
   else
@@ -88,61 +88,61 @@
   return v6;
 }
 
-- (void)setTargetEventIdentifier:(id)a3
+- (void)setTargetEventIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INDeleteEventIntent *)self _typedBackingStore];
-  [v5 setTargetEventIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INDeleteEventIntent *)self _typedBackingStore];
+  [_typedBackingStore setTargetEventIdentifier:identifierCopy];
 }
 
 - (NSString)targetEventIdentifier
 {
-  v2 = [(INDeleteEventIntent *)self _typedBackingStore];
-  v3 = [v2 targetEventIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INDeleteEventIntent *)self _typedBackingStore];
+  targetEventIdentifier = [_typedBackingStore targetEventIdentifier];
+  v4 = [targetEventIdentifier copy];
 
   return v4;
 }
 
-- (INDeleteEventIntent)initWithTargetEventIdentifier:(id)a3 deleteAllOccurrences:(id)a4
+- (INDeleteEventIntent)initWithTargetEventIdentifier:(id)identifier deleteAllOccurrences:(id)occurrences
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  occurrencesCopy = occurrences;
   v11.receiver = self;
   v11.super_class = INDeleteEventIntent;
   v8 = [(INIntent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(INDeleteEventIntent *)v8 setTargetEventIdentifier:v6];
-    [(INDeleteEventIntent *)v9 setDeleteAllOccurrences:v7];
+    [(INDeleteEventIntent *)v8 setTargetEventIdentifier:identifierCopy];
+    [(INDeleteEventIntent *)v9 setDeleteAllOccurrences:occurrencesCopy];
   }
 
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INDeleteEventIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INDeleteEventIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INDeleteEventIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INDeleteEventIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

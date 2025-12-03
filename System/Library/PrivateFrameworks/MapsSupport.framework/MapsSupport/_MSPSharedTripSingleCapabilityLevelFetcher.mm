@@ -1,38 +1,38 @@
 @interface _MSPSharedTripSingleCapabilityLevelFetcher
-- (_MSPSharedTripSingleCapabilityLevelFetcher)initWithContact:(id)a3 timeout:(double)a4 queue:(id)a5 completion:(id)a6;
-- (void)_finishWithType:(unint64_t)a3;
+- (_MSPSharedTripSingleCapabilityLevelFetcher)initWithContact:(id)contact timeout:(double)timeout queue:(id)queue completion:(id)completion;
+- (void)_finishWithType:(unint64_t)type;
 - (void)_timeout;
-- (void)capabilityLevelFetcher:(id)a3 didUpdateCapabilityLevelsForHandles:(id)a4;
+- (void)capabilityLevelFetcher:(id)fetcher didUpdateCapabilityLevelsForHandles:(id)handles;
 - (void)start;
 @end
 
 @implementation _MSPSharedTripSingleCapabilityLevelFetcher
 
-- (_MSPSharedTripSingleCapabilityLevelFetcher)initWithContact:(id)a3 timeout:(double)a4 queue:(id)a5 completion:(id)a6
+- (_MSPSharedTripSingleCapabilityLevelFetcher)initWithContact:(id)contact timeout:(double)timeout queue:(id)queue completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  contactCopy = contact;
+  queueCopy = queue;
+  completionCopy = completion;
   v20.receiver = self;
   v20.super_class = _MSPSharedTripSingleCapabilityLevelFetcher;
   v14 = [(_MSPSharedTripSingleCapabilityLevelFetcher *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_contact, a3);
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_contact, contact);
+    v16 = [completionCopy copy];
     completion = v15->_completion;
     v15->_completion = v16;
 
     objc_storeStrong(&v15->_keepAliveReference, v15);
-    objc_storeStrong(&v15->_callbackQueue, a5);
-    v18 = 10.0;
-    if (a4 > 0.0)
+    objc_storeStrong(&v15->_callbackQueue, queue);
+    timeoutCopy = 10.0;
+    if (timeout > 0.0)
     {
-      v18 = a4;
+      timeoutCopy = timeout;
     }
 
-    v15->_timeoutInterval = v18;
+    v15->_timeoutInterval = timeoutCopy;
   }
 
   return v15;
@@ -102,13 +102,13 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)capabilityLevelFetcher:(id)a3 didUpdateCapabilityLevelsForHandles:(id)a4
+- (void)capabilityLevelFetcher:(id)fetcher didUpdateCapabilityLevelsForHandles:(id)handles
 {
   v21 = *MEMORY[0x277D85DE8];
   contact = self->_contact;
-  v6 = a4;
-  v7 = [(MSPSharedTripContact *)contact stringValue];
-  v8 = [v6 containsObject:v7];
+  handlesCopy = handles;
+  stringValue = [(MSPSharedTripContact *)contact stringValue];
+  v8 = [handlesCopy containsObject:stringValue];
 
   if (v8)
   {
@@ -166,7 +166,7 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishWithType:(unint64_t)a3
+- (void)_finishWithType:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
   completion = self->_completion;
@@ -176,14 +176,14 @@
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      if (a3 > 4)
+      if (type > 4)
       {
         v8 = @"Unknown";
       }
 
       else
       {
-        v8 = *(&off_279867E10 + a3);
+        v8 = *(&off_279867E10 + type);
       }
 
       contact = self->_contact;
@@ -205,7 +205,7 @@
     v13 = self->_completion;
     self->_completion = 0;
 
-    (*(v7 + 16))(v7, a3);
+    (*(v7 + 16))(v7, type);
     keepAliveReference = self->_keepAliveReference;
     self->_keepAliveReference = 0;
   }

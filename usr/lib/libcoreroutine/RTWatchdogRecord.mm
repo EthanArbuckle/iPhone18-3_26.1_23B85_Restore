@@ -1,23 +1,23 @@
 @interface RTWatchdogRecord
 - (RTWatchdogProtocol)object;
-- (RTWatchdogRecord)initWithObject:(id)a3 timeout:(double)a4;
+- (RTWatchdogRecord)initWithObject:(id)object timeout:(double)timeout;
 - (double)getLatency;
 - (id)description;
 @end
 
 @implementation RTWatchdogRecord
 
-- (RTWatchdogRecord)initWithObject:(id)a3 timeout:(double)a4
+- (RTWatchdogRecord)initWithObject:(id)object timeout:(double)timeout
 {
-  v6 = a3;
-  if (!v6)
+  objectCopy = object;
+  if (!objectCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -28,7 +28,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (a4 <= 0.0)
+  if (timeout <= 0.0)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -47,23 +47,23 @@ LABEL_12:
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_object, v6);
-    v9 = [MEMORY[0x277CBEAA8] distantPast];
+    objc_storeWeak(&v7->_object, objectCopy);
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     checkInStartDate = v8->_checkInStartDate;
-    v8->_checkInStartDate = v9;
+    v8->_checkInStartDate = distantPast;
 
-    v11 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
     checkInStopDate = v8->_checkInStopDate;
-    v8->_checkInStopDate = v11;
+    v8->_checkInStopDate = distantPast2;
 
-    v8->_timeout = a4;
+    v8->_timeout = timeout;
   }
 
   self = v8;
-  v13 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v13;
+  return selfCopy;
 }
 
 - (double)getLatency
@@ -92,13 +92,13 @@ LABEL_10:
 {
   v3 = objc_opt_new();
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(RTWatchdogRecord *)self object];
+  object = [(RTWatchdogRecord *)self object];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(RTWatchdogRecord *)self checkInStartDate];
-  v9 = [v3 stringFromDate:v8];
-  v10 = [(RTWatchdogRecord *)self checkInStopDate];
-  v11 = [v3 stringFromDate:v10];
+  checkInStartDate = [(RTWatchdogRecord *)self checkInStartDate];
+  v9 = [v3 stringFromDate:checkInStartDate];
+  checkInStopDate = [(RTWatchdogRecord *)self checkInStopDate];
+  v11 = [v3 stringFromDate:checkInStopDate];
   [(RTWatchdogRecord *)self timeout];
   v13 = v12;
   [(RTWatchdogRecord *)self getLatency];

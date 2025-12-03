@@ -1,14 +1,14 @@
 @interface VideoMessageController
-- (void)momentsController:(id)a3 didFinishProcessingRawVideoMessage:(id)a4;
+- (void)momentsController:(id)controller didFinishProcessingRawVideoMessage:(id)message;
 @end
 
 @implementation VideoMessageController
 
-- (void)momentsController:(id)a3 didFinishProcessingRawVideoMessage:(id)a4
+- (void)momentsController:(id)controller didFinishProcessingRawVideoMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  messageCopy = message;
+  selfCopy = self;
   VideoMessageController.momentsController(_:didFinishProcessingRawVideoMessage:)();
 }
 

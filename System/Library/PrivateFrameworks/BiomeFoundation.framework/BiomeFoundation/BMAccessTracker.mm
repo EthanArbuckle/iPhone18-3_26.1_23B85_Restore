@@ -1,8 +1,8 @@
 @interface BMAccessTracker
 + (id)sharedInstance;
 - (BMAccessTracker)init;
-- (void)_logMissingEntitlementsForAccess:(id)a3 useCase:(id)a4;
-- (void)logMissingEntitlementsForAccessToResource:(id)a3 domain:(unint64_t)a4 withMode:(unint64_t)a5 useCase:(id)a6;
+- (void)_logMissingEntitlementsForAccess:(id)access useCase:(id)case;
+- (void)logMissingEntitlementsForAccessToResource:(id)resource domain:(unint64_t)domain withMode:(unint64_t)mode useCase:(id)case;
 @end
 
 @implementation BMAccessTracker
@@ -43,36 +43,36 @@ uint64_t __33__BMAccessTracker_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)logMissingEntitlementsForAccessToResource:(id)a3 domain:(unint64_t)a4 withMode:(unint64_t)a5 useCase:(id)a6
+- (void)logMissingEntitlementsForAccessToResource:(id)resource domain:(unint64_t)domain withMode:(unint64_t)mode useCase:(id)case
 {
-  v10 = a3;
-  v11 = a6;
+  resourceCopy = resource;
+  caseCopy = case;
   v12 = objc_autoreleasePoolPush();
-  v13 = [[BMAccessDescriptor alloc] initWithDomain:a4 accessMode:a5 resource:v10];
+  v13 = [[BMAccessDescriptor alloc] initWithDomain:domain accessMode:mode resource:resourceCopy];
   lock = self->_lock;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __85__BMAccessTracker_logMissingEntitlementsForAccessToResource_domain_withMode_useCase___block_invoke;
   v17[3] = &unk_1E796AD90;
   v18 = v13;
-  v15 = v11;
+  v15 = caseCopy;
   v19 = v15;
-  v20 = self;
+  selfCopy = self;
   v16 = v13;
   [(_PASLock *)lock runWithLockAcquired:v17];
 
   objc_autoreleasePoolPop(v12);
 }
 
-- (void)_logMissingEntitlementsForAccess:(id)a3 useCase:(id)a4
+- (void)_logMissingEntitlementsForAccess:(id)access useCase:(id)case
 {
-  v5 = a3;
-  v6 = a4;
+  accessCopy = access;
+  caseCopy = case;
   v7 = +[BMProcess current];
   if (([v7 processType] - 2) >= 7)
   {
     v8 = @"com.apple.biome.access.user";
-    if ([v5 domain] == 1)
+    if ([accessCopy domain] == 1)
     {
       v9 = @"com.apple.biome.access.system";
 
@@ -88,20 +88,20 @@ uint64_t __33__BMAccessTracker_sharedInstance__block_invoke()
       }
     }
 
-    v11 = [v6 hasPrefix:@"__"];
+    v11 = [caseCopy hasPrefix:@"__"];
     v12 = __biome_log_for_category(6);
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_FAULT);
     if (v11)
     {
       if (v13)
       {
-        [BMAccessTracker _logMissingEntitlementsForAccess:v5 useCase:v12];
+        [BMAccessTracker _logMissingEntitlementsForAccess:accessCopy useCase:v12];
       }
     }
 
     else if (v13)
     {
-      [(BMAccessTracker *)v5 _logMissingEntitlementsForAccess:v6 useCase:v12];
+      [(BMAccessTracker *)accessCopy _logMissingEntitlementsForAccess:caseCopy useCase:v12];
     }
   }
 }

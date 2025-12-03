@@ -1,76 +1,76 @@
 @interface CNFileManager
-- (BOOL)fileExistsAtURL:(id)a3;
-- (BOOL)fileExistsAtURL:(id)a3 isDirectory:(BOOL *)a4;
+- (BOOL)fileExistsAtURL:(id)l;
+- (BOOL)fileExistsAtURL:(id)l isDirectory:(BOOL *)directory;
 - (CNFileManager)init;
-- (CNFileManager)initWithFileManager:(id)a3;
-- (id)asyncDataWithContentsOfURL:(id)a3;
-- (id)asyncWriteData:(id)a3 toURL:(id)a4 options:(unint64_t)a5;
-- (id)containerURLForSecurityApplicationGroupIdentifier:(id)a3;
-- (id)contentsOfDirectoryAtURL:(id)a3 includingPropertiesForKeys:(id)a4 options:(unint64_t)a5;
-- (id)createDirectoryAtURL:(id)a3 withIntermediateDirectories:(BOOL)a4 attributes:(id)a5;
-- (id)dataWithContentsOfURL:(id)a3;
-- (id)observableWithContentsOfURL:(id)a3;
-- (id)removeExtendedAttribute:(id)a3 atURL:(id)a4;
-- (id)removeItemAtURL:(id)a3;
-- (id)setValue:(id)a3 forExtendedAttribute:(id)a4 atURL:(id)a5;
-- (id)valueForExtendedAttribute:(id)a3 atURL:(id)a4;
-- (id)writeData:(id)a3 toURL:(id)a4 options:(unint64_t)a5;
+- (CNFileManager)initWithFileManager:(id)manager;
+- (id)asyncDataWithContentsOfURL:(id)l;
+- (id)asyncWriteData:(id)data toURL:(id)l options:(unint64_t)options;
+- (id)containerURLForSecurityApplicationGroupIdentifier:(id)identifier;
+- (id)contentsOfDirectoryAtURL:(id)l includingPropertiesForKeys:(id)keys options:(unint64_t)options;
+- (id)createDirectoryAtURL:(id)l withIntermediateDirectories:(BOOL)directories attributes:(id)attributes;
+- (id)dataWithContentsOfURL:(id)l;
+- (id)observableWithContentsOfURL:(id)l;
+- (id)removeExtendedAttribute:(id)attribute atURL:(id)l;
+- (id)removeItemAtURL:(id)l;
+- (id)setValue:(id)value forExtendedAttribute:(id)attribute atURL:(id)l;
+- (id)valueForExtendedAttribute:(id)attribute atURL:(id)l;
+- (id)writeData:(id)data toURL:(id)l options:(unint64_t)options;
 @end
 
 @implementation CNFileManager
 
 - (CNFileManager)init
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(CNFileManager *)self initWithFileManager:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [(CNFileManager *)self initWithFileManager:defaultManager];
 
   return v4;
 }
 
-- (CNFileManager)initWithFileManager:(id)a3
+- (CNFileManager)initWithFileManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = CNFileManager;
   v6 = [(CNFileManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileManager, a3);
+    objc_storeStrong(&v6->_fileManager, manager);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)dataWithContentsOfURL:(id)a3
+- (id)dataWithContentsOfURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__CNFileManager_dataWithContentsOfURL___block_invoke;
   v7[3] = &unk_1E6ED5990;
-  v8 = v3;
-  v4 = v3;
+  v8 = lCopy;
+  v4 = lCopy;
   v5 = [CNResult resultWithBlock:v7];
 
   return v5;
 }
 
-- (id)writeData:(id)a3 toURL:(id)a4 options:(unint64_t)a5
+- (id)writeData:(id)data toURL:(id)l options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  lCopy = l;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __41__CNFileManager_writeData_toURL_options___block_invoke;
   v14[3] = &unk_1E6ED71E8;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = a5;
-  v10 = v8;
-  v11 = v9;
+  v15 = lCopy;
+  v16 = dataCopy;
+  optionsCopy = options;
+  v10 = dataCopy;
+  v11 = lCopy;
   v12 = [CNResult resultWithBlock:v14];
 
   return v12;
@@ -125,16 +125,16 @@ LABEL_9:
   return v13;
 }
 
-- (id)asyncDataWithContentsOfURL:(id)a3
+- (id)asyncDataWithContentsOfURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__CNFileManager_asyncDataWithContentsOfURL___block_invoke;
   v8[3] = &unk_1E6ED7210;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = lCopy;
+  v5 = lCopy;
   v6 = [CNFuture futureWithBlock:v8];
 
   return v6;
@@ -156,20 +156,20 @@ id __44__CNFileManager_asyncDataWithContentsOfURL___block_invoke(uint64_t a1, vo
   return v7;
 }
 
-- (id)asyncWriteData:(id)a3 toURL:(id)a4 options:(unint64_t)a5
+- (id)asyncWriteData:(id)data toURL:(id)l options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  lCopy = l;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__CNFileManager_asyncWriteData_toURL_options___block_invoke;
   v14[3] = &unk_1E6ED71E8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a5;
-  v10 = v9;
-  v11 = v8;
+  v15 = dataCopy;
+  v16 = lCopy;
+  optionsCopy = options;
+  v10 = lCopy;
+  v11 = dataCopy;
   v12 = [CNFuture futureWithBlock:v14];
 
   return v12;
@@ -191,38 +191,38 @@ id __46__CNFileManager_asyncWriteData_toURL_options___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (id)observableWithContentsOfURL:(id)a3
+- (id)observableWithContentsOfURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(CNData);
-  v5 = [(CNData *)v4 observableWithContentsOfURL:v3];
+  v5 = [(CNData *)v4 observableWithContentsOfURL:lCopy];
 
   return v5;
 }
 
-- (BOOL)fileExistsAtURL:(id)a3
+- (BOOL)fileExistsAtURL:(id)l
 {
   fileManager = self->_fileManager;
-  v4 = [a3 path];
-  LOBYTE(fileManager) = [(NSFileManager *)fileManager fileExistsAtPath:v4];
+  path = [l path];
+  LOBYTE(fileManager) = [(NSFileManager *)fileManager fileExistsAtPath:path];
 
   return fileManager;
 }
 
-- (BOOL)fileExistsAtURL:(id)a3 isDirectory:(BOOL *)a4
+- (BOOL)fileExistsAtURL:(id)l isDirectory:(BOOL *)directory
 {
   fileManager = self->_fileManager;
-  v6 = [a3 path];
-  LOBYTE(a4) = [(NSFileManager *)fileManager fileExistsAtPath:v6 isDirectory:a4];
+  path = [l path];
+  LOBYTE(directory) = [(NSFileManager *)fileManager fileExistsAtPath:path isDirectory:directory];
 
-  return a4;
+  return directory;
 }
 
-- (id)removeItemAtURL:(id)a3
+- (id)removeItemAtURL:(id)l
 {
   fileManager = self->_fileManager;
   v8 = 0;
-  v4 = [(NSFileManager *)fileManager removeItemAtURL:a3 error:&v8];
+  v4 = [(NSFileManager *)fileManager removeItemAtURL:l error:&v8];
   v5 = v8;
   if (v4)
   {
@@ -238,20 +238,20 @@ id __46__CNFileManager_asyncWriteData_toURL_options___block_invoke(uint64_t a1, 
   return v6;
 }
 
-- (id)createDirectoryAtURL:(id)a3 withIntermediateDirectories:(BOOL)a4 attributes:(id)a5
+- (id)createDirectoryAtURL:(id)l withIntermediateDirectories:(BOOL)directories attributes:(id)attributes
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  attributesCopy = attributes;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__CNFileManager_createDirectoryAtURL_withIntermediateDirectories_attributes___block_invoke;
   v14[3] = &unk_1E6ED7238;
   v14[4] = self;
-  v15 = v8;
-  v17 = a4;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
+  v15 = lCopy;
+  directoriesCopy = directories;
+  v16 = attributesCopy;
+  v10 = attributesCopy;
+  v11 = lCopy;
   v12 = [CNResult resultWithBlock:v14];
 
   return v12;
@@ -275,21 +275,21 @@ id __77__CNFileManager_createDirectoryAtURL_withIntermediateDirectories_attribut
   return v5;
 }
 
-- (id)contentsOfDirectoryAtURL:(id)a3 includingPropertiesForKeys:(id)a4 options:(unint64_t)a5
+- (id)contentsOfDirectoryAtURL:(id)l includingPropertiesForKeys:(id)keys options:(unint64_t)options
 {
   fileManager = self->_fileManager;
   v10 = 0;
-  v6 = [(NSFileManager *)fileManager contentsOfDirectoryAtURL:a3 includingPropertiesForKeys:a4 options:a5 error:&v10];
+  v6 = [(NSFileManager *)fileManager contentsOfDirectoryAtURL:l includingPropertiesForKeys:keys options:options error:&v10];
   v7 = v10;
   v8 = [CNResult resultWithValue:v6 orError:v7];
 
   return v8;
 }
 
-- (id)containerURLForSecurityApplicationGroupIdentifier:(id)a3
+- (id)containerURLForSecurityApplicationGroupIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(NSFileManager *)self->_fileManager containerURLForSecurityApplicationGroupIdentifier:a3];
+  v3 = [(NSFileManager *)self->_fileManager containerURLForSecurityApplicationGroupIdentifier:identifier];
   if (v3)
   {
     v4 = 0;
@@ -310,17 +310,17 @@ id __77__CNFileManager_createDirectoryAtURL_withIntermediateDirectories_attribut
   return v6;
 }
 
-- (id)setValue:(id)a3 forExtendedAttribute:(id)a4 atURL:(id)a5
+- (id)setValue:(id)value forExtendedAttribute:(id)attribute atURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  attributeCopy = attribute;
+  lCopy = l;
   fileManager = self->_fileManager;
-  v12 = [v10 path];
-  if (v8)
+  path = [lCopy path];
+  if (valueCopy)
   {
     v20 = 0;
-    v13 = [(NSFileManager *)fileManager _cn_setValue:v8 forExtendedAttribute:v9 path:v12 error:&v20];
+    v13 = [(NSFileManager *)fileManager _cn_setValue:valueCopy forExtendedAttribute:attributeCopy path:path error:&v20];
     v14 = v20;
 
     if (v13)
@@ -334,7 +334,7 @@ LABEL_3:
   else
   {
     v19 = 0;
-    v16 = [(NSFileManager *)fileManager _cn_removeExtendedAttributeForKey:v9 path:v12 error:&v19];
+    v16 = [(NSFileManager *)fileManager _cn_removeExtendedAttributeForKey:attributeCopy path:path error:&v19];
     v14 = v19;
 
     if (v16)
@@ -350,14 +350,14 @@ LABEL_6:
   return v17;
 }
 
-- (id)valueForExtendedAttribute:(id)a3 atURL:(id)a4
+- (id)valueForExtendedAttribute:(id)attribute atURL:(id)l
 {
   fileManager = self->_fileManager;
   v16 = 0;
-  v6 = a3;
-  v7 = [a4 path];
+  attributeCopy = attribute;
+  path = [l path];
   v15 = 0;
-  v8 = [(NSFileManager *)fileManager _cn_getValue:&v16 forExtendendAttribute:v6 path:v7 error:&v15];
+  v8 = [(NSFileManager *)fileManager _cn_getValue:&v16 forExtendendAttribute:attributeCopy path:path error:&v15];
 
   v9 = v16;
   v10 = v15;
@@ -387,13 +387,13 @@ LABEL_6:
   return v13;
 }
 
-- (id)removeExtendedAttribute:(id)a3 atURL:(id)a4
+- (id)removeExtendedAttribute:(id)attribute atURL:(id)l
 {
   fileManager = self->_fileManager;
-  v6 = a3;
-  v7 = [a4 path];
+  attributeCopy = attribute;
+  path = [l path];
   v11 = 0;
-  LODWORD(fileManager) = [(NSFileManager *)fileManager _cn_removeExtendedAttributeForKey:v6 path:v7 error:&v11];
+  LODWORD(fileManager) = [(NSFileManager *)fileManager _cn_removeExtendedAttributeForKey:attributeCopy path:path error:&v11];
 
   v8 = v11;
   if (fileManager)

@@ -1,21 +1,21 @@
 @interface AWDWiFiTxInhibitEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasState:(BOOL)state;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiTxInhibitEvent
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -52,7 +52,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -62,16 +62,16 @@
     }
 
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_version), @"version"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_version), @"version"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_4;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -82,13 +82,13 @@ LABEL_3:
   if ((has & 4) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_state), @"state"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_state), @"state"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 1) == 0)
@@ -129,13 +129,13 @@ LABEL_7:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -146,8 +146,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 24) = self->_state;
-      *(a3 + 28) |= 4u;
+      *(to + 24) = self->_state;
+      *(to + 28) |= 4u;
       return;
     }
   }
@@ -157,17 +157,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_version;
-  *(a3 + 28) |= 2u;
+  *(to + 2) = self->_version;
+  *(to + 28) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -204,41 +204,41 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 28) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
       goto LABEL_14;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0 || self->_version != *(a3 + 2))
+      if ((*(equal + 28) & 2) == 0 || self->_version != *(equal + 2))
       {
         goto LABEL_14;
       }
     }
 
-    else if ((*(a3 + 28) & 2) != 0)
+    else if ((*(equal + 28) & 2) != 0)
     {
       goto LABEL_14;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 28) & 4) == 0)
+      if ((*(equal + 28) & 4) == 0)
       {
 LABEL_14:
         LOBYTE(v5) = 0;
@@ -247,13 +247,13 @@ LABEL_14:
 
       if (self->_state)
       {
-        if ((*(a3 + 24) & 1) == 0)
+        if ((*(equal + 24) & 1) == 0)
         {
           goto LABEL_14;
         }
       }
 
-      else if (*(a3 + 24))
+      else if (*(equal + 24))
       {
         goto LABEL_14;
       }
@@ -305,14 +305,14 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -322,20 +322,20 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_state = *(a3 + 24);
+      self->_state = *(from + 24);
       *&self->_has |= 4u;
       return;
     }
   }
 
-  else if ((*(a3 + 28) & 2) == 0)
+  else if ((*(from + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_version = *(a3 + 2);
+  self->_version = *(from + 2);
   *&self->_has |= 2u;
-  if ((*(a3 + 28) & 4) != 0)
+  if ((*(from + 28) & 4) != 0)
   {
     goto LABEL_7;
   }

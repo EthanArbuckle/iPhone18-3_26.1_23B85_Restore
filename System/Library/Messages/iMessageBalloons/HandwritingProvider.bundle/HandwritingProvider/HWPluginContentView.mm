@@ -2,40 +2,40 @@
 + (id)_backgroundColor;
 + (id)_inkColor;
 - (CGSize)cachedSize;
-- (HWPluginContentView)initWithFrame:(CGRect)a3;
+- (HWPluginContentView)initWithFrame:(CGRect)frame;
 - (id)currentBackgroundColor;
 - (void)_lazySetupGLInkView;
 - (void)_teardownInkView;
-- (void)_updateCachedImageForSize:(CGSize)a3 completionBlock:(id)a4;
+- (void)_updateCachedImageForSize:(CGSize)size completionBlock:(id)block;
 - (void)cleanupAfterAnimation;
 - (void)layoutSubviews;
-- (void)replayDrawingWithCompletionBlock:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)replayDrawingWithCompletionBlock:(id)block;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HWPluginContentView
 
-- (HWPluginContentView)initWithFrame:(CGRect)a3
+- (HWPluginContentView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = HWPluginContentView;
-  v3 = [(HWPluginContentView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HWPluginContentView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HWPluginContentView *)v3 currentBackgroundColor];
-    [(HWPluginContentView *)v4 setBackgroundColor:v5];
+    currentBackgroundColor = [(HWPluginContentView *)v3 currentBackgroundColor];
+    [(HWPluginContentView *)v4 setBackgroundColor:currentBackgroundColor];
 
     v6 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(HWPluginContentView *)v4 setImageView:v6];
 
-    v7 = [(HWPluginContentView *)v4 imageView];
-    [v7 setContentMode:4];
+    imageView = [(HWPluginContentView *)v4 imageView];
+    [imageView setContentMode:4];
 
     v8 = +[UIDevice currentDevice];
-    v9 = [v8 dk_deviceSupportsGL];
+    dk_deviceSupportsGL = [v8 dk_deviceSupportsGL];
 
-    if (v9)
+    if (dk_deviceSupportsGL)
     {
       v10 = +[(HWAbstractBalloonController *)HWBalloonController];
       [v10 setMaxConcurrentOperationCount:1];
@@ -50,8 +50,8 @@
 
 - (id)currentBackgroundColor
 {
-  v2 = [(HWPluginContentView *)self dataSource];
-  if ([v2 payloadInShelf])
+  dataSource = [(HWPluginContentView *)self dataSource];
+  if ([dataSource payloadInShelf])
   {
     +[UIColor clearColor];
   }
@@ -65,21 +65,21 @@
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = HWPluginContentView;
-  v4 = a3;
-  [(HWPluginContentView *)&v11 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(HWPluginContentView *)&v11 traitCollectionDidChange:changeCopy];
   v5 = [(HWPluginContentView *)self traitCollection:v11.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     self->_cachedSize = CGSizeZero;
-    v8 = [(HWPluginContentView *)self imageView];
-    [v8 setContentMode:1];
+    imageView = [(HWPluginContentView *)self imageView];
+    [imageView setContentMode:1];
 
     [(HWPluginContentView *)self bounds];
     [(HWPluginContentView *)self _updateCachedImageForSize:0 completionBlock:v9, v10];
@@ -89,9 +89,9 @@
 + (id)_inkColor
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == &dword_4)
+  if (userInterfaceIdiom == &dword_4)
   {
     +[UIColor whiteColor];
   }
@@ -115,9 +115,9 @@
   else
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-    if (v4 == &dword_4)
+    if (userInterfaceIdiom == &dword_4)
     {
       +[UIColor blackColor];
     }
@@ -137,32 +137,32 @@
   v33.receiver = self;
   v33.super_class = HWPluginContentView;
   [(HWPluginContentView *)&v33 layoutSubviews];
-  v3 = [(HWPluginContentView *)self currentBackgroundColor];
-  [(HWPluginContentView *)self setBackgroundColor:v3];
+  currentBackgroundColor = [(HWPluginContentView *)self currentBackgroundColor];
+  [(HWPluginContentView *)self setBackgroundColor:currentBackgroundColor];
 
   [(HWPluginContentView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HWPluginContentView *)self imageView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  imageView = [(HWPluginContentView *)self imageView];
+  [imageView setFrame:{v5, v7, v9, v11}];
 
   [(HWPluginContentView *)self bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(HWPluginContentView *)self inkView];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  inkView = [(HWPluginContentView *)self inkView];
+  [inkView setFrame:{v14, v16, v18, v20}];
 
   v22 = +[UIDevice currentDevice];
   if ([v22 dk_deviceSupportsGL])
   {
-    v23 = [(HWPluginContentView *)self dataSource];
-    v24 = [v23 shouldAnimate];
+    dataSource = [(HWPluginContentView *)self dataSource];
+    shouldAnimate = [dataSource shouldAnimate];
 
-    if (v24)
+    if (shouldAnimate)
     {
       return;
     }
@@ -187,52 +187,52 @@
 
 - (void)_lazySetupGLInkView
 {
-  v3 = [(HWPluginContentView *)self inkView];
-  if (v3)
+  inkView = [(HWPluginContentView *)self inkView];
+  if (inkView)
   {
   }
 
   else
   {
     v4 = +[UIDevice currentDevice];
-    v5 = [v4 dk_deviceSupportsGL];
+    dk_deviceSupportsGL = [v4 dk_deviceSupportsGL];
 
-    if (v5)
+    if (dk_deviceSupportsGL)
     {
       v6 = [DKInkView alloc];
       [(HWPluginContentView *)self bounds];
       v7 = [v6 initWithFrame:?];
       [(HWPluginContentView *)self setInkView:v7];
 
-      v8 = [(HWPluginContentView *)self inkView];
-      [v8 setUserInteractionEnabled:0];
+      inkView2 = [(HWPluginContentView *)self inkView];
+      [inkView2 setUserInteractionEnabled:0];
 
-      v9 = [(HWPluginContentView *)self inkView];
-      [v9 setMode:1];
+      inkView3 = [(HWPluginContentView *)self inkView];
+      [inkView3 setMode:1];
 
-      v10 = [(HWPluginContentView *)self inkView];
-      [v10 setAllowInput:0];
+      inkView4 = [(HWPluginContentView *)self inkView];
+      [inkView4 setAllowInput:0];
 
-      v11 = [(HWPluginContentView *)self inkView];
-      [v11 setScaleDrawingToFitCanvas:1];
+      inkView5 = [(HWPluginContentView *)self inkView];
+      [inkView5 setScaleDrawingToFitCanvas:1];
 
-      v12 = [(HWPluginContentView *)self inkView];
-      [v12 setRenderPreviewMode:0];
+      inkView6 = [(HWPluginContentView *)self inkView];
+      [inkView6 setRenderPreviewMode:0];
 
-      v13 = [objc_opt_class() _inkColor];
-      v14 = [(HWPluginContentView *)self inkView];
-      [v14 setStrokeColor:v13];
+      _inkColor = [objc_opt_class() _inkColor];
+      inkView7 = [(HWPluginContentView *)self inkView];
+      [inkView7 setStrokeColor:_inkColor];
 
       [(HWPluginContentView *)self addSubview:self->_inkView];
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v15 = [(HWPluginContentView *)self inkView];
-      v16 = [v15 layer];
-      v17 = [v16 sublayers];
+      inkView8 = [(HWPluginContentView *)self inkView];
+      layer = [inkView8 layer];
+      sublayers = [layer sublayers];
 
-      v18 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v18 = [sublayers countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v18)
       {
         v19 = v18;
@@ -244,7 +244,7 @@
           {
             if (*v25 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(sublayers);
             }
 
             v22 = *(*(&v24 + 1) + 8 * v21);
@@ -258,59 +258,59 @@
           }
 
           while (v19 != v21);
-          v19 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v19 = [sublayers countByEnumeratingWithState:&v24 objects:v28 count:16];
         }
 
         while (v19);
       }
 
-      v23 = [(HWPluginContentView *)self inkView];
-      [v23 setNeedsLayout];
+      inkView9 = [(HWPluginContentView *)self inkView];
+      [inkView9 setNeedsLayout];
     }
   }
 }
 
 - (void)_teardownInkView
 {
-  v3 = [(HWPluginContentView *)self inkView];
-  [v3 teardown];
+  inkView = [(HWPluginContentView *)self inkView];
+  [inkView teardown];
 
-  v4 = [(HWPluginContentView *)self inkView];
-  [v4 removeFromSuperview];
+  inkView2 = [(HWPluginContentView *)self inkView];
+  [inkView2 removeFromSuperview];
 
   [(HWPluginContentView *)self setInkView:0];
-  v5 = [(HWPluginContentView *)self imageView];
-  [v5 setHidden:0];
+  imageView = [(HWPluginContentView *)self imageView];
+  [imageView setHidden:0];
 }
 
-- (void)replayDrawingWithCompletionBlock:(id)a3
+- (void)replayDrawingWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(HWPluginContentView *)self _lazySetupGLInkView];
   objc_initWeak(&location, self);
-  v5 = [(HWPluginContentView *)self handwriting];
-  v6 = [v5 drawing];
-  v7 = [(HWPluginContentView *)self inkView];
-  v8 = [v7 currentDrawing];
+  handwriting = [(HWPluginContentView *)self handwriting];
+  drawing = [handwriting drawing];
+  inkView = [(HWPluginContentView *)self inkView];
+  currentDrawing = [inkView currentDrawing];
 
-  if (v8 == v6)
+  if (currentDrawing == drawing)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v4[2](v4);
+      blockCopy[2](blockCopy);
     }
   }
 
   else
   {
-    v9 = [(HWPluginContentView *)self inkView];
+    inkView2 = [(HWPluginContentView *)self inkView];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_12BE0;
     v10[3] = &unk_28A98;
-    v11 = v4;
+    v11 = blockCopy;
     objc_copyWeak(&v12, &location);
-    [v9 setCurrentDrawing:v6 scaleDrawingToFitBounds:1 withAnimationType:1 animationCompletionHandler:v10];
+    [inkView2 setCurrentDrawing:drawing scaleDrawingToFitBounds:1 withAnimationType:1 animationCompletionHandler:v10];
 
     objc_destroyWeak(&v12);
   }
@@ -320,8 +320,8 @@
 
 - (void)cleanupAfterAnimation
 {
-  v3 = [(HWPluginContentView *)self inkView];
-  [v3 pauseRendering];
+  inkView = [(HWPluginContentView *)self inkView];
+  [inkView pauseRendering];
 
   objc_initWeak(&location, self);
   [(HWPluginContentView *)self bounds];
@@ -337,33 +337,33 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_updateCachedImageForSize:(CGSize)a3 completionBlock:(id)a4
+- (void)_updateCachedImageForSize:(CGSize)size completionBlock:(id)block
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
   v8 = +[HWPluginContentView _inkColor];
   [(HWPluginContentView *)self bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(HWPluginContentView *)self handwriting];
+  handwriting = [(HWPluginContentView *)self handwriting];
 
-  if (v17)
+  if (handwriting)
   {
-    v18 = [(HWPluginContentView *)self handwriting];
-    v19 = [v18 drawing];
+    handwriting2 = [(HWPluginContentView *)self handwriting];
+    drawing = [handwriting2 drawing];
     IsValid = DKDrawingIsValid();
 
     if (IsValid)
     {
-      v21 = [(HWPluginContentView *)self traitCollection];
-      v22 = [v21 userInterfaceStyle];
+      traitCollection = [(HWPluginContentView *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
       cachedImage = self->_cachedImage;
-      v24 = [(HWPluginContentView *)self imageView];
-      [v24 setImage:cachedImage];
+      imageView = [(HWPluginContentView *)self imageView];
+      [imageView setImage:cachedImage];
 
       p_cachedSize = &self->_cachedSize;
       if (self->_cachedSize.width != width || self->_cachedSize.height != height)
@@ -378,14 +378,14 @@
         v28[2] = sub_12FE8;
         v28[3] = &unk_28B10;
         objc_copyWeak(v31, &location);
-        v31[1] = v22;
+        v31[1] = userInterfaceStyle;
         v31[2] = v10;
         v31[3] = v12;
         v31[4] = v14;
         v31[5] = v16;
         v29 = v8;
         v32 = v34;
-        v30 = v7;
+        v30 = blockCopy;
         [v27 addOperationWithBlock:v28];
 
         objc_destroyWeak(v31);
@@ -405,9 +405,9 @@
     NSLog(@"Received unrecognized payload to render.");
   }
 
-  if (v7)
+  if (blockCopy)
   {
-    v7[2](v7);
+    blockCopy[2](blockCopy);
   }
 
 LABEL_12:

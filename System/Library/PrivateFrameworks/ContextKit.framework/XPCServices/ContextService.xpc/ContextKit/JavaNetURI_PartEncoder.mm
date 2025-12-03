@@ -1,14 +1,14 @@
 @interface JavaNetURI_PartEncoder
-- (JavaNetURI_PartEncoder)initWithNSString:(id)a3;
+- (JavaNetURI_PartEncoder)initWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation JavaNetURI_PartEncoder
 
-- (JavaNetURI_PartEncoder)initWithNSString:(id)a3
+- (JavaNetURI_PartEncoder)initWithNSString:(id)string
 {
   LibcoreNetUriCodec_init(self, a2);
-  JreStrongAssign(&self->extraLegalCharacters_, a3);
+  JreStrongAssign(&self->extraLegalCharacters_, string);
   return self;
 }
 

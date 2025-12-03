@@ -1,29 +1,29 @@
 @interface CNTask
-+ (id)taskWithBlock:(id)a3;
-+ (id)taskWithError:(id)a3;
-+ (id)taskWithName:(id)a3 block:(id)a4;
-+ (id)taskWithName:(id)a3 error:(id)a4;
-+ (id)taskWithName:(id)a3 result:(id)a4;
-+ (id)taskWithName:(id)a3 subtasks:(id)a4;
-+ (id)taskWithResult:(id)a3;
++ (id)taskWithBlock:(id)block;
++ (id)taskWithError:(id)error;
++ (id)taskWithName:(id)name block:(id)block;
++ (id)taskWithName:(id)name error:(id)error;
++ (id)taskWithName:(id)name result:(id)result;
++ (id)taskWithName:(id)name subtasks:(id)subtasks;
++ (id)taskWithResult:(id)result;
 - (BOOL)cancel;
 - (BOOL)isCancelled;
-- (CNTask)initWithName:(id)a3;
-- (id)flatMap:(id)a3;
-- (id)map:(id)a3;
-- (id)profileWithTimeProvider:(id)a3 os_log:(id)a4;
-- (id)recover:(id)a3;
+- (CNTask)initWithName:(id)name;
+- (id)flatMap:(id)map;
+- (id)map:(id)map;
+- (id)profileWithTimeProvider:(id)provider os_log:(id)os_log;
+- (id)recover:(id)recover;
 - (id)run;
-- (id)run:(id *)a3;
-- (id)runWithRetryDelegate:(id)a3;
+- (id)run:(id *)run;
+- (id)runWithRetryDelegate:(id)delegate;
 @end
 
 @implementation CNTask
 
-- (id)runWithRetryDelegate:(id)a3
+- (id)runWithRetryDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [[CNRetry alloc] initWithDelegate:v4];
+  delegateCopy = delegate;
+  v5 = [[CNRetry alloc] initWithDelegate:delegateCopy];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -35,69 +35,69 @@
   return v6;
 }
 
-+ (id)taskWithBlock:(id)a3
++ (id)taskWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[_CNBlockTask alloc] initWithBlock:v3];
+  blockCopy = block;
+  v4 = [[_CNBlockTask alloc] initWithBlock:blockCopy];
 
   return v4;
 }
 
-+ (id)taskWithName:(id)a3 block:(id)a4
++ (id)taskWithName:(id)name block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_CNBlockTask alloc] initWithName:v6 block:v5];
+  blockCopy = block;
+  nameCopy = name;
+  v7 = [[_CNBlockTask alloc] initWithName:nameCopy block:blockCopy];
 
   return v7;
 }
 
-+ (id)taskWithName:(id)a3 subtasks:(id)a4
++ (id)taskWithName:(id)name subtasks:(id)subtasks
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_CNAggregateTask alloc] initWithName:v6 tasks:v5];
+  subtasksCopy = subtasks;
+  nameCopy = name;
+  v7 = [[_CNAggregateTask alloc] initWithName:nameCopy tasks:subtasksCopy];
 
   return v7;
 }
 
-+ (id)taskWithResult:(id)a3
++ (id)taskWithResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __25__CNTask_taskWithResult___block_invoke;
   v7[3] = &unk_1E6ED6140;
-  v8 = v3;
-  v4 = v3;
+  v8 = resultCopy;
+  v4 = resultCopy;
   v5 = [CNTask taskWithBlock:v7];
 
   return v5;
 }
 
-+ (id)taskWithName:(id)a3 result:(id)a4
++ (id)taskWithName:(id)name result:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __30__CNTask_taskWithName_result___block_invoke;
   v9[3] = &unk_1E6ED6140;
-  v10 = v5;
-  v6 = v5;
-  v7 = [CNTask taskWithName:a3 block:v9];
+  v10 = resultCopy;
+  v6 = resultCopy;
+  v7 = [CNTask taskWithName:name block:v9];
 
   return v7;
 }
 
-+ (id)taskWithError:(id)a3
++ (id)taskWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __24__CNTask_taskWithError___block_invoke;
   v7[3] = &unk_1E6ED6140;
-  v8 = v3;
-  v4 = v3;
+  v8 = errorCopy;
+  v4 = errorCopy;
   v5 = [CNTask taskWithBlock:v7];
 
   return v5;
@@ -113,16 +113,16 @@ uint64_t __24__CNTask_taskWithError___block_invoke(uint64_t a1, void *a2)
   return 0;
 }
 
-+ (id)taskWithName:(id)a3 error:(id)a4
++ (id)taskWithName:(id)name error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __29__CNTask_taskWithName_error___block_invoke;
   v9[3] = &unk_1E6ED6140;
-  v10 = v5;
-  v6 = v5;
-  v7 = [CNTask taskWithName:a3 block:v9];
+  v10 = errorCopy;
+  v6 = errorCopy;
+  v7 = [CNTask taskWithName:name block:v9];
 
   return v7;
 }
@@ -137,10 +137,10 @@ uint64_t __29__CNTask_taskWithName_error___block_invoke(uint64_t a1, void *a2)
   return 0;
 }
 
-- (CNTask)initWithName:(id)a3
+- (CNTask)initWithName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_1 != -1)
     {
@@ -159,7 +159,7 @@ uint64_t __29__CNTask_taskWithName_error___block_invoke(uint64_t a1, void *a2)
   v6 = [(CNTask *)&v11 init];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [nameCopy copy];
     name = v6->_name;
     v6->_name = v7;
 
@@ -171,57 +171,57 @@ uint64_t __29__CNTask_taskWithName_error___block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)isCancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cancelled = v2->_cancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelled = selfCopy->_cancelled;
+  objc_sync_exit(selfCopy);
 
   return cancelled;
 }
 
 - (BOOL)cancel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cancelled = v2->_cancelled;
-  v2->_cancelled = 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelled = selfCopy->_cancelled;
+  selfCopy->_cancelled = 1;
+  objc_sync_exit(selfCopy);
 
   return !cancelled;
 }
 
-- (id)run:(id *)a3
+- (id)run:(id *)run
 {
   v5 = [(CNTask *)self methodForSelector:&sel_run];
   if (v5 == [CNTask instanceMethodForSelector:&sel_run])
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   else
   {
     v6 = [(CNTask *)self run];
-    v7 = [v6 value];
+    value = [v6 value];
 
-    if (v7)
+    if (value)
     {
-      v8 = [v6 value];
+      null = [v6 value];
     }
 
     else
     {
-      v9 = [v6 error];
-      if (a3)
+      error = [v6 error];
+      if (run)
       {
-        v9 = v9;
-        *a3 = v9;
+        error = error;
+        *run = error;
       }
 
-      v8 = 0;
+      null = 0;
     }
   }
 
-  return v8;
+  return null;
 }
 
 - (id)run
@@ -229,8 +229,8 @@ uint64_t __29__CNTask_taskWithName_error___block_invoke(uint64_t a1, void *a2)
   v3 = [(CNTask *)self methodForSelector:sel_run_];
   if (v3 == [CNTask instanceMethodForSelector:sel_run_])
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
-    v6 = [CNResult successWithValue:v7];
+    null = [MEMORY[0x1E695DFB0] null];
+    v6 = [CNResult successWithValue:null];
   }
 
   else
@@ -244,16 +244,16 @@ uint64_t __29__CNTask_taskWithName_error___block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (id)flatMap:(id)a3
+- (id)flatMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __18__CNTask_flatMap___block_invoke;
   v8[3] = &unk_1E6ED6168;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = mapCopy;
+  v5 = mapCopy;
   v6 = [CNTask taskWithBlock:v8];
 
   return v6;
@@ -299,15 +299,15 @@ id __18__CNTask_flatMap___block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-- (id)map:(id)a3
+- (id)map:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __14__CNTask_map___block_invoke;
   v8[3] = &unk_1E6ED6190;
-  v9 = v4;
-  v5 = v4;
+  v9 = mapCopy;
+  v5 = mapCopy;
   v6 = [(CNTask *)self flatMap:v8];
 
   return v6;
@@ -321,16 +321,16 @@ id __14__CNTask_map___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)recover:(id)a3
+- (id)recover:(id)recover
 {
-  v4 = a3;
+  recoverCopy = recover;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __18__CNTask_recover___block_invoke;
   v8[3] = &unk_1E6ED6168;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = recoverCopy;
+  v5 = recoverCopy;
   v6 = [CNTask taskWithBlock:v8];
 
   return v6;
@@ -359,11 +359,11 @@ id __18__CNTask_recover___block_invoke(uint64_t a1, uint64_t a2)
   return v10;
 }
 
-- (id)profileWithTimeProvider:(id)a3 os_log:(id)a4
+- (id)profileWithTimeProvider:(id)provider os_log:(id)os_log
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_CNTimeProfilingTask alloc] initWithTask:self timeProvider:v7 os_log:v6];
+  os_logCopy = os_log;
+  providerCopy = provider;
+  v8 = [[_CNTimeProfilingTask alloc] initWithTask:self timeProvider:providerCopy os_log:os_logCopy];
 
   return v8;
 }

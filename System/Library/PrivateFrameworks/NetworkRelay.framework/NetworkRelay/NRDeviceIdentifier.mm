@@ -1,16 +1,16 @@
 @interface NRDeviceIdentifier
 + (id)copyBestTestingDeviceIdentifier;
-+ (id)newDeviceIdentifierWithBluetoothUUID:(id)a3;
-+ (id)newDeviceIdentifierWithIDSDeviceID:(id)a3 shouldCreate:(BOOL)a4;
++ (id)newDeviceIdentifierWithBluetoothUUID:(id)d;
++ (id)newDeviceIdentifierWithIDSDeviceID:(id)d shouldCreate:(BOOL)create;
 + (id)newEphemeralDeviceIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (NRDeviceIdentifier)initWithCoder:(id)a3;
-- (NRDeviceIdentifier)initWithUUID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDeviceIdentifier)initWithCoder:(id)coder;
+- (NRDeviceIdentifier)initWithUUID:(id)d;
 - (NSUUID)bluetoothUUID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDeviceIdentifier
@@ -19,11 +19,11 @@
 {
   if (self && self->_ephemeral)
   {
-    v2 = self->_internalEphemeralBluetoothUUID;
+    firstObject = self->_internalEphemeralBluetoothUUID;
     goto LABEL_27;
   }
 
-  v8 = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
+  nrDeviceIdentifier = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
   if (nrCopyLogObj_onceToken_809 != -1)
   {
     dispatch_once(&nrCopyLogObj_onceToken_809, &__block_literal_global_810);
@@ -38,8 +38,8 @@
   if (!sBluetoothUUIDToNRUUIDMapping)
   {
 LABEL_17:
-    v2 = nrXPCCopyBluetoothUUIDForNRUUID(v8);
-    if (!v2)
+    firstObject = nrXPCCopyBluetoothUUIDForNRUUID(nrDeviceIdentifier);
+    if (!firstObject)
     {
       goto LABEL_26;
     }
@@ -76,7 +76,7 @@ LABEL_22:
 
       if ([v20 count] <= 0xF)
       {
-        [sBluetoothUUIDToNRUUIDMapping setObject:v8 forKeyedSubscript:v2];
+        [sBluetoothUUIDToNRUUIDMapping setObject:nrDeviceIdentifier forKeyedSubscript:firstObject];
       }
 
       goto LABEL_26;
@@ -87,16 +87,16 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v9 = [sBluetoothUUIDToNRUUIDMapping allKeysForObject:v8];
+  v9 = [sBluetoothUUIDToNRUUIDMapping allKeysForObject:nrDeviceIdentifier];
   if (![v9 count])
   {
 
     goto LABEL_17;
   }
 
-  v2 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  if (!v2)
+  if (!firstObject)
   {
     goto LABEL_17;
   }
@@ -130,27 +130,27 @@ LABEL_26:
 
 LABEL_27:
 
-  return v2;
+  return firstObject;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
-  v3 = [v2 hash];
+  nrDeviceIdentifier = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
+  v3 = [nrDeviceIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
-    v7 = [v5 nrDeviceIdentifier];
+    v5 = equalCopy;
+    nrDeviceIdentifier = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
+    nrDeviceIdentifier2 = [v5 nrDeviceIdentifier];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [nrDeviceIdentifier isEqual:nrDeviceIdentifier2];
   }
 
   else
@@ -164,18 +164,18 @@ LABEL_27:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
-  v5 = [v4 UUIDString];
-  v6 = [v3 initWithFormat:@"NRD[%@]", v5];
+  nrDeviceIdentifier = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
+  uUIDString = [nrDeviceIdentifier UUIDString];
+  v6 = [v3 initWithFormat:@"NRD[%@]", uUIDString];
 
   return v6;
 }
 
-- (NRDeviceIdentifier)initWithUUID:(id)a3
+- (NRDeviceIdentifier)initWithUUID:(id)d
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v11 = nrCopyLogObj_823();
     if (sNRCopyLogToStdErr == 1)
@@ -208,10 +208,10 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v5 = v4;
+  v5 = dCopy;
   *uu = 0;
   v53 = 0;
-  [v4 getUUIDBytes:uu];
+  [dCopy getUUIDBytes:uu];
   if (uuid_is_null(uu))
   {
     v12 = nrCopyLogObj_823();
@@ -288,11 +288,11 @@ LABEL_20:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
-  [v6 encodeObject:v4 forKey:@"nrDeviceIdentifier"];
+  coderCopy = coder;
+  nrDeviceIdentifier = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
+  [coderCopy encodeObject:nrDeviceIdentifier forKey:@"nrDeviceIdentifier"];
 
   if (self)
   {
@@ -304,13 +304,13 @@ LABEL_20:
     ephemeral = 0;
   }
 
-  [v6 encodeBool:ephemeral forKey:@"ephemeral"];
+  [coderCopy encodeBool:ephemeral forKey:@"ephemeral"];
 }
 
-- (NRDeviceIdentifier)initWithCoder:(id)a3
+- (NRDeviceIdentifier)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = NRDeviceIdentifier;
   v5 = [(NRDeviceIdentifier *)&v25 init];
@@ -347,19 +347,19 @@ LABEL_7:
   }
 
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nrDeviceIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nrDeviceIdentifier"];
   objc_setProperty_nonatomic_copy(v6, v8, v7, 16);
 
-  v6->_ephemeral = [v4 decodeBoolForKey:@"ephemeral"];
+  v6->_ephemeral = [coderCopy decodeBoolForKey:@"ephemeral"];
   v9 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
-  v6 = [v4 initWithUUID:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  nrDeviceIdentifier = [(NRDeviceIdentifier *)self nrDeviceIdentifier];
+  v6 = [v4 initWithUUID:nrDeviceIdentifier];
 
   if (!self)
   {
@@ -382,11 +382,11 @@ LABEL_3:
   return v6;
 }
 
-+ (id)newDeviceIdentifierWithBluetoothUUID:(id)a3
++ (id)newDeviceIdentifierWithBluetoothUUID:(id)d
 {
   v83 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v34 = nrCopyLogObj_823();
     if (sNRCopyLogToStdErr == 1)
@@ -419,10 +419,10 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  v5 = v4;
+  v5 = dCopy;
   *uu = 0;
   v82 = 0;
-  [v4 getUUIDBytes:uu];
+  [dCopy getUUIDBytes:uu];
   if (uuid_is_null(uu))
   {
     v35 = nrCopyLogObj_823();
@@ -639,7 +639,7 @@ LABEL_49:
     v33 = v63;
     if (HIBYTE(v80) == 1 && v63)
     {
-      objc_storeStrong(&v63->_internalEphemeralBluetoothUUID, a3);
+      objc_storeStrong(&v63->_internalEphemeralBluetoothUUID, d);
     }
 
     if (nrCopyLogObj_onceToken_809 == -1)
@@ -675,8 +675,8 @@ LABEL_57:
 
 + (id)newEphemeralDeviceIdentifier
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [[NRDeviceIdentifier alloc] initWithUUID:v2];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v3 = [[NRDeviceIdentifier alloc] initWithUUID:uUID];
   v9 = v3;
   if (v3)
   {
@@ -696,12 +696,12 @@ LABEL_57:
   return v9;
 }
 
-+ (id)newDeviceIdentifierWithIDSDeviceID:(id)a3 shouldCreate:(BOOL)a4
++ (id)newDeviceIdentifierWithIDSDeviceID:(id)d shouldCreate:(BOOL)create
 {
-  v4 = a4;
+  createCopy = create;
   v55 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     v41 = nrCopyLogObj_823();
     if (sNRCopyLogToStdErr == 1)
@@ -735,7 +735,7 @@ LABEL_39:
     _NRLogAbortWithPack(v54);
   }
 
-  v11 = v5;
+  v11 = dCopy;
   if (nrCopyLogObj_onceToken_809 != -1)
   {
     dispatch_once(&nrCopyLogObj_onceToken_809, &__block_literal_global_810);
@@ -779,11 +779,11 @@ LABEL_11:
     }
   }
 
-  v19 = nrXPCCopyNRUUIDForIDSDeviceID(v11, v4);
+  v19 = nrXPCCopyNRUUIDForIDSDeviceID(v11, createCopy);
   if (!v19)
   {
     os_unfair_lock_unlock(&sIDSDeviceIDToNRUUIDMappingLock);
-    if (v4)
+    if (createCopy)
     {
       if (nrCopyLogObj_onceToken_809 == -1)
       {

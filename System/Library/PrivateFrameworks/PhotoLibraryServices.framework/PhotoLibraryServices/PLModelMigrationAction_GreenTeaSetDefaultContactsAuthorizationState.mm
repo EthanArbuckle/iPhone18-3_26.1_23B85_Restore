@@ -1,22 +1,22 @@
 @interface PLModelMigrationAction_GreenTeaSetDefaultContactsAuthorizationState
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_GreenTeaSetDefaultContactsAuthorizationState
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = 1;
   v8 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
-  v9 = [PLGlobalKeyValue fetchGlobalKeyValueForKey:@"GreenTeaContactsAuthorization" withManagedObjectContext:v6 createIfMissing:0];
+  v9 = [PLGlobalKeyValue fetchGlobalKeyValueForKey:@"GreenTeaContactsAuthorization" withManagedObjectContext:contextCopy createIfMissing:0];
   v10 = 0;
   if (!v9)
   {
-    [PLGlobalKeyValue setGlobalValue:&unk_1F0FBCDD8 forKey:@"GreenTeaContactsAuthorization" managedObjectContext:v6];
+    [PLGlobalKeyValue setGlobalValue:&unk_1F0FBCDD8 forKey:@"GreenTeaContactsAuthorization" managedObjectContext:contextCopy];
     v36 = 0;
-    v11 = [v6 save:&v36];
+    v11 = [contextCopy save:&v36];
     v10 = v36;
     if (v11)
     {
@@ -28,9 +28,9 @@
 
       if (v13)
       {
-        v14 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v14)
+        if (logger)
         {
           v70 = 0u;
           v71 = 0u;
@@ -65,11 +65,11 @@
           memset(buf, 0, sizeof(buf));
           v15 = PLMigrationGetLog();
           os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-          v16 = [&unk_1F0FBCDD8 integerValue];
+          integerValue = [&unk_1F0FBCDD8 integerValue];
           v37 = 138543618;
           v38 = @"GreenTeaContactsAuthorization";
           v39 = 2048;
-          v40 = v16;
+          v40 = integerValue;
           LODWORD(v34) = 22;
           v17 = _os_log_send_and_compose_impl();
 
@@ -89,11 +89,11 @@
           v8 = v35;
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = [&unk_1F0FBCDD8 integerValue];
+            integerValue2 = [&unk_1F0FBCDD8 integerValue];
             *buf = 138543618;
             *&buf[4] = @"GreenTeaContactsAuthorization";
             *&buf[12] = 2048;
-            *&buf[14] = v28;
+            *&buf[14] = integerValue2;
             _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_DEFAULT, "Updated global value %{public}@ with token %td", buf, 0x16u);
           }
         }
@@ -114,9 +114,9 @@
 
       if (v20)
       {
-        v21 = [(PLModelMigrationActionCore *)self logger];
+        logger2 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v21)
+        if (logger2)
         {
           v70 = 0u;
           v71 = 0u;
@@ -190,10 +190,10 @@
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
     v32 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v7;

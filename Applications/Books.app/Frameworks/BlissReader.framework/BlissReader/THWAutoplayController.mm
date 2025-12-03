@@ -1,15 +1,15 @@
 @interface THWAutoplayController
 - (CGPoint)currentContentOffset;
 - (THWAutoplayController)init;
-- (id)p_documentNavigatorFromNotification:(id)a3;
+- (id)p_documentNavigatorFromNotification:(id)notification;
 - (void)dealloc;
-- (void)handleNotificationVantageDidChange:(id)a3;
-- (void)handleNotificationVantageWillChange:(id)a3;
+- (void)handleNotificationVantageDidChange:(id)change;
+- (void)handleNotificationVantageWillChange:(id)change;
 - (void)p_autoplayStart;
-- (void)p_autoplayStop:(id)a3;
-- (void)p_recursivelyAddAutoplayableRepsForRep:(id)a3;
-- (void)p_startAutoplayableDescendantsOfReps:(id)a3;
-- (void)p_unpackNotification:(id)a3 outCurrentRelativePageIndex:(unint64_t *)a4 outTopLevelReps:(id *)a5;
+- (void)p_autoplayStop:(id)stop;
+- (void)p_recursivelyAddAutoplayableRepsForRep:(id)rep;
+- (void)p_startAutoplayableDescendantsOfReps:(id)reps;
+- (void)p_unpackNotification:(id)notification outCurrentRelativePageIndex:(unint64_t *)index outTopLevelReps:(id *)reps;
 - (void)stop;
 - (void)teardown;
 @end
@@ -51,14 +51,14 @@
   self->_tornDown = 1;
 }
 
-- (id)p_documentNavigatorFromNotification:(id)a3
+- (id)p_documentNavigatorFromNotification:(id)notification
 {
   objc_opt_class();
-  [a3 object];
+  [notification object];
   result = TSUDynamicCast();
   if (!result)
   {
-    [a3 object];
+    [notification object];
     v5 = TSUProtocolCast();
 
     return [v5 documentNavigator];
@@ -74,14 +74,14 @@
   [(THWAutoplayController *)self p_autoplayStop:autoplayableReps];
 }
 
-- (void)handleNotificationVantageWillChange:(id)a3
+- (void)handleNotificationVantageWillChange:(id)change
 {
   interactiveCanvasController = self->_interactiveCanvasController;
   if (interactiveCanvasController)
   {
     if (interactiveCanvasController == [-[THWAutoplayController p_documentNavigatorFromNotification:](self "p_documentNavigatorFromNotification:"interactiveCanvasController"")])
     {
-      v6 = [objc_msgSend(a3 "userInfo")];
+      v6 = [objc_msgSend(change "userInfo")];
       if (([v6 isEqualToString:@"THVantageChangeReasonTransitionToDVC"] & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"THVantageChangeReasonScrolling") & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"THVantageChangeReasonWindowResize") & 1) == 0)
       {
         autoplayableReps = self->_autoplayableReps;
@@ -93,15 +93,15 @@
   }
 }
 
-- (void)handleNotificationVantageDidChange:(id)a3
+- (void)handleNotificationVantageDidChange:(id)change
 {
-  v5 = [objc_msgSend(a3 "userInfo")];
+  v5 = [objc_msgSend(change "userInfo")];
   if ([v5 isEqualToString:@"THVantageChangeReasonBookOpen"])
   {
     [(THWAutoplayController *)self setBookOpened:1];
   }
 
-  v6 = [(THWAutoplayController *)self p_documentNavigatorFromNotification:a3];
+  v6 = [(THWAutoplayController *)self p_documentNavigatorFromNotification:change];
   interactiveCanvasController = self->_interactiveCanvasController;
   if (interactiveCanvasController)
   {
@@ -110,7 +110,7 @@
     {
       v15 = 0x7FFFFFFFFFFFFFFFLL;
       v16 = 0;
-      [(THWAutoplayController *)self p_unpackNotification:a3 outCurrentRelativePageIndex:&v15 outTopLevelReps:&v16];
+      [(THWAutoplayController *)self p_unpackNotification:change outCurrentRelativePageIndex:&v15 outTopLevelReps:&v16];
       [objc_msgSend(-[TSDInteractiveCanvasController canvasView](self->_interactiveCanvasController "canvasView")];
       v10 = v9;
       v12 = v11;
@@ -155,9 +155,9 @@ LABEL_23:
   }
 }
 
-- (void)p_unpackNotification:(id)a3 outCurrentRelativePageIndex:(unint64_t *)a4 outTopLevelReps:(id *)a5
+- (void)p_unpackNotification:(id)notification outCurrentRelativePageIndex:(unint64_t *)index outTopLevelReps:(id *)reps
 {
-  v8 = [(THWAutoplayController *)self p_documentNavigatorFromNotification:a3];
+  v8 = [(THWAutoplayController *)self p_documentNavigatorFromNotification:notification];
   if (v8)
   {
     v9 = v8;
@@ -165,19 +165,19 @@ LABEL_23:
     v11 = [(THWAutoplayController *)self p_isInTwoPageMode:v9];
     self->_inTwoPageMode = v11;
     v12 = [objc_msgSend(v9 currentPageInfoForBookmarksUsingViewCenter:{!v11), "relativePageIndexInParent"}];
-    if (a5)
+    if (reps)
     {
-      *a5 = v10;
+      *reps = v10;
     }
 
-    if (a4)
+    if (index)
     {
-      *a4 = v12;
+      *index = v12;
     }
   }
 }
 
-- (void)p_startAutoplayableDescendantsOfReps:(id)a3
+- (void)p_startAutoplayableDescendantsOfReps:(id)reps
 {
   if (!self->_tornDown)
   {
@@ -189,7 +189,7 @@ LABEL_23:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v7 = [reps countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -201,7 +201,7 @@ LABEL_23:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(reps);
           }
 
           [(THWAutoplayController *)self p_recursivelyAddAutoplayableRepsForRep:*(*(&v16 + 1) + 8 * v10)];
@@ -209,7 +209,7 @@ LABEL_23:
         }
 
         while (v8 != v10);
-        v8 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [reps countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -239,11 +239,11 @@ LABEL_23:
   }
 }
 
-- (void)p_recursivelyAddAutoplayableRepsForRep:(id)a3
+- (void)p_recursivelyAddAutoplayableRepsForRep:(id)rep
 {
-  if ([a3 conformsToProtocol:&OBJC_PROTOCOL___THWAutoplayable] && (objc_msgSend(a3, "hasBeenRemoved") & 1) == 0 && objc_msgSend(a3, "isVisibleOnCanvas") && objc_msgSend(objc_msgSend(a3, "autoplayConfig"), "enabled") && objc_msgSend(a3, "autoplayAllowed"))
+  if ([rep conformsToProtocol:&OBJC_PROTOCOL___THWAutoplayable] && (objc_msgSend(rep, "hasBeenRemoved") & 1) == 0 && objc_msgSend(rep, "isVisibleOnCanvas") && objc_msgSend(objc_msgSend(rep, "autoplayConfig"), "enabled") && objc_msgSend(rep, "autoplayAllowed"))
   {
-    [(NSMutableSet *)self->_autoplayableReps addObject:a3];
+    [(NSMutableSet *)self->_autoplayableReps addObject:rep];
   }
 
   v5 = TSUProtocolCast();
@@ -256,8 +256,8 @@ LABEL_23:
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v7 = [v6 childReps];
-      v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      childReps = [v6 childReps];
+      v8 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v8)
       {
         v9 = v8;
@@ -269,7 +269,7 @@ LABEL_23:
           {
             if (*v13 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(childReps);
             }
 
             [(THWAutoplayController *)self p_recursivelyAddAutoplayableRepsForRep:*(*(&v12 + 1) + 8 * v11)];
@@ -277,7 +277,7 @@ LABEL_23:
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v9 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v9);
@@ -327,13 +327,13 @@ LABEL_23:
   }
 }
 
-- (void)p_autoplayStop:(id)a3
+- (void)p_autoplayStop:(id)stop
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [stop countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -344,7 +344,7 @@ LABEL_23:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(stop);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -354,13 +354,13 @@ LABEL_23:
         }
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [stop countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  [a3 removeAllObjects];
+  [stop removeAllObjects];
 }
 
 - (CGPoint)currentContentOffset

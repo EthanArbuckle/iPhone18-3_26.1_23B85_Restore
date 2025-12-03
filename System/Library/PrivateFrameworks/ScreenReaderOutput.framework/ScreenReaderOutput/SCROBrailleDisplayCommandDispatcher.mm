@@ -1,21 +1,21 @@
 @interface SCROBrailleDisplayCommandDispatcher
-- (BOOL)handleBrailleKeyEvent:(id)a3;
+- (BOOL)handleBrailleKeyEvent:(id)event;
 - (SCROBrailleDisplayCommandDispatcher)init;
 - (SCROBrailleDisplayCommandDispatcherDelegate)delegate;
-- (void)_handleDeleteEvent:(id)a3;
-- (void)_handleEscapeEvent:(id)a3;
-- (void)_handleForwardDeleteEvent:(id)a3;
-- (void)_handleMoveLeftEvent:(id)a3;
-- (void)_handleMoveRightEvent:(id)a3;
-- (void)_handlePanLeftEvent:(id)a3;
-- (void)_handlePanRightEvent:(id)a3;
-- (void)_handleReturnEvent:(id)a3;
-- (void)_handleRouterEvent:(id)a3;
-- (void)_handleToggleContractedBrailleEvent:(id)a3;
-- (void)_handleToggleEightDotBrailleEvent:(id)a3;
-- (void)_handleTranslateEvent:(id)a3;
-- (void)_handleUnsupportedEvent:(id)a3;
-- (void)_handleWordDescriptionEvent:(id)a3;
+- (void)_handleDeleteEvent:(id)event;
+- (void)_handleEscapeEvent:(id)event;
+- (void)_handleForwardDeleteEvent:(id)event;
+- (void)_handleMoveLeftEvent:(id)event;
+- (void)_handleMoveRightEvent:(id)event;
+- (void)_handlePanLeftEvent:(id)event;
+- (void)_handlePanRightEvent:(id)event;
+- (void)_handleReturnEvent:(id)event;
+- (void)_handleRouterEvent:(id)event;
+- (void)_handleToggleContractedBrailleEvent:(id)event;
+- (void)_handleToggleEightDotBrailleEvent:(id)event;
+- (void)_handleTranslateEvent:(id)event;
+- (void)_handleUnsupportedEvent:(id)event;
+- (void)_handleWordDescriptionEvent:(id)event;
 @end
 
 @implementation SCROBrailleDisplayCommandDispatcher
@@ -46,127 +46,127 @@
   return v2;
 }
 
-- (void)_handlePanLeftEvent:(id)a3
+- (void)_handlePanLeftEvent:(id)event
 {
-  v4 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v4 handleCommandPanLeftForDispatcher:self];
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandPanLeftForDispatcher:self];
 }
 
-- (void)_handlePanRightEvent:(id)a3
+- (void)_handlePanRightEvent:(id)event
 {
-  v4 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v4 handleCommandPanRightForDispatcher:self];
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandPanRightForDispatcher:self];
 }
 
-- (void)_handleMoveLeftEvent:(id)a3
+- (void)_handleMoveLeftEvent:(id)event
 {
-  v4 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v4 handleCommandMoveLeftForDispatcher:self];
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandMoveLeftForDispatcher:self];
 }
 
-- (void)_handleMoveRightEvent:(id)a3
+- (void)_handleMoveRightEvent:(id)event
 {
-  v4 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v4 handleCommandMoveRightForDispatcher:self];
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandMoveRightForDispatcher:self];
 }
 
-- (void)_handleRouterEvent:(id)a3
+- (void)_handleRouterEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v5 handleCommandRouterKeyEvent:v4 forDispatcher:self];
+  eventCopy = event;
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandRouterKeyEvent:eventCopy forDispatcher:self];
 }
 
-- (void)_handleDeleteEvent:(id)a3
+- (void)_handleDeleteEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v5 handleCommandDeleteKeyEvent:v4 forDispatcher:self];
+  eventCopy = event;
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandDeleteKeyEvent:eventCopy forDispatcher:self];
 }
 
-- (void)_handleForwardDeleteEvent:(id)a3
+- (void)_handleForwardDeleteEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v5 handleCommandForwardDeleteKeyEvent:v4 forDispatcher:self];
+  eventCopy = event;
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandForwardDeleteKeyEvent:eventCopy forDispatcher:self];
 }
 
-- (void)_handleEscapeEvent:(id)a3
+- (void)_handleEscapeEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v5 handleCommandEscapeKeyEvent:v4 forDispatcher:self];
+  eventCopy = event;
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandEscapeKeyEvent:eventCopy forDispatcher:self];
 }
 
-- (void)_handleReturnEvent:(id)a3
+- (void)_handleReturnEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v5 handleCommandReturnBrailleEvent:v4 forDispatcher:self];
+  eventCopy = event;
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandReturnBrailleEvent:eventCopy forDispatcher:self];
 }
 
-- (void)_handleWordDescriptionEvent:(id)a3
+- (void)_handleWordDescriptionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v5 handleCommandWordDescriptionEvent:v4 forDispatcher:self];
+  eventCopy = event;
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandWordDescriptionEvent:eventCopy forDispatcher:self];
 }
 
-- (void)_handleTranslateEvent:(id)a3
+- (void)_handleTranslateEvent:(id)event
 {
-  v4 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v4 handleCommandTranslateForDispatcher:self];
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandTranslateForDispatcher:self];
 }
 
-- (void)_handleToggleContractedBrailleEvent:(id)a3
+- (void)_handleToggleContractedBrailleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v5 handleCommandToggleContractedBrailleEvent:v4 forDispatcher:self];
+  eventCopy = event;
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandToggleContractedBrailleEvent:eventCopy forDispatcher:self];
 }
 
-- (void)_handleToggleEightDotBrailleEvent:(id)a3
+- (void)_handleToggleEightDotBrailleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v5 handleCommandToggleEightDotBrailleEvent:v4 forDispatcher:self];
+  eventCopy = event;
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleCommandToggleEightDotBrailleEvent:eventCopy forDispatcher:self];
 }
 
-- (void)_handleUnsupportedEvent:(id)a3
+- (void)_handleUnsupportedEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  [v5 handleUnsupportedKeyEvent:v4 forDispatcher:self];
+  eventCopy = event;
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  [delegate handleUnsupportedKeyEvent:eventCopy forDispatcher:self];
 }
 
-- (BOOL)handleBrailleKeyEvent:(id)a3
+- (BOOL)handleBrailleKeyEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
-  v6 = [v5 brailleInputManager];
+  eventCopy = event;
+  delegate = [(SCROBrailleDisplayCommandDispatcher *)self delegate];
+  brailleInputManager = [delegate brailleInputManager];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [v6 commandForBrailleKey:v4];
+    v8 = [brailleInputManager commandForBrailleKey:eventCopy];
     v9 = [(NSDictionary *)self->_commandDictionary objectForKey:v8];
-    v10 = [v9 pointerValue];
+    pointerValue = [v9 pointerValue];
 
-    if (v10)
+    if (pointerValue)
     {
-      [(SCROBrailleDisplayCommandDispatcher *)self performSelector:v10 withObject:v4];
+      [(SCROBrailleDisplayCommandDispatcher *)self performSelector:pointerValue withObject:eventCopy];
     }
 
     else
     {
-      if (v8 || ![v4 getRouterIndex:0 token:0 location:0 appToken:0])
+      if (v8 || ![eventCopy getRouterIndex:0 token:0 location:0 appToken:0])
       {
-        [(SCROBrailleDisplayCommandDispatcher *)self _handleUnsupportedEvent:v4];
+        [(SCROBrailleDisplayCommandDispatcher *)self _handleUnsupportedEvent:eventCopy];
         v7 = 0;
         goto LABEL_10;
       }
 
-      [(SCROBrailleDisplayCommandDispatcher *)self _handleRouterEvent:v4];
+      [(SCROBrailleDisplayCommandDispatcher *)self _handleRouterEvent:eventCopy];
     }
 
     v7 = 1;

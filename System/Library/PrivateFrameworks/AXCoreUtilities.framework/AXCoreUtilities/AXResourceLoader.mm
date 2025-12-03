@@ -1,30 +1,30 @@
 @interface AXResourceLoader
-+ (id)loadImageWithIdentifier:(id)a3 orPath:(id)a4 principalClass:(Class *)a5 error:(id *)a6;
-+ (id)loadResource:(unint64_t)a3 principalClass:(Class *)a4 error:(id *)a5;
-+ (void)_path:(id *)a3 bundleID:(id *)a4 forRescource:(unint64_t)a5;
++ (id)loadImageWithIdentifier:(id)identifier orPath:(id)path principalClass:(Class *)class error:(id *)error;
++ (id)loadResource:(unint64_t)resource principalClass:(Class *)class error:(id *)error;
++ (void)_path:(id *)_path bundleID:(id *)d forRescource:(unint64_t)rescource;
 @end
 
 @implementation AXResourceLoader
 
-+ (id)loadImageWithIdentifier:(id)a3 orPath:(id)a4 principalClass:(Class *)a5 error:(id *)a6
++ (id)loadImageWithIdentifier:(id)identifier orPath:(id)path principalClass:(Class *)class error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (v9 && ([MEMORY[0x1E696AAE8] bundleWithIdentifier:v9], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  identifierCopy = identifier;
+  pathCopy = path;
+  if (identifierCopy && ([MEMORY[0x1E696AAE8] bundleWithIdentifier:identifierCopy], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = v11;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAE8] bundleWithPath:v10];
+    v12 = [MEMORY[0x1E696AAE8] bundleWithPath:pathCopy];
     if (!v12)
     {
-      v15 = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXResourceLoader" description:{@"Bundle was nil. Tried ID:%@ and Path:%@", v9, v10}];
+      v15 = [MEMORY[0x1E696ABC0] ax_errorWithDomain:@"AXResourceLoader" description:{@"Bundle was nil. Tried ID:%@ and Path:%@", identifierCopy, pathCopy}];
 LABEL_12:
       v14 = v15;
-      if (!a5)
+      if (!class)
       {
         goto LABEL_14;
       }
@@ -50,17 +50,17 @@ LABEL_12:
   }
 
   v14 = 0;
-  if (a5)
+  if (class)
   {
 LABEL_13:
-    *a5 = [v12 principalClass];
+    *class = [v12 principalClass];
   }
 
 LABEL_14:
-  if (a6)
+  if (error)
   {
     v16 = v14;
-    *a6 = v14;
+    *error = v14;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -68,33 +68,33 @@ LABEL_14:
   return v12;
 }
 
-+ (id)loadResource:(unint64_t)a3 principalClass:(Class *)a4 error:(id *)a5
++ (id)loadResource:(unint64_t)resource principalClass:(Class *)class error:(id *)error
 {
   v12 = 0;
   v13 = 0;
-  [a1 _path:&v13 bundleID:&v12 forRescource:a3];
+  [self _path:&v13 bundleID:&v12 forRescource:resource];
   v8 = v13;
   v9 = v12;
   v10 = 0;
   if (v8 | v9)
   {
-    v10 = [a1 loadImageWithIdentifier:v9 orPath:v8 principalClass:a4 error:a5];
+    v10 = [self loadImageWithIdentifier:v9 orPath:v8 principalClass:class error:error];
   }
 
   return v10;
 }
 
-+ (void)_path:(id *)a3 bundleID:(id *)a4 forRescource:(unint64_t)a5
++ (void)_path:(id *)_path bundleID:(id *)d forRescource:(unint64_t)rescource
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  if (a5 == 1)
+  if (rescource == 1)
   {
     goto LABEL_7;
   }
 
-  if (a5 != 2)
+  if (rescource != 2)
   {
-    if (a5 == 3)
+    if (rescource == 3)
     {
       v7 = MEMORY[0x1E696AEC0];
       v8 = AXAccessibilityBundlesDirectory();
@@ -104,7 +104,7 @@ LABEL_14:
       v10 = [v7 pathWithComponents:v9];
 
       v11 = @"com.apple.QuickSpeak";
-      if (!a3)
+      if (!_path)
       {
         goto LABEL_12;
       }
@@ -114,13 +114,13 @@ LABEL_14:
     {
       v11 = 0;
       v10 = 0;
-      *a3 = 0;
-      *a4 = 0;
+      *_path = 0;
+      *d = 0;
     }
 
 LABEL_11:
     v12 = v10;
-    *a3 = v10;
+    *_path = v10;
     goto LABEL_12;
   }
 
@@ -137,15 +137,15 @@ LABEL_7:
   }
 
   v11 = 0;
-  if (a3)
+  if (_path)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
-  if (a4)
+  if (d)
   {
-    *a4 = v11;
+    *d = v11;
   }
 
   v13 = *MEMORY[0x1E69E9840];

@@ -1,42 +1,42 @@
 @interface CAMAnalyticsProResPurgeEvent
-- (CAMAnalyticsProResPurgeEvent)initWithRequestType:(int64_t)a3 graphConfiguration:(id)a4 totalBytesInSystem:(int64_t)a5;
-- (void)_updateForIsBeforePurge:(BOOL)a3 withFreeBytes:(int64_t)a4 fastPurgeableBytes:(int64_t)a5 slowPurgeableBytes:(int64_t)a6 maxRecordingTimeSeconds:(double)a7;
+- (CAMAnalyticsProResPurgeEvent)initWithRequestType:(int64_t)type graphConfiguration:(id)configuration totalBytesInSystem:(int64_t)system;
+- (void)_updateForIsBeforePurge:(BOOL)purge withFreeBytes:(int64_t)bytes fastPurgeableBytes:(int64_t)purgeableBytes slowPurgeableBytes:(int64_t)slowPurgeableBytes maxRecordingTimeSeconds:(double)seconds;
 - (void)publish;
-- (void)updateAfterPurgeOperationWithFreeBytes:(int64_t)a3 fastPurgeableBytes:(int64_t)a4 slowPurgeableBytes:(int64_t)a5 maxRecordingTimeSeconds:(double)a6 bytesPurged:(int64_t)a7;
-- (void)updateBeforePurgeOperationWithFreeBytes:(int64_t)a3 fastPurgeableBytes:(int64_t)a4 slowPurgeableBytes:(int64_t)a5 maxRecordingTimeSeconds:(double)a6;
+- (void)updateAfterPurgeOperationWithFreeBytes:(int64_t)bytes fastPurgeableBytes:(int64_t)purgeableBytes slowPurgeableBytes:(int64_t)slowPurgeableBytes maxRecordingTimeSeconds:(double)seconds bytesPurged:(int64_t)purged;
+- (void)updateBeforePurgeOperationWithFreeBytes:(int64_t)bytes fastPurgeableBytes:(int64_t)purgeableBytes slowPurgeableBytes:(int64_t)slowPurgeableBytes maxRecordingTimeSeconds:(double)seconds;
 - (void)updateForCancelRequest;
-- (void)updateForSkippedPurgeOperationWithFreeBytes:(int64_t)a3 fastPurgeableBytes:(int64_t)a4 slowPurgeableBytes:(int64_t)a5 maxRecordingTimeSeconds:(double)a6;
+- (void)updateForSkippedPurgeOperationWithFreeBytes:(int64_t)bytes fastPurgeableBytes:(int64_t)purgeableBytes slowPurgeableBytes:(int64_t)slowPurgeableBytes maxRecordingTimeSeconds:(double)seconds;
 @end
 
 @implementation CAMAnalyticsProResPurgeEvent
 
-- (CAMAnalyticsProResPurgeEvent)initWithRequestType:(int64_t)a3 graphConfiguration:(id)a4 totalBytesInSystem:(int64_t)a5
+- (CAMAnalyticsProResPurgeEvent)initWithRequestType:(int64_t)type graphConfiguration:(id)configuration totalBytesInSystem:(int64_t)system
 {
-  v9 = a4;
+  configurationCopy = configuration;
   v36.receiver = self;
   v36.super_class = CAMAnalyticsProResPurgeEvent;
   v10 = [(CAMAnalyticsEvent *)&v36 init];
   if (v10)
   {
     v10->__startTime = CFAbsoluteTimeGetCurrent();
-    objc_storeStrong(&v10->__graphConfiguration, a4);
+    objc_storeStrong(&v10->__graphConfiguration, configuration);
     v11 = +[CAMCaptureCapabilities capabilities];
-    v12 = [v9 mode];
-    v13 = [v9 device];
-    v14 = [v9 videoEncodingBehavior];
-    v15 = [v9 videoConfiguration];
-    v16 = [v9 prefersHDR10BitVideo];
-    LOBYTE(v35) = [v9 frontRearSimultaneousVideoEnabled];
-    v17 = [v11 resolvedVideoConfigurationForMode:v12 device:v13 videoEncodingBehavior:v14 videoConfiguration:v15 outputToExternalStorage:0 prefersHDR10BitVideo:v16 frontRearSimultaneousVideoEnabled:v35];
-    v18 = [(CAMAnalyticsEvent *)v10 _eventMap];
-    v19 = v18;
+    mode = [configurationCopy mode];
+    device = [configurationCopy device];
+    videoEncodingBehavior = [configurationCopy videoEncodingBehavior];
+    videoConfiguration = [configurationCopy videoConfiguration];
+    prefersHDR10BitVideo = [configurationCopy prefersHDR10BitVideo];
+    LOBYTE(v35) = [configurationCopy frontRearSimultaneousVideoEnabled];
+    v17 = [v11 resolvedVideoConfigurationForMode:mode device:device videoEncodingBehavior:videoEncodingBehavior videoConfiguration:videoConfiguration outputToExternalStorage:0 prefersHDR10BitVideo:prefersHDR10BitVideo frontRearSimultaneousVideoEnabled:v35];
+    _eventMap = [(CAMAnalyticsEvent *)v10 _eventMap];
+    v19 = _eventMap;
     v20 = @"UserInitiated";
-    if (a3 != 1)
+    if (type != 1)
     {
       v20 = 0;
     }
 
-    if (a3)
+    if (type)
     {
       v21 = v20;
     }
@@ -46,7 +46,7 @@
       v21 = @"Auto";
     }
 
-    [v18 setObject:v21 forKeyedSubscript:@"requestType"];
+    [_eventMap setObject:v21 forKeyedSubscript:@"requestType"];
     if (v17 > 9999)
     {
       v23 = @"ImagePickerVGA";
@@ -161,11 +161,11 @@
 
     [v19 setObject:v22 forKeyedSubscript:@"videoConfiguration"];
     v29 = MEMORY[0x1E696AD98];
-    [objc_opt_class() gigabytesForBytes:a5];
+    [objc_opt_class() gigabytesForBytes:system];
     v30 = [v29 numberWithDouble:?];
     [v19 setObject:v30 forKeyedSubscript:@"totalSystemGB"];
 
-    v31 = [objc_opt_class() bucketedGigabytesStringForBytes:a5 allowZero:0 minPositiveValue:64.0 maxValue:4096.0];
+    v31 = [objc_opt_class() bucketedGigabytesStringForBytes:system allowZero:0 minPositiveValue:64.0 maxValue:4096.0];
     [v19 setObject:v31 forKeyedSubscript:@"totalSystemGBRange"];
 
     v32 = MEMORY[0x1E695E110];
@@ -180,32 +180,32 @@
 - (void)publish
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMAnalyticsEvent *)self _eventMap];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
   Current = CFAbsoluteTimeGetCurrent();
   [(CAMAnalyticsProResPurgeEvent *)self _startTime];
   v6 = Current - v5;
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:v6];
-  [v3 setObject:v7 forKeyedSubscript:@"duration"];
+  [_eventMap setObject:v7 forKeyedSubscript:@"duration"];
 
   v8 = [objc_opt_class() durationRangeStringForDuration:v6];
-  [v3 setObject:v8 forKeyedSubscript:@"durationRange"];
+  [_eventMap setObject:v8 forKeyedSubscript:@"durationRange"];
 
   v9 = MEMORY[0x1E696AD98];
   [objc_opt_class() gigabytesForBytes:{-[CAMAnalyticsProResPurgeEvent _totalBytesPurged](self, "_totalBytesPurged")}];
   v10 = [v9 numberWithDouble:?];
-  [v3 setObject:v10 forKeyedSubscript:@"totalPurgedGB"];
+  [_eventMap setObject:v10 forKeyedSubscript:@"totalPurgedGB"];
 
   v11 = [objc_opt_class() bucketedGigabytesStringForBytes:{-[CAMAnalyticsProResPurgeEvent _totalBytesPurged](self, "_totalBytesPurged")}];
-  [v3 setObject:v11 forKeyedSubscript:@"totalPurgedGBRange"];
+  [_eventMap setObject:v11 forKeyedSubscript:@"totalPurgedGBRange"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsProResPurgeEvent _purgeOperationCount](self, "_purgeOperationCount")}];
-  [v3 setObject:v12 forKeyedSubscript:@"purgeOperationCount"];
+  [_eventMap setObject:v12 forKeyedSubscript:@"purgeOperationCount"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsProResPurgeEvent _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsProResPurgeEvent _purgeOperationCount](self, "_purgeOperationCount"))}];
-  [v3 setObject:v13 forKeyedSubscript:@"purgeOperationCountRange"];
+  [_eventMap setObject:v13 forKeyedSubscript:@"purgeOperationCountRange"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[CAMAnalyticsProResPurgeEvent _purgeOperationCount](self, "_purgeOperationCount") > 0}];
-  [v3 setObject:v14 forKeyedSubscript:@"didPurge"];
+  [_eventMap setObject:v14 forKeyedSubscript:@"didPurge"];
 
   v17.receiver = self;
   v17.super_class = CAMAnalyticsProResPurgeEvent;
@@ -213,40 +213,40 @@
   v15 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(CAMAnalyticsProResPurgeEvent *)self eventName];
+    eventName = [(CAMAnalyticsProResPurgeEvent *)self eventName];
     *buf = 138543618;
-    v19 = v16;
+    v19 = eventName;
     v20 = 2114;
-    v21 = v3;
+    v21 = _eventMap;
     _os_log_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEFAULT, "CoreAnalytics: %{public}@: %{public}@", buf, 0x16u);
   }
 }
 
-- (void)updateBeforePurgeOperationWithFreeBytes:(int64_t)a3 fastPurgeableBytes:(int64_t)a4 slowPurgeableBytes:(int64_t)a5 maxRecordingTimeSeconds:(double)a6
+- (void)updateBeforePurgeOperationWithFreeBytes:(int64_t)bytes fastPurgeableBytes:(int64_t)purgeableBytes slowPurgeableBytes:(int64_t)slowPurgeableBytes maxRecordingTimeSeconds:(double)seconds
 {
   if (![(CAMAnalyticsProResPurgeEvent *)self _didUpdateForFirstPurgeOperation])
   {
-    [(CAMAnalyticsProResPurgeEvent *)self _updateForIsBeforePurge:1 withFreeBytes:a3 fastPurgeableBytes:a4 slowPurgeableBytes:a5 maxRecordingTimeSeconds:a6];
+    [(CAMAnalyticsProResPurgeEvent *)self _updateForIsBeforePurge:1 withFreeBytes:bytes fastPurgeableBytes:purgeableBytes slowPurgeableBytes:slowPurgeableBytes maxRecordingTimeSeconds:seconds];
 
     [(CAMAnalyticsProResPurgeEvent *)self _setDidUpdateForFirstPurgeOperation:1];
   }
 }
 
-- (void)updateAfterPurgeOperationWithFreeBytes:(int64_t)a3 fastPurgeableBytes:(int64_t)a4 slowPurgeableBytes:(int64_t)a5 maxRecordingTimeSeconds:(double)a6 bytesPurged:(int64_t)a7
+- (void)updateAfterPurgeOperationWithFreeBytes:(int64_t)bytes fastPurgeableBytes:(int64_t)purgeableBytes slowPurgeableBytes:(int64_t)slowPurgeableBytes maxRecordingTimeSeconds:(double)seconds bytesPurged:(int64_t)purged
 {
-  [(CAMAnalyticsProResPurgeEvent *)self _updateForIsBeforePurge:0 withFreeBytes:a3 fastPurgeableBytes:a4 slowPurgeableBytes:a5 maxRecordingTimeSeconds:a6];
-  [(CAMAnalyticsProResPurgeEvent *)self _setTotalBytesPurged:[(CAMAnalyticsProResPurgeEvent *)self _totalBytesPurged]+ a7];
+  [(CAMAnalyticsProResPurgeEvent *)self _updateForIsBeforePurge:0 withFreeBytes:bytes fastPurgeableBytes:purgeableBytes slowPurgeableBytes:slowPurgeableBytes maxRecordingTimeSeconds:seconds];
+  [(CAMAnalyticsProResPurgeEvent *)self _setTotalBytesPurged:[(CAMAnalyticsProResPurgeEvent *)self _totalBytesPurged]+ purged];
   v9 = [(CAMAnalyticsProResPurgeEvent *)self _purgeOperationCount]+ 1;
 
   [(CAMAnalyticsProResPurgeEvent *)self _setPurgeOperationCount:v9];
 }
 
-- (void)_updateForIsBeforePurge:(BOOL)a3 withFreeBytes:(int64_t)a4 fastPurgeableBytes:(int64_t)a5 slowPurgeableBytes:(int64_t)a6 maxRecordingTimeSeconds:(double)a7
+- (void)_updateForIsBeforePurge:(BOOL)purge withFreeBytes:(int64_t)bytes fastPurgeableBytes:(int64_t)purgeableBytes slowPurgeableBytes:(int64_t)slowPurgeableBytes maxRecordingTimeSeconds:(double)seconds
 {
-  v8 = a3;
-  v43 = [(CAMAnalyticsEvent *)self _eventMap];
-  v9 = !v8;
-  if (v8)
+  purgeCopy = purge;
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  v9 = !purgeCopy;
+  if (purgeCopy)
   {
     v10 = @"freeGBBefore";
   }
@@ -256,7 +256,7 @@
     v10 = @"freeGBAfter";
   }
 
-  if (v8)
+  if (purgeCopy)
   {
     v11 = @"freeGBBeforeRange";
   }
@@ -266,7 +266,7 @@
     v11 = @"freeGBAfterRange";
   }
 
-  if (v8)
+  if (purgeCopy)
   {
     v12 = @"fastPurgeableGBBefore";
   }
@@ -342,45 +342,45 @@
   v24 = v12;
   v25 = v11;
   v26 = v10;
-  [objc_opt_class() gigabytesForBytes:a4];
+  [objc_opt_class() gigabytesForBytes:bytes];
   v27 = [v19 numberWithDouble:?];
-  [v43 setObject:v27 forKeyedSubscript:v26];
+  [_eventMap setObject:v27 forKeyedSubscript:v26];
 
-  v28 = [objc_opt_class() bucketedGigabytesStringForBytes:a4];
-  [v43 setObject:v28 forKeyedSubscript:v25];
+  v28 = [objc_opt_class() bucketedGigabytesStringForBytes:bytes];
+  [_eventMap setObject:v28 forKeyedSubscript:v25];
 
   v29 = MEMORY[0x1E696AD98];
-  [objc_opt_class() gigabytesForBytes:a5];
+  [objc_opt_class() gigabytesForBytes:purgeableBytes];
   v30 = [v29 numberWithDouble:?];
-  [v43 setObject:v30 forKeyedSubscript:v24];
+  [_eventMap setObject:v30 forKeyedSubscript:v24];
 
-  v31 = [objc_opt_class() bucketedGigabytesStringForBytes:a5];
-  [v43 setObject:v31 forKeyedSubscript:v23];
+  v31 = [objc_opt_class() bucketedGigabytesStringForBytes:purgeableBytes];
+  [_eventMap setObject:v31 forKeyedSubscript:v23];
 
   v32 = MEMORY[0x1E696AD98];
-  [objc_opt_class() gigabytesForBytes:a6];
+  [objc_opt_class() gigabytesForBytes:slowPurgeableBytes];
   v33 = [v32 numberWithDouble:?];
-  [v43 setObject:v33 forKeyedSubscript:v22];
+  [_eventMap setObject:v33 forKeyedSubscript:v22];
 
-  v34 = [objc_opt_class() bucketedGigabytesStringForBytes:a6];
-  [v43 setObject:v34 forKeyedSubscript:v21];
+  v34 = [objc_opt_class() bucketedGigabytesStringForBytes:slowPurgeableBytes];
+  [_eventMap setObject:v34 forKeyedSubscript:v21];
 
-  v35 = [MEMORY[0x1E696AD98] numberWithDouble:a7];
-  [v43 setObject:v35 forKeyedSubscript:v20];
+  v35 = [MEMORY[0x1E696AD98] numberWithDouble:seconds];
+  [_eventMap setObject:v35 forKeyedSubscript:v20];
 
-  v36 = [objc_opt_class() durationRangeStringForDuration:a7];
-  [v43 setObject:v36 forKeyedSubscript:v39];
+  v36 = [objc_opt_class() durationRangeStringForDuration:seconds];
+  [_eventMap setObject:v36 forKeyedSubscript:v39];
 
-  v37 = [MEMORY[0x1E696AD98] numberWithInt:a7 > 0.0];
-  [v43 setObject:v37 forKeyedSubscript:v42];
+  v37 = [MEMORY[0x1E696AD98] numberWithInt:seconds > 0.0];
+  [_eventMap setObject:v37 forKeyedSubscript:v42];
 }
 
-- (void)updateForSkippedPurgeOperationWithFreeBytes:(int64_t)a3 fastPurgeableBytes:(int64_t)a4 slowPurgeableBytes:(int64_t)a5 maxRecordingTimeSeconds:(double)a6
+- (void)updateForSkippedPurgeOperationWithFreeBytes:(int64_t)bytes fastPurgeableBytes:(int64_t)purgeableBytes slowPurgeableBytes:(int64_t)slowPurgeableBytes maxRecordingTimeSeconds:(double)seconds
 {
   if ([(CAMAnalyticsProResPurgeEvent *)self _didUpdateForFirstPurgeOperation])
   {
-    [(CAMAnalyticsProResPurgeEvent *)self _updateForIsBeforePurge:1 withFreeBytes:a3 fastPurgeableBytes:a4 slowPurgeableBytes:a5 maxRecordingTimeSeconds:a6];
-    [(CAMAnalyticsProResPurgeEvent *)self _updateForIsBeforePurge:0 withFreeBytes:a3 fastPurgeableBytes:a4 slowPurgeableBytes:a5 maxRecordingTimeSeconds:a6];
+    [(CAMAnalyticsProResPurgeEvent *)self _updateForIsBeforePurge:1 withFreeBytes:bytes fastPurgeableBytes:purgeableBytes slowPurgeableBytes:slowPurgeableBytes maxRecordingTimeSeconds:seconds];
+    [(CAMAnalyticsProResPurgeEvent *)self _updateForIsBeforePurge:0 withFreeBytes:bytes fastPurgeableBytes:purgeableBytes slowPurgeableBytes:slowPurgeableBytes maxRecordingTimeSeconds:seconds];
 
     [(CAMAnalyticsProResPurgeEvent *)self _setDidUpdateForFirstPurgeOperation:1];
   }
@@ -388,8 +388,8 @@
 
 - (void)updateForCancelRequest
 {
-  v2 = [(CAMAnalyticsEvent *)self _eventMap];
-  [v2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"didCancel"];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  [_eventMap setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"didCancel"];
 }
 
 @end

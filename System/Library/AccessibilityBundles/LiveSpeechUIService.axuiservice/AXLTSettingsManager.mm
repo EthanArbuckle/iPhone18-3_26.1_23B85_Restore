@@ -22,25 +22,25 @@
 
 - (void)updateNubbitIdleOpacity
 {
-  v2 = self;
+  selfCopy = self;
   sub_66AF4();
 }
 
 - (void)updateFont
 {
-  v2 = self;
+  selfCopy = self;
   sub_6735C();
 }
 
 - (void)updateTextColor
 {
-  v2 = self;
+  selfCopy = self;
   sub_6746C();
 }
 
 - (void)updateBackgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   sub_677F8();
 }
 

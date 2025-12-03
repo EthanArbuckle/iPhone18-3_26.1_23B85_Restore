@@ -1,26 +1,26 @@
 @interface _UIFloatingContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityPath;
 @end
 
 @implementation _UIFloatingContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIFloatingContentView" hasInstanceMethod:@"highlightView" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (CGRect)accessibilityFrame
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v13 = 0;
   objc_opt_class();
@@ -28,7 +28,7 @@
   v11 = MEMORY[0x29EDC9748](v12);
   objc_storeStrong(&v12, 0);
   v14[0] = v11;
-  v10 = [(_UIFloatingContentViewAccessibility *)v15 safeValueForKey:@"scaleFactor"];
+  v10 = [(_UIFloatingContentViewAccessibility *)selfCopy safeValueForKey:@"scaleFactor"];
   [v10 floatValue];
   MEMORY[0x29EDC9740](v10);
   [v14[0] bounds];
@@ -52,10 +52,10 @@
 - (id)accessibilityPath
 {
   v3 = [(_UIFloatingContentViewAccessibility *)self safeValueForKey:@"highlightView"];
-  v4 = [v3 accessibilityPath];
+  accessibilityPath = [v3 accessibilityPath];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityPath;
 }
 
 @end

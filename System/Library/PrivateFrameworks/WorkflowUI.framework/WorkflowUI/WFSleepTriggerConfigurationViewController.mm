@@ -1,32 +1,32 @@
 @interface WFSleepTriggerConfigurationViewController
 - (BOOL)shouldEnableNextButton;
-- (WFSleepTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFSleepTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
-- (id)footerLinkViewForTableView:(id)a3;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)footerLinkViewForTableView:(id)view;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)healthFeatureAvailability:(id)a3 sleepOnboardingStatusDidChange:(unint64_t)a4;
-- (void)setupParameterSectionCell:(id)a3 atRow:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)healthFeatureAvailability:(id)availability sleepOnboardingStatusDidChange:(unint64_t)change;
+- (void)setupParameterSectionCell:(id)cell atRow:(int64_t)row;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateUI;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFSleepTriggerConfigurationViewController
 
 - (BOOL)shouldEnableNextButton
 {
-  v3 = [(WFTriggerConfigurationViewController *)self trigger];
-  if ([v3 hasValidConfiguration])
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  if ([trigger hasValidConfiguration])
   {
-    v4 = [(WFSleepTriggerConfigurationViewController *)self healthFeatureAvailability];
-    v5 = [v4 sleepOnboardingStatus] == 1;
+    healthFeatureAvailability = [(WFSleepTriggerConfigurationViewController *)self healthFeatureAvailability];
+    v5 = [healthFeatureAvailability sleepOnboardingStatus] == 1;
   }
 
   else
@@ -37,7 +37,7 @@
   return v5;
 }
 
-- (void)healthFeatureAvailability:(id)a3 sleepOnboardingStatusDidChange:(unint64_t)a4
+- (void)healthFeatureAvailability:(id)availability sleepOnboardingStatusDidChange:(unint64_t)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -57,12 +57,12 @@ uint64_t __102__WFSleepTriggerConfigurationViewController_healthFeatureAvailabil
   return [v3 updateNextButtonEnabledState];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFSleepTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFSleepTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   v9 = [v8 isEqual:@"triggerParameters"];
 
@@ -78,11 +78,11 @@ uint64_t __102__WFSleepTriggerConfigurationViewController_healthFeatureAvailabil
       _os_log_impl(&dword_274719000, v10, OS_LOG_TYPE_DEBUG, "%s didselect section: %{public}@", &v16, 0x16u);
     }
 
-    if ([v6 row])
+    if ([pathCopy row])
     {
-      v11 = [v6 row];
-      v12 = [(WFTriggerConfigurationViewController *)self trigger];
-      v13 = v12;
+      v11 = [pathCopy row];
+      trigger = [(WFTriggerConfigurationViewController *)self trigger];
+      v13 = trigger;
       if (v11 == 1)
       {
         v14 = 1;
@@ -96,29 +96,29 @@ uint64_t __102__WFSleepTriggerConfigurationViewController_healthFeatureAvailabil
 
     else
     {
-      v12 = [(WFTriggerConfigurationViewController *)self trigger];
-      v13 = v12;
+      trigger = [(WFTriggerConfigurationViewController *)self trigger];
+      v13 = trigger;
       v14 = 0;
     }
 
-    [v12 setSelection:v14];
+    [trigger setSelection:v14];
   }
 
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v6 withSectionInfo:v7];
-  v15 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v15 reloadData];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v7];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (id)footerLinkViewForTableView:(id)a3
+- (id)footerLinkViewForTableView:(id)view
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFSleepTriggerConfigurationViewController *)self healthFeatureAvailability];
-  v6 = [v5 sleepOnboardingStatus];
+  viewCopy = view;
+  healthFeatureAvailability = [(WFSleepTriggerConfigurationViewController *)self healthFeatureAvailability];
+  sleepOnboardingStatus = [healthFeatureAvailability sleepOnboardingStatus];
 
-  if (v6 == 1)
+  if (sleepOnboardingStatus == 1)
   {
     v7 = 0;
     goto LABEL_18;
@@ -126,7 +126,7 @@ uint64_t __102__WFSleepTriggerConfigurationViewController_healthFeatureAvailabil
 
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v4 dequeueReusableHeaderFooterViewWithIdentifier:v9];
+  v10 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v9];
 
   v37 = 0;
   v38 = &v37;
@@ -150,9 +150,9 @@ uint64_t __102__WFSleepTriggerConfigurationViewController_healthFeatureAvailabil
   _Block_object_dispose(&v37, 8);
   if (!v11)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"HKSPSleepLaunchURLRoute getHKSPSleepLaunchURLRouteOnboardSleepCoaching(void)"];
-    [v31 handleFailureInFunction:v32 file:@"WFSleepTriggerConfigurationViewController.m" lineNumber:26 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v32 file:@"WFSleepTriggerConfigurationViewController.m" lineNumber:26 description:{@"%s", dlerror()}];
 
     goto LABEL_24;
   }
@@ -180,9 +180,9 @@ uint64_t __102__WFSleepTriggerConfigurationViewController_healthFeatureAvailabil
   _Block_object_dispose(&v37, 8);
   if (!v15)
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"HKSPProvenanceSource getHKSPProvenanceSourceShortcuts(void)"];
-    [v33 handleFailureInFunction:v34 file:@"WFSleepTriggerConfigurationViewController.m" lineNumber:28 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v34 file:@"WFSleepTriggerConfigurationViewController.m" lineNumber:28 description:{@"%s", dlerror()}];
 
     goto LABEL_24;
   }
@@ -212,9 +212,9 @@ uint64_t __102__WFSleepTriggerConfigurationViewController_healthFeatureAvailabil
   _Block_object_dispose(&v37, 8);
   if (!v21)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NSURL *WFHKSPSleepURL(__strong HKSPSleepLaunchURLRoute, __strong HKSPProvenanceSource)"}];
-    [v35 handleFailureInFunction:v36 file:@"WFSleepTriggerConfigurationViewController.m" lineNumber:27 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v36 file:@"WFSleepTriggerConfigurationViewController.m" lineNumber:27 description:{@"%s", dlerror()}];
 
 LABEL_24:
     __break(1u);
@@ -250,16 +250,16 @@ LABEL_18:
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(WFSleepTriggerConfigurationViewController *)self infoForSection:a4];
+  viewCopy = view;
+  v7 = [(WFSleepTriggerConfigurationViewController *)self infoForSection:section];
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   v9 = [v8 isEqual:@"triggerParameters"];
 
   if (v9)
   {
-    v10 = [(WFSleepTriggerConfigurationViewController *)self footerLinkViewForTableView:v6];
+    v10 = [(WFSleepTriggerConfigurationViewController *)self footerLinkViewForTableView:viewCopy];
   }
 
   else
@@ -270,18 +270,18 @@ LABEL_18:
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFSleepTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFSleepTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (void)setupParameterSectionCell:(id)a3 atRow:(int64_t)a4
+- (void)setupParameterSectionCell:(id)cell atRow:(int64_t)row
 {
-  v15 = a3;
-  switch(a4)
+  cellCopy = cell;
+  switch(row)
   {
     case 2:
       v6 = @"Waking Up";
@@ -293,47 +293,47 @@ LABEL_18:
       v6 = @"Wind Down Begins";
 LABEL_7:
       v7 = WFLocalizedString(v6);
-      v8 = [v15 textLabel];
-      [v8 setText:v7];
+      textLabel = [cellCopy textLabel];
+      [textLabel setText:v7];
 
       goto LABEL_9;
   }
 
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Invalid row %li for WFSleepTriggerConfigurationViewController", a4}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Invalid row %li for WFSleepTriggerConfigurationViewController", row}];
 LABEL_9:
-  [v15 setUserInteractionEnabled:1];
-  v9 = [v15 textLabel];
-  [v9 setEnabled:1];
+  [cellCopy setUserInteractionEnabled:1];
+  textLabel2 = [cellCopy textLabel];
+  [textLabel2 setEnabled:1];
 
-  v10 = [(WFSleepTriggerConfigurationViewController *)self healthFeatureAvailability];
-  v11 = [v10 sleepOnboardingStatus];
+  healthFeatureAvailability = [(WFSleepTriggerConfigurationViewController *)self healthFeatureAvailability];
+  sleepOnboardingStatus = [healthFeatureAvailability sleepOnboardingStatus];
 
-  if (v11)
+  if (sleepOnboardingStatus)
   {
-    v12 = [(WFTriggerConfigurationViewController *)self trigger];
-    v13 = [v12 selection];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    selection = [trigger selection];
 
-    if (v13 == a4)
+    if (selection == row)
     {
-      [v15 setAccessoryType:3];
+      [cellCopy setAccessoryType:3];
     }
   }
 
   else
   {
-    [v15 setUserInteractionEnabled:0];
-    v14 = [v15 textLabel];
-    [v14 setEnabled:0];
+    [cellCopy setUserInteractionEnabled:0];
+    textLabel3 = [cellCopy textLabel];
+    [textLabel3 setEnabled:0];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[WFSleepTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[WFSleepTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v6 dequeueReusableCellWithIdentifier:v9 forIndexPath:v7];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
   v12 = [v11 isEqual:@"triggerDescription"];
 
@@ -347,21 +347,21 @@ LABEL_9:
   else
   {
     [v10 setAccessoryType:0];
-    -[WFSleepTriggerConfigurationViewController setupParameterSectionCell:atRow:](self, "setupParameterSectionCell:atRow:", v10, [v7 row]);
+    -[WFSleepTriggerConfigurationViewController setupParameterSectionCell:atRow:](self, "setupParameterSectionCell:atRow:", v10, [pathCopy row]);
   }
 
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __77__WFSleepTriggerConfigurationViewController_tableView_cellForRowAtIndexPath___block_invoke;
   v20 = &unk_279EE8C58;
-  v21 = self;
+  selfCopy = self;
   v13 = v10;
   v22 = v13;
   v14 = _Block_copy(&v17);
-  v15 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v13 indexPath:v7 sectionInfo:v8, v17, v18, v19, v20, v21];
+  selfCopy = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v13 indexPath:pathCopy sectionInfo:v8, v17, v18, v19, v20, selfCopy];
   v14[2](v14);
 
-  return v15;
+  return selfCopy;
 }
 
 void __77__WFSleepTriggerConfigurationViewController_tableView_cellForRowAtIndexPath___block_invoke(uint64_t a1)
@@ -377,9 +377,9 @@ void __77__WFSleepTriggerConfigurationViewController_tableView_cellForRowAtIndex
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFSleepTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFSleepTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqual:@"triggerDescription"];
 
@@ -407,29 +407,29 @@ void __77__WFSleepTriggerConfigurationViewController_tableView_cellForRowAtIndex
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = WFSleepTriggerConfigurationViewController;
-  [(WFSleepTriggerConfigurationViewController *)&v5 viewWillAppear:a3];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 reloadData];
+  [(WFSleepTriggerConfigurationViewController *)&v5 viewWillAppear:appear];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)customSections
@@ -462,40 +462,40 @@ void __77__WFSleepTriggerConfigurationViewController_tableView_cellForRowAtIndex
 
 - (void)viewDidLoad
 {
-  v5 = [(WFTriggerConfigurationViewController *)self tableView];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
   v2 = objc_opt_class();
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  [v5 registerClass:v2 forHeaderFooterViewReuseIdentifier:v4];
+  [tableView registerClass:v2 forHeaderFooterViewReuseIdentifier:v4];
 }
 
 - (void)updateUI
 {
-  v2 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (WFSleepTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFSleepTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFSleepTriggerConfigurationViewController.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFSleepTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSleepTriggerConfigurationViewController.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFSleepTrigger class]]"}];
   }
 
   v15.receiver = self;
   v15.super_class = WFSleepTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v15 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v15 initWithTrigger:triggerCopy mode:mode];
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x277D7C4E0]) initWithSleepFeature:0];
     healthFeatureAvailability = v8->_healthFeatureAvailability;
     v8->_healthFeatureAvailability = v9;
 
-    v11 = [(WFSleepTriggerConfigurationViewController *)v8 healthFeatureAvailability];
-    [v11 setObserver:v8];
+    healthFeatureAvailability = [(WFSleepTriggerConfigurationViewController *)v8 healthFeatureAvailability];
+    [healthFeatureAvailability setObserver:v8];
 
     v12 = v8;
   }

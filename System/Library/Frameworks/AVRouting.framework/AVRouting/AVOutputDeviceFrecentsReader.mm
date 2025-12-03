@@ -1,6 +1,6 @@
 @interface AVOutputDeviceFrecentsReader
-- (AVOutputDeviceFrecentsReader)initWithFrecentsFilePath:(id)a3 error:(id *)a4;
-- (id)frecencyInfoForDeviceWithID:(id)a3;
+- (AVOutputDeviceFrecentsReader)initWithFrecentsFilePath:(id)path error:(id *)error;
+- (id)frecencyInfoForDeviceWithID:(id)d;
 - (void)dealloc;
 @end
 
@@ -13,7 +13,7 @@
   [(AVOutputDeviceFrecentsReader *)&v3 dealloc];
 }
 
-- (id)frecencyInfoForDeviceWithID:(id)a3
+- (id)frecencyInfoForDeviceWithID:(id)d
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = [(NSDictionary *)self->_frecents objectForKeyedSubscript:?];
@@ -37,7 +37,7 @@
   return v3;
 }
 
-- (AVOutputDeviceFrecentsReader)initWithFrecentsFilePath:(id)a3 error:(id *)a4
+- (AVOutputDeviceFrecentsReader)initWithFrecentsFilePath:(id)path error:(id *)error
 {
   v19[22] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -46,10 +46,10 @@
   v6 = [(AVOutputDeviceFrecentsReader *)&v18 init];
   v7 = v6;
   v8 = 0;
-  if (!a3 || !v6)
+  if (!path || !v6)
   {
 LABEL_15:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -57,7 +57,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:a3 options:0 error:v19];
+  v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:path options:0 error:v19];
   if (v9)
   {
     v10 = [MEMORY[0x1E696AE40] propertyListWithData:v9 options:0 format:0 error:v19];
@@ -103,7 +103,7 @@ LABEL_14:
   }
 
   v8 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_18;
   }
@@ -111,7 +111,7 @@ LABEL_14:
 LABEL_16:
   if (!v8)
   {
-    *a4 = v19[0];
+    *error = v19[0];
   }
 
 LABEL_18:

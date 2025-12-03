@@ -1,15 +1,15 @@
 @interface ArcadeWelcomeItemView
 - (CGRect)frame;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC18ASMessagesProvider21ArcadeWelcomeItemView)initWithCoder:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC18ASMessagesProvider21ArcadeWelcomeItemView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ArcadeWelcomeItemView
 
-- (_TtC18ASMessagesProvider21ArcadeWelcomeItemView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider21ArcadeWelcomeItemView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider21ArcadeWelcomeItemView_artwork) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider21ArcadeWelcomeItemView_artworkLoader) = 0;
@@ -31,25 +31,25 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v22.receiver = self;
   v22.super_class = ObjectType;
-  v9 = self;
+  selfCopy = self;
   [(ArcadeWelcomeItemView *)&v22 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v21.receiver = v9;
+  v21.receiver = selfCopy;
   v21.super_class = ObjectType;
   [(ArcadeWelcomeItemView *)&v21 setFrame:x, y, width, height];
-  v20.receiver = v9;
+  v20.receiver = selfCopy;
   v20.super_class = ObjectType;
   [(ArcadeWelcomeItemView *)&v20 frame];
   v25.origin.x = v11;
@@ -63,7 +63,7 @@
 
   else
   {
-    v19.receiver = v9;
+    v19.receiver = selfCopy;
     v19.super_class = ObjectType;
     [(ArcadeWelcomeItemView *)&v19 frame];
     v26.origin.x = 0.0;
@@ -73,22 +73,22 @@
     v18 = !CGRectEqualToRect(v24, v26);
   }
 
-  *(&v9->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider21ArcadeWelcomeItemView_shouldUpdateArtwork) = v18;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider21ArcadeWelcomeItemView_shouldUpdateArtwork) = v18;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2DF1B4();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  height = a3.height;
-  width = a3.width;
+  height = fitting.height;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  v9 = sub_2DF988(a4, width, height);
+  selfCopy = self;
+  v9 = sub_2DF988(in, width, height);
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -105,11 +105,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2DFEC4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2DFEC4(change);
 }
 
 @end

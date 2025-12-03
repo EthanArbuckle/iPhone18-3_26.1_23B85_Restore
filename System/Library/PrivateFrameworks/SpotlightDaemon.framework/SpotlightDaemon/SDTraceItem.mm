@@ -1,13 +1,13 @@
 @interface SDTraceItem
-+ (id)stringFromReferenceDate:(double)a3;
-+ (void)appendDescription:(id)a3 prefix:(id)a4 toString:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)stringFromReferenceDate:(double)date;
++ (void)appendDescription:(id)description prefix:(id)prefix toString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation SDTraceItem
 
-+ (id)stringFromReferenceDate:(double)a3
++ (id)stringFromReferenceDate:(double)date
 {
   if (stringFromReferenceDate__once != -1)
   {
@@ -15,7 +15,7 @@
   }
 
   v4 = stringFromReferenceDate__formatter;
-  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a3];
+  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:date];
   v6 = [v4 stringFromDate:v5];
 
   return v6;
@@ -32,42 +32,42 @@ uint64_t __39__SDTraceItem_stringFromReferenceDate___block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [(SDTraceItem *)self startTime];
   [v4 setStartTime:?];
   [v4 setIdentifier:{-[SDTraceItem identifier](self, "identifier")}];
-  v5 = [(SDTraceItem *)self label];
-  [v4 setLabel:v5];
+  label = [(SDTraceItem *)self label];
+  [v4 setLabel:label];
 
   [(SDTraceItem *)self duration];
   [v4 setDuration:?];
-  v6 = [(SDTraceItem *)self data];
-  [v4 setData:v6];
+  data = [(SDTraceItem *)self data];
+  [v4 setData:data];
 
-  v7 = [(SDTraceItem *)self string];
-  [v4 setString:v7];
+  string = [(SDTraceItem *)self string];
+  [v4 setString:string];
 
-  v8 = self;
-  return v8;
+  selfCopy = self;
+  return selfCopy;
 }
 
-+ (void)appendDescription:(id)a3 prefix:(id)a4 toString:(id)a5
++ (void)appendDescription:(id)description prefix:(id)prefix toString:(id)string
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  descriptionCopy = description;
+  prefixCopy = prefix;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
-    v11 = v7;
+    v10 = descriptionCopy;
+    v11 = descriptionCopy;
     v12 = &stru_2846BD100;
-    if (v8)
+    if (prefixCopy)
     {
-      v12 = v8;
+      v12 = prefixCopy;
     }
 
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@   ", v12];
@@ -92,8 +92,8 @@ uint64_t __39__SDTraceItem_stringFromReferenceDate___block_invoke()
           }
 
           v19 = *(*(&v37 + 1) + 8 * i);
-          [v9 appendFormat:@"\n"];
-          [SDTraceItem appendDescription:v19 prefix:v13 toString:v9];
+          [stringCopy appendFormat:@"\n"];
+          [SDTraceItem appendDescription:v19 prefix:v13 toString:stringCopy];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -102,7 +102,7 @@ uint64_t __39__SDTraceItem_stringFromReferenceDate___block_invoke()
       while (v16);
     }
 
-    v7 = v10;
+    descriptionCopy = v10;
   }
 
   else
@@ -110,8 +110,8 @@ uint64_t __39__SDTraceItem_stringFromReferenceDate___block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = v7;
-      v20 = v7;
+      v32 = descriptionCopy;
+      v20 = descriptionCopy;
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
@@ -121,9 +121,9 @@ uint64_t __39__SDTraceItem_stringFromReferenceDate___block_invoke()
       {
         v22 = v21;
         v23 = *v34;
-        if (v8)
+        if (prefixCopy)
         {
-          v24 = v8;
+          v24 = prefixCopy;
         }
 
         else
@@ -142,18 +142,18 @@ uint64_t __39__SDTraceItem_stringFromReferenceDate___block_invoke()
 
             v26 = *(*(&v33 + 1) + 8 * j);
             v27 = [v20 objectForKeyedSubscript:v26];
-            [v9 appendFormat:@"\n%@%@ - ", v8, v26];
+            [stringCopy appendFormat:@"\n%@%@ - ", prefixCopy, v26];
             objc_opt_class();
             if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
             {
               v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@   ", v24];
-              [SDTraceItem appendDescription:v27 prefix:v28 toString:v9];
+              [SDTraceItem appendDescription:v27 prefix:v28 toString:stringCopy];
             }
 
             else
             {
               v28 = [v27 description];
-              [v9 appendString:v28];
+              [stringCopy appendString:v28];
             }
           }
 
@@ -163,15 +163,15 @@ uint64_t __39__SDTraceItem_stringFromReferenceDate___block_invoke()
         while (v22);
       }
 
-      v13 = v8;
-      v7 = v32;
+      v13 = prefixCopy;
+      descriptionCopy = v32;
     }
 
     else
     {
-      if (v8)
+      if (prefixCopy)
       {
-        v29 = v8;
+        v29 = prefixCopy;
       }
 
       else
@@ -179,10 +179,10 @@ uint64_t __39__SDTraceItem_stringFromReferenceDate___block_invoke()
         v29 = &stru_2846BD100;
       }
 
-      v30 = [v7 description];
-      [v9 appendFormat:@"%@%@", v29, v30];
+      v30 = [descriptionCopy description];
+      [stringCopy appendFormat:@"%@%@", v29, v30];
 
-      v13 = v8;
+      v13 = prefixCopy;
     }
   }
 
@@ -191,38 +191,38 @@ uint64_t __39__SDTraceItem_stringFromReferenceDate___block_invoke()
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = [SDTraceItem stringFromReferenceDate:self->_startTime];
-  [v3 appendString:v4];
+  [string appendString:v4];
 
   if (self->_identifier != -1)
   {
-    [v3 appendFormat:@"\t%ld", self->_identifier];
+    [string appendFormat:@"\t%ld", self->_identifier];
   }
 
   if ([(NSString *)self->_label length])
   {
-    [v3 appendFormat:@"\t%@", self->_label];
+    [string appendFormat:@"\t%@", self->_label];
   }
 
   if (self->_duration != 0.0)
   {
-    [v3 appendFormat:@"\telapsed: %g", *&self->_duration];
+    [string appendFormat:@"\telapsed: %g", *&self->_duration];
   }
 
   if ([(NSString *)self->_string length])
   {
-    [v3 appendFormat:@"\t"];
-    [v3 appendString:self->_string];
+    [string appendFormat:@"\t"];
+    [string appendString:self->_string];
   }
 
   data = self->_data;
   if (data)
   {
-    [SDTraceItem appendDescription:data prefix:@"   " toString:v3];
+    [SDTraceItem appendDescription:data prefix:@"   " toString:string];
   }
 
-  return v3;
+  return string;
 }
 
 @end

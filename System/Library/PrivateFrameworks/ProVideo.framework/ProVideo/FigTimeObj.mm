@@ -1,84 +1,84 @@
 @interface FigTimeObj
-+ (id)timeWithTime:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (FigTimeObj)initWithCMTime:(id *)a3;
-- (FigTimeObj)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compareWithTime:(id)a3;
++ (id)timeWithTime:(id *)time;
+- (BOOL)isEqual:(id)equal;
+- (FigTimeObj)initWithCMTime:(id *)time;
+- (FigTimeObj)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compareWithTime:(id)time;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)getValue:(id *)a3;
-- (void)setTime:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getValue:(id *)value;
+- (void)setTime:(id *)time;
 @end
 
 @implementation FigTimeObj
 
-- (FigTimeObj)initWithCMTime:(id *)a3
+- (FigTimeObj)initWithCMTime:(id *)time
 {
   v6.receiver = self;
   v6.super_class = FigTimeObj;
   result = [(FigTimeObj *)&v6 init];
   if (result)
   {
-    v5 = *&a3->var0;
-    result->_time.epoch = a3->var3;
+    v5 = *&time->var0;
+    result->_time.epoch = time->var3;
     *&result->_time.value = v5;
   }
 
   return result;
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 
-- (void)getValue:(id *)a3
+- (void)getValue:(id *)value
 {
   v3 = *&self->_time.value;
-  a3->var3 = self->_time.epoch;
-  *&a3->var0 = v3;
+  value->var3 = self->_time.epoch;
+  *&value->var0 = v3;
 }
 
-- (FigTimeObj)initWithCoder:(id)a3
+- (FigTimeObj)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FigTimeObj;
   v4 = [(FigTimeObj *)&v6 init];
   if (v4)
   {
-    v4->_time.epoch = [a3 decodeInt64ForKey:@"epoch"];
-    v4->_time.value = [a3 decodeInt64ForKey:@"value"];
-    v4->_time.timescale = [a3 decodeInt32ForKey:@"timescale"];
-    v4->_time.flags = [a3 decodeInt32ForKey:@"flags"];
+    v4->_time.epoch = [coder decodeInt64ForKey:@"epoch"];
+    v4->_time.value = [coder decodeInt64ForKey:@"value"];
+    v4->_time.timescale = [coder decodeInt32ForKey:@"timescale"];
+    v4->_time.flags = [coder decodeInt32ForKey:@"flags"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt64:self->_time.epoch forKey:@"epoch"];
-  [a3 encodeInt64:self->_time.value forKey:@"value"];
-  [a3 encodeInt32:self->_time.timescale forKey:@"timescale"];
+  [coder encodeInt64:self->_time.epoch forKey:@"epoch"];
+  [coder encodeInt64:self->_time.value forKey:@"value"];
+  [coder encodeInt32:self->_time.timescale forKey:@"timescale"];
   flags = self->_time.flags;
 
-  [a3 encodeInt32:flags forKey:@"flags"];
+  [coder encodeInt32:flags forKey:@"flags"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [FigTimeObj allocWithZone:a3];
+  v4 = [FigTimeObj allocWithZone:zone];
   time = self->_time;
   return [(FigTimeObj *)v4 initWithCMTime:&time];
 }
 
-- (int64_t)compareWithTime:(id)a3
+- (int64_t)compareWithTime:(id)time
 {
   time1 = self->_time;
-  v5 = *(a3 + 8);
+  v5 = *(time + 8);
   v3 = CMTimeCompare(&time1, &v5);
   if (v3 < 0)
   {
@@ -105,9 +105,9 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -119,16 +119,16 @@
   {
     v13 = *&self->_time.value;
     epoch = self->_time.epoch;
-    time2 = *(a3 + 8);
+    time2 = *(equal + 8);
     v7 = &v13;
     p_time2 = &time2;
     return CMTimeCompare(v7, p_time2) == 0;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && !strcmp([a3 objCType], "{?=qiIq}"))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && !strcmp([equal objCType], "{?=qiIq}"))
   {
-    [a3 getValue:&v13];
+    [equal getValue:&v13];
     time2 = self->_time;
     v10 = v13;
     v11 = epoch;
@@ -140,10 +140,10 @@
   return 0;
 }
 
-+ (id)timeWithTime:(id *)a3
++ (id)timeWithTime:(id *)time
 {
   v4 = objc_alloc(objc_opt_class());
-  v6 = *a3;
+  v6 = *time;
   return [v4 initWithCMTime:&v6];
 }
 

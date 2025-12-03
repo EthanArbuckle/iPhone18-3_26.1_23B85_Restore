@@ -1,6 +1,6 @@
 @interface PreferencesAssistantSetLowPowerMode
 - (BOOL)isLowPowerModeSupported;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PreferencesAssistantSetLowPowerMode
@@ -19,59 +19,59 @@
   return v4;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[PSLowPowerModeSettingsDetail isEnabled];
   if (![(PreferencesAssistantSetLowPowerMode *)self isLowPowerModeSupported])
   {
     v14 = objc_alloc_init(SACommandFailed);
     [v14 setErrorCode:SASettingPropertyUnsupportedByDeviceErrorCode];
     [v14 setReason:@"Device does not support Low Power Mode"];
-    v7 = [v14 dictionary];
-    v4[2](v4, v7);
+    dictionary = [v14 dictionary];
+    completionCopy[2](completionCopy, dictionary);
     goto LABEL_18;
   }
 
   if ([(PreferencesAssistantSetLowPowerMode *)self toggle])
   {
-    v6 = (v5 ^ 1);
+    value = (v5 ^ 1);
   }
 
   else
   {
-    v6 = [(PreferencesAssistantSetLowPowerMode *)self value];
+    value = [(PreferencesAssistantSetLowPowerMode *)self value];
   }
 
-  v8 = [(PreferencesAssistantSetLowPowerMode *)self dryRun];
-  if (v5 == v6)
+  dryRun = [(PreferencesAssistantSetLowPowerMode *)self dryRun];
+  if (v5 == value)
   {
-    v7 = objc_alloc_init(SACommandFailed);
-    [v7 setErrorCode:SASettingValueUnchangedErrorCode];
-    [v7 setReason:{@"Value unchanged, No change was made"}];
+    dictionary = objc_alloc_init(SACommandFailed);
+    [dictionary setErrorCode:SASettingValueUnchangedErrorCode];
+    [dictionary setReason:{@"Value unchanged, No change was made"}];
   }
 
   else
   {
-    v7 = 0;
+    dictionary = 0;
   }
 
-  if (v7)
+  if (dictionary)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v8;
+    v9 = dryRun;
   }
 
   if ((v9 & 1) == 0)
   {
-    [PSLowPowerModeSettingsDetail setEnabled:v6];
+    [PSLowPowerModeSettingsDetail setEnabled:value];
 LABEL_16:
     v11 = objc_alloc_init(SASettingBooleanEntity);
-    [v11 setValue:v6];
+    [v11 setValue:value];
     v12 = [NSNumber numberWithBool:v5];
     [v11 setPreviousValue:v12];
 
@@ -82,18 +82,18 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v10 = v7;
-  if (!v7)
+  v10 = dictionary;
+  if (!dictionary)
   {
     goto LABEL_16;
   }
 
 LABEL_17:
   v14 = v10;
-  v13 = [v10 dictionary];
-  v4[2](v4, v13);
+  dictionary2 = [v10 dictionary];
+  completionCopy[2](completionCopy, dictionary2);
 
-  v4 = v13;
+  completionCopy = dictionary2;
 LABEL_18:
 }
 

@@ -1,6 +1,6 @@
 @interface ACActivityPresentationListener
 - (ACActivityPresentationListener)init;
-- (id)listenForActivityPresentation:(id)a3 presenterBundleIdentifier:(id)a4 withHandler:(id)a5;
+- (id)listenForActivityPresentation:(id)presentation presenterBundleIdentifier:(id)identifier withHandler:(id)handler;
 @end
 
 @implementation ACActivityPresentationListener
@@ -20,18 +20,18 @@
   return v2;
 }
 
-- (id)listenForActivityPresentation:(id)a3 presenterBundleIdentifier:(id)a4 withHandler:(id)a5
+- (id)listenForActivityPresentation:(id)presentation presenterBundleIdentifier:(id)identifier withHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   client = self->_client;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __102__ACActivityPresentationListener_listenForActivityPresentation_presenterBundleIdentifier_withHandler___block_invoke;
   v19[3] = &unk_1E76B6948;
-  v20 = v8;
-  v10 = v8;
-  v11 = a3;
-  v12 = [(ActivityPresentationObservationClient *)client listenForActivityPresentationWithActivityIdentifier:v11 presenterBundleIdentifier:a4 handler:v19];
+  v20 = handlerCopy;
+  v10 = handlerCopy;
+  presentationCopy = presentation;
+  v12 = [(ActivityPresentationObservationClient *)client listenForActivityPresentationWithActivityIdentifier:presentationCopy presenterBundleIdentifier:identifier handler:v19];
   v13 = objc_alloc(MEMORY[0x1E698E778]);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -39,7 +39,7 @@
   v17[3] = &unk_1E76B6970;
   v18 = v12;
   v14 = v12;
-  v15 = [v13 initWithIdentifier:@"ACActivityPresentationListener" forReason:v11 invalidationBlock:v17];
+  v15 = [v13 initWithIdentifier:@"ACActivityPresentationListener" forReason:presentationCopy invalidationBlock:v17];
 
   return v15;
 }

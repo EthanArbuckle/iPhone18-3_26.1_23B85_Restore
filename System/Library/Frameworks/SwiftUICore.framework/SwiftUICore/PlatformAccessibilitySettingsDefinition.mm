@@ -1,14 +1,14 @@
 @interface PlatformAccessibilitySettingsDefinition
-- (void)settingsValueDidChange:(id)a3;
+- (void)settingsValueDidChange:(id)change;
 @end
 
 @implementation PlatformAccessibilitySettingsDefinition
 
-- (void)settingsValueDidChange:(id)a3
+- (void)settingsValueDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
-  PlatformAccessibilitySettingsDefinition.settingsValueDidChange(_:)(v3);
+  PlatformAccessibilitySettingsDefinition.settingsValueDidChange(_:)(changeCopy);
 }
 
 @end

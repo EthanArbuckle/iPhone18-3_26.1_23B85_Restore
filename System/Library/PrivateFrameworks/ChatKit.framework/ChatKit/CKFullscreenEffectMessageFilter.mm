@@ -1,6 +1,6 @@
 @interface CKFullscreenEffectMessageFilter
 - (CKFullscreenEffectMessageFilter)init;
-- (CKFullscreenEffectMessageFilter)initWithDictionary:(id)a3;
+- (CKFullscreenEffectMessageFilter)initWithDictionary:(id)dictionary;
 @end
 
 @implementation CKFullscreenEffectMessageFilter
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (CKFullscreenEffectMessageFilter)initWithDictionary:(id)a3
+- (CKFullscreenEffectMessageFilter)initWithDictionary:(id)dictionary
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v61.receiver = self;
   v61.super_class = CKFullscreenEffectMessageFilter;
   v5 = [(CKFullscreenEffectMessageFilter *)&v61 init];
@@ -33,7 +33,7 @@
     goto LABEL_59;
   }
 
-  v6 = [v4 _stringForKey:@"type"];
+  v6 = [dictionaryCopy _stringForKey:@"type"];
   if ([v6 isEqualToIgnoringCase:@"text"])
   {
     goto LABEL_3;
@@ -90,7 +90,7 @@ LABEL_3:
 LABEL_18:
 
   v5->_type = v7;
-  v8 = [v4 _stringForKey:@"direction"];
+  v8 = [dictionaryCopy _stringForKey:@"direction"];
   v51 = v6;
   if (([v8 isEqualToIgnoringCase:@"both"] & 1) == 0)
   {
@@ -118,7 +118,7 @@ LABEL_24:
   v50 = v8;
 
   v5->_direction = v9;
-  v10 = [v4 _arrayForKey:@"balloonFilters"];
+  v10 = [dictionaryCopy _arrayForKey:@"balloonFilters"];
   v52 = v10;
   if (v10)
   {
@@ -167,7 +167,7 @@ LABEL_24:
     v10 = v52;
   }
 
-  v21 = [v4 _arrayForKey:@"balloonBackdropFilters"];
+  v21 = [dictionaryCopy _arrayForKey:@"balloonBackdropFilters"];
   if (v21)
   {
     v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -217,7 +217,7 @@ LABEL_24:
     v21 = v49;
   }
 
-  v32 = [v4 _dictionaryForKey:{@"balloonCompositingFilter", v49}];
+  v32 = [dictionaryCopy _dictionaryForKey:{@"balloonCompositingFilter", v49}];
   if (v32)
   {
     v33 = [MEMORY[0x1E6979378] ck_filterWithDictionary:v32];
@@ -225,7 +225,7 @@ LABEL_24:
     v5->_balloonCompositingFilter = v33;
   }
 
-  v35 = [v4 _numberForKey:@"balloonAlpha"];
+  v35 = [dictionaryCopy _numberForKey:@"balloonAlpha"];
   v36 = v35;
   v37 = 1.0;
   v38 = 1.0;
@@ -236,7 +236,7 @@ LABEL_24:
   }
 
   v5->_balloonAlpha = v38;
-  v40 = [v4 _numberForKey:@"contentAlpha"];
+  v40 = [dictionaryCopy _numberForKey:@"contentAlpha"];
   v41 = v40;
   if (v40)
   {
@@ -245,7 +245,7 @@ LABEL_24:
   }
 
   v5->_contentAlpha = v37;
-  v43 = [v4 _dictionaryForKey:@"textCompositingFilter"];
+  v43 = [dictionaryCopy _dictionaryForKey:@"textCompositingFilter"];
   if (v43)
   {
     v44 = [MEMORY[0x1E6979378] ck_filterWithDictionary:v43];

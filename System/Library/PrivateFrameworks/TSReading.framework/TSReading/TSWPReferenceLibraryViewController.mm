@@ -1,23 +1,23 @@
 @interface TSWPReferenceLibraryViewController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation TSWPReferenceLibraryViewController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = TSWPReferenceLibraryViewController;
-  [(TSWPReferenceLibraryViewController *)&v4 viewDidDisappear:a3];
+  [(TSWPReferenceLibraryViewController *)&v4 viewDidDisappear:disappear];
   [(TSWPReferenceLibraryViewControllerDelegate *)self->_delegate referenceLibrarayViewControllerWasDismissed:self];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(TSWPReferenceLibraryViewController *)self presentingViewController];
+  presentingViewController = [(TSWPReferenceLibraryViewController *)self presentingViewController];
 
-  return [v2 supportedInterfaceOrientations];
+  return [presentingViewController supportedInterfaceOrientations];
 }
 
 @end

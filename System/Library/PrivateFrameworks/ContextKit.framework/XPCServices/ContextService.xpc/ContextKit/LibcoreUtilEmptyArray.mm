@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&LibcoreUtilEmptyArray_BOOLEAN_, [IOSBooleanArray newArrayWithLength:0]);
     JreStrongAssignAndConsume(&LibcoreUtilEmptyArray_BYTE_, [IOSByteArray newArrayWithLength:0]);

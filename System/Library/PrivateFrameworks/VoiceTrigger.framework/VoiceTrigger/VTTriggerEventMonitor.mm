@@ -4,13 +4,13 @@
 - (void)_attemptConnection;
 - (void)_attemptConnectionInQueue;
 - (void)_earlyDetected;
-- (void)_enableTriggerEventXPCNotification:(BOOL)a3;
+- (void)_enableTriggerEventXPCNotification:(BOOL)notification;
 - (void)_invalidateConnection;
 - (void)_voiceTriggered;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)earlyDetected;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)voiceTriggered;
 @end
 
@@ -220,17 +220,17 @@ uint64_t __39__VTTriggerEventMonitor_voiceTriggered__block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__VTTriggerEventMonitor_removeObserver___block_invoke;
   v7[3] = &unk_2784ED118;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -242,17 +242,17 @@ uint64_t __40__VTTriggerEventMonitor_removeObserver___block_invoke(uint64_t a1)
   return [v2 _enableTriggerEventXPCNotification:0];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__VTTriggerEventMonitor_addObserver___block_invoke;
   v7[3] = &unk_2784ED118;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -264,11 +264,11 @@ uint64_t __37__VTTriggerEventMonitor_addObserver___block_invoke(uint64_t a1)
   return [v2 _enableTriggerEventXPCNotification:1];
 }
 
-- (void)_enableTriggerEventXPCNotification:(BOOL)a3
+- (void)_enableTriggerEventXPCNotification:(BOOL)notification
 {
-  v3 = a3;
-  v4 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v4 enableTriggerEventXPCNotification:v3];
+  notificationCopy = notification;
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy enableTriggerEventXPCNotification:notificationCopy];
 }
 
 - (void)_invalidateConnection
@@ -384,9 +384,9 @@ void __43__VTTriggerEventMonitor__attemptConnection__block_invoke(uint64_t a1)
     v2->_queue = v3;
 
     v2->_notifyToken = -1;
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     objc_initWeak(&location, v2);
     v7 = v2->_queue;

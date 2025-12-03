@@ -3,11 +3,11 @@
 - (BOOL)_connectToService;
 - (POUIServiceConnection)init;
 - (void)dealloc;
-- (void)deviceStatusWithCompletion:(id)a3;
+- (void)deviceStatusWithCompletion:(id)completion;
 - (void)init;
-- (void)startAction:(int64_t)a3 forUserName:(id)a4 completion:(id)a5;
-- (void)startDeviceAction:(int64_t)a3 completion:(id)a4;
-- (void)statusForUser:(id)a3 completion:(id)a4;
+- (void)startAction:(int64_t)action forUserName:(id)name completion:(id)completion;
+- (void)startDeviceAction:(int64_t)action completion:(id)completion;
+- (void)statusForUser:(id)user completion:(id)completion;
 @end
 
 @implementation POUIServiceConnection
@@ -60,26 +60,26 @@ uint64_t __33__POUIServiceConnection_xpcQueue__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceStatusWithCompletion:(id)a3
+- (void)deviceStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(POUIServiceConnection *)self _connectToService])
   {
-    v5 = [(POUIServiceConnection *)self xpcConnection];
+    xpcConnection = [(POUIServiceConnection *)self xpcConnection];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __52__POUIServiceConnection_deviceStatusWithCompletion___block_invoke;
     v9[3] = &unk_279A3A270;
-    v6 = v4;
+    v6 = completionCopy;
     v10 = v6;
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
     [v7 deviceStatusWithCompletion:v6];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v8 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v4 + 2))(v4, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 }
 
@@ -99,27 +99,27 @@ void __52__POUIServiceConnection_deviceStatusWithCompletion___block_invoke(uint6
   }
 }
 
-- (void)statusForUser:(id)a3 completion:(id)a4
+- (void)statusForUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  completionCopy = completion;
   if ([(POUIServiceConnection *)self _connectToService])
   {
-    v8 = [(POUIServiceConnection *)self xpcConnection];
+    xpcConnection = [(POUIServiceConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __50__POUIServiceConnection_statusForUser_completion___block_invoke;
     v12[3] = &unk_279A3A270;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 statusForUser:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 statusForUser:userCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -139,27 +139,27 @@ void __50__POUIServiceConnection_statusForUser_completion___block_invoke(uint64_
   }
 }
 
-- (void)startAction:(int64_t)a3 forUserName:(id)a4 completion:(id)a5
+- (void)startAction:(int64_t)action forUserName:(id)name completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  completionCopy = completion;
   if ([(POUIServiceConnection *)self _connectToService])
   {
-    v10 = [(POUIServiceConnection *)self xpcConnection];
+    xpcConnection = [(POUIServiceConnection *)self xpcConnection];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __60__POUIServiceConnection_startAction_forUserName_completion___block_invoke;
     v14[3] = &unk_279A3A270;
-    v11 = v9;
+    v11 = completionCopy;
     v15 = v11;
-    v12 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v14];
-    [v12 startAction:a3 forUserName:v8 completion:v11];
+    v12 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v14];
+    [v12 startAction:action forUserName:nameCopy completion:v11];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     v13 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v9 + 2))(v9, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
@@ -179,26 +179,26 @@ void __60__POUIServiceConnection_startAction_forUserName_completion___block_invo
   }
 }
 
-- (void)startDeviceAction:(int64_t)a3 completion:(id)a4
+- (void)startDeviceAction:(int64_t)action completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(POUIServiceConnection *)self _connectToService])
   {
-    v7 = [(POUIServiceConnection *)self xpcConnection];
+    xpcConnection = [(POUIServiceConnection *)self xpcConnection];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __54__POUIServiceConnection_startDeviceAction_completion___block_invoke;
     v11[3] = &unk_279A3A270;
-    v8 = v6;
+    v8 = completionCopy;
     v12 = v8;
-    v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v11];
-    [v9 startDeviceAction:a3 completion:v8];
+    v9 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
+    [v9 startDeviceAction:action completion:v8];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
     v10 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v6 + 2))(v6, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 

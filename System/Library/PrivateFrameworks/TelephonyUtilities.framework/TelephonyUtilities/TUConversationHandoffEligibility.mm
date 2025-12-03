@@ -1,39 +1,39 @@
 @interface TUConversationHandoffEligibility
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHandoffEligibility:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHandoffEligibility:(id)eligibility;
 - (NSString)localizedDeviceCategory;
-- (TUConversationHandoffEligibility)initWithCoder:(id)a3;
-- (TUConversationHandoffEligibility)initWithHandoffEligibility:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUConversationHandoffEligibility)initWithCoder:(id)coder;
+- (TUConversationHandoffEligibility)initWithHandoffEligibility:(id)eligibility;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationHandoffEligibility
 
-- (TUConversationHandoffEligibility)initWithHandoffEligibility:(id)a3
+- (TUConversationHandoffEligibility)initWithHandoffEligibility:(id)eligibility
 {
-  v4 = a3;
+  eligibilityCopy = eligibility;
   v13.receiver = self;
   v13.super_class = TUConversationHandoffEligibility;
   v5 = [(TUConversationHandoffEligibility *)&v13 init];
   if (v5)
   {
-    v5->_eligible = [v4 isEligible];
-    v5->_uplinkMuted = [v4 isUplinkMuted];
-    v5->_sendingVideo = [v4 isSendingVideo];
-    v6 = [v4 conversationGroupUUID];
+    v5->_eligible = [eligibilityCopy isEligible];
+    v5->_uplinkMuted = [eligibilityCopy isUplinkMuted];
+    v5->_sendingVideo = [eligibilityCopy isSendingVideo];
+    conversationGroupUUID = [eligibilityCopy conversationGroupUUID];
     conversationGroupUUID = v5->_conversationGroupUUID;
-    v5->_conversationGroupUUID = v6;
+    v5->_conversationGroupUUID = conversationGroupUUID;
 
-    v8 = [v4 association];
+    association = [eligibilityCopy association];
     association = v5->_association;
-    v5->_association = v8;
+    v5->_association = association;
 
-    v10 = [v4 originatingDeviceType];
+    originatingDeviceType = [eligibilityCopy originatingDeviceType];
     originatingDeviceType = v5->_originatingDeviceType;
-    v5->_originatingDeviceType = v10;
+    v5->_originatingDeviceType = originatingDeviceType;
   }
 
   return v5;
@@ -41,8 +41,8 @@
 
 - (NSString)localizedDeviceCategory
 {
-  v3 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
-  if ([v3 containsString:@"com.apple.iphone"])
+  originatingDeviceType = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+  if ([originatingDeviceType containsString:@"com.apple.iphone"])
   {
     v4 = @"IPHONE";
 LABEL_3:
@@ -54,8 +54,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
-  v6 = [v5 containsString:@"com.apple.homebuttonless-iphone"];
+  originatingDeviceType2 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+  v6 = [originatingDeviceType2 containsString:@"com.apple.homebuttonless-iphone"];
 
   if (v6)
   {
@@ -63,15 +63,15 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v3 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
-  if ([v3 containsString:@"com.apple.ipad"])
+  originatingDeviceType = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+  if ([originatingDeviceType containsString:@"com.apple.ipad"])
   {
     v4 = @"IPAD";
     goto LABEL_3;
   }
 
-  v10 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
-  v11 = [v10 containsString:@"com.apple.homebuttonless-ipad"];
+  originatingDeviceType3 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+  v11 = [originatingDeviceType3 containsString:@"com.apple.homebuttonless-ipad"];
 
   if (v11)
   {
@@ -79,8 +79,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v12 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
-  v13 = [v12 containsString:@"com.apple.ipod"];
+  originatingDeviceType4 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+  v13 = [originatingDeviceType4 containsString:@"com.apple.ipod"];
 
   if (v13)
   {
@@ -88,8 +88,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v14 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
-  v15 = [v14 containsString:@"com.apple.mac"];
+  originatingDeviceType5 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+  v15 = [originatingDeviceType5 containsString:@"com.apple.mac"];
 
   if (v15)
   {
@@ -97,8 +97,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v16 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
-  v17 = [v16 containsString:@"com.apple.visionpro"];
+  originatingDeviceType6 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+  v17 = [originatingDeviceType6 containsString:@"com.apple.visionpro"];
 
   if (v17)
   {
@@ -112,38 +112,38 @@ LABEL_7:
   return v8;
 }
 
-- (TUConversationHandoffEligibility)initWithCoder:(id)a3
+- (TUConversationHandoffEligibility)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = TUConversationHandoffEligibility;
   v5 = [(TUConversationHandoffEligibility *)&v22 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_isEligible);
-    v5->_eligible = [v4 decodeBoolForKey:v6];
+    v5->_eligible = [coderCopy decodeBoolForKey:v6];
 
     v7 = NSStringFromSelector(sel_isUplinkMuted);
-    v5->_uplinkMuted = [v4 decodeBoolForKey:v7];
+    v5->_uplinkMuted = [coderCopy decodeBoolForKey:v7];
 
     v8 = NSStringFromSelector(sel_isSendingVideo);
-    v5->_sendingVideo = [v4 decodeBoolForKey:v8];
+    v5->_sendingVideo = [coderCopy decodeBoolForKey:v8];
 
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_conversationGroupUUID);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     conversationGroupUUID = v5->_conversationGroupUUID;
     v5->_conversationGroupUUID = v11;
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector(sel_association);
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     association = v5->_association;
     v5->_association = v15;
 
     v17 = objc_opt_class();
     v18 = NSStringFromSelector(sel_originatingDeviceType);
-    v19 = [v4 decodeObjectOfClass:v17 forKey:v18];
+    v19 = [coderCopy decodeObjectOfClass:v17 forKey:v18];
     originatingDeviceType = v5->_originatingDeviceType;
     v5->_originatingDeviceType = v19;
   }
@@ -151,37 +151,37 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationHandoffEligibility *)self isEligible];
+  coderCopy = coder;
+  isEligible = [(TUConversationHandoffEligibility *)self isEligible];
   v6 = NSStringFromSelector(sel_isEligible);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:isEligible forKey:v6];
 
-  v7 = [(TUConversationHandoffEligibility *)self isUplinkMuted];
+  isUplinkMuted = [(TUConversationHandoffEligibility *)self isUplinkMuted];
   v8 = NSStringFromSelector(sel_isUplinkMuted);
-  [v4 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:isUplinkMuted forKey:v8];
 
-  v9 = [(TUConversationHandoffEligibility *)self isSendingVideo];
+  isSendingVideo = [(TUConversationHandoffEligibility *)self isSendingVideo];
   v10 = NSStringFromSelector(sel_isSendingVideo);
-  [v4 encodeBool:v9 forKey:v10];
+  [coderCopy encodeBool:isSendingVideo forKey:v10];
 
-  v11 = [(TUConversationHandoffEligibility *)self conversationGroupUUID];
+  conversationGroupUUID = [(TUConversationHandoffEligibility *)self conversationGroupUUID];
   v12 = NSStringFromSelector(sel_conversationGroupUUID);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:conversationGroupUUID forKey:v12];
 
-  v13 = [(TUConversationHandoffEligibility *)self association];
+  association = [(TUConversationHandoffEligibility *)self association];
   v14 = NSStringFromSelector(sel_association);
-  [v4 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:association forKey:v14];
 
-  v16 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+  originatingDeviceType = [(TUConversationHandoffEligibility *)self originatingDeviceType];
   v15 = NSStringFromSelector(sel_originatingDeviceType);
-  [v4 encodeObject:v16 forKey:v15];
+  [coderCopy encodeObject:originatingDeviceType forKey:v15];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TUConversationHandoffEligibility allocWithZone:a3];
+  v4 = [TUConversationHandoffEligibility allocWithZone:zone];
 
   return [(TUConversationHandoffEligibility *)v4 initWithHandoffEligibility:self];
 }
@@ -192,18 +192,18 @@ LABEL_7:
   [v3 appendFormat:@" isEligible=%d", -[TUConversationHandoffEligibility isEligible](self, "isEligible")];
   [v3 appendFormat:@" isUplinkMuted=%d", -[TUConversationHandoffEligibility isUplinkMuted](self, "isUplinkMuted")];
   [v3 appendFormat:@" isSendingVideo=%d", -[TUConversationHandoffEligibility isSendingVideo](self, "isSendingVideo")];
-  v4 = [(TUConversationHandoffEligibility *)self conversationGroupUUID];
-  [v3 appendFormat:@" conversationGroupUUID=%@", v4];
+  conversationGroupUUID = [(TUConversationHandoffEligibility *)self conversationGroupUUID];
+  [v3 appendFormat:@" conversationGroupUUID=%@", conversationGroupUUID];
 
-  v5 = [(TUConversationHandoffEligibility *)self association];
-  [v3 appendFormat:@" association=%@", v5];
+  association = [(TUConversationHandoffEligibility *)self association];
+  [v3 appendFormat:@" association=%@", association];
 
-  v6 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+  originatingDeviceType = [(TUConversationHandoffEligibility *)self originatingDeviceType];
 
-  if (v6)
+  if (originatingDeviceType)
   {
-    v7 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
-    [v3 appendFormat:@" originatingDeviceType=%@", v7];
+    originatingDeviceType2 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+    [v3 appendFormat:@" originatingDeviceType=%@", originatingDeviceType2];
   }
 
   [v3 appendString:@">"];
@@ -241,20 +241,20 @@ LABEL_7:
     v3 = 1237;
   }
 
-  v7 = [(TUConversationHandoffEligibility *)self conversationGroupUUID];
-  v8 = v6 ^ v3 ^ [v7 hash];
-  v9 = [(TUConversationHandoffEligibility *)self association];
-  v10 = [v9 hash];
-  v11 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
-  v12 = v10 ^ [v11 hash];
+  conversationGroupUUID = [(TUConversationHandoffEligibility *)self conversationGroupUUID];
+  v8 = v6 ^ v3 ^ [conversationGroupUUID hash];
+  association = [(TUConversationHandoffEligibility *)self association];
+  v10 = [association hash];
+  originatingDeviceType = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+  v12 = v10 ^ [originatingDeviceType hash];
 
   return v8 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -262,29 +262,29 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationHandoffEligibility *)self isEqualToHandoffEligibility:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationHandoffEligibility *)self isEqualToHandoffEligibility:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToHandoffEligibility:(id)a3
+- (BOOL)isEqualToHandoffEligibility:(id)eligibility
 {
-  v4 = a3;
-  v5 = [(TUConversationHandoffEligibility *)self isEligible];
-  if (v5 == [v4 isEligible] && (v6 = -[TUConversationHandoffEligibility isUplinkMuted](self, "isUplinkMuted"), v6 == objc_msgSend(v4, "isUplinkMuted")) && (v7 = -[TUConversationHandoffEligibility isSendingVideo](self, "isSendingVideo"), v7 == objc_msgSend(v4, "isSendingVideo")))
+  eligibilityCopy = eligibility;
+  isEligible = [(TUConversationHandoffEligibility *)self isEligible];
+  if (isEligible == [eligibilityCopy isEligible] && (v6 = -[TUConversationHandoffEligibility isUplinkMuted](self, "isUplinkMuted"), v6 == objc_msgSend(eligibilityCopy, "isUplinkMuted")) && (v7 = -[TUConversationHandoffEligibility isSendingVideo](self, "isSendingVideo"), v7 == objc_msgSend(eligibilityCopy, "isSendingVideo")))
   {
-    v10 = [(TUConversationHandoffEligibility *)self conversationGroupUUID];
-    v11 = [v4 conversationGroupUUID];
-    if (v10 == v11)
+    conversationGroupUUID = [(TUConversationHandoffEligibility *)self conversationGroupUUID];
+    conversationGroupUUID2 = [eligibilityCopy conversationGroupUUID];
+    if (conversationGroupUUID == conversationGroupUUID2)
     {
-      v12 = [(TUConversationHandoffEligibility *)self association];
-      v13 = [v4 association];
-      if ([v12 isEqual:v13])
+      association = [(TUConversationHandoffEligibility *)self association];
+      association2 = [eligibilityCopy association];
+      if ([association isEqual:association2])
       {
-        v14 = [(TUConversationHandoffEligibility *)self originatingDeviceType];
-        v15 = [v4 originatingDeviceType];
-        v8 = TUObjectsAreEqualOrNil(v14, v15);
+        originatingDeviceType = [(TUConversationHandoffEligibility *)self originatingDeviceType];
+        originatingDeviceType2 = [eligibilityCopy originatingDeviceType];
+        v8 = TUObjectsAreEqualOrNil(originatingDeviceType, originatingDeviceType2);
       }
 
       else

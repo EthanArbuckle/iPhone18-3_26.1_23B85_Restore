@@ -1,32 +1,32 @@
 @interface _MFFormatFlowedWriter
-+ (id)newWithPlainTextDocument:(id)a3 encoding:(unsigned int)a4;
++ (id)newWithPlainTextDocument:(id)document encoding:(unsigned int)encoding;
 - (id)outputString;
 - (id)quotedString;
-- (unint64_t)_findLineBreakInRange:(_NSRange)a3 maxCharWidthCount:(unint64_t)a4 endIsURL:(BOOL)a5;
-- (void)_outputQuotedParagraph:(id)a3 range:(_NSRange)a4 withQuoteLevel:(unsigned int)a5;
+- (unint64_t)_findLineBreakInRange:(_NSRange)range maxCharWidthCount:(unint64_t)count endIsURL:(BOOL)l;
+- (void)_outputQuotedParagraph:(id)paragraph range:(_NSRange)range withQuoteLevel:(unsigned int)level;
 @end
 
 @implementation _MFFormatFlowedWriter
 
-+ (id)newWithPlainTextDocument:(id)a3 encoding:(unsigned int)a4
++ (id)newWithPlainTextDocument:(id)document encoding:(unsigned int)encoding
 {
-  v6 = a3;
-  v7 = [objc_allocWithZone(a1) init];
+  documentCopy = document;
+  v7 = [objc_allocWithZone(self) init];
   v8 = *(v7 + 8);
-  *(v7 + 8) = v6;
+  *(v7 + 8) = documentCopy;
 
-  *(v7 + 16) = a4;
+  *(v7 + 16) = encoding;
   return v7;
 }
 
-- (unint64_t)_findLineBreakInRange:(_NSRange)a3 maxCharWidthCount:(unint64_t)a4 endIsURL:(BOOL)a5
+- (unint64_t)_findLineBreakInRange:(_NSRange)range maxCharWidthCount:(unint64_t)count endIsURL:(BOOL)l
 {
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3.location != 0x7FFFFFFFFFFFFFFFLL && a3.length != 0)
+  if (range.location != 0x7FFFFFFFFFFFFFFFLL && range.length != 0)
   {
-    v8 = a5;
-    length = a3.length;
-    location = a3.location;
+    lCopy = l;
+    length = range.length;
+    location = range.location;
     *&v12 = 0xAAAAAAAAAAAAAAAALL;
     *(&v12 + 1) = 0xAAAAAAAAAAAAAAAALL;
     v42 = v12;
@@ -39,7 +39,7 @@
     v37 = v12;
     lineString = self->_lineString;
     theString = lineString;
-    v47 = a3;
+    rangeCopy = range;
     CharactersPtr = CFStringGetCharactersPtr(lineString);
     if (CharactersPtr)
     {
@@ -51,17 +51,17 @@
       CStringPtr = CFStringGetCStringPtr(lineString, 0x600u);
     }
 
-    v35 = self;
+    selfCopy = self;
     v48 = 0;
     v49 = 0;
     v46 = CStringPtr;
-    if (a4)
+    if (count)
     {
       v15 = 0;
       v16 = 0;
       do
       {
-        if ((v15 & 0x8000000000000000) != 0 || (v17 = v47.length, v47.length <= v15))
+        if ((v15 & 0x8000000000000000) != 0 || (v17 = rangeCopy.length, rangeCopy.length <= v15))
         {
           v19 = 0;
         }
@@ -70,12 +70,12 @@
         {
           if (CharactersPtr)
           {
-            v18 = CharactersPtr[v47.location + v15];
+            v18 = CharactersPtr[rangeCopy.location + v15];
           }
 
           else if (v46)
           {
-            v18 = v46[v47.location + v15];
+            v18 = v46[rangeCopy.location + v15];
           }
 
           else
@@ -88,7 +88,7 @@
                 v22 = 0;
               }
 
-              if (v22 + 64 < v47.length)
+              if (v22 + 64 < rangeCopy.length)
               {
                 v17 = v22 + 64;
               }
@@ -96,7 +96,7 @@
               v48 = v22;
               v49 = v17;
               v50.length = v17 - v22;
-              v50.location = v47.location + v22;
+              v50.location = rangeCopy.location + v22;
               CFStringGetCharacters(theString, v50, buffer);
               v21 = v48;
             }
@@ -108,20 +108,20 @@
           if ((v18 & 0xFC00) == 0xD800 && v15 < length - 1)
           {
             v24 = v15 + 1;
-            v25 = v47.length;
-            if (v47.length <= (v15 + 1))
+            v25 = rangeCopy.length;
+            if (rangeCopy.length <= (v15 + 1))
             {
               v26 = 0;
             }
 
             else if (CharactersPtr)
             {
-              v26 = CharactersPtr[v47.location + v24];
+              v26 = CharactersPtr[rangeCopy.location + v24];
             }
 
             else if (v46)
             {
-              v26 = v46[v47.location + v24];
+              v26 = v46[rangeCopy.location + v24];
             }
 
             else
@@ -134,7 +134,7 @@
                   v30 = 0;
                 }
 
-                if (v30 + 64 < v47.length)
+                if (v30 + 64 < rangeCopy.length)
                 {
                   v25 = v30 + 64;
                 }
@@ -142,7 +142,7 @@
                 v48 = v30;
                 v49 = v25;
                 v51.length = v25 - v30;
-                v51.location = v47.location + v30;
+                v51.location = rangeCopy.location + v30;
                 CFStringGetCharacters(theString, v51, buffer);
                 v29 = v48;
               }
@@ -174,7 +174,7 @@
         ++v15;
       }
 
-      while (v15 < length && v16 < a4);
+      while (v15 < length && v16 < count);
     }
 
     else
@@ -183,15 +183,15 @@
       v15 = 0;
     }
 
-    if (v8 && v16 <= a4)
+    if (lCopy && v16 <= count)
     {
       return location + length;
     }
 
     else
     {
-      v31 = v35;
-      v32 = [(NSMutableString *)v35->_lineString length]- location;
+      v31 = selfCopy;
+      v32 = [(NSMutableString *)selfCopy->_lineString length]- location;
       v33 = [(NSMutableString *)v31->_lineString length];
       if (location + v15 + 1 < v33)
       {
@@ -210,14 +210,14 @@
   return result;
 }
 
-- (void)_outputQuotedParagraph:(id)a3 range:(_NSRange)a4 withQuoteLevel:(unsigned int)a5
+- (void)_outputQuotedParagraph:(id)paragraph range:(_NSRange)range withQuoteLevel:(unsigned int)level
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v76 = *MEMORY[0x1E69E9840];
-  str = a3;
+  str = paragraph;
   v66 = length;
-  v61 = a5;
+  levelCopy = level;
   if (length)
   {
     v9 = 1;
@@ -225,7 +225,7 @@
 
   else
   {
-    v9 = a5 == 0;
+    v9 = level == 0;
   }
 
   v10 = v9;
@@ -254,17 +254,17 @@
     self->_lineString = v13;
   }
 
-  v15 = a5;
-  if (a5)
+  levelCopy2 = level;
+  if (level)
   {
     do
     {
       [(NSMutableString *)self->_lineString appendString:@">"];
-      --v15;
+      --levelCopy2;
     }
 
-    while (v15);
-    v16 = 72 - a5;
+    while (levelCopy2);
+    v16 = 72 - level;
   }
 
   else
@@ -308,7 +308,7 @@
       v63 = location;
       while (1)
       {
-        if (v61 || [(__CFString *)str rangeOfString:@" " options:8 range:v65, v66]!= 0x7FFFFFFFFFFFFFFFLL || [(__CFString *)str rangeOfString:@"From " options:8 range:v65, v66]!= 0x7FFFFFFFFFFFFFFFLL || [(__CFString *)str rangeOfString:@">" options:8 range:v65, v66]!= 0x7FFFFFFFFFFFFFFFLL)
+        if (levelCopy || [(__CFString *)str rangeOfString:@" " options:8 range:v65, v66]!= 0x7FFFFFFFFFFFFFFFLL || [(__CFString *)str rangeOfString:@"From " options:8 range:v65, v66]!= 0x7FFFFFFFFFFFFFFFLL || [(__CFString *)str rangeOfString:@">" options:8 range:v65, v66]!= 0x7FFFFFFFFFFFFFFFLL)
         {
           [(NSMutableString *)self->_lineString appendString:@" "];
         }
@@ -337,8 +337,8 @@
               }
 
               v27 = *(*&buf[8] + 8 * i);
-              v28 = [v27 range];
-              if (v28 <= v24 && v28 + v29 > v24)
+              range = [v27 range];
+              if (range <= v24 && range + v29 > v24)
               {
                 v67 = v27;
                 goto LABEL_46;
@@ -513,9 +513,9 @@ LABEL_70:
             [(NSMutableString *)self->_outputString appendString:v59];
           }
 
-          if ([(NSMutableString *)self->_lineString length]> v61)
+          if ([(NSMutableString *)self->_lineString length]> levelCopy)
           {
-            [(NSMutableString *)self->_lineString deleteCharactersInRange:v61, [(NSMutableString *)self->_lineString length]- v61];
+            [(NSMutableString *)self->_lineString deleteCharactersInRange:levelCopy, [(NSMutableString *)self->_lineString length]- levelCopy];
           }
 
           v69 = v36;
@@ -580,14 +580,14 @@ LABEL_102:
   outputString = self->_outputString;
   if (!outputString)
   {
-    v4 = [(MFPlainTextDocument *)self->_inputDocument fragmentCount];
+    fragmentCount = [(MFPlainTextDocument *)self->_inputDocument fragmentCount];
     v21 = -1431655766;
     v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v6 = self->_outputString;
     self->_outputString = v5;
 
-    v18 = v4;
-    if (v4)
+    v18 = fragmentCount;
+    if (fragmentCount)
     {
       v7 = 0;
       v8 = 0;
@@ -693,13 +693,13 @@ LABEL_21:
   quotedString = self->_quotedString;
   if (!quotedString)
   {
-    v4 = [(MFPlainTextDocument *)self->_inputDocument fragmentCount];
+    fragmentCount = [(MFPlainTextDocument *)self->_inputDocument fragmentCount];
     v20 = -1431655766;
     v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v6 = self->_quotedString;
     self->_quotedString = v5;
 
-    if (v4)
+    if (fragmentCount)
     {
       v7 = 0;
       v8 = 0;
@@ -755,7 +755,7 @@ LABEL_21:
         ++v7;
       }
 
-      while (v7 != v4);
+      while (v7 != fragmentCount);
     }
 
     quotedString = self->_quotedString;

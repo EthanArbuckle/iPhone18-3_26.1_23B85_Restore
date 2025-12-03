@@ -1,26 +1,26 @@
 @interface PSAccountsClientListCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSAccountsClientListCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v11.receiver = self;
   v11.super_class = PSAccountsClientListCell;
-  v4 = a3;
-  [(PSTableCell *)&v11 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v11 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(PSAccountsClientListCell *)self textLabel:v11.receiver];
-  v6 = [v4 name];
-  [v5 setText:v6];
+  name = [specifierCopy name];
+  [v5 setText:name];
 
-  v7 = [(PSAccountsClientListCell *)self detailTextLabel];
-  v8 = [v4 propertyForKey:@"cellSubtitleText"];
+  detailTextLabel = [(PSAccountsClientListCell *)self detailTextLabel];
+  v8 = [specifierCopy propertyForKey:@"cellSubtitleText"];
 
-  [v7 setText:v8];
-  v9 = [(PSAccountsClientListCell *)self detailTextLabel];
-  v10 = [MEMORY[0x1E69DC888] grayColor];
-  [v9 setTextColor:v10];
+  [detailTextLabel setText:v8];
+  detailTextLabel2 = [(PSAccountsClientListCell *)self detailTextLabel];
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  [detailTextLabel2 setTextColor:grayColor];
 
   [(PSAccountsClientListCell *)self setNeedsLayout];
 }

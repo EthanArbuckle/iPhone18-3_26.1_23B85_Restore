@@ -1,24 +1,24 @@
 @interface SSTransferIntroViewController
-+ (id)getDetails:(id)a3;
-- (SSTransferIntroViewController)initWithItems:(id)a3;
++ (id)getDetails:(id)details;
+- (SSTransferIntroViewController)initWithItems:(id)items;
 - (TSSIMSetupFlowDelegate)delegate;
-- (void)_laterButtonTapped:(id)a3;
-- (void)_transferButtonTapped:(id)a3;
+- (void)_laterButtonTapped:(id)tapped;
+- (void)_transferButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation SSTransferIntroViewController
 
-+ (id)getDetails:(id)a3
++ (id)getDetails:(id)details
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  detailsCopy = details;
   v4 = [MEMORY[0x277CBEB58] set];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = detailsCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -36,13 +36,13 @@
         v10 = *(*(&v21 + 1) + 8 * i);
         if ([v10 isTransferablePlan])
         {
-          v11 = [v10 carrierName];
-          v12 = [v11 length];
+          carrierName = [v10 carrierName];
+          v12 = [carrierName length];
 
           if (v12)
           {
-            v13 = [v10 carrierName];
-            [v4 addObject:v13];
+            carrierName2 = [v10 carrierName];
+            [v4 addObject:carrierName2];
           }
         }
       }
@@ -73,14 +73,14 @@
   return v18;
 }
 
-- (SSTransferIntroViewController)initWithItems:(id)a3
+- (SSTransferIntroViewController)initWithItems:(id)items
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SET_UP_CELLULAR" value:&stru_28753DF48 table:@"Localizable"];
 
-  v8 = [SSTransferIntroViewController getDetails:v5];
+  v8 = [SSTransferIntroViewController getDetails:itemsCopy];
 
   v11.receiver = self;
   v11.super_class = SSTransferIntroViewController;
@@ -97,33 +97,33 @@
   v4 = [v3 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
   [v10 setTitle:v4 forState:0];
 
-  v5 = [(SSTransferIntroViewController *)self buttonTray];
-  [v5 addButton:v10];
+  buttonTray = [(SSTransferIntroViewController *)self buttonTray];
+  [buttonTray addButton:v10];
 
   if (+[TSUtilities inBuddy])
   {
-    v6 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"SET_UP_LATER" value:&stru_28753DF48 table:@"Localizable"];
-    [v6 setTitle:v8 forState:0];
+    [linkButton setTitle:v8 forState:0];
 
-    [v6 addTarget:self action:sel__laterButtonTapped_ forControlEvents:64];
-    v9 = [(SSTransferIntroViewController *)self buttonTray];
-    [v9 addButton:v6];
+    [linkButton addTarget:self action:sel__laterButtonTapped_ forControlEvents:64];
+    buttonTray2 = [(SSTransferIntroViewController *)self buttonTray];
+    [buttonTray2 addButton:linkButton];
   }
 }
 
-- (void)_transferButtonTapped:(id)a3
+- (void)_transferButtonTapped:(id)tapped
 {
   self->_isTransferButtonTapped = 1;
-  v4 = [(SSTransferIntroViewController *)self delegate];
-  [v4 viewControllerDidComplete:self];
+  delegate = [(SSTransferIntroViewController *)self delegate];
+  [delegate viewControllerDidComplete:self];
 }
 
-- (void)_laterButtonTapped:(id)a3
+- (void)_laterButtonTapped:(id)tapped
 {
-  v3 = [(SSTransferIntroViewController *)self delegate];
-  [v3 userDidTapCancel];
+  delegate = [(SSTransferIntroViewController *)self delegate];
+  [delegate userDidTapCancel];
 }
 
 - (TSSIMSetupFlowDelegate)delegate

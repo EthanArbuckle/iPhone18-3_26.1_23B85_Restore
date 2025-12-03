@@ -1,28 +1,28 @@
 @interface BCAudioBookPosition
-+ (id)positionWithChapter:(int64_t)a3 time:(double)a4;
++ (id)positionWithChapter:(int64_t)chapter time:(double)time;
 - (NSString)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation BCAudioBookPosition
 
-+ (id)positionWithChapter:(int64_t)a3 time:(double)a4
++ (id)positionWithChapter:(int64_t)chapter time:(double)time
 {
   v6 = objc_alloc_init(BCAudioBookPosition);
-  [(BCAudioBookPosition *)v6 setTimePosition:a4];
-  [(BCAudioBookPosition *)v6 setChapterNum:a3];
+  [(BCAudioBookPosition *)v6 setTimePosition:time];
+  [(BCAudioBookPosition *)v6 setChapterNum:chapter];
 
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   v5 = BUDynamicCast();
 
-  v6 = [(BCAudioBookPosition *)self chapterNum];
-  if (v6 == [v5 chapterNum])
+  chapterNum = [(BCAudioBookPosition *)self chapterNum];
+  if (chapterNum == [v5 chapterNum])
   {
     [(BCAudioBookPosition *)self timePosition];
     v8 = v7;
@@ -51,8 +51,8 @@
 
   else
   {
-    v14 = [(BCAudioBookPosition *)self chapterNum];
-    if (v14 < [v5 chapterNum])
+    chapterNum2 = [(BCAudioBookPosition *)self chapterNum];
+    if (chapterNum2 < [v5 chapterNum])
     {
       v13 = -1;
     }

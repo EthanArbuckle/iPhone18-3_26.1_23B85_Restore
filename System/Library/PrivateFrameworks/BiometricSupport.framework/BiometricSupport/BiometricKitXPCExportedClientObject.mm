@@ -1,15 +1,15 @@
 @interface BiometricKitXPCExportedClientObject
-- (BiometricKitXPCExportedClientObject)initWithClientID:(unint64_t)a3 clientInfo:(id)a4 exportedObject:(id)a5;
+- (BiometricKitXPCExportedClientObject)initWithClientID:(unint64_t)d clientInfo:(id)info exportedObject:(id)object;
 - (BiometricKitXPCExportedObject)exportedObject;
 - (id)description;
 - (id)name;
-- (void)enrollFeedback:(id)a3;
-- (void)enrollResult:(id)a3;
-- (void)enrollResult:(id)a3 details:(id)a4;
-- (void)enrollUpdate:(id)a3;
+- (void)enrollFeedback:(id)feedback;
+- (void)enrollResult:(id)result;
+- (void)enrollResult:(id)result details:(id)details;
+- (void)enrollUpdate:(id)update;
 - (void)homeButtonPressed;
-- (void)matchResult:(id)a3 details:(id)a4;
-- (void)templateUpdate:(id)a3 details:(id)a4;
+- (void)matchResult:(id)result details:(id)details;
+- (void)templateUpdate:(id)update details:(id)details;
 @end
 
 @implementation BiometricKitXPCExportedClientObject
@@ -19,9 +19,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(BiometricKitXPCExportedClientObject *)self name];
+  name = [(BiometricKitXPCExportedClientObject *)self name];
   v7 = [(NSDictionary *)self->_clientInfo objectForKeyedSubscript:@"BKClientConnectionId"];
-  v8 = [v3 stringWithFormat:@"<%@: %p: %@[%@]>", v5, self, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p: %@[%@]>", v5, self, name, v7];
 
   return v8;
 }
@@ -44,22 +44,22 @@
   return v5;
 }
 
-- (BiometricKitXPCExportedClientObject)initWithClientID:(unint64_t)a3 clientInfo:(id)a4 exportedObject:(id)a5
+- (BiometricKitXPCExportedClientObject)initWithClientID:(unint64_t)d clientInfo:(id)info exportedObject:(id)object
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = BiometricKitXPCExportedClientObject;
   v10 = [(BiometricKitXPCExportedClientObject *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_clientID = a3;
-    v12 = [v8 copy];
+    v10->_clientID = d;
+    v12 = [infoCopy copy];
     clientInfo = v11->_clientInfo;
     v11->_clientInfo = v12;
 
-    objc_storeWeak(&v11->_exportedObject, v9);
+    objc_storeWeak(&v11->_exportedObject, objectCopy);
   }
 
   return v11;
@@ -72,80 +72,80 @@
   return WeakRetained;
 }
 
-- (void)enrollResult:(id)a3
+- (void)enrollResult:(id)result
 {
-  v9 = a3;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_exportedObject);
   v5 = [WeakRetained isClient:self->_clientID entitled:2 forMethod:"-[BiometricKitXPCExportedClientObject enrollResult:]"];
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_exportedObject);
-    v7 = [v6 connection];
-    v8 = [v7 remoteObjectProxy];
-    [v8 enrollResult:v9 details:0 client:self->_clientID];
+    connection = [v6 connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy enrollResult:resultCopy details:0 client:self->_clientID];
   }
 }
 
-- (void)enrollResult:(id)a3 details:(id)a4
+- (void)enrollResult:(id)result details:(id)details
 {
-  v12 = a3;
-  v6 = a4;
+  resultCopy = result;
+  detailsCopy = details;
   WeakRetained = objc_loadWeakRetained(&self->_exportedObject);
   v8 = [WeakRetained isClient:self->_clientID entitled:2 forMethod:"-[BiometricKitXPCExportedClientObject enrollResult:details:]"];
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_exportedObject);
-    v10 = [v9 connection];
-    v11 = [v10 remoteObjectProxy];
-    [v11 enrollResult:v12 details:v6 client:self->_clientID];
+    connection = [v9 connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy enrollResult:resultCopy details:detailsCopy client:self->_clientID];
   }
 }
 
-- (void)enrollUpdate:(id)a3
+- (void)enrollUpdate:(id)update
 {
-  v9 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_exportedObject);
   v5 = [WeakRetained isClient:self->_clientID entitled:2 forMethod:"-[BiometricKitXPCExportedClientObject enrollUpdate:]"];
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_exportedObject);
-    v7 = [v6 connection];
-    v8 = [v7 remoteObjectProxy];
-    [v8 enrollUpdate:v9 client:self->_clientID];
+    connection = [v6 connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy enrollUpdate:updateCopy client:self->_clientID];
   }
 }
 
-- (void)enrollFeedback:(id)a3
+- (void)enrollFeedback:(id)feedback
 {
-  v9 = a3;
+  feedbackCopy = feedback;
   WeakRetained = objc_loadWeakRetained(&self->_exportedObject);
   v5 = [WeakRetained isClient:self->_clientID entitled:2 forMethod:"-[BiometricKitXPCExportedClientObject enrollFeedback:]"];
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_exportedObject);
-    v7 = [v6 connection];
-    v8 = [v7 remoteObjectProxy];
-    [v8 enrollFeedback:v9 client:self->_clientID];
+    connection = [v6 connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy enrollFeedback:feedbackCopy client:self->_clientID];
   }
 }
 
-- (void)matchResult:(id)a3 details:(id)a4
+- (void)matchResult:(id)result details:(id)details
 {
-  v12 = a3;
-  v6 = a4;
+  resultCopy = result;
+  detailsCopy = details;
   WeakRetained = objc_loadWeakRetained(&self->_exportedObject);
   v8 = [WeakRetained isClient:self->_clientID entitled:4 forMethod:"-[BiometricKitXPCExportedClientObject matchResult:details:]"];
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_exportedObject);
-    v10 = [v9 connection];
-    v11 = [v10 remoteObjectProxy];
-    [v11 matchResult:v12 details:v6 client:self->_clientID];
+    connection = [v9 connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy matchResult:resultCopy details:detailsCopy client:self->_clientID];
   }
 }
 
@@ -157,25 +157,25 @@
   if (v4)
   {
     v7 = objc_loadWeakRetained(&self->_exportedObject);
-    v5 = [v7 connection];
-    v6 = [v5 remoteObjectProxy];
-    [v6 homeButtonPressed:self->_clientID];
+    connection = [v7 connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy homeButtonPressed:self->_clientID];
   }
 }
 
-- (void)templateUpdate:(id)a3 details:(id)a4
+- (void)templateUpdate:(id)update details:(id)details
 {
-  v12 = a3;
-  v6 = a4;
+  updateCopy = update;
+  detailsCopy = details;
   WeakRetained = objc_loadWeakRetained(&self->_exportedObject);
   v8 = [WeakRetained isClient:self->_clientID entitled:1 forMethod:"-[BiometricKitXPCExportedClientObject templateUpdate:details:]"];
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_exportedObject);
-    v10 = [v9 connection];
-    v11 = [v10 remoteObjectProxy];
-    [v11 templateUpdate:v12 details:v6 client:self->_clientID];
+    connection = [v9 connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy templateUpdate:updateCopy details:detailsCopy client:self->_clientID];
   }
 }
 

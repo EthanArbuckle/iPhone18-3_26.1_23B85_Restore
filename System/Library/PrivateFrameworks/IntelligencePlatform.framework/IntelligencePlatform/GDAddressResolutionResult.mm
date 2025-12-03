@@ -1,13 +1,13 @@
 @interface GDAddressResolutionResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAddressResolutionResult:(id)a3;
-- (GDAddressResolutionResult)initWithCoder:(id)a3;
-- (GDAddressResolutionResult)initWithRankedEntities:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAddressResolutionResult:(id)result;
+- (GDAddressResolutionResult)initWithCoder:(id)coder;
+- (GDAddressResolutionResult)initWithRankedEntities:(id)entities;
 - (NSString)topRankedContactId;
 - (NSString)topRankedMdId;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GDAddressResolutionResult
@@ -52,13 +52,13 @@
     v12 = 0u;
     v13 = 0u;
     v3 = self->_rankedEntities;
-    v4 = [(NSArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
-    if (v4)
+    contactId2 = [(NSArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    if (contactId2)
     {
       v5 = *v13;
       while (2)
       {
-        for (i = 0; i != v4; i = i + 1)
+        for (i = 0; i != contactId2; i = i + 1)
         {
           if (*v13 != v5)
           {
@@ -66,18 +66,18 @@
           }
 
           v7 = *(*(&v12 + 1) + 8 * i);
-          v8 = [v7 contactId];
-          v9 = [v8 length];
+          contactId = [v7 contactId];
+          v9 = [contactId length];
 
           if (v9)
           {
-            v4 = [v7 contactId];
+            contactId2 = [v7 contactId];
             goto LABEL_12;
           }
         }
 
-        v4 = [(NSArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
-        if (v4)
+        contactId2 = [(NSArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        if (contactId2)
         {
           continue;
         }
@@ -91,12 +91,12 @@ LABEL_12:
 
   else
   {
-    v4 = 0;
+    contactId2 = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return contactId2;
 }
 
 - (NSString)topRankedMdId
@@ -104,46 +104,46 @@ LABEL_12:
   if ([(NSArray *)self->_rankedEntities count])
   {
     v3 = [(NSArray *)self->_rankedEntities objectAtIndexedSubscript:0];
-    v4 = [v3 mdId];
+    mdId = [v3 mdId];
   }
 
   else
   {
-    v4 = 0;
+    mdId = 0;
   }
 
-  return v4;
+  return mdId;
 }
 
-- (GDAddressResolutionResult)initWithRankedEntities:(id)a3
+- (GDAddressResolutionResult)initWithRankedEntities:(id)entities
 {
-  v5 = a3;
+  entitiesCopy = entities;
   v9.receiver = self;
   v9.super_class = GDAddressResolutionResult;
   v6 = [(GDAddressResolutionResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rankedEntities, a3);
+    objc_storeStrong(&v6->_rankedEntities, entities);
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToAddressResolutionResult:(id)a3
+- (BOOL)isEqualToAddressResolutionResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (resultCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4)
+  else if (resultCopy)
   {
     rankedEntities = self->_rankedEntities;
-    v7 = [(GDAddressResolutionResult *)v4 rankedEntities];
-    v8 = [(NSArray *)rankedEntities isEqualToArray:v7];
+    rankedEntities = [(GDAddressResolutionResult *)resultCopy rankedEntities];
+    v8 = [(NSArray *)rankedEntities isEqualToArray:rankedEntities];
   }
 
   else
@@ -154,10 +154,10 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -165,64 +165,64 @@ LABEL_12:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GDAddressResolutionResult *)self isEqualToAddressResolutionResult:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GDAddressResolutionResult *)self isEqualToAddressResolutionResult:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [GDAddressResolutionResult allocWithZone:a3];
+  v4 = [GDAddressResolutionResult allocWithZone:zone];
   rankedEntities = self->_rankedEntities;
 
   return [(GDAddressResolutionResult *)v4 initWithRankedEntities:rankedEntities];
 }
 
-- (GDAddressResolutionResult)initWithCoder:(id)a3
+- (GDAddressResolutionResult)initWithCoder:(id)coder
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
   v9 = NSStringFromSelector(sel_rankedEntities);
-  v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
 
   if (v10)
   {
     self = [(GDAddressResolutionResult *)self initWithRankedEntities:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = [v4 error];
+    error = [coderCopy error];
 
-    if (!v12)
+    if (!error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v18 = *MEMORY[0x1E696A578];
       v19[0] = @"GDAddressResolutionResult rankedEntities could not be decoded";
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
       v15 = [v13 errorWithDomain:@"GDErrorDomain" code:9 userInfo:v14];
-      [v4 failWithError:v15];
+      [coderCopy failWithError:v15];
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rankedEntities = self->_rankedEntities;
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_rankedEntities);
-  [v4 encodeObject:rankedEntities forKey:v5];
+  [coderCopy encodeObject:rankedEntities forKey:v5];
 }
 
 @end

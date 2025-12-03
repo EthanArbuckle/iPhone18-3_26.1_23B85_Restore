@@ -1,17 +1,17 @@
 @interface AVCatalystScrubber
-- (AVCatalystScrubber)initWithFrame:(CGRect)a3;
+- (AVCatalystScrubber)initWithFrame:(CGRect)frame;
 - (AVCatalystScrubberDelegate)delegate;
-- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)a3;
-- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)a3;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)point;
+- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)point;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isCollapsedOrExcluded;
 - (BOOL)isTracking;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGPoint)contentOffsetFromValue;
 - (CGRect)hitRect;
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3;
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds;
 - (CGSize)extrinsicContentSize;
 - (NSDirectionalEdgeInsets)hitRectInsets;
 - (NSMutableArray)previousScrubberVelocities;
@@ -21,35 +21,35 @@
 - (UIView)loadedTrackOverlayView;
 - (double)normalizedScrollOffset;
 - (double)timeIntervalSinceTrackingEnded;
-- (float)_normalizeSliderValue:(float)a3;
+- (float)_normalizeSliderValue:(float)value;
 - (float)clampedEstimatedFrameRate;
 - (float)duration;
 - (float)normalizedPosition;
 - (float)valueFromScrollView;
-- (void)_layoutPhotosensitiveRegions:(float)a3;
-- (void)_layoutTimeLineMarkerViews:(float)a3;
+- (void)_layoutPhotosensitiveRegions:(float)regions;
+- (void)_layoutTimeLineMarkerViews:(float)views;
 - (void)_updateLayoutItem;
 - (void)_updateSlowKnobMovementDetected;
-- (void)_updateSlowKnobMovementDetectedForTargetValue:(float)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)_updateSlowKnobMovementDetectedForTargetValue:(float)value;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)endOrCancelTracking;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutAttributesDidChange;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setExtrinsicContentSize:(CGSize)a3;
-- (void)setIncluded:(BOOL)a3;
-- (void)setInterstitialDisplayTimes:(id)a3;
-- (void)setLoadedTimeRanges:(id)a3;
-- (void)setPhotosensitiveDisplayTimes:(id)a3;
-- (void)setRemoved:(BOOL)a3;
-- (void)setShowsTimelineMarkers:(BOOL)a3;
-- (void)setValue:(float)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setExtrinsicContentSize:(CGSize)size;
+- (void)setIncluded:(BOOL)included;
+- (void)setInterstitialDisplayTimes:(id)times;
+- (void)setLoadedTimeRanges:(id)ranges;
+- (void)setPhotosensitiveDisplayTimes:(id)times;
+- (void)setRemoved:(BOOL)removed;
+- (void)setShowsTimelineMarkers:(BOOL)markers;
+- (void)setValue:(float)value;
 - (void)updateScrollViewContentSizeAndOffsetIfNeeded;
 @end
 
@@ -91,18 +91,18 @@
   return result;
 }
 
-- (void)_layoutTimeLineMarkerViews:(float)a3
+- (void)_layoutTimeLineMarkerViews:(float)views
 {
   v61 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(AVCatalystScrubber *)self _minTrackView];
-  [v6 bounds];
+  _minTrackView = [(AVCatalystScrubber *)self _minTrackView];
+  [_minTrackView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(AVCatalystScrubber *)self _minTrackView];
-  [(AVCatalystScrubber *)self convertRect:v15 fromView:v8, v10, v12, v14];
+  _minTrackView2 = [(AVCatalystScrubber *)self _minTrackView];
+  [(AVCatalystScrubber *)self convertRect:_minTrackView2 fromView:v8, v10, v12, v14];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -112,8 +112,8 @@
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v24 = [(AVCatalystScrubber *)self interstitialDisplayTimes];
-  v25 = [v24 countByEnumeratingWithState:&v55 objects:v60 count:16];
+  interstitialDisplayTimes = [(AVCatalystScrubber *)self interstitialDisplayTimes];
+  v25 = [interstitialDisplayTimes countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v25)
   {
     v26 = v25;
@@ -125,7 +125,7 @@
       {
         if (*v56 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(interstitialDisplayTimes);
         }
 
         v29 = *(*(&v55 + 1) + 8 * v28);
@@ -151,7 +151,7 @@
       }
 
       while (v26 != v28);
-      v26 = [v24 countByEnumeratingWithState:&v55 objects:v60 count:16];
+      v26 = [interstitialDisplayTimes countByEnumeratingWithState:&v55 objects:v60 count:16];
     }
 
     while (v26);
@@ -161,8 +161,8 @@
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v32 = [(AVCatalystScrubber *)self interstitialOverlayViews];
-  v33 = [v32 countByEnumeratingWithState:&v47 objects:v59 count:16];
+  interstitialOverlayViews = [(AVCatalystScrubber *)self interstitialOverlayViews];
+  v33 = [interstitialOverlayViews countByEnumeratingWithState:&v47 objects:v59 count:16];
   if (v33)
   {
     v34 = v33;
@@ -175,7 +175,7 @@
       {
         if (*v48 != v36)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(interstitialOverlayViews);
         }
 
         v38 = *(*(&v47 + 1) + 8 * v37);
@@ -183,7 +183,7 @@
         [v39 floatValue];
         v41 = v40;
         [(AVCatalystScrubber *)self minimumValue];
-        v43 = (v41 - v42) / a3;
+        v43 = (v41 - v42) / views;
 
         [(AVCatalystScrubber *)self bounds];
         [(AVCatalystScrubber *)self trackRectForBounds:?];
@@ -193,8 +193,8 @@
         v63.size.width = v21;
         v63.size.height = v23;
         MinY = CGRectGetMinY(v63);
-        v46 = [v38 layer];
-        [v46 setCornerRadius:2.5];
+        layer = [v38 layer];
+        [layer setCornerRadius:2.5];
 
         [v38 setFrame:{v44, MinY, 5.0, 5.0}];
         [(AVCatalystScrubber *)self insertSubview:v38 atIndex:0];
@@ -203,29 +203,29 @@
       }
 
       while (v34 != v37);
-      v34 = [v32 countByEnumeratingWithState:&v47 objects:v59 count:16];
+      v34 = [interstitialOverlayViews countByEnumeratingWithState:&v47 objects:v59 count:16];
     }
 
     while (v34);
   }
 }
 
-- (void)_layoutPhotosensitiveRegions:(float)a3
+- (void)_layoutPhotosensitiveRegions:(float)regions
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = [(AVCatalystScrubber *)self photosensitiveDisplayTimes];
-  v5 = [v4 count];
+  photosensitiveDisplayTimes = [(AVCatalystScrubber *)self photosensitiveDisplayTimes];
+  v5 = [photosensitiveDisplayTimes count];
 
   if (v5)
   {
-    v6 = [(AVCatalystScrubber *)self _minTrackView];
-    [v6 bounds];
+    _minTrackView = [(AVCatalystScrubber *)self _minTrackView];
+    [_minTrackView bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(AVCatalystScrubber *)self _minTrackView];
-    [(AVCatalystScrubber *)self convertRect:v15 fromView:v8, v10, v12, v14];
+    _minTrackView2 = [(AVCatalystScrubber *)self _minTrackView];
+    [(AVCatalystScrubber *)self convertRect:_minTrackView2 fromView:v8, v10, v12, v14];
     v58 = v17;
     v59 = v16;
     v56 = v19;
@@ -254,8 +254,8 @@
           }
 
           v23 = *(*(&v64 + 1) + 8 * i);
-          v24 = [(AVCatalystScrubber *)self photosensitiveDisplayTimes];
-          v25 = [v24 objectAtIndex:v21];
+          photosensitiveDisplayTimes2 = [(AVCatalystScrubber *)self photosensitiveDisplayTimes];
+          v25 = [photosensitiveDisplayTimes2 objectAtIndex:v21];
 
           v61 = v21;
           if (v25)
@@ -307,22 +307,22 @@
           v71.size.height = v56;
           v71.size.width = v57;
           MinY = CGRectGetMinY(v71);
-          v38 = [v23 layer];
-          [v38 setCornerRadius:2.5];
+          layer = [v23 layer];
+          [layer setCornerRadius:2.5];
 
-          v39 = [v25 colors];
+          colors = [v25 colors];
           v40 = MEMORY[0x1E69DC888];
-          v41 = [v39 objectAtIndexedSubscript:0];
+          v41 = [colors objectAtIndexedSubscript:0];
           [v41 doubleValue];
           v43 = v42;
-          v44 = [v39 objectAtIndexedSubscript:1];
+          v44 = [colors objectAtIndexedSubscript:1];
           [v44 doubleValue];
           v46 = v45;
-          [v39 objectAtIndexedSubscript:2];
+          [colors objectAtIndexedSubscript:2];
           v48 = v47 = v23;
           [v48 doubleValue];
           v50 = v49;
-          v51 = [v39 objectAtIndexedSubscript:3];
+          v51 = [colors objectAtIndexedSubscript:3];
           [v51 doubleValue];
           v53 = [v40 colorWithRed:v43 green:v46 blue:v50 alpha:v52];
           [v47 setBackgroundColor:v53];
@@ -340,7 +340,7 @@
   }
 }
 
-- (float)_normalizeSliderValue:(float)a3
+- (float)_normalizeSliderValue:(float)value
 {
   [(AVCatalystScrubber *)self maximumValue];
   v6 = v5;
@@ -350,7 +350,7 @@
   if (v8 > 0.0)
   {
     [(AVCatalystScrubber *)self minimumValue];
-    return (a3 - v10) / v8;
+    return (value - v10) / v8;
   }
 
   return result;
@@ -358,11 +358,11 @@
 
 - (void)_updateLayoutItem
 {
-  v3 = [(AVCatalystScrubber *)self layoutAttributes];
+  layoutAttributes = [(AVCatalystScrubber *)self layoutAttributes];
   [(AVCatalystScrubber *)self intrinsicContentSize];
-  [v3 setMinimumSize:?];
+  [layoutAttributes setMinimumSize:?];
 
-  v4 = [(AVCatalystScrubber *)self layoutAttributes];
+  layoutAttributes2 = [(AVCatalystScrubber *)self layoutAttributes];
   if ([(AVCatalystScrubber *)self isIncluded])
   {
     v5 = [(AVCatalystScrubber *)self isRemoved]^ 1;
@@ -373,13 +373,13 @@
     v5 = 0;
   }
 
-  [v4 setIncluded:v5];
+  [layoutAttributes2 setIncluded:v5];
 
-  v6 = [(AVCatalystScrubber *)self layoutAttributes];
-  [v6 setCollapsed:{-[AVCatalystScrubber isCollapsed](self, "isCollapsed")}];
+  layoutAttributes3 = [(AVCatalystScrubber *)self layoutAttributes];
+  [layoutAttributes3 setCollapsed:{-[AVCatalystScrubber isCollapsed](self, "isCollapsed")}];
 }
 
-- (void)_updateSlowKnobMovementDetectedForTargetValue:(float)a3
+- (void)_updateSlowKnobMovementDetectedForTargetValue:(float)value
 {
   v66 = *MEMORY[0x1E69E9840];
   if (![(AVCatalystScrubber *)self slowKnobMovementDetected]&& !self->_didHaveLessThanFullScrubbingSpeedSinceTrackingBegin)
@@ -392,8 +392,8 @@
     [(AVCatalystScrubber *)self trackRectForBounds:?];
     Width = CGRectGetWidth(v67);
     objc_initWeak(&location, self);
-    v10 = [(AVCatalystScrubber *)self updateSlowKnobMovementDetectedTimer];
-    [v10 invalidate];
+    updateSlowKnobMovementDetectedTimer = [(AVCatalystScrubber *)self updateSlowKnobMovementDetectedTimer];
+    [updateSlowKnobMovementDetectedTimer invalidate];
 
     v11 = MEMORY[0x1E695DFF0];
     v61[0] = MEMORY[0x1E69E9820];
@@ -405,13 +405,13 @@
     [(AVCatalystScrubber *)self setUpdateSlowKnobMovementDetectedTimer:v12];
 
     Current = CFAbsoluteTimeGetCurrent();
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v15 = [(AVCatalystScrubber *)self previousScrubberVelocities];
-    v16 = [v15 countByEnumeratingWithState:&v57 objects:v65 count:16];
+    previousScrubberVelocities = [(AVCatalystScrubber *)self previousScrubberVelocities];
+    v16 = [previousScrubberVelocities countByEnumeratingWithState:&v57 objects:v65 count:16];
     if (v16)
     {
       v17 = *v58;
@@ -421,25 +421,25 @@
         {
           if (*v58 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(previousScrubberVelocities);
           }
 
           v19 = *(*(&v57 + 1) + 8 * i);
           [v19 timestamp];
           if (Current - v20 > 1.5)
           {
-            [v14 addObject:v19];
+            [array addObject:v19];
           }
         }
 
-        v16 = [v15 countByEnumeratingWithState:&v57 objects:v65 count:16];
+        v16 = [previousScrubberVelocities countByEnumeratingWithState:&v57 objects:v65 count:16];
       }
 
       while (v16);
     }
 
-    v21 = [(AVCatalystScrubber *)self previousScrubberVelocities];
-    [v21 removeObjectsInArray:v14];
+    previousScrubberVelocities2 = [(AVCatalystScrubber *)self previousScrubberVelocities];
+    [previousScrubberVelocities2 removeObjectsInArray:array];
 
     previousValue = self->_previousValue;
     previousValueChangeTime = self->_previousValueChangeTime;
@@ -449,29 +449,29 @@
     {
       v26 = objc_alloc_init(AVCatalystScrubberVelocity);
       [(AVCatalystScrubberVelocity *)v26 setTimestamp:Current];
-      [(AVCatalystScrubberVelocity *)v26 setVelocity:(Width + -9.0) * ((a3 - previousValue) / v25) / (currentValueChangedTime - previousValueChangeTime)];
-      v27 = [(AVCatalystScrubber *)self previousScrubberVelocities];
-      [v27 addObject:v26];
+      [(AVCatalystScrubberVelocity *)v26 setVelocity:(Width + -9.0) * ((value - previousValue) / v25) / (currentValueChangedTime - previousValueChangeTime)];
+      previousScrubberVelocities3 = [(AVCatalystScrubber *)self previousScrubberVelocities];
+      [previousScrubberVelocities3 addObject:v26];
     }
 
     self->_previousValueChangeTime = self->_currentValueChangedTime;
     self->_currentValueChangedTime = Current;
-    self->_previousValue = a3;
+    self->_previousValue = value;
     if (Current - self->_trackingStartTime <= 1.0)
     {
       goto LABEL_40;
     }
 
-    v28 = [(AVCatalystScrubber *)self previousScrubberVelocities];
-    v29 = [v28 count] == 0;
+    previousScrubberVelocities4 = [(AVCatalystScrubber *)self previousScrubberVelocities];
+    v29 = [previousScrubberVelocities4 count] == 0;
 
     if (v29)
     {
       goto LABEL_40;
     }
 
-    v30 = [(AVCatalystScrubber *)self previousScrubberVelocities];
-    v31 = [v30 objectAtIndexedSubscript:0];
+    previousScrubberVelocities5 = [(AVCatalystScrubber *)self previousScrubberVelocities];
+    v31 = [previousScrubberVelocities5 objectAtIndexedSubscript:0];
     [v31 velocity];
     v33 = v32;
 
@@ -479,8 +479,8 @@
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v34 = [(AVCatalystScrubber *)self previousScrubberVelocities];
-    v35 = [v34 countByEnumeratingWithState:&v53 objects:v64 count:16];
+    previousScrubberVelocities6 = [(AVCatalystScrubber *)self previousScrubberVelocities];
+    v35 = [previousScrubberVelocities6 countByEnumeratingWithState:&v53 objects:v64 count:16];
     if (v35)
     {
       v36 = 0;
@@ -496,7 +496,7 @@
         {
           if (*v54 != v38)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(previousScrubberVelocities6);
           }
 
           v43 = *(*(&v53 + 1) + 8 * v40);
@@ -520,7 +520,7 @@
         }
 
         while (v35 != v40);
-        v35 = [v34 countByEnumeratingWithState:&v53 objects:v64 count:16];
+        v35 = [previousScrubberVelocities6 countByEnumeratingWithState:&v53 objects:v64 count:16];
       }
 
       while (v35);
@@ -536,8 +536,8 @@
     }
 
     [(AVCatalystScrubber *)self setSlowKnobMovementDetected:1];
-    v52 = [(AVCatalystScrubber *)self delegate];
-    [v52 catalystScrubberSlowKnobMovementDetected:self];
+    delegate = [(AVCatalystScrubber *)self delegate];
+    [delegate catalystScrubberSlowKnobMovementDetected:self];
 
 LABEL_40:
     objc_destroyWeak(&v62);
@@ -558,10 +558,10 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
   [(AVCatalystScrubber *)self _updateSlowKnobMovementDetectedForTargetValue:?];
 }
 
-- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)a3
+- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(AVCatalystScrubber *)self scrubsWhenTappedAnywhere])
   {
     [(AVCatalystScrubber *)self hitRect];
@@ -575,13 +575,13 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
     v6 = 0;
   }
 
-  v7 = [(AVCatalystScrubber *)self currentThumbView];
-  [(AVCatalystScrubber *)self convertPoint:v7 toView:x, y];
+  currentThumbView = [(AVCatalystScrubber *)self currentThumbView];
+  [(AVCatalystScrubber *)self convertPoint:currentThumbView toView:x, y];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AVCatalystScrubber *)self currentThumbView];
-  [v12 bounds];
+  currentThumbView2 = [(AVCatalystScrubber *)self currentThumbView];
+  [currentThumbView2 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -598,9 +598,9 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
   v37.size.height = v28;
   v35.x = v9;
   v35.y = v11;
-  LOBYTE(v12) = CGRectContainsPoint(v37, v35);
-  v29 = [(AVCatalystScrubber *)self _trackEnabled];
-  if ((v12 & 1) != 0 || v29)
+  LOBYTE(currentThumbView2) = CGRectContainsPoint(v37, v35);
+  _trackEnabled = [(AVCatalystScrubber *)self _trackEnabled];
+  if ((currentThumbView2 & 1) != 0 || _trackEnabled)
   {
     [(AVCatalystScrubber *)self maximumValue];
     v31 = v30;
@@ -621,16 +621,16 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
   return v6;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [(AVCatalystScrubber *)self sendActionsForControlEvents:448];
 
   [(AVCatalystScrubber *)self setScrollScrubbing:0];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(AVCatalystScrubber *)self sendActionsForControlEvents:448];
 
@@ -638,14 +638,14 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(AVCatalystScrubber *)self setScrollScrubbing:1];
 
   [(AVCatalystScrubber *)self sendActionsForControlEvents:1];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if ([(AVCatalystScrubber *)self isScrollScrubbing])
   {
@@ -658,19 +658,19 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
 
 - (UIGestureRecognizer)trackpadGestureRecognizer
 {
-  v2 = [(AVCatalystScrubber *)self scrollView];
-  v3 = [v2 panGestureRecognizer];
+  scrollView = [(AVCatalystScrubber *)self scrollView];
+  panGestureRecognizer = [scrollView panGestureRecognizer];
 
-  return v3;
+  return panGestureRecognizer;
 }
 
 - (CGPoint)contentOffsetFromValue
 {
-  v3 = [(AVCatalystScrubber *)self scrollView];
-  [v3 contentSize];
+  scrollView = [(AVCatalystScrubber *)self scrollView];
+  [scrollView contentSize];
   v5 = v4;
-  v6 = [(AVCatalystScrubber *)self scrollView];
-  [v6 bounds];
+  scrollView2 = [(AVCatalystScrubber *)self scrollView];
+  [scrollView2 bounds];
   v8 = v5 - v7;
 
   [(AVCatalystScrubber *)self normalizedPosition];
@@ -693,18 +693,18 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
 
 - (double)normalizedScrollOffset
 {
-  v3 = [(AVCatalystScrubber *)self scrollView];
-  [v3 contentSize];
+  scrollView = [(AVCatalystScrubber *)self scrollView];
+  [scrollView contentSize];
   v5 = v4;
-  v6 = [(AVCatalystScrubber *)self scrollView];
-  [v6 bounds];
+  scrollView2 = [(AVCatalystScrubber *)self scrollView];
+  [scrollView2 bounds];
   v8 = v5 - v7;
 
   v9 = 0.0;
   if (v8 > 0.0)
   {
-    v10 = [(AVCatalystScrubber *)self scrollView];
-    [v10 contentOffset];
+    scrollView3 = [(AVCatalystScrubber *)self scrollView];
+    [scrollView3 contentOffset];
     v9 = 1.0 - v11 / v8;
   }
 
@@ -737,10 +737,10 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
   return v4 - v5;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(AVCatalystScrubber *)self hitRect];
   v10 = x;
   v11 = y;
@@ -788,14 +788,14 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
   v47.receiver = self;
   v47.super_class = AVCatalystScrubber;
   [(AVCatalystScrubber *)&v47 layoutSubviews];
-  v3 = [(AVCatalystScrubber *)self _minTrackView];
-  [v3 bounds];
+  _minTrackView = [(AVCatalystScrubber *)self _minTrackView];
+  [_minTrackView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AVCatalystScrubber *)self _minTrackView];
-  [(AVCatalystScrubber *)self convertRect:v12 fromView:v5, v7, v9, v11];
+  _minTrackView2 = [(AVCatalystScrubber *)self _minTrackView];
+  [(AVCatalystScrubber *)self convertRect:_minTrackView2 fromView:v5, v7, v9, v11];
   v46 = v13;
   v15 = v14;
   v17 = v16;
@@ -805,12 +805,12 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
   MinY = *(MEMORY[0x1E695F058] + 8);
   v23 = *(MEMORY[0x1E695F058] + 16);
   Height = *(MEMORY[0x1E695F058] + 24);
-  v24 = [(AVCatalystScrubber *)self loadedTimeRanges];
+  loadedTimeRanges = [(AVCatalystScrubber *)self loadedTimeRanges];
   [(AVCatalystScrubber *)self maximumValue];
   LODWORD(v5) = v25;
   [(AVCatalystScrubber *)self minimumValue];
   v27 = *&v5 - v26;
-  if (v27 <= 0.0 || ![v24 count])
+  if (v27 <= 0.0 || ![loadedTimeRanges count])
   {
     goto LABEL_12;
   }
@@ -819,7 +819,7 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
   v29 = v28;
   [(AVCatalystScrubber *)self minimumValue];
   v31 = v30;
-  if ([v24 count] < 2)
+  if ([loadedTimeRanges count] < 2)
   {
     goto LABEL_11;
   }
@@ -828,7 +828,7 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
   v33 = (v29 - v31) / v27;
   while (1)
   {
-    v34 = [v24 objectAtIndexedSubscript:v32];
+    v34 = [loadedTimeRanges objectAtIndexedSubscript:v32];
     [v34 floatValue];
     if (v35 <= v33)
     {
@@ -837,13 +837,13 @@ void __68__AVCatalystScrubber__updateSlowKnobMovementDetectedForTargetValue___bl
 
     ++v32;
 LABEL_8:
-    if (v32 >= [v24 count] >> 1)
+    if (v32 >= [loadedTimeRanges count] >> 1)
     {
       goto LABEL_11;
     }
   }
 
-  v36 = [v24 objectAtIndexedSubscript:++v32];
+  v36 = [loadedTimeRanges objectAtIndexedSubscript:++v32];
   [v36 floatValue];
   v38 = v37;
 
@@ -852,7 +852,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v39 = [v24 objectAtIndexedSubscript:v32];
+  v39 = [loadedTimeRanges objectAtIndexedSubscript:v32];
   [v39 floatValue];
 
 LABEL_11:
@@ -882,8 +882,8 @@ LABEL_11:
   v52.size.height = v19;
   Height = CGRectGetHeight(v52);
 LABEL_12:
-  v42 = [(AVCatalystScrubber *)self loadedTrackOverlayView];
-  [v42 setFrame:{MaxX, MinY, v23, Height}];
+  loadedTrackOverlayView = [(AVCatalystScrubber *)self loadedTrackOverlayView];
+  [loadedTrackOverlayView setFrame:{MaxX, MinY, v23, Height}];
 
   *&v43 = v27;
   [(AVCatalystScrubber *)self _layoutTimeLineMarkerViews:v43];
@@ -897,16 +897,16 @@ LABEL_12:
   if (![(AVCatalystScrubber *)self isScrollScrubbing])
   {
     [(AVCatalystScrubber *)self updateScrollViewContentSizeAndOffsetIfNeeded];
-    v45 = [(AVCatalystScrubber *)self scrollView];
+    scrollView = [(AVCatalystScrubber *)self scrollView];
     [(AVCatalystScrubber *)self contentOffsetFromValue];
-    [v45 setContentOffset:?];
+    [scrollView setContentOffset:?];
   }
 }
 
 - (void)updateScrollViewContentSizeAndOffsetIfNeeded
 {
-  v3 = [(AVCatalystScrubber *)self scrollView];
-  [v3 frame];
+  scrollView = [(AVCatalystScrubber *)self scrollView];
+  [scrollView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -924,15 +924,15 @@ LABEL_12:
 
   if (!v16)
   {
-    v17 = [(AVCatalystScrubber *)self scrollView];
+    scrollView2 = [(AVCatalystScrubber *)self scrollView];
     [(AVCatalystScrubber *)self bounds];
-    [v17 setFrame:?];
+    [scrollView2 setFrame:?];
 
-    v19 = [(AVCatalystScrubber *)self scrollView];
+    scrollView3 = [(AVCatalystScrubber *)self scrollView];
     [(AVCatalystScrubber *)self bounds];
     v18 = CGRectGetWidth(v22) * 6.0;
     [(AVCatalystScrubber *)self bounds];
-    [v19 setContentSize:{v18, CGRectGetHeight(v23)}];
+    [scrollView3 setContentSize:{v18, CGRectGetHeight(v23)}];
   }
 }
 
@@ -953,11 +953,11 @@ LABEL_12:
 {
   [(AVCatalystScrubber *)self setTimestampWhenTrackingEnded:CFAbsoluteTimeGetCurrent()];
   [(AVCatalystScrubber *)self setSlowKnobMovementDetected:0];
-  v3 = [(AVCatalystScrubber *)self previousScrubberVelocities];
-  [v3 removeAllObjects];
+  previousScrubberVelocities = [(AVCatalystScrubber *)self previousScrubberVelocities];
+  [previousScrubberVelocities removeAllObjects];
 
-  v4 = [(AVCatalystScrubber *)self updateSlowKnobMovementDetectedTimer];
-  [v4 invalidate];
+  updateSlowKnobMovementDetectedTimer = [(AVCatalystScrubber *)self updateSlowKnobMovementDetectedTimer];
+  [updateSlowKnobMovementDetectedTimer invalidate];
 
   [(AVCatalystScrubber *)self setUpdateSlowKnobMovementDetectedTimer:0];
   self->_trackingStartTime = NAN;
@@ -966,25 +966,25 @@ LABEL_12:
   self->_currentValueChangedTime = NAN;
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = AVCatalystScrubber;
-  [(AVCatalystScrubber *)&v4 cancelTrackingWithEvent:a3];
+  [(AVCatalystScrubber *)&v4 cancelTrackingWithEvent:event];
   [(AVCatalystScrubber *)self endOrCancelTracking];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [(AVCatalystScrubber *)self setTracking:0, a4];
+  [(AVCatalystScrubber *)self setTracking:0, event];
   [(AVCatalystScrubber *)self setHighlighted:0];
 
   [(AVCatalystScrubber *)self endOrCancelTracking];
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   [(AVCatalystScrubber *)self maximumValue];
   v7 = v6;
   [(AVCatalystScrubber *)self minimumValue];
@@ -996,13 +996,13 @@ LABEL_12:
   width = v42.size.width;
   height = v42.size.height;
   v40 = CGRectGetWidth(v42);
-  v14 = [(AVCatalystScrubber *)self currentThumbView];
-  [v14 frame];
+  currentThumbView = [(AVCatalystScrubber *)self currentThumbView];
+  [currentThumbView frame];
   v39 = v15;
 
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v17 = v16;
-  [v5 previousLocationInView:self];
+  [touchCopy previousLocationInView:self];
   v19 = v18;
 
   [(AVCatalystScrubber *)self center];
@@ -1034,16 +1034,16 @@ LABEL_12:
 
   [(AVCatalystScrubber *)self minimumValue];
   v29 = v28;
-  v30 = [(AVCatalystScrubber *)self window];
-  v31 = [v30 windowScene];
-  if (v31)
+  window = [(AVCatalystScrubber *)self window];
+  windowScene = [window windowScene];
+  if (windowScene)
   {
-    v32 = v31;
-    v33 = [(AVCatalystScrubber *)self window];
-    v34 = [v33 windowScene];
-    v35 = [v34 activationState];
+    v32 = windowScene;
+    window2 = [(AVCatalystScrubber *)self window];
+    windowScene2 = [window2 windowScene];
+    activationState = [windowScene2 activationState];
 
-    if (!v35)
+    if (!activationState)
     {
       *&v36 = v29 + (v27 * v41);
       [(AVCatalystScrubber *)self setValue:v36];
@@ -1058,13 +1058,13 @@ LABEL_12:
   return 1;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   [(AVCatalystScrubber *)self setHasChangedLocationAtLeastOnce:0];
   [(AVCatalystScrubber *)self setShouldRecoverFromPrecisionScrubbingIfNeeded:0];
-  [v6 locationInView:self];
+  [touchCopy locationInView:self];
   v9 = v8;
   v10 = [(AVCatalystScrubber *)self _shouldTrackTouchAtPoint:?];
   if (v10)
@@ -1131,12 +1131,12 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
   return [(AVCatalystScrubber *)&v4 isTracking]|| [(AVCatalystScrubber *)self isScrollScrubbing];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = AVCatalystScrubber;
   [(AVCatalystScrubber *)&v5 setEnabled:?];
-  if ([(AVCatalystScrubber *)self isTracking]&& !a3)
+  if ([(AVCatalystScrubber *)self isTracking]&& !enabled)
   {
     [(AVCatalystScrubber *)self setTracking:0];
     [(AVCatalystScrubber *)self setHighlighted:0];
@@ -1146,7 +1146,7 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
   [(AVCatalystScrubber *)self setNeedsLayout];
 }
 
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -1159,7 +1159,7 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
   return result;
 }
 
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -1172,7 +1172,7 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
   return result;
 }
 
-- (void)setValue:(float)a3
+- (void)setValue:(float)value
 {
   v5.receiver = self;
   v5.super_class = AVCatalystScrubber;
@@ -1180,16 +1180,16 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
   if (![(AVCatalystScrubber *)self isScrollScrubbing])
   {
     [(AVCatalystScrubber *)self updateScrollViewContentSizeAndOffsetIfNeeded];
-    v4 = [(AVCatalystScrubber *)self scrollView];
+    scrollView = [(AVCatalystScrubber *)self scrollView];
     [(AVCatalystScrubber *)self contentOffsetFromValue];
-    [v4 setContentOffset:?];
+    [scrollView setContentOffset:?];
   }
 }
 
-- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)a3
+- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(AVCatalystScrubber *)self isTracking])
   {
     return 1;
@@ -1198,44 +1198,44 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
   return [(AVCatalystScrubber *)self _shouldTrackTouchAtPoint:x, y];
 }
 
-- (void)setExtrinsicContentSize:(CGSize)a3
+- (void)setExtrinsicContentSize:(CGSize)size
 {
-  if (a3.width != self->_extrinsicContentSize.width || a3.height != self->_extrinsicContentSize.height)
+  if (size.width != self->_extrinsicContentSize.width || size.height != self->_extrinsicContentSize.height)
   {
-    self->_extrinsicContentSize = a3;
+    self->_extrinsicContentSize = size;
     [(AVCatalystScrubber *)self invalidateIntrinsicContentSize];
 
     [(AVCatalystScrubber *)self _updateLayoutItem];
   }
 }
 
-- (void)setRemoved:(BOOL)a3
+- (void)setRemoved:(BOOL)removed
 {
-  if (self->_removed != a3)
+  if (self->_removed != removed)
   {
-    self->_removed = a3;
+    self->_removed = removed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVCatalystScrubber *)self _updateLayoutItem];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(AVCatalystScrubber *)self _updateLayoutItem];
 
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
   }
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(AVCatalystScrubber *)self _updateLayoutItem];
 
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
@@ -1254,31 +1254,31 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
 
 - (void)layoutAttributesDidChange
 {
-  v3 = [(AVCatalystScrubber *)self layoutAttributes];
-  -[AVCatalystScrubber setCollapsed:](self, "setCollapsed:", [v3 isCollapsed]);
+  layoutAttributes = [(AVCatalystScrubber *)self layoutAttributes];
+  -[AVCatalystScrubber setCollapsed:](self, "setCollapsed:", [layoutAttributes isCollapsed]);
 }
 
-- (void)setShowsTimelineMarkers:(BOOL)a3
+- (void)setShowsTimelineMarkers:(BOOL)markers
 {
-  if (self->_showsTimelineMarkers != a3)
+  if (self->_showsTimelineMarkers != markers)
   {
-    v3 = a3;
-    self->_showsTimelineMarkers = a3;
-    v5 = [(AVCatalystScrubber *)self interstitialOverlayViews];
-    v6 = [v5 count];
+    markersCopy = markers;
+    self->_showsTimelineMarkers = markers;
+    interstitialOverlayViews = [(AVCatalystScrubber *)self interstitialOverlayViews];
+    v6 = [interstitialOverlayViews count];
 
     if (v6)
     {
       v7 = 0;
       do
       {
-        v8 = [(AVCatalystScrubber *)self interstitialOverlayViews];
-        v9 = [v8 objectAtIndex:v7];
+        interstitialOverlayViews2 = [(AVCatalystScrubber *)self interstitialOverlayViews];
+        v9 = [interstitialOverlayViews2 objectAtIndex:v7];
 
-        [v9 setHidden:!v3];
+        [v9 setHidden:!markersCopy];
         ++v7;
-        v10 = [(AVCatalystScrubber *)self interstitialOverlayViews];
-        v11 = [v10 count];
+        interstitialOverlayViews3 = [(AVCatalystScrubber *)self interstitialOverlayViews];
+        v11 = [interstitialOverlayViews3 count];
       }
 
       while (v11 > v7);
@@ -1286,49 +1286,49 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
   }
 }
 
-- (void)setInterstitialDisplayTimes:(id)a3
+- (void)setInterstitialDisplayTimes:(id)times
 {
-  v10 = a3;
-  if (self->_interstitialDisplayTimes != v10)
+  timesCopy = times;
+  if (self->_interstitialDisplayTimes != timesCopy)
   {
-    objc_storeStrong(&self->_interstitialDisplayTimes, a3);
-    v5 = [(AVCatalystScrubber *)self interstitialOverlayViews];
-    [v5 removeAllObjects];
+    objc_storeStrong(&self->_interstitialDisplayTimes, times);
+    interstitialOverlayViews = [(AVCatalystScrubber *)self interstitialOverlayViews];
+    [interstitialOverlayViews removeAllObjects];
 
-    if ([(NSArray *)v10 count])
+    if ([(NSArray *)timesCopy count])
     {
       v6 = 0;
       do
       {
         v7 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-        v8 = [MEMORY[0x1E69DC888] whiteColor];
-        [v7 setBackgroundColor:v8];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [v7 setBackgroundColor:whiteColor];
 
         [v7 setUserInteractionEnabled:0];
-        v9 = [(AVCatalystScrubber *)self interstitialOverlayViews];
-        [v9 addObject:v7];
+        interstitialOverlayViews2 = [(AVCatalystScrubber *)self interstitialOverlayViews];
+        [interstitialOverlayViews2 addObject:v7];
 
         ++v6;
       }
 
-      while ([(NSArray *)v10 count]> v6);
+      while ([(NSArray *)timesCopy count]> v6);
     }
   }
 }
 
-- (void)setPhotosensitiveDisplayTimes:(id)a3
+- (void)setPhotosensitiveDisplayTimes:(id)times
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_photosensitiveDisplayTimes != v5)
+  timesCopy = times;
+  if (self->_photosensitiveDisplayTimes != timesCopy)
   {
-    objc_storeStrong(&self->_photosensitiveDisplayTimes, a3);
+    objc_storeStrong(&self->_photosensitiveDisplayTimes, times);
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(AVCatalystScrubber *)self photosensitiveOverlayViews];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    photosensitiveOverlayViews = [(AVCatalystScrubber *)self photosensitiveOverlayViews];
+    v7 = [photosensitiveOverlayViews countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1340,28 +1340,28 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(photosensitiveOverlayViews);
           }
 
           [*(*(&v18 + 1) + 8 * v10++) removeFromSuperview];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [photosensitiveOverlayViews countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
     }
 
-    v11 = [(AVCatalystScrubber *)self photosensitiveOverlayViews];
-    [v11 removeAllObjects];
+    photosensitiveOverlayViews2 = [(AVCatalystScrubber *)self photosensitiveOverlayViews];
+    [photosensitiveOverlayViews2 removeAllObjects];
 
-    if ([(NSArray *)v5 count])
+    if ([(NSArray *)timesCopy count])
     {
       v12 = 0;
       do
       {
-        v13 = [(NSArray *)v5 objectAtIndex:v12];
+        v13 = [(NSArray *)timesCopy objectAtIndex:v12];
         [v13 risk];
         v15 = v14;
 
@@ -1369,14 +1369,14 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
         {
           v16 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
           [v16 setUserInteractionEnabled:0];
-          v17 = [(AVCatalystScrubber *)self photosensitiveOverlayViews];
-          [v17 addObject:v16];
+          photosensitiveOverlayViews3 = [(AVCatalystScrubber *)self photosensitiveOverlayViews];
+          [photosensitiveOverlayViews3 addObject:v16];
         }
 
         ++v12;
       }
 
-      while ([(NSArray *)v5 count]> v12);
+      while ([(NSArray *)timesCopy count]> v12);
     }
   }
 }
@@ -1401,11 +1401,11 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
   return v3;
 }
 
-- (void)setLoadedTimeRanges:(id)a3
+- (void)setLoadedTimeRanges:(id)ranges
 {
-  if (self->_loadedTimeRanges != a3)
+  if (self->_loadedTimeRanges != ranges)
   {
-    v4 = [a3 copy];
+    v4 = [ranges copy];
     loadedTimeRanges = self->_loadedTimeRanges;
     self->_loadedTimeRanges = v4;
 
@@ -1418,9 +1418,9 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
   previousScrubberVelocities = self->_previousScrubberVelocities;
   if (!previousScrubberVelocities)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_previousScrubberVelocities;
-    self->_previousScrubberVelocities = v4;
+    self->_previousScrubberVelocities = array;
 
     previousScrubberVelocities = self->_previousScrubberVelocities;
   }
@@ -1438,8 +1438,8 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
     self->_loadedTrackOverlayView = v4;
 
     v6 = self->_loadedTrackOverlayView;
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v6 setBackgroundColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v6 setBackgroundColor:whiteColor];
 
     [(UIView *)self->_loadedTrackOverlayView setUserInteractionEnabled:0];
     loadedTrackOverlayView = self->_loadedTrackOverlayView;
@@ -1448,11 +1448,11 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
   return loadedTrackOverlayView;
 }
 
-- (AVCatalystScrubber)initWithFrame:(CGRect)a3
+- (AVCatalystScrubber)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = AVCatalystScrubber;
-  v3 = [(AVCatalystScrubber *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVCatalystScrubber *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1481,8 +1481,8 @@ void __55__AVCatalystScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(
     [(AVLayoutItemAttributes *)v4->_layoutAttributes setIncluded:[(AVCatalystScrubber *)v4 isIncluded]];
     [(AVLayoutItemAttributes *)v4->_layoutAttributes setHasFlexibleContentSize:0];
     v12 = v4->_layoutAttributes;
-    v13 = [(AVCatalystScrubber *)v4 accessibilityIdentifier];
-    [(AVLayoutItemAttributes *)v12 setAccessibilityIdentifier:v13];
+    accessibilityIdentifier = [(AVCatalystScrubber *)v4 accessibilityIdentifier];
+    [(AVLayoutItemAttributes *)v12 setAccessibilityIdentifier:accessibilityIdentifier];
 
     v14 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
     scrollView = v4->_scrollView;

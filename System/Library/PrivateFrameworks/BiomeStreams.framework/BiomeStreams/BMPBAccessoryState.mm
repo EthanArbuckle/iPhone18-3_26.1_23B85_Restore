@@ -1,15 +1,15 @@
 @interface BMPBAccessoryState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsValueType:(id)a3;
+- (int)StringAsValueType:(id)type;
 - (int)valueType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasValueType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasValueType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBAccessoryState
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasValueType:(BOOL)a3
+- (void)setHasValueType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -42,20 +42,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsValueType:(id)a3
+- (int)StringAsValueType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Data"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Data"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"String"])
+  else if ([typeCopy isEqualToString:@"String"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Num"])
+  else if ([typeCopy isEqualToString:@"Num"])
   {
     v4 = 2;
   }
@@ -74,20 +74,20 @@
   v8.receiver = self;
   v8.super_class = BMPBAccessoryState;
   v4 = [(BMPBAccessoryState *)&v8 description];
-  v5 = [(BMPBAccessoryState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBAccessoryState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   mediaPropertyType = self->_mediaPropertyType;
   if (mediaPropertyType)
   {
-    [v3 setObject:mediaPropertyType forKey:@"mediaPropertyType"];
+    [dictionary setObject:mediaPropertyType forKey:@"mediaPropertyType"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -127,82 +127,82 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_mediaPropertyType)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     valueType = self->_valueType;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_dataValue)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     numValue = self->_numValue;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_mediaPropertyType)
   {
-    [v4 setMediaPropertyType:?];
-    v4 = v5;
+    [toCopy setMediaPropertyType:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 10) = self->_valueType;
-    *(v4 + 44) |= 2u;
+    *(toCopy + 10) = self->_valueType;
+    *(toCopy + 44) |= 2u;
   }
 
   if (self->_dataValue)
   {
     [v5 setDataValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_stringValue)
   {
     [v5 setStringValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_numValue;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 1) = *&self->_numValue;
+    *(toCopy + 44) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_mediaPropertyType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_mediaPropertyType copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -212,11 +212,11 @@
     *(v5 + 44) |= 2u;
   }
 
-  v8 = [(NSData *)self->_dataValue copyWithZone:a3];
+  v8 = [(NSData *)self->_dataValue copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v10 = [(NSString *)self->_stringValue copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -229,16 +229,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   mediaPropertyType = self->_mediaPropertyType;
-  if (mediaPropertyType | *(v4 + 3))
+  if (mediaPropertyType | *(equalCopy + 3))
   {
     if (![(NSString *)mediaPropertyType isEqual:?])
     {
@@ -246,16 +246,16 @@
     }
   }
 
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_valueType != *(v4 + 10))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_valueType != *(equalCopy + 10))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
 LABEL_17:
     v9 = 0;
@@ -263,13 +263,13 @@ LABEL_17:
   }
 
   dataValue = self->_dataValue;
-  if (dataValue | *(v4 + 2) && ![(NSData *)dataValue isEqual:?])
+  if (dataValue | *(equalCopy + 2) && ![(NSData *)dataValue isEqual:?])
   {
     goto LABEL_17;
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 4))
+  if (stringValue | *(equalCopy + 4))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -277,10 +277,10 @@ LABEL_17:
     }
   }
 
-  v9 = (*(v4 + 44) & 1) == 0;
+  v9 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_numValue != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_numValue != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
@@ -344,37 +344,37 @@ LABEL_18:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(BMPBAccessoryState *)self setMediaPropertyType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 44) & 2) != 0)
+  if ((*(fromCopy + 44) & 2) != 0)
   {
-    self->_valueType = *(v4 + 10);
+    self->_valueType = *(fromCopy + 10);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBAccessoryState *)self setDataValue:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBAccessoryState *)self setStringValue:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_numValue = *(v4 + 1);
+    self->_numValue = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

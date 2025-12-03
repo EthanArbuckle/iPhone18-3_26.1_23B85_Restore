@@ -1,11 +1,11 @@
 @interface ACCNowPlayingFeaturePlugin
 + (BOOL)isMusicAppVisible;
-+ (id)getItemDictionaryForContentItem:(id)a3 infoMask:(unsigned int)a4;
++ (id)getItemDictionaryForContentItem:(id)item infoMask:(unsigned int)mask;
 - (BOOL)_nowPlayingAppIsIPodApp;
 - (BOOL)_nowPlayingAppIsIPodRadio;
 - (BOOL)_nowPlayingIsStreaming;
-- (BOOL)setPlaybackElapsedTime:(id)a3;
-- (BOOL)setPlaybackQueueIndex:(id)a3;
+- (BOOL)setPlaybackElapsedTime:(id)time;
+- (BOOL)setPlaybackQueueIndex:(id)index;
 - (NSString)description;
 - (NSString)pluginName;
 - (id)currentMediaItemArtwork;
@@ -14,27 +14,27 @@
 - (id)currentPlaybackAppName;
 - (id)currentPlaybackAttributes;
 - (unsigned)currentPlaybackStateMR;
-- (void)_generatePlaybackQueueItemsWithPropertyList:(id)a3 request:(id)a4 completionHandler:(id)a5 continueQuery:(id)a6;
+- (void)_generatePlaybackQueueItemsWithPropertyList:(id)list request:(id)request completionHandler:(id)handler continueQuery:(id)query;
 - (void)_nowPlayingAppDidChange;
 - (void)_nowPlayingArtworkDidChange;
-- (void)_nowPlayingInfoDebounceTimerKick:(int)a3;
-- (void)_nowPlayingInfoDebounceTimerStop:(int)a3;
+- (void)_nowPlayingInfoDebounceTimerKick:(int)kick;
+- (void)_nowPlayingInfoDebounceTimerStop:(int)stop;
 - (void)_nowPlayingInfoDidChange;
 - (void)_nowPlayingIsStreaming;
 - (void)_nowPlayingPlaybackQueueDidChange;
 - (void)_nowPlayingStateDidChange;
-- (void)cancelRequestPlaybackQueueListInfo:(id)a3 requestID:(id)a4;
+- (void)cancelRequestPlaybackQueueListInfo:(id)info requestID:(id)d;
 - (void)currentMediaItemArtwork;
 - (void)currentMediaItemAttributes;
 - (void)currentPlaybackAttributes;
 - (void)initPlugin;
-- (void)nowPlayingAppDidChange:(id)a3;
-- (void)nowPlayingArtworkDidChange:(id)a3;
-- (void)nowPlayingInfoDidChange:(id)a3;
-- (void)nowPlayingPlaybackQueueDidChange:(id)a3;
-- (void)nowPlayingStateDidChange:(id)a3;
-- (void)nowPlayingSupportedCommandsDidChange:(id)a3;
-- (void)requestPlaybackQueueListInfo:(id)a3 requestID:(id)a4 startIndex:(unsigned int)a5 upToCount:(unsigned int)a6 infoMask:(unsigned int)a7;
+- (void)nowPlayingAppDidChange:(id)change;
+- (void)nowPlayingArtworkDidChange:(id)change;
+- (void)nowPlayingInfoDidChange:(id)change;
+- (void)nowPlayingPlaybackQueueDidChange:(id)change;
+- (void)nowPlayingStateDidChange:(id)change;
+- (void)nowPlayingSupportedCommandsDidChange:(id)change;
+- (void)requestPlaybackQueueListInfo:(id)info requestID:(id)d startIndex:(unsigned int)index upToCount:(unsigned int)count infoMask:(unsigned int)mask;
 - (void)startPlugin;
 - (void)stopPlugin;
 @end
@@ -51,16 +51,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ACCNowPlayingFeaturePlugin *)self pluginName];
+  pluginName = [(ACCNowPlayingFeaturePlugin *)self pluginName];
   v5 = obfuscatedPointer(self);
-  v6 = [(ACCNowPlayingFeaturePlugin *)self isRunning];
+  isRunning = [(ACCNowPlayingFeaturePlugin *)self isRunning];
   v7 = "NO";
-  if (v6)
+  if (isRunning)
   {
     v7 = "YES";
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", pluginName, v5, v7];
 
   return v8;
 }
@@ -129,8 +129,8 @@
   }
 
   v6 = objc_alloc(MEMORY[0x277CD5FC0]);
-  v7 = [(ACCNowPlayingFeaturePlugin *)self queue];
-  v8 = [v6 initWithClientIdentifier:@"com.apple.accessoryd.mediaplayer" queue:v7];
+  queue = [(ACCNowPlayingFeaturePlugin *)self queue];
+  v8 = [v6 initWithClientIdentifier:@"com.apple.accessoryd.mediaplayer" queue:queue];
   [(ACCNowPlayingFeaturePlugin *)self setMpMusicPlayerControllerHandler:v8];
 
   v9 = [objc_alloc(MEMORY[0x277CE8300]) initWithDelegate:self];
@@ -147,22 +147,22 @@
   nowPlayingInfoDebounceTimerValue = self->_nowPlayingInfoDebounceTimerValue;
   self->_nowPlayingInfoDebounceTimerValue = v12;
 
-  v14 = [(ACCNowPlayingFeaturePlugin *)self queue];
-  v15 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v14);
+  queue2 = [(ACCNowPlayingFeaturePlugin *)self queue];
+  v15 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue2);
   nowPlayingInfoDebounceTimer = self->_nowPlayingInfoDebounceTimer;
   self->_nowPlayingInfoDebounceTimer = v15;
 
-  v17 = [(ACCNowPlayingFeaturePlugin *)self nowPlayingInfoDebounceTimer];
+  nowPlayingInfoDebounceTimer = [(ACCNowPlayingFeaturePlugin *)self nowPlayingInfoDebounceTimer];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __41__ACCNowPlayingFeaturePlugin_startPlugin__block_invoke;
   handler[3] = &unk_2789E4CC0;
   handler[4] = self;
-  dispatch_source_set_event_handler(v17, handler);
+  dispatch_source_set_event_handler(nowPlayingInfoDebounceTimer, handler);
 
   [(ACCNowPlayingFeaturePlugin *)self _nowPlayingInfoDebounceTimerStop:127];
-  v18 = [(ACCNowPlayingFeaturePlugin *)self nowPlayingInfoDebounceTimer];
-  dispatch_resume(v18);
+  nowPlayingInfoDebounceTimer2 = [(ACCNowPlayingFeaturePlugin *)self nowPlayingInfoDebounceTimer];
+  dispatch_resume(nowPlayingInfoDebounceTimer2);
 
   v19 = [[ACCSettingsState alloc] initWithKey:@"MaxPlaybackQueueInfoCount" applicationID:@"com.apple.iapd" notification:@"com.apple.iapd.LoggingPreferencesChangedNotification" defaultValue:2000 invalidValue:0];
   [(ACCNowPlayingFeaturePlugin *)self setMaxPlaybackQueueInfoCount:v19];
@@ -177,10 +177,10 @@
   [(ACCNowPlayingFeaturePlugin *)self setMeasureMemoryUsage:v22];
 
   [(ACCNowPlayingFeaturePlugin *)self setMemUse:0];
-  v23 = [(ACCNowPlayingFeaturePlugin *)self measureMemoryUsage];
-  LODWORD(v7) = [v23 BOOLValue];
+  measureMemoryUsage = [(ACCNowPlayingFeaturePlugin *)self measureMemoryUsage];
+  LODWORD(queue) = [measureMemoryUsage BOOLValue];
 
-  if (v7)
+  if (queue)
   {
     v24 = [[ACCMemUsageStat alloc] initWithName:@"ACCNowPlayingUpdate"];
     [(ACCNowPlayingFeaturePlugin *)self setMemUse:v24];
@@ -208,36 +208,36 @@
     _os_log_impl(&dword_233600000, v25, OS_LOG_TYPE_INFO, "Adding notification observers...", buf, 2u);
   }
 
-  v27 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v27 addObserver:self selector:sel_nowPlayingInfoDidChange_ name:*MEMORY[0x277D27BC8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_nowPlayingInfoDidChange_ name:*MEMORY[0x277D27BC8] object:0];
 
-  v28 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v28 addObserver:self selector:sel_nowPlayingStateDidChange_ name:*MEMORY[0x277D27B38] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_nowPlayingStateDidChange_ name:*MEMORY[0x277D27B38] object:0];
 
-  v29 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v29 addObserver:self selector:sel_nowPlayingStateDidChange_ name:*MEMORY[0x277D27B50] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_nowPlayingStateDidChange_ name:*MEMORY[0x277D27B50] object:0];
 
-  v30 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v30 addObserver:self selector:sel_nowPlayingAppDidChange_ name:*MEMORY[0x277D27B20] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_nowPlayingAppDidChange_ name:*MEMORY[0x277D27B20] object:0];
 
-  v31 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v31 addObserver:self selector:sel_nowPlayingSupportedCommandsDidChange_ name:*MEMORY[0x277D27E48] object:0];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel_nowPlayingSupportedCommandsDidChange_ name:*MEMORY[0x277D27E48] object:0];
 
   MRMediaRemoteSetWantsSupportedCommandsChangedNotifications();
-  v32 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v32 addObserver:self selector:sel_nowPlayingPlaybackQueueDidChange_ name:*MEMORY[0x277CD5C48] object:0];
+  defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter6 addObserver:self selector:sel_nowPlayingPlaybackQueueDidChange_ name:*MEMORY[0x277CD5C48] object:0];
 
-  v33 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v33 addObserver:self selector:sel_nowPlayingArtworkDidChange_ name:*MEMORY[0x277D27E88] object:0];
+  defaultCenter7 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter7 addObserver:self selector:sel_nowPlayingArtworkDidChange_ name:*MEMORY[0x277D27E88] object:0];
 
   MRMediaRemoteSetWantsNowPlayingNotifications();
-  v34 = [(ACCNowPlayingFeaturePlugin *)self queue];
+  queue3 = [(ACCNowPlayingFeaturePlugin *)self queue];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __41__ACCNowPlayingFeaturePlugin_startPlugin__block_invoke_153;
   v35[3] = &unk_2789E4CC0;
   v35[4] = self;
-  dispatch_sync(v34, v35);
+  dispatch_sync(queue3, v35);
 
   [(ACCNowPlayingFeaturePlugin *)self nowPlayingStateDidChange:0];
   [(ACCNowPlayingFeaturePlugin *)self nowPlayingInfoDidChange:0];
@@ -504,13 +504,13 @@ void __41__ACCNowPlayingFeaturePlugin_startPlugin__block_invoke_153(uint64_t a1)
     _os_log_impl(&dword_233600000, v6, OS_LOG_TYPE_INFO, "Removing all notification observers...", buf, 2u);
   }
 
-  v8 = [(ACCNowPlayingFeaturePlugin *)self queue];
+  queue = [(ACCNowPlayingFeaturePlugin *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__ACCNowPlayingFeaturePlugin_stopPlugin__block_invoke;
   block[3] = &unk_2789E4CC0;
   block[4] = self;
-  dispatch_sync(v8, block);
+  dispatch_sync(queue, block);
 
   if (gLogObjects && gNumLogObjects >= 1)
   {
@@ -541,11 +541,11 @@ void __41__ACCNowPlayingFeaturePlugin_startPlugin__block_invoke_153(uint64_t a1)
 
   MRMediaRemoteSetWantsNowPlayingNotifications();
   MRMediaRemoteSetWantsSupportedCommandsChangedNotifications();
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v14 = [(ACCNowPlayingFeaturePlugin *)self nowPlayingClient];
-  [v14 setDelegate:0];
+  nowPlayingClient = [(ACCNowPlayingFeaturePlugin *)self nowPlayingClient];
+  [nowPlayingClient setDelegate:0];
 
   [(ACCNowPlayingFeaturePlugin *)self setNowPlayingClient:0];
   [(ACCNowPlayingFeaturePlugin *)self setPbqUpdateAccessoryList:0];
@@ -681,8 +681,8 @@ void __40__ACCNowPlayingFeaturePlugin_stopPlugin__block_invoke(uint64_t a1)
     _os_log_impl(&dword_233600000, v5, OS_LOG_TYPE_INFO, "_nowPlayingPlaybackQueueDidChange: Tell client playbackQueueListDidChange", v7, 2u);
   }
 
-  v6 = [(ACCNowPlayingFeaturePlugin *)self nowPlayingClient];
-  [v6 playbackQueueListDidChange];
+  nowPlayingClient = [(ACCNowPlayingFeaturePlugin *)self nowPlayingClient];
+  [nowPlayingClient playbackQueueListDidChange];
 }
 
 - (void)_nowPlayingArtworkDidChange
@@ -692,10 +692,10 @@ void __40__ACCNowPlayingFeaturePlugin_stopPlugin__block_invoke(uint64_t a1)
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)nowPlayingInfoDidChange:(id)a3
+- (void)nowPlayingInfoDidChange:(id)change
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -724,36 +724,36 @@ void __40__ACCNowPlayingFeaturePlugin_stopPlugin__block_invoke(uint64_t a1)
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
+    intValue = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
     *buf = 136315650;
     v18 = "[ACCNowPlayingFeaturePlugin nowPlayingInfoDidChange:]";
     v19 = 2112;
-    v20 = v4;
+    v20 = changeCopy;
     v21 = 2048;
-    v22 = v8;
+    v22 = intValue;
     _os_log_impl(&dword_233600000, v7, OS_LOG_TYPE_INFO, "%s: Notification received: %@, debounce=%ld", buf, 0x20u);
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v9 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v11 = v10;
 
-  v12 = [(ACCNowPlayingFeaturePlugin *)self completionQueue];
+  completionQueue = [(ACCNowPlayingFeaturePlugin *)self completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__ACCNowPlayingFeaturePlugin_nowPlayingInfoDidChange___block_invoke;
   block[3] = &unk_2789E4D10;
   block[4] = self;
   block[5] = v11;
-  dispatch_async(v12, block);
+  dispatch_async(completionQueue, block);
 
-  v13 = [(ACCNowPlayingFeaturePlugin *)self queue];
+  queue = [(ACCNowPlayingFeaturePlugin *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __54__ACCNowPlayingFeaturePlugin_nowPlayingInfoDidChange___block_invoke_158;
   v15[3] = &unk_2789E4CC0;
   v15[4] = self;
-  dispatch_async(v13, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1159,10 +1159,10 @@ uint64_t __54__ACCNowPlayingFeaturePlugin_nowPlayingInfoDidChange___block_invoke
   return result;
 }
 
-- (void)nowPlayingStateDidChange:(id)a3
+- (void)nowPlayingStateDidChange:(id)change
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1191,36 +1191,36 @@ uint64_t __54__ACCNowPlayingFeaturePlugin_nowPlayingInfoDidChange___block_invoke
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
+    intValue = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
     *buf = 136315650;
     v18 = "[ACCNowPlayingFeaturePlugin nowPlayingStateDidChange:]";
     v19 = 2112;
-    v20 = v4;
+    v20 = changeCopy;
     v21 = 2048;
-    v22 = v8;
+    v22 = intValue;
     _os_log_impl(&dword_233600000, v7, OS_LOG_TYPE_INFO, "%s: Notification received: %@, debounce=%ld", buf, 0x20u);
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v9 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v11 = v10;
 
-  v12 = [(ACCNowPlayingFeaturePlugin *)self completionQueue];
+  completionQueue = [(ACCNowPlayingFeaturePlugin *)self completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__ACCNowPlayingFeaturePlugin_nowPlayingStateDidChange___block_invoke;
   block[3] = &unk_2789E4D10;
   block[4] = self;
   block[5] = v11;
-  dispatch_async(v12, block);
+  dispatch_async(completionQueue, block);
 
-  v13 = [(ACCNowPlayingFeaturePlugin *)self queue];
+  queue = [(ACCNowPlayingFeaturePlugin *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __55__ACCNowPlayingFeaturePlugin_nowPlayingStateDidChange___block_invoke_161;
   v15[3] = &unk_2789E4CC0;
   v15[4] = self;
-  dispatch_async(v13, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1336,10 +1336,10 @@ uint64_t __55__ACCNowPlayingFeaturePlugin_nowPlayingStateDidChange___block_invok
   return result;
 }
 
-- (void)nowPlayingAppDidChange:(id)a3
+- (void)nowPlayingAppDidChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1368,34 +1368,34 @@ uint64_t __55__ACCNowPlayingFeaturePlugin_nowPlayingStateDidChange___block_invok
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
+    intValue = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
     *buf = 138412546;
-    v18 = v4;
+    v18 = changeCopy;
     v19 = 2048;
-    v20 = v8;
+    v20 = intValue;
     _os_log_impl(&dword_233600000, v7, OS_LOG_TYPE_INFO, "nowPlayingAppDidChange: Notification received: %@, debounce=%ld", buf, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v9 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v11 = v10;
 
-  v12 = [(ACCNowPlayingFeaturePlugin *)self completionQueue];
+  completionQueue = [(ACCNowPlayingFeaturePlugin *)self completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__ACCNowPlayingFeaturePlugin_nowPlayingAppDidChange___block_invoke;
   block[3] = &unk_2789E4D10;
   block[4] = self;
   block[5] = v11;
-  dispatch_async(v12, block);
+  dispatch_async(completionQueue, block);
 
-  v13 = [(ACCNowPlayingFeaturePlugin *)self queue];
+  queue = [(ACCNowPlayingFeaturePlugin *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__ACCNowPlayingFeaturePlugin_nowPlayingAppDidChange___block_invoke_167;
   v15[3] = &unk_2789E4CC0;
   v15[4] = self;
-  dispatch_async(v13, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1573,10 +1573,10 @@ uint64_t __53__ACCNowPlayingFeaturePlugin_nowPlayingAppDidChange___block_invoke_
   return result;
 }
 
-- (void)nowPlayingPlaybackQueueDidChange:(id)a3
+- (void)nowPlayingPlaybackQueueDidChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1605,11 +1605,11 @@ uint64_t __53__ACCNowPlayingFeaturePlugin_nowPlayingAppDidChange___block_invoke_
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
+    intValue = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
     v10 = 138412546;
-    v11 = v4;
+    v11 = changeCopy;
     v12 = 2048;
-    v13 = v8;
+    v13 = intValue;
     _os_log_impl(&dword_233600000, v7, OS_LOG_TYPE_INFO, "nowPlayingPlaybackQueueDidChange: Notification received: %@, debounce=%ld", &v10, 0x16u);
   }
 
@@ -1626,10 +1626,10 @@ uint64_t __53__ACCNowPlayingFeaturePlugin_nowPlayingAppDidChange___block_invoke_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)nowPlayingArtworkDidChange:(id)a3
+- (void)nowPlayingArtworkDidChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1658,34 +1658,34 @@ uint64_t __53__ACCNowPlayingFeaturePlugin_nowPlayingAppDidChange___block_invoke_
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
+    intValue = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
     *buf = 138412546;
-    v18 = v4;
+    v18 = changeCopy;
     v19 = 2048;
-    v20 = v8;
+    v20 = intValue;
     _os_log_impl(&dword_233600000, v7, OS_LOG_TYPE_INFO, "nowPlayingArtworkDidChange: Notification received: %@, debounce=%ld", buf, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v9 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v11 = v10;
 
-  v12 = [(ACCNowPlayingFeaturePlugin *)self completionQueue];
+  completionQueue = [(ACCNowPlayingFeaturePlugin *)self completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ACCNowPlayingFeaturePlugin_nowPlayingArtworkDidChange___block_invoke;
   block[3] = &unk_2789E4D10;
   block[4] = self;
   block[5] = v11;
-  dispatch_async(v12, block);
+  dispatch_async(completionQueue, block);
 
-  v13 = [(ACCNowPlayingFeaturePlugin *)self queue];
+  queue = [(ACCNowPlayingFeaturePlugin *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__ACCNowPlayingFeaturePlugin_nowPlayingArtworkDidChange___block_invoke_170;
   v15[3] = &unk_2789E4CC0;
   v15[4] = self;
-  dispatch_async(v13, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1894,10 +1894,10 @@ uint64_t __57__ACCNowPlayingFeaturePlugin_nowPlayingArtworkDidChange___block_inv
   return result;
 }
 
-- (void)nowPlayingSupportedCommandsDidChange:(id)a3
+- (void)nowPlayingSupportedCommandsDidChange:(id)change
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1926,36 +1926,36 @@ uint64_t __57__ACCNowPlayingFeaturePlugin_nowPlayingArtworkDidChange___block_inv
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
+    intValue = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
     *buf = 136315650;
     v18 = "[ACCNowPlayingFeaturePlugin nowPlayingSupportedCommandsDidChange:]";
     v19 = 2112;
-    v20 = v4;
+    v20 = changeCopy;
     v21 = 2048;
-    v22 = v8;
+    v22 = intValue;
     _os_log_impl(&dword_233600000, v7, OS_LOG_TYPE_INFO, "%s: Notification received: %@, debounce=%ld", buf, 0x20u);
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v9 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v11 = v10;
 
-  v12 = [(ACCNowPlayingFeaturePlugin *)self completionQueue];
+  completionQueue = [(ACCNowPlayingFeaturePlugin *)self completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__ACCNowPlayingFeaturePlugin_nowPlayingSupportedCommandsDidChange___block_invoke;
   block[3] = &unk_2789E4D10;
   block[4] = self;
   block[5] = v11;
-  dispatch_async(v12, block);
+  dispatch_async(completionQueue, block);
 
-  v13 = [(ACCNowPlayingFeaturePlugin *)self queue];
+  queue = [(ACCNowPlayingFeaturePlugin *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__ACCNowPlayingFeaturePlugin_nowPlayingSupportedCommandsDidChange___block_invoke_173;
   v15[3] = &unk_2789E4CC0;
   v15[4] = self;
-  dispatch_async(v13, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -2243,7 +2243,7 @@ uint64_t __67__ACCNowPlayingFeaturePlugin_nowPlayingSupportedCommandsDidChange__
 - (id)currentMediaItemAttributes
 {
   v106 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = self->_mrNowPlayingInfo;
   if (gLogObjects)
   {
@@ -2275,9 +2275,9 @@ uint64_t __67__ACCNowPlayingFeaturePlugin_nowPlayingSupportedCommandsDidChange__
   v9 = MEMORY[0x277D27CC0];
   v10 = MEMORY[0x277D27C88];
   v11 = MEMORY[0x277D27BD8];
-  v68 = v3;
+  v68 = dictionary;
   v69 = v4;
-  v67 = self;
+  selfCopy = self;
   if (v8)
   {
     v71 = [(NSDictionary *)v4 objectForKeyedSubscript:*MEMORY[0x277D27CC0]];
@@ -2334,15 +2334,15 @@ uint64_t __67__ACCNowPlayingFeaturePlugin_nowPlayingSupportedCommandsDidChange__
     v10 = MEMORY[0x277D27C88];
 
     v7 = log;
-    self = v67;
+    self = selfCopy;
 
-    v3 = v68;
+    dictionary = v68;
     v4 = v69;
   }
 
   v21 = &unk_2848EBE10;
-  [v3 copyToKey:*MEMORY[0x277CE8378] fromKey:*v9 inDictionary:v4 objectIfNil:&unk_2848EBE10];
-  [v3 copyToKey:*MEMORY[0x277CE8388] fromKey:*v10 inDictionary:v4 objectIfNil:&stru_2848EA190];
+  [dictionary copyToKey:*MEMORY[0x277CE8378] fromKey:*v9 inDictionary:v4 objectIfNil:&unk_2848EBE10];
+  [dictionary copyToKey:*MEMORY[0x277CE8388] fromKey:*v10 inDictionary:v4 objectIfNil:&stru_2848EA190];
   v22 = *v11;
   v23 = [(NSDictionary *)v4 objectForKey:*v11];
 
@@ -2353,20 +2353,20 @@ uint64_t __67__ACCNowPlayingFeaturePlugin_nowPlayingSupportedCommandsDidChange__
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:(v25 * 1000.0)];
   }
 
-  [v3 setObject:v21 forKey:*MEMORY[0x277CE8380]];
-  [v3 copyToKey:*MEMORY[0x277CE8318] fromKey:*MEMORY[0x277D27B60] inDictionary:v4 objectIfNil:&stru_2848EA190];
-  [v3 copyToKey:*MEMORY[0x277CE8328] fromKey:*MEMORY[0x277D27CB0] inDictionary:v4 objectIfNil:&unk_2848EBE10];
-  [v3 copyToKey:*MEMORY[0x277CE8320] fromKey:*MEMORY[0x277D27CA8] inDictionary:v4 objectIfNil:&unk_2848EBE10];
-  [v3 copyToKey:*MEMORY[0x277CE8310] fromKey:*MEMORY[0x277D27BD0] inDictionary:v4 objectIfNil:&unk_2848EBE10];
-  [v3 copyToKey:*MEMORY[0x277CE8308] fromKey:*MEMORY[0x277D27C98] inDictionary:v4 objectIfNil:&unk_2848EBE10];
-  [v3 copyToKey:*MEMORY[0x277CE8330] fromKey:*MEMORY[0x277D27B70] inDictionary:v4 objectIfNil:&stru_2848EA190];
-  [v3 copyToKey:*MEMORY[0x277CE8350] fromKey:*MEMORY[0x277D27C00] inDictionary:v4 objectIfNil:&stru_2848EA190];
-  [v3 copyToKey:*MEMORY[0x277CE8348] fromKey:*MEMORY[0x277D27BB0] inDictionary:v4 objectIfNil:&stru_2848EA190];
+  [dictionary setObject:v21 forKey:*MEMORY[0x277CE8380]];
+  [dictionary copyToKey:*MEMORY[0x277CE8318] fromKey:*MEMORY[0x277D27B60] inDictionary:v4 objectIfNil:&stru_2848EA190];
+  [dictionary copyToKey:*MEMORY[0x277CE8328] fromKey:*MEMORY[0x277D27CB0] inDictionary:v4 objectIfNil:&unk_2848EBE10];
+  [dictionary copyToKey:*MEMORY[0x277CE8320] fromKey:*MEMORY[0x277D27CA8] inDictionary:v4 objectIfNil:&unk_2848EBE10];
+  [dictionary copyToKey:*MEMORY[0x277CE8310] fromKey:*MEMORY[0x277D27BD0] inDictionary:v4 objectIfNil:&unk_2848EBE10];
+  [dictionary copyToKey:*MEMORY[0x277CE8308] fromKey:*MEMORY[0x277D27C98] inDictionary:v4 objectIfNil:&unk_2848EBE10];
+  [dictionary copyToKey:*MEMORY[0x277CE8330] fromKey:*MEMORY[0x277D27B70] inDictionary:v4 objectIfNil:&stru_2848EA190];
+  [dictionary copyToKey:*MEMORY[0x277CE8350] fromKey:*MEMORY[0x277D27C00] inDictionary:v4 objectIfNil:&stru_2848EA190];
+  [dictionary copyToKey:*MEMORY[0x277CE8348] fromKey:*MEMORY[0x277D27BB0] inDictionary:v4 objectIfNil:&stru_2848EA190];
   v26 = MEMORY[0x277CBEC28];
-  [v3 copyToKey:*MEMORY[0x277CE8370] fromKey:*MEMORY[0x277D27C20] inDictionary:v4 objectIfNil:MEMORY[0x277CBEC28]];
-  [v3 copyToKey:*MEMORY[0x277CE8360] fromKey:*MEMORY[0x277D27C18] inDictionary:v4 objectIfNil:v26];
-  [v3 copyToKey:*MEMORY[0x277CE8340] fromKey:*MEMORY[0x277D27C90] inDictionary:v4 objectIfNil:v26];
-  [v3 copyToKey:*MEMORY[0x277CE8338] fromKey:*MEMORY[0x277D27B88] inDictionary:v4 objectIfNil:&stru_2848EA190];
+  [dictionary copyToKey:*MEMORY[0x277CE8370] fromKey:*MEMORY[0x277D27C20] inDictionary:v4 objectIfNil:MEMORY[0x277CBEC28]];
+  [dictionary copyToKey:*MEMORY[0x277CE8360] fromKey:*MEMORY[0x277D27C18] inDictionary:v4 objectIfNil:v26];
+  [dictionary copyToKey:*MEMORY[0x277CE8340] fromKey:*MEMORY[0x277D27C90] inDictionary:v4 objectIfNil:v26];
+  [dictionary copyToKey:*MEMORY[0x277CE8338] fromKey:*MEMORY[0x277D27B88] inDictionary:v4 objectIfNil:&stru_2848EA190];
   v27 = self->_mrSupportedCommands;
   if (gLogObjects && gNumLogObjects >= 1)
   {
@@ -2527,14 +2527,14 @@ LABEL_53:
     v49 = *gLogObjects;
     v50 = v69;
     v52 = v66;
-    v51 = v67;
+    v51 = selfCopy;
   }
 
   else
   {
     v50 = v69;
     v52 = v66;
-    v51 = v67;
+    v51 = selfCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [_ACCNowPlayingPBQUpdateRequest initWithID:startIndex:upToCount:infoMask:allowNonLibrary:];
@@ -2549,9 +2549,9 @@ LABEL_53:
     [ACCNowPlayingFeaturePlugin currentMediaItemAttributes];
   }
 
-  v54 = [(ACCNowPlayingFeaturePlugin *)v51 cachedMediaItemAttributes];
+  cachedMediaItemAttributes = [(ACCNowPlayingFeaturePlugin *)v51 cachedMediaItemAttributes];
 
-  if (!v54)
+  if (!cachedMediaItemAttributes)
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -2587,7 +2587,7 @@ LABEL_53:
 - (id)currentMediaItemArtwork
 {
   v33[3] = *MEMORY[0x277D85DE8];
-  v2 = [(ACCNowPlayingFeaturePlugin *)self mrArtworkData];
+  mrArtworkData = [(ACCNowPlayingFeaturePlugin *)self mrArtworkData];
   if (gLogObjects)
   {
     v3 = gNumLogObjects < 1;
@@ -2616,15 +2616,15 @@ LABEL_53:
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCNowPlayingFeaturePlugin *)v2 currentMediaItemArtwork];
+    [(ACCNowPlayingFeaturePlugin *)mrArtworkData currentMediaItemArtwork];
   }
 
-  if (!v2)
+  if (!mrArtworkData)
   {
     goto LABEL_57;
   }
 
-  v6 = CGImageSourceCreateWithData(v2, 0);
+  v6 = CGImageSourceCreateWithData(mrArtworkData, 0);
   if (gLogObjects && gNumLogObjects >= 1)
   {
     v7 = *gLogObjects;
@@ -2646,18 +2646,18 @@ LABEL_53:
     [(ACCNowPlayingFeaturePlugin *)v6 currentMediaItemArtwork];
   }
 
-  v9 = [MEMORY[0x277CBEB28] data];
-  v10 = CGImageDestinationCreateWithData(v9, *MEMORY[0x277CC20C8], 1uLL, 0);
+  data = [MEMORY[0x277CBEB28] data];
+  v10 = CGImageDestinationCreateWithData(data, *MEMORY[0x277CC20C8], 1uLL, 0);
   v11 = *MEMORY[0x277CD2D48];
   v33[0] = &unk_2848EBE40;
   v12 = *MEMORY[0x277CD3038];
   v32[0] = v11;
   v32[1] = v12;
-  v13 = [MEMORY[0x277CBEB68] null];
-  v33[1] = v13;
+  null = [MEMORY[0x277CBEB68] null];
+  v33[1] = null;
   v32[2] = *MEMORY[0x277CD3258];
-  v14 = [MEMORY[0x277CBEB68] null];
-  v33[2] = v14;
+  null2 = [MEMORY[0x277CBEB68] null];
+  v33[2] = null2;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:3];
   CGImageDestinationAddImageFromSource(v10, v6, 0, v15);
 
@@ -2695,7 +2695,7 @@ LABEL_53:
 
     if (v22)
     {
-      v23 = CGImageSourceCreateWithData(v9, 0);
+      v23 = CGImageSourceCreateWithData(data, 0);
       if (gLogObjects && gNumLogObjects >= 1)
       {
         v24 = *gLogObjects;
@@ -2723,7 +2723,7 @@ LABEL_53:
       }
     }
 
-    v26 = v9;
+    v26 = data;
     if (v10)
     {
 LABEL_53:
@@ -2801,7 +2801,7 @@ LABEL_57:
 - (id)currentPlaybackAttributes
 {
   v134 = *MEMORY[0x277D85DE8];
-  v102 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v3 = self->_mrNowPlayingInfo;
   if (gLogObjects)
   {
@@ -2850,7 +2850,7 @@ LABEL_57:
     v8 = MEMORY[0x277D86220];
   }
 
-  v88 = self;
+  selfCopy = self;
   v9 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
   v10 = MEMORY[0x277D27C80];
   v11 = MEMORY[0x277D27BE0];
@@ -2924,16 +2924,16 @@ LABEL_57:
   v29 = [(NSDictionary *)v3 objectForKeyedSubscript:*v13];
   v30 = [(NSDictionary *)v3 objectForKeyedSubscript:*v10];
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{(calculateCurrentElapsedTime(v26, v27, v29, v30) * 1000.0)}];
-  [v102 setObject:v31 forKey:*MEMORY[0x277CE83A0]];
+  [dictionary setObject:v31 forKey:*MEMORY[0x277CE83A0]];
 
-  [v102 copyToKey:*MEMORY[0x277CE83C8] fromKey:*MEMORY[0x277D27C48] inDictionary:v3 objectIfNil:&unk_2848EBE10];
-  [v102 copyToKey:*MEMORY[0x277CE83C0] fromKey:*MEMORY[0x277D27CA0] inDictionary:v3 objectIfNil:&unk_2848EBE10];
-  [v102 copyToKey:*MEMORY[0x277CE83B8] fromKey:*MEMORY[0x277D27BA0] inDictionary:v3 objectIfNil:&unk_2848EBE10];
-  [v102 copyToKey:*MEMORY[0x277CE83F0] fromKey:*MEMORY[0x277D27C08] inDictionary:v3 objectIfNil:MEMORY[0x277CBEC28]];
-  [v102 copyToKey:*MEMORY[0x277CE83F8] fromKey:*MEMORY[0x277D27C58] inDictionary:v3 objectIfNil:&stru_2848EA190];
-  [v102 copyToKey:*MEMORY[0x277CE8400] fromKey:*MEMORY[0x277D27C60] inDictionary:v3 objectIfNil:&stru_2848EA190];
+  [dictionary copyToKey:*MEMORY[0x277CE83C8] fromKey:*MEMORY[0x277D27C48] inDictionary:v3 objectIfNil:&unk_2848EBE10];
+  [dictionary copyToKey:*MEMORY[0x277CE83C0] fromKey:*MEMORY[0x277D27CA0] inDictionary:v3 objectIfNil:&unk_2848EBE10];
+  [dictionary copyToKey:*MEMORY[0x277CE83B8] fromKey:*MEMORY[0x277D27BA0] inDictionary:v3 objectIfNil:&unk_2848EBE10];
+  [dictionary copyToKey:*MEMORY[0x277CE83F0] fromKey:*MEMORY[0x277D27C08] inDictionary:v3 objectIfNil:MEMORY[0x277CBEC28]];
+  [dictionary copyToKey:*MEMORY[0x277CE83F8] fromKey:*MEMORY[0x277D27C58] inDictionary:v3 objectIfNil:&stru_2848EA190];
+  [dictionary copyToKey:*MEMORY[0x277CE8400] fromKey:*MEMORY[0x277D27C60] inDictionary:v3 objectIfNil:&stru_2848EA190];
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:0];
-  [v102 setObject:v32 forKey:*MEMORY[0x277CE8408]];
+  [dictionary setObject:v32 forKey:*MEMORY[0x277CE8408]];
 
   v33 = [(NSDictionary *)v3 objectForKey:v28];
   v34 = [(NSDictionary *)v3 objectForKey:*MEMORY[0x277D27BC0]];
@@ -2942,37 +2942,37 @@ LABEL_57:
   v85 = v36;
   if (v36)
   {
-    v37 = [v36 BOOLValue];
+    bOOLValue = [v36 BOOLValue];
   }
 
   else
   {
-    v37 = 0;
+    bOOLValue = 0;
   }
 
-  v38 = calculatePlaybackSpeed(v33, v34, v37);
-  [v102 setObject:v38 forKey:*MEMORY[0x277CE83B0]];
+  v38 = calculatePlaybackSpeed(v33, v34, bOOLValue);
+  [dictionary setObject:v38 forKey:*MEMORY[0x277CE83B0]];
 
   v87 = v33;
-  v39 = convertPlaybackStatus([(ACCNowPlayingFeaturePlugin *)v88 currentPlaybackStateMR], v33, v34);
-  [v102 setObject:v39 forKey:*MEMORY[0x277CE83E8]];
+  v39 = convertPlaybackStatus([(ACCNowPlayingFeaturePlugin *)selfCopy currentPlaybackStateMR], v33, v34);
+  [dictionary setObject:v39 forKey:*MEMORY[0x277CE83E8]];
 
-  v40 = [(ACCNowPlayingFeaturePlugin *)v88 currentPlaybackAppName];
-  [v102 setObject:v40 forKey:*MEMORY[0x277CE8398] objectIfNil:&stru_2848EA190];
+  currentPlaybackAppName = [(ACCNowPlayingFeaturePlugin *)selfCopy currentPlaybackAppName];
+  [dictionary setObject:currentPlaybackAppName forKey:*MEMORY[0x277CE8398] objectIfNil:&stru_2848EA190];
 
-  v41 = [(ACCNowPlayingFeaturePlugin *)v88 currentPlaybackAppBundleID];
-  [v102 setObject:v41 forKey:*MEMORY[0x277CE8390] objectIfNil:&stru_2848EA190];
+  currentPlaybackAppBundleID = [(ACCNowPlayingFeaturePlugin *)selfCopy currentPlaybackAppBundleID];
+  [dictionary setObject:currentPlaybackAppBundleID forKey:*MEMORY[0x277CE8390] objectIfNil:&stru_2848EA190];
 
-  [v102 copyToKey:*MEMORY[0x277CE83A8] fromKey:v35 inDictionary:v3 objectIfNil:MEMORY[0x277CBEC28]];
+  [dictionary copyToKey:*MEMORY[0x277CE83A8] fromKey:v35 inDictionary:v3 objectIfNil:MEMORY[0x277CBEC28]];
   v100 = *MEMORY[0x277CE83D0];
-  [v102 setObject:&unk_2848EBE28 forKey:?];
+  [dictionary setObject:&unk_2848EBE28 forKey:?];
   v98 = *MEMORY[0x277CE83E0];
-  [v102 setObject:&unk_2848EBE28 forKey:?];
+  [dictionary setObject:&unk_2848EBE28 forKey:?];
   v42 = [MEMORY[0x277CCABB0] numberWithBool:0];
   v96 = *MEMORY[0x277CE83D8];
-  [v102 setObject:v42 forKey:?];
+  [dictionary setObject:v42 forKey:?];
 
-  v43 = v88->_mrSupportedCommands;
+  v43 = selfCopy->_mrSupportedCommands;
   v44 = v43;
   if (gLogObjects)
   {
@@ -3136,7 +3136,7 @@ LABEL_57:
               }
 
               v73 = convertShuffleMode(v65);
-              v74 = v102;
+              v74 = dictionary;
               v75 = v73;
               v76 = v98;
               break;
@@ -3174,7 +3174,7 @@ LABEL_57:
               }
 
               v73 = convertRepeatMode(v65);
-              v74 = v102;
+              v74 = dictionary;
               v75 = v73;
               v76 = v100;
               break;
@@ -3209,7 +3209,7 @@ LABEL_57:
               }
 
               v65 = [MEMORY[0x277CCABB0] numberWithBool:1];
-              [v102 setObject:v65 forKey:v96];
+              [dictionary setObject:v65 forKey:v96];
               goto LABEL_90;
             default:
               continue;
@@ -3228,9 +3228,9 @@ LABEL_90:
     while (v52);
   }
 
-  v79 = [(ACCNowPlayingFeaturePlugin *)v88 cachedPlaybackAttributes];
+  cachedPlaybackAttributes = [(ACCNowPlayingFeaturePlugin *)selfCopy cachedPlaybackAttributes];
 
-  if (!v79)
+  if (!cachedPlaybackAttributes)
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -3253,20 +3253,20 @@ LABEL_90:
       [ACCNowPlayingFeaturePlugin currentPlaybackAttributes];
     }
 
-    [(ACCNowPlayingFeaturePlugin *)v88 setCachedPlaybackAttributes:v102];
+    [(ACCNowPlayingFeaturePlugin *)selfCopy setCachedPlaybackAttributes:dictionary];
   }
 
-  v82 = [v102 copy];
+  v82 = [dictionary copy];
 
   v83 = *MEMORY[0x277D85DE8];
 
   return v82;
 }
 
-- (BOOL)setPlaybackElapsedTime:(id)a3
+- (BOOL)setPlaybackElapsedTime:(id)time
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  timeCopy = time;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 1;
@@ -3296,21 +3296,21 @@ LABEL_90:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v3;
+    v10 = timeCopy;
     _os_log_impl(&dword_233600000, v6, OS_LOG_TYPE_DEFAULT, "Received set playback elapsed time: %@", &v9, 0xCu);
   }
 
-  [v3 unsignedLongValue];
+  [timeCopy unsignedLongValue];
   MRMediaRemoteSetElapsedTime();
 
   v7 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (BOOL)setPlaybackQueueIndex:(id)a3
+- (BOOL)setPlaybackQueueIndex:(id)index
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  indexCopy = index;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3344,20 +3344,20 @@ LABEL_90:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = indexCopy;
     _os_log_impl(&dword_233600000, v7, OS_LOG_TYPE_DEFAULT, "Received set playback queue index: %@", buf, 0xCu);
   }
 
-  v8 = [(ACCNowPlayingFeaturePlugin *)self queue];
+  queue = [(ACCNowPlayingFeaturePlugin *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__ACCNowPlayingFeaturePlugin_setPlaybackQueueIndex___block_invoke;
   block[3] = &unk_2789E4DD8;
   block[4] = self;
-  v14 = v4;
+  v14 = indexCopy;
   v15 = &v16;
-  v9 = v4;
-  dispatch_sync(v8, block);
+  v9 = indexCopy;
+  dispatch_sync(queue, block);
 
   v10 = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
@@ -3438,17 +3438,17 @@ void __52__ACCNowPlayingFeaturePlugin_setPlaybackQueueIndex___block_invoke(uint6
   }
 }
 
-- (void)requestPlaybackQueueListInfo:(id)a3 requestID:(id)a4 startIndex:(unsigned int)a5 upToCount:(unsigned int)a6 infoMask:(unsigned int)a7
+- (void)requestPlaybackQueueListInfo:(id)info requestID:(id)d startIndex:(unsigned int)index upToCount:(unsigned int)count infoMask:(unsigned int)mask
 {
   v52 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
-  v15 = [v14 objectForKey:*MEMORY[0x277CE83C0]];
-  v16 = [v15 unsignedIntegerValue];
+  infoCopy = info;
+  dCopy = d;
+  cachedPlaybackAttributes = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
+  v15 = [cachedPlaybackAttributes objectForKey:*MEMORY[0x277CE83C0]];
+  unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-  v17 = [(ACCSettingsState *)self->_maxPlaybackQueueInfoCount intValue];
-  if (v17 >= 1 && ((v18 = v17, v17 >= a6) ? (v19 = a6 == 0) : (v19 = 1), v19 ? (v20 = v16 > v17) : (v20 = 0), v20))
+  intValue = [(ACCSettingsState *)self->_maxPlaybackQueueInfoCount intValue];
+  if (intValue >= 1 && ((v18 = intValue, intValue >= count) ? (v19 = count == 0) : (v19 = 1), v19 ? (v20 = unsignedIntegerValue > intValue) : (v20 = 0), v20))
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -3469,20 +3469,20 @@ void __52__ACCNowPlayingFeaturePlugin_setPlaybackQueueIndex___block_invoke(uint6
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v39 = v12;
+      v39 = infoCopy;
       v40 = 2048;
       v41 = v18;
       v42 = 1024;
-      v43 = a6;
+      indexCopy = count;
       v44 = 1024;
-      v45 = v16;
+      countCopy2 = unsignedIntegerValue;
       _os_log_impl(&dword_233600000, v27, OS_LOG_TYPE_DEFAULT, "requestPlaybackQueueListInfo: accessoryUID %@, ignore request, maxPlaybackQueueInfoCount=%ld upToCount=%u count=%u !!!!!!!!", buf, 0x22u);
     }
   }
 
   else
   {
-    v21 = [(ACCSettingsState *)self->_playbackQueueInfoTimeoutMs intValue];
+    intValue2 = [(ACCSettingsState *)self->_playbackQueueInfoTimeoutMs intValue];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v23 = v22 * 1000.0;
     if (gLogObjects && gNumLogObjects >= 1)
@@ -3504,17 +3504,17 @@ void __52__ACCNowPlayingFeaturePlugin_setPlaybackQueueIndex___block_invoke(uint6
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413826;
-      v39 = v12;
+      v39 = infoCopy;
       v40 = 2112;
-      v41 = v13;
+      v41 = dCopy;
       v42 = 1024;
-      v43 = a5;
+      indexCopy = index;
       v44 = 1024;
-      v45 = a6;
+      countCopy2 = count;
       v46 = 1024;
-      v47 = a7;
+      maskCopy = mask;
       v48 = 2048;
-      v49 = v21;
+      v49 = intValue2;
       v50 = 2048;
       v51 = v23;
       _os_log_impl(&dword_233600000, v24, OS_LOG_TYPE_DEFAULT, "Received requestPlaybackQueueListInfo: %@ requestID: %@ startIndex: %u upToCount: %u infoMask: 0x%x, playbackQueueInfoTimeoutMs=%ld startTimeMs=%lld", buf, 0x3Cu);
@@ -3526,13 +3526,13 @@ void __52__ACCNowPlayingFeaturePlugin_setPlaybackQueueIndex___block_invoke(uint6
     block[2] = __99__ACCNowPlayingFeaturePlugin_requestPlaybackQueueListInfo_requestID_startIndex_upToCount_infoMask___block_invoke;
     block[3] = &unk_2789E4EA0;
     block[4] = self;
-    v31 = v12;
-    v35 = a7;
-    v36 = a5;
-    v37 = a6;
-    v32 = v13;
+    v31 = infoCopy;
+    maskCopy2 = mask;
+    indexCopy2 = index;
+    countCopy3 = count;
+    v32 = dCopy;
     v33 = v23;
-    v34 = v21;
+    v34 = intValue2;
     dispatch_async(nowPlayingInfoPBQueueListQ, block);
   }
 
@@ -4048,11 +4048,11 @@ LABEL_20:
   return v11;
 }
 
-- (void)cancelRequestPlaybackQueueListInfo:(id)a3 requestID:(id)a4
+- (void)cancelRequestPlaybackQueueListInfo:(id)info requestID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 1;
@@ -4082,9 +4082,9 @@ LABEL_20:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v19 = v6;
+    v19 = infoCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = dCopy;
     _os_log_impl(&dword_233600000, v10, OS_LOG_TYPE_DEFAULT, "Received cancelRequestPlaybackQueueListInfo: %@ requestID: %@", buf, 0x16u);
   }
 
@@ -4094,10 +4094,10 @@ LABEL_20:
   block[2] = __75__ACCNowPlayingFeaturePlugin_cancelRequestPlaybackQueueListInfo_requestID___block_invoke;
   block[3] = &unk_2789E4EC8;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = infoCopy;
+  v17 = dCopy;
+  v12 = dCopy;
+  v13 = infoCopy;
   dispatch_async(nowPlayingInfoPBQueueListQ, block);
 
   v14 = *MEMORY[0x277D85DE8];
@@ -4254,13 +4254,13 @@ LABEL_46:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generatePlaybackQueueItemsWithPropertyList:(id)a3 request:(id)a4 completionHandler:(id)a5 continueQuery:(id)a6
+- (void)_generatePlaybackQueueItemsWithPropertyList:(id)list request:(id)request completionHandler:(id)handler continueQuery:(id)query
 {
   v222 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v204 = a5;
-  v12 = a6;
+  listCopy = list;
+  requestCopy = request;
+  handlerCopy = handler;
+  queryCopy = query;
   v13 = 0x2812FF000uLL;
   v14 = 0x2812FF000uLL;
   if (gLogObjects)
@@ -4291,29 +4291,29 @@ LABEL_46:
 
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v10 accessoryUID];
-    v19 = [v11 requestID];
+    accessoryUID = [listCopy accessoryUID];
+    requestID = [requestCopy requestID];
     *buf = 138413314;
-    *v206 = v18;
+    *v206 = accessoryUID;
     *&v206[8] = 2112;
-    *v207 = v19;
+    *v207 = requestID;
     *&v207[8] = 1024;
-    *&v207[10] = [v11 startIndex];
+    *&v207[10] = [requestCopy startIndex];
     v14 = 0x2812FF000uLL;
     *&v207[14] = 1024;
-    *&v207[16] = [v11 upToCount];
+    *&v207[16] = [requestCopy upToCount];
     *&v207[20] = 1024;
-    *&v207[22] = [v11 infoMask];
+    *&v207[22] = [requestCopy infoMask];
     _os_log_impl(&dword_233600000, v17, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: %@ requestID: %@ startIndex: %u upToCount: %u infoMask:%xh", buf, 0x28u);
   }
 
-  v20 = v12[2](v12, v10, v11, 0);
+  v20 = queryCopy[2](queryCopy, listCopy, requestCopy, 0);
   if (v20 > 0)
   {
-    v21 = [(ACCNowPlayingFeaturePlugin *)self measureMemoryUsage];
-    v202 = v12;
-    v203 = v10;
-    if ([v21 BOOLValue])
+    measureMemoryUsage = [(ACCNowPlayingFeaturePlugin *)self measureMemoryUsage];
+    v202 = queryCopy;
+    v203 = listCopy;
+    if ([measureMemoryUsage BOOLValue])
     {
       memUse = self->_memUse;
 
@@ -4322,9 +4322,9 @@ LABEL_46:
         v23 = 0;
 LABEL_33:
         v35 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v36 = [v11 requestID];
+        requestID2 = [requestCopy requestID];
         v37 = *MEMORY[0x277CE8430];
-        [v35 setObject:v36 forKey:*MEMORY[0x277CE8430]];
+        [v35 setObject:requestID2 forKey:*MEMORY[0x277CE8430]];
 
         if (![(ACCNowPlayingFeaturePlugin *)self _nowPlayingAppIsIPodApp]|| [(ACCNowPlayingFeaturePlugin *)self _nowPlayingAppIsIPodRadio]|| [(ACCNowPlayingFeaturePlugin *)self _nowPlayingIsStreaming])
         {
@@ -4346,11 +4346,11 @@ LABEL_33:
 
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
-            v40 = [v203 accessoryUID];
-            [v11 requestID];
+            accessoryUID2 = [v203 accessoryUID];
+            [requestCopy requestID];
             v42 = v41 = self;
             *buf = 138412546;
-            *v206 = v40;
+            *v206 = accessoryUID2;
             *&v206[8] = 2112;
             *v207 = v42;
             _os_log_impl(&dword_233600000, v38, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: acc %@, req %@, 3rd party app / streaming, pbqList not available", buf, 0x16u);
@@ -4360,21 +4360,21 @@ LABEL_33:
           }
 
           [v35 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE8410]];
-          v43 = [v203 accessoryUID];
-          v44 = [v11 requestID];
-          v204[2](v204, v43, v44, v35);
+          accessoryUID3 = [v203 accessoryUID];
+          requestID3 = [requestCopy requestID];
+          handlerCopy[2](handlerCopy, accessoryUID3, requestID3, v35);
 
-          v45 = 0;
+          startTime = 0;
 LABEL_45:
-          v201 = 0;
+          unsignedIntegerValue = 0;
 LABEL_46:
 
-          v46 = [(ACCNowPlayingFeaturePlugin *)self measureMemoryUsage];
-          if ([v46 BOOLValue])
+          measureMemoryUsage2 = [(ACCNowPlayingFeaturePlugin *)self measureMemoryUsage];
+          if ([measureMemoryUsage2 BOOLValue])
           {
             v47 = self->_memUse;
 
-            v12 = v202;
+            queryCopy = v202;
             if (v47)
             {
               [(ACCMemUsageStat *)self->_memUse update];
@@ -4398,19 +4398,19 @@ LABEL_46:
 
               if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
               {
-                v195 = v45;
-                v200 = self;
-                v51 = [v203 accessoryUID];
-                v52 = [v11 requestID];
-                v53 = [v11 startIndex];
-                v54 = [v11 upToCount];
-                v55 = [v11 infoMask];
+                v195 = startTime;
+                selfCopy = self;
+                accessoryUID4 = [v203 accessoryUID];
+                requestID4 = [requestCopy requestID];
+                startIndex = [requestCopy startIndex];
+                upToCount = [requestCopy upToCount];
+                infoMask = [requestCopy infoMask];
                 if (v23)
                 {
-                  v56 = [MEMORY[0x277CBEAA8] date];
-                  v45 = [v23 startTime];
-                  v193 = v56;
-                  [v56 timeIntervalSinceDate:v45];
+                  date = [MEMORY[0x277CBEAA8] date];
+                  startTime = [v23 startTime];
+                  requestID10 = date;
+                  [date timeIntervalSinceDate:startTime];
                 }
 
                 else
@@ -4418,23 +4418,23 @@ LABEL_46:
                   v57 = 0;
                 }
 
-                v65 = v200->_memUse;
+                v65 = selfCopy->_memUse;
                 *buf = 138414338;
-                *v206 = v51;
+                *v206 = accessoryUID4;
                 *&v206[8] = 2112;
-                *v207 = v52;
+                *v207 = requestID4;
                 *&v207[8] = 1024;
-                *&v207[10] = v53;
+                *&v207[10] = startIndex;
                 *&v207[14] = 1024;
-                *&v207[16] = v54;
+                *&v207[16] = upToCount;
                 *&v207[20] = 1024;
-                *&v207[22] = v55;
+                *&v207[22] = infoMask;
                 *&v207[26] = 2048;
                 *&v207[28] = v57;
                 *&v207[36] = 1024;
                 *&v207[38] = v195;
                 *&v207[42] = 1024;
-                *&v207[44] = v201;
+                *&v207[44] = unsignedIntegerValue;
                 *&v207[48] = 2112;
                 *&v207[50] = v65;
                 _os_log_impl(&dword_233600000, v49, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: %@ requestID: %@ startIndex: %u upToCount: %u infoMask: 0x%x, \n  Finished in %f sec, curIndex=%d / %d, memUse:\n%@", buf, 0x48u);
@@ -4442,8 +4442,8 @@ LABEL_46:
                 {
                 }
 
-                v12 = v202;
-                self = v200;
+                queryCopy = v202;
+                self = selfCopy;
                 v14 = 0x2812FF000uLL;
                 v13 = 0x2812FF000uLL;
               }
@@ -4482,20 +4482,20 @@ LABEL_46:
           else
           {
 
-            v12 = v202;
+            queryCopy = v202;
           }
 
-          v10 = v203;
+          listCopy = v203;
           goto LABEL_84;
         }
 
-        v58 = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
-        v59 = [v58 objectForKey:*MEMORY[0x277CE83C0]];
-        v201 = [v59 unsignedIntegerValue];
+        cachedPlaybackAttributes = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
+        v59 = [cachedPlaybackAttributes objectForKey:*MEMORY[0x277CE83C0]];
+        unsignedIntegerValue = [v59 unsignedIntegerValue];
 
-        v60 = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
-        v61 = [v60 objectForKey:*MEMORY[0x277CE83C8]];
-        v45 = [v61 unsignedIntegerValue];
+        cachedPlaybackAttributes2 = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
+        v61 = [cachedPlaybackAttributes2 objectForKey:*MEMORY[0x277CE83C8]];
+        startTime = [v61 unsignedIntegerValue];
 
         if (gLogObjects && gNumLogObjects >= 1)
         {
@@ -4513,29 +4513,29 @@ LABEL_46:
           v63 = MEMORY[0x277D86220];
         }
 
-        v196 = v45;
+        v196 = startTime;
         if (os_log_type_enabled(v62, OS_LOG_TYPE_DEBUG))
         {
-          v156 = [v203 accessoryUID];
-          [v11 requestID];
+          accessoryUID5 = [v203 accessoryUID];
+          [requestCopy requestID];
           v157 = v23;
           v159 = v158 = self;
           *buf = 138413058;
-          *v206 = v156;
+          *v206 = accessoryUID5;
           *&v206[8] = 2112;
           *v207 = v159;
           *&v207[8] = 1024;
-          *&v207[10] = v201;
+          *&v207[10] = unsignedIntegerValue;
           *&v207[14] = 1024;
           *&v207[16] = v196;
           _os_log_debug_impl(&dword_233600000, v62, OS_LOG_TYPE_DEBUG, "_generatePlaybackQueueItemsWithPropertyList: acc %@, req %@, count=%d curIndex=%d", buf, 0x22u);
 
           self = v158;
           v23 = v157;
-          v45 = v196;
+          startTime = v196;
         }
 
-        if (!v201)
+        if (!unsignedIntegerValue)
         {
           if (gLogObjects && gNumLogObjects >= 1)
           {
@@ -4555,40 +4555,40 @@ LABEL_46:
 
           if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
           {
-            v74 = [v203 accessoryUID];
-            [v11 requestID];
+            accessoryUID6 = [v203 accessoryUID];
+            [requestCopy requestID];
             v76 = v75 = self;
             *buf = 138412546;
-            *v206 = v74;
+            *v206 = accessoryUID6;
             *&v206[8] = 2112;
             *v207 = v76;
             _os_log_impl(&dword_233600000, v70, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: acc %@, req %@, No QueueCount", buf, 0x16u);
 
             self = v75;
             v14 = 0x2812FF000uLL;
-            v45 = v196;
+            startTime = v196;
           }
 
           [v35 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE8410]];
-          v43 = [v203 accessoryUID];
-          v77 = [v11 requestID];
-          v204[2](v204, v43, v77, v35);
+          accessoryUID3 = [v203 accessoryUID];
+          requestID5 = [requestCopy requestID];
+          handlerCopy[2](handlerCopy, accessoryUID3, requestID5, v35);
 
           goto LABEL_45;
         }
 
-        if (v202[2](v202, v203, v11, 0) < 1)
+        if (v202[2](v202, v203, requestCopy, 0) < 1)
         {
-          v43 = logObjectForModule();
-          if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+          accessoryUID3 = logObjectForModule();
+          if (os_log_type_enabled(accessoryUID3, OS_LOG_TYPE_DEFAULT))
           {
-            v71 = [v203 accessoryUID];
-            v72 = [v11 requestID];
+            accessoryUID7 = [v203 accessoryUID];
+            requestID6 = [requestCopy requestID];
             *buf = 138412546;
-            *v206 = v71;
+            *v206 = accessoryUID7;
             *&v206[8] = 2112;
-            *v207 = v72;
-            _os_log_impl(&dword_233600000, v43, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: %@ requestID: %@, got continueCB false before retrieve list, skip processing.", buf, 0x16u);
+            *v207 = requestID6;
+            _os_log_impl(&dword_233600000, accessoryUID3, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: %@ requestID: %@, got continueCB false before retrieve list, skip processing.", buf, 0x16u);
           }
 
           goto LABEL_46;
@@ -4596,35 +4596,35 @@ LABEL_46:
 
         v182 = v37;
         v199 = v35;
-        v43 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        if ([v11 upToCount])
+        accessoryUID3 = objc_alloc_init(MEMORY[0x277CBEB18]);
+        if ([requestCopy upToCount])
         {
-          v64 = [v11 startIndex];
+          startIndex2 = [requestCopy startIndex];
         }
 
         else
         {
-          v64 = 0;
+          startIndex2 = 0;
         }
 
-        v78 = [v11 upToCount];
-        v79 = v201;
-        v80 = v201;
-        if (v78)
+        upToCount2 = [requestCopy upToCount];
+        v79 = unsignedIntegerValue;
+        v80 = unsignedIntegerValue;
+        if (upToCount2)
         {
-          v81 = [v11 upToCount];
-          v79 = v201;
-          v80 = v201;
-          if (v81 < v201)
+          upToCount3 = [requestCopy upToCount];
+          v79 = unsignedIntegerValue;
+          v80 = unsignedIntegerValue;
+          if (upToCount3 < unsignedIntegerValue)
           {
-            v82 = [v11 upToCount];
-            v79 = v201;
-            v80 = v82;
+            upToCount4 = [requestCopy upToCount];
+            v79 = unsignedIntegerValue;
+            v80 = upToCount4;
           }
         }
 
-        v83 = v79 - v64;
-        LODWORD(v193) = v80;
+        v83 = v79 - startIndex2;
+        LODWORD(requestID10) = v80;
         if (v83 >= v80)
         {
           v84 = v80;
@@ -4640,7 +4640,7 @@ LABEL_46:
         v183 = *MEMORY[0x277CE8418];
         [v35 setObject:v85 forKey:?];
 
-        v188 = v64;
+        v188 = startIndex2;
         v86 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:?];
         [v35 setObject:v86 forKey:*MEMORY[0x277CE8438]];
 
@@ -4663,40 +4663,40 @@ LABEL_46:
         v185 = v23;
         if (os_log_type_enabled(v87, OS_LOG_TYPE_INFO))
         {
-          v89 = [v23 startTime];
-          [v89 timeIntervalSince1970];
+          startTime2 = [v23 startTime];
+          [startTime2 timeIntervalSince1970];
           *buf = 134218240;
-          *v206 = v201;
+          *v206 = unsignedIntegerValue;
           *&v206[8] = 2048;
           *v207 = v90;
           _os_log_impl(&dword_233600000, v87, OS_LOG_TYPE_INFO, "_generatePlaybackQueueItemsWithPropertyList: Start retrieving queued track info: count=%lu startTimeInterval=%f", buf, 0x16u);
         }
 
-        if (v202[2](v202, v203, v11, 0) >= 1 && +[ACCNowPlayingFeaturePlugin isMusicAppVisible])
+        if (v202[2](v202, v203, requestCopy, 0) >= 1 && +[ACCNowPlayingFeaturePlugin isMusicAppVisible])
         {
           v91 = logObjectForModule();
           if (os_log_type_enabled(v91, OS_LOG_TYPE_DEBUG))
           {
             *buf = 67109888;
-            *v206 = v64;
+            *v206 = startIndex2;
             *&v206[4] = 1024;
-            *&v206[6] = v193;
+            *&v206[6] = requestID10;
             *v207 = 1024;
             *&v207[2] = v189;
             *&v207[6] = 1024;
-            *&v207[8] = v189 + v64;
+            *&v207[8] = v189 + startIndex2;
             _os_log_debug_impl(&dword_233600000, v91, OS_LOG_TYPE_DEBUG, "_generatePlaybackQueueItemsWithPropertyList: startIndex=%d contentSize=%d contentCount=%d endIndex=%d", buf, 0x1Au);
           }
 
-          v92 = [(ACCNowPlayingFeaturePlugin *)self mpMusicPlayerControllerHandler];
+          mpMusicPlayerControllerHandler = [(ACCNowPlayingFeaturePlugin *)self mpMusicPlayerControllerHandler];
           v184 = v35 == 0;
-          v186 = v92;
+          v186 = mpMusicPlayerControllerHandler;
           if (v189)
           {
             v192 = 0;
             v93 = 0;
             v94 = "exist";
-            if (!v92)
+            if (!mpMusicPlayerControllerHandler)
             {
               v94 = "null";
             }
@@ -4705,7 +4705,7 @@ LABEL_46:
             v95 = 1;
             while (1)
             {
-              if (v202[2](v202, v203, v11, v93) <= 0)
+              if (v202[2](v202, v203, requestCopy, v93) <= 0)
               {
                 goto LABEL_200;
               }
@@ -4714,7 +4714,7 @@ LABEL_46:
               v97 = gLogObjects;
               v98 = gNumLogObjects;
               v99 = !gLogObjects || gNumLogObjects < 1;
-              v193 = v96;
+              requestID10 = v96;
               if (v99)
               {
                 v100 = MEMORY[0x277D86220];
@@ -4729,7 +4729,7 @@ LABEL_46:
 
                 v101 = v100;
                 v103 = v100;
-                v102 = v193;
+                v102 = requestID10;
               }
 
               else
@@ -4745,7 +4745,7 @@ LABEL_46:
                 *&v206[8] = 2048;
                 *v207 = v188 + v93;
                 *&v207[8] = 1024;
-                *&v207[10] = v201;
+                *&v207[10] = unsignedIntegerValue;
                 _os_log_debug_impl(&dword_233600000, v103, OS_LOG_TYPE_DEBUG, "_generatePlaybackQueueItemsWithPropertyList: %lu [%lu / %d]", buf, 0x1Cu);
               }
 
@@ -4757,7 +4757,7 @@ LABEL_46:
 
               if (![v102 persistentID] || (objc_msgSend(v102, "existsInLibrary") & 1) == 0)
               {
-                v104 = [v11 allowNonLibrary];
+                allowNonLibrary = [requestCopy allowNonLibrary];
                 v105 = gLogObjects;
                 v106 = gNumLogObjects;
                 if (gLogObjects && gNumLogObjects >= 1)
@@ -4779,27 +4779,27 @@ LABEL_46:
 
                   v112 = v111;
                   v107 = v111;
-                  v102 = v193;
+                  v102 = requestID10;
                 }
 
                 if (os_log_type_enabled(v107, OS_LOG_TYPE_INFO))
                 {
-                  v113 = [v102 title];
-                  v114 = [v102 persistentID];
+                  title = [v102 title];
+                  persistentID = [v102 persistentID];
                   *buf = 134219010;
                   *v206 = v93;
                   *&v206[8] = 2048;
-                  *v207 = v201;
+                  *v207 = unsignedIntegerValue;
                   *&v207[8] = 2112;
                   *&v207[10] = v102;
                   *&v207[18] = 2112;
-                  *&v207[20] = v113;
+                  *&v207[20] = title;
                   *&v207[28] = 2048;
-                  *&v207[30] = v114;
+                  *&v207[30] = persistentID;
                   _os_log_impl(&dword_233600000, v107, OS_LOG_TYPE_INFO, "_generatePlaybackQueueItemsWithPropertyList: i=%lu/%lu Found non-library item %@ (%@ : %llu)", buf, 0x34u);
                 }
 
-                v95 &= v104;
+                v95 &= allowNonLibrary;
 
                 v192 = 1;
                 v35 = v199;
@@ -4831,44 +4831,44 @@ LABEL_46:
 
                 if (os_log_type_enabled(v117, OS_LOG_TYPE_DEBUG))
                 {
-                  v179 = [v102 persistentID];
-                  v123 = [v102 title];
-                  v124 = [v102 artist];
-                  v125 = [v102 albumTitle];
+                  persistentID2 = [v102 persistentID];
+                  title2 = [v102 title];
+                  artist = [v102 artist];
+                  albumTitle = [v102 albumTitle];
                   *buf = 134219522;
                   *v206 = v93;
                   *&v206[8] = 2048;
                   *v207 = v188 + v93;
                   *&v207[8] = 1024;
-                  *&v207[10] = v201;
+                  *&v207[10] = unsignedIntegerValue;
                   *&v207[14] = 2048;
-                  *&v207[16] = v179;
+                  *&v207[16] = persistentID2;
                   *&v207[24] = 2112;
-                  *&v207[26] = v123;
+                  *&v207[26] = title2;
                   *&v207[34] = 2112;
-                  *&v207[36] = v124;
+                  *&v207[36] = artist;
                   *&v207[44] = 2112;
-                  *&v207[46] = v125;
+                  *&v207[46] = albumTitle;
                   _os_log_debug_impl(&dword_233600000, v117, OS_LOG_TYPE_DEBUG, "_generatePlaybackQueueItemsWithPropertyList: %lu [%lu / %d]   mediaItem:(pid=%llu title='%@' artist='%@' album='%@')", buf, 0x44u);
                 }
 
-                v110 = +[ACCNowPlayingFeaturePlugin getItemDictionaryForContentItem:infoMask:](ACCNowPlayingFeaturePlugin, "getItemDictionaryForContentItem:infoMask:", v102, [v11 infoMask]);
-                [v43 addObject:v110];
+                v110 = +[ACCNowPlayingFeaturePlugin getItemDictionaryForContentItem:infoMask:](ACCNowPlayingFeaturePlugin, "getItemDictionaryForContentItem:infoMask:", v102, [requestCopy infoMask]);
+                [accessoryUID3 addObject:v110];
 LABEL_162:
 
                 v95 = v190;
               }
 
-              v120 = [(ACCNowPlayingFeaturePlugin *)self measureMemoryUsage];
-              v45 = v196;
-              if (![v120 BOOLValue])
+              measureMemoryUsage3 = [(ACCNowPlayingFeaturePlugin *)self measureMemoryUsage];
+              startTime = v196;
+              if (![measureMemoryUsage3 BOOLValue])
               {
                 goto LABEL_171;
               }
 
               v121 = self->_memUse;
 
-              if (v121 && ((v93 & 0x7F) == 0 || v201 - 1 == v93))
+              if (v121 && ((v93 & 0x7F) == 0 || unsignedIntegerValue - 1 == v93))
               {
                 [(ACCMemUsageStat *)self->_memUse update];
                 if (v185)
@@ -4876,41 +4876,41 @@ LABEL_162:
                   [v185 timeIntervalSinceLastUpdate];
                   if (v122 >= 1.0)
                   {
-                    v120 = logObjectForModule();
-                    if (os_log_type_enabled(v120, OS_LOG_TYPE_DEBUG))
+                    measureMemoryUsage3 = logObjectForModule();
+                    if (os_log_type_enabled(measureMemoryUsage3, OS_LOG_TYPE_DEBUG))
                     {
-                      v191 = [v185 residentMem];
-                      v175 = [v191 last];
-                      v187 = [v185 residentMem];
-                      v126 = [v187 last] / 1000000.0;
-                      v180 = [v185 residentMem];
-                      v173 = [v180 max];
-                      v178 = [v185 residentMem];
-                      v127 = [v178 max] / 1000000.0;
-                      v177 = [v185 virtualMem];
-                      v170 = [v177 last];
-                      v176 = [v185 virtualMem];
-                      v128 = [v176 last] / 1000000.0;
-                      v174 = [v185 virtualMem];
-                      v168 = [v174 max];
-                      v172 = [v185 virtualMem];
-                      v129 = [v172 max] / 1000000.0;
-                      v171 = [v185 physFootprintMem];
-                      v167 = [v171 last];
-                      v169 = [v185 physFootprintMem];
-                      v130 = [v169 last] / 1000000.0;
-                      v131 = [v185 physFootprintMem];
-                      v166 = [v131 max];
-                      v132 = [v185 physFootprintMem];
-                      v133 = [v132 max];
+                      residentMem = [v185 residentMem];
+                      last = [residentMem last];
+                      residentMem2 = [v185 residentMem];
+                      v126 = [residentMem2 last] / 1000000.0;
+                      residentMem3 = [v185 residentMem];
+                      v173 = [residentMem3 max];
+                      residentMem4 = [v185 residentMem];
+                      v127 = [residentMem4 max] / 1000000.0;
+                      virtualMem = [v185 virtualMem];
+                      last2 = [virtualMem last];
+                      virtualMem2 = [v185 virtualMem];
+                      v128 = [virtualMem2 last] / 1000000.0;
+                      virtualMem3 = [v185 virtualMem];
+                      v168 = [virtualMem3 max];
+                      virtualMem4 = [v185 virtualMem];
+                      v129 = [virtualMem4 max] / 1000000.0;
+                      physFootprintMem = [v185 physFootprintMem];
+                      last3 = [physFootprintMem last];
+                      physFootprintMem2 = [v185 physFootprintMem];
+                      v130 = [physFootprintMem2 last] / 1000000.0;
+                      physFootprintMem3 = [v185 physFootprintMem];
+                      v166 = [physFootprintMem3 max];
+                      physFootprintMem4 = [v185 physFootprintMem];
+                      v133 = [physFootprintMem4 max];
                       *buf = 134221568;
                       *v206 = v93;
                       *&v206[8] = 1024;
                       *v207 = v189;
                       *&v207[4] = 1024;
-                      *&v207[6] = v201;
+                      *&v207[6] = unsignedIntegerValue;
                       *&v207[10] = 2048;
-                      *&v207[12] = v175;
+                      *&v207[12] = last;
                       *&v207[20] = 2048;
                       *&v207[22] = v126;
                       *&v207[30] = 2048;
@@ -4918,7 +4918,7 @@ LABEL_162:
                       *&v207[40] = 2048;
                       *&v207[42] = v127;
                       *&v207[50] = 2048;
-                      *&v207[52] = v170;
+                      *&v207[52] = last2;
                       v208 = 2048;
                       v209 = v128;
                       v210 = 2048;
@@ -4926,14 +4926,14 @@ LABEL_162:
                       v212 = 2048;
                       v213 = v129;
                       v214 = 2048;
-                      v215 = v167;
+                      v215 = last3;
                       v216 = 2048;
                       v217 = v130;
                       v218 = 2048;
                       v219 = v166;
                       v220 = 2048;
                       v221 = v133 / 1000000.0;
-                      _os_log_debug_impl(&dword_233600000, v120, OS_LOG_TYPE_DEBUG, "_generatePlaybackQueueItemsWithPropertyList: %lu / %d / %d, memUse[resident=%llu(%.3fM)/%llu(%.3fM) virtual=%llu(%.3fM)/%llu(%.3fM) physFootprint=%llu(%.3fM)/=%llu(%.3fM)]", buf, 0x90u);
+                      _os_log_debug_impl(&dword_233600000, measureMemoryUsage3, OS_LOG_TYPE_DEBUG, "_generatePlaybackQueueItemsWithPropertyList: %lu / %d / %d, memUse[resident=%llu(%.3fM)/%llu(%.3fM) virtual=%llu(%.3fM)/%llu(%.3fM) physFootprint=%llu(%.3fM)/=%llu(%.3fM)]", buf, 0x90u);
                     }
 
 LABEL_171:
@@ -4984,9 +4984,9 @@ LABEL_171:
               *&v206[8] = 2048;
               *v207 = v188 + v93;
               *&v207[8] = 1024;
-              *&v207[10] = v201;
+              *&v207[10] = unsignedIntegerValue;
               *&v207[14] = 2048;
-              *&v207[16] = v201;
+              *&v207[16] = unsignedIntegerValue;
               *&v207[24] = 2048;
               *&v207[26] = v93;
               *&v207[34] = 2080;
@@ -5004,14 +5004,14 @@ LABEL_200:
           v160 = logObjectForModule();
           if (os_log_type_enabled(v160, OS_LOG_TYPE_INFO))
           {
-            v161 = [v43 count];
+            v161 = [accessoryUID3 count];
             *buf = 134218752;
-            *v206 = v201;
+            *v206 = unsignedIntegerValue;
             *&v206[8] = 1024;
             *v207 = v192 & 1;
             *&v207[4] = 1024;
             *&v207[6] = v95 & 1;
-            v45 = v196;
+            startTime = v196;
             v35 = v199;
             *&v207[10] = 2048;
             *&v207[12] = v161;
@@ -5022,13 +5022,13 @@ LABEL_200:
           if ((v95 & 1) == 0)
           {
             [v35 removeAllObjects];
-            v162 = [v11 requestID];
-            [v35 setObject:v162 forKey:v182];
+            requestID7 = [requestCopy requestID];
+            [v35 setObject:requestID7 forKey:v182];
 
             [v35 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE8410]];
           }
 
-          v163 = v202[2](v202, v203, v11, 0);
+          v163 = v202[2](v202, v203, requestCopy, 0);
           if (v163)
           {
             if ((v95 & 1) == 0)
@@ -5038,18 +5038,18 @@ LABEL_196:
               v148 = logObjectForModule();
               if (os_log_type_enabled(v148, OS_LOG_TYPE_DEFAULT))
               {
-                v149 = [v43 count];
+                v149 = [accessoryUID3 count];
                 [v199 objectForKey:v183];
                 v151 = v150 = self;
-                v152 = [v151 unsignedLongValue];
+                unsignedLongValue = [v151 unsignedLongValue];
                 [v185 timeIntervalSinceStart];
                 *buf = 134219008;
                 *v206 = v149;
                 *&v206[8] = 2048;
-                *v207 = v152;
+                *v207 = unsignedLongValue;
                 *&v207[8] = 1024;
                 *&v207[10] = v192 & 1;
-                v45 = v196;
+                startTime = v196;
                 *&v207[14] = 1024;
                 *&v207[16] = v147;
                 *&v207[20] = 2048;
@@ -5059,9 +5059,9 @@ LABEL_196:
                 self = v150;
               }
 
-              v154 = [v203 accessoryUID];
-              v155 = [v11 requestID];
-              v204[2](v204, v154, v155, v199);
+              accessoryUID8 = [v203 accessoryUID];
+              requestID8 = [requestCopy requestID];
+              handlerCopy[2](handlerCopy, accessoryUID8, requestID8, v199);
 
               v14 = 0x2812FF000;
 LABEL_209:
@@ -5073,22 +5073,22 @@ LABEL_209:
 
             v138 = v163;
 LABEL_186:
-            v139 = [(ACCNowPlayingFeaturePlugin *)self playbackQueueInfoSendPartialOnTimeout];
-            if ([v139 intValue] == 3)
+            playbackQueueInfoSendPartialOnTimeout = [(ACCNowPlayingFeaturePlugin *)self playbackQueueInfoSendPartialOnTimeout];
+            if ([playbackQueueInfoSendPartialOnTimeout intValue] == 3)
             {
-              v140 = [v43 count];
+              v140 = [accessoryUID3 count];
 
               if (v140 >= v189)
               {
 LABEL_193:
-                [v199 setObject:v43 forKey:*MEMORY[0x277CE8420]];
+                [v199 setObject:accessoryUID3 forKey:*MEMORY[0x277CE8420]];
                 v145 = [MEMORY[0x277CCABB0] numberWithBool:v192 & 1];
                 [v199 setObject:v145 forKey:*MEMORY[0x277CE8428]];
 
                 [v199 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CE8410]];
                 if (v138 < 0)
                 {
-                  v146 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{-[NSObject count](v43, "count")}];
+                  v146 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{-[NSObject count](accessoryUID3, "count")}];
                   [v199 setObject:v146 forKey:v183];
                 }
 
@@ -5099,20 +5099,20 @@ LABEL_193:
               v141 = logObjectForModule();
               if (os_log_type_enabled(v141, OS_LOG_TYPE_DEFAULT))
               {
-                v142 = [v43 count];
+                v142 = [accessoryUID3 count];
                 *buf = 134217984;
                 *v206 = v189 - v142;
                 _os_log_impl(&dword_233600000, v141, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: list not full, fill %lu items with 0 pid!", buf, 0xCu);
               }
 
-              v139 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{&unk_2848EBE28, *MEMORY[0x277CE8468], 0}];
-              v143 = [v43 count];
+              playbackQueueInfoSendPartialOnTimeout = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{&unk_2848EBE28, *MEMORY[0x277CE8468], 0}];
+              v143 = [accessoryUID3 count];
               v144 = v189 - v143;
               if (v189 > v143)
               {
                 do
                 {
-                  [v43 addObject:v139];
+                  [accessoryUID3 addObject:playbackQueueInfoSendPartialOnTimeout];
                   --v144;
                 }
 
@@ -5151,7 +5151,7 @@ LABEL_193:
             _os_log_impl(&dword_233600000, v134, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: no systemMusicPlayer!", buf, 2u);
           }
 
-          v137 = v202[2](v202, v135, v11, 0);
+          v137 = v202[2](v202, v135, requestCopy, 0);
           if (v137)
           {
             v138 = v137;
@@ -5160,16 +5160,16 @@ LABEL_193:
           }
         }
 
-        v154 = logObjectForModule();
-        if (os_log_type_enabled(v154, OS_LOG_TYPE_DEFAULT))
+        accessoryUID8 = logObjectForModule();
+        if (os_log_type_enabled(accessoryUID8, OS_LOG_TYPE_DEFAULT))
         {
-          v164 = [v203 accessoryUID];
-          v165 = [v11 requestID];
+          accessoryUID9 = [v203 accessoryUID];
+          requestID9 = [requestCopy requestID];
           *buf = 138412546;
-          *v206 = v164;
+          *v206 = accessoryUID9;
           *&v206[8] = 2112;
-          *v207 = v165;
-          _os_log_impl(&dword_233600000, v154, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: %@ requestID: %@, got continueCB false attempting to retrieve list, skip processing.", buf, 0x16u);
+          *v207 = requestID9;
+          _os_log_impl(&dword_233600000, accessoryUID8, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: %@ requestID: %@, got continueCB false attempting to retrieve list, skip processing.", buf, 0x16u);
         }
 
         goto LABEL_209;
@@ -5179,7 +5179,7 @@ LABEL_193:
       v23 = [(ACCMemUsageStat *)self->_memUse getMark:@"npPbqUpdateMark"];
       if (gLogObjects && gNumLogObjects >= 1)
       {
-        v21 = *gLogObjects;
+        measureMemoryUsage = *gLogObjects;
       }
 
       else
@@ -5189,34 +5189,34 @@ LABEL_193:
           [_ACCNowPlayingPBQUpdateRequest initWithID:startIndex:upToCount:infoMask:allowNonLibrary:];
         }
 
-        v21 = MEMORY[0x277D86220];
+        measureMemoryUsage = MEMORY[0x277D86220];
         v28 = MEMORY[0x277D86220];
       }
 
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(measureMemoryUsage, OS_LOG_TYPE_INFO))
       {
-        v194 = [v10 accessoryUID];
-        v193 = [v11 requestID];
-        v197 = [v23 residentMem];
-        v29 = self;
-        v30 = [v197 start];
-        v31 = [v23 virtualMem];
-        v32 = [v31 start];
-        v33 = [v23 physFootprintMem];
-        v34 = [v33 start];
+        accessoryUID10 = [listCopy accessoryUID];
+        requestID10 = [requestCopy requestID];
+        residentMem5 = [v23 residentMem];
+        selfCopy2 = self;
+        start = [residentMem5 start];
+        virtualMem5 = [v23 virtualMem];
+        start2 = [virtualMem5 start];
+        physFootprintMem5 = [v23 physFootprintMem];
+        start3 = [physFootprintMem5 start];
         *buf = 138413314;
-        *v206 = v194;
+        *v206 = accessoryUID10;
         *&v206[8] = 2112;
-        *v207 = v193;
+        *v207 = requestID10;
         *&v207[8] = 2048;
-        *&v207[10] = v30;
-        self = v29;
+        *&v207[10] = start;
+        self = selfCopy2;
         v14 = 0x2812FF000uLL;
         *&v207[18] = 2048;
-        *&v207[20] = v32;
+        *&v207[20] = start2;
         *&v207[28] = 2048;
-        *&v207[30] = v34;
-        _os_log_impl(&dword_233600000, v21, OS_LOG_TYPE_INFO, "_generatePlaybackQueueItemsWithPropertyList: %@ requestID: %@, memUse:[residentStart=%llu virtualStart=%llu ]hysFootprintStart=%llu]", buf, 0x34u);
+        *&v207[30] = start3;
+        _os_log_impl(&dword_233600000, measureMemoryUsage, OS_LOG_TYPE_INFO, "_generatePlaybackQueueItemsWithPropertyList: %@ requestID: %@, memUse:[residentStart=%llu virtualStart=%llu ]hysFootprintStart=%llu]", buf, 0x34u);
 
         v13 = 0x2812FF000uLL;
       }
@@ -5249,12 +5249,12 @@ LABEL_193:
 
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v10 accessoryUID];
-    v27 = [v11 requestID];
+    accessoryUID11 = [listCopy accessoryUID];
+    requestID11 = [requestCopy requestID];
     *buf = 138412802;
-    *v206 = v26;
+    *v206 = accessoryUID11;
     *&v206[8] = 2112;
-    *v207 = v27;
+    *v207 = requestID11;
     *&v207[8] = 1024;
     *&v207[10] = v24;
     _os_log_impl(&dword_233600000, v23, OS_LOG_TYPE_DEFAULT, "_generatePlaybackQueueItemsWithPropertyList: %@ requestID: %@, got continueCB=%d, @ enter, skip processing.", buf, 0x1Cu);
@@ -5267,17 +5267,17 @@ LABEL_84:
 
 - (BOOL)_nowPlayingAppIsIPodApp
 {
-  v2 = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
-  v3 = [v2 objectForKey:*MEMORY[0x277CE83A8]];
+  cachedPlaybackAttributes = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
+  v3 = [cachedPlaybackAttributes objectForKey:*MEMORY[0x277CE83A8]];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(cachedPlaybackAttributes) = [v3 BOOLValue];
+  return cachedPlaybackAttributes;
 }
 
 - (BOOL)_nowPlayingAppIsIPodRadio
 {
-  v2 = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
-  v3 = [v2 objectForKey:*MEMORY[0x277CE8400]];
+  cachedPlaybackAttributes = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
+  v3 = [cachedPlaybackAttributes objectForKey:*MEMORY[0x277CE8400]];
 
   if (v3)
   {
@@ -5294,15 +5294,15 @@ LABEL_84:
 
 - (BOOL)_nowPlayingIsStreaming
 {
-  v3 = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
-  v4 = [v3 objectForKey:*MEMORY[0x277CE83C8]];
+  cachedPlaybackAttributes = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
+  v4 = [cachedPlaybackAttributes objectForKey:*MEMORY[0x277CE83C8]];
 
-  v5 = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
-  v6 = [v5 objectForKey:*MEMORY[0x277CE83C0]];
+  cachedPlaybackAttributes2 = [(ACCNowPlayingFeaturePlugin *)self cachedPlaybackAttributes];
+  v6 = [cachedPlaybackAttributes2 objectForKey:*MEMORY[0x277CE83C0]];
 
-  LODWORD(v5) = [v6 unsignedLongValue];
-  v7 = [(ACCNowPlayingFeaturePlugin *)self _nowPlayingAppIsIPodRadio];
-  v8 = (v5 - 0x7FFFFFFF) < 0x80000002 || v7;
+  LODWORD(cachedPlaybackAttributes2) = [v6 unsignedLongValue];
+  _nowPlayingAppIsIPodRadio = [(ACCNowPlayingFeaturePlugin *)self _nowPlayingAppIsIPodRadio];
+  v8 = (cachedPlaybackAttributes2 - 0x7FFFFFFF) < 0x80000002 || _nowPlayingAppIsIPodRadio;
   if (v8 && [v4 unsignedLongValue])
   {
     if (gLogObjects && gNumLogObjects >= 1)
@@ -5330,7 +5330,7 @@ LABEL_84:
   return v8;
 }
 
-- (void)_nowPlayingInfoDebounceTimerKick:(int)a3
+- (void)_nowPlayingInfoDebounceTimerKick:(int)kick
 {
   v22 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
@@ -5363,27 +5363,27 @@ LABEL_84:
   {
     nowPlayingInfoDebounceTimerRunningMask = self->_nowPlayingInfoDebounceTimerRunningMask;
     v18 = 67109376;
-    v19 = a3;
+    kickCopy = kick;
     v20 = 1024;
     v21 = nowPlayingInfoDebounceTimerRunningMask;
     _os_log_impl(&dword_233600000, v7, OS_LOG_TYPE_DEFAULT, "_nowPlayingInfoDebounceTimerKick: event = 0x%02x, _nowPlayingInfoDebounceTimerRunningMask = 0x%02x", &v18, 0xEu);
   }
 
   v9 = self->_nowPlayingInfoDebounceTimerRunningMask;
-  if (!a3 || v9)
+  if (!kick || v9)
   {
-    self->_nowPlayingInfoDebounceTimerRunningMask = v9 | a3;
+    self->_nowPlayingInfoDebounceTimerRunningMask = v9 | kick;
   }
 
   else
   {
-    self->_nowPlayingInfoDebounceTimerRunningMask = a3;
-    v10 = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
+    self->_nowPlayingInfoDebounceTimerRunningMask = kick;
+    intValue = [(ACCSettingsState *)self->_nowPlayingInfoDebounceTimerValue intValue];
     nowPlayingInfoDebounceTimer = self->_nowPlayingInfoDebounceTimer;
-    v12 = dispatch_time(0, 1000000 * v10);
-    if (v10 <= 1000)
+    v12 = dispatch_time(0, 1000000 * intValue);
+    if (intValue <= 1000)
     {
-      v13 = 1000000 * (v10 / 10);
+      v13 = 1000000 * (intValue / 10);
     }
 
     else
@@ -5414,7 +5414,7 @@ LABEL_84:
   {
     v16 = self->_nowPlayingInfoDebounceTimerRunningMask;
     v18 = 67109376;
-    v19 = v9;
+    kickCopy = v9;
     v20 = 1024;
     v21 = v16;
     _os_log_impl(&dword_233600000, v14, OS_LOG_TYPE_INFO, "_nowPlayingInfoDebounceTimerKick: _nowPlayingInfoDebounceTimerRunningMask 0x%02x -> 0x%02x", &v18, 0xEu);
@@ -5423,7 +5423,7 @@ LABEL_84:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_nowPlayingInfoDebounceTimerStop:(int)a3
+- (void)_nowPlayingInfoDebounceTimerStop:(int)stop
 {
   v18 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
@@ -5456,15 +5456,15 @@ LABEL_84:
   {
     nowPlayingInfoDebounceTimerRunningMask = self->_nowPlayingInfoDebounceTimerRunningMask;
     v14 = 67109376;
-    v15 = a3;
+    stopCopy = stop;
     v16 = 1024;
     v17 = nowPlayingInfoDebounceTimerRunningMask;
     _os_log_impl(&dword_233600000, v7, OS_LOG_TYPE_DEFAULT, "_nowPlayingInfoDebounceTimerStop: event = 0x%02x, _nowPlayingInfoDebounceTimerRunningMask = 0x%02x", &v14, 0xEu);
   }
 
   v9 = self->_nowPlayingInfoDebounceTimerRunningMask;
-  self->_nowPlayingInfoDebounceTimerRunningMask = v9 & ~a3;
-  if ((v9 & ~a3) == 0)
+  self->_nowPlayingInfoDebounceTimerRunningMask = v9 & ~stop;
+  if ((v9 & ~stop) == 0)
   {
     dispatch_source_set_timer(self->_nowPlayingInfoDebounceTimer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
   }
@@ -5489,7 +5489,7 @@ LABEL_84:
   {
     v12 = self->_nowPlayingInfoDebounceTimerRunningMask;
     v14 = 67109376;
-    v15 = v9;
+    stopCopy = v9;
     v16 = 1024;
     v17 = v12;
     _os_log_impl(&dword_233600000, v10, OS_LOG_TYPE_INFO, "_nowPlayingInfoDebounceTimerStop: _nowPlayingInfoDebounceTimerRunningMask 0x%02x -> 0x%02x", &v14, 0xEu);
@@ -5510,11 +5510,11 @@ LABEL_84:
   return [v3 showMusic];
 }
 
-+ (id)getItemDictionaryForContentItem:(id)a3 infoMask:(unsigned int)a4
++ (id)getItemDictionaryForContentItem:(id)item infoMask:(unsigned int)mask
 {
-  v5 = a3;
+  itemCopy = item;
   v6 = 0;
-  if (!v5 || !a4)
+  if (!itemCopy || !mask)
   {
     goto LABEL_33;
   }
@@ -5536,7 +5536,7 @@ LABEL_84:
   v22 = *MEMORY[0x277CE8468];
   while (1)
   {
-    if (((a4 >> v7) & 1) == 0)
+    if (((mask >> v7) & 1) == 0)
     {
       goto LABEL_27;
     }
@@ -5550,7 +5550,7 @@ LABEL_84:
     {
       if (v7 == 1)
       {
-        v13 = [v5 valueForProperty:v12];
+        v13 = [itemCopy valueForProperty:v12];
         if (v13)
         {
           v14 = v6;
@@ -5567,7 +5567,7 @@ LABEL_26:
 
       if (v7 == 6)
       {
-        v13 = [v5 valueForProperty:v11];
+        v13 = [itemCopy valueForProperty:v11];
         if (v13)
         {
           v14 = v6;
@@ -5582,10 +5582,10 @@ LABEL_26:
 
     else
     {
-      v17 = [v5 persistentID];
-      if (v17)
+      persistentID = [itemCopy persistentID];
+      if (persistentID)
       {
-        v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v17];
+        v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:persistentID];
         v14 = v6;
         v15 = v13;
         v16 = v22;
@@ -5604,7 +5604,7 @@ LABEL_27:
   {
     if (v7 == 12)
     {
-      v13 = [v5 valueForProperty:v10];
+      v13 = [itemCopy valueForProperty:v10];
       if (v13)
       {
         v14 = v6;
@@ -5618,7 +5618,7 @@ LABEL_27:
 
     if (v7 == 14)
     {
-      v13 = [v5 valueForProperty:v9];
+      v13 = [itemCopy valueForProperty:v9];
       if (v13)
       {
         v14 = v6;
@@ -5635,7 +5635,7 @@ LABEL_27:
 
   if (v7 == 16)
   {
-    v13 = [v5 valueForProperty:v8];
+    v13 = [itemCopy valueForProperty:v8];
     if (v13)
     {
       v14 = v6;
@@ -5652,7 +5652,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v18 = [v5 valueForProperty:v21];
+  v18 = [itemCopy valueForProperty:v21];
   if (v18)
   {
     [v6 setObject:v18 forKey:v20];
@@ -5673,7 +5673,7 @@ LABEL_33:
 - (void)currentMediaItemArtwork
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a1 length];
+  [self length];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_4();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);

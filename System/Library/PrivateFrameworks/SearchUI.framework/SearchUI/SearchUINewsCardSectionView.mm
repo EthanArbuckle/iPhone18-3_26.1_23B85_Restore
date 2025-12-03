@@ -8,10 +8,10 @@
 - (id)highlightReferenceView;
 - (id)setupContentView;
 - (void)didMoveToWindow;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateLayoutForCardSection:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateLayoutForCardSection:(id)section;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUINewsCardSectionView
@@ -19,9 +19,9 @@
 - (double)minThumbnailBottomSpacing
 {
   v3 = MEMORY[0x1E69D91A8];
-  v4 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   v5 = 8.0;
-  if (v4)
+  if (isMacOS)
   {
     v5 = 6.0;
   }
@@ -32,9 +32,9 @@
 
 - (double)stackViewVerticalSpacing
 {
-  v2 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   result = 2.0;
-  if (v2)
+  if (isMacOS)
   {
     return 1.0;
   }
@@ -78,15 +78,15 @@
 
 - (CGRect)highlightFrame
 {
-  v3 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-  [v3 frame];
+  thumbnailImageView = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+  [thumbnailImageView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-  v13 = [v12 superview];
-  [(SearchUINewsCardSectionView *)self convertRect:v13 fromView:v5, v7, v9, v11];
+  thumbnailImageView2 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+  superview = [thumbnailImageView2 superview];
+  [(SearchUINewsCardSectionView *)self convertRect:superview fromView:v5, v7, v9, v11];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -105,10 +105,10 @@
 
 - (id)highlightReferenceView
 {
-  v2 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-  v3 = [v2 highlightReferenceView];
+  thumbnailImageView = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+  highlightReferenceView = [thumbnailImageView highlightReferenceView];
 
-  return v3;
+  return highlightReferenceView;
 }
 
 - (id)setupContentView
@@ -117,30 +117,30 @@
   v3 = objc_opt_new();
   [(SearchUINewsCardSectionView *)self setThumbnailImageView:v3];
 
-  v4 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+  thumbnailImageView = [(SearchUINewsCardSectionView *)self thumbnailImageView];
   [(SearchUINewsCardSectionView *)self smallThumbnailSize];
-  [v4 setLayoutSize:? withContentPriority:?];
+  [thumbnailImageView setLayoutSize:? withContentPriority:?];
 
-  v5 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-  [v5 setAlignment:2];
+  thumbnailImageView2 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+  [thumbnailImageView2 setAlignment:2];
 
   v6 = objc_opt_new();
   [(SearchUINewsCardSectionView *)self setProviderImageView:v6];
 
-  v7 = [(SearchUINewsCardSectionView *)self providerImageView];
-  [v7 setProminence:1];
+  providerImageView = [(SearchUINewsCardSectionView *)self providerImageView];
+  [providerImageView setProminence:1];
 
-  v8 = [(SearchUINewsCardSectionView *)self providerImageView];
-  [v8 setAlignment:4];
+  providerImageView2 = [(SearchUINewsCardSectionView *)self providerImageView];
+  [providerImageView2 setAlignment:4];
 
   v9 = +[(TLKLabel *)SearchUILabel];
   v55 = v9;
   [(SearchUINewsCardSectionView *)self setTitleLabel:v9];
   v10 = +[(TLKLabel *)SearchUILabel];
   v11 = MEMORY[0x1E69D9138];
-  v12 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   v13 = *MEMORY[0x1E69DDD80];
-  if (v12)
+  if (isMacOS)
   {
     v14 = *MEMORY[0x1E69DDD80];
   }
@@ -176,14 +176,14 @@
   [v9 setFont:v22];
 
   v23 = objc_alloc(MEMORY[0x1E698B730]);
-  v24 = [(SearchUINewsCardSectionView *)self providerImageView];
-  v59[0] = v24;
-  v25 = [(SearchUINewsCardSectionView *)self providerLabel];
-  v59[1] = v25;
-  v26 = [(SearchUINewsCardSectionView *)self titleLabel];
-  v59[2] = v26;
-  v27 = [(SearchUINewsCardSectionView *)self subtitleLabel];
-  v59[3] = v27;
+  providerImageView3 = [(SearchUINewsCardSectionView *)self providerImageView];
+  v59[0] = providerImageView3;
+  providerLabel = [(SearchUINewsCardSectionView *)self providerLabel];
+  v59[1] = providerLabel;
+  titleLabel = [(SearchUINewsCardSectionView *)self titleLabel];
+  v59[2] = titleLabel;
+  subtitleLabel = [(SearchUINewsCardSectionView *)self subtitleLabel];
+  v59[3] = subtitleLabel;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:4];
   v29 = [v23 initWithArrangedSubviews:v28];
 
@@ -196,16 +196,16 @@
   [v29 setContentCompressionResistancePriority:1 forAxis:v30];
   [(SearchUINewsCardSectionView *)self setTextContentStackView:v29];
   v31 = objc_alloc(MEMORY[0x1E698B730]);
-  v32 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-  v58[0] = v32;
+  thumbnailImageView3 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+  v58[0] = thumbnailImageView3;
   v58[1] = v29;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
   v34 = [v31 initWithArrangedSubviews:v33];
 
   [v34 setAxis:1];
   [v34 setAlignment:0];
-  v35 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-  [v34 setAlignment:0 forView:v35 inAxis:0];
+  thumbnailImageView4 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+  [v34 setAlignment:0 forView:thumbnailImageView4 inAxis:0];
 
   [(SearchUINewsCardSectionView *)self stackViewVerticalSpacing];
   [v34 setSpacing:?];
@@ -215,18 +215,18 @@
   v39 = v37 + v38;
   [(SearchUINewsCardSectionView *)self providerImageVerticalOffset];
   v41 = v39 + v40;
-  v42 = [(SearchUINewsCardSectionView *)self providerImageView];
-  [v29 setCustomSpacing:v42 afterView:v41];
+  providerImageView4 = [(SearchUINewsCardSectionView *)self providerImageView];
+  [v29 setCustomSpacing:providerImageView4 afterView:v41];
 
   [MEMORY[0x1E69D9248] makeContainerShadowCompatible:v34];
-  v43 = [(SearchUINewsCardSectionView *)self providerImageView];
+  providerImageView5 = [(SearchUINewsCardSectionView *)self providerImageView];
   v44 = *MEMORY[0x1E698B6F8];
-  v45 = [(SearchUINewsCardSectionView *)self providerLabel];
-  [v45 intrinsicContentSize];
+  providerLabel2 = [(SearchUINewsCardSectionView *)self providerLabel];
+  [providerLabel2 intrinsicContentSize];
   v47 = v46;
   [(SearchUINewsCardSectionView *)self providerImageVerticalSizeDelta];
   LODWORD(v49) = 1148846080;
-  [v43 setLayoutSize:v44 withContentPriority:{v47 + v48, v49}];
+  [providerImageView5 setLayoutSize:v44 withContentPriority:{v47 + v48, v49}];
 
   v50 = objc_opt_new();
   [v50 setVerticalAlignment:0];
@@ -242,59 +242,59 @@
   return v34;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v37.receiver = self;
   v37.super_class = SearchUINewsCardSectionView;
-  v4 = a3;
-  [(SearchUICardSectionView *)&v37 updateWithRowModel:v4];
-  v5 = [v4 cardSection];
+  modelCopy = model;
+  [(SearchUICardSectionView *)&v37 updateWithRowModel:modelCopy];
+  cardSection = [modelCopy cardSection];
 
-  [(SearchUINewsCardSectionView *)self updateLayoutForCardSection:v5];
-  v6 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-  v7 = [v5 thumbnail];
-  [v6 updateWithImage:v7];
+  [(SearchUINewsCardSectionView *)self updateLayoutForCardSection:cardSection];
+  thumbnailImageView = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+  thumbnail = [cardSection thumbnail];
+  [thumbnailImageView updateWithImage:thumbnail];
 
-  v8 = [(SearchUINewsCardSectionView *)self providerImageView];
-  v9 = [v5 providerImage];
-  [v8 updateWithImage:v9];
+  providerImageView = [(SearchUINewsCardSectionView *)self providerImageView];
+  providerImage = [cardSection providerImage];
+  [providerImageView updateWithImage:providerImage];
 
-  v10 = [v5 title];
-  v11 = [(SearchUINewsCardSectionView *)self titleLabel];
-  [v11 setSfText:v10];
+  title = [cardSection title];
+  titleLabel = [(SearchUINewsCardSectionView *)self titleLabel];
+  [titleLabel setSfText:title];
 
-  v12 = [v5 title];
-  v13 = [(SearchUINewsCardSectionView *)self titleLabel];
-  [v13 setHidden:v12 == 0];
+  title2 = [cardSection title];
+  titleLabel2 = [(SearchUINewsCardSectionView *)self titleLabel];
+  [titleLabel2 setHidden:title2 == 0];
 
-  v14 = [v5 subtitle];
-  v15 = [(SearchUINewsCardSectionView *)self subtitleLabel];
-  [v15 setSfText:v14];
+  subtitle = [cardSection subtitle];
+  subtitleLabel = [(SearchUINewsCardSectionView *)self subtitleLabel];
+  [subtitleLabel setSfText:subtitle];
 
-  v16 = [v5 subtitle];
-  v17 = [(SearchUINewsCardSectionView *)self subtitleLabel];
-  [v17 setHidden:v16 == 0];
+  subtitle2 = [cardSection subtitle];
+  subtitleLabel2 = [(SearchUINewsCardSectionView *)self subtitleLabel];
+  [subtitleLabel2 setHidden:subtitle2 == 0];
 
-  v18 = [v5 providerTitle];
-  v19 = [(SearchUINewsCardSectionView *)self providerLabel];
-  [v19 setSfText:v18];
+  providerTitle = [cardSection providerTitle];
+  providerLabel = [(SearchUINewsCardSectionView *)self providerLabel];
+  [providerLabel setSfText:providerTitle];
 
-  v20 = [v5 providerImage];
-  v21 = v20 == 0;
-  v22 = v20 != 0;
+  providerImage2 = [cardSection providerImage];
+  v21 = providerImage2 == 0;
+  v22 = providerImage2 != 0;
 
-  v23 = [(SearchUINewsCardSectionView *)self providerLabel];
-  [v23 setHidden:v22];
+  providerLabel2 = [(SearchUINewsCardSectionView *)self providerLabel];
+  [providerLabel2 setHidden:v22];
 
-  v24 = [(SearchUINewsCardSectionView *)self providerImageView];
-  [v24 setHidden:v21];
+  providerImageView2 = [(SearchUINewsCardSectionView *)self providerImageView];
+  [providerImageView2 setHidden:v21];
 
   if (![(SearchUINewsCardSectionView *)self overlaysTextInImage])
   {
-    v25 = [v5 providerImage];
+    providerImage3 = [cardSection providerImage];
 
     [(SearchUINewsCardSectionView *)self providerImageVerticalSizeDelta];
-    if (v25)
+    if (providerImage3)
     {
       v27 = fmax(-v26, 0.0);
     }
@@ -302,29 +302,29 @@
     else
     {
       v28 = fmax(v26, 0.0);
-      v29 = [(SearchUINewsCardSectionView *)self providerLabel];
-      [v29 effectiveBaselineOffsetFromContentBottom];
+      providerLabel3 = [(SearchUINewsCardSectionView *)self providerLabel];
+      [providerLabel3 effectiveBaselineOffsetFromContentBottom];
       v31 = v28 + v30;
       [(SearchUINewsCardSectionView *)self providerImageVerticalOffset];
       v27 = v31 + v32;
     }
 
-    v33 = [(SearchUICardSectionView *)self contentView];
+    contentView = [(SearchUICardSectionView *)self contentView];
     [(SearchUINewsCardSectionView *)self minThumbnailBottomSpacing];
     v35 = v27 + v34;
-    v36 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-    [v33 setCustomSpacing:v36 afterView:v35];
+    thumbnailImageView2 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+    [contentView setCustomSpacing:thumbnailImageView2 afterView:v35];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUINewsCardSectionView;
-  [(SearchUINewsCardSectionView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUINewsCardSectionView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SearchUINewsCardSectionView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUINewsCardSectionView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -332,11 +332,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUINewsCardSectionView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUINewsCardSectionView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -352,91 +352,91 @@ LABEL_5:
   [(SearchUINewsCardSectionView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v10.receiver = self;
   v10.super_class = SearchUINewsCardSectionView;
-  [(SearchUINewsCardSectionView *)&v10 tlk_updateForAppearance:v4];
-  v5 = [(SearchUICardSectionView *)self rowModel];
-  v6 = [v5 cardSection];
+  [(SearchUINewsCardSectionView *)&v10 tlk_updateForAppearance:appearanceCopy];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
 
-  if ([v6 overlayTextInImage])
+  if ([cardSection overlayTextInImage])
   {
     v7 = [MEMORY[0x1E69D9108] appearanceWithStyle:3];
   }
 
   else
   {
-    v7 = v4;
+    v7 = appearanceCopy;
   }
 
   v8 = v7;
-  v9 = [(SearchUINewsCardSectionView *)self textContentStackView];
-  [v8 overrideAppearanceForView:v9];
+  textContentStackView = [(SearchUINewsCardSectionView *)self textContentStackView];
+  [v8 overrideAppearanceForView:textContentStackView];
 }
 
-- (void)updateLayoutForCardSection:(id)a3
+- (void)updateLayoutForCardSection:(id)section
 {
-  v43 = a3;
-  v4 = [v43 overlayTextInImage];
-  v5 = v4 == [(SearchUINewsCardSectionView *)self overlaysTextInImage];
-  v6 = v43;
+  sectionCopy = section;
+  overlayTextInImage = [sectionCopy overlayTextInImage];
+  v5 = overlayTextInImage == [(SearchUINewsCardSectionView *)self overlaysTextInImage];
+  v6 = sectionCopy;
   if (!v5)
   {
-    -[SearchUINewsCardSectionView setOverlaysTextInImage:](self, "setOverlaysTextInImage:", [v43 overlayTextInImage]);
-    v7 = [(SearchUINewsCardSectionView *)self textContentStackView];
-    [v7 removeFromSuperview];
+    -[SearchUINewsCardSectionView setOverlaysTextInImage:](self, "setOverlaysTextInImage:", [sectionCopy overlayTextInImage]);
+    textContentStackView = [(SearchUINewsCardSectionView *)self textContentStackView];
+    [textContentStackView removeFromSuperview];
 
-    v8 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-    [v8 removeFromSuperview];
+    thumbnailImageView = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+    [thumbnailImageView removeFromSuperview];
 
-    v9 = [(SearchUINewsCardSectionView *)self textContentBoxView];
-    [v9 removeFromSuperview];
+    textContentBoxView = [(SearchUINewsCardSectionView *)self textContentBoxView];
+    [textContentBoxView removeFromSuperview];
 
-    v10 = [(SearchUINewsCardSectionView *)self baseBoxView];
-    [v10 removeFromSuperview];
+    baseBoxView = [(SearchUINewsCardSectionView *)self baseBoxView];
+    [baseBoxView removeFromSuperview];
 
-    v11 = [(SearchUINewsCardSectionView *)self gradientView];
-    [v11 removeFromSuperview];
+    gradientView = [(SearchUINewsCardSectionView *)self gradientView];
+    [gradientView removeFromSuperview];
 
-    if ([v43 overlayTextInImage])
+    if ([sectionCopy overlayTextInImage])
     {
       [(SearchUINewsCardSectionView *)self textContentInset];
       v13 = v12;
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      v20 = [(SearchUINewsCardSectionView *)self textContentStackView];
-      [v20 setCustomAlignmentRectInsets:{v13, v15, v17, v19}];
+      textContentStackView2 = [(SearchUINewsCardSectionView *)self textContentStackView];
+      [textContentStackView2 setCustomAlignmentRectInsets:{v13, v15, v17, v19}];
 
-      v21 = [(SearchUINewsCardSectionView *)self textContentBoxView];
-      v22 = [(SearchUINewsCardSectionView *)self textContentStackView];
-      [v21 addArrangedSubview:v22];
+      textContentBoxView2 = [(SearchUINewsCardSectionView *)self textContentBoxView];
+      textContentStackView3 = [(SearchUINewsCardSectionView *)self textContentStackView];
+      [textContentBoxView2 addArrangedSubview:textContentStackView3];
 
-      v23 = [(SearchUINewsCardSectionView *)self baseBoxView];
-      v24 = [(SearchUINewsCardSectionView *)self gradientView];
-      [v23 addArrangedSubview:v24];
+      baseBoxView2 = [(SearchUINewsCardSectionView *)self baseBoxView];
+      gradientView2 = [(SearchUINewsCardSectionView *)self gradientView];
+      [baseBoxView2 addArrangedSubview:gradientView2];
 
-      v25 = [(SearchUINewsCardSectionView *)self baseBoxView];
-      v26 = [(SearchUINewsCardSectionView *)self textContentBoxView];
-      [v25 addArrangedSubview:v26];
+      baseBoxView3 = [(SearchUINewsCardSectionView *)self baseBoxView];
+      textContentBoxView3 = [(SearchUINewsCardSectionView *)self textContentBoxView];
+      [baseBoxView3 addArrangedSubview:textContentBoxView3];
 
-      v27 = [(SearchUICardSectionView *)self contentView];
-      v28 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-      [v27 addArrangedSubview:v28];
+      contentView = [(SearchUICardSectionView *)self contentView];
+      thumbnailImageView2 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+      [contentView addArrangedSubview:thumbnailImageView2];
 
-      v29 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-      v30 = [v29 imageView];
-      v31 = [(SearchUINewsCardSectionView *)self baseBoxView];
-      [v30 addSubview:v31];
+      thumbnailImageView3 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+      imageView = [thumbnailImageView3 imageView];
+      baseBoxView4 = [(SearchUINewsCardSectionView *)self baseBoxView];
+      [imageView addSubview:baseBoxView4];
 
-      v32 = [(SearchUINewsCardSectionView *)self baseBoxView];
-      [SearchUIAutoLayout fillContainerWithView:v32];
+      baseBoxView5 = [(SearchUINewsCardSectionView *)self baseBoxView];
+      [SearchUIAutoLayout fillContainerWithView:baseBoxView5];
 
-      v33 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+      thumbnailImageView4 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
       [(SearchUINewsCardSectionView *)self largeThumbnailSize];
-      [v33 setLayoutSize:? withHorizontalContentPriority:? verticalContentPriority:?];
+      [thumbnailImageView4 setLayoutSize:? withHorizontalContentPriority:? verticalContentPriority:?];
     }
 
     else
@@ -445,23 +445,23 @@ LABEL_5:
       v35 = *(MEMORY[0x1E69DDCE0] + 8);
       v36 = *(MEMORY[0x1E69DDCE0] + 16);
       v37 = *(MEMORY[0x1E69DDCE0] + 24);
-      v38 = [(SearchUINewsCardSectionView *)self textContentStackView];
-      [v38 setCustomAlignmentRectInsets:{v34, v35, v36, v37}];
+      textContentStackView4 = [(SearchUINewsCardSectionView *)self textContentStackView];
+      [textContentStackView4 setCustomAlignmentRectInsets:{v34, v35, v36, v37}];
 
-      v39 = [(SearchUICardSectionView *)self contentView];
-      v40 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
-      [v39 addArrangedSubview:v40];
+      contentView2 = [(SearchUICardSectionView *)self contentView];
+      thumbnailImageView5 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+      [contentView2 addArrangedSubview:thumbnailImageView5];
 
-      v41 = [(SearchUICardSectionView *)self contentView];
-      v42 = [(SearchUINewsCardSectionView *)self textContentStackView];
-      [v41 addArrangedSubview:v42];
+      contentView3 = [(SearchUICardSectionView *)self contentView];
+      textContentStackView5 = [(SearchUINewsCardSectionView *)self textContentStackView];
+      [contentView3 addArrangedSubview:textContentStackView5];
 
-      v33 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
+      thumbnailImageView4 = [(SearchUINewsCardSectionView *)self thumbnailImageView];
       [(SearchUINewsCardSectionView *)self smallThumbnailSize];
-      [v33 setLayoutSize:? withContentPriority:?];
+      [thumbnailImageView4 setLayoutSize:? withContentPriority:?];
     }
 
-    v6 = v43;
+    v6 = sectionCopy;
   }
 }
 

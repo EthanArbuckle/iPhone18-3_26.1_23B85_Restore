@@ -1,16 +1,16 @@
 @interface IDSQRProtoReallocateIndication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)reasonAsString:(int)a3;
-- (int)StringAsReason:(id)a3;
+- (id)reasonAsString:(int)string;
+- (int)StringAsReason:(id)reason;
 - (int)reason;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoReallocateIndication
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -43,18 +43,18 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)reasonAsString:(int)a3
+- (id)reasonAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"PERFORMANCE_REDIRECT";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -66,17 +66,17 @@
   return v4;
 }
 
-- (int)StringAsReason:(id)a3
+- (int)StringAsReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SERVER_SHUTTING_DOWN"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"SERVER_SHUTTING_DOWN"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"PERFORMANCE_REDIRECT"];
+    v4 = [reasonCopy isEqualToString:@"PERFORMANCE_REDIRECT"];
   }
 
   return v4;
@@ -88,20 +88,20 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoReallocateIndication;
   v4 = [(IDSQRProtoReallocateIndication *)&v8 description];
-  v5 = [(IDSQRProtoReallocateIndication *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoReallocateIndication *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   reallocateToken = self->_reallocateToken;
   if (reallocateToken)
   {
-    [v3 setObject:reallocateToken forKey:@"reallocate_token"];
+    [dictionary setObject:reallocateToken forKey:@"reallocate_token"];
   }
 
   sessionId = self->_sessionId;
@@ -173,15 +173,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_reallocateToken)
   {
     sub_1A7E12148();
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteDataField();
   if (!self->_sessionId)
   {
@@ -231,35 +231,35 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setReallocateToken:self->_reallocateToken];
-  [v5 setSessionId:self->_sessionId];
-  [v5 setClientAddress:self->_clientAddress];
-  [v5 setServerAddress:self->_serverAddress];
+  toCopy = to;
+  [toCopy setReallocateToken:self->_reallocateToken];
+  [toCopy setSessionId:self->_sessionId];
+  [toCopy setClientAddress:self->_clientAddress];
+  [toCopy setServerAddress:self->_serverAddress];
   if (self->_serverBlob)
   {
-    [v5 setServerBlob:?];
+    [toCopy setServerBlob:?];
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
-    *(v5 + 8) = self->_reason;
-    *(v5 + 80) |= 2u;
+    *(toCopy + 8) = self->_reason;
+    *(toCopy + 80) |= 2u;
   }
 
   if (self->_serverIpAddressV4)
   {
-    [v5 setServerIpAddressV4:?];
-    v4 = v5;
+    [toCopy setServerIpAddressV4:?];
+    v4 = toCopy;
   }
 
   if (self->_serverIpAddressV6)
   {
-    [v5 setServerIpAddressV6:?];
-    v4 = v5;
+    [toCopy setServerIpAddressV6:?];
+    v4 = toCopy;
   }
 
   if (*&self->_has)
@@ -269,26 +269,26 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_reallocateToken copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_reallocateToken copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSData *)self->_sessionId copyWithZone:a3];
+  v8 = [(NSData *)self->_sessionId copyWithZone:zone];
   v9 = *(v5 + 72);
   *(v5 + 72) = v8;
 
-  v10 = [(NSString *)self->_clientAddress copyWithZone:a3];
+  v10 = [(NSString *)self->_clientAddress copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
-  v12 = [(NSString *)self->_serverAddress copyWithZone:a3];
+  v12 = [(NSString *)self->_serverAddress copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(NSData *)self->_serverBlob copyWithZone:a3];
+  v14 = [(NSData *)self->_serverBlob copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
@@ -298,11 +298,11 @@
     *(v5 + 80) |= 2u;
   }
 
-  v16 = [(NSString *)self->_serverIpAddressV4 copyWithZone:a3];
+  v16 = [(NSString *)self->_serverIpAddressV4 copyWithZone:zone];
   v17 = *(v5 + 56);
   *(v5 + 56) = v16;
 
-  v18 = [(NSString *)self->_serverIpAddressV6 copyWithZone:a3];
+  v18 = [(NSString *)self->_serverIpAddressV6 copyWithZone:zone];
   v19 = *(v5 + 64);
   *(v5 + 64) = v18;
 
@@ -315,16 +315,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   reallocateToken = self->_reallocateToken;
-  if (reallocateToken | *(v4 + 3))
+  if (reallocateToken | *(equalCopy + 3))
   {
     if (![(NSData *)reallocateToken isEqual:?])
     {
@@ -333,7 +333,7 @@
   }
 
   sessionId = self->_sessionId;
-  if (sessionId | *(v4 + 9))
+  if (sessionId | *(equalCopy + 9))
   {
     if (![(NSData *)sessionId isEqual:?])
     {
@@ -342,7 +342,7 @@
   }
 
   clientAddress = self->_clientAddress;
-  if (clientAddress | *(v4 + 2))
+  if (clientAddress | *(equalCopy + 2))
   {
     if (![(NSString *)clientAddress isEqual:?])
     {
@@ -351,7 +351,7 @@
   }
 
   serverAddress = self->_serverAddress;
-  if (serverAddress | *(v4 + 5))
+  if (serverAddress | *(equalCopy + 5))
   {
     if (![(NSString *)serverAddress isEqual:?])
     {
@@ -360,7 +360,7 @@
   }
 
   serverBlob = self->_serverBlob;
-  if (serverBlob | *(v4 + 6))
+  if (serverBlob | *(equalCopy + 6))
   {
     if (![(NSData *)serverBlob isEqual:?])
     {
@@ -370,13 +370,13 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_reason != *(v4 + 8))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_reason != *(equalCopy + 8))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
 LABEL_25:
     v12 = 0;
@@ -384,13 +384,13 @@ LABEL_25:
   }
 
   serverIpAddressV4 = self->_serverIpAddressV4;
-  if (serverIpAddressV4 | *(v4 + 7) && ![(NSString *)serverIpAddressV4 isEqual:?])
+  if (serverIpAddressV4 | *(equalCopy + 7) && ![(NSString *)serverIpAddressV4 isEqual:?])
   {
     goto LABEL_25;
   }
 
   serverIpAddressV6 = self->_serverIpAddressV6;
-  if (serverIpAddressV6 | *(v4 + 8))
+  if (serverIpAddressV6 | *(equalCopy + 8))
   {
     if (![(NSString *)serverIpAddressV6 isEqual:?])
     {
@@ -398,10 +398,10 @@ LABEL_25:
     }
   }
 
-  v12 = (*(v4 + 80) & 1) == 0;
+  v12 = (*(equalCopy + 80) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_txnId != *(v4 + 1))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_txnId != *(equalCopy + 1))
     {
       goto LABEL_25;
     }
@@ -446,61 +446,61 @@ LABEL_26:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(IDSQRProtoReallocateIndication *)self setReallocateToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(IDSQRProtoReallocateIndication *)self setSessionId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(IDSQRProtoReallocateIndication *)self setClientAddress:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(IDSQRProtoReallocateIndication *)self setServerAddress:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(IDSQRProtoReallocateIndication *)self setServerBlob:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 80) & 2) != 0)
+  if ((*(fromCopy + 80) & 2) != 0)
   {
-    self->_reason = *(v4 + 8);
+    self->_reason = *(fromCopy + 8);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(IDSQRProtoReallocateIndication *)self setServerIpAddressV4:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(IDSQRProtoReallocateIndication *)self setServerIpAddressV6:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 80))
+  if (*(fromCopy + 80))
   {
-    self->_txnId = *(v4 + 1);
+    self->_txnId = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

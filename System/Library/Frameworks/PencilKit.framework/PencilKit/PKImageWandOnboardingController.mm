@@ -1,32 +1,32 @@
 @interface PKImageWandOnboardingController
 + (BOOL)canShowOnboardingView;
 + (void)resetOnboarding;
-- (id)initWithPresentationViewController:(void *)a3 toolPicker:;
+- (id)initWithPresentationViewController:(void *)controller toolPicker:;
 - (uint64_t)showOnboardingViewAfterDelay:(uint64_t)result;
 - (void)_dismissOnboardingView;
 - (void)_stopObservingToolPickerWillShowNotification;
-- (void)imageWandOnboardingControllerIsBeingDismissed:(id)a3;
-- (void)imageWandOnboardingControllerViewDidAppear:(id)a3 animated:(BOOL)a4;
-- (void)keyboardSceneDelegate:(id)a3 inputViewSetVisibilityDidChange:(BOOL)a4 includedReset:(BOOL)a5;
-- (void)pencilInteraction:(id)a3 didReceiveSqueeze:(id)a4;
+- (void)imageWandOnboardingControllerIsBeingDismissed:(id)dismissed;
+- (void)imageWandOnboardingControllerViewDidAppear:(id)appear animated:(BOOL)animated;
+- (void)keyboardSceneDelegate:(id)delegate inputViewSetVisibilityDidChange:(BOOL)change includedReset:(BOOL)reset;
+- (void)pencilInteraction:(id)interaction didReceiveSqueeze:(id)squeeze;
 - (void)showOnboardingView;
 @end
 
 @implementation PKImageWandOnboardingController
 
-- (id)initWithPresentationViewController:(void *)a3 toolPicker:
+- (id)initWithPresentationViewController:(void *)controller toolPicker:
 {
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  controllerCopy = controller;
+  if (!self)
   {
     goto LABEL_8;
   }
 
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = PKImageWandOnboardingController;
   v7 = objc_msgSendSuper2(&v18, sel_init);
-  a1 = v7;
+  self = v7;
   if (!v7)
   {
     goto LABEL_8;
@@ -39,7 +39,7 @@
     goto LABEL_11;
   }
 
-  if (!v6)
+  if (!controllerCopy)
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D930];
@@ -49,41 +49,41 @@ LABEL_11:
   }
 
   objc_storeWeak(v7 + 1, v5);
-  objc_storeWeak(a1 + 2, v6);
+  objc_storeWeak(self + 2, controllerCopy);
   v8 = objc_alloc_init(PKImageWandOnboarding);
-  v9 = a1[3];
-  a1[3] = v8;
+  v9 = self[3];
+  self[3] = v8;
 
   v10 = __instances;
   if (!__instances)
   {
-    v11 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v12 = __instances;
-    __instances = v11;
+    __instances = weakObjectsHashTable;
 
     v10 = __instances;
   }
 
-  [v10 addObject:a1];
+  [v10 addObject:self];
 LABEL_8:
 
-  return a1;
+  return self;
 }
 
 + (BOOL)canShowOnboardingView
 {
   v2 = +[PKInternalSettings sharedInstance];
-  v3 = [(PKInternalSettings *)v2 imageWandOnboardingDisabled];
+  imageWandOnboardingDisabled = [(PKInternalSettings *)v2 imageWandOnboardingDisabled];
 
-  if (v3)
+  if (imageWandOnboardingDisabled)
   {
     return 0;
   }
 
   v5 = +[PKInternalSettings sharedInstance];
-  v6 = [(PKInternalSettings *)v5 forceShowImageWandOnboarding];
+  forceShowImageWandOnboarding = [(PKInternalSettings *)v5 forceShowImageWandOnboarding];
 
-  if (v6)
+  if (forceShowImageWandOnboarding)
   {
     return 1;
   }
@@ -138,10 +138,10 @@ LABEL_8:
 
 - (void)_dismissOnboardingView
 {
-  if (a1 && *(a1 + 32))
+  if (self && *(self + 32))
   {
-    [(PKImageWandOnboardingController *)a1 _stopObservingToolPickerWillShowNotification];
-    *(a1 + 32) = 0;
+    [(PKImageWandOnboardingController *)self _stopObservingToolPickerWillShowNotification];
+    *(self + 32) = 0;
     v2 = os_log_create("com.apple.pencilkit", "PKImageWandOnboardingController");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
@@ -149,7 +149,7 @@ LABEL_8:
       _os_log_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEFAULT, "hide onboarding", v4, 2u);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     [WeakRetained dismissModalViewControllerWithTransition:7];
   }
 }
@@ -185,17 +185,17 @@ LABEL_8:
     [MEMORY[0x1E69B7D70] preferredContentSize];
     v7 = v6;
     v9 = v8;
-    v10 = [p_super view];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [p_super view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [p_super view];
-    v12 = [v11 widthAnchor];
-    v13 = [v12 constraintEqualToConstant:v7];
+    view2 = [p_super view];
+    widthAnchor = [view2 widthAnchor];
+    v13 = [widthAnchor constraintEqualToConstant:v7];
     [v13 setActive:1];
 
-    v14 = [p_super view];
-    v15 = [v14 heightAnchor];
-    v16 = [v15 constraintEqualToConstant:v9];
+    view3 = [p_super view];
+    heightAnchor = [view3 heightAnchor];
+    v16 = [heightAnchor constraintEqualToConstant:v9];
     [v16 setActive:1];
 
     v17 = os_log_create("com.apple.pencilkit", "PKImageWandOnboardingController");
@@ -222,15 +222,15 @@ LABEL_8:
 
 - (void)_stopObservingToolPickerWillShowNotification
 {
-  if (a1)
+  if (self)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    [v3 removeObserver:a1 name:@"PKToolPickerWillShowNotification" object:WeakRetained];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    [defaultCenter removeObserver:self name:@"PKToolPickerWillShowNotification" object:WeakRetained];
   }
 }
 
-- (void)imageWandOnboardingControllerIsBeingDismissed:(id)a3
+- (void)imageWandOnboardingControllerIsBeingDismissed:(id)dismissed
 {
   WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
   [WeakRetained setKeyboardSceneDelegateVisibilityObserver:0];
@@ -245,9 +245,9 @@ LABEL_8:
   }
 }
 
-- (void)imageWandOnboardingControllerViewDidAppear:(id)a3 animated:(BOOL)a4
+- (void)imageWandOnboardingControllerViewDidAppear:(id)appear animated:(BOOL)animated
 {
-  v5 = a3;
+  appearCopy = appear;
   v6 = os_log_create("com.apple.pencilkit", "PKImageWandOnboardingController");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -258,32 +258,32 @@ LABEL_8:
   self->_onboardingViewDidAppear = 1;
   v7 = objc_alloc_init(MEMORY[0x1E69DCD58]);
   [v7 setDelegate:self];
-  v8 = [v5 view];
-  [v8 addInteraction:v7];
+  view = [appearCopy view];
+  [view addInteraction:v7];
 
-  [v5 becomeFirstResponder];
-  LOBYTE(v8) = [v5 isFirstResponder];
+  [appearCopy becomeFirstResponder];
+  LOBYTE(view) = [appearCopy isFirstResponder];
 
-  if (v8)
+  if (view)
   {
     [(PKImageWandOnboardingController *)self _stopObservingToolPickerWillShowNotification];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     WeakRetained = objc_loadWeakRetained(&self->_toolPicker);
-    [v9 addObserver:self selector:sel__toolPickerWillShow_ name:@"PKToolPickerWillShowNotification" object:WeakRetained];
+    [defaultCenter addObserver:self selector:sel__toolPickerWillShow_ name:@"PKToolPickerWillShowNotification" object:WeakRetained];
   }
 
   else
   {
-    v9 = os_log_create("com.apple.pencilkit", "PKImageWandOnboardingController");
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    defaultCenter = os_log_create("com.apple.pencilkit", "PKImageWandOnboardingController");
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
     {
       *v11 = 0;
-      _os_log_error_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_ERROR, "failed to become FR", v11, 2u);
+      _os_log_error_impl(&dword_1C7CCA000, defaultCenter, OS_LOG_TYPE_ERROR, "failed to become FR", v11, 2u);
     }
   }
 }
 
-- (void)keyboardSceneDelegate:(id)a3 inputViewSetVisibilityDidChange:(BOOL)a4 includedReset:(BOOL)a5
+- (void)keyboardSceneDelegate:(id)delegate inputViewSetVisibilityDidChange:(BOOL)change includedReset:(BOOL)reset
 {
   v5 = os_log_create("com.apple.pencilkit", "PKImageWandOnboardingController");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -293,7 +293,7 @@ LABEL_8:
   }
 }
 
-- (void)pencilInteraction:(id)a3 didReceiveSqueeze:(id)a4
+- (void)pencilInteraction:(id)interaction didReceiveSqueeze:(id)squeeze
 {
   v4 = os_log_create("com.apple.pencilkit", "PKImageWandOnboardingController");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

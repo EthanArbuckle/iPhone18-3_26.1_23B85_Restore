@@ -1,17 +1,17 @@
 @interface STMSizeCacheEvent
-- (int64_t)eventIDCompare:(id)a3;
+- (int64_t)eventIDCompare:(id)compare;
 @end
 
 @implementation STMSizeCacheEvent
 
-- (int64_t)eventIDCompare:(id)a3
+- (int64_t)eventIDCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [v4 evtID];
-  if (v5 <= [(STMSizeCacheEvent *)self evtID])
+  compareCopy = compare;
+  evtID = [compareCopy evtID];
+  if (evtID <= [(STMSizeCacheEvent *)self evtID])
   {
-    v7 = [v4 evtID];
-    v6 = v7 < [(STMSizeCacheEvent *)self evtID];
+    evtID2 = [compareCopy evtID];
+    v6 = evtID2 < [(STMSizeCacheEvent *)self evtID];
   }
 
   else

@@ -1,29 +1,29 @@
 @interface HUSimpleSliderControlView
 - (BOOL)isDisabled;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (HUControlViewDelegate)delegate;
-- (HUSimpleSliderControlView)initWithFrame:(CGRect)a3;
+- (HUSimpleSliderControlView)initWithFrame:(CGRect)frame;
 - (float)maxValue;
 - (float)minValue;
 - (id)value;
-- (void)_sliderTouchDown:(id)a3;
-- (void)_sliderTouchUp:(id)a3;
-- (void)_sliderValueChanged:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setMaxValue:(float)a3;
-- (void)setMinValue:(float)a3;
-- (void)setValue:(id)a3;
+- (void)_sliderTouchDown:(id)down;
+- (void)_sliderTouchUp:(id)up;
+- (void)_sliderValueChanged:(id)changed;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setMaxValue:(float)value;
+- (void)setMinValue:(float)value;
+- (void)setValue:(id)value;
 @end
 
 @implementation HUSimpleSliderControlView
 
-- (HUSimpleSliderControlView)initWithFrame:(CGRect)a3
+- (HUSimpleSliderControlView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = HUSimpleSliderControlView;
   v7 = [(HUSimpleSliderControlView *)&v11 initWithFrame:?];
@@ -45,40 +45,40 @@
 
 - (float)minValue
 {
-  v2 = [(HUSimpleSliderControlView *)self slider];
-  [v2 minimumValue];
+  slider = [(HUSimpleSliderControlView *)self slider];
+  [slider minimumValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMinValue:(float)a3
+- (void)setMinValue:(float)value
 {
-  v5 = [(HUSimpleSliderControlView *)self slider];
-  *&v4 = a3;
-  [v5 setMinimumValue:v4];
+  slider = [(HUSimpleSliderControlView *)self slider];
+  *&v4 = value;
+  [slider setMinimumValue:v4];
 }
 
 - (float)maxValue
 {
-  v2 = [(HUSimpleSliderControlView *)self slider];
-  [v2 maximumValue];
+  slider = [(HUSimpleSliderControlView *)self slider];
+  [slider maximumValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMaxValue:(float)a3
+- (void)setMaxValue:(float)value
 {
-  v5 = [(HUSimpleSliderControlView *)self slider];
-  *&v4 = a3;
-  [v5 setMaximumValue:v4];
+  slider = [(HUSimpleSliderControlView *)self slider];
+  *&v4 = value;
+  [slider setMaximumValue:v4];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(HUSimpleSliderControlView *)self slider];
-  [v2 intrinsicContentSize];
+  slider = [(HUSimpleSliderControlView *)self slider];
+  [slider intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -89,12 +89,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(HUSimpleSliderControlView *)self slider];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  slider = [(HUSimpleSliderControlView *)self slider];
+  [slider sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -108,57 +108,57 @@
 - (id)value
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(HUSimpleSliderControlView *)self slider];
-  [v3 value];
+  slider = [(HUSimpleSliderControlView *)self slider];
+  [slider value];
   v4 = [v2 numberWithFloat:?];
 
   return v4;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
-  v9 = [(HUSimpleSliderControlView *)self slider];
-  [v4 floatValue];
+  valueCopy = value;
+  slider = [(HUSimpleSliderControlView *)self slider];
+  [valueCopy floatValue];
   v6 = v5;
 
-  v7 = [MEMORY[0x277D75D18] _isInAnimationBlock];
+  _isInAnimationBlock = [MEMORY[0x277D75D18] _isInAnimationBlock];
   LODWORD(v8) = v6;
-  [v9 setValue:v7 animated:v8];
+  [slider setValue:_isInAnimationBlock animated:v8];
 }
 
 - (BOOL)isDisabled
 {
-  v2 = [(HUSimpleSliderControlView *)self slider];
-  v3 = [v2 isEnabled];
+  slider = [(HUSimpleSliderControlView *)self slider];
+  isEnabled = [slider isEnabled];
 
-  return v3 ^ 1;
+  return isEnabled ^ 1;
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(HUSimpleSliderControlView *)self slider];
-  [v4 setEnabled:!v3];
+  disabledCopy = disabled;
+  slider = [(HUSimpleSliderControlView *)self slider];
+  [slider setEnabled:!disabledCopy];
 }
 
-- (void)_sliderTouchDown:(id)a3
+- (void)_sliderTouchDown:(id)down
 {
-  v4 = [(HUSimpleSliderControlView *)self delegate];
-  [v4 controlViewDidBeginUserInteraction:self];
+  delegate = [(HUSimpleSliderControlView *)self delegate];
+  [delegate controlViewDidBeginUserInteraction:self];
 }
 
-- (void)_sliderTouchUp:(id)a3
+- (void)_sliderTouchUp:(id)up
 {
-  v4 = [(HUSimpleSliderControlView *)self delegate];
-  [v4 controlViewDidEndUserInteraction:self];
+  delegate = [(HUSimpleSliderControlView *)self delegate];
+  [delegate controlViewDidEndUserInteraction:self];
 }
 
-- (void)_sliderValueChanged:(id)a3
+- (void)_sliderValueChanged:(id)changed
 {
-  v5 = [(HUSimpleSliderControlView *)self delegate];
-  v4 = [(HUSimpleSliderControlView *)self value];
-  [v5 controlView:self valueDidChange:v4];
+  delegate = [(HUSimpleSliderControlView *)self delegate];
+  value = [(HUSimpleSliderControlView *)self value];
+  [delegate controlView:self valueDidChange:value];
 }
 
 - (HUControlViewDelegate)delegate

@@ -1,26 +1,26 @@
 @interface PEGASUSSchemaPEGASUSWebAnswerCitationTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSWebAnswerCitationTier1)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSWebAnswerCitationTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSWebAnswerCitationTier1)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSWebAnswerCitationTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSWebAnswerCitationTier1
 
-- (PEGASUSSchemaPEGASUSWebAnswerCitationTier1)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSWebAnswerCitationTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PEGASUSSchemaPEGASUSWebAnswerCitationTier1;
   v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"url"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)v5 setUrl:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sourceDomain"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sourceDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)v5 setSourceDomain:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"readableAttribution"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"readableAttribution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)v5 setReadableAttribution:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"citedText"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"citedText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)v5 setCitedText:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"enrichedUrl"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"enrichedUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)v5 setEnrichedUrl:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"thumbnail"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"thumbnail"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,30 +74,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSWebAnswerCitationTier1)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSWebAnswerCitationTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -110,48 +110,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_citedText)
   {
-    v4 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self citedText];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"citedText"];
+    citedText = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self citedText];
+    v5 = [citedText copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"citedText"];
   }
 
   if (self->_enrichedUrl)
   {
-    v6 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self enrichedUrl];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"enrichedUrl"];
+    enrichedUrl = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self enrichedUrl];
+    v7 = [enrichedUrl copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"enrichedUrl"];
   }
 
   if (self->_readableAttribution)
   {
-    v8 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self readableAttribution];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"readableAttribution"];
+    readableAttribution = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self readableAttribution];
+    v9 = [readableAttribution copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"readableAttribution"];
   }
 
   if (self->_sourceDomain)
   {
-    v10 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self sourceDomain];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"sourceDomain"];
+    sourceDomain = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self sourceDomain];
+    v11 = [sourceDomain copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"sourceDomain"];
   }
 
   if (self->_thumbnail)
   {
-    v12 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    thumbnail = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
+    dictionaryRepresentation = [thumbnail dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"thumbnail"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"thumbnail"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"thumbnail"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"thumbnail"];
     }
   }
 
@@ -159,12 +159,12 @@
   {
     v15 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self url];
     v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"url"];
+    [dictionary setObject:v16 forKeyedSubscript:@"url"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -177,17 +177,17 @@
   return v6 ^ v7 ^ [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self->_thumbnail hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self url];
-  v6 = [v4 url];
-  if ((v5 != 0) == (v6 == 0))
+  sourceDomain = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self url];
+  sourceDomain2 = [equalCopy url];
+  if ((sourceDomain != 0) == (sourceDomain2 == 0))
   {
     goto LABEL_31;
   }
@@ -197,7 +197,7 @@
   {
     v8 = v7;
     v9 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self url];
-    v10 = [v4 url];
+    v10 = [equalCopy url];
     v11 = [v9 isEqual:v10];
 
     if (!v11)
@@ -210,20 +210,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self sourceDomain];
-  v6 = [v4 sourceDomain];
-  if ((v5 != 0) == (v6 == 0))
+  sourceDomain = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self sourceDomain];
+  sourceDomain2 = [equalCopy sourceDomain];
+  if ((sourceDomain != 0) == (sourceDomain2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self sourceDomain];
-  if (v12)
+  sourceDomain3 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self sourceDomain];
+  if (sourceDomain3)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self sourceDomain];
-    v15 = [v4 sourceDomain];
-    v16 = [v14 isEqual:v15];
+    v13 = sourceDomain3;
+    sourceDomain4 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self sourceDomain];
+    sourceDomain5 = [equalCopy sourceDomain];
+    v16 = [sourceDomain4 isEqual:sourceDomain5];
 
     if (!v16)
     {
@@ -235,20 +235,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self readableAttribution];
-  v6 = [v4 readableAttribution];
-  if ((v5 != 0) == (v6 == 0))
+  sourceDomain = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self readableAttribution];
+  sourceDomain2 = [equalCopy readableAttribution];
+  if ((sourceDomain != 0) == (sourceDomain2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self readableAttribution];
-  if (v17)
+  readableAttribution = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self readableAttribution];
+  if (readableAttribution)
   {
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self readableAttribution];
-    v20 = [v4 readableAttribution];
-    v21 = [v19 isEqual:v20];
+    v18 = readableAttribution;
+    readableAttribution2 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self readableAttribution];
+    readableAttribution3 = [equalCopy readableAttribution];
+    v21 = [readableAttribution2 isEqual:readableAttribution3];
 
     if (!v21)
     {
@@ -260,20 +260,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self citedText];
-  v6 = [v4 citedText];
-  if ((v5 != 0) == (v6 == 0))
+  sourceDomain = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self citedText];
+  sourceDomain2 = [equalCopy citedText];
+  if ((sourceDomain != 0) == (sourceDomain2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self citedText];
-  if (v22)
+  citedText = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self citedText];
+  if (citedText)
   {
-    v23 = v22;
-    v24 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self citedText];
-    v25 = [v4 citedText];
-    v26 = [v24 isEqual:v25];
+    v23 = citedText;
+    citedText2 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self citedText];
+    citedText3 = [equalCopy citedText];
+    v26 = [citedText2 isEqual:citedText3];
 
     if (!v26)
     {
@@ -285,20 +285,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self enrichedUrl];
-  v6 = [v4 enrichedUrl];
-  if ((v5 != 0) == (v6 == 0))
+  sourceDomain = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self enrichedUrl];
+  sourceDomain2 = [equalCopy enrichedUrl];
+  if ((sourceDomain != 0) == (sourceDomain2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self enrichedUrl];
-  if (v27)
+  enrichedUrl = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self enrichedUrl];
+  if (enrichedUrl)
   {
-    v28 = v27;
-    v29 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self enrichedUrl];
-    v30 = [v4 enrichedUrl];
-    v31 = [v29 isEqual:v30];
+    v28 = enrichedUrl;
+    enrichedUrl2 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self enrichedUrl];
+    enrichedUrl3 = [equalCopy enrichedUrl];
+    v31 = [enrichedUrl2 isEqual:enrichedUrl3];
 
     if (!v31)
     {
@@ -310,12 +310,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
-  v6 = [v4 thumbnail];
-  if ((v5 != 0) != (v6 == 0))
+  sourceDomain = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
+  sourceDomain2 = [equalCopy thumbnail];
+  if ((sourceDomain != 0) != (sourceDomain2 == 0))
   {
-    v32 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
-    if (!v32)
+    thumbnail = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
+    if (!thumbnail)
     {
 
 LABEL_35:
@@ -323,10 +323,10 @@ LABEL_35:
       goto LABEL_33;
     }
 
-    v33 = v32;
-    v34 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
-    v35 = [v4 thumbnail];
-    v36 = [v34 isEqual:v35];
+    v33 = thumbnail;
+    thumbnail2 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
+    thumbnail3 = [equalCopy thumbnail];
+    v36 = [thumbnail2 isEqual:thumbnail3];
 
     if (v36)
     {
@@ -346,9 +346,9 @@ LABEL_33:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   v4 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self url];
 
   if (v4)
@@ -356,53 +356,53 @@ LABEL_33:
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self sourceDomain];
+  sourceDomain = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self sourceDomain];
 
-  if (v5)
+  if (sourceDomain)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self readableAttribution];
+  readableAttribution = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self readableAttribution];
 
-  if (v6)
+  if (readableAttribution)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self citedText];
+  citedText = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self citedText];
 
-  if (v7)
+  if (citedText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self enrichedUrl];
+  enrichedUrl = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self enrichedUrl];
 
-  if (v8)
+  if (enrichedUrl)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
+  thumbnail = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (thumbnail)
   {
-    v11 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
+    thumbnail2 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
     PBDataWriterWriteSubmessage();
 
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = PEGASUSSchemaPEGASUSWebAnswerCitationTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteUrl];
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteSourceDomain];
@@ -411,7 +411,7 @@ LABEL_33:
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteEnrichedUrl];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteUrl];
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteSourceDomain];
@@ -420,7 +420,7 @@ LABEL_33:
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteEnrichedUrl];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteUrl];
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteSourceDomain];
@@ -429,7 +429,7 @@ LABEL_33:
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteEnrichedUrl];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteUrl];
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteSourceDomain];
@@ -438,7 +438,7 @@ LABEL_33:
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteEnrichedUrl];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteUrl];
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteSourceDomain];
@@ -447,11 +447,11 @@ LABEL_33:
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteEnrichedUrl];
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  thumbnail = [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self thumbnail];
+  v7 = [thumbnail applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PEGASUSSchemaPEGASUSWebAnswerCitationTier1 *)self deleteThumbnail];
   }

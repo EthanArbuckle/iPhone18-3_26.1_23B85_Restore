@@ -1,5 +1,5 @@
 @interface ModernProductReviewCollectionViewCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)tintColorDidChange;
@@ -9,7 +9,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_2866DC();
 }
 
@@ -20,17 +20,17 @@
   v2 = v5.receiver;
   [(ModernProductReviewCollectionViewCell *)&v5 tintColorDidChange];
   v3 = *&v2[OBJC_IVAR____TtC23ShelfKitCollectionViews37ModernProductReviewCollectionViewCell_more];
-  v4 = [v2 tintColor];
-  [v3 setTitleColor:v4 forState:0];
+  tintColor = [v2 tintColor];
+  [v3 setTitleColor:tintColor forState:0];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for ModernProductReviewCollectionViewCell();
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = v8.receiver;
-  v6 = [(ModernProductReviewCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:v4];
+  v6 = [(ModernProductReviewCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:attributesCopy];
   if (*(v5 + OBJC_IVAR____TtC23ShelfKitCollectionViews37ModernProductReviewCollectionViewCell_isReviewExpanded) == 1)
   {
     [v5 setNeedsLayout];
@@ -42,7 +42,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_286980();
 }
 

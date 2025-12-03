@@ -1,16 +1,16 @@
 @interface MapsSuggestionsFrequentLocationTitleFormatter
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4;
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta;
 @end
 
 @implementation MapsSuggestionsFrequentLocationTitleFormatter
 
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  entryCopy = entry;
+  etaCopy = eta;
+  v8 = etaCopy;
+  if (!entryCopy)
   {
     v15 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v7)
+  if (!etaCopy)
   {
     v15 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -52,7 +52,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([v6 type] != 4)
+  if ([entryCopy type] != 4)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -77,14 +77,14 @@ LABEL_19:
 
   [v8 seconds];
   v10 = NSStringFromMapsSuggestionsShortETA(v9);
-  v11 = [v6 stringForKey:@"MapsSuggestionsFrequentLocationTitleWithoutNearKey"];
-  v12 = [v6 geoMapItem];
-  v13 = [v6 stringForKey:@"MapsSuggestionsCoreRoutineLabel"];
-  if (![v13 length] && objc_msgSend(v12, "_hasMUID") && objc_msgSend(v12, "_muid"))
+  v11 = [entryCopy stringForKey:@"MapsSuggestionsFrequentLocationTitleWithoutNearKey"];
+  geoMapItem = [entryCopy geoMapItem];
+  v13 = [entryCopy stringForKey:@"MapsSuggestionsCoreRoutineLabel"];
+  if (![v13 length] && objc_msgSend(geoMapItem, "_hasMUID") && objc_msgSend(geoMapItem, "_muid"))
   {
-    v14 = [v12 name];
+    name = [geoMapItem name];
 
-    v13 = v14;
+    v13 = name;
   }
 
   if ([v11 length] && objc_msgSend(v10, "length"))
@@ -99,12 +99,12 @@ LABEL_19:
       MapsSuggestionsLocalizedFrequentLocationNearTitleString(v11, v10);
     }
     v19 = ;
-    v20 = [v6 title];
-    v21 = [v19 isEqualToString:v20];
+    title = [entryCopy title];
+    v21 = [v19 isEqualToString:title];
 
     if ((v21 & 1) == 0)
     {
-      [v6 setTitle:v19];
+      [entryCopy setTitle:v19];
     }
   }
 
@@ -113,8 +113,8 @@ LABEL_19:
     v19 = 0;
   }
 
-  v22 = [v8 trafficString];
-  v17 = [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:v6 title:v19 subtitle:v22 includeLockedVersions:0];
+  trafficString = [v8 trafficString];
+  v17 = [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:entryCopy title:v19 subtitle:trafficString includeLockedVersions:0];
 
 LABEL_20:
   return v17;

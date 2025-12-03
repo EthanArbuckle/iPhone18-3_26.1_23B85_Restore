@@ -1,6 +1,6 @@
 @interface DeferredPopoverPresentationOperation
 - (BOOL)isReady;
-- (DeferredPopoverPresentationOperation)initWithViewController:(id)a3 shouldShowWithAnimation:(BOOL)a4;
+- (DeferredPopoverPresentationOperation)initWithViewController:(id)controller shouldShowWithAnimation:(BOOL)animation;
 - (id)description;
 - (id)sourceViewController;
 - (void)main;
@@ -8,23 +8,23 @@
 
 @implementation DeferredPopoverPresentationOperation
 
-- (DeferredPopoverPresentationOperation)initWithViewController:(id)a3 shouldShowWithAnimation:(BOOL)a4
+- (DeferredPopoverPresentationOperation)initWithViewController:(id)controller shouldShowWithAnimation:(BOOL)animation
 {
-  v7 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = DeferredPopoverPresentationOperation;
   v8 = [(DeferredPopoverPresentationOperation *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_viewController, a3);
-    v9->_shouldShowWithAnimation = a4;
+    objc_storeStrong(&v8->_viewController, controller);
+    v9->_shouldShowWithAnimation = animation;
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
 
     v13 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
-    v14 = dispatch_queue_create(v12, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     [(ShowViewControllerOperation *)v9 setQueue:v14];
   }
 
@@ -33,26 +33,26 @@
 
 - (id)description
 {
-  v3 = [(EnqueueableManagedNavigationController *)self->_viewController sourceViewController];
+  sourceViewController = [(EnqueueableManagedNavigationController *)self->_viewController sourceViewController];
   v4 = objc_opt_class();
   v5 = [NSString stringWithFormat:@"%@ presents popover showing view controller %@", v4, objc_opt_class()];
   [(DeferredPopoverPresentationOperation *)self setName:v5];
 
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(DeferredPopoverPresentationOperation *)self name];
-  v9 = [NSString stringWithFormat:@"<%@: %p{name = '%@'}>", v7, self, v8];
+  name = [(DeferredPopoverPresentationOperation *)self name];
+  v9 = [NSString stringWithFormat:@"<%@: %p{name = '%@'}>", v7, self, name];
 
   v10 = [[CalDescriptionBuilder alloc] initWithSuperclassDescription:v9];
-  v11 = [v10 build];
+  build = [v10 build];
 
-  return v11;
+  return build;
 }
 
 - (id)sourceViewController
 {
-  v4 = [(EnqueueableManagedNavigationController *)self->_viewController sourceViewController];
-  v5 = [v4 conformsToProtocol:&OBJC_PROTOCOL___EnqueuablePopoverPresentationManagedNavigationControllerDelegate];
+  sourceViewController = [(EnqueueableManagedNavigationController *)self->_viewController sourceViewController];
+  v5 = [sourceViewController conformsToProtocol:&OBJC_PROTOCOL___EnqueuablePopoverPresentationManagedNavigationControllerDelegate];
 
   if ((v5 & 1) == 0)
   {
@@ -68,18 +68,18 @@
 {
   v19.receiver = self;
   v19.super_class = DeferredPopoverPresentationOperation;
-  v3 = [(DeferredPopoverPresentationOperation *)&v19 isReady];
-  v4 = [(EnqueueableManagedNavigationController *)self->_viewController presentingViewController];
+  isReady = [(DeferredPopoverPresentationOperation *)&v19 isReady];
+  presentingViewController = [(EnqueueableManagedNavigationController *)self->_viewController presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(DeferredPopoverPresentationOperation *)self sourceViewController];
-    v7 = [v6 isReadyToShowViewControllersInsideEnqueueableManagedNavigationController:self->_viewController];
+    sourceViewController = [(DeferredPopoverPresentationOperation *)self sourceViewController];
+    v7 = [sourceViewController isReadyToShowViewControllersInsideEnqueueableManagedNavigationController:self->_viewController];
 
     v8 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEBUG))
@@ -95,7 +95,7 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Operation %@ sourceViewControllerClaimsReadiness: %@", buf, 0x16u);
     }
 
-    v5 = v3 & v7;
+    v5 = isReady & v7;
   }
 
   if (self->_isReady != v5)
@@ -128,7 +128,7 @@
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Executing operation: %@", buf, 0xCu);
   }
 

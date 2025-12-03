@@ -1,25 +1,25 @@
 @interface AppleTypeCRetimerFirmwareCopierOS
-- (AppleTypeCRetimerFirmwareCopierOS)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5;
-- (BOOL)copyFirmwareToDestinationBundleWithError:(id *)a3;
-- (BOOL)createDestinationBundleFirmwareDirectoryFor:(id)a3 error:(id *)a4;
-- (BOOL)parseOptions:(id)a3;
+- (AppleTypeCRetimerFirmwareCopierOS)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context;
+- (BOOL)copyFirmwareToDestinationBundleWithError:(id *)error;
+- (BOOL)createDestinationBundleFirmwareDirectoryFor:(id)for error:(id *)error;
+- (BOOL)parseOptions:(id)options;
 - (id)description;
-- (id)readFirmwareFileDataWithError:(id *)a3;
-- (id)rtKitKeyFromBuildIdentityDict:(id)a3;
+- (id)readFirmwareFileDataWithError:(id *)error;
+- (id)rtKitKeyFromBuildIdentityDict:(id)dict;
 @end
 
 @implementation AppleTypeCRetimerFirmwareCopierOS
 
-- (AppleTypeCRetimerFirmwareCopierOS)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5
+- (AppleTypeCRetimerFirmwareCopierOS)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context
 {
-  v8 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = AppleTypeCRetimerFirmwareCopierOS;
-  v9 = [(AppleTypeCRetimerRestoreInfoHelperOS *)&v13 initWithOptions:v8 logFunction:a4 logContext:a5];
+  v9 = [(AppleTypeCRetimerRestoreInfoHelperOS *)&v13 initWithOptions:optionsCopy logFunction:function logContext:context];
   v10 = v9;
   if (v9)
   {
-    if (![(AppleTypeCRetimerFirmwareCopierOS *)v9 parseOptions:v8])
+    if (![(AppleTypeCRetimerFirmwareCopierOS *)v9 parseOptions:optionsCopy])
     {
       v11 = 0;
       goto LABEL_6;
@@ -34,10 +34,10 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)parseOptions:(id)a3
+- (BOOL)parseOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"BuildIdentity"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"BuildIdentity"];
   if (v5)
   {
     v6 = [(AppleTypeCRetimerFirmwareCopierOS *)self rtKitKeyFromBuildIdentityDict:v5];
@@ -70,7 +70,7 @@ LABEL_19:
       firmwarePathSuffix = self->_firmwarePathSuffix;
       self->_firmwarePathSuffix = v12;
 
-      v14 = [v4 objectForKeyedSubscript:@"FirmwareData"];
+      v14 = [optionsCopy objectForKeyedSubscript:@"FirmwareData"];
       firmwareOverrideData = self->_firmwareOverrideData;
       self->_firmwareOverrideData = v14;
 
@@ -79,7 +79,7 @@ LABEL_19:
         goto LABEL_12;
       }
 
-      v16 = [v4 objectForKeyedSubscript:@"BundleDataDict"];
+      v16 = [optionsCopy objectForKeyedSubscript:@"BundleDataDict"];
       v17 = 0x2A13B8000;
       if (v16)
       {
@@ -98,7 +98,7 @@ LABEL_19:
         goto LABEL_12;
       }
 
-      v20 = [v4 objectForKeyedSubscript:@"BundlePath"];
+      v20 = [optionsCopy objectForKeyedSubscript:@"BundlePath"];
       if (v20)
       {
         v21 = v20;
@@ -107,7 +107,7 @@ LABEL_19:
         self->_firmwareBundleURL = v22;
 
 LABEL_12:
-        v24 = [v4 objectForKeyedSubscript:@"DestBundlePath"];
+        v24 = [optionsCopy objectForKeyedSubscript:@"DestBundlePath"];
         destBundlePathURL = self->_destBundlePathURL;
         self->_destBundlePathURL = v24;
 
@@ -137,15 +137,15 @@ LABEL_21:
   return v26;
 }
 
-- (id)rtKitKeyFromBuildIdentityDict:(id)a3
+- (id)rtKitKeyFromBuildIdentityDict:(id)dict
 {
   v17 = *MEMORY[0x29EDCA608];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  dictCopy = dict;
+  v4 = [dictCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -156,7 +156,7 @@ LABEL_21:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dictCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -167,7 +167,7 @@ LABEL_21:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [dictCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -185,47 +185,47 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)createDestinationBundleFirmwareDirectoryFor:(id)a3 error:(id *)a4
+- (BOOL)createDestinationBundleFirmwareDirectoryFor:(id)for error:(id *)error
 {
-  v6 = [MEMORY[0x29EDB8E70] fileURLWithPath:a3];
-  v7 = [v6 URLByDeletingLastPathComponent];
-  v8 = [MEMORY[0x29EDB9FB8] defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:a4];
+  v6 = [MEMORY[0x29EDB8E70] fileURLWithPath:for];
+  uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  path = [uRLByDeletingLastPathComponent path];
+  v10 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:error];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [v7 path];
-    [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to create destination bundle firmware directory at '%@' (%@)", v11, *a4];
+    path2 = [uRLByDeletingLastPathComponent path];
+    [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to create destination bundle firmware directory at '%@' (%@)", path2, *error];
   }
 
   return v10;
 }
 
-- (BOOL)copyFirmwareToDestinationBundleWithError:(id *)a3
+- (BOOL)copyFirmwareToDestinationBundleWithError:(id *)error
 {
   destBundlePathURL = self->_destBundlePathURL;
   if (destBundlePathURL)
   {
     v6 = MEMORY[0x29EDBA0F8];
-    v7 = [(NSURL *)destBundlePathURL path];
-    v8 = [v6 stringWithFormat:@"%@/%@", v7, self->_firmwarePathSuffix];
+    path = [(NSURL *)destBundlePathURL path];
+    v8 = [v6 stringWithFormat:@"%@/%@", path, self->_firmwarePathSuffix];
 
     v9 = [MEMORY[0x29EDB8E70] fileURLWithPath:v8];
-    v10 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v11 = [v9 URLByDeletingLastPathComponent];
-    v12 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v13 = [v11 path];
+    defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+    uRLByDeletingLastPathComponent = [v9 URLByDeletingLastPathComponent];
+    defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+    path2 = [uRLByDeletingLastPathComponent path];
     v36 = 0;
-    v14 = [v12 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:&v36];
+    v14 = [defaultManager2 createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v36];
     v15 = v36;
 
     if ((v14 & 1) == 0 && ([v15 isFileExistsError] & 1) == 0)
     {
-      v25 = [v11 path];
-      [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to create directory at '%@' (%@)", v25, v15];
+      path3 = [uRLByDeletingLastPathComponent path];
+      [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to create directory at '%@' (%@)", path3, v15];
 
-      if (!a3)
+      if (!error)
       {
 LABEL_21:
         v22 = 0;
@@ -234,23 +234,23 @@ LABEL_21:
 
       v26 = v15;
       v22 = 0;
-      *a3 = v15;
+      *error = v15;
       goto LABEL_22;
     }
 
-    v16 = [v9 path];
-    v17 = [v10 fileExistsAtPath:v16];
+    path4 = [v9 path];
+    v17 = [defaultManager fileExistsAtPath:path4];
 
     if (v17)
     {
       v35 = 0;
-      v18 = [v10 removeItemAtURL:v9 error:&v35];
+      v18 = [defaultManager removeItemAtURL:v9 error:&v35];
       v19 = v35;
       v20 = v19;
       if ((v18 & 1) == 0)
       {
-        v30 = [v9 path];
-        [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to remove file at '%@' (%@)", v30, v20];
+        path5 = [v9 path];
+        [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to remove file at '%@' (%@)", path5, v20];
         goto LABEL_17;
       }
     }
@@ -261,9 +261,9 @@ LABEL_21:
       v22 = 1;
       if (![(NSData *)firmwareOverrideData writeToURL:v9 atomically:1])
       {
-        v23 = [v9 path];
-        [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to write firmware file data to '%@'", v23];
-        v24 = v23;
+        path6 = [v9 path];
+        [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to write firmware file data to '%@'", path6];
+        v24 = path6;
 LABEL_20:
 
         goto LABEL_21;
@@ -274,10 +274,10 @@ LABEL_22:
       return v22;
     }
 
-    v27 = [MEMORY[0x29EDB9FB8] defaultManager];
+    defaultManager3 = [MEMORY[0x29EDB9FB8] defaultManager];
     firmwareBundleURL = self->_firmwareBundleURL;
     v34 = 0;
-    v29 = [v27 copyItemAtURL:firmwareBundleURL toURL:v9 error:&v34];
+    v29 = [defaultManager3 copyItemAtURL:firmwareBundleURL toURL:v9 error:&v34];
     v20 = v34;
 
     if (v29)
@@ -287,15 +287,15 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v30 = [(NSURL *)self->_firmwareBundleURL path];
-    v31 = [v9 path];
-    [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to copy firmware from '%@' to '%@' (%@)", v30, v31, v20];
+    path5 = [(NSURL *)self->_firmwareBundleURL path];
+    path7 = [v9 path];
+    [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to copy firmware from '%@' to '%@' (%@)", path5, path7, v20];
 
 LABEL_17:
-    if (a3)
+    if (error)
     {
       v32 = v20;
-      *a3 = v20;
+      *error = v20;
     }
 
     v24 = v20;
@@ -305,7 +305,7 @@ LABEL_17:
   return 1;
 }
 
-- (id)readFirmwareFileDataWithError:(id *)a3
+- (id)readFirmwareFileDataWithError:(id *)error
 {
   firmwareOverrideData = self->_firmwareOverrideData;
   if (firmwareOverrideData || (firmwareOverrideData = self->_firmwareInBundleDataDict) != 0)
@@ -321,13 +321,13 @@ LABEL_17:
     v9 = v12;
     if (!v5)
     {
-      v10 = [(NSURL *)self->_firmwareBundleURL path];
-      [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to read firmware file at '%@' (%@)", v10, v9];
+      path = [(NSURL *)self->_firmwareBundleURL path];
+      [(AppleTypeCRetimerRestoreInfoHelperOS *)self log:@"Failed to read firmware file at '%@' (%@)", path, v9];
 
-      if (a3)
+      if (error)
       {
         v11 = v9;
-        *a3 = v9;
+        *error = v9;
       }
     }
   }
@@ -343,14 +343,14 @@ LABEL_17:
   v6 = [v3 stringWithFormat:@"%@:\n", v5];
 
   [v6 appendFormat:@"\tFirmware path suffix: %@\n", self->_firmwarePathSuffix];
-  v7 = [(NSURL *)self->_firmwareBundleURL path];
-  [v6 appendFormat:@"\tFirmware bundle path: %@\n", v7];
+  path = [(NSURL *)self->_firmwareBundleURL path];
+  [v6 appendFormat:@"\tFirmware bundle path: %@\n", path];
 
   destBundlePathURL = self->_destBundlePathURL;
   if (destBundlePathURL)
   {
-    v9 = [(NSURL *)destBundlePathURL path];
-    [v6 appendFormat:@"\tDestination Bundle Path: %@\n", v9];
+    path2 = [(NSURL *)destBundlePathURL path];
+    [v6 appendFormat:@"\tDestination Bundle Path: %@\n", path2];
   }
 
   v10 = [MEMORY[0x29EDBA0F8] stringWithString:v6];

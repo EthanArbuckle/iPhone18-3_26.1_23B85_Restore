@@ -1,19 +1,19 @@
 @interface CRLCanvasView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGAffineTransform)additionalTransformIntoCoordinateSpace:(SEL)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGAffineTransform)additionalTransformIntoCoordinateSpace:(SEL)space;
 - (CRLCanvasLayer)canvasLayer;
 - (CRLCanvasLayerHosting)layerHost;
 - (CRLInteractiveCanvasController)controller;
 - (CRLScrollView)enclosingScrollView;
 - (UICoordinateSpace)unscaledCoordinateSpace;
 - (UIViewController)rootViewControllerForColorMagnifierHUD;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)dealloc;
-- (void)find:(id)a3;
-- (void)findAndReplace:(id)a3;
-- (void)setCanvasSubviews:(id)a3;
-- (void)setController:(id)a3;
+- (void)find:(id)find;
+- (void)findAndReplace:(id)replace;
+- (void)setCanvasSubviews:(id)subviews;
+- (void)setController:(id)controller;
 - (void)teardown;
 @end
 
@@ -55,11 +55,11 @@
   [(CRLCanvasView *)&v6 dealloc];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   [WeakRetained i_visibleBoundsRectForHitTestingCanvasView];
   v13.x = x;
@@ -70,7 +70,7 @@
   {
     v12.receiver = self;
     v12.super_class = CRLCanvasView;
-    v10 = [(CRLCanvasView *)&v12 pointInside:v7 withEvent:x, y];
+    v10 = [(CRLCanvasView *)&v12 pointInside:eventCopy withEvent:x, y];
   }
 
   else
@@ -81,9 +81,9 @@
   return v10;
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
 
   if (WeakRetained)
@@ -119,12 +119,12 @@
 
   if (!v9)
   {
-    objc_storeWeak(&self->_controller, v4);
-    v10 = [(CRLCanvasView *)self canvasLayer];
-    [v10 setController:v4];
+    objc_storeWeak(&self->_controller, controllerCopy);
+    canvasLayer = [(CRLCanvasView *)self canvasLayer];
+    [canvasLayer setController:controllerCopy];
 
-    v11 = [v4 layerHost];
-    [(CRLCanvasView *)self setLayerHost:v11];
+    layerHost = [controllerCopy layerHost];
+    [(CRLCanvasView *)self setLayerHost:layerHost];
   }
 }
 
@@ -164,15 +164,15 @@
   unscaledCoordinateSpace = self->_unscaledCoordinateSpace;
   self->_unscaledCoordinateSpace = 0;
 
-  v7 = [(CRLCanvasView *)self canvasLayer];
-  [v7 teardown];
+  canvasLayer = [(CRLCanvasView *)self canvasLayer];
+  [canvasLayer teardown];
 }
 
 - (CRLCanvasLayer)canvasLayer
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasView *)self layer];
-  v5 = sub_100014370(v3, v4);
+  layer = [(CRLCanvasView *)self layer];
+  v5 = sub_100014370(v3, layer);
 
   return v5;
 }
@@ -180,24 +180,24 @@
 - (CRLScrollView)enclosingScrollView
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasView *)self superview];
-  v5 = sub_100014370(v3, v4);
+  superview = [(CRLCanvasView *)self superview];
+  v5 = sub_100014370(v3, superview);
 
   return v5;
 }
 
-- (void)setCanvasSubviews:(id)a3
+- (void)setCanvasSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5 = [NSMutableOrderedSet alloc];
-  v6 = [(CRLCanvasView *)self subviews];
-  v7 = [v5 initWithArray:v6];
+  subviews = [(CRLCanvasView *)self subviews];
+  v7 = [v5 initWithArray:subviews];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v4;
+  v8 = subviewsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v9)
   {
@@ -215,10 +215,10 @@
         v13 = *(*(&v25 + 1) + 8 * i);
         if ([v7 containsObject:v13])
         {
-          v14 = [(CRLCanvasView *)self subviews];
-          v15 = [v14 lastObject];
+          subviews2 = [(CRLCanvasView *)self subviews];
+          lastObject = [subviews2 lastObject];
 
-          if (v13 != v15)
+          if (v13 != lastObject)
           {
             [v13 removeFromSuperview];
             [(CRLCanvasView *)self addSubview:v13];
@@ -268,31 +268,31 @@
   }
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLCanvasView *)self layer];
-  v9 = v8;
-  if (v8 != v6)
+  layerCopy = layer;
+  keyCopy = key;
+  layer = [(CRLCanvasView *)self layer];
+  v9 = layer;
+  if (layer != layerCopy)
   {
 
 LABEL_3:
     v14.receiver = self;
     v14.super_class = CRLCanvasView;
-    v10 = [(CRLCanvasView *)&v14 actionForLayer:v6 forKey:v7];
+    v10 = [(CRLCanvasView *)&v14 actionForLayer:layerCopy forKey:keyCopy];
     goto LABEL_6;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v12 = [WeakRetained i_currentAnimation];
+  i_currentAnimation = [WeakRetained i_currentAnimation];
 
-  if (!v12)
+  if (!i_currentAnimation)
   {
     goto LABEL_3;
   }
 
-  v10 = [v12 actionForLayer:v6 forKey:v7];
+  v10 = [i_currentAnimation actionForLayer:layerCopy forKey:keyCopy];
 
 LABEL_6:
 
@@ -301,12 +301,12 @@ LABEL_6:
 
 - (UIViewController)rootViewControllerForColorMagnifierHUD
 {
-  v2 = [(CRLCanvasView *)self window];
-  v3 = [v2 rootViewController];
-  v4 = [v3 childViewControllers];
-  v5 = [v4 lastObject];
+  window = [(CRLCanvasView *)self window];
+  rootViewController = [window rootViewController];
+  childViewControllers = [rootViewController childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  return v5;
+  return lastObject;
 }
 
 - (UICoordinateSpace)unscaledCoordinateSpace
@@ -324,13 +324,13 @@ LABEL_6:
   return unscaledCoordinateSpace;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v16.receiver = self;
   v16.super_class = CRLCanvasView;
-  v7 = [(CRLCanvasView *)&v16 hitTest:a4 withEvent:?];
+  v7 = [(CRLCanvasView *)&v16 hitTest:event withEvent:?];
   v8 = v7;
   if (v7)
   {
@@ -345,56 +345,56 @@ LABEL_6:
   if (!v9)
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    v11 = [WeakRetained layerHost];
-    v12 = [v11 asiOSCVC];
-    v13 = [v12 canvasSubview:v8 shouldHandleEventAtBoundsPoint:{x, y}];
+    layerHost = [WeakRetained layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
+    v13 = [asiOSCVC canvasSubview:v8 shouldHandleEventAtBoundsPoint:{x, y}];
 
     if ((v13 & 1) == 0)
     {
-      v14 = self;
+      selfCopy = self;
 
-      v8 = v14;
+      v8 = selfCopy;
     }
   }
 
   return v8;
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
-  v4 = a3;
-  v5 = [(CRLCanvasView *)self controller];
-  [v5 endEditing];
+  findCopy = find;
+  controller = [(CRLCanvasView *)self controller];
+  [controller endEditing];
 
   v6.receiver = self;
   v6.super_class = CRLCanvasView;
-  [(CRLCanvasView *)&v6 find:v4];
+  [(CRLCanvasView *)&v6 find:findCopy];
 }
 
-- (void)findAndReplace:(id)a3
+- (void)findAndReplace:(id)replace
 {
-  v4 = a3;
-  v5 = [(CRLCanvasView *)self controller];
-  [v5 endEditing];
+  replaceCopy = replace;
+  controller = [(CRLCanvasView *)self controller];
+  [controller endEditing];
 
   v6.receiver = self;
   v6.super_class = CRLCanvasView;
-  [(CRLCanvasView *)&v6 findAndReplace:v4];
+  [(CRLCanvasView *)&v6 findAndReplace:replaceCopy];
 }
 
-- (CGAffineTransform)additionalTransformIntoCoordinateSpace:(SEL)a3
+- (CGAffineTransform)additionalTransformIntoCoordinateSpace:(SEL)space
 {
   v6 = a4;
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:@"CRLCanvasViewUnscaledSpaceIdentifier"];
+  identifier = [v6 identifier];
+  v8 = [identifier isEqualToString:@"CRLCanvasViewUnscaledSpaceIdentifier"];
 
   if (v8)
   {
-    v9 = [(CRLCanvasView *)self controller];
-    v10 = v9;
-    if (v9)
+    controller = [(CRLCanvasView *)self controller];
+    v10 = controller;
+    if (controller)
     {
-      [v9 viewScale];
+      [controller viewScale];
       CGAffineTransformMakeScale(retstr, 1.0 / v11, 1.0 / v11);
     }
 
@@ -460,8 +460,8 @@ LABEL_6:
 
     v14 = [NSString stringWithUTF8String:"[CRLCanvasView additionalTransformIntoCoordinateSpace:]"];
     v15 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLiOSCanvasView.m"];
-    v16 = [v6 identifier];
-    [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:173 isFatal:0 description:"Unhandled coordinate space: %{public}@", v16];
+    identifier2 = [v6 identifier];
+    [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:173 isFatal:0 description:"Unhandled coordinate space: %{public}@", identifier2];
 
     v17 = *&CGAffineTransformIdentity.c;
     *&retstr->a = *&CGAffineTransformIdentity.a;

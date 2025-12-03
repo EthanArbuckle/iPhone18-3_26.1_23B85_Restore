@@ -1,15 +1,15 @@
 @interface TodayCardMarketingLockupOverlayView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)_continuousCornerRadius;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)handleTapWithGestureRecognizer:(id)a3;
+- (void)handleTapWithGestureRecognizer:(id)recognizer;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation TodayCardMarketingLockupOverlayView
@@ -18,18 +18,18 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_tapGestureRecognizer);
-  v5 = self;
-  [v4 removeTarget:v5 action:0];
-  v6.receiver = v5;
+  selfCopy = self;
+  [v4 removeTarget:selfCopy action:0];
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(TodayCardMarketingLockupOverlayView *)&v6 dealloc];
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_lockupView;
   v5 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_lockupView);
-  v7 = self;
+  selfCopy = self;
   if ([v5 isUserInteractionEnabled])
   {
     v6 = *(&self->super.super.super.super.isa + v4);
@@ -37,11 +37,11 @@
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   v5 = OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_lockupView;
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_lockupView);
-  v8 = self;
+  selfCopy = self;
   if (([v6 isUserInteractionEnabled] & 1) == 0)
   {
     v7 = *(&self->super.super.super.super.isa + v5);
@@ -49,13 +49,13 @@
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  v5 = a3;
-  [(TodayCardMarketingLockupOverlayView *)&v8 willMoveToWindow:v5];
+  windowCopy = window;
+  [(TodayCardMarketingLockupOverlayView *)&v8 willMoveToWindow:windowCopy];
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -70,16 +70,16 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = sub_100763ADC();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v19 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_lockupView);
-  v11 = self;
+  selfCopy = self;
   v12 = v10;
   sub_100353408(v9);
   [v12 layoutMargins];
@@ -96,7 +96,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010A880();
 }
 
@@ -108,42 +108,42 @@
   return result;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TodayCardMarketingLockupOverlayView *)&v5 _setContinuousCornerRadius:a3];
-  [*&v4[OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_materialBackground] _setCornerRadius:1 continuous:12 maskedCorners:{a3, v5.receiver, v5.super_class}];
+  [(TodayCardMarketingLockupOverlayView *)&v5 _setContinuousCornerRadius:radius];
+  [*&v4[OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_materialBackground] _setCornerRadius:1 continuous:12 maskedCorners:{radius, v5.receiver, v5.super_class}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v8.receiver;
-  [(TodayCardMarketingLockupOverlayView *)&v8 traitCollectionDidChange:v4];
+  [(TodayCardMarketingLockupOverlayView *)&v8 traitCollectionDidChange:changeCopy];
   v6 = *&v5[OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_lockupView];
-  v7 = [v5 traitCollection];
-  sub_100352754(v7);
+  traitCollection = [v5 traitCollection];
+  sub_100352754(traitCollection);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10010DCB0(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_10010DCB0(touchCopy);
 
   return v9;
 }
 
-- (void)handleTapWithGestureRecognizer:(id)a3
+- (void)handleTapWithGestureRecognizer:(id)recognizer
 {
-  v5 = self;
+  selfCopy = self;
   sub_100109C70(1);
-  v3 = *(&v5->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_clickActionHandler);
+  v3 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension35TodayCardMarketingLockupOverlayView_clickActionHandler);
   if (v3)
   {
 

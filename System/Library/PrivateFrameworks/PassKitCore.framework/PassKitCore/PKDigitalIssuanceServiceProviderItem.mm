@@ -1,32 +1,32 @@
 @interface PKDigitalIssuanceServiceProviderItem
-- (PKDigitalIssuanceServiceProviderItem)initWithDictionary:(id)a3;
-- (PKDigitalIssuanceServiceProviderItem)initWithServiceProviderProduct:(id)a3;
+- (PKDigitalIssuanceServiceProviderItem)initWithDictionary:(id)dictionary;
+- (PKDigitalIssuanceServiceProviderItem)initWithServiceProviderProduct:(id)product;
 @end
 
 @implementation PKDigitalIssuanceServiceProviderItem
 
-- (PKDigitalIssuanceServiceProviderItem)initWithDictionary:(id)a3
+- (PKDigitalIssuanceServiceProviderItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = PKDigitalIssuanceServiceProviderItem;
   v5 = [(PKDigitalIssuanceServiceProviderItem *)&v15 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"localizedDisplayName"];
+    v8 = [dictionaryCopy PKStringForKey:@"localizedDisplayName"];
     localizedDisplayName = v5->_localizedDisplayName;
     v5->_localizedDisplayName = v8;
 
-    v10 = [v4 PKStringForKey:@"localizedDescription"];
+    v10 = [dictionaryCopy PKStringForKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v10;
 
-    v5->_unitCount = [v4 PKIntegerForKey:@"unitCount"];
-    v12 = [v4 PKDecimalNumberForKey:@"amount"];
+    v5->_unitCount = [dictionaryCopy PKIntegerForKey:@"unitCount"];
+    v12 = [dictionaryCopy PKDecimalNumberForKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v12;
   }
@@ -34,25 +34,25 @@
   return v5;
 }
 
-- (PKDigitalIssuanceServiceProviderItem)initWithServiceProviderProduct:(id)a3
+- (PKDigitalIssuanceServiceProviderItem)initWithServiceProviderProduct:(id)product
 {
-  v4 = a3;
+  productCopy = product;
   v15.receiver = self;
   v15.super_class = PKDigitalIssuanceServiceProviderItem;
   v5 = [(PKDigitalIssuanceServiceProviderItem *)&v15 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [productCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = identifier;
 
-    v8 = [v4 localizedDisplayName];
+    localizedDisplayName = [productCopy localizedDisplayName];
     localizedDisplayName = v5->_localizedDisplayName;
-    v5->_localizedDisplayName = v8;
+    v5->_localizedDisplayName = localizedDisplayName;
 
-    v10 = [v4 localizedDescription];
+    localizedDescription = [productCopy localizedDescription];
     localizedDescription = v5->_localizedDescription;
-    v5->_localizedDescription = v10;
+    v5->_localizedDescription = localizedDescription;
 
     v5->_unitCount = 0;
     v12 = [objc_alloc(MEMORY[0x1E696AB90]) initWithInt:0];

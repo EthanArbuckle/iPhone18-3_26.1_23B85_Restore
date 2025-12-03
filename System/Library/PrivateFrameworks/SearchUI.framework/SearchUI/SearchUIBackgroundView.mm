@@ -1,10 +1,10 @@
 @interface SearchUIBackgroundView
 - (SearchUIBackgroundView)init;
 - (void)didMoveToWindow;
-- (void)setInPreviewPlatter:(BOOL)a3;
-- (void)setShouldUseInsetRoundedSections:(BOOL)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setInPreviewPlatter:(BOOL)platter;
+- (void)setShouldUseInsetRoundedSections:(BOOL)sections;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SearchUIBackgroundView
@@ -17,8 +17,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(SearchUIBackgroundView *)v2 layer];
-    [v4 setHitTestsAsOpaque:1];
+    layer = [(SearchUIBackgroundView *)v2 layer];
+    [layer setHitTestsAsOpaque:1];
   }
 
   return v3;
@@ -32,32 +32,32 @@
   [(SearchUIBackgroundView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)setShouldUseInsetRoundedSections:(BOOL)a3
+- (void)setShouldUseInsetRoundedSections:(BOOL)sections
 {
-  if (self->_shouldUseInsetRoundedSections != a3)
+  if (self->_shouldUseInsetRoundedSections != sections)
   {
-    self->_shouldUseInsetRoundedSections = a3;
+    self->_shouldUseInsetRoundedSections = sections;
     [(SearchUIBackgroundView *)self tlk_updateWithCurrentAppearance];
   }
 }
 
-- (void)setInPreviewPlatter:(BOOL)a3
+- (void)setInPreviewPlatter:(BOOL)platter
 {
-  if (self->_inPreviewPlatter != a3)
+  if (self->_inPreviewPlatter != platter)
   {
-    self->_inPreviewPlatter = a3;
+    self->_inPreviewPlatter = platter;
     [(SearchUIBackgroundView *)self tlk_updateWithCurrentAppearance];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUIBackgroundView;
-  [(SearchUIBackgroundView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUIBackgroundView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SearchUIBackgroundView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUIBackgroundView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -65,11 +65,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUIBackgroundView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUIBackgroundView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -77,16 +77,16 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v9.receiver = self;
   v9.super_class = SearchUIBackgroundView;
-  [(SearchUIBackgroundView *)&v9 tlk_updateForAppearance:v4];
-  if ([v4 isVibrant] && -[SearchUIBackgroundView isInPreviewPlatter](self, "isInPreviewPlatter"))
+  [(SearchUIBackgroundView *)&v9 tlk_updateForAppearance:appearanceCopy];
+  if ([appearanceCopy isVibrant] && -[SearchUIBackgroundView isInPreviewPlatter](self, "isInPreviewPlatter"))
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD818]) initWithVariant:0];
-    if ([v4 isDark])
+    if ([appearanceCopy isDark])
     {
       v6 = 2;
     }
@@ -106,25 +106,25 @@ LABEL_5:
     [(SearchUIBackgroundView *)self _setBackground:0];
     if ([(SearchUIBackgroundView *)self isInPreviewPlatter])
     {
-      v8 = [v4 platterColor];
+      platterColor = [appearanceCopy platterColor];
     }
 
     else
     {
       if ([(SearchUIBackgroundView *)self shouldUseInsetRoundedSections])
       {
-        [v4 groupedBackgroundColor];
+        [appearanceCopy groupedBackgroundColor];
       }
 
       else
       {
-        [v4 backgroundColor];
+        [appearanceCopy backgroundColor];
       }
-      v8 = ;
+      platterColor = ;
     }
 
-    v7 = v8;
-    v5 = v8;
+    v7 = platterColor;
+    v5 = platterColor;
   }
 
   [(SearchUIBackgroundView *)self setBackgroundColor:v7];

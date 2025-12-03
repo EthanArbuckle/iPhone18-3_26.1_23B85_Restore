@@ -1,33 +1,33 @@
 @interface HomePodUIManager
 - (_TtC12mediaremoted16HomePodUIManager)init;
-- (void)beginObservingSession:(id)a3;
-- (void)dismissJoinRequest:(id)a3;
-- (void)displayJoinRequest:(id)a3 handler:(id)a4;
-- (void)openMusicForDiscoveredSession:(id)a3 foreground:(BOOL)a4 completion:(id)a5;
-- (void)openMusicParticipantManagementWithCompletion:(id)a3;
+- (void)beginObservingSession:(id)session;
+- (void)dismissJoinRequest:(id)request;
+- (void)displayJoinRequest:(id)request handler:(id)handler;
+- (void)openMusicForDiscoveredSession:(id)session foreground:(BOOL)foreground completion:(id)completion;
+- (void)openMusicParticipantManagementWithCompletion:(id)completion;
 @end
 
 @implementation HomePodUIManager
 
-- (void)displayJoinRequest:(id)a3 handler:(id)a4
+- (void)displayJoinRequest:(id)request handler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v6;
-  v7 = a3;
-  v8 = self;
-  sub_10022B578(v7, sub_10022AFA0);
+  requestCopy = request;
+  selfCopy = self;
+  sub_10022B578(requestCopy, sub_10022AFA0);
 }
 
-- (void)dismissJoinRequest:(id)a3
+- (void)dismissJoinRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_10022BADC(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_10022BADC(requestCopy);
 }
 
-- (void)openMusicForDiscoveredSession:(id)a3 foreground:(BOOL)a4 completion:(id)a5
+- (void)openMusicForDiscoveredSession:(id)session foreground:(BOOL)foreground completion:(id)completion
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(completion);
   if (v5)
   {
     v6 = v5;
@@ -46,9 +46,9 @@
   }
 }
 
-- (void)openMusicParticipantManagementWithCompletion:(id)a3
+- (void)openMusicParticipantManagementWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   if (v3)
   {
     v4 = v3;
@@ -67,12 +67,12 @@
   }
 }
 
-- (void)beginObservingSession:(id)a3
+- (void)beginObservingSession:(id)session
 {
   v5 = *((swift_isaMask & self->super.isa) + 0x68);
   swift_unknownObjectRetain_n();
-  v6 = self;
-  v5(a3);
+  selfCopy = self;
+  v5(session);
   swift_unknownObjectRelease();
 }
 

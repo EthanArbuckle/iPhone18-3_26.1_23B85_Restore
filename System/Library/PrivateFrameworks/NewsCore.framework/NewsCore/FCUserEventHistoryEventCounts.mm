@@ -1,29 +1,29 @@
 @interface FCUserEventHistoryEventCounts
 + (FCUserEventHistoryEventCounts)empty;
-- (FCUserEventHistoryEventCounts)initWithArticleSeenEventCount:(int64_t)a3 articleVisitedEventCount:(int64_t)a4 articleReadEventCount:(int64_t)a5 articleLikedEventCount:(int64_t)a6 articleDislikedEventCount:(int64_t)a7 articleSharedEventCount:(int64_t)a8 articleSavedEventCount:(int64_t)a9 feedViewEventCount:(int64_t)a10 tagFollowedEventCount:(int64_t)a11 tagUnfollowedEventCount:(int64_t)a12 tagMutedEventCount:(int64_t)a13;
+- (FCUserEventHistoryEventCounts)initWithArticleSeenEventCount:(int64_t)count articleVisitedEventCount:(int64_t)eventCount articleReadEventCount:(int64_t)readEventCount articleLikedEventCount:(int64_t)likedEventCount articleDislikedEventCount:(int64_t)dislikedEventCount articleSharedEventCount:(int64_t)sharedEventCount articleSavedEventCount:(int64_t)savedEventCount feedViewEventCount:(int64_t)self0 tagFollowedEventCount:(int64_t)self1 tagUnfollowedEventCount:(int64_t)self2 tagMutedEventCount:(int64_t)self3;
 - (id)description;
 @end
 
 @implementation FCUserEventHistoryEventCounts
 
-- (FCUserEventHistoryEventCounts)initWithArticleSeenEventCount:(int64_t)a3 articleVisitedEventCount:(int64_t)a4 articleReadEventCount:(int64_t)a5 articleLikedEventCount:(int64_t)a6 articleDislikedEventCount:(int64_t)a7 articleSharedEventCount:(int64_t)a8 articleSavedEventCount:(int64_t)a9 feedViewEventCount:(int64_t)a10 tagFollowedEventCount:(int64_t)a11 tagUnfollowedEventCount:(int64_t)a12 tagMutedEventCount:(int64_t)a13
+- (FCUserEventHistoryEventCounts)initWithArticleSeenEventCount:(int64_t)count articleVisitedEventCount:(int64_t)eventCount articleReadEventCount:(int64_t)readEventCount articleLikedEventCount:(int64_t)likedEventCount articleDislikedEventCount:(int64_t)dislikedEventCount articleSharedEventCount:(int64_t)sharedEventCount articleSavedEventCount:(int64_t)savedEventCount feedViewEventCount:(int64_t)self0 tagFollowedEventCount:(int64_t)self1 tagUnfollowedEventCount:(int64_t)self2 tagMutedEventCount:(int64_t)self3
 {
   v20.receiver = self;
   v20.super_class = FCUserEventHistoryEventCounts;
   result = [(FCUserEventHistoryEventCounts *)&v20 init];
   if (result)
   {
-    result->_articleSeenEventCount = a3;
-    result->_articleVisitedEventCount = a4;
-    result->_articleReadEventCount = a5;
-    result->_articleLikedEventCount = a6;
-    result->_articleDislikedEventCount = a7;
-    result->_articleSharedEventCount = a8;
-    result->_articleSavedEventCount = a9;
-    result->_feedViewEventCount = a10;
-    result->_tagFollowedEventCount = a11;
-    result->_tagUnfollowedEventCount = a12;
-    result->_tagMutedEventCount = a13;
+    result->_articleSeenEventCount = count;
+    result->_articleVisitedEventCount = eventCount;
+    result->_articleReadEventCount = readEventCount;
+    result->_articleLikedEventCount = likedEventCount;
+    result->_articleDislikedEventCount = dislikedEventCount;
+    result->_articleSharedEventCount = sharedEventCount;
+    result->_articleSavedEventCount = savedEventCount;
+    result->_feedViewEventCount = viewEventCount;
+    result->_tagFollowedEventCount = followedEventCount;
+    result->_tagUnfollowedEventCount = unfollowedEventCount;
+    result->_tagMutedEventCount = mutedEventCount;
   }
 
   return result;

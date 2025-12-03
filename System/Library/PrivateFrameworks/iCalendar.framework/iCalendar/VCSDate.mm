@@ -1,27 +1,27 @@
 @interface VCSDate
-+ (id)dateListFromData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (VCSDate)dateWithTimeComponentsFromDate:(id)a3;
-- (VCSDate)initWithDateComponents:(id)a3 floating:(BOOL)a4 dateOnly:(BOOL)a5;
-- (VCSDate)initWithDateString:(const char *)a3;
-- (VCSDate)initWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 hour:(int64_t)a6 minute:(int64_t)a7 second:(int64_t)a8 floating:(BOOL)a9 dateOnly:(BOOL)a10;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dateByAddingDays:(int64_t)a3;
++ (id)dateListFromData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (VCSDate)dateWithTimeComponentsFromDate:(id)date;
+- (VCSDate)initWithDateComponents:(id)components floating:(BOOL)floating dateOnly:(BOOL)only;
+- (VCSDate)initWithDateString:(const char *)string;
+- (VCSDate)initWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day hour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second floating:(BOOL)floating dateOnly:(BOOL)self0;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dateByAddingDays:(int64_t)days;
 - (id)dateForEndOfDay;
 - (id)description;
-- (id)nsDateWithLocalTimeZone:(id)a3;
+- (id)nsDateWithLocalTimeZone:(id)zone;
 @end
 
 @implementation VCSDate
 
-+ (id)dateListFromData:(id)a3
++ (id)dateListFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
-  v6 = [v3 bytes];
+  bytes = [dataCopy bytes];
   v7 = 0;
-  for (i = v6; ; ++i)
+  for (i = bytes; ; ++i)
   {
     v9 = *i;
     if (v9 != 32 && v9 != 59)
@@ -46,7 +46,7 @@
     }
 
     [v5 setLength:0];
-    [v5 appendBytes:v6 + v7 length:v10];
+    [v5 appendBytes:bytes + v7 length:v10];
     [v5 increaseLengthBy:1];
     v11 = -[VCSDate initWithDateString:]([VCSDate alloc], "initWithDateString:", [v5 bytes]);
     if (v11)
@@ -73,51 +73,51 @@
   return v4;
 }
 
-- (VCSDate)initWithDateComponents:(id)a3 floating:(BOOL)a4 dateOnly:(BOOL)a5
+- (VCSDate)initWithDateComponents:(id)components floating:(BOOL)floating dateOnly:(BOOL)only
 {
-  v8 = a3;
+  componentsCopy = components;
   v13.receiver = self;
   v13.super_class = VCSDate;
   v9 = [(VCSDate *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [componentsCopy copy];
     components = v9->_components;
     v9->_components = v10;
 
-    v9->_floating = a4;
-    v9->_dateOnly = a5;
+    v9->_floating = floating;
+    v9->_dateOnly = only;
   }
 
   return v9;
 }
 
-- (VCSDate)initWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 hour:(int64_t)a6 minute:(int64_t)a7 second:(int64_t)a8 floating:(BOOL)a9 dateOnly:(BOOL)a10
+- (VCSDate)initWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day hour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second floating:(BOOL)floating dateOnly:(BOOL)self0
 {
   v17 = objc_opt_new();
-  [v17 setYear:a3];
-  [v17 setMonth:a4];
-  [v17 setDay:a5];
-  [v17 setHour:a6];
-  [v17 setMinute:a7];
-  [v17 setSecond:a8];
-  v18 = [MEMORY[0x277CBEA80] VCS_gregorianGMTCalendar];
-  [v17 setCalendar:v18];
+  [v17 setYear:year];
+  [v17 setMonth:month];
+  [v17 setDay:day];
+  [v17 setHour:hour];
+  [v17 setMinute:minute];
+  [v17 setSecond:second];
+  vCS_gregorianGMTCalendar = [MEMORY[0x277CBEA80] VCS_gregorianGMTCalendar];
+  [v17 setCalendar:vCS_gregorianGMTCalendar];
 
-  v19 = [(VCSDate *)self initWithDateComponents:v17 floating:a9 dateOnly:a10];
+  v19 = [(VCSDate *)self initWithDateComponents:v17 floating:floating dateOnly:only];
   return v19;
 }
 
-- (VCSDate)initWithDateString:(const char *)a3
+- (VCSDate)initWithDateString:(const char *)string
 {
   v17 = 0;
   v18 = 0;
   v16 = 0;
-  v5 = strlen(a3);
+  v5 = strlen(string);
   switch(v5)
   {
     case 8uLL:
-      sscanf(a3, "%04d%02d%02d", &v18 + 4, &v18, &v17 + 4);
+      sscanf(string, "%04d%02d%02d", &v18 + 4, &v18, &v17 + 4);
       v10 = 0;
       v9 = 0;
       v8 = 0;
@@ -128,12 +128,12 @@
       v6 = 1;
       break;
     case 0x10uLL:
-      if (a3[15] != 90)
+      if (string[15] != 90)
       {
         v12 = VCSLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          [(VCSDate *)a3 initWithDateString:v12];
+          [(VCSDate *)string initWithDateString:v12];
         }
 
         goto LABEL_15;
@@ -143,18 +143,18 @@
       break;
     default:
 LABEL_16:
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_17;
   }
 
   v15 = 0;
-  sscanf(a3, "%04d%02d%02d%c%02d%02d%02d", &v18 + 4, &v18, &v17 + 4, &v15, &v17, &v16 + 4, &v16);
+  sscanf(string, "%04d%02d%02d%c%02d%02d%02d", &v18 + 4, &v18, &v17 + 4, &v15, &v17, &v16 + 4, &v16);
   if (v15 != 84)
   {
     v12 = VCSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(VCSDate *)a3 initWithDateString:v12];
+      [(VCSDate *)string initWithDateString:v12];
     }
 
 LABEL_15:
@@ -170,21 +170,21 @@ LABEL_10:
   BYTE1(v14) = v7;
   LOBYTE(v14) = v6;
   self = [(VCSDate *)self initWithYear:SHIDWORD(v18) month:v18 day:HIDWORD(v17) hour:v8 minute:v9 second:v10 floating:v14 dateOnly:?];
-  v11 = self;
+  selfCopy = self;
 LABEL_17:
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSDateComponents *)self->_components year];
-  v5 = [(NSDateComponents *)self->_components month];
+  year = [(NSDateComponents *)self->_components year];
+  month = [(NSDateComponents *)self->_components month];
   v6 = [(NSDateComponents *)self->_components day];
-  v7 = [(NSDateComponents *)self->_components hour];
-  v8 = [(NSDateComponents *)self->_components minute];
-  v9 = [(NSDateComponents *)self->_components second];
+  hour = [(NSDateComponents *)self->_components hour];
+  minute = [(NSDateComponents *)self->_components minute];
+  second = [(NSDateComponents *)self->_components second];
   if (self->_floating)
   {
     v10 = @"floating";
@@ -196,12 +196,12 @@ LABEL_17:
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_dateOnly];
-  v12 = [v3 stringWithFormat:@"%04ld-%02ld-%02ld %02ld:%02ld:%02ld (%@), dateOnly: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  v12 = [v3 stringWithFormat:@"%04ld-%02ld-%02ld %02ld:%02ld:%02ld (%@), dateOnly: %@", year, month, v6, hour, minute, second, v10, v11];
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [VCSDate alloc];
   v5 = [(NSDateComponents *)self->_components copy];
@@ -210,19 +210,19 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     floating = self->_floating;
     if (floating == [v5 floating] && (dateOnly = self->_dateOnly, dateOnly == objc_msgSend(v5, "dateOnly")))
     {
       components = self->_components;
-      v9 = [v5 components];
-      v10 = [(NSDateComponents *)components isEqual:v9];
+      components = [v5 components];
+      v10 = [(NSDateComponents *)components isEqual:components];
     }
 
     else
@@ -250,60 +250,60 @@ LABEL_17:
   return v4;
 }
 
-- (id)dateByAddingDays:(int64_t)a3
+- (id)dateByAddingDays:(int64_t)days
 {
-  v5 = [(NSDateComponents *)self->_components calendar];
-  v6 = [(NSDateComponents *)self->_components date];
-  v7 = [v5 dateByAddingUnit:16 value:a3 toDate:v6 options:1024];
+  calendar = [(NSDateComponents *)self->_components calendar];
+  date = [(NSDateComponents *)self->_components date];
+  v7 = [calendar dateByAddingUnit:16 value:days toDate:date options:1024];
 
   v8 = [VCSDate alloc];
-  v9 = [(NSDateComponents *)self->_components calendar];
-  v10 = [v9 components:3145982 fromDate:v7];
+  calendar2 = [(NSDateComponents *)self->_components calendar];
+  v10 = [calendar2 components:3145982 fromDate:v7];
   v11 = [(VCSDate *)v8 initWithDateComponents:v10 floating:self->_floating dateOnly:self->_dateOnly];
 
   return v11;
 }
 
-- (VCSDate)dateWithTimeComponentsFromDate:(id)a3
+- (VCSDate)dateWithTimeComponentsFromDate:(id)date
 {
   components = self->_components;
-  v4 = a3;
+  dateCopy = date;
   v5 = [(NSDateComponents *)components copy];
-  v6 = [v4 components];
-  [v5 setHour:{objc_msgSend(v6, "hour")}];
+  components = [dateCopy components];
+  [v5 setHour:{objc_msgSend(components, "hour")}];
 
-  v7 = [v4 components];
-  [v5 setMinute:{objc_msgSend(v7, "minute")}];
+  components2 = [dateCopy components];
+  [v5 setMinute:{objc_msgSend(components2, "minute")}];
 
-  v8 = [v4 components];
-  [v5 setSecond:{objc_msgSend(v8, "second")}];
+  components3 = [dateCopy components];
+  [v5 setSecond:{objc_msgSend(components3, "second")}];
 
   v9 = [VCSDate alloc];
-  v10 = [v4 floating];
-  v11 = [v4 dateOnly];
+  floating = [dateCopy floating];
+  dateOnly = [dateCopy dateOnly];
 
-  v12 = [(VCSDate *)v9 initWithDateComponents:v5 floating:v10 dateOnly:v11];
+  v12 = [(VCSDate *)v9 initWithDateComponents:v5 floating:floating dateOnly:dateOnly];
 
   return v12;
 }
 
-- (id)nsDateWithLocalTimeZone:(id)a3
+- (id)nsDateWithLocalTimeZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(VCSDate *)self floating];
-  if (v4 && v5)
+  zoneCopy = zone;
+  floating = [(VCSDate *)self floating];
+  if (zoneCopy && floating)
   {
-    v6 = [MEMORY[0x277CBEA80] VCS_gregorianLocalCalendar:v4];
+    vCS_gregorianGMTCalendar = [MEMORY[0x277CBEA80] VCS_gregorianLocalCalendar:zoneCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEA80] VCS_gregorianGMTCalendar];
+    vCS_gregorianGMTCalendar = [MEMORY[0x277CBEA80] VCS_gregorianGMTCalendar];
   }
 
-  v7 = v6;
-  v8 = [(VCSDate *)self components];
-  v9 = [v7 dateFromComponents:v8];
+  v7 = vCS_gregorianGMTCalendar;
+  components = [(VCSDate *)self components];
+  v9 = [v7 dateFromComponents:components];
 
   return v9;
 }

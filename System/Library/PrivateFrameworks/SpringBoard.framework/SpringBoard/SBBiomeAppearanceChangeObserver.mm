@@ -15,11 +15,11 @@
   if (v2)
   {
     v3 = BiomeLibrary();
-    v4 = [v3 Device];
-    v5 = [v4 Display];
-    v6 = [v5 Appearance];
+    device = [v3 Device];
+    display = [device Display];
+    appearance = [display Appearance];
     v7 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:0 endDate:0 maxEvents:1 lastN:0 reversed:1];
-    v8 = [v6 publisherWithUseCase:@"ApplicationSnapshot" options:v7];
+    v8 = [appearance publisherWithUseCase:@"ApplicationSnapshot" options:v7];
     appearancePublisher = v2->_appearancePublisher;
     v2->_appearancePublisher = v8;
 

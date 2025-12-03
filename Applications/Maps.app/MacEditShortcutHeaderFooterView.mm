@@ -1,12 +1,12 @@
 @interface MacEditShortcutHeaderFooterView
-- (MacEditShortcutHeaderFooterView)initWithTitle:(id)a3 reuseIdentifier:(id)a4;
+- (MacEditShortcutHeaderFooterView)initWithTitle:(id)title reuseIdentifier:(id)identifier;
 @end
 
 @implementation MacEditShortcutHeaderFooterView
 
-- (MacEditShortcutHeaderFooterView)initWithTitle:(id)a3 reuseIdentifier:(id)a4
+- (MacEditShortcutHeaderFooterView)initWithTitle:(id)title reuseIdentifier:(id)identifier
 {
-  v5 = a3;
+  titleCopy = title;
   v35.receiver = self;
   v35.super_class = MacEditShortcutHeaderFooterView;
   v6 = [(MacEditShortcutHeaderFooterView *)&v35 initWithReuseIdentifier:@"MacEditShortcutHeaderFooterView"];
@@ -14,7 +14,7 @@
   if (v6)
   {
     [(MacEditShortcutHeaderFooterView *)v6 setAccessibilityIdentifier:@"MacEditShortcutHeaderFooterView"];
-    v8 = [(MacEditShortcutHeaderFooterView *)v7 contentView];
+    contentView = [(MacEditShortcutHeaderFooterView *)v7 contentView];
     v9 = [UIView alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -25,7 +25,7 @@
     v14 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v14 setAccessibilityIdentifier:@"MacEditShortcutHeaderFooterLabel"];
-    [v8 addSubview:v14];
+    [contentView addSubview:v14];
     v15 = +[UIFont system17Tall];
     [v14 setFont:v15];
 
@@ -33,31 +33,31 @@
     [v14 setTextColor:v16];
 
     [v14 setNumberOfLines:0];
-    [v14 setText:v5];
-    v34 = [v14 leadingAnchor];
-    v33 = [v8 leadingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:17.0];
+    [v14 setText:titleCopy];
+    leadingAnchor = [v14 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:17.0];
     v36[0] = v32;
-    v31 = [v14 trailingAnchor];
-    v30 = [v8 trailingAnchor];
-    v28 = [v31 constraintEqualToAnchor:v30 constant:-17.0];
+    trailingAnchor = [v14 trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-17.0];
     v36[1] = v28;
-    v17 = [v14 topAnchor];
-    v18 = v8;
-    v29 = v8;
-    v19 = [v8 topAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19 constant:14.0];
+    topAnchor = [v14 topAnchor];
+    v18 = contentView;
+    v29 = contentView;
+    topAnchor2 = [contentView topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:14.0];
     v36[2] = v20;
-    v21 = [v14 bottomAnchor];
-    v22 = [v18 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:-2.0];
+    bottomAnchor = [v14 bottomAnchor];
+    bottomAnchor2 = [v18 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-2.0];
     v36[3] = v23;
     [NSArray arrayWithObjects:v36 count:4];
     v24 = v7;
-    v26 = v25 = v5;
+    v26 = v25 = titleCopy;
     [NSLayoutConstraint activateConstraints:v26];
 
-    v5 = v25;
+    titleCopy = v25;
     v7 = v24;
   }
 

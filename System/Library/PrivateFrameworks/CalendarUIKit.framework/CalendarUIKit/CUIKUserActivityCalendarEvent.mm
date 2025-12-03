@@ -1,54 +1,54 @@
 @interface CUIKUserActivityCalendarEvent
-- (CUIKUserActivityCalendarEvent)initWithDictionary:(id)a3;
-- (CUIKUserActivityCalendarEvent)initWithEvent:(id)a3 view:(unint64_t)a4 forceLocal:(BOOL)a5;
+- (CUIKUserActivityCalendarEvent)initWithDictionary:(id)dictionary;
+- (CUIKUserActivityCalendarEvent)initWithEvent:(id)event view:(unint64_t)view forceLocal:(BOOL)local;
 - (id)dictionary;
-- (id)eventFromStore:(id)a3;
-- (void)updateActivity:(id)a3;
+- (id)eventFromStore:(id)store;
+- (void)updateActivity:(id)activity;
 @end
 
 @implementation CUIKUserActivityCalendarEvent
 
-- (CUIKUserActivityCalendarEvent)initWithEvent:(id)a3 view:(unint64_t)a4 forceLocal:(BOOL)a5
+- (CUIKUserActivityCalendarEvent)initWithEvent:(id)event view:(unint64_t)view forceLocal:(BOOL)local
 {
-  v9 = a3;
-  v10 = v9;
-  if (a5)
+  eventCopy = event;
+  v10 = eventCopy;
+  if (local)
   {
-    v11 = 0;
+    source = 0;
   }
 
   else
   {
-    v5 = [v9 calendar];
-    v11 = [v5 source];
+    calendar = [eventCopy calendar];
+    source = [calendar source];
   }
 
   v33.receiver = self;
   v33.super_class = CUIKUserActivityCalendarEvent;
-  v12 = [(CUIKUserActivityWithSource *)&v33 initWithSource:v11 type:4098];
-  if (!a5)
+  v12 = [(CUIKUserActivityWithSource *)&v33 initWithSource:source type:4098];
+  if (!local)
   {
   }
 
   if (v12)
   {
-    v13 = [v10 title];
+    title = [v10 title];
     title = v12->_title;
-    v12->_title = v13;
+    v12->_title = title;
 
-    v15 = [v10 startDate];
+    startDate = [v10 startDate];
     startDate = v12->_startDate;
-    v12->_startDate = v15;
+    v12->_startDate = startDate;
 
-    v17 = [v10 endDateUnadjustedForLegacyClients];
+    endDateUnadjustedForLegacyClients = [v10 endDateUnadjustedForLegacyClients];
     endDate = v12->_endDate;
-    v12->_endDate = v17;
+    v12->_endDate = endDateUnadjustedForLegacyClients;
 
-    v19 = [v10 location];
+    location = [v10 location];
     location = v12->_location;
-    v12->_location = v19;
+    v12->_location = location;
 
-    v12->_view = a4;
+    v12->_view = view;
     if (!v12->_title || !v12->_startDate || -[CUIKUserActivityWithSource _supportsConsistentExternalIDAcrossDevices](v12, "_supportsConsistentExternalIDAcrossDevices") && ([v10 uniqueId], v21 = objc_claimAutoreleasedReturnValue(), externalID = v12->_externalID, v12->_externalID = v21, externalID, !v12->_externalID))
     {
       v31 = 0;
@@ -56,10 +56,10 @@
     }
 
     v23 = MEMORY[0x1E696AEC0];
-    v24 = [v10 UUID];
-    v25 = [v10 startDate];
-    [v25 timeIntervalSinceReferenceDate];
-    v27 = [v23 stringWithFormat:@"%@.%f", v24, v26];
+    uUID = [v10 UUID];
+    startDate2 = [v10 startDate];
+    [startDate2 timeIntervalSinceReferenceDate];
+    v27 = [v23 stringWithFormat:@"%@.%f", uUID, v26];
     relatedUniqueIdentifier = v12->_relatedUniqueIdentifier;
     v12->_relatedUniqueIdentifier = v27;
 
@@ -75,13 +75,13 @@ LABEL_14:
   return v31;
 }
 
-- (CUIKUserActivityCalendarEvent)initWithDictionary:(id)a3
+- (CUIKUserActivityCalendarEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = CUIKUserActivityCalendarEvent;
-  v5 = [(CUIKUserActivityWithSource *)&v23 initWithDictionary:v4];
-  if (v5 && ((v22 = 0, [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.title" error:&v22], v6 = objc_claimAutoreleasedReturnValue(), title = v5->_title, v5->_title = v6, title, (v22 & 1) != 0) || (objc_msgSend(objc_opt_class(), "_doubleFromDictionary:key:error:", v4, @"com.apple.calendarUIKit.userActivity.date", &v22), (v22 & 1) != 0) || (v9 = objc_msgSend(objc_alloc(MEMORY[0x1E695DF00]), "initWithTimeIntervalSinceReferenceDate:", v8), startDate = v5->_startDate, v5->_startDate = v9, startDate, objc_msgSend(objc_opt_class(), "_doubleFromDictionary:key:error:", v4, @"com.apple.calendarUIKit.userActivity.endDate", &v22), (v22 & 1) != 0) || ((v13 = objc_msgSend(objc_alloc(MEMORY[0x1E695DF00]), "initWithTimeIntervalSinceReferenceDate:", v11), endDate = v5->_endDate, v5->_endDate = v13, endDate, objc_msgSend(objc_opt_class(), "_stringFromDictionary:key:error:", v4, @"com.apple.calendarUIKit.userActivity.location", 0), v15 = objc_claimAutoreleasedReturnValue(), location = v5->_location, v5->_location = v15, location, v17 = objc_msgSend(objc_opt_class(), "_unsignedIntegerFromDictionary:key:error:", v4, @"com.apple.calendarUIKit.userActivity.view", &v22), !v22) ? (v18 = v17) : (v18 = 0), (v5->_view = v18, -[CUIKUserActivityWithSource _supportsConsistentExternalIDAcrossDevices](v5, "_supportsConsistentExternalIDAcrossDevices")) && (objc_msgSend(objc_opt_class(), "_stringFromDictionary:key:error:", v4, @"com.apple.calendarUIKit.userActivity.externalID", &v22), v19 = objc_claimAutoreleasedReturnValue(), externalID = v5->_externalID, v5->_externalID = v19, externalID, (v22 & 1) != 0))))
+  v5 = [(CUIKUserActivityWithSource *)&v23 initWithDictionary:dictionaryCopy];
+  if (v5 && ((v22 = 0, [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.title" error:&v22], v6 = objc_claimAutoreleasedReturnValue(), title = v5->_title, v5->_title = v6, title, (v22 & 1) != 0) || (objc_msgSend(objc_opt_class(), "_doubleFromDictionary:key:error:", dictionaryCopy, @"com.apple.calendarUIKit.userActivity.date", &v22), (v22 & 1) != 0) || (v9 = objc_msgSend(objc_alloc(MEMORY[0x1E695DF00]), "initWithTimeIntervalSinceReferenceDate:", v8), startDate = v5->_startDate, v5->_startDate = v9, startDate, objc_msgSend(objc_opt_class(), "_doubleFromDictionary:key:error:", dictionaryCopy, @"com.apple.calendarUIKit.userActivity.endDate", &v22), (v22 & 1) != 0) || ((v13 = objc_msgSend(objc_alloc(MEMORY[0x1E695DF00]), "initWithTimeIntervalSinceReferenceDate:", v11), endDate = v5->_endDate, v5->_endDate = v13, endDate, objc_msgSend(objc_opt_class(), "_stringFromDictionary:key:error:", dictionaryCopy, @"com.apple.calendarUIKit.userActivity.location", 0), v15 = objc_claimAutoreleasedReturnValue(), location = v5->_location, v5->_location = v15, location, v17 = objc_msgSend(objc_opt_class(), "_unsignedIntegerFromDictionary:key:error:", dictionaryCopy, @"com.apple.calendarUIKit.userActivity.view", &v22), !v22) ? (v18 = v17) : (v18 = 0), (v5->_view = v18, -[CUIKUserActivityWithSource _supportsConsistentExternalIDAcrossDevices](v5, "_supportsConsistentExternalIDAcrossDevices")) && (objc_msgSend(objc_opt_class(), "_stringFromDictionary:key:error:", dictionaryCopy, @"com.apple.calendarUIKit.userActivity.externalID", &v22), v19 = objc_claimAutoreleasedReturnValue(), externalID = v5->_externalID, v5->_externalID = v19, externalID, (v22 & 1) != 0))))
   {
     v12 = 0;
   }
@@ -100,8 +100,8 @@ LABEL_14:
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v16.receiver = self;
   v16.super_class = CUIKUserActivityCalendarEvent;
-  v4 = [(CUIKUserActivityWithSource *)&v16 dictionary];
-  v5 = [v3 initWithDictionary:v4];
+  dictionary = [(CUIKUserActivityWithSource *)&v16 dictionary];
+  v5 = [v3 initWithDictionary:dictionary];
 
   v17[0] = @"com.apple.calendarUIKit.userActivity.date";
   v6 = MEMORY[0x1E696AD98];
@@ -137,15 +137,15 @@ LABEL_14:
   return v5;
 }
 
-- (id)eventFromStore:(id)a3
+- (id)eventFromStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   if ([(CUIKUserActivityWithSource *)self _supportsConsistentExternalIDAcrossDevices])
   {
-    v5 = [v4 allEventsWithUniqueId:self->_externalID occurrenceDate:self->_startDate];
+    v5 = [storeCopy allEventsWithUniqueId:self->_externalID occurrenceDate:self->_startDate];
     if ([v5 count] == 1)
     {
-      v6 = [v5 firstObject];
+      firstObject = [v5 firstObject];
       goto LABEL_13;
     }
   }
@@ -159,9 +159,9 @@ LABEL_14:
   {
     startDate = self->_startDate;
     v8 = [(NSDate *)startDate dateByAddingTimeInterval:1.0];
-    v9 = [v4 predicateForEventsWithStartDate:startDate endDate:v8 calendars:0];
+    v9 = [storeCopy predicateForEventsWithStartDate:startDate endDate:v8 calendars:0];
 
-    v10 = [v4 eventsMatchingPredicate:v9];
+    v10 = [storeCopy eventsMatchingPredicate:v9];
 
     v5 = v10;
   }
@@ -184,7 +184,7 @@ LABEL_14:
   {
     if ([v16 count] == 1)
     {
-      v6 = [v16 firstObject];
+      firstObject = [v16 firstObject];
     }
 
     else
@@ -207,7 +207,7 @@ LABEL_14:
       v18[5] = &v21;
       v18[6] = v19;
       [v16 enumerateObjectsUsingBlock:v18];
-      v6 = v22[5];
+      firstObject = v22[5];
       _Block_object_dispose(v19, 8);
       _Block_object_dispose(&v21, 8);
     }
@@ -215,12 +215,12 @@ LABEL_14:
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
 LABEL_13:
 
-  return v6;
+  return firstObject;
 }
 
 void __48__CUIKUserActivityCalendarEvent_eventFromStore___block_invoke(uint64_t a1, void *a2)
@@ -300,27 +300,27 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)updateActivity:(id)a3
+- (void)updateActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v13.receiver = self;
   v13.super_class = CUIKUserActivityCalendarEvent;
-  [(CUIKUserActivity *)&v13 updateActivity:v4];
-  v5 = [v4 contentAttributeSet];
-  v6 = [v5 copy];
+  [(CUIKUserActivity *)&v13 updateActivity:activityCopy];
+  contentAttributeSet = [activityCopy contentAttributeSet];
+  v6 = [contentAttributeSet copy];
 
   if (!v6)
   {
     v7 = objc_alloc(EKWeakLinkClass());
-    v8 = [v4 activityType];
-    v6 = [v7 initWithItemContentType:v8];
+    activityType = [activityCopy activityType];
+    v6 = [v7 initWithItemContentType:activityType];
   }
 
   [v6 setStartDate:self->_startDate];
   [v6 setEndDate:self->_endDate];
   [v6 setNamedLocation:self->_location];
   [v6 setRelatedUniqueIdentifier:self->_relatedUniqueIdentifier];
-  [v4 setContentAttributeSet:v6];
+  [activityCopy setContentAttributeSet:v6];
   if ([(CUIKUserActivityWithSource *)self _supportsConsistentExternalIDAcrossDevices])
   {
     externalID = self->_externalID;
@@ -329,7 +329,7 @@ LABEL_13:
       v10 = MEMORY[0x1E696AEC0];
       [(NSDate *)self->_startDate timeIntervalSinceReferenceDate];
       v12 = [v10 stringWithFormat:@"%@.%f", externalID, v11];
-      [v4 setPersistentIdentifier:v12];
+      [activityCopy setPersistentIdentifier:v12];
     }
   }
 }

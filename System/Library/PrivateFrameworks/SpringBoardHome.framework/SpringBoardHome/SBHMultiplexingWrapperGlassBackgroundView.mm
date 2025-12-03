@@ -2,9 +2,9 @@
 - (BOOL)_shouldBoostWhitePoint;
 - (SBHMultiplexingWrapperGlassBackgroundView)init;
 - (void)_updateGlassAppearance;
-- (void)setAllowsGlassGrouping:(BOOL)a3;
-- (void)setBackdropGroupName:(id)a3;
-- (void)updateGlassVisibility:(BOOL)a3;
+- (void)setAllowsGlassGrouping:(BOOL)grouping;
+- (void)setBackdropGroupName:(id)name;
+- (void)updateGlassVisibility:(BOOL)visibility;
 @end
 
 @implementation SBHMultiplexingWrapperGlassBackgroundView
@@ -31,11 +31,11 @@
   return v3;
 }
 
-- (void)updateGlassVisibility:(BOOL)a3
+- (void)updateGlassVisibility:(BOOL)visibility
 {
-  if (self->_hasVisibleGlass != a3)
+  if (self->_hasVisibleGlass != visibility)
   {
-    self->_hasVisibleGlass = a3;
+    self->_hasVisibleGlass = visibility;
     [(SBHMultiplexingWrapperGlassBackgroundView *)self _updateGlassAppearance];
   }
 }
@@ -44,13 +44,13 @@
 {
   if (self->_hasVisibleGlass)
   {
-    v7 = [(SBHMultiplexingWrapperGlassBackgroundView *)self traitCollection];
-    v3 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v7];
-    v4 = [v3 iconGlassUserInterfaceStyle];
-    v5 = [v3 tintColor];
-    [(UIView *)self sbh_applyWidgetGlassWithTintColor:v5 userInterfaceStyle:v4 allowingGrouping:self->_allowsGlassGrouping boostsWhitePoint:[(SBHMultiplexingWrapperGlassBackgroundView *)self _shouldBoostWhitePoint]];
-    v6 = [(SBHMultiplexingWrapperGlassBackgroundView *)self backdropGroupName];
-    [(UIView *)self sbh_backdropGroupName:v6];
+    traitCollection = [(SBHMultiplexingWrapperGlassBackgroundView *)self traitCollection];
+    v3 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
+    iconGlassUserInterfaceStyle = [v3 iconGlassUserInterfaceStyle];
+    tintColor = [v3 tintColor];
+    [(UIView *)self sbh_applyWidgetGlassWithTintColor:tintColor userInterfaceStyle:iconGlassUserInterfaceStyle allowingGrouping:self->_allowsGlassGrouping boostsWhitePoint:[(SBHMultiplexingWrapperGlassBackgroundView *)self _shouldBoostWhitePoint]];
+    backdropGroupName = [(SBHMultiplexingWrapperGlassBackgroundView *)self backdropGroupName];
+    [(UIView *)self sbh_backdropGroupName:backdropGroupName];
   }
 
   else
@@ -62,13 +62,13 @@
 
 - (BOOL)_shouldBoostWhitePoint
 {
-  v2 = [(SBHMultiplexingWrapperGlassBackgroundView *)self traitCollection];
+  traitCollection = [(SBHMultiplexingWrapperGlassBackgroundView *)self traitCollection];
   v3 = objc_opt_self();
-  v4 = [v2 valueForNSIntegerTrait:v3];
+  v4 = [traitCollection valueForNSIntegerTrait:v3];
 
   if (v4 == 1)
   {
-    v5 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v2];
+    v5 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
     v6 = [v5 isDark] ^ 1;
   }
 
@@ -80,27 +80,27 @@
   return v6;
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_backdropGroupName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     backdropGroupName = self->_backdropGroupName;
     self->_backdropGroupName = v4;
 
     if (self->_hasVisibleGlass)
     {
-      [(UIView *)self sbh_backdropGroupName:v6];
+      [(UIView *)self sbh_backdropGroupName:nameCopy];
     }
   }
 }
 
-- (void)setAllowsGlassGrouping:(BOOL)a3
+- (void)setAllowsGlassGrouping:(BOOL)grouping
 {
-  if (self->_allowsGlassGrouping != a3)
+  if (self->_allowsGlassGrouping != grouping)
   {
-    self->_allowsGlassGrouping = a3;
+    self->_allowsGlassGrouping = grouping;
     [(SBHMultiplexingWrapperGlassBackgroundView *)self _updateGlassAppearance];
   }
 }

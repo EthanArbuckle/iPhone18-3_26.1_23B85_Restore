@@ -4,7 +4,7 @@
 - (BOOL)writesDepth;
 - (BOOL)writesStencil;
 - (MTLResourceID)gpuResourceID;
-- (MTLToolsDepthStencilState)initWithDepthStencilState:(id)a3 descriptor:(id)a4 device:(id)a5;
+- (MTLToolsDepthStencilState)initWithDepthStencilState:(id)state descriptor:(id)descriptor device:(id)device;
 - (NSString)label;
 - (unint64_t)resourceIndex;
 - (unint64_t)uniqueIdentifier;
@@ -13,11 +13,11 @@
 
 @implementation MTLToolsDepthStencilState
 
-- (MTLToolsDepthStencilState)initWithDepthStencilState:(id)a3 descriptor:(id)a4 device:(id)a5
+- (MTLToolsDepthStencilState)initWithDepthStencilState:(id)state descriptor:(id)descriptor device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MTLToolsDepthStencilState;
-  return [(MTLToolsObject *)&v6 initWithBaseObject:a3 parent:a5];
+  return [(MTLToolsObject *)&v6 initWithBaseObject:state parent:device];
 }
 
 - (void)dealloc
@@ -30,58 +30,58 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
 - (BOOL)readsDepth
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 readsDepth];
+  return [baseObject readsDepth];
 }
 
 - (BOOL)writesDepth
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 writesDepth];
+  return [baseObject writesDepth];
 }
 
 - (BOOL)readsStencil
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 readsStencil];
+  return [baseObject readsStencil];
 }
 
 - (BOOL)writesStencil
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 writesStencil];
+  return [baseObject writesStencil];
 }
 
 - (unint64_t)uniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 uniqueIdentifier];
+  return [baseObject uniqueIdentifier];
 }
 
 - (MTLResourceID)gpuResourceID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
 @end

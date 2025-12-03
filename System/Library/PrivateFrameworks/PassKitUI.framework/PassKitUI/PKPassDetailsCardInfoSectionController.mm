@@ -1,63 +1,63 @@
 @interface PKPassDetailsCardInfoSectionController
-+ (BOOL)_paymentApplicationShouldShowFullDPANForPass:(id)a3 paymentApplication:(id)a4;
-+ (BOOL)_shouldDisplayRow:(unint64_t)a3 forPass:(id)a4 inContext:(id *)a5;
-+ (BOOL)_showExpressDetailsForPass:(id)a3 expressMode:(BOOL)a4 sectionMode:(unint64_t)a5;
-+ (BOOL)hasCompactDetailsForPaymentPass:(id)a3;
-+ (unint64_t)_rowTypesForPass:(id)a3 context:(id *)a4 outRows:(id *)a5;
-- (BOOL)_isExpressSettingsLinkRowType:(unint64_t)a3;
++ (BOOL)_paymentApplicationShouldShowFullDPANForPass:(id)pass paymentApplication:(id)application;
++ (BOOL)_shouldDisplayRow:(unint64_t)row forPass:(id)pass inContext:(id *)context;
++ (BOOL)_showExpressDetailsForPass:(id)pass expressMode:(BOOL)mode sectionMode:(unint64_t)sectionMode;
++ (BOOL)hasCompactDetailsForPaymentPass:(id)pass;
++ (unint64_t)_rowTypesForPass:(id)pass context:(id *)context outRows:(id *)rows;
+- (BOOL)_isExpressSettingsLinkRowType:(unint64_t)type;
 - (BOOL)_paymentApplicationShouldShowFullDPAN;
 - (BOOL)_showExpressDetails;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (PKPassDetailsCardInfoSectionController)initWithPass:(id)a3 sectionMode:(unint64_t)a4 detailViewStyle:(int64_t)a5 delegate:(id)a6;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (PKPassDetailsCardInfoSectionController)initWithPass:(id)pass sectionMode:(unint64_t)mode detailViewStyle:(int64_t)style delegate:(id)delegate;
 - (PKPassDetailsCardInfoSectionControllerDelegate)delegate;
-- (id)_cellForRowIndex:(unint64_t)a3 inTableView:(id)a4;
-- (id)_contextMenuConfigurationForCopyingText:(id)a3;
+- (id)_cellForRowIndex:(unint64_t)index inTableView:(id)view;
+- (id)_contextMenuConfigurationForCopyingText:(id)text;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5 sectionIdentifier:(id)a6;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (id)titleForHeaderInSectionIdentifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point sectionIdentifier:(id)identifier;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (id)titleForHeaderInSectionIdentifier:(id)identifier;
 - (void)_expressPassDidChange;
-- (void)_reloadDataAndNotifyDelegate:(BOOL)a3;
+- (void)_reloadDataAndNotifyDelegate:(BOOL)delegate;
 - (void)_updateExpressPassInformation;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPassDetailsCardInfoSectionController
 
-+ (BOOL)hasCompactDetailsForPaymentPass:(id)a3
++ (BOOL)hasCompactDetailsForPaymentPass:(id)pass
 {
   v5 = 0;
   v4 = xmmword_1BE115740;
-  return [a1 _rowTypesForPass:a3 context:&v4 outRows:0] != 0;
+  return [self _rowTypesForPass:pass context:&v4 outRows:0] != 0;
 }
 
-- (PKPassDetailsCardInfoSectionController)initWithPass:(id)a3 sectionMode:(unint64_t)a4 detailViewStyle:(int64_t)a5 delegate:(id)a6
+- (PKPassDetailsCardInfoSectionController)initWithPass:(id)pass sectionMode:(unint64_t)mode detailViewStyle:(int64_t)style delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a6;
+  passCopy = pass;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = PKPassDetailsCardInfoSectionController;
   v13 = [(PKPaymentPassDetailSectionController *)&v25 init];
   v14 = v13;
   if (v13)
   {
-    v13->_sectionMode = a4;
-    objc_storeStrong(&v13->_pass, a3);
-    v15 = [(PKPaymentPass *)v14->_pass devicePrimaryPaymentApplication];
+    v13->_sectionMode = mode;
+    objc_storeStrong(&v13->_pass, pass);
+    devicePrimaryPaymentApplication = [(PKPaymentPass *)v14->_pass devicePrimaryPaymentApplication];
     paymentApplication = v14->_paymentApplication;
-    v14->_paymentApplication = v15;
+    v14->_paymentApplication = devicePrimaryPaymentApplication;
 
-    v14->_detailViewStyle = a5;
-    objc_storeWeak(&v14->_delegate, v12);
+    v14->_detailViewStyle = style;
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     v17 = objc_alloc_init(MEMORY[0x1E69B8A60]);
     passLibraryDataProvider = v14->_passLibraryDataProvider;
     v14->_passLibraryDataProvider = v17;
 
-    v19 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     paymentServiceDataProvider = v14->_paymentServiceDataProvider;
-    v14->_paymentServiceDataProvider = v19;
+    v14->_paymentServiceDataProvider = defaultDataProvider;
 
     v21 = [objc_alloc(MEMORY[0x1E69B8850]) initWithPaymentDataProvider:v14->_paymentServiceDataProvider passLibraryDataProvider:v14->_passLibraryDataProvider isForWatch:v14->_detailViewStyle == 2];
     expressPassController = v14->_expressPassController;
@@ -66,8 +66,8 @@
     [(PKPassDetailsCardInfoSectionController *)v14 _updateExpressPassInformation];
     if ([(PKPassDetailsCardInfoSectionController *)v14 _showExpressDetails])
     {
-      v23 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v23 addObserver:v14 selector:sel__expressPassDidChange name:@"PKExpressPassesViewControllerExpressPassChangedNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v14 selector:sel__expressPassDidChange name:@"PKExpressPassesViewControllerExpressPassChangedNotification" object:0];
     }
 
     [(PKPassDetailsCardInfoSectionController *)v14 _reloadDataAndNotifyDelegate:0];
@@ -89,26 +89,26 @@
 {
   if ([(PKPaymentPassDetailSectionController *)self currentSegment])
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allSectionIdentifiers = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(PKPassDetailsCardInfoSectionController *)self allSectionIdentifiers];
+    allSectionIdentifiers = [(PKPassDetailsCardInfoSectionController *)self allSectionIdentifiers];
   }
 
-  return v3;
+  return allSectionIdentifiers;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   result = PKEqualObjects();
   if (result)
   {
-    v12 = -[PKPassDetailsCardInfoSectionController _cellForRowIndex:inTableView:](self, "_cellForRowIndex:inTableView:", [v9 row], v8);
+    v12 = -[PKPassDetailsCardInfoSectionController _cellForRowIndex:inTableView:](self, "_cellForRowIndex:inTableView:", [pathCopy row], viewCopy);
 
     return v12;
   }
@@ -121,37 +121,37 @@
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   if (PKEqualObjects())
   {
-    v10 = -[NSArray objectAtIndexedSubscript:](self->_rowTypes, "objectAtIndexedSubscript:", [v8 row]);
-    v11 = [v10 unsignedIntegerValue];
+    v10 = -[NSArray objectAtIndexedSubscript:](self->_rowTypes, "objectAtIndexedSubscript:", [pathCopy row]);
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-    if (v11 >= 4)
+    if (unsignedIntegerValue >= 4)
     {
-      if (v11 == 5)
+      if (unsignedIntegerValue == 5)
       {
-        v12 = self;
+        selfCopy2 = self;
         v13 = 5;
       }
 
       else
       {
-        if (v11 != 4)
+        if (unsignedIntegerValue != 4)
         {
           __break(1u);
           return;
         }
 
-        v12 = self;
+        selfCopy2 = self;
         v13 = 4;
       }
 
-      if ([(PKPassDetailsCardInfoSectionController *)v12 _isExpressSettingsLinkRowType:v13])
+      if ([(PKPassDetailsCardInfoSectionController *)selfCopy2 _isExpressSettingsLinkRowType:v13])
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained cardInfoSectionControllerDidSelectExpressPassSettings:self];
@@ -160,12 +160,12 @@
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!PKEqualObjects() || (-[NSArray objectAtIndexedSubscript:](self->_rowTypes, "objectAtIndexedSubscript:", [v9 row]), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "unsignedIntegerValue"), v11, v12 < 4))
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
+  if (!PKEqualObjects() || (-[NSArray objectAtIndexedSubscript:](self->_rowTypes, "objectAtIndexedSubscript:", [pathCopy row]), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "unsignedIntegerValue"), v11, v12 < 4))
   {
     v14 = 0;
 LABEL_4:
@@ -183,9 +183,9 @@ LABEL_4:
   return result;
 }
 
-- (id)titleForHeaderInSectionIdentifier:(id)a3
+- (id)titleForHeaderInSectionIdentifier:(id)identifier
 {
-  if (self->_hideSectionTitles || (-[PKPaymentPass associatedAccountServiceAccountIdentifier](self->_pass, "associatedAccountServiceAccountIdentifier", a3), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 length], v4, v5))
+  if (self->_hideSectionTitles || (-[PKPaymentPass associatedAccountServiceAccountIdentifier](self->_pass, "associatedAccountServiceAccountIdentifier", identifier), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 length], v4, v5))
   {
     v6 = 0;
   }
@@ -204,36 +204,36 @@ LABEL_4:
   return v6;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v5 = [MEMORY[0x1E69DCFC0] configurationWithActions:{0, a4, a5}];
+  v5 = [MEMORY[0x1E69DCFC0] configurationWithActions:{0, path, identifier}];
   [v5 setPerformsFirstActionWithFullSwipe:0];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5 sectionIdentifier:(id)a6
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point sectionIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   if (PKEqualObjects())
   {
-    v12 = -[NSArray objectAtIndexedSubscript:](self->_rowTypes, "objectAtIndexedSubscript:", [v10 row]);
-    v13 = [v12 unsignedIntegerValue];
+    v12 = -[NSArray objectAtIndexedSubscript:](self->_rowTypes, "objectAtIndexedSubscript:", [pathCopy row]);
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-    if (v13 > 5)
+    if (unsignedIntegerValue > 5)
     {
       __break(1u);
       return result;
     }
 
-    if (((1 << v13) & 0x33) == 0)
+    if (((1 << unsignedIntegerValue) & 0x33) == 0)
     {
-      if (v13 == 2)
+      if (unsignedIntegerValue == 2)
       {
-        v16 = [(PKPaymentApplication *)self->_paymentApplication sanitizedDPAN];
-        if (v16 && [(PKPassDetailsCardInfoSectionController *)self _paymentApplicationShouldShowFullDPAN])
+        sanitizedDPAN = [(PKPaymentApplication *)self->_paymentApplication sanitizedDPAN];
+        if (sanitizedDPAN && [(PKPassDetailsCardInfoSectionController *)self _paymentApplicationShouldShowFullDPAN])
         {
           v17 = PKFormattedSanitizedPAN();
           v15 = [(PKPassDetailsCardInfoSectionController *)self _contextMenuConfigurationForCopyingText:v17];
@@ -245,10 +245,10 @@ LABEL_15:
 
       else
       {
-        v16 = [(PKPaymentPass *)self->_pass customerServiceIdentifier];
-        if ([v16 length])
+        sanitizedDPAN = [(PKPaymentPass *)self->_pass customerServiceIdentifier];
+        if ([sanitizedDPAN length])
         {
-          v15 = [(PKPassDetailsCardInfoSectionController *)self _contextMenuConfigurationForCopyingText:v16];
+          v15 = [(PKPassDetailsCardInfoSectionController *)self _contextMenuConfigurationForCopyingText:sanitizedDPAN];
           goto LABEL_15;
         }
       }
@@ -264,9 +264,9 @@ LABEL_5:
   return v15;
 }
 
-- (void)_reloadDataAndNotifyDelegate:(BOOL)a3
+- (void)_reloadDataAndNotifyDelegate:(BOOL)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   sectionMode = self->_sectionMode;
   detailViewStyle = self->_detailViewStyle;
   if (self->_expressModeSupported)
@@ -285,24 +285,24 @@ LABEL_5:
   v11[1] = detailViewStyle;
   v11[2] = v7;
   self->_numberOfRows = [v8 _rowTypesForPass:pass context:v11 outRows:&self->_rowTypes];
-  if (v3)
+  if (delegateCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained reloadSectionIdentifier:@"CardInfoSection"];
   }
 }
 
-+ (unint64_t)_rowTypesForPass:(id)a3 context:(id *)a4 outRows:(id *)a5
++ (unint64_t)_rowTypesForPass:(id)pass context:(id *)context outRows:(id *)rows
 {
-  v8 = a3;
-  if ([v8 isAccessPass])
+  passCopy = pass;
+  if ([passCopy isAccessPass])
   {
     v9 = 0;
   }
 
   else
   {
-    if (a5)
+    if (rows)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -316,9 +316,9 @@ LABEL_5:
     v9 = 0;
     do
     {
-      v16 = *&a4->var0;
-      var2 = a4->var2;
-      if ([a1 _shouldDisplayRow:v11 forPass:v8 inContext:&v16])
+      v16 = *&context->var0;
+      var2 = context->var2;
+      if ([self _shouldDisplayRow:v11 forPass:passCopy inContext:&v16])
       {
         if (v10)
         {
@@ -333,46 +333,46 @@ LABEL_5:
     }
 
     while (v11 != 6);
-    if (a5)
+    if (rows)
     {
       v13 = [v10 copy];
-      v14 = *a5;
-      *a5 = v13;
+      v14 = *rows;
+      *rows = v13;
     }
   }
 
   return v9;
 }
 
-+ (BOOL)_shouldDisplayRow:(unint64_t)a3 forPass:(id)a4 inContext:(id *)a5
++ (BOOL)_shouldDisplayRow:(unint64_t)row forPass:(id)pass inContext:(id *)context
 {
-  v8 = a4;
-  v9 = v8;
-  if (a3 > 2)
+  passCopy = pass;
+  v9 = passCopy;
+  if (row > 2)
   {
-    switch(a3)
+    switch(row)
     {
       case 3uLL:
-        v14 = [v8 customerServiceIdentifier];
-        v10 = v14 != 0;
+        customerServiceIdentifier = [passCopy customerServiceIdentifier];
+        v10 = customerServiceIdentifier != 0;
 
         goto LABEL_21;
       case 4uLL:
-        if (a5->var2)
+        if (context->var2)
         {
-          v11 = [objc_opt_class() _showExpressDetailsForPass:v8 expressMode:a5->var2 == 1 sectionMode:a5->var0];
+          supportsBarcodePayment = [objc_opt_class() _showExpressDetailsForPass:passCopy expressMode:context->var2 == 1 sectionMode:context->var0];
           goto LABEL_16;
         }
 
         break;
       case 5uLL:
-        if (!a5->var1)
+        if (!context->var1)
         {
-          v19 = *&a5->var0;
-          var2 = a5->var2;
-          v11 = [a1 _shouldDisplayRow:4 forPass:v8 inContext:&v19];
+          v19 = *&context->var0;
+          var2 = context->var2;
+          supportsBarcodePayment = [self _shouldDisplayRow:4 forPass:passCopy inContext:&v19];
 LABEL_16:
-          v10 = v11;
+          v10 = supportsBarcodePayment;
           goto LABEL_21;
         }
 
@@ -385,57 +385,57 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  if (!a3)
+  if (!row)
   {
-    v12 = [v8 fieldForKey:*MEMORY[0x1E69BC0D0]];
-    v13 = [v12 value];
-    v10 = v13 != 0;
+    primaryAccountNumberSuffix = [passCopy fieldForKey:*MEMORY[0x1E69BC0D0]];
+    value = [primaryAccountNumberSuffix value];
+    v10 = value != 0;
 
 LABEL_19:
     goto LABEL_21;
   }
 
-  if (a3 == 1)
+  if (row == 1)
   {
-    v11 = [v8 supportsBarcodePayment];
+    supportsBarcodePayment = [passCopy supportsBarcodePayment];
     goto LABEL_16;
   }
 
-  if (a3 != 2)
+  if (row != 2)
   {
 LABEL_31:
     __break(1u);
-    return v8;
+    return passCopy;
   }
 
-  if (([v8 isSuicaPass] & 1) == 0 && (objc_msgSend(v9, "isOctopusPass") & 1) == 0)
+  if (([passCopy isSuicaPass] & 1) == 0 && (objc_msgSend(v9, "isOctopusPass") & 1) == 0)
   {
-    v12 = [v9 primaryAccountNumberSuffix];
-    if (v12)
+    primaryAccountNumberSuffix = [v9 primaryAccountNumberSuffix];
+    if (primaryAccountNumberSuffix)
     {
       v10 = 1;
     }
 
     else
     {
-      v15 = [v9 sanitizedPrimaryAccountNumber];
-      if (v15)
+      sanitizedPrimaryAccountNumber = [v9 sanitizedPrimaryAccountNumber];
+      if (sanitizedPrimaryAccountNumber)
       {
         v10 = 1;
       }
 
       else
       {
-        v16 = [v9 sanitizedPrimaryAccountName];
-        if (v16)
+        sanitizedPrimaryAccountName = [v9 sanitizedPrimaryAccountName];
+        if (sanitizedPrimaryAccountName)
         {
           v10 = 1;
         }
 
         else
         {
-          v17 = [v9 devicePrimaryPaymentApplication];
-          v10 = [a1 _paymentApplicationShouldShowFullDPANForPass:v9 paymentApplication:v17];
+          devicePrimaryPaymentApplication = [v9 devicePrimaryPaymentApplication];
+          v10 = [self _paymentApplicationShouldShowFullDPANForPass:v9 paymentApplication:devicePrimaryPaymentApplication];
         }
       }
     }
@@ -446,23 +446,23 @@ LABEL_31:
   v10 = 1;
 LABEL_21:
 
-  LOBYTE(v8) = v10;
-  return v8;
+  LOBYTE(passCopy) = v10;
+  return passCopy;
 }
 
-- (id)_cellForRowIndex:(unint64_t)a3 inTableView:(id)a4
+- (id)_cellForRowIndex:(unint64_t)index inTableView:(id)view
 {
-  v6 = a4;
-  v7 = [(NSArray *)self->_rowTypes objectAtIndexedSubscript:a3];
-  v8 = [v7 unsignedIntegerValue];
+  viewCopy = view;
+  v7 = [(NSArray *)self->_rowTypes objectAtIndexedSubscript:index];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  if (v8 <= 2)
+  if (unsignedIntegerValue <= 2)
   {
-    switch(v8)
+    switch(unsignedIntegerValue)
     {
       case 0:
-        v10 = [(PKPaymentPass *)self->_pass fieldForKey:*MEMORY[0x1E69BC0D0]];
-        v16 = [v10 value];
+        customerServiceIdentifier = [(PKPaymentPass *)self->_pass fieldForKey:*MEMORY[0x1E69BC0D0]];
+        value = [customerServiceIdentifier value];
         if (PKHandsOnDemoModeEnabled() && (PKFakeCardholderName(), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 length], v23, v24))
         {
           v25 = PKFakeCardholderName();
@@ -470,40 +470,40 @@ LABEL_21:
 
         else
         {
-          v25 = v16;
+          v25 = value;
         }
 
         v28 = v25;
         v29 = PKLocalizedPaymentString(&cfstr_CardInfoName.isa);
-        v14 = -[PKPaymentPassDetailSectionController infoCellWithPrimaryText:detailText:cellStyle:forTableView:](self, "infoCellWithPrimaryText:detailText:cellStyle:forTableView:", v29, v28, [v10 cellStyle], v6);
+        v14 = -[PKPaymentPassDetailSectionController infoCellWithPrimaryText:detailText:cellStyle:forTableView:](self, "infoCellWithPrimaryText:detailText:cellStyle:forTableView:", v29, v28, [customerServiceIdentifier cellStyle], viewCopy);
 
         goto LABEL_34;
       case 1:
-        v10 = PKSanitizedPrimaryAccountRepresentationForPass();
-        v15 = [(PKPaymentPass *)self->_pass organizationName];
-        v16 = PKLocalizedAquamanString(&cfstr_PassInfoAccoun.isa, &stru_1F3BD5BF0.isa, v15);
+        customerServiceIdentifier = PKSanitizedPrimaryAccountRepresentationForPass();
+        organizationName = [(PKPaymentPass *)self->_pass organizationName];
+        value = PKLocalizedAquamanString(&cfstr_PassInfoAccoun.isa, &stru_1F3BD5BF0.isa, organizationName);
 
-        v17 = self;
-        v18 = v16;
-        v19 = v10;
+        selfCopy2 = self;
+        v18 = value;
+        v19 = customerServiceIdentifier;
 LABEL_33:
-        v14 = [(PKPaymentPassDetailSectionController *)v17 infoCellWithPrimaryText:v18 detailText:v19 cellStyle:1 reuseIdentifier:@"cardNumberCell" forTableView:v6];
-        v32 = [v14 detailTextLabel];
-        [v32 setAdjustsFontSizeToFitWidth:1];
+        v14 = [(PKPaymentPassDetailSectionController *)selfCopy2 infoCellWithPrimaryText:v18 detailText:v19 cellStyle:1 reuseIdentifier:@"cardNumberCell" forTableView:viewCopy];
+        detailTextLabel = [v14 detailTextLabel];
+        [detailTextLabel setAdjustsFontSizeToFitWidth:1];
 
 LABEL_34:
         goto LABEL_35;
       case 2:
-        v10 = PKLocalizedPaymentString(&cfstr_CardInfoNumber.isa);
+        customerServiceIdentifier = PKLocalizedPaymentString(&cfstr_CardInfoNumber.isa);
         if ([(PKPaymentPass *)self->_pass isSuicaPass])
         {
-          v11 = [(PKPaymentApplication *)self->_paymentApplication sanitizedDPAN];
-          if (v11)
+          sanitizedDPAN = [(PKPaymentApplication *)self->_paymentApplication sanitizedDPAN];
+          if (sanitizedDPAN)
           {
-            v12 = v11;
-            v13 = [(PKPaymentPass *)self->_pass isOctopusPass];
+            v12 = sanitizedDPAN;
+            isOctopusPass = [(PKPaymentPass *)self->_pass isOctopusPass];
 
-            if ((v13 & 1) == 0)
+            if ((isOctopusPass & 1) == 0)
             {
               goto LABEL_27;
             }
@@ -513,30 +513,30 @@ LABEL_34:
         else if (![(PKPaymentPass *)self->_pass isOctopusPass])
         {
 LABEL_27:
-          v31 = [(PKPaymentPass *)self->_pass primaryAccountNumberSuffix];
-          if (v31 || ([(PKPaymentPass *)self->_pass sanitizedPrimaryAccountNumber], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+          primaryAccountNumberSuffix = [(PKPaymentPass *)self->_pass primaryAccountNumberSuffix];
+          if (primaryAccountNumberSuffix || ([(PKPaymentPass *)self->_pass sanitizedPrimaryAccountNumber], (primaryAccountNumberSuffix = objc_claimAutoreleasedReturnValue()) != 0))
           {
           }
 
           else
           {
-            v33 = [(PKPaymentPass *)self->_pass sanitizedPrimaryAccountName];
+            sanitizedPrimaryAccountName = [(PKPaymentPass *)self->_pass sanitizedPrimaryAccountName];
 
-            if (!v33)
+            if (!sanitizedPrimaryAccountName)
             {
               if ([(PKPassDetailsCardInfoSectionController *)self _paymentApplicationShouldShowFullDPAN])
               {
-                v34 = [(PKPaymentApplication *)self->_paymentApplication sanitizedDPAN];
-                v16 = PKFormattedSanitizedPAN();
+                sanitizedDPAN2 = [(PKPaymentApplication *)self->_paymentApplication sanitizedDPAN];
+                value = PKFormattedSanitizedPAN();
 
                 v35 = PKLocalizedPaymentString(&cfstr_CardInfoDigita.isa);
 
-                v10 = v35;
+                customerServiceIdentifier = v35;
               }
 
               else
               {
-                v16 = 0;
+                value = 0;
               }
 
               goto LABEL_32;
@@ -545,11 +545,11 @@ LABEL_27:
 
           v30 = PKSanitizedPrimaryAccountRepresentationForPass();
 LABEL_31:
-          v16 = v30;
+          value = v30;
 LABEL_32:
-          v17 = self;
-          v18 = v10;
-          v19 = v16;
+          selfCopy2 = self;
+          v18 = customerServiceIdentifier;
+          v19 = value;
           goto LABEL_33;
         }
 
@@ -562,15 +562,15 @@ LABEL_43:
     return result;
   }
 
-  switch(v8)
+  switch(unsignedIntegerValue)
   {
     case 3:
-      v10 = [(PKPaymentPass *)self->_pass customerServiceIdentifier];
+      customerServiceIdentifier = [(PKPaymentPass *)self->_pass customerServiceIdentifier];
       v26 = PKPassLocalizedStringWithFormat();
-      v14 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v26 detailText:v10 cellStyle:1 reuseIdentifier:@"PKTableViewCellReuseIdentifierCustomerServiceIdentifier" forTableView:v6, 0];
+      v14 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v26 detailText:customerServiceIdentifier cellStyle:1 reuseIdentifier:@"PKTableViewCellReuseIdentifierCustomerServiceIdentifier" forTableView:viewCopy, 0];
 
-      v27 = [v14 detailTextLabel];
-      [v27 setAdjustsFontSizeToFitWidth:1];
+      detailTextLabel2 = [v14 detailTextLabel];
+      [detailTextLabel2 setAdjustsFontSizeToFitWidth:1];
 
       break;
     case 4:
@@ -586,7 +586,7 @@ LABEL_43:
       }
 
       v22 = PKLocalizedPaymentString(&v21->isa);
-      v14 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v20 detailText:v22 cellStyle:1 reuseIdentifier:@"expressState" forTableView:v6];
+      v14 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v20 detailText:v22 cellStyle:1 reuseIdentifier:@"expressState" forTableView:viewCopy];
 
       if ([(PKPassDetailsCardInfoSectionController *)self _isExpressSettingsLinkRowType:4])
       {
@@ -595,8 +595,8 @@ LABEL_43:
 
       goto LABEL_36;
     case 5:
-      v10 = PKLocalizedPaymentString(&cfstr_ExpressTransit_0.isa);
-      v14 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v10 forTableView:v6];
+      customerServiceIdentifier = PKLocalizedPaymentString(&cfstr_ExpressTransit_0.isa);
+      v14 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:customerServiceIdentifier forTableView:viewCopy];
       break;
     default:
       goto LABEL_43;
@@ -609,20 +609,20 @@ LABEL_36:
   return v14;
 }
 
-+ (BOOL)_showExpressDetailsForPass:(id)a3 expressMode:(BOOL)a4 sectionMode:(unint64_t)a5
++ (BOOL)_showExpressDetailsForPass:(id)pass expressMode:(BOOL)mode sectionMode:(unint64_t)sectionMode
 {
-  v7 = [a3 isAccessPass];
-  if (a5)
+  isAccessPass = [pass isAccessPass];
+  if (sectionMode)
   {
-    v8 = 0;
+    modeCopy = 0;
   }
 
   else
   {
-    v8 = a4;
+    modeCopy = mode;
   }
 
-  return (v7 & 1) == 0 && v8;
+  return (isAccessPass & 1) == 0 && modeCopy;
 }
 
 - (BOOL)_showExpressDetails
@@ -635,38 +635,38 @@ LABEL_36:
   return [v3 _showExpressDetailsForPass:pass expressMode:expressModeSupported sectionMode:sectionMode];
 }
 
-+ (BOOL)_paymentApplicationShouldShowFullDPANForPass:(id)a3 paymentApplication:(id)a4
++ (BOOL)_paymentApplicationShouldShowFullDPANForPass:(id)pass paymentApplication:(id)application
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 sanitizedDPAN];
-  if (v7)
+  passCopy = pass;
+  applicationCopy = application;
+  sanitizedDPAN = [applicationCopy sanitizedDPAN];
+  if (sanitizedDPAN)
   {
-    v8 = [v6 appletDataFormat];
+    appletDataFormat = [applicationCopy appletDataFormat];
     if (PKEqualObjects())
     {
-      v9 = 1;
+      isSuicaPass = 1;
     }
 
     else
     {
-      v10 = [v6 appletDataFormat];
+      appletDataFormat2 = [applicationCopy appletDataFormat];
       if (PKEqualObjects())
       {
-        v9 = 1;
+        isSuicaPass = 1;
       }
 
       else
       {
-        v11 = [v6 appletDataFormat];
-        if (PKEqualObjects() & 1) != 0 || ([v5 isEMoneyPass])
+        appletDataFormat3 = [applicationCopy appletDataFormat];
+        if (PKEqualObjects() & 1) != 0 || ([passCopy isEMoneyPass])
         {
-          v9 = 1;
+          isSuicaPass = 1;
         }
 
         else
         {
-          v9 = [v5 isSuicaPass];
+          isSuicaPass = [passCopy isSuicaPass];
         }
       }
     }
@@ -674,10 +674,10 @@ LABEL_36:
 
   else
   {
-    v9 = 0;
+    isSuicaPass = 0;
   }
 
-  return v9;
+  return isSuicaPass;
 }
 
 - (BOOL)_paymentApplicationShouldShowFullDPAN
@@ -722,16 +722,16 @@ LABEL_36:
   }
 }
 
-- (BOOL)_isExpressSettingsLinkRowType:(unint64_t)a3
+- (BOOL)_isExpressSettingsLinkRowType:(unint64_t)type
 {
-  if (a3 >= 4)
+  if (type >= 4)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       LOBYTE(self) = self->_detailViewStyle == 0;
     }
 
-    else if (a3 == 4)
+    else if (type == 4)
     {
       LOBYTE(self) = self->_detailViewStyle != 0;
     }
@@ -750,15 +750,15 @@ LABEL_36:
   return self;
 }
 
-- (id)_contextMenuConfigurationForCopyingText:(id)a3
+- (id)_contextMenuConfigurationForCopyingText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__PKPassDetailsCardInfoSectionController__contextMenuConfigurationForCopyingText___block_invoke;
   aBlock[3] = &unk_1E8016090;
-  v9 = v3;
-  v4 = v3;
+  v9 = textCopy;
+  v4 = textCopy;
   v5 = _Block_copy(aBlock);
   v6 = [MEMORY[0x1E69DC8D8] configurationWithIdentifier:0 previewProvider:0 actionProvider:v5];
 

@@ -1,7 +1,7 @@
 @interface HDSynchronousTaskGroup
 - (HDSynchronousTaskGroup)init;
 - (HDSynchronousTaskGroupDelegate)delegate;
-- (void)failTaskWithError:(id)a3;
+- (void)failTaskWithError:(id)error;
 - (void)finishTask;
 @end
 
@@ -21,12 +21,12 @@
   return result;
 }
 
-- (void)failTaskWithError:(id)a3
+- (void)failTaskWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   self->_success = 0;
-  if (v7)
+  if (errorCopy)
   {
     errors = self->_errors;
     if (!errors)
@@ -38,7 +38,7 @@
       errors = self->_errors;
     }
 
-    [(NSMutableArray *)errors addObject:v7];
+    [(NSMutableArray *)errors addObject:errorCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -47,8 +47,8 @@
 
 - (void)finishTask
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"HDSynchronousTaskGroup.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"resultCount >= 0"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HDSynchronousTaskGroup.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"resultCount >= 0"}];
 }
 
 - (HDSynchronousTaskGroupDelegate)delegate

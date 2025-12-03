@@ -1,36 +1,36 @@
 @interface _SFKey
 + (Class)_attributesClass;
-+ (id)_specifierForSecKey:(__SecKey *)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_specifierForSecKey:(__SecKey *)key;
+- (BOOL)isEqual:(id)equal;
 - (NSString)keyDomain;
-- (_SFKey)initWithAttributes:(id)a3;
-- (_SFKey)initWithData:(id)a3 specifier:(id)a4 error:(id *)a5;
+- (_SFKey)initWithAttributes:(id)attributes;
+- (_SFKey)initWithData:(id)data specifier:(id)specifier error:(id *)error;
 - (_SFKeySpecifier)keySpecifier;
-- (id)initRandomKeyWithSpecifier:(id)a3;
+- (id)initRandomKeyWithSpecifier:(id)specifier;
 @end
 
 @implementation _SFKey
 
 + (Class)_attributesClass
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"SFKey.m" lineNumber:583 description:@"attempt to get attributes class from abstract base class SFKey - must be provided by subclass"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SFKey.m" lineNumber:583 description:@"attempt to get attributes class from abstract base class SFKey - must be provided by subclass"];
 
   return 0;
 }
 
-+ (id)_specifierForSecKey:(__SecKey *)a3
++ (id)_specifierForSecKey:(__SecKey *)key
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:a1 file:@"SFKey.m" lineNumber:589 description:@"attempt to get sec key specifier from abstract base class SFKey - must be provided by subclass"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SFKey.m" lineNumber:589 description:@"attempt to get sec key specifier from abstract base class SFKey - must be provided by subclass"];
 
   return 0;
 }
 
-- (_SFKey)initWithData:(id)a3 specifier:(id)a4 error:(id *)a5
+- (_SFKey)initWithData:(id)data specifier:(id)specifier error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  specifierCopy = specifier;
   v8 = MEMORY[0x277CCACA8];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
@@ -40,9 +40,9 @@
   objc_exception_throw(v12);
 }
 
-- (_SFKey)initWithAttributes:(id)a3
+- (_SFKey)initWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v12.receiver = self;
   v12.super_class = _SFKey;
   v5 = [(_SFKey *)&v12 init];
@@ -52,7 +52,7 @@
     keyInternal = v5->_keyInternal;
     v5->_keyInternal = v6;
 
-    v8 = [v4 copyWithZone:0];
+    v8 = [attributesCopy copyWithZone:0];
     v9 = v5->_keyInternal;
     v10 = v9[1];
     v9[1] = v8;
@@ -61,9 +61,9 @@
   return v5;
 }
 
-- (id)initRandomKeyWithSpecifier:(id)a3
+- (id)initRandomKeyWithSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -73,24 +73,24 @@
   objc_exception_throw(v8);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(_SFKey *)self keyData];
-      v8 = [(_SFKey *)v6 keyData];
-      v9 = [v7 isEqual:v8];
+      keyData = [(_SFKey *)self keyData];
+      keyData2 = [(_SFKey *)v6 keyData];
+      v9 = [keyData isEqual:keyData2];
     }
 
     else
@@ -109,16 +109,16 @@
 
 - (_SFKeySpecifier)keySpecifier
 {
-  v2 = [*(self->_keyInternal + 1) keySpecifier];
-  v3 = [v2 copy];
+  keySpecifier = [*(self->_keyInternal + 1) keySpecifier];
+  v3 = [keySpecifier copy];
 
   return v3;
 }
 
 - (NSString)keyDomain
 {
-  v2 = [*(self->_keyInternal + 1) keyDomain];
-  v3 = [v2 copy];
+  keyDomain = [*(self->_keyInternal + 1) keyDomain];
+  v3 = [keyDomain copy];
 
   return v3;
 }

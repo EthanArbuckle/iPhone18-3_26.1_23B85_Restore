@@ -1,22 +1,22 @@
 @interface ASDMediaClipTask
-- (ASDMediaClipTask)initWithClientID:(id)a3 bag:(id)a4;
+- (ASDMediaClipTask)initWithClientID:(id)d bag:(id)bag;
 - (id)perform;
 @end
 
 @implementation ASDMediaClipTask
 
-- (ASDMediaClipTask)initWithClientID:(id)a3 bag:(id)a4
+- (ASDMediaClipTask)initWithClientID:(id)d bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  bagCopy = bag;
   v17.receiver = self;
   v17.super_class = ASDMediaClipTask;
   v9 = [(AMSTask *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bag, a4);
-    objc_storeStrong(&v10->_clientID, a3);
+    objc_storeStrong(&v9->_bag, bag);
+    objc_storeStrong(&v10->_clientID, d);
     v11 = MEMORY[0x1E696AEC0];
     v12 = +[NSUUID asd_generateLogKey];
     v13 = [v11 stringWithFormat:@"MCT/%@", v12];

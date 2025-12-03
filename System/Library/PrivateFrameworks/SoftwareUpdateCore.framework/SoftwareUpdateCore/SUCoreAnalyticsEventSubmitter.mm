@@ -1,21 +1,21 @@
 @interface SUCoreAnalyticsEventSubmitter
-- (BOOL)_queue_registerSendEvent:(id)a3;
+- (BOOL)_queue_registerSendEvent:(id)event;
 - (BOOL)_queue_submitAllEvents;
-- (BOOL)_queue_submitEvent:(id)a3;
-- (BOOL)_queue_submitEventsWithName:(id)a3;
+- (BOOL)_queue_submitEvent:(id)event;
+- (BOOL)_queue_submitEventsWithName:(id)name;
 - (BOOL)submitAllEvents;
-- (BOOL)submitEvent:(id)a3;
-- (BOOL)submitEventsWithName:(id)a3;
+- (BOOL)submitEvent:(id)event;
+- (BOOL)submitEventsWithName:(id)name;
 - (NSDictionary)events;
 - (SUCoreAnalyticsEventSubmitter)init;
 - (void)_queue_removeAllEvents;
-- (void)_queue_removeEvent:(id)a3;
-- (void)_queue_removeEventsWithName:(id)a3;
-- (void)_queue_setEvent:(id)a3;
+- (void)_queue_removeEvent:(id)event;
+- (void)_queue_removeEventsWithName:(id)name;
+- (void)_queue_setEvent:(id)event;
 - (void)removeAllEvents;
-- (void)removeEvent:(id)a3;
-- (void)removeEventsWithName:(id)a3;
-- (void)setEvent:(id)a3;
+- (void)removeEvent:(id)event;
+- (void)removeEventsWithName:(id)name;
+- (void)setEvent:(id)event;
 @end
 
 @implementation SUCoreAnalyticsEventSubmitter
@@ -44,18 +44,18 @@
   return v2;
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__SUCoreAnalyticsEventSubmitter_setEvent___block_invoke;
   v7[3] = &unk_27892D478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -81,18 +81,18 @@ void __42__SUCoreAnalyticsEventSubmitter_setEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeEvent:(id)a3
+- (void)removeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__SUCoreAnalyticsEventSubmitter_removeEvent___block_invoke;
   v7[3] = &unk_27892D478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -118,18 +118,18 @@ void __45__SUCoreAnalyticsEventSubmitter_removeEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeEventsWithName:(id)a3
+- (void)removeEventsWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SUCoreAnalyticsEventSubmitter_removeEventsWithName___block_invoke;
   v7[3] = &unk_27892D478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = nameCopy;
+  selfCopy = self;
+  v6 = nameCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -167,9 +167,9 @@ void __54__SUCoreAnalyticsEventSubmitter_removeEventsWithName___block_invoke(uin
   dispatch_sync(stateQueue, block);
 }
 
-- (BOOL)submitEvent:(id)a3
+- (BOOL)submitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v12 = 0;
   v13 = &v12;
@@ -180,15 +180,15 @@ void __54__SUCoreAnalyticsEventSubmitter_removeEventsWithName___block_invoke(uin
   block[1] = 3221225472;
   block[2] = __45__SUCoreAnalyticsEventSubmitter_submitEvent___block_invoke;
   block[3] = &unk_27892D520;
-  v9 = v4;
-  v10 = self;
+  v9 = eventCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, block);
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(eventCopy) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return eventCopy;
 }
 
 void __45__SUCoreAnalyticsEventSubmitter_submitEvent___block_invoke(uint64_t a1)
@@ -211,9 +211,9 @@ void __45__SUCoreAnalyticsEventSubmitter_submitEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)submitEventsWithName:(id)a3
+- (BOOL)submitEventsWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v12 = 0;
   v13 = &v12;
@@ -224,15 +224,15 @@ void __45__SUCoreAnalyticsEventSubmitter_submitEvent___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __54__SUCoreAnalyticsEventSubmitter_submitEventsWithName___block_invoke;
   block[3] = &unk_27892D520;
-  v9 = v4;
-  v10 = self;
+  v9 = nameCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(stateQueue, block);
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(nameCopy) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return nameCopy;
 }
 
 void __54__SUCoreAnalyticsEventSubmitter_submitEventsWithName___block_invoke(void *a1)
@@ -258,23 +258,23 @@ void __54__SUCoreAnalyticsEventSubmitter_submitEventsWithName___block_invoke(voi
 
 - (BOOL)submitAllEvents
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  stateQueue = v2->_stateQueue;
+  stateQueue = selfCopy->_stateQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48__SUCoreAnalyticsEventSubmitter_submitAllEvents__block_invoke;
   v5[3] = &unk_27892C8D0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(stateQueue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __48__SUCoreAnalyticsEventSubmitter_submitAllEvents__block_invoke(uint64_t a1)
@@ -317,34 +317,34 @@ uint64_t __39__SUCoreAnalyticsEventSubmitter_events__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_queue_setEvent:(id)a3
+- (void)_queue_setEvent:(id)event
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4 && ([v4 eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (eventCopy && ([eventCopy eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-    v7 = [v6 oslog];
+    eventSubmitterLogger = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+    oslog = [eventSubmitterLogger oslog];
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v4;
-      _os_log_impl(&dword_23193C000, v7, OS_LOG_TYPE_DEFAULT, "SET_EVENT: Adding CoreAnalytics event to submission queue: %{public}@", &v12, 0xCu);
+      v13 = eventCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "SET_EVENT: Adding CoreAnalytics event to submission queue: %{public}@", &v12, 0xCu);
     }
 
     events = self->_events;
-    v9 = [v4 eventUUID];
-    [(NSMutableDictionary *)events setSafeObject:v4 forKey:v9];
+    eventUUID = [eventCopy eventUUID];
+    [(NSMutableDictionary *)events setSafeObject:eventCopy forKey:eventUUID];
   }
 
   else
   {
-    v10 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-    v9 = [v10 oslog];
+    eventSubmitterLogger2 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+    eventUUID = [eventSubmitterLogger2 oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(eventUUID, OS_LOG_TYPE_ERROR))
     {
       __42__SUCoreAnalyticsEventSubmitter_setEvent___block_invoke_cold_1();
     }
@@ -353,49 +353,49 @@ uint64_t __39__SUCoreAnalyticsEventSubmitter_events__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_removeEvent:(id)a3
+- (void)_queue_removeEvent:(id)event
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4 && ([v4 eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (eventCopy && ([eventCopy eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     events = self->_events;
-    v7 = [v4 eventUUID];
-    v8 = [(NSMutableDictionary *)events objectForKey:v7];
+    eventUUID = [eventCopy eventUUID];
+    oslog2 = [(NSMutableDictionary *)events objectForKey:eventUUID];
 
-    v9 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-    v10 = [v9 oslog];
+    eventSubmitterLogger = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+    oslog = [eventSubmitterLogger oslog];
 
-    v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    v11 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
+    if (oslog2)
     {
       if (v11)
       {
         v15 = 138543362;
-        v16 = v4;
-        _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "REMOVE_EVENT: Successfully removed event %{public}@ from queue", &v15, 0xCu);
+        v16 = eventCopy;
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "REMOVE_EVENT: Successfully removed event %{public}@ from queue", &v15, 0xCu);
       }
 
       v12 = self->_events;
-      v10 = [v8 eventUUID];
-      [(NSMutableDictionary *)v12 removeObjectForKey:v10];
+      oslog = [oslog2 eventUUID];
+      [(NSMutableDictionary *)v12 removeObjectForKey:oslog];
     }
 
     else if (v11)
     {
       v15 = 138543362;
-      v16 = v4;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "REMOVE_EVENT: Event %{public}@ does not exist. Nothing to do", &v15, 0xCu);
+      v16 = eventCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "REMOVE_EVENT: Event %{public}@ does not exist. Nothing to do", &v15, 0xCu);
     }
   }
 
   else
   {
-    v13 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-    v8 = [v13 oslog];
+    eventSubmitterLogger2 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+    oslog2 = [eventSubmitterLogger2 oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
       __45__SUCoreAnalyticsEventSubmitter_removeEvent___block_invoke_cold_1();
     }
@@ -404,19 +404,19 @@ uint64_t __39__SUCoreAnalyticsEventSubmitter_events__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_removeEventsWithName:(id)a3
+- (void)_queue_removeEventsWithName:(id)name
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4)
+  if (nameCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_events allValues];
+    allValues = [(NSMutableDictionary *)self->_events allValues];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    v6 = [allValues countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v6)
     {
       v8 = v6;
@@ -429,32 +429,32 @@ uint64_t __39__SUCoreAnalyticsEventSubmitter_events__block_invoke(uint64_t a1)
         {
           if (*v22 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 eventName];
-          v13 = [v12 isEqualToString:v4];
+          eventName = [v11 eventName];
+          v13 = [eventName isEqualToString:nameCopy];
 
           if (v13)
           {
-            v14 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-            v15 = [v14 oslog];
+            eventSubmitterLogger = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+            oslog = [eventSubmitterLogger oslog];
 
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v20;
               v26 = v11;
-              _os_log_impl(&dword_23193C000, v15, OS_LOG_TYPE_DEFAULT, "REMOVE_EVENTS_WITH_NAME: Removing %{public}@", buf, 0xCu);
+              _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "REMOVE_EVENTS_WITH_NAME: Removing %{public}@", buf, 0xCu);
             }
 
             events = self->_events;
-            v17 = [v11 eventUUID];
-            [(NSMutableDictionary *)events removeObjectForKey:v17];
+            eventUUID = [v11 eventUUID];
+            [(NSMutableDictionary *)events removeObjectForKey:eventUUID];
           }
         }
 
-        v8 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v21 objects:v27 count:16];
       }
 
       while (v8);
@@ -463,10 +463,10 @@ uint64_t __39__SUCoreAnalyticsEventSubmitter_events__block_invoke(uint64_t a1)
 
   else
   {
-    v18 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-    v5 = [v18 oslog];
+    eventSubmitterLogger2 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+    allValues = [eventSubmitterLogger2 oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(allValues, OS_LOG_TYPE_ERROR))
     {
       [SUCoreAnalyticsEventSubmitter _queue_removeEventsWithName:];
     }
@@ -478,29 +478,29 @@ uint64_t __39__SUCoreAnalyticsEventSubmitter_events__block_invoke(uint64_t a1)
 - (void)_queue_removeAllEvents
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  v3 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-  v4 = [v3 oslog];
+  eventSubmitterLogger = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+  oslog = [eventSubmitterLogger oslog];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_23193C000, v4, OS_LOG_TYPE_DEFAULT, "REMOVE_ALL_EVENTS: Removing all events from submission queue", v5, 2u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "REMOVE_ALL_EVENTS: Removing all events from submission queue", v5, 2u);
   }
 
   [(NSMutableDictionary *)self->_events removeAllObjects];
 }
 
-- (BOOL)_queue_submitEvent:(id)a3
+- (BOOL)_queue_submitEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (!v4 || ([v4 eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (!eventCopy || ([eventCopy eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    v13 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-    v8 = [v13 oslog];
+    eventSubmitterLogger = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+    oslog = [eventSubmitterLogger oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreAnalyticsEventSubmitter _queue_submitEvent:];
     }
@@ -509,20 +509,20 @@ uint64_t __39__SUCoreAnalyticsEventSubmitter_events__block_invoke(uint64_t a1)
   }
 
   events = self->_events;
-  v7 = [v4 eventUUID];
-  v8 = [(NSMutableDictionary *)events objectForKey:v7];
+  eventUUID = [eventCopy eventUUID];
+  oslog = [(NSMutableDictionary *)events objectForKey:eventUUID];
 
-  v9 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-  v10 = [v9 oslog];
+  eventSubmitterLogger2 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+  oslog2 = [eventSubmitterLogger2 oslog];
 
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (!v8)
+  v11 = os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT);
+  if (!oslog)
   {
     if (v11)
     {
       v18 = 138543362;
-      v19 = v4;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "SUBMIT: No event found matching %{public}@. Skipping", &v18, 0xCu);
+      v19 = eventCopy;
+      _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "SUBMIT: No event found matching %{public}@. Skipping", &v18, 0xCu);
     }
 
     goto LABEL_16;
@@ -531,18 +531,18 @@ uint64_t __39__SUCoreAnalyticsEventSubmitter_events__block_invoke(uint64_t a1)
   if (v11)
   {
     v18 = 138543362;
-    v19 = v8;
-    _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "SUBMIT: Found event %{public}@. Sending", &v18, 0xCu);
+    v19 = oslog;
+    _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "SUBMIT: Found event %{public}@. Sending", &v18, 0xCu);
   }
 
-  if (![(SUCoreAnalyticsEventSubmitter *)self _queue_registerSendEvent:v8])
+  if (![(SUCoreAnalyticsEventSubmitter *)self _queue_registerSendEvent:oslog])
   {
-    v14 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-    v15 = [v14 oslog];
+    eventSubmitterLogger3 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+    oslog3 = [eventSubmitterLogger3 oslog];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
     {
-      [(SUCoreAnalyticsEventSubmitter *)v4 _queue_submitEvent:v15];
+      [(SUCoreAnalyticsEventSubmitter *)eventCopy _queue_submitEvent:oslog3];
     }
 
 LABEL_16:
@@ -550,7 +550,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  [(SUCoreAnalyticsEventSubmitter *)self _queue_removeEvent:v8];
+  [(SUCoreAnalyticsEventSubmitter *)self _queue_removeEvent:oslog];
   v12 = 1;
 LABEL_17:
 
@@ -558,19 +558,19 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)_queue_submitEventsWithName:(id)a3
+- (BOOL)_queue_submitEventsWithName:(id)name
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4)
+  if (nameCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_events allValues];
+    allValues = [(NSMutableDictionary *)self->_events allValues];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    v6 = [allValues countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v6)
     {
       v8 = v6;
@@ -584,23 +584,23 @@ LABEL_17:
         {
           if (*v24 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v12 = *(*(&v23 + 1) + 8 * i);
-          v13 = [v12 eventName];
-          v14 = [v13 isEqualToString:v4];
+          eventName = [v12 eventName];
+          v14 = [eventName isEqualToString:nameCopy];
 
           if (v14)
           {
-            v15 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-            v16 = [v15 oslog];
+            eventSubmitterLogger = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+            oslog = [eventSubmitterLogger oslog];
 
-            if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v22;
               v28 = v12;
-              _os_log_impl(&dword_23193C000, v16, OS_LOG_TYPE_DEFAULT, "SUBMIT_EVENTS_WITH_NAME: Submitting %{public}@", buf, 0xCu);
+              _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "SUBMIT_EVENTS_WITH_NAME: Submitting %{public}@", buf, 0xCu);
             }
 
             if ([(SUCoreAnalyticsEventSubmitter *)self _queue_registerSendEvent:v12])
@@ -610,14 +610,14 @@ LABEL_17:
 
             else
             {
-              v17 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-              v18 = [v17 oslog];
+              eventSubmitterLogger2 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+              oslog2 = [eventSubmitterLogger2 oslog];
 
-              if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
               {
                 *buf = v22;
                 v28 = v12;
-                _os_log_error_impl(&dword_23193C000, v18, OS_LOG_TYPE_ERROR, "SUBMIT_EVENTS_WITH_NAME: Failed to send event: %{public}@", buf, 0xCu);
+                _os_log_error_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_ERROR, "SUBMIT_EVENTS_WITH_NAME: Failed to send event: %{public}@", buf, 0xCu);
               }
 
               v10 = 0;
@@ -625,7 +625,7 @@ LABEL_17:
           }
         }
 
-        v8 = [v5 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v23 objects:v29 count:16];
       }
 
       while (v8);
@@ -639,10 +639,10 @@ LABEL_17:
 
   else
   {
-    v19 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-    v5 = [v19 oslog];
+    eventSubmitterLogger3 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+    allValues = [eventSubmitterLogger3 oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(allValues, OS_LOG_TYPE_ERROR))
     {
       [SUCoreAnalyticsEventSubmitter _queue_submitEventsWithName:];
     }
@@ -658,22 +658,22 @@ LABEL_17:
 {
   v29 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_stateQueue);
-  v3 = [(NSMutableDictionary *)self->_events allValues];
-  v4 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-  v5 = [v4 oslog];
+  allValues = [(NSMutableDictionary *)self->_events allValues];
+  eventSubmitterLogger = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+  oslog = [eventSubmitterLogger oslog];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v28 = [v3 count];
-    _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "[CoreAnalytics]: SUBMIT_ALL_EVENTS: Will submit %{public}lu total events", buf, 0xCu);
+    v28 = [allValues count];
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[CoreAnalytics]: SUBMIT_ALL_EVENTS: Will submit %{public}lu total events", buf, 0xCu);
   }
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v3;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -693,14 +693,14 @@ LABEL_17:
 
         v13 = *(*(&v22 + 1) + 8 * i);
         v14 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger:v21];
-        v15 = [v14 oslog];
+        oslog2 = [v14 oslog];
 
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v13 eventName];
+          eventName = [v13 eventName];
           *buf = v21;
-          v28 = v16;
-          _os_log_impl(&dword_23193C000, v15, OS_LOG_TYPE_DEFAULT, "[CoreAnalytics]: SUBMIT_ALL_EVENT: Sending event %{public}@", buf, 0xCu);
+          v28 = eventName;
+          _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[CoreAnalytics]: SUBMIT_ALL_EVENT: Sending event %{public}@", buf, 0xCu);
         }
 
         if ([(SUCoreAnalyticsEventSubmitter *)self _queue_registerSendEvent:v13])
@@ -710,14 +710,14 @@ LABEL_17:
 
         else
         {
-          v17 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-          v18 = [v17 oslog];
+          eventSubmitterLogger2 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+          oslog3 = [eventSubmitterLogger2 oslog];
 
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
           {
             *buf = v21;
             v28 = v13;
-            _os_log_error_impl(&dword_23193C000, v18, OS_LOG_TYPE_ERROR, "[CoreAnalytics]: SUBMIT_ALL_EVENT: Failed to send event: %{public}@", buf, 0xCu);
+            _os_log_error_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_ERROR, "[CoreAnalytics]: SUBMIT_ALL_EVENT: Failed to send event: %{public}@", buf, 0xCu);
           }
 
           v11 = 0;
@@ -739,31 +739,31 @@ LABEL_17:
   return v11 & 1;
 }
 
-- (BOOL)_queue_registerSendEvent:(id)a3
+- (BOOL)_queue_registerSendEvent:(id)event
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  v5 = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
-  v6 = [v5 oslog];
+  eventSubmitterLogger = [(SUCoreAnalyticsEventSubmitter *)self eventSubmitterLogger];
+  oslog = [eventSubmitterLogger oslog];
 
-  if (v4)
+  if (eventCopy)
   {
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v13 = v4;
-      _os_log_impl(&dword_23193C000, v6, OS_LOG_TYPE_DEFAULT, "[CoreAnalytics] SUBMIT: Calling SendEventLazy for %{public}@", buf, 0xCu);
+      v13 = eventCopy;
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[CoreAnalytics] SUBMIT: Calling SendEventLazy for %{public}@", buf, 0xCu);
     }
 
-    v7 = [v4 eventName];
-    v11 = v4;
+    eventName = [eventCopy eventName];
+    v11 = eventCopy;
     v8 = AnalyticsSendEventLazy();
   }
 
   else
   {
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreAnalyticsEventSubmitter _queue_registerSendEvent:];
     }

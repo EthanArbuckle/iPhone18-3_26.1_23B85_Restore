@@ -3,11 +3,11 @@
 - (BOOL)_residentDidChange;
 - (HMDResidentDevice)residentDevice;
 - (HMDResidentMesh)owner;
-- (HMDResidentMeshResidentStorage)initWithResidentDevice:(id)a3 owner:(id)a4;
+- (HMDResidentMeshResidentStorage)initWithResidentDevice:(id)device owner:(id)owner;
 - (id)_buildPayload;
 - (id)logIdentifier;
-- (void)_transmitAfter:(double)a3;
-- (void)timerDidFire:(id)a3;
+- (void)_transmitAfter:(double)after;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDResidentMeshResidentStorage
@@ -26,23 +26,23 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDResidentMeshResidentStorage *)self owner];
-  v6 = v5;
-  if (v5)
+  fireCopy = fire;
+  owner = [(HMDResidentMeshResidentStorage *)self owner];
+  v6 = owner;
+  if (owner)
   {
-    v7 = [v5 workQueue];
-    dispatch_assert_queue_V2(v7);
+    workQueue = [owner workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v8 = [(HMDResidentMeshResidentStorage *)self transmitTimer];
+    transmitTimer = [(HMDResidentMeshResidentStorage *)self transmitTimer];
 
-    if (v8 == v4)
+    if (transmitTimer == fireCopy)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -53,14 +53,14 @@
       }
 
       objc_autoreleasePoolPop(v9);
-      [(HMDResidentMeshResidentStorage *)v10 _transmitStatus:0];
+      [(HMDResidentMeshResidentStorage *)selfCopy _transmitStatus:0];
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -78,12 +78,12 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDResidentMeshResidentStorage *)self residentDevice];
-  v3 = [v2 device];
-  v4 = [v3 identifier];
-  v5 = [v4 UUIDString];
+  residentDevice = [(HMDResidentMeshResidentStorage *)self residentDevice];
+  device = [residentDevice device];
+  identifier = [device identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
 void __50__HMDResidentMeshResidentStorage__transmitStatus___block_invoke(id *a1, void *a2, void *a3)
@@ -125,25 +125,25 @@ void __50__HMDResidentMeshResidentStorage__transmitStatus___block_invoke(id *a1,
 - (id)_buildPayload
 {
   v16[5] = *MEMORY[0x277D85DE8];
-  v2 = [(HMDResidentMeshResidentStorage *)self owner];
-  v3 = [v2 resident];
+  owner = [(HMDResidentMeshResidentStorage *)self owner];
+  resident = [owner resident];
   v16[0] = &unk_283E736D0;
   v15[0] = @"kMeshVersion";
   v15[1] = @"kMeshDeviceStorageGenerationCount";
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "generationCount")}];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(resident, "generationCount")}];
   v16[1] = v14;
   v15[2] = @"kMeshDevice";
-  v4 = [v3 residentDevice];
-  v5 = [v4 device];
-  v6 = [v5 identifier];
-  v7 = [v6 UUIDString];
-  v16[2] = v7;
+  residentDevice = [resident residentDevice];
+  device = [residentDevice device];
+  identifier = [device identifier];
+  uUIDString = [identifier UUIDString];
+  v16[2] = uUIDString;
   v15[3] = @"kMeshDeviceStorageEnabled";
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "enabled")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(resident, "enabled")}];
   v16[3] = v8;
   v15[4] = @"kMeshDeviceStorageSystemLoad";
-  v9 = [v2 loadMetrics];
-  v10 = [v9 copy];
+  loadMetrics = [owner loadMetrics];
+  v10 = [loadMetrics copy];
   v16[4] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:5];
 
@@ -152,14 +152,14 @@ void __50__HMDResidentMeshResidentStorage__transmitStatus___block_invoke(id *a1,
   return v11;
 }
 
-- (void)_transmitAfter:(double)a3
+- (void)_transmitAfter:(double)after
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDResidentMeshResidentStorage *)self owner];
-  if (!v5)
+  owner = [(HMDResidentMeshResidentStorage *)self owner];
+  if (!owner)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -173,12 +173,12 @@ void __50__HMDResidentMeshResidentStorage__transmitStatus___block_invoke(id *a1,
     goto LABEL_16;
   }
 
-  v6 = [(HMDResidentMeshResidentStorage *)self transmitTimer];
+  transmitTimer = [(HMDResidentMeshResidentStorage *)self transmitTimer];
 
-  if (v6)
+  if (transmitTimer)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = v5;
+    v8 = owner;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -194,12 +194,12 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v16 = [(HMDResidentMeshResidentStorage *)self _residentDidChange];
+  _residentDidChange = [(HMDResidentMeshResidentStorage *)self _residentDidChange];
   v17 = objc_autoreleasePoolPush();
-  v18 = v5;
+  v18 = owner;
   v19 = HMFGetOSLogHandle();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_INFO);
-  if (!v16)
+  if (!_residentDidChange)
   {
     if (v20)
     {
@@ -216,31 +216,31 @@ LABEL_16:
   if (v20)
   {
     v21 = HMFGetLogIdentifier();
-    v22 = [(HMDResidentMeshResidentStorage *)self residentDevice];
-    v23 = [v22 device];
-    v24 = [v23 shortDescription];
+    residentDevice = [(HMDResidentMeshResidentStorage *)self residentDevice];
+    device = [residentDevice device];
+    shortDescription = [device shortDescription];
     v32 = 138543874;
     v33 = v21;
     v34 = 2114;
-    v35 = v24;
+    v35 = shortDescription;
     v36 = 2048;
-    v37 = a3;
+    afterCopy = after;
     _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Starting transmit timer for %{public}@ for %fs", &v32, 0x20u);
   }
 
   objc_autoreleasePoolPop(v17);
-  v25 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:a3];
+  v25 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:after];
   [(HMDResidentMeshResidentStorage *)self setTransmitTimer:v25];
 
-  v26 = [(HMDResidentMeshResidentStorage *)self transmitTimer];
-  [v26 setDelegate:self];
+  transmitTimer2 = [(HMDResidentMeshResidentStorage *)self transmitTimer];
+  [transmitTimer2 setDelegate:self];
 
-  v27 = [(HMDResidentMeshResidentStorage *)self transmitTimer];
-  v28 = [v18 workQueue];
-  [v27 setDelegateQueue:v28];
+  transmitTimer3 = [(HMDResidentMeshResidentStorage *)self transmitTimer];
+  workQueue = [v18 workQueue];
+  [transmitTimer3 setDelegateQueue:workQueue];
 
-  v29 = [(HMDResidentMeshResidentStorage *)self transmitTimer];
-  [v29 resume];
+  transmitTimer4 = [(HMDResidentMeshResidentStorage *)self transmitTimer];
+  [transmitTimer4 resume];
 
 LABEL_17:
   v31 = *MEMORY[0x277D85DE8];
@@ -248,25 +248,25 @@ LABEL_17:
 
 - (BOOL)_residentDidChange
 {
-  v3 = [(HMDResidentMeshResidentStorage *)self metrics];
-  v4 = [(HMDResidentMeshResidentStorage *)self lastSentMetrics];
-  v5 = [v3 isEqualToDictionary:v4];
+  metrics = [(HMDResidentMeshResidentStorage *)self metrics];
+  lastSentMetrics = [(HMDResidentMeshResidentStorage *)self lastSentMetrics];
+  v5 = [metrics isEqualToDictionary:lastSentMetrics];
 
   return v5 ^ 1;
 }
 
-- (HMDResidentMeshResidentStorage)initWithResidentDevice:(id)a3 owner:(id)a4
+- (HMDResidentMeshResidentStorage)initWithResidentDevice:(id)device owner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  deviceCopy = device;
+  ownerCopy = owner;
+  if (!deviceCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = ownerCopy;
+  if (!ownerCopy)
   {
 LABEL_7:
     v17 = _HMFPreconditionFailure();
@@ -280,15 +280,15 @@ LABEL_7:
   if (v9)
   {
     objc_storeWeak(&v9->_owner, v8);
-    objc_storeWeak(&v10->_residentDevice, v6);
-    v11 = [v8 loadMetrics];
-    v12 = [v11 mutableCopy];
+    objc_storeWeak(&v10->_residentDevice, deviceCopy);
+    loadMetrics = [v8 loadMetrics];
+    v12 = [loadMetrics mutableCopy];
     metrics = v10->_metrics;
     v10->_metrics = v12;
 
-    v14 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     lastSentMetrics = v10->_lastSentMetrics;
-    v10->_lastSentMetrics = v14;
+    v10->_lastSentMetrics = dictionary;
   }
 
   return v10;

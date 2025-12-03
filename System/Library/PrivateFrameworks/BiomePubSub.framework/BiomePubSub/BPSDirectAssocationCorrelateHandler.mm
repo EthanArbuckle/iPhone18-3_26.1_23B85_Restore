@@ -1,14 +1,14 @@
 @interface BPSDirectAssocationCorrelateHandler
-- (BPSDirectAssocationCorrelateHandler)initWithCorrelating:(id)a3;
-- (id)correlateWithCurrentEvent:(id)a3;
-- (void)receivePriorEvent:(id)a3;
+- (BPSDirectAssocationCorrelateHandler)initWithCorrelating:(id)correlating;
+- (id)correlateWithCurrentEvent:(id)event;
+- (void)receivePriorEvent:(id)event;
 @end
 
 @implementation BPSDirectAssocationCorrelateHandler
 
-- (BPSDirectAssocationCorrelateHandler)initWithCorrelating:(id)a3
+- (BPSDirectAssocationCorrelateHandler)initWithCorrelating:(id)correlating
 {
-  v4 = a3;
+  correlatingCopy = correlating;
   v5 = objc_opt_new();
   v10.receiver = self;
   v10.super_class = BPSDirectAssocationCorrelateHandler;
@@ -16,7 +16,7 @@
 
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [correlatingCopy copy];
     correlating = v6->_correlating;
     v6->_correlating = v7;
   }
@@ -24,31 +24,31 @@
   return v6;
 }
 
-- (void)receivePriorEvent:(id)a3
+- (void)receivePriorEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(BPSCorrelateHandler *)self context];
-  [v5 addObject:v4];
+  eventCopy = event;
+  context = [(BPSCorrelateHandler *)self context];
+  [context addObject:eventCopy];
 }
 
-- (id)correlateWithCurrentEvent:(id)a3
+- (id)correlateWithCurrentEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [(BPSCorrelateHandler *)self context];
+  context = [(BPSCorrelateHandler *)self context];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __65__BPSDirectAssocationCorrelateHandler_correlateWithCurrentEvent___block_invoke;
   v17 = &unk_1E8320B58;
-  v18 = self;
-  v8 = v4;
+  selfCopy = self;
+  v8 = eventCopy;
   v19 = v8;
   v9 = v5;
   v20 = v9;
   v10 = v6;
   v21 = v10;
-  [v7 enumerateObjectsUsingBlock:&v14];
+  [context enumerateObjectsUsingBlock:&v14];
 
   v11 = [(BPSCorrelateHandler *)self context:v14];
   [v11 removeObjectsAtIndexes:v10];

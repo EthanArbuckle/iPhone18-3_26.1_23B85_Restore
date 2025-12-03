@@ -1,5 +1,5 @@
 @interface _ADAudioSessionCoordinationMessageMutation
-- (_ADAudioSessionCoordinationMessageMutation)initWithBase:(id)a3;
+- (_ADAudioSessionCoordinationMessageMutation)initWithBase:(id)base;
 - (id)getPayloadBeginAudioSessionRequest;
 - (id)getPayloadBeginAudioSessionResponse;
 - (id)getPayloadEndAudioSessionRequest;
@@ -16,90 +16,90 @@
 {
   if ((*&self->_mutationFlags & 0x100) != 0)
   {
-    v2 = self->_payloadEndAudioSessionResponse;
+    payloadEndAudioSessionResponse = self->_payloadEndAudioSessionResponse;
   }
 
   else
   {
-    v2 = [(ADAudioSessionCoordinationMessage *)self->_base payloadEndAudioSessionResponse];
+    payloadEndAudioSessionResponse = [(ADAudioSessionCoordinationMessage *)self->_base payloadEndAudioSessionResponse];
   }
 
-  return v2;
+  return payloadEndAudioSessionResponse;
 }
 
 - (id)getPayloadEndAudioSessionRequest
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_payloadEndAudioSessionRequest;
+    payloadEndAudioSessionRequest = self->_payloadEndAudioSessionRequest;
   }
 
   else
   {
-    v2 = [(ADAudioSessionCoordinationMessage *)self->_base payloadEndAudioSessionRequest];
+    payloadEndAudioSessionRequest = [(ADAudioSessionCoordinationMessage *)self->_base payloadEndAudioSessionRequest];
   }
 
-  return v2;
+  return payloadEndAudioSessionRequest;
 }
 
 - (id)getPayloadKeepAudioSessionAliveResponse
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_payloadKeepAudioSessionAliveResponse;
+    payloadKeepAudioSessionAliveResponse = self->_payloadKeepAudioSessionAliveResponse;
   }
 
   else
   {
-    v2 = [(ADAudioSessionCoordinationMessage *)self->_base payloadKeepAudioSessionAliveResponse];
+    payloadKeepAudioSessionAliveResponse = [(ADAudioSessionCoordinationMessage *)self->_base payloadKeepAudioSessionAliveResponse];
   }
 
-  return v2;
+  return payloadKeepAudioSessionAliveResponse;
 }
 
 - (id)getPayloadKeepAudioSessionAliveRequest
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_payloadKeepAudioSessionAliveRequest;
+    payloadKeepAudioSessionAliveRequest = self->_payloadKeepAudioSessionAliveRequest;
   }
 
   else
   {
-    v2 = [(ADAudioSessionCoordinationMessage *)self->_base payloadKeepAudioSessionAliveRequest];
+    payloadKeepAudioSessionAliveRequest = [(ADAudioSessionCoordinationMessage *)self->_base payloadKeepAudioSessionAliveRequest];
   }
 
-  return v2;
+  return payloadKeepAudioSessionAliveRequest;
 }
 
 - (id)getPayloadBeginAudioSessionResponse
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_payloadBeginAudioSessionResponse;
+    payloadBeginAudioSessionResponse = self->_payloadBeginAudioSessionResponse;
   }
 
   else
   {
-    v2 = [(ADAudioSessionCoordinationMessage *)self->_base payloadBeginAudioSessionResponse];
+    payloadBeginAudioSessionResponse = [(ADAudioSessionCoordinationMessage *)self->_base payloadBeginAudioSessionResponse];
   }
 
-  return v2;
+  return payloadBeginAudioSessionResponse;
 }
 
 - (id)getPayloadBeginAudioSessionRequest
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_payloadBeginAudioSessionRequest;
+    payloadBeginAudioSessionRequest = self->_payloadBeginAudioSessionRequest;
   }
 
   else
   {
-    v2 = [(ADAudioSessionCoordinationMessage *)self->_base payloadBeginAudioSessionRequest];
+    payloadBeginAudioSessionRequest = [(ADAudioSessionCoordinationMessage *)self->_base payloadBeginAudioSessionRequest];
   }
 
-  return v2;
+  return payloadBeginAudioSessionRequest;
 }
 
 - (int64_t)getType
@@ -128,16 +128,16 @@
   }
 }
 
-- (_ADAudioSessionCoordinationMessageMutation)initWithBase:(id)a3
+- (_ADAudioSessionCoordinationMessageMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADAudioSessionCoordinationMessageMutation;
   v6 = [(_ADAudioSessionCoordinationMessageMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

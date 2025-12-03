@@ -1,53 +1,53 @@
 @interface OBBoldSubtitleController
-- (OBBoldSubtitleController)initWithTitle:(id)a3 subtitle:(id)a4 detailText:(id)a5 icon:(id)a6;
-- (OBBoldSubtitleController)initWithTitle:(id)a3 subtitle:(id)a4 detailText:(id)a5 symbolName:(id)a6;
-- (void)initContentViewWithSubtitle:(id)a3 detailText:(id)a4;
+- (OBBoldSubtitleController)initWithTitle:(id)title subtitle:(id)subtitle detailText:(id)text icon:(id)icon;
+- (OBBoldSubtitleController)initWithTitle:(id)title subtitle:(id)subtitle detailText:(id)text symbolName:(id)name;
+- (void)initContentViewWithSubtitle:(id)subtitle detailText:(id)text;
 @end
 
 @implementation OBBoldSubtitleController
 
-- (OBBoldSubtitleController)initWithTitle:(id)a3 subtitle:(id)a4 detailText:(id)a5 icon:(id)a6
+- (OBBoldSubtitleController)initWithTitle:(id)title subtitle:(id)subtitle detailText:(id)text icon:(id)icon
 {
-  v10 = a4;
-  v11 = a5;
+  subtitleCopy = subtitle;
+  textCopy = text;
   v15.receiver = self;
   v15.super_class = OBBoldSubtitleController;
-  v12 = [(OBBoldSubtitleController *)&v15 initWithTitle:a3 detailText:0 icon:a6];
+  v12 = [(OBBoldSubtitleController *)&v15 initWithTitle:title detailText:0 icon:icon];
   v13 = v12;
   if (v12)
   {
-    [(OBBoldSubtitleController *)v12 initContentViewWithSubtitle:v10 detailText:v11];
+    [(OBBoldSubtitleController *)v12 initContentViewWithSubtitle:subtitleCopy detailText:textCopy];
   }
 
   return v13;
 }
 
-- (OBBoldSubtitleController)initWithTitle:(id)a3 subtitle:(id)a4 detailText:(id)a5 symbolName:(id)a6
+- (OBBoldSubtitleController)initWithTitle:(id)title subtitle:(id)subtitle detailText:(id)text symbolName:(id)name
 {
-  v10 = a4;
-  v11 = a5;
+  subtitleCopy = subtitle;
+  textCopy = text;
   v15.receiver = self;
   v15.super_class = OBBoldSubtitleController;
-  v12 = [(OBBoldSubtitleController *)&v15 initWithTitle:a3 detailText:0 symbolName:a6];
+  v12 = [(OBBoldSubtitleController *)&v15 initWithTitle:title detailText:0 symbolName:name];
   v13 = v12;
   if (v12)
   {
-    [(OBBoldSubtitleController *)v12 initContentViewWithSubtitle:v10 detailText:v11];
+    [(OBBoldSubtitleController *)v12 initContentViewWithSubtitle:subtitleCopy detailText:textCopy];
   }
 
   return v13;
 }
 
-- (void)initContentViewWithSubtitle:(id)a3 detailText:(id)a4
+- (void)initContentViewWithSubtitle:(id)subtitle detailText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(OBBoldSubtitleController *)self navigationItem];
-  [v8 setHidesBackButton:1];
+  subtitleCopy = subtitle;
+  textCopy = text;
+  navigationItem = [(OBBoldSubtitleController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   [(OBBoldSubtitleController *)self setScrollingDisabled:0];
-  v9 = [(OBBoldSubtitleController *)self contentView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(OBBoldSubtitleController *)self contentView];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
   v10 = objc_alloc_init(UILabel);
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   if (_UISolariumEnabled())
@@ -63,7 +63,7 @@
   v12 = [UIFont preferredFontForTextStyle:v11];
   [v10 setFont:v12];
 
-  [v10 setText:v7];
+  [v10 setText:textCopy];
   if (_UISolariumEnabled())
   {
     +[UIColor secondaryLabelColor];
@@ -88,11 +88,11 @@
   }
 
   [v10 setTextAlignment:v14];
-  [v9 addSubview:v10];
+  [contentView addSubview:v10];
   v15 = +[NSMutableArray array];
-  v51 = v6;
+  v51 = subtitleCopy;
   v52 = v15;
-  if (v6 && [v6 length])
+  if (subtitleCopy && [subtitleCopy length])
   {
     v16 = objc_alloc_init(UILabel);
     [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -110,7 +110,7 @@
       [v16 setFont:v22];
     }
 
-    [v16 setText:v6];
+    [v16 setText:subtitleCopy];
     [v16 setNumberOfLines:0];
     if (_UISolariumEnabled())
     {
@@ -123,52 +123,52 @@
     }
 
     [v16 setTextAlignment:v23];
-    [v9 addSubview:v16];
-    v49 = [v16 topAnchor];
-    v46 = [v9 topAnchor];
-    v45 = [v49 constraintEqualToAnchor:v46];
+    [contentView addSubview:v16];
+    topAnchor = [v16 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v54[0] = v45;
-    v44 = [v16 leadingAnchor];
-    v43 = [v9 leadingAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    leadingAnchor = [v16 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v54[1] = v42;
-    v24 = [v16 trailingAnchor];
-    v25 = [v9 trailingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    trailingAnchor = [v16 trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v54[2] = v26;
-    v27 = [v10 topAnchor];
+    topAnchor3 = [v10 topAnchor];
     [v16 bottomAnchor];
-    v29 = v28 = v9;
-    v30 = [v27 constraintEqualToAnchor:v29 constant:16.0];
+    v29 = v28 = contentView;
+    v30 = [topAnchor3 constraintEqualToAnchor:v29 constant:16.0];
     v54[3] = v30;
     v31 = [NSArray arrayWithObjects:v54 count:4];
     [v52 addObjectsFromArray:v31];
 
-    v9 = v28;
+    contentView = v28;
   }
 
   else
   {
-    v18 = [v10 topAnchor];
-    v19 = [v9 topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    topAnchor4 = [v10 topAnchor];
+    topAnchor5 = [contentView topAnchor];
+    v20 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     [v15 addObject:v20];
   }
 
-  v47 = v9;
-  v50 = [v10 leadingAnchor];
-  v32 = [v9 leadingAnchor];
-  v33 = [v50 constraintEqualToAnchor:v32];
+  v47 = contentView;
+  leadingAnchor3 = [v10 leadingAnchor];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v33 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v53[0] = v33;
-  v34 = [v10 trailingAnchor];
-  [v9 trailingAnchor];
+  trailingAnchor3 = [v10 trailingAnchor];
+  [contentView trailingAnchor];
   v35 = v10;
   v36 = v48 = v10;
-  v37 = [v34 constraintEqualToAnchor:v36];
+  v37 = [trailingAnchor3 constraintEqualToAnchor:v36];
   v53[1] = v37;
-  v38 = [v35 bottomAnchor];
-  v39 = [v9 bottomAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  bottomAnchor = [v35 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v53[2] = v40;
   v41 = [NSArray arrayWithObjects:v53 count:3];
   [v52 addObjectsFromArray:v41];

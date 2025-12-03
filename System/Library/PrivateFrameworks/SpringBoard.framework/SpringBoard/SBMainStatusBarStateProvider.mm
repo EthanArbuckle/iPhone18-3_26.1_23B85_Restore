@@ -1,24 +1,24 @@
 @interface SBMainStatusBarStateProvider
 + (id)sharedInstance;
-- (BOOL)_shouldPostForVisitedItem:(int)a3 withUpdates:(BOOL)a4 toAggregatorData:(id *)a5 lastPost:(id *)a6;
-- (BOOL)contentAssertionsWantTimeEnabledAnimated:(BOOL *)a3 duration:(double *)a4;
+- (BOOL)_shouldPostForVisitedItem:(int)item withUpdates:(BOOL)updates toAggregatorData:(id *)data lastPost:(id *)post;
+- (BOOL)contentAssertionsWantTimeEnabledAnimated:(BOOL *)animated duration:(double *)duration;
 - (SBMainStatusBarStateProvider)init;
-- (id)_identifierForStateAggregator:(id)a3;
-- (void)_composePostDataFromAggregatorData:(id *)a3;
-- (void)_enableTime:(BOOL)a3 crossfade:(BOOL)a4 crossfadeDuration:(double)a5 immediately:(BOOL)a6;
+- (id)_identifierForStateAggregator:(id)aggregator;
+- (void)_composePostDataFromAggregatorData:(id *)data;
+- (void)_enableTime:(BOOL)time crossfade:(BOOL)crossfade crossfadeDuration:(double)duration immediately:(BOOL)immediately;
 - (void)_updateDisabledItems;
-- (void)acquireContentAssertion:(id)a3;
+- (void)acquireContentAssertion:(id)assertion;
 - (void)dealloc;
-- (void)disableDataUpdateAnimationsForRequestor:(id)a3;
-- (void)disableStatusBarItem:(int)a3 requestor:(id)a4;
-- (void)enableStatusBarItem:(int)a3 requestor:(id)a4;
+- (void)disableDataUpdateAnimationsForRequestor:(id)requestor;
+- (void)disableStatusBarItem:(int)item requestor:(id)requestor;
+- (void)enableStatusBarItem:(int)item requestor:(id)requestor;
 - (void)forceUpdateLocalStatusBarData;
-- (void)relinquishContentAssertion:(id)a3;
-- (void)statusBarStateAggregatorDidRequestImmediateUpdates:(id)a3;
-- (void)statusBarStateAggregatorDidStopRequestingImmediateUpdates:(id)a3;
-- (void)statusBarStateProvider:(id)a3 didPostStatusBarData:(id *)a4 withActions:(int)a5;
-- (void)stopDisablingDataUpdateAnimationsForRequestor:(id)a3;
-- (void)updateTimeEnabledImmediately:(BOOL)a3;
+- (void)relinquishContentAssertion:(id)assertion;
+- (void)statusBarStateAggregatorDidRequestImmediateUpdates:(id)updates;
+- (void)statusBarStateAggregatorDidStopRequestingImmediateUpdates:(id)updates;
+- (void)statusBarStateProvider:(id)provider didPostStatusBarData:(id *)data withActions:(int)actions;
+- (void)stopDisablingDataUpdateAnimationsForRequestor:(id)requestor;
+- (void)updateTimeEnabledImmediately:(BOOL)immediately;
 @end
 
 @implementation SBMainStatusBarStateProvider
@@ -55,29 +55,29 @@ uint64_t __46__SBMainStatusBarStateProvider_sharedInstance__block_invoke()
   {
     v2->_timeEnabled = 1;
     [(SBStatusBarStateProvider *)v2 addStatusBarStateObserver:v2];
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     contentAssertions = v3->_contentAssertions;
-    v3->_contentAssertions = v4;
+    v3->_contentAssertions = weakObjectsHashTable;
   }
 
   return v3;
 }
 
-- (void)acquireContentAssertion:(id)a3
+- (void)acquireContentAssertion:(id)assertion
 {
-  [(NSHashTable *)self->_contentAssertions addObject:a3];
+  [(NSHashTable *)self->_contentAssertions addObject:assertion];
 
   [(SBMainStatusBarStateProvider *)self updateTimeEnabled];
 }
 
-- (void)relinquishContentAssertion:(id)a3
+- (void)relinquishContentAssertion:(id)assertion
 {
-  [(NSHashTable *)self->_contentAssertions removeObject:a3];
+  [(NSHashTable *)self->_contentAssertions removeObject:assertion];
 
   [(SBMainStatusBarStateProvider *)self updateTimeEnabled];
 }
 
-- (BOOL)contentAssertionsWantTimeEnabledAnimated:(BOOL *)a3 duration:(double *)a4
+- (BOOL)contentAssertionsWantTimeEnabledAnimated:(BOOL *)animated duration:(double *)duration
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
@@ -102,10 +102,10 @@ uint64_t __46__SBMainStatusBarStateProvider_sharedInstance__block_invoke()
         v11 = *(*(&v15 + 1) + 8 * i);
         if (([v11 dateAndTimeVisible] & 1) == 0)
         {
-          *a3 = [v11 animated];
+          *animated = [v11 animated];
           [v11 duration];
           v12 = 0;
-          *a4 = v13;
+          *duration = v13;
           goto LABEL_11;
         }
       }
@@ -134,12 +134,12 @@ LABEL_11:
   [(SBStatusBarStateProvider *)&v3 dealloc];
 }
 
-- (void)disableStatusBarItem:(int)a3 requestor:(id)a4
+- (void)disableStatusBarItem:(int)item requestor:(id)requestor
 {
-  v4 = *&a3;
-  v7 = a4;
-  v8 = v7;
-  v13 = v7;
+  v4 = *&item;
+  requestorCopy = requestor;
+  v8 = requestorCopy;
+  v13 = requestorCopy;
   if (v4 >= 0x2E)
   {
     [(SBMainStatusBarStateProvider *)a2 disableStatusBarItem:v4 requestor:?];
@@ -150,7 +150,7 @@ LABEL_11:
     }
   }
 
-  else if (v7)
+  else if (requestorCopy)
   {
     goto LABEL_3;
   }
@@ -174,13 +174,13 @@ LABEL_3:
   [(SBMainStatusBarStateProvider *)self _updateDisabledItems];
 }
 
-- (void)enableStatusBarItem:(int)a3 requestor:(id)a4
+- (void)enableStatusBarItem:(int)item requestor:(id)requestor
 {
-  v4 = *&a3;
-  v7 = a4;
+  v4 = *&item;
+  requestorCopy = requestor;
   if (v4 >= 0x2E)
   {
-    v9 = v7;
+    v9 = requestorCopy;
     [(SBMainStatusBarStateProvider *)a2 enableStatusBarItem:v4 requestor:?];
     if (v9)
     {
@@ -188,21 +188,21 @@ LABEL_3:
     }
   }
 
-  else if (v7)
+  else if (requestorCopy)
   {
     goto LABEL_3;
   }
 
   [SBMainStatusBarStateProvider enableStatusBarItem:a2 requestor:self];
 LABEL_3:
-  v8 = self->_itemDisabledRequests[v4];
-  if (v8)
+  _updateDisabledItems = self->_itemDisabledRequests[v4];
+  if (_updateDisabledItems)
   {
-    [(NSCountedSet *)v8 removeObject:?];
-    v8 = [(SBMainStatusBarStateProvider *)self _updateDisabledItems];
+    [(NSCountedSet *)_updateDisabledItems removeObject:?];
+    _updateDisabledItems = [(SBMainStatusBarStateProvider *)self _updateDisabledItems];
   }
 
-  MEMORY[0x2821F9730](v8);
+  MEMORY[0x2821F9730](_updateDisabledItems);
 }
 
 - (void)_updateDisabledItems
@@ -221,60 +221,60 @@ LABEL_3:
   [(SBStatusBarStateProvider *)self endCoalescentBlock];
 }
 
-- (void)updateTimeEnabledImmediately:(BOOL)a3
+- (void)updateTimeEnabledImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   v7 = 0;
   v6 = 0.0;
   v5 = [(SBMainStatusBarStateProvider *)self contentAssertionsWantTimeEnabledAnimated:&v7 duration:&v6];
-  [(SBMainStatusBarStateProvider *)self _enableTime:v5 crossfade:v7 crossfadeDuration:v3 immediately:v6];
+  [(SBMainStatusBarStateProvider *)self _enableTime:v5 crossfade:v7 crossfadeDuration:immediatelyCopy immediately:v6];
 }
 
-- (void)_enableTime:(BOOL)a3 crossfade:(BOOL)a4 crossfadeDuration:(double)a5 immediately:(BOOL)a6
+- (void)_enableTime:(BOOL)time crossfade:(BOOL)crossfade crossfadeDuration:(double)duration immediately:(BOOL)immediately
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  if (self->_timeEnabled != a3)
+  if (self->_timeEnabled != time)
   {
-    v6 = a6;
-    v8 = a4;
-    self->_timeEnabled = a3;
+    immediatelyCopy = immediately;
+    crossfadeCopy = crossfade;
+    self->_timeEnabled = time;
     self->_statusBarTimeRequiresUpdate = 1;
     [(SBStatusBarStateProvider *)self updateStatusBarItem:0];
-    v10 = [SBApp statusBarForEmbeddedDisplay];
+    statusBarForEmbeddedDisplay = [SBApp statusBarForEmbeddedDisplay];
     v13 = &unk_283372350;
     v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_timeEnabled];
     v14[0] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    [v10 setEnabledCenterItems:v12 duration:a5];
+    [statusBarForEmbeddedDisplay setEnabledCenterItems:v12 duration:duration];
 
-    if (v6)
+    if (immediatelyCopy)
     {
-      [v10 forceUpdateData:v8];
+      [statusBarForEmbeddedDisplay forceUpdateData:crossfadeCopy];
     }
   }
 }
 
-- (void)disableDataUpdateAnimationsForRequestor:(id)a3
+- (void)disableDataUpdateAnimationsForRequestor:(id)requestor
 {
-  v4 = a3;
+  requestorCopy = requestor;
   dataUpdateAnimationsDisabledRequests = self->_dataUpdateAnimationsDisabledRequests;
-  v8 = v4;
+  v8 = requestorCopy;
   if (!dataUpdateAnimationsDisabledRequests)
   {
     v6 = [objc_alloc(MEMORY[0x277CCA940]) initWithCapacity:1];
     v7 = self->_dataUpdateAnimationsDisabledRequests;
     self->_dataUpdateAnimationsDisabledRequests = v6;
 
-    v4 = v8;
+    requestorCopy = v8;
     dataUpdateAnimationsDisabledRequests = self->_dataUpdateAnimationsDisabledRequests;
   }
 
-  [(NSCountedSet *)dataUpdateAnimationsDisabledRequests addObject:v4];
+  [(NSCountedSet *)dataUpdateAnimationsDisabledRequests addObject:requestorCopy];
 }
 
-- (void)stopDisablingDataUpdateAnimationsForRequestor:(id)a3
+- (void)stopDisablingDataUpdateAnimationsForRequestor:(id)requestor
 {
-  [(NSCountedSet *)self->_dataUpdateAnimationsDisabledRequests removeObject:a3];
+  [(NSCountedSet *)self->_dataUpdateAnimationsDisabledRequests removeObject:requestor];
   if (![(NSCountedSet *)self->_dataUpdateAnimationsDisabledRequests count])
   {
     dataUpdateAnimationsDisabledRequests = self->_dataUpdateAnimationsDisabledRequests;
@@ -287,18 +287,18 @@ LABEL_3:
   v4 = *MEMORY[0x277D85DE8];
   memset(v3, 0, 512);
   [(SBStatusBarStateProvider *)self getStatusBarData:v3];
-  v2 = [SBApp statusBarForEmbeddedDisplay];
-  [v2 forceUpdateToData:v3 animated:0];
+  statusBarForEmbeddedDisplay = [SBApp statusBarForEmbeddedDisplay];
+  [statusBarForEmbeddedDisplay forceUpdateToData:v3 animated:0];
 }
 
-- (BOOL)_shouldPostForVisitedItem:(int)a3 withUpdates:(BOOL)a4 toAggregatorData:(id *)a5 lastPost:(id *)a6
+- (BOOL)_shouldPostForVisitedItem:(int)item withUpdates:(BOOL)updates toAggregatorData:(id *)data lastPost:(id *)post
 {
-  if (a3)
+  if (item)
   {
-    if (a3 == 32)
+    if (item == 32)
     {
       killActivity = self->_killActivity;
-      if ((*(a5 + 2272) & 4) != 0)
+      if ((*(data + 2272) & 4) != 0)
       {
         v12 = 0;
         self->_killActivity = 0;
@@ -309,8 +309,8 @@ LABEL_3:
         v10 = +[SBLockScreenManager sharedInstance];
         if ([v10 isUILocked])
         {
-          v11 = [SBApp userSessionController];
-          self->_killActivity = [v11 isLoginSession] ^ 1;
+          userSessionController = [SBApp userSessionController];
+          self->_killActivity = [userSessionController isLoginSession] ^ 1;
         }
 
         else
@@ -323,7 +323,7 @@ LABEL_3:
 
       if (killActivity != v12)
       {
-        a4 = 1;
+        updates = 1;
       }
     }
   }
@@ -331,33 +331,33 @@ LABEL_3:
   else if (self->_statusBarTimeRequiresUpdate)
   {
     self->_statusBarTimeRequiresUpdate = 0;
-    a4 = 1;
+    updates = 1;
   }
 
-  v13 = self->_itemIsDisabled[a3];
-  if (v13 != self->_itemWasDisabled[a3])
+  v13 = self->_itemIsDisabled[item];
+  if (v13 != self->_itemWasDisabled[item])
   {
-    self->_itemWasDisabled[a3] = v13;
+    self->_itemWasDisabled[item] = v13;
     return 1;
   }
 
-  return a4;
+  return updates;
 }
 
-- (void)_composePostDataFromAggregatorData:(id *)a3
+- (void)_composePostDataFromAggregatorData:(id *)data
 {
   if (self->_killActivity)
   {
-    a3->var0[32] = 0;
+    data->var0[32] = 0;
   }
 
   v3 = 0;
-  a3->var0[0] = self->_timeEnabled;
+  data->var0[0] = self->_timeEnabled;
   do
   {
     if (self->_itemIsDisabled[v3])
     {
-      a3->var0[v3] = 0;
+      data->var0[v3] = 0;
     }
 
     ++v3;
@@ -366,37 +366,37 @@ LABEL_3:
   while (v3 != 46);
 }
 
-- (void)statusBarStateAggregatorDidRequestImmediateUpdates:(id)a3
+- (void)statusBarStateAggregatorDidRequestImmediateUpdates:(id)updates
 {
-  v4 = [(SBMainStatusBarStateProvider *)self _identifierForStateAggregator:a3];
+  v4 = [(SBMainStatusBarStateProvider *)self _identifierForStateAggregator:updates];
   [(SBMainStatusBarStateProvider *)self disableDataUpdateAnimationsForRequestor:v4];
 }
 
-- (void)statusBarStateAggregatorDidStopRequestingImmediateUpdates:(id)a3
+- (void)statusBarStateAggregatorDidStopRequestingImmediateUpdates:(id)updates
 {
-  v4 = [(SBMainStatusBarStateProvider *)self _identifierForStateAggregator:a3];
+  v4 = [(SBMainStatusBarStateProvider *)self _identifierForStateAggregator:updates];
   [(SBMainStatusBarStateProvider *)self stopDisablingDataUpdateAnimationsForRequestor:v4];
 }
 
-- (id)_identifierForStateAggregator:(id)a3
+- (id)_identifierForStateAggregator:(id)aggregator
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithFormat:@"<%@:%p>", objc_opt_class(), v4];
+  aggregatorCopy = aggregator;
+  aggregatorCopy = [[v3 alloc] initWithFormat:@"<%@:%p>", objc_opt_class(), aggregatorCopy];
 
-  return v5;
+  return aggregatorCopy;
 }
 
-- (void)statusBarStateProvider:(id)a3 didPostStatusBarData:(id *)a4 withActions:(int)a5
+- (void)statusBarStateProvider:(id)provider didPostStatusBarData:(id *)data withActions:(int)actions
 {
-  v5 = *&a5;
+  v5 = *&actions;
   if ([(NSCountedSet *)self->_dataUpdateAnimationsDisabledRequests count])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __88__SBMainStatusBarStateProvider_statusBarStateProvider_didPostStatusBarData_withActions___block_invoke;
     v8[3] = &__block_descriptor_44_e5_v8__0l;
-    v8[4] = a4;
+    v8[4] = data;
     v9 = v5;
     [MEMORY[0x277D75D18] performWithoutAnimation:v8];
   }
@@ -405,7 +405,7 @@ LABEL_3:
   {
     v7 = MEMORY[0x277D75A98];
 
-    [v7 postStatusBarData:a4 withActions:v5];
+    [v7 postStatusBarData:data withActions:v5];
   }
 }
 

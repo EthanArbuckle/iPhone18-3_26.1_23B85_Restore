@@ -1,31 +1,31 @@
 @interface DDCoreRecents
-+ (void)addResultToRecents:(id)a3 eventDate:(id)a4 subject:(id)a5 weight:(id)a6 metadata:(id)a7 userInitiated:(BOOL)a8;
++ (void)addResultToRecents:(id)recents eventDate:(id)date subject:(id)subject weight:(id)weight metadata:(id)metadata userInitiated:(BOOL)initiated;
 @end
 
 @implementation DDCoreRecents
 
-+ (void)addResultToRecents:(id)a3 eventDate:(id)a4 subject:(id)a5 weight:(id)a6 metadata:(id)a7 userInitiated:(BOOL)a8
++ (void)addResultToRecents:(id)recents eventDate:(id)date subject:(id)subject weight:(id)weight metadata:(id)metadata userInitiated:(BOOL)initiated
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  recentsCopy = recents;
+  dateCopy = date;
+  subjectCopy = subject;
+  weightCopy = weight;
+  metadataCopy = metadata;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __84__DDCoreRecents_addResultToRecents_eventDate_subject_weight_metadata_userInitiated___block_invoke;
   v23[3] = &unk_278291770;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = v16;
-  v28 = v17;
-  v29 = a8;
-  v18 = v17;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
+  v24 = recentsCopy;
+  v25 = dateCopy;
+  v26 = subjectCopy;
+  v27 = weightCopy;
+  v28 = metadataCopy;
+  initiatedCopy = initiated;
+  v18 = metadataCopy;
+  v19 = weightCopy;
+  v20 = subjectCopy;
+  v21 = dateCopy;
+  v22 = recentsCopy;
   _os_activity_initiate(&dword_21AB70000, "Add Data Detectors result to Core Recents", OS_ACTIVITY_FLAG_DEFAULT, v23);
 }
 

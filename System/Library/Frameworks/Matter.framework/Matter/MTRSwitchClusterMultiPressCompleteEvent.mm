@@ -1,6 +1,6 @@
 @interface MTRSwitchClusterMultiPressCompleteEvent
 - (MTRSwitchClusterMultiPressCompleteEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRSwitchClusterMultiPressCompleteEvent);
-  v5 = [(MTRSwitchClusterMultiPressCompleteEvent *)self previousPosition];
-  [(MTRSwitchClusterMultiPressCompleteEvent *)v4 setPreviousPosition:v5];
+  previousPosition = [(MTRSwitchClusterMultiPressCompleteEvent *)self previousPosition];
+  [(MTRSwitchClusterMultiPressCompleteEvent *)v4 setPreviousPosition:previousPosition];
 
-  v6 = [(MTRSwitchClusterMultiPressCompleteEvent *)self totalNumberOfPressesCounted];
-  [(MTRSwitchClusterMultiPressCompleteEvent *)v4 setTotalNumberOfPressesCounted:v6];
+  totalNumberOfPressesCounted = [(MTRSwitchClusterMultiPressCompleteEvent *)self totalNumberOfPressesCounted];
+  [(MTRSwitchClusterMultiPressCompleteEvent *)v4 setTotalNumberOfPressesCounted:totalNumberOfPressesCounted];
 
   return v4;
 }

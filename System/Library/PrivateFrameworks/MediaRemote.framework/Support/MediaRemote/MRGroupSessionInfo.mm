@@ -1,41 +1,41 @@
 @interface MRGroupSessionInfo
-- (id)initWithGroupSession:(id)a3;
+- (id)initWithGroupSession:(id)session;
 @end
 
 @implementation MRGroupSessionInfo
 
-- (id)initWithGroupSession:(id)a3
+- (id)initWithGroupSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (sessionCopy)
   {
-    v6 = [v4 leader];
-    v7 = v6;
-    if (v6)
+    leader = [sessionCopy leader];
+    v7 = leader;
+    if (leader)
     {
-      v8 = [v6 identity];
-      v9 = [v8 displayName];
+      identity = [leader identity];
+      displayName = [identity displayName];
     }
 
     else
     {
-      v8 = [v5 joinToken];
-      v11 = [v8 hostInfo];
-      v9 = [v11 displayName];
+      identity = [v5 joinToken];
+      hostInfo = [identity hostInfo];
+      displayName = [hostInfo displayName];
     }
 
     v12 = [MRGroupSessionHostInfo alloc];
-    v13 = [v5 joinToken];
-    v14 = [v13 hostInfo];
-    v15 = [v12 initWithRouteType:objc_msgSend(v14 displayName:{"routeType"), v9}];
+    joinToken = [v5 joinToken];
+    hostInfo2 = [joinToken hostInfo];
+    v15 = [v12 initWithRouteType:objc_msgSend(hostInfo2 displayName:{"routeType"), displayName}];
 
     v16 = [MRGroupSessionInfo alloc];
-    v17 = [v5 identifier];
-    v18 = [v5 isHosted];
-    v19 = [v5 joinToken];
-    v20 = [v19 equivalentMediaIdentifier];
-    v10 = [v16 initWithIdentifier:v17 hostInfo:v15 isHosted:v18 equivalentMediaIdentifier:v20 isPlaceholder:0];
+    identifier = [v5 identifier];
+    isHosted = [v5 isHosted];
+    joinToken2 = [v5 joinToken];
+    equivalentMediaIdentifier = [joinToken2 equivalentMediaIdentifier];
+    v10 = [v16 initWithIdentifier:identifier hostInfo:v15 isHosted:isHosted equivalentMediaIdentifier:equivalentMediaIdentifier isPlaceholder:0];
   }
 
   else

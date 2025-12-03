@@ -1,46 +1,46 @@
 @interface HDDrugInteractionEngine
-+ (BOOL)_drugInteractionClassWithRelationshipsFromClass:(void *)a3 ontologyTransaction:(void *)a4 drugInteractionClassOut:(void *)a5 error:;
-+ (BOOL)_interactionClassForLifestyleFactor:(void *)a3 ontologyTransaction:(void *)a4 interactionClassCache:(void *)a5 interactionClassOut:(void *)a6 error:;
-+ (BOOL)_interactionClassForLifestyleFactorConceptIdentifier:(void *)a3 ontologyTransaction:(void *)a4 interactionClassOut:(void *)a5 error:;
-+ (BOOL)_interactionResultForFirstMedication:(void *)a3 secondMedication:(void *)a4 ontologyTransaction:(void *)a5 interactionClassCache:(void *)a6 interactionResultOut:(uint64_t *)a7 error:;
-+ (BOOL)_interactionResultForMedication:(uint64_t)a3 lifestyleFactor:(void *)a4 ontologyTransaction:(void *)a5 interactionClassCache:(void *)a6 interactionResultOut:(uint64_t *)a7 error:;
-+ (BOOL)interactionClassForLifestyleFactor:(unint64_t)a3 profile:(id)a4 interactionClassOut:(id *)a5 error:(id *)a6;
-+ (BOOL)interactionResultForFirstInteractionClass:(id)a3 secondInteractionClass:(id)a4 profile:(id)a5 interactionResultOut:(id *)a6 error:(id *)a7;
-+ (BOOL)interactionResultForFirstMedication:(id)a3 secondMedication:(id)a4 profile:(id)a5 interactionResultOut:(id *)a6 error:(id *)a7;
-+ (BOOL)interactionResultForMedication:(id)a3 lifestyleFactor:(unint64_t)a4 profile:(id)a5 interactionResultOut:(id *)a6 error:(id *)a7;
-+ (HDDrugInteractionClass)_drugInteractionClassForConcept:(void *)a3 ancestorIdentifier:;
-+ (NSObject)_interactionClassConceptsForConcept:(void *)a3 ontologyTransaction:(void *)a4 error:;
-+ (id)_fetchKnownConceptWithIdentifier:(void *)a3 ontologyTransaction:(void *)a4 errorOut:;
-+ (id)_interactionClassConceptsForConceptWithIdentifier:(void *)a3 ontologyTransaction:(void *)a4 error:;
-+ (id)_interactionClassesForConceptWithIdentifier:(void *)a3 ontologyTransaction:(uint64_t *)a4 error:;
-+ (id)_interactionClassesForConceptWithIdentifier:(void *)a3 ontologyTransaction:(void *)a4 interactionClassCache:(uint64_t *)a5 error:;
-+ (id)_interactionClassesForMedication:(void *)a3 ontologyTransaction:(void *)a4 interactionClassCache:(uint64_t *)a5 error:;
-+ (id)_interactionResultsForFirstInteractionClassSet:(void *)a3 secondInteractionClassSet:(void *)a4 ontologyTransaction:(void *)a5 error:;
-+ (id)_interactionResultsForInteractionClasses:(uint64_t)a3 lifestyleFactor:(void *)a4 ontologyTransaction:(void *)a5 interactionClassCache:(void *)a6 error:;
-+ (id)_interactionResultsForInteractionClasses:(void *)a3 ontologyTransaction:(void *)a4 error:;
-+ (id)_interactionResultsForMedications:(void *)a3 lifestyleFactors:(void *)a4 ontologyTransaction:(void *)a5 interactionClassCache:(void *)a6 medicationsUserDefaults:(uint64_t *)a7 error:;
-+ (id)_numberOfInteractionsForConceptWithIdentifier:(void *)a3 ontologyTransaction:(void *)a4 error:;
-+ (id)interactionClassesForConceptWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)interactionClassesForMedication:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)interactionResultsForInteractionClasses:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)interactionResultsForMedications:(id)a3 lifestyleFactors:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)numberOfInteractionsForConceptWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)numberOfInteractionsForMedication:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (uint64_t)_allAreOntologyBackedMedications:(uint64_t)a1;
-+ (uint64_t)_conceptForIdentifier:(void *)a3 ontologyTransaction:(void *)a4 conceptOut:(void *)a5 errorOut:;
-+ (uint64_t)_drugInteractionResultForConceptWithIdentifier:(void *)a3 firstInteractionClass:(void *)a4 secondInteractionClass:(void *)a5 ontologyTransaction:(NSObject *)a6 interactionResultOut:(void *)a7 error:;
-+ (uint64_t)_interactionResultForFirstInteractionClass:(void *)a3 secondInteractionClass:(void *)a4 ontologyTransaction:(NSObject *)a5 interactionResultOut:(void *)a6 error:;
-+ (uint64_t)_severityConceptForConceptWithIdentifier:(void *)a3 ontologyTransaction:(void *)a4 severityConceptOut:(uint64_t)a5 error:;
-+ (uint64_t)_severityForConceptWithIdentifier:(void *)a3 ontologyTransaction:(NSObject *)a4 severityOut:(uint64_t)a5 error:;
++ (BOOL)_drugInteractionClassWithRelationshipsFromClass:(void *)class ontologyTransaction:(void *)transaction drugInteractionClassOut:(void *)out error:;
++ (BOOL)_interactionClassForLifestyleFactor:(void *)factor ontologyTransaction:(void *)transaction interactionClassCache:(void *)cache interactionClassOut:(void *)out error:;
++ (BOOL)_interactionClassForLifestyleFactorConceptIdentifier:(void *)identifier ontologyTransaction:(void *)transaction interactionClassOut:(void *)out error:;
++ (BOOL)_interactionResultForFirstMedication:(void *)medication secondMedication:(void *)secondMedication ontologyTransaction:(void *)transaction interactionClassCache:(void *)cache interactionResultOut:(uint64_t *)out error:;
++ (BOOL)_interactionResultForMedication:(uint64_t)medication lifestyleFactor:(void *)factor ontologyTransaction:(void *)transaction interactionClassCache:(void *)cache interactionResultOut:(uint64_t *)out error:;
++ (BOOL)interactionClassForLifestyleFactor:(unint64_t)factor profile:(id)profile interactionClassOut:(id *)out error:(id *)error;
++ (BOOL)interactionResultForFirstInteractionClass:(id)class secondInteractionClass:(id)interactionClass profile:(id)profile interactionResultOut:(id *)out error:(id *)error;
++ (BOOL)interactionResultForFirstMedication:(id)medication secondMedication:(id)secondMedication profile:(id)profile interactionResultOut:(id *)out error:(id *)error;
++ (BOOL)interactionResultForMedication:(id)medication lifestyleFactor:(unint64_t)factor profile:(id)profile interactionResultOut:(id *)out error:(id *)error;
++ (HDDrugInteractionClass)_drugInteractionClassForConcept:(void *)concept ancestorIdentifier:;
++ (NSObject)_interactionClassConceptsForConcept:(void *)concept ontologyTransaction:(void *)transaction error:;
++ (id)_fetchKnownConceptWithIdentifier:(void *)identifier ontologyTransaction:(void *)transaction errorOut:;
++ (id)_interactionClassConceptsForConceptWithIdentifier:(void *)identifier ontologyTransaction:(void *)transaction error:;
++ (id)_interactionClassesForConceptWithIdentifier:(void *)identifier ontologyTransaction:(uint64_t *)transaction error:;
++ (id)_interactionClassesForConceptWithIdentifier:(void *)identifier ontologyTransaction:(void *)transaction interactionClassCache:(uint64_t *)cache error:;
++ (id)_interactionClassesForMedication:(void *)medication ontologyTransaction:(void *)transaction interactionClassCache:(uint64_t *)cache error:;
++ (id)_interactionResultsForFirstInteractionClassSet:(void *)set secondInteractionClassSet:(void *)classSet ontologyTransaction:(void *)transaction error:;
++ (id)_interactionResultsForInteractionClasses:(uint64_t)classes lifestyleFactor:(void *)factor ontologyTransaction:(void *)transaction interactionClassCache:(void *)cache error:;
++ (id)_interactionResultsForInteractionClasses:(void *)classes ontologyTransaction:(void *)transaction error:;
++ (id)_interactionResultsForMedications:(void *)medications lifestyleFactors:(void *)factors ontologyTransaction:(void *)transaction interactionClassCache:(void *)cache medicationsUserDefaults:(uint64_t *)defaults error:;
++ (id)_numberOfInteractionsForConceptWithIdentifier:(void *)identifier ontologyTransaction:(void *)transaction error:;
++ (id)interactionClassesForConceptWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)interactionClassesForMedication:(id)medication profile:(id)profile error:(id *)error;
++ (id)interactionResultsForInteractionClasses:(id)classes profile:(id)profile error:(id *)error;
++ (id)interactionResultsForMedications:(id)medications lifestyleFactors:(id)factors profile:(id)profile error:(id *)error;
++ (id)numberOfInteractionsForConceptWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)numberOfInteractionsForMedication:(id)medication profile:(id)profile error:(id *)error;
++ (uint64_t)_allAreOntologyBackedMedications:(uint64_t)medications;
++ (uint64_t)_conceptForIdentifier:(void *)identifier ontologyTransaction:(void *)transaction conceptOut:(void *)out errorOut:;
++ (uint64_t)_drugInteractionResultForConceptWithIdentifier:(void *)identifier firstInteractionClass:(void *)class secondInteractionClass:(void *)interactionClass ontologyTransaction:(NSObject *)transaction interactionResultOut:(void *)out error:;
++ (uint64_t)_interactionResultForFirstInteractionClass:(void *)class secondInteractionClass:(void *)interactionClass ontologyTransaction:(NSObject *)transaction interactionResultOut:(void *)out error:;
++ (uint64_t)_severityConceptForConceptWithIdentifier:(void *)identifier ontologyTransaction:(void *)transaction severityConceptOut:(uint64_t)out error:;
++ (uint64_t)_severityForConceptWithIdentifier:(void *)identifier ontologyTransaction:(NSObject *)transaction severityOut:(uint64_t)out error:;
 @end
 
 @implementation HDDrugInteractionEngine
 
-+ (id)interactionClassesForConceptWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)interactionClassesForConceptWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  profileCopy = profile;
+  if (!identifierCopy)
   {
     +[HDDrugInteractionEngine interactionClassesForConceptWithIdentifier:profile:error:];
   }
@@ -51,15 +51,15 @@
   v20 = __Block_byref_object_copy__5;
   v21 = __Block_byref_object_dispose__5;
   v22 = 0;
-  v9 = [v8 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __84__HDDrugInteractionEngine_interactionClassesForConceptWithIdentifier_profile_error___block_invoke;
   v14[3] = &unk_2796CDAA8;
   v16 = &v17;
-  v10 = v7;
+  v10 = identifierCopy;
   v15 = v10;
-  v11 = [v9 performTransactionWithError:a5 transactionHandler:v14];
+  v11 = [ontologyDatabase performTransactionWithError:error transactionHandler:v14];
 
   if (v11)
   {
@@ -86,18 +86,18 @@ BOOL __84__HDDrugInteractionEngine_interactionClassesForConceptWithIdentifier_pr
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-+ (id)_interactionClassesForConceptWithIdentifier:(void *)a3 ontologyTransaction:(uint64_t *)a4 error:
++ (id)_interactionClassesForConceptWithIdentifier:(void *)identifier ontologyTransaction:(uint64_t *)transaction error:
 {
   v25 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = objc_opt_self();
   if (!v6)
   {
     +[HDDrugInteractionEngine _interactionClassesForConceptWithIdentifier:ontologyTransaction:error:];
   }
 
-  v9 = [HDDrugInteractionEngine _interactionClassConceptsForConceptWithIdentifier:v6 ontologyTransaction:v7 error:a4];
+  v9 = [HDDrugInteractionEngine _interactionClassConceptsForConceptWithIdentifier:v6 ontologyTransaction:identifierCopy error:transaction];
   v10 = v9;
   if (v9)
   {
@@ -134,7 +134,7 @@ BOOL __84__HDDrugInteractionEngine_interactionClassesForConceptWithIdentifier_pr
     v12 = HKLogMedication();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = *a4;
+      v16 = *transaction;
       *buf = 138543874;
       v20 = v8;
       v21 = 2114;
@@ -152,19 +152,19 @@ BOOL __84__HDDrugInteractionEngine_interactionClassesForConceptWithIdentifier_pr
   return v11;
 }
 
-+ (id)interactionClassesForMedication:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)interactionClassesForMedication:(id)medication profile:(id)profile error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  medicationCopy = medication;
+  profileCopy = profile;
+  if (!medicationCopy)
   {
     +[HDDrugInteractionEngine interactionClassesForMedication:profile:error:];
   }
 
-  v9 = [v7 firstOntologyCoding];
+  firstOntologyCoding = [medicationCopy firstOntologyCoding];
 
-  if (!v9)
+  if (!firstOntologyCoding)
   {
     +[HDDrugInteractionEngine interactionClassesForMedication:profile:error:];
   }
@@ -175,15 +175,15 @@ BOOL __84__HDDrugInteractionEngine_interactionClassesForConceptWithIdentifier_pr
   v23 = __Block_byref_object_copy__5;
   v24 = __Block_byref_object_dispose__5;
   v25 = 0;
-  v10 = [v8 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__HDDrugInteractionEngine_interactionClassesForMedication_profile_error___block_invoke;
   v17[3] = &unk_2796CDAA8;
   v19 = &v20;
-  v11 = v7;
+  v11 = medicationCopy;
   v18 = v11;
-  v12 = [v10 performTransactionWithError:a5 transactionHandler:v17];
+  v12 = [ontologyDatabase performTransactionWithError:error transactionHandler:v17];
 
   if (v12)
   {
@@ -225,47 +225,47 @@ BOOL __73__HDDrugInteractionEngine_interactionClassesForMedication_profile_error
   return v11;
 }
 
-+ (id)_interactionClassesForMedication:(void *)a3 ontologyTransaction:(void *)a4 interactionClassCache:(uint64_t *)a5 error:
++ (id)_interactionClassesForMedication:(void *)medication ontologyTransaction:(void *)transaction interactionClassCache:(uint64_t *)cache error:
 {
   v8 = a2;
-  v9 = a4;
-  v10 = a3;
+  transactionCopy = transaction;
+  medicationCopy = medication;
   objc_opt_self();
   if (!v8)
   {
     +[HDDrugInteractionEngine _interactionClassesForMedication:ontologyTransaction:interactionClassCache:error:];
   }
 
-  v11 = [v8 firstConceptIdentifier];
-  v12 = [HDDrugInteractionEngine _interactionClassesForConceptWithIdentifier:v11 ontologyTransaction:v10 interactionClassCache:v9 error:a5];
+  firstConceptIdentifier = [v8 firstConceptIdentifier];
+  v12 = [HDDrugInteractionEngine _interactionClassesForConceptWithIdentifier:firstConceptIdentifier ontologyTransaction:medicationCopy interactionClassCache:transactionCopy error:cache];
 
   return v12;
 }
 
-+ (BOOL)interactionClassForLifestyleFactor:(unint64_t)a3 profile:(id)a4 interactionClassOut:(id *)a5 error:(id *)a6
++ (BOOL)interactionClassForLifestyleFactor:(unint64_t)factor profile:(id)profile interactionClassOut:(id *)out error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  profileCopy = profile;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__5;
   v20 = __Block_byref_object_dispose__5;
   v21 = 0;
-  v10 = [v9 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __96__HDDrugInteractionEngine_interactionClassForLifestyleFactor_profile_interactionClassOut_error___block_invoke;
   v15[3] = &unk_2796CDAD0;
   v15[4] = &v16;
-  v15[5] = a3;
-  v11 = [v10 performTransactionWithError:a6 transactionHandler:v15];
+  v15[5] = factor;
+  v11 = [ontologyDatabase performTransactionWithError:error transactionHandler:v15];
 
   if (v11)
   {
-    if (a5)
+    if (out)
     {
-      *a5 = v17[5];
+      *out = v17[5];
     }
   }
 
@@ -297,43 +297,43 @@ BOOL __96__HDDrugInteractionEngine_interactionClassForLifestyleFactor_profile_in
   return v7;
 }
 
-+ (BOOL)_interactionClassForLifestyleFactor:(void *)a3 ontologyTransaction:(void *)a4 interactionClassCache:(void *)a5 interactionClassOut:(void *)a6 error:
++ (BOOL)_interactionClassForLifestyleFactor:(void *)factor ontologyTransaction:(void *)transaction interactionClassCache:(void *)cache interactionClassOut:(void *)out error:
 {
-  v9 = a3;
-  v10 = a4;
+  factorCopy = factor;
+  transactionCopy = transaction;
   objc_opt_self();
   v11 = HKConceptIdentifierForDrugInteractionLifestyleFactor();
-  v12 = [v10 objectForKeyedSubscript:v11];
-  v13 = [v12 anyObject];
+  v12 = [transactionCopy objectForKeyedSubscript:v11];
+  anyObject = [v12 anyObject];
 
-  if (v13)
+  if (anyObject)
   {
-    if (!a5)
+    if (!cache)
     {
       v15 = 1;
       goto LABEL_11;
     }
 
-    v14 = v13;
+    v14 = anyObject;
     v15 = 1;
     goto LABEL_9;
   }
 
   v20 = 0;
-  v15 = [HDDrugInteractionEngine _interactionClassForLifestyleFactorConceptIdentifier:v11 ontologyTransaction:v9 interactionClassOut:&v20 error:a6];
+  v15 = [HDDrugInteractionEngine _interactionClassForLifestyleFactorConceptIdentifier:v11 ontologyTransaction:factorCopy interactionClassOut:&v20 error:out];
   v16 = v20;
-  v13 = v16;
+  anyObject = v16;
   if (v15 && v16)
   {
     v17 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v16, 0}];
-    [v10 setObject:v17 forKeyedSubscript:v11];
+    [transactionCopy setObject:v17 forKeyedSubscript:v11];
   }
 
-  if (a5)
+  if (cache)
   {
-    v18 = v13;
+    v18 = anyObject;
 LABEL_9:
-    *a5 = v13;
+    *cache = anyObject;
   }
 
 LABEL_11:
@@ -341,12 +341,12 @@ LABEL_11:
   return v15;
 }
 
-+ (id)numberOfInteractionsForConceptWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)numberOfInteractionsForConceptWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  profileCopy = profile;
+  if (!identifierCopy)
   {
     +[HDDrugInteractionEngine numberOfInteractionsForConceptWithIdentifier:profile:error:];
   }
@@ -357,15 +357,15 @@ LABEL_11:
   v22 = __Block_byref_object_copy__5;
   v23 = __Block_byref_object_dispose__5;
   v24 = 0;
-  v9 = [v8 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __86__HDDrugInteractionEngine_numberOfInteractionsForConceptWithIdentifier_profile_error___block_invoke;
   v16[3] = &unk_2796CDAA8;
   v18 = &v19;
-  v10 = v7;
+  v10 = identifierCopy;
   v17 = v10;
-  v11 = [v9 performTransactionWithError:a5 transactionHandler:v16];
+  v11 = [ontologyDatabase performTransactionWithError:error transactionHandler:v16];
 
   if (v11)
   {
@@ -402,28 +402,28 @@ BOOL __86__HDDrugInteractionEngine_numberOfInteractionsForConceptWithIdentifier_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-+ (id)_numberOfInteractionsForConceptWithIdentifier:(void *)a3 ontologyTransaction:(void *)a4 error:
++ (id)_numberOfInteractionsForConceptWithIdentifier:(void *)identifier ontologyTransaction:(void *)transaction error:
 {
   v27 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
   if (!v6)
   {
     +[HDDrugInteractionEngine _numberOfInteractionsForConceptWithIdentifier:ontologyTransaction:error:];
   }
 
-  v8 = [HDDrugInteractionEngine _interactionClassConceptsForConceptWithIdentifier:v6 ontologyTransaction:v7 error:a4];
+  v8 = [HDDrugInteractionEngine _interactionClassConceptsForConceptWithIdentifier:v6 ontologyTransaction:identifierCopy error:transaction];
   v9 = v8;
   if (v8)
   {
-    v21 = v7;
+    v21 = identifierCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [v8 allObjects];
-    v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    allObjects = [v8 allObjects];
+    v11 = [allObjects countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
       v12 = v11;
@@ -435,16 +435,16 @@ BOOL __86__HDDrugInteractionEngine_numberOfInteractionsForConceptWithIdentifier_
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allObjects);
           }
 
-          v16 = [*(*(&v22 + 1) + 8 * i) relationships];
-          v17 = [v16 hk_filter:&__block_literal_global_7];
+          relationships = [*(*(&v22 + 1) + 8 * i) relationships];
+          v17 = [relationships hk_filter:&__block_literal_global_7];
 
           v13 += [v17 count];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v12 = [allObjects countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v12);
@@ -456,7 +456,7 @@ BOOL __86__HDDrugInteractionEngine_numberOfInteractionsForConceptWithIdentifier_
     }
 
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
-    v7 = v21;
+    identifierCopy = v21;
   }
 
   else
@@ -469,40 +469,40 @@ BOOL __86__HDDrugInteractionEngine_numberOfInteractionsForConceptWithIdentifier_
   return v18;
 }
 
-+ (id)numberOfInteractionsForMedication:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)numberOfInteractionsForMedication:(id)medication profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  medicationCopy = medication;
+  profileCopy = profile;
+  if (!medicationCopy)
   {
     +[HDDrugInteractionEngine numberOfInteractionsForMedication:profile:error:];
   }
 
-  v9 = [v7 firstConceptIdentifier];
+  firstConceptIdentifier = [medicationCopy firstConceptIdentifier];
 
-  if (!v9)
+  if (!firstConceptIdentifier)
   {
     +[HDDrugInteractionEngine numberOfInteractionsForMedication:profile:error:];
   }
 
-  v10 = [v7 firstConceptIdentifier];
-  v11 = [HDDrugInteractionEngine numberOfInteractionsForConceptWithIdentifier:v10 profile:v8 error:a5];
+  firstConceptIdentifier2 = [medicationCopy firstConceptIdentifier];
+  v11 = [HDDrugInteractionEngine numberOfInteractionsForConceptWithIdentifier:firstConceptIdentifier2 profile:profileCopy error:error];
 
   return v11;
 }
 
-+ (BOOL)interactionResultForFirstInteractionClass:(id)a3 secondInteractionClass:(id)a4 profile:(id)a5 interactionResultOut:(id *)a6 error:(id *)a7
++ (BOOL)interactionResultForFirstInteractionClass:(id)class secondInteractionClass:(id)interactionClass profile:(id)profile interactionResultOut:(id *)out error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12)
+  classCopy = class;
+  interactionClassCopy = interactionClass;
+  profileCopy = profile;
+  if (!classCopy)
   {
     +[HDDrugInteractionEngine interactionResultForFirstInteractionClass:secondInteractionClass:profile:interactionResultOut:error:];
   }
 
-  if (!v13)
+  if (!interactionClassCopy)
   {
     +[HDDrugInteractionEngine interactionResultForFirstInteractionClass:secondInteractionClass:profile:interactionResultOut:error:];
   }
@@ -513,23 +513,23 @@ BOOL __86__HDDrugInteractionEngine_numberOfInteractionsForConceptWithIdentifier_
   v33 = __Block_byref_object_copy__5;
   v34 = __Block_byref_object_dispose__5;
   v35 = 0;
-  v15 = [v14 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __127__HDDrugInteractionEngine_interactionResultForFirstInteractionClass_secondInteractionClass_profile_interactionResultOut_error___block_invoke;
   v26[3] = &unk_2796CDAF8;
-  v16 = v12;
+  v16 = classCopy;
   v27 = v16;
-  v17 = v13;
+  v17 = interactionClassCopy;
   v28 = v17;
   v29 = &v30;
-  v18 = [v15 performTransactionWithError:a7 transactionHandler:v26];
+  v18 = [ontologyDatabase performTransactionWithError:error transactionHandler:v26];
 
   if (v18)
   {
-    if (a6)
+    if (out)
     {
-      *a6 = v31[5];
+      *out = v31[5];
     }
   }
 
@@ -539,16 +539,16 @@ BOOL __86__HDDrugInteractionEngine_numberOfInteractionsForConceptWithIdentifier_
     v19 = HKLogMedication();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v16 identifier];
-      v23 = [v17 identifier];
+      identifier = [v16 identifier];
+      identifier2 = [v17 identifier];
       v24 = HKSensitiveLogItem();
       v25 = HKSensitiveLogItem();
       *buf = 138544386;
-      v37 = a1;
+      selfCopy = self;
       v38 = 2114;
-      v39 = v22;
+      v39 = identifier;
       v40 = 2114;
-      v41 = v23;
+      v41 = identifier2;
       v42 = 2112;
       v43 = v24;
       v44 = 2112;
@@ -573,16 +573,16 @@ uint64_t __127__HDDrugInteractionEngine_interactionResultForFirstInteractionClas
   return v8;
 }
 
-+ (uint64_t)_interactionResultForFirstInteractionClass:(void *)a3 secondInteractionClass:(void *)a4 ontologyTransaction:(NSObject *)a5 interactionResultOut:(void *)a6 error:
++ (uint64_t)_interactionResultForFirstInteractionClass:(void *)class secondInteractionClass:(void *)interactionClass ontologyTransaction:(NSObject *)transaction interactionResultOut:(void *)out error:
 {
   v92 = *MEMORY[0x277D85DE8];
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
+  classCopy = class;
+  interactionClassCopy = interactionClass;
   v13 = objc_opt_self();
   if (v10)
   {
-    if (v11)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -591,7 +591,7 @@ uint64_t __127__HDDrugInteractionEngine_interactionResultForFirstInteractionClas
   else
   {
     +[HDDrugInteractionEngine _interactionResultForFirstInteractionClass:secondInteractionClass:ontologyTransaction:interactionResultOut:error:];
-    if (v11)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -599,9 +599,9 @@ uint64_t __127__HDDrugInteractionEngine_interactionResultForFirstInteractionClas
 
   +[HDDrugInteractionEngine _interactionResultForFirstInteractionClass:secondInteractionClass:ontologyTransaction:interactionResultOut:error:];
 LABEL_3:
-  v14 = [v10 identifier];
-  v15 = [v11 identifier];
-  v16 = [v14 isEqual:v15];
+  identifier = [v10 identifier];
+  identifier2 = [classCopy identifier];
+  v16 = [identifier isEqual:identifier2];
 
   if (v16)
   {
@@ -614,18 +614,18 @@ LABEL_3:
       v19 = HKLogMedication();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [v10 identifier];
+        identifier3 = [v10 identifier];
         *buf = 138543618;
         v85 = v13;
         v86 = 2114;
-        v87 = v20;
+        v87 = identifier3;
         _os_log_impl(&dword_25181C000, v19, OS_LOG_TYPE_INFO, "[%{public}@] Detected interaction class check against itself, skipping: %{public}@", buf, 0x16u);
       }
     }
 
-    if (a5)
+    if (transaction)
     {
-      *a5 = 0;
+      *transaction = 0;
     }
 
     v21 = 1;
@@ -634,24 +634,24 @@ LABEL_3:
   else
   {
     v83 = 0;
-    v22 = [HDDrugInteractionEngine _drugInteractionClassWithRelationshipsFromClass:v10 ontologyTransaction:v12 drugInteractionClassOut:&v83 error:a6];
+    v22 = [HDDrugInteractionEngine _drugInteractionClassWithRelationshipsFromClass:v10 ontologyTransaction:interactionClassCopy drugInteractionClassOut:&v83 error:out];
     v23 = v83;
     v24 = v23;
     if (v22 && v23)
     {
       v82 = 0;
-      v25 = [HDDrugInteractionEngine _drugInteractionClassWithRelationshipsFromClass:v11 ontologyTransaction:v12 drugInteractionClassOut:&v82 error:a6];
+      v25 = [HDDrugInteractionEngine _drugInteractionClassWithRelationshipsFromClass:classCopy ontologyTransaction:interactionClassCopy drugInteractionClassOut:&v82 error:out];
       v26 = v82;
       v27 = v26;
       if (v25 && v26)
       {
         v70 = v24;
-        v28 = [v24 relationships];
-        v29 = [v28 hk_filter:&__block_literal_global_389];
+        relationships = [v24 relationships];
+        v29 = [relationships hk_filter:&__block_literal_global_389];
 
         v69 = v27;
-        v30 = [v27 relationships];
-        v31 = [v30 hk_filter:&__block_literal_global_391];
+        relationships2 = [v27 relationships];
+        v31 = [relationships2 hk_filter:&__block_literal_global_391];
 
         v80 = 0u;
         v81 = 0u;
@@ -663,11 +663,11 @@ LABEL_3:
         if (v63)
         {
           v33 = *v79;
-          v66 = v11;
+          v66 = classCopy;
           v67 = v10;
-          v68 = v12;
-          v61 = a6;
-          v62 = a5;
+          v68 = interactionClassCopy;
+          outCopy = out;
+          transactionCopy = transaction;
           v59 = v13;
           v60 = *v79;
           v65 = v32;
@@ -703,22 +703,22 @@ LABEL_3:
                     }
 
                     v40 = *(*(&v74 + 1) + 8 * i);
-                    v41 = [v35 destination];
-                    v42 = [v41 identifier];
-                    v43 = [v42 rawIdentifier];
-                    v44 = [v40 destination];
-                    v45 = [v44 identifier];
-                    v46 = [v45 rawIdentifier];
+                    destination = [v35 destination];
+                    identifier4 = [destination identifier];
+                    rawIdentifier = [identifier4 rawIdentifier];
+                    destination2 = [v40 destination];
+                    identifier5 = [destination2 identifier];
+                    rawIdentifier2 = [identifier5 rawIdentifier];
 
-                    if (v43 == v46)
+                    if (rawIdentifier == rawIdentifier2)
                     {
-                      v48 = [v35 destination];
-                      v49 = [v48 identifier];
+                      destination3 = [v35 destination];
+                      identifier6 = [destination3 identifier];
                       v73 = 0;
-                      v11 = v66;
+                      classCopy = v66;
                       v10 = v67;
-                      v12 = v68;
-                      v21 = [HDDrugInteractionEngine _drugInteractionResultForConceptWithIdentifier:v49 firstInteractionClass:v67 secondInteractionClass:v66 ontologyTransaction:v68 interactionResultOut:&v73 error:v61];
+                      interactionClassCopy = v68;
+                      v21 = [HDDrugInteractionEngine _drugInteractionResultForConceptWithIdentifier:identifier6 firstInteractionClass:v67 secondInteractionClass:v66 ontologyTransaction:v68 interactionResultOut:&v73 error:outCopy];
                       v47 = v73;
 
                       _HKInitializeLogging();
@@ -734,23 +734,23 @@ LABEL_3:
                           v53 = HKLogMedication();
                           if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
                           {
-                            v54 = [v47 identifier];
+                            identifier7 = [v47 identifier];
                             v55 = HKSensitiveLogItem();
                             *buf = 138543874;
                             v85 = v59;
                             v86 = 2114;
-                            v87 = v54;
+                            v87 = identifier7;
                             v88 = 2112;
                             v89 = v55;
                             _os_log_impl(&dword_25181C000, v53, OS_LOG_TYPE_INFO, "[%{public}@] Found drug interaction with identifier: %{public}@, interaction: %@", buf, 0x20u);
                           }
                         }
 
-                        v12 = v68;
-                        if (v62)
+                        interactionClassCopy = v68;
+                        if (transactionCopy)
                         {
                           v56 = v47;
-                          *v62 = v47;
+                          *transactionCopy = v47;
                         }
                       }
 
@@ -779,10 +779,10 @@ LABEL_3:
               }
 
               v34 = v64 + 1;
-              v11 = v66;
+              classCopy = v66;
               v10 = v67;
-              v12 = v68;
-              a5 = v62;
+              interactionClassCopy = v68;
+              transaction = transactionCopy;
               v32 = v65;
               v31 = v71;
               v33 = v60;
@@ -796,9 +796,9 @@ LABEL_3:
         }
 
         v47 = 0;
-        if (a5)
+        if (transaction)
         {
-          *a5 = 0;
+          *transaction = 0;
         }
 
         v21 = 1;
@@ -839,11 +839,11 @@ LABEL_50:
   return v21;
 }
 
-+ (id)interactionResultsForInteractionClasses:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)interactionResultsForInteractionClasses:(id)classes profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  classesCopy = classes;
+  profileCopy = profile;
+  if (!classesCopy)
   {
     +[HDDrugInteractionEngine interactionResultsForInteractionClasses:profile:error:];
   }
@@ -854,15 +854,15 @@ LABEL_50:
   v20 = __Block_byref_object_copy__5;
   v21 = __Block_byref_object_dispose__5;
   v22 = 0;
-  v9 = [v8 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __81__HDDrugInteractionEngine_interactionResultsForInteractionClasses_profile_error___block_invoke;
   v14[3] = &unk_2796CDAA8;
   v16 = &v17;
-  v10 = v7;
+  v10 = classesCopy;
   v15 = v10;
-  v11 = [v9 performTransactionWithError:a5 transactionHandler:v14];
+  v11 = [ontologyDatabase performTransactionWithError:error transactionHandler:v14];
 
   if (v11)
   {
@@ -889,26 +889,26 @@ BOOL __81__HDDrugInteractionEngine_interactionResultsForInteractionClasses_profi
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-+ (id)_interactionResultsForInteractionClasses:(void *)a3 ontologyTransaction:(void *)a4 error:
++ (id)_interactionResultsForInteractionClasses:(void *)classes ontologyTransaction:(void *)transaction error:
 {
   v6 = a2;
-  v7 = a3;
+  classesCopy = classes;
   objc_opt_self();
   if (!v6)
   {
     +[HDDrugInteractionEngine _interactionResultsForInteractionClasses:ontologyTransaction:error:];
   }
 
-  v8 = [v6 allObjects];
+  allObjects = [v6 allObjects];
   v21 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  if ([v8 count])
+  if ([allObjects count])
   {
     v9 = 0;
     v10 = 1;
     while (1)
     {
       v20 = v9 + 1;
-      if ([v8 count] > (v9 + 1))
+      if ([allObjects count] > (v9 + 1))
       {
         break;
       }
@@ -916,7 +916,7 @@ BOOL __81__HDDrugInteractionEngine_interactionResultsForInteractionClasses_profi
 LABEL_11:
       ++v10;
       ++v9;
-      if ([v8 count] <= v20)
+      if ([allObjects count] <= v20)
       {
         goto LABEL_12;
       }
@@ -925,10 +925,10 @@ LABEL_11:
     v11 = v10;
     while (1)
     {
-      v12 = [v8 objectAtIndexedSubscript:v9];
-      v13 = [v8 objectAtIndexedSubscript:v11];
+      v12 = [allObjects objectAtIndexedSubscript:v9];
+      v13 = [allObjects objectAtIndexedSubscript:v11];
       v22 = 0;
-      v14 = [HDDrugInteractionEngine _interactionResultForFirstInteractionClass:v12 secondInteractionClass:v13 ontologyTransaction:v7 interactionResultOut:&v22 error:a4];
+      v14 = [HDDrugInteractionEngine _interactionResultForFirstInteractionClass:v12 secondInteractionClass:v13 ontologyTransaction:classesCopy interactionResultOut:&v22 error:transaction];
       v15 = v22;
 
       if (!v14)
@@ -941,7 +941,7 @@ LABEL_11:
         [v21 addObject:v15];
       }
 
-      if ([v8 count] <= ++v11)
+      if ([allObjects count] <= ++v11)
       {
         goto LABEL_11;
       }
@@ -961,14 +961,14 @@ LABEL_12:
   return v17;
 }
 
-+ (BOOL)interactionResultForFirstMedication:(id)a3 secondMedication:(id)a4 profile:(id)a5 interactionResultOut:(id *)a6 error:(id *)a7
++ (BOOL)interactionResultForFirstMedication:(id)medication secondMedication:(id)secondMedication profile:(id)profile interactionResultOut:(id *)out error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11)
+  medicationCopy = medication;
+  secondMedicationCopy = secondMedication;
+  profileCopy = profile;
+  if (medicationCopy)
   {
-    if (v12)
+    if (secondMedicationCopy)
     {
       goto LABEL_3;
     }
@@ -977,7 +977,7 @@ LABEL_12:
   else
   {
     +[HDDrugInteractionEngine interactionResultForFirstMedication:secondMedication:profile:interactionResultOut:error:];
-    if (v12)
+    if (secondMedicationCopy)
     {
       goto LABEL_3;
     }
@@ -985,16 +985,16 @@ LABEL_12:
 
   +[HDDrugInteractionEngine interactionResultForFirstMedication:secondMedication:profile:interactionResultOut:error:];
 LABEL_3:
-  v14 = [v11 firstOntologyCoding];
+  firstOntologyCoding = [medicationCopy firstOntologyCoding];
 
-  if (!v14)
+  if (!firstOntologyCoding)
   {
     +[HDDrugInteractionEngine interactionResultForFirstMedication:secondMedication:profile:interactionResultOut:error:];
   }
 
-  v15 = [v12 firstOntologyCoding];
+  firstOntologyCoding2 = [secondMedicationCopy firstOntologyCoding];
 
-  if (!v15)
+  if (!firstOntologyCoding2)
   {
     +[HDDrugInteractionEngine interactionResultForFirstMedication:secondMedication:profile:interactionResultOut:error:];
   }
@@ -1005,19 +1005,19 @@ LABEL_3:
   v29 = __Block_byref_object_copy__5;
   v30 = __Block_byref_object_dispose__5;
   v31 = 0;
-  v16 = [v13 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __115__HDDrugInteractionEngine_interactionResultForFirstMedication_secondMedication_profile_interactionResultOut_error___block_invoke;
   v22[3] = &unk_2796CDAF8;
-  v17 = v11;
+  v17 = medicationCopy;
   v23 = v17;
-  v18 = v12;
+  v18 = secondMedicationCopy;
   v24 = v18;
   v25 = &v26;
-  v19 = [v16 performTransactionWithError:a7 transactionHandler:v22];
+  v19 = [ontologyDatabase performTransactionWithError:error transactionHandler:v22];
 
-  if (a6)
+  if (out)
   {
     v20 = v19;
   }
@@ -1029,7 +1029,7 @@ LABEL_3:
 
   if (v20)
   {
-    *a6 = v27[5];
+    *out = v27[5];
   }
 
   _Block_object_dispose(&v26, 8);
@@ -1051,16 +1051,16 @@ BOOL __115__HDDrugInteractionEngine_interactionResultForFirstMedication_secondMe
   return v11;
 }
 
-+ (BOOL)_interactionResultForFirstMedication:(void *)a3 secondMedication:(void *)a4 ontologyTransaction:(void *)a5 interactionClassCache:(void *)a6 interactionResultOut:(uint64_t *)a7 error:
++ (BOOL)_interactionResultForFirstMedication:(void *)medication secondMedication:(void *)secondMedication ontologyTransaction:(void *)transaction interactionClassCache:(void *)cache interactionResultOut:(uint64_t *)out error:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  medicationCopy = medication;
+  secondMedicationCopy = secondMedication;
+  transactionCopy = transaction;
   objc_opt_self();
   if (v12)
   {
-    if (v13)
+    if (medicationCopy)
     {
       goto LABEL_3;
     }
@@ -1069,7 +1069,7 @@ BOOL __115__HDDrugInteractionEngine_interactionResultForFirstMedication_secondMe
   else
   {
     +[HDDrugInteractionEngine _interactionResultForFirstMedication:secondMedication:ontologyTransaction:interactionClassCache:interactionResultOut:error:];
-    if (v13)
+    if (medicationCopy)
     {
       goto LABEL_3;
     }
@@ -1077,13 +1077,13 @@ BOOL __115__HDDrugInteractionEngine_interactionResultForFirstMedication_secondMe
 
   +[HDDrugInteractionEngine _interactionResultForFirstMedication:secondMedication:ontologyTransaction:interactionClassCache:interactionResultOut:error:];
 LABEL_3:
-  v16 = [HDDrugInteractionEngine _interactionClassesForMedication:v12 ontologyTransaction:v14 interactionClassCache:v15 error:a7];
+  v16 = [HDDrugInteractionEngine _interactionClassesForMedication:v12 ontologyTransaction:secondMedicationCopy interactionClassCache:transactionCopy error:out];
   v17 = v16;
   if (v16)
   {
     if ([v16 count])
     {
-      v18 = [HDDrugInteractionEngine _interactionClassesForMedication:v13 ontologyTransaction:v14 interactionClassCache:v15 error:a7];
+      v18 = [HDDrugInteractionEngine _interactionClassesForMedication:medicationCopy ontologyTransaction:secondMedicationCopy interactionClassCache:transactionCopy error:out];
       v19 = v18;
       if (!v18)
       {
@@ -1097,7 +1097,7 @@ LABEL_3:
         goto LABEL_17;
       }
 
-      v20 = [HDDrugInteractionEngine _interactionResultsForFirstInteractionClassSet:v17 secondInteractionClassSet:v19 ontologyTransaction:v14 error:a7];
+      v20 = [HDDrugInteractionEngine _interactionResultsForFirstInteractionClassSet:v17 secondInteractionClassSet:v19 ontologyTransaction:secondMedicationCopy error:out];
       v21 = v20;
       v22 = v20 != 0;
       if (!v20)
@@ -1111,11 +1111,11 @@ LABEL_17:
       if ([v20 count])
       {
         v28 = objc_alloc(MEMORY[0x277D11550]);
-        v27 = [v12 firstConceptIdentifier];
-        v26 = [v13 firstConceptIdentifier];
-        v23 = [v28 initWithFirstConceptIdentifier:v27 secondConceptIdentifier:v26 interactionType:1 interactions:v21];
+        firstConceptIdentifier = [v12 firstConceptIdentifier];
+        firstConceptIdentifier2 = [medicationCopy firstConceptIdentifier];
+        v23 = [v28 initWithFirstConceptIdentifier:firstConceptIdentifier secondConceptIdentifier:firstConceptIdentifier2 interactionType:1 interactions:v21];
 
-        if (!a6)
+        if (!cache)
         {
 LABEL_11:
 
@@ -1126,14 +1126,14 @@ LABEL_11:
       else
       {
         v23 = 0;
-        if (!a6)
+        if (!cache)
         {
           goto LABEL_11;
         }
       }
 
       v24 = v23;
-      *a6 = v23;
+      *cache = v23;
       goto LABEL_11;
     }
 
@@ -1150,18 +1150,18 @@ LABEL_18:
   return v22;
 }
 
-+ (BOOL)interactionResultForMedication:(id)a3 lifestyleFactor:(unint64_t)a4 profile:(id)a5 interactionResultOut:(id *)a6 error:(id *)a7
++ (BOOL)interactionResultForMedication:(id)medication lifestyleFactor:(unint64_t)factor profile:(id)profile interactionResultOut:(id *)out error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  if (!v11)
+  medicationCopy = medication;
+  profileCopy = profile;
+  if (!medicationCopy)
   {
     +[HDDrugInteractionEngine interactionResultForMedication:lifestyleFactor:profile:interactionResultOut:error:];
   }
 
-  v13 = [v11 firstOntologyCoding];
+  firstOntologyCoding = [medicationCopy firstOntologyCoding];
 
-  if (!v13)
+  if (!firstOntologyCoding)
   {
     +[HDDrugInteractionEngine interactionResultForMedication:lifestyleFactor:profile:interactionResultOut:error:];
   }
@@ -1172,18 +1172,18 @@ LABEL_18:
   v26 = __Block_byref_object_copy__5;
   v27 = __Block_byref_object_dispose__5;
   v28 = 0;
-  v14 = [v12 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __109__HDDrugInteractionEngine_interactionResultForMedication_lifestyleFactor_profile_interactionResultOut_error___block_invoke;
   v19[3] = &unk_2796CDB20;
-  v15 = v11;
+  v15 = medicationCopy;
   v21 = &v23;
-  v22 = a4;
+  factorCopy = factor;
   v20 = v15;
-  v16 = [v14 performTransactionWithError:a7 transactionHandler:v19];
+  v16 = [ontologyDatabase performTransactionWithError:error transactionHandler:v19];
 
-  if (a6)
+  if (out)
   {
     v17 = v16;
   }
@@ -1195,7 +1195,7 @@ LABEL_18:
 
   if (v17)
   {
-    *a6 = v24[5];
+    *out = v24[5];
   }
 
   _Block_object_dispose(&v23, 8);
@@ -1213,24 +1213,24 @@ BOOL __109__HDDrugInteractionEngine_interactionResultForMedication_lifestyleFact
   return v8;
 }
 
-+ (BOOL)_interactionResultForMedication:(uint64_t)a3 lifestyleFactor:(void *)a4 ontologyTransaction:(void *)a5 interactionClassCache:(void *)a6 interactionResultOut:(uint64_t *)a7 error:
++ (BOOL)_interactionResultForMedication:(uint64_t)medication lifestyleFactor:(void *)factor ontologyTransaction:(void *)transaction interactionClassCache:(void *)cache interactionResultOut:(uint64_t *)out error:
 {
   v12 = a2;
-  v13 = a4;
-  v14 = a5;
+  factorCopy = factor;
+  transactionCopy = transaction;
   objc_opt_self();
   if (!v12)
   {
     +[HDDrugInteractionEngine _interactionResultForMedication:lifestyleFactor:ontologyTransaction:interactionClassCache:interactionResultOut:error:];
   }
 
-  v15 = [HDDrugInteractionEngine _interactionClassesForMedication:v12 ontologyTransaction:v13 interactionClassCache:v14 error:a7];
+  v15 = [HDDrugInteractionEngine _interactionClassesForMedication:v12 ontologyTransaction:factorCopy interactionClassCache:transactionCopy error:out];
   v16 = v15;
   if (v15)
   {
     if ([v15 count])
     {
-      v17 = [HDDrugInteractionEngine _interactionResultsForInteractionClasses:v16 lifestyleFactor:a3 ontologyTransaction:v13 interactionClassCache:v14 error:a7];
+      v17 = [HDDrugInteractionEngine _interactionResultsForInteractionClasses:v16 lifestyleFactor:medication ontologyTransaction:factorCopy interactionClassCache:transactionCopy error:out];
       v18 = v17;
       v19 = v17 != 0;
       if (v17)
@@ -1239,19 +1239,19 @@ BOOL __109__HDDrugInteractionEngine_interactionResultForMedication_lifestyleFact
         {
           v20 = HKConceptIdentifierForDrugInteractionLifestyleFactor();
           v21 = objc_alloc(MEMORY[0x277D11550]);
-          v22 = [v12 firstConceptIdentifier];
-          v23 = [v21 initWithFirstConceptIdentifier:v22 secondConceptIdentifier:v20 interactionType:2 interactions:v18];
+          firstConceptIdentifier = [v12 firstConceptIdentifier];
+          v23 = [v21 initWithFirstConceptIdentifier:firstConceptIdentifier secondConceptIdentifier:v20 interactionType:2 interactions:v18];
 
-          if (a6)
+          if (cache)
           {
             v24 = v23;
-            *a6 = v23;
+            *cache = v23;
           }
         }
 
-        else if (a6)
+        else if (cache)
         {
-          *a6 = 0;
+          *cache = 0;
         }
       }
     }
@@ -1270,17 +1270,17 @@ BOOL __109__HDDrugInteractionEngine_interactionResultForMedication_lifestyleFact
   return v19;
 }
 
-+ (id)interactionResultsForMedications:(id)a3 lifestyleFactors:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)interactionResultsForMedications:(id)medications lifestyleFactors:(id)factors profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  medicationsCopy = medications;
+  factorsCopy = factors;
+  profileCopy = profile;
+  if (!medicationsCopy)
   {
     +[HDDrugInteractionEngine interactionResultsForMedications:lifestyleFactors:profile:error:];
   }
 
-  if (([(HDDrugInteractionEngine *)a1 _allAreOntologyBackedMedications:v10]& 1) == 0)
+  if (([(HDDrugInteractionEngine *)self _allAreOntologyBackedMedications:medicationsCopy]& 1) == 0)
   {
     +[HDDrugInteractionEngine interactionResultsForMedications:lifestyleFactors:profile:error:];
   }
@@ -1291,19 +1291,19 @@ BOOL __109__HDDrugInteractionEngine_interactionResultForMedication_lifestyleFact
   v28 = __Block_byref_object_copy__5;
   v29 = __Block_byref_object_dispose__5;
   v30 = 0;
-  v13 = [v12 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __91__HDDrugInteractionEngine_interactionResultsForMedications_lifestyleFactors_profile_error___block_invoke;
   v20[3] = &unk_2796CDB48;
-  v14 = v12;
+  v14 = profileCopy;
   v21 = v14;
   v24 = &v25;
-  v15 = v10;
+  v15 = medicationsCopy;
   v22 = v15;
-  v16 = v11;
+  v16 = factorsCopy;
   v23 = v16;
-  v17 = [v13 performTransactionWithError:a6 transactionHandler:v20];
+  v17 = [ontologyDatabase performTransactionWithError:error transactionHandler:v20];
 
   if (v17)
   {
@@ -1320,7 +1320,7 @@ BOOL __109__HDDrugInteractionEngine_interactionResultForMedication_lifestyleFact
   return v18;
 }
 
-+ (uint64_t)_allAreOntologyBackedMedications:(uint64_t)a1
++ (uint64_t)_allAreOntologyBackedMedications:(uint64_t)medications
 {
   v2 = a2;
   objc_opt_self();
@@ -1347,14 +1347,14 @@ BOOL __91__HDDrugInteractionEngine_interactionResultsForMedications_lifestyleFac
   return v13;
 }
 
-+ (id)_interactionResultsForMedications:(void *)a3 lifestyleFactors:(void *)a4 ontologyTransaction:(void *)a5 interactionClassCache:(void *)a6 medicationsUserDefaults:(uint64_t *)a7 error:
++ (id)_interactionResultsForMedications:(void *)medications lifestyleFactors:(void *)factors ontologyTransaction:(void *)transaction interactionClassCache:(void *)cache medicationsUserDefaults:(uint64_t *)defaults error:
 {
   v80 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v57 = a3;
-  v12 = a4;
-  v63 = a5;
-  v13 = a6;
+  medicationsCopy = medications;
+  factorsCopy = factors;
+  transactionCopy = transaction;
+  cacheCopy = cache;
   v59 = objc_opt_self();
   if (!v11)
   {
@@ -1362,20 +1362,20 @@ BOOL __91__HDDrugInteractionEngine_interactionResultsForMedications_lifestyleFac
   }
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v58 = [v11 allObjects];
-  if ([v58 count])
+  allObjects = [v11 allObjects];
+  if ([allObjects count])
   {
     v16 = 0;
     v55 = 1;
     *&v15 = 138543874;
     v51 = v15;
     v61 = v14;
-    v53 = v13;
+    v53 = cacheCopy;
     v54 = v11;
     while (1)
     {
-      v17 = [v58 objectAtIndexedSubscript:{v16, v51}];
-      if (![v13 BOOLForKey:@"MedicationsInteractionsWithSelfAllowed"])
+      v17 = [allObjects objectAtIndexedSubscript:{v16, v51}];
+      if (![cacheCopy BOOLForKey:@"MedicationsInteractionsWithSelfAllowed"])
       {
         goto LABEL_13;
       }
@@ -1390,7 +1390,7 @@ BOOL __91__HDDrugInteractionEngine_interactionResultsForMedications_lifestyleFac
       }
 
       v70 = 0;
-      v19 = [HDDrugInteractionEngine _interactionResultForFirstMedication:v17 secondMedication:v17 ontologyTransaction:v12 interactionClassCache:v63 interactionResultOut:&v70 error:a7];
+      v19 = [HDDrugInteractionEngine _interactionResultForFirstMedication:v17 secondMedication:v17 ontologyTransaction:factorsCopy interactionClassCache:transactionCopy interactionResultOut:&v70 error:defaults];
       v20 = v70;
       v21 = v20;
       if (!v19)
@@ -1405,13 +1405,13 @@ BOOL __91__HDDrugInteractionEngine_interactionResultsForMedications_lifestyleFac
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v23 = [v14 count] + 1;
-          v24 = [v17 firstConceptIdentifier];
+          firstConceptIdentifier = [v17 firstConceptIdentifier];
           *buf = v51;
           v73 = v59;
           v74 = 2050;
           v75 = v23;
           v76 = 2114;
-          v77 = v24;
+          v77 = firstConceptIdentifier;
           _os_log_impl(&dword_25181C000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] Found medication #%{public}lu interaction: Inter-medication interaction with identifier: %{public}@", buf, 0x20u);
 
           v14 = v61;
@@ -1428,7 +1428,7 @@ LABEL_13:
       }
 
       v52 = v16 + 1;
-      if ([v58 count] > v16 + 1)
+      if ([allObjects count] > v16 + 1)
       {
         break;
       }
@@ -1438,7 +1438,7 @@ LABEL_22:
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
-      obj = v57;
+      obj = medicationsCopy;
       v34 = [obj countByEnumeratingWithState:&v65 objects:v71 count:16];
       v14 = v61;
       if (v34)
@@ -1454,16 +1454,16 @@ LABEL_22:
               objc_enumerationMutation(obj);
             }
 
-            v38 = [*(*(&v65 + 1) + 8 * i) unsignedIntValue];
+            unsignedIntValue = [*(*(&v65 + 1) + 8 * i) unsignedIntValue];
             v64 = 0;
-            v39 = [HDDrugInteractionEngine _interactionResultForMedication:v17 lifestyleFactor:v38 ontologyTransaction:v12 interactionClassCache:v63 interactionResultOut:&v64 error:a7];
+            v39 = [HDDrugInteractionEngine _interactionResultForMedication:v17 lifestyleFactor:unsignedIntValue ontologyTransaction:factorsCopy interactionClassCache:transactionCopy interactionResultOut:&v64 error:defaults];
             v40 = v64;
             v41 = v40;
             if (!v39)
             {
 
               v48 = 0;
-              v13 = v53;
+              cacheCopy = v53;
               v11 = v54;
               goto LABEL_39;
             }
@@ -1475,18 +1475,18 @@ LABEL_22:
               if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
               {
                 v43 = [v14 count];
-                v44 = v12;
+                v44 = factorsCopy;
                 v45 = v43 + 1;
-                v46 = [v17 firstConceptIdentifier];
+                firstConceptIdentifier2 = [v17 firstConceptIdentifier];
                 v47 = HKConceptIdentifierForDrugInteractionLifestyleFactor();
                 *buf = 138544130;
                 v73 = v59;
                 v74 = 2050;
                 v75 = v45;
-                v12 = v44;
+                factorsCopy = v44;
                 v14 = v61;
                 v76 = 2114;
-                v77 = v46;
+                v77 = firstConceptIdentifier2;
                 v78 = 2114;
                 v79 = v47;
                 _os_log_impl(&dword_25181C000, v42, OS_LOG_TYPE_DEFAULT, "[%{public}@] Found medication #%{public}lu interaction: Between identifier: %{public}@ and identifier: %{public}@", buf, 0x2Au);
@@ -1509,8 +1509,8 @@ LABEL_22:
       v11 = v54;
       ++v55;
       v16 = v52;
-      v13 = v53;
-      if ([v58 count] <= v52)
+      cacheCopy = v53;
+      if ([allObjects count] <= v52)
       {
         goto LABEL_35;
       }
@@ -1519,9 +1519,9 @@ LABEL_22:
     v25 = v55;
     while (1)
     {
-      v26 = [v58 objectAtIndexedSubscript:v25];
+      v26 = [allObjects objectAtIndexedSubscript:v25];
       v69 = 0;
-      v27 = [HDDrugInteractionEngine _interactionResultForFirstMedication:v17 secondMedication:v26 ontologyTransaction:v12 interactionClassCache:v63 interactionResultOut:&v69 error:a7];
+      v27 = [HDDrugInteractionEngine _interactionResultForFirstMedication:v17 secondMedication:v26 ontologyTransaction:factorsCopy interactionClassCache:transactionCopy interactionResultOut:&v69 error:defaults];
       v28 = v69;
       v29 = v28;
       if (!v27)
@@ -1536,29 +1536,29 @@ LABEL_22:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           v31 = [v61 count] + 1;
-          v32 = [v17 firstConceptIdentifier];
-          v33 = [v26 firstConceptIdentifier];
+          firstConceptIdentifier3 = [v17 firstConceptIdentifier];
+          firstConceptIdentifier4 = [v26 firstConceptIdentifier];
           *buf = 138544130;
           v73 = v59;
           v74 = 2050;
           v75 = v31;
           v76 = 2114;
-          v77 = v32;
+          v77 = firstConceptIdentifier3;
           v78 = 2114;
-          v79 = v33;
+          v79 = firstConceptIdentifier4;
           _os_log_impl(&dword_25181C000, v30, OS_LOG_TYPE_DEFAULT, "[%{public}@] Found medication #%{public}lu interaction: Between identifier: %{public}@ and identifier: %{public}@", buf, 0x2Au);
         }
 
         [v61 addObject:v29];
       }
 
-      if ([v58 count] <= ++v25)
+      if ([allObjects count] <= ++v25)
       {
         goto LABEL_22;
       }
     }
 
-    v13 = v53;
+    cacheCopy = v53;
     v11 = v54;
     v14 = v61;
     v21 = v56;
@@ -1580,24 +1580,24 @@ LABEL_39:
   return v48;
 }
 
-+ (id)_interactionClassesForConceptWithIdentifier:(void *)a3 ontologyTransaction:(void *)a4 interactionClassCache:(uint64_t *)a5 error:
++ (id)_interactionClassesForConceptWithIdentifier:(void *)identifier ontologyTransaction:(void *)transaction interactionClassCache:(uint64_t *)cache error:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   objc_opt_self();
   if (!v8)
   {
     +[HDDrugInteractionEngine _interactionClassesForConceptWithIdentifier:ontologyTransaction:interactionClassCache:error:];
   }
 
-  v11 = [v10 objectForKeyedSubscript:v8];
+  v11 = [transactionCopy objectForKeyedSubscript:v8];
   if (!v11)
   {
-    v11 = [HDDrugInteractionEngine _interactionClassesForConceptWithIdentifier:v8 ontologyTransaction:v9 error:a5];
+    v11 = [HDDrugInteractionEngine _interactionClassesForConceptWithIdentifier:v8 ontologyTransaction:identifierCopy error:cache];
     if (v11)
     {
-      [v10 setObject:v11 forKeyedSubscript:v8];
+      [transactionCopy setObject:v11 forKeyedSubscript:v8];
     }
   }
 
@@ -1606,10 +1606,10 @@ LABEL_39:
   return v12;
 }
 
-+ (id)_interactionClassConceptsForConceptWithIdentifier:(void *)a3 ontologyTransaction:(void *)a4 error:
++ (id)_interactionClassConceptsForConceptWithIdentifier:(void *)identifier ontologyTransaction:(void *)transaction error:
 {
   v6 = a2;
-  v7 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
   if (!v6)
   {
@@ -1617,20 +1617,20 @@ LABEL_39:
   }
 
   v15 = 0;
-  v8 = [HDDrugInteractionEngine _conceptForIdentifier:v6 ontologyTransaction:v7 conceptOut:&v15 errorOut:a4];
+  v8 = [HDDrugInteractionEngine _conceptForIdentifier:v6 ontologyTransaction:identifierCopy conceptOut:&v15 errorOut:transaction];
   v9 = v15;
   v10 = v9;
   if (v8)
   {
     if (v9)
     {
-      v11 = [HDDrugInteractionEngine _interactionClassConceptsForConcept:v9 ontologyTransaction:v7 error:a4];
+      v11 = [HDDrugInteractionEngine _interactionClassConceptsForConcept:v9 ontologyTransaction:identifierCopy error:transaction];
 LABEL_6:
       v12 = v11;
       goto LABEL_10;
     }
 
-    if (!*a4)
+    if (!*transaction)
     {
       v11 = objc_alloc_init(MEMORY[0x277CBEB98]);
       goto LABEL_6;
@@ -1660,9 +1660,9 @@ LABEL_10:
   return v12;
 }
 
-+ (HDDrugInteractionClass)_drugInteractionClassForConcept:(void *)a3 ancestorIdentifier:
++ (HDDrugInteractionClass)_drugInteractionClassForConcept:(void *)concept ancestorIdentifier:
 {
-  v4 = a3;
+  conceptCopy = concept;
   v5 = a2;
   objc_opt_self();
   if (!v5)
@@ -1671,30 +1671,30 @@ LABEL_10:
   }
 
   v6 = [HDDrugInteractionClass alloc];
-  v7 = [v5 localizedPreferredName];
-  v8 = [v5 relationships];
-  v9 = [v5 identifier];
-  v10 = [v5 validInRegions];
+  localizedPreferredName = [v5 localizedPreferredName];
+  relationships = [v5 relationships];
+  identifier = [v5 identifier];
+  validInRegions = [v5 validInRegions];
 
-  v11 = [(HDDrugInteractionClass *)v6 initWithName:v7 relationships:v8 ancestorIdentifier:v4 ontologyIdentifier:v9 validRegionCodes:v10];
+  v11 = [(HDDrugInteractionClass *)v6 initWithName:localizedPreferredName relationships:relationships ancestorIdentifier:conceptCopy ontologyIdentifier:identifier validRegionCodes:validInRegions];
 
   return v11;
 }
 
-+ (BOOL)_interactionClassForLifestyleFactorConceptIdentifier:(void *)a3 ontologyTransaction:(void *)a4 interactionClassOut:(void *)a5 error:
++ (BOOL)_interactionClassForLifestyleFactorConceptIdentifier:(void *)identifier ontologyTransaction:(void *)transaction interactionClassOut:(void *)out error:
 {
   v8 = a2;
-  v9 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
-  v10 = [HDDrugInteractionEngine _fetchKnownConceptWithIdentifier:v8 ontologyTransaction:v9 errorOut:a5];
+  v10 = [HDDrugInteractionEngine _fetchKnownConceptWithIdentifier:v8 ontologyTransaction:identifierCopy errorOut:out];
 
   if (v10)
   {
     v11 = [HDDrugInteractionEngine _drugInteractionClassForConcept:v10 ancestorIdentifier:v8];
-    if (a4)
+    if (transaction)
     {
       v11 = v11;
-      *a4 = v11;
+      *transaction = v11;
     }
   }
 
@@ -1711,20 +1711,20 @@ LABEL_10:
   return v10 != 0;
 }
 
-+ (id)_fetchKnownConceptWithIdentifier:(void *)a3 ontologyTransaction:(void *)a4 errorOut:
++ (id)_fetchKnownConceptWithIdentifier:(void *)identifier ontologyTransaction:(void *)transaction errorOut:
 {
   v6 = a2;
-  v7 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
   if (!v6)
   {
     +[HDDrugInteractionEngine _fetchKnownConceptWithIdentifier:ontologyTransaction:errorOut:];
   }
 
-  v8 = [v7 profile];
-  v9 = [v8 ontologyConceptManager];
+  profile = [identifierCopy profile];
+  ontologyConceptManager = [profile ontologyConceptManager];
   v15 = 0;
-  v10 = [v9 conceptForIdentifier:v6 options:1 transaction:v7 error:&v15];
+  v10 = [ontologyConceptManager conceptForIdentifier:v6 options:1 transaction:identifierCopy error:&v15];
 
   v11 = v15;
   if (v10)
@@ -1737,10 +1737,10 @@ LABEL_10:
   {
     v11 = v11;
 LABEL_8:
-    if (a4)
+    if (transaction)
     {
       v13 = v11;
-      *a4 = v11;
+      *transaction = v11;
     }
 
     else
@@ -1762,10 +1762,10 @@ LABEL_12:
   return v10;
 }
 
-+ (BOOL)_drugInteractionClassWithRelationshipsFromClass:(void *)a3 ontologyTransaction:(void *)a4 drugInteractionClassOut:(void *)a5 error:
++ (BOOL)_drugInteractionClassWithRelationshipsFromClass:(void *)class ontologyTransaction:(void *)transaction drugInteractionClassOut:(void *)out error:
 {
   v8 = a2;
-  v9 = a3;
+  classCopy = class;
   v10 = objc_opt_self();
   if (!v8)
   {
@@ -1775,10 +1775,10 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a4)
+    if (transaction)
     {
       v11 = v8;
-      *a4 = v8;
+      *transaction = v8;
     }
 
     v12 = 1;
@@ -1786,19 +1786,19 @@ LABEL_12:
 
   else
   {
-    v13 = [v8 identifier];
-    v14 = [HDDrugInteractionEngine _fetchKnownConceptWithIdentifier:v13 ontologyTransaction:v9 errorOut:a5];
+    identifier = [v8 identifier];
+    v14 = [HDDrugInteractionEngine _fetchKnownConceptWithIdentifier:identifier ontologyTransaction:classCopy errorOut:out];
 
     v12 = v14 != 0;
     if (v14)
     {
-      v15 = [v8 ancestorIdentifier];
-      v16 = [HDDrugInteractionEngine _drugInteractionClassForConcept:v14 ancestorIdentifier:v15];
+      ancestorIdentifier = [v8 ancestorIdentifier];
+      v16 = [HDDrugInteractionEngine _drugInteractionClassForConcept:v14 ancestorIdentifier:ancestorIdentifier];
 
-      if (a4)
+      if (transaction)
       {
         v17 = v16;
-        *a4 = v16;
+        *transaction = v16;
       }
     }
 
@@ -1816,46 +1816,46 @@ LABEL_12:
   return v12;
 }
 
-+ (uint64_t)_drugInteractionResultForConceptWithIdentifier:(void *)a3 firstInteractionClass:(void *)a4 secondInteractionClass:(void *)a5 ontologyTransaction:(NSObject *)a6 interactionResultOut:(void *)a7 error:
++ (uint64_t)_drugInteractionResultForConceptWithIdentifier:(void *)identifier firstInteractionClass:(void *)class secondInteractionClass:(void *)interactionClass ontologyTransaction:(NSObject *)transaction interactionResultOut:(void *)out error:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  identifierCopy = identifier;
+  classCopy = class;
+  interactionClassCopy = interactionClass;
   objc_opt_self();
   if (!v12)
   {
     +[HDDrugInteractionEngine _drugInteractionResultForConceptWithIdentifier:firstInteractionClass:secondInteractionClass:ontologyTransaction:interactionResultOut:error:];
   }
 
-  v16 = [HDDrugInteractionEngine _fetchKnownConceptWithIdentifier:v12 ontologyTransaction:v15 errorOut:a7];
+  v16 = [HDDrugInteractionEngine _fetchKnownConceptWithIdentifier:v12 ontologyTransaction:interactionClassCopy errorOut:out];
   if (v16)
   {
     v32 = 0;
-    v17 = [HDDrugInteractionEngine _severityForConceptWithIdentifier:v12 ontologyTransaction:v15 severityOut:&v32 error:a7];
+    v17 = [HDDrugInteractionEngine _severityForConceptWithIdentifier:v12 ontologyTransaction:interactionClassCopy severityOut:&v32 error:out];
     v18 = v32;
     if (v17)
     {
-      v29 = a6;
-      v30 = v13;
+      transactionCopy = transaction;
+      v30 = identifierCopy;
       v19 = MEMORY[0x277D103C8];
-      v20 = [v16 identifier];
+      identifier = [v16 identifier];
       v31 = 0;
-      v21 = [v19 localizedEducationContentForConceptWithIdentifier:v20 ontologyTransaction:v15 localizedEducationContentOut:&v31 error:a7];
+      v21 = [v19 localizedEducationContentForConceptWithIdentifier:identifier ontologyTransaction:interactionClassCopy localizedEducationContentOut:&v31 error:out];
       v22 = v31;
 
       if (v21)
       {
         v23 = objc_alloc(MEMORY[0x277D11518]);
-        v24 = [v16 validInRegions];
+        validInRegions = [v16 validInRegions];
         v25 = v23;
-        v13 = v30;
-        v26 = [v25 initWithFirstInteractionClass:v30 secondInteractionClass:v14 severity:v18 educationContent:v22 ontologyIdentifier:v12 validRegionCodes:v24];
+        identifierCopy = v30;
+        v26 = [v25 initWithFirstInteractionClass:v30 secondInteractionClass:classCopy severity:v18 educationContent:v22 ontologyIdentifier:v12 validRegionCodes:validInRegions];
 
-        if (v29)
+        if (transactionCopy)
         {
           v27 = v26;
-          *v29 = v26;
+          *transactionCopy = v26;
         }
       }
 
@@ -1868,7 +1868,7 @@ LABEL_12:
           +[HDDrugInteractionEngine _drugInteractionResultForConceptWithIdentifier:firstInteractionClass:secondInteractionClass:ontologyTransaction:interactionResultOut:error:];
         }
 
-        v13 = v30;
+        identifierCopy = v30;
       }
     }
 
@@ -1900,36 +1900,36 @@ LABEL_12:
   return v21;
 }
 
-+ (id)_interactionResultsForInteractionClasses:(uint64_t)a3 lifestyleFactor:(void *)a4 ontologyTransaction:(void *)a5 interactionClassCache:(void *)a6 error:
++ (id)_interactionResultsForInteractionClasses:(uint64_t)classes lifestyleFactor:(void *)factor ontologyTransaction:(void *)transaction interactionClassCache:(void *)cache error:
 {
   v10 = a2;
-  v11 = a4;
-  v12 = a5;
+  factorCopy = factor;
+  transactionCopy = transaction;
   v13 = v10;
-  v14 = v12;
+  v14 = transactionCopy;
   objc_opt_self();
   if (!v10)
   {
     +[HDDrugInteractionEngine _interactionResultsForInteractionClasses:lifestyleFactor:ontologyTransaction:interactionClassCache:error:];
   }
 
-  v15 = [v10 allObjects];
+  allObjects = [v10 allObjects];
   v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v27 = 0;
   v25 = v14;
-  v17 = [HDDrugInteractionEngine _interactionClassForLifestyleFactor:a3 ontologyTransaction:v11 interactionClassCache:v14 interactionClassOut:&v27 error:a6];
+  v17 = [HDDrugInteractionEngine _interactionClassForLifestyleFactor:classes ontologyTransaction:factorCopy interactionClassCache:v14 interactionClassOut:&v27 error:cache];
   v18 = v27;
   v19 = 0;
   if (v17)
   {
-    if ([v15 count])
+    if ([allObjects count])
     {
       v20 = 0;
       while (1)
       {
-        v21 = [v15 objectAtIndexedSubscript:v20];
+        v21 = [allObjects objectAtIndexedSubscript:v20];
         v26 = 0;
-        v22 = [HDDrugInteractionEngine _interactionResultForFirstInteractionClass:v21 secondInteractionClass:v18 ontologyTransaction:v11 interactionResultOut:&v26 error:a6];
+        v22 = [HDDrugInteractionEngine _interactionResultForFirstInteractionClass:v21 secondInteractionClass:v18 ontologyTransaction:factorCopy interactionResultOut:&v26 error:cache];
         v23 = v26;
 
         if (!v22)
@@ -1942,7 +1942,7 @@ LABEL_12:
           [v16 addObject:v23];
         }
 
-        if ([v15 count] <= ++v20)
+        if ([allObjects count] <= ++v20)
         {
           goto LABEL_10;
         }
@@ -1963,16 +1963,16 @@ LABEL_10:
   return v19;
 }
 
-+ (id)_interactionResultsForFirstInteractionClassSet:(void *)a3 secondInteractionClassSet:(void *)a4 ontologyTransaction:(void *)a5 error:
++ (id)_interactionResultsForFirstInteractionClassSet:(void *)set secondInteractionClassSet:(void *)classSet ontologyTransaction:(void *)transaction error:
 {
   v44 = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  setCopy = set;
+  classSetCopy = classSet;
   objc_opt_self();
   if (v8)
   {
-    if (v9)
+    if (setCopy)
     {
       goto LABEL_3;
     }
@@ -1981,7 +1981,7 @@ LABEL_10:
   else
   {
     +[HDDrugInteractionEngine _interactionResultsForFirstInteractionClassSet:secondInteractionClassSet:ontologyTransaction:error:];
-    if (v9)
+    if (setCopy)
     {
       goto LABEL_3;
     }
@@ -2000,7 +2000,7 @@ LABEL_3:
   {
     v13 = *v39;
     v31 = v12;
-    v32 = v9;
+    v32 = setCopy;
     v28 = *v39;
     do
     {
@@ -2018,7 +2018,7 @@ LABEL_3:
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v16 = v9;
+        v16 = setCopy;
         v17 = [v16 countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (v17)
         {
@@ -2035,7 +2035,7 @@ LABEL_3:
 
               v21 = *(*(&v34 + 1) + 8 * i);
               v33 = 0;
-              v22 = [HDDrugInteractionEngine _interactionResultForFirstInteractionClass:v15 secondInteractionClass:v21 ontologyTransaction:v10 interactionResultOut:&v33 error:a5];
+              v22 = [HDDrugInteractionEngine _interactionResultForFirstInteractionClass:v15 secondInteractionClass:v21 ontologyTransaction:classSetCopy interactionResultOut:&v33 error:transaction];
               v23 = v33;
               v24 = v23;
               if (!v22)
@@ -2043,7 +2043,7 @@ LABEL_3:
 
                 v12 = v31;
                 v25 = 0;
-                v9 = v32;
+                setCopy = v32;
                 goto LABEL_22;
               }
 
@@ -2065,7 +2065,7 @@ LABEL_3:
 
         v14 = v30 + 1;
         v12 = v31;
-        v9 = v32;
+        setCopy = v32;
         v13 = v28;
       }
 
@@ -2084,28 +2084,28 @@ LABEL_22:
   return v25;
 }
 
-+ (uint64_t)_conceptForIdentifier:(void *)a3 ontologyTransaction:(void *)a4 conceptOut:(void *)a5 errorOut:
++ (uint64_t)_conceptForIdentifier:(void *)identifier ontologyTransaction:(void *)transaction conceptOut:(void *)out errorOut:
 {
   v8 = a2;
-  v9 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
   if (!v8)
   {
     +[HDDrugInteractionEngine _conceptForIdentifier:ontologyTransaction:conceptOut:errorOut:];
   }
 
-  v10 = [v9 profile];
-  v11 = [v10 ontologyConceptManager];
+  profile = [identifierCopy profile];
+  ontologyConceptManager = [profile ontologyConceptManager];
   v19 = 0;
-  v12 = [v11 conceptForIdentifier:v8 options:1 transaction:v9 error:&v19];
+  v12 = [ontologyConceptManager conceptForIdentifier:v8 options:1 transaction:identifierCopy error:&v19];
 
   v13 = v19;
   if (v12)
   {
-    if (a4)
+    if (transaction)
     {
       v14 = v12;
-      *a4 = v12;
+      *transaction = v12;
     }
 
     goto LABEL_11;
@@ -2125,11 +2125,11 @@ LABEL_11:
     +[HDDrugInteractionEngine _conceptForIdentifier:ontologyTransaction:conceptOut:errorOut:];
   }
 
-  if (a5)
+  if (out)
   {
     v16 = v13;
     v17 = 0;
-    *a5 = v13;
+    *out = v13;
   }
 
   else
@@ -2143,10 +2143,10 @@ LABEL_12:
   return v17;
 }
 
-+ (uint64_t)_severityConceptForConceptWithIdentifier:(void *)a3 ontologyTransaction:(void *)a4 severityConceptOut:(uint64_t)a5 error:
++ (uint64_t)_severityConceptForConceptWithIdentifier:(void *)identifier ontologyTransaction:(void *)transaction severityConceptOut:(uint64_t)out error:
 {
   v8 = a2;
-  v9 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
   if (!v8)
   {
@@ -2165,20 +2165,20 @@ LABEL_12:
   v13[2] = __113__HDDrugInteractionEngine__severityConceptForConceptWithIdentifier_ontologyTransaction_severityConceptOut_error___block_invoke;
   v13[3] = &unk_2796CDBB8;
   v13[4] = &v14;
-  v11 = [MEMORY[0x277D103B8] enumerateConceptsMatchingPredicate:v10 options:1 limit:1 transaction:v9 error:a5 enumerationHandler:v13];
-  if (a4)
+  v11 = [MEMORY[0x277D103B8] enumerateConceptsMatchingPredicate:v10 options:1 limit:1 transaction:identifierCopy error:out enumerationHandler:v13];
+  if (transaction)
   {
-    *a4 = v15[5];
+    *transaction = v15[5];
   }
 
   _Block_object_dispose(&v14, 8);
   return v11;
 }
 
-+ (uint64_t)_severityForConceptWithIdentifier:(void *)a3 ontologyTransaction:(NSObject *)a4 severityOut:(uint64_t)a5 error:
++ (uint64_t)_severityForConceptWithIdentifier:(void *)identifier ontologyTransaction:(NSObject *)transaction severityOut:(uint64_t)out error:
 {
   v8 = a2;
-  v9 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
   if (!v8)
   {
@@ -2186,7 +2186,7 @@ LABEL_12:
   }
 
   v28 = 0;
-  v10 = [HDDrugInteractionEngine _severityConceptForConceptWithIdentifier:v8 ontologyTransaction:v9 severityConceptOut:&v28 error:a5];
+  v10 = [HDDrugInteractionEngine _severityConceptForConceptWithIdentifier:v8 ontologyTransaction:identifierCopy severityConceptOut:&v28 error:out];
   v11 = v28;
   v12 = v11;
   if ((v10 & 1) == 0)
@@ -2203,7 +2203,7 @@ LABEL_12:
 
   if (!v11)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:1003 format:{@"Could not find severity concept with identifier: %@", v8}];
+    [MEMORY[0x277CCA9B8] hk_assignError:out code:1003 format:{@"Could not find severity concept with identifier: %@", v8}];
     _HKInitializeLogging();
     v16 = HKLogMedication();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2214,39 +2214,39 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v13 = [v11 identifier];
-  v14 = [v13 rawIdentifier];
+  identifier = [v11 identifier];
+  rawIdentifier = [identifier rawIdentifier];
 
-  if (v14 != 650)
+  if (rawIdentifier != 650)
   {
-    v18 = [v12 identifier];
-    v19 = [v18 rawIdentifier];
+    identifier2 = [v12 identifier];
+    rawIdentifier2 = [identifier2 rawIdentifier];
 
-    if (v19 == 651)
+    if (rawIdentifier2 == 651)
     {
       v15 = 2;
       goto LABEL_18;
     }
 
-    v20 = [v12 identifier];
-    v21 = [v20 rawIdentifier];
+    identifier3 = [v12 identifier];
+    rawIdentifier3 = [identifier3 rawIdentifier];
 
-    if (v21 == 652)
+    if (rawIdentifier3 == 652)
     {
       v15 = 3;
       goto LABEL_18;
     }
 
-    v22 = [v12 identifier];
-    v23 = [v22 rawIdentifier];
+    identifier4 = [v12 identifier];
+    rawIdentifier4 = [identifier4 rawIdentifier];
 
-    if (v23 == 653)
+    if (rawIdentifier4 == 653)
     {
       v15 = 4;
       goto LABEL_18;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:1003 format:{@"Could not determine correct severity type for severity concept with identifier: %@", v8}];
+    [MEMORY[0x277CCA9B8] hk_assignError:out code:1003 format:{@"Could not determine correct severity type for severity concept with identifier: %@", v8}];
     _HKInitializeLogging();
     v16 = HKLogMedication();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2262,13 +2262,13 @@ LABEL_11:
   v15 = 1;
 LABEL_18:
   v24 = objc_alloc(MEMORY[0x277D11520]);
-  v25 = [v12 validInRegions];
-  v16 = [v24 initWithSeverityLevel:v15 validRegionCodes:v25];
+  validInRegions = [v12 validInRegions];
+  v16 = [v24 initWithSeverityLevel:v15 validRegionCodes:validInRegions];
 
-  if (a4)
+  if (transaction)
   {
     v26 = v16;
-    *a4 = v16;
+    *transaction = v16;
   }
 
   v17 = 1;
@@ -2277,11 +2277,11 @@ LABEL_21:
   return v17;
 }
 
-+ (NSObject)_interactionClassConceptsForConcept:(void *)a3 ontologyTransaction:(void *)a4 error:
++ (NSObject)_interactionClassConceptsForConcept:(void *)concept ontologyTransaction:(void *)transaction error:
 {
   v62 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v49 = a3;
+  conceptCopy = concept;
   v6 = objc_opt_self();
   if (!v5)
   {
@@ -2289,8 +2289,8 @@ LABEL_21:
   }
 
   v7 = v5;
-  v8 = [v7 relationships];
-  if (v8 && (v9 = v8, [v7 relationships], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v9, v11))
+  relationships = [v7 relationships];
+  if (relationships && (v9 = relationships, [v7 relationships], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v9, v11))
   {
     v51 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v12 = [MEMORY[0x277CBEB98] setWithArray:&unk_2863C2C48];
@@ -2336,8 +2336,8 @@ LABEL_21:
               v53 = 0u;
               v54 = 0u;
               v55 = 0u;
-              v22 = [v21 relationships];
-              v23 = [v22 countByEnumeratingWithState:&v52 objects:v60 count:16];
+              relationships2 = [v21 relationships];
+              v23 = [relationships2 countByEnumeratingWithState:&v52 objects:v60 count:16];
               if (v23)
               {
                 v24 = v23;
@@ -2348,7 +2348,7 @@ LABEL_21:
                   {
                     if (*v53 != v25)
                     {
-                      objc_enumerationMutation(v22);
+                      objc_enumerationMutation(relationships2);
                     }
 
                     v27 = *(*(&v52 + 1) + 8 * i);
@@ -2357,13 +2357,13 @@ LABEL_21:
 
                     if (v29)
                     {
-                      v30 = [v27 destination];
-                      if (([v30 relationshipsAreLoaded] & 1) == 0)
+                      destination = [v27 destination];
+                      if (([destination relationshipsAreLoaded] & 1) == 0)
                       {
-                        v31 = [v30 identifier];
-                        v32 = [HDDrugInteractionEngine _fetchKnownConceptWithIdentifier:v31 ontologyTransaction:v49 errorOut:a4];
+                        identifier = [destination identifier];
+                        v32 = [HDDrugInteractionEngine _fetchKnownConceptWithIdentifier:identifier ontologyTransaction:conceptCopy errorOut:transaction];
 
-                        v30 = v32;
+                        destination = v32;
                         if (!v32)
                         {
                           _HKInitializeLogging();
@@ -2389,11 +2389,11 @@ LABEL_21:
                         v33 = v50;
                       }
 
-                      [v33 addObject:v30];
+                      [v33 addObject:destination];
                     }
                   }
 
-                  v24 = [v22 countByEnumeratingWithState:&v52 objects:v60 count:16];
+                  v24 = [relationships2 countByEnumeratingWithState:&v52 objects:v60 count:16];
                   if (v24)
                   {
                     continue;
@@ -2440,9 +2440,9 @@ LABEL_40:
   else
   {
     v36 = MEMORY[0x277CCA9B8];
-    v37 = [v7 identifier];
-    v38 = [v7 identifier];
-    [v36 hk_assignError:a4 code:1003 format:{@"Could not find any relationships for concept: %@ with starting concept: %@", v37, v38}];
+    identifier2 = [v7 identifier];
+    identifier3 = [v7 identifier];
+    [v36 hk_assignError:transaction code:1003 format:{@"Could not find any relationships for concept: %@ with starting concept: %@", identifier2, identifier3}];
 
     _HKInitializeLogging();
     v51 = HKLogMedication();

@@ -1,39 +1,39 @@
 @interface BMSafariNavigations
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSafariNavigations)initWithDomain:(id)a3 visited:(id)a4 platform:(int)a5 userAgent:(int)a6 countryCode:(id)a7 privacyProxy:(id)a8 error:(int)a9 url:(id)a10 privateRelayVendorName:(id)a11;
-- (BMSafariNavigations)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSafariNavigations)initWithDomain:(id)domain visited:(id)visited platform:(int)platform userAgent:(int)agent countryCode:(id)code privacyProxy:(id)proxy error:(int)error url:(id)self0 privateRelayVendorName:(id)self1;
+- (BMSafariNavigations)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)visited;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSafariNavigations
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSafariNavigations *)self domain];
-    v7 = [v5 domain];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    domain = [(BMSafariNavigations *)self domain];
+    domain2 = [v5 domain];
+    v8 = domain2;
+    if (domain == domain2)
     {
     }
 
     else
     {
-      v9 = [(BMSafariNavigations *)self domain];
-      v10 = [v5 domain];
-      v11 = [v9 isEqual:v10];
+      domain3 = [(BMSafariNavigations *)self domain];
+      domain4 = [v5 domain];
+      v11 = [domain3 isEqual:domain4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMSafariNavigations *)self visited];
-    v14 = [v5 visited];
-    v15 = v14;
-    if (v13 == v14)
+    visited = [(BMSafariNavigations *)self visited];
+    visited2 = [v5 visited];
+    v15 = visited2;
+    if (visited == visited2)
     {
     }
 
     else
     {
-      v16 = [(BMSafariNavigations *)self visited];
-      v17 = [v5 visited];
-      v18 = [v16 isEqual:v17];
+      visited3 = [(BMSafariNavigations *)self visited];
+      visited4 = [v5 visited];
+      v18 = [visited3 isEqual:visited4];
 
       if (!v18)
       {
@@ -60,30 +60,30 @@
       }
     }
 
-    v19 = [(BMSafariNavigations *)self platform];
-    if (v19 != [v5 platform])
+    platform = [(BMSafariNavigations *)self platform];
+    if (platform != [v5 platform])
     {
       goto LABEL_25;
     }
 
-    v20 = [(BMSafariNavigations *)self userAgent];
-    if (v20 != [v5 userAgent])
+    userAgent = [(BMSafariNavigations *)self userAgent];
+    if (userAgent != [v5 userAgent])
     {
       goto LABEL_25;
     }
 
-    v21 = [(BMSafariNavigations *)self countryCode];
-    v22 = [v5 countryCode];
-    v23 = v22;
-    if (v21 == v22)
+    countryCode = [(BMSafariNavigations *)self countryCode];
+    countryCode2 = [v5 countryCode];
+    v23 = countryCode2;
+    if (countryCode == countryCode2)
     {
     }
 
     else
     {
-      v24 = [(BMSafariNavigations *)self countryCode];
-      v25 = [v5 countryCode];
-      v26 = [v24 isEqual:v25];
+      countryCode3 = [(BMSafariNavigations *)self countryCode];
+      countryCode4 = [v5 countryCode];
+      v26 = [countryCode3 isEqual:countryCode4];
 
       if (!v26)
       {
@@ -103,15 +103,15 @@
         goto LABEL_25;
       }
 
-      v27 = [(BMSafariNavigations *)self privacyProxy];
-      if (v27 != [v5 privacyProxy])
+      privacyProxy = [(BMSafariNavigations *)self privacyProxy];
+      if (privacyProxy != [v5 privacyProxy])
       {
         goto LABEL_25;
       }
     }
 
-    v28 = [(BMSafariNavigations *)self error];
-    if (v28 != [v5 error])
+    error = [(BMSafariNavigations *)self error];
+    if (error != [v5 error])
     {
       goto LABEL_25;
     }
@@ -139,18 +139,18 @@ LABEL_26:
       }
     }
 
-    v36 = [(BMSafariNavigations *)self privateRelayVendorName];
-    v37 = [v5 privateRelayVendorName];
-    if (v36 == v37)
+    privateRelayVendorName = [(BMSafariNavigations *)self privateRelayVendorName];
+    privateRelayVendorName2 = [v5 privateRelayVendorName];
+    if (privateRelayVendorName == privateRelayVendorName2)
     {
       v12 = 1;
     }
 
     else
     {
-      v38 = [(BMSafariNavigations *)self privateRelayVendorName];
-      v39 = [v5 privateRelayVendorName];
-      v12 = [v38 isEqual:v39];
+      privateRelayVendorName3 = [(BMSafariNavigations *)self privateRelayVendorName];
+      privateRelayVendorName4 = [v5 privateRelayVendorName];
+      v12 = [privateRelayVendorName3 isEqual:privateRelayVendorName4];
     }
 
     goto LABEL_26;
@@ -182,13 +182,13 @@ LABEL_27:
 - (id)jsonDictionary
 {
   v35[9] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSafariNavigations *)self domain];
-  v4 = [(BMSafariNavigations *)self visited];
-  if (v4)
+  domain = [(BMSafariNavigations *)self domain];
+  visited = [(BMSafariNavigations *)self visited];
+  if (visited)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(BMSafariNavigations *)self visited];
-    [v6 timeIntervalSince1970];
+    visited2 = [(BMSafariNavigations *)self visited];
+    [visited2 timeIntervalSince1970];
     v7 = [v5 numberWithDouble:?];
   }
 
@@ -199,7 +199,7 @@ LABEL_27:
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSafariNavigations platform](self, "platform")}];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSafariNavigations userAgent](self, "userAgent")}];
-  v10 = [(BMSafariNavigations *)self countryCode];
+  countryCode = [(BMSafariNavigations *)self countryCode];
   if ([(BMSafariNavigations *)self hasPrivacyProxy])
   {
     v33 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSafariNavigations privacyProxy](self, "privacyProxy")}];
@@ -212,88 +212,88 @@ LABEL_27:
 
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSafariNavigations error](self, "error")}];
   v12 = [(BMSafariNavigations *)self url];
-  v13 = [(BMSafariNavigations *)self privateRelayVendorName];
+  privateRelayVendorName = [(BMSafariNavigations *)self privateRelayVendorName];
   v34[0] = @"domain";
-  v14 = v3;
-  if (!v3)
+  null = domain;
+  if (!domain)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v14;
-  v35[0] = v14;
+  v28 = null;
+  v35[0] = null;
   v34[1] = @"visited";
-  v15 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v15;
-  v35[1] = v15;
+  v27 = null2;
+  v35[1] = null2;
   v34[2] = @"platform";
-  v16 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v16;
-  v35[2] = v16;
+  v26 = null3;
+  v35[2] = null3;
   v34[3] = @"userAgent";
-  v17 = v9;
+  null4 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v3;
-  v25 = v17;
-  v35[3] = v17;
+  v32 = domain;
+  v25 = null4;
+  v35[3] = null4;
   v34[4] = @"countryCode";
-  v18 = v10;
-  if (!v10)
+  null5 = countryCode;
+  if (!countryCode)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v31 = v7;
-  v35[4] = v18;
+  v35[4] = null5;
   v34[5] = @"privacyProxy";
-  v19 = v33;
+  null6 = v33;
   if (!v33)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v9;
-  v35[5] = v19;
+  v35[5] = null6;
   v34[6] = @"error";
-  v20 = v11;
+  null7 = v11;
   if (!v11)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[6] = v20;
+  v35[6] = null7;
   v34[7] = @"url";
-  v21 = v12;
+  null8 = v12;
   if (!v12)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[7] = v21;
+  v35[7] = null8;
   v34[8] = @"privateRelayVendorName";
-  v22 = v13;
-  if (!v13)
+  null9 = privateRelayVendorName;
+  if (!privateRelayVendorName)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[8] = v22;
+  v35[8] = null9;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:9];
-  if (v13)
+  if (privateRelayVendorName)
   {
     if (v12)
     {
@@ -319,7 +319,7 @@ LABEL_27:
   {
   }
 
-  if (!v10)
+  if (!countryCode)
   {
   }
 
@@ -372,16 +372,16 @@ LABEL_37:
   return v29;
 }
 
-- (BMSafariNavigations)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSafariNavigations)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v101[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"domain"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"visited"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"visited"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -410,7 +410,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v83 = 0;
             v19 = 0;
@@ -418,7 +418,7 @@ LABEL_4:
           }
 
           v61 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v62 = a4;
+          errorCopy = error;
           v63 = *MEMORY[0x1E698F240];
           v98 = *MEMORY[0x1E696A578];
           v82 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"visited"];
@@ -426,7 +426,7 @@ LABEL_4:
           v80 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v99 forKeys:&v98 count:1];
           v83 = 0;
           v19 = 0;
-          *v62 = [v61 initWithDomain:v63 code:2 userInfo:?];
+          *errorCopy = [v61 initWithDomain:v63 code:2 userInfo:?];
           goto LABEL_79;
         }
 
@@ -442,7 +442,7 @@ LABEL_4:
     }
 
 LABEL_16:
-    v21 = [v6 objectForKeyedSubscript:@"platform"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"platform"];
     v80 = v21;
     if (v21 && (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -454,11 +454,11 @@ LABEL_16:
 
       else
       {
-        v79 = self;
+        selfCopy2 = self;
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v82 = 0;
             v19 = 0;
@@ -466,7 +466,7 @@ LABEL_16:
           }
 
           v46 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v47 = a4;
+          errorCopy2 = error;
           v48 = *MEMORY[0x1E698F240];
           v96 = *MEMORY[0x1E696A578];
           v81 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"platform"];
@@ -474,7 +474,7 @@ LABEL_16:
           v77 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v97 forKeys:&v96 count:1];
           v82 = 0;
           v19 = 0;
-          *v47 = [v46 initWithDomain:v48 code:2 userInfo:?];
+          *errorCopy2 = [v46 initWithDomain:v48 code:2 userInfo:?];
           goto LABEL_95;
         }
 
@@ -487,20 +487,20 @@ LABEL_16:
       v82 = 0;
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"userAgent"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"userAgent"];
     v77 = v23;
     if (!v23 || (v24 = v23, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v81 = 0;
 LABEL_22:
-      v25 = [v6 objectForKeyedSubscript:@"countryCode"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
       v74 = v9;
       if (v25 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v32 = 0;
             v19 = 0;
@@ -508,7 +508,7 @@ LABEL_22:
           }
 
           v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v69 = a4;
+          errorCopy3 = error;
           v30 = *MEMORY[0x1E698F240];
           v92 = *MEMORY[0x1E696A578];
           v78 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"countryCode"];
@@ -517,7 +517,7 @@ LABEL_22:
           v31 = [v29 initWithDomain:v30 code:2 userInfo:v26];
           v32 = 0;
           v19 = 0;
-          *v69 = v31;
+          *errorCopy3 = v31;
           goto LABEL_76;
         }
 
@@ -529,14 +529,14 @@ LABEL_22:
         v72 = 0;
       }
 
-      v26 = [v6 objectForKeyedSubscript:@"privacyProxy"];
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"privacyProxy"];
       v71 = v25;
       if (v26 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v78 = 0;
             v19 = 0;
@@ -547,14 +547,14 @@ LABEL_22:
           v33 = objc_alloc(MEMORY[0x1E696ABC0]);
           v34 = *MEMORY[0x1E698F240];
           v90 = *MEMORY[0x1E696A578];
-          v35 = a4;
+          errorCopy4 = error;
           v75 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"privacyProxy"];
           v91 = v75;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
           v36 = [v33 initWithDomain:v34 code:2 userInfo:v27];
           v78 = 0;
           v19 = 0;
-          *v35 = v36;
+          *errorCopy4 = v36;
           v32 = v72;
 LABEL_75:
 
@@ -570,17 +570,17 @@ LABEL_79:
           goto LABEL_80;
         }
 
-        v68 = a4;
+        errorCopy6 = error;
         v78 = v26;
       }
 
       else
       {
-        v68 = a4;
+        errorCopy6 = error;
         v78 = 0;
       }
 
-      v27 = [v6 objectForKeyedSubscript:@"error"];
+      v27 = [dictionaryCopy objectForKeyedSubscript:@"error"];
       v73 = v8;
       if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
@@ -595,7 +595,7 @@ LABEL_79:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v68)
+            if (!errorCopy6)
             {
               v75 = 0;
               v19 = 0;
@@ -612,7 +612,7 @@ LABEL_79:
             v60 = [v76 initWithDomain:v59 code:2 userInfo:v37];
             v75 = 0;
             v19 = 0;
-            *v68 = v60;
+            *errorCopy6 = v60;
             goto LABEL_92;
           }
 
@@ -627,7 +627,7 @@ LABEL_79:
         v75 = 0;
       }
 
-      v37 = [v6 objectForKeyedSubscript:@"url"];
+      v37 = [dictionaryCopy objectForKeyedSubscript:@"url"];
       v70 = v7;
       if (!v37 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -640,17 +640,17 @@ LABEL_79:
       {
         v38 = v37;
 LABEL_55:
-        v39 = [v6 objectForKeyedSubscript:@"privateRelayVendorName"];
+        v39 = [dictionaryCopy objectForKeyedSubscript:@"privateRelayVendorName"];
         if (!v39 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v40 = 0;
 LABEL_58:
-          v41 = [v82 intValue];
-          v42 = [v81 intValue];
+          intValue = [v82 intValue];
+          intValue2 = [v81 intValue];
           LODWORD(v64) = [v75 intValue];
-          v43 = v42;
+          v43 = intValue2;
           v32 = v72;
-          v19 = [(BMSafariNavigations *)self initWithDomain:v73 visited:v83 platform:v41 userAgent:v43 countryCode:v72 privacyProxy:v78 error:v64 url:v38 privateRelayVendorName:v40];
+          v19 = [(BMSafariNavigations *)self initWithDomain:v73 visited:v83 platform:intValue userAgent:v43 countryCode:v72 privacyProxy:v78 error:v64 url:v38 privateRelayVendorName:v40];
           self = v19;
 LABEL_73:
 
@@ -668,8 +668,8 @@ LABEL_74:
           goto LABEL_58;
         }
 
-        v40 = v68;
-        if (v68)
+        v40 = errorCopy6;
+        if (errorCopy6)
         {
           v67 = objc_alloc(MEMORY[0x1E696ABC0]);
           v65 = *MEMORY[0x1E698F240];
@@ -677,7 +677,7 @@ LABEL_74:
           v49 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"privateRelayVendorName"];
           v85 = v49;
           v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-          *v68 = [v67 initWithDomain:v65 code:2 userInfo:v50];
+          *errorCopy6 = [v67 initWithDomain:v65 code:2 userInfo:v50];
 
           v40 = 0;
         }
@@ -688,7 +688,7 @@ LABEL_72:
         goto LABEL_73;
       }
 
-      if (v68)
+      if (errorCopy6)
       {
         v66 = objc_alloc(MEMORY[0x1E696ABC0]);
         v44 = *MEMORY[0x1E698F240];
@@ -699,7 +699,7 @@ LABEL_72:
         v45 = [v66 initWithDomain:v44 code:2 userInfo:v39];
         v38 = 0;
         v19 = 0;
-        *v68 = v45;
+        *errorCopy6 = v45;
         goto LABEL_72;
       }
 
@@ -717,7 +717,7 @@ LABEL_92:
       goto LABEL_22;
     }
 
-    v79 = self;
+    selfCopy2 = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -725,10 +725,10 @@ LABEL_92:
       goto LABEL_22;
     }
 
-    if (a4)
+    if (error)
     {
       v53 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v54 = a4;
+      errorCopy7 = error;
       v55 = *MEMORY[0x1E698F240];
       v94 = *MEMORY[0x1E696A578];
       v56 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"userAgent"];
@@ -738,7 +738,7 @@ LABEL_92:
       v25 = v57;
       v81 = 0;
       v19 = 0;
-      *v54 = [v58 initWithDomain:v55 code:2 userInfo:v57];
+      *errorCopy7 = [v58 initWithDomain:v55 code:2 userInfo:v57];
       v32 = v56;
       goto LABEL_77;
     }
@@ -746,7 +746,7 @@ LABEL_92:
     v81 = 0;
     v19 = 0;
 LABEL_95:
-    self = v79;
+    self = selfCopy2;
     goto LABEL_78;
   }
 
@@ -757,7 +757,7 @@ LABEL_95:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v19 = 0;
@@ -765,7 +765,7 @@ LABEL_95:
   }
 
   v16 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v17 = a4;
+  errorCopy8 = error;
   v18 = *MEMORY[0x1E698F240];
   v100 = *MEMORY[0x1E696A578];
   v83 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"domain"];
@@ -773,7 +773,7 @@ LABEL_95:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v101 forKeys:&v100 count:1];
   v8 = 0;
   v19 = 0;
-  *v17 = [v16 initWithDomain:v18 code:2 userInfo:v9];
+  *errorCopy8 = [v16 initWithDomain:v18 code:2 userInfo:v9];
 LABEL_80:
 
 LABEL_81:
@@ -785,14 +785,14 @@ LABEL_81:
 {
   v3 = objc_opt_new();
   [(BMSafariNavigations *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -832,9 +832,9 @@ LABEL_81:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v50.receiver = self;
   v50.super_class = BMSafariNavigations;
   v5 = [(BMEventBase *)&v50 init];
@@ -843,12 +843,12 @@ LABEL_81:
     goto LABEL_96;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -859,18 +859,18 @@ LABEL_81:
       while (1)
       {
         LOBYTE(v51) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v51) & 0x7F) << v7;
@@ -888,9 +888,9 @@ LABEL_81:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -908,18 +908,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v51) = 0;
-              v41 = [v4 position] + 1;
-              if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 1, v42 <= objc_msgSend(v4, "length")))
+              v41 = [fromCopy position] + 1;
+              if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 1, v42 <= objc_msgSend(fromCopy, "length")))
               {
-                v43 = [v4 data];
-                [v43 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (LOBYTE(v51) & 0x7F) << v39;
@@ -936,7 +936,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 3)
             {
 LABEL_84:
               LODWORD(v18) = 0;
@@ -958,18 +958,18 @@ LABEL_84:
             while (1)
             {
               LOBYTE(v51) = 0;
-              v27 = [v4 position] + 1;
-              if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+              v27 = [fromCopy position] + 1;
+              if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
               {
-                v29 = [v4 data];
-                [v29 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (LOBYTE(v51) & 0x7F) << v25;
@@ -986,7 +986,7 @@ LABEL_84:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 2)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 2)
             {
 LABEL_78:
               LODWORD(v18) = 0;
@@ -1016,18 +1016,18 @@ LABEL_73:
 
         v5->_hasRaw_visited = 1;
         v51 = 0.0;
-        v23 = [v4 position] + 8;
-        if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 8, v24 <= objc_msgSend(v4, "length")))
+        v23 = [fromCopy position] + 8;
+        if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 8, v24 <= objc_msgSend(fromCopy, "length")))
         {
-          v46 = [v4 data];
-          [v46 getBytes:&v51 range:{objc_msgSend(v4, "position"), 8}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_visited = v51;
@@ -1054,18 +1054,18 @@ LABEL_73:
               while (1)
               {
                 LOBYTE(v51) = 0;
-                v19 = [v4 position] + 1;
-                if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+                v19 = [fromCopy position] + 1;
+                if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v21 = [v4 data];
-                  [v21 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+                  data5 = [fromCopy data];
+                  [data5 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v18 |= (LOBYTE(v51) & 0x7F) << v16;
@@ -1082,7 +1082,7 @@ LABEL_73:
                 }
               }
 
-              if (([v4 hasError] & 1) != 0 || v18 > 0x25)
+              if (([fromCopy hasError] & 1) != 0 || v18 > 0x25)
               {
 LABEL_88:
                 LODWORD(v18) = 0;
@@ -1124,18 +1124,18 @@ LABEL_74:
         while (1)
         {
           LOBYTE(v51) = 0;
-          v33 = [v4 position] + 1;
-          if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+          v33 = [fromCopy position] + 1;
+          if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
           {
-            v35 = [v4 data];
-            [v35 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v32 |= (LOBYTE(v51) & 0x7F) << v30;
@@ -1153,19 +1153,19 @@ LABEL_74:
           }
         }
 
-        v36 = (v32 != 0) & ~[v4 hasError];
+        v36 = (v32 != 0) & ~[fromCopy hasError];
 LABEL_81:
         v5->_privacyProxy = v36;
       }
 
 LABEL_93:
-      v47 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v47 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_95:
     v48 = 0;
@@ -1183,39 +1183,39 @@ LABEL_96:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSafariNavigations *)self domain];
-  v5 = [(BMSafariNavigations *)self visited];
+  domain = [(BMSafariNavigations *)self domain];
+  visited = [(BMSafariNavigations *)self visited];
   v6 = BMSafariNavigationsPlatformAsString([(BMSafariNavigations *)self platform]);
   v7 = BMSafariNavigationsDeviceClassAsString([(BMSafariNavigations *)self userAgent]);
-  v8 = [(BMSafariNavigations *)self countryCode];
+  countryCode = [(BMSafariNavigations *)self countryCode];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSafariNavigations privacyProxy](self, "privacyProxy")}];
   v10 = BMSafariNavigationsErrorResponseAsString([(BMSafariNavigations *)self error]);
   v11 = [(BMSafariNavigations *)self url];
-  v12 = [(BMSafariNavigations *)self privateRelayVendorName];
-  v13 = [v3 initWithFormat:@"BMSafariNavigations with domain: %@, visited: %@, platform: %@, userAgent: %@, countryCode: %@, privacyProxy: %@, error: %@, url: %@, privateRelayVendorName: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  privateRelayVendorName = [(BMSafariNavigations *)self privateRelayVendorName];
+  v13 = [v3 initWithFormat:@"BMSafariNavigations with domain: %@, visited: %@, platform: %@, userAgent: %@, countryCode: %@, privacyProxy: %@, error: %@, url: %@, privateRelayVendorName: %@", domain, visited, v6, v7, countryCode, v9, v10, v11, privateRelayVendorName];
 
   return v13;
 }
 
-- (BMSafariNavigations)initWithDomain:(id)a3 visited:(id)a4 platform:(int)a5 userAgent:(int)a6 countryCode:(id)a7 privacyProxy:(id)a8 error:(int)a9 url:(id)a10 privateRelayVendorName:(id)a11
+- (BMSafariNavigations)initWithDomain:(id)domain visited:(id)visited platform:(int)platform userAgent:(int)agent countryCode:(id)code privacyProxy:(id)proxy error:(int)error url:(id)self0 privateRelayVendorName:(id)self1
 {
-  v26 = a3;
-  v17 = a4;
-  v25 = a7;
-  v18 = a8;
-  v19 = a10;
-  v20 = a11;
+  domainCopy = domain;
+  visitedCopy = visited;
+  codeCopy = code;
+  proxyCopy = proxy;
+  urlCopy = url;
+  nameCopy = name;
   v27.receiver = self;
   v27.super_class = BMSafariNavigations;
   v21 = [(BMEventBase *)&v27 init];
   if (v21)
   {
     v21->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v21->_domain, a3);
-    if (v17)
+    objc_storeStrong(&v21->_domain, domain);
+    if (visitedCopy)
     {
       v21->_hasRaw_visited = 1;
-      [v17 timeIntervalSince1970];
+      [visitedCopy timeIntervalSince1970];
     }
 
     else
@@ -1225,13 +1225,13 @@ LABEL_96:
     }
 
     v21->_raw_visited = v22;
-    v21->_platform = a5;
-    v21->_userAgent = a6;
-    objc_storeStrong(&v21->_countryCode, a7);
-    if (v18)
+    v21->_platform = platform;
+    v21->_userAgent = agent;
+    objc_storeStrong(&v21->_countryCode, code);
+    if (proxyCopy)
     {
       v21->_hasPrivacyProxy = 1;
-      v21->_privacyProxy = [v18 BOOLValue];
+      v21->_privacyProxy = [proxyCopy BOOLValue];
     }
 
     else
@@ -1240,9 +1240,9 @@ LABEL_96:
       v21->_privacyProxy = 0;
     }
 
-    v21->_error = a9;
-    objc_storeStrong(&v21->_url, a10);
-    objc_storeStrong(&v21->_privateRelayVendorName, a11);
+    v21->_error = error;
+    objc_storeStrong(&v21->_url, url);
+    objc_storeStrong(&v21->_privateRelayVendorName, name);
   }
 
   return v21;
@@ -1303,9 +1303,9 @@ LABEL_96:
   return v11;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1313,8 +1313,8 @@ LABEL_96:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSafariNavigations alloc] initByReadFrom:v7];
     v4 = v8;

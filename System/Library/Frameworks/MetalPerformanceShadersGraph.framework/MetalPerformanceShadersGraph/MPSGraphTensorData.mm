@@ -1,29 +1,29 @@
 @interface MPSGraphTensorData
 - (MPSGraphTensorData)initWithDevice:(MPSGraphDevice *)device data:(NSData *)data shape:(MPSShape *)shape dataType:(MPSDataType)dataType;
-- (MPSGraphTensorData)initWithDevice:(id)a3 IOSurface:(__IOSurface *)a4 rowBytesAlignment:(unint64_t)a5 shape:(id)a6 dataType:(unsigned int)a7;
-- (MPSGraphTensorData)initWithDevice:(id)a3 rowBytesAlignment:(unint64_t)a4 shape:(id)a5 dataType:(unsigned int)a6;
+- (MPSGraphTensorData)initWithDevice:(id)device IOSurface:(__IOSurface *)surface rowBytesAlignment:(unint64_t)alignment shape:(id)shape dataType:(unsigned int)type;
+- (MPSGraphTensorData)initWithDevice:(id)device rowBytesAlignment:(unint64_t)alignment shape:(id)shape dataType:(unsigned int)type;
 - (MPSGraphTensorData)initWithMPSImageBatch:(MPSImageBatch *)imageBatch;
 - (MPSGraphTensorData)initWithMPSMatrix:(MPSMatrix *)matrix;
 - (MPSGraphTensorData)initWithMPSMatrix:(MPSMatrix *)matrix rank:(NSUInteger)rank;
 - (MPSGraphTensorData)initWithMPSNDArray:(MPSNDArray *)ndarray;
-- (MPSGraphTensorData)initWithMPSNDArray:(id)a3 device:(id)a4;
+- (MPSGraphTensorData)initWithMPSNDArray:(id)array device:(id)device;
 - (MPSGraphTensorData)initWithMPSVector:(MPSVector *)vector;
 - (MPSGraphTensorData)initWithMPSVector:(MPSVector *)vector rank:(NSUInteger)rank;
-- (MPSGraphTensorData)initWithMTLBuffer:(id)a3 shape:(id)a4 strideBytes:(id)a5 dataType:(unsigned int)a6;
-- (MPSGraphTensorData)initWithMTLBuffer:(id)a3 shape:(id)a4 strides:(id)a5 dataType:(unsigned int)a6;
-- (MPSGraphTensorData)initWithMTLBuffer:(id)a3 shape:(id)a4 strides:(id)a5 interleaves:(id)a6 dataType:(unsigned int)a7;
 - (MPSGraphTensorData)initWithMTLBuffer:(id)buffer shape:(MPSShape *)shape dataType:(MPSDataType)dataType;
 - (MPSGraphTensorData)initWithMTLBuffer:(id)buffer shape:(MPSShape *)shape dataType:(MPSDataType)dataType rowBytes:(NSUInteger)rowBytes;
-- (MPSGraphTensorData)initWithMTLTensor:(id)a3;
+- (MPSGraphTensorData)initWithMTLBuffer:(id)buffer shape:(id)shape strideBytes:(id)bytes dataType:(unsigned int)type;
+- (MPSGraphTensorData)initWithMTLBuffer:(id)buffer shape:(id)shape strides:(id)strides dataType:(unsigned int)type;
+- (MPSGraphTensorData)initWithMTLBuffer:(id)buffer shape:(id)shape strides:(id)strides interleaves:(id)interleaves dataType:(unsigned int)type;
+- (MPSGraphTensorData)initWithMTLTensor:(id)tensor;
 - (MPSNDArray)mpsndarray;
 - (MPSShape)shape;
 - (__IOSurface)iosurface;
 - (__n128)getShapeVector;
-- (id)checkTensorData:(const float *)a3 nativeUlps:(float)a4 absoluteErr:(float)a5 PSNR:(float)a6;
-- (id)checkWithReferenceTensorData:(id)a3 nativeUlps:(float)a4 absoluteError:(float)a5 PSNR:(float)a6;
+- (id)checkTensorData:(const float *)data nativeUlps:(float)ulps absoluteErr:(float)err PSNR:(float)r;
+- (id)checkWithReferenceTensorData:(id)data nativeUlps:(float)ulps absoluteError:(float)error PSNR:(float)r;
 - (id)debugDescription;
-- (id)initEmptyWithShape:(id)a3 dataType:(unsigned int)a4 device:(id)a5;
-- (id)mpsndarrayWithCommandBuffer:(id)a3;
+- (id)initEmptyWithShape:(id)shape dataType:(unsigned int)type device:(id)device;
+- (id)mpsndarrayWithCommandBuffer:(id)buffer;
 - (void)commonInitialize;
 - (void)dealloc;
 - (void)print;
@@ -55,10 +55,10 @@
     result = *(&mpsndarray->super.isa + *MEMORY[0x1E69744E0]);
     if (!result)
     {
-      v5 = [(MPSNDArray *)mpsndarray buffer];
-      v6 = [v5 _aneIOSurface];
+      buffer = [(MPSNDArray *)mpsndarray buffer];
+      _aneIOSurface = [buffer _aneIOSurface];
 
-      return v6;
+      return _aneIOSurface;
     }
   }
 
@@ -111,10 +111,10 @@
 
 - (__n128)getShapeVector
 {
-  result = *(a1 + 32);
-  v3 = *(a1 + 48);
-  v4 = *(a1 + 80);
-  *(a2 + 32) = *(a1 + 64);
+  result = *(self + 32);
+  v3 = *(self + 48);
+  v4 = *(self + 80);
+  *(a2 + 32) = *(self + 64);
   *(a2 + 48) = v4;
   *a2 = result;
   *(a2 + 16) = v3;
@@ -215,16 +215,16 @@
 
   v10->_rank = v15;
   v10->_dataType = v5;
-  v18 = [v8 device];
-  v19 = [MPSGraphDevice deviceWithMTLDevice:v18];
+  device = [v8 device];
+  v19 = [MPSGraphDevice deviceWithMTLDevice:device];
   device = v11->_device;
   v11->_device = v19;
 
-  v21 = [v8 iosurface];
-  v11->_iosurface = v21;
-  if (v21)
+  iosurface = [v8 iosurface];
+  v11->_iosurface = iosurface;
+  if (iosurface)
   {
-    CFRetain(v21);
+    CFRetain(iosurface);
   }
 
   v22 = MEMORY[0x1E6974490];
@@ -284,26 +284,26 @@
 
   v11->_rank = v16;
   v11->_dataType = v7;
-  v19 = [v10 device];
-  v20 = [MPSGraphDevice deviceWithMTLDevice:v19];
+  device = [v10 device];
+  v20 = [MPSGraphDevice deviceWithMTLDevice:device];
   device = v12->_device;
   v12->_device = v20;
 
-  v22 = [v10 iosurface];
-  v12->_iosurface = v22;
-  if (v22)
+  iosurface = [v10 iosurface];
+  v12->_iosurface = iosurface;
+  if (iosurface)
   {
-    CFRetain(v22);
+    CFRetain(iosurface);
   }
 
   rank = v12->_rank;
   if (rank)
   {
     v24 = [(MPSShape *)v13 objectAtIndexedSubscript:rank - 1];
-    v25 = [v24 longLongValue];
+    longLongValue = [v24 longLongValue];
 
     v26 = v7 >> 3;
-    if (v25 * v26 <= rowBytes)
+    if (longLongValue * v26 <= rowBytes)
     {
       goto LABEL_13;
     }
@@ -343,35 +343,35 @@ LABEL_13:
   return v12;
 }
 
-- (MPSGraphTensorData)initWithMTLBuffer:(id)a3 shape:(id)a4 strides:(id)a5 dataType:(unsigned int)a6
+- (MPSGraphTensorData)initWithMTLBuffer:(id)buffer shape:(id)shape strides:(id)strides dataType:(unsigned int)type
 {
-  v6 = *&a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
-  for (i = 0; i < [v11 count]; ++i)
+  v6 = *&type;
+  bufferCopy = buffer;
+  shapeCopy = shape;
+  stridesCopy = strides;
+  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(shapeCopy, "count")}];
+  for (i = 0; i < [shapeCopy count]; ++i)
   {
     [v13 addObject:&unk_1F5B75950];
   }
 
-  v15 = [(MPSGraphTensorData *)self initWithMTLBuffer:v10 shape:v11 strides:v12 interleaves:v13 dataType:v6];
+  v15 = [(MPSGraphTensorData *)self initWithMTLBuffer:bufferCopy shape:shapeCopy strides:stridesCopy interleaves:v13 dataType:v6];
 
   return v15;
 }
 
-- (MPSGraphTensorData)initWithMTLBuffer:(id)a3 shape:(id)a4 strides:(id)a5 interleaves:(id)a6 dataType:(unsigned int)a7
+- (MPSGraphTensorData)initWithMTLBuffer:(id)buffer shape:(id)shape strides:(id)strides interleaves:(id)interleaves dataType:(unsigned int)type
 {
   v88[15] = *MEMORY[0x1E69E9840];
-  v70 = a3;
-  v67 = a4;
-  v72 = a5;
-  v73 = a6;
+  bufferCopy = buffer;
+  shapeCopy = shape;
+  stridesCopy = strides;
+  interleavesCopy = interleaves;
   v75.receiver = self;
   v75.super_class = MPSGraphTensorData;
   v11 = [(MPSGraphTensorData *)&v75 init];
   v11->_tensorDataType = 0;
-  v74 = v67;
+  v74 = shapeCopy;
   v12 = [v74 count];
   *&v13 = 0x100000001;
   *(&v13 + 1) = 0x100000001;
@@ -404,41 +404,41 @@ LABEL_13:
   }
 
   v11->_rank = v14;
-  v11->_dataType = a7;
-  v17 = [v70 device];
-  v18 = [MPSGraphDevice deviceWithMTLDevice:v17];
+  v11->_dataType = type;
+  device = [bufferCopy device];
+  v18 = [MPSGraphDevice deviceWithMTLDevice:device];
   device = v11->_device;
   v11->_device = v18;
 
-  v20 = [v70 iosurface];
-  v11->_iosurface = v20;
-  if (v20)
+  iosurface = [bufferCopy iosurface];
+  v11->_iosurface = iosurface;
+  if (iosurface)
   {
-    CFRetain(v20);
+    CFRetain(iosurface);
   }
 
   [v74 count];
-  [v72 count];
+  [stridesCopy count];
   v21 = [v74 count];
-  if (v21 != [v72 count] && MTLReportFailureTypeEnabled())
+  if (v21 != [stridesCopy count] && MTLReportFailureTypeEnabled())
   {
     v62 = [v74 count];
-    v65 = [v72 count];
+    v65 = [stridesCopy count];
     MTLReportFailure();
   }
 
   [v74 count];
-  [v73 count];
+  [interleavesCopy count];
   v22 = [v74 count];
-  if (v22 != [v73 count] && MTLReportFailureTypeEnabled())
+  if (v22 != [interleavesCopy count] && MTLReportFailureTypeEnabled())
   {
-    v63 = [v74 count];
-    v66 = [v73 count];
+    lastObject = [v74 count];
+    v66 = [interleavesCopy count];
     MTLReportFailure();
   }
 
   memset(v88, 0, 120);
-  v87 = 1;
+  unsignedIntegerValue = 1;
   memset(v86, 0, sizeof(v86));
   v84 = 0;
   v85 = 1;
@@ -462,12 +462,12 @@ LABEL_13:
   if (rank)
   {
     v25 = v24 - 1;
-    v26 = [v72 objectAtIndexedSubscript:v24 - 1];
-    v87 = [v26 unsignedIntegerValue];
+    v26 = [stridesCopy objectAtIndexedSubscript:v24 - 1];
+    unsignedIntegerValue = [v26 unsignedIntegerValue];
 
-    v27 = [v73 objectAtIndexedSubscript:v25];
-    v28 = [v27 unsignedIntegerValue];
-    v76 = v28;
+    v27 = [interleavesCopy objectAtIndexedSubscript:v25];
+    unsignedIntegerValue2 = [v27 unsignedIntegerValue];
+    v76 = unsignedIntegerValue2;
 
     v85 = *&v11->_shapeValues[4 * (v25 & 0xF)];
     if (v68 != 1)
@@ -476,15 +476,15 @@ LABEL_13:
       v30 = 1;
       do
       {
-        v31 = [v72 objectAtIndexedSubscript:{v29, v63, v66}];
+        v31 = [stridesCopy objectAtIndexedSubscript:{v29, lastObject, v66}];
         v88[v30 - 1] = [v31 unsignedIntegerValue];
 
-        v32 = [v73 objectAtIndexedSubscript:v29];
-        v33 = [v32 unsignedIntegerValue];
-        *(&v76 + v30) = v33;
+        v32 = [interleavesCopy objectAtIndexedSubscript:v29];
+        unsignedIntegerValue3 = [v32 unsignedIntegerValue];
+        *(&v76 + v30) = unsignedIntegerValue3;
 
         v86[v30 - 1] = *&v11->_shapeValues[4 * (v29 & 0xF)];
-        if (v33 >= 2)
+        if (unsignedIntegerValue3 >= 2)
         {
           operator new();
         }
@@ -494,12 +494,12 @@ LABEL_13:
       }
 
       while (v29 != -1);
-      v28 = v76;
+      unsignedIntegerValue2 = v76;
     }
 
-    if (v28 != 1 && MTLReportFailureTypeEnabled())
+    if (unsignedIntegerValue2 != 1 && MTLReportFailureTypeEnabled())
     {
-      v63 = [v73 lastObject];
+      lastObject = [interleavesCopy lastObject];
       MTLReportFailure();
     }
   }
@@ -515,12 +515,12 @@ LABEL_13:
     v35 = v71;
   }
 
-  v36 = [MEMORY[0x1E6974490] descriptorWithDataType:a7 dimensionCount:v35 dimensionSizes:{&v85, v63}];
+  v36 = [MEMORY[0x1E6974490] descriptorWithDataType:type dimensionCount:v35 dimensionSizes:{&v85, lastObject}];
   v37 = v36;
-  v38 = v87;
+  v38 = unsignedIntegerValue;
   if (v68)
   {
-    v39 = v87 == 1;
+    v39 = unsignedIntegerValue == 1;
   }
 
   else
@@ -547,7 +547,7 @@ LABEL_13:
 
     else
     {
-      *(v36 + *MEMORY[0x1E6974528]) = v87;
+      *(v36 + *MEMORY[0x1E6974528]) = unsignedIntegerValue;
       *(v36 + *MEMORY[0x1E6974550]) = 1;
       v42 = v71;
       if (v68 <= 1)
@@ -601,9 +601,9 @@ LABEL_37:
 
   *(v36 + *MEMORY[0x1E6974528] + 4 * (v34 & 0xF)) = v86[v34 - 1];
 LABEL_42:
-  v41->_rowBytes = *&v37[*MEMORY[0x1E6974528]] * (a7 >> 3);
+  v41->_rowBytes = *&v37[*MEMORY[0x1E6974528]] * (type >> 3);
   [v37 setRowBytes:v64];
-  v55 = [objc_alloc(MEMORY[0x1E6974488]) initWithBuffer:v70 descriptor:v37];
+  v55 = [objc_alloc(MEMORY[0x1E6974488]) initWithBuffer:bufferCopy descriptor:v37];
   mpsndarray = v41->_mpsndarray;
   v41->_mpsndarray = v55;
 
@@ -628,19 +628,19 @@ LABEL_42:
   return v60;
 }
 
-- (MPSGraphTensorData)initWithMTLBuffer:(id)a3 shape:(id)a4 strideBytes:(id)a5 dataType:(unsigned int)a6
+- (MPSGraphTensorData)initWithMTLBuffer:(id)buffer shape:(id)shape strideBytes:(id)bytes dataType:(unsigned int)type
 {
-  v6 = *&a6;
+  v6 = *&type;
   v28 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v22, "count")}];
+  bufferCopy = buffer;
+  shapeCopy = shape;
+  bytesCopy = bytes;
+  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(bytesCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v22;
+  v11 = bytesCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -654,8 +654,8 @@ LABEL_42:
           objc_enumerationMutation(v11);
         }
 
-        v15 = [*(*(&v23 + 1) + 8 * i) integerValue];
-        if (v15 < 1 || v15 % (v6 >> 3))
+        integerValue = [*(*(&v23 + 1) + 8 * i) integerValue];
+        if (integerValue < 1 || integerValue % (v6 >> 3))
         {
           if (MTLReportFailureTypeEnabled())
           {
@@ -663,7 +663,7 @@ LABEL_42:
             MTLReportFailure();
           }
 
-          v17 = 0;
+          selfCopy = 0;
           goto LABEL_14;
         }
 
@@ -681,11 +681,11 @@ LABEL_42:
     }
   }
 
-  self = [(MPSGraphTensorData *)self initWithMTLBuffer:v20 shape:v21 strides:v10 dataType:v6];
-  v17 = self;
+  self = [(MPSGraphTensorData *)self initWithMTLBuffer:bufferCopy shape:shapeCopy strides:v10 dataType:v6];
+  selfCopy = self;
 LABEL_14:
 
-  return v17;
+  return selfCopy;
 }
 
 - (MPSGraphTensorData)initWithMPSMatrix:(MPSMatrix *)matrix rank:(NSUInteger)rank
@@ -767,13 +767,13 @@ LABEL_14:
   }
 
   v7->_dataType = [(MPSMatrix *)v6 dataType];
-  v18 = [(MPSMatrix *)v6 device];
-  v19 = [MPSGraphDevice deviceWithMTLDevice:v18];
+  device = [(MPSMatrix *)v6 device];
+  v19 = [MPSGraphDevice deviceWithMTLDevice:device];
   device = v7->_device;
   v7->_device = v19;
 
-  v21 = [(MPSMatrix *)v6 columns];
-  v7->_rowBytes = v21 * ([(MPSMatrix *)v6 dataType]>> 3);
+  columns = [(MPSMatrix *)v6 columns];
+  v7->_rowBytes = columns * ([(MPSMatrix *)v6 dataType]>> 3);
   v22 = [MEMORY[0x1E6974490] descriptorWithDataType:-[MPSMatrix dataType](v6 dimensionCount:"dataType") dimensionSizes:{v9, v34}];
   if ([(MPSMatrix *)v6 rowBytes]== v7->_rowBytes)
   {
@@ -781,8 +781,8 @@ LABEL_14:
   }
 
   v23 = objc_alloc(MEMORY[0x1E6974488]);
-  v24 = [(MPSMatrix *)v6 data];
-  v25 = [v23 initWithBuffer:v24 descriptor:v22];
+  data = [(MPSMatrix *)v6 data];
+  v25 = [v23 initWithBuffer:data descriptor:v22];
   mpsndarray = v7->_mpsndarray;
   v7->_mpsndarray = v25;
 
@@ -798,15 +798,15 @@ LABEL_14:
   v27.super_class = MPSGraphTensorData;
   v5 = [(MPSGraphTensorData *)&v27 init];
   v5->_tensorDataType = 0;
-  v6 = [(MPSMatrix *)v4 columns];
-  v7 = v6;
-  v28[0] = v6;
-  v8 = [(MPSMatrix *)v4 rows];
-  v9 = v8;
-  v28[1] = v8;
-  v10 = [(MPSMatrix *)v4 matrices];
-  v28[2] = v10;
-  if (v10 == 1)
+  columns = [(MPSMatrix *)v4 columns];
+  v7 = columns;
+  v28[0] = columns;
+  rows = [(MPSMatrix *)v4 rows];
+  v9 = rows;
+  v28[1] = rows;
+  matrices = [(MPSMatrix *)v4 matrices];
+  v28[2] = matrices;
+  if (matrices == 1)
   {
     v11 = 2;
   }
@@ -827,7 +827,7 @@ LABEL_14:
   v13 = *&v5->_shapeValues[48];
   v15 = *v5->_shapeValues;
   v16 = *&v5->_shapeValues[16];
-  if (v10 == 1)
+  if (matrices == 1)
   {
     *&v15 = __PAIR64__(v7, v9);
     *v5->_shapeValues = v9;
@@ -835,7 +835,7 @@ LABEL_14:
 
   else
   {
-    *&v15 = __PAIR64__(v9, v10);
+    *&v15 = __PAIR64__(v9, matrices);
     *&v5->_shapeValues[32] = v14;
     *&v5->_shapeValues[48] = v13;
     *v5->_shapeValues = v15;
@@ -848,13 +848,13 @@ LABEL_14:
   *&v5->_shapeValues[32] = v14;
   *&v5->_shapeValues[48] = v13;
   v5->_dataType = [(MPSMatrix *)v4 dataType];
-  v17 = [(MPSMatrix *)v4 device];
-  v18 = [MPSGraphDevice deviceWithMTLDevice:v17];
+  device = [(MPSMatrix *)v4 device];
+  v18 = [MPSGraphDevice deviceWithMTLDevice:device];
   device = v5->_device;
   v5->_device = v18;
 
-  v20 = [(MPSMatrix *)v4 columns];
-  v5->_rowBytes = v20 * ([(MPSMatrix *)v4 dataType]>> 3);
+  columns2 = [(MPSMatrix *)v4 columns];
+  v5->_rowBytes = columns2 * ([(MPSMatrix *)v4 dataType]>> 3);
   v21 = [MEMORY[0x1E6974490] descriptorWithDataType:-[MPSMatrix dataType](v4 dimensionCount:"dataType") dimensionSizes:{v11, v28}];
   if ([(MPSMatrix *)v4 rowBytes]== v5->_rowBytes)
   {
@@ -862,8 +862,8 @@ LABEL_14:
   }
 
   v22 = objc_alloc(MEMORY[0x1E6974488]);
-  v23 = [(MPSMatrix *)v4 data];
-  v24 = [v22 initWithBuffer:v23 descriptor:v21];
+  data = [(MPSMatrix *)v4 data];
+  v24 = [v22 initWithBuffer:data descriptor:v21];
   mpsndarray = v5->_mpsndarray;
   v5->_mpsndarray = v24;
 
@@ -882,9 +882,9 @@ LABEL_14:
   v6 = [(MPSVector *)v4 length];
   v7 = v6;
   v27[0] = v6;
-  v8 = [(MPSVector *)v4 vectors];
-  v27[1] = v8;
-  if (v8 == 1)
+  vectors = [(MPSVector *)v4 vectors];
+  v27[1] = vectors;
+  if (vectors == 1)
   {
     v9 = 1;
   }
@@ -905,15 +905,15 @@ LABEL_14:
   v11 = *&v5->_shapeValues[48];
   v13 = *v5->_shapeValues;
   v14 = *&v5->_shapeValues[16];
-  if (v8 == 1)
+  if (vectors == 1)
   {
     LODWORD(v13) = v7;
   }
 
   else
   {
-    *&v13 = __PAIR64__(v7, v8);
-    *v5->_shapeValues = v8;
+    *&v13 = __PAIR64__(v7, vectors);
+    *v5->_shapeValues = vectors;
   }
 
   *v5->_shapeValues = v13;
@@ -921,22 +921,22 @@ LABEL_14:
   *&v5->_shapeValues[32] = v12;
   *&v5->_shapeValues[48] = v11;
   v5->_dataType = [(MPSVector *)v4 dataType];
-  v15 = [(MPSVector *)v4 device];
-  v16 = [MPSGraphDevice deviceWithMTLDevice:v15];
+  device = [(MPSVector *)v4 device];
+  v16 = [MPSGraphDevice deviceWithMTLDevice:device];
   device = v5->_device;
   v5->_device = v16;
 
   v18 = [MEMORY[0x1E6974490] descriptorWithDataType:-[MPSVector dataType](v4 dimensionCount:"dataType") dimensionSizes:{v9, v27}];
-  v19 = [(MPSVector *)v4 vectorBytes];
+  vectorBytes = [(MPSVector *)v4 vectorBytes];
   v20 = [(MPSVector *)v4 length];
-  if (v19 == v20 * ([(MPSVector *)v4 dataType]>> 3))
+  if (vectorBytes == v20 * ([(MPSVector *)v4 dataType]>> 3))
   {
     [v18 setPreferPackedRows:1];
   }
 
   v21 = objc_alloc(MEMORY[0x1E6974488]);
-  v22 = [(MPSVector *)v4 data];
-  v23 = [v21 initWithBuffer:v22 descriptor:v18];
+  data = [(MPSVector *)v4 data];
+  v23 = [v21 initWithBuffer:data descriptor:v18];
   mpsndarray = v5->_mpsndarray;
   v5->_mpsndarray = v23;
 
@@ -1022,22 +1022,22 @@ LABEL_14:
   }
 
   v7->_dataType = [(MPSVector *)v6 dataType];
-  v18 = [(MPSVector *)v6 device];
-  v19 = [MPSGraphDevice deviceWithMTLDevice:v18];
+  device = [(MPSVector *)v6 device];
+  v19 = [MPSGraphDevice deviceWithMTLDevice:device];
   device = v7->_device;
   v7->_device = v19;
 
   v21 = [MEMORY[0x1E6974490] descriptorWithDataType:-[MPSVector dataType](v6 dimensionCount:"dataType") dimensionSizes:{v9, v35}];
-  v22 = [(MPSVector *)v6 vectorBytes];
+  vectorBytes = [(MPSVector *)v6 vectorBytes];
   v23 = [(MPSVector *)v6 length];
-  if (v22 == v23 * ([(MPSVector *)v6 dataType]>> 3))
+  if (vectorBytes == v23 * ([(MPSVector *)v6 dataType]>> 3))
   {
     [v21 setPreferPackedRows:1];
   }
 
   v24 = objc_alloc(MEMORY[0x1E6974488]);
-  v25 = [(MPSVector *)v6 data];
-  v26 = [v24 initWithBuffer:v25 descriptor:v21];
+  data = [(MPSVector *)v6 data];
+  v26 = [v24 initWithBuffer:data descriptor:v21];
   mpsndarray = v7->_mpsndarray;
   v7->_mpsndarray = v26;
 
@@ -1045,17 +1045,17 @@ LABEL_14:
   return v7;
 }
 
-- (MPSGraphTensorData)initWithMPSNDArray:(id)a3 device:(id)a4
+- (MPSGraphTensorData)initWithMPSNDArray:(id)array device:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  arrayCopy = array;
+  deviceCopy = device;
   v28.receiver = self;
   v28.super_class = MPSGraphTensorData;
   v9 = [(MPSGraphTensorData *)&v28 init];
   v10 = v9;
   v11 = v9;
   v9->_tensorDataType = 0;
-  v9->_rank = *&v7[*MEMORY[0x1E69744F0]];
+  v9->_rank = *&arrayCopy[*MEMORY[0x1E69744F0]];
   *&v12 = 0x100000001;
   *(&v12 + 1) = 0x100000001;
   *v9->_shapeValues = v12;
@@ -1077,8 +1077,8 @@ LABEL_14:
     *(&v20 + 1) = 0x100000001;
     do
     {
-      v21 = &v7[*v16];
-      v23 = *&v7[*v17];
+      v21 = &arrayCopy[*v16];
+      v23 = *&arrayCopy[*v17];
       LODWORD(v21) = *&v21[4 * (*(&v23 | v14 & 0xF) & 0xF)];
       v24 = v12;
       v25 = v18;
@@ -1101,9 +1101,9 @@ LABEL_14:
     while (v14 < rank);
   }
 
-  v9->_dataType = [v7 dataType];
-  objc_storeStrong(&v10->_device, a4);
-  objc_storeStrong(&v10->_mpsndarray, a3);
+  v9->_dataType = [arrayCopy dataType];
+  objc_storeStrong(&v10->_device, device);
+  objc_storeStrong(&v10->_mpsndarray, array);
   [(MPSGraphTensorData *)v11 commonInitialize];
 
   return v11;
@@ -1112,8 +1112,8 @@ LABEL_14:
 - (MPSGraphTensorData)initWithMPSNDArray:(MPSNDArray *)ndarray
 {
   v4 = ndarray;
-  v5 = [(MPSNDArray *)v4 device];
-  v6 = [MPSGraphDevice deviceWithMTLDevice:v5];
+  device = [(MPSNDArray *)v4 device];
+  v6 = [MPSGraphDevice deviceWithMTLDevice:device];
   v7 = [(MPSGraphTensorData *)self initWithMPSNDArray:v4 device:v6];
 
   return v7;
@@ -1145,9 +1145,9 @@ LABEL_14:
 
   v11 = v5;
   v12 = [(MPSImageBatch *)v11 objectAtIndexedSubscript:0];
-  v13 = [v12 featureChannelFormat];
+  featureChannelFormat = [v12 featureChannelFormat];
 
-  if ((v13 - 1) >= 4)
+  if ((featureChannelFormat - 1) >= 4)
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -1161,13 +1161,13 @@ LABEL_14:
 
   else
   {
-    v14 = dword_1E09A9480[v13 - 1];
+    v14 = dword_1E09A9480[featureChannelFormat - 1];
   }
 
   v6->_dataType = v14;
   v16 = [(MPSImageBatch *)v11 objectAtIndexedSubscript:0];
-  v17 = [v16 device];
-  v18 = [MPSGraphDevice deviceWithMTLDevice:v17];
+  device = [v16 device];
+  v18 = [MPSGraphDevice deviceWithMTLDevice:device];
   device = v6->_device;
   v6->_device = v18;
 
@@ -1177,17 +1177,17 @@ LABEL_14:
   return v6;
 }
 
-- (MPSGraphTensorData)initWithDevice:(id)a3 IOSurface:(__IOSurface *)a4 rowBytesAlignment:(unint64_t)a5 shape:(id)a6 dataType:(unsigned int)a7
+- (MPSGraphTensorData)initWithDevice:(id)device IOSurface:(__IOSurface *)surface rowBytesAlignment:(unint64_t)alignment shape:(id)shape dataType:(unsigned int)type
 {
-  v7 = *&a7;
-  v30 = a3;
+  v7 = *&type;
+  deviceCopy = device;
   v32.receiver = self;
   v32.super_class = MPSGraphTensorData;
-  v31 = a6;
+  shapeCopy = shape;
   v13 = [(MPSGraphTensorData *)&v32 init];
   *(v13 + 17) = 0;
-  adaptForMPS(v31);
-  v14 = v29 = a4;
+  adaptForMPS(shapeCopy);
+  v14 = v29 = surface;
   v15 = [v14 count];
   v16 = v13 + 32;
   *&v17 = 0x100000001;
@@ -1222,17 +1222,17 @@ LABEL_14:
 
   *(v13 + 12) = v18;
   *(v13 + 36) = v7;
-  objc_storeStrong(v13 + 19, a3);
-  *(v13 + 1) = (a5 + *(v16 + ((*(v13 + 24) - 1) & 0xF)) * (v7 >> 3) - 1) / a5 * a5;
+  objc_storeStrong(v13 + 19, device);
+  *(v13 + 1) = (alignment + *(v16 + ((*(v13 + 24) - 1) & 0xF)) * (v7 >> 3) - 1) / alignment * alignment;
   v21 = MEMORY[0x1E6974490];
-  v22 = adaptForMPS(v31);
+  v22 = adaptForMPS(shapeCopy);
   v23 = [v21 descriptorWithDataType:v7 shape:v22];
 
   [v23 setRowBytes:*(v13 + 1)];
   *(v13 + 15) = v29;
   CFRetain(v29);
-  v24 = [v30 metalDevice];
-  v25 = [v24 newBufferWithIOSurface:v29];
+  metalDevice = [deviceCopy metalDevice];
+  v25 = [metalDevice newBufferWithIOSurface:v29];
 
   if (v25)
   {
@@ -1251,17 +1251,17 @@ LABEL_14:
   return v13;
 }
 
-- (MPSGraphTensorData)initWithDevice:(id)a3 rowBytesAlignment:(unint64_t)a4 shape:(id)a5 dataType:(unsigned int)a6
+- (MPSGraphTensorData)initWithDevice:(id)device rowBytesAlignment:(unint64_t)alignment shape:(id)shape dataType:(unsigned int)type
 {
-  v51 = a3;
-  v53 = a5;
+  deviceCopy = device;
+  shapeCopy = shape;
   v56.receiver = self;
   v56.super_class = MPSGraphTensorData;
   v10 = [(MPSGraphTensorData *)&v56 init];
   v11 = v10;
   *(v10 + 17) = 0;
-  adaptForMPS(v53);
-  v12 = v50 = a4;
+  adaptForMPS(shapeCopy);
+  v12 = v50 = alignment;
   v13 = [v12 count];
   v14 = v10 + 32;
   *&v15 = 0x100000001;
@@ -1295,26 +1295,26 @@ LABEL_14:
   }
 
   *(v10 + 12) = v16;
-  *(v10 + 36) = a6;
-  objc_storeStrong(v10 + 19, a3);
-  *(v10 + 1) = (v50 + *(v14 + ((*(v10 + 24) - 1) & 0xF)) * (a6 >> 3) - 1) / v50 * v50;
-  v19 = v51;
+  *(v10 + 36) = type;
+  objc_storeStrong(v10 + 19, device);
+  *(v10 + 1) = (v50 + *(v14 + ((*(v10 + 24) - 1) & 0xF)) * (type >> 3) - 1) / v50 * v50;
+  v19 = deviceCopy;
   if ([*(v10 + 19) type] != 1)
   {
     if ([*(v10 + 19) type] != 2)
     {
       v35 = MEMORY[0x1E6974490];
-      v36 = adaptForMPS(v53);
-      v37 = [v35 descriptorWithDataType:a6 shape:v36];
+      v36 = adaptForMPS(shapeCopy);
+      v37 = [v35 descriptorWithDataType:type shape:v36];
 
       [v37 setRowBytes:*(v10 + 1)];
       v38 = objc_alloc(MEMORY[0x1E6974488]);
-      v39 = [*(v10 + 19) metalDevice];
-      v40 = [v38 initWithDevice:v39 descriptor:v37];
+      metalDevice = [*(v10 + 19) metalDevice];
+      v40 = [v38 initWithDevice:metalDevice descriptor:v37];
       v41 = *(v10 + 13);
       *(v10 + 13) = v40;
 
-      v19 = v51;
+      v19 = deviceCopy;
 LABEL_24:
 
       goto LABEL_25;
@@ -1338,7 +1338,7 @@ LABEL_23:
         Copy = CFDictionaryCreateCopy(*MEMORY[0x1E695E480], v37);
         v47 = IOSurfaceCreate(Copy);
         CFRelease(Copy);
-        v48 = [(MPSGraphTensorData *)v11 initWithDevice:v51 IOSurface:v47 rowBytesAlignment:v50 shape:v53 dataType:a6];
+        v48 = [(MPSGraphTensorData *)v11 initWithDevice:deviceCopy IOSurface:v47 rowBytesAlignment:v50 shape:shapeCopy dataType:type];
         CFRelease(v47);
         v11 = v48;
         goto LABEL_24;
@@ -1405,22 +1405,22 @@ LABEL_23:
   *(v10 + 16) = v42;
 
   *(v10 + 17) = 2;
-  v11 = [v10 initWithDevice:v51 data:*(v10 + 16) shape:v53 dataType:a6];
+  v11 = [v10 initWithDevice:deviceCopy data:*(v10 + 16) shape:shapeCopy dataType:type];
 LABEL_25:
   [(MPSGraphTensorData *)v11 commonInitialize];
 
   return v11;
 }
 
-- (id)initEmptyWithShape:(id)a3 dataType:(unsigned int)a4 device:(id)a5
+- (id)initEmptyWithShape:(id)shape dataType:(unsigned int)type device:(id)device
 {
-  v8 = a3;
-  v17 = a5;
+  shapeCopy = shape;
+  deviceCopy = device;
   v18.receiver = self;
   v18.super_class = MPSGraphTensorData;
   v9 = [(MPSGraphTensorData *)&v18 init];
   v9->_tensorDataType = 0;
-  v10 = v8;
+  v10 = shapeCopy;
   v11 = [v10 count];
   *&v12 = 0x100000001;
   *(&v12 + 1) = 0x100000001;
@@ -1453,39 +1453,39 @@ LABEL_25:
   }
 
   v9->_rank = v13;
-  v9->_dataType = a4;
-  objc_storeStrong(&v9->_device, a5);
+  v9->_dataType = type;
+  objc_storeStrong(&v9->_device, device);
   [(MPSGraphTensorData *)v9 commonInitialize];
 
   return v9;
 }
 
-- (MPSGraphTensorData)initWithMTLTensor:(id)a3
+- (MPSGraphTensorData)initWithMTLTensor:(id)tensor
 {
-  v4 = a3;
-  if (!v4 && MTLReportFailureTypeEnabled())
+  tensorCopy = tensor;
+  if (!tensorCopy && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  [v4 usage];
-  if (([v4 usage] & 4) == 0 && MTLReportFailureTypeEnabled())
+  [tensorCopy usage];
+  if (([tensorCopy usage] & 4) == 0 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  v5 = [v4 dataType];
-  if (v5 <= 36)
+  dataType = [tensorCopy dataType];
+  if (dataType <= 36)
   {
-    if (v5 > 28)
+    if (dataType > 28)
     {
-      if (v5 == 29)
+      if (dataType == 29)
       {
         v6 = 536870944;
         goto LABEL_25;
       }
 
-      if (v5 == 33)
+      if (dataType == 33)
       {
         v6 = 32;
         goto LABEL_25;
@@ -1495,28 +1495,28 @@ LABEL_25:
     else
     {
       v6 = 268435472;
-      if (v5 == 3)
+      if (dataType == 3)
       {
         v6 = 268435488;
         goto LABEL_25;
       }
 
-      if (v5 == 16)
+      if (dataType == 16)
       {
         goto LABEL_25;
       }
     }
   }
 
-  else if (v5 <= 44)
+  else if (dataType <= 44)
   {
-    if (v5 == 37)
+    if (dataType == 37)
     {
       v6 = 536870928;
       goto LABEL_25;
     }
 
-    if (v5 == 41)
+    if (dataType == 41)
     {
       v6 = 16;
       goto LABEL_25;
@@ -1525,7 +1525,7 @@ LABEL_25:
 
   else
   {
-    switch(v5)
+    switch(dataType)
     {
       case '-':
         v6 = 536870920;
@@ -1541,25 +1541,25 @@ LABEL_25:
 
   v6 = 0;
 LABEL_25:
-  v7 = [v4 dimensions];
-  v8 = MPSShapeFromTensorExtents(v7);
+  dimensions = [tensorCopy dimensions];
+  v8 = MPSShapeFromTensorExtents(dimensions);
 
-  v9 = [v4 buffer];
+  buffer = [tensorCopy buffer];
   v10 = v6 & 0x38;
-  if (v9)
+  if (buffer)
   {
     if ([v8 count])
     {
       if ([v8 count] == 1)
       {
-        v11 = [v4 dimensions];
-        v12 = [v11 extentAtDimensionIndex:0];
+        dimensions2 = [tensorCopy dimensions];
+        v12 = [dimensions2 extentAtDimensionIndex:0];
       }
 
       else
       {
-        v11 = [v4 strides];
-        v12 = [v11 extentAtDimensionIndex:1];
+        dimensions2 = [tensorCopy strides];
+        v12 = [dimensions2 extentAtDimensionIndex:1];
       }
 
       v15 = v12;
@@ -1570,38 +1570,38 @@ LABEL_25:
       v15 = 1;
     }
 
-    [v4 offset];
-    if ([v4 offset] && MTLReportFailureTypeEnabled())
+    [tensorCopy offset];
+    if ([tensorCopy offset] && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    v16 = [v4 strides];
-    v17 = [v16 rank];
+    strides = [tensorCopy strides];
+    rank = [strides rank];
     v18 = v15 * (v10 >> 3);
 
-    if (v17)
+    if (rank)
     {
       v19 = 1;
       do
       {
-        v20 = [v4 strides];
-        v21 = [v20 rank];
+        strides2 = [tensorCopy strides];
+        rank2 = [strides2 rank];
 
         ++v19;
       }
 
-      while (v19 < v21);
+      while (v19 < rank2);
     }
   }
 
   else
   {
-    v9 = [v4 internalMTLBuffer];
+    buffer = [tensorCopy internalMTLBuffer];
     if ([v8 count])
     {
-      v13 = [v4 dimensions];
-      v14 = [v13 extentAtDimensionIndex:0];
+      dimensions3 = [tensorCopy dimensions];
+      v14 = [dimensions3 extentAtDimensionIndex:0];
     }
 
     else
@@ -1609,32 +1609,32 @@ LABEL_25:
       v14 = 1;
     }
 
-    v22 = [v4 dimensions];
-    v23 = [v22 rank];
+    dimensions4 = [tensorCopy dimensions];
+    rank3 = [dimensions4 rank];
     v18 = v14 * (v10 >> 3);
 
-    if (v23)
+    if (rank3)
     {
       v18 = (v18 + 63) & 0xFFFFFFFFFFFFFFC0;
     }
   }
 
-  v24 = [v4 dimensions];
-  v25 = [v24 rank];
+  dimensions5 = [tensorCopy dimensions];
+  rank4 = [dimensions5 rank];
 
-  if (v25 && (v18 & 0x3F) != 0 && MTLReportFailureTypeEnabled())
+  if (rank4 && (v18 & 0x3F) != 0 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  v26 = [(MPSGraphTensorData *)self initWithMTLBuffer:v9 shape:v8 dataType:v6 rowBytes:v18];
+  v26 = [(MPSGraphTensorData *)self initWithMTLBuffer:buffer shape:v8 dataType:v6 rowBytes:v18];
 
   return v26;
 }
 
-- (id)mpsndarrayWithCommandBuffer:(id)a3
+- (id)mpsndarrayWithCommandBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   if (self->_tensorDataType == 1)
   {
     mpsndarray = self->_mpsndarray;
@@ -1643,16 +1643,16 @@ LABEL_25:
       v21 = MEMORY[0x1E6974490];
       dataType = self->_dataType;
       v6 = [(NSArray *)self->_mpsimagebatch objectAtIndexedSubscript:0];
-      v7 = [v6 featureChannels];
+      featureChannels = [v6 featureChannels];
       v8 = [(NSArray *)self->_mpsimagebatch objectAtIndexedSubscript:0];
-      v9 = [v8 width];
+      width = [v8 width];
       v10 = [(NSArray *)self->_mpsimagebatch objectAtIndexedSubscript:0];
-      v11 = [v21 descriptorWithDataType:dataType dimensionSizes:{v7, v9, objc_msgSend(v10, "height"), -[NSArray count](self->_mpsimagebatch, "count"), 0}];
+      v11 = [v21 descriptorWithDataType:dataType dimensionSizes:{featureChannels, width, objc_msgSend(v10, "height"), -[NSArray count](self->_mpsimagebatch, "count"), 0}];
 
       v12 = objc_alloc(MEMORY[0x1E6974488]);
       v13 = [(NSArray *)self->_mpsimagebatch objectAtIndexedSubscript:0];
-      v14 = [v13 device];
-      v15 = [v12 initWithDevice:v14 descriptor:v11];
+      device = [v13 device];
+      v15 = [v12 initWithDevice:device descriptor:v11];
       v16 = self->_mpsndarray;
       self->_mpsndarray = v15;
 
@@ -1660,16 +1660,16 @@ LABEL_25:
     }
 
     memset(v22, 0, sizeof(v22));
-    [(MPSNDArray *)mpsndarray importDataWithCommandBuffer:v4 fromImages:self->_mpsimagebatch offset:v22];
-    v17 = self->_mpsndarray;
+    [(MPSNDArray *)mpsndarray importDataWithCommandBuffer:bufferCopy fromImages:self->_mpsimagebatch offset:v22];
+    mpsndarray = self->_mpsndarray;
   }
 
   else
   {
-    v17 = [(MPSGraphTensorData *)self mpsndarray];
+    mpsndarray = [(MPSGraphTensorData *)self mpsndarray];
   }
 
-  v18 = v17;
+  v18 = mpsndarray;
 
   return v18;
 }
@@ -1683,13 +1683,13 @@ LABEL_25:
     if (tensorDataType == 1)
     {
       v14 = [(NSArray *)self->_mpsimagebatch objectAtIndexedSubscript:0];
-      v15 = [v14 device];
-      v16 = [v15 newCommandQueue];
-      v9 = [v16 commandBuffer];
+      device = [v14 device];
+      newCommandQueue = [device newCommandQueue];
+      commandBuffer = [newCommandQueue commandBuffer];
 
-      v17 = [(MPSGraphTensorData *)self mpsndarrayWithCommandBuffer:v9];
-      [v9 commit];
-      [v9 waitUntilCompleted];
+      v17 = [(MPSGraphTensorData *)self mpsndarrayWithCommandBuffer:commandBuffer];
+      [commandBuffer commit];
+      [commandBuffer waitUntilCompleted];
       goto LABEL_6;
     }
 
@@ -1697,13 +1697,13 @@ LABEL_25:
     {
       v5 = MEMORY[0x1E6974490];
       dataType = self->_dataType;
-      v7 = [(MPSGraphTensorData *)self shape];
-      v8 = adaptForMPS(v7);
-      v9 = [v5 descriptorWithDataType:dataType shape:v8];
+      shape = [(MPSGraphTensorData *)self shape];
+      v8 = adaptForMPS(shape);
+      commandBuffer = [v5 descriptorWithDataType:dataType shape:v8];
 
       v10 = objc_alloc(MEMORY[0x1E6974488]);
-      v11 = [(MPSGraphDevice *)self->_device metalDevice];
-      v12 = [v10 initWithDevice:v11 descriptor:v9];
+      metalDevice = [(MPSGraphDevice *)self->_device metalDevice];
+      v12 = [v10 initWithDevice:metalDevice descriptor:commandBuffer];
       v13 = self->_mpsndarray;
       self->_mpsndarray = v12;
 
@@ -1738,8 +1738,8 @@ LABEL_8:
 
 - (void)printNDArray
 {
-  v2 = [(MPSGraphTensorData *)self mpsndarray];
-  [v2 printNDArray];
+  mpsndarray = [(MPSGraphTensorData *)self mpsndarray];
+  [mpsndarray printNDArray];
 }
 
 - (void)printIOSurface
@@ -1857,31 +1857,31 @@ LABEL_8:
   }
 }
 
-- (id)checkTensorData:(const float *)a3 nativeUlps:(float)a4 absoluteErr:(float)a5 PSNR:(float)a6
+- (id)checkTensorData:(const float *)data nativeUlps:(float)ulps absoluteErr:(float)err PSNR:(float)r
 {
-  v10 = [(MPSGraphTensorData *)self mpsndarray];
-  *&v11 = a4;
-  *&v12 = a5;
-  *&v13 = a6;
-  v14 = [v10 checkNDArray:a3 nativeUlps:v11 absoluteErr:v12 PSNR:v13];
+  mpsndarray = [(MPSGraphTensorData *)self mpsndarray];
+  *&v11 = ulps;
+  *&v12 = err;
+  *&v13 = r;
+  v14 = [mpsndarray checkNDArray:data nativeUlps:v11 absoluteErr:v12 PSNR:v13];
 
   return v14;
 }
 
-- (id)checkWithReferenceTensorData:(id)a3 nativeUlps:(float)a4 absoluteError:(float)a5 PSNR:(float)a6
+- (id)checkWithReferenceTensorData:(id)data nativeUlps:(float)ulps absoluteError:(float)error PSNR:(float)r
 {
-  v10 = a3;
-  v11 = [v10 mpsndarray];
-  [v10 dataType];
-  v12 = [v10 shape];
-  v13 = [v12 count];
+  dataCopy = data;
+  mpsndarray = [dataCopy mpsndarray];
+  [dataCopy dataType];
+  shape = [dataCopy shape];
+  v13 = [shape count];
   if (v13)
   {
     v14 = 0;
     v15 = 1;
     do
     {
-      v16 = [v12 objectAtIndexedSubscript:v14];
+      v16 = [shape objectAtIndexedSubscript:v14];
       v15 *= [v16 unsignedIntValue];
 
       ++v14;
@@ -1895,23 +1895,23 @@ LABEL_8:
     v15 = 1;
   }
 
-  v17 = [v10 dataType];
-  if (v17 == 285212736 || v17 == 285212704)
+  dataType = [dataCopy dataType];
+  if (dataType == 285212736 || dataType == 285212704)
   {
     v15 *= 2;
   }
 
   v18 = malloc_type_malloc(4 * v15, 0x100004052888210uLL);
-  v19 = [v10 dataType];
-  if (v19 > 268435487)
+  dataType2 = [dataCopy dataType];
+  if (dataType2 > 268435487)
   {
-    if (v19 > 536870919)
+    if (dataType2 > 536870919)
     {
-      if (v19 > 536870943)
+      if (dataType2 > 536870943)
       {
-        if (v19 == 536870944)
+        if (dataType2 == 536870944)
         {
-          v51 = v11;
+          v51 = mpsndarray;
           v24 = malloc_type_malloc(4 * v15, 0x100004052888210uLL);
           [v51 readBytes:v24 strideBytes:0];
           if (v15)
@@ -1951,12 +1951,12 @@ LABEL_171:
 
         else
         {
-          if (v19 != 536870976)
+          if (dataType2 != 536870976)
           {
             goto LABEL_166;
           }
 
-          v40 = v11;
+          v40 = mpsndarray;
           v24 = malloc_type_malloc(8 * v15, 0x100004000313F17uLL);
           [v40 readBytes:v24 strideBytes:0];
           if (v15)
@@ -2000,14 +2000,14 @@ LABEL_175:
         goto LABEL_165;
       }
 
-      if (v19 != 536870920)
+      if (dataType2 != 536870920)
       {
-        if (v19 != 536870928)
+        if (dataType2 != 536870928)
         {
           goto LABEL_166;
         }
 
-        v26 = v11;
+        v26 = mpsndarray;
         v24 = malloc_type_malloc(2 * v15, 0x1000040BDFB0063uLL);
         [v26 readBytes:v24 strideBytes:0];
         if (!v15)
@@ -2088,7 +2088,7 @@ LABEL_179:
         goto LABEL_179;
       }
 
-      v45 = v11;
+      v45 = mpsndarray;
       v24 = malloc_type_malloc(v15, 0x100004077774924uLL);
       [v45 readBytes:v24 strideBytes:0];
       if (!v15)
@@ -2165,9 +2165,9 @@ LABEL_185:
       goto LABEL_185;
     }
 
-    if (v19 == 268435488)
+    if (dataType2 == 268435488)
     {
-      v57 = v11;
+      v57 = mpsndarray;
       [v57 readBytes:v18 strideBytes:0];
       v24 = malloc_type_malloc(4 * v15, 0x100004052888210uLL);
       [v57 readBytes:v24 strideBytes:0];
@@ -2205,14 +2205,14 @@ LABEL_164:
       goto LABEL_165;
     }
 
-    if (v19 != 285212704)
+    if (dataType2 != 285212704)
     {
-      if (v19 != 285212736)
+      if (dataType2 != 285212736)
       {
         goto LABEL_166;
       }
 
-      v32 = v11;
+      v32 = mpsndarray;
       [v32 readBytes:v18 strideBytes:0];
       v24 = malloc_type_malloc(4 * v15, 0x100004052888210uLL);
       [v32 readBytes:v24 strideBytes:0];
@@ -2250,7 +2250,7 @@ LABEL_159:
       goto LABEL_165;
     }
 
-    v66 = v11;
+    v66 = mpsndarray;
     v24 = malloc_type_malloc(2 * v15, 0x1000040BDFB0063uLL);
     [v66 readBytes:v24 strideBytes:0];
     if (!v15)
@@ -2329,13 +2329,13 @@ LABEL_183:
     goto LABEL_183;
   }
 
-  if (v19 <= 15)
+  if (dataType2 <= 15)
   {
-    if (v19 != -2147483640)
+    if (dataType2 != -2147483640)
     {
-      if (v19 == -1879048176)
+      if (dataType2 == -1879048176)
       {
-        v63 = v11;
+        v63 = mpsndarray;
         v24 = malloc_type_malloc(2 * v15, 0x1000040BDFB0063uLL);
         [v63 readBytes:v24 strideBytes:0];
         if (v15)
@@ -2351,12 +2351,12 @@ LABEL_183:
         goto LABEL_165;
       }
 
-      if (v19 != 8)
+      if (dataType2 != 8)
       {
         goto LABEL_166;
       }
 
-      v29 = v11;
+      v29 = mpsndarray;
       v24 = malloc_type_malloc(v15, 0x100004077774924uLL);
       [v29 readBytes:v24 strideBytes:0];
       if (!v15)
@@ -2430,7 +2430,7 @@ LABEL_187:
       goto LABEL_187;
     }
 
-    v53 = v11;
+    v53 = mpsndarray;
     v24 = malloc_type_malloc(v15, 0x100004077774924uLL);
     [v53 readBytes:v24 strideBytes:0];
     if (!v15)
@@ -2507,11 +2507,11 @@ LABEL_161:
     goto LABEL_161;
   }
 
-  if (v19 > 63)
+  if (dataType2 > 63)
   {
-    if (v19 == 64)
+    if (dataType2 == 64)
     {
-      v49 = v11;
+      v49 = mpsndarray;
       v24 = malloc_type_malloc(8 * v15, 0x100004000313F17uLL);
       [v49 readBytes:v24 strideBytes:0];
       if (v15)
@@ -2554,12 +2554,12 @@ LABEL_169:
       goto LABEL_165;
     }
 
-    if (v19 != 268435472)
+    if (dataType2 != 268435472)
     {
       goto LABEL_166;
     }
 
-    v38 = v11;
+    v38 = mpsndarray;
     v24 = malloc_type_malloc(2 * v15, 0x1000040BDFB0063uLL);
     [v38 readBytes:v24 strideBytes:0];
     if (!v15)
@@ -2638,14 +2638,14 @@ LABEL_181:
     goto LABEL_181;
   }
 
-  if (v19 != 16)
+  if (dataType2 != 16)
   {
-    if (v19 != 32)
+    if (dataType2 != 32)
     {
       goto LABEL_166;
     }
 
-    v23 = v11;
+    v23 = mpsndarray;
     v24 = malloc_type_malloc(4 * v15, 0x100004052888210uLL);
     [v23 readBytes:v24 strideBytes:0];
     if (v15)
@@ -2685,7 +2685,7 @@ LABEL_173:
     goto LABEL_165;
   }
 
-  v42 = v11;
+  v42 = mpsndarray;
   v24 = malloc_type_malloc(2 * v15, 0x1000040BDFB0063uLL);
   [v42 readBytes:v24 strideBytes:0];
   if (v15)
@@ -2763,9 +2763,9 @@ LABEL_165:
   free(v24);
 
 LABEL_166:
-  *&v20 = a4;
-  *&v21 = a5;
-  *&v22 = a6;
+  *&v20 = ulps;
+  *&v21 = error;
+  *&v22 = r;
   v145 = [(MPSGraphTensorData *)self checkTensorData:v18 nativeUlps:v20 absoluteErr:v21 PSNR:v22];
   free(v18);
 

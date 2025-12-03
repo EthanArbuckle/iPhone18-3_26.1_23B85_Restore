@@ -1,23 +1,23 @@
 @interface HMFHTTPClientConnection
 + (id)logCategory;
-- (HMFHTTPClientConnection)initWithConnection:(id)a3;
+- (HMFHTTPClientConnection)initWithConnection:(id)connection;
 - (HMFHTTPClientConnectionDelegate)delegate;
 - (HMFNetAddress)peerAddress;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 - (id)shortDescription;
 - (void)close;
-- (void)connection:(id)a3 didReceiveRequest:(id)a4;
+- (void)connection:(id)connection didReceiveRequest:(id)request;
 - (void)dealloc;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)sendResponse:(id)a3 completionHandler:(id)a4;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)sendResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation HMFHTTPClientConnection
 
-- (HMFHTTPClientConnection)initWithConnection:(id)a3
+- (HMFHTTPClientConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = HMFHTTPClientConnection;
   v6 = [(HMFHTTPClientConnection *)&v15 init];
@@ -29,13 +29,13 @@
     clientQueue = v7->_clientQueue;
     v7->_clientQueue = v9;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingRespones = v7->_pendingRespones;
-    v7->_pendingRespones = v11;
+    v7->_pendingRespones = array;
 
-    objc_storeStrong(&v7->_internal, a3);
-    v13 = [(HMFHTTPClientConnection *)v7 internal];
-    [v13 setDelegate:v7];
+    objc_storeStrong(&v7->_internal, connection);
+    internal = [(HMFHTTPClientConnection *)v7 internal];
+    [internal setDelegate:v7];
   }
 
   return v7;
@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-  v3 = [(HMFHTTPClientConnection *)self internal];
-  [v3 invalidate];
+  internal = [(HMFHTTPClientConnection *)self internal];
+  [internal invalidate];
 
   v4.receiver = self;
   v4.super_class = HMFHTTPClientConnection;
@@ -54,10 +54,10 @@
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMFHTTPClientConnection *)self peerAddress];
-  v6 = [v5 addressString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  peerAddress = [(HMFHTTPClientConnection *)self peerAddress];
+  addressString = [peerAddress addressString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, addressString];
 
   return v7;
 }
@@ -66,8 +66,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(HMFHTTPClientConnection *)self peerAddress];
-  v5 = [(HMFAttributeDescription *)v3 initWithName:@"Address" value:v4];
+  peerAddress = [(HMFHTTPClientConnection *)self peerAddress];
+  v5 = [(HMFAttributeDescription *)v3 initWithName:@"Address" value:peerAddress];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -78,24 +78,24 @@
 
 - (HMFNetAddress)peerAddress
 {
-  v2 = [(HMFHTTPClientConnection *)self internal];
-  v3 = [v2 address];
+  internal = [(HMFHTTPClientConnection *)self internal];
+  address = [internal address];
 
-  return v3;
+  return address;
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMFHTTPClientConnection *)self clientQueue];
+  handlerCopy = handler;
+  clientQueue = [(HMFHTTPClientConnection *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__HMFHTTPClientConnection_openWithCompletionHandler___block_invoke;
   v7[3] = &unk_2786E6D68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __53__HMFHTTPClientConnection_openWithCompletionHandler___block_invoke(uint64_t a1)
@@ -149,13 +149,13 @@ void __53__HMFHTTPClientConnection_openWithCompletionHandler___block_invoke(uint
 
 - (void)close
 {
-  v3 = [(HMFHTTPClientConnection *)self clientQueue];
+  clientQueue = [(HMFHTTPClientConnection *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__HMFHTTPClientConnection_close__block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __32__HMFHTTPClientConnection_close__block_invoke(uint64_t a1)
@@ -198,21 +198,21 @@ void __32__HMFHTTPClientConnection_close__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendResponse:(id)a3 completionHandler:(id)a4
+- (void)sendResponse:(id)response completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  responseCopy = response;
+  handlerCopy = handler;
+  if (responseCopy)
   {
-    v8 = [(HMFHTTPClientConnection *)self clientQueue];
+    clientQueue = [(HMFHTTPClientConnection *)self clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__HMFHTTPClientConnection_sendResponse_completionHandler___block_invoke;
     block[3] = &unk_2786E79B0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
-    dispatch_async(v8, block);
+    v10 = responseCopy;
+    v11 = handlerCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
@@ -285,21 +285,21 @@ LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveRequest:(id)a4
+- (void)connection:(id)connection didReceiveRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMFHTTPClientConnection *)self clientQueue];
+  connectionCopy = connection;
+  requestCopy = request;
+  clientQueue = [(HMFHTTPClientConnection *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HMFHTTPClientConnection_connection_didReceiveRequest___block_invoke;
   block[3] = &unk_2786E73A0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = requestCopy;
+  v13 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = requestCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __56__HMFHTTPClientConnection_connection_didReceiveRequest___block_invoke(uint64_t a1)
@@ -388,10 +388,10 @@ uint64_t __38__HMFHTTPClientConnection_logCategory__block_invoke()
 
 - (id)logIdentifier
 {
-  v2 = [(HMFHTTPClientConnection *)self peerAddress];
-  v3 = [v2 addressString];
+  peerAddress = [(HMFHTTPClientConnection *)self peerAddress];
+  addressString = [peerAddress addressString];
 
-  return v3;
+  return addressString;
 }
 
 - (HMFHTTPClientConnectionDelegate)delegate

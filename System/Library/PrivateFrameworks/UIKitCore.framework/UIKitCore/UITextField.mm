@@ -1,9 +1,9 @@
 @interface UITextField
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3;
-- (BOOL)_allowsChangingFirstResponderForFocusUpdateWithContext:(id)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size;
+- (BOOL)_allowsChangingFirstResponderForFocusUpdateWithContext:(id)context;
 - (BOOL)_canDrawContent;
 - (BOOL)_delegateShouldBeginEditing;
-- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)a3 replacementString:(id)a4 delegateCares:(BOOL *)a5;
+- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)ranges replacementString:(id)string delegateCares:(BOOL *)cares;
 - (BOOL)_delegateShouldClear;
 - (BOOL)_delegateShouldEndEditing;
 - (BOOL)_delegateShouldScrollToVisibleWhenBecomingFirstResponder;
@@ -13,7 +13,7 @@
 - (BOOL)_implementsEditMenu;
 - (BOOL)_inPopover;
 - (BOOL)_inVibrantContentView;
-- (BOOL)_isAccessoryViewAnimatable:(id)a3;
+- (BOOL)_isAccessoryViewAnimatable:(id)animatable;
 - (BOOL)_isDisplayingLookupViewController;
 - (BOOL)_isDisplayingReferenceLibraryViewController;
 - (BOOL)_isDisplayingShareViewController;
@@ -25,85 +25,85 @@
 - (BOOL)_ownsInputAccessoryView;
 - (BOOL)_partsShouldBeMini;
 - (BOOL)_restoreFirstResponder;
-- (BOOL)_shouldAnimateTransitionForAccessoryView:(id)a3;
+- (BOOL)_shouldAnimateTransitionForAccessoryView:(id)view;
 - (BOOL)_shouldCollectAsKeyView;
-- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)a3;
+- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)engine;
 - (BOOL)_shouldObscureInput;
 - (BOOL)_shouldResignOnEditingDidEndOnExit;
 - (BOOL)_shouldShrinkPlaceholderToFitForAccessibility;
 - (BOOL)_shouldUnobscureTextWithContentCover;
 - (BOOL)_showsBackgroundCoverView;
-- (BOOL)_showsClearButton:(BOOL)a3;
-- (BOOL)_showsClearButtonWhenNonEmpty:(BOOL)a3;
+- (BOOL)_showsClearButton:(BOOL)button;
+- (BOOL)_showsClearButtonWhenNonEmpty:(BOOL)empty;
 - (BOOL)_showsContentCoverView;
 - (BOOL)_showsLeftView;
 - (BOOL)_showsRightView;
 - (BOOL)_showsTrailingView;
 - (BOOL)_supportsImagePasteCached;
-- (BOOL)_textNeedsSanitizing:(id)a3;
+- (BOOL)_textNeedsSanitizing:(id)sanitizing;
 - (BOOL)_wantsBaselineUpdatingFollowingConstraintsPass;
 - (BOOL)automaticallyAdjustsWritingDirection;
 - (BOOL)becomeFirstResponder;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)canBecomeFocused;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)drawTextInRectIfNeeded:(CGRect)a3;
-- (BOOL)fieldEditor:(id)a3 shouldInsertText:(id)a4 replacingRanges:(id)a5;
-- (BOOL)fieldEditorShouldExtendCaretHeight:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)drawTextInRectIfNeeded:(CGRect)needed;
+- (BOOL)fieldEditor:(id)editor shouldInsertText:(id)text replacingRanges:(id)ranges;
+- (BOOL)fieldEditorShouldExtendCaretHeight:(id)height;
 - (BOOL)hasMarkedText;
 - (BOOL)hasSelection;
 - (BOOL)hasText;
 - (BOOL)isEditing;
 - (BOOL)isTextDragActive;
 - (BOOL)isTextDropActive;
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5;
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRanges:(id)a4 replacementText:(id)a5;
-- (BOOL)keyboardInputChanged:(id)a3;
-- (BOOL)keyboardInputShouldDelete:(id)a3;
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText;
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRanges:(id)ranges replacementText:(id)text;
+- (BOOL)keyboardInputChanged:(id)changed;
+- (BOOL)keyboardInputShouldDelete:(id)delete;
 - (BOOL)resignFirstResponder;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (BOOL)supportsAdaptiveImageGlyph;
-- (CGPoint)_originForTextFieldLabel:(id)a3;
+- (CGPoint)_originForTextFieldLabel:(id)label;
 - (CGPoint)_scrollOffset;
-- (CGPoint)constrainedPoint:(CGPoint)a3;
+- (CGPoint)constrainedPoint:(CGPoint)point;
 - (CGPoint)contentOffsetForSameViewDrops;
 - (CGPoint)drawingScale;
 - (CGPoint)textContainerOrigin;
-- (CGRect)_availableTextRectExcludingButtonsForBounds:(CGRect)a3;
-- (CGRect)_availableTextRectForBounds:(CGRect)a3 forEditing:(BOOL)a4;
+- (CGRect)_availableTextRectExcludingButtonsForBounds:(CGRect)bounds;
+- (CGRect)_availableTextRectForBounds:(CGRect)bounds forEditing:(BOOL)editing;
 - (CGRect)_backgroundBounds;
-- (CGRect)_baselineLeftViewRectForBounds:(CGRect)a3;
-- (CGRect)_boundingRectForRange:(id)a3;
+- (CGRect)_baselineLeftViewRectForBounds:(CGRect)bounds;
+- (CGRect)_boundingRectForRange:(id)range;
 - (CGRect)_clipRectForFadedEdges;
 - (CGRect)_prefixFrame;
-- (CGRect)_responderExternalTouchRectForWindow:(id)a3;
-- (CGRect)_responderSelectionRectForWindow:(id)a3;
+- (CGRect)_responderExternalTouchRectForWindow:(id)window;
+- (CGRect)_responderSelectionRectForWindow:(id)window;
 - (CGRect)_selectionClipRect;
 - (CGRect)_suffixFrame;
 - (CGRect)_textCanvasViewFrameIncludingContentInsetsFromFontsWhenNotContainedByFieldEditor;
-- (CGRect)adjustedCaretRectForCaretRect:(CGRect)a3;
-- (CGRect)caretRectForPosition:(id)a3;
+- (CGRect)adjustedCaretRectForCaretRect:(CGRect)rect;
+- (CGRect)caretRectForPosition:(id)position;
 - (CGRect)clearButtonRect;
 - (CGRect)clearButtonRectForBounds:(CGRect)bounds;
-- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)a3;
+- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)point;
 - (CGRect)editRect;
 - (CGRect)editingRectForBounds:(CGRect)bounds;
-- (CGRect)firstRectForRange:(id)a3;
-- (CGRect)frameForDictationResultPlaceholder:(id)a3;
+- (CGRect)firstRectForRange:(id)range;
+- (CGRect)frameForDictationResultPlaceholder:(id)placeholder;
 - (CGRect)iconRect;
 - (CGRect)placeholderRectForBounds:(CGRect)bounds;
 - (CGRect)rightViewRectForBounds:(CGRect)bounds;
 - (CGRect)textRectForBounds:(CGRect)bounds;
-- (CGSize)_clearButtonSize:(CGRect)a3;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (CGSize)_clearButtonSize:(CGRect)size;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (CGSize)_leftViewOffset;
 - (CGSize)_rightViewOffset;
 - (CGSize)_textSize;
-- (CGSize)_textSizeUsingFullFontSize:(BOOL)a3;
-- (CGSize)_visionOverrideNaturalHeight:(CGSize)a3;
+- (CGSize)_textSizeUsingFullFontSize:(BOOL)size;
+- (CGSize)_visionOverrideNaturalHeight:(CGSize)height;
 - (CGSize)clearButtonOffset;
 - (CGSize)shadowOffset;
 - (Class)_defaultiOSBackgroundProviderClass;
@@ -127,15 +127,15 @@
 - (UIDragInteraction)textDragInteraction;
 - (UIDropInteraction)textDropInteraction;
 - (UIEdgeInsets)_padding;
-- (UIEdgeInsets)_visionOverrideHorizontalInsets:(UIEdgeInsets)a3;
+- (UIEdgeInsets)_visionOverrideHorizontalInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIEdgeInsets)textContainerInset;
 - (UIFieldEditor)_fieldEditor;
 - (UITextBorderStyle)borderStyle;
 - (UITextDragDelegate)textDragDelegate;
 - (UITextDropDelegate)textDropDelegate;
-- (UITextField)initWithCoder:(id)a3;
-- (UITextField)initWithFrame:(CGRect)a3;
+- (UITextField)initWithCoder:(id)coder;
+- (UITextField)initWithFrame:(CGRect)frame;
 - (UITextFieldViewMode)leftViewMode;
 - (UITextFieldViewMode)rightViewMode;
 - (UITextInputAssistantItem)inputAssistantItem;
@@ -154,14 +154,14 @@
 - (_NSRange)_rangeForClearButton;
 - (_NSRange)_rangeForSetText;
 - (_NSRange)_unobscuredSecureRange;
-- (_NSRange)_visibleRangeWithLayout:(BOOL)a3;
-- (_NSRange)fieldEditor:(id)a3 willChangeSelectionFromCharacterRange:(_NSRange)a4 toCharacterRange:(_NSRange)a5;
-- (_NSRange)insertFilteredText:(id)a3;
+- (_NSRange)_visibleRangeWithLayout:(BOOL)layout;
+- (_NSRange)fieldEditor:(id)editor willChangeSelectionFromCharacterRange:(_NSRange)range toCharacterRange:(_NSRange)characterRange;
+- (_NSRange)insertFilteredText:(id)text;
 - (_NSRange)selectionRange;
-- (double)_autolayoutSpacingAtEdge:(int)a3 forAttribute:(int64_t)a4 inContainer:(id)a5 isGuide:(BOOL)a6;
-- (double)_autolayoutSpacingAtEdge:(int)a3 forAttribute:(int64_t)a4 nextToNeighbor:(id)a5 edge:(int)a6 attribute:(int64_t)a7 multiplier:(double)a8;
+- (double)_autolayoutSpacingAtEdge:(int)edge forAttribute:(int64_t)attribute inContainer:(id)container isGuide:(BOOL)guide;
+- (double)_autolayoutSpacingAtEdge:(int)edge forAttribute:(int64_t)attribute nextToNeighbor:(id)neighbor edge:(int)a6 attribute:(int64_t)a7 multiplier:(double)multiplier;
 - (double)_backgroundStrokeWidth;
-- (double)_baselineOffsetForLast:(BOOL)a3 autolayoutOnly:(BOOL)a4;
+- (double)_baselineOffsetForLast:(BOOL)last autolayoutOnly:(BOOL)only;
 - (double)_clearButtonMarginX;
 - (double)_clearButtonPadX;
 - (double)_fieldEditorHeight;
@@ -170,87 +170,87 @@
 - (double)_roundedRectBackgroundCornerRadius;
 - (double)actualMinimumFontSize;
 - (float)_marginTop;
-- (float)_marginTopForBounds:(CGRect)a3;
-- (float)_newFontSize:(float)a3 maxSize:(float)a4;
-- (id)_NSTextRangeFromNSRange:(_NSRange)a3;
-- (id)_activityItemsConfigurationAtLocation:(CGPoint)a3;
-- (id)_attributedStringForInsertionOfAttributedString:(id)a3;
+- (float)_marginTopForBounds:(CGRect)bounds;
+- (float)_newFontSize:(float)size maxSize:(float)maxSize;
+- (id)_NSTextRangeFromNSRange:(_NSRange)range;
+- (id)_activityItemsConfigurationAtLocation:(CGPoint)location;
+- (id)_attributedStringForInsertionOfAttributedString:(id)string;
 - (id)_attributedText;
 - (id)_backgroundFillColor;
 - (id)_backgroundStrokeColor;
 - (id)_baselineCalculatorSourceCoordinateSpace;
-- (id)_clearButtonImageForState:(unint64_t)a3;
+- (id)_clearButtonImageForState:(unint64_t)state;
 - (id)_contentSnapshot;
-- (id)_copyFont:(id)a3 newSize:(float)a4 maxSize:(float)a5;
+- (id)_copyFont:(id)font newSize:(float)size maxSize:(float)maxSize;
 - (id)_defaultFont;
 - (id)_defaultPromptString;
 - (id)_dictationInterpretations;
 - (id)_editingProcessor;
 - (id)_effectivePasteConfiguration;
 - (id)_encodableSubviews;
-- (id)_fieldEditorHostAllowingCreation:(BOOL)a3;
+- (id)_fieldEditorHostAllowingCreation:(BOOL)creation;
 - (id)_implicitPasteConfigurationClasses;
-- (id)_initWithFrame:(CGRect)a3 textLayoutManagerEnabled:(BOOL)a4;
+- (id)_initWithFrame:(CGRect)frame textLayoutManagerEnabled:(BOOL)enabled;
 - (id)_inputController;
 - (id)_interactionState;
 - (id)_internalTextLayoutController;
 - (id)_placeholderColor;
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4;
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context;
 - (id)_preferredMetricsProvider;
 - (id)_proxyTextInput;
-- (id)_replaceRange:(id)a3 withAttributedText:(id)a4 updatingSelection:(BOOL)a5;
+- (id)_replaceRange:(id)range withAttributedText:(id)text updatingSelection:(BOOL)selection;
 - (id)_systemBackgroundView;
 - (id)_systemDefaultFocusGroupIdentifier;
 - (id)_text;
 - (id)_textGeometry;
 - (id)_tvTypingAttributes;
 - (id)_uiktest_placeholderLabelColor;
-- (id)_viewForLoweringBaselineLayoutAttribute:(int)a3;
-- (id)_visualSelectionRangeForExtent:(id)a3 forPoint:(CGPoint)a4 fromPosition:(id)a5 inDirection:(int64_t)a6;
-- (id)annotatedSubstringForRange:(id)a3;
-- (id)attributedTextInRange:(id)a3;
+- (id)_viewForLoweringBaselineLayoutAttribute:(int)attribute;
+- (id)_visualSelectionRangeForExtent:(id)extent forPoint:(CGPoint)point fromPosition:(id)position inDirection:(int64_t)direction;
+- (id)annotatedSubstringForRange:(id)range;
+- (id)attributedTextInRange:(id)range;
 - (id)automaticallySelectedOverlay;
 - (id)backgroundColor;
-- (id)characterRangeAtPoint:(CGPoint)a3;
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4;
+- (id)characterRangeAtPoint:(CGPoint)point;
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction;
 - (id)clearButton;
-- (id)closestPositionToPoint:(CGPoint)a3;
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4;
-- (id)createPlaceholderLabelWithFont:(id)a3 andTextAlignment:(int64_t)a4;
-- (id)createTextLabelWithTextColor:(id)a3;
+- (id)closestPositionToPoint:(CGPoint)point;
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range;
+- (id)createPlaceholderLabelWithFont:(id)font andTextAlignment:(int64_t)alignment;
+- (id)createTextLabelWithTextColor:(id)color;
 - (id)customOverlayContainer;
-- (id)defaultClearButtonImageForState:(unint64_t)a3;
+- (id)defaultClearButtonImageForState:(unint64_t)state;
 - (id)delegate;
-- (id)documentFragmentForPasteboardItemAtIndex:(int64_t)a3;
-- (id)editMenuForTextRange:(id)a3 suggestedActions:(id)a4;
-- (id)fieldEditor:(id)a3 willChangeSelectionFromCharacterRanges:(id)a4 toCharacterRanges:(id)a5;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)documentFragmentForPasteboardItemAtIndex:(int64_t)index;
+- (id)editMenuForTextRange:(id)range suggestedActions:(id)actions;
+- (id)fieldEditor:(id)editor willChangeSelectionFromCharacterRanges:(id)ranges toCharacterRanges:(id)characterRanges;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)insertDictationResultPlaceholder;
-- (id)insertTextPlaceholderWithSize:(CGSize)a3;
+- (id)insertTextPlaceholderWithSize:(CGSize)size;
 - (id)largeContentTitle;
 - (id)metadataDictionariesForDictationResults;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)obtainSelectionGrabberSuppressionAssertion;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5;
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4;
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4;
-- (id)rangeWithTextAlternatives:(id *)a3 atPosition:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset;
+- (id)positionFromPosition:(id)position offset:(int64_t)offset;
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction;
+- (id)rangeWithTextAlternatives:(id *)alternatives atPosition:(id)position;
 - (id)selectedAttributedText;
 - (id)selectedText;
 - (id)selectionContainerView;
-- (id)selectionRectsForRange:(id)a3;
+- (id)selectionRectsForRange:(id)range;
 - (id)supportedPasteboardTypesForCurrentSelection;
-- (id)textInRange:(id)a3;
+- (id)textInRange:(id)range;
 - (id)textInputTraits;
 - (id)textLabel;
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4;
-- (id)textStylingAtPosition:(id)a3 inDirection:(int64_t)a4;
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition;
+- (id)textStylingAtPosition:(id)position inDirection:(int64_t)direction;
 - (id)undoManager;
-- (id)valueForKey:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForKey:(id)key;
+- (id)valueForUndefinedKey:(id)key;
 - (id)willGenerateCancelPreview;
 - (int)textSelectionBehavior;
 - (int64_t)_blurEffectStyle;
@@ -259,59 +259,59 @@
 - (int64_t)_keyboardAppearance;
 - (int64_t)_systemDefaultFocusGroupPriority;
 - (int64_t)_userInterfaceStyle;
-- (int64_t)baseWritingDirectionForPosition:(id)a3 inDirection:(int64_t)a4;
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4;
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4;
+- (int64_t)baseWritingDirectionForPosition:(id)position inDirection:(int64_t)direction;
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition;
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition;
 - (unint64_t)_textLengthToDeleteBeforeSelectedRangeForSmartDelete;
 - (void)__resumeBecomeFirstResponder;
 - (void)_activateSelectionView;
 - (void)_addFieldEditorToView;
-- (void)_addShortcut:(id)a3;
-- (void)_addTextCanvasViewAdjustingFrame:(BOOL)a3;
-- (void)_adjustFontForAccessibilityTraits:(BOOL)a3;
-- (void)_applicableContentOutsetsFromFontsOversize:(int)a3 extremeSizing:;
-- (void)_applyHighlightedAnimated:(BOOL)a3;
+- (void)_addShortcut:(id)shortcut;
+- (void)_addTextCanvasViewAdjustingFrame:(BOOL)frame;
+- (void)_adjustFontForAccessibilityTraits:(BOOL)traits;
+- (void)_applicableContentOutsetsFromFontsOversize:(int)oversize extremeSizing:;
+- (void)_applyHighlightedAnimated:(BOOL)animated;
 - (void)_attachFieldEditor;
-- (void)_backgroundProviderClassOrImageBackgroundProviderClass:(void *)a1;
+- (void)_backgroundProviderClassOrImageBackgroundProviderClass:(void *)class;
 - (void)_becomeFirstResponder;
-- (void)_clearButtonClicked:(id)a3;
+- (void)_clearButtonClicked:(id)clicked;
 - (void)_clearSelectionUI;
 - (void)_contentCoverStateDidChange;
 - (void)_createInteractionAssistant;
-- (void)_define:(id)a3;
-- (void)_deleteBackwardAndNotify:(BOOL)a3;
-- (void)_detachFieldEditorDiscardingEdits:(BOOL)a3 animated:(BOOL)a4;
+- (void)_define:(id)_define;
+- (void)_deleteBackwardAndNotify:(BOOL)notify;
+- (void)_detachFieldEditorDiscardingEdits:(BOOL)edits animated:(BOOL)animated;
 - (void)_detectCustomDrawing;
 - (void)_didAttachFieldEditor;
 - (void)_didChangeSecureTextEntry;
 - (void)_didDetachFieldEditor;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
 - (void)_didUpdateAfterDetachingFieldEditor;
-- (void)_drawTextInRect:(CGRect)a3 forLabel:(id)a4;
-- (void)_enabledDidChangeAnimated:(BOOL)a3;
-- (void)_encodeBackgroundColorWithCoder:(id)a3;
+- (void)_drawTextInRect:(CGRect)rect forLabel:(id)label;
+- (void)_enabledDidChangeAnimated:(BOOL)animated;
+- (void)_encodeBackgroundColorWithCoder:(id)coder;
 - (void)_ensureSelectionContainerViewSubviewOrdering;
 - (void)_forceObscureAllText;
-- (void)_highlightedDidChangeAnimated:(BOOL)a3;
-- (void)_increaseContrastSettingChanged:(id)a3;
+- (void)_highlightedDidChangeAnimated:(BOOL)animated;
+- (void)_increaseContrastSettingChanged:(id)changed;
 - (void)_initIncreasedContrastNotifications;
 - (void)_initTextCanvasView;
 - (void)_initTextLayoutController;
 - (void)_initTextStorage;
 - (void)_initTraitChangeRegistrations;
-- (void)_initialScrollDidFinish:(id)a3;
-- (void)_insertAttributedText:(id)a3 withAnimation:(int64_t)a4 completion:(id)a5;
-- (void)_insertAttributedTextWithoutClosingTyping:(id)a3;
+- (void)_initialScrollDidFinish:(id)finish;
+- (void)_insertAttributedText:(id)text withAnimation:(int64_t)animation completion:(id)completion;
+- (void)_insertAttributedTextWithoutClosingTyping:(id)typing;
 - (void)_installSelectGestureRecognizer;
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4;
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector;
 - (void)_invalidateAfterUpdatingEditingAttributes;
 - (void)_invalidateAllGlyphsAndTextLayout;
-- (void)_invalidateBackgroundProviderForced:(BOOL)a3;
+- (void)_invalidateBackgroundProviderForced:(BOOL)forced;
 - (void)_invalidateCachedDefaultClearButtonImages;
 - (void)_invalidateDefaultFont;
 - (void)_invalidateDefaultFullFontSize;
 - (void)_invalidateMetricsProvider;
-- (void)_invalidatePasscodeStyleFromStyle:(BOOL)a3;
+- (void)_invalidatePasscodeStyleFromStyle:(BOOL)style;
 - (void)_layoutContentAndExtras;
 - (void)_layoutContentOnly;
 - (void)_layoutFieldEditor;
@@ -323,265 +323,265 @@
 - (void)_notifyDidBeginEditing;
 - (void)_notifyDidEndEditing;
 - (void)_notifySystemKeyboardOfAppearanceChange;
-- (void)_pasteSessionDidFinish:(id)a3;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_pasteSessionDidFinish:(id)finish;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_preferredContentSizeCategoryDidChange;
-- (void)_promptForReplace:(id)a3;
+- (void)_promptForReplace:(id)replace;
 - (void)_propagateCuiProperties;
 - (void)_removeFieldEditorAndHost;
-- (void)_replaceRange:(id)a3 withAttributedText:(id)a4 usingAnimation:(int64_t)a5 completion:(id)a6;
-- (void)_replaceRangeUsingColorWipe:(id)a3 withAttributedText:(id)a4 completion:(id)a5;
+- (void)_replaceRange:(id)range withAttributedText:(id)text usingAnimation:(int64_t)animation completion:(id)completion;
+- (void)_replaceRangeUsingColorWipe:(id)wipe withAttributedText:(id)text completion:(id)completion;
 - (void)_resetSelectionUI;
 - (void)_resignFirstResponder;
-- (void)_sanitizeText:(id)a3;
-- (void)_scrollRangeToVisible:(_NSRange)a3 animated:(BOOL)a4;
-- (void)_selectGestureChanged:(id)a3;
-- (void)_selectionMayChange:(id)a3;
-- (void)_setActualLeftView:(id)a3;
-- (void)_setActualLeftViewMode:(int64_t)a3;
-- (void)_setActualRightView:(id)a3;
-- (void)_setActualRightViewMode:(int64_t)a3;
-- (void)_setAttributedPlaceholder:(id)a3;
-- (void)_setAttributedText:(id)a3 setCaretSelectionAfterText:(BOOL)a4;
-- (void)_setAttributedTextOnFieldEditor:(id)a3 setCaretSelectionAfterText:(BOOL)a4;
-- (void)_setBackgroundCoverView:(id)a3;
-- (void)_setBackgroundCoverViewMode:(int64_t)a3;
-- (void)_setBackgroundFillColor:(id)a3;
-- (void)_setBackgroundProvider:(id)a3;
-- (void)_setBackgroundStrokeColor:(id)a3;
-- (void)_setBackgroundStrokeWidth:(double)a3;
-- (void)_setBlurEnabled:(BOOL)a3;
-- (void)_setContentCoverUnsecuresText:(BOOL)a3;
-- (void)_setContentCoverView:(id)a3;
-- (void)_setContentCoverViewMode:(int64_t)a3;
-- (void)_setCuiCatalog:(id)a3;
-- (void)_setCuiStyleEffectConfiguration:(id)a3;
-- (void)_setCursorAccessories:(id)a3;
-- (void)_setDisableFocus:(BOOL)a3;
-- (void)_setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setExtremeSizingEnabled:(BOOL)a3;
-- (void)_setForcesClearButtonHighContrastAppearance:(BOOL)a3;
-- (void)_setForegroundViewsAlpha:(double)a3;
-- (void)_setFullFontSize:(id)a3;
-- (void)_setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setInteractionState:(id)a3;
-- (void)_setLeadingPadding:(double)a3;
-- (void)_setLeftViewOffset:(CGSize)a3;
-- (void)_setMetricsProvider:(id)a3;
-- (void)_setOverridePasscodeStyle:(BOOL)a3;
-- (void)_setOverridePlaceholder:(id)a3 alignment:(int64_t)a4;
-- (void)_setPadding:(UIEdgeInsets)a3;
-- (void)_setPasscodeStyleAlpha:(double)a3;
-- (void)_setPlaceholder:(id)a3;
-- (void)_setPrefix:(id)a3;
-- (void)_setRightViewOffset:(CGSize)a3;
-- (void)_setRoundedRectBackgroundCornerRadius:(double)a3;
-- (void)_setSelectedRanges:(id)a3;
-- (void)_setShouldDisplayDictationPlaceholderMessage:(BOOL)a3;
-- (void)_setShouldUpdatePlaceholderTextAlignmentWhenOverridden:(BOOL)a3;
-- (void)_setSuffix:(id)a3 withColor:(id)a4;
-- (void)_setSupportsKeyboardNavigationForSuggestions:(BOOL)a3;
-- (void)_setSuppressContentChangedNotification:(BOOL)a3;
-- (void)_setTextColor:(id)a3;
-- (void)_setTextInRange:(_NSRange)a3 replacementText:(id)a4;
-- (void)_setTrailingPadding:(double)a3;
-- (void)_setVisualEffectViewEnabled:(BOOL)a3 backgroundColor:(id)a4;
+- (void)_sanitizeText:(id)text;
+- (void)_scrollRangeToVisible:(_NSRange)visible animated:(BOOL)animated;
+- (void)_selectGestureChanged:(id)changed;
+- (void)_selectionMayChange:(id)change;
+- (void)_setActualLeftView:(id)view;
+- (void)_setActualLeftViewMode:(int64_t)mode;
+- (void)_setActualRightView:(id)view;
+- (void)_setActualRightViewMode:(int64_t)mode;
+- (void)_setAttributedPlaceholder:(id)placeholder;
+- (void)_setAttributedText:(id)text setCaretSelectionAfterText:(BOOL)afterText;
+- (void)_setAttributedTextOnFieldEditor:(id)editor setCaretSelectionAfterText:(BOOL)text;
+- (void)_setBackgroundCoverView:(id)view;
+- (void)_setBackgroundCoverViewMode:(int64_t)mode;
+- (void)_setBackgroundFillColor:(id)color;
+- (void)_setBackgroundProvider:(id)provider;
+- (void)_setBackgroundStrokeColor:(id)color;
+- (void)_setBackgroundStrokeWidth:(double)width;
+- (void)_setBlurEnabled:(BOOL)enabled;
+- (void)_setContentCoverUnsecuresText:(BOOL)text;
+- (void)_setContentCoverView:(id)view;
+- (void)_setContentCoverViewMode:(int64_t)mode;
+- (void)_setCuiCatalog:(id)catalog;
+- (void)_setCuiStyleEffectConfiguration:(id)configuration;
+- (void)_setCursorAccessories:(id)accessories;
+- (void)_setDisableFocus:(BOOL)focus;
+- (void)_setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)_setExtremeSizingEnabled:(BOOL)enabled;
+- (void)_setForcesClearButtonHighContrastAppearance:(BOOL)appearance;
+- (void)_setForegroundViewsAlpha:(double)alpha;
+- (void)_setFullFontSize:(id)size;
+- (void)_setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)_setInteractionState:(id)state;
+- (void)_setLeadingPadding:(double)padding;
+- (void)_setLeftViewOffset:(CGSize)offset;
+- (void)_setMetricsProvider:(id)provider;
+- (void)_setOverridePasscodeStyle:(BOOL)style;
+- (void)_setOverridePlaceholder:(id)placeholder alignment:(int64_t)alignment;
+- (void)_setPadding:(UIEdgeInsets)padding;
+- (void)_setPasscodeStyleAlpha:(double)alpha;
+- (void)_setPlaceholder:(id)placeholder;
+- (void)_setPrefix:(id)prefix;
+- (void)_setRightViewOffset:(CGSize)offset;
+- (void)_setRoundedRectBackgroundCornerRadius:(double)radius;
+- (void)_setSelectedRanges:(id)ranges;
+- (void)_setShouldDisplayDictationPlaceholderMessage:(BOOL)message;
+- (void)_setShouldUpdatePlaceholderTextAlignmentWhenOverridden:(BOOL)overridden;
+- (void)_setSuffix:(id)suffix withColor:(id)color;
+- (void)_setSupportsKeyboardNavigationForSuggestions:(BOOL)suggestions;
+- (void)_setSuppressContentChangedNotification:(BOOL)notification;
+- (void)_setTextColor:(id)color;
+- (void)_setTextInRange:(_NSRange)range replacementText:(id)text;
+- (void)_setTrailingPadding:(double)padding;
+- (void)_setVisualEffectViewEnabled:(BOOL)enabled backgroundColor:(id)color;
 - (void)_setupDefaultStyleEffectConfiguration;
-- (void)_share:(id)a3;
+- (void)_share:(id)_share;
 - (void)_showSymbolAnimatableLeftViewNowIfNeeded;
 - (void)_showSymbolAnimatableRightViewNowIfNeeded;
-- (void)_sizeChanged:(BOOL)a3;
+- (void)_sizeChanged:(BOOL)changed;
 - (void)_stopObservingFieldEditorScroll;
-- (void)_syncTypingAttributesWithDefaultAttribute:(id)a3;
-- (void)_transitionFromAccessoryView:(id)a3 toView:(id)a4 allowingAnimation:(BOOL)a5;
-- (void)_translate:(id)a3;
-- (void)_transliterateChinese:(id)a3;
+- (void)_syncTypingAttributesWithDefaultAttribute:(id)attribute;
+- (void)_transitionFromAccessoryView:(id)view toView:(id)toView allowingAnimation:(BOOL)animation;
+- (void)_translate:(id)_translate;
+- (void)_transliterateChinese:(id)chinese;
 - (void)_tvUpdateAppearanceForUserInterfaceStyle;
 - (void)_tvUpdateTextColor;
 - (void)_uninstallSelectGestureRecognizer;
 - (void)_updateAutosizeStyleIfNeeded;
-- (void)_updateBaselineInformationDependentOnBoundsAllowingInvalidation:(BOOL)a3;
-- (void)_updateButtonsAllowingAnimation:(BOOL)a3;
+- (void)_updateBaselineInformationDependentOnBoundsAllowingInvalidation:(BOOL)invalidation;
+- (void)_updateButtonsAllowingAnimation:(BOOL)animation;
 - (void)_updateForTintColor;
 - (void)_updateLabel;
 - (void)_updateLabelAppearance;
 - (void)_updatePlaceholderPosition;
 - (void)_updateSelectionGestures;
-- (void)_updateSuffix:(id)a3;
+- (void)_updateSuffix:(id)suffix;
 - (void)_updateTextEffectsConfigurationIfNeeded;
 - (void)_willUpdateAfterDetachingFieldEditor;
 - (void)_windowBecameKey;
 - (void)_windowResignedKey;
-- (void)addTextAlternatives:(id)a3;
+- (void)addTextAlternatives:(id)alternatives;
 - (void)becomeDropResponder;
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3;
+- (void)beginFloatingCursorAtPoint:(CGPoint)point;
 - (void)beginSelectionChange;
 - (void)cancelAutoscroll;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)captureTextFromCamera:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)captureTextFromCamera:(id)camera;
 - (void)clearText;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)createPlaceholderIfNecessary;
-- (void)cut:(id)a3;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3 includingSelectedTextAndDisplayedViewControllers:(BOOL)a4;
-- (void)decreaseSize:(id)a3;
+- (void)decodeRestorableStateWithCoder:(id)coder includingSelectedTextAndDisplayedViewControllers:(BOOL)controllers;
+- (void)decreaseSize:(id)size;
 - (void)deleteBackward;
-- (void)didGenerateCancelPreview:(id)a3;
+- (void)didGenerateCancelPreview:(id)preview;
 - (void)didMoveToWindow;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)draggingFinished:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)draggingFinished:(id)finished;
+- (void)drawRect:(CGRect)rect;
 - (void)droppingFinished;
 - (void)droppingStarted;
-- (void)encodeRestorableStateWithCoder:(id)a3 includingSelectedTextAndDisplayedViewControllers:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeRestorableStateWithCoder:(id)coder includingSelectedTextAndDisplayedViewControllers:(BOOL)controllers;
+- (void)encodeWithCoder:(id)coder;
 - (void)endFloatingCursor;
 - (void)endSelectionChange;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)fieldEditorDidChange:(id)a3;
-- (void)fieldEditorDidChangeSelection:(id)a3;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)fieldEditorDidChange:(id)change;
+- (void)fieldEditorDidChangeSelection:(id)selection;
 - (void)finishedSettingPlaceholder;
 - (void)finishedSettingTextOrAttributedText;
-- (void)floatingContentView:(id)a3 isTransitioningFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)increaseSize:(id)a3;
-- (void)insertAdaptiveImageGlyph:(id)a3 replacementRange:(id)a4;
-- (void)insertAttributedText:(id)a3;
-- (void)insertDictationResult:(id)a3 withCorrectionIdentifier:(id)a4;
-- (void)insertInputSuggestion:(id)a3;
-- (void)insertText:(id)a3;
-- (void)insertText:(id)a3 alternatives:(id)a4 style:(int64_t)a5;
+- (void)floatingContentView:(id)view isTransitioningFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)increaseSize:(id)size;
+- (void)insertAdaptiveImageGlyph:(id)glyph replacementRange:(id)range;
+- (void)insertAttributedText:(id)text;
+- (void)insertDictationResult:(id)result withCorrectionIdentifier:(id)identifier;
+- (void)insertInputSuggestion:(id)suggestion;
+- (void)insertText:(id)text;
+- (void)insertText:(id)text alternatives:(id)alternatives style:(int64_t)style;
 - (void)interactionTintColorDidChange;
 - (void)invalidateDropCaret;
-- (void)keyboardInputChangedSelection:(id)a3;
+- (void)keyboardInputChangedSelection:(id)selection;
 - (void)layoutSubviews;
-- (void)makeTextWritingDirectionLeftToRight:(id)a3;
-- (void)makeTextWritingDirectionNatural:(id)a3;
-- (void)makeTextWritingDirectionRightToLeft:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)paste:(id)a3;
-- (void)pasteAndMatchStyle:(id)a3;
-- (void)pasteItemProviders:(id)a3;
+- (void)makeTextWritingDirectionLeftToRight:(id)right;
+- (void)makeTextWritingDirectionNatural:(id)natural;
+- (void)makeTextWritingDirectionRightToLeft:(id)left;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)paste:(id)paste;
+- (void)pasteAndMatchStyle:(id)style;
+- (void)pasteItemProviders:(id)providers;
 - (void)performCancelAnimations;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)removeAnnotation:(id)a3 forRange:(id)a4;
-- (void)removeDictationResultPlaceholder:(id)a3 willInsertResult:(BOOL)a4;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)removeAnnotation:(id)annotation forRange:(id)range;
+- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)result;
 - (void)removeEmojiAlternatives;
 - (void)removeFromSuperview;
-- (void)removeTextPlaceholder:(id)a3;
-- (void)replace:(id)a3;
-- (void)replaceRange:(id)a3 withAnnotatedString:(id)a4 relativeReplacementRange:(_NSRange)a5;
-- (void)replaceRange:(id)a3 withAttributedText:(id)a4;
-- (void)replaceRange:(id)a3 withText:(id)a4;
-- (void)replaceRangeWithTextWithoutClosingTyping:(id)a3 replacementText:(id)a4;
-- (void)resignDropResponderWithDropPerformed:(BOOL)a3;
-- (void)sanitizeAttributedText:(id)a3;
+- (void)removeTextPlaceholder:(id)placeholder;
+- (void)replace:(id)replace;
+- (void)replaceRange:(id)range withAnnotatedString:(id)string relativeReplacementRange:(_NSRange)replacementRange;
+- (void)replaceRange:(id)range withAttributedText:(id)text;
+- (void)replaceRange:(id)range withText:(id)text;
+- (void)replaceRangeWithTextWithoutClosingTyping:(id)typing replacementText:(id)text;
+- (void)resignDropResponderWithDropPerformed:(BOOL)performed;
+- (void)sanitizeAttributedText:(id)text;
 - (void)scrollTextFieldToVisibleIfNecessary;
-- (void)select:(id)a3;
+- (void)select:(id)select;
 - (void)selectAll;
-- (void)selectAll:(id)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
+- (void)selectAll:(id)all;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
 - (void)setAdjustsFontSizeToFitWidth:(BOOL)adjustsFontSizeToFitWidth;
-- (void)setAllowsAttachments:(BOOL)a3;
+- (void)setAllowsAttachments:(BOOL)attachments;
 - (void)setAllowsEditingTextAttributes:(BOOL)allowsEditingTextAttributes;
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4;
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range;
 - (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder;
-- (void)setAttributedPlaceholders:(id)a3;
-- (void)setAttributes:(id)a3 range:(_NSRange)a4;
-- (void)setAutomaticallyAdjustsWritingDirection:(BOOL)a3;
+- (void)setAttributedPlaceholders:(id)placeholders;
+- (void)setAttributes:(id)attributes range:(_NSRange)range;
+- (void)setAutomaticallyAdjustsWritingDirection:(BOOL)direction;
 - (void)setBackground:(UIImage *)background;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBaseWritingDirection:(int64_t)a3 forRange:(id)a4;
-- (void)setBecomesFirstResponderOnClearButtonTap:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setBaseWritingDirection:(int64_t)direction forRange:(id)range;
+- (void)setBecomesFirstResponderOnClearButtonTap:(BOOL)tap;
 - (void)setBorderStyle:(UITextBorderStyle)borderStyle;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setClearButtonMode:(UITextFieldViewMode)clearButtonMode;
-- (void)setClearButtonOffset:(CGSize)a3;
-- (void)setClearButtonStyle:(int64_t)a3;
-- (void)setClearingBehavior:(int64_t)a3;
+- (void)setClearButtonOffset:(CGSize)offset;
+- (void)setClearButtonStyle:(int64_t)style;
+- (void)setClearingBehavior:(int64_t)behavior;
 - (void)setClearsOnInsertion:(BOOL)clearsOnInsertion;
-- (void)setClearsPlaceholderOnBeginEditing:(BOOL)a3;
-- (void)setClipsToBounds:(BOOL)a3;
-- (void)setContentOffsetForSameViewDrops:(CGPoint)a3;
-- (void)setContentVerticalAlignment:(int64_t)a3;
-- (void)setContinuousSpellCheckingEnabled:(BOOL)a3;
-- (void)setControlSize:(int)a3;
+- (void)setClearsPlaceholderOnBeginEditing:(BOOL)editing;
+- (void)setClipsToBounds:(BOOL)bounds;
+- (void)setContentOffsetForSameViewDrops:(CGPoint)drops;
+- (void)setContentVerticalAlignment:(int64_t)alignment;
+- (void)setContinuousSpellCheckingEnabled:(BOOL)enabled;
+- (void)setControlSize:(int)size;
 - (void)setDefaultTextAttributes:(NSDictionary *)defaultTextAttributes;
 - (void)setDelegate:(id)delegate;
-- (void)setDevicePasscodeEntry:(BOOL)a3;
+- (void)setDevicePasscodeEntry:(BOOL)entry;
 - (void)setDisabledBackground:(UIImage *)disabledBackground;
-- (void)setDisplaySecureEditsUsingPlainText:(BOOL)a3;
-- (void)setDisplaySecureTextUsingPlainText:(BOOL)a3;
+- (void)setDisplaySecureEditsUsingPlainText:(BOOL)text;
+- (void)setDisplaySecureTextUsingPlainText:(BOOL)text;
 - (void)setFont:(UIFont *)font;
-- (void)setFont:(id)a3 fullFontSize:(id)a4 ambientOnly:(BOOL)a5;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIcon:(id)a3;
+- (void)setFont:(id)font fullFontSize:(id)size ambientOnly:(BOOL)only;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIcon:(id)icon;
 - (void)setInputAccessoryView:(UIView *)inputAccessoryView;
-- (void)setInputAssistantItem:(id)a3;
-- (void)setInputDelegate:(id)a3;
-- (void)setKeyboardAppearance:(int64_t)a3;
-- (void)setLabel:(id)a3;
-- (void)setLabelOffset:(float)a3;
+- (void)setInputAssistantItem:(id)item;
+- (void)setInputDelegate:(id)delegate;
+- (void)setKeyboardAppearance:(int64_t)appearance;
+- (void)setLabel:(id)label;
+- (void)setLabelOffset:(float)offset;
 - (void)setLeftView:(UIView *)leftView;
 - (void)setLeftViewMode:(UITextFieldViewMode)leftViewMode;
-- (void)setLinkTextAttributes:(id)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setMarkedTextStyle:(id)a3;
+- (void)setLinkTextAttributes:(id)attributes;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setMarkedTextStyle:(id)style;
 - (void)setMinimumFontSize:(CGFloat)minimumFontSize;
 - (void)setNeedsLayout;
-- (void)setPasswordRules:(id)a3;
+- (void)setPasswordRules:(id)rules;
 - (void)setPlaceholder:(NSString *)placeholder;
-- (void)setPlaceholders:(id)a3;
-- (void)setProgress:(float)a3;
-- (void)setRecentsAccessoryView:(id)a3;
+- (void)setPlaceholders:(id)placeholders;
+- (void)setProgress:(float)progress;
+- (void)setRecentsAccessoryView:(id)view;
 - (void)setRightView:(UIView *)rightView;
 - (void)setRightViewMode:(UITextFieldViewMode)rightViewMode;
-- (void)setSecureTextEntry:(BOOL)a3;
-- (void)setSelectedTextRange:(id)a3;
-- (void)setSelectionRange:(_NSRange)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setShadowBlur:(double)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setSizingRule:(int64_t)a3;
-- (void)setSupportsAdaptiveImageGlyph:(BOOL)a3;
+- (void)setSecureTextEntry:(BOOL)entry;
+- (void)setSelectedTextRange:(id)range;
+- (void)setSelectionRange:(_NSRange)range;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setShadowBlur:(double)blur;
+- (void)setShadowColor:(id)color;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setSizingRule:(int64_t)rule;
+- (void)setSupportsAdaptiveImageGlyph:(BOOL)glyph;
 - (void)setText:(NSString *)text;
 - (void)setTextAlignment:(NSTextAlignment)textAlignment;
-- (void)setTextCentersVertically:(BOOL)a3;
-- (void)setTextSelectionBehavior:(int)a3;
+- (void)setTextCentersVertically:(BOOL)vertically;
+- (void)setTextSelectionBehavior:(int)behavior;
 - (void)setTypingAttributes:(NSDictionary *)typingAttributes;
-- (void)setUndoEnabled:(BOOL)a3;
-- (void)startAutoscroll:(CGPoint)a3;
-- (void)takeTraitsFrom:(id)a3;
+- (void)setUndoEnabled:(BOOL)enabled;
+- (void)startAutoscroll:(CGPoint)autoscroll;
+- (void)takeTraitsFrom:(id)from;
 - (void)tintColorDidChange;
-- (void)toggleBoldface:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleUnderline:(id)a3;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3;
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3 animated:(BOOL)a4;
-- (void)validateCommand:(id)a3;
-- (void)willDismissEditMenuWithAnimator:(id)a3;
-- (void)willMoveToWindow:(id)a3;
-- (void)willPresentEditMenuWithAnimator:(id)a3;
+- (void)toggleBoldface:(id)boldface;
+- (void)toggleItalics:(id)italics;
+- (void)toggleUnderline:(id)underline;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateFloatingCursorAtPoint:(CGPoint)point;
+- (void)updateFloatingCursorAtPoint:(CGPoint)point animated:(BOOL)animated;
+- (void)validateCommand:(id)command;
+- (void)willDismissEditMenuWithAnimator:(id)animator;
+- (void)willMoveToWindow:(id)window;
+- (void)willPresentEditMenuWithAnimator:(id)animator;
 @end
 
 @implementation UITextField
 
 - (Class)_preferredBackgroundProviderClass
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     if (!dyld_program_sdk_at_least() || (_UIAquaDuckVisualProvidersEnabled() & 1) == 0)
     {
@@ -591,36 +591,36 @@
     goto LABEL_10;
   }
 
-  v5 = [(UIView *)self traitCollection];
-  if ([v5 userInterfaceIdiom] == 2)
+  traitCollection2 = [(UIView *)self traitCollection];
+  if ([traitCollection2 userInterfaceIdiom] == 2)
   {
 
 LABEL_10:
-    v8 = objc_opt_class();
+    _defaultiOSBackgroundProviderClass = objc_opt_class();
     goto LABEL_11;
   }
 
-  v6 = [(UIView *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  traitCollection3 = [(UIView *)self traitCollection];
+  userInterfaceIdiom2 = [traitCollection3 userInterfaceIdiom];
 
-  if (v7 == 8 || [(UITextField *)self _isPasscodeStyle])
+  if (userInterfaceIdiom2 == 8 || [(UITextField *)self _isPasscodeStyle])
   {
     goto LABEL_10;
   }
 
-  v8 = [(UITextField *)self _defaultiOSBackgroundProviderClass];
+  _defaultiOSBackgroundProviderClass = [(UITextField *)self _defaultiOSBackgroundProviderClass];
 LABEL_11:
 
-  return [(UITextField *)self _backgroundProviderClassOrImageBackgroundProviderClass:v8];
+  return [(UITextField *)self _backgroundProviderClassOrImageBackgroundProviderClass:_defaultiOSBackgroundProviderClass];
 }
 
 - (void)_invalidateMetricsProvider
 {
-  v3 = [(UITextField *)self _preferredMetricsProvider];
-  v5 = v3;
-  if (v3)
+  _preferredMetricsProvider = [(UITextField *)self _preferredMetricsProvider];
+  v5 = _preferredMetricsProvider;
+  if (_preferredMetricsProvider)
   {
-    [(UITextField *)self _setMetricsProvider:v3];
+    [(UITextField *)self _setMetricsProvider:_preferredMetricsProvider];
   }
 
   else
@@ -632,10 +632,10 @@ LABEL_11:
 
 - (id)_preferredMetricsProvider
 {
-  v4 = [(UITextField *)self _backgroundProvider];
-  v5 = [v4 preferredMetricsProvider];
+  _backgroundProvider = [(UITextField *)self _backgroundProvider];
+  preferredMetricsProvider = [_backgroundProvider preferredMetricsProvider];
 
-  if (!v5)
+  if (!preferredMetricsProvider)
   {
     preferredBorderStyle = self->_preferredBorderStyle;
     if (preferredBorderStyle > 1)
@@ -665,13 +665,13 @@ LABEL_11:
       {
         v7 = +[_UITextFieldLineBackgroundProvider lineStyleMetricsProvider];
 LABEL_13:
-        v5 = v7;
+        preferredMetricsProvider = v7;
         goto LABEL_14;
       }
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    v9 = v8;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v9 = currentHandler;
     v10 = self->_preferredBorderStyle;
     if (v10 > 3)
     {
@@ -683,21 +683,21 @@ LABEL_13:
       v11 = off_1E7126430[v10];
     }
 
-    [v8 handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:5274 description:{@"No metrics provider for border style %@.", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:5274 description:{@"No metrics provider for border style %@.", v11}];
 
-    v5 = 0;
+    preferredMetricsProvider = 0;
   }
 
 LABEL_14:
 
-  return v5;
+  return preferredMetricsProvider;
 }
 
 - (void)_initTextStorage
 {
   v3 = objc_opt_new();
-  v4 = [(_UITextFieldVisualStyle *)self->_visualStyle defaultTextColor];
-  [(_UICascadingTextStorage *)v3 setTextColor:v4];
+  defaultTextColor = [(_UITextFieldVisualStyle *)self->_visualStyle defaultTextColor];
+  [(_UICascadingTextStorage *)v3 setTextColor:defaultTextColor];
 
   [(_UICascadingTextStorage *)v3 setTextAlignment:4];
   v5 = objc_opt_self();
@@ -718,20 +718,20 @@ LABEL_14:
     textLayoutController = self->_textLayoutController;
     self->_textLayoutController = v8;
 
-    v10 = [(_UITextLayoutController *)self->_textLayoutController firstTextContainer];
+    firstTextContainer = [(_UITextLayoutController *)self->_textLayoutController firstTextContainer];
     textContainer = self->_textContainer;
-    self->_textContainer = v10;
+    self->_textContainer = firstTextContainer;
 
-    v12 = [(NSTextContainer *)self->_textContainer textLayoutManager];
-    [v12 setUsesFontLeading:0];
+    textLayoutManager = [(NSTextContainer *)self->_textContainer textLayoutManager];
+    [textLayoutManager setUsesFontLeading:0];
 
-    v13 = [(NSTextContainer *)self->_textContainer textLayoutManager];
-    [v13 setLimitsLayoutForSuspiciousContents:1];
+    textLayoutManager2 = [(NSTextContainer *)self->_textContainer textLayoutManager];
+    [textLayoutManager2 setLimitsLayoutForSuspiciousContents:1];
 
-    v14 = [(UITextField *)self keyboardType];
-    LODWORD(v13) = (v14 > 0xB) | (0x6CFu >> v14);
-    v15 = [(NSTextContainer *)self->_textContainer textLayoutManager];
-    [v15 setResolvesNaturalAlignmentWithBaseWritingDirection:v13 & 1];
+    keyboardType = [(UITextField *)self keyboardType];
+    LODWORD(textLayoutManager2) = (keyboardType > 0xB) | (0x6CFu >> keyboardType);
+    textLayoutManager3 = [(NSTextContainer *)self->_textContainer textLayoutManager];
+    [textLayoutManager3 setResolvesNaturalAlignmentWithBaseWritingDirection:textLayoutManager2 & 1];
   }
 
   else
@@ -769,10 +769,10 @@ LABEL_14:
 
 - (id)_defaultFont
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     if ([(UITextField *)self controlSize]== 1)
     {
@@ -815,11 +815,11 @@ uint64_t __35__UITextField__detectCustomDrawing__block_invoke()
 
 - (void)_initIncreasedContrastNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__increaseContrastSettingChanged_ name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__increaseContrastSettingChanged_ name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__increaseContrastSettingChanged_ name:@"UIAccessibilityReduceTransparencyStatusDidChangeNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__increaseContrastSettingChanged_ name:@"UIAccessibilityReduceTransparencyStatusDidChangeNotification" object:0];
 }
 
 - (void)_showSymbolAnimatableLeftViewNowIfNeeded
@@ -845,8 +845,8 @@ uint64_t __35__UITextField__detectCustomDrawing__block_invoke()
 
 - (NSTextStorage)textStorage
 {
-  v3 = [(UITextField *)self _fieldEditor];
-  v4 = [v3 _textLayoutController];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  _textLayoutController = [_fieldEditor _textLayoutController];
 
   textStorage = self->_textStorage;
 
@@ -858,9 +858,9 @@ uint64_t __35__UITextField__detectCustomDrawing__block_invoke()
   if (dyld_program_sdk_at_least())
   {
     v3 = objc_alloc_init(MEMORY[0x1E6999430]);
-    v4 = [(UIView *)self traitCollection];
-    v5 = [(UITraitCollection *)v4 _styleEffectAppearanceName];
-    [v3 setAppearanceName:v5];
+    traitCollection = [(UIView *)self traitCollection];
+    _styleEffectAppearanceName = [(UITraitCollection *)traitCollection _styleEffectAppearanceName];
+    [v3 setAppearanceName:_styleEffectAppearanceName];
 
     cuiStyleEffectConfiguration = self->_cuiStyleEffectConfiguration;
     self->_cuiStyleEffectConfiguration = v3;
@@ -916,8 +916,8 @@ LABEL_10:
 
 - (BOOL)_isPasscodeStyle
 {
-  v3 = [(UITextField *)self textInputTraits];
-  v4 = [v3 keyboardAppearance] == 127 && (*(&self->_textFieldFlags + 2) & 0x10) == 0;
+  textInputTraits = [(UITextField *)self textInputTraits];
+  v4 = [textInputTraits keyboardAppearance] == 127 && (*(&self->_textFieldFlags + 2) & 0x10) == 0;
 
   return v4;
 }
@@ -933,8 +933,8 @@ LABEL_10:
     }
 
 LABEL_6:
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    v6 = v5;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v6 = currentHandler;
     v7 = self->_preferredBorderStyle;
     if (v7 > 3)
     {
@@ -946,7 +946,7 @@ LABEL_6:
       v8 = off_1E7126430[v7];
     }
 
-    [v5 handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:5258 description:{@"No background provider for border style %@.", v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:5258 description:{@"No background provider for border style %@.", v8}];
 
     v9 = 0;
     goto LABEL_9;
@@ -966,11 +966,11 @@ LABEL_9:
 
 - (double)_clearButtonPadX
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   result = 3.0;
-  if (v3 == 6)
+  if (userInterfaceIdiom == 6)
   {
     return 0.0;
   }
@@ -980,11 +980,11 @@ LABEL_9:
 
 - (void)_invalidateAllGlyphsAndTextLayout
 {
-  v3 = [(UITextField *)self textLayoutController];
-  v4 = [v3 documentRange];
-  if (([v4 isEmpty] & 1) == 0)
+  textLayoutController = [(UITextField *)self textLayoutController];
+  documentRange = [textLayoutController documentRange];
+  if (([documentRange isEmpty] & 1) == 0)
   {
-    [v3 invalidateLayoutForRange:v4];
+    [textLayoutController invalidateLayoutForRange:documentRange];
     [(UIView *)self setNeedsDisplay];
   }
 
@@ -1012,12 +1012,12 @@ LABEL_9:
 
   if ((*(&self->super.super._viewFlags + 16) & 8) != 0)
   {
-    v5 = [(UIView *)self superview];
-    v6 = v5;
-    if (v5 && (*(v5 + 95) & 0x40) == 0)
+    superview = [(UIView *)self superview];
+    v6 = superview;
+    if (superview && (*(superview + 95) & 0x40) == 0)
     {
-      v7 = [(UIView *)self superview];
-      [v7 setNeedsLayout];
+      superview2 = [(UIView *)self superview];
+      [superview2 setNeedsLayout];
     }
   }
 }
@@ -1040,16 +1040,16 @@ LABEL_9:
   {
     [(UITextInputTraits *)self->_traits setTextSelectionBehavior:[(UITextInputTraits *)nonAtomTraits textSelectionBehavior]];
     v7 = self->_traits;
-    v8 = [(UITextInputTraits *)self->_nonAtomTraits insertionPointColor];
-    [(UITextInputTraits *)v7 setInsertionPointColor:v8];
+    insertionPointColor = [(UITextInputTraits *)self->_nonAtomTraits insertionPointColor];
+    [(UITextInputTraits *)v7 setInsertionPointColor:insertionPointColor];
 
     v9 = self->_traits;
-    v10 = [(UITextInputTraits *)self->_nonAtomTraits selectionHighlightColor];
-    [(UITextInputTraits *)v9 setSelectionHighlightColor:v10];
+    selectionHighlightColor = [(UITextInputTraits *)self->_nonAtomTraits selectionHighlightColor];
+    [(UITextInputTraits *)v9 setSelectionHighlightColor:selectionHighlightColor];
 
     v11 = self->_traits;
-    v12 = [(UITextInputTraits *)self->_nonAtomTraits selectionDragDotImage];
-    [(UITextInputTraits *)v11 setSelectionDragDotImage:v12];
+    selectionDragDotImage = [(UITextInputTraits *)self->_nonAtomTraits selectionDragDotImage];
+    [(UITextInputTraits *)v11 setSelectionDragDotImage:selectionDragDotImage];
 
     [(UITextInputTraits *)self->_traits setTextLoupeVisibility:[(UITextInputTraits *)self->_nonAtomTraits textLoupeVisibility]];
   }
@@ -1061,10 +1061,10 @@ LABEL_9:
 
 - (id)_inputController
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 _inputController];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  _inputController = [_fieldEditor _inputController];
 
-  return v3;
+  return _inputController;
 }
 
 - (UIFieldEditor)_fieldEditor
@@ -1084,21 +1084,21 @@ LABEL_9:
 
 - (BOOL)_shouldObscureInput
 {
-  v3 = [(UITextField *)self isSecureTextEntry];
-  if (v3)
+  isSecureTextEntry = [(UITextField *)self isSecureTextEntry];
+  if (isSecureTextEntry)
   {
     if (([(UITextField *)self displaySecureTextUsingPlainText]& 1) != 0)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isSecureTextEntry) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(UITextField *)self _shouldUnobscureTextWithContentCover];
+      LOBYTE(isSecureTextEntry) = ![(UITextField *)self _shouldUnobscureTextWithContentCover];
     }
   }
 
-  return v3;
+  return isSecureTextEntry;
 }
 
 - (BOOL)isEditing
@@ -1149,32 +1149,32 @@ LABEL_9:
 
 - (id)backgroundColor
 {
-  v3 = [(_UITextFieldBackgroundProvider *)self->_backgroundProvider overridingGetBackgroundColor];
-  v4 = v3;
-  if (v3)
+  overridingGetBackgroundColor = [(_UITextFieldBackgroundProvider *)self->_backgroundProvider overridingGetBackgroundColor];
+  v4 = overridingGetBackgroundColor;
+  if (overridingGetBackgroundColor)
   {
-    v5 = v3;
+    backgroundColor = overridingGetBackgroundColor;
 LABEL_3:
-    v6 = v5;
+    backgroundColor2 = backgroundColor;
     goto LABEL_6;
   }
 
-  v7 = [(UITextField *)self _contentView];
+  _contentView = [(UITextField *)self _contentView];
 
-  if (v7 == self)
+  if (_contentView == self)
   {
     v10.receiver = self;
     v10.super_class = UITextField;
-    v5 = [(UIView *)&v10 backgroundColor];
+    backgroundColor = [(UIView *)&v10 backgroundColor];
     goto LABEL_3;
   }
 
-  v8 = [(UITextField *)self _contentView];
-  v6 = [v8 backgroundColor];
+  _contentView2 = [(UITextField *)self _contentView];
+  backgroundColor2 = [_contentView2 backgroundColor];
 
 LABEL_6:
 
-  return v6;
+  return backgroundColor2;
 }
 
 - (BOOL)_showsLeftView
@@ -1226,8 +1226,8 @@ LABEL_11:
 
 - (BOOL)_hasContent
 {
-  v2 = [(UITextField *)self _text];
-  v3 = [v2 length] != 0;
+  _text = [(UITextField *)self _text];
+  v3 = [_text length] != 0;
 
   return v3;
 }
@@ -1236,16 +1236,16 @@ LABEL_11:
 {
   if (*(&self->_textFieldFlags + 1))
   {
-    v3 = [(UITextField *)self _fieldEditor];
-    v2 = [v3 text];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    text = [_fieldEditor text];
   }
 
   else
   {
-    v2 = [(NSConcreteTextStorage *)self->_textStorage string];
+    text = [(NSConcreteTextStorage *)self->_textStorage string];
   }
 
-  return v2;
+  return text;
 }
 
 - (void)_updateLabelAppearance
@@ -1258,19 +1258,19 @@ LABEL_11:
 
 - (UITextPosition)beginningOfDocument
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 beginningOfDocument];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  beginningOfDocument = [_fieldEditor beginningOfDocument];
 
-  return v3;
+  return beginningOfDocument;
 }
 
 - (id)_systemBackgroundView
 {
-  v2 = self;
-  v3 = v2;
-  if (v2 && (*(&v2->_textFieldFlags + 4) & 4) != 0)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy && (*(&selfCopy->_textFieldFlags + 4) & 4) != 0)
   {
-    backgroundProvider = v2->_backgroundProvider;
+    backgroundProvider = selfCopy->_backgroundProvider;
   }
 
   else
@@ -1280,12 +1280,12 @@ LABEL_11:
 
   v5 = backgroundProvider;
 
-  v6 = [(_UITextFieldBackgroundProvider *)v5 backgroundView];
+  backgroundView = [(_UITextFieldBackgroundProvider *)v5 backgroundView];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = backgroundView;
   }
 
   else
@@ -1311,8 +1311,8 @@ LABEL_11:
   if (!self->_placeholderLabel)
   {
     v3 = self->_textStorage;
-    v6 = [(_UICascadingTextStorage *)v3 font];
-    v4 = [(UITextField *)self createPlaceholderLabelWithFont:v6 andTextAlignment:[(_UICascadingTextStorage *)v3 textAlignment]];
+    font = [(_UICascadingTextStorage *)v3 font];
+    v4 = [(UITextField *)self createPlaceholderLabelWithFont:font andTextAlignment:[(_UICascadingTextStorage *)v3 textAlignment]];
     placeholderLabel = self->_placeholderLabel;
     self->_placeholderLabel = v4;
   }
@@ -1352,7 +1352,7 @@ LABEL_11:
 
 - (BOOL)_implementsEditMenu
 {
-  v2 = [(UITextField *)self delegate];
+  delegate = [(UITextField *)self delegate];
   v3 = objc_opt_respondsToSelector();
 
   return v3 & 1;
@@ -1365,17 +1365,17 @@ LABEL_11:
     return;
   }
 
-  v3 = [(UITextField *)self visualStyle];
-  v9 = [v3 parentViewForTextContentView];
+  visualStyle = [(UITextField *)self visualStyle];
+  parentViewForTextContentView = [visualStyle parentViewForTextContentView];
 
-  v4 = [(UITextField *)self _backgroundView];
-  v5 = [v4 superview];
+  _backgroundView = [(UITextField *)self _backgroundView];
+  superview = [_backgroundView superview];
 
-  if (v5 == v9)
+  if (superview == parentViewForTextContentView)
   {
     selectionContainerView = self->_selectionContainerView;
-    v8 = [(UITextField *)self _backgroundView];
-    [v9 insertSubview:selectionContainerView aboveSubview:v8];
+    _backgroundView2 = [(UITextField *)self _backgroundView];
+    [parentViewForTextContentView insertSubview:selectionContainerView aboveSubview:_backgroundView2];
 LABEL_8:
 
     goto LABEL_9;
@@ -1384,22 +1384,22 @@ LABEL_8:
   v6 = self->_selectionContainerView;
   if (*(&self->_textFieldFlags + 1))
   {
-    v8 = [(UITextField *)self _fieldEditor];
-    [v9 insertSubview:v6 belowSubview:v8];
+    _backgroundView2 = [(UITextField *)self _fieldEditor];
+    [parentViewForTextContentView insertSubview:v6 belowSubview:_backgroundView2];
     goto LABEL_8;
   }
 
-  [v9 insertSubview:self->_selectionContainerView atIndex:0];
+  [parentViewForTextContentView insertSubview:self->_selectionContainerView atIndex:0];
 LABEL_9:
 }
 
 - (UIView)_backgroundView
 {
-  v2 = self;
-  v3 = v2;
-  if (v2 && (*(&v2->_textFieldFlags + 4) & 4) != 0)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy && (*(&selfCopy->_textFieldFlags + 4) & 4) != 0)
   {
-    backgroundProvider = v2->_backgroundProvider;
+    backgroundProvider = selfCopy->_backgroundProvider;
   }
 
   else
@@ -1409,9 +1409,9 @@ LABEL_9:
 
   v5 = backgroundProvider;
 
-  v6 = [(_UITextFieldBackgroundProvider *)v5 backgroundView];
+  backgroundView = [(_UITextFieldBackgroundProvider *)v5 backgroundView];
 
-  return v6;
+  return backgroundView;
 }
 
 - (id)selectionContainerView
@@ -1435,8 +1435,8 @@ LABEL_9:
 {
   if ((*(&self->_textFieldFlags + 1) & 1) != 0 && [(UITextField *)self _tvHasFloatingFieldEditor])
   {
-    v3 = [(UITextField *)self _fieldEditor];
-    [v3 _selectionClipRect];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor _selectionClipRect];
   }
 
   else
@@ -1447,8 +1447,8 @@ LABEL_9:
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v3 = [(UITextField *)self textInputView];
-    [v3 convertRect:self fromView:{v9, v11, v13, v15}];
+    _fieldEditor = [(UITextField *)self textInputView];
+    [_fieldEditor convertRect:self fromView:{v9, v11, v13, v15}];
   }
 
   v16 = v4;
@@ -1484,21 +1484,21 @@ LABEL_9:
 
 - (void)_updateForTintColor
 {
-  v3 = [(UITextField *)self textInputTraits];
-  v4 = [(UIView *)self _inheritedInteractionTintColor];
-  [v3 _setColorsToMatchTintColor:v4];
+  textInputTraits = [(UITextField *)self textInputTraits];
+  _inheritedInteractionTintColor = [(UIView *)self _inheritedInteractionTintColor];
+  [textInputTraits _setColorsToMatchTintColor:_inheritedInteractionTintColor];
 
   if (*(&self->_textFieldFlags + 1))
   {
-    v5 = [(UITextField *)self interactionAssistant];
-    [v5 deactivateSelection];
+    interactionAssistant = [(UITextField *)self interactionAssistant];
+    [interactionAssistant deactivateSelection];
 
     fieldEditor = self->_fieldEditor;
-    v7 = [(UIView *)self _inheritedInteractionTintColor];
-    [(UIFieldEditor *)fieldEditor _setColorsToMatchTintColor:v7];
+    _inheritedInteractionTintColor2 = [(UIView *)self _inheritedInteractionTintColor];
+    [(UIFieldEditor *)fieldEditor _setColorsToMatchTintColor:_inheritedInteractionTintColor2];
 
-    v8 = [(UITextField *)self interactionAssistant];
-    [v8 activateSelection];
+    interactionAssistant2 = [(UITextField *)self interactionAssistant];
+    [interactionAssistant2 activateSelection];
   }
 
   [(UITextField *)self _invalidateCachedDefaultClearButtonImages];
@@ -1527,8 +1527,8 @@ LABEL_9:
 
   else
   {
-    v3 = [(UITextField *)self _fieldEditor];
-    [v3 _unobscureAllText];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor _unobscureAllText];
   }
 }
 
@@ -1544,19 +1544,19 @@ LABEL_9:
 
 - (NSString)placeholder
 {
-  v3 = [(NSAttributedString *)self->_overriddenPlaceholder string];
-  v4 = v3;
-  if (v3)
+  string = [(NSAttributedString *)self->_overriddenPlaceholder string];
+  v4 = string;
+  if (string)
   {
-    v5 = v3;
+    text = string;
   }
 
   else
   {
-    v5 = [(UILabel *)self->_placeholderLabel text];
+    text = [(UILabel *)self->_placeholderLabel text];
   }
 
-  v6 = v5;
+  v6 = text;
 
   return v6;
 }
@@ -1564,23 +1564,23 @@ LABEL_9:
 - (void)_invalidateCachedDefaultClearButtonImages
 {
   [(NSMutableDictionary *)self->_cachedDefaultClearButtonImages removeAllObjects];
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v5 = [(UITextField *)self _clearButtonImageForState:0];
-    v6 = [(UIButton *)self->_clearButton configuration];
-    [v6 setImage:v5];
+    configuration = [(UIButton *)self->_clearButton configuration];
+    [configuration setImage:v5];
 
-    v7 = [(UIButton *)self->_clearButton _visualProvider];
-    [v7 applyConfiguration];
+    _visualProvider = [(UIButton *)self->_clearButton _visualProvider];
+    [_visualProvider applyConfiguration];
   }
 
   else
   {
-    v7 = [(UIButton *)self->_clearButton _visualProvider];
-    [v7 _updateImageView];
+    _visualProvider = [(UIButton *)self->_clearButton _visualProvider];
+    [_visualProvider _updateImageView];
   }
 }
 
@@ -1597,8 +1597,8 @@ LABEL_9:
 - (void)_layoutContentOnly
 {
   v21 = self->_selectionContainerView;
-  v3 = [(UITextField *)self visualStyle];
-  v4 = [v3 parentViewForTextContentView];
+  visualStyle = [(UITextField *)self visualStyle];
+  parentViewForTextContentView = [visualStyle parentViewForTextContentView];
 
   if ([(UITextField *)self _showsContentCoverView])
   {
@@ -1609,32 +1609,32 @@ LABEL_9:
 
     if (v21)
     {
-      v5 = [(UIView *)self->_selectionContainerView superview];
+      superview = [(UIView *)self->_selectionContainerView superview];
 
-      if (v4 != v5)
+      if (parentViewForTextContentView != superview)
       {
-        [v4 addSubview:v21];
+        [parentViewForTextContentView addSubview:v21];
       }
     }
 
-    v6 = [(_UITextCanvas *)self->_textCanvasView superview];
+    superview2 = [(_UITextCanvas *)self->_textCanvasView superview];
 
-    if (v4 != v6)
+    if (parentViewForTextContentView != superview2)
     {
-      [v4 addSubview:self->_textCanvasView];
+      [parentViewForTextContentView addSubview:self->_textCanvasView];
     }
 
     contentCoverView = self->_contentCoverView;
     if (contentCoverView)
     {
-      v8 = [(UIView *)contentCoverView superview];
+      superview3 = [(UIView *)contentCoverView superview];
 
-      if (v4 != v8)
+      if (parentViewForTextContentView != superview3)
       {
-        [v4 addSubview:self->_contentCoverView];
+        [parentViewForTextContentView addSubview:self->_contentCoverView];
       }
 
-      [v4 bringSubviewToFront:self->_contentCoverView];
+      [parentViewForTextContentView bringSubviewToFront:self->_contentCoverView];
       [(UITextField *)self editRect];
       [(UIView *)self->_contentCoverView setFrame:?];
     }
@@ -1646,9 +1646,9 @@ LABEL_9:
     textFieldFlags = self->_textFieldFlags;
     if ((*&textFieldFlags & 0x100) != 0)
     {
-      v10 = [(UIView *)self->_fieldEditor superview];
+      superview4 = [(UIView *)self->_fieldEditor superview];
 
-      if (!v10)
+      if (!superview4)
       {
         [(UITextField *)self _addFieldEditorToView];
         goto LABEL_24;
@@ -1661,56 +1661,56 @@ LABEL_9:
     {
       if (v21)
       {
-        v11 = [(UIView *)self->_selectionContainerView superview];
+        superview5 = [(UIView *)self->_selectionContainerView superview];
 
-        if (v4 != v11)
+        if (parentViewForTextContentView != superview5)
         {
-          [v4 addSubview:v21];
+          [parentViewForTextContentView addSubview:v21];
         }
       }
 
-      v12 = [(_UITextCanvas *)self->_textCanvasView superview];
+      superview6 = [(_UITextCanvas *)self->_textCanvasView superview];
 
-      if (v4 != v12)
+      if (parentViewForTextContentView != superview6)
       {
-        [v4 addSubview:self->_textCanvasView];
+        [parentViewForTextContentView addSubview:self->_textCanvasView];
       }
 
-      [v4 bringSubviewToFront:self->_textCanvasView];
+      [parentViewForTextContentView bringSubviewToFront:self->_textCanvasView];
     }
   }
 
 LABEL_24:
-  v13 = [(UITextField *)self textInputView];
-  [v13 bounds];
+  textInputView = [(UITextField *)self textInputView];
+  [textInputView bounds];
   [(UIView *)v21 setFrame:?];
 
-  v14 = [(UITextField *)self interactionAssistant];
-  v15 = [v14 _legacySelectionView];
-  [v15 deferredUpdateSelectionRects];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  _legacySelectionView = [interactionAssistant _legacySelectionView];
+  [_legacySelectionView deferredUpdateSelectionRects];
 
   if ([(UITextField *)self _showsBackgroundCoverView])
   {
-    [v4 insertSubview:self->_backgroundCoverView belowSubview:self->_textCanvasView];
+    [parentViewForTextContentView insertSubview:self->_backgroundCoverView belowSubview:self->_textCanvasView];
     [(UIView *)self bounds];
     [(UITextField *)self borderRectForBounds:?];
     [(UIView *)self->_backgroundCoverView setFrame:?];
     if ([(UITextField *)self borderStyle]== UITextBorderStyleRoundedRect)
     {
       preferredBackgroundCornerRadius = self->_preferredBackgroundCornerRadius;
-      v17 = [(UIView *)self->_backgroundCoverView layer];
-      v18 = v17;
+      layer = [(UIView *)self->_backgroundCoverView layer];
+      v18 = layer;
       v19 = preferredBackgroundCornerRadius;
     }
 
     else
     {
-      v17 = [(UIView *)self->_backgroundCoverView layer];
-      v18 = v17;
+      layer = [(UIView *)self->_backgroundCoverView layer];
+      v18 = layer;
       v19 = 0.0;
     }
 
-    [v17 setCornerRadius:v19];
+    [layer setCornerRadius:v19];
   }
 
   else
@@ -1718,9 +1718,9 @@ LABEL_24:
     [(UIView *)self->_backgroundCoverView removeFromSuperview];
   }
 
-  v20 = [(_UITextCanvas *)self->_textCanvasView superview];
+  superview7 = [(_UITextCanvas *)self->_textCanvasView superview];
 
-  if (v4 == v20)
+  if (parentViewForTextContentView == superview7)
   {
     [(UITextField *)self _textCanvasViewFrameIncludingContentInsetsFromFontsWhenNotContainedByFieldEditor];
     [(_UITextCanvas *)self->_textCanvasView setFrame:?];
@@ -1760,9 +1760,9 @@ LABEL_24:
 
 - (UIView)textInputView
 {
-  v3 = [(UIFieldEditor *)self->_fieldEditor textInputView];
-  textCanvasView = v3;
-  if (!v3)
+  textInputView = [(UIFieldEditor *)self->_fieldEditor textInputView];
+  textCanvasView = textInputView;
+  if (!textInputView)
   {
     textCanvasView = self->_textCanvasView;
   }
@@ -1774,8 +1774,8 @@ LABEL_24:
 
 - (NSTextContainer)textContainer
 {
-  v3 = [(UITextField *)self _fieldEditor];
-  v4 = [v3 _textLayoutController];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  _textLayoutController = [_fieldEditor _textLayoutController];
 
   return [(UITextField *)self _textContainer];
 }
@@ -1794,12 +1794,12 @@ LABEL_24:
 
 - (void)_layoutLabels
 {
-  v3 = [(UITextField *)self _fieldEditor];
-  v4 = [v3 _hasDictationPlaceholder];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  _hasDictationPlaceholder = [_fieldEditor _hasDictationPlaceholder];
 
-  v5 = [(UITextField *)self _hasContent]| v4;
-  v6 = [(UILabel *)self->_placeholderLabel text];
-  if (![v6 length] || (v5 & 1) != 0 || (*(&self->_textFieldFlags + 3) & 8) != 0)
+  v5 = [(UITextField *)self _hasContent]| _hasDictationPlaceholder;
+  text = [(UILabel *)self->_placeholderLabel text];
+  if (![text length] || (v5 & 1) != 0 || (*(&self->_textFieldFlags + 3) & 8) != 0)
   {
 
 LABEL_7:
@@ -1827,14 +1827,14 @@ LABEL_7:
 
   [(UILabel *)self->_placeholderLabel setAdjustsFontSizeToFitWidth:v15];
   [(UILabel *)self->_placeholderLabel setBaselineAdjustment:v16];
-  v23 = [(UILabel *)self->_placeholderLabel font];
-  [v23 pointSize];
+  font = [(UILabel *)self->_placeholderLabel font];
+  [font pointSize];
   v25 = v24;
 
   if (v25 <= 0.0)
   {
-    v26 = [objc_opt_class() defaultFont];
-    [v26 pointSize];
+    defaultFont = [objc_opt_class() defaultFont];
+    [defaultFont pointSize];
     v25 = v27;
   }
 
@@ -1855,21 +1855,21 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v29 = [(UITextField *)self _fieldEditorHost];
-  v30 = v29;
-  if (v29)
+  _fieldEditorHost = [(UITextField *)self _fieldEditorHost];
+  v30 = _fieldEditorHost;
+  if (_fieldEditorHost)
   {
-    [v29 addPlaceholderLabel:self->_placeholderLabel];
+    [_fieldEditorHost addPlaceholderLabel:self->_placeholderLabel];
   }
 
   else
   {
-    v31 = [(UITextField *)self _contentView];
-    [v31 addSubview:self->_placeholderLabel];
+    _contentView = [(UITextField *)self _contentView];
+    [_contentView addSubview:self->_placeholderLabel];
   }
 
-  v32 = [(UITextField *)self _inputController];
-  [v32 _selectionGeometryChanged];
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController _selectionGeometryChanged];
 
 LABEL_8:
   prefixLabel = self->_prefixLabel;
@@ -1877,8 +1877,8 @@ LABEL_8:
   {
     [(UITextField *)self _prefixFrame];
     [(UILabel *)prefixLabel setFrame:?];
-    v18 = [(UITextField *)self _contentView];
-    [v18 addSubview:self->_prefixLabel];
+    _contentView2 = [(UITextField *)self _contentView];
+    [_contentView2 addSubview:self->_prefixLabel];
 
     if (([(UITextField *)self isEditing]| v5))
     {
@@ -1901,8 +1901,8 @@ LABEL_8:
   {
     [(UITextField *)self _suffixFrame];
     [(UILabel *)suffixLabel setFrame:?];
-    v21 = [(UITextField *)self _contentView];
-    [v21 addSubview:self->_suffixLabel];
+    _contentView3 = [(UITextField *)self _contentView];
+    [_contentView3 addSubview:self->_suffixLabel];
 
     v22 = self->_suffixLabel;
 
@@ -1917,9 +1917,9 @@ LABEL_8:
     return 0;
   }
 
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
@@ -1929,18 +1929,18 @@ LABEL_8:
   v6.receiver = self;
   v6.super_class = UITextField;
   [(UIView *)&v6 layoutSubviews];
-  v3 = [(UITextField *)self _contentFloatingContainerView];
+  _contentFloatingContainerView = [(UITextField *)self _contentFloatingContainerView];
   [(UIView *)self bounds];
-  [v3 setFrame:?];
-  [v3 setNeedsLayout];
-  [v3 layoutIfNeeded];
+  [_contentFloatingContainerView setFrame:?];
+  [_contentFloatingContainerView setNeedsLayout];
+  [_contentFloatingContainerView layoutIfNeeded];
   [(UITextField *)self _tvUpdateContentBackdropView];
   fieldEditor = self->_fieldEditor;
   if (fieldEditor)
   {
-    v5 = [(UIView *)fieldEditor superview];
+    superview = [(UIView *)fieldEditor superview];
 
-    if (!v5)
+    if (!superview)
     {
       [(UIView *)self->_fieldEditor layoutIfNeeded];
     }
@@ -1953,43 +1953,43 @@ LABEL_8:
 {
   if ([(UITextField *)self adjustsFontSizeToFitWidth]&& ((*(&self->_textFieldFlags + 1) & 1) == 0 || ![(UITextField *)self _tvHasFloatingFieldEditor]))
   {
-    v3 = [(UITextField *)self _shouldObscureInput];
+    _shouldObscureInput = [(UITextField *)self _shouldObscureInput];
     if ((*(&self->_textFieldFlags + 2) & 2) != 0)
     {
-      v5 = [(UITextField *)self attributedText];
-      v4 = [v5 string];
+      attributedText = [(UITextField *)self attributedText];
+      string = [attributedText string];
     }
 
     else
     {
-      v4 = [(UITextField *)self text];
+      string = [(UITextField *)self text];
     }
 
     v6 = self->_textStorage;
-    v7 = [(_UICascadingTextStorage *)v6 font];
-    v8 = [v4 length];
+    font = [(_UICascadingTextStorage *)v6 font];
+    v8 = [string length];
     v9 = v8 == 0;
     if (v8)
     {
-      if (v3)
+      if (_shouldObscureInput)
       {
         v84[0] = 0;
-        v10 = [v7 _ui_bulletStringWithFont:v84];
+        v10 = [font _ui_bulletStringWithFont:v84];
         v60 = v84[0];
         v69 = 0;
         v70 = &v69;
         v71 = 0x2020000000;
         v72 = 0;
-        v11 = [v4 length];
+        v11 = [string length];
         v83[0] = MEMORY[0x1E69E9820];
         v83[1] = 3221225472;
         v83[2] = __43__UITextField__updateAutosizeStyleIfNeeded__block_invoke;
         v83[3] = &unk_1E70FDB08;
         v83[4] = &v69;
-        [v4 enumerateSubstringsInRange:0 options:v11 usingBlock:{2, v83}];
-        v12 = [&stru_1EFB14550 stringByPaddingToLength:v70[3] withString:v10 startingAtIndex:0];
+        [string enumerateSubstringsInRange:0 options:v11 usingBlock:{2, v83}];
+        placeholder = [&stru_1EFB14550 stringByPaddingToLength:v70[3] withString:v10 startingAtIndex:0];
 
-        v9 = (*(&self->_textFieldFlags + 1) & 1) != 0 && [v12 length] == 0;
+        v9 = (*(&self->_textFieldFlags + 1) & 1) != 0 && [placeholder length] == 0;
         _Block_object_dispose(&v69, 8);
 
         v14 = 0;
@@ -1998,8 +1998,8 @@ LABEL_19:
         v79 = 0;
         v80 = &v79;
         v81 = 0x2020000000;
-        v15 = [(_UICascadingTextStorage *)v6 font];
-        [v15 pointSize];
+        font2 = [(_UICascadingTextStorage *)v6 font];
+        [font2 pointSize];
         v17 = v16;
 
         v82 = v17;
@@ -2009,10 +2009,10 @@ LABEL_19:
         {
           if (v80[6] != v19)
           {
-            v20 = [(_UICascadingTextStorage *)v6 font];
+            font3 = [(_UICascadingTextStorage *)v6 font];
             *&v21 = v19;
             *&v22 = v19;
-            v23 = [(UITextField *)self _copyFont:v20 newSize:v21 maxSize:v22];
+            v23 = [(UITextField *)self _copyFont:font3 newSize:v21 maxSize:v22];
 
             v24 = [(_UIFullFontSize *)self->_fullFontSize overrideUnlessDefault:v19];
             [(UITextField *)self setFont:v23 fullFontSize:v24 ambientOnly:v14];
@@ -2026,10 +2026,10 @@ LABEL_54:
 
         [(UITextField *)self editRect];
         v26 = v25;
-        v27 = [(UITextField *)self textInputTraits];
-        v28 = [v27 insertionPointWidth];
+        textInputTraits = [(UITextField *)self textInputTraits];
+        insertionPointWidth = [textInputTraits insertionPointWidth];
 
-        v29 = v26 - v28 + -10.0;
+        v29 = v26 - insertionPointWidth + -10.0;
         v75 = 0;
         v76 = &v75;
         v77 = 0x2020000000;
@@ -2048,18 +2048,18 @@ LABEL_54:
           v61[2] = __43__UITextField__updateAutosizeStyleIfNeeded__block_invoke_2;
           v61[3] = &unk_1E7126340;
           v66 = v19;
-          v67 = v26 - v28 + -10.0;
+          v67 = v26 - insertionPointWidth + -10.0;
           v63 = &v79;
           v64 = &v75;
           v61[4] = self;
           v68 = v30;
           v65 = &v69;
-          v62 = v7;
+          v62 = font;
           [(_UICascadingTextStorage *)v6 coordinateAccess:v61];
 
 LABEL_48:
           v56 = v70[5];
-          if (v56 && ([v56 isEqual:v7] & 1) == 0)
+          if (v56 && ([v56 isEqual:font] & 1) == 0)
           {
             v57 = v70[5];
             v58 = [(_UIFullFontSize *)self->_fullFontSize overrideUnlessDefault:v19];
@@ -2068,8 +2068,8 @@ LABEL_48:
 
           if (*(v76 + 6))
           {
-            v59 = [(UITextField *)self interactionAssistant];
-            [v59 setNeedsSelectionDisplayUpdate];
+            interactionAssistant = [(UITextField *)self interactionAssistant];
+            [interactionAssistant setNeedsSelectionDisplayUpdate];
           }
 
           _Block_object_dispose(&v69, 8);
@@ -2078,12 +2078,12 @@ LABEL_48:
           goto LABEL_54;
         }
 
-        if (v3)
+        if (_shouldObscureInput)
         {
-          [v7 pointSize];
+          [font pointSize];
           v31 = [v13 fontWithSize:?];
           v32 = v31;
-          if (v31 != v7)
+          if (v31 != font)
           {
             goto LABEL_28;
           }
@@ -2098,10 +2098,10 @@ LABEL_28:
 
         else
         {
-          v33 = v7;
+          v33 = font;
         }
 
-        [v12 _legacy_sizeWithFont:v33];
+        [placeholder _legacy_sizeWithFont:v33];
         v35 = v34;
         v36 = v29;
         while (1)
@@ -2115,7 +2115,7 @@ LABEL_28:
 
           ++*(v76 + 6);
           v37[6] = v38 + 1.0;
-          v40 = [UITextField _copyFont:"_copyFont:newSize:maxSize:" newSize:v7 maxSize:?];
+          v40 = [UITextField _copyFont:"_copyFont:newSize:maxSize:" newSize:font maxSize:?];
           v41 = v70[5];
           v70[5] = v40;
 
@@ -2129,7 +2129,7 @@ LABEL_28:
             v45 = v70[5];
           }
 
-          [v12 _legacy_sizeWithFont:v45];
+          [placeholder _legacy_sizeWithFont:v45];
           v35 = v46;
           v32 = v44;
         }
@@ -2144,7 +2144,7 @@ LABEL_28:
 
           --*(v76 + 6);
           v80[6] = v80[6] + -1.0;
-          v49 = [UITextField _copyFont:"_copyFont:newSize:maxSize:" newSize:v7 maxSize:?];
+          v49 = [UITextField _copyFont:"_copyFont:newSize:maxSize:" newSize:font maxSize:?];
           v50 = v70[5];
           v70[5] = v49;
 
@@ -2158,7 +2158,7 @@ LABEL_28:
             v54 = v70[5];
           }
 
-          [v12 _legacy_sizeWithFont:v54];
+          [placeholder _legacy_sizeWithFont:v54];
           v35 = v55;
           v38 = v80[6];
           v32 = v53;
@@ -2167,14 +2167,14 @@ LABEL_28:
         goto LABEL_48;
       }
 
-      v12 = v4;
+      placeholder = string;
     }
 
     else
     {
-      v12 = [(UITextField *)self placeholder];
+      placeholder = [(UITextField *)self placeholder];
 
-      if (v3)
+      if (_shouldObscureInput)
       {
         v13 = 0;
         v14 = 0;
@@ -2228,8 +2228,8 @@ LABEL_28:
 
 - (CGRect)_textCanvasViewFrameIncludingContentInsetsFromFontsWhenNotContainedByFieldEditor
 {
-  v3 = [(UITextField *)self _fieldEditor];
-  [v3 _contentInsetsFromFonts];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor _contentInsetsFromFonts];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2263,14 +2263,14 @@ LABEL_28:
 
 - (void)_layoutFieldEditor
 {
-  v3 = [(UITextField *)self _fieldEditor];
-  v19 = v3;
-  if (v3)
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v19 = _fieldEditor;
+  if (_fieldEditor)
   {
-    v4 = [(UIView *)self isFirstResponder];
-    v5 = v4;
+    isFirstResponder = [(UIView *)self isFirstResponder];
+    v5 = isFirstResponder;
     textFieldFlags = self->_textFieldFlags;
-    if ((*&textFieldFlags & 0x1E) != 0 && !v4)
+    if ((*&textFieldFlags & 0x1E) != 0 && !isFirstResponder)
     {
       v9 = *MEMORY[0x1E695F058];
       v11 = *(MEMORY[0x1E695F058] + 8);
@@ -2298,13 +2298,13 @@ LABEL_28:
       }
     }
 
-    v3 = v19;
+    _fieldEditor = v19;
     if (v5)
     {
       if ([(UITextField *)self adjustsFontSizeToFitWidth])
       {
-        v16 = [(UITextField *)self textInputTraits];
-        v17 = v13 - [v16 insertionPointWidth];
+        textInputTraits = [(UITextField *)self textInputTraits];
+        v17 = v13 - [textInputTraits insertionPointWidth];
 
         [v19 contentSize];
         if (v18 <= v17)
@@ -2314,11 +2314,11 @@ LABEL_28:
       }
 
       [v19 scrollSelectionToVisible:0];
-      v3 = v19;
+      _fieldEditor = v19;
     }
   }
 
-  [v3 _applyCorrectTextContainerSize];
+  [_fieldEditor _applyCorrectTextContainerSize];
 }
 
 - (UIView)leftView
@@ -2356,21 +2356,21 @@ LABEL_28:
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIView *)self traitCollection];
-  v13 = [v12 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v13 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v14 = +[UIButtonConfiguration filledButtonConfiguration];
     [v14 setButtonSize:1];
     v15 = [(UITextField *)self _clearButtonImageForState:0];
     [v14 setImage:v15];
 
-    v16 = [(UIView *)self traitCollection];
-    v17 = [v16 preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v17))
+    traitCollection2 = [(UIView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
-      if (UIContentSizeCategoryCompareToCategory(v17, &cfstr_Uictcontentsiz_11.isa) != NSOrderedAscending)
+      if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_11.isa) != NSOrderedAscending)
       {
         v18 = 1;
 LABEL_9:
@@ -2385,7 +2385,7 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      UIContentSizeCategoryCompareToCategory(v17, &cfstr_Uictcontentsiz_9.isa);
+      UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_9.isa);
     }
 
     v18 = 2;
@@ -2494,19 +2494,19 @@ LABEL_9:
 
 - (void)_updatePlaceholderPosition
 {
-  v3 = [(UILabel *)self->_placeholderLabel text];
-  v4 = [v3 length];
+  text = [(UILabel *)self->_placeholderLabel text];
+  v4 = [text length];
 
   if (v4)
   {
     if ([(UILabel *)self->_placeholderLabel textAlignment]!= NSTextAlignmentCenter)
     {
-      v5 = [(UITextField *)self _currentTextAlignment];
-      if (v5 != [(UILabel *)self->_placeholderLabel textAlignment])
+      _currentTextAlignment = [(UITextField *)self _currentTextAlignment];
+      if (_currentTextAlignment != [(UILabel *)self->_placeholderLabel textAlignment])
       {
         placeholderLabel = self->_placeholderLabel;
 
-        [(UILabel *)placeholderLabel setTextAlignment:v5];
+        [(UILabel *)placeholderLabel setTextAlignment:_currentTextAlignment];
       }
     }
   }
@@ -2549,17 +2549,17 @@ LABEL_9:
 
 - (UIColor)selectionHighlightColor
 {
-  v3 = [(UITextField *)self textInputTraits];
-  v4 = [v3 selectionHighlightColor];
+  textInputTraits = [(UITextField *)self textInputTraits];
+  selectionHighlightColor = [textInputTraits selectionHighlightColor];
 
   if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled](UITextSelectionDisplayInteraction, "isModernSelectionViewEnabled") && (-[UIView traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 userInterfaceStyle], v5, v6 == 2))
   {
-    v7 = [v4 colorWithAlphaComponent:0.35];
+    v7 = [selectionHighlightColor colorWithAlphaComponent:0.35];
   }
 
   else
   {
-    v7 = v4;
+    v7 = selectionHighlightColor;
   }
 
   v8 = v7;
@@ -2602,10 +2602,10 @@ LABEL_9:
 
 - (UITextRange)selectedTextRange
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 selectedTextRange];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  selectedTextRange = [_fieldEditor selectedTextRange];
 
-  return v3;
+  return selectedTextRange;
 }
 
 - (BOOL)_wantsBaselineUpdatingFollowingConstraintsPass
@@ -2634,8 +2634,8 @@ LABEL_9:
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIView *)self window];
-  if (!v3)
+  window = [(UIView *)self window];
+  if (!window)
   {
     v4 = +[UIKeyboardImpl activeInstance];
     if (!v4)
@@ -2644,37 +2644,37 @@ LABEL_9:
     }
 
     v5 = v4;
-    v6 = [(UIView *)self isUserInteractionEnabled];
+    isUserInteractionEnabled = [(UIView *)self isUserInteractionEnabled];
 
-    if (!v6)
+    if (!isUserInteractionEnabled)
     {
       return;
     }
 
     v7 = +[UIKeyboardImpl activeInstance];
     [v7 removeASPVisualEffectsIfNecessary:self];
-    v3 = v7;
+    window = v7;
   }
 }
 
 - (BOOL)_partsShouldBeMini
 {
-  v3 = [(UITextField *)self borderStyle];
-  if (v3)
+  borderStyle = [(UITextField *)self borderStyle];
+  if (borderStyle)
   {
 
-    LOBYTE(v3) = [(UITextField *)self _heightShouldBeMini];
+    LOBYTE(borderStyle) = [(UITextField *)self _heightShouldBeMini];
   }
 
-  return v3;
+  return borderStyle;
 }
 
 - (int64_t)_currentTextAlignment
 {
-  v2 = [(UITextField *)self _textStorage];
-  v3 = [v2 _ui_resolvedTextAlignment];
+  _textStorage = [(UITextField *)self _textStorage];
+  _ui_resolvedTextAlignment = [_textStorage _ui_resolvedTextAlignment];
 
-  return v3;
+  return _ui_resolvedTextAlignment;
 }
 
 - (double)_fullFontSize
@@ -2703,21 +2703,21 @@ LABEL_9:
 
 - (NSString)text
 {
-  v3 = [(UITextField *)self _text];
-  v4 = [(UITextField *)self textInputTraits];
-  v5 = [v4 textTrimmingSet];
+  _text = [(UITextField *)self _text];
+  textInputTraits = [(UITextField *)self textInputTraits];
+  textTrimmingSet = [textInputTraits textTrimmingSet];
 
-  if (v5)
+  if (textTrimmingSet)
   {
-    v6 = [v3 _stringByTrimmingCharactersInCFCharacterSet:v5];
+    v6 = [_text _stringByTrimmingCharactersInCFCharacterSet:textTrimmingSet];
 
-    v3 = v6;
+    _text = v6;
   }
 
-  v7 = [(UITextField *)self _shouldObscureInput];
-  v8 = [v3 copy];
+  _shouldObscureInput = [(UITextField *)self _shouldObscureInput];
+  v8 = [_text copy];
   v9 = v8;
-  if (v7 && v8)
+  if (_shouldObscureInput && v8)
   {
     v10 = [MEMORY[0x1E696AEC0] _newZStringWithString:v8];
   }
@@ -2734,19 +2734,19 @@ LABEL_9:
 
 - (double)_clearButtonMarginX
 {
-  v2 = [(UIView *)self traitCollection];
-  [v2 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollection userInterfaceIdiom];
 
   return 8.0;
 }
 
 - (_NSRange)selectionRange
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 selectionRange];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  selectionRange = [_fieldEditor selectionRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = selectionRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -2755,11 +2755,11 @@ LABEL_9:
 
 - (double)_roundedRectBackgroundCornerRadius
 {
-  v3 = [(UITextField *)self _backgroundView];
-  v4 = v3;
-  if (v3)
+  _backgroundView = [(UITextField *)self _backgroundView];
+  v4 = _backgroundView;
+  if (_backgroundView)
   {
-    [v3 _continuousCornerRadius];
+    [_backgroundView _continuousCornerRadius];
     preferredBackgroundCornerRadius = v5;
   }
 
@@ -2774,12 +2774,12 @@ LABEL_9:
 - (void)_didChangeSecureTextEntry
 {
   [(UITextField *)self _setNeedsStyleRecalc];
-  v3 = [(UITextField *)self _shouldObscureInput];
-  [(_UITextLayoutController *)self->_textLayoutController setDocumentObscured:v3];
-  v4 = [(UITextField *)self _fieldEditor];
-  [v4 setSecureTextEntry:{-[UITextField isSecureTextEntry](self, "isSecureTextEntry")}];
+  _shouldObscureInput = [(UITextField *)self _shouldObscureInput];
+  [(_UITextLayoutController *)self->_textLayoutController setDocumentObscured:_shouldObscureInput];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setSecureTextEntry:{-[UITextField isSecureTextEntry](self, "isSecureTextEntry")}];
 
-  if (v3)
+  if (_shouldObscureInput)
   {
     v5 = 18;
   }
@@ -2789,14 +2789,14 @@ LABEL_9:
     v5 = 0;
   }
 
-  v6 = [(_UITextCanvas *)self->_textCanvasView layer];
-  [v6 setDisableUpdateMask:v5];
+  layer = [(_UITextCanvas *)self->_textCanvasView layer];
+  [layer setDisableUpdateMask:v5];
 
   v7 = +[UIKeyboardImpl activeInstance];
-  v8 = [v7 inputDelegateManager];
-  v9 = [v8 keyInputDelegate];
+  inputDelegateManager = [v7 inputDelegateManager];
+  keyInputDelegate = [inputDelegateManager keyInputDelegate];
 
-  if (v9 == self)
+  if (keyInputDelegate == self)
   {
     v10 = +[UIKeyboardImpl activeInstance];
     [v10 setDelegate:self];
@@ -2807,7 +2807,7 @@ LABEL_9:
     [(UITextField *)self setTextAlignment:2];
   }
 
-  if (v3)
+  if (_shouldObscureInput)
   {
     [(UITextField *)self selectionRange];
     if (v11)
@@ -2816,20 +2816,20 @@ LABEL_9:
     }
   }
 
-  v12 = [(UITextField *)self interactionAssistant];
-  [v12 updateDisplayedSelection];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant updateDisplayedSelection];
 }
 
 - (BOOL)_shouldUnobscureTextWithContentCover
 {
-  v3 = [(UITextField *)self _showsContentCoverView];
-  if (v3)
+  _showsContentCoverView = [(UITextField *)self _showsContentCoverView];
+  if (_showsContentCoverView)
   {
 
-    LOBYTE(v3) = [(UITextField *)self _contentCoverUnsecuresText];
+    LOBYTE(_showsContentCoverView) = [(UITextField *)self _contentCoverUnsecuresText];
   }
 
-  return v3;
+  return _showsContentCoverView;
 }
 
 - (void)_noteThatKeyboardAppearanceHasChanged
@@ -2841,24 +2841,24 @@ LABEL_9:
 
 - (id)automaticallySelectedOverlay
 {
-  v3 = [(UITextField *)self customOverlayContainer];
-  if (v3)
+  customOverlayContainer = [(UITextField *)self customOverlayContainer];
+  if (customOverlayContainer)
   {
-    v4 = v3;
-    v5 = v4;
+    v4 = customOverlayContainer;
+    containerView = v4;
     goto LABEL_16;
   }
 
-  v6 = [(UIView *)self _scroller];
-  if (!v6)
+  _scroller = [(UIView *)self _scroller];
+  if (!_scroller)
   {
     goto LABEL_15;
   }
 
-  v7 = [(UIView *)self superview];
-  if (v7)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v4 = v7;
+    v4 = superview;
     do
     {
       objc_opt_class();
@@ -2867,21 +2867,21 @@ LABEL_9:
         goto LABEL_14;
       }
 
-      v8 = [v4 superview];
+      superview2 = [v4 superview];
 
-      v4 = v8;
+      v4 = superview2;
     }
 
-    while (v8);
+    while (superview2);
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) == 0 || ([v6 _flipsHorizontalAxis])
+  if (objc_opt_isKindOfClass() & 1) == 0 || ([_scroller _flipsHorizontalAxis])
   {
     goto LABEL_15;
   }
 
-  v4 = v6;
+  v4 = _scroller;
   if (![v4 isScrollEnabled])
   {
     goto LABEL_14;
@@ -2889,37 +2889,37 @@ LABEL_9:
 
   if ([v4 _canScrollY])
   {
-    v5 = v4;
+    containerView = v4;
     goto LABEL_16;
   }
 
-  v5 = v4;
+  containerView = v4;
   if (([v4 _canScrollX] & 1) == 0)
   {
 LABEL_14:
 
 LABEL_15:
-    v9 = [(UIView *)self keyboardSceneDelegate];
-    v5 = [v9 containerView];
+    keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
+    containerView = [keyboardSceneDelegate containerView];
 
-    v4 = v6;
+    v4 = _scroller;
   }
 
 LABEL_16:
 
-  return v5;
+  return containerView;
 }
 
 - (id)customOverlayContainer
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = 0;
+  customOverlayContainer = 0;
   if ((objc_opt_respondsToSelector() & 1) != 0 && WeakRetained != self)
   {
-    v4 = [(UITextField *)WeakRetained customOverlayContainer];
+    customOverlayContainer = [(UITextField *)WeakRetained customOverlayContainer];
   }
 
-  return v4;
+  return customOverlayContainer;
 }
 
 - (double)actualMinimumFontSize
@@ -2943,9 +2943,9 @@ LABEL_16:
   LODWORD(v3) = [(UIView *)self isUserInteractionEnabled];
   if (v3)
   {
-    v4 = [(UIView *)self _containedInAbsoluteResponderChain];
-    v5 = v4;
-    if (v4 && (*(&self->_textFieldFlags + 1) & 4) != 0)
+    _containedInAbsoluteResponderChain = [(UIView *)self _containedInAbsoluteResponderChain];
+    v5 = _containedInAbsoluteResponderChain;
+    if (_containedInAbsoluteResponderChain && (*(&self->_textFieldFlags + 1) & 4) != 0)
     {
       v9 = 0;
     }
@@ -2954,9 +2954,9 @@ LABEL_16:
     {
       if ([(UIControl *)self isEnabled])
       {
-        v6 = [(UITextField *)self _delegateShouldBeginEditing];
+        _delegateShouldBeginEditing = [(UITextField *)self _delegateShouldBeginEditing];
         v7 = 512;
-        if (!v6)
+        if (!_delegateShouldBeginEditing)
         {
           v7 = 0;
         }
@@ -3041,10 +3041,10 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(UIView *)self keyboardSceneDelegate];
-  if (-[UITextField keyboardAppearance](self, "keyboardAppearance") == 127 || -[UIView isFirstResponder](self, "isFirstResponder") && ([v3 responder], v4 = objc_claimAutoreleasedReturnValue(), v4, v4 != self))
+  keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
+  if (-[UITextField keyboardAppearance](self, "keyboardAppearance") == 127 || -[UIView isFirstResponder](self, "isFirstResponder") && ([keyboardSceneDelegate responder], v4 = objc_claimAutoreleasedReturnValue(), v4, v4 != self))
   {
-    [v3 _beginIgnoringReloadInputViews];
+    [keyboardSceneDelegate _beginIgnoringReloadInputViews];
     v5 = 1;
   }
 
@@ -3053,19 +3053,19 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
     v5 = 0;
   }
 
-  v6 = [(UIView *)self isFirstResponder];
+  isFirstResponder = [(UIView *)self isFirstResponder];
   v14.receiver = self;
   v14.super_class = UITextField;
-  v7 = [(UIView *)&v14 becomeFirstResponder];
-  if (v7)
+  becomeFirstResponder = [(UIView *)&v14 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     [(UITextField *)self scrollTextFieldToVisibleIfNecessary];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:self selector:sel__receivedKeyboardDidShowNotification_ name:@"UIKeyboardDidShowNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__receivedKeyboardDidShowNotification_ name:@"UIKeyboardDidShowNotification" object:0];
 
     if ([(NSConcreteTextStorage *)self->_textStorage length])
     {
-      if (v6 && [(UITextField *)self textSelectionBehavior]== 3)
+      if (isFirstResponder && [(UITextField *)self textSelectionBehavior]== 3)
       {
         [(UIFieldEditor *)self->_fieldEditor _updateTextSelectionFromBehavior];
       }
@@ -3078,9 +3078,9 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
 
     if ((*(&self->_textFieldFlags + 1) & 1) != 0 && [(UIScrollView *)self->_fieldEditor isScrollAnimating])
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      v10 = [(UITextField *)self _fieldEditor];
-      [v9 addObserver:self selector:sel__initialScrollDidFinish_ name:@"UITextSelectionDidScroll" object:v10];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      _fieldEditor = [(UITextField *)self _fieldEditor];
+      [defaultCenter2 addObserver:self selector:sel__initialScrollDidFinish_ name:@"UITextSelectionDidScroll" object:_fieldEditor];
     }
 
     else if ([(UITextField *)self _showsContentCoverView])
@@ -3093,23 +3093,23 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
       [(UITextField *)self _activateSelectionView];
     }
 
-    v11 = [(UITextField *)self textInputTraits];
-    v12 = [(UIView *)self _inheritedInteractionTintColor];
-    [v11 _setColorsToMatchTintColor:v12];
+    textInputTraits = [(UITextField *)self textInputTraits];
+    _inheritedInteractionTintColor = [(UIView *)self _inheritedInteractionTintColor];
+    [textInputTraits _setColorsToMatchTintColor:_inheritedInteractionTintColor];
 
     if (v5)
     {
-      [v3 _endIgnoringReloadInputViews];
+      [keyboardSceneDelegate _endIgnoringReloadInputViews];
       [(UIResponder *)self reloadInputViews];
     }
   }
 
-  else if ((v5 & 1) != 0 && [v3 _endIgnoringReloadInputViews])
+  else if ((v5 & 1) != 0 && [keyboardSceneDelegate _endIgnoringReloadInputViews])
   {
-    [v3 forceReloadInputViews];
+    [keyboardSceneDelegate forceReloadInputViews];
   }
 
-  return v7;
+  return becomeFirstResponder;
 }
 
 - (void)_becomeFirstResponder
@@ -3117,8 +3117,8 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
   v6.receiver = self;
   v6.super_class = UITextField;
   [(UIResponder *)&v6 _becomeFirstResponder];
-  v3 = [(UITextField *)self textInputTraits];
-  if ([v3 deferBecomingResponder])
+  textInputTraits = [(UITextField *)self textInputTraits];
+  if ([textInputTraits deferBecomingResponder])
   {
     deferringBecomeFirstResponder = self->_deferringBecomeFirstResponder;
 
@@ -3135,8 +3135,8 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
 
   self->_deferringBecomeFirstResponder = 0;
   [(UITextField *)self _attachFieldEditor];
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 setScrollEnabled:0];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setScrollEnabled:0];
 
   [(_UITextFieldBackgroundProvider *)self->_backgroundProvider didChangeFirstResponder];
   [(UITextField *)self _updateSelectionGestures];
@@ -3146,8 +3146,8 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
 - (void)_addFieldEditorToView
 {
   v3 = [(UITextField *)self _fieldEditorHostAllowingCreation:1];
-  v4 = [(UITextField *)self _fieldEditor];
-  [v3 addFieldEditor:v4];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [v3 addFieldEditor:_fieldEditor];
 
   [(UITextField *)self _invalidateAllGlyphsAndTextLayout];
 }
@@ -3165,8 +3165,8 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
     [WeakRetained textFieldDidBeginEditing:self];
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"UITextFieldTextDidBeginEditingNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UITextFieldTextDidBeginEditingNotification" object:self];
 }
 
 - (UIView)inputAccessoryView
@@ -3174,17 +3174,17 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
   inputAccessoryView = self->_inputAccessoryView;
   if (inputAccessoryView)
   {
-    v3 = inputAccessoryView;
+    inputAccessoryView = inputAccessoryView;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = UITextField;
-    v3 = [(UIResponder *)&v5 inputAccessoryView];
+    inputAccessoryView = [(UIResponder *)&v5 inputAccessoryView];
   }
 
-  return v3;
+  return inputAccessoryView;
 }
 
 - (void)_attachFieldEditor
@@ -3197,14 +3197,14 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
 
   else
   {
-    v3 = [(UITextField *)self _fieldEditor];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __33__UITextField__attachFieldEditor__block_invoke;
     v13 = &unk_1E70F35B8;
-    v4 = v3;
+    v4 = _fieldEditor;
     v14 = v4;
-    v15 = self;
+    selfCopy = self;
     [UIView performWithoutAnimation:&v10];
     textFieldFlags = self->_textFieldFlags;
     if ((*&textFieldFlags & 0x100) == 0)
@@ -3224,14 +3224,14 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
         [v4 setAttributedText:v7];
       }
 
-      v8 = [(UITextField *)self _inputController];
-      [v8 setAllowsEditingTextAttributes:(*&self->_textFieldFlags >> 16) & 1];
+      _inputController = [(UITextField *)self _inputController];
+      [_inputController setAllowsEditingTextAttributes:(*&self->_textFieldFlags >> 16) & 1];
 
       if ((*&textFieldFlags & 0x100) == 0)
       {
         [(UIControl *)self _sendActionsForEvents:0x10000 withEvent:0];
-        v9 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v9 addObserver:self selector:sel__applicationResuming_ name:@"UIApplicationResumedNotification" object:UIApp];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:self selector:sel__applicationResuming_ name:@"UIApplicationResumedNotification" object:UIApp];
       }
 
       [(UITextField *)self _activateSelectionView];
@@ -3248,15 +3248,15 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
 
 - (void)_activateSelectionView
 {
-  v3 = [(UITextField *)self inputDelegate];
+  inputDelegate = [(UITextField *)self inputDelegate];
 
-  if (v3)
+  if (inputDelegate)
   {
-    v4 = [(UITextField *)self interactionAssistant];
-    [v4 setSelectionDisplayVisible:1];
+    interactionAssistant = [(UITextField *)self interactionAssistant];
+    [interactionAssistant setSelectionDisplayVisible:1];
 
-    v5 = [(UITextField *)self interactionAssistant];
-    [v5 activateSelection];
+    interactionAssistant2 = [(UITextField *)self interactionAssistant];
+    [interactionAssistant2 activateSelection];
   }
 }
 
@@ -3265,12 +3265,12 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
   v4 = objc_getAssociatedObject(self, &EditingTokenKey);
   if (v4)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:6443 description:@"The textfield is already editing?!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:6443 description:@"The textfield is already editing?!"];
   }
 
-  v5 = [(UITextField *)self _editingProcessor];
-  value = [v5 beginEditingWithTextStorage:self->_textStorage];
+  _editingProcessor = [(UITextField *)self _editingProcessor];
+  value = [_editingProcessor beginEditingWithTextStorage:self->_textStorage];
 
   if (value)
   {
@@ -3278,55 +3278,55 @@ uint64_t __33__UITextField__attachFieldEditor__block_invoke(uint64_t a1)
     [(UITextField *)self _invalidateAfterUpdatingEditingAttributes];
   }
 
-  v6 = [(UITextField *)self _inputController];
-  [v6 _updateEmptyStringAttributes];
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController _updateEmptyStringAttributes];
 
   [(UITextField *)self _ensureSelectionContainerViewSubviewOrdering];
 }
 
 - (UITextInputDelegate)inputDelegate
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 inputDelegate];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  inputDelegate = [_fieldEditor inputDelegate];
 
-  return v3;
+  return inputDelegate;
 }
 
 - (void)_updateSelectionGestures
 {
-  v6 = [(UITextField *)self interactionAssistant];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
   if ([(UITextField *)self isTextDragActive]|| [(UITextField *)self isTextDropActive])
   {
     if ([(UIView *)self isFirstResponder])
     {
-      [v6 deactivateSelection];
+      [interactionAssistant deactivateSelection];
     }
 
     goto LABEL_5;
   }
 
-  v3 = [(UITextField *)self _showsContentCoverView];
-  v4 = [(UIView *)self isFirstResponder];
-  if (v3)
+  _showsContentCoverView = [(UITextField *)self _showsContentCoverView];
+  isFirstResponder = [(UIView *)self isFirstResponder];
+  if (_showsContentCoverView)
   {
-    v5 = v6;
-    if (v4)
+    v5 = interactionAssistant;
+    if (isFirstResponder)
     {
-      [v6 deactivateSelection];
-      [v6 hideSelectionCommands];
+      [interactionAssistant deactivateSelection];
+      [interactionAssistant hideSelectionCommands];
 LABEL_5:
-      [v6 clearGestureRecognizers:1];
+      [interactionAssistant clearGestureRecognizers:1];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v5 = v6;
-    if (v4)
+    v5 = interactionAssistant;
+    if (isFirstResponder)
     {
-      [v6 activateSelection];
-      v5 = v6;
+      [interactionAssistant activateSelection];
+      v5 = interactionAssistant;
     }
   }
 
@@ -3369,9 +3369,9 @@ LABEL_6:
   textFieldFlags = self->_textFieldFlags;
   if ((*&textFieldFlags & 0x40000000000) == 0)
   {
-    v4 = [(UIResponder *)self _supportsImagePaste];
+    _supportsImagePaste = [(UIResponder *)self _supportsImagePaste];
     v5 = 0x40000000000;
-    if (v4)
+    if (_supportsImagePaste)
     {
       v5 = 0xC0000000000;
     }
@@ -3387,21 +3387,21 @@ LABEL_6:
 {
   if ([(UIResponder *)self _textInputSource]!= 3)
   {
-    v3 = [(UIView *)self _scroller];
-    if (v3)
+    _scroller = [(UIView *)self _scroller];
+    if (_scroller)
     {
       while (1)
       {
-        v18 = v3;
-        if ([v3 isScrollEnabled])
+        v18 = _scroller;
+        if ([_scroller isScrollEnabled])
         {
           break;
         }
 
-        v4 = [v18 _scroller];
+        _scroller2 = [v18 _scroller];
 
-        v3 = v4;
-        if (!v4)
+        _scroller = _scroller2;
+        if (!_scroller2)
         {
           goto LABEL_5;
         }
@@ -3414,9 +3414,9 @@ LABEL_5:
       v18 = 0;
     }
 
-    v5 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
     [(UIView *)self frame];
-    [v5 convertRect:v18 toView:?];
+    [superview convertRect:v18 toView:?];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -3468,11 +3468,11 @@ LABEL_5:
 {
   v6.receiver = self;
   v6.super_class = UITextField;
-  v3 = [(UIResponder *)&v6 _finishResignFirstResponder];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"UIKeyboardDidShowNotification" object:0];
+  _finishResignFirstResponder = [(UIResponder *)&v6 _finishResignFirstResponder];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardDidShowNotification" object:0];
 
-  return v3;
+  return _finishResignFirstResponder;
 }
 
 - (void)_willUpdateAfterDetachingFieldEditor
@@ -3515,16 +3515,16 @@ LABEL_5:
   {
     v4 = MEMORY[0x1E696AD88];
     v5 = fieldEditor;
-    v6 = [v4 defaultCenter];
-    [v6 removeObserver:self name:@"UITextSelectionDidScroll" object:v5];
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter removeObserver:self name:@"UITextSelectionDidScroll" object:v5];
   }
 }
 
 - (void)_didDetachFieldEditor
 {
   objc_setAssociatedObject(self, &EditingTokenKey, 0, 1);
-  v3 = [(UITextField *)self _inputController];
-  [v3 _updateEmptyStringAttributes];
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController _updateEmptyStringAttributes];
 }
 
 - (_NSRange)_rangeForSetText
@@ -3540,56 +3540,56 @@ LABEL_5:
 {
   if ((*(&self->_textFieldFlags + 1) & 8) != 0)
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(resignFirstResponder) = 1;
   }
 
   else
   {
-    v3 = [(UITextField *)self _showsContentCoverView];
+    _showsContentCoverView = [(UITextField *)self _showsContentCoverView];
     *&self->_textFieldFlags |= 0x800uLL;
     v11.receiver = self;
     v11.super_class = UITextField;
-    v4 = [(UIResponder *)&v11 resignFirstResponder];
+    resignFirstResponder = [(UIResponder *)&v11 resignFirstResponder];
     *&self->_textFieldFlags &= ~0x800uLL;
-    if (v4)
+    if (resignFirstResponder)
     {
-      v5 = [(UITextField *)self interactionAssistant];
-      [v5 setSelectionDisplayVisible:0];
+      interactionAssistant = [(UITextField *)self interactionAssistant];
+      [interactionAssistant setSelectionDisplayVisible:0];
 
-      v6 = [(UITextField *)self interactionAssistant];
-      [v6 deactivateSelection];
+      interactionAssistant2 = [(UITextField *)self interactionAssistant];
+      [interactionAssistant2 deactivateSelection];
 
-      v7 = [(UITextField *)self _inputController];
-      [v7 didEndEditing];
+      _inputController = [(UITextField *)self _inputController];
+      [_inputController didEndEditing];
     }
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 removeObserver:self name:@"UIKeyboardDidShowNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UIKeyboardDidShowNotification" object:0];
 
-    if (v3 && [(UITextField *)self _shouldObscureInput])
+    if (_showsContentCoverView && [(UITextField *)self _shouldObscureInput])
     {
-      v9 = [(UITextField *)self _fieldEditor];
-      [v9 _obscureAllText];
+      _fieldEditor = [(UITextField *)self _fieldEditor];
+      [_fieldEditor _obscureAllText];
     }
   }
 
-  return v4;
+  return resignFirstResponder;
 }
 
 - (id)metadataDictionariesForDictationResults
 {
   if (*(&self->_textFieldFlags + 1))
   {
-    v3 = [(UITextField *)self _fieldEditor];
-    v2 = [v3 metadataDictionariesForDictationResults];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    metadataDictionariesForDictationResults = [_fieldEditor metadataDictionariesForDictationResults];
   }
 
   else
   {
-    v2 = 0;
+    metadataDictionariesForDictationResults = 0;
   }
 
-  return v2;
+  return metadataDictionariesForDictationResults;
 }
 
 - (void)_didUpdateAfterDetachingFieldEditor
@@ -3600,9 +3600,9 @@ LABEL_5:
   if (v3)
   {
     v6 = v3;
-    v5 = [v3 endEditing];
+    endEditing = [v3 endEditing];
     v4 = v6;
-    if (v5)
+    if (endEditing)
     {
       [(UIView *)self invalidateIntrinsicContentSize];
       v4 = v6;
@@ -3629,20 +3629,20 @@ LABEL_5:
     [WeakRetained textFieldDidEndEditing:self];
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = @"UITextFieldEndEditingReasonKey";
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:0];
   v8[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  [v4 postNotificationName:@"UITextFieldTextDidEndEditingNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"UITextFieldTextDidEndEditingNotification" object:self userInfo:v6];
 }
 
 - (void)_forceObscureAllText
 {
   if (*(&self->_textFieldFlags + 1))
   {
-    v3 = [(UITextField *)self _fieldEditor];
-    [v3 _obscureAllText];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor _obscureAllText];
   }
 }
 
@@ -3673,17 +3673,17 @@ LABEL_5:
   inputAssistantItem = self->_inputAssistantItem;
   if (inputAssistantItem)
   {
-    v3 = inputAssistantItem;
+    inputAssistantItem = inputAssistantItem;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = UITextField;
-    v3 = [(UIResponder *)&v5 inputAssistantItem];
+    inputAssistantItem = [(UIResponder *)&v5 inputAssistantItem];
   }
 
-  return v3;
+  return inputAssistantItem;
 }
 
 - (BOOL)hasText
@@ -3693,36 +3693,36 @@ LABEL_5:
     return [(NSConcreteTextStorage *)self->_textStorage length]!= 0;
   }
 
-  v3 = [(UITextField *)self _fieldEditor];
-  v4 = [v3 hasText];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  hasText = [_fieldEditor hasText];
 
-  return v4;
+  return hasText;
 }
 
 - (UITextInputTokenizer)tokenizer
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 tokenizer];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  tokenizer = [_fieldEditor tokenizer];
 
-  return v3;
+  return tokenizer;
 }
 
 - (UITextPosition)endOfDocument
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 endOfDocument];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  endOfDocument = [_fieldEditor endOfDocument];
 
-  return v3;
+  return endOfDocument;
 }
 
 - (BOOL)supportsAdaptiveImageGlyph
 {
   if ((*(&self->_textFieldFlags + 5) & 2) != 0)
   {
-    v4 = [(UITextField *)self _inputController];
-    v5 = [v4 supportsAdaptiveImageGlyph];
+    _inputController = [(UITextField *)self _inputController];
+    supportsAdaptiveImageGlyph = [_inputController supportsAdaptiveImageGlyph];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = supportsAdaptiveImageGlyph;
   }
 
   else
@@ -3740,10 +3740,10 @@ LABEL_5:
 
 - (id)_placeholderColor
 {
-  v2 = [(UITextField *)self visualStyle];
-  v3 = [v2 placeholderColor];
+  visualStyle = [(UITextField *)self visualStyle];
+  placeholderColor = [visualStyle placeholderColor];
 
-  return v3;
+  return placeholderColor;
 }
 
 - (void)_updateTextEffectsConfigurationIfNeeded
@@ -3753,12 +3753,12 @@ LABEL_5:
     return;
   }
 
-  v3 = [(UIView *)self traitCollection];
-  v4 = [(UITraitCollection *)v3 _styleEffectAppearanceName];
+  traitCollection = [(UIView *)self traitCollection];
+  _styleEffectAppearanceName = [(UITraitCollection *)traitCollection _styleEffectAppearanceName];
 
-  v5 = [(CUIStyleEffectConfiguration *)self->_cuiStyleEffectConfiguration appearanceName];
-  v10 = v4;
-  v6 = v5;
+  appearanceName = [(CUIStyleEffectConfiguration *)self->_cuiStyleEffectConfiguration appearanceName];
+  v10 = _styleEffectAppearanceName;
+  v6 = appearanceName;
   if (v10 == v6)
   {
   }
@@ -3800,47 +3800,47 @@ LABEL_11:
 
   if (self->_placeholderLabel)
   {
-    v4 = [(UITextField *)self _cuiCatalog];
-    [(UILabel *)self->_placeholderLabel _setCuiCatalog:v4];
+    _cuiCatalog = [(UITextField *)self _cuiCatalog];
+    [(UILabel *)self->_placeholderLabel _setCuiCatalog:_cuiCatalog];
 
-    v5 = [(UITextField *)self _cuiStyleEffectConfiguration];
-    [(UILabel *)self->_placeholderLabel _setCuiStyleEffectConfiguration:v5];
+    _cuiStyleEffectConfiguration = [(UITextField *)self _cuiStyleEffectConfiguration];
+    [(UILabel *)self->_placeholderLabel _setCuiStyleEffectConfiguration:_cuiStyleEffectConfiguration];
   }
 
   if (self->_suffixLabel)
   {
-    v6 = [(UITextField *)self _cuiCatalog];
-    [(UILabel *)self->_suffixLabel _setCuiCatalog:v6];
+    _cuiCatalog2 = [(UITextField *)self _cuiCatalog];
+    [(UILabel *)self->_suffixLabel _setCuiCatalog:_cuiCatalog2];
 
-    v7 = [(UITextField *)self _cuiStyleEffectConfiguration];
-    [(UILabel *)self->_suffixLabel _setCuiStyleEffectConfiguration:v7];
+    _cuiStyleEffectConfiguration2 = [(UITextField *)self _cuiStyleEffectConfiguration];
+    [(UILabel *)self->_suffixLabel _setCuiStyleEffectConfiguration:_cuiStyleEffectConfiguration2];
   }
 
   if (self->_prefixLabel)
   {
-    v8 = [(UITextField *)self _cuiCatalog];
-    [(UILabel *)self->_prefixLabel _setCuiCatalog:v8];
+    _cuiCatalog3 = [(UITextField *)self _cuiCatalog];
+    [(UILabel *)self->_prefixLabel _setCuiCatalog:_cuiCatalog3];
 
-    v9 = [(UITextField *)self _cuiStyleEffectConfiguration];
-    [(UILabel *)self->_prefixLabel _setCuiStyleEffectConfiguration:v9];
+    _cuiStyleEffectConfiguration3 = [(UITextField *)self _cuiStyleEffectConfiguration];
+    [(UILabel *)self->_prefixLabel _setCuiStyleEffectConfiguration:_cuiStyleEffectConfiguration3];
   }
 
   if (self->_label)
   {
-    v10 = [(UITextField *)self _cuiCatalog];
-    [(UILabel *)self->_label _setCuiCatalog:v10];
+    _cuiCatalog4 = [(UITextField *)self _cuiCatalog];
+    [(UILabel *)self->_label _setCuiCatalog:_cuiCatalog4];
 
-    v11 = [(UITextField *)self _cuiStyleEffectConfiguration];
-    [(UILabel *)self->_label _setCuiStyleEffectConfiguration:v11];
+    _cuiStyleEffectConfiguration4 = [(UITextField *)self _cuiStyleEffectConfiguration];
+    [(UILabel *)self->_label _setCuiStyleEffectConfiguration:_cuiStyleEffectConfiguration4];
   }
 }
 
 - (void)_notifySystemKeyboardOfAppearanceChange
 {
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v4 responder];
+  responder = [v4 responder];
 
-  if (v3 == self)
+  if (responder == self)
   {
     [v4 traitCollectionDidChange];
   }
@@ -3848,66 +3848,66 @@ LABEL_11:
 
 - (id)obtainSelectionGrabberSuppressionAssertion
 {
-  v2 = [(UITextField *)self interactionAssistant];
-  v3 = [v2 obtainSelectionGrabberSuppressionAssertion];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  obtainSelectionGrabberSuppressionAssertion = [interactionAssistant obtainSelectionGrabberSuppressionAssertion];
 
-  return v3;
+  return obtainSelectionGrabberSuppressionAssertion;
 }
 
 - (NSString)searchText
 {
   if ([(UITextField *)self hasMarkedText])
   {
-    v3 = [(UITextField *)self _fieldEditor];
-    v4 = [v3 text];
-    v5 = [v3 markedTextRange];
-    if (v5)
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    text = [_fieldEditor text];
+    markedTextRange = [_fieldEditor markedTextRange];
+    if (markedTextRange)
     {
       v6 = +[UIKeyboardImpl activeInstance];
-      v7 = [v6 searchStringForMarkedText];
-      v8 = v7;
+      searchStringForMarkedText = [v6 searchStringForMarkedText];
+      v8 = searchStringForMarkedText;
       v9 = &stru_1EFB14550;
-      if (v7)
+      if (searchStringForMarkedText)
       {
-        v9 = v7;
+        v9 = searchStringForMarkedText;
       }
 
       v10 = v9;
 
-      v11 = [(_UITextLayoutController *)self->_textLayoutController characterRangeForTextRange:v5];
-      v13 = [v4 stringByReplacingCharactersInRange:v11 withString:{v12, v10}];
+      v11 = [(_UITextLayoutController *)self->_textLayoutController characterRangeForTextRange:markedTextRange];
+      v13 = [text stringByReplacingCharactersInRange:v11 withString:{v12, v10}];
 
-      v4 = v13;
+      text = v13;
     }
 
-    v14 = [(UITextField *)self textInputTraits];
-    v15 = [v14 textTrimmingSet];
+    textInputTraits = [(UITextField *)self textInputTraits];
+    textTrimmingSet = [textInputTraits textTrimmingSet];
 
-    if (v15)
+    if (textTrimmingSet)
     {
-      v16 = [v4 _stringByTrimmingCharactersInCFCharacterSet:v15];
+      v16 = [text _stringByTrimmingCharactersInCFCharacterSet:textTrimmingSet];
 
-      v4 = v16;
+      text = v16;
     }
   }
 
   else
   {
-    v4 = [(UITextField *)self text];
+    text = [(UITextField *)self text];
   }
 
   if (dyld_program_sdk_at_least())
   {
-    v17 = [v4 mutableCopy];
+    v17 = [text mutableCopy];
     [(UITextField *)self _sanitizeText:v17];
 
-    v4 = v17;
+    text = v17;
   }
 
-  v18 = [(UITextField *)self _shouldObscureInput];
-  v19 = v4;
+  _shouldObscureInput = [(UITextField *)self _shouldObscureInput];
+  v19 = text;
   v20 = v19;
-  if (v19 && v18)
+  if (v19 && _shouldObscureInput)
   {
     v21 = [MEMORY[0x1E696AEC0] _newZStringWithString:v19];
   }
@@ -3924,9 +3924,9 @@ LABEL_11:
 
 - (BOOL)hasMarkedText
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 markedTextRange];
-  v4 = v3 != 0;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  markedTextRange = [_fieldEditor markedTextRange];
+  v4 = markedTextRange != 0;
 
   return v4;
 }
@@ -3943,14 +3943,14 @@ LABEL_11:
 
 - (id)_internalTextLayoutController
 {
-  v2 = [(UITextField *)self textLayoutController];
+  textLayoutController = [(UITextField *)self textLayoutController];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
-    v2 = 0;
+    textLayoutController = 0;
   }
 
-  return v2;
+  return textLayoutController;
 }
 
 - (Class)_intelligenceBaseClass
@@ -3960,102 +3960,102 @@ LABEL_11:
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector
 {
-  v5 = a4;
-  v6 = self;
-  _sSo11UITextFieldC5UIKitE27_intelligenceCollectContent2in9collectorySo6CGRectV_21UIIntelligenceSupport0J16ElementCollectorCtF_0(v5);
+  collectorCopy = collector;
+  selfCopy = self;
+  _sSo11UITextFieldC5UIKitE27_intelligenceCollectContent2in9collectorySo6CGRectV_21UIIntelligenceSupport0J16ElementCollectorCtF_0(collectorCopy);
 }
 
 - (id)largeContentTitle
 {
-  v3 = [(UIView *)self _largeContentStoredProperties];
-  v4 = [v3 didSetLargeContentTitle];
+  _largeContentStoredProperties = [(UIView *)self _largeContentStoredProperties];
+  didSetLargeContentTitle = [_largeContentStoredProperties didSetLargeContentTitle];
 
-  if (v4)
+  if (didSetLargeContentTitle)
   {
     v9.receiver = self;
     v9.super_class = UITextField;
-    v5 = [(UIView *)&v9 largeContentTitle];
+    largeContentTitle = [(UIView *)&v9 largeContentTitle];
   }
 
   else
   {
-    v6 = [(UITextField *)self attributedText];
-    v5 = [v6 string];
+    attributedText = [(UITextField *)self attributedText];
+    largeContentTitle = [attributedText string];
 
-    if (![v5 length])
+    if (![largeContentTitle length])
     {
-      v7 = [(UITextField *)self placeholder];
+      placeholder = [(UITextField *)self placeholder];
 
-      v5 = v7;
+      largeContentTitle = placeholder;
     }
   }
 
-  return v5;
+  return largeContentTitle;
 }
 
-- (void)_insertAttributedText:(id)a3 withAnimation:(int64_t)a4 completion:(id)a5
+- (void)_insertAttributedText:(id)text withAnimation:(int64_t)animation completion:(id)completion
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [(UITextField *)self selectedTextRange];
-  if (!v9)
+  textCopy = text;
+  completionCopy = completion;
+  selectedTextRange = [(UITextField *)self selectedTextRange];
+  if (!selectedTextRange)
   {
-    v10 = [(UITextField *)self endOfDocument];
-    v11 = [(UITextField *)self endOfDocument];
-    v9 = [(UITextField *)self textRangeFromPosition:v10 toPosition:v11];
+    endOfDocument = [(UITextField *)self endOfDocument];
+    endOfDocument2 = [(UITextField *)self endOfDocument];
+    selectedTextRange = [(UITextField *)self textRangeFromPosition:endOfDocument toPosition:endOfDocument2];
   }
 
-  [(UITextField *)self _replaceRange:v9 withAttributedText:v12 usingAnimation:a4 completion:v8];
+  [(UITextField *)self _replaceRange:selectedTextRange withAttributedText:textCopy usingAnimation:animation completion:completionCopy];
 }
 
-- (void)_replaceRange:(id)a3 withAttributedText:(id)a4 usingAnimation:(int64_t)a5 completion:(id)a6
+- (void)_replaceRange:(id)range withAttributedText:(id)text usingAnimation:(int64_t)animation completion:(id)completion
 {
-  v14 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5 == 1)
+  rangeCopy = range;
+  textCopy = text;
+  completionCopy = completion;
+  if (animation == 1)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITextInput+AnimatedInsertion.m" lineNumber:107 description:@"Vertical wipe animation is currently not supported on UITextField."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextInput+AnimatedInsertion.m" lineNumber:107 description:@"Vertical wipe animation is currently not supported on UITextField."];
   }
 
-  else if (a5 == 2)
+  else if (animation == 2)
   {
-    [(UITextField *)self _replaceRangeUsingColorWipe:v14 withAttributedText:v11 completion:v12];
+    [(UITextField *)self _replaceRangeUsingColorWipe:rangeCopy withAttributedText:textCopy completion:completionCopy];
   }
 }
 
-- (void)_replaceRangeUsingColorWipe:(id)a3 withAttributedText:(id)a4 completion:(id)a5
+- (void)_replaceRangeUsingColorWipe:(id)wipe withAttributedText:(id)text completion:(id)completion
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(UITextField *)self _replaceRange:a3 withAttributedText:a4 updatingSelection:1];
+  completionCopy = completion;
+  v9 = [(UITextField *)self _replaceRange:wipe withAttributedText:text updatingSelection:1];
   [(UITextField *)self _boundingRectForRange:v9];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(UITextField *)self _textCanvasView];
+  _textCanvasView = [(UITextField *)self _textCanvasView];
   v19 = [_UIIntelligentTextInsertionAnimatedColor alloc];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __92__UITextField_AnimatedInsertion___replaceRangeUsingColorWipe_withAttributedText_completion___block_invoke;
   v34[3] = &unk_1E710AF98;
-  v35 = v18;
-  v20 = v18;
+  v35 = _textCanvasView;
+  v20 = _textCanvasView;
   v21 = [(_UIIntelligentTextInsertionAnimatedColor *)v19 initWithBounds:v34 invalidationHandler:v11, v13, v15, v17];
-  v22 = [(UITextField *)self typingAttributes];
-  v23 = [(UITextField *)self textColor];
-  v24 = ResolvedReplacementColorForTypingAttributes(v22, v23);
+  typingAttributes = [(UITextField *)self typingAttributes];
+  textColor = [(UITextField *)self textColor];
+  v24 = ResolvedReplacementColorForTypingAttributes(typingAttributes, textColor);
   [(_UIIntelligentTextInsertionAnimatedColor *)v21 setResolvedColor:v24];
 
   v36 = *off_1E70EC920;
   v37[0] = v21;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-  v26 = [(UITextField *)self textLayoutController];
-  [v26 addRenderingAttributes:v25 forRange:v9];
+  textLayoutController = [(UITextField *)self textLayoutController];
+  [textLayoutController addRenderingAttributes:v25 forRange:v9];
 
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -4064,8 +4064,8 @@ LABEL_11:
   v30[4] = self;
   v31 = v25;
   v32 = v9;
-  v33 = v8;
-  v27 = v8;
+  v33 = completionCopy;
+  v27 = completionCopy;
   v28 = v9;
   v29 = v25;
   PerformStandardAnimatedColorInsertionAnimation(v21, v30);
@@ -4097,23 +4097,23 @@ uint64_t __92__UITextField_AnimatedInsertion___replaceRangeUsingColorWipe_withAt
   return result;
 }
 
-- (void)_setCuiCatalog:(id)a3
+- (void)_setCuiCatalog:(id)catalog
 {
-  v5 = a3;
-  if (self->_cuiCatalog != v5)
+  catalogCopy = catalog;
+  if (self->_cuiCatalog != catalogCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cuiCatalog, a3);
+    v6 = catalogCopy;
+    objc_storeStrong(&self->_cuiCatalog, catalog);
     [(UITextField *)self _propagateCuiProperties];
-    v5 = v6;
+    catalogCopy = v6;
   }
 }
 
-- (void)_setCuiStyleEffectConfiguration:(id)a3
+- (void)_setCuiStyleEffectConfiguration:(id)configuration
 {
-  if (self->_cuiStyleEffectConfiguration != a3)
+  if (self->_cuiStyleEffectConfiguration != configuration)
   {
-    v4 = [a3 copy];
+    v4 = [configuration copy];
     if (!v4)
     {
       if (dyld_program_sdk_at_least())
@@ -4127,13 +4127,13 @@ uint64_t __92__UITextField_AnimatedInsertion___replaceRangeUsingColorWipe_withAt
       }
     }
 
-    v5 = [v4 appearanceName];
+    appearanceName = [v4 appearanceName];
 
-    if (!v5)
+    if (!appearanceName)
     {
-      v6 = [(UIView *)self traitCollection];
-      v7 = [(UITraitCollection *)v6 _styleEffectAppearanceName];
-      [v4 setAppearanceName:v7];
+      traitCollection = [(UIView *)self traitCollection];
+      _styleEffectAppearanceName = [(UITraitCollection *)traitCollection _styleEffectAppearanceName];
+      [v4 setAppearanceName:_styleEffectAppearanceName];
     }
 
     cuiStyleEffectConfiguration = self->_cuiStyleEffectConfiguration;
@@ -4143,13 +4143,13 @@ uint64_t __92__UITextField_AnimatedInsertion___replaceRangeUsingColorWipe_withAt
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   p_viewFlags = &self->super.super._viewFlags;
   v5 = *(&self->super.super._viewFlags + 4);
   v12.receiver = self;
   v12.super_class = UITextField;
-  [(UIView *)&v12 setSemanticContentAttribute:a3];
+  [(UIView *)&v12 setSemanticContentAttribute:attribute];
   if (((*(p_viewFlags + 4) ^ v5) & 0x400000) != 0)
   {
     rightView = self->_rightView;
@@ -4169,12 +4169,12 @@ uint64_t __92__UITextField_AnimatedInsertion___replaceRangeUsingColorWipe_withAt
   }
 }
 
-- (id)_initWithFrame:(CGRect)a3 textLayoutManagerEnabled:(BOOL)a4
+- (id)_initWithFrame:(CGRect)frame textLayoutManagerEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v18.receiver = self;
   v18.super_class = UITextField;
-  v5 = [(UIControl *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIControl *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = [_UITextFieldVisualStyle inferredVisualStyleWithStyleSubject:v5];
@@ -4191,7 +4191,7 @@ uint64_t __92__UITextField_AnimatedInsertion___replaceRangeUsingColorWipe_withAt
     v5->_clearButtonOffset.width = v8;
     v5->_clearButtonOffset.height = 1.0;
     v9 = 32;
-    if (v4)
+    if (enabledCopy)
     {
       v9 = 0x1000000020;
     }
@@ -4216,8 +4216,8 @@ uint64_t __92__UITextField_AnimatedInsertion___replaceRangeUsingColorWipe_withAt
     [UIView _performSystemAppearanceModifications:v16];
 
     v12 = dyld_program_sdk_at_least();
-    v13 = [(UITextField *)v11 _contentView];
-    [v13 setClipsToBounds:v12 ^ 1u];
+    _contentView = [(UITextField *)v11 _contentView];
+    [_contentView setClipsToBounds:v12 ^ 1u];
 
     [off_1E70ECC18 systemMinimumFontSize];
     v11->_minimumFontSize = v14;
@@ -4248,24 +4248,24 @@ void __55__UITextField__initWithFrame_textLayoutManagerEnabled___block_invoke(ui
   }
 }
 
-- (UITextField)initWithFrame:(CGRect)a3
+- (UITextField)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [objc_opt_class() _isTextLayoutManagerEnabled];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _isTextLayoutManagerEnabled = [objc_opt_class() _isTextLayoutManagerEnabled];
 
-  return [(UITextField *)self _initWithFrame:v8 textLayoutManagerEnabled:x, y, width, height];
+  return [(UITextField *)self _initWithFrame:_isTextLayoutManagerEnabled textLayoutManagerEnabled:x, y, width, height];
 }
 
-- (UITextField)initWithCoder:(id)a3
+- (UITextField)initWithCoder:(id)coder
 {
   v78[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v77.receiver = self;
   v77.super_class = UITextField;
-  v5 = [(UIControl *)&v77 initWithCoder:v4];
+  v5 = [(UIControl *)&v77 initWithCoder:coderCopy];
 
   if (!v5)
   {
@@ -4276,27 +4276,27 @@ void __55__UITextField__initWithFrame_textLayoutManagerEnabled___block_invoke(ui
   visualStyle = v5->_visualStyle;
   v5->_visualStyle = v6;
 
-  v8 = [objc_opt_class() _isTextLayoutManagerEnabled];
+  _isTextLayoutManagerEnabled = [objc_opt_class() _isTextLayoutManagerEnabled];
   v9 = 0x1000000000;
-  if (!v8)
+  if (!_isTextLayoutManagerEnabled)
   {
     v9 = 0;
   }
 
   v5->_textFieldFlags = (*&v5->_textFieldFlags & 0xFFFFFFEFFFFFFFFFLL | v9);
   [(UITextField *)v5 _setupDefaultStyleEffectConfiguration];
-  v10 = [v4 containsValueForKey:@"UIRoundedRectBackgroundCornerRadius"];
+  v10 = [coderCopy containsValueForKey:@"UIRoundedRectBackgroundCornerRadius"];
   v11 = 5.0;
   if (v10)
   {
-    [v4 decodeDoubleForKey:{@"UIRoundedRectBackgroundCornerRadius", 5.0}];
+    [coderCopy decodeDoubleForKey:{@"UIRoundedRectBackgroundCornerRadius", 5.0}];
   }
 
   v5->_preferredBackgroundCornerRadius = v11;
   [(UITextField *)v5 _invalidateBackgroundProviderForced:1];
-  if ([v4 containsValueForKey:@"UIAllowsEditingTextAttributes"])
+  if ([coderCopy containsValueForKey:@"UIAllowsEditingTextAttributes"])
   {
-    v12 = [v4 decodeBoolForKey:@"UIAllowsEditingTextAttributes"];
+    v12 = [coderCopy decodeBoolForKey:@"UIAllowsEditingTextAttributes"];
     v13 = 0x10000;
     if (!v12)
     {
@@ -4306,7 +4306,7 @@ void __55__UITextField__initWithFrame_textLayoutManagerEnabled___block_invoke(ui
     v5->_textFieldFlags = (*&v5->_textFieldFlags & 0xFFFFFFFFFFFEFFFFLL | v13);
   }
 
-  v14 = [v4 decodeObjectForKey:@"UIText"];
+  v14 = [coderCopy decodeObjectForKey:@"UIText"];
   if (v14)
   {
     v15 = v14;
@@ -4317,7 +4317,7 @@ void __55__UITextField__initWithFrame_textLayoutManagerEnabled___block_invoke(ui
     v15 = &stru_1EFB14550;
   }
 
-  v16 = [v4 decodeObjectForKey:@"UIAttributedText"];
+  v16 = [coderCopy decodeObjectForKey:@"UIAttributedText"];
   v17 = [v16 mutableCopy];
 
   if (!v17)
@@ -4329,9 +4329,9 @@ void __55__UITextField__initWithFrame_textLayoutManagerEnabled___block_invoke(ui
   v76 = v15;
   if (![v17 length])
   {
-    if ([v4 containsValueForKey:@"UITextAlignment"])
+    if ([coderCopy containsValueForKey:@"UITextAlignment"])
     {
-      v21 = [v4 decodeIntegerForKey:@"UITextAlignment"];
+      v21 = [coderCopy decodeIntegerForKey:@"UITextAlignment"];
     }
 
     else
@@ -4346,15 +4346,15 @@ void __55__UITextField__initWithFrame_textLayoutManagerEnabled___block_invoke(ui
   v19 = v18;
   if (v18 && [v18 alignment] != 4)
   {
-    v20 = [v19 alignment];
+    alignment = [v19 alignment];
     goto LABEL_24;
   }
 
-  if ([v4 containsValueForKey:@"UITextAlignment"])
+  if ([coderCopy containsValueForKey:@"UITextAlignment"])
   {
-    v20 = [v4 decodeIntegerForKey:@"UITextAlignment"];
+    alignment = [coderCopy decodeIntegerForKey:@"UITextAlignment"];
 LABEL_24:
-    v21 = v20;
+    v21 = alignment;
     goto LABEL_25;
   }
 
@@ -4363,7 +4363,7 @@ LABEL_25:
 
 LABEL_27:
   [(UITextField *)v5 _initTextStorage];
-  v22 = [v4 decodeObjectForKey:@"UIFont"];
+  v22 = [coderCopy decodeObjectForKey:@"UIFont"];
   v23 = v22;
   if (v22)
   {
@@ -4380,7 +4380,7 @@ LABEL_27:
     [(UITextField *)v5 _setFullFontSize:v25];
   }
 
-  v26 = [v4 decodeObjectForKey:@"UITextColor"];
+  v26 = [coderCopy decodeObjectForKey:@"UITextColor"];
   if (v26)
   {
     [(_UICascadingTextStorage *)v5->_textStorage setTextColor:v26];
@@ -4393,20 +4393,20 @@ LABEL_27:
 
   *&v5->_textFieldFlags |= 0x20000uLL;
   [(_UICascadingTextStorage *)v5->_textStorage setAttributedString:v17];
-  if ([v4 containsValueForKey:@"UIAdjustsFontForContentSizeCategory"])
+  if ([coderCopy containsValueForKey:@"UIAdjustsFontForContentSizeCategory"])
   {
-    -[UITextField setAdjustsFontForContentSizeCategory:](v5, "setAdjustsFontForContentSizeCategory:", [v4 decodeBoolForKey:@"UIAdjustsFontForContentSizeCategory"]);
+    -[UITextField setAdjustsFontForContentSizeCategory:](v5, "setAdjustsFontForContentSizeCategory:", [coderCopy decodeBoolForKey:@"UIAdjustsFontForContentSizeCategory"]);
   }
 
-  v27 = [v4 decodeObjectForKey:@"UIDelegate"];
+  v27 = [coderCopy decodeObjectForKey:@"UIDelegate"];
   objc_storeWeak(&v5->_delegate, v27);
 
-  if ([v4 decodeBoolForKey:@"UIClearsOnBeginEditing"])
+  if ([coderCopy decodeBoolForKey:@"UIClearsOnBeginEditing"])
   {
     v5->_textFieldFlags = (*&v5->_textFieldFlags & 0xFFFFFFFFFFF3FFFFLL | 0x40000);
   }
 
-  v28 = [v4 decodeBoolForKey:@"UIAdjustsFontSizeToFit"];
+  v28 = [coderCopy decodeBoolForKey:@"UIAdjustsFontSizeToFit"];
   v29 = 128;
   if (!v28)
   {
@@ -4414,9 +4414,9 @@ LABEL_27:
   }
 
   v5->_textFieldFlags = (*&v5->_textFieldFlags & 0xFFFFFFFFFFFFFF7FLL | v29);
-  if ([v4 containsValueForKey:@"UIMinimumFontSize"])
+  if ([coderCopy containsValueForKey:@"UIMinimumFontSize"])
   {
-    [v4 decodeFloatForKey:@"UIMinimumFontSize"];
+    [coderCopy decodeFloatForKey:@"UIMinimumFontSize"];
     v31 = v30;
     if (v31 < 0.0)
     {
@@ -4431,9 +4431,9 @@ LABEL_27:
 
   v5->_minimumFontSize = v31;
   v75 = v23;
-  if ([v4 containsValueForKey:@"UIBorderStyle"])
+  if ([coderCopy containsValueForKey:@"UIBorderStyle"])
   {
-    v32 = [v4 decodeIntegerForKey:@"UIBorderStyle"];
+    v32 = [coderCopy decodeIntegerForKey:@"UIBorderStyle"];
   }
 
   else
@@ -4442,26 +4442,26 @@ LABEL_27:
   }
 
   v5->_clearButtonMode = 0;
-  if ([v4 containsValueForKey:@"UIClearButtonMode"])
+  if ([coderCopy containsValueForKey:@"UIClearButtonMode"])
   {
-    v5->_clearButtonMode = [v4 decodeIntegerForKey:@"UIClearButtonMode"];
+    v5->_clearButtonMode = [coderCopy decodeIntegerForKey:@"UIClearButtonMode"];
   }
 
   [(UITextField *)v5 _initTextLayoutController];
   [(UITextField *)v5 _initTextCanvasView];
   v5->_foregroundViewsAlpha = 1.0;
-  v33 = [v4 decodeObjectForKey:@"UIPlaceholder"];
+  v33 = [coderCopy decodeObjectForKey:@"UIPlaceholder"];
   if (v33)
   {
     [(UITextField *)v5 createPlaceholderIfNecessary];
     [(UILabel *)v5->_placeholderLabel setText:v33];
   }
 
-  v34 = [v4 decodeObjectForKey:@"UILeftView"];
+  v34 = [coderCopy decodeObjectForKey:@"UILeftView"];
   leftView = v5->_leftView;
   v5->_leftView = v34;
 
-  v36 = [v4 decodeObjectForKey:@"UIRightView"];
+  v36 = [coderCopy decodeObjectForKey:@"UIRightView"];
   rightView = v5->_rightView;
   v5->_rightView = v36;
 
@@ -4485,31 +4485,31 @@ LABEL_27:
   }
 
   v5->_textFieldFlags = (*&v5->_textFieldFlags & 0xFFFFDFFFFFFFFFFFLL | v41);
-  v42 = [v4 decodeObjectForKey:@"UITextFieldBackground"];
+  v42 = [coderCopy decodeObjectForKey:@"UITextFieldBackground"];
   background = v5->_background;
   v5->_background = v42;
 
-  v44 = [v4 decodeObjectForKey:@"UITextFieldDisabledBackground"];
+  v44 = [coderCopy decodeObjectForKey:@"UITextFieldDisabledBackground"];
   disabledBackground = v5->_disabledBackground;
   v5->_disabledBackground = v44;
 
   *&v5->_textFieldFlags |= 0x20uLL;
-  if ([v4 containsValueForKey:@"UIBecomesFirstResponderOnClearButtonTap"])
+  if ([coderCopy containsValueForKey:@"UIBecomesFirstResponderOnClearButtonTap"])
   {
-    v5->_textFieldFlags = (*&v5->_textFieldFlags & 0xFFFFFFFFFFFFFFDFLL | (32 * ([v4 decodeIntegerForKey:@"UIBecomesFirstResponderOnClearButtonTap"] & 1)));
+    v5->_textFieldFlags = (*&v5->_textFieldFlags & 0xFFFFFFFFFFFFFFDFLL | (32 * ([coderCopy decodeIntegerForKey:@"UIBecomesFirstResponderOnClearButtonTap"] & 1)));
   }
 
-  [v4 decodeCGSizeForKey:@"UIClearButtonOffset"];
+  [coderCopy decodeCGSizeForKey:@"UIClearButtonOffset"];
   v5->_clearButtonOffset.width = v46;
   v5->_clearButtonOffset.height = v47;
-  [v4 decodeUIEdgeInsetsForKey:@"UIPadding"];
+  [coderCopy decodeUIEdgeInsetsForKey:@"UIPadding"];
   v5->_padding.top = v48;
   v5->_padding.left = v49;
   v5->_padding.bottom = v50;
   v5->_padding.right = v51;
-  if ([v4 containsValueForKey:@"UIAutocapitalizationType"])
+  if ([coderCopy containsValueForKey:@"UIAutocapitalizationType"])
   {
-    v52 = [v4 decodeIntegerForKey:@"UIAutocapitalizationType"];
+    v52 = [coderCopy decodeIntegerForKey:@"UIAutocapitalizationType"];
   }
 
   else
@@ -4518,9 +4518,9 @@ LABEL_27:
   }
 
   [(UITextField *)v5 setAutocapitalizationType:v52];
-  if ([v4 containsValueForKey:@"UIAutocorrectionType"])
+  if ([coderCopy containsValueForKey:@"UIAutocorrectionType"])
   {
-    v53 = [v4 decodeIntegerForKey:@"UIAutocorrectionType"];
+    v53 = [coderCopy decodeIntegerForKey:@"UIAutocorrectionType"];
   }
 
   else
@@ -4529,9 +4529,9 @@ LABEL_27:
   }
 
   [(UITextField *)v5 setAutocorrectionType:v53];
-  if ([v4 containsValueForKey:@"UISpellCheckingType"])
+  if ([coderCopy containsValueForKey:@"UISpellCheckingType"])
   {
-    v54 = [v4 decodeIntegerForKey:@"UISpellCheckingType"];
+    v54 = [coderCopy decodeIntegerForKey:@"UISpellCheckingType"];
   }
 
   else
@@ -4540,9 +4540,9 @@ LABEL_27:
   }
 
   [(UITextField *)v5 setSpellCheckingType:v54];
-  if ([v4 containsValueForKey:@"UIDisableTextColorUpdateOnTraitCollectionChange"])
+  if ([coderCopy containsValueForKey:@"UIDisableTextColorUpdateOnTraitCollectionChange"])
   {
-    v55 = [v4 decodeBoolForKey:@"UIDisableTextColorUpdateOnTraitCollectionChange"];
+    v55 = [coderCopy decodeBoolForKey:@"UIDisableTextColorUpdateOnTraitCollectionChange"];
     p_disableTextColorUpdateOnTraitCollectionChange = &v5->_disableTextColorUpdateOnTraitCollectionChange;
     v5->_disableTextColorUpdateOnTraitCollectionChange = v55;
     if (!v55)
@@ -4561,9 +4561,9 @@ LABEL_72:
   }
 
 LABEL_73:
-  if ([v4 containsValueForKey:@"UIKeyboardAppearance"])
+  if ([coderCopy containsValueForKey:@"UIKeyboardAppearance"])
   {
-    v57 = [v4 decodeIntegerForKey:@"UIKeyboardAppearance"];
+    v57 = [coderCopy decodeIntegerForKey:@"UIKeyboardAppearance"];
   }
 
   else
@@ -4572,9 +4572,9 @@ LABEL_73:
   }
 
   [(UITextField *)v5 setKeyboardAppearance:v57];
-  if ([v4 containsValueForKey:@"UIKeyboardType"])
+  if ([coderCopy containsValueForKey:@"UIKeyboardType"])
   {
-    v58 = [v4 decodeIntegerForKey:@"UIKeyboardType"];
+    v58 = [coderCopy decodeIntegerForKey:@"UIKeyboardType"];
   }
 
   else
@@ -4583,9 +4583,9 @@ LABEL_73:
   }
 
   [(UITextField *)v5 setKeyboardType:v58];
-  if ([v4 containsValueForKey:@"UIReturnKeyType"])
+  if ([coderCopy containsValueForKey:@"UIReturnKeyType"])
   {
-    v59 = [v4 decodeIntegerForKey:@"UIReturnKeyType"];
+    v59 = [coderCopy decodeIntegerForKey:@"UIReturnKeyType"];
   }
 
   else
@@ -4594,13 +4594,13 @@ LABEL_73:
   }
 
   [(UITextField *)v5 setReturnKeyType:v59];
-  -[UITextField setEnablesReturnKeyAutomatically:](v5, "setEnablesReturnKeyAutomatically:", [v4 decodeBoolForKey:@"UIEnablesReturnKeyAutomatically"]);
-  v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UITextContentType"];
+  -[UITextField setEnablesReturnKeyAutomatically:](v5, "setEnablesReturnKeyAutomatically:", [coderCopy decodeBoolForKey:@"UIEnablesReturnKeyAutomatically"]);
+  v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UITextContentType"];
   [(UITextField *)v5 setTextContentType:v60];
 
-  if ([v4 containsValueForKey:@"UITextSmartInsertDeleteType"])
+  if ([coderCopy containsValueForKey:@"UITextSmartInsertDeleteType"])
   {
-    v61 = [v4 decodeIntegerForKey:@"UITextSmartInsertDeleteType"];
+    v61 = [coderCopy decodeIntegerForKey:@"UITextSmartInsertDeleteType"];
   }
 
   else
@@ -4609,9 +4609,9 @@ LABEL_73:
   }
 
   [(UITextField *)v5 setSmartInsertDeleteType:v61];
-  if ([v4 containsValueForKey:@"UITextSmartQuotesType"])
+  if ([coderCopy containsValueForKey:@"UITextSmartQuotesType"])
   {
-    v62 = [v4 decodeIntegerForKey:@"UITextSmartQuotesType"];
+    v62 = [coderCopy decodeIntegerForKey:@"UITextSmartQuotesType"];
   }
 
   else
@@ -4620,9 +4620,9 @@ LABEL_73:
   }
 
   [(UITextField *)v5 setSmartQuotesType:v62];
-  if ([v4 containsValueForKey:@"UITextSmartDashesType"])
+  if ([coderCopy containsValueForKey:@"UITextSmartDashesType"])
   {
-    v63 = [v4 decodeIntegerForKey:@"UITextSmartDashesType"];
+    v63 = [coderCopy decodeIntegerForKey:@"UITextSmartDashesType"];
   }
 
   else
@@ -4631,9 +4631,9 @@ LABEL_73:
   }
 
   [(UITextField *)v5 setSmartDashesType:v63];
-  if ([v4 containsValueForKey:@"UITextInlinePredictionType"])
+  if ([coderCopy containsValueForKey:@"UITextInlinePredictionType"])
   {
-    v64 = [v4 decodeIntegerForKey:@"UITextInlinePredictionType"];
+    v64 = [coderCopy decodeIntegerForKey:@"UITextInlinePredictionType"];
   }
 
   else
@@ -4642,30 +4642,30 @@ LABEL_73:
   }
 
   [(UITextField *)v5 setInlinePredictionType:v64];
-  if ([v4 containsValueForKey:@"UILetterformAwareSizingRule"])
+  if ([coderCopy containsValueForKey:@"UILetterformAwareSizingRule"])
   {
-    v5->_textFieldFlags = (*&v5->_textFieldFlags & 0xFFFFFFBFFFFFFFFFLL | (([v4 decodeIntegerForKey:@"UILetterformAwareSizingRule"] & 1) << 38));
+    v5->_textFieldFlags = (*&v5->_textFieldFlags & 0xFFFFFFBFFFFFFFFFLL | (([coderCopy decodeIntegerForKey:@"UILetterformAwareSizingRule"] & 1) << 38));
   }
 
-  -[UITextField setSecureTextEntry:](v5, "setSecureTextEntry:", [v4 decodeBoolForKey:@"UISecureTextEntry"]);
-  v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UITextInputPasswordRules"];
+  -[UITextField setSecureTextEntry:](v5, "setSecureTextEntry:", [coderCopy decodeBoolForKey:@"UISecureTextEntry"]);
+  v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UITextInputPasswordRules"];
   [(UITextField *)v5 setPasswordRules:v65];
 
-  v66 = [v4 decodeObjectForKey:@"UIIcon"];
+  v66 = [coderCopy decodeObjectForKey:@"UIIcon"];
   [(UITextField *)v5 setIcon:v66];
 
   [(UITextField *)v5 setBorderStyle:v32];
-  v67 = [(UIView *)v5 tintColor];
+  tintColor = [(UIView *)v5 tintColor];
 
-  if (v67)
+  if (tintColor)
   {
     [(UITextField *)v5 _updateForTintColor];
   }
 
   *&v5->_textFieldFlags |= 0x10000000uLL;
-  v68 = [(UITextField *)v5 _contentFloatingContainerView];
+  _contentFloatingContainerView = [(UITextField *)v5 _contentFloatingContainerView];
 
-  if (v68)
+  if (_contentFloatingContainerView)
   {
     v78[0] = v5->_iconView;
     v78[1] = v5->_placeholderLabel;
@@ -4678,8 +4678,8 @@ LABEL_73:
       v70 = v78[v69];
       if (v70)
       {
-        v71 = [(UITextField *)v5 _contentView];
-        [v71 addSubview:v70];
+        _contentView = [(UITextField *)v5 _contentView];
+        [_contentView addSubview:v70];
       }
 
       ++v69;
@@ -4730,95 +4730,95 @@ LABEL_106:
 
 - (id)_encodableSubviews
 {
-  v2 = [(UITextField *)self _contentView];
-  v3 = [v2 subviews];
+  _contentView = [(UITextField *)self _contentView];
+  subviews = [_contentView subviews];
 
-  return v3;
+  return subviews;
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v6.receiver = self;
   v6.super_class = UITextField;
-  [(UIView *)&v6 _populateArchivedSubviews:v4];
-  [(_UITextFieldBackgroundProvider *)self->_backgroundProvider populateArchivedSubviews:v4];
+  [(UIView *)&v6 _populateArchivedSubviews:subviewsCopy];
+  [(_UITextFieldBackgroundProvider *)self->_backgroundProvider populateArchivedSubviews:subviewsCopy];
   if (self->_iconView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 
   if (self->_placeholderLabel)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 
   if (self->_label)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 
   if (self->_clearButton)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 
   if (self->_contentBackdropView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 
   if (self->_textCanvasView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 
   if (self->_fieldEditor)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 
-  v5 = [(UITextInteractionAssistant *)self->_interactionAssistant _selectionViewManager];
-  [v5 _filterArchivedSubviews:v4];
+  _selectionViewManager = [(UITextInteractionAssistant *)self->_interactionAssistant _selectionViewManager];
+  [_selectionViewManager _filterArchivedSubviews:subviewsCopy];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v40.receiver = self;
   v40.super_class = UITextField;
-  [(UIControl *)&v40 encodeWithCoder:v4];
+  [(UIControl *)&v40 encodeWithCoder:coderCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    [v4 encodeConditionalObject:WeakRetained];
+    [coderCopy encodeConditionalObject:WeakRetained];
   }
 
   if ([(UITextField *)self adjustsFontForContentSizeCategory])
   {
-    [v4 encodeBool:1 forKey:@"UIAdjustsFontForContentSizeCategory"];
+    [coderCopy encodeBool:1 forKey:@"UIAdjustsFontForContentSizeCategory"];
   }
 
   v6 = self->_textStorage;
-  v7 = [(_UICascadingTextStorage *)self->_textStorage font];
+  font = [(_UICascadingTextStorage *)self->_textStorage font];
 
-  if (v7)
+  if (font)
   {
-    v8 = [(_UICascadingTextStorage *)v6 font];
-    [v4 encodeObject:v8 forKey:@"UIFont"];
+    font2 = [(_UICascadingTextStorage *)v6 font];
+    [coderCopy encodeObject:font2 forKey:@"UIFont"];
   }
 
-  v9 = [(UITextField *)self placeholder];
+  placeholder = [(UITextField *)self placeholder];
 
-  if (v9)
+  if (placeholder)
   {
-    v10 = [(UITextField *)self placeholder];
-    [v4 encodeObject:v10 forKey:@"UIPlaceholder"];
+    placeholder2 = [(UITextField *)self placeholder];
+    [coderCopy encodeObject:placeholder2 forKey:@"UIPlaceholder"];
   }
 
   if ((*(&self->_textFieldFlags + 1) & 0x20) != 0)
   {
-    [v4 encodeInteger:-[_UICascadingTextStorage textAlignment](v6 forKey:{"textAlignment"), @"UITextAlignment"}];
+    [coderCopy encodeInteger:-[_UICascadingTextStorage textAlignment](v6 forKey:{"textAlignment"), @"UITextAlignment"}];
   }
 
   if ([(NSConcreteTextStorage *)v6 length])
@@ -4826,68 +4826,68 @@ LABEL_106:
     if ((*(&self->_textFieldFlags + 2) & 2) != 0)
     {
       v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithAttributedString:v6];
-      [v4 encodeObject:v11 forKey:@"UIAttributedText"];
+      [coderCopy encodeObject:v11 forKey:@"UIAttributedText"];
     }
 
-    v12 = [(NSConcreteTextStorage *)v6 string];
-    [v4 encodeObject:v12 forKey:@"UIText"];
+    string = [(NSConcreteTextStorage *)v6 string];
+    [coderCopy encodeObject:string forKey:@"UIText"];
   }
 
-  v13 = [(UIImageView *)self->_iconView image];
+  image = [(UIImageView *)self->_iconView image];
 
-  if (v13)
+  if (image)
   {
-    v14 = [(UIImageView *)self->_iconView image];
-    [v4 encodeObject:v14 forKey:@"UIIcon"];
+    image2 = [(UIImageView *)self->_iconView image];
+    [coderCopy encodeObject:image2 forKey:@"UIIcon"];
   }
 
-  v15 = [(_UICascadingTextStorage *)v6 textColor];
+  textColor = [(_UICascadingTextStorage *)v6 textColor];
 
-  if (v15)
+  if (textColor)
   {
-    v16 = [(_UICascadingTextStorage *)v6 textColor];
-    [v4 encodeObject:v16 forKey:@"UITextColor"];
+    textColor2 = [(_UICascadingTextStorage *)v6 textColor];
+    [coderCopy encodeObject:textColor2 forKey:@"UITextColor"];
   }
 
   leftView = self->_leftView;
   if (leftView)
   {
-    [v4 encodeObject:leftView forKey:@"UILeftView"];
+    [coderCopy encodeObject:leftView forKey:@"UILeftView"];
   }
 
   rightView = self->_rightView;
   if (rightView)
   {
-    [v4 encodeObject:rightView forKey:@"UIRightView"];
+    [coderCopy encodeObject:rightView forKey:@"UIRightView"];
   }
 
   background = self->_background;
   if (background)
   {
-    [v4 encodeObject:background forKey:@"UITextFieldBackground"];
+    [coderCopy encodeObject:background forKey:@"UITextFieldBackground"];
   }
 
   disabledBackground = self->_disabledBackground;
   if (disabledBackground)
   {
-    [v4 encodeObject:disabledBackground forKey:@"UITextFieldDisabledBackground"];
+    [coderCopy encodeObject:disabledBackground forKey:@"UITextFieldDisabledBackground"];
   }
 
-  v21 = [(UITextField *)self borderStyle];
-  if (v21)
+  borderStyle = [(UITextField *)self borderStyle];
+  if (borderStyle)
   {
-    [v4 encodeInteger:v21 forKey:@"UIBorderStyle"];
+    [coderCopy encodeInteger:borderStyle forKey:@"UIBorderStyle"];
   }
 
   if ([(UITextField *)self clearsOnBeginEditing])
   {
-    [v4 encodeBool:1 forKey:@"UIClearsOnBeginEditing"];
+    [coderCopy encodeBool:1 forKey:@"UIClearsOnBeginEditing"];
   }
 
   textFieldFlags = self->_textFieldFlags;
   if ((*&textFieldFlags & 0x80) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UIAdjustsFontSizeToFit"];
+    [coderCopy encodeBool:1 forKey:@"UIAdjustsFontSizeToFit"];
     textFieldFlags = self->_textFieldFlags;
     if ((*&textFieldFlags & 0x20) != 0)
     {
@@ -4906,11 +4906,11 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  [v4 encodeBool:0 forKey:@"UIBecomesFirstResponderOnClearButtonTap"];
+  [coderCopy encodeBool:0 forKey:@"UIBecomesFirstResponderOnClearButtonTap"];
   if ((*&self->_textFieldFlags & 0x10000) != 0)
   {
 LABEL_34:
-    [v4 encodeBool:1 forKey:@"UIAllowsEditingTextAttributes"];
+    [coderCopy encodeBool:1 forKey:@"UIAllowsEditingTextAttributes"];
   }
 
 LABEL_35:
@@ -4918,129 +4918,129 @@ LABEL_35:
   if (minimumFontSize != 0.0)
   {
     *&minimumFontSize = minimumFontSize;
-    [v4 encodeFloat:@"UIMinimumFontSize" forKey:minimumFontSize];
+    [coderCopy encodeFloat:@"UIMinimumFontSize" forKey:minimumFontSize];
   }
 
   clearButtonMode = self->_clearButtonMode;
   if (clearButtonMode)
   {
-    [v4 encodeInteger:clearButtonMode forKey:@"UIClearButtonMode"];
+    [coderCopy encodeInteger:clearButtonMode forKey:@"UIClearButtonMode"];
   }
 
   if (self->_clearButtonOffset.width != 0.0 || self->_clearButtonOffset.height != 0.0)
   {
-    [v4 encodeCGSize:@"UIClearButtonOffset" forKey:?];
+    [coderCopy encodeCGSize:@"UIClearButtonOffset" forKey:?];
   }
 
   v25 = *&self->_padding.top;
   v26 = *&self->_padding.bottom;
   if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(v25), vceqzq_f64(v26))))))
   {
-    [v4 encodeUIEdgeInsets:@"UIPadding" forKey:{*&v25, *&v26}];
+    [coderCopy encodeUIEdgeInsets:@"UIPadding" forKey:{*&v25, *&v26}];
   }
 
-  v27 = [(UITextField *)self autocapitalizationType];
-  if (v27)
+  autocapitalizationType = [(UITextField *)self autocapitalizationType];
+  if (autocapitalizationType)
   {
-    [v4 encodeInteger:v27 forKey:@"UIAutocapitalizationType"];
+    [coderCopy encodeInteger:autocapitalizationType forKey:@"UIAutocapitalizationType"];
   }
 
-  v28 = [(UITextField *)self autocorrectionType];
-  if (v28)
+  autocorrectionType = [(UITextField *)self autocorrectionType];
+  if (autocorrectionType)
   {
-    [v4 encodeInteger:v28 forKey:@"UIAutocorrectionType"];
+    [coderCopy encodeInteger:autocorrectionType forKey:@"UIAutocorrectionType"];
   }
 
-  v29 = [(UITextField *)self spellCheckingType];
-  if (v29)
+  spellCheckingType = [(UITextField *)self spellCheckingType];
+  if (spellCheckingType)
   {
-    [v4 encodeInteger:v29 forKey:@"UISpellCheckingType"];
+    [coderCopy encodeInteger:spellCheckingType forKey:@"UISpellCheckingType"];
   }
 
-  v30 = [(UITextField *)self keyboardAppearance];
-  if (v30)
+  keyboardAppearance = [(UITextField *)self keyboardAppearance];
+  if (keyboardAppearance)
   {
-    [v4 encodeInteger:v30 forKey:@"UIKeyboardAppearance"];
+    [coderCopy encodeInteger:keyboardAppearance forKey:@"UIKeyboardAppearance"];
   }
 
-  v31 = [(UITextField *)self keyboardType];
-  if (v31)
+  keyboardType = [(UITextField *)self keyboardType];
+  if (keyboardType)
   {
-    [v4 encodeInteger:v31 forKey:@"UIKeyboardType"];
+    [coderCopy encodeInteger:keyboardType forKey:@"UIKeyboardType"];
   }
 
-  v32 = [(UITextField *)self returnKeyType];
-  if (v32)
+  returnKeyType = [(UITextField *)self returnKeyType];
+  if (returnKeyType)
   {
-    [v4 encodeInteger:v32 forKey:@"UIReturnKeyType"];
+    [coderCopy encodeInteger:returnKeyType forKey:@"UIReturnKeyType"];
   }
 
   if ([(UITextField *)self enablesReturnKeyAutomatically])
   {
-    [v4 encodeBool:1 forKey:@"UIEnablesReturnKeyAutomatically"];
+    [coderCopy encodeBool:1 forKey:@"UIEnablesReturnKeyAutomatically"];
   }
 
   if ([(UITextField *)self isSecureTextEntry])
   {
-    [v4 encodeBool:1 forKey:@"UISecureTextEntry"];
+    [coderCopy encodeBool:1 forKey:@"UISecureTextEntry"];
   }
 
-  v33 = [(UITextField *)self passwordRules];
-  if (v33)
+  passwordRules = [(UITextField *)self passwordRules];
+  if (passwordRules)
   {
-    [v4 encodeObject:v33 forKey:@"UITextInputPasswordRules"];
+    [coderCopy encodeObject:passwordRules forKey:@"UITextInputPasswordRules"];
   }
 
-  v34 = [(UITextField *)self textContentType];
-  if (v34)
+  textContentType = [(UITextField *)self textContentType];
+  if (textContentType)
   {
-    [v4 encodeObject:v34 forKey:@"UITextContentType"];
+    [coderCopy encodeObject:textContentType forKey:@"UITextContentType"];
   }
 
-  v35 = [(UITextField *)self smartInsertDeleteType];
-  if (v35)
+  smartInsertDeleteType = [(UITextField *)self smartInsertDeleteType];
+  if (smartInsertDeleteType)
   {
-    [v4 encodeInteger:v35 forKey:@"UITextSmartInsertDeleteType"];
+    [coderCopy encodeInteger:smartInsertDeleteType forKey:@"UITextSmartInsertDeleteType"];
   }
 
-  v36 = [(UITextField *)self smartQuotesType];
-  if (v36)
+  smartQuotesType = [(UITextField *)self smartQuotesType];
+  if (smartQuotesType)
   {
-    [v4 encodeInteger:v36 forKey:@"UITextSmartQuotesType"];
+    [coderCopy encodeInteger:smartQuotesType forKey:@"UITextSmartQuotesType"];
   }
 
-  v37 = [(UITextField *)self smartDashesType];
-  if (v37)
+  smartDashesType = [(UITextField *)self smartDashesType];
+  if (smartDashesType)
   {
-    [v4 encodeInteger:v37 forKey:@"UITextSmartDashesType"];
+    [coderCopy encodeInteger:smartDashesType forKey:@"UITextSmartDashesType"];
   }
 
-  v38 = [(UITextField *)self inlinePredictionType];
-  if (v38)
+  inlinePredictionType = [(UITextField *)self inlinePredictionType];
+  if (inlinePredictionType)
   {
-    [v4 encodeInteger:v38 forKey:@"UITextInlinePredictionType"];
+    [coderCopy encodeInteger:inlinePredictionType forKey:@"UITextInlinePredictionType"];
   }
 
-  [v4 encodeBool:self->_disableTextColorUpdateOnTraitCollectionChange forKey:@"UIDisableTextColorUpdateOnTraitCollectionChange"];
+  [coderCopy encodeBool:self->_disableTextColorUpdateOnTraitCollectionChange forKey:@"UIDisableTextColorUpdateOnTraitCollectionChange"];
   [(UITextField *)self _roundedRectBackgroundCornerRadius];
   if (fabs(v39 + -5.0) > 0.00000011920929)
   {
-    [v4 encodeDouble:@"UIRoundedRectBackgroundCornerRadius" forKey:?];
+    [coderCopy encodeDouble:@"UIRoundedRectBackgroundCornerRadius" forKey:?];
   }
 
   if ((*(&self->_textFieldFlags + 4) & 0x40) != 0)
   {
-    [v4 encodeInteger:1 forKey:@"UILetterformAwareSizingRule"];
+    [coderCopy encodeInteger:1 forKey:@"UILetterformAwareSizingRule"];
   }
 }
 
-- (void)_encodeBackgroundColorWithCoder:(id)a3
+- (void)_encodeBackgroundColorWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(UITextField *)self backgroundColor];
-  if (v4)
+  coderCopy = coder;
+  backgroundColor = [(UITextField *)self backgroundColor];
+  if (backgroundColor)
   {
-    [v5 encodeObject:v4 forKey:@"UIBackgroundColor"];
+    [coderCopy encodeObject:backgroundColor forKey:@"UIBackgroundColor"];
   }
 }
 
@@ -5048,12 +5048,12 @@ LABEL_35:
 {
   v7[3] = *MEMORY[0x1E69E9840];
   [(UITextField *)self _stopObservingFieldEditorScroll];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v7[0] = @"UIKeyboardDidShowNotification";
   v7[1] = @"UIAccessibilityReduceTransparencyStatusDidChangeNotification";
   v7[2] = @"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:3];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   interactionAssistant = self->_interactionAssistant;
   self->_interactionAssistant = 0;
@@ -5073,15 +5073,15 @@ LABEL_35:
   v4 = [v3 mutableCopy];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(UITextField *)self borderStyle];
-  if (v6 > UITextBorderStyleRoundedRect)
+  borderStyle = [(UITextField *)self borderStyle];
+  if (borderStyle > UITextBorderStyleRoundedRect)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_1E7126430[v6];
+    v7 = off_1E7126430[borderStyle];
   }
 
   backgroundProvider = self->_backgroundProvider;
@@ -5090,18 +5090,18 @@ LABEL_35:
     backgroundProvider = @"(nil)";
   }
 
-  v9 = [v5 stringWithFormat:@" borderStyle = %@; background = %@", v7, backgroundProvider];;
+  backgroundProvider = [v5 stringWithFormat:@" borderStyle = %@; background = %@", v7, backgroundProvider];;
   v10 = [v4 rangeOfString:@"; layer ="];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = [v4 length] - 1;
   }
 
-  [v4 insertString:v9 atIndex:v10];
-  v11 = [(UITextField *)self placeholder];
-  if (v11)
+  [v4 insertString:backgroundProvider atIndex:v10];
+  placeholder = [(UITextField *)self placeholder];
+  if (placeholder)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@" placeholder = %@", v11];;
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@" placeholder = %@", placeholder];;
     [v4 insertString:v12 atIndex:v10];
   }
 
@@ -5110,9 +5110,9 @@ LABEL_35:
   return v13;
 }
 
-- (void)_sizeChanged:(BOOL)a3
+- (void)_sizeChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     self->_firstBaselineOffsetFromTop = 0.0;
     self->_lastBaselineOffsetFromBottom = 0.0;
@@ -5131,9 +5131,9 @@ LABEL_35:
     }
   }
 
-  v6 = [(UITextField *)self interactionAssistant];
-  v7 = [v6 _selectionView];
-  [v7 updateSelectionRects];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  _selectionView = [interactionAssistant _selectionView];
+  [_selectionView updateSelectionRects];
 
   [(UILabel *)self->_placeholderLabel setNeedsDisplay];
   [(_UITextCanvas *)self->_textCanvasView setNeedsDisplay];
@@ -5142,12 +5142,12 @@ LABEL_35:
   [(_UITextFieldBackgroundProvider *)backgroundProvider setNeedsDisplay];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -5162,12 +5162,12 @@ LABEL_35:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -5180,7 +5180,7 @@ LABEL_35:
   }
 }
 
-- (CGRect)_responderSelectionRectForWindow:(id)a3
+- (CGRect)_responderSelectionRectForWindow:(id)window
 {
   if (*(&self->_textFieldFlags + 1))
   {
@@ -5194,7 +5194,7 @@ LABEL_35:
   {
     v7.receiver = self;
     v7.super_class = UITextField;
-    [(UIView *)&v7 _responderSelectionRectForWindow:a3];
+    [(UIView *)&v7 _responderSelectionRectForWindow:window];
   }
 
   result.size.height = v6;
@@ -5204,13 +5204,13 @@ LABEL_35:
   return result;
 }
 
-- (CGRect)_responderExternalTouchRectForWindow:(id)a3
+- (CGRect)_responderExternalTouchRectForWindow:(id)window
 {
   if (*(&self->_textFieldFlags + 1))
   {
-    v13 = a3;
-    v14 = [(UITextField *)self _fieldEditor];
-    [v14 _responderExternalTouchRectForWindow:v13];
+    windowCopy = window;
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor _responderExternalTouchRectForWindow:windowCopy];
     v6 = v15;
     v8 = v16;
     v10 = v17;
@@ -5221,8 +5221,8 @@ LABEL_35:
   {
     v23.receiver = self;
     v23.super_class = UITextField;
-    v4 = a3;
-    [(UIView *)&v23 _responderExternalTouchRectForWindow:v4];
+    windowCopy2 = window;
+    [(UIView *)&v23 _responderExternalTouchRectForWindow:windowCopy2];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -5240,17 +5240,17 @@ LABEL_35:
   return result;
 }
 
-- (CGSize)_textSizeUsingFullFontSize:(BOOL)a3
+- (CGSize)_textSizeUsingFullFontSize:(BOOL)size
 {
-  v3 = a3;
+  sizeCopy = size;
   [(UIResponder *)self _caretRect];
   v6 = v5;
   v7 = self->_textStorage;
   v8 = v7;
   if ((*(&self->_textFieldFlags + 2) & 2) != 0)
   {
-    v9 = [(_UICascadingTextStorage *)v7 _UIKBStringWideAttributeValueForKey:*off_1E70EC918];
-    if (v9 && [(NSConcreteTextStorage *)v8 length])
+    font = [(_UICascadingTextStorage *)v7 _UIKBStringWideAttributeValueForKey:*off_1E70EC918];
+    if (font && [(NSConcreteTextStorage *)v8 length])
     {
       [(_UICascadingTextStorage *)v8 size];
       v11 = v10;
@@ -5259,32 +5259,32 @@ LABEL_35:
     }
   }
 
-  v9 = [(_UICascadingTextStorage *)v8 font];
-  if (v3)
+  font = [(_UICascadingTextStorage *)v8 font];
+  if (sizeCopy)
   {
     [(UITextField *)self _fullFontSize];
-    v14 = [v9 fontWithSize:?];
+    v14 = [font fontWithSize:?];
 
-    v9 = v14;
+    font = v14;
   }
 
-  if (!v9)
+  if (!font)
   {
     [off_1E70ECC18 defaultFontSize];
-    v9 = [off_1E70ECC18 systemFontOfSize:?];
+    font = [off_1E70ECC18 systemFontOfSize:?];
   }
 
-  v15 = [(UITextField *)self text];
-  v16 = [(__CFString *)v15 length];
+  text = [(UITextField *)self text];
+  v16 = [(__CFString *)text length];
   v17 = @" ";
   if (v16)
   {
-    v17 = v15;
+    v17 = text;
   }
 
   v18 = v17;
 
-  [(__CFString *)v18 _legacy_sizeWithFont:v9];
+  [(__CFString *)v18 _legacy_sizeWithFont:font];
   v11 = v19;
   v13 = v20;
 
@@ -5309,10 +5309,10 @@ LABEL_13:
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   [(UITextField *)self alignmentRectInsets];
   v10 = v9 == 0.0;
@@ -5363,9 +5363,9 @@ LABEL_13:
   v40 = 0;
   if ((*(&self->_textFieldFlags + 2) & 2) == 0 || (v34[0] = 0, v34[1] = v34, v34[2] = 0x2020000000, v34[3] = 0, -[UITextField attributedText](self, "attributedText"), v13 = objc_claimAutoreleasedReturnValue(), -[UITextField attributedText](self, "attributedText"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 length], v16 = *off_1E70EC918, v33[0] = MEMORY[0x1E69E9820], v33[1] = 3221225472, v33[2] = __38__UITextField__baselineOffsetsAtSize___block_invoke, v33[3] = &unk_1E7126288, v33[4] = v34, v33[5] = buf, objc_msgSend(v13, "enumerateAttribute:inRange:options:usingBlock:", v16, 0, v15, 0, v33), v14, v13, _Block_object_dispose(v34, 8), !*(v36 + 5)))
   {
-    v17 = [(_UICascadingTextStorage *)v12 font];
+    font = [(_UICascadingTextStorage *)v12 font];
     [(UITextField *)self _fullFontSize];
-    v18 = [v17 fontWithSize:?];
+    v18 = [font fontWithSize:?];
     v19 = *(v36 + 5);
     *(v36 + 5) = v18;
 
@@ -5409,9 +5409,9 @@ void __38__UITextField__baselineOffsetsAtSize___block_invoke(uint64_t a1, void *
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  v4 = [(UIView *)self superview:a3.width];
+  v4 = [(UIView *)self superview:size.width];
   kdebug_trace();
 
   if (self)
@@ -5431,10 +5431,10 @@ void __38__UITextField__baselineOffsetsAtSize___block_invoke(uint64_t a1, void *
     v8 = 0.0;
   }
 
-  v13 = [(UIView *)self traitCollection];
-  v14 = [v13 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v14 == 6)
+  if (userInterfaceIdiom == 6)
   {
     [(UITextField *)self _visionOverrideHorizontalInsets:v8, v6, v10, v12];
     v8 = v15;
@@ -5511,15 +5511,15 @@ void __38__UITextField__baselineOffsetsAtSize___block_invoke(uint64_t a1, void *
     }
   }
 
-  v43 = [(UITextField *)self _metricsProvider];
-  [v43 intrinsicSizeForContentSize:{v30, v31}];
+  _metricsProvider = [(UITextField *)self _metricsProvider];
+  [_metricsProvider intrinsicSizeForContentSize:{v30, v31}];
   v45 = v44;
   v47 = v46;
 
-  v48 = [(UIView *)self traitCollection];
-  v49 = [v48 userInterfaceIdiom];
+  traitCollection2 = [(UIView *)self traitCollection];
+  userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-  if (v49 == 6)
+  if (userInterfaceIdiom2 == 6)
   {
     [(UITextField *)self _visionOverrideNaturalHeight:v45, v47];
   }
@@ -5530,7 +5530,7 @@ void __38__UITextField__baselineOffsetsAtSize___block_invoke(uint64_t a1, void *
     [v50 UTF8String];
     kdebug_trace_string();
 
-    v51 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
     kdebug_trace();
   }
 
@@ -5544,35 +5544,35 @@ void __38__UITextField__baselineOffsetsAtSize___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (void)_applicableContentOutsetsFromFontsOversize:(int)a3 extremeSizing:
+- (void)_applicableContentOutsetsFromFontsOversize:(int)oversize extremeSizing:
 {
-  if (a1 && a2 | a3)
+  if (self && a2 | oversize)
   {
-    if (*(a1 + 905))
+    if (*(self + 905))
     {
-      v4 = [a1 _fieldEditor];
-      [v4 _fullContentInsetsFromFonts];
+      _fieldEditor = [self _fieldEditor];
+      [_fieldEditor _fullContentInsetsFromFonts];
     }
 
     else
     {
-      v4 = [a1 text];
+      _fieldEditor = [self text];
       v5 = +[UILabel _tooBigChars];
-      v6 = [v4 rangeOfCharacterFromSet:v5];
+      v6 = [_fieldEditor rangeOfCharacterFromSet:v5];
 
       if (v6 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ((*(a1 + 906) & 2) != 0)
+        if ((*(self + 906) & 2) != 0)
         {
-          v8 = *(a1 + 816);
-          v7 = [v8 font];
-          [UILabel _insetsForAttributedString:v8 withDefaultFont:v7 inView:a1];
+          v8 = *(self + 816);
+          font = [v8 font];
+          [UILabel _insetsForAttributedString:v8 withDefaultFont:font inView:self];
         }
 
         else
         {
-          v7 = [a1 font];
-          [UILabel _insetsForString:v4 withFont:v7 inView:a1];
+          font = [self font];
+          [UILabel _insetsForString:_fieldEditor withFont:font inView:self];
         }
       }
     }
@@ -5595,9 +5595,9 @@ void __38__UITextField__baselineOffsetsAtSize___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)_selectGestureChanged:(id)a3
+- (void)_selectGestureChanged:(id)changed
 {
-  if ([a3 state] == 3)
+  if ([changed state] == 3)
   {
     [(UITextField *)self _setHighlighted:0 animated:1];
 
@@ -5605,23 +5605,23 @@ void __38__UITextField__baselineOffsetsAtSize___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![UIDictationController takesPressesBegan:v6 forTextView:self])
+  beganCopy = began;
+  eventCopy = event;
+  if (![UIDictationController takesPressesBegan:beganCopy forTextView:self])
   {
     v8 = +[UIKeyboard activeKeyboard];
-    v9 = [v8 canHandlePresses:v6 withEvent:v7];
+    v9 = [v8 canHandlePresses:beganCopy withEvent:eventCopy];
 
     if (!v9)
     {
-      v11 = [v7 _lastPreparedPress];
-      if ([v11 type] == 4)
+      _lastPreparedPress = [eventCopy _lastPreparedPress];
+      if ([_lastPreparedPress type] == 4)
       {
-        v12 = [(UIControl *)self isEnabled];
+        isEnabled = [(UIControl *)self isEnabled];
 
-        if (v12)
+        if (isEnabled)
         {
           [(UITextField *)self _setHighlighted:1 animated:1];
           goto LABEL_9;
@@ -5634,58 +5634,58 @@ void __38__UITextField__baselineOffsetsAtSize___block_invoke(uint64_t a1, void *
 
       v13.receiver = self;
       v13.super_class = UITextField;
-      [(UIResponder *)&v13 pressesBegan:v6 withEvent:v7];
+      [(UIResponder *)&v13 pressesBegan:beganCopy withEvent:eventCopy];
       goto LABEL_9;
     }
 
     v10 = +[UIKeyboard activeKeyboard];
-    [v10 pressesBegan:v6 withEvent:v7];
+    [v10 pressesBegan:beganCopy withEvent:eventCopy];
   }
 
 LABEL_9:
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![UIDictationController takesPressesChanged:v6 forTextView:self])
+  changedCopy = changed;
+  eventCopy = event;
+  if (![UIDictationController takesPressesChanged:changedCopy forTextView:self])
   {
     v8 = +[UIKeyboard activeKeyboard];
-    v9 = [v8 canHandlePresses:v6 withEvent:v7];
+    v9 = [v8 canHandlePresses:changedCopy withEvent:eventCopy];
 
     if (v9)
     {
       v10 = +[UIKeyboard activeKeyboard];
-      [v10 pressesChanged:v6 withEvent:v7];
+      [v10 pressesChanged:changedCopy withEvent:eventCopy];
     }
 
     else
     {
       v11.receiver = self;
       v11.super_class = UITextField;
-      [(UIResponder *)&v11 pressesChanged:v6 withEvent:v7];
+      [(UIResponder *)&v11 pressesChanged:changedCopy withEvent:eventCopy];
     }
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![UIDictationController takesPressesEnded:v6 forTextView:self])
+  endedCopy = ended;
+  eventCopy = event;
+  if (![UIDictationController takesPressesEnded:endedCopy forTextView:self])
   {
     v8 = +[UIKeyboard activeKeyboard];
-    v9 = [v8 canHandlePresses:v6 withEvent:v7];
+    v9 = [v8 canHandlePresses:endedCopy withEvent:eventCopy];
 
     if (!v9)
     {
-      v11 = [v7 _lastPreparedPress];
-      if ([v11 type] == 4)
+      _lastPreparedPress = [eventCopy _lastPreparedPress];
+      if ([_lastPreparedPress type] == 4)
       {
-        v12 = [(UIControl *)self isHighlighted];
+        isHighlighted = [(UIControl *)self isHighlighted];
 
-        if (v12)
+        if (isHighlighted)
         {
           [(UITextField *)self _setHighlighted:0 animated:1];
           goto LABEL_9;
@@ -5698,32 +5698,32 @@ LABEL_9:
 
       v13.receiver = self;
       v13.super_class = UITextField;
-      [(UIResponder *)&v13 pressesEnded:v6 withEvent:v7];
+      [(UIResponder *)&v13 pressesEnded:endedCopy withEvent:eventCopy];
       goto LABEL_9;
     }
 
     v10 = +[UIKeyboard activeKeyboard];
-    [v10 pressesEnded:v6 withEvent:v7];
+    [v10 pressesEnded:endedCopy withEvent:eventCopy];
   }
 
 LABEL_9:
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   v8 = +[UIKeyboard activeKeyboard];
-  v9 = [v8 canHandlePresses:v6 withEvent:v7];
+  v9 = [v8 canHandlePresses:cancelledCopy withEvent:eventCopy];
 
   if (!v9)
   {
-    v11 = [v7 _lastPreparedPress];
-    if ([v11 type] == 4)
+    _lastPreparedPress = [eventCopy _lastPreparedPress];
+    if ([_lastPreparedPress type] == 4)
     {
-      v12 = [(UIControl *)self isHighlighted];
+      isHighlighted = [(UIControl *)self isHighlighted];
 
-      if (v12)
+      if (isHighlighted)
       {
         [(UITextField *)self _setHighlighted:0 animated:1];
         goto LABEL_8;
@@ -5736,63 +5736,63 @@ LABEL_9:
 
     v13.receiver = self;
     v13.super_class = UITextField;
-    [(UIResponder *)&v13 pressesCancelled:v6 withEvent:v7];
+    [(UIResponder *)&v13 pressesCancelled:cancelledCopy withEvent:eventCopy];
     goto LABEL_8;
   }
 
   v10 = +[UIKeyboard activeKeyboard];
-  [v10 pressesCancelled:v6 withEvent:v7];
+  [v10 pressesCancelled:cancelledCopy withEvent:eventCopy];
 
 LABEL_8:
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  touchCopy = touch;
   [(UITextField *)self _animateNextHighlightChange];
   v9.receiver = self;
   v9.super_class = UITextField;
-  LOBYTE(self) = [(UIControl *)&v9 beginTrackingWithTouch:v7 withEvent:v6];
+  LOBYTE(self) = [(UIControl *)&v9 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return self;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  touchCopy = touch;
   [(UITextField *)self _animateNextHighlightChange];
   v9.receiver = self;
   v9.super_class = UITextField;
-  LOBYTE(self) = [(UIControl *)&v9 continueTrackingWithTouch:v7 withEvent:v6];
+  LOBYTE(self) = [(UIControl *)&v9 continueTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return self;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  touchCopy = touch;
   [(UITextField *)self _animateNextHighlightChange];
   v8.receiver = self;
   v8.super_class = UITextField;
-  [(UIControl *)&v8 endTrackingWithTouch:v7 withEvent:v6];
+  [(UIControl *)&v8 endTrackingWithTouch:touchCopy withEvent:eventCopy];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(UITextField *)self _animateNextHighlightChange];
   v5.receiver = self;
   v5.super_class = UITextField;
-  [(UIControl *)&v5 cancelTrackingWithEvent:v4];
+  [(UIControl *)&v5 cancelTrackingWithEvent:eventCopy];
 }
 
-- (void)_setDisableFocus:(BOOL)a3
+- (void)_setDisableFocus:(BOOL)focus
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!focus)
   {
     v3 = 0;
   }
@@ -5800,23 +5800,23 @@ LABEL_8:
   self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)_setForegroundViewsAlpha:(double)a3
+- (void)_setForegroundViewsAlpha:(double)alpha
 {
-  self->_foregroundViewsAlpha = a3;
+  self->_foregroundViewsAlpha = alpha;
   [(UIView *)self->_iconView setAlpha:?];
-  v5 = [(UITextField *)self leftView];
+  leftView = [(UITextField *)self leftView];
   [(UITextField *)self _maximumAlphaForLeadingView];
-  [v5 setAlpha:v6 * a3];
+  [leftView setAlpha:v6 * alpha];
 
-  v7 = [(UITextField *)self rightView];
-  [v7 setAlpha:a3];
+  rightView = [(UITextField *)self rightView];
+  [rightView setAlpha:alpha];
 
-  v8 = [(UITextField *)self _clearButton];
-  [v8 setAlpha:a3];
+  _clearButton = [(UITextField *)self _clearButton];
+  [_clearButton setAlpha:alpha];
 
-  [(_UITextCanvas *)self->_textCanvasView setAlpha:a3];
+  [(_UITextCanvas *)self->_textCanvasView setAlpha:alpha];
   placeholderLabel = self->_placeholderLabel;
-  [(UITextField *)self _placeholderLabelAlphaForForegroundViewsAlpha:a3];
+  [(UITextField *)self _placeholderLabelAlphaForForegroundViewsAlpha:alpha];
 
   [(UIView *)placeholderLabel setAlpha:?];
 }
@@ -5833,21 +5833,21 @@ LABEL_8:
   return [(UIControl *)&v3 canBecomeFocused];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v4.receiver = self;
   v4.super_class = UITextField;
-  [(UIView *)&v4 didUpdateFocusInContext:a3 withAnimationCoordinator:a4];
+  [(UIView *)&v4 didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
 }
 
-- (BOOL)_allowsChangingFirstResponderForFocusUpdateWithContext:(id)a3
+- (BOOL)_allowsChangingFirstResponderForFocusUpdateWithContext:(id)context
 {
-  v4 = a3;
-  if (-[UITextField _supportsKeyboardNavigationForSuggestions](self, "_supportsKeyboardNavigationForSuggestions") && -[UIView isFirstResponder](self, "isFirstResponder") && ([v4 nextFocusedItem], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  contextCopy = context;
+  if (-[UITextField _supportsKeyboardNavigationForSuggestions](self, "_supportsKeyboardNavigationForSuggestions") && -[UIView isFirstResponder](self, "isFirstResponder") && ([contextCopy nextFocusedItem], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = [[_UIDynamicFocusGroupMap alloc] initWithCoordinateSpace:self];
     v7 = [(_UIDynamicFocusGroupMap *)v6 focusGroupIdentifierForItem:self];
-    self = [v4 nextFocusedItem];
+    self = [contextCopy nextFocusedItem];
     v8 = [(_UIDynamicFocusGroupMap *)v6 focusGroupIdentifierForItem:self];
 
     LODWORD(self) = [v7 isEqualToString:v8] ^ 1;
@@ -5857,23 +5857,23 @@ LABEL_8:
   {
     v10.receiver = self;
     v10.super_class = UITextField;
-    LOBYTE(self) = [(UIResponder *)&v10 _allowsChangingFirstResponderForFocusUpdateWithContext:v4];
+    LOBYTE(self) = [(UIResponder *)&v10 _allowsChangingFirstResponderForFocusUpdateWithContext:contextCopy];
   }
 
   return self;
 }
 
-- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)a3
+- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)engine
 {
-  v5 = [(UITextField *)self _supportsKeyboardNavigationForSuggestions];
-  if (a3 == 2 && v5)
+  _supportsKeyboardNavigationForSuggestions = [(UITextField *)self _supportsKeyboardNavigationForSuggestions];
+  if (engine == 2 && _supportsKeyboardNavigationForSuggestions)
   {
     return 1;
   }
 
   v7.receiver = self;
   v7.super_class = UITextField;
-  return [(UIResponder *)&v7 _shouldForwardMovementToFocusEngine:a3];
+  return [(UIResponder *)&v7 _shouldForwardMovementToFocusEngine:engine];
 }
 
 - (int64_t)_systemDefaultFocusGroupPriority
@@ -5890,49 +5890,49 @@ LABEL_8:
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x200) != 0)
+  if ((focusGroupContainmentBehavior & 0x200) != 0)
   {
-    v5 = _UIFocusGroupIdentifierForInstance(self);
+    _systemDefaultFocusGroupIdentifier = _UIFocusGroupIdentifierForInstance(self);
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UITextField;
-    v5 = [(UIControl *)&v7 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier = [(UIControl *)&v7 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier;
 }
 
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context
 {
-  v6 = a4;
-  v7 = [(UITextField *)self _contentFloatingContainerView];
+  contextCopy = context;
+  _contentFloatingContainerView = [(UITextField *)self _contentFloatingContainerView];
 
-  if (v7)
+  if (_contentFloatingContainerView)
   {
-    v8 = [(UITextField *)self _contentFloatingContainerView];
-    v9 = [v8 _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    _contentFloatingContainerView2 = [(UITextField *)self _contentFloatingContainerView];
+    v9 = [_contentFloatingContainerView2 _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = UITextField;
-    v9 = [(UIView *)&v11 _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    v9 = [(UIView *)&v11 _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
   }
 
   return v9;
 }
 
-- (void)_setSupportsKeyboardNavigationForSuggestions:(BOOL)a3
+- (void)_setSupportsKeyboardNavigationForSuggestions:(BOOL)suggestions
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!suggestions)
   {
     v3 = 0;
   }
@@ -5940,7 +5940,7 @@ LABEL_8:
   self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)_initialScrollDidFinish:(id)a3
+- (void)_initialScrollDidFinish:(id)finish
 {
   [(UITextField *)self _activateSelectionView];
 
@@ -5980,10 +5980,10 @@ LABEL_8:
   [(UIResponder *)&v2 _windowResignedKey];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   if (qword_1ED49AAA0 != -1)
   {
     dispatch_once(&qword_1ED49AAA0, &__block_literal_global_2339);
@@ -5993,19 +5993,19 @@ LABEL_8:
   {
     v8.receiver = self;
     v8.super_class = UITextField;
-    [(UIControl *)&v8 touchesCancelled:v6 withEvent:v7];
+    [(UIControl *)&v8 touchesCancelled:cancelledCopy withEvent:eventCopy];
   }
 
   else
   {
-    [(UITextField *)self touchesEnded:v6 withEvent:v7];
+    [(UITextField *)self touchesEnded:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (qword_1ED49AAA0 != -1)
   {
     dispatch_once(&qword_1ED49AAA0, &__block_literal_global_2339);
@@ -6015,46 +6015,46 @@ LABEL_8:
   {
     v8.receiver = self;
     v8.super_class = UITextField;
-    [(UIControl *)&v8 touchesEnded:v6 withEvent:v7];
+    [(UIControl *)&v8 touchesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v49.receiver = self;
   v49.super_class = UITextField;
-  v10 = [(UIControl *)&v49 hitTest:v9 withEvent:x, y];
-  v11 = [(UIView *)self->_clearButton superview];
-  if (v11 == self)
+  v10 = [(UIControl *)&v49 hitTest:eventCopy withEvent:x, y];
+  superview = [(UIView *)self->_clearButton superview];
+  if (superview == self)
   {
-    v13 = v9;
+    v13 = eventCopy;
     v14 = 0;
   }
 
   else
   {
-    v4 = [(UIView *)self->_leftView superview];
-    if (v4 == self)
+    superview2 = [(UIView *)self->_leftView superview];
+    if (superview2 == self)
     {
-      v13 = v9;
+      v13 = eventCopy;
       v14 = 0;
     }
 
     else
     {
-      v12 = [(UIView *)self->_rightView superview];
-      v5 = v12;
-      if (v12 != self)
+      superview3 = [(UIView *)self->_rightView superview];
+      v5 = superview3;
+      if (superview3 != self)
       {
 
 LABEL_44:
         goto LABEL_45;
       }
 
-      v13 = v9;
+      v13 = eventCopy;
       v14 = 1;
     }
   }
@@ -6070,8 +6070,8 @@ LABEL_44:
     goto LABEL_11;
   }
 
-  v27 = [(UITextField *)self _fieldEditor];
-  v15 = v10 == v27;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v15 = v10 == _fieldEditor;
 
   if (v14)
   {
@@ -6079,7 +6079,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (v11 != self)
+  if (superview != self)
   {
 
     if (v15)
@@ -6088,7 +6088,7 @@ LABEL_12:
     }
 
 LABEL_20:
-    v9 = v13;
+    eventCopy = v13;
     goto LABEL_45;
   }
 
@@ -6103,10 +6103,10 @@ LABEL_14:
   v19 = v18;
   [(UITextField *)self _textSize];
   v21 = v20;
-  v22 = [(UITextField *)self _textStorage];
-  v23 = [v22 _ui_resolvedTextAlignment];
+  _textStorage = [(UITextField *)self _textStorage];
+  _ui_resolvedTextAlignment = [_textStorage _ui_resolvedTextAlignment];
 
-  if (v23)
+  if (_ui_resolvedTextAlignment)
   {
     v24 = v17 + v19;
     v25 = v17 + v19 - v21 + -20.0;
@@ -6116,8 +6116,8 @@ LABEL_14:
     }
 
     v26 = v25;
-    v9 = v13;
-    if (v23 == 2)
+    eventCopy = v13;
+    if (_ui_resolvedTextAlignment == 2)
     {
       goto LABEL_26;
     }
@@ -6127,7 +6127,7 @@ LABEL_14:
   {
     v26 = v17;
     v24 = v17 + v19;
-    v9 = v13;
+    eventCopy = v13;
   }
 
   if (v24 >= v17 + v21 + 20.0)
@@ -6158,9 +6158,9 @@ LABEL_26:
   if (x <= v32)
   {
     v34 = 496;
-    v35 = [(UIView *)self->_leftView superview];
-    v36 = v35;
-    if (v35 == self)
+    superview4 = [(UIView *)self->_leftView superview];
+    v36 = superview4;
+    if (superview4 == self)
     {
       v37 = UIViewIgnoresTouchEvents(self->_leftView);
 
@@ -6177,9 +6177,9 @@ LABEL_26:
 
   if (x >= v28)
   {
-    v38 = [(UIView *)self->_clearButton superview];
-    v39 = v38;
-    if (v38 == self)
+    superview5 = [(UIView *)self->_clearButton superview];
+    v39 = superview5;
+    if (superview5 == self)
     {
       v40 = UIViewIgnoresTouchEvents(self->_clearButton);
 
@@ -6195,8 +6195,8 @@ LABEL_26:
     }
 
     v34 = 512;
-    v11 = [(UIView *)self->_rightView superview];
-    if (v11 != self)
+    superview = [(UIView *)self->_rightView superview];
+    if (superview != self)
     {
       goto LABEL_44;
     }
@@ -6208,38 +6208,38 @@ LABEL_26:
 LABEL_41:
       clearButton = *(&self->super.super.super.super.isa + v34);
 LABEL_43:
-      v11 = v10;
+      superview = v10;
       v10 = clearButton;
       goto LABEL_44;
     }
   }
 
 LABEL_45:
-  v43 = v10;
+  selfCopy2 = v10;
   if (v10 != self->_leftView)
   {
-    v43 = v10;
+    selfCopy2 = v10;
     if (v10 != self->_rightView)
     {
-      v43 = v10;
+      selfCopy2 = v10;
       if (v10 != self->_clearButton)
       {
         if ([(_UITextFieldBackgroundProvider *)self->_backgroundProvider hitTestView:v10])
         {
-          v43 = self;
+          selfCopy2 = self;
           goto LABEL_55;
         }
 
         if (*(&self->_textFieldFlags + 1))
         {
-          v44 = [(UITextField *)self _fieldEditor];
-          v45 = v44;
-          if (v10 == v44)
+          _fieldEditor2 = [(UITextField *)self _fieldEditor];
+          v45 = _fieldEditor2;
+          if (v10 == _fieldEditor2)
           {
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
-            v43 = self;
+            selfCopy2 = self;
             if ((isKindOfClass & 1) == 0)
             {
               goto LABEL_55;
@@ -6251,22 +6251,22 @@ LABEL_45:
           }
         }
 
-        v43 = v10;
+        selfCopy2 = v10;
       }
     }
   }
 
 LABEL_55:
-  v47 = v43;
+  v47 = selfCopy2;
 
   return v47;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(UIView *)self traitCollection];
-  if ([v5 _focusSystemState] == 2)
+  changeCopy = change;
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection _focusSystemState] == 2)
   {
     [(UITextField *)self _installSelectGestureRecognizer];
   }
@@ -6276,10 +6276,10 @@ LABEL_55:
     [(UITextField *)self _uninstallSelectGestureRecognizer];
   }
 
-  v6 = [v4 userInterfaceIdiom];
-  if (v6 == [v5 userInterfaceIdiom])
+  userInterfaceIdiom = [changeCopy userInterfaceIdiom];
+  if (userInterfaceIdiom == [traitCollection userInterfaceIdiom])
   {
-    [(_UITextFieldBackgroundProvider *)self->_backgroundProvider traitCollectionDidChange:v4];
+    [(_UITextFieldBackgroundProvider *)self->_backgroundProvider traitCollectionDidChange:changeCopy];
   }
 
   else
@@ -6287,8 +6287,8 @@ LABEL_55:
     [(UITextField *)self _invalidateBackgroundProvider];
   }
 
-  v7 = [v5 userInterfaceStyle];
-  if (v7 != [v4 userInterfaceStyle])
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  if (userInterfaceStyle != [changeCopy userInterfaceStyle])
   {
     [(UITextField *)self _updateTextEffectsConfigurationIfNeeded];
   }
@@ -6300,7 +6300,7 @@ LABEL_55:
 
   v8.receiver = self;
   v8.super_class = UITextField;
-  [(UIView *)&v8 traitCollectionDidChange:v4];
+  [(UIView *)&v8 traitCollectionDidChange:changeCopy];
 }
 
 - (void)_preferredContentSizeCategoryDidChange
@@ -6333,16 +6333,16 @@ LABEL_55:
   [(UITextField *)self _tvUpdateContentBackdropView];
 }
 
-- (void)_setFullFontSize:(id)a3
+- (void)_setFullFontSize:(id)size
 {
-  v4 = a3;
-  if (!v4)
+  sizeCopy = size;
+  if (!sizeCopy)
   {
-    v4 = +[_UIFullFontSize defaultValue];
+    sizeCopy = +[_UIFullFontSize defaultValue];
   }
 
-  obj = v4;
-  if (![(_UIFullFontSize *)self->_fullFontSize isEqual:v4])
+  obj = sizeCopy;
+  if (![(_UIFullFontSize *)self->_fullFontSize isEqual:sizeCopy])
   {
     objc_storeStrong(&self->_fullFontSize, obj);
     if ([(UITextField *)self adjustsFontSizeToFitWidth])
@@ -6437,40 +6437,40 @@ void __37__UITextField__invalidateDefaultFont__block_invoke(uint64_t a1)
   [*(a1 + 32) setDefaultTextAttributes:v4];
 }
 
-- (CGSize)_visionOverrideNaturalHeight:(CGSize)a3
+- (CGSize)_visionOverrideNaturalHeight:(CGSize)height
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UIView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
+  height = height.height;
+  width = height.width;
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if ([(NSString *)v6 isEqualToString:@"UICTContentSizeCategoryXXXL"])
+  if ([(NSString *)preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryXXXL"])
   {
     height = 48.0;
   }
 
-  else if (UIContentSizeCategoryIsAccessibilityCategory(v6))
+  else if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     height = 52.0;
   }
 
   v7 = width;
-  v8 = height;
-  result.height = v8;
+  heightCopy = height;
+  result.height = heightCopy;
   result.width = v7;
   return result;
 }
 
-- (UIEdgeInsets)_visionOverrideHorizontalInsets:(UIEdgeInsets)a3
+- (UIEdgeInsets)_visionOverrideHorizontalInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(UIView *)self traitCollection];
-  v8 = [v7 preferredContentSizeCategory];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v8))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     left = 20.0;
     right = 20.0;
@@ -6487,19 +6487,19 @@ void __37__UITextField__invalidateDefaultFont__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setFont:(id)a3 fullFontSize:(id)a4 ambientOnly:(BOOL)a5
+- (void)setFont:(id)font fullFontSize:(id)size ambientOnly:(BOOL)only
 {
-  v5 = a5;
-  v22 = a3;
-  v8 = a4;
+  onlyCopy = only;
+  fontCopy = font;
+  sizeCopy = size;
   v9 = self->_textStorage;
   v10 = v9;
-  if (v5)
+  if (onlyCopy)
   {
-    if (v22)
+    if (fontCopy)
     {
-      v11 = [(_UICascadingTextStorage *)v9 defaultAttributes];
-      v12 = [v11 mutableCopy];
+      defaultAttributes = [(_UICascadingTextStorage *)v9 defaultAttributes];
+      v12 = [defaultAttributes mutableCopy];
       v13 = v12;
       if (v12)
       {
@@ -6513,31 +6513,31 @@ void __37__UITextField__invalidateDefaultFont__block_invoke(uint64_t a1)
 
       v15 = v14;
 
-      [v15 setObject:v22 forKeyedSubscript:*off_1E70EC918];
+      [v15 setObject:fontCopy forKeyedSubscript:*off_1E70EC918];
       [(_UICascadingTextStorage *)v10 setDefaultAttributes:v15];
     }
   }
 
   else
   {
-    [(_UICascadingTextStorage *)v9 setFont:v22];
+    [(_UICascadingTextStorage *)v9 setFont:fontCopy];
   }
 
   if (!self->_overriddenPlaceholder)
   {
-    [(UILabel *)self->_placeholderLabel setFont:v22];
+    [(UILabel *)self->_placeholderLabel setFont:fontCopy];
   }
 
-  [(UILabel *)self->_label setFont:v22];
-  [(UILabel *)self->_suffixLabel setFont:v22];
-  [(UILabel *)self->_prefixLabel setFont:v22];
-  [(UITextField *)self _setFullFontSize:v8];
-  if (v5)
+  [(UILabel *)self->_label setFont:fontCopy];
+  [(UILabel *)self->_suffixLabel setFont:fontCopy];
+  [(UILabel *)self->_prefixLabel setFont:fontCopy];
+  [(UITextField *)self _setFullFontSize:sizeCopy];
+  if (onlyCopy)
   {
-    if (v22)
+    if (fontCopy)
     {
-      v16 = [(_UICascadingTextStorage *)v10 defaultAttributes];
-      v17 = [v16 mutableCopy];
+      defaultAttributes2 = [(_UICascadingTextStorage *)v10 defaultAttributes];
+      v17 = [defaultAttributes2 mutableCopy];
       v18 = v17;
       if (v17)
       {
@@ -6551,14 +6551,14 @@ void __37__UITextField__invalidateDefaultFont__block_invoke(uint64_t a1)
 
       v20 = v19;
 
-      [v20 setObject:v22 forKeyedSubscript:*off_1E70EC918];
+      [v20 setObject:fontCopy forKeyedSubscript:*off_1E70EC918];
       [(_UICascadingTextStorage *)v10 setDefaultAttributes:v20];
     }
   }
 
   else
   {
-    [(_UICascadingTextStorage *)v10 setFont:v22];
+    [(_UICascadingTextStorage *)v10 setFont:fontCopy];
   }
 
   if ([(UITextField *)self _shouldObscureInput])
@@ -6567,53 +6567,53 @@ void __37__UITextField__invalidateDefaultFont__block_invoke(uint64_t a1)
   }
 
   [(UITextField *)self _syncTypingAttributesWithDefaultAttribute:*off_1E70EC918];
-  v21 = [(UITextField *)self _inputController];
-  [v21 _updateEmptyStringAttributes];
-  [v21 _selectionGeometryChanged];
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController _updateEmptyStringAttributes];
+  [_inputController _selectionGeometryChanged];
   [(UITextField *)self setNeedsLayout];
   [(UIView *)self invalidateIntrinsicContentSize];
-  if (!v5)
+  if (!onlyCopy)
   {
-    [(UITextField *)self _didSetFont:v22];
+    [(UITextField *)self _didSetFont:fontCopy];
   }
 
   [(UITextField *)self _invalidateAllGlyphsAndTextLayout];
 }
 
-- (float)_newFontSize:(float)a3 maxSize:(float)a4
+- (float)_newFontSize:(float)size maxSize:(float)maxSize
 {
-  if (a3 <= a4)
+  if (size <= maxSize)
   {
-    v5 = a3;
+    maxSizeCopy = size;
   }
 
   else
   {
-    v5 = a4;
+    maxSizeCopy = maxSize;
   }
 
   [(UITextField *)self actualMinimumFontSize];
-  if (v6 > v5)
+  if (v6 > maxSizeCopy)
   {
     [(UITextField *)self actualMinimumFontSize];
     return v7;
   }
 
-  return v5;
+  return maxSizeCopy;
 }
 
-- (id)_copyFont:(id)a3 newSize:(float)a4 maxSize:(float)a5
+- (id)_copyFont:(id)font newSize:(float)size maxSize:(float)maxSize
 {
-  if (!a3)
+  if (!font)
   {
     return 0;
   }
 
-  v8 = a3;
-  *&v9 = a4;
-  *&v10 = a5;
+  fontCopy = font;
+  *&v9 = size;
+  *&v10 = maxSize;
   [(UITextField *)self _newFontSize:v9 maxSize:v10];
-  v12 = [v8 fontWithSize:v11];
+  v12 = [fontCopy fontWithSize:v11];
 
   return v12;
 }
@@ -6626,11 +6626,11 @@ void __37__UITextField__invalidateDefaultFont__block_invoke(uint64_t a1)
   return result;
 }
 
-- (float)_marginTopForBounds:(CGRect)a3
+- (float)_marginTopForBounds:(CGRect)bounds
 {
-  if ((*&self->_textFieldFlags & 1) != 0 || [(UIControl *)self contentVerticalAlignment:a3.origin.x]== UIControlContentVerticalAlignmentCenter || [(UIControl *)self contentVerticalAlignment]== UIControlContentVerticalAlignmentBottom)
+  if ((*&self->_textFieldFlags & 1) != 0 || [(UIControl *)self contentVerticalAlignment:bounds.origin.x]== UIControlContentVerticalAlignmentCenter || [(UIControl *)self contentVerticalAlignment]== UIControlContentVerticalAlignmentBottom)
   {
-    v4 = [(UITextField *)self font:a3.origin.x];
+    v4 = [(UITextField *)self font:bounds.origin.x];
     [v4 lineHeight];
 
     [(UITextField *)self textRectForBounds:0.0, 0.0, 100.0, 100.0];
@@ -6640,22 +6640,22 @@ void __37__UITextField__invalidateDefaultFont__block_invoke(uint64_t a1)
   else
   {
     v7 = self->_textStorage;
-    v8 = [(_UICascadingTextStorage *)v7 font];
-    [v8 pointSize];
+    font = [(_UICascadingTextStorage *)v7 font];
+    [font pointSize];
     v10 = v9;
 
     [(UITextField *)self _fullFontSize];
     v12 = v11;
     if (v12 > v10)
     {
-      v13 = [(_UICascadingTextStorage *)v7 font];
+      font2 = [(_UICascadingTextStorage *)v7 font];
       *&v14 = v12;
       *&v15 = v12;
-      v16 = [(UITextField *)self _copyFont:v13 newSize:v14 maxSize:v15];
+      v16 = [(UITextField *)self _copyFont:font2 newSize:v14 maxSize:v15];
 
       [v16 ascender];
-      v17 = [(_UICascadingTextStorage *)v7 font];
-      [v17 ascender];
+      font3 = [(_UICascadingTextStorage *)v7 font];
+      [font3 ascender];
     }
   }
 
@@ -6663,58 +6663,58 @@ void __37__UITextField__invalidateDefaultFont__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)_clearButtonImageForState:(unint64_t)a3
+- (id)_clearButtonImageForState:(unint64_t)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 0;
     goto LABEL_15;
   }
 
-  v5 = [(UIView *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 3)
+  if (userInterfaceIdiom == 3)
   {
     v7 = +[UIColor whiteColor];
-    v8 = 2;
+    _partsShouldBeMini = 2;
   }
 
   else
   {
-    v8 = [(UITextField *)self _partsShouldBeMini];
+    _partsShouldBeMini = [(UITextField *)self _partsShouldBeMini];
     v7 = 0;
   }
 
-  v9 = [(UIView *)self tintColor];
-  v10 = [(UIView *)self traitCollection];
-  v3 = _GetTextFieldClearButtonWithCustomColorContrastSettings(0, v8, v7, v9, v10, [(UIView *)self _accessibilityResolvedInterfaceStyle]== 1, [(UITextField *)self _forcesClearButtonHighContrastAppearance]);
+  tintColor = [(UIView *)self tintColor];
+  traitCollection2 = [(UIView *)self traitCollection];
+  v3 = _GetTextFieldClearButtonWithCustomColorContrastSettings(0, _partsShouldBeMini, v7, tintColor, traitCollection2, [(UIView *)self _accessibilityResolvedInterfaceStyle]== 1, [(UITextField *)self _forcesClearButtonHighContrastAppearance]);
 
   if (_TextFieldScalesClearButton())
   {
-    v11 = [(UIView *)self traitCollection];
-    v12 = [v11 userInterfaceIdiom];
+    traitCollection3 = [(UIView *)self traitCollection];
+    userInterfaceIdiom2 = [traitCollection3 userInterfaceIdiom];
 
-    if (v12 != 6)
+    if (userInterfaceIdiom2 != 6)
     {
-      v13 = [(UITextField *)self font];
-      v14 = [(UIView *)self traitCollection];
-      v15 = [v14 preferredContentSizeCategory];
-      if (UIContentSizeCategoryIsAccessibilityCategory(v15))
+      font = [(UITextField *)self font];
+      traitCollection4 = [(UIView *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection4 preferredContentSizeCategory];
+      if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
       {
-        if (UIContentSizeCategoryCompareToCategory(v15, &cfstr_Uictcontentsiz_11.isa) != NSOrderedAscending)
+        if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_11.isa) != NSOrderedAscending)
         {
           v16 = 1;
 LABEL_13:
 
-          v17 = [UIImageSymbolConfiguration configurationWithFont:v13 scale:v16];
+          v17 = [UIImageSymbolConfiguration configurationWithFont:font scale:v16];
           v18 = [v3 imageWithConfiguration:v17];
 
           v3 = v18;
           goto LABEL_14;
         }
 
-        UIContentSizeCategoryCompareToCategory(v15, &cfstr_Uictcontentsiz_9.isa);
+        UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_9.isa);
       }
 
       v16 = 2;
@@ -6729,14 +6729,14 @@ LABEL_15:
   return v3;
 }
 
-- (BOOL)_shouldAnimateTransitionForAccessoryView:(id)a3
+- (BOOL)_shouldAnimateTransitionForAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIView *)self window];
-  if (v5 && [(UITextField *)self _isAccessoryViewAnimatable:v4])
+  viewCopy = view;
+  window = [(UIView *)self window];
+  if (window && [(UITextField *)self _isAccessoryViewAnimatable:viewCopy])
   {
-    v6 = [(UIView *)self traitCollection];
-    v7 = [v6 userInterfaceIdiom] != 6;
+    traitCollection = [(UIView *)self traitCollection];
+    v7 = [traitCollection userInterfaceIdiom] != 6;
   }
 
   else
@@ -6747,91 +6747,91 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)_isAccessoryViewAnimatable:(id)a3
+- (BOOL)_isAccessoryViewAnimatable:(id)animatable
 {
-  v4 = a3;
+  animatableCopy = animatable;
   if ([(UIControl *)self _allowsSymbolAnimations])
   {
     v5 = objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 _imageViewIfNeeded];
-      v7 = [v6 image];
-      v8 = [v7 isSymbolImage];
+      _imageViewIfNeeded = [animatableCopy _imageViewIfNeeded];
+      image = [_imageViewIfNeeded image];
+      isSymbolImage = [image isSymbolImage];
     }
 
     else
     {
-      v8 = 0;
+      isSymbolImage = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    isSymbolImage = 0;
   }
 
-  return v8;
+  return isSymbolImage;
 }
 
-- (void)_transitionFromAccessoryView:(id)a3 toView:(id)a4 allowingAnimation:(BOOL)a5
+- (void)_transitionFromAccessoryView:(id)view toView:(id)toView allowingAnimation:(BOOL)animation
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(UITextField *)self _contentView];
-  if (v8)
+  animationCopy = animation;
+  viewCopy = view;
+  toViewCopy = toView;
+  _contentView = [(UITextField *)self _contentView];
+  if (viewCopy)
   {
-    v11 = [v8 superview];
+    superview = [viewCopy superview];
 
-    if (v11 == v10)
+    if (superview == _contentView)
     {
-      if (v5 && [(UITextField *)self _shouldAnimateTransitionForAccessoryView:v8])
+      if (animationCopy && [(UITextField *)self _shouldAnimateTransitionForAccessoryView:viewCopy])
       {
-        v12 = v8;
-        v13 = [v12 _imageViewIfNeeded];
-        v14 = [MEMORY[0x1E6982258] disappearDownEffect];
-        v15 = [MEMORY[0x1E6982278] options];
+        v12 = viewCopy;
+        _imageViewIfNeeded = [v12 _imageViewIfNeeded];
+        disappearDownEffect = [MEMORY[0x1E6982258] disappearDownEffect];
+        options = [MEMORY[0x1E6982278] options];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __69__UITextField__transitionFromAccessoryView_toView_allowingAnimation___block_invoke;
         v24[3] = &unk_1E71262F0;
         v25 = v12;
         v16 = v12;
-        [v13 addSymbolEffect:v14 options:v15 animated:1 completion:v24];
+        [_imageViewIfNeeded addSymbolEffect:disappearDownEffect options:options animated:1 completion:v24];
       }
 
       else
       {
-        [v8 removeFromSuperview];
+        [viewCopy removeFromSuperview];
       }
     }
   }
 
-  if (v9)
+  if (toViewCopy)
   {
-    v17 = [v9 superview];
+    superview2 = [toViewCopy superview];
 
-    if (v17 != v10)
+    if (superview2 != _contentView)
     {
-      if (v5 && [(UITextField *)self _shouldAnimateTransitionForAccessoryView:v9])
+      if (animationCopy && [(UITextField *)self _shouldAnimateTransitionForAccessoryView:toViewCopy])
       {
-        v18 = v9;
-        v19 = [v18 _imageViewIfNeeded];
-        v20 = [MEMORY[0x1E6982258] disappearDownEffect];
-        v21 = [MEMORY[0x1E6982278] options];
-        [v19 addSymbolEffect:v20 options:v21 animated:0];
+        v18 = toViewCopy;
+        _imageViewIfNeeded2 = [v18 _imageViewIfNeeded];
+        disappearDownEffect2 = [MEMORY[0x1E6982258] disappearDownEffect];
+        options2 = [MEMORY[0x1E6982278] options];
+        [_imageViewIfNeeded2 addSymbolEffect:disappearDownEffect2 options:options2 animated:0];
 
-        [v10 addSubview:v18];
-        v22 = [v18 _imageViewIfNeeded];
+        [_contentView addSubview:v18];
+        _imageViewIfNeeded3 = [v18 _imageViewIfNeeded];
 
-        v23 = [MEMORY[0x1E6982238] appearUpEffect];
-        [v22 addSymbolEffect:v23];
+        appearUpEffect = [MEMORY[0x1E6982238] appearUpEffect];
+        [_imageViewIfNeeded3 addSymbolEffect:appearUpEffect];
       }
 
       else
       {
-        [v10 addSubview:v9];
+        [_contentView addSubview:toViewCopy];
       }
     }
   }
@@ -6849,36 +6849,36 @@ void __69__UITextField__transitionFromAccessoryView_toView_allowingAnimation___b
   }
 }
 
-- (void)_updateButtonsAllowingAnimation:(BOOL)a3
+- (void)_updateButtonsAllowingAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v9 = [(UITextField *)self _contentView];
-  v5 = [(UIView *)self->_clearButton superview];
+  animationCopy = animation;
+  _contentView = [(UITextField *)self _contentView];
+  superview = [(UIView *)self->_clearButton superview];
 
   if ([(UITextField *)self _showsClearButton:[(UITextField *)self isEditing]])
   {
-    v6 = [(UITextField *)self clearButton];
+    clearButton = [(UITextField *)self clearButton];
     v7 = +[UIView areAnimationsEnabled];
-    v8 = v5 == v9 && v7;
+    v8 = superview == _contentView && v7;
     [UIView setAnimationsEnabled:v8];
     [(UITextField *)self clearButtonRect];
     [(UIButton *)self->_clearButton setFrame:?];
     [(UIView *)self->_clearButton setUserInteractionEnabled:1];
     [(_UITextFieldClearButton *)self->_clearButton setPointerInteractionEnabled:[(UITextField *)self _hasCustomClearButtonImage]^ 1];
-    [(UITextField *)self _transitionFromAccessoryView:0 toView:self->_clearButton allowingAnimation:v3];
+    [(UITextField *)self _transitionFromAccessoryView:0 toView:self->_clearButton allowingAnimation:animationCopy];
     [UIView setAnimationsEnabled:v7];
   }
 
   else
   {
-    [(UITextField *)self _transitionFromAccessoryView:self->_clearButton toView:0 allowingAnimation:v3];
+    [(UITextField *)self _transitionFromAccessoryView:self->_clearButton toView:0 allowingAnimation:animationCopy];
   }
 
   if (self->_leftView)
   {
     if ([(UITextField *)self _showsLeftView])
     {
-      [(UITextField *)self _transitionFromAccessoryView:0 toView:self->_leftView allowingAnimation:v3];
+      [(UITextField *)self _transitionFromAccessoryView:0 toView:self->_leftView allowingAnimation:animationCopy];
       [(UIView *)self bounds];
       [(UITextField *)self leftViewRectForBounds:?];
       [(UIView *)self->_leftView setFrame:?];
@@ -6886,7 +6886,7 @@ void __69__UITextField__transitionFromAccessoryView_toView_allowingAnimation___b
 
     else
     {
-      [(UITextField *)self _transitionFromAccessoryView:self->_leftView toView:0 allowingAnimation:v3];
+      [(UITextField *)self _transitionFromAccessoryView:self->_leftView toView:0 allowingAnimation:animationCopy];
     }
   }
 
@@ -6894,7 +6894,7 @@ void __69__UITextField__transitionFromAccessoryView_toView_allowingAnimation___b
   {
     if ([(UITextField *)self _showsRightView])
     {
-      [(UITextField *)self _transitionFromAccessoryView:0 toView:self->_rightView allowingAnimation:v3];
+      [(UITextField *)self _transitionFromAccessoryView:0 toView:self->_rightView allowingAnimation:animationCopy];
       [(UIView *)self bounds];
       [(UITextField *)self rightViewRectForBounds:?];
       [(UIView *)self->_rightView setFrame:?];
@@ -6902,7 +6902,7 @@ void __69__UITextField__transitionFromAccessoryView_toView_allowingAnimation___b
 
     else
     {
-      [(UITextField *)self _transitionFromAccessoryView:self->_rightView toView:0 allowingAnimation:v3];
+      [(UITextField *)self _transitionFromAccessoryView:self->_rightView toView:0 allowingAnimation:animationCopy];
     }
   }
 }
@@ -7025,7 +7025,7 @@ void __43__UITextField__updateAutosizeStyleIfNeeded__block_invoke_4(uint64_t a1,
   [*(a1 + 40) addAttribute:*off_1E70EC918 value:v12 range:{a3, a4}];
 }
 
-- (BOOL)_showsClearButtonWhenNonEmpty:(BOOL)a3
+- (BOOL)_showsClearButtonWhenNonEmpty:(BOOL)empty
 {
   if ([(UITextField *)self clearButtonMode])
   {
@@ -7038,10 +7038,10 @@ void __43__UITextField__updateAutosizeStyleIfNeeded__block_invoke_4(uint64_t a1,
     if ([(UIView *)self isFirstResponder])
     {
       v6 = 1;
-      if (!a3)
+      if (!empty)
       {
 LABEL_7:
-        v7 = [(UITextField *)self _hasContent];
+        _hasContent = [(UITextField *)self _hasContent];
         goto LABEL_10;
       }
     }
@@ -7049,22 +7049,22 @@ LABEL_7:
     else
     {
       v6 = *(&self->_textFieldFlags + 1) & 1;
-      if (!a3)
+      if (!empty)
       {
         goto LABEL_7;
       }
     }
 
-    v7 = 1;
+    _hasContent = 1;
 LABEL_10:
     if ([(UITextField *)self clearButtonMode]== UITextFieldViewModeWhileEditing)
     {
-      v5 = v6 & v7 ^ 1;
+      v5 = v6 & _hasContent ^ 1;
     }
 
     else
     {
-      v5 = ([(UITextField *)self clearButtonMode]== UITextFieldViewModeUnlessEditing) & v6 & v7;
+      v5 = ([(UITextField *)self clearButtonMode]== UITextFieldViewModeUnlessEditing) & v6 & _hasContent;
     }
 
     goto LABEL_13;
@@ -7075,15 +7075,15 @@ LABEL_13:
   v8 = *(&self->super.super._viewFlags + 2);
   if ((v8 & 0x400000) != 0)
   {
-    v9 = [(UITextField *)self _showsLeftView];
+    _showsLeftView = [(UITextField *)self _showsLeftView];
   }
 
   else
   {
-    v9 = [(UITextField *)self _showsRightView];
+    _showsLeftView = [(UITextField *)self _showsRightView];
   }
 
-  if ((v5 | v9))
+  if ((v5 | _showsLeftView))
   {
     return 0;
   }
@@ -7109,20 +7109,20 @@ LABEL_13:
   }
 }
 
-- (BOOL)_showsClearButton:(BOOL)a3
+- (BOOL)_showsClearButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(UIView *)self traitCollection];
-  if ([v5 userInterfaceIdiom] == 3 && !-[UITextField _showsTrailingView](self, "_showsTrailingView"))
+  buttonCopy = button;
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3 && !-[UITextField _showsTrailingView](self, "_showsTrailingView"))
   {
     v7 = _UISolariumEnabled();
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(UIView *)self traitCollection];
-      v9 = [v8 interactionModel];
+      traitCollection2 = [(UIView *)self traitCollection];
+      interactionModel = [traitCollection2 interactionModel];
 
-      return v9 & 1;
+      return interactionModel & 1;
     }
   }
 
@@ -7133,7 +7133,7 @@ LABEL_13:
   if ([(UITextField *)self _hasContent])
   {
 
-    return [(UITextField *)self _showsClearButtonWhenNonEmpty:v3];
+    return [(UITextField *)self _showsClearButtonWhenNonEmpty:buttonCopy];
   }
 
   else
@@ -7145,28 +7145,28 @@ LABEL_13:
 
 - (BOOL)_isShowingPlaceholder
 {
-  v2 = [(UIView *)self->_placeholderLabel superview];
-  v3 = v2 != 0;
+  superview = [(UIView *)self->_placeholderLabel superview];
+  v3 = superview != 0;
 
   return v3;
 }
 
 - (BOOL)_isShowingPrefix
 {
-  v2 = [(UIView *)self->_prefixLabel superview];
-  v3 = v2 != 0;
+  superview = [(UIView *)self->_prefixLabel superview];
+  v3 = superview != 0;
 
   return v3;
 }
 
-- (CGRect)_availableTextRectExcludingButtonsForBounds:(CGRect)a3
+- (CGRect)_availableTextRectExcludingButtonsForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(UITextField *)self _metricsProvider];
-  [v7 contentFrameForBounds:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _metricsProvider = [(UITextField *)self _metricsProvider];
+  [_metricsProvider contentFrameForBounds:{x, y, width, height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -7183,14 +7183,14 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)_availableTextRectForBounds:(CGRect)a3 forEditing:(BOOL)a4
+- (CGRect)_availableTextRectForBounds:(CGRect)bounds forEditing:(BOOL)editing
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
+  editingCopy = editing;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
   v9 = *(&self->super.super._viewFlags + 2);
-  x = a3.origin.x;
+  x = bounds.origin.x;
   [(UITextField *)self _availableTextRectExcludingButtonsForBounds:?];
   v11 = v10;
   v13 = v12;
@@ -7265,9 +7265,9 @@ LABEL_13:
   suffixLabel = self->_suffixLabel;
   if (suffixLabel)
   {
-    v42 = [(UILabel *)suffixLabel text];
-    v43 = [(UILabel *)self->_suffixLabel font];
-    [v42 _legacy_sizeWithFont:v43];
+    text = [(UILabel *)suffixLabel text];
+    font = [(UILabel *)self->_suffixLabel font];
+    [text _legacy_sizeWithFont:font];
     v45 = fmin(v15, v44);
 
     v15 = v15 - v45;
@@ -7276,9 +7276,9 @@ LABEL_13:
   prefixLabel = self->_prefixLabel;
   if (prefixLabel)
   {
-    v47 = [(UILabel *)prefixLabel text];
-    v48 = [(UILabel *)self->_prefixLabel font];
-    [v47 _legacy_sizeWithFont:v48];
+    text2 = [(UILabel *)prefixLabel text];
+    font2 = [(UILabel *)self->_prefixLabel font];
+    [text2 _legacy_sizeWithFont:font2];
     v50 = fmin(v15, v49);
 
     v11 = v11 + v50;
@@ -7302,7 +7302,7 @@ LABEL_13:
       v56 = 0;
     }
 
-    if ([(UITextField *)self _showsLeftView]&& !v56 || [(UITextField *)self _hasContent]&& [(UITextField *)self _showsClearButtonWhenNonEmpty:v4]|| ![(UITextField *)self _hasContent]&& [(UITextField *)self _showsClearButtonWhenEmpty])
+    if ([(UITextField *)self _showsLeftView]&& !v56 || [(UITextField *)self _hasContent]&& [(UITextField *)self _showsClearButtonWhenNonEmpty:editingCopy]|| ![(UITextField *)self _hasContent]&& [(UITextField *)self _showsClearButtonWhenEmpty])
     {
       v15 = v15 - v54;
       v11 = v11 + v54;
@@ -7321,7 +7321,7 @@ LABEL_40:
 
   else
   {
-    if (((IsRightToLeftInputModeActive & 1) != 0 || [(_UICascadingTextStorage *)self->_textStorage _ui_resolvedTextAlignment]== 2 || [(UITextField *)self _hasContent]) && [(UITextField *)self _showsClearButtonWhenNonEmpty:v4]|| ![(UITextField *)self _hasContent]&& [(UITextField *)self _showsClearButtonWhenEmpty])
+    if (((IsRightToLeftInputModeActive & 1) != 0 || [(_UICascadingTextStorage *)self->_textStorage _ui_resolvedTextAlignment]== 2 || [(UITextField *)self _hasContent]) && [(UITextField *)self _showsClearButtonWhenNonEmpty:editingCopy]|| ![(UITextField *)self _hasContent]&& [(UITextField *)self _showsClearButtonWhenEmpty])
     {
       v15 = v15 - v54;
       goto LABEL_41;
@@ -7371,10 +7371,10 @@ LABEL_41:
   return result;
 }
 
-- (id)_viewForLoweringBaselineLayoutAttribute:(int)a3
+- (id)_viewForLoweringBaselineLayoutAttribute:(int)attribute
 {
   textFieldFlags = self->_textFieldFlags;
-  v4 = *&textFieldFlags >= 0 && (a3 - 11) >= 2;
+  v4 = *&textFieldFlags >= 0 && (attribute - 11) >= 2;
   v5 = 0x80000000;
   if (v4)
   {
@@ -7389,20 +7389,20 @@ LABEL_41:
   return v6;
 }
 
-- (double)_baselineOffsetForLast:(BOOL)a3 autolayoutOnly:(BOOL)a4
+- (double)_baselineOffsetForLast:(BOOL)last autolayoutOnly:(BOOL)only
 {
-  v4 = a3;
-  if (a4 && (*(&self->super.super._viewFlags + 7) & 2) == 0)
+  lastCopy = last;
+  if (only && (*(&self->super.super._viewFlags + 7) & 2) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    v10 = v9;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v10 = currentHandler;
     v11 = @"_firstBaselineOffsetFromTop";
-    if (v4)
+    if (lastCopy)
     {
       v11 = @"_baselineOffsetFromBottom";
     }
 
-    [v9 handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:3235 description:{@"-[UITextField %@] only valid when using auto layout", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:3235 description:{@"-[UITextField %@] only valid when using auto layout", v11}];
   }
 
   p_firstBaselineOffsetFromTop = &self->_firstBaselineOffsetFromTop;
@@ -7411,7 +7411,7 @@ LABEL_41:
     [(UITextField *)self _updateBaselineInformationDependentOnBoundsAllowingInvalidation:0];
   }
 
-  if (v4)
+  if (lastCopy)
   {
     p_firstBaselineOffsetFromTop = &self->_lastBaselineOffsetFromBottom;
   }
@@ -7445,15 +7445,15 @@ LABEL_41:
   return v4;
 }
 
-- (void)_updateBaselineInformationDependentOnBoundsAllowingInvalidation:(BOOL)a3
+- (void)_updateBaselineInformationDependentOnBoundsAllowingInvalidation:(BOOL)invalidation
 {
-  v3 = a3;
-  v6 = [(UIView *)self _wantsAutolayout];
-  v7 = v6;
-  if (v3 && !v6)
+  invalidationCopy = invalidation;
+  _wantsAutolayout = [(UIView *)self _wantsAutolayout];
+  v7 = _wantsAutolayout;
+  if (invalidationCopy && !_wantsAutolayout)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:3289 description:@"invalidation is only applicable to auto layout"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:3289 description:@"invalidation is only applicable to auto layout"];
 
     if (v7)
     {
@@ -7461,7 +7461,7 @@ LABEL_41:
     }
   }
 
-  else if (v6)
+  else if (_wantsAutolayout)
   {
 LABEL_4:
     [(UIView *)self bounds];
@@ -7497,11 +7497,11 @@ LABEL_7:
   }
 
   [(UITextField *)self _layoutContentOnly];
-  v21 = [(UITextField *)self _inputController];
-  v22 = [(UITextField *)self textLayoutController];
-  v23 = [v21 typingAttributes];
+  _inputController = [(UITextField *)self _inputController];
+  textLayoutController = [(UITextField *)self textLayoutController];
+  typingAttributes = [_inputController typingAttributes];
   [(UITextField *)self textContainerOrigin];
-  v24 = [_UITextLayoutControllerBase baselineCalculatorForView:v22 typingAttributes:self usesLineFragmentOrigin:v23 fallbackTextContainerOrigin:0];
+  v24 = [_UITextLayoutControllerBase baselineCalculatorForView:textLayoutController typingAttributes:self usesLineFragmentOrigin:typingAttributes fallbackTextContainerOrigin:0];
 
   [v24 firstBaselineOffsetFromTop];
   v26 = v25;
@@ -7516,22 +7516,22 @@ LABEL_13:
 
   if (!v7)
   {
-    v30 = 0;
+    _layoutEngineCreateIfNecessary = 0;
 LABEL_19:
     self->_firstBaselineOffsetFromTop = v26;
     self->_lastBaselineOffsetFromBottom = v28;
-    if (v3)
+    if (invalidationCopy)
     {
-      v31 = v30;
+      v31 = _layoutEngineCreateIfNecessary;
       [(UIView *)self _invalidateBaselineConstraints];
-      v30 = v31;
+      _layoutEngineCreateIfNecessary = v31;
     }
 
     goto LABEL_21;
   }
 
-  v30 = [(UIView *)self _layoutEngineCreateIfNecessary];
-  if (v30)
+  _layoutEngineCreateIfNecessary = [(UIView *)self _layoutEngineCreateIfNecessary];
+  if (_layoutEngineCreateIfNecessary)
   {
     goto LABEL_19;
   }
@@ -7539,21 +7539,21 @@ LABEL_19:
 LABEL_21:
 }
 
-- (void)setSizingRule:(int64_t)a3
+- (void)setSizingRule:(int64_t)rule
 {
-  if (((*&self->_textFieldFlags >> 38) & 1) != a3)
+  if (((*&self->_textFieldFlags >> 38) & 1) != rule)
   {
     if ((*(&self->super.super._viewFlags + 7) & 2) != 0)
     {
-      v5 = 0;
+      superview = 0;
     }
 
     else
     {
-      v5 = [(UIView *)self superview];
-      if (v5)
+      superview = [(UIView *)self superview];
+      if (superview)
       {
-        v14 = v5;
+        v14 = superview;
         [(UIView *)self bounds];
         v7 = v6;
         v9 = v8;
@@ -7566,30 +7566,30 @@ LABEL_21:
           [v14 setNeedsLayout];
         }
 
-        v5 = v14;
+        superview = v14;
       }
     }
 
-    self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFFBFFFFFFFFFLL | ((a3 == 1) << 38));
+    self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFFBFFFFFFFFFLL | ((rule == 1) << 38));
   }
 }
 
-- (void)_setExtremeSizingEnabled:(BOOL)a3
+- (void)_setExtremeSizingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(UITextField *)self _isExtremeSizingEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(UITextField *)self _isExtremeSizingEnabled]!= enabled)
   {
     if ((*(&self->super.super._viewFlags + 7) & 2) != 0)
     {
-      v5 = 0;
+      superview = 0;
     }
 
     else
     {
-      v5 = [(UIView *)self superview];
-      if (v5)
+      superview = [(UIView *)self superview];
+      if (superview)
       {
-        v11 = v5;
+        v11 = superview;
         [(UIView *)self bounds];
         width = v13.size.width;
         height = v13.size.height;
@@ -7600,12 +7600,12 @@ LABEL_21:
           [v11 setNeedsLayout];
         }
 
-        v5 = v11;
+        superview = v11;
       }
     }
 
     v10 = 0x2000000000;
-    if (!v3)
+    if (!enabledCopy)
     {
       v10 = 0;
     }
@@ -7616,16 +7616,16 @@ LABEL_21:
 
 - (CGRect)_suffixFrame
 {
-  v3 = [(UITextField *)self _isShowingPlaceholder];
+  _isShowingPlaceholder = [(UITextField *)self _isShowingPlaceholder];
   placeholderLabel = self;
-  if (v3)
+  if (_isShowingPlaceholder)
   {
     placeholderLabel = self->_placeholderLabel;
   }
 
-  v5 = [placeholderLabel text];
-  v6 = [(UITextField *)self font];
-  [v5 _legacy_sizeWithFont:v6];
+  text = [placeholderLabel text];
+  font = [(UITextField *)self font];
+  [text _legacy_sizeWithFont:font];
   v8 = v7;
 
   [(UIView *)self bounds];
@@ -7638,9 +7638,9 @@ LABEL_21:
   [(UITextField *)self placeholderRectForBounds:?];
   v22 = v21;
   v45 = v23;
-  v24 = [(UILabel *)self->_suffixLabel text];
-  v25 = [(UILabel *)self->_suffixLabel font];
-  [v24 _legacy_sizeWithFont:v25];
+  text2 = [(UILabel *)self->_suffixLabel text];
+  font2 = [(UILabel *)self->_suffixLabel font];
+  [text2 _legacy_sizeWithFont:font2];
   v27 = v26;
 
   v46.origin.x = v14;
@@ -7664,17 +7664,17 @@ LABEL_21:
     v14 = v32;
   }
 
-  v34 = [(_UICascadingTextStorage *)self->_textStorage _ui_resolvedTextAlignment];
+  _ui_resolvedTextAlignment = [(_UICascadingTextStorage *)self->_textStorage _ui_resolvedTextAlignment];
   v35 = v14;
   v36 = v16;
   v37 = v18;
   v38 = v20;
-  if (v34 == 1)
+  if (_ui_resolvedTextAlignment == 1)
   {
     v39 = v8 * 0.5 + CGRectGetMidX(*&v35) + -1.0;
   }
 
-  else if (v34 == 2)
+  else if (_ui_resolvedTextAlignment == 2)
   {
     v39 = CGRectGetMaxX(*&v35);
   }
@@ -7707,16 +7707,16 @@ LABEL_21:
 
 - (CGRect)_prefixFrame
 {
-  v3 = [(UITextField *)self _isShowingPlaceholder];
+  _isShowingPlaceholder = [(UITextField *)self _isShowingPlaceholder];
   placeholderLabel = self;
-  if (v3)
+  if (_isShowingPlaceholder)
   {
     placeholderLabel = self->_placeholderLabel;
   }
 
-  v5 = [placeholderLabel text];
-  v6 = [(UITextField *)self font];
-  [v5 _legacy_sizeWithFont:v6];
+  text = [placeholderLabel text];
+  font = [(UITextField *)self font];
+  [text _legacy_sizeWithFont:font];
   v8 = v7;
 
   [(UIView *)self bounds];
@@ -7725,9 +7725,9 @@ LABEL_21:
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(UILabel *)self->_prefixLabel text];
-  v22 = [(UILabel *)self->_prefixLabel font];
-  [v21 _legacy_sizeWithFont:v22];
+  text2 = [(UILabel *)self->_prefixLabel text];
+  font2 = [(UILabel *)self->_prefixLabel font];
+  [text2 _legacy_sizeWithFont:font2];
   v24 = v23;
 
   [(UIView *)self bounds];
@@ -7755,19 +7755,19 @@ LABEL_21:
     v14 = v32;
   }
 
-  v34 = [(_UICascadingTextStorage *)self->_textStorage _ui_resolvedTextAlignment];
+  _ui_resolvedTextAlignment = [(_UICascadingTextStorage *)self->_textStorage _ui_resolvedTextAlignment];
   v35 = v14;
   v36 = v16;
   v37 = v18;
   v38 = v20;
-  if (v34 == 1)
+  if (_ui_resolvedTextAlignment == 1)
   {
     v40 = CGRectGetMidX(*&v35) + v8 * -0.5 - v24 + -1.0;
   }
 
   else
   {
-    if (v34 == 2)
+    if (_ui_resolvedTextAlignment == 2)
     {
       v39 = CGRectGetMaxX(*&v35) - v8;
     }
@@ -7801,9 +7801,9 @@ LABEL_21:
   return result;
 }
 
-- (void)floatingContentView:(id)a3 isTransitioningFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)floatingContentView:(id)view isTransitioningFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  [(UITextField *)self _tvUpdateContentBackdropView:a3];
+  [(UITextField *)self _tvUpdateContentBackdropView:view];
   [(UITextField *)self _tvUpdateTextColor];
 
   [(UITextField *)self _layoutContentAndExtras];
@@ -7822,7 +7822,7 @@ LABEL_21:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
       {
         v9 = 138412290;
-        v10 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v7, OS_LOG_TYPE_FAULT, "TextKit1 layout manager requested from field (%@) configured to use TextKit2", &v9, 0xCu);
       }
     }
@@ -7834,39 +7834,39 @@ LABEL_21:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "TextKit1 layout manager requested from field (%@) configured to use TextKit2", &v9, 0xCu);
     }
   }
 
-  v5 = [(_UITextLayoutController *)self->_textLayoutController layoutManager];
+  layoutManager = [(_UITextLayoutController *)self->_textLayoutController layoutManager];
 
-  return v5;
+  return layoutManager;
 }
 
-- (CGRect)adjustedCaretRectForCaretRect:(CGRect)a3
+- (CGRect)adjustedCaretRectForCaretRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(UILabel *)self->_placeholderLabel textAlignment]== NSTextAlignmentCenter && ![(UITextField *)self _hasContent])
   {
-    v8 = [(UILabel *)self->_placeholderLabel text];
-    if (![v8 length])
+    text = [(UILabel *)self->_placeholderLabel text];
+    if (![text length])
     {
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v9 = [(UIView *)self->_placeholderLabel superview];
+    superview = [(UIView *)self->_placeholderLabel superview];
 
-    if (v9)
+    if (superview)
     {
       placeholderLabel = self->_placeholderLabel;
-      v11 = [(UITextField *)self textInputView];
-      [(UIView *)placeholderLabel convertRect:v11 fromView:x, y, width, height];
+      textInputView = [(UITextField *)self textInputView];
+      [(UIView *)placeholderLabel convertRect:textInputView fromView:x, y, width, height];
       v13 = v12;
       v15 = v14;
       v17 = v16;
@@ -7877,19 +7877,19 @@ LABEL_8:
       [(UILabel *)self->_placeholderLabel textRectForBounds:?];
       v23 = v22;
       v24 = round(v19 + (v21 - v22) * 0.5);
-      v25 = [(UILabel *)self->_placeholderLabel text];
-      LODWORD(v11) = [v25 _isNaturallyRTL];
+      text2 = [(UILabel *)self->_placeholderLabel text];
+      LODWORD(textInputView) = [text2 _isNaturallyRTL];
 
       v26 = -v15;
-      if (v11)
+      if (textInputView)
       {
         v26 = v23;
       }
 
       v27 = v26 + v24;
       v28 = self->_placeholderLabel;
-      v8 = [(UITextField *)self textInputView];
-      [(UIView *)v28 convertRect:v8 toView:v27, v13, v15, v17];
+      text = [(UITextField *)self textInputView];
+      [(UIView *)v28 convertRect:text toView:v27, v13, v15, v17];
       x = v29;
       y = v30;
       width = v31;
@@ -7922,8 +7922,8 @@ LABEL_9:
 
 - (CGPoint)_scrollOffset
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  [v2 contentOffset];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor contentOffset];
   v4 = v3;
   v6 = v5;
 
@@ -7954,10 +7954,10 @@ LABEL_9:
   return result;
 }
 
-- (void)_setLeftViewOffset:(CGSize)a3
+- (void)_setLeftViewOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
+  height = offset.height;
+  width = offset.width;
   [(UITextField *)self _leftViewOffset];
   if (v7 != width || v6 != height)
   {
@@ -7999,10 +7999,10 @@ LABEL_9:
   return result;
 }
 
-- (void)_setRightViewOffset:(CGSize)a3
+- (void)_setRightViewOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
+  height = offset.height;
+  width = offset.width;
   [(UITextField *)self _rightViewOffset];
   if (v7 != width || v6 != height)
   {
@@ -8024,11 +8024,11 @@ LABEL_9:
   }
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if ((valueForKey__checkedPlaceholderLabel & 1) == 0 && [v4 isEqualToString:@"_placeholderLabel"])
+  keyCopy = key;
+  v5 = keyCopy;
+  if ((valueForKey__checkedPlaceholderLabel & 1) == 0 && [keyCopy isEqualToString:@"_placeholderLabel"])
   {
     UIKVCAccessProhibited(v5, @"UITextField");
     valueForKey__checkedPlaceholderLabel = 1;
@@ -8041,42 +8041,42 @@ LABEL_9:
   return v6;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(UITextField *)self textInputTraits];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  textInputTraits = [(UITextField *)self textInputTraits];
+  v6 = [textInputTraits valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)takeTraitsFrom:(id)a3
+- (void)takeTraitsFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(UITextField *)self textInputTraits];
-  [v5 takeTraitsFrom:v4];
+  fromCopy = from;
+  textInputTraits = [(UITextField *)self textInputTraits];
+  [textInputTraits takeTraitsFrom:fromCopy];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  if ([objc_opt_class() instancesRespondToSelector:a3])
+  if ([objc_opt_class() instancesRespondToSelector:selector])
   {
-    v5 = [(UITextField *)self textInputTraits];
+    textInputTraits = [(UITextField *)self textInputTraits];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UITextField;
-    v5 = [(UITextField *)&v7 forwardingTargetForSelector:a3];
+    textInputTraits = [(UITextField *)&v7 forwardingTargetForSelector:selector];
   }
 
-  return v5;
+  return textInputTraits;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+  v4 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   v5 = v4;
   if (v4)
   {
@@ -8085,7 +8085,7 @@ LABEL_9:
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -8093,7 +8093,7 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = UITextField;
@@ -8104,27 +8104,27 @@ LABEL_9:
 
   else
   {
-    v5 = [(UITextField *)self textInputTraits];
+    textInputTraits = [(UITextField *)self textInputTraits];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)_increaseContrastSettingChanged:(id)a3
+- (void)_increaseContrastSettingChanged:(id)changed
 {
   [(UITextField *)self _invalidateCachedDefaultClearButtonImages];
 
   [(UITextField *)self setNeedsLayout];
 }
 
-- (void)_setForcesClearButtonHighContrastAppearance:(BOOL)a3
+- (void)_setForcesClearButtonHighContrastAppearance:(BOOL)appearance
 {
-  if (((((*&self->_textFieldFlags & 0x20000000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_textFieldFlags & 0x20000000) == 0) ^ appearance) & 1) == 0)
   {
     v9 = v3;
     v8 = 0x20000000;
-    if (!a3)
+    if (!appearance)
     {
       v8 = 0;
     }
@@ -8136,90 +8136,90 @@ LABEL_9:
   }
 }
 
-- (void)setDevicePasscodeEntry:(BOOL)a3
+- (void)setDevicePasscodeEntry:(BOOL)entry
 {
-  v3 = a3;
-  v5 = [(UITextField *)self textInputTraits];
-  if ([v5 isDevicePasscodeEntry] != v3)
+  entryCopy = entry;
+  textInputTraits = [(UITextField *)self textInputTraits];
+  if ([textInputTraits isDevicePasscodeEntry] != entryCopy)
   {
-    [v5 setDevicePasscodeEntry:v3];
+    [textInputTraits setDevicePasscodeEntry:entryCopy];
     [(UITextField *)self _didChangeSecureTextEntry];
   }
 }
 
-- (void)setSecureTextEntry:(BOOL)a3
+- (void)setSecureTextEntry:(BOOL)entry
 {
-  v3 = a3;
-  v5 = [(UITextField *)self textInputTraits];
-  if ([v5 isSecureTextEntry] != v3)
+  entryCopy = entry;
+  textInputTraits = [(UITextField *)self textInputTraits];
+  if ([textInputTraits isSecureTextEntry] != entryCopy)
   {
-    [v5 setSecureTextEntry:v3];
+    [textInputTraits setSecureTextEntry:entryCopy];
     [(UITextField *)self _didChangeSecureTextEntry];
   }
 }
 
-- (void)setDisplaySecureTextUsingPlainText:(BOOL)a3
+- (void)setDisplaySecureTextUsingPlainText:(BOOL)text
 {
-  v3 = a3;
-  v6 = [(UITextField *)self textInputTraits];
-  if ([v6 displaySecureTextUsingPlainText] != v3)
+  textCopy = text;
+  textInputTraits = [(UITextField *)self textInputTraits];
+  if ([textInputTraits displaySecureTextUsingPlainText] != textCopy)
   {
-    [v6 setDisplaySecureTextUsingPlainText:v3];
+    [textInputTraits setDisplaySecureTextUsingPlainText:textCopy];
     [(_UITextLayoutController *)self->_textLayoutController setDocumentObscured:[(UITextField *)self _shouldObscureInput]];
-    v5 = [(UITextField *)self _fieldEditor];
-    [v5 setDisplaySecureTextUsingPlainText:v3];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor setDisplaySecureTextUsingPlainText:textCopy];
   }
 }
 
-- (void)setDisplaySecureEditsUsingPlainText:(BOOL)a3
+- (void)setDisplaySecureEditsUsingPlainText:(BOOL)text
 {
-  v3 = a3;
-  v6 = [(UITextField *)self textInputTraits];
-  if ([v6 displaySecureEditsUsingPlainText] != v3)
+  textCopy = text;
+  textInputTraits = [(UITextField *)self textInputTraits];
+  if ([textInputTraits displaySecureEditsUsingPlainText] != textCopy)
   {
-    [v6 setDisplaySecureEditsUsingPlainText:v3];
-    v5 = [(UITextField *)self _fieldEditor];
-    [v5 setDisplaySecureEditsUsingPlainText:v3];
+    [textInputTraits setDisplaySecureEditsUsingPlainText:textCopy];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor setDisplaySecureEditsUsingPlainText:textCopy];
   }
 }
 
-- (void)setKeyboardAppearance:(int64_t)a3
+- (void)setKeyboardAppearance:(int64_t)appearance
 {
-  v6 = [(UITextField *)self textInputTraits];
-  v5 = [(UITextField *)self _isPasscodeStyle];
-  if ([v6 keyboardAppearance] != a3)
+  textInputTraits = [(UITextField *)self textInputTraits];
+  _isPasscodeStyle = [(UITextField *)self _isPasscodeStyle];
+  if ([textInputTraits keyboardAppearance] != appearance)
   {
-    [v6 setKeyboardAppearance:a3];
+    [textInputTraits setKeyboardAppearance:appearance];
     [(UITextField *)self _noteThatKeyboardAppearanceHasChanged];
-    [(UITextField *)self _invalidatePasscodeStyleFromStyle:v5];
+    [(UITextField *)self _invalidatePasscodeStyleFromStyle:_isPasscodeStyle];
   }
 }
 
-- (void)setPasswordRules:(id)a3
+- (void)setPasswordRules:(id)rules
 {
-  v7 = a3;
-  v4 = [(UITextField *)self textInputTraits];
-  v5 = [v4 passwordRules];
-  v6 = [v7 isEqual:v5];
+  rulesCopy = rules;
+  textInputTraits = [(UITextField *)self textInputTraits];
+  passwordRules = [textInputTraits passwordRules];
+  v6 = [rulesCopy isEqual:passwordRules];
 
   if ((v6 & 1) == 0)
   {
-    [v4 setPasswordRules:v7];
+    [textInputTraits setPasswordRules:rulesCopy];
   }
 }
 
-- (void)_invalidatePasscodeStyleFromStyle:(BOOL)a3
+- (void)_invalidatePasscodeStyleFromStyle:(BOOL)style
 {
-  v5 = [(UITextField *)self _isPasscodeStyle];
-  if (a3 || !v5)
+  _isPasscodeStyle = [(UITextField *)self _isPasscodeStyle];
+  if (style || !_isPasscodeStyle)
   {
-    if (v5 || !a3)
+    if (_isPasscodeStyle || !style)
     {
       return;
     }
 
-    v13 = [(_UICascadingTextStorage *)self->_textStorage defaultAttributes];
-    v14 = [v13 mutableCopy];
+    defaultAttributes = [(_UICascadingTextStorage *)self->_textStorage defaultAttributes];
+    v14 = [defaultAttributes mutableCopy];
 
     [v14 removeObjectForKey:*off_1E70EC950];
     [(_UICascadingTextStorage *)self->_textStorage setDefaultAttributes:v14];
@@ -8231,10 +8231,10 @@ LABEL_9:
   else
   {
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
     v8 = 16.0;
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v8 = 18.0;
       v9 = &unk_1EFE2EF88;
@@ -8246,8 +8246,8 @@ LABEL_9:
     }
 
     v14 = [off_1E70ECC18 systemFontOfSize:v8];
-    v10 = [(_UICascadingTextStorage *)self->_textStorage defaultAttributes];
-    v11 = [v10 mutableCopy];
+    defaultAttributes2 = [(_UICascadingTextStorage *)self->_textStorage defaultAttributes];
+    v11 = [defaultAttributes2 mutableCopy];
 
     [v11 setObject:v9 forKey:*off_1E70EC950];
     [(_UICascadingTextStorage *)self->_textStorage setDefaultAttributes:v11];
@@ -8261,43 +8261,43 @@ LABEL_9:
   }
 }
 
-- (id)annotatedSubstringForRange:(id)a3
+- (id)annotatedSubstringForRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  v6 = [v5 annotatedSubstringForRange:v4];
+  rangeCopy = range;
+  _inputController = [(UITextField *)self _inputController];
+  v6 = [_inputController annotatedSubstringForRange:rangeCopy];
 
   return v6;
 }
 
-- (void)replaceRange:(id)a3 withAnnotatedString:(id)a4 relativeReplacementRange:(_NSRange)a5
+- (void)replaceRange:(id)range withAnnotatedString:(id)string relativeReplacementRange:(_NSRange)replacementRange
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(UITextField *)self _inputController];
-  [v11 replaceRange:v10 withAnnotatedString:v9 relativeReplacementRange:{location, length}];
+  length = replacementRange.length;
+  location = replacementRange.location;
+  stringCopy = string;
+  rangeCopy = range;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController replaceRange:rangeCopy withAnnotatedString:stringCopy relativeReplacementRange:{location, length}];
 }
 
-- (void)removeAnnotation:(id)a3 forRange:(id)a4
+- (void)removeAnnotation:(id)annotation forRange:(id)range
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITextField *)self _inputController];
-  [v8 removeAnnotation:v7 forRange:v6];
+  rangeCopy = range;
+  annotationCopy = annotation;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController removeAnnotation:annotationCopy forRange:rangeCopy];
 }
 
-- (void)setLinkTextAttributes:(id)a3
+- (void)setLinkTextAttributes:(id)attributes
 {
-  v4 = [a3 copy];
+  v4 = [attributes copy];
   linkTextAttributes = self->_linkTextAttributes;
   self->_linkTextAttributes = v4;
 
-  v6 = [(_UITextLayoutController *)self->_textLayoutController documentRange];
-  if (([v6 isEmpty] & 1) == 0)
+  documentRange = [(_UITextLayoutController *)self->_textLayoutController documentRange];
+  if (([documentRange isEmpty] & 1) == 0)
   {
-    [(_UITextLayoutController *)self->_textLayoutController invalidateLayoutForRange:v6];
+    [(_UITextLayoutController *)self->_textLayoutController invalidateLayoutForRange:documentRange];
     [(_UITextCanvas *)self->_textCanvasView setNeedsDisplay];
   }
 }
@@ -8313,53 +8313,53 @@ LABEL_9:
 
   else
   {
-    v6 = [(UIView *)self tintColor];
-    if (!v6)
+    tintColor = [(UIView *)self tintColor];
+    if (!tintColor)
     {
-      v6 = [(UIView *)self _normalInheritedTintColor];
+      tintColor = [(UIView *)self _normalInheritedTintColor];
       if ([(UIView *)self tintAdjustmentMode]== UIViewTintAdjustmentModeDimmed)
       {
         v10 = 0.0;
         v11 = 0.0;
-        [v6 getWhite:&v11 alpha:&v10];
+        [tintColor getWhite:&v11 alpha:&v10];
         v7 = [UIColor colorWithWhite:v11 alpha:v10 * 0.8];
 
-        v6 = v7;
+        tintColor = v7;
       }
 
-      if (!v6)
+      if (!tintColor)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v9 handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:4461 description:@"Unable to derive tintColor!"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITextField.m" lineNumber:4461 description:@"Unable to derive tintColor!"];
 
-        v6 = 0;
+        tintColor = 0;
       }
     }
 
     v12 = *off_1E70EC920;
-    v13[0] = v6;
+    v13[0] = tintColor;
     v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   }
 
   return v3;
 }
 
-- (void)setAllowsAttachments:(BOOL)a3
+- (void)setAllowsAttachments:(BOOL)attachments
 {
-  if (((((*&self->_textFieldFlags & 0x4000000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_textFieldFlags & 0x4000000) == 0) ^ attachments) & 1) == 0)
   {
-    v3 = a3;
+    attachmentsCopy = attachments;
     v5 = 0x4000000;
-    if (!a3)
+    if (!attachments)
     {
       v5 = 0;
     }
 
     self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFFFFFBFFFFFFLL | v5);
-    v6 = [(UITextField *)self _fieldEditor];
-    [v6 setAllowsAttachments:v3];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor setAllowsAttachments:attachmentsCopy];
 
-    if (!v3)
+    if (!attachmentsCopy)
     {
       textStorage = self->_textStorage;
       v8[0] = MEMORY[0x1E69E9820];
@@ -8390,68 +8390,68 @@ void __36__UITextField_setAllowsAttachments___block_invoke(uint64_t a1, void *a2
 {
   if (*(&self->_textFieldFlags + 1))
   {
-    v3 = [(UITextField *)self _fieldEditor];
-    v2 = [v3 attributedText];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    attributedText = [_fieldEditor attributedText];
   }
 
   else
   {
-    v2 = self->_textStorage;
+    attributedText = self->_textStorage;
   }
 
-  return v2;
+  return attributedText;
 }
 
 - (NSAttributedString)attributedText
 {
   if ((*(&self->_textFieldFlags + 2) & 2) == 0)
   {
-    v3 = [(UITextField *)self text];
-    if (v3)
+    text = [(UITextField *)self text];
+    if (text)
     {
-      v4 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v3];
+      _attributedText = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:text];
       v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v6 = [(UITextField *)self font];
+      font = [(UITextField *)self font];
 
-      if (v6)
+      if (font)
       {
-        v7 = [(UITextField *)self font];
-        [v5 setObject:v7 forKey:*off_1E70EC918];
+        font2 = [(UITextField *)self font];
+        [v5 setObject:font2 forKey:*off_1E70EC918];
       }
 
-      v8 = [(UITextField *)self textColor];
+      textColor = [(UITextField *)self textColor];
 
-      if (v8)
+      if (textColor)
       {
-        v9 = [(UITextField *)self textColor];
-        [v5 setObject:v9 forKey:*off_1E70EC920];
+        textColor2 = [(UITextField *)self textColor];
+        [v5 setObject:textColor2 forKey:*off_1E70EC920];
       }
 
-      [v4 setAttributes:v5 range:{0, objc_msgSend(v4, "length")}];
+      [_attributedText setAttributes:v5 range:{0, objc_msgSend(_attributedText, "length")}];
     }
 
     else
     {
-      v4 = 0;
+      _attributedText = 0;
     }
 
-    if (!v4)
+    if (!_attributedText)
     {
       goto LABEL_12;
     }
 
 LABEL_9:
-    v10 = [v4 mutableCopy];
-    v11 = [v10 mutableString];
-    v12 = [(UITextField *)self textInputTraits];
-    [v11 _removeCharactersFromSet:{objc_msgSend(v12, "textTrimmingSet")}];
+    v10 = [_attributedText mutableCopy];
+    mutableString = [v10 mutableString];
+    textInputTraits = [(UITextField *)self textInputTraits];
+    [mutableString _removeCharactersFromSet:{objc_msgSend(textInputTraits, "textTrimmingSet")}];
 
     v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithAttributedString:v10];
     goto LABEL_13;
   }
 
-  v4 = [(UITextField *)self _attributedText];
-  if (v4)
+  _attributedText = [(UITextField *)self _attributedText];
+  if (_attributedText)
   {
     goto LABEL_9;
   }
@@ -8469,27 +8469,27 @@ LABEL_13:
   v7 = text;
   if ((*&textFieldFlags & 0x800000000) != 0)
   {
-    v5 = [(UITextField *)self _rangeForClearButton];
+    _rangeForClearButton = [(UITextField *)self _rangeForClearButton];
   }
 
   else
   {
-    v5 = [(UITextField *)self _rangeForSetText];
+    _rangeForClearButton = [(UITextField *)self _rangeForSetText];
   }
 
-  [(UITextField *)self _setTextInRange:v5 replacementText:v6, v7];
+  [(UITextField *)self _setTextInRange:_rangeForClearButton replacementText:v6, v7];
 }
 
-- (void)_setTextInRange:(_NSRange)a3 replacementText:(id)a4
+- (void)_setTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   *&self->_textFieldFlags &= ~0x20000uLL;
-  v16 = v7;
-  if (v7)
+  v16 = textCopy;
+  if (textCopy)
   {
-    v8 = [(UITextField *)self _textNeedsSanitizing:v7];
+    v8 = [(UITextField *)self _textNeedsSanitizing:textCopy];
     v9 = v16;
     if (!v8)
     {
@@ -8510,8 +8510,8 @@ LABEL_6:
   if ((*&textFieldFlags & 0x100) != 0)
   {
     self->_textFieldFlags = (*&textFieldFlags | 0x8000);
-    v15 = [(UITextField *)self _fieldEditor];
-    [v15 setTextInRange:location replacementText:{length, v10}];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor setTextInRange:location replacementText:{length, v10}];
 
     self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFFFFFFFF7FFFLL | (((*&textFieldFlags >> 15) & 1) << 15));
   }
@@ -8519,8 +8519,8 @@ LABEL_6:
   else if ([(__CFString *)v10 length]| length)
   {
     v12 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v13 = [(_UICascadingTextStorage *)self->_textStorage defaultAttributes];
-    v14 = [v12 initWithString:v10 attributes:v13];
+    defaultAttributes = [(_UICascadingTextStorage *)self->_textStorage defaultAttributes];
+    v14 = [v12 initWithString:v10 attributes:defaultAttributes];
 
     [(NSConcreteTextStorage *)self->_textStorage replaceCharactersInRange:location withAttributedString:length, v14];
   }
@@ -8528,35 +8528,35 @@ LABEL_6:
   [(UITextField *)self finishedSettingTextOrAttributedText];
 }
 
-- (void)_setAttributedTextOnFieldEditor:(id)a3 setCaretSelectionAfterText:(BOOL)a4
+- (void)_setAttributedTextOnFieldEditor:(id)editor setCaretSelectionAfterText:(BOOL)text
 {
-  v4 = a4;
-  v11 = a3;
+  textCopy = text;
+  editorCopy = editor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v11;
+    v6 = editorCopy;
   }
 
   else
   {
-    v6 = [v11 mutableCopy];
+    v6 = [editorCopy mutableCopy];
   }
 
   v7 = v6;
   *&self->_textFieldFlags |= 0x20000uLL;
-  v8 = [(UITextField *)self _fieldEditor];
-  v9 = [(UITextField *)self _rangeForSetText];
-  [v8 _setAttributedTextInRange:v9 replacementText:v10 andSetCaretSelectionAfterText:{v7, v4}];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  _rangeForSetText = [(UITextField *)self _rangeForSetText];
+  [_fieldEditor _setAttributedTextInRange:_rangeForSetText replacementText:v10 andSetCaretSelectionAfterText:{v7, textCopy}];
 }
 
-- (BOOL)_textNeedsSanitizing:(id)a3
+- (BOOL)_textNeedsSanitizing:(id)sanitizing
 {
-  v4 = a3;
-  v5 = [(UITextField *)self textInputTraits];
-  v6 = [v5 textTrimmingSet];
+  sanitizingCopy = sanitizing;
+  textInputTraits = [(UITextField *)self textInputTraits];
+  textTrimmingSet = [textInputTraits textTrimmingSet];
 
-  if (v6 && [v4 rangeOfCharacterFromSet:v6] != 0x7FFFFFFFFFFFFFFFLL)
+  if (textTrimmingSet && [sanitizingCopy rangeOfCharacterFromSet:textTrimmingSet] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 1;
   }
@@ -8564,51 +8564,51 @@ LABEL_6:
   else
   {
     v7 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"\r\n\uFFFC"];
-    v8 = [v4 rangeOfCharacterFromSet:v7] != 0x7FFFFFFFFFFFFFFFLL;
+    v8 = [sanitizingCopy rangeOfCharacterFromSet:v7] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v8;
 }
 
-- (void)sanitizeAttributedText:(id)a3
+- (void)sanitizeAttributedText:(id)text
 {
-  v5 = a3;
-  v4 = [v5 mutableString];
-  [(UITextField *)self _sanitizeText:v4];
+  textCopy = text;
+  mutableString = [textCopy mutableString];
+  [(UITextField *)self _sanitizeText:mutableString];
 
-  +[_NSAttributedStringIntentResolver resolveAttributedString:inRange:](_UIAttributedStringIntentResolver, "resolveAttributedString:inRange:", v5, 0, [v5 length]);
+  +[_NSAttributedStringIntentResolver resolveAttributedString:inRange:](_UIAttributedStringIntentResolver, "resolveAttributedString:inRange:", textCopy, 0, [textCopy length]);
 }
 
-- (void)_sanitizeText:(id)a3
+- (void)_sanitizeText:(id)text
 {
-  v6 = a3;
-  v4 = [(UITextField *)self textInputTraits];
-  [v6 _removeCharactersFromSet:{objc_msgSend(v4, "textTrimmingSet")}];
+  textCopy = text;
+  textInputTraits = [(UITextField *)self textInputTraits];
+  [textCopy _removeCharactersFromSet:{objc_msgSend(textInputTraits, "textTrimmingSet")}];
 
   if (![(UITextField *)self allowsAttachments])
   {
     v5 = [MEMORY[0x1E696AEC0] _stringWithUnichar:65532];
-    [v6 replaceOccurrencesOfString:v5 withString:&stru_1EFB14550 options:2 range:{0, objc_msgSend(v6, "length")}];
+    [textCopy replaceOccurrencesOfString:v5 withString:&stru_1EFB14550 options:2 range:{0, objc_msgSend(textCopy, "length")}];
   }
 
-  [v6 replaceOccurrencesOfString:@"\r\n" withString:@"\n" options:2 range:{0, objc_msgSend(v6, "length")}];
-  [v6 replaceOccurrencesOfString:@"\r" withString:@"\n" options:2 range:{0, objc_msgSend(v6, "length")}];
-  [v6 replaceOccurrencesOfString:@"\n" withString:@" " options:2 range:{0, objc_msgSend(v6, "length")}];
+  [textCopy replaceOccurrencesOfString:@"\r\n" withString:@"\n" options:2 range:{0, objc_msgSend(textCopy, "length")}];
+  [textCopy replaceOccurrencesOfString:@"\r" withString:@"\n" options:2 range:{0, objc_msgSend(textCopy, "length")}];
+  [textCopy replaceOccurrencesOfString:@"\n" withString:@" " options:2 range:{0, objc_msgSend(textCopy, "length")}];
 }
 
-- (void)_scrollRangeToVisible:(_NSRange)a3 animated:(BOOL)a4
+- (void)_scrollRangeToVisible:(_NSRange)visible animated:(BOOL)animated
 {
   if (*(&self->_textFieldFlags + 1))
   {
-    [(UIFieldEditor *)self->_fieldEditor _scrollRangeToVisible:a3.location animated:a3.length, a4];
+    [(UIFieldEditor *)self->_fieldEditor _scrollRangeToVisible:visible.location animated:visible.length, animated];
   }
 }
 
-- (void)_setAttributedText:(id)a3 setCaretSelectionAfterText:(BOOL)a4
+- (void)_setAttributedText:(id)text setCaretSelectionAfterText:(BOOL)afterText
 {
-  v4 = a4;
+  afterTextCopy = afterText;
   *&self->_textFieldFlags |= 0x20000uLL;
-  v6 = [a3 mutableCopy];
+  v6 = [text mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -8622,18 +8622,18 @@ LABEL_6:
 
   v13 = v8;
 
-  v9 = [v13 mutableString];
+  mutableString = [v13 mutableString];
   [(UITextField *)self sanitizeAttributedText:v13];
   if (*(&self->_textFieldFlags + 1))
   {
-    [(UITextField *)self _setAttributedTextOnFieldEditor:v13 setCaretSelectionAfterText:v4];
+    [(UITextField *)self _setAttributedTextOnFieldEditor:v13 setCaretSelectionAfterText:afterTextCopy];
   }
 
   else
   {
     v10 = self->_textStorage;
-    v11 = [(UITextField *)self _rangeForSetText];
-    [(NSConcreteTextStorage *)v10 replaceCharactersInRange:v11 withAttributedString:v12, v13];
+    _rangeForSetText = [(UITextField *)self _rangeForSetText];
+    [(NSConcreteTextStorage *)v10 replaceCharactersInRange:_rangeForSetText withAttributedString:v12, v13];
     [(_UICascadingTextStorage *)v10 _restoreOriginalFontAttribute];
     [(_UICascadingTextStorage *)v10 setLineBreakMode:[(UITextField *)self nonEditingLinebreakMode]];
   }
@@ -8641,51 +8641,51 @@ LABEL_6:
   [(UITextField *)self finishedSettingTextOrAttributedText];
 }
 
-- (void)_syncTypingAttributesWithDefaultAttribute:(id)a3
+- (void)_syncTypingAttributesWithDefaultAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = v4;
+  attributeCopy = attribute;
+  v5 = attributeCopy;
   if (*(&self->_textFieldFlags + 1))
   {
-    v15 = v4;
-    if (![v4 isEqualToString:*off_1E70EC918] || (v6 = -[UITextField _tvHasFloatingFieldEditor](self, "_tvHasFloatingFieldEditor"), v5 = v15, !v6))
+    v15 = attributeCopy;
+    if (![attributeCopy isEqualToString:*off_1E70EC918] || (v6 = -[UITextField _tvHasFloatingFieldEditor](self, "_tvHasFloatingFieldEditor"), v5 = v15, !v6))
     {
-      v7 = [(UITextField *)self _fieldEditor];
-      v8 = [v7 _textStorage];
-      v9 = [v8 defaultAttributes];
+      _fieldEditor = [(UITextField *)self _fieldEditor];
+      _textStorage = [_fieldEditor _textStorage];
+      defaultAttributes = [_textStorage defaultAttributes];
 
-      v10 = [(UITextField *)self _inputController];
-      v11 = [v9 objectForKey:v15];
-      [v10 _addToTypingAttributes:v15 value:v11];
+      _inputController = [(UITextField *)self _inputController];
+      v11 = [defaultAttributes objectForKey:v15];
+      [_inputController _addToTypingAttributes:v15 value:v11];
 
-      v12 = [v7 _textContainer];
-      v13 = [(UITextField *)self _inputController];
-      v14 = [v13 typingAttributes];
-      [v12 setAttributesForExtraLineFragment:v14];
+      _textContainer = [_fieldEditor _textContainer];
+      _inputController2 = [(UITextField *)self _inputController];
+      typingAttributes = [_inputController2 typingAttributes];
+      [_textContainer setAttributesForExtraLineFragment:typingAttributes];
 
       v5 = v15;
     }
   }
 }
 
-- (void)_setTextColor:(id)a3
+- (void)_setTextColor:(id)color
 {
-  [(_UICascadingTextStorage *)self->_textStorage setTextColor:a3];
+  [(_UICascadingTextStorage *)self->_textStorage setTextColor:color];
 
   [(UITextField *)self _updateLabelAppearance];
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  [(_UICascadingTextStorage *)self->_textStorage setShadowColor:a3];
+  [(_UICascadingTextStorage *)self->_textStorage setShadowColor:color];
   v4 = *off_1E70EC9B0;
 
   [(UITextField *)self _syncTypingAttributesWithDefaultAttribute:v4];
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  [(_UICascadingTextStorage *)self->_textStorage setShadowOffset:a3.width, a3.height];
+  [(_UICascadingTextStorage *)self->_textStorage setShadowOffset:offset.width, offset.height];
   v4 = *off_1E70EC9B0;
 
   [(UITextField *)self _syncTypingAttributesWithDefaultAttribute:v4];
@@ -8699,9 +8699,9 @@ LABEL_6:
   return result;
 }
 
-- (void)setShadowBlur:(double)a3
+- (void)setShadowBlur:(double)blur
 {
-  [(_UICascadingTextStorage *)self->_textStorage setShadowBlur:a3];
+  [(_UICascadingTextStorage *)self->_textStorage setShadowBlur:blur];
   v4 = *off_1E70EC9B0;
 
   [(UITextField *)self _syncTypingAttributesWithDefaultAttribute:v4];
@@ -8722,25 +8722,25 @@ LABEL_6:
     [(UITextInputTraits *)self->_traits setTextSelectionBehavior:[(UITextField *)self textSelectionBehavior]];
     if ([(UITextField *)self isEditing])
     {
-      v6 = [(UITextField *)self interactionAssistant];
-      v7 = v6;
+      interactionAssistant = [(UITextField *)self interactionAssistant];
+      v7 = interactionAssistant;
       if (v3)
       {
-        [v6 deactivateSelection];
+        [interactionAssistant deactivateSelection];
 
-        v8 = [(UITextField *)self _text];
-        -[UITextField setSelectionRange:](self, "setSelectionRange:", 0, [v8 length]);
+        _text = [(UITextField *)self _text];
+        -[UITextField setSelectionRange:](self, "setSelectionRange:", 0, [_text length]);
       }
 
       else
       {
-        [v6 activateSelection];
+        [interactionAssistant activateSelection];
 
-        v9 = [(UITextField *)self interactionAssistant];
-        [v9 setSelectionDisplayVisible:1];
+        interactionAssistant2 = [(UITextField *)self interactionAssistant];
+        [interactionAssistant2 setSelectionDisplayVisible:1];
 
-        v8 = [(UITextField *)self _fieldEditor];
-        [v8 setTextSelectionBehavior:{-[UITextInputTraits textSelectionBehavior](self->_traits, "textSelectionBehavior")}];
+        _text = [(UITextField *)self _fieldEditor];
+        [_text setTextSelectionBehavior:{-[UITextInputTraits textSelectionBehavior](self->_traits, "textSelectionBehavior")}];
       }
 
       [(UITextField *)self _updateSelectionGestures];
@@ -8748,47 +8748,47 @@ LABEL_6:
   }
 }
 
-- (void)setClearingBehavior:(int64_t)a3
+- (void)setClearingBehavior:(int64_t)behavior
 {
   textFieldFlags = self->_textFieldFlags;
-  if (((*&textFieldFlags >> 18) & 3) == a3)
+  if (((*&textFieldFlags >> 18) & 3) == behavior)
   {
     return;
   }
 
-  self->_textFieldFlags = (*&textFieldFlags & 0xFFFFFFFFFFF3FFFFLL | ((a3 & 3) << 18));
+  self->_textFieldFlags = (*&textFieldFlags & 0xFFFFFFFFFFF3FFFFLL | ((behavior & 3) << 18));
   [(UITextInputTraits *)self->_traits setTextSelectionBehavior:[(UITextField *)self textSelectionBehavior]];
   if (![(UITextField *)self isEditing])
   {
     return;
   }
 
-  switch(a3)
+  switch(behavior)
   {
     case 0:
-      v8 = [(UITextField *)self interactionAssistant];
-      [v8 activateSelection];
+      interactionAssistant = [(UITextField *)self interactionAssistant];
+      [interactionAssistant activateSelection];
 
-      v9 = [(UITextField *)self interactionAssistant];
-      [v9 setSelectionDisplayVisible:1];
+      interactionAssistant2 = [(UITextField *)self interactionAssistant];
+      [interactionAssistant2 setSelectionDisplayVisible:1];
 
-      v10 = [(UITextField *)self interactionAssistant];
-      [v10 setSelectionHighlightMode:0];
+      interactionAssistant3 = [(UITextField *)self interactionAssistant];
+      [interactionAssistant3 setSelectionHighlightMode:0];
 
-      v7 = [(UITextField *)self _fieldEditor];
-      [v7 setTextSelectionBehavior:{-[UITextInputTraits textSelectionBehavior](self->_traits, "textSelectionBehavior")}];
+      _fieldEditor = [(UITextField *)self _fieldEditor];
+      [_fieldEditor setTextSelectionBehavior:{-[UITextInputTraits textSelectionBehavior](self->_traits, "textSelectionBehavior")}];
       goto LABEL_11;
     case 3:
-      v6 = [(UITextField *)self interactionAssistant];
-      [v6 setSelectionHighlightMode:1];
+      interactionAssistant4 = [(UITextField *)self interactionAssistant];
+      [interactionAssistant4 setSelectionHighlightMode:1];
       goto LABEL_9;
     case 2:
-      v6 = [(UITextField *)self interactionAssistant];
-      [v6 deactivateSelection];
+      interactionAssistant4 = [(UITextField *)self interactionAssistant];
+      [interactionAssistant4 deactivateSelection];
 LABEL_9:
 
-      v7 = [(UITextField *)self _text];
-      -[UITextField setSelectionRange:](self, "setSelectionRange:", 0, [v7 length]);
+      _fieldEditor = [(UITextField *)self _text];
+      -[UITextField setSelectionRange:](self, "setSelectionRange:", 0, [_fieldEditor length]);
 LABEL_11:
 
       break;
@@ -8801,11 +8801,11 @@ LABEL_11:
 {
   v10 = font;
   v4 = self->_textStorage;
-  v5 = [(_UICascadingTextStorage *)v4 font];
-  if (v5 != v10)
+  font = [(_UICascadingTextStorage *)v4 font];
+  if (font != v10)
   {
-    v6 = [(_UICascadingTextStorage *)v4 font];
-    v7 = [v6 isEqual:v10];
+    font2 = [(_UICascadingTextStorage *)v4 font];
+    v7 = [font2 isEqual:v10];
 
     if (v7)
     {
@@ -8815,33 +8815,33 @@ LABEL_11:
     if (v10)
     {
       [(UIFont *)v10 pointSize];
-      v5 = [_UIFullFontSize valued:?];
-      v8 = self;
+      font = [_UIFullFontSize valued:?];
+      selfCopy2 = self;
       v9 = v10;
     }
 
     else
     {
-      v5 = +[_UIFullFontSize defaultValue];
-      v8 = self;
+      font = +[_UIFullFontSize defaultValue];
+      selfCopy2 = self;
       v9 = 0;
     }
 
-    [(UITextField *)v8 setFont:v9 fullFontSize:v5];
+    [(UITextField *)selfCopy2 setFont:v9 fullFontSize:font];
   }
 
 LABEL_8:
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
   v4.receiver = self;
   v4.super_class = UITextField;
-  [(UIView *)&v4 setClipsToBounds:a3];
+  [(UIView *)&v4 setClipsToBounds:bounds];
   [(UIScrollView *)self->_fieldEditor setNeedsLayout];
 }
 
-- (id)defaultClearButtonImageForState:(unint64_t)a3
+- (id)defaultClearButtonImageForState:(unint64_t)state
 {
   cachedDefaultClearButtonImages = self->_cachedDefaultClearButtonImages;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -8849,20 +8849,20 @@ LABEL_8:
 
   if (!v7)
   {
-    v7 = [(UITextField *)self _clearButtonImageForState:a3];
+    v7 = [(UITextField *)self _clearButtonImageForState:state];
     if (v7)
     {
       v8 = self->_cachedDefaultClearButtonImages;
       if (!v8)
       {
-        v9 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v10 = self->_cachedDefaultClearButtonImages;
-        self->_cachedDefaultClearButtonImages = v9;
+        self->_cachedDefaultClearButtonImages = dictionary;
 
         v8 = self->_cachedDefaultClearButtonImages;
       }
 
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
       [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v11];
     }
   }
@@ -8870,32 +8870,32 @@ LABEL_8:
   return v7;
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(UITextField *)self _adjustFontForAccessibilityTraits:0];
   }
 }
 
-- (void)_adjustFontForAccessibilityTraits:(BOOL)a3
+- (void)_adjustFontForAccessibilityTraits:(BOOL)traits
 {
-  if (self->_adjustsFontForContentSizeCategory || a3)
+  if (self->_adjustsFontForContentSizeCategory || traits)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = [(UITextField *)self font];
-    v6 = [v5 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v4];
+    traitCollection = [(UIView *)self traitCollection];
+    font = [(UITextField *)self font];
+    v6 = [font _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
 
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
-    v7 = [(UITextField *)self font];
+    font2 = [(UITextField *)self font];
     v8 = 0;
-    if (v7 && v6)
+    if (font2 && v6)
     {
-      v9 = [(UITextField *)self font];
-      v8 = [v9 isEqual:v6] ^ 1;
+      font3 = [(UITextField *)self font];
+      v8 = [font3 isEqual:v6] ^ 1;
     }
 
     v22 = v8;
@@ -8911,7 +8911,7 @@ LABEL_8:
     v14 = 3221225472;
     v15 = __49__UITextField__adjustFontForAccessibilityTraits___block_invoke;
     v16 = &unk_1E7126390;
-    v12 = v4;
+    v12 = traitCollection;
     v17 = v12;
     v18 = &v19;
     [(_UICascadingTextStorage *)v11 coordinateEditing:&v13];
@@ -8988,8 +8988,8 @@ void __49__UITextField__adjustFontForAccessibilityTraits___block_invoke_2(uint64
     [(UILabel *)self->_placeholderLabel setTextAlignment:textAlignment];
     [(_UICascadingTextStorage *)v7 setTextAlignment:textAlignment];
     [(UITextField *)self _syncTypingAttributesWithDefaultAttribute:*off_1E70EC988];
-    v6 = [(UITextField *)self _inputController];
-    [v6 _selectionGeometryChanged];
+    _inputController = [(UITextField *)self _inputController];
+    [_inputController _selectionGeometryChanged];
   }
 }
 
@@ -8998,8 +8998,8 @@ void __49__UITextField__adjustFontForAccessibilityTraits___block_invoke_2(uint64
   v5 = self->_textStorage;
   v6 = defaultTextAttributes;
   [(_UICascadingTextStorage *)v5 setDefaultAttributes:0];
-  v7 = [(_UICascadingTextStorage *)v5 defaultAttributes];
-  v8 = [v7 mutableCopy];
+  defaultAttributes = [(_UICascadingTextStorage *)v5 defaultAttributes];
+  v8 = [defaultAttributes mutableCopy];
 
   [v8 addEntriesFromDictionary:v6];
   v9 = [v8 objectForKey:*off_1E70EC918];
@@ -9020,8 +9020,8 @@ void __49__UITextField__adjustFontForAccessibilityTraits___block_invoke_2(uint64
     v13[3] = &unk_1E70F7970;
     v13[4] = self;
     [v8 enumerateKeysAndObjectsUsingBlock:v13];
-    v12 = [(UITextField *)self _inputController];
-    [v12 _selectionGeometryChanged];
+    _inputController = [(UITextField *)self _inputController];
+    [_inputController _selectionGeometryChanged];
   }
 
   [(UITextField *)self setNeedsLayout];
@@ -9036,10 +9036,10 @@ void __40__UITextField_setDefaultTextAttributes___block_invoke(uint64_t a1, void
   [v7 _addToTypingAttributes:v6 value:v5];
 }
 
-- (void)_setShouldUpdatePlaceholderTextAlignmentWhenOverridden:(BOOL)a3
+- (void)_setShouldUpdatePlaceholderTextAlignmentWhenOverridden:(BOOL)overridden
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!overridden)
   {
     v3 = 0;
   }
@@ -9047,23 +9047,23 @@ void __40__UITextField_setDefaultTextAttributes___block_invoke(uint64_t a1, void
   self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFEFFFFFFFFFFFLL | v3);
 }
 
-- (void)setContentVerticalAlignment:(int64_t)a3
+- (void)setContentVerticalAlignment:(int64_t)alignment
 {
-  if ([(UIControl *)self contentVerticalAlignment]!= a3)
+  if ([(UIControl *)self contentVerticalAlignment]!= alignment)
   {
     v5.receiver = self;
     v5.super_class = UITextField;
-    [(UIControl *)&v5 setContentVerticalAlignment:a3];
+    [(UIControl *)&v5 setContentVerticalAlignment:alignment];
     [(UITextField *)self _setNeedsStyleRecalc];
     [(UIView *)self _invalidateBaselineConstraints];
   }
 }
 
-- (void)setControlSize:(int)a3
+- (void)setControlSize:(int)size
 {
-  if (self->_controlSize != a3)
+  if (self->_controlSize != size)
   {
-    self->_controlSize = a3;
+    self->_controlSize = size;
     [(UITextField *)self _invalidateBackgroundProvider];
     [(UITextField *)self _invalidateDefaultFont];
     backgroundProvider = self->_backgroundProvider;
@@ -9084,10 +9084,10 @@ void __40__UITextField_setDefaultTextAttributes___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_invalidateBackgroundProviderForced:(BOOL)a3
+- (void)_invalidateBackgroundProviderForced:(BOOL)forced
 {
-  v5 = [(UITextField *)self _preferredBackgroundProviderClass];
-  if (a3 || ([(UITextField *)self _backgroundProvider], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_class(), v6, v5 != v7))
+  _preferredBackgroundProviderClass = [(UITextField *)self _preferredBackgroundProviderClass];
+  if (forced || ([(UITextField *)self _backgroundProvider], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_class(), v6, _preferredBackgroundProviderClass != v7))
   {
     v8 = objc_opt_new();
     if (v8)
@@ -9105,11 +9105,11 @@ void __40__UITextField_setDefaultTextAttributes___block_invoke(uint64_t a1, void
   [(UITextField *)self _invalidateMetricsProvider];
 }
 
-- (void)_setBackgroundProvider:(id)a3
+- (void)_setBackgroundProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   backgroundProvider = self->_backgroundProvider;
-  v6 = v4;
+  v6 = providerCopy;
   v7 = backgroundProvider;
   v8 = v7;
   if (v7 == v6)
@@ -9136,7 +9136,7 @@ void __40__UITextField_setDefaultTextAttributes___block_invoke(uint64_t a1, void
     v16 = 3221225472;
     v17 = __38__UITextField__setBackgroundProvider___block_invoke;
     v18 = &unk_1E70F35B8;
-    v19 = self;
+    selfCopy = self;
     v20 = v6;
     v10 = _Block_copy(&v15);
     if ([UIView _isInAnimationBlockWithAnimationsEnabled:v15])
@@ -9198,29 +9198,29 @@ void __38__UITextField__setBackgroundProvider___block_invoke(uint64_t a1)
   [*(a1 + 32) _backgroundProviderDidChange];
 }
 
-- (void)_backgroundProviderClassOrImageBackgroundProviderClass:(void *)a1
+- (void)_backgroundProviderClassOrImageBackgroundProviderClass:(void *)class
 {
-  if (a1)
+  if (class)
   {
     v3 = a2;
-    if (a1[59] && ([a2 isSubclassOfClass:objc_opt_class()] & 1) == 0)
+    if (class[59] && ([a2 isSubclassOfClass:objc_opt_class()] & 1) == 0)
     {
       v3 = objc_opt_class();
     }
 
-    a1 = v3;
+    class = v3;
     v2 = vars8;
   }
 
-  return a1;
+  return class;
 }
 
-- (void)_setMetricsProvider:(id)a3
+- (void)_setMetricsProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   backgroundProvider = self->_backgroundProvider;
   metricsProvider = self->_metricsProvider;
-  v10 = v5;
+  v10 = providerCopy;
   v8 = metricsProvider;
   if (v8 == v10)
   {
@@ -9238,7 +9238,7 @@ void __38__UITextField__setBackgroundProvider___block_invoke(uint64_t a1)
     }
 
 LABEL_7:
-    if (backgroundProvider != v5)
+    if (backgroundProvider != providerCopy)
     {
       goto LABEL_12;
     }
@@ -9248,7 +9248,7 @@ LABEL_7:
 
 LABEL_10:
   [(UITextField *)self _metricsProviderWillChange:v10];
-  objc_storeStrong(&self->_metricsProvider, a3);
+  objc_storeStrong(&self->_metricsProvider, provider);
   [(UITextField *)self _metricsProviderDidChange];
 LABEL_11:
   [(UITextField *)self _setNeedsStyleRecalc];
@@ -9257,32 +9257,32 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)createPlaceholderLabelWithFont:(id)a3 andTextAlignment:(int64_t)a4
+- (id)createPlaceholderLabelWithFont:(id)font andTextAlignment:(int64_t)alignment
 {
-  v5 = objc_alloc([(UITextField *)self _placeholderLabelClass:a3]);
+  v5 = objc_alloc([(UITextField *)self _placeholderLabelClass:font]);
   v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v7 = [(UITextField *)self _placeholderColor];
-  [v6 setTextColor:v7];
+  _placeholderColor = [(UITextField *)self _placeholderColor];
+  [v6 setTextColor:_placeholderColor];
 
   [v6 setOpaque:0];
   [v6 setBackgroundColor:0];
-  v8 = [(_UICascadingTextStorage *)self->_textStorage font];
-  [v6 setFont:v8];
+  font = [(_UICascadingTextStorage *)self->_textStorage font];
+  [v6 setFont:font];
 
   [v6 setTextAlignment:{-[_UICascadingTextStorage textAlignment](self->_textStorage, "textAlignment")}];
   [v6 _setOverrideUserInterfaceRenderingMode:{-[UITextField _preferredRenderingModeForPlaceholder](self, "_preferredRenderingModeForPlaceholder")}];
-  v9 = [(UITextField *)self _cuiCatalog];
-  [v6 _setCuiCatalog:v9];
+  _cuiCatalog = [(UITextField *)self _cuiCatalog];
+  [v6 _setCuiCatalog:_cuiCatalog];
 
-  v10 = [(UITextField *)self _cuiStyleEffectConfiguration];
-  [v6 _setCuiStyleEffectConfiguration:v10];
+  _cuiStyleEffectConfiguration = [(UITextField *)self _cuiStyleEffectConfiguration];
+  [v6 _setCuiStyleEffectConfiguration:_cuiStyleEffectConfiguration];
 
   return v6;
 }
 
-- (id)createTextLabelWithTextColor:(id)a3
+- (id)createTextLabelWithTextColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = [UITextFieldLabel alloc];
   v5 = [(UILabel *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [off_1E70ECC18 defaultFontSize];
@@ -9292,22 +9292,22 @@ LABEL_12:
   [(UIView *)v5 setOpaque:0];
   [(UIView *)v5 setBackgroundColor:0];
   [(UIView *)v5 setContentMode:3];
-  if (v3)
+  if (colorCopy)
   {
-    [(UILabel *)v5 setTextColor:v3];
+    [(UILabel *)v5 setTextColor:colorCopy];
   }
 
   return v5;
 }
 
-- (void)setPlaceholders:(id)a3
+- (void)setPlaceholders:(id)placeholders
 {
-  v4 = [a3 copy];
+  v4 = [placeholders copy];
   placeholders = self->_placeholders;
   self->_placeholders = v4;
 
-  v6 = [(NSArray *)self->_placeholders firstObject];
-  [(UITextField *)self setPlaceholder:v6];
+  firstObject = [(NSArray *)self->_placeholders firstObject];
+  [(UITextField *)self setPlaceholder:firstObject];
 }
 
 - (void)setPlaceholder:(NSString *)placeholder
@@ -9341,22 +9341,22 @@ LABEL_12:
   }
 }
 
-- (void)_setPlaceholder:(id)a3
+- (void)_setPlaceholder:(id)placeholder
 {
-  v8 = a3;
-  if ([v8 length])
+  placeholderCopy = placeholder;
+  if ([placeholderCopy length])
   {
     [(UITextField *)self createPlaceholderIfNecessary];
   }
 
-  if ([v8 length] || (-[UILabel text](self->_placeholderLabel, "text"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v5))
+  if ([placeholderCopy length] || (-[UILabel text](self->_placeholderLabel, "text"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v5))
   {
-    v6 = [(UILabel *)self->_placeholderLabel text];
-    v7 = [v8 isEqualToString:v6];
+    text = [(UILabel *)self->_placeholderLabel text];
+    v7 = [placeholderCopy isEqualToString:text];
 
     if ((v7 & 1) == 0)
     {
-      [(UILabel *)self->_placeholderLabel setText:v8];
+      [(UILabel *)self->_placeholderLabel setText:placeholderCopy];
       [(UITextField *)self finishedSettingPlaceholder];
     }
   }
@@ -9374,14 +9374,14 @@ LABEL_12:
   return placeholders;
 }
 
-- (void)setAttributedPlaceholders:(id)a3
+- (void)setAttributedPlaceholders:(id)placeholders
 {
-  v4 = [a3 copy];
+  v4 = [placeholders copy];
   attributedPlaceholders = self->_attributedPlaceholders;
   self->_attributedPlaceholders = v4;
 
-  v6 = [(NSArray *)self->_attributedPlaceholders firstObject];
-  [(UITextField *)self setAttributedPlaceholder:v6];
+  firstObject = [(NSArray *)self->_attributedPlaceholders firstObject];
+  [(UITextField *)self setAttributedPlaceholder:firstObject];
 }
 
 - (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder
@@ -9399,22 +9399,22 @@ LABEL_12:
   }
 }
 
-- (void)_setAttributedPlaceholder:(id)a3
+- (void)_setAttributedPlaceholder:(id)placeholder
 {
-  v8 = a3;
-  if ([v8 length])
+  placeholderCopy = placeholder;
+  if ([placeholderCopy length])
   {
     [(UITextField *)self createPlaceholderIfNecessary];
   }
 
-  if ([v8 length] || (-[UILabel attributedText](self->_placeholderLabel, "attributedText"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v5))
+  if ([placeholderCopy length] || (-[UILabel attributedText](self->_placeholderLabel, "attributedText"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v5))
   {
-    v6 = [(UILabel *)self->_placeholderLabel attributedText];
-    v7 = [v8 isEqualToAttributedString:v6];
+    attributedText = [(UILabel *)self->_placeholderLabel attributedText];
+    v7 = [placeholderCopy isEqualToAttributedString:attributedText];
 
     if ((v7 & 1) == 0)
     {
-      [(UILabel *)self->_placeholderLabel setAttributedText:v8];
+      [(UILabel *)self->_placeholderLabel setAttributedText:placeholderCopy];
       [(UITextField *)self finishedSettingPlaceholder];
     }
   }
@@ -9437,21 +9437,21 @@ LABEL_12:
   overriddenPlaceholder = self->_overriddenPlaceholder;
   if (overriddenPlaceholder)
   {
-    v3 = overriddenPlaceholder;
+    attributedText = overriddenPlaceholder;
   }
 
   else
   {
-    v3 = [(UILabel *)self->_placeholderLabel attributedText];
+    attributedText = [(UILabel *)self->_placeholderLabel attributedText];
   }
 
-  return v3;
+  return attributedText;
 }
 
-- (void)_setSuffix:(id)a3 withColor:(id)a4
+- (void)_setSuffix:(id)suffix withColor:(id)color
 {
-  v15 = a3;
-  v6 = a4;
+  suffixCopy = suffix;
+  colorCopy = color;
   suffixLabel = self->_suffixLabel;
   if (suffixLabel)
   {
@@ -9462,10 +9462,10 @@ LABEL_12:
     [(UITextField *)self setNeedsLayout];
   }
 
-  if ([v15 length])
+  if ([suffixCopy length])
   {
-    v9 = v6;
-    if (!v6)
+    v9 = colorCopy;
+    if (!colorCopy)
     {
       v9 = +[UIColor placeholderTextColor];
     }
@@ -9474,31 +9474,31 @@ LABEL_12:
     v11 = self->_suffixLabel;
     self->_suffixLabel = v10;
 
-    if (!v6)
+    if (!colorCopy)
     {
     }
 
-    [(UILabel *)self->_suffixLabel setText:v15];
-    v12 = [(UITextField *)self font];
-    [(UILabel *)self->_suffixLabel setFont:v12];
+    [(UILabel *)self->_suffixLabel setText:suffixCopy];
+    font = [(UITextField *)self font];
+    [(UILabel *)self->_suffixLabel setFont:font];
 
     [(UILabel *)self->_suffixLabel setTextAlignment:[(UITextField *)self _suffixLabelTextAlignment]];
-    v13 = [(UITextField *)self _cuiCatalog];
-    [(UILabel *)self->_suffixLabel _setCuiCatalog:v13];
+    _cuiCatalog = [(UITextField *)self _cuiCatalog];
+    [(UILabel *)self->_suffixLabel _setCuiCatalog:_cuiCatalog];
 
-    v14 = [(UITextField *)self _cuiStyleEffectConfiguration];
-    [(UILabel *)self->_suffixLabel _setCuiStyleEffectConfiguration:v14];
+    _cuiStyleEffectConfiguration = [(UITextField *)self _cuiStyleEffectConfiguration];
+    [(UILabel *)self->_suffixLabel _setCuiStyleEffectConfiguration:_cuiStyleEffectConfiguration];
 
     [(UITextField *)self setNeedsLayout];
   }
 }
 
-- (void)_updateSuffix:(id)a3
+- (void)_updateSuffix:(id)suffix
 {
   suffixLabel = self->_suffixLabel;
   if (suffixLabel)
   {
-    [(UILabel *)suffixLabel setText:a3];
+    [(UILabel *)suffixLabel setText:suffix];
 
     [(UITextField *)self setNeedsLayout];
   }
@@ -9506,33 +9506,33 @@ LABEL_12:
   else
   {
 
-    [(UITextField *)self _setSuffix:a3 withColor:0];
+    [(UITextField *)self _setSuffix:suffix withColor:0];
   }
 }
 
-- (void)_setPrefix:(id)a3
+- (void)_setPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   prefixLabel = self->_prefixLabel;
-  v15 = v4;
+  v15 = prefixCopy;
   if (prefixLabel)
   {
     [(UIView *)prefixLabel removeFromSuperview];
     v6 = self->_prefixLabel;
     self->_prefixLabel = 0;
 
-    v4 = v15;
+    prefixCopy = v15;
   }
 
-  if ([v4 length])
+  if ([prefixCopy length])
   {
     v7 = +[UIColor placeholderTextColor];
     placeholderLabel = self->_placeholderLabel;
     if (placeholderLabel)
     {
-      v9 = [(UILabel *)placeholderLabel textColor];
+      textColor = [(UILabel *)placeholderLabel textColor];
 
-      v7 = v9;
+      v7 = textColor;
     }
 
     v10 = [(UITextField *)self createTextLabelWithTextColor:v7];
@@ -9540,23 +9540,23 @@ LABEL_12:
     self->_prefixLabel = v10;
 
     [(UILabel *)self->_prefixLabel setText:v15];
-    v12 = [(UITextField *)self font];
-    [(UILabel *)self->_prefixLabel setFont:v12];
+    font = [(UITextField *)self font];
+    [(UILabel *)self->_prefixLabel setFont:font];
 
-    v13 = [(UITextField *)self _cuiCatalog];
-    [(UILabel *)self->_prefixLabel _setCuiCatalog:v13];
+    _cuiCatalog = [(UITextField *)self _cuiCatalog];
+    [(UILabel *)self->_prefixLabel _setCuiCatalog:_cuiCatalog];
 
-    v14 = [(UITextField *)self _cuiStyleEffectConfiguration];
-    [(UILabel *)self->_prefixLabel _setCuiStyleEffectConfiguration:v14];
+    _cuiStyleEffectConfiguration = [(UITextField *)self _cuiStyleEffectConfiguration];
+    [(UILabel *)self->_prefixLabel _setCuiStyleEffectConfiguration:_cuiStyleEffectConfiguration];
 
     [(UITextField *)self setNeedsLayout];
   }
 }
 
-- (void)setClearsPlaceholderOnBeginEditing:(BOOL)a3
+- (void)setClearsPlaceholderOnBeginEditing:(BOOL)editing
 {
   v3 = 64;
-  if (!a3)
+  if (!editing)
   {
     v3 = 0;
   }
@@ -9587,8 +9587,8 @@ LABEL_12:
     v7 = v5;
     objc_storeStrong(&self->_background, background);
     [(UITextField *)self _invalidateBackgroundProvider];
-    v6 = [(UITextField *)self _backgroundProvider];
-    [v6 setNeedsDisplay];
+    _backgroundProvider = [(UITextField *)self _backgroundProvider];
+    [_backgroundProvider setNeedsDisplay];
 
     v5 = v7;
   }
@@ -9626,22 +9626,22 @@ LABEL_12:
   }
 }
 
-- (id)_attributedStringForInsertionOfAttributedString:(id)a3
+- (id)_attributedStringForInsertionOfAttributedString:(id)string
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  v6 = [v5 _inputController];
-  v7 = [v6 _attributedStringForInsertionOfAttributedString:v4];
+  stringCopy = string;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  _inputController = [_fieldEditor _inputController];
+  v7 = [_inputController _attributedStringForInsertionOfAttributedString:stringCopy];
 
   return v7;
 }
 
 - (NSDictionary)typingAttributes
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 typingAttributes];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  typingAttributes = [_fieldEditor typingAttributes];
 
-  return v3;
+  return typingAttributes;
 }
 
 - (void)setTypingAttributes:(NSDictionary *)typingAttributes
@@ -9651,35 +9651,35 @@ LABEL_12:
   {
     self->_textFieldFlags = (*&textFieldFlags | 0x20000);
     v6 = typingAttributes;
-    v7 = [(UITextField *)self _fieldEditor];
-    [v7 setTypingAttributes:v6];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor setTypingAttributes:v6];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   backgroundProvider = self->_backgroundProvider;
   if (backgroundProvider)
   {
-    v6 = [(_UITextFieldBackgroundProvider *)backgroundProvider overridingSetBackgroundColor:v4];
+    v6 = [(_UITextFieldBackgroundProvider *)backgroundProvider overridingSetBackgroundColor:colorCopy];
 
-    v4 = v6;
+    colorCopy = v6;
   }
 
-  v7 = [(UITextField *)self _contentView];
+  _contentView = [(UITextField *)self _contentView];
 
-  if (v7 != self)
+  if (_contentView != self)
   {
-    v8 = [(UITextField *)self _contentView];
-    [v8 setBackgroundColor:v4];
+    _contentView2 = [(UITextField *)self _contentView];
+    [_contentView2 setBackgroundColor:colorCopy];
 
-    v4 = 0;
+    colorCopy = 0;
   }
 
   v9.receiver = self;
   v9.super_class = UITextField;
-  [(UIView *)&v9 setBackgroundColor:v4];
+  [(UIView *)&v9 setBackgroundColor:colorCopy];
 }
 
 - (void)setClearButtonMode:(UITextFieldViewMode)clearButtonMode
@@ -9728,12 +9728,12 @@ LABEL_12:
   }
 }
 
-- (void)_setActualLeftView:(id)a3
+- (void)_setActualLeftView:(id)view
 {
-  v5 = a3;
-  if (self->_leftView != v5)
+  viewCopy = view;
+  if (self->_leftView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -9742,7 +9742,7 @@ LABEL_12:
 
     [(UIView *)self->_leftView _setOverrideUserInterfaceRenderingMode:-1];
     [(UITextField *)self _transitionFromAccessoryView:self->_leftView toView:0 allowingAnimation:0];
-    objc_storeStrong(&self->_leftView, a3);
+    objc_storeStrong(&self->_leftView, view);
     if ((*(&self->super.super._viewFlags + 18) & 0x40) != 0)
     {
       objc_opt_class();
@@ -9759,22 +9759,22 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(UIControl *)self pointerInteraction];
-      [(UIView *)self->_leftView _setProxyPointerInteraction:v8];
+      pointerInteraction = [(UIControl *)self pointerInteraction];
+      [(UIView *)self->_leftView _setProxyPointerInteraction:pointerInteraction];
     }
 
     [(UIView *)self->_leftView _setOverrideUserInterfaceRenderingMode:1];
     [(UITextField *)self _showSymbolAnimatableLeftViewNowIfNeeded];
     [(UITextField *)self setNeedsLayout];
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)_setActualLeftViewMode:(int64_t)a3
+- (void)_setActualLeftViewMode:(int64_t)mode
 {
-  if (self->_leftViewMode != a3)
+  if (self->_leftViewMode != mode)
   {
-    self->_leftViewMode = a3;
+    self->_leftViewMode = mode;
     [(UITextField *)self _showSymbolAnimatableLeftViewNowIfNeeded];
 
     [(UITextField *)self setNeedsLayout];
@@ -9818,12 +9818,12 @@ LABEL_12:
   }
 }
 
-- (void)_setActualRightView:(id)a3
+- (void)_setActualRightView:(id)view
 {
-  v5 = a3;
-  if (self->_rightView != v5)
+  viewCopy = view;
+  if (self->_rightView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -9832,7 +9832,7 @@ LABEL_12:
 
     [(UIView *)self->_rightView _setOverrideUserInterfaceRenderingMode:-1];
     [(UITextField *)self _transitionFromAccessoryView:self->_rightView toView:0 allowingAnimation:0];
-    objc_storeStrong(&self->_rightView, a3);
+    objc_storeStrong(&self->_rightView, view);
     if ((*(&self->super.super._viewFlags + 18) & 0x40) == 0)
     {
       objc_opt_class();
@@ -9849,58 +9849,58 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(UIControl *)self pointerInteraction];
-      [(UIView *)self->_rightView _setProxyPointerInteraction:v8];
+      pointerInteraction = [(UIControl *)self pointerInteraction];
+      [(UIView *)self->_rightView _setProxyPointerInteraction:pointerInteraction];
     }
 
     [(UIView *)self->_rightView _setOverrideUserInterfaceRenderingMode:1];
     [(UITextField *)self _showSymbolAnimatableRightViewNowIfNeeded];
     [(UITextField *)self setNeedsLayout];
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)_setActualRightViewMode:(int64_t)a3
+- (void)_setActualRightViewMode:(int64_t)mode
 {
-  if (self->_rightViewMode != a3)
+  if (self->_rightViewMode != mode)
   {
-    self->_rightViewMode = a3;
+    self->_rightViewMode = mode;
     [(UITextField *)self _showSymbolAnimatableRightViewNowIfNeeded];
 
     [(UITextField *)self setNeedsLayout];
   }
 }
 
-- (void)_setContentCoverView:(id)a3
+- (void)_setContentCoverView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentCoverView = self->_contentCoverView;
-  if (contentCoverView != v5)
+  if (contentCoverView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)contentCoverView removeFromSuperview];
-    objc_storeStrong(&self->_contentCoverView, a3);
+    objc_storeStrong(&self->_contentCoverView, view);
     [(UIView *)self->_contentCoverView setUserInteractionEnabled:0];
     [(UITextField *)self _contentCoverStateDidChange];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)_setContentCoverViewMode:(int64_t)a3
+- (void)_setContentCoverViewMode:(int64_t)mode
 {
-  if (self->_contentCoverViewMode != a3)
+  if (self->_contentCoverViewMode != mode)
   {
-    self->_contentCoverViewMode = a3;
+    self->_contentCoverViewMode = mode;
     [(UITextField *)self _contentCoverStateDidChange];
   }
 }
 
-- (void)_setContentCoverUnsecuresText:(BOOL)a3
+- (void)_setContentCoverUnsecuresText:(BOOL)text
 {
-  if (((((*&self->_textFieldFlags & 0x10000000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_textFieldFlags & 0x10000000) == 0) ^ text) & 1) == 0)
   {
     v4 = 0x10000000;
-    if (!a3)
+    if (!text)
     {
       v4 = 0;
     }
@@ -9930,9 +9930,9 @@ LABEL_12:
     }
   }
 
-  v3 = [(UITextField *)self _shouldObscureInput];
-  [(_UITextLayoutController *)self->_textLayoutController setDocumentObscured:v3];
-  if (v3)
+  _shouldObscureInput = [(UITextField *)self _shouldObscureInput];
+  [(_UITextLayoutController *)self->_textLayoutController setDocumentObscured:_shouldObscureInput];
+  if (_shouldObscureInput)
   {
     [(UIFieldEditor *)self->_fieldEditor _obscureAllText];
   }
@@ -9945,26 +9945,26 @@ LABEL_12:
   [(UITextField *)self _updateSelectionGestures];
 }
 
-- (void)_setBackgroundCoverView:(id)a3
+- (void)_setBackgroundCoverView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundCoverView = self->_backgroundCoverView;
-  if (backgroundCoverView != v5)
+  if (backgroundCoverView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)backgroundCoverView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundCoverView, a3);
+    objc_storeStrong(&self->_backgroundCoverView, view);
     [(UIView *)self->_backgroundCoverView setUserInteractionEnabled:0];
     [(UITextField *)self _backgroundCoverStateDidChange];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)_setBackgroundCoverViewMode:(int64_t)a3
+- (void)_setBackgroundCoverViewMode:(int64_t)mode
 {
-  if (self->_backgroundCoverViewMode != a3)
+  if (self->_backgroundCoverViewMode != mode)
   {
-    self->_backgroundCoverViewMode = a3;
+    self->_backgroundCoverViewMode = mode;
     [(UITextField *)self _backgroundCoverStateDidChange];
   }
 }
@@ -9980,14 +9980,14 @@ LABEL_12:
   }
 }
 
-- (void)setRecentsAccessoryView:(id)a3
+- (void)setRecentsAccessoryView:(id)view
 {
-  v5 = a3;
-  if (self->_recentsAccessoryView != v5)
+  viewCopy = view;
+  if (self->_recentsAccessoryView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_recentsAccessoryView, a3);
-    v5 = v6;
+    v6 = viewCopy;
+    objc_storeStrong(&self->_recentsAccessoryView, view);
+    viewCopy = v6;
   }
 }
 
@@ -9996,17 +9996,17 @@ LABEL_12:
   recentsAccessoryView = self->_recentsAccessoryView;
   if (recentsAccessoryView)
   {
-    v3 = recentsAccessoryView;
+    inputAccessoryView = recentsAccessoryView;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = UITextField;
-    v3 = [(UIResponder *)&v5 inputAccessoryView];
+    inputAccessoryView = [(UIResponder *)&v5 inputAccessoryView];
   }
 
-  return v3;
+  return inputAccessoryView;
 }
 
 - (BOOL)_ownsInputAccessoryView
@@ -10023,14 +10023,14 @@ LABEL_12:
   return [(UIResponder *)&v5 _ownsInputAccessoryView];
 }
 
-- (void)setInputAssistantItem:(id)a3
+- (void)setInputAssistantItem:(id)item
 {
-  v5 = a3;
-  if (self->_inputAssistantItem != v5)
+  itemCopy = item;
+  if (self->_inputAssistantItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_inputAssistantItem, a3);
-    v5 = v6;
+    v6 = itemCopy;
+    objc_storeStrong(&self->_inputAssistantItem, item);
+    itemCopy = v6;
   }
 }
 
@@ -10066,11 +10066,11 @@ LABEL_12:
   v15 = v11;
   [(UILabel *)self->_placeholderLabel textRectForBounds:x, y, width, height];
   v17 = v16;
-  v18 = [(UIControl *)self contentVerticalAlignment];
-  if (v18 != UIControlContentVerticalAlignmentTop)
+  contentVerticalAlignment = [(UIControl *)self contentVerticalAlignment];
+  if (contentVerticalAlignment != UIControlContentVerticalAlignmentTop)
   {
     v19 = v15 - v17;
-    if (v18 != UIControlContentVerticalAlignmentBottom)
+    if (contentVerticalAlignment != UIControlContentVerticalAlignmentBottom)
     {
       UIRoundToViewScale(self);
     }
@@ -10099,13 +10099,13 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)_clearButtonSize:(CGRect)a3
+- (CGSize)_clearButtonSize:(CGRect)size
 {
-  v4 = [(UIView *)self traitCollection:a3.origin.x];
-  v5 = [v4 userInterfaceIdiom];
+  v4 = [(UIView *)self traitCollection:size.origin.x];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
   v6 = 28.0;
-  if (v5 != 6 && (v6 = 19.0, _TextFieldScalesClearButton()) && (clearButton = self->_clearButton) != 0)
+  if (userInterfaceIdiom != 6 && (v6 = 19.0, _TextFieldScalesClearButton()) && (clearButton = self->_clearButton) != 0)
   {
     v8 = [(UIButton *)clearButton imageForState:0];
     [v8 size];
@@ -10194,12 +10194,12 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_baselineLeftViewRectForBounds:(CGRect)a3
+- (CGRect)_baselineLeftViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (ShouldSizeLeftOrRightViewToFit(self->_leftView))
   {
     [(UIView *)self->_leftView systemLayoutSizeFittingSize:width, height];
@@ -10276,52 +10276,52 @@ LABEL_12:
   return result;
 }
 
-- (void)_drawTextInRect:(CGRect)a3 forLabel:(id)a4
+- (void)_drawTextInRect:(CGRect)rect forLabel:(id)label
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  if (self->_placeholderLabel == v9)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  labelCopy = label;
+  if (self->_placeholderLabel == labelCopy)
   {
-    v10 = v9;
+    v10 = labelCopy;
     [(UITextField *)self drawPlaceholderInRect:x, y, width, height];
   }
 
-  else if (self->_suffixLabel == v9)
+  else if (self->_suffixLabel == labelCopy)
   {
-    v10 = v9;
+    v10 = labelCopy;
     [(UITextField *)self drawSuffixInRect:x, y, width, height];
   }
 
   else
   {
-    if (self->_prefixLabel != v9)
+    if (self->_prefixLabel != labelCopy)
     {
       goto LABEL_8;
     }
 
-    v10 = v9;
+    v10 = labelCopy;
     [(UITextField *)self drawPrefixInRect:x, y, width, height];
   }
 
-  v9 = v10;
+  labelCopy = v10;
 LABEL_8:
 }
 
-- (void)setTextSelectionBehavior:(int)a3
+- (void)setTextSelectionBehavior:(int)behavior
 {
-  [(UITextInputTraits *)self->_traits setTextSelectionBehavior:*&a3];
-  v4 = [(UITextField *)self textSelectionBehavior];
+  [(UITextInputTraits *)self->_traits setTextSelectionBehavior:*&behavior];
+  textSelectionBehavior = [(UITextField *)self textSelectionBehavior];
   traits = self->_traits;
 
-  [(UITextInputTraits *)traits setTextSelectionBehavior:v4];
+  [(UITextInputTraits *)traits setTextSelectionBehavior:textSelectionBehavior];
 }
 
-- (id)_fieldEditorHostAllowingCreation:(BOOL)a3
+- (id)_fieldEditorHostAllowingCreation:(BOOL)creation
 {
-  v3 = a3;
+  creationCopy = creation;
   v5 = objc_getAssociatedObject(self, &FieldEditorHostKey);
   if (v5)
   {
@@ -10330,7 +10330,7 @@ LABEL_8:
 
   else
   {
-    v6 = !v3;
+    v6 = !creationCopy;
   }
 
   if (!v6)
@@ -10342,17 +10342,17 @@ LABEL_8:
   return v5;
 }
 
-- (void)_detachFieldEditorDiscardingEdits:(BOOL)a3 animated:(BOOL)a4
+- (void)_detachFieldEditorDiscardingEdits:(BOOL)edits animated:(BOOL)animated
 {
   v31 = *MEMORY[0x1E69E9840];
   fieldEditor = self->_fieldEditor;
   if (fieldEditor)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(UIFieldEditor *)fieldEditor _scrollAnimationEndedAction];
+    animatedCopy = animated;
+    editsCopy = edits;
+    _scrollAnimationEndedAction = [(UIFieldEditor *)fieldEditor _scrollAnimationEndedAction];
 
-    if (v8)
+    if (_scrollAnimationEndedAction)
     {
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("Text", &qword_1ED49AA78);
       if (*CategoryCachedImpl)
@@ -10369,7 +10369,7 @@ LABEL_8:
     else
     {
       [(UITextField *)self _stopObservingFieldEditorScroll];
-      if (v6 && ([(UIScrollView *)self->_fieldEditor contentOffset], v13 > 0.0))
+      if (animatedCopy && ([(UIScrollView *)self->_fieldEditor contentOffset], v13 > 0.0))
       {
         objc_initWeak(buf, self);
         v23 = MEMORY[0x1E69E9820];
@@ -10377,7 +10377,7 @@ LABEL_8:
         v25 = __58__UITextField__detachFieldEditorDiscardingEdits_animated___block_invoke;
         v26 = &unk_1E71263B8;
         objc_copyWeak(&v27, buf);
-        v28 = v7;
+        v28 = editsCopy;
         [(UIFieldEditor *)self->_fieldEditor _setScrollAnimationEndedAction:&v23];
         [(UIFieldEditor *)self->_fieldEditor setContentOffset:1 animated:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v23, v24, v25, v26];
         objc_destroyWeak(&v27);
@@ -10386,14 +10386,14 @@ LABEL_8:
 
       else
       {
-        if (!v7)
+        if (!editsCopy)
         {
           [(UITextField *)self _willUpdateAfterDetachingFieldEditor];
         }
 
-        [(UIFieldEditor *)self->_fieldEditor deactivateEditorDiscardingEdits:v7];
+        [(UIFieldEditor *)self->_fieldEditor deactivateEditorDiscardingEdits:editsCopy];
         *&self->_textFieldFlags &= ~0x100uLL;
-        if (!v7)
+        if (!editsCopy)
         {
           [(UITextField *)self _didUpdateAfterDetachingFieldEditor];
         }
@@ -10406,23 +10406,23 @@ LABEL_8:
             [(UIControl *)self _sendActionsForEvents:0x40000 withEvent:0];
           }
 
-          v14 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v14 removeObserver:self name:@"UIApplicationResumedNotification" object:0];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter removeObserver:self name:@"UIApplicationResumedNotification" object:0];
 
           [(UITextField *)self _removeFieldEditorAndHost];
           if ((*(&self->_textFieldFlags + 2) & 2) != 0)
           {
-            v15 = [(UIFieldEditor *)self->_fieldEditor _inputController];
-            v16 = [v15 typingAttributes];
+            _inputController = [(UIFieldEditor *)self->_fieldEditor _inputController];
+            typingAttributes = [_inputController typingAttributes];
 
-            if (!v16 || [v16 count])
+            if (!typingAttributes || [typingAttributes count])
             {
-              [(_UICascadingTextStorage *)self->_textStorage setDefaultAttributes:v16];
+              [(_UICascadingTextStorage *)self->_textStorage setDefaultAttributes:typingAttributes];
             }
           }
 
-          v17 = [(UITextField *)self interactionAssistant];
-          [v17 deactivateSelection];
+          interactionAssistant = [(UITextField *)self interactionAssistant];
+          [interactionAssistant deactivateSelection];
         }
 
         else
@@ -10440,32 +10440,32 @@ LABEL_8:
   else
   {
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v12 = [(UITextField *)self _fieldEditorHost];
+    _fieldEditorHost = [(UITextField *)self _fieldEditorHost];
 
     if (has_internal_diagnostics)
     {
-      if (v12)
+      if (_fieldEditorHost)
       {
         v18 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
         {
-          v22 = [(UITextField *)self _fieldEditorHost];
+          _fieldEditorHost2 = [(UITextField *)self _fieldEditorHost];
           *buf = 138412290;
-          v30 = v22;
+          v30 = _fieldEditorHost2;
           _os_log_fault_impl(&dword_188A29000, v18, OS_LOG_TYPE_FAULT, "Detaching non-existing fieldeditor, but have a host (%@)", buf, 0xCu);
         }
       }
     }
 
-    else if (v12)
+    else if (_fieldEditorHost)
     {
       v19 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49AA70) + 8);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = v19;
-        v21 = [(UITextField *)self _fieldEditorHost];
+        _fieldEditorHost3 = [(UITextField *)self _fieldEditorHost];
         *buf = 138412290;
-        v30 = v21;
+        v30 = _fieldEditorHost3;
         _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_ERROR, "Detaching non-existing fieldeditor, but have a host (%@)", buf, 0xCu);
       }
     }
@@ -10486,28 +10486,28 @@ void __58__UITextField__detachFieldEditorDiscardingEdits_animated___block_invoke
   overriddenPlaceholder = self->_overriddenPlaceholder;
   if (overriddenPlaceholder)
   {
-    v4 = [(NSAttributedString *)overriddenPlaceholder string];
+    string = [(NSAttributedString *)overriddenPlaceholder string];
   }
 
   else
   {
-    v5 = [(UITextField *)self attributedPlaceholder];
-    v6 = [v5 string];
-    v7 = v6;
-    if (v6)
+    attributedPlaceholder = [(UITextField *)self attributedPlaceholder];
+    string2 = [attributedPlaceholder string];
+    v7 = string2;
+    if (string2)
     {
-      v8 = v6;
+      placeholder = string2;
     }
 
     else
     {
-      v8 = [(UITextField *)self placeholder];
+      placeholder = [(UITextField *)self placeholder];
     }
 
-    v4 = v8;
+    string = placeholder;
   }
 
-  return v4;
+  return string;
 }
 
 - (void)_invalidateAfterUpdatingEditingAttributes
@@ -10517,15 +10517,15 @@ void __58__UITextField__detachFieldEditorDiscardingEdits_animated___block_invoke
   [(UITextField *)self _invalidateAllGlyphsAndTextLayout];
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (-[UITextField isEditing](self, "isEditing") || -[UITextField _showsContentCoverView](self, "_showsContentCoverView") && [v9 isEqualToString:@"\n"])
+  markedTextCopy = markedText;
+  inputCopy = input;
+  textCopy = text;
+  if (-[UITextField isEditing](self, "isEditing") || -[UITextField _showsContentCoverView](self, "_showsContentCoverView") && [textCopy isEqualToString:@"\n"])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    if ([v9 isEqualToString:@"\n"])
+    if ([textCopy isEqualToString:@"\n"])
     {
       if (objc_opt_respondsToSelector())
       {
@@ -10543,14 +10543,14 @@ LABEL_15:
       }
     }
 
-    v12 = [(UITextField *)self _fieldEditor];
-    v13 = [v12 selectionRanges];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    selectionRanges = [_fieldEditor selectionRanges];
 
     v15 = 0;
-    v11 = [(UITextField *)self _delegateShouldChangeCharactersInTextStorageRanges:v13 replacementString:v9 delegateCares:&v15];
+    v11 = [(UITextField *)self _delegateShouldChangeCharactersInTextStorageRanges:selectionRanges replacementString:textCopy delegateCares:&v15];
     if ((v15 & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && WeakRetained != self)
     {
-      v11 = [(UITextField *)WeakRetained keyboardInput:v8 shouldInsertText:v9 isMarkedText:v5];
+      v11 = [(UITextField *)WeakRetained keyboardInput:inputCopy shouldInsertText:textCopy isMarkedText:markedTextCopy];
     }
 
     goto LABEL_15;
@@ -10562,29 +10562,29 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v15[1] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E696B098];
-  v10 = a5;
-  v11 = a3;
+  textCopy = text;
+  inputCopy = input;
   v12 = [v9 valueWithRange:{location, length}];
   v15[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  LOBYTE(length) = [(UITextField *)self keyboardInput:v11 shouldReplaceTextInRanges:v13 replacementText:v10];
+  LOBYTE(length) = [(UITextField *)self keyboardInput:inputCopy shouldReplaceTextInRanges:v13 replacementText:textCopy];
 
   return length;
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRanges:(id)a4 replacementText:(id)a5
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRanges:(id)ranges replacementText:(id)text
 {
-  v7 = a4;
-  v8 = a5;
+  rangesCopy = ranges;
+  textCopy = text;
   if ([(UITextField *)self isEditing])
   {
-    v9 = [(UITextField *)self _delegateShouldChangeCharactersInTextStorageRanges:v7 replacementString:v8 delegateCares:0];
+    v9 = [(UITextField *)self _delegateShouldChangeCharactersInTextStorageRanges:rangesCopy replacementString:textCopy delegateCares:0];
   }
 
   else
@@ -10595,17 +10595,17 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)keyboardInputShouldDelete:(id)a3
+- (BOOL)keyboardInputShouldDelete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   if ([(UITextField *)self isEditing])
   {
-    v5 = [(UITextField *)self _inputController];
-    v6 = [v5 _rangesForBackwardsDelete];
+    _inputController = [(UITextField *)self _inputController];
+    _rangesForBackwardsDelete = [_inputController _rangesForBackwardsDelete];
 
     v12 = 0;
-    [v6 unionRange];
-    if (v7 && (v8 = [(UITextField *)self _delegateShouldChangeCharactersInTextStorageRanges:v6 replacementString:&stru_1EFB14550 delegateCares:&v12], (v12 & 1) != 0))
+    [_rangesForBackwardsDelete unionRange];
+    if (v7 && (v8 = [(UITextField *)self _delegateShouldChangeCharactersInTextStorageRanges:_rangesForBackwardsDelete replacementString:&stru_1EFB14550 delegateCares:&v12], (v12 & 1) != 0))
     {
       v9 = v8;
     }
@@ -10616,7 +10616,7 @@ LABEL_16:
       v9 = 1;
       if ((objc_opt_respondsToSelector() & 1) != 0 && WeakRetained != self)
       {
-        v9 = [(UITextField *)WeakRetained keyboardInputShouldDelete:v4];
+        v9 = [(UITextField *)WeakRetained keyboardInputShouldDelete:deleteCopy];
       }
     }
   }
@@ -10629,9 +10629,9 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)keyboardInputChanged:(id)a3
+- (BOOL)keyboardInputChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if ([(UITextField *)self isEditing])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -10643,7 +10643,7 @@ LABEL_16:
 
     else
     {
-      v6 = [(UITextField *)WeakRetained keyboardInputChanged:v4];
+      v6 = [(UITextField *)WeakRetained keyboardInputChanged:changedCopy];
     }
   }
 
@@ -10655,28 +10655,28 @@ LABEL_16:
   return v6;
 }
 
-- (void)keyboardInputChangedSelection:(id)a3
+- (void)keyboardInputChangedSelection:(id)selection
 {
-  v5 = a3;
+  selectionCopy = selection;
   if ([(UITextField *)self isEditing])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if ((objc_opt_respondsToSelector() & 1) != 0 && WeakRetained != self)
     {
-      [(UITextField *)WeakRetained keyboardInputChangedSelection:v5];
+      [(UITextField *)WeakRetained keyboardInputChangedSelection:selectionCopy];
     }
   }
 }
 
-- (void)fieldEditorDidChange:(id)a3
+- (void)fieldEditorDidChange:(id)change
 {
   if ([(UITextField *)self adjustsFontSizeToFitWidth])
   {
     [(UITextField *)self _setNeedsStyleRecalc];
   }
 
-  v4 = [(UITextField *)self _hasContent];
-  if (self->_clearButtonMode || v4 == [(UITextField *)self _isShowingPlaceholder])
+  _hasContent = [(UITextField *)self _hasContent];
+  if (self->_clearButtonMode || _hasContent == [(UITextField *)self _isShowingPlaceholder])
   {
     [(UITextField *)self setNeedsLayout];
   }
@@ -10684,11 +10684,11 @@ LABEL_16:
   if (([(UITextField *)self _shouldSendContentChangedNotificationsIfOnlyMarkedTextChanged]|| ![(UITextField *)self hasMarkedText]) && (*(&self->_textFieldFlags + 1) & 0x80) == 0)
   {
     [(UIControl *)self _sendActionsForEvents:0x20000 withEvent:0];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"UITextFieldTextDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UITextFieldTextDidChangeNotification" object:self];
   }
 
-  if (v4)
+  if (_hasContent)
   {
     [(UIView *)self invalidateIntrinsicContentSize];
     [(UITextField *)self setNeedsLayout];
@@ -10713,16 +10713,16 @@ LABEL_16:
     [(UILabel *)prefixLabel setFrame:?];
   }
 
-  v8 = [(UITextField *)self _fieldEditorHost];
-  [v8 layoutIfNeeded];
+  _fieldEditorHost = [(UITextField *)self _fieldEditorHost];
+  [_fieldEditorHost layoutIfNeeded];
 }
 
-- (_NSRange)fieldEditor:(id)a3 willChangeSelectionFromCharacterRange:(_NSRange)a4 toCharacterRange:(_NSRange)a5
+- (_NSRange)fieldEditor:(id)editor willChangeSelectionFromCharacterRange:(_NSRange)range toCharacterRange:(_NSRange)characterRange
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = a4.length;
-  v8 = a4.location;
+  length = characterRange.length;
+  location = characterRange.location;
+  v7 = range.length;
+  v8 = range.location;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -10737,24 +10737,24 @@ LABEL_16:
   return result;
 }
 
-- (id)fieldEditor:(id)a3 willChangeSelectionFromCharacterRanges:(id)a4 toCharacterRanges:(id)a5
+- (id)fieldEditor:(id)editor willChangeSelectionFromCharacterRanges:(id)ranges toCharacterRanges:(id)characterRanges
 {
-  v7 = a4;
-  v8 = a5;
+  rangesCopy = ranges;
+  characterRangesCopy = characterRanges;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v10 = [WeakRetained textField:self willChangeSelectionFromCharacterRanges:v7 toCharacterRanges:v8];
+    v10 = [WeakRetained textField:self willChangeSelectionFromCharacterRanges:rangesCopy toCharacterRanges:characterRangesCopy];
 
-    v8 = v10;
+    characterRangesCopy = v10;
   }
 
-  return v8;
+  return characterRangesCopy;
 }
 
-- (void)fieldEditorDidChangeSelection:(id)a3
+- (void)fieldEditorDidChangeSelection:(id)selection
 {
-  v8 = a3;
+  selectionCopy = selection;
   textDragDropSupport = self->_textDragDropSupport;
   if (!textDragDropSupport)
   {
@@ -10773,10 +10773,10 @@ LABEL_16:
   }
 }
 
-- (BOOL)fieldEditor:(id)a3 shouldInsertText:(id)a4 replacingRanges:(id)a5
+- (BOOL)fieldEditor:(id)editor shouldInsertText:(id)text replacingRanges:(id)ranges
 {
-  v7 = a4;
-  v8 = a5;
+  textCopy = text;
+  rangesCopy = ranges;
   textDragDropSupport = self->_textDragDropSupport;
   if (!textDragDropSupport)
   {
@@ -10788,18 +10788,18 @@ LABEL_16:
   }
 
   [(UITextDragDropSupport *)textDragDropSupport notifyTextInteraction];
-  v12 = [(UITextField *)self _delegateShouldChangeCharactersInTextStorageRanges:v8 replacementString:v7 delegateCares:0];
+  v12 = [(UITextField *)self _delegateShouldChangeCharactersInTextStorageRanges:rangesCopy replacementString:textCopy delegateCares:0];
   [(UITextField *)self disableClearsOnInsertion];
 
   return v12;
 }
 
-- (BOOL)fieldEditorShouldExtendCaretHeight:(id)a3
+- (BOOL)fieldEditorShouldExtendCaretHeight:(id)height
 {
-  v3 = [(UITextField *)self _metricsProvider];
-  v4 = [v3 shouldExtendCaretHeight];
+  _metricsProvider = [(UITextField *)self _metricsProvider];
+  shouldExtendCaretHeight = [_metricsProvider shouldExtendCaretHeight];
 
-  return v4;
+  return shouldExtendCaretHeight;
 }
 
 - (id)supportedPasteboardTypesForCurrentSelection
@@ -10812,8 +10812,8 @@ LABEL_16:
     qword_1ED49AA80 = v4;
 
     v6 = qword_1ED49AA80;
-    v7 = [*MEMORY[0x1E6983030] identifier];
-    [v6 addObject:v7];
+    identifier = [*MEMORY[0x1E6983030] identifier];
+    [v6 addObject:identifier];
 
     [qword_1ED49AA80 addObjectsFromArray:UIPasteboardTypeListString];
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -10822,12 +10822,12 @@ LABEL_16:
 
     [qword_1ED49AA88 addObject:*MEMORY[0x1E69E2FD8]];
     v10 = qword_1ED49AA88;
-    v11 = [*MEMORY[0x1E6982F90] identifier];
-    [v10 addObject:v11];
+    identifier2 = [*MEMORY[0x1E6982F90] identifier];
+    [v10 addObject:identifier2];
 
     v12 = qword_1ED49AA88;
-    v13 = [*MEMORY[0x1E6982F98] identifier];
-    [v12 addObject:v13];
+    identifier3 = [*MEMORY[0x1E6982F98] identifier];
+    [v12 addObject:identifier3];
 
     [qword_1ED49AA88 addObjectsFromArray:qword_1ED49AA80];
     v3 = qword_1ED49AA80;
@@ -10851,18 +10851,18 @@ LABEL_16:
   objc_opt_class();
   NSRequestConcreteImplementation();
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(UITextField *)self text];
-  v5 = [v3 arrayWithObject:v4];
+  text = [(UITextField *)self text];
+  v5 = [v3 arrayWithObject:text];
 
   return v5;
 }
 
-- (id)documentFragmentForPasteboardItemAtIndex:(int64_t)a3
+- (id)documentFragmentForPasteboardItemAtIndex:(int64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained documentFragmentForPasteboardItemAtIndex:a3 inTextField:self];
+    v6 = [WeakRetained documentFragmentForPasteboardItemAtIndex:index inTextField:self];
   }
 
   else
@@ -10873,19 +10873,19 @@ LABEL_16:
   return v6;
 }
 
-- (void)setClearButtonStyle:(int64_t)a3
+- (void)setClearButtonStyle:(int64_t)style
 {
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    [(UITextField *)self setClearButtonMode:qword_18A682DB8[a3]];
+    [(UITextField *)self setClearButtonMode:qword_18A682DB8[style]];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if ((*(&self->_textFieldFlags + 4) & 2) != 0)
   {
-    [(UIView *)self bounds:a3.origin.x];
+    [(UIView *)self bounds:rect.origin.x];
     [(UITextField *)self borderRectForBounds:?];
     backgroundProvider = self->_backgroundProvider;
 
@@ -10893,36 +10893,36 @@ LABEL_16:
   }
 }
 
-- (void)_setPadding:(UIEdgeInsets)a3
+- (void)_setPadding:(UIEdgeInsets)padding
 {
   p_padding = &self->_padding;
   v4 = *&self->_padding.top;
   v5 = *&self->_padding.bottom;
-  v6.f64[0] = a3.top;
-  v6.f64[1] = a3.left;
-  v7.f64[0] = a3.bottom;
-  v7.f64[1] = a3.right;
+  v6.f64[0] = padding.top;
+  v6.f64[1] = padding.left;
+  v7.f64[0] = padding.bottom;
+  v7.f64[1] = padding.right;
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v6, v4), vceqq_f64(v7, v5)))))
   {
     return;
   }
 
-  if (a3.bottom != v5.f64[0])
+  if (padding.bottom != v5.f64[0])
   {
-    p_padding->top = a3.top;
-    self->_padding.left = a3.left;
-    self->_padding.bottom = a3.bottom;
-    self->_padding.right = a3.right;
+    p_padding->top = padding.top;
+    self->_padding.left = padding.left;
+    self->_padding.bottom = padding.bottom;
+    self->_padding.right = padding.right;
 LABEL_6:
     [(UIView *)self _invalidateBaselineConstraints];
     goto LABEL_7;
   }
 
-  p_padding->top = a3.top;
-  self->_padding.left = a3.left;
-  self->_padding.bottom = a3.bottom;
-  self->_padding.right = a3.right;
-  if (a3.top != v4.f64[0])
+  p_padding->top = padding.top;
+  self->_padding.left = padding.left;
+  self->_padding.bottom = padding.bottom;
+  self->_padding.right = padding.right;
+  if (padding.top != v4.f64[0])
   {
     goto LABEL_6;
   }
@@ -10932,12 +10932,12 @@ LABEL_7:
   [(UITextField *)self _setNeedsStyleRecalc];
 }
 
-- (void)_setLeadingPadding:(double)a3
+- (void)_setLeadingPadding:(double)padding
 {
-  left = a3;
+  left = padding;
   if ((*(&self->super.super._viewFlags + 18) & 0x40) != 0)
   {
-    right = a3;
+    right = padding;
     left = self->_padding.left;
   }
 
@@ -10949,9 +10949,9 @@ LABEL_7:
   [(UITextField *)self _setPadding:self->_padding.top, left, self->_padding.bottom, right];
 }
 
-- (void)_setTrailingPadding:(double)a3
+- (void)_setTrailingPadding:(double)padding
 {
-  left = a3;
+  left = padding;
   if ((*(&self->super.super._viewFlags + 18) & 0x40) != 0)
   {
     right = self->_padding.right;
@@ -10959,23 +10959,23 @@ LABEL_7:
 
   else
   {
-    right = a3;
+    right = padding;
     left = self->_padding.left;
   }
 
   [(UITextField *)self _setPadding:self->_padding.top, left, self->_padding.bottom, right];
 }
 
-- (void)_setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)_setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(UIControl *)self isEnabled]!= a3)
+  animatedCopy = animated;
+  enabledCopy = enabled;
+  if ([(UIControl *)self isEnabled]!= enabled)
   {
-    if (!v5 && (*(&self->_textFieldFlags + 1) & 1) != 0 && [(UITextField *)self canResignFirstResponder])
+    if (!enabledCopy && (*(&self->_textFieldFlags + 1) & 1) != 0 && [(UITextField *)self canResignFirstResponder])
     {
-      v7 = [(UITextField *)self resignFirstResponder];
-      if (v5)
+      resignFirstResponder = [(UITextField *)self resignFirstResponder];
+      if (enabledCopy)
       {
         goto LABEL_9;
       }
@@ -10983,19 +10983,19 @@ LABEL_7:
 
     else
     {
-      v7 = (*(&self->_textFieldFlags + 1) & 1) == 0;
-      if (v5)
+      resignFirstResponder = (*(&self->_textFieldFlags + 1) & 1) == 0;
+      if (enabledCopy)
       {
 LABEL_9:
         v8.receiver = self;
         v8.super_class = UITextField;
-        [(UIControl *)&v8 setEnabled:v5];
-        [(UITextField *)self _enabledDidChangeAnimated:v4];
+        [(UIControl *)&v8 setEnabled:enabledCopy];
+        [(UITextField *)self _enabledDidChangeAnimated:animatedCopy];
         return;
       }
     }
 
-    if (!v7)
+    if (!resignFirstResponder)
     {
       return;
     }
@@ -11004,86 +11004,86 @@ LABEL_9:
   }
 }
 
-- (void)_enabledDidChangeAnimated:(BOOL)a3
+- (void)_enabledDidChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(UITextField *)self _backgroundProvider];
-  [v4 enabledDidChangeAnimated:v3];
+  animatedCopy = animated;
+  _backgroundProvider = [(UITextField *)self _backgroundProvider];
+  [_backgroundProvider enabledDidChangeAnimated:animatedCopy];
 }
 
-- (void)_setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)_setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(UIControl *)self isHighlighted];
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
+  isHighlighted = [(UIControl *)self isHighlighted];
   v8.receiver = self;
   v8.super_class = UITextField;
-  [(UIControl *)&v8 setHighlighted:v5];
-  if (v7 != [(UIControl *)self isHighlighted])
+  [(UIControl *)&v8 setHighlighted:highlightedCopy];
+  if (isHighlighted != [(UIControl *)self isHighlighted])
   {
-    [(UITextField *)self _highlightedDidChangeAnimated:v4];
+    [(UITextField *)self _highlightedDidChangeAnimated:animatedCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   textFieldFlags = self->_textFieldFlags;
   self->_textFieldFlags = (*&textFieldFlags & 0xFFFFFFFEFFFFFFFFLL);
-  [(UITextField *)self _setHighlighted:a3 animated:HIDWORD(*&textFieldFlags) & 1];
+  [(UITextField *)self _setHighlighted:highlighted animated:HIDWORD(*&textFieldFlags) & 1];
 }
 
-- (void)_highlightedDidChangeAnimated:(BOOL)a3
+- (void)_highlightedDidChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(UITextField *)self _backgroundProvider];
-  [v4 highlightedDidChangeAnimated:v3];
+  animatedCopy = animated;
+  _backgroundProvider = [(UITextField *)self _backgroundProvider];
+  [_backgroundProvider highlightedDidChangeAnimated:animatedCopy];
 }
 
 - (void)selectAll
 {
-  v3 = [(UITextField *)self _text];
-  -[UITextField setSelectionRange:](self, "setSelectionRange:", 0, [v3 length]);
+  _text = [(UITextField *)self _text];
+  -[UITextField setSelectionRange:](self, "setSelectionRange:", 0, [_text length]);
 }
 
 - (void)_clearSelectionUI
 {
-  v3 = [(UITextField *)self interactionAssistant];
-  v4 = [v3 activeSelection];
-  [v4 clearSelection];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  activeSelection = [interactionAssistant activeSelection];
+  [activeSelection clearSelection];
 
-  v5 = [(UITextField *)self interactionAssistant];
-  [v5 updateDisplayedSelection];
+  interactionAssistant2 = [(UITextField *)self interactionAssistant];
+  [interactionAssistant2 updateDisplayedSelection];
 }
 
 - (void)_resetSelectionUI
 {
-  v3 = [(UITextField *)self interactionAssistant];
-  v4 = [v3 activeSelection];
-  [v4 selectionChanged];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  activeSelection = [interactionAssistant activeSelection];
+  [activeSelection selectionChanged];
 
-  v5 = [(UITextField *)self interactionAssistant];
-  [v5 updateDisplayedSelection];
+  interactionAssistant2 = [(UITextField *)self interactionAssistant];
+  [interactionAssistant2 updateDisplayedSelection];
 }
 
 - (void)clearText
 {
   if (*(&self->_textFieldFlags + 1))
   {
-    v6 = [(UITextField *)self _fieldEditor];
-    v4 = [(UITextField *)self _rangeForSetText];
-    [v6 setTextInRange:v4 replacementText:{v5, &stru_1EFB14550}];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    _rangeForSetText = [(UITextField *)self _rangeForSetText];
+    [_fieldEditor setTextInRange:_rangeForSetText replacementText:{v5, &stru_1EFB14550}];
   }
 }
 
 - (id)_tvTypingAttributes
 {
-  v3 = [(UITextField *)self typingAttributes];
-  v4 = [v3 mutableCopy];
+  typingAttributes = [(UITextField *)self typingAttributes];
+  v4 = [typingAttributes mutableCopy];
 
   [(UITextField *)self _fieldEditorHeight];
   v6 = v5;
-  v7 = [(UITextField *)self font];
-  v8 = [v7 fontWithSize:v6];
+  font = [(UITextField *)self font];
+  v8 = [font fontWithSize:v6];
 
   if (v8)
   {
@@ -11093,13 +11093,13 @@ LABEL_9:
   return v4;
 }
 
-- (void)_setBlurEnabled:(BOOL)a3
+- (void)_setBlurEnabled:(BOOL)enabled
 {
   textFieldFlags = self->_textFieldFlags;
-  if (((((*&textFieldFlags & 0x400000) == 0) ^ a3) & 1) == 0)
+  if (((((*&textFieldFlags & 0x400000) == 0) ^ enabled) & 1) == 0)
   {
     v4 = 0x400000;
-    if (!a3)
+    if (!enabled)
     {
       v4 = 0;
     }
@@ -11108,10 +11108,10 @@ LABEL_9:
   }
 }
 
-- (void)_setVisualEffectViewEnabled:(BOOL)a3 backgroundColor:(id)a4
+- (void)_setVisualEffectViewEnabled:(BOOL)enabled backgroundColor:(id)color
 {
   v4 = 0x800000;
-  if (!a3)
+  if (!enabled)
   {
     v4 = 0;
   }
@@ -11135,46 +11135,46 @@ LABEL_9:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v6.receiver = self;
   v6.super_class = UITextField;
-  [(UITextField *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+  [(UITextField *)&v6 observeValueForKeyPath:path ofObject:object change:change context:context];
 }
 
-- (void)setSelectionRange:(_NSRange)a3
+- (void)setSelectionRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 setSelection:{location, length}];
+  length = range.length;
+  location = range.location;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setSelection:{location, length}];
 }
 
 - (NSArray)_selectedRanges
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 selectionRanges];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  selectionRanges = [_fieldEditor selectionRanges];
 
-  return v3;
+  return selectionRanges;
 }
 
-- (void)_setSelectedRanges:(id)a3
+- (void)_setSelectedRanges:(id)ranges
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 setSelectionRanges:v4];
+  rangesCopy = ranges;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setSelectionRanges:rangesCopy];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v13 = a3;
-  v4 = [(UIImageView *)self->_iconView image];
+  iconCopy = icon;
+  image = [(UIImageView *)self->_iconView image];
 
-  v5 = v13;
-  if (v4 != v13)
+  v5 = iconCopy;
+  if (image != iconCopy)
   {
     iconView = self->_iconView;
-    if (v13)
+    if (iconCopy)
     {
       if (iconView)
       {
@@ -11184,15 +11184,15 @@ LABEL_9:
 
       else
       {
-        v8 = [[UIImageView alloc] initWithImage:v13];
+        v8 = [[UIImageView alloc] initWithImage:iconCopy];
         v9 = self->_iconView;
         self->_iconView = v8;
 
-        v10 = [(UITextField *)self _contentView];
-        [v10 addSubview:self->_iconView];
+        _contentView = [(UITextField *)self _contentView];
+        [_contentView addSubview:self->_iconView];
 
-        v11 = [(UITextField *)self _contentView];
-        [v11 bringSubviewToFront:self->_iconView];
+        _contentView2 = [(UITextField *)self _contentView];
+        [_contentView2 bringSubviewToFront:self->_iconView];
       }
 
       v12 = self->_iconView;
@@ -11208,14 +11208,14 @@ LABEL_9:
     }
 
     [(UITextField *)self setNeedsLayout];
-    v5 = v13;
+    v5 = iconCopy;
   }
 }
 
-- (void)setBecomesFirstResponderOnClearButtonTap:(BOOL)a3
+- (void)setBecomesFirstResponderOnClearButtonTap:(BOOL)tap
 {
   v3 = 32;
-  if (!a3)
+  if (!tap)
   {
     v3 = 0;
   }
@@ -11248,33 +11248,33 @@ LABEL_9:
   return result;
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
   if (objc_opt_respondsToSelector())
   {
     backgroundProvider = self->_backgroundProvider;
 
-    [(_UITextFieldBackgroundProvider *)backgroundProvider setProgress:a3];
+    [(_UITextFieldBackgroundProvider *)backgroundProvider setProgress:progress];
   }
 }
 
-- (void)setLabelOffset:(float)a3
+- (void)setLabelOffset:(float)offset
 {
   label = self->_label;
   if (label)
   {
     [(UIView *)label frame];
     v7 = v6 - self->_labelOffset;
-    self->_labelOffset = a3;
+    self->_labelOffset = offset;
     v8 = self->_label;
-    v9 = v7 + a3;
+    v9 = v7 + offset;
 
     [(UILabel *)v8 setFrame:v9];
   }
 
   else
   {
-    self->_labelOffset = a3;
+    self->_labelOffset = offset;
   }
 }
 
@@ -11286,22 +11286,22 @@ LABEL_9:
   return label;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v20 = a3;
-  v4 = [(UILabel *)self->_label text];
-  if ([v4 length] || objc_msgSend(v20, "length"))
+  labelCopy = label;
+  text = [(UILabel *)self->_label text];
+  if ([text length] || objc_msgSend(labelCopy, "length"))
   {
-    v5 = [(UILabel *)self->_label text];
-    v6 = [v5 isEqualToString:v20];
+    text2 = [(UILabel *)self->_label text];
+    v6 = [text2 isEqualToString:labelCopy];
 
-    v7 = v20;
+    v7 = labelCopy;
     if (v6)
     {
       goto LABEL_15;
     }
 
-    v8 = [v20 length];
+    v8 = [labelCopy length];
     label = self->_label;
     if (v8)
     {
@@ -11311,32 +11311,32 @@ LABEL_9:
         v11 = self->_label;
         self->_label = v10;
 
-        v12 = [(UITextField *)self _contentView];
-        [v12 addSubview:self->_label];
+        _contentView = [(UITextField *)self _contentView];
+        [_contentView addSubview:self->_label];
 
         [(UILabel *)self->_label setEnabled:0];
         [(UIView *)self->_label setOpaque:0];
         [(UIView *)self->_label setBackgroundColor:0];
-        v13 = [(UITextField *)self _cuiCatalog];
-        [(UILabel *)self->_label _setCuiCatalog:v13];
+        _cuiCatalog = [(UITextField *)self _cuiCatalog];
+        [(UILabel *)self->_label _setCuiCatalog:_cuiCatalog];
 
-        v14 = [(UITextField *)self _cuiStyleEffectConfiguration];
-        [(UILabel *)self->_label _setCuiStyleEffectConfiguration:v14];
+        _cuiStyleEffectConfiguration = [(UITextField *)self _cuiStyleEffectConfiguration];
+        [(UILabel *)self->_label _setCuiStyleEffectConfiguration:_cuiStyleEffectConfiguration];
 
         v15 = self->_textStorage;
-        v16 = [(_UICascadingTextStorage *)v15 font];
+        font = [(_UICascadingTextStorage *)v15 font];
 
-        if (v16)
+        if (font)
         {
           v17 = self->_label;
-          v18 = [(_UICascadingTextStorage *)v15 font];
-          [(UILabel *)v17 setFont:v18];
+          font2 = [(_UICascadingTextStorage *)v15 font];
+          [(UILabel *)v17 setFont:font2];
         }
 
         label = self->_label;
       }
 
-      [(UILabel *)label setText:v20];
+      [(UILabel *)label setText:labelCopy];
       [(UIView *)self->_label sizeToFit];
     }
 
@@ -11354,23 +11354,23 @@ LABEL_9:
   {
   }
 
-  v7 = v20;
+  v7 = labelCopy;
 LABEL_15:
 }
 
-- (void)setTextCentersVertically:(BOOL)a3
+- (void)setTextCentersVertically:(BOOL)vertically
 {
-  if ((*&self->_textFieldFlags & 1) != a3)
+  if ((*&self->_textFieldFlags & 1) != vertically)
   {
-    self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFFFFFFFFFFFELL | a3);
+    self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFFFFFFFFFFFELL | vertically);
     [(UITextField *)self _setNeedsStyleRecalc];
   }
 }
 
-- (void)setUndoEnabled:(BOOL)a3
+- (void)setUndoEnabled:(BOOL)enabled
 {
   v3 = 4096;
-  if (a3)
+  if (enabled)
   {
     v3 = 0;
   }
@@ -11378,7 +11378,7 @@ LABEL_15:
   self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)_clearButtonClicked:(id)a3
+- (void)_clearButtonClicked:(id)clicked
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([(UITextField *)self _delegateShouldClear])
@@ -11386,17 +11386,17 @@ LABEL_15:
     textFieldFlags = self->_textFieldFlags;
     if ((*&textFieldFlags & 0x100) != 0)
     {
-      v6 = [(UITextField *)self _fieldEditor];
-      [v6 selectionRange];
+      _fieldEditor = [(UITextField *)self _fieldEditor];
+      [_fieldEditor selectionRange];
       if (v7)
       {
-        [v6 setSelection:{0, 0}];
+        [_fieldEditor setSelection:{0, 0}];
       }
 
-      [v6 clearText];
+      [_fieldEditor clearText];
       v8 = self->_textFieldFlags;
       self->_textFieldFlags = (*&v8 | 0x8000);
-      [(UITextField *)self fieldEditorDidChange:v6];
+      [(UITextField *)self fieldEditorDidChange:_fieldEditor];
       self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFFFFFFFF7FFFLL | (((*&v8 >> 15) & 1) << 15));
     }
 
@@ -11406,8 +11406,8 @@ LABEL_15:
       [(UITextField *)self setText:&stru_1EFB14550];
       *&self->_textFieldFlags &= ~0x800000000uLL;
       [(UIControl *)self _sendActionsForEvents:0x20000 withEvent:0];
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 postNotificationName:@"UITextFieldTextDidChangeNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"UITextFieldTextDidChangeNotification" object:self];
     }
 
     v9 = +[UIKeyboardImpl activeInstance];
@@ -11440,11 +11440,11 @@ LABEL_15:
   }
 }
 
-- (void)setClearButtonOffset:(CGSize)a3
+- (void)setClearButtonOffset:(CGSize)offset
 {
-  if (self->_clearButtonOffset.width != a3.width || self->_clearButtonOffset.height != a3.height)
+  if (self->_clearButtonOffset.width != offset.width || self->_clearButtonOffset.height != offset.height)
   {
-    self->_clearButtonOffset = a3;
+    self->_clearButtonOffset = offset;
     [(UITextField *)self setNeedsLayout];
   }
 }
@@ -11453,30 +11453,30 @@ LABEL_15:
 {
   if ([(UITextField *)self isUndoEnabled])
   {
-    v3 = [(UITextField *)self _fieldEditor];
-    v4 = [v3 undoManager];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    undoManager = [_fieldEditor undoManager];
   }
 
   else
   {
-    v4 = 0;
+    undoManager = 0;
   }
 
-  return v4;
+  return undoManager;
 }
 
-- (CGPoint)_originForTextFieldLabel:(id)a3
+- (CGPoint)_originForTextFieldLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  v6 = [v5 superview];
-  v7 = v6;
-  if (!v6)
+  labelCopy = label;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  selfCopy = [_fieldEditor superview];
+  v7 = selfCopy;
+  if (!selfCopy)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  [v6 bounds];
+  [selfCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -11493,7 +11493,7 @@ LABEL_15:
   }
 
   v19 = v17;
-  if (self->_placeholderLabel == v4 || v4 == 0)
+  if (self->_placeholderLabel == labelCopy || labelCopy == 0)
   {
     v21 = left;
   }
@@ -11510,28 +11510,28 @@ LABEL_15:
   return result;
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v6 = a3;
-  v7 = a4;
+  windowCopy = window;
+  toWindowCopy = toWindow;
   v13.receiver = self;
   v13.super_class = UITextField;
-  [(UIControl *)&v13 _didMoveFromWindow:v6 toWindow:v7];
-  if (v7 && dyld_program_sdk_at_least())
+  [(UIControl *)&v13 _didMoveFromWindow:windowCopy toWindow:toWindowCopy];
+  if (toWindowCopy && dyld_program_sdk_at_least())
   {
-    v8 = [v7 traitCollection];
-    v9 = [v8 userInterfaceIdiom];
-    v10 = [v6 traitCollection];
-    if (v9 == [v10 userInterfaceIdiom])
+    traitCollection = [toWindowCopy traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+    traitCollection2 = [windowCopy traitCollection];
+    if (userInterfaceIdiom == [traitCollection2 userInterfaceIdiom])
     {
     }
 
     else
     {
-      v11 = [v7 traitCollection];
-      v12 = [v11 userInterfaceIdiom];
+      traitCollection3 = [toWindowCopy traitCollection];
+      userInterfaceIdiom2 = [traitCollection3 userInterfaceIdiom];
 
-      if (v12 == 3)
+      if (userInterfaceIdiom2 == 3)
       {
         [(UITextField *)self _adjustFontForAccessibilityTraits:1];
       }
@@ -11541,26 +11541,26 @@ LABEL_15:
 
 - (BOOL)_hasFloatingFieldEditor
 {
-  v2 = self;
-  v3 = [(UITextField *)self _fieldEditor];
-  LOBYTE(v2) = [v3 isDescendantOfView:v2];
+  selfCopy = self;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  LOBYTE(selfCopy) = [_fieldEditor isDescendantOfView:selfCopy];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (BOOL)_inVibrantContentView
 {
-  v3 = [(UITextField *)self _fieldEditor];
-  v4 = [(UIVisualEffectView *)self->_contentBackdropView contentView];
-  v5 = [v3 isDescendantOfView:v4];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  contentView = [(UIVisualEffectView *)self->_contentBackdropView contentView];
+  v5 = [_fieldEditor isDescendantOfView:contentView];
 
   return v5;
 }
 
 - (double)_fieldEditorHeight
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  [v2 frame];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor frame];
   v4 = round(v3 * 0.6857);
 
   return v4;
@@ -11568,51 +11568,51 @@ LABEL_15:
 
 - (id)_uiktest_placeholderLabelColor
 {
-  v2 = [(UITextField *)self _placeholderLabel];
-  v3 = [v2 textColor];
+  _placeholderLabel = [(UITextField *)self _placeholderLabel];
+  textColor = [_placeholderLabel textColor];
 
-  return v3;
+  return textColor;
 }
 
 - (void)beginSelectionChange
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  [v2 beginSelectionChange];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor beginSelectionChange];
 }
 
 - (void)endSelectionChange
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  [v2 endSelectionChange];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor endSelectionChange];
 }
 
 - (BOOL)hasSelection
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  [v2 selectionRange];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor selectionRange];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)startAutoscroll:(CGPoint)a3
+- (void)startAutoscroll:(CGPoint)autoscroll
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITextField *)self _fieldEditor];
-  v7 = [(UITextField *)self textInputView];
-  [v6 convertPoint:v7 fromView:{x, y}];
+  y = autoscroll.y;
+  x = autoscroll.x;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  textInputView = [(UITextField *)self textInputView];
+  [_fieldEditor convertPoint:textInputView fromView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UITextField *)self _fieldEditor];
-  [v12 startAutoscroll:{v9, v11}];
+  _fieldEditor2 = [(UITextField *)self _fieldEditor];
+  [_fieldEditor2 startAutoscroll:{v9, v11}];
 }
 
 - (void)cancelAutoscroll
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  [v2 cancelAutoscroll];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor cancelAutoscroll];
 }
 
 - (BOOL)_restoreFirstResponder
@@ -11622,68 +11622,68 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(UITextField *)self interactionAssistant];
-  v4 = v3;
-  if (v3)
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  v4 = interactionAssistant;
+  if (interactionAssistant)
   {
-    [v3 checkEditabilityAndSetFirstResponderIfNecessary];
-    v5 = [(UIView *)self isFirstResponder];
+    [interactionAssistant checkEditabilityAndSetFirstResponderIfNecessary];
+    isFirstResponder = [(UIView *)self isFirstResponder];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UITextField;
-    v5 = [(UIResponder *)&v8 _restoreFirstResponder];
+    isFirstResponder = [(UIResponder *)&v8 _restoreFirstResponder];
   }
 
-  v6 = v5;
+  v6 = isFirstResponder;
 
   return v6;
 }
 
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3
+- (void)beginFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UITextField *)self interactionAssistant];
-  [v5 beginFloatingCursorAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant beginFloatingCursorAtPoint:{x, y}];
 }
 
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3
+- (void)updateFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UITextField *)self interactionAssistant];
-  [v5 updateFloatingCursorAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant updateFloatingCursorAtPoint:{x, y}];
 }
 
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3 animated:(BOOL)a4
+- (void)updateFloatingCursorAtPoint:(CGPoint)point animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v7 = [(UITextField *)self interactionAssistant];
-  [v7 updateFloatingCursorAtPoint:v4 animated:{x, y}];
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant updateFloatingCursorAtPoint:animatedCopy animated:{x, y}];
 }
 
 - (void)endFloatingCursor
 {
-  v2 = [(UITextField *)self interactionAssistant];
-  [v2 endFloatingCursor];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant endFloatingCursor];
 }
 
 - (id)selectedText
 {
-  v3 = [(UITextField *)self _fieldEditor];
-  v4 = [(UITextField *)self _fieldEditor];
-  v5 = [v4 selectedTextRange];
-  v6 = [v3 textInRange:v5];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  _fieldEditor2 = [(UITextField *)self _fieldEditor];
+  selectedTextRange = [_fieldEditor2 selectedTextRange];
+  v6 = [_fieldEditor textInRange:selectedTextRange];
 
-  v7 = [(UITextField *)self _shouldObscureInput];
+  _shouldObscureInput = [(UITextField *)self _shouldObscureInput];
   v8 = v6;
   v9 = v8;
-  if (v8 && v7)
+  if (v8 && _shouldObscureInput)
   {
     v10 = [MEMORY[0x1E696AEC0] _newZStringWithString:v8];
   }
@@ -11700,26 +11700,26 @@ LABEL_15:
 
 - (id)selectedAttributedText
 {
-  v3 = [(UITextField *)self attributedText];
-  v4 = [(UITextField *)self selectionRange];
-  v6 = [v3 attributedSubstringFromRange:{v4, v5}];
+  attributedText = [(UITextField *)self attributedText];
+  selectionRange = [(UITextField *)self selectionRange];
+  v6 = [attributedText attributedSubstringFromRange:{selectionRange, v5}];
 
   return v6;
 }
 
-- (id)_activityItemsConfigurationAtLocation:(CGPoint)a3
+- (id)_activityItemsConfigurationAtLocation:(CGPoint)location
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v4 = [UIActivityItemsConfiguration alloc];
-  v5 = [(UITextField *)self selectedText];
-  v9[0] = v5;
+  selectedText = [(UITextField *)self selectedText];
+  v9[0] = selectedText;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v7 = [(UIActivityItemsConfiguration *)v4 initWithObjects:v6];
 
   return v7;
 }
 
-- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)a3
+- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)point
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -11732,7 +11732,7 @@ LABEL_15:
   return result;
 }
 
-- (CGPoint)constrainedPoint:(CGPoint)a3
+- (CGPoint)constrainedPoint:(CGPoint)point
 {
   v3 = *MEMORY[0x1E695EFF8];
   v4 = *(MEMORY[0x1E695EFF8] + 8);
@@ -11751,195 +11751,195 @@ LABEL_15:
   return self;
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v5 = a3;
+  cutCopy = cut;
   if ([(UITextField *)self keyboardInputShouldDelete:self])
   {
-    v4 = [(UITextField *)self _inputController];
-    [v4 cut:v5];
+    _inputController = [(UITextField *)self _inputController];
+    [_inputController cut:cutCopy];
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 copy:v4];
+  copyCopy = copy;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController copy:copyCopy];
 
-  v6 = [(UITextField *)self interactionAssistant];
-  [v6 hideSelectionCommands];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant hideSelectionCommands];
 }
 
-- (void)_define:(id)a3
+- (void)_define:(id)_define
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 _define:v4];
+  _defineCopy = _define;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController _define:_defineCopy];
 }
 
-- (void)_translate:(id)a3
+- (void)_translate:(id)_translate
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 _translate:v4];
+  _translateCopy = _translate;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController _translate:_translateCopy];
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 _share:v4];
+  _shareCopy = _share;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController _share:_shareCopy];
 }
 
 - (BOOL)_isDisplayingTextService
 {
-  v2 = [(UITextField *)self _inputController];
-  v3 = [v2 _isDisplayingTextService];
+  _inputController = [(UITextField *)self _inputController];
+  _isDisplayingTextService = [_inputController _isDisplayingTextService];
 
-  return v3;
+  return _isDisplayingTextService;
 }
 
 - (BOOL)_isDisplayingShortcutViewController
 {
-  v2 = [(UITextField *)self _inputController];
-  v3 = [v2 _isDisplayingShortcutViewController];
+  _inputController = [(UITextField *)self _inputController];
+  _isDisplayingShortcutViewController = [_inputController _isDisplayingShortcutViewController];
 
-  return v3;
+  return _isDisplayingShortcutViewController;
 }
 
 - (BOOL)_isDisplayingReferenceLibraryViewController
 {
-  v2 = [(UITextField *)self _inputController];
-  v3 = [v2 _isDisplayingReferenceLibraryViewController];
+  _inputController = [(UITextField *)self _inputController];
+  _isDisplayingReferenceLibraryViewController = [_inputController _isDisplayingReferenceLibraryViewController];
 
-  return v3;
+  return _isDisplayingReferenceLibraryViewController;
 }
 
 - (BOOL)_isDisplayingShareViewController
 {
-  v2 = [(UITextField *)self _inputController];
-  v3 = [v2 _isDisplayingShareViewController];
+  _inputController = [(UITextField *)self _inputController];
+  _isDisplayingShareViewController = [_inputController _isDisplayingShareViewController];
 
-  return v3;
+  return _isDisplayingShareViewController;
 }
 
 - (BOOL)_isDisplayingLookupViewController
 {
-  v2 = [(UITextField *)self _inputController];
-  v3 = [v2 _isDisplayingLookupViewController];
+  _inputController = [(UITextField *)self _inputController];
+  _isDisplayingLookupViewController = [_inputController _isDisplayingLookupViewController];
 
-  return v3;
+  return _isDisplayingLookupViewController;
 }
 
-- (void)_selectionMayChange:(id)a3
+- (void)_selectionMayChange:(id)change
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 _selectionMayChange:v4];
+  changeCopy = change;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController _selectionMayChange:changeCopy];
 }
 
-- (void)_setBackgroundStrokeColor:(id)a3
+- (void)_setBackgroundStrokeColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _systemBackgroundView];
-  [v5 setStrokeColor:v4];
+  colorCopy = color;
+  _systemBackgroundView = [(UITextField *)self _systemBackgroundView];
+  [_systemBackgroundView setStrokeColor:colorCopy];
 }
 
 - (id)_backgroundStrokeColor
 {
-  v2 = [(UITextField *)self _systemBackgroundView];
-  v3 = [v2 strokeColor];
+  _systemBackgroundView = [(UITextField *)self _systemBackgroundView];
+  strokeColor = [_systemBackgroundView strokeColor];
 
-  return v3;
+  return strokeColor;
 }
 
-- (void)_setBackgroundFillColor:(id)a3
+- (void)_setBackgroundFillColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _systemBackgroundView];
-  [v5 setFillColor:v4];
+  colorCopy = color;
+  _systemBackgroundView = [(UITextField *)self _systemBackgroundView];
+  [_systemBackgroundView setFillColor:colorCopy];
 }
 
 - (id)_backgroundFillColor
 {
-  v2 = [(UITextField *)self _systemBackgroundView];
-  v3 = [v2 fillColor];
+  _systemBackgroundView = [(UITextField *)self _systemBackgroundView];
+  fillColor = [_systemBackgroundView fillColor];
 
-  return v3;
+  return fillColor;
 }
 
-- (void)_setBackgroundStrokeWidth:(double)a3
+- (void)_setBackgroundStrokeWidth:(double)width
 {
-  v4 = [(UITextField *)self _systemBackgroundView];
-  [v4 setLineWidth:a3];
+  _systemBackgroundView = [(UITextField *)self _systemBackgroundView];
+  [_systemBackgroundView setLineWidth:width];
 }
 
 - (double)_backgroundStrokeWidth
 {
-  v2 = [(UITextField *)self _systemBackgroundView];
-  [v2 lineWidth];
+  _systemBackgroundView = [(UITextField *)self _systemBackgroundView];
+  [_systemBackgroundView lineWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setAttributes:(id)a3 range:(_NSRange)a4
+- (void)setAttributes:(id)attributes range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (*(&self->_textFieldFlags + 1))
   {
-    v8 = a3;
-    v9 = [(UITextField *)self _inputController];
-    [v9 setAttributes:v8 range:{location, length}];
+    attributesCopy = attributes;
+    attributesCopy2 = [(UITextField *)self _inputController];
+    [attributesCopy2 setAttributes:attributesCopy range:{location, length}];
   }
 
   else
   {
     textStorage = self->_textStorage;
-    v9 = a3;
+    attributesCopy2 = attributes;
     [NSConcreteTextStorage setAttributes:"setAttributes:range:" range:?];
   }
 }
 
-- (void)_insertAttributedTextWithoutClosingTyping:(id)a3
+- (void)_insertAttributedTextWithoutClosingTyping:(id)typing
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 _insertAttributedTextWithoutClosingTyping:v4];
+  typingCopy = typing;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController _insertAttributedTextWithoutClosingTyping:typingCopy];
 }
 
-- (void)_addShortcut:(id)a3
+- (void)_addShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 _addShortcut:v4];
+  shortcutCopy = shortcut;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController _addShortcut:shortcutCopy];
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   if (*(&self->_textFieldFlags + 1))
   {
-    v5 = a3;
-    v6 = [(UITextField *)self _fieldEditor];
-    [v6 _clearOnEditIfNeeded];
+    pasteCopy = paste;
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor _clearOnEditIfNeeded];
 
-    v7 = [(UITextField *)self _inputController];
-    [v7 paste:v5];
+    _inputController = [(UITextField *)self _inputController];
+    [_inputController paste:pasteCopy];
   }
 }
 
-- (void)pasteAndMatchStyle:(id)a3
+- (void)pasteAndMatchStyle:(id)style
 {
   if (*(&self->_textFieldFlags + 1))
   {
-    v5 = a3;
-    v6 = [(UITextField *)self _fieldEditor];
-    [v6 _clearOnEditIfNeeded];
+    styleCopy = style;
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor _clearOnEditIfNeeded];
 
-    v7 = [(UITextField *)self _inputController];
-    [v7 pasteAndMatchStyle:v5];
+    _inputController = [(UITextField *)self _inputController];
+    [_inputController pasteAndMatchStyle:styleCopy];
   }
 }
 
@@ -11947,17 +11947,17 @@ LABEL_15:
 {
   v8.receiver = self;
   v8.super_class = UITextField;
-  v3 = [(UIResponder *)&v8 _effectivePasteConfiguration];
-  v4 = v3;
-  if (v3)
+  _effectivePasteConfiguration = [(UIResponder *)&v8 _effectivePasteConfiguration];
+  v4 = _effectivePasteConfiguration;
+  if (_effectivePasteConfiguration)
   {
-    v5 = v3;
+    v5 = _effectivePasteConfiguration;
   }
 
   else
   {
-    v6 = [(UITextField *)self _implicitPasteConfigurationClasses];
-    v5 = [UIPasteConfiguration _pasteConfigurationForAcceptingClasses:v6];
+    _implicitPasteConfigurationClasses = [(UITextField *)self _implicitPasteConfigurationClasses];
+    v5 = [UIPasteConfiguration _pasteConfigurationForAcceptingClasses:_implicitPasteConfigurationClasses];
   }
 
   return v5;
@@ -11968,9 +11968,9 @@ LABEL_15:
   v15 = *MEMORY[0x1E69E9840];
   if ([(UITextField *)self isEditable])
   {
-    v3 = [(UITextField *)self allowsEditingTextAttributes];
+    allowsEditingTextAttributes = [(UITextField *)self allowsEditingTextAttributes];
     v4 = objc_opt_class();
-    if (v3)
+    if (allowsEditingTextAttributes)
     {
       v12 = v4;
       v13 = objc_opt_class();
@@ -12000,20 +12000,20 @@ LABEL_15:
   return v8;
 }
 
-- (void)pasteItemProviders:(id)a3
+- (void)pasteItemProviders:(id)providers
 {
   if (*(&self->_textFieldFlags + 1))
   {
-    v5 = a3;
-    v6 = [(UITextField *)self _fieldEditor];
-    [v6 _clearOnEditIfNeeded];
+    providersCopy = providers;
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor _clearOnEditIfNeeded];
 
-    v7 = [(UITextField *)self _inputController];
-    [v7 pasteItemProviders:v5];
+    _inputController = [(UITextField *)self _inputController];
+    [_inputController pasteItemProviders:providersCopy];
   }
 }
 
-- (void)_pasteSessionDidFinish:(id)a3
+- (void)_pasteSessionDidFinish:(id)finish
 {
   if ([(UITextField *)self _shouldObscureInput])
   {
@@ -12023,112 +12023,112 @@ LABEL_15:
   }
 }
 
-- (void)select:(id)a3
+- (void)select:(id)select
 {
-  v3 = [(UITextField *)self interactionAssistant];
-  [v3 selectWord];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant selectWord];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v4 = a3;
-  v5 = [(UITextField *)self interactionAssistant];
-  [v5 selectAll:v4];
+  allCopy = all;
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant selectAll:allCopy];
 }
 
-- (void)makeTextWritingDirectionRightToLeft:(id)a3
+- (void)makeTextWritingDirectionRightToLeft:(id)left
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 makeTextWritingDirectionRightToLeft:v4];
+  leftCopy = left;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController makeTextWritingDirectionRightToLeft:leftCopy];
 }
 
-- (void)makeTextWritingDirectionNatural:(id)a3
+- (void)makeTextWritingDirectionNatural:(id)natural
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 makeTextWritingDirectionNatural:v4];
+  naturalCopy = natural;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController makeTextWritingDirectionNatural:naturalCopy];
 }
 
-- (void)makeTextWritingDirectionLeftToRight:(id)a3
+- (void)makeTextWritingDirectionLeftToRight:(id)right
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 makeTextWritingDirectionLeftToRight:v4];
+  rightCopy = right;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController makeTextWritingDirectionLeftToRight:rightCopy];
 }
 
-- (void)toggleBoldface:(id)a3
+- (void)toggleBoldface:(id)boldface
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 toggleBoldface:v4];
+  boldfaceCopy = boldface;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController toggleBoldface:boldfaceCopy];
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 toggleItalics:v4];
+  italicsCopy = italics;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController toggleItalics:italicsCopy];
 }
 
-- (void)toggleUnderline:(id)a3
+- (void)toggleUnderline:(id)underline
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 toggleUnderline:v4];
+  underlineCopy = underline;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController toggleUnderline:underlineCopy];
 }
 
-- (void)increaseSize:(id)a3
+- (void)increaseSize:(id)size
 {
-  v4 = [(UITextField *)self _inputController];
-  [v4 increaseSize:self];
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController increaseSize:self];
 }
 
-- (void)decreaseSize:(id)a3
+- (void)decreaseSize:(id)size
 {
-  v4 = [(UITextField *)self _inputController];
-  [v4 decreaseSize:self];
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController decreaseSize:self];
 }
 
-- (void)replace:(id)a3
+- (void)replace:(id)replace
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 replace:v4];
+  replaceCopy = replace;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController replace:replaceCopy];
 }
 
-- (void)_promptForReplace:(id)a3
+- (void)_promptForReplace:(id)replace
 {
-  v3 = [(UITextField *)self interactionAssistant];
-  [v3 scheduleReplacements];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant scheduleReplacements];
 }
 
-- (void)_transliterateChinese:(id)a3
+- (void)_transliterateChinese:(id)chinese
 {
-  v3 = [(UITextField *)self interactionAssistant];
-  [v3 scheduleChineseTransliteration];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant scheduleChineseTransliteration];
 }
 
-- (void)captureTextFromCamera:(id)a3
+- (void)captureTextFromCamera:(id)camera
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 captureTextFromCamera:v4];
+  cameraCopy = camera;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController captureTextFromCamera:cameraCopy];
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 validateCommand:v4];
+  commandCopy = command;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController validateCommand:commandCopy];
 }
 
 - (BOOL)_inPopover
 {
-  v2 = [(UIView *)self superview];
-  if (v2)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v3 = v2;
+    v3 = superview;
     do
     {
       objc_opt_class();
@@ -12138,12 +12138,12 @@ LABEL_15:
         break;
       }
 
-      v5 = [v3 superview];
+      superview2 = [v3 superview];
 
-      v3 = v5;
+      v3 = superview2;
     }
 
-    while (v5);
+    while (superview2);
   }
 
   else
@@ -12154,10 +12154,10 @@ LABEL_15:
   return isKindOfClass & 1;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v8 = sel_paste_ == a3 || sel_select_ == a3 || sel_selectAll_ == a3;
+  senderCopy = sender;
+  v8 = sel_paste_ == action || sel_select_ == action || sel_selectAll_ == action;
   if (v8 && [(UITextField *)self _isPasscodeStyle])
   {
     v9 = 0;
@@ -12165,36 +12165,36 @@ LABEL_15:
 
   else
   {
-    v10 = [(UITextField *)self _inputController];
-    v11 = [v10 _canHandleResponderAction:a3];
+    _inputController = [(UITextField *)self _inputController];
+    v11 = [_inputController _canHandleResponderAction:action];
 
     if (v11)
     {
-      v12 = [(UITextField *)self _inputController];
-      v9 = [v12 _shouldHandleResponderAction:a3 withSender:v6];
+      _inputController2 = [(UITextField *)self _inputController];
+      v9 = [_inputController2 _shouldHandleResponderAction:action withSender:senderCopy];
     }
 
     else
     {
       v14.receiver = self;
       v14.super_class = UITextField;
-      v9 = [(UIView *)&v14 canPerformAction:a3 withSender:v6];
+      v9 = [(UIView *)&v14 canPerformAction:action withSender:senderCopy];
     }
   }
 
   return v9;
 }
 
-- (id)textInRange:(id)a3
+- (id)textInRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  v6 = [v5 textInRange:v4];
+  rangeCopy = range;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v6 = [_fieldEditor textInRange:rangeCopy];
 
-  v7 = [(UITextField *)self _shouldObscureInput];
+  _shouldObscureInput = [(UITextField *)self _shouldObscureInput];
   v8 = v6;
   v9 = v8;
-  if (v8 && v7)
+  if (v8 && _shouldObscureInput)
   {
     v10 = [MEMORY[0x1E696AEC0] _newZStringWithString:v8];
   }
@@ -12209,73 +12209,73 @@ LABEL_15:
   return v11;
 }
 
-- (void)insertAttributedText:(id)a3
+- (void)insertAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 insertAttributedText:v4];
+  textCopy = text;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor insertAttributedText:textCopy];
 }
 
-- (id)attributedTextInRange:(id)a3
+- (id)attributedTextInRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  v6 = [v5 attributedTextInRange:v4];
+  rangeCopy = range;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v6 = [_fieldEditor attributedTextInRange:rangeCopy];
 
   return v6;
 }
 
-- (void)replaceRange:(id)a3 withText:(id)a4
+- (void)replaceRange:(id)range withText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITextField *)self _fieldEditor];
-  [v8 replaceRange:v7 withText:v6];
+  textCopy = text;
+  rangeCopy = range;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor replaceRange:rangeCopy withText:textCopy];
 }
 
-- (void)replaceRange:(id)a3 withAttributedText:(id)a4
+- (void)replaceRange:(id)range withAttributedText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITextField *)self _fieldEditor];
-  [v8 replaceRange:v7 withAttributedText:v6];
+  textCopy = text;
+  rangeCopy = range;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor replaceRange:rangeCopy withAttributedText:textCopy];
 }
 
-- (id)_replaceRange:(id)a3 withAttributedText:(id)a4 updatingSelection:(BOOL)a5
+- (id)_replaceRange:(id)range withAttributedText:(id)text updatingSelection:(BOOL)selection
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(UITextField *)self _fieldEditor];
-  v11 = [v10 replaceRange:v9 withAttributedText:v8 updatingSelection:v5];
+  selectionCopy = selection;
+  textCopy = text;
+  rangeCopy = range;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v11 = [_fieldEditor replaceRange:rangeCopy withAttributedText:textCopy updatingSelection:selectionCopy];
 
   return v11;
 }
 
-- (void)replaceRangeWithTextWithoutClosingTyping:(id)a3 replacementText:(id)a4
+- (void)replaceRangeWithTextWithoutClosingTyping:(id)typing replacementText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITextField *)self _fieldEditor];
-  [v8 replaceRangeWithTextWithoutClosingTyping:v7 replacementText:v6];
+  textCopy = text;
+  typingCopy = typing;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor replaceRangeWithTextWithoutClosingTyping:typingCopy replacementText:textCopy];
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 setSelectedTextRange:v4];
+  rangeCopy = range;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setSelectedTextRange:rangeCopy];
 }
 
-- (id)_NSTextRangeFromNSRange:(_NSRange)a3
+- (id)_NSTextRangeFromNSRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(UITextField *)self _internalTextLayoutController];
-  v6 = v5;
-  if (v5)
+  length = range.length;
+  location = range.location;
+  _internalTextLayoutController = [(UITextField *)self _internalTextLayoutController];
+  v6 = _internalTextLayoutController;
+  if (_internalTextLayoutController)
   {
-    v7 = [v5 _rangeForCharacterRange:{location, length}];
+    v7 = [_internalTextLayoutController _rangeForCharacterRange:{location, length}];
   }
 
   else
@@ -12286,137 +12286,137 @@ LABEL_15:
   return v7;
 }
 
-- (void)setMarkedTextStyle:(id)a3
+- (void)setMarkedTextStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 setMarkedTextStyle:v4];
+  styleCopy = style;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setMarkedTextStyle:styleCopy];
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(UITextField *)self _fieldEditor];
-  [v8 setMarkedText:v7 selectedRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setMarkedText:textCopy selectedRange:{location, length}];
 }
 
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(UITextField *)self _fieldEditor];
-  [v8 setAttributedMarkedText:v7 selectedRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setAttributedMarkedText:textCopy selectedRange:{location, length}];
 }
 
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITextField *)self _fieldEditor];
-  v9 = [v8 textRangeFromPosition:v7 toPosition:v6];
+  toPositionCopy = toPosition;
+  positionCopy = position;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v9 = [_fieldEditor textRangeFromPosition:positionCopy toPosition:toPositionCopy];
 
   return v9;
 }
 
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4
+- (id)positionFromPosition:(id)position offset:(int64_t)offset
 {
-  v6 = a3;
-  v7 = [(UITextField *)self _fieldEditor];
-  v8 = [v7 positionFromPosition:v6 offset:a4];
+  positionCopy = position;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v8 = [_fieldEditor positionFromPosition:positionCopy offset:offset];
 
   return v8;
 }
 
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset
 {
-  v8 = a3;
-  v9 = [(UITextField *)self _fieldEditor];
-  v10 = [v9 positionFromPosition:v8 inDirection:a4 offset:a5];
+  positionCopy = position;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v10 = [_fieldEditor positionFromPosition:positionCopy inDirection:direction offset:offset];
 
   return v10;
 }
 
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITextField *)self _fieldEditor];
-  v9 = [v8 comparePosition:v7 toPosition:v6];
+  toPositionCopy = toPosition;
+  positionCopy = position;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v9 = [_fieldEditor comparePosition:positionCopy toPosition:toPositionCopy];
 
   return v9;
 }
 
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITextField *)self _fieldEditor];
-  v9 = [v8 offsetFromPosition:v7 toPosition:v6];
+  toPositionCopy = toPosition;
+  positionCopy = position;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v9 = [_fieldEditor offsetFromPosition:positionCopy toPosition:toPositionCopy];
 
   return v9;
 }
 
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = [(UITextField *)self _fieldEditor];
-  v8 = [v7 positionWithinRange:v6 farthestInDirection:a4];
+  rangeCopy = range;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v8 = [_fieldEditor positionWithinRange:rangeCopy farthestInDirection:direction];
 
   return v8;
 }
 
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = [(UITextField *)self _fieldEditor];
-  v8 = [v7 characterRangeByExtendingPosition:v6 inDirection:a4];
+  positionCopy = position;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v8 = [_fieldEditor characterRangeByExtendingPosition:positionCopy inDirection:direction];
 
   return v8;
 }
 
-- (id)_visualSelectionRangeForExtent:(id)a3 forPoint:(CGPoint)a4 fromPosition:(id)a5 inDirection:(int64_t)a6
+- (id)_visualSelectionRangeForExtent:(id)extent forPoint:(CGPoint)point fromPosition:(id)position inDirection:(int64_t)direction
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(UITextField *)self _fieldEditor];
-  v14 = [v13 _visualSelectionRangeForExtent:v12 forPoint:v11 fromPosition:a6 inDirection:{x, y}];
+  y = point.y;
+  x = point.x;
+  positionCopy = position;
+  extentCopy = extent;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v14 = [_fieldEditor _visualSelectionRangeForExtent:extentCopy forPoint:positionCopy fromPosition:direction inDirection:{x, y}];
 
   return v14;
 }
 
-- (void)setInputDelegate:(id)a3
+- (void)setInputDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 setInputDelegate:v4];
+  delegateCopy = delegate;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setInputDelegate:delegateCopy];
 }
 
-- (int64_t)baseWritingDirectionForPosition:(id)a3 inDirection:(int64_t)a4
+- (int64_t)baseWritingDirectionForPosition:(id)position inDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = [(UITextField *)self _fieldEditor];
-  v8 = [v7 baseWritingDirectionForPosition:v6 inDirection:a4];
+  positionCopy = position;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v8 = [_fieldEditor baseWritingDirectionForPosition:positionCopy inDirection:direction];
 
   return v8;
 }
 
-- (void)setBaseWritingDirection:(int64_t)a3 forRange:(id)a4
+- (void)setBaseWritingDirection:(int64_t)direction forRange:(id)range
 {
-  v6 = a4;
-  v7 = [(UITextField *)self _fieldEditor];
-  [v7 setBaseWritingDirection:a3 forRange:v6];
+  rangeCopy = range;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setBaseWritingDirection:direction forRange:rangeCopy];
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 firstRectForRange:v4];
+  rangeCopy = range;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor firstRectForRange:rangeCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -12433,11 +12433,11 @@ LABEL_15:
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 caretRectForPosition:v4];
+  positionCopy = position;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor caretRectForPosition:positionCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -12460,28 +12460,28 @@ LABEL_15:
   return result;
 }
 
-- (id)textStylingAtPosition:(id)a3 inDirection:(int64_t)a4
+- (id)textStylingAtPosition:(id)position inDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = [(UITextField *)self _inputController];
-  v8 = [v7 textStylingAtPosition:v6 inDirection:a4];
+  positionCopy = position;
+  _inputController = [(UITextField *)self _inputController];
+  v8 = [_inputController textStylingAtPosition:positionCopy inDirection:direction];
 
   return v8;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  v6 = [v5 selectionRectsForRange:v4];
+  rangeCopy = range;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v6 = [_fieldEditor selectionRectsForRange:rangeCopy];
 
   return v6;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3
+- (id)closestPositionToPoint:(CGPoint)point
 {
-  x = a3.x;
-  v5 = [(_UITextLayoutController *)self->_textLayoutController beginningOfDocument:a3.x];
+  x = point.x;
+  v5 = [(_UITextLayoutController *)self->_textLayoutController beginningOfDocument:point.x];
   [(UITextField *)self caretRectForPosition:v5];
   v7 = v6;
   v9 = v8;
@@ -12493,19 +12493,19 @@ LABEL_15:
   v19.size.width = v11;
   v19.size.height = v13;
   MidY = CGRectGetMidY(v19);
-  v15 = [(UITextField *)self _fieldEditor];
-  v16 = [v15 closestPositionToPoint:{x, MidY}];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v16 = [_fieldEditor closestPositionToPoint:{x, MidY}];
 
   return v16;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range
 {
-  x = a3.x;
+  x = point.x;
   textLayoutController = self->_textLayoutController;
-  v7 = a4;
-  v8 = [(_UITextLayoutController *)textLayoutController beginningOfDocument];
-  [(UITextField *)self caretRectForPosition:v8];
+  rangeCopy = range;
+  beginningOfDocument = [(_UITextLayoutController *)textLayoutController beginningOfDocument];
+  [(UITextField *)self caretRectForPosition:beginningOfDocument];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -12516,84 +12516,84 @@ LABEL_15:
   v22.size.width = v14;
   v22.size.height = v16;
   MidY = CGRectGetMidY(v22);
-  v18 = [(UITextField *)self _fieldEditor];
-  v19 = [v18 closestPositionToPoint:v7 withinRange:{x, MidY}];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v19 = [_fieldEditor closestPositionToPoint:rangeCopy withinRange:{x, MidY}];
 
   return v19;
 }
 
-- (void)_setCursorAccessories:(id)a3
+- (void)_setCursorAccessories:(id)accessories
 {
   interactionAssistant = self->_interactionAssistant;
-  v4 = a3;
-  v6 = [(UITextInteractionAssistant *)interactionAssistant _selectionViewManager];
-  v5 = [v6 _cursorAccessoryViewController];
-  [v5 setAccessories:v4];
+  accessoriesCopy = accessories;
+  _selectionViewManager = [(UITextInteractionAssistant *)interactionAssistant _selectionViewManager];
+  _cursorAccessoryViewController = [_selectionViewManager _cursorAccessoryViewController];
+  [_cursorAccessoryViewController setAccessories:accessoriesCopy];
 }
 
-- (id)characterRangeAtPoint:(CGPoint)a3
+- (id)characterRangeAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UITextField *)self _fieldEditor];
-  v6 = [v5 characterRangeAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v6 = [_fieldEditor characterRangeAtPoint:{x, y}];
 
   return v6;
 }
 
-- (void)insertDictationResult:(id)a3 withCorrectionIdentifier:(id)a4
+- (void)insertDictationResult:(id)result withCorrectionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v10 = [a3 singleLineResult];
-  v7 = [v10 phrases];
-  v8 = [v7 count];
+  identifierCopy = identifier;
+  singleLineResult = [result singleLineResult];
+  phrases = [singleLineResult phrases];
+  v8 = [phrases count];
 
   if (v8)
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v10 dictationPhraseArray];
-      [(UITextField *)self insertDictationResult:v9];
+      dictationPhraseArray = [singleLineResult dictationPhraseArray];
+      [(UITextField *)self insertDictationResult:dictationPhraseArray];
     }
 
     else
     {
-      v9 = [(UITextField *)self _fieldEditor];
-      [v9 insertDictationResult:v10 withCorrectionIdentifier:v6];
+      dictationPhraseArray = [(UITextField *)self _fieldEditor];
+      [dictationPhraseArray insertDictationResult:singleLineResult withCorrectionIdentifier:identifierCopy];
     }
   }
 }
 
-- (id)insertTextPlaceholderWithSize:(CGSize)a3
+- (id)insertTextPlaceholderWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UITextField *)self _fieldEditor];
-  v6 = [v5 insertTextPlaceholderWithSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  v6 = [_fieldEditor insertTextPlaceholderWithSize:{width, height}];
 
   return v6;
 }
 
-- (void)removeTextPlaceholder:(id)a3
+- (void)removeTextPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 removeTextPlaceholder:v4];
+  placeholderCopy = placeholder;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor removeTextPlaceholder:placeholderCopy];
 }
 
 - (id)insertDictationResultPlaceholder
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  v3 = [v2 insertDictationResultPlaceholder];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  insertDictationResultPlaceholder = [_fieldEditor insertDictationResultPlaceholder];
 
-  return v3;
+  return insertDictationResultPlaceholder;
 }
 
-- (CGRect)frameForDictationResultPlaceholder:(id)a3
+- (CGRect)frameForDictationResultPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 frameForDictationResultPlaceholder:v4];
+  placeholderCopy = placeholder;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor frameForDictationResultPlaceholder:placeholderCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -12610,38 +12610,38 @@ LABEL_15:
   return result;
 }
 
-- (void)removeDictationResultPlaceholder:(id)a3 willInsertResult:(BOOL)a4
+- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)result
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UITextField *)self _fieldEditor];
-  [v7 removeDictationResultPlaceholder:v6 willInsertResult:v4];
+  resultCopy = result;
+  placeholderCopy = placeholder;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor removeDictationResultPlaceholder:placeholderCopy willInsertResult:resultCopy];
 }
 
-- (void)_setOverridePlaceholder:(id)a3 alignment:(int64_t)a4
+- (void)_setOverridePlaceholder:(id)placeholder alignment:(int64_t)alignment
 {
-  v6 = a3;
-  v7 = v6;
+  placeholderCopy = placeholder;
+  v7 = placeholderCopy;
   if (!self->_overriddenPlaceholder)
   {
-    if (!v6)
+    if (!placeholderCopy)
     {
       goto LABEL_14;
     }
 
-    v22 = v6;
-    v9 = [(UITextField *)self attributedPlaceholder];
-    v10 = v9;
-    v11 = v9 ? v9 : [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1EFB14550];
+    v22 = placeholderCopy;
+    attributedPlaceholder = [(UITextField *)self attributedPlaceholder];
+    v10 = attributedPlaceholder;
+    v11 = attributedPlaceholder ? attributedPlaceholder : [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1EFB14550];
     overriddenPlaceholder = self->_overriddenPlaceholder;
     self->_overriddenPlaceholder = v11;
 
-    v19 = [(UITextField *)self _placeholderLabel];
-    self->_overriddenPlaceholderAlignment = [v19 textAlignment];
+    _placeholderLabel = [(UITextField *)self _placeholderLabel];
+    self->_overriddenPlaceholderAlignment = [_placeholderLabel textAlignment];
 
     [(UITextField *)self _setAttributedPlaceholder:v22];
-    v20 = [(UITextField *)self _placeholderLabel];
-    [v20 setTextAlignment:a4];
+    _placeholderLabel2 = [(UITextField *)self _placeholderLabel];
+    [_placeholderLabel2 setTextAlignment:alignment];
 
     v21 = objc_opt_respondsToSelector();
     v7 = v22;
@@ -12657,13 +12657,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v22 = v6;
-  if (!v6)
+  v22 = placeholderCopy;
+  if (!placeholderCopy)
   {
     [(UITextField *)self _setAttributedPlaceholder:?];
     overriddenPlaceholderAlignment = self->_overriddenPlaceholderAlignment;
-    v13 = [(UITextField *)self _placeholderLabel];
-    [v13 setTextAlignment:overriddenPlaceholderAlignment];
+    _placeholderLabel3 = [(UITextField *)self _placeholderLabel];
+    [_placeholderLabel3 setTextAlignment:overriddenPlaceholderAlignment];
 
     v14 = self->_overriddenPlaceholder;
     self->_overriddenPlaceholder = 0;
@@ -12680,25 +12680,25 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [(UITextField *)self _setAttributedPlaceholder:v6];
-  v8 = [(UITextField *)self _placeholderLabel];
-  [v8 setTextAlignment:a4];
+  [(UITextField *)self _setAttributedPlaceholder:placeholderCopy];
+  _placeholderLabel4 = [(UITextField *)self _placeholderLabel];
+  [_placeholderLabel4 setTextAlignment:alignment];
 
 LABEL_13:
   v7 = v22;
 LABEL_14:
 }
 
-- (id)rangeWithTextAlternatives:(id *)a3 atPosition:(id)a4
+- (id)rangeWithTextAlternatives:(id *)alternatives atPosition:(id)position
 {
-  v6 = a4;
-  v7 = [(UITextField *)self _fieldEditor];
+  positionCopy = position;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(UITextField *)self _fieldEditor];
-    v10 = [v9 rangeWithTextAlternatives:a3 atPosition:v6];
+    _fieldEditor2 = [(UITextField *)self _fieldEditor];
+    v10 = [_fieldEditor2 rangeWithTextAlternatives:alternatives atPosition:positionCopy];
   }
 
   else
@@ -12719,10 +12719,10 @@ LABEL_14:
   return [(UIControl *)self _hasActionForEventMask:0x80000];
 }
 
-- (void)_setShouldDisplayDictationPlaceholderMessage:(BOOL)a3
+- (void)_setShouldDisplayDictationPlaceholderMessage:(BOOL)message
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!message)
   {
     v3 = 0;
   }
@@ -12730,10 +12730,10 @@ LABEL_14:
   self->_textFieldFlags = (*&self->_textFieldFlags & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)_setSuppressContentChangedNotification:(BOOL)a3
+- (void)_setSuppressContentChangedNotification:(BOOL)notification
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!notification)
   {
     v3 = 0;
   }
@@ -12766,18 +12766,18 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)a3 replacementString:(id)a4 delegateCares:(BOOL *)a5
+- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)ranges replacementString:(id)string delegateCares:(BOOL *)cares
 {
-  v8 = a4;
-  v9 = a3;
+  stringCopy = string;
+  rangesCopy = ranges;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11 = [(UITextField *)self _textRangesForTextStorageRanges:v9];
+  v11 = [(UITextField *)self _textRangesForTextStorageRanges:rangesCopy];
 
   v12 = objc_opt_respondsToSelector();
   v13 = objc_opt_respondsToSelector();
   if (v13)
   {
-    v14 = [WeakRetained textField:self shouldChangeCharactersInRanges:v11 replacementString:v8];
+    v14 = [WeakRetained textField:self shouldChangeCharactersInRanges:v11 replacementString:stringCopy];
   }
 
   else
@@ -12785,7 +12785,7 @@ LABEL_14:
     if ((v12 & 1) == 0)
     {
       v17 = 1;
-      if (!a5)
+      if (!cares)
       {
         goto LABEL_7;
       }
@@ -12793,15 +12793,15 @@ LABEL_14:
       goto LABEL_6;
     }
 
-    v15 = [v11 unionRange];
-    v14 = [WeakRetained textField:self shouldChangeCharactersInRange:v15 replacementString:{v16, v8}];
+    unionRange = [v11 unionRange];
+    v14 = [WeakRetained textField:self shouldChangeCharactersInRange:unionRange replacementString:{v16, stringCopy}];
   }
 
   v17 = v14;
-  if (a5)
+  if (cares)
   {
 LABEL_6:
-    *a5 = (v12 | v13) & 1;
+    *cares = (v12 | v13) & 1;
   }
 
 LABEL_7:
@@ -12809,46 +12809,46 @@ LABEL_7:
   return v17;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 insertText:v4];
+  textCopy = text;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor insertText:textCopy];
 }
 
-- (void)insertText:(id)a3 alternatives:(id)a4 style:(int64_t)a5
+- (void)insertText:(id)text alternatives:(id)alternatives style:(int64_t)style
 {
-  v6 = [off_1E70ECBA0 attributedText:a3 withAlternativeTexts:a4 style:a5];
+  v6 = [off_1E70ECBA0 attributedText:text withAlternativeTexts:alternatives style:style];
   [(UITextField *)self insertAttributedText:v6];
 }
 
-- (void)addTextAlternatives:(id)a3
+- (void)addTextAlternatives:(id)alternatives
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _inputController];
-  [v5 addTextAlternatives:v4];
+  alternativesCopy = alternatives;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController addTextAlternatives:alternativesCopy];
 }
 
 - (void)removeEmojiAlternatives
 {
-  v2 = [(UITextField *)self _inputController];
-  [v2 removeEmojiAlternatives];
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController removeEmojiAlternatives];
 }
 
-- (_NSRange)insertFilteredText:(id)a3
+- (_NSRange)insertFilteredText:(id)text
 {
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
+  textCopy = text;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 insertFilteredText:v4];
+    v6 = [_fieldEditor insertFilteredText:textCopy];
     v8 = v7;
   }
 
   else
   {
-    [v5 insertText:v4];
-    v8 = [v4 length];
+    [_fieldEditor insertText:textCopy];
+    v8 = [textCopy length];
     v6 = 0;
   }
 
@@ -12861,13 +12861,13 @@ LABEL_7:
 
 - (void)deleteBackward
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  [v2 deleteBackward];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor deleteBackward];
 }
 
-- (void)_deleteBackwardAndNotify:(BOOL)a3
+- (void)_deleteBackwardAndNotify:(BOOL)notify
 {
-  if (a3)
+  if (notify)
   {
 
     [(UITextField *)self deleteBackward];
@@ -12875,43 +12875,43 @@ LABEL_7:
 
   else
   {
-    v4 = [(UITextField *)self _fieldEditor];
-    [v4 _deleteBackwardAndNotify:0];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor _deleteBackwardAndNotify:0];
   }
 }
 
 - (unint64_t)_textLengthToDeleteBeforeSelectedRangeForSmartDelete
 {
-  v2 = [(UITextField *)self _inputController];
-  v3 = [v2 textLengthToDeleteBeforeSelectedRangeForSmartDelete];
+  _inputController = [(UITextField *)self _inputController];
+  textLengthToDeleteBeforeSelectedRangeForSmartDelete = [_inputController textLengthToDeleteBeforeSelectedRangeForSmartDelete];
 
-  return v3;
+  return textLengthToDeleteBeforeSelectedRangeForSmartDelete;
 }
 
-- (void)setContinuousSpellCheckingEnabled:(BOOL)a3
+- (void)setContinuousSpellCheckingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(UITextField *)self _inputController];
-  [v4 setContinuousSpellCheckingEnabled:v3];
+  enabledCopy = enabled;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController setContinuousSpellCheckingEnabled:enabledCopy];
 }
 
-- (void)_setRoundedRectBackgroundCornerRadius:(double)a3
+- (void)_setRoundedRectBackgroundCornerRadius:(double)radius
 {
-  if (a3 >= 0.0)
+  if (radius >= 0.0)
   {
-    v3 = a3;
+    radiusCopy = radius;
   }
 
   else
   {
-    v3 = 0.0;
+    radiusCopy = 0.0;
   }
 
-  if (self->_preferredBackgroundCornerRadius != v3)
+  if (self->_preferredBackgroundCornerRadius != radiusCopy)
   {
-    self->_preferredBackgroundCornerRadius = v3;
-    v4 = [(UITextField *)self _systemBackgroundView];
-    [v4 setCornerRadius:v3];
+    self->_preferredBackgroundCornerRadius = radiusCopy;
+    _systemBackgroundView = [(UITextField *)self _systemBackgroundView];
+    [_systemBackgroundView setCornerRadius:radiusCopy];
   }
 }
 
@@ -12919,8 +12919,8 @@ LABEL_7:
 {
   if ([(UITextField *)self _fieldEditorAttached])
   {
-    v8 = [(_UITextFieldVisualStyle *)self->_visualStyle defaultTextColorForKeyboardAppearance];
-    [(UITextField *)self _setTextColor:v8];
+    defaultTextColorForKeyboardAppearance = [(_UITextFieldVisualStyle *)self->_visualStyle defaultTextColorForKeyboardAppearance];
+    [(UITextField *)self _setTextColor:defaultTextColorForKeyboardAppearance];
   }
 
   else
@@ -12930,16 +12930,16 @@ LABEL_7:
       tvCustomFocusedTextColor = self->_tvCustomFocusedTextColor;
       if (tvCustomFocusedTextColor)
       {
-        v4 = tvCustomFocusedTextColor;
+        defaultFocusedTextColor = tvCustomFocusedTextColor;
       }
 
       else
       {
-        v4 = [(_UITextFieldVisualStyle *)self->_visualStyle defaultFocusedTextColor];
+        defaultFocusedTextColor = [(_UITextFieldVisualStyle *)self->_visualStyle defaultFocusedTextColor];
       }
 
-      v7 = v4;
-      [(_UICascadingTextStorage *)self->_textStorage setTextColor:v4];
+      v7 = defaultFocusedTextColor;
+      [(_UICascadingTextStorage *)self->_textStorage setTextColor:defaultFocusedTextColor];
       self->_tvUseVibrancy = 0;
     }
 
@@ -12948,16 +12948,16 @@ LABEL_7:
       tvCustomTextColor = self->_tvCustomTextColor;
       if (tvCustomTextColor)
       {
-        v6 = tvCustomTextColor;
+        defaultTextColor = tvCustomTextColor;
       }
 
       else
       {
-        v6 = [(_UITextFieldVisualStyle *)self->_visualStyle defaultTextColor];
+        defaultTextColor = [(_UITextFieldVisualStyle *)self->_visualStyle defaultTextColor];
       }
 
-      v7 = v6;
-      [(_UICascadingTextStorage *)self->_textStorage setTextColor:v6];
+      v7 = defaultTextColor;
+      [(_UICascadingTextStorage *)self->_textStorage setTextColor:defaultTextColor];
       self->_tvUseVibrancy = self->_tvCustomTextColor == 0;
     }
 
@@ -12969,31 +12969,31 @@ LABEL_7:
 {
   v2 = [UISystemInputViewController _canonicalTraitsForResponder:self];
   v3 = _UISolariumEnabled();
-  v4 = [v2 keyboardAppearance];
+  keyboardAppearance = [v2 keyboardAppearance];
   v5 = 4016;
   v6 = 4012;
-  if (v4 == 1)
+  if (keyboardAppearance == 1)
   {
     v6 = 4013;
   }
 
-  if (v4 != 9)
+  if (keyboardAppearance != 9)
   {
     v5 = v6;
   }
 
-  if (v4 == 10)
+  if (keyboardAppearance == 10)
   {
     v5 = 5006;
   }
 
   v7 = 17;
-  if (v4 == 10)
+  if (keyboardAppearance == 10)
   {
     v7 = 7;
   }
 
-  if (v4 == 2)
+  if (keyboardAppearance == 2)
   {
     v7 = 12;
   }
@@ -13021,28 +13021,28 @@ LABEL_7:
   return [(UITextField *)self _blurEffectStyleForAppearance];
 }
 
-- (void)insertInputSuggestion:(id)a3
+- (void)insertInputSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained textField:self insertInputSuggestion:v5];
+    [WeakRetained textField:self insertInputSuggestion:suggestionCopy];
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __65__UITextField_pointerInteraction_regionForRequest_defaultRegion___block_invoke;
   v20 = &unk_1E71263E8;
-  v11 = v9;
+  v11 = requestCopy;
   v21 = v11;
-  v22 = self;
+  selfCopy = self;
   v12 = _Block_copy(&v17);
   if ([(UITextField *)self _showsLeftView:v17]&& v12[2](v12, self->_leftView))
   {
@@ -13060,8 +13060,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v15 = [(UITextField *)self interactionAssistant];
-  v14 = [v15 pointerInteraction:v8 regionForRequest:v11 defaultRegion:v10];
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  v14 = [interactionAssistant pointerInteraction:interactionCopy regionForRequest:v11 defaultRegion:regionCopy];
 
 LABEL_9:
 
@@ -13113,12 +13113,12 @@ uint64_t __65__UITextField_pointerInteraction_regionForRequest_defaultRegion___b
   return v15;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [v8 isEqual:@"_UITextFieldLeftViewRegion"];
+  interactionCopy = interaction;
+  regionCopy = region;
+  identifier = [regionCopy identifier];
+  v9 = [identifier isEqual:@"_UITextFieldLeftViewRegion"];
 
   if (v9)
   {
@@ -13127,14 +13127,14 @@ uint64_t __65__UITextField_pointerInteraction_regionForRequest_defaultRegion___b
 
   else
   {
-    v11 = [v7 identifier];
-    v12 = [v11 isEqual:@"_UITextFieldRightViewRegion"];
+    identifier2 = [regionCopy identifier];
+    v12 = [identifier2 isEqual:@"_UITextFieldRightViewRegion"];
 
     if (!v12)
     {
 LABEL_8:
-      v14 = [(UITextField *)self interactionAssistant];
-      v17 = [v14 pointerInteraction:v6 styleForRegion:v7];
+      interactionAssistant = [(UITextField *)self interactionAssistant];
+      v17 = [interactionAssistant pointerInteraction:interactionCopy styleForRegion:regionCopy];
       goto LABEL_14;
     }
 
@@ -13147,30 +13147,30 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v14 = v13;
-  v15 = [v13 _pointerEffect];
-  if ([v15 isMemberOfClass:objc_opt_class()])
+  interactionAssistant = v13;
+  _pointerEffect = [v13 _pointerEffect];
+  if ([_pointerEffect isMemberOfClass:objc_opt_class()])
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __49__UITextField_pointerInteraction_styleForRegion___block_invoke;
     v21[3] = &unk_1E7126410;
     v21[4] = self;
-    v22 = v14;
+    v22 = interactionAssistant;
     v23 = v9 ^ 1;
     v16 = [v22 _shapeInContainer:self proposal:v21];
   }
 
   else
   {
-    v16 = [v14 _shapeInContainer:self];
+    v16 = [interactionAssistant _shapeInContainer:self];
   }
 
-  v18 = [v14 pointerStyleProvider];
-  v19 = v18;
-  if (!v18 || ((*(v18 + 16))(v18, v14, v15, v16), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+  pointerStyleProvider = [interactionAssistant pointerStyleProvider];
+  v19 = pointerStyleProvider;
+  if (!pointerStyleProvider || ((*(pointerStyleProvider + 16))(pointerStyleProvider, interactionAssistant, _pointerEffect, v16), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v17 = [UIPointerStyle styleWithEffect:v15 shape:v16];
+    v17 = [UIPointerStyle styleWithEffect:_pointerEffect shape:v16];
   }
 
 LABEL_14:
@@ -13243,22 +13243,22 @@ LABEL_10:
   return v20;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(UITextField *)self interactionAssistant];
-  [v11 pointerInteraction:v10 willEnterRegion:v9 animator:v8];
+  animatorCopy = animator;
+  regionCopy = region;
+  interactionCopy = interaction;
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant pointerInteraction:interactionCopy willEnterRegion:regionCopy animator:animatorCopy];
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(UITextField *)self interactionAssistant];
-  [v11 pointerInteraction:v10 willExitRegion:v9 animator:v8];
+  animatorCopy = animator;
+  regionCopy = region;
+  interactionCopy = interaction;
+  interactionAssistant = [(UITextField *)self interactionAssistant];
+  [interactionAssistant pointerInteraction:interactionCopy willExitRegion:regionCopy animator:animatorCopy];
 }
 
 - (UIDragInteraction)textDragInteraction
@@ -13268,16 +13268,16 @@ LABEL_10:
   {
     v4 = textDragDropSupport;
 LABEL_4:
-    v7 = [(UIView *)self interactions];
-    v8 = [(UITextDragDropSupport *)v4 dragInteraction];
-    if ([v7 indexOfObject:v8] == 0x7FFFFFFFFFFFFFFFLL)
+    interactions = [(UIView *)self interactions];
+    dragInteraction = [(UITextDragDropSupport *)v4 dragInteraction];
+    if ([interactions indexOfObject:dragInteraction] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = 0;
+      dragInteraction2 = 0;
     }
 
     else
     {
-      v9 = [(UITextDragDropSupport *)v4 dragInteraction];
+      dragInteraction2 = [(UITextDragDropSupport *)v4 dragInteraction];
     }
 
     goto LABEL_8;
@@ -13293,10 +13293,10 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v9 = 0;
+  dragInteraction2 = 0;
 LABEL_8:
 
-  return v9;
+  return dragInteraction2;
 }
 
 - (UIDropInteraction)textDropInteraction
@@ -13306,16 +13306,16 @@ LABEL_8:
   {
     v4 = textDragDropSupport;
 LABEL_4:
-    v7 = [(UIView *)self interactions];
-    v8 = [(UITextDragDropSupport *)v4 dropInteraction];
-    if ([v7 indexOfObject:v8] == 0x7FFFFFFFFFFFFFFFLL)
+    interactions = [(UIView *)self interactions];
+    dropInteraction = [(UITextDragDropSupport *)v4 dropInteraction];
+    if ([interactions indexOfObject:dropInteraction] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = 0;
+      dropInteraction2 = 0;
     }
 
     else
     {
-      v9 = [(UITextDragDropSupport *)v4 dropInteraction];
+      dropInteraction2 = [(UITextDragDropSupport *)v4 dropInteraction];
     }
 
     goto LABEL_8;
@@ -13331,10 +13331,10 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v9 = 0;
+  dropInteraction2 = 0;
 LABEL_8:
 
-  return v9;
+  return dropInteraction2;
 }
 
 - (void)invalidateDropCaret
@@ -13352,22 +13352,22 @@ LABEL_8:
   [(UITextDragDropSupport *)textDragDropSupport invalidateDropCaret];
 }
 
-- (void)draggingFinished:(id)a3
+- (void)draggingFinished:(id)finished
 {
-  v6 = a3;
+  finishedCopy = finished;
   [(UITextField *)self _updateSelectionGestures];
   if (![(UIView *)self isFirstResponder])
   {
     [(UITextField *)self _detachFieldEditor];
   }
 
-  if (([v6 dragTearoffOccured] & 1) == 0)
+  if (([finishedCopy dragTearoffOccured] & 1) == 0)
   {
     [(UITextField *)self selectionRange];
     if (v4)
     {
-      v5 = [(UITextField *)self interactionAssistant];
-      [v5 showSelectionCommands];
+      interactionAssistant = [(UITextField *)self interactionAssistant];
+      [interactionAssistant showSelectionCommands];
     }
   }
 }
@@ -13375,25 +13375,25 @@ LABEL_8:
 - (id)willGenerateCancelPreview
 {
   v3 = MEMORY[0x1E696B098];
-  v4 = [(UITextField *)self _fieldEditor];
-  [v4 contentOffset];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor contentOffset];
   v5 = [v3 valueWithPoint:?];
 
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
-  v8 = [(UITextField *)self _fieldEditor];
-  [v8 setContentOffset:{v6, v7}];
+  _fieldEditor2 = [(UITextField *)self _fieldEditor];
+  [_fieldEditor2 setContentOffset:{v6, v7}];
 
   return v5;
 }
 
-- (void)didGenerateCancelPreview:(id)a3
+- (void)didGenerateCancelPreview:(id)preview
 {
-  [a3 CGPointValue];
+  [preview CGPointValue];
   v5 = v4;
   v7 = v6;
-  v8 = [(UITextField *)self _fieldEditor];
-  [v8 setContentOffset:{v5, v7}];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setContentOffset:{v5, v7}];
 }
 
 - (void)performCancelAnimations
@@ -13401,8 +13401,8 @@ LABEL_8:
   if (![(UIView *)self isFirstResponder]&& [(UITextField *)self _fieldEditorAttached])
   {
     fieldEditor = self->_fieldEditor;
-    v4 = [(UITextField *)self beginningOfDocument];
-    [(UITextField *)self caretRectForPosition:v4];
+    beginningOfDocument = [(UITextField *)self beginningOfDocument];
+    [(UITextField *)self caretRectForPosition:beginningOfDocument];
     [(UIScrollView *)fieldEditor scrollRectToVisible:1 animated:?];
   }
 }
@@ -13414,29 +13414,29 @@ LABEL_8:
     [(UITextField *)self _attachFieldEditor];
     v3 = *MEMORY[0x1E695EFF8];
     v4 = *(MEMORY[0x1E695EFF8] + 8);
-    v5 = [(UITextField *)self _fieldEditor];
-    [v5 setContentOffset:{v3, v4}];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor setContentOffset:{v3, v4}];
 
-    v6 = [(UITextField *)self _fieldEditor];
-    [v6 setScrollEnabled:1];
+    _fieldEditor2 = [(UITextField *)self _fieldEditor];
+    [_fieldEditor2 setScrollEnabled:1];
   }
 }
 
-- (void)resignDropResponderWithDropPerformed:(BOOL)a3
+- (void)resignDropResponderWithDropPerformed:(BOOL)performed
 {
   if (![(UIView *)self isFirstResponder]&& (*(&self->_textFieldFlags + 1) & 1) != 0)
   {
-    v5 = [(UITextField *)self _fieldEditor];
-    [v5 setScrollEnabled:0];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor setScrollEnabled:0];
 
     v6 = 0;
-    if (!a3)
+    if (!performed)
     {
       v6 = ![(UITextField *)self isTextDragActive];
     }
 
-    v7 = [(UITextField *)self _fieldEditor];
-    [v7 _contentOffsetAnimationDuration];
+    _fieldEditor2 = [(UITextField *)self _fieldEditor];
+    [_fieldEditor2 _contentOffsetAnimationDuration];
     v9 = dispatch_time(0, (v8 * 1000000000.0));
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -13466,8 +13466,8 @@ uint64_t __52__UITextField_resignDropResponderWithDropPerformed___block_invoke(u
 
 - (CGPoint)contentOffsetForSameViewDrops
 {
-  v2 = [(UITextField *)self _fieldEditor];
-  [v2 contentOffset];
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor contentOffset];
   v4 = v3;
   v6 = v5;
 
@@ -13478,12 +13478,12 @@ uint64_t __52__UITextField_resignDropResponderWithDropPerformed___block_invoke(u
   return result;
 }
 
-- (void)setContentOffsetForSameViewDrops:(CGPoint)a3
+- (void)setContentOffsetForSameViewDrops:(CGPoint)drops
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UITextField *)self _fieldEditor];
-  [v5 setContentOffset:{x, y}];
+  y = drops.y;
+  x = drops.x;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
+  [_fieldEditor setContentOffset:{x, y}];
 }
 
 - (void)droppingStarted
@@ -13508,23 +13508,23 @@ uint64_t __52__UITextField_resignDropResponderWithDropPerformed___block_invoke(u
   }
 }
 
-- (_NSRange)_visibleRangeWithLayout:(BOOL)a3
+- (_NSRange)_visibleRangeWithLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   [(UIView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UITextField *)self textInputView];
-  [v13 convertRect:self fromView:{v6, v8, v10, v12}];
+  textInputView = [(UITextField *)self textInputView];
+  [textInputView convertRect:self fromView:{v6, v8, v10, v12}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(UITextField *)self textInputView];
-  [v22 bounds];
+  textInputView2 = [(UITextField *)self textInputView];
+  [textInputView2 bounds];
   v52.origin.x = v23;
   v52.origin.y = v24;
   v52.size.width = v25;
@@ -13552,8 +13552,8 @@ uint64_t __52__UITextField_resignDropResponderWithDropPerformed___block_invoke(u
   v37 = v51.size.width;
   v38 = v51.size.height;
   textLayoutController = self->_textLayoutController;
-  v40 = [(UITextField *)self textContainer];
-  v41 = [(_UITextLayoutController *)textLayoutController textRangeForBounds:v40 inTextContainer:v3 layoutIfNeeded:v35, v36, v37, v38];
+  textContainer = [(UITextField *)self textContainer];
+  v41 = [(_UITextLayoutController *)textLayoutController textRangeForBounds:textContainer inTextContainer:layoutCopy layoutIfNeeded:v35, v36, v37, v38];
 
   v42 = [(_UITextLayoutController *)self->_textLayoutController characterRangeForTextRange:v41];
   v44 = v43;
@@ -13565,9 +13565,9 @@ uint64_t __52__UITextField_resignDropResponderWithDropPerformed___block_invoke(u
   return result;
 }
 
-- (CGRect)_boundingRectForRange:(id)a3
+- (CGRect)_boundingRectForRange:(id)range
 {
-  [(_UITextLayoutController *)self->_textLayoutController boundingRectForRange:a3];
+  [(_UITextLayoutController *)self->_textLayoutController boundingRectForRange:range];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -13575,22 +13575,22 @@ uint64_t __52__UITextField_resignDropResponderWithDropPerformed___block_invoke(u
   return result;
 }
 
-- (void)_addTextCanvasViewAdjustingFrame:(BOOL)a3
+- (void)_addTextCanvasViewAdjustingFrame:(BOOL)frame
 {
-  v5 = [(UITextField *)self visualStyle];
-  v6 = [v5 parentViewForTextContentView];
+  visualStyle = [(UITextField *)self visualStyle];
+  parentViewForTextContentView = [visualStyle parentViewForTextContentView];
 
-  v7 = [(_UITextCanvas *)self->_textCanvasView superview];
+  superview = [(_UITextCanvas *)self->_textCanvasView superview];
 
-  if (v7 != v6)
+  if (superview != parentViewForTextContentView)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __48__UITextField__addTextCanvasViewAdjustingFrame___block_invoke;
     v8[3] = &unk_1E70F5AF0;
-    v10 = a3;
+    frameCopy = frame;
     v8[4] = self;
-    v9 = v6;
+    v9 = parentViewForTextContentView;
     [UIView performWithoutAnimation:v8];
     [(UIView *)self _invalidateBaselineConstraints];
   }
@@ -13611,12 +13611,12 @@ uint64_t __48__UITextField__addTextCanvasViewAdjustingFrame___block_invoke(uint6
   return [v2 addSubview:v3];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  if (v4)
+  windowCopy = window;
+  if (windowCopy)
   {
-    v8 = v4;
+    v8 = windowCopy;
     if (!self->_textDragDropSupport)
     {
       v5 = [UITextDragDropSupport installTextDragDropOnView:self];
@@ -13625,9 +13625,9 @@ uint64_t __48__UITextField__addTextCanvasViewAdjustingFrame___block_invoke(uint6
     }
 
     [(UITextField *)self _createInteractionAssistant];
-    v7 = [v8 _focusSystem];
+    _focusSystem = [v8 _focusSystem];
 
-    if (v7)
+    if (_focusSystem)
     {
       [(UITextField *)self _installSelectGestureRecognizer];
     }
@@ -13637,32 +13637,32 @@ uint64_t __48__UITextField__addTextCanvasViewAdjustingFrame___block_invoke(uint6
       [(UITextField *)self _uninstallSelectGestureRecognizer];
     }
 
-    v4 = v8;
+    windowCopy = v8;
   }
 }
 
 - (int64_t)_keyboardAppearance
 {
   v2 = [UISystemInputViewController _canonicalTraitsForResponder:self];
-  v3 = [v2 keyboardAppearance];
+  keyboardAppearance = [v2 keyboardAppearance];
 
-  return v3;
+  return keyboardAppearance;
 }
 
 - (int64_t)_userInterfaceStyle
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v3;
+  return userInterfaceStyle;
 }
 
-- (BOOL)drawTextInRectIfNeeded:(CGRect)a3
+- (BOOL)drawTextInRectIfNeeded:(CGRect)needed
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = needed.size.height;
+  width = needed.size.width;
+  y = needed.origin.y;
+  x = needed.origin.x;
   if ((dyld_program_sdk_at_least() & 1) != 0 || (v8 = [(UITextField *)self _fieldEditorAttached]))
   {
     [(UITextField *)self drawTextInRect:x, y, width, height];
@@ -13674,22 +13674,22 @@ uint64_t __48__UITextField__addTextCanvasViewAdjustingFrame___block_invoke(uint6
 
 - (_NSRange)_unobscuredSecureRange
 {
-  v2 = [(UIFieldEditor *)self->_fieldEditor _unobscuredSecureRange];
+  _unobscuredSecureRange = [(UIFieldEditor *)self->_fieldEditor _unobscuredSecureRange];
   result.length = v3;
-  result.location = v2;
+  result.location = _unobscuredSecureRange;
   return result;
 }
 
-- (id)editMenuForTextRange:(id)a3 suggestedActions:(id)a4
+- (id)editMenuForTextRange:(id)range suggestedActions:(id)actions
 {
-  v6 = a3;
-  v7 = a4;
+  rangeCopy = range;
+  actionsCopy = actions;
   if ([(UITextField *)self _implementsEditMenu])
   {
-    v8 = [(_UITextLayoutController *)self->_textLayoutController characterRangeForTextRange:v6];
+    v8 = [(_UITextLayoutController *)self->_textLayoutController characterRangeForTextRange:rangeCopy];
     v10 = v9;
-    v11 = [(UITextField *)self delegate];
-    v12 = [v11 textField:self editMenuForCharactersInRange:v8 suggestedActions:{v10, v7}];
+    delegate = [(UITextField *)self delegate];
+    v12 = [delegate textField:self editMenuForCharactersInRange:v8 suggestedActions:{v10, actionsCopy}];
   }
 
   else
@@ -13700,29 +13700,29 @@ uint64_t __48__UITextField__addTextCanvasViewAdjustingFrame___block_invoke(uint6
   return v12;
 }
 
-- (void)willPresentEditMenuWithAnimator:(id)a3
+- (void)willPresentEditMenuWithAnimator:(id)animator
 {
-  v7 = a3;
-  v4 = [(UITextField *)self delegate];
+  animatorCopy = animator;
+  delegate = [(UITextField *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UITextField *)self delegate];
-    [v6 textField:self willPresentEditMenuWithAnimator:v7];
+    delegate2 = [(UITextField *)self delegate];
+    [delegate2 textField:self willPresentEditMenuWithAnimator:animatorCopy];
   }
 }
 
-- (void)willDismissEditMenuWithAnimator:(id)a3
+- (void)willDismissEditMenuWithAnimator:(id)animator
 {
-  v8 = a3;
-  v4 = [(UITextField *)self delegate];
+  animatorCopy = animator;
+  delegate = [(UITextField *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UITextField *)self delegate];
-    [v6 textField:self willDismissEditMenuWithAnimator:v8];
+    delegate2 = [(UITextField *)self delegate];
+    [delegate2 textField:self willDismissEditMenuWithAnimator:animatorCopy];
   }
 
   v7 = +[UIKeyboardImpl activeInstance];
@@ -13739,13 +13739,13 @@ uint64_t __48__UITextField__addTextCanvasViewAdjustingFrame___block_invoke(uint6
   }
 }
 
-- (void)_setOverridePasscodeStyle:(BOOL)a3
+- (void)_setOverridePasscodeStyle:(BOOL)style
 {
   textFieldFlags = self->_textFieldFlags;
-  if (((((*&textFieldFlags & 0x100000) == 0) ^ a3) & 1) == 0)
+  if (((((*&textFieldFlags & 0x100000) == 0) ^ style) & 1) == 0)
   {
     v4 = 0x100000;
-    if (!a3)
+    if (!style)
     {
       v4 = 0;
     }
@@ -13773,9 +13773,9 @@ uint64_t __48__UITextField__addTextCanvasViewAdjustingFrame___block_invoke(uint6
   return v5;
 }
 
-- (void)_setPasscodeStyleAlpha:(double)a3
+- (void)_setPasscodeStyleAlpha:(double)alpha
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:alpha];
   objc_setAssociatedObject(self, &_UITextFieldPasscodeStyleAlphaKey, v4, 1);
 
   textCanvasView = self->_textCanvasView;
@@ -13815,27 +13815,27 @@ uint64_t __31__UITextField__contentSnapshot__block_invoke(uint64_t a1)
   return [v1 drawRect:?];
 }
 
-- (void)_applyHighlightedAnimated:(BOOL)a3
+- (void)_applyHighlightedAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UITextField *)self _contentFloatingContainerView];
-  [v5 setControlState:-[UIControl state](self animated:{"state"), v3}];
+  animatedCopy = animated;
+  _contentFloatingContainerView = [(UITextField *)self _contentFloatingContainerView];
+  [_contentFloatingContainerView setControlState:-[UIControl state](self animated:{"state"), animatedCopy}];
 }
 
-- (void)setSupportsAdaptiveImageGlyph:(BOOL)a3
+- (void)setSupportsAdaptiveImageGlyph:(BOOL)glyph
 {
-  v3 = a3;
+  glyphCopy = glyph;
   *&self->_textFieldFlags |= 0x20000000000uLL;
-  v4 = [(UITextField *)self _inputController];
-  [v4 setSupportsAdaptiveImageGlyph:v3];
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController setSupportsAdaptiveImageGlyph:glyphCopy];
 }
 
-- (void)insertAdaptiveImageGlyph:(id)a3 replacementRange:(id)a4
+- (void)insertAdaptiveImageGlyph:(id)glyph replacementRange:(id)range
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITextField *)self _inputController];
-  [v8 insertAdaptiveImageGlyph:v7 replacementRange:v6];
+  rangeCopy = range;
+  glyphCopy = glyph;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController insertAdaptiveImageGlyph:glyphCopy replacementRange:rangeCopy];
 }
 
 - (UITextPasteDelegate)pasteDelegate
@@ -13859,28 +13859,28 @@ uint64_t __31__UITextField__contentSnapshot__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3 includingSelectedTextAndDisplayedViewControllers:(BOOL)a4
+- (void)encodeRestorableStateWithCoder:(id)coder includingSelectedTextAndDisplayedViewControllers:(BOOL)controllers
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UITextField *)self selectionRange];
+  controllersCopy = controllers;
+  coderCopy = coder;
+  selectionRange = [(UITextField *)self selectionRange];
   v9 = v8;
   v13.receiver = self;
   v13.super_class = UITextField;
-  [(UIResponder *)&v13 encodeRestorableStateWithCoder:v6];
+  [(UIResponder *)&v13 encodeRestorableStateWithCoder:coderCopy];
   if ([(UIView *)self isFirstResponder])
   {
-    [v6 encodeBool:1 forKey:@"kTextFirstResponderKey"];
-    [v6 encodeInt:v9 forKey:@"kTextSelectedTextLengthKey"];
-    [v6 encodeInt:v7 forKey:@"kTextSelectedTextLocationKey"];
+    [coderCopy encodeBool:1 forKey:@"kTextFirstResponderKey"];
+    [coderCopy encodeInt:v9 forKey:@"kTextSelectedTextLengthKey"];
+    [coderCopy encodeInt:selectionRange forKey:@"kTextSelectedTextLocationKey"];
   }
 
-  if (v4)
+  if (controllersCopy)
   {
-    v10 = [(UITextField *)self selectedText];
-    if ([v10 length])
+    selectedText = [(UITextField *)self selectedText];
+    if ([selectedText length])
     {
-      [v6 encodeObject:v10 forKey:@"kTextSelectedTextKey"];
+      [coderCopy encodeObject:selectedText forKey:@"kTextSelectedTextKey"];
     }
 
     if ([(UITextField *)self _isDisplayingShortcutViewController])
@@ -13891,14 +13891,14 @@ uint64_t __31__UITextField__contentSnapshot__block_invoke(uint64_t a1)
     if ([(UITextField *)self _isDisplayingReferenceLibraryViewController])
     {
       v11 = +[UIDevice currentDevice];
-      v12 = [v11 userInterfaceIdiom];
+      userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-      if (!v12)
+      if (!userInterfaceIdiom)
       {
         [UIApp ignoreSnapshotOnNextApplicationLaunch];
       }
 
-      [v6 encodeBool:1 forKey:@"kTextDisplayingReferenceLibraryViewControllerKey"];
+      [coderCopy encodeBool:1 forKey:@"kTextDisplayingReferenceLibraryViewControllerKey"];
     }
 
     if ([(UITextField *)self _isDisplayingShareViewController])
@@ -13908,34 +13908,34 @@ uint64_t __31__UITextField__contentSnapshot__block_invoke(uint64_t a1)
   }
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3 includingSelectedTextAndDisplayedViewControllers:(BOOL)a4
+- (void)decodeRestorableStateWithCoder:(id)coder includingSelectedTextAndDisplayedViewControllers:(BOOL)controllers
 {
-  v4 = a4;
-  v6 = a3;
+  controllersCopy = controllers;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UITextField;
-  [(UIResponder *)&v10 decodeRestorableStateWithCoder:v6];
-  if ([v6 containsValueForKey:@"kTextFirstResponderKey"] && objc_msgSend(v6, "decodeBoolForKey:", @"kTextFirstResponderKey"))
+  [(UIResponder *)&v10 decodeRestorableStateWithCoder:coderCopy];
+  if ([coderCopy containsValueForKey:@"kTextFirstResponderKey"] && objc_msgSend(coderCopy, "decodeBoolForKey:", @"kTextFirstResponderKey"))
   {
     [(UITextField *)self becomeFirstResponder];
   }
 
-  if ([v6 containsValueForKey:@"kTextSelectedTextLengthKey"])
+  if ([coderCopy containsValueForKey:@"kTextSelectedTextLengthKey"])
   {
-    if ([v6 containsValueForKey:@"kTextSelectedTextLocationKey"])
+    if ([coderCopy containsValueForKey:@"kTextSelectedTextLocationKey"])
     {
-      v7 = [v6 decodeIntForKey:@"kTextSelectedTextLengthKey"];
-      v8 = [v6 decodeIntForKey:@"kTextSelectedTextLocationKey"];
+      v7 = [coderCopy decodeIntForKey:@"kTextSelectedTextLengthKey"];
+      v8 = [coderCopy decodeIntForKey:@"kTextSelectedTextLocationKey"];
       [(UITextField *)self becomeFirstResponder];
       [(UITextField *)self setSelectionRange:v8, v7];
-      if (v4)
+      if (controllersCopy)
       {
-        v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"kTextSelectedTextKey"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTextSelectedTextKey"];
         if (v9)
         {
-          [v6 decodeBoolForKey:@"kTextDisplayingShortcutViewControllerKey"];
-          [v6 decodeBoolForKey:@"kTextDisplayingReferenceLibraryViewControllerKey"];
-          [v6 decodeBoolForKey:@"kTextDisplayingShareViewControllerKey"];
+          [coderCopy decodeBoolForKey:@"kTextDisplayingShortcutViewControllerKey"];
+          [coderCopy decodeBoolForKey:@"kTextDisplayingReferenceLibraryViewControllerKey"];
+          [coderCopy decodeBoolForKey:@"kTextDisplayingShareViewControllerKey"];
         }
       }
     }
@@ -13946,18 +13946,18 @@ uint64_t __31__UITextField__contentSnapshot__block_invoke(uint64_t a1)
 {
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [(UITextField *)self encodeRestorableStateWithCoder:v3 includingSelectedTextAndDisplayedViewControllers:0];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-- (void)_setInteractionState:(id)a3
+- (void)_setInteractionState:(id)state
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ACD0];
-  v5 = a3;
+  stateCopy = state;
   v10 = 0;
-  v6 = [[v4 alloc] initForReadingFromData:v5 error:&v10];
+  v6 = [[v4 alloc] initForReadingFromData:stateCopy error:&v10];
 
   v7 = v10;
   if (v6)
@@ -13985,31 +13985,31 @@ uint64_t __31__UITextField__contentSnapshot__block_invoke(uint64_t a1)
 
 - (BOOL)automaticallyAdjustsWritingDirection
 {
-  v2 = [(UITextField *)self _inputController];
-  v3 = [v2 automaticallyAdjustsWritingDirection];
+  _inputController = [(UITextField *)self _inputController];
+  automaticallyAdjustsWritingDirection = [_inputController automaticallyAdjustsWritingDirection];
 
-  return v3;
+  return automaticallyAdjustsWritingDirection;
 }
 
-- (void)setAutomaticallyAdjustsWritingDirection:(BOOL)a3
+- (void)setAutomaticallyAdjustsWritingDirection:(BOOL)direction
 {
-  v3 = a3;
-  v4 = [(UITextField *)self _inputController];
-  [v4 setAutomaticallyAdjustsWritingDirection:v3];
+  directionCopy = direction;
+  _inputController = [(UITextField *)self _inputController];
+  [_inputController setAutomaticallyAdjustsWritingDirection:directionCopy];
 }
 
-- (double)_autolayoutSpacingAtEdge:(int)a3 forAttribute:(int64_t)a4 inContainer:(id)a5 isGuide:(BOOL)a6
+- (double)_autolayoutSpacingAtEdge:(int)edge forAttribute:(int64_t)attribute inContainer:(id)container isGuide:(BOOL)guide
 {
-  if ((a3 - 5) > 1)
+  if ((edge - 5) > 1)
   {
     v8.receiver = self;
     v8.super_class = UITextField;
-    [(UIView *)&v8 _autolayoutSpacingAtEdge:*&a3 forAttribute:a4 inContainer:a5 isGuide:a6];
+    [(UIView *)&v8 _autolayoutSpacingAtEdge:*&edge forAttribute:attribute inContainer:container isGuide:guide];
   }
 
   else
   {
-    _UIViewBaselineToEdgeSpacing([(UITextField *)self _fontInfoForBaselineSpacing], a3);
+    _UIViewBaselineToEdgeSpacing([(UITextField *)self _fontInfoForBaselineSpacing], edge);
 
     UICeilToViewScale(self);
   }
@@ -14017,16 +14017,16 @@ uint64_t __31__UITextField__contentSnapshot__block_invoke(uint64_t a1)
   return result;
 }
 
-- (double)_autolayoutSpacingAtEdge:(int)a3 forAttribute:(int64_t)a4 nextToNeighbor:(id)a5 edge:(int)a6 attribute:(int64_t)a7 multiplier:(double)a8
+- (double)_autolayoutSpacingAtEdge:(int)edge forAttribute:(int64_t)attribute nextToNeighbor:(id)neighbor edge:(int)a6 attribute:(int64_t)a7 multiplier:(double)multiplier
 {
   v10 = *&a6;
-  v13 = *&a3;
-  if ((a3 - 5) > 1)
+  v13 = *&edge;
+  if ((edge - 5) > 1)
   {
     goto LABEL_12;
   }
 
-  v15 = a4 - 11;
+  v15 = attribute - 11;
   if (os_variant_has_internal_diagnostics())
   {
     if (v15 < 2)
@@ -14044,7 +14044,7 @@ uint64_t __31__UITextField__contentSnapshot__block_invoke(uint64_t a1)
 LABEL_12:
     v19.receiver = self;
     v19.super_class = UITextField;
-    [(UIView *)&v19 _autolayoutSpacingAtEdge:v13 forAttribute:a4 nextToNeighbor:a5 edge:v10 attribute:a7 multiplier:a8];
+    [(UIView *)&v19 _autolayoutSpacingAtEdge:v13 forAttribute:attribute nextToNeighbor:neighbor edge:v10 attribute:a7 multiplier:multiplier];
     return result;
   }
 
@@ -14062,7 +14062,7 @@ LABEL_12:
 
 LABEL_4:
 
-  _UIViewBaselineSpacing(self, a5, v13);
+  _UIViewBaselineSpacing(self, neighbor, v13);
   return result;
 }
 

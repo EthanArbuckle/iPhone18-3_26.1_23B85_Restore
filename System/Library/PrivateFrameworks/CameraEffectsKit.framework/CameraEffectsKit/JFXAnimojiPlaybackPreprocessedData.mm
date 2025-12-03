@@ -1,33 +1,33 @@
 @interface JFXAnimojiPlaybackPreprocessedData
 - ($AC64C642040120CEEAD84DEEACA9A5CE)mediaTimeRangeForData;
-- (id)initForRenderTime:(id *)a3 usingDataFromMediaTimeRange:(id *)a4 arFrame:(id)a5 avDepthData:(id)a6 animojiBlendShapes:(id)a7;
+- (id)initForRenderTime:(id *)time usingDataFromMediaTimeRange:(id *)range arFrame:(id)frame avDepthData:(id)data animojiBlendShapes:(id)shapes;
 @end
 
 @implementation JFXAnimojiPlaybackPreprocessedData
 
-- (id)initForRenderTime:(id *)a3 usingDataFromMediaTimeRange:(id *)a4 arFrame:(id)a5 avDepthData:(id)a6 animojiBlendShapes:(id)a7
+- (id)initForRenderTime:(id *)time usingDataFromMediaTimeRange:(id *)range arFrame:(id)frame avDepthData:(id)data animojiBlendShapes:(id)shapes
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  frameCopy = frame;
+  dataCopy = data;
+  shapesCopy = shapes;
   v24.receiver = self;
   v24.super_class = JFXAnimojiPlaybackPreprocessedData;
   v16 = [(JFXAnimojiPlaybackPreprocessedData *)&v24 init];
   v17 = v16;
   if (v16)
   {
-    v18 = *&a3->var0;
-    v16->_time.epoch = a3->var3;
+    v18 = *&time->var0;
+    v16->_time.epoch = time->var3;
     *&v16->_time.value = v18;
-    objc_storeStrong(&v16->_arFrame, a5);
-    objc_storeStrong(&v17->_avDepthData, a6);
-    v19 = [v15 copy];
+    objc_storeStrong(&v16->_arFrame, frame);
+    objc_storeStrong(&v17->_avDepthData, data);
+    v19 = [shapesCopy copy];
     animojiBlendShapes = v17->_animojiBlendShapes;
     v17->_animojiBlendShapes = v19;
 
-    v21 = *&a4->var0.var0;
-    v22 = *&a4->var0.var3;
-    *&v17->_mediaTimeRangeForData.duration.timescale = *&a4->var1.var1;
+    v21 = *&range->var0.var0;
+    v22 = *&range->var0.var3;
+    *&v17->_mediaTimeRangeForData.duration.timescale = *&range->var1.var1;
     *&v17->_mediaTimeRangeForData.start.epoch = v22;
     *&v17->_mediaTimeRangeForData.start.value = v21;
   }

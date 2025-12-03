@@ -1,51 +1,51 @@
 @interface PCMultiStageGrowthAlgorithm
-+ (void)_loadDefaultValue:(double *)a3 forKey:(__CFString *)a4;
++ (void)_loadDefaultValue:(double *)value forKey:(__CFString *)key;
 + (void)_loadDefaults;
-- (BOOL)useIntervalIfImprovement:(double)a3;
+- (BOOL)useIntervalIfImprovement:(double)improvement;
 - (NSDictionary)cacheInfo;
 - (NSString)description;
-- (PCMultiStageGrowthAlgorithm)initWithCacheInfo:(id)a3 loggingIdentifier:(id)a4 algorithmName:(id)a5;
+- (PCMultiStageGrowthAlgorithm)initWithCacheInfo:(id)info loggingIdentifier:(id)identifier algorithmName:(id)name;
 - (_PCTimeRange)signalAvoidanceRange;
 - (double)_steadyStateTimeout;
 - (double)maximumKeepAliveInterval;
 - (double)minimumKeepAliveInterval;
-- (id)_stringForAction:(int)a3;
-- (id)_stringForMode:(int)a3;
-- (id)_stringForStage:(int)a3;
+- (id)_stringForAction:(int)action;
+- (id)_stringForMode:(int)mode;
+- (id)_stringForStage:(int)stage;
 - (void)_adjustGrowthAlgorithmMode;
 - (void)_fallbackToLastSuccessfulKeepAliveInterval;
-- (void)_processBackoffAction:(int)a3;
-- (void)_processInitialGrowthAction:(int)a3;
-- (void)_processInitialShrinkAction:(int)a3;
-- (void)_processRefinedGrowthAction:(int)a3;
-- (void)_processRefinedShrinkAction:(int)a3;
-- (void)_setCurrentKeepAliveInterval:(double)a3 varianceMode:(unsigned int)a4 allowRoundUp:(BOOL)a5;
-- (void)setLastSuccessfulKeepAliveInterval:(double)a3;
-- (void)setMaximumKeepAliveInterval:(double)a3;
-- (void)setMinimumIntervalFallbackEnabled:(BOOL)a3;
-- (void)setMinimumKeepAliveInterval:(double)a3;
+- (void)_processBackoffAction:(int)action;
+- (void)_processInitialGrowthAction:(int)action;
+- (void)_processInitialShrinkAction:(int)action;
+- (void)_processRefinedGrowthAction:(int)action;
+- (void)_processRefinedShrinkAction:(int)action;
+- (void)_setCurrentKeepAliveInterval:(double)interval varianceMode:(unsigned int)mode allowRoundUp:(BOOL)up;
+- (void)setLastSuccessfulKeepAliveInterval:(double)interval;
+- (void)setMaximumKeepAliveInterval:(double)interval;
+- (void)setMinimumIntervalFallbackEnabled:(BOOL)enabled;
+- (void)setMinimumKeepAliveInterval:(double)interval;
 @end
 
 @implementation PCMultiStageGrowthAlgorithm
 
-- (PCMultiStageGrowthAlgorithm)initWithCacheInfo:(id)a3 loggingIdentifier:(id)a4 algorithmName:(id)a5
+- (PCMultiStageGrowthAlgorithm)initWithCacheInfo:(id)info loggingIdentifier:(id)identifier algorithmName:(id)name
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  identifierCopy = identifier;
+  nameCopy = name;
   +[PCMultiStageGrowthAlgorithm _loadDefaults];
   v27.receiver = self;
   v27.super_class = PCMultiStageGrowthAlgorithm;
   v11 = [(PCMultiStageGrowthAlgorithm *)&v27 init];
   if (v11)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"multiStateGrowth.%@", v9];
-    v13 = +[PCLog logWithCategory:](PCLog, "logWithCategory:", [v12 UTF8String]);
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"multiStateGrowth.%@", identifierCopy];
+    v13 = +[PCLog logWithCategory:](PCLog, "logWithCategory:", [identifierCopy UTF8String]);
     v14 = *(v11 + 15);
     *(v11 + 15) = v13;
 
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     v16 = *(v11 + 13);
     *(v11 + 13) = v15;
 
@@ -57,14 +57,14 @@
     *(v11 + 19) = 0;
     *(v11 + 20) = 0;
     *(v11 + 21) = 0x40F5180000000000;
-    if (v8)
+    if (infoCopy)
     {
-      v18 = [v8 objectForKey:@"keepAliveInterval"];
+      v18 = [infoCopy objectForKey:@"keepAliveInterval"];
       [v18 doubleValue];
       v20 = v19;
 
-      v21 = [v8 objectForKey:@"inInitialGrowth"];
-      v22 = [v21 BOOLValue];
+      v21 = [infoCopy objectForKey:@"inInitialGrowth"];
+      bOOLValue = [v21 BOOLValue];
 
       v23 = *(v11 + 15);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -73,18 +73,18 @@
         *buf = 134218498;
         v29 = v20;
         v30 = 2114;
-        if (v22)
+        if (bOOLValue)
         {
           v24 = @"YES";
         }
 
         v31 = v24;
         v32 = 2114;
-        v33 = v8;
+        v33 = infoCopy;
         _os_log_impl(&dword_25E3EF000, v23, OS_LOG_TYPE_DEFAULT, "Using cached keep alive interval of %g seconds inInitialGrowth? %{public}@ from [%{public}@]", buf, 0x20u);
       }
 
-      if (v22)
+      if (bOOLValue)
       {
         [v11 _resetAlgorithmToInterval:0 stage:v20];
 LABEL_11:
@@ -130,13 +130,13 @@ LABEL_12:
   return result;
 }
 
-- (void)setMaximumKeepAliveInterval:(double)a3
+- (void)setMaximumKeepAliveInterval:(double)interval
 {
-  self->_maximumKeepAliveInterval = a3;
+  self->_maximumKeepAliveInterval = interval;
   [(PCMultiStageGrowthAlgorithm *)self minimumKeepAliveInterval];
-  if (v5 > a3)
+  if (v5 > interval)
   {
-    [(PCMultiStageGrowthAlgorithm *)self setMinimumKeepAliveInterval:a3];
+    [(PCMultiStageGrowthAlgorithm *)self setMinimumKeepAliveInterval:interval];
   }
 
   [(PCMultiStageGrowthAlgorithm *)self currentKeepAliveInterval];
@@ -144,13 +144,13 @@ LABEL_12:
   [(PCMultiStageGrowthAlgorithm *)self _setCurrentKeepAliveInterval:0 varianceMode:?];
 }
 
-- (void)setMinimumKeepAliveInterval:(double)a3
+- (void)setMinimumKeepAliveInterval:(double)interval
 {
-  self->_minimumKeepAliveInterval = a3;
+  self->_minimumKeepAliveInterval = interval;
   [(PCMultiStageGrowthAlgorithm *)self maximumKeepAliveInterval];
-  if (v5 < a3)
+  if (v5 < interval)
   {
-    [(PCMultiStageGrowthAlgorithm *)self setMaximumKeepAliveInterval:a3];
+    [(PCMultiStageGrowthAlgorithm *)self setMaximumKeepAliveInterval:interval];
   }
 
   [(PCMultiStageGrowthAlgorithm *)self currentKeepAliveInterval];
@@ -158,32 +158,32 @@ LABEL_12:
   [(PCMultiStageGrowthAlgorithm *)self _setCurrentKeepAliveInterval:0 varianceMode:?];
 }
 
-- (void)_setCurrentKeepAliveInterval:(double)a3 varianceMode:(unsigned int)a4 allowRoundUp:(BOOL)a5
+- (void)_setCurrentKeepAliveInterval:(double)interval varianceMode:(unsigned int)mode allowRoundUp:(BOOL)up
 {
-  v5 = a5;
+  upCopy = up;
   v46 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (interval <= 0.0)
   {
-    v8 = *&PCDefaultInitialKeepAliveInterval;
+    intervalCopy = *&PCDefaultInitialKeepAliveInterval;
   }
 
   else
   {
-    v8 = a3;
+    intervalCopy = interval;
   }
 
   [(PCMultiStageGrowthAlgorithm *)self minimumKeepAliveInterval];
-  if (v8 < v9)
+  if (intervalCopy < v9)
   {
     [(PCMultiStageGrowthAlgorithm *)self minimumKeepAliveInterval];
 LABEL_8:
-    v8 = v10;
-    a4 = 0;
+    intervalCopy = v10;
+    mode = 0;
     goto LABEL_9;
   }
 
   [(PCMultiStageGrowthAlgorithm *)self maximumKeepAliveInterval];
-  if (v8 > v11)
+  if (intervalCopy > v11)
   {
     [(PCMultiStageGrowthAlgorithm *)self maximumKeepAliveInterval];
     goto LABEL_8;
@@ -191,9 +191,9 @@ LABEL_8:
 
 LABEL_9:
   duration = self->_signalAvoidanceRange.duration;
-  if (duration == 0.0 || ((v13 = self->_signalAvoidanceRange.start, v14 = v13 + duration, v13 != 0.0) ? (v15 = v13 < v8) : (v15 = 0), v15 ? (v16 = v14 <= v8) : (v16 = 1), v16))
+  if (duration == 0.0 || ((v13 = self->_signalAvoidanceRange.start, v14 = v13 + duration, v13 != 0.0) ? (v15 = v13 < intervalCopy) : (v15 = 0), v15 ? (v16 = v14 <= intervalCopy) : (v16 = 1), v16))
   {
-    start = v8;
+    start = intervalCopy;
   }
 
   else
@@ -205,11 +205,11 @@ LABEL_9:
       v24 = dbl_25E416230[growthStage];
     }
 
-    if (v5)
+    if (upCopy)
     {
       currentKeepAliveInterval = self->_currentKeepAliveInterval;
-      v26 = (v8 - v13) / duration;
-      if (v8 <= currentKeepAliveInterval)
+      v26 = (intervalCopy - v13) / duration;
+      if (intervalCopy <= currentKeepAliveInterval)
       {
         if (v26 <= v24)
         {
@@ -290,9 +290,9 @@ LABEL_9:
       v32 = self->_signalAvoidanceRange.start;
       v33 = self->_signalAvoidanceRange.duration;
       v34 = 138413570;
-      v35 = self;
+      selfCopy = self;
       v36 = 2048;
-      v37 = v8;
+      v37 = intervalCopy;
       v38 = 2048;
       v39 = start;
       v40 = 2048;
@@ -305,13 +305,13 @@ LABEL_9:
     }
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
     v19 = arc4random();
     start = start - -(*&PCIncrementRandomVariance - (v19 / 4294967300.0 + v19 / 4294967300.0) * *&PCIncrementRandomVariance);
   }
 
-  else if (a4 == 1)
+  else if (mode == 1)
   {
     v18 = arc4random();
     start = start - (*&PCIncrementRandomVariance - (v18 / 4294967300.0 + v18 / 4294967300.0) * *&PCIncrementRandomVariance);
@@ -324,7 +324,7 @@ LABEL_9:
     {
       algorithmName = self->_algorithmName;
       v34 = 138543618;
-      v35 = algorithmName;
+      selfCopy = algorithmName;
       v36 = 2048;
       v37 = start;
       _os_log_impl(&dword_25E3EF000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: setting current interval to %g seconds", &v34, 0x16u);
@@ -337,10 +337,10 @@ LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLastSuccessfulKeepAliveInterval:(double)a3
+- (void)setLastSuccessfulKeepAliveInterval:(double)interval
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (self->_lastSuccessfulKeepAliveInterval != a3)
+  if (self->_lastSuccessfulKeepAliveInterval != interval)
   {
     logObject = self->_logObject;
     if (os_log_type_enabled(logObject, OS_LOG_TYPE_DEFAULT))
@@ -349,11 +349,11 @@ LABEL_9:
       v8 = 138543618;
       v9 = algorithmName;
       v10 = 2048;
-      v11 = a3;
+      intervalCopy = interval;
       _os_log_impl(&dword_25E3EF000, logObject, OS_LOG_TYPE_DEFAULT, "%{public}@: setting lastSuccessfulKeepAliveInterval to %g seconds", &v8, 0x16u);
     }
 
-    self->_lastSuccessfulKeepAliveInterval = a3;
+    self->_lastSuccessfulKeepAliveInterval = interval;
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -368,24 +368,24 @@ LABEL_9:
   }
 }
 
-- (void)setMinimumIntervalFallbackEnabled:(BOOL)a3
+- (void)setMinimumIntervalFallbackEnabled:(BOOL)enabled
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_minimumIntervalFallbackEnabled != a3)
+  if (self->_minimumIntervalFallbackEnabled != enabled)
   {
-    v3 = a3;
-    self->_minimumIntervalFallbackEnabled = a3;
+    enabledCopy = enabled;
+    self->_minimumIntervalFallbackEnabled = enabled;
     logObject = self->_logObject;
     if (os_log_type_enabled(logObject, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = @"YES";
       }
 
       v9 = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_25E3EF000, logObject, OS_LOG_TYPE_DEFAULT, "%@ minimumIntervalFallbackEnabled changed to %@", &v9, 0x16u);
@@ -404,7 +404,7 @@ LABEL_9:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)useIntervalIfImprovement:(double)a3
+- (BOOL)useIntervalIfImprovement:(double)improvement
 {
   v21 = *MEMORY[0x277D85DE8];
   logObject = self->_logObject;
@@ -413,9 +413,9 @@ LABEL_9:
     lastKeepAliveInterval = self->_lastKeepAliveInterval;
     currentKeepAliveInterval = self->_currentKeepAliveInterval;
     v13 = 138544130;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
-    v16 = a3;
+    improvementCopy = improvement;
     v17 = 2048;
     v18 = lastKeepAliveInterval;
     v19 = 2048;
@@ -434,12 +434,12 @@ LABEL_9:
     v10 = self->_lastKeepAliveInterval;
   }
 
-  if (v10 < a3)
+  if (v10 < improvement)
   {
-    [(PCMultiStageGrowthAlgorithm *)self _setCurrentKeepAliveInterval:0 varianceMode:0 allowRoundUp:a3];
+    [(PCMultiStageGrowthAlgorithm *)self _setCurrentKeepAliveInterval:0 varianceMode:0 allowRoundUp:improvement];
   }
 
-  result = v10 < a3;
+  result = v10 < improvement;
   v12 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -449,8 +449,8 @@ LABEL_9:
   v3 = objc_alloc(MEMORY[0x277CBEAC0]);
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_currentKeepAliveInterval];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_growthStage == 0];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v3 initWithObjectsAndKeys:{v4, @"keepAliveInterval", v5, @"inInitialGrowth", v6, @"cacheDate", 0}];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [v3 initWithObjectsAndKeys:{v4, @"keepAliveInterval", v5, @"inInitialGrowth", date, @"cacheDate", 0}];
 
   return v7;
 }
@@ -523,7 +523,7 @@ LABEL_15:
     v8 = [(PCMultiStageGrowthAlgorithm *)self _stringForMode:v6];
     v9 = [(PCMultiStageGrowthAlgorithm *)self _stringForMode:self->_currentKeepAliveAlgorithmMode];
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v8;
     v15 = 2112;
@@ -534,12 +534,12 @@ LABEL_15:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processInitialGrowthAction:(int)a3
+- (void)_processInitialGrowthAction:(int)action
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a3 != 2)
+  if (action != 2)
   {
-    if (a3 == 1)
+    if (action == 1)
     {
       currentKeepAliveInterval = self->_currentKeepAliveInterval;
       [(PCMultiStageGrowthAlgorithm *)self _fallbackToLastSuccessfulKeepAliveInterval];
@@ -556,7 +556,7 @@ LABEL_15:
       [(PCMultiStageGrowthAlgorithm *)self processNextAction:self->_currentKeepAliveInterval >= currentKeepAliveInterval];
     }
 
-    else if (!a3)
+    else if (!action)
     {
       v4 = self->_currentKeepAliveInterval;
       [(PCMultiStageGrowthAlgorithm *)self maximumKeepAliveInterval];
@@ -608,9 +608,9 @@ LABEL_23:
   [(PCMultiStageGrowthAlgorithm *)self _fallbackToLastSuccessfulKeepAliveInterval];
 }
 
-- (void)_processBackoffAction:(int)a3
+- (void)_processBackoffAction:(int)action
 {
-  switch(a3)
+  switch(action)
   {
     case 2:
       if (self->_isServerOriginatedKeepAlive)
@@ -629,10 +629,10 @@ LABEL_23:
   }
 }
 
-- (void)_processRefinedGrowthAction:(int)a3
+- (void)_processRefinedGrowthAction:(int)action
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (action == 2)
   {
     if (self->_isServerOriginatedKeepAlive)
     {
@@ -647,7 +647,7 @@ LABEL_25:
     return;
   }
 
-  if (a3 == 1)
+  if (action == 1)
   {
     [(PCMultiStageGrowthAlgorithm *)self _fallbackToLastSuccessfulKeepAliveInterval];
     self->_growthStage = 2;
@@ -657,7 +657,7 @@ LABEL_25:
     return;
   }
 
-  if (a3)
+  if (action)
   {
     goto LABEL_25;
   }
@@ -698,9 +698,9 @@ LABEL_25:
   [(PCMultiStageGrowthAlgorithm *)self _setCurrentKeepAliveInterval:1 varianceMode:v9, v7];
 }
 
-- (void)_processInitialShrinkAction:(int)a3
+- (void)_processInitialShrinkAction:(int)action
 {
-  if (a3 == 1)
+  if (action == 1)
   {
     if (self->_serverStatsExpectedKeepAliveInterval >= (self->_currentKeepAliveInterval + -300.0))
     {
@@ -710,7 +710,7 @@ LABEL_25:
     [(PCMultiStageGrowthAlgorithm *)self _setCurrentKeepAliveInterval:2 varianceMode:?];
   }
 
-  else if (!a3)
+  else if (!action)
   {
     self->_growthStage = 2;
     currentKeepAliveInterval = self->_currentKeepAliveInterval;
@@ -723,9 +723,9 @@ LABEL_25:
   }
 }
 
-- (void)_processRefinedShrinkAction:(int)a3
+- (void)_processRefinedShrinkAction:(int)action
 {
-  if (a3 == 1)
+  if (action == 1)
   {
     if (self->_serverStatsExpectedKeepAliveInterval >= (self->_currentKeepAliveInterval + -120.0))
     {
@@ -735,7 +735,7 @@ LABEL_25:
     [(PCMultiStageGrowthAlgorithm *)self _setCurrentKeepAliveInterval:2 varianceMode:?];
   }
 
-  else if (!a3)
+  else if (!action)
   {
     self->_growthStage = 2;
     currentKeepAliveInterval = self->_currentKeepAliveInterval;
@@ -785,7 +785,7 @@ LABEL_25:
   block[1] = 3221225472;
   block[2] = __44__PCMultiStageGrowthAlgorithm__loadDefaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_loadDefaults_pred != -1)
   {
     dispatch_once(&_loadDefaults_pred, block);
@@ -806,10 +806,10 @@ uint64_t __44__PCMultiStageGrowthAlgorithm__loadDefaults__block_invoke(uint64_t 
   return [v2 _loadDefaultValue:&PCHighWatermarkThreshold forKey:@"PCHighWatermarkThreshold"];
 }
 
-+ (void)_loadDefaultValue:(double *)a3 forKey:(__CFString *)a4
++ (void)_loadDefaultValue:(double *)value forKey:(__CFString *)key
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = CFPreferencesCopyAppValue(a4, @"com.apple.persistentconnection");
+  v6 = CFPreferencesCopyAppValue(key, @"com.apple.persistentconnection");
   if (v6)
   {
     v7 = v6;
@@ -821,13 +821,13 @@ uint64_t __44__PCMultiStageGrowthAlgorithm__loadDefaults__block_invoke(uint64_t 
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543618;
-        v13 = a4;
+        keyCopy = key;
         v14 = 2048;
         v15 = v9;
         _os_log_impl(&dword_25E3EF000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: %0.2f", &v12, 0x16u);
       }
 
-      *a3 = v9;
+      *value = v9;
     }
 
     CFRelease(v7);
@@ -849,42 +849,42 @@ uint64_t __44__PCMultiStageGrowthAlgorithm__loadDefaults__block_invoke(uint64_t 
   return v7;
 }
 
-- (id)_stringForAction:(int)a3
+- (id)_stringForAction:(int)action
 {
-  if (a3 > 3)
+  if (action > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_279A19DD8[a3];
+    return off_279A19DD8[action];
   }
 }
 
-- (id)_stringForStage:(int)a3
+- (id)_stringForStage:(int)stage
 {
-  if (a3 > 6)
+  if (stage > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_279A19DF8[a3];
+    return off_279A19DF8[stage];
   }
 }
 
-- (id)_stringForMode:(int)a3
+- (id)_stringForMode:(int)mode
 {
-  if (a3 > 2)
+  if (mode > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_279A19E30[a3];
+    return off_279A19E30[mode];
   }
 }
 

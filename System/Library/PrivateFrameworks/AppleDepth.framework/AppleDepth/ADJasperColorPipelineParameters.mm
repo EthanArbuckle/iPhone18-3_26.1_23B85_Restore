@@ -1,15 +1,15 @@
 @interface ADJasperColorPipelineParameters
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 @end
 
 @implementation ADJasperColorPipelineParameters
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = ADJasperColorPipelineParameters;
-  v5 = [(ADPipelineParameters *)&v21 initForDevice:v4];
+  v5 = [(ADPipelineParameters *)&v21 initForDevice:deviceCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -29,7 +29,7 @@
     [*(v5 + 7) setAggregationSize:4];
     [*(v5 + 7) setMaxPointCloudAge:0.5];
     *(v5 + 10) = 1045220557;
-    v11 = [ADDeviceConfiguration getLidarType:v4];
+    v11 = [ADDeviceConfiguration getLidarType:deviceCopy];
     v13 = *(v5 + 6);
     if (v11 == 2)
     {

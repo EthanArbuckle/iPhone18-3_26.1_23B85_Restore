@@ -1,15 +1,15 @@
 @interface SKUIGiftComposeViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)loadView;
 @end
 
 @implementation SKUIGiftComposeViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIGiftComposeViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SKUIGiftComposeViewController" hasInstanceVariable:@"_tableView" withType:"UITableView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIGiftComposeViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SKUIGiftComposeViewController" hasInstanceVariable:@"_tableView" withType:"UITableView"];
 }
 
 - (void)loadView

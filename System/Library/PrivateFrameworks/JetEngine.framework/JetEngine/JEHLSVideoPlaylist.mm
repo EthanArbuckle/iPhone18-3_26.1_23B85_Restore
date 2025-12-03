@@ -1,44 +1,44 @@
 @interface JEHLSVideoPlaylist
-- (JEHLSVideoPlaylist)initWithStartPosition:(unint64_t)a3 mainFeatureMetricsData:(id)a4;
+- (JEHLSVideoPlaylist)initWithStartPosition:(unint64_t)position mainFeatureMetricsData:(id)data;
 - (NSMutableArray)rollItems;
-- (id)itemAtOverallPosition:(unint64_t)a3 rangeOptions:(int64_t)a4;
-- (id)itemsBetweenStartOverallPosition:(unint64_t)a3 endOverallPosition:(unint64_t)a4;
-- (id)mainFeatureItemWithStartOverallPosition:(unint64_t)a3;
-- (int64_t)indexOfLastRollItemWithStartBeforePosition:(unint64_t)a3;
-- (void)addItemStartAtMilliseconds:(unint64_t)a3 durationMilliseconds:(unint64_t)a4 metricsData:(id)a5;
-- (void)addItemStartAtSeconds:(double)a3 durationSeconds:(double)a4 metricsData:(id)a5;
-- (void)addRollInfoItem:(id)a3;
-- (void)addRollInfoItems:(id)a3;
-- (void)addRollItem:(id)a3;
+- (id)itemAtOverallPosition:(unint64_t)position rangeOptions:(int64_t)options;
+- (id)itemsBetweenStartOverallPosition:(unint64_t)position endOverallPosition:(unint64_t)overallPosition;
+- (id)mainFeatureItemWithStartOverallPosition:(unint64_t)position;
+- (int64_t)indexOfLastRollItemWithStartBeforePosition:(unint64_t)position;
+- (void)addItemStartAtMilliseconds:(unint64_t)milliseconds durationMilliseconds:(unint64_t)durationMilliseconds metricsData:(id)data;
+- (void)addItemStartAtSeconds:(double)seconds durationSeconds:(double)durationSeconds metricsData:(id)data;
+- (void)addRollInfoItem:(id)item;
+- (void)addRollInfoItems:(id)items;
+- (void)addRollItem:(id)item;
 @end
 
 @implementation JEHLSVideoPlaylist
 
-- (JEHLSVideoPlaylist)initWithStartPosition:(unint64_t)a3 mainFeatureMetricsData:(id)a4
+- (JEHLSVideoPlaylist)initWithStartPosition:(unint64_t)position mainFeatureMetricsData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = JEHLSVideoPlaylist;
   v7 = [(JEHLSVideoPlaylist *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(JEHLSVideoPlaylist *)v7 setStartPosition:a3];
-    [(JEHLSVideoPlaylist *)v8 setMainFeatureMetricsData:v6];
+    [(JEHLSVideoPlaylist *)v7 setStartPosition:position];
+    [(JEHLSVideoPlaylist *)v8 setMainFeatureMetricsData:dataCopy];
   }
 
   return v8;
 }
 
-- (void)addRollInfoItems:(id)a3
+- (void)addRollInfoItems:(id)items
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -50,58 +50,58 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         [(JEHLSVideoPlaylist *)self addRollInfoItem:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addRollInfoItem:(id)a3
+- (void)addRollInfoItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v8 metricsData];
+    metricsData = [itemCopy metricsData];
   }
 
   else
   {
-    v4 = 0;
+    metricsData = 0;
   }
 
-  [v8 start];
+  [itemCopy start];
   v6 = v5;
-  [v8 duration];
-  [(JEHLSVideoPlaylist *)self addItemStartAtSeconds:v4 durationSeconds:v6 metricsData:v7];
+  [itemCopy duration];
+  [(JEHLSVideoPlaylist *)self addItemStartAtSeconds:metricsData durationSeconds:v6 metricsData:v7];
 }
 
-- (void)addItemStartAtSeconds:(double)a3 durationSeconds:(double)a4 metricsData:(id)a5
+- (void)addItemStartAtSeconds:(double)seconds durationSeconds:(double)durationSeconds metricsData:(id)data
 {
-  v8 = a5;
-  v9 = [[JEHLSRollItem alloc] initWithStartOverallPosition:(a3 * 1000.0) duration:(a4 * 1000.0) metricsData:v8];
+  dataCopy = data;
+  v9 = [[JEHLSRollItem alloc] initWithStartOverallPosition:(seconds * 1000.0) duration:(durationSeconds * 1000.0) metricsData:dataCopy];
 
   [(JEHLSVideoPlaylist *)self addRollItem:v9];
 }
 
-- (void)addItemStartAtMilliseconds:(unint64_t)a3 durationMilliseconds:(unint64_t)a4 metricsData:(id)a5
+- (void)addItemStartAtMilliseconds:(unint64_t)milliseconds durationMilliseconds:(unint64_t)durationMilliseconds metricsData:(id)data
 {
-  v8 = a5;
-  v9 = [[JEHLSRollItem alloc] initWithStartOverallPosition:a3 duration:a4 metricsData:v8];
+  dataCopy = data;
+  v9 = [[JEHLSRollItem alloc] initWithStartOverallPosition:milliseconds duration:durationMilliseconds metricsData:dataCopy];
 
   [(JEHLSVideoPlaylist *)self addRollItem:v9];
 }
 
-- (id)itemAtOverallPosition:(unint64_t)a3 rangeOptions:(int64_t)a4
+- (id)itemAtOverallPosition:(unint64_t)position rangeOptions:(int64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v7 = [(JEHLSVideoPlaylist *)self indexOfLastRollItemWithStartBeforePosition:?];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -111,16 +111,16 @@
   else
   {
     v9 = v7;
-    if ((v4 & 1) == 0)
+    if ((optionsCopy & 1) == 0)
     {
       do
       {
-        v10 = [(JEHLSVideoPlaylist *)self rollItems];
-        v11 = [v10 objectAtIndexedSubscript:v9];
-        v12 = [v11 startOverallPosition];
+        rollItems = [(JEHLSVideoPlaylist *)self rollItems];
+        v11 = [rollItems objectAtIndexedSubscript:v9];
+        startOverallPosition = [v11 startOverallPosition];
 
         v13 = v9 - 1;
-        if (v12 != a3)
+        if (startOverallPosition != position)
         {
           break;
         }
@@ -130,10 +130,10 @@
       v9 = v13 + 1;
     }
 
-    v15 = [(JEHLSVideoPlaylist *)self rollItems];
-    v16 = [v15 objectAtIndexedSubscript:v9];
+    rollItems2 = [(JEHLSVideoPlaylist *)self rollItems];
+    v16 = [rollItems2 objectAtIndexedSubscript:v9];
 
-    if (([v16 containsOverallPosition:a3] & 1) != 0 || (v4 & 2) != 0 && objc_msgSend(v16, "endOverallPosition") == a3)
+    if (([v16 containsOverallPosition:position] & 1) != 0 || (optionsCopy & 2) != 0 && objc_msgSend(v16, "endOverallPosition") == position)
     {
       v17 = v16;
     }
@@ -149,68 +149,68 @@
   return v8;
 }
 
-- (id)itemsBetweenStartOverallPosition:(unint64_t)a3 endOverallPosition:(unint64_t)a4
+- (id)itemsBetweenStartOverallPosition:(unint64_t)position endOverallPosition:(unint64_t)overallPosition
 {
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(JEHLSVideoPlaylist *)self rollItems];
-  v9 = [v8 count];
+  array = [MEMORY[0x1E695DF70] array];
+  rollItems = [(JEHLSVideoPlaylist *)self rollItems];
+  v9 = [rollItems count];
 
   if (v9)
   {
-    v10 = [(JEHLSVideoPlaylist *)self indexOfLastRollItemWithStartBeforePosition:a3];
+    v10 = [(JEHLSVideoPlaylist *)self indexOfLastRollItemWithStartBeforePosition:position];
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = [(JEHLSVideoPlaylist *)self mainFeatureItemWithStartOverallPosition:0];
-      [v7 addObject:v11];
+      [array addObject:v11];
 
       v10 = 0;
     }
 
     while (1)
     {
-      v20 = [(JEHLSVideoPlaylist *)self rollItems];
-      v21 = [v20 count];
+      rollItems2 = [(JEHLSVideoPlaylist *)self rollItems];
+      v21 = [rollItems2 count];
 
       if (v10 >= v21)
       {
         break;
       }
 
-      v12 = [(JEHLSVideoPlaylist *)self rollItems];
-      v13 = [v12 objectAtIndexedSubscript:v10];
+      rollItems3 = [(JEHLSVideoPlaylist *)self rollItems];
+      v13 = [rollItems3 objectAtIndexedSubscript:v10];
 
-      if ([v13 startOverallPosition] > a4)
+      if ([v13 startOverallPosition] > overallPosition)
       {
         goto LABEL_17;
       }
 
-      if ([v13 endOverallPosition] >= a3)
+      if ([v13 endOverallPosition] >= position)
       {
-        [v7 addObject:v13];
+        [array addObject:v13];
       }
 
       ++v10;
-      if ([v13 endOverallPosition] < a4)
+      if ([v13 endOverallPosition] < overallPosition)
       {
-        v14 = [(JEHLSVideoPlaylist *)self rollItems];
-        v15 = [v14 count];
+        rollItems4 = [(JEHLSVideoPlaylist *)self rollItems];
+        v15 = [rollItems4 count];
 
         if (v10 >= v15)
         {
           v17 = -[JEHLSVideoPlaylist mainFeatureItemWithStartOverallPosition:](self, "mainFeatureItemWithStartOverallPosition:", [v13 endOverallPosition]);
-          [v7 addObject:v17];
+          [array addObject:v17];
         }
 
         else
         {
-          v16 = [(JEHLSVideoPlaylist *)self rollItems];
-          v17 = [v16 objectAtIndexedSubscript:v10];
+          rollItems5 = [(JEHLSVideoPlaylist *)self rollItems];
+          v17 = [rollItems5 objectAtIndexedSubscript:v10];
 
-          v18 = [v17 startOverallPosition];
-          if (v18 > [v13 endOverallPosition])
+          startOverallPosition = [v17 startOverallPosition];
+          if (startOverallPosition > [v13 endOverallPosition])
           {
             v19 = -[JEHLSVideoPlaylist mainFeatureItemWithStartOverallPosition:](self, "mainFeatureItemWithStartOverallPosition:", [v13 endOverallPosition]);
-            [v7 addObject:v19];
+            [array addObject:v19];
           }
         }
       }
@@ -220,11 +220,11 @@
   else
   {
     v13 = [(JEHLSVideoPlaylist *)self mainFeatureItemWithStartOverallPosition:0];
-    [v7 addObject:v13];
+    [array addObject:v13];
 LABEL_17:
   }
 
-  return v7;
+  return array;
 }
 
 - (NSMutableArray)rollItems
@@ -232,9 +232,9 @@ LABEL_17:
   rollItems = self->_rollItems;
   if (!rollItems)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_rollItems;
-    self->_rollItems = v4;
+    self->_rollItems = array;
 
     rollItems = self->_rollItems;
   }
@@ -242,46 +242,46 @@ LABEL_17:
   return rollItems;
 }
 
-- (void)addRollItem:(id)a3
+- (void)addRollItem:(id)item
 {
-  v4 = a3;
-  v8 = [(JEHLSVideoPlaylist *)self rollItems];
-  v5 = [v8 count];
+  itemCopy = item;
+  rollItems = [(JEHLSVideoPlaylist *)self rollItems];
+  v5 = [rollItems count];
   v6 = +[JEHLSItem comparator];
-  v7 = [v8 indexOfObject:v4 inSortedRange:0 options:v5 usingComparator:{1024, v6}];
+  v7 = [rollItems indexOfObject:itemCopy inSortedRange:0 options:v5 usingComparator:{1024, v6}];
 
-  [v8 insertObject:v4 atIndex:v7];
+  [rollItems insertObject:itemCopy atIndex:v7];
 }
 
-- (id)mainFeatureItemWithStartOverallPosition:(unint64_t)a3
+- (id)mainFeatureItemWithStartOverallPosition:(unint64_t)position
 {
   v5 = [JEHLSItem alloc];
-  v6 = [(JEHLSVideoPlaylist *)self mainFeatureMetricsData];
-  v7 = [(JEHLSItem *)v5 initWithStartOverallPosition:a3 metricsData:v6];
+  mainFeatureMetricsData = [(JEHLSVideoPlaylist *)self mainFeatureMetricsData];
+  v7 = [(JEHLSItem *)v5 initWithStartOverallPosition:position metricsData:mainFeatureMetricsData];
 
-  v8 = [(JEHLSVideoPlaylist *)self startPosition];
-  v9 = [(JEHLSVideoPlaylist *)self indexOfLastRollItemWithStartBeforePosition:a3];
+  startPosition = [(JEHLSVideoPlaylist *)self startPosition];
+  v9 = [(JEHLSVideoPlaylist *)self indexOfLastRollItemWithStartBeforePosition:position];
   if (v9 <= 0x7FFFFFFFFFFFFFFELL)
   {
     v10 = v9;
-    v11 = [(JEHLSVideoPlaylist *)self rollItems];
-    v12 = [v11 objectAtIndexedSubscript:v10];
+    rollItems = [(JEHLSVideoPlaylist *)self rollItems];
+    v12 = [rollItems objectAtIndexedSubscript:v10];
 
     if (v10)
     {
       v13 = v10 - 1;
       do
       {
-        v14 = [(JEHLSVideoPlaylist *)self rollItems];
-        v15 = [v14 objectAtIndexedSubscript:v13];
+        rollItems2 = [(JEHLSVideoPlaylist *)self rollItems];
+        v15 = [rollItems2 objectAtIndexedSubscript:v13];
 
-        v16 = [v12 startOverallPosition];
-        v17 = [v15 startOverallPosition];
-        v18 = [v15 duration];
+        startOverallPosition = [v12 startOverallPosition];
+        startOverallPosition2 = [v15 startOverallPosition];
+        duration = [v15 duration];
 
-        v8 = v16 + v8 - (v17 + v18);
-        v19 = [(JEHLSVideoPlaylist *)self rollItems];
-        v12 = [v19 objectAtIndexedSubscript:v13];
+        startPosition = startOverallPosition + startPosition - (startOverallPosition2 + duration);
+        rollItems3 = [(JEHLSVideoPlaylist *)self rollItems];
+        v12 = [rollItems3 objectAtIndexedSubscript:v13];
 
         --v13;
       }
@@ -289,23 +289,23 @@ LABEL_17:
       while (v13 != -1);
     }
 
-    v8 += [v12 startOverallPosition];
+    startPosition += [v12 startOverallPosition];
   }
 
-  [(JEHLSItem *)v7 setStartPosition:v8];
+  [(JEHLSItem *)v7 setStartPosition:startPosition];
 
   return v7;
 }
 
-- (int64_t)indexOfLastRollItemWithStartBeforePosition:(unint64_t)a3
+- (int64_t)indexOfLastRollItemWithStartBeforePosition:(unint64_t)position
 {
-  v5 = [(JEHLSVideoPlaylist *)self rollItems];
-  v6 = [v5 firstObject];
+  rollItems = [(JEHLSVideoPlaylist *)self rollItems];
+  firstObject = [rollItems firstObject];
 
-  if (v6 && [v6 startOverallPosition] <= a3)
+  if (firstObject && [firstObject startOverallPosition] <= position)
   {
-    v8 = [(JEHLSVideoPlaylist *)self rollItems];
-    v9 = [v8 count] - 1;
+    rollItems2 = [(JEHLSVideoPlaylist *)self rollItems];
+    v9 = [rollItems2 count] - 1;
 
     if (v9 < 1)
     {
@@ -318,10 +318,10 @@ LABEL_17:
       do
       {
         v10 = (v7 + v9 + 1) >> 1;
-        v11 = [(JEHLSVideoPlaylist *)self rollItems];
-        v12 = [v11 objectAtIndexedSubscript:v10];
+        rollItems3 = [(JEHLSVideoPlaylist *)self rollItems];
+        v12 = [rollItems3 objectAtIndexedSubscript:v10];
 
-        if ([v12 startOverallPosition] > a3)
+        if ([v12 startOverallPosition] > position)
         {
           v9 = v10 - 1;
         }

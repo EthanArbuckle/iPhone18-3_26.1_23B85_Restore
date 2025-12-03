@@ -1,21 +1,21 @@
 @interface HDContentProtectionManager
 - (BOOL)isProtectedDataAvailable;
-- (HDContentProtectionManager)initWithNotifications:(BOOL)a3 initialState:(int64_t)a4 unlockedSinceBoot:(BOOL)a5;
+- (HDContentProtectionManager)initWithNotifications:(BOOL)notifications initialState:(int64_t)state unlockedSinceBoot:(BOOL)boot;
 - (id)diagnosticDescription;
 - (int64_t)observedState;
-- (uint64_t)_handleAppleKeyStoreRegistration:(int)a3 event:;
+- (uint64_t)_handleAppleKeyStoreRegistration:(int)registration event:;
 - (uint64_t)_keyBagLockState;
 - (void)_handleKeyBagLockStatusNotification;
-- (void)_observationQueue_adjustContentProtectionStateWithBlock:(uint64_t)a1;
+- (void)_observationQueue_adjustContentProtectionStateWithBlock:(uint64_t)block;
 - (void)_updateMKBState;
-- (void)addContentProtectionObserver:(id)a3 withQueue:(id)a4;
-- (void)addSynchronousContentProtectionObserver:(id)a3;
+- (void)addContentProtectionObserver:(id)observer withQueue:(id)queue;
+- (void)addSynchronousContentProtectionObserver:(id)observer;
 - (void)dealloc;
 - (void)recheckContentProtectionState;
-- (void)removeContentProtectionObserver:(id)a3;
-- (void)setContentProtectionState:(int64_t)a3;
-- (void)setInSession:(BOOL)a3;
-- (void)setShouldIgnoreUnlockedState:(BOOL)a3;
+- (void)removeContentProtectionObserver:(id)observer;
+- (void)setContentProtectionState:(int64_t)state;
+- (void)setInSession:(BOOL)session;
+- (void)setShouldIgnoreUnlockedState:(BOOL)state;
 @end
 
 @implementation HDContentProtectionManager
@@ -23,9 +23,9 @@
 - (BOOL)isProtectedDataAvailable
 {
   v3 = objc_opt_class();
-  v4 = [(HDContentProtectionManager *)self observedState];
+  observedState = [(HDContentProtectionManager *)self observedState];
 
-  return [v3 isProtectedDataAvailableWithState:v4];
+  return [v3 isProtectedDataAvailableWithState:observedState];
 }
 
 - (int64_t)observedState
@@ -41,15 +41,15 @@
 
 - (void)_handleKeyBagLockStatusNotification
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 64) = CFAbsoluteTimeGetCurrent();
+    *(self + 64) = CFAbsoluteTimeGetCurrent();
     v2[0] = MEMORY[0x277D85DD0];
     v2[1] = 3221225472;
     v2[2] = __65__HDContentProtectionManager__handleKeyBagLockStatusNotification__block_invoke;
     v2[3] = &unk_2796BD9B0;
-    v2[4] = a1;
-    [(HDContentProtectionManager *)a1 _observationQueue_adjustContentProtectionStateWithBlock:v2];
+    v2[4] = self;
+    [(HDContentProtectionManager *)self _observationQueue_adjustContentProtectionStateWithBlock:v2];
   }
 }
 
@@ -81,9 +81,9 @@ uint64_t __65__HDContentProtectionManager__handleKeyBagLockStatusNotification__b
   return result;
 }
 
-- (HDContentProtectionManager)initWithNotifications:(BOOL)a3 initialState:(int64_t)a4 unlockedSinceBoot:(BOOL)a5
+- (HDContentProtectionManager)initWithNotifications:(BOOL)notifications initialState:(int64_t)state unlockedSinceBoot:(BOOL)boot
 {
-  v7 = a3;
+  notificationsCopy = notifications;
   v24.receiver = self;
   v24.super_class = HDContentProtectionManager;
   v8 = [(HDContentProtectionManager *)&v24 init];
@@ -105,7 +105,7 @@ uint64_t __65__HDContentProtectionManager__handleKeyBagLockStatusNotification__b
     synchronousObservers = v8->_synchronousObservers;
     v8->_synchronousObservers = v17;
 
-    if (v7)
+    if (notificationsCopy)
     {
       v19 = v8->_observationQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -118,13 +118,13 @@ uint64_t __65__HDContentProtectionManager__handleKeyBagLockStatusNotification__b
 
     else
     {
-      if (!a4)
+      if (!state)
       {
         [HDContentProtectionManager initWithNotifications:initialState:unlockedSinceBoot:];
       }
 
-      atomic_store(a4, &v8->_contentProtectionState);
-      atomic_store(a5, &v8->_unlockedSinceBoot);
+      atomic_store(state, &v8->_contentProtectionState);
+      atomic_store(boot, &v8->_unlockedSinceBoot);
     }
 
     v20 = +[HDDiagnosticManager sharedDiagnosticManager];
@@ -184,11 +184,11 @@ void __83__HDContentProtectionManager_initWithNotifications_initialState_unlocke
   [(HDContentProtectionManager *)WeakRetained _handleAppleKeyStoreRegistration:a3 event:a2];
 }
 
-- (uint64_t)_handleAppleKeyStoreRegistration:(int)a3 event:
+- (uint64_t)_handleAppleKeyStoreRegistration:(int)registration event:
 {
   if (result)
   {
-    if (a3 == 1)
+    if (registration == 1)
     {
       value[3] = v3;
       value[4] = v4;
@@ -224,15 +224,15 @@ void __83__HDContentProtectionManager_initWithNotifications_initialState_unlocke
   [(HDContentProtectionManager *)&v5 dealloc];
 }
 
-- (void)addContentProtectionObserver:(id)a3 withQueue:(id)a4
+- (void)addContentProtectionObserver:(id)observer withQueue:(id)queue
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  observerCopy = observer;
+  queueCopy = queue;
+  v8 = queueCopy;
+  if (observerCopy)
   {
-    if (v7)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -259,20 +259,20 @@ LABEL_3:
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v6;
+    v12 = observerCopy;
     _os_log_impl(&dword_25156C000, v9, OS_LOG_TYPE_DEFAULT, "Added content protection observer %{public}@", &v11, 0xCu);
   }
 
-  [(HKObserverSet *)self->_observers registerObserver:v6 queue:v8];
+  [(HKObserverSet *)self->_observers registerObserver:observerCopy queue:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSynchronousContentProtectionObserver:(id)a3
+- (void)addSynchronousContentProtectionObserver:(id)observer
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [HDContentProtectionManager addSynchronousContentProtectionObserver:];
   }
@@ -282,26 +282,26 @@ LABEL_3:
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = observerCopy;
     _os_log_impl(&dword_25156C000, v5, OS_LOG_TYPE_DEFAULT, "Added synchronous content protection observer %{public}@", &v7, 0xCu);
   }
 
-  [(HKSynchronousObserverSet *)self->_synchronousObservers registerObserver:v4];
+  [(HKSynchronousObserverSet *)self->_synchronousObservers registerObserver:observerCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeContentProtectionObserver:(id)a3
+- (void)removeContentProtectionObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (!observerCopy)
   {
     [HDContentProtectionManager removeContentProtectionObserver:];
-    v4 = 0;
+    observerCopy = 0;
   }
 
-  [(HKObserverSet *)self->_observers unregisterObserver:v4];
+  [(HKObserverSet *)self->_observers unregisterObserver:observerCopy];
   [(HKSynchronousObserverSet *)self->_synchronousObservers unregisterObserver:v5];
 }
 
@@ -328,7 +328,7 @@ void __59__HDContentProtectionManager_recheckContentProtectionState__block_invok
   }
 }
 
-- (void)setContentProtectionState:(int64_t)a3
+- (void)setContentProtectionState:(int64_t)state
 {
   observationQueue = self->_observationQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -336,11 +336,11 @@ void __59__HDContentProtectionManager_recheckContentProtectionState__block_invok
   v4[2] = __56__HDContentProtectionManager_setContentProtectionState___block_invoke;
   v4[3] = &unk_2796BD9D8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_sync(observationQueue, v4);
 }
 
-- (void)setInSession:(BOOL)a3
+- (void)setInSession:(BOOL)session
 {
   observationQueue = self->_observationQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -348,11 +348,11 @@ void __59__HDContentProtectionManager_recheckContentProtectionState__block_invok
   v4[2] = __43__HDContentProtectionManager_setInSession___block_invoke;
   v4[3] = &unk_2796BDA00;
   v4[4] = self;
-  v5 = a3;
+  sessionCopy = session;
   dispatch_sync(observationQueue, v4);
 }
 
-- (void)setShouldIgnoreUnlockedState:(BOOL)a3
+- (void)setShouldIgnoreUnlockedState:(BOOL)state
 {
   observationQueue = self->_observationQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -360,40 +360,40 @@ void __59__HDContentProtectionManager_recheckContentProtectionState__block_invok
   v4[2] = __59__HDContentProtectionManager_setShouldIgnoreUnlockedState___block_invoke;
   v4[3] = &unk_2796BDA00;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_sync(observationQueue, v4);
 }
 
 - (id)diagnosticDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   observationQueue = self->_observationQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__HDContentProtectionManager_diagnosticDescription__block_invoke;
   v8[3] = &unk_2796BDA28;
-  v5 = v3;
+  v5 = string;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(observationQueue, v8);
   v6 = v5;
 
   return v5;
 }
 
-- (void)_observationQueue_adjustContentProtectionStateWithBlock:(uint64_t)a1
+- (void)_observationQueue_adjustContentProtectionStateWithBlock:(uint64_t)block
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    v4 = [a1 observedState];
+    observedState = [block observedState];
     v3[2](v3);
-    v5 = [a1 observedState];
-    v6 = v5;
-    v7 = v5 == 4 || v5 == 1;
+    observedState2 = [block observedState];
+    v6 = observedState2;
+    v7 = observedState2 == 4 || observedState2 == 1;
     v8 = MEMORY[0x277CCC2A0];
-    if (v7 && (atomic_exchange((a1 + 13), 1u) & 1) == 0)
+    if (v7 && (atomic_exchange((block + 13), 1u) & 1) == 0)
     {
       _HKInitializeLogging();
       v9 = *v8;
@@ -407,12 +407,12 @@ void __59__HDContentProtectionManager_recheckContentProtectionState__block_invok
     _HKInitializeLogging();
     v10 = *v8;
     v11 = os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT);
-    if (v6 == v4)
+    if (v6 == observedState)
     {
       if (v11)
       {
         v12 = @"invalid";
-        switch(v4)
+        switch(observedState)
         {
           case 0uLL:
             break;
@@ -446,14 +446,14 @@ void __59__HDContentProtectionManager_recheckContentProtectionState__block_invok
     {
       if (v11)
       {
-        if (v4 > 4)
+        if (observedState > 4)
         {
           v13 = @"unknown";
         }
 
         else
         {
-          v13 = off_2796BDA68[v4];
+          v13 = off_2796BDA68[observedState];
         }
 
         if (v6 > 4)
@@ -474,21 +474,21 @@ void __59__HDContentProtectionManager_recheckContentProtectionState__block_invok
         _os_log_impl(&dword_25156C000, v15, OS_LOG_TYPE_DEFAULT, "Key bag transitioning from %{public}@ to %{public}@", buf, 0x16u);
       }
 
-      v16 = *(a1 + 40);
+      v16 = *(block + 40);
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __86__HDContentProtectionManager__observationQueue_adjustContentProtectionStateWithBlock___block_invoke;
       v21[3] = &__block_descriptor_48_e39_v16__0___HDContentProtectionObserver__8l;
       v21[4] = v6;
-      v21[5] = v4;
+      v21[5] = observedState;
       [v16 notifyObservers:v21];
-      v17 = *(a1 + 32);
+      v17 = *(block + 32);
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __86__HDContentProtectionManager__observationQueue_adjustContentProtectionStateWithBlock___block_invoke_2;
       v20[3] = &__block_descriptor_48_e39_v16__0___HDContentProtectionObserver__8l;
       v20[4] = v6;
-      v20[5] = v4;
+      v20[5] = observedState;
       [v17 notifyObservers:v20];
     }
   }
@@ -499,12 +499,12 @@ void __59__HDContentProtectionManager_recheckContentProtectionState__block_invok
 - (void)_updateMKBState
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [(HDContentProtectionManager *)a1 _keyBagLockState];
-    v3 = v2;
-    v4 = atomic_exchange((a1 + 8), v2);
-    if (v2 != v4)
+    _keyBagLockState = [(HDContentProtectionManager *)self _keyBagLockState];
+    v3 = _keyBagLockState;
+    v4 = atomic_exchange((self + 8), _keyBagLockState);
+    if (_keyBagLockState != v4)
     {
       _HKInitializeLogging();
       v5 = *MEMORY[0x277CCC2A0];

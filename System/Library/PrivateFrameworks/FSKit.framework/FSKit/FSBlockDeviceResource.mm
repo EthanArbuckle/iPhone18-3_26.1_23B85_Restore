@@ -1,57 +1,57 @@
 @interface FSBlockDeviceResource
-+ (id)getDeviceName:(id)a3;
-+ (void)openWithBSDName:(id)a3 writable:(BOOL)a4 auditToken:(id)a5 replyHandler:(id)a6;
-- (BOOL)asynchronousMetadataFlushWithError:(id *)a3;
-- (BOOL)delayedMetadataWriteFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)metadataClear:(id)a3 withDelayedWrites:(BOOL)a4 error:(id *)a5;
-- (BOOL)metadataFlushWithError:(id *)a3;
-- (BOOL)metadataPurge:(id)a3 error:(id *)a4;
-- (BOOL)metadataReadInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6;
-- (BOOL)metadataReadInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 readAheadExtents:(id *)a6 readAheadCount:(int64_t)a7 error:(id *)a8;
-- (BOOL)metadataWriteFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6;
++ (id)getDeviceName:(id)name;
++ (void)openWithBSDName:(id)name writable:(BOOL)writable auditToken:(id)token replyHandler:(id)handler;
+- (BOOL)asynchronousMetadataFlushWithError:(id *)error;
+- (BOOL)delayedMetadataWriteFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)metadataClear:(id)clear withDelayedWrites:(BOOL)writes error:(id *)error;
+- (BOOL)metadataFlushWithError:(id *)error;
+- (BOOL)metadataPurge:(id)purge error:(id *)error;
+- (BOOL)metadataReadInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length error:(id *)error;
+- (BOOL)metadataReadInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length readAheadExtents:(id *)extents readAheadCount:(int64_t)count error:(id *)error;
+- (BOOL)metadataWriteFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error;
 - (BOOL)terminated;
-- (FSBlockDeviceResource)initWithBSDName:(id)a3 devicePath:(id)a4 fileDescriptor:(int)a5 writable:(BOOL)a6;
-- (FSBlockDeviceResource)initWithCoder:(id)a3;
-- (FSBlockDeviceResource)initWithResource:(id)a3;
+- (FSBlockDeviceResource)initWithBSDName:(id)name devicePath:(id)path fileDescriptor:(int)descriptor writable:(BOOL)writable;
+- (FSBlockDeviceResource)initWithCoder:(id)coder;
+- (FSBlockDeviceResource)initWithResource:(id)resource;
 - (id)getProgressURLKey;
 - (id)makeProxy;
-- (id)startUsingResource:(id)a3;
-- (id)stopUsingResource:(id)a3;
-- (unint64_t)readInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6;
-- (unint64_t)writeFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6;
+- (id)startUsingResource:(id)resource;
+- (id)stopUsingResource:(id)resource;
+- (unint64_t)readInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length error:(id *)error;
+- (unint64_t)writeFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)readFirstSectorAndLog;
-- (void)readInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 completionHandler:(id)a6;
+- (void)readInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length completionHandler:(id)handler;
 - (void)releaseNotification;
 - (void)revoke;
 - (void)terminate;
 - (void)terminateLocked;
-- (void)writeFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 completionHandler:(id)a6;
+- (void)writeFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length completionHandler:(id)handler;
 @end
 
 @implementation FSBlockDeviceResource
 
-+ (id)getDeviceName:(id)a3
++ (id)getDeviceName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if ([v3 hasPrefix:@"/dev/"])
+  nameCopy = name;
+  v4 = nameCopy;
+  if ([nameCopy hasPrefix:@"/dev/"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"/dev/", "length")}];
+    v4 = [nameCopy substringFromIndex:{objc_msgSend(@"/dev/", "length")}];
   }
 
   memset(&v15, 0, sizeof(v15));
   if ([v4 hasPrefix:@"fd/"])
   {
     v5 = [v4 substringFromIndex:{objc_msgSend(@"fd/", "length")}];
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
 
-    if (v6 >= 1)
+    if (intValue >= 1)
     {
-      if (fstat(v6, &v15))
+      if (fstat(intValue, &v15))
       {
         v7 = fskit_std_log();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -65,12 +65,12 @@ LABEL_8:
         goto LABEL_18;
       }
 
-      if (fcntl(v6, 50, v16) == -1)
+      if (fcntl(intValue, 50, v16) == -1)
       {
         v7 = fskit_std_log();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          [(FSBlockDeviceResource *)v6 getDeviceName:v7];
+          [(FSBlockDeviceResource *)intValue getDeviceName:v7];
         }
 
         goto LABEL_8;
@@ -81,7 +81,7 @@ LABEL_8:
       v10 = fskit_std_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [(FSBlockDeviceResource *)v9 getDeviceName:v6, v10];
+        [(FSBlockDeviceResource *)v9 getDeviceName:intValue, v10];
       }
 
       if ([v9 hasPrefix:@"/dev/"])
@@ -111,13 +111,13 @@ LABEL_18:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = FSBlockDeviceResource;
-  [(FSResource *)&v13 encodeWithCoder:v4];
+  [(FSResource *)&v13 encodeWithCoder:coderCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -131,7 +131,7 @@ LABEL_18:
     v6 = xpc_fd_create(fileDescriptor);
     if (v6)
     {
-      [v4 encodeXPCObject:v6 forKey:@"FSResource.fd"];
+      [coderCopy encodeXPCObject:v6 forKey:@"FSResource.fd"];
     }
 
     else
@@ -153,25 +153,25 @@ LABEL_18:
     }
   }
 
-  [v4 encodeObject:self->_BSDName forKey:@"FSResource.bsdName"];
-  [v4 encodeObject:self->_devicePath forKey:@"FSResource.path"];
-  [v4 encodeBool:self->_writable forKey:@"FSResource.writable"];
-  [v4 encodeBool:self->_supportsBarrier forKey:@"FSResource.supportsBarrier"];
-  [v4 encodeBool:self->_supportsPriority forKey:@"FSResource.supportsPriority"];
-  [v4 encodeBool:self->_supportsUnmap forKey:@"FSResource.supportsUnmap"];
-  [v4 encodeInteger:self->_blockSize forKey:@"FSResource.blockSize"];
-  [v4 encodeInteger:self->_blockCount forKey:@"FSResource.blockCount"];
-  [v4 encodeInteger:self->_physicalBlockSize forKey:@"FSResource.physicalBlockSize"];
-  [v4 encodeInteger:self->_queueDepth forKey:@"FSResource.queueDepth"];
-  [v4 encodeInteger:self->_partitionBase forKey:@"FSResource.partitionBase"];
-  [v4 encodeBool:self->_limited forKey:@"FSResource.Limited"];
+  [coderCopy encodeObject:self->_BSDName forKey:@"FSResource.bsdName"];
+  [coderCopy encodeObject:self->_devicePath forKey:@"FSResource.path"];
+  [coderCopy encodeBool:self->_writable forKey:@"FSResource.writable"];
+  [coderCopy encodeBool:self->_supportsBarrier forKey:@"FSResource.supportsBarrier"];
+  [coderCopy encodeBool:self->_supportsPriority forKey:@"FSResource.supportsPriority"];
+  [coderCopy encodeBool:self->_supportsUnmap forKey:@"FSResource.supportsUnmap"];
+  [coderCopy encodeInteger:self->_blockSize forKey:@"FSResource.blockSize"];
+  [coderCopy encodeInteger:self->_blockCount forKey:@"FSResource.blockCount"];
+  [coderCopy encodeInteger:self->_physicalBlockSize forKey:@"FSResource.physicalBlockSize"];
+  [coderCopy encodeInteger:self->_queueDepth forKey:@"FSResource.queueDepth"];
+  [coderCopy encodeInteger:self->_partitionBase forKey:@"FSResource.partitionBase"];
+  [coderCopy encodeBool:self->_limited forKey:@"FSResource.Limited"];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (FSBlockDeviceResource)initWithCoder:(id)a3
+- (FSBlockDeviceResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -181,28 +181,28 @@ LABEL_18:
 
   v19.receiver = self;
   v19.super_class = FSBlockDeviceResource;
-  v5 = [(FSResource *)&v19 initWithCoder:v4];
+  v5 = [(FSResource *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSResource.bsdName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSResource.bsdName"];
     BSDName = v5->_BSDName;
     v5->_BSDName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSResource.path"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSResource.path"];
     devicePath = v5->_devicePath;
     v5->_devicePath = v8;
 
-    v5->_writable = [v4 decodeBoolForKey:@"FSResource.writable"];
-    v5->_supportsBarrier = [v4 decodeBoolForKey:@"FSResource.supportsBarrier"];
-    v5->_supportsPriority = [v4 decodeBoolForKey:@"FSResource.supportsPriority"];
-    v5->_supportsUnmap = [v4 decodeBoolForKey:@"FSResource.supportsUnmap"];
-    v5->_blockSize = [v4 decodeIntegerForKey:@"FSResource.blockSize"];
-    v5->_blockCount = [v4 decodeIntegerForKey:@"FSResource.blockCount"];
-    v5->_physicalBlockSize = [v4 decodeIntegerForKey:@"FSResource.physicalBlockSize"];
-    v5->_queueDepth = [v4 decodeIntegerForKey:@"FSResource.queueDepth"];
-    v5->_partitionBase = [v4 decodeIntegerForKey:@"FSResource.partitionBase"];
-    v5->_limited = [v4 decodeBoolForKey:@"FSResource.Limited"];
-    v10 = [v4 decodeXPCObjectOfType:MEMORY[0x277D86488] forKey:@"FSResource.fd"];
+    v5->_writable = [coderCopy decodeBoolForKey:@"FSResource.writable"];
+    v5->_supportsBarrier = [coderCopy decodeBoolForKey:@"FSResource.supportsBarrier"];
+    v5->_supportsPriority = [coderCopy decodeBoolForKey:@"FSResource.supportsPriority"];
+    v5->_supportsUnmap = [coderCopy decodeBoolForKey:@"FSResource.supportsUnmap"];
+    v5->_blockSize = [coderCopy decodeIntegerForKey:@"FSResource.blockSize"];
+    v5->_blockCount = [coderCopy decodeIntegerForKey:@"FSResource.blockCount"];
+    v5->_physicalBlockSize = [coderCopy decodeIntegerForKey:@"FSResource.physicalBlockSize"];
+    v5->_queueDepth = [coderCopy decodeIntegerForKey:@"FSResource.queueDepth"];
+    v5->_partitionBase = [coderCopy decodeIntegerForKey:@"FSResource.partitionBase"];
+    v5->_limited = [coderCopy decodeBoolForKey:@"FSResource.Limited"];
+    v10 = [coderCopy decodeXPCObjectOfType:MEMORY[0x277D86488] forKey:@"FSResource.fd"];
     v11 = v10;
     if (v10)
     {
@@ -228,8 +228,8 @@ LABEL_18:
 
 - (id)makeProxy
 {
-  v3 = [(FSBlockDeviceResource *)self BSDName];
-  v4 = [FSBlockDeviceResource newProxyForBSDName:v3 isWritable:[(FSBlockDeviceResource *)self isWritable]];
+  bSDName = [(FSBlockDeviceResource *)self BSDName];
+  v4 = [FSBlockDeviceResource newProxyForBSDName:bSDName isWritable:[(FSBlockDeviceResource *)self isWritable]];
 
   return v4;
 }
@@ -245,7 +245,7 @@ LABEL_18:
 - (void)revoke
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_3_0(&dword_24A929000, a1, a3, "%s:end", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_3_0(&dword_24A929000, self, a3, "%s:end", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -271,42 +271,42 @@ void __31__FSBlockDeviceResource_revoke__block_invoke_77(uint64_t a1, void *a2)
   *(*(*(a1 + 32) + 8) + 24) = [v3 code];
 }
 
-- (void)readInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 completionHandler:(id)a6
+- (void)readInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v11->_terminated)
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_terminated)
   {
     v12 = fs_errorForPOSIXError(5);
-    v10[2](v10, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
-  if (!a3)
+  if (!into)
   {
-    v11 = fs_errorForPOSIXError(14);
-    v10[2](v10, 0, v11);
+    selfCopy = fs_errorForPOSIXError(14);
+    handlerCopy[2](handlerCopy, 0, selfCopy);
     goto LABEL_6;
   }
 
-  objc_initWeak(&location, v11);
-  fsExecQueue = v11->_fsExecQueue;
+  objc_initWeak(&location, selfCopy);
+  fsExecQueue = selfCopy->_fsExecQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__FSBlockDeviceResource_readInto_startingAt_length_completionHandler___block_invoke;
   v14[3] = &unk_278FED420;
   objc_copyWeak(v16, &location);
-  v16[1] = a3;
-  v16[2] = a5;
-  v16[3] = a4;
-  v15 = v10;
+  v16[1] = into;
+  v16[2] = length;
+  v16[3] = at;
+  v15 = handlerCopy;
   [(FSWorkQueue *)fsExecQueue enqueue:v14];
 
   objc_destroyWeak(v16);
@@ -338,83 +338,83 @@ void __70__FSBlockDeviceResource_readInto_startingAt_length_completionHandler___
   }
 }
 
-- (unint64_t)readInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (unint64_t)readInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length error:(id *)error
 {
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v10->_terminated)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_terminated)
   {
     v11 = fs_errorForPOSIXError(5);
-    if (a6)
+    if (error)
     {
       v11 = v11;
-      *a6 = v11;
+      *error = v11;
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
     return 0;
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
-  result = pread([(FSBlockDeviceResource *)v10 fileDescriptor], a3, a5, a4);
+  result = pread([(FSBlockDeviceResource *)selfCopy fileDescriptor], into, length, at);
   if ((result & 0x8000000000000000) != 0)
   {
     v13 = __error();
     v14 = fs_errorForPOSIXError(*v13);
-    if (a6)
+    if (error)
     {
       v14 = v14;
-      *a6 = v14;
+      *error = v14;
     }
 
     return 0;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   return result;
 }
 
-- (void)writeFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 completionHandler:(id)a6
+- (void)writeFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v11->_terminated)
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_terminated)
   {
     v12 = fs_errorForPOSIXError(5);
-    v10[2](v10, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
-  if (!a3)
+  if (!from)
   {
-    v11 = fs_errorForPOSIXError(14);
-    v10[2](v10, 0, v11);
+    selfCopy = fs_errorForPOSIXError(14);
+    handlerCopy[2](handlerCopy, 0, selfCopy);
     goto LABEL_6;
   }
 
-  objc_initWeak(&location, v11);
-  fsExecQueue = v11->_fsExecQueue;
+  objc_initWeak(&location, selfCopy);
+  fsExecQueue = selfCopy->_fsExecQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler___block_invoke;
   v14[3] = &unk_278FED420;
   objc_copyWeak(v16, &location);
-  v16[1] = a3;
-  v16[2] = a5;
-  v16[3] = a4;
-  v15 = v10;
+  v16[1] = from;
+  v16[2] = length;
+  v16[3] = at;
+  v15 = handlerCopy;
   [(FSWorkQueue *)fsExecQueue enqueue:v14];
 
   objc_destroyWeak(v16);
@@ -446,117 +446,117 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
   }
 }
 
-- (unint64_t)writeFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (unint64_t)writeFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error
 {
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v10->_terminated)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_terminated)
   {
     v11 = fs_errorForPOSIXError(5);
-    if (a6)
+    if (error)
     {
       v11 = v11;
-      *a6 = v11;
+      *error = v11;
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
     return 0;
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
-  result = pwrite([(FSBlockDeviceResource *)v10 fileDescriptor], a3, a5, a4);
+  result = pwrite([(FSBlockDeviceResource *)selfCopy fileDescriptor], from, length, at);
   if ((result & 0x8000000000000000) != 0)
   {
     v13 = __error();
     v14 = fs_errorForPOSIXError(*v13);
-    if (a6)
+    if (error)
     {
       v14 = v14;
-      *a6 = v14;
+      *error = v14;
     }
 
     return 0;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   return result;
 }
 
-- (BOOL)metadataReadInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (BOOL)metadataReadInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length error:(id *)error
 {
-  v11 = [MEMORY[0x277D23DB8] defaultClient];
-  v12 = [v11 readMeta:self->_fileDescriptor buffer:a3 offset:a4 length:a5];
+  defaultClient = [MEMORY[0x277D23DB8] defaultClient];
+  v12 = [defaultClient readMeta:self->_fileDescriptor buffer:into offset:at length:length];
   if (v12)
   {
     v13 = fs_errorForPOSIXError(5);
-    if (a6)
+    if (error)
     {
       v13 = v13;
-      *a6 = v13;
+      *error = v13;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   return v12 == 0;
 }
 
-- (BOOL)metadataWriteFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (BOOL)metadataWriteFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error
 {
-  v11 = [MEMORY[0x277D23DB8] defaultClient];
-  v12 = [v11 writeMeta:self->_fileDescriptor buffer:a3 offset:a4 length:a5];
+  defaultClient = [MEMORY[0x277D23DB8] defaultClient];
+  v12 = [defaultClient writeMeta:self->_fileDescriptor buffer:from offset:at length:length];
   if (v12)
   {
     v13 = fs_errorForPOSIXError(5);
-    if (a6)
+    if (error)
     {
       v13 = v13;
-      *a6 = v13;
+      *error = v13;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   return v12 == 0;
 }
 
-- (BOOL)delayedMetadataWriteFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (BOOL)delayedMetadataWriteFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error
 {
-  v11 = [MEMORY[0x277D23DB8] defaultClient];
-  v12 = [v11 writeMetaDelayed:self->_fileDescriptor buffer:a3 offset:a4 length:a5];
+  defaultClient = [MEMORY[0x277D23DB8] defaultClient];
+  v12 = [defaultClient writeMetaDelayed:self->_fileDescriptor buffer:from offset:at length:length];
   if (v12)
   {
     v13 = fs_errorForPOSIXError(5);
-    if (a6)
+    if (error)
     {
       v13 = v13;
-      *a6 = v13;
+      *error = v13;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   return v12 == 0;
 }
 
-- (BOOL)asynchronousMetadataFlushWithError:(id *)a3
+- (BOOL)asynchronousMetadataFlushWithError:(id *)error
 {
-  v5 = [MEMORY[0x277D23DB8] defaultClient];
-  v6 = [v5 flushMeta:self->_fileDescriptor wait:0];
+  defaultClient = [MEMORY[0x277D23DB8] defaultClient];
+  v6 = [defaultClient flushMeta:self->_fileDescriptor wait:0];
   if (v6)
   {
     v7 = fskit_std_log();
@@ -566,25 +566,25 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
     }
 
     v8 = fs_errorForPOSIXError(5);
-    if (a3)
+    if (error)
     {
       v8 = v8;
-      *a3 = v8;
+      *error = v8;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return v6 == 0;
 }
 
-- (BOOL)metadataFlushWithError:(id *)a3
+- (BOOL)metadataFlushWithError:(id *)error
 {
-  v5 = [MEMORY[0x277D23DB8] defaultClient];
-  v6 = [v5 flushMeta:self->_fileDescriptor wait:1];
+  defaultClient = [MEMORY[0x277D23DB8] defaultClient];
+  v6 = [defaultClient flushMeta:self->_fileDescriptor wait:1];
   if (v6)
   {
     v7 = fskit_std_log();
@@ -594,37 +594,37 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
     }
 
     v8 = fs_errorForPOSIXError(5);
-    if (a3)
+    if (error)
     {
       v8 = v8;
-      *a3 = v8;
+      *error = v8;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return v6 == 0;
 }
 
-- (BOOL)metadataClear:(id)a3 withDelayedWrites:(BOOL)a4 error:(id *)a5
+- (BOOL)metadataClear:(id)clear withDelayedWrites:(BOOL)writes error:(id *)error
 {
-  v6 = a4;
+  writesCopy = writes;
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MEMORY[0x277D23DB8] defaultClient];
-  if ([v8 count] < 9)
+  clearCopy = clear;
+  defaultClient = [MEMORY[0x277D23DB8] defaultClient];
+  if ([clearCopy count] < 9)
   {
-    v26 = self;
-    v27 = v9;
+    selfCopy = self;
+    v27 = defaultClient;
     memset(v33, 0, sizeof(v33));
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v13 = v8;
+    v13 = clearCopy;
     v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v14)
     {
@@ -658,8 +658,8 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
       while (v15);
     }
 
-    v9 = v27;
-    v21 = [v27 clearMetaBlocks:v26->_fileDescriptor ranges:v33 rangesCount:objc_msgSend(v13 wait:{"count"), v6}];
+    defaultClient = v27;
+    v21 = [v27 clearMetaBlocks:selfCopy->_fileDescriptor ranges:v33 rangesCount:objc_msgSend(v13 wait:{"count"), writesCopy}];
     v12 = v21 == 0;
     if (v21)
     {
@@ -670,16 +670,16 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
       }
 
       v23 = fs_errorForPOSIXError(5);
-      if (a5)
+      if (error)
       {
         v23 = v23;
-        *a5 = v23;
+        *error = v23;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
   }
 
@@ -692,10 +692,10 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
     }
 
     v11 = fs_errorForPOSIXError(22);
-    if (a5)
+    if (error)
     {
       v11 = v11;
-      *a5 = v11;
+      *error = v11;
     }
 
     v12 = 0;
@@ -705,21 +705,21 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
   return v12;
 }
 
-- (BOOL)metadataPurge:(id)a3 error:(id *)a4
+- (BOOL)metadataPurge:(id)purge error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277D23DB8] defaultClient];
-  if ([v6 count] < 9)
+  purgeCopy = purge;
+  defaultClient = [MEMORY[0x277D23DB8] defaultClient];
+  if ([purgeCopy count] < 9)
   {
-    v24 = self;
-    v25 = v7;
+    selfCopy = self;
+    v25 = defaultClient;
     memset(v31, 0, sizeof(v31));
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = v6;
+    v11 = purgeCopy;
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v12)
     {
@@ -753,8 +753,8 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
       while (v13);
     }
 
-    v7 = v25;
-    v19 = [v25 purgeMetaBlocks:v24->_fileDescriptor ranges:v31 rangesCount:{objc_msgSend(v11, "count")}];
+    defaultClient = v25;
+    v19 = [v25 purgeMetaBlocks:selfCopy->_fileDescriptor ranges:v31 rangesCount:{objc_msgSend(v11, "count")}];
     v10 = v19 == 0;
     if (v19)
     {
@@ -765,16 +765,16 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
       }
 
       v21 = fs_errorForPOSIXError(5);
-      if (a4)
+      if (error)
       {
         v21 = v21;
-        *a4 = v21;
+        *error = v21;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
   }
 
@@ -787,10 +787,10 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
     }
 
     v9 = fs_errorForPOSIXError(22);
-    if (a4)
+    if (error)
     {
       v9 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     v10 = 0;
@@ -803,19 +803,19 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
 - (void)releaseNotification
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_3_0(&dword_24A929000, a1, a3, "%s:released", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_3_0(&dword_24A929000, self, a3, "%s:released", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = [(FSResource *)FSBlockDeviceResource dynamicCast:a3];
+  v4 = [(FSResource *)FSBlockDeviceResource dynamicCast:equal];
   v5 = v4;
   if (v4)
   {
     BSDName = self->_BSDName;
-    v7 = [v4 BSDName];
-    v8 = [(NSString *)BSDName isEqual:v7];
+    bSDName = [v4 BSDName];
+    v8 = [(NSString *)BSDName isEqual:bSDName];
   }
 
   else
@@ -830,30 +830,30 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
 {
   v2 = MEMORY[0x277CBEBC0];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(FSBlockDeviceResource *)self bsdName];
-  v5 = [v3 stringWithFormat:@"/dev/r%@", v4];
+  bsdName = [(FSBlockDeviceResource *)self bsdName];
+  v5 = [v3 stringWithFormat:@"/dev/r%@", bsdName];
   v6 = [v2 fileURLWithPath:v5];
 
   return v6;
 }
 
-- (FSBlockDeviceResource)initWithBSDName:(id)a3 devicePath:(id)a4 fileDescriptor:(int)a5 writable:(BOOL)a6
+- (FSBlockDeviceResource)initWithBSDName:(id)name devicePath:(id)path fileDescriptor:(int)descriptor writable:(BOOL)writable
 {
-  v11 = a3;
-  v12 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v30.receiver = self;
   v30.super_class = FSBlockDeviceResource;
-  v13 = [(FSResource *)&v30 initResource];
-  v14 = v13;
-  if (v13)
+  initResource = [(FSResource *)&v30 initResource];
+  v14 = initResource;
+  if (initResource)
   {
-    objc_storeStrong(v13 + 6, a3);
-    objc_storeStrong(&v14->_devicePath, a4);
-    v14->_fileDescriptor = a5;
-    v14->_writable = a6;
+    objc_storeStrong(initResource + 6, name);
+    objc_storeStrong(&v14->_devicePath, path);
+    v14->_fileDescriptor = descriptor;
+    v14->_writable = writable;
     v29 = 0;
     v28 = 0;
-    if (ioctl(a5, 0x40046418uLL, &v29))
+    if (ioctl(descriptor, 0x40046418uLL, &v29))
     {
       v15 = 512;
     }
@@ -929,58 +929,58 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
   return v14;
 }
 
-- (FSBlockDeviceResource)initWithResource:(id)a3
+- (FSBlockDeviceResource)initWithResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v15.receiver = self;
   v15.super_class = FSBlockDeviceResource;
-  v5 = [(FSResource *)&v15 initResource];
-  if (v5)
+  initResource = [(FSResource *)&v15 initResource];
+  if (initResource)
   {
-    v6 = [v4 BSDName];
-    BSDName = v5->_BSDName;
-    v5->_BSDName = v6;
+    bSDName = [resourceCopy BSDName];
+    BSDName = initResource->_BSDName;
+    initResource->_BSDName = bSDName;
 
-    v8 = [v4 devicePath];
-    devicePath = v5->_devicePath;
-    v5->_devicePath = v8;
+    devicePath = [resourceCopy devicePath];
+    devicePath = initResource->_devicePath;
+    initResource->_devicePath = devicePath;
 
-    v5->_fileDescriptor = [v4 fileDescriptor];
-    v5->_writable = [v4 isWritable];
-    v5->_blockSize = [v4 blockSize];
-    v5->_blockCount = [v4 blockCount];
-    v5->_physicalBlockSize = [v4 physicalBlockSize];
-    v5->_queueDepth = *(v4 + 3);
-    v5->_supportsBarrier = *(v4 + 17);
-    v5->_supportsUnmap = *(v4 + 19);
-    v5->_supportsPriority = *(v4 + 18);
-    v5->_partitionBase = [v4 partitionBase];
-    v5->_notification = 0;
-    v5->_terminated = [v4 terminated];
+    initResource->_fileDescriptor = [resourceCopy fileDescriptor];
+    initResource->_writable = [resourceCopy isWritable];
+    initResource->_blockSize = [resourceCopy blockSize];
+    initResource->_blockCount = [resourceCopy blockCount];
+    initResource->_physicalBlockSize = [resourceCopy physicalBlockSize];
+    initResource->_queueDepth = *(resourceCopy + 3);
+    initResource->_supportsBarrier = *(resourceCopy + 17);
+    initResource->_supportsUnmap = *(resourceCopy + 19);
+    initResource->_supportsPriority = *(resourceCopy + 18);
+    initResource->_partitionBase = [resourceCopy partitionBase];
+    initResource->_notification = 0;
+    initResource->_terminated = [resourceCopy terminated];
     v10 = [FSWorkQueue alloc];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"fsblockdevice.%@", v5->_BSDName];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"fsblockdevice.%@", initResource->_BSDName];
     v12 = [(FSWorkQueue *)v10 initQueueWithDomain:v11 concurrency:16];
-    fsExecQueue = v5->_fsExecQueue;
-    v5->_fsExecQueue = v12;
+    fsExecQueue = initResource->_fsExecQueue;
+    initResource->_fsExecQueue = v12;
   }
 
-  return v5;
+  return initResource;
 }
 
-+ (void)openWithBSDName:(id)a3 writable:(BOOL)a4 auditToken:(id)a5 replyHandler:(id)a6
++ (void)openWithBSDName:(id)name writable:(BOOL)writable auditToken:(id)token replyHandler:(id)handler
 {
-  v8 = a4;
+  writableCopy = writable;
   v83 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  nameCopy = name;
+  tokenCopy = token;
+  handlerCopy = handler;
   v12 = fskit_std_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     +[FSBlockDeviceResource(Project) openWithBSDName:writable:auditToken:replyHandler:];
   }
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"/dev/r%@", v9];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"/dev/r%@", nameCopy];
   v14 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.fskit.fskit_helper" options:4096];
   v15 = +[FSKitConstants FSKitHelperProtocol];
   [v14 setRemoteObjectInterface:v15];
@@ -1009,7 +1009,7 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
   v63[1] = 3221225472;
   v63[2] = __83__FSBlockDeviceResource_Project__openWithBSDName_writable_auditToken_replyHandler___block_invoke_209;
   v63[3] = &unk_278FED448;
-  if (v8)
+  if (writableCopy)
   {
     v18 = 2;
   }
@@ -1021,7 +1021,7 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
 
   v63[4] = &v65;
   v63[5] = &v71;
-  [v16 openDevice:v9 devicePath:v13 flags:v18 auditToken:v10 replyHandler:v63];
+  [v16 openDevice:nameCopy devicePath:nameCopy flags:v18 auditToken:tokenCopy replyHandler:v63];
   v19 = v66[5];
   if (!v19 || ([v19 fileDescriptor] & 0x80000000) != 0)
   {
@@ -1032,7 +1032,7 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
       notification = 136315650;
       v78 = "+[FSBlockDeviceResource(Project) openWithBSDName:writable:auditToken:replyHandler:]";
       v79 = 2112;
-      v80 = v9;
+      v80 = nameCopy;
       v81 = 2112;
       v82 = v39;
       _os_log_impl(&dword_24A929000, v22, OS_LOG_TYPE_INFO, "%s: failed to open device %@, %@", &notification, 0x20u);
@@ -1042,16 +1042,16 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
   else
   {
     v20 = MEMORY[0x277CCACA8];
-    v21 = [v66[5] BSDName];
-    v22 = [v20 stringWithFormat:@"com.apple.fskit.iokit.queue.%@.%d", v21, objc_msgSend(v66[5], "fileDescriptor")];
+    bSDName = [v66[5] BSDName];
+    v22 = [v20 stringWithFormat:@"com.apple.fskit.iokit.queue.%@.%d", bSDName, objc_msgSend(v66[5], "fileDescriptor")];
 
     v23 = v22;
     v24 = dispatch_queue_create([v22 UTF8String], 0);
     [v66[5] setIoKitQueue:v24];
 
-    v25 = [v66[5] ioKitQueue];
+    ioKitQueue = [v66[5] ioKitQueue];
 
-    if (v25)
+    if (ioKitQueue)
     {
       v26 = IONotificationPortCreate(*MEMORY[0x277CD2898]);
       v27 = fskit_std_log();
@@ -1060,20 +1060,20 @@ void __71__FSBlockDeviceResource_writeFrom_startingAt_length_completionHandler__
         +[FSBlockDeviceResource(Project) openWithBSDName:writable:auditToken:replyHandler:];
       }
 
-      v28 = [v66[5] ioKitQueue];
-      IONotificationPortSetDispatchQueue(v26, v28);
+      ioKitQueue2 = [v66[5] ioKitQueue];
+      IONotificationPortSetDispatchQueue(v26, ioKitQueue2);
 
       [v66[5] setNotifyPort:v26];
-      v29 = v9;
-      v30 = [v9 UTF8String];
+      v29 = nameCopy;
+      uTF8String = [nameCopy UTF8String];
       v31 = *MEMORY[0x277CD28A0];
-      v32 = IOBSDNameMatching(*MEMORY[0x277CD28A0], 0, v30);
+      v32 = IOBSDNameMatching(*MEMORY[0x277CD28A0], 0, uTF8String);
       MatchingService = IOServiceGetMatchingService(v31, v32);
       notification = 0;
       if (MatchingService)
       {
-        v34 = [v66[5] notifyPort];
-        v35 = IOServiceAddInterestNotification(v34, MatchingService, "IOGeneralInterest", deviceNotificationCallback, v66[5], &notification);
+        notifyPort = [v66[5] notifyPort];
+        v35 = IOServiceAddInterestNotification(notifyPort, MatchingService, "IOGeneralInterest", deviceNotificationCallback, v66[5], &notification);
         IOObjectRelease(MatchingService);
         if (!v35)
         {
@@ -1146,7 +1146,7 @@ LABEL_26:
     [(FSBlockDeviceResource(Project) *)v47 openWithBSDName:v48 writable:v49 auditToken:v50 replyHandler:v51, v52, v53, v54];
   }
 
-  v11[2](v11, v66[5], v72[5]);
+  handlerCopy[2](handlerCopy, v66[5], v72[5]);
   _Block_object_dispose(&v65, 8);
 
   _Block_object_dispose(&v71, 8);
@@ -1203,9 +1203,9 @@ void __83__FSBlockDeviceResource_Project__openWithBSDName_writable_auditToken_re
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)startUsingResource:(id)a3
+- (id)startUsingResource:(id)resource
 {
-  v5 = a3;
+  resourceCopy = resource;
   if (self->_usingResourcePurpose)
   {
     v6 = fskit_std_log();
@@ -1220,7 +1220,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v8 = [MEMORY[0x277D23DB8] defaultClient];
+  defaultClient = [MEMORY[0x277D23DB8] defaultClient];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1236,8 +1236,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v10 = [MEMORY[0x277D23DB8] defaultClient];
-  v11 = v10;
+  defaultClient2 = [MEMORY[0x277D23DB8] defaultClient];
+  v11 = defaultClient2;
   if (self->_writable)
   {
     v12 = 2;
@@ -1248,7 +1248,7 @@ LABEL_16:
     v12 = 0;
   }
 
-  v13 = [v10 openFileDescriptorForKernel:self->_fileDescriptor flags:v12];
+  v13 = [defaultClient2 openFileDescriptorForKernel:self->_fileDescriptor flags:v12];
   if (v13)
   {
     v14 = v13;
@@ -1263,7 +1263,7 @@ LABEL_16:
 
   else
   {
-    objc_storeStrong(&self->_usingResourcePurpose, a3);
+    objc_storeStrong(&self->_usingResourcePurpose, resource);
     v19 = fskit_std_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -1278,22 +1278,22 @@ LABEL_17:
   return v16;
 }
 
-- (id)stopUsingResource:(id)a3
+- (id)stopUsingResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   usingResourcePurpose = self->_usingResourcePurpose;
   if (usingResourcePurpose && [(NSString *)usingResourcePurpose length])
   {
-    if (-[NSString isEqualToString:](self->_usingResourcePurpose, "isEqualToString:", v4) || ([v4 isEqualToString:@"serviceTerminated"] & 1) != 0)
+    if (-[NSString isEqualToString:](self->_usingResourcePurpose, "isEqualToString:", resourceCopy) || ([resourceCopy isEqualToString:@"serviceTerminated"] & 1) != 0)
     {
-      v6 = [MEMORY[0x277D23DB8] defaultClient];
+      defaultClient = [MEMORY[0x277D23DB8] defaultClient];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v8 = [MEMORY[0x277D23DB8] defaultClient];
-        v9 = [v8 closeFileDescriptorForKernel:self->_fileDescriptor];
+        defaultClient2 = [MEMORY[0x277D23DB8] defaultClient];
+        v9 = [defaultClient2 closeFileDescriptorForKernel:self->_fileDescriptor];
         v10 = fskit_std_log();
         v11 = v10;
         if (v9)
@@ -1424,26 +1424,26 @@ LABEL_24:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)metadataReadInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 readAheadExtents:(id *)a6 readAheadCount:(int64_t)a7 error:(id *)a8
+- (BOOL)metadataReadInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length readAheadExtents:(id *)extents readAheadCount:(int64_t)count error:(id *)error
 {
-  if (a7)
+  if (count)
   {
-    v15 = [MEMORY[0x277D23DB8] defaultClient];
-    v16 = [v15 readMetaWithRA:self->_fileDescriptor buffer:a3 offset:a4 length:a5 raList:a6 raListCount:a7];
+    defaultClient = [MEMORY[0x277D23DB8] defaultClient];
+    v16 = [defaultClient readMetaWithRA:self->_fileDescriptor buffer:into offset:at length:length raList:extents raListCount:count];
     v17 = v16 == 0;
     if (v16)
     {
       v18 = fs_errorForPOSIXError(5);
-      if (a8)
+      if (error)
       {
         v18 = v18;
-        *a8 = v18;
+        *error = v18;
       }
     }
 
-    else if (a8)
+    else if (error)
     {
-      *a8 = 0;
+      *error = 0;
     }
   }
 
@@ -1456,10 +1456,10 @@ LABEL_24:
     }
 
     v20 = fs_errorForPOSIXError(22);
-    if (a8)
+    if (error)
     {
       v20 = v20;
-      *a8 = v20;
+      *error = v20;
     }
 
     return 0;
@@ -1470,10 +1470,10 @@ LABEL_24:
 
 - (BOOL)terminated
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  terminated = v2->_terminated;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  terminated = selfCopy->_terminated;
+  objc_sync_exit(selfCopy);
 
   return terminated;
 }

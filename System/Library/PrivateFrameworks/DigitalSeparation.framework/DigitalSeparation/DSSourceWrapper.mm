@@ -1,6 +1,6 @@
 @interface DSSourceWrapper
-+ (BOOL)shouldEnumerateResourceNamesForSource:(id)a3;
-+ (id)wrapMultiSource:(id)a3;
++ (BOOL)shouldEnumerateResourceNamesForSource:(id)source;
++ (id)wrapMultiSource:(id)source;
 + (void)initialize;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLog_5 = os_log_create("com.apple.DigitalSeparation", "DSSourceWrapper");
 
@@ -16,13 +16,13 @@
   }
 }
 
-+ (BOOL)shouldEnumerateResourceNamesForSource:(id)a3
++ (BOOL)shouldEnumerateResourceNamesForSource:(id)source
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&unk_285BAD248])
+  sourceCopy = source;
+  if ([sourceCopy conformsToProtocol:&unk_285BAD248])
   {
-    v4 = [v3 resourceNames];
-    v5 = [v4 count] > 1;
+    resourceNames = [sourceCopy resourceNames];
+    v5 = [resourceNames count] > 1;
   }
 
   else
@@ -33,18 +33,18 @@
   return v5;
 }
 
-+ (id)wrapMultiSource:(id)a3
++ (id)wrapMultiSource:(id)source
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if ([DSSourceWrapper shouldEnumerateResourceNamesForSource:v3])
+  sourceCopy = source;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([DSSourceWrapper shouldEnumerateResourceNamesForSource:sourceCopy])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    obj = [v3 resourceNames];
+    obj = [sourceCopy resourceNames];
     v5 = [obj countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v5)
     {
@@ -60,18 +60,18 @@
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
-          v10 = [[DSSubSource alloc] init:v3 withResourceName:v9];
-          [v4 setObject:v10 forKeyedSubscript:v9];
+          v10 = [[DSSubSource alloc] init:sourceCopy withResourceName:v9];
+          [dictionary setObject:v10 forKeyedSubscript:v9];
 
           v11 = DSLog_5;
           if (os_log_type_enabled(DSLog_5, OS_LOG_TYPE_DEFAULT))
           {
             v12 = v11;
-            v13 = [v3 name];
+            name = [sourceCopy name];
             *buf = 138543618;
             v23 = v9;
             v24 = 2114;
-            v25 = v13;
+            v25 = name;
             _os_log_impl(&dword_248C40000, v12, OS_LOG_TYPE_DEFAULT, "Adding sharing sub source for %{public}@ from %{public}@", buf, 0x16u);
           }
         }
@@ -88,13 +88,13 @@
     v14 = DSLog_5;
     if (os_log_type_enabled(DSLog_5, OS_LOG_TYPE_ERROR))
     {
-      [(DSSourceWrapper *)v14 wrapMultiSource:v3];
+      [(DSSourceWrapper *)v14 wrapMultiSource:sourceCopy];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 + (void)wrapMultiSource:(void *)a1 .cold.1(void *a1, void *a2)

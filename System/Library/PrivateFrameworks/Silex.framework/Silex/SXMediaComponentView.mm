@@ -1,33 +1,33 @@
 @interface SXMediaComponentView
-- (BOOL)shouldSubmitMediaExposureEventForExposedBounds:(CGRect)a3;
+- (BOOL)shouldSubmitMediaExposureEventForExposedBounds:(CGRect)bounds;
 - (CGRect)visibleBounds;
-- (SXMediaComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8;
-- (id)mediaEventForClass:(Class)a3;
+- (SXMediaComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor;
+- (id)mediaEventForClass:(Class)class;
 - (void)calculateVisibleBounds;
 - (void)createMediaExposureEventIfNeeded;
 - (void)finishMediaExposureEventIfNeeded;
-- (void)setIsDisplayingMedia:(BOOL)a3;
-- (void)visibilityStateDidChangeFromState:(int64_t)a3;
+- (void)setIsDisplayingMedia:(BOOL)media;
+- (void)visibilityStateDidChangeFromState:(int64_t)state;
 - (void)visibleBoundsChanged;
 @end
 
 @implementation SXMediaComponentView
 
-- (SXMediaComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8
+- (SXMediaComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  providerCopy = provider;
+  viewportCopy = viewport;
+  delegateCopy = delegate;
+  factoryCopy = factory;
+  reportingCopy = reporting;
+  monitorCopy = monitor;
   v34.receiver = self;
   v34.super_class = SXMediaComponentView;
-  v20 = [(SXComponentView *)&v34 initWithDOMObjectProvider:v14 viewport:v15 presentationDelegate:v16 componentStyleRendererFactory:v17];
+  v20 = [(SXComponentView *)&v34 initWithDOMObjectProvider:providerCopy viewport:viewportCopy presentationDelegate:delegateCopy componentStyleRendererFactory:factoryCopy];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_analyticsReporting, a7);
+    objc_storeStrong(&v20->_analyticsReporting, reporting);
     objc_initWeak(&location, v21);
     if (objc_opt_respondsToSelector())
     {
@@ -36,7 +36,7 @@
       v31[2] = __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentationDelegate_componentStyleRendererFactory_analyticsReporting_appStateMonitor___block_invoke;
       v31[3] = &unk_1E84FEC28;
       objc_copyWeak(&v32, &location);
-      [v19 performOnApplicationWindowDidBecomeBackground:v31];
+      [monitorCopy performOnApplicationWindowDidBecomeBackground:v31];
       objc_destroyWeak(&v32);
     }
 
@@ -45,7 +45,7 @@
     v29[2] = __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentationDelegate_componentStyleRendererFactory_analyticsReporting_appStateMonitor___block_invoke_2;
     v29[3] = &unk_1E84FEC28;
     objc_copyWeak(&v30, &location);
-    [v19 performOnApplicationDidEnterBackground:v29];
+    [monitorCopy performOnApplicationDidEnterBackground:v29];
     if (objc_opt_respondsToSelector())
     {
       v27[0] = MEMORY[0x1E69E9820];
@@ -53,7 +53,7 @@
       v27[2] = __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentationDelegate_componentStyleRendererFactory_analyticsReporting_appStateMonitor___block_invoke_3;
       v27[3] = &unk_1E84FEC28;
       objc_copyWeak(&v28, &location);
-      [v19 performOnApplicationWindowDidBecomeForeground:v27];
+      [monitorCopy performOnApplicationWindowDidBecomeForeground:v27];
       objc_destroyWeak(&v28);
     }
 
@@ -64,7 +64,7 @@
       v25[2] = __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentationDelegate_componentStyleRendererFactory_analyticsReporting_appStateMonitor___block_invoke_4;
       v25[3] = &unk_1E84FEC28;
       objc_copyWeak(&v26, &location);
-      [v19 performOnApplicationWillEnterForeground:v25];
+      [monitorCopy performOnApplicationWillEnterForeground:v25];
       objc_destroyWeak(&v26);
     }
 
@@ -73,7 +73,7 @@
     v23[2] = __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentationDelegate_componentStyleRendererFactory_analyticsReporting_appStateMonitor___block_invoke_5;
     v23[3] = &unk_1E84FEC28;
     objc_copyWeak(&v24, &location);
-    [v19 performOnApplicationDidBecomeActive:v23];
+    [monitorCopy performOnApplicationDidBecomeActive:v23];
     v21->_minimumVisibleY = 1.79769313e308;
     v21->_maximumVisibleY = 2.22507386e-308;
     objc_destroyWeak(&v24);
@@ -116,11 +116,11 @@ void __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentation
 
 - (void)createMediaExposureEventIfNeeded
 {
-  v3 = [(SXMediaComponentView *)self mediaExposureEvent];
-  if (!v3)
+  mediaExposureEvent = [(SXMediaComponentView *)self mediaExposureEvent];
+  if (!mediaExposureEvent)
   {
     v4 = [(SXComponentView *)self visibilityState]== 1;
-    v3 = 0;
+    mediaExposureEvent = 0;
     if (v4)
     {
       if (![(SXMediaComponentView *)self isDisplayingMedia])
@@ -130,20 +130,20 @@ void __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentation
 
       v5 = [(SXMediaComponentView *)self mediaEventForClass:objc_opt_class()];
       [(SXMediaComponentView *)self setMediaExposureEvent:v5];
-      v3 = v5;
+      mediaExposureEvent = v5;
     }
   }
 }
 
 - (void)finishMediaExposureEventIfNeeded
 {
-  v3 = [(SXMediaComponentView *)self mediaExposureEvent];
+  mediaExposureEvent = [(SXMediaComponentView *)self mediaExposureEvent];
 
-  if (v3)
+  if (mediaExposureEvent)
   {
-    v4 = [(SXMediaComponentView *)self mediaExposureEvent];
-    v5 = [v4 startDate];
-    [v5 timeIntervalSinceNow];
+    mediaExposureEvent2 = [(SXMediaComponentView *)self mediaExposureEvent];
+    startDate = [mediaExposureEvent2 startDate];
+    [startDate timeIntervalSinceNow];
     v7 = v6;
 
     if (v7 >= 0.0)
@@ -168,47 +168,47 @@ void __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentation
     v16 = [(SXMediaComponentView *)self shouldSubmitMediaExposureEventForExposedBounds:MinX, v11, Width, v14 - v15];
     if (v8 >= 1.0 && v16)
     {
-      v18 = [(SXMediaComponentView *)self mediaExposureEvent];
-      [(SXMediaComponentView *)self willSubmitMediaExposureEvent:v18];
+      mediaExposureEvent3 = [(SXMediaComponentView *)self mediaExposureEvent];
+      [(SXMediaComponentView *)self willSubmitMediaExposureEvent:mediaExposureEvent3];
 
-      v19 = [(SXMediaComponentView *)self mediaExposureEvent];
-      [v19 determineEndDate];
+      mediaExposureEvent4 = [(SXMediaComponentView *)self mediaExposureEvent];
+      [mediaExposureEvent4 determineEndDate];
 
-      v20 = [(SXMediaComponentView *)self analyticsReporting];
-      v21 = [(SXMediaComponentView *)self mediaExposureEvent];
-      [v20 reportEvent:v21];
+      analyticsReporting = [(SXMediaComponentView *)self analyticsReporting];
+      mediaExposureEvent5 = [(SXMediaComponentView *)self mediaExposureEvent];
+      [analyticsReporting reportEvent:mediaExposureEvent5];
 
       [(SXMediaComponentView *)self setMediaExposureEvent:0];
     }
   }
 }
 
-- (id)mediaEventForClass:(Class)a3
+- (id)mediaEventForClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   [v4 setMediaType:{-[SXMediaComponentView analyticsMediaType](self, "analyticsMediaType")}];
   [v4 setGalleryType:{-[SXMediaComponentView analyticsGalleryType](self, "analyticsGalleryType")}];
   [v4 setVideoType:{-[SXMediaComponentView analyticsVideoType](self, "analyticsVideoType")}];
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 identifier];
-  [v4 setMediaId:v6];
+  component = [(SXComponentView *)self component];
+  identifier = [component identifier];
+  [v4 setMediaId:identifier];
 
-  v7 = [(SXComponentView *)self component];
-  v8 = [v7 analytics];
-  v9 = [v8 jsonDictionary];
-  [v4 setMetaData:v9];
+  component2 = [(SXComponentView *)self component];
+  analytics = [component2 analytics];
+  jsonDictionary = [analytics jsonDictionary];
+  [v4 setMetaData:jsonDictionary];
 
   return v4;
 }
 
-- (BOOL)shouldSubmitMediaExposureEventForExposedBounds:(CGRect)a3
+- (BOOL)shouldSubmitMediaExposureEventForExposedBounds:(CGRect)bounds
 {
-  Height = CGRectGetHeight(a3);
+  Height = CGRectGetHeight(bounds);
   [(SXComponentView *)self absoluteFrame];
   return Height >= CGRectGetHeight(v6) * 0.5;
 }
 
-- (void)visibilityStateDidChangeFromState:(int64_t)a3
+- (void)visibilityStateDidChangeFromState:(int64_t)state
 {
   v8.receiver = self;
   v8.super_class = SXMediaComponentView;
@@ -216,20 +216,20 @@ void __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentation
   if ([(SXComponentView *)self visibilityState]== 1)
   {
     [(SXMediaComponentView *)self createMediaExposureEventIfNeeded];
-    v5 = [(SXComponentView *)self viewport];
-    [v5 addViewportChangeListener:self forOptions:2];
+    viewport = [(SXComponentView *)self viewport];
+    [viewport addViewportChangeListener:self forOptions:2];
 
     [(SXMediaComponentView *)self calculateVisibleBounds];
   }
 
   else
   {
-    v6 = [(SXComponentView *)self visibilityState];
-    if (a3 == 1 && v6 == 2)
+    visibilityState = [(SXComponentView *)self visibilityState];
+    if (state == 1 && visibilityState == 2)
     {
       [(SXMediaComponentView *)self submitEvents];
-      v7 = [(SXComponentView *)self viewport];
-      [v7 removeViewportChangeListener:self forOptions:2];
+      viewport2 = [(SXComponentView *)self viewport];
+      [viewport2 removeViewportChangeListener:self forOptions:2];
     }
   }
 }
@@ -241,8 +241,8 @@ void __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentation
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SXComponentView *)self viewport];
-  [v11 dynamicBounds];
+  viewport = [(SXComponentView *)self viewport];
+  [viewport dynamicBounds];
   v34.origin.x = v12;
   v34.origin.y = v13;
   v34.size.width = v14;
@@ -271,8 +271,8 @@ void __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentation
 
   else
   {
-    v24 = [(SXComponentView *)self viewport];
-    [v24 dynamicBounds];
+    viewport2 = [(SXComponentView *)self viewport];
+    [viewport2 dynamicBounds];
     MinY = CGRectGetMinY(v30);
     [(SXComponentView *)self absoluteFrame];
     v21 = MinY - CGRectGetMinY(v31);
@@ -332,11 +332,11 @@ void __145__SXMediaComponentView_initWithDOMObjectProvider_viewport_presentation
   [(SXMediaComponentView *)self setMaximumVisibleY:MaxY];
 }
 
-- (void)setIsDisplayingMedia:(BOOL)a3
+- (void)setIsDisplayingMedia:(BOOL)media
 {
-  if (self->_isDisplayingMedia != a3)
+  if (self->_isDisplayingMedia != media)
   {
-    self->_isDisplayingMedia = a3;
+    self->_isDisplayingMedia = media;
     [(SXMediaComponentView *)self createMediaExposureEventIfNeeded];
   }
 }

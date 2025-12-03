@@ -1,26 +1,26 @@
 @interface DOCServiceInfoViewController
 - (_TtC26DocumentManagerExecutables28DOCServiceInfoViewController)init;
-- (_TtC26DocumentManagerExecutables28DOCServiceInfoViewController)initWithConfiguration:(id)a3 actionReporting:(id)a4 nodes:(id)a5 showTagsOnly:(BOOL)a6;
+- (_TtC26DocumentManagerExecutables28DOCServiceInfoViewController)initWithConfiguration:(id)configuration actionReporting:(id)reporting nodes:(id)nodes showTagsOnly:(BOOL)only;
 - (int64_t)modalPresentationStyle;
 - (void)doc_startPreheatIfNecessary;
-- (void)doneButtonTapped:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)setModalPresentationStyle:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)doneButtonTapped:(id)tapped;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)setModalPresentationStyle:(int64_t)style;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation DOCServiceInfoViewController
 
-- (_TtC26DocumentManagerExecutables28DOCServiceInfoViewController)initWithConfiguration:(id)a3 actionReporting:(id)a4 nodes:(id)a5 showTagsOnly:(BOOL)a6
+- (_TtC26DocumentManagerExecutables28DOCServiceInfoViewController)initWithConfiguration:(id)configuration actionReporting:(id)reporting nodes:(id)nodes showTagsOnly:(BOOL)only
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7DOCNode_pMd);
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v11 = specialized DOCServiceInfoViewController.init(configuration:actionReporting:nodes:showTagsOnly:)(v10, a4, v9, a6);
+  v11 = specialized DOCServiceInfoViewController.init(configuration:actionReporting:nodes:showTagsOnly:)(configurationCopy, reporting, v9, only);
 
   swift_unknownObjectRelease();
   return v11;
@@ -28,33 +28,33 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DOCServiceInfoViewController.viewDidLoad()();
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  DOCServiceInfoViewController.preferredContentSizeDidChange(forChildContentContainer:)(a3);
+  selfCopy = self;
+  DOCServiceInfoViewController.preferredContentSizeDidChange(forChildContentContainer:)(container);
   swift_unknownObjectRelease();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   DOCServiceInfoViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -64,7 +64,7 @@
   {
     v6 = 0u;
     v7 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   [(DOCServiceInfoViewController *)self dismissViewControllerAnimated:1 completion:0, v6, v7];
@@ -79,23 +79,23 @@
   return [(DOCServiceInfoViewController *)&v3 modalPresentationStyle];
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
   ObjectType = swift_getObjectType();
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v6 = self;
-  [(DOCServiceInfoViewController *)&v10 setModalPresentationStyle:a3];
-  v7 = [(DOCServiceInfoViewController *)v6 traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  selfCopy = self;
+  [(DOCServiceInfoViewController *)&v10 setModalPresentationStyle:style];
+  traitCollection = [(DOCServiceInfoViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 != 6)
+  if (userInterfaceIdiom != 6)
   {
-    v9.receiver = v6;
+    v9.receiver = selfCopy;
     v9.super_class = ObjectType;
     if ([(DOCServiceInfoViewController *)&v9 modalPresentationStyle]== 2)
     {
-      [(DOCServiceInfoViewController *)v6 setPreferredContentSize:0.0, 0.0];
+      [(DOCServiceInfoViewController *)selfCopy setPreferredContentSize:0.0, 0.0];
     }
   }
 }
@@ -119,23 +119,23 @@
   v7[2] = thunk for @escaping @callee_guaranteed @Sendable () -> ();
   v7[3] = &block_descriptor_11_1;
   v5 = _Block_copy(v7);
-  v6 = self;
+  selfCopy = self;
 
   [v3 objc:v5 doc:? preheatForPresentingWithCompletion:?];
   _Block_release(v5);
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v7 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v8 = self;
-  specialized DOCServiceInfoViewController.presentationController(_:willPresentWithAdaptiveStyle:transitionCoordinator:)(a4);
+  selfCopy = self;
+  specialized DOCServiceInfoViewController.presentationController(_:willPresentWithAdaptiveStyle:transitionCoordinator:)(style);
 
   swift_unknownObjectRelease();
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   objc_opt_self();
   v5 = swift_dynamicCastObjCClass();
@@ -143,8 +143,8 @@
   {
     v6 = v5;
     v7 = one-time initialization token for associatedObjectStorageKey;
-    v8 = a3;
-    v9 = self;
+    dismissCopy = dismiss;
+    selfCopy = self;
     if (v7 != -1)
     {
       swift_once();

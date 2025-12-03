@@ -1,17 +1,17 @@
 @interface VKWalkAssistManager
 - (BOOL)isInWalkingNavigatingState;
 - (VKWalkAssistManager)init;
-- (double)_bearingFromCurrentLocation:(id)a3 toEndLocation:(id)a4;
+- (double)_bearingFromCurrentLocation:(id)location toEndLocation:(id)endLocation;
 - (id)_startRouteLocation;
-- (void)_queueAssistStatusAnnouncement:(id)a3;
+- (void)_queueAssistStatusAnnouncement:(id)announcement;
 - (void)_startObservingNavigationUpdates;
 - (void)_stopObservingNavigationUpdates;
-- (void)didArrive:(BOOL)a3;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didReroute:(id)a4;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 didUpdateHeading:(double)a4 accuracy:(double)a5;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
+- (void)didArrive:(BOOL)arrive;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didReroute:(id)reroute;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service didUpdateHeading:(double)heading accuracy:(double)accuracy;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
 - (void)start;
 - (void)stop;
 @end
@@ -71,11 +71,11 @@
 - (void)start
 {
   [(VKWalkAssistManager *)self setRunning:1];
-  v3 = [(VKWalkAssistManager *)self hapticEngine];
-  [v3 start];
+  hapticEngine = [(VKWalkAssistManager *)self hapticEngine];
+  [hapticEngine start];
 
-  v4 = [(VKWalkAssistManager *)self feedbackProcessor];
-  [v4 setShouldPlayAudio:1];
+  feedbackProcessor = [(VKWalkAssistManager *)self feedbackProcessor];
+  [feedbackProcessor setShouldPlayAudio:1];
 
   [(VKWalkAssistManager *)self _startObservingNavigationUpdates];
 }
@@ -83,22 +83,22 @@
 - (void)stop
 {
   [(VKWalkAssistManager *)self setRunning:0];
-  v3 = [(VKWalkAssistManager *)self hapticEngine];
-  [v3 stop];
+  hapticEngine = [(VKWalkAssistManager *)self hapticEngine];
+  [hapticEngine stop];
 
-  v4 = [(VKWalkAssistManager *)self feedbackProcessor];
-  [v4 stopProcessing];
+  feedbackProcessor = [(VKWalkAssistManager *)self feedbackProcessor];
+  [feedbackProcessor stopProcessing];
 
   [(VKWalkAssistManager *)self _stopObservingNavigationUpdates];
 }
 
 - (BOOL)isInWalkingNavigatingState
 {
-  v2 = [MEMORY[0x29EDC5E28] sharedService];
-  if ([v2 isInNavigatingState])
+  mEMORY[0x29EDC5E28] = [MEMORY[0x29EDC5E28] sharedService];
+  if ([mEMORY[0x29EDC5E28] isInNavigatingState])
   {
-    v3 = [MEMORY[0x29EDC5E28] sharedService];
-    v4 = [v3 navigationTransportType] == 2;
+    mEMORY[0x29EDC5E28]2 = [MEMORY[0x29EDC5E28] sharedService];
+    v4 = [mEMORY[0x29EDC5E28]2 navigationTransportType] == 2;
   }
 
   else
@@ -111,44 +111,44 @@
 
 - (void)_startObservingNavigationUpdates
 {
-  v3 = [MEMORY[0x29EDC5E28] sharedService];
-  [v3 registerObserver:self];
+  mEMORY[0x29EDC5E28] = [MEMORY[0x29EDC5E28] sharedService];
+  [mEMORY[0x29EDC5E28] registerObserver:self];
 }
 
 - (void)_stopObservingNavigationUpdates
 {
-  v3 = [MEMORY[0x29EDC5E28] sharedService];
-  [v3 unregisterObserver:self];
+  mEMORY[0x29EDC5E28] = [MEMORY[0x29EDC5E28] sharedService];
+  [mEMORY[0x29EDC5E28] unregisterObserver:self];
 }
 
 - (id)_startRouteLocation
 {
-  v3 = [MEMORY[0x29EDC5E28] sharedService];
-  v4 = [v3 route];
+  mEMORY[0x29EDC5E28] = [MEMORY[0x29EDC5E28] sharedService];
+  route = [mEMORY[0x29EDC5E28] route];
 
   objc_opt_class();
-  v5 = [v4 steps];
-  v6 = [v5 firstObject];
+  steps = [route steps];
+  firstObject = [steps firstObject];
   v7 = __UIAccessibilityCastAsClass();
 
-  [v4 pointAtRouteCoordinate:{objc_msgSend(v7, "startRouteCoordinate")}];
+  [route pointAtRouteCoordinate:{objc_msgSend(v7, "startRouteCoordinate")}];
   v9 = v8;
   v11 = v10;
-  v12 = [v7 maneuverRoadName];
-  [(VKWalkAssistManager *)self setStartRouteRoadName:v12];
+  maneuverRoadName = [v7 maneuverRoadName];
+  [(VKWalkAssistManager *)self setStartRouteRoadName:maneuverRoadName];
 
   v13 = [objc_alloc(MEMORY[0x29EDC5E20]) initWithLatitude:v9 longitude:v11];
 
   return v13;
 }
 
-- (void)_queueAssistStatusAnnouncement:(id)a3
+- (void)_queueAssistStatusAnnouncement:(id)announcement
 {
-  v8 = a3;
-  if (v8)
+  announcementCopy = announcement;
+  if (announcementCopy)
   {
-    v4 = [(VKWalkAssistManager *)self lastAssistStatusAnnouncement];
-    v5 = [v4 isEqualToString:v8];
+    lastAssistStatusAnnouncement = [(VKWalkAssistManager *)self lastAssistStatusAnnouncement];
+    v5 = [lastAssistStatusAnnouncement isEqualToString:announcementCopy];
 
     if ((v5 & 1) == 0)
     {
@@ -156,20 +156,20 @@
       [v6 clearOutputQueue];
 
       v7 = +[VKMapViewOutputManager sharedOutputManager];
-      [v7 queueOutput:v8];
+      [v7 queueOutput:announcementCopy];
     }
   }
 
-  [(VKWalkAssistManager *)self setLastAssistStatusAnnouncement:v8];
+  [(VKWalkAssistManager *)self setLastAssistStatusAnnouncement:announcementCopy];
 }
 
-- (void)navigationService:(id)a3 didUpdateHeading:(double)a4 accuracy:(double)a5
+- (void)navigationService:(id)service didUpdateHeading:(double)heading accuracy:(double)accuracy
 {
   if (UIAccessibilityIsVoiceOverRunning() || self->_arrived)
   {
-    v9 = [(VKWalkAssistManager *)self headingManager];
+    headingManager = [(VKWalkAssistManager *)self headingManager];
     [(VKWalkAssistManager *)self bearing];
-    [v9 updateHeading:a4 bearing:v7];
+    [headingManager updateHeading:heading bearing:v7];
   }
 
   else
@@ -184,32 +184,32 @@
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   if (UIAccessibilityIsVoiceOverRunning() || self->_arrived)
   {
     if (CFAbsoluteTimeGetCurrent() - *&navigationService_didUpdateMatchedLocation__LastProcessTime >= 0.5)
     {
       navigationService_didUpdateMatchedLocation__LastProcessTime = CFAbsoluteTimeGetCurrent();
-      v6 = [(VKWalkAssistManager *)self _startRouteLocation];
-      [(VKWalkAssistManager *)self _bearingFromCurrentLocation:v5 toEndLocation:v6];
+      _startRouteLocation = [(VKWalkAssistManager *)self _startRouteLocation];
+      [(VKWalkAssistManager *)self _bearingFromCurrentLocation:locationCopy toEndLocation:_startRouteLocation];
       [(VKWalkAssistManager *)self setBearing:?];
-      v7 = [(VKWalkAssistManager *)self assistStatus];
-      v8 = [(VKWalkAssistManager *)self headingManager];
-      v9 = [(VKWalkAssistManager *)self feedbackProcessor];
-      [v5 speed];
+      assistStatus = [(VKWalkAssistManager *)self assistStatus];
+      headingManager = [(VKWalkAssistManager *)self headingManager];
+      feedbackProcessor = [(VKWalkAssistManager *)self feedbackProcessor];
+      [locationCopy speed];
       v11 = v10 <= 0.35;
-      [v5 coordinate];
-      [v5 coordinate];
-      [v6 coordinate];
-      [v6 coordinate];
+      [locationCopy coordinate];
+      [locationCopy coordinate];
+      [_startRouteLocation coordinate];
+      [_startRouteLocation coordinate];
       GEOCalculateDistance();
       v13 = v12;
-      v14 = [v8 isFacingStartLocation];
-      v15 = [v8 isFacingStartLocation];
-      [v9 processPulseFeedbackForDistance:v13 shouldProcessHapticPulse:v14];
-      [v7 updateAssistStatusWithCurrentDistance:self->_startRouteRoadName startRouteRoadName:v15 isFacingStartLocation:v11 isStationary:v13];
+      isFacingStartLocation = [headingManager isFacingStartLocation];
+      isFacingStartLocation2 = [headingManager isFacingStartLocation];
+      [feedbackProcessor processPulseFeedbackForDistance:v13 shouldProcessHapticPulse:isFacingStartLocation];
+      [assistStatus updateAssistStatusWithCurrentDistance:self->_startRouteRoadName startRouteRoadName:isFacingStartLocation2 isFacingStartLocation:v11 isStationary:v13];
     }
   }
 
@@ -225,63 +225,63 @@
   }
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  if (a4 != 2)
+  if (type != 2)
   {
-    [(VKWalkAssistManager *)self stop:a3];
+    [(VKWalkAssistManager *)self stop:service];
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = a3;
-  if (a5 >= 4)
+  serviceCopy = service;
+  if (toState >= 4)
   {
-    if (a5 - 4 >= 3)
+    if (toState - 4 >= 3)
     {
       goto LABEL_6;
     }
 
-    v8 = v7;
+    v8 = serviceCopy;
     [(VKWalkAssistManager *)self start];
   }
 
   else
   {
-    v8 = v7;
+    v8 = serviceCopy;
     [(VKWalkAssistManager *)self stop];
   }
 
-  v7 = v8;
+  serviceCopy = v8;
 LABEL_6:
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4
+- (void)navigationService:(id)service didReroute:(id)reroute
 {
   if (self->_arrived)
   {
-    [(VKWalkAssistManager *)self setArrived:0, a4];
+    [(VKWalkAssistManager *)self setArrived:0, reroute];
   }
 }
 
-- (double)_bearingFromCurrentLocation:(id)a3 toEndLocation:(id)a4
+- (double)_bearingFromCurrentLocation:(id)location toEndLocation:(id)endLocation
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 coordinate];
-  [v6 coordinate];
+  endLocationCopy = endLocation;
+  locationCopy = location;
+  [locationCopy coordinate];
+  [locationCopy coordinate];
 
-  [v5 coordinate];
-  [v5 coordinate];
+  [endLocationCopy coordinate];
+  [endLocationCopy coordinate];
 
   GEOBearingFromCoordinateToCoordinate();
   return result;
 }
 
-- (void)didArrive:(BOOL)a3
+- (void)didArrive:(BOOL)arrive
 {
-  if (a3)
+  if (arrive)
   {
     [(AVAudioPlayer *)self->_audioPlayer play];
     [(VKWalkAssistManager *)self setArrived:1];

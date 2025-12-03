@@ -1,22 +1,22 @@
 @interface CSComplicationWrapperViewController
-- (CSComplicationWrapperViewController)initWithWidgetHostViewController:(id)a3;
+- (CSComplicationWrapperViewController)initWithWidgetHostViewController:(id)controller;
 - (void)dealloc;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)viewDidLoad;
 @end
 
 @implementation CSComplicationWrapperViewController
 
-- (CSComplicationWrapperViewController)initWithWidgetHostViewController:(id)a3
+- (CSComplicationWrapperViewController)initWithWidgetHostViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = CSComplicationWrapperViewController;
   v6 = [(CSComplicationWrapperViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_widgetHostViewController, a3);
+    objc_storeStrong(&v6->_widgetHostViewController, controller);
   }
 
   return v7;
@@ -38,36 +38,36 @@
   [(CSComplicationWrapperViewController *)self bs_addChildViewController:self->_widgetHostViewController];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    v4 = a3;
-    self->_highlighted = a3;
+    highlightedCopy = highlighted;
+    self->_highlighted = highlighted;
     if (!self->_dimmingView)
     {
       v6 = objc_alloc(MEMORY[0x277D75D18]);
-      v7 = [(CSComplicationWrapperViewController *)self view];
-      [v7 bounds];
+      view = [(CSComplicationWrapperViewController *)self view];
+      [view bounds];
       v8 = [v6 initWithFrame:?];
       dimmingView = self->_dimmingView;
       self->_dimmingView = v8;
 
       [(UIView *)self->_dimmingView setAutoresizingMask:18];
       v10 = self->_dimmingView;
-      v11 = [MEMORY[0x277D75348] blackColor];
-      [(UIView *)v10 setBackgroundColor:v11];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UIView *)v10 setBackgroundColor:blackColor];
 
       [(UIView *)self->_dimmingView setAlpha:0.600000024];
-      v12 = [(CSComplicationWrapperViewController *)self view];
-      [v12 addSubview:self->_dimmingView];
+      view2 = [(CSComplicationWrapperViewController *)self view];
+      [view2 addSubview:self->_dimmingView];
     }
 
     v13 = self->_dimmingView;
-    if (v4)
+    if (highlightedCopy)
     {
-      v14 = [(CHUISWidgetHostViewController *)self->_widgetHostViewController snapshotView];
-      [(UIView *)v13 setMaskView:v14];
+      snapshotView = [(CHUISWidgetHostViewController *)self->_widgetHostViewController snapshotView];
+      [(UIView *)v13 setMaskView:snapshotView];
     }
 
     else
@@ -77,7 +77,7 @@
 
     v15 = self->_dimmingView;
 
-    [(UIView *)v15 setHidden:!v4];
+    [(UIView *)v15 setHidden:!highlightedCopy];
   }
 }
 

@@ -1,35 +1,35 @@
 @interface SBSplitViewToSlideOverSwitcherModifier
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBSplitViewToSlideOverSwitcherModifier)initWithTransitionID:(id)a3 transitioningLayoutRole:(int64_t)a4 splitViewAppLayout:(id)a5 slideOverAppLayout:(id)a6 direction:(unint64_t)a7;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)topMostLayoutRolesForAppLayout:(id)a3;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBSplitViewToSlideOverSwitcherModifier)initWithTransitionID:(id)d transitioningLayoutRole:(int64_t)role splitViewAppLayout:(id)layout slideOverAppLayout:(id)appLayout direction:(unint64_t)direction;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)topMostLayoutRolesForAppLayout:(id)layout;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
 @end
 
 @implementation SBSplitViewToSlideOverSwitcherModifier
 
-- (SBSplitViewToSlideOverSwitcherModifier)initWithTransitionID:(id)a3 transitioningLayoutRole:(int64_t)a4 splitViewAppLayout:(id)a5 slideOverAppLayout:(id)a6 direction:(unint64_t)a7
+- (SBSplitViewToSlideOverSwitcherModifier)initWithTransitionID:(id)d transitioningLayoutRole:(int64_t)role splitViewAppLayout:(id)layout slideOverAppLayout:(id)appLayout direction:(unint64_t)direction
 {
-  v13 = a5;
-  v14 = a6;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v28.receiver = self;
   v28.super_class = SBSplitViewToSlideOverSwitcherModifier;
-  v15 = [(SBTransitionSwitcherModifier *)&v28 initWithTransitionID:a3];
+  v15 = [(SBTransitionSwitcherModifier *)&v28 initWithTransitionID:d];
   if (!v15)
   {
     goto LABEL_11;
   }
 
-  if (!v13)
+  if (!layoutCopy)
   {
     [SBSplitViewToSlideOverSwitcherModifier initWithTransitionID:transitioningLayoutRole:splitViewAppLayout:slideOverAppLayout:direction:];
-    if (v14)
+    if (appLayoutCopy)
     {
       goto LABEL_4;
     }
@@ -39,22 +39,22 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  if (!v14)
+  if (!appLayoutCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  v15->_transitioningLayoutRole = a4;
-  objc_storeStrong(&v15->_splitViewAppLayout, a5);
-  objc_storeStrong(&v15->_slideOverAppLayout, a6);
-  v15->_direction = a7;
+  v15->_transitioningLayoutRole = role;
+  objc_storeStrong(&v15->_splitViewAppLayout, layout);
+  objc_storeStrong(&v15->_slideOverAppLayout, appLayout);
+  v15->_direction = direction;
   splitViewAppLayout = v15->_splitViewAppLayout;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __135__SBSplitViewToSlideOverSwitcherModifier_initWithTransitionID_transitioningLayoutRole_splitViewAppLayout_slideOverAppLayout_direction___block_invoke;
   v26[3] = &unk_2783A8C90;
-  v17 = v14;
+  v17 = appLayoutCopy;
   v27 = v17;
   v18 = [(SBAppLayout *)splitViewAppLayout appLayoutWithItemsPassingTest:v26];
   fullScreenAppLayout = v15->_fullScreenAppLayout;
@@ -87,11 +87,11 @@ LABEL_11:
   return v15;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBSplitViewToSlideOverSwitcherModifier;
-  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:a3];
+  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:event];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:12 updateMode:3];
   v5 = SBAppendSwitcherModifierResponse(v4, v3);
 
@@ -102,9 +102,9 @@ LABEL_11:
 {
   v6.receiver = self;
   v6.super_class = SBSplitViewToSlideOverSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
-  v4 = SBAppendSwitcherModifierResponse(v3, v2);
+  v4 = SBAppendSwitcherModifierResponse(v3, transitionWillBegin);
 
   return v4;
 }
@@ -113,8 +113,8 @@ LABEL_11:
 {
   v12.receiver = self;
   v12.super_class = SBSplitViewToSlideOverSwitcherModifier;
-  v3 = [(SBSplitViewToSlideOverSwitcherModifier *)&v12 visibleAppLayouts];
-  v4 = [v3 mutableCopy];
+  visibleAppLayouts = [(SBSplitViewToSlideOverSwitcherModifier *)&v12 visibleAppLayouts];
+  v4 = [visibleAppLayouts mutableCopy];
 
   if (self->_direction)
   {
@@ -146,7 +146,7 @@ LABEL_11:
   return v4;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v25.receiver = self;
   v25.super_class = SBSplitViewToSlideOverSwitcherModifier;
@@ -157,8 +157,8 @@ LABEL_11:
   v12 = v11;
   if ([(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
   {
-    v13 = [(SBSplitViewToSlideOverSwitcherModifier *)self appLayouts];
-    v14 = [v13 objectAtIndex:a3];
+    appLayouts = [(SBSplitViewToSlideOverSwitcherModifier *)self appLayouts];
+    v14 = [appLayouts objectAtIndex:index];
 
     if (!self->_direction)
     {
@@ -206,16 +206,16 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   v44.receiver = self;
   v44.super_class = SBSplitViewToSlideOverSwitcherModifier;
-  [(SBSplitViewToSlideOverSwitcherModifier *)&v44 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  [(SBSplitViewToSlideOverSwitcherModifier *)&v44 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -224,7 +224,7 @@ LABEL_10:
   {
     if (!self->_direction)
     {
-      if ([v11 isEqual:self->_slideOverAppLayout])
+      if ([layoutCopy isEqual:self->_slideOverAppLayout])
       {
         transitioningLayoutRole = self->_transitioningLayoutRole;
         splitViewAppLayout = self->_splitViewAppLayout;
@@ -236,7 +236,7 @@ LABEL_10:
 
       else
       {
-        if (![v11 isEqual:self->_fullScreenAppLayout])
+        if (![layoutCopy isEqual:self->_fullScreenAppLayout])
         {
           goto LABEL_15;
         }
@@ -261,9 +261,9 @@ LABEL_10:
       goto LABEL_14;
     }
 
-    if ([v11 isEqual:self->_splitViewAppLayout])
+    if ([layoutCopy isEqual:self->_splitViewAppLayout])
     {
-      if (self->_transitioningLayoutRole == a3)
+      if (self->_transitioningLayoutRole == role)
       {
         v36 = 0;
         v37 = &v36;
@@ -324,12 +324,12 @@ id __84__SBSplitViewToSlideOverSwitcherModifier_frameForLayoutRole_inAppLayout_w
   return result;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
-  if (([v6 isEqual:self->_slideOverAppLayout] & 1) != 0 || (objc_msgSend(v6, "isEqual:", self->_fullScreenAppLayout) & 1) != 0 || objc_msgSend(v6, "isEqual:", self->_splitViewAppLayout))
+  layoutCopy = layout;
+  if (([layoutCopy isEqual:self->_slideOverAppLayout] & 1) != 0 || (objc_msgSend(layoutCopy, "isEqual:", self->_fullScreenAppLayout) & 1) != 0 || objc_msgSend(layoutCopy, "isEqual:", self->_splitViewAppLayout))
   {
-    v7 = [(SBSplitViewToSlideOverSwitcherModifier *)self isLayoutRoleContentReady:a3 inAppLayout:v6]^ 1;
+    v7 = [(SBSplitViewToSlideOverSwitcherModifier *)self isLayoutRoleContentReady:blurred inAppLayout:layoutCopy]^ 1;
   }
 
   else
@@ -340,39 +340,39 @@ id __84__SBSplitViewToSlideOverSwitcherModifier_frameForLayoutRole_inAppLayout_w
   return v7;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v5 = a4;
-  if ([v5 isEqual:self->_slideOverAppLayout] & 1) != 0 || (objc_msgSend(v5, "isEqual:", self->_fullScreenAppLayout))
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_slideOverAppLayout] & 1) != 0 || (objc_msgSend(layoutCopy, "isEqual:", self->_fullScreenAppLayout))
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 isEqual:self->_splitViewAppLayout];
+    v6 = [layoutCopy isEqual:self->_splitViewAppLayout];
   }
 
   return v6;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v4 = [(SBSplitViewToSlideOverSwitcherModifier *)self switcherSettings:a3];
-  v5 = [v4 animationSettings];
-  [v5 resizeBlurDelay];
+  v4 = [(SBSplitViewToSlideOverSwitcherModifier *)self switcherSettings:role];
+  animationSettings = [v4 animationSettings];
+  [animationSettings resizeBlurDelay];
   v7 = v6;
 
   return v7;
 }
 
-- (id)topMostLayoutRolesForAppLayout:(id)a3
+- (id)topMostLayoutRolesForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = SBSplitViewToSlideOverSwitcherModifier;
-  v5 = [(SBSplitViewToSlideOverSwitcherModifier *)&v17 topMostLayoutRolesForAppLayout:v4];
-  if (self->_splitViewAppLayout && [v4 isEqual:?])
+  v5 = [(SBSplitViewToSlideOverSwitcherModifier *)&v17 topMostLayoutRolesForAppLayout:layoutCopy];
+  if (self->_splitViewAppLayout && [layoutCopy isEqual:?])
   {
     v6 = [v5 mutableCopy];
     v7 = [MEMORY[0x277CCABB0] numberWithInteger:1];
@@ -418,18 +418,18 @@ id __84__SBSplitViewToSlideOverSwitcherModifier_frameForLayoutRole_inAppLayout_w
   return v6;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v10.receiver = self;
   v10.super_class = SBSplitViewToSlideOverSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBSplitViewToSlideOverSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
+  switcherSettings = [(SBSplitViewToSlideOverSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
-  v8 = [v7 splitViewToSlideOverSettings];
-  [v5 setLayoutSettings:v8];
+  splitViewToSlideOverSettings = [animationSettings splitViewToSlideOverSettings];
+  [v5 setLayoutSettings:splitViewToSlideOverSettings];
 
   return v5;
 }

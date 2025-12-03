@@ -1,27 +1,27 @@
 @interface GameOverlayUIService
 - (_TtC13GameOverlayUI20GameOverlayUIService)init;
 - (uint64_t)closeDashboard;
-- (void)checkDashboardOverlayVisibility:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)setUpAccessPointWithLocation:(id)a3 useCase:(id)a4 gameInternal:(id)a5 didReturnToForeground:(id)a6 newToGameCenter:(id)a7 sceneIdentifier:(id)a8;
-- (void)showDashboardWithInitialState:(id)a3 canDismissWithGesture:(id)a4 sceneIdentifier:(id)a5;
-- (void)showGameModeBannerWithBundleIdentifier:(id)a3 available:(id)a4 required:(id)a5 enabled:(id)a6 showText:(id)a7;
-- (void)showGameModeBannerWithConfig:(id)a3;
-- (void)showInGameBannerWithData:(id)a3 gameInternal:(id)a4 sceneIdentifier:(id)a5;
-- (void)showPlayTogetherWithData:(id)a3 sceneIdentifier:(id)a4;
-- (void)tearDownAccessPointWithSceneIdentifier:(id)a3;
-- (void)updateAccessPointWithLocation:(id)a3 gameInternal:(id)a4 sceneIdentifier:(id)a5;
+- (void)checkDashboardOverlayVisibility:(id)visibility;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)setUpAccessPointWithLocation:(id)location useCase:(id)case gameInternal:(id)internal didReturnToForeground:(id)foreground newToGameCenter:(id)center sceneIdentifier:(id)identifier;
+- (void)showDashboardWithInitialState:(id)state canDismissWithGesture:(id)gesture sceneIdentifier:(id)identifier;
+- (void)showGameModeBannerWithBundleIdentifier:(id)identifier available:(id)available required:(id)required enabled:(id)enabled showText:(id)text;
+- (void)showGameModeBannerWithConfig:(id)config;
+- (void)showInGameBannerWithData:(id)data gameInternal:(id)internal sceneIdentifier:(id)identifier;
+- (void)showPlayTogetherWithData:(id)data sceneIdentifier:(id)identifier;
+- (void)tearDownAccessPointWithSceneIdentifier:(id)identifier;
+- (void)updateAccessPointWithLocation:(id)location gameInternal:(id)internal sceneIdentifier:(id)identifier;
 @end
 
 @implementation GameOverlayUIService
 
-- (void)checkDashboardOverlayVisibility:(id)a3
+- (void)checkDashboardOverlayVisibility:(id)visibility
 {
   v4 = sub_100002B38(&unk_100130F10, &qword_1000EA660);
   v5 = *(*(v4 - 8) + 64);
   __chkstk_darwin(v4 - 8);
   v7 = &v12 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(visibility);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = type metadata accessor for TaskPriority();
@@ -34,21 +34,21 @@
   sub_100014BBC(0, 0, v7, &unk_1000EA4D8, v11);
 }
 
-- (void)setUpAccessPointWithLocation:(id)a3 useCase:(id)a4 gameInternal:(id)a5 didReturnToForeground:(id)a6 newToGameCenter:(id)a7 sceneIdentifier:(id)a8
+- (void)setUpAccessPointWithLocation:(id)location useCase:(id)case gameInternal:(id)internal didReturnToForeground:(id)foreground newToGameCenter:(id)center sceneIdentifier:(id)identifier
 {
   v29 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
   v15 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = v16;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v28 = self;
-  v21 = a8;
+  internalCopy = internal;
+  foregroundCopy = foreground;
+  centerCopy = center;
+  selfCopy = self;
+  identifierCopy = identifier;
   v22 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v24 = v23;
 
-  if (v21)
+  if (identifierCopy)
   {
     v25 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v27 = v26;
@@ -60,20 +60,20 @@
     v27 = 0;
   }
 
-  sub_10003BF30(v29, v14, v15, v17, v22, v24, v19, v20, v25, v27);
+  sub_10003BF30(v29, v14, v15, v17, v22, v24, foregroundCopy, centerCopy, v25, v27);
 
   sub_100030784(v22, v24);
 }
 
-- (void)tearDownAccessPointWithSceneIdentifier:(id)a3
+- (void)tearDownAccessPointWithSceneIdentifier:(id)identifier
 {
   v5 = sub_100002B38(&unk_100130F10, &qword_1000EA660);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v17 - v7;
-  if (a3)
+  if (identifier)
   {
-    a3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
   }
 
@@ -82,8 +82,8 @@
     v10 = 0;
   }
 
-  v18 = self;
-  v11 = sub_10007C628(0, a3, v10);
+  selfCopy = self;
+  v11 = sub_10007C628(0, identifier, v10);
   v13 = v12;
 
   if (v13)
@@ -100,21 +100,21 @@
 
   else
   {
-    v16 = v18;
+    v16 = selfCopy;
   }
 }
 
-- (void)updateAccessPointWithLocation:(id)a3 gameInternal:(id)a4 sceneIdentifier:(id)a5
+- (void)updateAccessPointWithLocation:(id)location gameInternal:(id)internal sceneIdentifier:(id)identifier
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = a4;
-  v12 = self;
-  v13 = a5;
+  internalCopy = internal;
+  selfCopy = self;
+  identifierCopy = identifier;
   v14 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
 
-  if (v13)
+  if (identifierCopy)
   {
     v17 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v19 = v18;
@@ -131,21 +131,21 @@
   sub_100030784(v14, v16);
 }
 
-- (void)showInGameBannerWithData:(id)a3 gameInternal:(id)a4 sceneIdentifier:(id)a5
+- (void)showInGameBannerWithData:(id)data gameInternal:(id)internal sceneIdentifier:(id)identifier
 {
-  v8 = a3;
-  v20 = self;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  selfCopy = self;
+  internalCopy = internal;
+  identifierCopy = identifier;
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
 
-  if (v9)
+  if (internalCopy)
   {
     v14 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v16 = v15;
 
-    if (v10)
+    if (identifierCopy)
     {
 LABEL_3:
       v17 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -159,7 +159,7 @@ LABEL_3:
   {
     v14 = 0;
     v16 = 0xF000000000000000;
-    if (v10)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -174,16 +174,16 @@ LABEL_6:
   sub_100030784(v11, v13);
 }
 
-- (void)showDashboardWithInitialState:(id)a3 canDismissWithGesture:(id)a4 sceneIdentifier:(id)a5
+- (void)showDashboardWithInitialState:(id)state canDismissWithGesture:(id)gesture sceneIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v17 = self;
-  v10 = a5;
+  stateCopy = state;
+  gestureCopy = gesture;
+  selfCopy = self;
+  identifierCopy = identifier;
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
 
-  if (v10)
+  if (identifierCopy)
   {
     v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v16 = v15;
@@ -195,20 +195,20 @@ LABEL_6:
     v16 = 0;
   }
 
-  sub_10003D8D4(v11, v13, v9, v14, v16);
+  sub_10003D8D4(v11, v13, gestureCopy, v14, v16);
 
   sub_100030784(v11, v13);
 }
 
-- (void)showPlayTogetherWithData:(id)a3 sceneIdentifier:(id)a4
+- (void)showPlayTogetherWithData:(id)data sceneIdentifier:(id)identifier
 {
-  v6 = a3;
-  v14 = self;
-  v7 = a4;
+  dataCopy = data;
+  selfCopy = self;
+  identifierCopy = identifier;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
-  if (v7)
+  if (identifierCopy)
   {
     v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
@@ -225,21 +225,21 @@ LABEL_6:
   sub_100030784(v8, v10);
 }
 
-- (void)showGameModeBannerWithBundleIdentifier:(id)a3 available:(id)a4 required:(id)a5 enabled:(id)a6 showText:(id)a7
+- (void)showGameModeBannerWithBundleIdentifier:(id)identifier available:(id)available required:(id)required enabled:(id)enabled showText:(id)text
 {
-  v9 = a3;
-  v10 = a6;
-  v12 = self;
-  v11 = [objc_allocWithZone(GKGameModeBannerConfig) initWithBundleIdentifier:v9 enabled:objc_msgSend(v10 actionSymbols:{"BOOLValueSafe"), 0}];
+  identifierCopy = identifier;
+  enabledCopy = enabled;
+  selfCopy = self;
+  v11 = [objc_allocWithZone(GKGameModeBannerConfig) initWithBundleIdentifier:identifierCopy enabled:objc_msgSend(enabledCopy actionSymbols:{"BOOLValueSafe"), 0}];
 
   sub_10003EB8C(v11);
 }
 
-- (void)showGameModeBannerWithConfig:(id)a3
+- (void)showGameModeBannerWithConfig:(id)config
 {
-  v4 = a3;
-  v5 = self;
-  sub_10003EB8C(v4);
+  configCopy = config;
+  selfCopy = self;
+  sub_10003EB8C(configCopy);
 }
 
 - (uint64_t)closeDashboard
@@ -302,13 +302,13 @@ LABEL_6:
   return [(GameOverlayUIService *)&v5 init];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_10007CA7C(v8);
+  selfCopy = self;
+  sub_10007CA7C(connectionCopy);
 
   swift_unknownObjectRelease();
 }

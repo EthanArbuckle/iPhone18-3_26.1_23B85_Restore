@@ -1,38 +1,38 @@
 @interface FRFlintDataProviderFactory
-- (FRFlintDataProviderFactory)initWithCloudContext:(id)a3 resourceManager:(id)a4 embedConfigurationManager:(id)a5;
-- (id)flintDataProviderForANFContent:(id)a3 headline:(id)a4;
+- (FRFlintDataProviderFactory)initWithCloudContext:(id)context resourceManager:(id)manager embedConfigurationManager:(id)configurationManager;
+- (id)flintDataProviderForANFContent:(id)content headline:(id)headline;
 @end
 
 @implementation FRFlintDataProviderFactory
 
-- (FRFlintDataProviderFactory)initWithCloudContext:(id)a3 resourceManager:(id)a4 embedConfigurationManager:(id)a5
+- (FRFlintDataProviderFactory)initWithCloudContext:(id)context resourceManager:(id)manager embedConfigurationManager:(id)configurationManager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  managerCopy = manager;
+  configurationManagerCopy = configurationManager;
   v15.receiver = self;
   v15.super_class = FRFlintDataProviderFactory;
   v12 = [(FRFlintDataProviderFactory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_cloudContext, a3);
-    objc_storeStrong(&v13->_resourceManager, a4);
-    objc_storeStrong(&v13->_embedConfigurationManager, a5);
+    objc_storeStrong(&v12->_cloudContext, context);
+    objc_storeStrong(&v13->_resourceManager, manager);
+    objc_storeStrong(&v13->_embedConfigurationManager, configurationManager);
   }
 
   return v13;
 }
 
-- (id)flintDataProviderForANFContent:(id)a3 headline:(id)a4
+- (id)flintDataProviderForANFContent:(id)content headline:(id)headline
 {
-  v6 = a4;
-  v7 = a3;
+  headlineCopy = headline;
+  contentCopy = content;
   v8 = [FRFlintDataProvider alloc];
-  v9 = [(FRFlintDataProviderFactory *)self resourceManager];
-  v10 = [(FRFlintDataProviderFactory *)self cloudContext];
-  v11 = [(FRFlintDataProviderFactory *)self embedConfigurationManager];
-  v12 = [(FRFlintDataProvider *)v8 initWithANFContent:v7 headline:v6 resourceManager:v9 cloudContext:v10 embedConfigurationManager:v11];
+  resourceManager = [(FRFlintDataProviderFactory *)self resourceManager];
+  cloudContext = [(FRFlintDataProviderFactory *)self cloudContext];
+  embedConfigurationManager = [(FRFlintDataProviderFactory *)self embedConfigurationManager];
+  v12 = [(FRFlintDataProvider *)v8 initWithANFContent:contentCopy headline:headlineCopy resourceManager:resourceManager cloudContext:cloudContext embedConfigurationManager:embedConfigurationManager];
 
   return v12;
 }

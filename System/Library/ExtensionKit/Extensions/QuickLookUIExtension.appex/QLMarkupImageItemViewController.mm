@@ -1,6 +1,6 @@
 @interface QLMarkupImageItemViewController
-- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)a3;
-- (BOOL)shouldAcceptTouch:(id)a3 ofGestureRecognizer:(id)a4;
+- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)actions;
+- (BOOL)shouldAcceptTouch:(id)touch ofGestureRecognizer:(id)recognizer;
 - (BOOL)shouldDisplayInfoButton;
 - (CGSize)imageSize;
 - (UIEdgeInsets)customEdgeInsets;
@@ -9,34 +9,34 @@
 - (id)imageAnalysisToolbarButton;
 - (id)imageForAnalysis;
 - (id)scrollView;
-- (id)toolbarButtonsForTraitCollection:(id)a3;
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)performFirstTimeAppearanceActions:(unint64_t)a3;
-- (void)transitionWillFinish:(BOOL)a3 didComplete:(BOOL)a4;
+- (id)toolbarButtonsForTraitCollection:(id)collection;
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)performFirstTimeAppearanceActions:(unint64_t)actions;
+- (void)transitionWillFinish:(BOOL)finish didComplete:(BOOL)complete;
 @end
 
 @implementation QLMarkupImageItemViewController
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000119FC;
   v9[3] = &unk_100024C80;
-  v10 = self;
-  v11 = a5;
-  v8.receiver = v10;
+  selfCopy = self;
+  handlerCopy = handler;
+  v8.receiver = selfCopy;
   v8.super_class = QLMarkupImageItemViewController;
-  v7 = v11;
-  [(QLMarkupItemViewController *)&v8 loadPreviewControllerWithContents:a3 context:a4 completionHandler:v9];
+  v7 = handlerCopy;
+  [(QLMarkupItemViewController *)&v8 loadPreviewControllerWithContents:contents context:context completionHandler:v9];
 }
 
-- (id)toolbarButtonsForTraitCollection:(id)a3
+- (id)toolbarButtonsForTraitCollection:(id)collection
 {
   v8.receiver = self;
   v8.super_class = QLMarkupImageItemViewController;
-  v4 = [(QLMarkupItemViewController *)&v8 toolbarButtonsForTraitCollection:a3];
+  v4 = [(QLMarkupItemViewController *)&v8 toolbarButtonsForTraitCollection:collection];
   v5 = [v4 mutableCopy];
 
   if (!v5)
@@ -46,8 +46,8 @@
 
   if ([(QLMarkupImageItemViewController *)self shouldDisplayInfoButton])
   {
-    v6 = [(QLMarkupImageItemViewController *)self imageAnalysisToolbarButton];
-    [v5 addObject:v6];
+    imageAnalysisToolbarButton = [(QLMarkupImageItemViewController *)self imageAnalysisToolbarButton];
+    [v5 addObject:imageAnalysisToolbarButton];
   }
 
   return v5;
@@ -60,19 +60,19 @@
     return 1;
   }
 
-  v4 = [(QLMarkupItemViewController *)self markupViewController];
-  if ([v4 isInteractionActive])
+  markupViewController = [(QLMarkupItemViewController *)self markupViewController];
+  if ([markupViewController isInteractionActive])
   {
-    v5 = [(QLMarkupItemViewController *)self markupViewController];
-    v3 = [v5 hasResultsForVisualSearch];
+    markupViewController2 = [(QLMarkupItemViewController *)self markupViewController];
+    hasResultsForVisualSearch = [markupViewController2 hasResultsForVisualSearch];
   }
 
   else
   {
-    v3 = 0;
+    hasResultsForVisualSearch = 0;
   }
 
-  return v3;
+  return hasResultsForVisualSearch;
 }
 
 - (id)imageAnalysisToolbarButton
@@ -110,10 +110,10 @@
       v7 = @"square.fill";
     }
 
-    v8 = [(QLMarkupItemViewController *)self markupViewController];
-    v9 = [v8 isVisualSearchEnabled];
+    markupViewController = [(QLMarkupItemViewController *)self markupViewController];
+    isVisualSearchEnabled = [markupViewController isVisualSearchEnabled];
 
-    if (v9)
+    if (isVisualSearchEnabled)
     {
       v10 = v7;
     }
@@ -125,44 +125,44 @@
 
     [(QLToolbarButton *)self->_infoButton setSymbolImageName:v10];
     [(QLToolbarButton *)self->_infoButton setUseInternalSymbolImage:1];
-    v11 = @"info.circle.and.sparkles";
-    v12 = @"info.circle.and.sparkles.fill";
+    infoButtonGlyphName = @"info.circle.and.sparkles";
+    filledInfoButtonGlyphName = @"info.circle.and.sparkles.fill";
   }
 
   else
   {
-    v13 = [(QLMarkupItemViewController *)self markupViewController];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v13 infoButtonGlyphName], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+    markupViewController2 = [(QLMarkupItemViewController *)self markupViewController];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([markupViewController2 infoButtonGlyphName], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
     {
-      v11 = [v13 infoButtonGlyphName];
+      infoButtonGlyphName = [markupViewController2 infoButtonGlyphName];
     }
 
     else
     {
-      v11 = @"info.circle.and.sparkles";
+      infoButtonGlyphName = @"info.circle.and.sparkles";
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v13 filledInfoButtonGlyphName], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([markupViewController2 filledInfoButtonGlyphName], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
     {
-      v12 = [v13 filledInfoButtonGlyphName];
-    }
-
-    else
-    {
-      v12 = @"info.circle.and.sparkles.fill";
-    }
-
-    v16 = [(QLMarkupItemViewController *)self markupViewController];
-    v17 = [v16 isVisualSearchEnabled];
-
-    if (v17)
-    {
-      v18 = v12;
+      filledInfoButtonGlyphName = [markupViewController2 filledInfoButtonGlyphName];
     }
 
     else
     {
-      v18 = v11;
+      filledInfoButtonGlyphName = @"info.circle.and.sparkles.fill";
+    }
+
+    markupViewController3 = [(QLMarkupItemViewController *)self markupViewController];
+    isVisualSearchEnabled2 = [markupViewController3 isVisualSearchEnabled];
+
+    if (isVisualSearchEnabled2)
+    {
+      v18 = filledInfoButtonGlyphName;
+    }
+
+    else
+    {
+      v18 = infoButtonGlyphName;
     }
 
     [(QLToolbarButton *)self->_infoButton setSymbolImageName:v18];
@@ -175,12 +175,12 @@
   return v19;
 }
 
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = _os_feature_enabled_impl();
-  if ([v6 isEqualToString:QLVisualSearchButtonIdentifier])
+  if ([identifierCopy isEqualToString:QLVisualSearchButtonIdentifier])
   {
     v9 = v8 == 0;
   }
@@ -194,32 +194,32 @@
   {
     v11.receiver = self;
     v11.super_class = QLMarkupImageItemViewController;
-    [(QLMarkupItemViewController *)&v11 buttonPressedWithIdentifier:v6 completionHandler:v7];
+    [(QLMarkupItemViewController *)&v11 buttonPressedWithIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v10 = [(QLMarkupItemViewController *)self markupViewController];
-    [v10 infoButtonTapped];
+    markupViewController = [(QLMarkupItemViewController *)self markupViewController];
+    [markupViewController infoButtonTapped];
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
 - (UIEdgeInsets)customEdgeInsets
 {
-  v3 = [(QLMarkupImageItemViewController *)self appearance];
-  v4 = [v3 presentationMode];
+  appearance = [(QLMarkupImageItemViewController *)self appearance];
+  presentationMode = [appearance presentationMode];
 
   [(QLMarkupImageItemViewController *)self imageSize];
-  v5 = [(QLMarkupImageItemViewController *)self view];
-  [v5 frame];
+  view = [(QLMarkupImageItemViewController *)self view];
+  [view frame];
   v6 = QLSizeAspectRatioEqualToSizeAspectRatioWithTolerance();
 
-  if (v4 == 4 || v6)
+  if (presentationMode == 4 || v6)
   {
     top = UIEdgeInsetsZero.top;
     left = UIEdgeInsetsZero.left;
@@ -229,21 +229,21 @@
 
   else
   {
-    v7 = [(QLMarkupImageItemViewController *)self appearance];
-    [v7 peripheryInsets];
+    appearance2 = [(QLMarkupImageItemViewController *)self appearance];
+    [appearance2 peripheryInsets];
     top = v8;
     left = v10;
     bottom = v12;
     right = v14;
   }
 
-  v16 = [(QLMarkupItemViewController *)self markupViewController];
-  v17 = [v16 annotationEditingEnabled];
+  markupViewController = [(QLMarkupItemViewController *)self markupViewController];
+  annotationEditingEnabled = [markupViewController annotationEditingEnabled];
 
-  if (v17)
+  if (annotationEditingEnabled)
   {
-    v18 = [(QLMarkupImageItemViewController *)self appearance];
-    [v18 topInset];
+    appearance3 = [(QLMarkupImageItemViewController *)self appearance];
+    [appearance3 topInset];
     v20 = v19;
 
     if (top < v20)
@@ -251,9 +251,9 @@
       top = v20;
     }
 
-    v21 = [(QLMarkupItemViewController *)self markupViewController];
-    v22 = [v21 toolbar];
-    [v22 frame];
+    markupViewController2 = [(QLMarkupItemViewController *)self markupViewController];
+    toolbar = [markupViewController2 toolbar];
+    [toolbar frame];
     v24 = v23;
 
     if (bottom >= v24)
@@ -261,8 +261,8 @@
       v24 = bottom;
     }
 
-    v25 = [(QLMarkupImageItemViewController *)self appearance];
-    [v25 bottomInset];
+    appearance4 = [(QLMarkupImageItemViewController *)self appearance];
+    [appearance4 bottomInset];
     bottom = v26;
 
     if (v24 >= bottom)
@@ -300,10 +300,10 @@
   scrollView = self->_scrollView;
   if (!scrollView)
   {
-    v4 = [(QLMarkupItemViewController *)self markupViewController];
-    v5 = [v4 contentViewScrollView];
+    markupViewController = [(QLMarkupItemViewController *)self markupViewController];
+    contentViewScrollView = [markupViewController contentViewScrollView];
     v6 = self->_scrollView;
-    self->_scrollView = v5;
+    self->_scrollView = contentViewScrollView;
 
     [(UIScrollView *)self->_scrollView setShowsVerticalScrollIndicator:0];
     [(UIScrollView *)self->_scrollView setShowsHorizontalScrollIndicator:0];
@@ -314,13 +314,13 @@
   return scrollView;
 }
 
-- (void)transitionWillFinish:(BOOL)a3 didComplete:(BOOL)a4
+- (void)transitionWillFinish:(BOOL)finish didComplete:(BOOL)complete
 {
-  v4 = a4;
+  completeCopy = complete;
   v8.receiver = self;
   v8.super_class = QLMarkupImageItemViewController;
   [QLMarkupImageItemViewController transitionWillFinish:"transitionWillFinish:didComplete:" didComplete:?];
-  if (v4 && !a3)
+  if (completeCopy && !finish)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -333,8 +333,8 @@
 
 - (CGSize)imageSize
 {
-  v2 = [(QLMarkupImageItemViewController *)self imageForAnalysis];
-  [v2 size];
+  imageForAnalysis = [(QLMarkupImageItemViewController *)self imageForAnalysis];
+  [imageForAnalysis size];
   v4 = v3;
   v6 = v5;
 
@@ -350,49 +350,49 @@
   imageForAnalysis = self->_imageForAnalysis;
   if (imageForAnalysis)
   {
-    v3 = imageForAnalysis;
+    image = imageForAnalysis;
   }
 
   else
   {
-    v4 = [(QLMarkupImageItemViewController *)self contents];
-    v3 = [v4 image];
+    contents = [(QLMarkupImageItemViewController *)self contents];
+    image = [contents image];
   }
 
-  return v3;
+  return image;
 }
 
-- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)a3
+- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   v7.receiver = self;
   v7.super_class = QLMarkupImageItemViewController;
   v4 = [(QLMarkupItemViewController *)&v7 canPerformFirstTimeAppearanceActions:?];
-  v5 = (v3 & 0x28) != 0;
+  v5 = (actionsCopy & 0x28) != 0;
   if (v4)
   {
     v5 = 1;
   }
 
-  return (v3 & 0x10) != 0 || v5;
+  return (actionsCopy & 0x10) != 0 || v5;
 }
 
-- (void)performFirstTimeAppearanceActions:(unint64_t)a3
+- (void)performFirstTimeAppearanceActions:(unint64_t)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   v11.receiver = self;
   v11.super_class = QLMarkupImageItemViewController;
   [(QLMarkupItemViewController *)&v11 performFirstTimeAppearanceActions:?];
-  v5 = [(QLMarkupItemViewController *)self markupViewController];
-  v6 = [v5 annotationEditingEnabled];
+  markupViewController = [(QLMarkupItemViewController *)self markupViewController];
+  annotationEditingEnabled = [markupViewController annotationEditingEnabled];
 
-  v7 = [(QLMarkupItemViewController *)self markupViewController];
-  v8 = v7;
-  if (v3 & 8) == 0 || (v6)
+  markupViewController2 = [(QLMarkupItemViewController *)self markupViewController];
+  v8 = markupViewController2;
+  if (actionsCopy & 8) == 0 || (annotationEditingEnabled)
   {
-    if ((v3 & 0x10) != 0)
+    if ((actionsCopy & 0x10) != 0)
     {
-      v9 = v6;
+      v9 = annotationEditingEnabled;
     }
 
     else
@@ -402,9 +402,9 @@
 
     if (v9)
     {
-      if ((v3 & 0x20) != 0)
+      if ((actionsCopy & 0x20) != 0)
       {
-        v10 = v6;
+        v10 = annotationEditingEnabled;
       }
 
       else
@@ -414,35 +414,35 @@
 
       if ((v10 & 1) == 0)
       {
-        [v7 setShouldUpliftSubjectAfterNextAnalysis:1];
+        [markupViewController2 setShouldUpliftSubjectAfterNextAnalysis:1];
       }
     }
 
     else
     {
-      [v7 setShouldEnterVisualSearchAfterNextAnalysis:1];
+      [markupViewController2 setShouldEnterVisualSearchAfterNextAnalysis:1];
     }
   }
 
   else
   {
-    [v7 setShouldHighlightTextAndDDAfterNextAnalysis:1];
+    [markupViewController2 setShouldHighlightTextAndDDAfterNextAnalysis:1];
   }
 }
 
-- (BOOL)shouldAcceptTouch:(id)a3 ofGestureRecognizer:(id)a4
+- (BOOL)shouldAcceptTouch:(id)touch ofGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  recognizerCopy = recognizer;
   v12.receiver = self;
   v12.super_class = QLMarkupImageItemViewController;
-  if ([(QLMarkupItemViewController *)&v12 shouldAcceptTouch:v6 ofGestureRecognizer:v7])
+  if ([(QLMarkupItemViewController *)&v12 shouldAcceptTouch:touchCopy ofGestureRecognizer:recognizerCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(QLMarkupItemViewController *)self markupViewController];
-      v9 = [v8 acceptSingleTouch:v6];
+      markupViewController = [(QLMarkupItemViewController *)self markupViewController];
+      v9 = [markupViewController acceptSingleTouch:touchCopy];
 
       v10 = v9 ^ 1;
     }
@@ -463,10 +463,10 @@
 
 - (id)clientPreviewOptions
 {
-  v2 = [(QLMarkupImageItemViewController *)self context];
-  v3 = [v2 clientPreviewOptions];
+  context = [(QLMarkupImageItemViewController *)self context];
+  clientPreviewOptions = [context clientPreviewOptions];
 
-  return v3;
+  return clientPreviewOptions;
 }
 
 @end

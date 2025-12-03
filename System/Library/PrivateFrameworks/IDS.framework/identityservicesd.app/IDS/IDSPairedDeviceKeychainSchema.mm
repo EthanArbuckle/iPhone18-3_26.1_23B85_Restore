@@ -1,16 +1,16 @@
 @interface IDSPairedDeviceKeychainSchema
-- (id)_migrateFromSinglePairedDeviceToMultipleWithKeychainDictionary:(id)a3;
-- (id)_propertyDictionariesFromPairedDevices:(id)a3;
-- (id)keychainDictionaryWithPairedDevices:(id)a3;
-- (id)migrateKeychainDictionary:(id)a3;
-- (unint64_t)_migrationTypeForKeychainDictionary:(id)a3;
+- (id)_migrateFromSinglePairedDeviceToMultipleWithKeychainDictionary:(id)dictionary;
+- (id)_propertyDictionariesFromPairedDevices:(id)devices;
+- (id)keychainDictionaryWithPairedDevices:(id)devices;
+- (id)migrateKeychainDictionary:(id)dictionary;
+- (unint64_t)_migrationTypeForKeychainDictionary:(id)dictionary;
 @end
 
 @implementation IDSPairedDeviceKeychainSchema
 
-- (id)keychainDictionaryWithPairedDevices:(id)a3
+- (id)keychainDictionaryWithPairedDevices:(id)devices
 {
-  v3 = [(IDSPairedDeviceKeychainSchema *)self _propertyDictionariesFromPairedDevices:a3];
+  v3 = [(IDSPairedDeviceKeychainSchema *)self _propertyDictionariesFromPairedDevices:devices];
   v6[0] = @"schema-version";
   v6[1] = @"paired-devices";
   v7[0] = &off_100C3C088;
@@ -20,15 +20,15 @@
   return v4;
 }
 
-- (id)_propertyDictionariesFromPairedDevices:(id)a3
+- (id)_propertyDictionariesFromPairedDevices:(id)devices
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  devicesCopy = devices;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [devicesCopy count]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = devicesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -43,8 +43,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) persistedProperties];
-        [v4 addObject:v10];
+        persistedProperties = [*(*(&v12 + 1) + 8 * i) persistedProperties];
+        [v4 addObject:persistedProperties];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -56,13 +56,13 @@
   return v4;
 }
 
-- (unint64_t)_migrationTypeForKeychainDictionary:(id)a3
+- (unint64_t)_migrationTypeForKeychainDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"schema-version"];
-  v4 = [v3 unsignedIntegerValue];
-  if (v4)
+  v3 = [dictionary objectForKeyedSubscript:@"schema-version"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  if (unsignedIntegerValue)
   {
-    if (v4 != 9200)
+    if (unsignedIntegerValue != 9200)
     {
       v5 = +[IMRGLog watchPairing];
       if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -82,11 +82,11 @@
   return v6;
 }
 
-- (id)migrateKeychainDictionary:(id)a3
+- (id)migrateKeychainDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(IDSPairedDeviceKeychainSchema *)self _migrationTypeForKeychainDictionary:v4];
-  v6 = v4;
+  dictionaryCopy = dictionary;
+  v5 = [(IDSPairedDeviceKeychainSchema *)self _migrationTypeForKeychainDictionary:dictionaryCopy];
+  v6 = dictionaryCopy;
   v7 = v6;
   if (v5 == 1)
   {
@@ -111,10 +111,10 @@
   return v8;
 }
 
-- (id)_migrateFromSinglePairedDeviceToMultipleWithKeychainDictionary:(id)a3
+- (id)_migrateFromSinglePairedDeviceToMultipleWithKeychainDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[IDSPairedDevice alloc] initWithProperties:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[IDSPairedDevice alloc] initWithProperties:dictionaryCopy];
 
   v6 = [[IDSPairedDevice alloc] initWithPairedDevice:v5 isActive:1];
   v10 = v6;

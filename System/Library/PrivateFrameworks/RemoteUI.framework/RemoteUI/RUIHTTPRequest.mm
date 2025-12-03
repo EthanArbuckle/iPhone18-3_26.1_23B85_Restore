@@ -1,35 +1,35 @@
 @interface RUIHTTPRequest
-+ (id)invalidResponseErrorWithResponse:(id)a3;
++ (id)invalidResponseErrorWithResponse:(id)response;
 + (id)safeBaseURL;
-- (BOOL)receivedValidResponse:(id)a3 forRequest:(id)a4;
+- (BOOL)receivedValidResponse:(id)response forRequest:(id)request;
 - (RUIHTTPRequest)init;
 - (id)delegate;
 - (void)_finishedLoading;
-- (void)_loadRequestMain:(id)a3;
+- (void)_loadRequestMain:(id)main;
 - (void)_preLoadCancel;
 - (void)dealloc;
-- (void)failWithError:(id)a3 forRequest:(id)a4;
-- (void)loadRequest:(id)a3;
+- (void)failWithError:(id)error forRequest:(id)request;
+- (void)loadRequest:(id)request;
 - (void)loadStatusChanged;
-- (void)parseData:(id)a3;
-- (void)parseData:(id)a3 completion:(id)a4;
-- (void)shouldLoadRequest:(id)a3 completionHandler:(id)a4;
+- (void)parseData:(id)data;
+- (void)parseData:(id)data completion:(id)completion;
+- (void)shouldLoadRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation RUIHTTPRequest
 
-+ (id)invalidResponseErrorWithResponse:(id)a3
++ (id)invalidResponseErrorWithResponse:(id)response
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8[0] = @"statusCode";
-    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "statusCode")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(responseCopy, "statusCode")}];
     v8[1] = RUIHTTPResponseKey;
     v9[0] = v4;
-    v9[1] = v3;
+    v9[1] = responseCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
   }
 
@@ -45,11 +45,11 @@
 
 + (id)safeBaseURL
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"x-remoteui://%@/", v3];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"x-remoteui://%@/", uUIDString];
   v6 = [v4 URLWithString:v5];
 
   if (!v6)
@@ -97,9 +97,9 @@
   [(RUIHTTPRequest *)self loadStatusChanged];
 }
 
-- (void)_loadRequestMain:(id)a3
+- (void)_loadRequestMain:(id)main
 {
-  v4 = a3;
+  mainCopy = main;
   [(RUIHTTPRequest *)self _preLoadCancel];
   if (_isInternalInstall())
   {
@@ -116,7 +116,7 @@
   v6[2] = __35__RUIHTTPRequest__loadRequestMain___block_invoke;
   v6[3] = &unk_2782E84D0;
   v6[4] = self;
-  [(RUIHTTPRequest *)self shouldLoadRequest:v4 completionHandler:v6];
+  [(RUIHTTPRequest *)self shouldLoadRequest:mainCopy completionHandler:v6];
 }
 
 void __35__RUIHTTPRequest__loadRequestMain___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -303,24 +303,24 @@ void __35__RUIHTTPRequest__loadRequestMain___block_invoke_31(uint64_t a1)
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)loadRequest:(id)a3
+- (void)loadRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__RUIHTTPRequest_loadRequest___block_invoke;
   v6[3] = &unk_2782E84F8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = requestCopy;
+  v5 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)shouldLoadRequest:(id)a3 completionHandler:(id)a4
+- (void)shouldLoadRequest:(id)request completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [(RUIHTTPRequest *)self handleWillLoadRequest:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  handlerCopy = handler;
+  v8 = [(RUIHTTPRequest *)self handleWillLoadRequest:request];
+  (*(handler + 2))(handlerCopy, v8, 0);
 }
 
 - (void)_preLoadCancel
@@ -338,44 +338,44 @@ void __35__RUIHTTPRequest__loadRequestMain___block_invoke_31(uint64_t a1)
 
 - (void)loadStatusChanged
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:RUIHTTPRequestLoadingStatusDidChangeNotification object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:RUIHTTPRequestLoadingStatusDidChangeNotification object:self];
 }
 
-- (void)parseData:(id)a3
+- (void)parseData:(id)data
 {
   v3 = NSStringFromSelector(a2);
   NSLog(&cfstr_ToBeImplemente.isa, v3);
 }
 
-- (void)parseData:(id)a3 completion:(id)a4
+- (void)parseData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  [(RUIHTTPRequest *)self parseData:a3];
-  v6[2]();
+  completionCopy = completion;
+  [(RUIHTTPRequest *)self parseData:data];
+  completionCopy[2]();
 }
 
-- (void)failWithError:(id)a3 forRequest:(id)a4
+- (void)failWithError:(id)error forRequest:(id)request
 {
   v4 = NSStringFromSelector(a2);
   NSLog(&cfstr_ToBeImplemente.isa, v4);
 }
 
-- (BOOL)receivedValidResponse:(id)a3 forRequest:(id)a4
+- (BOOL)receivedValidResponse:(id)response forRequest:(id)request
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = responseCopy;
     if (_isInternalInstall())
     {
       v6 = _RUILoggingFacility();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 134217984;
-        v10 = [v5 statusCode];
+        statusCode = [v5 statusCode];
         _os_log_impl(&dword_21B93D000, v6, OS_LOG_TYPE_DEFAULT, "RUIHTTPRequest Response StatusCode: %ld", &v9, 0xCu);
       }
     }

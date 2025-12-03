@@ -1,8 +1,8 @@
 @interface BTXPCTimer
 - (BOOL)isActive;
-- (BTXPCTimer)initWithName:(id)a3 date:(id)a4 gracePeriod:(double)a5 priority:(int64_t)a6 options:(unint64_t)a7 block:(id)a8;
-- (BTXPCTimer)initWithName:(id)a3 timeInterval:(double)a4 gracePeriod:(double)a5 priority:(int64_t)a6 options:(unint64_t)a7 block:(id)a8;
-- (BTXPCTimer)initWithName:(id)a3 timeInterval:(double)a4 priority:(int64_t)a5 options:(unint64_t)a6 block:(id)a7;
+- (BTXPCTimer)initWithName:(id)name date:(id)date gracePeriod:(double)period priority:(int64_t)priority options:(unint64_t)options block:(id)block;
+- (BTXPCTimer)initWithName:(id)name timeInterval:(double)interval gracePeriod:(double)period priority:(int64_t)priority options:(unint64_t)options block:(id)block;
+- (BTXPCTimer)initWithName:(id)name timeInterval:(double)interval priority:(int64_t)priority options:(unint64_t)options block:(id)block;
 - (id)activityHandler;
 - (id)criteria;
 - (void)handleActivity;
@@ -11,53 +11,53 @@
 
 @implementation BTXPCTimer
 
-- (BTXPCTimer)initWithName:(id)a3 date:(id)a4 gracePeriod:(double)a5 priority:(int64_t)a6 options:(unint64_t)a7 block:(id)a8
+- (BTXPCTimer)initWithName:(id)name date:(id)date gracePeriod:(double)period priority:(int64_t)priority options:(unint64_t)options block:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  nameCopy = name;
+  dateCopy = date;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = BTXPCTimer;
   v17 = [(BTXPCTimer *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    [(BTXPCTimer *)v17 setName:v14];
-    [(BTXPCTimer *)v18 setDate:v15];
-    [(BTXPCTimer *)v18 setGracePeriod:a5];
-    [(BTXPCTimer *)v18 setPriority:a6];
-    [(BTXPCTimer *)v18 setOptions:a7];
-    [(BTXPCTimer *)v18 setBlock:v16];
+    [(BTXPCTimer *)v17 setName:nameCopy];
+    [(BTXPCTimer *)v18 setDate:dateCopy];
+    [(BTXPCTimer *)v18 setGracePeriod:period];
+    [(BTXPCTimer *)v18 setPriority:priority];
+    [(BTXPCTimer *)v18 setOptions:options];
+    [(BTXPCTimer *)v18 setBlock:blockCopy];
     [(BTXPCTimer *)v18 handleActivity];
   }
 
   return v18;
 }
 
-- (BTXPCTimer)initWithName:(id)a3 timeInterval:(double)a4 gracePeriod:(double)a5 priority:(int64_t)a6 options:(unint64_t)a7 block:(id)a8
+- (BTXPCTimer)initWithName:(id)name timeInterval:(double)interval gracePeriod:(double)period priority:(int64_t)priority options:(unint64_t)options block:(id)block
 {
-  v14 = a8;
-  v15 = a3;
-  v16 = [NSDate dateWithTimeIntervalSinceNow:a4];
-  v17 = [(BTXPCTimer *)self initWithName:v15 date:v16 gracePeriod:a6 priority:a7 options:v14 block:a5];
+  blockCopy = block;
+  nameCopy = name;
+  v16 = [NSDate dateWithTimeIntervalSinceNow:interval];
+  v17 = [(BTXPCTimer *)self initWithName:nameCopy date:v16 gracePeriod:priority priority:options options:blockCopy block:period];
 
   return v17;
 }
 
-- (BTXPCTimer)initWithName:(id)a3 timeInterval:(double)a4 priority:(int64_t)a5 options:(unint64_t)a6 block:(id)a7
+- (BTXPCTimer)initWithName:(id)name timeInterval:(double)interval priority:(int64_t)priority options:(unint64_t)options block:(id)block
 {
-  v12 = a7;
-  v13 = a3;
-  v14 = [NSDate dateWithTimeIntervalSinceNow:a4];
-  v15 = [(BTXPCTimer *)self initWithName:v13 date:v14 gracePeriod:a5 priority:a6 options:v12 block:0.0];
+  blockCopy = block;
+  nameCopy = name;
+  v14 = [NSDate dateWithTimeIntervalSinceNow:interval];
+  v15 = [(BTXPCTimer *)self initWithName:nameCopy date:v14 gracePeriod:priority priority:options options:blockCopy block:0.0];
 
   return v15;
 }
 
 - (id)criteria
 {
-  v3 = [(BTXPCTimer *)self date];
-  [v3 timeIntervalSinceNow];
+  date = [(BTXPCTimer *)self date];
+  [date timeIntervalSinceNow];
   v5 = v4;
 
   v6 = 0.0;
@@ -73,22 +73,22 @@
   xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REPEATING, 0);
   xpc_dictionary_set_int64(v10, XPC_ACTIVITY_DELAY, v7);
   xpc_dictionary_set_int64(v10, XPC_ACTIVITY_GRACE_PERIOD, v9);
-  v11 = [(BTXPCTimer *)self priority];
+  priority = [(BTXPCTimer *)self priority];
   v12 = &XPC_ACTIVITY_PRIORITY_UTILITY;
-  if (v11 != 1)
+  if (priority != 1)
   {
     v12 = &XPC_ACTIVITY_PRIORITY_MAINTENANCE;
   }
 
   xpc_dictionary_set_string(v10, XPC_ACTIVITY_PRIORITY, *v12);
-  v13 = [(BTXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_POWER_NAP, v13 & 1);
-  v14 = [(BTXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REQUIRE_SIGNIFICANT_USER_INACTIVITY, (v14 & 4) != 0);
-  v15 = [(BTXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_SHOULD_WAKE_DEVICE, (v15 & 2) != 0);
-  v16 = [(BTXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_USES_DUET_POWER_BUDGETING, (v16 & 8) != 0);
+  options = [(BTXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_POWER_NAP, options & 1);
+  options2 = [(BTXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REQUIRE_SIGNIFICANT_USER_INACTIVITY, (options2 & 4) != 0);
+  options3 = [(BTXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_SHOULD_WAKE_DEVICE, (options3 & 2) != 0);
+  options4 = [(BTXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_USES_DUET_POWER_BUDGETING, (options4 & 8) != 0);
   if (([(BTXPCTimer *)self options]& 0x10) != 0)
   {
     v17 = &XPC_ACTIVITY_REQUIRES_CLASS_A;
@@ -115,21 +115,21 @@
   }
 
 LABEL_13:
-  v18 = [(BTXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REQUIRE_NETWORK_CONNECTIVITY, (v18 & 0x80) != 0);
-  v19 = [(BTXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REQUIRE_INEXPENSIVE_NETWORK_CONNECTIVITY, v19 & 0x100);
+  options5 = [(BTXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REQUIRE_NETWORK_CONNECTIVITY, (options5 & 0x80) != 0);
+  options6 = [(BTXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REQUIRE_INEXPENSIVE_NETWORK_CONNECTIVITY, options6 & 0x100);
   xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_ALLOW_BATTERY, ([(BTXPCTimer *)self options]& 0x200) != 0);
-  v20 = [(BTXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_MEMORY_INTENSIVE, (v20 & 0x400) != 0);
-  v21 = [(BTXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_CPU_INTENSIVE, (v21 & 0x800) != 0);
-  v22 = [(BTXPCTimer *)self options];
-  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_DISK_INTENSIVE, (v22 & 0x1000) != 0);
-  v23 = [(BTXPCTimer *)self duetActivitySchedulerData];
-  if (v23)
+  options7 = [(BTXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_MEMORY_INTENSIVE, (options7 & 0x400) != 0);
+  options8 = [(BTXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_CPU_INTENSIVE, (options8 & 0x800) != 0);
+  options9 = [(BTXPCTimer *)self options];
+  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_DISK_INTENSIVE, (options9 & 0x1000) != 0);
+  duetActivitySchedulerData = [(BTXPCTimer *)self duetActivitySchedulerData];
+  if (duetActivitySchedulerData)
   {
-    xpc_dictionary_set_value(v10, XPC_ACTIVITY_DUET_ACTIVITY_SCHEDULER_DATA, v23);
+    xpc_dictionary_set_value(v10, XPC_ACTIVITY_DUET_ACTIVITY_SCHEDULER_DATA, duetActivitySchedulerData);
   }
 
   return v10;
@@ -137,23 +137,23 @@ LABEL_13:
 
 - (void)invalidate
 {
-  v3 = [(BTXPCTimer *)self name];
-  v4 = [v3 UTF8String];
+  name = [(BTXPCTimer *)self name];
+  uTF8String = [name UTF8String];
 
   v5 = sub_100005C14("BTXPCTimer");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315138;
-    v14 = v4;
+    v14 = uTF8String;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BTXPCTimer Unregistering XPC activity %s", &v13, 0xCu);
   }
 
-  v6 = [(BTXPCTimer *)self activity];
-  if (v6)
+  activity = [(BTXPCTimer *)self activity];
+  if (activity)
   {
-    v7 = v6;
-    v8 = [(BTXPCTimer *)self activity];
-    v9 = xpc_activity_set_state(v8, 5);
+    v7 = activity;
+    activity2 = [(BTXPCTimer *)self activity];
+    v9 = xpc_activity_set_state(activity2, 5);
 
     if (v9)
     {
@@ -161,23 +161,23 @@ LABEL_13:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 136315138;
-        v14 = v4;
+        v14 = uTF8String;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "BTXPCTimer XPC activity marked DONE for %s", &v13, 0xCu);
       }
     }
   }
 
-  xpc_activity_unregister(v4);
-  v11 = [(BTXPCTimer *)self block];
+  xpc_activity_unregister(uTF8String);
+  block = [(BTXPCTimer *)self block];
 
-  if (v11)
+  if (block)
   {
     [(BTXPCTimer *)self setBlock:0];
   }
 
-  v12 = [(BTXPCTimer *)self activity];
+  activity3 = [(BTXPCTimer *)self activity];
 
-  if (v12)
+  if (activity3)
   {
     [(BTXPCTimer *)self setActivity:0];
   }
@@ -185,10 +185,10 @@ LABEL_13:
 
 - (id)activityHandler
 {
-  v3 = [(BTXPCTimer *)self criteria];
-  v4 = [(BTXPCTimer *)self name];
-  v5 = [(BTXPCTimer *)self date];
-  [v5 timeIntervalSinceNow];
+  criteria = [(BTXPCTimer *)self criteria];
+  name = [(BTXPCTimer *)self name];
+  date = [(BTXPCTimer *)self date];
+  [date timeIntervalSinceNow];
   v7 = v6;
 
   v8 = sub_100005C14("BTXPCTimer");
@@ -199,10 +199,10 @@ LABEL_13:
       v7 = 0.0;
     }
 
-    v9 = [(BTXPCTimer *)self name];
+    name2 = [(BTXPCTimer *)self name];
     [(BTXPCTimer *)self gracePeriod];
     *buf = 138412802;
-    v23 = v9;
+    v23 = name2;
     v24 = 2048;
     v25 = v7;
     v26 = 2048;
@@ -211,18 +211,18 @@ LABEL_13:
   }
 
   objc_initWeak(buf, self);
-  v11 = [(BTXPCTimer *)self block];
+  block = [(BTXPCTimer *)self block];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10008E664;
   v17[3] = &unk_1002B9A80;
   objc_copyWeak(&v21, buf);
-  v18 = v4;
-  v19 = v3;
-  v20 = v11;
-  v12 = v11;
-  v13 = v3;
-  v14 = v4;
+  v18 = name;
+  v19 = criteria;
+  v20 = block;
+  v12 = block;
+  v13 = criteria;
+  v14 = name;
   v15 = objc_retainBlock(v17);
 
   objc_destroyWeak(&v21);
@@ -233,22 +233,22 @@ LABEL_13:
 
 - (BOOL)isActive
 {
-  v3 = [(BTXPCTimer *)self activity];
+  activity = [(BTXPCTimer *)self activity];
 
-  if (!v3)
+  if (!activity)
   {
     return 0;
   }
 
-  v4 = [(BTXPCTimer *)self activity];
-  state = xpc_activity_get_state(v4);
+  activity2 = [(BTXPCTimer *)self activity];
+  state = xpc_activity_get_state(activity2);
 
   v6 = sub_100005C14("BTXPCTimer");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(BTXPCTimer *)self name];
+    name = [(BTXPCTimer *)self name];
     v9 = 138412546;
-    v10 = v7;
+    v10 = name;
     v11 = 2048;
     v12 = state;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "BTXPCTimer %@ current state %ld", &v9, 0x16u);
@@ -259,11 +259,11 @@ LABEL_13:
 
 - (void)handleActivity
 {
-  v6 = [(BTXPCTimer *)self name];
-  v3 = v6;
-  v4 = [v6 UTF8String];
-  v5 = [(BTXPCTimer *)self activityHandler];
-  xpc_activity_register(v4, XPC_ACTIVITY_CHECK_IN, v5);
+  name = [(BTXPCTimer *)self name];
+  v3 = name;
+  uTF8String = [name UTF8String];
+  activityHandler = [(BTXPCTimer *)self activityHandler];
+  xpc_activity_register(uTF8String, XPC_ACTIVITY_CHECK_IN, activityHandler);
 }
 
 @end

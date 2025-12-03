@@ -13,12 +13,12 @@
   v9 = a4;
   v10 = a5;
   v11 = objc_alloc_init(MEMORY[0x277CBDB38]);
-  v12 = [v8 value];
-  if ([v12 length])
+  value = [v8 value];
+  if ([value length])
   {
     if (v10)
     {
-      v13 = [a1 suggestedContactForHandle:v8 isoCountryCode:v9 metadataCache:v10];
+      v13 = [self suggestedContactForHandle:v8 isoCountryCode:v9 metadataCache:v10];
       v14 = v13;
       if (v13)
       {
@@ -27,7 +27,7 @@
         v11 = v15;
       }
 
-      v16 = [objc_alloc(MEMORY[0x277D6EF00]) initWithDestinationID:v12 isoCountryCode:v9];
+      v16 = [objc_alloc(MEMORY[0x277D6EF00]) initWithDestinationID:value isoCountryCode:v9];
       if (v16)
       {
         v17 = [v10 metadataForDestinationID:v16];
@@ -39,16 +39,16 @@
       }
     }
 
-    v19 = v12;
-    v20 = [v8 type];
-    if (v20 == 2)
+    v19 = value;
+    type = [v8 type];
+    if (type == 2)
     {
       v21 = [MEMORY[0x277CBDB70] phoneNumberWithDigits:v19 countryCode:v9];
     }
 
     else
     {
-      if (v20 != 1)
+      if (type != 1)
       {
         goto LABEL_15;
       }
@@ -61,8 +61,8 @@
     v19 = v22;
 LABEL_15:
     v23 = [MEMORY[0x277CBDB20] labeledValueWithLabel:0 value:v19];
-    v24 = [v8 type];
-    switch(v24)
+    type2 = [v8 type];
+    switch(type2)
     {
       case 3:
         v28 = v23;
@@ -102,28 +102,28 @@ LABEL_23:
   v8 = [MEMORY[0x277D6EEE8] handleForCHRecentCall:v6];
   if (v8)
   {
-    v9 = [v6 isoCountryCode];
+    isoCountryCode = [v6 isoCountryCode];
     if ([v8 type] == 2)
     {
-      if (![v9 length])
+      if (![isoCountryCode length])
       {
-        v10 = [v6 callStatus];
-        if (v10 != *MEMORY[0x277CF7D90] && v10 != *MEMORY[0x277CF7D78])
+        callStatus = [v6 callStatus];
+        if (callStatus != *MEMORY[0x277CF7D90] && callStatus != *MEMORY[0x277CF7D78])
         {
           v13 = *MEMORY[0x277CF7DA0];
         }
 
         v14 = TUCountryCodeForIncomingCall();
 
-        v9 = v14;
+        isoCountryCode = v14;
       }
 
-      if ([v9 length])
+      if ([isoCountryCode length])
       {
         v15 = TUHomeCountryCode();
-        if (([v9 isEqualToString:v15] & 1) == 0)
+        if (([isoCountryCode isEqualToString:v15] & 1) == 0)
         {
-          v16 = [v8 value];
+          value = [v8 value];
           v17 = TUNumberToDial();
 
           v18 = [objc_alloc(MEMORY[0x277D6EEE8]) initWithType:objc_msgSend(v8 value:{"type"), v17}];
@@ -132,13 +132,13 @@ LABEL_23:
       }
     }
 
-    v12 = [a1 contactForHandle:v8 isoCountryCode:v9 metadataCache:v7];
-    v19 = [v6 imageURL];
+    v12 = [self contactForHandle:v8 isoCountryCode:isoCountryCode metadataCache:v7];
+    imageURL = [v6 imageURL];
 
-    if (v19)
+    if (imageURL)
     {
-      v20 = [v6 name];
-      [v12 setOrganizationName:v20];
+      name = [v6 name];
+      [v12 setOrganizationName:name];
 
       [v12 setContactType:1];
     }
@@ -148,17 +148,17 @@ LABEL_23:
       [v12 setContactType:{objc_msgSend(v6, "callDirectoryIdentityType") == 2}];
       if ([v12 contactType])
       {
-        v21 = [v6 fullName];
-        [v12 setOrganizationName:v21];
+        fullName = [v6 fullName];
+        [v12 setOrganizationName:fullName];
       }
 
       else
       {
-        v22 = [v6 givenName];
-        [v12 setGivenName:v22];
+        givenName = [v6 givenName];
+        [v12 setGivenName:givenName];
 
-        v21 = [v6 familyName];
-        [v12 setFamilyName:v21];
+        fullName = [v6 familyName];
+        [v12 setFamilyName:fullName];
       }
     }
   }
@@ -215,8 +215,8 @@ LABEL_3:
     }
 
     v17 = objc_opt_class();
-    v18 = [v7 value];
-    v15 = [v17 newestSuggestedContactForDestinationID:v18];
+    value = [v7 value];
+    v15 = [v17 newestSuggestedContactForDestinationID:value];
 
     if (!v15)
     {
@@ -226,8 +226,8 @@ LABEL_3:
 
     v11 = [v15 mutableCopy];
     v19 = objc_alloc(MEMORY[0x277D6EF00]);
-    v20 = [v7 value];
-    v16 = [v19 initWithDestinationID:v20 isoCountryCode:v8];
+    value2 = [v7 value];
+    v16 = [v19 initWithDestinationID:value2 isoCountryCode:v8];
 
     if (v16)
     {

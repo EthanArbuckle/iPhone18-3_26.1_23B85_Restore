@@ -1,16 +1,16 @@
 @interface _DPPrioPlusPlusMetadataValueRandomizer
-- (_DPPrioPlusPlusMetadataValueRandomizer)initWithEpsilon:(double)a3 dimensionality:(unint64_t)a4 dynamicVectorSize:(BOOL)a5;
-- (id)randomizeBitVector:(id)a3 metadata:(id)a4;
-- (id)randomizeBitVectors:(id)a3 metadata:(id)a4 forKey:(id)a5;
+- (_DPPrioPlusPlusMetadataValueRandomizer)initWithEpsilon:(double)epsilon dimensionality:(unint64_t)dimensionality dynamicVectorSize:(BOOL)size;
+- (id)randomizeBitVector:(id)vector metadata:(id)metadata;
+- (id)randomizeBitVectors:(id)vectors metadata:(id)metadata forKey:(id)key;
 @end
 
 @implementation _DPPrioPlusPlusMetadataValueRandomizer
 
-- (_DPPrioPlusPlusMetadataValueRandomizer)initWithEpsilon:(double)a3 dimensionality:(unint64_t)a4 dynamicVectorSize:(BOOL)a5
+- (_DPPrioPlusPlusMetadataValueRandomizer)initWithEpsilon:(double)epsilon dimensionality:(unint64_t)dimensionality dynamicVectorSize:(BOOL)size
 {
-  if (!a4 || (a3 >= 0.0 ? (v6 = a3 > 16.0) : (v6 = 1), v6))
+  if (!dimensionality || (epsilon >= 0.0 ? (v6 = epsilon > 16.0) : (v6 = 1), v6))
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -20,24 +20,24 @@
     v10 = [(_DPPrioPlusPlusMetadataValueRandomizer *)&v12 init];
     if (v10)
     {
-      v10->_epsilon = a3;
-      v10->_p = a4;
-      v10->_dynamicVectorSize = a5;
+      v10->_epsilon = epsilon;
+      v10->_p = dimensionality;
+      v10->_dynamicVectorSize = size;
     }
 
     self = v10;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)randomizeBitVector:(id)a3 metadata:(id)a4
+- (id)randomizeBitVector:(id)vector metadata:(id)metadata
 {
-  v5 = a3;
+  vectorCopy = vector;
   if ([(_DPPrioPlusPlusMetadataValueRandomizer *)self dynamicVectorSize])
   {
-    v6 = [v5 length];
+    v6 = [vectorCopy length];
   }
 
   else
@@ -46,13 +46,13 @@
   }
 
   v7 = v6;
-  v8 = [v5 bytes];
-  if ([v5 length])
+  bytes = [vectorCopy bytes];
+  if ([vectorCopy length])
   {
     v9 = 0;
-    while (*(v8 + v9) <= 1u)
+    while (*(bytes + v9) <= 1u)
     {
-      if (++v9 >= [v5 length])
+      if (++v9 >= [vectorCopy length])
       {
         goto LABEL_8;
       }
@@ -68,7 +68,7 @@ LABEL_8:
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 randomize:v5];
+      v12 = [v10 randomize:vectorCopy];
     }
 
     else
@@ -86,12 +86,12 @@ LABEL_8:
   return v12;
 }
 
-- (id)randomizeBitVectors:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (id)randomizeBitVectors:(id)vectors metadata:(id)metadata forKey:(id)key
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v28 = a5;
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
+  keyCopy = key;
   v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
   [v9 timeIntervalSinceReferenceDate];
   v11 = v10;
@@ -101,7 +101,7 @@ LABEL_8:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v7;
+  obj = vectorsCopy;
   v12 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v12)
   {
@@ -118,13 +118,13 @@ LABEL_8:
           objc_enumerationMutation(obj);
         }
 
-        v15 = [(_DPPrioPlusPlusMetadataValueRandomizer *)self randomizeBitVector:*(*(&v31 + 1) + 8 * v14) metadata:v8];
+        v15 = [(_DPPrioPlusPlusMetadataValueRandomizer *)self randomizeBitVector:*(*(&v31 + 1) + 8 * v14) metadata:metadataCopy];
         if ([v15 count])
         {
           v16 = [v15 objectForKeyedSubscript:@"share1"];
           v17 = [v15 objectForKeyedSubscript:@"share2"];
           v18 = [v15 objectForKeyedSubscript:@"dimensionality"];
-          v19 = v8;
+          v19 = metadataCopy;
           if ([(_DPPrioPlusPlusMetadataValueRandomizer *)self dynamicVectorSize])
           {
             v20 = [v19 mutableCopy];
@@ -135,7 +135,7 @@ LABEL_8:
             v13 = v25;
           }
 
-          v22 = -[_DPPrioRecord initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:]([_DPPrioRecord alloc], "initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:", v28, v16, v17, [v18 longLongValue], v19, 0, v11, 0);
+          v22 = -[_DPPrioRecord initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:]([_DPPrioRecord alloc], "initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:", keyCopy, v16, v17, [v18 longLongValue], v19, 0, v11, 0);
           if (v22)
           {
             [v26 addObject:v22];

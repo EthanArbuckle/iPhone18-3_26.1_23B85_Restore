@@ -4,7 +4,7 @@
 - (TRAParticipant)contentParticipant;
 - (void)loadView;
 - (void)updateOrientationIfNeeded;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBTraitsOrientedContentViewController
@@ -13,9 +13,9 @@
 {
   v4.receiver = self;
   v4.super_class = SBTraitsOrientedContentViewController;
-  v2 = [(SBTraitsOrientedContentViewController *)&v4 view];
+  view = [(SBTraitsOrientedContentViewController *)&v4 view];
 
-  return v2;
+  return view;
 }
 
 - (void)loadView
@@ -25,14 +25,14 @@
   [(SBTraitsOrientedContentViewController *)self setView:v4];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = SBTraitsOrientedContentViewController;
-  [(SBTraitsOrientedContentViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SBTraitsOrientedContentViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   WeakRetained = objc_loadWeakRetained(&self->_contentParticipant);
 
   if (WeakRetained)
@@ -42,13 +42,13 @@
     v9[2] = __92__SBTraitsOrientedContentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v9[3] = &unk_2783A9488;
     v9[4] = self;
-    [v7 animateAlongsideTransition:v9 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v9 completion:0];
   }
 }
 
 - (void)updateOrientationIfNeeded
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 }
 
 - (TRAParticipant)contentParticipant

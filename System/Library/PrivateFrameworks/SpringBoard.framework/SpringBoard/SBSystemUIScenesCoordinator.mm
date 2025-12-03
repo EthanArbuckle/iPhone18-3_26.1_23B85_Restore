@@ -1,30 +1,30 @@
 @interface SBSystemUIScenesCoordinator
-+ (BOOL)_isSystemUISceneBoundClient:(id)a3;
-+ (BOOL)_isSystemUISceneDynamicClient:(id)a3 withSceneRequestOptions:(id)a4;
-+ (BOOL)shouldHandleSceneRequestsForProcess:(id)a3 withOptions:(id)a4;
++ (BOOL)_isSystemUISceneBoundClient:(id)client;
++ (BOOL)_isSystemUISceneDynamicClient:(id)client withSceneRequestOptions:(id)options;
++ (BOOL)shouldHandleSceneRequestsForProcess:(id)process withOptions:(id)options;
 + (id)_configurationForSystemUISceneSessionRoles;
 + (id)_sceneControllersConfigurations;
 + (id)_systemUISceneBoundProcessIdentities;
 + (id)_systemUISceneSessionRoles;
-- (BOOL)enumerateScenesWithBlock:(id)a3;
+- (BOOL)enumerateScenesWithBlock:(id)block;
 - (SBSystemUIScenesCoordinator)init;
-- (double)_levelForClientConfiguration:(id)a3;
-- (id)_newDefaultPresenterForWindowScene:(id)a3 configuration:(id)a4;
-- (id)sceneFromIdentityToken:(id)a3;
-- (id)sceneFromIdentityTokenStringRepresentation:(id)a3;
-- (id)sceneWorkspaceControllerForProcessIdentity:(id)a3;
+- (double)_levelForClientConfiguration:(id)configuration;
+- (id)_newDefaultPresenterForWindowScene:(id)scene configuration:(id)configuration;
+- (id)sceneFromIdentityToken:(id)token;
+- (id)sceneFromIdentityTokenStringRepresentation:(id)representation;
+- (id)sceneWorkspaceControllerForProcessIdentity:(id)identity;
 - (void)_completeWindowSceneClientsConfiguration;
-- (void)_createSceneWorkspaceControllerForProcessIdentity:(id)a3 jobLabel:(id)a4 options:(id)a5;
-- (void)_createSystemUISceneControllerForConfiguration:(id)a3 withActiveDisplayWindowScene:(id)a4;
-- (void)_didDisableSecureRendering:(id)a3;
-- (void)_willEnableSecureRendering:(id)a3;
-- (void)activateSceneForProcessIdentity:(id)a3 withHandle:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)addSystemUISceneToPresentationBinder:(id)a3 forDisplayIdentity:(id)a4;
+- (void)_createSceneWorkspaceControllerForProcessIdentity:(id)identity jobLabel:(id)label options:(id)options;
+- (void)_createSystemUISceneControllerForConfiguration:(id)configuration withActiveDisplayWindowScene:(id)scene;
+- (void)_didDisableSecureRendering:(id)rendering;
+- (void)_willEnableSecureRendering:(id)rendering;
+- (void)activateSceneForProcessIdentity:(id)identity withHandle:(id)handle options:(id)options completion:(id)completion;
+- (void)addSystemUISceneToPresentationBinder:(id)binder forDisplayIdentity:(id)identity;
 - (void)dealloc;
-- (void)destroyScenesWithPersistentIdentifiers:(id)a3 processIdentity:(id)a4 completion:(id)a5;
-- (void)removeSystemUISceneFromPresentationBinder:(id)a3 forDisplayIdentity:(id)a4;
-- (void)windowSceneDidConnect:(id)a3;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (void)destroyScenesWithPersistentIdentifiers:(id)identifiers processIdentity:(id)identity completion:(id)completion;
+- (void)removeSystemUISceneFromPresentationBinder:(id)binder forDisplayIdentity:(id)identity;
+- (void)windowSceneDidConnect:(id)connect;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBSystemUIScenesCoordinator
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __67__SBSystemUIScenesCoordinator__systemUISceneBoundProcessIdentities__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_systemUISceneBoundProcessIdentities_onceToken != -1)
   {
     dispatch_once(&_systemUISceneBoundProcessIdentities_onceToken, block);
@@ -415,65 +415,65 @@ void __67__SBSystemUIScenesCoordinator__systemUISceneBoundProcessIdentities__blo
   }
 }
 
-+ (BOOL)shouldHandleSceneRequestsForProcess:(id)a3 withOptions:(id)a4
++ (BOOL)shouldHandleSceneRequestsForProcess:(id)process withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  processCopy = process;
+  optionsCopy = options;
+  if (!processCopy)
   {
     +[SBSystemUIScenesCoordinator shouldHandleSceneRequestsForProcess:withOptions:];
   }
 
   v8 = objc_opt_class();
-  v9 = [v6 identity];
-  if ([v8 _isSystemUISceneBoundClient:v9])
+  identity = [processCopy identity];
+  if ([v8 _isSystemUISceneBoundClient:identity])
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = [a1 _isSystemUISceneDynamicClient:v6 withSceneRequestOptions:v7];
+    v10 = [self _isSystemUISceneDynamicClient:processCopy withSceneRequestOptions:optionsCopy];
   }
 
   return v10;
 }
 
-+ (BOOL)_isSystemUISceneBoundClient:(id)a3
++ (BOOL)_isSystemUISceneBoundClient:(id)client
 {
-  v4 = a3;
-  if (!v4)
+  clientCopy = client;
+  if (!clientCopy)
   {
     +[SBSystemUIScenesCoordinator _isSystemUISceneBoundClient:];
   }
 
-  v5 = [a1 _systemUISceneBoundProcessIdentities];
-  v6 = [v5 containsObject:v4];
+  _systemUISceneBoundProcessIdentities = [self _systemUISceneBoundProcessIdentities];
+  v6 = [_systemUISceneBoundProcessIdentities containsObject:clientCopy];
 
   return v6;
 }
 
-+ (BOOL)_isSystemUISceneDynamicClient:(id)a3 withSceneRequestOptions:(id)a4
++ (BOOL)_isSystemUISceneDynamicClient:(id)client withSceneRequestOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  clientCopy = client;
+  optionsCopy = options;
+  if (!clientCopy)
   {
     +[SBSystemUIScenesCoordinator _isSystemUISceneDynamicClient:withSceneRequestOptions:];
   }
 
-  v7 = [MEMORY[0x277D0AAC0] sharedInstance];
-  v8 = [v7 processForPID:{objc_msgSend(v5, "pid")}];
+  mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+  v8 = [mEMORY[0x277D0AAC0] processForPID:{objc_msgSend(clientCopy, "pid")}];
 
-  v9 = [v6 specification];
-  v10 = [v9 uiSceneSessionRole];
+  specification = [optionsCopy specification];
+  uiSceneSessionRole = [specification uiSceneSessionRole];
 
   v11 = [v8 hasEntitlement:@"com.apple.springboard.SystemUIScene"];
   v12 = v11;
-  if (v10)
+  if (uiSceneSessionRole)
   {
-    v13 = [objc_opt_class() _systemUISceneSessionRoles];
-    v14 = [v13 containsObject:v10];
+    _systemUISceneSessionRoles = [objc_opt_class() _systemUISceneSessionRoles];
+    v14 = [_systemUISceneSessionRoles containsObject:uiSceneSessionRole];
 
     if (v12)
     {
@@ -492,7 +492,7 @@ LABEL_8:
   }
 
 LABEL_5:
-  if (v6)
+  if (optionsCopy)
   {
     v15 = +[SBSystemUISceneDomain rootSettings];
     v16 = [v15 allowAnySceneSessionRole] | v14;
@@ -508,25 +508,25 @@ LABEL_10:
   return v16 & 1;
 }
 
-- (void)_createSceneWorkspaceControllerForProcessIdentity:(id)a3 jobLabel:(id)a4 options:(id)a5
+- (void)_createSceneWorkspaceControllerForProcessIdentity:(id)identity jobLabel:(id)label options:(id)options
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = [a5 specification];
-  v10 = [v9 uiSceneSessionRole];
+  identityCopy = identity;
+  labelCopy = label;
+  specification = [options specification];
+  uiSceneSessionRole = [specification uiSceneSessionRole];
 
-  v11 = [objc_opt_class() _configurationForSystemUISceneSessionRoles];
-  v12 = [v11 objectForKey:v10];
+  _configurationForSystemUISceneSessionRoles = [objc_opt_class() _configurationForSystemUISceneSessionRoles];
+  v12 = [_configurationForSystemUISceneSessionRoles objectForKey:uiSceneSessionRole];
   v13 = [v12 mutableCopy];
 
-  if (!v8)
+  if (!labelCopy)
   {
-    v8 = [v13 objectForKey:@"jobLabel"];
+    labelCopy = [v13 objectForKey:@"jobLabel"];
   }
 
-  if (v18)
+  if (identityCopy)
   {
-    if (v8)
+    if (labelCopy)
     {
       goto LABEL_5;
     }
@@ -535,7 +535,7 @@ LABEL_10:
   else
   {
     [SBSystemUIScenesCoordinator _createSceneWorkspaceControllerForProcessIdentity:jobLabel:options:];
-    if (v8)
+    if (labelCopy)
     {
       goto LABEL_5;
     }
@@ -543,25 +543,25 @@ LABEL_10:
 
   [SBSystemUIScenesCoordinator _createSceneWorkspaceControllerForProcessIdentity:jobLabel:options:];
 LABEL_5:
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"com.apple.SpringBoard.SceneWorkspace", v8];
+  labelCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"com.apple.SpringBoard.SceneWorkspace", labelCopy];
   if (v13)
   {
-    [v13 setObject:v18 forKey:@"processIdentity"];
-    [v13 setObject:v8 forKey:@"jobLabel"];
-    [v13 setObject:v14 forKey:@"workspaceID"];
-    v15 = [SBApp windowSceneManager];
-    v16 = [v15 activeDisplayWindowScene];
+    [v13 setObject:identityCopy forKey:@"processIdentity"];
+    [v13 setObject:labelCopy forKey:@"jobLabel"];
+    [v13 setObject:labelCopy forKey:@"workspaceID"];
+    windowSceneManager = [SBApp windowSceneManager];
+    activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-    [(SBSystemUIScenesCoordinator *)self _createSystemUISceneControllerForConfiguration:v13 withActiveDisplayWindowScene:v16];
+    [(SBSystemUIScenesCoordinator *)self _createSystemUISceneControllerForConfiguration:v13 withActiveDisplayWindowScene:activeDisplayWindowScene];
   }
 
   else
   {
     v17 = [SBSystemUISceneController alloc];
-    v16 = [(SBSystemUISceneController *)v17 initWithSceneWorkspaceIdentifier:v14 clientProcessIdentity:v18 sceneVendingPolicy:2 traitsRole:@"SBTraitsParticipantRoleSystemUIScene" jobLabel:v8 level:*MEMORY[0x277D76EE8] + 255.0];
-    [(SBSystemUISceneController *)v16 setDefaultPresenter:self->_springboardMainBinderPresenter];
-    [(NSMutableArray *)self->_sceneControllers addObject:v16];
-    [(NSMutableArray *)self->_allKnownProcessIdentities addObject:v18];
+    activeDisplayWindowScene = [(SBSystemUISceneController *)v17 initWithSceneWorkspaceIdentifier:labelCopy clientProcessIdentity:identityCopy sceneVendingPolicy:2 traitsRole:@"SBTraitsParticipantRoleSystemUIScene" jobLabel:labelCopy level:*MEMORY[0x277D76EE8] + 255.0];
+    [(SBSystemUISceneController *)activeDisplayWindowScene setDefaultPresenter:self->_springboardMainBinderPresenter];
+    [(NSMutableArray *)self->_sceneControllers addObject:activeDisplayWindowScene];
+    [(NSMutableArray *)self->_allKnownProcessIdentities addObject:identityCopy];
   }
 }
 
@@ -581,33 +581,33 @@ LABEL_5:
     springboardMainBinderPresenter = v2->_springboardMainBinderPresenter;
     v2->_springboardMainBinderPresenter = v5;
 
-    v7 = [objc_opt_class() _sceneControllersConfigurations];
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    _sceneControllersConfigurations = [objc_opt_class() _sceneControllersConfigurations];
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(_sceneControllersConfigurations, "count")}];
     sceneControllers = v2->_sceneControllers;
     v2->_sceneControllers = v8;
 
-    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(_sceneControllersConfigurations, "count")}];
     allKnownProcessIdentities = v2->_allKnownProcessIdentities;
     v2->_allKnownProcessIdentities = v10;
 
-    v12 = [SBApp windowSceneManager];
-    v13 = [v12 activeDisplayWindowScene];
+    windowSceneManager = [SBApp windowSceneManager];
+    activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-    if (!v13)
+    if (!activeDisplayWindowScene)
     {
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v14 addObserver:v2 selector:sel__completeWindowSceneClientsConfiguration name:@"SBBootCompleteNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel__completeWindowSceneClientsConfiguration name:@"SBBootCompleteNotification" object:0];
     }
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v2 selector:sel__willEnableSecureRendering_ name:*MEMORY[0x277D66028] object:0];
-    [v15 addObserver:v2 selector:sel__didDisableSecureRendering_ name:*MEMORY[0x277D66020] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__willEnableSecureRendering_ name:*MEMORY[0x277D66028] object:0];
+    [defaultCenter2 addObserver:v2 selector:sel__didDisableSecureRendering_ name:*MEMORY[0x277D66020] object:0];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v16 = [objc_opt_class() _sceneControllersConfigurations];
-    v17 = [v16 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    _sceneControllersConfigurations2 = [objc_opt_class() _sceneControllersConfigurations];
+    v17 = [_sceneControllersConfigurations2 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v17)
     {
       v18 = v17;
@@ -619,14 +619,14 @@ LABEL_5:
         {
           if (*v23 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(_sceneControllersConfigurations2);
           }
 
-          [(SBSystemUIScenesCoordinator *)v2 _createSystemUISceneControllerForConfiguration:*(*(&v22 + 1) + 8 * v20++) withActiveDisplayWindowScene:v13];
+          [(SBSystemUIScenesCoordinator *)v2 _createSystemUISceneControllerForConfiguration:*(*(&v22 + 1) + 8 * v20++) withActiveDisplayWindowScene:activeDisplayWindowScene];
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v18 = [_sceneControllersConfigurations2 countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v18);
@@ -638,70 +638,70 @@ LABEL_5:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBSystemUIScenesCoordinator;
   [(SBSystemUIScenesCoordinator *)&v4 dealloc];
 }
 
-- (void)_createSystemUISceneControllerForConfiguration:(id)a3 withActiveDisplayWindowScene:(id)a4
+- (void)_createSystemUISceneControllerForConfiguration:(id)configuration withActiveDisplayWindowScene:(id)scene
 {
-  v26 = a3;
-  v6 = a4;
-  v7 = [v26 objectForKey:@"processIdentity"];
-  v8 = [v26 objectForKey:@"enabled"];
-  v9 = [v8 BOOLValue];
+  configurationCopy = configuration;
+  sceneCopy = scene;
+  v7 = [configurationCopy objectForKey:@"processIdentity"];
+  v8 = [configurationCopy objectForKey:@"enabled"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (!v9)
+  if (!bOOLValue)
   {
     goto LABEL_17;
   }
 
-  v23 = [v26 objectForKey:@"class"];
-  v24 = [v26 objectForKey:@"jobLabel"];
-  v25 = [v26 objectForKey:@"traitsRole"];
-  v10 = [v26 objectForKey:@"workspaceID"];
-  v11 = [v26 objectForKey:@"setter"];
-  v12 = [v11 pointerValue];
+  v23 = [configurationCopy objectForKey:@"class"];
+  v24 = [configurationCopy objectForKey:@"jobLabel"];
+  v25 = [configurationCopy objectForKey:@"traitsRole"];
+  v10 = [configurationCopy objectForKey:@"workspaceID"];
+  v11 = [configurationCopy objectForKey:@"setter"];
+  pointerValue = [v11 pointerValue];
 
-  v13 = [v26 objectForKey:@"presentationStyle"];
-  v14 = [v26 objectForKey:@"vendingStrategy"];
-  [(SBSystemUIScenesCoordinator *)self _levelForClientConfiguration:v26];
+  v13 = [configurationCopy objectForKey:@"presentationStyle"];
+  v14 = [configurationCopy objectForKey:@"vendingStrategy"];
+  [(SBSystemUIScenesCoordinator *)self _levelForClientConfiguration:configurationCopy];
   v16 = v15;
   if (v13)
   {
-    v17 = [v13 integerValue];
+    integerValue = [v13 integerValue];
     if (v14)
     {
 LABEL_4:
-      v18 = [v14 integerValue];
+      integerValue2 = [v14 integerValue];
       goto LABEL_7;
     }
   }
 
   else
   {
-    v17 = 0;
+    integerValue = 0;
     if (v14)
     {
       goto LABEL_4;
     }
   }
 
-  v18 = 2;
+  integerValue2 = 2;
 LABEL_7:
   v19 = self->_springboardMainBinderPresenter;
-  if (v17 == 2)
+  if (integerValue == 2)
   {
-    if (!v6)
+    if (!sceneCopy)
     {
       v21 = 0;
       goto LABEL_13;
     }
 
-    v20 = [(SBSystemUIScenesCoordinator *)self _newDefaultPresenterForWindowScene:v6 configuration:v26];
+    v20 = [(SBSystemUIScenesCoordinator *)self _newDefaultPresenterForWindowScene:sceneCopy configuration:configurationCopy];
 LABEL_12:
     v21 = v20;
 LABEL_13:
@@ -710,18 +710,18 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v17 == 1)
+  if (integerValue == 1)
   {
     v20 = self->_customBinderPresenter;
     goto LABEL_12;
   }
 
 LABEL_14:
-  v22 = [[v23 alloc] initWithSceneWorkspaceIdentifier:v10 clientProcessIdentity:v7 sceneVendingPolicy:v18 traitsRole:v25 jobLabel:v24 level:v16];
+  v22 = [[v23 alloc] initWithSceneWorkspaceIdentifier:v10 clientProcessIdentity:v7 sceneVendingPolicy:integerValue2 traitsRole:v25 jobLabel:v24 level:v16];
   [v22 setDefaultPresenter:v19];
-  if (v12)
+  if (pointerValue)
   {
-    [(SBSystemUIScenesCoordinator *)self performSelector:v12 withObject:v22];
+    [(SBSystemUIScenesCoordinator *)self performSelector:pointerValue withObject:v22];
   }
 
   [(NSMutableArray *)self->_sceneControllers addObject:v22];
@@ -733,17 +733,17 @@ LABEL_17:
 - (void)_completeWindowSceneClientsConfiguration
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (id)_newDefaultPresenterForWindowScene:(id)a3 configuration:(id)a4
+- (id)_newDefaultPresenterForWindowScene:(id)scene configuration:(id)configuration
 {
-  v6 = a3;
-  [(SBSystemUIScenesCoordinator *)self _levelForClientConfiguration:a4];
+  sceneCopy = scene;
+  [(SBSystemUIScenesCoordinator *)self _levelForClientConfiguration:configuration];
   v8 = v7;
-  v9 = [[SBSystemUISceneDefaultPresenter alloc] initWithWindowHostingPresentationOnWindowScene:v6];
+  v9 = [[SBSystemUISceneDefaultPresenter alloc] initWithWindowHostingPresentationOnWindowScene:sceneCopy];
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
   [(SBSystemUISceneDefaultPresenter *)v9 setPreferredWindowLevel:v10];
@@ -751,9 +751,9 @@ LABEL_17:
   return v9;
 }
 
-- (double)_levelForClientConfiguration:(id)a3
+- (double)_levelForClientConfiguration:(id)configuration
 {
-  v3 = [a3 objectForKey:@"hostLevel"];
+  v3 = [configuration objectForKey:@"hostLevel"];
   v4 = v3;
   if (v3)
   {
@@ -769,10 +769,10 @@ LABEL_17:
   return v6;
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectCopy = connect;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -793,7 +793,7 @@ LABEL_17:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) windowSceneDidConnect:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) windowSceneDidConnect:{connectCopy, v10}];
       }
 
       while (v7 != v9);
@@ -804,10 +804,10 @@ LABEL_17:
   }
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  disconnectCopy = disconnect;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -828,7 +828,7 @@ LABEL_17:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) windowSceneDidDisconnect:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) windowSceneDidDisconnect:{disconnectCopy, v10}];
       }
 
       while (v7 != v9);
@@ -839,7 +839,7 @@ LABEL_17:
   }
 }
 
-- (void)_willEnableSecureRendering:(id)a3
+- (void)_willEnableSecureRendering:(id)rendering
 {
   v13 = *MEMORY[0x277D85DE8];
   v8 = 0u;
@@ -873,7 +873,7 @@ LABEL_17:
   }
 }
 
-- (void)_didDisableSecureRendering:(id)a3
+- (void)_didDisableSecureRendering:(id)rendering
 {
   v13 = *MEMORY[0x277D85DE8];
   v8 = 0u;
@@ -907,16 +907,16 @@ LABEL_17:
   }
 }
 
-- (void)activateSceneForProcessIdentity:(id)a3 withHandle:(id)a4 options:(id)a5 completion:(id)a6
+- (void)activateSceneForProcessIdentity:(id)identity withHandle:(id)handle options:(id)options completion:(id)completion
 {
-  v21 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identityCopy = identity;
+  handleCopy = handle;
+  optionsCopy = options;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  if (v21)
+  if (identityCopy)
   {
-    if (v11)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
@@ -927,32 +927,32 @@ LABEL_11:
   }
 
   [SBSystemUIScenesCoordinator activateSceneForProcessIdentity:withHandle:options:completion:];
-  if (!v11)
+  if (!optionsCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
-  v13 = [objc_opt_class() _isSystemUISceneBoundClient:v21];
-  if (v10)
+  v13 = [objc_opt_class() _isSystemUISceneBoundClient:identityCopy];
+  if (handleCopy)
   {
     if ((v13 & 1) == 0)
     {
-      if ([objc_opt_class() _isSystemUISceneDynamicClient:v10 withSceneRequestOptions:v11])
+      if ([objc_opt_class() _isSystemUISceneDynamicClient:handleCopy withSceneRequestOptions:optionsCopy])
       {
-        v14 = [(SBSystemUIScenesCoordinator *)self sceneWorkspaceControllerForProcessIdentity:v21];
+        v14 = [(SBSystemUIScenesCoordinator *)self sceneWorkspaceControllerForProcessIdentity:identityCopy];
 
         if (!v14)
         {
-          v15 = [v10 consistentJobLabel];
-          [(SBSystemUIScenesCoordinator *)self _createSceneWorkspaceControllerForProcessIdentity:v21 jobLabel:v15 options:v11];
+          consistentJobLabel = [handleCopy consistentJobLabel];
+          [(SBSystemUIScenesCoordinator *)self _createSceneWorkspaceControllerForProcessIdentity:identityCopy jobLabel:consistentJobLabel options:optionsCopy];
         }
       }
     }
   }
 
   v16 = objc_opt_class();
-  v17 = [(SBSystemUIScenesCoordinator *)self sceneWorkspaceControllerForProcessIdentity:v21];
+  v17 = [(SBSystemUIScenesCoordinator *)self sceneWorkspaceControllerForProcessIdentity:identityCopy];
   v18 = SBSafeCast(v16, v17);
 
   if (v18)
@@ -966,31 +966,31 @@ LABEL_12:
   if (!v18)
   {
 LABEL_15:
-    v20 = [v18 clientProcessIdentity];
-    [v18 activateSceneForProcessIdentity:v20 withHandle:v10 options:v11 completion:v12];
+    clientProcessIdentity = [v18 clientProcessIdentity];
+    [v18 activateSceneForProcessIdentity:clientProcessIdentity withHandle:handleCopy options:optionsCopy completion:completionCopy];
 
     v18 = 0;
     goto LABEL_16;
   }
 
-  if (v12)
+  if (completionCopy)
   {
-    v12[2](v12, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
   }
 
 LABEL_16:
 }
 
-- (void)destroyScenesWithPersistentIdentifiers:(id)a3 processIdentity:(id)a4 completion:(id)a5
+- (void)destroyScenesWithPersistentIdentifiers:(id)identifiers processIdentity:(id)identity completion:(id)completion
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  identityCopy = identity;
   BSDispatchQueueAssertMain();
-  if (v8)
+  if (identifiersCopy)
   {
-    if (v10)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -999,7 +999,7 @@ LABEL_16:
   else
   {
     [SBSystemUIScenesCoordinator destroyScenesWithPersistentIdentifiers:processIdentity:completion:];
-    if (v10)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -1008,17 +1008,17 @@ LABEL_16:
   [SBSystemUIScenesCoordinator destroyScenesWithPersistentIdentifiers:processIdentity:completion:];
 LABEL_3:
   v11 = objc_opt_class();
-  v12 = [(SBSystemUIScenesCoordinator *)self sceneWorkspaceControllerForProcessIdentity:v10];
+  v12 = [(SBSystemUIScenesCoordinator *)self sceneWorkspaceControllerForProcessIdentity:identityCopy];
 
   v13 = SBSafeCast(v11, v12);
 
   if (v13)
   {
-    v14 = [v13 clientProcessIdentity];
-    [v13 destroyScenesWithPersistentIdentifiers:v8 processIdentity:v14 completion:v9];
+    clientProcessIdentity = [v13 clientProcessIdentity];
+    [v13 destroyScenesWithPersistentIdentifiers:identifiersCopy processIdentity:clientProcessIdentity completion:completionCopy];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     v15 = MEMORY[0x277CCA9B8];
     v16 = SBSystemUIScenesCoordinatorErrorDomain;
@@ -1026,16 +1026,16 @@ LABEL_3:
     v20[0] = @"Unknown process identity";
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v18 = [v15 errorWithDomain:v16 code:2 userInfo:v17];
-    v9[2](v9, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
   }
 }
 
-- (id)sceneWorkspaceControllerForProcessIdentity:(id)a3
+- (id)sceneWorkspaceControllerForProcessIdentity:(id)identity
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identityCopy = identity;
   BSDispatchQueueAssertMain();
-  if (!v4)
+  if (!identityCopy)
   {
     [SBSystemUIScenesCoordinator sceneWorkspaceControllerForProcessIdentity:];
   }
@@ -1059,7 +1059,7 @@ LABEL_3:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 sceneWorkspaceControllerForProcessIdentity:{v4, v12}];
+        v10 = [v9 sceneWorkspaceControllerForProcessIdentity:{identityCopy, v12}];
 
         if (v9 == v10)
         {
@@ -1083,10 +1083,10 @@ LABEL_13:
   return v6;
 }
 
-- (id)sceneFromIdentityToken:(id)a3
+- (id)sceneFromIdentityToken:(id)token
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   BSDispatchQueueAssertMain();
   v15 = 0u;
   v16 = 0u;
@@ -1107,7 +1107,7 @@ LABEL_13:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) sceneFromIdentityToken:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) sceneFromIdentityToken:{tokenCopy, v13}];
         if (v10)
         {
           v11 = v10;
@@ -1131,10 +1131,10 @@ LABEL_11:
   return v11;
 }
 
-- (id)sceneFromIdentityTokenStringRepresentation:(id)a3
+- (id)sceneFromIdentityTokenStringRepresentation:(id)representation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representationCopy = representation;
   BSDispatchQueueAssertMain();
   v15 = 0u;
   v16 = 0u;
@@ -1155,7 +1155,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) sceneFromIdentityTokenStringRepresentation:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) sceneFromIdentityTokenStringRepresentation:{representationCopy, v13}];
         if (v10)
         {
           v11 = v10;
@@ -1179,10 +1179,10 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)enumerateScenesWithBlock:(id)a3
+- (BOOL)enumerateScenesWithBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   BSDispatchQueueAssertMain();
   v12 = 0u;
   v13 = 0u;
@@ -1202,7 +1202,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) enumerateScenesWithBlock:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) enumerateScenesWithBlock:{blockCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -1224,24 +1224,24 @@ LABEL_11:
   return v6;
 }
 
-- (void)addSystemUISceneToPresentationBinder:(id)a3 forDisplayIdentity:(id)a4
+- (void)addSystemUISceneToPresentationBinder:(id)binder forDisplayIdentity:(id)identity
 {
-  v5 = a4;
-  v6 = a3;
+  identityCopy = identity;
+  binderCopy = binder;
   v7 = +[SBSceneManagerCoordinator sharedInstance];
-  v8 = [v7 sceneManagerForDisplayIdentity:v5];
+  v8 = [v7 sceneManagerForDisplayIdentity:identityCopy];
 
-  [v8 addSystemUISceneToPresentationBinder:v6];
+  [v8 addSystemUISceneToPresentationBinder:binderCopy];
 }
 
-- (void)removeSystemUISceneFromPresentationBinder:(id)a3 forDisplayIdentity:(id)a4
+- (void)removeSystemUISceneFromPresentationBinder:(id)binder forDisplayIdentity:(id)identity
 {
-  v5 = a4;
-  v6 = a3;
+  identityCopy = identity;
+  binderCopy = binder;
   v7 = +[SBSceneManagerCoordinator sharedInstance];
-  v8 = [v7 sceneManagerForDisplayIdentity:v5];
+  v8 = [v7 sceneManagerForDisplayIdentity:identityCopy];
 
-  [v8 removeSystemUISceneFromPresentationBinder:v6];
+  [v8 removeSystemUISceneFromPresentationBinder:binderCopy];
 }
 
 + (void)shouldHandleSceneRequestsForProcess:withOptions:.cold.1()

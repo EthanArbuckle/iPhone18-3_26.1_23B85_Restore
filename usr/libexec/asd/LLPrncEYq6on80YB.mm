@@ -1,62 +1,62 @@
 @interface LLPrncEYq6on80YB
-- (LLPrncEYq6on80YB)initWithQueue:(id)a3;
-- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)a3;
-- (void)assembleExpressions:(_h7c2C07OidUWbWOi *)a3 i4KDOQicW9Xd5WBz:(id)a4 TWWnmIjkBlMfHmma:(id)a5 withCompletion:(id)a6;
-- (void)compute:(_KUwyEjpVZR65eUyl *)a3 UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)a4 SFkZRA5Ek9YzhDRs:(unsigned int)a5 jAVr67FQ6j4EzsgV:(id)a6 i4KDOQicW9Xd5WBz:(id)a7 TWWnmIjkBlMfHmma:(id)a8 withCompletion:(id)a9;
-- (void)computeHash:(_KUwyEjpVZR65eUyl *)a3 jAVr67FQ6j4EzsgV:(id)a4 i4KDOQicW9Xd5WBz:(id)a5 TWWnmIjkBlMfHmma:(id)a6 withCompletion:(id)a7;
-- (void)endSignpost:(_eipjLVDiD7LNwlPc *)a3 signpostId:(unint64_t)a4;
-- (void)filterPredicate:(_h7c2C07OidUWbWOi *)a3 dfVersion:(unsigned int)a4 i4KDOQicW9Xd5WBz:(id)a5 TWWnmIjkBlMfHmma:(id)a6 completion:(id)a7;
+- (LLPrncEYq6on80YB)initWithQueue:(id)queue;
+- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)signpost;
+- (void)assembleExpressions:(_h7c2C07OidUWbWOi *)expressions i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion;
+- (void)compute:(_KUwyEjpVZR65eUyl *)compute UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)ue1 SFkZRA5Ek9YzhDRs:(unsigned int)rs jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion;
+- (void)computeHash:(_KUwyEjpVZR65eUyl *)hash jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion;
+- (void)endSignpost:(_eipjLVDiD7LNwlPc *)signpost signpostId:(unint64_t)id;
+- (void)filterPredicate:(_h7c2C07OidUWbWOi *)predicate dfVersion:(unsigned int)version i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma completion:(id)completion;
 @end
 
 @implementation LLPrncEYq6on80YB
 
-- (LLPrncEYq6on80YB)initWithQueue:(id)a3
+- (LLPrncEYq6on80YB)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = LLPrncEYq6on80YB;
   v6 = [(LLPrncEYq6on80YB *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (void)filterPredicate:(_h7c2C07OidUWbWOi *)a3 dfVersion:(unsigned int)a4 i4KDOQicW9Xd5WBz:(id)a5 TWWnmIjkBlMfHmma:(id)a6 completion:(id)a7
+- (void)filterPredicate:(_h7c2C07OidUWbWOi *)predicate dfVersion:(unsigned int)version i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma completion:(id)completion
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (a4 > 1)
+  bzCopy = bz;
+  hmmaCopy = hmma;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if (version > 1)
   {
-    v16 = [(LLPrncEYq6on80YB *)self queue];
+    queue = [(LLPrncEYq6on80YB *)self queue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10001DCCC;
     v17[3] = &unk_10068FBE8;
     v18 = v15;
-    [Yp00msaYdVlZesvU yv5QRLoFvJ66jYJS:&a3->var6 i4KDOQicW9Xd5WBz:v12 TWWnmIjkBlMfHmma:v13 completionQueue:v16 withCompletion:v17];
+    [Yp00msaYdVlZesvU yv5QRLoFvJ66jYJS:&predicate->var6 i4KDOQicW9Xd5WBz:bzCopy TWWnmIjkBlMfHmma:hmmaCopy completionQueue:queue withCompletion:v17];
   }
 
   else
   {
-    (*(v14 + 2))(v14, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)assembleExpressions:(_h7c2C07OidUWbWOi *)a3 i4KDOQicW9Xd5WBz:(id)a4 TWWnmIjkBlMfHmma:(id)a5 withCompletion:(id)a6
+- (void)assembleExpressions:(_h7c2C07OidUWbWOi *)expressions i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion
 {
-  v39 = a4;
-  v38 = a5;
-  v32 = a6;
-  v31 = [[NSMutableArray alloc] initWithCapacity:a3->var1];
-  v30 = [[NSMutableArray alloc] initWithCapacity:a3->var1];
-  v10 = [[NSMutableDictionary alloc] initWithCapacity:a3->var1];
-  v35 = self;
+  bzCopy = bz;
+  hmmaCopy = hmma;
+  completionCopy = completion;
+  v31 = [[NSMutableArray alloc] initWithCapacity:expressions->var1];
+  v30 = [[NSMutableArray alloc] initWithCapacity:expressions->var1];
+  v10 = [[NSMutableDictionary alloc] initWithCapacity:expressions->var1];
+  selfCopy = self;
   v28 = dispatch_group_create();
   v29 = v10;
   v68[0] = 0;
@@ -70,7 +70,7 @@
   v37 = objc_opt_new();
   v61 = v37;
   v67 = v68;
-  v33 = v32;
+  v33 = completionCopy;
   v66 = v33;
   v41 = v31;
   v62 = v41;
@@ -81,19 +81,19 @@
   v11 = v28;
   v65 = v11;
   v36 = objc_retainBlock(v60);
-  if (a3->var1)
+  if (expressions->var1)
   {
     v12 = 0;
     do
     {
       v13 = objc_opt_new();
-      [v41 addObject:{v13, v28, v29, v30, v31, v32}];
+      [v41 addObject:{v13, v28, v29, v30, v31, completionCopy}];
 
       v14 = objc_opt_new();
       [v40 addObject:v14];
 
       ++v12;
-      var1 = a3->var1;
+      var1 = expressions->var1;
     }
 
     while (v12 < var1);
@@ -104,9 +104,9 @@
       do
       {
         dispatch_group_enter(v11);
-        var3 = a3->var3;
-        var4 = a3->var4;
-        v20 = [(LLPrncEYq6on80YB *)v35 queue];
+        var3 = expressions->var3;
+        var4 = expressions->var4;
+        queue = [(LLPrncEYq6on80YB *)selfCopy queue];
         v48[0] = _NSConcreteStackBlock;
         v48[1] = 3221225472;
         v48[2] = sub_10001E404;
@@ -116,25 +116,25 @@
         v50 = v41;
         v59 = v17;
         v51 = v40;
-        v58 = a3;
-        v21 = v39;
+        expressionsCopy = expressions;
+        v21 = bzCopy;
         v52 = v21;
-        v22 = v38;
+        v22 = hmmaCopy;
         v53 = v22;
-        v54 = v35;
+        v54 = selfCopy;
         v55 = v34;
         v56 = v11;
-        [Yp00msaYdVlZesvU evaluateStringTypes2:&var3[v16] string2:&var4[v16] i4KDOQicW9Xd5WBz:v21 TWWnmIjkBlMfHmma:v22 completionQueue:v20 withCompletion:v48];
+        [Yp00msaYdVlZesvU evaluateStringTypes2:&var3[v16] string2:&var4[v16] i4KDOQicW9Xd5WBz:v21 TWWnmIjkBlMfHmma:v22 completionQueue:queue withCompletion:v48];
 
         ++v17;
         ++v16;
       }
 
-      while (v17 < a3->var1);
+      while (v17 < expressions->var1);
     }
   }
 
-  v23 = [(LLPrncEYq6on80YB *)v35 queue:v28];
+  v23 = [(LLPrncEYq6on80YB *)selfCopy queue:v28];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001E704;
@@ -153,91 +153,91 @@
   _Block_object_dispose(v68, 8);
 }
 
-- (void)compute:(_KUwyEjpVZR65eUyl *)a3 UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)a4 SFkZRA5Ek9YzhDRs:(unsigned int)a5 jAVr67FQ6j4EzsgV:(id)a6 i4KDOQicW9Xd5WBz:(id)a7 TWWnmIjkBlMfHmma:(id)a8 withCompletion:(id)a9
+- (void)compute:(_KUwyEjpVZR65eUyl *)compute UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)ue1 SFkZRA5Ek9YzhDRs:(unsigned int)rs jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion
 {
-  v13 = a7;
-  v14 = a8;
-  v15 = a9;
-  var0 = a3->var4.var8.var0;
-  p_var4 = &a3->var4;
+  bzCopy = bz;
+  hmmaCopy = hmma;
+  completionCopy = completion;
+  var0 = compute->var4.var8.var0;
+  p_var4 = &compute->var4;
   v18 = *(&p_var4[-1].var28 + 97);
-  if ([v13 supports:var0])
+  if ([bzCopy supports:var0])
   {
     v19 = p_var4->var8.var0;
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10001E8E0;
     v21[3] = &unk_10068FD00;
-    v24 = v15;
+    v24 = completionCopy;
     v25 = p_var4;
     v21[4] = self;
     v28 = v18;
-    v22 = v13;
-    v23 = v14;
-    v26 = *&a4->profileIDPrefix;
-    profileParsedDate = a4->profileParsedDate;
+    v22 = bzCopy;
+    v23 = hmmaCopy;
+    v26 = *&ue1->profileIDPrefix;
+    profileParsedDate = ue1->profileParsedDate;
     [v22 getAt:v19 completion:v21];
   }
 
   else
   {
     v20 = [[kjAS9HuCdR1m5txL alloc] initWithGyF0atX3JpCKc9pK:0 qfSDGTGvqd3Hruzg:161031];
-    (*(v15 + 2))(v15, v20);
+    (*(completionCopy + 2))(completionCopy, v20);
   }
 }
 
-- (void)computeHash:(_KUwyEjpVZR65eUyl *)a3 jAVr67FQ6j4EzsgV:(id)a4 i4KDOQicW9Xd5WBz:(id)a5 TWWnmIjkBlMfHmma:(id)a6 withCompletion:(id)a7
+- (void)computeHash:(_KUwyEjpVZR65eUyl *)hash jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  bzCopy = bz;
+  hmmaCopy = hmma;
+  completionCopy = completion;
   v14 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:0];
   [v14 encodeInt64:0x594EAC2DD9E5ADEFLL forKey:@"0x5563"];
-  [v14 encodeInt64:a3->var1 forKey:@"0x6595"];
-  [v14 encodeInt64:a3->var4.var9.var1 forKey:@"0x89bc"];
-  if (a3->var4.var9.var1)
+  [v14 encodeInt64:hash->var1 forKey:@"0x6595"];
+  [v14 encodeInt64:hash->var4.var9.var1 forKey:@"0x89bc"];
+  if (hash->var4.var9.var1)
   {
     v15 = 0;
     do
     {
-      v16 = *(a3->var4.var11.var1 + 4 * v15);
+      v16 = *(hash->var4.var11.var1 + 4 * v15);
       v17 = [NSString stringWithFormat:@"%d 0xa8c1", v15];
       [v14 encodeInt32:v16 forKey:v17];
 
       ++v15;
     }
 
-    while (v15 < a3->var4.var9.var1);
+    while (v15 < hash->var4.var9.var1);
   }
 
-  var0 = a3->var4.var8.var0;
+  var0 = hash->var4.var8.var0;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10001FB40;
   v23[3] = &unk_10068FD78;
-  p_var4 = &a3->var4;
+  p_var4 = &hash->var4;
   v19 = v14;
   v24 = v19;
-  v25 = self;
-  v20 = v11;
+  selfCopy = self;
+  v20 = bzCopy;
   v26 = v20;
-  v21 = v12;
+  v21 = hmmaCopy;
   v27 = v21;
-  v30 = a3;
-  v22 = v13;
+  hashCopy = hash;
+  v22 = completionCopy;
   v28 = v22;
   [v20 getAt:var0 completion:v23];
 }
 
-- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)a3
+- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)signpost
 {
   v4 = os_signpost_id_generate(qword_1006DF788);
   v5 = qword_1006DF788;
   v6 = v5;
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
-    profileIDPrefix = a3->profileIDPrefix;
-    dataframeIndex = a3->dataframeIndex;
+    profileIDPrefix = signpost->profileIDPrefix;
+    dataframeIndex = signpost->dataframeIndex;
     v10[0] = 67240448;
     v10[1] = profileIDPrefix;
     v11 = 1026;
@@ -248,19 +248,19 @@
   return v4;
 }
 
-- (void)endSignpost:(_eipjLVDiD7LNwlPc *)a3 signpostId:(unint64_t)a4
+- (void)endSignpost:(_eipjLVDiD7LNwlPc *)signpost signpostId:(unint64_t)id
 {
   v6 = qword_1006DF788;
   v7 = v6;
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
+  if (id - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
-    profileIDPrefix = a3->profileIDPrefix;
-    dataframeIndex = a3->dataframeIndex;
+    profileIDPrefix = signpost->profileIDPrefix;
+    dataframeIndex = signpost->dataframeIndex;
     v10[0] = 67240448;
     v10[1] = profileIDPrefix;
     v11 = 1026;
     v12 = dataframeIndex;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_END, a4, "ma", "p=%{public,signpost.telemetry:number1}d,i=%{public,signpost.telemetry:number2}d", v10, 0xEu);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_END, id, "ma", "p=%{public,signpost.telemetry:number1}d,i=%{public,signpost.telemetry:number2}d", v10, 0xEu);
   }
 }
 

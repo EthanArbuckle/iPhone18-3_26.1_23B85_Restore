@@ -1,8 +1,8 @@
 @interface TSPDocumentResourceLegacyInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDocumentResourceLegacyInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDocumentResourceLegacyInfo:(id)info;
 - (TSPDocumentResourceLegacyInfo)init;
-- (TSPDocumentResourceLegacyInfo)initWithDigestString:(id)a3 locator:(id)a4;
+- (TSPDocumentResourceLegacyInfo)initWithDigestString:(id)string locator:(id)locator;
 - (id)description;
 @end
 
@@ -25,20 +25,20 @@
   objc_exception_throw(v14);
 }
 
-- (TSPDocumentResourceLegacyInfo)initWithDigestString:(id)a3 locator:(id)a4
+- (TSPDocumentResourceLegacyInfo)initWithDigestString:(id)string locator:(id)locator
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  locatorCopy = locator;
   v18.receiver = self;
   v18.super_class = TSPDocumentResourceLegacyInfo;
   v10 = [(TSPDocumentResourceLegacyInfo *)&v18 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(stringCopy, v8, v9);
     digestString = v10->_digestString;
     v10->_digestString = v11;
 
-    v15 = objc_msgSend_copy(v7, v13, v14);
+    v15 = objc_msgSend_copy(locatorCopy, v13, v14);
     locator = v10->_locator;
     v10->_locator = v15;
   }
@@ -46,14 +46,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -81,15 +81,15 @@
   return v6;
 }
 
-- (BOOL)isEqualToDocumentResourceLegacyInfo:(id)a3
+- (BOOL)isEqualToDocumentResourceLegacyInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   digestString = self->_digestString;
-  v8 = objc_msgSend_digestString(v4, v6, v7);
+  v8 = objc_msgSend_digestString(infoCopy, v6, v7);
   if (objc_msgSend_isEqualToString_(digestString, v9, v8))
   {
     locator = self->_locator;
-    v13 = objc_msgSend_locator(v4, v10, v11);
+    v13 = objc_msgSend_locator(infoCopy, v10, v11);
     isEqualToString = objc_msgSend_isEqualToString_(locator, v14, v13);
   }
 

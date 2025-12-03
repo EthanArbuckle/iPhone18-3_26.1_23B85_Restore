@@ -1,29 +1,29 @@
 @interface QLAsynchronousOperation
 - (void)finish;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
 @implementation QLAsynchronousOperation
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  if (self->_finished != a3)
+  if (self->_finished != finished)
   {
     [(QLAsynchronousOperation *)self willChangeValueForKey:@"isFinished"];
-    self->_finished = a3;
+    self->_finished = finished;
 
     [(QLAsynchronousOperation *)self didChangeValueForKey:@"isFinished"];
   }
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  if (self->_executing != a3)
+  if (self->_executing != executing)
   {
     [(QLAsynchronousOperation *)self willChangeValueForKey:@"isExecuting"];
-    self->_executing = a3;
+    self->_executing = executing;
 
     [(QLAsynchronousOperation *)self didChangeValueForKey:@"isExecuting"];
   }

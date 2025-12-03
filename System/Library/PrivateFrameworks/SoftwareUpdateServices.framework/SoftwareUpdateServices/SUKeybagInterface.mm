@@ -1,7 +1,7 @@
 @interface SUKeybagInterface
 + (id)sharedInstance;
-- (BOOL)createInstallationKeybagForDescriptor:(id)a3 withLASecret:(id)a4 forUnattendedInstall:(BOOL)a5;
-- (BOOL)createInstallationKeybagForDescriptor:(id)a3 withSecret:(id)a4 forUnattendedInstall:(BOOL)a5;
+- (BOOL)createInstallationKeybagForDescriptor:(id)descriptor withLASecret:(id)secret forUnattendedInstall:(BOOL)install;
+- (BOOL)createInstallationKeybagForDescriptor:(id)descriptor withSecret:(id)secret forUnattendedInstall:(BOOL)install;
 - (BOOL)disableKeybagStash;
 - (BOOL)hadFirstUnlock;
 - (BOOL)hasPasscodeSet;
@@ -9,17 +9,17 @@
 - (BOOL)persistKeybagStash;
 - (id)_init;
 - (id)_verifyKeyBagKeyStash;
-- (id)createPreventLockAssertionWithDuration:(int64_t)a3;
+- (id)createPreventLockAssertionWithDuration:(int64_t)duration;
 - (id)lastBuildWithStashKeybagCreated;
 - (int)_queue_fetchKeybagState;
-- (int)installationKeybagStateForDescriptor:(id)a3;
+- (int)installationKeybagStateForDescriptor:(id)descriptor;
 - (void)_queue_passcodeChanged;
 - (void)_queue_refreshState;
-- (void)_queue_setHasPasscodeSet:(BOOL)a3;
-- (void)_queue_setIsPasscodeLocked:(BOOL)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setLastBuildWithStashKeybagCreated:(id)a3;
+- (void)_queue_setHasPasscodeSet:(BOOL)set;
+- (void)_queue_setIsPasscodeLocked:(BOOL)locked;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)setLastBuildWithStashKeybagCreated:(id)created;
 @end
 
 @implementation SUKeybagInterface
@@ -29,9 +29,9 @@
   v2 = sharedInstance___instance_5;
   if (!sharedInstance___instance_5)
   {
-    v3 = [[SUKeybagInterface alloc] _init];
+    _init = [[SUKeybagInterface alloc] _init];
     v4 = sharedInstance___instance_5;
-    sharedInstance___instance_5 = v3;
+    sharedInstance___instance_5 = _init;
 
     v2 = sharedInstance___instance_5;
   }
@@ -109,50 +109,50 @@ void __26__SUKeybagInterface__init__block_invoke_2(uint64_t a1)
 
 - (BOOL)hasPasscodeSet
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_queue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  queue = v2->_queue;
+  queue = selfCopy->_queue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __35__SUKeybagInterface_hasPasscodeSet__block_invoke;
   v5[3] = &unk_279CAA858;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(queue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isPasscodeLocked
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_queue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  queue = v2->_queue;
+  queue = selfCopy->_queue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __37__SUKeybagInterface_isPasscodeLocked__block_invoke;
   v5[3] = &unk_279CAA858;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(queue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [SUKeybagInterface addObserver:];
   }
@@ -164,15 +164,15 @@ void __26__SUKeybagInterface__init__block_invoke_2(uint64_t a1)
   v7[2] = __33__SUKeybagInterface_addObserver___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [SUKeybagInterface removeObserver:];
   }
@@ -184,8 +184,8 @@ void __26__SUKeybagInterface__init__block_invoke_2(uint64_t a1)
   v7[2] = __36__SUKeybagInterface_removeObserver___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -200,21 +200,21 @@ void __26__SUKeybagInterface__init__block_invoke_2(uint64_t a1)
 - (id)lastBuildWithStashKeybagCreated
 {
   v2 = +[SUState currentState];
-  v3 = [v2 lastBuildWithStashKeybagCreated];
+  lastBuildWithStashKeybagCreated = [v2 lastBuildWithStashKeybagCreated];
 
-  return v3;
+  return lastBuildWithStashKeybagCreated;
 }
 
-- (void)setLastBuildWithStashKeybagCreated:(id)a3
+- (void)setLastBuildWithStashKeybagCreated:(id)created
 {
-  v3 = a3;
+  createdCopy = created;
   v4 = +[SUState currentState];
-  [v4 setLastBuildWithStashKeybagCreated:v3];
+  [v4 setLastBuildWithStashKeybagCreated:createdCopy];
 }
 
-- (int)installationKeybagStateForDescriptor:(id)a3
+- (int)installationKeybagStateForDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   if (!+[SUUtility currentReleaseTypeIsInternal](SUUtility, "currentReleaseTypeIsInternal") || (+[SUPreferences sharedInstance](SUPreferences, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), [v5 keybagState], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
     if (![(SUKeybagInterface *)self hasPasscodeSet])
@@ -223,7 +223,7 @@ void __26__SUKeybagInterface__init__block_invoke_2(uint64_t a1)
       goto LABEL_11;
     }
 
-    if ([v4 isSplatOnly])
+    if ([descriptorCopy isSplatOnly])
     {
       v26 = @"Splat update does not require installation keybag";
 LABEL_11:
@@ -238,16 +238,16 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v28 = [(SUKeybagInterface *)self lastBuildWithStashKeybagCreated];
-    v36 = v28;
-    if (v4)
+    lastBuildWithStashKeybagCreated = [(SUKeybagInterface *)self lastBuildWithStashKeybagCreated];
+    v36 = lastBuildWithStashKeybagCreated;
+    if (descriptorCopy)
     {
-      v37 = [v4 productBuildVersion];
-      v38 = [v37 isEqualToString:v36];
+      productBuildVersion = [descriptorCopy productBuildVersion];
+      v38 = [productBuildVersion isEqualToString:v36];
 
       if ((v38 & 1) == 0)
       {
-        v39 = [v4 productBuildVersion];
+        productBuildVersion2 = [descriptorCopy productBuildVersion];
         SULogInfo(@"The last keybag was created for %@, not %@", v40, v41, v42, v43, v44, v45, v46, v36);
         v18 = 1;
 LABEL_45:
@@ -258,44 +258,44 @@ LABEL_45:
 
     else
     {
-      SULogInfo(@"Skip the build version check because the provided descriptor is nil; lastBuildWithStashKeybagCreated = %@", v29, v30, v31, v32, v33, v34, v35, v28);
+      SULogInfo(@"Skip the build version check because the provided descriptor is nil; lastBuildWithStashKeybagCreated = %@", v29, v30, v31, v32, v33, v34, v35, lastBuildWithStashKeybagCreated);
     }
 
-    v39 = [(SUKeybagInterface *)self _verifyKeyBagKeyStash];
-    SULogInfo(@"MKBKeyBagKeyStashVerify() returned %@", v47, v48, v49, v50, v51, v52, v53, v39);
-    if (v39)
+    productBuildVersion2 = [(SUKeybagInterface *)self _verifyKeyBagKeyStash];
+    SULogInfo(@"MKBKeyBagKeyStashVerify() returned %@", v47, v48, v49, v50, v51, v52, v53, productBuildVersion2);
+    if (productBuildVersion2)
     {
-      v61 = [v39 objectForKey:@"StashBagValidOnDisk"];
+      v61 = [productBuildVersion2 objectForKey:@"StashBagValidOnDisk"];
       SULogInfo(@"validOnDiskValue from stashVerify: %@", v62, v63, v64, v65, v66, v67, v68, v61);
       if (v61 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v76 = [v61 intValue];
+        intValue = [v61 intValue];
       }
 
       else
       {
         SULogError(@"validOnDiskValue is invalid", v69, v70, v71, v72, v73, v74, v75, v109);
-        v76 = 2;
+        intValue = 2;
       }
 
-      v77 = [v39 objectForKey:@"StashStagedManifest"];
+      v77 = [productBuildVersion2 objectForKey:@"StashStagedManifest"];
       SULogInfo(@"manifestValue from stashVerify: %@", v78, v79, v80, v81, v82, v83, v84, v77);
       if (v77 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v92 = [v77 BOOLValue];
+        bOOLValue = [v77 BOOLValue];
       }
 
       else
       {
         SULogError(@"manifestValue is invalid", v85, v86, v87, v88, v89, v90, v91, v110);
-        v92 = 0;
+        bOOLValue = 0;
       }
 
-      SULogInfo(@"stashState = %d, hasStagedManifest = %d", v93, v94, v95, v96, v97, v98, v99, v76);
+      SULogInfo(@"stashState = %d, hasStagedManifest = %d", v93, v94, v95, v96, v97, v98, v99, intValue);
       v18 = 1;
-      if (!v76)
+      if (!intValue)
       {
-        if (v92)
+        if (bOOLValue)
         {
           v107 = @"keybag is valid in memory";
         }
@@ -305,7 +305,7 @@ LABEL_45:
           v107 = @"keybag is in memory, but staged manifest does not exist";
         }
 
-        if (v92)
+        if (bOOLValue)
         {
           v18 = 2;
         }
@@ -318,9 +318,9 @@ LABEL_45:
         goto LABEL_44;
       }
 
-      if (v76 == 1)
+      if (intValue == 1)
       {
-        if (v92)
+        if (bOOLValue)
         {
           v107 = @"keybag is valid and committed";
         }
@@ -330,7 +330,7 @@ LABEL_45:
           v107 = @"keybag is valid on disk, but staged manifest does not exist";
         }
 
-        if (v92)
+        if (bOOLValue)
         {
           v18 = 3;
         }
@@ -357,17 +357,17 @@ LABEL_44:
   }
 
   v7 = +[SUPreferences sharedInstance];
-  v8 = [v7 keybagState];
-  v9 = [v8 intValue];
+  keybagState = [v7 keybagState];
+  intValue2 = [keybagState intValue];
 
-  if (v9 >= 3)
+  if (intValue2 >= 3)
   {
     v17 = 3;
   }
 
   else
   {
-    v17 = v9;
+    v17 = intValue2;
   }
 
   v18 = v17 & ~(v17 >> 31);
@@ -377,21 +377,21 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)createInstallationKeybagForDescriptor:(id)a3 withSecret:(id)a4 forUnattendedInstall:(BOOL)a5
+- (BOOL)createInstallationKeybagForDescriptor:(id)descriptor withSecret:(id)secret forUnattendedInstall:(BOOL)install
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  installCopy = install;
+  descriptorCopy = descriptor;
+  secretCopy = secret;
+  if (!secretCopy)
   {
     [SUKeybagInterface createInstallationKeybagForDescriptor:withSecret:forUnattendedInstall:];
   }
 
-  v9 = [SUManifestBuilder manifestFromDescriptor:v7];
-  v17 = [v8 dataUsingEncoding:4];
+  v9 = [SUManifestBuilder manifestFromDescriptor:descriptorCopy];
+  v17 = [secretCopy dataUsingEncoding:4];
   if (v9)
   {
-    if (v5)
+    if (installCopy)
     {
       v18 = 2;
     }
@@ -401,16 +401,16 @@ LABEL_12:
       v18 = 1;
     }
 
-    v19 = [v7 productBuildVersion];
+    productBuildVersion = [descriptorCopy productBuildVersion];
     v47 = stringForStashMode(v18);
-    SULogInfo(@"createInstallationKeybag - Creating stashbag. descriptor productBuildVersion: %@; stashMode: %@; manifest: %@", v20, v21, v22, v23, v24, v25, v26, v19);
+    SULogInfo(@"createInstallationKeybag - Creating stashbag. descriptor productBuildVersion: %@; stashMode: %@; manifest: %@", v20, v21, v22, v23, v24, v25, v26, productBuildVersion);
 
     v27 = MKBKeyBagKeyStashCreateWithManifest();
     if (!v27)
     {
       v36 = +[SUState currentState];
-      v37 = [v7 productBuildVersion];
-      [v36 setLastBuildWithStashKeybagCreated:v37];
+      productBuildVersion2 = [descriptorCopy productBuildVersion];
+      [v36 setLastBuildWithStashKeybagCreated:productBuildVersion2];
 
       SULogInfo(@"createInstallationKeybag - Succeeded to create installation keybag stash from secret: %d", v38, v39, v40, v41, v42, v43, v44, 0);
       v35 = 1;
@@ -431,21 +431,21 @@ LABEL_12:
   return v35;
 }
 
-- (BOOL)createInstallationKeybagForDescriptor:(id)a3 withLASecret:(id)a4 forUnattendedInstall:(BOOL)a5
+- (BOOL)createInstallationKeybagForDescriptor:(id)descriptor withLASecret:(id)secret forUnattendedInstall:(BOOL)install
 {
-  v5 = a5;
+  installCopy = install;
   v51[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  descriptorCopy = descriptor;
+  secretCopy = secret;
+  if (!secretCopy)
   {
     [SUKeybagInterface createInstallationKeybagForDescriptor:withLASecret:forUnattendedInstall:];
   }
 
-  v16 = [SUManifestBuilder manifestFromDescriptor:v7];
+  v16 = [SUManifestBuilder manifestFromDescriptor:descriptorCopy];
   if (v16)
   {
-    if (v5)
+    if (installCopy)
     {
       v17 = 2;
     }
@@ -455,14 +455,14 @@ LABEL_12:
       v17 = 1;
     }
 
-    v18 = [v7 productBuildVersion];
+    productBuildVersion = [descriptorCopy productBuildVersion];
     v49 = stringForStashMode(v17);
-    SULogInfo(@"createInstallationKeybag - Creating stashbag with LAContext secret. descriptor productBuildVersion: %@; stashMode: %@; manifest: %@", v19, v20, v21, v22, v23, v24, v25, v18);
+    SULogInfo(@"createInstallationKeybag - Creating stashbag with LAContext secret. descriptor productBuildVersion: %@; stashMode: %@; manifest: %@", v19, v20, v21, v22, v23, v24, v25, productBuildVersion);
 
     v50 = @"Manifest";
     v51[0] = v16;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:&v50 count:1];
-    v27 = [v8 externalizedContext];
+    externalizedContext = [secretCopy externalizedContext];
     v28 = MKBKeyBagKeyStashCreateWithOpts();
 
     v36 = v28 == 0;
@@ -474,8 +474,8 @@ LABEL_12:
     else
     {
       v37 = +[SUState currentState];
-      v38 = [v7 productBuildVersion];
-      [v37 setLastBuildWithStashKeybagCreated:v38];
+      productBuildVersion2 = [descriptorCopy productBuildVersion];
+      [v37 setLastBuildWithStashKeybagCreated:productBuildVersion2];
 
       SULogInfo(@"createInstallationKeybag - Succeeded to create installation keybag stash from LAContext secret: %d", v39, v40, v41, v42, v43, v44, v45, 0);
     }
@@ -507,10 +507,10 @@ LABEL_12:
   return v3 == 0;
 }
 
-- (id)createPreventLockAssertionWithDuration:(int64_t)a3
+- (id)createPreventLockAssertionWithDuration:(int64_t)duration
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  SULogInfo(@"Trying to create prevent lock assertion for duration: %llds", a2, a3, v3, v4, v5, v6, v7, a3);
+  SULogInfo(@"Trying to create prevent lock assertion for duration: %llds", a2, duration, v3, v4, v5, v6, v7, duration);
   if ([(SUKeybagInterface *)self isPasscodeLocked])
   {
     SULogError(@"Failed to create prevent lock assertion when the device is passcode locked", v10, v11, v12, v13, v14, v15, v16, v37);
@@ -522,7 +522,7 @@ LABEL_12:
     v38[0] = @"MKBAssertionKey";
     v38[1] = @"MKBAssertionTimeout";
     v39[0] = @"RemoteProfile";
-    v18 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    v18 = [MEMORY[0x277CCABB0] numberWithLongLong:duration];
     v39[1] = v18;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
 
@@ -559,10 +559,10 @@ LABEL_12:
 - (void)_queue_refreshState
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(SUKeybagInterface *)self _queue_fetchKeybagState];
-  [(SUKeybagInterface *)self _queue_setHasPasscodeSet:v3 != 3];
+  _queue_fetchKeybagState = [(SUKeybagInterface *)self _queue_fetchKeybagState];
+  [(SUKeybagInterface *)self _queue_setHasPasscodeSet:_queue_fetchKeybagState != 3];
 
-  [(SUKeybagInterface *)self _queue_setIsPasscodeLocked:(v3 < 7) & (0x46u >> v3)];
+  [(SUKeybagInterface *)self _queue_setIsPasscodeLocked:(_queue_fetchKeybagState < 7) & (0x46u >> _queue_fetchKeybagState)];
 }
 
 - (void)_queue_passcodeChanged
@@ -570,15 +570,15 @@ LABEL_12:
   dispatch_assert_queue_V2(self->_queue);
   SULogInfo(@"SUKeybagInterface got passcode changed event", v3, v4, v5, v6, v7, v8, v9, v13[0]);
   [(SUKeybagInterface *)self _queue_refreshState];
-  v10 = [(NSHashTable *)self->_queue_observers allObjects];
+  allObjects = [(NSHashTable *)self->_queue_observers allObjects];
   observerCalloutQueue = self->_observerCalloutQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __43__SUKeybagInterface__queue_passcodeChanged__block_invoke;
   v13[3] = &unk_279CAA7C0;
-  v14 = v10;
-  v15 = self;
-  v12 = v10;
+  v14 = allObjects;
+  selfCopy = self;
+  v12 = allObjects;
   dispatch_async(observerCalloutQueue, v13);
 }
 
@@ -639,24 +639,24 @@ void __43__SUKeybagInterface__queue_passcodeChanged__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_queue_setHasPasscodeSet:(BOOL)a3
+- (void)_queue_setHasPasscodeSet:(BOOL)set
 {
-  v3 = a3;
+  setCopy = set;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_queue_hasPasscodeSet != v3)
+  if (self->_queue_hasPasscodeSet != setCopy)
   {
     SULogDebug(@"Device hasPasscodeSet changed from %d to %d", v5, v6, v7, v8, v9, v10, v11, self->_queue_hasPasscodeSet);
-    self->_queue_hasPasscodeSet = v3;
-    v12 = [(NSHashTable *)self->_queue_observers allObjects];
+    self->_queue_hasPasscodeSet = setCopy;
+    allObjects = [(NSHashTable *)self->_queue_observers allObjects];
     observerCalloutQueue = self->_observerCalloutQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__SUKeybagInterface__queue_setHasPasscodeSet___block_invoke;
     block[3] = &unk_279CAAE40;
-    v16 = v12;
-    v17 = self;
-    v18 = v3;
-    v14 = v12;
+    v16 = allObjects;
+    selfCopy = self;
+    v18 = setCopy;
+    v14 = allObjects;
     dispatch_async(observerCalloutQueue, block);
   }
 }
@@ -703,24 +703,24 @@ void __46__SUKeybagInterface__queue_setHasPasscodeSet___block_invoke(uint64_t a1
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setIsPasscodeLocked:(BOOL)a3
+- (void)_queue_setIsPasscodeLocked:(BOOL)locked
 {
-  v3 = a3;
+  lockedCopy = locked;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_queue_isPasscodeLocked != v3)
+  if (self->_queue_isPasscodeLocked != lockedCopy)
   {
     SULogDebug(@"Device isPasscodeLocked changed from %d to %d", v5, v6, v7, v8, v9, v10, v11, self->_queue_isPasscodeLocked);
-    self->_queue_isPasscodeLocked = v3;
-    v12 = [(NSHashTable *)self->_queue_observers allObjects];
+    self->_queue_isPasscodeLocked = lockedCopy;
+    allObjects = [(NSHashTable *)self->_queue_observers allObjects];
     observerCalloutQueue = self->_observerCalloutQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __48__SUKeybagInterface__queue_setIsPasscodeLocked___block_invoke;
     block[3] = &unk_279CAAE40;
-    v16 = v12;
-    v17 = self;
-    v18 = v3;
-    v14 = v12;
+    v16 = allObjects;
+    selfCopy = self;
+    v18 = lockedCopy;
+    v14 = allObjects;
     dispatch_async(observerCalloutQueue, block);
   }
 }

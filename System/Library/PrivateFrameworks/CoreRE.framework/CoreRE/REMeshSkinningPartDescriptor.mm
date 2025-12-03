@@ -1,16 +1,16 @@
 @interface REMeshSkinningPartDescriptor
-- (BOOL)validateWithPayloadSize:(const void *)a3 skeletonCount:(unint64_t)a4 vertexCount:(unint64_t)a5 error:(id *)a6;
-- (REMeshSkinningPartDescriptor)initWithAttributeDescriptor:(const void *)a3 payloadBuilder:(void *)a4;
-- (REMeshSkinningPartDescriptor)initWithCoder:(id)a3;
-- (REMeshSkinningPartDescriptor)initWithSkeletonIndexAndInfluences:(unsigned int)a3 packedInfluence:(BOOL)a4 influencePerVertex:(unsigned __int8)a5 skinningInfluences:(id)a6 influenceEndIndices:(id)a7;
+- (BOOL)validateWithPayloadSize:(const void *)size skeletonCount:(unint64_t)count vertexCount:(unint64_t)vertexCount error:(id *)error;
+- (REMeshSkinningPartDescriptor)initWithAttributeDescriptor:(const void *)descriptor payloadBuilder:(void *)builder;
+- (REMeshSkinningPartDescriptor)initWithCoder:(id)coder;
+- (REMeshSkinningPartDescriptor)initWithSkeletonIndexAndInfluences:(unsigned int)influences packedInfluence:(BOOL)influence influencePerVertex:(unsigned __int8)vertex skinningInfluences:(id)skinningInfluences influenceEndIndices:(id)indices;
 - (unint64_t)estimateContainerSize;
-- (void)addToSkinningModelBuilder:(void *)a3 payloadBuffers:(const void *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)addToSkinningModelBuilder:(void *)builder payloadBuffers:(const void *)buffers;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMeshSkinningPartDescriptor
 
-- (REMeshSkinningPartDescriptor)initWithAttributeDescriptor:(const void *)a3 payloadBuilder:(void *)a4
+- (REMeshSkinningPartDescriptor)initWithAttributeDescriptor:(const void *)descriptor payloadBuilder:(void *)builder
 {
   v13 = 0xA7268F0C3B45D55ELL;
   v7 = v14 = "skinningInfluences";
@@ -32,26 +32,26 @@
     }
   }
 
-  v11 = [(REMeshSkinningPartDescriptor *)self initWithSkeletonIndexAndInfluences:*a3 packedInfluence:*(a3 + 4) influencePerVertex:*(a3 + 5) skinningInfluences:v8 influenceEndIndices:v10];
+  v11 = [(REMeshSkinningPartDescriptor *)self initWithSkeletonIndexAndInfluences:*descriptor packedInfluence:*(descriptor + 4) influencePerVertex:*(descriptor + 5) skinningInfluences:v8 influenceEndIndices:v10];
 
   return v11;
 }
 
-- (void)addToSkinningModelBuilder:(void *)a3 payloadBuffers:(const void *)a4
+- (void)addToSkinningModelBuilder:(void *)builder payloadBuffers:(const void *)buffers
 {
   v22 = 0;
   memset(v21, 0, sizeof(v21));
   v23 = 0x7FFFFFFFLL;
-  v7 = [(REMeshSkinningPartDescriptor *)self skinningInfluences];
+  skinningInfluences = [(REMeshSkinningPartDescriptor *)self skinningInfluences];
 
-  if (v7)
+  if (skinningInfluences)
   {
     v19 = 0xA7268F0C3B45D55ELL;
     v20 = "skinningInfluences";
-    v8 = [(REMeshSkinningPartDescriptor *)self skinningInfluences];
-    v9 = [v8 payloadOffset];
-    v10 = [(REMeshSkinningPartDescriptor *)self skinningInfluences];
-    re::MeshPayloadBuffers::slice(a4, 5, v9, [v10 bufferSize]);
+    skinningInfluences2 = [(REMeshSkinningPartDescriptor *)self skinningInfluences];
+    payloadOffset = [skinningInfluences2 payloadOffset];
+    skinningInfluences3 = [(REMeshSkinningPartDescriptor *)self skinningInfluences];
+    re::MeshPayloadBuffers::slice(buffers, 5, payloadOffset, [skinningInfluences3 bufferSize]);
     re::HashTable<re::StringID,re::BufferSlice,re::Hash<re::StringID>,re::EqualTo<re::StringID>,false,false>::addNew(v21, &v19, v17);
     if (v18 != -1)
     {
@@ -68,16 +68,16 @@
     }
   }
 
-  v12 = [(REMeshSkinningPartDescriptor *)self influenceEndIndices];
+  influenceEndIndices = [(REMeshSkinningPartDescriptor *)self influenceEndIndices];
 
-  if (v12)
+  if (influenceEndIndices)
   {
     v19 = 0xF98D22D8F2059642;
     v20 = "influenceEndIndices";
-    v13 = [(REMeshSkinningPartDescriptor *)self influenceEndIndices];
-    v14 = [v13 payloadOffset];
-    v15 = [(REMeshSkinningPartDescriptor *)self influenceEndIndices];
-    re::MeshPayloadBuffers::slice(a4, 5, v14, [v15 bufferSize]);
+    influenceEndIndices2 = [(REMeshSkinningPartDescriptor *)self influenceEndIndices];
+    payloadOffset2 = [influenceEndIndices2 payloadOffset];
+    influenceEndIndices3 = [(REMeshSkinningPartDescriptor *)self influenceEndIndices];
+    re::MeshPayloadBuffers::slice(buffers, 5, payloadOffset2, [influenceEndIndices3 bufferSize]);
     re::HashTable<re::StringID,re::BufferSlice,re::Hash<re::StringID>,re::EqualTo<re::StringID>,false,false>::addNew(v21, &v19, v17);
     if (v18 != -1)
     {
@@ -94,37 +94,37 @@
     }
   }
 
-  re::SkinningModelBuilder::addSkinnedMeshPartData(a3, [(REMeshSkinningPartDescriptor *)self skeletonIndex], [(REMeshSkinningPartDescriptor *)self packedInfluence], [(REMeshSkinningPartDescriptor *)self influencePerVertex], v21);
+  re::SkinningModelBuilder::addSkinnedMeshPartData(builder, [(REMeshSkinningPartDescriptor *)self skeletonIndex], [(REMeshSkinningPartDescriptor *)self packedInfluence], [(REMeshSkinningPartDescriptor *)self influencePerVertex], v21);
   re::HashTable<re::StringID,re::BufferSlice,re::Hash<re::StringID>,re::EqualTo<re::StringID>,false,false>::deinit(v21);
 }
 
-- (REMeshSkinningPartDescriptor)initWithSkeletonIndexAndInfluences:(unsigned int)a3 packedInfluence:(BOOL)a4 influencePerVertex:(unsigned __int8)a5 skinningInfluences:(id)a6 influenceEndIndices:(id)a7
+- (REMeshSkinningPartDescriptor)initWithSkeletonIndexAndInfluences:(unsigned int)influences packedInfluence:(BOOL)influence influencePerVertex:(unsigned __int8)vertex skinningInfluences:(id)skinningInfluences influenceEndIndices:(id)indices
 {
-  v13 = a6;
-  v14 = a7;
+  skinningInfluencesCopy = skinningInfluences;
+  indicesCopy = indices;
   v18.receiver = self;
   v18.super_class = REMeshSkinningPartDescriptor;
   v15 = [(REMeshSkinningPartDescriptor *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    v15->_skeletonIndex = a3;
-    v15->_packedInfluence = a4;
-    v15->_influencePerVertex = a5;
-    objc_storeStrong(&v15->_skinningInfluences, a6);
-    objc_storeStrong(&v16->_influenceEndIndices, a7);
+    v15->_skeletonIndex = influences;
+    v15->_packedInfluence = influence;
+    v15->_influencePerVertex = vertex;
+    objc_storeStrong(&v15->_skinningInfluences, skinningInfluences);
+    objc_storeStrong(&v16->_influenceEndIndices, indices);
   }
 
   return v16;
 }
 
-- (REMeshSkinningPartDescriptor)initWithCoder:(id)a3
+- (REMeshSkinningPartDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"skeletonIndex"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"skeletonIndex"];
   self->_skeletonIndex = v5;
-  self->_packedInfluence = [v4 decodeBoolForKey:@"packedInfluence"];
-  v6 = [v4 decodeIntegerForKey:@"influencePerVertex"];
+  self->_packedInfluence = [coderCopy decodeBoolForKey:@"packedInfluence"];
+  v6 = [coderCopy decodeIntegerForKey:@"influencePerVertex"];
   self->_influencePerVertex = v6;
   if (HIDWORD(v5))
   {
@@ -137,42 +137,42 @@
   }
 
   v8 = v7;
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"skinningInfluences"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"skinningInfluences"];
   skinningInfluences = self->_skinningInfluences;
   self->_skinningInfluences = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"influenceEndIndices"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"influenceEndIndices"];
   influenceEndIndices = self->_influenceEndIndices;
   self->_influenceEndIndices = v11;
 
   if (v8)
     v14 = {;
-    [v4 failWithError:v14];
+    [coderCopy failWithError:v14];
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:self->_skeletonIndex forKey:@"skeletonIndex"];
-  [v4 encodeBool:self->_packedInfluence forKey:@"packedInfluence"];
-  [v4 encodeInt:self->_influencePerVertex forKey:@"influencePerVertex"];
-  [v4 encodeObject:self->_skinningInfluences forKey:@"skinningInfluences"];
-  [v4 encodeObject:self->_influenceEndIndices forKey:@"influenceEndIndices"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_skeletonIndex forKey:@"skeletonIndex"];
+  [coderCopy encodeBool:self->_packedInfluence forKey:@"packedInfluence"];
+  [coderCopy encodeInt:self->_influencePerVertex forKey:@"influencePerVertex"];
+  [coderCopy encodeObject:self->_skinningInfluences forKey:@"skinningInfluences"];
+  [coderCopy encodeObject:self->_influenceEndIndices forKey:@"influenceEndIndices"];
 }
 
-- (BOOL)validateWithPayloadSize:(const void *)a3 skeletonCount:(unint64_t)a4 vertexCount:(unint64_t)a5 error:(id *)a6
+- (BOOL)validateWithPayloadSize:(const void *)size skeletonCount:(unint64_t)count vertexCount:(unint64_t)vertexCount error:(id *)error
 {
-  if (self->_skeletonIndex >= a4)
+  if (self->_skeletonIndex >= count)
   {
     goto LABEL_15;
   }
@@ -184,15 +184,15 @@
     goto LABEL_12;
   }
 
-  v11 = [(REAttributeDescriptor *)skinningInfluences validateWithPayloadSize:*(a3 + 5) error:a6];
+  v11 = [(REAttributeDescriptor *)skinningInfluences validateWithPayloadSize:*(size + 5) error:error];
   if (v11)
   {
     influenceEndIndices = self->_influenceEndIndices;
-    if (!influenceEndIndices || (v11 = [(REAttributeDescriptor *)influenceEndIndices validateWithPayloadSize:*(a3 + 5) error:a6]))
+    if (!influenceEndIndices || (v11 = [(REAttributeDescriptor *)influenceEndIndices validateWithPayloadSize:*(size + 5) error:error]))
     {
       packedInfluence = self->_packedInfluence;
-      v14 = [(REMeshSkinningPartDescriptor *)self skinningInfluences];
-      v15 = [v14 bufferSize];
+      skinningInfluences = [(REMeshSkinningPartDescriptor *)self skinningInfluences];
+      bufferSize = [skinningInfluences bufferSize];
 
       if (self->_influencePerVertex)
       {
@@ -202,7 +202,7 @@
           v16 = 3;
         }
 
-        if (v15 >> v16 != self->_influencePerVertex * a5)
+        if (bufferSize >> v16 != self->_influencePerVertex * vertexCount)
         {
           v17 = @"REMeshSkinningPartDescriptor: incorrect influence count";
 LABEL_12:
@@ -213,18 +213,18 @@ LABEL_12:
 
       else
       {
-        v18 = [(REMeshSkinningPartDescriptor *)self influenceEndIndices];
+        influenceEndIndices = [(REMeshSkinningPartDescriptor *)self influenceEndIndices];
 
-        if (!v18)
+        if (!influenceEndIndices)
         {
           v17 = @"REMeshSkinningPartDescriptor: is missing influenceEndIndices";
           goto LABEL_12;
         }
 
-        v19 = [(REMeshSkinningPartDescriptor *)self influenceEndIndices];
-        v20 = [v19 bufferSize];
+        influenceEndIndices2 = [(REMeshSkinningPartDescriptor *)self influenceEndIndices];
+        bufferSize2 = [influenceEndIndices2 bufferSize];
 
-        if (a5 != v20 >> 2)
+        if (vertexCount != bufferSize2 >> 2)
         {
           v17 = @"REMeshSkinningPartDescriptor: incorrect number of influenceEndIndices";
           goto LABEL_12;

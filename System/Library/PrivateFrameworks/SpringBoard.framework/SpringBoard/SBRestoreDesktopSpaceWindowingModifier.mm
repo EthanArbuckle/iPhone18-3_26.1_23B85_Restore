@@ -1,48 +1,48 @@
 @interface SBRestoreDesktopSpaceWindowingModifier
-- (BOOL)shouldInterruptForActivity:(id)a3;
-- (SBWindowingItemFrame)frameForItem:(SEL)a3;
-- (void)transitionWillBegin:(id)a3;
+- (BOOL)shouldInterruptForActivity:(id)activity;
+- (SBWindowingItemFrame)frameForItem:(SEL)item;
+- (void)transitionWillBegin:(id)begin;
 @end
 
 @implementation SBRestoreDesktopSpaceWindowingModifier
 
-- (BOOL)shouldInterruptForActivity:(id)a3
+- (BOOL)shouldInterruptForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_transitionID && [v4 isTransitionEvent])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_transitionID && [activityCopy isTransitionEvent])
   {
-    v6 = [v5 transitionID];
+    transitionID = [v5 transitionID];
     if (BSEqualObjects())
     {
-      v7 = [v5 isGestureEvent];
+      isGestureEvent = [v5 isGestureEvent];
     }
 
     else
     {
-      v7 = 1;
+      isGestureEvent = 1;
     }
   }
 
   else
   {
-    v7 = [v5 isGestureEvent];
+    isGestureEvent = [v5 isGestureEvent];
   }
 
-  return v7;
+  return isGestureEvent;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v4 = [a3 transitionID];
+  transitionID = [begin transitionID];
   transitionID = self->_transitionID;
-  self->_transitionID = v4;
+  self->_transitionID = transitionID;
 
   v6 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:0];
   [(SBWindowingModifier *)self appendResponse:v6];
 }
 
-- (SBWindowingItemFrame)frameForItem:(SEL)a3
+- (SBWindowingItemFrame)frameForItem:(SEL)item
 {
   v6 = a4;
   retstr->bounds.origin = 0u;
@@ -57,8 +57,8 @@
   if ([v6 isAppLayout])
   {
     launchingOverDesktopSpaceAppLayout = self->_launchingOverDesktopSpaceAppLayout;
-    v8 = [v6 appLayout];
-    LODWORD(launchingOverDesktopSpaceAppLayout) = [(SBAppLayout *)launchingOverDesktopSpaceAppLayout isOrContainsAppLayout:v8];
+    appLayout = [v6 appLayout];
+    LODWORD(launchingOverDesktopSpaceAppLayout) = [(SBAppLayout *)launchingOverDesktopSpaceAppLayout isOrContainsAppLayout:appLayout];
 
     if (launchingOverDesktopSpaceAppLayout)
     {

@@ -9,11 +9,11 @@
 
 - (id)cd_dataImage
 {
-  if ([a1 _requiresRetrieval])
+  if ([self _requiresRetrieval])
   {
-    v2 = [a1 _uri];
-    v3 = v2;
-    if (v2 && ([v2 isFileURL] & 1) == 0)
+    _uri = [self _uri];
+    v3 = _uri;
+    if (_uri && ([_uri isFileURL] & 1) == 0)
     {
       v10 = +[_CDLogging knowledgeChannel];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -22,19 +22,19 @@
         _os_log_impl(&dword_191750000, v10, OS_LOG_TYPE_DEFAULT, "Retrieving populated intent images with remote URLs is not supported", buf, 2u);
       }
 
-      v7 = 0;
+      selfCopy = 0;
     }
 
     else
     {
       slRESupergreenSuggestedImageDonationWidth();
       v5 = v4;
-      v6 = [MEMORY[0x1E696E878] sharedConnection];
+      mEMORY[0x1E696E878] = [MEMORY[0x1E696E878] sharedConnection];
       v12 = 0;
-      v7 = [v6 loadDataImageFromImage:a1 scaledSize:&v12 error:{v5, v5}];
+      selfCopy = [mEMORY[0x1E696E878] loadDataImageFromImage:self scaledSize:&v12 error:{v5, v5}];
       v8 = v12;
 
-      if (!v7)
+      if (!selfCopy)
       {
         v9 = +[_CDLogging knowledgeChannel];
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -47,19 +47,19 @@
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)cd_encodedDataImage
 {
-  v1 = [a1 cd_dataImage];
-  if (v1)
+  cd_dataImage = [self cd_dataImage];
+  if (cd_dataImage)
   {
     v6 = 0;
-    v2 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v1 requiringSecureCoding:1 error:&v6];
+    v2 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:cd_dataImage requiringSecureCoding:1 error:&v6];
     v3 = v6;
     if (!v2)
     {
@@ -83,7 +83,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_191750000, a2, OS_LOG_TYPE_ERROR, "Error retrieving populated intent image: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -92,7 +92,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_191750000, a2, OS_LOG_TYPE_ERROR, "Error archiving intents image: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

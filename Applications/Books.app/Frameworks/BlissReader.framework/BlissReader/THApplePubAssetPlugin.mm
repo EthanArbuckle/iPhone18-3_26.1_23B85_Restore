@@ -1,36 +1,36 @@
 @interface THApplePubAssetPlugin
 + (id)sharedPlugin;
 - (AEAnnotationProvider)sharedAnnotationProvider;
-- (BOOL)helper:(id)a3 validateBookAuthorizationWithError:(id *)a4 needsCoordination:(BOOL)a5;
+- (BOOL)helper:(id)helper validateBookAuthorizationWithError:(id *)error needsCoordination:(BOOL)coordination;
 - (BOOL)isDeviceSupported;
-- (BOOL)supportsAssetAtURL:(id)a3 quickCheck:(BOOL)a4;
+- (BOOL)supportsAssetAtURL:(id)l quickCheck:(BOOL)check;
 - (THApplePubAssetPlugin)init;
-- (id)_helper:(id)a3 assetInfo:(id)a4 viewControllerForBookDescription:(id)a5 options:(id)a6 error:(id *)a7;
-- (id)assetHelperForAsset:(id)a3;
-- (id)assetInfoForURL:(id)a3;
-- (id)coverDescriptionForAsset:(id)a3;
-- (id)coverDescriptionForURL:(id)a3;
-- (id)descriptionForAsset:(id)a3;
-- (id)existingBookViewControllerForDocumentRoot:(id)a3;
-- (id)helper:(id)a3 coverImageForURL:(id)a4;
-- (id)helper:(id)a3 metadataForKey:(id)a4 forURL:(id)a5 needsCoordination:(BOOL)a6;
-- (id)helperForURL:(id)a3 withOptions:(id)a4;
+- (id)_helper:(id)_helper assetInfo:(id)info viewControllerForBookDescription:(id)description options:(id)options error:(id *)error;
+- (id)assetHelperForAsset:(id)asset;
+- (id)assetInfoForURL:(id)l;
+- (id)coverDescriptionForAsset:(id)asset;
+- (id)coverDescriptionForURL:(id)l;
+- (id)descriptionForAsset:(id)asset;
+- (id)existingBookViewControllerForDocumentRoot:(id)root;
+- (id)helper:(id)helper coverImageForURL:(id)l;
+- (id)helper:(id)helper metadataForKey:(id)key forURL:(id)l needsCoordination:(BOOL)coordination;
+- (id)helperForURL:(id)l withOptions:(id)options;
 - (id)supportedFileExtensions;
-- (id)uniqueIdForURL:(id)a3;
-- (id)viewControllerForAsset:(id)a3 bookDescription:(id)a4 options:(id)a5;
-- (id)viewControllerForAsset:(id)a3 options:(id)a4;
-- (id)viewControllerForBook:(id)a3;
-- (void)_helper:(id)a3 canRefetch:(BOOL)a4 viewControllerWithOptions:(id)a5 completion:(id)a6;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationDidReceiveMemoryWarning:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
+- (id)uniqueIdForURL:(id)l;
+- (id)viewControllerForAsset:(id)asset bookDescription:(id)description options:(id)options;
+- (id)viewControllerForAsset:(id)asset options:(id)options;
+- (id)viewControllerForBook:(id)book;
+- (void)_helper:(id)_helper canRefetch:(BOOL)refetch viewControllerWithOptions:(id)options completion:(id)completion;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationDidReceiveMemoryWarning:(id)warning;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)applicationWillResignActive:(id)active;
 - (void)dealloc;
-- (void)didEnterBackground:(id)a3;
-- (void)didReceiveMemoryWarning:(id)a3;
-- (void)helper:(id)a3 deletePersistentCacheForURL:(id)a4;
-- (void)presentAlertController:(id)a3 options:(id)a4 animated:(BOOL)a5;
-- (void)willCloseBook:(id)a3;
+- (void)didEnterBackground:(id)background;
+- (void)didReceiveMemoryWarning:(id)warning;
+- (void)helper:(id)helper deletePersistentCacheForURL:(id)l;
+- (void)presentAlertController:(id)controller options:(id)options animated:(BOOL)animated;
+- (void)willCloseBook:(id)book;
 @end
 
 @implementation THApplePubAssetPlugin
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = sub_7AB14;
   block[3] = &unk_45C2B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_5677B0 != -1)
   {
     dispatch_once(&qword_5677B0, block);
@@ -93,23 +93,23 @@
   [(THApplicationDelegate *)&v7 dealloc];
 }
 
-- (id)viewControllerForBook:(id)a3
+- (id)viewControllerForBook:(id)book
 {
-  v3 = a3;
-  v4 = [[THBookViewController alloc] initWithBookDescription:v3];
+  bookCopy = book;
+  v4 = [[THBookViewController alloc] initWithBookDescription:bookCopy];
 
   return v4;
 }
 
-- (id)existingBookViewControllerForDocumentRoot:(id)a3
+- (id)existingBookViewControllerForDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableSet *)self->_currentBookViewControllers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSMutableSet *)self->_currentBookViewControllers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -119,21 +119,21 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 documentViewController];
-        v11 = [v10 documentRoot];
+        documentViewController = [v9 documentViewController];
+        documentRoot = [documentViewController documentRoot];
 
-        if (v11 == v4)
+        if (documentRoot == rootCopy)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -148,76 +148,76 @@ LABEL_11:
   return v6;
 }
 
-- (void)willCloseBook:(id)a3
+- (void)willCloseBook:(id)book
 {
-  v9 = a3;
-  v4 = [v9 bookDescription];
-  v5 = v4;
-  if (v4)
+  bookCopy = book;
+  bookDescription = [bookCopy bookDescription];
+  v5 = bookDescription;
+  if (bookDescription)
   {
-    v6 = [v4 asset];
-    v7 = [v6 url];
+    asset = [bookDescription asset];
+    v7 = [asset url];
 
     if (v7)
     {
-      v8 = self;
-      objc_sync_enter(v8);
-      [(THApplicationDelegate *)v8 uncacheBookDescriptionForURL:v7];
-      objc_sync_exit(v8);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      [(THApplicationDelegate *)selfCopy uncacheBookDescriptionForURL:v7];
+      objc_sync_exit(selfCopy);
     }
   }
 
-  [(NSMutableSet *)self->_currentBookViewControllers removeObject:v9];
+  [(NSMutableSet *)self->_currentBookViewControllers removeObject:bookCopy];
 }
 
-- (id)uniqueIdForURL:(id)a3
+- (id)uniqueIdForURL:(id)l
 {
-  v3 = [a3 path];
-  v4 = THUniqueIdForPath(v3);
+  path = [l path];
+  v4 = THUniqueIdForPath(path);
 
   return v4;
 }
 
-- (id)descriptionForAsset:(id)a3
+- (id)descriptionForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  assetCopy = asset;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   objc_opt_class();
-  v6 = [v4 url];
-  v7 = [(THApplicationDelegate *)v5 cachedBookDescriptionForURL:v6];
+  v6 = [assetCopy url];
+  v7 = [(THApplicationDelegate *)selfCopy cachedBookDescriptionForURL:v6];
   v8 = TSUDynamicCast();
 
   if (v8)
   {
-    v9 = [v8 asset];
-    v10 = [v9 assetID];
-    v11 = [v4 assetID];
-    v12 = [v10 isEqual:v11];
+    asset = [v8 asset];
+    assetID = [asset assetID];
+    assetID2 = [assetCopy assetID];
+    v12 = [assetID isEqual:assetID2];
 
     if (v12)
     {
       goto LABEL_9;
     }
 
-    v13 = [v4 url];
-    [(THApplicationDelegate *)v5 uncacheBookDescriptionForURL:v13];
+    v13 = [assetCopy url];
+    [(THApplicationDelegate *)selfCopy uncacheBookDescriptionForURL:v13];
   }
 
-  v14 = [v4 url];
-  v15 = [v14 path];
-  v16 = THIsApplePubAtPath(v15);
+  v14 = [assetCopy url];
+  path = [v14 path];
+  v16 = THIsApplePubAtPath(path);
 
   if (v16)
   {
-    [(THApplicationDelegate *)v5 clearBookDescriptionCache];
+    [(THApplicationDelegate *)selfCopy clearBookDescriptionCache];
     objc_opt_class();
     v17 = TSUDynamicCast();
     v8 = [THBookDescription descriptionWithAsset:v17];
     if (v8)
     {
-      v18 = [v4 url];
-      [(THApplicationDelegate *)v5 cacheBookDescription:v8 forURL:v18];
+      v18 = [assetCopy url];
+      [(THApplicationDelegate *)selfCopy cacheBookDescription:v8 forURL:v18];
     }
   }
 
@@ -227,32 +227,32 @@ LABEL_11:
   }
 
 LABEL_9:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (id)coverDescriptionForURL:(id)a3
+- (id)coverDescriptionForURL:(id)l
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   objc_opt_class();
-  v6 = [(NSMutableDictionary *)v5->mBookCoverDescriptionCache objectForKey:v4];
+  v6 = [(NSMutableDictionary *)selfCopy->mBookCoverDescriptionCache objectForKey:lCopy];
   v7 = TSUDynamicCast();
 
   if (!v7)
   {
-    v8 = [v4 path];
-    v9 = THIsApplePubAtPath(v8);
+    path = [lCopy path];
+    v9 = THIsApplePubAtPath(path);
 
     if (v9)
     {
-      [(NSMutableDictionary *)v5->mBookCoverDescriptionCache removeAllObjects];
-      v7 = [THBookCoverDescription descriptionWithURL:v4];
+      [(NSMutableDictionary *)selfCopy->mBookCoverDescriptionCache removeAllObjects];
+      v7 = [THBookCoverDescription descriptionWithURL:lCopy];
       if (v7)
       {
-        [(NSMutableDictionary *)v5->mBookCoverDescriptionCache setObject:v7 forKey:v4];
+        [(NSMutableDictionary *)selfCopy->mBookCoverDescriptionCache setObject:v7 forKey:lCopy];
       }
     }
 
@@ -262,53 +262,53 @@ LABEL_9:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)coverDescriptionForAsset:(id)a3
+- (id)coverDescriptionForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  assetCopy = asset;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   objc_opt_class();
-  mBookCoverDescriptionCache = v5->mBookCoverDescriptionCache;
-  v7 = [v4 url];
+  mBookCoverDescriptionCache = selfCopy->mBookCoverDescriptionCache;
+  v7 = [assetCopy url];
   v8 = [(NSMutableDictionary *)mBookCoverDescriptionCache objectForKey:v7];
   v9 = TSUDynamicCast();
 
   if (v9)
   {
-    v10 = [v9 asset];
-    v11 = [v10 assetID];
-    v12 = [v4 assetID];
-    v13 = [v11 isEqual:v12];
+    asset = [v9 asset];
+    assetID = [asset assetID];
+    assetID2 = [assetCopy assetID];
+    v13 = [assetID isEqual:assetID2];
 
     if (v13)
     {
       goto LABEL_8;
     }
 
-    v14 = [v4 url];
-    [(THApplicationDelegate *)v5 uncacheBookDescriptionForURL:v14];
+    v14 = [assetCopy url];
+    [(THApplicationDelegate *)selfCopy uncacheBookDescriptionForURL:v14];
   }
 
-  v15 = [v4 url];
-  v16 = [v15 path];
-  v17 = THIsApplePubAtPath(v16);
+  v15 = [assetCopy url];
+  path = [v15 path];
+  v17 = THIsApplePubAtPath(path);
 
   if (v17)
   {
-    [(THApplicationDelegate *)v5 clearBookDescriptionCache];
-    v18 = [v4 url];
-    v19 = [v4 assetID];
-    v9 = [THBookCoverDescription descriptionWithURL:v18 assetID:v19];
+    [(THApplicationDelegate *)selfCopy clearBookDescriptionCache];
+    v18 = [assetCopy url];
+    assetID3 = [assetCopy assetID];
+    v9 = [THBookCoverDescription descriptionWithURL:v18 assetID:assetID3];
 
     if (v9)
     {
-      v20 = v5->mBookCoverDescriptionCache;
-      v21 = [v4 url];
+      v20 = selfCopy->mBookCoverDescriptionCache;
+      v21 = [assetCopy url];
       [(NSMutableDictionary *)v20 setObject:v9 forKey:v21];
     }
   }
@@ -319,24 +319,24 @@ LABEL_9:
   }
 
 LABEL_8:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (BOOL)supportsAssetAtURL:(id)a3 quickCheck:(BOOL)a4
+- (BOOL)supportsAssetAtURL:(id)l quickCheck:(BOOL)check
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  checkCopy = check;
+  lCopy = l;
+  v7 = lCopy;
+  if (lCopy)
   {
-    if (v4)
+    if (checkCopy)
     {
-      v8 = [v6 pathExtension];
-      if ([v8 caseInsensitiveCompare:@"ibooks"])
+      pathExtension = [lCopy pathExtension];
+      if ([pathExtension caseInsensitiveCompare:@"ibooks"])
       {
-        LOBYTE(v9) = [v8 caseInsensitiveCompare:@"epub"] == 0;
+        LOBYTE(v9) = [pathExtension caseInsensitiveCompare:@"epub"] == 0;
       }
 
       else
@@ -347,8 +347,8 @@ LABEL_8:
 
     else
     {
-      v8 = [(THApplePubAssetPlugin *)self assetInfoForURL:v6];
-      v9 = v8 != 0;
+      pathExtension = [(THApplePubAssetPlugin *)self assetInfoForURL:lCopy];
+      v9 = pathExtension != 0;
     }
   }
 
@@ -360,49 +360,49 @@ LABEL_8:
   return v9;
 }
 
-- (id)assetInfoForURL:(id)a3
+- (id)assetInfoForURL:(id)l
 {
-  v3 = [(THApplicationDelegate *)self descriptionForURL:a3];
-  v4 = [v3 asset];
+  v3 = [(THApplicationDelegate *)self descriptionForURL:l];
+  asset = [v3 asset];
 
-  return v4;
+  return asset;
 }
 
-- (id)assetHelperForAsset:(id)a3
+- (id)assetHelperForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(THApplePubAssetPlugin *)self descriptionForAsset:v4];
-  v6 = [(THApplePubAssetPlugin *)self coverDescriptionForAsset:v4];
+  assetCopy = asset;
+  v5 = [(THApplePubAssetPlugin *)self descriptionForAsset:assetCopy];
+  v6 = [(THApplePubAssetPlugin *)self coverDescriptionForAsset:assetCopy];
 
   v7 = [[THAssetHelper alloc] initWithBookDescription:v5 bookCoverDescription:v6];
 
   return v7;
 }
 
-- (id)viewControllerForAsset:(id)a3 options:(id)a4
+- (id)viewControllerForAsset:(id)asset options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(THApplePubAssetPlugin *)self descriptionForAsset:v7];
+  optionsCopy = options;
+  assetCopy = asset;
+  v8 = [(THApplePubAssetPlugin *)self descriptionForAsset:assetCopy];
   [v8 loadMetadata];
-  v9 = [(THApplePubAssetPlugin *)self viewControllerForAsset:v7 bookDescription:v8 options:v6];
+  v9 = [(THApplePubAssetPlugin *)self viewControllerForAsset:assetCopy bookDescription:v8 options:optionsCopy];
 
   return v9;
 }
 
-- (id)viewControllerForAsset:(id)a3 bookDescription:(id)a4 options:(id)a5
+- (id)viewControllerForAsset:(id)asset bookDescription:(id)description options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  descriptionCopy = description;
   if ([(THApplePubAssetPlugin *)self isDeviceSupported])
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_7B85C;
     v11[3] = &unk_45C2E0;
-    v12 = v7;
+    v12 = assetCopy;
     [THPerformanceRegressionLogger logEventWithBlock:v11];
-    v9 = [(THApplePubAssetPlugin *)self viewControllerForBook:v8];
+    v9 = [(THApplePubAssetPlugin *)self viewControllerForBook:descriptionCopy];
   }
 
   else
@@ -439,41 +439,41 @@ LABEL_8:
   return isPhone();
 }
 
-- (id)helper:(id)a3 coverImageForURL:(id)a4
+- (id)helper:(id)helper coverImageForURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
+  lCopy = l;
+  helperCopy = helper;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
-  if (v8 || (objc_opt_class(), [(THApplePubAssetPlugin *)self helperForURL:v6 withOptions:0], v9 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(), v8 = objc_claimAutoreleasedReturnValue(), v9, v8))
+  if (v8 || (objc_opt_class(), [(THApplePubAssetPlugin *)self helperForURL:lCopy withOptions:0], v9 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(), v8 = objc_claimAutoreleasedReturnValue(), v9, v8))
   {
-    v10 = [v8 helperCoverImage];
+    helperCoverImage = [v8 helperCoverImage];
   }
 
   else
   {
-    v10 = 0;
+    helperCoverImage = 0;
   }
 
-  return v10;
+  return helperCoverImage;
 }
 
-- (id)_helper:(id)a3 assetInfo:(id)a4 viewControllerForBookDescription:(id)a5 options:(id)a6 error:(id *)a7
+- (id)_helper:(id)_helper assetInfo:(id)info viewControllerForBookDescription:(id)description options:(id)options error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  infoCopy = info;
+  descriptionCopy = description;
+  optionsCopy = options;
   if (![(THApplePubAssetPlugin *)self isDeviceSupported])
   {
     if (![(THApplePubAssetPlugin *)self isDeviceSupported])
     {
-      if (a7)
+      if (error)
       {
-        v26 = [v11 url];
+        v26 = [infoCopy url];
         v27 = [NSDictionary dictionaryWithObject:v26 forKey:AssetEngineErrorAssetURLUserInfoKey];
 
-        *a7 = [NSError errorWithDomain:AssetEngineErrorDomain code:1003 userInfo:v27];
+        *error = [NSError errorWithDomain:AssetEngineErrorDomain code:1003 userInfo:v27];
       }
 
       v28 = THBundle();
@@ -487,7 +487,7 @@ LABEL_8:
       v34 = [UIAlertAction actionWithTitle:v33 style:1 handler:0];
       [v14 addAction:v34];
 
-      [(THApplePubAssetPlugin *)self presentAlertController:v14 options:v13 animated:1];
+      [(THApplePubAssetPlugin *)self presentAlertController:v14 options:optionsCopy animated:1];
       v25 = 0;
       goto LABEL_18;
     }
@@ -497,18 +497,18 @@ LABEL_8:
     goto LABEL_19;
   }
 
-  if (!v12)
+  if (!descriptionCopy)
   {
     goto LABEL_8;
   }
 
-  v14 = [v13 objectForKey:AEHelperNumberIsPreorderKey];
-  [v12 setIsPreorderBook:{objc_msgSend(v14, "BOOLValue")}];
-  v15 = [v12 requiredVersion];
-  v16 = v15;
-  if (!v15 || ([v15 floatValue], v17 <= 2.2))
+  v14 = [optionsCopy objectForKey:AEHelperNumberIsPreorderKey];
+  [descriptionCopy setIsPreorderBook:{objc_msgSend(v14, "BOOLValue")}];
+  requiredVersion = [descriptionCopy requiredVersion];
+  v16 = requiredVersion;
+  if (!requiredVersion || ([requiredVersion floatValue], v17 <= 2.2))
   {
-    if ([v12 containsUnknownContentVersions])
+    if ([descriptionCopy containsUnknownContentVersions])
     {
       v46 = THBundle();
       v35 = [v46 localizedStringForKey:@"New Features" value:&stru_471858 table:0];
@@ -523,11 +523,11 @@ LABEL_8:
       [v38 addAction:v41];
 
       v16 = v48;
-      [(THApplePubAssetPlugin *)self presentAlertController:v38 options:v13 animated:1];
+      [(THApplePubAssetPlugin *)self presentAlertController:v38 options:optionsCopy animated:1];
     }
 
-    v25 = [(THApplePubAssetPlugin *)self viewControllerForAsset:v11 bookDescription:v12 options:0];
-    if (!a7)
+    v25 = [(THApplePubAssetPlugin *)self viewControllerForAsset:infoCopy bookDescription:descriptionCopy options:0];
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -548,18 +548,18 @@ LABEL_8:
   [v21 addAction:v24];
 
   v16 = v47;
-  [(THApplePubAssetPlugin *)self presentAlertController:v21 options:v13 animated:1];
+  [(THApplePubAssetPlugin *)self presentAlertController:v21 options:optionsCopy animated:1];
 
   v25 = 0;
-  if (a7)
+  if (error)
   {
 LABEL_15:
     if (!v25)
     {
-      v42 = [v11 url];
+      v42 = [infoCopy url];
       v43 = [NSDictionary dictionaryWithObject:v42 forKey:AssetEngineErrorAssetURLUserInfoKey];
 
-      *a7 = [NSError errorWithDomain:AssetEngineErrorDomain code:1000 userInfo:v43];
+      *error = [NSError errorWithDomain:AssetEngineErrorDomain code:1000 userInfo:v43];
     }
   }
 
@@ -571,52 +571,52 @@ LABEL_19:
   return v25;
 }
 
-- (void)presentAlertController:(id)a3 options:(id)a4 animated:(BOOL)a5
+- (void)presentAlertController:(id)controller options:(id)options animated:(BOOL)animated
 {
   v6 = BCTransactionOptionsTransactionKey;
-  v7 = a3;
-  v9 = [a4 objectForKeyedSubscript:v6];
+  controllerCopy = controller;
+  v9 = [options objectForKeyedSubscript:v6];
   if (!v9)
   {
     sub_29CDD4();
   }
 
   v8 = +[AEAssetEngine appInfoMgr];
-  [v8 presentViewController:v7 transaction:v9 animated:1 completion:0];
+  [v8 presentViewController:controllerCopy transaction:v9 animated:1 completion:0];
 }
 
-- (id)helper:(id)a3 metadataForKey:(id)a4 forURL:(id)a5 needsCoordination:(BOOL)a6
+- (id)helper:(id)helper metadataForKey:(id)key forURL:(id)l needsCoordination:(BOOL)coordination
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
+  coordinationCopy = coordination;
+  keyCopy = key;
+  lCopy = l;
+  helperCopy = helper;
   objc_opt_class();
   v13 = TSUDynamicCast();
 
   if (v13)
   {
-    v14 = [v13 helperMetadataForKey:v10 needsCoordination:v6];
+    v14 = [v13 helperMetadataForKey:keyCopy needsCoordination:coordinationCopy];
     goto LABEL_13;
   }
 
-  v15 = [(THApplicationDelegate *)self descriptionForURL:v11];
+  v15 = [(THApplicationDelegate *)self descriptionForURL:lCopy];
   if (!v15)
   {
     goto LABEL_11;
   }
 
-  if (![v10 isEqual:AEHelperStringMetadataAuthorKey])
+  if (![keyCopy isEqual:AEHelperStringMetadataAuthorKey])
   {
-    if ([v10 isEqual:AEHelperStringMetadataTitleKey])
+    if ([keyCopy isEqual:AEHelperStringMetadataTitleKey])
     {
-      v16 = [v15 bookTitle];
+      bookTitle = [v15 bookTitle];
       goto LABEL_10;
     }
 
-    if ([v10 isEqual:AEHelperStringMetadataGenreKey])
+    if ([keyCopy isEqual:AEHelperStringMetadataGenreKey])
     {
-      v16 = [v15 genre];
+      bookTitle = [v15 genre];
       goto LABEL_10;
     }
 
@@ -625,9 +625,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [v15 bookAuthor];
+  bookTitle = [v15 bookAuthor];
 LABEL_10:
-  v14 = v16;
+  v14 = bookTitle;
 LABEL_12:
 
 LABEL_13:
@@ -635,29 +635,29 @@ LABEL_13:
   return v14;
 }
 
-- (void)helper:(id)a3 deletePersistentCacheForURL:(id)a4
+- (void)helper:(id)helper deletePersistentCacheForURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(THApplicationDelegate *)self descriptionForURL:v7];
-  v9 = [v8 contextDirectoryPath];
-  if (v9)
+  helperCopy = helper;
+  lCopy = l;
+  v8 = [(THApplicationDelegate *)self descriptionForURL:lCopy];
+  contextDirectoryPath = [v8 contextDirectoryPath];
+  if (contextDirectoryPath)
   {
     v11 = 0;
     v10 = +[NSFileManager defaultManager];
-    if ([v10 fileExistsAtPath:v9 isDirectory:&v11] && v11 == 1)
+    if ([v10 fileExistsAtPath:contextDirectoryPath isDirectory:&v11] && v11 == 1)
     {
-      [v10 removeItemAtPath:v9 error:0];
+      [v10 removeItemAtPath:contextDirectoryPath error:0];
     }
   }
 }
 
-- (void)_helper:(id)a3 canRefetch:(BOOL)a4 viewControllerWithOptions:(id)a5 completion:(id)a6
+- (void)_helper:(id)_helper canRefetch:(BOOL)refetch viewControllerWithOptions:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v10;
+  _helperCopy = _helper;
+  optionsCopy = options;
+  completionCopy = completion;
+  v13 = _helperCopy;
   v14 = [v13 url];
   v15 = [NSFileAccessIntent readingIntentWithURL:v14 options:1];
   v16 = objc_opt_new();
@@ -668,29 +668,29 @@ LABEL_13:
   v23[1] = 3221225472;
   v23[2] = sub_7C544;
   v23[3] = &unk_45C3F8;
-  v27 = v11;
-  v28 = v12;
+  v27 = optionsCopy;
+  v28 = completionCopy;
   v24 = v14;
-  v25 = self;
+  selfCopy = self;
   v26 = v13;
-  v29 = a4;
-  v19 = v11;
+  refetchCopy = refetch;
+  v19 = optionsCopy;
   v20 = v13;
-  v21 = v12;
+  v21 = completionCopy;
   v22 = v14;
   [v16 coordinateAccessWithIntents:v17 queue:v18 byAccessor:v23];
 }
 
-- (BOOL)helper:(id)a3 validateBookAuthorizationWithError:(id *)a4 needsCoordination:(BOOL)a5
+- (BOOL)helper:(id)helper validateBookAuthorizationWithError:(id *)error needsCoordination:(BOOL)coordination
 {
-  v5 = a5;
-  v7 = a3;
+  coordinationCopy = coordination;
+  helperCopy = helper;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
   if (v8)
   {
-    v9 = [v8 helperValidateBookAuthorizationWithError:a4 needsCoordination:v5];
+    v9 = [v8 helperValidateBookAuthorizationWithError:error needsCoordination:coordinationCopy];
   }
 
   else
@@ -701,13 +701,13 @@ LABEL_13:
   return v9;
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NSMutableSet *)self->_currentBookViewControllers allObjects:a3];
+  v3 = [(NSMutableSet *)self->_currentBookViewControllers allObjects:active];
   v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
@@ -723,12 +723,12 @@ LABEL_13:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * v7) documentViewController];
-        v9 = [v8 documentRoot];
+        documentViewController = [*(*(&v12 + 1) + 8 * v7) documentViewController];
+        documentRoot = [documentViewController documentRoot];
 
-        v10 = [v9 userDataManager];
-        v11 = [v9 moc];
-        [v10 save:v11];
+        userDataManager = [documentRoot userDataManager];
+        v11 = [documentRoot moc];
+        [userDataManager save:v11];
 
         v7 = v7 + 1;
       }
@@ -741,40 +741,40 @@ LABEL_13:
   }
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   v3 = +[TSUFlushingManager sharedManager];
   [v3 didEnterBackground];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v3 = +[TSUFlushingManager sharedManager];
   [v3 willEnterForeground];
 }
 
-- (void)didReceiveMemoryWarning:(id)a3
+- (void)didReceiveMemoryWarning:(id)warning
 {
   v4 = +[UIApplication sharedApplication];
   [(THApplePubAssetPlugin *)self applicationDidReceiveMemoryWarning:v4];
 }
 
-- (void)applicationDidReceiveMemoryWarning:(id)a3
+- (void)applicationDidReceiveMemoryWarning:(id)warning
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(THApplicationDelegate *)v4 clearBookDescriptionCache];
-  objc_sync_exit(v4);
+  warningCopy = warning;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(THApplicationDelegate *)selfCopy clearBookDescriptionCache];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)didEnterBackground:(id)a3
+- (void)didEnterBackground:(id)background
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(THApplicationDelegate *)v4 clearBookDescriptionCache];
-  objc_sync_exit(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(THApplicationDelegate *)selfCopy clearBookDescriptionCache];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)supportedFileExtensions
@@ -786,20 +786,20 @@ LABEL_13:
   return v2;
 }
 
-- (id)helperForURL:(id)a3 withOptions:(id)a4
+- (id)helperForURL:(id)l withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  optionsCopy = options;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_7D744;
   v11[3] = &unk_45C2E0;
-  v8 = v6;
+  v8 = lCopy;
   v12 = v8;
   [THPerformanceRegressionLogger logEventWithBlock:v11];
   if ([(THApplePubAssetPlugin *)self supportsAssetAtURL:v8 quickCheck:1])
   {
-    v9 = [[THAEHelper alloc] initWithURL:v8 withOptions:v7];
+    v9 = [[THAEHelper alloc] initWithURL:v8 withOptions:optionsCopy];
   }
 
   else

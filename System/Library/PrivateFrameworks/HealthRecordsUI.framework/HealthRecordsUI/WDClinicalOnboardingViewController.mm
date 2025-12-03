@@ -6,29 +6,29 @@
 - (NSLayoutConstraint)noContentBottomConstraint;
 - (NSLayoutConstraint)noContentTopConstraint;
 - (UIViewController)dismissalViewController;
-- (WDClinicalOnboardingViewController)initWithProfile:(id)a3 gatewayProxy:(id)a4;
+- (WDClinicalOnboardingViewController)initWithProfile:(id)profile gatewayProxy:(id)proxy;
 - (WDClinicalSampleAccountsLoader)sampleAccountsLoader;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_cacheKeyForSearchQuery:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_cacheKeyForSearchQuery:(id)query;
 - (id)_changeEnvironmentMenuElements;
 - (id)_createNoContentParentView;
 - (id)_createNoGeoView;
 - (id)_createNoLocationsView;
 - (id)_createSpinnerView;
 - (id)_emptyMutableOrderedSet;
-- (id)_mutableOrderedSetWithSampleAccountsForQuery:(id)a3;
+- (id)_mutableOrderedSetWithSampleAccountsForQuery:(id)query;
 - (id)_providerNotFoundExplanationMessage;
-- (id)accountSearchResultAtIndexPath:(id)a3;
+- (id)accountSearchResultAtIndexPath:(id)path;
 - (id)keyCommands;
-- (id)providerSearchResultAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)providerSearchResultAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_beginLoadingAlreadyConnectedAccountsIfNecessary;
 - (void)_cancelSearch;
-- (void)_changeEnvironment:(int64_t)a3;
+- (void)_changeEnvironment:(int64_t)environment;
 - (void)_configureDeniedAuthorization;
 - (void)_configureLeftNavigationItemAsCancel;
 - (void)_configureLocationServices;
@@ -37,59 +37,59 @@
 - (void)_configureRightNavigationItems;
 - (void)_configureSearchController;
 - (void)_configureTableViewCells;
-- (void)_didFetchResultsForQuery:(id)a3 searchResultsPage:(id)a4 error:(id)a5;
+- (void)_didFetchResultsForQuery:(id)query searchResultsPage:(id)page error:(id)error;
 - (void)_disableLocationAwareness;
 - (void)_hideSpinnerView;
-- (void)_loadGatewayProxyForDeeplinking:(id)a3;
-- (void)_presentError:(id)a3;
+- (void)_loadGatewayProxyForDeeplinking:(id)deeplinking;
+- (void)_presentError:(id)error;
 - (void)_presentInitialResultsIfNecessary;
-- (void)_presentLoginForAlreadyConnectedAccount:(id)a3;
-- (void)_proceedWithAlreadyConnectedAccount:(id)a3;
+- (void)_presentLoginForAlreadyConnectedAccount:(id)account;
+- (void)_proceedWithAlreadyConnectedAccount:(id)account;
 - (void)_requestWhenInUseAuthorizationIfNeeded;
 - (void)_resetCacheAndReloadData;
 - (void)_resetSearchResults;
-- (void)_searchResultsForQuery:(id)a3 from:(int64_t)a4;
-- (void)_searchUsingQuery:(id)a3;
-- (void)_showNoContentView:(id)a3;
+- (void)_searchResultsForQuery:(id)query from:(int64_t)from;
+- (void)_searchUsingQuery:(id)query;
+- (void)_showNoContentView:(id)view;
 - (void)_showNoGeoView;
 - (void)_showNoLocationsViewIfNeeded;
 - (void)_showSpinnerView;
 - (void)_suggestNewProviders;
 - (void)_updateNoContentViewConstraints;
 - (void)_updateTableHeaderViewHeight;
-- (void)activateSearch:(id)a3;
+- (void)activateSearch:(id)search;
 - (void)didReceiveMemoryWarning;
-- (void)dismiss:(id)a3;
+- (void)dismiss:(id)dismiss;
 - (void)loadView;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)reloadData;
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setShowProviderNotFound:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setShowProviderNotFound:(BOOL)found;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation WDClinicalOnboardingViewController
 
-- (WDClinicalOnboardingViewController)initWithProfile:(id)a3 gatewayProxy:(id)a4
+- (WDClinicalOnboardingViewController)initWithProfile:(id)profile gatewayProxy:(id)proxy
 {
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  proxyCopy = proxy;
   v22.receiver = self;
   v22.super_class = WDClinicalOnboardingViewController;
   v9 = [(HKTableViewController *)&v22 initWithUsingInsetStyling:1];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_profile, a3);
+    objc_storeStrong(&v9->_profile, profile);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     resultsCache = v10->_resultsCache;
     v10->_resultsCache = v11;
@@ -101,12 +101,12 @@
     v10->_searchTerms = MEMORY[0x1E695E0F0];
 
     v15 = objc_alloc(MEMORY[0x1E69A3F68]);
-    v16 = [v7 healthStore];
-    v17 = [v15 initWithHealthStore:v16];
+    healthStore = [profileCopy healthStore];
+    v17 = [v15 initWithHealthStore:healthStore];
     providerServiceStore = v10->_providerServiceStore;
     v10->_providerServiceStore = v17;
 
-    objc_storeStrong(&v10->_pendingGatewayProxy, a4);
+    objc_storeStrong(&v10->_pendingGatewayProxy, proxy);
     v19 = objc_alloc_init(HRUITableViewSectionConfiguration);
     sectionConfiguration = v10->_sectionConfiguration;
     v10->_sectionConfiguration = v19;
@@ -125,18 +125,18 @@
 
   v4 = *MEMORY[0x1E69A4090];
   v5 = *MEMORY[0x1E69A4090] + 48.0 + 16.0;
-  v6 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v6 setSeparatorInset:{0.0, v5, 0.0, v4}];
+  tableView = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView setSeparatorInset:{0.0, v5, 0.0, v4}];
 
-  v7 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v7 setBackgroundView:0];
+  tableView2 = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView2 setBackgroundView:0];
 
-  v8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v9 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v9 setBackgroundColor:v8];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  tableView3 = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView3 setBackgroundColor:systemBackgroundColor];
 
-  v10 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v10 setKeyboardDismissMode:2];
+  tableView4 = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView4 setKeyboardDismissMode:2];
 
   [(WDClinicalOnboardingViewController *)self _configureNavigationItems];
   [(WDClinicalOnboardingViewController *)self _configureSearchController];
@@ -148,12 +148,12 @@
   v6.receiver = self;
   v6.super_class = WDClinicalOnboardingViewController;
   [(HKTableViewController *)&v6 viewDidLoad];
-  v3 = [(WDClinicalOnboardingViewController *)self pendingGatewayProxy];
+  pendingGatewayProxy = [(WDClinicalOnboardingViewController *)self pendingGatewayProxy];
 
-  if (v3)
+  if (pendingGatewayProxy)
   {
-    v4 = [(WDClinicalOnboardingViewController *)self pendingGatewayProxy];
-    [(WDClinicalOnboardingViewController *)self _loadGatewayProxyForDeeplinking:v4];
+    pendingGatewayProxy2 = [(WDClinicalOnboardingViewController *)self pendingGatewayProxy];
+    [(WDClinicalOnboardingViewController *)self _loadGatewayProxyForDeeplinking:pendingGatewayProxy2];
   }
 
   else
@@ -163,8 +163,8 @@
 
   [(WDClinicalOnboardingViewController *)self setShowProviderNotFound:self->_showProviderNotFound];
   [(WDClinicalOnboardingViewController *)self _beginLoadingAlreadyConnectedAccountsIfNecessary];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__applicationDidBecomeActive name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationDidBecomeActive name:*MEMORY[0x1E69DDAB0] object:0];
 }
 
 - (CGSize)preferredContentSize
@@ -214,21 +214,21 @@
   return v4;
 }
 
-- (void)activateSearch:(id)a3
+- (void)activateSearch:(id)search
 {
-  v3 = [(UISearchController *)self->_searchController searchBar];
-  [v3 becomeFirstResponder];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar becomeFirstResponder];
 }
 
 - (void)_configureLeftNavigationItemAsCancel
 {
   v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_dismiss_];
-  v3 = [(WDClinicalOnboardingViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:v6];
+  navigationItem = [(WDClinicalOnboardingViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
-  v4 = [(WDClinicalOnboardingViewController *)self navigationItem];
-  v5 = [v4 leftBarButtonItem];
-  [v5 setAccessibilityIdentifier:@"UIA.Health.ClinicalOnboarding.Navigation.Cancel"];
+  navigationItem2 = [(WDClinicalOnboardingViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+  [leftBarButtonItem setAccessibilityIdentifier:@"UIA.Health.ClinicalOnboarding.Navigation.Cancel"];
 }
 
 - (void)_configureRightNavigationItems
@@ -246,8 +246,8 @@
     v6 = HKHealthRecordsNameForEnvironment();
     v7 = MEMORY[0x1E69DCC60];
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Environment: %@", v6];
-    v9 = [(WDClinicalOnboardingViewController *)self _changeEnvironmentMenuElements];
-    v10 = [v7 menuWithTitle:v8 children:v9];
+    _changeEnvironmentMenuElements = [(WDClinicalOnboardingViewController *)self _changeEnvironmentMenuElements];
+    v10 = [v7 menuWithTitle:v8 children:_changeEnvironmentMenuElements];
 
     v11 = MEMORY[0x1E69DCC60];
     v18[0] = v5;
@@ -256,27 +256,27 @@
     v13 = [v11 menuWithTitle:@"Internal Only Options" children:v12];
 
     v14 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:@"Internal" menu:v13];
-    v15 = [(WDClinicalOnboardingViewController *)self navigationItem];
-    [v15 setRightBarButtonItem:v14];
+    navigationItem = [(WDClinicalOnboardingViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v14];
   }
 
   else
   {
-    v16 = [(WDClinicalOnboardingViewController *)self navigationItem];
-    [v16 setRightBarButtonItem:0];
+    navigationItem2 = [(WDClinicalOnboardingViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 }
 
 - (void)_configureNavigationItems
 {
-  v3 = [(WDClinicalOnboardingViewController *)self presentingViewController];
+  presentingViewController = [(WDClinicalOnboardingViewController *)self presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
-    v4 = [(WDClinicalOnboardingViewController *)self presentingViewController];
-    v5 = [v4 navigationController];
-    v6 = [v5 navigationBar];
-    [v6 setAccessibilityIdentifier:@"UIA.Health.ClinicalOnboarding.Navigation"];
+    presentingViewController2 = [(WDClinicalOnboardingViewController *)self presentingViewController];
+    navigationController = [presentingViewController2 navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setAccessibilityIdentifier:@"UIA.Health.ClinicalOnboarding.Navigation"];
 
     [(WDClinicalOnboardingViewController *)self _configureLeftNavigationItemAsCancel];
 
@@ -291,68 +291,68 @@
   self->_searchController = v3;
 
   [(UISearchController *)self->_searchController setDelegate:self];
-  v10 = [(UISearchController *)self->_searchController searchBar];
-  [v10 setDelegate:self];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar setDelegate:self];
   v5 = HRLocalizedString(@"HEALTH_RECORDS_ONBOARDING_SEARCH_PLACEHOLDER");
-  [v10 setPlaceholder:v5];
+  [searchBar setPlaceholder:v5];
 
-  v6 = [v10 searchTextField];
-  [v6 setAccessibilityIdentifier:@"UIA.Health.ClinicalOnboarding.SearchBar.SearchText"];
+  searchTextField = [searchBar searchTextField];
+  [searchTextField setAccessibilityIdentifier:@"UIA.Health.ClinicalOnboarding.SearchBar.SearchText"];
 
   [(UISearchController *)self->_searchController setSearchResultsUpdater:self];
   [(UISearchController *)self->_searchController setHidesNavigationBarDuringPresentation:1];
   [(UISearchController *)self->_searchController setObscuresBackgroundDuringPresentation:0];
   v7 = self->_searchController;
-  v8 = [(WDClinicalOnboardingViewController *)self navigationItem];
-  [v8 setSearchController:v7];
+  navigationItem = [(WDClinicalOnboardingViewController *)self navigationItem];
+  [navigationItem setSearchController:v7];
 
-  v9 = [(WDClinicalOnboardingViewController *)self navigationItem];
-  [v9 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(WDClinicalOnboardingViewController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 }
 
 - (void)_configureTableViewCells
 {
-  v3 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"AlreadyConnectedCell"];
+  tableView = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"AlreadyConnectedCell"];
 
-  v4 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"SearchResultCell"];
+  tableView2 = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"SearchResultCell"];
 
-  v7 = [(WDClinicalOnboardingViewController *)self tableView];
+  tableView3 = [(WDClinicalOnboardingViewController *)self tableView];
   v5 = objc_opt_class();
   v6 = +[HRWDSpinnerTableViewCell defaultReuseIdentifier];
-  [v7 registerClass:v5 forCellReuseIdentifier:v6];
+  [tableView3 registerClass:v5 forCellReuseIdentifier:v6];
 }
 
-- (void)_loadGatewayProxyForDeeplinking:(id)a3
+- (void)_loadGatewayProxyForDeeplinking:(id)deeplinking
 {
   sectionConfiguration = self->_sectionConfiguration;
-  v5 = a3;
-  v6 = [(HRUITableViewSectionConfiguration *)sectionConfiguration sections];
-  if ([v6 count])
+  deeplinkingCopy = deeplinking;
+  sections = [(HRUITableViewSectionConfiguration *)sectionConfiguration sections];
+  if ([sections count])
   {
   }
 
   else
   {
-    v7 = [(WDClinicalOnboardingViewController *)self showingNoLocations];
+    showingNoLocations = [(WDClinicalOnboardingViewController *)self showingNoLocations];
 
-    if (!v7)
+    if (!showingNoLocations)
     {
       [(WDClinicalOnboardingViewController *)self _showSpinnerView];
     }
   }
 
   providerServiceStore = self->_providerServiceStore;
-  v9 = [v5 gatewayID];
-  v10 = [v5 batchID];
+  gatewayID = [deeplinkingCopy gatewayID];
+  batchID = [deeplinkingCopy batchID];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__WDClinicalOnboardingViewController__loadGatewayProxyForDeeplinking___block_invoke;
   v11[3] = &unk_1E83DC9F8;
   v11[4] = self;
-  [(HKClinicalProviderServiceStore *)providerServiceStore fetchRemoteGatewayWithExternalID:v9 batchID:v10 completion:v11];
+  [(HKClinicalProviderServiceStore *)providerServiceStore fetchRemoteGatewayWithExternalID:gatewayID batchID:batchID completion:v11];
 }
 
 void __70__WDClinicalOnboardingViewController__loadGatewayProxyForDeeplinking___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -428,8 +428,8 @@ uint64_t __70__WDClinicalOnboardingViewController__loadGatewayProxyForDeeplinkin
 - (void)reloadData
 {
   [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration removeAllSections];
-  v3 = [(WDClinicalOnboardingViewController *)self pendingGatewayProxy];
-  if (v3 || [(WDClinicalOnboardingViewController *)self showingMainSpinner])
+  pendingGatewayProxy = [(WDClinicalOnboardingViewController *)self pendingGatewayProxy];
+  if (pendingGatewayProxy || [(WDClinicalOnboardingViewController *)self showingMainSpinner])
   {
     goto LABEL_15;
   }
@@ -475,8 +475,8 @@ LABEL_8:
       [v9 setHeaderString:0];
     }
 
-    v12 = [(WDClinicalOnboardingViewController *)self _providerNotFoundExplanationMessage];
-    [v10 setFooterString:v12];
+    _providerNotFoundExplanationMessage = [(WDClinicalOnboardingViewController *)self _providerNotFoundExplanationMessage];
+    [v10 setFooterString:_providerNotFoundExplanationMessage];
 
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSMutableOrderedSet count](self->_supportedSearchResults, "count")}];
     [v10 setEstimatedNumRows:v13];
@@ -484,21 +484,21 @@ LABEL_8:
 
   if ([(NSMutableOrderedSet *)self->_unsupportedSearchResults count])
   {
-    v3 = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration addSectionWithIdentifier:@"UnsupportedLocations" firstRowReuseIdentifier:0];
+    pendingGatewayProxy = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration addSectionWithIdentifier:@"UnsupportedLocations" firstRowReuseIdentifier:0];
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSMutableOrderedSet count](self->_unsupportedSearchResults, "count")}];
-    [v3 setEstimatedNumRows:v14];
+    [pendingGatewayProxy setEstimatedNumRows:v14];
 
 LABEL_15:
   }
 
 LABEL_16:
-  v15 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v15 reloadData];
+  tableView = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)setShowProviderNotFound:(BOOL)a3
+- (void)setShowProviderNotFound:(BOOL)found
 {
-  self->_showProviderNotFound = a3;
+  self->_showProviderNotFound = found;
   if ([(WDClinicalOnboardingViewController *)self isViewLoaded])
   {
     if (self->_showProviderNotFound)
@@ -508,8 +508,8 @@ LABEL_16:
 
     else
     {
-      v4 = [(WDClinicalOnboardingViewController *)self tableView];
-      [v4 setTableHeaderView:0];
+      tableView = [(WDClinicalOnboardingViewController *)self tableView];
+      [tableView setTableHeaderView:0];
 
       [(WDClinicalOnboardingViewController *)self setProviderNotFoundView:0];
     }
@@ -524,9 +524,9 @@ LABEL_16:
   v4 = [(HRProviderNotFoundView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(WDClinicalOnboardingViewController *)self setProviderNotFoundView:v4];
 
-  v6 = [(WDClinicalOnboardingViewController *)self providerNotFoundView];
-  v5 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v5 setTableHeaderView:v6];
+  providerNotFoundView = [(WDClinicalOnboardingViewController *)self providerNotFoundView];
+  tableView = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView setTableHeaderView:providerNotFoundView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -539,9 +539,9 @@ LABEL_16:
 
 - (void)_updateTableHeaderViewHeight
 {
-  v3 = [(WDClinicalOnboardingViewController *)self providerNotFoundView];
+  providerNotFoundView = [(WDClinicalOnboardingViewController *)self providerNotFoundView];
 
-  if (v3)
+  if (providerNotFoundView)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
@@ -582,18 +582,18 @@ void __66__WDClinicalOnboardingViewController__updateTableHeaderViewHeight__bloc
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = [v4 authorizationStatus];
-  if ((v5 - 1) < 2)
+  authorizationCopy = authorization;
+  authorizationStatus = [authorizationCopy authorizationStatus];
+  if ((authorizationStatus - 1) < 2)
   {
     [(WDClinicalOnboardingViewController *)self _configureDeniedAuthorization];
   }
 
-  else if ((v5 - 3) >= 2)
+  else if ((authorizationStatus - 3) >= 2)
   {
-    if (!v5)
+    if (!authorizationStatus)
     {
       [(WDClinicalOnboardingViewController *)self _requestWhenInUseAuthorizationIfNeeded];
     }
@@ -601,14 +601,14 @@ void __66__WDClinicalOnboardingViewController__updateTableHeaderViewHeight__bloc
 
   else
   {
-    v6 = [v4 accuracyAuthorization];
+    accuracyAuthorization = [authorizationCopy accuracyAuthorization];
     v7 = MEMORY[0x1E6985CB8];
-    if (v6)
+    if (accuracyAuthorization)
     {
       v7 = MEMORY[0x1E6985CB0];
     }
 
-    [v4 setDesiredAccuracy:*v7];
+    [authorizationCopy setDesiredAccuracy:*v7];
     _HKInitializeLogging();
     v8 = *MEMORY[0x1E696B948];
     if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEBUG))
@@ -616,17 +616,17 @@ void __66__WDClinicalOnboardingViewController__updateTableHeaderViewHeight__bloc
       [WDClinicalOnboardingViewController locationManagerDidChangeAuthorization:v8];
     }
 
-    [v4 startUpdatingLocation];
-    v9 = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
-    if ([v9 count])
+    [authorizationCopy startUpdatingLocation];
+    sections = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
+    if ([sections count])
     {
     }
 
     else
     {
-      v10 = [(WDClinicalOnboardingViewController *)self showingNoLocations];
+      showingNoLocations = [(WDClinicalOnboardingViewController *)self showingNoLocations];
 
-      if (!v10)
+      if (!showingNoLocations)
       {
         [(WDClinicalOnboardingViewController *)self _showSpinnerView];
       }
@@ -634,10 +634,10 @@ void __66__WDClinicalOnboardingViewController__updateTableHeaderViewHeight__bloc
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   _HKInitializeLogging();
   v8 = *MEMORY[0x1E696B948];
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEBUG))
@@ -645,11 +645,11 @@ void __66__WDClinicalOnboardingViewController__updateTableHeaderViewHeight__bloc
     [WDClinicalOnboardingViewController locationManager:v8 didUpdateLocations:?];
   }
 
-  [v6 stopUpdatingLocation];
-  v9 = [v7 lastObject];
+  [managerCopy stopUpdatingLocation];
+  lastObject = [locationsCopy lastObject];
 
   location = self->_location;
-  self->_location = v9;
+  self->_location = lastObject;
 
   locationManager = self->_locationManager;
   self->_locationManager = 0;
@@ -658,14 +658,14 @@ void __66__WDClinicalOnboardingViewController__updateTableHeaderViewHeight__bloc
   [(WDClinicalOnboardingViewController *)self _presentInitialResultsIfNecessary];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a4;
-  [a3 stopUpdatingLocation];
+  errorCopy = error;
+  [manager stopUpdatingLocation];
   locationManager = self->_locationManager;
   self->_locationManager = 0;
 
-  if ([v6 code] == 1)
+  if ([errorCopy code] == 1)
   {
     [(WDClinicalOnboardingViewController *)self _configureDeniedAuthorization];
   }
@@ -673,11 +673,11 @@ void __66__WDClinicalOnboardingViewController__updateTableHeaderViewHeight__bloc
   else
   {
     [(WDClinicalOnboardingViewController *)self _presentInitialResultsIfNecessary];
-    v8 = [v6 code];
+    code = [errorCopy code];
     _HKInitializeLogging();
     v9 = *MEMORY[0x1E696B948];
     v10 = os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_ERROR);
-    if (v8)
+    if (code)
     {
       if (v10)
       {
@@ -696,10 +696,10 @@ void __66__WDClinicalOnboardingViewController__updateTableHeaderViewHeight__bloc
 {
   if (self->_locationManager)
   {
-    v3 = [(WDClinicalOnboardingViewController *)self viewIfLoaded];
-    v4 = [v3 window];
+    viewIfLoaded = [(WDClinicalOnboardingViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
 
-    if (v4)
+    if (window)
     {
       locationManager = self->_locationManager;
 
@@ -726,55 +726,55 @@ void __66__WDClinicalOnboardingViewController__updateTableHeaderViewHeight__bloc
   self->_location = 0;
 
   [(WDClinicalOnboardingViewController *)self setLocationEnabled:0];
-  v4 = [(WDClinicalOnboardingViewController *)self resultsCache];
-  [v4 setObject:0 forKeyedSubscript:@"DefaultListKey"];
+  resultsCache = [(WDClinicalOnboardingViewController *)self resultsCache];
+  [resultsCache setObject:0 forKeyedSubscript:@"DefaultListKey"];
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = [(WDClinicalOnboardingViewController *)self presentingViewController];
+  presentingViewController = [(WDClinicalOnboardingViewController *)self presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
-    v6 = [(WDClinicalOnboardingViewController *)self navigationItem];
-    v5 = [v6 leftBarButtonItem];
-    [v5 setHidden:1];
+    navigationItem = [(WDClinicalOnboardingViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setHidden:1];
   }
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
   [(WDClinicalOnboardingViewController *)self setSearchQuery:&stru_1F4D16E38];
   [(WDClinicalOnboardingViewController *)self setSearchTerms:MEMORY[0x1E695E0F0]];
-  v4 = [(WDClinicalOnboardingViewController *)self presentingViewController];
+  presentingViewController = [(WDClinicalOnboardingViewController *)self presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
-    v6 = [(WDClinicalOnboardingViewController *)self navigationItem];
-    v5 = [v6 leftBarButtonItem];
-    [v5 setHidden:0];
+    navigationItem = [(WDClinicalOnboardingViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setHidden:0];
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(WDClinicalOnboardingViewController *)self _hideNoGeoView];
-  v5 = [v4 searchBar];
+  searchBar = [controllerCopy searchBar];
 
-  v6 = [v5 text];
+  text = [searchBar text];
 
-  if ([v6 length])
+  if ([text length])
   {
     [(NSTimer *)self->_searchTimer invalidate];
-    v7 = dbl_1D139C1D0[[v6 length] > 6];
+    v7 = dbl_1D139C1D0[[text length] > 6];
     v8 = MEMORY[0x1E695DFF0];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __77__WDClinicalOnboardingViewController_updateSearchResultsForSearchController___block_invoke;
     v11[3] = &unk_1E83DCA48;
     v11[4] = self;
-    v12 = v6;
+    v12 = text;
     v9 = [v8 scheduledTimerWithTimeInterval:0 repeats:v11 block:v7];
     searchTimer = self->_searchTimer;
     self->_searchTimer = v9;
@@ -817,9 +817,9 @@ _BYTE *__77__WDClinicalOnboardingViewController_updateSearchResultsForSearchCont
   [(WDClinicalOnboardingViewController *)self setAlreadySharingSearchResults:0];
   [(WDClinicalOnboardingViewController *)self setUnsupportedSearchResults:0];
   [(WDClinicalOnboardingViewController *)self setSupportedSearchResults:0];
-  v5 = [(UISearchController *)self->_searchController searchBar];
-  v4 = [v5 text];
-  [(WDClinicalOnboardingViewController *)self _searchUsingQuery:v4];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  text = [searchBar text];
+  [(WDClinicalOnboardingViewController *)self _searchUsingQuery:text];
 }
 
 - (void)_presentInitialResultsIfNecessary
@@ -831,31 +831,31 @@ _BYTE *__77__WDClinicalOnboardingViewController_updateSearchResultsForSearchCont
   }
 }
 
-- (void)_searchUsingQuery:(id)a3
+- (void)_searchUsingQuery:(id)query
 {
-  v15 = a3;
-  v4 = [(WDClinicalOnboardingViewController *)self searchQuery];
-  if ([v4 length])
+  queryCopy = query;
+  searchQuery = [(WDClinicalOnboardingViewController *)self searchQuery];
+  if ([searchQuery length])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v15 length] != 0;
+    v5 = [queryCopy length] != 0;
   }
 
-  v6 = [(WDClinicalOnboardingViewController *)self _cacheKeyForSearchQuery:v15];
-  [(WDClinicalOnboardingViewController *)self setSearchQuery:v15];
-  v7 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v8 = [v15 componentsSeparatedByCharactersInSet:v7];
+  v6 = [(WDClinicalOnboardingViewController *)self _cacheKeyForSearchQuery:queryCopy];
+  [(WDClinicalOnboardingViewController *)self setSearchQuery:queryCopy];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v8 = [queryCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
   [(WDClinicalOnboardingViewController *)self setSearchTerms:v8];
 
   [(WDClinicalOnboardingViewController *)self _hideSpinnerView];
-  if (-[WDClinicalOnboardingViewController locationEnabled](self, "locationEnabled") || [v15 length])
+  if (-[WDClinicalOnboardingViewController locationEnabled](self, "locationEnabled") || [queryCopy length])
   {
-    v9 = [(WDClinicalOnboardingViewController *)self resultsCache];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    resultsCache = [(WDClinicalOnboardingViewController *)self resultsCache];
+    v10 = [resultsCache objectForKeyedSubscript:v6];
 
     if (v10)
     {
@@ -885,7 +885,7 @@ _BYTE *__77__WDClinicalOnboardingViewController_updateSearchResultsForSearchCont
       }
 
       [(WDClinicalOnboardingViewController *)self setNextFrom:0];
-      [(WDClinicalOnboardingViewController *)self _searchResultsForQuery:v15 from:0];
+      [(WDClinicalOnboardingViewController *)self _searchResultsForQuery:queryCopy from:0];
     }
   }
 
@@ -907,9 +907,9 @@ _BYTE *__77__WDClinicalOnboardingViewController_updateSearchResultsForSearchCont
   }
 }
 
-- (void)_searchResultsForQuery:(id)a3 from:(int64_t)a4
+- (void)_searchResultsForQuery:(id)query from:(int64_t)from
 {
-  v6 = a3;
+  queryCopy = query;
   location = self->_location;
   if (location)
   {
@@ -934,15 +934,15 @@ _BYTE *__77__WDClinicalOnboardingViewController_updateSearchResultsForSearchCont
   }
 
   ++self->_searchesInFlight;
-  v13 = [objc_alloc(MEMORY[0x1E69A3F50]) initWithSearchString:v6 latitude:v9 longitude:v12 pageOffset:a4 options:self->_showOnlyClinicalSharingCapableProviders];
+  v13 = [objc_alloc(MEMORY[0x1E69A3F50]) initWithSearchString:queryCopy latitude:v9 longitude:v12 pageOffset:from options:self->_showOnlyClinicalSharingCapableProviders];
   providerServiceStore = self->_providerServiceStore;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __66__WDClinicalOnboardingViewController__searchResultsForQuery_from___block_invoke_417;
   v16[3] = &unk_1E83DCAB8;
   v16[4] = self;
-  v17 = v6;
-  v15 = v6;
+  v17 = queryCopy;
+  v15 = queryCopy;
   [(HKClinicalProviderServiceStore *)providerServiceStore fetchRemoteSearchResultsPageForQuery:v13 completion:v16];
 }
 
@@ -988,23 +988,23 @@ uint64_t __66__WDClinicalOnboardingViewController__searchResultsForQuery_from___
   return [v2 _didFetchResultsForQuery:v3 searchResultsPage:v4 error:v5];
 }
 
-- (void)_didFetchResultsForQuery:(id)a3 searchResultsPage:(id)a4 error:(id)a5
+- (void)_didFetchResultsForQuery:(id)query searchResultsPage:(id)page error:(id)error
 {
   v52[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  pageCopy = page;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   --self->_searchesInFlight;
   [(WDClinicalOnboardingViewController *)self _hideSpinnerView];
-  if (v9 || ([v10 hk_isUserCanceledError] & 1) == 0)
+  if (pageCopy || ([errorCopy hk_isUserCanceledError] & 1) == 0)
   {
-    v11 = [(WDClinicalOnboardingViewController *)self _cacheKeyForSearchQuery:v8];
-    v12 = v9;
+    v11 = [(WDClinicalOnboardingViewController *)self _cacheKeyForSearchQuery:queryCopy];
+    v12 = pageCopy;
     if ([(WDClinicalOnboardingViewController *)self _isSimulator])
     {
       [(WDClinicalOnboardingViewController *)self setHasCompletedAtLeastOneFetch:1];
-      if (v9)
+      if (pageCopy)
       {
         goto LABEL_7;
       }
@@ -1015,27 +1015,27 @@ uint64_t __66__WDClinicalOnboardingViewController__searchResultsForQuery_from___
 
     if (!v12)
     {
-      v21 = [(WDClinicalOnboardingViewController *)self resultsCache];
-      [v21 removeObjectForKey:v11];
+      resultsCache = [(WDClinicalOnboardingViewController *)self resultsCache];
+      [resultsCache removeObjectForKey:v11];
 
       [(WDClinicalOnboardingViewController *)self _resetSearchResults];
       [(WDClinicalOnboardingViewController *)self setNextFrom:0];
       [(WDClinicalOnboardingViewController *)self setSpinnerIndexPath:0];
       [(WDClinicalOnboardingViewController *)self reloadData];
       [(WDClinicalOnboardingViewController *)self _showNoLocationsViewIfNeeded];
-      if (v10)
+      if (errorCopy)
       {
-        [(WDClinicalOnboardingViewController *)self _presentError:v10];
+        [(WDClinicalOnboardingViewController *)self _presentError:errorCopy];
       }
 
       goto LABEL_26;
     }
 
 LABEL_7:
-    v47 = v9;
-    v14 = [(WDClinicalOnboardingViewController *)self resultsCache];
+    v47 = pageCopy;
+    resultsCache2 = [(WDClinicalOnboardingViewController *)self resultsCache];
     v45 = v11;
-    v15 = [v14 objectForKeyedSubscript:v11];
+    v15 = [resultsCache2 objectForKeyedSubscript:v11];
 
     v16 = [v15 objectForKeyedSubscript:@"AlreadySharingKey"];
     if (v16)
@@ -1057,10 +1057,10 @@ LABEL_7:
     {
       if (!v18)
       {
-        v20 = [(WDClinicalOnboardingViewController *)self _mutableOrderedSetWithSampleAccountsForQuery:v8];
+        _emptyMutableOrderedSet = [(WDClinicalOnboardingViewController *)self _mutableOrderedSetWithSampleAccountsForQuery:queryCopy];
 LABEL_18:
-        v22 = v20;
-        [(WDClinicalOnboardingViewController *)self setSupportedSearchResults:v20];
+        v22 = _emptyMutableOrderedSet;
+        [(WDClinicalOnboardingViewController *)self setSupportedSearchResults:_emptyMutableOrderedSet];
 
         v23 = [v15 objectForKeyedSubscript:@"UnsupportedKey"];
         if (v23)
@@ -1075,27 +1075,27 @@ LABEL_18:
         v24 = ;
         [(WDClinicalOnboardingViewController *)self setUnsupportedSearchResults:v24];
 
-        v25 = [v12 searchResults];
+        searchResults = [v12 searchResults];
         v50[0] = MEMORY[0x1E69E9820];
         v50[1] = 3221225472;
         v50[2] = __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searchResultsPage_error___block_invoke;
         v50[3] = &unk_1E83DCAE0;
         v50[4] = self;
-        v26 = [v25 hk_filter:v50];
-        v27 = [v25 hk_filter:&__block_literal_global_422];
+        v26 = [searchResults hk_filter:v50];
+        v27 = [searchResults hk_filter:&__block_literal_global_422];
         v49[0] = MEMORY[0x1E69E9820];
         v49[1] = 3221225472;
         v49[2] = __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searchResultsPage_error___block_invoke_3;
         v49[3] = &unk_1E83DCAE0;
         v49[4] = self;
-        v43 = v25;
-        v28 = [v25 hk_filter:v49];
-        v29 = [(WDClinicalOnboardingViewController *)self alreadySharingSearchResults];
+        v43 = searchResults;
+        v28 = [searchResults hk_filter:v49];
+        alreadySharingSearchResults = [(WDClinicalOnboardingViewController *)self alreadySharingSearchResults];
         v42 = v28;
-        [v29 addObjectsFromArray:v28];
+        [alreadySharingSearchResults addObjectsFromArray:v28];
 
-        v48 = v8;
-        v46 = v10;
+        v48 = queryCopy;
+        v46 = errorCopy;
         v44 = v15;
         if (-[NSArray count](self->_alreadyConnectedAccounts, "count") && ![v12 from] && !-[WDClinicalOnboardingViewController hasSearchTerm](self, "hasSearchTerm"))
         {
@@ -1104,39 +1104,39 @@ LABEL_18:
           v26 = v30;
         }
 
-        v31 = [(WDClinicalOnboardingViewController *)self supportedSearchResults];
-        [v31 addObjectsFromArray:v26];
+        supportedSearchResults = [(WDClinicalOnboardingViewController *)self supportedSearchResults];
+        [supportedSearchResults addObjectsFromArray:v26];
 
-        v32 = [(WDClinicalOnboardingViewController *)self unsupportedSearchResults];
+        unsupportedSearchResults = [(WDClinicalOnboardingViewController *)self unsupportedSearchResults];
         v33 = v27;
-        [v32 addObjectsFromArray:v27];
+        [unsupportedSearchResults addObjectsFromArray:v27];
 
         -[WDClinicalOnboardingViewController setNextFrom:](self, "setNextFrom:", [v12 nextFrom]);
         v51[0] = @"AlreadySharingKey";
-        v34 = [(WDClinicalOnboardingViewController *)self alreadySharingSearchResults];
-        v52[0] = v34;
+        alreadySharingSearchResults2 = [(WDClinicalOnboardingViewController *)self alreadySharingSearchResults];
+        v52[0] = alreadySharingSearchResults2;
         v51[1] = @"SupportedKey";
-        v35 = [(WDClinicalOnboardingViewController *)self supportedSearchResults];
-        v52[1] = v35;
+        supportedSearchResults2 = [(WDClinicalOnboardingViewController *)self supportedSearchResults];
+        v52[1] = supportedSearchResults2;
         v51[2] = @"UnsupportedKey";
-        v36 = [(WDClinicalOnboardingViewController *)self unsupportedSearchResults];
-        v52[2] = v36;
+        unsupportedSearchResults2 = [(WDClinicalOnboardingViewController *)self unsupportedSearchResults];
+        v52[2] = unsupportedSearchResults2;
         v51[3] = @"NextFromKey";
         v37 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v12, "nextFrom")}];
         v52[3] = v37;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:4];
         v39 = v38 = v12;
-        v40 = [(WDClinicalOnboardingViewController *)self resultsCache];
+        resultsCache3 = [(WDClinicalOnboardingViewController *)self resultsCache];
         v11 = v45;
-        [v40 setObject:v39 forKeyedSubscript:v45];
+        [resultsCache3 setObject:v39 forKeyedSubscript:v45];
 
         [(WDClinicalOnboardingViewController *)self setSpinnerIndexPath:0];
         [(WDClinicalOnboardingViewController *)self reloadData];
         [(WDClinicalOnboardingViewController *)self _showNoLocationsViewIfNeeded];
 
-        v9 = v47;
-        v8 = v48;
-        v10 = v46;
+        pageCopy = v47;
+        queryCopy = v48;
+        errorCopy = v46;
 LABEL_26:
 
         goto LABEL_27;
@@ -1145,11 +1145,11 @@ LABEL_26:
 
     else if (!v18)
     {
-      v20 = [(WDClinicalOnboardingViewController *)self _emptyMutableOrderedSet];
+      _emptyMutableOrderedSet = [(WDClinicalOnboardingViewController *)self _emptyMutableOrderedSet];
       goto LABEL_18;
     }
 
-    v20 = [v15 objectForKeyedSubscript:@"SupportedKey"];
+    _emptyMutableOrderedSet = [v15 objectForKeyedSubscript:@"SupportedKey"];
     goto LABEL_18;
   }
 
@@ -1193,12 +1193,12 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
   return v4;
 }
 
-- (id)_cacheKeyForSearchQuery:(id)a3
+- (id)_cacheKeyForSearchQuery:(id)query
 {
-  v3 = a3;
-  if ([(__CFString *)v3 length])
+  queryCopy = query;
+  if ([(__CFString *)queryCopy length])
   {
-    v4 = v3;
+    v4 = queryCopy;
   }
 
   else
@@ -1213,14 +1213,14 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
 - (void)_resetSearchResults
 {
-  v3 = [(WDClinicalOnboardingViewController *)self _emptyMutableOrderedSet];
-  [(WDClinicalOnboardingViewController *)self setAlreadySharingSearchResults:v3];
+  _emptyMutableOrderedSet = [(WDClinicalOnboardingViewController *)self _emptyMutableOrderedSet];
+  [(WDClinicalOnboardingViewController *)self setAlreadySharingSearchResults:_emptyMutableOrderedSet];
 
-  v4 = [(WDClinicalOnboardingViewController *)self _emptyMutableOrderedSet];
-  [(WDClinicalOnboardingViewController *)self setSupportedSearchResults:v4];
+  _emptyMutableOrderedSet2 = [(WDClinicalOnboardingViewController *)self _emptyMutableOrderedSet];
+  [(WDClinicalOnboardingViewController *)self setSupportedSearchResults:_emptyMutableOrderedSet2];
 
-  v5 = [(WDClinicalOnboardingViewController *)self _emptyMutableOrderedSet];
-  [(WDClinicalOnboardingViewController *)self setUnsupportedSearchResults:v5];
+  _emptyMutableOrderedSet3 = [(WDClinicalOnboardingViewController *)self _emptyMutableOrderedSet];
+  [(WDClinicalOnboardingViewController *)self setUnsupportedSearchResults:_emptyMutableOrderedSet3];
 }
 
 - (id)_emptyMutableOrderedSet
@@ -1230,29 +1230,29 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
   return v2;
 }
 
-- (id)_mutableOrderedSetWithSampleAccountsForQuery:(id)a3
+- (id)_mutableOrderedSetWithSampleAccountsForQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(WDClinicalOnboardingViewController *)self _emptyMutableOrderedSet];
-  v6 = [v4 length];
+  queryCopy = query;
+  _emptyMutableOrderedSet = [(WDClinicalOnboardingViewController *)self _emptyMutableOrderedSet];
+  v6 = [queryCopy length];
 
   if (!v6)
   {
-    v7 = [(WDClinicalOnboardingViewController *)self sampleAccountsLoader];
-    v8 = [v7 sampleAccountsAsSearchResults];
+    sampleAccountsLoader = [(WDClinicalOnboardingViewController *)self sampleAccountsLoader];
+    sampleAccountsAsSearchResults = [sampleAccountsLoader sampleAccountsAsSearchResults];
 
-    [v5 addObjectsFromArray:v8];
+    [_emptyMutableOrderedSet addObjectsFromArray:sampleAccountsAsSearchResults];
   }
 
-  return v5;
+  return _emptyMutableOrderedSet;
 }
 
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset
 {
-  v4 = a3;
-  v5 = [(WDClinicalOnboardingViewController *)self tableView];
+  insetCopy = inset;
+  tableView = [(WDClinicalOnboardingViewController *)self tableView];
 
-  if (v5 == v4)
+  if (tableView == insetCopy)
   {
 
     [(WDClinicalOnboardingViewController *)self _updateNoContentViewConstraints];
@@ -1261,20 +1261,20 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
 - (void)_updateNoContentViewConstraints
 {
-  v3 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v3 adjustedContentInset];
+  tableView = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView adjustedContentInset];
   v5 = v4;
-  v6 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v6 safeAreaInsets];
+  tableView2 = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView2 safeAreaInsets];
   v8 = v5 - v7;
   WeakRetained = objc_loadWeakRetained(&self->_noContentTopConstraint);
   [WeakRetained setConstant:v8];
 
-  v16 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v16 adjustedContentInset];
+  tableView3 = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView3 adjustedContentInset];
   v11 = v10;
-  v12 = [(WDClinicalOnboardingViewController *)self tableView];
-  [v12 safeAreaInsets];
+  tableView4 = [(WDClinicalOnboardingViewController *)self tableView];
+  [tableView4 safeAreaInsets];
   v14 = -(v11 - v13);
   v15 = objc_loadWeakRetained(&self->_noContentBottomConstraint);
   [v15 setConstant:v14];
@@ -1290,14 +1290,14 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
   return v2;
 }
 
-- (void)_showNoContentView:(id)a3
+- (void)_showNoContentView:(id)view
 {
   v61[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIView *)self->_noContentParentView subviews];
-  [v5 makeObjectsPerformSelector:sel_removeFromSuperview];
+  viewCopy = view;
+  subviews = [(UIView *)self->_noContentParentView subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
-  if (v4)
+  if (viewCopy)
   {
     if (self->_noContentParentView)
     {
@@ -1306,22 +1306,22 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
     else
     {
-      v6 = [(WDClinicalOnboardingViewController *)self _createNoContentParentView];
-      [(WDClinicalOnboardingViewController *)self setNoContentParentView:v6];
+      _createNoContentParentView = [(WDClinicalOnboardingViewController *)self _createNoContentParentView];
+      [(WDClinicalOnboardingViewController *)self setNoContentParentView:_createNoContentParentView];
     }
 
-    [(UIView *)self->_noContentParentView addSubview:v4];
-    v7 = [v4 topAnchor];
-    v8 = [(UIView *)self->_noContentParentView safeAreaLayoutGuide];
-    v9 = [v8 topAnchor];
-    v10 = [v7 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v9 multiplier:1.0];
+    [(UIView *)self->_noContentParentView addSubview:viewCopy];
+    topAnchor = [viewCopy topAnchor];
+    safeAreaLayoutGuide = [(UIView *)self->_noContentParentView safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v10 = [topAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
 
     v59 = v10;
     [(WDClinicalOnboardingViewController *)self setNoContentTopConstraint:v10];
-    v11 = [v4 bottomAnchor];
-    v12 = [(UIView *)self->_noContentParentView safeAreaLayoutGuide];
-    v13 = [v12 bottomAnchor];
-    v14 = [v11 constraintLessThanOrEqualToSystemSpacingBelowAnchor:v13 multiplier:1.0];
+    bottomAnchor = [viewCopy bottomAnchor];
+    safeAreaLayoutGuide2 = [(UIView *)self->_noContentParentView safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+    v14 = [bottomAnchor constraintLessThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
 
     [v10 priority];
     *&v16 = v15 + -1.0;
@@ -1329,22 +1329,22 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
     [(WDClinicalOnboardingViewController *)self setNoContentBottomConstraint:v14];
     [(WDClinicalOnboardingViewController *)self _updateNoContentViewConstraints];
     v45 = MEMORY[0x1E696ACD8];
-    v55 = [v4 widthAnchor];
-    v53 = [(UIView *)self->_noContentParentView widthAnchor];
-    v51 = [v55 constraintLessThanOrEqualToAnchor:v53];
+    widthAnchor = [viewCopy widthAnchor];
+    widthAnchor2 = [(UIView *)self->_noContentParentView widthAnchor];
+    v51 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     v61[0] = v51;
-    v49 = [v4 centerXAnchor];
-    v47 = [(UIView *)self->_noContentParentView centerXAnchor];
-    v17 = [v49 constraintEqualToAnchor:v47];
+    centerXAnchor = [viewCopy centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_noContentParentView centerXAnchor];
+    v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v61[1] = v17;
-    v18 = [v4 leadingAnchor];
-    v19 = [(UIView *)self->_noContentParentView leadingAnchor];
-    v20 = [v18 constraintGreaterThanOrEqualToAnchor:v19];
+    leadingAnchor = [viewCopy leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_noContentParentView leadingAnchor];
+    v20 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v61[2] = v20;
-    v58 = v4;
-    v21 = [v4 trailingAnchor];
-    v22 = [(UIView *)self->_noContentParentView trailingAnchor];
-    v23 = [v21 constraintLessThanOrEqualToAnchor:v22];
+    v58 = viewCopy;
+    trailingAnchor = [viewCopy trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_noContentParentView trailingAnchor];
+    v23 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v61[3] = v23;
     v61[4] = v59;
     v57 = v14;
@@ -1352,46 +1352,46 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:6];
     [v45 activateConstraints:v24];
 
-    v25 = [(UIView *)self->_noContentParentView superview];
+    superview = [(UIView *)self->_noContentParentView superview];
 
-    if (!v25)
+    if (!superview)
     {
-      v26 = [(WDClinicalOnboardingViewController *)self tableView];
-      [v26 addSubview:self->_noContentParentView];
+      tableView = [(WDClinicalOnboardingViewController *)self tableView];
+      [tableView addSubview:self->_noContentParentView];
 
       v41 = MEMORY[0x1E696ACD8];
-      v54 = [(UIView *)self->_noContentParentView widthAnchor];
-      v56 = [(WDClinicalOnboardingViewController *)self tableView];
-      v52 = [v56 widthAnchor];
-      v50 = [v54 constraintEqualToAnchor:v52];
+      widthAnchor3 = [(UIView *)self->_noContentParentView widthAnchor];
+      tableView2 = [(WDClinicalOnboardingViewController *)self tableView];
+      widthAnchor4 = [tableView2 widthAnchor];
+      v50 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
       v60[0] = v50;
-      v46 = [(UIView *)self->_noContentParentView topAnchor];
-      v48 = [(WDClinicalOnboardingViewController *)self tableView];
-      v44 = [v48 safeAreaLayoutGuide];
-      v43 = [v44 topAnchor];
-      v42 = [v46 constraintEqualToAnchor:v43];
+      topAnchor3 = [(UIView *)self->_noContentParentView topAnchor];
+      tableView3 = [(WDClinicalOnboardingViewController *)self tableView];
+      safeAreaLayoutGuide3 = [tableView3 safeAreaLayoutGuide];
+      topAnchor4 = [safeAreaLayoutGuide3 topAnchor];
+      v42 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v60[1] = v42;
-      v39 = [(UIView *)self->_noContentParentView bottomAnchor];
-      v40 = [(WDClinicalOnboardingViewController *)self tableView];
-      v38 = [v40 safeAreaLayoutGuide];
-      v37 = [v38 bottomAnchor];
-      v27 = [v39 constraintEqualToAnchor:v37];
+      bottomAnchor3 = [(UIView *)self->_noContentParentView bottomAnchor];
+      tableView4 = [(WDClinicalOnboardingViewController *)self tableView];
+      safeAreaLayoutGuide4 = [tableView4 safeAreaLayoutGuide];
+      bottomAnchor4 = [safeAreaLayoutGuide4 bottomAnchor];
+      v27 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v60[2] = v27;
-      v28 = [(UIView *)self->_noContentParentView leadingAnchor];
-      v29 = [(WDClinicalOnboardingViewController *)self tableView];
-      v30 = [v29 leadingAnchor];
-      v31 = [v28 constraintEqualToAnchor:v30];
+      leadingAnchor3 = [(UIView *)self->_noContentParentView leadingAnchor];
+      tableView5 = [(WDClinicalOnboardingViewController *)self tableView];
+      leadingAnchor4 = [tableView5 leadingAnchor];
+      v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v60[3] = v31;
-      v32 = [(UIView *)self->_noContentParentView trailingAnchor];
-      v33 = [(WDClinicalOnboardingViewController *)self tableView];
-      v34 = [v33 trailingAnchor];
-      v35 = [v32 constraintEqualToAnchor:v34];
+      trailingAnchor3 = [(UIView *)self->_noContentParentView trailingAnchor];
+      tableView6 = [(WDClinicalOnboardingViewController *)self tableView];
+      trailingAnchor4 = [tableView6 trailingAnchor];
+      v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v60[4] = v35;
       v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:5];
       [v41 activateConstraints:v36];
     }
 
-    v4 = v58;
+    viewCopy = v58;
   }
 
   else
@@ -1402,8 +1402,8 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
 - (BOOL)showingNoLocations
 {
-  v2 = [(_UIContentUnavailableView *)self->_noLocationsView superview];
-  v3 = v2 != 0;
+  superview = [(_UIContentUnavailableView *)self->_noLocationsView superview];
+  v3 = superview != 0;
 
   return v3;
 }
@@ -1415,8 +1415,8 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
   v5 = [v3 initWithFrame:v4 title:0 style:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(WDClinicalOnboardingViewController *)self _providerNotFoundExplanationMessage];
-  [v5 setMessage:v6];
+  _providerNotFoundExplanationMessage = [(WDClinicalOnboardingViewController *)self _providerNotFoundExplanationMessage];
+  [v5 setMessage:_providerNotFoundExplanationMessage];
 
   LODWORD(v7) = 1148846080;
   [v5 setContentCompressionResistancePriority:1 forAxis:v7];
@@ -1434,9 +1434,9 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
   else
   {
-    v3 = [(_UIContentUnavailableView *)self->_noLocationsView superview];
+    superview = [(_UIContentUnavailableView *)self->_noLocationsView superview];
 
-    if (!v3)
+    if (!superview)
     {
       if (self->_noLocationsView)
       {
@@ -1445,8 +1445,8 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
       else
       {
-        v4 = [(WDClinicalOnboardingViewController *)self _createNoLocationsView];
-        [(WDClinicalOnboardingViewController *)self setNoLocationsView:v4];
+        _createNoLocationsView = [(WDClinicalOnboardingViewController *)self _createNoLocationsView];
+        [(WDClinicalOnboardingViewController *)self setNoLocationsView:_createNoLocationsView];
       }
 
       noLocationsView = self->_noLocationsView;
@@ -1458,8 +1458,8 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
 - (BOOL)showingMainSpinner
 {
-  v2 = [(HRWDSpinnerView *)self->_spinnerView superview];
-  v3 = v2 != 0;
+  superview = [(HRWDSpinnerView *)self->_spinnerView superview];
+  v3 = superview != 0;
 
   return v3;
 }
@@ -1479,9 +1479,9 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
 - (void)_showSpinnerView
 {
-  v3 = [(HRWDSpinnerView *)self->_spinnerView superview];
+  superview = [(HRWDSpinnerView *)self->_spinnerView superview];
 
-  if (!v3)
+  if (!superview)
   {
     if (self->_spinnerView)
     {
@@ -1490,8 +1490,8 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
     else
     {
-      v4 = [(WDClinicalOnboardingViewController *)self _createSpinnerView];
-      [(WDClinicalOnboardingViewController *)self setSpinnerView:v4];
+      _createSpinnerView = [(WDClinicalOnboardingViewController *)self _createSpinnerView];
+      [(WDClinicalOnboardingViewController *)self setSpinnerView:_createSpinnerView];
     }
 
     [(WDClinicalOnboardingViewController *)self _showNoContentView:self->_spinnerView];
@@ -1510,8 +1510,8 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
 - (BOOL)showingNoGeoView
 {
-  v2 = [(WDClinicalOnboardingNoGeoView *)self->_noGeoView superview];
-  v3 = v2 != 0;
+  superview = [(WDClinicalOnboardingNoGeoView *)self->_noGeoView superview];
+  v3 = superview != 0;
 
   return v3;
 }
@@ -1526,9 +1526,9 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
 - (void)_showNoGeoView
 {
-  v3 = [(WDClinicalOnboardingNoGeoView *)self->_noGeoView superview];
+  superview = [(WDClinicalOnboardingNoGeoView *)self->_noGeoView superview];
 
-  if (!v3)
+  if (!superview)
   {
     if (self->_noGeoView)
     {
@@ -1537,8 +1537,8 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
     else
     {
-      v4 = [(WDClinicalOnboardingViewController *)self _createNoGeoView];
-      [(WDClinicalOnboardingViewController *)self setNoGeoView:v4];
+      _createNoGeoView = [(WDClinicalOnboardingViewController *)self _createNoGeoView];
+      [(WDClinicalOnboardingViewController *)self setNoGeoView:_createNoGeoView];
     }
 
     noGeoView = self->_noGeoView;
@@ -1563,7 +1563,7 @@ uint64_t __87__WDClinicalOnboardingViewController__didFetchResultsForQuery_searc
 
 - (void)_beginLoadingAlreadyConnectedAccountsIfNecessary
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   OUTLINED_FUNCTION_1();
@@ -1661,27 +1661,27 @@ uint64_t __86__WDClinicalOnboardingViewController__beginLoadingAlreadyConnectedA
   return v7;
 }
 
-- (void)_presentLoginForAlreadyConnectedAccount:(id)a3
+- (void)_presentLoginForAlreadyConnectedAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   _HKInitializeLogging();
   v5 = *MEMORY[0x1E696B948];
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEBUG))
   {
-    [(WDClinicalOnboardingViewController *)v5 _presentLoginForAlreadyConnectedAccount:v4];
+    [(WDClinicalOnboardingViewController *)v5 _presentLoginForAlreadyConnectedAccount:accountCopy];
   }
 
   objc_initWeak(&location, self);
-  v6 = [(HRProfile *)self->_profile clinicalSourcesDataProvider];
+  clinicalSourcesDataProvider = [(HRProfile *)self->_profile clinicalSourcesDataProvider];
   profile = self->_profile;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__WDClinicalOnboardingViewController__presentLoginForAlreadyConnectedAccount___block_invoke;
   v9[3] = &unk_1E83DCBD8;
-  v8 = v4;
+  v8 = accountCopy;
   v10 = v8;
   objc_copyWeak(&v11, &location);
-  [v6 beginReloginSessionForAccount:v8 fromViewController:self profile:profile loginCancelledHandler:0 errorHandler:v9];
+  [clinicalSourcesDataProvider beginReloginSessionForAccount:v8 fromViewController:self profile:profile loginCancelledHandler:0 errorHandler:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1698,10 +1698,10 @@ void __78__WDClinicalOnboardingViewController__presentLoginForAlreadyConnectedAc
   [WeakRetained presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_proceedWithAlreadyConnectedAccount:(id)a3
+- (void)_proceedWithAlreadyConnectedAccount:(id)account
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   _HKInitializeLogging();
   v5 = *MEMORY[0x1E696B948];
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEBUG))
@@ -1711,22 +1711,22 @@ void __78__WDClinicalOnboardingViewController__presentLoginForAlreadyConnectedAc
 
   v6 = +[_TtC15HealthRecordsUI39OAuthCompletionNotificationUserInfoKeys account];
   v12 = v6;
-  v13[0] = v4;
+  v13[0] = accountCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
   v8 = MEMORY[0x1E696AD80];
-  v9 = [MEMORY[0x1E696AD80] OAuthCompletionNotification];
-  v10 = [v8 notificationWithName:v9 object:self userInfo:v7];
+  oAuthCompletionNotification = [MEMORY[0x1E696AD80] OAuthCompletionNotification];
+  v10 = [v8 notificationWithName:oAuthCompletionNotification object:self userInfo:v7];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotification:v10];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotification:v10];
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v4 = [(WDClinicalOnboardingViewController *)self dismissalViewController];
+  dismissalViewController = [(WDClinicalOnboardingViewController *)self dismissalViewController];
 
-  if (v4)
+  if (dismissalViewController)
   {
     [(WDClinicalOnboardingViewController *)self dismissalViewController];
   }
@@ -1739,9 +1739,9 @@ void __78__WDClinicalOnboardingViewController__presentLoginForAlreadyConnectedAc
   [v5 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_presentError:(id)a3
+- (void)_presentError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   _HKInitializeLogging();
   v5 = *MEMORY[0x1E696B948];
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_ERROR))
@@ -1751,19 +1751,19 @@ void __78__WDClinicalOnboardingViewController__presentLoginForAlreadyConnectedAc
 
   v6 = HRLocalizedString(@"HEALTH_RECORDS_PROVIDER_SERVICE_ERROR_TITLE");
   v7 = HRLocalizedString(@"HEALTH_RECORDS_PROVIDER_SERVICE_ERROR_ONBOARDING_SEARCH");
-  v8 = [v4 domain];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E696A978]];
+  domain = [errorCopy domain];
+  v9 = [domain isEqualToString:*MEMORY[0x1E696A978]];
 
   if (v9)
   {
-    v10 = [v4 code];
-    if (v10 == -1009)
+    code = [errorCopy code];
+    if (code == -1009)
     {
       v11 = @"HEALTH_RECORDS_ERROR_NO_CONNECTION_TO_INTERNET";
       goto LABEL_9;
     }
 
-    if (v10 == -1003 && [MEMORY[0x1E696C608] isAppleInternalInstall])
+    if (code == -1003 && [MEMORY[0x1E696C608] isAppleInternalInstall])
     {
       v11 = @"HEALTH_RECORDS_ERROR_REQUIRES_INTERNAL_NETWORK";
 LABEL_9:
@@ -1773,9 +1773,9 @@ LABEL_9:
     }
   }
 
-  v13 = [(WDClinicalOnboardingViewController *)self presentedViewController];
+  presentedViewController = [(WDClinicalOnboardingViewController *)self presentedViewController];
 
-  if (!v13)
+  if (!presentedViewController)
   {
     v14 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v6 message:v7 preferredStyle:1];
     v15 = MEMORY[0x1E69DC648];
@@ -1840,7 +1840,7 @@ void __58__WDClinicalOnboardingViewController__suggestNewProviders__block_invoke
   return v9;
 }
 
-- (void)_changeEnvironment:(int64_t)a3
+- (void)_changeEnvironment:(int64_t)environment
 {
   if ([MEMORY[0x1E696C608] isAppleInternalInstall])
   {
@@ -1851,8 +1851,8 @@ void __58__WDClinicalOnboardingViewController__suggestNewProviders__block_invoke
     v6[2] = __57__WDClinicalOnboardingViewController__changeEnvironment___block_invoke;
     v6[3] = &unk_1E83DCC90;
     objc_copyWeak(v7, &location);
-    v7[1] = a3;
-    [(HKClinicalProviderServiceStore *)providerServiceStore setHealthRecordsEnvironment:a3 completion:v6];
+    v7[1] = environment;
+    [(HKClinicalProviderServiceStore *)providerServiceStore setHealthRecordsEnvironment:environment completion:v6];
     objc_destroyWeak(v7);
     objc_destroyWeak(&location);
   }
@@ -1924,13 +1924,13 @@ void __57__WDClinicalOnboardingViewController__changeEnvironment___block_invoke_
   [WeakRetained _resetCacheAndReloadData];
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v5 = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sections = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
+  v6 = [sections objectAtIndexedSubscript:section];
 
-  v7 = [v6 headerString];
-  v8 = [v7 length];
+  headerString = [v6 headerString];
+  v8 = [headerString length];
 
   if (v8)
   {
@@ -1945,112 +1945,112 @@ void __57__WDClinicalOnboardingViewController__changeEnvironment___block_invoke_
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 headerString];
+  sections = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
+  v6 = [sections objectAtIndexedSubscript:section];
+  headerString = [v6 headerString];
 
-  return v7;
+  return headerString;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   spinnerIndexPath = self->_spinnerIndexPath;
-  if (spinnerIndexPath && [(NSIndexPath *)spinnerIndexPath section]== a4)
+  if (spinnerIndexPath && [(NSIndexPath *)spinnerIndexPath section]== section)
   {
-    v8 = 0;
+    footerString = 0;
   }
 
   else
   {
-    v9 = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
-    v10 = [v9 objectAtIndexedSubscript:a4];
-    v8 = [v10 footerString];
+    sections = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
+    v10 = [sections objectAtIndexedSubscript:section];
+    footerString = [v10 footerString];
   }
 
-  return v8;
+  return footerString;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
-  v4 = [v3 count];
+  sections = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  sections = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
+  v7 = [sections objectAtIndexedSubscript:section];
 
-  v8 = [v7 identifier];
-  if (![v8 isEqualToString:@"SupportedLocations"])
+  identifier = [v7 identifier];
+  if (![identifier isEqualToString:@"SupportedLocations"])
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(WDClinicalOnboardingViewController *)self couldFetchAdditionalResults];
+  couldFetchAdditionalResults = [(WDClinicalOnboardingViewController *)self couldFetchAdditionalResults];
 
-  if (!v9)
+  if (!couldFetchAdditionalResults)
   {
 LABEL_5:
-    v13 = [v7 estimatedNumRows];
-    v14 = [v13 integerValue];
+    estimatedNumRows = [v7 estimatedNumRows];
+    integerValue = [estimatedNumRows integerValue];
     goto LABEL_6;
   }
 
   v10 = MEMORY[0x1E696AC88];
-  v11 = [v7 estimatedNumRows];
-  v12 = [v10 indexPathForRow:objc_msgSend(v11 inSection:{"integerValue"), a4}];
+  estimatedNumRows2 = [v7 estimatedNumRows];
+  v12 = [v10 indexPathForRow:objc_msgSend(estimatedNumRows2 inSection:{"integerValue"), section}];
   [(WDClinicalOnboardingViewController *)self setSpinnerIndexPath:v12];
 
-  v13 = [v7 estimatedNumRows];
-  v14 = [v13 integerValue] + 1;
+  estimatedNumRows = [v7 estimatedNumRows];
+  integerValue = [estimatedNumRows integerValue] + 1;
 LABEL_6:
 
-  return v14;
+  return integerValue;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v5 = MEMORY[0x1E69DC888];
-  v6 = a4;
-  v7 = [v5 secondarySystemBackgroundColor];
-  [v6 setBackgroundColor:v7];
+  cellCopy = cell;
+  secondarySystemBackgroundColor = [v5 secondarySystemBackgroundColor];
+  [cellCopy setBackgroundColor:secondarySystemBackgroundColor];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WDClinicalOnboardingViewController *)self spinnerIndexPath];
-  v9 = [v7 isEqual:v8];
+  viewCopy = view;
+  pathCopy = path;
+  spinnerIndexPath = [(WDClinicalOnboardingViewController *)self spinnerIndexPath];
+  v9 = [pathCopy isEqual:spinnerIndexPath];
 
   if (v9)
   {
     v10 = +[HRWDSpinnerTableViewCell defaultReuseIdentifier];
-    v11 = [v6 dequeueReusableCellWithIdentifier:v10 forIndexPath:v7];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v10 forIndexPath:pathCopy];
   }
 
   else
   {
-    v10 = [(WDClinicalOnboardingViewController *)self accountSearchResultAtIndexPath:v7];
+    v10 = [(WDClinicalOnboardingViewController *)self accountSearchResultAtIndexPath:pathCopy];
     if (v10)
     {
-      v11 = [v6 dequeueReusableCellWithIdentifier:@"AlreadyConnectedCell" forIndexPath:v7];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:@"AlreadyConnectedCell" forIndexPath:pathCopy];
       [v11 setSelectionStyle:3];
       [v11 setAccessoryType:1];
-      v12 = [(HRProfile *)self->_profile clinicalSourcesDataProvider];
-      [v11 setBrandable:v10 dataProvider:v12];
+      clinicalSourcesDataProvider = [(HRProfile *)self->_profile clinicalSourcesDataProvider];
+      [v11 setBrandable:v10 dataProvider:clinicalSourcesDataProvider];
     }
 
     else
     {
-      v13 = [(WDClinicalOnboardingViewController *)self providerSearchResultAtIndexPath:v7];
+      v13 = [(WDClinicalOnboardingViewController *)self providerSearchResultAtIndexPath:pathCopy];
       if (!v13)
       {
         _HKInitializeLogging();
@@ -2061,9 +2061,9 @@ LABEL_6:
         }
       }
 
-      v11 = [v6 dequeueReusableCellWithIdentifier:@"SearchResultCell" forIndexPath:v7];
-      v15 = [(HRProfile *)self->_profile clinicalSourcesDataProvider];
-      [v11 setSearchResult:v13 dataProvider:v15 searchTerms:self->_searchTerms];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:@"SearchResultCell" forIndexPath:pathCopy];
+      clinicalSourcesDataProvider2 = [(HRProfile *)self->_profile clinicalSourcesDataProvider];
+      [v11 setSearchResult:v13 dataProvider:clinicalSourcesDataProvider2 searchTerms:self->_searchTerms];
 
       [v11 setSelectionStyle:3];
     }
@@ -2072,14 +2072,14 @@ LABEL_6:
   return v11;
 }
 
-- (id)providerSearchResultAtIndexPath:(id)a3
+- (id)providerSearchResultAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  sections = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v7 = [v6 identifier];
-  if (v7 == @"SupportedLocations" || (v8 = v7, [v6 identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"SupportedLocations"), v9, v8, (v10 & 1) != 0))
+  identifier = [v6 identifier];
+  if (identifier == @"SupportedLocations" || (v8 = identifier, [v6 identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"SupportedLocations"), v9, v8, (v10 & 1) != 0))
   {
     v11 = &OBJC_IVAR___WDClinicalOnboardingViewController__supportedSearchResults;
 LABEL_10:
@@ -2087,15 +2087,15 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v12 = [v6 identifier];
-  if (v12 == @"AlreadySharing" || (v13 = v12, [v6 identifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"AlreadySharing"), v14, v13, (v15 & 1) != 0))
+  identifier2 = [v6 identifier];
+  if (identifier2 == @"AlreadySharing" || (v13 = identifier2, [v6 identifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"AlreadySharing"), v14, v13, (v15 & 1) != 0))
   {
     v11 = &OBJC_IVAR___WDClinicalOnboardingViewController__alreadySharingSearchResults;
     goto LABEL_10;
   }
 
-  v16 = [v6 identifier];
-  if (v16 == @"UnsupportedLocations" || (v17 = v16, [v6 identifier], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", @"UnsupportedLocations"), v18, v17, v19))
+  identifier3 = [v6 identifier];
+  if (identifier3 == @"UnsupportedLocations" || (v17 = identifier3, [v6 identifier], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", @"UnsupportedLocations"), v18, v17, v19))
   {
     v11 = &OBJC_IVAR___WDClinicalOnboardingViewController__unsupportedSearchResults;
     goto LABEL_10;
@@ -2103,7 +2103,7 @@ LABEL_10:
 
   v20 = 0;
 LABEL_11:
-  v21 = [v4 row];
+  v21 = [pathCopy row];
   if (v21 >= [v20 count])
   {
     _HKInitializeLogging();
@@ -2117,7 +2117,7 @@ LABEL_11:
 
   else
   {
-    v22 = [v20 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v22 = [v20 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2133,14 +2133,14 @@ LABEL_11:
   return v23;
 }
 
-- (id)accountSearchResultAtIndexPath:(id)a3
+- (id)accountSearchResultAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  sections = [(HRUITableViewSectionConfiguration *)self->_sectionConfiguration sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v7 = [v6 identifier];
-  if (v7 == @"SupportedLocations" || (v8 = v7, [v6 identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"SupportedLocations"), v9, v8, (v10 & 1) != 0))
+  identifier = [v6 identifier];
+  if (identifier == @"SupportedLocations" || (v8 = identifier, [v6 identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"SupportedLocations"), v9, v8, (v10 & 1) != 0))
   {
     v11 = &OBJC_IVAR___WDClinicalOnboardingViewController__supportedSearchResults;
 LABEL_7:
@@ -2148,8 +2148,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [v6 identifier];
-  if (v12 == @"UnsupportedLocations" || (v13 = v12, [v6 identifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"UnsupportedLocations"), v14, v13, v15))
+  identifier2 = [v6 identifier];
+  if (identifier2 == @"UnsupportedLocations" || (v13 = identifier2, [v6 identifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"UnsupportedLocations"), v14, v13, v15))
   {
     v11 = &OBJC_IVAR___WDClinicalOnboardingViewController__unsupportedSearchResults;
     goto LABEL_7;
@@ -2157,7 +2157,7 @@ LABEL_7:
 
   v16 = 0;
 LABEL_8:
-  v17 = [v4 row];
+  v17 = [pathCopy row];
   if (v17 >= [v16 count])
   {
     _HKInitializeLogging();
@@ -2171,7 +2171,7 @@ LABEL_8:
 
   else
   {
-    v18 = [v16 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v18 = [v16 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2187,27 +2187,27 @@ LABEL_8:
   return v19;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  [v4 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v6 = v5;
-  [v4 frame];
+  [scrollCopy frame];
   v8 = v6 + v7;
-  [v4 contentSize];
+  [scrollCopy contentSize];
   v10 = v9;
 
   if (v8 >= v10 - (*MEMORY[0x1E69DE3D8] + *MEMORY[0x1E69DE3D8]) && [(WDClinicalOnboardingViewController *)self couldFetchAdditionalResults]&& ![(WDClinicalOnboardingViewController *)self searchInFlight])
   {
-    v11 = [(WDClinicalOnboardingViewController *)self searchQuery];
-    [(WDClinicalOnboardingViewController *)self _searchResultsForQuery:v11 from:[(WDClinicalOnboardingViewController *)self nextFrom]];
+    searchQuery = [(WDClinicalOnboardingViewController *)self searchQuery];
+    [(WDClinicalOnboardingViewController *)self _searchResultsForQuery:searchQuery from:[(WDClinicalOnboardingViewController *)self nextFrom]];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WDClinicalOnboardingViewController *)self accountSearchResultAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [(WDClinicalOnboardingViewController *)self accountSearchResultAtIndexPath:pathCopy];
   if (v6)
   {
     _HKInitializeLogging();
@@ -2220,8 +2220,8 @@ LABEL_8:
     if ([v6 needsLoginToEnableClinicalSharing])
     {
       [(WDClinicalOnboardingViewController *)self _presentLoginForAlreadyConnectedAccount:v6];
-      v8 = [(WDClinicalOnboardingViewController *)self tableView];
-      [v8 deselectRowAtIndexPath:v5 animated:1];
+      tableView = [(WDClinicalOnboardingViewController *)self tableView];
+      [tableView deselectRowAtIndexPath:pathCopy animated:1];
     }
 
     else
@@ -2232,13 +2232,13 @@ LABEL_8:
 
   else
   {
-    v9 = [(WDClinicalOnboardingViewController *)self providerSearchResultAtIndexPath:v5];
+    v9 = [(WDClinicalOnboardingViewController *)self providerSearchResultAtIndexPath:pathCopy];
     if (v9)
     {
       if ([(WDClinicalOnboardingViewController *)self _isSimulator])
       {
-        v10 = [(WDClinicalOnboardingViewController *)self sampleAccountsLoader];
-        [(HRProfile *)self->_profile setClinicalSampleAccountsLoader:v10];
+        sampleAccountsLoader = [(WDClinicalOnboardingViewController *)self sampleAccountsLoader];
+        [(HRProfile *)self->_profile setClinicalSampleAccountsLoader:sampleAccountsLoader];
       }
 
       _HKInitializeLogging();

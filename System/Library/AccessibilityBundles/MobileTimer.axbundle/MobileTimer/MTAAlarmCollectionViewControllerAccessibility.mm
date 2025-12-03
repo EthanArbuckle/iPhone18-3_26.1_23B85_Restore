@@ -1,5 +1,5 @@
 @interface MTAAlarmCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axDataSource;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
@@ -7,14 +7,14 @@
 
 @implementation MTAAlarmCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UICollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAAlarmCollectionViewController" hasInstanceMethod:@"_removeAlarm:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MTAAlarmCollectionViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"MTAAlarmCollectionViewController" hasInstanceVariable:@"_noItemsView" withType:"_UIContentUnavailableView"];
-  [v3 validateClass:@"MTAAlarmCollectionViewController" hasInstanceVariable:@"_dataSource" withType:"MTAlarmDataSource"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UICollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewController" hasInstanceMethod:@"_removeAlarm:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewController" hasInstanceVariable:@"_noItemsView" withType:"_UIContentUnavailableView"];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewController" hasInstanceVariable:@"_dataSource" withType:"MTAlarmDataSource"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

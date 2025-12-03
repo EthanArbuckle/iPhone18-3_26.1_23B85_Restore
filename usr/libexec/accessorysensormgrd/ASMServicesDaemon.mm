@@ -1,12 +1,12 @@
 @interface ASMServicesDaemon
 + (id)sharedInstance;
 - (ASMServicesDaemon)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
 - (void)_scheduleUpdate;
-- (void)_xpcConnectionInterrupted:(id)a3;
-- (void)_xpcConnectionInvalidated:(id)a3;
+- (void)_xpcConnectionInterrupted:(id)interrupted;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
 - (void)activate;
 - (void)invalidate;
 @end
@@ -44,7 +44,7 @@
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v44 = 0;
   NSAppendPrintF_safe();
@@ -138,16 +138,16 @@ LABEL_14:
         }
 
         v19 = *(*(&v33 + 1) + 8 * j);
-        v20 = [v19 xpcCnx];
-        v21 = [v20 processIdentifier];
-        v22 = [v19 entitled];
+        xpcCnx = [v19 xpcCnx];
+        processIdentifier = [xpcCnx processIdentifier];
+        entitled = [v19 entitled];
         v23 = "no";
-        if (v22)
+        if (entitled)
         {
           v23 = "yes";
         }
 
-        v28 = v21;
+        v28 = processIdentifier;
         v30 = v23;
         NSAppendPrintF();
         v24 = v4;
@@ -156,7 +156,7 @@ LABEL_14:
         v4 = v24;
       }
 
-      v16 = [(NSMutableSet *)obja countByEnumeratingWithState:&v33 objects:v45 count:16, v21, v30];
+      v16 = [(NSMutableSet *)obja countByEnumeratingWithState:&v33 objects:v45 count:16, processIdentifier, v30];
     }
 
     while (v16);
@@ -224,13 +224,13 @@ LABEL_14:
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = objc_alloc_init(ASMServicesXPCConnection);
   [(ASMServicesXPCConnection *)v6 setDaemon:self];
   [(ASMServicesXPCConnection *)v6 setDispatchQueue:self->_dispatchQueue];
-  [(ASMServicesXPCConnection *)v6 setXpcCnx:v5];
+  [(ASMServicesXPCConnection *)v6 setXpcCnx:connectionCopy];
   [(ASMServicesXPCConnection *)v6 setConnectionID:ASMXPCGetNextConnectionID()];
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
@@ -244,30 +244,30 @@ LABEL_14:
 
   [(NSMutableSet *)xpcConnections addObject:v6];
   v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ASMServicesXPCClientInterface];
-  [v5 _setQueue:self->_dispatchQueue];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ASMServicesXPCDaemonInterface];
-  [v5 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
-  [v5 setExportedObject:v6];
+  [connectionCopy setExportedObject:v6];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100007478;
   v14[3] = &unk_1000144A0;
   v14[4] = self;
   v14[5] = v6;
-  [v5 setInterruptionHandler:v14];
+  [connectionCopy setInterruptionHandler:v14];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100007484;
   v13[3] = &unk_1000144A0;
   v13[4] = self;
   v13[5] = v6;
-  [v5 setInvalidationHandler:v13];
-  [v5 setRemoteObjectInterface:v10];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:v13];
+  [connectionCopy setRemoteObjectInterface:v10];
+  [connectionCopy resume];
   if (dword_10001A478 <= 20 && (dword_10001A478 != -1 || _LogCategory_Initialize()))
   {
-    sub_1000096D4(v5);
+    sub_1000096D4(connectionCopy);
   }
 
   return 1;
@@ -288,38 +288,38 @@ LABEL_14:
   }
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v6 = v4;
+  invalidatedCopy = invalidated;
+  v6 = invalidatedCopy;
   if (dword_10001A478 <= 20)
   {
-    if (dword_10001A478 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (dword_10001A478 != -1 || (v5 = _LogCategory_Initialize(), invalidatedCopy = v6, v5))
     {
-      sub_100009718(v4);
-      v4 = v6;
+      sub_100009718(invalidatedCopy);
+      invalidatedCopy = v6;
     }
   }
 
-  [v4 xpcConnectionInvalidated];
+  [invalidatedCopy xpcConnectionInvalidated];
   [(NSMutableSet *)self->_xpcConnections removeObject:v6];
   [(ASMServicesDaemon *)self _update];
 }
 
-- (void)_xpcConnectionInterrupted:(id)a3
+- (void)_xpcConnectionInterrupted:(id)interrupted
 {
-  v3 = a3;
-  v5 = v3;
+  interruptedCopy = interrupted;
+  v5 = interruptedCopy;
   if (dword_10001A478 <= 20)
   {
-    if (dword_10001A478 != -1 || (v4 = _LogCategory_Initialize(), v3 = v5, v4))
+    if (dword_10001A478 != -1 || (v4 = _LogCategory_Initialize(), interruptedCopy = v5, v4))
     {
-      sub_10000977C(v3);
-      v3 = v5;
+      sub_10000977C(interruptedCopy);
+      interruptedCopy = v5;
     }
   }
 
-  [v3 xpcConnectionInterrupted];
+  [interruptedCopy xpcConnectionInterrupted];
 }
 
 @end

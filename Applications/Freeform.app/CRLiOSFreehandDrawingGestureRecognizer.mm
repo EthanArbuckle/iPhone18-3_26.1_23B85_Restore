@@ -1,39 +1,39 @@
 @interface CRLiOSFreehandDrawingGestureRecognizer
-- ($D9ACD5A945031E604089763E4FBE0988)p_canvasTouchPointFromTouch:(id)a3;
-- (BOOL)p_selectTargetFreehandInfoForDrawing:(id)a3;
+- ($D9ACD5A945031E604089763E4FBE0988)p_canvasTouchPointFromTouch:(id)touch;
+- (BOOL)p_selectTargetFreehandInfoForDrawing:(id)drawing;
 - (BOOL)p_tapShouldAvoidDrawing;
-- (CRLiOSFreehandDrawingGestureRecognizer)initWithInteractiveCanvasController:(id)a3;
+- (CRLiOSFreehandDrawingGestureRecognizer)initWithInteractiveCanvasController:(id)controller;
 - (unint64_t)inputType;
 - (void)operationDidEnd;
-- (void)p_addCoalescedAndPredictedTouchesToTrackerForTouch:(id)a3 fromEvent:(id)a4 fromTouchesEnded:(BOOL)a5;
-- (void)p_beginDrawingModeWithoutDrawingWithTouch:(id)a3;
+- (void)p_addCoalescedAndPredictedTouchesToTrackerForTouch:(id)touch fromEvent:(id)event fromTouchesEnded:(BOOL)ended;
+- (void)p_beginDrawingModeWithoutDrawingWithTouch:(id)touch;
 - (void)p_beginDynamicDrawing;
 - (void)p_cancelOrFailAndCleanUpChanges;
-- (void)p_canvasWillScrollOrZoom:(id)a3;
+- (void)p_canvasWillScrollOrZoom:(id)zoom;
 - (void)p_clearTimerIfNeeded;
 - (void)p_closeCVCDelegatePresentedViewControllerIfNeeded;
-- (void)p_endSuccessfullyWithEvent:(id)a3;
+- (void)p_endSuccessfullyWithEvent:(id)event;
 - (void)p_hideEditMenuIfNeeded;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesEstimatedPropertiesUpdated:(id)a3;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesEstimatedPropertiesUpdated:(id)updated;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CRLiOSFreehandDrawingGestureRecognizer
 
-- (CRLiOSFreehandDrawingGestureRecognizer)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSFreehandDrawingGestureRecognizer)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = CRLiOSFreehandDrawingGestureRecognizer;
   v5 = [(CRLiOSFreehandDrawingGestureRecognizer *)&v14 initWithTarget:0 action:0];
   if (v5)
   {
-    if (!v4)
+    if (!controllerCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -62,7 +62,7 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:92 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
     }
 
-    objc_storeWeak(&v5->_icc, v4);
+    objc_storeWeak(&v5->_icc, controllerCopy);
     v5->_startingScaledPoint = xmmword_1014629F0;
     v9 = +[NSNotificationCenter defaultCenter];
     WeakRetained = objc_loadWeakRetained(&v5->_icc);
@@ -76,9 +76,9 @@
   return v5;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if ([(CRLiOSFreehandDrawingGestureRecognizer *)self state]!= a3)
+  if ([(CRLiOSFreehandDrawingGestureRecognizer *)self state]!= state)
   {
     if (qword_101AD5C98 != -1)
     {
@@ -88,38 +88,38 @@
     v5 = off_1019EFD50;
     if (os_log_type_enabled(off_1019EFD50, OS_LOG_TYPE_DEBUG))
     {
-      sub_101367544(v5, a3);
+      sub_101367544(v5, state);
     }
   }
 
   v10.receiver = self;
   v10.super_class = CRLiOSFreehandDrawingGestureRecognizer;
-  [(CRLiOSFreehandDrawingGestureRecognizer *)&v10 setState:a3];
-  if (a3 == 1)
+  [(CRLiOSFreehandDrawingGestureRecognizer *)&v10 setState:state];
+  if (state == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v7 = [WeakRetained layerHost];
-    v8 = [v7 canvasView];
-    v9 = [v8 enclosingScrollView];
-    [v9 setScrollEnabled:0];
+    layerHost = [WeakRetained layerHost];
+    canvasView = [layerHost canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    [enclosingScrollView setScrollEnabled:0];
 
     self->_didDisableScrolling = 1;
   }
 }
 
-- (BOOL)p_selectTargetFreehandInfoForDrawing:(id)a3
+- (BOOL)p_selectTargetFreehandInfoForDrawing:(id)drawing
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 locked] & 1) == 0)
+  drawingCopy = drawing;
+  v5 = drawingCopy;
+  if (drawingCopy && ([drawingCopy locked] & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v8 = [WeakRetained canvasEditor];
-    v9 = [v8 selectionPathWithInfo:v5];
+    canvasEditor = [WeakRetained canvasEditor];
+    v9 = [canvasEditor selectionPathWithInfo:v5];
 
     v10 = objc_loadWeakRetained(&self->_icc);
-    v11 = [v10 editorController];
-    [v11 setSelectionPath:v9];
+    editorController = [v10 editorController];
+    [editorController setSelectionPath:v9];
 
     v6 = 1;
   }
@@ -132,19 +132,19 @@
   return v6;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v94.receiver = self;
   v94.super_class = CRLiOSFreehandDrawingGestureRecognizer;
-  v66 = a4;
-  [(CRLiOSFreehandDrawingGestureRecognizer *)&v94 touchesBegan:v6 withEvent:?];
+  eventCopy = event;
+  [(CRLiOSFreehandDrawingGestureRecognizer *)&v94 touchesBegan:beganCopy withEvent:?];
   if (![(CRLiOSFreehandDrawingGestureRecognizer *)self state])
   {
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v8 = [WeakRetained currentlyScrolling];
+    currentlyScrolling = [WeakRetained currentlyScrolling];
 
-    if (v8)
+    if (currentlyScrolling)
     {
       if (qword_101AD5C98 != -1)
       {
@@ -161,10 +161,10 @@
     }
   }
 
-  v9 = [v6 anyObject];
-  v10 = [v9 type];
+  anyObject = [beganCopy anyObject];
+  type = [anyObject type];
 
-  if (v10 == 3)
+  if (type == 3)
   {
     v11 = [(CRLiOSFreehandDrawingGestureRecognizer *)self modifierFlags]& 0x40000;
     if (v11 | [(CRLiOSFreehandDrawingGestureRecognizer *)self buttonMask]& 2)
@@ -185,14 +185,14 @@
   }
 
   v12 = objc_loadWeakRetained(&self->_icc);
-  v13 = [v12 freehandDrawingToolkit];
+  freehandDrawingToolkit = [v12 freehandDrawingToolkit];
 
   v92 = 0u;
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v65 = v6;
-  v14 = v6;
+  v65 = beganCopy;
+  v14 = beganCopy;
   v15 = [v14 countByEnumeratingWithState:&v90 objects:v101 count:16];
   if (!v15)
   {
@@ -203,7 +203,7 @@
   v18 = *v91;
   *&v16 = 134218496;
   v64 = v16;
-  v70 = v13;
+  v70 = freehandDrawingToolkit;
   v67 = v14;
   v68 = *v91;
   while (2)
@@ -240,16 +240,16 @@
 
       v20 = *(*(&v90 + 1) + 8 * v19);
       v21 = objc_loadWeakRetained(&self->_icc);
-      v22 = [v21 isInDynamicOperation];
+      isInDynamicOperation = [v21 isInDynamicOperation];
 
-      if (v22)
+      if (isInDynamicOperation)
       {
         if (qword_101AD5C98 != -1)
         {
           sub_101367900();
         }
 
-        v6 = v65;
+        beganCopy = v65;
         if (os_log_type_enabled(off_1019EFD50, OS_LOG_TYPE_DEBUG))
         {
           sub_101367928();
@@ -265,11 +265,11 @@
       v28 = v27;
       v30 = v29;
       v31 = sub_10042B6C0([v20 type]);
-      v32 = [v13 freehandDrawingBehaviorForTouchType:objc_msgSend(v20 atUnscaledPoint:{"type"), v28, v30}];
+      v32 = [freehandDrawingToolkit freehandDrawingBehaviorForTouchType:objc_msgSend(v20 atUnscaledPoint:{"type"), v28, v30}];
       v33 = v32;
       if (v32 == 2)
       {
-        if ([v13 isInDrawingMode])
+        if ([freehandDrawingToolkit isInDrawingMode])
         {
           v34 = [(CRLiOSFreehandDrawingGestureRecognizer *)self p_selectTargetFreehandInfoForDrawing:0];
           goto LABEL_29;
@@ -293,9 +293,9 @@ LABEL_29:
       if (os_log_type_enabled(off_1019EFD50, OS_LOG_TYPE_DEBUG))
       {
         v60 = v35;
-        v61 = [v20 type];
+        type2 = [v20 type];
         *buf = v64;
-        v96 = v61;
+        v96 = type2;
         v97 = 2048;
         v98 = v33;
         v99 = 1024;
@@ -340,15 +340,15 @@ LABEL_41:
       else
       {
         v38 = objc_loadWeakRetained(&self->_icc);
-        v39 = [v38 layerHost];
-        v40 = [v39 asiOSCVC];
+        layerHost = [v38 layerHost];
+        asiOSCVC = [layerHost asiOSCVC];
 
-        v41 = [v40 pencilMediator];
-        v42 = v41;
-        v37 = !v41 || ([v41 prefersPencilOnlyDrawing] & 1) != 0 || objc_msgSend(v20, "type") == 2;
+        pencilMediator = [asiOSCVC pencilMediator];
+        v42 = pencilMediator;
+        v37 = !pencilMediator || ([pencilMediator prefersPencilOnlyDrawing] & 1) != 0 || objc_msgSend(v20, "type") == 2;
       }
 
-      v13 = v70;
+      freehandDrawingToolkit = v70;
       if (!v36 || v37)
       {
         if (v36)
@@ -362,15 +362,15 @@ LABEL_41:
         v43 = objc_loadWeakRetained(&self->_icc);
         v44 = [v43 hitKnobAtPoint:v31 inputType:0 returningRep:{v28, v30}];
 
-        v45 = [v44 worksWithStylus];
+        worksWithStylus = [v44 worksWithStylus];
         if ([v70 isLassoSelectionForMixedTypeEnabledInDrawingMode])
         {
           v46 = objc_opt_class();
           v47 = sub_100014370(v46, v44);
-          v45 |= v47 != 0;
+          worksWithStylus |= v47 != 0;
         }
 
-        if (!v44 || (v45 & 1) == 0)
+        if (!v44 || (worksWithStylus & 1) == 0)
         {
 
 LABEL_60:
@@ -408,7 +408,7 @@ LABEL_60:
               self->_tracker = v52;
             }
 
-            [(CRLiOSFreehandDrawingGestureRecognizer *)self p_addCoalescedAndPredictedTouchesToTrackerForTouch:self->_trackingTouch fromEvent:v66 fromTouchesEnded:0];
+            [(CRLiOSFreehandDrawingGestureRecognizer *)self p_addCoalescedAndPredictedTouchesToTrackerForTouch:self->_trackingTouch fromEvent:eventCopy fromTouchesEnded:0];
             v17 = v69;
             if ([(UITouch *)self->_trackingTouch type]== 2)
             {
@@ -531,12 +531,12 @@ LABEL_97:
 
 LABEL_102:
 
-  v6 = v65;
+  beganCopy = v65;
   if (![(CRLiOSFreehandDrawingGestureRecognizer *)self state]&& self->_didBeginDynamicDrawing)
   {
     v14 = objc_loadWeakRetained(&self->_icc);
-    v63 = [v14 dynamicOperationController];
-    [v63 handleTrackerManipulator:self];
+    dynamicOperationController = [v14 dynamicOperationController];
+    [dynamicOperationController handleTrackerManipulator:self];
 
 LABEL_114:
   }
@@ -544,14 +544,14 @@ LABEL_114:
 LABEL_116:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   v27.receiver = self;
   v27.super_class = CRLiOSFreehandDrawingGestureRecognizer;
-  [(CRLiOSFreehandDrawingGestureRecognizer *)&v27 touchesMoved:v6 withEvent:v7];
-  if (self->_trackingTouch && [v6 containsObject:?] && !-[CRLiOSFreehandDrawingGestureRecognizer p_isStateDone](self, "p_isStateDone"))
+  [(CRLiOSFreehandDrawingGestureRecognizer *)&v27 touchesMoved:movedCopy withEvent:eventCopy];
+  if (self->_trackingTouch && [movedCopy containsObject:?] && !-[CRLiOSFreehandDrawingGestureRecognizer p_isStateDone](self, "p_isStateDone"))
   {
     [(CRLiOSFreehandDrawingGestureRecognizer *)self p_canvasTouchPointFromTouch:self->_trackingTouch];
     v9 = v8;
@@ -560,11 +560,11 @@ LABEL_116:
     if ([(UITouch *)self->_trackingTouch type]== 2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_icc);
-      v14 = [WeakRetained freehandDrawingToolkit];
-      [v14 keepPencilShadowVisible];
+      freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+      [freehandDrawingToolkit keepPencilShadowVisible];
     }
 
-    [(CRLiOSFreehandDrawingGestureRecognizer *)self p_addCoalescedAndPredictedTouchesToTrackerForTouch:self->_trackingTouch fromEvent:v7 fromTouchesEnded:0];
+    [(CRLiOSFreehandDrawingGestureRecognizer *)self p_addCoalescedAndPredictedTouchesToTrackerForTouch:self->_trackingTouch fromEvent:eventCopy fromTouchesEnded:0];
     v16 = [(UITouch *)self->_trackingTouch type]== 2 && ([(CRLiOSFreehandDrawingGestureRecognizer *)self state]== 1 || [(CRLiOSFreehandDrawingGestureRecognizer *)self state]== 2) && v12 > 20.0 && !self->_didBeginDynamicDrawing;
     if ([(UITouch *)self->_trackingTouch type]== 2)
     {
@@ -573,18 +573,18 @@ LABEL_116:
 
     else
     {
-      v18 = [(CRLiOSFreehandDrawingGestureRecognizer *)self state];
-      v17 = v12 > 163.0 && v18 == 0;
+      state = [(CRLiOSFreehandDrawingGestureRecognizer *)self state];
+      v17 = v12 > 163.0 && state == 0;
     }
 
     if (v16 || v17)
     {
       [(CRLiOSFreehandDrawingGestureRecognizer *)self p_clearTimerIfNeeded];
       v20 = objc_loadWeakRetained(&self->_icc);
-      v21 = [v20 tmCoordinator];
-      v22 = [v21 controllingTM];
+      tmCoordinator = [v20 tmCoordinator];
+      controllingTM = [tmCoordinator controllingTM];
 
-      if (!v22 || v22 == self)
+      if (!controllingTM || controllingTM == self)
       {
         if (qword_101AD5C98 != -1)
         {
@@ -620,44 +620,44 @@ LABEL_116:
     if (![(CRLiOSFreehandDrawingGestureRecognizer *)self state]&& self->_didBeginDynamicDrawing)
     {
       v24 = objc_loadWeakRetained(&self->_icc);
-      v25 = [v24 dynamicOperationController];
-      [v25 handleTrackerManipulator:self];
+      dynamicOperationController = [v24 dynamicOperationController];
+      [dynamicOperationController handleTrackerManipulator:self];
     }
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = CRLiOSFreehandDrawingGestureRecognizer;
-  [(CRLiOSFreehandDrawingGestureRecognizer *)&v8 touchesEnded:v6 withEvent:v7];
-  if (self->_trackingTouch && [v6 containsObject:?] && !-[CRLiOSFreehandDrawingGestureRecognizer p_isStateDone](self, "p_isStateDone"))
+  [(CRLiOSFreehandDrawingGestureRecognizer *)&v8 touchesEnded:endedCopy withEvent:eventCopy];
+  if (self->_trackingTouch && [endedCopy containsObject:?] && !-[CRLiOSFreehandDrawingGestureRecognizer p_isStateDone](self, "p_isStateDone"))
   {
-    [(CRLiOSFreehandDrawingGestureRecognizer *)self p_endSuccessfullyWithEvent:v7];
+    [(CRLiOSFreehandDrawingGestureRecognizer *)self p_endSuccessfullyWithEvent:eventCopy];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
+  cancelledCopy = cancelled;
   v7.receiver = self;
   v7.super_class = CRLiOSFreehandDrawingGestureRecognizer;
-  [(CRLiOSFreehandDrawingGestureRecognizer *)&v7 touchesCancelled:v6 withEvent:a4];
-  if (self->_trackingTouch && [v6 containsObject:?] && !-[CRLiOSFreehandDrawingGestureRecognizer p_isStateDone](self, "p_isStateDone"))
+  [(CRLiOSFreehandDrawingGestureRecognizer *)&v7 touchesCancelled:cancelledCopy withEvent:event];
+  if (self->_trackingTouch && [cancelledCopy containsObject:?] && !-[CRLiOSFreehandDrawingGestureRecognizer p_isStateDone](self, "p_isStateDone"))
   {
     [(CRLiOSFreehandDrawingGestureRecognizer *)self p_cancelOrFailAndCleanUpChanges];
   }
 }
 
-- (void)touchesEstimatedPropertiesUpdated:(id)a3
+- (void)touchesEstimatedPropertiesUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v8.receiver = self;
   v8.super_class = CRLiOSFreehandDrawingGestureRecognizer;
-  [(CRLiOSFreehandDrawingGestureRecognizer *)&v8 touchesEstimatedPropertiesUpdated:v4];
-  if (self->_trackingTouch && [v4 containsObject:?] && !-[CRLiOSFreehandDrawingGestureRecognizer p_isStateDone](self, "p_isStateDone"))
+  [(CRLiOSFreehandDrawingGestureRecognizer *)&v8 touchesEstimatedPropertiesUpdated:updatedCopy];
+  if (self->_trackingTouch && [updatedCopy containsObject:?] && !-[CRLiOSFreehandDrawingGestureRecognizer p_isStateDone](self, "p_isStateDone"))
   {
     [(CRLiOSFreehandDrawingGestureRecognizer *)self p_canvasTouchPointFromTouch:self->_trackingTouch];
     v7 = [[CRLFreehandDrawingToolInputPoint alloc] initWithUnscaledPoint:self->_trackingTouch touch:self->_lastActiveInputProperties activeInputProperties:0 isPredicted:0 wasAddedByTouchesEnded:v5, v6];
@@ -681,10 +681,10 @@ LABEL_116:
   if (self->_didDisableScrolling)
   {
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v4 = [WeakRetained layerHost];
-    v5 = [v4 canvasView];
-    v6 = [v5 enclosingScrollView];
-    [v6 setScrollEnabled:1];
+    layerHost = [WeakRetained layerHost];
+    canvasView = [layerHost canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    [enclosingScrollView setScrollEnabled:1];
 
     self->_didDisableScrolling = 0;
   }
@@ -722,13 +722,13 @@ LABEL_116:
 - (void)operationDidEnd
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v3 = [WeakRetained dynamicOperationController];
-  [(CRLiOSFreehandDrawingGestureRecognizer *)self removeTarget:v3 action:"handleGestureRecognizer:"];
+  dynamicOperationController = [WeakRetained dynamicOperationController];
+  [(CRLiOSFreehandDrawingGestureRecognizer *)self removeTarget:dynamicOperationController action:"handleGestureRecognizer:"];
 }
 
-- (void)p_endSuccessfullyWithEvent:(id)a3
+- (void)p_endSuccessfullyWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (qword_101AD5C98 != -1)
   {
     sub_101367AB8();
@@ -771,18 +771,18 @@ LABEL_116:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v6 = [WeakRetained freehandDrawingToolkit];
-    v7 = [v6 isInDrawingMode];
+    freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+    isInDrawingMode = [freehandDrawingToolkit isInDrawingMode];
 
-    if ((v7 & 1) == 0)
+    if ((isInDrawingMode & 1) == 0)
     {
       [(CRLiOSFreehandDrawingGestureRecognizer *)self p_beginDrawingModeWithoutDrawingWithTouch:self->_trackingTouch];
     }
   }
 
-  if (v4)
+  if (eventCopy)
   {
-    [(CRLiOSFreehandDrawingGestureRecognizer *)self p_addCoalescedAndPredictedTouchesToTrackerForTouch:self->_trackingTouch fromEvent:v4 fromTouchesEnded:1];
+    [(CRLiOSFreehandDrawingGestureRecognizer *)self p_addCoalescedAndPredictedTouchesToTrackerForTouch:self->_trackingTouch fromEvent:eventCopy fromTouchesEnded:1];
   }
 
   [(CRLiOSFreehandDrawingGestureRecognizer *)self p_clearTimerIfNeeded];
@@ -804,8 +804,8 @@ LABEL_116:
     sub_101367BCC();
   }
 
-  v3 = [(CRLiOSFreehandDrawingGestureRecognizer *)self state];
-  if ((v3 - 3) < 3)
+  state = [(CRLiOSFreehandDrawingGestureRecognizer *)self state];
+  if ((state - 3) < 3)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -836,24 +836,24 @@ LABEL_116:
 
   else
   {
-    if ((v3 - 1) >= 2)
+    if ((state - 1) >= 2)
     {
-      if (v3)
+      if (state)
       {
         goto LABEL_20;
       }
 
-      v4 = self;
+      selfCopy2 = self;
       v5 = 5;
     }
 
     else
     {
-      v4 = self;
+      selfCopy2 = self;
       v5 = 4;
     }
 
-    [(CRLiOSFreehandDrawingGestureRecognizer *)v4 setState:v5];
+    [(CRLiOSFreehandDrawingGestureRecognizer *)selfCopy2 setState:v5];
   }
 
 LABEL_20:
@@ -867,18 +867,18 @@ LABEL_20:
   if (self->_didBeginDynamicDrawing)
   {
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v11 = [WeakRetained dynamicOperationController];
-    [v11 handleTrackerManipulator:self];
+    dynamicOperationController = [WeakRetained dynamicOperationController];
+    [dynamicOperationController handleTrackerManipulator:self];
   }
 }
 
 - (BOOL)p_tapShouldAvoidDrawing
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained layerHost];
-  v5 = [v4 asUIKitHost];
+  layerHost = [WeakRetained layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
-  if ([v5 contextMenuMightBeDisplayed] & 1) != 0 || (objc_msgSend(v5, "documentChromeHasPresentedViewController"))
+  if ([asUIKitHost contextMenuMightBeDisplayed] & 1) != 0 || (objc_msgSend(asUIKitHost, "documentChromeHasPresentedViewController"))
   {
     LOBYTE(v6) = 1;
   }
@@ -886,8 +886,8 @@ LABEL_20:
   else
   {
     v7 = objc_loadWeakRetained(&self->_icc);
-    v8 = [v7 freehandDrawingToolkit];
-    v6 = [v8 isInDrawingMode] ^ 1;
+    freehandDrawingToolkit = [v7 freehandDrawingToolkit];
+    v6 = [freehandDrawingToolkit isInDrawingMode] ^ 1;
   }
 
   return v6;
@@ -907,25 +907,25 @@ LABEL_20:
 
   self->_didBeginDynamicDrawing = 1;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained dynamicOperationController];
-  v5 = [v4 isInPossibleDynamicOperation];
+  dynamicOperationController = [WeakRetained dynamicOperationController];
+  isInPossibleDynamicOperation = [dynamicOperationController isInPossibleDynamicOperation];
 
-  if (v5)
+  if (isInPossibleDynamicOperation)
   {
     v6 = objc_loadWeakRetained(&self->_icc);
-    v7 = [v6 dynamicOperationController];
-    [v7 endOperation];
+    dynamicOperationController2 = [v6 dynamicOperationController];
+    [dynamicOperationController2 endOperation];
   }
 
   v8 = objc_loadWeakRetained(&self->_icc);
-  v9 = [v8 dynamicOperationController];
-  v10 = [v9 isInOperation];
+  dynamicOperationController3 = [v8 dynamicOperationController];
+  isInOperation = [dynamicOperationController3 isInOperation];
 
-  if (v10)
+  if (isInOperation)
   {
     v11 = objc_loadWeakRetained(&self->_icc);
-    v12 = [v11 dynamicOperationController];
-    [v12 cancelOperation];
+    dynamicOperationController4 = [v11 dynamicOperationController];
+    [dynamicOperationController4 cancelOperation];
   }
 
   v13 = objc_loadWeakRetained(&self->_icc);
@@ -933,16 +933,16 @@ LABEL_20:
 
   [(CRLiOSFreehandDrawingGestureRecognizer *)self p_hideEditMenuIfNeeded];
   v14 = objc_loadWeakRetained(&self->_icc);
-  v15 = [v14 dynamicOperationController];
-  [(CRLiOSFreehandDrawingGestureRecognizer *)self addTarget:v15 action:"handleGestureRecognizer:"];
+  dynamicOperationController5 = [v14 dynamicOperationController];
+  [(CRLiOSFreehandDrawingGestureRecognizer *)self addTarget:dynamicOperationController5 action:"handleGestureRecognizer:"];
 
   v16 = objc_loadWeakRetained(&self->_icc);
-  v17 = [v16 tmCoordinator];
-  [v17 registerTrackerManipulator:self];
+  tmCoordinator = [v16 tmCoordinator];
+  [tmCoordinator registerTrackerManipulator:self];
 
   v18 = objc_loadWeakRetained(&self->_icc);
-  v19 = [v18 tmCoordinator];
-  v20 = [v19 takeControlWithTrackerManipulator:self];
+  tmCoordinator2 = [v18 tmCoordinator];
+  v20 = [tmCoordinator2 takeControlWithTrackerManipulator:self];
 
   if ((v20 & 1) == 0)
   {
@@ -974,13 +974,13 @@ LABEL_20:
   }
 
   v24 = objc_loadWeakRetained(&self->_icc);
-  v25 = [v24 dynamicOperationController];
-  [v25 beginOperation];
+  dynamicOperationController6 = [v24 dynamicOperationController];
+  [dynamicOperationController6 beginOperation];
 }
 
-- (void)p_beginDrawingModeWithoutDrawingWithTouch:(id)a3
+- (void)p_beginDrawingModeWithoutDrawingWithTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   if (qword_101AD5C98 != -1)
   {
     sub_101367E10();
@@ -992,22 +992,22 @@ LABEL_20:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v6 = [WeakRetained freehandDrawingToolkit];
+  freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
 
-  [(CRLiOSFreehandDrawingGestureRecognizer *)self p_canvasTouchPointFromTouch:v4];
+  [(CRLiOSFreehandDrawingGestureRecognizer *)self p_canvasTouchPointFromTouch:touchCopy];
   v8 = v7;
   v10 = v9;
-  v11 = [v6 freehandDrawingBehaviorForTouchType:objc_msgSend(v4 atUnscaledPoint:{"type"), v7, v9}];
-  [v6 beginDrawingModeIfNeededForTouchType:{objc_msgSend(v4, "type")}];
+  v11 = [freehandDrawingToolkit freehandDrawingBehaviorForTouchType:objc_msgSend(touchCopy atUnscaledPoint:{"type"), v7, v9}];
+  [freehandDrawingToolkit beginDrawingModeIfNeededForTouchType:{objc_msgSend(touchCopy, "type")}];
   if (v11 == 2)
   {
     v12 = objc_loadWeakRetained(&self->_icc);
     v13 = [v12 hitRep:{v8, v10}];
 
-    v14 = [v13 info];
-    if (v14)
+    info = [v13 info];
+    if (info)
     {
-      v15 = v14;
+      v15 = info;
       while (1)
       {
         objc_opt_class();
@@ -1016,20 +1016,20 @@ LABEL_20:
           break;
         }
 
-        v16 = [v15 parentInfo];
+        parentInfo = [v15 parentInfo];
 
-        v15 = v16;
-        if (!v16)
+        v15 = parentInfo;
+        if (!parentInfo)
         {
           goto LABEL_12;
         }
       }
 
       v17 = objc_loadWeakRetained(&self->_icc);
-      v18 = [v17 canvasEditor];
+      canvasEditor = [v17 canvasEditor];
       v19 = objc_opt_class();
       v25 = sub_100303920(v15, v19, 1, v20, v21, v22, v23, v24, &OBJC_PROTOCOL___CRLCanvasElementInfo);
-      v26 = [v18 selectionPathWithInfo:v25];
+      v26 = [canvasEditor selectionPathWithInfo:v25];
 
       v27 = objc_loadWeakRetained(&self->_icc);
       [v27 setSelectionPath:v26 withSelectionFlags:0];
@@ -1053,39 +1053,39 @@ LABEL_12:
 - (void)p_hideEditMenuIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v3 = [WeakRetained layerHost];
-  v4 = [v3 asUIKitHost];
+  layerHost = [WeakRetained layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
-  if ([v4 contextMenuMightBeDisplayed])
+  if ([asUIKitHost contextMenuMightBeDisplayed])
   {
-    [v4 hideEditMenu];
-    [v4 setContextMenuMightBeDisplayed:1];
+    [asUIKitHost hideEditMenu];
+    [asUIKitHost setContextMenuMightBeDisplayed:1];
   }
 }
 
 - (void)p_closeCVCDelegatePresentedViewControllerIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v3 = [WeakRetained layerHost];
-  v4 = [v3 asUIKitHost];
+  layerHost = [WeakRetained layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
-  if ([v4 documentChromeHasPresentedViewController])
+  if ([asUIKitHost documentChromeHasPresentedViewController])
   {
-    [v4 dismissDocumentChromePresentedViewController];
+    [asUIKitHost dismissDocumentChromePresentedViewController];
   }
 }
 
-- (void)p_addCoalescedAndPredictedTouchesToTrackerForTouch:(id)a3 fromEvent:(id)a4 fromTouchesEnded:(BOOL)a5
+- (void)p_addCoalescedAndPredictedTouchesToTrackerForTouch:(id)touch fromEvent:(id)event fromTouchesEnded:(BOOL)ended
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  endedCopy = ended;
+  touchCopy = touch;
+  eventCopy = event;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v27 = v8;
-  obj = [v9 coalescedTouchesForTouch:v8];
+  v27 = touchCopy;
+  obj = [eventCopy coalescedTouchesForTouch:touchCopy];
   v10 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v10)
   {
@@ -1102,7 +1102,7 @@ LABEL_12:
 
         v14 = *(*(&v33 + 1) + 8 * i);
         [(CRLiOSFreehandDrawingGestureRecognizer *)self p_canvasTouchPointFromTouch:v14];
-        v17 = [[CRLFreehandDrawingToolInputPoint alloc] initWithUnscaledPoint:v14 touch:v9 event:0 isPredicted:v5 wasAddedByTouchesEnded:v15, v16];
+        v17 = [[CRLFreehandDrawingToolInputPoint alloc] initWithUnscaledPoint:v14 touch:eventCopy event:0 isPredicted:endedCopy wasAddedByTouchesEnded:v15, v16];
         [(CRLFreehandDrawingTracker *)self->_tracker addPoint:v17];
         self->_lastActiveInputProperties = [(CRLFreehandDrawingToolInputPoint *)v17 activeInputProperties];
       }
@@ -1117,7 +1117,7 @@ LABEL_12:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v18 = [v9 predictedTouchesForTouch:v8];
+  v18 = [eventCopy predictedTouchesForTouch:touchCopy];
   v19 = [v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v19)
   {
@@ -1134,7 +1134,7 @@ LABEL_12:
 
         v23 = *(*(&v29 + 1) + 8 * j);
         [(CRLiOSFreehandDrawingGestureRecognizer *)self p_canvasTouchPointFromTouch:v23];
-        v26 = [[CRLFreehandDrawingToolInputPoint alloc] initWithUnscaledPoint:v23 touch:v9 event:1 isPredicted:v5 wasAddedByTouchesEnded:v24, v25];
+        v26 = [[CRLFreehandDrawingToolInputPoint alloc] initWithUnscaledPoint:v23 touch:eventCopy event:1 isPredicted:endedCopy wasAddedByTouchesEnded:v24, v25];
         [(CRLFreehandDrawingTracker *)self->_tracker addPoint:v26];
       }
 
@@ -1145,12 +1145,12 @@ LABEL_12:
   }
 }
 
-- ($D9ACD5A945031E604089763E4FBE0988)p_canvasTouchPointFromTouch:(id)a3
+- ($D9ACD5A945031E604089763E4FBE0988)p_canvasTouchPointFromTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v6 = [WeakRetained canvasView];
-  [v4 preciseLocationInView:v6];
+  canvasView = [WeakRetained canvasView];
+  [touchCopy preciseLocationInView:canvasView];
   v8 = v7;
   v10 = v9;
 
@@ -1170,9 +1170,9 @@ LABEL_12:
   return result;
 }
 
-- (void)p_canvasWillScrollOrZoom:(id)a3
+- (void)p_canvasWillScrollOrZoom:(id)zoom
 {
-  v4 = a3;
+  zoomCopy = zoom;
   if (self->_trackingTouch && ![(CRLiOSFreehandDrawingGestureRecognizer *)self p_isStateDone])
   {
     if (qword_101AD5C98 != -1)

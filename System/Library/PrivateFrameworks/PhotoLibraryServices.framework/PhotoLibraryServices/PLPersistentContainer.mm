@@ -1,26 +1,26 @@
 @interface PLPersistentContainer
-+ (BOOL)_destroyPhotosDatabaseWithPath:(id)a3 backupToPath:(id)a4;
-+ (BOOL)currentModelVersionMatchesLibrarySchemaVersionWithPathManager:(id)a3 error:(id *)a4;
++ (BOOL)_destroyPhotosDatabaseWithPath:(id)path backupToPath:(id)toPath;
++ (BOOL)currentModelVersionMatchesLibrarySchemaVersionWithPathManager:(id)manager error:(id *)error;
 + (BOOL)shouldTrackIndexUse;
 + (NSManagedObjectModel)managedObjectModel;
 + (NSURL)managedObjectModelURL;
 + (id)newManagedObjectModel;
-+ (int)librarySchemaVersionWithPathManager:(id)a3 error:(id *)a4;
-+ (int64_t)_migrateOrRebuildDatabaseWithSharedPersistentStoreCoordinator:(id)a3 modelMigrator:(id)a4 migrationPolicy:(unsigned int)a5 error:(id *)a6;
-+ (int64_t)_openAndMigrateStoreWithURL:(id)a3 options:(id)a4 coordinator:(id)a5 modelMigrator:(id)a6 migrationPolicy:(unsigned int)a7 error:(id *)a8;
-+ (void)_getPersistentStoreURL:(id *)a3 options:(id *)a4 forDatabasePath:(id)a5 enableOrderKeyNotifications:(BOOL)a6;
-+ (void)getConfigurationForDatabasePath:(id)a3 withBlock:(id)a4;
-+ (void)removePhotosDatabaseWithPathManager:(id)a3;
-- (BOOL)_configurePersistentStoreCoordinator:(id)a3 overrideCurrentModelVersionInStore:(BOOL)a4 error:(id *)a5;
-- (BOOL)_configureXPCPersistentStoreCoordinator:(id)a3 error:(id *)a4;
++ (int)librarySchemaVersionWithPathManager:(id)manager error:(id *)error;
++ (int64_t)_migrateOrRebuildDatabaseWithSharedPersistentStoreCoordinator:(id)coordinator modelMigrator:(id)migrator migrationPolicy:(unsigned int)policy error:(id *)error;
++ (int64_t)_openAndMigrateStoreWithURL:(id)l options:(id)options coordinator:(id)coordinator modelMigrator:(id)migrator migrationPolicy:(unsigned int)policy error:(id *)error;
++ (void)_getPersistentStoreURL:(id *)l options:(id *)options forDatabasePath:(id)path enableOrderKeyNotifications:(BOOL)notifications;
++ (void)getConfigurationForDatabasePath:(id)path withBlock:(id)block;
++ (void)removePhotosDatabaseWithPathManager:(id)manager;
+- (BOOL)_configurePersistentStoreCoordinator:(id)coordinator overrideCurrentModelVersionInStore:(BOOL)store error:(id *)error;
+- (BOOL)_configureXPCPersistentStoreCoordinator:(id)coordinator error:(id *)error;
 - (BOOL)shouldUseXPCPhotoLibraryStore;
-- (PLPersistentContainer)initWithLibraryURL:(id)a3 lazyAssetsdClient:(id)a4;
-- (id)newPersistentStoreCoordinatorForMigration:(id *)a3;
-- (id)newSharedPersistentStoreCoordinator:(id *)a3;
-- (id)sharedPersistentStoreCoordinatorWithError:(id *)a3;
-- (int64_t)configureSharedPersistentStoreCoordinatorAndMigrateOrRebuildIfNecessaryWithModelMigrator:(id)a3 migrationPolicy:(unsigned int)a4 error:(id *)a5;
+- (PLPersistentContainer)initWithLibraryURL:(id)l lazyAssetsdClient:(id)client;
+- (id)newPersistentStoreCoordinatorForMigration:(id *)migration;
+- (id)newSharedPersistentStoreCoordinator:(id *)coordinator;
+- (id)sharedPersistentStoreCoordinatorWithError:(id *)error;
+- (int64_t)configureSharedPersistentStoreCoordinatorAndMigrateOrRebuildIfNecessaryWithModelMigrator:(id)migrator migrationPolicy:(unsigned int)policy error:(id *)error;
 - (void)dealloc;
-- (void)removeSharedPersistentStoreCoordinatorWithReason:(id)a3;
+- (void)removeSharedPersistentStoreCoordinatorWithReason:(id)reason;
 @end
 
 @implementation PLPersistentContainer
@@ -49,8 +49,8 @@ void __46__PLPersistentContainer_managedObjectModelURL__block_invoke(uint64_t a1
 
 + (id)newManagedObjectModel
 {
-  v2 = [a1 managedObjectModelURL];
-  if (!v2)
+  managedObjectModelURL = [self managedObjectModelURL];
+  if (!managedObjectModelURL)
   {
     v5 = PLMigrationGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -62,10 +62,10 @@ void __46__PLPersistentContainer_managedObjectModelURL__block_invoke(uint64_t a1
     goto LABEL_9;
   }
 
-  v3 = [objc_alloc(MEMORY[0x1E695D638]) initWithContentsOfURL:v2];
+  v3 = [objc_alloc(MEMORY[0x1E695D638]) initWithContentsOfURL:managedObjectModelURL];
   if (!v3)
   {
-    [MEMORY[0x1E69BF238] logDiagnosticInfoForURL:v2];
+    [MEMORY[0x1E69BF238] logDiagnosticInfoForURL:managedObjectModelURL];
     v7 = PLMigrationGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -90,13 +90,13 @@ LABEL_10:
 
 - (BOOL)shouldUseXPCPhotoLibraryStore
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [objc_alloc(MEMORY[0x1E69BF2A0]) initWithLibraryURL:self->_libraryURL];
-  v4 = [v3 photosDatabasePath];
+  photosDatabasePath = [v3 photosDatabasePath];
   memset(v6, 0, sizeof(v6));
-  LOBYTE(v2) = [(PLXPCPhotoLibraryStorePolicy *)v2->_xpcStorePolicy shouldUseXPCStoreForDatabasePath:v4 auditToken:v6];
+  LOBYTE(selfCopy) = [(PLXPCPhotoLibraryStorePolicy *)selfCopy->_xpcStorePolicy shouldUseXPCStoreForDatabasePath:photosDatabasePath auditToken:v6];
 
-  return v2;
+  return selfCopy;
 }
 
 id __43__PLPersistentContainer_managedObjectModel__block_invoke(uint64_t a1)
@@ -116,20 +116,20 @@ id __43__PLPersistentContainer_managedObjectModel__block_invoke(uint64_t a1)
 
 + (BOOL)shouldTrackIndexUse
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"com.apple.photos.TrackIndexUse"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"com.apple.photos.TrackIndexUse"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = MEMORY[0x19EAEE230]();
+    bOOLValue = MEMORY[0x19EAEE230]();
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 
   return v5;
 }
@@ -141,17 +141,17 @@ id __43__PLPersistentContainer_managedObjectModel__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)_configurePersistentStoreCoordinator:(id)a3 overrideCurrentModelVersionInStore:(BOOL)a4 error:(id *)a5
+- (BOOL)_configurePersistentStoreCoordinator:(id)coordinator overrideCurrentModelVersionInStore:(BOOL)store error:(id *)error
 {
-  v6 = a4;
+  storeCopy = store;
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  coordinatorCopy = coordinator;
   v9 = [objc_alloc(MEMORY[0x1E69BF2A0]) initWithLibraryURL:self->_libraryURL];
   v10 = objc_opt_class();
   v58 = 0;
   v59 = 0;
-  v11 = [v9 photosDatabasePath];
-  [v10 _getPersistentStoreURL:&v59 options:&v58 forDatabasePath:v11 enableOrderKeyNotifications:1];
+  photosDatabasePath = [v9 photosDatabasePath];
+  [v10 _getPersistentStoreURL:&v59 options:&v58 forDatabasePath:photosDatabasePath enableOrderKeyNotifications:1];
   v12 = v59;
   v13 = v58;
 
@@ -170,7 +170,7 @@ id __43__PLPersistentContainer_managedObjectModel__block_invoke(uint64_t a1)
   v53[1] = 3221225472;
   v53[2] = __103__PLPersistentContainer__configurePersistentStoreCoordinator_overrideCurrentModelVersionInStore_error___block_invoke;
   v53[3] = &unk_1E756E3A0;
-  v15 = v8;
+  v15 = coordinatorCopy;
   v54 = v15;
   v16 = v12;
   v55 = v16;
@@ -181,12 +181,12 @@ id __43__PLPersistentContainer_managedObjectModel__block_invoke(uint64_t a1)
   v20 = v19;
   if (v18)
   {
-    v49 = a5;
+    errorCopy = error;
     v50 = v19;
     v51 = v9;
     v21 = [v15 metadataForPersistentStore:v18];
     v22 = [v21 objectForKey:@"PLModelVersion"];
-    v23 = [v22 intValue];
+    intValue = [v22 intValue];
     v24 = +[PLModelMigrator currentModelVersion];
     if (v22)
     {
@@ -195,10 +195,10 @@ id __43__PLPersistentContainer_managedObjectModel__block_invoke(uint64_t a1)
 
     else
     {
-      v25 = v6;
+      v25 = storeCopy;
     }
 
-    v26 = v23 == v24 || v25;
+    v26 = intValue == v24 || v25;
     if (v26)
     {
       self->_didConfigurePersistentStore = 1;
@@ -232,7 +232,7 @@ id __43__PLPersistentContainer_managedObjectModel__block_invoke(uint64_t a1)
         }
       }
 
-      if (v49)
+      if (errorCopy)
       {
         v36 = [v22 description];
         if (v36)
@@ -245,12 +245,12 @@ id __43__PLPersistentContainer_managedObjectModel__block_invoke(uint64_t a1)
           v37 = @"None";
         }
 
-        v38 = [v22 intValue];
+        intValue2 = [v22 intValue];
         v39 = +[PLModelMigrator currentModelVersion];
         v47 = MEMORY[0x1E696ABC0];
         v46 = *MEMORY[0x1E69BFF48];
         v48 = v37;
-        if (v38 >= v39)
+        if (intValue2 >= v39)
         {
           v60[1] = @"CurrentVersion";
           v61[0] = v37;
@@ -276,7 +276,7 @@ id __43__PLPersistentContainer_managedObjectModel__block_invoke(uint64_t a1)
           v44 = 46007;
         }
 
-        *v49 = [v42 errorWithDomain:v43 code:v44 userInfo:v41];
+        *errorCopy = [v42 errorWithDomain:v43 code:v44 userInfo:v41];
       }
     }
 
@@ -300,11 +300,11 @@ id __43__PLPersistentContainer_managedObjectModel__block_invoke(uint64_t a1)
       v20 = v29;
     }
 
-    if (a5)
+    if (error)
     {
       v31 = v20;
       LOBYTE(v26) = 0;
-      *a5 = v20;
+      *error = v20;
     }
 
     else
@@ -345,10 +345,10 @@ id __103__PLPersistentContainer__configurePersistentStoreCoordinator_overrideCur
   return v7;
 }
 
-- (BOOL)_configureXPCPersistentStoreCoordinator:(id)a3 error:(id *)a4
+- (BOOL)_configureXPCPersistentStoreCoordinator:(id)coordinator error:(id *)error
 {
   v40[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  coordinatorCopy = coordinator;
   v7 = PLBackendGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -359,8 +359,8 @@ id __103__PLPersistentContainer__configurePersistentStoreCoordinator_overrideCur
   }
 
   v9 = [objc_alloc(MEMORY[0x1E69BF2A0]) initWithLibraryURL:self->_libraryURL];
-  v10 = [(PLLazyObject *)self->_lazyAssetdClient objectValue];
-  v11 = [[PLXPCPhotoLibraryStoreEndpointFactory alloc] initWithAssetsdClient:v10];
+  objectValue = [(PLLazyObject *)self->_lazyAssetdClient objectValue];
+  v11 = [[PLXPCPhotoLibraryStoreEndpointFactory alloc] initWithAssetsdClient:objectValue];
   v12 = *MEMORY[0x1E695D520];
   v39[0] = *MEMORY[0x1E695D510];
   v39[1] = v12;
@@ -370,8 +370,8 @@ id __103__PLPersistentContainer__configurePersistentStoreCoordinator_overrideCur
   v40[2] = MEMORY[0x1E695E118];
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:3];
   v14 = MEMORY[0x1E695DFF8];
-  v15 = [v9 photosDatabasePath];
-  v16 = [v14 fileURLWithPath:v15 isDirectory:0];
+  photosDatabasePath = [v9 photosDatabasePath];
+  v16 = [v14 fileURLWithPath:photosDatabasePath isDirectory:0];
 
   v17 = PLMigrationGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -388,7 +388,7 @@ id __103__PLPersistentContainer__configurePersistentStoreCoordinator_overrideCur
   v28[1] = 3221225472;
   v28[2] = __71__PLPersistentContainer__configureXPCPersistentStoreCoordinator_error___block_invoke;
   v28[3] = &unk_1E756E3A0;
-  v18 = v6;
+  v18 = coordinatorCopy;
   v29 = v18;
   v19 = v16;
   v30 = v19;
@@ -407,7 +407,7 @@ id __103__PLPersistentContainer__configurePersistentStoreCoordinator_overrideCur
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       PLFilteredDescriptionForAddPersistentStoreError(v22);
-      v24 = v27 = a4;
+      v24 = v27 = error;
       *buf = 138412802;
       v34 = v19;
       v35 = 2112;
@@ -416,13 +416,13 @@ id __103__PLPersistentContainer__configurePersistentStoreCoordinator_overrideCur
       v38 = v24;
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Failed to connect to XPC PhotoLibraryStore %@ with options %@: %@", buf, 0x20u);
 
-      a4 = v27;
+      error = v27;
     }
 
-    if (a4)
+    if (error)
     {
       v25 = v22;
-      *a4 = v22;
+      *error = v22;
     }
   }
 
@@ -458,7 +458,7 @@ id __71__PLPersistentContainer__configureXPCPersistentStoreCoordinator_error___b
   return v7;
 }
 
-- (int64_t)configureSharedPersistentStoreCoordinatorAndMigrateOrRebuildIfNecessaryWithModelMigrator:(id)a3 migrationPolicy:(unsigned int)a4 error:(id *)a5
+- (int64_t)configureSharedPersistentStoreCoordinatorAndMigrateOrRebuildIfNecessaryWithModelMigrator:(id)migrator migrationPolicy:(unsigned int)policy error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -470,14 +470,14 @@ id __71__PLPersistentContainer__configureXPCPersistentStoreCoordinator_error___b
   v14 = __Block_byref_object_copy__311;
   v15 = __Block_byref_object_dispose__312;
   v16 = 0;
-  v6 = a3;
+  migratorCopy = migrator;
   PLRunWithUnfairLock();
   v7 = v18[3];
   v8 = v12[5];
-  if (v7 == 4 && a5)
+  if (v7 == 4 && error)
   {
     v8 = v8;
-    *a5 = v8;
+    *error = v8;
   }
 
   v9 = v18[3];
@@ -530,24 +530,24 @@ void __136__PLPersistentContainer_configureSharedPersistentStoreCoordinatorAndMi
   }
 }
 
-- (void)removeSharedPersistentStoreCoordinatorWithReason:(id)a3
+- (void)removeSharedPersistentStoreCoordinatorWithReason:(id)reason
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = PLPhotosObjectLifecycleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[PLPersistentContainer removeSharedPersistentStoreCoordinatorWithReason:]";
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "%@ %p %s", buf, 0x20u);
   }
 
-  v7 = v4;
-  v6 = v4;
+  v7 = reasonCopy;
+  v6 = reasonCopy;
   PLRunWithUnfairLock();
 }
 
@@ -686,7 +686,7 @@ void __74__PLPersistentContainer_removeSharedPersistentStoreCoordinatorWithReaso
   }
 }
 
-- (id)newSharedPersistentStoreCoordinator:(id *)a3
+- (id)newSharedPersistentStoreCoordinator:(id *)coordinator
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = PLPhotoLibraryGetLog();
@@ -700,8 +700,8 @@ void __74__PLPersistentContainer_removeSharedPersistentStoreCoordinatorWithReaso
   }
 
   v9 = objc_alloc(MEMORY[0x1E695D6C0]);
-  v10 = [objc_opt_class() managedObjectModel];
-  v11 = [v9 initWithManagedObjectModel:v10];
+  managedObjectModel = [objc_opt_class() managedObjectModel];
+  v11 = [v9 initWithManagedObjectModel:managedObjectModel];
 
   if ([(PLPersistentContainer *)self shouldUseXPCPhotoLibraryStore])
   {
@@ -731,11 +731,11 @@ void __74__PLPersistentContainer_removeSharedPersistentStoreCoordinatorWithReaso
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Failed to configure PSC for library %@: %@", buf, 0x16u);
     }
 
-    if (a3)
+    if (coordinator)
     {
       v17 = v14;
       v11 = 0;
-      *a3 = v14;
+      *coordinator = v14;
     }
 
     else
@@ -756,7 +756,7 @@ void __74__PLPersistentContainer_removeSharedPersistentStoreCoordinatorWithReaso
   return v11;
 }
 
-- (id)sharedPersistentStoreCoordinatorWithError:(id *)a3
+- (id)sharedPersistentStoreCoordinatorWithError:(id *)error
 {
   v3 = PLResultWithUnfairLock();
 
@@ -822,13 +822,13 @@ id __67__PLPersistentContainer_sharedPersistentStoreCoordinatorWithError___block
   return v3;
 }
 
-- (id)newPersistentStoreCoordinatorForMigration:(id *)a3
+- (id)newPersistentStoreCoordinatorForMigration:(id *)migration
 {
   v5 = objc_alloc(MEMORY[0x1E695D6C0]);
-  v6 = [objc_opt_class() managedObjectModel];
-  v7 = [v5 initWithManagedObjectModel:v6];
+  managedObjectModel = [objc_opt_class() managedObjectModel];
+  v7 = [v5 initWithManagedObjectModel:managedObjectModel];
 
-  if (![(PLPersistentContainer *)self _configurePersistentStoreCoordinator:v7 overrideCurrentModelVersionInStore:1 error:a3])
+  if (![(PLPersistentContainer *)self _configurePersistentStoreCoordinator:v7 overrideCurrentModelVersionInStore:1 error:migration])
   {
 
     return 0;
@@ -846,7 +846,7 @@ id __67__PLPersistentContainer_sharedPersistentStoreCoordinatorWithError___block
     *buf = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc", buf, 0x16u);
   }
 
@@ -855,21 +855,21 @@ id __67__PLPersistentContainer_sharedPersistentStoreCoordinatorWithError___block
   [(PLPersistentContainer *)&v4 dealloc];
 }
 
-- (PLPersistentContainer)initWithLibraryURL:(id)a3 lazyAssetsdClient:(id)a4
+- (PLPersistentContainer)initWithLibraryURL:(id)l lazyAssetsdClient:(id)client
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  clientCopy = client;
   v17.receiver = self;
   v17.super_class = PLPersistentContainer;
   v8 = [(PLPersistentContainer *)&v17 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     libraryURL = v8->_libraryURL;
     v8->_libraryURL = v9;
 
-    objc_storeStrong(&v8->_lazyAssetdClient, a4);
+    objc_storeStrong(&v8->_lazyAssetdClient, client);
     v11 = objc_alloc_init(PLXPCPhotoLibraryStorePolicySandbox);
     xpcStorePolicy = v8->_xpcStorePolicy;
     v8->_xpcStorePolicy = v11;
@@ -884,7 +884,7 @@ id __67__PLPersistentContainer_sharedPersistentStoreCoordinatorWithError___block
       v20 = 2048;
       v21 = v8;
       v22 = 2112;
-      v23 = v6;
+      v23 = lCopy;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, "%@ %p initWithLibraryURL:%@", buf, 0x20u);
     }
 
@@ -894,20 +894,20 @@ id __67__PLPersistentContainer_sharedPersistentStoreCoordinatorWithError___block
   return v8;
 }
 
-+ (BOOL)currentModelVersionMatchesLibrarySchemaVersionWithPathManager:(id)a3 error:(id *)a4
++ (BOOL)currentModelVersionMatchesLibrarySchemaVersionWithPathManager:(id)manager error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v22 = 0;
-  v5 = [a1 librarySchemaVersionWithPathManager:a3 error:&v22];
+  v5 = [self librarySchemaVersionWithPathManager:manager error:&v22];
   v6 = v22;
   v7 = v6;
   if (!v5)
   {
-    if (a4)
+    if (error)
     {
       v10 = v6;
       v9 = 0;
-      *a4 = v7;
+      *error = v7;
       goto LABEL_13;
     }
 
@@ -946,10 +946,10 @@ LABEL_12:
     }
 
     v20 = [v15 errorWithDomain:v16 code:v17 userInfo:v14];
-    if (a4)
+    if (error)
     {
       v20 = v20;
-      *a4 = v20;
+      *error = v20;
     }
 
     goto LABEL_12;
@@ -961,9 +961,9 @@ LABEL_13:
   return v9;
 }
 
-+ (int)librarySchemaVersionWithPathManager:(id)a3 error:(id *)a4
++ (int)librarySchemaVersionWithPathManager:(id)manager error:(id *)error
 {
-  v5 = a3;
+  managerCopy = manager;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -977,21 +977,21 @@ LABEL_13:
   v17 = __Block_byref_object_dispose__312;
   v18 = 0;
   v6 = objc_opt_class();
-  v7 = [v5 photosDatabasePath];
+  photosDatabasePath = [managerCopy photosDatabasePath];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___block_invoke;
   v12[3] = &unk_1E7564608;
   v12[4] = &v13;
   v12[5] = &v19;
-  [v6 getConfigurationForDatabasePath:v7 withBlock:v12];
+  [v6 getConfigurationForDatabasePath:photosDatabasePath withBlock:v12];
 
   v8 = v14[5];
   if (!v8)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = v20[5];
+      *error = v20[5];
       v8 = v14[5];
     }
 
@@ -1002,12 +1002,12 @@ LABEL_13:
   }
 
   v9 = [v8 objectForKey:@"PLModelVersion"];
-  v10 = [v9 intValue];
+  intValue = [v9 intValue];
 
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v19, 8);
 
-  return v10;
+  return intValue;
 }
 
 void __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1050,24 +1050,24 @@ void __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___blo
   }
 }
 
-+ (void)_getPersistentStoreURL:(id *)a3 options:(id *)a4 forDatabasePath:(id)a5 enableOrderKeyNotifications:(BOOL)a6
++ (void)_getPersistentStoreURL:(id *)l options:(id *)options forDatabasePath:(id)path enableOrderKeyNotifications:(BOOL)notifications
 {
-  v52 = a6;
+  notificationsCopy = notifications;
   v65[3] = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:@"WAL" forKeyedSubscript:@"journal_mode"];
-  v57 = v6;
-  v8 = [MEMORY[0x1E69BF238] proxyLockFilePathForDatabasePath:v6];
+  pathCopy = path;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"WAL" forKeyedSubscript:@"journal_mode"];
+  v57 = pathCopy;
+  v8 = [MEMORY[0x1E69BF238] proxyLockFilePathForDatabasePath:pathCopy];
   if (v8)
   {
-    [v7 setObject:v8 forKeyedSubscript:@"lock_proxy_file"];
+    [dictionary setObject:v8 forKeyedSubscript:@"lock_proxy_file"];
   }
 
   v53 = v8;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    [v7 setObject:@"0" forKeyedSubscript:@"wal_autocheckpoint"];
+    [dictionary setObject:@"0" forKeyedSubscript:@"wal_autocheckpoint"];
   }
 
   v64[0] = *MEMORY[0x1E695D3B0];
@@ -1086,7 +1086,7 @@ void __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___blo
   v45 = +[PLSceneprint entityName];
   v63[6] = v45;
   +[PLDetectedFaceprint entityName];
-  v9 = v56 = v7;
+  v9 = v56 = dictionary;
   v63[7] = v9;
   v10 = +[PLCharacterRecognitionAttributes entityName];
   v63[8] = v10;
@@ -1113,15 +1113,15 @@ void __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___blo
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:3];
 
   v21 = v20;
-  v22 = [MEMORY[0x1E695DF90] dictionary];
-  [v22 setObject:v56 forKeyedSubscript:*MEMORY[0x1E695D4A0]];
-  [v22 setObject:&unk_1F0FBA7C8 forKeyedSubscript:*MEMORY[0x1E695D498]];
-  [v22 setObject:v20 forKeyedSubscript:*MEMORY[0x1E695D3C0]];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary2 setObject:v56 forKeyedSubscript:*MEMORY[0x1E695D4A0]];
+  [dictionary2 setObject:&unk_1F0FBA7C8 forKeyedSubscript:*MEMORY[0x1E695D498]];
+  [dictionary2 setObject:v20 forKeyedSubscript:*MEMORY[0x1E695D3C0]];
   v23 = +[PLPersistentContainer shouldTrackIndexUse];
   v24 = [MEMORY[0x1E696AD98] numberWithBool:v23];
-  [v22 setObject:v24 forKeyedSubscript:*MEMORY[0x1E695D448]];
+  [dictionary2 setObject:v24 forKeyedSubscript:*MEMORY[0x1E695D448]];
 
-  [v22 setObject:*MEMORY[0x1E696A388] forKeyedSubscript:*MEMORY[0x1E695D3F8]];
+  [dictionary2 setObject:*MEMORY[0x1E696A388] forKeyedSubscript:*MEMORY[0x1E695D3F8]];
   if ([MEMORY[0x1E69BF2E0] processCanWriteSandboxForPath:v57])
   {
     v25 = 1;
@@ -1129,23 +1129,23 @@ void __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___blo
 
   else if (PLIsAssetsd())
   {
-    v26 = [MEMORY[0x1E69BF238] fileManager];
-    if ([v26 fileExistsAtPath:v57 isDirectory:0])
+    fileManager = [MEMORY[0x1E69BF238] fileManager];
+    if ([fileManager fileExistsAtPath:v57 isDirectory:0])
     {
-      v27 = PLBackendGetLog();
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+      stringByDeletingLastPathComponent = PLBackendGetLog();
+      if (os_log_type_enabled(stringByDeletingLastPathComponent, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v60 = v57;
-        _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Possibly fatal error: sandbox denied assetsd write-access for %@, but it exists", buf, 0xCu);
+        _os_log_impl(&dword_19BF1F000, stringByDeletingLastPathComponent, OS_LOG_TYPE_ERROR, "Possibly fatal error: sandbox denied assetsd write-access for %@, but it exists", buf, 0xCu);
       }
     }
 
     else
     {
       v58 = 0;
-      v27 = [v57 stringByDeletingLastPathComponent];
-      v28 = [v26 fileExistsAtPath:v27 isDirectory:&v58];
+      stringByDeletingLastPathComponent = [v57 stringByDeletingLastPathComponent];
+      v28 = [fileManager fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:&v58];
       if (!v28 || (v58 & 1) == 0)
       {
         v29 = PLBackendGetLog();
@@ -1158,7 +1158,7 @@ void __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___blo
           }
 
           *buf = 138412546;
-          v60 = v27;
+          v60 = stringByDeletingLastPathComponent;
           v61 = 2112;
           v62 = v30;
           _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "Possibly fatal error: parent directory %@ is %@", buf, 0x16u);
@@ -1186,18 +1186,18 @@ void __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___blo
   v32 = [MEMORY[0x1E695DFF8] fileURLWithPath:v57];
   if ((v25 & 1) == 0)
   {
-    [v22 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695D458]];
-    v33 = [v32 absoluteString];
-    v34 = [v33 stringByAppendingString:@"?readonly_shm=1"];
+    [dictionary2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695D458]];
+    absoluteString = [v32 absoluteString];
+    v34 = [absoluteString stringByAppendingString:@"?readonly_shm=1"];
 
     v35 = [MEMORY[0x1E695DFF8] URLWithString:v34];
 
     v32 = v35;
   }
 
-  if (v52 && PLIsAssetsd())
+  if (notificationsCopy && PLIsAssetsd())
   {
-    [v22 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695D418]];
+    [dictionary2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695D418]];
   }
 
   if (PLIsAssetsd())
@@ -1205,12 +1205,12 @@ void __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___blo
     v36 = MEMORY[0x1E696AD98];
     v37 = +[PLConcurrencyLimiter sharedLimiter];
     v38 = [v36 numberWithInteger:{objc_msgSend(v37, "maxConcurrency")}];
-    [v22 setObject:v38 forKeyedSubscript:*MEMORY[0x1E695D3D0]];
+    [dictionary2 setObject:v38 forKeyedSubscript:*MEMORY[0x1E695D3D0]];
   }
 
   else if (MEMORY[0x19EAEE460]())
   {
-    [v22 setObject:&unk_1F0FBA7E0 forKeyedSubscript:*MEMORY[0x1E695D3D0]];
+    [dictionary2 setObject:&unk_1F0FBA7E0 forKeyedSubscript:*MEMORY[0x1E695D3D0]];
   }
 
   v39 = PLBackendGetLog();
@@ -1231,34 +1231,34 @@ void __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___blo
     _os_log_impl(&dword_19BF1F000, v39, OS_LOG_TYPE_INFO, "Using NSPersistentStoreTrackIndexUseOptionKey = %{public}@ for store at %@", buf, 0x16u);
   }
 
-  if (a3)
+  if (l)
   {
     v43 = v32;
-    *a3 = v32;
+    *l = v32;
   }
 
-  if (a4)
+  if (options)
   {
-    v44 = v22;
-    *a4 = v22;
+    v44 = dictionary2;
+    *options = dictionary2;
   }
 }
 
-+ (int64_t)_migrateOrRebuildDatabaseWithSharedPersistentStoreCoordinator:(id)a3 modelMigrator:(id)a4 migrationPolicy:(unsigned int)a5 error:(id *)a6
++ (int64_t)_migrateOrRebuildDatabaseWithSharedPersistentStoreCoordinator:(id)coordinator modelMigrator:(id)migrator migrationPolicy:(unsigned int)policy error:(id *)error
 {
-  v7 = *&a5;
+  v7 = *&policy;
   v88 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  coordinatorCopy = coordinator;
+  migratorCopy = migrator;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v66 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v66 handleFailureInMethod:a2 object:a1 file:@"PLPersistentContainer.m" lineNumber:550 description:@"Must only be called by assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentContainer.m" lineNumber:550 description:@"Must only be called by assetsd"];
   }
 
-  v13 = [v12 checkForceRebuildIndicatorFile];
-  v71 = a6;
-  if (v13 == 1)
+  checkForceRebuildIndicatorFile = [migratorCopy checkForceRebuildIndicatorFile];
+  errorCopy = error;
+  if (checkForceRebuildIndicatorFile == 1)
   {
     v14 = PLMigrationGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1267,42 +1267,42 @@ void __67__PLPersistentContainer_librarySchemaVersionWithPathManager_error___blo
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Found force rebuild indicator file, will not attempt lightweight migration", buf, 2u);
     }
 
-    v15 = [v12 pathManager];
-    v74 = [v15 recordRebuildReason];
+    pathManager = [migratorCopy pathManager];
+    recordRebuildReason = [pathManager recordRebuildReason];
   }
 
   else
   {
-    v74 = 0;
+    recordRebuildReason = 0;
   }
 
   v82 = 0;
   v83 = 0;
-  v16 = [v12 pathManager];
-  v17 = [v16 photosDatabasePath];
-  [a1 _getPersistentStoreURL:&v83 options:&v82 forDatabasePath:v17 enableOrderKeyNotifications:1];
+  pathManager2 = [migratorCopy pathManager];
+  photosDatabasePath = [pathManager2 photosDatabasePath];
+  [self _getPersistentStoreURL:&v83 options:&v82 forDatabasePath:photosDatabasePath enableOrderKeyNotifications:1];
   v18 = v83;
   v19 = v82;
 
   v20 = 0;
   v73 = v18;
-  if (v13 != 1)
+  if (checkForceRebuildIndicatorFile != 1)
   {
     v81 = 0;
-    v24 = [a1 _openAndMigrateStoreWithURL:v18 options:v19 coordinator:v11 modelMigrator:v12 migrationPolicy:v7 error:&v81];
+    v24 = [self _openAndMigrateStoreWithURL:v18 options:v19 coordinator:coordinatorCopy modelMigrator:migratorCopy migrationPolicy:v7 error:&v81];
     v25 = v81;
     v20 = v25;
     if (v24 != 4)
     {
 LABEL_58:
-      v60 = [v12 pathManager];
-      [v60 removeSqliteErrorIndicatorFile];
+      pathManager3 = [migratorCopy pathManager];
+      [pathManager3 removeSqliteErrorIndicatorFile];
 
       goto LABEL_67;
     }
 
-    v26 = [(__CFString *)v25 domain];
-    v27 = [v26 isEqualToString:*MEMORY[0x1E69BFF48]];
+    domain = [(__CFString *)v25 domain];
+    v27 = [domain isEqualToString:*MEMORY[0x1E69BFF48]];
 
     v18 = v73;
     if (v27)
@@ -1385,26 +1385,26 @@ LABEL_63:
     }
 
 LABEL_64:
-    if (v71)
+    if (errorCopy)
     {
       v61 = v20;
-      *v71 = v20;
+      *errorCopy = v20;
     }
 
     goto LABEL_66;
   }
 
 LABEL_9:
-  v21 = [v74 allValues];
-  v22 = [v21 lastObject];
+  allValues = [recordRebuildReason allValues];
+  lastObject = [allValues lastObject];
 
-  if ([v12 promptUserIfNeededForRebuildReason:v22 migrationError:v20] == 2)
+  if ([migratorCopy promptUserIfNeededForRebuildReason:lastObject migrationError:v20] == 2)
   {
     v23 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46016 userInfo:0];
-    if (v71)
+    if (errorCopy)
     {
       v23 = v23;
-      *v71 = v23;
+      *errorCopy = v23;
     }
 
 LABEL_66:
@@ -1413,10 +1413,10 @@ LABEL_66:
   }
 
   v80 = 0;
-  v29 = [v12 createNewDatabaseWithMigrationType:1 forceRebuildReason:v22 coordinator:v11 error:&v80];
+  v29 = [migratorCopy createNewDatabaseWithMigrationType:1 forceRebuildReason:lastObject coordinator:coordinatorCopy error:&v80];
   v30 = v80;
   v31 = v30;
-  v70 = v11;
+  v70 = coordinatorCopy;
   if (v29 == 4)
   {
     v32 = v30;
@@ -1429,7 +1429,7 @@ LABEL_66:
     v75[1] = 3221225472;
     v75[2] = __123__PLPersistentContainer__migrateOrRebuildDatabaseWithSharedPersistentStoreCoordinator_modelMigrator_migrationPolicy_error___block_invoke;
     v75[3] = &unk_1E756E3A0;
-    v76 = v11;
+    v76 = coordinatorCopy;
     v77 = v18;
     v78 = v19;
     v33 = [PLManagedObjectContext loadingPersistentStoreWithReason:0 error:&v79 workBlock:v75];
@@ -1457,7 +1457,7 @@ LABEL_66:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
   {
     v36 = @"migration failure";
-    if (v13)
+    if (checkForceRebuildIndicatorFile)
     {
       v36 = @"forced";
     }
@@ -1468,11 +1468,11 @@ LABEL_66:
   }
 
   v69 = v32;
-  if (v71)
+  if (errorCopy)
   {
     v37 = v32;
     v68 = 0;
-    *v71 = v32;
+    *errorCopy = v32;
   }
 
   else
@@ -1482,17 +1482,17 @@ LABEL_66:
 
   v24 = 4;
 LABEL_36:
-  v38 = [v12 analyticsEventManager];
+  analyticsEventManager = [migratorCopy analyticsEventManager];
   v39 = *MEMORY[0x1E69BF740];
-  [v38 setPayloadValue:@"failed open rebuild" forKey:*MEMORY[0x1E69BF778] onEventWithName:*MEMORY[0x1E69BF740]];
-  v40 = [MEMORY[0x1E696AD98] numberWithBool:v13 != 0];
-  v72 = v38;
-  [v38 setPayloadValue:v40 forKey:*MEMORY[0x1E69BF750] onEventWithName:v39];
+  [analyticsEventManager setPayloadValue:@"failed open rebuild" forKey:*MEMORY[0x1E69BF778] onEventWithName:*MEMORY[0x1E69BF740]];
+  v40 = [MEMORY[0x1E696AD98] numberWithBool:checkForceRebuildIndicatorFile != 0];
+  v72 = analyticsEventManager;
+  [analyticsEventManager setPayloadValue:v40 forKey:*MEMORY[0x1E69BF750] onEventWithName:v39];
 
   v41 = MEMORY[0x1E69BF2A0];
-  v42 = [v12 pathManager];
-  v43 = [v42 libraryURL];
-  v44 = [v41 wellKnownPhotoLibraryIdentifierForURL:v43];
+  pathManager4 = [migratorCopy pathManager];
+  libraryURL = [pathManager4 libraryURL];
+  v44 = [v41 wellKnownPhotoLibraryIdentifierForURL:libraryURL];
 
   if (v20)
   {
@@ -1504,8 +1504,8 @@ LABEL_36:
     v45 = 1;
   }
 
-  v11 = v70;
-  if (v13 && ((v46 = [v22 intValue], v46 > 0x11) || ((1 << v46) & 0x20404) == 0))
+  coordinatorCopy = v70;
+  if (checkForceRebuildIndicatorFile && ((v46 = [lastObject intValue], v46 > 0x11) || ((1 << v46) & 0x20404) == 0))
   {
     if (v44 == 3)
     {
@@ -1543,14 +1543,14 @@ LABEL_36:
   v50 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US"];
   [v49 setLocale:v50];
 
-  v51 = [MEMORY[0x1E695DF00] date];
-  v52 = [v49 stringFromDate:v51];
+  date = [MEMORY[0x1E695DF00] date];
+  v52 = [v49 stringFromDate:date];
 
   v53 = MEMORY[0x1E696AEC0];
   v67 = v52;
-  if (v13)
+  if (checkForceRebuildIndicatorFile)
   {
-    v54 = PLRebuildReasonToShortString([v22 integerValue]);
+    v54 = PLRebuildReasonToShortString([lastObject integerValue]);
     [v53 stringWithFormat:@"TTR: Photo Library Rebuild for reason %@", v54];
   }
 
@@ -1564,16 +1564,16 @@ LABEL_36:
 
   if (!v44)
   {
-    v56 = [v12 pathManager];
-    [v56 isSystemPhotoLibraryPathManager];
+    pathManager5 = [migratorCopy pathManager];
+    [pathManager5 isSystemPhotoLibraryPathManager];
   }
 
   v57 = PLStringFromWellKnownPhotoLibraryIdentifier();
   v58 = [MEMORY[0x1E696AD60] stringWithFormat:@"Library identifier: %@\n\nPhoto library was rebuilt at %@\n", v57, v67];
   v59 = v58;
-  if (v13)
+  if (checkForceRebuildIndicatorFile)
   {
-    [v58 appendFormat:@"Last force rebuild date and reason: %@", v74];
+    [v58 appendFormat:@"Last force rebuild date and reason: %@", recordRebuildReason];
   }
 
   else
@@ -1583,7 +1583,7 @@ LABEL_36:
 
   [PLDiagnostics fileRadarUserNotificationWithHeader:@"Photo Library Rebuild Detected" message:@"Your photo library has experienced an unexpected state radarTitle:please file a Radar against Photos to diagnose the issue" radarDescription:v55, v59];
 
-  v11 = v70;
+  coordinatorCopy = v70;
 LABEL_57:
 
   if (v68)
@@ -1625,35 +1625,35 @@ id __123__PLPersistentContainer__migrateOrRebuildDatabaseWithSharedPersistentSto
   return v7;
 }
 
-+ (int64_t)_openAndMigrateStoreWithURL:(id)a3 options:(id)a4 coordinator:(id)a5 modelMigrator:(id)a6 migrationPolicy:(unsigned int)a7 error:(id *)a8
++ (int64_t)_openAndMigrateStoreWithURL:(id)l options:(id)options coordinator:(id)coordinator modelMigrator:(id)migrator migrationPolicy:(unsigned int)policy error:(id *)error
 {
   v122[3] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  lCopy = l;
+  optionsCopy = options;
+  coordinatorCopy = coordinator;
+  migratorCopy = migrator;
   v95 = +[PLModelMigrator currentModelVersion];
   v17 = PLMigrationGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v114 = v13;
+    v114 = lCopy;
     v115 = 2112;
-    *v116 = v14;
+    *v116 = optionsCopy;
     _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEBUG, "Adding persistent store for URL: %@ with options: %@", buf, 0x16u);
   }
 
-  v97 = [v16 analyticsEventManager];
+  analyticsEventManager = [migratorCopy analyticsEventManager];
   v108 = 0;
   v104[0] = MEMORY[0x1E69E9820];
   v104[1] = 3221225472;
   v104[2] = __109__PLPersistentContainer__openAndMigrateStoreWithURL_options_coordinator_modelMigrator_migrationPolicy_error___block_invoke;
   v104[3] = &unk_1E756E3A0;
-  v18 = v15;
+  v18 = coordinatorCopy;
   v105 = v18;
-  v100 = v13;
+  v100 = lCopy;
   v106 = v100;
-  v99 = v14;
+  v99 = optionsCopy;
   v107 = v99;
   v19 = [PLManagedObjectContext loadingPersistentStoreWithReason:0 error:&v108 workBlock:v104];
   v20 = v108;
@@ -1663,15 +1663,15 @@ id __123__PLPersistentContainer__migrateOrRebuildDatabaseWithSharedPersistentSto
     v21 = [v18 metadataForPersistentStore:v19];
     v22 = [v21 objectForKey:@"PLModelVersion"];
     v23 = 0;
-    v24 = v97;
+    v24 = analyticsEventManager;
     goto LABEL_28;
   }
 
   v25 = v20;
   if ([v20 code] == 134100)
   {
-    v26 = [v25 domain];
-    v27 = [v26 isEqualToString:*MEMORY[0x1E696A250]];
+    domain = [v25 domain];
+    v27 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
     if (v27)
     {
@@ -1679,15 +1679,15 @@ id __123__PLPersistentContainer__migrateOrRebuildDatabaseWithSharedPersistentSto
       v103 = 0;
       v21 = [MEMORY[0x1E695D6C0] metadataForPersistentStoreOfType:v28 URL:v100 options:v99 error:&v103];
       v92 = v103;
-      v24 = v97;
+      v24 = analyticsEventManager;
       if (v21)
       {
         v22 = [v21 objectForKey:@"PLModelVersion"];
-        v29 = [v22 intValue];
+        intValue = [v22 intValue];
         v30 = PLMigrationGetLog();
-        if (v29 == v95)
+        if (intValue == v95)
         {
-          v90 = a7;
+          policyCopy = policy;
           v31 = v30;
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
@@ -1704,36 +1704,36 @@ id __123__PLPersistentContainer__migrateOrRebuildDatabaseWithSharedPersistentSto
           v33 = PLMigrationGetLog();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v34 = [v18 managedObjectModel];
-            v35 = [PLModelMigrator schemaIncompatibilityDetailsForStoreMetadata:v21 model:v34];
+            managedObjectModel = [v18 managedObjectModel];
+            v35 = [PLModelMigrator schemaIncompatibilityDetailsForStoreMetadata:v21 model:managedObjectModel];
             *buf = 138412290;
             v114 = v35;
             _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "Incompatibility details: %@", buf, 0xCu);
           }
 
-          if (!a8)
+          if (!error)
           {
-            a7 = v90;
+            policy = policyCopy;
             goto LABEL_27;
           }
 
           v89 = MEMORY[0x1E696ABC0];
           v88 = *MEMORY[0x1E69BFF48];
           v119[0] = *MEMORY[0x1E696A278];
-          v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Store schema incompatibility, but store model version %d matches current model version. A system reboot is recommended to clear this error.", objc_msgSend(v22, "intValue")];
-          v120[0] = v36;
+          path2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Store schema incompatibility, but store model version %d matches current model version. A system reboot is recommended to clear this error.", objc_msgSend(v22, "intValue")];
+          v120[0] = path2;
           v119[1] = *MEMORY[0x1E696A368];
-          v37 = [v100 path];
-          v120[1] = v37;
+          path = [v100 path];
+          v120[1] = path;
           v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v120 forKeys:v119 count:2];
-          *a8 = [v89 errorWithDomain:v88 code:46009 userInfo:v38];
+          *error = [v89 errorWithDomain:v88 code:46009 userInfo:v38];
 
-          a7 = v90;
+          policy = policyCopy;
         }
 
         else
         {
-          v36 = v30;
+          path2 = v30;
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
             v53 = PLFilteredDescriptionForAddPersistentStoreError(v96);
@@ -1743,7 +1743,7 @@ id __123__PLPersistentContainer__migrateOrRebuildDatabaseWithSharedPersistentSto
             *v116 = v95;
             *&v116[4] = 2114;
             *&v116[6] = v53;
-            _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEFAULT, "Store schema incompatibility, requires migration from version %{public}@ to %d. Add store error: %{public}@", buf, 0x1Cu);
+            _os_log_impl(&dword_19BF1F000, path2, OS_LOG_TYPE_DEFAULT, "Store schema incompatibility, requires migration from version %{public}@ to %d. Add store error: %{public}@", buf, 0x1Cu);
           }
         }
       }
@@ -1761,7 +1761,7 @@ id __123__PLPersistentContainer__migrateOrRebuildDatabaseWithSharedPersistentSto
           _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_ERROR, "Store schema incompatibility and metadata read failure (%{public}@). Add store error: %{public}@", buf, 0x16u);
         }
 
-        if (!a8)
+        if (!error)
         {
           v22 = 0;
           goto LABEL_27;
@@ -1775,13 +1775,13 @@ id __123__PLPersistentContainer__migrateOrRebuildDatabaseWithSharedPersistentSto
         v122[0] = @"Store schema incompatibility and metadata read failure";
         v122[1] = v92;
         v121[2] = *MEMORY[0x1E696A368];
-        v36 = [v100 path];
-        v122[2] = v36;
+        path2 = [v100 path];
+        v122[2] = path2;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:v122 forKeys:v121 count:3];
-        v52 = v51 = a7;
-        *a8 = [v91 errorWithDomain:v49 code:46009 userInfo:v52];
+        v52 = v51 = policy;
+        *error = [v91 errorWithDomain:v49 code:46009 userInfo:v52];
 
-        a7 = v51;
+        policy = v51;
         v22 = 0;
       }
 
@@ -1792,7 +1792,7 @@ LABEL_27:
   }
 
   v39 = PLMigrationGetLog();
-  v24 = v97;
+  v24 = analyticsEventManager;
   if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
   {
     v40 = PLFilteredDescriptionForAddPersistentStoreError(v25);
@@ -1803,7 +1803,7 @@ LABEL_27:
     _os_log_impl(&dword_19BF1F000, v39, OS_LOG_TYPE_ERROR, "Unexpected error opening %@: %{public}@", buf, 0x16u);
   }
 
-  if (a8)
+  if (error)
   {
     v41 = MEMORY[0x1E696ABC0];
     v42 = *MEMORY[0x1E69BFF48];
@@ -1813,13 +1813,13 @@ LABEL_27:
     v118[0] = @"Unexpected open error";
     v118[1] = v25;
     v117[2] = *MEMORY[0x1E696A368];
-    v44 = [v100 path];
-    v118[2] = v44;
+    path3 = [v100 path];
+    v118[2] = path3;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v118 forKeys:v117 count:3];
-    v46 = v45 = a7;
-    *a8 = [v41 errorWithDomain:v42 code:46009 userInfo:v46];
+    v46 = v45 = policy;
+    *error = [v41 errorWithDomain:v42 code:46009 userInfo:v46];
 
-    a7 = v45;
+    policy = v45;
   }
 
   v23 = 0;
@@ -1835,7 +1835,7 @@ LABEL_28:
       {
         v54 = *MEMORY[0x1E69BF6D0];
         [v24 setPayloadValue:MEMORY[0x1E695E110] forKey:*MEMORY[0x1E69BF728] onEventWithName:*MEMORY[0x1E69BF6D0]];
-        if (!a8)
+        if (!error)
         {
           goto LABEL_46;
         }
@@ -1845,7 +1845,7 @@ LABEL_28:
 
       [v24 removeEventWithName:*MEMORY[0x1E69BF6D0]];
       v102 = 0;
-      if (([v16 postProcessThumbnailsOnlyIfVersionMismatchOrMissing:&v102 coordinator:v18] & 1) == 0)
+      if (([migratorCopy postProcessThumbnailsOnlyIfVersionMismatchOrMissing:&v102 coordinator:v18] & 1) == 0)
       {
         v81 = PLMigrationGetLog();
         if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
@@ -1878,20 +1878,20 @@ LABEL_64:
 
     else
     {
-      if ((a7 & 1) == 0)
+      if ((policy & 1) == 0)
       {
-        if (a8)
+        if (error)
         {
           v71 = MEMORY[0x1E696ABC0];
           v72 = *MEMORY[0x1E69BFF48];
           v109 = *MEMORY[0x1E696A368];
           [v100 path];
-          v73 = v98 = v16;
+          v73 = v98 = migratorCopy;
           v110 = v73;
           v74 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
-          *a8 = [v71 errorWithDomain:v72 code:46007 userInfo:v74];
+          *error = [v71 errorWithDomain:v72 code:46007 userInfo:v74];
 
-          v16 = v98;
+          migratorCopy = v98;
         }
 
         goto LABEL_46;
@@ -1899,16 +1899,16 @@ LABEL_64:
 
       [v24 startRecordingTimedEventToken];
       v83 = v82;
-      LODWORD(v87) = a7;
-      v79 = [v16 attemptLightweightMigrationFromVersion:v22 onStore:v19 withMetadata:v21 orStoreURL:v100 options:v99 coordinator:v18 migrationPolicy:v87 error:a8];
+      LODWORD(v87) = policy;
+      v79 = [migratorCopy attemptLightweightMigrationFromVersion:v22 onStore:v19 withMetadata:v21 orStoreURL:v100 options:v99 coordinator:v18 migrationPolicy:v87 error:error];
       v84 = *MEMORY[0x1E69BF6D0];
       [v24 stopRecordingTimedEventWithToken:*MEMORY[0x1E69BF6E8] forKey:*MEMORY[0x1E69BF6D0] onEventWithName:v83];
       v85 = [MEMORY[0x1E696AD98] numberWithInt:v79 == 2];
       [v24 setPayloadValue:v85 forKey:*MEMORY[0x1E69BF728] onEventWithName:v84];
 
-      if (a8)
+      if (error)
       {
-        [v24 setPayloadValue:*a8 forKey:*MEMORY[0x1E69BF6D8] onEventWithName:v84];
+        [v24 setPayloadValue:*error forKey:*MEMORY[0x1E69BF6D8] onEventWithName:v84];
       }
     }
 
@@ -1926,7 +1926,7 @@ LABEL_66:
   {
     v56 = [v19 URL];
     [v56 path];
-    v58 = v57 = v16;
+    v58 = v57 = migratorCopy;
     *buf = 134218498;
     v114 = v19;
     v115 = 2112;
@@ -1935,10 +1935,10 @@ LABEL_66:
     *&v116[10] = v21;
     _os_log_impl(&dword_19BF1F000, v55, OS_LOG_TYPE_DEFAULT, "Store %p (%@) has no version, requires rebuild %@", buf, 0x20u);
 
-    v16 = v57;
+    migratorCopy = v57;
   }
 
-  if (!a8)
+  if (!error)
   {
     v68 = *MEMORY[0x1E69BF728];
     v70 = *MEMORY[0x1E69BF6D0];
@@ -1947,29 +1947,29 @@ LABEL_66:
     goto LABEL_45;
   }
 
-  if (!*a8)
+  if (!*error)
   {
     v59 = MEMORY[0x1E696ABC0];
-    v60 = v16;
+    v60 = migratorCopy;
     v61 = *MEMORY[0x1E69BFF48];
     v62 = *MEMORY[0x1E696A278];
     v112[0] = @"Store has no version";
     v63 = *MEMORY[0x1E696A368];
     v111[0] = v62;
     v111[1] = v63;
-    v64 = [v100 path];
-    v112[1] = v64;
+    path4 = [v100 path];
+    v112[1] = path4;
     v65 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v112 forKeys:v111 count:2];
     v66 = v61;
-    v16 = v60;
-    v24 = v97;
-    *a8 = [v59 errorWithDomain:v66 code:46009 userInfo:v65];
+    migratorCopy = v60;
+    v24 = analyticsEventManager;
+    *error = [v59 errorWithDomain:v66 code:46009 userInfo:v65];
   }
 
   v54 = *MEMORY[0x1E69BF6D0];
   [v24 setPayloadValue:MEMORY[0x1E695E110] forKey:*MEMORY[0x1E69BF728] onEventWithName:*MEMORY[0x1E69BF6D0]];
 LABEL_40:
-  v67 = *a8;
+  v67 = *error;
   v68 = *MEMORY[0x1E69BF6D8];
   v69 = v24;
   v70 = v54;
@@ -1979,9 +1979,9 @@ LABEL_46:
   v75 = PLMigrationGetLog();
   if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
   {
-    v76 = [v100 path];
+    path5 = [v100 path];
     *buf = 138412290;
-    v114 = v76;
+    v114 = path5;
     _os_log_impl(&dword_19BF1F000, v75, OS_LOG_TYPE_ERROR, "Failed to open store %@, requires rebuild", buf, 0xCu);
   }
 
@@ -1992,8 +1992,8 @@ LABEL_46:
     v78 = v101;
     if ((v77 & 1) == 0)
     {
-      v86 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v86 handleFailureInMethod:a2 object:a1 file:@"PLPersistentContainer.m" lineNumber:537 description:{@"Unable to remove store: %@", v78}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentContainer.m" lineNumber:537 description:{@"Unable to remove store: %@", v78}];
     }
   }
 
@@ -2032,28 +2032,28 @@ id __109__PLPersistentContainer__openAndMigrateStoreWithURL_options_coordinator_
   return v7;
 }
 
-+ (void)removePhotosDatabaseWithPathManager:(id)a3
++ (void)removePhotosDatabaseWithPathManager:(id)manager
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 photosDatabasePath];
-  v5 = [v4 stringByAppendingString:@"-wal"];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  managerCopy = manager;
+  photosDatabasePath = [managerCopy photosDatabasePath];
+  v5 = [photosDatabasePath stringByAppendingString:@"-wal"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v51[0] = v4;
+  v51[0] = photosDatabasePath;
   v51[1] = v5;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
   v8 = [v7 countByEnumeratingWithState:&v43 objects:v52 count:16];
-  v39 = v6;
+  v39 = defaultManager;
   if (v8)
   {
     v9 = v8;
     v34 = v5;
-    v35 = v4;
-    v36 = v3;
+    v35 = photosDatabasePath;
+    v36 = managerCopy;
     v38 = 0;
     v10 = 0;
     v11 = *v44;
@@ -2068,7 +2068,7 @@ id __109__PLPersistentContainer__openAndMigrateStoreWithURL_options_coordinator_
         }
 
         v14 = *(*(&v43 + 1) + 8 * i);
-        if ([v6 fileExistsAtPath:v14 isDirectory:{0, v34, v35, v36}])
+        if ([defaultManager fileExistsAtPath:v14 isDirectory:{0, v34, v35, v36}])
         {
           v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14 isDirectory:0];
           v41 = 0;
@@ -2106,7 +2106,7 @@ id __109__PLPersistentContainer__openAndMigrateStoreWithURL_options_coordinator_
             v10 += [v17 unsignedLongLongValue];
           }
 
-          v6 = v39;
+          defaultManager = v39;
         }
       }
 
@@ -2115,8 +2115,8 @@ id __109__PLPersistentContainer__openAndMigrateStoreWithURL_options_coordinator_
 
     while (v9);
     v21 = 2 * v10 + 0x40000000;
-    v4 = v35;
-    v3 = v36;
+    photosDatabasePath = v35;
+    managerCopy = v36;
     v5 = v34;
     v22 = v38;
   }
@@ -2128,9 +2128,9 @@ id __109__PLPersistentContainer__openAndMigrateStoreWithURL_options_coordinator_
   }
 
   v23 = MEMORY[0x1E69BF208];
-  v24 = [v3 libraryURL];
-  v25 = [v24 path];
-  LOBYTE(v23) = [v23 diskSpaceAvailableForPath:v25] <= v21;
+  libraryURL = [managerCopy libraryURL];
+  path = [libraryURL path];
+  LOBYTE(v23) = [v23 diskSpaceAvailableForPath:path] <= v21;
 
   v26 = v22 | v23;
   v27 = PLMigrationGetLog();
@@ -2149,19 +2149,19 @@ id __109__PLPersistentContainer__openAndMigrateStoreWithURL_options_coordinator_
 
   if (v26)
   {
-    [a1 _destroyPhotosDatabaseWithPath:v4 backupToPath:0];
+    [self _destroyPhotosDatabaseWithPath:photosDatabasePath backupToPath:0];
     v29 = v39;
   }
 
   else
   {
-    v30 = [v3 photosAsideDatabasePath];
-    [a1 _destroyPhotosDatabaseWithPath:v4 backupToPath:v30];
+    photosAsideDatabasePath = [managerCopy photosAsideDatabasePath];
+    [self _destroyPhotosDatabaseWithPath:photosDatabasePath backupToPath:photosAsideDatabasePath];
     v29 = v39;
-    if (v30)
+    if (photosAsideDatabasePath)
     {
       v40 = 66049;
-      if (fsctl([(__CFString *)v30 fileSystemRepresentation], 0xC0084A44uLL, &v40, 0) == -1 && *__error() != 45)
+      if (fsctl([(__CFString *)photosAsideDatabasePath fileSystemRepresentation], 0xC0084A44uLL, &v40, 0) == -1 && *__error() != 45)
       {
         v31 = PLMigrationGetLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -2169,7 +2169,7 @@ id __109__PLPersistentContainer__openAndMigrateStoreWithURL_options_coordinator_
           v32 = __error();
           v33 = strerror(*v32);
           *buf = 138412546;
-          v48 = v30;
+          v48 = photosAsideDatabasePath;
           v49 = 2080;
           v50 = v33;
           _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "error marking %@ purgeable: %s", buf, 0x16u);
@@ -2179,31 +2179,31 @@ id __109__PLPersistentContainer__openAndMigrateStoreWithURL_options_coordinator_
   }
 }
 
-+ (BOOL)_destroyPhotosDatabaseWithPath:(id)a3 backupToPath:(id)a4
++ (BOOL)_destroyPhotosDatabaseWithPath:(id)path backupToPath:(id)toPath
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  toPathCopy = toPath;
   context = objc_autoreleasePoolPush();
   v46 = 0;
   v47 = 0;
-  [a1 _getPersistentStoreURL:&v47 options:&v46 forDatabasePath:v6 enableOrderKeyNotifications:0];
+  [self _getPersistentStoreURL:&v47 options:&v46 forDatabasePath:pathCopy enableOrderKeyNotifications:0];
   v8 = v47;
   v9 = v46;
   v10 = objc_alloc_init(MEMORY[0x1E695D6C0]);
   v11 = *MEMORY[0x1E695D4A8];
-  v40 = v7;
-  if (!v7)
+  v40 = toPathCopy;
+  if (!toPathCopy)
   {
     v16 = 0;
     v38 = 1;
     goto LABEL_10;
   }
 
-  v37 = v6;
+  v37 = pathCopy;
   v44 = 0;
   v45 = 0;
-  [a1 _getPersistentStoreURL:&v45 options:&v44 forDatabasePath:v7 enableOrderKeyNotifications:0];
+  [self _getPersistentStoreURL:&v45 options:&v44 forDatabasePath:toPathCopy enableOrderKeyNotifications:0];
   v12 = v45;
   v13 = v44;
   v36 = v9;
@@ -2218,12 +2218,12 @@ id __109__PLPersistentContainer__openAndMigrateStoreWithURL_options_coordinator_
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v8 path];
-      v20 = [v12 path];
+      path = [v8 path];
+      path2 = [v12 path];
       *buf = 138412546;
-      v49 = v19;
+      v49 = path;
       v50 = 2112;
-      v51 = v20;
+      v51 = path2;
       v21 = "Moved old store aside from %@ to %@";
       v22 = v18;
       v23 = OS_LOG_TYPE_DEFAULT;
@@ -2235,12 +2235,12 @@ LABEL_8:
 
   else if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    v19 = [v8 path];
-    v20 = [v12 path];
+    path = [v8 path];
+    path2 = [v12 path];
     *buf = 138412802;
-    v49 = v19;
+    v49 = path;
     v50 = 2112;
-    v51 = v20;
+    v51 = path2;
     v52 = 2112;
     v53 = v16;
     v21 = "Could not move store at %@ to %@: %@";
@@ -2251,7 +2251,7 @@ LABEL_8:
   }
 
   v9 = v36;
-  v6 = v37;
+  pathCopy = v37;
 LABEL_10:
   v25 = [v9 mutableCopy];
   [v25 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695D400]];
@@ -2270,9 +2270,9 @@ LABEL_10:
     v30 = PLMigrationGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v31 = [v8 path];
+      path3 = [v8 path];
       *buf = 138412546;
-      v49 = v31;
+      v49 = path3;
       v50 = 2112;
       v51 = v27;
       _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_ERROR, "Failed to destroy store located at %@. Attempting again with unlink option. Error: %@", buf, 0x16u);
@@ -2293,9 +2293,9 @@ LABEL_10:
       v33 = PLMigrationGetLog();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v34 = [v8 path];
+        path4 = [v8 path];
         *buf = 138412546;
-        v49 = v34;
+        v49 = path4;
         v50 = 2112;
         v51 = v29;
         _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, "Could not destroy store %@. Error: %@", buf, 0x16u);
@@ -2309,15 +2309,15 @@ LABEL_10:
   return v38 & v28;
 }
 
-+ (void)getConfigurationForDatabasePath:(id)a3 withBlock:(id)a4
++ (void)getConfigurationForDatabasePath:(id)path withBlock:(id)block
 {
   v9 = 0;
   v10 = 0;
-  v6 = a4;
-  [a1 _getPersistentStoreURL:&v10 options:&v9 forDatabasePath:a3 enableOrderKeyNotifications:0];
+  blockCopy = block;
+  [self _getPersistentStoreURL:&v10 options:&v9 forDatabasePath:path enableOrderKeyNotifications:0];
   v7 = v10;
   v8 = v9;
-  v6[2](v6, v7, v8);
+  blockCopy[2](blockCopy, v7, v8);
 }
 
 void __55__PLPersistentContainer_unsafeRemoveManagedObjectModel__block_invoke()

@@ -1,10 +1,10 @@
 @interface CPCarPlayObserver
 - (_TtC14CopresenceCore17CPCarPlayObserver)init;
-- (void)cancelledConnectionAttemptOnTransport:(unint64_t)a3;
+- (void)cancelledConnectionAttemptOnTransport:(unint64_t)transport;
 - (void)dealloc;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)startedConnectionAttemptOnTransport:(unint64_t)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)startedConnectionAttemptOnTransport:(unint64_t)transport;
 @end
 
 @implementation CPCarPlayObserver
@@ -12,9 +12,9 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC14CopresenceCore17CPCarPlayObserver_sessionStatus);
-  v3 = self;
+  selfCopy = self;
   [v2 removeSessionObserver_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for CPCarPlayObserver();
   [(CPCarPlayObserver *)&v4 dealloc];
 }
@@ -26,30 +26,30 @@
   return result;
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  CPCarPlayObserver.sessionDidConnect(_:)(v4);
+  connectCopy = connect;
+  selfCopy = self;
+  CPCarPlayObserver.sessionDidConnect(_:)(connectCopy);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  CPCarPlayObserver.sessionDidDisconnect(_:)(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  CPCarPlayObserver.sessionDidDisconnect(_:)(disconnectCopy);
 }
 
-- (void)startedConnectionAttemptOnTransport:(unint64_t)a3
+- (void)startedConnectionAttemptOnTransport:(unint64_t)transport
 {
-  v4 = self;
-  CPCarPlayObserver.startedConnectionAttempt(on:)(a3);
+  selfCopy = self;
+  CPCarPlayObserver.startedConnectionAttempt(on:)(transport);
 }
 
-- (void)cancelledConnectionAttemptOnTransport:(unint64_t)a3
+- (void)cancelledConnectionAttemptOnTransport:(unint64_t)transport
 {
-  v4 = self;
-  CPCarPlayObserver.cancelledConnectionAttempt(on:)(a3);
+  selfCopy = self;
+  CPCarPlayObserver.cancelledConnectionAttempt(on:)(transport);
 }
 
 @end

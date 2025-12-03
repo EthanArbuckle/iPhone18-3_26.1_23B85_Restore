@@ -1,37 +1,37 @@
 @interface WFNFCTriggerConfigurationViewController
-- (WFNFCTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFNFCTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)alertTextFieldDidChange:(id)a3;
-- (void)readerSession:(id)a3 didDetectTags:(id)a4;
-- (void)readerSessionDidEndUnexpectedly:(id)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)alertTextFieldDidChange:(id)change;
+- (void)readerSession:(id)session didDetectTags:(id)tags;
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly;
 - (void)showNameStep;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateUI;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFNFCTriggerConfigurationViewController
 
-- (void)alertTextFieldDidChange:(id)a3
+- (void)alertTextFieldDidChange:(id)change
 {
-  v9 = a3;
-  v4 = [(WFNFCTriggerConfigurationViewController *)self presentedViewController];
-  if (v4)
+  changeCopy = change;
+  presentedViewController = [(WFNFCTriggerConfigurationViewController *)self presentedViewController];
+  if (presentedViewController)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v9 text];
-      v6 = [v5 length] != 0;
-      v7 = [v4 actions];
-      v8 = [v7 firstObject];
-      [v8 setEnabled:v6];
+      text = [changeCopy text];
+      v6 = [text length] != 0;
+      actions = [presentedViewController actions];
+      firstObject = [actions firstObject];
+      [firstObject setEnabled:v6];
     }
   }
 }
@@ -49,7 +49,7 @@
   v15[2] = __55__WFNFCTriggerConfigurationViewController_showNameStep__block_invoke;
   v15[3] = &unk_279EE81B0;
   v16 = v5;
-  v17 = self;
+  selfCopy = self;
   v8 = v5;
   v9 = [v6 actionWithTitle:v7 style:0 handler:v15];
 
@@ -134,37 +134,37 @@ void __55__WFNFCTriggerConfigurationViewController_showNameStep__block_invoke_3(
   [v4 addTarget:*(a1 + 32) action:sel_alertTextFieldDidChange_ forControlEvents:0x20000];
 }
 
-- (void)readerSessionDidEndUnexpectedly:(id)a3
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  unexpectedlyCopy = unexpectedly;
   v4 = getWFTriggersLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     v5 = 136315394;
     v6 = "[WFNFCTriggerConfigurationViewController readerSessionDidEndUnexpectedly:]";
     v7 = 2114;
-    v8 = v3;
+    v8 = unexpectedlyCopy;
     _os_log_impl(&dword_274719000, v4, OS_LOG_TYPE_ERROR, "%s session (%{public}@) ended unexpectedly", &v5, 0x16u);
   }
 }
 
-- (void)readerSession:(id)a3 didDetectTags:(id)a4
+- (void)readerSession:(id)session didDetectTags:(id)tags
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  tagsCopy = tags;
   v8 = getWFTriggersLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315906;
     v16 = "[WFNFCTriggerConfigurationViewController readerSession:didDetectTags:]";
     v17 = 2114;
-    v18 = v6;
+    v18 = sessionCopy;
     v19 = 2050;
-    v20 = [v7 count];
+    v20 = [tagsCopy count];
     v21 = 2112;
-    v22 = v7;
+    v22 = tagsCopy;
     _os_log_impl(&dword_274719000, v8, OS_LOG_TYPE_DEBUG, "%s session (%{public}@) detected %{public}lu tags: %@", buf, 0x2Au);
   }
 
@@ -172,11 +172,11 @@ void __55__WFNFCTriggerConfigurationViewController_showNameStep__block_invoke_3(
   block[1] = 3221225472;
   block[2] = __71__WFNFCTriggerConfigurationViewController_readerSession_didDetectTags___block_invoke;
   block[3] = &unk_279EE8CA8;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = tagsCopy;
+  v13 = sessionCopy;
+  selfCopy = self;
+  v9 = sessionCopy;
+  v10 = tagsCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -243,11 +243,11 @@ void __71__WFNFCTriggerConfigurationViewController_readerSession_didDetectTags__
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFNFCTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFNFCTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   v9 = [v8 isEqual:@"triggerParameters"];
 
@@ -261,7 +261,7 @@ void __71__WFNFCTriggerConfigurationViewController_readerSession_didDetectTags__
     [MEMORY[0x277D2C848] sharedHardwareManager:v10];
   }
 
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v6 withSectionInfo:v7];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v7];
 }
 
 id __77__WFNFCTriggerConfigurationViewController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -302,21 +302,21 @@ void __77__WFNFCTriggerConfigurationViewController_tableView_didSelectRowAtIndex
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFNFCTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFNFCTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFNFCTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFNFCTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
   v12 = [v11 isEqual:@"triggerDescription"];
@@ -336,71 +336,71 @@ void __77__WFNFCTriggerConfigurationViewController_tableView_didSelectRowAtIndex
     if (v14)
     {
       v15 = WFLocalizedString(@"NFC Tag");
-      v16 = [v10 textLabel];
-      [v16 setText:v15];
+      textLabel = [v10 textLabel];
+      [textLabel setText:v15];
 
-      v17 = [(WFTriggerConfigurationViewController *)self trigger];
-      v18 = [v17 tagIdentifier];
+      trigger = [(WFTriggerConfigurationViewController *)self trigger];
+      tagIdentifier = [trigger tagIdentifier];
 
-      if (v18)
+      if (tagIdentifier)
       {
-        v19 = [(WFTriggerConfigurationViewController *)self trigger];
-        v20 = [v19 name];
-        v21 = [v10 detailTextLabel];
-        [v21 setText:v20];
+        trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+        name = [trigger2 name];
+        detailTextLabel = [v10 detailTextLabel];
+        [detailTextLabel setText:name];
       }
 
       else
       {
-        v19 = WFLocalizedString(@"Scan");
-        v20 = [v10 detailTextLabel];
-        [v20 setText:v19];
+        trigger2 = WFLocalizedString(@"Scan");
+        name = [v10 detailTextLabel];
+        [name setText:trigger2];
       }
     }
   }
 
-  v22 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:v6 sectionInfo:v8];
+  v22 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:pathCopy sectionInfo:v8];
 
   return v22;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFNFCTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFNFCTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [(WFTriggerConfigurationViewController *)self numberOfRowsInSectionWithInfo:v5];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = WFNFCTriggerConfigurationViewController;
-  [(WFNFCTriggerConfigurationViewController *)&v5 viewWillAppear:a3];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 reloadData];
+  [(WFNFCTriggerConfigurationViewController *)&v5 viewWillAppear:appear];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)updateUI
 {
-  v2 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)customSections
@@ -431,19 +431,19 @@ void __77__WFNFCTriggerConfigurationViewController_tableView_didSelectRowAtIndex
   return v4;
 }
 
-- (WFNFCTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFNFCTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFNFCTriggerConfigurationViewController.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFNFCTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFNFCTriggerConfigurationViewController.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFNFCTrigger class]]"}];
   }
 
   v13.receiver = self;
   v13.super_class = WFNFCTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:triggerCopy mode:mode];
   v9 = v8;
   if (v8)
   {

@@ -1,34 +1,34 @@
 @interface XMLParserDelegate
 - (_TtC11ShaderGraph17XMLParserDelegate)init;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation XMLParserDelegate
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (a5)
+  if (i)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  if (a6)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   v14 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = a3;
-  v16 = self;
+  parserCopy = parser;
+  selfCopy = self;
   specialized XMLParserDelegate.parser(_:didStartElement:namespaceURI:qualifiedName:attributes:)(v11, v13, v14);
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v6 = self;
+  selfCopy = self;
   XMLParserDelegate.endElement()();
 }
 

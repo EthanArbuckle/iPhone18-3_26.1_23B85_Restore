@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __52__PFSceneTaxonomy_MediaAnalysis__vcp_sharedTaxonomy__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[PFSceneTaxonomy(MediaAnalysis) vcp_sharedTaxonomy]::once != -1)
   {
     dispatch_once(&+[PFSceneTaxonomy(MediaAnalysis) vcp_sharedTaxonomy]::once, block);
@@ -111,17 +111,17 @@ LABEL_9:
 - (id)mad_sceneNameFromExtendedSceneId:()MediaAnalysis
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [a1 nodeForExtendedSceneClassId:?];
+  v4 = [self nodeForExtendedSceneClassId:?];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 name];
+    name = [v4 name];
   }
 
   else
   {
     v7 = VCPSpecialLabelFromExtendedSceneClassificationID(a3);
-    v6 = v7;
+    name = v7;
     if (v7)
     {
       v8 = v7;
@@ -135,14 +135,14 @@ LABEL_9:
     }
   }
 
-  return v6;
+  return name;
 }
 
 - (id)mad_extendedSceneIdFromSceneName:()MediaAnalysis
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 nodeForName:v4];
+  v5 = [self nodeForName:v4];
   v6 = v5;
   if (v5)
   {
@@ -173,16 +173,16 @@ LABEL_9:
 {
   v43 = *MEMORY[0x1E69E9840];
   v27 = [MEMORY[0x1E695DFA8] set];
-  v5 = [a1 nodeForSceneClassId:a3];
+  v5 = [self nodeForSceneClassId:a3];
   if (v5)
   {
     v24 = v5;
-    v6 = [v5 parents];
+    parents = [v5 parents];
     v25 = 0;
     while (1)
     {
-      v26 = v6;
-      if (![v6 count])
+      v26 = parents;
+      if (![parents count])
       {
         break;
       }
@@ -242,8 +242,8 @@ LABEL_9:
             v29 = 0u;
             v30 = 0u;
             v31 = 0u;
-            v18 = [v17 parents];
-            v19 = [v18 countByEnumeratingWithState:&v28 objects:v40 count:16];
+            parents2 = [v17 parents];
+            v19 = [parents2 countByEnumeratingWithState:&v28 objects:v40 count:16];
             if (v19)
             {
               v20 = *v29;
@@ -253,7 +253,7 @@ LABEL_9:
                 {
                   if (*v29 != v20)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(parents2);
                   }
 
                   v22 = *(*(&v28 + 1) + 8 * k);
@@ -263,7 +263,7 @@ LABEL_9:
                   }
                 }
 
-                v19 = [v18 countByEnumeratingWithState:&v28 objects:v40 count:16];
+                v19 = [parents2 countByEnumeratingWithState:&v28 objects:v40 count:16];
               }
 
               while (v19);
@@ -276,7 +276,7 @@ LABEL_9:
         while (v14);
       }
 
-      v6 = v12;
+      parents = v12;
       if (++v25 == 10)
       {
         goto LABEL_32;

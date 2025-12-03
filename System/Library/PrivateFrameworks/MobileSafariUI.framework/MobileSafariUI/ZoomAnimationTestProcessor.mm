@@ -1,30 +1,30 @@
 @interface ZoomAnimationTestProcessor
-- (BOOL)performActionForPage:(id)a3;
-- (BOOL)startPageAction:(id)a3;
-- (ZoomAnimationTestProcessor)initWithTestName:(id)a3 browserController:(id)a4;
+- (BOOL)performActionForPage:(id)page;
+- (BOOL)startPageAction:(id)action;
+- (ZoomAnimationTestProcessor)initWithTestName:(id)name browserController:(id)controller;
 - (void)advanceTest;
 - (void)dealloc;
 - (void)resetZoom;
-- (void)scrollViewDidEndZooming:(id)a3;
+- (void)scrollViewDidEndZooming:(id)zooming;
 - (void)startZoom;
 @end
 
 @implementation ZoomAnimationTestProcessor
 
-- (ZoomAnimationTestProcessor)initWithTestName:(id)a3 browserController:(id)a4
+- (ZoomAnimationTestProcessor)initWithTestName:(id)name browserController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = ZoomAnimationTestProcessor;
-  v4 = [(ContentInteractionTestRunner *)&v10 initWithTestName:a3 browserController:a4];
+  v4 = [(ContentInteractionTestRunner *)&v10 initWithTestName:name browserController:controller];
   v5 = v4;
   if (v4)
   {
     [(ZoomAnimationTestProcessor *)v4 setTestState:0];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v5 selector:sel_scrollViewWillBeginZooming_ name:@"ScrollViewWillBeginZoomingNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_scrollViewWillBeginZooming_ name:@"ScrollViewWillBeginZoomingNotification" object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v5 selector:sel_scrollViewDidEndZooming_ name:@"ScrollViewDidEndZoomingNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel_scrollViewDidEndZooming_ name:@"ScrollViewDidEndZoomingNotification" object:0];
 
     v8 = v5;
   }
@@ -34,33 +34,33 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ZoomAnimationTestProcessor;
   [(PageLoadTestRunner *)&v4 dealloc];
 }
 
-- (BOOL)startPageAction:(id)a3
+- (BOOL)startPageAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(ZoomAnimationTestProcessor *)self setTestState:1];
   [(ZoomAnimationTestProcessor *)self setTargetIndex:0];
   [(ZoomAnimationTestProcessor *)self setIterationsRemaining:[(ContentInteractionTestRunner *)self iterations]];
-  v5 = [(ContentInteractionTestRunner *)self pageWebView];
-  v6 = [v5 scrollView];
+  pageWebView = [(ContentInteractionTestRunner *)self pageWebView];
+  scrollView = [pageWebView scrollView];
 
-  [v6 zoomScale];
+  [scrollView zoomScale];
   [(ZoomAnimationTestProcessor *)self setInitialZoom:?];
   v8.receiver = self;
   v8.super_class = ZoomAnimationTestProcessor;
-  LOBYTE(self) = [(ContentInteractionTestRunner *)&v8 startPageAction:v4];
+  LOBYTE(self) = [(ContentInteractionTestRunner *)&v8 startPageAction:actionCopy];
 
   return self;
 }
 
-- (void)scrollViewDidEndZooming:(id)a3
+- (void)scrollViewDidEndZooming:(id)zooming
 {
   [(ContentInteractionTestRunner *)self stopSubtest:@"zooming"];
   [(ZoomAnimationTestProcessor *)self resetZoom];
@@ -71,23 +71,23 @@
 
 - (void)startZoom
 {
-  v3 = [(ContentInteractionTestRunner *)self pageWebView];
-  v8 = [v3 scrollView];
+  pageWebView = [(ContentInteractionTestRunner *)self pageWebView];
+  scrollView = [pageWebView scrollView];
 
   v4 = *MEMORY[0x277CBF348];
-  [v8 contentSize];
+  [scrollView contentSize];
   v6 = v5;
   v7 = (&zoomTargets + 32 * [(ZoomAnimationTestProcessor *)self targetIndex]);
-  [v8 zoomToRect:1 animated:{v4 + v6 * v7[1] - v6 * v7[2] * 0.5, *v7 - v6 * v7[2] / v7[3] * 0.5}];
+  [scrollView zoomToRect:1 animated:{v4 + v6 * v7[1] - v6 * v7[2] * 0.5, *v7 - v6 * v7[2] / v7[3] * 0.5}];
 }
 
 - (void)resetZoom
 {
-  v3 = [(ContentInteractionTestRunner *)self pageWebView];
-  v4 = [v3 scrollView];
+  pageWebView = [(ContentInteractionTestRunner *)self pageWebView];
+  scrollView = [pageWebView scrollView];
 
   [(ZoomAnimationTestProcessor *)self initialZoom];
-  [v4 setZoomScale:?];
+  [scrollView setZoomScale:?];
 }
 
 - (void)advanceTest
@@ -136,7 +136,7 @@ LABEL_3:
   }
 }
 
-- (BOOL)performActionForPage:(id)a3
+- (BOOL)performActionForPage:(id)page
 {
   if ([(ZoomAnimationTestProcessor *)self testState]== 1)
   {

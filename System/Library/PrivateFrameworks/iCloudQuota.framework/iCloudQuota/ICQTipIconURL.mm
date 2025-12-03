@@ -1,26 +1,26 @@
 @interface ICQTipIconURL
-- (ICQTipIconURL)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICQTipIconURL)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ICQTipIconURL
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQTipIconURL);
   [(ICQTipIconURL *)v4 setImageURL:self->_imageURL];
   return v4;
 }
 
-- (ICQTipIconURL)initWithCoder:(id)a3
+- (ICQTipIconURL)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICQTipIconURL;
   v5 = [(ICQTipIconURL *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
     imageURL = v5->_imageURL;
     v5->_imageURL = v6;
   }

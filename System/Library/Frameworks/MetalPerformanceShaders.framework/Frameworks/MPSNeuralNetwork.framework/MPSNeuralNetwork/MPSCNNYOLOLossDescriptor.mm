@@ -1,28 +1,28 @@
 @interface MPSCNNYOLOLossDescriptor
 + (MPSCNNYOLOLossDescriptor)cnnLossDescriptorWithXYLossType:(MPSCNNLossType)XYLossType WHLossType:(MPSCNNLossType)WHLossType confidenceLossType:(MPSCNNLossType)confidenceLossType classesLossType:(MPSCNNLossType)classesLossType reductionType:(MPSCNNReductionType)reductionType anchorBoxes:(NSData *)anchorBoxes numberOfAnchorBoxes:(NSUInteger)numberOfAnchorBoxes;
-- (MPSCNNYOLOLossDescriptor)initWithXYLossType:(unsigned int)a3 WHLossType:(unsigned int)a4 confidenceLossType:(unsigned int)a5 classesLossType:(unsigned int)a6 reductionType:(int)a7 anchorBoxes:(id)a8 numberOfAnchorBoxes:(unint64_t)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MPSCNNYOLOLossDescriptor)initWithXYLossType:(unsigned int)type WHLossType:(unsigned int)lossType confidenceLossType:(unsigned int)confidenceLossType classesLossType:(unsigned int)classesLossType reductionType:(int)reductionType anchorBoxes:(id)boxes numberOfAnchorBoxes:(unint64_t)anchorBoxes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (void)dealloc;
 @end
 
 @implementation MPSCNNYOLOLossDescriptor
 
-- (MPSCNNYOLOLossDescriptor)initWithXYLossType:(unsigned int)a3 WHLossType:(unsigned int)a4 confidenceLossType:(unsigned int)a5 classesLossType:(unsigned int)a6 reductionType:(int)a7 anchorBoxes:(id)a8 numberOfAnchorBoxes:(unint64_t)a9
+- (MPSCNNYOLOLossDescriptor)initWithXYLossType:(unsigned int)type WHLossType:(unsigned int)lossType confidenceLossType:(unsigned int)confidenceLossType classesLossType:(unsigned int)classesLossType reductionType:(int)reductionType anchorBoxes:(id)boxes numberOfAnchorBoxes:(unint64_t)anchorBoxes
 {
-  v10 = *&a7;
-  v11 = *&a6;
-  v12 = *&a5;
-  v13 = *&a4;
-  v14 = *&a3;
+  v10 = *&reductionType;
+  v11 = *&classesLossType;
+  v12 = *&confidenceLossType;
+  v13 = *&lossType;
+  v14 = *&type;
   v152.receiver = self;
   v152.super_class = MPSCNNYOLOLossDescriptor;
   v15 = [(MPSCNNYOLOLossDescriptor *)&v152 init];
   v22 = v15;
   if (v15)
   {
-    objc_msgSend_setAnchorBoxes_(v15, v16, a8, v17, v18, v19, v20, v21);
-    objc_msgSend_setNumberOfAnchorBoxes_(v22, v23, a9, v24, v25, v26, v27, v28);
+    objc_msgSend_setAnchorBoxes_(v15, v16, boxes, v17, v18, v19, v20, v21);
+    objc_msgSend_setNumberOfAnchorBoxes_(v22, v23, anchorBoxes, v24, v25, v26, v27, v28);
     LODWORD(v29) = 10.0;
     objc_msgSend_setScaleXY_(v22, v30, v31, v32, v33, v34, v35, v36, v29);
     LODWORD(v37) = 10.0;
@@ -66,10 +66,10 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  result = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9, v10, v11);
+  result = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9, v10, v11);
   if (result)
   {
     v19 = result;
@@ -92,10 +92,10 @@
     objc_msgSend_setMinIOUForObjectPresence_(v19, v85, v86, v87, v88, v89, v90, v91, v84);
     *&v92 = self->_maxIOUForObjectAbsence;
     objc_msgSend_setMaxIOUForObjectAbsence_(v19, v93, v94, v95, v96, v97, v98, v99, v92);
-    v19[1] = objc_msgSend_copyWithZone_(self->_XYLossDescriptor, v100, a3, v101, v102, v103, v104, v105);
-    v19[2] = objc_msgSend_copyWithZone_(self->_WHLossDescriptor, v106, a3, v107, v108, v109, v110, v111);
-    v19[3] = objc_msgSend_copyWithZone_(self->_confidenceLossDescriptor, v112, a3, v113, v114, v115, v116, v117);
-    v124 = objc_msgSend_copyWithZone_(self->_classesLossDescriptor, v118, a3, v119, v120, v121, v122, v123);
+    v19[1] = objc_msgSend_copyWithZone_(self->_XYLossDescriptor, v100, zone, v101, v102, v103, v104, v105);
+    v19[2] = objc_msgSend_copyWithZone_(self->_WHLossDescriptor, v106, zone, v107, v108, v109, v110, v111);
+    v19[3] = objc_msgSend_copyWithZone_(self->_confidenceLossDescriptor, v112, zone, v113, v114, v115, v116, v117);
+    v124 = objc_msgSend_copyWithZone_(self->_classesLossDescriptor, v118, zone, v119, v120, v121, v122, v123);
     result = v19;
     v19[4] = v124;
   }

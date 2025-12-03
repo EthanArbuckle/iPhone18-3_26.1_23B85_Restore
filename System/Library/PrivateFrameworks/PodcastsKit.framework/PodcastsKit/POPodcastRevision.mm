@@ -18,8 +18,8 @@
   }
 
   v4 = objc_alloc_init(NSClassFromString(&v3->isa));
-  v5 = [(POPodcastRevision *)self objectID];
-  [v4 setUuid:v5];
+  objectID = [(POPodcastRevision *)self objectID];
+  [v4 setUuid:objectID];
 
   return v4;
 }
@@ -29,20 +29,20 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(POPodcastRevision *)self revisionID];
-  v7 = [(POPodcastRevision *)self revisionType];
-  if (v7 > 2)
+  revisionID = [(POPodcastRevision *)self revisionID];
+  revisionType = [(POPodcastRevision *)self revisionType];
+  if (revisionType > 2)
   {
     v8 = @"unknown";
   }
 
   else
   {
-    v8 = off_279A44910[v7];
+    v8 = off_279A44910[revisionType];
   }
 
-  v9 = [(POPodcastRevision *)self objectID];
-  v10 = [v3 stringWithFormat:@"%@ (%p) revisionID: %lu, type: %@, uuid, %@", v5, self, v6, v8, v9];
+  objectID = [(POPodcastRevision *)self objectID];
+  v10 = [v3 stringWithFormat:@"%@ (%p) revisionID: %lu, type: %@, uuid, %@", v5, self, revisionID, v8, objectID];
 
   return v10;
 }

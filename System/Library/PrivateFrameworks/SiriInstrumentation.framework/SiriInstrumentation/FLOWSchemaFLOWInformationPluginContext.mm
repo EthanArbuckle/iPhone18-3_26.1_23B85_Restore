@@ -1,33 +1,33 @@
 @interface FLOWSchemaFLOWInformationPluginContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWInformationPluginContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWInformationPluginContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWInformationPluginContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWInformationPluginContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWInformationPluginContext
 
-- (FLOWSchemaFLOWInformationPluginContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWInformationPluginContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = FLOWSchemaFLOWInformationPluginContext;
   v5 = [(FLOWSchemaFLOWInformationPluginContext *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWInformationPluginContext setEventType:](v5, "setEventType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"executedPegasusDomain"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"executedPegasusDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWInformationPluginContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWInformationPluginContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWInformationPluginContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWInformationPluginContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWInformationPluginContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,17 +77,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(FLOWSchemaFLOWInformationPluginContext *)self eventType];
+    eventType = [(FLOWSchemaFLOWInformationPluginContext *)self eventType];
     v5 = @"FLOWINFORMATIONPLUGINEVENTTYPE_UNKNOWN";
-    if (v4 == 1)
+    if (eventType == 1)
     {
       v5 = @"FLOWINFORMATIONPLUGINEVENTTYPE_POMMES";
     }
 
-    if (v4 == 2)
+    if (eventType == 2)
     {
       v6 = @"FLOWINFORMATIONPLUGINEVENTTYPE_MODALITY";
     }
@@ -97,19 +97,19 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"eventType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"eventType"];
   }
 
   if (self->_executedPegasusDomain)
   {
-    v7 = [(FLOWSchemaFLOWInformationPluginContext *)self executedPegasusDomain];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"executedPegasusDomain"];
+    executedPegasusDomain = [(FLOWSchemaFLOWInformationPluginContext *)self executedPegasusDomain];
+    v8 = [executedPegasusDomain copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"executedPegasusDomain"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -127,22 +127,22 @@
   return [(NSString *)self->_executedPegasusDomain hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (eventType = self->_eventType, eventType == [v4 eventType]))
+      if ((*&self->_has & 1) == 0 || (eventType = self->_eventType, eventType == [equalCopy eventType]))
       {
-        v6 = [(FLOWSchemaFLOWInformationPluginContext *)self executedPegasusDomain];
-        v7 = [v4 executedPegasusDomain];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        executedPegasusDomain = [(FLOWSchemaFLOWInformationPluginContext *)self executedPegasusDomain];
+        executedPegasusDomain2 = [equalCopy executedPegasusDomain];
+        v8 = executedPegasusDomain2;
+        if ((executedPegasusDomain != 0) != (executedPegasusDomain2 == 0))
         {
-          v9 = [(FLOWSchemaFLOWInformationPluginContext *)self executedPegasusDomain];
-          if (!v9)
+          executedPegasusDomain3 = [(FLOWSchemaFLOWInformationPluginContext *)self executedPegasusDomain];
+          if (!executedPegasusDomain3)
           {
 
 LABEL_13:
@@ -150,10 +150,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(FLOWSchemaFLOWInformationPluginContext *)self executedPegasusDomain];
-          v12 = [v4 executedPegasusDomain];
-          v13 = [v11 isEqual:v12];
+          v10 = executedPegasusDomain3;
+          executedPegasusDomain4 = [(FLOWSchemaFLOWInformationPluginContext *)self executedPegasusDomain];
+          executedPegasusDomain5 = [equalCopy executedPegasusDomain];
+          v13 = [executedPegasusDomain4 isEqual:executedPegasusDomain5];
 
           if (v13)
           {
@@ -174,31 +174,31 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(FLOWSchemaFLOWInformationPluginContext *)self executedPegasusDomain];
+  executedPegasusDomain = [(FLOWSchemaFLOWInformationPluginContext *)self executedPegasusDomain];
 
-  v5 = v6;
-  if (v4)
+  v5 = toCopy;
+  if (executedPegasusDomain)
   {
     PBDataWriterWriteStringField();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = FLOWSchemaFLOWInformationPluginContext;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

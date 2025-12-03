@@ -1,21 +1,21 @@
 @interface FCPaymentTransactionAuthorizationResponse
-- (FCPaymentTransactionAuthorizationResponse)initWithCredential:(id)a3 accountSignupError:(id)a4;
+- (FCPaymentTransactionAuthorizationResponse)initWithCredential:(id)credential accountSignupError:(id)error;
 @end
 
 @implementation FCPaymentTransactionAuthorizationResponse
 
-- (FCPaymentTransactionAuthorizationResponse)initWithCredential:(id)a3 accountSignupError:(id)a4
+- (FCPaymentTransactionAuthorizationResponse)initWithCredential:(id)credential accountSignupError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  credentialCopy = credential;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = FCPaymentTransactionAuthorizationResponse;
   v9 = [(FCPaymentTransactionAuthorizationResponse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_credential, a3);
-    objc_storeStrong(&v10->_accountSignupError, a4);
+    objc_storeStrong(&v9->_credential, credential);
+    objc_storeStrong(&v10->_accountSignupError, error);
   }
 
   return v10;

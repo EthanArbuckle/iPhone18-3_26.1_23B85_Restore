@@ -1,7 +1,7 @@
 @interface PICurvesLUTFilter
-+ (id)curvePointsFromDictionaries:(id)a3;
-+ (id)tableImageFromRed:(const float *)a3 green:(const float *)a4 blue:(const float *)a5 luminance:(const float *)a6;
-+ (vector<float,)calculateCurveTable:(id)a2;
++ (id)curvePointsFromDictionaries:(id)dictionaries;
++ (id)tableImageFromRed:(const float *)red green:(const float *)green blue:(const float *)blue luminance:(const float *)luminance;
++ (vector<float,)calculateCurveTable:(id)table;
 - (id)outputImage;
 @end
 
@@ -9,17 +9,17 @@
 
 - (id)outputImage
 {
-  v3 = [(PICurvesLUTFilter *)self inputPointsR];
-  v4 = [PICurvesLUTFilter curvePointsFromDictionaries:v3];
+  inputPointsR = [(PICurvesLUTFilter *)self inputPointsR];
+  v4 = [PICurvesLUTFilter curvePointsFromDictionaries:inputPointsR];
 
-  v5 = [(PICurvesLUTFilter *)self inputPointsG];
-  v6 = [PICurvesLUTFilter curvePointsFromDictionaries:v5];
+  inputPointsG = [(PICurvesLUTFilter *)self inputPointsG];
+  v6 = [PICurvesLUTFilter curvePointsFromDictionaries:inputPointsG];
 
-  v7 = [(PICurvesLUTFilter *)self inputPointsB];
-  v8 = [PICurvesLUTFilter curvePointsFromDictionaries:v7];
+  inputPointsB = [(PICurvesLUTFilter *)self inputPointsB];
+  v8 = [PICurvesLUTFilter curvePointsFromDictionaries:inputPointsB];
 
-  v9 = [(PICurvesLUTFilter *)self inputPointsL];
-  v10 = [PICurvesLUTFilter curvePointsFromDictionaries:v9];
+  inputPointsL = [(PICurvesLUTFilter *)self inputPointsL];
+  v10 = [PICurvesLUTFilter curvePointsFromDictionaries:inputPointsL];
 
   [PICurvesLUTFilter calculateCurveTable:v4];
   [PICurvesLUTFilter calculateCurveTable:v6];
@@ -49,10 +49,10 @@
   return v11;
 }
 
-+ (id)tableImageFromRed:(const float *)a3 green:(const float *)a4 blue:(const float *)a5 luminance:(const float *)a6
++ (id)tableImageFromRed:(const float *)red green:(const float *)green blue:(const float *)blue luminance:(const float *)luminance
 {
   v62 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!red)
   {
     v18 = NUAssertLogger();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -72,8 +72,8 @@
       if (v23)
       {
         v41 = dispatch_get_specific(*v20);
-        v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(srcA.data) = 138543618;
         *(&srcA.data + 4) = v41;
         WORD2(srcA.height) = 2114;
@@ -90,8 +90,8 @@
     }
 
 LABEL_27:
-    v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v40 = [v39 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v40 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     LODWORD(srcA.data) = 138543362;
     *(&srcA.data + 4) = v40;
     _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &srcA, 0xCu);
@@ -99,7 +99,7 @@ LABEL_27:
     goto LABEL_39;
   }
 
-  if (!a4)
+  if (!green)
   {
     v24 = NUAssertLogger();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -119,8 +119,8 @@ LABEL_27:
       if (v28)
       {
         v44 = dispatch_get_specific(*v26);
-        v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v46 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         LODWORD(srcA.data) = 138543618;
         *(&srcA.data + 4) = v44;
         WORD2(srcA.height) = 2114;
@@ -139,7 +139,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (!a5)
+  if (!blue)
   {
     v29 = NUAssertLogger();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -159,8 +159,8 @@ LABEL_27:
       if (v33)
       {
         v47 = dispatch_get_specific(*v31);
-        v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v49 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         LODWORD(srcA.data) = 138543618;
         *(&srcA.data + 4) = v47;
         WORD2(srcA.height) = 2114;
@@ -179,7 +179,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (!a6)
+  if (!luminance)
   {
     v34 = NUAssertLogger();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -207,8 +207,8 @@ LABEL_27:
     if (v38)
     {
       v50 = dispatch_get_specific(*v36);
-      v51 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v52 = [v51 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v52 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       LODWORD(srcA.data) = 138543618;
       *(&srcA.data + 4) = v50;
       WORD2(srcA.height) = 2114;
@@ -224,16 +224,16 @@ LABEL_39:
 
   v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:0x2000];
   *&srcA.height = xmmword_1C7845D90;
-  srcA.data = a3;
+  srcA.data = red;
   srcA.rowBytes = 2048;
   *&srcR.height = xmmword_1C7845D90;
   srcG.rowBytes = 2048;
-  srcR.data = a4;
+  srcR.data = green;
   srcR.rowBytes = 2048;
   srcB.rowBytes = 2048;
-  srcG.data = a5;
+  srcG.data = blue;
   *&srcG.height = xmmword_1C7845D90;
-  srcB.data = a6;
+  srcB.data = luminance;
   *&srcB.height = xmmword_1C7845D90;
   dest.data = [v10 mutableBytes];
   *&dest.height = xmmword_1C7845D90;
@@ -273,16 +273,16 @@ vImage_Error __60__PICurvesLUTFilter_tableImageFromRed_green_blue_luminance___bl
   return vImageConvert_PlanarFtoPlanar16F(&src, &dest, 0);
 }
 
-+ (id)curvePointsFromDictionaries:(id)a3
++ (id)curvePointsFromDictionaries:(id)dictionaries
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  dictionariesCopy = dictionaries;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dictionariesCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -311,7 +311,7 @@ vImage_Error __60__PICurvesLUTFilter_tableImageFromRed_green_blue_luminance___bl
   return v4;
 }
 
-+ (vector<float,)calculateCurveTable:(id)a2
++ (vector<float,)calculateCurveTable:(id)table
 {
   v5 = a4;
   v6 = [v5 count];

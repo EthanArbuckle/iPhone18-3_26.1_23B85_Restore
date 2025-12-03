@@ -1,7 +1,7 @@
 @interface PKProvisioningSEStorageManager
 - (PKProvisioningSEStorageManager)init;
-- (PKProvisioningSEStorageManager)initWithWebService:(id)a3;
-- (void)reclaimUnusedSEMemoryWithCompletion:(id)a3;
+- (PKProvisioningSEStorageManager)initWithWebService:(id)service;
+- (void)reclaimUnusedSEMemoryWithCompletion:(id)completion;
 @end
 
 @implementation PKProvisioningSEStorageManager
@@ -14,43 +14,43 @@
   return v4;
 }
 
-- (PKProvisioningSEStorageManager)initWithWebService:(id)a3
+- (PKProvisioningSEStorageManager)initWithWebService:(id)service
 {
-  v4 = a3;
-  if (v4)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     v10.receiver = self;
     v10.super_class = PKProvisioningSEStorageManager;
     v5 = [(PKProvisioningSEStorageManager *)&v10 init];
     if (v5)
     {
-      v6 = [[_PKProvisioningSEStorageManager alloc] initWithWebService:v4];
+      v6 = [[_PKProvisioningSEStorageManager alloc] initWithWebService:serviceCopy];
       manager = v5->_manager;
       v5->_manager = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)reclaimUnusedSEMemoryWithCompletion:(id)a3
+- (void)reclaimUnusedSEMemoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   manager = self->_manager;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__PKProvisioningSEStorageManager_reclaimUnusedSEMemoryWithCompletion___block_invoke;
   v7[3] = &unk_1E79CC7E8;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(_PKProvisioningSEStorageManager *)manager reclaimUnusedSEMemoryWithCompletion:v7];
 }
 

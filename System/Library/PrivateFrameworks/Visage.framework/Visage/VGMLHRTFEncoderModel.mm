@@ -1,13 +1,13 @@
 @interface VGMLHRTFEncoderModel
-- (void)inferCaptureData:(const void *)a3 toOutput:(id)a4;
+- (void)inferCaptureData:(const void *)data toOutput:(id)output;
 @end
 
 @implementation VGMLHRTFEncoderModel
 
-- (void)inferCaptureData:(const void *)a3 toOutput:(id)a4
+- (void)inferCaptureData:(const void *)data toOutput:(id)output
 {
-  v40 = a4;
-  CVPixelBufferFromIOSurface = createCVPixelBufferFromIOSurface(**a3);
+  outputCopy = output;
+  CVPixelBufferFromIOSurface = createCVPixelBufferFromIOSurface(**data);
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __50__VGMLHRTFEncoderModel_inferCaptureData_toOutput___block_invoke;
@@ -17,7 +17,7 @@
   v7 = [(NSMutableArray *)self->super._inputBuffers objectAtIndexedSubscript:0];
   [v7 bindImage:CVPixelBufferFromIOSurface];
 
-  v8 = createCVPixelBufferFromIOSurface(*(*a3 + 80));
+  v8 = createCVPixelBufferFromIOSurface(*(*data + 80));
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __50__VGMLHRTFEncoderModel_inferCaptureData_toOutput___block_invoke_2;
@@ -27,7 +27,7 @@
   v9 = [(NSMutableArray *)self->super._inputBuffers objectAtIndexedSubscript:1];
   [v9 bindImage:v8];
 
-  v10 = createCVPixelBufferFromIOSurface(*(*a3 + 160));
+  v10 = createCVPixelBufferFromIOSurface(*(*data + 160));
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __50__VGMLHRTFEncoderModel_inferCaptureData_toOutput___block_invoke_3;
@@ -37,8 +37,8 @@
   v11 = [(NSMutableArray *)self->super._inputBuffers objectAtIndexedSubscript:2];
   [v11 bindImage:v10];
 
-  v12 = [*(*a3 + 8) vg_toFloat16Surface];
-  v13 = createCVPixelBufferFromIOSurface(v12);
+  vg_toFloat16Surface = [*(*data + 8) vg_toFloat16Surface];
+  v13 = createCVPixelBufferFromIOSurface(vg_toFloat16Surface);
 
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
@@ -49,8 +49,8 @@
   v14 = [(NSMutableArray *)self->super._inputBuffers objectAtIndexedSubscript:3];
   [v14 bindImage:v13];
 
-  v15 = [*(*a3 + 88) vg_toFloat16Surface];
-  v16 = createCVPixelBufferFromIOSurface(v15);
+  vg_toFloat16Surface2 = [*(*data + 88) vg_toFloat16Surface];
+  v16 = createCVPixelBufferFromIOSurface(vg_toFloat16Surface2);
 
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -61,8 +61,8 @@
   v18 = [(NSMutableArray *)self->super._inputBuffers objectAtIndexedSubscript:4];
   [v18 bindImage:v16];
 
-  v19 = [*(*a3 + 168) vg_toFloat16Surface];
-  v20 = createCVPixelBufferFromIOSurface(v19);
+  vg_toFloat16Surface3 = [*(*data + 168) vg_toFloat16Surface];
+  v20 = createCVPixelBufferFromIOSurface(vg_toFloat16Surface3);
 
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
@@ -73,8 +73,8 @@
   v22 = [(NSMutableArray *)self->super._inputBuffers objectAtIndexedSubscript:5];
   [v22 bindImage:v20];
 
-  v23 = [*(*a3 + 16) vg_toFloat16Surface];
-  v24 = createCVPixelBufferFromIOSurface(v23);
+  vg_toFloat16Surface4 = [*(*data + 16) vg_toFloat16Surface];
+  v24 = createCVPixelBufferFromIOSurface(vg_toFloat16Surface4);
 
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
@@ -85,8 +85,8 @@
   v26 = [(NSMutableArray *)self->super._inputBuffers objectAtIndexedSubscript:6];
   [v26 bindImage:v24];
 
-  v27 = [*(*a3 + 96) vg_toFloat16Surface];
-  v28 = createCVPixelBufferFromIOSurface(v27);
+  vg_toFloat16Surface5 = [*(*data + 96) vg_toFloat16Surface];
+  v28 = createCVPixelBufferFromIOSurface(vg_toFloat16Surface5);
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -97,8 +97,8 @@
   v30 = [(NSMutableArray *)self->super._inputBuffers objectAtIndexedSubscript:7];
   [v30 bindImage:v28];
 
-  v31 = [*(*a3 + 176) vg_toFloat16Surface];
-  v32 = createCVPixelBufferFromIOSurface(v31);
+  vg_toFloat16Surface6 = [*(*data + 176) vg_toFloat16Surface];
+  v32 = createCVPixelBufferFromIOSurface(vg_toFloat16Surface6);
 
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
@@ -110,7 +110,7 @@
   [v34 bindImage:v32];
 
   v35 = [(NSMutableArray *)self->super._outputBuffers objectAtIndexedSubscript:0];
-  [v35 bindTensor:v40];
+  [v35 bindTensor:outputCopy];
 
   [(VGMLEspressoModel *)self inferModel];
   v33[2](v33);

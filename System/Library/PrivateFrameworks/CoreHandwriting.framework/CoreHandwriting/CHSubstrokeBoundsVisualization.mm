@@ -1,28 +1,28 @@
 @interface CHSubstrokeBoundsVisualization
-- (CGRect)dirtyRectForStrokeGroup:(id)a3;
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5;
+- (CGRect)dirtyRectForStrokeGroup:(id)group;
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds;
 @end
 
 @implementation CHSubstrokeBoundsVisualization
 
-- (CGRect)dirtyRectForStrokeGroup:(id)a3
+- (CGRect)dirtyRectForStrokeGroup:(id)group
 {
   v3.receiver = self;
   v3.super_class = CHSubstrokeBoundsVisualization;
-  [(CHStrokeGroupBasedVisualization *)&v3 dirtyRectForStrokeGroup:a3];
+  [(CHStrokeGroupBasedVisualization *)&v3 dirtyRectForStrokeGroup:group];
   return CGRectInset(v4, -2.0, -2.0);
 }
 
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v81 = *MEMORY[0x1E69E9840];
   v77.receiver = self;
   v77.super_class = CHSubstrokeBoundsVisualization;
-  [(CHStrokeGroupBasedVisualization *)&v77 drawVisualizationInRect:a3.origin.x context:a3.origin.y viewBounds:a3.size.width, a3.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(CHStrokeGroupBasedVisualization *)&v77 drawVisualizationInRect:rect.origin.x context:rect.origin.y viewBounds:rect.size.width, rect.size.height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v16 = objc_msgSend_resultDrawn(self, v11, v12, v13, v14, v15);
   v67 = objc_msgSend_strokeGroupingResult(v16, v17, v18, v19, v20, v21);
 
@@ -30,9 +30,9 @@
   v33 = objc_msgSend_allObjects(v27, v28, v29, v30, v31, v32);
   v66 = objc_msgSend_sortedArrayWithOptions_usingComparator_(v33, v34, 1, &unk_1EF1BDE68, v35, v36);
 
-  CGContextSetLineWidth(a4, 2.0);
+  CGContextSetLineWidth(context, 2.0);
   *lengths = xmmword_1839CE6F0;
-  CGContextSetLineDash(a4, 0.0, lengths, 2uLL);
+  CGContextSetLineDash(context, 0.0, lengths, 2uLL);
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
@@ -83,7 +83,7 @@
                   }
 
                   objc_msgSend_rotatedBounds(*(*(&v69 + 1) + 8 * j), v58, v59, v60, v61, v62);
-                  CGContextStrokeRect(a4, v83);
+                  CGContextStrokeRect(context, v83);
                 }
 
                 v63 = objc_msgSend_countByEnumeratingWithState_objects_count_(v55, v58, &v69, v78, 16, v62);

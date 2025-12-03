@@ -1,36 +1,36 @@
 @interface SASActivePresentationInstrumentationSender
-- (SASActivePresentationInstrumentationSender)initWithAnalyticsStream:(id)a3;
-- (void)_instrumentActivationMessage:(id)a3;
-- (void)_requestStateDidChange:(int64_t)a3;
-- (void)aggregatePresentationRequestStateDidChange:(int64_t)a3;
-- (void)barrierWithCompletion:(id)a3;
-- (void)instrumentActivationMessage:(id)a3;
+- (SASActivePresentationInstrumentationSender)initWithAnalyticsStream:(id)stream;
+- (void)_instrumentActivationMessage:(id)message;
+- (void)_requestStateDidChange:(int64_t)change;
+- (void)aggregatePresentationRequestStateDidChange:(int64_t)change;
+- (void)barrierWithCompletion:(id)completion;
+- (void)instrumentActivationMessage:(id)message;
 @end
 
 @implementation SASActivePresentationInstrumentationSender
 
-- (SASActivePresentationInstrumentationSender)initWithAnalyticsStream:(id)a3
+- (SASActivePresentationInstrumentationSender)initWithAnalyticsStream:(id)stream
 {
   v9.receiver = self;
   v9.super_class = SASActivePresentationInstrumentationSender;
-  v3 = [(SASActivationInstrumentationSender *)&v9 initWithAnalyticsStream:a3];
+  v3 = [(SASActivationInstrumentationSender *)&v9 initWithAnalyticsStream:stream];
   if (v3)
   {
     v4 = dispatch_queue_create("com.apple.siri-activation.activePresentationSender", 0);
     queue = v3->_queue;
     v3->_queue = v4;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     queuedMesasges = v3->_queuedMesasges;
-    v3->_queuedMesasges = v6;
+    v3->_queuedMesasges = array;
   }
 
   return v3;
 }
 
-- (void)instrumentActivationMessage:(id)a3
+- (void)instrumentActivationMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -38,8 +38,8 @@
   block[2] = __74__SASActivePresentationInstrumentationSender_instrumentActivationMessage___block_invoke;
   block[3] = &unk_1E82F37D0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -52,7 +52,7 @@ void __74__SASActivePresentationInstrumentationSender_instrumentActivationMessag
   [WeakRetained _instrumentActivationMessage:*(a1 + 32)];
 }
 
-- (void)aggregatePresentationRequestStateDidChange:(int64_t)a3
+- (void)aggregatePresentationRequestStateDidChange:(int64_t)change
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -61,7 +61,7 @@ void __74__SASActivePresentationInstrumentationSender_instrumentActivationMessag
   block[2] = __89__SASActivePresentationInstrumentationSender_aggregatePresentationRequestStateDidChange___block_invoke;
   block[3] = &unk_1E82F36A8;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = change;
   dispatch_async(queue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -73,16 +73,16 @@ void __89__SASActivePresentationInstrumentationSender_aggregatePresentationReque
   [WeakRetained _requestStateDidChange:*(a1 + 40)];
 }
 
-- (void)barrierWithCompletion:(id)a3
+- (void)barrierWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__SASActivePresentationInstrumentationSender_barrierWithCompletion___block_invoke;
   block[3] = &unk_1E82F3D58;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(queue, block);
 }
 
@@ -107,10 +107,10 @@ uint64_t __68__SASActivePresentationInstrumentationSender_barrierWithCompletion_
   return result;
 }
 
-- (void)_instrumentActivationMessage:(id)a3
+- (void)_instrumentActivationMessage:(id)message
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = [(SASActivePresentationInstrumentationSender *)self _canInstrumentForRequestState:self->_aggregateRequestState];
   v6 = MEMORY[0x1E698D0A0];
   v7 = *MEMORY[0x1E698D0A0];
@@ -122,13 +122,13 @@ uint64_t __68__SASActivePresentationInstrumentationSender_barrierWithCompletion_
       *buf = 136315394;
       v18 = "[SASActivePresentationInstrumentationSender _instrumentActivationMessage:]";
       v19 = 2112;
-      v20 = v4;
+      v20 = messageCopy;
       _os_log_impl(&dword_1C8137000, v7, OS_LOG_TYPE_DEFAULT, "%s #instrumentation Allowing message %@", buf, 0x16u);
     }
 
     v16.receiver = self;
     v16.super_class = SASActivePresentationInstrumentationSender;
-    [(SASActivationInstrumentationSender *)&v16 instrumentActivationMessage:v4];
+    [(SASActivationInstrumentationSender *)&v16 instrumentActivationMessage:messageCopy];
   }
 
   else
@@ -138,14 +138,14 @@ uint64_t __68__SASActivePresentationInstrumentationSender_barrierWithCompletion_
       *buf = 136315394;
       v18 = "[SASActivePresentationInstrumentationSender _instrumentActivationMessage:]";
       v19 = 2112;
-      v20 = v4;
+      v20 = messageCopy;
       _os_log_impl(&dword_1C8137000, v7, OS_LOG_TYPE_DEFAULT, "%s #instrumentation Buffering message %@", buf, 0x16u);
     }
 
-    v9 = [(NSMutableArray *)self->_queuedMesasges lastObject];
-    v10 = [v9 activationEventIdentifier];
-    v11 = [v4 activationEventIdentifier];
-    if (v10 && ([v10 isEqual:v11] & 1) == 0)
+    lastObject = [(NSMutableArray *)self->_queuedMesasges lastObject];
+    activationEventIdentifier = [lastObject activationEventIdentifier];
+    activationEventIdentifier2 = [messageCopy activationEventIdentifier];
+    if (activationEventIdentifier && ([activationEventIdentifier isEqual:activationEventIdentifier2] & 1) == 0)
     {
       v12 = *v6;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -153,31 +153,31 @@ uint64_t __68__SASActivePresentationInstrumentationSender_barrierWithCompletion_
         *buf = 136315650;
         v18 = "[SASActivePresentationInstrumentationSender _instrumentActivationMessage:]";
         v19 = 2112;
-        v20 = v10;
+        v20 = activationEventIdentifier;
         v21 = 2112;
-        v22 = v11;
+        v22 = activationEventIdentifier2;
         _os_log_impl(&dword_1C8137000, v12, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New activation interaction detected. Old %@, New %@", buf, 0x20u);
       }
 
-      v13 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       queuedMesasges = self->_queuedMesasges;
-      self->_queuedMesasges = v13;
+      self->_queuedMesasges = array;
     }
 
-    [(NSMutableArray *)self->_queuedMesasges addObject:v4];
+    [(NSMutableArray *)self->_queuedMesasges addObject:messageCopy];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestStateDidChange:(int64_t)a3
+- (void)_requestStateDidChange:(int64_t)change
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = SASRequestStateGetName(a3);
+    v7 = SASRequestStateGetName(change);
     *buf = 136315394;
     v24 = "[SASActivePresentationInstrumentationSender _requestStateDidChange:]";
     v25 = 2112;
@@ -185,7 +185,7 @@ uint64_t __68__SASActivePresentationInstrumentationSender_barrierWithCompletion_
     _os_log_impl(&dword_1C8137000, v6, OS_LOG_TYPE_DEFAULT, "%s #instrumentation Request state did change %@", buf, 0x16u);
   }
 
-  if ([(SASActivePresentationInstrumentationSender *)self _canInstrumentForRequestState:a3])
+  if ([(SASActivePresentationInstrumentationSender *)self _canInstrumentForRequestState:change])
   {
     v20 = 0u;
     v21 = 0u;
@@ -221,12 +221,12 @@ uint64_t __68__SASActivePresentationInstrumentationSender_barrierWithCompletion_
       while (v10);
     }
 
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     queuedMesasges = self->_queuedMesasges;
-    self->_queuedMesasges = v14;
+    self->_queuedMesasges = array;
   }
 
-  self->_aggregateRequestState = a3;
+  self->_aggregateRequestState = change;
   v16 = *MEMORY[0x1E69E9840];
 }
 

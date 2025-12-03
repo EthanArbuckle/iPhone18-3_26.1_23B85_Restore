@@ -1,26 +1,26 @@
 @interface CKLastSentCapabilitiesAndUsage
 + (id)none;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNone;
-- (CKLastSentCapabilitiesAndUsage)initWithCapabilitySet:(id)a3 savedDate:(id)a4 usageSavedDate:(id)a5;
-- (CKLastSentCapabilitiesAndUsage)initWithCoder:(id)a3;
-- (CKLastSentCapabilitiesAndUsage)initWithLastSentCapabilitiesAndUsageEntry:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CKLastSentCapabilitiesAndUsage)initWithCapabilitySet:(id)set savedDate:(id)date usageSavedDate:(id)savedDate;
+- (CKLastSentCapabilitiesAndUsage)initWithCoder:(id)coder;
+- (CKLastSentCapabilitiesAndUsage)initWithLastSentCapabilitiesAndUsageEntry:(id)entry;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKLastSentCapabilitiesAndUsage
 
-- (CKLastSentCapabilitiesAndUsage)initWithLastSentCapabilitiesAndUsageEntry:(id)a3
+- (CKLastSentCapabilitiesAndUsage)initWithLastSentCapabilitiesAndUsageEntry:(id)entry
 {
   v4 = MEMORY[0x277CBC2B0];
-  v5 = a3;
-  v8 = objc_msgSend_deviceCapabilityStringSet(v5, v6, v7);
+  entryCopy = entry;
+  v8 = objc_msgSend_deviceCapabilityStringSet(entryCopy, v6, v7);
   v10 = objc_msgSend_fromSqliteRepresentations_(v4, v9, v8);
 
-  v13 = objc_msgSend_capabilitySetSavedDate(v5, v11, v12);
-  v16 = objc_msgSend_usageSavedDate(v5, v14, v15);
+  v13 = objc_msgSend_capabilitySetSavedDate(entryCopy, v11, v12);
+  v16 = objc_msgSend_usageSavedDate(entryCopy, v14, v15);
 
   v18 = objc_msgSend_initWithCapabilitySet_savedDate_usageSavedDate_(self, v17, v10, v13, v16);
   return v18;
@@ -38,25 +38,25 @@
   return v3;
 }
 
-- (CKLastSentCapabilitiesAndUsage)initWithCapabilitySet:(id)a3 savedDate:(id)a4 usageSavedDate:(id)a5
+- (CKLastSentCapabilitiesAndUsage)initWithCapabilitySet:(id)set savedDate:(id)date usageSavedDate:(id)savedDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  setCopy = set;
+  dateCopy = date;
+  savedDateCopy = savedDate;
   v25.receiver = self;
   v25.super_class = CKLastSentCapabilitiesAndUsage;
   v13 = [(CKLastSentCapabilitiesAndUsage *)&v25 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v8, v11, v12);
+    v14 = objc_msgSend_copy(setCopy, v11, v12);
     capabilitySet = v13->_capabilitySet;
     v13->_capabilitySet = v14;
 
-    v18 = objc_msgSend_copy(v9, v16, v17);
+    v18 = objc_msgSend_copy(dateCopy, v16, v17);
     capabilitySetSavedDate = v13->_capabilitySetSavedDate;
     v13->_capabilitySetSavedDate = v18;
 
-    v22 = objc_msgSend_copy(v10, v20, v21);
+    v22 = objc_msgSend_copy(savedDateCopy, v20, v21);
     usageSavedDate = v13->_usageSavedDate;
     v13->_usageSavedDate = v22;
   }
@@ -72,10 +72,10 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v29 = 1;
   }
@@ -85,7 +85,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v11 = objc_msgSend_capabilitySet(self, v7, v8);
       if (v11 || (objc_msgSend_capabilitySet(v6, v9, v10), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
@@ -144,38 +144,38 @@ LABEL_16:
   return v29;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v7 = objc_msgSend_capabilitySet(self, v5, v6);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v8, @"capabilitySet", v7, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v8, @"capabilitySet", v7, 0);
 
   v11 = objc_msgSend_capabilitySetSavedDate(self, v9, v10);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v12, @"capabilitySavedDate", v11, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v12, @"capabilitySavedDate", v11, 0);
 
   v16 = objc_msgSend_usageSavedDate(self, v13, v14);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v15, @"usageSavedDate", v16, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v15, @"usageSavedDate", v16, 0);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_capabilitySet(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v17, v8, v7, @"CapabilitySet");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"CapabilitySet");
 
   v11 = objc_msgSend_capabilitySetSavedDate(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v17, v12, v11, @"CapabilitySavedDate");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"CapabilitySavedDate");
 
   v15 = objc_msgSend_usageSavedDate(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v17, v16, v15, @"UsageSavedDate");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"UsageSavedDate");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKLastSentCapabilitiesAndUsage)initWithCoder:(id)a3
+- (CKLastSentCapabilitiesAndUsage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = CKLastSentCapabilitiesAndUsage;
   v5 = [(CKLastSentCapabilitiesAndUsage *)&v25 init];
@@ -187,17 +187,17 @@ LABEL_16:
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v12 = objc_msgSend_setWithObjects_(v7, v11, v8, v9, v10, 0);
-    v14 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v13, v12, @"CapabilitySet");
+    v14 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v13, v12, @"CapabilitySet");
     capabilitySet = v5->_capabilitySet;
     v5->_capabilitySet = v14;
 
     v16 = objc_opt_class();
-    v18 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v17, v16, @"CapabilitySavedDate");
+    v18 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v17, v16, @"CapabilitySavedDate");
     capabilitySetSavedDate = v5->_capabilitySetSavedDate;
     v5->_capabilitySetSavedDate = v18;
 
     v20 = objc_opt_class();
-    v22 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v20, @"UsageSavedDate");
+    v22 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v20, @"UsageSavedDate");
     usageSavedDate = v5->_usageSavedDate;
     v5->_usageSavedDate = v22;
 
@@ -207,7 +207,7 @@ LABEL_16:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKLastSentCapabilitiesAndUsage alloc];
   v7 = objc_msgSend_capabilitySet(self, v5, v6);

@@ -1,18 +1,18 @@
 @interface PLAssetsdResourceInternalClient
-- (BOOL)cancelAllPrewarming:(id *)a3;
-- (BOOL)handlePhotoKitIngestJobs:(id)a3 withCompletionHandler:(id)a4;
-- (BOOL)prewarmWithCapturePhotoSettings:(id)a3 error:(id *)a4;
-- (void)batchSaveAssetsWithJobDictionaries:(id)a3 completionHandler:(id)a4;
-- (void)cancelAllPrewarmingWithCompletionHandler:(id)a3;
-- (void)prewarmWithCapturePhotoSettings:(id)a3 completionHandler:(id)a4;
-- (void)requestMasterThumbnailForAssetUUID:(id)a3 completionHandler:(id)a4;
+- (BOOL)cancelAllPrewarming:(id *)prewarming;
+- (BOOL)handlePhotoKitIngestJobs:(id)jobs withCompletionHandler:(id)handler;
+- (BOOL)prewarmWithCapturePhotoSettings:(id)settings error:(id *)error;
+- (void)batchSaveAssetsWithJobDictionaries:(id)dictionaries completionHandler:(id)handler;
+- (void)cancelAllPrewarmingWithCompletionHandler:(id)handler;
+- (void)prewarmWithCapturePhotoSettings:(id)settings completionHandler:(id)handler;
+- (void)requestMasterThumbnailForAssetUUID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation PLAssetsdResourceInternalClient
 
-- (void)cancelAllPrewarmingWithCompletionHandler:(id)a3
+- (void)cancelAllPrewarmingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -20,14 +20,14 @@
     _os_log_impl(&dword_1AA9BD000, v5, OS_LOG_TYPE_DEFAULT, "Sending cancel all prewarming", buf, 2u);
   }
 
-  v6 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__PLAssetsdResourceInternalClient_cancelAllPrewarmingWithCompletionHandler___block_invoke_28;
   v8[3] = &unk_1E79323B0;
-  v9 = v4;
-  v7 = v4;
-  [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_27_11024 handler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_27_11024 handler:v8];
 }
 
 void __76__PLAssetsdResourceInternalClient_cancelAllPrewarmingWithCompletionHandler___block_invoke_28(uint64_t a1, void *a2)
@@ -79,7 +79,7 @@ void __76__PLAssetsdResourceInternalClient_cancelAllPrewarmingWithCompletionHand
   }
 }
 
-- (BOOL)cancelAllPrewarming:(id *)a3
+- (BOOL)cancelAllPrewarming:(id *)prewarming
 {
   v21 = 0;
   v22 = &v21;
@@ -98,14 +98,14 @@ void __76__PLAssetsdResourceInternalClient_cancelAllPrewarmingWithCompletionHand
     _os_log_impl(&dword_1AA9BD000, v5, OS_LOG_TYPE_DEFAULT, "Sending cancel all prewarming", buf, 2u);
   }
 
-  v6 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__PLAssetsdResourceInternalClient_cancelAllPrewarming___block_invoke;
   v13[3] = &unk_1E7932360;
   v13[4] = &v21;
   v13[5] = &v15;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v7 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__PLAssetsdResourceInternalClient_cancelAllPrewarming___block_invoke_25;
@@ -116,10 +116,10 @@ void __76__PLAssetsdResourceInternalClient_cancelAllPrewarmingWithCompletionHand
 
   v8 = *(v22 + 24);
   v9 = v16[5];
-  if (a3 && (v8 & 1) == 0)
+  if (prewarming && (v8 & 1) == 0)
   {
     v9 = v9;
-    *a3 = v9;
+    *prewarming = v9;
   }
 
   v10 = *(v22 + 24);
@@ -170,29 +170,29 @@ void __55__PLAssetsdResourceInternalClient_cancelAllPrewarming___block_invoke_25
   }
 }
 
-- (void)prewarmWithCapturePhotoSettings:(id)a3 completionHandler:(id)a4
+- (void)prewarmWithCapturePhotoSettings:(id)settings completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  handlerCopy = handler;
   v8 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = settingsCopy;
     _os_log_impl(&dword_1AA9BD000, v8, OS_LOG_TYPE_DEFAULT, "Sending prewarm with PLCapturePhotoSettings: %@", buf, 0xCu);
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __85__PLAssetsdResourceInternalClient_prewarmWithCapturePhotoSettings_completionHandler___block_invoke_23;
   v12[3] = &unk_1E7932388;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 remoteObjectProxyWithErrorHandler:&__block_literal_global_11035 handler:v12];
+  v13 = settingsCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = settingsCopy;
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_11035 handler:v12];
 }
 
 void __85__PLAssetsdResourceInternalClient_prewarmWithCapturePhotoSettings_completionHandler___block_invoke_23(uint64_t a1, void *a2)
@@ -255,10 +255,10 @@ void __85__PLAssetsdResourceInternalClient_prewarmWithCapturePhotoSettings_compl
   }
 }
 
-- (BOOL)prewarmWithCapturePhotoSettings:(id)a3 error:(id *)a4
+- (BOOL)prewarmWithCapturePhotoSettings:(id)settings error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  settingsCopy = settings;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -273,32 +273,32 @@ void __85__PLAssetsdResourceInternalClient_prewarmWithCapturePhotoSettings_compl
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = settingsCopy;
     _os_log_impl(&dword_1AA9BD000, v7, OS_LOG_TYPE_DEFAULT, "Sending prewarm with PLCapturePhotoSettings: %@", buf, 0xCu);
   }
 
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__PLAssetsdResourceInternalClient_prewarmWithCapturePhotoSettings_error___block_invoke;
   v15[3] = &unk_1E7932360;
   v15[4] = &v22;
   v15[5] = &v16;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v15];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __73__PLAssetsdResourceInternalClient_prewarmWithCapturePhotoSettings_error___block_invoke_21;
   v14[3] = &unk_1E7932E48;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v9 prewarmWithCapturePhotoSettings:v6 reply:v14];
+  [v9 prewarmWithCapturePhotoSettings:settingsCopy reply:v14];
 
   v10 = *(v23 + 24);
   v11 = v17[5];
-  if (a4 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
     v11 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   v12 = *(v23 + 24);
@@ -349,28 +349,28 @@ void __73__PLAssetsdResourceInternalClient_prewarmWithCapturePhotoSettings_error
   }
 }
 
-- (BOOL)handlePhotoKitIngestJobs:(id)a3 withCompletionHandler:(id)a4
+- (BOOL)handlePhotoKitIngestJobs:(id)jobs withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  jobsCopy = jobs;
+  handlerCopy = handler;
   v7 = objc_alloc_init(NSClassFromString(@"PHAssetCreationRequestBridge"));
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 executeCreationRequestWithBatchJobDictionaries:v5];
-    v10 = [v9 isSuccess];
-    v11 = [v9 error];
-    v6[2](v6, v10, v5, v11);
+    v9 = [v7 executeCreationRequestWithBatchJobDictionaries:jobsCopy];
+    isSuccess = [v9 isSuccess];
+    error = [v9 error];
+    handlerCopy[2](handlerCopy, isSuccess, jobsCopy, error);
   }
 
   return v8 != 0;
 }
 
-- (void)requestMasterThumbnailForAssetUUID:(id)a3 completionHandler:(id)a4
+- (void)requestMasterThumbnailForAssetUUID:(id)d completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v31 = 0u;
   v32 = 0u;
   v30 = 0u;
@@ -385,18 +385,18 @@ void __73__PLAssetsdResourceInternalClient_prewarmWithCapturePhotoSettings_error
     os_activity_scope_enter(v10, (&v31 + 8));
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceInternalClient.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceInternalClient.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __88__PLAssetsdResourceInternalClient_requestMasterThumbnailForAssetUUID_completionHandler___block_invoke;
   v28[3] = &unk_1E7932DA8;
-  v29 = v8;
+  v29 = handlerCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3254779904;
   v20[2] = __88__PLAssetsdResourceInternalClient_requestMasterThumbnailForAssetUUID_completionHandler___block_invoke_2;
@@ -406,11 +406,11 @@ void __73__PLAssetsdResourceInternalClient_prewarmWithCapturePhotoSettings_error
   v25 = v31;
   v26 = v32;
   v27 = a2;
-  v13 = v7;
+  v13 = dCopy;
   v21 = v13;
   v14 = v29;
   v22 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v28 handler:v20];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v28 handler:v20];
 
   if (v30 == 1)
   {
@@ -491,11 +491,11 @@ void __88__PLAssetsdResourceInternalClient_requestMasterThumbnailForAssetUUID_co
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)batchSaveAssetsWithJobDictionaries:(id)a3 completionHandler:(id)a4
+- (void)batchSaveAssetsWithJobDictionaries:(id)dictionaries completionHandler:(id)handler
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v31 = a4;
+  dictionariesCopy = dictionaries;
+  handlerCopy = handler;
   v47 = 0u;
   *sel = 0u;
   v46 = 0u;
@@ -510,17 +510,17 @@ void __88__PLAssetsdResourceInternalClient_requestMasterThumbnailForAssetUUID_co
     os_activity_scope_enter(v7, (&v47 + 8));
   }
 
-  if (!v31)
+  if (!handlerCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceInternalClient.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceInternalClient.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   context = objc_autoreleasePoolPush();
   v9 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v5 count];
+    v10 = [dictionariesCopy count];
     *buf = 67109120;
     *v50 = v10;
     _os_log_impl(&dword_1AA9BD000, v9, OS_LOG_TYPE_DEFAULT, "Sending batchSaveAssetsWithJobDictionaries:completionHander: with %d jobs", buf, 8u);
@@ -530,7 +530,7 @@ void __88__PLAssetsdResourceInternalClient_requestMasterThumbnailForAssetUUID_co
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v11 = v5;
+  v11 = dictionariesCopy;
   v12 = [v11 countByEnumeratingWithState:&v42 objects:v53 count:16];
   if (v12)
   {
@@ -589,14 +589,14 @@ void __88__PLAssetsdResourceInternalClient_requestMasterThumbnailForAssetUUID_co
 
 LABEL_21:
 
-  if (!PFIsCamera() || ![(PLAssetsdResourceInternalClient *)self handlePhotoKitIngestJobs:v11 withCompletionHandler:v31])
+  if (!PFIsCamera() || ![(PLAssetsdResourceInternalClient *)self handlePhotoKitIngestJobs:v11 withCompletionHandler:handlerCopy])
   {
-    v22 = [(PLAssetsdBaseClient *)self proxyFactory];
+    proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __88__PLAssetsdResourceInternalClient_batchSaveAssetsWithJobDictionaries_completionHandler___block_invoke;
     v40[3] = &unk_1E7932DA8;
-    v41 = v31;
+    v41 = handlerCopy;
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3254779904;
     v32[2] = __88__PLAssetsdResourceInternalClient_batchSaveAssetsWithJobDictionaries_completionHandler___block_invoke_11;
@@ -608,7 +608,7 @@ LABEL_21:
     v39 = a2;
     v33 = v11;
     v34 = v41;
-    [v22 remoteObjectProxyWithErrorHandler:v40 handler:v32];
+    [proxyFactory remoteObjectProxyWithErrorHandler:v40 handler:v32];
   }
 
   objc_autoreleasePoolPop(context);

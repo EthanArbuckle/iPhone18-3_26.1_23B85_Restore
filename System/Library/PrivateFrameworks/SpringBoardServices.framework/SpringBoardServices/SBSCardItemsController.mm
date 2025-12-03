@@ -1,25 +1,25 @@
 @interface SBSCardItemsController
-- (SBSCardItemsController)initWithIdentifier:(id)a3;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3;
+- (SBSCardItemsController)initWithIdentifier:(id)identifier;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler;
 - (void)_connectToServerIfNecessary;
 - (void)_invalidateConnection;
 - (void)_noteConnectionDropped;
 - (void)dealloc;
-- (void)getCardItemsWithHandler:(id)a3;
-- (void)setCardItems:(id)a3;
+- (void)getCardItemsWithHandler:(id)handler;
+- (void)setCardItems:(id)items;
 @end
 
 @implementation SBSCardItemsController
 
-- (SBSCardItemsController)initWithIdentifier:(id)a3
+- (SBSCardItemsController)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SBSCardItemsController;
   v5 = [(SBSCardItemsController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -35,20 +35,20 @@
   [(SBSCardItemsController *)&v3 dealloc];
 }
 
-- (void)setCardItems:(id)a3
+- (void)setCardItems:(id)items
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = SBLogWallet();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = [v4 count];
+    v8 = [itemsCopy count];
     _os_log_impl(&dword_19169D000, v5, OS_LOG_TYPE_INFO, "Set %ld SBSCardItems", &v7, 0xCu);
   }
 
   v6 = [(SBSCardItemsController *)self _remoteInterfaceWithErrorHandler:&__block_literal_global_36];
-  [v6 setCardItems:v4 forControllerWithIdentifier:self->_identifier];
+  [v6 setCardItems:itemsCopy forControllerWithIdentifier:self->_identifier];
 }
 
 void __39__SBSCardItemsController_setCardItems___block_invoke(uint64_t a1, void *a2)
@@ -61,10 +61,10 @@ void __39__SBSCardItemsController_setCardItems___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)getCardItemsWithHandler:(id)a3
+- (void)getCardItemsWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = SBLogWallet();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -77,7 +77,7 @@ void __39__SBSCardItemsController_setCardItems___block_invoke(uint64_t a1, void 
     v11[1] = 3221225472;
     v11[2] = __50__SBSCardItemsController_getCardItemsWithHandler___block_invoke;
     v11[3] = &unk_1E735F0F8;
-    v6 = v4;
+    v6 = handlerCopy;
     v12 = v6;
     v7 = [(SBSCardItemsController *)self _remoteInterfaceWithErrorHandler:v11];
     identifier = self->_identifier;
@@ -134,17 +134,17 @@ void __50__SBSCardItemsController_getCardItemsWithHandler___block_invoke_175(uin
   v8();
 }
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3
+- (id)_remoteInterfaceWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(SBSCardItemsController *)self _connectToServerIfNecessary];
   connection = self->_connection;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__SBSCardItemsController__remoteInterfaceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E735F0F8;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;

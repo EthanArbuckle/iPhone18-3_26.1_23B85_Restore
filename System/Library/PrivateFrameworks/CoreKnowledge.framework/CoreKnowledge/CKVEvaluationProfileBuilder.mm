@@ -1,13 +1,13 @@
 @interface CKVEvaluationProfileBuilder
 - (CKVEvaluationProfileBuilder)init;
-- (CKVEvaluationProfileBuilder)initWithOmittedItemTypes:(id)a3;
+- (CKVEvaluationProfileBuilder)initWithOmittedItemTypes:(id)types;
 @end
 
 @implementation CKVEvaluationProfileBuilder
 
-- (CKVEvaluationProfileBuilder)initWithOmittedItemTypes:(id)a3
+- (CKVEvaluationProfileBuilder)initWithOmittedItemTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v11.receiver = self;
   v11.super_class = CKVEvaluationProfileBuilder;
   v5 = [(CKVEvaluationProfileBuilder *)&v11 init];
@@ -31,7 +31,7 @@
 
     v7 = v6;
     _Block_object_dispose(&v13, 8);
-    v8 = [[v6 alloc] initWithOmittedItemTypes:v4];
+    v8 = [[v6 alloc] initWithOmittedItemTypes:typesCopy];
     converter = v5->_converter;
     v5->_converter = v8;
   }

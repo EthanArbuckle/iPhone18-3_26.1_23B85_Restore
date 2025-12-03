@@ -1,22 +1,22 @@
 @interface HLPHelpLocale
-- (HLPHelpLocale)initWithDictionary:(id)a3;
+- (HLPHelpLocale)initWithDictionary:(id)dictionary;
 - (id)debugDescription;
 @end
 
 @implementation HLPHelpLocale
 
-- (HLPHelpLocale)initWithDictionary:(id)a3
+- (HLPHelpLocale)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = HLPHelpLocale;
   v5 = [(HLPHelpLocale *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"folder"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"folder"];
     [(HLPHelpLocale *)v5 setPath:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"isoCodes"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isoCodes"];
     [(HLPHelpLocale *)v5 setIsoCodes:v7];
   }
 
@@ -26,11 +26,11 @@
 - (id)debugDescription
 {
   v3 = [MEMORY[0x277CCAB68] stringWithString:&stru_2864756F0];
-  v4 = [(HLPHelpLocale *)self path];
-  [v3 appendFormat:@"path: %@\n", v4];
+  path = [(HLPHelpLocale *)self path];
+  [v3 appendFormat:@"path: %@\n", path];
 
-  v5 = [(HLPHelpLocale *)self isoCodes];
-  [v3 appendFormat:@"isoCodes: %@\n", v5];
+  isoCodes = [(HLPHelpLocale *)self isoCodes];
+  [v3 appendFormat:@"isoCodes: %@\n", isoCodes];
 
   return v3;
 }

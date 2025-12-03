@@ -1,32 +1,32 @@
 @interface HMMTRHAPEnumerator
 + (id)logCategory;
-- (HMMTRHAPEnumerator)initWithClusterIDCharacteristicMap:(id)a3;
-- (id)_createBridgedHAPAccessoryWithServer:(id)a3 services:(id)a4 instanceId:(id)a5 endpointID:(id)a6;
-- (id)_serviceLabelIndexMapForDescriptions:(id)a3;
-- (id)enumerateBridgedAccessoriesFromAccessories:(id)a3 serviceDescriptionsDictionary:(id)a4 namesDictionary:(id)a5 topology:(id)a6 server:(id)a7 legacyInstanceIDAssignment:(BOOL)a8;
-- (id)enumerateServicesFromServices:(id)a3 serviceDescriptionsDictionary:(id)a4 topology:(id)a5 nodeID:(id)a6 primaryAccessory:(id)a7 legacyInstanceIDAssignment:(BOOL)a8;
-- (void)_createHAPServicesFromServiceDescriptions:(id)a3 topology:(id)a4 nodeID:(id)a5 accessoryEndpointID:(id)a6 services:(id)a7 startingServiceInstanceID:(int64_t *)a8 primaryAccessory:(id)a9 standaloneServiceLabelIndexMap:(id)a10;
+- (HMMTRHAPEnumerator)initWithClusterIDCharacteristicMap:(id)map;
+- (id)_createBridgedHAPAccessoryWithServer:(id)server services:(id)services instanceId:(id)id endpointID:(id)d;
+- (id)_serviceLabelIndexMapForDescriptions:(id)descriptions;
+- (id)enumerateBridgedAccessoriesFromAccessories:(id)accessories serviceDescriptionsDictionary:(id)dictionary namesDictionary:(id)namesDictionary topology:(id)topology server:(id)server legacyInstanceIDAssignment:(BOOL)assignment;
+- (id)enumerateServicesFromServices:(id)services serviceDescriptionsDictionary:(id)dictionary topology:(id)topology nodeID:(id)d primaryAccessory:(id)accessory legacyInstanceIDAssignment:(BOOL)assignment;
+- (void)_createHAPServicesFromServiceDescriptions:(id)descriptions topology:(id)topology nodeID:(id)d accessoryEndpointID:(id)iD services:(id)services startingServiceInstanceID:(int64_t *)instanceID primaryAccessory:(id)accessory standaloneServiceLabelIndexMap:(id)self0;
 @end
 
 @implementation HMMTRHAPEnumerator
 
-- (id)_createBridgedHAPAccessoryWithServer:(id)a3 services:(id)a4 instanceId:(id)a5 endpointID:(id)a6
+- (id)_createBridgedHAPAccessoryWithServer:(id)server services:(id)services instanceId:(id)id endpointID:(id)d
 {
-  v8 = a3;
+  serverCopy = server;
   v9 = MEMORY[0x277CFE9F8];
-  v10 = a5;
-  v11 = a4;
-  v12 = [[v9 alloc] initWithServer:v8 instanceID:v10 parsedServices:v11];
+  idCopy = id;
+  servicesCopy = services;
+  v12 = [[v9 alloc] initWithServer:serverCopy instanceID:idCopy parsedServices:servicesCopy];
 
   if (v12)
   {
-    v13 = [v8 nodeID];
-    v14 = [HMMTRUtilities identifierStringWithCHIPNodeID:v13];
+    nodeID = [serverCopy nodeID];
+    v14 = [HMMTRUtilities identifierStringWithCHIPNodeID:nodeID];
     [v12 setIdentifier:v14];
 
-    v15 = [v8 primaryAccessory];
-    v16 = [v15 serverIdentifier];
-    [v12 setServerIdentifier:v16];
+    primaryAccessory = [serverCopy primaryAccessory];
+    serverIdentifier = [primaryAccessory serverIdentifier];
+    [v12 setServerIdentifier:serverIdentifier];
 
     [v12 setPrimary:0];
   }
@@ -34,16 +34,16 @@
   return v12;
 }
 
-- (void)_createHAPServicesFromServiceDescriptions:(id)a3 topology:(id)a4 nodeID:(id)a5 accessoryEndpointID:(id)a6 services:(id)a7 startingServiceInstanceID:(int64_t *)a8 primaryAccessory:(id)a9 standaloneServiceLabelIndexMap:(id)a10
+- (void)_createHAPServicesFromServiceDescriptions:(id)descriptions topology:(id)topology nodeID:(id)d accessoryEndpointID:(id)iD services:(id)services startingServiceInstanceID:(int64_t *)instanceID primaryAccessory:(id)accessory standaloneServiceLabelIndexMap:(id)self0
 {
   v122 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v85 = a4;
-  v94 = a5;
-  v80 = a6;
-  v82 = a7;
-  v15 = a9;
-  v16 = a10;
+  descriptionsCopy = descriptions;
+  topologyCopy = topology;
+  dCopy = d;
+  iDCopy = iD;
+  servicesCopy = services;
+  accessoryCopy = accessory;
+  mapCopy = map;
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v88 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -52,7 +52,7 @@
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v19 = v14;
+  v19 = descriptionsCopy;
   v20 = [v19 countByEnumeratingWithState:&v107 objects:v121 count:16];
   if (v20)
   {
@@ -68,8 +68,8 @@
         }
 
         v24 = *(*(&v107 + 1) + 8 * i);
-        v25 = [v24 linkedServiceTypes];
-        if ([v25 count])
+        linkedServiceTypes = [v24 linkedServiceTypes];
+        if ([linkedServiceTypes count])
         {
           v26 = v17;
         }
@@ -88,8 +88,8 @@
     while (v21);
   }
 
-  v84 = v16;
-  v86 = v15;
+  v84 = mapCopy;
+  v86 = accessoryCopy;
   v79 = v19;
 
   v27 = [MEMORY[0x277CBEB18] arrayWithArray:v88];
@@ -116,29 +116,29 @@
         }
 
         v29 = *(*(&v103 + 1) + 8 * j);
-        v30 = [MEMORY[0x277CBEB18] array];
-        v31 = [v29 serviceType];
-        v32 = [v29 linkedServiceTypes];
-        v98 = [v29 endpoint];
+        array = [MEMORY[0x277CBEB18] array];
+        serviceType = [v29 serviceType];
+        linkedServiceTypes2 = [v29 linkedServiceTypes];
+        endpoint = [v29 endpoint];
         v33 = MEMORY[0x277CBEB18];
-        v34 = [v29 requiredCharacteristics];
-        v35 = [v33 arrayWithArray:v34];
+        requiredCharacteristics = [v29 requiredCharacteristics];
+        v35 = [v33 arrayWithArray:requiredCharacteristics];
 
-        v36 = [v29 optionalCharacteristics];
-        [v35 addObjectsFromArray:v36];
+        optionalCharacteristics = [v29 optionalCharacteristics];
+        [v35 addObjectsFromArray:optionalCharacteristics];
 
-        [v96 setObject:MEMORY[0x277CBEBF8] forKey:v31];
+        [v96 setObject:MEMORY[0x277CBEBF8] forKey:serviceType];
         v97 = v35;
         if ([v35 count])
         {
-          v93 = v32;
+          v93 = linkedServiceTypes2;
           if ([v29 optionalServiceLabelIndexIncluded])
           {
             if (v84)
             {
-              v37 = [v29 endpoint];
-              v38 = [v37 stringValue];
-              v95 = [v84 valueForKey:v38];
+              endpoint2 = [v29 endpoint];
+              stringValue = [endpoint2 stringValue];
+              v95 = [v84 valueForKey:stringValue];
             }
 
             else
@@ -148,33 +148,33 @@
             }
 
             v44 = objc_autoreleasePoolPush();
-            v45 = self;
+            selfCopy = self;
             v46 = HMFGetOSLogHandle();
             v43 = v91;
             if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
             {
               v47 = HMFGetLogIdentifier();
-              v48 = [v29 endpoint];
+              endpoint3 = [v29 endpoint];
               *buf = 138544130;
               v113 = v47;
               v114 = 2112;
               v115 = v95;
               v116 = 2112;
-              v117 = v48;
+              v117 = endpoint3;
               v118 = 2112;
-              v119 = v94;
+              v119 = dCopy;
               _os_log_impl(&dword_22AEAE000, v46, OS_LOG_TYPE_INFO, "%{public}@Service label index enumerated to %@ for endpoint %@ of node %@", buf, 0x2Au);
             }
 
             objc_autoreleasePoolPop(v44);
-            v32 = v93;
+            linkedServiceTypes2 = v93;
             if (!v91)
             {
 LABEL_29:
               if (v84 || v81 >= 2)
               {
                 v49 = objc_autoreleasePoolPush();
-                v50 = self;
+                selfCopy2 = self;
                 v51 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
                 {
@@ -182,21 +182,21 @@ LABEL_29:
                   *buf = 138543874;
                   v113 = v52;
                   v114 = 2112;
-                  v115 = v80;
+                  v115 = iDCopy;
                   v116 = 2112;
-                  v117 = v94;
+                  v117 = dCopy;
                   _os_log_impl(&dword_22AEAE000, v51, OS_LOG_TYPE_INFO, "%{public}@Constructed Service Label service at endpoint %@ of node %@", buf, 0x20u);
                 }
 
                 objc_autoreleasePoolPop(v49);
-                v53 = [HMMTRAccessoryServerFactory createHMMTRHAPServiceLabelServiceWithEndpointID:v80 nodeID:v94];
+                v53 = [HMMTRAccessoryServerFactory createHMMTRHAPServiceLabelServiceWithEndpointID:iDCopy nodeID:dCopy];
                 v43 = v53;
                 if (v86)
                 {
                   [v53 setAccessory:?];
                 }
 
-                [v82 addObject:v43];
+                [servicesCopy addObject:v43];
                 if (v43)
                 {
                   goto LABEL_36;
@@ -209,7 +209,7 @@ LABEL_38:
               v102 = 0u;
               v99 = 0u;
               v100 = 0u;
-              v55 = v32;
+              v55 = linkedServiceTypes2;
               v56 = [v55 countByEnumeratingWithState:&v99 objects:v111 count:16];
               if (v56)
               {
@@ -227,7 +227,7 @@ LABEL_38:
                     v60 = [v18 objectForKey:*(*(&v99 + 1) + 8 * k)];
                     if (v60)
                     {
-                      [v30 addObject:v60];
+                      [array addObject:v60];
                     }
                   }
 
@@ -237,11 +237,11 @@ LABEL_38:
                 while (v57);
               }
 
-              v61 = [MEMORY[0x277CBEA60] arrayWithArray:v30];
-              [v96 setValue:v61 forKey:v31];
+              v61 = [MEMORY[0x277CBEA60] arrayWithArray:array];
+              [v96 setValue:v61 forKey:serviceType];
 
               v62 = objc_autoreleasePoolPush();
-              v63 = self;
+              selfCopy3 = self;
               v64 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
               {
@@ -251,14 +251,14 @@ LABEL_38:
                 v114 = 2112;
                 v115 = v97;
                 v116 = 2112;
-                v117 = v94;
+                v117 = dCopy;
                 _os_log_impl(&dword_22AEAE000, v64, OS_LOG_TYPE_INFO, "%{public}@Will construct service with characteristics %@ for nodeID %@", buf, 0x20u);
               }
 
               objc_autoreleasePoolPop(v62);
-              if (a8)
+              if (instanceID)
               {
-                v66 = [MEMORY[0x277CCABB0] numberWithInteger:*a8];
+                v66 = [MEMORY[0x277CCABB0] numberWithInteger:*instanceID];
               }
 
               else
@@ -266,9 +266,9 @@ LABEL_38:
                 v66 = 0;
               }
 
-              v67 = [(HMMTRHAPEnumerator *)v63 clusterIDCharacteristicMap];
-              v68 = [v96 objectForKey:v31];
-              v69 = [HMMTRAccessoryServerFactory createHMMTRHAPServiceCommon:v31 characteristics:v97 serviceLabelIndex:v95 serviceInstanceID:v66 endpointID:v98 nodeID:v94 topology:v85 clusterIDCharacteristicMap:v67 linkedServices:v68];
+              clusterIDCharacteristicMap = [(HMMTRHAPEnumerator *)selfCopy3 clusterIDCharacteristicMap];
+              v68 = [v96 objectForKey:serviceType];
+              v69 = [HMMTRAccessoryServerFactory createHMMTRHAPServiceCommon:serviceType characteristics:v97 serviceLabelIndex:v95 serviceInstanceID:v66 endpointID:endpoint nodeID:dCopy topology:topologyCopy clusterIDCharacteristicMap:clusterIDCharacteristicMap linkedServices:v68];
 
               if (v86)
               {
@@ -276,7 +276,7 @@ LABEL_38:
               }
 
               v70 = objc_autoreleasePoolPush();
-              v71 = v63;
+              v71 = selfCopy3;
               v72 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
               {
@@ -286,28 +286,28 @@ LABEL_38:
                 v114 = 2112;
                 v115 = v69;
                 v116 = 2112;
-                v117 = v98;
+                v117 = endpoint;
                 v118 = 2112;
-                v119 = v94;
+                v119 = dCopy;
                 _os_log_impl(&dword_22AEAE000, v72, OS_LOG_TYPE_INFO, "%{public}@Constructed new service to add %@ at endpoint %@ of node %@", buf, 0x2Au);
               }
 
               objc_autoreleasePoolPop(v70);
               if (v69)
               {
-                if (a8)
+                if (instanceID)
                 {
-                  v74 = *a8;
-                  v75 = [v69 characteristics];
-                  *a8 = +[HMMTRUtilities nextServiceInstanceID:previousCharacteristicsCount:](HMMTRUtilities, "nextServiceInstanceID:previousCharacteristicsCount:", v74, [v75 count]);
+                  v74 = *instanceID;
+                  characteristics = [v69 characteristics];
+                  *instanceID = +[HMMTRUtilities nextServiceInstanceID:previousCharacteristicsCount:](HMMTRUtilities, "nextServiceInstanceID:previousCharacteristicsCount:", v74, [characteristics count]);
                 }
 
-                [v82 addObject:v69];
-                v76 = [v69 instanceID];
-                [v18 setObject:v76 forKey:v31];
+                [servicesCopy addObject:v69];
+                instanceID = [v69 instanceID];
+                [v18 setObject:instanceID forKey:serviceType];
               }
 
-              v32 = v93;
+              linkedServiceTypes2 = v93;
               goto LABEL_61;
             }
           }
@@ -324,14 +324,14 @@ LABEL_38:
 
 LABEL_36:
           v91 = v43;
-          v54 = [v43 instanceID];
-          [v30 addObject:v54];
+          instanceID2 = [v43 instanceID];
+          [array addObject:instanceID2];
 
           goto LABEL_38;
         }
 
         v39 = objc_autoreleasePoolPush();
-        v40 = self;
+        selfCopy4 = self;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
         {
@@ -339,9 +339,9 @@ LABEL_36:
           *buf = 138543874;
           v113 = v42;
           v114 = 2112;
-          v115 = v31;
+          v115 = serviceType;
           v116 = 2112;
-          v117 = v98;
+          v117 = endpoint;
           _os_log_impl(&dword_22AEAE000, v41, OS_LOG_TYPE_INFO, "%{public}@Not constructing new service of type %@ as there are no supported characteristics at endpoint %@", buf, 0x20u);
         }
 
@@ -363,23 +363,23 @@ LABEL_65:
   v77 = *MEMORY[0x277D85DE8];
 }
 
-- (id)enumerateBridgedAccessoriesFromAccessories:(id)a3 serviceDescriptionsDictionary:(id)a4 namesDictionary:(id)a5 topology:(id)a6 server:(id)a7 legacyInstanceIDAssignment:(BOOL)a8
+- (id)enumerateBridgedAccessoriesFromAccessories:(id)accessories serviceDescriptionsDictionary:(id)dictionary namesDictionary:(id)namesDictionary topology:(id)topology server:(id)server legacyInstanceIDAssignment:(BOOL)assignment
 {
-  v8 = a8;
+  assignmentCopy = assignment;
   v74 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v54 = a5;
-  v53 = a6;
-  v15 = a7;
-  v46 = v13;
-  v49 = [MEMORY[0x277CBEB18] arrayWithArray:v13];
+  accessoriesCopy = accessories;
+  dictionaryCopy = dictionary;
+  namesDictionaryCopy = namesDictionary;
+  topologyCopy = topology;
+  serverCopy = server;
+  v46 = accessoriesCopy;
+  v49 = [MEMORY[0x277CBEB18] arrayWithArray:accessoriesCopy];
   v66 = 20;
-  v52 = v8;
+  v52 = assignmentCopy;
   v16 = &v66;
   v62 = 0u;
   v63 = 0u;
-  if (!v8)
+  if (!assignmentCopy)
   {
     v16 = 0;
   }
@@ -387,14 +387,14 @@ LABEL_65:
   v51 = v16;
   v64 = 0uLL;
   v65 = 0uLL;
-  v55 = v14;
-  obj = [v14 allKeys];
+  v55 = dictionaryCopy;
+  obj = [dictionaryCopy allKeys];
   v56 = [obj countByEnumeratingWithState:&v62 objects:v73 count:16];
   if (v56)
   {
     v50 = *v63;
     v17 = 0x277CCA000uLL;
-    v58 = v15;
+    v58 = serverCopy;
     do
     {
       for (i = 0; i != v56; ++i)
@@ -407,7 +407,7 @@ LABEL_65:
         v19 = *(*(&v62 + 1) + 8 * i);
         v61 = [v55 objectForKey:v19];
         v20 = objc_opt_new();
-        v21 = [v54 objectForKey:v19];
+        v21 = [namesDictionaryCopy objectForKey:v19];
         v22 = v21;
         if (!v21 || [v21 isEqual:&stru_283ED2308])
         {
@@ -421,19 +421,19 @@ LABEL_65:
         v57 = v19;
         v25 = [*(v17 + 2992) numberWithInteger:{objc_msgSend(v19, "integerValue")}];
         v26 = v66;
-        v27 = [v15 nodeID];
+        nodeID = [serverCopy nodeID];
         LOBYTE(v45) = v52;
         v59 = v24;
-        v28 = [HMMTRAccessoryServerFactory createInfoService:v24 model:@"Unknown" manufacturer:@"Unknown" serialNumber:@"Unknown" instanceID:v26 endpointID:v25 nodeID:v27 legacyInstanceIDAssignment:v45];
+        v28 = [HMMTRAccessoryServerFactory createInfoService:v24 model:@"Unknown" manufacturer:@"Unknown" serialNumber:@"Unknown" instanceID:v26 endpointID:v25 nodeID:nodeID legacyInstanceIDAssignment:v45];
 
         [v20 addObject:v28];
         v29 = v66;
-        v30 = [v28 characteristics];
-        v66 = +[HMMTRUtilities nextServiceInstanceID:previousCharacteristicsCount:](HMMTRUtilities, "nextServiceInstanceID:previousCharacteristicsCount:", v29, [v30 count]);
+        characteristics = [v28 characteristics];
+        v66 = +[HMMTRUtilities nextServiceInstanceID:previousCharacteristicsCount:](HMMTRUtilities, "nextServiceInstanceID:previousCharacteristicsCount:", v29, [characteristics count]);
 
-        v15 = v58;
-        v31 = [v58 nodeID];
-        [(HMMTRHAPEnumerator *)self _createHAPServicesFromServiceDescriptions:v61 topology:v53 nodeID:v31 accessoryEndpointID:v25 services:v20 startingServiceInstanceID:v51 primaryAccessory:0 standaloneServiceLabelIndexMap:0];
+        serverCopy = v58;
+        nodeID2 = [v58 nodeID];
+        [(HMMTRHAPEnumerator *)self _createHAPServicesFromServiceDescriptions:v61 topology:topologyCopy nodeID:nodeID2 accessoryEndpointID:v25 services:v20 startingServiceInstanceID:v51 primaryAccessory:0 standaloneServiceLabelIndexMap:0];
 
         v32 = +[HMMTRProtocolMap protocolMap];
         v33 = [v32 primaryHAPServiceAmongServices:v20];
@@ -459,8 +459,8 @@ LABEL_65:
 
         else
         {
-          v37 = [v58 nodeID];
-          v36 = [HMMTRAccessoryServerFactory instanceIDForCharacteristicType:0 serviceType:0 endpointID:v25 nodeID:v37];
+          nodeID3 = [v58 nodeID];
+          v36 = [HMMTRAccessoryServerFactory instanceIDForCharacteristicType:0 serviceType:0 endpointID:v25 nodeID:nodeID3];
         }
 
         v38 = [(HMMTRHAPEnumerator *)self _createBridgedHAPAccessoryWithServer:v58 services:v20 instanceId:v36 endpointID:v25];
@@ -468,7 +468,7 @@ LABEL_65:
         {
           [v49 addObject:v38];
           v39 = objc_autoreleasePoolPush();
-          v40 = self;
+          selfCopy = self;
           v41 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
           {
@@ -486,7 +486,7 @@ LABEL_65:
           }
 
           objc_autoreleasePoolPop(v39);
-          v15 = v58;
+          serverCopy = v58;
         }
 
         v17 = 0x277CCA000;
@@ -503,17 +503,17 @@ LABEL_65:
   return v49;
 }
 
-- (id)enumerateServicesFromServices:(id)a3 serviceDescriptionsDictionary:(id)a4 topology:(id)a5 nodeID:(id)a6 primaryAccessory:(id)a7 legacyInstanceIDAssignment:(BOOL)a8
+- (id)enumerateServicesFromServices:(id)services serviceDescriptionsDictionary:(id)dictionary topology:(id)topology nodeID:(id)d primaryAccessory:(id)accessory legacyInstanceIDAssignment:(BOOL)assignment
 {
-  v8 = a8;
+  assignmentCopy = assignment;
   v77 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v53 = a5;
-  v57 = a6;
-  v55 = a7;
+  servicesCopy = services;
+  dictionaryCopy = dictionary;
+  topologyCopy = topology;
+  dCopy = d;
+  accessoryCopy = accessory;
   v66 = 20;
-  if (v8)
+  if (assignmentCopy)
   {
     v16 = &v66;
   }
@@ -524,9 +524,9 @@ LABEL_65:
   }
 
   v56 = objc_opt_new();
-  v54 = [(HMMTRHAPEnumerator *)self _serviceLabelIndexMapForDescriptions:v15];
+  v54 = [(HMMTRHAPEnumerator *)self _serviceLabelIndexMapForDescriptions:dictionaryCopy];
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
@@ -534,9 +534,9 @@ LABEL_65:
     *buf = 138544130;
     v70 = v20;
     v71 = 2112;
-    v72 = v55;
+    v72 = accessoryCopy;
     v73 = 2112;
-    v74 = v57;
+    v74 = dCopy;
     v75 = 2112;
     v76 = v54;
     _os_log_impl(&dword_22AEAE000, v19, OS_LOG_TYPE_INFO, "%{public}@Computed service label index map for non-bridged accessory %@ of node %@: %@", buf, 0x2Au);
@@ -547,9 +547,9 @@ LABEL_65:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v51 = v15;
-  v21 = [v15 allValues];
-  v22 = [v21 countByEnumeratingWithState:&v62 objects:v68 count:16];
+  v51 = dictionaryCopy;
+  allValues = [dictionaryCopy allValues];
+  v22 = [allValues countByEnumeratingWithState:&v62 objects:v68 count:16];
   if (v22)
   {
     v23 = v22;
@@ -560,13 +560,13 @@ LABEL_65:
       {
         if (*v63 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allValues);
         }
 
-        [(HMMTRHAPEnumerator *)v18 _createHAPServicesFromServiceDescriptions:*(*(&v62 + 1) + 8 * i) topology:v53 nodeID:v57 accessoryEndpointID:&unk_283EE7BA8 services:v56 startingServiceInstanceID:v16 primaryAccessory:v55 standaloneServiceLabelIndexMap:v54];
+        [(HMMTRHAPEnumerator *)selfCopy _createHAPServicesFromServiceDescriptions:*(*(&v62 + 1) + 8 * i) topology:topologyCopy nodeID:dCopy accessoryEndpointID:&unk_283EE7BA8 services:v56 startingServiceInstanceID:v16 primaryAccessory:accessoryCopy standaloneServiceLabelIndexMap:v54];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v62 objects:v68 count:16];
+      v23 = [allValues countByEnumeratingWithState:&v62 objects:v68 count:16];
     }
 
     while (v23);
@@ -580,8 +580,8 @@ LABEL_65:
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v50 = v14;
-    v28 = v14;
+    v50 = servicesCopy;
+    v28 = servicesCopy;
     v29 = [v28 countByEnumeratingWithState:&v58 objects:v67 count:16];
     if (v29)
     {
@@ -599,19 +599,19 @@ LABEL_65:
           }
 
           v33 = *(*(&v58 + 1) + 8 * v32);
-          v34 = [v33 instanceID];
-          v35 = [v34 unsignedLongLongValue];
+          instanceID = [v33 instanceID];
+          unsignedLongLongValue = [instanceID unsignedLongLongValue];
 
-          if (v35 > 0x13)
+          if (unsignedLongLongValue > 0x13)
           {
             v36 = objc_autoreleasePoolPush();
-            v37 = v18;
+            v37 = selfCopy;
             v38 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
             {
               HMFGetLogIdentifier();
               v39 = v31;
-              v40 = v18;
+              v40 = selfCopy;
               v41 = v28;
               v43 = v42 = v27;
               *buf = 138543874;
@@ -619,12 +619,12 @@ LABEL_65:
               v71 = 2112;
               v72 = v33;
               v73 = 2112;
-              v74 = v57;
+              v74 = dCopy;
               _os_log_impl(&dword_22AEAE000, v38, OS_LOG_TYPE_DEBUG, "%{public}@Dropping existing service %@ of node %@ to replace", buf, 0x20u);
 
               v27 = v42;
               v28 = v41;
-              v18 = v40;
+              selfCopy = v40;
               v31 = v39;
               v30 = v52;
             }
@@ -649,13 +649,13 @@ LABEL_65:
 
     v26 = v56;
     [v27 addObjectsFromArray:v56];
-    v14 = v50;
+    servicesCopy = v50;
   }
 
   else
   {
     v44 = objc_autoreleasePoolPush();
-    v45 = v18;
+    v45 = selfCopy;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
@@ -663,7 +663,7 @@ LABEL_65:
       *buf = 138543618;
       v70 = v47;
       v71 = 2112;
-      v72 = v57;
+      v72 = dCopy;
       _os_log_impl(&dword_22AEAE000, v46, OS_LOG_TYPE_ERROR, "%{public}@Could not construct any of the services of node %@", buf, 0x16u);
     }
 
@@ -676,13 +676,13 @@ LABEL_65:
   return v27;
 }
 
-- (id)_serviceLabelIndexMapForDescriptions:(id)a3
+- (id)_serviceLabelIndexMapForDescriptions:(id)descriptions
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptionsCopy = descriptions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [v3 allKeys];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_489];
+  allKeys = [descriptionsCopy allKeys];
+  v6 = [allKeys sortedArrayUsingComparator:&__block_literal_global_489];
 
   v31 = 0u;
   v32 = 0u;
@@ -705,7 +705,7 @@ LABEL_65:
         }
 
         v24 = v8;
-        v9 = [v3 objectForKey:*(*(&v29 + 1) + 8 * v8)];
+        v9 = [descriptionsCopy objectForKey:*(*(&v29 + 1) + 8 * v8)];
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
@@ -728,9 +728,9 @@ LABEL_65:
               if ([v14 optionalServiceLabelIndexIncluded])
               {
                 v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
-                v16 = [v14 endpoint];
-                v17 = [v16 stringValue];
-                [v4 setValue:v15 forKey:v17];
+                endpoint = [v14 endpoint];
+                stringValue = [endpoint stringValue];
+                [v4 setValue:v15 forKey:stringValue];
 
                 ++v7;
               }
@@ -781,16 +781,16 @@ uint64_t __59__HMMTRHAPEnumerator__serviceLabelIndexMapForDescriptions___block_i
   return v10;
 }
 
-- (HMMTRHAPEnumerator)initWithClusterIDCharacteristicMap:(id)a3
+- (HMMTRHAPEnumerator)initWithClusterIDCharacteristicMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   v9.receiver = self;
   v9.super_class = HMMTRHAPEnumerator;
   v6 = [(HMMTRHAPEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clusterIDCharacteristicMap, a3);
+    objc_storeStrong(&v6->_clusterIDCharacteristicMap, map);
   }
 
   return v7;

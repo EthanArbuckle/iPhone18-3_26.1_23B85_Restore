@@ -1,21 +1,21 @@
 @interface LSSXPCClient
 - (id)setDelegate:(id *)result;
 - (void)dealloc;
-- (void)setOptions:(uint64_t)a1;
-- (xpc_connection_t)initWithDelegate:(xpc_connection_t *)a1;
+- (void)setOptions:(uint64_t)options;
+- (xpc_connection_t)initWithDelegate:(xpc_connection_t *)delegate;
 @end
 
 @implementation LSSXPCClient
 
-- (xpc_connection_t)initWithDelegate:(xpc_connection_t *)a1
+- (xpc_connection_t)initWithDelegate:(xpc_connection_t *)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
-    v13.receiver = a1;
+    v13.receiver = delegate;
     v13.super_class = LSSXPCClient;
     v4 = [(xpc_connection_t *)&v13 init];
-    a1 = v4;
+    delegate = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 3, v3);
@@ -26,18 +26,18 @@
         {
 LABEL_5:
           mach_service = xpc_connection_create_mach_service([@"com.apple.lightsourcesupport.lightstate" UTF8String], 0, 0);
-          v7 = a1[1];
-          a1[1] = mach_service;
+          v7 = delegate[1];
+          delegate[1] = mach_service;
 
-          objc_initWeak(&location, a1);
-          v8 = a1[1];
+          objc_initWeak(&location, delegate);
+          v8 = delegate[1];
           v10[0] = MEMORY[0x277D85DD0];
           v10[1] = 3221225472;
           v10[2] = __33__LSSXPCClient_initWithDelegate___block_invoke;
           v10[3] = &unk_279812A60;
           objc_copyWeak(&v11, &location);
           xpc_connection_set_event_handler(v8, v10);
-          xpc_connection_activate(a1[1]);
+          xpc_connection_activate(delegate[1]);
           objc_destroyWeak(&v11);
           objc_destroyWeak(&location);
           goto LABEL_6;
@@ -61,7 +61,7 @@ LABEL_5:
 
 LABEL_6:
 
-  return a1;
+  return delegate;
 }
 
 void __33__LSSXPCClient_initWithDelegate___block_invoke(uint64_t a1, void *a2)
@@ -211,15 +211,15 @@ LABEL_18:
   [(LSSXPCClient *)&v5 dealloc];
 }
 
-- (void)setOptions:(uint64_t)a1
+- (void)setOptions:(uint64_t)options
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (options)
   {
-    if (*(a1 + 16) != a2)
+    if (*(options + 16) != a2)
     {
-      *(a1 + 16) = a2;
-      if (*(a1 + 8))
+      *(options + 16) = a2;
+      if (*(options + 8))
       {
         if (qword_280D2F5F0 != -1)
         {
@@ -235,8 +235,8 @@ LABEL_18:
         }
 
         empty = xpc_dictionary_create_empty();
-        xpc_dictionary_set_int64(empty, "options", *(a1 + 16));
-        xpc_connection_send_message(*(a1 + 8), empty);
+        xpc_dictionary_set_int64(empty, "options", *(options + 16));
+        xpc_connection_send_message(*(options + 8), empty);
       }
     }
   }

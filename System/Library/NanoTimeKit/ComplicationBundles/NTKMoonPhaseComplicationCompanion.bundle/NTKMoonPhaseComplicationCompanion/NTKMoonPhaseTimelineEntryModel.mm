@@ -1,22 +1,22 @@
 @interface NTKMoonPhaseTimelineEntryModel
-+ (id)circular:(id)a3 isMedium:(BOOL)a4;
-+ (id)extraLarge:(id)a3;
-+ (id)largeModular:(id)a3;
-+ (id)largeUtility:(id)a3;
-+ (id)smallModular:(id)a3;
-+ (id)smallUtility:(id)a3;
-+ (id)textForMoonPhaseEvent:(int64_t)a3 useShort:(BOOL)a4;
-- (id)templateForComplicationFamily:(int64_t)a3;
++ (id)circular:(id)circular isMedium:(BOOL)medium;
++ (id)extraLarge:(id)large;
++ (id)largeModular:(id)modular;
++ (id)largeUtility:(id)utility;
++ (id)smallModular:(id)modular;
++ (id)smallUtility:(id)utility;
++ (id)textForMoonPhaseEvent:(int64_t)event useShort:(BOOL)short;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKMoonPhaseTimelineEntryModel
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
   v5 = 0;
-  if (a3 > 2)
+  if (family > 2)
   {
-    switch(a3)
+    switch(family)
     {
       case 3:
         v6 = [objc_opt_class() largeUtility:self];
@@ -32,16 +32,16 @@
     }
   }
 
-  else if (a3)
+  else if (family)
   {
-    if (a3 == 1)
+    if (family == 1)
     {
       v6 = [objc_opt_class() largeModular:self];
     }
 
     else
     {
-      if (a3 != 2)
+      if (family != 2)
       {
         goto LABEL_15;
       }
@@ -57,7 +57,7 @@
 
   v5 = v6;
 LABEL_15:
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
     v7 = [objc_opt_class() circular:self isMedium:1];
 
@@ -67,14 +67,14 @@ LABEL_15:
   return v5;
 }
 
-+ (id)largeModular:(id)a3
++ (id)largeModular:(id)modular
 {
-  v4 = a3;
-  v5 = [v4 phaseName];
-  v6 = [a1 providerWithText:v5];
+  modularCopy = modular;
+  phaseName = [modularCopy phaseName];
+  v6 = [self providerWithText:phaseName];
 
-  v7 = [v4 eventDate];
-  if (!v7 || (v8 = v7, v9 = [v4 event], v8, v9 == -1))
+  eventDate = [modularCopy eventDate];
+  if (!eventDate || (v8 = eventDate, v9 = [modularCopy event], v8, v9 == -1))
   {
     v14 = +[NTKNoContentTemplateProvider largeModularEmptyTextProvider];
     v16 = 0;
@@ -82,22 +82,22 @@ LABEL_15:
 
   else
   {
-    v10 = [v4 eventDate];
-    v11 = [CLKTimeTextProvider textProviderWithDate:v10];
+    eventDate2 = [modularCopy eventDate];
+    v11 = [CLKTimeTextProvider textProviderWithDate:eventDate2];
 
-    v12 = [a1 textForMoonPhaseEvent:{objc_msgSend(v4, "event")}];
-    v13 = [a1 providerWithText:v12];
+    v12 = [self textForMoonPhaseEvent:{objc_msgSend(modularCopy, "event")}];
+    v13 = [self providerWithText:v12];
     v14 = [CLKTextProvider textProviderWithFormat:@"%@ %@", v13, v11];
-    if ([v4 currentEvent])
+    if ([modularCopy currentEvent])
     {
-      v15 = NTKClockFaceLocalizedString();
-      [CLKSimpleTextProvider textProviderWithText:v15];
+      eventDate3 = NTKClockFaceLocalizedString();
+      [CLKSimpleTextProvider textProviderWithText:eventDate3];
     }
 
     else
     {
-      v15 = [v4 eventDate];
-      [CLKRelativeDateTextProvider textProviderWithDate:v15 style:0 units:96];
+      eventDate3 = [modularCopy eventDate];
+      [CLKRelativeDateTextProvider textProviderWithDate:eventDate3 style:0 units:96];
     }
     v16 = ;
   }
@@ -109,14 +109,14 @@ LABEL_15:
   return v17;
 }
 
-+ (id)smallModular:(id)a3
++ (id)smallModular:(id)modular
 {
-  v4 = a3;
-  [v4 phaseNumber];
-  [v4 hemisphere];
+  modularCopy = modular;
+  [modularCopy phaseNumber];
+  [modularCopy hemisphere];
 
   v5 = NUNIMoonImageForPhaseNumber();
-  v6 = [a1 imageProviderWithOnePieceImage:v5];
+  v6 = [self imageProviderWithOnePieceImage:v5];
   v7 = [CLKComplicationTemplateModularSmallSimpleImage templateWithImageProvider:v6];
   v8 = +[UIColor whiteColor];
   [v7 setTintColor:v8];
@@ -124,27 +124,27 @@ LABEL_15:
   return v7;
 }
 
-+ (id)smallUtility:(id)a3
++ (id)smallUtility:(id)utility
 {
-  v4 = a3;
-  [v4 phaseNumber];
-  [v4 hemisphere];
+  utilityCopy = utility;
+  [utilityCopy phaseNumber];
+  [utilityCopy hemisphere];
 
   v5 = NUNIMoonImageForPhaseNumber();
-  v6 = [a1 imageProviderWithOnePieceImage:v5];
+  v6 = [self imageProviderWithOnePieceImage:v5];
   v7 = [CLKComplicationTemplateUtilitarianSmallSquare templateWithImageProvider:v6];
 
   return v7;
 }
 
-+ (id)circular:(id)a3 isMedium:(BOOL)a4
++ (id)circular:(id)circular isMedium:(BOOL)medium
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 phaseNumber];
-  [v6 hemisphere];
+  mediumCopy = medium;
+  circularCopy = circular;
+  [circularCopy phaseNumber];
+  [circularCopy hemisphere];
 
-  if (v4)
+  if (mediumCopy)
   {
     v7 = CLKComplicationTemplateCircularMediumCircularImage_ptr;
   }
@@ -155,30 +155,30 @@ LABEL_15:
   }
 
   v8 = NUNIMoonImageForPhaseNumber();
-  v9 = [a1 imageProviderWithOnePieceImage:v8];
+  v9 = [self imageProviderWithOnePieceImage:v8];
   v10 = [*v7 templateWithImageProvider:v9];
 
   return v10;
 }
 
-+ (id)largeUtility:(id)a3
++ (id)largeUtility:(id)utility
 {
-  v4 = [a3 phaseName];
-  v5 = [a1 providerWithText:v4];
+  phaseName = [utility phaseName];
+  v5 = [self providerWithText:phaseName];
 
   v6 = [CLKComplicationTemplateUtilitarianLargeFlat templateWithTextProvider:v5];
 
   return v6;
 }
 
-+ (id)extraLarge:(id)a3
++ (id)extraLarge:(id)large
 {
-  v4 = a3;
-  [v4 phaseNumber];
-  [v4 hemisphere];
+  largeCopy = large;
+  [largeCopy phaseNumber];
+  [largeCopy hemisphere];
 
   v5 = NUNIMoonImageForPhaseNumber();
-  v6 = [a1 imageProviderWithOnePieceImage:v5];
+  v6 = [self imageProviderWithOnePieceImage:v5];
   v7 = [CLKComplicationTemplateExtraLargeSimpleImage templateWithImageProvider:v6];
   v8 = +[UIColor whiteColor];
   [v7 setTintColor:v8];
@@ -186,12 +186,12 @@ LABEL_15:
   return v7;
 }
 
-+ (id)textForMoonPhaseEvent:(int64_t)a3 useShort:(BOOL)a4
++ (id)textForMoonPhaseEvent:(int64_t)event useShort:(BOOL)short
 {
-  if ((a3 + 1) > 3)
+  if ((event + 1) > 3)
   {
     v4 = 0;
-    if (!a4)
+    if (!short)
     {
       goto LABEL_6;
     }
@@ -199,8 +199,8 @@ LABEL_15:
     goto LABEL_5;
   }
 
-  v4 = off_8258[a3 + 1];
-  if (a4)
+  v4 = off_8258[event + 1];
+  if (short)
   {
 LABEL_5:
     v4 = [(__CFString *)v4 stringByAppendingString:@"_SHORT"];

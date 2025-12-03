@@ -1,83 +1,83 @@
 @interface PKPaymentCredentialMetadataTableController
-- (PKPaymentCredentialMetadataTableController)initWithMetadata:(id)a3 setupContext:(int64_t)a4 cellStyle:(int64_t)a5;
-- (id)cellForRowAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
+- (PKPaymentCredentialMetadataTableController)initWithMetadata:(id)metadata setupContext:(int64_t)context cellStyle:(int64_t)style;
+- (id)cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
 @end
 
 @implementation PKPaymentCredentialMetadataTableController
 
-- (PKPaymentCredentialMetadataTableController)initWithMetadata:(id)a3 setupContext:(int64_t)a4 cellStyle:(int64_t)a5
+- (PKPaymentCredentialMetadataTableController)initWithMetadata:(id)metadata setupContext:(int64_t)context cellStyle:(int64_t)style
 {
-  v8 = a3;
+  metadataCopy = metadata;
   v13.receiver = self;
   v13.super_class = PKPaymentCredentialMetadataTableController;
   v9 = [(PKPaymentCredentialMetadataTableController *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [metadataCopy copy];
     metadata = v9->_metadata;
     v9->_metadata = v10;
 
-    v9->_setupContext = a4;
-    v9->_cellStyle = a5;
+    v9->_setupContext = context;
+    v9->_cellStyle = style;
   }
 
   return v9;
 }
 
-- (id)cellForRowAtIndexPath:(id)a3
+- (id)cellForRowAtIndexPath:(id)path
 {
   v4 = MEMORY[0x1E69DD028];
-  v5 = a3;
+  pathCopy = path;
   v6 = [[v4 alloc] initWithStyle:self->_cellStyle reuseIdentifier:@"summaryCell"];
   v7 = PKProvisioningSecondaryBackgroundColor();
   [v6 setBackgroundColor:v7];
 
-  v8 = [v6 detailTextLabel];
-  v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v8 setTextColor:v9];
+  detailTextLabel = [v6 detailTextLabel];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [detailTextLabel setTextColor:secondaryLabelColor];
 
   metadata = self->_metadata;
-  v11 = [v5 row];
+  v11 = [pathCopy row];
 
   v12 = [(NSArray *)metadata objectAtIndex:v11];
-  v13 = [v6 textLabel];
-  v14 = [v12 localizedDisplayName];
-  [v13 setText:v14];
+  textLabel = [v6 textLabel];
+  localizedDisplayName = [v12 localizedDisplayName];
+  [textLabel setText:localizedDisplayName];
 
-  v15 = [v6 detailTextLabel];
-  v16 = [v12 displayString];
-  [v15 setText:v16];
+  detailTextLabel2 = [v6 detailTextLabel];
+  displayString = [v12 displayString];
+  [detailTextLabel2 setText:displayString];
 
-  [v15 setAdjustsFontSizeToFitWidth:1];
-  [v15 setMinimumScaleFactor:0.75];
-  [v15 setNumberOfLines:2];
+  [detailTextLabel2 setAdjustsFontSizeToFitWidth:1];
+  [detailTextLabel2 setMinimumScaleFactor:0.75];
+  [detailTextLabel2 setNumberOfLines:2];
   [v6 setSelectionStyle:0];
   if (self->_cellStyle == 3)
   {
     if (PKPaymentSetupContextIsBridge())
     {
-      v17 = [MEMORY[0x1E69DC888] systemGrayColor];
-      [v13 setTextColor:v17];
+      systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+      [textLabel setTextColor:systemGrayColor];
 
       v18 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-      [v13 setFont:v18];
+      [textLabel setFont:v18];
 
       [MEMORY[0x1E69DC888] whiteColor];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [v13 setTextColor:v21];
+      secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [textLabel setTextColor:secondaryLabelColor2];
 
       v22 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-      [v13 setFont:v22];
+      [textLabel setFont:v22];
 
       [MEMORY[0x1E69DC888] labelColor];
     }
     v23 = ;
-    [v15 setTextColor:v23];
+    [detailTextLabel2 setTextColor:v23];
 
     v20 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD00], 0, 0, 4);
   }
@@ -85,36 +85,36 @@
   else
   {
     v19 = PKOBKListTextFieldCellLabelFont();
-    [v13 setFont:v19];
+    [textLabel setFont:v19];
 
     v20 = PKOBKListTextFieldCellTextFieldFont();
   }
 
   v24 = v20;
-  [v15 setFont:v20];
+  [detailTextLabel2 setFont:v20];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v5 = [a3 cellForRowAtIndexPath:{a4, a5.x, a5.y}];
+  v5 = [view cellForRowAtIndexPath:{path, point.x, point.y}];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 detailTextLabel];
-    v8 = [v7 text];
+    detailTextLabel = [v5 detailTextLabel];
+    text = [detailTextLabel text];
   }
 
   else
   {
-    v8 = 0;
+    text = 0;
   }
 
-  if (![v8 length])
+  if (![text length])
   {
 
-    v8 = 0;
+    text = 0;
   }
 
   v9 = MEMORY[0x1E69DC8D8];
@@ -122,8 +122,8 @@
   v13[1] = 3221225472;
   v13[2] = __104__PKPaymentCredentialMetadataTableController_tableView_contextMenuConfigurationForRowAtIndexPath_point___block_invoke;
   v13[3] = &unk_1E8016090;
-  v14 = v8;
-  v10 = v8;
+  v14 = text;
+  v10 = text;
   v11 = [v9 configurationWithIdentifier:0 previewProvider:0 actionProvider:v13];
 
   return v11;

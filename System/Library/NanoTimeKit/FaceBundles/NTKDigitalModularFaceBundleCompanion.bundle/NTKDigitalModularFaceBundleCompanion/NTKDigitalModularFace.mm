@@ -1,24 +1,24 @@
 @interface NTKDigitalModularFace
 + (id)_complicationSlotDescriptors;
 + (id)_orderedComplicationSlots;
-- (BOOL)_option:(id)a3 migratesToValidOption:(id *)a4 forCustomEditMode:(int64_t)a5 slot:(id)a6;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (BOOL)_option:(id)_option migratesToValidOption:(id *)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)applyPreviewConfigurationWithFamily:(int64_t)a3 faceColor:(int64_t)a4;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)applyPreviewConfigurationWithFamily:(int64_t)family faceColor:(int64_t)color;
 @end
 
 @implementation NTKDigitalModularFace
 
 - (id)_faceDescription
 {
-  v2 = [(NTKDigitalModularFace *)self _faceDescriptionKey];
-  v3 = [NTKDigitalModularFaceBundle localizedStringForKey:v2 comment:@"Digital Modular Description"];
+  _faceDescriptionKey = [(NTKDigitalModularFace *)self _faceDescriptionKey];
+  v3 = [NTKDigitalModularFaceBundle localizedStringForKey:_faceDescriptionKey comment:@"Digital Modular Description"];
 
   return v3;
 }
@@ -64,10 +64,10 @@
   return v2;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotBottomCenter])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotBottomCenter])
   {
     v5 = NTKClockFaceLocalizedString();
   }
@@ -76,7 +76,7 @@
   {
     v8.receiver = self;
     v8.super_class = NTKDigitalModularFace;
-    v5 = [(NTKDigitalModularFace *)&v8 _localizedNameForComplicationSlot:v4];
+    v5 = [(NTKDigitalModularFace *)&v8 _localizedNameForComplicationSlot:slotCopy];
   }
 
   v6 = v5;
@@ -84,61 +84,61 @@
   return v6;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if ([UIApplication runningInStoreDemoModeFProgramNumber:a3]== &stru_B8.segname[1])
+  if ([UIApplication runningInStoreDemoModeFProgramNumber:mode]== &stru_B8.segname[1])
   {
     v5 = 7;
   }
 
   else
   {
-    v6 = [(NTKDigitalModularFace *)self device];
+    device = [(NTKDigitalModularFace *)self device];
     v5 = NTKDefaultFaceColorForDeviceCollection();
   }
 
-  v7 = [(NTKDigitalModularFace *)self device];
-  v8 = [NTKFaceColorModularEditOption optionWithFaceColor:v5 forDevice:v7];
+  device2 = [(NTKDigitalModularFace *)self device];
+  v8 = [NTKFaceColorModularEditOption optionWithFaceColor:v5 forDevice:device2];
 
   return v8;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v4 = [(NTKDigitalModularFace *)self device:a3];
+  v4 = [(NTKDigitalModularFace *)self device:mode];
   v5 = [NTKFaceColorModularEditOption numberOfOptionsForDevice:v4];
 
   return v5;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = [(NTKDigitalModularFace *)self device:a3];
-  v7 = [NTKFaceColorModularEditOption optionAtIndex:a3 forDevice:v6];
+  v6 = [(NTKDigitalModularFace *)self device:index];
+  v7 = [NTKFaceColorModularEditOption optionAtIndex:index forDevice:v6];
 
   return v7;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a3;
-  v7 = [(NTKDigitalModularFace *)self device];
-  v8 = [NTKFaceColorModularEditOption indexOfOption:v6 forDevice:v7];
+  optionCopy = option;
+  device = [(NTKDigitalModularFace *)self device];
+  v8 = [NTKFaceColorModularEditOption indexOfOption:optionCopy forDevice:device];
 
   return v8;
 }
 
-- (BOOL)_option:(id)a3 migratesToValidOption:(id *)a4 forCustomEditMode:(int64_t)a5 slot:(id)a6
+- (BOOL)_option:(id)_option migratesToValidOption:(id *)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
+  _optionCopy = _option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 faceColor];
-    v10 = [(NTKDigitalModularFace *)self device];
-    *a4 = [NTKFaceColorModularEditOption optionWithFaceColor:v9 forDevice:v10];
+    faceColor = [_optionCopy faceColor];
+    device = [(NTKDigitalModularFace *)self device];
+    *option = [NTKFaceColorModularEditOption optionWithFaceColor:faceColor forDevice:device];
 
-    v11 = *a4 != 0;
+    v11 = *option != 0;
   }
 
   else
@@ -149,9 +149,9 @@
   return v11;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = objc_opt_class();
   }
@@ -164,20 +164,20 @@
   return v4;
 }
 
-- (void)applyPreviewConfigurationWithFamily:(int64_t)a3 faceColor:(int64_t)a4
+- (void)applyPreviewConfigurationWithFamily:(int64_t)family faceColor:(int64_t)color
 {
-  if (a4 > 7)
+  if (color > 7)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_5910[a4];
+    v5 = qword_5910[color];
   }
 
-  v6 = [(NTKDigitalModularFace *)self device];
-  v12 = [NTKFaceColorModularEditOption optionWithFaceColor:v5 forDevice:v6];
+  device = [(NTKDigitalModularFace *)self device];
+  v12 = [NTKFaceColorModularEditOption optionWithFaceColor:v5 forDevice:device];
 
   [(NTKDigitalModularFace *)self selectOption:v12 forCustomEditMode:10 slot:0];
   v7 = [NTKComplication anyComplicationOfType:1];
@@ -196,9 +196,9 @@
   [(NTKDigitalModularFace *)self setComplication:v11 forSlot:NTKComplicationSlotBottomRight];
 }
 
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index
 {
-  if (a3)
+  if (index)
   {
     return 0;
   }

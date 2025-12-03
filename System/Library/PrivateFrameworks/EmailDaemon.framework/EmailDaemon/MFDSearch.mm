@@ -2,16 +2,16 @@
 + (id)endpointInfo;
 - (BOOL)_hasSearchableMailAccount;
 - (BOOL)shouldCancel;
-- (MFDSearch)initWithClient:(id)a3;
-- (MFDSearch)initWithRemoteObjectInterface:(id)a3;
+- (MFDSearch)initWithClient:(id)client;
+- (MFDSearch)initWithRemoteObjectInterface:(id)interface;
 - (id)_searchResultsProxy;
 - (unsigned)_libraryOptions;
-- (void)_autoFetchDone:(id)a3;
+- (void)_autoFetchDone:(id)done;
 - (void)_backgroundSearch;
 - (void)_performLibrarySearch;
 - (void)_registerForAutoFetchFinishedNotification;
 - (void)dealloc;
-- (void)findMessageData:(id)a3 matchingCriterion:(id)a4 options:(unint64_t)a5;
+- (void)findMessageData:(id)data matchingCriterion:(id)criterion options:(unint64_t)options;
 - (void)start;
 - (void)stop;
 @end
@@ -26,15 +26,15 @@
   v7[1] = 3221225472;
   v7[2] = sub_100064B88;
   v7[3] = &unk_100158888;
-  v7[4] = a1;
+  v7[4] = self;
   v5 = [MFXPCEndpointInfo endpointInfoWithExportedInterface:v3 remoteObjectInterface:v4 shouldAcceptClient:0 exportedObjectForClient:v7];
 
   return v5;
 }
 
-- (MFDSearch)initWithClient:(id)a3
+- (MFDSearch)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v19.receiver = self;
   v19.super_class = MFDSearch;
   v6 = [(MFDSearch *)&v19 initWithRemoteObjectInterface:0];
@@ -47,9 +47,9 @@
     v16 = &unk_1001567F0;
     objc_copyWeak(&v17, &location);
     v7 = objc_retainBlock(&v13);
-    [v5 setInterruptionHandler:{v7, v13, v14, v15, v16}];
-    [v5 setInvalidationHandler:v7];
-    objc_storeStrong(&v6->_client, a3);
+    [clientCopy setInterruptionHandler:{v7, v13, v14, v15, v16}];
+    [clientCopy setInvalidationHandler:v7];
+    objc_storeStrong(&v6->_client, client);
     v8 = +[MFMailMessageLibrary defaultInstance];
     library = v6->_library;
     v6->_library = v8;
@@ -65,9 +65,9 @@
   return v6;
 }
 
-- (MFDSearch)initWithRemoteObjectInterface:(id)a3
+- (MFDSearch)initWithRemoteObjectInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   [(MFDSearch *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFDSearch initWithRemoteObjectInterface:]", "MFDSearch.m", 197, "0");
 }
@@ -82,16 +82,16 @@
 
 - (id)_searchResultsProxy
 {
-  v2 = [(MFXPCClient *)self->_client connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(MFXPCClient *)self->_client connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)findMessageData:(id)a3 matchingCriterion:(id)a4 options:(unint64_t)a5
+- (void)findMessageData:(id)data matchingCriterion:(id)criterion options:(unint64_t)options
 {
-  v14 = a3;
-  v8 = a4;
+  dataCopy = data;
+  criterionCopy = criterion;
   if (self->_keys)
   {
     v9 = 1500;
@@ -104,7 +104,7 @@
     goto LABEL_10;
   }
 
-  if (!v8)
+  if (!criterionCopy)
   {
     v9 = 1502;
 LABEL_10:
@@ -117,13 +117,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = sub_1000651A0(v8, (a5 >> 2) & 1);
+  v10 = sub_1000651A0(criterionCopy, (options >> 2) & 1);
   if (v10)
   {
-    [(MFDSearch *)self setOptions:a5];
+    [(MFDSearch *)self setOptions:options];
     [(MFDSearch *)self setCriteria:v10];
-    [(MFDSearch *)self setKeys:v14];
-    if (a5)
+    [(MFDSearch *)self setKeys:dataCopy];
+    if (options)
     {
       [(MFDSearch *)self _registerForAutoFetchFinishedNotification];
       v13 = +[AutoFetchController sharedController];
@@ -146,8 +146,8 @@ LABEL_10:
   if (v11)
   {
 LABEL_11:
-    v12 = [(MFDSearch *)self _searchResultsProxy];
-    [v12 foundResults:0 error:v11];
+    _searchResultsProxy = [(MFDSearch *)self _searchResultsProxy];
+    [_searchResultsProxy foundResults:0 error:v11];
   }
 
 LABEL_12:
@@ -205,7 +205,7 @@ LABEL_12:
   [v3 addObserver:self selector:"_autoFetchDone:" name:@"AutoFetchDoneNotification" object:0];
 }
 
-- (void)_autoFetchDone:(id)a3
+- (void)_autoFetchDone:(id)done
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:@"AutoFetchDoneNotification" object:0];
@@ -223,9 +223,9 @@ LABEL_12:
 
   v7 = [MFMonitoredInvocation invocationWithSelector:"_backgroundSearch" target:self taskName:@"MailServices Search" priority:11 canBeCancelled:1];
   [v7 retainArguments];
-  v3 = [v7 monitor];
+  monitor = [v7 monitor];
   monitor = self->_monitor;
-  self->_monitor = v3;
+  self->_monitor = monitor;
 
   v5 = +[MFInvocationQueue sharedInvocationQueue];
   [v5 addInvocation:v7];
@@ -234,8 +234,8 @@ LABEL_12:
 - (void)stop
 {
   [(MFActivityMonitor *)self->_monitor cancel];
-  v3 = [(MFDSearch *)self searchProgress];
-  [v3 cancel];
+  searchProgress = [(MFDSearch *)self searchProgress];
+  [searchProgress cancel];
 }
 
 - (BOOL)shouldCancel
@@ -245,10 +245,10 @@ LABEL_12:
     return 1;
   }
 
-  v4 = [(MFDSearch *)self searchProgress];
-  v3 = [v4 isCancelled];
+  searchProgress = [(MFDSearch *)self searchProgress];
+  isCancelled = [searchProgress isCancelled];
 
-  return v3;
+  return isCancelled;
 }
 
 - (void)_performLibrarySearch
@@ -258,23 +258,23 @@ LABEL_12:
   {
     criteria = self->_criteria;
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = criteria;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "#MailServices %@ searching library for criteria: %@", &v9, 0x16u);
   }
 
-  v5 = [(MFDSearch *)self _libraryOptions];
+  _libraryOptions = [(MFDSearch *)self _libraryOptions];
   library = self->_library;
   v7 = self->_criteria;
-  v8 = [(MFDSearch *)self resultsQueue];
-  [(MFMailMessageLibrary *)library iterateMessagesMatchingCriterion:v7 withResultHandler:v8 options:v5 withMonitor:self];
+  resultsQueue = [(MFDSearch *)self resultsQueue];
+  [(MFMailMessageLibrary *)library iterateMessagesMatchingCriterion:v7 withResultHandler:resultsQueue options:_libraryOptions withMonitor:self];
 }
 
 - (void)_backgroundSearch
 {
-  v3 = [(MFDSearch *)self _searchResultsProxy];
-  v4 = [[_MFDSearchResultsQueue alloc] initWithKeys:self->_keys resultsProxy:v3];
+  _searchResultsProxy = [(MFDSearch *)self _searchResultsProxy];
+  v4 = [[_MFDSearchResultsQueue alloc] initWithKeys:self->_keys resultsProxy:_searchResultsProxy];
   [(MFDSearch *)self setResultsQueue:v4];
 
   if (![(MFDSearch *)self shouldCancel])
@@ -289,8 +289,8 @@ LABEL_12:
 
   else
   {
-    v6 = [(MFDSearch *)self resultsQueue];
-    [v6 flush];
+    resultsQueue = [(MFDSearch *)self resultsQueue];
+    [resultsQueue flush];
 
     v5 = 0;
   }
@@ -301,7 +301,7 @@ LABEL_12:
     v8 = @" with error: ";
     v9 = &stru_10015BEC8;
     v11 = 138412802;
-    v12 = self;
+    selfCopy = self;
     if (!v5)
     {
       v8 = &stru_10015BEC8;
@@ -319,8 +319,8 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "#MailServices %@ finished search%@%@", &v11, 0x20u);
   }
 
-  v10 = [(MFDSearch *)self resultsQueue];
-  [v10 finishWithError:v5];
+  resultsQueue2 = [(MFDSearch *)self resultsQueue];
+  [resultsQueue2 finishWithError:v5];
 
   [(MFDSearch *)self setResultsQueue:0];
   [(MFDSearch *)self setSearchPromise:0];
@@ -364,9 +364,9 @@ LABEL_12:
         }
 
         v9 = [v3 objectForKeyedSubscript:{*(*(&v12 + 1) + 8 * i), v12}];
-        v10 = [v9 unsignedIntValue];
+        unsignedIntValue = [v9 unsignedIntValue];
 
-        v7 |= v10;
+        v7 |= unsignedIntValue;
       }
 
       v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];

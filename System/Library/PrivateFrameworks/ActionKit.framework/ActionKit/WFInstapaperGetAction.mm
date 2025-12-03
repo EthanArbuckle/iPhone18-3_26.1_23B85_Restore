@@ -1,32 +1,32 @@
 @interface WFInstapaperGetAction
 - (id)disabledOnPlatforms;
-- (void)engine:(id)a3 connection:(id)a4 didReceiveBookmarks:(id)a5 ofUser:(id)a6 forFolder:(id)a7;
-- (void)runAsynchronouslyWithInput:(id)a3 selectedFolder:(id)a4;
+- (void)engine:(id)engine connection:(id)connection didReceiveBookmarks:(id)bookmarks ofUser:(id)user forFolder:(id)folder;
+- (void)runAsynchronouslyWithInput:(id)input selectedFolder:(id)folder;
 @end
 
 @implementation WFInstapaperGetAction
 
-- (void)engine:(id)a3 connection:(id)a4 didReceiveBookmarks:(id)a5 ofUser:(id)a6 forFolder:(id)a7
+- (void)engine:(id)engine connection:(id)connection didReceiveBookmarks:(id)bookmarks ofUser:(id)user forFolder:(id)folder
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFInstapaperAction *)self identifiers];
-  v12 = [v11 count];
+  connectionCopy = connection;
+  bookmarksCopy = bookmarks;
+  identifiers = [(WFInstapaperAction *)self identifiers];
+  v12 = [identifiers count];
 
   if (v12)
   {
-    v13 = [(WFInstapaperAction *)self identifiers];
-    v14 = [(WFInstapaperAction *)self engine];
-    v15 = [v14 identifierForConnection:v9];
-    [v13 removeObject:v15];
+    identifiers2 = [(WFInstapaperAction *)self identifiers];
+    engine = [(WFInstapaperAction *)self engine];
+    v15 = [engine identifierForConnection:connectionCopy];
+    [identifiers2 removeObject:v15];
   }
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = v10;
+  v16 = bookmarksCopy;
   v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v17)
   {
@@ -43,10 +43,10 @@
         }
 
         v21 = *(*(&v26 + 1) + 8 * v20);
-        v22 = [(WFInstapaperGetAction *)self output];
+        output = [(WFInstapaperGetAction *)self output];
         v23 = [v21 URL];
-        v24 = [v21 title];
-        [v22 addObject:v23 named:v24];
+        title = [v21 title];
+        [output addObject:v23 named:title];
 
         ++v20;
       }
@@ -61,16 +61,16 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3 selectedFolder:(id)a4
+- (void)runAsynchronouslyWithInput:(id)input selectedFolder:(id)folder
 {
-  v5 = a4;
+  folderCopy = folder;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__WFInstapaperGetAction_runAsynchronouslyWithInput_selectedFolder___block_invoke;
   v7[3] = &unk_278C21508;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = folderCopy;
+  v6 = folderCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -89,8 +89,8 @@ void __67__WFInstapaperGetAction_runAsynchronouslyWithInput_selectedFolder___blo
 {
   v5.receiver = self;
   v5.super_class = WFInstapaperGetAction;
-  v2 = [(WFInstapaperGetAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFInstapaperGetAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }

@@ -6,9 +6,9 @@
 
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
-  v4 = [HFStateDumpBuilder builderWithObject:a1 context:a3];
-  v5 = [a1 characteristic];
-  [v4 setObject:v5 forKeyedSubscript:@"characteristic"];
+  v4 = [HFStateDumpBuilder builderWithObject:self context:a3];
+  characteristic = [self characteristic];
+  [v4 setObject:characteristic forKeyedSubscript:@"characteristic"];
 
   return v4;
 }

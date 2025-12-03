@@ -2,11 +2,11 @@
 + (id)any;
 + (id)localWiFi;
 - (BOOL)isAny;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAddress:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAddress:(id)address;
 - (BOOL)isLocalWiFi;
-- (CATAddress)initWithData:(id)a3;
-- (CATAddress)initWithString:(id)a3;
+- (CATAddress)initWithData:(id)data;
+- (CATAddress)initWithString:(id)string;
 - (NSString)address;
 - (id)description;
 - (unint64_t)hash;
@@ -33,10 +33,10 @@
       goto LABEL_13;
     }
 
-    v6 = [(NSData *)data bytes];
-    v7 = [MEMORY[0x277CBEB28] data];
-    address = v7;
-    v9 = *(v6 + 1);
+    bytes = [(NSData *)data bytes];
+    data = [MEMORY[0x277CBEB28] data];
+    address = data;
+    v9 = *(bytes + 1);
     if (v9 == 2)
     {
       v10 = 17;
@@ -55,10 +55,10 @@
       v11 = 8;
     }
 
-    v12 = (v6 + v11);
-    [(NSString *)v7 setLength:v10];
+    v12 = (bytes + v11);
+    [(NSString *)data setLength:v10];
 LABEL_12:
-    inet_ntop(*(v6 + 1), v12, [(NSString *)address mutableBytes], [(NSString *)address length]);
+    inet_ntop(*(bytes + 1), v12, [(NSString *)address mutableBytes], [(NSString *)address length]);
     v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:{-[NSString bytes](address, "bytes")}];
     v14 = self->_address;
     self->_address = v13;
@@ -73,16 +73,16 @@ LABEL_13:
 
 - (BOOL)isAny
 {
-  v3 = [(CATAddress *)self data];
-  v4 = [v3 length];
+  data = [(CATAddress *)self data];
+  v4 = [data length];
   result = v4 >= 0x10 && (-[CATAddress data](self, "data"), v5 = ;
   return result;
 }
 
 - (BOOL)isLocalWiFi
 {
-  v3 = [(CATAddress *)self data];
-  v4 = [v3 length];
+  data = [(CATAddress *)self data];
+  v4 = [data length];
   result = v4 >= 0x10 && (-[CATAddress data](self, "data"), v5 = ;
   return result;
 }
@@ -93,7 +93,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __17__CATAddress_any__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (any_onceToken != -1)
   {
     dispatch_once(&any_onceToken, block);
@@ -123,7 +123,7 @@ void __17__CATAddress_any__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __23__CATAddress_localWiFi__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (localWiFi_onceToken != -1)
   {
     dispatch_once(&localWiFi_onceToken, block);
@@ -147,15 +147,15 @@ void __23__CATAddress_localWiFi__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (CATAddress)initWithString:(id)a3
+- (CATAddress)initWithString:(id)string
 {
   v9 = 0;
   memset(&v10, 0, sizeof(v10));
   v10.ai_flags = 4;
-  v5 = a3;
-  if (getaddrinfo([a3 UTF8String], 0, &v10, &v9))
+  stringCopy = string;
+  if (getaddrinfo([string UTF8String], 0, &v10, &v9))
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -164,16 +164,16 @@ void __23__CATAddress_localWiFi__block_invoke(uint64_t a1)
     freeaddrinfo(v9);
     self = [(CATAddress *)self initWithData:v7];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (CATAddress)initWithData:(id)a3
+- (CATAddress)initWithData:(id)data
 {
-  v5 = a3;
-  if ([v5 length] && objc_msgSend(v5, "length") <= 0xF)
+  dataCopy = data;
+  if ([dataCopy length] && objc_msgSend(dataCopy, "length") <= 0xF)
   {
     [(CATAddress *)a2 initWithData:?];
   }
@@ -183,7 +183,7 @@ void __23__CATAddress_localWiFi__block_invoke(uint64_t a1)
   v6 = [(CATAddress *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEA90] dataWithData:v5];
+    v7 = [MEMORY[0x277CBEA90] dataWithData:dataCopy];
     data = v6->_data;
     v6->_data = v7;
   }
@@ -199,21 +199,21 @@ void __23__CATAddress_localWiFi__block_invoke(uint64_t a1)
     v12.receiver = self;
     v12.super_class = CATAddress;
     v4 = [(CATAddress *)&v12 description];
-    v5 = [(CATAddress *)self address];
-    [v3 stringWithFormat:@"%@ address: ANY %@", v4, v5];
+    address = [(CATAddress *)self address];
+    [v3 stringWithFormat:@"%@ address: ANY %@", v4, address];
   }
 
   else
   {
-    v6 = [(CATAddress *)self isLocalWiFi];
+    isLocalWiFi = [(CATAddress *)self isLocalWiFi];
     v7 = MEMORY[0x277CCACA8];
-    if (v6)
+    if (isLocalWiFi)
     {
       v11.receiver = self;
       v11.super_class = CATAddress;
       v4 = [(CATAddress *)&v11 description];
-      v5 = [(CATAddress *)self address];
-      [v7 stringWithFormat:@"%@ address: LOCAL WIFI %@", v4, v5];
+      address = [(CATAddress *)self address];
+      [v7 stringWithFormat:@"%@ address: LOCAL WIFI %@", v4, address];
     }
 
     else
@@ -221,8 +221,8 @@ void __23__CATAddress_localWiFi__block_invoke(uint64_t a1)
       v10.receiver = self;
       v10.super_class = CATAddress;
       v4 = [(CATAddress *)&v10 description];
-      v5 = [(CATAddress *)self address];
-      [v7 stringWithFormat:@"%@ address: %@", v4, v5];
+      address = [(CATAddress *)self address];
+      [v7 stringWithFormat:@"%@ address: %@", v4, address];
     }
   }
   v8 = ;
@@ -232,21 +232,21 @@ void __23__CATAddress_localWiFi__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v2 = [(CATAddress *)self data];
-  v3 = [v2 hash];
+  data = [(CATAddress *)self data];
+  v3 = [data hash];
 
   return v3;
 }
 
-- (BOOL)isEqualToAddress:(id)a3
+- (BOOL)isEqualToAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(CATAddress *)self data];
-  v6 = [v4 data];
+  addressCopy = address;
+  data = [(CATAddress *)self data];
+  data2 = [addressCopy data];
 
-  if (v5 | v6)
+  if (data | data2)
   {
-    v7 = [v5 isEqual:v6];
+    v7 = [data isEqual:data2];
   }
 
   else
@@ -257,10 +257,10 @@ void __23__CATAddress_localWiFi__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -268,7 +268,7 @@ void __23__CATAddress_localWiFi__block_invoke(uint64_t a1)
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CATAddress *)self isEqualToAddress:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CATAddress *)self isEqualToAddress:equalCopy];
   }
 
   return v5;
@@ -276,8 +276,8 @@ void __23__CATAddress_localWiFi__block_invoke(uint64_t a1)
 
 - (void)address
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CATAddress.m" lineNumber:46 description:@"The provided data is not long enough to be a sockaddr."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CATAddress.m" lineNumber:46 description:@"The provided data is not long enough to be a sockaddr."];
 }
 
 - (void)initWithData:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

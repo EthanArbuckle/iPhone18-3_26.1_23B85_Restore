@@ -1,15 +1,15 @@
 @interface HKBarButtonItemControl
 - (CGSize)intrinsicContentSize;
-- (HKBarButtonItemControl)initWithSystemItem:(int64_t)a3 preferredHeight:(double)a4 collapseHeight:(BOOL)a5;
+- (HKBarButtonItemControl)initWithSystemItem:(int64_t)item preferredHeight:(double)height collapseHeight:(BOOL)collapseHeight;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHorizontalMargin:(double)a3;
-- (void)setTintColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setHorizontalMargin:(double)margin;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation HKBarButtonItemControl
 
-- (HKBarButtonItemControl)initWithSystemItem:(int64_t)a3 preferredHeight:(double)a4 collapseHeight:(BOOL)a5
+- (HKBarButtonItemControl)initWithSystemItem:(int64_t)item preferredHeight:(double)height collapseHeight:(BOOL)collapseHeight
 {
   v22.receiver = self;
   v22.super_class = HKBarButtonItemControl;
@@ -21,20 +21,20 @@
   v13 = v12;
   if (v12)
   {
-    v14 = 44.0;
-    if (a4 > 0.0)
+    heightCopy = 44.0;
+    if (height > 0.0)
     {
-      v14 = a4;
+      heightCopy = height;
     }
 
-    v12->_preferredHeight = v14;
-    v12->_collapseHeight = a5;
+    v12->_preferredHeight = heightCopy;
+    v12->_collapseHeight = collapseHeight;
     v12->_horizontalMargin = 2.0;
     v15 = [objc_alloc(MEMORY[0x1E69DD180]) initWithFrame:{v8, v9, v10, v11}];
     toolbar = v13->_toolbar;
     v13->_toolbar = v15;
 
-    v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:a3 target:0 action:0];
+    v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:item target:0 action:0];
     barButtonItem = v13->_barButtonItem;
     v13->_barButtonItem = v17;
 
@@ -48,34 +48,34 @@
     }
 
     [(HKBarButtonItemControl *)v13 setClipsToBounds:1];
-    v20 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(HKBarButtonItemControl *)v13 setBackgroundColor:v20];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(HKBarButtonItemControl *)v13 setBackgroundColor:systemBackgroundColor];
   }
 
   return v13;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = HKBarButtonItemControl;
-  v4 = a3;
-  [(HKBarButtonItemControl *)&v5 setBackgroundColor:v4];
-  [(UIControl *)self->_barButtonItemControl setBackgroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(HKBarButtonItemControl *)&v5 setBackgroundColor:colorCopy];
+  [(UIControl *)self->_barButtonItemControl setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = HKBarButtonItemControl;
-  v4 = a3;
-  [(HKBarButtonItemControl *)&v5 setTintColor:v4];
-  [(UIControl *)self->_barButtonItemControl setTintColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(HKBarButtonItemControl *)&v5 setTintColor:colorCopy];
+  [(UIControl *)self->_barButtonItemControl setTintColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setHorizontalMargin:(double)a3
+- (void)setHorizontalMargin:(double)margin
 {
-  self->_horizontalMargin = a3;
+  self->_horizontalMargin = margin;
   [(HKBarButtonItemControl *)self invalidateIntrinsicContentSize];
 
   [(HKBarButtonItemControl *)self setNeedsLayout];

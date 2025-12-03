@@ -10,9 +10,9 @@
 
 - (void)willBeginZoomingOperation
 {
-  *(a1 + OBJC_IVAR____TtC8Freeform14CRLTableChrome_shouldSuppressTableAxisChrome) = 1;
-  v1 = *(a1 + OBJC_IVAR____TtC8Freeform14CRLTableChrome_tableAxisHoveringSelectorLayer);
-  *(a1 + OBJC_IVAR____TtC8Freeform14CRLTableChrome_tableAxisHoveringSelectorLayer) = 0;
+  *(self + OBJC_IVAR____TtC8Freeform14CRLTableChrome_shouldSuppressTableAxisChrome) = 1;
+  v1 = *(self + OBJC_IVAR____TtC8Freeform14CRLTableChrome_tableAxisHoveringSelectorLayer);
+  *(self + OBJC_IVAR____TtC8Freeform14CRLTableChrome_tableAxisHoveringSelectorLayer) = 0;
 }
 
 - (void)dealloc
@@ -25,7 +25,7 @@
 
 - (void)validateTableAxisChrome
 {
-  v2 = self;
+  selfCopy = self;
   sub_1011C0F38();
 }
 

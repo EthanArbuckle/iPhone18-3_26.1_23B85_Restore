@@ -1,24 +1,24 @@
 @interface RoutingAppLaunchRecord
 - (NSMutableArray)recentlyLaunchedApps;
-- (RoutingAppLaunchRecord)initWithCoder:(id)a3;
-- (RoutingAppLaunchRecord)initWithRecentlyLaunchedApps:(id)a3;
-- (id)appIDsSortedByMostRecentLaunch:(id)a3;
-- (id)rankedRoutingAppProxiesWithProxies:(id)a3;
-- (void)recordAppLaunch:(id)a3;
+- (RoutingAppLaunchRecord)initWithCoder:(id)coder;
+- (RoutingAppLaunchRecord)initWithRecentlyLaunchedApps:(id)apps;
+- (id)appIDsSortedByMostRecentLaunch:(id)launch;
+- (id)rankedRoutingAppProxiesWithProxies:(id)proxies;
+- (void)recordAppLaunch:(id)launch;
 @end
 
 @implementation RoutingAppLaunchRecord
 
-- (id)rankedRoutingAppProxiesWithProxies:(id)a3
+- (id)rankedRoutingAppProxiesWithProxies:(id)proxies
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  proxiesCopy = proxies;
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(proxiesCopy, "count")}];
+  v6 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(proxiesCopy, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v4;
+  v7 = proxiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v8)
   {
@@ -34,9 +34,9 @@
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
-        v13 = [v12 bundleIdentifier];
-        [v5 addObject:v13];
-        [v6 setObject:v12 forKeyedSubscript:v13];
+        bundleIdentifier = [v12 bundleIdentifier];
+        [v5 addObject:bundleIdentifier];
+        [v6 setObject:v12 forKeyedSubscript:bundleIdentifier];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -79,10 +79,10 @@
   return v15;
 }
 
-- (RoutingAppLaunchRecord)initWithCoder:(id)a3
+- (RoutingAppLaunchRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_recentlyLaunchedApps"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_recentlyLaunchedApps"];
 
   v6 = &__NSArray0__struct;
   if (v5)
@@ -103,34 +103,34 @@
   return v2;
 }
 
-- (void)recordAppLaunch:(id)a3
+- (void)recordAppLaunch:(id)launch
 {
-  v4 = a3;
+  launchCopy = launch;
   recentlyLaunchedApps = self->_recentlyLaunchedApps;
-  v8 = v4;
+  v8 = launchCopy;
   if (!recentlyLaunchedApps)
   {
     v6 = [NSMutableArray arrayWithCapacity:1];
     v7 = self->_recentlyLaunchedApps;
     self->_recentlyLaunchedApps = v6;
 
-    v4 = v8;
+    launchCopy = v8;
     recentlyLaunchedApps = self->_recentlyLaunchedApps;
   }
 
-  [(NSMutableArray *)recentlyLaunchedApps removeObject:v4];
+  [(NSMutableArray *)recentlyLaunchedApps removeObject:launchCopy];
   [(NSMutableArray *)self->_recentlyLaunchedApps insertObject:v8 atIndex:0];
 }
 
-- (id)appIDsSortedByMostRecentLaunch:(id)a3
+- (id)appIDsSortedByMostRecentLaunch:(id)launch
 {
-  v4 = a3;
-  v5 = malloc_type_malloc(8 * [v4 count], 0x100004000313F17uLL);
+  launchCopy = launch;
+  v5 = malloc_type_malloc(8 * [launchCopy count], 0x100004000313F17uLL);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = launchCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -179,15 +179,15 @@
   return v15;
 }
 
-- (RoutingAppLaunchRecord)initWithRecentlyLaunchedApps:(id)a3
+- (RoutingAppLaunchRecord)initWithRecentlyLaunchedApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v9.receiver = self;
   v9.super_class = RoutingAppLaunchRecord;
   v5 = [(RoutingAppLaunchRecord *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [appsCopy mutableCopy];
     [(RoutingAppLaunchRecord *)v5 setRecentlyLaunchedApps:v6];
     v7 = v5;
   }

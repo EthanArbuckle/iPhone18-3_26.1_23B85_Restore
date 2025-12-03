@@ -1,55 +1,55 @@
 @interface MapsSuggestionsWallet
-- (MapsSuggestionsEntry)_q_entryFromFlightPass:(uint64_t)a1;
-- (MapsSuggestionsWallet)initWithConnector:(id)a3 network:(id)a4;
+- (MapsSuggestionsEntry)_q_entryFromFlightPass:(uint64_t)pass;
+- (MapsSuggestionsWallet)initWithConnector:(id)connector network:(id)network;
 - (NSString)uniqueName;
-- (char)entriesFromPassesBefore:(id)a3 handler:(id)a4;
-- (char)hasExpressPaymentCardWithHandler:(id)a3;
-- (char)hasPaymentCardWithHandler:(id)a3;
-- (char)hasTransitPassWithHandler:(id)a3;
-- (dispatch_queue_t)_q_entryFromPass:(dispatch_queue_t *)a1;
+- (char)entriesFromPassesBefore:(id)before handler:(id)handler;
+- (char)hasExpressPaymentCardWithHandler:(id)handler;
+- (char)hasPaymentCardWithHandler:(id)handler;
+- (char)hasTransitPassWithHandler:(id)handler;
+- (dispatch_queue_t)_q_entryFromPass:(dispatch_queue_t *)pass;
 - (id).cxx_construct;
 - (id)connector;
-- (id)initFromResourceDepot:(id)a3;
-- (uint64_t)_q_addLocationInfoToEntry:(void *)a3 completion:;
-- (void)_q_readPassesWithHandler:(void *)a3 withEndDate:;
-- (void)passKitDidChange:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (id)initFromResourceDepot:(id)depot;
+- (uint64_t)_q_addLocationInfoToEntry:(void *)entry completion:;
+- (void)_q_readPassesWithHandler:(void *)handler withEndDate:;
+- (void)passKitDidChange:(id)change;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation MapsSuggestionsWallet
 
 - (id)connector
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[3];
+    self = self[3];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)passKitDidChange:(id)a3
+- (void)passKitDidChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 uniqueName];
+    uniqueName = [changeCopy uniqueName];
     v7 = 138412290;
-    v8 = v6;
+    v8 = uniqueName;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "Received passKitDidChange from:%@. CanKicking the notification.", &v7, 0xCu);
   }
 
   [(MapsSuggestionsCanKicker *)self->_changedNotificationCanKicker kickCanBySameTime];
 }
 
-- (MapsSuggestionsWallet)initWithConnector:(id)a3 network:(id)a4
+- (MapsSuggestionsWallet)initWithConnector:(id)connector network:(id)network
 {
-  v7 = a3;
-  v8 = a4;
+  connectorCopy = connector;
+  networkCopy = network;
   v32.receiver = self;
   v32.super_class = MapsSuggestionsWallet;
   v9 = [(MapsSuggestionsWallet *)&v32 init];
@@ -67,9 +67,9 @@
     name = v9->_queue._name;
     v9->_queue._name = v13;
 
-    objc_storeStrong(&v9->_connector, a3);
+    objc_storeStrong(&v9->_connector, connector);
     [(MapsSuggestionsWalletConnector *)v9->_connector setDelegate:v9];
-    objc_storeStrong(&v9->_network, a4);
+    objc_storeStrong(&v9->_network, network);
     v15 = [[MapsSuggestionsLimitedDictionary alloc] initWithMaximumCapacity:GEOConfigGetInteger()];
     airportCache = v9->_airportCache;
     v9->_airportCache = v15;
@@ -166,12 +166,12 @@ void __51__MapsSuggestionsWallet_initWithConnector_network___block_invoke_198(ui
   }
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -190,9 +190,9 @@ void __51__MapsSuggestionsWallet_initWithConnector_network___block_invoke_198(ui
     goto LABEL_9;
   }
 
-  v6 = [v4 oneNetworkRequester];
+  oneNetworkRequester = [depotCopy oneNetworkRequester];
 
-  if (!v6)
+  if (!oneNetworkRequester)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -210,23 +210,23 @@ void __51__MapsSuggestionsWallet_initWithConnector_network___block_invoke_198(ui
 
 LABEL_9:
 
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
   v7 = objc_alloc_init(MapsSuggestionsRealWalletConnector);
-  v8 = [v5 oneNetworkRequester];
-  self = [(MapsSuggestionsWallet *)self initWithConnector:v7 network:v8];
+  oneNetworkRequester2 = [v5 oneNetworkRequester];
+  self = [(MapsSuggestionsWallet *)self initWithConnector:v7 network:oneNetworkRequester2];
 
-  v9 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observers = self->_observers;
   v6[0] = MEMORY[0x1E69E9820];
@@ -234,7 +234,7 @@ LABEL_10:
   v6[2] = __42__MapsSuggestionsWallet_registerObserver___block_invoke;
   v6[3] = &unk_1E81F55C8;
   objc_copyWeak(&v7, &location);
-  [(MapsSuggestionsObservers *)observers registerObserver:v4 handler:v6];
+  [(MapsSuggestionsObservers *)observers registerObserver:observerCopy handler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -269,9 +269,9 @@ void __42__MapsSuggestionsWallet_registerObserver___block_invoke(uint64_t a1, in
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observers = self->_observers;
   v6[0] = MEMORY[0x1E69E9820];
@@ -279,7 +279,7 @@ void __42__MapsSuggestionsWallet_registerObserver___block_invoke(uint64_t a1, in
   v6[2] = __44__MapsSuggestionsWallet_unregisterObserver___block_invoke;
   v6[3] = &unk_1E81F55C8;
   objc_copyWeak(&v7, &location);
-  [(MapsSuggestionsObservers *)observers unregisterObserver:v4 handler:v6];
+  [(MapsSuggestionsObservers *)observers unregisterObserver:observerCopy handler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -314,17 +314,17 @@ void __44__MapsSuggestionsWallet_unregisterObserver___block_invoke(uint64_t a1, 
   }
 }
 
-- (char)entriesFromPassesBefore:(id)a3 handler:(id)a4
+- (char)entriesFromPassesBefore:(id)before handler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  beforeCopy = before;
+  handlerCopy = handler;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(MapsSuggestionsWallet *)self uniqueName];
+    uniqueName = [(MapsSuggestionsWallet *)self uniqueName];
     *buf = 138412546;
-    v18 = v9;
+    v18 = uniqueName;
     v19 = 2080;
     v20 = "entriesFromPassesBefore:handler:";
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -341,9 +341,9 @@ void __44__MapsSuggestionsWallet_unregisterObserver___block_invoke(uint64_t a1, 
   v14[1] = 3221225472;
   v14[2] = __57__MapsSuggestionsWallet_entriesFromPassesBefore_handler___block_invoke;
   v14[3] = &unk_1E81F6D48;
-  v11 = v7;
+  v11 = handlerCopy;
   v16 = v11;
-  v12 = v6;
+  v12 = beforeCopy;
   v15 = v12;
   MSg::Queue::async<MapsSuggestionsWallet>(&self->_queue, self, v14);
 
@@ -374,22 +374,22 @@ void __57__MapsSuggestionsWallet_entriesFromPassesBefore_handler___block_invoke(
   }
 }
 
-- (void)_q_readPassesWithHandler:(void *)a3 withEndDate:
+- (void)_q_readPassesWithHandler:(void *)handler withEndDate:
 {
   v70 = *MEMORY[0x1E69E9840];
   v41 = a2;
-  v5 = a3;
-  if (a1)
+  handlerCopy = handler;
+  if (self)
   {
-    v43 = v5;
-    dispatch_assert_queue_V2(a1[1]);
+    v43 = handlerCopy;
+    dispatch_assert_queue_V2(self[1]);
     GEOFindOrCreateLog();
-    v6 = val = a1;
+    v6 = val = self;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [val uniqueName];
+      uniqueName = [val uniqueName];
       *buf = 138412546;
-      v65 = v7;
+      v65 = uniqueName;
       v66 = 2080;
       *v67 = "_q_readPassesWithHandler";
       _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -405,22 +405,22 @@ void __57__MapsSuggestionsWallet_entriesFromPassesBefore_handler___block_invoke(
     objc_initWeak(&location, val);
     group = dispatch_group_create();
     v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v5)
+    if (handlerCopy)
     {
       v9 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v65 = v5;
+        v65 = handlerCopy;
         _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "endDate for the request is non-nil: %@", buf, 0xCu);
       }
     }
 
     GEOConfigGetDouble();
     v42 = MapsSuggestionsNowWithOffset(-(v10 * 1000000000.0) / 1000000000.0);
-    if (v5)
+    if (handlerCopy)
     {
-      v11 = v5;
+      v11 = handlerCopy;
     }
 
     else
@@ -506,22 +506,22 @@ void __57__MapsSuggestionsWallet_entriesFromPassesBefore_handler___block_invoke(
               goto LABEL_41;
             }
 
-            v22 = [v20 style];
-            if (v22 <= 0xA && ((1 << v22) & 0x414) != 0)
+            style = [v20 style];
+            if (style <= 0xA && ((1 << style) & 0x414) != 0)
             {
 
-              v24 = [v21 relevantDates];
-              v25 = [v24 firstObject];
-              v26 = [v25 date];
+              relevantDates = [v21 relevantDates];
+              firstObject = [relevantDates firstObject];
+              date = [firstObject date];
 
-              if (v26 && ([v47 containsDate:v26] & 1) != 0)
+              if (date && ([v47 containsDate:date] & 1) != 0)
               {
                 v27 = GEOFindOrCreateLog();
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
                 {
-                  v28 = [v21 localizedDescription];
+                  localizedDescription = [v21 localizedDescription];
                   *buf = 138412290;
-                  v65 = v28;
+                  v65 = localizedDescription;
                   _os_log_impl(&dword_1C5126000, v27, OS_LOG_TYPE_DEBUG, "✅ Processing pass: %@", buf, 0xCu);
                 }
 
@@ -552,7 +552,7 @@ void __57__MapsSuggestionsWallet_entriesFromPassesBefore_handler___block_invoke(
                     dispatch_group_leave(v34);
                   }
 
-                  v5 = v43;
+                  handlerCopy = v43;
                 }
 
                 objc_autoreleasePoolPop(v29);
@@ -563,19 +563,19 @@ void __57__MapsSuggestionsWallet_entriesFromPassesBefore_handler___block_invoke(
                 v35 = GEOFindOrCreateLog();
                 if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
                 {
-                  v36 = [v21 localizedDescription];
+                  localizedDescription2 = [v21 localizedDescription];
                   *buf = 138412290;
-                  v65 = v36;
+                  v65 = localizedDescription2;
                   _os_log_impl(&dword_1C5126000, v35, OS_LOG_TYPE_DEBUG, "Skipping %@", buf, 0xCu);
                 }
 
-                v21 = v26;
+                v21 = date;
 LABEL_41:
 
                 goto LABEL_43;
               }
 
-              v21 = v26;
+              v21 = date;
             }
 
 LABEL_43:
@@ -607,22 +607,22 @@ LABEL_51:
   }
 }
 
-- (uint64_t)_q_addLocationInfoToEntry:(void *)a3 completion:
+- (uint64_t)_q_addLocationInfoToEntry:(void *)entry completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  entryCopy = entry;
+  if (!self)
   {
     goto LABEL_8;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 8));
+  dispatch_assert_queue_V2(*(self + 8));
   if (!v5)
   {
     v13 = GEOFindOrCreateLog();
     [MapsSuggestionsWallet _q_addLocationInfoToEntry:v13 completion:?];
 LABEL_11:
-    a1 = 0;
+    self = 0;
     goto LABEL_8;
   }
 
@@ -633,9 +633,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v7 = [v5 stringForKey:@"MapsSuggestionsFlightFullTargetAirportKey"];
-  v8 = [*(a1 + 48) objectForKeyedSubscript:v7];
+  v8 = [*(self + 48) objectForKeyedSubscript:v7];
   if (v8)
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -645,27 +645,27 @@ LABEL_11:
     objc_copyWeak(&v24, &location);
     v21 = v5;
     v22 = v8;
-    v23 = v6;
-    v9 = *(a1 + 8);
+    v23 = entryCopy;
+    v9 = *(self + 8);
     v10 = v8;
     dispatch_async(v9, block);
 
     objc_destroyWeak(&v24);
-    a1 = 1;
+    self = 1;
   }
 
   else
   {
-    v11 = *(a1 + 32);
+    v11 = *(self + 32);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_invoke_208;
     v15[3] = &unk_1E81F6D98;
-    v18 = v6;
+    v18 = entryCopy;
     objc_copyWeak(&v19, &location);
     v16 = v5;
     v17 = v7;
-    a1 = MapsSuggestionsSearchAirport(v17, v11, v15);
+    self = MapsSuggestionsSearchAirport(v17, v11, v15);
 
     objc_destroyWeak(&v19);
   }
@@ -673,7 +673,7 @@ LABEL_11:
   objc_destroyWeak(&location);
 LABEL_8:
 
-  return a1;
+  return self;
 }
 
 void __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_invoke(uint64_t a1)
@@ -816,19 +816,19 @@ void __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_in
   }
 }
 
-- (MapsSuggestionsEntry)_q_entryFromFlightPass:(uint64_t)a1
+- (MapsSuggestionsEntry)_q_entryFromFlightPass:(uint64_t)pass
 {
   v74 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (pass)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(pass + 8));
     v4 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [a1 uniqueName];
+      uniqueName = [pass uniqueName];
       *buf = 138412546;
-      v67 = v5;
+      v67 = uniqueName;
       v68 = 2080;
       *v69 = "_entryFromFlightPass";
       _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -844,73 +844,73 @@ void __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_in
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v3 localizedDescription];
-      v9 = [v3 flightCode];
+      localizedDescription = [v3 localizedDescription];
+      flightCode = [v3 flightCode];
       *buf = 138412546;
-      v67 = v8;
+      v67 = localizedDescription;
       v68 = 2112;
-      *v69 = v9;
+      *v69 = flightCode;
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "Trying %@ (%@)", buf, 0x16u);
     }
 
-    v10 = [*(a1 + 24) fieldReader];
-    [v10 loadPass:v3];
+    fieldReader = [*(pass + 24) fieldReader];
+    [fieldReader loadPass:v3];
 
-    v11 = [*(a1 + 24) fieldReader];
-    v12 = [v11 combinedFlightCode];
+    fieldReader2 = [*(pass + 24) fieldReader];
+    combinedFlightCode = [fieldReader2 combinedFlightCode];
 
-    v13 = [*(a1 + 24) fieldReader];
-    v14 = [v13 departureAirportCode];
+    fieldReader3 = [*(pass + 24) fieldReader];
+    departureAirportCode = [fieldReader3 departureAirportCode];
 
-    v15 = [*(a1 + 24) fieldReader];
-    v62 = [v15 arrivalAirportCode];
+    fieldReader4 = [*(pass + 24) fieldReader];
+    arrivalAirportCode = [fieldReader4 arrivalAirportCode];
 
-    v16 = [*(a1 + 24) fieldReader];
-    v61 = [v16 departureTerminal];
+    fieldReader5 = [*(pass + 24) fieldReader];
+    departureTerminal = [fieldReader5 departureTerminal];
 
-    v17 = [*(a1 + 24) fieldReader];
-    v60 = [v17 departureGate];
+    fieldReader6 = [*(pass + 24) fieldReader];
+    departureGate = [fieldReader6 departureGate];
 
-    v18 = [*(a1 + 24) fieldReader];
-    v19 = [v18 departureTime];
-    v20 = v19;
-    if (v19)
+    fieldReader7 = [*(pass + 24) fieldReader];
+    departureTime = [fieldReader7 departureTime];
+    v20 = departureTime;
+    if (departureTime)
     {
-      v21 = v19;
+      date = departureTime;
     }
 
     else
     {
-      v22 = [v3 relevantDates];
-      v23 = [v22 firstObject];
-      v21 = [v23 date];
+      relevantDates = [v3 relevantDates];
+      firstObject = [relevantDates firstObject];
+      date = [firstObject date];
     }
 
-    v24 = [*(a1 + 24) fieldReader];
-    v59 = [v24 arrivalTime];
+    fieldReader8 = [*(pass + 24) fieldReader];
+    arrivalTime = [fieldReader8 arrivalTime];
 
     v25 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v67 = v14;
+      v67 = departureAirportCode;
       v68 = 2112;
-      *v69 = v12;
+      *v69 = combinedFlightCode;
       *&v69[8] = 2112;
-      *&v69[10] = v21;
+      *&v69[10] = date;
       _os_log_impl(&dword_1C5126000, v25, OS_LOG_TYPE_DEBUG, "departureAirportCode=%@, fullFlightNumber=%@, departureTime=%@", buf, 0x20u);
     }
 
-    if (v14 && v12 && v21)
+    if (departureAirportCode && combinedFlightCode && date)
     {
-      v26 = v12;
-      v27 = [MEMORY[0x1E696AB08] letterCharacterSet];
-      v28 = [v26 rangeOfCharacterFromSet:v27] == 0x7FFFFFFFFFFFFFFFLL;
+      v26 = combinedFlightCode;
+      letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
+      v28 = [v26 rangeOfCharacterFromSet:letterCharacterSet] == 0x7FFFFFFFFFFFFFFFLL;
 
       if (v28)
       {
-        v29 = [v3 organizationName];
-        v30 = [@"JetBlue" isEqualToString:v29];
+        organizationName = [v3 organizationName];
+        v30 = [@"JetBlue" isEqualToString:organizationName];
 
         if (v30)
         {
@@ -921,13 +921,13 @@ void __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_in
       }
 
       v32 = v26;
-      v33 = [MEMORY[0x1E696AB08] letterCharacterSet];
-      v34 = [v32 rangeOfCharacterFromSet:v33] == 0x7FFFFFFFFFFFFFFFLL;
+      letterCharacterSet2 = [MEMORY[0x1E696AB08] letterCharacterSet];
+      v34 = [v32 rangeOfCharacterFromSet:letterCharacterSet2] == 0x7FFFFFFFFFFFFFFFLL;
 
       if (v34)
       {
-        v35 = [v3 organizationName];
-        v36 = [@"Spirit Airlines Inc" isEqualToString:v35];
+        organizationName2 = [v3 organizationName];
+        v36 = [@"Spirit Airlines Inc" isEqualToString:organizationName2];
 
         if (v36)
         {
@@ -937,9 +937,9 @@ void __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_in
         }
       }
 
-      v12 = v32;
-      v38 = [MEMORY[0x1E696AB08] letterCharacterSet];
-      v39 = [v12 rangeOfCharacterFromSet:v38] == 0x7FFFFFFFFFFFFFFFLL;
+      combinedFlightCode = v32;
+      letterCharacterSet3 = [MEMORY[0x1E696AB08] letterCharacterSet];
+      v39 = [combinedFlightCode rangeOfCharacterFromSet:letterCharacterSet3] == 0x7FFFFFFFFFFFFFFFLL;
 
       if (!v39)
       {
@@ -947,11 +947,11 @@ void __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_in
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v67 = v12;
+          v67 = combinedFlightCode;
           v68 = 2112;
-          *v69 = v14;
+          *v69 = departureAirportCode;
           *&v69[8] = 2112;
-          *&v69[10] = v21;
+          *&v69[10] = date;
           _os_log_impl(&dword_1C5126000, v46, OS_LOG_TYPE_DEBUG, "Creating Entry for Flight %@ (%@ %@)", buf, 0x20u);
         }
 
@@ -959,25 +959,25 @@ void __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_in
         GEOConfigGetDouble();
         v49 = v48;
         GEOConfigGetDouble();
-        v50 = [v21 dateByAddingTimeInterval:?];
+        v50 = [date dateByAddingTimeInterval:?];
         v64[1] = @"MapsSuggestionsWalletPK";
         v65[0] = @"MapsSuggestionsWalletPK";
         v64[0] = @"MapsSuggestionsPrimaryKey";
-        v51 = [v3 uniqueID];
-        v65[1] = v51;
+        uniqueID = [v3 uniqueID];
+        v65[1] = uniqueID;
         v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:2];
-        v45 = [(MapsSuggestionsEntry *)v47 initWithType:15 title:v14 subtitle:0 weight:v50 expires:0 geoMapItem:v52 sourceSpecificInfo:v49];
+        v45 = [(MapsSuggestionsEntry *)v47 initWithType:15 title:departureAirportCode subtitle:0 weight:v50 expires:0 geoMapItem:v52 sourceSpecificInfo:v49];
 
-        [(MapsSuggestionsEntry *)v45 setString:v12 forKey:@"MapsSuggestionsFullFlightNumberKey"];
-        [(MapsSuggestionsEntry *)v45 setString:v60 forKey:@"MapsSuggestionsFlightDepartureGateKey"];
-        [(MapsSuggestionsEntry *)v45 setString:v61 forKey:@"MapsSuggestionsFlightDepartureTerminalKey"];
-        [(MapsSuggestionsEntry *)v45 setString:v14 forKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
-        [(MapsSuggestionsEntry *)v45 setString:v62 forKey:@"MapsSuggestionsFlightArrivalAirportCodeKey"];
-        [(MapsSuggestionsEntry *)v45 setString:v14 forKey:@"MapsSuggestionsFlightFullTargetAirportKey"];
-        [(MapsSuggestionsEntry *)v45 setDate:v21 forKey:@"MapsSuggestionsFlightDepartureTimeKey"];
-        [(MapsSuggestionsEntry *)v45 setString:v14 forKey:@"MapsSuggestionsEntryTitleNameKey"];
-        [(MapsSuggestionsEntry *)v45 setDate:v21 forKey:@"MapsSuggestionsScheduledTimeKey"];
-        [(MapsSuggestionsEntry *)v45 setDate:v59 forKey:@"MapsSuggestionsScheduledEndTimeKey"];
+        [(MapsSuggestionsEntry *)v45 setString:combinedFlightCode forKey:@"MapsSuggestionsFullFlightNumberKey"];
+        [(MapsSuggestionsEntry *)v45 setString:departureGate forKey:@"MapsSuggestionsFlightDepartureGateKey"];
+        [(MapsSuggestionsEntry *)v45 setString:departureTerminal forKey:@"MapsSuggestionsFlightDepartureTerminalKey"];
+        [(MapsSuggestionsEntry *)v45 setString:departureAirportCode forKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
+        [(MapsSuggestionsEntry *)v45 setString:arrivalAirportCode forKey:@"MapsSuggestionsFlightArrivalAirportCodeKey"];
+        [(MapsSuggestionsEntry *)v45 setString:departureAirportCode forKey:@"MapsSuggestionsFlightFullTargetAirportKey"];
+        [(MapsSuggestionsEntry *)v45 setDate:date forKey:@"MapsSuggestionsFlightDepartureTimeKey"];
+        [(MapsSuggestionsEntry *)v45 setString:departureAirportCode forKey:@"MapsSuggestionsEntryTitleNameKey"];
+        [(MapsSuggestionsEntry *)v45 setDate:date forKey:@"MapsSuggestionsScheduledTimeKey"];
+        [(MapsSuggestionsEntry *)v45 setDate:arrivalTime forKey:@"MapsSuggestionsScheduledEndTimeKey"];
         v53 = objc_alloc(MEMORY[0x1E695DFD8]);
         v63 = MapsSuggestionsWalletAppBundleID;
         v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
@@ -987,9 +987,9 @@ void __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_in
         v55 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
         {
-          v56 = [a1 uniqueName];
+          uniqueName2 = [pass uniqueName];
           *buf = 138412546;
-          v67 = v56;
+          v67 = uniqueName2;
           v68 = 2080;
           *v69 = "_entryFromFlightPass";
           _os_log_impl(&dword_1C5126000, v55, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -1012,9 +1012,9 @@ void __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_in
         *&v69[14] = 2082;
         *&v69[16] = "_isAllNumeric(fullFlightNumber)";
         v70 = 2112;
-        v71 = v12;
+        v71 = combinedFlightCode;
         v72 = 2112;
-        v73 = v14;
+        v73 = departureAirportCode;
         _os_log_impl(&dword_1C5126000, v40, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Full Flight number should not be all numeric: '%@' from %@", buf, 0x3Au);
       }
     }
@@ -1024,18 +1024,18 @@ void __62__MapsSuggestionsWallet__q_addLocationInfoToEntry_completion___block_in
       v41 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
       {
-        v42 = [v3 uniqueID];
+        uniqueID2 = [v3 uniqueID];
         *buf = 138412290;
-        v67 = v42;
+        v67 = uniqueID2;
         _os_log_impl(&dword_1C5126000, v41, OS_LOG_TYPE_DEBUG, "Cannot do anything with %@", buf, 0xCu);
       }
 
       v43 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
       {
-        v44 = [a1 uniqueName];
+        uniqueName3 = [pass uniqueName];
         *buf = 138412546;
-        v67 = v44;
+        v67 = uniqueName3;
         v68 = 2080;
         *v69 = "_entryFromFlightPass";
         _os_log_impl(&dword_1C5126000, v43, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s FAIL", buf, 0x16u);
@@ -1061,25 +1061,25 @@ LABEL_38:
   return v45;
 }
 
-- (dispatch_queue_t)_q_entryFromPass:(dispatch_queue_t *)a1
+- (dispatch_queue_t)_q_entryFromPass:(dispatch_queue_t *)pass
 {
   v3 = a2;
-  if (a1)
+  if (pass)
   {
-    dispatch_assert_queue_V2(a1[1]);
-    v4 = [v3 style];
-    if (v4 == 4 || v4 == 10)
+    dispatch_assert_queue_V2(pass[1]);
+    style = [v3 style];
+    if (style == 4 || style == 10)
     {
-      a1 = [(MapsSuggestionsWallet *)a1 _q_entryFromFlightPass:v3];
+      pass = [(MapsSuggestionsWallet *)pass _q_entryFromFlightPass:v3];
     }
 
     else
     {
-      a1 = 0;
+      pass = 0;
     }
   }
 
-  return a1;
+  return pass;
 }
 
 void __62__MapsSuggestionsWallet__q_readPassesWithHandler_withEndDate___block_invoke_3(uint64_t a1)
@@ -1192,18 +1192,18 @@ void __62__MapsSuggestionsWallet__q_readPassesWithHandler_withEndDate___block_in
   }
 }
 
-- (char)hasTransitPassWithHandler:(id)a3
+- (char)hasTransitPassWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __51__MapsSuggestionsWallet_hasTransitPassWithHandler___block_invoke;
     v9[3] = &unk_1E81F6DE8;
-    v10 = v4;
+    v10 = handlerCopy;
     MSg::Queue::async<MapsSuggestionsWallet>(&self->_queue, self, v9);
     v6 = 1;
     v7 = v10;
@@ -1249,18 +1249,18 @@ void __51__MapsSuggestionsWallet_hasTransitPassWithHandler___block_invoke(uint64
   }
 }
 
-- (char)hasPaymentCardWithHandler:(id)a3
+- (char)hasPaymentCardWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __51__MapsSuggestionsWallet_hasPaymentCardWithHandler___block_invoke;
     v9[3] = &unk_1E81F6DE8;
-    v10 = v4;
+    v10 = handlerCopy;
     MSg::Queue::async<MapsSuggestionsWallet>(&self->_queue, self, v9);
     v6 = 1;
     v7 = v10;
@@ -1288,18 +1288,18 @@ void __51__MapsSuggestionsWallet_hasTransitPassWithHandler___block_invoke(uint64
   return v6;
 }
 
-- (char)hasExpressPaymentCardWithHandler:(id)a3
+- (char)hasExpressPaymentCardWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __58__MapsSuggestionsWallet_hasExpressPaymentCardWithHandler___block_invoke;
     v9[3] = &unk_1E81F6DE8;
-    v10 = v4;
+    v10 = handlerCopy;
     MSg::Queue::async<MapsSuggestionsWallet>(&self->_queue, self, v9);
     v6 = 1;
     v7 = v10;

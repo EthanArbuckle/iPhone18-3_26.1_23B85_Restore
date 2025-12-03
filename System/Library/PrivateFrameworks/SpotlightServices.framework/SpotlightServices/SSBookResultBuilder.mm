@@ -1,37 +1,37 @@
 @interface SSBookResultBuilder
-- (SSBookResultBuilder)initWithResult:(id)a3;
+- (SSBookResultBuilder)initWithResult:(id)result;
 - (id)buildCompactCardSection;
 @end
 
 @implementation SSBookResultBuilder
 
-- (SSBookResultBuilder)initWithResult:(id)a3
+- (SSBookResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v13.receiver = self;
   v13.super_class = SSBookResultBuilder;
-  v5 = [(SSResultBuilder *)&v13 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v13 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E6963EB8] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E6963EB8] withType:objc_opt_class()];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 firstObject];
-      [(SSBookResultBuilder *)v5 setAuthor:v8];
+      firstObject = [v6 firstObject];
+      [(SSBookResultBuilder *)v5 setAuthor:firstObject];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v9 = [v8 localizedStringForKey:@"NO_TITLE" value:&stru_1F556FE60 table:@"SpotlightServices"];
+      firstObject = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
+      v9 = [firstObject localizedStringForKey:@"NO_TITLE" value:&stru_1F556FE60 table:@"SpotlightServices"];
       [(SSBookResultBuilder *)v5 setAuthor:v9];
     }
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x1E69643E0] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x1E69643E0] withType:objc_opt_class()];
     [(SSBookResultBuilder *)v5 setGenre:v10];
 
-    v11 = [v4 valueForAttribute:*MEMORY[0x1E6964548] withType:objc_opt_class()];
+    v11 = [resultCopy valueForAttribute:*MEMORY[0x1E6964548] withType:objc_opt_class()];
     [(SSBookResultBuilder *)v5 setDate:v11];
   }
 
@@ -41,34 +41,34 @@
 - (id)buildCompactCardSection
 {
   v3 = objc_opt_new();
-  v4 = [(SSBookResultBuilder *)self author];
-  if (v4)
+  author = [(SSBookResultBuilder *)self author];
+  if (author)
   {
-    [v3 addObject:v4];
+    [v3 addObject:author];
   }
 
-  v5 = [(SSBookResultBuilder *)self genre];
-  if (v5)
+  genre = [(SSBookResultBuilder *)self genre];
+  if (genre)
   {
-    [v3 addObject:v5];
+    [v3 addObject:genre];
   }
 
-  v6 = [(SSBookResultBuilder *)self date];
-  v7 = [(SSBookResultBuilder *)self date];
+  date = [(SSBookResultBuilder *)self date];
+  date2 = [(SSBookResultBuilder *)self date];
 
-  if (v7)
+  if (date2)
   {
-    v8 = [SSDateFormatManager stringsFromDate:v6 toDate:v6 isAllDay:0];
+    v8 = [SSDateFormatManager stringsFromDate:date toDate:date isAllDay:0];
     [v3 addObjectsFromArray:v8];
   }
 
   v12.receiver = self;
   v12.super_class = SSBookResultBuilder;
-  v9 = [(SSResultBuilder *)&v12 buildCompactCardSection];
+  buildCompactCardSection = [(SSResultBuilder *)&v12 buildCompactCardSection];
   v10 = [objc_opt_class() richTextsFromStrings:v3];
-  [v9 setDescriptions:v10];
+  [buildCompactCardSection setDescriptions:v10];
 
-  return v9;
+  return buildCompactCardSection;
 }
 
 @end

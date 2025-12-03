@@ -1,31 +1,31 @@
 @interface DMCPayloadDetailsViewController
-- (DMCPayloadDetailsViewController)initWithPayload:(id)a3;
-- (DMCPayloadDetailsViewController)initWithPayloadViewModel:(id)a3;
-- (id)_keyValueSectionForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_setTitle:(id)a3 keyValueSections:(id)a4;
+- (DMCPayloadDetailsViewController)initWithPayload:(id)payload;
+- (DMCPayloadDetailsViewController)initWithPayloadViewModel:(id)model;
+- (id)_keyValueSectionForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_setTitle:(id)title keyValueSections:(id)sections;
 - (void)_setup;
 @end
 
 @implementation DMCPayloadDetailsViewController
 
-- (DMCPayloadDetailsViewController)initWithPayload:(id)a3
+- (DMCPayloadDetailsViewController)initWithPayload:(id)payload
 {
-  v5 = a3;
+  payloadCopy = payload;
   v11.receiver = self;
   v11.super_class = DMCPayloadDetailsViewController;
   v6 = [(DMCProfileTableViewController *)&v11 initWithStyle:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_payload, a3);
-    v8 = [v5 friendlyName];
-    v9 = [v5 payloadDescriptionKeyValueSections];
-    [(DMCPayloadDetailsViewController *)v7 _setTitle:v8 keyValueSections:v9];
+    objc_storeStrong(&v6->_payload, payload);
+    friendlyName = [payloadCopy friendlyName];
+    payloadDescriptionKeyValueSections = [payloadCopy payloadDescriptionKeyValueSections];
+    [(DMCPayloadDetailsViewController *)v7 _setTitle:friendlyName keyValueSections:payloadDescriptionKeyValueSections];
 
     [(DMCPayloadDetailsViewController *)v7 _setup];
   }
@@ -33,35 +33,35 @@
   return v7;
 }
 
-- (DMCPayloadDetailsViewController)initWithPayloadViewModel:(id)a3
+- (DMCPayloadDetailsViewController)initWithPayloadViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v18.receiver = self;
   v18.super_class = DMCPayloadDetailsViewController;
   v6 = [(DMCProfileTableViewController *)&v18 initWithStyle:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_payloadViewModel, a3);
+    objc_storeStrong(&v6->_payloadViewModel, model);
     v8 = objc_opt_new();
-    v9 = [(DMCPayloadViewModel *)v7->_payloadViewModel certificateProperties];
-    v10 = [v9 count];
+    certificateProperties = [(DMCPayloadViewModel *)v7->_payloadViewModel certificateProperties];
+    v10 = [certificateProperties count];
 
     if (v10)
     {
       v11 = [DMCCertificateProperties alloc];
-      v12 = [(DMCPayloadViewModel *)v7->_payloadViewModel certificateProperties];
-      v13 = [(DMCCertificateProperties *)v11 initWithCertificateProperties:v12];
+      certificateProperties2 = [(DMCPayloadViewModel *)v7->_payloadViewModel certificateProperties];
+      v13 = [(DMCCertificateProperties *)v11 initWithCertificateProperties:certificateProperties2];
 
-      v14 = [(DMCCertificateProperties *)v13 keyValueSections];
-      [v8 addObjectsFromArray:v14];
+      keyValueSections = [(DMCCertificateProperties *)v13 keyValueSections];
+      [v8 addObjectsFromArray:keyValueSections];
     }
 
-    v15 = [v5 payloadDescriptionKeyValueSections];
-    [v8 addObjectsFromArray:v15];
+    payloadDescriptionKeyValueSections = [modelCopy payloadDescriptionKeyValueSections];
+    [v8 addObjectsFromArray:payloadDescriptionKeyValueSections];
 
-    v16 = [v5 friendlyName];
-    [(DMCPayloadDetailsViewController *)v7 _setTitle:v16 keyValueSections:v8];
+    friendlyName = [modelCopy friendlyName];
+    [(DMCPayloadDetailsViewController *)v7 _setTitle:friendlyName keyValueSections:v8];
 
     [(DMCPayloadDetailsViewController *)v7 _setup];
   }
@@ -74,40 +74,40 @@
   v5.receiver = self;
   v5.super_class = DMCPayloadDetailsViewController;
   [(DMCProfileTableViewController *)&v5 updateExtendedLayoutIncludesOpaqueBars];
-  v3 = [(DMCPayloadDetailsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PayloadDetailsCell"];
+  tableView = [(DMCPayloadDetailsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PayloadDetailsCell"];
 
   v4.receiver = self;
   v4.super_class = DMCPayloadDetailsViewController;
   [(DMCProfileTableViewController *)&v4 reloadTableOnContentSizeCategoryChange];
 }
 
-- (void)_setTitle:(id)a3 keyValueSections:(id)a4
+- (void)_setTitle:(id)title keyValueSections:(id)sections
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(DMCPayloadDetailsViewController *)self navigationItem];
-  [v7 setTitle:v6];
+  sectionsCopy = sections;
+  titleCopy = title;
+  navigationItem = [(DMCPayloadDetailsViewController *)self navigationItem];
+  [navigationItem setTitle:titleCopy];
 
-  [(DMCPayloadDetailsViewController *)self setKeyValueSections:v8];
+  [(DMCPayloadDetailsViewController *)self setKeyValueSections:sectionsCopy];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(DMCPayloadDetailsViewController *)self keyValueSections];
-  v4 = [v3 count];
+  keyValueSections = [(DMCPayloadDetailsViewController *)self keyValueSections];
+  v4 = [keyValueSections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(DMCPayloadDetailsViewController *)self _keyValueSectionForSection:a4];
-  v5 = [v4 sectionKeyValues];
+  v4 = [(DMCPayloadDetailsViewController *)self _keyValueSectionForSection:section];
+  sectionKeyValues = [v4 sectionKeyValues];
 
-  if (v5)
+  if (sectionKeyValues)
   {
-    v6 = [v5 count];
+    v6 = [sectionKeyValues count];
   }
 
   else
@@ -118,54 +118,54 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(DMCPayloadDetailsViewController *)self _keyValueSectionForSection:a4];
-  v5 = [v4 sectionTitle];
+  v4 = [(DMCPayloadDetailsViewController *)self _keyValueSectionForSection:section];
+  sectionTitle = [v4 sectionTitle];
 
-  return v5;
+  return sectionTitle;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(DMCPayloadDetailsViewController *)self _keyValueSectionForSection:a4];
-  v5 = [v4 sectionFooter];
+  v4 = [(DMCPayloadDetailsViewController *)self _keyValueSectionForSection:section];
+  sectionFooter = [v4 sectionFooter];
 
-  return v5;
+  return sectionFooter;
 }
 
-- (id)_keyValueSectionForSection:(int64_t)a3
+- (id)_keyValueSectionForSection:(int64_t)section
 {
-  v5 = [(DMCPayloadDetailsViewController *)self keyValueSections];
-  if ([v5 count] <= a3)
+  keyValueSections = [(DMCPayloadDetailsViewController *)self keyValueSections];
+  if ([keyValueSections count] <= section)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(DMCPayloadDetailsViewController *)self keyValueSections];
-    v7 = [v6 objectAtIndexedSubscript:a3];
+    keyValueSections2 = [(DMCPayloadDetailsViewController *)self keyValueSections];
+    v7 = [keyValueSections2 objectAtIndexedSubscript:section];
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DMCPayloadDetailsViewController *)self keyValueSections];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  keyValueSections = [(DMCPayloadDetailsViewController *)self keyValueSections];
+  v9 = [keyValueSections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [v9 sectionKeyValues];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v6, "row")}];
+  sectionKeyValues = [v9 sectionKeyValues];
+  v11 = [sectionKeyValues objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v12 = [v7 dequeueReusableCellWithIdentifier:@"PayloadDetailsCell" forIndexPath:v6];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:@"PayloadDetailsCell" forIndexPath:pathCopy];
 
   v13 = [v11 key];
-  v14 = [v11 value];
-  [v12 setDetail:v13 value:v14];
+  value = [v11 value];
+  [v12 setDetail:v13 value:value];
 
   return v12;
 }

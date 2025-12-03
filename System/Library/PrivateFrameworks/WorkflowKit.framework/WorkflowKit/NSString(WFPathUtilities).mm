@@ -8,30 +8,30 @@
 
 - (id)wf_expandingTildeInPath
 {
-  v2 = [MEMORY[0x1E695DFF8] wf_realHomeDirectoryURL];
-  v3 = [v2 path];
-  v4 = [a1 stringByReplacingOccurrencesOfString:@"~" withString:v3];
+  wf_realHomeDirectoryURL = [MEMORY[0x1E695DFF8] wf_realHomeDirectoryURL];
+  path = [wf_realHomeDirectoryURL path];
+  v4 = [self stringByReplacingOccurrencesOfString:@"~" withString:path];
 
   return v4;
 }
 
 - (id)wf_normalizedPathForROSP
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 wf_bestGuessURL];
-    v3 = v2;
-    if (v2)
+    wf_bestGuessURL = [self wf_bestGuessURL];
+    v3 = wf_bestGuessURL;
+    if (wf_bestGuessURL)
     {
-      v4 = [v2 wf_normalizedFileURLForROSP];
-      if ([v4 isEqual:v3])
+      wf_normalizedFileURLForROSP = [wf_bestGuessURL wf_normalizedFileURLForROSP];
+      if ([wf_normalizedFileURLForROSP isEqual:v3])
       {
-        v5 = a1;
+        selfCopy4 = self;
       }
 
       else
       {
-        v6 = [a1 mutableCopy];
+        v6 = [self mutableCopy];
         v7 = [v6 rangeOfString:@"/Applications"];
         if (v7 != 0x7FFFFFFFFFFFFFFFLL && v8)
         {
@@ -42,45 +42,45 @@
         v10 = v9;
         if (v9 && (v13 = 0, [v9 checkResourceIsReachableAndReturnError:&v13]))
         {
-          v11 = [v6 copy];
+          selfCopy2 = [v6 copy];
         }
 
         else
         {
-          v11 = a1;
+          selfCopy2 = self;
         }
 
-        v5 = v11;
+        selfCopy4 = selfCopy2;
       }
     }
 
     else
     {
-      v5 = a1;
+      selfCopy4 = self;
     }
   }
 
   else
   {
-    v5 = a1;
+    selfCopy4 = self;
   }
 
-  return v5;
+  return selfCopy4;
 }
 
 - (const)wf_bestGuessURL
 {
   v30[6] = *MEMORY[0x1E69E9840];
-  v1 = [a1 copy];
+  v1 = [self copy];
   if ([(__CFString *)v1 hasPrefix:@"~"])
   {
-    v2 = [(__CFString *)v1 stringByExpandingTildeInPath];
+    stringByExpandingTildeInPath = [(__CFString *)v1 stringByExpandingTildeInPath];
 
-    v1 = v2;
+    v1 = stringByExpandingTildeInPath;
   }
 
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:v1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:v1];
 
   if (v4)
   {
@@ -108,22 +108,22 @@
 
     else
     {
-      v9 = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
-      v30[0] = v9;
-      v10 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-      v30[1] = v10;
-      v11 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-      v30[2] = v11;
-      v12 = [MEMORY[0x1E696AB08] URLFragmentAllowedCharacterSet];
-      v30[3] = v12;
-      v13 = [MEMORY[0x1E696AB08] URLPasswordAllowedCharacterSet];
-      v30[4] = v13;
-      v14 = [MEMORY[0x1E696AB08] URLUserAllowedCharacterSet];
-      v30[5] = v14;
+      uRLHostAllowedCharacterSet = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
+      v30[0] = uRLHostAllowedCharacterSet;
+      uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+      v30[1] = uRLPathAllowedCharacterSet;
+      uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+      v30[2] = uRLQueryAllowedCharacterSet;
+      uRLFragmentAllowedCharacterSet = [MEMORY[0x1E696AB08] URLFragmentAllowedCharacterSet];
+      v30[3] = uRLFragmentAllowedCharacterSet;
+      uRLPasswordAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPasswordAllowedCharacterSet];
+      v30[4] = uRLPasswordAllowedCharacterSet;
+      uRLUserAllowedCharacterSet = [MEMORY[0x1E696AB08] URLUserAllowedCharacterSet];
+      v30[5] = uRLUserAllowedCharacterSet;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:6];
 
-      v16 = [v15 firstObject];
-      v17 = [v16 mutableCopy];
+      firstObject = [v15 firstObject];
+      v17 = [firstObject mutableCopy];
 
       v25 = MEMORY[0x1E69E9820];
       v26 = 3221225472;

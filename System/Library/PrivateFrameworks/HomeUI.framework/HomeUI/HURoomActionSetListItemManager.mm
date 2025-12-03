@@ -1,36 +1,36 @@
 @interface HURoomActionSetListItemManager
-- (id)_buildItemProvidersForHome:(id)a3;
+- (id)_buildItemProvidersForHome:(id)home;
 - (id)_currentSectionIdentifiers;
-- (id)_identifierForSection:(unint64_t)a3;
-- (id)_sectionIdentifierForItem:(id)a3;
+- (id)_identifierForSection:(unint64_t)section;
+- (id)_sectionIdentifierForItem:(id)item;
 - (id)_sortedRooms;
-- (id)_titleForSectionWithIdentifier:(id)a3;
-- (int64_t)sectionIndexForRoomIdentifier:(id)a3;
+- (id)_titleForSectionWithIdentifier:(id)identifier;
+- (int64_t)sectionIndexForRoomIdentifier:(id)identifier;
 - (unint64_t)_numberOfSections;
 @end
 
 @implementation HURoomActionSetListItemManager
 
-- (int64_t)sectionIndexForRoomIdentifier:(id)a3
+- (int64_t)sectionIndexForRoomIdentifier:(id)identifier
 {
-  v4 = [a3 UUIDString];
-  v5 = [(HFItemManager *)self sectionIndexForDisplayedSectionIdentifier:v4];
+  uUIDString = [identifier UUIDString];
+  v5 = [(HFItemManager *)self sectionIndexForDisplayedSectionIdentifier:uUIDString];
 
   return v5;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  homeCopy = home;
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v3 rooms];
-  v6 = [v3 roomForEntireHome];
-  v7 = [v5 arrayByAddingObject:v6];
+  rooms = [homeCopy rooms];
+  roomForEntireHome = [homeCopy roomForEntireHome];
+  v7 = [rooms arrayByAddingObject:roomForEntireHome];
 
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v8)
@@ -46,8 +46,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [objc_alloc(MEMORY[0x277D143B0]) initWithHome:v3 room:*(*(&v18 + 1) + 8 * i)];
-        [v4 addObject:v12];
+        v12 = [objc_alloc(MEMORY[0x277D143B0]) initWithHome:homeCopy room:*(*(&v18 + 1) + 8 * i)];
+        [array addObject:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -57,7 +57,7 @@
   }
 
   v13 = objc_alloc(MEMORY[0x277D14B40]);
-  v14 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  v14 = [MEMORY[0x277CBEB98] setWithArray:array];
   v15 = [v13 initWithItems:v14];
 
   v22 = v15;
@@ -68,76 +68,76 @@
 
 - (unint64_t)_numberOfSections
 {
-  v2 = [(HURoomActionSetListItemManager *)self _currentSectionIdentifiers];
-  v3 = [v2 count];
+  _currentSectionIdentifiers = [(HURoomActionSetListItemManager *)self _currentSectionIdentifiers];
+  v3 = [_currentSectionIdentifiers count];
 
   return v3;
 }
 
-- (id)_identifierForSection:(unint64_t)a3
+- (id)_identifierForSection:(unint64_t)section
 {
-  v4 = [(HURoomActionSetListItemManager *)self _currentSectionIdentifiers];
-  if ([v4 count] <= a3)
+  _currentSectionIdentifiers = [(HURoomActionSetListItemManager *)self _currentSectionIdentifiers];
+  if ([_currentSectionIdentifiers count] <= section)
   {
-    NSLog(&cfstr_ReceivedIdenti.isa, a3, [v4 count]);
+    NSLog(&cfstr_ReceivedIdenti.isa, section, [_currentSectionIdentifiers count]);
   }
 
-  if ([v4 count] <= a3)
+  if ([_currentSectionIdentifiers count] <= section)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [_currentSectionIdentifiers objectAtIndexedSubscript:section];
   }
 
   return v5;
 }
 
-- (id)_titleForSectionWithIdentifier:(id)a3
+- (id)_titleForSectionWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithUUIDString:v5];
+  identifierCopy = identifier;
+  v6 = [[v4 alloc] initWithUUIDString:identifierCopy];
 
-  v7 = [(HFItemManager *)self home];
-  v8 = [v7 hf_roomWithIdentifier:v6];
+  home = [(HFItemManager *)self home];
+  v8 = [home hf_roomWithIdentifier:v6];
 
-  v9 = [v8 name];
-  v10 = [v9 localizedUppercaseString];
+  name = [v8 name];
+  localizedUppercaseString = [name localizedUppercaseString];
 
-  return v10;
+  return localizedUppercaseString;
 }
 
-- (id)_sectionIdentifierForItem:(id)a3
+- (id)_sectionIdentifierForItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 room], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([itemCopy room], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HURoomActionSetListItemManager.m" lineNumber:74 description:{@"We don't have a room for this item: %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HURoomActionSetListItemManager.m" lineNumber:74 description:{@"We don't have a room for this item: %@", itemCopy}];
 
     v6 = 0;
   }
 
-  v8 = [v6 uniqueIdentifier];
-  v9 = [v8 UUIDString];
+  uniqueIdentifier = [v6 uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  return v9;
+  return uUIDString;
 }
 
 - (id)_currentSectionIdentifiers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(HURoomActionSetListItemManager *)self _sortedRooms];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _sortedRooms = [(HURoomActionSetListItemManager *)self _sortedRooms];
+  v5 = [_sortedRooms countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -148,21 +148,21 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_sortedRooms);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) uniqueIdentifier];
-        v10 = [v9 UUIDString];
-        [v3 addObject:v10];
+        uniqueIdentifier = [*(*(&v13 + 1) + 8 * i) uniqueIdentifier];
+        uUIDString = [uniqueIdentifier UUIDString];
+        [array addObject:uUIDString];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [_sortedRooms countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [v3 copy];
+  v11 = [array copy];
 
   return v11;
 }
@@ -170,22 +170,22 @@
 - (id)_sortedRooms
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HURoomActionSetListItemManager *)self cachedSortedRooms];
+  cachedSortedRooms = [(HURoomActionSetListItemManager *)self cachedSortedRooms];
 
-  if (!v3)
+  if (!cachedSortedRooms)
   {
-    v4 = [(HFItemManager *)self allItems];
-    v5 = [(HFItemManager *)self allItems];
-    v6 = [(HFItemManager *)self _itemsToHideInSet:v5];
-    v7 = [v4 na_setByRemovingObjectsFromSet:v6];
+    allItems = [(HFItemManager *)self allItems];
+    allItems2 = [(HFItemManager *)self allItems];
+    v6 = [(HFItemManager *)self _itemsToHideInSet:allItems2];
+    v7 = [allItems na_setByRemovingObjectsFromSet:v6];
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [v7 allObjects];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allObjects = [v7 allObjects];
+    v10 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -197,35 +197,35 @@
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allObjects);
           }
 
           v14 = *(*(&v20 + 1) + 8 * v13);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v14 room];
-            [v8 addObject:v15];
+            room = [v14 room];
+            [array addObject:room];
           }
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
     }
 
-    v16 = [(HURoomActionSetListItemManager *)self _roomComparator];
-    v17 = [v8 sortedArrayUsingComparator:v16];
+    _roomComparator = [(HURoomActionSetListItemManager *)self _roomComparator];
+    v17 = [array sortedArrayUsingComparator:_roomComparator];
     [(HURoomActionSetListItemManager *)self setCachedSortedRooms:v17];
   }
 
-  v18 = [(HURoomActionSetListItemManager *)self cachedSortedRooms];
+  cachedSortedRooms2 = [(HURoomActionSetListItemManager *)self cachedSortedRooms];
 
-  return v18;
+  return cachedSortedRooms2;
 }
 
 uint64_t __49__HURoomActionSetListItemManager__roomComparator__block_invoke(uint64_t a1, void *a2, void *a3)

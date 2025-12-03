@@ -1,30 +1,30 @@
 @interface BrowseService
-- (BrowseService)initWithProxy:(id)a3 session:(id)a4;
+- (BrowseService)initWithProxy:(id)proxy session:(id)session;
 - (void)_checkSync;
-- (void)_setupBrowser:(id)a3;
+- (void)_setupBrowser:(id)browser;
 - (void)_syncTimerFired;
-- (void)addEntity:(id)a3;
-- (void)removeEntity:(id)a3;
-- (void)startBrowsing:(id)a3 provenance:(unint64_t)a4;
+- (void)addEntity:(id)entity;
+- (void)removeEntity:(id)entity;
+- (void)startBrowsing:(id)browsing provenance:(unint64_t)provenance;
 - (void)stopBrowsing;
 - (void)stopBrowsing0;
-- (void)updateEntity:(id)a3;
+- (void)updateEntity:(id)entity;
 @end
 
 @implementation BrowseService
 
-- (BrowseService)initWithProxy:(id)a3 session:(id)a4
+- (BrowseService)initWithProxy:(id)proxy session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  proxyCopy = proxy;
+  sessionCopy = session;
   v23.receiver = self;
   v23.super_class = BrowseService;
   v9 = [(BrowseService *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_proxy, a3);
-    objc_storeStrong(&v10->_session, a4);
+    objc_storeStrong(&v9->_proxy, proxy);
+    objc_storeStrong(&v10->_session, session);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.printing.BrowseService", v11);
     queue = v10->_queue;
@@ -87,11 +87,11 @@
 
   dispatch_suspend(self->_syncTimer);
   self->_syncTimerSuspendedCount = 0;
-  v7 = [(PrintInfoSet *)self->_browseInfos uniquedBrowseInfos];
-  v8 = v7;
+  uniquedBrowseInfos = [(PrintInfoSet *)self->_browseInfos uniquedBrowseInfos];
+  v8 = uniquedBrowseInfos;
   p_lastBrowseInfos = &self->_lastBrowseInfos;
   lastBrowseInfos = self->_lastBrowseInfos;
-  if (v7)
+  if (uniquedBrowseInfos)
   {
     if (!lastBrowseInfos)
     {
@@ -110,7 +110,7 @@
     goto LABEL_15;
   }
 
-  v12 = [v7 mutableCopy];
+  v12 = [uniquedBrowseInfos mutableCopy];
   [v12 minusSet:*p_lastBrowseInfos];
   v14 = [(NSSet *)*p_lastBrowseInfos mutableCopy];
   [v14 minusSet:v8];
@@ -160,12 +160,12 @@ LABEL_15:
   }
 }
 
-- (void)addEntity:(id)a3
+- (void)addEntity:(id)entity
 {
-  v8 = a3;
+  entityCopy = entity;
   if (([(NSMutableSet *)self->_entities containsObject:?]& 1) == 0)
   {
-    [(NSMutableSet *)self->_entities addObject:v8];
+    [(NSMutableSet *)self->_entities addObject:entityCopy];
     browseInfos = self->_browseInfos;
     if (!browseInfos)
     {
@@ -176,45 +176,45 @@ LABEL_15:
       browseInfos = self->_browseInfos;
     }
 
-    v7 = [v8 browseInfo];
-    [(PrintInfoSet *)browseInfos addInfo:v7];
+    browseInfo = [entityCopy browseInfo];
+    [(PrintInfoSet *)browseInfos addInfo:browseInfo];
 
     [(BrowseService *)self _checkSync];
   }
 }
 
-- (void)removeEntity:(id)a3
+- (void)removeEntity:(id)entity
 {
-  v6 = a3;
+  entityCopy = entity;
   if ([(NSMutableSet *)self->_entities containsObject:?])
   {
-    [(NSMutableSet *)self->_entities removeObject:v6];
+    [(NSMutableSet *)self->_entities removeObject:entityCopy];
     browseInfos = self->_browseInfos;
     if (browseInfos)
     {
-      v5 = [v6 browseInfo];
-      [(PrintInfoSet *)browseInfos removeInfo:v5];
+      browseInfo = [entityCopy browseInfo];
+      [(PrintInfoSet *)browseInfos removeInfo:browseInfo];
     }
 
     [(BrowseService *)self _checkSync];
   }
 }
 
-- (void)updateEntity:(id)a3
+- (void)updateEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   [(BrowseService *)self removeEntity:?];
-  [(BrowseService *)self addEntity:v4];
+  [(BrowseService *)self addEntity:entityCopy];
 }
 
-- (void)startBrowsing:(id)a3 provenance:(unint64_t)a4
+- (void)startBrowsing:(id)browsing provenance:(unint64_t)provenance
 {
-  v20 = a3;
+  browsingCopy = browsing;
   v6 = objc_opt_new();
   entities = self->_entities;
   self->_entities = v6;
 
-  if (!a4 || (a4 & 4) != 0)
+  if (!provenance || (provenance & 4) != 0)
   {
     v8 = [[Browse_Bonjour alloc] initWithQueue:self->_queue];
     bonjour = self->_bonjour;
@@ -223,7 +223,7 @@ LABEL_15:
     [(BrowseService *)self _setupBrowser:self->_bonjour];
   }
 
-  if (!a4 || (a4 & 1) != 0)
+  if (!provenance || (provenance & 1) != 0)
   {
     v10 = [[Browse_MDM alloc] initWithQueue:self->_queue];
     mdm = self->_mdm;
@@ -232,7 +232,7 @@ LABEL_15:
     [(BrowseService *)self _setupBrowser:self->_mdm];
   }
 
-  if (!a4 || (a4 & 8) != 0)
+  if (!provenance || (provenance & 8) != 0)
   {
     v12 = [[Browse_WirelessProximity alloc] initWithQueue:self->_queue];
     proximity = self->_proximity;
@@ -241,16 +241,16 @@ LABEL_15:
     [(BrowseService *)self _setupBrowser:self->_proximity];
   }
 
-  if (!a4 || (a4 & 2) != 0)
+  if (!provenance || (provenance & 2) != 0)
   {
-    v14 = [[Browse_Extension alloc] initWithQueue:self->_queue printInfo:v20];
+    v14 = [[Browse_Extension alloc] initWithQueue:self->_queue printInfo:browsingCopy];
     extension = self->_extension;
     self->_extension = v14;
 
     [(BrowseService *)self _setupBrowser:self->_extension];
   }
 
-  if ((a4 & 0x20) != 0 || !a4 && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 BOOLForKey:@"PrintKitBrowseNAN"], v16, v17))
+  if ((provenance & 0x20) != 0 || !provenance && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 BOOLForKey:@"PrintKitBrowseNAN"], v16, v17))
   {
     v18 = [[Browse_NAN alloc] initWithQueue:self->_queue];
     nan = self->_nan;
@@ -260,13 +260,13 @@ LABEL_15:
   }
 }
 
-- (void)_setupBrowser:(id)a3
+- (void)_setupBrowser:(id)browser
 {
-  v4 = a3;
+  browserCopy = browser;
   objc_initWeak(location, self);
-  v5 = [NSString stringWithFormat:@"<%@@%p>", objc_opt_class(), v4];
+  browserCopy = [NSString stringWithFormat:@"<%@@%p>", objc_opt_class(), browserCopy];
   v6 = self->_queue;
-  [v4 setSession:self->_session];
+  [browserCopy setSession:self->_session];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10005F9BC;
@@ -274,9 +274,9 @@ LABEL_15:
   objc_copyWeak(&v30, location);
   v7 = v6;
   v28 = v7;
-  v8 = v5;
+  v8 = browserCopy;
   v29 = v8;
-  [v4 setAddEntity:v27];
+  [browserCopy setAddEntity:v27];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10005FB84;
@@ -286,7 +286,7 @@ LABEL_15:
   v24 = v9;
   v10 = v8;
   v25 = v10;
-  [v4 setRemoveEntity:v23];
+  [browserCopy setRemoveEntity:v23];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10005FD4C;
@@ -296,7 +296,7 @@ LABEL_15:
   v20 = v11;
   v12 = v10;
   v21 = v12;
-  [v4 setUpdateEntity:v19];
+  [browserCopy setUpdateEntity:v19];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -304,8 +304,8 @@ LABEL_15:
   block[3] = &unk_1000A3F50;
   block[4] = self;
   v17 = v12;
-  v18 = v4;
-  v14 = v4;
+  v18 = browserCopy;
+  v14 = browserCopy;
   v15 = v12;
   dispatch_async(queue, block);
 
@@ -318,15 +318,15 @@ LABEL_15:
 
 - (void)stopBrowsing
 {
-  v2 = self;
-  queue = v2->_queue;
+  selfCopy = self;
+  queue = selfCopy->_queue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100060070;
   v5[3] = &unk_1000957C8;
-  v5[4] = v2;
-  v6 = v2;
-  v4 = v2;
+  v5[4] = selfCopy;
+  v6 = selfCopy;
+  v4 = selfCopy;
   dispatch_async(queue, v5);
 }
 

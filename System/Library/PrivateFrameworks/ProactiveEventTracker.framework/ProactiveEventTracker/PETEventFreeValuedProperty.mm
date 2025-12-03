@@ -1,5 +1,5 @@
 @interface PETEventFreeValuedProperty
-- (PETEventFreeValuedProperty)initWithName:(id)a3;
+- (PETEventFreeValuedProperty)initWithName:(id)name;
 - (id)description;
 @end
 
@@ -8,17 +8,17 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PETEventProperty *)self name];
-  v4 = [v2 stringWithFormat:@"FreeValued: Name=%@", v3];
+  name = [(PETEventProperty *)self name];
+  v4 = [v2 stringWithFormat:@"FreeValued: Name=%@", name];
 
   return v4;
 }
 
-- (PETEventFreeValuedProperty)initWithName:(id)a3
+- (PETEventFreeValuedProperty)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = PETEventFreeValuedProperty;
-  return [(PETEventProperty *)&v4 initWithName:a3];
+  return [(PETEventProperty *)&v4 initWithName:name];
 }
 
 @end

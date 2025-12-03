@@ -1,14 +1,14 @@
 @interface PKApplicationProxy
-+ (id)applicationProxyForBundleURL:(id)a3;
++ (id)applicationProxyForBundleURL:(id)l;
 - (BOOL)isPlaceholder;
 - (NSArray)plugInKitPlugins;
 @end
 
 @implementation PKApplicationProxy
 
-+ (id)applicationProxyForBundleURL:(id)a3
++ (id)applicationProxyForBundleURL:(id)l
 {
-  v3 = [MEMORY[0x1E69635E0] applicationProxyForBundleURL:a3];
+  v3 = [MEMORY[0x1E69635E0] applicationProxyForBundleURL:l];
 
   return v3;
 }

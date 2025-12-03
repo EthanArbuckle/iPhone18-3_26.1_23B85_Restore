@@ -1,47 +1,47 @@
 @interface RBSTarget
-+ (RBSTarget)targetWithEndpoint:(id)a3;
-+ (RBSTarget)targetWithProcessIdentifier:(id)a3;
-+ (RBSTarget)targetWithProcessIdentifier:(id)a3 environmentIdentifier:(id)a4;
-+ (RBSTarget)targetWithProcessIdentity:(id)a3;
-+ (RBSTarget)targetWithProcessIdentity:(id)a3 environmentIdentifier:(id)a4;
++ (RBSTarget)targetWithEndpoint:(id)endpoint;
++ (RBSTarget)targetWithProcessIdentifier:(id)identifier;
++ (RBSTarget)targetWithProcessIdentifier:(id)identifier environmentIdentifier:(id)environmentIdentifier;
++ (RBSTarget)targetWithProcessIdentity:(id)identity;
++ (RBSTarget)targetWithProcessIdentity:(id)identity environmentIdentifier:(id)identifier;
 + (id)currentProcess;
 + (id)systemTarget;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesProcess:(id)process;
 - (NSString)debugDescription;
 - (NSString)shortDescription;
 - (RBSTarget)init;
-- (RBSTarget)initWithRBSXPCCoder:(id)a3;
-- (id)copyWithPersonaString:(id)a3;
+- (RBSTarget)initWithRBSXPCCoder:(id)coder;
+- (id)copyWithPersonaString:(id)string;
 - (id)processPredicate;
 - (unint64_t)hash;
-- (void)_initWithProcessIdentifier:(void *)a3 processIdentity:(void *)a4 environmentIdentifier:(uint64_t)a5 euid:;
-- (void)_initWithProcessIdentifier:(void *)a3 processIdentity:(void *)a4 environmentIdentifier:(void *)a5 endpoint:(uint64_t)a6 euid:;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)_initWithProcessIdentifier:(void *)identifier processIdentity:(void *)identity environmentIdentifier:(uint64_t)environmentIdentifier euid:;
+- (void)_initWithProcessIdentifier:(void *)identifier processIdentity:(void *)identity environmentIdentifier:(void *)environmentIdentifier endpoint:(uint64_t)endpoint euid:;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSTarget
 
 - (NSString)shortDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  shortDescription = v2->_shortDescription;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shortDescription = selfCopy->_shortDescription;
   if (!shortDescription)
   {
-    if (v2->_processIdentifier)
+    if (selfCopy->_processIdentifier)
     {
-      p_environment = &v2->_environment;
+      p_environment = &selfCopy->_environment;
       v5 = MEMORY[0x1E696AEC0];
-      if (v2->_environment)
+      if (selfCopy->_environment)
       {
-        v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[RBSProcessIdentifier pid](v2->_processIdentifier, "pid")}];
+        shortDescription = [MEMORY[0x1E696AD98] numberWithInt:{-[RBSProcessIdentifier pid](selfCopy->_processIdentifier, "pid")}];
 LABEL_8:
-        v8 = v6;
-        v9 = [v5 stringWithFormat:@"%@<%@>", v6, *p_environment];
+        v8 = shortDescription;
+        v9 = [v5 stringWithFormat:@"%@<%@>", shortDescription, *p_environment];
 LABEL_14:
-        v12 = v2->_shortDescription;
-        v2->_shortDescription = v9;
+        v12 = selfCopy->_shortDescription;
+        selfCopy->_shortDescription = v9;
 
         shortDescription = v8;
 LABEL_15:
@@ -49,49 +49,49 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[RBSProcessIdentifier pid](v2->_processIdentifier, "pid")}];
+      shortDescription2 = [MEMORY[0x1E696AD98] numberWithInt:{-[RBSProcessIdentifier pid](selfCopy->_processIdentifier, "pid")}];
     }
 
     else
     {
-      processIdentity = v2->_processIdentity;
+      processIdentity = selfCopy->_processIdentity;
       if (!processIdentity)
       {
-        if (v2->_endpoint)
+        if (selfCopy->_endpoint)
         {
-          v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@>", v2->_endpoint];
-          shortDescription = v2->_shortDescription;
-          v2->_shortDescription = v11;
+          v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@>", selfCopy->_endpoint];
+          shortDescription = selfCopy->_shortDescription;
+          selfCopy->_shortDescription = v11;
         }
 
         else
         {
-          v2->_shortDescription = @"system";
+          selfCopy->_shortDescription = @"system";
         }
 
         goto LABEL_15;
       }
 
-      p_environment = &v2->_environment;
+      p_environment = &selfCopy->_environment;
       v5 = MEMORY[0x1E696AEC0];
-      if (v2->_environment)
+      if (selfCopy->_environment)
       {
-        v6 = [(RBSProcessIdentity *)processIdentity shortDescription];
+        shortDescription = [(RBSProcessIdentity *)processIdentity shortDescription];
         goto LABEL_8;
       }
 
-      v10 = [(RBSProcessIdentity *)processIdentity shortDescription];
+      shortDescription2 = [(RBSProcessIdentity *)processIdentity shortDescription];
     }
 
-    v8 = v10;
-    v9 = [v5 stringWithFormat:@"%@", v10];
+    v8 = shortDescription2;
+    v9 = [v5 stringWithFormat:@"%@", shortDescription2];
     goto LABEL_14;
   }
 
 LABEL_16:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v13 = v2->_shortDescription;
+  v13 = selfCopy->_shortDescription;
 
   return v13;
 }
@@ -160,35 +160,35 @@ uint64_t __25__RBSTarget_systemTarget__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (RBSTarget)targetWithEndpoint:(id)a3
++ (RBSTarget)targetWithEndpoint:(id)endpoint
 {
-  v3 = a3;
-  if (!v3)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
     +[RBSTarget targetWithEndpoint:];
   }
 
-  if (MEMORY[0x193AD5A20](v3) != MEMORY[0x1E69E9E90])
+  if (MEMORY[0x193AD5A20](endpointCopy) != MEMORY[0x1E69E9E90])
   {
     +[RBSTarget targetWithEndpoint:];
   }
 
-  v4 = [[RBSTarget alloc] _initWithProcessIdentifier:0 processIdentity:0 environmentIdentifier:v3 endpoint:0 euid:?];
+  v4 = [[RBSTarget alloc] _initWithProcessIdentifier:0 processIdentity:0 environmentIdentifier:endpointCopy endpoint:0 euid:?];
 
   return v4;
 }
 
 - (RBSTarget)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBSTarget.m" lineNumber:93 description:@"-init is not allowed on RBSTarget"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBSTarget.m" lineNumber:93 description:@"-init is not allowed on RBSTarget"];
 
   return 0;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   if (self->_endpoint)
   {
     v5 = 0;
@@ -202,36 +202,36 @@ uint64_t __25__RBSTarget_systemTarget__block_invoke()
       processIdentity = self->_processIdentifier;
     }
 
-    v5 = [processIdentity matchesProcess:v4];
+    v5 = [processIdentity matchesProcess:processCopy];
   }
 
   return v5;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   processIdentifier = self->_processIdentifier;
-  v5 = a3;
-  [v5 encodeObject:processIdentifier forKey:@"processIdentifier"];
-  [v5 encodeObject:self->_processIdentity forKey:@"processIdentity"];
-  [v5 encodeObject:self->_environment forKey:@"environment"];
-  [v5 encodeXPCObject:self->_endpoint forKey:@"endpoint"];
+  coderCopy = coder;
+  [coderCopy encodeObject:processIdentifier forKey:@"processIdentifier"];
+  [coderCopy encodeObject:self->_processIdentity forKey:@"processIdentity"];
+  [coderCopy encodeObject:self->_environment forKey:@"environment"];
+  [coderCopy encodeXPCObject:self->_endpoint forKey:@"endpoint"];
 }
 
-- (RBSTarget)initWithRBSXPCCoder:(id)a3
+- (RBSTarget)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"endpoint"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"endpoint"];
   if (!v5)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processIdentity"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processIdentity"];
 LABEL_10:
     v8 = v7;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processIdentifier"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
     self = [(RBSTarget *)self _initWithProcessIdentifier:v11 processIdentity:v8 environmentIdentifier:v12 endpoint:0 euid:0];
 
-    v9 = self;
+    selfCopy = self;
     goto LABEL_8;
   }
 
@@ -253,10 +253,10 @@ LABEL_10:
     [(RBSTarget *)v5 initWithRBSXPCCoder:v8];
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -276,10 +276,10 @@ LABEL_8:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -287,10 +287,10 @@ LABEL_8:
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && ((processIdentifier = self->_processIdentifier, processIdentifier == v4->_processIdentifier) || [(RBSProcessIdentifier *)processIdentifier isEqual:?]) && ((processIdentity = self->_processIdentity, processIdentity == v4->_processIdentity) || [(RBSProcessIdentity *)processIdentity isEqual:?]) && ((environment = self->_environment, environment == v4->_environment) || [(NSString *)environment isEqualToString:?]))
+    if (v5 == objc_opt_class() && ((processIdentifier = self->_processIdentifier, processIdentifier == equalCopy->_processIdentifier) || [(RBSProcessIdentifier *)processIdentifier isEqual:?]) && ((processIdentity = self->_processIdentity, processIdentity == equalCopy->_processIdentity) || [(RBSProcessIdentity *)processIdentity isEqual:?]) && ((environment = self->_environment, environment == equalCopy->_environment) || [(NSString *)environment isEqualToString:?]))
     {
       endpoint = self->_endpoint;
-      v12 = v4->_endpoint;
+      v12 = equalCopy->_endpoint;
       if (endpoint && v12)
       {
         v6 = xpc_equal(endpoint, v12);
@@ -336,8 +336,8 @@ LABEL_8:
       v10 = @"(n/a)";
     }
 
-    v11 = [(RBSProcessIdentity *)self->_processIdentity shortDescription];
-    v8 = [v4 stringWithFormat:@"<%@: %p pid: %@; identity: %@; environment: %@>", v7, self, v10, v11, self->_environment];;
+    shortDescription = [(RBSProcessIdentity *)self->_processIdentity shortDescription];
+    v8 = [v4 stringWithFormat:@"<%@: %p pid: %@; identity: %@; environment: %@>", v7, self, v10, shortDescription, self->_environment];;
 
     if (processIdentifier)
     {
@@ -347,14 +347,14 @@ LABEL_8:
   return v8;
 }
 
-- (void)_initWithProcessIdentifier:(void *)a3 processIdentity:(void *)a4 environmentIdentifier:(uint64_t)a5 euid:
+- (void)_initWithProcessIdentifier:(void *)identifier processIdentity:(void *)identity environmentIdentifier:(uint64_t)environmentIdentifier euid:
 {
-  if (a1)
+  if (self)
   {
-    v9 = a4;
-    v10 = a3;
+    identityCopy = identity;
+    identifierCopy = identifier;
     v11 = a2;
-    v12 = [[RBSTarget alloc] _initWithProcessIdentifier:v11 processIdentity:v10 environmentIdentifier:v9 endpoint:0 euid:a5];
+    v12 = [[RBSTarget alloc] _initWithProcessIdentifier:v11 processIdentity:identifierCopy environmentIdentifier:identityCopy endpoint:0 euid:environmentIdentifier];
   }
 
   else
@@ -365,58 +365,58 @@ LABEL_8:
   return v12;
 }
 
-+ (RBSTarget)targetWithProcessIdentity:(id)a3
++ (RBSTarget)targetWithProcessIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = [[RBSTarget alloc] _initWithProcessIdentifier:v3 processIdentity:0 environmentIdentifier:0 euid:?];
+  identityCopy = identity;
+  v4 = [[RBSTarget alloc] _initWithProcessIdentifier:identityCopy processIdentity:0 environmentIdentifier:0 euid:?];
 
   return v4;
 }
 
-+ (RBSTarget)targetWithProcessIdentity:(id)a3 environmentIdentifier:(id)a4
++ (RBSTarget)targetWithProcessIdentity:(id)identity environmentIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RBSTarget alloc] _initWithProcessIdentifier:v6 processIdentity:v5 environmentIdentifier:0 euid:?];
+  identifierCopy = identifier;
+  identityCopy = identity;
+  v7 = [[RBSTarget alloc] _initWithProcessIdentifier:identityCopy processIdentity:identifierCopy environmentIdentifier:0 euid:?];
 
   return v7;
 }
 
-+ (RBSTarget)targetWithProcessIdentifier:(id)a3
++ (RBSTarget)targetWithProcessIdentifier:(id)identifier
 {
-  v5 = a3;
-  if ([v5 rbs_pid] <= 0)
+  identifierCopy = identifier;
+  if ([identifierCopy rbs_pid] <= 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"RBSTarget.m" lineNumber:73 description:@"must specify a valid pid"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"RBSTarget.m" lineNumber:73 description:@"must specify a valid pid"];
   }
 
-  v6 = [[RBSTarget alloc] _initWithProcessIdentifier:v5 processIdentity:0 environmentIdentifier:0 euid:0];
+  v6 = [[RBSTarget alloc] _initWithProcessIdentifier:identifierCopy processIdentity:0 environmentIdentifier:0 euid:0];
 
   return v6;
 }
 
-+ (RBSTarget)targetWithProcessIdentifier:(id)a3 environmentIdentifier:(id)a4
++ (RBSTarget)targetWithProcessIdentifier:(id)identifier environmentIdentifier:(id)environmentIdentifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RBSTarget alloc] _initWithProcessIdentifier:v6 processIdentity:0 environmentIdentifier:v5 euid:0];
+  environmentIdentifierCopy = environmentIdentifier;
+  identifierCopy = identifier;
+  v7 = [[RBSTarget alloc] _initWithProcessIdentifier:identifierCopy processIdentity:0 environmentIdentifier:environmentIdentifierCopy euid:0];
 
   return v7;
 }
 
-- (void)_initWithProcessIdentifier:(void *)a3 processIdentity:(void *)a4 environmentIdentifier:(void *)a5 endpoint:(uint64_t)a6 euid:
+- (void)_initWithProcessIdentifier:(void *)identifier processIdentity:(void *)identity environmentIdentifier:(void *)environmentIdentifier endpoint:(uint64_t)endpoint euid:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (a1)
+  identifierCopy = identifier;
+  identityCopy = identity;
+  environmentIdentifierCopy = environmentIdentifier;
+  if (self)
   {
-    v24.receiver = a1;
+    v24.receiver = self;
     v24.super_class = RBSTarget;
-    a1 = objc_msgSendSuper2(&v24, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v24, sel_init);
+    if (self)
     {
       if (v11)
       {
@@ -428,44 +428,44 @@ LABEL_8:
         v15 = 0;
       }
 
-      v16 = a1[1];
-      a1[1] = v15;
+      v16 = self[1];
+      self[1] = v15;
 
-      if (a6)
+      if (endpoint)
       {
-        v17 = [v12 copyWithAuid:a6];
+        v17 = [identifierCopy copyWithAuid:endpoint];
       }
 
       else
       {
-        v17 = [v12 copy];
+        v17 = [identifierCopy copy];
       }
 
-      v18 = a1[2];
-      a1[2] = v17;
+      v18 = self[2];
+      self[2] = v17;
 
-      v19 = [v13 copy];
-      v20 = a1[3];
-      a1[3] = v19;
+      v19 = [identityCopy copy];
+      v20 = self[3];
+      self[3] = v19;
 
-      if (v14)
+      if (environmentIdentifierCopy)
       {
-        v21 = xpc_copy(v14);
-        v22 = a1[4];
-        a1[4] = v21;
+        v21 = xpc_copy(environmentIdentifierCopy);
+        v22 = self[4];
+        self[4] = v21;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)copyWithPersonaString:(id)a3
+- (id)copyWithPersonaString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [RBSTarget alloc];
   processIdentifier = self->_processIdentifier;
-  v7 = [(RBSProcessIdentity *)self->_processIdentity copyWithPersonaString:v4];
+  v7 = [(RBSProcessIdentity *)self->_processIdentity copyWithPersonaString:stringCopy];
 
   v8 = [(RBSTarget *)v5 _initWithProcessIdentifier:v7 processIdentity:self->_environment environmentIdentifier:self->_endpoint endpoint:0 euid:?];
   return v8;

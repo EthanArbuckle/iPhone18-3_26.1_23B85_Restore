@@ -1,6 +1,6 @@
 @interface DMPluginPassbookDataMigrator
 - (id)activity;
-- (void)faultWithLog:(id)a3 message:(id)a4;
+- (void)faultWithLog:(id)log message:(id)message;
 @end
 
 @implementation DMPluginPassbookDataMigrator
@@ -12,9 +12,9 @@
   return v2;
 }
 
-- (void)faultWithLog:(id)a3 message:(id)a4
+- (void)faultWithLog:(id)log message:(id)message
 {
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_FAULT))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_FAULT))
   {
     sub_100004E68();
   }

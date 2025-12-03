@@ -1,40 +1,40 @@
 @interface MRAudioDataBlock
 - ($F24F406B2B787EFB06265DBA3D28CBD5)time;
-- (MRAudioDataBlock)initWithData:(id)a3;
-- (MRAudioDataBlock)initWithProtobuf:(id)a3;
+- (MRAudioDataBlock)initWithData:(id)data;
+- (MRAudioDataBlock)initWithProtobuf:(id)protobuf;
 - (NSData)data;
 - (_MRAudioDataBlockProtobuf)protobuf;
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_parseBuffer:(id)a3;
-- (void)_parseGain:(id)a3;
-- (void)_parseTimestamp:(id)a3;
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_parseBuffer:(id)buffer;
+- (void)_parseGain:(id)gain;
+- (void)_parseTimestamp:(id)timestamp;
 @end
 
 @implementation MRAudioDataBlock
 
-- (MRAudioDataBlock)initWithData:(id)a3
+- (MRAudioDataBlock)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[_MRAudioDataBlockProtobuf alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[_MRAudioDataBlockProtobuf alloc] initWithData:dataCopy];
 
   v6 = [(MRAudioDataBlock *)self initWithProtobuf:v5];
   return v6;
 }
 
-- (MRAudioDataBlock)initWithProtobuf:(id)a3
+- (MRAudioDataBlock)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v8.receiver = self;
   v8.super_class = MRAudioDataBlock;
   v5 = [(MRAudioDataBlock *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MRAudioDataBlock *)v5 _parseBuffer:v4];
-    [(MRAudioDataBlock *)v6 _parseTimestamp:v4];
-    [(MRAudioDataBlock *)v6 _parseGain:v4];
+    [(MRAudioDataBlock *)v5 _parseBuffer:protobufCopy];
+    [(MRAudioDataBlock *)v6 _parseTimestamp:protobufCopy];
+    [(MRAudioDataBlock *)v6 _parseGain:protobufCopy];
   }
 
   return v6;
@@ -44,32 +44,32 @@
 {
   v3 = objc_alloc_init(_MRAudioFormatSettingsProtobuf);
   v4 = MEMORY[0x1E696AE40];
-  v5 = [(MRAudioBuffer *)self->_buffer formatSettings];
-  v6 = [v4 dataWithPropertyList:v5 format:200 options:0 error:0];
+  formatSettings = [(MRAudioBuffer *)self->_buffer formatSettings];
+  v6 = [v4 dataWithPropertyList:formatSettings format:200 options:0 error:0];
   [(_MRAudioFormatSettingsProtobuf *)v3 setFormatSettingsPlistData:v6];
 
   v7 = objc_alloc_init(_MRAudioBufferProtobuf);
   [(_MRAudioBufferProtobuf *)v7 setFormatSettings:v3];
-  v8 = [(MRAudioBuffer *)self->_buffer buffer];
-  -[_MRAudioBufferProtobuf setPacketCapacity:](v7, "setPacketCapacity:", [v8 packetCapacity]);
+  buffer = [(MRAudioBuffer *)self->_buffer buffer];
+  -[_MRAudioBufferProtobuf setPacketCapacity:](v7, "setPacketCapacity:", [buffer packetCapacity]);
 
-  v9 = [(MRAudioBuffer *)self->_buffer buffer];
-  -[_MRAudioBufferProtobuf setMaximumPacketSize:](v7, "setMaximumPacketSize:", [v9 maximumPacketSize]);
+  buffer2 = [(MRAudioBuffer *)self->_buffer buffer];
+  -[_MRAudioBufferProtobuf setMaximumPacketSize:](v7, "setMaximumPacketSize:", [buffer2 maximumPacketSize]);
 
-  v10 = [(MRAudioBuffer *)self->_buffer buffer];
-  -[_MRAudioBufferProtobuf setPacketCount:](v7, "setPacketCount:", [v10 packetCount]);
+  buffer3 = [(MRAudioBuffer *)self->_buffer buffer];
+  -[_MRAudioBufferProtobuf setPacketCount:](v7, "setPacketCount:", [buffer3 packetCount]);
 
   v11 = MEMORY[0x1E695DEF0];
-  v12 = [(MRAudioBuffer *)self->_buffer buffer];
-  v13 = [v12 data];
-  v14 = [(MRAudioBuffer *)self->_buffer buffer];
-  v15 = [v14 packetCapacity];
-  v16 = [(MRAudioBuffer *)self->_buffer buffer];
-  v17 = [v11 dataWithBytes:v13 length:{objc_msgSend(v16, "maximumPacketSize") * v15}];
+  buffer4 = [(MRAudioBuffer *)self->_buffer buffer];
+  data = [buffer4 data];
+  buffer5 = [(MRAudioBuffer *)self->_buffer buffer];
+  packetCapacity = [buffer5 packetCapacity];
+  buffer6 = [(MRAudioBuffer *)self->_buffer buffer];
+  v17 = [v11 dataWithBytes:data length:{objc_msgSend(buffer6, "maximumPacketSize") * packetCapacity}];
   [(_MRAudioBufferProtobuf *)v7 setContents:v17];
 
-  v18 = [(MRAudioBuffer *)self->_buffer buffer];
-  LODWORD(v17) = [v18 packetCapacity];
+  buffer7 = [(MRAudioBuffer *)self->_buffer buffer];
+  LODWORD(v17) = [buffer7 packetCapacity];
 
   if (v17)
   {
@@ -77,11 +77,11 @@
     v20 = 0;
     do
     {
-      v21 = [(MRAudioBuffer *)self->_buffer buffer];
-      v22 = [v21 packetDescriptions];
-      v23 = *(v22 + v19);
-      v24 = *(v22 + v19 + 8);
-      v25 = *(v22 + v19 + 12);
+      buffer8 = [(MRAudioBuffer *)self->_buffer buffer];
+      packetDescriptions = [buffer8 packetDescriptions];
+      v23 = *(packetDescriptions + v19);
+      v24 = *(packetDescriptions + v19 + 8);
+      v25 = *(packetDescriptions + v19 + 12);
 
       v26 = objc_alloc_init(_MRAudioStreamPacketDescriptionProtobuf);
       [(_MRAudioStreamPacketDescriptionProtobuf *)v26 setStartOffset:v23];
@@ -90,8 +90,8 @@
       [(_MRAudioBufferProtobuf *)v7 addPacketDescriptions:v26];
 
       ++v20;
-      v27 = [(MRAudioBuffer *)self->_buffer buffer];
-      LODWORD(v23) = [v27 packetCapacity];
+      buffer9 = [(MRAudioBuffer *)self->_buffer buffer];
+      LODWORD(v23) = [buffer9 packetCapacity];
 
       v19 += 16;
     }
@@ -112,38 +112,38 @@
 
 - (NSData)data
 {
-  v2 = [(MRAudioDataBlock *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRAudioDataBlock *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MRAudioDataBlock *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MRAudioDataBlock *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MRAudioDataBlock *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MRAudioDataBlock *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class
 {
-  v5 = objc_alloc_init(a4);
+  v5 = objc_alloc_init(class);
   objc_storeStrong(v5 + 1, self->_buffer);
   *(v5 + 1) = self->_time;
   *(v5 + 8) = LODWORD(self->_gain);
   return v5;
 }
 
-- (void)_parseBuffer:(id)a3
+- (void)_parseBuffer:(id)buffer
 {
-  v28 = a3;
+  bufferCopy = buffer;
   p_buffer = &self->_buffer;
   buffer = self->_buffer;
   if (buffer)
@@ -151,49 +151,49 @@
     *p_buffer = 0;
   }
 
-  v6 = [v28 buffer];
+  buffer = [bufferCopy buffer];
   v7 = MEMORY[0x1E696AE40];
-  v8 = [v6 formatSettings];
-  v9 = [v8 formatSettingsPlistData];
-  v10 = [v7 propertyListWithData:v9 options:0 format:0 error:0];
+  formatSettings = [buffer formatSettings];
+  formatSettingsPlistData = [formatSettings formatSettingsPlistData];
+  v10 = [v7 propertyListWithData:formatSettingsPlistData options:0 format:0 error:0];
 
-  v11 = -[MRAudioBuffer initWithFormatSettings:packetCapacity:maximumPacketSize:]([MRAudioBuffer alloc], "initWithFormatSettings:packetCapacity:maximumPacketSize:", v10, [v6 packetCapacity], objc_msgSend(v6, "maximumPacketSize"));
+  v11 = -[MRAudioBuffer initWithFormatSettings:packetCapacity:maximumPacketSize:]([MRAudioBuffer alloc], "initWithFormatSettings:packetCapacity:maximumPacketSize:", v10, [buffer packetCapacity], objc_msgSend(buffer, "maximumPacketSize"));
   v12 = *p_buffer;
   *p_buffer = v11;
 
-  v13 = [v6 contents];
-  v14 = [v13 length];
-  v15 = [v6 packetCapacity];
-  if (v14 > [v6 maximumPacketSize] * v15)
+  contents = [buffer contents];
+  v14 = [contents length];
+  packetCapacity = [buffer packetCapacity];
+  if (v14 > [buffer maximumPacketSize] * packetCapacity)
   {
     [MRAudioDataBlock _parseBuffer:];
   }
 
-  v16 = [*p_buffer buffer];
-  v17 = [v16 packetCapacity];
-  v18 = [v6 packetDescriptionsCount];
+  buffer2 = [*p_buffer buffer];
+  packetCapacity2 = [buffer2 packetCapacity];
+  packetDescriptionsCount = [buffer packetDescriptionsCount];
 
-  if (v18 < v17)
+  if (packetDescriptionsCount < packetCapacity2)
   {
     [MRAudioDataBlock _parseBuffer:];
   }
 
-  v19 = [*p_buffer buffer];
-  memcpy([v19 data], objc_msgSend(v13, "bytes"), objc_msgSend(v13, "length"));
+  buffer3 = [*p_buffer buffer];
+  memcpy([buffer3 data], objc_msgSend(contents, "bytes"), objc_msgSend(contents, "length"));
 
-  v20 = [v6 packetCount];
-  v21 = [*p_buffer buffer];
-  [v21 setPacketCount:v20];
+  packetCount = [buffer packetCount];
+  buffer4 = [*p_buffer buffer];
+  [buffer4 setPacketCount:packetCount];
 
-  if ([v6 packetDescriptionsCount])
+  if ([buffer packetDescriptionsCount])
   {
     v22 = 0;
     v23 = 1;
     do
     {
-      v24 = [v6 packetDescriptionsAtIndex:v22];
-      v25 = [*p_buffer buffer];
-      v26 = [v25 packetDescriptions] + 16 * v22;
+      v24 = [buffer packetDescriptionsAtIndex:v22];
+      buffer5 = [*p_buffer buffer];
+      v26 = [buffer5 packetDescriptions] + 16 * v22;
 
       *(v26 + 12) = [v24 dataByteSize];
       *v26 = [v24 startOffset];
@@ -202,22 +202,22 @@
       v22 = v23;
     }
 
-    while ([v6 packetDescriptionsCount] > v23++);
+    while ([buffer packetDescriptionsCount] > v23++);
   }
 }
 
-- (void)_parseTimestamp:(id)a3
+- (void)_parseTimestamp:(id)timestamp
 {
-  v6 = [a3 time];
-  [v6 timestamp];
+  time = [timestamp time];
+  [time timestamp];
   self->_time.timestamp = v4;
-  [v6 sampleRate];
+  [time sampleRate];
   self->_time.sampleRate = v5;
 }
 
-- (void)_parseGain:(id)a3
+- (void)_parseGain:(id)gain
 {
-  [a3 gain];
+  [gain gain];
   *&v4 = v4;
   self->_gain = *&v4;
 }

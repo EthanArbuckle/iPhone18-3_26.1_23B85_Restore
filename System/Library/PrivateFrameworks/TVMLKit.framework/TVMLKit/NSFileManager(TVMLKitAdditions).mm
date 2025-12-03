@@ -29,8 +29,8 @@
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 enumeratorAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager enumeratorAtPath:v5];
 
   v21 = 0u;
   v22 = 0u;

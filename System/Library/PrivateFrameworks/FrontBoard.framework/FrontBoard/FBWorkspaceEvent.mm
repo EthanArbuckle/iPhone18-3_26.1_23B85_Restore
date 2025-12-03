@@ -11,7 +11,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A89DD000, v3, OS_LOG_TYPE_DEFAULT, "[FBWorkspaceEvent] Executing: %{public}@", buf, 0xCu);
   }
 

@@ -1,25 +1,25 @@
 @interface PXChangeAssetDateAction
-- (PXChangeAssetDateAction)initWithAssets:(id)a3 date:(id)a4 timeZone:(id)a5;
-- (PXChangeAssetDateAction)initWithAssets:(id)a3 dateOffset:(double)a4 timeZone:(id)a5;
-- (id)_timeZoneForAsset:(id)a3;
-- (void)_setDate:(id)a3 timeZone:(id)a4 forAsset:(id)a5;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXChangeAssetDateAction)initWithAssets:(id)assets date:(id)date timeZone:(id)zone;
+- (PXChangeAssetDateAction)initWithAssets:(id)assets dateOffset:(double)offset timeZone:(id)zone;
+- (id)_timeZoneForAsset:(id)asset;
+- (void)_setDate:(id)date timeZone:(id)zone forAsset:(id)asset;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXChangeAssetDateAction
 
-- (void)_setDate:(id)a3 timeZone:(id)a4 forAsset:(id)a5
+- (void)_setDate:(id)date timeZone:(id)zone forAsset:(id)asset
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E6978648] changeRequestForAsset:v8];
+  dateCopy = date;
+  zoneCopy = zone;
+  assetCopy = asset;
+  v9 = [MEMORY[0x1E6978648] changeRequestForAsset:assetCopy];
   v10 = v9;
-  if (v11)
+  if (dateCopy)
   {
     [v9 setCreationDate:?];
-    if (!v7)
+    if (!zoneCopy)
     {
       goto LABEL_4;
     }
@@ -27,42 +27,42 @@
     goto LABEL_3;
   }
 
-  v11 = [v8 creationDate];
-  if (v7)
+  dateCopy = [assetCopy creationDate];
+  if (zoneCopy)
   {
 LABEL_3:
-    [v10 setTimeZone:v7 withDate:v11];
+    [v10 setTimeZone:zoneCopy withDate:dateCopy];
   }
 
 LABEL_4:
 }
 
-- (id)_timeZoneForAsset:(id)a3
+- (id)_timeZoneForAsset:(id)asset
 {
-  v3 = a3;
-  [v3 fetchPropertySetsIfNeeded];
-  v4 = [v3 originalMetadataProperties];
+  assetCopy = asset;
+  [assetCopy fetchPropertySetsIfNeeded];
+  originalMetadataProperties = [assetCopy originalMetadataProperties];
 
-  v5 = [v4 timeZone];
+  timeZone = [originalMetadataProperties timeZone];
 
-  return v5;
+  return timeZone;
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXChangeAssetDateAction *)self originalDateByLocalIdentifier];
-  v6 = [(PXChangeAssetDateAction *)self originalTimeZoneByLocalIdentifier];
+  undoCopy = undo;
+  originalDateByLocalIdentifier = [(PXChangeAssetDateAction *)self originalDateByLocalIdentifier];
+  originalTimeZoneByLocalIdentifier = [(PXChangeAssetDateAction *)self originalTimeZoneByLocalIdentifier];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __39__PXChangeAssetDateAction_performUndo___block_invoke;
   v9[3] = &unk_1E774A1B8;
   v9[4] = self;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
-  [(PXPhotosAction *)self performChanges:v9 completionHandler:v4];
+  v10 = originalDateByLocalIdentifier;
+  v11 = originalTimeZoneByLocalIdentifier;
+  v7 = originalTimeZoneByLocalIdentifier;
+  v8 = originalDateByLocalIdentifier;
+  [(PXPhotosAction *)self performChanges:v9 completionHandler:undoCopy];
 }
 
 uint64_t __39__PXChangeAssetDateAction_performUndo___block_invoke(id *a1)
@@ -104,25 +104,25 @@ uint64_t __39__PXChangeAssetDateAction_performUndo___block_invoke(id *a1)
   return [a1[4] setOriginalTimeZoneByLocalIdentifier:0];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXAssetsAction *)self assets];
-  v6 = [v5 count];
+  actionCopy = action;
+  assets = [(PXAssetsAction *)self assets];
+  v6 = [assets count];
   v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v6];
   v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v6];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __41__PXChangeAssetDateAction_performAction___block_invoke;
   v12[3] = &unk_1E7744F50;
-  v13 = v5;
+  v13 = assets;
   v14 = v7;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v9 = v8;
   v10 = v7;
-  v11 = v5;
-  [(PXPhotosAction *)self performChanges:v12 completionHandler:v4];
+  v11 = assets;
+  [(PXPhotosAction *)self performChanges:v12 completionHandler:actionCopy];
 }
 
 uint64_t __41__PXChangeAssetDateAction_performAction___block_invoke(uint64_t a1)
@@ -144,34 +144,34 @@ uint64_t __41__PXChangeAssetDateAction_performAction___block_invoke(uint64_t a1)
   return [*(a1 + 56) setOriginalTimeZoneByLocalIdentifier:*(a1 + 48)];
 }
 
-- (PXChangeAssetDateAction)initWithAssets:(id)a3 dateOffset:(double)a4 timeZone:(id)a5
+- (PXChangeAssetDateAction)initWithAssets:(id)assets dateOffset:(double)offset timeZone:(id)zone
 {
-  v9 = a5;
+  zoneCopy = zone;
   v13.receiver = self;
   v13.super_class = PXChangeAssetDateAction;
-  v10 = [(PXAssetsAction *)&v13 initWithAssets:a3];
+  v10 = [(PXAssetsAction *)&v13 initWithAssets:assets];
   v11 = v10;
   if (v10)
   {
-    v10->_dateOffset = a4;
-    objc_storeStrong(&v10->_timeZone, a5);
+    v10->_dateOffset = offset;
+    objc_storeStrong(&v10->_timeZone, zone);
   }
 
   return v11;
 }
 
-- (PXChangeAssetDateAction)initWithAssets:(id)a3 date:(id)a4 timeZone:(id)a5
+- (PXChangeAssetDateAction)initWithAssets:(id)assets date:(id)date timeZone:(id)zone
 {
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  zoneCopy = zone;
   v14.receiver = self;
   v14.super_class = PXChangeAssetDateAction;
-  v11 = [(PXAssetsAction *)&v14 initWithAssets:a3];
+  v11 = [(PXAssetsAction *)&v14 initWithAssets:assets];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_changeDate, a4);
-    objc_storeStrong(&v12->_timeZone, a5);
+    objc_storeStrong(&v11->_changeDate, date);
+    objc_storeStrong(&v12->_timeZone, zone);
   }
 
   return v12;

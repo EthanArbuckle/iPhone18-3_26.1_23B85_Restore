@@ -2,10 +2,10 @@
 - (BOOL)isMuted;
 - (NSDictionary)stateDictionary;
 - (float)relativeVolume;
-- (void)resetWithReason:(id)a3;
-- (void)setIsMuted:(BOOL)a3;
-- (void)setRelativeVolume:(float)a3;
-- (void)setSpatializationFormat:(int64_t)a3;
+- (void)resetWithReason:(id)reason;
+- (void)setIsMuted:(BOOL)muted;
+- (void)setRelativeVolume:(float)volume;
+- (void)setSpatializationFormat:(int64_t)format;
 @end
 
 @implementation PlayerController
@@ -20,17 +20,17 @@
   return v2;
 }
 
-- (void)resetWithReason:(id)a3
+- (void)resetWithReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
 
-  sub_1C5DDC13C(v3);
+  sub_1C5DDC13C(reasonCopy);
 }
 
-- (void)setSpatializationFormat:(int64_t)a3
+- (void)setSpatializationFormat:(int64_t)format
 {
 
-  sub_1C5C83FA8(a3);
+  sub_1C5C83FA8(format);
 }
 
 - (float)relativeVolume
@@ -42,10 +42,10 @@
   return v3;
 }
 
-- (void)setRelativeVolume:(float)a3
+- (void)setRelativeVolume:(float)volume
 {
 
-  sub_1C5DDE2E0(a3);
+  sub_1C5DDE2E0(volume);
 }
 
 - (BOOL)isMuted
@@ -56,11 +56,11 @@
   return v2 & 1;
 }
 
-- (void)setIsMuted:(BOOL)a3
+- (void)setIsMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
 
-  sub_1C5DDE450(v3);
+  sub_1C5DDE450(mutedCopy);
 }
 
 @end

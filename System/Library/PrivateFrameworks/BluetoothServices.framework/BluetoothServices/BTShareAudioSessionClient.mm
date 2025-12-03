@@ -1,14 +1,14 @@
 @interface BTShareAudioSessionClient
 - (BTShareAudioSessionClient)init;
-- (BTShareAudioSessionClient)initWithCoder:(id)a3;
+- (BTShareAudioSessionClient)initWithCoder:(id)coder;
 - (id)_ensureXPCStarted;
-- (void)_activate:(BOOL)a3;
+- (void)_activate:(BOOL)_activate;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)activate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)userConfirmed:(BOOL)a3;
+- (void)userConfirmed:(BOOL)confirmed;
 @end
 
 @implementation BTShareAudioSessionClient
@@ -28,9 +28,9 @@
   return v3;
 }
 
-- (BTShareAudioSessionClient)initWithCoder:(id)a3
+- (BTShareAudioSessionClient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BTShareAudioSessionClient *)self init];
   if (v5)
   {
@@ -45,12 +45,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mode = self->_mode;
   if (mode)
   {
-    [a3 encodeInteger:mode forKey:@"mode"];
+    [coder encodeInteger:mode forKey:@"mode"];
   }
 }
 
@@ -77,9 +77,9 @@ uint64_t __37__BTShareAudioSessionClient_activate__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_activate:(BOOL)a3
+- (void)_activate:(BOOL)_activate
 {
-  if (a3)
+  if (_activate)
   {
     if (gLogCategory_BTShareAudioSessionClient <= 30 && (gLogCategory_BTShareAudioSessionClient != -1 || _LogCategory_Initialize()))
     {
@@ -93,8 +93,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v5 = [(BTShareAudioSessionClient *)self _ensureXPCStarted];
-  if (v5)
+  _ensureXPCStarted = [(BTShareAudioSessionClient *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
     if (gLogCategory_BTShareAudioSessionClient <= 90 && (gLogCategory_BTShareAudioSessionClient != -1 || _LogCategory_Initialize()))
     {
@@ -109,13 +109,13 @@ LABEL_16:
     v10[1] = 3221225472;
     v10[2] = __39__BTShareAudioSessionClient__activate___block_invoke;
     v10[3] = &__block_descriptor_33_e17_v16__0__NSError_8l;
-    v11 = a3;
+    _activateCopy = _activate;
     v7 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __39__BTShareAudioSessionClient__activate___block_invoke_2;
     v8[3] = &__block_descriptor_33_e17_v16__0__NSError_8l;
-    v9 = a3;
+    _activateCopy2 = _activate;
     [v7 shareAudioSessionActivate:self completion:v8];
   }
 }
@@ -335,7 +335,7 @@ uint64_t __39__BTShareAudioSessionClient_invalidate__block_invoke(uint64_t resul
   }
 }
 
-- (void)userConfirmed:(BOOL)a3
+- (void)userConfirmed:(BOOL)confirmed
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -343,7 +343,7 @@ uint64_t __39__BTShareAudioSessionClient_invalidate__block_invoke(uint64_t resul
   v4[2] = __43__BTShareAudioSessionClient_userConfirmed___block_invoke;
   v4[3] = &unk_278D11AF8;
   v4[4] = self;
-  v5 = a3;
+  confirmedCopy = confirmed;
   dispatch_async(dispatchQueue, v4);
 }
 

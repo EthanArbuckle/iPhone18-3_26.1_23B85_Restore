@@ -1,41 +1,41 @@
 @interface SBMoveFloatingApplicationGestureWorkspaceTransactionAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axDestinationAppName;
-- (void)handleTransitionRequestForGestureComplete:(id)a3 fromGestureManager:(id)a4;
+- (void)handleTransitionRequestForGestureComplete:(id)complete fromGestureManager:(id)manager;
 @end
 
 @implementation SBMoveFloatingApplicationGestureWorkspaceTransactionAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBMoveFloatingApplicationGestureWorkspaceTransaction" isKindOfClass:@"SBFluidSwitcherGestureWorkspaceTransaction"];
-  [v3 validateClass:@"SBFluidSwitcherGestureWorkspaceTransaction" hasInstanceMethod:@"handleTransitionRequestForGestureComplete:fromGestureManager:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"SBSwitcherTransitionRequest"];
-  [v3 validateClass:@"SBSwitcherTransitionRequest" hasInstanceMethod:@"floatingConfiguration" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBWorkspaceTransaction"];
-  [v3 validateClass:@"SBMoveFloatingApplicationGestureWorkspaceTransaction" isKindOfClass:@"SBWorkspaceTransaction"];
-  [v3 validateClass:@"SBWorkspaceTransaction" hasInstanceMethod:@"transitionRequest" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBWorkspaceTransitionRequest"];
-  [v3 validateClass:@"SBWorkspaceTransitionRequest" hasInstanceMethod:@"applicationContext" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBWorkspaceApplicationSceneTransitionContext"];
-  [v3 validateClass:@"SBWorkspaceApplicationSceneTransitionContext" hasInstanceMethod:@"applicationSceneEntities" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplicationSceneEntity"];
-  [v3 validateClass:@"SBApplicationSceneEntity" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplication"];
-  [v3 validateClass:@"SBApplication" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBMoveFloatingApplicationGestureWorkspaceTransaction" isKindOfClass:@"SBFluidSwitcherGestureWorkspaceTransaction"];
+  [validationsCopy validateClass:@"SBFluidSwitcherGestureWorkspaceTransaction" hasInstanceMethod:@"handleTransitionRequestForGestureComplete:fromGestureManager:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherTransitionRequest"];
+  [validationsCopy validateClass:@"SBSwitcherTransitionRequest" hasInstanceMethod:@"floatingConfiguration" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBWorkspaceTransaction"];
+  [validationsCopy validateClass:@"SBMoveFloatingApplicationGestureWorkspaceTransaction" isKindOfClass:@"SBWorkspaceTransaction"];
+  [validationsCopy validateClass:@"SBWorkspaceTransaction" hasInstanceMethod:@"transitionRequest" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBWorkspaceTransitionRequest"];
+  [validationsCopy validateClass:@"SBWorkspaceTransitionRequest" hasInstanceMethod:@"applicationContext" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBWorkspaceApplicationSceneTransitionContext"];
+  [validationsCopy validateClass:@"SBWorkspaceApplicationSceneTransitionContext" hasInstanceMethod:@"applicationSceneEntities" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplicationSceneEntity"];
+  [validationsCopy validateClass:@"SBApplicationSceneEntity" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplication"];
+  [validationsCopy validateClass:@"SBApplication" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
-- (void)handleTransitionRequestForGestureComplete:(id)a3 fromGestureManager:(id)a4
+- (void)handleTransitionRequestForGestureComplete:(id)complete fromGestureManager:(id)manager
 {
   v16.receiver = self;
   v16.super_class = SBMoveFloatingApplicationGestureWorkspaceTransactionAccessibility;
-  v6 = a3;
-  [(SBMoveFloatingApplicationGestureWorkspaceTransactionAccessibility *)&v16 handleTransitionRequestForGestureComplete:v6 fromGestureManager:a4];
-  v7 = [(SBMoveFloatingApplicationGestureWorkspaceTransactionAccessibility *)self _accessibilityIsRTL];
-  v8 = [v6 safeIntegerForKey:@"floatingConfiguration"];
+  completeCopy = complete;
+  [(SBMoveFloatingApplicationGestureWorkspaceTransactionAccessibility *)&v16 handleTransitionRequestForGestureComplete:completeCopy fromGestureManager:manager];
+  _accessibilityIsRTL = [(SBMoveFloatingApplicationGestureWorkspaceTransactionAccessibility *)self _accessibilityIsRTL];
+  v8 = [completeCopy safeIntegerForKey:@"floatingConfiguration"];
 
-  v9 = [(SBMoveFloatingApplicationGestureWorkspaceTransactionAccessibility *)self _axDestinationAppName];
+  _axDestinationAppName = [(SBMoveFloatingApplicationGestureWorkspaceTransactionAccessibility *)self _axDestinationAppName];
   v10 = 0;
   if (v8 > 2)
   {
@@ -57,7 +57,7 @@
 LABEL_13:
     v14 = MEMORY[0x29EDBA0F8];
     v15 = accessibilityLocalizedString(v13);
-    v10 = [v14 stringWithFormat:v15, v9];
+    v10 = [v14 stringWithFormat:v15, _axDestinationAppName];
 
     goto LABEL_14;
   }
@@ -67,7 +67,7 @@ LABEL_13:
     v11 = @"app.pip.nib.action.moved.app.left";
     v12 = @"app.pip.nib.action.moved.app.right";
 LABEL_9:
-    if (v7)
+    if (_accessibilityIsRTL)
     {
       v13 = v12;
     }

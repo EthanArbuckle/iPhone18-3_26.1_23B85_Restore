@@ -8,9 +8,9 @@
 {
   v3 = a3;
   v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
-  v5 = [v4 scheme];
+  scheme = [v4 scheme];
 
-  if (v5)
+  if (scheme)
   {
     v6 = v4;
   }

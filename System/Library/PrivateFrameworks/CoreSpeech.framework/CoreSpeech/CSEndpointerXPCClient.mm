@@ -1,28 +1,28 @@
 @interface CSEndpointerXPCClient
-- (BOOL)shouldAcceptEagerResultForDurationSync:(double)a3 withEndpointerMetrics:(id)a4;
+- (BOOL)shouldAcceptEagerResultForDurationSync:(double)sync withEndpointerMetrics:(id)metrics;
 - (CSEndpointAnalyzerDelegate)delegate;
 - (CSEndpointerXPCClient)init;
 - (NSString)endpointerModelVersion;
 - (id)_getRemoteServiceProxyObject;
-- (id)_getSerialQueueWithName:(id)a3 targetQueue:(id)a4;
+- (id)_getSerialQueueWithName:(id)name targetQueue:(id)queue;
 - (id)cachedEndpointerMetrics;
 - (unint64_t)activeChannel;
 - (void)_createClientConnection;
-- (void)_deliverHardEndpointDetectedAtTime:(double)a3 withMetrics:(id)a4 eventType:(int64_t)a5;
+- (void)_deliverHardEndpointDetectedAtTime:(double)time withMetrics:(id)metrics eventType:(int64_t)type;
 - (void)dealloc;
-- (void)didDetectHardEndpointAtTime:(double)a3 withMetrics:(id)a4 eventType:(int64_t)a5;
-- (void)didDetectTwoShotAtTime:(double)a3;
-- (void)logFeaturesWithEvent:(id)a3 locale:(id)a4;
-- (void)processASRFeatures:(id)a3 fromServer:(BOOL)a4;
-- (void)recordingStoppedForReason:(int64_t)a3;
-- (void)resetForNewRequestWithSampleRate:(unint64_t)a3 recordContext:(id)a4 recordOption:(id)a5 voiceTriggerInfo:(id)a6;
-- (void)setActiveChannel:(unint64_t)a3;
-- (void)setEndpointerModelVersion:(id)a3;
-- (void)setEndpointerOperationMode:(int64_t)a3;
-- (void)shouldAcceptEagerResultForDuration:(double)a3 resultsCompletionHandler:(id)a4;
-- (void)shouldAcceptEagerResultForDuration:(double)a3 withEndpointerMetrics:(id)a4 resultsCompletionHandler:(id)a5;
+- (void)didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics eventType:(int64_t)type;
+- (void)didDetectTwoShotAtTime:(double)time;
+- (void)logFeaturesWithEvent:(id)event locale:(id)locale;
+- (void)processASRFeatures:(id)features fromServer:(BOOL)server;
+- (void)recordingStoppedForReason:(int64_t)reason;
+- (void)resetForNewRequestWithSampleRate:(unint64_t)rate recordContext:(id)context recordOption:(id)option voiceTriggerInfo:(id)info;
+- (void)setActiveChannel:(unint64_t)channel;
+- (void)setEndpointerModelVersion:(id)version;
+- (void)setEndpointerOperationMode:(int64_t)mode;
+- (void)shouldAcceptEagerResultForDuration:(double)duration resultsCompletionHandler:(id)handler;
+- (void)shouldAcceptEagerResultForDuration:(double)duration withEndpointerMetrics:(id)metrics resultsCompletionHandler:(id)handler;
 - (void)stopEndpointer;
-- (void)updateEndpointerThreshold:(float)a3;
+- (void)updateEndpointerThreshold:(float)threshold;
 @end
 
 @implementation CSEndpointerXPCClient
@@ -85,14 +85,14 @@
   return WeakRetained;
 }
 
-- (void)didDetectTwoShotAtTime:(double)a3
+- (void)didDetectTwoShotAtTime:(double)time
 {
   xpcDelegateQueue = self->_xpcDelegateQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__CSEndpointerXPCClient_didDetectTwoShotAtTime___block_invoke;
   v4[3] = &unk_2784C6EC0;
-  *&v4[5] = a3;
+  *&v4[5] = time;
   v4[4] = self;
   dispatch_async(xpcDelegateQueue, v4);
 }
@@ -128,10 +128,10 @@ void __48__CSEndpointerXPCClient_didDetectTwoShotAtTime___block_invoke(uint64_t 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deliverHardEndpointDetectedAtTime:(double)a3 withMetrics:(id)a4 eventType:(int64_t)a5
+- (void)_deliverHardEndpointDetectedAtTime:(double)time withMetrics:(id)metrics eventType:(int64_t)type
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  metricsCopy = metrics;
   v9 = *MEMORY[0x277D015B8];
   if (os_log_type_enabled(*MEMORY[0x277D015B8], OS_LOG_TYPE_DEFAULT))
   {
@@ -139,11 +139,11 @@ void __48__CSEndpointerXPCClient_didDetectTwoShotAtTime___block_invoke(uint64_t 
     v17 = 136316162;
     v18 = "[CSEndpointerXPCClient _deliverHardEndpointDetectedAtTime:withMetrics:eventType:]";
     v19 = 2048;
-    v20 = a3;
+    timeCopy = time;
     v21 = 2112;
-    v22 = v8;
+    v22 = metricsCopy;
     v23 = 2048;
-    v24 = a5;
+    typeCopy = type;
     v25 = 2112;
     v26 = requestId;
     _os_log_impl(&dword_222E4D000, v9, OS_LOG_TYPE_DEFAULT, "%s Endpointer didDetectHardEndpointAtTime %f withMetrics %@ eventType %ld, current requestId %@", &v17, 0x34u);
@@ -159,26 +159,26 @@ void __48__CSEndpointerXPCClient_didDetectTwoShotAtTime___block_invoke(uint64_t 
     if (v14)
     {
       v15 = objc_loadWeakRetained(&self->_delegate);
-      [v15 endpointer:self didDetectHardEndpointAtTime:v8 withMetrics:a5 eventType:a3];
+      [v15 endpointer:self didDetectHardEndpointAtTime:metricsCopy withMetrics:type eventType:time];
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didDetectHardEndpointAtTime:(double)a3 withMetrics:(id)a4 eventType:(int64_t)a5
+- (void)didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics eventType:(int64_t)type
 {
-  v8 = a4;
+  metricsCopy = metrics;
   xpcDelegateQueue = self->_xpcDelegateQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__CSEndpointerXPCClient_didDetectHardEndpointAtTime_withMetrics_eventType___block_invoke;
   v11[3] = &unk_2784C62C8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a3;
-  v14 = a5;
-  v10 = v8;
+  v12 = metricsCopy;
+  timeCopy = time;
+  typeCopy = type;
+  v10 = metricsCopy;
   dispatch_async(xpcDelegateQueue, v11);
 }
 
@@ -402,20 +402,20 @@ void __39__CSEndpointerXPCClient_stopEndpointer__block_invoke(uint64_t a1)
   [v1 stopEndpointer];
 }
 
-- (void)logFeaturesWithEvent:(id)a3 locale:(id)a4
+- (void)logFeaturesWithEvent:(id)event locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  localeCopy = locale;
   xpcClientQueue = self->_xpcClientQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__CSEndpointerXPCClient_logFeaturesWithEvent_locale___block_invoke;
   block[3] = &unk_2784C6EE8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = localeCopy;
+  v9 = localeCopy;
+  v10 = eventCopy;
   dispatch_async(xpcClientQueue, block);
 }
 
@@ -425,7 +425,7 @@ void __53__CSEndpointerXPCClient_logFeaturesWithEvent_locale___block_invoke(uint
   [v2 logFeaturesWithEvent:*(a1 + 40) locale:*(a1 + 48)];
 }
 
-- (void)recordingStoppedForReason:(int64_t)a3
+- (void)recordingStoppedForReason:(int64_t)reason
 {
   xpcDelegateQueue = self->_xpcDelegateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -467,20 +467,20 @@ void __51__CSEndpointerXPCClient_recordingStoppedForReason___block_invoke(uint64
   return v3;
 }
 
-- (void)resetForNewRequestWithSampleRate:(unint64_t)a3 recordContext:(id)a4 recordOption:(id)a5 voiceTriggerInfo:(id)a6
+- (void)resetForNewRequestWithSampleRate:(unint64_t)rate recordContext:(id)context recordOption:(id)option voiceTriggerInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  optionCopy = option;
   xpcDelegateQueue = self->_xpcDelegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __102__CSEndpointerXPCClient_resetForNewRequestWithSampleRate_recordContext_recordOption_voiceTriggerInfo___block_invoke;
   block[3] = &unk_2784C6EE8;
   block[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v11 = v8;
-  v12 = v9;
+  v16 = optionCopy;
+  v17 = contextCopy;
+  v11 = contextCopy;
+  v12 = optionCopy;
   dispatch_async(xpcDelegateQueue, block);
   xpcClientQueue = self->_xpcClientQueue;
   v14[0] = MEMORY[0x277D85DD0];
@@ -544,7 +544,7 @@ void __102__CSEndpointerXPCClient_resetForNewRequestWithSampleRate_recordContext
   [v1 setupConnection];
 }
 
-- (void)setEndpointerOperationMode:(int64_t)a3
+- (void)setEndpointerOperationMode:(int64_t)mode
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D015B8];
@@ -561,7 +561,7 @@ void __102__CSEndpointerXPCClient_resetForNewRequestWithSampleRate_recordContext
   v8[2] = __52__CSEndpointerXPCClient_setEndpointerOperationMode___block_invoke;
   v8[3] = &unk_2784C6EC0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = mode;
   dispatch_async(xpcClientQueue, v8);
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -588,15 +588,15 @@ void __52__CSEndpointerXPCClient_setEndpointerOperationMode___block_invoke(uint6
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldAcceptEagerResultForDurationSync:(double)a3 withEndpointerMetrics:(id)a4
+- (BOOL)shouldAcceptEagerResultForDurationSync:(double)sync withEndpointerMetrics:(id)metrics
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  metricsCopy = metrics;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -610,8 +610,8 @@ void __52__CSEndpointerXPCClient_setEndpointerOperationMode___block_invoke(uint6
   block[3] = &unk_2784C5348;
   v18 = &v27;
   block[4] = self;
-  v20 = a3;
-  v9 = v6;
+  syncCopy = sync;
+  v9 = metricsCopy;
   v17 = v9;
   v19 = &v21;
   dispatch_async_and_wait(xpcClientQueue, block);
@@ -621,7 +621,7 @@ void __52__CSEndpointerXPCClient_setEndpointerOperationMode___block_invoke(uint6
     v11 = *MEMORY[0x277D015B8];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      [v10[5] timeIntervalSinceDate:v7];
+      [v10[5] timeIntervalSinceDate:date];
       *buf = 136315394;
       v32 = "[CSEndpointerXPCClient shouldAcceptEagerResultForDurationSync:withEndpointerMetrics:]";
       v33 = 2050;
@@ -650,21 +650,21 @@ void __86__CSEndpointerXPCClient_shouldAcceptEagerResultForDurationSync_withEndp
   *(v4 + 40) = v3;
 }
 
-- (void)shouldAcceptEagerResultForDuration:(double)a3 withEndpointerMetrics:(id)a4 resultsCompletionHandler:(id)a5
+- (void)shouldAcceptEagerResultForDuration:(double)duration withEndpointerMetrics:(id)metrics resultsCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  metricsCopy = metrics;
+  handlerCopy = handler;
   xpcClientQueue = self->_xpcClientQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __107__CSEndpointerXPCClient_shouldAcceptEagerResultForDuration_withEndpointerMetrics_resultsCompletionHandler___block_invoke;
   v13[3] = &unk_2784C4638;
-  v16 = a3;
+  durationCopy = duration;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = metricsCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = metricsCopy;
   dispatch_async(xpcClientQueue, v13);
 }
 
@@ -674,18 +674,18 @@ void __107__CSEndpointerXPCClient_shouldAcceptEagerResultForDuration_withEndpoin
   [v2 shouldAcceptEagerResultForDuration:*(a1 + 40) withEndpointerMetrics:*(a1 + 48) resultsCompletionHandler:*(a1 + 56)];
 }
 
-- (void)shouldAcceptEagerResultForDuration:(double)a3 resultsCompletionHandler:(id)a4
+- (void)shouldAcceptEagerResultForDuration:(double)duration resultsCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   xpcClientQueue = self->_xpcClientQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__CSEndpointerXPCClient_shouldAcceptEagerResultForDuration_resultsCompletionHandler___block_invoke;
   block[3] = &unk_2784C4750;
-  v11 = a3;
+  durationCopy = duration;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(xpcClientQueue, block);
 }
 
@@ -695,14 +695,14 @@ void __85__CSEndpointerXPCClient_shouldAcceptEagerResultForDuration_resultsCompl
   [v2 shouldAcceptEagerResultForDuration:*(a1 + 40) resultsCompletionHandler:*(a1 + 48)];
 }
 
-- (void)updateEndpointerThreshold:(float)a3
+- (void)updateEndpointerThreshold:(float)threshold
 {
   xpcClientQueue = self->_xpcClientQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__CSEndpointerXPCClient_updateEndpointerThreshold___block_invoke;
   v4[3] = &unk_2784C5998;
-  v5 = a3;
+  thresholdCopy = threshold;
   v4[4] = self;
   dispatch_async(xpcClientQueue, v4);
 }
@@ -728,18 +728,18 @@ void __51__CSEndpointerXPCClient_updateEndpointerThreshold___block_invoke(uint64
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processASRFeatures:(id)a3 fromServer:(BOOL)a4
+- (void)processASRFeatures:(id)features fromServer:(BOOL)server
 {
-  v6 = a3;
+  featuresCopy = features;
   xpcClientQueue = self->_xpcClientQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__CSEndpointerXPCClient_processASRFeatures_fromServer___block_invoke;
   block[3] = &unk_2784C6750;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = featuresCopy;
+  serverCopy = server;
+  v8 = featuresCopy;
   dispatch_async(xpcClientQueue, block);
 }
 
@@ -759,10 +759,10 @@ void __55__CSEndpointerXPCClient_processASRFeatures_fromServer___block_invoke(ui
   [v12 processASRFeaturesWithWordCount:v2 trailingSilenceDuration:v3 eosLikelihood:v6 pauseCounts:v9 silencePosterior:v10 taskName:*(a1 + 48) processedAudioDurationInMilliseconds:v5 acousticEndpointerScore:v8 fromServer:v11];
 }
 
-- (void)setEndpointerModelVersion:(id)a3
+- (void)setEndpointerModelVersion:(id)version
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"CSEndpointerXPCClient.m" lineNumber:106 description:@"CSEndpointerXPCClient should not have the endpointerModelVersion setter called"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CSEndpointerXPCClient.m" lineNumber:106 description:@"CSEndpointerXPCClient should not have the endpointerModelVersion setter called"];
 }
 
 - (NSString)endpointerModelVersion
@@ -774,7 +774,7 @@ void __55__CSEndpointerXPCClient_processASRFeatures_fromServer___block_invoke(ui
   v21 = __Block_byref_object_copy__7388;
   v22 = __Block_byref_object_dispose__7389;
   v23 = 0;
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -796,7 +796,7 @@ void __55__CSEndpointerXPCClient_processASRFeatures_fromServer___block_invoke(ui
     v6 = *MEMORY[0x277D015B8];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      [v5[5] timeIntervalSinceDate:v3];
+      [v5[5] timeIntervalSinceDate:date];
       *buf = 136315394;
       v25 = "[CSEndpointerXPCClient endpointerModelVersion]";
       v26 = 2050;
@@ -854,7 +854,7 @@ void __47__CSEndpointerXPCClient_endpointerModelVersion__block_invoke_2(uint64_t
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setActiveChannel:(unint64_t)a3
+- (void)setActiveChannel:(unint64_t)channel
 {
   xpcClientQueue = self->_xpcClientQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -862,7 +862,7 @@ void __47__CSEndpointerXPCClient_endpointerModelVersion__block_invoke_2(uint64_t
   v4[2] = __42__CSEndpointerXPCClient_setActiveChannel___block_invoke;
   v4[3] = &unk_2784C6EC0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = channel;
   dispatch_async(xpcClientQueue, v4);
 }
 
@@ -874,23 +874,23 @@ void __42__CSEndpointerXPCClient_setActiveChannel___block_invoke(uint64_t a1)
 
 - (unint64_t)activeChannel
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CSEndpointerXPCClient.m" lineNumber:72 description:@"CSEndpointerXPCClient should not have the activeChannel getter called"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CSEndpointerXPCClient.m" lineNumber:72 description:@"CSEndpointerXPCClient should not have the activeChannel getter called"];
 
   return 0;
 }
 
-- (id)_getSerialQueueWithName:(id)a3 targetQueue:(id)a4
+- (id)_getSerialQueueWithName:(id)name targetQueue:(id)queue
 {
-  v5 = a4;
-  if (v5)
+  queueCopy = queue;
+  if (queueCopy)
   {
-    v6 = dispatch_queue_create_with_target_V2([a3 UTF8String], 0, v5);
+    v6 = dispatch_queue_create_with_target_V2([name UTF8String], 0, queueCopy);
   }
 
   else
   {
-    v6 = [MEMORY[0x277D018F8] getSerialQueueWithQOS:33 name:a3 fixedPriority:*MEMORY[0x277D019B0]];
+    v6 = [MEMORY[0x277D018F8] getSerialQueueWithQOS:33 name:name fixedPriority:*MEMORY[0x277D019B0]];
   }
 
   v7 = v6;

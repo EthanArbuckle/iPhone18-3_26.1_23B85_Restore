@@ -1,24 +1,24 @@
 @interface IMTableView
-- (IMTableView)initWithCoder:(id)a3;
-- (IMTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (IMTableView)initWithCoder:(id)coder;
+- (IMTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)quickScroller;
 - (int64_t)totalRowCount;
 - (void)layoutSubviews;
-- (void)quickScroll:(id)a3;
+- (void)quickScroll:(id)scroll;
 - (void)reloadData;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)updateQuickScroller;
 @end
 
 @implementation IMTableView
 
-- (IMTableView)initWithCoder:(id)a3
+- (IMTableView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = IMTableView;
-  v3 = [(IMTableView *)&v6 initWithCoder:a3];
+  v3 = [(IMTableView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -28,11 +28,11 @@
   return v4;
 }
 
-- (IMTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (IMTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = IMTableView;
-  v4 = [(IMTableView *)&v7 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(IMTableView *)&v7 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -42,14 +42,14 @@
   return v5;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   quickScroller = self->_quickScroller;
   [(IMQuickScroller *)quickScroller convertPoint:self fromView:x, y];
-  v9 = [(IMQuickScroller *)quickScroller hitTest:v7 withEvent:?];
+  v9 = [(IMQuickScroller *)quickScroller hitTest:eventCopy withEvent:?];
   v10 = v9;
   if (v9 && v9 == self->_quickScroller)
   {
@@ -62,7 +62,7 @@
     [(IMTableView *)self setDelaysContentTouches:1];
     v14.receiver = self;
     v14.super_class = IMTableView;
-    v11 = [(IMTableView *)&v14 hitTest:v7 withEvent:x, y];
+    v11 = [(IMTableView *)&v14 hitTest:eventCopy withEvent:x, y];
   }
 
   v12 = v11;
@@ -78,19 +78,19 @@
   [(IMTableView *)self updateQuickScroller];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = IMTableView;
-  [(IMTableView *)&v5 setEditing:a3 animated:a4];
+  [(IMTableView *)&v5 setEditing:editing animated:animated];
   [(IMTableView *)self updateQuickScroller];
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
   v4.receiver = self;
   v4.super_class = IMTableView;
-  [(IMTableView *)&v4 setContentOffset:a3.x, a3.y];
+  [(IMTableView *)&v4 setContentOffset:offset.x, offset.y];
   if (self->_quickScroller)
   {
     [(IMTableView *)self bringSubviewToFront:?];
@@ -116,13 +116,13 @@
 
 - (int64_t)totalRowCount
 {
-  v3 = [(IMTableView *)self numberOfSections];
-  if (v3 < 1)
+  numberOfSections = [(IMTableView *)self numberOfSections];
+  if (numberOfSections < 1)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = numberOfSections;
   v5 = 0;
   for (i = 0; i != v4; ++i)
   {
@@ -149,9 +149,9 @@
   return quickScroller;
 }
 
-- (void)quickScroll:(id)a3
+- (void)quickScroll:(id)scroll
 {
-  [a3 value];
+  [scroll value];
   v5 = v4;
   [(IMTableView *)self contentOffset];
   v7 = v6;
@@ -164,9 +164,9 @@
 
 - (void)updateQuickScroller
 {
-  v3 = [(IMTableView *)self totalRowCount];
-  v4 = [(IMTableView *)self quickScrollerMinimumDisplayRowCount];
-  if (v3 < v4 || v4 == 0x7FFFFFFFFFFFFFFFLL || ([(IMTableView *)self isEditing]& 1) != 0 || v3 > [(IMTableView *)self sectionIndexMinimumDisplayRowCount])
+  totalRowCount = [(IMTableView *)self totalRowCount];
+  quickScrollerMinimumDisplayRowCount = [(IMTableView *)self quickScrollerMinimumDisplayRowCount];
+  if (totalRowCount < quickScrollerMinimumDisplayRowCount || quickScrollerMinimumDisplayRowCount == 0x7FFFFFFFFFFFFFFFLL || ([(IMTableView *)self isEditing]& 1) != 0 || totalRowCount > [(IMTableView *)self sectionIndexMinimumDisplayRowCount])
   {
     quickScroller = self->_quickScroller;
 
@@ -175,12 +175,12 @@
 
   else
   {
-    v6 = [(IMQuickScroller *)self->_quickScroller superview];
+    superview = [(IMQuickScroller *)self->_quickScroller superview];
 
-    if (v6 != self)
+    if (superview != self)
     {
-      v7 = [(IMTableView *)self quickScroller];
-      [(IMTableView *)self addSubview:v7];
+      quickScroller = [(IMTableView *)self quickScroller];
+      [(IMTableView *)self addSubview:quickScroller];
     }
   }
 }

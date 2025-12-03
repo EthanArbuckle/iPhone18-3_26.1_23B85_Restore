@@ -1,10 +1,10 @@
 @interface HDSkiingWorkoutEventCollector
 + (BOOL)isAvailableInCurrentHardware;
-- (HDSkiingWorkoutEventCollector)initWithProfile:(id)a3 delegate:(id)a4;
-- (void)_queue_errorOccurred:(void *)a1;
-- (void)_queue_querySkiDataWithCompletion:(uint64_t)a1;
-- (void)requestPendingEventsThroughDate:(id)a3 completion:(id)a4;
-- (void)startWithSessionId:(id)a3;
+- (HDSkiingWorkoutEventCollector)initWithProfile:(id)profile delegate:(id)delegate;
+- (void)_queue_errorOccurred:(void *)occurred;
+- (void)_queue_querySkiDataWithCompletion:(uint64_t)completion;
+- (void)requestPendingEventsThroughDate:(id)date completion:(id)completion;
+- (void)startWithSessionId:(id)id;
 - (void)stop;
 @end
 
@@ -19,23 +19,23 @@
 
   else
   {
-    return MEMORY[0x2821208A8](a1, a2);
+    return MEMORY[0x2821208A8](self, a2);
   }
 }
 
-- (HDSkiingWorkoutEventCollector)initWithProfile:(id)a3 delegate:(id)a4
+- (HDSkiingWorkoutEventCollector)initWithProfile:(id)profile delegate:(id)delegate
 {
   v13.receiver = self;
   v13.super_class = HDSkiingWorkoutEventCollector;
-  v4 = [(HDWorkoutEventCollector *)&v13 initWithProfile:a3 delegate:a4];
+  v4 = [(HDWorkoutEventCollector *)&v13 initWithProfile:profile delegate:delegate];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HDWorkoutEventCollector *)v4 profile];
-    v7 = [v6 workoutManager];
-    v8 = [v7 newCMSkiTracker];
+    profile = [(HDWorkoutEventCollector *)v4 profile];
+    workoutManager = [profile workoutManager];
+    newCMSkiTracker = [workoutManager newCMSkiTracker];
     skiTracker = v5->_skiTracker;
-    v5->_skiTracker = v8;
+    v5->_skiTracker = newCMSkiTracker;
 
     v10 = HKCreateSerialDispatchQueue();
     workoutEventQueue = v5->_workoutEventQueue;
@@ -45,17 +45,17 @@
   return v5;
 }
 
-- (void)startWithSessionId:(id)a3
+- (void)startWithSessionId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   workoutEventQueue = self->_workoutEventQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HDSkiingWorkoutEventCollector_startWithSessionId___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_sync(workoutEventQueue, v7);
 }
 
@@ -138,17 +138,17 @@ id __37__HDSkiingWorkoutEventCollector_stop__block_invoke(id result)
   return result;
 }
 
-- (void)requestPendingEventsThroughDate:(id)a3 completion:(id)a4
+- (void)requestPendingEventsThroughDate:(id)date completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   workoutEventQueue = self->_workoutEventQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__HDSkiingWorkoutEventCollector_requestPendingEventsThroughDate_completion___block_invoke;
   v8[3] = &unk_278614E28;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(workoutEventQueue, v8);
 }
 
@@ -182,19 +182,19 @@ void __76__HDSkiingWorkoutEventCollector_requestPendingEventsThroughDate_complet
   }
 }
 
-- (void)_queue_querySkiDataWithCompletion:(uint64_t)a1
+- (void)_queue_querySkiDataWithCompletion:(uint64_t)completion
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
-    v5 = *(a1 + 32);
-    v6 = *(a1 + 40);
+    v5 = *(completion + 32);
+    v6 = *(completion + 40);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __67__HDSkiingWorkoutEventCollector__queue_querySkiDataWithCompletion___block_invoke;
     v7[3] = &unk_27861B2F8;
-    v7[4] = a1;
+    v7[4] = completion;
     v8 = v3;
     [v5 querySkiUpdatesFromRecord:v6 handler:v7];
   }
@@ -233,11 +233,11 @@ void __73__HDSkiingWorkoutEventCollector__startUpdatesFromRecordHandlerWithError
   }
 }
 
-- (void)_queue_errorOccurred:(void *)a1
+- (void)_queue_errorOccurred:(void *)occurred
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (occurred)
   {
     _HKInitializeLogging();
     v4 = *MEMORY[0x277CCC330];
@@ -249,11 +249,11 @@ void __73__HDSkiingWorkoutEventCollector__startUpdatesFromRecordHandlerWithError
     }
 
     v5 = objc_alloc(MEMORY[0x277CCDE58]);
-    v6 = [a1 sessionId];
-    v7 = [v5 initWithSessionId:v6 error:v3];
+    sessionId = [occurred sessionId];
+    v7 = [v5 initWithSessionId:sessionId error:v3];
 
-    v8 = [a1 delegate];
-    [v8 receivedWorkoutEvent:v7];
+    delegate = [occurred delegate];
+    [delegate receivedWorkoutEvent:v7];
   }
 
   v9 = *MEMORY[0x277D85DE8];

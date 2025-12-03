@@ -1,23 +1,23 @@
 @interface SAAlarmUpdate
-- (id)_ad_alarmResponseForResponse:(id)a3;
-- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)a3;
+- (id)_ad_alarmResponseForResponse:(id)response;
+- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)handler;
 @end
 
 @implementation SAAlarmUpdate
 
-- (id)_ad_alarmResponseForResponse:(id)a3
+- (id)_ad_alarmResponseForResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 alarmIdentifiers];
-    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    alarmIdentifiers = [responseCopy alarmIdentifiers];
+    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(alarmIdentifiers, "count")}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = alarmIdentifiers;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -54,17 +54,17 @@
   return v12;
 }
 
-- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)a3
+- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)handler
 {
-  v18 = a3;
-  v4 = [(SAAlarmUpdate *)self modifications];
+  handlerCopy = handler;
+  modifications = [(SAAlarmUpdate *)self modifications];
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = objc_alloc_init(NSMutableArray);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v4;
+  v7 = modifications;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v8)
   {
@@ -80,8 +80,8 @@
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 alarmId];
-        v14 = sub_10024B22C(v13);
+        alarmId = [v12 alarmId];
+        v14 = sub_10024B22C(alarmId);
 
         [v6 addObject:v14];
         v15 = AFSiriLogContextDaemon;
@@ -115,9 +115,9 @@
   v19[2] = sub_10024B2BC;
   v19[3] = &unk_100517998;
   v19[5] = v5;
-  v20 = v18;
+  v20 = handlerCopy;
   v19[4] = v6;
-  v17 = v18;
+  v17 = handlerCopy;
   sub_10019F930(v19);
 }
 

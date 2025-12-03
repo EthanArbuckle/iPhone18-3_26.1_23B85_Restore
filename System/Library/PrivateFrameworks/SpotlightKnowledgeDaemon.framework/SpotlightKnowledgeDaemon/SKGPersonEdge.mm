@@ -1,14 +1,14 @@
 @interface SKGPersonEdge
-+ (id)edgeFromPerson:(id)a3 toNode:(id)a4;
++ (id)edgeFromPerson:(id)person toNode:(id)node;
 @end
 
 @implementation SKGPersonEdge
 
-+ (id)edgeFromPerson:(id)a3 toNode:(id)a4
++ (id)edgeFromPerson:(id)person toNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(SKGEdge *)[SKGPersonEdge alloc] initWithSourceNode:v5 targetNode:v6];
+  personCopy = person;
+  nodeCopy = node;
+  v7 = [(SKGEdge *)[SKGPersonEdge alloc] initWithSourceNode:personCopy targetNode:nodeCopy];
 
   return v7;
 }

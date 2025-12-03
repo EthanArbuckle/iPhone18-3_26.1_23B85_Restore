@@ -1,10 +1,10 @@
 @interface _DASFileProtectionPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)deviceRecentlyLocked:(id)a3 since:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)deviceRecentlyLocked:(id)locked since:(id)since;
 - (_DASFileProtectionPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASFileProtectionPolicy
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005520C;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B1F8 != -1)
   {
     dispatch_once(&qword_10020B1F8, block);
@@ -70,9 +70,9 @@
     policyName = v2->_policyName;
     v2->_policyName = @"File Protection Policy";
 
-    v5 = [(_DASFileProtectionPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASFileProtectionPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v5;
+    v3->_triggers = initializeTriggers;
 
     v7 = dispatch_queue_create("com.apple.duetactivityscheduler.fileprotectionpolicy.queue", 0);
     handleUnlockQueue = v3->_handleUnlockQueue;
@@ -144,53 +144,53 @@
   return v3;
 }
 
-- (BOOL)deviceRecentlyLocked:(id)a3 since:(id)a4
+- (BOOL)deviceRecentlyLocked:(id)locked since:(id)since
 {
-  v4 = a3;
+  lockedCopy = locked;
   v5 = +[_CDContextQueries keyPathForDeviceLockStatus];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 BOOLValue];
+  v6 = [lockedCopy objectForKeyedSubscript:v5];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = +[_CDContextQueries keyPathForKeybagLockStatus];
-  v9 = [v4 objectForKeyedSubscript:v8];
+  v9 = [lockedCopy objectForKeyedSubscript:v8];
 
-  LOBYTE(v4) = [v9 BOOLValue];
-  return v7 & (v4 ^ 1);
+  LOBYTE(lockedCopy) = [v9 BOOLValue];
+  return bOOLValue & (lockedCopy ^ 1);
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = [a3 fileProtection];
-  v4 = [v3 indicatesProtection];
+  fileProtection = [activity fileProtection];
+  indicatesProtection = [fileProtection indicatesProtection];
 
-  return v4;
+  return indicatesProtection;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   isClassCLocked = self->_isClassCLocked;
   isClassCXExpired = self->_isClassCXExpired;
   v10 = +[_CDContextQueries keyPathForKeybagLockStatus];
-  v40 = v7;
-  v11 = [v7 objectForKeyedSubscript:v10];
-  v12 = [v11 BOOLValue];
+  v40 = stateCopy;
+  v11 = [stateCopy objectForKeyedSubscript:v10];
+  bOOLValue = [v11 BOOLValue];
 
   v13 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"File Protection Policy"];
-  if (v12)
+  if (bOOLValue)
   {
-    v14 = [v6 fileProtection];
+    fileProtection = [activityCopy fileProtection];
     v15 = +[_DASFileProtection complete];
-    v16 = [v14 isEqual:v15];
+    v16 = [fileProtection isEqual:v15];
 
     if (v16)
     {
       v17 = [NSNumber numberWithBool:1];
-      v18 = [v6 fileProtection];
-      [NSPredicate predicateWithFormat:@"classALocked == %@ && activityFileProtection == %@", v17, v18];
-      v25 = LABEL_10:;
-      [(_DASPolicyResponseRationale *)v13 addRationaleWithCondition:v25];
+      fileProtection2 = [activityCopy fileProtection];
+      [NSPredicate predicateWithFormat:@"classALocked == %@ && activityFileProtection == %@", v17, fileProtection2];
+      fileProtection6 = LABEL_10:;
+      [(_DASPolicyResponseRationale *)v13 addRationaleWithCondition:fileProtection6];
       v26 = v40;
       goto LABEL_11;
     }
@@ -198,57 +198,57 @@
 
   if (isClassCXExpired)
   {
-    v19 = [v6 fileProtection];
+    fileProtection3 = [activityCopy fileProtection];
     v20 = +[_DASFileProtection completeWhenUserInactive];
-    v21 = [v19 isEqual:v20];
+    v21 = [fileProtection3 isEqual:v20];
 
     if (v21)
     {
       v17 = [NSNumber numberWithBool:1];
-      v18 = [v6 fileProtection];
-      [NSPredicate predicateWithFormat:@"classCExpired == %@ && activityFileProtection == %@", v17, v18];
+      fileProtection2 = [activityCopy fileProtection];
+      [NSPredicate predicateWithFormat:@"classCExpired == %@ && activityFileProtection == %@", v17, fileProtection2];
       goto LABEL_10;
     }
   }
 
   if (isClassCLocked)
   {
-    v22 = [v6 fileProtection];
+    fileProtection4 = [activityCopy fileProtection];
     v23 = +[_DASFileProtection completeUntilFirstUserAuthentication];
-    v24 = [v22 isEqual:v23];
+    v24 = [fileProtection4 isEqual:v23];
 
     if (v24)
     {
       v17 = [NSNumber numberWithBool:1];
-      v18 = [v6 fileProtection];
-      [NSPredicate predicateWithFormat:@"classCLocked == %@ && activityFileProtection == %@", v17, v18];
+      fileProtection2 = [activityCopy fileProtection];
+      [NSPredicate predicateWithFormat:@"classCLocked == %@ && activityFileProtection == %@", v17, fileProtection2];
       goto LABEL_10;
     }
   }
 
-  v29 = [v6 fileProtection];
+  fileProtection5 = [activityCopy fileProtection];
   v30 = +[_DASFileProtection completeUnlessOpen];
-  v31 = [v29 isEqual:v30];
+  v31 = [fileProtection5 isEqual:v30];
 
   if (v31)
   {
     v17 = +[NSDate date];
     v26 = v40;
-    if (-[_DASFileProtectionPolicy deviceRecentlyLocked:since:](self, "deviceRecentlyLocked:since:", v40, v17) || ([v6 startDate], v32 = objc_claimAutoreleasedReturnValue(), v32, v32) || (v12 & 1) == 0 && (objc_msgSend(v6, "overdueAtDate:", v17) & 1) != 0)
+    if (-[_DASFileProtectionPolicy deviceRecentlyLocked:since:](self, "deviceRecentlyLocked:since:", v40, v17) || ([activityCopy startDate], v32 = objc_claimAutoreleasedReturnValue(), v32, v32) || (bOOLValue & 1) == 0 && (objc_msgSend(activityCopy, "overdueAtDate:", v17) & 1) != 0)
     {
       v27 = 0;
       v28 = 0;
       goto LABEL_16;
     }
 
-    v35 = [v6 startBefore];
-    [v35 timeIntervalSinceDate:v17];
+    startBefore = [activityCopy startBefore];
+    [startBefore timeIntervalSinceDate:v17];
     v37 = v36;
 
-    v18 = [NSNumber numberWithBool:v12];
-    v25 = [v6 fileProtection];
+    fileProtection2 = [NSNumber numberWithBool:bOOLValue];
+    fileProtection6 = [activityCopy fileProtection];
     v38 = [NSNumber numberWithDouble:v37];
-    v39 = [NSPredicate predicateWithFormat:@"classALocked == %@ && activityFileProtection == %@ && timeUntilDeadline == %@", v18, v25, v38];
+    v39 = [NSPredicate predicateWithFormat:@"classALocked == %@ && activityFileProtection == %@ && timeUntilDeadline == %@", fileProtection2, fileProtection6, v38];
     [(_DASPolicyResponseRationale *)v13 addRationaleWithCondition:v39];
 
 LABEL_11:

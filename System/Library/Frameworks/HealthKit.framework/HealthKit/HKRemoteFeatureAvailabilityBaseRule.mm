@@ -1,16 +1,16 @@
 @interface HKRemoteFeatureAvailabilityBaseRule
-+ (Class)ruleClassForRawValue:(id)a3;
++ (Class)ruleClassForRawValue:(id)value;
 - (BOOL)evaluate;
-- (HKRemoteFeatureAvailabilityBaseRule)initWithRawValue:(id)a3 dataSource:(id)a4;
+- (HKRemoteFeatureAvailabilityBaseRule)initWithRawValue:(id)value dataSource:(id)source;
 - (HKRemoteFeatureAvailabilityDataSource)dataSource;
-- (void)processUserInfo:(id)a3;
+- (void)processUserInfo:(id)info;
 @end
 
 @implementation HKRemoteFeatureAvailabilityBaseRule
 
-+ (Class)ruleClassForRawValue:(id)a3
++ (Class)ruleClassForRawValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   if (ruleClassForRawValue__onceToken != -1)
   {
     +[HKRemoteFeatureAvailabilityBaseRule ruleClassForRawValue:];
@@ -19,7 +19,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 objectForKeyedSubscript:@"ruleIdentifier"];
+    v4 = [valueCopy objectForKeyedSubscript:@"ruleIdentifier"];
     if (v4)
     {
       v5 = [ruleClassForRawValue__allRules objectForKeyedSubscript:v4];
@@ -124,18 +124,18 @@ void __60__HKRemoteFeatureAvailabilityBaseRule_ruleClassForRawValue___block_invo
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (HKRemoteFeatureAvailabilityBaseRule)initWithRawValue:(id)a3 dataSource:(id)a4
+- (HKRemoteFeatureAvailabilityBaseRule)initWithRawValue:(id)value dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = HKRemoteFeatureAvailabilityBaseRule;
   v8 = [(HKRemoteFeatureAvailabilityBaseRule *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v7);
-    v10 = [v6 objectForKeyedSubscript:@"userInfo"];
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    v10 = [valueCopy objectForKeyedSubscript:@"userInfo"];
     v11 = v10;
     if (v10)
     {
@@ -160,7 +160,7 @@ void __60__HKRemoteFeatureAvailabilityBaseRule_ruleClassForRawValue___block_invo
   return WeakRetained;
 }
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
   objc_opt_class();
 

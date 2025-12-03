@@ -1,39 +1,39 @@
 @interface RCStoreChangeMerger
-- (BOOL)_isBackgroundContextTransaction:(id)a3;
-- (BOOL)_isRelevantTransactionAuthor:(id)a3;
-- (RCStoreChangeMerger)initWithPersistentStore:(id)a3 transactionAuthorToIgnore:(id)a4 startingToken:(id)a5 viewContext:(id)a6;
+- (BOOL)_isBackgroundContextTransaction:(id)transaction;
+- (BOOL)_isRelevantTransactionAuthor:(id)author;
+- (RCStoreChangeMerger)initWithPersistentStore:(id)store transactionAuthorToIgnore:(id)ignore startingToken:(id)token viewContext:(id)context;
 - (RCStoreChangeMergerDelegate)delegate;
-- (id)_nextTransactionAfterToken:(id)a3 context:(id)a4 error:(id *)a5;
-- (void)_mergeChangeIntoRelevantContexts:(id)a3;
-- (void)handleChange:(id)a3;
+- (id)_nextTransactionAfterToken:(id)token context:(id)context error:(id *)error;
+- (void)_mergeChangeIntoRelevantContexts:(id)contexts;
+- (void)handleChange:(id)change;
 @end
 
 @implementation RCStoreChangeMerger
 
-- (RCStoreChangeMerger)initWithPersistentStore:(id)a3 transactionAuthorToIgnore:(id)a4 startingToken:(id)a5 viewContext:(id)a6
+- (RCStoreChangeMerger)initWithPersistentStore:(id)store transactionAuthorToIgnore:(id)ignore startingToken:(id)token viewContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  storeCopy = store;
+  ignoreCopy = ignore;
+  tokenCopy = token;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = RCStoreChangeMerger;
   v14 = [(RCStoreChangeMerger *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_transactionAuthorToIgnore, a4);
-    objc_storeStrong(&v15->_currentHistoryToken, a5);
-    objc_storeStrong(&v15->_latestHistoryToken, a5);
+    objc_storeStrong(&v14->_transactionAuthorToIgnore, ignore);
+    objc_storeStrong(&v15->_currentHistoryToken, token);
+    objc_storeStrong(&v15->_latestHistoryToken, token);
     v16 = objc_opt_new();
     transactionsBuffer = v15->_transactionsBuffer;
     v15->_transactionsBuffer = v16;
 
-    objc_storeStrong(&v15->_viewContext, a6);
-    v18 = [v10 persistentStoreCoordinator];
-    v19 = [v18 managedObjectModel];
-    v20 = [v19 entitiesByName];
-    v21 = [v20 objectForKeyedSubscript:RCCloudRecording_EntityName];
+    objc_storeStrong(&v15->_viewContext, context);
+    persistentStoreCoordinator = [storeCopy persistentStoreCoordinator];
+    managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+    entitiesByName = [managedObjectModel entitiesByName];
+    v21 = [entitiesByName objectForKeyedSubscript:RCCloudRecording_EntityName];
     cloudRecordingEntity = v15->_cloudRecordingEntity;
     v15->_cloudRecordingEntity = v21;
   }
@@ -41,28 +41,28 @@
   return v15;
 }
 
-- (BOOL)_isRelevantTransactionAuthor:(id)a3
+- (BOOL)_isRelevantTransactionAuthor:(id)author
 {
-  v4 = [a3 author];
-  LOBYTE(self) = [v4 isEqualToString:self->_transactionAuthorToIgnore];
+  author = [author author];
+  LOBYTE(self) = [author isEqualToString:self->_transactionAuthorToIgnore];
 
   return self ^ 1;
 }
 
-- (BOOL)_isBackgroundContextTransaction:(id)a3
+- (BOOL)_isBackgroundContextTransaction:(id)transaction
 {
-  v3 = [a3 contextName];
-  v4 = [v3 isEqualToString:kRCBackgroundContextName];
+  contextName = [transaction contextName];
+  v4 = [contextName isEqualToString:kRCBackgroundContextName];
 
   return v4;
 }
 
-- (void)handleChange:(id)a3
+- (void)handleChange:(id)change
 {
-  v4 = a3;
-  if ([(NSPersistentHistoryToken *)self->_latestHistoryToken compareToken:v4 error:0]== 2)
+  changeCopy = change;
+  if ([(NSPersistentHistoryToken *)self->_latestHistoryToken compareToken:changeCopy error:0]== 2)
   {
-    v5 = [v4 copy];
+    v5 = [changeCopy copy];
     latestHistoryToken = self->_latestHistoryToken;
     self->_latestHistoryToken = v5;
 
@@ -103,26 +103,26 @@
   }
 }
 
-- (void)_mergeChangeIntoRelevantContexts:(id)a3
+- (void)_mergeChangeIntoRelevantContexts:(id)contexts
 {
-  v4 = a3;
-  v5 = [v4 objectIDNotification];
-  v6 = [v5 userInfo];
+  contextsCopy = contexts;
+  objectIDNotification = [contextsCopy objectIDNotification];
+  userInfo = [objectIDNotification userInfo];
 
-  if ([(RCStoreChangeMerger *)self _isRelevantTransactionAuthor:v4])
+  if ([(RCStoreChangeMerger *)self _isRelevantTransactionAuthor:contextsCopy])
   {
     viewContext = self->_viewContext;
     v7 = [NSArray arrayWithObjects:&viewContext count:1];
-    [NSManagedObjectContext mergeChangesFromRemoteContextSave:v6 intoContexts:v7];
+    [NSManagedObjectContext mergeChangesFromRemoteContextSave:userInfo intoContexts:v7];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [(RCStoreChangeMerger *)self delegate];
-    v9 = [v8 backgroundContexts];
+    delegate = [(RCStoreChangeMerger *)self delegate];
+    backgroundContexts = [delegate backgroundContexts];
 
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v10 = [backgroundContexts countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -133,7 +133,7 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(backgroundContexts);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
@@ -141,12 +141,12 @@
           v15[1] = 3221225472;
           v15[2] = sub_10006C31C;
           v15[3] = &unk_10028A650;
-          v16 = v6;
+          v16 = userInfo;
           v17 = v14;
           [v14 performBlock:v15];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [backgroundContexts countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -155,42 +155,42 @@
     goto LABEL_12;
   }
 
-  if ([(RCStoreChangeMerger *)self _isBackgroundContextTransaction:v4])
+  if ([(RCStoreChangeMerger *)self _isBackgroundContextTransaction:contextsCopy])
   {
     viewContext = self->_viewContext;
-    v9 = [NSArray arrayWithObjects:&viewContext count:1];
-    [NSManagedObjectContext mergeChangesFromRemoteContextSave:v6 intoContexts:v9];
+    backgroundContexts = [NSArray arrayWithObjects:&viewContext count:1];
+    [NSManagedObjectContext mergeChangesFromRemoteContextSave:userInfo intoContexts:backgroundContexts];
 LABEL_12:
   }
 }
 
-- (id)_nextTransactionAfterToken:(id)a3 context:(id)a4 error:(id *)a5
+- (id)_nextTransactionAfterToken:(id)token context:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  tokenCopy = token;
+  contextCopy = context;
   if (![(NSMutableArray *)self->_transactionsBuffer count])
   {
-    v10 = [NSPersistentHistoryChangeRequest fetchHistoryAfterToken:v8];
+    v10 = [NSPersistentHistoryChangeRequest fetchHistoryAfterToken:tokenCopy];
     [v10 setFetchBatchSize:kDefaultFetchBatchSize];
-    v11 = [v9 executeRequest:v10 error:a5];
+    v11 = [contextCopy executeRequest:v10 error:error];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 result];
+      result = [v11 result];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v32 = v12;
         v33 = v10;
-        v34 = v9;
-        v35 = v8;
-        v36 = self;
-        v31 = v13;
+        v34 = contextCopy;
+        v35 = tokenCopy;
+        selfCopy = self;
+        v31 = result;
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        obj = v13;
+        obj = result;
         v14 = [obj countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v14)
         {
@@ -206,16 +206,16 @@ LABEL_12:
               }
 
               v18 = *(*(&v38 + 1) + 8 * i);
-              v19 = [v18 token];
+              token = [v18 token];
 
-              if (v19)
+              if (token)
               {
                 v44 = 0u;
                 v45 = 0u;
                 v42 = 0u;
                 v43 = 0u;
-                v20 = [v18 changes];
-                v21 = [v20 countByEnumeratingWithState:&v42 objects:buf count:16];
+                changes = [v18 changes];
+                v21 = [changes countByEnumeratingWithState:&v42 objects:buf count:16];
                 if (v21)
                 {
                   v22 = v21;
@@ -226,15 +226,15 @@ LABEL_12:
                     {
                       if (*v43 != v23)
                       {
-                        objc_enumerationMutation(v20);
+                        objc_enumerationMutation(changes);
                       }
 
                       v25 = *(*(&v42 + 1) + 8 * j);
                       if ([v25 changeType] != 2)
                       {
-                        v26 = [v25 changedObjectID];
+                        changedObjectID = [v25 changedObjectID];
 
-                        if (!v26)
+                        if (!changedObjectID)
                         {
 
                           goto LABEL_21;
@@ -242,7 +242,7 @@ LABEL_12:
                       }
                     }
 
-                    v22 = [v20 countByEnumeratingWithState:&v42 objects:buf count:16];
+                    v22 = [changes countByEnumeratingWithState:&v42 objects:buf count:16];
                     if (v22)
                     {
                       continue;
@@ -252,7 +252,7 @@ LABEL_12:
                   }
                 }
 
-                transactionsBuffer = v36->_transactionsBuffer;
+                transactionsBuffer = selfCopy->_transactionsBuffer;
                 v28 = [v18 copy];
                 [(NSMutableArray *)transactionsBuffer addObject:v28];
               }
@@ -279,23 +279,23 @@ LABEL_21:
           while (v15);
         }
 
-        v9 = v34;
-        v8 = v35;
-        self = v36;
+        contextCopy = v34;
+        tokenCopy = v35;
+        self = selfCopy;
         v12 = v32;
         v10 = v33;
-        v13 = v31;
+        result = v31;
       }
     }
   }
 
-  v29 = [(NSMutableArray *)self->_transactionsBuffer firstObject];
-  if (v29)
+  firstObject = [(NSMutableArray *)self->_transactionsBuffer firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_transactionsBuffer removeObjectAtIndex:0];
   }
 
-  return v29;
+  return firstObject;
 }
 
 - (RCStoreChangeMergerDelegate)delegate

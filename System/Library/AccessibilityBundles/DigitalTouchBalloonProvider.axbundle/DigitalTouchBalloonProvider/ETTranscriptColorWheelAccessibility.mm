@@ -1,30 +1,30 @@
 @interface ETTranscriptColorWheelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (ETTranscriptColorWheelAccessibility)initWithFrame:(CGRect)a3;
-- (void)_accessibilityAdjustColorPickerBy:(double)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (ETTranscriptColorWheelAccessibility)initWithFrame:(CGRect)frame;
+- (void)_accessibilityAdjustColorPickerBy:(double)by;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilitySpeakPickerColor;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)updatePickerPositionForPoint:(CGPoint)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)updatePickerPositionForPoint:(CGPoint)point;
 @end
 
 @implementation ETTranscriptColorWheelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ETTranscriptColorWheel" isKindOfClass:@"DTSColorWheel"];
-  [v3 validateClass:@"ETTranscriptColorWheel" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"DTSColorWheel" hasInstanceMethod:@"pickerRotation" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"DTSColorWheel" hasInstanceMethod:@"pickerCircle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DTSColorWheel" hasInstanceMethod:@"colorWheelRadius" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"DTSColorWheel" hasInstanceMethod:@"gradientWidth" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"DTSColorWheel" hasInstanceMethod:@"updatePickerPositionForPoint:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"DTSColorWheel" hasInstanceMethod:@"touchesBegan: withEvent:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"DTSColorWheel" hasInstanceMethod:@"touchesEnded: withEvent:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"DTSColorWheel" hasInstanceMethod:@"touchesCancelled: withEvent:" withFullSignature:{"v", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ETTranscriptColorWheel" isKindOfClass:@"DTSColorWheel"];
+  [validationsCopy validateClass:@"ETTranscriptColorWheel" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"DTSColorWheel" hasInstanceMethod:@"pickerRotation" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"DTSColorWheel" hasInstanceMethod:@"pickerCircle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DTSColorWheel" hasInstanceMethod:@"colorWheelRadius" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"DTSColorWheel" hasInstanceMethod:@"gradientWidth" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"DTSColorWheel" hasInstanceMethod:@"updatePickerPositionForPoint:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"DTSColorWheel" hasInstanceMethod:@"touchesBegan: withEvent:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"DTSColorWheel" hasInstanceMethod:@"touchesEnded: withEvent:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"DTSColorWheel" hasInstanceMethod:@"touchesCancelled: withEvent:" withFullSignature:{"v", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -36,11 +36,11 @@
   [v3 setAccessibilityIdentifier:@"digital.touch.picker.circle.identifier"];
 }
 
-- (ETTranscriptColorWheelAccessibility)initWithFrame:(CGRect)a3
+- (ETTranscriptColorWheelAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ETTranscriptColorWheelAccessibility;
-  v3 = [(ETTranscriptColorWheelAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ETTranscriptColorWheelAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -50,11 +50,11 @@
   return v4;
 }
 
-- (void)updatePickerPositionForPoint:(CGPoint)a3
+- (void)updatePickerPositionForPoint:(CGPoint)point
 {
   v11.receiver = self;
   v11.super_class = ETTranscriptColorWheelAccessibility;
-  [(ETTranscriptColorWheelAccessibility *)&v11 updatePickerPositionForPoint:a3.x, a3.y];
+  [(ETTranscriptColorWheelAccessibility *)&v11 updatePickerPositionForPoint:point.x, point.y];
   v4 = [(ETTranscriptColorWheelAccessibility *)self safeValueForKey:@"pickerCircle"];
   [(ETTranscriptColorWheelAccessibility *)self _accessibilityOriginalPickerRotation];
   if (v5 > 0.0)
@@ -78,39 +78,39 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  beganCopy = began;
   [(ETTranscriptColorWheelAccessibility *)self safeCGFloatForKey:@"pickerRotation"];
   [(ETTranscriptColorWheelAccessibility *)self _accessibilitySetOriginalPickerRotation:?];
   v8.receiver = self;
   v8.super_class = ETTranscriptColorWheelAccessibility;
-  [(ETTranscriptColorWheelAccessibility *)&v8 touchesBegan:v7 withEvent:v6];
+  [(ETTranscriptColorWheelAccessibility *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = ETTranscriptColorWheelAccessibility;
-  [(ETTranscriptColorWheelAccessibility *)&v5 touchesEnded:a3 withEvent:a4];
+  [(ETTranscriptColorWheelAccessibility *)&v5 touchesEnded:ended withEvent:event];
   [(ETTranscriptColorWheelAccessibility *)self _accessibilitySetOriginalPickerRotation:-1.0];
   [(ETTranscriptColorWheelAccessibility *)self _accessibilitySpeakPickerColor];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = ETTranscriptColorWheelAccessibility;
-  [(ETTranscriptColorWheelAccessibility *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(ETTranscriptColorWheelAccessibility *)&v5 touchesCancelled:cancelled withEvent:event];
   [(ETTranscriptColorWheelAccessibility *)self _accessibilitySetOriginalPickerRotation:-1.0];
   [(ETTranscriptColorWheelAccessibility *)self _accessibilitySpeakPickerColor];
 }
 
-- (void)_accessibilityAdjustColorPickerBy:(double)a3
+- (void)_accessibilityAdjustColorPickerBy:(double)by
 {
   [(ETTranscriptColorWheelAccessibility *)self safeCGFloatForKey:@"pickerRotation"];
-  v6 = v5 + a3;
+  v6 = v5 + by;
   [(ETTranscriptColorWheelAccessibility *)self safeCGFloatForKey:@"colorWheelRadius"];
   v8 = v7;
   [(ETTranscriptColorWheelAccessibility *)self safeCGFloatForKey:@"gradientWidth"];
@@ -141,7 +141,7 @@
 {
   v4 = [(ETTranscriptColorWheelAccessibility *)self safeValueForKey:@"pickerCircle"];
   v2 = [v4 safeValueForKey:@"backgroundColor"];
-  v3 = [v2 axColorStringForSpeaking];
+  axColorStringForSpeaking = [v2 axColorStringForSpeaking];
   UIAccessibilitySpeak();
 }
 

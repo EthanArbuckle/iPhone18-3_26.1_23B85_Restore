@@ -1,15 +1,15 @@
 @interface ANFIssueTableOfContentsViewController
-- (_TtC12NewsArticles37ANFIssueTableOfContentsViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles37ANFIssueTableOfContentsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC12NewsArticles37ANFIssueTableOfContentsViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles37ANFIssueTableOfContentsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ANFIssueTableOfContentsViewController
 
-- (_TtC12NewsArticles37ANFIssueTableOfContentsViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles37ANFIssueTableOfContentsViewController)initWithCoder:(id)coder
 {
   result = sub_1D7D3160C();
   __break(1u);
@@ -18,40 +18,40 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7A784BC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ANFIssueTableOfContentsViewController *)&v5 viewWillAppear:v3];
+  [(ANFIssueTableOfContentsViewController *)&v5 viewWillAppear:appearCopy];
   sub_1D7D2C43C();
   sub_1D7D2A4AC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(ANFIssueTableOfContentsViewController *)&v4 viewDidAppear:v3];
+  [(ANFIssueTableOfContentsViewController *)&v4 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ANFIssueTableOfContentsViewController *)&v5 viewWillDisappear:v3];
+  [(ANFIssueTableOfContentsViewController *)&v5 viewWillDisappear:disappearCopy];
   sub_1D7D2A4EC();
 }
 
-- (_TtC12NewsArticles37ANFIssueTableOfContentsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles37ANFIssueTableOfContentsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

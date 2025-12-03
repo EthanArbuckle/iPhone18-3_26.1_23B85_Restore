@@ -1,24 +1,24 @@
 @interface VCSPropertyValue
 - (NSString)description;
-- (VCSPropertyValue)initWithValue:(id)a3 type:(unint64_t)a4;
+- (VCSPropertyValue)initWithValue:(id)value type:(unint64_t)type;
 - (id)dictify;
 - (id)valueDescription;
-- (void)addParameter:(id)a3 withValue:(id)a4;
+- (void)addParameter:(id)parameter withValue:(id)value;
 @end
 
 @implementation VCSPropertyValue
 
-- (VCSPropertyValue)initWithValue:(id)a3 type:(unint64_t)a4
+- (VCSPropertyValue)initWithValue:(id)value type:(unint64_t)type
 {
-  v7 = a3;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = VCSPropertyValue;
   v8 = [(VCSPropertyValue *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_valueType = a4;
-    objc_storeStrong(&v8->_value, a3);
+    v8->_valueType = type;
+    objc_storeStrong(&v8->_value, value);
     v10 = objc_opt_new();
     parameters = v9->_parameters;
     v9->_parameters = v10;
@@ -27,21 +27,21 @@
   return v9;
 }
 
-- (void)addParameter:(id)a3 withValue:(id)a4
+- (void)addParameter:(id)parameter withValue:(id)value
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  parameterCopy = parameter;
+  valueCopy = value;
+  if (parameterCopy)
   {
     parameters = self->_parameters;
-    if (v6)
+    if (valueCopy)
     {
-      [(NSMutableDictionary *)parameters setObject:v6 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)parameters setObject:valueCopy forKeyedSubscript:parameterCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)parameters removeObjectForKey:v8];
+      [(NSMutableDictionary *)parameters removeObjectForKey:parameterCopy];
     }
   }
 }
@@ -63,8 +63,8 @@
 
   [v3 setObject:v5 forKeyedSubscript:@"valueType"];
 
-  v6 = [(VCSPropertyValue *)self valueDescription];
-  [v3 setObject:v6 forKeyedSubscript:@"value"];
+  valueDescription = [(VCSPropertyValue *)self valueDescription];
+  [v3 setObject:valueDescription forKeyedSubscript:@"value"];
 
   if ([(NSMutableDictionary *)self->_parameters count])
   {
@@ -73,8 +73,8 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [(NSMutableDictionary *)self->_parameters allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    allKeys = [(NSMutableDictionary *)self->_parameters allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -85,16 +85,16 @@
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
           v14 = [(NSMutableDictionary *)self->_parameters objectForKeyedSubscript:v13];
-          v15 = [v14 dictify];
-          [v7 setObject:v15 forKeyedSubscript:v13];
+          dictify = [v14 dictify];
+          [v7 setObject:dictify forKeyedSubscript:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
@@ -112,8 +112,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(VCSPropertyValue *)self dictify];
-  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictify = [(VCSPropertyValue *)self dictify];
+  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, dictify];
 
   return v6;
 }
@@ -127,13 +127,13 @@
     {
       if (!valueType)
       {
-        v3 = stringForEntityStatus([self->_value unsignedIntegerValue]);
+        dictify = stringForEntityStatus([self->_value unsignedIntegerValue]);
         goto LABEL_8;
       }
 
       if (valueType == 1)
       {
-        v3 = stringForEntityTransparency([self->_value unsignedIntegerValue]);
+        dictify = stringForEntityTransparency([self->_value unsignedIntegerValue]);
         goto LABEL_8;
       }
     }
@@ -142,13 +142,13 @@
     {
       if (valueType == 2)
       {
-        v3 = stringForEntityClassification([self->_value unsignedIntegerValue]);
+        dictify = stringForEntityClassification([self->_value unsignedIntegerValue]);
         goto LABEL_8;
       }
 
       if (valueType == 3)
       {
-        v3 = self->_value;
+        dictify = self->_value;
         goto LABEL_8;
       }
     }
@@ -159,9 +159,9 @@
   if ((valueType - 6) < 3)
   {
 LABEL_7:
-    v3 = [self->_value description];
+    dictify = [self->_value description];
 LABEL_8:
-    v4 = v3;
+    v4 = dictify;
     goto LABEL_9;
   }
 
@@ -169,7 +169,7 @@ LABEL_8:
   {
     if (valueType == 9)
     {
-      v3 = [self->_value dictify];
+      dictify = [self->_value dictify];
       goto LABEL_8;
     }
 

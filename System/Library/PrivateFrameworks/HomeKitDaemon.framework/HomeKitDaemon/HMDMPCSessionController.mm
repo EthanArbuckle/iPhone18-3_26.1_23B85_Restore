@@ -1,38 +1,38 @@
 @interface HMDMPCSessionController
-- (HMDMPCSessionController)initWithLogEventSubmitter:(id)a3;
-- (void)executeSessionWithSessionData:(id)a3 completion:(id)a4;
+- (HMDMPCSessionController)initWithLogEventSubmitter:(id)submitter;
+- (void)executeSessionWithSessionData:(id)data completion:(id)completion;
 @end
 
 @implementation HMDMPCSessionController
 
-- (void)executeSessionWithSessionData:(id)a3 completion:(id)a4
+- (void)executeSessionWithSessionData:(id)data completion:(id)completion
 {
   v122 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  obj = a4;
+  dataCopy = data;
+  obj = completion;
   v88 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"HMDMPCSessionCreation"];
-  v86 = self;
-  v84 = v6;
+  selfCopy = self;
+  v84 = dataCopy;
   if (self)
   {
-    v7 = v6;
-    v8 = [v7 mediaProfiles];
-    v9 = [v8 na_map:&__block_literal_global_285381];
+    v7 = dataCopy;
+    mediaProfiles = [v7 mediaProfiles];
+    v9 = [mediaProfiles na_map:&__block_literal_global_285381];
 
     v10 = [HMDMPCSessionControllerExecutionEvent alloc];
-    v11 = [v7 playbackArchive];
-    v12 = [v7 playbackStateNumber];
-    v13 = [v7 playbackVolumeNumber];
-    v14 = [v7 source];
-    v15 = [v7 clientName];
+    playbackArchive = [v7 playbackArchive];
+    playbackStateNumber = [v7 playbackStateNumber];
+    playbackVolumeNumber = [v7 playbackVolumeNumber];
+    source = [v7 source];
+    clientName = [v7 clientName];
 
-    v16 = [v9 allObjects];
-    self = [(HMDMediaPlaybackActionEvent *)v10 initWithIsPlaybackArchivePresent:v11 != 0 playbackStateNumber:v12 volumeNumber:v13 sourceNumber:v14 sourceClientName:v15 accessories:v16];
+    allObjects = [v9 allObjects];
+    self = [(HMDMediaPlaybackActionEvent *)v10 initWithIsPlaybackArchivePresent:playbackArchive != 0 playbackStateNumber:playbackStateNumber volumeNumber:playbackVolumeNumber sourceNumber:source sourceClientName:clientName accessories:allObjects];
   }
 
-  v82 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v17 = objc_autoreleasePoolPush();
-  val = v86;
+  val = selfCopy;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
@@ -40,7 +40,7 @@
     *buf = 138543618;
     v119 = v19;
     v120 = 2112;
-    v121 = v82;
+    v121 = uUID;
     _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Running MPC media session with sessionUUID: %@", buf, 0x16u);
   }
 
@@ -52,16 +52,16 @@
   v81 = v88;
   v105 = v81;
   v106 = val;
-  v80 = self;
-  v107 = v80;
+  selfCopy2 = self;
+  v107 = selfCopy2;
   v79 = obj;
   v108 = v79;
   v83 = _Block_copy(aBlock);
-  v20 = [v84 mediaProfiles];
-  v85 = v20;
-  if (v86)
+  mediaProfiles2 = [v84 mediaProfiles];
+  v85 = mediaProfiles2;
+  if (selfCopy)
   {
-    v87 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v20, "count")}];
+    v87 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(mediaProfiles2, "count")}];
     v111 = 0u;
     v112 = 0u;
     v109 = 0u;
@@ -81,14 +81,14 @@
           }
 
           v24 = *(*(&v109 + 1) + 8 * i);
-          v25 = [v24 accessory];
-          v26 = v25;
-          if (v25 && [v25 providesHashRouteID])
+          accessory = [v24 accessory];
+          v26 = accessory;
+          if (accessory && [accessory providesHashRouteID])
           {
-            v27 = [v26 hashRouteID];
-            if (v27)
+            hashRouteID = [v26 hashRouteID];
+            if (hashRouteID)
             {
-              [v87 addObject:v27];
+              [v87 addObject:hashRouteID];
             }
 
             else
@@ -145,22 +145,22 @@
 
   v37 = v36;
   v38 = v84;
-  if (!v86)
+  if (!selfCopy)
   {
     goto LABEL_43;
   }
 
   if ([v37 count])
   {
-    v39 = [v38 playbackStateNumber];
-    if (v39)
+    playbackStateNumber2 = [v38 playbackStateNumber];
+    if (playbackStateNumber2)
     {
     }
 
     else
     {
-      v41 = [v38 playbackVolumeNumber];
-      v42 = v41 == 0;
+      playbackVolumeNumber2 = [v38 playbackVolumeNumber];
+      v42 = playbackVolumeNumber2 == 0;
 
       if (v42)
       {
@@ -169,11 +169,11 @@
       }
     }
 
-    v43 = [v38 playbackVolumeNumber];
-    if (v43)
+    playbackVolumeNumber3 = [v38 playbackVolumeNumber];
+    if (playbackVolumeNumber3)
     {
-      v44 = [v38 playbackVolumeNumber];
-      [v44 floatValue];
+      playbackVolumeNumber4 = [v38 playbackVolumeNumber];
+      [playbackVolumeNumber4 floatValue];
       if (v45 > 100.0)
       {
 
@@ -182,8 +182,8 @@ LABEL_35:
         goto LABEL_45;
       }
 
-      v46 = [v38 playbackVolumeNumber];
-      [v46 floatValue];
+      playbackVolumeNumber5 = [v38 playbackVolumeNumber];
+      [playbackVolumeNumber5 floatValue];
       v48 = v47 < -0.00000011921;
 
       if (v48)
@@ -192,25 +192,25 @@ LABEL_35:
       }
     }
 
-    v49 = [v38 playbackStateNumber];
-    if (v49)
+    playbackStateNumber3 = [v38 playbackStateNumber];
+    if (playbackStateNumber3)
     {
-      v50 = [v38 playbackStateNumber];
-      if ([v50 integerValue] == 1)
+      playbackStateNumber4 = [v38 playbackStateNumber];
+      if ([playbackStateNumber4 integerValue] == 1)
       {
       }
 
       else
       {
-        v51 = [v38 playbackStateNumber];
-        if ([v51 integerValue] == 2)
+        playbackStateNumber5 = [v38 playbackStateNumber];
+        if ([playbackStateNumber5 integerValue] == 2)
         {
         }
 
         else
         {
-          v52 = [v38 playbackStateNumber];
-          v53 = [v52 integerValue] == 3;
+          playbackStateNumber6 = [v38 playbackStateNumber];
+          v53 = [playbackStateNumber6 integerValue] == 3;
 
           if (!v53)
           {
@@ -244,68 +244,68 @@ LABEL_46:
   v97[2] = __68__HMDMPCSessionController_executeSessionWithSessionData_completion___block_invoke_2;
   v97[3] = &unk_27868A550;
   objc_copyWeak(&v103, buf);
-  v98 = v82;
+  v98 = uUID;
   v102 = v83;
   v99 = v81;
   v55 = v38;
   v100 = v55;
-  v101 = v80;
+  v101 = selfCopy2;
   objb = _Block_copy(v97);
   v56 = @"com.apple.Music";
-  v57 = [v55 playbackArchive];
-  if (v57)
+  playbackArchive2 = [v55 playbackArchive];
+  if (playbackArchive2)
   {
     v58 = 1;
   }
 
   else
   {
-    v59 = [v55 playbackStateNumber];
-    v58 = [v59 integerValue] == 1;
+    playbackStateNumber7 = [v55 playbackStateNumber];
+    v58 = [playbackStateNumber7 integerValue] == 1;
   }
 
-  v60 = [v55 playbackArchive];
-  v61 = v60 == 0;
+  playbackArchive3 = [v55 playbackArchive];
+  v61 = playbackArchive3 == 0;
 
   if (v61)
   {
-    v66 = 0;
-    v67 = @"com.apple.Music";
+    bundleIdentifier2 = 0;
+    playbackArchive5 = @"com.apple.Music";
     v65 = 1;
 LABEL_56:
 
     goto LABEL_57;
   }
 
-  v62 = [v55 playbackArchive];
-  v63 = [v62 bundleIdentifier];
-  v64 = [v63 hasPrefix:@"com.apple.Music"];
+  playbackArchive4 = [v55 playbackArchive];
+  bundleIdentifier = [playbackArchive4 bundleIdentifier];
+  v64 = [bundleIdentifier hasPrefix:@"com.apple.Music"];
 
   if ((v64 & 1) == 0)
   {
-    v67 = [v55 playbackArchive];
-    v66 = [(__CFString *)v67 bundleIdentifier];
+    playbackArchive5 = [v55 playbackArchive];
+    bundleIdentifier2 = [(__CFString *)playbackArchive5 bundleIdentifier];
 
     v65 = 2;
     goto LABEL_56;
   }
 
   v65 = 0;
-  v66 = @"com.apple.Music";
+  bundleIdentifier2 = @"com.apple.Music";
 LABEL_57:
   v68 = [HMDMPCResolveDestinationOperation alloc];
-  v69 = [v55 playbackArchive];
-  v70 = [v69 bundleIdentifier];
-  v71 = [(HMDMPCResolveDestinationOperation *)v68 initWithHashedRouteIDs:v37 mediaApplicationDestination:v65 mediaApplicationIdentifier:v70 forceSingleGroup:v58 completion:objb];
+  playbackArchive6 = [v55 playbackArchive];
+  bundleIdentifier3 = [playbackArchive6 bundleIdentifier];
+  v71 = [(HMDMPCResolveDestinationOperation *)v68 initWithHashedRouteIDs:v37 mediaApplicationDestination:v65 mediaApplicationIdentifier:bundleIdentifier3 forceSingleGroup:v58 completion:objb];
 
   v95 = 0u;
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v72 = [(HMDMPCSessionController *)val speakerGroupCommandOperationQueue];
-  v73 = [v72 operations];
+  speakerGroupCommandOperationQueue = [(HMDMPCSessionController *)val speakerGroupCommandOperationQueue];
+  operations = [speakerGroupCommandOperationQueue operations];
 
-  v74 = [v73 countByEnumeratingWithState:&v93 objects:v113 count:16];
+  v74 = [operations countByEnumeratingWithState:&v93 objects:v113 count:16];
   if (v74)
   {
     v75 = *v94;
@@ -315,20 +315,20 @@ LABEL_57:
       {
         if (*v94 != v75)
         {
-          objc_enumerationMutation(v73);
+          objc_enumerationMutation(operations);
         }
 
         [(HMDMPCResolveDestinationOperation *)v71 addDependency:*(*(&v93 + 1) + 8 * j)];
       }
 
-      v74 = [v73 countByEnumeratingWithState:&v93 objects:v113 count:16];
+      v74 = [operations countByEnumeratingWithState:&v93 objects:v113 count:16];
     }
 
     while (v74);
   }
 
-  v77 = [(HMDMPCSessionController *)val speakerGroupCommandOperationQueue];
-  [v77 addOperation:v71];
+  speakerGroupCommandOperationQueue2 = [(HMDMPCSessionController *)val speakerGroupCommandOperationQueue];
+  [speakerGroupCommandOperationQueue2 addOperation:v71];
 
   objc_destroyWeak(&v103);
   objc_destroyWeak(buf);
@@ -714,9 +714,9 @@ void __138__HMDMPCSessionController_generateMRCommandOperationsForDestination_pl
   [*(a1 + 32) addObject:v4];
 }
 
-- (HMDMPCSessionController)initWithLogEventSubmitter:(id)a3
+- (HMDMPCSessionController)initWithLogEventSubmitter:(id)submitter
 {
-  v5 = a3;
+  submitterCopy = submitter;
   v11.receiver = self;
   v11.super_class = HMDMPCSessionController;
   v6 = [(HMDMPCSessionController *)&v11 init];
@@ -730,7 +730,7 @@ void __138__HMDMPCSessionController_generateMRCommandOperationsForDestination_pl
     v6->_speakerGroupCommandOperationQueue = v7;
     v9 = v7;
 
-    objc_storeStrong(&v6->_logEventSubmitter, a3);
+    objc_storeStrong(&v6->_logEventSubmitter, submitter);
   }
 
   return v6;

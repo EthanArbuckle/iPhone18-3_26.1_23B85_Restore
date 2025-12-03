@@ -1,27 +1,27 @@
 @interface CLRecentLocationsFetchOptions
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFetchOptions:(id)a3;
-- (CLRecentLocationsFetchOptions)initWithCoder:(id)a3;
-- (CLRecentLocationsFetchOptions)initWithDate:(id)a3 machContinuousTimeSeconds:(id)a4 numberOfSeconds:(id)a5 allowDelayedResponse:(BOOL)a6 returnSparseLocations:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFetchOptions:(id)options;
+- (CLRecentLocationsFetchOptions)initWithCoder:(id)coder;
+- (CLRecentLocationsFetchOptions)initWithDate:(id)date machContinuousTimeSeconds:(id)seconds numberOfSeconds:(id)ofSeconds allowDelayedResponse:(BOOL)response returnSparseLocations:(BOOL)locations;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLRecentLocationsFetchOptions
 
-- (CLRecentLocationsFetchOptions)initWithDate:(id)a3 machContinuousTimeSeconds:(id)a4 numberOfSeconds:(id)a5 allowDelayedResponse:(BOOL)a6 returnSparseLocations:(BOOL)a7
+- (CLRecentLocationsFetchOptions)initWithDate:(id)date machContinuousTimeSeconds:(id)seconds numberOfSeconds:(id)ofSeconds allowDelayedResponse:(BOOL)response returnSparseLocations:(BOOL)locations
 {
   v14.receiver = self;
   v14.super_class = CLRecentLocationsFetchOptions;
   v12 = [(CLRecentLocationsFetchOptions *)&v14 init];
   if (v12)
   {
-    v12->_date = a3;
-    v12->_machContinuousTimeSeconds = a4;
-    v12->_numberOfSeconds = a5;
-    v12->_allowDelayedResponse = a6;
-    v12->_returnSparseLocations = a7;
+    v12->_date = date;
+    v12->_machContinuousTimeSeconds = seconds;
+    v12->_numberOfSeconds = ofSeconds;
+    v12->_allowDelayedResponse = response;
+    v12->_returnSparseLocations = locations;
   }
 
   return v12;
@@ -34,14 +34,14 @@
   [(CLRecentLocationsFetchOptions *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -55,7 +55,7 @@
   return MEMORY[0x1EEE66B58](self, sel_isEqualToFetchOptions_);
 }
 
-- (BOOL)isEqualToFetchOptions:(id)a3
+- (BOOL)isEqualToFetchOptions:(id)options
 {
   date = self->_date;
   if (date)
@@ -63,11 +63,11 @@
     goto LABEL_4;
   }
 
-  if ([a3 date])
+  if ([options date])
   {
     date = self->_date;
 LABEL_4:
-    v6 = -[NSDate isEqual:](date, "isEqual:", [a3 date]) ^ 1;
+    v6 = -[NSDate isEqual:](date, "isEqual:", [options date]) ^ 1;
     goto LABEL_5;
   }
 
@@ -77,11 +77,11 @@ LABEL_5:
   if (machContinuousTimeSeconds)
   {
 LABEL_8:
-    v8 = -[NSNumber isEqual:](machContinuousTimeSeconds, "isEqual:", [a3 machContinuousTimeSeconds]) ^ 1;
+    v8 = -[NSNumber isEqual:](machContinuousTimeSeconds, "isEqual:", [options machContinuousTimeSeconds]) ^ 1;
     goto LABEL_9;
   }
 
-  if ([a3 machContinuousTimeSeconds])
+  if ([options machContinuousTimeSeconds])
   {
     machContinuousTimeSeconds = self->_machContinuousTimeSeconds;
     goto LABEL_8;
@@ -92,7 +92,7 @@ LABEL_9:
   numberOfSeconds = self->_numberOfSeconds;
   if (!numberOfSeconds)
   {
-    if (![a3 numberOfSeconds])
+    if (![options numberOfSeconds])
     {
       v10 = 0;
       goto LABEL_13;
@@ -101,38 +101,38 @@ LABEL_9:
     numberOfSeconds = self->_numberOfSeconds;
   }
 
-  v10 = -[NSNumber isEqual:](numberOfSeconds, "isEqual:", [a3 numberOfSeconds]) ^ 1;
+  v10 = -[NSNumber isEqual:](numberOfSeconds, "isEqual:", [options numberOfSeconds]) ^ 1;
 LABEL_13:
   allowDelayedResponse = self->_allowDelayedResponse;
-  v12 = [a3 allowDelayedResponse];
+  allowDelayedResponse = [options allowDelayedResponse];
   returnSparseLocations = self->_returnSparseLocations;
-  v14 = [a3 returnSparseLocations];
+  returnSparseLocations = [options returnSparseLocations];
   result = 0;
   if (((v6 | v8) & 1) == 0 && (v10 & 1) == 0)
   {
-    v16 = v14 & 1;
-    return allowDelayedResponse == v12 && v16 == returnSparseLocations;
+    v16 = returnSparseLocations & 1;
+    return allowDelayedResponse == allowDelayedResponse && v16 == returnSparseLocations;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_date forKey:@"date"];
-  [a3 encodeObject:self->_machContinuousTimeSeconds forKey:@"machContinuousTimeSeconds"];
-  [a3 encodeObject:self->_numberOfSeconds forKey:@"numberOfSeconds"];
-  [a3 encodeBool:self->_allowDelayedResponse forKey:@"allowDelayedResponse"];
+  [coder encodeObject:self->_date forKey:@"date"];
+  [coder encodeObject:self->_machContinuousTimeSeconds forKey:@"machContinuousTimeSeconds"];
+  [coder encodeObject:self->_numberOfSeconds forKey:@"numberOfSeconds"];
+  [coder encodeBool:self->_allowDelayedResponse forKey:@"allowDelayedResponse"];
   returnSparseLocations = self->_returnSparseLocations;
 
-  [a3 encodeBool:returnSparseLocations forKey:@"returnSparseLocations"];
+  [coder encodeBool:returnSparseLocations forKey:@"returnSparseLocations"];
 }
 
-- (CLRecentLocationsFetchOptions)initWithCoder:(id)a3
+- (CLRecentLocationsFetchOptions)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"machContinuousTimeSeconds"];
-  v7 = -[CLRecentLocationsFetchOptions initWithDate:machContinuousTimeSeconds:numberOfSeconds:allowDelayedResponse:returnSparseLocations:](self, "initWithDate:machContinuousTimeSeconds:numberOfSeconds:allowDelayedResponse:returnSparseLocations:", v5, v6, [a3 decodeObjectOfClass:objc_opt_class() forKey:@"numberOfSeconds"], objc_msgSend(a3, "decodeBoolForKey:", @"allowDelayedResponse"), objc_msgSend(a3, "decodeBoolForKey:", @"returnSparseLocations"));
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"machContinuousTimeSeconds"];
+  v7 = -[CLRecentLocationsFetchOptions initWithDate:machContinuousTimeSeconds:numberOfSeconds:allowDelayedResponse:returnSparseLocations:](self, "initWithDate:machContinuousTimeSeconds:numberOfSeconds:allowDelayedResponse:returnSparseLocations:", v5, v6, [coder decodeObjectOfClass:objc_opt_class() forKey:@"numberOfSeconds"], objc_msgSend(coder, "decodeBoolForKey:", @"allowDelayedResponse"), objc_msgSend(coder, "decodeBoolForKey:", @"returnSparseLocations"));
 
   return v7;
 }

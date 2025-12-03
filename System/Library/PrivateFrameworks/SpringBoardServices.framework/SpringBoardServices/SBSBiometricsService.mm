@@ -1,25 +1,25 @@
 @interface SBSBiometricsService
-- (void)_acquireBiometricAssertionOfType:(unsigned __int8)a3 assertionName:(id)a4 reason:(id)a5 completion:(id)a6;
-- (void)fetchUnlockCredentialSetWithCompletion:(id)a3;
+- (void)_acquireBiometricAssertionOfType:(unsigned __int8)type assertionName:(id)name reason:(id)reason completion:(id)completion;
+- (void)fetchUnlockCredentialSetWithCompletion:(id)completion;
 @end
 
 @implementation SBSBiometricsService
 
-- (void)fetchUnlockCredentialSetWithCompletion:(id)a3
+- (void)fetchUnlockCredentialSetWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(SBSAbstractFacilityService *)self callbackQueue];
-    v6 = [(SBSAbstractSystemService *)self client];
+    callbackQueue = [(SBSAbstractFacilityService *)self callbackQueue];
+    client = [(SBSAbstractSystemService *)self client];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __63__SBSBiometricsService_fetchUnlockCredentialSetWithCompletion___block_invoke;
     v8[3] = &unk_1E735F208;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
-    [v6 fetchUnlockCredentialSetWithCompletion:v8];
+    v9 = callbackQueue;
+    v10 = completionCopy;
+    v7 = callbackQueue;
+    [client fetchUnlockCredentialSetWithCompletion:v8];
   }
 }
 
@@ -38,25 +38,25 @@ void __63__SBSBiometricsService_fetchUnlockCredentialSetWithCompletion___block_i
   dispatch_async(v4, v7);
 }
 
-- (void)_acquireBiometricAssertionOfType:(unsigned __int8)a3 assertionName:(id)a4 reason:(id)a5 completion:(id)a6
+- (void)_acquireBiometricAssertionOfType:(unsigned __int8)type assertionName:(id)name reason:(id)reason completion:(id)completion
 {
-  v8 = a3;
+  typeCopy = type;
   v20 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  nameCopy = name;
+  reasonCopy = reason;
+  completionCopy = completion;
   v12 = objc_alloc_init(MEMORY[0x1E698E6C0]);
   if ([v12 isUsable])
   {
     memset(v19, 0, 512);
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v15 = [v14 UUIDString];
-    v16 = [v13 stringWithFormat:@"%@-%@", v15, v10];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    reasonCopy = [v13 stringWithFormat:@"%@-%@", uUIDString, reasonCopy];
 
-    if ([v16 getCString:v19 maxLength:1024 encoding:4] && (v17 = SBSSpringBoardServerPort(), !SBAddBiometricAssertion(v17, v19, objc_msgSend(v12, "port"), v8)))
+    if ([reasonCopy getCString:v19 maxLength:1024 encoding:4] && (v17 = SBSSpringBoardServerPort(), !SBAddBiometricAssertion(v17, v19, objc_msgSend(v12, "port"), typeCopy)))
     {
-      v18 = [[SBSAssertion alloc] initWithAssertionName:v9 reason:v16 receiveRight:v12];
+      v18 = [[SBSAssertion alloc] initWithAssertionName:nameCopy reason:reasonCopy receiveRight:v12];
     }
 
     else
@@ -70,7 +70,7 @@ void __63__SBSBiometricsService_fetchUnlockCredentialSetWithCompletion___block_i
     v18 = 0;
   }
 
-  v11[2](v11, v18);
+  completionCopy[2](completionCopy, v18);
 }
 
 @end

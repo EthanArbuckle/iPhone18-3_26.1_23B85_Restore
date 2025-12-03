@@ -1,5 +1,5 @@
 @interface MRLegacySendHIDEventMessage
-- (MRLegacySendHIDEventMessage)initWithHIDEvent:(__IOHIDEvent *)a3;
+- (MRLegacySendHIDEventMessage)initWithHIDEvent:(__IOHIDEvent *)event;
 - (_MRHIDButtonEvent)buttonEvent;
 - (id)description;
 - (void)dealloc;
@@ -7,19 +7,19 @@
 
 @implementation MRLegacySendHIDEventMessage
 
-- (MRLegacySendHIDEventMessage)initWithHIDEvent:(__IOHIDEvent *)a3
+- (MRLegacySendHIDEventMessage)initWithHIDEvent:(__IOHIDEvent *)event
 {
   v10.receiver = self;
   v10.super_class = MRLegacySendHIDEventMessage;
   v5 = [(MRProtocolMessage *)&v10 init];
   if (v5)
   {
-    if (!a3)
+    if (!event)
     {
       [(MRLegacySendHIDEventMessage *)a2 initWithHIDEvent:v5];
     }
 
-    v5->_event = CFRetain(a3);
+    v5->_event = CFRetain(event);
     v6 = *MEMORY[0x1E695E480];
     Data = IOHIDEventCreateData();
     v8 = objc_alloc_init(_MRSendHIDEventMessageProtobuf);
@@ -45,10 +45,10 @@
 
 - (_MRHIDButtonEvent)buttonEvent
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 hidEventData];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  hidEventData = [underlyingCodableMessage hidEventData];
 
-  if ([v3 length] < 0x30)
+  if ([hidEventData length] < 0x30)
   {
     v6 = 0;
     v7 = 0;
@@ -57,10 +57,10 @@
 
   else
   {
-    v4 = [v3 bytes];
-    v5 = bswap32(*(v4 + 43)) >> 16;
-    v6 = *(v4 + 47) != 0;
-    v7 = (bswap32(*(v4 + 45)) >> 16) << 32;
+    bytes = [hidEventData bytes];
+    v5 = bswap32(*(bytes + 43)) >> 16;
+    v6 = *(bytes + 47) != 0;
+    v7 = (bswap32(*(bytes + 45)) >> 16) << 32;
   }
 
   v8 = v5 | v7;
@@ -75,13 +75,13 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRProtocolMessage *)self timestamp];
-  v6 = [(MRProtocolMessage *)self error];
-  v7 = [(MRProtocolMessage *)self replyIdentifier];
-  v8 = [(MRLegacySendHIDEventMessage *)self type];
-  v9 = [(MRLegacySendHIDEventMessage *)self buttonEvent];
-  v11 = MRHIDButtonEventCopyDescription(v9, v10);
-  v12 = [v3 stringWithFormat:@"\n<Message Type: %@\nTimestamp: %llu\nError: %@\nIdentifier: %@\nType: %lu\nMessage: %@\n>", v4, v5, v6, v7, v8, v11];
+  timestamp = [(MRProtocolMessage *)self timestamp];
+  error = [(MRProtocolMessage *)self error];
+  replyIdentifier = [(MRProtocolMessage *)self replyIdentifier];
+  type = [(MRLegacySendHIDEventMessage *)self type];
+  buttonEvent = [(MRLegacySendHIDEventMessage *)self buttonEvent];
+  v11 = MRHIDButtonEventCopyDescription(buttonEvent, v10);
+  v12 = [v3 stringWithFormat:@"\n<Message Type: %@\nTimestamp: %llu\nError: %@\nIdentifier: %@\nType: %lu\nMessage: %@\n>", v4, timestamp, error, replyIdentifier, type, v11];
 
   return v12;
 }

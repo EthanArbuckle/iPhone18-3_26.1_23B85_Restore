@@ -1,8 +1,8 @@
 @interface NetworkAttachmentAnalytics
 - (NetworkAttachmentAnalytics)init;
-- (id)networkAttachmentsWithId:(id)a3;
-- (id)networkAttachmentsWithIdInSet:(id)a3;
-- (id)networkAttachmentsWithMajorID:(id)a3;
+- (id)networkAttachmentsWithId:(id)id;
+- (id)networkAttachmentsWithIdInSet:(id)set;
+- (id)networkAttachmentsWithMajorID:(id)d;
 @end
 
 @implementation NetworkAttachmentAnalytics
@@ -18,19 +18,19 @@
   return v5;
 }
 
-- (id)networkAttachmentsWithId:(id)a3
+- (id)networkAttachmentsWithId:(id)id
 {
-  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"identifier", a3];
+  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"identifier", id];
   v5 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:v4 sortDesc:0];
 
   return v5;
 }
 
-- (id)networkAttachmentsWithIdInSet:(id)a3
+- (id)networkAttachmentsWithIdInSet:(id)set
 {
-  if (a3)
+  if (set)
   {
-    v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"identifier", a3];
+    v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"identifier", set];
   }
 
   else
@@ -43,10 +43,10 @@
   return v5;
 }
 
-- (id)networkAttachmentsWithMajorID:(id)a3
+- (id)networkAttachmentsWithMajorID:(id)d
 {
   v4 = MEMORY[0x277CCAC30];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-", a3];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-", d];
   v6 = [v4 predicateWithFormat:@"%K BEGINSWITH %@", @"identifier", v5];
 
   v7 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:v6 sortDesc:0];

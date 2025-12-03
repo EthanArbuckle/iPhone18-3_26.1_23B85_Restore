@@ -1,27 +1,27 @@
 @interface CNAutocompleteSearchOperation
-+ (id)operationWithOwner:(id)a3 text:(id)a4 taskID:(id)a5;
++ (id)operationWithOwner:(id)owner text:(id)text taskID:(id)d;
 @end
 
 @implementation CNAutocompleteSearchOperation
 
-+ (id)operationWithOwner:(id)a3 text:(id)a4 taskID:(id)a5
++ (id)operationWithOwner:(id)owner text:(id)text taskID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = objc_alloc_init(a1);
+  ownerCopy = owner;
+  textCopy = text;
+  dCopy = d;
+  v12 = objc_alloc_init(self);
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(v12 + 31, a3);
-    objc_storeStrong(v13 + 32, a5);
-    v14 = [v10 copy];
+    objc_storeStrong(v12 + 31, owner);
+    objc_storeStrong(v13 + 32, d);
+    v14 = [textCopy copy];
     v15 = v13[33];
     v13[33] = v14;
 
-    v16 = [v9 sendingAddress];
+    sendingAddress = [ownerCopy sendingAddress];
     v17 = v13[34];
-    v13[34] = v16;
+    v13[34] = sendingAddress;
   }
 
   return v13;

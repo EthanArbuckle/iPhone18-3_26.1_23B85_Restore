@@ -1,20 +1,20 @@
 @interface CVNLPCaptionDecoderLSTM
-- (CVNLPCaptionDecoderLSTM)initWithOptions:(id)a3 runTimeParams:(id)a4;
-- (id)computeCaptionForImageWithInputs:(id)a3 genderOption:(int)a4;
-- (id)packBeamID:(id)a3 tokenID:(id)a4 lstmAttnState:(id *)a5 lstmLangState:(id *)a6 softmax:(id *)a7;
+- (CVNLPCaptionDecoderLSTM)initWithOptions:(id)options runTimeParams:(id)params;
+- (id)computeCaptionForImageWithInputs:(id)inputs genderOption:(int)option;
+- (id)packBeamID:(id)d tokenID:(id)iD lstmAttnState:(id *)state lstmLangState:(id *)langState softmax:(id *)softmax;
 - (void)dealloc;
-- (void)extractBeamID:(id *)a3 tokenID:(id *)a4 lstmAttnState:(id *)a5 lstmLangState:(id *)a6 fromFollowup:(id)a7;
+- (void)extractBeamID:(id *)d tokenID:(id *)iD lstmAttnState:(id *)state lstmLangState:(id *)langState fromFollowup:(id)followup;
 @end
 
 @implementation CVNLPCaptionDecoderLSTM
 
-- (CVNLPCaptionDecoderLSTM)initWithOptions:(id)a3 runTimeParams:(id)a4
+- (CVNLPCaptionDecoderLSTM)initWithOptions:(id)options runTimeParams:(id)params
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  paramsCopy = params;
   v127.receiver = self;
   v127.super_class = CVNLPCaptionDecoderLSTM;
-  v8 = [(CVNLPCaptionModelBase *)&v127 initWithOptions:v6 runTimeParams:v7];
+  v8 = [(CVNLPCaptionModelBase *)&v127 initWithOptions:optionsCopy runTimeParams:paramsCopy];
   v11 = v8;
   if (v8)
   {
@@ -23,7 +23,7 @@
     v8->maxCaptionLen = 16;
     v8->beamSize = 5;
     v8->meanFeaturesPresent = 0;
-    v124 = objc_msgSend_objectForKeyedSubscript_(v6, v9, CVNLPCaptionModelPath, v10);
+    v124 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v9, CVNLPCaptionModelPath, v10);
     v14 = objc_msgSend_URLByAppendingPathComponent_(v124, v12, @"vocab_reverse.json", v13);
     v15 = MEMORY[0x1E695DEF0];
     v123 = v14;
@@ -190,7 +190,7 @@
 
     v11->vocabSize = objc_msgSend_count(v11->vocab, v60, v61, v62);
     v66 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v63, v64, v65);
-    v69 = objc_msgSend_objectForKeyedSubscript_(v6, v67, CVNLPBeamSearchSize, v68);
+    v69 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v67, CVNLPBeamSearchSize, v68);
     v71 = v69;
     if (v69)
     {
@@ -228,62 +228,62 @@
   [(CVNLPCaptionDecoderLSTM *)&v5 dealloc];
 }
 
-- (id)packBeamID:(id)a3 tokenID:(id)a4 lstmAttnState:(id *)a5 lstmLangState:(id *)a6 softmax:(id *)a7
+- (id)packBeamID:(id)d tokenID:(id)iD lstmAttnState:(id *)state lstmLangState:(id *)langState softmax:(id *)softmax
 {
-  v12 = a3;
-  v13 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v17 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v14, v15, v16);
-  objc_msgSend_setObject_forKeyedSubscript_(v17, v18, v12, CVNLPBeamSearchBeamID);
-  objc_msgSend_setObject_forKeyedSubscript_(v17, v19, v13, CVNLPBeamSearchNextTokenID);
-  if (a7)
+  objc_msgSend_setObject_forKeyedSubscript_(v17, v18, dCopy, CVNLPBeamSearchBeamID);
+  objc_msgSend_setObject_forKeyedSubscript_(v17, v19, iDCopy, CVNLPBeamSearchNextTokenID);
+  if (softmax)
   {
-    v23 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v20, a7->var0, 4 * self->vocabSize);
+    v23 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v20, softmax->var0, 4 * self->vocabSize);
     objc_msgSend_setObject_forKeyedSubscript_(v17, v24, v23, CVNLPBeamSearchNextTokenSoftmaxValues);
   }
 
   v28 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v20, v21, v22);
-  if (a5)
+  if (state)
   {
-    var0 = a5->var0;
-    v30 = *&a5->var12;
-    v60 = *&a5->var10;
+    var0 = state->var0;
+    v30 = *&state->var12;
+    v60 = *&state->var10;
     v61 = v30;
-    v62 = *&a5->var14;
-    v31 = *&a5->var4;
-    v56 = *&a5->var3[2];
+    v62 = *&state->var14;
+    v31 = *&state->var4;
+    v56 = *&state->var3[2];
     v57 = v31;
-    v32 = *&a5->var8;
-    v58 = *&a5->var6;
+    v32 = *&state->var8;
+    v58 = *&state->var6;
     v59 = v32;
-    v33 = *a5->var2;
-    v52 = *&a5->var0;
+    v33 = *state->var2;
+    v52 = *&state->var0;
     v53 = v33;
-    v34 = *a5->var3;
-    v54 = *&a5->var2[2];
+    v34 = *state->var3;
+    v54 = *&state->var2[2];
     v55 = v34;
     v35 = objc_msgSend__blob_size_(self, v25, &v52, v27);
     v37 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v36, var0, 4 * v35);
     objc_msgSend_setObject_forKeyedSubscript_(v28, v38, v37, @"lstmAttnStateData");
   }
 
-  if (a6)
+  if (langState)
   {
-    v39 = a6->var0;
-    v40 = *&a6->var12;
-    v60 = *&a6->var10;
+    v39 = langState->var0;
+    v40 = *&langState->var12;
+    v60 = *&langState->var10;
     v61 = v40;
-    v62 = *&a6->var14;
-    v41 = *&a6->var4;
-    v56 = *&a6->var3[2];
+    v62 = *&langState->var14;
+    v41 = *&langState->var4;
+    v56 = *&langState->var3[2];
     v57 = v41;
-    v42 = *&a6->var8;
-    v58 = *&a6->var6;
+    v42 = *&langState->var8;
+    v58 = *&langState->var6;
     v59 = v42;
-    v43 = *a6->var2;
-    v52 = *&a6->var0;
+    v43 = *langState->var2;
+    v52 = *&langState->var0;
     v53 = v43;
-    v44 = *a6->var3;
-    v54 = *&a6->var2[2];
+    v44 = *langState->var3;
+    v54 = *&langState->var2[2];
     v55 = v44;
     v45 = objc_msgSend__blob_size_(self, v25, &v52, v27);
     v47 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v46, v39, 4 * v45);
@@ -296,31 +296,31 @@
   return v17;
 }
 
-- (void)extractBeamID:(id *)a3 tokenID:(id *)a4 lstmAttnState:(id *)a5 lstmLangState:(id *)a6 fromFollowup:(id)a7
+- (void)extractBeamID:(id *)d tokenID:(id *)iD lstmAttnState:(id *)state lstmLangState:(id *)langState fromFollowup:(id)followup
 {
-  v12 = a7;
-  *a3 = objc_msgSend_objectForKeyedSubscript_(v12, v13, CVNLPBeamSearchBeamID, v14);
-  *a4 = objc_msgSend_objectForKeyedSubscript_(v12, v15, CVNLPBeamSearchNextTokenID, v16);
-  v19 = objc_msgSend_objectForKeyedSubscript_(v12, v17, CVNLPBeamSearchNextTokenMetaData, v18);
+  followupCopy = followup;
+  *d = objc_msgSend_objectForKeyedSubscript_(followupCopy, v13, CVNLPBeamSearchBeamID, v14);
+  *iD = objc_msgSend_objectForKeyedSubscript_(followupCopy, v15, CVNLPBeamSearchNextTokenID, v16);
+  v19 = objc_msgSend_objectForKeyedSubscript_(followupCopy, v17, CVNLPBeamSearchNextTokenMetaData, v18);
   v24 = objc_msgSend_objectForKeyedSubscript_(v19, v20, @"lstmAttnStateData", v21);
   if (v24)
   {
-    var0 = a5->var0;
-    v26 = *&a5->var12;
-    v59 = *&a5->var10;
+    var0 = state->var0;
+    v26 = *&state->var12;
+    v59 = *&state->var10;
     v60 = v26;
-    v61 = *&a5->var14;
-    v27 = *&a5->var4;
-    v55 = *&a5->var3[2];
+    v61 = *&state->var14;
+    v27 = *&state->var4;
+    v55 = *&state->var3[2];
     v56 = v27;
-    v28 = *&a5->var8;
-    v57 = *&a5->var6;
+    v28 = *&state->var8;
+    v57 = *&state->var6;
     v58 = v28;
-    v29 = *a5->var2;
-    v51 = *&a5->var0;
+    v29 = *state->var2;
+    v51 = *&state->var0;
     v52 = v29;
-    v30 = *a5->var3;
-    v53 = *&a5->var2[2];
+    v30 = *state->var3;
+    v53 = *&state->var2[2];
     v54 = v30;
     v31 = objc_msgSend__blob_size_(self, v22, &v51, v23);
     v32 = v24;
@@ -334,22 +334,22 @@
   v38 = objc_msgSend_objectForKeyedSubscript_(v19, v22, @"lstmLangStateData", v23);
   if (v38)
   {
-    v39 = a6->var0;
-    v40 = *&a6->var12;
-    v59 = *&a6->var10;
+    v39 = langState->var0;
+    v40 = *&langState->var12;
+    v59 = *&langState->var10;
     v60 = v40;
-    v61 = *&a6->var14;
-    v41 = *&a6->var4;
-    v55 = *&a6->var3[2];
+    v61 = *&langState->var14;
+    v41 = *&langState->var4;
+    v55 = *&langState->var3[2];
     v56 = v41;
-    v42 = *&a6->var8;
-    v57 = *&a6->var6;
+    v42 = *&langState->var8;
+    v57 = *&langState->var6;
     v58 = v42;
-    v43 = *a6->var2;
-    v51 = *&a6->var0;
+    v43 = *langState->var2;
+    v51 = *&langState->var0;
     v52 = v43;
-    v44 = *a6->var3;
-    v53 = *&a6->var2[2];
+    v44 = *langState->var3;
+    v53 = *&langState->var2[2];
     v54 = v44;
     v45 = objc_msgSend__blob_size_(self, v36, &v51, v37);
     v46 = v38;
@@ -361,14 +361,14 @@
   }
 }
 
-- (id)computeCaptionForImageWithInputs:(id)a3 genderOption:(int)a4
+- (id)computeCaptionForImageWithInputs:(id)inputs genderOption:(int)option
 {
   v184[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v147 = v5;
+  inputsCopy = inputs;
+  v147 = inputsCopy;
   if (self->meanFeaturesPresent)
   {
-    v8 = objc_msgSend_objectAtIndexedSubscript_(v5, v6, 0, v7);
+    v8 = objc_msgSend_objectAtIndexedSubscript_(inputsCopy, v6, 0, v7);
     v9 = v8;
     v13 = objc_msgSend_bytes(v9, v10, v11, v12);
     v14 = *&self->meanFeatsPlaceholderBlob.stride_batch_number;
@@ -389,10 +389,10 @@
     v172 = v18;
     objc_msgSend__copy_data_to_blob_to_(self, v19, v13, &v169);
 
-    v5 = v147;
+    inputsCopy = v147;
   }
 
-  v145 = objc_msgSend_objectAtIndexedSubscript_(v5, v6, 1, v7);
+  v145 = objc_msgSend_objectAtIndexedSubscript_(inputsCopy, v6, 1, v7);
   v20 = v145;
   v24 = objc_msgSend_bytes(v145, v21, v22, v23);
   v25 = *&self->attFeatsPlaceholderBlob.stride_batch_number;

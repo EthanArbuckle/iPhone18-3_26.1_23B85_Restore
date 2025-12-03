@@ -9,17 +9,17 @@
   _DMLogFunc();
   if ([(MCMDMDataMigrator *)self didRestoreFromBackup])
   {
-    v3 = [(MCMDMDataMigrator *)self didMigrateBackupFromDifferentDevice];
+    didMigrateBackupFromDifferentDevice = [(MCMDMDataMigrator *)self didMigrateBackupFromDifferentDevice];
     v4 = 0;
-    v5 = v3 == 0;
-    if (v3)
+    v5 = didMigrateBackupFromDifferentDevice == 0;
+    if (didMigrateBackupFromDifferentDevice)
     {
-      v6 = 3;
+      didUpgrade = 3;
     }
 
     else
     {
-      v6 = 2;
+      didUpgrade = 2;
     }
 
     v7 = @"Restore from the same device";
@@ -28,11 +28,11 @@
 
   else
   {
-    v6 = [(MCMDMDataMigrator *)self didUpgrade];
-    v4 = v6 ^ 1;
+    didUpgrade = [(MCMDMDataMigrator *)self didUpgrade];
+    v4 = didUpgrade ^ 1;
     v7 = @"Device erasure";
     v8 = @"Software update";
-    v5 = v6 == 0;
+    v5 = didUpgrade == 0;
   }
 
   if (!v5)
@@ -43,9 +43,9 @@
   v13 = v7;
   _DMLogFunc();
   v9 = +[UMUserManager sharedManager];
-  v10 = [v9 isSharedIPad];
+  isSharedIPad = [v9 isSharedIPad];
 
-  if (v4 && v10)
+  if (v4 && isSharedIPad)
   {
     _DMLogFunc();
   }
@@ -53,7 +53,7 @@
   else
   {
     v11 = +[MDMClient sharedClient];
-    [v11 migrateMDMWithContext:v6 completion:&stru_4058];
+    [v11 migrateMDMWithContext:didUpgrade completion:&stru_4058];
   }
 
   return 1;

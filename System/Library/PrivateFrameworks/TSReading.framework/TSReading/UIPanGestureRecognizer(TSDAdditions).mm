@@ -6,7 +6,7 @@
 
 - (double)direction
 {
-  [a1 velocityInView:{objc_msgSend(a1, "view")}];
+  [self velocityInView:{objc_msgSend(self, "view")}];
 
   return TSDNormalizePoint(v1, v2);
 }

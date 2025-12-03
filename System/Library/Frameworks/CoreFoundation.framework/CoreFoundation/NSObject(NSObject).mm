@@ -24,14 +24,14 @@
 {
   v2 = objc_opt_class();
   Name = class_getName(v2);
-  v4 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"<%s: %p>", Name, a1);
+  v4 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"<%s: %p>", Name, self);
 
   return _CFAutoreleasePoolAddObject(v4, v4);
 }
 
 + (uint64_t)description
 {
-  Name = class_getName(a1);
+  Name = class_getName(self);
   v2 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%s", Name);
 
   return _CFAutoreleasePoolAddObject(v2, v2);
@@ -40,7 +40,7 @@
 - (CFTypeRef)_copyDescription
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 description];
+  v3 = [self description];
   if (v3)
   {
     v4 = CFRetain(v3);
@@ -68,7 +68,7 @@
 + (CFTypeRef)_copyDescription
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 description];
+  v3 = [self description];
   if (v3)
   {
     v4 = CFRetain(v3);
@@ -166,7 +166,7 @@ LABEL_3:
 
   v7 = "(null selector)";
 LABEL_6:
-  v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"[%s %s]: unrecognized selector sent to instance %p", Name, v7, a1);
+  v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"[%s %s]: unrecognized selector sent to instance %p", Name, v7, self);
   v9 = _CFAutoreleasePoolAddObject(v8, v8);
   strlen(Name);
   is_memory_immutable = _dyld_is_memory_immutable();
@@ -194,13 +194,13 @@ LABEL_6:
     v15 = "(dynamic selector)";
   }
 
-  v16 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:v9 userInfo:0 osLogPack:v17 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0) size:v12, __os_log_helper_1_2_3_8_32_8_32_8_0(v13, v14, v15, a1)];
+  v16 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:v9 userInfo:0 osLogPack:v17 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0) size:v12, __os_log_helper_1_2_3_8_32_8_32_8_0(v13, v14, v15, self)];
   objc_exception_throw(v16);
 }
 
 + (NSMethodSignature)instanceMethodSignatureForSelector:()NSObject
 {
-  if (!name || !__methodDescriptionForSelector(a1, name))
+  if (!name || !__methodDescriptionForSelector(self, name))
   {
     return 0;
   }
@@ -215,7 +215,7 @@ LABEL_6:
     return 0;
   }
 
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (!__methodDescriptionForSelector(Class, a3))
   {
     return 0;
@@ -262,7 +262,7 @@ LABEL_6:
 {
   __CFRecordAllocationEvent();
 
-  return MEMORY[0x1EEE66848](a1);
+  return MEMORY[0x1EEE66848](self);
 }
 
 + (void)__allocWithZone_OA:()NSObject
@@ -281,7 +281,7 @@ LABEL_6:
 - (void)__dealloc_zombie
 {
   name[1] = *MEMORY[0x1E69E9840];
-  if ((a1 & 0x8000000000000000) != 0)
+  if ((self & 0x8000000000000000) != 0)
   {
 LABEL_7:
     v6 = *MEMORY[0x1E69E9840];
@@ -290,7 +290,7 @@ LABEL_7:
 
   if (__CFZombieEnabled)
   {
-    Class = object_getClass(a1);
+    Class = object_getClass(self);
     name[0] = 0;
     v3 = class_getName(Class);
     asprintf(name, "_NSZombie_%s", v3);
@@ -302,11 +302,11 @@ LABEL_7:
     }
 
     free(name[0]);
-    objc_destructInstance(a1);
-    object_setClass(a1, v4);
+    objc_destructInstance(self);
+    object_setClass(self, v4);
     if (__CFDeallocateZombies)
     {
-      free(a1);
+      free(self);
     }
 
     goto LABEL_7;
@@ -321,19 +321,19 @@ LABEL_7:
 {
   if (_CFExecutableLinkedOnOrAfter(6uLL))
   {
-    Name = class_getName(a1);
-    v4 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** +[%s<%p> init]: cannot init a class object.", Name, a1);
+    Name = class_getName(self);
+    v4 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** +[%s<%p> init]: cannot init a class object.", Name, self);
     v5 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(v4 userInfo:v4), 0];
     objc_exception_throw(v5);
   }
 
-  return a1;
+  return self;
 }
 
 + (void)dealloc
 {
-  Name = class_getName(a1);
-  v3 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** +[%s<%p> dealloc]: cannot dealloc a class object.", Name, a1);
+  Name = class_getName(self);
+  v3 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** +[%s<%p> dealloc]: cannot dealloc a class object.", Name, self);
   v4 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(v3 userInfo:v3), 0];
   objc_exception_throw(v4);
 }

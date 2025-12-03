@@ -1,15 +1,15 @@
 @interface HKSelectedRangeLabel
-+ (id)_addChevron:(id)a3 font:(id)a4;
-+ (id)_attributedMultiplePrefixStringForSelectedRangeData:(id)a3 attributedString:(id)a4 font:(id)a5 foregroundColor:(id)a6;
-+ (id)_attributedStringForSelectedRangeData:(id)a3 font:(id)a4 foregroundColor:(id)a5 prefixColor:(id)a6 prefersImageAffixes:(BOOL)a7 embedded:(BOOL)a8;
-+ (id)_stringForSelectedRangeData:(id)a3 embedded:(BOOL)a4;
-+ (id)attributedStringForSelectedRangeData:(id)a3 font:(id)a4 foregroundColor:(id)a5 prefixColor:(id)a6 prefersImageAffixes:(BOOL)a7 embedded:(BOOL)a8;
-+ (id)standardPrefixColorForSelectedRangeData:(id)a3 defaultColor:(id)a4;
++ (id)_addChevron:(id)chevron font:(id)font;
++ (id)_attributedMultiplePrefixStringForSelectedRangeData:(id)data attributedString:(id)string font:(id)font foregroundColor:(id)color;
++ (id)_attributedStringForSelectedRangeData:(id)data font:(id)font foregroundColor:(id)color prefixColor:(id)prefixColor prefersImageAffixes:(BOOL)affixes embedded:(BOOL)embedded;
++ (id)_stringForSelectedRangeData:(id)data embedded:(BOOL)embedded;
++ (id)attributedStringForSelectedRangeData:(id)data font:(id)font foregroundColor:(id)color prefixColor:(id)prefixColor prefersImageAffixes:(BOOL)affixes embedded:(BOOL)embedded;
++ (id)standardPrefixColorForSelectedRangeData:(id)data defaultColor:(id)color;
 - (CGSize)intrinsicContentSize;
 - (HKSelectedRangeLabel)init;
 - (UIEdgeInsets)padding;
-- (void)drawTextInRect:(CGRect)a3;
-- (void)setSelectedRangeData:(id)a3;
+- (void)drawTextInRect:(CGRect)rect;
+- (void)setSelectedRangeData:(id)data;
 @end
 
 @implementation HKSelectedRangeLabel
@@ -29,15 +29,15 @@
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
   top = self->_padding.top;
   left = self->_padding.left;
-  v5 = a3.size.width - (left + self->_padding.right);
-  v6 = a3.size.height - (top + self->_padding.bottom);
+  v5 = rect.size.width - (left + self->_padding.right);
+  v6 = rect.size.height - (top + self->_padding.bottom);
   v7.receiver = self;
   v7.super_class = HKSelectedRangeLabel;
-  [(HKSelectedRangeLabel *)&v7 drawTextInRect:a3.origin.x + left, a3.origin.y + top, v5, v6];
+  [(HKSelectedRangeLabel *)&v7 drawTextInRect:rect.origin.x + left, rect.origin.y + top, v5, v6];
 }
 
 - (CGSize)intrinsicContentSize
@@ -52,31 +52,31 @@
   return result;
 }
 
-- (void)setSelectedRangeData:(id)a3
+- (void)setSelectedRangeData:(id)data
 {
-  v4 = a3;
-  v5 = [(HKSelectedRangeLabel *)self textColor];
-  v9 = [HKSelectedRangeLabel standardPrefixColorForSelectedRangeData:v4 defaultColor:v5];
+  dataCopy = data;
+  textColor = [(HKSelectedRangeLabel *)self textColor];
+  v9 = [HKSelectedRangeLabel standardPrefixColorForSelectedRangeData:dataCopy defaultColor:textColor];
 
-  v6 = [(HKSelectedRangeLabel *)self font];
-  v7 = [(HKSelectedRangeLabel *)self textColor];
-  v8 = +[HKSelectedRangeLabel attributedStringForSelectedRangeData:font:foregroundColor:prefixColor:prefersImageAffixes:embedded:](HKSelectedRangeLabel, "attributedStringForSelectedRangeData:font:foregroundColor:prefixColor:prefersImageAffixes:embedded:", v4, v6, v7, v9, [v4 prefersImageAffixes], 0);
+  font = [(HKSelectedRangeLabel *)self font];
+  textColor2 = [(HKSelectedRangeLabel *)self textColor];
+  v8 = +[HKSelectedRangeLabel attributedStringForSelectedRangeData:font:foregroundColor:prefixColor:prefersImageAffixes:embedded:](HKSelectedRangeLabel, "attributedStringForSelectedRangeData:font:foregroundColor:prefixColor:prefersImageAffixes:embedded:", dataCopy, font, textColor2, v9, [dataCopy prefersImageAffixes], 0);
 
   [(HKSelectedRangeLabel *)self setAttributedText:v8];
 }
 
-+ (id)attributedStringForSelectedRangeData:(id)a3 font:(id)a4 foregroundColor:(id)a5 prefixColor:(id)a6 prefersImageAffixes:(BOOL)a7 embedded:(BOOL)a8
++ (id)attributedStringForSelectedRangeData:(id)data font:(id)font foregroundColor:(id)color prefixColor:(id)prefixColor prefersImageAffixes:(BOOL)affixes embedded:(BOOL)embedded
 {
-  v8 = a8;
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = [a1 _attributedStringForSelectedRangeData:v14 font:v15 foregroundColor:v16 prefixColor:a6 prefersImageAffixes:v9 embedded:v8];
+  embeddedCopy = embedded;
+  affixesCopy = affixes;
+  dataCopy = data;
+  fontCopy = font;
+  colorCopy = color;
+  v17 = [self _attributedStringForSelectedRangeData:dataCopy font:fontCopy foregroundColor:colorCopy prefixColor:prefixColor prefersImageAffixes:affixesCopy embedded:embeddedCopy];
   v18 = v17;
-  if (v9 && v17)
+  if (affixesCopy && v17)
   {
-    v19 = [a1 _attributedMultiplePrefixStringForSelectedRangeData:v14 attributedString:v17 font:v15 foregroundColor:v16];
+    v19 = [self _attributedMultiplePrefixStringForSelectedRangeData:dataCopy attributedString:v17 font:fontCopy foregroundColor:colorCopy];
 
     v18 = v19;
   }
@@ -84,36 +84,36 @@
   return v18;
 }
 
-+ (id)_attributedStringForSelectedRangeData:(id)a3 font:(id)a4 foregroundColor:(id)a5 prefixColor:(id)a6 prefersImageAffixes:(BOOL)a7 embedded:(BOOL)a8
++ (id)_attributedStringForSelectedRangeData:(id)data font:(id)font foregroundColor:(id)color prefixColor:(id)prefixColor prefersImageAffixes:(BOOL)affixes embedded:(BOOL)embedded
 {
-  v8 = a8;
-  v9 = a7;
+  embeddedCopy = embedded;
+  affixesCopy = affixes;
   v37[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  dataCopy = data;
+  fontCopy = font;
+  colorCopy = color;
+  prefixColorCopy = prefixColor;
   v36[0] = *MEMORY[0x1E69DB650];
-  v18 = [v14 titleColorOverride];
-  v19 = v18;
-  if (v18)
+  titleColorOverride = [dataCopy titleColorOverride];
+  v19 = titleColorOverride;
+  if (titleColorOverride)
   {
-    v20 = v18;
+    v20 = titleColorOverride;
   }
 
   else
   {
-    v20 = v16;
+    v20 = colorCopy;
   }
 
   v36[1] = *MEMORY[0x1E69DB648];
   v37[0] = v20;
-  v37[1] = v15;
+  v37[1] = fontCopy;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
 
-  if (v9)
+  if (affixesCopy)
   {
-    v22 = [_WDSelectedRangeIcon iconForData:v14 foregroundColor:v17 compatibleWithFont:v15];
+    v22 = [_WDSelectedRangeIcon iconForData:dataCopy foregroundColor:prefixColorCopy compatibleWithFont:fontCopy];
   }
 
   else
@@ -121,7 +121,7 @@
     v22 = 0;
   }
 
-  v23 = [a1 _stringForSelectedRangeData:v14 embedded:v8];
+  v23 = [self _stringForSelectedRangeData:dataCopy embedded:embeddedCopy];
   if (v23)
   {
     v24 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v23 attributes:v21];
@@ -130,19 +130,19 @@
     {
       v26 = objc_alloc(MEMORY[0x1E696AAB0]);
       [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-      v27 = v34 = v16;
+      v27 = v34 = colorCopy;
       [v27 localizedStringForKey:@"BLOOD_PRESSURE_SYMBOL_SPACE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-      v28 = v33 = v17;
+      v28 = v33 = prefixColorCopy;
       v29 = [v26 initWithString:v28 attributes:v21];
 
-      v16 = v34;
+      colorCopy = v34;
       v35[0] = v22;
       v35[1] = v29;
       v35[2] = v25;
       v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:3];
       v31 = HKUIJoinAttributedStringsForLocale(v30);
 
-      v17 = v33;
+      prefixColorCopy = v33;
       goto LABEL_14;
     }
   }
@@ -166,11 +166,11 @@ LABEL_15:
   return v25;
 }
 
-+ (id)_addChevron:(id)a3 font:(id)a4
++ (id)_addChevron:(id)chevron font:(id)font
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  chevronCopy = chevron;
+  fontCopy = font;
   v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   if ([MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:0] == 1)
   {
@@ -194,13 +194,13 @@ LABEL_15:
     [v10 size];
   }
 
-  [v6 capHeight];
+  [fontCopy capHeight];
   [v11 bounds];
   v14 = v13;
   [v11 bounds];
   [v11 setBounds:v14];
   v15 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v11];
-  v19[0] = v5;
+  v19[0] = chevronCopy;
   v19[1] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v17 = HKUIJoinAttributedStringsForLocale(v16);
@@ -208,18 +208,18 @@ LABEL_15:
   return v17;
 }
 
-+ (id)_attributedMultiplePrefixStringForSelectedRangeData:(id)a3 attributedString:(id)a4 font:(id)a5 foregroundColor:(id)a6
++ (id)_attributedMultiplePrefixStringForSelectedRangeData:(id)data attributedString:(id)string font:(id)font foregroundColor:(id)color
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v34 = a5;
-  v12 = a6;
-  if ([v10 dataType] == 5 && (objc_msgSend(v10, "statisticsType") == 3 || objc_msgSend(v10, "statisticsType") == 5))
+  dataCopy = data;
+  stringCopy = string;
+  fontCopy = font;
+  colorCopy = color;
+  if ([dataCopy dataType] == 5 && (objc_msgSend(dataCopy, "statisticsType") == 3 || objc_msgSend(dataCopy, "statisticsType") == 5))
   {
-    v29 = v11;
-    v30 = v10;
-    v13 = [v11 mutableCopy];
+    v29 = stringCopy;
+    v30 = dataCopy;
+    v13 = [stringCopy mutableCopy];
     v14 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
     [(HKSelectedRangeData *)v14 setDataType:3];
     v15 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
@@ -248,12 +248,12 @@ LABEL_15:
           }
 
           v17 = *(*(&v36 + 1) + 8 * i);
-          v18 = [a1 standardPrefixColorForSelectedRangeData:v17 defaultColor:v12];
-          v19 = [a1 _attributedStringForSelectedRangeData:v17 font:v34 foregroundColor:v12 prefixColor:v18 prefersImageAffixes:1 embedded:1];
-          v20 = [a1 _attributedStringForSelectedRangeData:v17 font:v34 foregroundColor:v12 prefixColor:v18 prefersImageAffixes:0 embedded:1];
-          v21 = [v13 mutableString];
-          v22 = [v20 string];
-          v23 = [v21 rangeOfString:v22];
+          v18 = [self standardPrefixColorForSelectedRangeData:v17 defaultColor:colorCopy];
+          v19 = [self _attributedStringForSelectedRangeData:v17 font:fontCopy foregroundColor:colorCopy prefixColor:v18 prefersImageAffixes:1 embedded:1];
+          v20 = [self _attributedStringForSelectedRangeData:v17 font:fontCopy foregroundColor:colorCopy prefixColor:v18 prefersImageAffixes:0 embedded:1];
+          mutableString = [v13 mutableString];
+          string = [v20 string];
+          v23 = [mutableString rangeOfString:string];
           v25 = v24;
 
           v13 = v33;
@@ -269,119 +269,119 @@ LABEL_15:
       while (v35);
     }
 
-    v11 = v29;
-    v10 = v30;
+    stringCopy = v29;
+    dataCopy = v30;
   }
 
   else
   {
-    v33 = v11;
+    v33 = stringCopy;
   }
 
   return v33;
 }
 
-+ (id)_stringForSelectedRangeData:(id)a3 embedded:(BOOL)a4
++ (id)_stringForSelectedRangeData:(id)data embedded:(BOOL)embedded
 {
-  v4 = a4;
+  embeddedCopy = embedded;
   v51[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 titleOverride];
+  dataCopy = data;
+  titleOverride = [dataCopy titleOverride];
 
-  if (v6)
+  if (titleOverride)
   {
-    v7 = [v5 titleOverride];
+    titleOverride2 = [dataCopy titleOverride];
     goto LABEL_33;
   }
 
-  if ([v5 statisticsType] == 3 && objc_msgSend(v5, "dataType") == 7)
+  if ([dataCopy statisticsType] == 3 && objc_msgSend(dataCopy, "dataType") == 7)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v9 = v8;
+    localizedUppercaseString3 = v8;
     v10 = @"LEFT_AVERAGE_HEARING";
 LABEL_15:
     v11 = @"HealthUI-Localizable";
 LABEL_29:
-    v12 = [v8 localizedStringForKey:v10 value:&stru_1F42FFBE0 table:v11];
-    v13 = [v12 localizedUppercaseString];
+    localizedUppercaseString2 = [v8 localizedStringForKey:v10 value:&stru_1F42FFBE0 table:v11];
+    localizedUppercaseString = [localizedUppercaseString2 localizedUppercaseString];
 LABEL_30:
-    v7 = v13;
+    titleOverride2 = localizedUppercaseString;
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  if ([v5 statisticsType] == 3 && objc_msgSend(v5, "dataType") == 8)
+  if ([dataCopy statisticsType] == 3 && objc_msgSend(dataCopy, "dataType") == 8)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v9 = v8;
+    localizedUppercaseString3 = v8;
     v10 = @"RIGHT_AVERAGE_HEARING";
     goto LABEL_15;
   }
 
-  if ([v5 statisticsType] == 3 && objc_msgSend(v5, "dataType") == 9)
+  if ([dataCopy statisticsType] == 3 && objc_msgSend(dataCopy, "dataType") == 9)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v9 = v8;
+    localizedUppercaseString3 = v8;
     v10 = @"IN_BED_AVERAGE";
     goto LABEL_15;
   }
 
-  if ([v5 statisticsType] == 3 && objc_msgSend(v5, "dataType") == 10)
+  if ([dataCopy statisticsType] == 3 && objc_msgSend(dataCopy, "dataType") == 10)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v9 = v8;
+    localizedUppercaseString3 = v8;
     v10 = @"ASLEEP_AVERAGE";
     goto LABEL_15;
   }
 
-  if ([v5 statisticsType] == 3 && objc_msgSend(v5, "dataType") == 24)
+  if ([dataCopy statisticsType] == 3 && objc_msgSend(dataCopy, "dataType") == 24)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v9 = v8;
+    localizedUppercaseString3 = v8;
     v10 = @"SLEEP_STAGES_ANNOTATION_AVERAGE_AWAKE";
 LABEL_28:
     v11 = @"HealthUI-Localizable-Acacia";
     goto LABEL_29;
   }
 
-  if ([v5 statisticsType] == 3 && objc_msgSend(v5, "dataType") == 25)
+  if ([dataCopy statisticsType] == 3 && objc_msgSend(dataCopy, "dataType") == 25)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v9 = v8;
+    localizedUppercaseString3 = v8;
     v10 = @"SLEEP_STAGES_ANNOTATION_AVERAGE_CORE";
     goto LABEL_28;
   }
 
-  if ([v5 statisticsType] == 3 && objc_msgSend(v5, "dataType") == 26)
+  if ([dataCopy statisticsType] == 3 && objc_msgSend(dataCopy, "dataType") == 26)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v9 = v8;
+    localizedUppercaseString3 = v8;
     v10 = @"SLEEP_STAGES_ANNOTATION_AVERAGE_DEEP";
     goto LABEL_28;
   }
 
-  if ([v5 statisticsType] == 3 && objc_msgSend(v5, "dataType") == 27)
+  if ([dataCopy statisticsType] == 3 && objc_msgSend(dataCopy, "dataType") == 27)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v9 = v8;
+    localizedUppercaseString3 = v8;
     v10 = @"SLEEP_STAGES_ANNOTATION_AVERAGE_REM";
     goto LABEL_28;
   }
 
-  if ([v5 statisticsType] == 3 && objc_msgSend(v5, "dataType") == 5)
+  if ([dataCopy statisticsType] == 3 && objc_msgSend(dataCopy, "dataType") == 5)
   {
     v15 = MEMORY[0x1E696AEC0];
     v16 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v9 = v16;
+    localizedUppercaseString3 = v16;
     v17 = @"AVERAGE_INSULIN_DELIVERY";
   }
 
   else
   {
-    if ([v5 statisticsType] != 5 || objc_msgSend(v5, "dataType") != 5)
+    if ([dataCopy statisticsType] != 5 || objc_msgSend(dataCopy, "dataType") != 5)
     {
-      switch([v5 statisticsType])
+      switch([dataCopy statisticsType])
       {
         case 1:
           v22 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -395,7 +395,7 @@ LABEL_28:
           goto LABEL_85;
         case 3:
           v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-          if (v4)
+          if (embeddedCopy)
           {
             v26 = @"AVERAGE_ABBREVIATED";
             goto LABEL_81;
@@ -425,7 +425,7 @@ LABEL_28:
           goto LABEL_85;
         case 8:
           v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-          if (v4)
+          if (embeddedCopy)
           {
             v26 = @"DAILY_AVERAGE_ABBREVIATED";
             goto LABEL_81;
@@ -450,7 +450,7 @@ LABEL_28:
           goto LABEL_85;
         case 12:
           v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-          if (v4)
+          if (embeddedCopy)
           {
             v26 = @"MONTHLY_AVERAGE_ABBREVIATED";
             goto LABEL_81;
@@ -460,7 +460,7 @@ LABEL_28:
           goto LABEL_158;
         case 13:
           v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-          if (v4)
+          if (embeddedCopy)
           {
             v26 = @"HOURLY_AVERAGE_ABBREVIATED";
             goto LABEL_81;
@@ -470,7 +470,7 @@ LABEL_28:
           goto LABEL_158;
         case 14:
           v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-          if (v4)
+          if (embeddedCopy)
           {
             v26 = @"MINUTE_AVERAGE_ABBREVIATED";
             goto LABEL_81;
@@ -514,9 +514,9 @@ LABEL_28:
         case 21:
           v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
           v27 = [v23 localizedStringForKey:@"SCANDIUM_OVERLAY_LOW_AIR_PRESSURE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Scandium"];
-          v12 = [v27 localizedUppercaseString];
+          localizedUppercaseString2 = [v27 localizedUppercaseString];
 
-          v9 = 0;
+          localizedUppercaseString3 = 0;
           goto LABEL_88;
         case 22:
           v22 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -532,11 +532,11 @@ LABEL_77:
           goto LABEL_86;
         case 24:
           v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-          if (v4)
+          if (embeddedCopy)
           {
             v26 = @"WEEKLY_AVERAGE_ABBREVIATED";
 LABEL_81:
-            v9 = [v23 localizedStringForKey:v26 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+            localizedUppercaseString3 = [v23 localizedStringForKey:v26 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
           }
 
           else
@@ -547,14 +547,14 @@ LABEL_158:
             v22 = v23;
 LABEL_86:
             v28 = [v22 localizedStringForKey:v24 value:&stru_1F42FFBE0 table:v25];
-            v9 = [v28 localizedUppercaseString];
+            localizedUppercaseString3 = [v28 localizedUppercaseString];
           }
 
-          v12 = 0;
+          localizedUppercaseString2 = 0;
 LABEL_88:
 
 LABEL_89:
-          switch([v5 dataType])
+          switch([dataCopy dataType])
           {
             case 1:
               v29 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -568,12 +568,12 @@ LABEL_89:
               goto LABEL_135;
             case 3:
               v40 = 1;
-              v30 = HKUIStringForInsulinDeliveryReasonEmbedded(1, v4);
-              v39 = [v30 localizedUppercaseString];
+              v30 = HKUIStringForInsulinDeliveryReasonEmbedded(1, embeddedCopy);
+              localizedUppercaseString4 = [v30 localizedUppercaseString];
               goto LABEL_138;
             case 4:
-              v30 = HKUIStringForInsulinDeliveryReasonEmbedded(2, v4);
-              v41 = [v30 localizedUppercaseString];
+              v30 = HKUIStringForInsulinDeliveryReasonEmbedded(2, embeddedCopy);
+              localizedUppercaseString5 = [v30 localizedUppercaseString];
               goto LABEL_146;
             case 5:
               v34 = MEMORY[0x1E696AEC0];
@@ -582,9 +582,9 @@ LABEL_89:
               v36 = HKUIStringForInsulinDeliveryReasonEmbedded(1, 1);
               v37 = HKUIStringForInsulinDeliveryReasonEmbedded(2, 1);
               v38 = [v34 stringWithFormat:v35, v36, v37];
-              v39 = [v38 localizedUppercaseString];
+              localizedUppercaseString4 = [v38 localizedUppercaseString];
 
-              v12 = v35;
+              localizedUppercaseString2 = v35;
               v40 = 1;
               goto LABEL_138;
             case 6:
@@ -710,7 +710,7 @@ LABEL_131:
               v43 = @"DOSE_EVENT_CHART_SKIPPED";
 LABEL_133:
               v45 = [v42 localizedStringForKey:v43 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Meds"];
-              v39 = [v45 localizedUppercaseString];
+              localizedUppercaseString4 = [v45 localizedUppercaseString];
 
               v40 = 0;
               goto LABEL_137;
@@ -756,9 +756,9 @@ LABEL_122:
               v30 = v32;
               v33 = @"BALANCE_CHART_WRIST_TEMPERATURE";
 LABEL_145:
-              v41 = [v32 localizedStringForKey:v33 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Balance"];
+              localizedUppercaseString5 = [v32 localizedStringForKey:v33 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Balance"];
 LABEL_146:
-              v39 = v41;
+              localizedUppercaseString4 = localizedUppercaseString5;
               v40 = 1;
               goto LABEL_138;
             case 40:
@@ -791,15 +791,15 @@ LABEL_129:
               v44 = @"HealthUI-Localizable-SleepDetails";
 LABEL_136:
               v45 = [v29 localizedStringForKey:v31 value:&stru_1F42FFBE0 table:v44];
-              v39 = [v45 localizedUppercaseString];
+              localizedUppercaseString4 = [v45 localizedUppercaseString];
 
               v40 = 1;
 LABEL_137:
-              v12 = v45;
+              localizedUppercaseString2 = v45;
 LABEL_138:
 
-              v12 = v39;
-              if (v9)
+              localizedUppercaseString2 = localizedUppercaseString4;
+              if (localizedUppercaseString3)
               {
                 goto LABEL_139;
               }
@@ -807,48 +807,48 @@ LABEL_138:
               goto LABEL_148;
             default:
               v40 = 1;
-              if (!v9)
+              if (!localizedUppercaseString3)
               {
                 goto LABEL_148;
               }
 
 LABEL_139:
-              if (v12)
+              if (localizedUppercaseString2)
               {
                 if (v40)
                 {
-                  v51[0] = v12;
+                  v51[0] = localizedUppercaseString2;
                   v46 = v51;
-                  v47 = v9;
+                  v47 = localizedUppercaseString3;
                 }
 
                 else
                 {
-                  v50 = v9;
+                  v50 = localizedUppercaseString3;
                   v46 = &v50;
-                  v47 = v12;
+                  v47 = localizedUppercaseString2;
                 }
 
                 v46[1] = @" ";
                 v46[2] = v47;
                 v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:? count:?];
-                v7 = HKUIJoinStringsForLocale(v48);
+                titleOverride2 = HKUIJoinStringsForLocale(v48);
 
                 goto LABEL_31;
               }
 
 LABEL_148:
-              if (v9)
+              if (localizedUppercaseString3)
               {
-                v49 = v9;
+                v49 = localizedUppercaseString3;
               }
 
               else
               {
-                v49 = v12;
+                v49 = localizedUppercaseString2;
               }
 
-              v13 = v49;
+              localizedUppercaseString = v49;
               break;
           }
 
@@ -893,8 +893,8 @@ LABEL_85:
           v25 = @"HealthUI-Localizable-Nebula";
           goto LABEL_86;
         default:
-          v9 = 0;
-          v12 = 0;
+          localizedUppercaseString3 = 0;
+          localizedUppercaseString2 = 0;
           goto LABEL_89;
       }
 
@@ -903,7 +903,7 @@ LABEL_85:
 
     v15 = MEMORY[0x1E696AEC0];
     v16 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v9 = v16;
+    localizedUppercaseString3 = v16;
     v17 = @"TOTAL_INSULIN_DELIVERY";
   }
 
@@ -911,27 +911,27 @@ LABEL_85:
   v19 = HKUIStringForInsulinDeliveryReasonEmbedded(1, 1);
   v20 = HKUIStringForInsulinDeliveryReasonEmbedded(2, 1);
   v21 = [v15 stringWithFormat:v18, v19, v20];
-  v7 = [v21 localizedUppercaseString];
+  titleOverride2 = [v21 localizedUppercaseString];
 
 LABEL_32:
 LABEL_33:
 
-  return v7;
+  return titleOverride2;
 }
 
-+ (id)standardPrefixColorForSelectedRangeData:(id)a3 defaultColor:(id)a4
++ (id)standardPrefixColorForSelectedRangeData:(id)data defaultColor:(id)color
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 prefixColor];
+  dataCopy = data;
+  colorCopy = color;
+  prefixColor = [dataCopy prefixColor];
 
-  v8 = v6;
-  if (v7)
+  prefixColor2 = colorCopy;
+  if (prefixColor)
   {
-    v8 = [v5 prefixColor];
+    prefixColor2 = [dataCopy prefixColor];
   }
 
-  switch([v5 dataType])
+  switch([dataCopy dataType])
   {
     case 1:
     case 20:
@@ -939,25 +939,25 @@ LABEL_33:
     case 22:
     case 23:
     case 40:
-      v9 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
       break;
     case 2:
     case 41:
-      v9 = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
+      labelColor = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
       break;
     case 3:
-      v9 = [MEMORY[0x1E69DC888] hk_insulinBasalKeyColor];
+      labelColor = [MEMORY[0x1E69DC888] hk_insulinBasalKeyColor];
       break;
     case 4:
-      v9 = HKHealthKeyColor();
+      labelColor = HKHealthKeyColor();
       break;
     case 9:
-      if (v7)
+      if (prefixColor)
       {
         goto LABEL_16;
       }
 
-      v9 = [MEMORY[0x1E69DC888] hk_sleepInBedColor];
+      labelColor = [MEMORY[0x1E69DC888] hk_sleepInBedColor];
       break;
     case 10:
     case 13:
@@ -967,33 +967,33 @@ LABEL_33:
     case 17:
     case 18:
     case 19:
-      if (v7)
+      if (prefixColor)
       {
         goto LABEL_16;
       }
 
-      v9 = [MEMORY[0x1E69DC888] hk_sleepAsleepColor];
+      labelColor = [MEMORY[0x1E69DC888] hk_sleepAsleepColor];
       break;
     case 11:
     case 12:
-      v9 = [MEMORY[0x1E69DC888] hk_reproductiveHealthKeyColor];
+      labelColor = [MEMORY[0x1E69DC888] hk_reproductiveHealthKeyColor];
       break;
     case 28:
-      v9 = [MEMORY[0x1E69DC888] hk_medicationDoseEventTakenColor];
+      labelColor = [MEMORY[0x1E69DC888] hk_medicationDoseEventTakenColor];
       break;
     case 29:
-      v9 = [MEMORY[0x1E69DC888] hk_medicationDoseEventSkippedColor];
+      labelColor = [MEMORY[0x1E69DC888] hk_medicationDoseEventSkippedColor];
       break;
     default:
       goto LABEL_16;
   }
 
-  v10 = v9;
+  v10 = labelColor;
 
-  v8 = v10;
+  prefixColor2 = v10;
 LABEL_16:
 
-  return v8;
+  return prefixColor2;
 }
 
 - (UIEdgeInsets)padding

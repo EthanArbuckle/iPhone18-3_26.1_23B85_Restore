@@ -1,6 +1,6 @@
 @interface _HDClinicalRecordEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -21,32 +21,32 @@
   v9[9] = @"original_fhir_resource_rowid";
   v9[10] = @"original_signed_clinical_data_rowid";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:11];
-  v4 = [(HDEntityEncoder *)self superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCD110]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCD110]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
     v13 = HDSQLiteColumnWithNameAsString();
-    [v10 _setDisplayName:v13];
+    [objectCopy _setDisplayName:v13];
     if (HDSQLiteColumnWithNameIsNull())
     {
       v14 = 0;
@@ -66,7 +66,7 @@
       v14 = [objc_alloc(MEMORY[0x277CCD3C8]) initWithResourceType:v16 identifier:v17 FHIRVersion:v15 data:v18 sourceURL:v19 lastUpdatedDate:v20];
     }
 
-    [v10 _setFHIRResource:v14];
+    [objectCopy _setFHIRResource:v14];
   }
 
   return v12;

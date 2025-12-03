@@ -1,10 +1,10 @@
 @interface SponsorshipAdFetchActivity
 + (APClientInfo)defaultClientInfo;
 + (APXPCConnection)xpcConnection;
-+ (BOOL)saveWithItems:(id)a3 fetchedUsingContext:(id)a4 error:(id *)a5;
++ (BOOL)saveWithItems:(id)items fetchedUsingContext:(id)context error:(id *)error;
 + (NSArray)defaultRequestTypes;
 + (NSString)appleNewsBundleIdentifier;
-+ (void)isFetchFeatureFlagEnabledWithCompletionHandler:(id)a3;
++ (void)isFetchFeatureFlagEnabledWithCompletionHandler:(id)handler;
 - (_TtC16promotedcontentd26SponsorshipAdFetchActivity)init;
 @end
 
@@ -47,15 +47,15 @@
   return v2;
 }
 
-+ (void)isFetchFeatureFlagEnabledWithCompletionHandler:(id)a3
++ (void)isFetchFeatureFlagEnabledWithCompletionHandler:(id)handler
 {
   v5 = sub_1001E27A8(&qword_1004D70F0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  *(v9 + 24) = a1;
+  *(v9 + 24) = self;
   v10 = sub_100399268();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   v11 = swift_allocObject();
@@ -71,12 +71,12 @@
   sub_1001FAFC8(0, 0, v7, &unk_1003C9CA0, v12);
 }
 
-+ (BOOL)saveWithItems:(id)a3 fetchedUsingContext:(id)a4 error:(id *)a5
++ (BOOL)saveWithItems:(id)items fetchedUsingContext:(id)context error:(id *)error
 {
   sub_100004218(0, &qword_1004D4828);
   v6 = sub_100399198();
-  v7 = a4;
-  sub_1001FBAD4(v6, v7);
+  contextCopy = context;
+  sub_1001FBAD4(v6, contextCopy);
 
   return 1;
 }

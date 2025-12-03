@@ -1,12 +1,12 @@
 @interface BKPanGestureRecognizer
-- (BKPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BKPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (CGPoint)lastLocation;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)startLocationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)startLocationInView:(id)view;
 - (void)dealloc;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation BKPanGestureRecognizer
@@ -21,11 +21,11 @@
   [(BKPanGestureRecognizer *)&v4 dealloc];
 }
 
-- (BKPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (BKPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = BKPanGestureRecognizer;
-  result = [(BKPanGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  result = [(BKPanGestureRecognizer *)&v5 initWithTarget:target action:action];
   if (result)
   {
     result->_rightSideMovementThreshold = 20.0;
@@ -49,10 +49,10 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v8 = _AEPanGRLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -65,9 +65,9 @@
     [(BKPanGestureRecognizer *)self setTrackingTouch:0];
   }
 
-  v9 = [(BKPanGestureRecognizer *)self trackingTouch];
+  trackingTouch = [(BKPanGestureRecognizer *)self trackingTouch];
 
-  if (v9)
+  if (trackingTouch)
   {
     v10 = _AEPanGRLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -83,8 +83,8 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v23 = v6;
-    v11 = v6;
+    v23 = beganCopy;
+    v11 = beganCopy;
     v12 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v12)
     {
@@ -100,9 +100,9 @@
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          v17 = [v16 window];
+          window = [v16 window];
           [v16 locationInView:0];
-          [v17 convertPoint:0 toWindow:?];
+          [window convertPoint:0 toWindow:?];
           v19 = v18;
           v21 = v20;
 
@@ -118,18 +118,18 @@
 
     v24.receiver = self;
     v24.super_class = BKPanGestureRecognizer;
-    [(BKPanGestureRecognizer *)&v24 touchesBegan:v11 withEvent:v7];
-    v6 = v23;
+    [(BKPanGestureRecognizer *)&v24 touchesBegan:v11 withEvent:eventCopy];
+    beganCopy = v23;
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKPanGestureRecognizer *)self trackingTouch];
+  movedCopy = moved;
+  eventCopy = event;
+  trackingTouch = [(BKPanGestureRecognizer *)self trackingTouch];
 
-  if (v8)
+  if (trackingTouch)
   {
     goto LABEL_2;
   }
@@ -138,24 +138,24 @@
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v14 = v6;
+  v14 = movedCopy;
   v15 = [v14 countByEnumeratingWithState:&v64 objects:v72 count:16];
   if (!v15)
   {
 
 LABEL_2:
-    v9 = v6;
+    v9 = movedCopy;
     goto LABEL_3;
   }
 
   v16 = v15;
-  v59 = v7;
-  v60 = v6;
+  v59 = eventCopy;
+  v60 = movedCopy;
   v11 = 0;
   v17 = *v65;
   v18 = 0.0;
   v61 = v14;
-  v62 = self;
+  selfCopy = self;
   do
   {
     for (i = 0; i != v16; i = i + 1)
@@ -173,19 +173,19 @@ LABEL_2:
         [v21 CGPointValue];
         v24 = v23;
         v26 = v25;
-        v27 = [v20 window];
+        window = [v20 window];
         [v20 locationInView:0];
-        [v27 convertPoint:0 fromWindow:?];
+        [window convertPoint:0 fromWindow:?];
         v29 = v28;
         v31 = v30;
 
         v32 = vabdd_f64(v29, v24);
-        v33 = [v20 window];
-        [v33 bounds];
+        window2 = [v20 window];
+        [window2 bounds];
         Width = CGRectGetWidth(v77);
 
-        v35 = [v20 view];
-        [v20 locationInView:v35];
+        view = [v20 view];
+        [v20 locationInView:view];
         v37 = v36;
 
         v38 = &OBJC_IVAR___BKPanGestureRecognizer__rightSideMovementThreshold;
@@ -232,7 +232,7 @@ LABEL_2:
             v11 = v47;
             v14 = v61;
 
-            self = v62;
+            self = selfCopy;
           }
         }
 
@@ -264,7 +264,7 @@ LABEL_2:
             v71 = *&v44;
             _os_log_impl(&dword_0, v41, OS_LOG_TYPE_DEFAULT, "start %@ moved %@", buf, 0x16u);
 
-            self = v62;
+            self = selfCopy;
             v11 = v42;
             v14 = v61;
           }
@@ -288,7 +288,7 @@ LABEL_25:
   while (v16);
 
   v50 = v14;
-  v6 = v60;
+  movedCopy = v60;
   if (!v11)
   {
 LABEL_3:
@@ -296,7 +296,7 @@ LABEL_3:
 
     v11 = 0;
     v12 = 0;
-    v13 = v6;
+    v13 = movedCopy;
     if (v10)
     {
       goto LABEL_37;
@@ -306,9 +306,9 @@ LABEL_3:
   }
 
   v51 = v50;
-  v52 = [(BKPanGestureRecognizer *)self trackingTouch];
+  trackingTouch2 = [(BKPanGestureRecognizer *)self trackingTouch];
 
-  if (!v52)
+  if (!trackingTouch2)
   {
     v53 = _AEPanGRLog();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
@@ -321,11 +321,11 @@ LABEL_3:
     [(BKPanGestureRecognizer *)self setTrackingTouch:v11];
   }
 
-  [(BKPanGestureRecognizer *)self setState:1, v7, v60];
+  [(BKPanGestureRecognizer *)self setState:1, eventCopy, v60];
   v13 = [NSSet setWithObject:v11];
 
-  v54 = [v7 allTouches];
-  v55 = [v54 mutableCopy];
+  allTouches = [eventCopy allTouches];
+  v55 = [allTouches mutableCopy];
 
   [v55 removeObject:v11];
   if ([v55 count])
@@ -340,17 +340,17 @@ LABEL_3:
       _os_log_impl(&dword_0, v56, OS_LOG_TYPE_DEFAULT, "Ending touches %@. Tracking %@", buf, 0x16u);
     }
 
-    [(BKPanGestureRecognizer *)self touchesEnded:v55 withEvent:v7];
+    [(BKPanGestureRecognizer *)self touchesEnded:v55 withEvent:eventCopy];
   }
 
 LABEL_37:
   v63.receiver = self;
   v63.super_class = BKPanGestureRecognizer;
-  [(BKPanGestureRecognizer *)&v63 touchesMoved:v13 withEvent:v7];
+  [(BKPanGestureRecognizer *)&v63 touchesMoved:v13 withEvent:eventCopy];
   v12 = v11;
 LABEL_38:
-  v57 = [(BKPanGestureRecognizer *)self trackingTouch];
-  if (v57)
+  trackingTouch3 = [(BKPanGestureRecognizer *)self trackingTouch];
+  if (trackingTouch3)
   {
   }
 
@@ -359,20 +359,20 @@ LABEL_38:
     [(BKPanGestureRecognizer *)self setTrackingTouch:v12];
   }
 
-  v58 = [(BKPanGestureRecognizer *)self trackingTouch];
+  trackingTouch4 = [(BKPanGestureRecognizer *)self trackingTouch];
 
-  if (v58 && [(BKPanGestureRecognizer *)self numberOfTouches])
+  if (trackingTouch4 && [(BKPanGestureRecognizer *)self numberOfTouches])
   {
     [(BKPanGestureRecognizer *)self locationOfTouch:0 inView:0];
     [(BKPanGestureRecognizer *)self setLastLocation:?];
   }
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(BKPanGestureRecognizer *)self lastLocation];
-  [v4 convertPoint:0 fromView:?];
+  [viewCopy convertPoint:0 fromView:?];
   v6 = v5;
   v8 = v7;
 
@@ -383,14 +383,14 @@ LABEL_38:
   return result;
 }
 
-- (CGPoint)startLocationInView:(id)a3
+- (CGPoint)startLocationInView:(id)view
 {
-  v4 = a3;
-  v5 = [(BKPanGestureRecognizer *)self trackingTouch];
-  v6 = objc_getAssociatedObject(v5, &unk_193938);
+  viewCopy = view;
+  trackingTouch = [(BKPanGestureRecognizer *)self trackingTouch];
+  v6 = objc_getAssociatedObject(trackingTouch, &unk_193938);
 
   [v6 CGPointValue];
-  [v4 convertPoint:0 fromView:?];
+  [viewCopy convertPoint:0 fromView:?];
   v8 = v7;
   v10 = v9;
 

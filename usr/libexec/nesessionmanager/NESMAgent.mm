@@ -1,28 +1,28 @@
 @interface NESMAgent
-- (NESMAgent)initWithPluginType:(id)a3 pluginVersion:(int64_t)a4 pluginClass:(int64_t)a5 pluginInfo:(id)a6 userID:(id)a7;
-- (void)startWithCompletionHandler:(id)a3;
+- (NESMAgent)initWithPluginType:(id)type pluginVersion:(int64_t)version pluginClass:(int64_t)class pluginInfo:(id)info userID:(id)d;
+- (void)startWithCompletionHandler:(id)handler;
 @end
 
 @implementation NESMAgent
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_10000DA38();
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100007090;
   v15 = &unk_1000E96B0;
-  v16 = self;
-  v17 = v4;
-  v6 = v4;
-  v7 = self;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v6 = handlerCopy;
+  selfCopy2 = self;
   v8 = &v12;
   if (v5)
   {
-    if (v7)
+    if (selfCopy2)
     {
-      pluginClass = v7->super._pluginClass;
+      pluginClass = selfCopy2->super._pluginClass;
     }
 
     else
@@ -39,7 +39,7 @@
       block[2] = sub_10000EA84;
       block[3] = &unk_1000E97E8;
       block[4] = v5;
-      v19 = v7;
+      v19 = selfCopy2;
       v20 = v10;
       v21 = v8;
       dispatch_async(v11, block);
@@ -52,11 +52,11 @@
   }
 }
 
-- (NESMAgent)initWithPluginType:(id)a3 pluginVersion:(int64_t)a4 pluginClass:(int64_t)a5 pluginInfo:(id)a6 userID:(id)a7
+- (NESMAgent)initWithPluginType:(id)type pluginVersion:(int64_t)version pluginClass:(int64_t)class pluginInfo:(id)info userID:(id)d
 {
   v8.receiver = self;
   v8.super_class = NESMAgent;
-  return [(NEAgent *)&v8 initWithPluginType:a3 pluginVersion:a4 pluginClass:a5 pluginInfo:a6 userID:a7];
+  return [(NEAgent *)&v8 initWithPluginType:type pluginVersion:version pluginClass:class pluginInfo:info userID:d];
 }
 
 @end

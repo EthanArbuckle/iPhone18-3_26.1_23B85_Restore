@@ -1,15 +1,15 @@
 @interface NSFileManager
-- (BOOL)bc_doesFolderAtURL:(id)a3 containFileAtURL:(id)a4;
-- (BOOL)bc_removeFilesWithExtension:(id)a3 fromDirectory:(id)a4;
-- (BOOL)im_safeLinkItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
+- (BOOL)bc_doesFolderAtURL:(id)l containFileAtURL:(id)rL;
+- (BOOL)bc_removeFilesWithExtension:(id)extension fromDirectory:(id)directory;
+- (BOOL)im_safeLinkItemAtURL:(id)l toURL:(id)rL error:(id *)error;
 @end
 
 @implementation NSFileManager
 
-- (BOOL)im_safeLinkItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)im_safeLinkItemAtURL:(id)l toURL:(id)rL error:(id *)error
 {
-  v7 = a3;
-  v40 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v57 = 0;
   v58 = &v57;
   v59 = 0x3032000000;
@@ -24,12 +24,12 @@
   v56[2] = sub_1581B0;
   v56[3] = &unk_2CE5D0;
   v56[4] = &v57;
-  v39 = self;
-  v9 = [(NSFileManager *)self enumeratorAtURL:v7 includingPropertiesForKeys:v8 options:0 errorHandler:v56];
-  v36 = v7;
+  selfCopy = self;
+  v9 = [(NSFileManager *)self enumeratorAtURL:lCopy includingPropertiesForKeys:v8 options:0 errorHandler:v56];
+  v36 = lCopy;
   v37 = v8;
-  v10 = [v7 path];
-  v11 = [v10 stringByResolvingSymlinksInPath];
+  path = [lCopy path];
+  stringByResolvingSymlinksInPath = [path stringByResolvingSymlinksInPath];
 
   v12 = v58;
   if (!v58[5])
@@ -59,7 +59,7 @@
           [v16 getResourceValue:&v51 forKey:NSURLIsDirectoryKey error:&obj];
           v18 = v51;
           objc_storeStrong(v17 + 5, obj);
-          if (v58[5] || [v18 BOOLValue] && (objc_msgSend(v16, "path"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "im_stringWithPathRelativeTo:", v11), v20 = objc_claimAutoreleasedReturnValue(), v19, objc_msgSend(v40, "URLByAppendingPathComponent:", v20), v21 = objc_claimAutoreleasedReturnValue(), v22 = (v58 + 5), v49 = v58[5], -[NSFileManager createDirectoryAtURL:withIntermediateDirectories:attributes:error:](v39, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v21, 1, 0, &v49), objc_storeStrong(v22, v49), LOBYTE(v22) = v58[5] == 0, v21, v20, (v22 & 1) == 0))
+          if (v58[5] || [v18 BOOLValue] && (objc_msgSend(v16, "path"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "im_stringWithPathRelativeTo:", stringByResolvingSymlinksInPath), v20 = objc_claimAutoreleasedReturnValue(), v19, objc_msgSend(rLCopy, "URLByAppendingPathComponent:", v20), v21 = objc_claimAutoreleasedReturnValue(), v22 = (v58 + 5), v49 = v58[5], -[NSFileManager createDirectoryAtURL:withIntermediateDirectories:attributes:error:](selfCopy, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v21, 1, 0, &v49), objc_storeStrong(v22, v49), LOBYTE(v22) = v58[5] == 0, v21, v20, (v22 & 1) == 0))
           {
 
             goto LABEL_14;
@@ -86,7 +86,7 @@ LABEL_14:
       v48[2] = sub_1581DC;
       v48[3] = &unk_2CE5D0;
       v48[4] = &v57;
-      v23 = [(NSFileManager *)v39 enumeratorAtURL:v36 includingPropertiesForKeys:v37 options:0 errorHandler:v48];
+      v23 = [(NSFileManager *)selfCopy enumeratorAtURL:v36 includingPropertiesForKeys:v37 options:0 errorHandler:v48];
 
       v46 = 0u;
       v47 = 0u;
@@ -113,7 +113,7 @@ LABEL_14:
             [v27 getResourceValue:&v43 forKey:NSURLIsRegularFileKey error:&v42];
             v29 = v43;
             objc_storeStrong(v28 + 5, v42);
-            if (v58[5] || [v29 BOOLValue] && (objc_msgSend(v27, "path"), v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "im_stringWithPathRelativeTo:", v11), v31 = objc_claimAutoreleasedReturnValue(), v30, objc_msgSend(v40, "URLByAppendingPathComponent:", v31), v32 = objc_claimAutoreleasedReturnValue(), v33 = (v58 + 5), v41 = v58[5], -[NSFileManager linkItemAtURL:toURL:error:](v39, "linkItemAtURL:toURL:error:", v27, v32, &v41), objc_storeStrong(v33, v41), LOBYTE(v33) = v58[5] == 0, v32, v31, (v33 & 1) == 0))
+            if (v58[5] || [v29 BOOLValue] && (objc_msgSend(v27, "path"), v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "im_stringWithPathRelativeTo:", stringByResolvingSymlinksInPath), v31 = objc_claimAutoreleasedReturnValue(), v30, objc_msgSend(rLCopy, "URLByAppendingPathComponent:", v31), v32 = objc_claimAutoreleasedReturnValue(), v33 = (v58 + 5), v41 = v58[5], -[NSFileManager linkItemAtURL:toURL:error:](selfCopy, "linkItemAtURL:toURL:error:", v27, v32, &v41), objc_storeStrong(v33, v41), LOBYTE(v33) = v58[5] == 0, v32, v31, (v33 & 1) == 0))
             {
 
               goto LABEL_27;
@@ -136,9 +136,9 @@ LABEL_27:
     }
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v12[5];
+    *error = v12[5];
     v12 = v58;
   }
 
@@ -148,23 +148,23 @@ LABEL_27:
   return v34;
 }
 
-- (BOOL)bc_doesFolderAtURL:(id)a3 containFileAtURL:(id)a4
+- (BOOL)bc_doesFolderAtURL:(id)l containFileAtURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isFileURL] && objc_msgSend(v5, "isFileURL"))
+  lCopy = l;
+  rLCopy = rL;
+  if ([rLCopy isFileURL] && objc_msgSend(lCopy, "isFileURL"))
   {
-    v7 = [v6 path];
-    v8 = [v7 stringByStandardizingPath];
+    path = [rLCopy path];
+    stringByStandardizingPath = [path stringByStandardizingPath];
 
-    v9 = [v8 stringByResolvingSymlinksInPath];
+    stringByResolvingSymlinksInPath = [stringByStandardizingPath stringByResolvingSymlinksInPath];
 
-    v10 = [v5 path];
-    v11 = [v10 stringByStandardizingPath];
+    path2 = [lCopy path];
+    stringByStandardizingPath2 = [path2 stringByStandardizingPath];
 
-    v12 = [v11 stringByResolvingSymlinksInPath];
+    stringByResolvingSymlinksInPath2 = [stringByStandardizingPath2 stringByResolvingSymlinksInPath];
 
-    v13 = [v9 hasPrefix:v12];
+    v13 = [stringByResolvingSymlinksInPath hasPrefix:stringByResolvingSymlinksInPath2];
   }
 
   else
@@ -175,10 +175,10 @@ LABEL_27:
   return v13;
 }
 
-- (BOOL)bc_removeFilesWithExtension:(id)a3 fromDirectory:(id)a4
+- (BOOL)bc_removeFilesWithExtension:(id)extension fromDirectory:(id)directory
 {
-  v6 = a3;
-  v7 = [NSURL fileURLWithPath:a4];
+  extensionCopy = extension;
+  v7 = [NSURL fileURLWithPath:directory];
   v8 = [(NSFileManager *)self enumeratorAtURL:v7 includingPropertiesForKeys:0 options:5 errorHandler:0];
 
   v26 = 0u;
@@ -203,8 +203,8 @@ LABEL_27:
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = [v15 pathExtension];
-        v17 = [v16 isEqualToString:v6];
+        pathExtension = [v15 pathExtension];
+        v17 = [pathExtension isEqualToString:extensionCopy];
 
         if (v17)
         {

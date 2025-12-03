@@ -1,21 +1,21 @@
 @interface SUContinuation
-- (void)sendErrorToDelegate:(id)a3;
+- (void)sendErrorToDelegate:(id)delegate;
 - (void)sendFinishToDelegate;
 @end
 
 @implementation SUContinuation
 
-- (void)sendErrorToDelegate:(id)a3
+- (void)sendErrorToDelegate:(id)delegate
 {
-  v5 = self;
+  selfCopy = self;
   delegate = self->_delegate;
 
-  [(SUContinuationDelegate *)delegate continuation:self failedWithError:a3];
+  [(SUContinuationDelegate *)delegate continuation:self failedWithError:delegate];
 }
 
 - (void)sendFinishToDelegate
 {
-  v3 = self;
+  selfCopy = self;
   delegate = self->_delegate;
 
   [(SUContinuationDelegate *)delegate continuationFinished:self];

@@ -1,26 +1,26 @@
 @interface IAMTriggerKey
-+ (id)nameSpacedKeyNameForName:(id)a3 bundleIdentifier:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (IAMTriggerKey)initWithName:(id)a3 bundleIdentifier:(id)a4;
++ (id)nameSpacedKeyNameForName:(id)name bundleIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (IAMTriggerKey)initWithName:(id)name bundleIdentifier:(id)identifier;
 - (id)description;
 @end
 
 @implementation IAMTriggerKey
 
-- (IAMTriggerKey)initWithName:(id)a3 bundleIdentifier:(id)a4
+- (IAMTriggerKey)initWithName:(id)name bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = IAMTriggerKey;
   v8 = [(IAMTriggerKey *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v11;
   }
@@ -28,13 +28,13 @@
   return v8;
 }
 
-+ (id)nameSpacedKeyNameForName:(id)a3 bundleIdentifier:(id)a4
++ (id)nameSpacedKeyNameForName:(id)name bundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [a3 copy];
-  if (v5)
+  identifierCopy = identifier;
+  v6 = [name copy];
+  if (identifierCopy)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@::%@", v5, v6];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@::%@", identifierCopy, v6];
 
     v6 = v7;
   }
@@ -47,16 +47,16 @@
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(IAMTriggerKey *)self nameSpacedKeyName];
-  v7 = [v3 initWithFormat:@"<%@: %p %@>", v5, self, v6];
+  nameSpacedKeyName = [(IAMTriggerKey *)self nameSpacedKeyName];
+  v7 = [v3 initWithFormat:@"<%@: %p %@>", v5, self, nameSpacedKeyName];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -66,19 +66,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       name = self->_name;
-      v7 = [(IAMTriggerKey *)v5 name];
-      v8 = [(NSString *)name isEqualToString:v7];
+      name = [(IAMTriggerKey *)v5 name];
+      bundleIdentifier = [(NSString *)name isEqualToString:name];
 
-      if (v8)
+      if (bundleIdentifier)
       {
         bundleIdentifier = self->_bundleIdentifier;
         v10 = bundleIdentifier;
         if (!bundleIdentifier)
         {
-          v8 = [(IAMTriggerKey *)v5 bundleIdentifier];
-          if (!v8)
+          bundleIdentifier = [(IAMTriggerKey *)v5 bundleIdentifier];
+          if (!bundleIdentifier)
           {
             v12 = 1;
 LABEL_13:
@@ -89,8 +89,8 @@ LABEL_13:
           v10 = self->_bundleIdentifier;
         }
 
-        v11 = [(IAMTriggerKey *)v5 bundleIdentifier];
-        v12 = [(NSString *)v10 isEqual:v11];
+        bundleIdentifier2 = [(IAMTriggerKey *)v5 bundleIdentifier];
+        v12 = [(NSString *)v10 isEqual:bundleIdentifier2];
 
         if (!bundleIdentifier)
         {

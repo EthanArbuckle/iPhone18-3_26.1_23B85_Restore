@@ -1,21 +1,21 @@
 @interface WFRecordProperty
-- (WFRecordProperty)initWithName:(id)a3 property:(objc_property *)a4;
+- (WFRecordProperty)initWithName:(id)name property:(objc_property *)property;
 @end
 
 @implementation WFRecordProperty
 
-- (WFRecordProperty)initWithName:(id)a3 property:(objc_property *)a4
+- (WFRecordProperty)initWithName:(id)name property:(objc_property *)property
 {
-  v7 = a3;
+  nameCopy = name;
   v29.receiver = self;
   v29.super_class = WFRecordProperty;
   v8 = [(WFRecordProperty *)&v29 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
+    objc_storeStrong(&v8->_name, name);
     outCount = 0;
-    v10 = property_copyAttributeList(a4, &outCount);
+    v10 = property_copyAttributeList(property, &outCount);
     v11 = v10;
     if (outCount)
     {
@@ -85,9 +85,9 @@ LABEL_16:
       v20 = v19;
       if (v18 <= 0x19)
       {
-        v21 = [v19 uppercaseString];
+        uppercaseString = [v19 uppercaseString];
 
-        v20 = v21;
+        v20 = uppercaseString;
       }
 
       v22 = MEMORY[0x1E696AEC0];

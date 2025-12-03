@@ -1,11 +1,11 @@
 @interface HMMTRCommissioningSessionHandler
 + (id)logCategory;
-- (HMMTRCommissioningSessionHandler)initWithClientQueue:(id)a3;
+- (HMMTRCommissioningSessionHandler)initWithClientQueue:(id)queue;
 - (id)logIdentifier;
-- (void)controller:(id)a3 commissioningSessionEstablishmentDone:(id)a4;
-- (void)establishSessionToRemoveFabricWithDeviceController:(id)a3 forControllerParameters:(id)a4 setupPayload:(id)a5 nodeID:(id)a6 allPairedNodeIDs:(id)a7 completion:(id)a8;
-- (void)readFabricsFromDeviceBeingCommissionedWithController:(id)a3 completion:(id)a4;
-- (void)removeFabricFromDeviceBeingCommissionedWithController:(id)a3 fabricIndex:(id)a4 completion:(id)a5;
+- (void)controller:(id)controller commissioningSessionEstablishmentDone:(id)done;
+- (void)establishSessionToRemoveFabricWithDeviceController:(id)controller forControllerParameters:(id)parameters setupPayload:(id)payload nodeID:(id)d allPairedNodeIDs:(id)ds completion:(id)completion;
+- (void)readFabricsFromDeviceBeingCommissionedWithController:(id)controller completion:(id)completion;
+- (void)removeFabricFromDeviceBeingCommissionedWithController:(id)controller fabricIndex:(id)index completion:(id)completion;
 @end
 
 @implementation HMMTRCommissioningSessionHandler
@@ -13,45 +13,45 @@
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMMTRCommissioningSessionHandler *)self nodeID];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  nodeID = [(HMMTRCommissioningSessionHandler *)self nodeID];
+  v4 = [v2 stringWithFormat:@"%@", nodeID];
 
   return v4;
 }
 
-- (void)removeFabricFromDeviceBeingCommissionedWithController:(id)a3 fabricIndex:(id)a4 completion:(id)a5
+- (void)removeFabricFromDeviceBeingCommissionedWithController:(id)controller fabricIndex:(id)index completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMMTRCommissioningSessionHandler *)self nodeID];
+  controllerCopy = controller;
+  indexCopy = index;
+  completionCopy = completion;
+  nodeID = [(HMMTRCommissioningSessionHandler *)self nodeID];
   v26 = 0;
-  v12 = [v8 deviceBeingCommissionedWithNodeID:v11 error:&v26];
+  v12 = [controllerCopy deviceBeingCommissionedWithNodeID:nodeID error:&v26];
   v13 = v26;
 
   if (v12)
   {
     v14 = objc_alloc(MEMORY[0x277CD5208]);
-    v15 = [(HMMTRCommissioningSessionHandler *)self clientQueue];
-    v16 = [v14 initWithDevice:v12 endpointID:&unk_283EE7C68 queue:v15];
+    clientQueue = [(HMMTRCommissioningSessionHandler *)self clientQueue];
+    v16 = [v14 initWithDevice:v12 endpointID:&unk_283EE7C68 queue:clientQueue];
 
     v17 = objc_alloc_init(MEMORY[0x277CD5470]);
-    [v17 setFabricIndex:v9];
+    [v17 setFabricIndex:indexCopy];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __113__HMMTRCommissioningSessionHandler_removeFabricFromDeviceBeingCommissionedWithController_fabricIndex_completion___block_invoke;
     v23[3] = &unk_2786ED910;
     v23[4] = self;
-    v24 = v9;
-    v25 = v10;
+    v24 = indexCopy;
+    v25 = completionCopy;
     [v16 removeFabricWithParams:v17 completion:v23];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -64,7 +64,7 @@
     }
 
     objc_autoreleasePoolPop(v18);
-    (*(v10 + 2))(v10, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -149,31 +149,31 @@ LABEL_9:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readFabricsFromDeviceBeingCommissionedWithController:(id)a3 completion:(id)a4
+- (void)readFabricsFromDeviceBeingCommissionedWithController:(id)controller completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRCommissioningSessionHandler *)self nodeID];
+  controllerCopy = controller;
+  completionCopy = completion;
+  nodeID = [(HMMTRCommissioningSessionHandler *)self nodeID];
   v20 = 0;
-  v9 = [v6 deviceBeingCommissionedWithNodeID:v8 error:&v20];
+  v9 = [controllerCopy deviceBeingCommissionedWithNodeID:nodeID error:&v20];
   v10 = v20;
 
   if (v9)
   {
     v11 = objc_alloc(MEMORY[0x277CD5208]);
-    v12 = [(HMMTRCommissioningSessionHandler *)self clientQueue];
-    v13 = [v11 initWithDevice:v9 endpointID:&unk_283EE7C68 queue:v12];
+    clientQueue = [(HMMTRCommissioningSessionHandler *)self clientQueue];
+    v13 = [v11 initWithDevice:v9 endpointID:&unk_283EE7C68 queue:clientQueue];
 
     v14 = objc_alloc_init(MEMORY[0x277CD54D8]);
     [v14 setFilterByFabric:0];
-    [v13 readAttributeFabricsWithParams:v14 completion:v7];
+    [v13 readAttributeFabricsWithParams:v14 completion:completionCopy];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -186,19 +186,19 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v15);
-    v7[2](v7, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)controller:(id)a3 commissioningSessionEstablishmentDone:(id)a4
+- (void)controller:(id)controller commissioningSessionEstablishmentDone:(id)done
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  doneCopy = done;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -206,40 +206,40 @@ LABEL_9:
     *buf = 138543618;
     v23 = v11;
     v24 = 2112;
-    v25 = v7;
+    v25 = doneCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@Established commissioning session with error %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  if (v7)
+  if (doneCopy)
   {
-    v12 = [(HMMTRCommissioningSessionHandler *)v9 completionHandler];
-    [(HMMTRCommissioningSessionHandler *)v9 setCompletionHandler:0];
-    if (v12)
+    completionHandler = [(HMMTRCommissioningSessionHandler *)selfCopy completionHandler];
+    [(HMMTRCommissioningSessionHandler *)selfCopy setCompletionHandler:0];
+    if (completionHandler)
     {
-      (v12)[2](v12, v7);
+      (completionHandler)[2](completionHandler, doneCopy);
     }
   }
 
   else
   {
-    v13 = [(HMMTRCommissioningSessionHandler *)v9 controllerParametersToRemove];
+    controllerParametersToRemove = [(HMMTRCommissioningSessionHandler *)selfCopy controllerParametersToRemove];
 
-    if (v13)
+    if (controllerParametersToRemove)
     {
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __85__HMMTRCommissioningSessionHandler_controller_commissioningSessionEstablishmentDone___block_invoke;
       v20[3] = &unk_2786EEEC0;
-      v20[4] = v9;
-      v21 = v6;
-      [(HMMTRCommissioningSessionHandler *)v9 readFabricsFromDeviceBeingCommissionedWithController:v21 completion:v20];
+      v20[4] = selfCopy;
+      v21 = controllerCopy;
+      [(HMMTRCommissioningSessionHandler *)selfCopy readFabricsFromDeviceBeingCommissionedWithController:v21 completion:v20];
 
       goto LABEL_9;
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = v9;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -250,12 +250,12 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v15);
-    v12 = [(HMMTRCommissioningSessionHandler *)v16 completionHandler];
+    completionHandler = [(HMMTRCommissioningSessionHandler *)v16 completionHandler];
     [(HMMTRCommissioningSessionHandler *)v16 setCompletionHandler:0];
-    if (v12)
+    if (completionHandler)
     {
       v19 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:3];
-      (v12)[2](v12, v19);
+      (completionHandler)[2](completionHandler, v19);
     }
   }
 
@@ -465,19 +465,19 @@ uint64_t __85__HMMTRCommissioningSessionHandler_controller_commissioningSessionE
   return v4;
 }
 
-- (void)establishSessionToRemoveFabricWithDeviceController:(id)a3 forControllerParameters:(id)a4 setupPayload:(id)a5 nodeID:(id)a6 allPairedNodeIDs:(id)a7 completion:(id)a8
+- (void)establishSessionToRemoveFabricWithDeviceController:(id)controller forControllerParameters:(id)parameters setupPayload:(id)payload nodeID:(id)d allPairedNodeIDs:(id)ds completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  [(HMMTRCommissioningSessionHandler *)self setNodeID:v17];
-  [(HMMTRCommissioningSessionHandler *)self setAllPairedNodeIDs:v18];
+  controllerCopy = controller;
+  parametersCopy = parameters;
+  payloadCopy = payload;
+  dCopy = d;
+  dsCopy = ds;
+  completionCopy = completion;
+  [(HMMTRCommissioningSessionHandler *)self setNodeID:dCopy];
+  [(HMMTRCommissioningSessionHandler *)self setAllPairedNodeIDs:dsCopy];
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
@@ -488,19 +488,19 @@ uint64_t __85__HMMTRCommissioningSessionHandler_controller_commissioningSessionE
   }
 
   objc_autoreleasePoolPop(v20);
-  v24 = [(HMMTRCommissioningSessionHandler *)v21 clientQueue];
-  [v14 setDeviceControllerDelegate:v21 queue:v24];
+  clientQueue = [(HMMTRCommissioningSessionHandler *)selfCopy clientQueue];
+  [controllerCopy setDeviceControllerDelegate:selfCopy queue:clientQueue];
 
-  [(HMMTRCommissioningSessionHandler *)v21 setCompletionHandler:v19];
-  [(HMMTRCommissioningSessionHandler *)v21 setControllerParametersToRemove:v15];
+  [(HMMTRCommissioningSessionHandler *)selfCopy setCompletionHandler:completionCopy];
+  [(HMMTRCommissioningSessionHandler *)selfCopy setControllerParametersToRemove:parametersCopy];
   v36 = 0;
-  [(HMMTRCommissioningSessionHandler *)v21 setUpCommissioningSessionWithDeviceController:v14 payload:v16 newNodeID:v17 error:&v36];
+  [(HMMTRCommissioningSessionHandler *)selfCopy setUpCommissioningSessionWithDeviceController:controllerCopy payload:payloadCopy newNodeID:dCopy error:&v36];
   v25 = v36;
   if (v25)
   {
-    v32 = v15;
+    v32 = parametersCopy;
     v26 = objc_autoreleasePoolPush();
-    v27 = v21;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -516,31 +516,31 @@ uint64_t __85__HMMTRCommissioningSessionHandler_controller_commissioningSessionE
     [(HMMTRCommissioningSessionHandler *)v27 setCompletionHandler:0];
     [(HMMTRCommissioningSessionHandler *)v27 setNodeID:0];
     [(HMMTRCommissioningSessionHandler *)v27 setAllPairedNodeIDs:0];
-    v30 = [(HMMTRCommissioningSessionHandler *)v27 clientQueue];
+    clientQueue2 = [(HMMTRCommissioningSessionHandler *)v27 clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __159__HMMTRCommissioningSessionHandler_establishSessionToRemoveFabricWithDeviceController_forControllerParameters_setupPayload_nodeID_allPairedNodeIDs_completion___block_invoke;
     block[3] = &unk_2786EF5A8;
-    v35 = v19;
+    v35 = completionCopy;
     v34 = v25;
-    dispatch_async(v30, block);
+    dispatch_async(clientQueue2, block);
 
-    v15 = v32;
+    parametersCopy = v32;
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRCommissioningSessionHandler)initWithClientQueue:(id)a3
+- (HMMTRCommissioningSessionHandler)initWithClientQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = HMMTRCommissioningSessionHandler;
   v6 = [(HMMTRCommissioningSessionHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientQueue, a3);
+    objc_storeStrong(&v6->_clientQueue, queue);
   }
 
   return v7;

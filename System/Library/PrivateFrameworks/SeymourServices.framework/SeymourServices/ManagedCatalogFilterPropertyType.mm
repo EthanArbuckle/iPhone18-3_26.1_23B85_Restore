@@ -1,14 +1,14 @@
 @interface ManagedCatalogFilterPropertyType
-- (ManagedCatalogFilterPropertyType)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedCatalogFilterPropertyType)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedCatalogFilterPropertyType
 
-- (ManagedCatalogFilterPropertyType)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedCatalogFilterPropertyType)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedCatalogFilterPropertyType();
-  return [(ManagedCatalogFilterPropertyType *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedCatalogFilterPropertyType *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

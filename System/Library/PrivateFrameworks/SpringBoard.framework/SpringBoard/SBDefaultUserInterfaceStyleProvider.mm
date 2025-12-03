@@ -2,18 +2,18 @@
 - (SBDefaultUserInterfaceStyleProvider)init;
 - (int64_t)currentStyle;
 - (void)_notifyObserversCurrentStyleChanged;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBDefaultUserInterfaceStyleProvider
 
 - (int64_t)currentStyle
 {
-  v2 = [MEMORY[0x277D75CF0] sharedInstance];
-  v3 = [v2 currentStyle];
+  mEMORY[0x277D75CF0] = [MEMORY[0x277D75CF0] sharedInstance];
+  currentStyle = [mEMORY[0x277D75CF0] currentStyle];
 
-  return v3;
+  return currentStyle;
 }
 
 - (SBDefaultUserInterfaceStyleProvider)init
@@ -27,26 +27,26 @@
     observers = v2->_observers;
     v2->_observers = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = *MEMORY[0x277D77250];
-    v7 = [MEMORY[0x277D75CF0] sharedInstance];
-    [v5 addObserver:v2 selector:sel__notifyObserversCurrentStyleChanged name:v6 object:v7];
+    mEMORY[0x277D75CF0] = [MEMORY[0x277D75CF0] sharedInstance];
+    [defaultCenter addObserver:v2 selector:sel__notifyObserversCurrentStyleChanged name:v6 object:mEMORY[0x277D75CF0]];
   }
 
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers addObject:?];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -55,8 +55,8 @@
 - (void)_notifyObserversCurrentStyleChanged
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SBDefaultUserInterfaceStyleProvider *)self currentStyle];
-  v4 = [MEMORY[0x277D679A8] animationSettingsForTransitionToStyle:v3];
+  currentStyle = [(SBDefaultUserInterfaceStyleProvider *)self currentStyle];
+  v4 = [MEMORY[0x277D679A8] animationSettingsForTransitionToStyle:currentStyle];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -77,7 +77,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) userInterfaceStyleProvider:self didUpdateStyle:v3 preferredAnimationSettings:v4 completion:0];
+        [*(*(&v10 + 1) + 8 * v9++) userInterfaceStyleProvider:self didUpdateStyle:currentStyle preferredAnimationSettings:v4 completion:0];
       }
 
       while (v7 != v9);

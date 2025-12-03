@@ -1,46 +1,46 @@
 @interface CDPToolFakeUIProvider
-- (void)cdpContext:(id)a3 promptForAdoptionOfMultipleICSC:(id)a4;
-- (void)cdpContext:(id)a3 promptForBeneficiaryAccessKeyWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForICSCWithIsNumeric:(BOOL)a4 numericLength:(id)a5 isRandom:(BOOL)a6 validator:(id)a7;
-- (void)cdpContext:(id)a3 promptForInteractiveAuthenticationWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForLocalSecretWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithSecretValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 offeringRemoteApproval:(BOOL)a5 validator:(id)a6;
-- (void)cdpRecoveryFlowContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 validator:(id)a5;
-- (void)showCustodianProvidedCodeEntryScreen:(id)a3 controller:(id)a4 validator:(id)a5;
-- (void)startCustodianRecoveryWithContext:(id)a3 validator:(id)a4;
-- (void)validateCode:(id)a3 controller:(id)a4 completion:(id)a5;
+- (void)cdpContext:(id)context promptForAdoptionOfMultipleICSC:(id)c;
+- (void)cdpContext:(id)context promptForBeneficiaryAccessKeyWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForICSCWithIsNumeric:(BOOL)numeric numericLength:(id)length isRandom:(BOOL)random validator:(id)validator;
+- (void)cdpContext:(id)context promptForInteractiveAuthenticationWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForLocalSecretWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForRecoveryKeyWithSecretValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context promptForRecoveryKeyWithValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context promptForRemoteSecretWithDevices:(id)devices offeringRemoteApproval:(BOOL)approval validator:(id)validator;
+- (void)cdpRecoveryFlowContext:(id)context promptForRemoteSecretWithDevices:(id)devices validator:(id)validator;
+- (void)showCustodianProvidedCodeEntryScreen:(id)screen controller:(id)controller validator:(id)validator;
+- (void)startCustodianRecoveryWithContext:(id)context validator:(id)validator;
+- (void)validateCode:(id)code controller:(id)controller completion:(id)completion;
 @end
 
 @implementation CDPToolFakeUIProvider
 
-- (void)cdpContext:(id)a3 promptForLocalSecretWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForLocalSecretWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[CDPLocalDevice sharedInstance];
-  v7 = [v6 hasLocalSecret];
+  hasLocalSecret = [v6 hasLocalSecret];
 
-  if (!v7)
+  if (!hasLocalSecret)
   {
     v13 = 2;
 LABEL_8:
-    v8 = [[CDPLocalSecret alloc] initWithValidatedSecret:self->_localSecret secretType:v13];
-    v5[2](v5, v8, 0);
+    mEMORY[0x1E69ADFB8] = [[CDPLocalSecret alloc] initWithValidatedSecret:self->_localSecret secretType:v13];
+    completionCopy[2](completionCopy, mEMORY[0x1E69ADFB8], 0);
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
   localSecret = self->_localSecret;
   v16 = 0;
-  v10 = [(CDPLocalSecret *)v8 unlockDeviceWithPasscode:localSecret outError:&v16];
+  v10 = [(CDPLocalSecret *)mEMORY[0x1E69ADFB8] unlockDeviceWithPasscode:localSecret outError:&v16];
   v11 = v16;
   v12 = v11;
   if (v10)
   {
     printf("Local secret is set and valid");
     v15 = 0;
-    [(CDPLocalSecret *)v8 unlockScreenTypeWithOutSimplePasscodeType:&v15];
+    [(CDPLocalSecret *)mEMORY[0x1E69ADFB8] unlockScreenTypeWithOutSimplePasscodeType:&v15];
     if (v15 == -1)
     {
       v13 = 3;
@@ -57,20 +57,20 @@ LABEL_8:
   v14 = [v11 description];
   printf("Local secret is invalid, error: %s\n", [v14 UTF8String]);
 
-  if (v5)
+  if (completionCopy)
   {
-    (v5)[2](v5, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
   }
 
 LABEL_12:
 }
 
-- (void)cdpContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 offeringRemoteApproval:(BOOL)a5 validator:(id)a6
+- (void)cdpContext:(id)context promptForRemoteSecretWithDevices:(id)devices offeringRemoteApproval:(BOOL)approval validator:(id)validator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = v11;
+  contextCopy = context;
+  devicesCopy = devices;
+  validatorCopy = validator;
+  v12 = validatorCopy;
   remoteSecret = self->_remoteSecret;
   if (remoteSecret)
   {
@@ -78,8 +78,8 @@ LABEL_12:
     v23[1] = 3221225472;
     v23[2] = __102__CDPToolFakeUIProvider_cdpContext_promptForRemoteSecretWithDevices_offeringRemoteApproval_validator___block_invoke;
     v23[3] = &unk_1E869DDB0;
-    v24 = v11;
-    [v24 validateSecret:remoteSecret devices:v10 type:2 withCompletion:v23];
+    v24 = validatorCopy;
+    [v24 validateSecret:remoteSecret devices:devicesCopy type:2 withCompletion:v23];
     v14 = v24;
   }
 
@@ -95,7 +95,7 @@ LABEL_12:
       v16[3] = &unk_1E869DDD8;
       objc_copyWeak(&v19, &location);
       v17 = v12;
-      v18 = v9;
+      v18 = contextCopy;
       [v17 supportedEscapeOfferMaskCompletion:v16];
 
       objc_destroyWeak(&v19);
@@ -107,7 +107,7 @@ LABEL_12:
     v21[1] = 3221225472;
     v21[2] = __102__CDPToolFakeUIProvider_cdpContext_promptForRemoteSecretWithDevices_offeringRemoteApproval_validator___block_invoke_2;
     v21[3] = &unk_1E869DDB0;
-    v22 = v11;
+    v22 = validatorCopy;
     [v22 validateRecoveryKey:recoveryKey withCompletion:v21];
     v14 = v22;
   }
@@ -164,22 +164,22 @@ LABEL_4:
 LABEL_6:
 }
 
-- (void)startCustodianRecoveryWithContext:(id)a3 validator:(id)a4
+- (void)startCustodianRecoveryWithContext:(id)context validator:(id)validator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[CDPCustodianRecoveryController alloc] initWithContext:v6];
+  contextCopy = context;
+  validatorCopy = validator;
+  v8 = [[CDPCustodianRecoveryController alloc] initWithContext:contextCopy];
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__CDPToolFakeUIProvider_startCustodianRecoveryWithContext_validator___block_invoke;
   v12[3] = &unk_1E869DE00;
   objc_copyWeak(&v16, &location);
-  v9 = v6;
+  v9 = contextCopy;
   v13 = v9;
   v10 = v8;
   v14 = v10;
-  v11 = v7;
+  v11 = validatorCopy;
   v15 = v11;
   [(CDPCustodianRecoveryController *)v10 startRecoverySessionWithCompletion:v12];
 
@@ -208,11 +208,11 @@ void __69__CDPToolFakeUIProvider_startCustodianRecoveryWithContext_validator___b
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)showCustodianProvidedCodeEntryScreen:(id)a3 controller:(id)a4 validator:(id)a5
+- (void)showCustodianProvidedCodeEntryScreen:(id)screen controller:(id)controller validator:(id)validator
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
+  validatorCopy = validator;
+  controllerCopy = controller;
   v9 = _CDPLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -233,9 +233,9 @@ void __69__CDPToolFakeUIProvider_startCustodianRecoveryWithContext_validator___b
   v14[1] = 3221225472;
   v14[2] = __83__CDPToolFakeUIProvider_showCustodianProvidedCodeEntryScreen_controller_validator___block_invoke;
   v14[3] = &unk_1E869DE50;
-  v15 = v7;
-  v12 = v7;
-  [(CDPToolFakeUIProvider *)self validateCode:v10 controller:v8 completion:v14];
+  v15 = validatorCopy;
+  v12 = validatorCopy;
+  [(CDPToolFakeUIProvider *)self validateCode:v10 controller:controllerCopy completion:v14];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -306,11 +306,11 @@ void __83__CDPToolFakeUIProvider_showCustodianProvidedCodeEntryScreen_controller
   }
 }
 
-- (void)validateCode:(id)a3 controller:(id)a4 completion:(id)a5
+- (void)validateCode:(id)code controller:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  controllerCopy = controller;
+  completionCopy = completion;
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -325,11 +325,11 @@ void __83__CDPToolFakeUIProvider_showCustodianProvidedCodeEntryScreen_controller
   v14[2] = __60__CDPToolFakeUIProvider_validateCode_controller_completion___block_invoke;
   v14[3] = &unk_1E869DE78;
   objc_copyWeak(&v17, buf);
-  v12 = v10;
+  v12 = completionCopy;
   v16 = v12;
-  v13 = v9;
+  v13 = controllerCopy;
   v15 = v13;
-  [v13 validateRecoveryCode:v8 withCompletion:v14];
+  [v13 validateRecoveryCode:codeCopy withCompletion:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -388,21 +388,21 @@ void __60__CDPToolFakeUIProvider_validateCode_controller_completion___block_invo
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cdpRecoveryFlowContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 validator:(id)a5
+- (void)cdpRecoveryFlowContext:(id)context promptForRemoteSecretWithDevices:(id)devices validator:(id)validator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [v10 context];
-  v11 = [v10 hasPeersForRemoteApproval];
+  validatorCopy = validator;
+  devicesCopy = devices;
+  contextCopy = context;
+  context = [contextCopy context];
+  hasPeersForRemoteApproval = [contextCopy hasPeersForRemoteApproval];
 
-  [(CDPToolFakeUIProvider *)self cdpContext:v12 promptForRemoteSecretWithDevices:v9 offeringRemoteApproval:v11 validator:v8];
+  [(CDPToolFakeUIProvider *)self cdpContext:context promptForRemoteSecretWithDevices:devicesCopy offeringRemoteApproval:hasPeersForRemoteApproval validator:validatorCopy];
 }
 
-- (void)cdpContext:(id)a3 promptForICSCWithIsNumeric:(BOOL)a4 numericLength:(id)a5 isRandom:(BOOL)a6 validator:(id)a7
+- (void)cdpContext:(id)context promptForICSCWithIsNumeric:(BOOL)numeric numericLength:(id)length isRandom:(BOOL)random validator:(id)validator
 {
-  v8 = a7;
-  v9 = v8;
+  validatorCopy = validator;
+  v9 = validatorCopy;
   icsc = self->_icsc;
   if (icsc)
   {
@@ -410,7 +410,7 @@ void __60__CDPToolFakeUIProvider_validateCode_controller_completion___block_invo
     v11[1] = 3221225472;
     v11[2] = __96__CDPToolFakeUIProvider_cdpContext_promptForICSCWithIsNumeric_numericLength_isRandom_validator___block_invoke;
     v11[3] = &unk_1E869DDB0;
-    v12 = v8;
+    v12 = validatorCopy;
     [v12 validateSecret:icsc devices:0 type:0 withCompletion:v11];
   }
 
@@ -435,54 +435,54 @@ uint64_t __96__CDPToolFakeUIProvider_cdpContext_promptForICSCWithIsNumeric_numer
   return result;
 }
 
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context promptForRecoveryKeyWithValidator:(id)validator completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CDPToolFakeUIProvider *)self recoveryKey];
-  [v8 confirmRecoveryKey:v9 completion:v7];
+  completionCopy = completion;
+  validatorCopy = validator;
+  recoveryKey = [(CDPToolFakeUIProvider *)self recoveryKey];
+  [validatorCopy confirmRecoveryKey:recoveryKey completion:completionCopy];
 }
 
-- (void)cdpContext:(id)a3 promptForAdoptionOfMultipleICSC:(id)a4
+- (void)cdpContext:(id)context promptForAdoptionOfMultipleICSC:(id)c
 {
-  if (a4)
+  if (c)
   {
-    (*(a4 + 2))(a4, 1, 0);
+    (*(c + 2))(c, 1, 0);
   }
 }
 
-- (void)cdpContext:(id)a3 promptForInteractiveAuthenticationWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForInteractiveAuthenticationWithCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)cdpContext:(id)a3 promptForBeneficiaryAccessKeyWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForBeneficiaryAccessKeyWithCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v6 = a4;
-    v7 = [(CDPToolFakeUIProvider *)self accessKey];
-    (*(a4 + 2))(v6, v7, 0);
+    completionCopy = completion;
+    accessKey = [(CDPToolFakeUIProvider *)self accessKey];
+    (*(completion + 2))(completionCopy, accessKey, 0);
   }
 }
 
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithSecretValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context promptForRecoveryKeyWithSecretValidator:(id)validator completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [[CDPRecoveryKeySecretValidatorProxyImpl alloc] initWithRemoteObject:v7];
+  validatorCopy = validator;
+  completionCopy = completion;
+  v9 = [[CDPRecoveryKeySecretValidatorProxyImpl alloc] initWithRemoteObject:validatorCopy];
   recoveryKey = self->_recoveryKey;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__CDPToolFakeUIProvider_cdpContext_promptForRecoveryKeyWithSecretValidator_completion___block_invoke;
   v13[3] = &unk_1E869DBA8;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
+  v14 = validatorCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = validatorCopy;
   [(CDPRecoveryKeySecretValidatorProxyImpl *)v9 validateRecoveryKey:recoveryKey withCompletion:v13];
 }
 

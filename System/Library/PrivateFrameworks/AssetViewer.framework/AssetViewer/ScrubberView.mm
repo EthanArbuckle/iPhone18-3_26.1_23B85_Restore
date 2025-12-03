@@ -1,12 +1,12 @@
 @interface ScrubberView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (void)didScrub:(id)a3;
-- (void)handlePlayPauseButton:(id)a3;
-- (void)handleSkipBackButton:(id)a3;
-- (void)handleSkipForwardButton:(id)a3;
+- (void)didScrub:(id)scrub;
+- (void)handlePlayPauseButton:(id)button;
+- (void)handleSkipBackButton:(id)button;
+- (void)handleSkipForwardButton:(id)button;
 - (void)layoutSubviews;
-- (void)startScrubbing:(id)a3;
-- (void)stopScrubbing:(id)a3;
+- (void)startScrubbing:(id)scrubbing;
+- (void)stopScrubbing:(id)scrubbing;
 - (void)updateTimeLabelFonts;
 @end
 
@@ -44,51 +44,51 @@
   return result;
 }
 
-- (void)handlePlayPauseButton:(id)a3
+- (void)handlePlayPauseButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_241286DD4();
 }
 
-- (void)handleSkipBackButton:(id)a3
+- (void)handleSkipBackButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_241286E4C();
 }
 
-- (void)handleSkipForwardButton:(id)a3
+- (void)handleSkipForwardButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_241286FB0();
 }
 
 - (void)updateTimeLabelFonts
 {
-  v2 = self;
+  selfCopy = self;
   sub_241284A74();
 }
 
-- (void)startScrubbing:(id)a3
+- (void)startScrubbing:(id)scrubbing
 {
-  v4 = a3;
-  v5 = self;
+  scrubbingCopy = scrubbing;
+  selfCopy = self;
   sub_24128710C();
 }
 
-- (void)didScrub:(id)a3
+- (void)didScrub:(id)scrub
 {
-  v4 = a3;
-  v5 = self;
-  sub_241284C8C(v4);
+  scrubCopy = scrub;
+  selfCopy = self;
+  sub_241284C8C(scrubCopy);
 }
 
-- (void)stopScrubbing:(id)a3
+- (void)stopScrubbing:(id)scrubbing
 {
-  v4 = a3;
-  v5 = self;
+  scrubbingCopy = scrubbing;
+  selfCopy = self;
   sub_241287250();
 }
 

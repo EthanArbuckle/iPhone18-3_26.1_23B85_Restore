@@ -1,63 +1,63 @@
 @interface _LTSpeechRecognizer
-- (_LTSpeechRecognizer)initWithModelURL:(id)a3 language:(id)a4 modelVersion:(id)a5 taskHint:(int64_t)a6;
-- (void)_recognizedResult:(id)a3 error:(id)a4;
-- (void)addSpeechAudioData:(id)a3;
+- (_LTSpeechRecognizer)initWithModelURL:(id)l language:(id)language modelVersion:(id)version taskHint:(int64_t)hint;
+- (void)_recognizedResult:(id)result error:(id)error;
+- (void)addSpeechAudioData:(id)data;
 - (void)cancelRecognition;
 - (void)endAudio;
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResultPackage:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4;
-- (void)startRecognitionWithAutoStop:(BOOL)a3 enableStreamingSpeechTranslation:(BOOL)a4 resultHandler:(id)a5;
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error;
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResultPackage:(id)package;
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result;
+- (void)startRecognitionWithAutoStop:(BOOL)stop enableStreamingSpeechTranslation:(BOOL)translation resultHandler:(id)handler;
 - (void)triggerServerSideEndPointer;
 @end
 
 @implementation _LTSpeechRecognizer
 
-- (_LTSpeechRecognizer)initWithModelURL:(id)a3 language:(id)a4 modelVersion:(id)a5 taskHint:(int64_t)a6
+- (_LTSpeechRecognizer)initWithModelURL:(id)l language:(id)language modelVersion:(id)version taskHint:(int64_t)hint
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  lCopy = l;
+  languageCopy = language;
+  versionCopy = version;
   v46.receiver = self;
   v46.super_class = _LTSpeechRecognizer;
   v14 = [(_LTSpeechRecognizer *)&v46 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_modelURL, a3);
-    objc_storeStrong(&v15->_modelVersion, a5);
-    objc_storeStrong(&v15->_language, a4);
-    v15->_taskHint = a6;
+    objc_storeStrong(&v14->_modelURL, l);
+    objc_storeStrong(&v15->_modelVersion, version);
+    objc_storeStrong(&v15->_language, language);
+    v15->_taskHint = hint;
     v16 = dispatch_queue_create("com.apple.translation.speech", 0);
     recognitionQueue = v15->_recognitionQueue;
     v15->_recognitionQueue = v16;
 
-    v18 = [v11 URLByAppendingPathComponent:@"mini.json"];
-    v19 = [MEMORY[0x277CBEBD0] lt_appGroupDefaults];
-    v20 = [v19 lt_asrModels];
-    v21 = [v12 localeIdentifier];
-    v22 = [v20 objectForKey:v21];
+    v18 = [lCopy URLByAppendingPathComponent:@"mini.json"];
+    lt_appGroupDefaults = [MEMORY[0x277CBEBD0] lt_appGroupDefaults];
+    lt_asrModels = [lt_appGroupDefaults lt_asrModels];
+    localeIdentifier = [languageCopy localeIdentifier];
+    v22 = [lt_asrModels objectForKey:localeIdentifier];
     v23 = v22;
     v45 = v18;
     if (v22)
     {
-      v24 = v22;
+      path = v22;
     }
 
     else
     {
-      v24 = [v18 path];
+      path = [v18 path];
     }
 
-    v25 = v24;
+    v25 = path;
 
     v26 = [objc_opt_class() supportedByQuasarConfig:v25];
-    v27 = [MEMORY[0x277CBEBD0] lt_appGroupDefaults];
-    v28 = [v27 lt_overrides];
+    lt_appGroupDefaults2 = [MEMORY[0x277CBEBD0] lt_appGroupDefaults];
+    lt_overrides = [lt_appGroupDefaults2 lt_overrides];
 
-    if ([v28 count])
+    if ([lt_overrides count])
     {
-      v29 = v28;
+      v29 = lt_overrides;
     }
 
     else
@@ -99,8 +99,8 @@
         [_LTSpeechRecognizer initWithModelURL:v31 language:? modelVersion:? taskHint:?];
       }
 
-      v36 = [v11 path];
-      recognizer = [v36 stringByAppendingPathComponent:@"ncs"];
+      path2 = [lCopy path];
+      recognizer = [path2 stringByAppendingPathComponent:@"ncs"];
 
       v38 = [recognizer stringByAppendingPathComponent:@"dispatch.voc"];
       v39 = [recognizer stringByAppendingPathComponent:@"lexicon.enh"];
@@ -116,9 +116,9 @@
   return v15;
 }
 
-- (void)startRecognitionWithAutoStop:(BOOL)a3 enableStreamingSpeechTranslation:(BOOL)a4 resultHandler:(id)a5
+- (void)startRecognitionWithAutoStop:(BOOL)stop enableStreamingSpeechTranslation:(BOOL)translation resultHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   recognitionQueue = self->_recognitionQueue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -126,19 +126,19 @@
   v11[2] = __99___LTSpeechRecognizer_startRecognitionWithAutoStop_enableStreamingSpeechTranslation_resultHandler___block_invoke;
   v11[3] = &unk_2789B7BD0;
   objc_copyWeak(&v13, &location);
-  v14 = a4;
-  v12 = v8;
-  v15 = a3;
-  v10 = v8;
+  translationCopy = translation;
+  v12 = handlerCopy;
+  stopCopy = stop;
+  v10 = handlerCopy;
   dispatch_async(recognitionQueue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)addSpeechAudioData:(id)a3
+- (void)addSpeechAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_initWeak(&location, self);
   recognitionQueue = self->_recognitionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -146,8 +146,8 @@
   block[2] = __42___LTSpeechRecognizer_addSpeechAudioData___block_invoke;
   block[3] = &unk_2789B5288;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(recognitionQueue, block);
 
   objc_destroyWeak(&v9);
@@ -196,19 +196,19 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_recognizedResult:(id)a3 error:(id)a4
+- (void)_recognizedResult:(id)result error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
+  resultCopy = result;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_recognitionQueue);
-  v7 = [(_LTSpeechRecognizer *)self recognitionHandler];
+  recognitionHandler = [(_LTSpeechRecognizer *)self recognitionHandler];
 
-  if (v7)
+  if (recognitionHandler)
   {
-    v8 = [(_LTSpeechRecognizer *)self recognitionHandler];
-    (v8)[2](v8, v10, v6);
+    recognitionHandler2 = [(_LTSpeechRecognizer *)self recognitionHandler];
+    (recognitionHandler2)[2](recognitionHandler2, resultCopy, errorCopy);
 
-    if (v6 || v10 && [v10 isFinal])
+    if (errorCopy || resultCopy && [resultCopy isFinal])
     {
       recognitionHandler = self->_recognitionHandler;
       self->_recognitionHandler = 0;
@@ -216,9 +216,9 @@
   }
 }
 
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   objc_initWeak(&location, self);
   recognitionQueue = self->_recognitionQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -226,18 +226,18 @@
   v8[2] = __70___LTSpeechRecognizer_speechRecognizer_didFinishRecognitionWithError___block_invoke;
   v8[3] = &unk_2789B6C78;
   objc_copyWeak(&v11, &location);
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = errorCopy;
+  selfCopy = self;
+  v7 = errorCopy;
   dispatch_async(recognitionQueue, v8);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResultPackage:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResultPackage:(id)package
 {
-  v5 = a4;
+  packageCopy = package;
   objc_initWeak(&location, self);
   recognitionQueue = self->_recognitionQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -245,18 +245,18 @@
   v8[2] = __71___LTSpeechRecognizer_speechRecognizer_didRecognizeFinalResultPackage___block_invoke;
   v8[3] = &unk_2789B6C78;
   objc_copyWeak(&v11, &location);
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = packageCopy;
+  selfCopy = self;
+  v7 = packageCopy;
   dispatch_async(recognitionQueue, v8);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   objc_initWeak(&location, self);
   recognitionQueue = self->_recognitionQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -264,9 +264,9 @@
   v8[2] = __66___LTSpeechRecognizer_speechRecognizer_didRecognizePartialResult___block_invoke;
   v8[3] = &unk_2789B6C78;
   objc_copyWeak(&v11, &location);
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = resultCopy;
+  selfCopy = self;
+  v7 = resultCopy;
   dispatch_async(recognitionQueue, v8);
 
   objc_destroyWeak(&v11);

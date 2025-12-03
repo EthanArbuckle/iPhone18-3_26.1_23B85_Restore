@@ -1,25 +1,25 @@
 @interface _UIGlintyShapeView
-- (_UIGlintyShapeView)initWithFrame:(CGRect)a3;
-- (void)setFillColor:(id)a3;
-- (void)setPath:(id)a3;
-- (void)setStrokeColor:(id)a3;
+- (_UIGlintyShapeView)initWithFrame:(CGRect)frame;
+- (void)setFillColor:(id)color;
+- (void)setPath:(id)path;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation _UIGlintyShapeView
 
-- (_UIGlintyShapeView)initWithFrame:(CGRect)a3
+- (_UIGlintyShapeView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _UIGlintyShapeView;
-  v3 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 layer];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(UIView *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v6 = [(UIView *)v4 layer];
-    [v6 setAllowsGroupBlending:0];
+    layer2 = [(UIView *)v4 layer];
+    [layer2 setAllowsGroupBlending:0];
 
     [(UIView *)v4 setOpaque:0];
     v7 = +[UIColor clearColor];
@@ -31,34 +31,34 @@
   return v4;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  objc_storeStrong(&self->_path, a3);
-  v5 = a3;
-  v6 = [v5 CGPath];
+  objc_storeStrong(&self->_path, path);
+  pathCopy = path;
+  cGPath = [pathCopy CGPath];
 
-  v7 = [(_UIGlintyShapeView *)self shapeLayer];
-  [v7 setPath:v6];
+  shapeLayer = [(_UIGlintyShapeView *)self shapeLayer];
+  [shapeLayer setPath:cGPath];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  objc_storeStrong(&self->_fillColor, a3);
-  v5 = a3;
-  v6 = [v5 CGColor];
+  objc_storeStrong(&self->_fillColor, color);
+  colorCopy = color;
+  cGColor = [colorCopy CGColor];
 
-  v7 = [(_UIGlintyShapeView *)self shapeLayer];
-  [v7 setFillColor:v6];
+  shapeLayer = [(_UIGlintyShapeView *)self shapeLayer];
+  [shapeLayer setFillColor:cGColor];
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  objc_storeStrong(&self->_strokeColor, a3);
-  v5 = a3;
-  v6 = [v5 CGColor];
+  objc_storeStrong(&self->_strokeColor, color);
+  colorCopy = color;
+  cGColor = [colorCopy CGColor];
 
-  v7 = [(_UIGlintyShapeView *)self shapeLayer];
-  [v7 setStrokeColor:v6];
+  shapeLayer = [(_UIGlintyShapeView *)self shapeLayer];
+  [shapeLayer setStrokeColor:cGColor];
 }
 
 @end

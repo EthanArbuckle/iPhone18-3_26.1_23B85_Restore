@@ -1,17 +1,17 @@
 @interface AEMarginNotesController
 - (AEMarginNotesController)init;
-- (BOOL)hasMarginNoteAtPoint:(CGPoint)a3;
+- (BOOL)hasMarginNoteAtPoint:(CGPoint)point;
 - (CGRect)ownerFrame;
 - (CGSize)ownerSize;
 - (NSArray)layers;
-- (id)marginNoteAtPoint:(CGPoint)a3;
-- (id)p_marginNoteIntersectingRect:(CGRect)a3;
-- (void)addMarginNote:(id)a3 edgeInsets:(UIEdgeInsets)a4;
-- (void)highlightMarginNote:(id)a3;
+- (id)marginNoteAtPoint:(CGPoint)point;
+- (id)p_marginNoteIntersectingRect:(CGRect)rect;
+- (void)addMarginNote:(id)note edgeInsets:(UIEdgeInsets)insets;
+- (void)highlightMarginNote:(id)note;
 - (void)p_updateLayerLayout;
-- (void)removeMarginNote:(id)a3;
+- (void)removeMarginNote:(id)note;
 - (void)unhighlightAllMarginNotes;
-- (void)unhighlightMarginNote:(id)a3;
+- (void)unhighlightMarginNote:(id)note;
 @end
 
 @implementation AEMarginNotesController
@@ -51,35 +51,35 @@
 
 - (NSArray)layers
 {
-  v2 = [(AEMarginNotesController *)self marginNoteMarkers];
-  v3 = [v2 objectEnumerator];
-  v4 = [v3 allObjects];
+  marginNoteMarkers = [(AEMarginNotesController *)self marginNoteMarkers];
+  objectEnumerator = [marginNoteMarkers objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [allObjects count]);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_E2D10;
   v5 = v7[3] = &unk_2CD1D8;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [allObjects enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
 
-- (id)p_marginNoteIntersectingRect:(CGRect)a3
+- (id)p_marginNoteIntersectingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGRectGetMidX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGRectGetMidX(rect);
   v35.origin.x = x;
   v35.origin.y = y;
   v35.size.width = width;
   v35.size.height = height;
   CGRectGetMidY(v35);
-  v8 = [(AEMarginNotesController *)self marginNoteMarkers];
-  v9 = [v8 copy];
+  marginNoteMarkers = [(AEMarginNotesController *)self marginNoteMarkers];
+  v9 = [marginNoteMarkers copy];
 
   v31 = 0u;
   v32 = 0u;
@@ -105,9 +105,9 @@
 
         v16 = *(*(&v29 + 1) + 8 * i);
         v17 = [v10 objectForKey:{v16, *&v27}];
-        v18 = [v17 layer];
+        layer = [v17 layer];
 
-        [v18 frame];
+        [layer frame];
         v19 = v36.origin.x;
         v20 = v36.origin.y;
         v21 = v36.size.width;
@@ -156,7 +156,7 @@
   return v13;
 }
 
-- (id)marginNoteAtPoint:(CGPoint)a3
+- (id)marginNoteAtPoint:(CGPoint)point
 {
   [(AEMarginNotesController *)self ownerScale];
   CGPointMultiply();
@@ -170,8 +170,8 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = [(AEMarginNotesController *)self marginNoteMarkers];
-  v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  marginNoteMarkers = [(AEMarginNotesController *)self marginNoteMarkers];
+  v13 = [marginNoteMarkers countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v13)
   {
     v14 = v13;
@@ -184,17 +184,17 @@
       {
         if (*v29 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(marginNoteMarkers);
         }
 
         v18 = *(*(&v28 + 1) + 8 * i);
-        v19 = [(AEMarginNotesController *)self marginNoteMarkers];
-        v20 = [v19 objectForKey:v18];
-        v21 = [v20 layer];
+        marginNoteMarkers2 = [(AEMarginNotesController *)self marginNoteMarkers];
+        v20 = [marginNoteMarkers2 objectForKey:v18];
+        layer = [v20 layer];
 
-        [v21 frame];
+        [layer frame];
         MidX = CGRectGetMidX(v35);
-        [v21 frame];
+        [layer frame];
         MidY = CGRectGetMidY(v36);
         v37.origin.x = MidX - v9 * 0.5;
         v37.origin.y = MidY - v11 * 0.5;
@@ -215,7 +215,7 @@
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v14 = [marginNoteMarkers countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v14);
@@ -229,9 +229,9 @@
   return v15;
 }
 
-- (BOOL)hasMarginNoteAtPoint:(CGPoint)a3
+- (BOOL)hasMarginNoteAtPoint:(CGPoint)point
 {
-  v3 = [(AEMarginNotesController *)self marginNoteAtPoint:a3.x, a3.y];
+  v3 = [(AEMarginNotesController *)self marginNoteAtPoint:point.x, point.y];
   v4 = v3 != 0;
 
   return v4;
@@ -243,8 +243,8 @@
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v3 = [(AEMarginNotesController *)self layers];
-  v4 = [v3 countByEnumeratingWithState:&v54 objects:v59 count:16];
+  layers = [(AEMarginNotesController *)self layers];
+  v4 = [layers countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v4)
   {
     v5 = v4;
@@ -255,22 +255,22 @@
       {
         if (*v55 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(layers);
         }
 
         [*(*(&v54 + 1) + 8 * i) setPosition:{-100.0, -100.0}];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v54 objects:v59 count:16];
+      v5 = [layers countByEnumeratingWithState:&v54 objects:v59 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(AEMarginNotesController *)self marginNoteMarkers];
-  v9 = [v8 keyEnumerator];
-  v10 = [v9 allObjects];
-  v11 = [v10 sortedArrayUsingComparator:&stru_2CD1F8];
+  marginNoteMarkers = [(AEMarginNotesController *)self marginNoteMarkers];
+  keyEnumerator = [marginNoteMarkers keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v11 = [allObjects sortedArrayUsingComparator:&stru_2CD1F8];
 
   [(AEMarginNotesController *)self ownerScale];
   v50 = 0u;
@@ -305,10 +305,10 @@
         }
 
         v19 = *(*(&v50 + 1) + 8 * v18);
-        v20 = [(AEMarginNotesController *)self marginNoteMarkers];
-        v21 = [v20 objectForKey:v19];
+        marginNoteMarkers2 = [(AEMarginNotesController *)self marginNoteMarkers];
+        v21 = [marginNoteMarkers2 objectForKey:v19];
 
-        v22 = [v21 layer];
+        layer = [v21 layer];
         [v21 imageSize];
         if ([v19 side])
         {
@@ -322,7 +322,7 @@
         [(AEMarginNotesController *)self ownerFrame];
         CGPointMultiply();
         v24 = v23;
-        [v22 bounds];
+        [layer bounds];
         CGRectMakeWithOriginSize();
         width = v60.size.width;
         height = v60.size.height;
@@ -333,16 +333,16 @@
           v28 = v27;
           while (1)
           {
-            v29 = [(AEMarginNotesController *)self marginNoteMarkers];
-            v30 = [v29 objectForKey:v28];
-            v31 = [v30 layer];
+            marginNoteMarkers3 = [(AEMarginNotesController *)self marginNoteMarkers];
+            v30 = [marginNoteMarkers3 objectForKey:v28];
+            layer2 = [v30 layer];
 
-            if (!v31)
+            if (!layer2)
             {
               break;
             }
 
-            [v31 frame];
+            [layer2 frame];
             v38 = v13 * 6.0 + CGRectGetMaxY(v62);
             v63.origin.x = v24;
             v63.origin.y = v38;
@@ -361,7 +361,7 @@
         }
 
 LABEL_22:
-        [v22 frame];
+        [layer frame];
         v40 = v39;
         v42 = v41;
         v43 = +[UIScreen mainScreen];
@@ -370,7 +370,7 @@ LABEL_22:
         v45 = v44;
         v47 = v46;
 
-        [v22 setFrame:{v45, v47, v40, v42}];
+        [layer setFrame:{v45, v47, v40, v42}];
         v18 = v18 + 1;
       }
 
@@ -383,85 +383,85 @@ LABEL_22:
   }
 }
 
-- (void)addMarginNote:(id)a3 edgeInsets:(UIEdgeInsets)a4
+- (void)addMarginNote:(id)note edgeInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v16 = a3;
-  v9 = [v16 theme];
-  if ([v9 isUnderline])
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  noteCopy = note;
+  theme = [noteCopy theme];
+  if ([theme isUnderline])
   {
-    v10 = &dword_4 + 2;
+    annotationStyle = &dword_4 + 2;
   }
 
   else
   {
-    v11 = [v16 theme];
-    v10 = [v11 annotationStyle];
+    theme2 = [noteCopy theme];
+    annotationStyle = [theme2 annotationStyle];
   }
 
   v12 = [AEAnnotationMarker alloc];
   v13 = +[UIScreen mainScreen];
   [v13 scale];
-  v14 = [(AEAnnotationMarker *)v12 initWithAnnotationStyle:v10 contentScale:?];
+  v14 = [(AEAnnotationMarker *)v12 initWithAnnotationStyle:annotationStyle contentScale:?];
 
   [(AEAnnotationMarker *)v14 setPageTheme:[(AEMarginNotesController *)self pageTheme]];
   [(AEMarginNotesController *)self ownerScale];
   [(AEAnnotationMarker *)v14 setViewScale:?];
   [(AEAnnotationMarker *)v14 setEdgeInsets:top, left, bottom, right];
-  v15 = [(AEMarginNotesController *)self marginNoteMarkers];
-  [v15 setObject:v14 forKey:v16];
+  marginNoteMarkers = [(AEMarginNotesController *)self marginNoteMarkers];
+  [marginNoteMarkers setObject:v14 forKey:noteCopy];
 
   [(AEMarginNotesController *)self p_updateLayerLayout];
 }
 
-- (void)removeMarginNote:(id)a3
+- (void)removeMarginNote:(id)note
 {
-  v4 = a3;
-  v5 = [(AEMarginNotesController *)self marginNoteMarkers];
-  [v5 removeObjectForKey:v4];
+  noteCopy = note;
+  marginNoteMarkers = [(AEMarginNotesController *)self marginNoteMarkers];
+  [marginNoteMarkers removeObjectForKey:noteCopy];
 
-  v6 = [(AEMarginNotesController *)self highlightedMarginNoteMarkers];
-  [v6 removeObjectForKey:v4];
+  highlightedMarginNoteMarkers = [(AEMarginNotesController *)self highlightedMarginNoteMarkers];
+  [highlightedMarginNoteMarkers removeObjectForKey:noteCopy];
 
   [(AEMarginNotesController *)self p_updateLayerLayout];
 }
 
-- (void)highlightMarginNote:(id)a3
+- (void)highlightMarginNote:(id)note
 {
-  v4 = a3;
-  v5 = [(AEMarginNotesController *)self marginNoteMarkers];
-  v7 = [v5 objectForKey:v4];
+  noteCopy = note;
+  marginNoteMarkers = [(AEMarginNotesController *)self marginNoteMarkers];
+  v7 = [marginNoteMarkers objectForKey:noteCopy];
 
   [v7 setEffect:1];
-  v6 = [(AEMarginNotesController *)self highlightedMarginNoteMarkers];
-  [v6 setObject:v7 forKey:v4];
+  highlightedMarginNoteMarkers = [(AEMarginNotesController *)self highlightedMarginNoteMarkers];
+  [highlightedMarginNoteMarkers setObject:v7 forKey:noteCopy];
 }
 
-- (void)unhighlightMarginNote:(id)a3
+- (void)unhighlightMarginNote:(id)note
 {
-  v4 = a3;
-  v5 = [(AEMarginNotesController *)self marginNoteMarkers];
-  v7 = [v5 objectForKey:v4];
+  noteCopy = note;
+  marginNoteMarkers = [(AEMarginNotesController *)self marginNoteMarkers];
+  v7 = [marginNoteMarkers objectForKey:noteCopy];
 
   [v7 setEffect:0];
-  v6 = [(AEMarginNotesController *)self highlightedMarginNoteMarkers];
-  [v6 removeObjectForKey:v4];
+  highlightedMarginNoteMarkers = [(AEMarginNotesController *)self highlightedMarginNoteMarkers];
+  [highlightedMarginNoteMarkers removeObjectForKey:noteCopy];
 }
 
 - (void)unhighlightAllMarginNotes
 {
-  v3 = [(AEMarginNotesController *)self highlightedMarginNoteMarkers];
-  v4 = [v3 keyEnumerator];
-  v5 = [v4 allObjects];
+  highlightedMarginNoteMarkers = [(AEMarginNotesController *)self highlightedMarginNoteMarkers];
+  keyEnumerator = [highlightedMarginNoteMarkers keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

@@ -1,13 +1,13 @@
 @interface BDSReachability
 + (id)reachabilityForInternetConnection;
 + (id)reachabilityForLocalWiFi;
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3;
-+ (id)reachabilityWithHostName:(id)a3;
++ (id)reachabilityWithAddress:(const sockaddr_in *)address;
++ (id)reachabilityWithHostName:(id)name;
 + (id)sharedReachabilityForInternetConnection;
 + (void)_updateIsOffline;
 - (BOOL)startNotifier;
 - (int)currentReachabilityStatus;
-- (int)networkStatusForFlags:(unsigned int)a3;
+- (int)networkStatusForFlags:(unsigned int)flags;
 - (void)dealloc;
 - (void)stopNotifier;
 @end
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_1E45E45B8;
   block[3] = &unk_1E875A198;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EE2B04E8 != -1)
   {
     dispatch_once(&qword_1EE2B04E8, block);
@@ -36,7 +36,7 @@
   v5[2] = *MEMORY[0x1E69E9840];
   v5[1] = 0;
   v5[0] = 528;
-  v2 = [a1 reachabilityWithAddress:v5];
+  v2 = [self reachabilityWithAddress:v5];
   v3 = *MEMORY[0x1E69E9840];
 
   return v2;
@@ -105,14 +105,14 @@
   [(BDSReachability *)&v4 dealloc];
 }
 
-+ (id)reachabilityWithHostName:(id)a3
++ (id)reachabilityWithHostName:(id)name
 {
-  v5 = a3;
-  v6 = SCNetworkReachabilityCreateWithName(0, [a3 UTF8String]);
+  nameCopy = name;
+  v6 = SCNetworkReachabilityCreateWithName(0, [name UTF8String]);
   if (v6)
   {
     v7 = v6;
-    v6 = objc_alloc_init(a1);
+    v6 = objc_alloc_init(self);
     if (v6)
     {
       *(v6 + 2) = v7;
@@ -129,13 +129,13 @@
   return v6;
 }
 
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3
++ (id)reachabilityWithAddress:(const sockaddr_in *)address
 {
-  v4 = SCNetworkReachabilityCreateWithAddress(*MEMORY[0x1E695E480], a3);
+  v4 = SCNetworkReachabilityCreateWithAddress(*MEMORY[0x1E695E480], address);
   if (v4)
   {
     v5 = v4;
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     if (v4)
     {
       *(v4 + 2) = v5;
@@ -157,7 +157,7 @@
   v5[2] = *MEMORY[0x1E69E9840];
   v5[1] = 0;
   v5[0] = 0xFEA900000210;
-  v2 = [a1 reachabilityWithAddress:v5];
+  v2 = [self reachabilityWithAddress:v5];
   if (v2)
   {
     v2[8] = 1;
@@ -168,20 +168,20 @@
   return v2;
 }
 
-- (int)networkStatusForFlags:(unsigned int)a3
+- (int)networkStatusForFlags:(unsigned int)flags
 {
-  v3 = ((a3 >> 2) & 1) == 0;
-  if ((a3 & 0x10) == 0 && (a3 & 0x28) != 0)
+  v3 = ((flags >> 2) & 1) == 0;
+  if ((flags & 0x10) == 0 && (flags & 0x28) != 0)
   {
     v3 = 1;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((flags & 0x40000) != 0)
   {
     v3 = 2;
   }
 
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
     return v3;
   }

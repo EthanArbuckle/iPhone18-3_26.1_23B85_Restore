@@ -1,21 +1,21 @@
 @interface TSWPLayoutMetricsCache
-- (TSWPLayoutMetricsCache)initWithStorage:(id)a3;
-- (TSWPParagraphMetrics)paragraphMetricsForParagraphAtIndex:(unint64_t)a3;
+- (TSWPLayoutMetricsCache)initWithStorage:(id)storage;
+- (TSWPParagraphMetrics)paragraphMetricsForParagraphAtIndex:(unint64_t)index;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)reset;
-- (void)storage:(id)a3 didChangeParagraphsInIndexRange:(_NSRange)a4;
-- (void)storage:(id)a3 didDeleteParagraphsInIndexRange:(_NSRange)a4;
-- (void)storage:(id)a3 didInsertParagraphsInIndexRange:(_NSRange)a4;
+- (void)storage:(id)storage didChangeParagraphsInIndexRange:(_NSRange)range;
+- (void)storage:(id)storage didDeleteParagraphsInIndexRange:(_NSRange)range;
+- (void)storage:(id)storage didInsertParagraphsInIndexRange:(_NSRange)range;
 - (void)tearDown;
 @end
 
 @implementation TSWPLayoutMetricsCache
 
-- (TSWPLayoutMetricsCache)initWithStorage:(id)a3
+- (TSWPLayoutMetricsCache)initWithStorage:(id)storage
 {
-  v5 = a3;
-  if (v5)
+  storageCopy = storage;
+  if (storageCopy)
   {
     v22.receiver = self;
     v22.super_class = TSWPLayoutMetricsCache;
@@ -23,15 +23,15 @@
     v7 = v6;
     if (v6)
     {
-      v8 = objc_storeWeak(&v6->_storage, v5);
-      objc_msgSend_addParagraphObserver_(v5, v9, v7);
+      v8 = objc_storeWeak(&v6->_storage, storageCopy);
+      objc_msgSend_addParagraphObserver_(storageCopy, v9, v7);
 
-      v12 = objc_msgSend_paragraphCount(v5, v10, v11);
+      v12 = objc_msgSend_paragraphCount(storageCopy, v10, v11);
       sub_276E065C4(&v7->_paragraphMetrics.__begin_, v12);
     }
 
     self = v7;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -42,10 +42,10 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v18, v15, v17, 30, 0, "invalid nil value for '%{public}s'", "storage");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20);
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -75,18 +75,18 @@
   objc_storeWeak(&self->_storage, 0);
 }
 
-- (TSWPParagraphMetrics)paragraphMetricsForParagraphAtIndex:(unint64_t)a3
+- (TSWPParagraphMetrics)paragraphMetricsForParagraphAtIndex:(unint64_t)index
 {
   begin = self->_paragraphMetrics.__begin_;
-  if (0xCCCCCCCCCCCCCCCDLL * ((self->_paragraphMetrics.__end_ - begin) >> 3) > a3)
+  if (0xCCCCCCCCCCCCCCCDLL * ((self->_paragraphMetrics.__end_ - begin) >> 3) > index)
   {
-    return &begin[a3];
+    return &begin[index];
   }
 
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPLayoutMetricsCache paragraphMetricsForParagraphAtIndex:]");
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPLayoutMetricsCache.mm");
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 58, 0, "Invalid paragraph index: %lu", a3);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 58, 0, "Invalid paragraph index: %lu", index);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   return 0;
@@ -126,12 +126,12 @@
   }
 }
 
-- (void)storage:(id)a3 didInsertParagraphsInIndexRange:(_NSRange)a4
+- (void)storage:(id)storage didInsertParagraphsInIndexRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a4.location > 0x7FFFFFFFFFFFFFFELL || a4.length == 0;
-  if (v7 || (begin = self->_paragraphMetrics.__begin_, p_paragraphMetrics = &self->_paragraphMetrics, a4.location > 0xCCCCCCCCCCCCCCCDLL * ((self->_paragraphMetrics.__end_ - begin) >> 3) + 1))
+  length = range.length;
+  location = range.location;
+  v7 = range.location > 0x7FFFFFFFFFFFFFFELL || range.length == 0;
+  if (v7 || (begin = self->_paragraphMetrics.__begin_, p_paragraphMetrics = &self->_paragraphMetrics, range.location > 0xCCCCCCCCCCCCCCCDLL * ((self->_paragraphMetrics.__end_ - begin) >> 3) + 1))
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPLayoutMetricsCache storage:didInsertParagraphsInIndexRange:]");
@@ -149,16 +149,16 @@
     v19 = vdupq_n_s64(0x7FF8000000000000uLL);
     v20 = 0x7FFFFFFFFFFFFFFFLL;
     v21 = 0x7FF8000000000000;
-    sub_276E06ACC(p_paragraphMetrics, &begin[a4.location].var0, a4.length, v18);
+    sub_276E06ACC(p_paragraphMetrics, &begin[range.location].var0, range.length, v18);
   }
 }
 
-- (void)storage:(id)a3 didDeleteParagraphsInIndexRange:(_NSRange)a4
+- (void)storage:(id)storage didDeleteParagraphsInIndexRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a4.location > 0x7FFFFFFFFFFFFFFELL || a4.length == 0;
-  if (v7 || (begin = self->_paragraphMetrics.__begin_, end = self->_paragraphMetrics.__end_, a4.location + a4.length > 0xCCCCCCCCCCCCCCCDLL * ((end - begin) >> 3)))
+  length = range.length;
+  location = range.location;
+  v7 = range.location > 0x7FFFFFFFFFFFFFFELL || range.length == 0;
+  if (v7 || (begin = self->_paragraphMetrics.__begin_, end = self->_paragraphMetrics.__end_, range.location + range.length > 0xCCCCCCCCCCCCCCCDLL * ((end - begin) >> 3)))
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPLayoutMetricsCache storage:didDeleteParagraphsInIndexRange:]");
@@ -172,23 +172,23 @@
 
   else
   {
-    v18 = &begin[a4.location];
-    v19 = &v18[a4.length];
+    v18 = &begin[range.location];
+    v19 = &v18[range.length];
     v20 = end - v19;
     if (end != v19)
     {
-      memmove(&begin[a4.location], v19, end - v19);
+      memmove(&begin[range.location], v19, end - v19);
     }
 
     self->_paragraphMetrics.__end_ = (v18 + v20);
   }
 }
 
-- (void)storage:(id)a3 didChangeParagraphsInIndexRange:(_NSRange)a4
+- (void)storage:(id)storage didChangeParagraphsInIndexRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v18 = a3;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
   if (location <= 0x7FFFFFFFFFFFFFFELL && length && (begin = self->_paragraphMetrics.__begin_, location + length <= 0xCCCCCCCCCCCCCCCDLL * ((self->_paragraphMetrics.__end_ - begin) >> 3)))
   {
     if (location < location + length)

@@ -13,7 +13,7 @@
 - (id)COPreferredAlarm:()CoordinationCore
 {
   v4 = a3;
-  if (!v4 || [a1 isFiring])
+  if (!v4 || [self isFiring])
   {
     goto LABEL_3;
   }
@@ -23,38 +23,38 @@
     goto LABEL_5;
   }
 
-  if ([a1 isSnoozed])
+  if ([self isSnoozed])
   {
 LABEL_3:
-    v5 = a1;
+    selfCopy = self;
 LABEL_6:
-    v6 = v5;
+    selfCopy2 = selfCopy;
     goto LABEL_7;
   }
 
   if ([v4 isSnoozed])
   {
 LABEL_5:
-    v5 = v4;
+    selfCopy = v4;
     goto LABEL_6;
   }
 
-  v6 = a1;
-  v8 = [v4 lastModifiedDate];
-  if (v8)
+  selfCopy2 = self;
+  lastModifiedDate = [v4 lastModifiedDate];
+  if (lastModifiedDate)
   {
-    v9 = v8;
-    v10 = [v4 lastModifiedDate];
-    v11 = [v6 lastModifiedDate];
-    if ([v10 compare:v11] == 1)
+    v9 = lastModifiedDate;
+    lastModifiedDate2 = [v4 lastModifiedDate];
+    lastModifiedDate3 = [selfCopy2 lastModifiedDate];
+    if ([lastModifiedDate2 compare:lastModifiedDate3] == 1)
     {
     }
 
     else
     {
-      v12 = [v6 lastModifiedDate];
+      lastModifiedDate4 = [selfCopy2 lastModifiedDate];
 
-      if (v12)
+      if (lastModifiedDate4)
       {
         goto LABEL_7;
       }
@@ -62,81 +62,81 @@ LABEL_5:
 
     v13 = v4;
 
-    v6 = v13;
+    selfCopy2 = v13;
   }
 
 LABEL_7:
 
-  return v6;
+  return selfCopy2;
 }
 
 - (id)co_sanitizedHomeKitAlarm
 {
-  v2 = [a1 siriContext];
+  siriContext = [self siriContext];
   v3 = *MEMORY[0x277CFCEC8];
-  v4 = [v2 objectForKey:*MEMORY[0x277CFCEC8]];
-  v5 = [v2 objectForKey:@"COAlarmSiriContextIsMediaSystemKey"];
-  if (v4 | v5 || ([a1 isFiring] & 1) != 0 || (objc_msgSend(a1, "isSnoozed") & 1) != 0)
+  v4 = [siriContext objectForKey:*MEMORY[0x277CFCEC8]];
+  v5 = [siriContext objectForKey:@"COAlarmSiriContextIsMediaSystemKey"];
+  if (v4 | v5 || ([self isFiring] & 1) != 0 || (objc_msgSend(self, "isSnoozed") & 1) != 0)
   {
     v6 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(MTAlarm(CoordinationCore) *)a1 co_sanitizedHomeKitAlarm];
+      [(MTAlarm(CoordinationCore) *)self co_sanitizedHomeKitAlarm];
     }
 
-    v7 = [a1 mutableCopy];
-    [v7 setFiredDate:0];
-    [v7 setSnoozeFireDate:0];
-    [v7 setDismissedDate:0];
+    selfCopy = [self mutableCopy];
+    [selfCopy setFiredDate:0];
+    [selfCopy setSnoozeFireDate:0];
+    [selfCopy setDismissedDate:0];
     if (v4)
     {
-      v8 = [v2 mutableCopy];
+      v8 = [siriContext mutableCopy];
       [v8 removeObjectForKey:v3];
       [v8 removeObjectForKey:@"COAlarmSiriContextIsMediaSystemKey"];
-      [v7 setSiriContext:v8];
+      [selfCopy setSiriContext:v8];
     }
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)co_targetReference
 {
-  v1 = [a1 siriContext];
-  v2 = [v1 objectForKey:*MEMORY[0x277CFCEC8]];
+  siriContext = [self siriContext];
+  v2 = [siriContext objectForKey:*MEMORY[0x277CFCEC8]];
 
   return v2;
 }
 
 - (uint64_t)co_isMediaSystemOriginating
 {
-  v1 = [a1 siriContext];
-  v2 = [v1 objectForKey:@"COAlarmSiriContextIsMediaSystemKey"];
-  v3 = [v2 BOOLValue];
+  siriContext = [self siriContext];
+  v2 = [siriContext objectForKey:@"COAlarmSiriContextIsMediaSystemKey"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)co_HomeKitAlarmCopy
 {
   v2 = objc_alloc_init(MEMORY[0x277D296F0]);
-  [v2 setHour:{objc_msgSend(a1, "hour")}];
-  [v2 setMinute:{objc_msgSend(a1, "minute")}];
-  [v2 setEnabled:{objc_msgSend(a1, "isEnabled")}];
-  [v2 setRepeatSchedule:{objc_msgSend(a1, "repeatSchedule")}];
-  v3 = [a1 title];
-  [v2 setTitle:v3];
+  [v2 setHour:{objc_msgSend(self, "hour")}];
+  [v2 setMinute:{objc_msgSend(self, "minute")}];
+  [v2 setEnabled:{objc_msgSend(self, "isEnabled")}];
+  [v2 setRepeatSchedule:{objc_msgSend(self, "repeatSchedule")}];
+  title = [self title];
+  [v2 setTitle:title];
 
-  v4 = [a1 sound];
-  [v2 setSound:v4];
+  sound = [self sound];
+  [v2 setSound:sound];
 
-  v5 = [a1 siriContext];
-  [v2 setSiriContext:v5];
+  siriContext = [self siriContext];
+  [v2 setSiriContext:siriContext];
 
   return v2;
 }
@@ -144,50 +144,50 @@ LABEL_7:
 - (id)co_alarmUpdatedWithHomeKitAlarm:()CoordinationCore
 {
   v4 = a3;
-  v5 = [a1 lastModifiedDate];
-  v6 = [v4 co_HomeKitSaveDate];
-  v7 = v6;
+  lastModifiedDate = [self lastModifiedDate];
+  co_HomeKitSaveDate = [v4 co_HomeKitSaveDate];
+  v7 = co_HomeKitSaveDate;
   v8 = 0;
-  if (!v5 || !v6)
+  if (!lastModifiedDate || !co_HomeKitSaveDate)
   {
     goto LABEL_36;
   }
 
-  if ([v6 compare:v5] == -1)
+  if ([co_HomeKitSaveDate compare:lastModifiedDate] == -1)
   {
     v8 = 0;
     goto LABEL_36;
   }
 
-  v9 = [v4 isEnabled];
-  v10 = [v4 hour];
-  v11 = [v4 minute];
-  v12 = [v4 title];
-  v24 = [v4 repeatSchedule];
-  v13 = [v4 sound];
-  if (v9 == [a1 isEnabled])
+  isEnabled = [v4 isEnabled];
+  hour = [v4 hour];
+  minute = [v4 minute];
+  title = [v4 title];
+  repeatSchedule = [v4 repeatSchedule];
+  sound = [v4 sound];
+  if (isEnabled == [self isEnabled])
   {
-    if ([a1 hour] == v10)
+    if ([self hour] == hour)
     {
-      if ([a1 minute] == v11)
+      if ([self minute] == minute)
       {
         v8 = 0;
         goto LABEL_18;
       }
 
 LABEL_16:
-      v8 = [a1 mutableCopy];
+      v8 = [self mutableCopy];
       goto LABEL_17;
     }
 
 LABEL_12:
-    v8 = [a1 mutableCopy];
+    v8 = [self mutableCopy];
     goto LABEL_13;
   }
 
-  v8 = [a1 mutableCopy];
-  [v8 setEnabled:v9];
-  if ([a1 hour] == v10)
+  v8 = [self mutableCopy];
+  [v8 setEnabled:isEnabled];
+  if ([self hour] == hour)
   {
     goto LABEL_14;
   }
@@ -198,9 +198,9 @@ LABEL_12:
   }
 
 LABEL_13:
-  [v8 setHour:v10];
+  [v8 setHour:hour];
 LABEL_14:
-  if ([a1 minute] == v11)
+  if ([self minute] == minute)
   {
     goto LABEL_18;
   }
@@ -211,63 +211,63 @@ LABEL_14:
   }
 
 LABEL_17:
-  [v8 setMinute:v11];
+  [v8 setMinute:minute];
 LABEL_18:
-  v14 = [a1 title];
-  v15 = v14;
-  if (v12 == v14)
+  title2 = [self title];
+  v15 = title2;
+  if (title == title2)
   {
   }
 
   else
   {
-    v16 = [a1 title];
-    v17 = [v12 isEqual:v16];
+    title3 = [self title];
+    v17 = [title isEqual:title3];
 
     if ((v17 & 1) == 0)
     {
-      v18 = v24;
+      v18 = repeatSchedule;
       if (!v8)
       {
-        v8 = [a1 mutableCopy];
+        v8 = [self mutableCopy];
       }
 
-      [v8 setTitle:v12];
+      [v8 setTitle:title];
       goto LABEL_25;
     }
   }
 
-  v18 = v24;
+  v18 = repeatSchedule;
 LABEL_25:
-  if ([a1 repeatSchedule] != v18)
+  if ([self repeatSchedule] != v18)
   {
     if (!v8)
     {
-      v8 = [a1 mutableCopy];
+      v8 = [self mutableCopy];
     }
 
     [v8 setRepeatSchedule:v18];
   }
 
-  v19 = [a1 sound];
-  v20 = v19;
-  if (v13 == v19)
+  sound2 = [self sound];
+  v20 = sound2;
+  if (sound == sound2)
   {
   }
 
   else
   {
-    v21 = [a1 sound];
-    v22 = [v13 isEqual:v21];
+    sound3 = [self sound];
+    v22 = [sound isEqual:sound3];
 
     if ((v22 & 1) == 0)
     {
       if (!v8)
       {
-        v8 = [a1 mutableCopy];
+        v8 = [self mutableCopy];
       }
 
-      [v8 setSound:v13];
+      [v8 setSound:sound];
     }
   }
 
@@ -279,9 +279,9 @@ LABEL_36:
 - (void)co_sanitizedHomeKitAlarm
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 alarmID];
+  alarmID = [self alarmID];
   v5 = 138412290;
-  v6 = v3;
+  v6 = alarmID;
   _os_log_error_impl(&dword_244378000, a2, OS_LOG_TYPE_ERROR, "%@ required sanitizing!", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];

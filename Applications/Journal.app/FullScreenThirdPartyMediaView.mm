@@ -1,11 +1,11 @@
 @interface FullScreenThirdPartyMediaView
-- (_TtC7Journal29FullScreenThirdPartyMediaView)initWithCoder:(id)a3;
-- (_TtC7Journal29FullScreenThirdPartyMediaView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal29FullScreenThirdPartyMediaView)initWithCoder:(id)coder;
+- (_TtC7Journal29FullScreenThirdPartyMediaView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FullScreenThirdPartyMediaView
 
-- (_TtC7Journal29FullScreenThirdPartyMediaView)initWithCoder:(id)a3
+- (_TtC7Journal29FullScreenThirdPartyMediaView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal29FullScreenThirdPartyMediaView_dateLabel;
   v5 = [objc_allocWithZone(UILabel) init];
@@ -16,7 +16,7 @@
   return 0;
 }
 
-- (_TtC7Journal29FullScreenThirdPartyMediaView)initWithFrame:(CGRect)a3
+- (_TtC7Journal29FullScreenThirdPartyMediaView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

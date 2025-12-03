@@ -1,29 +1,29 @@
 @interface ADAddressBookManager
-- (ADAddressBookManager)initWithDelegate:(id)a3;
+- (ADAddressBookManager)initWithDelegate:(id)delegate;
 - (CNContactStore)contactStore;
 - (id)_fetchMappedMeCard;
-- (id)contactHandlesForPerson:(id)a3;
-- (void)_firstUnlockStateDidChange:(id)a3;
-- (void)_meContactDidChange:(id)a3;
-- (void)dumpAssistantStateChunk:(id)a3;
-- (void)getMeCard:(id)a3;
+- (id)contactHandlesForPerson:(id)person;
+- (void)_firstUnlockStateDidChange:(id)change;
+- (void)_meContactDidChange:(id)change;
+- (void)dumpAssistantStateChunk:(id)chunk;
+- (void)getMeCard:(id)card;
 - (void)unregisterChangeHistory;
 @end
 
 @implementation ADAddressBookManager
 
-- (void)dumpAssistantStateChunk:(id)a3
+- (void)dumpAssistantStateChunk:(id)chunk
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1002B972C;
   v5[3] = &unk_10051B7A0;
-  v6 = a3;
-  v4 = v6;
+  chunkCopy = chunk;
+  v4 = chunkCopy;
   [(ADAddressBookManager *)self getMeCard:v5];
 }
 
-- (void)_firstUnlockStateDidChange:(id)a3
+- (void)_firstUnlockStateDidChange:(id)change
 {
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -44,7 +44,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)_meContactDidChange:(id)a3
+- (void)_meContactDidChange:(id)change
 {
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -117,15 +117,15 @@
 {
   if ((AFIsHorseman() & 1) == 0)
   {
-    v3 = [(ADAddressBookManager *)self contactStore];
+    contactStore = [(ADAddressBookManager *)self contactStore];
     v4 = 0;
-    [v3 unregisterChangeHistoryClientIdentifier:@"com.apple.contact.people" error:&v4];
+    [contactStore unregisterChangeHistoryClientIdentifier:@"com.apple.contact.people" error:&v4];
   }
 }
 
-- (id)contactHandlesForPerson:(id)a3
+- (id)contactHandlesForPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   if (AFIsHorseman())
   {
     v5 = 0;
@@ -134,27 +134,27 @@
   else
   {
     v5 = +[NSMutableSet set];
-    v6 = [v4 internalGUID];
-    if (v6)
+    internalGUID = [personCopy internalGUID];
+    if (internalGUID)
     {
-      v7 = [v4 internalGUID];
+      internalGUID2 = [personCopy internalGUID];
     }
 
     else
     {
-      v8 = [v4 identifier];
-      v7 = [v8 absoluteString];
+      identifier = [personCopy identifier];
+      internalGUID2 = [identifier absoluteString];
     }
 
-    if (v7)
+    if (internalGUID2)
     {
       v46[0] = CNContactPhoneNumbersKey;
       v46[1] = CNContactEmailAddressesKey;
       v9 = [NSArray arrayWithObjects:v46 count:2];
-      v10 = [(ADAddressBookManager *)self contactStore];
+      contactStore = [(ADAddressBookManager *)self contactStore];
       v43 = 0;
-      v33 = v7;
-      v11 = [v10 unifiedContactWithIdentifier:v7 keysToFetch:v9 error:&v43];
+      v33 = internalGUID2;
+      v11 = [contactStore unifiedContactWithIdentifier:internalGUID2 keysToFetch:v9 error:&v43];
       v32 = v43;
 
       v41 = 0u;
@@ -162,8 +162,8 @@
       v39 = 0u;
       v40 = 0u;
       v34 = v11;
-      v12 = [v11 phoneNumbers];
-      v13 = [v12 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      phoneNumbers = [v11 phoneNumbers];
+      v13 = [phoneNumbers countByEnumeratingWithState:&v39 objects:v45 count:16];
       if (v13)
       {
         v14 = v13;
@@ -174,23 +174,23 @@
           {
             if (*v40 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(phoneNumbers);
             }
 
             v17 = *(*(&v39 + 1) + 8 * i);
             v18 = objc_alloc_init(STPersonContactHandle);
             [v18 setType:{1, v32}];
-            v19 = [v17 label];
-            [v18 setLabel:v19];
+            label = [v17 label];
+            [v18 setLabel:label];
 
-            v20 = [v17 value];
-            v21 = [v20 stringValue];
-            [v18 setHandle:v21];
+            value = [v17 value];
+            stringValue = [value stringValue];
+            [v18 setHandle:stringValue];
 
             [v5 addObject:v18];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v39 objects:v45 count:16];
+          v14 = [phoneNumbers countByEnumeratingWithState:&v39 objects:v45 count:16];
         }
 
         while (v14);
@@ -200,8 +200,8 @@
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v22 = [v34 emailAddresses];
-      v23 = [v22 countByEnumeratingWithState:&v35 objects:v44 count:16];
+      emailAddresses = [v34 emailAddresses];
+      v23 = [emailAddresses countByEnumeratingWithState:&v35 objects:v44 count:16];
       if (v23)
       {
         v24 = v23;
@@ -212,42 +212,42 @@
           {
             if (*v36 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(emailAddresses);
             }
 
             v27 = *(*(&v35 + 1) + 8 * j);
             v28 = objc_alloc_init(STPersonContactHandle);
             [v28 setType:0];
-            v29 = [v27 label];
-            [v28 setLabel:v29];
+            label2 = [v27 label];
+            [v28 setLabel:label2];
 
-            v30 = [v27 value];
-            [v28 setHandle:v30];
+            value2 = [v27 value];
+            [v28 setHandle:value2];
 
             [v5 addObject:v28];
           }
 
-          v24 = [v22 countByEnumeratingWithState:&v35 objects:v44 count:16];
+          v24 = [emailAddresses countByEnumeratingWithState:&v35 objects:v44 count:16];
         }
 
         while (v24);
       }
 
-      v7 = v33;
+      internalGUID2 = v33;
     }
   }
 
   return v5;
 }
 
-- (void)getMeCard:(id)a3
+- (void)getMeCard:(id)card
 {
-  v4 = a3;
-  if (v4)
+  cardCopy = card;
+  if (cardCopy)
   {
     if (AFIsHorseman())
     {
-      v4[2](v4, 0);
+      cardCopy[2](cardCopy, 0);
     }
 
     else
@@ -258,18 +258,18 @@
       v6[2] = sub_1002BA128;
       v6[3] = &unk_10051E038;
       v6[4] = self;
-      v7 = v4;
+      v7 = cardCopy;
       dispatch_async(queue, v6);
     }
   }
 }
 
-- (ADAddressBookManager)initWithDelegate:(id)a3
+- (ADAddressBookManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (AFIsHorseman())
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -285,8 +285,8 @@
       queue = v6->_queue;
       v6->_queue = v8;
 
-      v10 = objc_storeWeak(&v6->_delegate, v4);
-      if (v4)
+      v10 = objc_storeWeak(&v6->_delegate, delegateCopy);
+      if (delegateCopy)
       {
         v11 = +[NSNotificationCenter defaultCenter];
         [v11 addObserver:v6 selector:"_meContactDidChange:" name:CNContactStoreMeContactDidChangeNotification object:0];
@@ -295,10 +295,10 @@
     }
 
     self = v6;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

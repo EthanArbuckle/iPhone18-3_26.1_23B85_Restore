@@ -1,12 +1,12 @@
 @interface _EXAppExtensionPointEnumerator
 - (_EXAppExtensionPointEnumerator)init;
-- (_EXAppExtensionPointEnumerator)initWithBundleIdentifier:(id)a3 sdkDictionary:(id)a4 entitlements:(id)a5;
+- (_EXAppExtensionPointEnumerator)initWithBundleIdentifier:(id)identifier sdkDictionary:(id)dictionary entitlements:(id)entitlements;
 - (id)nextObject;
 @end
 
 @implementation _EXAppExtensionPointEnumerator
 
-- (_EXAppExtensionPointEnumerator)initWithBundleIdentifier:(id)a3 sdkDictionary:(id)a4 entitlements:(id)a5
+- (_EXAppExtensionPointEnumerator)initWithBundleIdentifier:(id)identifier sdkDictionary:(id)dictionary entitlements:(id)entitlements
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -42,7 +42,7 @@
 - (id)nextObject
 {
   swift_beginAccess();
-  v3 = self;
+  selfCopy = self;
   AppExtensionPointEnumerator.Iterator.next()(v4);
   v6 = v5;
   v8 = v7;

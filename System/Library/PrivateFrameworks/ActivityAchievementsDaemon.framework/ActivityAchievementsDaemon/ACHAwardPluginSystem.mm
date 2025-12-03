@@ -1,8 +1,8 @@
 @interface ACHAwardPluginSystem
 - (ACHAwardPluginSystem)init;
-- (Class)_loadPrincipalClassConformingToProtocols:(id)a3 fromBundleAtPath:(id)a4;
-- (id)_createPluginsFromClasses:(id)a3;
-- (id)_loadPrincipalClassesConformingToProtocols:(id)a3 fromBundlesInDirectoryAtPath:(id)a4 error:(id *)a5;
+- (Class)_loadPrincipalClassConformingToProtocols:(id)protocols fromBundleAtPath:(id)path;
+- (id)_createPluginsFromClasses:(id)classes;
+- (id)_loadPrincipalClassesConformingToProtocols:(id)protocols fromBundlesInDirectoryAtPath:(id)path error:(id *)error;
 - (id)_pluginClasses;
 - (id)_pluginDirectoryPath;
 - (id)_principalClassProtocols;
@@ -51,10 +51,10 @@
 - (id)_pluginClasses
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(ACHAwardPluginSystem *)self _pluginDirectoryPath];
-  v5 = [(ACHAwardPluginSystem *)self _principalClassProtocols];
+  _pluginDirectoryPath = [(ACHAwardPluginSystem *)self _pluginDirectoryPath];
+  _principalClassProtocols = [(ACHAwardPluginSystem *)self _principalClassProtocols];
   v10 = 0;
-  v6 = [(ACHAwardPluginSystem *)self _loadPrincipalClassesConformingToProtocols:v5 fromBundlesInDirectoryAtPath:v4 error:&v10];
+  v6 = [(ACHAwardPluginSystem *)self _loadPrincipalClassesConformingToProtocols:_principalClassProtocols fromBundlesInDirectoryAtPath:_pluginDirectoryPath error:&v10];
   v7 = v10;
 
   if (v6)
@@ -74,14 +74,14 @@
   return v3;
 }
 
-- (id)_loadPrincipalClassesConformingToProtocols:(id)a3 fromBundlesInDirectoryAtPath:(id)a4 error:(id *)a5
+- (id)_loadPrincipalClassesConformingToProtocols:(id)protocols fromBundlesInDirectoryAtPath:(id)path error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v7 = a4;
+  protocolsCopy = protocols;
+  pathCopy = path;
   v8 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v9 = v7;
-  v10 = [v8 contentsOfDirectoryAtPath:v7 error:a5];
+  v9 = pathCopy;
+  v10 = [v8 contentsOfDirectoryAtPath:pathCopy error:error];
   if (v10)
   {
     v25 = v8;
@@ -108,13 +108,13 @@
 
           v16 = *(*(&v29 + 1) + 8 * i);
           v17 = objc_autoreleasePoolPush();
-          v18 = [v16 pathExtension];
-          v19 = [v18 isEqualToString:@"bundle"];
+          pathExtension = [v16 pathExtension];
+          v19 = [pathExtension isEqualToString:@"bundle"];
 
           if (v19)
           {
             v20 = [v9 stringByAppendingPathComponent:v16];
-            v21 = [(ACHAwardPluginSystem *)self _loadPrincipalClassConformingToProtocols:v28 fromBundleAtPath:v20];
+            v21 = [(ACHAwardPluginSystem *)self _loadPrincipalClassConformingToProtocols:protocolsCopy fromBundleAtPath:v20];
             if (v21)
             {
               [v26 addObject:v21];
@@ -144,12 +144,12 @@
   return v26;
 }
 
-- (Class)_loadPrincipalClassConformingToProtocols:(id)a3 fromBundleAtPath:(id)a4
+- (Class)_loadPrincipalClassConformingToProtocols:(id)protocols fromBundleAtPath:(id)path
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:v6];
+  protocolsCopy = protocols;
+  pathCopy = path;
+  v7 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:pathCopy];
   v8 = v7;
   if (v7)
   {
@@ -158,8 +158,8 @@
     v10 = v29;
     if (v9)
     {
-      v11 = [v8 principalClass];
-      if (!v11)
+      principalClass = [v8 principalClass];
+      if (!principalClass)
       {
         v12 = ACHLogDefault();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -172,7 +172,7 @@
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v13 = v5;
+      v13 = protocolsCopy;
       v14 = [v13 countByEnumeratingWithState:&v25 objects:v36 count:16];
       if (v14)
       {
@@ -187,7 +187,7 @@
               objc_enumerationMutation(v13);
             }
 
-            if ([v11 conformsToProtocol:{*(*(&v25 + 1) + 8 * i), v25}])
+            if ([principalClass conformsToProtocol:{*(*(&v25 + 1) + 8 * i), v25}])
             {
               v20 = ACHLogDefault();
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -195,7 +195,7 @@
                 [ACHAwardPluginSystem _loadPrincipalClassConformingToProtocols:fromBundleAtPath:];
               }
 
-              v19 = v11;
+              v19 = principalClass;
               goto LABEL_26;
             }
           }
@@ -213,9 +213,9 @@
       v18 = ACHLogDefault();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        if (v11)
+        if (principalClass)
         {
-          v23 = NSStringFromClass(v11);
+          v23 = NSStringFromClass(principalClass);
         }
 
         else
@@ -225,13 +225,13 @@
 
         v24 = [v13 hk_map:&__block_literal_global_11, v25];
         *buf = 138543874;
-        v31 = v6;
+        v31 = pathCopy;
         v32 = 2114;
         v33 = v23;
         v34 = 2114;
         v35 = v24;
         _os_log_error_impl(&dword_221DDC000, v18, OS_LOG_TYPE_ERROR, "Error: failed to load bundle %{public}@: principal class %{public}@ doesn't conform to any of: %{public}@", buf, 0x20u);
-        if (v11)
+        if (principalClass)
         {
         }
       }
@@ -270,7 +270,7 @@ LABEL_26:
   return v19;
 }
 
-- (id)_createPluginsFromClasses:(id)a3
+- (id)_createPluginsFromClasses:(id)classes
 {
   v4 = &unk_28356FF18;
   v8[0] = MEMORY[0x277D85DD0];
@@ -280,7 +280,7 @@ LABEL_26:
   v9 = v4;
   v10 = sel_shouldLoadPlugin;
   v5 = v4;
-  v6 = [a3 hk_map:v8];
+  v6 = [classes hk_map:v8];
 
   return v6;
 }
@@ -302,8 +302,8 @@ id __50__ACHAwardPluginSystem__createPluginsFromClasses___block_invoke(uint64_t 
 
 - (void)_loadPlugins
 {
-  v5 = [(ACHAwardPluginSystem *)self _pluginClasses];
-  v3 = [(ACHAwardPluginSystem *)self _createPluginsFromClasses:v5];
+  _pluginClasses = [(ACHAwardPluginSystem *)self _pluginClasses];
+  v3 = [(ACHAwardPluginSystem *)self _createPluginsFromClasses:_pluginClasses];
   plugins = self->_plugins;
   self->_plugins = v3;
 }
@@ -332,11 +332,11 @@ id __50__ACHAwardPluginSystem__createPluginsFromClasses___block_invoke(uint64_t 
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 templateAssetSource];
-        if (v10)
+        templateAssetSource = [v9 templateAssetSource];
+        if (templateAssetSource)
         {
-          v11 = [v9 pluginIdentifier];
-          [v3 setObject:v10 forKeyedSubscript:v11];
+          pluginIdentifier = [v9 pluginIdentifier];
+          [v3 setObject:templateAssetSource forKeyedSubscript:pluginIdentifier];
         }
       }
 
@@ -377,13 +377,13 @@ id __50__ACHAwardPluginSystem__createPluginsFromClasses___block_invoke(uint64_t 
         v9 = *(*(&v16 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v10 = [v9 progressProvider];
-          if (v10)
+          progressProvider = [v9 progressProvider];
+          if (progressProvider)
           {
-            v11 = [v9 pluginIdentifier];
-            [v3 setObject:v10 forKeyedSubscript:v11];
+            pluginIdentifier = [v9 pluginIdentifier];
+            [v3 setObject:progressProvider forKeyedSubscript:pluginIdentifier];
 
-            v12 = [(NSArray *)self->_progressProviders arrayByAddingObject:v10];
+            v12 = [(NSArray *)self->_progressProviders arrayByAddingObject:progressProvider];
             progressProviders = self->_progressProviders;
             self->_progressProviders = v12;
           }

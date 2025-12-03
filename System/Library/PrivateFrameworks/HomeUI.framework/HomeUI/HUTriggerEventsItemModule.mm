@@ -1,22 +1,22 @@
 @interface HUTriggerEventsItemModule
-- (HUTriggerEventsItemModule)initWithTriggerBuilder:(id)a3 itemUpdater:(id)a4;
+- (HUTriggerEventsItemModule)initWithTriggerBuilder:(id)builder itemUpdater:(id)updater;
 - (id)_buildItemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 @end
 
 @implementation HUTriggerEventsItemModule
 
-- (HUTriggerEventsItemModule)initWithTriggerBuilder:(id)a3 itemUpdater:(id)a4
+- (HUTriggerEventsItemModule)initWithTriggerBuilder:(id)builder itemUpdater:(id)updater
 {
-  v7 = a3;
+  builderCopy = builder;
   v11.receiver = self;
   v11.super_class = HUTriggerEventsItemModule;
-  v8 = [(HFItemModule *)&v11 initWithItemUpdater:a4];
+  v8 = [(HFItemModule *)&v11 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_triggerBuilder, a3);
+    objc_storeStrong(&v8->_triggerBuilder, builder);
     v9->_hideAddEventButton = 0;
   }
 
@@ -27,10 +27,10 @@
 {
   v3 = [MEMORY[0x277CBEB58] set];
   objc_opt_class();
-  v4 = [(HUTriggerEventsItemModule *)self triggerBuilder];
+  triggerBuilder = [(HUTriggerEventsItemModule *)self triggerBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = triggerBuilder;
   }
 
   else
@@ -45,20 +45,20 @@
     v7 = [objc_alloc(MEMORY[0x277D14660]) initWithTriggerBuilder:v6];
     [(HUTriggerEventsItemModule *)self setTriggerEventsItemProvider:v7];
 
-    v8 = [(HUTriggerEventsItemModule *)self triggerEventsItemProvider];
-    [v8 setNameType:1];
+    triggerEventsItemProvider = [(HUTriggerEventsItemModule *)self triggerEventsItemProvider];
+    [triggerEventsItemProvider setNameType:1];
   }
 
   else
   {
     v9 = [HUTriggerBuilderItem alloc];
-    v10 = [(HUTriggerEventsItemModule *)self triggerBuilder];
-    v11 = [(HUTriggerBuilderItem *)v9 initWithTriggerBuilder:v10 nameType:1];
+    triggerBuilder2 = [(HUTriggerEventsItemModule *)self triggerBuilder];
+    v11 = [(HUTriggerBuilderItem *)v9 initWithTriggerBuilder:triggerBuilder2 nameType:1];
     triggerBuilderItem = self->_triggerBuilderItem;
     self->_triggerBuilderItem = v11;
 
-    v8 = [(HUTriggerEventsItemModule *)self triggerBuilderItem];
-    [v3 addObject:v8];
+    triggerEventsItemProvider = [(HUTriggerEventsItemModule *)self triggerBuilderItem];
+    [v3 addObject:triggerEventsItemProvider];
   }
 
   v13 = objc_alloc(MEMORY[0x277D14B38]);
@@ -70,16 +70,16 @@
   v14 = [v13 initWithResultsBlock:v22];
   [(HUTriggerEventsItemModule *)self setAddEventButtonItem:v14];
 
-  v15 = [(HUTriggerEventsItemModule *)self addEventButtonItem];
-  [v3 addObject:v15];
+  addEventButtonItem = [(HUTriggerEventsItemModule *)self addEventButtonItem];
+  [v3 addObject:addEventButtonItem];
 
   v16 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v3];
   [(HUTriggerEventsItemModule *)self setStaticItemProvider:v16];
 
   v17 = MEMORY[0x277CBEB98];
-  v18 = [(HUTriggerEventsItemModule *)self staticItemProvider];
-  v19 = [(HUTriggerEventsItemModule *)self triggerEventsItemProvider];
-  v20 = [v17 setWithObjects:{v18, v19, 0}];
+  staticItemProvider = [(HUTriggerEventsItemModule *)self staticItemProvider];
+  triggerEventsItemProvider2 = [(HUTriggerEventsItemModule *)self triggerEventsItemProvider];
+  v20 = [v17 setWithObjects:{staticItemProvider, triggerEventsItemProvider2, 0}];
 
   return v20;
 }
@@ -112,9 +112,9 @@ id __48__HUTriggerEventsItemModule__buildItemProviders__block_invoke(uint64_t a1
   itemProviders = self->_itemProviders;
   if (!itemProviders)
   {
-    v4 = [(HUTriggerEventsItemModule *)self _buildItemProviders];
+    _buildItemProviders = [(HUTriggerEventsItemModule *)self _buildItemProviders];
     v5 = self->_itemProviders;
-    self->_itemProviders = v4;
+    self->_itemProviders = _buildItemProviders;
 
     itemProviders = self->_itemProviders;
   }
@@ -122,33 +122,33 @@ id __48__HUTriggerEventsItemModule__buildItemProviders__block_invoke(uint64_t a1
   return itemProviders;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"triggerEventsSection"];
-  v7 = [(HUTriggerEventsItemModule *)self triggerEventsItemProvider];
+  triggerEventsItemProvider = [(HUTriggerEventsItemModule *)self triggerEventsItemProvider];
 
-  if (v7)
+  if (triggerEventsItemProvider)
   {
-    v8 = [(HUTriggerEventsItemModule *)self triggerEventsItemProvider];
-    v9 = [v8 items];
-    v10 = [v9 allObjects];
-    [v6 setItems:v10];
+    triggerEventsItemProvider2 = [(HUTriggerEventsItemModule *)self triggerEventsItemProvider];
+    items = [triggerEventsItemProvider2 items];
+    allObjects = [items allObjects];
+    [v6 setItems:allObjects];
   }
 
   else
   {
     v11 = MEMORY[0x277CBEA60];
-    v8 = [(HUTriggerEventsItemModule *)self triggerBuilderItem];
-    v9 = [v11 na_arrayWithSafeObject:v8];
-    [v6 setItems:v9];
+    triggerEventsItemProvider2 = [(HUTriggerEventsItemModule *)self triggerBuilderItem];
+    items = [v11 na_arrayWithSafeObject:triggerEventsItemProvider2];
+    [v6 setItems:items];
   }
 
-  v12 = [v6 items];
-  v13 = [(HUTriggerEventsItemModule *)self addEventButtonItem];
-  v14 = [v12 arrayByAddingObject:v13];
+  items2 = [v6 items];
+  addEventButtonItem = [(HUTriggerEventsItemModule *)self addEventButtonItem];
+  v14 = [items2 arrayByAddingObject:addEventButtonItem];
   [v6 setItems:v14];
 
   v15 = _HULocalizedStringWithDefaultValue(@"HUTriggerSummaryTriggersInstructionTitle", @"HUTriggerSummaryTriggersInstructionTitle", 1);
@@ -157,7 +157,7 @@ id __48__HUTriggerEventsItemModule__buildItemProviders__block_invoke(uint64_t a1
   v16 = MEMORY[0x277D14778];
   v20[0] = v6;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-  v18 = [v16 filterSections:v17 toDisplayedItems:v5];
+  v18 = [v16 filterSections:v17 toDisplayedItems:itemsCopy];
 
   return v18;
 }

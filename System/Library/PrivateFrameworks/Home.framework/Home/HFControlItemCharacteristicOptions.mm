@@ -1,26 +1,26 @@
 @interface HFControlItemCharacteristicOptions
-+ (HFControlItemCharacteristicOptions)optionsWithReadWriteCharacteristicTypes:(id)a3;
++ (HFControlItemCharacteristicOptions)optionsWithReadWriteCharacteristicTypes:(id)types;
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (HFControlItemCharacteristicOptions)initWithCharacteristicTypesByUsage:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HFControlItemCharacteristicOptions)initWithCharacteristicTypesByUsage:(id)usage;
 - (NSString)description;
-- (id)_characteristicTypesForUsagesPassingTest:(id)a3;
-- (id)_optionsByReducingWithOptions:(id)a3 reducer:(id)a4;
-- (id)characteristicTypesForUsage:(unint64_t)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)optionsByAddingCharacteristicTypes:(id)a3 forUsage:(unint64_t)a4;
+- (id)_characteristicTypesForUsagesPassingTest:(id)test;
+- (id)_optionsByReducingWithOptions:(id)options reducer:(id)reducer;
+- (id)characteristicTypesForUsage:(unint64_t)usage;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)optionsByAddingCharacteristicTypes:(id)types forUsage:(unint64_t)usage;
 - (unint64_t)hash;
 @end
 
 @implementation HFControlItemCharacteristicOptions
 
-+ (HFControlItemCharacteristicOptions)optionsWithReadWriteCharacteristicTypes:(id)a3
++ (HFControlItemCharacteristicOptions)optionsWithReadWriteCharacteristicTypes:(id)types
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 alloc];
+  typesCopy = types;
+  v5 = [self alloc];
   v10 = &unk_282523B80;
-  v11[0] = v4;
+  v11[0] = typesCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   v7 = [v5 initWithCharacteristicTypesByUsage:v6];
@@ -29,15 +29,15 @@
   return v7;
 }
 
-- (HFControlItemCharacteristicOptions)initWithCharacteristicTypesByUsage:(id)a3
+- (HFControlItemCharacteristicOptions)initWithCharacteristicTypesByUsage:(id)usage
 {
-  v4 = a3;
+  usageCopy = usage;
   v9.receiver = self;
   v9.super_class = HFControlItemCharacteristicOptions;
   v5 = [(HFControlItemCharacteristicOptions *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [usageCopy copy];
     characteristicTypesByUsage = v5->_characteristicTypesByUsage;
     v5->_characteristicTypesByUsage = v6;
   }
@@ -45,18 +45,18 @@
   return v5;
 }
 
-- (id)_characteristicTypesForUsagesPassingTest:(id)a3
+- (id)_characteristicTypesForUsagesPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(HFControlItemCharacteristicOptions *)self characteristicTypesByUsage];
+  testCopy = test;
+  characteristicTypesByUsage = [(HFControlItemCharacteristicOptions *)self characteristicTypesByUsage];
   v6 = [MEMORY[0x277CBEB58] set];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__HFControlItemCharacteristicOptions__characteristicTypesForUsagesPassingTest___block_invoke;
   v10[3] = &unk_277DF79A8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v5 na_reduceWithInitialValue:v6 reducer:v10];
+  v11 = testCopy;
+  v7 = testCopy;
+  v8 = [characteristicTypesByUsage na_reduceWithInitialValue:v6 reducer:v10];
 
   return v8;
 }
@@ -73,18 +73,18 @@ id __79__HFControlItemCharacteristicOptions__characteristicTypesForUsagesPassing
   return v8;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = [a3 unsignedIntegerValue];
+  unsignedIntegerValue = [subscript unsignedIntegerValue];
 
-  return [(HFControlItemCharacteristicOptions *)self characteristicTypesForUsage:v4];
+  return [(HFControlItemCharacteristicOptions *)self characteristicTypesForUsage:unsignedIntegerValue];
 }
 
-- (id)characteristicTypesForUsage:(unint64_t)a3
+- (id)characteristicTypesForUsage:(unint64_t)usage
 {
-  v4 = [(HFControlItemCharacteristicOptions *)self characteristicTypesByUsage];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  characteristicTypesByUsage = [(HFControlItemCharacteristicOptions *)self characteristicTypesByUsage];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:usage];
+  v6 = [characteristicTypesByUsage objectForKeyedSubscript:v5];
   v7 = v6;
   if (v6)
   {
@@ -101,14 +101,14 @@ id __79__HFControlItemCharacteristicOptions__characteristicTypesForUsagesPassing
   return v9;
 }
 
-- (id)optionsByAddingCharacteristicTypes:(id)a3 forUsage:(unint64_t)a4
+- (id)optionsByAddingCharacteristicTypes:(id)types forUsage:(unint64_t)usage
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  typesCopy = types;
   v7 = [HFControlItemCharacteristicOptions alloc];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:usage];
   v14 = v8;
-  v15[0] = v6;
+  v15[0] = typesCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
   v10 = [(HFControlItemCharacteristicOptions *)v7 initWithCharacteristicTypesByUsage:v9];
@@ -119,36 +119,36 @@ id __79__HFControlItemCharacteristicOptions__characteristicTypesForUsagesPassing
   return v11;
 }
 
-- (id)_optionsByReducingWithOptions:(id)a3 reducer:(id)a4
+- (id)_optionsByReducingWithOptions:(id)options reducer:(id)reducer
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ([v6 characteristicTypesByUsage], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9))
+  optionsCopy = options;
+  reducerCopy = reducer;
+  if (optionsCopy && ([optionsCopy characteristicTypesByUsage], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9))
   {
-    v10 = [(HFControlItemCharacteristicOptions *)self characteristicTypesByUsage];
-    v11 = [v10 na_dictionaryByMappingValues:&__block_literal_global_237];
+    characteristicTypesByUsage = [(HFControlItemCharacteristicOptions *)self characteristicTypesByUsage];
+    v11 = [characteristicTypesByUsage na_dictionaryByMappingValues:&__block_literal_global_237];
     v12 = [v11 mutableCopy];
 
-    v13 = [v6 characteristicTypesByUsage];
+    characteristicTypesByUsage2 = [optionsCopy characteristicTypesByUsage];
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __76__HFControlItemCharacteristicOptions__optionsByReducingWithOptions_reducer___block_invoke_2;
     v21 = &unk_277DF7A10;
     v22 = v12;
-    v23 = v7;
+    v23 = reducerCopy;
     v14 = v12;
-    [v13 enumerateKeysAndObjectsUsingBlock:&v18];
+    [characteristicTypesByUsage2 enumerateKeysAndObjectsUsingBlock:&v18];
 
     v15 = objc_alloc(objc_opt_class());
-    v16 = [v15 initWithCharacteristicTypesByUsage:{v14, v18, v19, v20, v21}];
+    selfCopy = [v15 initWithCharacteristicTypesByUsage:{v14, v18, v19, v20, v21}];
   }
 
   else
   {
-    v16 = self;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 id __76__HFControlItemCharacteristicOptions__optionsByReducingWithOptions_reducer___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -170,19 +170,19 @@ void __76__HFControlItemCharacteristicOptions__optionsByReducingWithOptions_redu
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [v3 activeMultilinePrefix];
+  activeMultilinePrefix = [v3 activeMultilinePrefix];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __49__HFControlItemCharacteristicOptions_description__block_invoke;
   v11 = &unk_277DF3370;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
-  [v5 appendBodySectionWithName:@"characteristicsByUsage" multilinePrefix:v4 block:&v8];
+  [v5 appendBodySectionWithName:@"characteristicsByUsage" multilinePrefix:activeMultilinePrefix block:&v8];
 
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 void __49__HFControlItemCharacteristicOptions_description__block_invoke(uint64_t a1)
@@ -285,19 +285,19 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

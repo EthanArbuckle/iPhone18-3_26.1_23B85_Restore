@@ -9,18 +9,18 @@
 {
   v4.receiver = self;
   v4.super_class = SBApplicationIcon;
-  v2 = [(SBHApplicationIcon *)&v4 application];
+  application = [(SBHApplicationIcon *)&v4 application];
 
-  return v2;
+  return application;
 }
 
 - (SBApplicationPlaceholder)applicationPlaceholder
 {
   v4.receiver = self;
   v4.super_class = SBApplicationIcon;
-  v2 = [(SBHApplicationIcon *)&v4 applicationPlaceholder];
+  applicationPlaceholder = [(SBHApplicationIcon *)&v4 applicationPlaceholder];
 
-  return v2;
+  return applicationPlaceholder;
 }
 
 @end

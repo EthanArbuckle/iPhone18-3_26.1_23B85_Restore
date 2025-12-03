@@ -8,16 +8,16 @@
 - (id)accessibilityLabel
 {
   v2 = [(PKPassFieldViewAccessibility *)self safeValueForKey:@"labelLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  if ([v3 isEqualToString:@"***"])
+  if ([accessibilityLabel isEqualToString:@"***"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = accessibilityLabel;
   }
 
   return v4;
@@ -26,16 +26,16 @@
 - (id)accessibilityValue
 {
   v2 = [(PKPassFieldViewAccessibility *)self safeValueForKey:@"valueLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  if ([v3 isEqualToString:@"***"])
+  if ([accessibilityLabel isEqualToString:@"***"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = accessibilityLabel;
   }
 
   return v4;

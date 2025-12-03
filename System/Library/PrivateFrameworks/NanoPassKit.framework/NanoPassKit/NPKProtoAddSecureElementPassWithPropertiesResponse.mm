@@ -1,33 +1,33 @@
 @interface NPKProtoAddSecureElementPassWithPropertiesResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCredentialsBytes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCredentialsBytes:(id)bytes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoAddSecureElementPassWithPropertiesResponse
 
-- (void)addCredentialsBytes:(id)a3
+- (void)addCredentialsBytes:(id)bytes
 {
-  v4 = a3;
+  bytesCopy = bytes;
   credentialsBytes = self->_credentialsBytes;
-  v8 = v4;
+  v8 = bytesCopy;
   if (!credentialsBytes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_credentialsBytes;
     self->_credentialsBytes = v6;
 
-    v4 = v8;
+    bytesCopy = v8;
     credentialsBytes = self->_credentialsBytes;
   }
 
-  [(NSMutableArray *)credentialsBytes addObject:v4];
+  [(NSMutableArray *)credentialsBytes addObject:bytesCopy];
 }
 
 - (id)description
@@ -36,40 +36,40 @@
   v8.receiver = self;
   v8.super_class = NPKProtoAddSecureElementPassWithPropertiesResponse;
   v4 = [(NPKProtoAddSecureElementPassWithPropertiesResponse *)&v8 description];
-  v5 = [(NPKProtoAddSecureElementPassWithPropertiesResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoAddSecureElementPassWithPropertiesResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_success];
-    [v3 setObject:v4 forKey:@"success"];
+    [dictionary setObject:v4 forKey:@"success"];
   }
 
   credentialsBytes = self->_credentialsBytes;
   if (credentialsBytes)
   {
-    [v3 setObject:credentialsBytes forKey:@"credentialsBytes"];
+    [dictionary setObject:credentialsBytes forKey:@"credentialsBytes"];
   }
 
   paymentApplicationID = self->_paymentApplicationID;
   if (paymentApplicationID)
   {
-    [v3 setObject:paymentApplicationID forKey:@"paymentApplicationID"];
+    [dictionary setObject:paymentApplicationID forKey:@"paymentApplicationID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     success = self->_success;
@@ -116,23 +116,23 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[24] = self->_success;
-    v4[28] |= 1u;
+    toCopy[24] = self->_success;
+    toCopy[28] |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(NPKProtoAddSecureElementPassWithPropertiesResponse *)self credentialsBytesCount])
   {
     [v9 clearCredentialsBytes];
-    v5 = [(NPKProtoAddSecureElementPassWithPropertiesResponse *)self credentialsBytesCount];
-    if (v5)
+    credentialsBytesCount = [(NPKProtoAddSecureElementPassWithPropertiesResponse *)self credentialsBytesCount];
+    if (credentialsBytesCount)
     {
-      v6 = v5;
+      v6 = credentialsBytesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NPKProtoAddSecureElementPassWithPropertiesResponse *)self credentialsBytesAtIndex:i];
@@ -147,10 +147,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -178,7 +178,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) copyWithZone:{a3, v17}];
+        v12 = [*(*(&v17 + 1) + 8 * v11) copyWithZone:{zone, v17}];
         [v6 addCredentialsBytes:v12];
 
         ++v11;
@@ -191,7 +191,7 @@
     while (v9);
   }
 
-  v13 = [(NSString *)self->_paymentApplicationID copyWithZone:a3];
+  v13 = [(NSString *)self->_paymentApplicationID copyWithZone:zone];
   v14 = v6[2];
   v6[2] = v13;
 
@@ -199,26 +199,26 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_9;
     }
 
-    v5 = *(v4 + 24);
+    v5 = *(equalCopy + 24);
     if (self->_success)
     {
-      if (*(v4 + 24))
+      if (*(equalCopy + 24))
       {
         goto LABEL_4;
       }
@@ -236,13 +236,13 @@ LABEL_9:
 
 LABEL_4:
   credentialsBytes = self->_credentialsBytes;
-  if (credentialsBytes | *(v4 + 1) && ![(NSMutableArray *)credentialsBytes isEqual:?])
+  if (credentialsBytes | *(equalCopy + 1) && ![(NSMutableArray *)credentialsBytes isEqual:?])
   {
     goto LABEL_9;
   }
 
   paymentApplicationID = self->_paymentApplicationID;
-  if (paymentApplicationID | *(v4 + 2))
+  if (paymentApplicationID | *(equalCopy + 2))
   {
     v8 = [(NSString *)paymentApplicationID isEqual:?];
   }
@@ -273,14 +273,14 @@ LABEL_10:
   return v4 ^ [(NSString *)self->_paymentApplicationID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 28))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 28))
   {
-    self->_success = *(v4 + 24);
+    self->_success = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 
@@ -288,7 +288,7 @@ LABEL_10:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

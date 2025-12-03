@@ -1,20 +1,20 @@
 @interface CTAppStoreSearchResult
-+ (id)appStoreSearchResultsWithResultData:(id)a3 platform:(id)a4 error:(id *)a5;
-- (CTAppStoreSearchResult)initWithBundleID:(id)a3 platform:(id)a4;
-- (CTAppStoreSearchResult)initWithSearchResultRecord:(id)a3 platform:(id)a4;
++ (id)appStoreSearchResultsWithResultData:(id)data platform:(id)platform error:(id *)error;
+- (CTAppStoreSearchResult)initWithBundleID:(id)d platform:(id)platform;
+- (CTAppStoreSearchResult)initWithSearchResultRecord:(id)record platform:(id)platform;
 @end
 
 @implementation CTAppStoreSearchResult
 
-+ (id)appStoreSearchResultsWithResultData:(id)a3 platform:(id)a4 error:(id *)a5
++ (id)appStoreSearchResultsWithResultData:(id)data platform:(id)platform error:(id *)error
 {
-  v28 = a4;
-  v8 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:a5];
+  platformCopy = platform;
+  v8 = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
   if (!v8)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100003BE0(a5, v18, v19, v20, v21, v22, v23, v24);
+      sub_100003BE0(error, v18, v19, v20, v21, v22, v23, v24);
     }
 
     goto LABEL_31;
@@ -23,9 +23,9 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:CTErrorDomain code:2002 userInfo:0];
+      *error = [NSError errorWithDomain:CTErrorDomain code:2002 userInfo:0];
     }
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@ LABEL_31:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = [[a1 alloc] initWithSearchResultRecord:v16 platform:v28];
+            v17 = [[self alloc] initWithSearchResultRecord:v16 platform:platformCopy];
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
             {
               *buf = 138477827;
@@ -120,9 +120,9 @@ LABEL_31:
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:CTErrorDomain code:2002 userInfo:0];
+      *error = [NSError errorWithDomain:CTErrorDomain code:2002 userInfo:0];
     }
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -138,20 +138,20 @@ LABEL_38:
   return v10;
 }
 
-- (CTAppStoreSearchResult)initWithSearchResultRecord:(id)a3 platform:(id)a4
+- (CTAppStoreSearchResult)initWithSearchResultRecord:(id)record platform:(id)platform
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"bundleId"];
+  recordCopy = record;
+  platformCopy = platform;
+  v8 = [recordCopy objectForKeyedSubscript:@"bundleId"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 objectForKeyedSubscript:@"genreIds"];
+    v9 = [recordCopy objectForKeyedSubscript:@"genreIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v23 = v9;
-      v24 = v7;
+      v24 = platformCopy;
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
@@ -181,7 +181,7 @@ LABEL_38:
                 sub_100003D38();
               }
 
-              v21 = 0;
+              selfCopy = 0;
               goto LABEL_21;
             }
 
@@ -210,12 +210,12 @@ LABEL_38:
       genreIDs = v16->_genreIDs;
       v16->_genreIDs = v19;
 
-      objc_storeStrong(&v16->_platform, a4);
+      objc_storeStrong(&v16->_platform, platform);
       self = v16;
-      v21 = self;
+      selfCopy = self;
 LABEL_21:
       v9 = v23;
-      v7 = v24;
+      platformCopy = v24;
     }
 
     else
@@ -225,7 +225,7 @@ LABEL_21:
         sub_100003CC8();
       }
 
-      v21 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -236,20 +236,20 @@ LABEL_21:
       sub_100003C58();
     }
 
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (CTAppStoreSearchResult)initWithBundleID:(id)a3 platform:(id)a4
+- (CTAppStoreSearchResult)initWithBundleID:(id)d platform:(id)platform
 {
-  v6 = a4;
+  platformCopy = platform;
   v14.receiver = self;
   v14.super_class = CTAppStoreSearchResult;
-  v7 = a3;
+  dCopy = d;
   v8 = [(CTAppStoreSearchResult *)&v14 init];
-  v9 = [v7 copy];
+  v9 = [dCopy copy];
 
   bundleID = v8->_bundleID;
   v8->_bundleID = v9;
@@ -258,7 +258,7 @@ LABEL_21:
   v8->_genreIDs = &__NSArray0__struct;
 
   platform = v8->_platform;
-  v8->_platform = v6;
+  v8->_platform = platformCopy;
 
   return v8;
 }

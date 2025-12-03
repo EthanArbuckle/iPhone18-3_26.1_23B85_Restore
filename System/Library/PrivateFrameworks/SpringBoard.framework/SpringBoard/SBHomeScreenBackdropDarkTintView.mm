@@ -1,20 +1,20 @@
 @interface SBHomeScreenBackdropDarkTintView
-- (SBHomeScreenBackdropDarkTintView)initWithFrame:(CGRect)a3;
+- (SBHomeScreenBackdropDarkTintView)initWithFrame:(CGRect)frame;
 - (void)_updateDarkTintViewHidden;
-- (void)beginRequiringBackdropViewForReason:(id)a3;
-- (void)beginRequiringLiveBackdropViewForReason:(id)a3;
-- (void)endRequiringBackdropViewForReason:(id)a3;
-- (void)endRequiringLiveBackdropViewForReason:(id)a3;
-- (void)setBlurProgress:(double)a3 behaviorMode:(int64_t)a4 completion:(id)a5;
+- (void)beginRequiringBackdropViewForReason:(id)reason;
+- (void)beginRequiringLiveBackdropViewForReason:(id)reason;
+- (void)endRequiringBackdropViewForReason:(id)reason;
+- (void)endRequiringLiveBackdropViewForReason:(id)reason;
+- (void)setBlurProgress:(double)progress behaviorMode:(int64_t)mode completion:(id)completion;
 @end
 
 @implementation SBHomeScreenBackdropDarkTintView
 
-- (SBHomeScreenBackdropDarkTintView)initWithFrame:(CGRect)a3
+- (SBHomeScreenBackdropDarkTintView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SBHomeScreenBackdropDarkTintView;
-  v3 = [(SBHomeScreenBackdropViewBase *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHomeScreenBackdropViewBase *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
@@ -35,50 +35,50 @@
   return v3;
 }
 
-- (void)beginRequiringBackdropViewForReason:(id)a3
+- (void)beginRequiringBackdropViewForReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenBackdropDarkTintView;
-  [(SBHomeScreenBackdropViewBase *)&v4 beginRequiringBackdropViewForReason:a3];
+  [(SBHomeScreenBackdropViewBase *)&v4 beginRequiringBackdropViewForReason:reason];
   [(SBHomeScreenBackdropDarkTintView *)self _updateDarkTintViewHidden];
 }
 
-- (void)beginRequiringLiveBackdropViewForReason:(id)a3
+- (void)beginRequiringLiveBackdropViewForReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenBackdropDarkTintView;
-  [(SBHomeScreenBackdropViewBase *)&v4 beginRequiringLiveBackdropViewForReason:a3];
+  [(SBHomeScreenBackdropViewBase *)&v4 beginRequiringLiveBackdropViewForReason:reason];
   [(SBHomeScreenBackdropDarkTintView *)self _updateDarkTintViewHidden];
 }
 
-- (void)endRequiringBackdropViewForReason:(id)a3
+- (void)endRequiringBackdropViewForReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenBackdropDarkTintView;
-  [(SBHomeScreenBackdropViewBase *)&v4 endRequiringBackdropViewForReason:a3];
+  [(SBHomeScreenBackdropViewBase *)&v4 endRequiringBackdropViewForReason:reason];
   [(SBHomeScreenBackdropDarkTintView *)self _updateDarkTintViewHidden];
 }
 
-- (void)endRequiringLiveBackdropViewForReason:(id)a3
+- (void)endRequiringLiveBackdropViewForReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenBackdropDarkTintView;
-  [(SBHomeScreenBackdropViewBase *)&v4 endRequiringLiveBackdropViewForReason:a3];
+  [(SBHomeScreenBackdropViewBase *)&v4 endRequiringLiveBackdropViewForReason:reason];
   [(SBHomeScreenBackdropDarkTintView *)self _updateDarkTintViewHidden];
 }
 
-- (void)setBlurProgress:(double)a3 behaviorMode:(int64_t)a4 completion:(id)a5
+- (void)setBlurProgress:(double)progress behaviorMode:(int64_t)mode completion:(id)completion
 {
   v8 = MEMORY[0x277D75D18];
-  v9 = a5;
-  v10 = [(SBHomeScreenBackdropViewBase *)self backdropBlurSettings];
+  completionCopy = completion;
+  backdropBlurSettings = [(SBHomeScreenBackdropViewBase *)self backdropBlurSettings];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__SBHomeScreenBackdropDarkTintView_setBlurProgress_behaviorMode_completion___block_invoke;
   v11[3] = &unk_2783A8BC8;
   v11[4] = self;
-  *&v11[5] = a3;
-  [v8 sb_animateWithSettings:v10 mode:a4 animations:v11 completion:v9];
+  *&v11[5] = progress;
+  [v8 sb_animateWithSettings:backdropBlurSettings mode:mode animations:v11 completion:completionCopy];
 }
 
 uint64_t __76__SBHomeScreenBackdropDarkTintView_setBlurProgress_behaviorMode_completion___block_invoke(uint64_t a1)

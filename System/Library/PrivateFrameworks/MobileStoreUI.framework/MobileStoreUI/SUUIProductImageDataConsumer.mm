@@ -1,7 +1,7 @@
 @interface SUUIProductImageDataConsumer
 + (id)cardConsumer;
 + (id)chartsConsumer;
-+ (id)consumerWithSize:(CGSize)a3;
++ (id)consumerWithSize:(CGSize)size;
 + (id)giftComposeConsumer;
 + (id)giftComposeLetterboxConsumer;
 + (id)giftComposePosterConsumer;
@@ -10,7 +10,7 @@
 + (id)giftThemeLetterboxConsumer;
 + (id)giftThemePosterConsumer;
 + (id)gridConsumer;
-+ (id)lockupConsumerWithSize:(int64_t)a3 itemKind:(int64_t)a4;
++ (id)lockupConsumerWithSize:(int64_t)size itemKind:(int64_t)kind;
 + (id)productPageConsumer;
 + (id)purchasedConsumer;
 + (id)smartBannerConsumer;
@@ -19,18 +19,18 @@
 + (id)wishlistConsumer;
 - (CGSize)iconSize;
 - (CGSize)imageSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)imageForColor:(id)a3 size:(CGSize)a4;
-- (id)imageForImage:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)imageForColor:(id)color size:(CGSize)size;
+- (id)imageForImage:(id)image;
 @end
 
 @implementation SUUIProductImageDataConsumer
 
-+ (id)consumerWithSize:(CGSize)a3
++ (id)consumerWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  result = [a1 consumer];
+  height = size.height;
+  width = size.width;
+  result = [self consumer];
   *(result + 2) = width;
   *(result + 3) = height;
   return result;
@@ -38,215 +38,215 @@
 
 + (id)gridConsumer
 {
-  result = [a1 consumer];
+  result = [self consumer];
   *(result + 1) = vdupq_n_s64(0x4052C00000000000uLL);
   return result;
 }
 
-+ (id)lockupConsumerWithSize:(int64_t)a3 itemKind:(int64_t)a4
++ (id)lockupConsumerWithSize:(int64_t)size itemKind:(int64_t)kind
 {
-  v6 = [a1 consumer];
-  *(v6 + 16) = SUUILockupImageSizeForLockupSize(a3, a4);
-  *(v6 + 24) = v7;
+  consumer = [self consumer];
+  *(consumer + 16) = SUUILockupImageSizeForLockupSize(size, kind);
+  *(consumer + 24) = v7;
 
-  return v6;
+  return consumer;
 }
 
 + (id)cardConsumer
 {
-  v2 = [a1 consumer];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 72.0;
   }
 
-  v2[2] = v5;
-  v2[3] = v5;
+  consumer[2] = v5;
+  consumer[3] = v5;
 
-  return v2;
+  return consumer;
 }
 
 + (id)chartsConsumer
 {
-  v2 = [a1 consumer];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 67.0;
   }
 
-  v2[2] = v5;
-  v2[3] = v5;
+  consumer[2] = v5;
+  consumer[3] = v5;
 
-  return v2;
+  return consumer;
 }
 
 + (id)updatesConsumer
 {
-  v2 = [a1 consumer];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 57.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 72.0;
   }
 
-  v2[2] = v5;
-  v2[3] = v5;
+  consumer[2] = v5;
+  consumer[3] = v5;
 
-  return v2;
+  return consumer;
 }
 
 + (id)purchasedConsumer
 {
-  v2 = [a1 consumer];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 57.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 72.0;
   }
 
-  v2[2] = v5;
-  v2[3] = v5;
+  consumer[2] = v5;
+  consumer[3] = v5;
 
-  return v2;
+  return consumer;
 }
 
 + (id)productPageConsumer
 {
-  v2 = [a1 consumer];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 100.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 170.0;
   }
 
-  v2[2] = v5;
-  v2[3] = v5;
+  consumer[2] = v5;
+  consumer[3] = v5;
 
-  return v2;
+  return consumer;
 }
 
 + (id)swooshConsumer
 {
-  v2 = [a1 consumer];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 72.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 90.0;
   }
 
-  v2[2] = v5;
-  v2[3] = v5;
+  consumer[2] = v5;
+  consumer[3] = v5;
 
-  return v2;
+  return consumer;
 }
 
 + (id)giftComposeConsumer
 {
-  result = [a1 consumer];
+  result = [self consumer];
   *(result + 1) = vdupq_n_s64(0x4052C00000000000uLL);
   return result;
 }
 
 + (id)giftComposeLetterboxConsumer
 {
-  result = [a1 consumer];
+  result = [self consumer];
   *(result + 1) = xmmword_259FCAC70;
   return result;
 }
 
 + (id)giftComposePosterConsumer
 {
-  v2 = [a1 consumer];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v5 = qword_259FCAC80[(v4 & 0xFFFFFFFFFFFFFFFBLL) == 1];
-  v2[2] = v5;
-  v2[3] = v5;
+  v5 = qword_259FCAC80[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  consumer[2] = v5;
+  consumer[3] = v5;
 
-  return v2;
+  return consumer;
 }
 
 + (id)giftThemeConsumer
 {
-  result = [a1 consumer];
+  result = [self consumer];
   *(result + 1) = vdupq_n_s64(0x404C800000000000uLL);
   return result;
 }
 
 + (id)giftThemeLetterboxConsumer
 {
-  result = [a1 consumer];
+  result = [self consumer];
   *(result + 1) = xmmword_259FCAC90;
   return result;
 }
 
 + (id)giftThemePosterConsumer
 {
-  result = [a1 consumer];
+  result = [self consumer];
   *(result + 1) = vdupq_n_s64(0x404C800000000000uLL);
   return result;
 }
 
 + (id)giftResultConsumer
 {
-  v2 = [a1 consumer];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 72.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 144.0;
   }
 
-  v2[2] = v5;
-  v2[3] = v5;
+  consumer[2] = v5;
+  consumer[3] = v5;
 
-  return v2;
+  return consumer;
 }
 
 + (id)smartBannerConsumer
 {
-  v2 = [a1 consumer];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 75.0;
   }
 
-  v2[2] = v5;
-  v2[3] = v5;
+  consumer[2] = v5;
+  consumer[3] = v5;
 
-  return v2;
+  return consumer;
 }
 
 + (id)wishlistConsumer
 {
-  result = [a1 consumer];
+  result = [self consumer];
   *(result + 1) = vdupq_n_s64(0x4050000000000000uLL);
   return result;
 }
@@ -260,12 +260,12 @@
   return result;
 }
 
-- (id)imageForColor:(id)a3 size:(CGSize)a4
+- (id)imageForColor:(id)color size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v32[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  colorCopy = color;
   v8 = 0;
   if (width > 0.0 && height > 0.0)
   {
@@ -284,17 +284,17 @@
     v32[0] = [v10 CGColor];
     v32[1] = [v11 CGColor];
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
-    v14 = [MEMORY[0x277CD9EB0] layer];
-    [v14 setBounds:{v29, v30}];
-    [v14 setColors:v13];
-    [v14 setLocations:&unk_286BBE070];
-    v15 = [MEMORY[0x277D75568] preferredFormat];
-    v16 = [MEMORY[0x277D759A0] mainScreen];
-    [v16 scale];
-    [v15 setScale:?];
+    layer = [MEMORY[0x277CD9EB0] layer];
+    [layer setBounds:{v29, v30}];
+    [layer setColors:v13];
+    [layer setLocations:&unk_286BBE070];
+    preferredFormat = [MEMORY[0x277D75568] preferredFormat];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    [preferredFormat setScale:?];
 
     v17 = objc_alloc(MEMORY[0x277D75560]);
-    v18 = [v17 initWithSize:v15 format:v31];
+    v18 = [v17 initWithSize:preferredFormat format:v31];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __51__SUUIProductImageDataConsumer_imageForColor_size___block_invoke;
@@ -303,8 +303,8 @@
     v24 = v29;
     v25 = v30;
     v21[4] = self;
-    v22 = v14;
-    v19 = v14;
+    v22 = layer;
+    v19 = layer;
     v8 = [v18 imageWithActions:v21];
   }
 
@@ -327,22 +327,22 @@ void __51__SUUIProductImageDataConsumer_imageForColor_size___block_invoke(uint64
   [*(a1 + 40) renderInContext:{objc_msgSend(v6, "CGContext")}];
 }
 
-- (id)imageForImage:(id)a3
+- (id)imageForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v18.width = 0.0;
   v18.height = 0.0;
   v16 = 0u;
   v17 = 0u;
-  [v4 size];
+  [imageCopy size];
   SUUIIconFrameForIconSize(&v18.width, &v16, v5, v6, self->_iconSize.width, self->_iconSize.height, 0.0);
   colorScheme = self->_colorScheme;
   v15 = 0;
   SUUIIconColorsForColorScheme(colorScheme, 0, 0, &v15);
   v8 = v15;
   v9 = self->_backgroundColor != 0;
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   UIGraphicsBeginImageContextWithOptions(v18, v9, v11);
 
   backgroundColor = self->_backgroundColor;
@@ -356,16 +356,16 @@ void __51__SUUIProductImageDataConsumer_imageForColor_size___block_invoke(uint64
     UIRectFill(v20);
   }
 
-  [v4 drawInRect:{v16, v17}];
+  [imageCopy drawInRect:{v16, v17}];
   v13 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 8), self->_backgroundColor);
   objc_storeStrong((v4 + 32), self->_colorScheme);
   *(v4 + 16) = self->_iconSize;

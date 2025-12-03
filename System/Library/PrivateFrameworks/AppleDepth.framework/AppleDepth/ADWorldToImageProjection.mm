@@ -1,7 +1,7 @@
 @interface ADWorldToImageProjection
-- (uint64_t)initWithPose:(void *)a3 calibration:;
+- (uint64_t)initWithPose:(void *)pose calibration:;
 - (void)dealloc;
-- (void)projectPoints:(ADWorldToImageProjection *)self count:(SEL)a2;
+- (void)projectPoints:(ADWorldToImageProjection *)self count:(SEL)count;
 @end
 
 @implementation ADWorldToImageProjection
@@ -19,7 +19,7 @@
   [(ADWorldToImageProjection *)&v4 dealloc];
 }
 
-- (void)projectPoints:(ADWorldToImageProjection *)self count:(SEL)a2
+- (void)projectPoints:(ADWorldToImageProjection *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -48,16 +48,16 @@
   operator delete(v7);
 }
 
-- (uint64_t)initWithPose:(void *)a3 calibration:
+- (uint64_t)initWithPose:(void *)pose calibration:
 {
   v8[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  a1[1] = 0;
-  v7.receiver = a1;
+  poseCopy = pose;
+  self[1] = 0;
+  v7.receiver = self;
   v7.super_class = ADWorldToImageProjection;
   if ([(ADWorldToImageProjection *)&v7 init])
   {
-    v5 = v4;
+    v5 = poseCopy;
     v8[0] = &unk_285231478;
     v8[1] = v5;
     v8[3] = v8;

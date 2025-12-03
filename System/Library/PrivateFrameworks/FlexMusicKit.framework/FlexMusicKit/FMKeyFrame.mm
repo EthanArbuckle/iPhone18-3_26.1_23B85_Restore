@@ -1,19 +1,19 @@
 @interface FMKeyFrame
-- (FMKeyFrame)initWithValue:(float)a3 atTime:(int64_t)a4;
+- (FMKeyFrame)initWithValue:(float)value atTime:(int64_t)time;
 - (id)description;
 @end
 
 @implementation FMKeyFrame
 
-- (FMKeyFrame)initWithValue:(float)a3 atTime:(int64_t)a4
+- (FMKeyFrame)initWithValue:(float)value atTime:(int64_t)time
 {
   v7.receiver = self;
   v7.super_class = FMKeyFrame;
   result = [(FMKeyFrame *)&v7 init];
   if (result)
   {
-    result->_value = a3;
-    result->_sampleTime = a4;
+    result->_value = value;
+    result->_sampleTime = time;
   }
 
   return result;

@@ -1,25 +1,25 @@
 @interface AMUIIconModelStore
 - (AMUIIconModelStoreDelegate)iconModelStoreDelegate;
-- (BOOL)saveCurrentIconState:(id)a3 error:(id *)a4;
+- (BOOL)saveCurrentIconState:(id)state error:(id *)error;
 - (PRSPosterConfiguration)posterConfiguration;
-- (id)loadCurrentIconState:(id *)a3;
+- (id)loadCurrentIconState:(id *)state;
 @end
 
 @implementation AMUIIconModelStore
 
-- (BOOL)saveCurrentIconState:(id)a3 error:(id *)a4
+- (BOOL)saveCurrentIconState:(id)state error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AMUIIconModelStore *)self iconModelStoreDelegate];
+  stateCopy = state;
+  iconModelStoreDelegate = [(AMUIIconModelStore *)self iconModelStoreDelegate];
   v14 = 0;
-  v8 = [v7 iconModelStore:self saveIconState:v6 toPosterConfigurationWithError:&v14];
+  v8 = [iconModelStoreDelegate iconModelStore:self saveIconState:stateCopy toPosterConfigurationWithError:&v14];
 
   v9 = v14;
   v10 = v9;
   if ((v8 & 1) == 0)
   {
     v11 = v9;
-    *a4 = v10;
+    *error = v10;
     v12 = AMUILogInfograph();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -30,11 +30,11 @@
   return v8;
 }
 
-- (id)loadCurrentIconState:(id *)a3
+- (id)loadCurrentIconState:(id *)state
 {
-  v5 = [(AMUIIconModelStore *)self iconModelStoreDelegate];
+  iconModelStoreDelegate = [(AMUIIconModelStore *)self iconModelStoreDelegate];
   v11 = 0;
-  v6 = [v5 iconModelStore:self loadIconStateFromPosterConfigurationWithError:&v11];
+  v6 = [iconModelStoreDelegate iconModelStore:self loadIconStateFromPosterConfigurationWithError:&v11];
   v7 = v11;
   if (!v6)
   {
@@ -47,7 +47,7 @@
     if (v7)
     {
       v9 = v7;
-      *a3 = v7;
+      *state = v7;
     }
   }
 

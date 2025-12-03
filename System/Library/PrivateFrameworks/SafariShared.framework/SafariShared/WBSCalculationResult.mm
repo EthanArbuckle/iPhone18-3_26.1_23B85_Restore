@@ -1,24 +1,24 @@
 @interface WBSCalculationResult
 - (BOOL)isCalculation;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)formattedEquation;
 - (NSString)sectionTitle;
-- (WBSCalculationResult)initWithCalculateResult:(id)a3;
-- (id)reflectedStringForQueryString:(id)a3;
+- (WBSCalculationResult)initWithCalculateResult:(id)result;
+- (id)reflectedStringForQueryString:(id)string;
 @end
 
 @implementation WBSCalculationResult
 
-- (WBSCalculationResult)initWithCalculateResult:(id)a3
+- (WBSCalculationResult)initWithCalculateResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v11.receiver = self;
   v11.super_class = WBSCalculationResult;
   v6 = [(WBSCalculationResult *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_result, a3);
+    objc_storeStrong(&v6->_result, result);
     if ([(WBSCalculationResult *)v7 isCalculation])
     {
       if (calculationResultNumberFormatter_onceToken != -1)
@@ -48,16 +48,16 @@
 
 - (BOOL)isCalculation
 {
-  v3 = [(CalculateResult *)self->_result conversions];
-  if ([v3 count])
+  conversions = [(CalculateResult *)self->_result conversions];
+  if ([conversions count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(CalculateResult *)self->_result inputValueAndUnit];
-    v4 = v5 == 0;
+    inputValueAndUnit = [(CalculateResult *)self->_result inputValueAndUnit];
+    v4 = inputValueAndUnit == 0;
   }
 
   return v4;
@@ -73,32 +73,32 @@
 
 - (NSString)formattedEquation
 {
-  v3 = [(CalculateResult *)self->_result formattedExpression];
-  v4 = [(WBSCalculationResult *)self reflectedStringForQueryString:v3];
+  formattedExpression = [(CalculateResult *)self->_result formattedExpression];
+  v4 = [(WBSCalculationResult *)self reflectedStringForQueryString:formattedExpression];
 
   return v4;
 }
 
-- (id)reflectedStringForQueryString:(id)a3
+- (id)reflectedStringForQueryString:(id)string
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  stringCopy = string;
   v6 = _WBSLocalizedString();
-  v7 = [(CalculateResult *)self->_result formattedResult];
-  v8 = [v4 stringWithFormat:v6, v5, v7];
+  formattedResult = [(CalculateResult *)self->_result formattedResult];
+  v8 = [v4 stringWithFormat:v6, stringCopy, formattedResult];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WBSCalculationResult *)self formattedEquation];
-    v6 = [v4 formattedEquation];
-    v7 = [v5 isEqualToString:v6];
+    formattedEquation = [(WBSCalculationResult *)self formattedEquation];
+    formattedEquation2 = [equalCopy formattedEquation];
+    v7 = [formattedEquation isEqualToString:formattedEquation2];
   }
 
   else

@@ -1,7 +1,7 @@
 @interface PCIeNANDiBootUpdater
 + (id)IOMatchingPropertyTable;
-- (BOOL)updateBootFirmwareWithError:(id *)a3;
-- (PCIeNANDiBootUpdater)initWithIOService:(unsigned int)a3;
+- (BOOL)updateBootFirmwareWithError:(id *)error;
+- (PCIeNANDiBootUpdater)initWithIOService:(unsigned int)service;
 - (void)dealloc;
 @end
 
@@ -14,9 +14,9 @@
   return [NSDictionary dictionaryWithObjects:&v4 forKeys:&v3 count:1];
 }
 
-- (PCIeNANDiBootUpdater)initWithIOService:(unsigned int)a3
+- (PCIeNANDiBootUpdater)initWithIOService:(unsigned int)service
 {
-  v3 = *&a3;
+  v3 = *&service;
   v7.receiver = self;
   v7.super_class = PCIeNANDiBootUpdater;
   v4 = [(MSUBootFirmwareUpdater *)&v7 initWithIOService:?];
@@ -46,12 +46,12 @@
   [(MSUBootFirmwareUpdater *)&v3 dealloc];
 }
 
-- (BOOL)updateBootFirmwareWithError:(id *)a3
+- (BOOL)updateBootFirmwareWithError:(id *)error
 {
-  v5 = [(PCIeNANDiBootUpdater *)self writer];
-  [(PCIeNANDBootWriter *)v5 setIsErase:[(MSUBootFirmwareUpdater *)self isErase]];
-  [(PCIeNANDBootWriter *)v5 setShouldCommit:[(MSUBootFirmwareUpdater *)self shouldCommit]];
-  return [(PCIeNANDBootWriter *)v5 writeFirmware:self error:a3]== 0;
+  writer = [(PCIeNANDiBootUpdater *)self writer];
+  [(PCIeNANDBootWriter *)writer setIsErase:[(MSUBootFirmwareUpdater *)self isErase]];
+  [(PCIeNANDBootWriter *)writer setShouldCommit:[(MSUBootFirmwareUpdater *)self shouldCommit]];
+  return [(PCIeNANDBootWriter *)writer writeFirmware:self error:error]== 0;
 }
 
 @end

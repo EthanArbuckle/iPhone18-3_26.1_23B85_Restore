@@ -1,26 +1,26 @@
 @interface LTSchemaSafariFeedbackEvent
-- (BOOL)isEqual:(id)a3;
-- (LTSchemaSafariFeedbackEvent)initWithDictionary:(id)a3;
-- (LTSchemaSafariFeedbackEvent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LTSchemaSafariFeedbackEvent)initWithDictionary:(id)dictionary;
+- (LTSchemaSafariFeedbackEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LTSchemaSafariFeedbackEvent
 
-- (LTSchemaSafariFeedbackEvent)initWithDictionary:(id)a3
+- (LTSchemaSafariFeedbackEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = LTSchemaSafariFeedbackEvent;
   v5 = [(LTSchemaSafariFeedbackEvent *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"task"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"task"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(LTSchemaSafariFeedbackEvent *)v5 setTask:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sessionID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sessionID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(LTSchemaSafariFeedbackEvent *)v5 setSessionID:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"userFeedbackContentSource"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"userFeedbackContentSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(LTSchemaSafariFeedbackEvent *)v5 setUserFeedbackContentSource:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"userFeedbackContentTarget"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"userFeedbackContentTarget"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (LTSchemaSafariFeedbackEvent)initWithJSON:(id)a3
+- (LTSchemaSafariFeedbackEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LTSchemaSafariFeedbackEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LTSchemaSafariFeedbackEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LTSchemaSafariFeedbackEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,47 +94,47 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_sessionID)
   {
-    v4 = [(LTSchemaSafariFeedbackEvent *)self sessionID];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"sessionID"];
+    sessionID = [(LTSchemaSafariFeedbackEvent *)self sessionID];
+    v5 = [sessionID copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"sessionID"];
   }
 
   if (self->_task)
   {
-    v6 = [(LTSchemaSafariFeedbackEvent *)self task];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    task = [(LTSchemaSafariFeedbackEvent *)self task];
+    dictionaryRepresentation = [task dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"task"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"task"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"task"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"task"];
     }
   }
 
   if (self->_userFeedbackContentSource)
   {
-    v9 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentSource];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"userFeedbackContentSource"];
+    userFeedbackContentSource = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentSource];
+    v10 = [userFeedbackContentSource copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"userFeedbackContentSource"];
   }
 
   if (self->_userFeedbackContentTarget)
   {
-    v11 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentTarget];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"userFeedbackContentTarget"];
+    userFeedbackContentTarget = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentTarget];
+    v12 = [userFeedbackContentTarget copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"userFeedbackContentTarget"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -145,28 +145,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_userFeedbackContentTarget hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(LTSchemaSafariFeedbackEvent *)self task];
-  v6 = [v4 task];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaSafariFeedbackEvent *)self task];
+  task2 = [equalCopy task];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(LTSchemaSafariFeedbackEvent *)self task];
-  if (v7)
+  task3 = [(LTSchemaSafariFeedbackEvent *)self task];
+  if (task3)
   {
-    v8 = v7;
-    v9 = [(LTSchemaSafariFeedbackEvent *)self task];
-    v10 = [v4 task];
-    v11 = [v9 isEqual:v10];
+    v8 = task3;
+    task4 = [(LTSchemaSafariFeedbackEvent *)self task];
+    task5 = [equalCopy task];
+    v11 = [task4 isEqual:task5];
 
     if (!v11)
     {
@@ -178,20 +178,20 @@
   {
   }
 
-  v5 = [(LTSchemaSafariFeedbackEvent *)self sessionID];
-  v6 = [v4 sessionID];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaSafariFeedbackEvent *)self sessionID];
+  task2 = [equalCopy sessionID];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(LTSchemaSafariFeedbackEvent *)self sessionID];
-  if (v12)
+  sessionID = [(LTSchemaSafariFeedbackEvent *)self sessionID];
+  if (sessionID)
   {
-    v13 = v12;
-    v14 = [(LTSchemaSafariFeedbackEvent *)self sessionID];
-    v15 = [v4 sessionID];
-    v16 = [v14 isEqual:v15];
+    v13 = sessionID;
+    sessionID2 = [(LTSchemaSafariFeedbackEvent *)self sessionID];
+    sessionID3 = [equalCopy sessionID];
+    v16 = [sessionID2 isEqual:sessionID3];
 
     if (!v16)
     {
@@ -203,20 +203,20 @@
   {
   }
 
-  v5 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentSource];
-  v6 = [v4 userFeedbackContentSource];
-  if ((v5 != 0) == (v6 == 0))
+  task = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentSource];
+  task2 = [equalCopy userFeedbackContentSource];
+  if ((task != 0) == (task2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentSource];
-  if (v17)
+  userFeedbackContentSource = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentSource];
+  if (userFeedbackContentSource)
   {
-    v18 = v17;
-    v19 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentSource];
-    v20 = [v4 userFeedbackContentSource];
-    v21 = [v19 isEqual:v20];
+    v18 = userFeedbackContentSource;
+    userFeedbackContentSource2 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentSource];
+    userFeedbackContentSource3 = [equalCopy userFeedbackContentSource];
+    v21 = [userFeedbackContentSource2 isEqual:userFeedbackContentSource3];
 
     if (!v21)
     {
@@ -228,12 +228,12 @@
   {
   }
 
-  v5 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentTarget];
-  v6 = [v4 userFeedbackContentTarget];
-  if ((v5 != 0) != (v6 == 0))
+  task = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentTarget];
+  task2 = [equalCopy userFeedbackContentTarget];
+  if ((task != 0) != (task2 == 0))
   {
-    v22 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentTarget];
-    if (!v22)
+    userFeedbackContentTarget = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentTarget];
+    if (!userFeedbackContentTarget)
     {
 
 LABEL_25:
@@ -241,10 +241,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentTarget];
-    v25 = [v4 userFeedbackContentTarget];
-    v26 = [v24 isEqual:v25];
+    v23 = userFeedbackContentTarget;
+    userFeedbackContentTarget2 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentTarget];
+    userFeedbackContentTarget3 = [equalCopy userFeedbackContentTarget];
+    v26 = [userFeedbackContentTarget2 isEqual:userFeedbackContentTarget3];
 
     if (v26)
     {
@@ -264,52 +264,52 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(LTSchemaSafariFeedbackEvent *)self task];
+  toCopy = to;
+  task = [(LTSchemaSafariFeedbackEvent *)self task];
 
-  if (v4)
+  if (task)
   {
-    v5 = [(LTSchemaSafariFeedbackEvent *)self task];
+    task2 = [(LTSchemaSafariFeedbackEvent *)self task];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(LTSchemaSafariFeedbackEvent *)self sessionID];
+  sessionID = [(LTSchemaSafariFeedbackEvent *)self sessionID];
 
-  if (v6)
+  if (sessionID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentSource];
+  userFeedbackContentSource = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentSource];
 
-  if (v7)
+  if (userFeedbackContentSource)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentTarget];
+  userFeedbackContentTarget = [(LTSchemaSafariFeedbackEvent *)self userFeedbackContentTarget];
 
-  v9 = v10;
-  if (v8)
+  v9 = toCopy;
+  if (userFeedbackContentTarget)
   {
     PBDataWriterWriteStringField();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = LTSchemaSafariFeedbackEvent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(LTSchemaSafariFeedbackEvent *)self task:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(LTSchemaSafariFeedbackEvent *)self deleteTask];
   }

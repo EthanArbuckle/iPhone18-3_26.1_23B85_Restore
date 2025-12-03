@@ -1,30 +1,30 @@
 @interface HDHRBloodPressureJournalNotificationSyncManager
-- (HDHRBloodPressureJournalNotificationSyncManager)initWithProfile:(id)a3;
-- (id)_identifiersForHoldInstructionsFrom:(id)a3 journal:(id)a4;
-- (int64_t)isAlarmEventWithIdentifiersOnHold:(id)a3 journalIdentifier:(id)a4 error:(id *)a5;
-- (int64_t)isAlarmEventWithJournalIdentifierOnHold:(id)a3 error:(id *)a4;
-- (int64_t)isAlarmEventWithNotificationIdentifierOnHold:(id)a3 error:(id *)a4;
-- (unint64_t)bloodPressureJournalsClosed:(id)a3;
-- (unint64_t)bloodPressureSamplesAdded:(id)a3 forJournal:(id)a4;
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4;
+- (HDHRBloodPressureJournalNotificationSyncManager)initWithProfile:(id)profile;
+- (id)_identifiersForHoldInstructionsFrom:(id)from journal:(id)journal;
+- (int64_t)isAlarmEventWithIdentifiersOnHold:(id)hold journalIdentifier:(id)identifier error:(id *)error;
+- (int64_t)isAlarmEventWithJournalIdentifierOnHold:(id)hold error:(id *)error;
+- (int64_t)isAlarmEventWithNotificationIdentifierOnHold:(id)hold error:(id *)error;
+- (unint64_t)bloodPressureJournalsClosed:(id)closed;
+- (unint64_t)bloodPressureSamplesAdded:(id)added forJournal:(id)journal;
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action;
 @end
 
 @implementation HDHRBloodPressureJournalNotificationSyncManager
 
-- (HDHRBloodPressureJournalNotificationSyncManager)initWithProfile:(id)a3
+- (HDHRBloodPressureJournalNotificationSyncManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HDHRBloodPressureJournalNotificationSyncManager;
   v5 = [(HDHRBloodPressureJournalNotificationSyncManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277D107B8]);
     v8 = *MEMORY[0x277CCBFF8];
     v9 = HKCreateSerialDispatchQueue();
-    v10 = [v7 initWithProfile:v4 clientIdentifier:v8 queue:v9];
+    v10 = [v7 initWithProfile:profileCopy clientIdentifier:v8 queue:v9];
     notificationSyncClient = v6->_notificationSyncClient;
     v6->_notificationSyncClient = v10;
 
@@ -34,17 +34,17 @@
   return v6;
 }
 
-- (id)_identifiersForHoldInstructionsFrom:(id)a3 journal:(id)a4
+- (id)_identifiersForHoldInstructionsFrom:(id)from journal:(id)journal
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  journalCopy = journal;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v5;
+  v8 = fromCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v9)
   {
@@ -62,27 +62,27 @@
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [HDHRBloodPressureJournalNotificationIdentifier identifierFromBPSample:v14 journal:v6, v20];
+        v15 = [HDHRBloodPressureJournalNotificationIdentifier identifierFromBPSample:v14 journal:journalCopy, v20];
         v16 = v15;
         if (v15)
         {
-          v17 = [v15 identifierString];
-          [v7 addObject:v17];
+          identifierString = [v15 identifierString];
+          [v7 addObject:identifierString];
         }
 
         else
         {
           _HKInitializeLogging();
-          v17 = HKLogBloodPressureJournal();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          identifierString = HKLogBloodPressureJournal();
+          if (os_log_type_enabled(identifierString, OS_LOG_TYPE_ERROR))
           {
             *buf = v20;
-            v27 = self;
+            selfCopy = self;
             v28 = 2114;
             v29 = v14;
             v30 = 2114;
-            v31 = v6;
-            _os_log_error_impl(&dword_229486000, v17, OS_LOG_TYPE_ERROR, "[%{public}@] Could not make identifier for sample [%{public}@] and  journal [%{public}@].", buf, 0x20u);
+            v31 = journalCopy;
+            _os_log_error_impl(&dword_229486000, identifierString, OS_LOG_TYPE_ERROR, "[%{public}@] Could not make identifier for sample [%{public}@] and  journal [%{public}@].", buf, 0x20u);
           }
         }
       }
@@ -98,17 +98,17 @@
   return v7;
 }
 
-- (unint64_t)bloodPressureSamplesAdded:(id)a3 forJournal:(id)a4
+- (unint64_t)bloodPressureSamplesAdded:(id)added forJournal:(id)journal
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [(HDHRBloodPressureJournalNotificationSyncManager *)self _identifiersForHoldInstructionsFrom:a3 journal:a4];
-  v6 = [v5 allObjects];
+  v5 = [(HDHRBloodPressureJournalNotificationSyncManager *)self _identifiersForHoldInstructionsFrom:added journal:journal];
+  allObjects = [v5 allObjects];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v6;
+  obj = allObjects;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v7)
   {
@@ -130,11 +130,11 @@
         v14 = HKLogBloodPressureJournal();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v13 categoryIdentifier];
+          categoryIdentifier = [v13 categoryIdentifier];
           *buf = 138543618;
-          v29 = self;
+          selfCopy2 = self;
           v30 = 2114;
-          v31 = v15;
+          v31 = categoryIdentifier;
         }
 
         notificationSyncClient = self->_notificationSyncClient;
@@ -153,7 +153,7 @@
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543874;
-            v29 = self;
+            selfCopy2 = self;
             v30 = 2114;
             v31 = v12;
             v32 = 2114;
@@ -177,14 +177,14 @@
   return v9;
 }
 
-- (unint64_t)bloodPressureJournalsClosed:(id)a3
+- (unint64_t)bloodPressureJournalsClosed:(id)closed
 {
   v35 = *MEMORY[0x277D85DE8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a3;
+  obj = closed;
   v4 = [obj countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v4)
   {
@@ -202,19 +202,19 @@
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v24 + 1) + 8 * i) UUID];
-        v11 = [v10 UUIDString];
+        uUID = [*(*(&v24 + 1) + 8 * i) UUID];
+        uUIDString = [uUID UUIDString];
 
-        v12 = [objc_alloc(MEMORY[0x277CCD6C0]) initWithAction:2 journalIdentifier:v11];
+        v12 = [objc_alloc(MEMORY[0x277CCD6C0]) initWithAction:2 journalIdentifier:uUIDString];
         _HKInitializeLogging();
         v13 = HKLogBloodPressureJournal();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v12 categoryIdentifier];
+          categoryIdentifier = [v12 categoryIdentifier];
           *buf = 138543618;
-          v29 = self;
+          selfCopy2 = self;
           v30 = 2114;
-          v31 = v14;
+          v31 = categoryIdentifier;
         }
 
         notificationSyncClient = self->_notificationSyncClient;
@@ -233,9 +233,9 @@
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
             *buf = v21;
-            v29 = self;
+            selfCopy2 = self;
             v30 = 2114;
-            v31 = v11;
+            v31 = uUIDString;
             v32 = 2114;
             v33 = v17;
           }
@@ -257,13 +257,13 @@
   return v7;
 }
 
-- (int64_t)isAlarmEventWithNotificationIdentifierOnHold:(id)a3 error:(id *)a4
+- (int64_t)isAlarmEventWithNotificationIdentifierOnHold:(id)hold error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDNotificationSyncClient *)self->_notificationSyncClient notificationHoldInstructionsWithError:a4];
+  holdCopy = hold;
+  v7 = [(HDNotificationSyncClient *)self->_notificationSyncClient notificationHoldInstructionsWithError:error];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCD6C0] categoryIdentifierFromAlarmEventIdentifier:v6];
+    v8 = [MEMORY[0x277CCD6C0] categoryIdentifierFromAlarmEventIdentifier:holdCopy];
     if ([v7 containsObject:v8])
     {
       v9 = 1;
@@ -283,13 +283,13 @@
   return v9;
 }
 
-- (int64_t)isAlarmEventWithJournalIdentifierOnHold:(id)a3 error:(id *)a4
+- (int64_t)isAlarmEventWithJournalIdentifierOnHold:(id)hold error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDNotificationSyncClient *)self->_notificationSyncClient notificationHoldInstructionsWithError:a4];
+  holdCopy = hold;
+  v7 = [(HDNotificationSyncClient *)self->_notificationSyncClient notificationHoldInstructionsWithError:error];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCD6C0] categoryIdentifierFromJournalIdentifier:v6];
+    v8 = [MEMORY[0x277CCD6C0] categoryIdentifierFromJournalIdentifier:holdCopy];
     if ([v7 containsObject:v8])
     {
       v9 = 1;
@@ -309,15 +309,15 @@
   return v9;
 }
 
-- (int64_t)isAlarmEventWithIdentifiersOnHold:(id)a3 journalIdentifier:(id)a4 error:(id *)a5
+- (int64_t)isAlarmEventWithIdentifiersOnHold:(id)hold journalIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HDNotificationSyncClient *)self->_notificationSyncClient notificationHoldInstructionsWithError:a5];
+  holdCopy = hold;
+  identifierCopy = identifier;
+  v10 = [(HDNotificationSyncClient *)self->_notificationSyncClient notificationHoldInstructionsWithError:error];
   if (v10)
   {
-    v11 = [MEMORY[0x277CCD6C0] categoryIdentifierFromJournalIdentifier:v9];
-    v12 = [MEMORY[0x277CCD6C0] categoryIdentifierFromAlarmEventIdentifier:v8];
+    v11 = [MEMORY[0x277CCD6C0] categoryIdentifierFromJournalIdentifier:identifierCopy];
+    v12 = [MEMORY[0x277CCD6C0] categoryIdentifierFromAlarmEventIdentifier:holdCopy];
     if ([v10 containsObject:v12])
     {
       v13 = 1;
@@ -342,7 +342,7 @@
   return v13;
 }
 
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action
 {
   v21 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -356,7 +356,7 @@
     {
       v8 = NSStringFromHKNotificationInstructionAction();
       *buf = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = v8;
       _os_log_impl(&dword_229486000, v7, OS_LOG_TYPE_INFO, "[%{public}@] Notification Sync Client didReceiveInstructionWithAction %{public}@", buf, 0x16u);
@@ -371,8 +371,8 @@
   {
     v12 = [MEMORY[0x277CCD6C0] notificationIdentifiersFromCategoryIdentifiers:v10];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v14 = [WeakRetained notificationManager];
-    [v14 removeDeliveredNotificationsWithIdentifiers:v12];
+    notificationManager = [WeakRetained notificationManager];
+    [notificationManager removeDeliveredNotificationsWithIdentifiers:v12];
   }
 
   else

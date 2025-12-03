@@ -1,27 +1,27 @@
 @interface HKFeatureAvailabilityOnboardingEligibility
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityOnboardingEligibility)initWithCoder:(id)a3;
-- (HKFeatureAvailabilityOnboardingEligibility)initWithIneligibilityReasons:(unint64_t)a3 countryAvailabilityVersion:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityOnboardingEligibility)initWithCoder:(id)coder;
+- (HKFeatureAvailabilityOnboardingEligibility)initWithIneligibilityReasons:(unint64_t)reasons countryAvailabilityVersion:(id)version;
 - (id)description;
-- (id)eligibilityRespectingOverridesForFeatureIdentifier:(id)a3;
+- (id)eligibilityRespectingOverridesForFeatureIdentifier:(id)identifier;
 - (id)ineligibilityReasonsDescription;
 - (int64_t)onboardedCountrySupportedState;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFeatureAvailabilityOnboardingEligibility
 
-- (HKFeatureAvailabilityOnboardingEligibility)initWithIneligibilityReasons:(unint64_t)a3 countryAvailabilityVersion:(id)a4
+- (HKFeatureAvailabilityOnboardingEligibility)initWithIneligibilityReasons:(unint64_t)reasons countryAvailabilityVersion:(id)version
 {
-  v6 = a4;
+  versionCopy = version;
   v12.receiver = self;
   v12.super_class = HKFeatureAvailabilityOnboardingEligibility;
   v7 = [(HKFeatureAvailabilityOnboardingEligibility *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_ineligibilityReasons = a3;
-    v9 = [v6 copy];
+    v7->_ineligibilityReasons = reasons;
+    v9 = [versionCopy copy];
     countryAvailabilityVersion = v8->_countryAvailabilityVersion;
     v8->_countryAvailabilityVersion = v9;
   }
@@ -29,10 +29,10 @@
   return v8;
 }
 
-- (id)eligibilityRespectingOverridesForFeatureIdentifier:(id)a3
+- (id)eligibilityRespectingOverridesForFeatureIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[HKFeatureAvailabilityRequirementSatisfactionOverrides alloc] initWithFeatureIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[HKFeatureAvailabilityRequirementSatisfactionOverrides alloc] initWithFeatureIdentifier:identifierCopy];
 
   ineligibilityReasons = self->_ineligibilityReasons;
   v7 = [(HKFeatureAvailabilityRequirementSatisfactionOverrides *)v5 overriddenSatisfactionOfRequirementWithIdentifier:@"ActiveRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapability"];
@@ -175,12 +175,12 @@
 {
   if (self->_ineligibilityReasons)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = v3;
+    array = [MEMORY[0x1E695DF70] array];
+    v4 = array;
     ineligibilityReasons = self->_ineligibilityReasons;
     if (ineligibilityReasons)
     {
-      [v3 addObject:@"A country code is required"];
+      [array addObject:@"A country code is required"];
       ineligibilityReasons = self->_ineligibilityReasons;
       if ((ineligibilityReasons & 2) == 0)
       {
@@ -289,13 +289,13 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_ineligibilityReasons != v5[1])
     {
       goto LABEL_7;
@@ -341,22 +341,22 @@ LABEL_10:
   return v6;
 }
 
-- (HKFeatureAvailabilityOnboardingEligibility)initWithCoder:(id)a3
+- (HKFeatureAvailabilityOnboardingEligibility)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"ineligibilityReasons"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryAvailabilityVersion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"ineligibilityReasons"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryAvailabilityVersion"];
 
   v7 = [(HKFeatureAvailabilityOnboardingEligibility *)self initWithIneligibilityReasons:v5 countryAvailabilityVersion:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ineligibilityReasons = self->_ineligibilityReasons;
-  v5 = a3;
-  [v5 encodeInteger:ineligibilityReasons forKey:@"ineligibilityReasons"];
-  [v5 encodeObject:self->_countryAvailabilityVersion forKey:@"countryAvailabilityVersion"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:ineligibilityReasons forKey:@"ineligibilityReasons"];
+  [coderCopy encodeObject:self->_countryAvailabilityVersion forKey:@"countryAvailabilityVersion"];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface TPSNRDeviceCapabilityCondition
 - (TPSNRDeviceCapabilityCondition)init;
-- (id)_valuesFromValuesArray:(id)a3;
+- (id)_valuesFromValuesArray:(id)array;
 - (id)targetingValidations;
 @end
 
@@ -23,18 +23,18 @@
 - (id)targetingValidations
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(TPSCondition *)self values];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  values = [(TPSCondition *)self values];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(values, "count")}];
 
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
   v6 = MEMORY[0x277CBEB38];
-  v7 = [(TPSCondition *)self values];
-  v8 = [v6 dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  values2 = [(TPSCondition *)self values];
+  v8 = [v6 dictionaryWithCapacity:{objc_msgSend(values2, "count")}];
 
-  v9 = [(TPSCondition *)self values];
+  values3 = [(TPSCondition *)self values];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __54__TPSNRDeviceCapabilityCondition_targetingValidations__block_invoke;
@@ -44,7 +44,7 @@
   v20 = &v21;
   v11 = v5;
   v19 = v11;
-  [v9 enumerateObjectsUsingBlock:v17];
+  [values3 enumerateObjectsUsingBlock:v17];
 
   if ([v10 count])
   {
@@ -113,18 +113,18 @@ LABEL_7:
 LABEL_13:
 }
 
-- (id)_valuesFromValuesArray:(id)a3
+- (id)_valuesFromValuesArray:(id)array
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  arrayCopy = array;
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__TPSNRDeviceCapabilityCondition__valuesFromValuesArray___block_invoke;
   v9[3] = &unk_2789B0078;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [arrayCopy enumerateObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 

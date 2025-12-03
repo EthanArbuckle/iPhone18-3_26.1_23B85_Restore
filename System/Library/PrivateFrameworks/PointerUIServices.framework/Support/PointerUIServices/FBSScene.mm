@@ -6,10 +6,10 @@
 
 - (PSDisplay)psDisplay
 {
-  v2 = [(FBSScene *)self settings];
-  v3 = [v2 displayConfiguration];
-  v4 = [v3 hardwareIdentifier];
-  v5 = [PSDisplay displayWithHardwareIdentifier:v4];
+  settings = [(FBSScene *)self settings];
+  displayConfiguration = [settings displayConfiguration];
+  hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+  v5 = [PSDisplay displayWithHardwareIdentifier:hardwareIdentifier];
 
   return v5;
 }

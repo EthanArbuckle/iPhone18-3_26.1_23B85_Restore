@@ -1,6 +1,6 @@
 @interface PDFTimer
-- (PDFTimer)initWithSelector:(SEL)a3 forTarget:(id)a4;
-- (PDFTimer)initWithThrottleDelay:(double)a3 forSelector:(SEL)a4 forTarget:(id)a5;
+- (PDFTimer)initWithSelector:(SEL)selector forTarget:(id)target;
+- (PDFTimer)initWithThrottleDelay:(double)delay forSelector:(SEL)selector forTarget:(id)target;
 - (void)_execute;
 - (void)cancel;
 - (void)dealloc;
@@ -9,9 +9,9 @@
 
 @implementation PDFTimer
 
-- (PDFTimer)initWithSelector:(SEL)a3 forTarget:(id)a4
+- (PDFTimer)initWithSelector:(SEL)selector forTarget:(id)target
 {
-  v6 = a4;
+  targetCopy = target;
   v17.receiver = self;
   v17.super_class = PDFTimer;
   v7 = [(PDFTimer *)&v17 init];
@@ -21,15 +21,15 @@
     v9 = v7->_private;
     v7->_private = v8;
 
-    objc_storeWeak(&v7->_private->target, v6);
-    v10 = [v6 methodSignatureForSelector:a3];
+    objc_storeWeak(&v7->_private->target, targetCopy);
+    v10 = [targetCopy methodSignatureForSelector:selector];
     v11 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v10];
     v12 = v7->_private;
     methodInvocation = v12->methodInvocation;
     v12->methodInvocation = v11;
 
-    [(NSInvocation *)v7->_private->methodInvocation setSelector:a3];
-    [(NSInvocation *)v7->_private->methodInvocation setTarget:v6];
+    [(NSInvocation *)v7->_private->methodInvocation setSelector:selector];
+    [(NSInvocation *)v7->_private->methodInvocation setTarget:targetCopy];
     v7->_private->timeInterval = 0.0;
     v14 = v7->_private;
     timer = v14->timer;
@@ -39,9 +39,9 @@
   return v7;
 }
 
-- (PDFTimer)initWithThrottleDelay:(double)a3 forSelector:(SEL)a4 forTarget:(id)a5
+- (PDFTimer)initWithThrottleDelay:(double)delay forSelector:(SEL)selector forTarget:(id)target
 {
-  v8 = a5;
+  targetCopy = target;
   v19.receiver = self;
   v19.super_class = PDFTimer;
   v9 = [(PDFTimer *)&v19 init];
@@ -51,16 +51,16 @@
     v11 = v9->_private;
     v9->_private = v10;
 
-    objc_storeWeak(&v9->_private->target, v8);
-    v12 = [v8 methodSignatureForSelector:a4];
+    objc_storeWeak(&v9->_private->target, targetCopy);
+    v12 = [targetCopy methodSignatureForSelector:selector];
     v13 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v12];
     v14 = v9->_private;
     methodInvocation = v14->methodInvocation;
     v14->methodInvocation = v13;
 
-    [(NSInvocation *)v9->_private->methodInvocation setSelector:a4];
-    [(NSInvocation *)v9->_private->methodInvocation setTarget:v8];
-    v9->_private->timeInterval = a3;
+    [(NSInvocation *)v9->_private->methodInvocation setSelector:selector];
+    [(NSInvocation *)v9->_private->methodInvocation setTarget:targetCopy];
+    v9->_private->timeInterval = delay;
     v16 = v9->_private;
     timer = v16->timer;
     v16->timer = 0;
@@ -92,8 +92,8 @@
     timer = v5->timer;
     v5->timer = v4;
 
-    v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v7 addTimer:obj->_private->timer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:obj->_private->timer forMode:*MEMORY[0x1E695DA28]];
 
     v2 = obj;
   }
@@ -130,13 +130,13 @@
       timer = v5->timer;
       v5->timer = v4;
 
-      v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v7 addTimer:obj->_private->timer forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [mainRunLoop addTimer:obj->_private->timer forMode:*MEMORY[0x1E695DA28]];
     }
 
     else
     {
-      v7 = v3->timer;
+      mainRunLoop = v3->timer;
       v3->timer = 0;
     }
 

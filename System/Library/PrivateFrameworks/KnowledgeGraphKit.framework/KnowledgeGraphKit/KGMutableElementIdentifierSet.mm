@@ -1,85 +1,85 @@
 @interface KGMutableElementIdentifierSet
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addIdentifier:(unint64_t)a3;
-- (void)formSymmetricDifferenceWithIdentifierSet:(id)a3;
-- (void)intersectWithIdentifierSet:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addIdentifier:(unint64_t)identifier;
+- (void)formSymmetricDifferenceWithIdentifierSet:(id)set;
+- (void)intersectWithIdentifierSet:(id)set;
 - (void)mutableBitmap;
 - (void)removeAllIdentifiers;
-- (void)removeIdentifier:(unint64_t)a3;
-- (void)subtractIdentifierSet:(id)a3;
-- (void)unionWithIdentifierSet:(id)a3;
+- (void)removeIdentifier:(unint64_t)identifier;
+- (void)subtractIdentifierSet:(id)set;
+- (void)unionWithIdentifierSet:(id)set;
 @end
 
 @implementation KGMutableElementIdentifierSet
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [KGElementIdentifierSet allocWithZone:a3];
-  v5 = [(KGElementIdentifierSet *)self bitmap];
+  v4 = [KGElementIdentifierSet allocWithZone:zone];
+  bitmap = [(KGElementIdentifierSet *)self bitmap];
 
-  return [(KGElementIdentifierSet *)v4 initWithBitmap:v5];
+  return [(KGElementIdentifierSet *)v4 initWithBitmap:bitmap];
 }
 
 - (id)copy
 {
   v3 = [KGElementIdentifierSet alloc];
-  v4 = [(KGElementIdentifierSet *)self bitmap];
+  bitmap = [(KGElementIdentifierSet *)self bitmap];
 
-  return [(KGElementIdentifierSet *)v3 initWithBitmap:v4];
+  return [(KGElementIdentifierSet *)v3 initWithBitmap:bitmap];
 }
 
-- (void)formSymmetricDifferenceWithIdentifierSet:(id)a3
+- (void)formSymmetricDifferenceWithIdentifierSet:(id)set
 {
-  v4 = a3;
-  degas::Bitmap::symmetricDiffWith<degas::Bitmap>(-[KGMutableElementIdentifierSet mutableBitmap](self, "mutableBitmap"), [v4 bitmap]);
+  setCopy = set;
+  degas::Bitmap::symmetricDiffWith<degas::Bitmap>(-[KGMutableElementIdentifierSet mutableBitmap](self, "mutableBitmap"), [setCopy bitmap]);
 }
 
-- (void)subtractIdentifierSet:(id)a3
+- (void)subtractIdentifierSet:(id)set
 {
-  v4 = a3;
-  degas::Bitmap::diffWith<degas::Bitmap>(-[KGMutableElementIdentifierSet mutableBitmap](self, "mutableBitmap"), [v4 bitmap]);
+  setCopy = set;
+  degas::Bitmap::diffWith<degas::Bitmap>(-[KGMutableElementIdentifierSet mutableBitmap](self, "mutableBitmap"), [setCopy bitmap]);
 }
 
-- (void)intersectWithIdentifierSet:(id)a3
+- (void)intersectWithIdentifierSet:(id)set
 {
-  v4 = a3;
-  degas::Bitmap::intersectWith<degas::Bitmap>(-[KGMutableElementIdentifierSet mutableBitmap](self, "mutableBitmap"), [v4 bitmap]);
+  setCopy = set;
+  degas::Bitmap::intersectWith<degas::Bitmap>(-[KGMutableElementIdentifierSet mutableBitmap](self, "mutableBitmap"), [setCopy bitmap]);
 }
 
-- (void)unionWithIdentifierSet:(id)a3
+- (void)unionWithIdentifierSet:(id)set
 {
-  v4 = a3;
-  degas::Bitmap::unionWith<degas::Bitmap>(-[KGMutableElementIdentifierSet mutableBitmap](self, "mutableBitmap"), [v4 bitmap]);
+  setCopy = set;
+  degas::Bitmap::unionWith<degas::Bitmap>(-[KGMutableElementIdentifierSet mutableBitmap](self, "mutableBitmap"), [setCopy bitmap]);
 }
 
 - (void)removeAllIdentifiers
 {
-  v2 = [(KGMutableElementIdentifierSet *)self mutableBitmap];
-  *v2 = 0;
-  v2[1] = 0;
-  v3 = v2[2];
-  for (i = v2[3]; i != v3; i -= 16)
+  mutableBitmap = [(KGMutableElementIdentifierSet *)self mutableBitmap];
+  *mutableBitmap = 0;
+  mutableBitmap[1] = 0;
+  v3 = mutableBitmap[2];
+  for (i = mutableBitmap[3]; i != v3; i -= 16)
   {
     degas::BitsetPtr::releaseBitset((i - 16));
     *(i - 8) = 0;
   }
 
-  v2[3] = v3;
+  mutableBitmap[3] = v3;
 }
 
-- (void)removeIdentifier:(unint64_t)a3
+- (void)removeIdentifier:(unint64_t)identifier
 {
-  v4 = [(KGMutableElementIdentifierSet *)self mutableBitmap];
+  mutableBitmap = [(KGMutableElementIdentifierSet *)self mutableBitmap];
 
-  degas::Bitmap::clearBit(v4, a3);
+  degas::Bitmap::clearBit(mutableBitmap, identifier);
 }
 
-- (void)addIdentifier:(unint64_t)a3
+- (void)addIdentifier:(unint64_t)identifier
 {
-  v4 = [(KGMutableElementIdentifierSet *)self mutableBitmap];
+  mutableBitmap = [(KGMutableElementIdentifierSet *)self mutableBitmap];
 
-  degas::Bitmap::setBit(v4, a3);
+  degas::Bitmap::setBit(mutableBitmap, identifier);
 }
 
 - (void)mutableBitmap

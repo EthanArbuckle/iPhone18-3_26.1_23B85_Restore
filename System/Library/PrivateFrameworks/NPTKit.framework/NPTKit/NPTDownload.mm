@@ -1,42 +1,42 @@
 @interface NPTDownload
 - (BOOL)finishedAllTasks;
 - (BOOL)inTimedMode;
-- (NPTDownload)initWithCoder:(id)a3;
-- (NPTDownload)initWithNetworkActivityParent:(id)a3 testConfiguration:(id)a4;
-- (double)checkAndReturnSpeedStablized:(id)a3;
-- (double)minNonZeroValue:(double)a3 comparisonValue:(double)a4;
+- (NPTDownload)initWithCoder:(id)coder;
+- (NPTDownload)initWithNetworkActivityParent:(id)parent testConfiguration:(id)configuration;
+- (double)checkAndReturnSpeedStablized:(id)stablized;
+- (double)minNonZeroValue:(double)value comparisonValue:(double)comparisonValue;
 - (id)aggregateResults;
 - (id)checkInterfaceSpecified;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)delegate;
-- (id)overAllResultByTask:(unint64_t)a3;
-- (id)processNQResult:(id)a3;
-- (id)realTimeSpeedMetric:(unint64_t)a3;
+- (id)overAllResultByTask:(unint64_t)task;
+- (id)processNQResult:(id)result;
+- (id)realTimeSpeedMetric:(unint64_t)metric;
 - (id)realTimeSpeedMetricOverall;
 - (id)setupNewDownloadTask;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
 - (void)cancel;
 - (void)cancelDispatchTimer;
 - (void)cancelDispatchTimerAndSession;
-- (void)completeActivityWithReason:(int)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)completeActivityWithReason:(int)reason;
+- (void)encodeWithCoder:(id)coder;
 - (void)kickOffNewDownload;
-- (void)progress:(id)a3;
+- (void)progress:(id)progress;
 - (void)setupTimer;
-- (void)startDownloadWithCompletion:(id)a3;
-- (void)startLegacyDownloadWithCompletion:(id)a3;
-- (void)startNQDownloadWithCompletion:(id)a3;
+- (void)startDownloadWithCompletion:(id)completion;
+- (void)startLegacyDownloadWithCompletion:(id)completion;
+- (void)startNQDownloadWithCompletion:(id)completion;
 - (void)startTasks;
 @end
 
 @implementation NPTDownload
 
-- (NPTDownload)initWithNetworkActivityParent:(id)a3 testConfiguration:(id)a4
+- (NPTDownload)initWithNetworkActivityParent:(id)parent testConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  parentCopy = parent;
+  configurationCopy = configuration;
   v28.receiver = self;
   v28.super_class = NPTDownload;
   v9 = [(NPTDownload *)&v28 init];
@@ -45,11 +45,11 @@
     v10 = objc_alloc_init(NPTMetricResult);
     [(NPTDownload *)v9 setResults:v10];
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     taskDict = v9->taskDict;
-    v9->taskDict = v11;
+    v9->taskDict = dictionary;
 
-    objc_storeStrong(&v9->activityParent, a3);
+    objc_storeStrong(&v9->activityParent, parent);
     v13 = nw_activity_create();
     downloadActivity = v9->downloadActivity;
     v9->downloadActivity = v13;
@@ -57,18 +57,18 @@
     activityParent = v9->activityParent;
     v15 = v9->downloadActivity;
     nw_activity_set_parent_activity();
-    if ([v8 stopAtFileSize])
+    if ([configurationCopy stopAtFileSize])
     {
-      v17 = 1;
+      concurrentStreams = 1;
     }
 
     else
     {
-      v17 = [v8 concurrentStreams];
+      concurrentStreams = [configurationCopy concurrentStreams];
     }
 
     v9->processedStreamEndCount = 0;
-    v9->maxConcurrentStreams = v17;
+    v9->maxConcurrentStreams = concurrentStreams;
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     buffer = v9->buffer;
     v9->buffer = v18;
@@ -78,71 +78,71 @@
     endTimeAggregate = v9->endTimeAggregate;
     v9->endTimeAggregate = 0;
 
-    v9->smartDownload = [v8 endWhenStable];
-    v9->timedDownloadLength = [v8 testDuration];
+    v9->smartDownload = [configurationCopy endWhenStable];
+    v9->timedDownloadLength = [configurationCopy testDuration];
     v9->stableSpeedToLog = 0.0;
     downloadError = v9->downloadError;
     v9->downloadError = 0;
 
-    v9->stopAtFileSizeEnabled = [v8 stopAtFileSize];
-    v23 = [v8 clientName];
+    v9->stopAtFileSizeEnabled = [configurationCopy stopAtFileSize];
+    clientName = [configurationCopy clientName];
     callingClient = v9->callingClient;
-    v9->callingClient = v23;
+    v9->callingClient = clientName;
 
     v9->maxSpeedObserved = 0.0;
-    v9->legacy = [v8 legacyMode];
+    v9->legacy = [configurationCopy legacyMode];
     nqTest = v9->nqTest;
     v9->nqTest = 0;
 
     nqConfig = v9->nqConfig;
     v9->nqConfig = 0;
 
-    objc_storeStrong(&v9->testConfig, a4);
+    objc_storeStrong(&v9->testConfig, configuration);
   }
 
   return v9;
 }
 
-- (void)startNQDownloadWithCompletion:(id)a3
+- (void)startNQDownloadWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(NPTDownload *)self setCompletion:v4];
-  v5 = [(NPTPerformanceTestConfiguration *)self->testConfig NQDownloadConfiguration];
+  completionCopy = completion;
+  [(NPTDownload *)self setCompletion:completionCopy];
+  nQDownloadConfiguration = [(NPTPerformanceTestConfiguration *)self->testConfig NQDownloadConfiguration];
   nqConfig = self->nqConfig;
-  self->nqConfig = v5;
+  self->nqConfig = nQDownloadConfiguration;
 
-  v7 = [(NPTPerformanceTestConfiguration *)self->testConfig bonjourHost];
+  bonjourHost = [(NPTPerformanceTestConfiguration *)self->testConfig bonjourHost];
 
-  if (v7)
+  if (bonjourHost)
   {
-    v8 = [(NPTPerformanceTestConfiguration *)self->testConfig bonjourHost];
-    [(NetworkQualityConfiguration *)self->nqConfig setBonjourHost:v8];
+    bonjourHost2 = [(NPTPerformanceTestConfiguration *)self->testConfig bonjourHost];
+    [(NetworkQualityConfiguration *)self->nqConfig setBonjourHost:bonjourHost2];
 
     [(NetworkQualityConfiguration *)self->nqConfig setValidateCertificate:0];
   }
 
   downloadActivity = self->downloadActivity;
   nw_activity_activate();
-  v10 = [(NPTDownload *)self checkInterfaceSpecified];
-  v11 = [(NPTDownload *)self results];
-  [v11 setError:v10];
+  checkInterfaceSpecified = [(NPTDownload *)self checkInterfaceSpecified];
+  results = [(NPTDownload *)self results];
+  [results setError:checkInterfaceSpecified];
 
-  if (v10)
+  if (checkInterfaceSpecified)
   {
-    v12 = [(NPTDownload *)self delegate];
+    delegate = [(NPTDownload *)self delegate];
 
-    if (v12)
+    if (delegate)
     {
-      v13 = [(NPTDownload *)self delegate];
-      [v13 download:self didFinishWithError:v10];
+      delegate2 = [(NPTDownload *)self delegate];
+      [delegate2 download:self didFinishWithError:checkInterfaceSpecified];
     }
 
-    v14 = [(NPTDownload *)self completion];
+    completion = [(NPTDownload *)self completion];
 
-    if (v14)
+    if (completion)
     {
-      v15 = [(NPTDownload *)self completion];
-      (v15)[2](v15, 0, v10);
+      completion2 = [(NPTDownload *)self completion];
+      (completion2)[2](completion2, 0, checkInterfaceSpecified);
     }
   }
 
@@ -163,12 +163,12 @@
 
     if (self->nqTest)
     {
-      v22 = [(NPTDownload *)self delegate];
+      delegate3 = [(NPTDownload *)self delegate];
 
-      if (v22)
+      if (delegate3)
       {
-        v23 = [(NPTDownload *)self delegate];
-        [v23 downloadWillStart];
+        delegate4 = [(NPTDownload *)self delegate];
+        [delegate4 downloadWillStart];
       }
     }
 
@@ -274,45 +274,45 @@ void __45__NPTDownload_startNQDownloadWithCompletion___block_invoke(uint64_t a1,
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startDownloadWithCompletion:(id)a3
+- (void)startDownloadWithCompletion:(id)completion
 {
   if (self->legacy)
   {
-    [(NPTDownload *)self startLegacyDownloadWithCompletion:a3];
+    [(NPTDownload *)self startLegacyDownloadWithCompletion:completion];
   }
 
   else
   {
-    [(NPTDownload *)self startNQDownloadWithCompletion:a3];
+    [(NPTDownload *)self startNQDownloadWithCompletion:completion];
   }
 }
 
-- (void)startLegacyDownloadWithCompletion:(id)a3
+- (void)startLegacyDownloadWithCompletion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  [(NPTDownload *)self setCompletion:a3];
+  [(NPTDownload *)self setCompletion:completion];
   downloadActivity = self->downloadActivity;
   nw_activity_activate();
-  v5 = [(NPTDownload *)self checkInterfaceSpecified];
-  v6 = [(NPTDownload *)self results];
-  [v6 setError:v5];
+  checkInterfaceSpecified = [(NPTDownload *)self checkInterfaceSpecified];
+  results = [(NPTDownload *)self results];
+  [results setError:checkInterfaceSpecified];
 
-  if (v5)
+  if (checkInterfaceSpecified)
   {
-    v7 = [(NPTDownload *)self delegate];
+    delegate = [(NPTDownload *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
-      v8 = [(NPTDownload *)self delegate];
-      [v8 download:self didFinishWithError:v5];
+      delegate2 = [(NPTDownload *)self delegate];
+      [delegate2 download:self didFinishWithError:checkInterfaceSpecified];
     }
 
-    v9 = [(NPTDownload *)self completion];
+    completion = [(NPTDownload *)self completion];
 
-    if (v9)
+    if (completion)
     {
-      v10 = [(NPTDownload *)self completion];
-      (v10)[2](v10, 0, v5);
+      completion2 = [(NPTDownload *)self completion];
+      (completion2)[2](completion2, 0, checkInterfaceSpecified);
     }
   }
 
@@ -328,26 +328,26 @@ void __45__NPTDownload_startNQDownloadWithCompletion___block_invoke(uint64_t a1,
       v11 = 1;
     }
 
-    v12 = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
+    ephemeralSessionConfiguration = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
     v13 = objc_alloc_init(MEMORY[0x277CCABD8]);
     [v13 setQualityOfService:33];
     [v13 setMaxConcurrentOperationCount:1];
-    [v12 setAllowsCellularAccess:v11];
-    [v12 setWaitsForConnectivity:0];
-    [v12 setTimeoutIntervalForRequest:3.0];
+    [ephemeralSessionConfiguration setAllowsCellularAccess:v11];
+    [ephemeralSessionConfiguration setWaitsForConnectivity:0];
+    [ephemeralSessionConfiguration setTimeoutIntervalForRequest:3.0];
     if (!self->timedDownloadLength)
     {
-      [v12 setTimeoutIntervalForResource:(90 * self->maxConcurrentStreams)];
+      [ephemeralSessionConfiguration setTimeoutIntervalForResource:(90 * self->maxConcurrentStreams)];
     }
 
-    [v12 setHTTPMaximumConnectionsPerHost:self->maxConcurrentStreams + 1];
-    v14 = [MEMORY[0x277CBABB8] sessionWithConfiguration:v12 delegate:self delegateQueue:v13];
+    [ephemeralSessionConfiguration setHTTPMaximumConnectionsPerHost:self->maxConcurrentStreams + 1];
+    v14 = [MEMORY[0x277CBABB8] sessionWithConfiguration:ephemeralSessionConfiguration delegate:self delegateQueue:v13];
     downloadSession = self->downloadSession;
     self->downloadSession = v14;
 
     v16 = MEMORY[0x277CBAB50];
-    v17 = [(NPTPerformanceTestConfiguration *)self->testConfig downloadURL];
-    v18 = [v16 requestWithURL:v17];
+    downloadURL = [(NPTPerformanceTestConfiguration *)self->testConfig downloadURL];
+    v18 = [v16 requestWithURL:downloadURL];
     request = self->request;
     self->request = v18;
 
@@ -367,27 +367,27 @@ void __45__NPTDownload_startNQDownloadWithCompletion___block_invoke(uint64_t a1,
       [(NSMutableURLRequest *)self->request setValue:self->callingClient forHTTPHeaderField:@"NPTKit-Client"];
     }
 
-    v23 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
+    interfaceName = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
 
-    if (v23)
+    if (interfaceName)
     {
       v24 = +[NPTLogger network];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
+        interfaceName2 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
         *buf = 138412290;
-        v42 = v25;
+        v42 = interfaceName2;
         _os_log_impl(&dword_233421000, v24, OS_LOG_TYPE_DEFAULT, "Force the download over the following interface: %@", buf, 0xCu);
       }
 
       v26 = self->request;
-      v27 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
-      [(NSMutableURLRequest *)v26 setBoundInterfaceIdentifier:v27];
+      interfaceName3 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
+      [(NSMutableURLRequest *)v26 setBoundInterfaceIdentifier:interfaceName3];
     }
 
     v28 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.wifiqa.NPTKit"];
-    v29 = [v28 infoDictionary];
-    v30 = [v29 objectForKey:@"CFBundleShortVersionString"];
+    infoDictionary = [v28 infoDictionary];
+    v30 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
     v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"NPTKit/%@", v30];
     [(NSMutableURLRequest *)self->request addValue:v31 forHTTPHeaderField:@"User-Agent"];
@@ -402,12 +402,12 @@ void __45__NPTDownload_startNQDownloadWithCompletion___block_invoke(uint64_t a1,
 
     if (self->downloadSession)
     {
-      v34 = [(NPTDownload *)self delegate];
+      delegate3 = [(NPTDownload *)self delegate];
 
-      if (v34)
+      if (delegate3)
       {
-        v35 = [(NPTDownload *)self delegate];
-        [v35 downloadWillStart];
+        delegate4 = [(NPTDownload *)self delegate];
+        [delegate4 downloadWillStart];
       }
 
       if (self->maxConcurrentStreams)
@@ -415,7 +415,7 @@ void __45__NPTDownload_startNQDownloadWithCompletion___block_invoke(uint64_t a1,
         v36 = 0;
         do
         {
-          v37 = [(NPTDownload *)self setupNewDownloadTask];
+          setupNewDownloadTask = [(NPTDownload *)self setupNewDownloadTask];
           ++v36;
         }
 
@@ -492,8 +492,8 @@ uint64_t __25__NPTDownload_setupTimer__block_invoke(uint64_t a1)
 
 - (void)kickOffNewDownload
 {
-  v2 = [(NPTDownload *)self setupNewDownloadTask];
-  [v2 resume];
+  setupNewDownloadTask = [(NPTDownload *)self setupNewDownloadTask];
+  [setupNewDownloadTask resume];
 }
 
 - (id)setupNewDownloadTask
@@ -539,9 +539,9 @@ uint64_t __25__NPTDownload_setupTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (double)checkAndReturnSpeedStablized:(id)a3
+- (double)checkAndReturnSpeedStablized:(id)stablized
 {
-  v4 = a3;
+  stablizedCopy = stablized;
   v5 = self->recentBufferTime + 1.0;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v6 = 0.0;
@@ -551,7 +551,7 @@ uint64_t __25__NPTDownload_setupTimer__block_invoke(uint64_t a1)
     self->recentBufferTime = v8;
     buffer = self->buffer;
     v10 = MEMORY[0x277CCABB0];
-    [v4 speed];
+    [stablizedCopy speed];
     v11 = [v10 numberWithDouble:?];
     [(NSMutableArray *)buffer addObject:v11];
 
@@ -576,7 +576,7 @@ uint64_t __25__NPTDownload_setupTimer__block_invoke(uint64_t a1)
 
       if (v20 < 0.1)
       {
-        [v4 speed];
+        [stablizedCopy speed];
         v6 = v21;
       }
     }
@@ -585,16 +585,16 @@ uint64_t __25__NPTDownload_setupTimer__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = [(NPTDownload *)self realTimeSpeedMetricOverall:a3];
-  v7 = [(NPTDownload *)self delegate];
+  v6 = [(NPTDownload *)self realTimeSpeedMetricOverall:session];
+  delegate = [(NPTDownload *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(NPTDownload *)self delegate];
-    [v8 download:self didReceiveSpeedMetric:v6];
+    delegate2 = [(NPTDownload *)self delegate];
+    [delegate2 download:self didReceiveSpeedMetric:v6];
   }
 
   [v6 speed];
@@ -614,12 +614,12 @@ uint64_t __25__NPTDownload_setupTimer__block_invoke(uint64_t a1)
       v13 = +[NPTLogger network];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v6 bytesTransferred];
+        bytesTransferred = [v6 bytesTransferred];
         [v6 timeSinceStart];
         v17 = 134218496;
         v18 = v12;
         v19 = 2048;
-        v20 = v14;
+        v20 = bytesTransferred;
         v21 = 2048;
         v22 = v15;
         _os_log_impl(&dword_233421000, v13, OS_LOG_TYPE_DEFAULT, "Download task has stabilized at %f Mbps after downloading %lld bytes over %f seconds", &v17, 0x20u);
@@ -635,58 +635,58 @@ uint64_t __25__NPTDownload_setupTimer__block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v21 = a4;
-  v7 = a5;
+  taskCopy = task;
+  metricsCopy = metrics;
   taskDict = self->taskDict;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v21, "taskIdentifier")];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(taskCopy, "taskIdentifier")];
   v10 = [(NSMutableDictionary *)taskDict objectForKeyedSubscript:v9];
 
   if (v10)
   {
     v11 = objc_alloc_init(NPTMetricResult);
-    [(NPTMetricResult *)v11 populateWithMetrics:v7];
-    v12 = [v21 response];
-    [(NPTMetricResult *)v11 populateWithURLResponse:v12];
+    [(NPTMetricResult *)v11 populateWithMetrics:metricsCopy];
+    response = [taskCopy response];
+    [(NPTMetricResult *)v11 populateWithURLResponse:response];
 
-    -[NPTMetricResult setFileSize:](v11, "setFileSize:", [v21 countOfBytesReceived]);
+    -[NPTMetricResult setFileSize:](v11, "setFileSize:", [taskCopy countOfBytesReceived]);
     v13 = [(NPTMetricResult *)v11 fileSize]* 8.0;
     [(NPTMetricResult *)v11 responseTime];
     [(NPTMetricResult *)v11 setSpeed:v13 / v14 / 1000000.0];
     v15 = self->taskDict;
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v21, "taskIdentifier")];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(taskCopy, "taskIdentifier")];
     v17 = [(NSMutableDictionary *)v15 objectForKeyedSubscript:v16];
-    [v17 setTaskMetrics:v7];
+    [v17 setTaskMetrics:metricsCopy];
 
     v18 = self->taskDict;
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(v21, "taskIdentifier")];
+    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(taskCopy, "taskIdentifier")];
     v20 = [(NSMutableDictionary *)v18 objectForKeyedSubscript:v19];
     [v20 setResults:v11];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 copy];
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  v11 = [errorCopy copy];
   if (v11 && ![(NPTDownload *)self isTimerCancelledError:v11])
   {
     goto LABEL_6;
   }
 
-  v12 = [v9 response];
-  v13 = v12;
-  if (v12 && (v14 = [v12 statusCode], v14 > 399))
+  response = [taskCopy response];
+  v13 = response;
+  if (response && (v14 = [response statusCode], v14 > 399))
   {
     v15 = v14;
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Download task: %@ failed to download payload due to: %ld", v9, v14];
-    v17 = [MEMORY[0x277CBEB38] dictionary];
-    [v17 setValue:v16 forKey:*MEMORY[0x277CCA450]];
-    v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPTKit" code:v15 userInfo:v17];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Download task: %@ failed to download payload due to: %ld", taskCopy, v14];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setValue:v16 forKey:*MEMORY[0x277CCA450]];
+    v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPTKit" code:v15 userInfo:dictionary];
 
     v11 = v18;
     if (v18)
@@ -695,7 +695,7 @@ LABEL_6:
       v19 = +[NPTLogger network];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [NPTDownload URLSession:v9 task:v11 didCompleteWithError:v19];
+        [NPTDownload URLSession:taskCopy task:v11 didCompleteWithError:v19];
       }
 
       downloadError = self->downloadError;
@@ -728,9 +728,9 @@ LABEL_6:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v38 = v9;
+      v38 = taskCopy;
       v39 = 2048;
-      v40 = [v9 countOfBytesReceived];
+      countOfBytesReceived = [taskCopy countOfBytesReceived];
       _os_log_impl(&dword_233421000, v22, OS_LOG_TYPE_DEFAULT, "Download task: %@ downloaded: %lld bytes", buf, 0x16u);
     }
 
@@ -774,39 +774,39 @@ LABEL_22:
     }
 
     [(NPTDownload *)self completeActivityWithReason:v24];
-    v25 = [(NPTDownload *)self aggregateResults];
-    [(NPTDownload *)self setResults:v25];
+    aggregateResults = [(NPTDownload *)self aggregateResults];
+    [(NPTDownload *)self setResults:aggregateResults];
 
-    v26 = [(NPTDownload *)self delegate];
-    LOBYTE(v25) = v26 == 0;
+    delegate = [(NPTDownload *)self delegate];
+    LOBYTE(aggregateResults) = delegate == 0;
 
-    if ((v25 & 1) == 0)
+    if ((aggregateResults & 1) == 0)
     {
       v27 = self->downloadError == 0;
-      v28 = [(NPTDownload *)self delegate];
-      v29 = v28;
+      delegate2 = [(NPTDownload *)self delegate];
+      v29 = delegate2;
       if (v27)
       {
-        v30 = [(NPTDownload *)self results];
-        [v29 download:self didFinishWithResults:v30];
+        results = [(NPTDownload *)self results];
+        [v29 download:self didFinishWithResults:results];
       }
 
       else
       {
-        [v28 download:self didFinishWithError:self->downloadError];
+        [delegate2 download:self didFinishWithError:self->downloadError];
       }
     }
 
-    v31 = [(NPTDownload *)self completion];
-    v32 = v31 == 0;
+    completion = [(NPTDownload *)self completion];
+    v32 = completion == 0;
 
     if (!v32)
     {
       objc_initWeak(buf, self);
-      v33 = [(NPTDownload *)self completion];
+      completion2 = [(NPTDownload *)self completion];
       WeakRetained = objc_loadWeakRetained(buf);
-      v35 = [WeakRetained results];
-      (v33)[2](v33, v35, self->downloadError);
+      results2 = [WeakRetained results];
+      (completion2)[2](completion2, results2, self->downloadError);
 
       objc_destroyWeak(buf);
     }
@@ -817,44 +817,44 @@ LABEL_38:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NPTDownload *)self results];
-  [v4 encodeObject:v5 forKey:@"downloadResult"];
+  coderCopy = coder;
+  results = [(NPTDownload *)self results];
+  [coderCopy encodeObject:results forKey:@"downloadResult"];
 }
 
-- (NPTDownload)initWithCoder:(id)a3
+- (NPTDownload)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = NPTDownload;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(NPTDownload *)&v7 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"downloadResult", v7.receiver, v7.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"downloadResult", v7.receiver, v7.super_class}];
 
   [(NPTDownload *)v4 setResults:v5];
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NPTDownload allocWithZone:?]];
-  v5 = [(NPTDownload *)self results];
-  [(NPTDownload *)v4 setResults:v5];
+  results = [(NPTDownload *)self results];
+  [(NPTDownload *)v4 setResults:results];
 
   return v4;
 }
 
-- (void)progress:(id)a3
+- (void)progress:(id)progress
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  progressCopy = progress;
   v5 = objc_alloc_init(MEMORY[0x277CBEAA8]);
   [v5 timeIntervalSinceDate:self->initialTime];
   v7 = v6;
-  v8 = [v4 downlinkCapacity];
-  v9 = [v8 value];
-  [v9 doubleValue];
+  downlinkCapacity = [progressCopy downlinkCapacity];
+  value = [downlinkCapacity value];
+  [value doubleValue];
   v11 = v10 / 1000000.0;
 
   v12 = +[NPTLogger network];
@@ -866,19 +866,19 @@ LABEL_38:
   }
 
   v13 = [NPTSpeedMetric alloc];
-  v14 = [v4 downlinkBytesTransferred];
-  v15 = [v14 intValue];
-  v16 = [(NetworkQualityConfiguration *)self->nqConfig maxDownlinkData];
-  v17 = [v4 downlinkResponsiveness];
-  v18 = [v17 value];
-  v19 = -[NPTSpeedMetric initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:speed:responsiveness:](v13, "initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:speed:responsiveness:", v5, v15, v16, [v18 intValue], v7, v11);
+  downlinkBytesTransferred = [progressCopy downlinkBytesTransferred];
+  intValue = [downlinkBytesTransferred intValue];
+  maxDownlinkData = [(NetworkQualityConfiguration *)self->nqConfig maxDownlinkData];
+  downlinkResponsiveness = [progressCopy downlinkResponsiveness];
+  value2 = [downlinkResponsiveness value];
+  v19 = -[NPTSpeedMetric initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:speed:responsiveness:](v13, "initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:speed:responsiveness:", v5, intValue, maxDownlinkData, [value2 intValue], v7, v11);
 
-  v20 = [(NPTDownload *)self delegate];
+  delegate = [(NPTDownload *)self delegate];
 
-  if (v20)
+  if (delegate)
   {
-    v21 = [(NPTDownload *)self delegate];
-    [v21 download:self didReceiveSpeedMetric:v19];
+    delegate2 = [(NPTDownload *)self delegate];
+    [delegate2 download:self didReceiveSpeedMetric:v19];
   }
 
   [(NPTSpeedMetric *)v19 speed];
@@ -898,12 +898,12 @@ LABEL_38:
       v26 = +[NPTLogger network];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(NPTSpeedMetric *)v19 bytesTransferred];
+        bytesTransferred = [(NPTSpeedMetric *)v19 bytesTransferred];
         [(NPTSpeedMetric *)v19 timeSinceStart];
         v30 = 134218496;
         v31 = v25;
         v32 = 2048;
-        v33 = v27;
+        v33 = bytesTransferred;
         v34 = 2048;
         v35 = v28;
         _os_log_impl(&dword_233421000, v26, OS_LOG_TYPE_DEFAULT, "Download task has stabilized at %f Mbps after downloading %lld bytes over %f seconds", &v30, 0x20u);
@@ -928,8 +928,8 @@ LABEL_38:
 - (id)checkInterfaceSpecified
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
-  if (v3)
+  interfaceName = [(NPTPerformanceTestConfiguration *)self->testConfig interfaceName];
+  if (interfaceName)
   {
 
 LABEL_4:
@@ -979,8 +979,8 @@ LABEL_5:
         }
 
         v8 = [(NSMutableDictionary *)self->taskDict objectForKey:*(*(&v11 + 1) + 8 * v7), v11];
-        v9 = [v8 task];
-        [v9 resume];
+        task = [v8 task];
+        [task resume];
 
         ++v7;
       }
@@ -995,16 +995,16 @@ LABEL_5:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)realTimeSpeedMetric:(unint64_t)a3
+- (id)realTimeSpeedMetric:(unint64_t)metric
 {
   taskDict = self->taskDict;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a3];
-  v6 = [(NSMutableDictionary *)taskDict objectForKeyedSubscript:v5];
-  v7 = [v6 task];
+  metric = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", metric];
+  v6 = [(NSMutableDictionary *)taskDict objectForKeyedSubscript:metric];
+  task = [v6 task];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEAA8]);
   [v8 timeIntervalSinceDate:self->initialTime];
-  v10 = -[NPTSpeedMetric initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:]([NPTSpeedMetric alloc], "initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:", v8, [v7 countOfBytesReceived], objc_msgSend(v7, "countOfBytesExpectedToReceive"), v9);
+  v10 = -[NPTSpeedMetric initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:]([NPTSpeedMetric alloc], "initWithPointInTime:timeSinceStart:bytesTransferred:totalBytesExpected:", v8, [task countOfBytesReceived], objc_msgSend(task, "countOfBytesExpectedToReceive"), v9);
 
   return v10;
 }
@@ -1034,11 +1034,11 @@ LABEL_5:
         }
 
         v10 = [(NSMutableDictionary *)self->taskDict objectForKey:*(*(&v18 + 1) + 8 * i), v18];
-        v11 = [v10 task];
-        v7 += [v11 countOfBytesReceived];
+        task = [v10 task];
+        v7 += [task countOfBytesReceived];
 
-        v12 = [v10 task];
-        v6 += [v12 countOfBytesExpectedToReceive];
+        task2 = [v10 task];
+        v6 += [task2 countOfBytesExpectedToReceive];
       }
 
       v5 = [(NSMutableDictionary *)v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -1062,36 +1062,36 @@ LABEL_5:
   return v15;
 }
 
-- (id)overAllResultByTask:(unint64_t)a3
+- (id)overAllResultByTask:(unint64_t)task
 {
   taskDict = self->taskDict;
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a3];
-  v5 = [(NSMutableDictionary *)taskDict objectForKeyedSubscript:v4];
+  task = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", task];
+  v5 = [(NSMutableDictionary *)taskDict objectForKeyedSubscript:task];
 
-  v6 = [v5 results];
+  results = [v5 results];
 
-  return v6;
+  return results;
 }
 
-- (double)minNonZeroValue:(double)a3 comparisonValue:(double)a4
+- (double)minNonZeroValue:(double)value comparisonValue:(double)comparisonValue
 {
-  if (a3 != 0.0)
+  if (value != 0.0)
   {
-    if (a4 <= 0.0)
+    if (comparisonValue <= 0.0)
     {
-      return a3;
+      return value;
     }
 
-    else if (a3 < a4)
+    else if (value < comparisonValue)
     {
-      return a3;
+      return value;
     }
   }
 
-  return a4;
+  return comparisonValue;
 }
 
-- (void)completeActivityWithReason:(int)a3
+- (void)completeActivityWithReason:(int)reason
 {
   if (self->downloadActivity && nw_activity_is_activated())
   {
@@ -1113,25 +1113,25 @@ LABEL_5:
 {
   v134 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(NPTMetricResult);
-  v117 = self;
+  selfCopy = self;
   if ([(NSMutableDictionary *)self->taskDict count])
   {
-    v4 = [(NSMutableDictionary *)self->taskDict allKeys];
-    v5 = [v4 objectAtIndex:0];
+    allKeys = [(NSMutableDictionary *)self->taskDict allKeys];
+    v5 = [allKeys objectAtIndex:0];
 
-    v6 = [(NSMutableDictionary *)v117->taskDict objectForKeyedSubscript:v5];
-    v7 = [v6 taskMetrics];
-    v8 = [v7 transactionMetrics];
-    v9 = [v8 firstObject];
-    v10 = [v9 responseStartDate];
+    v6 = [(NSMutableDictionary *)selfCopy->taskDict objectForKeyedSubscript:v5];
+    taskMetrics = [v6 taskMetrics];
+    transactionMetrics = [taskMetrics transactionMetrics];
+    firstObject = [transactionMetrics firstObject];
+    responseStartDate = [firstObject responseStartDate];
 
-    v11 = [(NSMutableDictionary *)v117->taskDict objectForKeyedSubscript:v5];
-    v12 = [v11 taskMetrics];
-    v13 = [v12 transactionMetrics];
-    v14 = [v13 firstObject];
-    v15 = [v14 responseEndDate];
+    v11 = [(NSMutableDictionary *)selfCopy->taskDict objectForKeyedSubscript:v5];
+    taskMetrics2 = [v11 taskMetrics];
+    transactionMetrics2 = [taskMetrics2 transactionMetrics];
+    firstObject2 = [transactionMetrics2 firstObject];
+    responseEndDate = [firstObject2 responseEndDate];
 
-    endTimeAggregate = v117->endTimeAggregate;
+    endTimeAggregate = selfCopy->endTimeAggregate;
     if (endTimeAggregate)
     {
       v17 = endTimeAggregate;
@@ -1148,26 +1148,26 @@ LABEL_5:
 
     else
     {
-      v115 = v15;
+      v115 = responseEndDate;
     }
 
     v109 = v5;
-    v20 = [(NSMutableDictionary *)v117->taskDict objectForKeyedSubscript:v5];
-    v21 = [v20 results];
-    v22 = [v21 copy];
+    v20 = [(NSMutableDictionary *)selfCopy->taskDict objectForKeyedSubscript:v5];
+    results = [v20 results];
+    v22 = [results copy];
 
     [v22 setSpeed:0.0];
     [v22 setFileSize:0];
-    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v117->maxConcurrentStreams];
+    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:selfCopy->maxConcurrentStreams];
     [v22 setConcurrentStreams:v23];
 
-    [v22 setError:v117->downloadError];
+    [v22 setError:selfCopy->downloadError];
     v121 = 0u;
     v122 = 0u;
     v119 = 0u;
     v120 = 0u;
-    obj = v117->taskDict;
-    v24 = v10;
+    obj = selfCopy->taskDict;
+    v24 = responseStartDate;
     v114 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v119 objects:v133 count:16];
     if (v114)
     {
@@ -1184,33 +1184,33 @@ LABEL_5:
           }
 
           v26 = *(*(&v119 + 1) + 8 * v25);
-          v27 = [(NSMutableDictionary *)v117->taskDict objectForKey:v26];
-          v28 = [(NSMutableDictionary *)v117->taskDict objectForKeyedSubscript:v26];
-          v29 = [v28 taskMetrics];
-          v30 = [v29 transactionMetrics];
-          v31 = [v30 firstObject];
-          v32 = [v31 responseStartDate];
+          v27 = [(NSMutableDictionary *)selfCopy->taskDict objectForKey:v26];
+          v28 = [(NSMutableDictionary *)selfCopy->taskDict objectForKeyedSubscript:v26];
+          taskMetrics3 = [v28 taskMetrics];
+          transactionMetrics3 = [taskMetrics3 transactionMetrics];
+          firstObject3 = [transactionMetrics3 firstObject];
+          responseStartDate2 = [firstObject3 responseStartDate];
 
-          v33 = [(NSMutableDictionary *)v117->taskDict objectForKeyedSubscript:v26];
-          v34 = [v33 taskMetrics];
-          v35 = [v34 transactionMetrics];
-          v36 = [v35 firstObject];
-          v118 = [v36 responseEndDate];
+          v33 = [(NSMutableDictionary *)selfCopy->taskDict objectForKeyedSubscript:v26];
+          taskMetrics4 = [v33 taskMetrics];
+          transactionMetrics4 = [taskMetrics4 transactionMetrics];
+          firstObject4 = [transactionMetrics4 firstObject];
+          responseEndDate2 = [firstObject4 responseEndDate];
 
-          v37 = v32;
-          if (v32 && (!v24 || [(NSDate *)v24 compare:v32]== NSOrderedDescending))
+          v37 = responseStartDate2;
+          if (responseStartDate2 && (!v24 || [(NSDate *)v24 compare:responseStartDate2]== NSOrderedDescending))
           {
-            v38 = v32;
+            v38 = responseStartDate2;
 
             v24 = v38;
           }
 
-          v39 = v118;
+          v39 = responseEndDate2;
           v22 = v112;
           v116 = v24;
-          if (v118 && (!v115 || [(NSDate *)v115 compare:v118]== NSOrderedAscending))
+          if (responseEndDate2 && (!v115 || [(NSDate *)v115 compare:responseEndDate2]== NSOrderedAscending))
           {
-            v40 = v118;
+            v40 = responseEndDate2;
 
             v115 = v40;
           }
@@ -1218,21 +1218,21 @@ LABEL_5:
           v41 = +[NPTLogger network];
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
-            v42 = [v27 task];
+            task = [v27 task];
             [v27 results];
             v43 = v111 = v37;
             [v43 domainLookupTime];
             v45 = v44;
-            v46 = [v27 results];
-            [v46 connectionTime];
+            results2 = [v27 results];
+            [results2 connectionTime];
             v48 = v47;
-            v49 = [v27 results];
-            [v49 requestTime];
+            results3 = [v27 results];
+            [results3 requestTime];
             v51 = v50;
-            v52 = [v27 results];
-            [v52 responseTime];
+            results4 = [v27 results];
+            [results4 responseTime];
             *buf = 138413314;
-            v124 = v42;
+            v124 = task;
             v125 = 2048;
             v126 = v45;
             v127 = 2048;
@@ -1243,67 +1243,67 @@ LABEL_5:
             v132 = v53;
             _os_log_impl(&dword_233421000, v41, OS_LOG_TYPE_DEFAULT, "Download Task: %@ DomainLookupTime: %f, connectionTime: %f, requestTime: %f, responseTime: %f", buf, 0x34u);
 
-            v39 = v118;
+            v39 = responseEndDate2;
             v37 = v111;
           }
 
-          v54 = [v27 results];
-          [v112 setFileSize:{objc_msgSend(v112, "fileSize") + objc_msgSend(v54, "fileSize")}];
+          results5 = [v27 results];
+          [v112 setFileSize:{objc_msgSend(v112, "fileSize") + objc_msgSend(results5, "fileSize")}];
 
           [v112 domainLookupTime];
           v56 = v55;
-          v57 = [v27 results];
-          [v57 domainLookupTime];
-          [(NPTDownload *)v117 minNonZeroValue:v56 comparisonValue:v58];
+          results6 = [v27 results];
+          [results6 domainLookupTime];
+          [(NPTDownload *)selfCopy minNonZeroValue:v56 comparisonValue:v58];
           [v112 setDomainLookupTime:?];
 
           [v112 connectionTime];
           v60 = v59;
-          v61 = [v27 results];
-          [v61 connectionTime];
-          [(NPTDownload *)v117 minNonZeroValue:v60 comparisonValue:v62];
+          results7 = [v27 results];
+          [results7 connectionTime];
+          [(NPTDownload *)selfCopy minNonZeroValue:v60 comparisonValue:v62];
           [v112 setConnectionTime:?];
 
           [v112 secureConnectionTime];
           v64 = v63;
-          v65 = [v27 results];
-          [v65 secureConnectionTime];
-          [(NPTDownload *)v117 minNonZeroValue:v64 comparisonValue:v66];
+          results8 = [v27 results];
+          [results8 secureConnectionTime];
+          [(NPTDownload *)selfCopy minNonZeroValue:v64 comparisonValue:v66];
           [v112 setSecureConnectionTime:?];
 
           [v112 requestTime];
           v68 = v67;
-          v69 = [v27 results];
-          [v69 requestTime];
-          [(NPTDownload *)v117 minNonZeroValue:v68 comparisonValue:v70];
+          results9 = [v27 results];
+          [results9 requestTime];
+          [(NPTDownload *)selfCopy minNonZeroValue:v68 comparisonValue:v70];
           [v112 setRequestTime:?];
 
           [v112 requestToResponseTime];
           v72 = v71;
-          v73 = [v27 results];
-          [v73 requestToResponseTime];
-          [(NPTDownload *)v117 minNonZeroValue:v72 comparisonValue:v74];
+          results10 = [v27 results];
+          [results10 requestToResponseTime];
+          [(NPTDownload *)selfCopy minNonZeroValue:v72 comparisonValue:v74];
           [v112 setRequestToResponseTime:?];
 
-          v75 = [v27 results];
-          v76 = [v75 cdnpop];
-          v77 = [v76 length];
+          results11 = [v27 results];
+          cdnpop = [results11 cdnpop];
+          v77 = [cdnpop length];
 
           if (v77)
           {
-            v78 = [v27 results];
-            v79 = [v78 cdnpop];
-            [v112 setCdnpop:v79];
+            results12 = [v27 results];
+            cdnpop2 = [results12 cdnpop];
+            [v112 setCdnpop:cdnpop2];
 
             v80 = +[NPTLogger network];
             if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
             {
-              v95 = [v27 task];
-              v96 = [v27 results];
-              [v96 cdnpop];
+              task2 = [v27 task];
+              results13 = [v27 results];
+              [results13 cdnpop];
               v98 = v97 = v37;
               *buf = 138412546;
-              v124 = v95;
+              v124 = task2;
               v125 = 2112;
               v126 = v98;
               _os_log_debug_impl(&dword_233421000, v80, OS_LOG_TYPE_DEBUG, "Task: %@ CDN point of presence: %@", buf, 0x16u);
@@ -1312,36 +1312,36 @@ LABEL_5:
             }
           }
 
-          v81 = [v27 results];
-          v82 = [v81 server];
-          v83 = [v82 length];
+          results14 = [v27 results];
+          server = [results14 server];
+          v83 = [server length];
 
           if (v83)
           {
-            v84 = [v27 results];
-            v85 = [v84 server];
-            [v112 setServer:v85];
+            results15 = [v27 results];
+            server2 = [results15 server];
+            [v112 setServer:server2];
           }
 
-          v86 = [v27 results];
-          v87 = [v86 appleClientASNCompany];
-          v88 = [v87 length];
+          results16 = [v27 results];
+          appleClientASNCompany = [results16 appleClientASNCompany];
+          v88 = [appleClientASNCompany length];
 
           if (v88)
           {
-            v89 = [v27 results];
-            v90 = [v89 appleClientASNCompany];
-            [v112 setAppleClientASNCompany:v90];
+            results17 = [v27 results];
+            appleClientASNCompany2 = [results17 appleClientASNCompany];
+            [v112 setAppleClientASNCompany:appleClientASNCompany2];
           }
 
-          v91 = [v27 results];
-          v92 = [v91 appleClientASN];
+          results18 = [v27 results];
+          appleClientASN = [results18 appleClientASN];
 
-          if (v92)
+          if (appleClientASN)
           {
-            v93 = [v27 results];
-            v94 = [v93 appleClientASN];
-            [v112 setAppleClientASN:v94];
+            results19 = [v27 results];
+            appleClientASN2 = [results19 appleClientASN];
+            [v112 setAppleClientASN:appleClientASN2];
           }
 
           ++v25;
@@ -1357,7 +1357,7 @@ LABEL_5:
 
     if (!v24)
     {
-      v24 = v117->initialTime;
+      v24 = selfCopy->initialTime;
       v99 = +[NPTLogger network];
       if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
       {
@@ -1385,14 +1385,14 @@ LABEL_5:
     }
 
     [v22 speed];
-    if (v105 > v117->maxSpeedObserved)
+    if (v105 > selfCopy->maxSpeedObserved)
     {
       [v22 speed];
-      v117->maxSpeedObserved = v106;
+      selfCopy->maxSpeedObserved = v106;
     }
 
     [v22 setMaxSpeedObserved:?];
-    if (v117->stableSpeedToLog > 0.0)
+    if (selfCopy->stableSpeedToLog > 0.0)
     {
       [v22 setStableSpeed:?];
     }
@@ -1433,9 +1433,9 @@ LABEL_5:
         }
 
         v8 = [(NSMutableDictionary *)self->taskDict objectForKey:*(*(&v13 + 1) + 8 * i), v13];
-        v9 = [v8 taskMetrics];
+        taskMetrics = [v8 taskMetrics];
 
-        if (!v9)
+        if (!taskMetrics)
         {
           v10 = 0;
           goto LABEL_11;
@@ -1459,15 +1459,15 @@ LABEL_11:
   return v10;
 }
 
-- (id)processNQResult:(id)a3
+- (id)processNQResult:(id)result
 {
   v62 = *MEMORY[0x277D85DE8];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v53 = a3;
-  obj = [v53 urlSessionMetrics];
+  resultCopy = result;
+  obj = [resultCopy urlSessionMetrics];
   v4 = [obj countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (v4)
   {
@@ -1490,8 +1490,8 @@ LABEL_11:
         if ([v9 hasPrefix:@"tp_"])
         {
           v56 = v8;
-          v10 = [v53 urlSessionMetrics];
-          v11 = [v10 objectForKeyedSubscript:v9];
+          urlSessionMetrics = [resultCopy urlSessionMetrics];
+          v11 = [urlSessionMetrics objectForKeyedSubscript:v9];
 
           if ([v11 count])
           {
@@ -1501,9 +1501,9 @@ LABEL_11:
               v13 = [v11 objectAtIndexedSubscript:v12];
               v14 = objc_alloc_init(*(v7 + 2312));
               [v14 populateWithMetrics:v13];
-              v15 = [v13 transactionMetrics];
-              v16 = [v15 firstObject];
-              [v16 response];
+              transactionMetrics = [v13 transactionMetrics];
+              firstObject = [transactionMetrics firstObject];
+              [firstObject response];
               v18 = v17 = v7;
               [v14 populateWithURLResponse:v18];
 
@@ -1538,93 +1538,93 @@ LABEL_11:
     while (v5);
   }
 
-  v23 = [(NPTDownload *)self aggregateResults];
-  [v23 setMaxSpeedObserved:self->maxSpeedObserved];
-  v24 = [v53 downlinkBytesTransferred];
-  [v23 setFileSize:{objc_msgSend(v24, "unsignedIntValue")}];
+  aggregateResults = [(NPTDownload *)self aggregateResults];
+  [aggregateResults setMaxSpeedObserved:self->maxSpeedObserved];
+  downlinkBytesTransferred = [resultCopy downlinkBytesTransferred];
+  [aggregateResults setFileSize:{objc_msgSend(downlinkBytesTransferred, "unsignedIntValue")}];
 
-  v25 = [v53 downlinkCapacity];
-  v26 = [v25 value];
-  [v26 doubleValue];
-  [v23 setSpeed:v27 / 1000000.0];
+  downlinkCapacity = [resultCopy downlinkCapacity];
+  value = [downlinkCapacity value];
+  [value doubleValue];
+  [aggregateResults setSpeed:v27 / 1000000.0];
 
-  v28 = [v53 downlinkCapacity];
-  v29 = [v28 rating];
-  if (v29)
+  downlinkCapacity2 = [resultCopy downlinkCapacity];
+  rating = [downlinkCapacity2 rating];
+  if (rating)
   {
-    [v23 setSpeedRating:v29];
+    [aggregateResults setSpeedRating:rating];
   }
 
   else
   {
     v30 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:0];
-    [v23 setSpeedRating:v30];
+    [aggregateResults setSpeedRating:v30];
   }
 
   v31 = objc_alloc(MEMORY[0x277CCABB0]);
-  v32 = [v53 downlinkCapacity];
-  v33 = [v31 initWithInteger:{objc_msgSend(v32, "confidence")}];
-  [v23 setSpeedConfidence:v33];
+  downlinkCapacity3 = [resultCopy downlinkCapacity];
+  v33 = [v31 initWithInteger:{objc_msgSend(downlinkCapacity3, "confidence")}];
+  [aggregateResults setSpeedConfidence:v33];
 
-  v34 = [v53 downlinkResponsiveness];
-  v35 = [v34 value];
-  if (v35)
+  downlinkResponsiveness = [resultCopy downlinkResponsiveness];
+  value2 = [downlinkResponsiveness value];
+  if (value2)
   {
-    [v23 setResponsiveness:v35];
+    [aggregateResults setResponsiveness:value2];
   }
 
   else
   {
     v36 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:0];
-    [v23 setResponsiveness:v36];
+    [aggregateResults setResponsiveness:v36];
   }
 
-  v37 = [v53 downlinkResponsiveness];
-  v38 = [v37 rating];
-  if (v38)
+  downlinkResponsiveness2 = [resultCopy downlinkResponsiveness];
+  rating2 = [downlinkResponsiveness2 rating];
+  if (rating2)
   {
-    [v23 setResponsivenessRating:v38];
+    [aggregateResults setResponsivenessRating:rating2];
   }
 
   else
   {
     v39 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:0];
-    [v23 setResponsivenessRating:v39];
+    [aggregateResults setResponsivenessRating:v39];
   }
 
   v40 = objc_alloc(MEMORY[0x277CCABB0]);
-  v41 = [v53 downlinkResponsiveness];
-  v42 = [v40 initWithInteger:{objc_msgSend(v41, "confidence")}];
-  [v23 setResponsivenessConfidence:v42];
+  downlinkResponsiveness3 = [resultCopy downlinkResponsiveness];
+  v42 = [v40 initWithInteger:{objc_msgSend(downlinkResponsiveness3, "confidence")}];
+  [aggregateResults setResponsivenessConfidence:v42];
 
-  v43 = [v53 downlinkFlows];
-  if (v43)
+  downlinkFlows = [resultCopy downlinkFlows];
+  if (downlinkFlows)
   {
-    [v23 setConcurrentStreams:v43];
+    [aggregateResults setConcurrentStreams:downlinkFlows];
   }
 
   else
   {
     v44 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:0];
-    [v23 setConcurrentStreams:v44];
+    [aggregateResults setConcurrentStreams:v44];
   }
 
-  v45 = [v53 latency];
-  v46 = [v45 value];
-  [v23 setLatency:v46];
+  latency = [resultCopy latency];
+  value3 = [latency value];
+  [aggregateResults setLatency:value3];
 
-  v47 = [v53 testEndpoint];
-  [v23 setNqTestEndPoint:v47];
+  testEndpoint = [resultCopy testEndpoint];
+  [aggregateResults setNqTestEndPoint:testEndpoint];
 
-  v48 = [v53 asn];
-  [v23 setAppleClientASN:v48];
+  v48 = [resultCopy asn];
+  [aggregateResults setAppleClientASN:v48];
 
-  v49 = [v53 asnName];
-  [v23 setAppleClientASNCompany:v49];
+  asnName = [resultCopy asnName];
+  [aggregateResults setAppleClientASNCompany:asnName];
 
   v50 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return aggregateResults;
 }
 
 - (id)delegate

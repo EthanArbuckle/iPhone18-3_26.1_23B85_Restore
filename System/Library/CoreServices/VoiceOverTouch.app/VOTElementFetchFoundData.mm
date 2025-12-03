@@ -1,25 +1,25 @@
 @interface VOTElementFetchFoundData
-+ (id)fetchFoundData:(id)a3 forceUpdate:(BOOL)a4 direction:(int64_t)a5 generation:(unint64_t)a6 range:(_NSRange)a7 searchType:(int64_t)a8;
++ (id)fetchFoundData:(id)data forceUpdate:(BOOL)update direction:(int64_t)direction generation:(unint64_t)generation range:(_NSRange)range searchType:(int64_t)type;
 - (_NSRange)range;
 - (id)description;
 @end
 
 @implementation VOTElementFetchFoundData
 
-+ (id)fetchFoundData:(id)a3 forceUpdate:(BOOL)a4 direction:(int64_t)a5 generation:(unint64_t)a6 range:(_NSRange)a7 searchType:(int64_t)a8
++ (id)fetchFoundData:(id)data forceUpdate:(BOOL)update direction:(int64_t)direction generation:(unint64_t)generation range:(_NSRange)range searchType:(int64_t)type
 {
-  length = a7.length;
-  location = a7.location;
-  v12 = a4;
-  v13 = a3;
+  length = range.length;
+  location = range.location;
+  updateCopy = update;
+  dataCopy = data;
   v14 = objc_alloc_init(VOTElementFetchFoundData);
-  [(VOTElementFetchFoundData *)v14 setElement:v13];
+  [(VOTElementFetchFoundData *)v14 setElement:dataCopy];
 
-  [(VOTElementFetchFoundData *)v14 setNeedsForceCacheUpdate:v12];
-  [(VOTElementFetchFoundData *)v14 setDirection:a5];
-  [(VOTElementFetchFoundData *)v14 setClientGeneration:a6];
+  [(VOTElementFetchFoundData *)v14 setNeedsForceCacheUpdate:updateCopy];
+  [(VOTElementFetchFoundData *)v14 setDirection:direction];
+  [(VOTElementFetchFoundData *)v14 setClientGeneration:generation];
   [(VOTElementFetchFoundData *)v14 setRange:location, length];
-  [(VOTElementFetchFoundData *)v14 setSearchType:a8];
+  [(VOTElementFetchFoundData *)v14 setSearchType:type];
 
   return v14;
 }
@@ -29,10 +29,10 @@
   v8.receiver = self;
   v8.super_class = VOTElementFetchFoundData;
   v3 = [(VOTElementFetchFoundData *)&v8 description];
-  v4 = [(VOTElementFetchFoundData *)self element];
+  element = [(VOTElementFetchFoundData *)self element];
   v10.location = [(VOTElementFetchFoundData *)self range];
   v5 = NSStringFromRange(v10);
-  v6 = [NSString stringWithFormat:@"%@ element: %@, range: %@", v3, v4, v5];
+  v6 = [NSString stringWithFormat:@"%@ element: %@, range: %@", v3, element, v5];
 
   return v6;
 }

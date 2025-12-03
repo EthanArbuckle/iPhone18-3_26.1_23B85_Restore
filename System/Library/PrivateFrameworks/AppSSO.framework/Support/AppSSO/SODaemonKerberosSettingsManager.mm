@@ -1,6 +1,6 @@
 @interface SODaemonKerberosSettingsManager
-- (SODaemonKerberosSettingsManager)initWithConfigurationHost:(id)a3 settingsManager:(id)a4;
-- (void)configurationChanged:(id)a3;
+- (SODaemonKerberosSettingsManager)initWithConfigurationHost:(id)host settingsManager:(id)manager;
+- (void)configurationChanged:(id)changed;
 - (void)dealloc;
 - (void)listenForConfigurationChanges;
 - (void)saveKerberosValuesForPlugins;
@@ -8,18 +8,18 @@
 
 @implementation SODaemonKerberosSettingsManager
 
-- (SODaemonKerberosSettingsManager)initWithConfigurationHost:(id)a3 settingsManager:(id)a4
+- (SODaemonKerberosSettingsManager)initWithConfigurationHost:(id)host settingsManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  hostCopy = host;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = SODaemonKerberosSettingsManager;
   v9 = [(SODaemonKerberosSettingsManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configurationHost, a3);
-    objc_storeStrong(&v10->_settingsManager, a4);
+    objc_storeStrong(&v9->_configurationHost, host);
+    objc_storeStrong(&v10->_settingsManager, manager);
     v10->_observingConfigurationChanges = 0;
   }
 
@@ -47,7 +47,7 @@
   [(SODaemonKerberosSettingsManager *)&v4 dealloc];
 }
 
-- (void)configurationChanged:(id)a3
+- (void)configurationChanged:(id)changed
 {
   v4 = sub_100001818();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -55,7 +55,7 @@
     *buf = 136315394;
     v8 = "[SODaemonKerberosSettingsManager configurationChanged:]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -76,7 +76,7 @@
     *buf = 136315394;
     v15 = "[SODaemonKerberosSettingsManager saveKerberosValuesForPlugins]";
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 

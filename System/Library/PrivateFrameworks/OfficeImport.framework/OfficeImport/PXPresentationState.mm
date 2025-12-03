@@ -1,12 +1,12 @@
 @interface PXPresentationState
 - (PXPresentationState)init;
-- (id)modelObjectForLocation:(id)a3;
-- (int64_t)slideIndexForSlideURL:(id)a3;
+- (id)modelObjectForLocation:(id)location;
+- (int64_t)slideIndexForSlideURL:(id)l;
 - (void)resetOfficeArtState;
-- (void)setModelObject:(id)a3 forLocation:(id)a4;
-- (void)setSlideIndex:(int64_t)a3 forSlideURL:(id)a4;
-- (void)setTgtPresentation:(id)a3;
-- (void)setupNSForXMLFormat:(int)a3;
+- (void)setModelObject:(id)object forLocation:(id)location;
+- (void)setSlideIndex:(int64_t)index forSlideURL:(id)l;
+- (void)setTgtPresentation:(id)presentation;
+- (void)setupNSForXMLFormat:(int)format;
 @end
 
 @implementation PXPresentationState
@@ -54,9 +54,9 @@
 
 - (void)resetOfficeArtState
 {
-  v13 = [(OAXDrawingState *)self->mOfficeArtState styleMatrix];
-  v3 = [(OAXDrawingState *)self->mOfficeArtState sourceURLToTargetBlipIndexMap];
-  v4 = [(OAXDrawingState *)self->mOfficeArtState sourceURLToTargetBulletBlipIndexMap];
+  styleMatrix = [(OAXDrawingState *)self->mOfficeArtState styleMatrix];
+  sourceURLToTargetBlipIndexMap = [(OAXDrawingState *)self->mOfficeArtState sourceURLToTargetBlipIndexMap];
+  sourceURLToTargetBulletBlipIndexMap = [(OAXDrawingState *)self->mOfficeArtState sourceURLToTargetBulletBlipIndexMap];
   mOfficeArtState = self->mOfficeArtState;
   self->mOfficeArtState = 0;
 
@@ -69,16 +69,16 @@
   [(OAXDrawingState *)self->mOfficeArtState setOavState:self->mOAVState];
   [(OAVReadState *)self->mOAVState setOaxState:self->mOfficeArtState];
   v9 = self->mOfficeArtState;
-  v10 = [(OCDDocument *)self->mTgtPresentation blips];
-  [(OAXDrawingState *)v9 setTargetBlipCollection:v10];
+  blips = [(OCDDocument *)self->mTgtPresentation blips];
+  [(OAXDrawingState *)v9 setTargetBlipCollection:blips];
 
   v11 = self->mOfficeArtState;
-  v12 = [(PDPresentation *)self->mTgtPresentation bulletBlips];
-  [(OAXDrawingState *)v11 setTargetBulletBlipArray:v12];
+  bulletBlips = [(PDPresentation *)self->mTgtPresentation bulletBlips];
+  [(OAXDrawingState *)v11 setTargetBulletBlipArray:bulletBlips];
 
-  [(OAXDrawingState *)self->mOfficeArtState setStyleMatrix:v13];
-  [(OAXDrawingState *)self->mOfficeArtState setSourceURLToTargetBlipIndexMap:v3];
-  [(OAXDrawingState *)self->mOfficeArtState setSourceURLToTargetBulletBlipIndexMap:v4];
+  [(OAXDrawingState *)self->mOfficeArtState setStyleMatrix:styleMatrix];
+  [(OAXDrawingState *)self->mOfficeArtState setSourceURLToTargetBlipIndexMap:sourceURLToTargetBlipIndexMap];
+  [(OAXDrawingState *)self->mOfficeArtState setSourceURLToTargetBulletBlipIndexMap:sourceURLToTargetBulletBlipIndexMap];
   [PXPresentationState setPptChartGraphicPropertyDefaultBlock:self->mOfficeArtState];
 }
 
@@ -134,67 +134,67 @@ LABEL_12:
   return v12;
 }
 
-- (id)modelObjectForLocation:(id)a3
+- (id)modelObjectForLocation:(id)location
 {
   mModelObjects = self->mModelObjects;
-  v4 = [a3 absoluteURL];
-  v5 = [(NSMutableDictionary *)mModelObjects objectForKey:v4];
+  absoluteURL = [location absoluteURL];
+  v5 = [(NSMutableDictionary *)mModelObjects objectForKey:absoluteURL];
 
   return v5;
 }
 
-- (void)setModelObject:(id)a3 forLocation:(id)a4
+- (void)setModelObject:(id)object forLocation:(id)location
 {
-  v8 = a3;
+  objectCopy = object;
   mModelObjects = self->mModelObjects;
-  v7 = [a4 absoluteURL];
-  [(NSMutableDictionary *)mModelObjects setObject:v8 forKey:v7];
+  absoluteURL = [location absoluteURL];
+  [(NSMutableDictionary *)mModelObjects setObject:objectCopy forKey:absoluteURL];
 }
 
-- (int64_t)slideIndexForSlideURL:(id)a3
+- (int64_t)slideIndexForSlideURL:(id)l
 {
   mSlideURLToIndexMap = self->mSlideURLToIndexMap;
-  v4 = [a3 absoluteURL];
-  v5 = [(NSMutableDictionary *)mSlideURLToIndexMap objectForKey:v4];
+  absoluteURL = [l absoluteURL];
+  v5 = [(NSMutableDictionary *)mSlideURLToIndexMap objectForKey:absoluteURL];
 
   if (v5)
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (void)setSlideIndex:(int64_t)a3 forSlideURL:(id)a4
+- (void)setSlideIndex:(int64_t)index forSlideURL:(id)l
 {
-  v9 = a4;
+  lCopy = l;
   mSlideURLToIndexMap = self->mSlideURLToIndexMap;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v8 = [v9 absoluteURL];
-  [(NSMutableDictionary *)mSlideURLToIndexMap setObject:v7 forKey:v8];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  absoluteURL = [lCopy absoluteURL];
+  [(NSMutableDictionary *)mSlideURLToIndexMap setObject:v7 forKey:absoluteURL];
 }
 
-- (void)setTgtPresentation:(id)a3
+- (void)setTgtPresentation:(id)presentation
 {
-  v9 = a3;
-  objc_storeStrong(&self->mTgtPresentation, a3);
+  presentationCopy = presentation;
+  objc_storeStrong(&self->mTgtPresentation, presentation);
   mOfficeArtState = self->mOfficeArtState;
-  v6 = [v9 blips];
-  [(OAXDrawingState *)mOfficeArtState setTargetBlipCollection:v6];
+  blips = [presentationCopy blips];
+  [(OAXDrawingState *)mOfficeArtState setTargetBlipCollection:blips];
 
   v7 = self->mOfficeArtState;
-  v8 = [v9 bulletBlips];
-  [(OAXDrawingState *)v7 setTargetBulletBlipArray:v8];
+  bulletBlips = [presentationCopy bulletBlips];
+  [(OAXDrawingState *)v7 setTargetBulletBlipArray:bulletBlips];
 }
 
-- (void)setupNSForXMLFormat:(int)a3
+- (void)setupNSForXMLFormat:(int)format
 {
-  v3 = *&a3;
+  v3 = *&format;
   v9.receiver = self;
   v9.super_class = PXPresentationState;
   [(OCXState *)&v9 setupNSForXMLFormat:?];

@@ -1,34 +1,34 @@
 @interface CNFInternalAccountViewController
-- (CNFInternalAccountViewController)initWithAccount:(id)a3;
-- (id)accountDisplayName:(id)a3;
-- (id)accountIsActive:(id)a3;
-- (id)accountLogin:(id)a3;
-- (id)accountLoginStatus:(id)a3;
-- (id)accountType:(id)a3;
-- (id)registrationFailureReason:(id)a3;
-- (id)registrationStatus:(id)a3;
-- (id)specifierForAlias:(id)a3;
+- (CNFInternalAccountViewController)initWithAccount:(id)account;
+- (id)accountDisplayName:(id)name;
+- (id)accountIsActive:(id)active;
+- (id)accountLogin:(id)login;
+- (id)accountLoginStatus:(id)status;
+- (id)accountType:(id)type;
+- (id)registrationFailureReason:(id)reason;
+- (id)registrationStatus:(id)status;
+- (id)specifierForAlias:(id)alias;
 - (id)specifiers;
-- (id)statusForAlias:(id)a3;
-- (void)_handleAccountNotification:(id)a3;
+- (id)statusForAlias:(id)alias;
+- (void)_handleAccountNotification:(id)notification;
 - (void)_startListeningForNotifications;
 - (void)_stopListeningForNotifications;
 @end
 
 @implementation CNFInternalAccountViewController
 
-- (CNFInternalAccountViewController)initWithAccount:(id)a3
+- (CNFInternalAccountViewController)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v12.receiver = self;
   v12.super_class = CNFInternalAccountViewController;
   v5 = [(CNFInternalAccountViewController *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    [(CNFInternalAccountViewController *)v5 setAccount:v4];
-    v7 = [v4 service];
-    v8 = FTCServiceTypeForService(v7);
+    [(CNFInternalAccountViewController *)v5 setAccount:accountCopy];
+    service = [accountCopy service];
+    v8 = FTCServiceTypeForService(service);
 
     v9 = [[FTRegConnectionHandler alloc] initWithServiceType:v8 name:@"InternalAccountView"];
     connectionHandler = v6->_connectionHandler;
@@ -55,8 +55,8 @@
         if (v8 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v9 = v8 + 1;
-          v10 = [(CNFInternalAccountViewController *)self account];
-          v11 = [v10 aliases];
+          account = [(CNFInternalAccountViewController *)self account];
+          aliases = [account aliases];
 
           v19[0] = MEMORY[0x277D85DD0];
           v19[1] = 3221225472;
@@ -65,7 +65,7 @@
           v19[4] = self;
           v20 = v5;
           v21 = v9;
-          [v11 enumerateObjectsWithOptions:2 usingBlock:v19];
+          [aliases enumerateObjectsWithOptions:2 usingBlock:v19];
 
           v7 = 0;
         }
@@ -74,10 +74,10 @@
 
     if ([(CNFInternalAccountViewController *)self isConnectedToDaemon])
     {
-      v12 = [(CNFInternalAccountViewController *)self account];
-      v13 = [v12 registrationStatus];
+      account2 = [(CNFInternalAccountViewController *)self account];
+      registrationStatus = [account2 registrationStatus];
 
-      if (v13 == -1)
+      if (registrationStatus == -1)
       {
         if (!v7)
         {
@@ -130,52 +130,52 @@ uint64_t __46__CNFInternalAccountViewController_specifiers__block_invoke(uint64_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)specifierForAlias:(id)a3
+- (id)specifierForAlias:(id)alias
 {
   v4 = MEMORY[0x277D3FAD8];
-  v5 = a3;
-  v6 = [v4 preferenceSpecifierNamed:v5 target:self set:0 get:sel_statusForAlias_ detail:0 cell:4 edit:0];
-  [v6 setProperty:v5 forKey:@"cnf-internal-alias"];
+  aliasCopy = alias;
+  v6 = [v4 preferenceSpecifierNamed:aliasCopy target:self set:0 get:sel_statusForAlias_ detail:0 cell:4 edit:0];
+  [v6 setProperty:aliasCopy forKey:@"cnf-internal-alias"];
 
   return v6;
 }
 
-- (id)accountLoginStatus:(id)a3
+- (id)accountLoginStatus:(id)status
 {
   if ([(CNFInternalAccountViewController *)self isConnectedToDaemon])
   {
-    v4 = [(CNFInternalAccountViewController *)self account];
-    v5 = v4;
-    if (v4)
+    account = [(CNFInternalAccountViewController *)self account];
+    v5 = account;
+    if (account)
     {
-      v6 = [v4 loginStatus];
-      if (v6 > 4)
+      loginStatus = [account loginStatus];
+      if (loginStatus > 4)
       {
-        v7 = @"Unknown";
+        loginStatusMessage3 = @"Unknown";
       }
 
       else
       {
-        v7 = off_278DE8838[v6];
+        loginStatusMessage3 = off_278DE8838[loginStatus];
       }
 
-      v10 = [v5 loginStatusMessage];
-      if (v10)
+      loginStatusMessage = [v5 loginStatusMessage];
+      if (loginStatusMessage)
       {
-        v11 = [v5 loginStatusMessage];
-        if (([v11 isEqualToIgnoringCase:&stru_2856D3978] & 1) == 0)
+        loginStatusMessage2 = [v5 loginStatusMessage];
+        if (([loginStatusMessage2 isEqualToIgnoringCase:&stru_2856D3978] & 1) == 0)
         {
-          v7 = [v5 loginStatusMessage];
+          loginStatusMessage3 = [v5 loginStatusMessage];
         }
       }
     }
 
     else
     {
-      v7 = @"Account missing";
+      loginStatusMessage3 = @"Account missing";
     }
 
-    v9 = v7;
+    v9 = loginStatusMessage3;
 
     v8 = v9;
   }
@@ -189,15 +189,15 @@ uint64_t __46__CNFInternalAccountViewController_specifiers__block_invoke(uint64_
   return v8;
 }
 
-- (id)registrationStatus:(id)a3
+- (id)registrationStatus:(id)status
 {
   if ([(CNFInternalAccountViewController *)self isConnectedToDaemon])
   {
-    v4 = [(CNFInternalAccountViewController *)self account];
-    v5 = v4;
-    if (v4)
+    account = [(CNFInternalAccountViewController *)self account];
+    v5 = account;
+    if (account)
     {
-      v6 = CNFRegNonLocStringForRegistrationStatus([v4 registrationStatus]);
+      v6 = CNFRegNonLocStringForRegistrationStatus([account registrationStatus]);
     }
 
     else
@@ -219,37 +219,37 @@ uint64_t __46__CNFInternalAccountViewController_specifiers__block_invoke(uint64_
   return v7;
 }
 
-- (id)accountLogin:(id)a3
+- (id)accountLogin:(id)login
 {
   if ([(CNFInternalAccountViewController *)self isConnectedToDaemon])
   {
-    v4 = [(CNFInternalAccountViewController *)self account];
-    v5 = [v4 login];
+    account = [(CNFInternalAccountViewController *)self account];
+    login = [account login];
   }
 
   else
   {
-    v5 = @"Disconnected";
+    login = @"Disconnected";
   }
 
-  return v5;
+  return login;
 }
 
-- (id)accountType:(id)a3
+- (id)accountType:(id)type
 {
   if ([(CNFInternalAccountViewController *)self isConnectedToDaemon])
   {
-    v4 = [(CNFInternalAccountViewController *)self account];
-    v5 = [v4 accountType];
+    account = [(CNFInternalAccountViewController *)self account];
+    accountType = [account accountType];
 
-    if (v5 >= 3)
+    if (accountType >= 3)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown account type (%ld)", v5];
+      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown account type (%ld)", accountType];
     }
 
     else
     {
-      v6 = off_278DE8860[v5];
+      v6 = off_278DE8860[accountType];
     }
   }
 
@@ -261,14 +261,14 @@ uint64_t __46__CNFInternalAccountViewController_specifiers__block_invoke(uint64_
   return v6;
 }
 
-- (id)statusForAlias:(id)a3
+- (id)statusForAlias:(id)alias
 {
-  v4 = a3;
+  aliasCopy = alias;
   if ([(CNFInternalAccountViewController *)self isConnectedToDaemon])
   {
-    v5 = [v4 propertyForKey:@"cnf-internal-alias"];
-    v6 = [(CNFInternalAccountViewController *)self account];
-    v7 = CNFRegNonLocStringForAliasValidationStatus([v6 validationStatusForAlias:v5]);
+    v5 = [aliasCopy propertyForKey:@"cnf-internal-alias"];
+    account = [(CNFInternalAccountViewController *)self account];
+    v7 = CNFRegNonLocStringForAliasValidationStatus([account validationStatusForAlias:v5]);
   }
 
   else
@@ -279,32 +279,32 @@ uint64_t __46__CNFInternalAccountViewController_specifiers__block_invoke(uint64_
   return v7;
 }
 
-- (id)accountDisplayName:(id)a3
+- (id)accountDisplayName:(id)name
 {
   if ([(CNFInternalAccountViewController *)self isConnectedToDaemon])
   {
-    v4 = [(CNFInternalAccountViewController *)self account];
-    v5 = [v4 displayName];
+    account = [(CNFInternalAccountViewController *)self account];
+    displayName = [account displayName];
   }
 
   else
   {
-    v5 = @"Disconnected";
+    displayName = @"Disconnected";
   }
 
-  return v5;
+  return displayName;
 }
 
-- (id)registrationFailureReason:(id)a3
+- (id)registrationFailureReason:(id)reason
 {
   if ([(CNFInternalAccountViewController *)self isConnectedToDaemon])
   {
-    v4 = [(CNFInternalAccountViewController *)self account];
-    v5 = [v4 registrationFailureReason];
+    account = [(CNFInternalAccountViewController *)self account];
+    registrationFailureReason = [account registrationFailureReason];
 
     v6 = MEMORY[0x277CCACA8];
-    v7 = CNFRegNonLocStringForRegistrationFailure(v5);
-    v8 = [v6 stringWithFormat:@"%ld: %@", v5, v7];
+    v7 = CNFRegNonLocStringForRegistrationFailure(registrationFailureReason);
+    v8 = [v6 stringWithFormat:@"%ld: %@", registrationFailureReason, v7];
   }
 
   else
@@ -315,14 +315,14 @@ uint64_t __46__CNFInternalAccountViewController_specifiers__block_invoke(uint64_
   return v8;
 }
 
-- (id)accountIsActive:(id)a3
+- (id)accountIsActive:(id)active
 {
   if ([(CNFInternalAccountViewController *)self isConnectedToDaemon])
   {
-    v4 = [(CNFInternalAccountViewController *)self account];
-    v5 = [v4 isActive];
+    account = [(CNFInternalAccountViewController *)self account];
+    isActive = [account isActive];
     v6 = @"NO";
-    if (v5)
+    if (isActive)
     {
       v6 = @"YES";
     }
@@ -340,41 +340,41 @@ uint64_t __46__CNFInternalAccountViewController_specifiers__block_invoke(uint64_
 
 - (void)_startListeningForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleDaemonConnected_ name:*MEMORY[0x277D18CE0] object:0];
-  [v3 addObserver:self selector:sel__handleDaemonDisconnected_ name:*MEMORY[0x277D18CE8] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C18] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C20] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18CA8] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18BF8] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18BA8] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C48] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C58] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C08] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C10] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18B98] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C28] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleDaemonConnected_ name:*MEMORY[0x277D18CE0] object:0];
+  [defaultCenter addObserver:self selector:sel__handleDaemonDisconnected_ name:*MEMORY[0x277D18CE8] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C18] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C20] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18CA8] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18BF8] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18BA8] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C48] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C58] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C08] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C10] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18B98] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C28] object:0];
 }
 
 - (void)_stopListeningForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D18CE0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18CE8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18C18] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18C20] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18CA8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18BF8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18BA8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18C48] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18C58] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18C08] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18C10] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18B98] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18C28] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18CE0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18CE8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18C18] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18C20] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18CA8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18BF8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18BA8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18C48] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18C58] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18C08] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18C10] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18B98] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18C28] object:0];
 }
 
-- (void)_handleAccountNotification:(id)a3
+- (void)_handleAccountNotification:(id)notification
 {
   if ([(CNFInternalAccountViewController *)self isConnectedToDaemon])
   {

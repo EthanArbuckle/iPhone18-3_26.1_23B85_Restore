@@ -1,6 +1,6 @@
 @interface CNSocialProfileServicePickerController
 + (id)defaultServices;
-- (CNSocialProfileServicePickerController)initWithStyle:(int64_t)a3;
+- (CNSocialProfileServicePickerController)initWithStyle:(int64_t)style;
 - (id)titleForAddCustomItem;
 @end
 
@@ -14,21 +14,21 @@
   return v3;
 }
 
-- (CNSocialProfileServicePickerController)initWithStyle:(int64_t)a3
+- (CNSocialProfileServicePickerController)initWithStyle:(int64_t)style
 {
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = CNSocialProfileServicePickerController;
-  v3 = [(CNPickerController *)&v15 initWithStyle:a3];
+  v3 = [(CNPickerController *)&v15 initWithStyle:style];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [objc_opt_class() defaultServices];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    defaultServices = [objc_opt_class() defaultServices];
+    v6 = [defaultServices countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -40,20 +40,20 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(defaultServices);
           }
 
-          [v4 addObject:*(*(&v11 + 1) + 8 * v9++)];
+          [array addObject:*(*(&v11 + 1) + 8 * v9++)];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [defaultServices countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v7);
     }
 
-    [(CNPickerController *)v3 setBuiltinItems:v4];
+    [(CNPickerController *)v3 setBuiltinItems:array];
   }
 
   return v3;

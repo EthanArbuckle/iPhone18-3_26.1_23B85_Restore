@@ -1,33 +1,33 @@
 @interface INCWidgetIntentProvider
 + (void)initialize;
-- (id)intentsExtensionForExtension:(id)a3 compatibleWithIntent:(id)a4 error:(id *)a5;
-- (void)_provideAppIntentWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)provideAppIntentWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)provideIntentWithOptions:(id)a3 completionHandler:(id)a4;
+- (id)intentsExtensionForExtension:(id)extension compatibleWithIntent:(id)intent error:(id *)error;
+- (void)_provideAppIntentWithOptions:(id)options completionHandler:(id)handler;
+- (void)provideAppIntentWithOptions:(id)options completionHandler:(id)handler;
+- (void)provideIntentWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation INCWidgetIntentProvider
 
-- (id)intentsExtensionForExtension:(id)a3 compatibleWithIntent:(id)a4 error:(id *)a5
+- (id)intentsExtensionForExtension:(id)extension compatibleWithIntent:(id)intent error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 compatibilityObject];
-  v10 = [v9 if_isSystem];
+  extensionCopy = extension;
+  intentCopy = intent;
+  compatibilityObject = [extensionCopy compatibilityObject];
+  if_isSystem = [compatibilityObject if_isSystem];
 
-  if (!v10 || ([v7 infoDictionary], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKey:ofClass:", *MEMORY[0x277CD44A8], objc_opt_class()), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12) || (v13 = objc_msgSend(objc_alloc(MEMORY[0x277CC1E50]), "initWithBundleIdentifier:error:", v12, a5), v12, !v13))
+  if (!if_isSystem || ([extensionCopy infoDictionary], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKey:ofClass:", *MEMORY[0x277CD44A8], objc_opt_class()), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12) || (v13 = objc_msgSend(objc_alloc(MEMORY[0x277CC1E50]), "initWithBundleIdentifier:error:", v12, error), v12, !v13))
   {
-    v14 = [v7 URL];
-    v15 = [v14 URLByDeletingLastPathComponent];
+    v14 = [extensionCopy URL];
+    uRLByDeletingLastPathComponent = [v14 URLByDeletingLastPathComponent];
 
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
-    v17 = [v16 contentsOfDirectoryAtURL:v15 includingPropertiesForKeys:0 options:1 error:a5];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v17 = [defaultManager contentsOfDirectoryAtURL:uRLByDeletingLastPathComponent includingPropertiesForKeys:0 options:1 error:error];
 
     if (v17)
     {
-      v38 = v15;
-      v39 = v7;
+      v38 = uRLByDeletingLastPathComponent;
+      v39 = extensionCopy;
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
@@ -44,7 +44,7 @@
         do
         {
           v21 = 0;
-          v22 = v8;
+          v22 = intentCopy;
           do
           {
             if (*v45 != v20)
@@ -61,27 +61,27 @@
             }
 
             v26 = v25;
-            v27 = [v25 extensionPointRecord];
-            v28 = [v27 identifier];
-            v29 = [v28 isEqualToString:v43];
+            extensionPointRecord = [v25 extensionPointRecord];
+            identifier = [extensionPointRecord identifier];
+            v29 = [identifier isEqualToString:v43];
 
             if ((v29 & 1) == 0)
             {
 
 LABEL_18:
               objc_autoreleasePoolPop(v24);
-              v8 = v22;
+              intentCopy = v22;
               goto LABEL_21;
             }
 
             v30 = [v22 componentsSeparatedByString:@"."];
-            v8 = [v30 lastObject];
+            intentCopy = [v30 lastObject];
 
-            v31 = [v26 infoDictionary];
-            v32 = [v26 if_extensionAttributesDictionary];
-            v33 = [v32 objectForKeyedSubscript:v41];
+            infoDictionary = [v26 infoDictionary];
+            if_extensionAttributesDictionary = [v26 if_extensionAttributesDictionary];
+            v33 = [if_extensionAttributesDictionary objectForKeyedSubscript:v41];
 
-            if (v33 && (objc_opt_class(), (objc_opt_isKindOfClass()) || (v33, [v31 objectForKey:v41 ofClass:objc_opt_class()], (v33 = objc_claimAutoreleasedReturnValue()) != 0)) && objc_msgSend(v33, "containsObject:", v8))
+            if (v33 && (objc_opt_class(), (objc_opt_isKindOfClass()) || (v33, [infoDictionary objectForKey:v41 ofClass:objc_opt_class()], (v33 = objc_claimAutoreleasedReturnValue()) != 0)) && objc_msgSend(v33, "containsObject:", intentCopy))
             {
               v40 = v26;
               v34 = 0;
@@ -100,7 +100,7 @@ LABEL_18:
 
 LABEL_21:
             ++v21;
-            v22 = v8;
+            v22 = intentCopy;
           }
 
           while (v19 != v21);
@@ -113,8 +113,8 @@ LABEL_21:
       v40 = 0;
 LABEL_24:
 
-      v15 = v38;
-      v7 = v39;
+      uRLByDeletingLastPathComponent = v38;
+      extensionCopy = v39;
       v17 = v37;
       v13 = v40;
     }
@@ -130,27 +130,27 @@ LABEL_24:
   return v13;
 }
 
-- (void)_provideAppIntentWithOptions:(id)a3 completionHandler:(id)a4
+- (void)_provideAppIntentWithOptions:(id)options completionHandler:(id)handler
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v35 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatch_assert_queue_not_V2(MEMORY[0x277D85CD0]);
   v6 = objc_alloc(MEMORY[0x277CC1E50]);
-  v7 = [v5 extensionBundleIdentifier];
+  extensionBundleIdentifier = [optionsCopy extensionBundleIdentifier];
   v43 = 0;
-  v8 = [v6 initWithBundleIdentifier:v7 error:&v43];
+  v8 = [v6 initWithBundleIdentifier:extensionBundleIdentifier error:&v43];
   v34 = v43;
 
   if (v8)
   {
-    v9 = [v8 containingBundleRecord];
-    if (v9)
+    containingBundleRecord = [v8 containingBundleRecord];
+    if (containingBundleRecord)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = v9;
+        v10 = containingBundleRecord;
       }
 
       else
@@ -166,17 +166,17 @@ LABEL_24:
 
     v33 = v10;
 
-    v12 = [v33 bundleIdentifier];
-    v13 = v12;
-    if (v12)
+    bundleIdentifier = [v33 bundleIdentifier];
+    v13 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v14 = v12;
+      bundleIdentifier2 = bundleIdentifier;
     }
 
     else
     {
-      v15 = [v8 entitlements];
-      v16 = [v15 objectForKey:@"com.apple.private.appintents.attribution.bundle-identifier" ofClass:objc_opt_class()];
+      entitlements = [v8 entitlements];
+      v16 = [entitlements objectForKey:@"com.apple.private.appintents.attribution.bundle-identifier" ofClass:objc_opt_class()];
 
       if (v16)
       {
@@ -187,15 +187,15 @@ LABEL_24:
         }
       }
 
-      v14 = [v8 bundleIdentifier];
+      bundleIdentifier2 = [v8 bundleIdentifier];
     }
 
-    v16 = v14;
+    v16 = bundleIdentifier2;
 LABEL_16:
 
-    v17 = [v5 intentType];
-    v18 = [v17 componentsSeparatedByString:@":"];
-    v19 = [v18 lastObject];
+    intentType = [optionsCopy intentType];
+    v18 = [intentType componentsSeparatedByString:@":"];
+    lastObject = [v18 lastObject];
 
     v44 = 0;
     v45 = &v44;
@@ -215,7 +215,7 @@ LABEL_16:
 
     v21 = v20;
     _Block_object_dispose(&v44, 8);
-    v22 = [[v20 alloc] initWithActionIdentifier:v19 bundleIdentifier:v16];
+    v22 = [[v20 alloc] initWithActionIdentifier:lastObject bundleIdentifier:v16];
     v44 = 0;
     v45 = &v44;
     v46 = 0x2050000000;
@@ -241,12 +241,12 @@ LABEL_16:
     v36[3] = &unk_2797E8168;
     v37 = v22;
     v38 = v25;
-    v39 = v19;
-    v42 = v35;
+    v39 = lastObject;
+    v42 = handlerCopy;
     v40 = v16;
-    v41 = v5;
+    v41 = optionsCopy;
     v26 = v16;
-    v27 = v19;
+    v27 = lastObject;
     v28 = v25;
     v29 = v22;
     [v28 loadDefaultValuesWithCompletionHandler:v36];
@@ -258,17 +258,17 @@ LABEL_16:
   if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_ERROR))
   {
     v31 = v11;
-    v32 = [v5 extensionBundleIdentifier];
+    extensionBundleIdentifier2 = [optionsCopy extensionBundleIdentifier];
     *buf = 136315650;
     *&buf[4] = "[INCWidgetIntentProvider _provideAppIntentWithOptions:completionHandler:]";
     *&buf[12] = 2114;
-    *&buf[14] = v32;
+    *&buf[14] = extensionBundleIdentifier2;
     *&buf[22] = 2114;
     v49 = v34;
     _os_log_error_impl(&dword_255503000, v31, OS_LOG_TYPE_ERROR, "%s No chrono extension found with identifier: %{public}@. Error: %{public}@", buf, 0x20u);
   }
 
-  (*(v35 + 2))(v35, 0, v34);
+  (*(handlerCopy + 2))(handlerCopy, 0, v34);
 LABEL_21:
 
   v30 = *MEMORY[0x277D85DE8];
@@ -355,18 +355,18 @@ void __74__INCWidgetIntentProvider__provideAppIntentWithOptions_completionHandle
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provideAppIntentWithOptions:(id)a3 completionHandler:(id)a4
+- (void)provideAppIntentWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__INCWidgetIntentProvider_provideAppIntentWithOptions_completionHandler___block_invoke;
   v12[3] = &unk_2797E8140;
   v12[4] = self;
-  v8 = v6;
+  v8 = optionsCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v14 = v9;
   v10 = MEMORY[0x259C36E60](v12);
   if ([MEMORY[0x277CCACC8] isMainThread])
@@ -381,29 +381,29 @@ void __74__INCWidgetIntentProvider__provideAppIntentWithOptions_completionHandle
   }
 }
 
-- (void)provideIntentWithOptions:(id)a3 completionHandler:(id)a4
+- (void)provideIntentWithOptions:(id)options completionHandler:(id)handler
 {
   v109 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CD38C8];
   v9 = *MEMORY[0x277CD38C8];
   if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v6 extensionBundleIdentifier];
-    v12 = [v6 intentType];
+    extensionBundleIdentifier = [optionsCopy extensionBundleIdentifier];
+    intentType = [optionsCopy intentType];
     *buf = 136315650;
     v104 = "[INCWidgetIntentProvider provideIntentWithOptions:completionHandler:]";
     v105 = 2114;
-    v106 = v11;
+    v106 = extensionBundleIdentifier;
     v107 = 2114;
-    v108 = v12;
+    v108 = intentType;
     _os_log_impl(&dword_255503000, v10, OS_LOG_TYPE_INFO, "%s Providing intent for chrono with options: extensionBundleIdentifier = %{public}@, intentType = %{public}@", buf, 0x20u);
   }
 
-  v13 = [v6 intentType];
-  v14 = [v13 hasPrefix:@"appintent:"];
+  intentType2 = [optionsCopy intentType];
+  v14 = [intentType2 hasPrefix:@"appintent:"];
 
   if (!v14)
   {
@@ -413,12 +413,12 @@ void __74__INCWidgetIntentProvider__provideAppIntentWithOptions_completionHandle
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
     v17 = [v15 optionsWithDictionary:v16];
 
-    v18 = [MEMORY[0x277CD3A88] sharedResolver];
-    [v18 setOptions:v17];
+    mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+    [mEMORY[0x277CD3A88] setOptions:v17];
     v19 = objc_alloc(MEMORY[0x277CC1E50]);
-    v20 = [v6 extensionBundleIdentifier];
+    extensionBundleIdentifier2 = [optionsCopy extensionBundleIdentifier];
     v100 = 0;
-    v21 = [v19 initWithBundleIdentifier:v20 error:&v100];
+    v21 = [v19 initWithBundleIdentifier:extensionBundleIdentifier2 error:&v100];
     v22 = v100;
 
     if (!v21)
@@ -427,27 +427,27 @@ void __74__INCWidgetIntentProvider__provideAppIntentWithOptions_completionHandle
       if (os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
       {
         v89 = v25;
-        v90 = [v6 extensionBundleIdentifier];
+        extensionBundleIdentifier3 = [optionsCopy extensionBundleIdentifier];
         *buf = 136315650;
         v104 = "[INCWidgetIntentProvider provideIntentWithOptions:completionHandler:]";
         v105 = 2114;
-        v106 = v90;
+        v106 = extensionBundleIdentifier3;
         v107 = 2114;
         v108 = v22;
         _os_log_error_impl(&dword_255503000, v89, OS_LOG_TYPE_ERROR, "%s No chrono extension found with identifier: %{public}@. Error: %{public}@", buf, 0x20u);
       }
 
-      v7[2](v7, 0, v22);
+      handlerCopy[2](handlerCopy, 0, v22);
       goto LABEL_43;
     }
 
-    v23 = [v21 containingBundleRecord];
-    if (v23)
+    containingBundleRecord = [v21 containingBundleRecord];
+    if (containingBundleRecord)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = v23;
+        v24 = containingBundleRecord;
       }
 
       else
@@ -462,10 +462,10 @@ void __74__INCWidgetIntentProvider__provideAppIntentWithOptions_completionHandle
     }
 
     v26 = v24;
-    v27 = [v6 intentType];
+    intentType3 = [optionsCopy intentType];
     v99 = v22;
     v96 = v21;
-    v28 = [(INCWidgetIntentProvider *)self intentsExtensionForExtension:v21 compatibleWithIntent:v27 error:&v99];
+    v28 = [(INCWidgetIntentProvider *)self intentsExtensionForExtension:v21 compatibleWithIntent:intentType3 error:&v99];
     v29 = v99;
 
     if (v28)
@@ -474,10 +474,10 @@ void __74__INCWidgetIntentProvider__provideAppIntentWithOptions_completionHandle
       v92 = v26;
       v95 = v17;
       v30 = v28;
-      v31 = [v28 bundleIdentifier];
+      bundleIdentifier = [v28 bundleIdentifier];
       v32 = objc_alloc(MEMORY[0x277CD3D38]);
-      v33 = [v6 intentType];
-      v34 = [v32 initWithIntentClassName:v33 extensionBundleId:v31];
+      intentType4 = [optionsCopy intentType];
+      v34 = [v32 initWithIntentClassName:intentType4 extensionBundleId:bundleIdentifier];
     }
 
     else
@@ -494,7 +494,7 @@ void __74__INCWidgetIntentProvider__provideAppIntentWithOptions_completionHandle
           _os_log_error_impl(&dword_255503000, v63, OS_LOG_TYPE_ERROR, "%s No intents extension found in same bundle as chrono extension. %{public}@", buf, 0x16u);
         }
 
-        v7[2](v7, 0, v29);
+        handlerCopy[2](handlerCopy, 0, v29);
         goto LABEL_42;
       }
 
@@ -502,33 +502,33 @@ void __74__INCWidgetIntentProvider__provideAppIntentWithOptions_completionHandle
       v91 = v29;
       v92 = v26;
       v95 = v17;
-      v31 = [v26 bundleIdentifier];
+      bundleIdentifier = [v26 bundleIdentifier];
       v35 = objc_alloc(MEMORY[0x277CD3D38]);
-      v33 = [v6 intentType];
-      v34 = [v35 initWithIntentClassName:v33 launchableAppBundleId:v31];
+      intentType4 = [optionsCopy intentType];
+      v34 = [v35 initWithIntentClassName:intentType4 launchableAppBundleId:bundleIdentifier];
     }
 
     v36 = v34;
-    v93 = v23;
+    v93 = containingBundleRecord;
 
-    v94 = v18;
-    v37 = [v18 resolvedIntentMatchingDescriptor:v36];
+    v94 = mEMORY[0x277CD3A88];
+    v37 = [mEMORY[0x277CD3A88] resolvedIntentMatchingDescriptor:v36];
 
-    v38 = [v96 intentDefinitionURLs];
-    v39 = [v38 allValues];
-    v40 = [v39 count];
+    intentDefinitionURLs = [v96 intentDefinitionURLs];
+    allValues = [intentDefinitionURLs allValues];
+    v40 = [allValues count];
 
     if (v40)
     {
       v41 = MEMORY[0x277CBEB98];
-      v42 = [v96 intentDefinitionURLs];
-      v43 = [v42 allValues];
-      v44 = [v41 setWithArray:v43];
-      v45 = [v44 allObjects];
+      intentDefinitionURLs2 = [v96 intentDefinitionURLs];
+      allValues2 = [intentDefinitionURLs2 allValues];
+      v44 = [v41 setWithArray:allValues2];
+      allObjects = [v44 allObjects];
 
       v46 = objc_alloc(MEMORY[0x277CD4000]);
-      v47 = [v96 bundleIdentifier];
-      v48 = [v46 _initWithContentsOfURLs:v45 bundleIdentifier:v47];
+      bundleIdentifier2 = [v96 bundleIdentifier];
+      v48 = [v46 _initWithContentsOfURLs:allObjects bundleIdentifier:bundleIdentifier2];
 
       if (v48)
       {
@@ -536,64 +536,64 @@ void __74__INCWidgetIntentProvider__provideAppIntentWithOptions_completionHandle
       }
     }
 
-    v49 = [v37 bundleIdentifier];
+    bundleIdentifier3 = [v37 bundleIdentifier];
 
-    if (v49)
+    if (bundleIdentifier3)
     {
       v50 = MEMORY[0x277CC1E90];
-      v51 = [v37 bundleIdentifier];
-      v52 = [v50 bundleRecordWithBundleIdentifier:v51 allowPlaceholder:0 error:0];
+      bundleIdentifier4 = [v37 bundleIdentifier];
+      v52 = [v50 bundleRecordWithBundleIdentifier:bundleIdentifier4 allowPlaceholder:0 error:0];
 
-      v53 = [v52 intentDefinitionURLs];
-      v54 = [v53 allValues];
-      v55 = [v54 count];
+      intentDefinitionURLs3 = [v52 intentDefinitionURLs];
+      allValues3 = [intentDefinitionURLs3 allValues];
+      v55 = [allValues3 count];
 
       if (v55)
       {
         v56 = MEMORY[0x277CBEB98];
-        v57 = [v52 intentDefinitionURLs];
-        v58 = [v57 allValues];
-        v59 = [v56 setWithArray:v58];
-        v60 = [v59 allObjects];
+        intentDefinitionURLs4 = [v52 intentDefinitionURLs];
+        allValues4 = [intentDefinitionURLs4 allValues];
+        v59 = [v56 setWithArray:allValues4];
+        allObjects2 = [v59 allObjects];
 
         v61 = objc_alloc(MEMORY[0x277CD4000]);
-        v62 = [v52 bundleIdentifier];
-        v48 = [v61 _initWithContentsOfURLs:v60 bundleIdentifier:v62];
+        bundleIdentifier5 = [v52 bundleIdentifier];
+        v48 = [v61 _initWithContentsOfURLs:allObjects2 bundleIdentifier:bundleIdentifier5];
 
         if (v48)
         {
 LABEL_31:
           v78 = objc_alloc(MEMORY[0x277CD3D30]);
-          v79 = [MEMORY[0x277CCAD78] UUID];
-          v80 = [v79 UUIDString];
-          v81 = [v6 intentType];
-          v82 = [v78 _initWithIdentifier:v80 schema:v48 name:v81 data:0];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          uUIDString = [uUID UUIDString];
+          intentType5 = [optionsCopy intentType];
+          v82 = [v78 _initWithIdentifier:uUIDString schema:v48 name:intentType5 data:0];
 
           if (v82)
           {
-            v83 = [v37 bundleIdentifier];
-            [v82 _setLaunchId:v83];
+            bundleIdentifier6 = [v37 bundleIdentifier];
+            [v82 _setLaunchId:bundleIdentifier6];
 
-            v84 = [v37 extensionBundleIdentifier];
-            [v82 _setExtensionBundleId:v84];
+            extensionBundleIdentifier4 = [v37 extensionBundleIdentifier];
+            [v82 _setExtensionBundleId:extensionBundleIdentifier4];
 
             v85 = [[INCIntentDefaultValueProvider alloc] initWithIntent:v82];
             v97[0] = MEMORY[0x277D85DD0];
             v97[1] = 3221225472;
             v97[2] = __70__INCWidgetIntentProvider_provideIntentWithOptions_completionHandler___block_invoke;
             v97[3] = &unk_2797E8118;
-            v98 = v7;
+            v98 = handlerCopy;
             [(INCIntentDefaultValueProvider *)v85 loadDefaultValuesWithCompletionHandler:v97];
 
-            v18 = v94;
+            mEMORY[0x277CD3A88] = v94;
             v17 = v95;
-            v23 = v93;
+            containingBundleRecord = v93;
           }
 
           else
           {
             v86 = *MEMORY[0x277CD38C8];
-            v23 = v93;
+            containingBundleRecord = v93;
             if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_ERROR))
             {
               *buf = 136315138;
@@ -601,8 +601,8 @@ LABEL_31:
               _os_log_error_impl(&dword_255503000, v86, OS_LOG_TYPE_ERROR, "%s Unable to create intent from schema.", buf, 0xCu);
             }
 
-            v7[2](v7, 0, 0);
-            v18 = v94;
+            handlerCopy[2](handlerCopy, 0, 0);
+            mEMORY[0x277CD3A88] = v94;
             v17 = v95;
           }
 
@@ -626,29 +626,29 @@ LABEL_43:
       }
     }
 
-    v64 = [v37 extensionBundleIdentifier];
+    extensionBundleIdentifier5 = [v37 extensionBundleIdentifier];
 
-    if (v64)
+    if (extensionBundleIdentifier5)
     {
       v65 = MEMORY[0x277CC1E90];
-      v66 = [v37 extensionBundleIdentifier];
-      v67 = [v65 bundleRecordWithBundleIdentifier:v66 allowPlaceholder:0 error:0];
+      extensionBundleIdentifier6 = [v37 extensionBundleIdentifier];
+      v67 = [v65 bundleRecordWithBundleIdentifier:extensionBundleIdentifier6 allowPlaceholder:0 error:0];
 
-      v68 = [v67 intentDefinitionURLs];
-      v69 = [v68 allValues];
-      v70 = [v69 count];
+      intentDefinitionURLs5 = [v67 intentDefinitionURLs];
+      allValues5 = [intentDefinitionURLs5 allValues];
+      v70 = [allValues5 count];
 
       if (v70)
       {
         v71 = MEMORY[0x277CBEB98];
-        v72 = [v67 intentDefinitionURLs];
-        v73 = [v72 allValues];
-        v74 = [v71 setWithArray:v73];
-        v75 = [v74 allObjects];
+        intentDefinitionURLs6 = [v67 intentDefinitionURLs];
+        allValues6 = [intentDefinitionURLs6 allValues];
+        v74 = [v71 setWithArray:allValues6];
+        allObjects3 = [v74 allObjects];
 
         v76 = objc_alloc(MEMORY[0x277CD4000]);
-        v77 = [v67 bundleIdentifier];
-        v48 = [v76 _initWithContentsOfURLs:v75 bundleIdentifier:v77];
+        bundleIdentifier7 = [v67 bundleIdentifier];
+        v48 = [v76 _initWithContentsOfURLs:allObjects3 bundleIdentifier:bundleIdentifier7];
 
         if (v48)
         {
@@ -669,13 +669,13 @@ LABEL_43:
       _os_log_error_impl(&dword_255503000, v87, OS_LOG_TYPE_ERROR, "%s No intent definitions found in extensions.", buf, 0xCu);
     }
 
-    v7[2](v7, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
     v17 = v95;
-    v23 = v93;
+    containingBundleRecord = v93;
     goto LABEL_41;
   }
 
-  [(INCWidgetIntentProvider *)self provideAppIntentWithOptions:v6 completionHandler:v7];
+  [(INCWidgetIntentProvider *)self provideAppIntentWithOptions:optionsCopy completionHandler:handlerCopy];
 LABEL_44:
 
   v88 = *MEMORY[0x277D85DE8];
@@ -683,7 +683,7 @@ LABEL_44:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     INLogInitIfNeeded();

@@ -1,35 +1,35 @@
 @interface _UICollectionViewAnimator
-- (void)initWithHandler:(void *)a1;
-- (void)setAnimationContext:(uint64_t)a1;
+- (void)initWithHandler:(void *)handler;
+- (void)setAnimationContext:(uint64_t)context;
 @end
 
 @implementation _UICollectionViewAnimator
 
-- (void)initWithHandler:(void *)a1
+- (void)initWithHandler:(void *)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    v7.receiver = a1;
+    v7.receiver = handler;
     v7.super_class = _UICollectionViewAnimator;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    handler = objc_msgSendSuper2(&v7, sel_init);
+    if (handler)
     {
       v4 = _Block_copy(v3);
-      v5 = a1[2];
-      a1[2] = v4;
+      v5 = handler[2];
+      handler[2] = v4;
     }
   }
 
-  return a1;
+  return handler;
 }
 
-- (void)setAnimationContext:(uint64_t)a1
+- (void)setAnimationContext:(uint64_t)context
 {
   v4 = a2;
-  if (a1)
+  if (context)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((context + 8), a2);
   }
 }
 

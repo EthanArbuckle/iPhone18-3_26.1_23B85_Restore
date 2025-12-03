@@ -1,8 +1,8 @@
 @interface FigCaptureDepthDataPipeline
-- (FigCaptureDepthDataPipeline)initWithConfiguration:(id)a3 sourceOutput:(id)a4 graph:(id)a5 name:(id)a6 delegate:(id)a7;
-- (id)_buildDepthDataSinkPipeline:(uint64_t)a3 sourceOutput:(void *)a4 graph:(_OWORD *)a5 clientAuditToken:(uint64_t)a6 delegate:(int)a7 insertCopier:;
-- (id)_buildDepthPipelineWithConfiguration:(uint64_t)a3 sourceOutput:(void *)a4 graph:(uint64_t)a5 delegate:;
-- (uint64_t)_buildDepthConversionPipelineWithConfiguration:(uint64_t)a3 sourceOutput:(void *)a4 graph:(uint64_t *)a5 convertedDepthOutputsOut:;
+- (FigCaptureDepthDataPipeline)initWithConfiguration:(id)configuration sourceOutput:(id)output graph:(id)graph name:(id)name delegate:(id)delegate;
+- (id)_buildDepthDataSinkPipeline:(uint64_t)pipeline sourceOutput:(void *)output graph:(_OWORD *)graph clientAuditToken:(uint64_t)token delegate:(int)delegate insertCopier:;
+- (id)_buildDepthPipelineWithConfiguration:(uint64_t)configuration sourceOutput:(void *)output graph:(uint64_t)graph delegate:;
+- (uint64_t)_buildDepthConversionPipelineWithConfiguration:(uint64_t)configuration sourceOutput:(void *)output graph:(uint64_t *)graph convertedDepthOutputsOut:;
 - (void)dealloc;
 @end
 
@@ -15,11 +15,11 @@
   [(FigCaptureRemoteQueueSinkPipeline *)&v3 dealloc];
 }
 
-- (FigCaptureDepthDataPipeline)initWithConfiguration:(id)a3 sourceOutput:(id)a4 graph:(id)a5 name:(id)a6 delegate:(id)a7
+- (FigCaptureDepthDataPipeline)initWithConfiguration:(id)configuration sourceOutput:(id)output graph:(id)graph name:(id)name delegate:(id)delegate
 {
-  if (a3)
+  if (configuration)
   {
-    v12 = *(a3 + 1);
+    v12 = *(configuration + 1);
   }
 
   else
@@ -29,21 +29,21 @@
 
   v16.receiver = self;
   v16.super_class = FigCaptureDepthDataPipeline;
-  v13 = -[FigCaptureSinkPipeline initWithGraph:name:sinkID:](&v16, sel_initWithGraph_name_sinkID_, a5, a6, [objc_msgSend(v12 "sinkConfiguration")]);
+  v13 = -[FigCaptureSinkPipeline initWithGraph:name:sinkID:](&v16, sel_initWithGraph_name_sinkID_, graph, name, [objc_msgSend(v12 "sinkConfiguration")]);
   if (!v13)
   {
     goto LABEL_4;
   }
 
-  if (a3)
+  if (configuration)
   {
-    v15 = *(a3 + 1);
+    v15 = *(configuration + 1);
     if (!v15)
     {
-      v15 = *(a3 + 2);
+      v15 = *(configuration + 2);
       if (!v15)
       {
-        v15 = *(a3 + 3);
+        v15 = *(configuration + 3);
       }
     }
   }
@@ -55,7 +55,7 @@
 
   v13->_sourceID = [objc_msgSend(v15 "sourceConfiguration")];
   v13->_sourceDeviceType = [v15 underlyingDeviceType];
-  if ([(FigCaptureDepthDataPipeline *)v13 _buildDepthPipelineWithConfiguration:a3 sourceOutput:a4 graph:a5 delegate:a7])
+  if ([(FigCaptureDepthDataPipeline *)v13 _buildDepthPipelineWithConfiguration:configuration sourceOutput:output graph:graph delegate:delegate])
   {
     fig_log_get_emitter();
     FigDebugAssert3();
@@ -66,15 +66,15 @@
   else
   {
 LABEL_4:
-    [objc_msgSend(a5 "memoryAnalyticsPayload")];
+    [objc_msgSend(graph "memoryAnalyticsPayload")];
   }
 
   return v13;
 }
 
-- (id)_buildDepthPipelineWithConfiguration:(uint64_t)a3 sourceOutput:(void *)a4 graph:(uint64_t)a5 delegate:
+- (id)_buildDepthPipelineWithConfiguration:(uint64_t)configuration sourceOutput:(void *)output graph:(uint64_t)graph delegate:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -82,13 +82,13 @@ LABEL_4:
   v18 = 0;
   if (!a2)
   {
-    a1[9] = 0;
-    [(FigCaptureDepthDataPipeline *)a1 _buildDepthConversionPipelineWithConfiguration:a3 sourceOutput:a4 graph:&v18 convertedDepthOutputsOut:?];
+    self[9] = 0;
+    [(FigCaptureDepthDataPipeline *)self _buildDepthConversionPipelineWithConfiguration:configuration sourceOutput:output graph:&v18 convertedDepthOutputsOut:?];
     return 0;
   }
 
-  a1[9] = *(a2 + 40);
-  [(FigCaptureDepthDataPipeline *)a1 _buildDepthConversionPipelineWithConfiguration:a2 sourceOutput:a3 graph:a4 convertedDepthOutputsOut:&v18];
+  self[9] = *(a2 + 40);
+  [(FigCaptureDepthDataPipeline *)self _buildDepthConversionPipelineWithConfiguration:a2 sourceOutput:configuration graph:output convertedDepthOutputsOut:&v18];
   v10 = *(a2 + 8);
   if (v10)
   {
@@ -96,7 +96,7 @@ LABEL_4:
     v14 = *(a2 + 64);
     v17[0] = *(a2 + 48);
     v17[1] = v14;
-    v15 = -[FigCaptureDepthDataPipeline _buildDepthDataSinkPipeline:sourceOutput:graph:clientAuditToken:delegate:insertCopier:](a1, v10, v13, a4, v17, a5, [v18 count] > 1);
+    v15 = -[FigCaptureDepthDataPipeline _buildDepthDataSinkPipeline:sourceOutput:graph:clientAuditToken:delegate:insertCopier:](self, v10, v13, output, v17, graph, [v18 count] > 1);
     if (v15)
     {
       v12 = v15;
@@ -119,11 +119,11 @@ LABEL_4:
   }
 
   v12 = 0;
-  a1[8] = [v18 objectAtIndexedSubscript:v11];
+  self[8] = [v18 objectAtIndexedSubscript:v11];
   return v12;
 }
 
-- (uint64_t)_buildDepthConversionPipelineWithConfiguration:(uint64_t)a3 sourceOutput:(void *)a4 graph:(uint64_t *)a5 convertedDepthOutputsOut:
+- (uint64_t)_buildDepthConversionPipelineWithConfiguration:(uint64_t)configuration sourceOutput:(void *)output graph:(uint64_t *)graph convertedDepthOutputsOut:
 {
   if (!result)
   {
@@ -237,7 +237,7 @@ LABEL_22:
     {
       v32.receiver = v9;
       v32.super_class = FigCaptureDepthDataPipeline;
-      if ((objc_msgSendSuper2(&v32, sel_addNode_error_, v24, &v33) & 1) == 0 || ([a4 connectOutput:a3 toInput:-[BWNode input](v25 pipelineStage:{"input"), v13}] & 1) == 0)
+      if ((objc_msgSendSuper2(&v32, sel_addNode_error_, v24, &v33) & 1) == 0 || ([output connectOutput:configuration toInput:-[BWNode input](v25 pipelineStage:{"input"), v13}] & 1) == 0)
       {
         fig_log_get_emitter();
         OUTLINED_FUNCTION_0();
@@ -245,7 +245,7 @@ LABEL_22:
       }
 
       v9[7] = v25;
-      a3 = [(BWNode *)v25 output];
+      configuration = [(BWNode *)v25 output];
       if (v14)
       {
         goto LABEL_27;
@@ -271,12 +271,12 @@ LABEL_27:
     v31.super_class = FigCaptureDepthDataPipeline;
     if (objc_msgSendSuper2(&v31, sel_addNode_error_, v26, &v33))
     {
-      v27 = [(BWNode *)v26 input];
+      input = [(BWNode *)v26 input];
       v28 = a2 ? *(a2 + 40) : 0;
-      if ([a4 connectOutput:a3 toInput:v27 pipelineStage:v28])
+      if ([output connectOutput:configuration toInput:input pipelineStage:v28])
       {
-        v29 = [(BWNode *)v26 outputs];
-        if (!a5)
+        outputs = [(BWNode *)v26 outputs];
+        if (!graph)
         {
           goto LABEL_38;
         }
@@ -293,10 +293,10 @@ LABEL_50:
   }
 
 LABEL_33:
-  if (!a3)
+  if (!configuration)
   {
-    v29 = 0;
-    if (!a5)
+    outputs = 0;
+    if (!graph)
     {
       goto LABEL_38;
     }
@@ -304,12 +304,12 @@ LABEL_33:
     goto LABEL_37;
   }
 
-  v30 = a3;
-  v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-  if (a5)
+  configurationCopy = configuration;
+  outputs = [MEMORY[0x1E695DEC8] arrayWithObjects:&configurationCopy count:1];
+  if (graph)
   {
 LABEL_37:
-    *a5 = v29;
+    *graph = outputs;
   }
 
 LABEL_38:
@@ -325,7 +325,7 @@ LABEL_38:
   return result;
 }
 
-- (id)_buildDepthDataSinkPipeline:(uint64_t)a3 sourceOutput:(void *)a4 graph:(_OWORD *)a5 clientAuditToken:(uint64_t)a6 delegate:(int)a7 insertCopier:
+- (id)_buildDepthDataSinkPipeline:(uint64_t)pipeline sourceOutput:(void *)output graph:(_OWORD *)graph clientAuditToken:(uint64_t)token delegate:(int)delegate insertCopier:
 {
   if (result)
   {
@@ -343,7 +343,7 @@ LABEL_38:
     if (objc_msgSendSuper2(&v24, sel_addNode_error_, v14, v27) & 1) != 0 && (OUTLINED_FUNCTION_2_123([(BWNode *)v14 input]))
     {
       [(NSArray *)[(BWNode *)v14 outputs] objectAtIndexedSubscript:0];
-      if (a7)
+      if (delegate)
       {
         v15 = [[BWPixelTransferNode alloc] initWithfractionalSourceRectEnabled:0];
         [(BWNode *)v15 setName:@"Depth Data Copier"];
@@ -361,13 +361,13 @@ LABEL_38:
       }
 
       v16 = [BWRemoteQueueSinkNode alloc];
-      v17 = [v12 sinkID];
-      v18 = a5[1];
-      v22[0] = *a5;
+      sinkID = [v12 sinkID];
+      v18 = graph[1];
+      v22[0] = *graph;
       v22[1] = v18;
-      v19 = [(BWRemoteQueueSinkNode *)v16 initWithMediaType:1986618469 clientAuditToken:v22 sinkID:v17 cameraInfoByPortType:0];
+      v19 = [(BWRemoteQueueSinkNode *)v16 initWithMediaType:1986618469 clientAuditToken:v22 sinkID:sinkID cameraInfoByPortType:0];
       [(BWNode *)v19 setName:@"Depth Data Remote Queue Sink"];
-      [(BWRemoteQueueSinkNode *)v19 setDelegate:a6];
+      [(BWRemoteQueueSinkNode *)v19 setDelegate:token];
       -[BWRemoteQueueSinkNode setDiscardsLateSampleBuffers:](v19, "setDiscardsLateSampleBuffers:", [objc_msgSend(a2 "depthDataSinkConfiguration")]);
       -[BWRemoteQueueSinkNode setClientVideoRetainedBufferCount:](v19, "setClientVideoRetainedBufferCount:", [a2 retainedBufferCount]);
       v21.receiver = v12;
@@ -379,9 +379,9 @@ LABEL_38:
         objc_msgSendSuper2(&v20, sel_setSinkNode_, v19);
         if (OUTLINED_FUNCTION_2_123([(BWNode *)v19 input]))
         {
-          if ([a4 deferredNodePrepareSupported] && (objc_msgSend(objc_msgSend(a2, "sinkConfiguration"), "deferredStartEnabled") & 1) == 0)
+          if ([output deferredNodePrepareSupported] && (objc_msgSend(objc_msgSend(a2, "sinkConfiguration"), "deferredStartEnabled") & 1) == 0)
           {
-            [a4 enableDeferredPrepareForNodesNotInPathOfSinkNode:v19];
+            [output enableDeferredPrepareForNodesNotInPathOfSinkNode:v19];
           }
 
           goto LABEL_13;

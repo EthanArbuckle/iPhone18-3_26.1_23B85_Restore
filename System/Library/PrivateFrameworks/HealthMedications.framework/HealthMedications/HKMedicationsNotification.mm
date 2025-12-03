@@ -1,11 +1,11 @@
 @interface HKMedicationsNotification
 + (id)allNotificationCategories;
-+ (id)notificationBeforeFirstUnlockWithScheduleItemIdentifier:(id)a3 dueDate:(id)a4;
-+ (id)notificationCategoryForString:(id)a3;
-+ (id)notificationMissedWithScheduleItemIdentifier:(id)a3 dueDate:(id)a4;
++ (id)notificationBeforeFirstUnlockWithScheduleItemIdentifier:(id)identifier dueDate:(id)date;
++ (id)notificationCategoryForString:(id)string;
++ (id)notificationMissedWithScheduleItemIdentifier:(id)identifier dueDate:(id)date;
 - (HKMedicationsNotification)init;
-- (id)_userInfoWithScheduleItemIdentifier:(void *)a3 extraUserInfo:;
-- (id)initWithScheduleItemIdentifier:(void *)a3 dueDate:(void *)a4 category:(void *)a5 argument:(void *)a6 extraUserInfo:;
+- (id)_userInfoWithScheduleItemIdentifier:(void *)identifier extraUserInfo:;
+- (id)initWithScheduleItemIdentifier:(void *)identifier dueDate:(void *)date category:(void *)category argument:(void *)argument extraUserInfo:;
 @end
 
 @implementation HKMedicationsNotification
@@ -20,11 +20,11 @@
   return 0;
 }
 
-+ (id)notificationBeforeFirstUnlockWithScheduleItemIdentifier:(id)a3 dueDate:(id)a4
++ (id)notificationBeforeFirstUnlockWithScheduleItemIdentifier:(id)identifier dueDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HKMedicationsNotification alloc] initWithScheduleItemIdentifier:v6 dueDate:v5 category:@"MedicationsHealthAppPlugin.BeforeFirstUnlock" argument:0 extraUserInfo:0];
+  dateCopy = date;
+  identifierCopy = identifier;
+  v7 = [[HKMedicationsNotification alloc] initWithScheduleItemIdentifier:identifierCopy dueDate:dateCopy category:@"MedicationsHealthAppPlugin.BeforeFirstUnlock" argument:0 extraUserInfo:0];
 
   return v7;
 }
@@ -44,26 +44,26 @@
   return v2;
 }
 
-+ (id)notificationCategoryForString:(id)a3
++ (id)notificationCategoryForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = @"MedicationsHealthAppPlugin.BeforeFirstUnlock";
-  if (([v3 isEqualToString:@"MedicationsHealthAppPlugin.BeforeFirstUnlock"] & 1) == 0)
+  if (([stringCopy isEqualToString:@"MedicationsHealthAppPlugin.BeforeFirstUnlock"] & 1) == 0)
   {
     v4 = @"MedicationsHealthAppPlugin.NotMissed";
-    if (([v3 isEqualToString:@"MedicationsHealthAppPlugin.NotMissed"] & 1) == 0)
+    if (([stringCopy isEqualToString:@"MedicationsHealthAppPlugin.NotMissed"] & 1) == 0)
     {
       v4 = @"MedicationsHealthAppPlugin.NotMissed.Singular";
-      if (([v3 isEqualToString:@"MedicationsHealthAppPlugin.NotMissed.Singular"] & 1) == 0)
+      if (([stringCopy isEqualToString:@"MedicationsHealthAppPlugin.NotMissed.Singular"] & 1) == 0)
       {
         v4 = @"MedicationsHealthAppPlugin.NotMissedFollowUp";
-        if (([v3 isEqualToString:@"MedicationsHealthAppPlugin.NotMissedFollowUp"] & 1) == 0)
+        if (([stringCopy isEqualToString:@"MedicationsHealthAppPlugin.NotMissedFollowUp"] & 1) == 0)
         {
           v4 = @"MedicationsHealthAppPlugin.NotMissedFollowUp.Singular";
-          if (([v3 isEqualToString:@"MedicationsHealthAppPlugin.NotMissedFollowUp.Singular"] & 1) == 0)
+          if (([stringCopy isEqualToString:@"MedicationsHealthAppPlugin.NotMissedFollowUp.Singular"] & 1) == 0)
           {
             v4 = @"MedicationsHealthAppPlugin.Missed";
-            if (![v3 isEqualToString:@"MedicationsHealthAppPlugin.Missed"])
+            if (![stringCopy isEqualToString:@"MedicationsHealthAppPlugin.Missed"])
             {
               v4 = 0;
             }
@@ -76,63 +76,63 @@
   return v4;
 }
 
-- (id)initWithScheduleItemIdentifier:(void *)a3 dueDate:(void *)a4 category:(void *)a5 argument:(void *)a6 extraUserInfo:
+- (id)initWithScheduleItemIdentifier:(void *)identifier dueDate:(void *)date category:(void *)category argument:(void *)argument extraUserInfo:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (a1)
+  identifierCopy = identifier;
+  dateCopy = date;
+  categoryCopy = category;
+  argumentCopy = argument;
+  if (self)
   {
-    v21.receiver = a1;
+    v21.receiver = self;
     v21.super_class = HKMedicationsNotification;
     v17 = objc_msgSendSuper2(&v21, sel_init);
-    a1 = v17;
+    self = v17;
     if (v17)
     {
-      objc_storeStrong(v17 + 1, a4);
-      objc_storeStrong(a1 + 2, a5);
-      v19 = [(HKMedicationsNotification *)a1 _userInfoWithScheduleItemIdentifier:v12 extraUserInfo:v16];
-      v20 = a1[3];
-      a1[3] = v19;
+      objc_storeStrong(v17 + 1, date);
+      objc_storeStrong(self + 2, category);
+      v19 = [(HKMedicationsNotification *)self _userInfoWithScheduleItemIdentifier:v12 extraUserInfo:argumentCopy];
+      v20 = self[3];
+      self[3] = v19;
 
-      objc_storeStrong(a1 + 4, a2);
-      objc_storeStrong(a1 + 5, a3);
+      objc_storeStrong(self + 4, a2);
+      objc_storeStrong(self + 5, identifier);
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)notificationMissedWithScheduleItemIdentifier:(id)a3 dueDate:(id)a4
++ (id)notificationMissedWithScheduleItemIdentifier:(id)identifier dueDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HKMedicationsNotification alloc] initWithScheduleItemIdentifier:v6 dueDate:v5 category:@"MedicationsHealthAppPlugin.Missed" argument:0 extraUserInfo:0];
+  dateCopy = date;
+  identifierCopy = identifier;
+  v7 = [[HKMedicationsNotification alloc] initWithScheduleItemIdentifier:identifierCopy dueDate:dateCopy category:@"MedicationsHealthAppPlugin.Missed" argument:0 extraUserInfo:0];
 
   return v7;
 }
 
-- (id)_userInfoWithScheduleItemIdentifier:(void *)a3 extraUserInfo:
+- (id)_userInfoWithScheduleItemIdentifier:(void *)identifier extraUserInfo:
 {
-  v5 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
     v6 = MEMORY[0x277CBEB38];
     v7 = a2;
-    v8 = [v6 dictionary];
-    [v8 setObject:v7 forKeyedSubscript:@"MedicationsNotificationScheduleItemIdentifierKey"];
+    dictionary = [v6 dictionary];
+    [dictionary setObject:v7 forKeyedSubscript:@"MedicationsNotificationScheduleItemIdentifierKey"];
 
-    if (v5)
+    if (identifierCopy)
     {
-      [v8 addEntriesFromDictionary:v5];
+      [dictionary addEntriesFromDictionary:identifierCopy];
     }
 
-    a1 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v8];
+    self = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
   }
 
-  return a1;
+  return self;
 }
 
 @end

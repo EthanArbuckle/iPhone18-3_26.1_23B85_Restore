@@ -1,10 +1,10 @@
 @interface AMSUICardMetadata
-+ (id)_cardArtworkForPaymentPass:(id)a3 width:(double)a4;
-+ (id)_passesForPassTypeIdentifier:(id)a3 serialNumber:(id)a4;
++ (id)_cardArtworkForPaymentPass:(id)pass width:(double)width;
++ (id)_passesForPassTypeIdentifier:(id)identifier serialNumber:(id)number;
 + (id)appleCardIcon;
 + (id)appleCardIconString;
-+ (id)metadataForPassTypeIdentifier:(id)a3 serialNumber:(id)a4 cardArtworkSize:(id)a5;
-+ (void)metadataForPassTypeIdentifier:(id)a3 serialNumber:(id)a4 cardArtworkSize:(id)a5 completionHandler:(id)a6;
++ (id)metadataForPassTypeIdentifier:(id)identifier serialNumber:(id)number cardArtworkSize:(id)size;
++ (void)metadataForPassTypeIdentifier:(id)identifier serialNumber:(id)number cardArtworkSize:(id)size completionHandler:(id)handler;
 @end
 
 @implementation AMSUICardMetadata
@@ -18,21 +18,21 @@
   }
 
   v2 = AMSSetLogKeyIfNeeded();
-  v3 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v3)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v3 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     *&buf[4] = objc_opt_class();
     *&buf[12] = 2114;
     *&buf[14] = v2;
     v5 = *&buf[4];
-    _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking for card icon", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Checking for card icon", buf, 0x16u);
   }
 
   v17 = 0;
@@ -57,19 +57,19 @@
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 cardIcon];
+    cardIcon = [v8 cardIcon];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v11)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v11 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       *buf = 138543618;
@@ -77,15 +77,15 @@
       *&buf[12] = 2114;
       *&buf[14] = v2;
       v14 = v13;
-      _os_log_impl(&dword_1BB036000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch virtual card", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch virtual card", buf, 0x16u);
     }
 
-    v10 = 0;
+    cardIcon = 0;
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return cardIcon;
 }
 
 void __34__AMSUICardMetadata_appleCardIcon__block_invoke()
@@ -126,8 +126,8 @@ LABEL_4:
 + (id)appleCardIconString
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 appleCardIcon];
-  v3 = UIImagePNGRepresentation(v2);
+  appleCardIcon = [self appleCardIcon];
+  v3 = UIImagePNGRepresentation(appleCardIcon);
   v4 = v3;
   if (v3)
   {
@@ -137,14 +137,14 @@ LABEL_4:
 
   else
   {
-    v7 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v7)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v7 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = v9;
@@ -153,7 +153,7 @@ LABEL_4:
       v15 = v9;
       v16 = 2114;
       v17 = v11;
-      _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch card icon", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch card icon", buf, 0x16u);
     }
 
     v6 = 0;
@@ -164,26 +164,26 @@ LABEL_4:
   return v6;
 }
 
-+ (void)metadataForPassTypeIdentifier:(id)a3 serialNumber:(id)a4 cardArtworkSize:(id)a5 completionHandler:(id)a6
++ (void)metadataForPassTypeIdentifier:(id)identifier serialNumber:(id)number cardArtworkSize:(id)size completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  numberCopy = number;
+  sizeCopy = size;
+  handlerCopy = handler;
   v14 = dispatch_get_global_queue(2, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__AMSUICardMetadata_metadataForPassTypeIdentifier_serialNumber_cardArtworkSize_completionHandler___block_invoke;
   block[3] = &unk_1E7F247D0;
-  v23 = v13;
-  v24 = a1;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v23 = handlerCopy;
+  selfCopy = self;
+  v20 = identifierCopy;
+  v21 = numberCopy;
+  v22 = sizeCopy;
+  v15 = handlerCopy;
+  v16 = sizeCopy;
+  v17 = numberCopy;
+  v18 = identifierCopy;
   dispatch_async(v14, block);
 }
 
@@ -193,23 +193,23 @@ void __98__AMSUICardMetadata_metadataForPassTypeIdentifier_serialNumber_cardArtw
   (*(*(a1 + 56) + 16))();
 }
 
-+ (id)metadataForPassTypeIdentifier:(id)a3 serialNumber:(id)a4 cardArtworkSize:(id)a5
++ (id)metadataForPassTypeIdentifier:(id)identifier serialNumber:(id)number cardArtworkSize:(id)size
 {
   v38 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  numberCopy = number;
+  sizeCopy = size;
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = AMSSetLogKeyIfNeeded();
-  v11 = [a1 _passesForPassTypeIdentifier:v26 serialNumber:v8];
-  v12 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v12)
+  v11 = [self _passesForPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v12 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
     v15 = MEMORY[0x1E696AD98];
@@ -221,16 +221,16 @@ void __98__AMSUICardMetadata_metadataForPassTypeIdentifier_serialNumber_cardArtw
     v35 = v10;
     v36 = 2114;
     v37 = v17;
-    _os_log_impl(&dword_1BB036000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found %{public}@ payment passes", buf, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found %{public}@ payment passes", buf, 0x20u);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __80__AMSUICardMetadata_metadataForPassTypeIdentifier_serialNumber_cardArtworkSize___block_invoke;
   v27[3] = &unk_1E7F24820;
   objc_copyWeak(&v31, buf);
-  v18 = v9;
+  v18 = sizeCopy;
   v28 = v18;
   v19 = v10;
   v29 = v19;
@@ -473,16 +473,16 @@ uint64_t __80__AMSUICardMetadata_metadataForPassTypeIdentifier_serialNumber_card
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_cardArtworkForPaymentPass:(id)a3 width:(double)a4
++ (id)_cardArtworkForPaymentPass:(id)pass width:(double)width
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  passCopy = pass;
   if (_cardArtworkForPaymentPass_width__onceToken != -1)
   {
     +[AMSUICardMetadata _cardArtworkForPaymentPass:width:];
   }
 
-  v6 = [v5 cardImageWithDimensions:{a4, a4}];
+  v6 = [passCopy cardImageWithDimensions:{width, width}];
   v7 = v6;
   if (v6)
   {
@@ -491,14 +491,14 @@ uint64_t __80__AMSUICardMetadata_metadataForPassTypeIdentifier_serialNumber_card
 
   else
   {
-    v9 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v9)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v9 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       v12 = v11;
@@ -507,7 +507,7 @@ uint64_t __80__AMSUICardMetadata_metadataForPassTypeIdentifier_serialNumber_card
       v17 = v11;
       v18 = 2114;
       v19 = v13;
-      _os_log_impl(&dword_1BB036000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to obtain card artwork", &v16, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to obtain card artwork", &v16, 0x16u);
     }
 
     v8 = 0;
@@ -553,11 +553,11 @@ LABEL_4:
   v1 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_passesForPassTypeIdentifier:(id)a3 serialNumber:(id)a4
++ (id)_passesForPassTypeIdentifier:(id)identifier serialNumber:(id)number
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  numberCopy = number;
   v7 = AMSSetLogKeyIfNeeded();
   v30 = 0;
   v31 = &v30;
@@ -578,9 +578,9 @@ LABEL_4:
   v9 = v8;
   _Block_object_dispose(&v30, 8);
   v10 = objc_alloc_init(v8);
-  if (v5)
+  if (identifierCopy)
   {
-    v11 = v6 == 0;
+    v11 = numberCopy == 0;
   }
 
   else
@@ -589,17 +589,17 @@ LABEL_4:
   }
 
   v12 = !v11;
-  v13 = [MEMORY[0x1E698C968] sharedConfig];
-  v14 = v13;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  mEMORY[0x1E698C968]2 = mEMORY[0x1E698C968];
   if (v12)
   {
-    if (!v13)
+    if (!mEMORY[0x1E698C968])
     {
-      v14 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       *buf = 138543618;
@@ -607,10 +607,10 @@ LABEL_4:
       *&buf[12] = 2114;
       *&buf[14] = v7;
       v17 = v16;
-      _os_log_impl(&dword_1BB036000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to search for specific card", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to search for specific card", buf, 0x16u);
     }
 
-    v18 = [v10 passWithPassTypeIdentifier:v5 serialNumber:v6];
+    v18 = [v10 passWithPassTypeIdentifier:identifierCopy serialNumber:numberCopy];
     v19 = v18;
     if (v18)
     {
@@ -620,14 +620,14 @@ LABEL_4:
 
     else
     {
-      v24 = [MEMORY[0x1E698C968] sharedConfig];
-      if (!v24)
+      mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedConfig];
+      if (!mEMORY[0x1E698C968]3)
       {
-        v24 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v25 = [v24 OSLogObject];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [mEMORY[0x1E698C968]3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v26 = objc_opt_class();
         *buf = 138543618;
@@ -635,7 +635,7 @@ LABEL_4:
         *&buf[12] = 2114;
         *&buf[14] = v7;
         v27 = v26;
-        _os_log_impl(&dword_1BB036000, v25, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Card metadata failed for no card", buf, 0x16u);
+        _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Card metadata failed for no card", buf, 0x16u);
       }
 
       v20 = 0;
@@ -644,13 +644,13 @@ LABEL_4:
 
   else
   {
-    if (!v13)
+    if (!mEMORY[0x1E698C968])
     {
-      v14 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v21 = [v14 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v22 = objc_opt_class();
       *buf = 138543618;
@@ -658,7 +658,7 @@ LABEL_4:
       *&buf[12] = 2114;
       *&buf[14] = v7;
       v23 = v22;
-      _os_log_impl(&dword_1BB036000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to search for all cards", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to search for all cards", buf, 0x16u);
     }
 
     v20 = [v10 passesOfType:1];

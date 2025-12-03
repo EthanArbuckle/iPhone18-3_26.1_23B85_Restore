@@ -1,21 +1,21 @@
 @interface NCNotificationListStackDimmingOverlayView
-- (NCNotificationListStackDimmingOverlayView)initWithFrame:(CGRect)a3 cornerRadius:(double)a4;
+- (NCNotificationListStackDimmingOverlayView)initWithFrame:(CGRect)frame cornerRadius:(double)radius;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateStackDimmingVisualStyling;
 @end
 
 @implementation NCNotificationListStackDimmingOverlayView
 
-- (NCNotificationListStackDimmingOverlayView)initWithFrame:(CGRect)a3 cornerRadius:(double)a4
+- (NCNotificationListStackDimmingOverlayView)initWithFrame:(CGRect)frame cornerRadius:(double)radius
 {
   v8.receiver = self;
   v8.super_class = NCNotificationListStackDimmingOverlayView;
-  v5 = [(NCNotificationListStackDimmingOverlayView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(NCNotificationListStackDimmingOverlayView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [(NCNotificationListStackDimmingOverlayView *)v5 setUserInteractionEnabled:0];
-    [(NCNotificationListStackDimmingOverlayView *)v6 _setContinuousCornerRadius:a4];
+    [(NCNotificationListStackDimmingOverlayView *)v6 _setContinuousCornerRadius:radius];
     [(NCNotificationListStackDimmingOverlayView *)v6 setClipsToBounds:1];
     [(NCNotificationListStackDimmingOverlayView *)v6 setAutoresizingMask:18];
     [(NCNotificationListStackDimmingOverlayView *)v6 setAlpha:0.0];
@@ -35,10 +35,10 @@
 
 - (void)_updateStackDimmingVisualStyling
 {
-  v3 = [(NCNotificationListStackDimmingOverlayView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(NCNotificationListStackDimmingOverlayView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v5 = @"stackDimmingLight";
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v5 = @"stackDimmingDark";
   }

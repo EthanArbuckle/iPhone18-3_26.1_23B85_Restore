@@ -1,19 +1,19 @@
 @interface PPNamedEntityMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNamedEntityMetadata:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNamedEntityMetadata:(id)metadata;
 - (NSSet)featureNames;
-- (PPNamedEntityMetadata)initWithCoder:(id)a3;
-- (PPNamedEntityMetadata)initWithImpressionCount:(unsigned __int16)a3 occurrencesInSource:(unsigned __int16)a4;
-- (id)featureValueForName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PPNamedEntityMetadata)initWithCoder:(id)coder;
+- (PPNamedEntityMetadata)initWithImpressionCount:(unsigned __int16)count occurrencesInSource:(unsigned __int16)source;
+- (id)featureValueForName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPNamedEntityMetadata
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"impressionCount"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"impressionCount"])
   {
     v5 = 8;
 LABEL_5:
@@ -21,7 +21,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"occurrencesInSource"])
+  if ([nameCopy isEqualToString:@"occurrencesInSource"])
   {
     v5 = 10;
     goto LABEL_5;
@@ -57,10 +57,10 @@ void __37__PPNamedEntityMetadata_featureNames__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -68,22 +68,22 @@ void __37__PPNamedEntityMetadata_featureNames__block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPNamedEntityMetadata *)self isEqualToNamedEntityMetadata:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPNamedEntityMetadata *)self isEqualToNamedEntityMetadata:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToNamedEntityMetadata:(id)a3
+- (BOOL)isEqualToNamedEntityMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (metadataCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (impressionCount = self->_impressionCount, impressionCount == [(PPNamedEntityMetadata *)v4 impressionCount]))
+  else if (metadataCopy && (impressionCount = self->_impressionCount, impressionCount == [(PPNamedEntityMetadata *)metadataCopy impressionCount]))
   {
     occurrencesInSource = self->_occurrencesInSource;
     v8 = occurrencesInSource == [(PPNamedEntityMetadata *)v5 occurrencesInSource];
@@ -97,41 +97,41 @@ void __37__PPNamedEntityMetadata_featureNames__block_invoke()
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   impressionCount = self->_impressionCount;
-  v5 = a3;
-  [v5 encodeInt32:impressionCount forKey:@"ict"];
-  [v5 encodeInt32:self->_occurrencesInSource forKey:@"ois"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:impressionCount forKey:@"ict"];
+  [coderCopy encodeInt32:self->_occurrencesInSource forKey:@"ois"];
 }
 
-- (PPNamedEntityMetadata)initWithCoder:(id)a3
+- (PPNamedEntityMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"ict"];
-  if (HIWORD(v5) || (v6 = v5, v7 = [v4 decodeInt32ForKey:@"ois"], HIWORD(v7)))
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"ict"];
+  if (HIWORD(v5) || (v6 = v5, v7 = [coderCopy decodeInt32ForKey:@"ois"], HIWORD(v7)))
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PPNamedEntityMetadata *)self initWithImpressionCount:v6 occurrencesInSource:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PPNamedEntityMetadata)initWithImpressionCount:(unsigned __int16)a3 occurrencesInSource:(unsigned __int16)a4
+- (PPNamedEntityMetadata)initWithImpressionCount:(unsigned __int16)count occurrencesInSource:(unsigned __int16)source
 {
   v7.receiver = self;
   v7.super_class = PPNamedEntityMetadata;
   result = [(PPNamedEntityMetadata *)&v7 init];
   if (result)
   {
-    result->_impressionCount = a3;
-    result->_occurrencesInSource = a4;
+    result->_impressionCount = count;
+    result->_occurrencesInSource = source;
   }
 
   return result;

@@ -1,26 +1,26 @@
 @interface SendLaterRootViewController
 - (CKBrowserViewControllerSendDelegate)sendDelegate;
-- (SendLaterRootViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4;
-- (SendLaterRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SendLaterRootViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source;
+- (SendLaterRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)pluginContext;
 - (void)dismiss;
-- (void)pluginInfoSelectedDateDidChange:(id)a3;
-- (void)setBalloonPlugin:(id)a3;
-- (void)setBalloonPluginDataSource:(id)a3;
-- (void)setPluginContext:(id)a3;
-- (void)setPresentationViewController:(id)a3;
-- (void)setSendDelegate:(id)a3;
+- (void)pluginInfoSelectedDateDidChange:(id)change;
+- (void)setBalloonPlugin:(id)plugin;
+- (void)setBalloonPluginDataSource:(id)source;
+- (void)setPluginContext:(id)context;
+- (void)setPresentationViewController:(id)controller;
+- (void)setSendDelegate:(id)delegate;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SendLaterRootViewController
 
-- (void)setPresentationViewController:(id)a3
+- (void)setPresentationViewController:(id)controller
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_presentationViewController);
-  *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_presentationViewController) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_presentationViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (CKBrowserViewControllerSendDelegate)sendDelegate
@@ -31,27 +31,27 @@
   return v3;
 }
 
-- (void)setSendDelegate:(id)a3
+- (void)setSendDelegate:(id)delegate
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_sendDelegate);
-  *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_sendDelegate) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_sendDelegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setBalloonPlugin:(id)a3
+- (void)setBalloonPlugin:(id)plugin
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_balloonPlugin);
-  *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_balloonPlugin) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_balloonPlugin) = plugin;
+  pluginCopy = plugin;
 }
 
-- (void)setBalloonPluginDataSource:(id)a3
+- (void)setBalloonPluginDataSource:(id)source
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_balloonPluginDataSource);
-  *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_balloonPluginDataSource) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_balloonPluginDataSource) = source;
+  sourceCopy = source;
 }
 
 - (id)pluginContext
@@ -73,11 +73,11 @@
   return v4;
 }
 
-- (void)setPluginContext:(id)a3
+- (void)setPluginContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_8090();
     swift_unknownObjectRelease();
@@ -86,24 +86,24 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v4 = self;
+    selfCopy2 = self;
   }
 
   sub_1D80(v6);
 }
 
-- (SendLaterRootViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4
+- (SendLaterRootViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SendLaterRootViewController *)self initWithBalloonPlugin:v6];
+  pluginCopy = plugin;
+  sourceCopy = source;
+  v8 = [(SendLaterRootViewController *)self initWithBalloonPlugin:pluginCopy];
 
   if (v8)
   {
 
     v9 = *(&v8->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_balloonPluginDataSource);
-    *(&v8->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_balloonPluginDataSource) = v7;
-    v7 = v9;
+    *(&v8->super.super.super.isa + OBJC_IVAR___SendLaterRootViewController_balloonPluginDataSource) = sourceCopy;
+    sourceCopy = v9;
   }
 
   return v8;
@@ -111,13 +111,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_220C();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2C50();
 }
 
@@ -135,14 +135,14 @@
   }
 }
 
-- (void)pluginInfoSelectedDateDidChange:(id)a3
+- (void)pluginInfoSelectedDateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_36A0(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_36A0(changeCopy);
 }
 
-- (SendLaterRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SendLaterRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

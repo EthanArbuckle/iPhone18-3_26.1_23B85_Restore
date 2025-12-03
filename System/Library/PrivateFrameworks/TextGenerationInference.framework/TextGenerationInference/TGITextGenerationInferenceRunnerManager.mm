@@ -1,51 +1,51 @@
 @interface TGITextGenerationInferenceRunnerManager
-- (TGITextGenerationInferenceRunnerManager)initWithWorkQueue:(id)a3;
-- (TGITextGenerationInferenceRunnerManager)initWithWorkQueue:(id)a3 inferenceQueue:(id)a4 dataSource:(id)a5;
+- (TGITextGenerationInferenceRunnerManager)initWithWorkQueue:(id)queue;
+- (TGITextGenerationInferenceRunnerManager)initWithWorkQueue:(id)queue inferenceQueue:(id)inferenceQueue dataSource:(id)source;
 - (id).cxx_construct;
 - (shared_ptr<TGITextGenerationInferenceModelInterface>)model;
-- (void)cancelOperationWithExecutionUUID:(id)a3;
-- (void)enqueueOperation:(id)a3 executionUUID:(id)a4 session:(id)a5;
+- (void)cancelOperationWithExecutionUUID:(id)d;
+- (void)enqueueOperation:(id)operation executionUUID:(id)d session:(id)session;
 - (void)runInferenceRunners;
 - (void)start;
 @end
 
 @implementation TGITextGenerationInferenceRunnerManager
 
-- (TGITextGenerationInferenceRunnerManager)initWithWorkQueue:(id)a3
+- (TGITextGenerationInferenceRunnerManager)initWithWorkQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = dispatch_queue_create("com.apple.text-generation-inference", 0);
   v6 = dispatch_get_global_queue(33, 0);
   dispatch_set_target_queue(v5, v6);
 
   v7 = objc_alloc_init(TGITextGenerationInferenceDataSource);
-  v8 = [(TGITextGenerationInferenceRunnerManager *)self initWithWorkQueue:v4 inferenceQueue:v5 dataSource:v7];
+  v8 = [(TGITextGenerationInferenceRunnerManager *)self initWithWorkQueue:queueCopy inferenceQueue:v5 dataSource:v7];
 
   return v8;
 }
 
-- (TGITextGenerationInferenceRunnerManager)initWithWorkQueue:(id)a3 inferenceQueue:(id)a4 dataSource:(id)a5
+- (TGITextGenerationInferenceRunnerManager)initWithWorkQueue:(id)queue inferenceQueue:(id)inferenceQueue dataSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  inferenceQueueCopy = inferenceQueue;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = TGITextGenerationInferenceRunnerManager;
   v12 = [(TGITextGenerationInferenceRunnerManager *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataSource, a5);
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v12->_dataSource, source);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     inferenceRunnerByExecutionUUID = v13->_inferenceRunnerByExecutionUUID;
-    v13->_inferenceRunnerByExecutionUUID = v14;
+    v13->_inferenceRunnerByExecutionUUID = dictionary;
 
-    v16 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
     scheduledInferenceRunnerByExecutionUUID = v13->_scheduledInferenceRunnerByExecutionUUID;
-    v13->_scheduledInferenceRunnerByExecutionUUID = v16;
+    v13->_scheduledInferenceRunnerByExecutionUUID = dictionary2;
 
-    objc_storeStrong(&v13->_inferenceQueue, a4);
-    objc_storeStrong(&v13->_workQueue, a3);
+    objc_storeStrong(&v13->_inferenceQueue, inferenceQueue);
+    objc_storeStrong(&v13->_workQueue, queue);
   }
 
   return v13;
@@ -53,25 +53,25 @@
 
 - (void)start
 {
-  v3 = [(TGITextGenerationInferenceRunnerManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(TGITextGenerationInferenceRunnerManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (![(TGITextGenerationInferenceRunnerManager *)self isStarted])
   {
     [(TGITextGenerationInferenceRunnerManager *)self setStarted:1];
-    v4 = [(TGITextGenerationInferenceRunnerManager *)self dataSource];
-    v5 = [v4 defaultConfiguration];
+    dataSource = [(TGITextGenerationInferenceRunnerManager *)self dataSource];
+    defaultConfiguration = [dataSource defaultConfiguration];
 
-    if (v5)
+    if (defaultConfiguration)
     {
-      v6 = [(TGITextGenerationInferenceRunnerManager *)self inferenceQueue];
+      inferenceQueue = [(TGITextGenerationInferenceRunnerManager *)self inferenceQueue];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __48__TGITextGenerationInferenceRunnerManager_start__block_invoke;
       v8[3] = &unk_279D9C660;
       v8[4] = self;
-      v9 = v5;
-      dispatch_async(v6, v8);
+      v9 = defaultConfiguration;
+      dispatch_async(inferenceQueue, v8);
     }
 
     else
@@ -108,23 +108,23 @@ void __48__TGITextGenerationInferenceRunnerManager_start__block_invoke(uint64_t 
   }
 }
 
-- (void)enqueueOperation:(id)a3 executionUUID:(id)a4 session:(id)a5
+- (void)enqueueOperation:(id)operation executionUUID:(id)d session:(id)session
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TGITextGenerationInferenceRunnerManager *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  operationCopy = operation;
+  dCopy = d;
+  sessionCopy = session;
+  workQueue = [(TGITextGenerationInferenceRunnerManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v11 = [(TGITextGenerationInferenceRunnerManager *)self dataSource];
-  v12 = [(TGITextGenerationInferenceRunnerManager *)self inferenceQueue];
-  v13 = [v11 createInferenceRunnerWithQueue:v12 executionUUID:v8 operation:v17 session:v9];
+  dataSource = [(TGITextGenerationInferenceRunnerManager *)self dataSource];
+  inferenceQueue = [(TGITextGenerationInferenceRunnerManager *)self inferenceQueue];
+  v13 = [dataSource createInferenceRunnerWithQueue:inferenceQueue executionUUID:dCopy operation:operationCopy session:sessionCopy];
 
-  v14 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
-  v15 = [v14 count];
+  inferenceRunnerByExecutionUUID = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
+  v15 = [inferenceRunnerByExecutionUUID count];
 
-  v16 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
-  [v16 setObject:v13 forKeyedSubscript:v8];
+  inferenceRunnerByExecutionUUID2 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
+  [inferenceRunnerByExecutionUUID2 setObject:v13 forKeyedSubscript:dCopy];
 
   if (!v15)
   {
@@ -134,34 +134,34 @@ void __48__TGITextGenerationInferenceRunnerManager_start__block_invoke(uint64_t 
 
 - (void)runInferenceRunners
 {
-  v3 = [(TGITextGenerationInferenceRunnerManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(TGITextGenerationInferenceRunnerManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
-  v5 = [v4 count];
+  inferenceRunnerByExecutionUUID = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
+  v5 = [inferenceRunnerByExecutionUUID count];
 
   if (v5)
   {
-    v6 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
-    v7 = [v6 allValues];
-    v8 = [v7 copy];
+    inferenceRunnerByExecutionUUID2 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
+    allValues = [inferenceRunnerByExecutionUUID2 allValues];
+    v8 = [allValues copy];
 
-    v9 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
-    v10 = [v9 copy];
+    inferenceRunnerByExecutionUUID3 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
+    v10 = [inferenceRunnerByExecutionUUID3 copy];
     [(TGITextGenerationInferenceRunnerManager *)self setScheduledInferenceRunnerByExecutionUUID:v10];
 
-    v11 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
-    [v11 removeAllObjects];
+    inferenceRunnerByExecutionUUID4 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
+    [inferenceRunnerByExecutionUUID4 removeAllObjects];
 
-    v12 = [(TGITextGenerationInferenceRunnerManager *)self inferenceQueue];
+    inferenceQueue = [(TGITextGenerationInferenceRunnerManager *)self inferenceQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __62__TGITextGenerationInferenceRunnerManager_runInferenceRunners__block_invoke;
     v15[3] = &unk_279D9C660;
     v16 = v8;
-    v17 = self;
+    selfCopy = self;
     v13 = v8;
-    dispatch_async(v12, v15);
+    dispatch_async(inferenceQueue, v15);
   }
 
   else
@@ -232,27 +232,27 @@ void __62__TGITextGenerationInferenceRunnerManager_runInferenceRunners__block_in
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelOperationWithExecutionUUID:(id)a3
+- (void)cancelOperationWithExecutionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TGITextGenerationInferenceRunnerManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  workQueue = [(TGITextGenerationInferenceRunnerManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  inferenceRunnerByExecutionUUID = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
+  v7 = [inferenceRunnerByExecutionUUID objectForKeyedSubscript:dCopy];
 
   if (v7)
   {
-    v8 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
-    [v8 setObject:0 forKeyedSubscript:v4];
+    inferenceRunnerByExecutionUUID2 = [(TGITextGenerationInferenceRunnerManager *)self inferenceRunnerByExecutionUUID];
+    [inferenceRunnerByExecutionUUID2 setObject:0 forKeyedSubscript:dCopy];
 
 LABEL_4:
     [v7 cancel];
     goto LABEL_5;
   }
 
-  v9 = [(TGITextGenerationInferenceRunnerManager *)self scheduledInferenceRunnerByExecutionUUID];
-  v7 = [v9 objectForKeyedSubscript:v4];
+  scheduledInferenceRunnerByExecutionUUID = [(TGITextGenerationInferenceRunnerManager *)self scheduledInferenceRunnerByExecutionUUID];
+  v7 = [scheduledInferenceRunnerByExecutionUUID objectForKeyedSubscript:dCopy];
 
   if (v7)
   {
@@ -262,7 +262,7 @@ LABEL_4:
   v10 = _nlpDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [(TGITextGenerationInferenceRunnerManager *)v4 cancelOperationWithExecutionUUID:v10];
+    [(TGITextGenerationInferenceRunnerManager *)dCopy cancelOperationWithExecutionUUID:v10];
   }
 
   v7 = 0;

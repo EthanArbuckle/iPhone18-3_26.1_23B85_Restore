@@ -1,17 +1,17 @@
 @interface PrivacyProxyStateRelay
-+ (id)networkStatusString:(unsigned int)a3;
-+ (id)serviceStatusString:(unsigned int)a3;
++ (id)networkStatusString:(unsigned int)string;
++ (id)serviceStatusString:(unsigned int)string;
 + (id)sharedInstance;
-+ (id)userTierString:(unsigned int)a3;
-+ (unsigned)networkStatusFromNSPStatus:(unint64_t)a3;
-+ (unsigned)serviceStatusFromNSPStatus:(unint64_t)a3;
-+ (unsigned)userTierFromNSPTier:(unint64_t)a3;
++ (id)userTierString:(unsigned int)string;
++ (unsigned)networkStatusFromNSPStatus:(unint64_t)status;
++ (unsigned)serviceStatusFromNSPStatus:(unint64_t)status;
++ (unsigned)userTierFromNSPTier:(unint64_t)tier;
 - (NSMutableArray)networks;
 - (PrivacyProxyStateRelay)init;
 - (SFPrivacyProxyTraffic)traffic;
 - (void)dealloc;
-- (void)setNetworks:(id)a3;
-- (void)setTraffic:(id)a3;
+- (void)setNetworks:(id)networks;
+- (void)setTraffic:(id)traffic;
 - (void)updatePrivacyProxyConfiguration;
 - (void)updatePrivacyProxyPath;
 - (void)updatePrivacyProxyStatus;
@@ -142,7 +142,7 @@ uint64_t __33__PrivacyProxyStateRelay_traffic__block_invoke(uint64_t a1)
     v15 = v13;
     v25 = v15;
     notify_register_dispatch("com.apple.networkserviceproxy.privacy-proxy-path-changed", v13 + 5, v14, v24);
-    v16 = [@"com.apple.networkserviceproxy.privacy-proxy-xpc-listen-ready" UTF8String];
+    uTF8String = [@"com.apple.networkserviceproxy.privacy-proxy-xpc-listen-ready" UTF8String];
     v17 = v3->_privacyProxyStateQueue;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -150,7 +150,7 @@ uint64_t __33__PrivacyProxyStateRelay_traffic__block_invoke(uint64_t a1)
     v22[3] = &unk_27898B048;
     v18 = v15;
     v23 = v18;
-    notify_register_dispatch(v16, v15 + 6, v17, v22);
+    notify_register_dispatch(uTF8String, v15 + 6, v17, v22);
     v19 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
@@ -190,29 +190,29 @@ uint64_t __30__PrivacyProxyStateRelay_init__block_invoke_4(uint64_t a1)
   [(PrivacyProxyStateRelay *)&v4 dealloc];
 }
 
-- (void)setNetworks:(id)a3
+- (void)setNetworks:(id)networks
 {
-  v4 = a3;
+  networksCopy = networks;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__PrivacyProxyStateRelay_setNetworks___block_invoke;
   v6[3] = &unk_27898A7D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = networksCopy;
+  v5 = networksCopy;
   sf_synchronize(&self->lock, v6);
 }
 
-- (void)setTraffic:(id)a3
+- (void)setTraffic:(id)traffic
 {
-  v4 = a3;
+  trafficCopy = traffic;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__PrivacyProxyStateRelay_setTraffic___block_invoke;
   v6[3] = &unk_27898A7D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = trafficCopy;
+  v5 = trafficCopy;
   sf_synchronize(&self->lock, v6);
 }
 
@@ -492,17 +492,17 @@ LABEL_20:
   }
 }
 
-+ (unsigned)serviceStatusFromNSPStatus:(unint64_t)a3
++ (unsigned)serviceStatusFromNSPStatus:(unint64_t)status
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 >= 8)
+  if (status >= 8)
   {
     v5 = analyticsLogHandle;
     result = os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR);
     if (result)
     {
       v7 = 134217984;
-      v8 = a3;
+      statusCopy = status;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "serviceStatusFromNSPStatus - invalid nspStatus: %lu", &v7, 0xCu);
       result = 0;
     }
@@ -510,23 +510,23 @@ LABEL_20:
 
   else
   {
-    result = a3 + 1;
+    result = status + 1;
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-+ (id)serviceStatusString:(unsigned int)a3
++ (id)serviceStatusString:(unsigned int)string
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 >= 9)
+  if (string >= 9)
   {
     v5 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v7[0] = 67109120;
-      v7[1] = a3;
+      v7[1] = string;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "serviceStatusString - invalid status: %u", v7, 8u);
     }
 
@@ -535,22 +535,22 @@ LABEL_20:
 
   else
   {
-    result = off_27898D4B8[a3];
+    result = off_27898D4B8[string];
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-+ (unsigned)userTierFromNSPTier:(unint64_t)a3
++ (unsigned)userTierFromNSPTier:(unint64_t)tier
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (tier == 1)
   {
     result = 1;
   }
 
-  else if (a3 == 2)
+  else if (tier == 2)
   {
     result = 2;
   }
@@ -562,7 +562,7 @@ LABEL_20:
     if (result)
     {
       v7 = 134217984;
-      v8 = a3;
+      tierCopy = tier;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "userTierFromNSPTier - invalid nspTier: %lu", &v7, 0xCu);
       result = 0;
     }
@@ -572,16 +572,16 @@ LABEL_20:
   return result;
 }
 
-+ (id)userTierString:(unsigned int)a3
++ (id)userTierString:(unsigned int)string
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 >= 3)
+  if (string >= 3)
   {
     v5 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v7[0] = 67109120;
-      v7[1] = a3;
+      v7[1] = string;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "userTierString - invalid tier: %u", v7, 8u);
     }
 
@@ -590,24 +590,24 @@ LABEL_20:
 
   else
   {
-    result = off_27898D500[a3];
+    result = off_27898D500[string];
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-+ (unsigned)networkStatusFromNSPStatus:(unint64_t)a3
++ (unsigned)networkStatusFromNSPStatus:(unint64_t)status
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 >= 3)
+  if (status >= 3)
   {
     v5 = analyticsLogHandle;
     result = os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR);
     if (result)
     {
       v7 = 134217984;
-      v8 = a3;
+      statusCopy = status;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "networkStatusFromNSPStatus - invalid nspStatus: %lu", &v7, 0xCu);
       result = 0;
     }
@@ -615,23 +615,23 @@ LABEL_20:
 
   else
   {
-    result = a3 + 1;
+    result = status + 1;
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-+ (id)networkStatusString:(unsigned int)a3
++ (id)networkStatusString:(unsigned int)string
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 >= 4)
+  if (string >= 4)
   {
     v5 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v7[0] = 67109120;
-      v7[1] = a3;
+      v7[1] = string;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "networkStatusString - invalid status: %u", v7, 8u);
     }
 
@@ -640,7 +640,7 @@ LABEL_20:
 
   else
   {
-    result = off_27898D518[a3];
+    result = off_27898D518[string];
   }
 
   v6 = *MEMORY[0x277D85DE8];

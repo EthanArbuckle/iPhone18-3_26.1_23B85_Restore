@@ -15,8 +15,8 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(AKCodeEntryViewAccessibility *)self _axVerificationCodeString];
-  v3 = [v2 length];
+  _axVerificationCodeString = [(AKCodeEntryViewAccessibility *)self _axVerificationCodeString];
+  v3 = [_axVerificationCodeString length];
 
   v4 = accessibilityLocalizedString(@"verification.code");
   v5 = MEMORY[0x29EDBA0F8];
@@ -29,10 +29,10 @@
 
 - (id)accessibilityAttributedValue
 {
-  v2 = [(AKCodeEntryViewAccessibility *)self _axVerificationCodeString];
-  if (v2)
+  _axVerificationCodeString = [(AKCodeEntryViewAccessibility *)self _axVerificationCodeString];
+  if (_axVerificationCodeString)
   {
-    v3 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v2];
+    v3 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:_axVerificationCodeString];
     [v3 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD9D0]];
   }
 

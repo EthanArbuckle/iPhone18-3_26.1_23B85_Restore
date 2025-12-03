@@ -1,11 +1,11 @@
 @interface IconWithNumberedBulletList
-- (_TtC16HeadphoneConfigs26IconWithNumberedBulletList)initWithCoder:(id)a3;
-- (_TtC16HeadphoneConfigs26IconWithNumberedBulletList)initWithFrame:(CGRect)a3;
+- (_TtC16HeadphoneConfigs26IconWithNumberedBulletList)initWithCoder:(id)coder;
+- (_TtC16HeadphoneConfigs26IconWithNumberedBulletList)initWithFrame:(CGRect)frame;
 @end
 
 @implementation IconWithNumberedBulletList
 
-- (_TtC16HeadphoneConfigs26IconWithNumberedBulletList)initWithCoder:(id)a3
+- (_TtC16HeadphoneConfigs26IconWithNumberedBulletList)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16HeadphoneConfigs26IconWithNumberedBulletList_containerView;
   v5 = [objc_allocWithZone(MEMORY[0x277D75D18]) init];
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC16HeadphoneConfigs26IconWithNumberedBulletList)initWithFrame:(CGRect)a3
+- (_TtC16HeadphoneConfigs26IconWithNumberedBulletList)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

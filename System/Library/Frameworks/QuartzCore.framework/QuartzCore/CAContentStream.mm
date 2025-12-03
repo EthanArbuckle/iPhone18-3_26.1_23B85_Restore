@@ -1,16 +1,16 @@
 @interface CAContentStream
-+ (id)contentStreamWithOptions:(id)a3 queue:(id)a4 handler:(id)a5 error:(id *)a6;
-- (BOOL)releaseSurface:(__IOSurface *)a3 error:(id *)a4;
-- (BOOL)releaseSurfaceWithId:(unsigned int)a3 error:(id *)a4;
-- (BOOL)setExcludedContexts:(id)a3 error:(id *)a4;
-- (BOOL)setIncludedContexts:(id)a3 error:(id *)a4;
-- (BOOL)start:(id *)a3;
-- (BOOL)stop:(id *)a3;
-- (BOOL)updateOptions:(id)a3 error:(id *)a4;
++ (id)contentStreamWithOptions:(id)options queue:(id)queue handler:(id)handler error:(id *)error;
+- (BOOL)releaseSurface:(__IOSurface *)surface error:(id *)error;
+- (BOOL)releaseSurfaceWithId:(unsigned int)id error:(id *)error;
+- (BOOL)setExcludedContexts:(id)contexts error:(id *)error;
+- (BOOL)setIncludedContexts:(id)contexts error:(id *)error;
+- (BOOL)start:(id *)start;
+- (BOOL)stop:(id *)stop;
+- (BOOL)updateOptions:(id)options error:(id *)error;
 - (id).cxx_construct;
 - (void)clearSeenSurfaces;
 - (void)dealloc;
-- (void)produceSurface:(unsigned int)a3 withFrameInfo:(const CA_content_stream_frame_info *)a4;
+- (void)produceSurface:(unsigned int)surface withFrameInfo:(const CA_content_stream_frame_info *)info;
 @end
 
 @implementation CAContentStream
@@ -41,7 +41,7 @@
   v17 = 0u;
   v16 = 0u;
   v15 = 0u;
-  v3 = [(CAContentStreamOptions *)self->_options targetDisplayId];
+  targetDisplayId = [(CAContentStreamOptions *)self->_options targetDisplayId];
   serverPort = self->_serverPort;
   port = self->_clientIPC._port;
   v6 = CA::MachPortUtil::task_identity_port(void)::task[0];
@@ -52,7 +52,7 @@
   }
 
   *buf = 0;
-  v14 = v3;
+  v14 = targetDisplayId;
   v18[21] = 2;
   v19 = 0;
   v7 = _CASContentStreamModify(serverPort, port, v6, buf);
@@ -143,22 +143,22 @@ LABEL_17:
   self->_seen_surfaces._end = begin;
 }
 
-- (BOOL)releaseSurface:(__IOSurface *)a3 error:(id *)a4
+- (BOOL)releaseSurface:(__IOSurface *)surface error:(id *)error
 {
-  if (!a3)
+  if (!surface)
   {
     return 0;
   }
 
-  ID = IOSurfaceGetID(a3);
+  ID = IOSurfaceGetID(surface);
 
-  return [(CAContentStream *)self releaseSurfaceWithId:ID error:a4];
+  return [(CAContentStream *)self releaseSurfaceWithId:ID error:error];
 }
 
-- (BOOL)releaseSurfaceWithId:(unsigned int)a3 error:(id *)a4
+- (BOOL)releaseSurfaceWithId:(unsigned int)id error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (id)
   {
     serverPort = self->_serverPort;
     port = self->_clientIPC._port;
@@ -168,7 +168,7 @@ LABEL_17:
     *&msg[28] = port;
     v13 = 1245184;
     v14 = *MEMORY[0x1E69E99E0];
-    v15 = a3;
+    idCopy = id;
     reply_port = mig_get_reply_port();
     *&msg[8] = serverPort;
     *&msg[12] = reply_port;
@@ -225,19 +225,19 @@ LABEL_17:
       mach_msg_destroy(msg);
     }
 
-    server_error(a4, v10);
+    server_error(error, v10);
   }
 
   return 0;
 }
 
-- (void)produceSurface:(unsigned int)a3 withFrameInfo:(const CA_content_stream_frame_info *)a4
+- (void)produceSurface:(unsigned int)surface withFrameInfo:(const CA_content_stream_frame_info *)info
 {
   v23 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_callback_lock);
   if (self->_queue && self->_handler)
   {
-    if (!a3)
+    if (!surface)
     {
       iosurface = 0;
       id = 0;
@@ -248,7 +248,7 @@ LABEL_17:
     end = self->_seen_surfaces._end;
     if (begin != end)
     {
-      while (begin->port != a3)
+      while (begin->port != surface)
       {
         if (++begin == end)
         {
@@ -266,15 +266,15 @@ LABEL_15:
       v15 = objc_opt_new();
       [v15 setSurfaceId:id];
       [v15 setSurface:iosurface];
-      [v15 setStatus:a4->var2];
-      [v15 setDisplayTime:a4->var0];
-      [v15 setUpdateBeginTime:a4->var1];
-      [v15 setDropCount:a4->var3];
-      LOBYTE(v16) = a4->var10;
+      [v15 setStatus:info->var2];
+      [v15 setDisplayTime:info->var0];
+      [v15 setUpdateBeginTime:info->var1];
+      [v15 setDropCount:info->var3];
+      LOBYTE(v16) = info->var10;
       [v15 setDisplayResolution:v16];
-      [v15 setContentScaleX:a4->var4];
-      [v15 setContentScaleY:a4->var5];
-      [v15 setContentRect:{a4->var6, a4->var7, a4->var8, a4->var9}];
+      [v15 setContentScaleX:info->var4];
+      [v15 setContentScaleY:info->var5];
+      [v15 setContentRect:{info->var6, info->var7, info->var8, info->var9}];
       v17 = _Block_copy(self->_handler);
       queue = self->_queue;
       block[0] = MEMORY[0x1E69E9820];
@@ -289,10 +289,10 @@ LABEL_15:
     }
 
 LABEL_9:
-    v9 = IOSurfaceLookupFromMachPort(a3);
+    v9 = IOSurfaceLookupFromMachPort(surface);
     if (v9)
     {
-      mach_port_mod_refs(*MEMORY[0x1E69E9A60], a3, 0, 1);
+      mach_port_mod_refs(*MEMORY[0x1E69E9A60], surface, 0, 1);
       v10 = IOSurfaceGetID(v9);
       v11 = self->_seen_surfaces._end;
       v12 = v11 - self->_seen_surfaces._begin + 1;
@@ -304,7 +304,7 @@ LABEL_9:
 
       v11->iosurface = v9;
       v11->id = v10;
-      v11->port = a3;
+      v11->port = surface;
       begin = self->_seen_surfaces._end;
       self->_seen_surfaces._end = begin + 1;
       goto LABEL_13;
@@ -319,7 +319,7 @@ LABEL_9:
     if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v22 = a3;
+      surfaceCopy = surface;
       _os_log_error_impl(&dword_183AA6000, v19, OS_LOG_TYPE_ERROR, "Failed to create surface from machport %u", buf, 8u);
     }
   }
@@ -335,18 +335,18 @@ void __48__CAContentStream_produceSurface_withFrameInfo___block_invoke(uint64_t 
   v2 = *(a1 + 40);
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
   v9[1] = *MEMORY[0x1E69E9840];
   if (!self->_started)
   {
-    if (a3)
+    if (stop)
     {
       v8 = *MEMORY[0x1E696A578];
       v9[0] = @"Stream already stopped";
       v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v9, &v8, 1)}];
       result = 0;
-      *a3 = v6;
+      *stop = v6;
       return result;
     }
 
@@ -356,7 +356,7 @@ void __48__CAContentStream_produceSurface_withFrameInfo___block_invoke(uint64_t 
   started = _CASContentStreamStartStop(self->_serverPort, self->_clientIPC._port, 0, 0, 0, 0, 0);
   if (started)
   {
-    server_error(a3, started);
+    server_error(stop, started);
     return 0;
   }
 
@@ -364,12 +364,12 @@ void __48__CAContentStream_produceSurface_withFrameInfo___block_invoke(uint64_t 
   return 1;
 }
 
-- (BOOL)start:(id *)a3
+- (BOOL)start:(id *)start
 {
   v24[1] = *MEMORY[0x1E69E9840];
   if (self->_started)
   {
-    stream_active_error(a3);
+    stream_active_error(start);
     return 0;
   }
 
@@ -385,7 +385,7 @@ void __48__CAContentStream_produceSurface_withFrameInfo___block_invoke(uint64_t 
       }
     }
 
-    if (!a3)
+    if (!start)
     {
       return 0;
     }
@@ -402,7 +402,7 @@ LABEL_7:
   v9 = (v8 + size);
   if (!(v8 + size))
   {
-    if (!a3)
+    if (!start)
     {
       return 0;
     }
@@ -412,7 +412,7 @@ LABEL_7:
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v22, &v21, 1)}];
 LABEL_20:
     v4 = 0;
-    *a3 = v13;
+    *start = v13;
     return v4;
   }
 
@@ -442,7 +442,7 @@ LABEL_20:
   v4 = started == 0;
   if (started)
   {
-    server_error(a3, started);
+    server_error(start, started);
   }
 
   else
@@ -458,23 +458,23 @@ LABEL_20:
   return v4;
 }
 
-- (BOOL)updateOptions:(id)a3 error:(id *)a4
+- (BOOL)updateOptions:(id)options error:(id *)error
 {
   v94 = *MEMORY[0x1E69E9840];
   if (self->_started)
   {
-    stream_active_error(a4);
+    stream_active_error(error);
     return 0;
   }
 
-  if (!validate_options(a3, a4))
+  if (!validate_options(options, error))
   {
     return 0;
   }
 
-  v72 = [a3 targetDisplayId];
-  v71 = [a3 pixelFormat];
-  Name = CGColorSpaceGetName([a3 colorSpaceKey]);
+  targetDisplayId = [options targetDisplayId];
+  pixelFormat = [options pixelFormat];
+  Name = CGColorSpaceGetName([options colorSpaceKey]);
   LOBYTE(v73) = 0;
   get_colorspace_map(&v73);
   if (v73)
@@ -495,16 +495,16 @@ LABEL_8:
     LOBYTE(v8) = 0;
   }
 
-  v70 = [a3 YCbCrMatrix];
-  v69 = [a3 ChromaLocation];
-  [a3 frameSize];
+  yCbCrMatrix = [options YCbCrMatrix];
+  chromaLocation = [options ChromaLocation];
+  [options frameSize];
   v64 = v9;
-  [a3 frameSize];
+  [options frameSize];
   v62 = v10;
-  [a3 minimumFrameTime];
+  [options minimumFrameTime];
   v66 = v11;
-  v68 = [a3 queueDepth];
-  if ([a3 alwaysScaleToFit])
+  queueDepth = [options queueDepth];
+  if ([options alwaysScaleToFit])
   {
     v12 = 2;
   }
@@ -514,24 +514,24 @@ LABEL_8:
     v12 = 0;
   }
 
-  v13 = [a3 preserveAspectRatioKey];
-  [a3 sourceRect];
+  preserveAspectRatioKey = [options preserveAspectRatioKey];
+  [options sourceRect];
   v15 = v14;
-  [a3 sourceRect];
+  [options sourceRect];
   v17 = v16;
-  [a3 sourceRect];
+  [options sourceRect];
   v19 = v18;
-  [a3 sourceRect];
+  [options sourceRect];
   v21 = v20;
-  [a3 destinationRect];
+  [options destinationRect];
   v23 = v22;
-  [a3 destinationRect];
+  [options destinationRect];
   v25 = v24;
-  [a3 destinationRect];
+  [options destinationRect];
   v27 = v26;
-  [a3 destinationRect];
+  [options destinationRect];
   v29 = v28;
-  v61 = [a3 trackedLayerIDContent];
+  trackedLayerIDContent = [options trackedLayerIDContent];
   if (self->_warmed_up)
   {
     v30 = 0;
@@ -543,10 +543,10 @@ LABEL_8:
   }
 
   v58 = v30;
-  if ([a3 backgroundColorKey])
+  if ([options backgroundColorKey])
   {
-    NumberOfComponents = CGColorGetNumberOfComponents([a3 backgroundColorKey]);
-    Components = CGColorGetComponents([a3 backgroundColorKey]);
+    NumberOfComponents = CGColorGetNumberOfComponents([options backgroundColorKey]);
+    Components = CGColorGetComponents([options backgroundColorKey]);
     v33 = 0;
     if (NumberOfComponents >= 4 && Components)
     {
@@ -582,7 +582,7 @@ LABEL_8:
   v46 = v25;
   v47 = v29;
   v48 = v66;
-  v49 = v12 | v13 | v58;
+  v49 = v12 | preserveAspectRatioKey | v58;
   serverPort = self->_serverPort;
   port = self->_clientIPC._port;
   v52 = CA::MachPortUtil::task_identity_port(void)::task[0];
@@ -591,7 +591,7 @@ LABEL_8:
     v65 = self->_serverPort;
     v63 = self->_clientIPC._port;
     v67 = v41;
-    v57 = v12 | v13 | v58;
+    v57 = v12 | preserveAspectRatioKey | v58;
     v59 = v42;
     v55 = v45;
     v56 = v44;
@@ -607,8 +607,8 @@ LABEL_8:
     v52 = CA::MachPortUtil::task_identity_port(void)::task[0];
   }
 
-  *&v73 = __PAIR64__(v72, v42);
-  *(&v73 + 1) = __PAIR64__(v44, v71);
+  *&v73 = __PAIR64__(targetDisplayId, v42);
+  *(&v73 + 1) = __PAIR64__(v44, pixelFormat);
   v74 = v45;
   v75 = v15;
   v76 = v17;
@@ -619,12 +619,12 @@ LABEL_8:
   v81 = v27;
   v82 = v47;
   v83 = 0;
-  v84 = v61;
+  v84 = trackedLayerIDContent;
   v85 = v48;
-  v86 = v68;
+  v86 = queueDepth;
   v87 = v8;
-  v88 = v70;
-  v89 = v69;
+  v88 = yCbCrMatrix;
+  v89 = chromaLocation;
   v90 = vuzp1_s8(v60, v60).u32[0];
   v91 = v41;
   v92 = v49;
@@ -633,21 +633,21 @@ LABEL_8:
   v40 = v53 == 0;
   if (v53)
   {
-    server_error(a4, v53);
+    server_error(error, v53);
   }
 
-  self->_options = [a3 copy];
+  self->_options = [options copy];
   [(CAContentStream *)self clearSeenSurfaces];
   return v40;
 }
 
-- (BOOL)setExcludedContexts:(id)a3 error:(id *)a4
+- (BOOL)setExcludedContexts:(id)contexts error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
   started = self->_started;
   if (started)
   {
-    stream_active_error(a4);
+    stream_active_error(error);
   }
 
   else
@@ -657,7 +657,7 @@ LABEL_8:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    v7 = [contexts countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (v7)
     {
       v8 = v7;
@@ -668,13 +668,13 @@ LABEL_8:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(contexts);
           }
 
           std::__hash_table<std::__hash_value_type<unsigned int,unsigned int>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,unsigned int>>>::__emplace_unique_key_args<unsigned int,unsigned int,unsigned int>(&self->_excludedContexts.__table_.__bucket_list_.__ptr_, [*(*(&v13 + 1) + 8 * i) unsignedIntValue]);
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v8 = [contexts countByEnumeratingWithState:&v13 objects:v12 count:16];
       }
 
       while (v8);
@@ -684,13 +684,13 @@ LABEL_8:
   return !started;
 }
 
-- (BOOL)setIncludedContexts:(id)a3 error:(id *)a4
+- (BOOL)setIncludedContexts:(id)contexts error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
   started = self->_started;
   if (started)
   {
-    stream_active_error(a4);
+    stream_active_error(error);
   }
 
   else
@@ -700,7 +700,7 @@ LABEL_8:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    v7 = [contexts countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (v7)
     {
       v8 = v7;
@@ -711,13 +711,13 @@ LABEL_8:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(contexts);
           }
 
           std::__hash_table<std::__hash_value_type<unsigned int,unsigned int>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,unsigned int>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,unsigned int>>>::__emplace_unique_key_args<unsigned int,unsigned int,unsigned int>(&self->_includedContexts.__table_.__bucket_list_.__ptr_, [*(*(&v13 + 1) + 8 * i) unsignedIntValue]);
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v8 = [contexts countByEnumeratingWithState:&v13 objects:v12 count:16];
       }
 
       while (v8);
@@ -727,29 +727,29 @@ LABEL_8:
   return !started;
 }
 
-+ (id)contentStreamWithOptions:(id)a3 queue:(id)a4 handler:(id)a5 error:(id *)a6
++ (id)contentStreamWithOptions:(id)options queue:(id)queue handler:(id)handler error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  if (!a4 || !a5)
+  if (!queue || !handler)
   {
-    if (a6)
+    if (error)
     {
       v33 = *MEMORY[0x1E696A578];
       v34[0] = @"Invalid handler";
       v11 = 0;
-      *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v34, &v33, 1)}];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v34, &v33, 1)}];
       return v11;
     }
 
     return 0;
   }
 
-  if (!validate_options(a3, a6))
+  if (!validate_options(options, error))
   {
     return 0;
   }
 
-  v11 = objc_alloc_init(a1);
+  v11 = objc_alloc_init(self);
   if (!v11)
   {
     return v11;
@@ -759,27 +759,27 @@ LABEL_8:
   v12 = CA::MachPortUtil::ClientIPC::create((v11 + 33), "CAContentStreamClientHandler");
   if (v12)
   {
-    if (a6)
+    if (error)
     {
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error creating client ports! 0x%x", v12];
       v31 = *MEMORY[0x1E696A578];
       v32 = v13;
-      *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:2 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v32, &v31, 1)}];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:2 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v32, &v31, 1)}];
     }
 
     return 0;
   }
 
-  if (([v11 updateOptions:a3 error:a6] & 1) == 0)
+  if (([v11 updateOptions:options error:error] & 1) == 0)
   {
 
     return 0;
   }
 
   *(v11 + 288) = 0;
-  v11[38] = _Block_copy(a5);
-  dispatch_retain(a4);
-  v11[37] = a4;
+  v11[38] = _Block_copy(handler);
+  dispatch_retain(queue);
+  v11[37] = queue;
   *(v11 + 289) = 1;
   v14 = v11[35];
   if (v14)

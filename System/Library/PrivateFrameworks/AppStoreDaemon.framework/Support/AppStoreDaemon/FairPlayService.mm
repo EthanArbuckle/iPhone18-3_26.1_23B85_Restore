@@ -2,10 +2,10 @@
 + (NSString)entitlement;
 + (_TtC9appstored15FairPlayService)defaultService;
 - (_TtC9appstored15FairPlayService)init;
-- (void)generateKeybagRequestForDSID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)generateSubscriptionRequestForDSID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)importKeybag:(NSData *)a3 completionHandler:(id)a4;
-- (void)importSubscriptionKeybag:(NSData *)a3 completionHandler:(id)a4;
+- (void)generateKeybagRequestForDSID:(unint64_t)d completionHandler:(id)handler;
+- (void)generateSubscriptionRequestForDSID:(unint64_t)d completionHandler:(id)handler;
+- (void)importKeybag:(NSData *)keybag completionHandler:(id)handler;
+- (void)importSubscriptionKeybag:(NSData *)keybag completionHandler:(id)handler;
 @end
 
 @implementation FairPlayService
@@ -29,14 +29,14 @@
   return v2;
 }
 
-- (void)generateKeybagRequestForDSID:(unint64_t)a3 completionHandler:(id)a4
+- (void)generateKeybagRequestForDSID:(unint64_t)d completionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -51,18 +51,18 @@
   v14[3] = 0;
   v14[4] = &unk_1004345D8;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_1004345E0, v14);
 }
 
-- (void)generateSubscriptionRequestForDSID:(unint64_t)a3 completionHandler:(id)a4
+- (void)generateSubscriptionRequestForDSID:(unint64_t)d completionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -77,18 +77,18 @@
   v14[3] = 0;
   v14[4] = &unk_1004345B8;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_1004345C0, v14);
 }
 
-- (void)importKeybag:(NSData *)a3 completionHandler:(id)a4
+- (void)importKeybag:(NSData *)keybag completionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = keybag;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -103,19 +103,19 @@
   v14[3] = 0;
   v14[4] = &unk_100434598;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  keybagCopy = keybag;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_1004345A0, v14);
 }
 
-- (void)importSubscriptionKeybag:(NSData *)a3 completionHandler:(id)a4
+- (void)importSubscriptionKeybag:(NSData *)keybag completionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = keybag;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -130,8 +130,8 @@
   v14[3] = 0;
   v14[4] = &unk_1004366D0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  keybagCopy = keybag;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_1004344E0, v14);
 }
 

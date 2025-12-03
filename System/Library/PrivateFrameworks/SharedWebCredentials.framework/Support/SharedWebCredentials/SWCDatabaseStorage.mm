@@ -1,23 +1,23 @@
 @interface SWCDatabaseStorage
-- (SWCDatabaseStorage)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SWCDatabaseStorage)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWCDatabaseStorage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [SWCEntry canonicalizeEntries:self->_entries];
-  [a3 encodeInt64:self->_databaseVersion forKey:@"databaseVersion"];
-  [a3 encodeObject:self->_entries forKey:@"entries"];
-  [a3 encodeObject:self->_settings forKey:@"settings"];
-  [a3 encodeObject:self->_launchServicesDatabaseGeneration forKey:@"launchServicesDatabaseGeneration"];
+  [coder encodeInt64:self->_databaseVersion forKey:@"databaseVersion"];
+  [coder encodeObject:self->_entries forKey:@"entries"];
+  [coder encodeObject:self->_settings forKey:@"settings"];
+  [coder encodeObject:self->_launchServicesDatabaseGeneration forKey:@"launchServicesDatabaseGeneration"];
   enterpriseState = self->_enterpriseState;
 
-  [a3 encodeObject:enterpriseState forKey:@"enterpriseState"];
+  [coder encodeObject:enterpriseState forKey:@"enterpriseState"];
 }
 
-- (SWCDatabaseStorage)initWithCoder:(id)a3
+- (SWCDatabaseStorage)initWithCoder:(id)coder
 {
   context = objc_autoreleasePoolPush();
   v49.receiver = self;
@@ -28,7 +28,7 @@
     goto LABEL_25;
   }
 
-  v5->_databaseVersion = [a3 decodeInt64ForKey:@"databaseVersion"];
+  v5->_databaseVersion = [coder decodeInt64ForKey:@"databaseVersion"];
   v6 = objc_opt_class();
   v36 = objc_opt_class();
   v7 = [NSSet alloc];
@@ -48,10 +48,10 @@
   v10 = [NSArray arrayWithObjects:v55 count:7];
   v37 = [v9 initWithArray:v10];
 
-  v11 = [a3 swc_decodeObjectOfClasses:v38 forKey:@"entries"];
-  v12 = [a3 swc_decodeObjectOfClasses:v37 forKey:@"settings"];
-  v13 = [a3 swc_decodeObjectOfClass:objc_opt_class() forKey:@"launchServicesDatabaseGeneration"];
-  v14 = [a3 swc_decodeObjectOfClass:objc_opt_class() forKey:@"enterpriseState"];
+  v11 = [coder swc_decodeObjectOfClasses:v38 forKey:@"entries"];
+  v12 = [coder swc_decodeObjectOfClasses:v37 forKey:@"settings"];
+  v13 = [coder swc_decodeObjectOfClass:objc_opt_class() forKey:@"launchServicesDatabaseGeneration"];
+  v14 = [coder swc_decodeObjectOfClass:objc_opt_class() forKey:@"enterpriseState"];
   if (v11)
   {
     objc_opt_class();
@@ -66,7 +66,7 @@ LABEL_16:
       v53[1] = entries;
       v23 = [NSDictionary dictionaryWithObjects:v53 forKeys:v52 count:2];
       v24 = [v22 initWithDomain:NSCocoaErrorDomain code:4864 userInfo:v23];
-      [a3 failWithError:v24];
+      [coder failWithError:v24];
 
       goto LABEL_17;
     }
@@ -146,7 +146,7 @@ LABEL_17:
       v51[1] = settings;
       v28 = [NSDictionary dictionaryWithObjects:v51 forKeys:v50 count:2];
       v29 = [v27 initWithDomain:NSCocoaErrorDomain code:4864 userInfo:v28];
-      [a3 failWithError:v29];
+      [coder failWithError:v29];
     }
 
     _Block_object_dispose(&v41, 8);

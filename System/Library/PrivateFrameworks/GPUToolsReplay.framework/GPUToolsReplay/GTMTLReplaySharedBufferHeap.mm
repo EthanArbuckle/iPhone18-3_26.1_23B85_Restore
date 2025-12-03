@@ -1,5 +1,5 @@
 @interface GTMTLReplaySharedBufferHeap
-- (GTMTLReplaySharedBufferHeap)initWithBuffer:(id)a3 resourcePool:(id)a4;
+- (GTMTLReplaySharedBufferHeap)initWithBuffer:(id)buffer resourcePool:(id)pool;
 - (void)dealloc;
 @end
 
@@ -13,18 +13,18 @@
   [(GTMTLReplaySharedBufferHeap *)&v3 dealloc];
 }
 
-- (GTMTLReplaySharedBufferHeap)initWithBuffer:(id)a3 resourcePool:(id)a4
+- (GTMTLReplaySharedBufferHeap)initWithBuffer:(id)buffer resourcePool:(id)pool
 {
-  v7 = a3;
-  v8 = a4;
+  bufferCopy = buffer;
+  poolCopy = pool;
   v12.receiver = self;
   v12.super_class = GTMTLReplaySharedBufferHeap;
   v9 = [(GTMTLReplaySharedBufferHeap *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_buffer, a3);
-    objc_storeStrong(&v10->_resourcePool, a4);
+    objc_storeStrong(&v9->_buffer, buffer);
+    objc_storeStrong(&v10->_resourcePool, pool);
   }
 
   return v10;

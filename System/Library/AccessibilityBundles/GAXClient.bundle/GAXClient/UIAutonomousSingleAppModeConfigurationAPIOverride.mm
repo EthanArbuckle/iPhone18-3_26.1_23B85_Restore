@@ -1,16 +1,16 @@
 @interface UIAutonomousSingleAppModeConfigurationAPIOverride
-- (BOOL)__gaxTrampoline_defaultBoolValueForFeatureKey:(id)a3;
+- (BOOL)__gaxTrampoline_defaultBoolValueForFeatureKey:(id)key;
 @end
 
 @implementation UIAutonomousSingleAppModeConfigurationAPIOverride
 
-- (BOOL)__gaxTrampoline_defaultBoolValueForFeatureKey:(id)a3
+- (BOOL)__gaxTrampoline_defaultBoolValueForFeatureKey:(id)key
 {
-  v3 = GAXProfileKeyForUIAutonomousSingleAppModeConfigurationDictionaryKey(a3);
+  v3 = GAXProfileKeyForUIAutonomousSingleAppModeConfigurationDictionaryKey(key);
   v4 = GAXFallbackValueForProfileKey(v3, 3, 1);
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

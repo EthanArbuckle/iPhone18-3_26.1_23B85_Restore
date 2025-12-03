@@ -1,23 +1,23 @@
 @interface CRViewArea
 - (CGRect)safeAreaPixelFrame;
 - (CGRect)visiblePixelFrame;
-- (CRViewArea)initWithAirPlayDictionary:(id)a3;
-- (CRViewArea)initWithVisiblePixelFrame:(CGRect)a3 safeAreaPixelFrame:(CGRect)a4;
+- (CRViewArea)initWithAirPlayDictionary:(id)dictionary;
+- (CRViewArea)initWithVisiblePixelFrame:(CGRect)frame safeAreaPixelFrame:(CGRect)pixelFrame;
 - (id)description;
 @end
 
 @implementation CRViewArea
 
-- (CRViewArea)initWithVisiblePixelFrame:(CGRect)a3 safeAreaPixelFrame:(CGRect)a4
+- (CRViewArea)initWithVisiblePixelFrame:(CGRect)frame safeAreaPixelFrame:(CGRect)pixelFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = pixelFrame.size.height;
+  width = pixelFrame.size.width;
+  y = pixelFrame.origin.y;
+  x = pixelFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v13.receiver = self;
   v13.super_class = CRViewArea;
   result = [(CRViewArea *)&v13 init];
@@ -36,11 +36,11 @@
   return result;
 }
 
-- (CRViewArea)initWithAirPlayDictionary:(id)a3
+- (CRViewArea)initWithAirPlayDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"safeArea"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"safeArea"];
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v6 = v5;
@@ -53,10 +53,10 @@
 
   v15 = *MEMORY[0x1E695EFF8];
   v11 = v15;
-  CROriginFromAirPlayDictionary(v4, &v15);
+  CROriginFromAirPlayDictionary(dictionaryCopy, &v15);
   v14 = *MEMORY[0x1E695F060];
   v10 = v14;
-  CRSizeFromAirPlayDictionary(v4, &v14);
+  CRSizeFromAirPlayDictionary(dictionaryCopy, &v14);
   v12 = v11;
   v13 = v10;
   if (v6)

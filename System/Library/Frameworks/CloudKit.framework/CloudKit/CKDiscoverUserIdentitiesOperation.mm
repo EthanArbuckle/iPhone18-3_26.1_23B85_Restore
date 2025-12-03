@@ -1,15 +1,15 @@
 @interface CKDiscoverUserIdentitiesOperation
-- (BOOL)CKOperationShouldRun:(id *)a3;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (CKDiscoverUserIdentitiesOperation)init;
 - (CKDiscoverUserIdentitiesOperation)initWithUserIdentityLookupInfos:(NSArray *)userIdentityLookupInfos;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
 - (void)discoverUserIdentitiesCompletionBlock;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleUserIdentityDiscoveryForLookupInfo:(id)a3 userIdentity:(id)a4;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleUserIdentityDiscoveryForLookupInfo:(id)info userIdentity:(id)identity;
 - (void)setDiscoverUserIdentitiesCompletionBlock:(void *)discoverUserIdentitiesCompletionBlock;
 - (void)setUserIdentityDiscoveredBlock:(void *)userIdentityDiscoveredBlock;
 - (void)userIdentityDiscoveredBlock;
@@ -186,36 +186,36 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_userIdentityLookupInfos(self, v5, v6);
-  objc_msgSend_setUserIdentityLookupInfos_(v4, v8, v7);
+  objc_msgSend_setUserIdentityLookupInfos_(infoCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKDiscoverUserIdentitiesOperation;
-  [(CKOperation *)&v9 fillOutOperationInfo:v4];
+  [(CKOperation *)&v9 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CKDiscoverUserIdentitiesOperation;
-  v4 = a3;
-  [(CKOperation *)&v9 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_userIdentityLookupInfos(v4, v5, v6, v9.receiver, v9.super_class);
+  infoCopy = info;
+  [(CKOperation *)&v9 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_userIdentityLookupInfos(infoCopy, v5, v6, v9.receiver, v9.super_class);
 
   objc_msgSend_setUserIdentityLookupInfos_(self, v8, v7);
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v34 = *MEMORY[0x1E69E9840];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = objc_msgSend_userIdentityLookupInfos(self, a2, a3);
+  v5 = objc_msgSend_userIdentityLookupInfos(self, a2, run);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v29, v33, 16);
   if (v7)
   {
@@ -235,11 +235,11 @@ LABEL_9:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a3)
+          if (run)
           {
             v23 = objc_opt_class();
             v24 = NSStringFromClass(v23);
-            *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v25, @"CKErrorDomain", 12, @"Unexpected user identity lookup info passed to %@: %@", v24, v11);
+            *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v25, @"CKErrorDomain", 12, @"Unexpected user identity lookup info passed to %@: %@", v24, v11);
           }
 
           goto LABEL_15;
@@ -270,7 +270,7 @@ LABEL_9:
     {
       v28.receiver = self;
       v28.super_class = CKDiscoverUserIdentitiesOperation;
-      LOBYTE(v15) = [(CKOperation *)&v28 CKOperationShouldRun:a3];
+      LOBYTE(v15) = [(CKOperation *)&v28 CKOperationShouldRun:run];
     }
 
     else
@@ -284,11 +284,11 @@ LABEL_15:
   return v15;
 }
 
-- (void)handleUserIdentityDiscoveryForLookupInfo:(id)a3 userIdentity:(id)a4
+- (void)handleUserIdentityDiscoveryForLookupInfo:(id)info userIdentity:(id)identity
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  identityCopy = identity;
   if (self)
   {
     signpost = self->super._signpost;
@@ -332,29 +332,29 @@ LABEL_15:
     if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
     {
       v31 = 138412290;
-      v32 = v6;
+      v32 = infoCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v16, OS_SIGNPOST_EVENT, v21, "CKDiscoverUserIdentitiesOperation", "User identity discovered for %@", &v31, 0xCu);
     }
   }
 
   v22 = objc_msgSend_discoveredLookupInfos(self, v10, v11);
-  objc_msgSend_addObject_(v22, v23, v6);
+  objc_msgSend_addObject_(v22, v23, infoCopy);
 
   v26 = objc_msgSend_userIdentityDiscoveredBlock(self, v24, v25);
 
   if (v26)
   {
     v29 = objc_msgSend_userIdentityDiscoveredBlock(self, v27, v28);
-    (v29)[2](v29, v7, v6);
+    (v29)[2](v29, identityCopy, infoCopy);
   }
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -455,7 +455,7 @@ LABEL_15:
   if (v33)
   {
     v36 = objc_msgSend_discoverUserIdentitiesCompletionBlock(self, v34, v35);
-    v39 = objc_msgSend_CKClientSuitableError(v4, v37, v38);
+    v39 = objc_msgSend_CKClientSuitableError(errorCopy, v37, v38);
     (v36)[2](v36, v39);
 
     objc_msgSend_setDiscoverUserIdentitiesCompletionBlock_(self, v40, 0);
@@ -464,7 +464,7 @@ LABEL_15:
   objc_msgSend_setUserIdentityDiscoveredBlock_(self, v34, 0);
   v42.receiver = self;
   v42.super_class = CKDiscoverUserIdentitiesOperation;
-  [(CKOperation *)&v42 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v42 _finishOnCallbackQueueWithError:errorCopy];
 
   v41 = *MEMORY[0x1E69E9840];
 }
@@ -543,10 +543,10 @@ LABEL_15:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -590,7 +590,7 @@ LABEL_15:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKDiscoverUserIdentitiesOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }

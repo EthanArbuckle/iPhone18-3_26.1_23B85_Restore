@@ -9,16 +9,16 @@
 - (UIView)contentView;
 - (UIView)secondaryView;
 - (int64_t)contentViewLayout;
-- (void)setContentView:(id)a3;
-- (void)setContentViewLayout:(int64_t)a3;
-- (void)setDetailText:(id)a3;
-- (void)setHelpLinkTitle:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImageName:(id)a3;
-- (void)setPrimaryButton:(id)a3;
-- (void)setSecondaryButton:(id)a3;
-- (void)setSecondaryView:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setContentView:(id)view;
+- (void)setContentViewLayout:(int64_t)layout;
+- (void)setDetailText:(id)text;
+- (void)setHelpLinkTitle:(id)title;
+- (void)setImage:(id)image;
+- (void)setImageName:(id)name;
+- (void)setPrimaryButton:(id)button;
+- (void)setSecondaryButton:(id)button;
+- (void)setSecondaryView:(id)view;
+- (void)setTitle:(id)title;
 @end
 
 @implementation AAUIProtoAccountShieldUI
@@ -44,15 +44,15 @@
   return v5;
 }
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](name);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (name)
   {
     v4 = sub_1C5596574();
     v5 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](name);
     v6 = v4;
     v7 = v5;
   }
@@ -88,15 +88,15 @@
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](title);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (title)
   {
     v4 = sub_1C5596574();
     v5 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](title);
     v6 = v4;
     v7 = v5;
   }
@@ -132,15 +132,15 @@
   return v5;
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](text);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (text)
   {
     v4 = sub_1C5596574();
     v5 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](text);
     v6 = v4;
     v7 = v5;
   }
@@ -176,15 +176,15 @@
   return v5;
 }
 
-- (void)setPrimaryButton:(id)a3
+- (void)setPrimaryButton:(id)button
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](button);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (button)
   {
     v4 = sub_1C5596574();
     v5 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](button);
     v6 = v4;
     v7 = v5;
   }
@@ -220,15 +220,15 @@
   return v5;
 }
 
-- (void)setSecondaryButton:(id)a3
+- (void)setSecondaryButton:(id)button
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](button);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (button)
   {
     v4 = sub_1C5596574();
     v5 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](button);
     v6 = v4;
     v7 = v5;
   }
@@ -251,10 +251,10 @@
   return v4;
 }
 
-- (void)setContentViewLayout:(int64_t)a3
+- (void)setContentViewLayout:(int64_t)layout
 {
   MEMORY[0x1E69E5928](self);
-  sub_1C54653B4(a3);
+  sub_1C54653B4(layout);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -267,11 +267,11 @@
   return v4;
 }
 
-- (void)setSecondaryView:(id)a3
+- (void)setSecondaryView:(id)view
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](view);
   MEMORY[0x1E69E5928](self);
-  sub_1C546571C(a3);
+  sub_1C546571C(view);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -296,15 +296,15 @@
   return v5;
 }
 
-- (void)setHelpLinkTitle:(id)a3
+- (void)setHelpLinkTitle:(id)title
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](title);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (title)
   {
     v4 = sub_1C5596574();
     v5 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](title);
     v6 = v4;
     v7 = v5;
   }
@@ -328,11 +328,11 @@
   return v4;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](view);
   MEMORY[0x1E69E5928](self);
-  sub_1C5465F44(a3);
+  sub_1C5465F44(view);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -345,11 +345,11 @@
   return v4;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](image);
   MEMORY[0x1E69E5928](self);
-  sub_1C54662E8(a3);
+  sub_1C54662E8(image);
   MEMORY[0x1E69E5920](self);
 }
 

@@ -8,20 +8,20 @@
 
 - (NSString)crlaxShapeString
 {
-  v2 = [(CRLWPShapeItemAccessibility *)self crlaxContainedStorage];
-  v3 = [v2 crlaxString];
+  crlaxContainedStorage = [(CRLWPShapeItemAccessibility *)self crlaxContainedStorage];
+  crlaxString = [crlaxContainedStorage crlaxString];
 
-  return v3;
+  return crlaxString;
 }
 
 - (CRLWPStorageAccessibility)crlaxContainedStorage
 {
   v8 = 0;
-  v2 = [(CRLWPShapeItemAccessibility *)self crlaxTarget];
-  v3 = [v2 textStorage];
+  crlaxTarget = [(CRLWPShapeItemAccessibility *)self crlaxTarget];
+  textStorage = [crlaxTarget textStorage];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, textStorage, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -35,9 +35,9 @@
 - (id)crlaxTarget
 {
   v7 = 0;
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  v4 = __CRLAccessibilityCastAsClass(v3, v2, 1, &v7);
+  v4 = __CRLAccessibilityCastAsClass(v3, selfCopy, 1, &v7);
   if (v7 == 1)
   {
     abort();

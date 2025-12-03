@@ -1,7 +1,7 @@
 @interface PLModelMigrationAction_FixBlankPhotosFromVideoMode
 - (id)buildFetchRequest;
 - (id)startDate;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixBlankPhotosFromVideoMode
@@ -19,11 +19,11 @@
   return v5;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v90 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PLModelMigrationAction_FixBlankPhotosFromVideoMode *)self buildFetchRequest];
+  contextCopy = context;
+  buildFetchRequest = [(PLModelMigrationAction_FixBlankPhotosFromVideoMode *)self buildFetchRequest];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v49 = 0;
@@ -37,7 +37,7 @@
   v47[1] = 3221225472;
   v47[2] = __98__PLModelMigrationAction_FixBlankPhotosFromVideoMode_performActionWithManagedObjectContext_error___block_invoke;
   v47[3] = &unk_1E7575B30;
-  v10 = v5;
+  v10 = contextCopy;
   v48 = v10;
   v45[4] = &v49;
   v46[0] = MEMORY[0x1E69E9820];
@@ -50,7 +50,7 @@
   v45[1] = 3221225472;
   v45[2] = __98__PLModelMigrationAction_FixBlankPhotosFromVideoMode_performActionWithManagedObjectContext_error___block_invoke_3;
   v45[3] = &unk_1E756C620;
-  v11 = [(PLEnumerateAndSaveController *)v9 initWithName:v8 fetchRequest:v6 context:v10 options:4 generateContextBlock:v47 didFetchObjectIDsBlock:v46 processResultBlock:v45];
+  v11 = [(PLEnumerateAndSaveController *)v9 initWithName:v8 fetchRequest:buildFetchRequest context:v10 options:4 generateContextBlock:v47 didFetchObjectIDsBlock:v46 processResultBlock:v45];
   v44 = 0;
   v12 = [(PLEnumerateAndSaveController *)v11 processObjectsWithError:&v44];
   v42 = v44;
@@ -61,17 +61,17 @@
 
     if (v14)
     {
-      v15 = [(PLModelMigrationActionCore *)self logger];
-      v16 = v15 == 0;
+      logger = [(PLModelMigrationActionCore *)self logger];
+      v16 = logger == 0;
 
       if (v16)
       {
         v30 = PLMigrationGetLog();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
         {
-          v31 = [v50[5] completedUnitCount];
+          completedUnitCount = [v50[5] completedUnitCount];
           *buf = 134217984;
-          *&buf[4] = v31;
+          *&buf[4] = completedUnitCount;
           _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_INFO, "Completed photo recovery on %lu assets", buf, 0xCu);
         }
       }
@@ -111,9 +111,9 @@
         memset(buf, 0, sizeof(buf));
         v17 = PLMigrationGetLog();
         os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
-        v18 = [v50[5] completedUnitCount];
+        completedUnitCount2 = [v50[5] completedUnitCount];
         v55 = 134217984;
-        v56 = v18;
+        v56 = completedUnitCount2;
         LODWORD(v41) = 12;
         v19 = _os_log_send_and_compose_impl();
 
@@ -137,8 +137,8 @@
 
     if (v22)
     {
-      v23 = [(PLModelMigrationActionCore *)self logger];
-      v24 = v23 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v24 = logger2 == 0;
 
       if (v24)
       {
@@ -215,7 +215,7 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v36 = v42;
   v37 = v36;
-  if (a4)
+  if (error)
   {
     v38 = v12;
   }
@@ -228,7 +228,7 @@
   if ((v38 & 1) == 0)
   {
     v39 = v36;
-    *a4 = v37;
+    *error = v37;
   }
 
   _Block_object_dispose(&v49, 8);
@@ -250,8 +250,8 @@
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"adjustmentsState", 3];
   v16[2] = v9;
   v10 = MEMORY[0x1E696AE18];
-  v11 = [(PLModelMigrationAction_FixBlankPhotosFromVideoMode *)self startDate];
-  v12 = [v10 predicateWithFormat:@"%K >= %@", @"dateCreated", v11];
+  startDate = [(PLModelMigrationAction_FixBlankPhotosFromVideoMode *)self startDate];
+  v12 = [v10 predicateWithFormat:@"%K >= %@", @"dateCreated", startDate];
   v16[3] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:4];
   v14 = [v6 andPredicateWithSubpredicates:v13];

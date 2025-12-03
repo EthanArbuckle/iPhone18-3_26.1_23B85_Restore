@@ -1,7 +1,7 @@
 @interface PKPassShareActivationOverviewViewController
-- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithActivationOptions:(id)a3 recipient:(id)a4 delegate:(id)a5;
-- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithActivationOptions:(id)options recipient:(id)recipient delegate:(id)delegate;
+- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)closeButtonPressed;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -9,18 +9,18 @@
 
 @implementation PKPassShareActivationOverviewViewController
 
-- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithActivationOptions:(id)a3 recipient:(id)a4 delegate:(id)a5
+- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithActivationOptions:(id)options recipient:(id)recipient delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  recipientCopy = recipient;
   swift_unknownObjectRetain();
-  v8 = sub_1BDA6E3D0(v6, v7);
+  v8 = sub_1BDA6E3D0(optionsCopy, recipientCopy);
 
   swift_unknownObjectRelease();
   return v8;
 }
 
-- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9PassKitUI43PKPassShareActivationOverviewViewController_hostingController) = 0;
@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BDA6B0C8();
 }
 
@@ -48,11 +48,11 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BDA6B50C();
 }
 
-- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9PassKitUI43PKPassShareActivationOverviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

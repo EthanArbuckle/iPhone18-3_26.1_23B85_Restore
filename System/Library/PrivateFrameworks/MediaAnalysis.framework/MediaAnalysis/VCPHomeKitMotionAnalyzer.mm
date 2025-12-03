@@ -1,10 +1,10 @@
 @interface VCPHomeKitMotionAnalyzer
 - (VCPHomeKitMotionAnalyzer)init;
 - (id).cxx_construct;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
-- (int)calculateFrameDifference:(__CVBuffer *)a3;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
+- (int)calculateFrameDifference:(__CVBuffer *)difference;
 - (int)computeRegionsofInterest;
-- (int)setPixelBuffer:(__CVBuffer *)a3;
+- (int)setPixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 @end
 
@@ -19,9 +19,9 @@
   if (v2)
   {
     v2->_frameArray.__end_ = v2->_frameArray.__begin_;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     regions = v3->_regions;
-    v3->_regions = v4;
+    v3->_regions = array;
 
     v3->_diff = 0;
     v3->_ptrFirst = 0;
@@ -87,9 +87,9 @@
   [(VCPHomeKitMotionAnalyzer *)&v11 dealloc];
 }
 
-- (int)setPixelBuffer:(__CVBuffer *)a3
+- (int)setPixelBuffer:(__CVBuffer *)buffer
 {
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
   self->_stride = BytesPerRowOfPlane;
   v5 = self->_height * self->_width;
   if (v5 < 0)
@@ -134,12 +134,12 @@
   return result;
 }
 
-- (int)calculateFrameDifference:(__CVBuffer *)a3
+- (int)calculateFrameDifference:(__CVBuffer *)difference
 {
   v37 = *MEMORY[0x1E69E9840];
   v30 = 0;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(difference);
+  Height = CVPixelBufferGetHeight(difference);
   v7 = Height;
   if (self->_diff)
   {
@@ -148,7 +148,7 @@
       return -50;
     }
 
-    Scaler::Scale(&self->_scaler, a3, &v30, self->_width, self->_height, 875704438);
+    Scaler::Scale(&self->_scaler, difference, &v30, self->_width, self->_height, 875704438);
     v9 = v8;
     if (v8)
     {
@@ -180,7 +180,7 @@
     }
 
     self->_height = v11;
-    Scaler::Scale(&self->_scaler, a3, &v30, self->_width, v11, 875704438);
+    Scaler::Scale(&self->_scaler, difference, &v30, self->_width, v11, 875704438);
     v9 = v12;
     if (v12)
     {
@@ -629,10 +629,10 @@
   return 0;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
-  [(NSMutableArray *)self->_regions removeAllObjects:a3];
-  result = [(VCPHomeKitMotionAnalyzer *)self calculateFrameDifference:a3];
+  [(NSMutableArray *)self->_regions removeAllObjects:frame];
+  result = [(VCPHomeKitMotionAnalyzer *)self calculateFrameDifference:frame];
   if (!result)
   {
 

@@ -1,21 +1,21 @@
 @interface DEDDataTask
-- (DEDDataTask)initWithDataTask:(id)a3;
+- (DEDDataTask)initWithDataTask:(id)task;
 - (id)description;
 @end
 
 @implementation DEDDataTask
 
-- (DEDDataTask)initWithDataTask:(id)a3
+- (DEDDataTask)initWithDataTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v8.receiver = self;
   v8.super_class = DEDDataTask;
   v5 = [(DEDDataTask *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DEDDataTask *)v5 setDataTask:v4];
-    [v4 resume];
+    [(DEDDataTask *)v5 setDataTask:taskCopy];
+    [taskCopy resume];
   }
 
   return v6;
@@ -25,18 +25,18 @@
 {
   v16[4] = *MEMORY[0x277D85DE8];
   v15[0] = @"dataTask";
-  v3 = [(DEDDataTask *)self dataTask];
-  v16[0] = v3;
+  dataTask = [(DEDDataTask *)self dataTask];
+  v16[0] = dataTask;
   v15[1] = @"data";
-  v4 = [(DEDDataTask *)self data];
-  v16[1] = v4;
+  data = [(DEDDataTask *)self data];
+  v16[1] = data;
   v15[2] = @"response";
-  v5 = [(DEDDataTask *)self response];
-  v16[2] = v5;
+  response = [(DEDDataTask *)self response];
+  v16[2] = response;
   v15[3] = @"isFinished";
-  v6 = [(DEDDataTask *)self isFinished];
+  isFinished = [(DEDDataTask *)self isFinished];
   v7 = @"false";
-  if (v6)
+  if (isFinished)
   {
     v7 = @"true";
   }

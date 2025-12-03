@@ -1,7 +1,7 @@
 @interface VideoPlayerView
 + (Class)layerClass;
-- (_TtC20JournalWidgetsSecureP33_31F3567620D0C5010386072F9BB039BA15VideoPlayerView)initWithCoder:(id)a3;
-- (_TtC20JournalWidgetsSecureP33_31F3567620D0C5010386072F9BB039BA15VideoPlayerView)initWithFrame:(CGRect)a3;
+- (_TtC20JournalWidgetsSecureP33_31F3567620D0C5010386072F9BB039BA15VideoPlayerView)initWithCoder:(id)coder;
+- (_TtC20JournalWidgetsSecureP33_31F3567620D0C5010386072F9BB039BA15VideoPlayerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation VideoPlayerView
@@ -13,23 +13,23 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC20JournalWidgetsSecureP33_31F3567620D0C5010386072F9BB039BA15VideoPlayerView)initWithFrame:(CGRect)a3
+- (_TtC20JournalWidgetsSecureP33_31F3567620D0C5010386072F9BB039BA15VideoPlayerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for VideoPlayerView();
   return [(VideoPlayerView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC20JournalWidgetsSecureP33_31F3567620D0C5010386072F9BB039BA15VideoPlayerView)initWithCoder:(id)a3
+- (_TtC20JournalWidgetsSecureP33_31F3567620D0C5010386072F9BB039BA15VideoPlayerView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for VideoPlayerView();
-  v4 = a3;
-  v5 = [(VideoPlayerView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(VideoPlayerView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

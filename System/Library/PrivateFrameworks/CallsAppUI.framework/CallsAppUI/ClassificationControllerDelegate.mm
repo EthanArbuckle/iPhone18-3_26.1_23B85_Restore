@@ -1,17 +1,17 @@
 @interface ClassificationControllerDelegate
 - (_TtC10CallsAppUI32ClassificationControllerDelegate)init;
-- (void)controller:(id)a3 didCompleteClassificationRequest:(id)a4 withResponse:(id)a5;
+- (void)controller:(id)controller didCompleteClassificationRequest:(id)request withResponse:(id)response;
 @end
 
 @implementation ClassificationControllerDelegate
 
-- (void)controller:(id)a3 didCompleteClassificationRequest:(id)a4 withResponse:(id)a5
+- (void)controller:(id)controller didCompleteClassificationRequest:(id)request withResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1CFBD44D4(v9, a5);
+  controllerCopy = controller;
+  requestCopy = request;
+  responseCopy = response;
+  selfCopy = self;
+  sub_1CFBD44D4(requestCopy, response);
 }
 
 - (_TtC10CallsAppUI32ClassificationControllerDelegate)init

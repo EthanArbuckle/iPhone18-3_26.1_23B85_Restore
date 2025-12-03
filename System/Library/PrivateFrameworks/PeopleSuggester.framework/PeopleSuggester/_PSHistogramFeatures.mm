@@ -1,18 +1,18 @@
 @interface _PSHistogramFeatures
-+ (id)computeFactorNameForFeature:(id)a3;
-+ (id)fetchBucketNamesFromPredictionContextForFeatureName:(int)a3 predictionContext:(id)a4;
-+ (int)bucketCounttimeIntervalForFeatureName:(int)a3;
-+ (int)virtualFeatureToDurableFeatureSourceMapping:(int)a3;
++ (id)computeFactorNameForFeature:(id)feature;
++ (id)fetchBucketNamesFromPredictionContextForFeatureName:(int)name predictionContext:(id)context;
++ (int)bucketCounttimeIntervalForFeatureName:(int)name;
++ (int)virtualFeatureToDurableFeatureSourceMapping:(int)mapping;
 @end
 
 @implementation _PSHistogramFeatures
 
-+ (id)fetchBucketNamesFromPredictionContextForFeatureName:(int)a3 predictionContext:(id)a4
++ (id)fetchBucketNamesFromPredictionContextForFeatureName:(int)name predictionContext:(id)context
 {
   v100 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  contextCopy = context;
   v6 = objc_opt_new();
-  switch(a3)
+  switch(name)
   {
     case 524:
     case 525:
@@ -25,15 +25,15 @@
     case 532:
     case 533:
     case 644:
-      v7 = [v5 suggestionDate];
+      suggestionDate = [contextCopy suggestionDate];
 
-      if (v7)
+      if (suggestionDate)
       {
-        v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-        v9 = [v5 suggestionDate];
-        v10 = [v8 components:96 fromDate:v9];
+        currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+        suggestionDate2 = [contextCopy suggestionDate];
+        suggestionDate4 = [currentCalendar components:96 fromDate:suggestionDate2];
 
-        v11 = [v10 hour];
+        hour = [suggestionDate4 hour];
         goto LABEL_33;
       }
 
@@ -49,14 +49,14 @@
     case 542:
     case 543:
     case 645:
-      v58 = [v5 suggestionDate];
+      suggestionDate3 = [contextCopy suggestionDate];
 
-      if (v58)
+      if (suggestionDate3)
       {
-        v8 = [MEMORY[0x1E695DEE8] currentCalendar];
+        currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
         v59 = MEMORY[0x1E696AD98];
-        v10 = [v5 suggestionDate];
-        v31 = [v59 numberWithBool:{objc_msgSend(v8, "isDateInWeekend:", v10)}];
+        suggestionDate4 = [contextCopy suggestionDate];
+        v31 = [v59 numberWithBool:{objc_msgSend(currentCalendar, "isDateInWeekend:", suggestionDate4)}];
         goto LABEL_79;
       }
 
@@ -76,8 +76,8 @@
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v8 = [v5 locationUUIDs];
-      v53 = [v8 countByEnumeratingWithState:&v65 objects:v93 count:16];
+      currentCalendar = [contextCopy locationUUIDs];
+      v53 = [currentCalendar countByEnumeratingWithState:&v65 objects:v93 count:16];
       if (v53)
       {
         v54 = v53;
@@ -88,7 +88,7 @@
           {
             if (*v66 != v55)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(currentCalendar);
             }
 
             if (*(*(&v65 + 1) + 8 * i))
@@ -97,7 +97,7 @@
             }
           }
 
-          v54 = [v8 countByEnumeratingWithState:&v65 objects:v93 count:16];
+          v54 = [currentCalendar countByEnumeratingWithState:&v65 objects:v93 count:16];
         }
 
         while (v54);
@@ -119,8 +119,8 @@
       v92 = 0u;
       v89 = 0u;
       v90 = 0u;
-      v8 = [v5 attachments];
-      v43 = [v8 countByEnumeratingWithState:&v89 objects:v99 count:16];
+      currentCalendar = [contextCopy attachments];
+      v43 = [currentCalendar countByEnumeratingWithState:&v89 objects:v99 count:16];
       if (v43)
       {
         v44 = v43;
@@ -131,7 +131,7 @@
           {
             if (*v90 != v45)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(currentCalendar);
             }
 
             v47 = *(*(&v89 + 1) + 8 * j);
@@ -139,8 +139,8 @@
             v86 = 0u;
             v87 = 0u;
             v88 = 0u;
-            v48 = [v47 peopleInPhoto];
-            v49 = [v48 countByEnumeratingWithState:&v85 objects:v98 count:16];
+            peopleInPhoto = [v47 peopleInPhoto];
+            v49 = [peopleInPhoto countByEnumeratingWithState:&v85 objects:v98 count:16];
             if (v49)
             {
               v50 = v49;
@@ -151,7 +151,7 @@
                 {
                   if (*v86 != v51)
                   {
-                    objc_enumerationMutation(v48);
+                    objc_enumerationMutation(peopleInPhoto);
                   }
 
                   if (*(*(&v85 + 1) + 8 * k))
@@ -160,14 +160,14 @@
                   }
                 }
 
-                v50 = [v48 countByEnumeratingWithState:&v85 objects:v98 count:16];
+                v50 = [peopleInPhoto countByEnumeratingWithState:&v85 objects:v98 count:16];
               }
 
               while (v50);
             }
           }
 
-          v44 = [v8 countByEnumeratingWithState:&v89 objects:v99 count:16];
+          v44 = [currentCalendar countByEnumeratingWithState:&v89 objects:v99 count:16];
         }
 
         while (v44);
@@ -189,8 +189,8 @@
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v8 = [v5 attachments];
-      v32 = [v8 countByEnumeratingWithState:&v69 objects:v94 count:16];
+      currentCalendar = [contextCopy attachments];
+      v32 = [currentCalendar countByEnumeratingWithState:&v69 objects:v94 count:16];
       if (v32)
       {
         v33 = v32;
@@ -201,34 +201,34 @@
           {
             if (*v70 != v34)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(currentCalendar);
             }
 
             v36 = *(*(&v69 + 1) + 8 * m);
-            v37 = [v36 contentURL];
+            contentURL = [v36 contentURL];
 
-            if (v37)
+            if (contentURL)
             {
-              v38 = [v36 contentURL];
-              v39 = [v38 baseURL];
-              v40 = [v39 absoluteString];
+              contentURL2 = [v36 contentURL];
+              baseURL = [contentURL2 baseURL];
+              absoluteString = [baseURL absoluteString];
 
-              v41 = [v36 contentURL];
-              v42 = [v41 absoluteString];
+              contentURL3 = [v36 contentURL];
+              absoluteString2 = [contentURL3 absoluteString];
 
-              if (v40)
+              if (absoluteString)
               {
-                [v6 addObject:v40];
+                [v6 addObject:absoluteString];
               }
 
-              if (v42)
+              if (absoluteString2)
               {
-                [v6 addObject:v42];
+                [v6 addObject:absoluteString2];
               }
             }
           }
 
-          v33 = [v8 countByEnumeratingWithState:&v69 objects:v94 count:16];
+          v33 = [currentCalendar countByEnumeratingWithState:&v69 objects:v94 count:16];
         }
 
         while (v33);
@@ -246,15 +246,15 @@
     case 582:
     case 583:
     case 649:
-      v57 = [v5 bundleID];
+      bundleID = [contextCopy bundleID];
 
-      if (!v57)
+      if (!bundleID)
       {
         goto LABEL_81;
       }
 
-      v8 = [v5 bundleID];
-      [v6 addObject:v8];
+      currentCalendar = [contextCopy bundleID];
+      [v6 addObject:currentCalendar];
       break;
     case 604:
     case 605:
@@ -267,24 +267,24 @@
     case 612:
     case 613:
     case 652:
-      v29 = [v5 suggestionDate];
+      suggestionDate5 = [contextCopy suggestionDate];
 
-      if (!v29)
+      if (!suggestionDate5)
       {
         goto LABEL_81;
       }
 
-      v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v30 = [v5 suggestionDate];
-      v10 = [v8 components:512 fromDate:v30];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      suggestionDate6 = [contextCopy suggestionDate];
+      suggestionDate4 = [currentCalendar components:512 fromDate:suggestionDate6];
 
-      v11 = [v10 weekday];
+      hour = [suggestionDate4 weekday];
 LABEL_33:
-      v31 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
+      v31 = [MEMORY[0x1E696AD98] numberWithInteger:hour];
 LABEL_79:
       v60 = v31;
-      v61 = [v31 stringValue];
-      [v6 addObject:v61];
+      stringValue = [v31 stringValue];
+      [v6 addObject:stringValue];
 
       break;
     case 614:
@@ -302,8 +302,8 @@ LABEL_79:
       v84 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v8 = [v5 attachments];
-      v19 = [v8 countByEnumeratingWithState:&v81 objects:v97 count:16];
+      currentCalendar = [contextCopy attachments];
+      v19 = [currentCalendar countByEnumeratingWithState:&v81 objects:v97 count:16];
       if (v19)
       {
         v20 = v19;
@@ -314,7 +314,7 @@ LABEL_79:
           {
             if (*v82 != v21)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(currentCalendar);
             }
 
             v23 = *(*(&v81 + 1) + 8 * n);
@@ -322,8 +322,8 @@ LABEL_79:
             v78 = 0u;
             v79 = 0u;
             v80 = 0u;
-            v24 = [v23 photoSceneDescriptors];
-            v25 = [v24 countByEnumeratingWithState:&v77 objects:v96 count:16];
+            photoSceneDescriptors = [v23 photoSceneDescriptors];
+            v25 = [photoSceneDescriptors countByEnumeratingWithState:&v77 objects:v96 count:16];
             if (v25)
             {
               v26 = v25;
@@ -334,7 +334,7 @@ LABEL_79:
                 {
                   if (*v78 != v27)
                   {
-                    objc_enumerationMutation(v24);
+                    objc_enumerationMutation(photoSceneDescriptors);
                   }
 
                   if (*(*(&v77 + 1) + 8 * ii))
@@ -343,14 +343,14 @@ LABEL_79:
                   }
                 }
 
-                v26 = [v24 countByEnumeratingWithState:&v77 objects:v96 count:16];
+                v26 = [photoSceneDescriptors countByEnumeratingWithState:&v77 objects:v96 count:16];
               }
 
               while (v26);
             }
           }
 
-          v20 = [v8 countByEnumeratingWithState:&v81 objects:v97 count:16];
+          v20 = [currentCalendar countByEnumeratingWithState:&v81 objects:v97 count:16];
         }
 
         while (v20);
@@ -372,8 +372,8 @@ LABEL_79:
       v76 = 0u;
       v73 = 0u;
       v74 = 0u;
-      v8 = [v5 attachments];
-      v12 = [v8 countByEnumeratingWithState:&v73 objects:v95 count:16];
+      currentCalendar = [contextCopy attachments];
+      v12 = [currentCalendar countByEnumeratingWithState:&v73 objects:v95 count:16];
       if (v12)
       {
         v13 = v12;
@@ -384,7 +384,7 @@ LABEL_79:
           {
             if (*v74 != v14)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(currentCalendar);
             }
 
             v16 = *(*(&v73 + 1) + 8 * jj);
@@ -397,7 +397,7 @@ LABEL_79:
             }
           }
 
-          v13 = [v8 countByEnumeratingWithState:&v73 objects:v95 count:16];
+          v13 = [currentCalendar countByEnumeratingWithState:&v73 objects:v95 count:16];
         }
 
         while (v13);
@@ -409,46 +409,46 @@ LABEL_79:
   }
 
 LABEL_81:
-  v62 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
   v63 = *MEMORY[0x1E69E9840];
 
-  return v62;
+  return allObjects;
 }
 
-+ (int)bucketCounttimeIntervalForFeatureName:(int)a3
++ (int)bucketCounttimeIntervalForFeatureName:(int)name
 {
-  if ((a3 - 524) > 0x77)
+  if ((name - 524) > 0x77)
   {
     return 0;
   }
 
   else
   {
-    return dword_1B5FCAA40[a3 - 524];
+    return dword_1B5FCAA40[name - 524];
   }
 }
 
-+ (int)virtualFeatureToDurableFeatureSourceMapping:(int)a3
++ (int)virtualFeatureToDurableFeatureSourceMapping:(int)mapping
 {
-  if ((a3 - 524) > 0x83)
+  if ((mapping - 524) > 0x83)
   {
     return 0;
   }
 
   else
   {
-    return dword_1B5FCAC20[a3 - 524];
+    return dword_1B5FCAC20[mapping - 524];
   }
 }
 
-+ (id)computeFactorNameForFeature:(id)a3
++ (id)computeFactorNameForFeature:(id)feature
 {
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"SortedDescending"];
+  featureCopy = feature;
+  v4 = [featureCopy componentsSeparatedByString:@"SortedDescending"];
   if ([v4 count] == 2)
   {
-    v5 = [v3 componentsSeparatedByString:@"SortedDescending"];
+    v5 = [featureCopy componentsSeparatedByString:@"SortedDescending"];
     v6 = [v5 objectAtIndexedSubscript:1];
 
     v7 = [v6 componentsSeparatedByString:@"ShareEventList"];

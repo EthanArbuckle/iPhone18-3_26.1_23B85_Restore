@@ -1,39 +1,39 @@
 @interface ENTextMessage
-+ (id)textMessageWithMessage:(id)a3 embeddedURLs:(id)a4;
-- (ENTextMessage)initWithCoder:(id)a3;
-- (ENTextMessage)initWithMessage:(id)a3 embeddedURLs:(id)a4;
++ (id)textMessageWithMessage:(id)message embeddedURLs:(id)ls;
+- (ENTextMessage)initWithCoder:(id)coder;
+- (ENTextMessage)initWithMessage:(id)message embeddedURLs:(id)ls;
 - (NSString)signature;
 - (NSString)verificationString;
 - (NSURL)ensTestVerificationURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENTextMessage
 
-+ (id)textMessageWithMessage:(id)a3 embeddedURLs:(id)a4
++ (id)textMessageWithMessage:(id)message embeddedURLs:(id)ls
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ENTextMessage alloc] initWithMessage:v6 embeddedURLs:v5];
+  lsCopy = ls;
+  messageCopy = message;
+  v7 = [[ENTextMessage alloc] initWithMessage:messageCopy embeddedURLs:lsCopy];
 
   return v7;
 }
 
-- (ENTextMessage)initWithMessage:(id)a3 embeddedURLs:(id)a4
+- (ENTextMessage)initWithMessage:(id)message embeddedURLs:(id)ls
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  lsCopy = ls;
   v12.receiver = self;
   v12.super_class = ENTextMessage;
   v8 = [(ENTextMessage *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(ENTextMessage *)v8 setMessage:v6];
-    [(ENTextMessage *)v9 setEmbeddedURLs:v7];
-    v10 = [(ENTextMessage *)v9 ensTestVerificationURL];
+    [(ENTextMessage *)v8 setMessage:messageCopy];
+    [(ENTextMessage *)v9 setEmbeddedURLs:lsCopy];
+    ensTestVerificationURL = [(ENTextMessage *)v9 ensTestVerificationURL];
   }
 
   return v9;
@@ -54,31 +54,31 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_message forKey:@"textMessage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_message forKey:@"textMessage"];
   embeddedURLs = self->_embeddedURLs;
   if (embeddedURLs)
   {
-    [v5 encodeObject:embeddedURLs forKey:@"textMessageURLs"];
+    [coderCopy encodeObject:embeddedURLs forKey:@"textMessageURLs"];
   }
 }
 
-- (ENTextMessage)initWithCoder:(id)a3
+- (ENTextMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textMessage"];
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"textMessageURLs"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textMessage"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"textMessageURLs"];
 
   v7 = [objc_opt_class() textMessageWithMessage:v5 embeddedURLs:v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   message = self->_message;
   embeddedURLs = self->_embeddedURLs;
 
@@ -90,13 +90,13 @@
   ensTestVerificationURL = self->_ensTestVerificationURL;
   if (!ensTestVerificationURL)
   {
-    v4 = [(ENTextMessage *)self embeddedURLs];
+    embeddedURLs = [(ENTextMessage *)self embeddedURLs];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __39__ENTextMessage_ensTestVerificationURL__block_invoke;
     v7[3] = &unk_278A4B660;
     v7[4] = self;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [embeddedURLs enumerateObjectsUsingBlock:v7];
 
     ensTestVerificationURL = self->_ensTestVerificationURL;
   }
@@ -215,8 +215,8 @@ LABEL_8:
 
 - (NSString)verificationString
 {
-  v2 = [(ENTextMessage *)self message];
-  v3 = [v2 rangeOfString:@"Authentication:" options:4];
+  message = [(ENTextMessage *)self message];
+  v3 = [message rangeOfString:@"Authentication:" options:4];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -224,7 +224,7 @@ LABEL_8:
 
   else
   {
-    v5 = [v2 substringToIndex:v3 + v4];
+    v5 = [message substringToIndex:v3 + v4];
   }
 
   return v5;
@@ -232,8 +232,8 @@ LABEL_8:
 
 - (NSString)signature
 {
-  v2 = [(ENTextMessage *)self message];
-  v3 = [v2 rangeOfString:@":" options:4];
+  message = [(ENTextMessage *)self message];
+  v3 = [message rangeOfString:@":" options:4];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -241,7 +241,7 @@ LABEL_8:
 
   else
   {
-    v5 = [v2 substringFromIndex:v3 + v4];
+    v5 = [message substringFromIndex:v3 + v4];
   }
 
   return v5;

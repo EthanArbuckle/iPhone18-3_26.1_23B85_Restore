@@ -1,26 +1,26 @@
 @interface MPSNDArrayScanGradient
-- (MPSNDArrayScanGradient)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayScanGradient)initWithDevice:(id)a3;
-- (MPSNDArrayScanGradient)initWithDevice:(id)a3 axis:(unint64_t)a4 operation:(int)a5 exclusive:(BOOL)a6 reverse:(BOOL)a7;
+- (MPSNDArrayScanGradient)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayScanGradient)initWithDevice:(id)device;
+- (MPSNDArrayScanGradient)initWithDevice:(id)device axis:(unint64_t)axis operation:(int)operation exclusive:(BOOL)exclusive reverse:(BOOL)reverse;
 @end
 
 @implementation MPSNDArrayScanGradient
 
-- (MPSNDArrayScanGradient)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayScanGradient)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayScanGradient;
-  return [(MPSNDArrayUnaryGradientKernel *)&v5 initWithCoder:a3 device:a4];
+  return [(MPSNDArrayUnaryGradientKernel *)&v5 initWithCoder:coder device:device];
 }
 
-- (MPSNDArrayScanGradient)initWithDevice:(id)a3
+- (MPSNDArrayScanGradient)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayScanGradient;
-  return [(MPSNDArrayUnaryGradientKernel *)&v4 initWithDevice:a3];
+  return [(MPSNDArrayUnaryGradientKernel *)&v4 initWithDevice:device];
 }
 
-- (MPSNDArrayScanGradient)initWithDevice:(id)a3 axis:(unint64_t)a4 operation:(int)a5 exclusive:(BOOL)a6 reverse:(BOOL)a7
+- (MPSNDArrayScanGradient)initWithDevice:(id)device axis:(unint64_t)axis operation:(int)operation exclusive:(BOOL)exclusive reverse:(BOOL)reverse
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -29,14 +29,14 @@
 
   v14.receiver = self;
   v14.super_class = MPSNDArrayScanGradient;
-  result = [(MPSNDArrayUnaryGradientKernel *)&v14 initWithDevice:a3];
+  result = [(MPSNDArrayUnaryGradientKernel *)&v14 initWithDevice:device];
   if (result)
   {
     result->super.super.super._encodeGradient = EncodeScanGradient;
-    result->_operation = a5;
-    result->_axis = a4;
-    result->_exclusive = a6;
-    result->_reverse = !a7;
+    result->_operation = operation;
+    result->_axis = axis;
+    result->_exclusive = exclusive;
+    result->_reverse = !reverse;
   }
 
   return result;

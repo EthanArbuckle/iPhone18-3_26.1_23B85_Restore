@@ -1,27 +1,27 @@
 @interface PDDevEndpointServer
-- (BOOL)copyClass:(id)a3 fromDB:(id)a4 toDB:(id)a5;
-- (BOOL)copyHandout:(id)a3 fromDB:(id)a4 toDB:(id)a5;
-- (BOOL)insertDefaultCollaborationStatesFor:(id)a3 forClassID:(id)a4 toPersonIDs:(id)a5 fromPersonID:(id)a6;
+- (BOOL)copyClass:(id)class fromDB:(id)b toDB:(id)dB;
+- (BOOL)copyHandout:(id)handout fromDB:(id)b toDB:(id)dB;
+- (BOOL)insertDefaultCollaborationStatesFor:(id)for forClassID:(id)d toPersonIDs:(id)ds fromPersonID:(id)iD;
 - (PDDatabase)studentDB;
 - (PDDatabase)teacherDB;
-- (id)_applyCollaborationStateChanges:(id)a3;
-- (id)_createHandoutAssignedItemFrom:(id)a3 withError:(id *)a4;
+- (id)_applyCollaborationStateChanges:(id)changes;
+- (id)_createHandoutAssignedItemFrom:(id)from withError:(id *)error;
 - (id)database;
 - (id)statusReport;
 - (void)generateReports;
-- (void)handleCollaborationStateChangesForMarkActivityAsComplete:(id)a3;
-- (void)populateDevDB:(id)a3 forStudent:(BOOL)a4;
-- (void)processSavedObjects:(id)a3;
-- (void)remote_deleteAdminRequestID:(id)a3 completion:(id)a4;
-- (void)remote_fetchAndCompleteActiveAssignedActivitiesForContextPath:(id)a3 withCompletion:(id)a4;
-- (void)remote_fetchHandoutAttachmentForDocumentURL:(id)a3 withCompletion:(id)a4;
-- (void)remote_publishAdminRequests:(id)a3 withRequestor:(id)a4 adminRequestAccounts:(id)a5 completion:(id)a6;
-- (void)remote_publishClass:(id)a3 membersToInsert:(id)a4 membersToDelete:(id)a5 completion:(id)a6;
-- (void)remote_publishCollaborationStateChanges:(id)a3 completion:(id)a4;
-- (void)remote_publishHandoutGraph:(id)a3 completion:(id)a4;
-- (void)remote_publishSurveyAnswers:(id)a3 completion:(id)a4;
-- (void)remote_saveObjects:(id)a3 saveResponse:(id)a4 completion:(id)a5;
-- (void)remote_validateAndCreateHandoutAssignedItem:(id)a3 withCompletion:(id)a4;
+- (void)handleCollaborationStateChangesForMarkActivityAsComplete:(id)complete;
+- (void)populateDevDB:(id)b forStudent:(BOOL)student;
+- (void)processSavedObjects:(id)objects;
+- (void)remote_deleteAdminRequestID:(id)d completion:(id)completion;
+- (void)remote_fetchAndCompleteActiveAssignedActivitiesForContextPath:(id)path withCompletion:(id)completion;
+- (void)remote_fetchHandoutAttachmentForDocumentURL:(id)l withCompletion:(id)completion;
+- (void)remote_publishAdminRequests:(id)requests withRequestor:(id)requestor adminRequestAccounts:(id)accounts completion:(id)completion;
+- (void)remote_publishClass:(id)class membersToInsert:(id)insert membersToDelete:(id)delete completion:(id)completion;
+- (void)remote_publishCollaborationStateChanges:(id)changes completion:(id)completion;
+- (void)remote_publishHandoutGraph:(id)graph completion:(id)completion;
+- (void)remote_publishSurveyAnswers:(id)answers completion:(id)completion;
+- (void)remote_saveObjects:(id)objects saveResponse:(id)response completion:(id)completion;
+- (void)remote_validateAndCreateHandoutAssignedItem:(id)item withCompletion:(id)completion;
 @end
 
 @implementation PDDevEndpointServer
@@ -30,27 +30,27 @@
 {
   v4.receiver = self;
   v4.super_class = PDDevEndpointServer;
-  v2 = [(PDEndpointServer *)&v4 statusReport];
-  [v2 setObject:&__kCFBooleanTrue forKeyedSubscript:@"is connected as dev"];
+  statusReport = [(PDEndpointServer *)&v4 statusReport];
+  [statusReport setObject:&__kCFBooleanTrue forKeyedSubscript:@"is connected as dev"];
 
-  return v2;
+  return statusReport;
 }
 
-- (void)remote_publishClass:(id)a3 membersToInsert:(id)a4 membersToDelete:(id)a5 completion:(id)a6
+- (void)remote_publishClass:(id)class membersToInsert:(id)insert membersToDelete:(id)delete completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  classCopy = class;
+  insertCopy = insert;
+  deleteCopy = delete;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v15 = [(PDDevEndpointServer *)self database];
-  v16 = [(PDEndpointServer *)self daemon];
-  v17 = [v16 mode];
+  database = [(PDDevEndpointServer *)self database];
+  daemon = [(PDEndpointServer *)self daemon];
+  mode = [daemon mode];
 
-  v18 = [(PDEndpointServer *)self client];
-  if (v18)
+  client = [(PDEndpointServer *)self client];
+  if (client)
   {
-    v19 = v18[26];
+    v19 = client[26];
   }
 
   else
@@ -58,20 +58,20 @@
     v19 = 0;
   }
 
-  if (v15)
+  if (database)
   {
-    v20 = sub_1000717E8(v15);
-    if (((v17 == 2) & v19) == 1 && (v20 & 2) != 0)
+    v20 = sub_1000717E8(database);
+    if (((mode == 2) & v19) == 1 && (v20 & 2) != 0)
     {
-      v21 = [(PDEndpointServer *)self client];
-      v22 = sub_1000B2528(v21);
+      client2 = [(PDEndpointServer *)self client];
+      v22 = sub_1000B2528(client2);
 
       v43[0] = 0;
       v43[1] = v43;
       v43[2] = 0x3032000000;
       v43[3] = sub_1000BAD08;
       v43[4] = sub_1000BAD18;
-      v23 = v11;
+      v23 = classCopy;
       v44 = v23;
       v33 = _NSConcreteStackBlock;
       v34 = 3221225472;
@@ -80,10 +80,10 @@
       v42 = v43;
       v24 = v22;
       v37 = v24;
-      v25 = v15;
+      v25 = database;
       v38 = v25;
-      v39 = v13;
-      v40 = v12;
+      v39 = deleteCopy;
+      v40 = insertCopy;
       v26 = v23;
       v41 = v26;
       v27 = [v25 performTransaction:&v33 forWriting:1];
@@ -98,7 +98,7 @@ LABEL_8:
           v30 = 0;
           v31 = 1;
 LABEL_12:
-          v14[2](v14, v31, v30);
+          completionCopy[2](completionCopy, v31, v30);
 
           _Block_object_dispose(v43, 8);
           goto LABEL_13;
@@ -117,25 +117,25 @@ LABEL_12:
   }
 
   v32 = [NSError cls_createErrorWithCode:4 description:@"Creating classes not allowed."];
-  v14[2](v14, 0, v32);
+  completionCopy[2](completionCopy, 0, v32);
 
 LABEL_13:
 }
 
-- (void)remote_publishHandoutGraph:(id)a3 completion:(id)a4
+- (void)remote_publishHandoutGraph:(id)graph completion:(id)completion
 {
-  v41 = a3;
-  v42 = a4;
+  graphCopy = graph;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v43 = self;
-  v44 = [(PDDevEndpointServer *)self database];
-  v7 = [(PDEndpointServer *)self daemon];
-  v8 = [v7 mode];
+  selfCopy = self;
+  database = [(PDDevEndpointServer *)self database];
+  daemon = [(PDEndpointServer *)self daemon];
+  mode = [daemon mode];
 
-  v9 = [(PDEndpointServer *)self client];
-  if (v9)
+  client = [(PDEndpointServer *)self client];
+  if (client)
   {
-    v10 = v9[26];
+    v10 = client[26];
   }
 
   else
@@ -143,33 +143,33 @@ LABEL_13:
     v10 = 0;
   }
 
-  if (v44)
+  if (database)
   {
-    v11 = sub_1000717E8(v44);
-    if (((v8 == 2) & v10) == 1 && (v11 & 2) != 0)
+    v11 = sub_1000717E8(database);
+    if (((mode == 2) & v10) == 1 && (v11 & 2) != 0)
     {
       v79 = 0;
-      v12 = [(PDDevEndpointServer *)v43 validateHandoutGraph:v41 error:&v79];
+      v12 = [(PDDevEndpointServer *)selfCopy validateHandoutGraph:graphCopy error:&v79];
       v13 = v79;
       v40 = v13;
       if ((v12 & 1) == 0)
       {
-        v42[2](v42, 0, v13);
+        completionCopy[2](completionCopy, 0, v13);
 LABEL_28:
 
         goto LABEL_29;
       }
 
-      v14 = [(PDEndpointServer *)v43 client];
-      v39 = sub_1000B2528(v14);
+      client2 = [(PDEndpointServer *)selfCopy client];
+      v39 = sub_1000B2528(client2);
 
       v77[0] = 0;
       v77[1] = v77;
       v77[2] = 0x3032000000;
       v77[3] = sub_1000BAD08;
       v77[4] = sub_1000BAD18;
-      v15 = sub_1000711FC(v44);
-      v78 = [v15 objectID];
+      v15 = sub_1000711FC(database);
+      objectID = [v15 objectID];
 
       v71 = 0;
       v72 = &v71;
@@ -187,7 +187,7 @@ LABEL_28:
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v16 = v41;
+      v16 = graphCopy;
       v17 = [v16 countByEnumeratingWithState:&v61 objects:v81 count:16];
       if (v17)
       {
@@ -206,22 +206,22 @@ LABEL_28:
             if (objc_opt_isKindOfClass())
             {
               v21 = v20;
-              v22 = [v21 personID];
+              personID = [v21 personID];
 
-              if (v22)
+              if (personID)
               {
                 v23 = v66[5];
-                v24 = [v21 personID];
-                [v23 addObject:v24];
+                personID2 = [v21 personID];
+                [v23 addObject:personID2];
               }
 
-              v25 = [v21 classID];
+              classID = [v21 classID];
 
-              if (v25)
+              if (classID)
               {
-                v26 = [v21 classID];
+                classID2 = [v21 classID];
                 v27 = v72[5];
-                v72[5] = v26;
+                v72[5] = classID2;
 
                 v80[0] = v72[5];
                 v80[1] = &off_10021B6F0;
@@ -232,7 +232,7 @@ LABEL_28:
                 v60[2] = sub_1000BB61C;
                 v60[3] = &unk_1002045C8;
                 v60[4] = &v65;
-                [v44 selectAll:v29 where:@"parentObjectID = ? AND roles = ?" bindings:v28 block:v60];
+                [database selectAll:v29 where:@"parentObjectID = ? AND roles = ?" bindings:v28 block:v60];
               }
             }
           }
@@ -257,9 +257,9 @@ LABEL_28:
       v50 = &v54;
       v30 = v39;
       v47 = v30;
-      v31 = v44;
+      v31 = database;
       v48 = v31;
-      v49 = v43;
+      v49 = selfCopy;
       v51 = &v71;
       v52 = &v65;
       v53 = v77;
@@ -267,8 +267,8 @@ LABEL_28:
       v33 = v55[5];
       if (v33)
       {
-        v34 = [(PDDevEndpointServer *)v43 studentDB];
-        v35 = [(PDDevEndpointServer *)v43 copyHandout:v33 fromDB:v31 toDB:v34];
+        studentDB = [(PDDevEndpointServer *)selfCopy studentDB];
+        v35 = [(PDDevEndpointServer *)selfCopy copyHandout:v33 fromDB:v31 toDB:studentDB];
 
         if (v35)
         {
@@ -276,7 +276,7 @@ LABEL_22:
           v36 = 0;
           v37 = 1;
 LABEL_27:
-          v42[2](v42, v37, v36);
+          completionCopy[2](completionCopy, v37, v36);
 
           _Block_object_dispose(&v54, 8);
           _Block_object_dispose(&v65, 8);
@@ -300,32 +300,32 @@ LABEL_27:
   }
 
   v38 = [NSError cls_createErrorWithCode:4 description:@"Publishing handouts not allowed."];
-  v42[2](v42, 0, v38);
+  completionCopy[2](completionCopy, 0, v38);
 
 LABEL_29:
 }
 
-- (BOOL)copyHandout:(id)a3 fromDB:(id)a4 toDB:(id)a5
+- (BOOL)copyHandout:(id)handout fromDB:(id)b toDB:(id)dB
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 insertOrUpdateObject:v7])
+  handoutCopy = handout;
+  bCopy = b;
+  dBCopy = dB;
+  if ([dBCopy insertOrUpdateObject:handoutCopy])
   {
     v100[0] = 0;
     v100[1] = v100;
     v100[2] = 0x3032000000;
     v100[3] = sub_1000BAD08;
     v100[4] = sub_1000BAD18;
-    v10 = sub_1000711FC(v9);
-    v101 = [v10 objectID];
+    v10 = sub_1000711FC(dBCopy);
+    objectID = [v10 objectID];
 
     v96 = 0;
     v97 = &v96;
     v98 = 0x2020000000;
     v99 = 0;
-    v11 = [v7 objectID];
-    v102 = v11;
+    objectID2 = [handoutCopy objectID];
+    v102 = objectID2;
     v12 = [NSArray arrayWithObjects:&v102 count:1];
 
     v13 = objc_opt_class();
@@ -334,9 +334,9 @@ LABEL_29:
     v93[2] = sub_1000BC55C;
     v93[3] = &unk_100204618;
     v95 = &v96;
-    v14 = v9;
+    v14 = dBCopy;
     v94 = v14;
-    [v8 selectAll:v13 where:@"parentObjectID = ?" bindings:v12 block:v93];
+    [bCopy selectAll:v13 where:@"parentObjectID = ?" bindings:v12 block:v93];
     if (v97[3])
     {
       v15 = 0;
@@ -348,8 +348,8 @@ LABEL_29:
       v17 = objc_opt_new();
       v18 = objc_opt_new();
       v19 = objc_opt_new();
-      v20 = [v7 objectID];
-      [v17 addObject:v20];
+      objectID3 = [handoutCopy objectID];
+      [v17 addObject:objectID3];
 
       v21 = objc_opt_class();
       v87[0] = _NSConcreteStackBlock;
@@ -365,7 +365,7 @@ LABEL_29:
       v90 = v24;
       v25 = v19;
       v91 = v25;
-      [v8 selectAll:v21 where:@"parentObjectID = ?" bindings:v12 block:v87];
+      [bCopy selectAll:v21 where:@"parentObjectID = ?" bindings:v12 block:v87];
       if (v97[3])
       {
         v15 = 0;
@@ -382,7 +382,7 @@ LABEL_29:
         v86 = &v96;
         v50 = v22;
         v85 = v50;
-        [v8 selectAll:v26 where:@"parentObjectID = ?" bindings:v12 block:v84];
+        [bCopy selectAll:v26 where:@"parentObjectID = ?" bindings:v12 block:v84];
         if (v97[3])
         {
           v15 = 0;
@@ -402,7 +402,7 @@ LABEL_29:
             v83 = &v96;
             v81 = v50;
             v82 = v23;
-            [v8 selectAll:v28 where:v27 bindings:v24 block:v80];
+            [bCopy selectAll:v28 where:v27 bindings:v24 block:v80];
           }
 
           else
@@ -423,7 +423,7 @@ LABEL_29:
             v79 = &v96;
             v77 = v50;
             v78 = v49;
-            [v8 selectAll:v30 where:v29 bindings:v25 block:v76];
+            [bCopy selectAll:v30 where:v29 bindings:v25 block:v76];
           }
 
           else
@@ -449,7 +449,7 @@ LABEL_29:
             v72 = v48;
             v73 = v45;
             v74 = v47;
-            [v8 selectAll:v32 where:v31 bindings:v49 block:v69];
+            [bCopy selectAll:v32 where:v31 bindings:v49 block:v69];
           }
 
           else
@@ -470,7 +470,7 @@ LABEL_29:
             v68 = &v96;
             v66 = v50;
             v67 = v33;
-            [v8 selectAll:v35 where:v34 bindings:v48 block:v65];
+            [bCopy selectAll:v35 where:v34 bindings:v48 block:v65];
           }
 
           else
@@ -489,7 +489,7 @@ LABEL_29:
             v62[3] = &unk_100204618;
             v64 = &v96;
             v63 = v50;
-            [v8 selectAll:v37 where:v36 bindings:v47 block:v62];
+            [bCopy selectAll:v37 where:v36 bindings:v47 block:v62];
           }
 
           else
@@ -508,7 +508,7 @@ LABEL_29:
             v59[3] = &unk_100204618;
             v61 = &v96;
             v60 = v50;
-            [v8 selectAll:v39 where:v38 bindings:v46 block:v59];
+            [bCopy selectAll:v39 where:v38 bindings:v46 block:v59];
           }
 
           else
@@ -528,7 +528,7 @@ LABEL_29:
             v58 = &v96;
             v56 = v50;
             v57 = v23;
-            [v8 selectAll:v41 where:v40 bindings:v33 block:v55];
+            [bCopy selectAll:v41 where:v40 bindings:v33 block:v55];
           }
 
           else
@@ -548,7 +548,7 @@ LABEL_29:
             v53 = v100;
             v54 = &v96;
             v52 = v50;
-            [v8 selectAll:v42 where:v16 bindings:v23 block:v51];
+            [bCopy selectAll:v42 where:v16 bindings:v23 block:v51];
           }
 
           else
@@ -575,19 +575,19 @@ LABEL_29:
   return v15 & 1;
 }
 
-- (BOOL)copyClass:(id)a3 fromDB:(id)a4 toDB:(id)a5
+- (BOOL)copyClass:(id)class fromDB:(id)b toDB:(id)dB
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 insertOrUpdateObject:v7])
+  classCopy = class;
+  bCopy = b;
+  dBCopy = dB;
+  if ([dBCopy insertOrUpdateObject:classCopy])
   {
     v24 = 0;
     v25 = &v24;
     v26 = 0x2020000000;
     v27 = 0;
-    v10 = [v7 objectID];
-    v28 = v10;
+    objectID = [classCopy objectID];
+    v28 = objectID;
     v11 = [NSArray arrayWithObjects:&v28 count:1];
 
     v12 = objc_opt_class();
@@ -596,9 +596,9 @@ LABEL_29:
     v21[2] = sub_1000BCE14;
     v21[3] = &unk_100204618;
     v23 = &v24;
-    v13 = v9;
+    v13 = dBCopy;
     v22 = v13;
-    [v8 selectAll:v12 where:@"parentObjectID = ?" bindings:v11 block:v21];
+    [bCopy selectAll:v12 where:@"parentObjectID = ?" bindings:v11 block:v21];
     if (v25[3])
     {
       v14 = 0;
@@ -613,7 +613,7 @@ LABEL_29:
       v18[3] = &unk_100204780;
       v20 = &v24;
       v19 = v13;
-      [v8 selectAll:v15 where:@"parentObjectID = ?" bindings:v11 block:v18];
+      [bCopy selectAll:v15 where:@"parentObjectID = ?" bindings:v11 block:v18];
       v16 = *(v25 + 24);
 
       v14 = v16 ^ 1;
@@ -630,33 +630,33 @@ LABEL_29:
   return v14 & 1;
 }
 
-- (void)remote_saveObjects:(id)a3 saveResponse:(id)a4 completion:(id)a5
+- (void)remote_saveObjects:(id)objects saveResponse:(id)response completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(PDDevEndpointServer *)self processSavedObjects:v10];
+  completionCopy = completion;
+  responseCopy = response;
+  objectsCopy = objects;
+  [(PDDevEndpointServer *)self processSavedObjects:objectsCopy];
   v11.receiver = self;
   v11.super_class = PDDevEndpointServer;
-  [(PDEndpointServer *)&v11 remote_saveObjects:v10 saveResponse:v9 completion:v8];
+  [(PDEndpointServer *)&v11 remote_saveObjects:objectsCopy saveResponse:responseCopy completion:completionCopy];
 
   [(PDDevEndpointServer *)self generateReports];
 }
 
-- (void)processSavedObjects:(id)a3
+- (void)processSavedObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [(PDEndpointServer *)self daemon];
-  v6 = [v5 mode];
+  objectsCopy = objects;
+  daemon = [(PDEndpointServer *)self daemon];
+  mode = [daemon mode];
 
-  if (v6 == 2)
+  if (mode == 2)
   {
-    v7 = [(PDDevEndpointServer *)self studentDB];
+    studentDB = [(PDDevEndpointServer *)self studentDB];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v15 = v4;
+    v15 = objectsCopy;
     v16 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v16)
     {
@@ -672,9 +672,9 @@ LABEL_29:
           }
 
           v20 = *(*(&v21 + 1) + 8 * i);
-          if ([v20 canCopyToDatabase:{v7, v21}])
+          if ([v20 canCopyToDatabase:{studentDB, v21}])
           {
-            [v20 writeInDatabase:v7];
+            [v20 writeInDatabase:studentDB];
           }
         }
 
@@ -687,14 +687,14 @@ LABEL_29:
 LABEL_28:
   }
 
-  else if (v6 == 1)
+  else if (mode == 1)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = v4;
-    v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    studentDB = objectsCopy;
+    v8 = [studentDB countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (!v8)
     {
       goto LABEL_28;
@@ -708,7 +708,7 @@ LABEL_28:
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(studentDB);
         }
 
         v12 = *(*(&v25 + 1) + 8 * j);
@@ -733,7 +733,7 @@ LABEL_13:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v9 = [studentDB countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (!v9)
       {
         goto LABEL_28;
@@ -744,56 +744,56 @@ LABEL_13:
 
 - (void)generateReports
 {
-  v3 = [(PDEndpointServer *)self daemon];
-  v4 = [v3 mode];
+  daemon = [(PDEndpointServer *)self daemon];
+  mode = [daemon mode];
 
-  if (v4 == 1)
+  if (mode == 1)
   {
-    v5 = [(PDDevEndpointServer *)self studentDB];
-    v6 = [(PDDevEndpointServer *)self teacherDB];
+    studentDB = [(PDDevEndpointServer *)self studentDB];
+    teacherDB = [(PDDevEndpointServer *)self teacherDB];
     v7 = objc_opt_class();
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000BD27C;
     v10[3] = &unk_1002047A8;
-    v11 = v5;
-    v12 = v6;
-    v8 = v6;
-    v9 = v5;
+    v11 = studentDB;
+    v12 = teacherDB;
+    v8 = teacherDB;
+    v9 = studentDB;
     [v9 selectAll:v7 block:v10];
   }
 }
 
-- (id)_applyCollaborationStateChanges:(id)a3
+- (id)_applyCollaborationStateChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PDDevEndpointServer *)self database];
-  v6 = sub_1000711FC(v5);
+  changesCopy = changes;
+  database = [(PDDevEndpointServer *)self database];
+  v6 = sub_1000711FC(database);
 
   if (v6)
   {
-    v7 = sub_1000711FC(v5);
-    v31 = [v7 objectID];
+    v7 = sub_1000711FC(database);
+    objectID = [v7 objectID];
 
-    v8 = [(PDDevEndpointServer *)self teacherDB];
-    v9 = sub_1000711FC(v8);
-    v35 = [v9 objectID];
+    teacherDB = [(PDDevEndpointServer *)self teacherDB];
+    v9 = sub_1000711FC(teacherDB);
+    objectID2 = [v9 objectID];
 
     v38 = objc_opt_new();
     v37 = objc_opt_new();
     v10 = objc_opt_new();
-    v11 = sub_1000711FC(v5);
+    v11 = sub_1000711FC(database);
 
     if (v11)
     {
-      v28 = self;
-      v29 = v5;
+      selfCopy = self;
+      v29 = database;
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v30 = v4;
-      obj = v4;
+      v30 = changesCopy;
+      obj = changesCopy;
       v34 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
       if (v34)
       {
@@ -810,28 +810,28 @@ LABEL_13:
 
             v36 = v12;
             v13 = *(*(&v43 + 1) + 8 * v12);
-            v14 = [v13 senderPersonID];
+            senderPersonID = [v13 senderPersonID];
 
-            if (!v14)
+            if (!senderPersonID)
             {
-              [v13 setSenderPersonID:v31];
+              [v13 setSenderPersonID:objectID];
             }
 
-            v15 = [v13 senderPersonID];
-            v16 = v15;
-            v17 = (v35 | v15) == 0;
-            if (v35 && v15)
+            senderPersonID2 = [v13 senderPersonID];
+            v16 = senderPersonID2;
+            v17 = (objectID2 | senderPersonID2) == 0;
+            if (objectID2 && senderPersonID2)
             {
-              v18 = [v13 senderPersonID];
-              v17 = [v35 isEqualToString:v18];
+              senderPersonID3 = [v13 senderPersonID];
+              v17 = [objectID2 isEqualToString:senderPersonID3];
             }
 
             v41 = 0u;
             v42 = 0u;
             v39 = 0u;
             v40 = 0u;
-            v19 = [v13 changedDomains];
-            v20 = [v19 countByEnumeratingWithState:&v39 objects:v47 count:16];
+            changedDomains = [v13 changedDomains];
+            v20 = [changedDomains countByEnumeratingWithState:&v39 objects:v47 count:16];
             if (v20)
             {
               v21 = v20;
@@ -842,7 +842,7 @@ LABEL_13:
                 {
                   if (*v40 != v22)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(changedDomains);
                   }
 
                   v24 = [v13 stateForDomain:{objc_msgSend(*(*(&v39 + 1) + 8 * i), "integerValue")}];
@@ -854,7 +854,7 @@ LABEL_13:
                   }
                 }
 
-                v21 = [v19 countByEnumeratingWithState:&v39 objects:v47 count:16];
+                v21 = [changedDomains countByEnumeratingWithState:&v39 objects:v47 count:16];
               }
 
               while (v21);
@@ -870,16 +870,16 @@ LABEL_13:
         while (v34);
       }
 
-      v5 = v29;
-      v4 = v30;
-      self = v28;
+      database = v29;
+      changesCopy = v30;
+      self = selfCopy;
     }
 
-    v25 = [(PDDevEndpointServer *)self studentDB];
-    [v25 insertOrUpdateObjects:v38];
+    studentDB = [(PDDevEndpointServer *)self studentDB];
+    [studentDB insertOrUpdateObjects:v38];
 
-    v26 = [(PDDevEndpointServer *)self teacherDB];
-    [v26 insertOrUpdateObjects:v38];
+    teacherDB2 = [(PDDevEndpointServer *)self teacherDB];
+    [teacherDB2 insertOrUpdateObjects:v38];
   }
 
   else
@@ -890,20 +890,20 @@ LABEL_13:
   return v38;
 }
 
-- (void)remote_publishCollaborationStateChanges:(id)a3 completion:(id)a4
+- (void)remote_publishCollaborationStateChanges:(id)changes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[26], v8, (v9 & 1) != 0))
+  changesCopy = changes;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[26], client, (v9 & 1) != 0))
   {
-    v10 = [(PDDevEndpointServer *)self database];
-    v11 = sub_1000711FC(v10);
+    database = [(PDDevEndpointServer *)self database];
+    v11 = sub_1000711FC(database);
 
     if (v11)
     {
-      v12 = [(PDDevEndpointServer *)self _applyCollaborationStateChanges:v6];
-      v7[2](v7, v12, &__NSArray0__struct, 0);
+      v12 = [(PDDevEndpointServer *)self _applyCollaborationStateChanges:changesCopy];
+      completionCopy[2](completionCopy, v12, &__NSArray0__struct, 0);
     }
 
     else
@@ -917,41 +917,41 @@ LABEL_13:
       }
 
       v12 = [NSError cls_createErrorWithCode:2 description:@"Must be signed in to publish state changes."];
-      (v7)[2](v7, 0, 0, v12);
+      (completionCopy)[2](completionCopy, 0, 0, v12);
     }
   }
 
   else
   {
-    v10 = [NSError cls_createErrorWithCode:4 description:@"Changing assignment state not allowed. Not a Dashboard Client."];
-    (v7)[2](v7, 0, 0, v10);
+    database = [NSError cls_createErrorWithCode:4 description:@"Changing assignment state not allowed. Not a Dashboard Client."];
+    (completionCopy)[2](completionCopy, 0, 0, database);
   }
 }
 
-- (void)handleCollaborationStateChangesForMarkActivityAsComplete:(id)a3
+- (void)handleCollaborationStateChangesForMarkActivityAsComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v5 = [PDSchoolworkCollaborationStateChangeManager alloc];
-  v6 = [(PDEndpointServer *)self client];
-  v7 = sub_1000B2528(v6);
-  v8 = [(PDDevEndpointServer *)self database];
-  v27 = sub_1001111CC(&v5->super.isa, v7, v8);
+  client = [(PDEndpointServer *)self client];
+  v7 = sub_1000B2528(client);
+  database = [(PDDevEndpointServer *)self database];
+  v27 = sub_1001111CC(&v5->super.isa, v7, database);
 
-  v9 = [(PDDevEndpointServer *)self database];
-  v10 = sub_1000711FC(v9);
+  database2 = [(PDDevEndpointServer *)self database];
+  v10 = sub_1000711FC(database2);
 
   if (v10)
   {
-    v11 = sub_1000711FC(v9);
-    v12 = [v11 objectID];
+    v11 = sub_1000711FC(database2);
+    objectID = [v11 objectID];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    if (v4)
+    if (completeCopy)
     {
-      v13 = v4[2];
+      v13 = completeCopy[2];
     }
 
     else
@@ -974,17 +974,17 @@ LABEL_13:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [v9 select:objc_opt_class() identity:*(*(&v28 + 1) + 8 * i)];
+          v19 = [database2 select:objc_opt_class() identity:*(*(&v28 + 1) + 8 * i)];
           v20 = v19;
           if (v19)
           {
             [v19 setCompletionStatus:3];
-            sub_100111334(v27, v20, v12);
-            v21 = [(PDDevEndpointServer *)self studentDB];
-            [v21 insertOrUpdateObject:v20];
+            sub_100111334(v27, v20, objectID);
+            studentDB = [(PDDevEndpointServer *)self studentDB];
+            [studentDB insertOrUpdateObject:v20];
 
-            v22 = [(PDDevEndpointServer *)self teacherDB];
-            [v22 insertOrUpdateObject:v20];
+            teacherDB = [(PDDevEndpointServer *)self teacherDB];
+            [teacherDB insertOrUpdateObject:v20];
           }
         }
 
@@ -997,9 +997,9 @@ LABEL_13:
     v23 = sub_100111548(v27);
     v24 = [(PDDevEndpointServer *)self _applyCollaborationStateChanges:v23];
 
-    if (v4)
+    if (completeCopy)
     {
-      v25 = v4[4];
+      v25 = completeCopy[4];
     }
 
     else
@@ -1012,18 +1012,18 @@ LABEL_13:
   }
 }
 
-- (void)remote_fetchAndCompleteActiveAssignedActivitiesForContextPath:(id)a3 withCompletion:(id)a4
+- (void)remote_fetchAndCompleteActiveAssignedActivitiesForContextPath:(id)path withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   if (sub_1000B280C())
   {
     sub_100023888(self, a2);
-    v9 = [(PDDevEndpointServer *)self database];
-    v10 = v9;
-    if (v9)
+    database = [(PDDevEndpointServer *)self database];
+    v10 = database;
+    if (database)
     {
-      v11 = (sub_1000717E8(v9) >> 1) & 1;
+      v11 = (sub_1000717E8(database) >> 1) & 1;
     }
 
     else
@@ -1035,14 +1035,14 @@ LABEL_13:
     {
       v13 = 0;
       [NSError cls_assignError:&v13 code:323 description:@"Unable call to fetchAndCompleteAllAssignedActivitiesForContextPath. Progress tracking is not allowed."];
-      (*(v8 + 2))(v8, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
 
     else
     {
-      v12 = sub_100026D00(self, v7);
+      v12 = sub_100026D00(self, pathCopy);
       [(PDDevEndpointServer *)self handleCollaborationStateChangesForMarkActivityAsComplete:v12];
-      (*(v8 + 2))(v8, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
@@ -1051,22 +1051,22 @@ LABEL_13:
     v14 = 0;
     [NSError cls_assignError:&v14 code:322 description:@"No-Op for mark all assigned activities complete. Schoolwork is not installed."];
     v10 = v14;
-    (*(v8 + 2))(v8, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
-- (BOOL)insertDefaultCollaborationStatesFor:(id)a3 forClassID:(id)a4 toPersonIDs:(id)a5 fromPersonID:(id)a6
+- (BOOL)insertDefaultCollaborationStatesFor:(id)for forClassID:(id)d toPersonIDs:(id)ds fromPersonID:(id)iD
 {
-  v9 = a3;
-  v28 = a4;
-  v10 = a5;
+  forCopy = for;
+  dCopy = d;
+  dsCopy = ds;
   v11 = objc_opt_new();
-  v27 = [(PDDevEndpointServer *)self database];
+  database = [(PDDevEndpointServer *)self database];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = v10;
+  v12 = dsCopy;
   v29 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v29)
   {
@@ -1085,29 +1085,29 @@ LABEL_13:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = sub_1000AC900((p_info + 296), v9, v16, v28);
+          v17 = sub_1000AC900((p_info + 296), forCopy, v16, dCopy);
           [v11 addObjectsFromArray:v17];
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [(PDEndpointServer *)self daemon];
-          v19 = [v18 mode];
+          daemon = [(PDEndpointServer *)self daemon];
+          mode = [daemon mode];
 
-          if (v19 == 2)
+          if (mode == 2)
           {
             v20 = [CLSCollaborationState alloc];
-            v21 = sub_1000712CC(v27);
-            v22 = [v20 initForObject:v9 ownerPersonID:v21 domain:5 state:1 flags:0];
+            v21 = sub_1000712CC(database);
+            v22 = [v20 initForObject:forCopy ownerPersonID:v21 domain:5 state:1 flags:0];
 
             p_info = (&OBJC_METACLASS___PDCKRecordZone + 32);
-            v23 = sub_1000712CC(v27);
+            v23 = sub_1000712CC(database);
             [v22 setSenderPersonID:v23];
 
             [v11 addObject:v22];
-            v24 = [(PDDevEndpointServer *)self studentDB];
-            [v24 insertOrUpdateObject:v22];
+            studentDB = [(PDDevEndpointServer *)self studentDB];
+            [studentDB insertOrUpdateObject:v22];
           }
         }
       }
@@ -1118,35 +1118,35 @@ LABEL_13:
     while (v29);
   }
 
-  v25 = [v27 insertOrUpdateObjects:v11];
+  v25 = [database insertOrUpdateObjects:v11];
   return v25;
 }
 
-- (void)remote_fetchHandoutAttachmentForDocumentURL:(id)a3 withCompletion:(id)a4
+- (void)remote_fetchHandoutAttachmentForDocumentURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
+  lCopy = l;
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1000BE314;
   v29[3] = &unk_1002047D0;
-  v7 = a4;
-  v31 = v7;
-  v8 = v6;
+  completionCopy = completion;
+  v31 = completionCopy;
+  v8 = lCopy;
   v30 = v8;
   v9 = objc_retainBlock(v29);
-  v10 = [v8 lastPathComponent];
+  lastPathComponent = [v8 lastPathComponent];
   v11 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-  v12 = [v10 stringByAddingPercentEncodingWithAllowedCharacters:v11];
+  v12 = [lastPathComponent stringByAddingPercentEncodingWithAllowedCharacters:v11];
 
   v13 = [@"%/" stringByAppendingString:v12];
   if (v12)
   {
-    v28 = v7;
-    v14 = [(PDDevEndpointServer *)self database];
+    v28 = completionCopy;
+    database = [(PDDevEndpointServer *)self database];
     v15 = objc_opt_class();
     v35 = v13;
     v16 = [NSArray arrayWithObjects:&v35 count:1];
-    v17 = [v14 select:v15 where:@"devModeURL LIKE ?" bindings:v16];
+    v17 = [database select:v15 where:@"devModeURL LIKE ?" bindings:v16];
 
     CLSInitLog();
     v18 = CLSLogDefault;
@@ -1157,16 +1157,16 @@ LABEL_13:
       _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Looking up asset matching devModeFileName: %@", buf, 0xCu);
     }
 
-    v19 = [v17 parentObjectID];
+    parentObjectID = [v17 parentObjectID];
 
-    if (v19)
+    if (parentObjectID)
     {
-      v20 = [(PDDevEndpointServer *)self database];
+      database2 = [(PDDevEndpointServer *)self database];
       v21 = objc_opt_class();
-      v22 = [v17 parentObjectID];
-      v32 = v22;
+      parentObjectID2 = [v17 parentObjectID];
+      v32 = parentObjectID2;
       v23 = [NSArray arrayWithObjects:&v32 count:1];
-      v24 = [v20 select:v21 where:@"objectID = ?" bindings:v23];
+      v24 = [database2 select:v21 where:@"objectID = ?" bindings:v23];
 
       if (v24)
       {
@@ -1175,15 +1175,15 @@ LABEL_13:
 
       else
       {
-        v27 = [v17 objectID];
-        v25 = [NSError cls_createErrorWithCode:100 format:@"failed to find attachment for asset with id: %@", v27];
+        objectID = [v17 objectID];
+        v25 = [NSError cls_createErrorWithCode:100 format:@"failed to find attachment for asset with id: %@", objectID];
 
         [v25 cls_log:CLSLogDefault];
       }
 
       (v9[2])(v9, v24, v25);
 
-      v7 = v28;
+      completionCopy = v28;
     }
 
     else
@@ -1211,16 +1211,16 @@ LABEL_13:
   }
 }
 
-- (void)remote_validateAndCreateHandoutAssignedItem:(id)a3 withCompletion:(id)a4
+- (void)remote_validateAndCreateHandoutAssignedItem:(id)item withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDDevEndpointServer *)self database];
-  v10 = v9;
-  if (v9)
+  database = [(PDDevEndpointServer *)self database];
+  v10 = database;
+  if (database)
   {
-    v11 = (sub_1000717E8(v9) >> 1) & 1;
+    v11 = (sub_1000717E8(database) >> 1) & 1;
   }
 
   else
@@ -1241,30 +1241,30 @@ LABEL_13:
     v32 = 0;
     [NSError cls_assignError:&v32 code:4 description:@"Not Authorized"];
     v16 = v32;
-    v8[2](v8, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
   }
 
   else
   {
-    v12 = [(PDDevEndpointServer *)self database];
+    database2 = [(PDDevEndpointServer *)self database];
     v13 = objc_opt_class();
-    v36 = v7;
+    v36 = itemCopy;
     v14 = [NSArray arrayWithObjects:&v36 count:1];
-    v15 = [v12 select:v13 where:@"parentObjectID = ?" bindings:v14];
+    v15 = [database2 select:v13 where:@"parentObjectID = ?" bindings:v14];
 
     if (v15)
     {
-      (v8)[2](v8, v15, 0);
+      (completionCopy)[2](completionCopy, v15, 0);
       v16 = 0;
     }
 
     else
     {
-      v18 = [(PDDevEndpointServer *)self database];
+      database3 = [(PDDevEndpointServer *)self database];
       v19 = objc_opt_class();
-      v35 = v7;
+      v35 = itemCopy;
       v20 = [NSArray arrayWithObjects:&v35 count:1];
-      v21 = [v18 select:v19 where:@"objectID = ?" bindings:v20];
+      v21 = [database3 select:v19 where:@"objectID = ?" bindings:v20];
 
       if (v21)
       {
@@ -1277,21 +1277,21 @@ LABEL_13:
           [NSError cls_assignError:&v29 code:4 description:@"Authorization Denied."];
           v23 = v29;
 
-          v8[2](v8, 0, v23);
+          completionCopy[2](completionCopy, 0, v23);
           v15 = 0;
           v16 = v23;
         }
 
         else
         {
-          v25 = [(PDDevEndpointServer *)self database];
+          database4 = [(PDDevEndpointServer *)self database];
           v26 = objc_opt_class();
-          v27 = [v22 objectID];
-          v34 = v27;
+          objectID = [v22 objectID];
+          v34 = objectID;
           v28 = [NSArray arrayWithObjects:&v34 count:1];
-          v15 = [v25 select:v26 where:@"objectID = ?" bindings:v28];
+          v15 = [database4 select:v26 where:@"objectID = ?" bindings:v28];
 
-          (v8)[2](v8, v15, v16);
+          (completionCopy)[2](completionCopy, v15, v16);
         }
       }
 
@@ -1308,21 +1308,21 @@ LABEL_13:
         v31 = 0;
         [NSError cls_assignError:&v31 code:4 description:@"Not Authorized"];
         v16 = v31;
-        v8[2](v8, 0, v16);
+        completionCopy[2](completionCopy, 0, v16);
         v15 = 0;
       }
     }
   }
 }
 
-- (id)_createHandoutAssignedItemFrom:(id)a3 withError:(id *)a4
+- (id)_createHandoutAssignedItemFrom:(id)from withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(PDEndpointServer *)self client];
-  v8 = sub_1000B2528(v7);
+  fromCopy = from;
+  client = [(PDEndpointServer *)self client];
+  v8 = sub_1000B2528(client);
   if (![v8 length])
   {
-    [NSError cls_assignError:a4 code:2 description:@"Unable to determine bundle identifier."];
+    [NSError cls_assignError:error code:2 description:@"Unable to determine bundle identifier."];
     v17 = 0;
     goto LABEL_12;
   }
@@ -1345,7 +1345,7 @@ LABEL_13:
   v22[3] = sub_1000BAD08;
   v22[4] = sub_1000BAD18;
   v23 = 0;
-  v9 = sub_1000B2528(v7);
+  v9 = sub_1000B2528(client);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000BEBF4;
@@ -1356,36 +1356,36 @@ LABEL_13:
   [CLSUtil fetchInfoForAppWithBundleIdentifier:v9 completion:v21];
 
   v10 = [CLSHandoutAssignedItem alloc];
-  v11 = [v6 type];
-  v12 = [v6 title];
-  v13 = [v6 objectID];
-  v14 = [v10 initWithType:v11 title:v12 handoutAttachmentID:v13];
+  type = [fromCopy type];
+  title = [fromCopy title];
+  objectID = [fromCopy objectID];
+  v14 = [v10 initWithType:type title:title handoutAttachmentID:objectID];
 
-  v15 = [v14 effectiveAuthorizationStatus];
+  effectiveAuthorizationStatus = [v14 effectiveAuthorizationStatus];
   CLSInitLog();
   v16 = CLSLogDatabase;
   if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v29 = v15;
+    v29 = effectiveAuthorizationStatus;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Authorization Status %ld.", buf, 0xCu);
   }
 
-  if (v15 == 2)
+  if (effectiveAuthorizationStatus == 2)
   {
-    [NSError cls_assignError:a4 code:4 description:@"Authorization Denied."];
+    [NSError cls_assignError:error code:4 description:@"Authorization Denied."];
 LABEL_10:
     v17 = 0;
     goto LABEL_11;
   }
 
   [v14 setAppIdentifier:v8];
-  v18 = [(PDDevEndpointServer *)self database];
-  v19 = [v18 insertObject:v14];
+  database = [(PDDevEndpointServer *)self database];
+  v19 = [database insertObject:v14];
 
   if ((v19 & 1) == 0)
   {
-    [NSError cls_assignError:a4 code:100 description:@"Unable to create CLSHandoutAssignedItem."];
+    [NSError cls_assignError:error code:100 description:@"Unable to create CLSHandoutAssignedItem."];
     goto LABEL_10;
   }
 
@@ -1403,31 +1403,31 @@ LABEL_12:
 
 - (id)database
 {
-  v3 = [(PDEndpointServer *)self client];
-  v4 = [(PDEndpointServer *)self daemon];
-  v5 = v4;
-  if (v3)
+  client = [(PDEndpointServer *)self client];
+  daemon = [(PDEndpointServer *)self daemon];
+  v5 = daemon;
+  if (client)
   {
-    if (*(v3 + 26) == 1)
+    if (*(client + 26) == 1)
     {
-      v6 = [v4 mode];
-      switch(v6)
+      mode = [daemon mode];
+      switch(mode)
       {
         case 2u:
-          v7 = [(PDDevEndpointServer *)self teacherDB];
+          teacherDB = [(PDDevEndpointServer *)self teacherDB];
           goto LABEL_18;
         case 1u:
-          v7 = [(PDDevEndpointServer *)self studentDB];
+          teacherDB = [(PDDevEndpointServer *)self studentDB];
           goto LABEL_18;
         case 0u:
-          v7 = [v5 database];
+          teacherDB = [v5 database];
 LABEL_18:
-          v12 = v7;
+          v12 = teacherDB;
           goto LABEL_21;
       }
     }
 
-    v8 = *(v3 + 40);
+    v8 = *(client + 40);
   }
 
   else
@@ -1436,11 +1436,11 @@ LABEL_18:
   }
 
   v9 = v8;
-  v10 = [v9 classKitEnvironment];
+  classKitEnvironment = [v9 classKitEnvironment];
 
-  if (!(v10 | CLSClassKitEnvironmentProduction) || v10 && CLSClassKitEnvironmentProduction && [v10 isEqualToString:?])
+  if (!(classKitEnvironment | CLSClassKitEnvironmentProduction) || classKitEnvironment && CLSClassKitEnvironmentProduction && [classKitEnvironment isEqualToString:?])
   {
-    v11 = [v5 database];
+    database = [v5 database];
   }
 
   else
@@ -1454,10 +1454,10 @@ LABEL_18:
     {
       [(PDDevEndpointServer *)self studentDB];
     }
-    v11 = ;
+    database = ;
   }
 
-  v12 = v11;
+  v12 = database;
 
 LABEL_21:
 
@@ -1466,29 +1466,29 @@ LABEL_21:
 
 - (PDDatabase)teacherDB
 {
-  v3 = [(PDEndpointServer *)self daemon];
-  v4 = [v3 teacherDevDatabase];
+  daemon = [(PDEndpointServer *)self daemon];
+  teacherDevDatabase = [daemon teacherDevDatabase];
 
-  [(PDDevEndpointServer *)self populateDevDB:v4 forStudent:0];
+  [(PDDevEndpointServer *)self populateDevDB:teacherDevDatabase forStudent:0];
 
-  return v4;
+  return teacherDevDatabase;
 }
 
 - (PDDatabase)studentDB
 {
-  v3 = [(PDEndpointServer *)self daemon];
-  v4 = [v3 studentDevDatabase];
+  daemon = [(PDEndpointServer *)self daemon];
+  studentDevDatabase = [daemon studentDevDatabase];
 
-  [(PDDevEndpointServer *)self populateDevDB:v4 forStudent:1];
+  [(PDDevEndpointServer *)self populateDevDB:studentDevDatabase forStudent:1];
 
-  return v4;
+  return studentDevDatabase;
 }
 
-- (void)remote_publishAdminRequests:(id)a3 withRequestor:(id)a4 adminRequestAccounts:(id)a5 completion:(id)a6
+- (void)remote_publishAdminRequests:(id)requests withRequestor:(id)requestor adminRequestAccounts:(id)accounts completion:(id)completion
 {
-  v7 = a6;
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[26], v8, (v9 & 1) != 0))
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[26], client, (v9 & 1) != 0))
   {
     CLSInitLog();
     v10 = CLSLogOnboarding;
@@ -1499,21 +1499,21 @@ LABEL_21:
     }
 
     v11 = [NSError cls_createErrorWithCode:1 description:@"Feature unavailable."];
-    v7[2](v7, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
   else
   {
     v12 = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
-    v7[2](v7, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)remote_deleteAdminRequestID:(id)a3 completion:(id)a4
+- (void)remote_deleteAdminRequestID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(PDEndpointServer *)self client];
-  if (v6 && (v7 = v6[26], v6, (v7 & 1) != 0))
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v7 = client[26], client, (v7 & 1) != 0))
   {
     CLSInitLog();
     v8 = CLSLogOnboarding;
@@ -1524,45 +1524,45 @@ LABEL_21:
     }
 
     v9 = [NSError cls_createErrorWithCode:1 description:@"Feature unavailable."];
-    v5[2](v5, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 
   else
   {
     v10 = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
-    v5[2](v5, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 }
 
-- (void)remote_publishSurveyAnswers:(id)a3 completion:(id)a4
+- (void)remote_publishSurveyAnswers:(id)answers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDEndpointServer *)self client];
-  if (!v8 || (v9 = v8[26], v8, (v9 & 1) == 0))
+  answersCopy = answers;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (!client || (v9 = client[26], client, (v9 & 1) == 0))
   {
     v12 = @"Not authorized.";
     goto LABEL_14;
   }
 
-  v10 = [(PDDevEndpointServer *)self database];
-  v11 = [(PDDevEndpointServer *)self studentDB];
+  database = [(PDDevEndpointServer *)self database];
+  studentDB = [(PDDevEndpointServer *)self studentDB];
 
-  if (v10 != v11)
+  if (database != studentDB)
   {
     v12 = @"Student only operation.";
 LABEL_14:
     v26 = [NSError cls_createErrorWithCode:4 description:v12];
-    v7[2](v7, 0, v26);
+    completionCopy[2](completionCopy, 0, v26);
 
     goto LABEL_15;
   }
 
-  v13 = [(PDDevEndpointServer *)self database];
+  database2 = [(PDDevEndpointServer *)self database];
   v14 = objc_opt_new();
   v15 = objc_opt_class();
-  v16 = [v6 objectID];
-  v34 = v16;
+  objectID = [answersCopy objectID];
+  v34 = objectID;
   v17 = [NSArray arrayWithObjects:&v34 count:1];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
@@ -1570,7 +1570,7 @@ LABEL_14:
   v31[3] = &unk_1002047F8;
   v18 = v14;
   v32 = v18;
-  [v13 selectAll:v15 where:@"surveyID = ?" bindings:v17 block:v31];
+  [database2 selectAll:v15 where:@"surveyID = ?" bindings:v17 block:v31];
 
   v29 = 0u;
   v30 = 0u;
@@ -1592,8 +1592,8 @@ LABEL_14:
         }
 
         v24 = *(*(&v27 + 1) + 8 * i);
-        v25 = [(PDDevEndpointServer *)self teacherDB];
-        [v25 insertOrUpdateObject:v24];
+        teacherDB = [(PDDevEndpointServer *)self teacherDB];
+        [teacherDB insertOrUpdateObject:v24];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v27 objects:v33 count:16];
@@ -1602,37 +1602,37 @@ LABEL_14:
     while (v21);
   }
 
-  (v7)[2](v7, v19, 0);
+  (completionCopy)[2](completionCopy, v19, 0);
 LABEL_15:
 }
 
-- (void)populateDevDB:(id)a3 forStudent:(BOOL)a4
+- (void)populateDevDB:(id)b forStudent:(BOOL)student
 {
-  v4 = a4;
-  v5 = a3;
-  [v5 lock];
-  v6 = sub_1000711FC(v5);
+  studentCopy = student;
+  bCopy = b;
+  [bCopy lock];
+  v6 = sub_1000711FC(bCopy);
   v7 = v6;
   if (v6 && [v6 sourceType])
   {
-    [v5 unlock];
+    [bCopy unlock];
   }
 
   else
   {
-    v8 = sub_100043B24(v5);
+    v8 = sub_100043B24(bCopy);
     if (v8)
     {
       *(v8 + 10) = 256;
       *(v8 + 9) = 0;
-      *(v8 + 8) = v4;
+      *(v8 + 8) = studentCopy;
     }
 
-    v63 = v4;
+    v63 = studentCopy;
     v64 = v7;
     v62 = v8;
-    sub_100043BD0(v5, v8);
-    v9 = sub_1000BA854(v5);
+    sub_100043BD0(bCopy, v8);
+    v9 = sub_1000BA854(bCopy);
     if (v9)
     {
       *(v9 + 48) = 2;
@@ -1641,83 +1641,83 @@ LABEL_15:
     }
 
     v61 = v9;
-    sub_1000BA900(v5, v9);
-    v58 = v5;
-    sub_100071764(v5, 1);
-    v10 = [[CLSLocation alloc] _init];
-    [v10 setLocationName:@"AppleSchool123"];
-    [v10 setObjectID:@"AppleSchool123LocationID"];
-    [v10 setSourceType:1];
-    v11 = [[CLSRole alloc] _init];
-    [v11 setObjectID:@"role-instructor"];
-    [v11 setType:4];
+    sub_1000BA900(bCopy, v9);
+    v58 = bCopy;
+    sub_100071764(bCopy, 1);
+    _init = [[CLSLocation alloc] _init];
+    [_init setLocationName:@"AppleSchool123"];
+    [_init setObjectID:@"AppleSchool123LocationID"];
+    [_init setSourceType:1];
+    _init2 = [[CLSRole alloc] _init];
+    [_init2 setObjectID:@"role-instructor"];
+    [_init2 setType:4];
     v84[0] = @"CAN_MANAGE_CLASSES";
     v84[1] = @"CAN_MANAGE_MANAGED_APPLE_ID";
     v84[2] = @"CAN_EASY_STUDENT_SIGN_IN";
     v12 = [NSArray arrayWithObjects:v84 count:3];
-    [v11 setPrivileges:v12];
+    [_init2 setPrivileges:v12];
 
-    v56 = [[CLSRole alloc] _init];
-    [v56 setObjectID:@"role-student"];
-    [v56 setType:6];
-    v13 = [[CLSClass alloc] _init];
-    [v13 setClassName:@"Dev Class"];
-    v14 = [v13 className];
-    v15 = [v14 sha224];
-    [v13 setObjectID:v15];
+    _init3 = [[CLSRole alloc] _init];
+    [_init3 setObjectID:@"role-student"];
+    [_init3 setType:6];
+    _init4 = [[CLSClass alloc] _init];
+    [_init4 setClassName:@"Dev Class"];
+    className = [_init4 className];
+    sha224 = [className sha224];
+    [_init4 setObjectID:sha224];
 
-    [v13 setSource:3];
-    [v13 setOriginatingSource:1];
-    v16 = [[CLSPerson alloc] _init];
-    [v16 setGivenName:@"Johnny"];
-    [v16 setFamilyName:@"Appleseed"];
-    [v16 setOrgID:@"apple-school-org-id"];
-    [v16 setAppleID:@"johnny.appleseed@apple.com"];
-    [v16 setProgressTrackingAllowed:1];
-    v17 = [v16 givenName];
-    v18 = [v17 sha224];
-    [v16 setObjectID:v18];
+    [_init4 setSource:3];
+    [_init4 setOriginatingSource:1];
+    _init5 = [[CLSPerson alloc] _init];
+    [_init5 setGivenName:@"Johnny"];
+    [_init5 setFamilyName:@"Appleseed"];
+    [_init5 setOrgID:@"apple-school-org-id"];
+    [_init5 setAppleID:@"johnny.appleseed@apple.com"];
+    [_init5 setProgressTrackingAllowed:1];
+    givenName = [_init5 givenName];
+    sha2242 = [givenName sha224];
+    [_init5 setObjectID:sha2242];
 
-    [v16 setIsSearchable:1];
-    [v16 setSourceType:1];
-    v19 = [[CLSPerson alloc] _init];
-    [v19 setGivenName:@"Jane"];
-    [v19 setFamilyName:@"Appleseed"];
-    [v19 setOrgID:@"apple-school-org-id"];
-    [v19 setAppleID:@"jane.appleseed@apple.com"];
-    [v19 setProgressTrackingAllowed:0];
-    v20 = [v19 givenName];
-    v21 = [v20 sha224];
-    [v19 setObjectID:v21];
+    [_init5 setIsSearchable:1];
+    [_init5 setSourceType:1];
+    _init6 = [[CLSPerson alloc] _init];
+    [_init6 setGivenName:@"Jane"];
+    [_init6 setFamilyName:@"Appleseed"];
+    [_init6 setOrgID:@"apple-school-org-id"];
+    [_init6 setAppleID:@"jane.appleseed@apple.com"];
+    [_init6 setProgressTrackingAllowed:0];
+    givenName2 = [_init6 givenName];
+    sha2243 = [givenName2 sha224];
+    [_init6 setObjectID:sha2243];
 
-    [v19 setIsSearchable:1];
-    [v19 setSourceType:1];
+    [_init6 setIsSearchable:1];
+    [_init6 setSourceType:1];
     v22 = [CLSClassMember alloc];
-    v23 = [v13 objectID];
-    v24 = [v19 objectID];
-    v55 = [v22 initWithClassID:v23 personID:v24 roles:2];
+    objectID = [_init4 objectID];
+    objectID2 = [_init6 objectID];
+    v55 = [v22 initWithClassID:objectID personID:objectID2 roles:2];
 
     v25 = [CLSClassMember alloc];
-    v26 = [v13 objectID];
-    v27 = [v16 objectID];
-    v54 = [v25 initWithClassID:v26 personID:v27 roles:1];
+    objectID3 = [_init4 objectID];
+    objectID4 = [_init5 objectID];
+    v54 = [v25 initWithClassID:objectID3 personID:objectID4 roles:1];
 
     v28 = [PDPersonRoleLocation alloc];
-    v29 = [v19 objectID];
-    v30 = [v11 objectID];
-    v31 = [v10 objectID];
-    v59 = v11;
-    v32 = sub_1000C8F24(v28, v29, v30, v31, [v11 type]);
+    objectID5 = [_init6 objectID];
+    objectID6 = [_init2 objectID];
+    objectID7 = [_init objectID];
+    v59 = _init2;
+    v32 = sub_1000C8F24(v28, objectID5, objectID6, objectID7, [_init2 type]);
 
     v33 = [PDPersonRoleLocation alloc];
-    v34 = [v16 objectID];
-    v35 = [v56 objectID];
-    v36 = [v10 objectID];
-    v37 = sub_1000C8F24(v33, v34, v35, v36, [v56 type]);
+    objectID8 = [_init5 objectID];
+    objectID9 = [_init3 objectID];
+    objectID10 = [_init objectID];
+    v37 = sub_1000C8F24(v33, objectID8, objectID9, objectID10, [_init3 type]);
 
     if (v63)
     {
-      v51 = v16;
+      v51 = _init5;
 
       v83 = v37;
       v38 = &v83;
@@ -1725,7 +1725,7 @@ LABEL_15:
 
     else
     {
-      v51 = v19;
+      v51 = _init6;
 
       v82 = v32;
       v38 = &v82;
@@ -1737,20 +1737,20 @@ LABEL_15:
     v66[1] = 3221225472;
     v66[2] = sub_1000BFC00;
     v66[3] = &unk_100204820;
-    v5 = v58;
+    bCopy = v58;
     v41 = v58;
     v67 = v41;
-    v57 = v56;
+    v57 = _init3;
     v68 = v57;
     v60 = v59;
     v69 = v60;
-    v53 = v10;
+    v53 = _init;
     v70 = v53;
-    v52 = v16;
+    v52 = _init5;
     v71 = v52;
     v42 = v37;
     v72 = v42;
-    v43 = v19;
+    v43 = _init6;
     v73 = v43;
     v44 = v39;
     v74 = v44;
@@ -1758,7 +1758,7 @@ LABEL_15:
     v75 = v65;
     v45 = v40;
     v76 = v45;
-    v46 = v13;
+    v46 = _init4;
     v77 = v46;
     v47 = v55;
     v78 = v47;

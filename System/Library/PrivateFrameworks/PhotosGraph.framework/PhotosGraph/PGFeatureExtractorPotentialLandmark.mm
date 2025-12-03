@@ -1,20 +1,20 @@
 @interface PGFeatureExtractorPotentialLandmark
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorPotentialLandmark
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [a3 sceneClassifications];
+  sceneClassifications = [entity sceneClassifications];
   v6 = [MEMORY[0x277D22C68] zerosOfCount:{-[PGFeatureExtractorPotentialLandmark featureLength](self, "featureLength")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = sceneClassifications;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {

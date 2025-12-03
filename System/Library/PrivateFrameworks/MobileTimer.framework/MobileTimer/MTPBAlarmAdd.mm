@@ -1,9 +1,9 @@
 @interface MTPBAlarmAdd
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
+- (void)mergeFrom:(id)from;
 @end
 
 @implementation MTPBAlarmAdd
@@ -14,42 +14,42 @@
   v8.receiver = self;
   v8.super_class = MTPBAlarmAdd;
   v4 = [(MTPBAlarmAdd *)&v8 description];
-  v5 = [(MTPBAlarmAdd *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTPBAlarmAdd *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   alarm = self->_alarm;
   if (alarm)
   {
-    v5 = [(MTPBAlarm *)alarm dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"alarm"];
+    dictionaryRepresentation = [(MTPBAlarm *)alarm dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"alarm"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MTPBAlarm *)self->_alarm copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MTPBAlarm *)self->_alarm copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     alarm = self->_alarm;
-    if (alarm | v4[1])
+    if (alarm | equalCopy[1])
     {
       v6 = [(MTPBAlarm *)alarm isEqual:?];
     }
@@ -68,11 +68,11 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   alarm = self->_alarm;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (alarm)
   {
     if (!v6)
@@ -80,7 +80,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     alarm = [(MTPBAlarm *)alarm mergeFrom:?];
   }
 
@@ -91,14 +91,14 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     alarm = [(MTPBAlarmAdd *)self setAlarm:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
 
-  MEMORY[0x1EEE66BB8](alarm, v4);
+  MEMORY[0x1EEE66BB8](alarm, fromCopy);
 }
 
 @end

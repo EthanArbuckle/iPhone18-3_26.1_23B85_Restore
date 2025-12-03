@@ -1,13 +1,13 @@
 @interface StockChartViewController
-- (_TtC8StocksUI24StockChartViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC8StocksUI24StockChartViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation StockChartViewController
 
-- (_TtC8StocksUI24StockChartViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8StocksUI24StockChartViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -16,23 +16,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   StockChartViewController.viewDidLoad()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   StockChartViewController.traitCollectionDidChange(_:)(v9);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   StockChartViewController.viewDidLayoutSubviews()();
 }
 

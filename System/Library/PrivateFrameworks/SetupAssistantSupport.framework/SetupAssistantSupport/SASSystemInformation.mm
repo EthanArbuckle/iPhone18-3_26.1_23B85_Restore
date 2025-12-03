@@ -2,7 +2,7 @@
 + (id)productVersion;
 + (id)storageAvailable;
 + (id)storageCapacity;
-+ (int64_t)compareProductVersion:(id)a3 toProductVersion:(id)a4;
++ (int64_t)compareProductVersion:(id)version toProductVersion:(id)productVersion;
 + (void)storageAvailable;
 @end
 
@@ -78,19 +78,19 @@
   return v3;
 }
 
-+ (int64_t)compareProductVersion:(id)a3 toProductVersion:(id)a4
++ (int64_t)compareProductVersion:(id)version toProductVersion:(id)productVersion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:v6])
+  versionCopy = version;
+  productVersionCopy = productVersion;
+  if ([versionCopy isEqualToString:productVersionCopy])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v5 componentsSeparatedByString:@"."];
-    v9 = [v6 componentsSeparatedByString:@"."];
+    v8 = [versionCopy componentsSeparatedByString:@"."];
+    v9 = [productVersionCopy componentsSeparatedByString:@"."];
     v10 = [v8 count];
     if (v10 | [v9 count])
     {
@@ -100,32 +100,32 @@
       {
         if ([v8 count] <= v11)
         {
-          v13 = 0;
+          intValue = 0;
         }
 
         else
         {
           v12 = [v8 objectAtIndexedSubscript:v11];
-          v13 = [v12 intValue];
+          intValue = [v12 intValue];
         }
 
         if ([v9 count] <= v11)
         {
-          v15 = 0;
+          intValue2 = 0;
         }
 
         else
         {
           v14 = [v9 objectAtIndexedSubscript:v11];
-          v15 = [v14 intValue];
+          intValue2 = [v14 intValue];
         }
 
-        if (v13 > v15)
+        if (intValue > intValue2)
         {
           break;
         }
 
-        if (v13 < v15)
+        if (intValue < intValue2)
         {
           v7 = -1;
           break;
@@ -165,7 +165,7 @@ LABEL_17:
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_22E4D7000, a2, OS_LOG_TYPE_ERROR, "storageAvailable statfs failed with error %d", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

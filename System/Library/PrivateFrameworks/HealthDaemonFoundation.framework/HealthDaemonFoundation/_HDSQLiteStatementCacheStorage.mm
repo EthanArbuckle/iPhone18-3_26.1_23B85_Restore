@@ -1,9 +1,9 @@
 @interface _HDSQLiteStatementCacheStorage
 - (CFDictionaryRef)allStatementSQLStrings;
-- (const)statementForSQL:(uint64_t)a1;
+- (const)statementForSQL:(uint64_t)l;
 - (void)clearStatements;
 - (void)dealloc;
-- (void)initWithParentStorage:(void *)a1;
+- (void)initWithParentStorage:(void *)storage;
 @end
 
 @implementation _HDSQLiteStatementCacheStorage
@@ -19,38 +19,38 @@
 
 - (CFDictionaryRef)allStatementSQLStrings
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    CFDictionaryApplyFunction(v1[3], collectStatementStrings, v2);
-    CFDictionaryApplyFunction(v1[2], collectStatementStrings, v2);
-    v1 = [v2 copy];
+    CFDictionaryApplyFunction(selfCopy[3], collectStatementStrings, v2);
+    CFDictionaryApplyFunction(selfCopy[2], collectStatementStrings, v2);
+    selfCopy = [v2 copy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)clearStatements
 {
-  if (a1)
+  if (self)
   {
-    CFDictionaryRemoveAllValues(*(a1 + 16));
-    v2 = *(a1 + 24);
+    CFDictionaryRemoveAllValues(*(self + 16));
+    v2 = *(self + 24);
 
     CFDictionaryRemoveAllValues(v2);
   }
 }
 
-- (const)statementForSQL:(uint64_t)a1
+- (const)statementForSQL:(uint64_t)l
 {
   v3 = a2;
-  if (a1)
+  if (l)
   {
-    Value = CFDictionaryGetValue(*(a1 + 16), v3);
+    Value = CFDictionaryGetValue(*(l + 16), v3);
     if (!Value)
     {
-      Value = [(_HDSQLiteStatementCacheStorage *)*(a1 + 8) statementForSQL:v3];
+      Value = [(_HDSQLiteStatementCacheStorage *)*(l + 8) statementForSQL:v3];
     }
   }
 
@@ -62,24 +62,24 @@
   return Value;
 }
 
-- (void)initWithParentStorage:(void *)a1
+- (void)initWithParentStorage:(void *)storage
 {
   v4 = a2;
-  if (a1)
+  if (storage)
   {
-    v7.receiver = a1;
+    v7.receiver = storage;
     v7.super_class = _HDSQLiteStatementCacheStorage;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    storage = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
-      a1[2] = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], &kSQLite3StatementDictionaryValueCallbacks);
-      a1[3] = CFDictionaryCreateMutable(0, 0, 0, &kSQLite3StatementDictionaryValueCallbacks);
+      storage[2] = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], &kSQLite3StatementDictionaryValueCallbacks);
+      storage[3] = CFDictionaryCreateMutable(0, 0, 0, &kSQLite3StatementDictionaryValueCallbacks);
     }
   }
 
-  return a1;
+  return storage;
 }
 
 @end

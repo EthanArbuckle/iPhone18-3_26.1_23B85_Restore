@@ -1,8 +1,8 @@
 @interface GradientView
 + (Class)layerClass;
-- (_TtC8HealthUI12GradientView)initWithCoder:(id)a3;
-- (_TtC8HealthUI12GradientView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC8HealthUI12GradientView)initWithCoder:(id)coder;
+- (_TtC8HealthUI12GradientView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation GradientView
@@ -22,7 +22,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -32,17 +32,17 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_1C3C5AB78();
 }
 
-- (_TtC8HealthUI12GradientView)initWithFrame:(CGRect)a3
+- (_TtC8HealthUI12GradientView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_1C3D20374();
   sub_1C3D20364();
   sub_1C3D20314();
@@ -58,12 +58,12 @@
   v8[1] = 0;
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = [(GradientView *)&v12 initWithFrame:x, y, width, height];
+  height = [(GradientView *)&v12 initWithFrame:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
-- (_TtC8HealthUI12GradientView)initWithCoder:(id)a3
+- (_TtC8HealthUI12GradientView)initWithCoder:(id)coder
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -79,8 +79,8 @@
   v5[1] = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for GradientView();
-  v6 = a3;
-  v7 = [(GradientView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(GradientView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

@@ -1,25 +1,25 @@
 @interface STUserResolutionResult
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)confirmationRequiredWithUserToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithUsersToDisambiguate:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
-+ (id)successWithResolvedUser:(id)a3;
-- (STUserResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)confirmationRequiredWithUserToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithUsersToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedObject:(id)object;
++ (id)successWithResolvedUser:(id)user;
+- (STUserResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation STUserResolutionResult
 
-+ (id)successWithResolvedUser:(id)a3
++ (id)successWithResolvedUser:(id)user
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static STUserResolutionResult.success(with:)(v4);
+  userCopy = user;
+  v5 = static STUserResolutionResult.success(with:)(userCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithUsersToDisambiguate:(id)a3
++ (id)disambiguationWithUsersToDisambiguate:(id)disambiguate
 {
   type metadata accessor for STUser();
   v3 = sub_100049F58();
@@ -29,45 +29,45 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithUserToConfirm:(id)a3
++ (id)confirmationRequiredWithUserToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static STUserResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static STUserResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
   result = sub_10004A2A8();
   __break(1u);
   return result;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   result = sub_10004A2A8();
   __break(1u);
   return result;
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
   result = sub_10004A2A8();
   __break(1u);
   return result;
 }
 
-- (STUserResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (STUserResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_100049DA8();
-  v6 = a4;
+  intentCopy = intent;
   isa = sub_100049D98().super.isa;
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for STUserResolutionResult();
-  v8 = [(STUserResolutionResult *)&v10 initWithJSONDictionary:isa forIntent:v6];
+  v8 = [(STUserResolutionResult *)&v10 initWithJSONDictionary:isa forIntent:intentCopy];
 
   if (v8)
   {

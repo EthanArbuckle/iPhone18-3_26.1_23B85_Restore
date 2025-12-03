@@ -1,23 +1,23 @@
 @interface iOSPeoplePickerAddButtonHandler
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
+- (void)contactPickerDidCancel:(id)cancel;
 @end
 
 @implementation iOSPeoplePickerAddButtonHandler
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  iOSPeoplePickerAddButtonHandler.contactPicker(_:didSelect:)(v6, v7);
+  pickerCopy = picker;
+  propertyCopy = property;
+  selfCopy = self;
+  iOSPeoplePickerAddButtonHandler.contactPicker(_:didSelect:)(pickerCopy, propertyCopy);
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  iOSPeoplePickerAddButtonHandler.contactPickerDidCancel(_:)(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  iOSPeoplePickerAddButtonHandler.contactPickerDidCancel(_:)(cancelCopy);
 }
 
 @end

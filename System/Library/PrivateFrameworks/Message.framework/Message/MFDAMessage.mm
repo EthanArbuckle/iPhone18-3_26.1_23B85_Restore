@@ -1,7 +1,7 @@
 @interface MFDAMessage
-- (BOOL)messageData:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6;
-- (BOOL)messageDataHolder:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6;
-- (MFDAMessage)initWithDAMailMessage:(id)a3 mailbox:(id)a4;
+- (BOOL)messageData:(id *)data messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary;
+- (BOOL)messageDataHolder:(id *)holder messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary;
+- (MFDAMessage)initWithDAMailMessage:(id)message mailbox:(id)mailbox;
 - (id)remoteMailboxURL;
 - (unint64_t)messageFlags;
 - (unint64_t)messageSize;
@@ -9,23 +9,23 @@
 
 @implementation MFDAMessage
 
-- (MFDAMessage)initWithDAMailMessage:(id)a3 mailbox:(id)a4
+- (MFDAMessage)initWithDAMailMessage:(id)message mailbox:(id)mailbox
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  mailboxCopy = mailbox;
   v19.receiver = self;
   v19.super_class = MFDAMessage;
   v9 = [(MFDAMessage *)&v19 init];
   if (v9)
   {
-    v10 = [v7 rfc822Data];
-    v11 = [(MFMessage *)MFMailMessage messageWithRFC822Data:v10];
+    rfc822Data = [messageCopy rfc822Data];
+    v11 = [(MFMessage *)MFMailMessage messageWithRFC822Data:rfc822Data];
     rfc822CreatedMessage = v9->_rfc822CreatedMessage;
     v9->_rfc822CreatedMessage = v11;
 
-    objc_storeStrong(&v9->_DAMailMessage, a3);
-    objc_storeStrong(&v9->_mailbox, a4);
+    objc_storeStrong(&v9->_DAMailMessage, message);
+    objc_storeStrong(&v9->_mailbox, mailbox);
     v13 = MFCreateExternalConversationID(v9->_DAMailMessage);
     externalConversationID = v9->_externalConversationID;
     v9->_externalConversationID = v13;
@@ -33,9 +33,9 @@
     v15 = MFLogGeneral();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(MFDAMessage *)v9 subject];
+      subject = [(MFDAMessage *)v9 subject];
       *buf = 138412290;
-      v21 = v16;
+      v21 = subject;
       _os_log_impl(&dword_1B0389000, v15, OS_LOG_TYPE_INFO, "#Power [New Message] subject=%@;", buf, 0xCu);
     }
   }
@@ -48,16 +48,16 @@
 {
   v14.receiver = self;
   v14.super_class = MFDAMessage;
-  v3 = [(MFMailMessage *)&v14 messageFlags];
-  v4 = v3 | [self->_DAMailMessage read];
+  messageFlags = [(MFMailMessage *)&v14 messageFlags];
+  v4 = messageFlags | [self->_DAMailMessage read];
   if ([self->_DAMailMessage flagged])
   {
     v4 |= 0x10uLL;
   }
 
-  v5 = [self->_DAMailMessage lastVerb];
+  lastVerb = [self->_DAMailMessage lastVerb];
   v6 = v4 | 4;
-  if (v5 == 1)
+  if (lastVerb == 1)
   {
     v7 = v4 | 4;
   }
@@ -67,12 +67,12 @@
     v7 = v4;
   }
 
-  if (v5 != 2)
+  if (lastVerb != 2)
   {
     v6 = v7;
   }
 
-  if (v5 == 3)
+  if (lastVerb == 3)
   {
     v8 = v4 | 0x100;
   }
@@ -82,12 +82,12 @@
     v8 = v6;
   }
 
-  v9 = [self->_DAMailMessage attachments];
-  v10 = [v9 count];
+  attachments = [self->_DAMailMessage attachments];
+  v10 = [attachments count];
 
-  v11 = [self->_DAMailMessage meetingRequestUUID];
+  meetingRequestUUID = [self->_DAMailMessage meetingRequestUUID];
 
-  if (v11)
+  if (meetingRequestUUID)
   {
     v12 = v10 + 1;
   }
@@ -100,31 +100,31 @@
   return v8 & 0xFFFFFFFFFFFF03FFLL | ((v12 & 0x3F) << 10);
 }
 
-- (BOOL)messageData:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6
+- (BOOL)messageData:(id *)data messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary
 {
-  if (a3)
+  if (data)
   {
-    *a3 = 0;
+    *data = 0;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
   return 0;
 }
 
-- (BOOL)messageDataHolder:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6
+- (BOOL)messageDataHolder:(id *)holder messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary
 {
-  if (a3)
+  if (holder)
   {
-    *a3 = 0;
+    *holder = 0;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
   return 0;
@@ -132,18 +132,18 @@
 
 - (id)remoteMailboxURL
 {
-  v2 = [(MFDAMessage *)self mailbox];
-  v3 = [v2 URLString];
+  mailbox = [(MFDAMessage *)self mailbox];
+  uRLString = [mailbox URLString];
 
-  return v3;
+  return uRLString;
 }
 
 - (unint64_t)messageSize
 {
-  v3 = [self->_DAMailMessage bodySize];
-  v4 = [self->_DAMailMessage attachments];
-  v5 = [v4 valueForKeyPath:@"@sum.size"];
-  v6 = [v5 intValue] + v3;
+  bodySize = [self->_DAMailMessage bodySize];
+  attachments = [self->_DAMailMessage attachments];
+  v5 = [attachments valueForKeyPath:@"@sum.size"];
+  v6 = [v5 intValue] + bodySize;
 
   return v6;
 }

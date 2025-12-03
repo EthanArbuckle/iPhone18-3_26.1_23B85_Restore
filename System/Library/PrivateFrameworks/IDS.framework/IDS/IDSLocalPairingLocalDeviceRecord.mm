@@ -1,15 +1,15 @@
 @interface IDSLocalPairingLocalDeviceRecord
-- (IDSLocalPairingLocalDeviceRecord)initWithWithFullIdentityDataClassA:(id)a3 classC:(id)a4 classD:(id)a5;
+- (IDSLocalPairingLocalDeviceRecord)initWithWithFullIdentityDataClassA:(id)a classC:(id)c classD:(id)d;
 - (id)description;
 @end
 
 @implementation IDSLocalPairingLocalDeviceRecord
 
-- (IDSLocalPairingLocalDeviceRecord)initWithWithFullIdentityDataClassA:(id)a3 classC:(id)a4 classD:(id)a5
+- (IDSLocalPairingLocalDeviceRecord)initWithWithFullIdentityDataClassA:(id)a classC:(id)c classD:(id)d
 {
   v6.receiver = self;
   v6.super_class = IDSLocalPairingLocalDeviceRecord;
-  return [(IDSLocalPairingRecord *)&v6 initWithIdentityDataClassA:a3 classC:a4 classD:a5];
+  return [(IDSLocalPairingRecord *)&v6 initWithIdentityDataClassA:a classC:c classD:d];
 }
 
 - (id)description

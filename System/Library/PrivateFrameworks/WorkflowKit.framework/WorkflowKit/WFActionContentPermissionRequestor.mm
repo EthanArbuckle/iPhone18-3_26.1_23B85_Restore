@@ -1,11 +1,11 @@
 @interface WFActionContentPermissionRequestor
 - (WFAction)action;
-- (WFActionContentPermissionRequestor)initWithAction:(id)a3;
+- (WFActionContentPermissionRequestor)initWithAction:(id)action;
 - (WFContactStore)contactStore;
-- (void)_allowNetworkAccessAfterPromptingForURLs:(id)a3 completionHandler:(id)a4;
-- (void)allowContactsAccessWithCompletionHandler:(id)a3;
-- (void)allowNetworkAccessAfterPromptingForURLs:(id)a3 completionHandler:(id)a4;
-- (void)requestUserConsentToLoadWebContentAtURL:(id)a3 completionHandler:(id)a4;
+- (void)_allowNetworkAccessAfterPromptingForURLs:(id)ls completionHandler:(id)handler;
+- (void)allowContactsAccessWithCompletionHandler:(id)handler;
+- (void)allowNetworkAccessAfterPromptingForURLs:(id)ls completionHandler:(id)handler;
+- (void)requestUserConsentToLoadWebContentAtURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WFActionContentPermissionRequestor
@@ -32,29 +32,29 @@
   return contactStore;
 }
 
-- (void)allowNetworkAccessAfterPromptingForURLs:(id)a3 completionHandler:(id)a4
+- (void)allowNetworkAccessAfterPromptingForURLs:(id)ls completionHandler:(id)handler
 {
-  v9 = a3;
-  v7 = a4;
-  if (![v9 count])
+  lsCopy = ls;
+  handlerCopy = handler;
+  if (![lsCopy count])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFActionContentPermissionRequestor.m" lineNumber:115 description:@"Programming error: at least 1 URLs must be passed into allowNetworkAccessAfterPromptingForURLs:"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionContentPermissionRequestor.m" lineNumber:115 description:@"Programming error: at least 1 URLs must be passed into allowNetworkAccessAfterPromptingForURLs:"];
   }
 
-  [(WFActionContentPermissionRequestor *)self _allowNetworkAccessAfterPromptingForURLs:v9 completionHandler:v7];
+  [(WFActionContentPermissionRequestor *)self _allowNetworkAccessAfterPromptingForURLs:lsCopy completionHandler:handlerCopy];
 }
 
-- (void)_allowNetworkAccessAfterPromptingForURLs:(id)a3 completionHandler:(id)a4
+- (void)_allowNetworkAccessAfterPromptingForURLs:(id)ls completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 if_objectsPassingTest:&__block_literal_global_54807];
-  v9 = [v7 count];
+  handlerCopy = handler;
+  lsCopy = ls;
+  v8 = [lsCopy if_objectsPassingTest:&__block_literal_global_54807];
+  v9 = [lsCopy count];
 
   if (v9 && ![v8 count])
   {
-    v6[2](v6, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
@@ -67,7 +67,7 @@
 
     if (v13)
     {
-      (v6)[2](v6, 0, v13);
+      (handlerCopy)[2](handlerCopy, 0, v13);
     }
 
     else
@@ -76,7 +76,7 @@
       aBlock[1] = 3221225472;
       aBlock[2] = __97__WFActionContentPermissionRequestor__allowNetworkAccessAfterPromptingForURLs_completionHandler___block_invoke_2;
       aBlock[3] = &unk_1E837BE38;
-      v14 = v6;
+      v14 = handlerCopy;
       v29 = v14;
       v15 = _Block_copy(aBlock);
       v25[0] = MEMORY[0x1E69E9820];
@@ -90,13 +90,13 @@
       v18 = v17;
       if (v12)
       {
-        v19 = [(WFActionContentPermissionRequestor *)self action];
-        v20 = [(WFActionContentPermissionRequestor *)self userInterface];
-        v21 = [(WFActionContentPermissionRequestor *)self action];
-        v22 = [v21 runningDelegate];
-        [v22 contentItemCache];
+        action = [(WFActionContentPermissionRequestor *)self action];
+        userInterface = [(WFActionContentPermissionRequestor *)self userInterface];
+        action2 = [(WFActionContentPermissionRequestor *)self action];
+        runningDelegate = [action2 runningDelegate];
+        [runningDelegate contentItemCache];
         v23 = v24 = v16;
-        [v19 performSmartPromptChecksWithUserInterface:v20 contentDestination:v12 contentItemCache:v23 isWebpageCoercion:1 completionHandler:v18];
+        [action performSmartPromptChecksWithUserInterface:userInterface contentDestination:v12 contentItemCache:v23 isWebpageCoercion:1 completionHandler:v18];
 
         v16 = v24;
       }
@@ -132,72 +132,72 @@ void __97__WFActionContentPermissionRequestor__allowNetworkAccessAfterPromptingF
   }
 }
 
-- (void)requestUserConsentToLoadWebContentAtURL:(id)a3 completionHandler:(id)a4
+- (void)requestUserConsentToLoadWebContentAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isFileURL])
+  lCopy = l;
+  handlerCopy = handler;
+  if ([lCopy isFileURL])
   {
-    v8 = [MEMORY[0x1E6996D78] webpagesLocation];
+    webpagesLocation = [MEMORY[0x1E6996D78] webpagesLocation];
   }
 
   else
   {
     v20 = 0;
-    v8 = [MEMORY[0x1E6996F90] locationWithURL:v6 error:&v20];
+    webpagesLocation = [MEMORY[0x1E6996F90] locationWithURL:lCopy error:&v20];
     v9 = v20;
-    if (!v8)
+    if (!webpagesLocation)
     {
-      v10 = [v6 scheme];
-      if ([v10 isEqualToString:@"data"])
+      scheme = [lCopy scheme];
+      if ([scheme isEqualToString:@"data"])
       {
       }
 
       else
       {
-        v11 = [v6 scheme];
-        v12 = [v11 isEqualToString:@"about"];
+        scheme2 = [lCopy scheme];
+        v12 = [scheme2 isEqualToString:@"about"];
 
         if (!v12)
         {
-          v7[2](v7, 0, v9);
+          handlerCopy[2](handlerCopy, 0, v9);
           goto LABEL_10;
         }
       }
 
-      v8 = [MEMORY[0x1E6996D78] webpagesLocation];
+      webpagesLocation = [MEMORY[0x1E6996D78] webpagesLocation];
     }
   }
 
-  v13 = [(WFActionContentPermissionRequestor *)self action];
-  v14 = [(WFActionContentPermissionRequestor *)self userInterface];
-  v15 = [(WFActionContentPermissionRequestor *)self action];
-  v16 = [v15 runningDelegate];
-  v17 = [v16 contentItemCache];
+  action = [(WFActionContentPermissionRequestor *)self action];
+  userInterface = [(WFActionContentPermissionRequestor *)self userInterface];
+  action2 = [(WFActionContentPermissionRequestor *)self action];
+  runningDelegate = [action2 runningDelegate];
+  contentItemCache = [runningDelegate contentItemCache];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __96__WFActionContentPermissionRequestor_requestUserConsentToLoadWebContentAtURL_completionHandler___block_invoke;
   v18[3] = &unk_1E837BE38;
-  v19 = v7;
-  [v13 performSmartPromptChecksWithUserInterface:v14 contentDestination:v8 contentItemCache:v17 isWebpageCoercion:1 completionHandler:v18];
+  v19 = handlerCopy;
+  [action performSmartPromptChecksWithUserInterface:userInterface contentDestination:webpagesLocation contentItemCache:contentItemCache isWebpageCoercion:1 completionHandler:v18];
 
-  v9 = v8;
+  v9 = webpagesLocation;
 LABEL_10:
 }
 
-- (void)allowContactsAccessWithCompletionHandler:(id)a3
+- (void)allowContactsAccessWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69E0C70] sharedManager];
+  handlerCopy = handler;
+  mEMORY[0x1E69E0C70] = [MEMORY[0x1E69E0C70] sharedManager];
   v6 = [MEMORY[0x1E695DFD8] setWithObject:@"WFContactAccessResource"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__WFActionContentPermissionRequestor_allowContactsAccessWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E837BE10;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 requestSandboxExtensionForRunningActionWithAccessResources:v6 completion:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [mEMORY[0x1E69E0C70] requestSandboxExtensionForRunningActionWithAccessResources:v6 completion:v8];
 }
 
 void __79__WFActionContentPermissionRequestor_allowContactsAccessWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -218,20 +218,20 @@ void __79__WFActionContentPermissionRequestor_allowContactsAccessWithCompletionH
   }
 }
 
-- (WFActionContentPermissionRequestor)initWithAction:(id)a3
+- (WFActionContentPermissionRequestor)initWithAction:(id)action
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v13.receiver = self;
   v13.super_class = WFActionContentPermissionRequestor;
   v5 = [(WFActionContentPermissionRequestor *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_action, v4);
-    v7 = [v4 userInterface];
+    objc_storeWeak(&v5->_action, actionCopy);
+    userInterface = [actionCopy userInterface];
     userInterface = v6->_userInterface;
-    v6->_userInterface = v7;
+    v6->_userInterface = userInterface;
 
     if (!v6->_userInterface)
     {

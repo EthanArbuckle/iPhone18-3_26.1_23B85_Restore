@@ -1,11 +1,11 @@
 @interface TTRIRemindersListHashtagCollectionCell
 + (Class)containerViewClass;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)accessibilityElements;
-- (_TtC9Reminders38TTRIRemindersListHashtagCollectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
+- (_TtC9Reminders38TTRIRemindersListHashtagCollectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
 - (void)dealloc;
-- (void)hashtagButtonAction:(id)a3;
+- (void)hashtagButtonAction:(id)action;
 - (void)layoutSubviews;
 - (void)ttrAccessibilityServicesDidChange;
 @end
@@ -19,11 +19,11 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC9Reminders38TTRIRemindersListHashtagCollectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC9Reminders38TTRIRemindersListHashtagCollectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -32,7 +32,7 @@
     v6 = 0;
   }
 
-  return sub_1005FDF24(a3, a4, v6);
+  return sub_1005FDF24(style, identifier, v6);
 }
 
 - (void)dealloc
@@ -40,25 +40,25 @@
   ObjectType = swift_getObjectType();
   v6[3] = ObjectType;
   v6[0] = self;
-  v4 = self;
+  selfCopy = self;
   static UIAccessibility.removeAccessibilityStatusChangeObserver(_:)();
   sub_100004758(v6);
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(TTRIRemindersListHashtagCollectionCell *)&v5 dealloc];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005FE7E8();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1005FE8C4(width, height);
   v7 = v6;
   v9 = v8;
@@ -70,11 +70,11 @@
   return result;
 }
 
-- (void)hashtagButtonAction:(id)a3
+- (void)hashtagButtonAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -83,7 +83,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100600A04(v6);
@@ -93,7 +93,7 @@
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100601044();
 
   if (v3)
@@ -111,16 +111,16 @@
 
 - (void)ttrAccessibilityServicesDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005FF5B8();
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
-  width = a4.width;
-  v7 = a3;
-  v8 = self;
-  sub_100602DCC(v7, width);
+  width = size.width;
+  viewCopy = view;
+  selfCopy = self;
+  sub_100602DCC(viewCopy, width);
 }
 
 @end

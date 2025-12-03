@@ -1,26 +1,26 @@
 @interface CADSPGraph
-- (BOOL)getLatency:(double *)a3 error:(id *)a4;
-- (BOOL)getParameter:(float *)a3 forID:(unsigned int)a4 error:(id *)a5;
-- (BOOL)getParameterDirection:(unsigned int *)a3 forID:(unsigned int)a4 error:(id *)a5;
-- (BOOL)getPropertyData:(void *)a3 size:(unsigned int *)a4 forID:(unsigned int)a5 error:(id *)a6;
-- (BOOL)getPropertyDirection:(unsigned int *)a3 forID:(unsigned int)a4 error:(id *)a5;
-- (BOOL)getPropertyInfo:(CADSPPropertyInfo *)a3 forID:(unsigned int)a4 error:(id *)a5;
-- (BOOL)getTailTime:(double *)a3 error:(id *)a4;
-- (BOOL)initialize:(id *)a3;
-- (BOOL)loadStrip:(id)a3 type:(unsigned int)a4 withResourcePath:(id)a5 error:(id *)a6;
-- (BOOL)setParameter:(float)a3 forID:(unsigned int)a4 error:(id *)a5;
-- (CADSPGraph)initWithModel:(id)a3 error:(id *)a4;
+- (BOOL)getLatency:(double *)latency error:(id *)error;
+- (BOOL)getParameter:(float *)parameter forID:(unsigned int)d error:(id *)error;
+- (BOOL)getParameterDirection:(unsigned int *)direction forID:(unsigned int)d error:(id *)error;
+- (BOOL)getPropertyData:(void *)data size:(unsigned int *)size forID:(unsigned int)d error:(id *)error;
+- (BOOL)getPropertyDirection:(unsigned int *)direction forID:(unsigned int)d error:(id *)error;
+- (BOOL)getPropertyInfo:(CADSPPropertyInfo *)info forID:(unsigned int)d error:(id *)error;
+- (BOOL)getTailTime:(double *)time error:(id *)error;
+- (BOOL)initialize:(id *)initialize;
+- (BOOL)loadStrip:(id)strip type:(unsigned int)type withResourcePath:(id)path error:(id *)error;
+- (BOOL)setParameter:(float)parameter forID:(unsigned int)d error:(id *)error;
+- (CADSPGraph)initWithModel:(id)model error:(id *)error;
 - (NSArray)boxes;
 - (NSArray)eventListeners;
 - (NSArray)subsets;
 - (id).cxx_construct;
-- (id)boxForName:(id)a3;
-- (id)createRemoteProcessingBlockHost:(id *)a3;
-- (id)saveStrip:(unsigned int)a3 error:(id *)a4;
-- (id)subsetForName:(id)a3;
-- (void)addEventListener:(id)a3;
+- (id)boxForName:(id)name;
+- (id)createRemoteProcessingBlockHost:(id *)host;
+- (id)saveStrip:(unsigned int)strip error:(id *)error;
+- (id)subsetForName:(id)name;
+- (void)addEventListener:(id)listener;
 - (void)removeAllEventListeners;
-- (void)removeEventListener:(id)a3;
+- (void)removeEventListener:(id)listener;
 @end
 
 @implementation CADSPGraph
@@ -32,16 +32,16 @@
   return self;
 }
 
-- (id)subsetForName:(id)a3
+- (id)subsetForName:(id)name
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CADSPGraph *)self subsets];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  subsets = [(CADSPGraph *)self subsets];
+  v6 = [subsets countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -51,13 +51,13 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subsets);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 model];
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v4];
+        model = [v9 model];
+        name = [model name];
+        v12 = [name isEqualToString:nameCopy];
 
         if (v12)
         {
@@ -66,7 +66,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [subsets countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -86,17 +86,17 @@ LABEL_11:
 - (NSArray)subsets
 {
   v51 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  subsets = v2->_subsets;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  subsets = selfCopy->_subsets;
   if (!subsets)
   {
-    v39 = [MEMORY[0x1E695DF70] arrayWithCapacity:(*(v2->_graph.__ptr_ + 128) - *(v2->_graph.__ptr_ + 127)) >> 3];
+    v39 = [MEMORY[0x1E695DF70] arrayWithCapacity:(*(selfCopy->_graph.__ptr_ + 128) - *(selfCopy->_graph.__ptr_ + 127)) >> 3];
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    obj = [(CADSPGraphModel *)v2->_model subsets];
+    obj = [(CADSPGraphModel *)selfCopy->_model subsets];
     v4 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v4)
     {
@@ -113,10 +113,10 @@ LABEL_11:
           }
 
           v6 = *(*(&v46 + 1) + 8 * v5);
-          ptr = v2->_graph.__ptr_;
-          v8 = [v6 name];
-          v9 = v8;
-          std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
+          ptr = selfCopy->_graph.__ptr_;
+          name = [v6 name];
+          v9 = name;
+          std::string::basic_string[abi:ne200100]<0>(__p, [name UTF8String]);
           v10 = *(ptr + 127);
           v11 = *(ptr + 128);
           if (v10 == v11)
@@ -174,7 +174,7 @@ LABEL_22:
             }
           }
 
-          cntrl = v2->_graph.__cntrl_;
+          cntrl = selfCopy->_graph.__cntrl_;
           if (cntrl)
           {
             atomic_fetch_add_explicit(&cntrl->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -217,7 +217,7 @@ LABEL_22:
               }
 
               v29 = [v22 initWithBytes:v27 length:v28 encoding:4];
-              v30 = [(CADSPGraph *)v2 boxForName:v29];
+              v30 = [(CADSPGraph *)selfCopy boxForName:v29];
               if (v30)
               {
                 [v19 addObject:v30];
@@ -257,30 +257,30 @@ LABEL_22:
     }
 
     v33 = [v39 copy];
-    v34 = v2->_subsets;
-    v2->_subsets = v33;
+    v34 = selfCopy->_subsets;
+    selfCopy->_subsets = v33;
 
-    subsets = v2->_subsets;
+    subsets = selfCopy->_subsets;
   }
 
   v35 = subsets;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v36 = *MEMORY[0x1E69E9840];
 
   return v35;
 }
 
-- (id)boxForName:(id)a3
+- (id)boxForName:(id)name
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CADSPGraph *)self boxes];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  boxes = [(CADSPGraph *)self boxes];
+  v6 = [boxes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -290,13 +290,13 @@ LABEL_22:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(boxes);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 model];
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v4];
+        model = [v9 model];
+        name = [model name];
+        v12 = [name isEqualToString:nameCopy];
 
         if (v12)
         {
@@ -305,7 +305,7 @@ LABEL_22:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [boxes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -325,18 +325,18 @@ LABEL_11:
 - (NSArray)boxes
 {
   v32 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  boxes = v2->_boxes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  boxes = selfCopy->_boxes;
   if (!boxes)
   {
-    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(v2->_graph.__ptr_ + 5)];
+    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(selfCopy->_graph.__ptr_ + 5)];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v5 = [(CADSPGraphModel *)v2->_model boxes];
-    v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    boxes = [(CADSPGraphModel *)selfCopy->_model boxes];
+    v6 = [boxes countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v6)
     {
       v7 = *v28;
@@ -346,14 +346,14 @@ LABEL_11:
         {
           if (*v28 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(boxes);
           }
 
           v9 = *(*(&v27 + 1) + 8 * i);
-          ptr = v2->_graph.__ptr_;
-          v11 = [v9 name];
-          v12 = v11;
-          std::string::basic_string[abi:ne200100]<0>(__p, [v11 UTF8String]);
+          ptr = selfCopy->_graph.__ptr_;
+          name = [v9 name];
+          v12 = name;
+          std::string::basic_string[abi:ne200100]<0>(__p, [name UTF8String]);
           v13 = std::__hash_table<std::__hash_value_type<std::string,AudioDSPGraph::Box *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,AudioDSPGraph::Box *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,AudioDSPGraph::Box *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,AudioDSPGraph::Box *>>>::find<std::string>(ptr + 117, __p);
           if (v13)
           {
@@ -365,7 +365,7 @@ LABEL_11:
             v14 = 0;
           }
 
-          cntrl = v2->_graph.__cntrl_;
+          cntrl = selfCopy->_graph.__cntrl_;
           if (cntrl)
           {
             atomic_fetch_add_explicit(&cntrl->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -393,32 +393,32 @@ LABEL_11:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v6 = [boxes countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v6);
     }
 
     v18 = [v4 copy];
-    v19 = v2->_boxes;
-    v2->_boxes = v18;
+    v19 = selfCopy->_boxes;
+    selfCopy->_boxes = v18;
 
-    boxes = v2->_boxes;
+    boxes = selfCopy->_boxes;
   }
 
   v20 = boxes;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v21 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-- (CADSPGraph)initWithModel:(id)a3 error:(id *)a4
+- (CADSPGraph)initWithModel:(id)model error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v11.receiver = v6;
+  modelCopy = model;
+  selfCopy = self;
+  v11.receiver = selfCopy;
   v11.super_class = CADSPGraph;
   v7 = [(CADSPGraph *)&v11 init];
 
@@ -432,26 +432,26 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)getTailTime:(double *)a3 error:(id *)a4
+- (BOOL)getTailTime:(double *)time error:(id *)error
 {
-  TailTime = CADSPGraphGetTailTime(self, a3);
+  TailTime = CADSPGraphGetTailTime(self, time);
   v6 = TailTime;
-  if (a4 && !TailTime)
+  if (error && !TailTime)
   {
-    *a4 = [CADSPError createWithRealTimeError:0];
+    *error = [CADSPError createWithRealTimeError:0];
   }
 
   return v6 != 0;
 }
 
-- (id)saveStrip:(unsigned int)a3 error:(id *)a4
+- (id)saveStrip:(unsigned int)strip error:(id *)error
 {
-  if (a3)
+  if (strip)
   {
     v4 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = [CADSPError errorWithCode:1853060464 descriptionFormat:@"graph cannot save property strip(s)"];
+      *error = [CADSPError errorWithCode:1853060464 descriptionFormat:@"graph cannot save property strip(s)"];
     }
   }
 
@@ -498,21 +498,21 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)loadStrip:(id)a3 type:(unsigned int)a4 withResourcePath:(id)a5 error:(id *)a6
+- (BOOL)loadStrip:(id)strip type:(unsigned int)type withResourcePath:(id)path error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  if (a4 == 1)
+  stripCopy = strip;
+  pathCopy = path;
+  if (type == 1)
   {
-    AudioDSPGraph::Graph::setPropertyStrip(self->_graph.__ptr_, v10, v11);
+    AudioDSPGraph::Graph::setPropertyStrip(self->_graph.__ptr_, stripCopy, pathCopy);
 LABEL_6:
     v6 = 1;
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!type)
   {
-    v12 = AudioDSPGraph::Graph::setAUStrip(self->_graph.__ptr_, v10);
+    v12 = AudioDSPGraph::Graph::setAUStrip(self->_graph.__ptr_, stripCopy);
     if (v12)
     {
       std::string::basic_string[abi:ne200100]<0>(v14, "failed to set parameter strip");
@@ -527,7 +527,7 @@ LABEL_7:
   return v6 & 1;
 }
 
-- (id)createRemoteProcessingBlockHost:(id *)a3
+- (id)createRemoteProcessingBlockHost:(id *)host
 {
   v167[1] = *MEMORY[0x1E69E9840];
   if (objc_opt_class())
@@ -591,9 +591,9 @@ LABEL_7:
     }
 
     v21 = objc_alloc(MEMORY[0x1E69C6DE0]);
-    v22 = [(CADSPGraph *)self model];
-    v23 = [v22 name];
-    v24 = [v21 initWithName:v23 inputs:v159 outputs:v158];
+    model = [(CADSPGraph *)self model];
+    name = [model name];
+    v24 = [v21 initWithName:name inputs:v159 outputs:v158];
 
     if (v24)
     {
@@ -797,12 +797,12 @@ LABEL_7:
             [v50 setDelegate:v86];
 
             v87 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-            v88 = [v87 executableURL];
-            v89 = [v88 URLByStandardizingPath];
+            executableURL = [v87 executableURL];
+            uRLByStandardizingPath = [executableURL URLByStandardizingPath];
 
             v90 = objc_opt_class();
             v91 = NSStringFromClass(v90);
-            v165 = v89;
+            v165 = uRLByStandardizingPath;
             v92 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v165 count:1];
             [v50 loadPropertyMarshallerWithClassName:v91 bundleLocationURLs:v92 error:0];
 
@@ -830,9 +830,9 @@ LABEL_62:
           ioDataSize = 8;
           if (!AudioUnitGetProperty(v49, 0x686F7062u, 0, 0, &outData, &ioDataSize) && outData != 0)
           {
-            v52 = [MEMORY[0x1E69C6E00] sharedInstance];
+            mEMORY[0x1E69C6E00] = [MEMORY[0x1E69C6E00] sharedInstance];
             v53 = outData;
-            [v52 addHost:outData toItem:v50];
+            [mEMORY[0x1E69C6E00] addHost:outData toItem:v50];
           }
         }
 
@@ -1042,18 +1042,18 @@ LABEL_64:
       [v24 setDelegate:self];
     }
 
-    else if (a3)
+    else if (host)
     {
-      *a3 = [[CADSPError alloc] initWithCode:1970170734];
+      *host = [[CADSPError alloc] initWithCode:1970170734];
     }
   }
 
   else
   {
     v24 = 0;
-    if (a3)
+    if (host)
     {
-      *a3 = [[CADSPError alloc] initWithCode:1853060464];
+      *host = [[CADSPError alloc] initWithCode:1853060464];
     }
   }
 
@@ -1062,94 +1062,94 @@ LABEL_64:
   return v24;
 }
 
-- (BOOL)getPropertyData:(void *)a3 size:(unsigned int *)a4 forID:(unsigned int)a5 error:(id *)a6
+- (BOOL)getPropertyData:(void *)data size:(unsigned int *)size forID:(unsigned int)d error:(id *)error
 {
-  Property = CADSPGraphGetProperty(self, a5, a3, a4);
+  Property = CADSPGraphGetProperty(self, d, data, size);
   v8 = Property;
-  if (a6 && !Property)
+  if (error && !Property)
   {
-    *a6 = [CADSPError createWithRealTimeError:0];
+    *error = [CADSPError createWithRealTimeError:0];
   }
 
   return v8 != 0;
 }
 
-- (BOOL)getPropertyInfo:(CADSPPropertyInfo *)a3 forID:(unsigned int)a4 error:(id *)a5
+- (BOOL)getPropertyInfo:(CADSPPropertyInfo *)info forID:(unsigned int)d error:(id *)error
 {
-  PropertyInfo = CADSPGraphGetPropertyInfo(self, a4, a3);
+  PropertyInfo = CADSPGraphGetPropertyInfo(self, d, info);
   v7 = PropertyInfo;
-  if (a5 && !PropertyInfo)
+  if (error && !PropertyInfo)
   {
-    *a5 = [CADSPError createWithRealTimeError:0];
+    *error = [CADSPError createWithRealTimeError:0];
   }
 
   return v7 != 0;
 }
 
-- (BOOL)getPropertyDirection:(unsigned int *)a3 forID:(unsigned int)a4 error:(id *)a5
+- (BOOL)getPropertyDirection:(unsigned int *)direction forID:(unsigned int)d error:(id *)error
 {
-  PropertyDirection = CADSPGraphGetPropertyDirection(self, a4, a3);
+  PropertyDirection = CADSPGraphGetPropertyDirection(self, d, direction);
   v7 = PropertyDirection;
-  if (a5 && !PropertyDirection)
+  if (error && !PropertyDirection)
   {
-    *a5 = [CADSPError createWithRealTimeError:0];
+    *error = [CADSPError createWithRealTimeError:0];
   }
 
   return v7 != 0;
 }
 
-- (BOOL)setParameter:(float)a3 forID:(unsigned int)a4 error:(id *)a5
+- (BOOL)setParameter:(float)parameter forID:(unsigned int)d error:(id *)error
 {
   v9 = 0;
-  v6 = CADSPGraphSetParameter(self, a4, &v9, a3);
+  v6 = CADSPGraphSetParameter(self, d, &v9, parameter);
   v7 = v6;
-  if (a5 && !v6)
+  if (error && !v6)
   {
-    *a5 = [CADSPError createWithRealTimeError:v9];
+    *error = [CADSPError createWithRealTimeError:v9];
   }
 
   return v7 != 0;
 }
 
-- (BOOL)getParameter:(float *)a3 forID:(unsigned int)a4 error:(id *)a5
+- (BOOL)getParameter:(float *)parameter forID:(unsigned int)d error:(id *)error
 {
   v9 = 0;
-  Parameter = CADSPGraphGetParameter(self, a4, a3, &v9);
+  Parameter = CADSPGraphGetParameter(self, d, parameter, &v9);
   v7 = Parameter;
-  if (a5 && !Parameter)
+  if (error && !Parameter)
   {
-    *a5 = [CADSPError createWithRealTimeError:v9];
+    *error = [CADSPError createWithRealTimeError:v9];
   }
 
   return v7 != 0;
 }
 
-- (BOOL)getParameterDirection:(unsigned int *)a3 forID:(unsigned int)a4 error:(id *)a5
+- (BOOL)getParameterDirection:(unsigned int *)direction forID:(unsigned int)d error:(id *)error
 {
   v9 = 0;
-  ParameterDirection = CADSPGraphGetParameterDirection(self, a4, a3, &v9);
+  ParameterDirection = CADSPGraphGetParameterDirection(self, d, direction, &v9);
   v7 = ParameterDirection;
-  if (a5 && !ParameterDirection)
+  if (error && !ParameterDirection)
   {
-    *a5 = [CADSPError createWithRealTimeError:v9];
+    *error = [CADSPError createWithRealTimeError:v9];
   }
 
   return v7 != 0;
 }
 
-- (BOOL)getLatency:(double *)a3 error:(id *)a4
+- (BOOL)getLatency:(double *)latency error:(id *)error
 {
-  Latency = CADSPGraphGetLatency(self, a3);
+  Latency = CADSPGraphGetLatency(self, latency);
   v6 = Latency;
-  if (a4 && !Latency)
+  if (error && !Latency)
   {
-    *a4 = [CADSPError createWithRealTimeError:0];
+    *error = [CADSPError createWithRealTimeError:0];
   }
 
   return v6 != 0;
 }
 
-- (BOOL)initialize:(id *)a3
+- (BOOL)initialize:(id *)initialize
 {
   v78 = *MEMORY[0x1E69E9840];
   v3 = self->_graph.__ptr_;
@@ -1547,13 +1547,13 @@ LABEL_64:
 - (void)removeAllEventListeners
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = v2->_eventListeners;
+  v3 = selfCopy->_eventListeners;
   v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
@@ -1569,7 +1569,7 @@ LABEL_64:
         }
 
         v7 = *(*(&v13 + 1) + 8 * v6);
-        ptr = v2->_graph.__ptr_;
+        ptr = selfCopy->_graph.__ptr_;
         v9 = v7[1];
         v10 = v7[2];
         if (v10)
@@ -1595,22 +1595,22 @@ LABEL_64:
     while (v4);
   }
 
-  [(NSMutableArray *)v2->_eventListeners removeAllObjects];
-  objc_sync_exit(v2);
+  [(NSMutableArray *)selfCopy->_eventListeners removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeEventListener:(id)a3
+- (void)removeEventListener:(id)listener
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(NSMutableArray *)v4->_eventListeners containsObject:v8])
+  listenerCopy = listener;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableArray *)selfCopy->_eventListeners containsObject:listenerCopy])
   {
-    ptr = v4->_graph.__ptr_;
-    v6 = v8[1];
-    v7 = v8[2];
+    ptr = selfCopy->_graph.__ptr_;
+    v6 = listenerCopy[1];
+    v7 = listenerCopy[2];
     if (v7)
     {
       atomic_fetch_add_explicit(&v7->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -1624,25 +1624,25 @@ LABEL_64:
       std::__shared_weak_count::__release_shared[abi:ne200100](v7);
     }
 
-    [(NSMutableArray *)v4->_eventListeners removeObject:v8];
+    [(NSMutableArray *)selfCopy->_eventListeners removeObject:listenerCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addEventListener:(id)a3
+- (void)addEventListener:(id)listener
 {
-  v14 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  eventListeners = v4->_eventListeners;
+  listenerCopy = listener;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  eventListeners = selfCopy->_eventListeners;
   if (eventListeners)
   {
-    if (([(NSMutableArray *)eventListeners containsObject:v14]& 1) == 0)
+    if (([(NSMutableArray *)eventListeners containsObject:listenerCopy]& 1) == 0)
     {
-      ptr = v4->_graph.__ptr_;
-      v8 = v14[1];
-      v7 = v14[2];
+      ptr = selfCopy->_graph.__ptr_;
+      v8 = listenerCopy[1];
+      v7 = listenerCopy[2];
       if (v7)
       {
         atomic_fetch_add_explicit((v7 + 8), 1uLL, memory_order_relaxed);
@@ -1656,15 +1656,15 @@ LABEL_64:
         std::__shared_weak_count::__release_shared[abi:ne200100](*(&v15 + 1));
       }
 
-      [(NSMutableArray *)v4->_eventListeners addObject:v14];
+      [(NSMutableArray *)selfCopy->_eventListeners addObject:listenerCopy];
     }
   }
 
   else
   {
-    v9 = v4->_graph.__ptr_;
-    v11 = v14[1];
-    v10 = v14[2];
+    v9 = selfCopy->_graph.__ptr_;
+    v11 = listenerCopy[1];
+    v10 = listenerCopy[2];
     if (v10)
     {
       atomic_fetch_add_explicit((v10 + 8), 1uLL, memory_order_relaxed);
@@ -1678,19 +1678,19 @@ LABEL_64:
       std::__shared_weak_count::__release_shared[abi:ne200100](*(&v16 + 1));
     }
 
-    v12 = [MEMORY[0x1E695DF70] arrayWithObject:v14];
-    v13 = v4->_eventListeners;
-    v4->_eventListeners = v12;
+    v12 = [MEMORY[0x1E695DF70] arrayWithObject:listenerCopy];
+    v13 = selfCopy->_eventListeners;
+    selfCopy->_eventListeners = v12;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)eventListeners
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  eventListeners = v2->_eventListeners;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  eventListeners = selfCopy->_eventListeners;
   if (eventListeners)
   {
     v4 = [(NSMutableArray *)eventListeners copy];
@@ -1701,7 +1701,7 @@ LABEL_64:
     v4 = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }

@@ -1,6 +1,6 @@
 @interface _DPCMSWordRecord
-- (BOOL)copyFromManagedObject:(id)a3;
-- (BOOL)copyToManagedObject:(id)a3;
+- (BOOL)copyFromManagedObject:(id)object;
+- (BOOL)copyToManagedObject:(id)object;
 - (id)description;
 @end
 
@@ -28,18 +28,18 @@
   return v11;
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = _DPCMSWordRecord, [(_DPCMSSequenceRecord *)&v10 copyToManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = _DPCMSWordRecord, [(_DPCMSSequenceRecord *)&v10 copyToManagedObject:objectCopy]))
   {
-    v5 = v4;
-    v6 = [(_DPCMSWordRecord *)self plainFragment];
-    [v5 setPlainFragment:v6];
+    v5 = objectCopy;
+    plainFragment = [(_DPCMSWordRecord *)self plainFragment];
+    [v5 setPlainFragment:plainFragment];
 
-    v7 = [(_DPCMSWordRecord *)self fragment];
-    [v5 setFragment:v7];
+    fragment = [(_DPCMSWordRecord *)self fragment];
+    [v5 setFragment:fragment];
 
     [v5 setFragmentPosition:{-[_DPCMSWordRecord fragmentPosition](self, "fragmentPosition")}];
     [v5 setFragmentHashIndex:{-[_DPCMSWordRecord fragmentHashIndex](self, "fragmentHashIndex")}];
@@ -55,23 +55,23 @@
   return v8;
 }
 
-- (BOOL)copyFromManagedObject:(id)a3
+- (BOOL)copyFromManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = _DPCMSWordRecord, [(_DPCMSSequenceRecord *)&v11 copyFromManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = _DPCMSWordRecord, [(_DPCMSSequenceRecord *)&v11 copyFromManagedObject:objectCopy]))
   {
-    v5 = v4;
-    v6 = [v5 plainFragment];
-    [(_DPCMSWordRecord *)self setPlainFragment:v6];
+    v5 = objectCopy;
+    plainFragment = [v5 plainFragment];
+    [(_DPCMSWordRecord *)self setPlainFragment:plainFragment];
 
-    v7 = [v5 fragment];
-    [(_DPCMSWordRecord *)self setFragment:v7];
+    fragment = [v5 fragment];
+    [(_DPCMSWordRecord *)self setFragment:fragment];
 
     -[_DPCMSWordRecord setFragmentPosition:](self, "setFragmentPosition:", [v5 fragmentPosition]);
-    v8 = [v5 fragmentHashIndex];
+    fragmentHashIndex = [v5 fragmentHashIndex];
 
-    [(_DPCMSWordRecord *)self setFragmentHashIndex:v8];
+    [(_DPCMSWordRecord *)self setFragmentHashIndex:fragmentHashIndex];
     v9 = 1;
   }
 

@@ -1,12 +1,12 @@
 @interface AMSMutableBinaryPromise
-+ (BOOL)cancelPromise:(id)a3;
-+ (BOOL)finishPromise:(id)a3 withError:(id)a4;
-+ (BOOL)finishPromise:(id)a3 withPromise:(id)a4;
-+ (BOOL)finishPromise:(id)a3 withSuccess:(BOOL)a4;
-+ (BOOL)finishPromise:(id)a3 withSuccess:(BOOL)a4 error:(id)a5;
++ (BOOL)cancelPromise:(id)promise;
++ (BOOL)finishPromise:(id)promise withError:(id)error;
++ (BOOL)finishPromise:(id)promise withPromise:(id)withPromise;
++ (BOOL)finishPromise:(id)promise withSuccess:(BOOL)success;
++ (BOOL)finishPromise:(id)promise withSuccess:(BOOL)success error:(id)error;
 - (BOOL)cancel;
-- (BOOL)finishWithPromise:(id)a3;
-- (BOOL)finishWithSuccess:(BOOL)a3 error:(id)a4;
+- (BOOL)finishWithPromise:(id)promise;
+- (BOOL)finishWithSuccess:(BOOL)success error:(id)error;
 @end
 
 @implementation AMSMutableBinaryPromise
@@ -18,60 +18,60 @@
   return [v3 cancelPromise:self];
 }
 
-- (BOOL)finishWithPromise:(id)a3
+- (BOOL)finishWithPromise:(id)promise
 {
-  v4 = a3;
-  LOBYTE(self) = [objc_opt_class() finishPromise:self withPromise:v4];
+  promiseCopy = promise;
+  LOBYTE(self) = [objc_opt_class() finishPromise:self withPromise:promiseCopy];
 
   return self;
 }
 
-- (BOOL)finishWithSuccess:(BOOL)a3 error:(id)a4
+- (BOOL)finishWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  LOBYTE(v4) = [objc_opt_class() finishPromise:self withSuccess:v4 error:v6];
+  successCopy = success;
+  errorCopy = error;
+  LOBYTE(successCopy) = [objc_opt_class() finishPromise:self withSuccess:successCopy error:errorCopy];
 
-  return v4;
+  return successCopy;
 }
 
-+ (BOOL)cancelPromise:(id)a3
++ (BOOL)cancelPromise:(id)promise
 {
-  v3 = a3;
-  v4 = [v3 backingPromise];
-  v5 = [v4 cancel];
+  promiseCopy = promise;
+  backingPromise = [promiseCopy backingPromise];
+  cancel = [backingPromise cancel];
 
-  [v3 stopRetainingSelf];
-  return v5;
+  [promiseCopy stopRetainingSelf];
+  return cancel;
 }
 
-+ (BOOL)finishPromise:(id)a3 withError:(id)a4
++ (BOOL)finishPromise:(id)promise withError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 backingPromise];
-  v8 = [v7 finishWithError:v5];
+  errorCopy = error;
+  promiseCopy = promise;
+  backingPromise = [promiseCopy backingPromise];
+  v8 = [backingPromise finishWithError:errorCopy];
 
-  [v6 stopRetainingSelf];
+  [promiseCopy stopRetainingSelf];
   return v8;
 }
 
-+ (BOOL)finishPromise:(id)a3 withSuccess:(BOOL)a4
++ (BOOL)finishPromise:(id)promise withSuccess:(BOOL)success
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 backingPromise];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  v8 = [v6 finishWithResult:v7];
+  successCopy = success;
+  promiseCopy = promise;
+  backingPromise = [promiseCopy backingPromise];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:successCopy];
+  v8 = [backingPromise finishWithResult:v7];
 
-  [v5 stopRetainingSelf];
+  [promiseCopy stopRetainingSelf];
   return v8;
 }
 
-+ (BOOL)finishPromise:(id)a3 withPromise:(id)a4
++ (BOOL)finishPromise:(id)promise withPromise:(id)withPromise
 {
-  v5 = a3;
-  v6 = a4;
+  promiseCopy = promise;
+  withPromiseCopy = withPromise;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -81,9 +81,9 @@
   v10[2] = __53__AMSMutableBinaryPromise_finishPromise_withPromise___block_invoke;
   v10[3] = &unk_1E73B35D8;
   v12 = &v13;
-  v7 = v5;
+  v7 = promiseCopy;
   v11 = v7;
-  [v6 addFinishBlock:v10];
+  [withPromiseCopy addFinishBlock:v10];
   v8 = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
@@ -97,21 +97,21 @@ uint64_t __53__AMSMutableBinaryPromise_finishPromise_withPromise___block_invoke(
   return result;
 }
 
-+ (BOOL)finishPromise:(id)a3 withSuccess:(BOOL)a4 error:(id)a5
++ (BOOL)finishPromise:(id)promise withSuccess:(BOOL)success error:(id)error
 {
   v7 = MEMORY[0x1E695E118];
-  if (!a4)
+  if (!success)
   {
     v7 = 0;
   }
 
   v8 = v7;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 backingPromise];
-  v12 = [v11 finishWithResult:v8 error:v9];
+  errorCopy = error;
+  promiseCopy = promise;
+  backingPromise = [promiseCopy backingPromise];
+  v12 = [backingPromise finishWithResult:v8 error:errorCopy];
 
-  [v10 stopRetainingSelf];
+  [promiseCopy stopRetainingSelf];
   return v12;
 }
 

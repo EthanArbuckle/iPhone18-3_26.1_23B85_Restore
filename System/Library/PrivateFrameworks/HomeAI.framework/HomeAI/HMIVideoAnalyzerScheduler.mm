@@ -2,20 +2,20 @@
 + (id)sharedInstance;
 - (BOOL)_shouldSkipLogState;
 - (HMIVideoAnalyzerScheduler)init;
-- (HMIVideoAnalyzerScheduler)initWithTimer:(id)a3;
+- (HMIVideoAnalyzerScheduler)initWithTimer:(id)timer;
 - (NSArray)analyzerConfigurations;
 - (NSArray)analyzerStates;
 - (NSArray)analyzers;
-- (id)analyzerWithConfiguration:(id)a3 block:(id)a4;
-- (id)reducedConfiguration:(id)a3;
-- (id)reducedConfiguration:(id)a3 analyzers:(id)a4;
+- (id)analyzerWithConfiguration:(id)configuration block:(id)block;
+- (id)reducedConfiguration:(id)configuration;
+- (id)reducedConfiguration:(id)configuration analyzers:(id)analyzers;
 - (int64_t)_getPeakPowerPressureLevel;
 - (void)_compactInternalAnalyzers;
 - (void)_logState;
-- (void)_updateAnalyzer:(id)a3 withIndex:(unint64_t)a4;
-- (void)registerAnalyzer:(id)a3;
-- (void)systemResourceUsageDidUpdate:(int64_t)a3 maxNumberOfAnalyzers:(unint64_t)a4 maxAnalysisFPS:(float)a5;
-- (void)timerDidFire:(id)a3;
+- (void)_updateAnalyzer:(id)analyzer withIndex:(unint64_t)index;
+- (void)registerAnalyzer:(id)analyzer;
+- (void)systemResourceUsageDidUpdate:(int64_t)update maxNumberOfAnalyzers:(unint64_t)analyzers maxAnalysisFPS:(float)s;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMIVideoAnalyzerScheduler
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __43__HMIVideoAnalyzerScheduler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -52,9 +52,9 @@ uint64_t __43__HMIVideoAnalyzerScheduler_sharedInstance__block_invoke(uint64_t a
   return v4;
 }
 
-- (HMIVideoAnalyzerScheduler)initWithTimer:(id)a3
+- (HMIVideoAnalyzerScheduler)initWithTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   v22.receiver = self;
   v22.super_class = HMIVideoAnalyzerScheduler;
   v6 = [(HMIVideoAnalyzerScheduler *)&v22 init];
@@ -66,11 +66,11 @@ uint64_t __43__HMIVideoAnalyzerScheduler_sharedInstance__block_invoke(uint64_t a
 
   v6->_lock._os_unfair_lock_opaque = 0;
   v6->_registerLock._os_unfair_lock_opaque = 0;
-  objc_storeStrong(&v6->_tick, a3);
+  objc_storeStrong(&v6->_tick, timer);
   [(HMFTimer *)v7->_tick setDelegate:v7];
-  v8 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+  weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
   internalAnalyzers = v7->_internalAnalyzers;
-  v7->_internalAnalyzers = v8;
+  v7->_internalAnalyzers = weakObjectsPointerArray;
 
   v10 = objc_alloc_init(HMISystemResourceUsageMonitor);
   usageMonitor = v7->_usageMonitor;
@@ -150,23 +150,23 @@ LABEL_20:
   return v7;
 }
 
-- (void)registerAnalyzer:(id)a3
+- (void)registerAnalyzer:(id)analyzer
 {
-  v4 = a3;
+  analyzerCopy = analyzer;
   os_unfair_lock_lock_with_options();
-  [(NSPointerArray *)self->_internalAnalyzers hmf_addObject:v4];
+  [(NSPointerArray *)self->_internalAnalyzers hmf_addObject:analyzerCopy];
   [(HMFTimer *)self->_tick resume];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)analyzerWithConfiguration:(id)a3 block:(id)a4
+- (id)analyzerWithConfiguration:(id)configuration block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  blockCopy = block;
   os_unfair_lock_lock_with_options();
-  v8 = [(HMIVideoAnalyzerScheduler *)self reducedConfiguration:v6];
+  v8 = [(HMIVideoAnalyzerScheduler *)self reducedConfiguration:configurationCopy];
 
-  v9 = v7[2](v7, v8);
+  v9 = blockCopy[2](blockCopy, v8);
   [(HMIVideoAnalyzerScheduler *)self registerAnalyzer:v9];
   os_unfair_lock_unlock(&self->_registerLock);
 
@@ -176,8 +176,8 @@ LABEL_20:
 - (NSArray)analyzerConfigurations
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(HMIVideoAnalyzerScheduler *)self analyzers];
-  v5 = [v4 na_map:&__block_literal_global_26];
+  analyzers = [(HMIVideoAnalyzerScheduler *)self analyzers];
+  v5 = [analyzers na_map:&__block_literal_global_26];
 
   objc_autoreleasePoolPop(v3);
 
@@ -187,29 +187,29 @@ LABEL_20:
 - (NSArray)analyzerStates
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(HMIVideoAnalyzerScheduler *)self analyzers];
-  v5 = [v4 na_map:&__block_literal_global_52];
+  analyzers = [(HMIVideoAnalyzerScheduler *)self analyzers];
+  v5 = [analyzers na_map:&__block_literal_global_52];
 
   objc_autoreleasePoolPop(v3);
 
   return v5;
 }
 
-- (id)reducedConfiguration:(id)a3
+- (id)reducedConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(HMIVideoAnalyzerScheduler *)self analyzers];
-  v6 = [(HMIVideoAnalyzerScheduler *)self reducedConfiguration:v4 analyzers:v5];
+  configurationCopy = configuration;
+  analyzers = [(HMIVideoAnalyzerScheduler *)self analyzers];
+  v6 = [(HMIVideoAnalyzerScheduler *)self reducedConfiguration:configurationCopy analyzers:analyzers];
 
   return v6;
 }
 
-- (id)reducedConfiguration:(id)a3 analyzers:(id)a4
+- (id)reducedConfiguration:(id)configuration analyzers:(id)analyzers
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 allowReducedConfiguration])
+  configurationCopy = configuration;
+  analyzersCopy = analyzers;
+  if ([configurationCopy allowReducedConfiguration])
   {
     v56 = 0;
     v57 = &v56;
@@ -230,15 +230,15 @@ LABEL_20:
     v47[4] = &v56;
     v47[5] = &v52;
     v47[6] = &v48;
-    [v7 na_each:v47];
-    v8 = [v6 copy];
+    [analyzersCopy na_each:v47];
+    v8 = [configurationCopy copy];
     if ([v8 initialDecodeMode])
     {
       v9 = v57[3];
       if (v9 >= [(HMIVideoAnalyzerScheduler *)self maxH264VideoDecoders])
       {
         v10 = objc_autoreleasePoolPush();
-        v11 = self;
+        selfCopy = self;
         v12 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
@@ -264,7 +264,7 @@ LABEL_20:
         if (v15 >= [(HMIVideoAnalyzerScheduler *)self maxH265VideoEncoders])
         {
           v16 = objc_autoreleasePoolPush();
-          v17 = self;
+          selfCopy2 = self;
           v18 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
@@ -279,10 +279,10 @@ LABEL_20:
 
           objc_autoreleasePoolPop(v16);
           v21 = v53[3];
-          if (v21 >= [(HMIVideoAnalyzerScheduler *)v17 maxH264VideoEncoders])
+          if (v21 >= [(HMIVideoAnalyzerScheduler *)selfCopy2 maxH264VideoEncoders])
           {
             v22 = objc_autoreleasePoolPush();
-            v23 = v17;
+            v23 = selfCopy2;
             v24 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
@@ -322,7 +322,7 @@ LABEL_20:
           if (v27 >= [(HMIVideoAnalyzerScheduler *)self maxH265VideoEncoders])
           {
             v33 = objc_autoreleasePoolPush();
-            v34 = self;
+            selfCopy3 = self;
             v35 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
             {
@@ -337,10 +337,10 @@ LABEL_20:
 
             objc_autoreleasePoolPop(v33);
             v38 = v53[3];
-            if (v38 >= [(HMIVideoAnalyzerScheduler *)v34 maxH264VideoEncoders])
+            if (v38 >= [(HMIVideoAnalyzerScheduler *)selfCopy3 maxH264VideoEncoders])
             {
               v39 = objc_autoreleasePoolPush();
-              v40 = v34;
+              v40 = selfCopy3;
               v41 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
               {
@@ -396,7 +396,7 @@ LABEL_20:
       [v28 maxAnalysisFPSForSystemResourceUsageLevel:self->_usageLevel];
       v30 = v29;
 
-      [v6 analysisFPS];
+      [configurationCopy analysisFPS];
       if (v30 < v31)
       {
         v31 = v30;
@@ -412,7 +412,7 @@ LABEL_20:
 
   else
   {
-    v8 = v6;
+    v8 = configurationCopy;
   }
 
   return v8;
@@ -501,9 +501,9 @@ LABEL_17:
   [(NSPointerArray *)internalAnalyzers compact];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
   os_unfair_lock_lock_with_options();
   [(HMIVideoAnalyzerScheduler *)self _compactInternalAnalyzers];
@@ -513,37 +513,37 @@ LABEL_17:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v6 = [(HMIVideoAnalyzerScheduler *)self analyzers];
+  analyzers = [(HMIVideoAnalyzerScheduler *)self analyzers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HMIVideoAnalyzerScheduler_timerDidFire___block_invoke_3;
   v7[3] = &unk_278754FA0;
   v7[4] = self;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [analyzers enumerateObjectsUsingBlock:v7];
   [(HMIVideoAnalyzerScheduler *)self _logState];
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)systemResourceUsageDidUpdate:(int64_t)a3 maxNumberOfAnalyzers:(unint64_t)a4 maxAnalysisFPS:(float)a5
+- (void)systemResourceUsageDidUpdate:(int64_t)update maxNumberOfAnalyzers:(unint64_t)analyzers maxAnalysisFPS:(float)s
 {
   v24 = *MEMORY[0x277D85DE8];
   if (![(HMIVideoAnalyzerScheduler *)self ignoreThermalAndSystemResourceUsageLevel])
   {
-    self->_maxH264VideoDecoders = a4;
-    if (self->_usageLevel != a3)
+    self->_maxH264VideoDecoders = analyzers;
+    if (self->_usageLevel != update)
     {
-      self->_usageLevel = a3;
-      v8 = [(HMIVideoAnalyzerScheduler *)self maxH264VideoDecoders];
-      if (a3 > 1)
+      self->_usageLevel = update;
+      maxH264VideoDecoders = [(HMIVideoAnalyzerScheduler *)self maxH264VideoDecoders];
+      if (update > 1)
       {
-        if (a3 != 3)
+        if (update != 3)
         {
           return;
         }
 
         v14 = objc_autoreleasePoolPush();
-        v10 = self;
+        selfCopy2 = self;
         v15 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
@@ -559,20 +559,20 @@ LABEL_17:
         v22 = 0x2020000000;
         v23 = 0;
         os_unfair_lock_lock_with_options();
-        v17 = [(HMIVideoAnalyzerScheduler *)v10 analyzers];
+        analyzers = [(HMIVideoAnalyzerScheduler *)selfCopy2 analyzers];
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAnalyzers_maxAnalysisFPS___block_invoke_55;
         v18[3] = &unk_278754FC8;
         v18[4] = &buf;
-        v18[5] = v8;
-        [v17 na_each:v18];
+        v18[5] = maxH264VideoDecoders;
+        [analyzers na_each:v18];
       }
 
       else
       {
         v9 = objc_autoreleasePoolPush();
-        v10 = self;
+        selfCopy2 = self;
         v11 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
@@ -588,23 +588,23 @@ LABEL_17:
         v22 = 0x2020000000;
         v23 = 0;
         os_unfair_lock_lock_with_options();
-        v13 = [(HMIVideoAnalyzerScheduler *)v10 analyzers];
+        analyzers2 = [(HMIVideoAnalyzerScheduler *)selfCopy2 analyzers];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAnalyzers_maxAnalysisFPS___block_invoke;
         v20[3] = &unk_278754F78;
         v20[4] = &buf;
-        [v13 na_each:v20];
+        [analyzers2 na_each:v20];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAnalyzers_maxAnalysisFPS___block_invoke_2;
         v19[3] = &unk_278754FC8;
         v19[4] = &buf;
-        v19[5] = v8;
-        [v13 na_each:v19];
+        v19[5] = maxH264VideoDecoders;
+        [analyzers2 na_each:v19];
       }
 
-      os_unfair_lock_unlock(&v10->_registerLock);
+      os_unfair_lock_unlock(&selfCopy2->_registerLock);
       _Block_object_dispose(&buf, 8);
     }
   }
@@ -660,12 +660,12 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
   }
 }
 
-- (void)_updateAnalyzer:(id)a3 withIndex:(unint64_t)a4
+- (void)_updateAnalyzer:(id)analyzer withIndex:(unint64_t)index
 {
-  v11 = a3;
-  if ([v11 monitored])
+  analyzerCopy = analyzer;
+  if ([analyzerCopy monitored])
   {
-    [v11 delay];
+    [analyzerCopy delay];
     if (v5 <= 16.0)
     {
       v7 = 0.25;
@@ -694,9 +694,9 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
     else
     {
       v6 = 1.0;
-      if ([v11 decodeMode])
+      if ([analyzerCopy decodeMode])
       {
-        [v11 setDecodeMode:0];
+        [analyzerCopy setDecodeMode:0];
       }
     }
 
@@ -710,19 +710,19 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
       }
     }
 
-    [v11 setAnalysisFPS:v6];
+    [analyzerCopy setAnalysisFPS:v6];
   }
 }
 
 - (BOOL)_shouldSkipLogState
 {
-  v3 = [(HMIVideoAnalyzerScheduler *)self logStateCount];
+  logStateCount = [(HMIVideoAnalyzerScheduler *)self logStateCount];
   [(HMIVideoAnalyzerScheduler *)self setLogStateCount:[(HMIVideoAnalyzerScheduler *)self logStateCount]+ 1];
   v4 = +[HMIPreference sharedInstance];
   v5 = [v4 numberPreferenceForKey:@"schedulerStateLogFrequency" defaultValue:&unk_284075228];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return v3 % v6 != 0;
+  return logStateCount % integerValue != 0;
 }
 
 - (int64_t)_getPeakPowerPressureLevel
@@ -733,9 +733,9 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
   }
 
   v2 = +[HMIPeakPowerPressureMonitor sharedInstance];
-  v3 = [v2 peakPowerPressureLevel];
+  peakPowerPressureLevel = [v2 peakPowerPressureLevel];
 
-  return v3;
+  return peakPowerPressureLevel;
 }
 
 - (void)_logState
@@ -773,18 +773,18 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
     }
 
     v9 = objc_autoreleasePoolPush();
-    v10 = [(HMIVideoAnalyzerScheduler *)self analyzers];
-    v11 = [v10 firstObject];
+    analyzers = [(HMIVideoAnalyzerScheduler *)self analyzers];
+    firstObject = [analyzers firstObject];
 
-    if (v11)
+    if (firstObject)
     {
       v71 = v9;
-      [v10 na_each:&__block_literal_global_78];
+      [analyzers na_each:&__block_literal_global_78];
       v12 = +[HMIPreference sharedInstance];
       v13 = [v12 BOOLPreferenceForKey:@"logHumanFriendlySchedulerState" defaultValue:0];
 
       v14 = 0x278751000;
-      v72 = v10;
+      v72 = analyzers;
       if (v13)
       {
         v15 = [MEMORY[0x277CCAB68] stringWithString:@"Scheduler state: "];
@@ -794,14 +794,14 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
         v17 = HMFBooleanToString();
         [v15 appendFormat:@", idle: %@", v17];
 
-        v18 = [MEMORY[0x277CCAC38] processInfo];
-        v19 = [v18 processName];
-        [v15 appendFormat:@", %@: (%llu MB | %llu MB)", v19, v81 >> 20, v80 >> 20];
+        processInfo = [MEMORY[0x277CCAC38] processInfo];
+        processName = [processInfo processName];
+        [v15 appendFormat:@", %@: (%llu MB | %llu MB)", processName, v81 >> 20, v80 >> 20];
 
         v20 = +[HMIPreference sharedInstance];
-        LODWORD(v19) = [v20 BOOLPreferenceForKey:@"logOtherProcessMemorySchedulerState" defaultValue:0];
+        LODWORD(processName) = [v20 BOOLPreferenceForKey:@"logOtherProcessMemorySchedulerState" defaultValue:0];
 
-        if (v19)
+        if (processName)
         {
           [v15 appendFormat:@", mediaserverd: (%llu MB | %llu MB)", v77 >> 20, v76 >> 20];
           [v15 appendFormat:@", homed: (%llu MB | %llu MB)", v79 >> 20, v78 >> 20];
@@ -821,7 +821,7 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
         [v15 appendFormat:@", build: %@", v23];
         [v15 appendFormat:@", maxConcurrentAnalyzers: %lu", -[HMIVideoAnalyzerScheduler maxH264VideoDecoders](self, "maxH264VideoDecoders")];
         v24 = objc_autoreleasePoolPush();
-        v25 = self;
+        selfCopy = self;
         v26 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
@@ -832,21 +832,21 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
           v95 = v15;
           _os_log_impl(&dword_22D12F000, v26, OS_LOG_TYPE_INFO, "%{public}@%@", buf, 0x16u);
 
-          v10 = v72;
+          analyzers = v72;
         }
 
         objc_autoreleasePoolPop(v24);
-        v28 = [v10 firstObject];
-        v29 = [v28 state];
-        v30 = [v29 tableColumns];
+        firstObject2 = [analyzers firstObject];
+        state = [firstObject2 state];
+        tableColumns = [state tableColumns];
 
         v31 = objc_autoreleasePoolPush();
-        v32 = v25;
+        v32 = selfCopy;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
           v34 = HMFGetLogIdentifier();
-          [v30 componentsJoinedByString:@" | "];
+          [tableColumns componentsJoinedByString:@" | "];
           v36 = v35 = v4;
           *buf = 138543618;
           v93 = v34;
@@ -862,10 +862,10 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
         v73[1] = 3221225472;
         v73[2] = __38__HMIVideoAnalyzerScheduler__logState__block_invoke_121;
         v73[3] = &unk_278755038;
-        v74 = v30;
+        v74 = tableColumns;
         v75 = v32;
-        v37 = v30;
-        v10 = v72;
+        v37 = tableColumns;
+        analyzers = v72;
         [v72 na_each:v73];
 
         v14 = 0x278751000uLL;
@@ -879,9 +879,9 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
       v70 = +[HMIPreference sharedInstance];
       v69 = [v38 numberWithBool:{objc_msgSend(v70, "isIdle")}];
       v91[1] = v69;
-      v68 = [MEMORY[0x277CCAC38] processInfo];
-      v67 = [v68 processName];
-      v90[2] = v67;
+      processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+      processName2 = [processInfo2 processName];
+      v90[2] = processName2;
       v88[0] = @"footprint";
       v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v81 >> 20];
       v89[0] = v39;
@@ -892,8 +892,8 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
       v91[2] = v41;
       v90[3] = @"thermalLevel";
       v42 = MEMORY[0x277CCABB0];
-      v43 = [*(v14 + 3488) sharedInstance];
-      v44 = [v42 numberWithUnsignedInteger:{objc_msgSend(v43, "thermalLevel")}];
+      sharedInstance = [*(v14 + 3488) sharedInstance];
+      v44 = [v42 numberWithUnsignedInteger:{objc_msgSend(sharedInstance, "thermalLevel")}];
       v91[3] = v44;
       v90[4] = @"peakPowerPressureLevel";
       v45 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMIVideoAnalyzerScheduler _getPeakPowerPressureLevel](self, "_getPeakPowerPressureLevel")}];
@@ -908,7 +908,7 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
 
       v91[5] = v47;
       v90[6] = @"analyzers";
-      v48 = [v10 na_map:&__block_literal_global_159];
+      v48 = [analyzers na_map:&__block_literal_global_159];
       v91[6] = v48;
       v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v91 forKeys:v90 count:7];
       v50 = [v66 dictionaryWithDictionary:v49];
@@ -957,7 +957,7 @@ void __94__HMIVideoAnalyzerScheduler_systemResourceUsageDidUpdate_maxNumberOfAna
 
       objc_autoreleasePoolPop(v61);
       v9 = v71;
-      v10 = v72;
+      analyzers = v72;
     }
 
     objc_autoreleasePoolPop(v9);
@@ -1036,10 +1036,10 @@ id __38__HMIVideoAnalyzerScheduler__logState__block_invoke_157(uint64_t a1, void
 - (NSArray)analyzers
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSPointerArray *)self->_internalAnalyzers allObjects];
+  allObjects = [(NSPointerArray *)self->_internalAnalyzers allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface MADPhotosFaceCropGenerationTask
 - (MADPhotosFaceCropGenerationTask)init;
 - (double)downloadInactiveTimeInterval;
-- (int)removeDownloadRequestIDForAsset:(id)a3;
-- (void)addDownloadRequestID:(int)a3 forAsset:(id)a4;
-- (void)addFace:(id)a3;
-- (void)cancelRemainingDownloadsWithStatus:(int)a3;
+- (int)removeDownloadRequestIDForAsset:(id)asset;
+- (void)addDownloadRequestID:(int)d forAsset:(id)asset;
+- (void)addFace:(id)face;
+- (void)cancelRemainingDownloadsWithStatus:(int)status;
 - (void)download;
 - (void)prepare;
 - (void)process;
@@ -40,19 +40,19 @@
   return v2;
 }
 
-- (void)addFace:(id)a3
+- (void)addFace:(id)face
 {
-  v4 = a3;
-  if ([(NSMutableSet *)self->_faces containsObject:v4])
+  faceCopy = face;
+  if ([(NSMutableSet *)self->_faces containsObject:faceCopy])
   {
     if (MediaAnalysisLogLevel() >= 4)
     {
       v5 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v5))
       {
-        v6 = [v4 localIdentifier];
+        localIdentifier = [faceCopy localIdentifier];
         v7 = 138412290;
-        v8 = v6;
+        v8 = localIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[FaceCrop][%@] Batch already contains face; ignoring", &v7, 0xCu);
       }
     }
@@ -60,7 +60,7 @@
 
   else
   {
-    [(NSMutableSet *)self->_faces addObject:v4];
+    [(NSMutableSet *)self->_faces addObject:faceCopy];
   }
 }
 
@@ -88,7 +88,7 @@
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v45 = self;
+  selfCopy = self;
   obj = self->_faces;
   v8 = [(NSMutableSet *)obj countByEnumeratingWithState:&v55 objects:v66 count:16];
   if (v8)
@@ -107,43 +107,43 @@
         }
 
         v14 = *(*(&v55 + 1) + 8 * i);
-        v15 = [v14 uuid];
-        v16 = [v7 objectForKeyedSubscript:v15];
+        uuid = [v14 uuid];
+        v16 = [v7 objectForKeyedSubscript:uuid];
 
         if (v16)
         {
-          v17 = [v16 localIdentifier];
+          localIdentifier = [v16 localIdentifier];
 
-          if (v17)
+          if (localIdentifier)
           {
             v18 = v7;
             v19 = v12;
-            v20 = [v16 localIdentifier];
-            v21 = [v49 objectForKeyedSubscript:v20];
+            localIdentifier2 = [v16 localIdentifier];
+            v21 = [v49 objectForKeyedSubscript:localIdentifier2];
 
             if (v21)
             {
-              v22 = [v21 faces];
-              [(MADPhotosFaceCropGenerationEntry *)v22 addObject:v14];
+              faces = [v21 faces];
+              [(MADPhotosFaceCropGenerationEntry *)faces addObject:v14];
             }
 
             else
             {
-              v22 = [[MADPhotosFaceCropGenerationEntry alloc] initWithAsset:v16 andFace:v14];
-              if (v22)
+              faces = [[MADPhotosFaceCropGenerationEntry alloc] initWithAsset:v16 andFace:v14];
+              if (faces)
               {
-                v24 = [v16 localIdentifier];
-                [v49 setObject:v22 forKeyedSubscript:v24];
+                localIdentifier3 = [v16 localIdentifier];
+                [v49 setObject:faces forKeyedSubscript:localIdentifier3];
               }
 
               else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(v19, v11))
               {
-                v48 = [v16 localIdentifier];
-                v25 = [v14 localIdentifier];
+                localIdentifier4 = [v16 localIdentifier];
+                localIdentifier5 = [v14 localIdentifier];
                 *buf = 138412546;
-                v61 = v48;
+                v61 = localIdentifier4;
                 v62 = 2112;
-                v63 = v25;
+                v63 = localIdentifier5;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "[FaceCrop] Failed to create entry asset %@ and face %@; skip", buf, 0x16u);
               }
             }
@@ -154,11 +154,11 @@
 
           else if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
           {
-            v23 = [v14 localIdentifier];
+            localIdentifier6 = [v14 localIdentifier];
             *buf = 138412546;
             v61 = v16;
             v62 = 2112;
-            v63 = v23;
+            v63 = localIdentifier6;
             _os_log_fault_impl(&_mh_execute_header, v12, OS_LOG_TYPE_FAULT, "[FaceCrop] Asset %@ containing face (%@) misses localIdentifier; skip", buf, 0x16u);
           }
         }
@@ -175,15 +175,15 @@
     while (v9);
   }
 
-  v26 = [v49 allValues];
-  assetEntries = v45->_assetEntries;
-  v45->_assetEntries = v26;
+  allValues = [v49 allValues];
+  assetEntries = selfCopy->_assetEntries;
+  selfCopy->_assetEntries = allValues;
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v28 = v45->_assetEntries;
+  v28 = selfCopy->_assetEntries;
   v29 = [(NSArray *)v28 countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v29)
   {
@@ -200,20 +200,20 @@
         }
 
         v34 = *(*(&v51 + 1) + 8 * j);
-        v35 = [v34 asset];
-        v36 = [VCPFaceUtils preferredResourcesForFaceProcessingWithAsset:v35];
+        asset = [v34 asset];
+        v36 = [VCPFaceUtils preferredResourcesForFaceProcessingWithAsset:asset];
 
         v37 = [VCPFaceUtils resourceForFaceProcessing:v36 allowStreaming:1];
         [v34 setResource:v37];
 
-        v38 = [v34 resource];
+        resource = [v34 resource];
 
-        if (!v38 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v32))
+        if (!resource && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v32))
         {
-          v39 = [v34 asset];
-          v40 = [v39 localIdentifier];
+          asset2 = [v34 asset];
+          localIdentifier7 = [asset2 localIdentifier];
           *buf = 138412290;
-          v61 = v40;
+          v61 = localIdentifier7;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v32, "[FaceCrop][%@] Failed to identify resource", buf, 0xCu);
         }
       }
@@ -238,24 +238,24 @@
   [v43 accumulateDoubleValue:@"TotalPrepareTimeInSeconds" forField:@"com.apple.mediaanalysisd.FaceAnalysisRunSession" andEvent:?];
 }
 
-- (void)addDownloadRequestID:(int)a3 forAsset:(id)a4
+- (void)addDownloadRequestID:(int)d forAsset:(id)asset
 {
-  v6 = a4;
+  assetCopy = asset;
   downloadStateQueue = self->_downloadStateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D0EA0;
   block[3] = &unk_100285CA8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = assetCopy;
+  dCopy = d;
+  v8 = assetCopy;
   dispatch_sync(downloadStateQueue, block);
 }
 
-- (int)removeDownloadRequestIDForAsset:(id)a3
+- (int)removeDownloadRequestIDForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -265,10 +265,10 @@
   block[1] = 3221225472;
   block[2] = sub_1000D101C;
   block[3] = &unk_100282F28;
-  v9 = v4;
+  v9 = assetCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = assetCopy;
   dispatch_sync(downloadStateQueue, block);
   LODWORD(downloadStateQueue) = *(v12 + 6);
 
@@ -295,7 +295,7 @@
   return v3;
 }
 
-- (void)cancelRemainingDownloadsWithStatus:(int)a3
+- (void)cancelRemainingDownloadsWithStatus:(int)status
 {
   downloadStateQueue = self->_downloadStateQueue;
   v5[0] = _NSConcreteStackBlock;
@@ -303,7 +303,7 @@
   v5[2] = sub_1000D1318;
   v5[3] = &unk_100282EB0;
   v5[4] = self;
-  v6 = a3;
+  statusCopy = status;
   dispatch_sync(downloadStateQueue, v5);
   dispatch_group_wait(self->_downloadGroup, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -370,24 +370,24 @@
         v17 = +[VCPWatchdog sharedWatchdog];
         [v17 pet];
 
-        v18 = [v16 resource];
+        resource = [v16 resource];
 
-        if (v18)
+        if (resource)
         {
           dispatch_group_enter(self->_downloadGroup);
-          v19 = [v16 resource];
+          resource2 = [v16 resource];
           v45[0] = _NSConcreteStackBlock;
           v45[1] = 3221225472;
           v45[2] = sub_1000D1B90;
           v45[3] = &unk_100285CD0;
           v45[4] = self;
           v45[5] = v16;
-          v20 = [PHAssetResourceManager vcp_requestFileURLForAssetResource:v19 taskID:3 completionHandler:v45];
+          v20 = [PHAssetResourceManager vcp_requestFileURLForAssetResource:resource2 taskID:3 completionHandler:v45];
 
           if (v20)
           {
-            v21 = [v16 asset];
-            [(MADPhotosFaceCropGenerationTask *)self addDownloadRequestID:v20 forAsset:v21];
+            asset = [v16 asset];
+            [(MADPhotosFaceCropGenerationTask *)self addDownloadRequestID:v20 forAsset:asset];
 
             ++v13;
           }
@@ -396,10 +396,10 @@
           {
             if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, type))
             {
-              v22 = [v16 asset];
-              v23 = [v22 localIdentifier];
+              asset2 = [v16 asset];
+              localIdentifier = [asset2 localIdentifier];
               *buf = 138412290;
-              *v52 = v23;
+              *v52 = localIdentifier;
               _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[FaceCrop][Download][%@] Failed to initialize resource download", buf, 0xCu);
             }
 
@@ -440,12 +440,12 @@
       break;
     }
 
-    v27 = [(MADProcessingTask *)self cancelBlock];
-    if (v27)
+    cancelBlock = [(MADProcessingTask *)self cancelBlock];
+    if (cancelBlock)
     {
-      v28 = v27;
-      v29 = [(MADProcessingTask *)self cancelBlock];
-      v30 = v29[2]();
+      v28 = cancelBlock;
+      cancelBlock2 = [(MADProcessingTask *)self cancelBlock];
+      v30 = cancelBlock2[2]();
 
       if (v30)
       {
@@ -459,7 +459,7 @@
           }
         }
 
-        v33 = self;
+        selfCopy2 = self;
         v34 = 4294967168;
         goto LABEL_38;
       }
@@ -478,10 +478,10 @@
         }
       }
 
-      v33 = self;
+      selfCopy2 = self;
       v34 = 4294943494;
 LABEL_38:
-      [(MADPhotosFaceCropGenerationTask *)v33 cancelRemainingDownloadsWithStatus:v34];
+      [(MADPhotosFaceCropGenerationTask *)selfCopy2 cancelRemainingDownloadsWithStatus:v34];
       break;
     }
   }
@@ -522,12 +522,12 @@ LABEL_38:
   v46 = v4;
 
   v50 = +[VCPMADCoreAnalyticsManager sharedManager];
-  v7 = [(NSMutableSet *)self->_faces anyObject];
-  v8 = [v7 photoLibrary];
+  anyObject = [(NSMutableSet *)self->_faces anyObject];
+  photoLibrary = [anyObject photoLibrary];
 
-  v48 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:v8];
-  v49 = v8;
-  v58 = [[VCPFaceCropManager alloc] initWithPhotoLibrary:v8 andContext:v48];
+  v48 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:photoLibrary];
+  v49 = photoLibrary;
+  v58 = [[VCPFaceCropManager alloc] initWithPhotoLibrary:photoLibrary andContext:v48];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -540,7 +540,7 @@ LABEL_38:
     v12 = *v62;
     type = VCPLogToOSLogType[3];
     v54 = v9;
-    v55 = self;
+    selfCopy = self;
     v53 = *v62;
     while (2)
     {
@@ -558,12 +558,12 @@ LABEL_38:
         v16 = +[VCPWatchdog sharedWatchdog];
         [v16 pet];
 
-        v17 = [(MADProcessingTask *)self cancelBlock];
-        if (v17)
+        cancelBlock = [(MADProcessingTask *)self cancelBlock];
+        if (cancelBlock)
         {
-          v18 = v17;
-          v19 = [(MADProcessingTask *)self cancelBlock];
-          v20 = v19[2]();
+          v18 = cancelBlock;
+          cancelBlock2 = [(MADProcessingTask *)self cancelBlock];
+          v20 = cancelBlock2[2]();
 
           if (v20)
           {
@@ -572,13 +572,13 @@ LABEL_38:
           }
         }
 
-        v21 = [v14 resource];
-        if (v21)
+        resource = [v14 resource];
+        if (resource)
         {
-          v22 = v21;
-          v23 = [v14 status];
+          v22 = resource;
+          status = [v14 status];
 
-          if (!v23)
+          if (!status)
           {
             v24 = VCPSignPostLog();
             v25 = os_signpost_id_generate(v24);
@@ -592,34 +592,34 @@ LABEL_38:
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v27, OS_SIGNPOST_INTERVAL_BEGIN, v25, "VCPFaceProcessingGenerateFaceCrop", "", buf, 2u);
             }
 
-            v29 = [v14 downloadURL];
+            downloadURL = [v14 downloadURL];
             spid = v25;
-            if (v29)
+            if (downloadURL)
             {
-              v30 = [v14 downloadURL];
+              downloadURL2 = [v14 downloadURL];
             }
 
             else
             {
-              v31 = [v14 resource];
-              v30 = [v31 privateFileURL];
+              resource2 = [v14 resource];
+              downloadURL2 = [resource2 privateFileURL];
             }
 
-            v32 = [v14 faces];
-            v33 = [v32 allObjects];
-            v34 = [v14 asset];
-            v35 = [v14 resource];
-            v59 = v30;
+            faces = [v14 faces];
+            allObjects = [faces allObjects];
+            asset = [v14 asset];
+            resource3 = [v14 resource];
+            v59 = downloadURL2;
             v60 = 0;
-            v36 = [v58 generateAndPersistFaceCropsForFaces:v33 withAsset:v34 resource:v35 resourceURL:v30 error:&v60];
+            v36 = [v58 generateAndPersistFaceCropsForFaces:allObjects withAsset:asset resource:resource3 resourceURL:downloadURL2 error:&v60];
             v37 = v60;
 
             if ((v36 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
             {
-              v38 = [v14 asset];
-              v39 = [v38 localIdentifier];
+              asset2 = [v14 asset];
+              localIdentifier = [asset2 localIdentifier];
               *buf = 138412546;
-              v66 = v39;
+              v66 = localIdentifier;
               v67 = 2112;
               v68 = v37;
               _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[FaceCrop][%@] Failed to generate - %@", buf, 0x16u);
@@ -627,7 +627,7 @@ LABEL_38:
 
             v40 = VCPSignPostLog();
             v41 = v40;
-            self = v55;
+            self = selfCopy;
             v12 = v53;
             if (v28 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v40))
             {
@@ -635,12 +635,12 @@ LABEL_38:
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v41, OS_SIGNPOST_INTERVAL_END, spid, "VCPFaceProcessingGenerateFaceCrop", "", buf, 2u);
             }
 
-            v42 = [v14 downloadURL];
+            downloadURL3 = [v14 downloadURL];
 
-            if (v42)
+            if (downloadURL3)
             {
-              v43 = [v14 downloadURL];
-              [PHAssetResourceManager vcp_flushResourceURL:v43];
+              downloadURL4 = [v14 downloadURL];
+              [PHAssetResourceManager vcp_flushResourceURL:downloadURL4];
 
               [v14 setDownloadURL:0];
             }

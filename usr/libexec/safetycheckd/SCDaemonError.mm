@@ -1,21 +1,21 @@
 @interface SCDaemonError
-+ (id)errorWithCode:(int64_t)a3 underlyingErrors:(id)a4;
++ (id)errorWithCode:(int64_t)code underlyingErrors:(id)errors;
 - (SCDaemonError)init;
 - (id)toError;
 @end
 
 @implementation SCDaemonError
 
-+ (id)errorWithCode:(int64_t)a3 underlyingErrors:(id)a4
++ (id)errorWithCode:(int64_t)code underlyingErrors:(id)errors
 {
-  v5 = a4;
+  errorsCopy = errors;
   v6 = +[NSMutableDictionary dictionary];
-  if ([v5 count])
+  if ([errorsCopy count])
   {
-    [v6 setObject:v5 forKeyedSubscript:NSMultipleUnderlyingErrorsKey];
+    [v6 setObject:errorsCopy forKeyedSubscript:NSMultipleUnderlyingErrorsKey];
   }
 
-  v7 = [NSError errorWithDomain:SCDaemonErrorDomain code:a3 userInfo:v6];
+  v7 = [NSError errorWithDomain:SCDaemonErrorDomain code:code userInfo:v6];
 
   return v7;
 }
@@ -40,9 +40,9 @@
 {
   if (-[SCDaemonError code](self, "code") || (-[SCDaemonError underlyingErrors](self, "underlyingErrors"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, v4))
   {
-    v5 = [(SCDaemonError *)self code];
-    v6 = [(SCDaemonError *)self underlyingErrors];
-    v7 = [SCDaemonError errorWithCode:v5 underlyingErrors:v6];
+    code = [(SCDaemonError *)self code];
+    underlyingErrors = [(SCDaemonError *)self underlyingErrors];
+    v7 = [SCDaemonError errorWithCode:code underlyingErrors:underlyingErrors];
   }
 
   else

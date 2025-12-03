@@ -4,29 +4,29 @@
 - (BOOL)hasAuxiliaryProperties;
 - (BOOL)hasPlaceholder;
 - (BOOL)isAirPlay;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLocal;
 - (BOOL)isSystemBooksApplication;
 - (BOOL)isSystemMediaApplication;
 - (BOOL)isSystemPodcastsApplication;
 - (BOOL)isValid;
 - (BOOL)isWebKit;
-- (MRClient)initWithCoder:(id)a3;
-- (MRClient)initWithData:(id)a3;
-- (MRClient)initWithProcessIdentifier:(int)a3 bundleIdentifier:(id)a4;
-- (MRClient)initWithProtobuf:(id)a3;
+- (MRClient)initWithCoder:(id)coder;
+- (MRClient)initWithData:(id)data;
+- (MRClient)initWithProcessIdentifier:(int)identifier bundleIdentifier:(id)bundleIdentifier;
+- (MRClient)initWithProtobuf:(id)protobuf;
 - (MRClient)skeleton;
 - (NSArray)bundleIdentifierHierarchy;
 - (NSData)data;
 - (NSString)representedBundleID;
 - (_MRNowPlayingClientProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)resolvePlaceholdersForDeviceInfo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeFrom:(id)from;
+- (void)resolvePlaceholdersForDeviceInfo:(id)info;
 @end
 
 @implementation MRClient
@@ -34,28 +34,28 @@
 - (NSArray)bundleIdentifierHierarchy
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(MRClient *)self bundleIdentifier];
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
 
-  if (v4)
+  if (bundleIdentifier)
   {
-    v5 = [(MRClient *)self bundleIdentifier];
-    [v3 addObject:v5];
+    bundleIdentifier2 = [(MRClient *)self bundleIdentifier];
+    [v3 addObject:bundleIdentifier2];
   }
 
-  v6 = [(MRClient *)self parentApplicationBundleIdentifier];
+  parentApplicationBundleIdentifier = [(MRClient *)self parentApplicationBundleIdentifier];
 
-  if (v6)
+  if (parentApplicationBundleIdentifier)
   {
-    v7 = [(MRClient *)self parentApplicationBundleIdentifier];
-    [v3 addObject:v7];
+    parentApplicationBundleIdentifier2 = [(MRClient *)self parentApplicationBundleIdentifier];
+    [v3 addObject:parentApplicationBundleIdentifier2];
   }
 
-  v8 = [(MRClient *)self extendedBundleIdentifierHierarchy];
+  extendedBundleIdentifierHierarchy = [(MRClient *)self extendedBundleIdentifierHierarchy];
 
-  if (v8)
+  if (extendedBundleIdentifierHierarchy)
   {
-    v9 = [(MRClient *)self extendedBundleIdentifierHierarchy];
-    [v3 addObjectsFromArray:v9];
+    extendedBundleIdentifierHierarchy2 = [(MRClient *)self extendedBundleIdentifierHierarchy];
+    [v3 addObjectsFromArray:extendedBundleIdentifierHierarchy2];
   }
 
   v10 = [v3 copy];
@@ -88,7 +88,7 @@ void __23__MRClient_localClient__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __23__MRClient_localClient__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (localClient_onceToken != -1)
   {
     dispatch_once(&localClient_onceToken, block);
@@ -101,47 +101,47 @@ void __23__MRClient_localClient__block_invoke(uint64_t a1)
 
 - (BOOL)isSystemBooksApplication
 {
-  v2 = [(MRClient *)self bundleIdentifier];
-  IsSystemBooksApplication = MRMediaRemoteApplicationIsSystemBooksApplication(v2);
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  IsSystemBooksApplication = MRMediaRemoteApplicationIsSystemBooksApplication(bundleIdentifier);
 
   return IsSystemBooksApplication;
 }
 
 - (BOOL)hasPlaceholder
 {
-  v3 = [(MRClient *)self bundleIdentifier];
-  v4 = [v3 isEqualToString:@"(System Media Application)"];
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"(System Media Application)"];
 
   if (v4)
   {
     return 1;
   }
 
-  v5 = [(MRClient *)self bundleIdentifier];
-  v6 = [v5 isEqualToString:@"(System Podcast Application)"];
+  bundleIdentifier2 = [(MRClient *)self bundleIdentifier];
+  v6 = [bundleIdentifier2 isEqualToString:@"(System Podcast Application)"];
 
   if (v6)
   {
     return 1;
   }
 
-  v7 = [(MRClient *)self bundleIdentifier];
-  v8 = [v7 isEqualToString:@"(System Books Application)"];
+  bundleIdentifier3 = [(MRClient *)self bundleIdentifier];
+  v8 = [bundleIdentifier3 isEqualToString:@"(System Books Application)"];
 
   if (v8)
   {
     return 1;
   }
 
-  v10 = [(MRClient *)self bundleIdentifier];
-  v11 = [v10 isEqualToString:@"(System Classical Room Application)"];
+  bundleIdentifier4 = [(MRClient *)self bundleIdentifier];
+  v11 = [bundleIdentifier4 isEqualToString:@"(System Classical Room Application)"];
 
   return v11;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if ([(MRClient *)self isSystemMediaApplication])
   {
     v4 = @"􀘪 ";
@@ -172,47 +172,47 @@ void __23__MRClient_localClient__block_invoke(uint64_t a1)
     v4 = @"􀐥 ";
   }
 
-  [v3 appendString:v4];
-  v5 = [(MRClient *)self bundleIdentifierHierarchy];
-  v6 = [v5 count];
+  [string appendString:v4];
+  bundleIdentifierHierarchy = [(MRClient *)self bundleIdentifierHierarchy];
+  v6 = [bundleIdentifierHierarchy count];
 
   if (v6)
   {
-    v7 = [(MRClient *)self bundleIdentifierHierarchy];
-    v8 = [v7 componentsJoinedByString:@"/"];
+    bundleIdentifierHierarchy2 = [(MRClient *)self bundleIdentifierHierarchy];
+    v8 = [bundleIdentifierHierarchy2 componentsJoinedByString:@"/"];
 
-    [v3 appendFormat:@"%@", v8];
+    [string appendFormat:@"%@", v8];
   }
 
   if ([(MRClient *)self processIdentifier]>= 1)
   {
-    [v3 appendFormat:@" (%d)", -[MRClient processIdentifier](self, "processIdentifier")];
+    [string appendFormat:@" (%d)", -[MRClient processIdentifier](self, "processIdentifier")];
   }
 
-  v9 = [(MRClient *)self displayName];
-  v10 = [v9 length];
+  displayName = [(MRClient *)self displayName];
+  v10 = [displayName length];
 
   if (v10)
   {
-    v11 = [(MRClient *)self displayName];
-    [v3 appendFormat:@" %@", v11];
+    displayName2 = [(MRClient *)self displayName];
+    [string appendFormat:@" %@", displayName2];
   }
 
-  return v3;
+  return string;
 }
 
 - (BOOL)isSystemMediaApplication
 {
-  v2 = [(MRClient *)self bundleIdentifier];
-  IsSystemMediaApplication = MRMediaRemoteApplicationIsSystemMediaApplication(v2);
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  IsSystemMediaApplication = MRMediaRemoteApplicationIsSystemMediaApplication(bundleIdentifier);
 
   return IsSystemMediaApplication;
 }
 
 - (BOOL)isSystemPodcastsApplication
 {
-  v2 = [(MRClient *)self bundleIdentifier];
-  IsSystemPodcastApplication = MRMediaRemoteApplicationIsSystemPodcastApplication(v2);
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  IsSystemPodcastApplication = MRMediaRemoteApplicationIsSystemPodcastApplication(bundleIdentifier);
 
   return IsSystemPodcastApplication;
 }
@@ -230,7 +230,7 @@ void __23__MRClient_localClient__block_invoke(uint64_t a1)
   v8 = v5 ^ 0x7465646279746573;
   v65 = v5 ^ 0x7465646279746573;
   v9 = self->_bundleIdentifier;
-  v10 = [(NSString *)v9 UTF8String];
+  uTF8String = [(NSString *)v9 UTF8String];
   v11 = [(NSString *)v9 length];
   if (v11 < 8)
   {
@@ -243,7 +243,7 @@ LABEL_5:
       v20 = v11;
       do
       {
-        v21 = *v10++;
+        v21 = *uTF8String++;
         v19 |= v21 << v18;
         v18 += 8;
         --v20;
@@ -260,8 +260,8 @@ LABEL_5:
     v12 = ((v11 - 8) & 0xFFFFFFFFFFFFFFF8) + 8;
     do
     {
-      v13 = *v10;
-      v10 += 8;
+      v13 = *uTF8String;
+      uTF8String += 8;
       v14 = (v4 + v6) ^ __ROR8__(v6, 51);
       v15 = v7 + (v8 ^ v13);
       v16 = __ROR8__(v8 ^ v13, 48);
@@ -349,8 +349,8 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [(MRClient *)self bundleIdentifier];
-  v3 = [v4 length] != 0;
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  v3 = [bundleIdentifier length] != 0;
 
   return v3;
 }
@@ -360,41 +360,41 @@ LABEL_10:
   v3 = objc_alloc_init(_MRNowPlayingClientProtobuf);
   [(_MRNowPlayingClientProtobuf *)v3 setProcessIdentifier:[(MRClient *)self processIdentifier]];
   [(_MRNowPlayingClientProtobuf *)v3 setHasProcessIdentifier:[(MRClient *)self processIdentifier]> 0];
-  v4 = [(MRClient *)self bundleIdentifier];
-  [(_MRNowPlayingClientProtobuf *)v3 setBundleIdentifier:v4];
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  [(_MRNowPlayingClientProtobuf *)v3 setBundleIdentifier:bundleIdentifier];
 
-  v5 = [(MRClient *)self parentApplicationBundleIdentifier];
-  [(_MRNowPlayingClientProtobuf *)v3 setParentApplicationBundleIdentifier:v5];
+  parentApplicationBundleIdentifier = [(MRClient *)self parentApplicationBundleIdentifier];
+  [(_MRNowPlayingClientProtobuf *)v3 setParentApplicationBundleIdentifier:parentApplicationBundleIdentifier];
 
   [(_MRNowPlayingClientProtobuf *)v3 setProcessUserIdentifier:[(MRClient *)self processUserIdentifier]];
   [(_MRNowPlayingClientProtobuf *)v3 setHasProcessUserIdentifier:[(MRClient *)self processUserIdentifier]!= 0];
-  v6 = [(MRClient *)self visibility];
-  if (v6 >= 4)
+  visibility = [(MRClient *)self visibility];
+  if (visibility >= 4)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v6;
+    v7 = visibility;
   }
 
   [(_MRNowPlayingClientProtobuf *)v3 setNowPlayingVisibility:v7];
   [(_MRNowPlayingClientProtobuf *)v3 setHasNowPlayingVisibility:[(MRClient *)self visibility]!= 0];
-  v8 = [(MRClient *)self tintColor];
-  v9 = [v8 protobuf];
-  [(_MRNowPlayingClientProtobuf *)v3 setTintColor:v9];
+  tintColor = [(MRClient *)self tintColor];
+  protobuf = [tintColor protobuf];
+  [(_MRNowPlayingClientProtobuf *)v3 setTintColor:protobuf];
 
-  v10 = [(MRClient *)self displayName];
-  [(_MRNowPlayingClientProtobuf *)v3 setDisplayName:v10];
+  displayName = [(MRClient *)self displayName];
+  [(_MRNowPlayingClientProtobuf *)v3 setDisplayName:displayName];
 
-  v11 = [(MRClient *)self extendedBundleIdentifierHierarchy];
-  v12 = [v11 mutableCopy];
+  extendedBundleIdentifierHierarchy = [(MRClient *)self extendedBundleIdentifierHierarchy];
+  v12 = [extendedBundleIdentifierHierarchy mutableCopy];
   [(_MRNowPlayingClientProtobuf *)v3 setExtendedBundleIdentifierHierarchys:v12];
 
-  v13 = [(MRClient *)self appIcon];
-  v14 = [v13 absoluteString];
-  [(_MRNowPlayingClientProtobuf *)v3 setIconURL:v14];
+  appIcon = [(MRClient *)self appIcon];
+  absoluteString = [appIcon absoluteString];
+  [(_MRNowPlayingClientProtobuf *)v3 setIconURL:absoluteString];
 
   return v3;
 }
@@ -409,46 +409,46 @@ LABEL_10:
 
 + (MRClient)anyClient
 {
-  v2 = [[a1 alloc] initWithBundleIdentifier:@"any"];
+  v2 = [[self alloc] initWithBundleIdentifier:@"any"];
 
   return v2;
 }
 
 - (BOOL)isAirPlay
 {
-  v2 = [(MRClient *)self bundleIdentifier];
-  IsAirPlayReceiver = MRMediaRemoteApplicationIsAirPlayReceiver(v2);
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  IsAirPlayReceiver = MRMediaRemoteApplicationIsAirPlayReceiver(bundleIdentifier);
 
   return IsAirPlayReceiver;
 }
 
 - (BOOL)isWebKit
 {
-  v2 = [(MRClient *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.WebKit.GPU"];
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.WebKit.GPU"];
 
   return v3;
 }
 
 - (NSData)data
 {
-  v2 = [(MRClient *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRClient *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
-- (MRClient)initWithProcessIdentifier:(int)a3 bundleIdentifier:(id)a4
+- (MRClient)initWithProcessIdentifier:(int)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a4;
+  bundleIdentifierCopy = bundleIdentifier;
   v12.receiver = self;
   v12.super_class = MRClient;
   v7 = [(MRClient *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_processIdentifier = a3;
-    v9 = [v6 copy];
+    v7->_processIdentifier = identifier;
+    v9 = [bundleIdentifierCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v9;
   }
@@ -456,107 +456,107 @@ LABEL_10:
   return v8;
 }
 
-- (MRClient)initWithProtobuf:(id)a3
+- (MRClient)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v30.receiver = self;
     v30.super_class = MRClient;
     v5 = [(MRClient *)&v30 init];
     if (v5)
     {
-      v5->_processIdentifier = [v4 processIdentifier];
-      v6 = [v4 bundleIdentifier];
-      v7 = [v6 copy];
+      v5->_processIdentifier = [protobufCopy processIdentifier];
+      bundleIdentifier = [protobufCopy bundleIdentifier];
+      v7 = [bundleIdentifier copy];
       bundleIdentifier = v5->_bundleIdentifier;
       v5->_bundleIdentifier = v7;
 
-      v9 = [v4 parentApplicationBundleIdentifier];
-      v10 = [v9 copy];
+      parentApplicationBundleIdentifier = [protobufCopy parentApplicationBundleIdentifier];
+      v10 = [parentApplicationBundleIdentifier copy];
       parentApplicationBundleIdentifier = v5->_parentApplicationBundleIdentifier;
       v5->_parentApplicationBundleIdentifier = v10;
 
-      v5->_processUserIdentifier = [v4 processUserIdentifier];
-      v12 = [v4 nowPlayingVisibility];
-      if (v12 >= 4)
+      v5->_processUserIdentifier = [protobufCopy processUserIdentifier];
+      nowPlayingVisibility = [protobufCopy nowPlayingVisibility];
+      if (nowPlayingVisibility >= 4)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = v12;
+        v13 = nowPlayingVisibility;
       }
 
       v5->_visibility = v13;
       v14 = [MRColorComponents alloc];
-      v15 = [v4 tintColor];
-      v16 = [(MRColorComponents *)v14 initWithProtobuf:v15];
+      tintColor = [protobufCopy tintColor];
+      v16 = [(MRColorComponents *)v14 initWithProtobuf:tintColor];
       tintColor = v5->_tintColor;
       v5->_tintColor = v16;
 
-      v18 = [v4 displayName];
-      v19 = [v18 copy];
+      displayName = [protobufCopy displayName];
+      v19 = [displayName copy];
       displayName = v5->_displayName;
       v5->_displayName = v19;
 
-      v21 = [v4 extendedBundleIdentifierHierarchys];
-      v22 = [v21 copy];
+      extendedBundleIdentifierHierarchys = [protobufCopy extendedBundleIdentifierHierarchys];
+      v22 = [extendedBundleIdentifierHierarchys copy];
       extendedBundleIdentifierHierarchy = v5->_extendedBundleIdentifierHierarchy;
       v5->_extendedBundleIdentifierHierarchy = v22;
 
-      if ([v4 hasIconURL])
+      if ([protobufCopy hasIconURL])
       {
         v24 = objc_alloc(MEMORY[0x1E695DFF8]);
-        v25 = [v4 iconURL];
-        v26 = [v24 initWithString:v25];
+        iconURL = [protobufCopy iconURL];
+        v26 = [v24 initWithString:iconURL];
         appIcon = v5->_appIcon;
         v5->_appIcon = v26;
       }
 
       else
       {
-        v25 = v5->_appIcon;
+        iconURL = v5->_appIcon;
         v5->_appIcon = 0;
       }
     }
 
     self = v5;
-    v28 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v28 = 0;
+    selfCopy = 0;
   }
 
-  return v28;
+  return selfCopy;
 }
 
-- (MRClient)initWithData:(id)a3
+- (MRClient)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRNowPlayingClientProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRNowPlayingClientProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRClient *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (MRClient)initWithCoder:(id)a3
+- (MRClient)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -575,79 +575,79 @@ LABEL_10:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRClient *)self protobuf];
-  [v4 encodeObject:v5 forKey:@"protobuf"];
+  coderCopy = coder;
+  protobuf = [(MRClient *)self protobuf];
+  [coderCopy encodeObject:protobuf forKey:@"protobuf"];
 }
 
 - (MRClient)skeleton
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(MRClient *)self processIdentifier];
-  v5 = [(MRClient *)self bundleIdentifier];
-  v6 = [v3 initWithProcessIdentifier:v4 bundleIdentifier:v5];
+  processIdentifier = [(MRClient *)self processIdentifier];
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  v6 = [v3 initWithProcessIdentifier:processIdentifier bundleIdentifier:bundleIdentifier];
 
   return v6;
 }
 
 - (NSString)representedBundleID
 {
-  v3 = [(MRClient *)self bundleIdentifier];
-  v4 = [(MRClient *)self bundleIdentifierHierarchy];
-  v5 = [(MRClient *)self parentApplicationBundleIdentifier];
-  if ([v4 count])
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  bundleIdentifierHierarchy = [(MRClient *)self bundleIdentifierHierarchy];
+  parentApplicationBundleIdentifier = [(MRClient *)self parentApplicationBundleIdentifier];
+  if ([bundleIdentifierHierarchy count])
   {
-    v6 = [v4 lastObject];
+    lastObject = [bundleIdentifierHierarchy lastObject];
   }
 
   else
   {
-    if (![v5 length])
+    if (![parentApplicationBundleIdentifier length])
     {
       goto LABEL_6;
     }
 
-    v6 = v5;
+    lastObject = parentApplicationBundleIdentifier;
   }
 
-  v7 = v6;
+  v7 = lastObject;
 
-  v3 = v7;
+  bundleIdentifier = v7;
 LABEL_6:
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (BOOL)hasAuxiliaryProperties
 {
-  v3 = [(MRClient *)self displayName];
-  if (v3)
+  displayName = [(MRClient *)self displayName];
+  if (displayName)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MRClient *)self parentApplicationBundleIdentifier];
-    if (v5)
+    parentApplicationBundleIdentifier = [(MRClient *)self parentApplicationBundleIdentifier];
+    if (parentApplicationBundleIdentifier)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(MRClient *)self tintColor];
-      if (v6 || [(MRClient *)self visibility])
+      tintColor = [(MRClient *)self tintColor];
+      if (tintColor || [(MRClient *)self visibility])
       {
         v4 = 1;
       }
 
       else
       {
-        v8 = [(MRClient *)self appIcon];
-        v4 = v8 != 0;
+        appIcon = [(MRClient *)self appIcon];
+        v4 = appIcon != 0;
       }
     }
   }
@@ -655,10 +655,10 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -668,7 +668,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(MRClient *)v5 processIdentifier]< 1 || [(MRClient *)self processIdentifier]< 1)
       {
         v8 = 0;
@@ -677,22 +677,22 @@ LABEL_6:
 
       else
       {
-        v6 = [(MRClient *)v5 processIdentifier];
+        processIdentifier = [(MRClient *)v5 processIdentifier];
         v7 = 0;
-        v8 = v6 == [(MRClient *)self processIdentifier];
+        v8 = processIdentifier == [(MRClient *)self processIdentifier];
       }
 
-      v10 = [(MRClient *)v5 bundleIdentifier];
-      v11 = [(MRClient *)self bundleIdentifier];
-      v12 = [v10 isEqualToString:v11];
+      bundleIdentifier = [(MRClient *)v5 bundleIdentifier];
+      bundleIdentifier2 = [(MRClient *)self bundleIdentifier];
+      v12 = [bundleIdentifier isEqualToString:bundleIdentifier2];
 
-      v13 = [(MRClient *)v5 bundleIdentifierHierarchy];
-      v14 = [(MRClient *)self bundleIdentifier];
-      v15 = [v13 containsObject:v14];
+      bundleIdentifierHierarchy = [(MRClient *)v5 bundleIdentifierHierarchy];
+      bundleIdentifier3 = [(MRClient *)self bundleIdentifier];
+      v15 = [bundleIdentifierHierarchy containsObject:bundleIdentifier3];
 
-      v16 = [(MRClient *)self bundleIdentifierHierarchy];
-      v17 = [(MRClient *)v5 bundleIdentifier];
-      v18 = [v16 containsObject:v17];
+      bundleIdentifierHierarchy2 = [(MRClient *)self bundleIdentifierHierarchy];
+      bundleIdentifier4 = [(MRClient *)v5 bundleIdentifier];
+      v18 = [bundleIdentifierHierarchy2 containsObject:bundleIdentifier4];
 
       if (v8)
       {
@@ -716,122 +716,122 @@ LABEL_6:
 
 - (id)debugDescription
 {
-  v2 = [(MRClient *)self protobuf];
-  v3 = [v2 dictionaryRepresentation];
-  v4 = [v3 description];
+  protobuf = [(MRClient *)self protobuf];
+  dictionaryRepresentation = [protobuf dictionaryRepresentation];
+  v4 = [dictionaryRepresentation description];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setProcessIdentifier:{-[MRClient processIdentifier](self, "processIdentifier")}];
   [v5 setProcessUserIdentifier:{-[MRClient processUserIdentifier](self, "processUserIdentifier")}];
   [v5 setVisibility:{-[MRClient visibility](self, "visibility")}];
-  v6 = [(MRClient *)self tintColor];
-  v7 = [v6 copyWithZone:a3];
+  tintColor = [(MRClient *)self tintColor];
+  v7 = [tintColor copyWithZone:zone];
   [v5 setTintColor:v7];
 
-  v8 = [(MRClient *)self bundleIdentifier];
-  v9 = [v8 copyWithZone:a3];
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  v9 = [bundleIdentifier copyWithZone:zone];
   [v5 setBundleIdentifier:v9];
 
-  v10 = [(MRClient *)self parentApplicationBundleIdentifier];
-  v11 = [v10 copyWithZone:a3];
+  parentApplicationBundleIdentifier = [(MRClient *)self parentApplicationBundleIdentifier];
+  v11 = [parentApplicationBundleIdentifier copyWithZone:zone];
   [v5 setParentApplicationBundleIdentifier:v11];
 
-  v12 = [(MRClient *)self displayName];
-  v13 = [v12 copyWithZone:a3];
+  displayName = [(MRClient *)self displayName];
+  v13 = [displayName copyWithZone:zone];
   [v5 setDisplayName:v13];
 
-  v14 = [(MRClient *)self extendedBundleIdentifierHierarchy];
-  v15 = [v14 copyWithZone:a3];
+  extendedBundleIdentifierHierarchy = [(MRClient *)self extendedBundleIdentifierHierarchy];
+  v15 = [extendedBundleIdentifierHierarchy copyWithZone:zone];
   [v5 setExtendedBundleIdentifierHierarchy:v15];
 
-  v16 = [(MRClient *)self appIcon];
-  v17 = [v16 copyWithZone:a3];
+  appIcon = [(MRClient *)self appIcon];
+  v17 = [appIcon copyWithZone:zone];
   [v5 setAppIcon:v17];
 
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v16 = a3;
-  if ([v16 processIdentifier])
+  fromCopy = from;
+  if ([fromCopy processIdentifier])
   {
-    -[MRClient setProcessIdentifier:](self, "setProcessIdentifier:", [v16 processIdentifier]);
+    -[MRClient setProcessIdentifier:](self, "setProcessIdentifier:", [fromCopy processIdentifier]);
   }
 
-  if ([v16 processUserIdentifier])
+  if ([fromCopy processUserIdentifier])
   {
-    -[MRClient setProcessUserIdentifier:](self, "setProcessUserIdentifier:", [v16 processUserIdentifier]);
+    -[MRClient setProcessUserIdentifier:](self, "setProcessUserIdentifier:", [fromCopy processUserIdentifier]);
   }
 
-  if ([v16 visibility])
+  if ([fromCopy visibility])
   {
-    -[MRClient setVisibility:](self, "setVisibility:", [v16 visibility]);
+    -[MRClient setVisibility:](self, "setVisibility:", [fromCopy visibility]);
   }
 
-  v4 = [v16 tintColor];
+  tintColor = [fromCopy tintColor];
 
-  if (v4)
+  if (tintColor)
   {
-    v5 = [v16 tintColor];
-    [(MRClient *)self setTintColor:v5];
+    tintColor2 = [fromCopy tintColor];
+    [(MRClient *)self setTintColor:tintColor2];
   }
 
-  v6 = [v16 bundleIdentifier];
+  bundleIdentifier = [fromCopy bundleIdentifier];
 
-  if (v6)
+  if (bundleIdentifier)
   {
-    v7 = [v16 bundleIdentifier];
-    [(MRClient *)self setBundleIdentifier:v7];
+    bundleIdentifier2 = [fromCopy bundleIdentifier];
+    [(MRClient *)self setBundleIdentifier:bundleIdentifier2];
   }
 
-  v8 = [v16 parentApplicationBundleIdentifier];
+  parentApplicationBundleIdentifier = [fromCopy parentApplicationBundleIdentifier];
 
-  if (v8)
+  if (parentApplicationBundleIdentifier)
   {
-    v9 = [v16 parentApplicationBundleIdentifier];
-    [(MRClient *)self setParentApplicationBundleIdentifier:v9];
+    parentApplicationBundleIdentifier2 = [fromCopy parentApplicationBundleIdentifier];
+    [(MRClient *)self setParentApplicationBundleIdentifier:parentApplicationBundleIdentifier2];
   }
 
-  v10 = [v16 displayName];
+  displayName = [fromCopy displayName];
 
-  if (v10)
+  if (displayName)
   {
-    v11 = [v16 displayName];
-    [(MRClient *)self setDisplayName:v11];
+    displayName2 = [fromCopy displayName];
+    [(MRClient *)self setDisplayName:displayName2];
   }
 
-  v12 = [v16 extendedBundleIdentifierHierarchy];
+  extendedBundleIdentifierHierarchy = [fromCopy extendedBundleIdentifierHierarchy];
 
-  if (v12)
+  if (extendedBundleIdentifierHierarchy)
   {
-    v13 = [v16 extendedBundleIdentifierHierarchy];
-    [(MRClient *)self setExtendedBundleIdentifierHierarchy:v13];
+    extendedBundleIdentifierHierarchy2 = [fromCopy extendedBundleIdentifierHierarchy];
+    [(MRClient *)self setExtendedBundleIdentifierHierarchy:extendedBundleIdentifierHierarchy2];
   }
 
-  v14 = [v16 appIcon];
+  appIcon = [fromCopy appIcon];
 
-  if (v14)
+  if (appIcon)
   {
-    v15 = [v16 appIcon];
-    [(MRClient *)self setAppIcon:v15];
+    appIcon2 = [fromCopy appIcon];
+    [(MRClient *)self setAppIcon:appIcon2];
   }
 }
 
-- (void)resolvePlaceholdersForDeviceInfo:(id)a3
+- (void)resolvePlaceholdersForDeviceInfo:(id)info
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRClient *)self bundleIdentifier];
-  if ([v5 isEqualToString:@"(System Media Application)"])
+  infoCopy = info;
+  bundleIdentifier = [(MRClient *)self bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"(System Media Application)"])
   {
-    v6 = [v4 systemMediaApplication];
-    if (!v6)
+    systemMediaApplication = [infoCopy systemMediaApplication];
+    if (!systemMediaApplication)
     {
       v7 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
       v8 = _MRLogForCategory(0);
@@ -850,10 +850,10 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"(System Podcast Application)"])
+  if ([bundleIdentifier isEqualToString:@"(System Podcast Application)"])
   {
-    v6 = [v4 systemPodcastApplication];
-    if (!v6)
+    systemMediaApplication = [infoCopy systemPodcastApplication];
+    if (!systemMediaApplication)
     {
       v7 = MRMediaRemoteCopyLocalDeviceSystemPodcastApplicationDisplayID();
       v8 = _MRLogForCategory(0);
@@ -870,17 +870,17 @@ LABEL_15:
     }
 
 LABEL_11:
-    v7 = v6;
+    v7 = systemMediaApplication;
 LABEL_16:
     [(MRClient *)self setBundleIdentifier:v7, *v10];
 
     goto LABEL_17;
   }
 
-  if ([v5 isEqualToString:@"(System Books Application)"])
+  if ([bundleIdentifier isEqualToString:@"(System Books Application)"])
   {
-    v6 = [v4 systemBooksApplication];
-    if (!v6)
+    systemMediaApplication = [infoCopy systemBooksApplication];
+    if (!systemMediaApplication)
     {
       v7 = MRMediaRemoteCopyLocalDeviceSystemBooksApplicationDisplayID();
       v8 = _MRLogForCategory(0);

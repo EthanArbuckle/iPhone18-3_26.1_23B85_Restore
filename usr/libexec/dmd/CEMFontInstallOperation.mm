@@ -1,27 +1,27 @@
 @interface CEMFontInstallOperation
 - (CEMAssetBaseDescriptor)assetDescriptor;
 - (CEMAssetBaseReference)assetReference;
-- (CEMFontInstallOperation)initWithFontDeclaration:(id)a3 resolver:(id)a4;
+- (CEMFontInstallOperation)initWithFontDeclaration:(id)declaration resolver:(id)resolver;
 - (NSString)assetIdentifier;
-- (void)assetResolutionDidSucceedWithAssetURL:(id)a3;
-- (void)assetResolutionFailedWithError:(id)a3;
+- (void)assetResolutionDidSucceedWithAssetURL:(id)l;
+- (void)assetResolutionFailedWithError:(id)error;
 - (void)main;
 @end
 
 @implementation CEMFontInstallOperation
 
-- (CEMFontInstallOperation)initWithFontDeclaration:(id)a3 resolver:(id)a4
+- (CEMFontInstallOperation)initWithFontDeclaration:(id)declaration resolver:(id)resolver
 {
-  v7 = a3;
-  v8 = a4;
+  declarationCopy = declaration;
+  resolverCopy = resolver;
   v12.receiver = self;
   v12.super_class = CEMFontInstallOperation;
   v9 = [(CEMFontInstallOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fontDeclaration, a3);
-    objc_storeStrong(&v10->_resolver, a4);
+    objc_storeStrong(&v9->_fontDeclaration, declaration);
+    objc_storeStrong(&v10->_resolver, resolver);
   }
 
   return v10;
@@ -29,43 +29,43 @@
 
 - (void)main
 {
-  v3 = [(CEMFontInstallOperation *)self resolver];
-  [v3 resolveAssetWithContext:self];
+  resolver = [(CEMFontInstallOperation *)self resolver];
+  [resolver resolveAssetWithContext:self];
 }
 
 - (NSString)assetIdentifier
 {
-  v3 = [(CEMFontInstallOperation *)self fontDeclaration];
-  v4 = [v3 declarationIdentifier];
-  v5 = [(CEMFontInstallOperation *)self fontDeclaration];
-  v6 = [v5 declarationServerHash];
-  v7 = [NSString stringWithFormat:@"%@-%@", v4, v6];
+  fontDeclaration = [(CEMFontInstallOperation *)self fontDeclaration];
+  declarationIdentifier = [fontDeclaration declarationIdentifier];
+  fontDeclaration2 = [(CEMFontInstallOperation *)self fontDeclaration];
+  declarationServerHash = [fontDeclaration2 declarationServerHash];
+  v7 = [NSString stringWithFormat:@"%@-%@", declarationIdentifier, declarationServerHash];
 
   return v7;
 }
 
 - (CEMAssetBaseDescriptor)assetDescriptor
 {
-  v2 = [(CEMFontInstallOperation *)self fontDeclaration];
-  v3 = [v2 payloadDescriptor];
+  fontDeclaration = [(CEMFontInstallOperation *)self fontDeclaration];
+  payloadDescriptor = [fontDeclaration payloadDescriptor];
 
-  return v3;
+  return payloadDescriptor;
 }
 
 - (CEMAssetBaseReference)assetReference
 {
-  v2 = [(CEMFontInstallOperation *)self fontDeclaration];
-  v3 = [v2 payloadReference];
+  fontDeclaration = [(CEMFontInstallOperation *)self fontDeclaration];
+  payloadReference = [fontDeclaration payloadReference];
 
-  return v3;
+  return payloadReference;
 }
 
-- (void)assetResolutionDidSucceedWithAssetURL:(id)a3
+- (void)assetResolutionDidSucceedWithAssetURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ([(CEMFontInstallOperation *)self isExecuting])
   {
-    if (v4)
+    if (lCopy)
     {
       v5 = +[NSFileManager dmd_userFontDatabaseDirectoryURL];
       v6 = +[NSFileManager defaultManager];
@@ -75,14 +75,14 @@
 
       if (v7)
       {
-        v9 = [(CEMFontInstallOperation *)self assetIdentifier];
+        assetIdentifier = [(CEMFontInstallOperation *)self assetIdentifier];
         v10 = +[NSUUID UUID];
-        v11 = [NSString stringWithFormat:@"%@-%@", v9, v10];
+        v11 = [NSString stringWithFormat:@"%@-%@", assetIdentifier, v10];
         v12 = [v5 URLByAppendingPathComponent:v11];
 
         v13 = +[NSFileManager defaultManager];
         v17 = v8;
-        LOBYTE(v11) = [v13 copyItemAtURL:v4 toURL:v12 error:&v17];
+        LOBYTE(v11) = [v13 copyItemAtURL:lCopy toURL:v12 error:&v17];
         v14 = v17;
 
         if (v11)
@@ -120,12 +120,12 @@
   }
 }
 
-- (void)assetResolutionFailedWithError:(id)a3
+- (void)assetResolutionFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(CEMFontInstallOperation *)self isExecuting])
   {
-    [(CEMFontInstallOperation *)self endOperationWithError:v4];
+    [(CEMFontInstallOperation *)self endOperationWithError:errorCopy];
   }
 }
 

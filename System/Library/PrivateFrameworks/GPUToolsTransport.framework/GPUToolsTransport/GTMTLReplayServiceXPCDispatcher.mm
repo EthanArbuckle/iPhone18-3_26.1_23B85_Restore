@@ -1,33 +1,33 @@
 @interface GTMTLReplayServiceXPCDispatcher
-- (GTMTLReplayServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4 bulkDataService:(id)a5 bulkDataServiceProperties:(id)a6;
-- (void)broadcastDisconnect:(id)a3 replyConnection:(id)a4;
-- (void)bulkDataService:(id)a3 replyConnection:(id)a4;
-- (void)cancel_:(id)a3 replyConnection:(id)a4;
-- (void)decode_:(id)a3 replyConnection:(id)a4;
-- (void)deregisterObserver_:(id)a3 replyConnection:(id)a4;
-- (void)display_:(id)a3 replyConnection:(id)a4;
-- (void)fetchInto_:(id)a3 replyConnection:(id)a4;
-- (void)fetch_:(id)a3 replyConnection:(id)a4;
-- (void)load_error_:(id)a3 replyConnection:(id)a4;
-- (void)pause_:(id)a3 replyConnection:(id)a4;
-- (void)profile_:(id)a3 replyConnection:(id)a4;
-- (void)query_:(id)a3 replyConnection:(id)a4;
-- (void)raytrace_:(id)a3 replyConnection:(id)a4;
-- (void)registerObserver_:(id)a3 replyConnection:(id)a4;
-- (void)resume_:(id)a3 replyConnection:(id)a4;
-- (void)shaderdebug_:(id)a3 replyConnection:(id)a4;
-- (void)update_:(id)a3 replyConnection:(id)a4;
+- (GTMTLReplayServiceXPCDispatcher)initWithService:(id)service properties:(id)properties bulkDataService:(id)dataService bulkDataServiceProperties:(id)serviceProperties;
+- (void)broadcastDisconnect:(id)disconnect replyConnection:(id)connection;
+- (void)bulkDataService:(id)service replyConnection:(id)connection;
+- (void)cancel_:(id)cancel_ replyConnection:(id)connection;
+- (void)decode_:(id)decode_ replyConnection:(id)connection;
+- (void)deregisterObserver_:(id)observer_ replyConnection:(id)connection;
+- (void)display_:(id)display_ replyConnection:(id)connection;
+- (void)fetchInto_:(id)into_ replyConnection:(id)connection;
+- (void)fetch_:(id)fetch_ replyConnection:(id)connection;
+- (void)load_error_:(id)load_error_ replyConnection:(id)connection;
+- (void)pause_:(id)pause_ replyConnection:(id)connection;
+- (void)profile_:(id)profile_ replyConnection:(id)connection;
+- (void)query_:(id)query_ replyConnection:(id)connection;
+- (void)raytrace_:(id)raytrace_ replyConnection:(id)connection;
+- (void)registerObserver_:(id)observer_ replyConnection:(id)connection;
+- (void)resume_:(id)resume_ replyConnection:(id)connection;
+- (void)shaderdebug_:(id)shaderdebug_ replyConnection:(id)connection;
+- (void)update_:(id)update_ replyConnection:(id)connection;
 @end
 
 @implementation GTMTLReplayServiceXPCDispatcher
 
-- (GTMTLReplayServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4 bulkDataService:(id)a5 bulkDataServiceProperties:(id)a6
+- (GTMTLReplayServiceXPCDispatcher)initWithService:(id)service properties:(id)properties bulkDataService:(id)dataService bulkDataServiceProperties:(id)serviceProperties
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a4 protocolMethods];
-  v15 = [v14 mutableCopy];
+  serviceCopy = service;
+  dataServiceCopy = dataService;
+  servicePropertiesCopy = serviceProperties;
+  protocolMethods = [properties protocolMethods];
+  v15 = [protocolMethods mutableCopy];
 
   [v15 addObject:@"bulkDataService"];
   [v15 addObject:@"broadcastDisconnect"];
@@ -37,66 +37,66 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_implInstance, a3);
-    objc_storeStrong(&v17->_bulkDataService, a5);
-    objc_storeStrong(&v17->_bulkDataServiceProperties, a6);
+    objc_storeStrong(&v16->_implInstance, service);
+    objc_storeStrong(&v17->_bulkDataService, dataService);
+    objc_storeStrong(&v17->_bulkDataServiceProperties, serviceProperties);
   }
 
   return v17;
 }
 
-- (void)broadcastDisconnect:(id)a3 replyConnection:(id)a4
+- (void)broadcastDisconnect:(id)disconnect replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = xpc_dictionary_get_array(a3, "_pathHistory");
-  [(GTMTLReplayService *)self->_implInstance broadcastDisconnect:v6 path:v7];
+  connectionCopy = connection;
+  v7 = xpc_dictionary_get_array(disconnect, "_pathHistory");
+  [(GTMTLReplayService *)self->_implInstance broadcastDisconnect:connectionCopy path:v7];
 }
 
-- (void)bulkDataService:(id)a3 replyConnection:(id)a4
+- (void)bulkDataService:(id)service replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = gt_xpc_dictionary_create_reply(a3);
+  connectionCopy = connection;
+  v7 = gt_xpc_dictionary_create_reply(service);
   xpc_dictionary_set_nsobject(v7, "returnValue", self->_bulkDataServiceProperties);
-  [v6 sendMessage:v7];
+  [connectionCopy sendMessage:v7];
 }
 
-- (void)registerObserver_:(id)a3 replyConnection:(id)a4
+- (void)registerObserver_:(id)observer_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(GTServiceObserver *)[GTMTLReplayServiceObserver alloc] initWithMessage:v7 notifyConnection:v6];
+  connectionCopy = connection;
+  observer_Copy = observer_;
+  v10 = [(GTServiceObserver *)[GTMTLReplayServiceObserver alloc] initWithMessage:observer_Copy notifyConnection:connectionCopy];
   v8 = [(GTMTLReplayService *)self->_implInstance registerObserver:v10];
-  v9 = gt_xpc_dictionary_create_reply(v7);
+  v9 = gt_xpc_dictionary_create_reply(observer_Copy);
 
   xpc_dictionary_set_uint64(v9, "observerId", v8);
-  [v6 sendMessage:v9];
+  [connectionCopy sendMessage:v9];
 }
 
-- (void)deregisterObserver_:(id)a3 replyConnection:(id)a4
+- (void)deregisterObserver_:(id)observer_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  [(GTMTLReplayService *)self->_implInstance deregisterObserver:xpc_dictionary_get_uint64(v7, "observerId")];
-  v8 = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  observer_Copy = observer_;
+  [(GTMTLReplayService *)self->_implInstance deregisterObserver:xpc_dictionary_get_uint64(observer_Copy, "observerId")];
+  v8 = gt_xpc_dictionary_create_reply(observer_Copy);
 
-  [v6 sendMessage:v8];
+  [connectionCopy sendMessage:v8];
 }
 
-- (void)load_error_:(id)a3 replyConnection:(id)a4
+- (void)load_error_:(id)load_error_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = allServices(v6);
+  connectionCopy = connection;
+  load_error_Copy = load_error_;
+  v8 = allServices(connectionCopy);
   v9 = filteredArrayByService(v8, &unk_2860EEDF0);
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
   v11 = [GTURLAccessProviderXPCProxy alloc];
-  v12 = [v10 serviceProperties];
-  v13 = [(GTURLAccessProviderXPCProxy *)v11 initWithConnection:v6 remoteProperties:v12];
+  serviceProperties = [firstObject serviceProperties];
+  v13 = [(GTURLAccessProviderXPCProxy *)v11 initWithConnection:connectionCopy remoteProperties:serviceProperties];
 
   v14 = objc_opt_class();
-  nsobject = xpc_dictionary_get_nsobject(v7, "url", v14);
-  v16 = gt_xpc_dictionary_create_reply(v7);
+  nsobject = xpc_dictionary_get_nsobject(load_error_Copy, "url", v14);
+  v16 = gt_xpc_dictionary_create_reply(load_error_Copy);
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -104,8 +104,8 @@
   v19[3] = &unk_2796616B8;
   v19[4] = self;
   v20 = v16;
-  v21 = v6;
-  v17 = v6;
+  v21 = connectionCopy;
+  v17 = connectionCopy;
   v18 = v16;
   [(GTURLAccessProviderXPCProxy *)v13 securityScopedURLFromSandboxID:nsobject completionHandler:v19];
 }
@@ -137,18 +137,18 @@ void __63__GTMTLReplayServiceXPCDispatcher_load_error__replyConnection___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetch_:(id)a3 replyConnection:(id)a4
+- (void)fetch_:(id)fetch_ replyConnection:(id)connection
 {
-  v6 = DispatchReplayerBatchRequest(a4, a3, self->_bulkDataService, 0);
+  v6 = DispatchReplayerBatchRequest(connection, fetch_, self->_bulkDataService, 0);
   v5 = [(GTMTLReplayService *)self->_implInstance fetch:v6];
 }
 
-- (void)fetchInto_:(id)a3 replyConnection:(id)a4
+- (void)fetchInto_:(id)into_ replyConnection:(id)connection
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (xpc_dictionary_get_flag(v6, "_flags", 6))
+  into_Copy = into_;
+  connectionCopy = connection;
+  if (xpc_dictionary_get_flag(into_Copy, "_flags", 6))
   {
     if (GTCoreLogUseOsLog())
     {
@@ -166,7 +166,7 @@ void __63__GTMTLReplayServiceXPCDispatcher_load_error__replyConnection___block_i
       fprintf(v11, "%s\n", [v12 UTF8String]);
     }
 
-    v13 = gt_xpc_dictionary_create_reply(v6);
+    v13 = gt_xpc_dictionary_create_reply(into_Copy);
     v14 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277CCA450];
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"API unavailable"];
@@ -175,39 +175,39 @@ void __63__GTMTLReplayServiceXPCDispatcher_load_error__replyConnection___block_i
     v17 = [v14 errorWithDomain:@"com.apple.gputools.transport" code:12 userInfo:v16];
 
     xpc_dictionary_set_nserror(v13, "_error", v17);
-    [v7 sendMessage:v13];
+    [connectionCopy sendMessage:v13];
   }
 
   else
   {
-    v9 = DispatchReplayerBatchRequest(v7, v6, self->_bulkDataService, 0);
+    v9 = DispatchReplayerBatchRequest(connectionCopy, into_Copy, self->_bulkDataService, 0);
     v10 = [(GTMTLReplayService *)self->_implInstance fetchInto:v9];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)query_:(id)a3 replyConnection:(id)a4
+- (void)query_:(id)query_ replyConnection:(id)connection
 {
-  v6 = DispatchReplayerBatchRequest(a4, a3, self->_bulkDataService, 0);
+  v6 = DispatchReplayerBatchRequest(connection, query_, self->_bulkDataService, 0);
   v5 = [(GTMTLReplayService *)self->_implInstance query:v6];
 }
 
-- (void)update_:(id)a3 replyConnection:(id)a4
+- (void)update_:(id)update_ replyConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  update_Copy = update_;
+  connectionCopy = connection;
   objc_initWeak(&location, self->_implInstance);
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__GTMTLReplayServiceXPCDispatcher_update__replyConnection___block_invoke;
   block[3] = &unk_279661730;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = connectionCopy;
+  v13 = update_Copy;
+  selfCopy = self;
+  v9 = update_Copy;
+  v10 = connectionCopy;
   objc_copyWeak(&v15, &location);
   dispatch_async(v8, block);
 
@@ -291,52 +291,52 @@ void __59__GTMTLReplayServiceXPCDispatcher_update__replyConnection___block_invok
   dispatch_group_leave(v3);
 }
 
-- (void)decode_:(id)a3 replyConnection:(id)a4
+- (void)decode_:(id)decode_ replyConnection:(id)connection
 {
-  v6 = DispatchReplayerBatchRequest(a4, a3, self->_bulkDataService, 0);
+  v6 = DispatchReplayerBatchRequest(connection, decode_, self->_bulkDataService, 0);
   v5 = [(GTMTLReplayService *)self->_implInstance decode:v6];
 }
 
-- (void)display_:(id)a3 replyConnection:(id)a4
+- (void)display_:(id)display_ replyConnection:(id)connection
 {
-  v5 = a3;
+  display_Copy = display_;
   v6 = objc_opt_class();
-  nsobject = xpc_dictionary_get_nsobject(v5, "request", v6);
+  nsobject = xpc_dictionary_get_nsobject(display_Copy, "request", v6);
 
   [(GTMTLReplayService *)self->_implInstance display:nsobject];
 }
 
-- (void)profile_:(id)a3 replyConnection:(id)a4
+- (void)profile_:(id)profile_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  uint64 = xpc_dictionary_get_uint64(v7, "_replyStreamId");
-  v9 = xpc_dictionary_get_array(v7, "_pathHistory");
+  connectionCopy = connection;
+  profile_Copy = profile_;
+  uint64 = xpc_dictionary_get_uint64(profile_Copy, "_replyStreamId");
+  v9 = xpc_dictionary_get_array(profile_Copy, "_pathHistory");
   v10 = MEMORY[0x277CBEB98];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v10 setWithObjects:{v11, v12, v13, objc_opt_class(), 0}];
-  nsobject_classes = xpc_dictionary_get_nsobject_classes(v7, "request", v14);
+  nsobject_classes = xpc_dictionary_get_nsobject_classes(profile_Copy, "request", v14);
 
-  v16 = allServices(v6);
+  v16 = allServices(connectionCopy);
   v17 = filteredArrayByService(v16, &unk_2860EEDF0);
-  v18 = [v17 firstObject];
+  firstObject = [v17 firstObject];
 
   v19 = [GTURLAccessProviderXPCProxy alloc];
-  v20 = [v18 serviceProperties];
-  v21 = [(GTURLAccessProviderXPCProxy *)v19 initWithConnection:v6 remoteProperties:v20];
+  serviceProperties = [firstObject serviceProperties];
+  v21 = [(GTURLAccessProviderXPCProxy *)v19 initWithConnection:connectionCopy remoteProperties:serviceProperties];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __60__GTMTLReplayServiceXPCDispatcher_profile__replyConnection___block_invoke;
   v26[3] = &unk_279661758;
-  v30 = v6;
+  v30 = connectionCopy;
   v31 = uint64;
   v27 = v9;
   v28 = v21;
-  v29 = self;
-  v22 = v6;
+  selfCopy = self;
+  v22 = connectionCopy;
   v23 = v21;
   v24 = v9;
   [nsobject_classes setStreamHandler:v26];
@@ -418,11 +418,11 @@ LABEL_13:
   [*(a1 + 56) sendMessage:empty];
 }
 
-- (void)shaderdebug_:(id)a3 replyConnection:(id)a4
+- (void)shaderdebug_:(id)shaderdebug_ replyConnection:(id)connection
 {
   v25[7] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  shaderdebug_Copy = shaderdebug_;
+  connectionCopy = connection;
   v8 = MEMORY[0x277CBEB98];
   v25[0] = objc_opt_class();
   v25[1] = objc_opt_class();
@@ -434,22 +434,22 @@ LABEL_13:
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:7];
   v10 = [v8 setWithArray:v9];
 
-  nsobject_classes = xpc_dictionary_get_nsobject_classes(v6, "request", v10);
-  uint64 = xpc_dictionary_get_uint64(v6, "programDataHandle");
+  nsobject_classes = xpc_dictionary_get_nsobject_classes(shaderdebug_Copy, "request", v10);
+  uint64 = xpc_dictionary_get_uint64(shaderdebug_Copy, "programDataHandle");
   if (uint64)
   {
     v13 = [(GTBulkDataService *)self->_bulkDataService takeUploadedDataForHandle:uint64];
     [nsobject_classes setProgramData:v13];
   }
 
-  v14 = gt_xpc_dictionary_create_reply(v6);
+  v14 = gt_xpc_dictionary_create_reply(shaderdebug_Copy);
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __64__GTMTLReplayServiceXPCDispatcher_shaderdebug__replyConnection___block_invoke;
   v22 = &unk_279661780;
   v23 = v14;
-  v24 = v7;
-  v15 = v7;
+  v24 = connectionCopy;
+  v15 = connectionCopy;
   v16 = v14;
   [nsobject_classes setCompletionHandler:&v19];
   v17 = [(GTMTLReplayService *)self->_implInstance shaderdebug:nsobject_classes, v19, v20, v21, v22];
@@ -466,24 +466,24 @@ uint64_t __64__GTMTLReplayServiceXPCDispatcher_shaderdebug__replyConnection___bl
   return [v3 sendMessage:v4];
 }
 
-- (void)raytrace_:(id)a3 replyConnection:(id)a4
+- (void)raytrace_:(id)raytrace_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  uint64 = xpc_dictionary_get_uint64(v7, "_replyStreamId");
-  v9 = xpc_dictionary_get_array(v7, "_pathHistory");
+  connectionCopy = connection;
+  raytrace_Copy = raytrace_;
+  uint64 = xpc_dictionary_get_uint64(raytrace_Copy, "_replyStreamId");
+  v9 = xpc_dictionary_get_array(raytrace_Copy, "_pathHistory");
   v10 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-  nsobject_classes = xpc_dictionary_get_nsobject_classes(v7, "request", v10);
+  nsobject_classes = xpc_dictionary_get_nsobject_classes(raytrace_Copy, "request", v10);
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__GTMTLReplayServiceXPCDispatcher_raytrace__replyConnection___block_invoke;
   v15[3] = &unk_2796617A8;
   v16 = v9;
-  v17 = self;
-  v18 = v6;
+  selfCopy = self;
+  v18 = connectionCopy;
   v19 = uint64;
-  v12 = v6;
+  v12 = connectionCopy;
   v13 = v9;
   [nsobject_classes setStreamHandler:v15];
   v14 = [(GTMTLReplayService *)self->_implInstance raytrace:nsobject_classes];
@@ -536,37 +536,37 @@ LABEL_6:
   [*(a1 + 48) sendMessage:empty];
 }
 
-- (void)cancel_:(id)a3 replyConnection:(id)a4
+- (void)cancel_:(id)cancel_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  LOBYTE(self) = [(GTMTLReplayService *)self->_implInstance cancel:xpc_dictionary_get_uint64(v7, "token")];
-  xdict = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  cancel_Copy = cancel_;
+  LOBYTE(self) = [(GTMTLReplayService *)self->_implInstance cancel:xpc_dictionary_get_uint64(cancel_Copy, "token")];
+  xdict = gt_xpc_dictionary_create_reply(cancel_Copy);
 
   xpc_dictionary_set_BOOL(xdict, "success", self);
-  [v6 sendMessage:xdict];
+  [connectionCopy sendMessage:xdict];
 }
 
-- (void)pause_:(id)a3 replyConnection:(id)a4
+- (void)pause_:(id)pause_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  LOBYTE(self) = [(GTMTLReplayService *)self->_implInstance pause:xpc_dictionary_get_uint64(v7, "token")];
-  xdict = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  pause_Copy = pause_;
+  LOBYTE(self) = [(GTMTLReplayService *)self->_implInstance pause:xpc_dictionary_get_uint64(pause_Copy, "token")];
+  xdict = gt_xpc_dictionary_create_reply(pause_Copy);
 
   xpc_dictionary_set_BOOL(xdict, "success", self);
-  [v6 sendMessage:xdict];
+  [connectionCopy sendMessage:xdict];
 }
 
-- (void)resume_:(id)a3 replyConnection:(id)a4
+- (void)resume_:(id)resume_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  LOBYTE(self) = [(GTMTLReplayService *)self->_implInstance resume:xpc_dictionary_get_uint64(v7, "token")];
-  xdict = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  resume_Copy = resume_;
+  LOBYTE(self) = [(GTMTLReplayService *)self->_implInstance resume:xpc_dictionary_get_uint64(resume_Copy, "token")];
+  xdict = gt_xpc_dictionary_create_reply(resume_Copy);
 
   xpc_dictionary_set_BOOL(xdict, "success", self);
-  [v6 sendMessage:xdict];
+  [connectionCopy sendMessage:xdict];
 }
 
 @end

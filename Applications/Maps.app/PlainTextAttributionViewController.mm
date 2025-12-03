@@ -1,5 +1,5 @@
 @interface PlainTextAttributionViewController
-- (PlainTextAttributionViewController)initWithFileURL:(id)a3;
+- (PlainTextAttributionViewController)initWithFileURL:(id)l;
 - (void)viewDidLoad;
 @end
 
@@ -24,16 +24,16 @@
   [(UITextView *)self->_textView setTextColor:v7];
 
   [(UITextView *)self->_textView setTextContainerInset:0.0, 16.0, 0.0, 16.0];
-  v8 = [(PlainTextAttributionViewController *)self view];
-  [v8 addSubview:self->_textView];
+  view = [(PlainTextAttributionViewController *)self view];
+  [view addSubview:self->_textView];
 
   v9 = self->_textView;
-  v10 = [(PlainTextAttributionViewController *)self view];
+  view2 = [(PlainTextAttributionViewController *)self view];
   LODWORD(v11) = 1148846080;
-  v12 = [(UITextView *)v9 _maps_constraintsEqualToEdgesOfView:v10 priority:v11];
+  v12 = [(UITextView *)v9 _maps_constraintsEqualToEdgesOfView:view2 priority:v11];
 
-  v13 = [v12 allConstraints];
-  [NSLayoutConstraint activateConstraints:v13];
+  allConstraints = [v12 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 
   v14 = [NSData dataWithContentsOfURL:self->_fileURL options:0 error:0];
   v15 = v14;
@@ -48,18 +48,18 @@
   [(PlainTextAttributionViewController *)self setTitle:v18];
 
   v19 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismiss"];
-  v20 = [(PlainTextAttributionViewController *)self navigationItem];
-  [v20 setRightBarButtonItem:v19];
+  navigationItem = [(PlainTextAttributionViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v19];
 }
 
-- (PlainTextAttributionViewController)initWithFileURL:(id)a3
+- (PlainTextAttributionViewController)initWithFileURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = [(PlainTextAttributionViewController *)self initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileURL, a3);
+    objc_storeStrong(&v6->_fileURL, l);
     v8 = v7;
   }
 

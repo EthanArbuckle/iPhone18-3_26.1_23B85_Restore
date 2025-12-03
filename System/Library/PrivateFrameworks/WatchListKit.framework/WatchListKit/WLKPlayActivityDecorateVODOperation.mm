@@ -1,25 +1,25 @@
 @interface WLKPlayActivityDecorateVODOperation
-+ (id)identifierForPlayActivityID:(id)a3 channelID:(id)a4 duration:(id)a5;
-- (WLKPlayActivityDecorateVODOperation)initWithExternalId:(id)a3 brandId:(id)a4 hlsAssetDuration:(id)a5 playablePassthrough:(id)a6;
++ (id)identifierForPlayActivityID:(id)d channelID:(id)iD duration:(id)duration;
+- (WLKPlayActivityDecorateVODOperation)initWithExternalId:(id)id brandId:(id)brandId hlsAssetDuration:(id)duration playablePassthrough:(id)passthrough;
 - (void)processResponse;
 @end
 
 @implementation WLKPlayActivityDecorateVODOperation
 
-+ (id)identifierForPlayActivityID:(id)a3 channelID:(id)a4 duration:(id)a5
++ (id)identifierForPlayActivityID:(id)d channelID:(id)iD duration:(id)duration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 length] && objc_msgSend(v8, "length"))
+  dCopy = d;
+  iDCopy = iD;
+  durationCopy = duration;
+  if ([dCopy length] && objc_msgSend(iDCopy, "length"))
   {
-    v10 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-    v11 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v10];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+    v11 = [dCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v8, v11];
-    if ([v9 integerValue] >= 1)
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", iDCopy, v11];
+    if ([durationCopy integerValue] >= 1)
     {
-      [v9 doubleValue];
+      [durationCopy doubleValue];
       v14 = [v12 stringByAppendingFormat:@":%.0f", v13 * 1000.0];
 
       v12 = v14;
@@ -34,45 +34,45 @@
   return v12;
 }
 
-- (WLKPlayActivityDecorateVODOperation)initWithExternalId:(id)a3 brandId:(id)a4 hlsAssetDuration:(id)a5 playablePassthrough:(id)a6
+- (WLKPlayActivityDecorateVODOperation)initWithExternalId:(id)id brandId:(id)brandId hlsAssetDuration:(id)duration playablePassthrough:(id)passthrough
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  idCopy = id;
+  brandIdCopy = brandId;
+  durationCopy = duration;
+  passthroughCopy = passthrough;
+  if (!idCopy)
   {
     [WLKPlayActivityDecorateVODOperation initWithExternalId:brandId:hlsAssetDuration:playablePassthrough:];
   }
 
-  if (!v11)
+  if (!brandIdCopy)
   {
     [WLKPlayActivityDecorateVODOperation initWithExternalId:brandId:hlsAssetDuration:playablePassthrough:];
   }
 
-  if (!v12)
+  if (!durationCopy)
   {
     [WLKPlayActivityDecorateVODOperation initWithExternalId:brandId:hlsAssetDuration:playablePassthrough:];
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = passthroughCopy;
+  if (!passthroughCopy)
   {
     v15 = WLKSystemLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [WLKPlayActivityDecorateVODOperation initWithExternalId:v10 brandId:v11 hlsAssetDuration:v15 playablePassthrough:?];
+      [WLKPlayActivityDecorateVODOperation initWithExternalId:idCopy brandId:brandIdCopy hlsAssetDuration:v15 playablePassthrough:?];
     }
   }
 
-  v16 = [objc_opt_class() identifierForPlayActivityID:v10 channelID:v11 duration:v12];
+  v16 = [objc_opt_class() identifierForPlayActivityID:idCopy channelID:brandIdCopy duration:durationCopy];
   compoundId = self->_compoundId;
   self->_compoundId = v16;
 
   v18 = objc_opt_new();
-  [v18 setObject:v10 forKey:@"externalId"];
-  [v18 setObject:v11 forKey:@"brandId"];
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v12, "integerValue")];
+  [v18 setObject:idCopy forKey:@"externalId"];
+  [v18 setObject:brandIdCopy forKey:@"brandId"];
+  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(durationCopy, "integerValue")];
   [v18 setObject:v19 forKey:@"hlsAssetDuration"];
 
   [v18 wlk_setObjectUnlessNil:v14 forKey:@"playablePassthrough"];
@@ -87,10 +87,10 @@
 - (void)processResponse
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(WLKUTSNetworkRequestOperation *)self responseDictionary];
-  if (v3)
+  responseDictionary = [(WLKUTSNetworkRequestOperation *)self responseDictionary];
+  if (responseDictionary)
   {
-    v4 = [[WLKPlayActivityMetadata alloc] initWithDictionary:v3];
+    v4 = [[WLKPlayActivityMetadata alloc] initWithDictionary:responseDictionary];
     v5 = v4;
     if (self->_compoundId)
     {

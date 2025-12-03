@@ -1,67 +1,67 @@
 @interface SNNMILOperation
-- (SNNMILOperation)initWithOperatorName:(id)a3 inputs:(id)a4 attributes:(id)a5 outputs:(id)a6;
-- (id)attributeWithName:(id)a3;
-- (id)inputWithName:(id)a3;
+- (SNNMILOperation)initWithOperatorName:(id)name inputs:(id)inputs attributes:(id)attributes outputs:(id)outputs;
+- (id)attributeWithName:(id)name;
+- (id)inputWithName:(id)name;
 @end
 
 @implementation SNNMILOperation
 
-- (SNNMILOperation)initWithOperatorName:(id)a3 inputs:(id)a4 attributes:(id)a5 outputs:(id)a6
+- (SNNMILOperation)initWithOperatorName:(id)name inputs:(id)inputs attributes:(id)attributes outputs:(id)outputs
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  inputsCopy = inputs;
+  attributesCopy = attributes;
+  outputsCopy = outputs;
   v18.receiver = self;
   v18.super_class = SNNMILOperation;
   v15 = [(SNNMILOperation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_opName, a3);
-    objc_storeStrong(&v16->_inputs, a4);
-    objc_storeStrong(&v16->_attributes, a5);
-    objc_storeStrong(&v16->_outputs, a6);
+    objc_storeStrong(&v15->_opName, name);
+    objc_storeStrong(&v16->_inputs, inputs);
+    objc_storeStrong(&v16->_attributes, attributes);
+    objc_storeStrong(&v16->_outputs, outputs);
   }
 
   return v16;
 }
 
-- (id)inputWithName:(id)a3
+- (id)inputWithName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SNNMILOperation *)self inputs];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v6)
+  inputs = [(SNNMILOperation *)self inputs];
+  value = [inputs countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (value)
   {
     v7 = *v15;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != value; i = i + 1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(inputs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:nameCopy];
 
         if (v11)
         {
-          v6 = [v9 value];
+          value = [v9 value];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v6)
+      value = [inputs countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (value)
       {
         continue;
       }
@@ -74,44 +74,44 @@ LABEL_11:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return value;
 }
 
-- (id)attributeWithName:(id)a3
+- (id)attributeWithName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SNNMILOperation *)self attributes];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v6)
+  attributes = [(SNNMILOperation *)self attributes];
+  value = [attributes countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (value)
   {
     v7 = *v15;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != value; i = i + 1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(attributes);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:nameCopy];
 
         if (v11)
         {
-          v6 = [v9 value];
+          value = [v9 value];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v6)
+      value = [attributes countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (value)
       {
         continue;
       }
@@ -124,7 +124,7 @@ LABEL_11:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return value;
 }
 
 @end

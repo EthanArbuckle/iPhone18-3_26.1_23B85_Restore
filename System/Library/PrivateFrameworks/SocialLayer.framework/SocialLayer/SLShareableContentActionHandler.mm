@@ -1,27 +1,27 @@
 @interface SLShareableContentActionHandler
 + (SLShareableContentActionHandler)sharedActionHandler;
-- (id)activityItemsConfigurationForSceneWithIdentifier:(id)a3;
-- (id)lpMetadataForActivityItemsConfiguration:(id)a3;
-- (id)respondToBSActions:(id)a3;
-- (id)sceneWithIdentifier:(id)a3;
-- (id)titleForActivityItemsConfiguration:(id)a3;
-- (void)fulfillAsynchronousMetadataAction:(id)a3 linkMetadata:(id)a4;
-- (void)fulfillAsynchronousMetadataAction:(id)a3 response:(id)a4;
-- (void)fulfillContentAction:(id)a3 itemProvider:(id)a4;
-- (void)fulfillMetadataAction:(id)a3 error:(id)a4;
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5;
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5 containerSetupInfo:(id)a6;
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5 highlightURL:(id)a6 initiatorRequest:(id)a7;
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5 inPlaceFileURL:(id)a6;
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5 pendingCollaboration:(id)a6;
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5 sharingContext:(id)a6;
-- (void)fulfillMetadataAction:(id)a3 response:(id)a4;
-- (void)performAction:(id)a3;
-- (void)performActions:(id)a3;
-- (void)performFetchAsynchronousLPMetadataAction:(id)a3;
-- (void)performFetchShareableContentAction:(id)a3;
-- (void)performFetchShareableContentMetadataAction:(id)a3;
-- (void)performSendShareableContentAction:(id)a3;
+- (id)activityItemsConfigurationForSceneWithIdentifier:(id)identifier;
+- (id)lpMetadataForActivityItemsConfiguration:(id)configuration;
+- (id)respondToBSActions:(id)actions;
+- (id)sceneWithIdentifier:(id)identifier;
+- (id)titleForActivityItemsConfiguration:(id)configuration;
+- (void)fulfillAsynchronousMetadataAction:(id)action linkMetadata:(id)metadata;
+- (void)fulfillAsynchronousMetadataAction:(id)action response:(id)response;
+- (void)fulfillContentAction:(id)action itemProvider:(id)provider;
+- (void)fulfillMetadataAction:(id)action error:(id)error;
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata;
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata containerSetupInfo:(id)info;
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata highlightURL:(id)l initiatorRequest:(id)request;
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata inPlaceFileURL:(id)l;
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata pendingCollaboration:(id)collaboration;
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata sharingContext:(id)context;
+- (void)fulfillMetadataAction:(id)action response:(id)response;
+- (void)performAction:(id)action;
+- (void)performActions:(id)actions;
+- (void)performFetchAsynchronousLPMetadataAction:(id)action;
+- (void)performFetchShareableContentAction:(id)action;
+- (void)performFetchShareableContentMetadataAction:(id)action;
+- (void)performSendShareableContentAction:(id)action;
 @end
 
 @implementation SLShareableContentActionHandler
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = __54__SLShareableContentActionHandler_sharedActionHandler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedActionHandler_onceToken != -1)
   {
     dispatch_once(&sharedActionHandler_onceToken, block);
@@ -50,18 +50,18 @@ uint64_t __54__SLShareableContentActionHandler_sharedActionHandler__block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)sceneWithIdentifier:(id)a3
+- (id)sceneWithIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  v5 = [v4 connectedScenes];
+  identifierCopy = identifier;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  connectedScenes = [mEMORY[0x277D75128] connectedScenes];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v5;
+  v6 = connectedScenes;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -80,9 +80,9 @@ LABEL_3:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v11 _FBSScene];
-        v13 = [v12 identifier];
-        v14 = [v13 isEqualToString:v3];
+        _FBSScene = [v11 _FBSScene];
+        identifier = [_FBSScene identifier];
+        v14 = [identifier isEqualToString:identifierCopy];
 
         if (v14)
         {
@@ -131,23 +131,23 @@ LABEL_13:
   return v16;
 }
 
-- (id)activityItemsConfigurationForSceneWithIdentifier:(id)a3
+- (id)activityItemsConfigurationForSceneWithIdentifier:(id)identifier
 {
-  v4 = [(SLShareableContentActionHandler *)self sceneWithIdentifier:a3];
+  v4 = [(SLShareableContentActionHandler *)self sceneWithIdentifier:identifier];
   v5 = [(SLShareableContentActionHandler *)self activityItemsConfigurationForScene:v4];
 
   return v5;
 }
 
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 firstObject];
-  v12 = [v11 registeredTypeIdentifiersWithFileOptions:1];
-  if ([v11 canLoadObjectOfClass:getCKPostSharingContextClass()])
+  actionCopy = action;
+  providersCopy = providers;
+  metadataCopy = metadata;
+  firstObject = [providersCopy firstObject];
+  v12 = [firstObject registeredTypeIdentifiersWithFileOptions:1];
+  if ([firstObject canLoadObjectOfClass:getCKPostSharingContextClass()])
   {
     CKPostSharingContextClass = getCKPostSharingContextClass();
     v42[0] = MEMORY[0x277D85DD0];
@@ -155,10 +155,10 @@ LABEL_13:
     v42[2] = __84__SLShareableContentActionHandler_fulfillMetadataAction_itemProviders_linkMetadata___block_invoke;
     v42[3] = &unk_278927658;
     v42[4] = self;
-    v43 = v8;
-    v44 = v9;
-    v45 = v10;
-    v14 = [v11 loadObjectOfClass:CKPostSharingContextClass completionHandler:v42];
+    v43 = actionCopy;
+    v44 = providersCopy;
+    v45 = metadataCopy;
+    v14 = [firstObject loadObjectOfClass:CKPostSharingContextClass completionHandler:v42];
 
     v15 = v43;
 LABEL_13:
@@ -166,7 +166,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v11 canLoadObjectOfClass:getCKContainerSetupInfoClass()])
+  if ([firstObject canLoadObjectOfClass:getCKContainerSetupInfoClass()])
   {
     CKContainerSetupInfoClass = getCKContainerSetupInfoClass();
     v38[0] = MEMORY[0x277D85DD0];
@@ -174,16 +174,16 @@ LABEL_13:
     v38[2] = __84__SLShareableContentActionHandler_fulfillMetadataAction_itemProviders_linkMetadata___block_invoke_13;
     v38[3] = &unk_278927658;
     v38[4] = self;
-    v39 = v8;
-    v40 = v9;
-    v41 = v10;
-    v17 = [v11 loadObjectOfClass:CKContainerSetupInfoClass completionHandler:v38];
+    v39 = actionCopy;
+    v40 = providersCopy;
+    v41 = metadataCopy;
+    v17 = [firstObject loadObjectOfClass:CKContainerSetupInfoClass completionHandler:v38];
 
     v15 = v39;
     goto LABEL_13;
   }
 
-  if ([v11 canLoadObjectOfClass:objc_opt_class()])
+  if ([firstObject canLoadObjectOfClass:objc_opt_class()])
   {
     v18 = objc_opt_class();
     v34[0] = MEMORY[0x277D85DD0];
@@ -191,19 +191,19 @@ LABEL_13:
     v34[2] = __84__SLShareableContentActionHandler_fulfillMetadataAction_itemProviders_linkMetadata___block_invoke_16;
     v34[3] = &unk_278927658;
     v34[4] = self;
-    v35 = v8;
-    v36 = v9;
-    v37 = v10;
-    v19 = [v11 loadObjectOfClass:v18 completionHandler:v34];
+    v35 = actionCopy;
+    v36 = providersCopy;
+    v37 = metadataCopy;
+    v19 = [firstObject loadObjectOfClass:v18 completionHandler:v34];
 
     v15 = v35;
     goto LABEL_13;
   }
 
-  v20 = [v12 firstObject];
-  if ([v20 isEqualToString:*MEMORY[0x277CDC720]])
+  firstObject2 = [v12 firstObject];
+  if ([firstObject2 isEqualToString:*MEMORY[0x277CDC720]])
   {
-    v21 = [v11 hasItemConformingToTypeIdentifier:@"public.file-url"];
+    v21 = [firstObject hasItemConformingToTypeIdentifier:@"public.file-url"];
 
     if (v21)
     {
@@ -212,10 +212,10 @@ LABEL_13:
       v30[2] = __84__SLShareableContentActionHandler_fulfillMetadataAction_itemProviders_linkMetadata___block_invoke_21;
       v30[3] = &unk_278927680;
       v30[4] = self;
-      v31 = v8;
-      v32 = v9;
-      v33 = v10;
-      [v11 loadItemForTypeIdentifier:@"public.file-url" options:0 completionHandler:v30];
+      v31 = actionCopy;
+      v32 = providersCopy;
+      v33 = metadataCopy;
+      [firstObject loadItemForTypeIdentifier:@"public.file-url" options:0 completionHandler:v30];
 
       v15 = v31;
       goto LABEL_13;
@@ -228,16 +228,16 @@ LABEL_13:
 
   if ([v12 count])
   {
-    v22 = [v12 firstObject];
+    firstObject3 = [v12 firstObject];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __84__SLShareableContentActionHandler_fulfillMetadataAction_itemProviders_linkMetadata___block_invoke_24;
     v26[3] = &unk_2789276D0;
     v26[4] = self;
-    v27 = v8;
-    v28 = v9;
-    v29 = v10;
-    v23 = [v11 loadInPlaceFileRepresentationForTypeIdentifier:v22 completionHandler:v26];
+    v27 = actionCopy;
+    v28 = providersCopy;
+    v29 = metadataCopy;
+    v23 = [firstObject loadInPlaceFileRepresentationForTypeIdentifier:firstObject3 completionHandler:v26];
 
     v15 = v27;
     goto LABEL_13;
@@ -247,11 +247,11 @@ LABEL_13:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v47 = v11;
+    v47 = firstObject;
     _os_log_impl(&dword_231772000, v25, OS_LOG_TYPE_DEFAULT, "Fulfilling action without initiator request for item provider without any registered collaborations: %@", buf, 0xCu);
   }
 
-  [(SLShareableContentActionHandler *)self fulfillMetadataAction:v8 itemProviders:v9 linkMetadata:v10 highlightURL:0 initiatorRequest:0];
+  [(SLShareableContentActionHandler *)self fulfillMetadataAction:actionCopy itemProviders:providersCopy linkMetadata:metadataCopy highlightURL:0 initiatorRequest:0];
 LABEL_14:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -506,45 +506,45 @@ uint64_t __84__SLShareableContentActionHandler_fulfillMetadataAction_itemProvide
   }
 }
 
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5 sharingContext:(id)a6
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata sharingContext:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  contextCopy = context;
+  metadataCopy = metadata;
+  providersCopy = providers;
+  actionCopy = action;
   v14 = [SLShareableContentInitiatorRequest alloc];
-  v15 = [v10 containerSetupInfo];
-  v18 = [(SLShareableContentInitiatorRequest *)v14 initWithContainerSetupInfo:v15];
+  containerSetupInfo = [contextCopy containerSetupInfo];
+  v18 = [(SLShareableContentInitiatorRequest *)v14 initWithContainerSetupInfo:containerSetupInfo];
 
-  v16 = [v10 share];
+  share = [contextCopy share];
 
-  v17 = [v16 URL];
-  [(SLShareableContentActionHandler *)self fulfillMetadataAction:v13 itemProviders:v12 linkMetadata:v11 highlightURL:v17 initiatorRequest:v18];
+  v17 = [share URL];
+  [(SLShareableContentActionHandler *)self fulfillMetadataAction:actionCopy itemProviders:providersCopy linkMetadata:metadataCopy highlightURL:v17 initiatorRequest:v18];
 }
 
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5 containerSetupInfo:(id)a6
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata containerSetupInfo:(id)info
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[SLShareableContentInitiatorRequest alloc] initWithContainerSetupInfo:v10];
+  infoCopy = info;
+  metadataCopy = metadata;
+  providersCopy = providers;
+  actionCopy = action;
+  v14 = [[SLShareableContentInitiatorRequest alloc] initWithContainerSetupInfo:infoCopy];
 
-  [(SLShareableContentActionHandler *)self fulfillMetadataAction:v13 itemProviders:v12 linkMetadata:v11 highlightURL:0 initiatorRequest:v14];
+  [(SLShareableContentActionHandler *)self fulfillMetadataAction:actionCopy itemProviders:providersCopy linkMetadata:metadataCopy highlightURL:0 initiatorRequest:v14];
 }
 
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5 pendingCollaboration:(id)a6
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata pendingCollaboration:(id)collaboration
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [v12 collaborationMetadata];
-  if (v14)
+  providersCopy = providers;
+  metadataCopy = metadata;
+  collaborationCopy = collaboration;
+  actionCopy = action;
+  collaborationMetadata = [collaborationCopy collaborationMetadata];
+  if (collaborationMetadata)
   {
-    v15 = [[SLShareableContentInitiatorRequest alloc] initWithCollaborationMetadata:v14];
-    v16 = [v12 fileURL];
-    [(SLShareableContentActionHandler *)self fulfillMetadataAction:v13 itemProviders:v10 linkMetadata:v11 highlightURL:v16 initiatorRequest:v15];
+    v15 = [[SLShareableContentInitiatorRequest alloc] initWithCollaborationMetadata:collaborationMetadata];
+    fileURL = [collaborationCopy fileURL];
+    [(SLShareableContentActionHandler *)self fulfillMetadataAction:actionCopy itemProviders:providersCopy linkMetadata:metadataCopy highlightURL:fileURL initiatorRequest:v15];
   }
 
   else
@@ -556,46 +556,46 @@ uint64_t __84__SLShareableContentActionHandler_fulfillMetadataAction_itemProvide
     }
 
     v15 = +[(SLShareableContentActionResponse *)SLFetchShareableContentMetadataActionResponse];
-    [(SLShareableContentActionHandler *)self fulfillMetadataAction:v13 response:v15];
+    [(SLShareableContentActionHandler *)self fulfillMetadataAction:actionCopy response:v15];
   }
 }
 
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5 inPlaceFileURL:(id)a6
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata inPlaceFileURL:(id)l
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[SLShareableContentInitiatorRequest alloc] initWithFileURL:v10];
-  [(SLShareableContentActionHandler *)self fulfillMetadataAction:v13 itemProviders:v12 linkMetadata:v11 highlightURL:v10 initiatorRequest:v14];
+  lCopy = l;
+  metadataCopy = metadata;
+  providersCopy = providers;
+  actionCopy = action;
+  v14 = [[SLShareableContentInitiatorRequest alloc] initWithFileURL:lCopy];
+  [(SLShareableContentActionHandler *)self fulfillMetadataAction:actionCopy itemProviders:providersCopy linkMetadata:metadataCopy highlightURL:lCopy initiatorRequest:v14];
 }
 
-- (void)fulfillMetadataAction:(id)a3 itemProviders:(id)a4 linkMetadata:(id)a5 highlightURL:(id)a6 initiatorRequest:(id)a7
+- (void)fulfillMetadataAction:(id)action itemProviders:(id)providers linkMetadata:(id)metadata highlightURL:(id)l initiatorRequest:(id)request
 {
   v47 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v36 = a5;
-  v35 = a6;
-  v33 = a7;
-  v32 = [v11 sceneIdentifier];
-  v13 = [MEMORY[0x277CCA8D8] mainBundle];
-  v14 = [v13 bundleIdentifier];
-  v15 = v14;
+  actionCopy = action;
+  providersCopy = providers;
+  metadataCopy = metadata;
+  lCopy = l;
+  requestCopy = request;
+  sceneIdentifier = [actionCopy sceneIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v15 = bundleIdentifier;
   v16 = &stru_28468DAB8;
-  if (v14)
+  if (bundleIdentifier)
   {
-    v16 = v14;
+    v16 = bundleIdentifier;
   }
 
   v37 = v16;
 
-  v17 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v18 = v12;
+  v18 = providersCopy;
   v19 = [v18 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v19)
   {
@@ -612,11 +612,11 @@ uint64_t __84__SLShareableContentActionHandler_fulfillMetadataAction_itemProvide
 
         v23 = *(*(&v38 + 1) + 8 * i);
         v24 = [SLShareableContentRepresentationCollection alloc];
-        v25 = [v23 sl_representations];
-        v26 = [v23 suggestedName];
-        v27 = [(SLShareableContentRepresentationCollection *)v24 initWithRepresentations:v25 suggestedFileName:v26];
+        sl_representations = [v23 sl_representations];
+        suggestedName = [v23 suggestedName];
+        v27 = [(SLShareableContentRepresentationCollection *)v24 initWithRepresentations:sl_representations suggestedFileName:suggestedName];
 
-        [v17 addObject:v27];
+        [array addObject:v27];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -625,105 +625,105 @@ uint64_t __84__SLShareableContentActionHandler_fulfillMetadataAction_itemProvide
     while (v20);
   }
 
-  v28 = [[SLShareableContentMetadata alloc] initWithSceneIdentifier:v32 bundleIdentifier:v37 representations:v17 metadata:v36 highlightURL:v35];
+  v28 = [[SLShareableContentMetadata alloc] initWithSceneIdentifier:sceneIdentifier bundleIdentifier:v37 representations:array metadata:metadataCopy highlightURL:lCopy];
   v29 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v43 = v28;
     v44 = 2112;
-    v45 = v33;
+    v45 = requestCopy;
     _os_log_impl(&dword_231772000, v29, OS_LOG_TYPE_DEFAULT, "Fulfilling action with metadata: %@ initiatorRequest: %@", buf, 0x16u);
   }
 
-  v30 = [SLFetchShareableContentMetadataActionResponse responseWithMetadata:v28 initiatorRequest:v33];
-  [(SLShareableContentActionHandler *)self fulfillMetadataAction:v11 response:v30];
+  v30 = [SLFetchShareableContentMetadataActionResponse responseWithMetadata:v28 initiatorRequest:requestCopy];
+  [(SLShareableContentActionHandler *)self fulfillMetadataAction:actionCopy response:v30];
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fulfillMetadataAction:(id)a3 response:(id)a4
+- (void)fulfillMetadataAction:(id)action response:(id)response
 {
-  v5 = a4;
-  v7 = a3;
+  responseCopy = response;
+  actionCopy = action;
   v6 = +[SLShareableContentObserver sharedObserver];
   [v6 setNeedsRefresh];
 
-  [v7 fulfillWithResponse:v5];
+  [actionCopy fulfillWithResponse:responseCopy];
 }
 
-- (void)fulfillMetadataAction:(id)a3 error:(id)a4
+- (void)fulfillMetadataAction:(id)action error:(id)error
 {
-  v5 = a4;
-  v7 = a3;
+  errorCopy = error;
+  actionCopy = action;
   v6 = +[SLShareableContentObserver sharedObserver];
   [v6 setNeedsRefresh];
 
-  [v7 failWithError:v5];
+  [actionCopy failWithError:errorCopy];
 }
 
-- (void)fulfillAsynchronousMetadataAction:(id)a3 linkMetadata:(id)a4
+- (void)fulfillAsynchronousMetadataAction:(id)action linkMetadata:(id)metadata
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  metadataCopy = metadata;
+  actionCopy = action;
   v8 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = metadataCopy;
     _os_log_impl(&dword_231772000, v8, OS_LOG_TYPE_DEFAULT, "Fulfilling action with metadata: %@", &v11, 0xCu);
   }
 
-  v9 = [SLFetchAsynchronousLPMetadataActionResponse responseWithMetadata:v6];
-  [(SLShareableContentActionHandler *)self fulfillAsynchronousMetadataAction:v7 response:v9];
+  v9 = [SLFetchAsynchronousLPMetadataActionResponse responseWithMetadata:metadataCopy];
+  [(SLShareableContentActionHandler *)self fulfillAsynchronousMetadataAction:actionCopy response:v9];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fulfillAsynchronousMetadataAction:(id)a3 response:(id)a4
+- (void)fulfillAsynchronousMetadataAction:(id)action response:(id)response
 {
-  v5 = a4;
-  v7 = a3;
+  responseCopy = response;
+  actionCopy = action;
   v6 = +[SLShareableContentObserver sharedObserver];
   [v6 setNeedsRefresh];
 
-  [v7 fulfillWithResponse:v5];
+  [actionCopy fulfillWithResponse:responseCopy];
 }
 
-- (void)performFetchShareableContentMetadataAction:(id)a3
+- (void)performFetchShareableContentMetadataAction:(id)action
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 sceneIdentifier];
+    sceneIdentifier = [actionCopy sceneIdentifier];
     v19 = 138412290;
-    v20 = v6;
+    v20 = sceneIdentifier;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_DEFAULT, "Fetching on screen content for scene identifier: %@", &v19, 0xCu);
   }
 
-  v7 = [v4 sceneIdentifier];
-  v8 = [(SLShareableContentActionHandler *)self activityItemsConfigurationForSceneWithIdentifier:v7];
+  sceneIdentifier2 = [actionCopy sceneIdentifier];
+  v8 = [(SLShareableContentActionHandler *)self activityItemsConfigurationForSceneWithIdentifier:sceneIdentifier2];
 
   if (v8)
   {
-    v9 = [v8 itemProvidersForActivityItemsConfiguration];
-    v10 = v9;
-    if (!v9 || ![v9 count])
+    itemProvidersForActivityItemsConfiguration = [v8 itemProvidersForActivityItemsConfiguration];
+    v10 = itemProvidersForActivityItemsConfiguration;
+    if (!itemProvidersForActivityItemsConfiguration || ![itemProvidersForActivityItemsConfiguration count])
     {
       v13 = SLShareableContentLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v4 sceneIdentifier];
+        sceneIdentifier3 = [actionCopy sceneIdentifier];
         v19 = 138412290;
-        v20 = v14;
+        v20 = sceneIdentifier3;
         _os_log_impl(&dword_231772000, v13, OS_LOG_TYPE_DEFAULT, "Could not find content attached to the given scene with identifier: %@", &v19, 0xCu);
       }
 
       v12 = +[(SLShareableContentActionResponse *)SLFetchShareableContentMetadataActionResponse];
-      [(SLShareableContentActionHandler *)self fulfillMetadataAction:v4 response:v12];
+      [(SLShareableContentActionHandler *)self fulfillMetadataAction:actionCopy response:v12];
       goto LABEL_19;
     }
 
@@ -752,7 +752,7 @@ uint64_t __84__SLShareableContentActionHandler_fulfillMetadataAction_itemProvide
     [v12 setTitle:v17];
 
 LABEL_18:
-    [(SLShareableContentActionHandler *)self fulfillMetadataAction:v4 itemProviders:v10 linkMetadata:v12];
+    [(SLShareableContentActionHandler *)self fulfillMetadataAction:actionCopy itemProviders:v10 linkMetadata:v12];
 LABEL_19:
 
     goto LABEL_20;
@@ -761,34 +761,34 @@ LABEL_19:
   v15 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v4 sceneIdentifier];
+    sceneIdentifier4 = [actionCopy sceneIdentifier];
     v19 = 138412290;
-    v20 = v16;
+    v20 = sceneIdentifier4;
     _os_log_impl(&dword_231772000, v15, OS_LOG_TYPE_DEFAULT, "Could not find an activity items configuration for the requested scene: %@", &v19, 0xCu);
   }
 
   v10 = +[(SLShareableContentActionResponse *)SLFetchShareableContentMetadataActionResponse];
-  [(SLShareableContentActionHandler *)self fulfillMetadataAction:v4 response:v10];
+  [(SLShareableContentActionHandler *)self fulfillMetadataAction:actionCopy response:v10];
 LABEL_20:
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performFetchAsynchronousLPMetadataAction:(id)a3
+- (void)performFetchAsynchronousLPMetadataAction:(id)action
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 sceneIdentifier];
+    sceneIdentifier = [actionCopy sceneIdentifier];
     *buf = 138412290;
-    v24 = v6;
+    v24 = sceneIdentifier;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_DEFAULT, "Fetching asynchronous metdata for on screen content for scene identifier: %@", buf, 0xCu);
   }
 
-  v7 = [v4 sceneIdentifier];
-  v8 = [(SLShareableContentActionHandler *)self activityItemsConfigurationForSceneWithIdentifier:v7];
+  sceneIdentifier2 = [actionCopy sceneIdentifier];
+  v8 = [(SLShareableContentActionHandler *)self activityItemsConfigurationForSceneWithIdentifier:sceneIdentifier2];
 
   if (v8)
   {
@@ -828,8 +828,8 @@ LABEL_20:
     v19[2] = __76__SLShareableContentActionHandler_performFetchAsynchronousLPMetadataAction___block_invoke;
     v19[3] = &unk_2789275B0;
     v20 = v11;
-    v21 = self;
-    v22 = v4;
+    selfCopy = self;
+    v22 = actionCopy;
     v15 = v11;
     [v15 _loadAsynchronousFieldsWithUpdateHandler:v19];
   }
@@ -839,14 +839,14 @@ LABEL_20:
     v16 = SLShareableContentLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v4 sceneIdentifier];
+      sceneIdentifier3 = [actionCopy sceneIdentifier];
       *buf = 138412290;
-      v24 = v17;
+      v24 = sceneIdentifier3;
       _os_log_impl(&dword_231772000, v16, OS_LOG_TYPE_DEFAULT, "Could not find an activity items configuration for the requested scene: %@", buf, 0xCu);
     }
 
     v15 = +[(SLShareableContentActionResponse *)SLFetchAsynchronousLPMetadataActionResponse];
-    [(SLShareableContentActionHandler *)self fulfillAsynchronousMetadataAction:v4 response:v15];
+    [(SLShareableContentActionHandler *)self fulfillAsynchronousMetadataAction:actionCopy response:v15];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -877,18 +877,18 @@ uint64_t __76__SLShareableContentActionHandler_performFetchAsynchronousLPMetadat
   return result;
 }
 
-- (void)fulfillContentAction:(id)a3 itemProvider:(id)a4
+- (void)fulfillContentAction:(id)action itemProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 requestedTypeIdentifier];
+  actionCopy = action;
+  providerCopy = provider;
+  requestedTypeIdentifier = [actionCopy requestedTypeIdentifier];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__SLShareableContentActionHandler_fulfillContentAction_itemProvider___block_invoke;
   v9[3] = &unk_2789276F8;
-  v10 = v5;
-  v8 = v5;
-  [v6 sl_loadRepresentationForTypeIdentifier:v7 completionHandler:v9];
+  v10 = actionCopy;
+  v8 = actionCopy;
+  [providerCopy sl_loadRepresentationForTypeIdentifier:requestedTypeIdentifier completionHandler:v9];
 }
 
 void __69__SLShareableContentActionHandler_fulfillContentAction_itemProvider___block_invoke(uint64_t a1, uint64_t a2)
@@ -898,35 +898,35 @@ void __69__SLShareableContentActionHandler_fulfillContentAction_itemProvider___b
   [v2 fulfillWithResponse:v3];
 }
 
-- (void)performFetchShareableContentAction:(id)a3
+- (void)performFetchShareableContentAction:(id)action
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 sceneIdentifier];
-    v7 = [v4 requestedTypeIdentifier];
+    sceneIdentifier = [actionCopy sceneIdentifier];
+    requestedTypeIdentifier = [actionCopy requestedTypeIdentifier];
     *buf = 138412546;
-    v25 = v6;
+    v25 = sceneIdentifier;
     v26 = 2112;
-    v27 = v7;
+    v27 = requestedTypeIdentifier;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_DEFAULT, "Fetching on screen content representation for scene identifier: %@ requested type identifier: %@", buf, 0x16u);
   }
 
-  v8 = [v4 requestedTypeIdentifier];
+  requestedTypeIdentifier2 = [actionCopy requestedTypeIdentifier];
 
-  if (v8)
+  if (requestedTypeIdentifier2)
   {
-    v9 = [v4 sceneIdentifier];
-    v10 = [(SLShareableContentActionHandler *)self activityItemsConfigurationForSceneWithIdentifier:v9];
+    sceneIdentifier2 = [actionCopy sceneIdentifier];
+    v10 = [(SLShareableContentActionHandler *)self activityItemsConfigurationForSceneWithIdentifier:sceneIdentifier2];
 
     if (!v10)
     {
       v17 = SLShareableContentLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        [SLShareableContentActionHandler performFetchShareableContentAction:v4];
+        [SLShareableContentActionHandler performFetchShareableContentAction:actionCopy];
       }
 
       v18 = MEMORY[0x277CCA9B8];
@@ -936,19 +936,19 @@ void __69__SLShareableContentActionHandler_fulfillContentAction_itemProvider___b
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       v12 = [v18 errorWithDomain:v19 code:2 userInfo:v20];
 
-      [v4 failWithError:v12];
+      [actionCopy failWithError:v12];
       goto LABEL_21;
     }
 
-    v11 = [v10 itemProvidersForActivityItemsConfiguration];
-    v12 = v11;
-    if (v11 && [v11 count])
+    itemProvidersForActivityItemsConfiguration = [v10 itemProvidersForActivityItemsConfiguration];
+    v12 = itemProvidersForActivityItemsConfiguration;
+    if (itemProvidersForActivityItemsConfiguration && [itemProvidersForActivityItemsConfiguration count])
     {
-      v13 = [v4 requestedItemProviderIndex];
-      if (v13 < [v12 count])
+      requestedItemProviderIndex = [actionCopy requestedItemProviderIndex];
+      if (requestedItemProviderIndex < [v12 count])
       {
-        v14 = [v12 objectAtIndexedSubscript:v13];
-        [(SLShareableContentActionHandler *)self fulfillContentAction:v4 itemProvider:v14];
+        v14 = [v12 objectAtIndexedSubscript:requestedItemProviderIndex];
+        [(SLShareableContentActionHandler *)self fulfillContentAction:actionCopy itemProvider:v14];
 LABEL_20:
 
 LABEL_21:
@@ -958,7 +958,7 @@ LABEL_21:
       v16 = SLShareableContentLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [SLShareableContentActionHandler performFetchShareableContentAction:v4];
+        [SLShareableContentActionHandler performFetchShareableContentAction:actionCopy];
       }
     }
 
@@ -967,64 +967,64 @@ LABEL_21:
       v16 = SLShareableContentLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [SLShareableContentActionHandler performFetchShareableContentAction:v4];
+        [SLShareableContentActionHandler performFetchShareableContentAction:actionCopy];
       }
     }
 
     v14 = +[(SLShareableContentActionResponse *)SLFetchShareableContentActionResponse];
-    [v4 fulfillWithResponse:v14];
+    [actionCopy fulfillWithResponse:v14];
     goto LABEL_20;
   }
 
   v15 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    [SLShareableContentActionHandler performFetchShareableContentAction:v4];
+    [SLShareableContentActionHandler performFetchShareableContentAction:actionCopy];
   }
 
   v10 = +[(SLShareableContentActionResponse *)SLFetchShareableContentActionResponse];
-  [v4 fulfillWithResponse:v10];
+  [actionCopy fulfillWithResponse:v10];
 LABEL_22:
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performSendShareableContentAction:(id)a3
+- (void)performSendShareableContentAction:(id)action
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 sceneIdentifier];
+    sceneIdentifier = [actionCopy sceneIdentifier];
     v25 = 138412290;
-    v26 = v6;
+    v26 = sceneIdentifier;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_DEFAULT, "Presenting message compose sheet to send on screen content for scene identifier: %@", &v25, 0xCu);
   }
 
-  v7 = [v4 sceneIdentifier];
-  v8 = [(SLShareableContentActionHandler *)self sceneWithIdentifier:v7];
+  sceneIdentifier2 = [actionCopy sceneIdentifier];
+  v8 = [(SLShareableContentActionHandler *)self sceneWithIdentifier:sceneIdentifier2];
 
   if (v8)
   {
-    v9 = [v4 sceneIdentifier];
-    v10 = [(SLShareableContentActionHandler *)self activityItemsConfigurationForSceneWithIdentifier:v9];
+    sceneIdentifier3 = [actionCopy sceneIdentifier];
+    v10 = [(SLShareableContentActionHandler *)self activityItemsConfigurationForSceneWithIdentifier:sceneIdentifier3];
 
     if (v10)
     {
-      v11 = [v10 itemProvidersForActivityItemsConfiguration];
-      v12 = [v11 firstObject];
+      itemProvidersForActivityItemsConfiguration = [v10 itemProvidersForActivityItemsConfiguration];
+      firstObject = [itemProvidersForActivityItemsConfiguration firstObject];
 
-      if (v12)
+      if (firstObject)
       {
         v13 = [objc_alloc(MEMORY[0x277CDC6C0]) initWithCollaborationIdentifier:&stru_28468DAB8 title:&stru_28468DAB8 defaultShareOptions:0];
         v14 = +[SLSoftLinks newComposeViewControllerInstance];
-        v15 = [MEMORY[0x277CBEA60] array];
-        [v14 insertCollaborationItemProvider:v12 collaborationOptions:v15 collaborationMetadata:v13 isCollaboration:1];
+        array = [MEMORY[0x277CBEA60] array];
+        [v14 insertCollaborationItemProvider:firstObject collaborationOptions:array collaborationMetadata:v13 isCollaboration:1];
 
         [v14 setSl_messageComposeResultHandler:&__block_literal_global_18];
-        v16 = [v8 keyWindow];
-        v17 = [MEMORY[0x277D75D28] _viewControllerForFullScreenPresentationFromView:v16];
+        keyWindow = [v8 keyWindow];
+        v17 = [MEMORY[0x277D75D28] _viewControllerForFullScreenPresentationFromView:keyWindow];
         v18 = v17;
         if (v17)
         {
@@ -1042,11 +1042,11 @@ LABEL_22:
           }
 
           v22 = objc_alloc_init(MEMORY[0x277D75F48]);
-          [v22 _presentViewController:v14 sendingView:v16 animated:1];
+          [v22 _presentViewController:v14 sendingView:keyWindow animated:1];
         }
 
         v23 = +[SLShareableContentActionResponse response];
-        [v4 fulfillWithResponse:v23];
+        [actionCopy fulfillWithResponse:v23];
       }
 
       else
@@ -1054,11 +1054,11 @@ LABEL_22:
         v20 = SLShareableContentLogHandle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          [SLShareableContentActionHandler performFetchShareableContentAction:v4];
+          [SLShareableContentActionHandler performFetchShareableContentAction:actionCopy];
         }
 
         v13 = +[SLShareableContentActionResponse response];
-        [v4 fulfillWithResponse:v13];
+        [actionCopy fulfillWithResponse:v13];
       }
     }
 
@@ -1067,18 +1067,18 @@ LABEL_22:
       v19 = SLShareableContentLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [SLShareableContentActionHandler performFetchShareableContentAction:v4];
+        [SLShareableContentActionHandler performFetchShareableContentAction:actionCopy];
       }
 
-      v12 = +[SLShareableContentActionResponse response];
-      [v4 fulfillWithResponse:v12];
+      firstObject = +[SLShareableContentActionResponse response];
+      [actionCopy fulfillWithResponse:firstObject];
     }
   }
 
   else
   {
     v10 = +[SLShareableContentActionResponse response];
-    [v4 fulfillWithResponse:v10];
+    [actionCopy fulfillWithResponse:v10];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -1090,13 +1090,13 @@ void __69__SLShareableContentActionHandler_performSendShareableContentAction___b
   [v2 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SLShareableContentActionHandler *)self performFetchShareableContentMetadataAction:v4];
+    [(SLShareableContentActionHandler *)self performFetchShareableContentMetadataAction:actionCopy];
   }
 
   else
@@ -1104,7 +1104,7 @@ void __69__SLShareableContentActionHandler_performSendShareableContentAction___b
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SLShareableContentActionHandler *)self performFetchShareableContentAction:v4];
+      [(SLShareableContentActionHandler *)self performFetchShareableContentAction:actionCopy];
     }
 
     else
@@ -1112,7 +1112,7 @@ void __69__SLShareableContentActionHandler_performSendShareableContentAction___b
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(SLShareableContentActionHandler *)self performSendShareableContentAction:v4];
+        [(SLShareableContentActionHandler *)self performSendShareableContentAction:actionCopy];
       }
 
       else
@@ -1120,22 +1120,22 @@ void __69__SLShareableContentActionHandler_performSendShareableContentAction___b
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(SLShareableContentActionHandler *)self performFetchAsynchronousLPMetadataAction:v4];
+          [(SLShareableContentActionHandler *)self performFetchAsynchronousLPMetadataAction:actionCopy];
         }
       }
     }
   }
 }
 
-- (void)performActions:(id)a3
+- (void)performActions:(id)actions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionsCopy = actions;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1147,14 +1147,14 @@ void __69__SLShareableContentActionHandler_performSendShareableContentAction___b
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         [(SLShareableContentActionHandler *)self performAction:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1163,12 +1163,12 @@ void __69__SLShareableContentActionHandler_performSendShareableContentAction___b
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)respondToBSActions:(id)a3
+- (id)respondToBSActions:(id)actions
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
-  v6 = [v4 setWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+  actionsCopy = actions;
+  v6 = [v4 setWithCapacity:{objc_msgSend(actionsCopy, "count")}];
+  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(actionsCopy, "count")}];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __54__SLShareableContentActionHandler_respondToBSActions___block_invoke;
@@ -1177,9 +1177,9 @@ void __69__SLShareableContentActionHandler_performSendShareableContentAction___b
   v18 = v7;
   v8 = v7;
   v9 = v6;
-  [v5 enumerateObjectsUsingBlock:&v13];
+  [actionsCopy enumerateObjectsUsingBlock:&v13];
   [(SLShareableContentActionHandler *)self performActions:v9, v13, v14, v15, v16];
-  v10 = [v5 mutableCopy];
+  v10 = [actionsCopy mutableCopy];
 
   [v10 minusSet:v8];
   v11 = [v10 copy];
@@ -1198,12 +1198,12 @@ void __54__SLShareableContentActionHandler_respondToBSActions___block_invoke(uin
   }
 }
 
-- (id)titleForActivityItemsConfiguration:(id)a3
+- (id)titleForActivityItemsConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 activityItemsConfigurationMetadataForKey:*MEMORY[0x277D76608]];
+    v4 = [configurationCopy activityItemsConfigurationMetadataForKey:*MEMORY[0x277D76608]];
   }
 
   else
@@ -1211,8 +1211,8 @@ void __54__SLShareableContentActionHandler_respondToBSActions___block_invoke(uin
     v4 = 0;
   }
 
-  v5 = [v3 itemProvidersForActivityItemsConfiguration];
-  v6 = [v5 count];
+  itemProvidersForActivityItemsConfiguration = [configurationCopy itemProvidersForActivityItemsConfiguration];
+  v6 = [itemProvidersForActivityItemsConfiguration count];
 
   if (!v4)
   {
@@ -1225,7 +1225,7 @@ void __54__SLShareableContentActionHandler_respondToBSActions___block_invoke(uin
     v9 = *MEMORY[0x277D76608];
     while (1)
     {
-      v10 = [v3 activityItemsConfigurationMetadataForItemAtIndex:v8 key:v9];
+      v10 = [configurationCopy activityItemsConfigurationMetadataForItemAtIndex:v8 key:v9];
       if (v10)
       {
         break;
@@ -1244,9 +1244,9 @@ void __54__SLShareableContentActionHandler_respondToBSActions___block_invoke(uin
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 string];
+    string = [v4 string];
 
-    v4 = v7;
+    v4 = string;
   }
 
 LABEL_13:
@@ -1266,12 +1266,12 @@ LABEL_13:
   return v11;
 }
 
-- (id)lpMetadataForActivityItemsConfiguration:(id)a3
+- (id)lpMetadataForActivityItemsConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 activityItemsConfigurationMetadataForKey:*MEMORY[0x277D76600]];
+    v4 = [configurationCopy activityItemsConfigurationMetadataForKey:*MEMORY[0x277D76600]];
   }
 
   else
@@ -1279,8 +1279,8 @@ LABEL_13:
     v4 = 0;
   }
 
-  v5 = [v3 itemProvidersForActivityItemsConfiguration];
-  v6 = [v5 count];
+  itemProvidersForActivityItemsConfiguration = [configurationCopy itemProvidersForActivityItemsConfiguration];
+  v6 = [itemProvidersForActivityItemsConfiguration count];
 
   if (!v4 && (objc_opt_respondsToSelector() & 1) != 0 && v6)
   {
@@ -1288,7 +1288,7 @@ LABEL_13:
     v11 = *MEMORY[0x277D76600];
     while (1)
     {
-      v12 = [v3 activityItemsConfigurationMetadataForItemAtIndex:v10 key:v11];
+      v12 = [configurationCopy activityItemsConfigurationMetadataForItemAtIndex:v10 key:v11];
       if (v12)
       {
         break;

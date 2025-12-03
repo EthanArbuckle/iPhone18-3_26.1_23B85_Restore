@@ -1,8 +1,8 @@
 @interface TSCH3DPointLightShaderEffect
 + (id)variableLightIntensities;
 - (id)variableLightIntensities;
-- (void)injectCommonShaderInto:(id)a3 context:(id)a4;
-- (void)uploadData:(id)a3 effectsStates:(id)a4;
+- (void)injectCommonShaderInto:(id)into context:(id)context;
+- (void)uploadData:(id)data effectsStates:(id)states;
 @end
 
 @implementation TSCH3DPointLightShaderEffect
@@ -26,21 +26,21 @@
   return objc_msgSend_variableLightIntensities(v2, v3, v4, v5, v6);
 }
 
-- (void)uploadData:(id)a3 effectsStates:(id)a4
+- (void)uploadData:(id)data effectsStates:(id)states
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  statesCopy = states;
   v12.receiver = self;
   v12.super_class = TSCH3DPointLightShaderEffect;
-  [(TSCH3DLightShaderEffect *)&v12 uploadData:v6 effectsStates:v7];
-  objc_msgSend_uploadLightPositionablesWithUploader_effectsStates_(self, v8, v9, v10, v11, v6, v7);
+  [(TSCH3DLightShaderEffect *)&v12 uploadData:dataCopy effectsStates:statesCopy];
+  objc_msgSend_uploadLightPositionablesWithUploader_effectsStates_(self, v8, v9, v10, v11, dataCopy, statesCopy);
 }
 
-- (void)injectCommonShaderInto:(id)a3 context:(id)a4
+- (void)injectCommonShaderInto:(id)into context:(id)context
 {
   v93[11] = *MEMORY[0x277D85DE8];
-  v89 = a3;
-  objc_msgSend_addFunctionString_name_(v89, v4, v5, v6, v7, @"tsch_mediump_mat4 PointLight(\n                  tsch_highp_vec3 lightPosition,\n                  tsch_highp_vec3 eyeSpacePosition3,\n                  tsch_highp_vec3 normal,\n                  tsch_mediump_vec3 attenuations,\n                  tsch_mediump_vec4 lightAmbient,\n                  tsch_mediump_vec4 lightDiffuse,\n                  tsch_mediump_vec4 lightSpecular,\n                  tsch_mediump_vec4 materialShininess,\n                  tsch_mediump_vec4 ambient,\n                  tsch_mediump_vec4 diffuse,\n                  tsch_mediump_vec4 specular)\n{\n  tsch_highp_vec3 light = lightPosition - eyeSpacePosition3;\n  tsch_mediump_float d = length(light);\n  light = normalize(light);\n  tsch_mediump_float att = 1.0;\n  const tsch_mediump_float epsilon = 1.0e-6;\n  tsch_mediump_vec3 eye = tsch_vec3(0.0, 0.0, 1.0);\n  tsch_mediump_vec3 halfVector = normalize(light + eye);\n  tsch_mediump_float nDotL = max(0.0, dot(normal, light));\n  tsch_mediump_float nDotH = max(epsilon, dot(normal, halfVector));\n  tsch_mediump_float pf = tsch_float(nDotL != 0.0) * pow(nDotH, materialShininess.r * 128.0);\n  ambient = ambient + lightAmbient * att;\n  diffuse = diffuse + lightDiffuse * nDotL * att;\n  specular = specular + lightSpecular * pf * att;\n  tsch_mediump_mat4 intensities = tsch_mat4(ambient, diffuse, specular, tsch_vec4(0.0));\n  return intensities;\n}\n", @"PointLight");
+  intoCopy = into;
+  objc_msgSend_addFunctionString_name_(intoCopy, v4, v5, v6, v7, @"tsch_mediump_mat4 PointLight(\n                  tsch_highp_vec3 lightPosition,\n                  tsch_highp_vec3 eyeSpacePosition3,\n                  tsch_highp_vec3 normal,\n                  tsch_mediump_vec3 attenuations,\n                  tsch_mediump_vec4 lightAmbient,\n                  tsch_mediump_vec4 lightDiffuse,\n                  tsch_mediump_vec4 lightSpecular,\n                  tsch_mediump_vec4 materialShininess,\n                  tsch_mediump_vec4 ambient,\n                  tsch_mediump_vec4 diffuse,\n                  tsch_mediump_vec4 specular)\n{\n  tsch_highp_vec3 light = lightPosition - eyeSpacePosition3;\n  tsch_mediump_float d = length(light);\n  light = normalize(light);\n  tsch_mediump_float att = 1.0;\n  const tsch_mediump_float epsilon = 1.0e-6;\n  tsch_mediump_vec3 eye = tsch_vec3(0.0, 0.0, 1.0);\n  tsch_mediump_vec3 halfVector = normalize(light + eye);\n  tsch_mediump_float nDotL = max(0.0, dot(normal, light));\n  tsch_mediump_float nDotH = max(epsilon, dot(normal, halfVector));\n  tsch_mediump_float pf = tsch_float(nDotL != 0.0) * pow(nDotH, materialShininess.r * 128.0);\n  ambient = ambient + lightAmbient * att;\n  diffuse = diffuse + lightDiffuse * nDotL * att;\n  specular = specular + lightSpecular * pf * att;\n  tsch_mediump_mat4 intensities = tsch_mat4(ambient, diffuse, specular, tsch_vec4(0.0));\n  return intensities;\n}\n", @"PointLight");
   v87 = objc_msgSend_variables(TSCH3DPointLightUniformArrayShaderVariables, v8, v9, v10, v11);
   if (self->super._lightCount)
   {
@@ -67,21 +67,21 @@
       v93[9] = qword_280A465B8;
       v93[10] = qword_280A46648;
       v52 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v48, v49, v50, v51, v93, 11);
-      objc_msgSend_assignVariable_statement_substitutes_type_toSection_(v89, v53, v54, v55, v56, v47, @"PointLight(@@, @@, @@, @@, @@, @@, @@, @@, @@, @@, @@)", v52, 0, 2);
+      objc_msgSend_assignVariable_statement_substitutes_type_toSection_(intoCopy, v53, v54, v55, v56, v47, @"PointLight(@@, @@, @@, @@, @@, @@, @@, @@, @@, @@, @@)", v52, 0, 2);
       v57 = qword_280A46448;
       v92 = v47;
       v62 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v58, v59, v60, v61, &v92, 1);
-      objc_msgSend_assignVariable_statement_substitutes_type_toSection_(v89, v63, v64, v65, v66, v57, @"@@[0]", v62, 0, 2);
+      objc_msgSend_assignVariable_statement_substitutes_type_toSection_(intoCopy, v63, v64, v65, v66, v57, @"@@[0]", v62, 0, 2);
 
       v67 = qword_280A465B8;
       v91 = v47;
       v72 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v68, v69, v70, v71, &v91, 1);
-      objc_msgSend_assignVariable_statement_substitutes_type_toSection_(v89, v73, v74, v75, v76, v67, @"@@[1]", v72, 0, 2);
+      objc_msgSend_assignVariable_statement_substitutes_type_toSection_(intoCopy, v73, v74, v75, v76, v67, @"@@[1]", v72, 0, 2);
 
       v77 = qword_280A46648;
       v90 = v47;
       v82 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v78, v79, v80, v81, &v90, 1);
-      objc_msgSend_assignVariable_statement_substitutes_type_toSection_(v89, v83, v84, v85, v86, v77, @"@@[2]", v82, 0, 2);
+      objc_msgSend_assignVariable_statement_substitutes_type_toSection_(intoCopy, v83, v84, v85, v86, v77, @"@@[2]", v82, 0, 2);
 
       ++v16;
     }

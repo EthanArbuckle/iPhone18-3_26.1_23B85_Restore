@@ -1,11 +1,11 @@
 @interface SUUILayoutCache
 - (SUUILayoutCache)init;
 - (SUUILayoutCacheDelegate)delegate;
-- (_NSRange)addLayoutRequests:(id)a3;
-- (_NSRange)populateCacheWithLayoutRequests:(id)a3;
-- (id)layoutForIndex:(int64_t)a3 forced:(BOOL)a4;
-- (void)_addLayoutBatch:(id)a3;
-- (void)_layoutRequestsInRange:(_NSRange)a3;
+- (_NSRange)addLayoutRequests:(id)requests;
+- (_NSRange)populateCacheWithLayoutRequests:(id)requests;
+- (id)layoutForIndex:(int64_t)index forced:(BOOL)forced;
+- (void)_addLayoutBatch:(id)batch;
+- (void)_layoutRequestsInRange:(_NSRange)range;
 - (void)_populateCache;
 - (void)commitLayoutRequests;
 @end
@@ -36,9 +36,9 @@
   return v2;
 }
 
-- (_NSRange)addLayoutRequests:(id)a3
+- (_NSRange)addLayoutRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   if (!self->_batchedRequests)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -48,8 +48,8 @@
 
   v7 = [(NSMutableArray *)self->_requests count];
   v8 = [(NSMutableArray *)self->_batchedRequests count];
-  v9 = [v4 count];
-  [(NSMutableArray *)self->_batchedRequests addObjectsFromArray:v4];
+  v9 = [requestsCopy count];
+  [(NSMutableArray *)self->_batchedRequests addObjectsFromArray:requestsCopy];
 
   v10 = v8 + v7;
   v11 = v9;
@@ -71,12 +71,12 @@
   }
 }
 
-- (id)layoutForIndex:(int64_t)a3 forced:(BOOL)a4
+- (id)layoutForIndex:(int64_t)index forced:(BOOL)forced
 {
-  v4 = a4;
-  if ([(NSMutableArray *)self->_layouts count]<= a3)
+  forcedCopy = forced;
+  if ([(NSMutableArray *)self->_layouts count]<= index)
   {
-    if (v4 && (v8 = a3 - [(NSMutableArray *)self->_layouts count], v8 < [(NSMutableArray *)self->_batchedRequests count]))
+    if (forcedCopy && (v8 = index - [(NSMutableArray *)self->_layouts count], v8 < [(NSMutableArray *)self->_batchedRequests count]))
     {
       v9 = [(NSMutableArray *)self->_batchedRequests objectAtIndex:v8];
       v7 = [objc_alloc(objc_msgSend(v9 "layoutClass"))];
@@ -90,17 +90,17 @@
 
   else
   {
-    v7 = [(NSMutableArray *)self->_layouts objectAtIndex:a3];
+    v7 = [(NSMutableArray *)self->_layouts objectAtIndex:index];
   }
 
   return v7;
 }
 
-- (_NSRange)populateCacheWithLayoutRequests:(id)a3
+- (_NSRange)populateCacheWithLayoutRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v5 = [(NSMutableArray *)self->_requests count];
-  v6 = [v4 count];
+  v6 = [requestsCopy count];
   if (self->_batchedRequests)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"-populateCacheWithLayoutRequests: before -commitLayoutRequests"];
@@ -110,7 +110,7 @@
   {
     v7 = [(NSMutableArray *)self->_layouts count];
     v8 = [(NSMutableArray *)self->_requests count];
-    [(NSMutableArray *)self->_requests addObjectsFromArray:v4];
+    [(NSMutableArray *)self->_requests addObjectsFromArray:requestsCopy];
     if (v7 == v8)
     {
       [(SUUILayoutCache *)self _populateCache];
@@ -137,9 +137,9 @@
   return result;
 }
 
-- (void)_addLayoutBatch:(id)a3
+- (void)_addLayoutBatch:(id)batch
 {
-  [(NSMutableArray *)self->_layouts addObjectsFromArray:a3];
+  [(NSMutableArray *)self->_layouts addObjectsFromArray:batch];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
@@ -150,10 +150,10 @@
   }
 }
 
-- (void)_layoutRequestsInRange:(_NSRange)a3
+- (void)_layoutRequestsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (location < location + length)
   {

@@ -1,8 +1,8 @@
 @interface FRAccountActionQueueBasedDataActionProvider
 - (FRAccountActionQueueBasedDataActionProvider)init;
-- (void)_consumeActionsUpToActionPassingTest:(id)a3 withBlock:(id)a4;
-- (void)consumeActionsUpToDestructiveActionSyncWithBlock:(id)a3;
-- (void)consumeNonDestructiveActionsSyncWithBlock:(id)a3;
+- (void)_consumeActionsUpToActionPassingTest:(id)test withBlock:(id)block;
+- (void)consumeActionsUpToDestructiveActionSyncWithBlock:(id)block;
+- (void)consumeNonDestructiveActionsSyncWithBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -37,10 +37,10 @@
   [(FRAccountActionQueueBasedDataActionProvider *)&v3 dealloc];
 }
 
-- (void)consumeActionsUpToDestructiveActionSyncWithBlock:(id)a3
+- (void)consumeActionsUpToDestructiveActionSyncWithBlock:(id)block
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  blockCopy = block;
+  if (!blockCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100072270();
   }
@@ -59,16 +59,16 @@
   v6[1] = 3221225472;
   v6[2] = sub_100055A30;
   v6[3] = &unk_1000C59A8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(FRAccountActionQueueBasedDataActionProvider *)self _consumeActionsUpToActionPassingTest:&stru_1000C5980 withBlock:v6];
   [(FRAccountActionQueueBasedDataActionProvider *)self setDestructiveHasBeenConsumed:1];
 }
 
-- (void)consumeNonDestructiveActionsSyncWithBlock:(id)a3
+- (void)consumeNonDestructiveActionsSyncWithBlock:(id)block
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  blockCopy = block;
+  if (!blockCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000724A4();
   }
@@ -83,24 +83,24 @@
     sub_100072620();
   }
 
-  [(FRAccountActionQueueBasedDataActionProvider *)self _consumeActionsUpToActionPassingTest:&stru_1000C59C8 withBlock:v4];
+  [(FRAccountActionQueueBasedDataActionProvider *)self _consumeActionsUpToActionPassingTest:&stru_1000C59C8 withBlock:blockCopy];
   [(FRAccountActionQueueBasedDataActionProvider *)self setNonDestructiveHaveBeenConsumed:1];
 }
 
-- (void)_consumeActionsUpToActionPassingTest:(id)a3 withBlock:(id)a4
+- (void)_consumeActionsUpToActionPassingTest:(id)test withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  testCopy = test;
+  blockCopy = block;
+  if (!testCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100072790();
-    if (v7)
+    if (blockCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
     goto LABEL_6;
   }
@@ -111,16 +111,16 @@
   }
 
 LABEL_6:
-  v8 = [(FRAccountActionQueueBasedDataActionProvider *)self accountActionQueue];
-  v9 = [v8 peekAtActionTypes];
-  v10 = [NSArray arrayWithArray:v9];
+  accountActionQueue = [(FRAccountActionQueueBasedDataActionProvider *)self accountActionQueue];
+  peekAtActionTypes = [accountActionQueue peekAtActionTypes];
+  v10 = [NSArray arrayWithArray:peekAtActionTypes];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100055D50;
   v21[3] = &unk_1000C59F0;
-  v22 = v6;
-  v11 = v6;
+  v22 = testCopy;
+  v11 = testCopy;
   v12 = [v10 indexOfObjectWithOptions:2 passingTest:v21];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -138,11 +138,11 @@ LABEL_6:
   v18[1] = 3221225472;
   v18[2] = sub_100055D98;
   v18[3] = &unk_1000C5A18;
-  v19 = v8;
+  v19 = accountActionQueue;
   v20 = v13;
-  v16 = v7[2];
-  v17 = v8;
-  v16(v7, v15, v18);
+  v16 = blockCopy[2];
+  v17 = accountActionQueue;
+  v16(blockCopy, v15, v18);
 }
 
 @end

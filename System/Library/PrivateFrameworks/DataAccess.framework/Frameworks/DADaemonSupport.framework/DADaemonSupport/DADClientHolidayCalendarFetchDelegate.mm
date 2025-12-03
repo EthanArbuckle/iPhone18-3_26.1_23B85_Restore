@@ -2,10 +2,10 @@
 - (id)_getThrottleDateIfApplicable;
 - (id)syncingAccount;
 - (void)_addAuthenticationHeaders;
-- (void)_handleCalendarSearchResults:(id)a3;
-- (void)_sendCompletionWithError:(id)a3 retryThrottleTime:(double)a4;
-- (void)_sendResults:(id)a3;
-- (void)_setThrottledRetryDateUsingTimeInterval:(double)a3;
+- (void)_handleCalendarSearchResults:(id)results;
+- (void)_sendCompletionWithError:(id)error retryThrottleTime:(double)time;
+- (void)_sendResults:(id)results;
+- (void)_setThrottledRetryDateUsingTimeInterval:(double)interval;
 - (void)fetchHolidayCalendars;
 @end
 
@@ -14,43 +14,43 @@
 - (void)fetchHolidayCalendars
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(DADClientHolidayCalendarFetchDelegate *)self _getThrottleDateIfApplicable];
-  if (v3)
+  _getThrottleDateIfApplicable = [(DADClientHolidayCalendarFetchDelegate *)self _getThrottleDateIfApplicable];
+  if (_getThrottleDateIfApplicable)
   {
     v4 = DALoggingwithCategory();
     v5 = *(MEMORY[0x277D03988] + 4);
     if (os_log_type_enabled(v4, v5))
     {
       *buf = 138412290;
-      v26 = v3;
+      v26 = _getThrottleDateIfApplicable;
       _os_log_impl(&dword_248524000, v4, v5, "HolidayCalendarFetch: Server requested we not fetch. Denying retries until %@", buf, 0xCu);
     }
 
-    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CF6F80] code:2 userInfo:0];
-    [v3 timeIntervalSinceReferenceDate];
+    holidayCalendarURL = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CF6F80] code:2 userInfo:0];
+    [_getThrottleDateIfApplicable timeIntervalSinceReferenceDate];
     v8 = v7;
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [v9 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v11 = v10;
 
-    [(DADClientHolidayCalendarFetchDelegate *)self _sendCompletionWithError:v6 retryThrottleTime:v8 - v11];
+    [(DADClientHolidayCalendarFetchDelegate *)self _sendCompletionWithError:holidayCalendarURL retryThrottleTime:v8 - v11];
   }
 
   else
   {
-    v12 = [(DADClientHolidayCalendarFetchDelegate *)self syncingAccount];
+    syncingAccount = [(DADClientHolidayCalendarFetchDelegate *)self syncingAccount];
 
-    if (v12)
+    if (syncingAccount)
     {
-      v6 = [MEMORY[0x277D03910] holidayCalendarURL];
-      v13 = [objc_alloc(MEMORY[0x277CF6FB8]) initWithLanguages:0 location:0 calendarType:@"Holiday" url:v6];
+      holidayCalendarURL = [MEMORY[0x277D03910] holidayCalendarURL];
+      v13 = [objc_alloc(MEMORY[0x277CF6FB8]) initWithLanguages:0 location:0 calendarType:@"Holiday" url:holidayCalendarURL];
       searchTask = self->_searchTask;
       self->_searchTask = v13;
 
       [(DADClientHolidayCalendarFetchDelegate *)self _addAuthenticationHeaders];
       [(CalDAVCalendarSearchTask *)self->_searchTask setLimit:0];
-      v15 = [(DADClientHolidayCalendarFetchDelegate *)self syncingAccount];
-      [(CalDAVCalendarSearchTask *)self->_searchTask setAccountInfoProvider:v15];
+      syncingAccount2 = [(DADClientHolidayCalendarFetchDelegate *)self syncingAccount];
+      [(CalDAVCalendarSearchTask *)self->_searchTask setAccountInfoProvider:syncingAccount2];
 
       objc_initWeak(buf, self->_searchTask);
       objc_initWeak(&location, self);
@@ -61,9 +61,9 @@
       objc_copyWeak(&v22, buf);
       objc_copyWeak(&v23, &location);
       [(CalDAVCalendarSearchTask *)self->_searchTask setCompletionBlock:v21];
-      v16 = [(DADClientHolidayCalendarFetchDelegate *)self syncingAccount];
-      v17 = [v16 taskManager];
-      [v17 submitIndependentTask:self->_searchTask];
+      syncingAccount3 = [(DADClientHolidayCalendarFetchDelegate *)self syncingAccount];
+      taskManager = [syncingAccount3 taskManager];
+      [taskManager submitIndependentTask:self->_searchTask];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(&v22);
@@ -81,8 +81,8 @@
         _os_log_impl(&dword_248524000, v18, v19, "HolidayCalendarFetch: no valid calendar account found.", buf, 2u);
       }
 
-      v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
-      [(DADClientHolidayCalendarFetchDelegate *)self _sendCompletionWithError:v6 retryThrottleTime:0.0];
+      holidayCalendarURL = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
+      [(DADClientHolidayCalendarFetchDelegate *)self _sendCompletionWithError:holidayCalendarURL retryThrottleTime:0.0];
     }
   }
 
@@ -142,26 +142,26 @@ void __62__DADClientHolidayCalendarFetchDelegate_fetchHolidayCalendars__block_in
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCalendarSearchResults:(id)a3
+- (void)_handleCalendarSearchResults:(id)results
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
+  resultsCopy = results;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v33 = v4;
-  v7 = [v4 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  v33 = resultsCopy;
+  allKeys = [resultsCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v8)
   {
     v9 = v8;
-    v29 = self;
-    v30 = v5;
+    selfCopy = self;
+    v30 = array;
     v10 = 0;
-    obj = v7;
+    obj = allKeys;
     v32 = *v39;
     do
     {
@@ -174,30 +174,30 @@ void __62__DADClientHolidayCalendarFetchDelegate_fetchHolidayCalendars__block_in
 
         v12 = *(*(&v38 + 1) + 8 * i);
         v13 = [v33 objectForKey:v12];
-        v14 = [v13 region];
-        v15 = [v14 payloadAsString];
+        region = [v13 region];
+        payloadAsString = [region payloadAsString];
 
-        v16 = [v13 language];
-        v17 = [v16 payloadAsString];
+        language = [v13 language];
+        payloadAsString2 = [language payloadAsString];
 
-        v18 = [v13 calendarDescription];
-        v19 = [v18 payloadAsString];
+        calendarDescription = [v13 calendarDescription];
+        payloadAsString3 = [calendarDescription payloadAsString];
 
         v20 = objc_alloc_init(MEMORY[0x277D03948]);
-        v21 = [v12 absoluteString];
-        [v20 setURLString:v21];
+        absoluteString = [v12 absoluteString];
+        [v20 setURLString:absoluteString];
 
-        [v20 setRegion:v15];
-        [v20 setLanguage:v17];
-        [v20 setCalendarDescription:v19];
-        [v6 addObject:v20];
+        [v20 setRegion:payloadAsString];
+        [v20 setLanguage:payloadAsString2];
+        [v20 setCalendarDescription:payloadAsString3];
+        [array2 addObject:v20];
         if (v10 >= 49)
         {
-          [v30 addObject:v6];
-          v22 = [MEMORY[0x277CBEB18] array];
+          [v30 addObject:array2];
+          array3 = [MEMORY[0x277CBEB18] array];
 
           v10 = 0;
-          v6 = v22;
+          array2 = array3;
         }
 
         else
@@ -213,15 +213,15 @@ void __62__DADClientHolidayCalendarFetchDelegate_fetchHolidayCalendars__block_in
 
     if (v10 < 1)
     {
-      self = v29;
-      v5 = v30;
+      self = selfCopy;
+      array = v30;
     }
 
     else
     {
-      v5 = v30;
-      [v30 addObject:v6];
-      self = v29;
+      array = v30;
+      [v30 addObject:array2];
+      self = selfCopy;
     }
   }
 
@@ -233,7 +233,7 @@ void __62__DADClientHolidayCalendarFetchDelegate_fetchHolidayCalendars__block_in
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v23 = v5;
+  v23 = array;
   v24 = [v23 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v24)
   {
@@ -261,107 +261,107 @@ void __62__DADClientHolidayCalendarFetchDelegate_fetchHolidayCalendars__block_in
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendResults:(id)a3
+- (void)_sendResults:(id)results
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (results)
   {
-    v4 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a3 forKey:*MEMORY[0x277D03B68]];
+    v4 = [MEMORY[0x277CBEAC0] dictionaryWithObject:results forKey:*MEMORY[0x277D03B68]];
     v15 = 0;
     v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v15];
     v6 = v15;
-    v7 = [(DADClientDelegate *)self client];
-    v8 = [v7 rawConnection];
+    client = [(DADClientDelegate *)self client];
+    rawConnection = [client rawConnection];
 
-    if (v8)
+    if (rawConnection)
     {
       v9 = *MEMORY[0x277D03C88];
       v17[0] = *MEMORY[0x277D03B78];
       v10 = *MEMORY[0x277D03B58];
       v16[0] = v9;
       v16[1] = v10;
-      v11 = [(DADClientDelegate *)self delegateID];
+      delegateID = [(DADClientDelegate *)self delegateID];
       v16[2] = *MEMORY[0x277D03B60];
-      v17[1] = v11;
+      v17[1] = delegateID;
       v17[2] = v5;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:3];
 
       v13 = _CFXPCCreateXPCObjectFromCFObject();
-      xpc_connection_send_message(v8, v13);
+      xpc_connection_send_message(rawConnection, v13);
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendCompletionWithError:(id)a3 retryThrottleTime:(double)a4
+- (void)_sendCompletionWithError:(id)error retryThrottleTime:(double)time
 {
-  v13 = a3;
+  errorCopy = error;
   if (![(DADisableableObject *)self isDisabled]&& ![(DADClientDelegate *)self finished])
   {
     [(DADClientDelegate *)self setFinished:1];
-    v6 = [(DADClientDelegate *)self client];
-    v7 = [v6 rawConnection];
+    client = [(DADClientDelegate *)self client];
+    rawConnection = [client rawConnection];
 
-    if (v7)
+    if (rawConnection)
     {
-      v8 = [MEMORY[0x277CBEB38] dictionary];
-      [v8 setObject:*MEMORY[0x277D03B50] forKey:*MEMORY[0x277D03C88]];
-      v9 = [(DADClientDelegate *)self delegateID];
-      [v8 setObject:v9 forKey:*MEMORY[0x277D03B58]];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:*MEMORY[0x277D03B50] forKey:*MEMORY[0x277D03C88]];
+      delegateID = [(DADClientDelegate *)self delegateID];
+      [dictionary setObject:delegateID forKey:*MEMORY[0x277D03B58]];
 
-      if (v13)
+      if (errorCopy)
       {
-        v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:0];
+        v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy requiringSecureCoding:1 error:0];
         if (v10)
         {
-          [v8 setObject:v10 forKey:*MEMORY[0x277D03B40]];
+          [dictionary setObject:v10 forKey:*MEMORY[0x277D03B40]];
         }
 
-        v11 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-        [v8 setObject:v11 forKey:*MEMORY[0x277D03B70]];
+        v11 = [MEMORY[0x277CCABB0] numberWithDouble:time];
+        [dictionary setObject:v11 forKey:*MEMORY[0x277D03B70]];
       }
 
       v12 = _CFXPCCreateXPCObjectFromCFObject();
-      xpc_connection_send_message(v7, v12);
+      xpc_connection_send_message(rawConnection, v12);
     }
   }
 }
 
 - (id)syncingAccount
 {
-  v2 = self;
+  selfCopy = self;
   v46 = *MEMORY[0x277D85DE8];
   v3 = 56;
   syncingAccount = self->_syncingAccount;
   if (!syncingAccount)
   {
     v5 = sharedDAAccountStore();
-    v6 = [v5 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
 
-    v7 = [v6 calSyncingAccountUsingChildAccounts:0];
+    v7 = [aa_primaryAppleAccount calSyncingAccountUsingChildAccounts:0];
     v8 = +[DADAgentManager sharedManager];
-    v9 = [v7 identifier];
-    v10 = [v8 accountWithAccountID:v9];
+    identifier = [v7 identifier];
+    account4 = [v8 accountWithAccountID:identifier];
 
-    if (!v10)
+    if (!account4)
     {
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
       v11 = +[DADAgentManager sharedManager];
-      v12 = [v11 activeAgents];
+      activeAgents = [v11 activeAgents];
 
-      obj = v12;
-      v13 = [v12 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      obj = activeAgents;
+      v13 = [activeAgents countByEnumeratingWithState:&v41 objects:v45 count:16];
       if (v13)
       {
         v14 = v13;
         v34 = v7;
-        v35 = v6;
+        v35 = aa_primaryAppleAccount;
         v36 = 56;
-        v37 = v2;
+        v37 = selfCopy;
         v39 = *v42;
         v15 = *MEMORY[0x277CB8BA0];
         while (2)
@@ -374,25 +374,25 @@ void __62__DADClientHolidayCalendarFetchDelegate_fetchHolidayCalendars__block_in
             }
 
             v17 = *(*(&v41 + 1) + 8 * i);
-            v18 = [v17 account];
-            v19 = [v18 backingAccountInfo];
-            v20 = [v19 accountType];
-            v21 = [v20 identifier];
+            account = [v17 account];
+            backingAccountInfo = [account backingAccountInfo];
+            accountType = [backingAccountInfo accountType];
+            identifier2 = [accountType identifier];
 
-            v22 = [v17 account];
-            v23 = [v22 backingAccountInfo];
-            v24 = [v23 parentAccount];
-            v25 = [v24 accountType];
-            v26 = [v25 identifier];
+            account2 = [v17 account];
+            backingAccountInfo2 = [account2 backingAccountInfo];
+            parentAccount = [backingAccountInfo2 parentAccount];
+            accountType2 = [parentAccount accountType];
+            identifier3 = [accountType2 identifier];
 
-            if (([v21 isEqualToString:v15] & 1) != 0 || objc_msgSend(v26, "isEqualToString:", v15))
+            if (([identifier2 isEqualToString:v15] & 1) != 0 || objc_msgSend(identifier3, "isEqualToString:", v15))
             {
-              v27 = [v17 account];
-              v28 = [v27 enabledForDADataclass:4];
+              account3 = [v17 account];
+              v28 = [account3 enabledForDADataclass:4];
 
               if (v28)
               {
-                v10 = [v17 account];
+                account4 = [v17 account];
 
                 goto LABEL_15;
               }
@@ -408,24 +408,24 @@ void __62__DADClientHolidayCalendarFetchDelegate_fetchHolidayCalendars__block_in
           break;
         }
 
-        v10 = 0;
+        account4 = 0;
 LABEL_15:
         v3 = v36;
-        v2 = v37;
+        selfCopy = v37;
         v7 = v34;
-        v6 = v35;
+        aa_primaryAppleAccount = v35;
       }
 
       else
       {
-        v10 = 0;
+        account4 = 0;
       }
     }
 
-    v29 = *(&v2->super.super.super.isa + v3);
-    *(&v2->super.super.super.isa + v3) = v10;
+    v29 = *(&selfCopy->super.super.super.isa + v3);
+    *(&selfCopy->super.super.super.isa + v3) = account4;
 
-    if (!*(&v2->super.super.super.isa + v3))
+    if (!*(&selfCopy->super.super.super.isa + v3))
     {
       v30 = DALoggingwithCategory();
       v31 = *(MEMORY[0x277D03988] + 4);
@@ -436,7 +436,7 @@ LABEL_15:
       }
     }
 
-    syncingAccount = *(&v2->super.super.super.isa + v3);
+    syncingAccount = *(&selfCopy->super.super.super.isa + v3);
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -452,10 +452,10 @@ LABEL_15:
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
-    v5 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v6 = MEMORY[0x277CBEAA8];
-    v7 = [v5 secondsInDay];
-    v8 = [v6 dateWithTimeIntervalSinceNow:v7 + v7];
+    secondsInDay = [currentCalendar secondsInDay];
+    v8 = [v6 dateWithTimeIntervalSinceNow:secondsInDay + secondsInDay];
     if ([v4 compare:v8] == 1 || (objc_msgSend(MEMORY[0x277CBEAA8], "date"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v4, "compare:", v9), v9, v10 == -1))
     {
       CFPreferencesSetAppValue(@"HolidayCalendarFetchThrottleDate", 0, v2);
@@ -476,18 +476,18 @@ LABEL_15:
   return v11;
 }
 
-- (void)_setThrottledRetryDateUsingTimeInterval:(double)a3
+- (void)_setThrottledRetryDateUsingTimeInterval:(double)interval
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [v4 secondsInDay];
-  v6 = v5 + v5;
-  if (v6 > a3)
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  secondsInDay = [currentCalendar secondsInDay];
+  intervalCopy = secondsInDay + secondsInDay;
+  if (intervalCopy > interval)
   {
-    v6 = a3;
+    intervalCopy = interval;
   }
 
-  v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v6];
+  v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:intervalCopy];
   v8 = DALoggingwithCategory();
   v9 = *(MEMORY[0x277D03988] + 4);
   if (os_log_type_enabled(v8, v9))
@@ -505,20 +505,20 @@ LABEL_15:
 {
   v12 = objc_alloc_init(MEMORY[0x277CCAB70]);
   v3 = MEMORY[0x277CBEAC0];
-  v4 = [v12 allHTTPHeaderFields];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  allHTTPHeaderFields = [v12 allHTTPHeaderFields];
+  v5 = [v3 dictionaryWithDictionary:allHTTPHeaderFields];
 
-  v6 = [(DADClientHolidayCalendarFetchDelegate *)self syncingAccount];
-  v7 = [v6 backingAccountInfo];
+  syncingAccount = [(DADClientHolidayCalendarFetchDelegate *)self syncingAccount];
+  backingAccountInfo = [syncingAccount backingAccountInfo];
 
-  if ([v12 aa_addAuthTokenOrBasicAuthHeaderWithAccount:v7 preferUsingPassword:0])
+  if ([v12 aa_addAuthTokenOrBasicAuthHeaderWithAccount:backingAccountInfo preferUsingPassword:0])
   {
     v8 = MEMORY[0x277CBEB38];
-    v9 = [v12 allHTTPHeaderFields];
-    v10 = [v8 dictionaryWithDictionary:v9];
+    allHTTPHeaderFields2 = [v12 allHTTPHeaderFields];
+    v10 = [v8 dictionaryWithDictionary:allHTTPHeaderFields2];
 
-    v11 = [v5 allKeys];
-    [v10 removeObjectsForKeys:v11];
+    allKeys = [v5 allKeys];
+    [v10 removeObjectsForKeys:allKeys];
 
     [(CalDAVCalendarSearchTask *)self->_searchTask setAdditionalAuthenticationHeaders:v10];
   }

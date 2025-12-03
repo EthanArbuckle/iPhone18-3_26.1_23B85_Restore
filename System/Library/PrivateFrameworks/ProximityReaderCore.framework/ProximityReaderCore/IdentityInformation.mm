@@ -1,6 +1,6 @@
 @interface IdentityInformation
 - (_TtC19ProximityReaderCore19IdentityInformation)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityInformation
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityInformation.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityInformation.encode(with:)(coderCopy);
 }
 
 @end

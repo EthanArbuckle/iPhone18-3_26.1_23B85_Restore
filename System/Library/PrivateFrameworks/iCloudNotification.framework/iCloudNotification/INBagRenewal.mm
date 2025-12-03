@@ -1,15 +1,15 @@
 @interface INBagRenewal
-+ (void)attemptRenewCredentialsWithAccount:(id)a3 completion:(id)a4;
++ (void)attemptRenewCredentialsWithAccount:(id)account completion:(id)completion;
 @end
 
 @implementation INBagRenewal
 
-+ (void)attemptRenewCredentialsWithAccount:(id)a3 completion:(id)a4
++ (void)attemptRenewCredentialsWithAccount:(id)account completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v7 = +[ACAccountStore defaultStore];
-  v8 = [v5 aa_altDSID];
+  aa_altDSID = [accountCopy aa_altDSID];
   v18[0] = kACRenewCredentialsShouldAvoidUIKey;
   v18[1] = kACRenewCredentialsShouldForceKey;
   v19[0] = &__kCFBooleanTrue;
@@ -18,20 +18,20 @@
   v10 = _INLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_100033E4C(v8, v10);
+    sub_100033E4C(aa_altDSID, v10);
   }
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100004898;
   v14[3] = &unk_1000552C8;
-  v16 = v8;
-  v17 = v6;
+  v16 = aa_altDSID;
+  v17 = completionCopy;
   v15 = v7;
-  v11 = v8;
+  v11 = aa_altDSID;
   v12 = v7;
-  v13 = v6;
-  [v12 renewCredentialsForAccount:v5 options:v9 completion:v14];
+  v13 = completionCopy;
+  [v12 renewCredentialsForAccount:accountCopy options:v9 completion:v14];
 }
 
 @end

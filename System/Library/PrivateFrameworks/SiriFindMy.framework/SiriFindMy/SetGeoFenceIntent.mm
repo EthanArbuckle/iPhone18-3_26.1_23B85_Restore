@@ -1,13 +1,13 @@
 @interface SetGeoFenceIntent
-- (SetGeoFenceIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (SetGeoFenceIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (SetGeoFenceIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (SetGeoFenceIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation SetGeoFenceIntent
 
-- (SetGeoFenceIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (SetGeoFenceIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_266DAA70C();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return SetGeoFenceIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return SetGeoFenceIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (SetGeoFenceIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (SetGeoFenceIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_266DAA70C();
   sub_266DAA70C();
-  if (a5)
+  if (name)
   {
     sub_266DAA6AC();
   }

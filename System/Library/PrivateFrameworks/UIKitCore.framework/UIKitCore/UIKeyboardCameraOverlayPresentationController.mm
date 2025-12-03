@@ -1,13 +1,13 @@
 @interface UIKeyboardCameraOverlayPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
 - (void)_determinePortraitHeights;
-- (void)_handlePan:(id)a3;
+- (void)_handlePan:(id)pan;
 - (void)_installGrabber;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIKeyboardCameraOverlayPresentationController
@@ -16,19 +16,19 @@
 {
   if ([(UIKeyboardCameraBasePresentationController *)self presentingOverKeyboard])
   {
-    v3 = [(UIPresentationController *)self presentingViewController];
-    v4 = [v3 inputViewSet];
-    v5 = [v4 inputView];
-    v6 = [v4 inputAssistantView];
-    v7 = v6;
-    if (v6)
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    inputViewSet = [presentingViewController inputViewSet];
+    inputView = [inputViewSet inputView];
+    inputAssistantView = [inputViewSet inputAssistantView];
+    v7 = inputAssistantView;
+    if (inputAssistantView)
     {
-      v8 = v6;
+      v8 = inputAssistantView;
     }
 
     else
     {
-      v8 = v5;
+      v8 = inputView;
     }
 
     v9 = v8;
@@ -39,8 +39,8 @@
     v15 = v14;
     v17 = v16;
 
-    v18 = [objc_opt_self() mainScreen];
-    [v18 bounds];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen bounds];
     Height = CGRectGetHeight(v26);
     v27.origin.x = v11;
     v27.origin.y = v13;
@@ -56,21 +56,21 @@
     self->_keyboardCameraNormalHeight = 325.0;
   }
 
-  v21 = [(UIPresentationController *)self containerView];
-  [v21 bounds];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView bounds];
   v23 = v22;
-  v24 = [(UIPresentationController *)self containerView];
-  [v24 safeAreaInsets];
+  containerView2 = [(UIPresentationController *)self containerView];
+  [containerView2 safeAreaInsets];
   self->_keyboardCameraFullScreenHeight = v23 - v25;
 
   self->_keyboardCameraHeight = self->_keyboardCameraNormalHeight;
 }
 
-- (void)_handlePan:(id)a3
+- (void)_handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = [v4 state];
-  switch(v5)
+  panCopy = pan;
+  state = [panCopy state];
+  switch(state)
   {
     case 3:
       keyboardCameraNormalHeight = self->_keyboardCameraNormalHeight;
@@ -102,15 +102,15 @@ LABEL_12:
       [UIView animateWithDuration:v22 animations:0.25];
       break;
     case 2:
-      v6 = [(UIPresentationController *)self containerView];
-      [v4 translationInView:v6];
+      containerView = [(UIPresentationController *)self containerView];
+      [panCopy translationInView:containerView];
       v8 = v7;
 
       panningStartingHeight = self->_panningStartingHeight;
       v10 = fmax(panningStartingHeight - v8, self->_keyboardCameraNormalHeight);
       if (vabdd_f64(v10, panningStartingHeight) > 75.0)
       {
-        [v4 setState:3];
+        [panCopy setState:3];
       }
 
       self->_keyboardCameraHeight = v10;
@@ -119,8 +119,8 @@ LABEL_12:
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = [(UIPresentationController *)self presentedView];
-      [v19 setFrame:{v12, v14, v16, v18}];
+      presentedView = [(UIPresentationController *)self presentedView];
+      [presentedView setFrame:{v12, v14, v16, v18}];
 
       break;
     case 1:
@@ -176,25 +176,25 @@ void __60__UIKeyboardCameraOverlayPresentationController__handlePan___block_invo
   self->_grabberView = v5;
 
   [(UIView *)self->_grabberView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v26 = [(UIPresentationController *)self containerView];
-  v7 = [(UIPresentationController *)self presentedView];
-  [v26 addSubview:self->_grabberView];
+  containerView = [(UIPresentationController *)self containerView];
+  presentedView = [(UIPresentationController *)self presentedView];
+  [containerView addSubview:self->_grabberView];
   v20 = MEMORY[0x1E69977A0];
-  v25 = [(UIView *)self->_grabberView topAnchor];
-  v23 = [v7 topAnchor];
-  v22 = [v25 constraintEqualToAnchor:v23];
+  topAnchor = [(UIView *)self->_grabberView topAnchor];
+  topAnchor2 = [presentedView topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v28[0] = v22;
-  v21 = [(UIView *)self->_grabberView centerXAnchor];
-  v24 = v7;
-  v8 = [v7 centerXAnchor];
-  v9 = [v21 constraintEqualToAnchor:v8];
+  centerXAnchor = [(UIView *)self->_grabberView centerXAnchor];
+  v24 = presentedView;
+  centerXAnchor2 = [presentedView centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v28[1] = v9;
-  v10 = [(UIView *)self->_grabberView heightAnchor];
-  v11 = [v10 constraintEqualToConstant:30.0];
+  heightAnchor = [(UIView *)self->_grabberView heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:30.0];
   v28[2] = v11;
-  v12 = [(UIView *)self->_grabberView widthAnchor];
-  v13 = [v7 widthAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  widthAnchor = [(UIView *)self->_grabberView widthAnchor];
+  widthAnchor2 = [presentedView widthAnchor];
+  v14 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v28[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
   [v20 activateConstraints:v15];
@@ -220,26 +220,26 @@ void __60__UIKeyboardCameraOverlayPresentationController__handlePan___block_invo
   }
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
   [(UIPresentationController *)self _setContainerIgnoresDirectTouchEvents:1];
   [(UIKeyboardCameraOverlayPresentationController *)self _installGrabber];
   if (_UISolariumEnabled())
   {
     v4 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v5 = [v4 preferencesActions];
-    v6 = [(UIPresentationController *)self traitCollection];
-    [v6 displayScale];
-    [v5 rivenSizeFactor:81.0 / v7];
+    preferencesActions = [v4 preferencesActions];
+    traitCollection = [(UIPresentationController *)self traitCollection];
+    [traitCollection displayScale];
+    [preferencesActions rivenSizeFactor:81.0 / v7];
     v9 = v8;
 
-    v10 = [(UIPresentationController *)self presentedView];
-    v11 = [v10 layer];
+    presentedView = [(UIPresentationController *)self presentedView];
+    layer = [presentedView layer];
 
-    [v11 setMasksToBounds:1];
-    [v11 setMaskedCorners:3];
-    [v11 setCornerCurve:*MEMORY[0x1E69796E8]];
-    [v11 setCornerRadius:v9];
+    [layer setMasksToBounds:1];
+    [layer setMaskedCorners:3];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer setCornerRadius:v9];
   }
 
   if (![(UIKeyboardCameraBasePresentationController *)self presentingOverKeyboard])
@@ -258,7 +258,7 @@ void __60__UIKeyboardCameraOverlayPresentationController__handlePan___block_invo
   }
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
   if (![(UIKeyboardCameraBasePresentationController *)self presentingOverKeyboard])
   {
@@ -269,12 +269,12 @@ void __60__UIKeyboardCameraOverlayPresentationController__handlePan___block_invo
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(UIPresentationController *)self containerView];
-  [v3 bounds];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView bounds];
 
   isLandscape = self->_isLandscape;
-  v5 = [(UIPresentationController *)self containerView];
-  [v5 bounds];
+  containerView2 = [(UIPresentationController *)self containerView];
+  [containerView2 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -302,15 +302,15 @@ void __60__UIKeyboardCameraOverlayPresentationController__handlePan___block_invo
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v19.receiver = self;
   v19.super_class = UIKeyboardCameraOverlayPresentationController;
-  [(UIPresentationController *)&v19 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(UIKeyboardCameraOverlayPresentationController *)self updatesGuideDuringRotation];
+  [(UIPresentationController *)&v19 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  updatesGuideDuringRotation = [(UIKeyboardCameraOverlayPresentationController *)self updatesGuideDuringRotation];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x4010000000;
@@ -332,16 +332,16 @@ void __60__UIKeyboardCameraOverlayPresentationController__handlePan___block_invo
   v11[4] = self;
   v11[5] = v16;
   v11[6] = v13;
-  v12 = v8;
+  v12 = updatesGuideDuringRotation;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __100__UIKeyboardCameraOverlayPresentationController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v9[3] = &unk_1E7103B68;
-  v10 = v8;
+  v10 = updatesGuideDuringRotation;
   v9[4] = self;
   v9[5] = v16;
   v9[6] = v13;
-  [v7 animateAlongsideTransition:v11 completion:v9];
+  [coordinatorCopy animateAlongsideTransition:v11 completion:v9];
   _Block_object_dispose(v13, 8);
   _Block_object_dispose(v16, 8);
 }

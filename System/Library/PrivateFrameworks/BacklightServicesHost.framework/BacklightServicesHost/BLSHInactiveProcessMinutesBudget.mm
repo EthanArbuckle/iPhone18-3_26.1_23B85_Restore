@@ -1,21 +1,21 @@
 @interface BLSHInactiveProcessMinutesBudget
-- (BLSHInactiveProcessMinutesBudget)initWithIdentifier:(id)a3 osTimerProvider:(id)a4;
-- (BOOL)chargeSpecifier:(void *)a3 withChargeBlock:(void *)a4 fitInBucketBlock:(void *)a5 exceededBudgetBlock:(void *)a6 missedBucketBlock:;
-- (BOOL)hasSecondsBudgetAtDate:(id)a3;
-- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)a3;
+- (BLSHInactiveProcessMinutesBudget)initWithIdentifier:(id)identifier osTimerProvider:(id)provider;
+- (BOOL)chargeSpecifier:(void *)specifier withChargeBlock:(void *)block fitInBucketBlock:(void *)bucketBlock exceededBudgetBlock:(void *)budgetBlock missedBucketBlock:;
+- (BOOL)hasSecondsBudgetAtDate:(id)date;
+- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)date;
 - (NSArray)buckets;
 - (NSString)debugDescription;
 - (NSString)description;
-- (double)delayTimeToAddInvalidation:(char)a3 hasSecondsBudget:;
+- (double)delayTimeToAddInvalidation:(char)invalidation hasSecondsBudget:;
 - (double)intervalSinceLastInvalidation;
-- (id)validateAndChargeFutureSpecifier:(id)a3 nextSpecifier:(id)a4 expectedFidelity:(int64_t)a5;
-- (int64_t)allowedFidelityAtDate:(id)a3 expectedFidelity:(int64_t)a4;
-- (uint64_t)lock_hasSecondsBudgetAtDate:(uint64_t)a1;
+- (id)validateAndChargeFutureSpecifier:(id)specifier nextSpecifier:(id)nextSpecifier expectedFidelity:(int64_t)fidelity;
+- (int64_t)allowedFidelityAtDate:(id)date expectedFidelity:(int64_t)fidelity;
+- (uint64_t)lock_hasSecondsBudgetAtDate:(uint64_t)date;
 - (unint64_t)bucketCount;
 - (unint64_t)secondsBucketCount;
-- (void)chargeRenderedSpecifier:(id)a3 expectedFidelity:(int64_t)a4;
+- (void)chargeRenderedSpecifier:(id)specifier expectedFidelity:(int64_t)fidelity;
 - (void)dealloc;
-- (void)invalidateAtRequestDate:(id)a3 expectedFidelity:(int64_t)a4 invalidationBlock:(id)a5;
+- (void)invalidateAtRequestDate:(id)date expectedFidelity:(int64_t)fidelity invalidationBlock:(id)block;
 - (void)performInvalidation;
 - (void)resetFutureSpecifiers;
 @end
@@ -40,29 +40,29 @@
     [v3 appendString:v6 withName:@"lastInvalidation" skipIfEmpty:0];
   }
 
-  v7 = [v3 build];
+  build = [v3 build];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v7;
+  return build;
 }
 
-- (BLSHInactiveProcessMinutesBudget)initWithIdentifier:(id)a3 osTimerProvider:(id)a4
+- (BLSHInactiveProcessMinutesBudget)initWithIdentifier:(id)identifier osTimerProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = BLSHInactiveProcessMinutesBudget;
   v8 = [(BLSHInactiveProcessMinutesBudget *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_osTimerProvider, a4);
+    objc_storeStrong(&v8->_osTimerProvider, provider);
     v9->_lock._os_unfair_lock_opaque = 0;
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     lock_buckets = v9->_lock_buckets;
-    v9->_lock_buckets = v10;
+    v9->_lock_buckets = array;
 
-    v12 = [v6 copy];
+    v12 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v12;
   }
@@ -90,22 +90,22 @@
     v5 = [v3 appendTimeInterval:@"pendingInvalidation" withName:1 decomposeUnits:?];
   }
 
-  v6 = [v3 build];
+  build = [v3 build];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return build;
 }
 
-- (int64_t)allowedFidelityAtDate:(id)a3 expectedFidelity:(int64_t)a4
+- (int64_t)allowedFidelityAtDate:(id)date expectedFidelity:(int64_t)fidelity
 {
-  v7 = a3;
-  if (a4 != 1)
+  dateCopy = date;
+  if (fidelity != 1)
   {
     [BLSHInactiveProcessMinutesBudget allowedFidelityAtDate:a2 expectedFidelity:?];
   }
 
-  v8 = v7;
-  if ([(BLSHInactiveProcessMinutesBudget *)self hasSecondsBudgetAtDate:v7])
+  v8 = dateCopy;
+  if ([(BLSHInactiveProcessMinutesBudget *)self hasSecondsBudgetAtDate:dateCopy])
   {
     v9 = 2;
   }
@@ -118,18 +118,18 @@
   return v9;
 }
 
-- (BOOL)chargeSpecifier:(void *)a3 withChargeBlock:(void *)a4 fitInBucketBlock:(void *)a5 exceededBudgetBlock:(void *)a6 missedBucketBlock:
+- (BOOL)chargeSpecifier:(void *)specifier withChargeBlock:(void *)block fitInBucketBlock:(void *)bucketBlock exceededBudgetBlock:(void *)budgetBlock missedBucketBlock:
 {
   v88 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  specifierCopy = specifier;
+  blockCopy = block;
+  bucketBlockCopy = bucketBlock;
   v40 = v11;
-  v41 = a6;
-  if (a1)
+  budgetBlockCopy = budgetBlock;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 48));
+    os_unfair_lock_lock((self + 48));
     v71 = 0;
     v72 = &v71;
     v73 = 0x2020000000;
@@ -152,13 +152,13 @@
     v54 = &v53;
     v55 = 0x2020000000;
     v56 = 0;
-    v15 = *(a1 + 24);
+    v15 = *(self + 24);
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __123__BLSHInactiveProcessMinutesBudget_chargeSpecifier_withChargeBlock_fitInBucketBlock_exceededBudgetBlock_missedBucketBlock___block_invoke;
     v46[3] = &unk_2784208E0;
     v48 = &v61;
-    v47 = v12;
+    v47 = specifierCopy;
     v49 = &v57;
     v50 = &v53;
     v51 = &v65;
@@ -166,8 +166,8 @@
     [v15 enumerateObjectsWithOptions:2 usingBlock:v46];
     if (*(v58 + 24) == 1)
     {
-      v14[2](v14, v66[5]);
-      v16 = v13;
+      bucketBlockCopy[2](bucketBlockCopy, v66[5]);
+      v16 = blockCopy;
       v39 = 0;
     }
 
@@ -176,19 +176,19 @@
       v17 = v66[5];
       if (*(v54 + 24) == 1)
       {
-        (*(v13 + 2))(v13, v17);
-        v16 = v13;
+        (*(blockCopy + 2))(blockCopy, v17);
+        v16 = blockCopy;
         v39 = 1;
       }
 
       else
       {
-        v16 = v13;
-        v18 = v41[2](v41, v17, v62[3]);
+        v16 = blockCopy;
+        v18 = budgetBlockCopy[2](budgetBlockCopy, v17, v62[3]);
         v39 = v18 != 0;
         if (v18)
         {
-          [*(a1 + 24) insertObject:v18 atIndex:v72[3]];
+          [*(self + 24) insertObject:v18 atIndex:v72[3]];
           if (os_variant_has_internal_diagnostics())
           {
             v19 = bls_budget_log();
@@ -201,7 +201,7 @@
               v45 = 0u;
               v42 = 0u;
               v43 = 0u;
-              v21 = *(a1 + 24);
+              v21 = *(self + 24);
               v22 = 0;
               v23 = [v21 countByEnumeratingWithState:&v42 objects:v87 count:16];
               if (v23)
@@ -221,7 +221,7 @@
                     v27 = *(*(&v42 + 1) + 8 * v25);
                     if (v26 && [v26 compare:*(*(&v42 + 1) + 8 * v25)] != -1)
                     {
-                      v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"(internal only) unsorted buckets %@", *(a1 + 24)];
+                      v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"(internal only) unsorted buckets %@", *(self + 24)];
                       v31 = MEMORY[0x277D86220];
                       v32 = MEMORY[0x277D86220];
                       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -234,7 +234,7 @@
                         v77 = 2114;
                         v78 = v35;
                         v79 = 2048;
-                        v80 = a1;
+                        selfCopy = self;
                         v81 = 2114;
                         v82 = @"BLSHInactiveProcessMinutesBudget.m";
                         v83 = 1024;
@@ -270,7 +270,7 @@
       }
     }
 
-    os_unfair_lock_unlock((a1 + 48));
+    os_unfair_lock_unlock((self + 48));
 
     _Block_object_dispose(&v53, 8);
     _Block_object_dispose(&v57, 8);
@@ -282,7 +282,7 @@
 
   else
   {
-    v16 = v13;
+    v16 = blockCopy;
     v39 = 0;
   }
 
@@ -336,20 +336,20 @@ LABEL_13:
   *(v12 + 40) = v7;
 }
 
-- (id)validateAndChargeFutureSpecifier:(id)a3 nextSpecifier:(id)a4 expectedFidelity:(int64_t)a5
+- (id)validateAndChargeFutureSpecifier:(id)specifier nextSpecifier:(id)nextSpecifier expectedFidelity:(int64_t)fidelity
 {
-  v9 = a3;
-  v10 = a4;
-  if (a5 != 1)
+  specifierCopy = specifier;
+  nextSpecifierCopy = nextSpecifier;
+  if (fidelity != 1)
   {
     [BLSHInactiveProcessMinutesBudget validateAndChargeFutureSpecifier:a2 nextSpecifier:? expectedFidelity:?];
   }
 
-  v11 = v10;
-  v12 = [v9 fidelity];
-  if ((v12 - 4) <= 0xFFFFFFFFFFFFFFFALL)
+  v11 = nextSpecifierCopy;
+  fidelity = [specifierCopy fidelity];
+  if ((fidelity - 4) <= 0xFFFFFFFFFFFFFFFALL)
   {
-    [BLSHInactiveProcessMinutesBudget validateAndChargeFutureSpecifier:v12 nextSpecifier:a2 expectedFidelity:?];
+    [BLSHInactiveProcessMinutesBudget validateAndChargeFutureSpecifier:fidelity nextSpecifier:a2 expectedFidelity:?];
   }
 
   v50 = 0;
@@ -357,15 +357,15 @@ LABEL_13:
   v52 = 0x3032000000;
   v53 = __Block_byref_object_copy__12;
   v54 = __Block_byref_object_dispose__12;
-  v13 = v9;
+  v13 = specifierCopy;
   v55 = v13;
   [MEMORY[0x277CF0920] secondsFidelityThreshold];
   v15 = v14;
   os_unfair_lock_lock(&self->_lock);
-  v16 = [v13 date];
-  v17 = [(BLSHInactiveProcessMinutesBudget *)self lock_hasSecondsBudgetAtDate:v16];
-  v18 = [v11 date];
-  [v18 timeIntervalSinceDate:v16];
+  date = [v13 date];
+  v17 = [(BLSHInactiveProcessMinutesBudget *)self lock_hasSecondsBudgetAtDate:date];
+  date2 = [v11 date];
+  [date2 timeIntervalSinceDate:date];
   v20 = v19;
 
   if (v20 > v15 + v15)
@@ -412,7 +412,7 @@ LABEL_13:
   v34 = &v50;
   v23 = v41;
   v30 = v23;
-  v31 = self;
+  selfCopy = self;
   v24 = v40;
   v32 = v24;
   v25 = v42;
@@ -676,15 +676,15 @@ uint64_t __57__BLSHInactiveProcessMinutesBudget_resetFutureSpecifiers__block_inv
   return v3;
 }
 
-- (void)chargeRenderedSpecifier:(id)a3 expectedFidelity:(int64_t)a4
+- (void)chargeRenderedSpecifier:(id)specifier expectedFidelity:(int64_t)fidelity
 {
-  v7 = a3;
+  specifierCopy = specifier;
   v8 = self->_identifier;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __77__BLSHInactiveProcessMinutesBudget_chargeRenderedSpecifier_expectedFidelity___block_invoke;
   v24[3] = &unk_2784209C8;
-  v25 = v7;
+  v25 = specifierCopy;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __77__BLSHInactiveProcessMinutesBudget_chargeRenderedSpecifier_expectedFidelity___block_invoke_2;
@@ -696,16 +696,16 @@ uint64_t __57__BLSHInactiveProcessMinutesBudget_resetFutureSpecifiers__block_inv
   v16[1] = 3221225472;
   v16[2] = __77__BLSHInactiveProcessMinutesBudget_chargeRenderedSpecifier_expectedFidelity___block_invoke_67;
   v16[3] = &unk_2784209F0;
-  v19 = a4;
+  fidelityCopy = fidelity;
   v20 = a2;
   v17 = v23;
-  v18 = self;
+  selfCopy = self;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__BLSHInactiveProcessMinutesBudget_chargeRenderedSpecifier_expectedFidelity___block_invoke_71;
   v11[3] = &unk_278420A18;
   v12 = v17;
-  v13 = self;
+  selfCopy2 = self;
   v14 = v22;
   v15 = a2;
   v9 = v22;
@@ -908,17 +908,17 @@ uint64_t __55__BLSHInactiveProcessMinutesBudget_performInvalidation__block_invok
   return v3 ^ 1u;
 }
 
-- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)a3
+- (BOOL)stillTrackingAfterPurgingStaleDataForNowDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   lock_buckets = self->_lock_buckets;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__BLSHInactiveProcessMinutesBudget_stillTrackingAfterPurgingStaleDataForNowDate___block_invoke;
   v9[3] = &unk_278420A90;
-  v10 = v4;
-  v6 = v4;
+  v10 = dateCopy;
+  v6 = dateCopy;
   v7 = [(NSMutableArray *)lock_buckets indexesOfObjectsPassingTest:v9];
   [(NSMutableArray *)lock_buckets removeObjectsAtIndexes:v7];
 
@@ -955,11 +955,11 @@ uint64_t __55__BLSHInactiveProcessMinutesBudget_performInvalidation__block_invok
   return v3;
 }
 
-- (uint64_t)lock_hasSecondsBudgetAtDate:(uint64_t)a1
+- (uint64_t)lock_hasSecondsBudgetAtDate:(uint64_t)date
 {
   v34 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (date)
   {
     [MEMORY[0x277CF0920] secondsFidelityThreshold];
     v5 = llround(150.0 / v4);
@@ -967,7 +967,7 @@ uint64_t __55__BLSHInactiveProcessMinutesBudget_performInvalidation__block_invok
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v6 = *(a1 + 24);
+    v6 = *(date + 24);
     v7 = [v6 countByEnumeratingWithState:&v26 objects:v33 count:16];
     if (v7)
     {
@@ -993,18 +993,18 @@ uint64_t __55__BLSHInactiveProcessMinutesBudget_performInvalidation__block_invok
                 v13 = bls_budget_log();
                 if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
                 {
-                  v16 = *(a1 + 8);
-                  v17 = [v3 bls_shortLoggingString];
-                  v18 = [*(a1 + 24) bls_boundedDescription];
+                  v16 = *(date + 8);
+                  bls_shortLoggingString = [v3 bls_shortLoggingString];
+                  bls_boundedDescription = [*(date + 24) bls_boundedDescription];
                   OUTLINED_FUNCTION_5_8();
                   v31 = v19;
-                  *v32 = v17;
+                  *v32 = bls_shortLoggingString;
                   *&v32[8] = 2112;
                   *&v32[10] = v20;
                   _os_log_debug_impl(&dword_21FD11000, v13, OS_LOG_TYPE_DEBUG, "%p:%{public}@ budget full at date:%{public}@ buckets:%@", buf, 0x2Au);
                 }
 
-                a1 = 0;
+                date = 0;
                 goto LABEL_18;
               }
             }
@@ -1024,51 +1024,51 @@ uint64_t __55__BLSHInactiveProcessMinutesBudget_performInvalidation__block_invok
     v6 = bls_budget_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v21 = *(a1 + 8);
-      v22 = [v3 bls_shortLoggingString];
-      v23 = [*(a1 + 24) bls_boundedDescriptionWithMax:16 transformer:&__block_literal_global_99];
+      v21 = *(date + 8);
+      bls_shortLoggingString2 = [v3 bls_shortLoggingString];
+      v23 = [*(date + 24) bls_boundedDescriptionWithMax:16 transformer:&__block_literal_global_99];
       OUTLINED_FUNCTION_5_8();
       v31 = 1024;
       *v32 = v5;
       *&v32[4] = v24;
-      *&v32[6] = v22;
+      *&v32[6] = bls_shortLoggingString2;
       *&v32[14] = 2112;
       *&v32[16] = v25;
       _os_log_debug_impl(&dword_21FD11000, v6, OS_LOG_TYPE_DEBUG, "%p:%{public}@ budget available (%d) at date:%{public}@ buckets:%@", buf, 0x30u);
     }
 
-    a1 = 1;
+    date = 1;
 LABEL_18:
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return a1;
+  return date;
 }
 
-- (double)delayTimeToAddInvalidation:(char)a3 hasSecondsBudget:
+- (double)delayTimeToAddInvalidation:(char)invalidation hasSecondsBudget:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __80__BLSHInactiveProcessMinutesBudget_delayTimeToAddInvalidation_hasSecondsBudget___block_invoke;
     v21[3] = &unk_278420908;
     v22 = v5;
-    v23 = a3;
+    invalidationCopy = invalidation;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __80__BLSHInactiveProcessMinutesBudget_delayTimeToAddInvalidation_hasSecondsBudget___block_invoke_2;
     v18[3] = &unk_278420930;
-    v18[4] = a1;
+    v18[4] = self;
     v19 = v6;
     v20 = v22;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __80__BLSHInactiveProcessMinutesBudget_delayTimeToAddInvalidation_hasSecondsBudget___block_invoke_78;
     v15[3] = &unk_278420930;
-    v15[4] = a1;
+    v15[4] = self;
     v16 = v19;
     v17 = v20;
     v11[0] = MEMORY[0x277D85DD0];
@@ -1076,12 +1076,12 @@ LABEL_18:
     v11[2] = __80__BLSHInactiveProcessMinutesBudget_delayTimeToAddInvalidation_hasSecondsBudget___block_invoke_82;
     v11[3] = &unk_278420A40;
     v12 = v17;
-    v13 = a1;
+    selfCopy = self;
     v7 = v16;
     v14 = v7;
-    if ([(BLSHInactiveProcessMinutesBudget *)a1 chargeSpecifier:v12 withChargeBlock:v21 fitInBucketBlock:v18 exceededBudgetBlock:v15 missedBucketBlock:v11])
+    if ([(BLSHInactiveProcessMinutesBudget *)self chargeSpecifier:v12 withChargeBlock:v21 fitInBucketBlock:v18 exceededBudgetBlock:v15 missedBucketBlock:v11])
     {
-      if ([(BLSHInactiveProcessMinutesBudget *)a1 intervalSinceLastInvalidation]>= 0.9)
+      if ([(BLSHInactiveProcessMinutesBudget *)self intervalSinceLastInvalidation]>= 0.9)
       {
         v9 = 0.0;
       }
@@ -1109,38 +1109,38 @@ LABEL_18:
 
 - (double)intervalSinceLastInvalidation
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  os_unfair_lock_lock((a1 + 48));
-  v2 = *(a1 + 40);
+  os_unfair_lock_lock((self + 48));
+  v2 = *(self + 40);
   mach_continuous_time();
   BSTimeDifferenceFromMachTimeToMachTime();
   v4 = v3;
-  os_unfair_lock_unlock((a1 + 48));
+  os_unfair_lock_unlock((self + 48));
   return v4;
 }
 
-- (void)invalidateAtRequestDate:(id)a3 expectedFidelity:(int64_t)a4 invalidationBlock:(id)a5
+- (void)invalidateAtRequestDate:(id)date expectedFidelity:(int64_t)fidelity invalidationBlock:(id)block
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x277CF0848]) initWithDate:v8 fidelity:a4];
-  v11 = [(BLSHInactiveProcessMinutesBudget *)self delayTimeToAddInvalidation:v10 hasSecondsBudget:[(BLSHInactiveProcessMinutesBudget *)self hasSecondsBudgetAtDate:v8]];
+  dateCopy = date;
+  blockCopy = block;
+  v10 = [objc_alloc(MEMORY[0x277CF0848]) initWithDate:dateCopy fidelity:fidelity];
+  v11 = [(BLSHInactiveProcessMinutesBudget *)self delayTimeToAddInvalidation:v10 hasSecondsBudget:[(BLSHInactiveProcessMinutesBudget *)self hasSecondsBudgetAtDate:dateCopy]];
   v12 = self->_osTimerProvider;
   v44 = MEMORY[0x277D85DD0];
   v45 = 3221225472;
   v46 = __95__BLSHInactiveProcessMinutesBudget_invalidateAtRequestDate_expectedFidelity_invalidationBlock___block_invoke;
   v47 = &unk_278420A68;
   LOBYTE(v52) = v11 == 0.0;
-  v48 = self;
+  selfCopy = self;
   v13 = v12;
   v49 = v13;
-  v51 = a4;
-  v14 = v9;
+  fidelityCopy = fidelity;
+  v14 = blockCopy;
   v50 = v14;
   v15 = MEMORY[0x223D70730](&v44);
   os_unfair_lock_lock(&self->_lock);
@@ -1152,24 +1152,24 @@ LABEL_18:
 
   else
   {
-    v16 = [(BSTimerScheduleQuerying *)self->_lock_invalidationTimer isScheduled];
+    isScheduled = [(BSTimerScheduleQuerying *)self->_lock_invalidationTimer isScheduled];
     v17 = bls_budget_log();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
-    if (v16)
+    if (isScheduled)
     {
       if (v18)
       {
         identifier = self->_identifier;
-        v26 = [v8 bls_loggingString];
+        bls_loggingString = [dateCopy bls_loggingString];
         [(BSTimerScheduleQuerying *)self->_lock_invalidationTimer timeRemaining];
         HIDWORD(v53) = HIDWORD(self);
         v54 = 2114;
         v55 = identifier;
         v56 = 2114;
-        v57 = v26;
+        v57 = bls_loggingString;
         v58 = 2048;
         v59 = v27;
-        OUTLINED_FUNCTION_8_4(&dword_21FD11000, v28, v29, "%p:%{public}@ will ignore budgeted invalidation at requesteDate:%{public}@ already have scheduled invalidation in %.3lfs", v30, v31, v32, v33, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, 2u);
+        OUTLINED_FUNCTION_8_4(&dword_21FD11000, v28, v29, "%p:%{public}@ will ignore budgeted invalidation at requesteDate:%{public}@ already have scheduled invalidation in %.3lfs", v30, v31, v32, v33, v39, v40, v41, v42, v43, v44, v45, v46, v47, selfCopy, v49, v50, fidelityCopy, v52, 2u);
       }
     }
 
@@ -1185,7 +1185,7 @@ LABEL_18:
         v57 = v10;
         v58 = 2048;
         v59 = v11;
-        OUTLINED_FUNCTION_8_4(&dword_21FD11000, v19, v20, "%p:%{public}@ will schedule budgeted invalidation specifier:%{public}@ in %.0lfs", v21, v22, v23, v24, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, 2u);
+        OUTLINED_FUNCTION_8_4(&dword_21FD11000, v19, v20, "%p:%{public}@ will schedule budgeted invalidation specifier:%{public}@ in %.0lfs", v21, v22, v23, v24, v39, v40, v41, v42, v43, v44, v45, v46, v47, selfCopy, v49, v50, fidelityCopy, v52, 2u);
       }
 
       [(BSTimerScheduleQuerying *)self->_lock_invalidationTimer invalidate];
@@ -1208,11 +1208,11 @@ LABEL_18:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasSecondsBudgetAtDate:(id)a3
+- (BOOL)hasSecondsBudgetAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BLSHInactiveProcessMinutesBudget *)self lock_hasSecondsBudgetAtDate:v4];
+  v5 = [(BLSHInactiveProcessMinutesBudget *)self lock_hasSecondsBudgetAtDate:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;

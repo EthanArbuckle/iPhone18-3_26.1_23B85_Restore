@@ -1,11 +1,11 @@
 @interface SBArcSwipeSwitcherModifier
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3;
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3;
-- (SBArcSwipeSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 pinSpaceCornerRadiiToDisplayCornerRadii:(BOOL)a6;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index;
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay;
+- (SBArcSwipeSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout pinSpaceCornerRadiiToDisplayCornerRadii:(BOOL)radii;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (id)_layoutSettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToCacheFullsizeSnapshots;
 - (id)appLayoutsToCacheSnapshots;
 - (id)appLayoutsToResignActive;
@@ -17,23 +17,23 @@
 
 @implementation SBArcSwipeSwitcherModifier
 
-- (SBArcSwipeSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 pinSpaceCornerRadiiToDisplayCornerRadii:(BOOL)a6
+- (SBArcSwipeSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout pinSpaceCornerRadiiToDisplayCornerRadii:(BOOL)radii
 {
-  v12 = a4;
-  v13 = a5;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v16.receiver = self;
   v16.super_class = SBArcSwipeSwitcherModifier;
-  v14 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:a3];
+  v14 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:d];
   if (v14)
   {
-    if (!v13)
+    if (!appLayoutCopy)
     {
       [SBArcSwipeSwitcherModifier initWithTransitionID:a2 fromAppLayout:v14 toAppLayout:? pinSpaceCornerRadiiToDisplayCornerRadii:?];
     }
 
-    objc_storeStrong(&v14->_fromAppLayout, a4);
-    objc_storeStrong(&v14->_toAppLayout, a5);
-    v14->_pinSpaceCornerRadiiToDisplayCornerRadii = a6;
+    objc_storeStrong(&v14->_fromAppLayout, layout);
+    objc_storeStrong(&v14->_toAppLayout, appLayout);
+    v14->_pinSpaceCornerRadiiToDisplayCornerRadii = radii;
   }
 
   return v14;
@@ -43,15 +43,15 @@
 {
   v11.receiver = self;
   v11.super_class = SBArcSwipeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
-  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillBegin];
 
   if (!self->_systemApertureSuppressionIdentifier && self->_toAppLayout)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     systemApertureSuppressionIdentifier = self->_systemApertureSuppressionIdentifier;
-    self->_systemApertureSuppressionIdentifier = v6;
+    self->_systemApertureSuppressionIdentifier = uUID;
 
     v8 = [[SBRequestSystemApertureElementSuppressionEventResponse alloc] initWithAppLayout:self->_toAppLayout wantsGlobalSuppression:0 wantsKeyLineEnabled:0 invalidationIdentifier:self->_systemApertureSuppressionIdentifier];
     v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v8 toResponse:v5];
@@ -66,33 +66,33 @@
 {
   v8.receiver = self;
   v8.super_class = SBArcSwipeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v8 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v8 transitionDidEnd];
   if (self->_systemApertureSuppressionIdentifier)
   {
     v4 = [[SBRelinquishSystemApertureElementSuppressionEventResponse alloc] initWithInvalidationIdentifier:self->_systemApertureSuppressionIdentifier];
-    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionDidEnd];
 
     systemApertureSuppressionIdentifier = self->_systemApertureSuppressionIdentifier;
     self->_systemApertureSuppressionIdentifier = 0;
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay
 {
-  v5 = [(SBArcSwipeSwitcherModifier *)self switcherSettings];
-  v6 = [v5 animationSettings];
-  [v6 disableAsyncRenderingTransitionPercentage];
+  switcherSettings = [(SBArcSwipeSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings disableAsyncRenderingTransitionPercentage];
   v8 = v7;
 
-  v9 = [(SBArcSwipeSwitcherModifier *)self _layoutSettings];
-  [v9 settlingDuration];
+  _layoutSettings = [(SBArcSwipeSwitcherModifier *)self _layoutSettings];
+  [_layoutSettings settlingDuration];
   v11 = v8 * v10;
   UIAnimationDragCoefficient();
-  *a3 = v11 * v12;
+  *delay = v11 * v12;
 
   return 1;
 }
@@ -101,8 +101,8 @@
 {
   v6.receiver = self;
   v6.super_class = SBArcSwipeSwitcherModifier;
-  v3 = [(SBArcSwipeSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 mutableCopy];
+  visibleAppLayouts = [(SBArcSwipeSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts mutableCopy];
 
   if (self->_toAppLayout)
   {
@@ -117,50 +117,50 @@
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBArcSwipeSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBArcSwipeSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBArcSwipeSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   return v5;
 }
 
 - (id)_layoutSettings
 {
-  v3 = [(SBArcSwipeSwitcherModifier *)self windowManagementContext];
-  if ([v3 isFlexibleWindowingEnabled] && (objc_msgSend(v3, "isAutomaticStageCreationEnabled") & 1) == 0)
+  windowManagementContext = [(SBArcSwipeSwitcherModifier *)self windowManagementContext];
+  if ([windowManagementContext isFlexibleWindowingEnabled] && (objc_msgSend(windowManagementContext, "isAutomaticStageCreationEnabled") & 1) == 0)
   {
-    v6 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-    [v6 setResponse:0.54];
-    [v6 setDampingRatio:0.8];
+    initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    [initWithDefaultValues setResponse:0.54];
+    [initWithDefaultValues setDampingRatio:0.8];
   }
 
   else
   {
-    v4 = [(SBArcSwipeSwitcherModifier *)self switcherSettings];
-    v5 = [v4 animationSettings];
+    switcherSettings = [(SBArcSwipeSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
 
     if (([(SBArcSwipeSwitcherModifier *)self isReduceMotionEnabled]& 1) != 0)
     {
-      [v5 reduceMotionArcSwipeSettings];
+      [animationSettings reduceMotionArcSwipeSettings];
     }
 
     else
     {
-      [v5 arcSwipeSettings];
+      [animationSettings arcSwipeSettings];
     }
-    v6 = ;
+    initWithDefaultValues = ;
   }
 
-  return v6;
+  return initWithDefaultValues;
 }
 
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index
 {
   toAppLayout = self->_toAppLayout;
   if (!toAppLayout)
@@ -168,8 +168,8 @@
     return 0;
   }
 
-  v5 = [(SBArcSwipeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBArcSwipeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
   v7 = [(SBAppLayout *)toAppLayout isEqual:v6];
 
   return v7;
@@ -177,14 +177,14 @@
 
 - (id)appLayoutsToCacheSnapshots
 {
-  v3 = [(SBArcSwipeSwitcherModifier *)self appLayouts];
-  if ([v3 count])
+  appLayouts = [(SBArcSwipeSwitcherModifier *)self appLayouts];
+  if ([appLayouts count])
   {
-    v4 = [(SBArcSwipeSwitcherModifier *)self appLayouts];
-    v5 = v4;
+    appLayouts2 = [(SBArcSwipeSwitcherModifier *)self appLayouts];
+    v5 = appLayouts2;
     if (self->_toAppLayout)
     {
-      v6 = [v4 indexOfObject:?];
+      v6 = [appLayouts2 indexOfObject:?];
       if (v6 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v11[0] = MEMORY[0x277D85DD0];
@@ -201,14 +201,14 @@
       v6 = 0;
     }
 
-    v8 = [(SBArcSwipeSwitcherModifier *)self switcherSettings];
-    v9 = [v8 numberOfSnapshotsToAlwaysKeepAround];
-    if (!v9)
+    switcherSettings = [(SBArcSwipeSwitcherModifier *)self switcherSettings];
+    numberOfSnapshotsToAlwaysKeepAround = [switcherSettings numberOfSnapshotsToAlwaysKeepAround];
+    if (!numberOfSnapshotsToAlwaysKeepAround)
     {
-      v9 = [v8 numberOfSnapshotsToCacheInSwitcher];
+      numberOfSnapshotsToAlwaysKeepAround = [switcherSettings numberOfSnapshotsToCacheInSwitcher];
     }
 
-    v7 = [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v6 numberOfSnapshotsToCache:1 biasForward:v9, 1];
+    v7 = [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v6 numberOfSnapshotsToCache:1 biasForward:numberOfSnapshotsToAlwaysKeepAround, 1];
   }
 
   else
@@ -237,11 +237,11 @@ uint64_t __56__SBArcSwipeSwitcherModifier_appLayoutsToCacheSnapshots__block_invo
 
 - (id)appLayoutsToCacheFullsizeSnapshots
 {
-  v3 = [(SBArcSwipeSwitcherModifier *)self appLayouts];
+  appLayouts = [(SBArcSwipeSwitcherModifier *)self appLayouts];
   if (self->_fromAppLayout)
   {
-    v4 = [(SBArcSwipeSwitcherModifier *)self appLayouts];
-    v5 = [v4 indexOfObject:self->_toAppLayout];
+    appLayouts2 = [(SBArcSwipeSwitcherModifier *)self appLayouts];
+    v5 = [appLayouts2 indexOfObject:self->_toAppLayout];
 
     if (v5)
     {
@@ -261,17 +261,17 @@ uint64_t __56__SBArcSwipeSwitcherModifier_appLayoutsToCacheSnapshots__block_invo
     v6 = 1;
   }
 
-  v12.length = [v3 count];
+  v12.length = [appLayouts count];
   v11.location = v5;
   v11.length = v6;
   v12.location = 0;
   v7 = NSIntersectionRange(v11, v12);
-  v8 = [v3 subarrayWithRange:{v7.location, v7.length}];
+  v8 = [appLayouts subarrayWithRange:{v7.location, v7.length}];
 
   return v8;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   if (self->_pinSpaceCornerRadiiToDisplayCornerRadii)
   {
@@ -284,7 +284,7 @@ uint64_t __56__SBArcSwipeSwitcherModifier_appLayoutsToCacheSnapshots__block_invo
   {
     v7.receiver = self;
     v7.super_class = SBArcSwipeSwitcherModifier;
-    [(SBArcSwipeSwitcherModifier *)&v7 cornerRadiiForIndex:a3];
+    [(SBArcSwipeSwitcherModifier *)&v7 cornerRadiiForIndex:index];
   }
 
   result.topRight = v6;
@@ -298,41 +298,41 @@ uint64_t __56__SBArcSwipeSwitcherModifier_appLayoutsToCacheSnapshots__block_invo
 {
   if ([(SBAppLayout *)self->_fromAppLayout isEqual:self->_toAppLayout])
   {
-    v3 = MEMORY[0x277CBEC10];
+    appLayoutsToResignActive = MEMORY[0x277CBEC10];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBArcSwipeSwitcherModifier;
-    v3 = [(SBTransitionSwitcherModifier *)&v5 appLayoutsToResignActive];
+    appLayoutsToResignActive = [(SBTransitionSwitcherModifier *)&v5 appLayoutsToResignActive];
   }
 
-  return v3;
+  return appLayoutsToResignActive;
 }
 
 - (id)keyboardSuppressionMode
 {
   if ([(SBAppLayout *)self->_fromAppLayout isEqual:self->_toAppLayout])
   {
-    v3 = +[SBSwitcherKeyboardSuppressionMode suppressionModeNone];
+    keyboardSuppressionMode = +[SBSwitcherKeyboardSuppressionMode suppressionModeNone];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBArcSwipeSwitcherModifier;
-    v3 = [(SBTransitionSwitcherModifier *)&v5 keyboardSuppressionMode];
+    keyboardSuppressionMode = [(SBTransitionSwitcherModifier *)&v5 keyboardSuppressionMode];
   }
 
-  return v3;
+  return keyboardSuppressionMode;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
   v7.receiver = self;
   v7.super_class = SBArcSwipeSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v7 asyncRenderingAttributesForAppLayout:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v7 asyncRenderingAttributesForAppLayout:layout];
   if (self->_fromAppLayout == self->_toAppLayout)
   {
     v5 = 0;

@@ -69,7 +69,7 @@
           objc_enumerationMutation(v14);
         }
 
-        if (![a1 _compareMultiValueRelationshipKey:*(*(&v22 + 1) + 8 * i) forObject:v11 againstObject:v12 propertiesToIgnore:{v13, v22}])
+        if (![self _compareMultiValueRelationshipKey:*(*(&v22 + 1) + 8 * i) forObject:v11 againstObject:v12 propertiesToIgnore:{v13, v22}])
         {
           v19 = 0;
           goto LABEL_11;
@@ -100,20 +100,20 @@ LABEL_11:
   v12 = a5;
   v13 = a7;
   v14 = MEMORY[0x1E695DFA8];
-  v15 = [a1 knownRelationshipMultiValueKeys];
-  v16 = [v14 setWithArray:v15];
+  knownRelationshipMultiValueKeys = [self knownRelationshipMultiValueKeys];
+  v16 = [v14 setWithArray:knownRelationshipMultiValueKeys];
 
   v17 = MEMORY[0x1E695DFA8];
-  v18 = [a1 knownRelationshipSingleValueKeys];
-  v19 = [v17 setWithArray:v18];
+  knownRelationshipSingleValueKeys = [self knownRelationshipSingleValueKeys];
+  v19 = [v17 setWithArray:knownRelationshipSingleValueKeys];
 
   v20 = MEMORY[0x1E695DFA8];
-  v21 = [a1 knownSingleValueKeysForComparison];
-  v22 = [v20 setWithArray:v21];
+  knownSingleValueKeysForComparison = [self knownSingleValueKeysForComparison];
+  v22 = [v20 setWithArray:knownSingleValueKeysForComparison];
 
   v23 = MEMORY[0x1E695DFA8];
-  v24 = [a1 knownImmutableKeys];
-  v25 = [v23 setWithArray:v24];
+  knownImmutableKeys = [self knownImmutableKeys];
+  v25 = [v23 setWithArray:knownImmutableKeys];
 
   v38 = v16;
   if (v11)
@@ -130,18 +130,18 @@ LABEL_11:
     v25 = 0;
   }
 
-  v26 = [v19 allObjects];
+  allObjects = [v19 allObjects];
   v27 = v37;
-  v28 = [a1 _compareSingleValueRelationshipKeys:v26 forObject:v37 againstObject:v12 propertiesToIgnore:v13];
+  v28 = [self _compareSingleValueRelationshipKeys:allObjects forObject:v37 againstObject:v12 propertiesToIgnore:v13];
 
-  if (!v28 || ([v38 allObjects], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(a1, "_compareMultiValueRelationshipKeys:forObject:againstObject:propertiesToIgnore:", v29, v37, v12, v13), v29, !v30))
+  if (!v28 || ([v38 allObjects], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(self, "_compareMultiValueRelationshipKeys:forObject:againstObject:propertiesToIgnore:", v29, v37, v12, v13), v29, !v30))
   {
     v34 = 0;
     goto LABEL_11;
   }
 
-  v31 = [v22 allObjects];
-  v32 = [a1 _compareNonRelationshipKeys:v31 forObject:v37 againstObject:v12 propertiesToIgnore:v13];
+  allObjects2 = [v22 allObjects];
+  v32 = [self _compareNonRelationshipKeys:allObjects2 forObject:v37 againstObject:v12 propertiesToIgnore:v13];
 
   if (!v32)
   {
@@ -157,9 +157,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v33 = [v25 allObjects];
+  allObjects3 = [v25 allObjects];
   v27 = v37;
-  v34 = [a1 _compareNonRelationshipKeys:v33 forObject:v37 againstObject:v12 propertiesToIgnore:v13];
+  v34 = [self _compareNonRelationshipKeys:allObjects3 forObject:v37 againstObject:v12 propertiesToIgnore:v13];
 
 LABEL_11:
   return v34 & 1;
@@ -191,7 +191,7 @@ LABEL_11:
           objc_enumerationMutation(v14);
         }
 
-        if (![a1 _compareSingleValueRelationshipKey:*(*(&v22 + 1) + 8 * i) forObject:v11 againstObject:v12 propertiesToIgnore:v13 ignoreIdentityKeys:{0, v22}])
+        if (![self _compareSingleValueRelationshipKey:*(*(&v22 + 1) + 8 * i) forObject:v11 againstObject:v12 propertiesToIgnore:v13 ignoreIdentityKeys:{0, v22}])
         {
           v19 = 0;
           goto LABEL_11;
@@ -220,10 +220,10 @@ LABEL_11:
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [a1 knownIdentityKeysForComparison];
-  LOBYTE(a1) = [a1 _compareNonRelationshipKeys:v11 forObject:v10 againstObject:v9 propertiesToIgnore:v8];
+  knownIdentityKeysForComparison = [self knownIdentityKeysForComparison];
+  LOBYTE(self) = [self _compareNonRelationshipKeys:knownIdentityKeysForComparison forObject:v10 againstObject:v9 propertiesToIgnore:v8];
 
-  return a1;
+  return self;
 }
 
 - (void)validate:()Shared .cold.1(void *a1, void *a2)

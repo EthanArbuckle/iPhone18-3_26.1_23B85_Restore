@@ -1,13 +1,13 @@
 @interface LACPersistentStoreFactory
-+ (id)makePersistentStoreWithSuiteName:(id)a3;
++ (id)makePersistentStoreWithSuiteName:(id)name;
 @end
 
 @implementation LACPersistentStoreFactory
 
-+ (id)makePersistentStoreWithSuiteName:(id)a3
++ (id)makePersistentStoreWithSuiteName:(id)name
 {
-  v3 = a3;
-  v4 = [[_TtC23LocalAuthenticationCore30LACUserDefaultsPersistentStore alloc] initWithSuiteName:v3];
+  nameCopy = name;
+  v4 = [[_TtC23LocalAuthenticationCore30LACUserDefaultsPersistentStore alloc] initWithSuiteName:nameCopy];
 
   return v4;
 }

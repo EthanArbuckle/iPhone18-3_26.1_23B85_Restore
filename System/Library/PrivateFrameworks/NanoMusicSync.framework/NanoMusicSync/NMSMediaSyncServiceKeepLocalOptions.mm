@@ -1,29 +1,29 @@
 @interface NMSMediaSyncServiceKeepLocalOptions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDownloadOffPowerPolicy:(id)a3;
-- (int)StringAsDownloadOnCellularPolicy:(id)a3;
-- (int)StringAsQualityOfService:(id)a3;
+- (int)StringAsDownloadOffPowerPolicy:(id)policy;
+- (int)StringAsDownloadOnCellularPolicy:(id)policy;
+- (int)StringAsQualityOfService:(id)service;
 - (int)downloadOffPowerPolicy;
 - (int)downloadOnCellularPolicy;
 - (int)qualityOfService;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDownloadOffPowerPolicy:(BOOL)a3;
-- (void)setHasDownloadOnCellularPolicy:(BOOL)a3;
-- (void)setHasQualityOfService:(BOOL)a3;
-- (void)setHasRequiresValidation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDownloadOffPowerPolicy:(BOOL)policy;
+- (void)setHasDownloadOnCellularPolicy:(BOOL)policy;
+- (void)setHasQualityOfService:(BOOL)service;
+- (void)setHasRequiresValidation:(BOOL)validation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NMSMediaSyncServiceKeepLocalOptions
 
-- (void)setHasRequiresValidation:(BOOL)a3
+- (void)setHasRequiresValidation:(BOOL)validation
 {
-  if (a3)
+  if (validation)
   {
     v3 = 16;
   }
@@ -49,9 +49,9 @@
   }
 }
 
-- (void)setHasDownloadOffPowerPolicy:(BOOL)a3
+- (void)setHasDownloadOffPowerPolicy:(BOOL)policy
 {
-  if (a3)
+  if (policy)
   {
     v3 = 2;
   }
@@ -64,20 +64,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsDownloadOffPowerPolicy:(id)a3
+- (int)StringAsDownloadOffPowerPolicy:(id)policy
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  policyCopy = policy;
+  if ([policyCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Allowed"])
+  else if ([policyCopy isEqualToString:@"Allowed"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NotAllowed"])
+  else if ([policyCopy isEqualToString:@"NotAllowed"])
   {
     v4 = 2;
   }
@@ -103,9 +103,9 @@
   }
 }
 
-- (void)setHasDownloadOnCellularPolicy:(BOOL)a3
+- (void)setHasDownloadOnCellularPolicy:(BOOL)policy
 {
-  if (a3)
+  if (policy)
   {
     v3 = 4;
   }
@@ -118,20 +118,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsDownloadOnCellularPolicy:(id)a3
+- (int)StringAsDownloadOnCellularPolicy:(id)policy
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  policyCopy = policy;
+  if ([policyCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Allowed"])
+  else if ([policyCopy isEqualToString:@"Allowed"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NotAllowed"])
+  else if ([policyCopy isEqualToString:@"NotAllowed"])
   {
     v4 = 2;
   }
@@ -157,9 +157,9 @@
   }
 }
 
-- (void)setHasQualityOfService:(BOOL)a3
+- (void)setHasQualityOfService:(BOOL)service
 {
-  if (a3)
+  if (service)
   {
     v3 = 8;
   }
@@ -172,30 +172,30 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsQualityOfService:(id)a3
+- (int)StringAsQualityOfService:(id)service
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UserInteractive"])
+  serviceCopy = service;
+  if ([serviceCopy isEqualToString:@"UserInteractive"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"UserInitiated"])
+  else if ([serviceCopy isEqualToString:@"UserInitiated"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Utility"])
+  else if ([serviceCopy isEqualToString:@"Utility"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Background"])
+  else if ([serviceCopy isEqualToString:@"Background"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Default"])
+  else if ([serviceCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
@@ -214,20 +214,20 @@
   v8.receiver = self;
   v8.super_class = NMSMediaSyncServiceKeepLocalOptions;
   v4 = [(NMSMediaSyncServiceKeepLocalOptions *)&v8 description];
-  v5 = [(NMSMediaSyncServiceKeepLocalOptions *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NMSMediaSyncServiceKeepLocalOptions *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_requiresValidation];
-    [v3 setObject:v8 forKey:@"requiresValidation"];
+    [dictionary setObject:v8 forKey:@"requiresValidation"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -258,7 +258,7 @@ LABEL_3:
     v10 = off_27993E430[downloadOffPowerPolicy];
   }
 
-  [v3 setObject:v10 forKey:@"downloadOffPowerPolicy"];
+  [dictionary setObject:v10 forKey:@"downloadOffPowerPolicy"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -284,7 +284,7 @@ LABEL_17:
     v12 = off_27993E430[downloadOnCellularPolicy];
   }
 
-  [v3 setObject:v12 forKey:@"downloadOnCellularPolicy"];
+  [dictionary setObject:v12 forKey:@"downloadOnCellularPolicy"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -310,35 +310,35 @@ LABEL_21:
     v14 = off_27993E448[qualityOfService];
   }
 
-  [v3 setObject:v14 forKey:@"qualityOfService"];
+  [dictionary setObject:v14 forKey:@"qualityOfService"];
 
   if (*&self->_has)
   {
 LABEL_6:
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeout];
-    [v3 setObject:v5 forKey:@"timeout"];
+    [dictionary setObject:v5 forKey:@"timeout"];
   }
 
 LABEL_7:
   cellularBundleIdentifier = self->_cellularBundleIdentifier;
   if (cellularBundleIdentifier)
   {
-    [v3 setObject:cellularBundleIdentifier forKey:@"cellularBundleIdentifier"];
+    [dictionary setObject:cellularBundleIdentifier forKey:@"cellularBundleIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v11 = v4;
+  v11 = toCopy;
   if ((has & 0x10) != 0)
   {
     requiresValidation = self->_requiresValidation;
     PBDataWriterWriteBOOLField();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -359,7 +359,7 @@ LABEL_3:
 
   downloadOffPowerPolicy = self->_downloadOffPowerPolicy;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -375,7 +375,7 @@ LABEL_4:
 LABEL_14:
   downloadOnCellularPolicy = self->_downloadOnCellularPolicy;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -391,31 +391,31 @@ LABEL_5:
 LABEL_15:
   qualityOfService = self->_qualityOfService;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   if (*&self->_has)
   {
 LABEL_6:
     timeout = self->_timeout;
     PBDataWriterWriteDoubleField();
-    v4 = v11;
+    toCopy = v11;
   }
 
 LABEL_7:
   if (self->_cellularBundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[36] = self->_requiresValidation;
-    v4[40] |= 0x10u;
+    toCopy[36] = self->_requiresValidation;
+    toCopy[40] |= 0x10u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -434,8 +434,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_downloadOffPowerPolicy;
-  v4[40] |= 2u;
+  *(toCopy + 6) = self->_downloadOffPowerPolicy;
+  toCopy[40] |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -449,8 +449,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  *(v4 + 7) = self->_downloadOnCellularPolicy;
-  v4[40] |= 4u;
+  *(toCopy + 7) = self->_downloadOnCellularPolicy;
+  toCopy[40] |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -464,27 +464,27 @@ LABEL_5:
   }
 
 LABEL_15:
-  *(v4 + 8) = self->_qualityOfService;
-  v4[40] |= 8u;
+  *(toCopy + 8) = self->_qualityOfService;
+  toCopy[40] |= 8u;
   if (*&self->_has)
   {
 LABEL_6:
-    *(v4 + 1) = *&self->_timeout;
-    v4[40] |= 1u;
+    *(toCopy + 1) = *&self->_timeout;
+    toCopy[40] |= 1u;
   }
 
 LABEL_7:
   if (self->_cellularBundleIdentifier)
   {
-    v6 = v4;
-    [v4 setCellularBundleIdentifier:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setCellularBundleIdentifier:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -549,25 +549,25 @@ LABEL_6:
   }
 
 LABEL_7:
-  v8 = [(NSString *)self->_cellularBundleIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_cellularBundleIdentifier copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 40) & 0x10) == 0)
+    if ((*(equalCopy + 40) & 0x10) == 0)
     {
       goto LABEL_4;
     }
@@ -577,21 +577,21 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if ((*(v4 + 40) & 0x10) == 0)
+  if ((*(equalCopy + 40) & 0x10) == 0)
   {
     goto LABEL_32;
   }
 
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (self->_requiresValidation)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_32;
   }
@@ -599,58 +599,58 @@ LABEL_32:
 LABEL_4:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_downloadOffPowerPolicy != *(v4 + 6))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_downloadOffPowerPolicy != *(equalCopy + 6))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_32;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_downloadOnCellularPolicy != *(v4 + 7))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_downloadOnCellularPolicy != *(equalCopy + 7))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_32;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_qualityOfService != *(v4 + 8))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_qualityOfService != *(equalCopy + 8))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_32;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timeout != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timeout != *(equalCopy + 1))
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_32;
   }
 
   cellularBundleIdentifier = self->_cellularBundleIdentifier;
-  if (cellularBundleIdentifier | *(v4 + 2))
+  if (cellularBundleIdentifier | *(equalCopy + 2))
   {
     v8 = [(NSString *)cellularBundleIdentifier isEqual:?];
   }
@@ -757,15 +757,15 @@ LABEL_6:
   return v9 ^ v8 ^ v10 ^ v11 ^ v15 ^ [(NSString *)self->_cellularBundleIdentifier hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x10) != 0)
   {
-    self->_requiresValidation = *(v4 + 36);
+    self->_requiresValidation = *(fromCopy + 36);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -778,14 +778,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 40) & 2) == 0)
+  else if ((*(fromCopy + 40) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_downloadOffPowerPolicy = *(v4 + 6);
+  self->_downloadOffPowerPolicy = *(fromCopy + 6);
   *&self->_has |= 2u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -798,9 +798,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_downloadOnCellularPolicy = *(v4 + 7);
+  self->_downloadOnCellularPolicy = *(fromCopy + 7);
   *&self->_has |= 4u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -813,21 +813,21 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_qualityOfService = *(v4 + 8);
+  self->_qualityOfService = *(fromCopy + 8);
   *&self->_has |= 8u;
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
 LABEL_6:
-    self->_timeout = *(v4 + 1);
+    self->_timeout = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_7:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(NMSMediaSyncServiceKeepLocalOptions *)self setCellularBundleIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

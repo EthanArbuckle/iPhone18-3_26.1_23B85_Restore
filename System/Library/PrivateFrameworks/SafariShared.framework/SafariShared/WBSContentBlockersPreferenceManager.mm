@@ -1,22 +1,22 @@
 @interface WBSContentBlockersPreferenceManager
-- (WBSContentBlockersPreferenceManager)initWithPerSitePreferencesStore:(id)a3;
+- (WBSContentBlockersPreferenceManager)initWithPerSitePreferencesStore:(id)store;
 - (id)preferences;
-- (void)didUpdatePreference:(id)a3 toValue:(id)a4 forDomain:(id)a5;
-- (void)getContentBlockersEnabledStateForDomain:(id)a3 withTimeout:(double)a4 fallbackEnabledState:(BOOL)a5 completionHandler:(id)a6;
+- (void)didUpdatePreference:(id)preference toValue:(id)value forDomain:(id)domain;
+- (void)getContentBlockersEnabledStateForDomain:(id)domain withTimeout:(double)timeout fallbackEnabledState:(BOOL)state completionHandler:(id)handler;
 @end
 
 @implementation WBSContentBlockersPreferenceManager
 
-- (WBSContentBlockersPreferenceManager)initWithPerSitePreferencesStore:(id)a3
+- (WBSContentBlockersPreferenceManager)initWithPerSitePreferencesStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = WBSContentBlockersPreferenceManager;
   v6 = [(WBSContentBlockersPreferenceManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_perSitePreferencesStore, a3);
+    objc_storeStrong(&v6->_perSitePreferencesStore, store);
     v8 = [[WBSPerSitePreference alloc] initWithIdentifier:@"ContentBlockersPreference"];
     contentBlockersPreference = v7->_contentBlockersPreference;
     v7->_contentBlockersPreference = v8;
@@ -29,27 +29,27 @@
   return v7;
 }
 
-- (void)getContentBlockersEnabledStateForDomain:(id)a3 withTimeout:(double)a4 fallbackEnabledState:(BOOL)a5 completionHandler:(id)a6
+- (void)getContentBlockersEnabledStateForDomain:(id)domain withTimeout:(double)timeout fallbackEnabledState:(BOOL)state completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  if ([v10 length])
+  stateCopy = state;
+  domainCopy = domain;
+  handlerCopy = handler;
+  if ([domainCopy length])
   {
     contentBlockersPreference = self->_contentBlockersPreference;
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v7];
-    v14 = [WBSPerSitePreferenceTimeout timeoutWithInterval:v13 fallbackValue:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:stateCopy];
+    v14 = [WBSPerSitePreferenceTimeout timeoutWithInterval:v13 fallbackValue:timeout];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __130__WBSContentBlockersPreferenceManager_getContentBlockersEnabledStateForDomain_withTimeout_fallbackEnabledState_completionHandler___block_invoke;
     v15[3] = &unk_1E7FB6CA8;
-    v16 = v11;
-    [(WBSPerSitePreferenceManager *)self getValueOfPreference:contentBlockersPreference forDomain:v10 withTimeout:v14 usingBlock:v15];
+    v16 = handlerCopy;
+    [(WBSPerSitePreferenceManager *)self getValueOfPreference:contentBlockersPreference forDomain:domainCopy withTimeout:v14 usingBlock:v15];
   }
 
   else
   {
-    (*(v11 + 2))(v11, v7);
+    (*(handlerCopy + 2))(handlerCopy, stateCopy);
   }
 }
 
@@ -62,17 +62,17 @@ uint64_t __130__WBSContentBlockersPreferenceManager_getContentBlockersEnabledSta
   return v4(v2, v3);
 }
 
-- (void)didUpdatePreference:(id)a3 toValue:(id)a4 forDomain:(id)a5
+- (void)didUpdatePreference:(id)preference toValue:(id)value forDomain:(id)domain
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AD88];
-  v7 = a5;
-  v8 = [v6 defaultCenter];
+  domainCopy = domain;
+  defaultCenter = [v6 defaultCenter];
   v10 = @"domainWithModifiedContentBlockersPreference";
-  v11[0] = v7;
+  v11[0] = domainCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  [v8 postNotificationName:@"perSiteContentBlockersPreferenceDidChange" object:self userInfo:v9];
+  [defaultCenter postNotificationName:@"perSiteContentBlockersPreferenceDidChange" object:self userInfo:v9];
 }
 
 - (id)preferences

@@ -1,8 +1,8 @@
 @interface PKAsyncCache
 - (PKAsyncCache)init;
-- (PKAsyncCache)initWithCache:(id)a3;
-- (void)_executeRetrievalBlock:(id)a3 forKey:(id)a4;
-- (void)retrieveItemForKey:(id)a3 synchronous:(BOOL)a4 retrievalBlock:(id)a5 deliveryBlock:(id)a6;
+- (PKAsyncCache)initWithCache:(id)cache;
+- (void)_executeRetrievalBlock:(id)block forKey:(id)key;
+- (void)retrieveItemForKey:(id)key synchronous:(BOOL)synchronous retrievalBlock:(id)block deliveryBlock:(id)deliveryBlock;
 @end
 
 @implementation PKAsyncCache
@@ -15,9 +15,9 @@
   return v4;
 }
 
-- (PKAsyncCache)initWithCache:(id)a3
+- (PKAsyncCache)initWithCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = PKAsyncCache;
   v6 = [(PKAsyncCache *)&v13 init];
@@ -25,10 +25,10 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_itemByKey, a3);
-    v8 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    objc_storeStrong(&v6->_itemByKey, cache);
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     weakItemByKey = v7->_weakItemByKey;
-    v7->_weakItemByKey = v8;
+    v7->_weakItemByKey = strongToWeakObjectsMapTable;
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     outstandingRetrievals = v7->_outstandingRetrievals;
@@ -38,30 +38,30 @@
   return v7;
 }
 
-- (void)retrieveItemForKey:(id)a3 synchronous:(BOOL)a4 retrievalBlock:(id)a5 deliveryBlock:(id)a6
+- (void)retrieveItemForKey:(id)key synchronous:(BOOL)synchronous retrievalBlock:(id)block deliveryBlock:(id)deliveryBlock
 {
-  v8 = a4;
+  synchronousCopy = synchronous;
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  blockCopy = block;
+  deliveryBlockCopy = deliveryBlock;
   os_unfair_lock_lock(&self->_lock);
-  v13 = [(NSCache *)self->_itemByKey objectForKey:v10];
+  v13 = [(NSCache *)self->_itemByKey objectForKey:keyCopy];
   if (v13)
   {
     goto LABEL_4;
   }
 
-  v14 = [(NSMapTable *)self->_weakItemByKey objectForKey:v10];
+  v14 = [(NSMapTable *)self->_weakItemByKey objectForKey:keyCopy];
   if (!v14)
   {
-    v23 = [(NSMutableDictionary *)self->_outstandingRetrievals objectForKeyedSubscript:v10];
+    v23 = [(NSMutableDictionary *)self->_outstandingRetrievals objectForKeyedSubscript:keyCopy];
     if (v23)
     {
       v17 = v23;
       os_unfair_lock_unlock(&self->_lock);
       v28 = 0;
-      if (!v8)
+      if (!synchronousCopy)
       {
         goto LABEL_27;
       }
@@ -70,30 +70,30 @@
     else
     {
       v17 = objc_alloc_init(PKAsyncCacheRetrievalInfo);
-      [(NSMutableDictionary *)self->_outstandingRetrievals setObject:v17 forKeyedSubscript:v10];
+      [(NSMutableDictionary *)self->_outstandingRetrievals setObject:v17 forKeyedSubscript:keyCopy];
       os_unfair_lock_unlock(&self->_lock);
       v28 = 0;
-      if (!v8)
+      if (!synchronousCopy)
       {
-        [(PKAsyncCache *)self _executeRetrievalBlock:v11 forKey:v10];
+        [(PKAsyncCache *)self _executeRetrievalBlock:blockCopy forKey:keyCopy];
 LABEL_27:
-        [(PKAsyncCacheRetrievalInfo *)v17 addDeliveryBlock:v12];
+        [(PKAsyncCacheRetrievalInfo *)v17 addDeliveryBlock:deliveryBlockCopy];
         v16 = 0;
         v13 = 0;
         goto LABEL_16;
       }
     }
 
-    v13 = [(PKAsyncCacheRetrievalInfo *)v17 synchronouslyRetrieve:v11 outDeliveryBlocks:&v28];
+    v13 = [(PKAsyncCacheRetrievalInfo *)v17 synchronouslyRetrieve:blockCopy outDeliveryBlocks:&v28];
     os_unfair_lock_lock(&self->_lock);
     if (v13)
     {
-      [(NSCache *)self->_itemByKey setObject:v13 forKey:v10];
-      [(NSMapTable *)self->_weakItemByKey setObject:v13 forKey:v10];
+      [(NSCache *)self->_itemByKey setObject:v13 forKey:keyCopy];
+      [(NSMapTable *)self->_weakItemByKey setObject:v13 forKey:keyCopy];
     }
 
-    v16 = [(NSMutableDictionary *)self->_outstandingRetrievals objectForKeyedSubscript:v10];
-    [(NSMutableDictionary *)self->_outstandingRetrievals setObject:0 forKeyedSubscript:v10];
+    v16 = [(NSMutableDictionary *)self->_outstandingRetrievals objectForKeyedSubscript:keyCopy];
+    [(NSMutableDictionary *)self->_outstandingRetrievals setObject:0 forKeyedSubscript:keyCopy];
     if (v17 == v16)
     {
 
@@ -106,7 +106,7 @@ LABEL_27:
   }
 
   v13 = v14;
-  [(NSCache *)self->_itemByKey setObject:v14 forKey:v10];
+  [(NSCache *)self->_itemByKey setObject:v14 forKey:keyCopy];
 LABEL_4:
   os_unfair_lock_unlock(&self->_lock);
   v15 = 0;
@@ -147,26 +147,26 @@ LABEL_5:
     [(PKAsyncCacheRetrievalInfo *)v16 deliverItem:v13, v24];
   }
 
-  if (v12)
+  if (deliveryBlockCopy)
   {
-    v12[2](v12, v13);
+    deliveryBlockCopy[2](deliveryBlockCopy, v13);
   }
 
 LABEL_16:
 }
 
-- (void)_executeRetrievalBlock:(id)a3 forKey:(id)a4
+- (void)_executeRetrievalBlock:(id)block forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__PKAsyncCache__executeRetrievalBlock_forKey___block_invoke;
   v9[3] = &unk_1E79CA690;
   v9[4] = self;
-  v10 = v6;
-  v7 = *(a3 + 2);
-  v8 = v6;
-  v7(a3, v9);
+  v10 = keyCopy;
+  v7 = *(block + 2);
+  v8 = keyCopy;
+  v7(block, v9);
 }
 
 void __46__PKAsyncCache__executeRetrievalBlock_forKey___block_invoke(uint64_t a1, void *a2)

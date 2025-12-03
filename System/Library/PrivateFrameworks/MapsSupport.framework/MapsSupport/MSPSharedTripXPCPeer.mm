@@ -1,21 +1,21 @@
 @interface MSPSharedTripXPCPeer
-- (MSPSharedTripXPCPeer)initWithConnection:(id)a3;
+- (MSPSharedTripXPCPeer)initWithConnection:(id)connection;
 @end
 
 @implementation MSPSharedTripXPCPeer
 
-- (MSPSharedTripXPCPeer)initWithConnection:(id)a3
+- (MSPSharedTripXPCPeer)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = MSPSharedTripXPCPeer;
   v5 = [(MSPSharedTripXPCPeer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 valueForEntitlement:@"com.apple.Maps.tripsharing.sharing"];
+    v6 = [connectionCopy valueForEntitlement:@"com.apple.Maps.tripsharing.sharing"];
     v5->_canControlSharing = [v6 BOOLValue];
 
-    v7 = [v4 valueForEntitlement:@"com.apple.Maps.tripsharing.receiving"];
+    v7 = [connectionCopy valueForEntitlement:@"com.apple.Maps.tripsharing.receiving"];
     v5->_canControlReceiving = [v7 BOOLValue];
   }
 

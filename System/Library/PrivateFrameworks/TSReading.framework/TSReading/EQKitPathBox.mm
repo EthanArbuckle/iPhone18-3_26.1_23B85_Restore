@@ -1,30 +1,30 @@
 @interface EQKitPathBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)erasableBounds;
 - (CGRect)p_cacheErasableBounds;
-- (EQKitPathBox)initWithCGPath:(CGPath *)a3 height:(double)a4 paddingLeft:(double)a5 paddingRight:(double)a6 cgColor:(CGColor *)a7 drawingMode:(int)a8 lineWidth:(double)a9;
+- (EQKitPathBox)initWithCGPath:(CGPath *)path height:(double)height paddingLeft:(double)left paddingRight:(double)right cgColor:(CGColor *)color drawingMode:(int)mode lineWidth:(double)width;
 - (double)depth;
 - (double)width;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 - (void)p_cacheDimensions;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitPathBox
 
-- (EQKitPathBox)initWithCGPath:(CGPath *)a3 height:(double)a4 paddingLeft:(double)a5 paddingRight:(double)a6 cgColor:(CGColor *)a7 drawingMode:(int)a8 lineWidth:(double)a9
+- (EQKitPathBox)initWithCGPath:(CGPath *)path height:(double)height paddingLeft:(double)left paddingRight:(double)right cgColor:(CGColor *)color drawingMode:(int)mode lineWidth:(double)width
 {
   v20.receiver = self;
   v20.super_class = EQKitPathBox;
   v16 = [(EQKitPathBox *)&v20 init];
   if (v16)
   {
-    if (a3)
+    if (path)
     {
-      MutableCopy = CGPathCreateMutableCopy(a3);
+      MutableCopy = CGPathCreateMutableCopy(path);
     }
 
     else
@@ -33,12 +33,12 @@
     }
 
     v16->mCGPath = MutableCopy;
-    v16->mHeight = a4;
-    v16->mPaddingLeft = a5;
-    v16->mPaddingRight = a6;
-    if (a7)
+    v16->mHeight = height;
+    v16->mPaddingLeft = left;
+    v16->mPaddingRight = right;
+    if (color)
     {
-      v18 = CFRetain(a7);
+      v18 = CFRetain(color);
     }
 
     else
@@ -47,8 +47,8 @@
     }
 
     v16->mCGColor = v18;
-    v16->mDrawingMode = a8;
-    v16->mLineWidth = a9;
+    v16->mDrawingMode = mode;
+    v16->mLineWidth = width;
   }
 
   return v16;
@@ -63,88 +63,88 @@
   [(EQKitPathBox *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(EQKitPathBox *)self cgPath];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  cgPath = [(EQKitPathBox *)self cgPath];
   [(EQKitPathBox *)self height];
   v7 = v6;
   [(EQKitPathBox *)self paddingLeft];
   v9 = v8;
   [(EQKitPathBox *)self paddingRight];
   v11 = v10;
-  v12 = [(EQKitPathBox *)self color];
-  v13 = [(EQKitPathBox *)self drawingMode];
+  color = [(EQKitPathBox *)self color];
+  drawingMode = [(EQKitPathBox *)self drawingMode];
   [(EQKitPathBox *)self lineWidth];
 
-  return [v4 initWithCGPath:v5 height:v12 paddingLeft:v13 paddingRight:v7 cgColor:v9 drawingMode:v11 lineWidth:v14];
+  return [v4 initWithCGPath:cgPath height:color paddingLeft:drawingMode paddingRight:v7 cgColor:v9 drawingMode:v11 lineWidth:v14];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
-      LODWORD(self) = [a3 isMemberOfClass:objc_opt_class()];
+      LODWORD(self) = [equal isMemberOfClass:objc_opt_class()];
       if (self)
       {
-        [(EQKitPathBox *)v3 height];
+        [(EQKitPathBox *)selfCopy height];
         v7 = v6;
-        [a3 height];
+        [equal height];
         if (v7 != v8)
         {
           goto LABEL_16;
         }
 
-        [(EQKitPathBox *)v3 paddingLeft];
+        [(EQKitPathBox *)selfCopy paddingLeft];
         v10 = v9;
-        [a3 paddingLeft];
+        [equal paddingLeft];
         if (v10 != v11)
         {
           goto LABEL_16;
         }
 
-        [(EQKitPathBox *)v3 paddingRight];
+        [(EQKitPathBox *)selfCopy paddingRight];
         v13 = v12;
-        [a3 paddingRight];
+        [equal paddingRight];
         if (v13 != v14)
         {
           goto LABEL_16;
         }
 
-        LODWORD(self) = CGColorEqualToColor(-[EQKitPathBox color](v3, "color"), [a3 color]);
+        LODWORD(self) = CGColorEqualToColor(-[EQKitPathBox color](selfCopy, "color"), [equal color]);
         if (!self)
         {
           return self;
         }
 
-        v15 = [(EQKitPathBox *)v3 drawingMode];
-        if (v15 != [a3 drawingMode] || (-[EQKitPathBox lineWidth](v3, "lineWidth"), v17 = v16, objc_msgSend(a3, "lineWidth"), v17 != v18))
+        drawingMode = [(EQKitPathBox *)selfCopy drawingMode];
+        if (drawingMode != [equal drawingMode] || (-[EQKitPathBox lineWidth](selfCopy, "lineWidth"), v17 = v16, objc_msgSend(equal, "lineWidth"), v17 != v18))
         {
 LABEL_16:
           LOBYTE(self) = 0;
           return self;
         }
 
-        v19 = [(EQKitPathBox *)v3 cgPath];
-        self = [a3 cgPath];
-        if (v19 == self)
+        cgPath = [(EQKitPathBox *)selfCopy cgPath];
+        self = [equal cgPath];
+        if (cgPath == self)
         {
           LOBYTE(self) = 1;
         }
 
         else
         {
-          v20 = self;
+          selfCopy2 = self;
           LOBYTE(self) = 0;
-          if (v19 && v20)
+          if (cgPath && selfCopy2)
           {
 
-            LOBYTE(self) = CGPathEqualToPath(v19, v20);
+            LOBYTE(self) = CGPathEqualToPath(cgPath, selfCopy2);
           }
         }
       }
@@ -203,37 +203,37 @@ LABEL_16:
   return result;
 }
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  if (a3 && self->mCGPath)
+  if (context && self->mCGPath)
   {
-    y = a4.y;
-    x = a4.x;
-    CGContextSaveGState(a3);
-    CGContextTranslateCTM(a3, x + self->mPaddingLeft, y - self->mHeight);
-    CGContextAddPath(a3, self->mCGPath);
+    y = offset.y;
+    x = offset.x;
+    CGContextSaveGState(context);
+    CGContextTranslateCTM(context, x + self->mPaddingLeft, y - self->mHeight);
+    CGContextAddPath(context, self->mCGPath);
     mCGColor = self->mCGColor;
     if (mCGColor)
     {
-      CGContextSetFillColorWithColor(a3, mCGColor);
-      CGContextSetStrokeColorWithColor(a3, self->mCGColor);
+      CGContextSetFillColorWithColor(context, mCGColor);
+      CGContextSetStrokeColorWithColor(context, self->mCGColor);
     }
 
-    CGContextSetLineWidth(a3, self->mLineWidth);
-    CGContextDrawPath(a3, self->mDrawingMode);
+    CGContextSetLineWidth(context, self->mLineWidth);
+    CGContextDrawPath(context, self->mDrawingMode);
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
   mCGPath = self->mCGPath;
   if (mCGPath)
   {
-    v6.x = a4.x + self->mPaddingLeft;
-    v6.y = a4.y - self->mHeight;
-    EQKit::OpticalKern::Spec::appendEntry(a3, v6, mCGPath);
+    v6.x = offset.x + self->mPaddingLeft;
+    v6.y = offset.y - self->mHeight;
+    EQKit::OpticalKern::Spec::appendEntry(spec, v6, mCGPath);
   }
 
   return mCGPath != 0;

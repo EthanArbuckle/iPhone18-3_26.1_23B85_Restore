@@ -1,15 +1,15 @@
 @interface COSControlCenterTriggerAnimationCell
-- (COSControlCenterTriggerAnimationCell)initWithCoder:(id)a3;
-- (COSControlCenterTriggerAnimationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (COSControlCenterTriggerAnimationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (COSControlCenterTriggerAnimationCell)initWithCoder:(id)coder;
+- (COSControlCenterTriggerAnimationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (COSControlCenterTriggerAnimationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
 @implementation COSControlCenterTriggerAnimationCell
 
-- (COSControlCenterTriggerAnimationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (COSControlCenterTriggerAnimationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *&self->PSTableCell_opaque[OBJC_IVAR___COSControlCenterTriggerAnimationCell_triggerImageView] = 0;
@@ -26,19 +26,19 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for ControlCenterTriggerAnimationCell();
-  v7 = [(COSControlCenterTriggerAnimationCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(COSControlCenterTriggerAnimationCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (COSControlCenterTriggerAnimationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (COSControlCenterTriggerAnimationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  sub_10014DD6C(a3, v7, v8, a5);
+  sub_10014DD6C(style, v7, v8, specifier);
   return result;
 }
 
-- (COSControlCenterTriggerAnimationCell)initWithCoder:(id)a3
+- (COSControlCenterTriggerAnimationCell)initWithCoder:(id)coder
 {
   *&self->PSTableCell_opaque[OBJC_IVAR___COSControlCenterTriggerAnimationCell_triggerImageView] = 0;
   self->PSTableCell_opaque[OBJC_IVAR___COSControlCenterTriggerAnimationCell_didSetupConstraints] = 0;
@@ -49,7 +49,7 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_10014E1B4();
 }
 

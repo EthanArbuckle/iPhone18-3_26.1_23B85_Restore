@@ -1,52 +1,52 @@
 @interface ASCloudKitUtility
 - (ASCloudKitUtility)init;
-- (ASCloudKitUtility)initWithContainer:(id)a3;
-- (id)_lookupInfoFromIdentifier:(id)a3;
-- (void)_acceptShareMetadatas:(id)a3 completion:(id)a4;
-- (void)_acceptSharesWithURLs:(id)a3 operation:(id)a4 cloudKitGroup:(id)a5 completion:(id)a6;
-- (void)_fetchChangesInDatabase:(id)a3 serverChangeTokenCache:(id)a4 priority:(int64_t)a5 activity:(id)a6 group:(id)a7 additionalZoneIDs:(id)a8 zoneIDsToSkip:(id)a9 fetchConfigurations:(id)a10 completion:(id)a11;
-- (void)_fetchChangesInZones:(id)a3 additionalZonesToFetch:(id)a4 fetchConfigurations:(id)a5 inDatabase:(id)a6 serverChangeTokenCache:(id)a7 priority:(int64_t)a8 allowRetry:(BOOL)a9 activity:(id)a10 group:(id)a11 completion:(id)a12;
-- (void)_fetchShareParticipantForLookupInfos:(id)a3 group:(id)a4 completion:(id)a5;
-- (void)_fetchShareWithShareRecordID:(id)a3 activity:(id)a4 group:(id)a5 completion:(id)a6;
-- (void)_retrieveZone:(id)a3 database:(id)a4 completion:(id)a5;
-- (void)_saveRecordsIntoPrivateDatabase:(id)a3 recordIDsToDelete:(id)a4 savePolicy:(int64_t)a5 priority:(int64_t)a6 activity:(id)a7 group:(id)a8 completion:(id)a9;
-- (void)_saveRecordsIntoPrivateDatabaseCreatingZones:(id)a3 recordIDsToDelete:(id)a4 savePolicy:(int64_t)a5 priority:(int64_t)a6 activity:(id)a7 useZoneWideSharing:(BOOL)a8 group:(id)a9 completion:(id)a10;
-- (void)acceptSharesWithInvitationTokensByShareURL:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5;
-- (void)acceptSharesWithURLs:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5;
-- (void)addParticipant:(id)a3 toShares:(id)a4 group:(id)a5 completion:(id)a6;
-- (void)addParticipantWithCloudKitAddress:(id)a3 toShares:(id)a4 group:(id)a5 completion:(id)a6;
+- (ASCloudKitUtility)initWithContainer:(id)container;
+- (id)_lookupInfoFromIdentifier:(id)identifier;
+- (void)_acceptShareMetadatas:(id)metadatas completion:(id)completion;
+- (void)_acceptSharesWithURLs:(id)ls operation:(id)operation cloudKitGroup:(id)group completion:(id)completion;
+- (void)_fetchChangesInDatabase:(id)database serverChangeTokenCache:(id)cache priority:(int64_t)priority activity:(id)activity group:(id)group additionalZoneIDs:(id)ds zoneIDsToSkip:(id)skip fetchConfigurations:(id)self0 completion:(id)self1;
+- (void)_fetchChangesInZones:(id)zones additionalZonesToFetch:(id)fetch fetchConfigurations:(id)configurations inDatabase:(id)database serverChangeTokenCache:(id)cache priority:(int64_t)priority allowRetry:(BOOL)retry activity:(id)self0 group:(id)self1 completion:(id)self2;
+- (void)_fetchShareParticipantForLookupInfos:(id)infos group:(id)group completion:(id)completion;
+- (void)_fetchShareWithShareRecordID:(id)d activity:(id)activity group:(id)group completion:(id)completion;
+- (void)_retrieveZone:(id)zone database:(id)database completion:(id)completion;
+- (void)_saveRecordsIntoPrivateDatabase:(id)database recordIDsToDelete:(id)delete savePolicy:(int64_t)policy priority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion;
+- (void)_saveRecordsIntoPrivateDatabaseCreatingZones:(id)zones recordIDsToDelete:(id)delete savePolicy:(int64_t)policy priority:(int64_t)priority activity:(id)activity useZoneWideSharing:(BOOL)sharing group:(id)group completion:(id)self0;
+- (void)acceptSharesWithInvitationTokensByShareURL:(id)l cloudKitGroup:(id)group completion:(id)completion;
+- (void)acceptSharesWithURLs:(id)ls cloudKitGroup:(id)group completion:(id)completion;
+- (void)addParticipant:(id)participant toShares:(id)shares group:(id)group completion:(id)completion;
+- (void)addParticipantWithCloudKitAddress:(id)address toShares:(id)shares group:(id)group completion:(id)completion;
 - (void)cancelAllExecutingFetches;
-- (void)createRecordZonesWithIDs:(id)a3 priority:(int64_t)a4 useZoneWideSharing:(BOOL)a5 group:(id)a6 completion:(id)a7;
-- (void)createShareAndAssociatedZoneWithShareRecordID:(id)a3 rootRecord:(id)a4 otherRecordsToSave:(id)a5 completion:(id)a6;
-- (void)fetchChangesInPrivateDatabaseWithServerChangeTokenCache:(id)a3 priority:(int64_t)a4 activity:(id)a5 group:(id)a6 additionalZoneIDs:(id)a7 zoneIDsToSkip:(id)a8 fetchConfigurations:(id)a9 completion:(id)a10;
-- (void)fetchChangesInSharedDatabaseWithServerChangeTokenCache:(id)a3 priority:(int64_t)a4 activity:(id)a5 group:(id)a6 additionalZoneIDs:(id)a7 zoneIDsToSkip:(id)a8 fetchConfigurations:(id)a9 completion:(id)a10;
-- (void)fetchShareParticipantForEmailAddress:(id)a3 group:(id)a4 completion:(id)a5;
-- (void)fetchShareParticipantForIdentifier:(id)a3 group:(id)a4 completion:(id)a5;
-- (void)fetchShareWithShareRecordID:(id)a3 activity:(id)a4 group:(id)a5 completion:(id)a6;
-- (void)removeParticipantWithCloudKitAddress:(id)a3 fromShares:(id)a4 group:(id)a5 completion:(id)a6;
-- (void)retrieveZone:(id)a3 completion:(id)a4;
-- (void)saveSubscriptions:(id)a3 andDeleteSubscriptionsWithIdentifiers:(id)a4 inDatabase:(id)a5 completion:(id)a6;
+- (void)createRecordZonesWithIDs:(id)ds priority:(int64_t)priority useZoneWideSharing:(BOOL)sharing group:(id)group completion:(id)completion;
+- (void)createShareAndAssociatedZoneWithShareRecordID:(id)d rootRecord:(id)record otherRecordsToSave:(id)save completion:(id)completion;
+- (void)fetchChangesInPrivateDatabaseWithServerChangeTokenCache:(id)cache priority:(int64_t)priority activity:(id)activity group:(id)group additionalZoneIDs:(id)ds zoneIDsToSkip:(id)skip fetchConfigurations:(id)configurations completion:(id)self0;
+- (void)fetchChangesInSharedDatabaseWithServerChangeTokenCache:(id)cache priority:(int64_t)priority activity:(id)activity group:(id)group additionalZoneIDs:(id)ds zoneIDsToSkip:(id)skip fetchConfigurations:(id)configurations completion:(id)self0;
+- (void)fetchShareParticipantForEmailAddress:(id)address group:(id)group completion:(id)completion;
+- (void)fetchShareParticipantForIdentifier:(id)identifier group:(id)group completion:(id)completion;
+- (void)fetchShareWithShareRecordID:(id)d activity:(id)activity group:(id)group completion:(id)completion;
+- (void)removeParticipantWithCloudKitAddress:(id)address fromShares:(id)shares group:(id)group completion:(id)completion;
+- (void)retrieveZone:(id)zone completion:(id)completion;
+- (void)saveSubscriptions:(id)subscriptions andDeleteSubscriptionsWithIdentifiers:(id)identifiers inDatabase:(id)database completion:(id)completion;
 @end
 
 @implementation ASCloudKitUtility
 
-- (ASCloudKitUtility)initWithContainer:(id)a3
+- (ASCloudKitUtility)initWithContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v12.receiver = self;
   v12.super_class = ASCloudKitUtility;
   v5 = [(ASCloudKitUtility *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    [(ASCloudKitUtility *)v5 setContainer:v4];
+    [(ASCloudKitUtility *)v5 setContainer:containerCopy];
     v7 = HKCreateSerialDispatchQueue();
     serialQueue = v6->_serialQueue;
     v6->_serialQueue = v7;
 
-    v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     queue_executingFetchOperations = v6->_queue_executingFetchOperations;
-    v6->_queue_executingFetchOperations = v9;
+    v6->_queue_executingFetchOperations = weakObjectsHashTable;
   }
 
   return v6;
@@ -69,19 +69,19 @@
   return v2;
 }
 
-- (void)saveSubscriptions:(id)a3 andDeleteSubscriptionsWithIdentifiers:(id)a4 inDatabase:(id)a5 completion:(id)a6
+- (void)saveSubscriptions:(id)subscriptions andDeleteSubscriptionsWithIdentifiers:(id)identifiers inDatabase:(id)database completion:(id)completion
 {
-  v9 = a6;
+  completionCopy = completion;
   v10 = MEMORY[0x277CBC4B0];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  databaseCopy = database;
+  identifiersCopy = identifiers;
+  subscriptionsCopy = subscriptions;
   v14 = [v10 alloc];
-  v15 = [v13 allObjects];
+  allObjects = [subscriptionsCopy allObjects];
 
-  v16 = [v12 allObjects];
+  allObjects2 = [identifiersCopy allObjects];
 
-  v17 = [v14 initWithSubscriptionsToSave:v15 subscriptionIDsToDelete:v16];
+  v17 = [v14 initWithSubscriptionsToSave:allObjects subscriptionIDsToDelete:allObjects2];
   v18 = _ASOperationConfigurationForPriority(2, 0);
   [v17 setConfiguration:v18];
 
@@ -92,10 +92,10 @@
   v21[1] = 3221225472;
   v21[2] = __99__ASCloudKitUtility_saveSubscriptions_andDeleteSubscriptionsWithIdentifiers_inDatabase_completion___block_invoke;
   v21[3] = &unk_278C4E900;
-  v22 = v9;
-  v20 = v9;
+  v22 = completionCopy;
+  v20 = completionCopy;
   [v17 setModifySubscriptionsCompletionBlock:v21];
-  [v11 addOperation:v17];
+  [databaseCopy addOperation:v17];
 }
 
 void __99__ASCloudKitUtility_saveSubscriptions_andDeleteSubscriptionsWithIdentifiers_inDatabase_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -126,18 +126,18 @@ void __99__ASCloudKitUtility_saveSubscriptions_andDeleteSubscriptionsWithIdentif
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createRecordZonesWithIDs:(id)a3 priority:(int64_t)a4 useZoneWideSharing:(BOOL)a5 group:(id)a6 completion:(id)a7
+- (void)createRecordZonesWithIDs:(id)ds priority:(int64_t)priority useZoneWideSharing:(BOOL)sharing group:(id)group completion:(id)completion
 {
-  v9 = a5;
+  sharingCopy = sharing;
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v27 = a7;
+  dsCopy = ds;
+  groupCopy = group;
+  completionCopy = completion;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v12 = [v10 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v12 = [dsCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v12)
   {
     v13 = v12;
@@ -151,14 +151,14 @@ void __99__ASCloudKitUtility_saveSubscriptions_andDeleteSubscriptionsWithIdentif
       {
         if (*v35 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(dsCopy);
         }
 
         v18 = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneID:*(*(&v34 + 1) + 8 * v16)];
         [v18 setCapabilities:{objc_msgSend(v18, "capabilities") | 1}];
         [v18 setCapabilities:{objc_msgSend(v18, "capabilities") | 2}];
         [v18 setCapabilities:{objc_msgSend(v18, "capabilities") | 4}];
-        if (v9)
+        if (sharingCopy)
         {
           [v18 setCapabilities:{objc_msgSend(v18, "capabilities") | 8}];
         }
@@ -170,7 +170,7 @@ void __99__ASCloudKitUtility_saveSubscriptions_andDeleteSubscriptionsWithIdentif
       }
 
       while (v13 != v16);
-      v13 = [v10 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v13 = [dsCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v13);
@@ -182,25 +182,25 @@ void __99__ASCloudKitUtility_saveSubscriptions_andDeleteSubscriptionsWithIdentif
   }
 
   v19 = [objc_alloc(MEMORY[0x277CBC490]) initWithRecordZonesToSave:v15 recordZoneIDsToDelete:0];
-  [v19 setGroup:v11];
+  [v19 setGroup:groupCopy];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __91__ASCloudKitUtility_createRecordZonesWithIDs_priority_useZoneWideSharing_group_completion___block_invoke;
   v30[3] = &unk_278C4E928;
-  v31 = v10;
-  v32 = v11;
-  v33 = v27;
-  v20 = v27;
-  v21 = v11;
-  v22 = v10;
+  v31 = dsCopy;
+  v32 = groupCopy;
+  v33 = completionCopy;
+  v20 = completionCopy;
+  v21 = groupCopy;
+  v22 = dsCopy;
   [v19 setModifyRecordZonesCompletionBlock:v30];
   [v19 setQualityOfService:17];
-  v23 = _ASOperationConfigurationForPriority(a4, 0);
+  v23 = _ASOperationConfigurationForPriority(priority, 0);
   [v19 setConfiguration:v23];
 
-  v24 = [(ASCloudKitUtility *)self container];
-  v25 = [v24 privateCloudDatabase];
-  [v25 addOperation:v19];
+  container = [(ASCloudKitUtility *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [privateCloudDatabase addOperation:v19];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -243,38 +243,38 @@ void __91__ASCloudKitUtility_createRecordZonesWithIDs_priority_useZoneWideSharin
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveRecordsIntoPrivateDatabase:(id)a3 recordIDsToDelete:(id)a4 savePolicy:(int64_t)a5 priority:(int64_t)a6 activity:(id)a7 group:(id)a8 completion:(id)a9
+- (void)_saveRecordsIntoPrivateDatabase:(id)database recordIDsToDelete:(id)delete savePolicy:(int64_t)policy priority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion
 {
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
   v18 = MEMORY[0x277CBC4A0];
-  v19 = a4;
-  v20 = a3;
-  v21 = [[v18 alloc] initWithRecordsToSave:v20 recordIDsToDelete:v19];
+  deleteCopy = delete;
+  databaseCopy = database;
+  v21 = [[v18 alloc] initWithRecordsToSave:databaseCopy recordIDsToDelete:deleteCopy];
 
   [v21 setAtomic:1];
-  [v21 setSavePolicy:a5];
-  [v21 setGroup:v16];
+  [v21 setSavePolicy:policy];
+  [v21 setGroup:groupCopy];
   v28 = MEMORY[0x277D85DD0];
   v29 = 3221225472;
   v30 = __117__ASCloudKitUtility__saveRecordsIntoPrivateDatabase_recordIDsToDelete_savePolicy_priority_activity_group_completion___block_invoke;
   v31 = &unk_278C4E950;
-  v32 = self;
-  v33 = v16;
-  v34 = v15;
-  v35 = v17;
-  v22 = v17;
-  v23 = v15;
-  v24 = v16;
+  selfCopy = self;
+  v33 = groupCopy;
+  v34 = activityCopy;
+  v35 = completionCopy;
+  v22 = completionCopy;
+  v23 = activityCopy;
+  v24 = groupCopy;
   [v21 setModifyRecordsCompletionBlock:&v28];
-  [v21 setQualityOfService:{17, v28, v29, v30, v31, v32}];
-  v25 = _ASOperationConfigurationForPriority(a6, v23);
+  [v21 setQualityOfService:{17, v28, v29, v30, v31, selfCopy}];
+  v25 = _ASOperationConfigurationForPriority(priority, v23);
   [v21 setConfiguration:v25];
 
-  v26 = [(ASCloudKitUtility *)self container];
-  v27 = [v26 privateCloudDatabase];
-  [v27 addOperation:v21];
+  container = [(ASCloudKitUtility *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [privateCloudDatabase addOperation:v21];
 }
 
 void __117__ASCloudKitUtility__saveRecordsIntoPrivateDatabase_recordIDsToDelete_savePolicy_priority_activity_group_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -338,20 +338,20 @@ LABEL_7:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveRecordsIntoPrivateDatabaseCreatingZones:(id)a3 recordIDsToDelete:(id)a4 savePolicy:(int64_t)a5 priority:(int64_t)a6 activity:(id)a7 useZoneWideSharing:(BOOL)a8 group:(id)a9 completion:(id)a10
+- (void)_saveRecordsIntoPrivateDatabaseCreatingZones:(id)zones recordIDsToDelete:(id)delete savePolicy:(int64_t)policy priority:(int64_t)priority activity:(id)activity useZoneWideSharing:(BOOL)sharing group:(id)group completion:(id)self0
 {
   v52 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v31 = a4;
-  v13 = a7;
-  v30 = a9;
-  v14 = a10;
+  zonesCopy = zones;
+  deleteCopy = delete;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
   v15 = [MEMORY[0x277CBEB98] set];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v16 = v12;
+  v16 = zonesCopy;
   v17 = [v16 countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v17)
   {
@@ -368,9 +368,9 @@ LABEL_7:
           objc_enumerationMutation(v16);
         }
 
-        v22 = [*(*(&v47 + 1) + 8 * v20) recordID];
-        v23 = [v22 zoneID];
-        v15 = [v21 setByAddingObject:v23];
+        recordID = [*(*(&v47 + 1) + 8 * v20) recordID];
+        zoneID = [recordID zoneID];
+        v15 = [v21 setByAddingObject:zoneID];
 
         ++v20;
         v21 = v15;
@@ -389,21 +389,21 @@ LABEL_7:
   v37[3] = &unk_278C4E9A0;
   v37[4] = self;
   v38 = v15;
-  v46 = a8;
-  v39 = v30;
+  sharingCopy = sharing;
+  v39 = groupCopy;
   v40 = v16;
-  v41 = v31;
-  v42 = v13;
-  v44 = a6;
-  v45 = a5;
-  v43 = v14;
-  v33 = v14;
-  v24 = v13;
-  v25 = v31;
+  v41 = deleteCopy;
+  v42 = activityCopy;
+  priorityCopy = priority;
+  policyCopy = policy;
+  v43 = completionCopy;
+  v33 = completionCopy;
+  v24 = activityCopy;
+  v25 = deleteCopy;
   v26 = v16;
-  v27 = v30;
+  v27 = groupCopy;
   v28 = v15;
-  [(ASCloudKitUtility *)self _saveRecordsIntoPrivateDatabase:v26 recordIDsToDelete:v25 savePolicy:a5 priority:a6 activity:v24 group:v27 completion:v37];
+  [(ASCloudKitUtility *)self _saveRecordsIntoPrivateDatabase:v26 recordIDsToDelete:v25 savePolicy:policy priority:priority activity:v24 group:v27 completion:v37];
 
   v29 = *MEMORY[0x277D85DE8];
 }
@@ -516,38 +516,38 @@ uint64_t __149__ASCloudKitUtility__saveRecordsIntoPrivateDatabaseCreatingZones_r
   return v5();
 }
 
-- (void)createShareAndAssociatedZoneWithShareRecordID:(id)a3 rootRecord:(id)a4 otherRecordsToSave:(id)a5 completion:(id)a6
+- (void)createShareAndAssociatedZoneWithShareRecordID:(id)d rootRecord:(id)record otherRecordsToSave:(id)save completion:(id)completion
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [v10 zoneID];
-  v15 = [v11 recordID];
-  v16 = [v15 zoneID];
-  v17 = [v14 isEqual:v16];
+  dCopy = d;
+  recordCopy = record;
+  completionCopy = completion;
+  saveCopy = save;
+  zoneID = [dCopy zoneID];
+  recordID = [recordCopy recordID];
+  zoneID2 = [recordID zoneID];
+  v17 = [zoneID isEqual:zoneID2];
 
   if (v17)
   {
-    v18 = [objc_alloc(MEMORY[0x277CBC680]) initWithRootRecord:v11 shareID:v10];
+    v18 = [objc_alloc(MEMORY[0x277CBC680]) initWithRootRecord:recordCopy shareID:dCopy];
     [v18 setParticipantVisibility:1];
     v27[0] = v18;
-    v27[1] = v11;
+    v27[1] = recordCopy;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
-    v20 = [v19 arrayByAddingObjectsFromArray:v13];
+    v20 = [v19 arrayByAddingObjectsFromArray:saveCopy];
 
     v21 = ASCloudKitGroupSharingSetup();
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __108__ASCloudKitUtility_createShareAndAssociatedZoneWithShareRecordID_rootRecord_otherRecordsToSave_completion___block_invoke;
     v23[3] = &unk_278C4E9C8;
-    v24 = v10;
-    v25 = v11;
-    v26 = v12;
+    v24 = dCopy;
+    v25 = recordCopy;
+    v26 = completionCopy;
     [(ASCloudKitUtility *)self forceSaveRecordsIntoPrivateDatabaseIgnoringServerChanges:v20 recordIDsToDelete:0 priority:2 activity:0 group:v21 completion:v23];
 
-    v13 = v18;
+    saveCopy = v18;
   }
 
   else
@@ -558,7 +558,7 @@ uint64_t __149__ASCloudKitUtility__saveRecordsIntoPrivateDatabaseCreatingZones_r
       [ASCloudKitUtility createShareAndAssociatedZoneWithShareRecordID:rootRecord:otherRecordsToSave:completion:];
     }
 
-    (*(v12 + 2))(v12, 0, 0, 0, v11, v13);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, recordCopy, saveCopy);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -648,36 +648,36 @@ LABEL_17:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchShareWithShareRecordID:(id)a3 activity:(id)a4 group:(id)a5 completion:(id)a6
+- (void)_fetchShareWithShareRecordID:(id)d activity:(id)activity group:(id)group completion:(id)completion
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  completionCopy = completion;
   v12 = MEMORY[0x277CBC3E0];
-  v13 = a5;
-  v14 = a4;
+  groupCopy = group;
+  activityCopy = activity;
   v15 = [v12 alloc];
-  v30[0] = v10;
+  v30[0] = dCopy;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
   v17 = [v15 initWithRecordIDs:v16];
 
-  [v17 setGroup:v13];
+  [v17 setGroup:groupCopy];
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __76__ASCloudKitUtility__fetchShareWithShareRecordID_activity_group_completion___block_invoke;
   v27 = &unk_278C4E9F0;
-  v28 = v10;
-  v29 = v11;
-  v18 = v11;
-  v19 = v10;
+  v28 = dCopy;
+  v29 = completionCopy;
+  v18 = completionCopy;
+  v19 = dCopy;
   [v17 setFetchRecordsCompletionBlock:&v24];
   [v17 setQualityOfService:{17, v24, v25, v26, v27}];
-  v20 = _ASOperationConfigurationForPriority(2, v14);
+  v20 = _ASOperationConfigurationForPriority(2, activityCopy);
 
   [v17 setConfiguration:v20];
-  v21 = [(ASCloudKitUtility *)self container];
-  v22 = [v21 privateCloudDatabase];
-  [v22 addOperation:v17];
+  container = [(ASCloudKitUtility *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [privateCloudDatabase addOperation:v17];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -699,19 +699,19 @@ void __76__ASCloudKitUtility__fetchShareWithShareRecordID_activity_group_complet
   (*(*(a1 + 40) + 16))(*(a1 + 40), v7 == 0);
 }
 
-- (void)fetchShareWithShareRecordID:(id)a3 activity:(id)a4 group:(id)a5 completion:(id)a6
+- (void)fetchShareWithShareRecordID:(id)d activity:(id)activity group:(id)group completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
+  dCopy = d;
+  completionCopy = completion;
+  groupCopy = group;
+  activityCopy = activity;
   ASLoggingInitialize();
   v14 = *MEMORY[0x277CE8FD0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v10;
+    v22 = dCopy;
     _os_log_impl(&dword_23E5E3000, v14, OS_LOG_TYPE_DEFAULT, "Fetching share with ID: %@", buf, 0xCu);
   }
 
@@ -719,11 +719,11 @@ void __76__ASCloudKitUtility__fetchShareWithShareRecordID_activity_group_complet
   v18[1] = 3221225472;
   v18[2] = __75__ASCloudKitUtility_fetchShareWithShareRecordID_activity_group_completion___block_invoke;
   v18[3] = &unk_278C4EA18;
-  v19 = v10;
-  v20 = v11;
-  v15 = v11;
-  v16 = v10;
-  [(ASCloudKitUtility *)self _fetchShareWithShareRecordID:v16 activity:v13 group:v12 completion:v18];
+  v19 = dCopy;
+  v20 = completionCopy;
+  v15 = completionCopy;
+  v16 = dCopy;
+  [(ASCloudKitUtility *)self _fetchShareWithShareRecordID:v16 activity:activityCopy group:groupCopy completion:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -755,11 +755,11 @@ void __75__ASCloudKitUtility_fetchShareWithShareRecordID_activity_group_completi
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_acceptShareMetadatas:(id)a3 completion:(id)a4
+- (void)_acceptShareMetadatas:(id)metadatas completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CBC158]) initWithShareMetadatas:v6];
+  metadatasCopy = metadatas;
+  completionCopy = completion;
+  v8 = [objc_alloc(MEMORY[0x277CBC158]) initWithShareMetadatas:metadatasCopy];
   v9 = ASCloudKitGroupSharingSetup();
   [v8 setGroup:v9];
 
@@ -768,7 +768,7 @@ void __75__ASCloudKitUtility_fetchShareWithShareRecordID_activity_group_completi
   v17[2] = 0x3032000000;
   v17[3] = __Block_byref_object_copy__14;
   v17[4] = __Block_byref_object_dispose__14;
-  v18 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  v18 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(metadatasCopy, "count")}];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__ASCloudKitUtility__acceptShareMetadatas_completion___block_invoke;
@@ -779,7 +779,7 @@ void __75__ASCloudKitUtility_fetchShareWithShareRecordID_activity_group_completi
   v13[1] = 3221225472;
   v13[2] = __54__ASCloudKitUtility__acceptShareMetadatas_completion___block_invoke_314;
   v13[3] = &unk_278C4EA68;
-  v10 = v7;
+  v10 = completionCopy;
   v14 = v10;
   v15 = v17;
   [v8 setAcceptSharesCompletionBlock:v13];
@@ -787,8 +787,8 @@ void __75__ASCloudKitUtility_fetchShareWithShareRecordID_activity_group_completi
   v11 = _ASOperationConfigurationForPriority(2, 0);
   [v8 setConfiguration:v11];
 
-  v12 = [(ASCloudKitUtility *)self container];
-  [v12 addOperation:v8];
+  container = [(ASCloudKitUtility *)self container];
+  [container addOperation:v8];
 
   _Block_object_dispose(v17, 8);
 }
@@ -855,23 +855,23 @@ void __54__ASCloudKitUtility__acceptShareMetadatas_completion___block_invoke_314
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)acceptSharesWithURLs:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5
+- (void)acceptSharesWithURLs:(id)ls cloudKitGroup:(id)group completion:(id)completion
 {
   v8 = MEMORY[0x277CBC3F8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithShareURLs:v11];
-  [(ASCloudKitUtility *)self _acceptSharesWithURLs:v11 operation:v12 cloudKitGroup:v10 completion:v9];
+  completionCopy = completion;
+  groupCopy = group;
+  lsCopy = ls;
+  v12 = [[v8 alloc] initWithShareURLs:lsCopy];
+  [(ASCloudKitUtility *)self _acceptSharesWithURLs:lsCopy operation:v12 cloudKitGroup:groupCopy completion:completionCopy];
 }
 
-- (void)_acceptSharesWithURLs:(id)a3 operation:(id)a4 cloudKitGroup:(id)a5 completion:(id)a6
+- (void)_acceptSharesWithURLs:(id)ls operation:(id)operation cloudKitGroup:(id)group completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [v11 setGroup:v12];
+  lsCopy = ls;
+  operationCopy = operation;
+  groupCopy = group;
+  completionCopy = completion;
+  [operationCopy setGroup:groupCopy];
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
@@ -883,24 +883,24 @@ void __54__ASCloudKitUtility__acceptShareMetadatas_completion___block_invoke_314
   v23[2] = __78__ASCloudKitUtility__acceptSharesWithURLs_operation_cloudKitGroup_completion___block_invoke;
   v23[3] = &unk_278C4EA90;
   v23[4] = v24;
-  [v11 setPerShareMetadataBlock:v23];
+  [operationCopy setPerShareMetadataBlock:v23];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __78__ASCloudKitUtility__acceptSharesWithURLs_operation_cloudKitGroup_completion___block_invoke_318;
   v18[3] = &unk_278C4EAB8;
-  v14 = v13;
+  v14 = completionCopy;
   v21 = v14;
   v22 = v24;
-  v15 = v10;
+  v15 = lsCopy;
   v19 = v15;
-  v20 = self;
-  [v11 setFetchShareMetadataCompletionBlock:v18];
-  [v11 setQualityOfService:17];
+  selfCopy = self;
+  [operationCopy setFetchShareMetadataCompletionBlock:v18];
+  [operationCopy setQualityOfService:17];
   v16 = _ASOperationConfigurationForPriority(2, 0);
-  [v11 setConfiguration:v16];
+  [operationCopy setConfiguration:v16];
 
-  v17 = [(ASCloudKitUtility *)self container];
-  [v17 addOperation:v11];
+  container = [(ASCloudKitUtility *)self container];
+  [container addOperation:operationCopy];
 
   _Block_object_dispose(v24, 8);
 }
@@ -985,44 +985,44 @@ LABEL_13:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptSharesWithInvitationTokensByShareURL:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5
+- (void)acceptSharesWithInvitationTokensByShareURL:(id)l cloudKitGroup:(id)group completion:(id)completion
 {
   v8 = MEMORY[0x277CBC3F8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  groupCopy = group;
+  lCopy = l;
   v12 = [v8 alloc];
-  v13 = [v11 allKeys];
-  v15 = [v12 initWithShareURLs:v13 invitationTokensByShareURL:v11];
+  allKeys = [lCopy allKeys];
+  v15 = [v12 initWithShareURLs:allKeys invitationTokensByShareURL:lCopy];
 
-  v14 = [v11 allKeys];
+  allKeys2 = [lCopy allKeys];
 
-  [(ASCloudKitUtility *)self _acceptSharesWithURLs:v14 operation:v15 cloudKitGroup:v10 completion:v9];
+  [(ASCloudKitUtility *)self _acceptSharesWithURLs:allKeys2 operation:v15 cloudKitGroup:groupCopy completion:completionCopy];
 }
 
-- (void)fetchShareParticipantForEmailAddress:(id)a3 group:(id)a4 completion:(id)a5
+- (void)fetchShareParticipantForEmailAddress:(id)address group:(id)group completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CBC7C8];
-  v16 = a3;
+  addressCopy = address;
   v9 = MEMORY[0x277CBEA60];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v9 arrayWithObjects:&v16 count:1];
-  v14 = [v8 lookupInfosWithEmails:{v13, v16, v17}];
+  completionCopy = completion;
+  groupCopy = group;
+  addressCopy2 = address;
+  v13 = [v9 arrayWithObjects:&addressCopy count:1];
+  v14 = [v8 lookupInfosWithEmails:{v13, addressCopy, v17}];
 
-  [(ASCloudKitUtility *)self _fetchShareParticipantForLookupInfos:v14 group:v11 completion:v10];
+  [(ASCloudKitUtility *)self _fetchShareParticipantForLookupInfos:v14 group:groupCopy completion:completionCopy];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchShareParticipantForLookupInfos:(id)a3 group:(id)a4 completion:(id)a5
+- (void)_fetchShareParticipantForLookupInfos:(id)infos group:(id)group completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x277CBC410]) initWithUserIdentityLookupInfos:v8];
-  [v11 setGroup:v9];
+  infosCopy = infos;
+  groupCopy = group;
+  completionCopy = completion;
+  v11 = [objc_alloc(MEMORY[0x277CBC410]) initWithUserIdentityLookupInfos:infosCopy];
+  [v11 setGroup:groupCopy];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -1039,7 +1039,7 @@ LABEL_13:
   v15[1] = 3221225472;
   v15[2] = __75__ASCloudKitUtility__fetchShareParticipantForLookupInfos_group_completion___block_invoke_2;
   v15[3] = &unk_278C4EA68;
-  v12 = v10;
+  v12 = completionCopy;
   v16 = v12;
   v17 = v19;
   [v11 setFetchShareParticipantsCompletionBlock:v15];
@@ -1047,8 +1047,8 @@ LABEL_13:
   v13 = _ASOperationConfigurationForPriority(2, 0);
   [v11 setConfiguration:v13];
 
-  v14 = [(ASCloudKitUtility *)self container];
-  [v14 addOperation:v11];
+  container = [(ASCloudKitUtility *)self container];
+  [container addOperation:v11];
 
   _Block_object_dispose(v19, 8);
 }
@@ -1073,20 +1073,20 @@ void __75__ASCloudKitUtility__fetchShareParticipantForLookupInfos_group_completi
   (*(v3 + 16))(v3, v2, v5, v6);
 }
 
-- (void)fetchShareParticipantForIdentifier:(id)a3 group:(id)a4 completion:(id)a5
+- (void)fetchShareParticipantForIdentifier:(id)identifier group:(id)group completion:(id)completion
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  groupCopy = group;
+  completionCopy = completion;
   v11 = ASSanitizedContactDestination();
-  v12 = [(ASCloudKitUtility *)self _lookupInfoFromIdentifier:v8];
+  v12 = [(ASCloudKitUtility *)self _lookupInfoFromIdentifier:identifierCopy];
   v13 = v12;
   if (v12)
   {
     v16[0] = v12;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-    [(ASCloudKitUtility *)self _fetchShareParticipantForLookupInfos:v14 group:v9 completion:v10];
+    [(ASCloudKitUtility *)self _fetchShareParticipantForLookupInfos:v14 group:groupCopy completion:completionCopy];
   }
 
   else
@@ -1098,18 +1098,18 @@ void __75__ASCloudKitUtility__fetchShareParticipantForLookupInfos_group_completi
     }
 
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASCloudKitUtilityErrorDomain" code:0 userInfo:0];
-    (*(v10 + 2))(v10, 0, v14, 0);
+    (*(completionCopy + 2))(completionCopy, 0, v14, 0);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lookupInfoFromIdentifier:(id)a3
+- (id)_lookupInfoFromIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (ASDestinationIsPhoneNumber())
   {
-    v4 = [objc_alloc(MEMORY[0x277CBC7C8]) initWithPhoneNumber:v3];
+    v4 = [objc_alloc(MEMORY[0x277CBC7C8]) initWithPhoneNumber:identifierCopy];
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
@@ -1117,7 +1117,7 @@ LABEL_5:
 
   if (ASDestinationIsEmail())
   {
-    v4 = [objc_alloc(MEMORY[0x277CBC7C8]) initWithEmailAddress:v3];
+    v4 = [objc_alloc(MEMORY[0x277CBC7C8]) initWithEmailAddress:identifierCopy];
     goto LABEL_5;
   }
 
@@ -1127,21 +1127,21 @@ LABEL_7:
   return v5;
 }
 
-- (void)addParticipantWithCloudKitAddress:(id)a3 toShares:(id)a4 group:(id)a5 completion:(id)a6
+- (void)addParticipantWithCloudKitAddress:(id)address toShares:(id)shares group:(id)group completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  addressCopy = address;
+  sharesCopy = shares;
+  groupCopy = group;
+  completionCopy = completion;
   ASLoggingInitialize();
   v14 = *MEMORY[0x277CE8FD0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v26 = v10;
+    v26 = addressCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = sharesCopy;
     _os_log_impl(&dword_23E5E3000, v14, OS_LOG_TYPE_DEFAULT, "Adding participant with address %@ to shares: %@", buf, 0x16u);
   }
 
@@ -1150,14 +1150,14 @@ LABEL_7:
   v20[2] = __81__ASCloudKitUtility_addParticipantWithCloudKitAddress_toShares_group_completion___block_invoke;
   v20[3] = &unk_278C4EB08;
   v20[4] = self;
-  v21 = v11;
-  v22 = v12;
-  v23 = v10;
-  v24 = v13;
-  v15 = v13;
-  v16 = v10;
-  v17 = v12;
-  v18 = v11;
+  v21 = sharesCopy;
+  v22 = groupCopy;
+  v23 = addressCopy;
+  v24 = completionCopy;
+  v15 = completionCopy;
+  v16 = addressCopy;
+  v17 = groupCopy;
+  v18 = sharesCopy;
   [(ASCloudKitUtility *)self fetchShareParticipantForEmailAddress:v16 group:v17 completion:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1229,21 +1229,21 @@ void __81__ASCloudKitUtility_addParticipantWithCloudKitAddress_toShares_group_co
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addParticipant:(id)a3 toShares:(id)a4 group:(id)a5 completion:(id)a6
+- (void)addParticipant:(id)participant toShares:(id)shares group:(id)group completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v29 = a5;
-  v27 = a6;
+  participantCopy = participant;
+  sharesCopy = shares;
+  groupCopy = group;
+  completionCopy = completion;
   ASLoggingInitialize();
   v11 = *MEMORY[0x277CE8FD0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v39 = v9;
+    v39 = participantCopy;
     v40 = 2112;
-    v41 = v10;
+    v41 = sharesCopy;
     _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "Adding participant %@ to shares: %@", buf, 0x16u);
   }
 
@@ -1251,7 +1251,7 @@ void __81__ASCloudKitUtility_addParticipantWithCloudKitAddress_toShares_group_co
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = v10;
+  v12 = sharesCopy;
   v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v13)
   {
@@ -1268,10 +1268,10 @@ void __81__ASCloudKitUtility_addParticipantWithCloudKitAddress_toShares_group_co
         }
 
         v17 = *(*(&v33 + 1) + 8 * v16);
-        v18 = [v9 userIdentity];
-        v19 = [v17 owner];
-        v20 = [v19 userIdentity];
-        v21 = [v18 isEquivalentToUserIdentity:v20];
+        userIdentity = [participantCopy userIdentity];
+        owner = [v17 owner];
+        userIdentity2 = [owner userIdentity];
+        v21 = [userIdentity isEquivalentToUserIdentity:userIdentity2];
 
         if (v21)
         {
@@ -1285,7 +1285,7 @@ void __81__ASCloudKitUtility_addParticipantWithCloudKitAddress_toShares_group_co
 
         else
         {
-          v23 = [v9 copy];
+          v23 = [participantCopy copy];
           [v17 addParticipant:v23];
         }
 
@@ -1303,11 +1303,11 @@ void __81__ASCloudKitUtility_addParticipantWithCloudKitAddress_toShares_group_co
   v30[1] = 3221225472;
   v30[2] = __62__ASCloudKitUtility_addParticipant_toShares_group_completion___block_invoke;
   v30[3] = &unk_278C4D340;
-  v31 = v9;
-  v32 = v27;
-  v24 = v27;
-  v25 = v9;
-  [(ASCloudKitUtility *)self saveRecordsIntoPrivateDatabase:v12 priority:2 activity:0 group:v29 completion:v30];
+  v31 = participantCopy;
+  v32 = completionCopy;
+  v24 = completionCopy;
+  v25 = participantCopy;
+  [(ASCloudKitUtility *)self saveRecordsIntoPrivateDatabase:v12 priority:2 activity:0 group:groupCopy completion:v30];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -1346,21 +1346,21 @@ void __62__ASCloudKitUtility_addParticipant_toShares_group_completion___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeParticipantWithCloudKitAddress:(id)a3 fromShares:(id)a4 group:(id)a5 completion:(id)a6
+- (void)removeParticipantWithCloudKitAddress:(id)address fromShares:(id)shares group:(id)group completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  addressCopy = address;
+  sharesCopy = shares;
+  groupCopy = group;
+  completionCopy = completion;
   ASLoggingInitialize();
   v14 = *MEMORY[0x277CE8FD0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = _ASRecordIDsForRecords(v11);
+    v16 = _ASRecordIDsForRecords(sharesCopy);
     *buf = 138412546;
-    v29 = v10;
+    v29 = addressCopy;
     v30 = 2112;
     v31 = v16;
     _os_log_impl(&dword_23E5E3000, v15, OS_LOG_TYPE_DEFAULT, "Removing participant with address %@ from shares with IDs: %@", buf, 0x16u);
@@ -1370,15 +1370,15 @@ void __62__ASCloudKitUtility_addParticipant_toShares_group_completion___block_in
   v22[1] = 3221225472;
   v22[2] = __86__ASCloudKitUtility_removeParticipantWithCloudKitAddress_fromShares_group_completion___block_invoke;
   v22[3] = &unk_278C4EB08;
-  v23 = v11;
-  v24 = self;
-  v25 = v12;
-  v26 = v10;
-  v27 = v13;
-  v17 = v13;
-  v18 = v10;
-  v19 = v12;
-  v20 = v11;
+  v23 = sharesCopy;
+  selfCopy = self;
+  v25 = groupCopy;
+  v26 = addressCopy;
+  v27 = completionCopy;
+  v17 = completionCopy;
+  v18 = addressCopy;
+  v19 = groupCopy;
+  v20 = sharesCopy;
   [(ASCloudKitUtility *)self fetchShareParticipantForEmailAddress:v18 group:v19 completion:v22];
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1583,20 +1583,20 @@ LABEL_11:
   return result;
 }
 
-- (void)_fetchChangesInZones:(id)a3 additionalZonesToFetch:(id)a4 fetchConfigurations:(id)a5 inDatabase:(id)a6 serverChangeTokenCache:(id)a7 priority:(int64_t)a8 allowRetry:(BOOL)a9 activity:(id)a10 group:(id)a11 completion:(id)a12
+- (void)_fetchChangesInZones:(id)zones additionalZonesToFetch:(id)fetch fetchConfigurations:(id)configurations inDatabase:(id)database serverChangeTokenCache:(id)cache priority:(int64_t)priority allowRetry:(BOOL)retry activity:(id)self0 group:(id)self1 completion:(id)self2
 {
   v116 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v73 = a5;
-  v70 = a6;
-  v18 = a7;
-  v69 = a10;
-  v75 = a11;
-  v65 = a12;
-  v58 = v16;
-  v67 = v17;
-  v19 = [v16 setByAddingObjectsFromSet:v17];
+  zonesCopy = zones;
+  fetchCopy = fetch;
+  configurationsCopy = configurations;
+  databaseCopy = database;
+  cacheCopy = cache;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
+  v58 = zonesCopy;
+  v67 = fetchCopy;
+  v19 = [zonesCopy setByAddingObjectsFromSet:fetchCopy];
   ASLoggingInitialize();
   v20 = MEMORY[0x277CE8FD0];
   v21 = *MEMORY[0x277CE8FD0];
@@ -1604,44 +1604,44 @@ LABEL_11:
   {
     v22 = v21;
     v23 = [v19 count];
-    [v70 databaseScope];
+    [databaseCopy databaseScope];
     v24 = CKDatabaseScopeString();
-    v25 = [v75 name];
+    name = [groupCopy name];
     *buf = 134218754;
     v109 = v23;
     v110 = 2114;
     v111 = v24;
     v112 = 2114;
-    v113 = v25;
+    v113 = name;
     v114 = 2114;
-    v115 = v69;
+    v115 = activityCopy;
     _os_log_impl(&dword_23E5E3000, v22, OS_LOG_TYPE_DEFAULT, "Fetching changes in %lu record zones (database %{public}@, group %{public}@, activity %{public}@)", buf, 0x2Au);
   }
 
-  if ([v73 count])
+  if ([configurationsCopy count])
   {
     ASLoggingInitialize();
     v26 = *v20;
     if (os_log_type_enabled(*v20, OS_LOG_TYPE_DEFAULT))
     {
       v27 = v26;
-      [v70 databaseScope];
+      [databaseCopy databaseScope];
       v28 = CKDatabaseScopeString();
-      v29 = [(CKContainer *)self->_container containerIdentifier];
+      containerIdentifier = [(CKContainer *)self->_container containerIdentifier];
       *buf = 138543874;
-      v109 = v73;
+      v109 = configurationsCopy;
       v110 = 2114;
       v111 = v28;
       v112 = 2114;
-      v113 = v29;
+      v113 = containerIdentifier;
       _os_log_impl(&dword_23E5E3000, v27, OS_LOG_TYPE_DEFAULT, "Using fetch configurations %{public}@ %{public}@ database in %{public}@", buf, 0x20u);
     }
   }
 
-  v63 = [MEMORY[0x277CBEB18] array];
-  v61 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v59 = [MEMORY[0x277CBEB58] set];
-  v60 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v30 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v19, "count")}];
   v105 = 0u;
   v106 = 0u;
@@ -1664,7 +1664,7 @@ LABEL_11:
 
         v35 = *(*(&v103 + 1) + 8 * v34);
         v36 = objc_alloc_init(MEMORY[0x277CBC3A0]);
-        v37 = [v18 serverChangeTokenForRecordZoneID:v35];
+        v37 = [cacheCopy serverChangeTokenForRecordZoneID:v35];
         [v36 setPreviousServerChangeToken:v37];
 
         [v30 setObject:v36 forKeyedSubscript:v35];
@@ -1679,37 +1679,37 @@ LABEL_11:
   }
 
   v38 = objc_alloc(MEMORY[0x277CBC3B8]);
-  v39 = [v31 allObjects];
-  v40 = [v38 initWithRecordZoneIDs:v39 configurationsByRecordZoneID:v30];
+  allObjects = [v31 allObjects];
+  v40 = [v38 initWithRecordZoneIDs:allObjects configurationsByRecordZoneID:v30];
 
-  [v40 setGroup:v75];
+  [v40 setGroup:groupCopy];
   objc_initWeak(buf, v40);
   [v40 setFetchAllChanges:1];
   v98[0] = MEMORY[0x277D85DD0];
   v98[1] = 3221225472;
   v98[2] = __165__ASCloudKitUtility__fetchChangesInZones_additionalZonesToFetch_fetchConfigurations_inDatabase_serverChangeTokenCache_priority_allowRetry_activity_group_completion___block_invoke;
   v98[3] = &unk_278C4EB30;
-  v41 = v73;
+  v41 = configurationsCopy;
   v99 = v41;
-  v42 = v63;
+  v42 = array;
   v100 = v42;
-  v43 = v70;
+  v43 = databaseCopy;
   v101 = v43;
-  v74 = v60;
+  v74 = dictionary;
   v102 = v74;
   [v40 setRecordChangedBlock:v98];
   v96[0] = MEMORY[0x277D85DD0];
   v96[1] = 3221225472;
   v96[2] = __165__ASCloudKitUtility__fetchChangesInZones_additionalZonesToFetch_fetchConfigurations_inDatabase_serverChangeTokenCache_priority_allowRetry_activity_group_completion___block_invoke_333;
   v96[3] = &unk_278C4EB58;
-  v44 = v61;
+  v44 = array2;
   v97 = v44;
   [v40 setRecordWithIDWasDeletedBlock:v96];
   v94[0] = MEMORY[0x277D85DD0];
   v94[1] = 3221225472;
   v94[2] = __165__ASCloudKitUtility__fetchChangesInZones_additionalZonesToFetch_fetchConfigurations_inDatabase_serverChangeTokenCache_priority_allowRetry_activity_group_completion___block_invoke_2;
   v94[3] = &unk_278C4EB80;
-  v45 = v18;
+  v45 = cacheCopy;
   v95 = v45;
   [v40 setRecordZoneChangeTokensUpdatedBlock:v94];
   v90[0] = MEMORY[0x277D85DD0];
@@ -1735,23 +1735,23 @@ LABEL_11:
   v80 = v71;
   v49 = v46;
   v81 = v49;
-  v89 = a9;
+  retryCopy = retry;
   v62 = v41;
   v82 = v62;
   v68 = v47;
   v83 = v68;
-  v88[1] = a8;
-  v50 = v69;
+  v88[1] = priority;
+  v50 = activityCopy;
   v84 = v50;
-  v51 = v75;
+  v51 = groupCopy;
   v85 = v51;
-  v52 = v65;
+  v52 = completionCopy;
   v87 = v52;
   v53 = v44;
   v86 = v53;
   [v40 setFetchRecordZoneChangesCompletionBlock:v78];
   [v40 setQualityOfService:17];
-  v54 = _ASOperationConfigurationForPriority(a8, v50);
+  v54 = _ASOperationConfigurationForPriority(priority, v50);
   [v40 setConfiguration:v54];
 
   serialQueue = self->_serialQueue;
@@ -2161,29 +2161,29 @@ void __165__ASCloudKitUtility__fetchChangesInZones_additionalZonesToFetch_fetchC
   (*(v9 + 16))(v9, a2, v12, v14, v13);
 }
 
-- (void)_fetchChangesInDatabase:(id)a3 serverChangeTokenCache:(id)a4 priority:(int64_t)a5 activity:(id)a6 group:(id)a7 additionalZoneIDs:(id)a8 zoneIDsToSkip:(id)a9 fetchConfigurations:(id)a10 completion:(id)a11
+- (void)_fetchChangesInDatabase:(id)database serverChangeTokenCache:(id)cache priority:(int64_t)priority activity:(id)activity group:(id)group additionalZoneIDs:(id)ds zoneIDsToSkip:(id)skip fetchConfigurations:(id)self0 completion:(id)self1
 {
   v65 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v44 = a4;
-  v42 = a6;
-  v17 = a7;
-  v41 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
+  databaseCopy = database;
+  cacheCopy = cache;
+  activityCopy = activity;
+  groupCopy = group;
+  dsCopy = ds;
+  skipCopy = skip;
+  configurationsCopy = configurations;
+  completionCopy = completion;
   ASLoggingInitialize();
   v21 = *MEMORY[0x277CE8FD0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
   {
     v22 = v21;
-    [v16 databaseScope];
+    [databaseCopy databaseScope];
     v23 = CKDatabaseScopeString();
-    v24 = [(CKContainer *)self->_container containerIdentifier];
+    containerIdentifier = [(CKContainer *)self->_container containerIdentifier];
     *buf = 138543618;
     *&buf[4] = v23;
     *&buf[12] = 2114;
-    *&buf[14] = v24;
+    *&buf[14] = containerIdentifier;
     _os_log_impl(&dword_23E5E3000, v22, OS_LOG_TYPE_DEFAULT, "Fetching changes in database %{public}@, %{public}@", buf, 0x16u);
   }
 
@@ -2194,17 +2194,17 @@ void __165__ASCloudKitUtility__fetchChangesInZones_additionalZonesToFetch_fetchC
   v63 = __Block_byref_object_dispose__14;
   v64 = [MEMORY[0x277CBEB98] set];
   v25 = objc_alloc(MEMORY[0x277CBC388]);
-  v26 = [v44 serverChangeTokenForDatabase:v16];
+  v26 = [cacheCopy serverChangeTokenForDatabase:databaseCopy];
   v27 = [v25 initWithPreviousServerChangeToken:v26];
 
   objc_initWeak(&location, v27);
   [v27 setFetchAllChanges:1];
-  [v27 setGroup:v17];
+  [v27 setGroup:groupCopy];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __155__ASCloudKitUtility__fetchChangesInDatabase_serverChangeTokenCache_priority_activity_group_additionalZoneIDs_zoneIDsToSkip_fetchConfigurations_completion___block_invoke;
   v57[3] = &unk_278C4EC48;
-  v40 = v18;
+  v40 = skipCopy;
   v58 = v40;
   v59 = buf;
   [v27 setRecordZoneWithIDChangedBlock:v57];
@@ -2214,26 +2214,26 @@ void __165__ASCloudKitUtility__fetchChangesInZones_additionalZonesToFetch_fetchC
   v47[3] = &unk_278C4EC70;
   objc_copyWeak(v56, &location);
   v47[4] = self;
-  v28 = v20;
-  v29 = v44;
+  v28 = completionCopy;
+  v29 = cacheCopy;
   v48 = v29;
-  v30 = v16;
+  v30 = databaseCopy;
   v49 = v30;
   v55 = buf;
-  v31 = v41;
+  v31 = dsCopy;
   v50 = v31;
-  v32 = v19;
+  v32 = configurationsCopy;
   v51 = v32;
-  v56[1] = a5;
-  v33 = v42;
+  v56[1] = priority;
+  v33 = activityCopy;
   v52 = v33;
-  v34 = v17;
+  v34 = groupCopy;
   v53 = v34;
   v35 = v28;
   v54 = v35;
   [v27 setFetchDatabaseChangesCompletionBlock:v47];
   [v27 setQualityOfService:17];
-  v36 = _ASOperationConfigurationForPriority(a5, v33);
+  v36 = _ASOperationConfigurationForPriority(priority, v33);
   [v27 setConfiguration:v36];
 
   serialQueue = self->_serialQueue;
@@ -2408,15 +2408,15 @@ void __155__ASCloudKitUtility__fetchChangesInDatabase_serverChangeTokenCache_pri
   [v1 removeObject:WeakRetained];
 }
 
-- (void)_retrieveZone:(id)a3 database:(id)a4 completion:(id)a5
+- (void)_retrieveZone:(id)zone database:(id)database completion:(id)completion
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  zoneCopy = zone;
+  completionCopy = completion;
   v9 = MEMORY[0x277CBC3D0];
-  v10 = a4;
+  databaseCopy = database;
   v11 = [v9 alloc];
-  v24[0] = v7;
+  v24[0] = zoneCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
   v13 = [v11 initWithRecordZoneIDs:v12];
 
@@ -2424,16 +2424,16 @@ void __155__ASCloudKitUtility__fetchChangesInDatabase_serverChangeTokenCache_pri
   v19 = 3221225472;
   v20 = __55__ASCloudKitUtility__retrieveZone_database_completion___block_invoke;
   v21 = &unk_278C4E9F0;
-  v22 = v7;
-  v23 = v8;
-  v14 = v8;
-  v15 = v7;
+  v22 = zoneCopy;
+  v23 = completionCopy;
+  v14 = completionCopy;
+  v15 = zoneCopy;
   [v13 setFetchRecordZonesCompletionBlock:&v18];
   [v13 setQualityOfService:{17, v18, v19, v20, v21}];
   v16 = _ASOperationConfigurationForPriority(2, 0);
   [v13 setConfiguration:v16];
 
-  [v10 addOperation:v13];
+  [databaseCopy addOperation:v13];
   v17 = *MEMORY[0x277D85DE8];
 }
 
@@ -2459,41 +2459,41 @@ void __55__ASCloudKitUtility__retrieveZone_database_completion___block_invoke(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)retrieveZone:(id)a3 completion:(id)a4
+- (void)retrieveZone:(id)zone completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(ASCloudKitUtility *)self container];
-  v8 = [v9 privateCloudDatabase];
-  [(ASCloudKitUtility *)self _retrieveZone:v7 database:v8 completion:v6];
+  completionCopy = completion;
+  zoneCopy = zone;
+  container = [(ASCloudKitUtility *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [(ASCloudKitUtility *)self _retrieveZone:zoneCopy database:privateCloudDatabase completion:completionCopy];
 }
 
-- (void)fetchChangesInPrivateDatabaseWithServerChangeTokenCache:(id)a3 priority:(int64_t)a4 activity:(id)a5 group:(id)a6 additionalZoneIDs:(id)a7 zoneIDsToSkip:(id)a8 fetchConfigurations:(id)a9 completion:(id)a10
+- (void)fetchChangesInPrivateDatabaseWithServerChangeTokenCache:(id)cache priority:(int64_t)priority activity:(id)activity group:(id)group additionalZoneIDs:(id)ds zoneIDsToSkip:(id)skip fetchConfigurations:(id)configurations completion:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a3;
-  v25 = [(ASCloudKitUtility *)self container];
-  v24 = [v25 privateCloudDatabase];
-  [(ASCloudKitUtility *)self _fetchChangesInDatabase:v24 serverChangeTokenCache:v23 priority:a4 activity:v22 group:v21 additionalZoneIDs:v20 zoneIDsToSkip:v19 fetchConfigurations:v18 completion:v17];
+  completionCopy = completion;
+  configurationsCopy = configurations;
+  skipCopy = skip;
+  dsCopy = ds;
+  groupCopy = group;
+  activityCopy = activity;
+  cacheCopy = cache;
+  container = [(ASCloudKitUtility *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [(ASCloudKitUtility *)self _fetchChangesInDatabase:privateCloudDatabase serverChangeTokenCache:cacheCopy priority:priority activity:activityCopy group:groupCopy additionalZoneIDs:dsCopy zoneIDsToSkip:skipCopy fetchConfigurations:configurationsCopy completion:completionCopy];
 }
 
-- (void)fetchChangesInSharedDatabaseWithServerChangeTokenCache:(id)a3 priority:(int64_t)a4 activity:(id)a5 group:(id)a6 additionalZoneIDs:(id)a7 zoneIDsToSkip:(id)a8 fetchConfigurations:(id)a9 completion:(id)a10
+- (void)fetchChangesInSharedDatabaseWithServerChangeTokenCache:(id)cache priority:(int64_t)priority activity:(id)activity group:(id)group additionalZoneIDs:(id)ds zoneIDsToSkip:(id)skip fetchConfigurations:(id)configurations completion:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a3;
-  v25 = [(ASCloudKitUtility *)self container];
-  v24 = [v25 sharedCloudDatabase];
-  [(ASCloudKitUtility *)self _fetchChangesInDatabase:v24 serverChangeTokenCache:v23 priority:a4 activity:v22 group:v21 additionalZoneIDs:v20 zoneIDsToSkip:v19 fetchConfigurations:v18 completion:v17];
+  completionCopy = completion;
+  configurationsCopy = configurations;
+  skipCopy = skip;
+  dsCopy = ds;
+  groupCopy = group;
+  activityCopy = activity;
+  cacheCopy = cache;
+  container = [(ASCloudKitUtility *)self container];
+  sharedCloudDatabase = [container sharedCloudDatabase];
+  [(ASCloudKitUtility *)self _fetchChangesInDatabase:sharedCloudDatabase serverChangeTokenCache:cacheCopy priority:priority activity:activityCopy group:groupCopy additionalZoneIDs:dsCopy zoneIDsToSkip:skipCopy fetchConfigurations:configurationsCopy completion:completionCopy];
 }
 
 void __91__ASCloudKitUtility_createRecordZonesWithIDs_priority_useZoneWideSharing_group_completion___block_invoke_cold_1(uint64_t a1)

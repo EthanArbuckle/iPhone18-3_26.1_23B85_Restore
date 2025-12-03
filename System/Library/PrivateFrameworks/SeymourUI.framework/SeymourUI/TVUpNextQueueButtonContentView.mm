@@ -1,6 +1,6 @@
 @interface TVUpNextQueueButtonContentView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI30TVUpNextQueueButtonContentView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI30TVUpNextQueueButtonContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TVUpNextQueueButtonContentView
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI30TVUpNextQueueButtonContentView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI30TVUpNextQueueButtonContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,15 +1,15 @@
 @interface WRWorkflowProvider
-+ (id)providerForAllWorkflowsWithQueue:(id)a3 callback:(id)a4;
-+ (id)providerForWorkflowWithName:(id)a3 queue:(id)a4 callback:(id)a5;
-- (WRWorkflowProvider)initWithQueue:(id)a3;
++ (id)providerForAllWorkflowsWithQueue:(id)queue callback:(id)callback;
++ (id)providerForWorkflowWithName:(id)name queue:(id)queue callback:(id)callback;
+- (WRWorkflowProvider)initWithQueue:(id)queue;
 - (void)dealloc;
-- (void)handleSettingsChanged:(BOOL)a3;
+- (void)handleSettingsChanged:(BOOL)changed;
 - (void)registerNotification;
 @end
 
 @implementation WRWorkflowProvider
 
-- (void)handleSettingsChanged:(BOOL)a3
+- (void)handleSettingsChanged:(BOOL)changed
 {
   v3 = *__error();
   v4 = _wrlog();
@@ -57,9 +57,9 @@ void __42__WRWorkflowProvider_registerNotification__block_invoke_214(uint64_t a1
   [WeakRetained handleSettingsChanged:0];
 }
 
-- (WRWorkflowProvider)initWithQueue:(id)a3
+- (WRWorkflowProvider)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = WRWorkflowProvider;
   v6 = [(WRWorkflowProvider *)&v9 init];
@@ -67,7 +67,7 @@ void __42__WRWorkflowProvider_registerNotification__block_invoke_214(uint64_t a1
   if (v6)
   {
     *&v6->_taskingNotifyToken = -1;
-    objc_storeStrong(&v6->_callbackQueue, a3);
+    objc_storeStrong(&v6->_callbackQueue, queue);
   }
 
   return v7;
@@ -102,23 +102,23 @@ LABEL_6:
   [(WRWorkflowProvider *)&v5 dealloc];
 }
 
-+ (id)providerForAllWorkflowsWithQueue:(id)a3 callback:(id)a4
++ (id)providerForAllWorkflowsWithQueue:(id)queue callback:(id)callback
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[WRWorkflowProviderAllWorkflows alloc] initWithQueue:v6 callback:v5];
+  callbackCopy = callback;
+  queueCopy = queue;
+  v7 = [[WRWorkflowProviderAllWorkflows alloc] initWithQueue:queueCopy callback:callbackCopy];
 
   [(WRWorkflowProvider *)v7 registerNotification];
 
   return v7;
 }
 
-+ (id)providerForWorkflowWithName:(id)a3 queue:(id)a4 callback:(id)a5
++ (id)providerForWorkflowWithName:(id)name queue:(id)queue callback:(id)callback
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[WRWorkflowProviderSingleWorkflow alloc] initWithWorkflowName:v9 queue:v8 callback:v7];
+  callbackCopy = callback;
+  queueCopy = queue;
+  nameCopy = name;
+  v10 = [[WRWorkflowProviderSingleWorkflow alloc] initWithWorkflowName:nameCopy queue:queueCopy callback:callbackCopy];
 
   [(WRWorkflowProvider *)v10 registerNotification];
 

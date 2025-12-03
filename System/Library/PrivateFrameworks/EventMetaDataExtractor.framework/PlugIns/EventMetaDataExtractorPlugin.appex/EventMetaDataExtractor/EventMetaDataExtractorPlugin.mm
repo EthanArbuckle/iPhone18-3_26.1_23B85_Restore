@@ -1,24 +1,24 @@
 @interface EventMetaDataExtractorPlugin
-+ (void)sendAnalyticsForTask:(id)a3 extractorOutput:(id)a4 startTime:(id)a5;
-- (id)performTask:(id)a3 error:(id *)a4;
++ (void)sendAnalyticsForTask:(id)task extractorOutput:(id)output startTime:(id)time;
+- (id)performTask:(id)task error:(id *)error;
 @end
 
 @implementation EventMetaDataExtractorPlugin
 
-+ (void)sendAnalyticsForTask:(id)a3 extractorOutput:(id)a4 startTime:(id)a5
++ (void)sendAnalyticsForTask:(id)task extractorOutput:(id)output startTime:(id)time
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  taskCopy = task;
+  outputCopy = output;
+  timeCopy = time;
   v26[0] = @"taskName";
   v26[1] = @"extractionStatus";
-  v27[0] = v7;
+  v27[0] = taskCopy;
   v27[1] = &__kCFBooleanFalse;
   v26[2] = @"extractionFailureCode";
-  v10 = [v8 objectForKeyedSubscript:@"errorCode"];
+  v10 = [outputCopy objectForKeyedSubscript:@"errorCode"];
   v27[2] = v10;
   v26[3] = @"executionTime";
-  [v9 timeIntervalSinceNow];
+  [timeCopy timeIntervalSinceNow];
   v12 = [NSNumber numberWithInt:(v11 * -10.0)];
   v26[4] = @"eventCategory";
   v27[3] = v12;
@@ -26,24 +26,24 @@
   v13 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:5];
   v14 = [v13 mutableCopy];
 
-  v15 = [v7 isEqual:@"EventSuggestionsFromMessage"] ^ 1;
-  if (!v8)
+  v15 = [taskCopy isEqual:@"EventSuggestionsFromMessage"] ^ 1;
+  if (!outputCopy)
   {
     LOBYTE(v15) = 1;
   }
 
   if ((v15 & 1) == 0)
   {
-    v16 = [v8 objectForKeyedSubscript:@"events"];
+    v16 = [outputCopy objectForKeyedSubscript:@"events"];
     if (v16)
     {
-      v17 = [v8 objectForKeyedSubscript:@"events"];
+      v17 = [outputCopy objectForKeyedSubscript:@"events"];
       v18 = [v17 count] == 0;
 
       if (!v18)
       {
         [v14 setObject:&__kCFBooleanTrue forKeyedSubscript:@"extractionStatus"];
-        v19 = [v8 objectForKeyedSubscript:@"events"];
+        v19 = [outputCopy objectForKeyedSubscript:@"events"];
         v20 = [v19 objectAtIndexedSubscript:0];
         v21 = [v20 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__CATEGORY"];
         [v14 setObject:v21 forKeyedSubscript:@"eventCategory"];
@@ -51,15 +51,15 @@
     }
   }
 
-  v22 = [v7 isEqual:@"TitleSuggestionFromMessage"] ^ 1;
-  if (!v8)
+  v22 = [taskCopy isEqual:@"TitleSuggestionFromMessage"] ^ 1;
+  if (!outputCopy)
   {
     LOBYTE(v22) = 1;
   }
 
   if ((v22 & 1) == 0)
   {
-    v23 = [v8 objectForKeyedSubscript:@"title"];
+    v23 = [outputCopy objectForKeyedSubscript:@"title"];
     v24 = v23 == 0;
 
     if (!v24)
@@ -78,21 +78,21 @@
   AnalyticsSendEvent();
 }
 
-- (id)performTask:(id)a3 error:(id *)a4
+- (id)performTask:(id)task error:(id *)error
 {
-  v5 = a3;
+  taskCopy = task;
   v27 = +[NSDate date];
-  v6 = [v5 parameters];
-  v7 = [v6 stringValueForKey:@"TaskName" defaultValue:0];
+  parameters = [taskCopy parameters];
+  v7 = [parameters stringValueForKey:@"TaskName" defaultValue:0];
 
-  v8 = [v5 parameters];
-  v28 = [v8 stringValueForKey:@"AssetFolderPath" defaultValue:0];
+  parameters2 = [taskCopy parameters];
+  v28 = [parameters2 stringValueForKey:@"AssetFolderPath" defaultValue:0];
 
-  v9 = [v5 parameters];
-  v10 = [v9 stringValueForKey:@"ConfigFile" defaultValue:@"config.plist"];
+  parameters3 = [taskCopy parameters];
+  v10 = [parameters3 stringValueForKey:@"ConfigFile" defaultValue:@"config.plist"];
 
-  v11 = [v5 parameters];
-  v26 = [v11 stringValueForKey:@"InputMessage" defaultValue:0];
+  parameters4 = [taskCopy parameters];
+  v26 = [parameters4 stringValueForKey:@"InputMessage" defaultValue:0];
 
   v12 = extractionLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -116,11 +116,11 @@
   v34[2] = sub_10001375C;
   v34[3] = &unk_1000ACB00;
   v37 = buf;
-  v13 = [[EMDEEventExtractor alloc] initWithConfigFile:v10 assetFolderPath:v28 error:a4];
+  v13 = [[EMDEEventExtractor alloc] initWithConfigFile:v10 assetFolderPath:v28 error:error];
   v35 = v13;
   v14 = v26;
   v36 = v14;
-  v38 = a4;
+  errorCopy = error;
   v15 = objc_retainBlock(v34);
   v41[1] = @"TitleSuggestionFromMessage";
   v42[0] = v15;
@@ -133,7 +133,7 @@
   v30 = v16;
   v17 = v14;
   v31 = v17;
-  v33 = a4;
+  errorCopy2 = error;
   v18 = objc_retainBlock(v29);
   v42[1] = v18;
   v19 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:2];

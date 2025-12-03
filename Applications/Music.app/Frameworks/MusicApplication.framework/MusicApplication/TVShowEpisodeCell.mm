@@ -5,15 +5,15 @@
 - (UIImageView)accessibilityChevronImageView;
 - (void)clearArtworkCatalogs;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation TVShowEpisodeCell
 
 - (void)clearArtworkCatalogs
 {
-  v2 = self;
+  selfCopy = self;
   sub_43B4B8();
 }
 
@@ -27,13 +27,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_43B6F8(&selRef_frame, &selRef_setFrame_, x, y, width, height);
 }
 
@@ -47,25 +47,25 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_43B6F8(&selRef_bounds, &selRef_setBounds_, x, y, width, height);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_43B804();
 }
 
 - (UIImageView)accessibilityChevronImageView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_43BD10();
 
   return v3;

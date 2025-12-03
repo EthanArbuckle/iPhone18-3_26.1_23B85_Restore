@@ -6,21 +6,21 @@
 - (CGSize)menuItemSize;
 - (CGSize)menuItemSpacing;
 - (SCATMenuCollectionViewFlowLayout)init;
-- (double)_heightForAllRows:(unint64_t)a3 itemsPerRow:(unint64_t)a4;
-- (double)_maxHeightForRow:(unint64_t)a3 itemsPerRow:(unint64_t)a4;
-- (double)_xValueForDockItemAtIndex:(unint64_t)a3 layoutAttributes:(id)a4;
-- (double)menuItemHorizontalSpacingAfterItemAtIndex:(unint64_t)a3;
-- (id)_rowToFrameDictionaryForAttributes:(id)a3 itemsPerRow:(unint64_t)a4;
+- (double)_heightForAllRows:(unint64_t)rows itemsPerRow:(unint64_t)row;
+- (double)_maxHeightForRow:(unint64_t)row itemsPerRow:(unint64_t)perRow;
+- (double)_xValueForDockItemAtIndex:(unint64_t)index layoutAttributes:(id)attributes;
+- (double)menuItemHorizontalSpacingAfterItemAtIndex:(unint64_t)index;
+- (id)_rowToFrameDictionaryForAttributes:(id)attributes itemsPerRow:(unint64_t)row;
 - (id)effectiveStyleAttributes;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (id)layoutDelegate;
 - (id)menuSheet;
 - (unint64_t)maxItemsPerRow;
 - (unint64_t)maxRows;
 - (unint64_t)numberOfMenuItems;
 - (void)_initStyleAttributes;
-- (void)column:(unint64_t *)a3 row:(unint64_t *)a4 forItemAtIndex:(unint64_t)a5;
-- (void)optimalNumberOfRows:(unint64_t *)a3 itemsPerRow:(unint64_t *)a4 forTotalNumberOfItems:(unint64_t)a5;
+- (void)column:(unint64_t *)column row:(unint64_t *)row forItemAtIndex:(unint64_t)index;
+- (void)optimalNumberOfRows:(unint64_t *)rows itemsPerRow:(unint64_t *)row forTotalNumberOfItems:(unint64_t)items;
 @end
 
 @implementation SCATMenuCollectionViewFlowLayout
@@ -50,77 +50,77 @@
 
 - (id)layoutDelegate
 {
-  v2 = [(SCATMenuCollectionViewFlowLayout *)self collectionView];
-  v3 = [v2 delegate];
+  collectionView = [(SCATMenuCollectionViewFlowLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (id)menuSheet
 {
-  v3 = [(SCATMenuCollectionViewFlowLayout *)self layoutDelegate];
-  v4 = [(SCATMenuCollectionViewFlowLayout *)self collectionView];
-  v5 = [v3 menuSheetForCollectionView:v4];
+  layoutDelegate = [(SCATMenuCollectionViewFlowLayout *)self layoutDelegate];
+  collectionView = [(SCATMenuCollectionViewFlowLayout *)self collectionView];
+  v5 = [layoutDelegate menuSheetForCollectionView:collectionView];
 
   return v5;
 }
 
 - (unint64_t)numberOfMenuItems
 {
-  v2 = [(SCATMenuCollectionViewFlowLayout *)self collectionView];
-  v3 = [v2 numberOfItemsInSection:0];
+  collectionView = [(SCATMenuCollectionViewFlowLayout *)self collectionView];
+  v3 = [collectionView numberOfItemsInSection:0];
 
   return v3;
 }
 
 - (BOOL)willIncludeTitleLabels
 {
-  v2 = [(SCATMenuCollectionViewFlowLayout *)self menuSheet];
-  v3 = [v2 shouldIncludeTextLabels];
+  menuSheet = [(SCATMenuCollectionViewFlowLayout *)self menuSheet];
+  shouldIncludeTextLabels = [menuSheet shouldIncludeTextLabels];
 
-  return v3;
+  return shouldIncludeTextLabels;
 }
 
 - (BOOL)isPopoverStyle
 {
-  v2 = [(SCATMenuCollectionViewFlowLayout *)self menuSheet];
-  v3 = [v2 presentationMode] == 0;
+  menuSheet = [(SCATMenuCollectionViewFlowLayout *)self menuSheet];
+  v3 = [menuSheet presentationMode] == 0;
 
   return v3;
 }
 
 - (BOOL)isDockStyle
 {
-  v2 = [(SCATMenuCollectionViewFlowLayout *)self menuSheet];
-  v3 = [v2 presentationMode] == 1;
+  menuSheet = [(SCATMenuCollectionViewFlowLayout *)self menuSheet];
+  v3 = [menuSheet presentationMode] == 1;
 
   return v3;
 }
 
 - (id)effectiveStyleAttributes
 {
-  v3 = [(SCATMenuCollectionViewFlowLayout *)self menuSheet];
-  v4 = [v3 presentationMode];
+  menuSheet = [(SCATMenuCollectionViewFlowLayout *)self menuSheet];
+  presentationMode = [menuSheet presentationMode];
 
-  if (v4)
+  if (presentationMode)
   {
-    if (v4 == 1)
+    if (presentationMode == 1)
     {
-      v5 = [(SCATMenuCollectionViewFlowLayout *)self dockStyleAttributes];
+      dockStyleAttributes = [(SCATMenuCollectionViewFlowLayout *)self dockStyleAttributes];
     }
   }
 
   else
   {
-    v5 = [(SCATMenuCollectionViewFlowLayout *)self popoverStyleAttributes];
+    dockStyleAttributes = [(SCATMenuCollectionViewFlowLayout *)self popoverStyleAttributes];
   }
 
-  return v5;
+  return dockStyleAttributes;
 }
 
 - (CGSize)menuItemSize
 {
-  v2 = [(SCATMenuCollectionViewFlowLayout *)self effectiveStyleAttributes];
+  effectiveStyleAttributes = [(SCATMenuCollectionViewFlowLayout *)self effectiveStyleAttributes];
   [objc_opt_class() itemSize];
   v4 = v3;
   v6 = v5;
@@ -135,17 +135,17 @@
 - (CGSize)menuItemSpacing
 {
   v3 = +[SCATScannerManager sharedManager];
-  v4 = [v3 isLandscape];
-  v5 = [(SCATMenuCollectionViewFlowLayout *)self effectiveStyleAttributes];
-  v6 = v5;
-  if (v4)
+  isLandscape = [v3 isLandscape];
+  effectiveStyleAttributes = [(SCATMenuCollectionViewFlowLayout *)self effectiveStyleAttributes];
+  v6 = effectiveStyleAttributes;
+  if (isLandscape)
   {
-    [v5 itemSpacingLandscape];
+    [effectiveStyleAttributes itemSpacingLandscape];
   }
 
   else
   {
-    [v5 itemSpacingPortrait];
+    [effectiveStyleAttributes itemSpacingPortrait];
   }
 
   v9 = v7;
@@ -160,21 +160,21 @@
 
 - (unint64_t)maxItemsPerRow
 {
-  v2 = [(SCATMenuCollectionViewFlowLayout *)self effectiveStyleAttributes];
-  v3 = [v2 maxItemsPerRow];
+  effectiveStyleAttributes = [(SCATMenuCollectionViewFlowLayout *)self effectiveStyleAttributes];
+  maxItemsPerRow = [effectiveStyleAttributes maxItemsPerRow];
 
-  return v3;
+  return maxItemsPerRow;
 }
 
 - (unint64_t)maxRows
 {
-  v2 = [(SCATMenuCollectionViewFlowLayout *)self effectiveStyleAttributes];
-  v3 = [v2 maxRows];
+  effectiveStyleAttributes = [(SCATMenuCollectionViewFlowLayout *)self effectiveStyleAttributes];
+  maxRows = [effectiveStyleAttributes maxRows];
 
-  return v3;
+  return maxRows;
 }
 
-- (double)menuItemHorizontalSpacingAfterItemAtIndex:(unint64_t)a3
+- (double)menuItemHorizontalSpacingAfterItemAtIndex:(unint64_t)index
 {
   [(SCATMenuCollectionViewFlowLayout *)self menuItemSpacing];
   v6 = v5;
@@ -183,12 +183,12 @@
     _AXAssert();
   }
 
-  v7 = [(SCATMenuCollectionViewFlowLayout *)self menuSheet];
-  v8 = [v7 menuItemStruts];
+  menuSheet = [(SCATMenuCollectionViewFlowLayout *)self menuSheet];
+  menuItemStruts = [menuSheet menuItemStruts];
 
-  if (v8)
+  if (menuItemStruts)
   {
-    v9 = [v8 objectAtIndex:a3];
+    v9 = [menuItemStruts objectAtIndex:index];
     [v9 doubleValue];
     v6 = v10;
   }
@@ -196,112 +196,112 @@
   return v6;
 }
 
-- (void)optimalNumberOfRows:(unint64_t *)a3 itemsPerRow:(unint64_t *)a4 forTotalNumberOfItems:(unint64_t)a5
+- (void)optimalNumberOfRows:(unint64_t *)rows itemsPerRow:(unint64_t *)row forTotalNumberOfItems:(unint64_t)items
 {
   if ([(SCATMenuCollectionViewFlowLayout *)self isPopoverStyle])
   {
-    v9 = [(SCATMenuCollectionViewFlowLayout *)self maxVisibleItems];
-    if (v9 >= a5)
+    maxVisibleItems = [(SCATMenuCollectionViewFlowLayout *)self maxVisibleItems];
+    if (maxVisibleItems >= items)
     {
-      v10 = a5;
+      itemsCopy = items;
     }
 
     else
     {
-      v10 = v9;
+      itemsCopy = maxVisibleItems;
     }
 
-    v11 = [(SCATMenuCollectionViewFlowLayout *)self maxItemsPerRow];
-    v12 = [(SCATMenuCollectionViewFlowLayout *)self maxRows];
-    v13 = ceil(v10 / v11);
-    if (v13 > v12)
+    maxItemsPerRow = [(SCATMenuCollectionViewFlowLayout *)self maxItemsPerRow];
+    maxRows = [(SCATMenuCollectionViewFlowLayout *)self maxRows];
+    v13 = ceil(itemsCopy / maxItemsPerRow);
+    if (v13 > maxRows)
     {
-      v13 = v12;
+      v13 = maxRows;
     }
 
-    v14 = v13;
-    if (v10 >= v11)
+    maxRows2 = v13;
+    if (itemsCopy >= maxItemsPerRow)
     {
-      v15 = v11;
-    }
-
-    else
-    {
-      v15 = v10;
-    }
-
-    if (v14 == 1)
-    {
-      v16 = v15;
+      v15 = maxItemsPerRow;
     }
 
     else
     {
-      v16 = v11;
+      v15 = itemsCopy;
     }
 
-    if (v10 > 8)
+    if (maxRows2 == 1)
     {
-      if (v10 == 9)
+      numberOfMenuItems = v15;
+    }
+
+    else
+    {
+      numberOfMenuItems = maxItemsPerRow;
+    }
+
+    if (itemsCopy > 8)
+    {
+      if (itemsCopy == 9)
       {
         if (AXDeviceIsPad())
         {
-          v14 = 2;
-          v16 = 5;
+          maxRows2 = 2;
+          numberOfMenuItems = 5;
         }
 
         else if ((AXDeviceIsPhone() & 1) != 0 || AXDeviceIsPod())
         {
-          v16 = 3;
-          v14 = 3;
+          numberOfMenuItems = 3;
+          maxRows2 = 3;
         }
       }
 
-      else if (v10 == 10 && AXDeviceIsPad())
+      else if (itemsCopy == 10 && AXDeviceIsPad())
       {
-        v16 = 5;
-        v14 = 2;
+        numberOfMenuItems = 5;
+        maxRows2 = 2;
       }
     }
 
-    else if ((v10 - 5) < 2)
+    else if ((itemsCopy - 5) < 2)
     {
-      v14 = 2;
-      v16 = 3;
+      maxRows2 = 2;
+      numberOfMenuItems = 3;
     }
 
-    else if ((v10 - 7) < 2)
+    else if ((itemsCopy - 7) < 2)
     {
-      v14 = 2;
-      v16 = 4;
+      maxRows2 = 2;
+      numberOfMenuItems = 4;
     }
   }
 
   else if ([(SCATMenuCollectionViewFlowLayout *)self isDockStyle])
   {
-    v14 = [(SCATMenuCollectionViewFlowLayout *)self maxRows];
-    v16 = [(SCATMenuCollectionViewFlowLayout *)self numberOfMenuItems];
+    maxRows2 = [(SCATMenuCollectionViewFlowLayout *)self maxRows];
+    numberOfMenuItems = [(SCATMenuCollectionViewFlowLayout *)self numberOfMenuItems];
   }
 
   else
   {
     _AXAssert();
-    v16 = 0;
-    v14 = 0;
+    numberOfMenuItems = 0;
+    maxRows2 = 0;
   }
 
-  if (a4)
+  if (row)
   {
-    *a4 = v16;
+    *row = numberOfMenuItems;
   }
 
-  if (a3)
+  if (rows)
   {
-    *a3 = v14;
+    *rows = maxRows2;
   }
 }
 
-- (void)column:(unint64_t *)a3 row:(unint64_t *)a4 forItemAtIndex:(unint64_t)a5
+- (void)column:(unint64_t *)column row:(unint64_t *)row forItemAtIndex:(unint64_t)index
 {
   v11 = 0;
   v12 = 0;
@@ -315,45 +315,45 @@
     v8 += v11;
   }
 
-  while (v8 <= a5);
-  if (a4)
+  while (v8 <= index);
+  if (row)
   {
-    *a4 = v9;
+    *row = v9;
   }
 
-  if (a3)
+  if (column)
   {
-    *a3 = a5 % v10;
+    *column = index % v10;
   }
 }
 
-- (id)_rowToFrameDictionaryForAttributes:(id)a3 itemsPerRow:(unint64_t)a4
+- (id)_rowToFrameDictionaryForAttributes:(id)attributes itemsPerRow:(unint64_t)row
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v6 = objc_alloc_init(NSMutableDictionary);
-  if ([v5 count])
+  if ([attributesCopy count])
   {
     v7 = 0;
-    if (a4 <= 1)
+    if (row <= 1)
     {
-      v8 = 1;
+      rowCopy = 1;
     }
 
     else
     {
-      v8 = a4;
+      rowCopy = row;
     }
 
     do
     {
-      if (!a4)
+      if (!row)
       {
         _AXAssert();
       }
 
-      v9 = [v5 objectAtIndex:v7];
-      v10 = [NSNumber numberWithUnsignedInteger:v7 / v8];
-      v11 = [v6 objectForKey:v10];
+      v9 = [attributesCopy objectAtIndex:v7];
+      rowCopy = [NSNumber numberWithUnsignedInteger:v7 / rowCopy];
+      v11 = [v6 objectForKey:rowCopy];
       [v11 CGRectValue];
       v13 = v12;
       v15 = v14;
@@ -374,33 +374,33 @@
         v28[2] = v23;
         v28[3] = v24;
         v25 = [NSValue valueWithBytes:v28 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-        v26 = [NSNumber numberWithUnsignedInteger:v7 / v8];
-        [v6 setObject:v25 forKeyedSubscript:v26];
+        rowCopy2 = [NSNumber numberWithUnsignedInteger:v7 / rowCopy];
+        [v6 setObject:v25 forKeyedSubscript:rowCopy2];
       }
 
       ++v7;
     }
 
-    while (v7 < [v5 count]);
+    while (v7 < [attributesCopy count]);
   }
 
   return v6;
 }
 
-- (double)_xValueForDockItemAtIndex:(unint64_t)a3 layoutAttributes:(id)a4
+- (double)_xValueForDockItemAtIndex:(unint64_t)index layoutAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = [v6 objectAtIndex:a3];
+  attributesCopy = attributes;
+  v7 = [attributesCopy objectAtIndex:index];
   [v7 frame];
-  if (a3)
+  if (index)
   {
     v9 = +[HNDAccessibilityManager sharedManager];
-    v10 = [v9 applicationIsRTL];
+    applicationIsRTL = [v9 applicationIsRTL];
 
-    v11 = a3 - 1;
-    v12 = [v6 objectAtIndex:a3 - 1];
+    v11 = index - 1;
+    v12 = [attributesCopy objectAtIndex:index - 1];
     [v12 frame];
-    if (v10)
+    if (applicationIsRTL)
     {
       MinX = CGRectGetMinX(*&v13);
       [(SCATMenuCollectionViewFlowLayout *)self menuItemHorizontalSpacingAfterItemAtIndex:v11];
@@ -425,9 +425,9 @@
   return v20;
 }
 
-- (double)_heightForAllRows:(unint64_t)a3 itemsPerRow:(unint64_t)a4
+- (double)_heightForAllRows:(unint64_t)rows itemsPerRow:(unint64_t)row
 {
-  if (!a3)
+  if (!rows)
   {
     return 0.0;
   }
@@ -436,44 +436,44 @@
   v8 = 0.0;
   do
   {
-    [(SCATMenuCollectionViewFlowLayout *)self _maxHeightForRow:v7 itemsPerRow:a4];
+    [(SCATMenuCollectionViewFlowLayout *)self _maxHeightForRow:v7 itemsPerRow:row];
     v8 = v8 + v9;
     ++v7;
   }
 
-  while (a3 != v7);
+  while (rows != v7);
   return v8;
 }
 
-- (double)_maxHeightForRow:(unint64_t)a3 itemsPerRow:(unint64_t)a4
+- (double)_maxHeightForRow:(unint64_t)row itemsPerRow:(unint64_t)perRow
 {
-  v7 = [(SCATMenuCollectionViewFlowLayout *)self collectionView];
-  v8 = [v7 delegate];
+  collectionView = [(SCATMenuCollectionViewFlowLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
-  v9 = [(SCATMenuCollectionViewFlowLayout *)self numberOfMenuItems];
-  if (v9)
+  numberOfMenuItems = [(SCATMenuCollectionViewFlowLayout *)self numberOfMenuItems];
+  if (numberOfMenuItems)
   {
-    v10 = v9;
+    v10 = numberOfMenuItems;
     v11 = 0;
     v12 = 0.0;
     do
     {
-      if (v11 / a4 == a3)
+      if (v11 / perRow == row)
       {
-        v13 = [(SCATMenuCollectionViewFlowLayout *)self collectionView];
-        v14 = [v8 collectionView:v13 menuItemForItemAtIndex:v11];
+        collectionView2 = [(SCATMenuCollectionViewFlowLayout *)self collectionView];
+        v14 = [delegate collectionView:collectionView2 menuItemForItemAtIndex:v11];
 
         if ([(SCATMenuCollectionViewFlowLayout *)self willIncludeTitleLabels])
         {
-          v15 = [v14 title];
+          title = [v14 title];
         }
 
         else
         {
-          v15 = 0;
+          title = 0;
         }
 
-        [SCATMenuItemCell cellSizeForTitle:v15];
+        [SCATMenuItemCell cellSizeForTitle:title];
         if (v12 < v16)
         {
           v12 = v16;
@@ -494,11 +494,11 @@
   return v12;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v24.receiver = self;
   v24.super_class = SCATMenuCollectionViewFlowLayout;
-  v4 = [(SCATMenuCollectionViewFlowLayout *)&v24 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(SCATMenuCollectionViewFlowLayout *)&v24 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v22 = 0;
   v23 = 0;
   [(SCATMenuCollectionViewFlowLayout *)self optimalNumberOfRows:&v23 itemsPerRow:&v22 forTotalNumberOfItems:[(SCATMenuCollectionViewFlowLayout *)self numberOfMenuItems]];
@@ -550,10 +550,10 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(SCATMenuCollectionViewFlowLayout *)self numberOfMenuItems];
+  numberOfMenuItems = [(SCATMenuCollectionViewFlowLayout *)self numberOfMenuItems];
   v19 = 0;
   v20 = 0;
-  [(SCATMenuCollectionViewFlowLayout *)self optimalNumberOfRows:&v20 itemsPerRow:&v19 forTotalNumberOfItems:v3];
+  [(SCATMenuCollectionViewFlowLayout *)self optimalNumberOfRows:&v20 itemsPerRow:&v19 forTotalNumberOfItems:numberOfMenuItems];
   [(SCATMenuCollectionViewFlowLayout *)self menuItemSize];
   v5 = v4;
   [(SCATMenuCollectionViewFlowLayout *)self menuItemSpacing];
@@ -564,9 +564,9 @@
   v12 = v20;
   if ([(SCATMenuCollectionViewFlowLayout *)self isDockStyle])
   {
-    v13 = v5 * v3;
-    v14 = v3 - 1;
-    if (v3 != 1)
+    v13 = v5 * numberOfMenuItems;
+    v14 = numberOfMenuItems - 1;
+    if (numberOfMenuItems != 1)
     {
       v15 = 0;
       do

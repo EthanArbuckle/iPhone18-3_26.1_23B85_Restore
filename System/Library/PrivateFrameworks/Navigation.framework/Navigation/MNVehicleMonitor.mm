@@ -54,14 +54,14 @@
 
   v4 = dispatch_get_global_queue(21, 0);
   objc_initWeak(buf, self);
-  v5 = [*MEMORY[0x1E6963538] UTF8String];
+  uTF8String = [*MEMORY[0x1E6963538] UTF8String];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __35__MNVehicleMonitor_startMonitoring__block_invoke;
   handler[3] = &unk_1E8430E58;
   objc_copyWeak(&v12, buf);
-  notify_register_dispatch(v5, &self->_vehicleConnectedToken, v4, handler);
-  v6 = [*MEMORY[0x1E6963540] UTF8String];
+  notify_register_dispatch(uTF8String, &self->_vehicleConnectedToken, v4, handler);
+  uTF8String2 = [*MEMORY[0x1E6963540] UTF8String];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __35__MNVehicleMonitor_startMonitoring__block_invoke_2;
@@ -69,7 +69,7 @@
   v7 = v4;
   v9 = v7;
   objc_copyWeak(&v10, buf);
-  notify_register_dispatch(v6, &self->_vehicleDisconnectedToken, v7, v8);
+  notify_register_dispatch(uTF8String2, &self->_vehicleDisconnectedToken, v7, v8);
   self->_isMonitoring = 1;
   objc_destroyWeak(&v10);
 

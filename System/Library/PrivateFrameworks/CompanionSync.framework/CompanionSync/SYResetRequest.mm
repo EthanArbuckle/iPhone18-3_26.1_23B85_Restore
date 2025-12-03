@@ -1,11 +1,11 @@
 @interface SYResetRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYResetRequest
@@ -16,40 +16,40 @@
   v8.receiver = self;
   v8.super_class = SYResetRequest;
   v4 = [(SYResetRequest *)&v8 description];
-  v5 = [(SYResetRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYResetRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(SYMessageHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(SYMessageHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   cancelSessionID = self->_cancelSessionID;
   if (cancelSessionID)
   {
-    [v3 setObject:cancelSessionID forKey:@"cancelSessionID"];
+    [dictionary setObject:cancelSessionID forKey:@"cancelSessionID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_header)
   {
     [SYResetRequest writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   if (self->_cancelSessionID)
   {
@@ -57,37 +57,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setHeader:self->_header];
+  toCopy = to;
+  [toCopy setHeader:self->_header];
   if (self->_cancelSessionID)
   {
-    [v4 setCancelSessionID:?];
+    [toCopy setCancelSessionID:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SYMessageHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SYMessageHeader *)self->_header copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_cancelSessionID copyWithZone:a3];
+  v8 = [(NSString *)self->_cancelSessionID copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | v4[2])) || -[SYMessageHeader isEqual:](header, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | equalCopy[2])) || -[SYMessageHeader isEqual:](header, "isEqual:")))
   {
     cancelSessionID = self->_cancelSessionID;
-    if (cancelSessionID | v4[1])
+    if (cancelSessionID | equalCopy[1])
     {
       v7 = [(NSString *)cancelSessionID isEqual:?];
     }
@@ -106,12 +106,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = v4[2];
-  v7 = v4;
+  v6 = fromCopy[2];
+  v7 = fromCopy;
   if (header)
   {
     if (!v6)
@@ -132,15 +132,15 @@
     header = [(SYResetRequest *)self setHeader:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[1])
+  if (fromCopy[1])
   {
     header = [(SYResetRequest *)self setCancelSessionID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](header, v4);
+  MEMORY[0x1EEE66BB8](header, fromCopy);
 }
 
 @end

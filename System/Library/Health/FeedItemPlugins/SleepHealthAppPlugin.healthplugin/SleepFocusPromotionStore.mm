@@ -1,6 +1,6 @@
 @interface SleepFocusPromotionStore
 - (_TtC20SleepHealthAppPlugin24SleepFocusPromotionStore)init;
-- (void)sleepStore:(id)a3 sleepFocusConfigurationDidUpdate:(id)a4;
+- (void)sleepStore:(id)store sleepFocusConfigurationDidUpdate:(id)update;
 @end
 
 @implementation SleepFocusPromotionStore
@@ -12,9 +12,9 @@
   return result;
 }
 
-- (void)sleepStore:(id)a3 sleepFocusConfigurationDidUpdate:(id)a4
+- (void)sleepStore:(id)store sleepFocusConfigurationDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   sub_29E70B51C();
   swift_getKeyPath();
   swift_getKeyPath();

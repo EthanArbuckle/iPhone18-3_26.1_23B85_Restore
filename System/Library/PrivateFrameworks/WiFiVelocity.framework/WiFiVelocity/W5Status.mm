@@ -1,13 +1,13 @@
 @interface W5Status
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStatus:(id)a3;
-- (W5Status)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStatus:(id)status;
+- (W5Status)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5Status
@@ -36,27 +36,27 @@
   return v4;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5Status;
-  if (-[W5Status conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5Status conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (BOOL)isEqualToStatus:(id)a3
+- (BOOL)isEqualToStatus:(id)status
 {
   wifi = self->_wifi;
   if (!wifi)
   {
-    if (![a3 wifi])
+    if (![status wifi])
     {
       goto LABEL_5;
     }
@@ -64,7 +64,7 @@
     wifi = self->_wifi;
   }
 
-  v6 = -[W5WiFiStatus isEqual:](wifi, "isEqual:", [a3 wifi]);
+  v6 = -[W5WiFiStatus isEqual:](wifi, "isEqual:", [status wifi]);
   if (!v6)
   {
     return v6;
@@ -74,7 +74,7 @@ LABEL_5:
   awdl = self->_awdl;
   if (!awdl)
   {
-    if (![a3 awdl])
+    if (![status awdl])
     {
       goto LABEL_9;
     }
@@ -82,7 +82,7 @@ LABEL_5:
     awdl = self->_awdl;
   }
 
-  v6 = -[W5AWDLStatus isEqual:](awdl, "isEqual:", [a3 awdl]);
+  v6 = -[W5AWDLStatus isEqual:](awdl, "isEqual:", [status awdl]);
   if (!v6)
   {
     return v6;
@@ -92,7 +92,7 @@ LABEL_9:
   bluetooth = self->_bluetooth;
   if (!bluetooth)
   {
-    if (![a3 bluetooth])
+    if (![status bluetooth])
     {
       goto LABEL_13;
     }
@@ -100,7 +100,7 @@ LABEL_9:
     bluetooth = self->_bluetooth;
   }
 
-  v6 = -[W5BluetoothStatus isEqual:](bluetooth, "isEqual:", [a3 bluetooth]);
+  v6 = -[W5BluetoothStatus isEqual:](bluetooth, "isEqual:", [status bluetooth]);
   if (!v6)
   {
     return v6;
@@ -110,7 +110,7 @@ LABEL_13:
   network = self->_network;
   if (!network)
   {
-    if (![a3 network])
+    if (![status network])
     {
       goto LABEL_17;
     }
@@ -118,7 +118,7 @@ LABEL_13:
     network = self->_network;
   }
 
-  v6 = -[W5NetworkStatus isEqual:](network, "isEqual:", [a3 network]);
+  v6 = -[W5NetworkStatus isEqual:](network, "isEqual:", [status network]);
   if (!v6)
   {
     return v6;
@@ -128,7 +128,7 @@ LABEL_17:
   power = self->_power;
   if (!power)
   {
-    if (![a3 power])
+    if (![status power])
     {
       goto LABEL_21;
     }
@@ -136,7 +136,7 @@ LABEL_17:
     power = self->_power;
   }
 
-  v6 = -[W5PowerStatus isEqual:](power, "isEqual:", [a3 power]);
+  v6 = -[W5PowerStatus isEqual:](power, "isEqual:", [status power]);
   if (!v6)
   {
     return v6;
@@ -146,7 +146,7 @@ LABEL_21:
   diagnosticsModes = self->_diagnosticsModes;
   if (!diagnosticsModes)
   {
-    if (![a3 diagnosticsModes])
+    if (![status diagnosticsModes])
     {
       goto LABEL_25;
     }
@@ -154,7 +154,7 @@ LABEL_21:
     diagnosticsModes = self->_diagnosticsModes;
   }
 
-  v6 = -[NSArray isEqual:](diagnosticsModes, "isEqual:", [a3 diagnosticsModes]);
+  v6 = -[NSArray isEqual:](diagnosticsModes, "isEqual:", [status diagnosticsModes]);
   if (!v6)
   {
     return v6;
@@ -164,7 +164,7 @@ LABEL_25:
   lastHrFaults = self->_lastHrFaults;
   if (!lastHrFaults)
   {
-    if (![a3 lastHrFaults])
+    if (![status lastHrFaults])
     {
       goto LABEL_29;
     }
@@ -172,7 +172,7 @@ LABEL_25:
     lastHrFaults = self->_lastHrFaults;
   }
 
-  v6 = -[W5SummaryFaults isEqual:](lastHrFaults, "isEqual:", [a3 lastHrFaults]);
+  v6 = -[W5SummaryFaults isEqual:](lastHrFaults, "isEqual:", [status lastHrFaults]);
   if (!v6)
   {
     return v6;
@@ -185,11 +185,11 @@ LABEL_29:
     goto LABEL_32;
   }
 
-  if ([a3 lastHrLinkTests])
+  if ([status lastHrLinkTests])
   {
     lastHrLinkTests = self->_lastHrLinkTests;
 LABEL_32:
-    v6 = -[W5SummaryLinkTests isEqual:](lastHrLinkTests, "isEqual:", [a3 lastHrLinkTests]);
+    v6 = -[W5SummaryLinkTests isEqual:](lastHrLinkTests, "isEqual:", [status lastHrLinkTests]);
     if (!v6)
     {
       return v6;
@@ -199,7 +199,7 @@ LABEL_32:
   lastHrRecoveries = self->_lastHrRecoveries;
   if (!lastHrRecoveries)
   {
-    if (![a3 lastHrRecoveries])
+    if (![status lastHrRecoveries])
     {
       LOBYTE(v6) = 1;
       return v6;
@@ -208,20 +208,20 @@ LABEL_32:
     lastHrRecoveries = self->_lastHrRecoveries;
   }
 
-  v15 = [a3 lastHrRecoveries];
+  lastHrRecoveries = [status lastHrRecoveries];
 
-  LOBYTE(v6) = [(W5SummaryRecoveries *)lastHrRecoveries isEqual:v15];
+  LOBYTE(v6) = [(W5SummaryRecoveries *)lastHrRecoveries isEqual:lastHrRecoveries];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -232,7 +232,7 @@ LABEL_32:
     return 0;
   }
 
-  return [(W5Status *)self isEqualToStatus:a3];
+  return [(W5Status *)self isEqualToStatus:equal];
 }
 
 - (unint64_t)hash
@@ -248,7 +248,7 @@ LABEL_32:
   return v9 ^ v10 ^ [(W5SummaryRecoveries *)self->_lastHrRecoveries hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5Status allocWithZone:?]];
   [(W5Status *)v4 setWifi:self->_wifi];
@@ -263,41 +263,41 @@ LABEL_32:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_wifi forKey:@"_wifi"];
-  [a3 encodeObject:self->_awdl forKey:@"_awdl"];
-  [a3 encodeObject:self->_bluetooth forKey:@"_bluetooth"];
-  [a3 encodeObject:self->_network forKey:@"_network"];
-  [a3 encodeObject:self->_power forKey:@"_power"];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCAAB0] forKey:{"archivedDataWithRootObject:requiringSecureCoding:error:", self->_diagnosticsModes, 1, 0), @"_diagnosticsModes"}];
-  [a3 encodeObject:self->_lastHrFaults forKey:@"_lastHrFaults"];
-  [a3 encodeObject:self->_lastHrLinkTests forKey:@"_lastHrLinkTests"];
+  [coder encodeObject:self->_wifi forKey:@"_wifi"];
+  [coder encodeObject:self->_awdl forKey:@"_awdl"];
+  [coder encodeObject:self->_bluetooth forKey:@"_bluetooth"];
+  [coder encodeObject:self->_network forKey:@"_network"];
+  [coder encodeObject:self->_power forKey:@"_power"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCAAB0] forKey:{"archivedDataWithRootObject:requiringSecureCoding:error:", self->_diagnosticsModes, 1, 0), @"_diagnosticsModes"}];
+  [coder encodeObject:self->_lastHrFaults forKey:@"_lastHrFaults"];
+  [coder encodeObject:self->_lastHrLinkTests forKey:@"_lastHrLinkTests"];
   lastHrRecoveries = self->_lastHrRecoveries;
 
-  [a3 encodeObject:lastHrRecoveries forKey:@"_lastHrRecoveries"];
+  [coder encodeObject:lastHrRecoveries forKey:@"_lastHrRecoveries"];
 }
 
-- (W5Status)initWithCoder:(id)a3
+- (W5Status)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = W5Status;
   v4 = [(W5Status *)&v10 init];
   if (v4)
   {
-    v4->_wifi = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_wifi", "copy"}];
-    v4->_awdl = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_awdl", "copy"}];
-    v4->_bluetooth = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_bluetooth", "copy"}];
-    v4->_network = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_network", "copy"}];
-    v4->_power = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_power", "copy"}];
+    v4->_wifi = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_wifi", "copy"}];
+    v4->_awdl = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_awdl", "copy"}];
+    v4->_bluetooth = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_bluetooth", "copy"}];
+    v4->_network = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_network", "copy"}];
+    v4->_power = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_power", "copy"}];
     v5 = MEMORY[0x277CCAAC8];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v4->_diagnosticsModes = [objc_msgSend(v5 unarchivedObjectOfClasses:v8 fromData:objc_msgSend(a3 error:{"decodeObjectOfClass:forKey:", objc_opt_class(), @"_diagnosticsModes", 0), "copy"}];
-    v4->_lastHrFaults = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_lastHrFaults", "copy"}];
-    v4->_lastHrLinkTests = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_lastHrLinkTests", "copy"}];
-    v4->_lastHrRecoveries = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_lastHrRecoveries", "copy"}];
+    v4->_diagnosticsModes = [objc_msgSend(v5 unarchivedObjectOfClasses:v8 fromData:objc_msgSend(coder error:{"decodeObjectOfClass:forKey:", objc_opt_class(), @"_diagnosticsModes", 0), "copy"}];
+    v4->_lastHrFaults = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_lastHrFaults", "copy"}];
+    v4->_lastHrLinkTests = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_lastHrLinkTests", "copy"}];
+    v4->_lastHrRecoveries = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_lastHrRecoveries", "copy"}];
   }
 
   return v4;

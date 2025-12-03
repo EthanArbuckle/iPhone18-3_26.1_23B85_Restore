@@ -4,7 +4,7 @@
 - (CKMemoryInfo)init;
 - (int64_t)memoryPressure;
 - (void)dealloc;
-- (void)handleMemoryPressureEvent:(unint64_t)a3;
+- (void)handleMemoryPressureEvent:(unint64_t)event;
 @end
 
 @implementation CKMemoryInfo
@@ -23,10 +23,10 @@
 
 - (int64_t)memoryPressure
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  memoryPressure = v2->_memoryPressure;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  memoryPressure = selfCopy->_memoryPressure;
+  objc_sync_exit(selfCopy);
 
   return memoryPressure;
 }
@@ -79,7 +79,7 @@
   [(CKMemoryInfo *)&v3 dealloc];
 }
 
-- (void)handleMemoryPressureEvent:(unint64_t)a3
+- (void)handleMemoryPressureEvent:(unint64_t)event
 {
   v19 = *MEMORY[0x1E69E9840];
   if (ck_log_initialization_predicate != -1)
@@ -91,41 +91,41 @@
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v18 = a3;
+    eventCopy = event;
     _os_log_debug_impl(&dword_1883EA000, v5, OS_LOG_TYPE_DEBUG, "Handling memory pressure event: %lu", buf, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = (a3 >> 4) & 1;
-  if ((a3 & 0x20) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = (event >> 4) & 1;
+  if ((event & 0x20) != 0)
   {
     v7 = 3;
   }
 
-  v8 = (2 * a3) & 4;
-  if ((a3 & 4) != 0)
+  v8 = (2 * event) & 4;
+  if ((event & 4) != 0)
   {
     v8 = 12;
   }
 
   v9 = v7 | v8;
-  if (!v6)
+  if (!selfCopy)
   {
     v9 = 0;
   }
 
-  if (v6->_memoryPressure == v9)
+  if (selfCopy->_memoryPressure == v9)
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v6->_memoryPressure = v9;
-    objc_sync_exit(v6);
+    selfCopy->_memoryPressure = v9;
+    objc_sync_exit(selfCopy);
 
-    if (a3 == 32)
+    if (event == 32)
     {
       v12 = QOS_CLASS_USER_INITIATED;
     }
@@ -140,7 +140,7 @@
     block[1] = 3221225472;
     block[2] = sub_1886B9470;
     block[3] = &unk_1E70BC388;
-    block[4] = v6;
+    block[4] = selfCopy;
     v14 = dispatch_block_create_with_qos_class(0, v12, 0, block);
     dispatch_async(v13, v14);
   }

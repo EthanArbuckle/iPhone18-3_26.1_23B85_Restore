@@ -1,6 +1,6 @@
 @interface UINibStringIDTable
-- (BOOL)lookupKey:(id)a3 identifier:(int64_t *)a4;
-- (UINibStringIDTable)initWithKeysTransferingOwnership:(id *)a3 count:(unint64_t)a4;
+- (BOOL)lookupKey:(id)key identifier:(int64_t *)identifier;
+- (UINibStringIDTable)initWithKeysTransferingOwnership:(id *)ownership count:(unint64_t)count;
 - (void)dealloc;
 @end
 
@@ -29,7 +29,7 @@
   [(UINibStringIDTable *)&v5 dealloc];
 }
 
-- (UINibStringIDTable)initWithKeysTransferingOwnership:(id *)a3 count:(unint64_t)a4
+- (UINibStringIDTable)initWithKeysTransferingOwnership:(id *)ownership count:(unint64_t)count
 {
   v16.receiver = self;
   v16.super_class = UINibStringIDTable;
@@ -43,21 +43,21 @@
       v7 *= 2;
     }
 
-    while (v8 <= 2 * a4);
+    while (v8 <= 2 * count);
     v6->table = malloc_type_calloc(8uLL, v8, 0x5794E50uLL);
-    v6->buckets = malloc_type_malloc(24 * a4, 0x10A0040319E9F20uLL);
+    v6->buckets = malloc_type_malloc(24 * count, 0x10A0040319E9F20uLL);
     v6->hashMask = v8 - 1;
-    v6->count = a4;
-    if (a4)
+    v6->count = count;
+    if (count)
     {
       v9 = 0;
       v10 = 0;
       do
       {
         v11 = &v6->buckets[v9];
-        v12 = [a3[v10] hash];
+        v12 = [ownership[v10] hash];
         v11->var1 = v12;
-        v11->var0 = a3[v10];
+        v11->var0 = ownership[v10];
         count = v6->count;
         v14 = v6->hashMask & v12;
         v11->var2 = v6->table[v14];
@@ -73,9 +73,9 @@
   return v6;
 }
 
-- (BOOL)lookupKey:(id)a3 identifier:(int64_t *)a4
+- (BOOL)lookupKey:(id)key identifier:(int64_t *)identifier
 {
-  v7 = [a3 hash];
+  v7 = [key hash];
   v8 = self->table[self->hashMask & v7];
   if (!v8)
   {
@@ -88,12 +88,12 @@
     if (v8->var1 == v9)
     {
       var0 = v8->var0;
-      if (v8->var0 == a3)
+      if (v8->var0 == key)
       {
         goto LABEL_9;
       }
 
-      if ([var0 isEqualToString:a3])
+      if ([var0 isEqualToString:key])
       {
         break;
       }
@@ -108,11 +108,11 @@
 
   var0 = v8->var0;
 LABEL_9:
-  *a4 = 0xAAAAAAAAAAAAAAABLL * ((v8 - self->buckets) >> 3);
-  if (var0 != a3)
+  *identifier = 0xAAAAAAAAAAAAAAABLL * ((v8 - self->buckets) >> 3);
+  if (var0 != key)
   {
 
-    v8->var0 = [a3 copy];
+    v8->var0 = [key copy];
   }
 
   return 1;

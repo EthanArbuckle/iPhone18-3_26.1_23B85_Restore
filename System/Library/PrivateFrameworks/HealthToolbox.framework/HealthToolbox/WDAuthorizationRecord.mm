@@ -1,21 +1,21 @@
 @interface WDAuthorizationRecord
 - (WDAuthorizationRecord)init;
-- (WDAuthorizationRecord)initWithInternalAuthorizationRecord:(id)a3;
+- (WDAuthorizationRecord)initWithInternalAuthorizationRecord:(id)record;
 @end
 
 @implementation WDAuthorizationRecord
 
-- (WDAuthorizationRecord)initWithInternalAuthorizationRecord:(id)a3
+- (WDAuthorizationRecord)initWithInternalAuthorizationRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   v9.receiver = self;
   v9.super_class = WDAuthorizationRecord;
   v6 = [(WDAuthorizationRecord *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalAuthorizationRecord, a3);
-    v7->_status = [v5 status];
+    objc_storeStrong(&v6->_internalAuthorizationRecord, record);
+    v7->_status = [recordCopy status];
   }
 
   return v7;

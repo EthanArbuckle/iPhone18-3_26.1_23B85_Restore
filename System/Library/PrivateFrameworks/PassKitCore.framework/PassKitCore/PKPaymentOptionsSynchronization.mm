@@ -24,8 +24,8 @@
   if (v2)
   {
     [(PKPaymentOptionsSynchronization *)v2 _updateSynchronizationBehavior];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__localeDidChangeNotification_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__localeDidChangeNotification_ name:*MEMORY[0x1E695D8F0] object:0];
   }
 
   return v3;
@@ -34,9 +34,9 @@
 - (void)_updateSynchronizationBehavior
 {
   shouldSyncToCloud = self->_shouldSyncToCloud;
-  v4 = [objc_opt_class() shouldSyncToCloud];
-  self->_shouldSyncToCloud = v4;
-  if (shouldSyncToCloud != v4)
+  shouldSyncToCloud = [objc_opt_class() shouldSyncToCloud];
+  self->_shouldSyncToCloud = shouldSyncToCloud;
+  if (shouldSyncToCloud != shouldSyncToCloud)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = WeakRetained;

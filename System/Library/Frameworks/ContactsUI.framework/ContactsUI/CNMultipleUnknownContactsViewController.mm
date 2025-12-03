@@ -2,25 +2,25 @@
 + (id)contactFormatter;
 + (id)descriptorForRequiredKeys;
 + (id)log;
-- (BOOL)contactViewController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4;
+- (BOOL)contactViewController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property;
 - (CNContactStore)contactStore;
 - (CNContainer)targetContainer;
-- (CNMultipleUnknownContactsViewController)initWithContacts:(id)a3 targetGroup:(id)a4 targetContainer:(id)a5;
+- (CNMultipleUnknownContactsViewController)initWithContacts:(id)contacts targetGroup:(id)group targetContainer:(id)container;
 - (CNMultipleUnknownContactsViewControllerDelegate)delegate;
 - (CNUIGroupsAndContainersSaveManager)groupsAndContainersSaveManager;
-- (id)_existingMatchForUnknownContact:(id)a3;
-- (id)_updatedContact:(id)a3 withPropertiesFromContact:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_addToExistingContacts:(id)a3;
-- (void)_createNewContacts:(id)a3;
+- (id)_existingMatchForUnknownContact:(id)contact;
+- (id)_updatedContact:(id)contact withPropertiesFromContact:(id)fromContact;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_addToExistingContacts:(id)contacts;
+- (void)_createNewContacts:(id)contacts;
 - (void)_didComplete;
-- (void)_presentUnknownContact:(id)a3;
-- (void)_save:(id)a3;
+- (void)_presentUnknownContact:(id)contact;
+- (void)_save:(id)_save;
 - (void)_showAddAllToContactsConfirmation;
-- (void)addContacts:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)addContacts:(id)contacts;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -33,16 +33,16 @@
   return WeakRetained;
 }
 
-- (BOOL)contactViewController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4
+- (BOOL)contactViewController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property
 {
-  v5 = a4;
-  v6 = [(CNMultipleUnknownContactsViewController *)self delegate];
+  propertyCopy = property;
+  delegate = [(CNMultipleUnknownContactsViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNMultipleUnknownContactsViewController *)self delegate];
-    v9 = [v8 multipleUnknownContactsViewController:self shouldPerformDefaultActionForContactProperty:v5];
+    delegate2 = [(CNMultipleUnknownContactsViewController *)self delegate];
+    v9 = [delegate2 multipleUnknownContactsViewController:self shouldPerformDefaultActionForContactProperty:propertyCopy];
   }
 
   else
@@ -53,32 +53,32 @@
   return v9;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  if (a4)
+  if (contact)
   {
-    v5 = [a3 contact];
-    v6 = [v5 identifier];
+    contact = [controller contact];
+    identifier = [contact identifier];
 
-    v7 = [(CNMultipleUnknownContactsViewController *)self contacts];
+    contacts = [(CNMultipleUnknownContactsViewController *)self contacts];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __88__CNMultipleUnknownContactsViewController_contactViewController_didCompleteWithContact___block_invoke;
     v14[3] = &unk_1E74E7880;
-    v8 = v6;
+    v8 = identifier;
     v15 = v8;
-    LODWORD(v6) = [v7 _cn_any:v14];
+    LODWORD(identifier) = [contacts _cn_any:v14];
 
-    if (v6)
+    if (identifier)
     {
-      v9 = [(CNMultipleUnknownContactsViewController *)self createdContactIdentifiers];
-      [v9 _cn_addNonNilObject:v8];
+      createdContactIdentifiers = [(CNMultipleUnknownContactsViewController *)self createdContactIdentifiers];
+      [createdContactIdentifiers _cn_addNonNilObject:v8];
     }
 
-    v10 = [(CNMultipleUnknownContactsViewController *)self createdContactIdentifiers];
-    v11 = [v10 count];
-    v12 = [(CNMultipleUnknownContactsViewController *)self contacts];
-    v13 = [v12 count];
+    createdContactIdentifiers2 = [(CNMultipleUnknownContactsViewController *)self createdContactIdentifiers];
+    v11 = [createdContactIdentifiers2 count];
+    contacts2 = [(CNMultipleUnknownContactsViewController *)self contacts];
+    v13 = [contacts2 count];
 
     if (v11 == v13)
     {
@@ -95,22 +95,22 @@ uint64_t __88__CNMultipleUnknownContactsViewController_contactViewController_did
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:v6];
-  if ([v6 section])
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:pathCopy];
+  if ([pathCopy section])
   {
-    v8 = [(CNMultipleUnknownContactsViewController *)self contacts];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    contacts = [(CNMultipleUnknownContactsViewController *)self contacts];
+    v9 = [contacts objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v10 = [(CNMultipleUnknownContactsViewController *)self formatter];
-    v11 = [v10 stringFromContact:v9];
-    v12 = [v7 textLabel];
-    [v12 setText:v11];
+    formatter = [(CNMultipleUnknownContactsViewController *)self formatter];
+    v11 = [formatter stringFromContact:v9];
+    textLabel = [v7 textLabel];
+    [textLabel setText:v11];
 
-    v13 = [v7 textLabel];
-    [v13 setTextAlignment:4];
+    textLabel2 = [v7 textLabel];
+    [textLabel2 setTextAlignment:4];
 
     [v7 setAccessoryType:1];
   }
@@ -120,13 +120,13 @@ uint64_t __88__CNMultipleUnknownContactsViewController_contactViewController_did
     v14 = MEMORY[0x1E696AEC0];
     v15 = CNContactsUIBundle();
     v16 = [v15 localizedStringForKey:@"VCARD_ADD_CONTACT" value:&stru_1F0CE7398 table:@"Localized"];
-    v17 = [(CNMultipleUnknownContactsViewController *)self contacts];
-    v18 = [v14 localizedStringWithFormat:v16, objc_msgSend(v17, "count")];
-    v19 = [v7 textLabel];
-    [v19 setText:v18];
+    contacts2 = [(CNMultipleUnknownContactsViewController *)self contacts];
+    v18 = [v14 localizedStringWithFormat:v16, objc_msgSend(contacts2, "count")];
+    textLabel3 = [v7 textLabel];
+    [textLabel3 setText:v18];
 
-    v20 = [v7 textLabel];
-    [v20 setTextAlignment:1];
+    textLabel4 = [v7 textLabel];
+    [textLabel4 setTextAlignment:1];
 
     [v7 setAccessoryType:0];
   }
@@ -134,100 +134,100 @@ uint64_t __88__CNMultipleUnknownContactsViewController_contactViewController_did
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 1;
   }
 
-  v4 = [(CNMultipleUnknownContactsViewController *)self contacts];
-  v5 = [v4 count];
+  contacts = [(CNMultipleUnknownContactsViewController *)self contacts];
+  v5 = [contacts count];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v6 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v7 = [(CNMultipleUnknownContactsViewController *)self contacts];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    contacts = [(CNMultipleUnknownContactsViewController *)self contacts];
+    indexPathForSelectedRow = [contacts objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    [(CNMultipleUnknownContactsViewController *)self _presentUnknownContact:v8];
+    [(CNMultipleUnknownContactsViewController *)self _presentUnknownContact:indexPathForSelectedRow];
   }
 
   else
   {
     [(CNMultipleUnknownContactsViewController *)self _showAddAllToContactsConfirmation];
-    v8 = [v9 indexPathForSelectedRow];
-    [v9 deselectRowAtIndexPath:v8 animated:1];
+    indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+    [viewCopy deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
   }
 }
 
-- (id)_updatedContact:(id)a3 withPropertiesFromContact:(id)a4
+- (id)_updatedContact:(id)contact withPropertiesFromContact:(id)fromContact
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  v7 = [v6 addAllPropertiesFromContact:v5];
+  fromContactCopy = fromContact;
+  v6 = [contact mutableCopy];
+  v7 = [v6 addAllPropertiesFromContact:fromContactCopy];
 
   return v6;
 }
 
-- (id)_existingMatchForUnknownContact:(id)a3
+- (id)_existingMatchForUnknownContact:(id)contact
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 contactType];
-  if (v5 == 1)
+  contactCopy = contact;
+  contactType = [contactCopy contactType];
+  if (contactType == 1)
   {
-    v6 = [v4 organizationName];
+    organizationName = [contactCopy organizationName];
   }
 
   else
   {
-    v6 = &stru_1F0CE7398;
+    organizationName = &stru_1F0CE7398;
   }
 
   v7 = *MEMORY[0x1E6996568];
-  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v6))
+  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], organizationName))
   {
-    v8 = [v4 givenName];
+    givenName = [contactCopy givenName];
 
-    v6 = v8;
+    organizationName = givenName;
   }
 
-  v9 = [v4 familyName];
-  if (((*(v7 + 16))(v7, v9) & 1) == 0)
+  familyName = [contactCopy familyName];
+  if (((*(v7 + 16))(v7, familyName) & 1) == 0)
   {
-    if ((*(v7 + 16))(v7, v6))
+    if ((*(v7 + 16))(v7, organizationName))
     {
-      v10 = v9;
+      v10 = familyName;
     }
 
     else
     {
-      v10 = [(__CFString *)v6 stringByAppendingFormat:@" %@", v9];
+      v10 = [(__CFString *)organizationName stringByAppendingFormat:@" %@", familyName];
     }
 
     v11 = v10;
 
-    v6 = v11;
+    organizationName = v11;
   }
 
-  if ((*(v7 + 16))(v7, v6))
+  if ((*(v7 + 16))(v7, organizationName))
   {
     v12 = 0;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695CD58] predicateForContactsMatchingName:v6];
+    v13 = [MEMORY[0x1E695CD58] predicateForContactsMatchingName:organizationName];
     v14 = objc_alloc(MEMORY[0x1E695CD78]);
-    v15 = [objc_opt_class() descriptorForRequiredKeys];
-    v35[0] = v15;
+    descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+    v35[0] = descriptorForRequiredKeys;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
     v17 = [v14 initWithKeysToFetch:v16];
 
@@ -239,17 +239,17 @@ uint64_t __88__CNMultipleUnknownContactsViewController_contactViewController_did
     v32 = __Block_byref_object_copy__19313;
     v33 = __Block_byref_object_dispose__19314;
     v34 = 0;
-    v18 = [(CNMultipleUnknownContactsViewController *)self contactStore];
-    v27 = v5;
+    contactStore = [(CNMultipleUnknownContactsViewController *)self contactStore];
+    v27 = contactType;
     v28 = 0;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __75__CNMultipleUnknownContactsViewController__existingMatchForUnknownContact___block_invoke_63;
     v23[3] = &unk_1E74E2DF0;
     v25 = &__block_literal_global_62;
-    v24 = v4;
+    v24 = contactCopy;
     v26 = &v29;
-    v19 = [v18 enumerateContactsWithFetchRequest:v17 error:&v28 usingBlock:v23];
+    v19 = [contactStore enumerateContactsWithFetchRequest:v17 error:&v28 usingBlock:v23];
     v20 = v28;
 
     if (v19)
@@ -373,64 +373,64 @@ BOOL __75__CNMultipleUnknownContactsViewController__existingMatchForUnknownConta
   return v7;
 }
 
-- (void)_presentUnknownContact:(id)a3
+- (void)_presentUnknownContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNMultipleUnknownContactsViewController *)self createdContactIdentifiers];
-  v6 = [v4 identifier];
-  v7 = [v5 containsObject:v6];
+  contactCopy = contact;
+  createdContactIdentifiers = [(CNMultipleUnknownContactsViewController *)self createdContactIdentifiers];
+  identifier = [contactCopy identifier];
+  v7 = [createdContactIdentifiers containsObject:identifier];
 
   if (v7)
   {
-    [CNContactViewController viewControllerForContact:v4];
+    [CNContactViewController viewControllerForContact:contactCopy];
   }
 
   else
   {
-    [CNContactViewController viewControllerForUnknownContact:v4];
+    [CNContactViewController viewControllerForUnknownContact:contactCopy];
   }
   v12 = ;
 
-  v8 = [(CNMultipleUnknownContactsViewController *)self contactStore];
-  [v12 setContactStore:v8];
+  contactStore = [(CNMultipleUnknownContactsViewController *)self contactStore];
+  [v12 setContactStore:contactStore];
 
   [v12 setDelegate:self];
-  v9 = [(CNMultipleUnknownContactsViewController *)self targetGroup];
-  [v12 setParentGroup:v9];
+  targetGroup = [(CNMultipleUnknownContactsViewController *)self targetGroup];
+  [v12 setParentGroup:targetGroup];
 
-  v10 = [(CNMultipleUnknownContactsViewController *)self targetContainer];
-  [v12 setParentContainer:v10];
+  targetContainer = [(CNMultipleUnknownContactsViewController *)self targetContainer];
+  [v12 setParentContainer:targetContainer];
 
-  v11 = [(CNMultipleUnknownContactsViewController *)self navigationController];
-  [v11 pushViewController:v12 animated:1];
+  navigationController = [(CNMultipleUnknownContactsViewController *)self navigationController];
+  [navigationController pushViewController:v12 animated:1];
 }
 
-- (void)_addToExistingContacts:(id)a3
+- (void)_addToExistingContacts:(id)contacts
 {
   v45 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [MEMORY[0x1E695DF70] array];
+  contactsCopy = contacts;
+  array = [v4 array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v8 = objc_alloc_init(MEMORY[0x1E695CF88]);
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __66__CNMultipleUnknownContactsViewController__addToExistingContacts___block_invoke;
   v37[3] = &unk_1E74E2DA8;
   v37[4] = self;
-  v9 = v6;
+  v9 = array;
   v38 = v9;
-  v10 = v7;
+  v10 = array2;
   v39 = v10;
   v11 = v8;
   v40 = v11;
-  [v5 enumerateObjectsUsingBlock:v37];
+  [contactsCopy enumerateObjectsUsingBlock:v37];
 
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    v12 = [(CNMultipleUnknownContactsViewController *)self contactStore];
+    contactStore = [(CNMultipleUnknownContactsViewController *)self contactStore];
     v36 = 0;
-    v13 = [v12 executeSaveRequest:v11 error:&v36];
+    v13 = [contactStore executeSaveRequest:v11 error:&v36];
     v14 = v36;
 
     if (v13)
@@ -443,9 +443,9 @@ BOOL __75__CNMultipleUnknownContactsViewController__existingMatchForUnknownConta
       v15 = [objc_opt_class() log];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v32 = [(CNMultipleUnknownContactsViewController *)self contactStore];
+        contactStore2 = [(CNMultipleUnknownContactsViewController *)self contactStore];
         *buf = 138412546;
-        v42 = v32;
+        v42 = contactStore2;
         v43 = 2112;
         v44 = v14;
         _os_log_error_impl(&dword_199A75000, v15, OS_LOG_TYPE_ERROR, "Could not save contacts in store %@: %@", buf, 0x16u);
@@ -524,17 +524,17 @@ void __66__CNMultipleUnknownContactsViewController__addToExistingContacts___bloc
   }
 }
 
-- (void)addContacts:(id)a3
+- (void)addContacts:(id)contacts
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = contactsCopy;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v7)
   {
@@ -550,9 +550,9 @@ void __66__CNMultipleUnknownContactsViewController__addToExistingContacts___bloc
         }
 
         v10 = *(*(&v29 + 1) + 8 * v9);
-        v11 = [(CNMultipleUnknownContactsViewController *)self groupsAndContainersSaveManager];
-        v12 = [(CNMultipleUnknownContactsViewController *)self targetContainer];
-        v13 = [v11 isAuthorizedToAddContact:v10 toContainer:v12 ignoresParentalRestrictions:0];
+        groupsAndContainersSaveManager = [(CNMultipleUnknownContactsViewController *)self groupsAndContainersSaveManager];
+        targetContainer = [(CNMultipleUnknownContactsViewController *)self targetContainer];
+        v13 = [groupsAndContainersSaveManager isAuthorizedToAddContact:v10 toContainer:targetContainer ignoresParentalRestrictions:0];
 
         if (v13)
         {
@@ -578,31 +578,31 @@ void __66__CNMultipleUnknownContactsViewController__addToExistingContacts___bloc
   v15 = *MEMORY[0x1E6996530];
   if (((*(*MEMORY[0x1E6996530] + 16))(*MEMORY[0x1E6996530], v5) & 1) == 0)
   {
-    v16 = [(CNMultipleUnknownContactsViewController *)self groupsAndContainersSaveManager];
-    v17 = [(CNMultipleUnknownContactsViewController *)self targetGroup];
-    v18 = [(CNMultipleUnknownContactsViewController *)self targetContainer];
-    v19 = [v16 addContacts:v5 toGroup:v17 inContainer:v18 moveWasAuthorized:1];
+    groupsAndContainersSaveManager2 = [(CNMultipleUnknownContactsViewController *)self groupsAndContainersSaveManager];
+    targetGroup = [(CNMultipleUnknownContactsViewController *)self targetGroup];
+    targetContainer2 = [(CNMultipleUnknownContactsViewController *)self targetContainer];
+    v19 = [groupsAndContainersSaveManager2 addContacts:v5 toGroup:targetGroup inContainer:targetContainer2 moveWasAuthorized:1];
 
     if ([v19 saveDidSucceed])
     {
-      v20 = [(CNMultipleUnknownContactsViewController *)self createdContactIdentifiers];
-      v21 = [v19 addedContacts];
-      v22 = [v21 _cn_map:&__block_literal_global_41_19338];
-      [v20 addObjectsFromArray:v22];
+      createdContactIdentifiers = [(CNMultipleUnknownContactsViewController *)self createdContactIdentifiers];
+      addedContacts = [v19 addedContacts];
+      v22 = [addedContacts _cn_map:&__block_literal_global_41_19338];
+      [createdContactIdentifiers addObjectsFromArray:v22];
     }
   }
 
   if (((*(v15 + 16))(v15, v6) & 1) == 0)
   {
     objc_initWeak(&location, self);
-    v23 = [(CNMultipleUnknownContactsViewController *)self groupsAndContainersSaveManager];
+    groupsAndContainersSaveManager3 = [(CNMultipleUnknownContactsViewController *)self groupsAndContainersSaveManager];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __55__CNMultipleUnknownContactsViewController_addContacts___block_invoke_2;
     v25[3] = &unk_1E74E2D80;
     objc_copyWeak(&v27, &location);
     v26 = v6;
-    [v23 authorizeForViewController:self sender:self animated:1 completionBlock:v25];
+    [groupsAndContainersSaveManager3 authorizeForViewController:self sender:self animated:1 completionBlock:v25];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -627,14 +627,14 @@ void __55__CNMultipleUnknownContactsViewController_addContacts___block_invoke_2(
   }
 }
 
-- (void)_createNewContacts:(id)a3
+- (void)_createNewContacts:(id)contacts
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __62__CNMultipleUnknownContactsViewController__createNewContacts___block_invoke;
   v5[3] = &unk_1E74E7880;
   v5[4] = self;
-  v4 = [a3 _cn_filter:v5];
+  v4 = [contacts _cn_filter:v5];
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
     [(CNMultipleUnknownContactsViewController *)self addContacts:v4];
@@ -656,20 +656,20 @@ uint64_t __62__CNMultipleUnknownContactsViewController__createNewContacts___bloc
 
 - (void)_didComplete
 {
-  v3 = [(CNMultipleUnknownContactsViewController *)self delegate];
-  [v3 multipleUnknownContactsViewControllerDidComplete:self];
+  delegate = [(CNMultipleUnknownContactsViewController *)self delegate];
+  [delegate multipleUnknownContactsViewControllerDidComplete:self];
 }
 
-- (void)_save:(id)a3
+- (void)_save:(id)_save
 {
-  v4 = [(CNMultipleUnknownContactsViewController *)self contacts];
-  [(CNMultipleUnknownContactsViewController *)self _createNewContacts:v4];
+  contacts = [(CNMultipleUnknownContactsViewController *)self contacts];
+  [(CNMultipleUnknownContactsViewController *)self _createNewContacts:contacts];
 }
 
 - (void)_showAddAllToContactsConfirmation
 {
   v3 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
-  v4 = [(CNMultipleUnknownContactsViewController *)self contacts];
+  contacts = [(CNMultipleUnknownContactsViewController *)self contacts];
   v5 = MEMORY[0x1E69DC648];
   v6 = CNContactsUIBundle();
   v7 = [v6 localizedStringForKey:@"VCARD_CANCEL" value:&stru_1F0CE7398 table:@"Localized"];
@@ -684,7 +684,7 @@ uint64_t __62__CNMultipleUnknownContactsViewController__createNewContacts___bloc
   v23[2] = __76__CNMultipleUnknownContactsViewController__showAddAllToContactsConfirmation__block_invoke;
   v23[3] = &unk_1E74E7308;
   v23[4] = self;
-  v12 = v4;
+  v12 = contacts;
   v24 = v12;
   v13 = [v9 actionWithTitle:v11 style:0 handler:v23];
   [v3 addAction:v13];
@@ -714,24 +714,24 @@ uint64_t __62__CNMultipleUnknownContactsViewController__createNewContacts___bloc
   targetContainer = self->_targetContainer;
   if (targetContainer)
   {
-    v3 = targetContainer;
+    firstObject = targetContainer;
   }
 
   else
   {
     v5 = MEMORY[0x1E695CE48];
-    v6 = [(CNMultipleUnknownContactsViewController *)self contactStore];
-    v7 = [v6 defaultContainerIdentifier];
-    v13[0] = v7;
+    contactStore = [(CNMultipleUnknownContactsViewController *)self contactStore];
+    defaultContainerIdentifier = [contactStore defaultContainerIdentifier];
+    v13[0] = defaultContainerIdentifier;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     v9 = [v5 predicateForContainersWithIdentifiers:v8];
 
-    v10 = [(CNMultipleUnknownContactsViewController *)self contactStore];
-    v11 = [v10 containersMatchingPredicate:v9 error:0];
-    v3 = [v11 firstObject];
+    contactStore2 = [(CNMultipleUnknownContactsViewController *)self contactStore];
+    v11 = [contactStore2 containersMatchingPredicate:v9 error:0];
+    firstObject = [v11 firstObject];
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (CNUIGroupsAndContainersSaveManager)groupsAndContainersSaveManager
@@ -740,8 +740,8 @@ uint64_t __62__CNMultipleUnknownContactsViewController__createNewContacts___bloc
   if (!groupsAndContainersSaveManager)
   {
     v4 = [CNUIGroupsAndContainersSaveManager alloc];
-    v5 = [(CNMultipleUnknownContactsViewController *)self contactStore];
-    v6 = [(CNUIGroupsAndContainersSaveManager *)v4 initWithContactStore:v5];
+    contactStore = [(CNMultipleUnknownContactsViewController *)self contactStore];
+    v6 = [(CNUIGroupsAndContainersSaveManager *)v4 initWithContactStore:contactStore];
     v7 = self->_groupsAndContainersSaveManager;
     self->_groupsAndContainersSaveManager = v6;
 
@@ -773,21 +773,21 @@ uint64_t __62__CNMultipleUnknownContactsViewController__createNewContacts___bloc
   v4.receiver = self;
   v4.super_class = CNMultipleUnknownContactsViewController;
   [(CNMultipleUnknownContactsViewController *)&v4 viewDidLoad];
-  v3 = [(CNMultipleUnknownContactsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"UITableViewCell"];
+  tableView = [(CNMultipleUnknownContactsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"UITableViewCell"];
 }
 
-- (CNMultipleUnknownContactsViewController)initWithContacts:(id)a3 targetGroup:(id)a4 targetContainer:(id)a5
+- (CNMultipleUnknownContactsViewController)initWithContacts:(id)contacts targetGroup:(id)group targetContainer:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contactsCopy = contacts;
+  groupCopy = group;
+  containerCopy = container;
   v27.receiver = self;
   v27.super_class = CNMultipleUnknownContactsViewController;
   v11 = [(CNMultipleUnknownContactsViewController *)&v27 initWithStyle:1];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [contactsCopy copy];
     contacts = v11->_contacts;
     v11->_contacts = v12;
 
@@ -799,23 +799,23 @@ uint64_t __62__CNMultipleUnknownContactsViewController__createNewContacts___bloc
     v15 = v11;
     v26 = v15;
     [(NSArray *)v14 enumerateObjectsUsingBlock:v25];
-    v16 = [objc_opt_class() contactFormatter];
+    contactFormatter = [objc_opt_class() contactFormatter];
     formatter = v15->_formatter;
-    v15->_formatter = v16;
+    v15->_formatter = contactFormatter;
 
     v18 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     createdContactIdentifiers = v15->_createdContactIdentifiers;
     v15->_createdContactIdentifiers = v18;
 
     v20 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:3 target:v15 action:sel__save_];
-    v21 = [(CNMultipleUnknownContactsViewController *)v15 navigationItem];
-    [v21 setRightBarButtonItem:v20];
+    navigationItem = [(CNMultipleUnknownContactsViewController *)v15 navigationItem];
+    [navigationItem setRightBarButtonItem:v20];
 
-    v22 = [(CNMultipleUnknownContactsViewController *)v15 navigationItem];
-    [v22 setLargeTitleDisplayMode:2];
+    navigationItem2 = [(CNMultipleUnknownContactsViewController *)v15 navigationItem];
+    [navigationItem2 setLargeTitleDisplayMode:2];
 
-    objc_storeStrong(&v15->_targetGroup, a4);
-    objc_storeStrong(&v15->_targetContainer, a5);
+    objc_storeStrong(&v15->_targetGroup, group);
+    objc_storeStrong(&v15->_targetContainer, container);
     v23 = v15;
   }
 
@@ -838,9 +838,9 @@ void __88__CNMultipleUnknownContactsViewController_initWithContacts_targetGroup_
   v3 = MEMORY[0x1E695CD58];
   v4 = +[CNContactViewController descriptorForRequiredKeys];
   v11[0] = v4;
-  v5 = [a1 contactFormatter];
-  v6 = [v5 descriptorForRequiredKeys];
-  v11[1] = v6;
+  contactFormatter = [self contactFormatter];
+  descriptorForRequiredKeys = [contactFormatter descriptorForRequiredKeys];
+  v11[1] = descriptorForRequiredKeys;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNMultipleUnknownContactsViewController descriptorForRequiredKeys]"];
   v9 = [v3 descriptorWithKeyDescriptors:v7 description:v8];

@@ -1,32 +1,32 @@
 @interface PKSearchAmountResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKSearchAmountResult)initWithCoder:(id)a3;
+- (PKSearchAmountResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSearchAmountResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeInteger:self->_comparison forKey:@"comparison"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeInteger:self->_comparison forKey:@"comparison"];
 }
 
-- (PKSearchAmountResult)initWithCoder:(id)a3
+- (PKSearchAmountResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchAmountResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v5->_comparison = [v4 decodeIntegerForKey:@"comparison"];
+    v5->_comparison = [coderCopy decodeIntegerForKey:@"comparison"];
   }
 
   return v5;
@@ -46,9 +46,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -56,7 +56,7 @@
   }
 
   amount = self->_amount;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (!amount || !v6)
   {
     if (amount == v6)
@@ -75,7 +75,7 @@ LABEL_7:
   }
 
 LABEL_5:
-  v7 = self->_comparison == v4[2];
+  v7 = self->_comparison == equalCopy[2];
 LABEL_8:
 
   return v7;

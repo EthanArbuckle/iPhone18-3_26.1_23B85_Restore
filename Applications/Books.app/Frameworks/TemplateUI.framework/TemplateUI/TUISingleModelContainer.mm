@@ -1,29 +1,29 @@
 @interface TUISingleModelContainer
 - (TUIModelContaining)parentModel;
 - (void)onContainedModelsChanged;
-- (void)updateModelChildren:(id)a3;
+- (void)updateModelChildren:(id)children;
 @end
 
 @implementation TUISingleModelContainer
 
 - (void)onContainedModelsChanged
 {
-  v2 = [(TUISingleModelContainer *)self parentModel];
-  [v2 onContainedModelsChanged];
+  parentModel = [(TUISingleModelContainer *)self parentModel];
+  [parentModel onContainedModelsChanged];
 }
 
-- (void)updateModelChildren:(id)a3
+- (void)updateModelChildren:(id)children
 {
-  v4 = [a3 firstObject];
+  firstObject = [children firstObject];
   submodel = self->_submodel;
-  if (v4 != submodel)
+  if (firstObject != submodel)
   {
-    obj = v4;
+    obj = firstObject;
     [(TUIModel *)submodel setParentModel:0];
     objc_storeStrong(&self->_submodel, obj);
     [(TUIModel *)self->_submodel setParentModel:self];
     [(TUISingleModelContainer *)self onContainedModelsChanged];
-    v4 = obj;
+    firstObject = obj;
   }
 }
 

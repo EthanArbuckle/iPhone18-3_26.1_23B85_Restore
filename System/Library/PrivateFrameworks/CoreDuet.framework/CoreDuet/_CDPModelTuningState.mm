@@ -1,37 +1,37 @@
 @interface _CDPModelTuningState
 + (id)initialTuningState;
-- (_CDPModelTuningState)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_CDPModelTuningState)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDPModelTuningState
 
 + (id)initialTuningState
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   LODWORD(v3) = -1.0;
   [v2 setBestScore:v3];
 
   return v2;
 }
 
-- (_CDPModelTuningState)initWithCoder:(id)a3
+- (_CDPModelTuningState)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = _CDPModelTuningState;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(_CDPModelTuningState *)&v9 init];
-  -[_CDPModelTuningState setI:](v4, "setI:", [v3 decodeIntForKey:{@"i", v9.receiver, v9.super_class}]);
-  -[_CDPModelTuningState setJ:](v4, "setJ:", [v3 decodeIntForKey:@"j"]);
-  [v3 decodeFloatForKey:@"bestLogLambda"];
+  -[_CDPModelTuningState setI:](v4, "setI:", [coderCopy decodeIntForKey:{@"i", v9.receiver, v9.super_class}]);
+  -[_CDPModelTuningState setJ:](v4, "setJ:", [coderCopy decodeIntForKey:@"j"]);
+  [coderCopy decodeFloatForKey:@"bestLogLambda"];
   [(_CDPModelTuningState *)v4 setBestLogLambda:?];
-  [v3 decodeFloatForKey:@"bestW0"];
+  [coderCopy decodeFloatForKey:@"bestW0"];
   [(_CDPModelTuningState *)v4 setBestW0:?];
-  [v3 decodeFloatForKey:@"bestScore"];
+  [coderCopy decodeFloatForKey:@"bestScore"];
   [(_CDPModelTuningState *)v4 setBestScore:?];
-  [v3 decodeFloatForKey:@"bestThreshold"];
+  [coderCopy decodeFloatForKey:@"bestThreshold"];
   v6 = v5;
 
   LODWORD(v7) = v6;
@@ -49,22 +49,22 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[_CDPModelTuningState i](self forKey:{"i"), @"i"}];
-  [v4 encodeInt:-[_CDPModelTuningState j](self forKey:{"j"), @"j"}];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[_CDPModelTuningState i](self forKey:{"i"), @"i"}];
+  [coderCopy encodeInt:-[_CDPModelTuningState j](self forKey:{"j"), @"j"}];
   [(_CDPModelTuningState *)self bestLogLambda];
-  [v4 encodeFloat:@"bestLogLambda" forKey:?];
+  [coderCopy encodeFloat:@"bestLogLambda" forKey:?];
   [(_CDPModelTuningState *)self bestW0];
-  [v4 encodeFloat:@"bestW0" forKey:?];
+  [coderCopy encodeFloat:@"bestW0" forKey:?];
   [(_CDPModelTuningState *)self bestScore];
-  [v4 encodeFloat:@"bestScore" forKey:?];
+  [coderCopy encodeFloat:@"bestScore" forKey:?];
   [(_CDPModelTuningState *)self bestThreshold];
-  [v4 encodeFloat:@"bestThreshold" forKey:?];
+  [coderCopy encodeFloat:@"bestThreshold" forKey:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = +[_CDPModelTuningState initialTuningState];
   [v4 setI:{-[_CDPModelTuningState i](self, "i")}];

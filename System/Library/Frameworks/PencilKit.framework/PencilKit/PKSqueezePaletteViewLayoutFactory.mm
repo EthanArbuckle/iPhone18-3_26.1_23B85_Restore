@@ -1,13 +1,13 @@
 @interface PKSqueezePaletteViewLayoutFactory
 - (PKSqueezePaletteViewLayoutFactory)init;
-- (id)makeExpandedColorsLayoutWithContext:(void *)a3 colors:(void *)a4 selectedColor:;
-- (id)makeExpandedLassoToolLayoutWithContext:(uint64_t)a1;
-- (id)makeExpandedOptionsLayoutWithContext:(id *)a1;
-- (id)makeExpandedToolsLayoutWithContext:(void *)a3 drawingTools:(void *)a4 selectedToolIndex:(void *)a5 visibleToolsCount:(void *)a6 delegate:;
-- (id)makeExpandedUndoRedoLayoutWithContext:(int)a3 isLTR:;
-- (uint64_t)makeInitialLayoutWithToolPicker:(void *)a3 undoManager:(void *)a4 paletteViewStartAngleProvider:(int)a5 isLTR:;
-- (void)makeExpandedEraserToolLayoutWithContext:(void *)a1;
-- (void)makeExpandedInkingToolLayoutWithContext:(void *)a1;
+- (id)makeExpandedColorsLayoutWithContext:(void *)context colors:(void *)colors selectedColor:;
+- (id)makeExpandedLassoToolLayoutWithContext:(uint64_t)context;
+- (id)makeExpandedOptionsLayoutWithContext:(id *)context;
+- (id)makeExpandedToolsLayoutWithContext:(void *)context drawingTools:(void *)tools selectedToolIndex:(void *)index visibleToolsCount:(void *)count delegate:;
+- (id)makeExpandedUndoRedoLayoutWithContext:(int)context isLTR:;
+- (uint64_t)makeInitialLayoutWithToolPicker:(void *)picker undoManager:(void *)manager paletteViewStartAngleProvider:(int)provider isLTR:;
+- (void)makeExpandedEraserToolLayoutWithContext:(void *)context;
+- (void)makeExpandedInkingToolLayoutWithContext:(void *)context;
 @end
 
 @implementation PKSqueezePaletteViewLayoutFactory
@@ -31,20 +31,20 @@
   return self;
 }
 
-- (uint64_t)makeInitialLayoutWithToolPicker:(void *)a3 undoManager:(void *)a4 paletteViewStartAngleProvider:(int)a5 isLTR:
+- (uint64_t)makeInitialLayoutWithToolPicker:(void *)picker undoManager:(void *)manager paletteViewStartAngleProvider:(int)provider isLTR:
 {
   v60 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  pickerCopy = picker;
+  managerCopy = manager;
+  if (self)
   {
-    v12 = [v9 _tools];
-    v13 = [v12 count];
+    _tools = [v9 _tools];
+    v13 = [_tools count];
 
     if (v13)
     {
-      v53 = v10;
+      v53 = pickerCopy;
       if (v9)
       {
         v14 = [v9[1] indexOfObjectPassingTest:&__block_literal_global_197];
@@ -66,8 +66,8 @@
         v17 = 0;
       }
 
-      v18 = [v9 _tools];
-      v19 = [v18 mutableCopy];
+      _tools2 = [v9 _tools];
+      v19 = [_tools2 mutableCopy];
 
       if (v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -167,8 +167,8 @@ LABEL_39:
           }
 
           v46 = v29;
-          v52 = v11;
-          v30 = v11[2](v11, 0);
+          v52 = managerCopy;
+          v30 = managerCopy[2](managerCopy, 0);
           v31 = v19;
           v32 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v31, "count")}];
           v55 = 0u;
@@ -190,7 +190,7 @@ LABEL_39:
                   objc_enumerationMutation(v22);
                 }
 
-                v37 = [(PKSqueezePaletteButtonFactory *)a1[1] makeDrawingToolButtonWithTool:?];
+                v37 = [(PKSqueezePaletteButtonFactory *)self[1] makeDrawingToolButtonWithTool:?];
                 [v32 addObject:v37];
               }
 
@@ -202,27 +202,27 @@ LABEL_39:
 
           v49 = v25;
 
-          v38 = [(PKSqueezePaletteButtonFactory *)a1[1] makeUndoButtonIsLTR:a5];
-          v39 = [(PKSqueezePaletteButtonFactory *)a1[1] makeRedoButtonIsLTR:a5];
-          v40 = [(PKSqueezePaletteButtonFactory *)a1[1] makeMoreButton];
+          v38 = [(PKSqueezePaletteButtonFactory *)self[1] makeUndoButtonIsLTR:provider];
+          v39 = [(PKSqueezePaletteButtonFactory *)self[1] makeRedoButtonIsLTR:provider];
+          makeMoreButton = [(PKSqueezePaletteButtonFactory *)self[1] makeMoreButton];
           if (v27 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v41 = 0;
+            color = 0;
           }
 
           else
           {
             v42 = [v22 objectAtIndex:v27];
             v43 = [v42 ink];
-            v41 = [v43 color];
+            color = [v43 color];
           }
 
-          v10 = v53;
-          v44 = [(PKSqueezePaletteButtonFactory *)a1[1] makeMulticolorButtonWithColor:v41];
-          a1 = [[PKSqueezePaletteViewMiniPaletteLayout alloc] initWithUndoButton:v38 redoButton:v39 drawingTools:v32 selectedToolIndex:v27 eraserToolIndex:v47 visibleToolsCount:v46 multicolorButton:v44 moreButton:v30 startAngle:v40];
+          pickerCopy = v53;
+          v44 = [(PKSqueezePaletteButtonFactory *)self[1] makeMulticolorButtonWithColor:color];
+          self = [[PKSqueezePaletteViewMiniPaletteLayout alloc] initWithUndoButton:v38 redoButton:v39 drawingTools:v32 selectedToolIndex:v27 eraserToolIndex:v47 visibleToolsCount:v46 multicolorButton:v44 moreButton:v30 startAngle:makeMoreButton];
 
           v23 = v51;
-          v11 = v52;
+          managerCopy = v52;
           v9 = v48;
           goto LABEL_52;
         }
@@ -241,32 +241,32 @@ LABEL_39:
       goto LABEL_39;
     }
 
-    if (v10 && (([v10 canUndo] & 1) != 0 || objc_msgSend(v10, "canRedo")))
+    if (pickerCopy && (([pickerCopy canUndo] & 1) != 0 || objc_msgSend(pickerCopy, "canRedo")))
     {
-      v21 = v11[2](v11, 1);
-      v22 = [(PKSqueezePaletteButtonFactory *)a1[1] makeUndoButtonIsLTR:a5];
-      v23 = [(PKSqueezePaletteButtonFactory *)a1[1] makeRedoButtonIsLTR:a5];
-      a1 = [[PKSqueezePaletteViewUndoRedoLayout alloc] initWithUndoButton:v22 redoButton:v23 startAngle:v21];
+      v21 = managerCopy[2](managerCopy, 1);
+      v22 = [(PKSqueezePaletteButtonFactory *)self[1] makeUndoButtonIsLTR:provider];
+      v23 = [(PKSqueezePaletteButtonFactory *)self[1] makeRedoButtonIsLTR:provider];
+      self = [[PKSqueezePaletteViewUndoRedoLayout alloc] initWithUndoButton:v22 redoButton:v23 startAngle:v21];
 LABEL_52:
 
       goto LABEL_53;
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_53:
 
-  return a1;
+  return self;
 }
 
-- (id)makeExpandedUndoRedoLayoutWithContext:(int)a3 isLTR:
+- (id)makeExpandedUndoRedoLayoutWithContext:(int)context isLTR:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
     v6 = [PKSqueezePaletteViewExpandedUndoRedoLayout alloc];
-    v7 = [(PKSqueezePaletteButtonFactory *)*(a1 + 8) sliderButtonConfigurationIsLTR:a3];
+    v7 = [(PKSqueezePaletteButtonFactory *)*(self + 8) sliderButtonConfigurationIsLTR:context];
     v8 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)&v6->super.isa initWithContext:v5 sliderButtonConfiguration:v7];
   }
 
@@ -278,18 +278,18 @@ LABEL_53:
   return v8;
 }
 
-- (id)makeExpandedToolsLayoutWithContext:(void *)a3 drawingTools:(void *)a4 selectedToolIndex:(void *)a5 visibleToolsCount:(void *)a6 delegate:
+- (id)makeExpandedToolsLayoutWithContext:(void *)context drawingTools:(void *)tools selectedToolIndex:(void *)index visibleToolsCount:(void *)count delegate:
 {
-  if (a1)
+  if (self)
   {
-    v10 = a6;
-    v11 = a3;
+    countCopy = count;
+    contextCopy = context;
     v12 = a2;
-    v13 = [[PKSqueezePaletteViewExpandedToolsLayout alloc] initWithContext:v12 drawingTools:v11 selectedToolIndex:a4 visibleToolsCount:a5];
+    v13 = [[PKSqueezePaletteViewExpandedToolsLayout alloc] initWithContext:v12 drawingTools:contextCopy selectedToolIndex:tools visibleToolsCount:index];
 
     if (v13)
     {
-      objc_storeWeak(v13 + 7, v10);
+      objc_storeWeak(v13 + 7, countCopy);
     }
   }
 
@@ -301,14 +301,14 @@ LABEL_53:
   return v13;
 }
 
-- (id)makeExpandedColorsLayoutWithContext:(void *)a3 colors:(void *)a4 selectedColor:
+- (id)makeExpandedColorsLayoutWithContext:(void *)context colors:(void *)colors selectedColor:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  contextCopy = context;
+  colorsCopy = colors;
+  if (self)
   {
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(contextCopy, "count")}];
     v23 = 0;
     v24 = &v23;
     v25 = 0x2020000000;
@@ -317,20 +317,20 @@ LABEL_53:
     v16 = 3221225472;
     v17 = __94__PKSqueezePaletteViewLayoutFactory_makeExpandedColorsLayoutWithContext_colors_selectedColor___block_invoke;
     v18 = &unk_1E82DC238;
-    v19 = a1;
+    selfCopy = self;
     v11 = v10;
     v20 = v11;
-    v21 = v9;
+    v21 = colorsCopy;
     v22 = &v23;
-    [v8 enumerateObjectsUsingBlock:&v15];
-    v12 = [a1[1] makeBackButton];
+    [contextCopy enumerateObjectsUsingBlock:&v15];
+    makeBackButton = [self[1] makeBackButton];
     v13 = [PKSqueezePaletteViewExpandedColorsLayout alloc];
-    a1 = [(PKSqueezePaletteViewExpandedColorsLayout *)&v13->super.isa initWithContext:v7 colorButtons:v11 selectedColorIndex:v24[3] backButton:v12];
+    self = [(PKSqueezePaletteViewExpandedColorsLayout *)&v13->super.isa initWithContext:v7 colorButtons:v11 selectedColorIndex:v24[3] backButton:makeBackButton];
 
     _Block_object_dispose(&v23, 8);
   }
 
-  return a1;
+  return self;
 }
 
 void __94__PKSqueezePaletteViewLayoutFactory_makeExpandedColorsLayoutWithContext_colors_selectedColor___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -348,43 +348,43 @@ void __94__PKSqueezePaletteViewLayoutFactory_makeExpandedColorsLayoutWithContext
   }
 }
 
-- (id)makeExpandedOptionsLayoutWithContext:(id *)a1
+- (id)makeExpandedOptionsLayoutWithContext:(id *)context
 {
-  v2 = a1;
-  if (a1)
+  contextCopy = context;
+  if (context)
   {
     v3 = a2;
     v4 = [PKSqueezePaletteViewExpandedOptionsLayout alloc];
-    v5 = [v2[1] makeBackButton];
-    v6 = [v2[1] makeTextBoxButton];
-    v7 = [v2[1] makeSignatureButton];
-    v8 = [v2[1] makeShapesButton];
+    makeBackButton = [contextCopy[1] makeBackButton];
+    makeTextBoxButton = [contextCopy[1] makeTextBoxButton];
+    makeSignatureButton = [contextCopy[1] makeSignatureButton];
+    makeShapesButton = [contextCopy[1] makeShapesButton];
     v9 = PKIsDeviceLocked();
     if (v9)
     {
-      v10 = 0;
+      makeStickersButton = 0;
     }
 
     else
     {
-      v10 = [v2[1] makeStickersButton];
+      makeStickersButton = [contextCopy[1] makeStickersButton];
     }
 
-    v11 = [v2[1] makeGearButton];
-    v2 = [(PKSqueezePaletteViewExpandedOptionsLayout *)&v4->super.isa initWithContext:v3 backButton:v5 textBoxButton:v6 signatureButton:v7 shapesButton:v8 stickersButton:v10 gearButton:v11];
+    makeGearButton = [contextCopy[1] makeGearButton];
+    contextCopy = [(PKSqueezePaletteViewExpandedOptionsLayout *)&v4->super.isa initWithContext:v3 backButton:makeBackButton textBoxButton:makeTextBoxButton signatureButton:makeSignatureButton shapesButton:makeShapesButton stickersButton:makeStickersButton gearButton:makeGearButton];
 
     if (!v9)
     {
     }
   }
 
-  return v2;
+  return contextCopy;
 }
 
-- (void)makeExpandedInkingToolLayoutWithContext:(void *)a1
+- (void)makeExpandedInkingToolLayoutWithContext:(void *)context
 {
-  v2 = a1;
-  if (a1)
+  contextCopy = context;
+  if (context)
   {
     v3 = a2;
     v4 = v3;
@@ -411,26 +411,26 @@ void __94__PKSqueezePaletteViewLayoutFactory_makeExpandedColorsLayoutWithContext
     }
 
     v9 = v8;
-    v10 = [v9 _configuration];
-    v11 = [v10 strokeWeightsToButtonImages];
+    _configuration = [v9 _configuration];
+    strokeWeightsToButtonImages = [_configuration strokeWeightsToButtonImages];
 
-    v12 = [v11 allKeys];
-    v13 = [v12 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [strokeWeightsToButtonImages allKeys];
+    v13 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __77__PKSqueezePaletteViewLayoutFactory_makeExpandedInkingToolLayoutWithContext___block_invoke;
     v17[3] = &unk_1E82DC260;
-    v17[4] = v2;
+    v17[4] = contextCopy;
     v18 = v6;
     v19 = v7;
     v14 = v7;
     v15 = v6;
     [v13 enumerateObjectsUsingBlock:v17];
-    v2 = [[PKSqueezePaletteViewExpandedInkingToolLayout alloc] initWithContext:v4 strokeWeightButtons:v14];
+    contextCopy = [[PKSqueezePaletteViewExpandedInkingToolLayout alloc] initWithContext:v4 strokeWeightButtons:v14];
   }
 
-  return v2;
+  return contextCopy;
 }
 
 void __77__PKSqueezePaletteViewLayoutFactory_makeExpandedInkingToolLayoutWithContext___block_invoke(uint64_t a1, void *a2)
@@ -500,9 +500,9 @@ void __77__PKSqueezePaletteViewLayoutFactory_makeExpandedInkingToolLayoutWithCon
   }
 }
 
-- (id)makeExpandedLassoToolLayoutWithContext:(uint64_t)a1
+- (id)makeExpandedLassoToolLayoutWithContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
     v2 = a2;
     v3 = [[PKSqueezePaletteViewExpandedLassoToolLayout alloc] initWithContext:v2];
@@ -516,36 +516,36 @@ void __77__PKSqueezePaletteViewLayoutFactory_makeExpandedInkingToolLayoutWithCon
   return v3;
 }
 
-- (void)makeExpandedEraserToolLayoutWithContext:(void *)a1
+- (void)makeExpandedEraserToolLayoutWithContext:(void *)context
 {
-  v2 = a1;
-  if (a1)
+  contextCopy = context;
+  if (context)
   {
     v3 = a2;
     v4 = objc_opt_new();
-    v5 = [(PKSqueezePaletteButtonFactory *)v2[1] makeObjectEraserButton];
-    [v4 addObject:v5];
+    makeObjectEraserButton = [(PKSqueezePaletteButtonFactory *)contextCopy[1] makeObjectEraserButton];
+    [v4 addObject:makeObjectEraserButton];
     v6 = [[PKEraserTool alloc] initWithEraserType:1];
-    v7 = [(PKTool *)v6 _configuration];
-    v8 = [v7 strokeWeightsToButtonImages];
+    _configuration = [(PKTool *)v6 _configuration];
+    strokeWeightsToButtonImages = [_configuration strokeWeightsToButtonImages];
 
-    v9 = [v8 allKeys];
-    v10 = [v9 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [strokeWeightsToButtonImages allKeys];
+    v10 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __77__PKSqueezePaletteViewLayoutFactory_makeExpandedEraserToolLayoutWithContext___block_invoke;
     v14[3] = &unk_1E82DC260;
-    v14[4] = v2;
+    v14[4] = contextCopy;
     v15 = v6;
     v16 = v4;
     v11 = v4;
     v12 = v6;
     [v10 enumerateObjectsUsingBlock:v14];
-    v2 = [[PKSqueezePaletteViewExpandedEraserToolLayout alloc] initWithContext:v3 attributeButtons:v11];
+    contextCopy = [[PKSqueezePaletteViewExpandedEraserToolLayout alloc] initWithContext:v3 attributeButtons:v11];
   }
 
-  return v2;
+  return contextCopy;
 }
 
 void __77__PKSqueezePaletteViewLayoutFactory_makeExpandedEraserToolLayoutWithContext___block_invoke(uint64_t a1, void *a2)

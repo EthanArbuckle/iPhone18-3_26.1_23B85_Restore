@@ -7,8 +7,8 @@
 - (CGSize)windowHostingWindowSize
 {
   v2 = +[JSABridge sharedInstance];
-  v3 = [v2 windowManager];
-  [v3 keyWindowSize];
+  windowManager = [v2 windowManager];
+  [windowManager keyWindowSize];
   v5 = v4;
   v7 = v6;
 

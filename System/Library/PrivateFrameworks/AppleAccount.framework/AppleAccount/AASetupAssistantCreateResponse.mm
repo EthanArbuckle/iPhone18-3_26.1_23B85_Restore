@@ -9,32 +9,32 @@
 
 - (NSNumber)status
 {
-  v2 = [(AAResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:AASetupAssistantCreateStatusKey];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:AASetupAssistantCreateStatusKey];
 
   return v3;
 }
 
 - (NSString)statusMessage
 {
-  v2 = [(AAResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:AASetupAssistantCreateStatusMessageKey];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:AASetupAssistantCreateStatusMessageKey];
 
   return v3;
 }
 
 - (NSString)personID
 {
-  v2 = [(AAResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:AASetupAssistantDSIDKey];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:AASetupAssistantDSIDKey];
 
   return v3;
 }
 
 - (NSString)appleID
 {
-  v2 = [(AAResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:AASetupAssistantCreateAppleIDKey];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:AASetupAssistantCreateAppleIDKey];
 
   return v3;
 }

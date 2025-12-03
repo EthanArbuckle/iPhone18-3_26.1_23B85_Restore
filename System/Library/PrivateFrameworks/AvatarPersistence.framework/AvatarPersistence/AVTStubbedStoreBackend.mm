@@ -1,18 +1,18 @@
 @interface AVTStubbedStoreBackend
-- (id)duplicateAvatarRecord:(id)a3 error:(id *)a4;
+- (id)duplicateAvatarRecord:(id)record error:(id *)error;
 @end
 
 @implementation AVTStubbedStoreBackend
 
-- (id)duplicateAvatarRecord:(id)a3 error:(id *)a4
+- (id)duplicateAvatarRecord:(id)record error:(id *)error
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = [AVTAvatarRecord alloc];
-  v6 = [v4 avatarData];
-  v7 = [v6 copy];
-  v8 = [v4 orderDate];
+  avatarData = [recordCopy avatarData];
+  v7 = [avatarData copy];
+  orderDate = [recordCopy orderDate];
 
-  v9 = [v8 dateByAddingTimeInterval:1.0];
+  v9 = [orderDate dateByAddingTimeInterval:1.0];
   v10 = [(AVTAvatarRecord *)v5 initWithAvatarData:v7 orderDate:v9];
 
   return v10;

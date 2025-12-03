@@ -1,10 +1,10 @@
 @interface CMDeviceOrientation
-- (CMDeviceOrientation)initWithCoder:(id)a3;
-- (CMDeviceOrientation)initWithOrientation:(int)a3 andTimestamp:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMDeviceOrientation)initWithCoder:(id)coder;
+- (CMDeviceOrientation)initWithOrientation:(int)orientation andTimestamp:(double)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMDeviceOrientation
@@ -16,45 +16,45 @@
   [(CMLogItem *)&v2 dealloc];
 }
 
-- (CMDeviceOrientation)initWithOrientation:(int)a3 andTimestamp:(double)a4
+- (CMDeviceOrientation)initWithOrientation:(int)orientation andTimestamp:(double)timestamp
 {
   v6.receiver = self;
   v6.super_class = CMDeviceOrientation;
-  result = [(CMLogItem *)&v6 initWithTimestamp:a4];
+  result = [(CMLogItem *)&v6 initWithTimestamp:timestamp];
   if (result)
   {
-    result->fOrientation = a3;
+    result->fOrientation = orientation;
   }
 
   return result;
 }
 
-- (CMDeviceOrientation)initWithCoder:(id)a3
+- (CMDeviceOrientation)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CMDeviceOrientation;
   v5 = [(CMLogItem *)&v7 initWithCoder:?];
   if (v5)
   {
-    v5->fOrientation = objc_msgSend_decodeIntForKey_(a3, v4, @"kCMDeviceOrientationCodingKeyOrientation");
+    v5->fOrientation = objc_msgSend_decodeIntForKey_(coder, v4, @"kCMDeviceOrientationCodingKeyOrientation");
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CMDeviceOrientation;
   [(CMLogItem *)&v6 encodeWithCoder:?];
-  objc_msgSend_encodeInt_forKey_(a3, v5, self->fOrientation, @"kCMDeviceOrientationCodingKeyOrientation");
+  objc_msgSend_encodeInt_forKey_(coder, v5, self->fOrientation, @"kCMDeviceOrientationCodingKeyOrientation");
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = CMDeviceOrientation;
-  result = [(CMLogItem *)&v5 copyWithZone:a3];
+  result = [(CMLogItem *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 4) = self->fOrientation;

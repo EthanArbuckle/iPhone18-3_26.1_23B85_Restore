@@ -1,33 +1,33 @@
 @interface MRUNowPlayingLabelView
 - (BOOL)_increaseContrast;
-- (BOOL)isLabelOversized:(id)a3;
+- (BOOL)isLabelOversized:(id)oversized;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeForTextInLabel:(id)a3 availableSize:(CGSize)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUNowPlayingLabelView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeForTextInLabel:(id)label availableSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUNowPlayingLabelView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)marqueeFadeEdgeInsets;
 - (double)estimatedHeight;
-- (double)heightForTextInLabel:(id)a3;
+- (double)heightForTextInLabel:(id)label;
 - (id)viewForFirstBaselineLayout;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContentScale:(double)a3;
-- (void)setDeviceImage:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLayout:(int64_t)a3;
-- (void)setMarqueeContentGap:(double)a3;
-- (void)setMarqueeEnabled:(BOOL)a3;
-- (void)setMarqueeFadeEdgeInsets:(UIEdgeInsets)a3;
-- (void)setPlaceholder:(id)a3;
-- (void)setRoute:(id)a3;
-- (void)setShowDevice:(BOOL)a3;
-- (void)setShowPlaceholder:(BOOL)a3;
-- (void)setShowRoute:(BOOL)a3;
-- (void)setShowSubtitle:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)setContentScale:(double)scale;
+- (void)setDeviceImage:(id)image;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLayout:(int64_t)layout;
+- (void)setMarqueeContentGap:(double)gap;
+- (void)setMarqueeEnabled:(BOOL)enabled;
+- (void)setMarqueeFadeEdgeInsets:(UIEdgeInsets)insets;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setRoute:(id)route;
+- (void)setShowDevice:(BOOL)device;
+- (void)setShowPlaceholder:(BOOL)placeholder;
+- (void)setShowRoute:(BOOL)route;
+- (void)setShowSubtitle:(BOOL)subtitle;
+- (void)setStylingProvider:(id)provider;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTitle:(id)title;
 - (void)updateContentSizeCategory;
 - (void)updateFonts;
 - (void)updateMarquee;
@@ -38,20 +38,20 @@
 
 @implementation MRUNowPlayingLabelView
 
-- (MRUNowPlayingLabelView)initWithFrame:(CGRect)a3
+- (MRUNowPlayingLabelView)initWithFrame:(CGRect)frame
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v25.receiver = self;
   v25.super_class = MRUNowPlayingLabelView;
-  v3 = [(MRUNowPlayingLabelView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUNowPlayingLabelView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
     contentView = v3->_contentView;
     v3->_contentView = v4;
 
-    v6 = [(UIView *)v3->_contentView layer];
-    [v6 setAllowsGroupOpacity:0];
+    layer = [(UIView *)v3->_contentView layer];
+    [layer setAllowsGroupOpacity:0];
 
     [(UIView *)v3->_contentView setUserInteractionEnabled:0];
     [(MRUNowPlayingLabelView *)v3 addSubview:v3->_contentView];
@@ -103,9 +103,9 @@
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
     v22 = [(MRUNowPlayingLabelView *)v3 registerForTraitChanges:v21 withAction:sel_updateContentSizeCategory];
 
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 addObserver:v3 selector:sel_updateVisualStyling name:*MEMORY[0x1E69DD8B8] object:0];
-    [v23 addObserver:v3 selector:sel_updateVisualStyling name:*MEMORY[0x1E69DD920] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_updateVisualStyling name:*MEMORY[0x1E69DD8B8] object:0];
+    [defaultCenter addObserver:v3 selector:sel_updateVisualStyling name:*MEMORY[0x1E69DD920] object:0];
     v3->_showRoute = 1;
     v3->_showSubtitle = 1;
     v3->_adjustsLabelsWhenHighlighted = 1;
@@ -123,9 +123,9 @@
   v4.receiver = self;
   v4.super_class = MRUNowPlayingLabelView;
   [(MRUNowPlayingLabelView *)&v4 didMoveToWindow];
-  v3 = [(MRUNowPlayingLabelView *)self window];
+  window = [(MRUNowPlayingLabelView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     [(MRUNowPlayingLabelView *)self setMarqueeEnabled:0];
   }
@@ -141,8 +141,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MRUNowPlayingLabelView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(MRUNowPlayingLabelView *)self traitCollection];
+  [traitCollection displayScale];
   rect_8 = v12;
 
   [(UIView *)self->_contentView setFrame:v4, v6, v8, v10];
@@ -576,21 +576,21 @@ uint64_t __40__MRUNowPlayingLabelView_layoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   if (self->_layout)
   {
-    v5 = [(MPRouteLabel *)self->_routeLabel titleLabel:a3.width];
-    v6 = [v5 font];
-    [v6 lineHeight];
+    v5 = [(MPRouteLabel *)self->_routeLabel titleLabel:fits.width];
+    font = [v5 font];
+    [font lineHeight];
 
     [(MRUNowPlayingLabelView *)self heightForTextInLabel:self->_titleMarqueeView];
   }
 
   else
   {
-    [(MRUNowPlayingLabelView *)self heightForTextInLabel:self->_titleMarqueeView, a3.width, a3.height];
+    [(MRUNowPlayingLabelView *)self heightForTextInLabel:self->_titleMarqueeView, fits.width, fits.height];
   }
 
   [(MRUNowPlayingLabelView *)self heightForTextInLabel:self->_subtitleMarqueeView];
@@ -602,12 +602,12 @@ uint64_t __40__MRUNowPlayingLabelView_layoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGSize)sizeForTextInLabel:(id)a3 availableSize:(CGSize)a4
+- (CGSize)sizeForTextInLabel:(id)label availableSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  [v7 sizeThatFits:{width, height}];
+  height = size.height;
+  width = size.width;
+  labelCopy = label;
+  [labelCopy sizeThatFits:{width, height}];
   if (v8 >= width)
   {
     v9 = width;
@@ -628,7 +628,7 @@ uint64_t __40__MRUNowPlayingLabelView_layoutSubviews__block_invoke(uint64_t a1)
     v10 = v9;
   }
 
-  [(MRUNowPlayingLabelView *)self heightForTextInLabel:v7];
+  [(MRUNowPlayingLabelView *)self heightForTextInLabel:labelCopy];
   v12 = v11;
 
   v13 = v10;
@@ -638,17 +638,17 @@ uint64_t __40__MRUNowPlayingLabelView_layoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (double)heightForTextInLabel:(id)a3
+- (double)heightForTextInLabel:(id)label
 {
-  v4 = a3;
-  v5 = [v4 text];
-  if (v5 && (v6 = v5, [v4 text], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", &stru_1F1445548), v7, v6, !v8))
+  labelCopy = label;
+  text = [labelCopy text];
+  if (text && (v6 = text, [labelCopy text], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", &stru_1F1445548), v7, v6, !v8))
   {
-    v12 = [v4 font];
-    [(UILabel *)self->_heightSizingLabel setFont:v12];
+    font = [labelCopy font];
+    [(UILabel *)self->_heightSizingLabel setFont:font];
 
-    v13 = [v4 text];
-    [(UILabel *)self->_heightSizingLabel setText:v13];
+    text2 = [labelCopy text];
+    [(UILabel *)self->_heightSizingLabel setText:text2];
 
     [(UILabel *)self->_heightSizingLabel sizeThatFits:1.79769313e308, 1.79769313e308];
     v11 = v14;
@@ -656,8 +656,8 @@ uint64_t __40__MRUNowPlayingLabelView_layoutSubviews__block_invoke(uint64_t a1)
 
   else
   {
-    v9 = [v4 font];
-    [v9 lineHeight];
+    font2 = [labelCopy font];
+    [font2 lineHeight];
     UICeilToViewScale();
     v11 = v10;
   }
@@ -665,12 +665,12 @@ uint64_t __40__MRUNowPlayingLabelView_layoutSubviews__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (BOOL)isLabelOversized:(id)a3
+- (BOOL)isLabelOversized:(id)oversized
 {
-  v4 = a3;
-  [(MRUNowPlayingLabelView *)self heightForTextInLabel:v4];
+  oversizedCopy = oversized;
+  [(MRUNowPlayingLabelView *)self heightForTextInLabel:oversizedCopy];
   v6 = v5;
-  [(MRUNowPlayingLabelView *)self intrinsicHeightForTextInLabel:v4];
+  [(MRUNowPlayingLabelView *)self intrinsicHeightForTextInLabel:oversizedCopy];
   v8 = v7;
 
   return v6 > v8;
@@ -682,7 +682,7 @@ uint64_t __40__MRUNowPlayingLabelView_layoutSubviews__block_invoke(uint64_t a1)
   {
     if (self->_showRoute)
     {
-      v2 = [(MPRouteLabel *)self->_routeLabel titleLabel];
+      titleLabel = [(MPRouteLabel *)self->_routeLabel titleLabel];
       goto LABEL_8;
     }
 
@@ -698,100 +698,100 @@ LABEL_6:
 
   v3 = 576;
 LABEL_7:
-  v2 = [*(&self->super.super.super.super.isa + v3) viewForFirstBaselineLayout];
+  titleLabel = [*(&self->super.super.super.super.isa + v3) viewForFirstBaselineLayout];
 LABEL_8:
 
-  return v2;
+  return titleLabel;
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  objc_storeStrong(&self->_route, a3);
-  v5 = a3;
-  [(MPRouteLabel *)self->_routeLabel setRoute:v5];
+  objc_storeStrong(&self->_route, route);
+  routeCopy = route;
+  [(MPRouteLabel *)self->_routeLabel setRoute:routeCopy];
 
   [(MRUNowPlayingLabelView *)self invalidateIntrinsicContentSize];
 
   [(MRUNowPlayingLabelView *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  titleCopy = title;
+  v5 = [titleCopy copy];
   title = self->_title;
   self->_title = v5;
 
-  [(MRUMarqueeLabel *)self->_titleMarqueeView setText:v4];
+  [(MRUMarqueeLabel *)self->_titleMarqueeView setText:titleCopy];
   [(MRUNowPlayingLabelView *)self updateFonts];
   [(MRUNowPlayingLabelView *)self invalidateIntrinsicContentSize];
 
   [(MRUNowPlayingLabelView *)self setNeedsLayout];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  subtitleCopy = subtitle;
+  v5 = [subtitleCopy copy];
   subtitle = self->_subtitle;
   self->_subtitle = v5;
 
-  [(MRUMarqueeLabel *)self->_subtitleMarqueeView setText:v4];
+  [(MRUMarqueeLabel *)self->_subtitleMarqueeView setText:subtitleCopy];
   [(MRUNowPlayingLabelView *)self updateFonts];
   [(MRUNowPlayingLabelView *)self invalidateIntrinsicContentSize];
 
   [(MRUNowPlayingLabelView *)self setNeedsLayout];
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  placeholderCopy = placeholder;
+  v5 = [placeholderCopy copy];
   placeholder = self->_placeholder;
   self->_placeholder = v5;
 
-  [(MRUMarqueeLabel *)self->_placeholderMarqueeView setText:v4];
+  [(MRUMarqueeLabel *)self->_placeholderMarqueeView setText:placeholderCopy];
   [(MRUNowPlayingLabelView *)self invalidateIntrinsicContentSize];
 
   [(MRUNowPlayingLabelView *)self setNeedsLayout];
 }
 
-- (void)setDeviceImage:(id)a3
+- (void)setDeviceImage:(id)image
 {
-  objc_storeStrong(&self->_deviceImage, a3);
-  v5 = a3;
-  [(UIImageView *)self->_deviceImageView setImage:v5];
+  objc_storeStrong(&self->_deviceImage, image);
+  imageCopy = image;
+  [(UIImageView *)self->_deviceImageView setImage:imageCopy];
 
   [(MRUNowPlayingLabelView *)self setNeedsLayout];
 }
 
-- (void)setShowRoute:(BOOL)a3
+- (void)setShowRoute:(BOOL)route
 {
-  if (self->_showRoute != a3)
+  if (self->_showRoute != route)
   {
-    self->_showRoute = a3;
+    self->_showRoute = route;
     [(MRUNowPlayingLabelView *)self updateVisibility];
 
     [(MRUNowPlayingLabelView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowSubtitle:(BOOL)a3
+- (void)setShowSubtitle:(BOOL)subtitle
 {
-  if (self->_showSubtitle != a3)
+  if (self->_showSubtitle != subtitle)
   {
-    self->_showSubtitle = a3;
+    self->_showSubtitle = subtitle;
     [(MRUNowPlayingLabelView *)self updateVisibility];
 
     [(MRUNowPlayingLabelView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowPlaceholder:(BOOL)a3
+- (void)setShowPlaceholder:(BOOL)placeholder
 {
-  if (self->_showPlaceholder != a3)
+  if (self->_showPlaceholder != placeholder)
   {
-    self->_showPlaceholder = a3;
+    self->_showPlaceholder = placeholder;
     [(MRUNowPlayingLabelView *)self updateVisualStyling];
     [(MRUNowPlayingLabelView *)self updateVisibility];
 
@@ -799,45 +799,45 @@ LABEL_8:
   }
 }
 
-- (void)setShowDevice:(BOOL)a3
+- (void)setShowDevice:(BOOL)device
 {
-  if (self->_showDevice != a3)
+  if (self->_showDevice != device)
   {
-    self->_showDevice = a3;
+    self->_showDevice = device;
     [(MRUNowPlayingLabelView *)self updateVisibility];
 
     [(MRUNowPlayingLabelView *)self setNeedsLayout];
   }
 }
 
-- (void)setMarqueeEnabled:(BOOL)a3
+- (void)setMarqueeEnabled:(BOOL)enabled
 {
-  if (self->_marqueeEnabled != a3)
+  if (self->_marqueeEnabled != enabled)
   {
-    self->_marqueeEnabled = a3;
+    self->_marqueeEnabled = enabled;
     [(MRUNowPlayingLabelView *)self updateMarquee];
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(MPRouteLabel *)self->_routeLabel setTextAlignment:?];
-    [(MRUMarqueeLabel *)self->_titleMarqueeView setTextAlignment:a3];
-    [(MRUMarqueeLabel *)self->_subtitleMarqueeView setTextAlignment:a3];
+    [(MRUMarqueeLabel *)self->_titleMarqueeView setTextAlignment:alignment];
+    [(MRUMarqueeLabel *)self->_subtitleMarqueeView setTextAlignment:alignment];
     [(MRUNowPlayingLabelView *)self updatePlaceholderTextAlignment];
 
     [(MRUNowPlayingLabelView *)self setNeedsLayout];
   }
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     [(MRUNowPlayingLabelView *)self updateContentSizeCategory];
     [(MRUNowPlayingLabelView *)self updateMarquee];
     [(MRUNowPlayingLabelView *)self updateVisualStyling];
@@ -848,11 +848,11 @@ LABEL_8:
   }
 }
 
-- (void)setMarqueeFadeEdgeInsets:(UIEdgeInsets)a3
+- (void)setMarqueeFadeEdgeInsets:(UIEdgeInsets)insets
 {
-  self->_marqueeFadeEdgeInsets = a3;
-  v4 = fabs(a3.left);
-  v5 = fabs(a3.right);
+  self->_marqueeFadeEdgeInsets = insets;
+  v4 = fabs(insets.left);
+  v5 = fabs(insets.right);
   [(MRUMarqueeLabel *)self->_titleMarqueeView setFadeEdgeInsets:0.0, v4, 0.0, v5];
   [(MRUMarqueeLabel *)self->_subtitleMarqueeView setFadeEdgeInsets:0.0, v4, 0.0, v5];
   placeholderMarqueeView = self->_placeholderMarqueeView;
@@ -860,40 +860,40 @@ LABEL_8:
   [(MRUMarqueeLabel *)placeholderMarqueeView setFadeEdgeInsets:0.0, v4, 0.0, v5];
 }
 
-- (void)setMarqueeContentGap:(double)a3
+- (void)setMarqueeContentGap:(double)gap
 {
-  self->_marqueeContentGap = a3;
+  self->_marqueeContentGap = gap;
   [(MRUMarqueeLabel *)self->_titleMarqueeView setContentGap:?];
-  [(MRUMarqueeLabel *)self->_subtitleMarqueeView setContentGap:a3];
+  [(MRUMarqueeLabel *)self->_subtitleMarqueeView setContentGap:gap];
   placeholderMarqueeView = self->_placeholderMarqueeView;
 
-  [(MRUMarqueeLabel *)placeholderMarqueeView setContentGap:a3];
+  [(MRUMarqueeLabel *)placeholderMarqueeView setContentGap:gap];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUNowPlayingLabelView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = MRUNowPlayingLabelView;
   [(MRUNowPlayingLabelView *)&v7 setHighlighted:?];
   if (self->_adjustsLabelsWhenHighlighted)
   {
-    if (v3)
+    if (highlightedCopy)
     {
-      v5 = [(MRUNowPlayingLabelView *)self contentView];
-      [v5 setAlpha:0.2];
+      contentView = [(MRUNowPlayingLabelView *)self contentView];
+      [contentView setAlpha:0.2];
     }
 
     else
@@ -916,28 +916,28 @@ void __41__MRUNowPlayingLabelView_setHighlighted___block_invoke(uint64_t a1)
 
 - (double)estimatedHeight
 {
-  v3 = [(MRUMarqueeLabel *)self->_titleMarqueeView font];
-  [v3 lineHeight];
+  font = [(MRUMarqueeLabel *)self->_titleMarqueeView font];
+  [font lineHeight];
 
-  v4 = [(MRUMarqueeLabel *)self->_subtitleMarqueeView font];
-  [v4 lineHeight];
+  font2 = [(MRUMarqueeLabel *)self->_subtitleMarqueeView font];
+  [font2 lineHeight];
 
   if (self->_layout)
   {
-    v5 = [(MPRouteLabel *)self->_routeLabel titleLabel];
-    v6 = [v5 font];
-    [v6 lineHeight];
+    titleLabel = [(MPRouteLabel *)self->_routeLabel titleLabel];
+    font3 = [titleLabel font];
+    [font3 lineHeight];
   }
 
   UICeilToViewScale();
   return result;
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (vabdd_f64(self->_contentScale, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_contentScale, scale) > 2.22044605e-16)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(MRUNowPlayingLabelView *)self updateContentSizeCategory];
   }
 }
@@ -975,9 +975,9 @@ void __41__MRUNowPlayingLabelView_setHighlighted___block_invoke(uint64_t a1)
       v4 = 1;
     }
 
-    v11 = [(MPRouteLabel *)self->_routeLabel contentView];
-    v12 = [(MRUNowPlayingLabelView *)self traitCollection];
-    [(MRUVisualStylingProvider *)stylingProvider applyStyle:v4 toView:v11 traitCollection:v12];
+    contentView = [(MPRouteLabel *)self->_routeLabel contentView];
+    traitCollection = [(MRUNowPlayingLabelView *)self traitCollection];
+    [(MRUVisualStylingProvider *)stylingProvider applyStyle:v4 toView:contentView traitCollection:traitCollection];
 
     v5 = 2;
   }
@@ -995,30 +995,30 @@ void __41__MRUNowPlayingLabelView_setHighlighted___block_invoke(uint64_t a1)
       v6 = 2;
     }
 
-    v7 = [(MPRouteLabel *)self->_routeLabel contentView];
-    v8 = [(MRUNowPlayingLabelView *)self traitCollection];
-    [(MRUVisualStylingProvider *)stylingProvider applyStyle:v6 toView:v7 traitCollection:v8];
+    contentView2 = [(MPRouteLabel *)self->_routeLabel contentView];
+    traitCollection2 = [(MRUNowPlayingLabelView *)self traitCollection];
+    [(MRUVisualStylingProvider *)stylingProvider applyStyle:v6 toView:contentView2 traitCollection:traitCollection2];
 
     v9 = self->_stylingProvider;
     deviceImageView = self->_deviceImageView;
-    v11 = [(MRUNowPlayingLabelView *)self traitCollection];
-    [(MRUVisualStylingProvider *)v9 applyStyle:2 toView:deviceImageView traitCollection:v11];
+    contentView = [(MRUNowPlayingLabelView *)self traitCollection];
+    [(MRUVisualStylingProvider *)v9 applyStyle:2 toView:deviceImageView traitCollection:contentView];
   }
 
   v13 = self->_stylingProvider;
   titleMarqueeView = self->_titleMarqueeView;
-  v15 = [(MRUNowPlayingLabelView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v13 applyStyle:0 toView:titleMarqueeView traitCollection:v15];
+  traitCollection3 = [(MRUNowPlayingLabelView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v13 applyStyle:0 toView:titleMarqueeView traitCollection:traitCollection3];
 
   v16 = self->_stylingProvider;
   subtitleMarqueeView = self->_subtitleMarqueeView;
-  v18 = [(MRUNowPlayingLabelView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v16 applyStyle:v5 toView:subtitleMarqueeView traitCollection:v18];
+  traitCollection4 = [(MRUNowPlayingLabelView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v16 applyStyle:v5 toView:subtitleMarqueeView traitCollection:traitCollection4];
 
   v19 = self->_stylingProvider;
   placeholderMarqueeView = self->_placeholderMarqueeView;
-  v21 = [(MRUNowPlayingLabelView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v19 applyStyle:1 toView:placeholderMarqueeView traitCollection:v21];
+  traitCollection5 = [(MRUNowPlayingLabelView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v19 applyStyle:1 toView:placeholderMarqueeView traitCollection:traitCollection5];
 }
 
 - (void)updateContentSizeCategory
@@ -1029,25 +1029,25 @@ void __41__MRUNowPlayingLabelView_setHighlighted___block_invoke(uint64_t a1)
     switch(layout)
     {
       case 0:
-        v4 = [MEMORY[0x1E69DB878] mru_routeFont];
-        v5 = [MEMORY[0x1E69DB878] mru_smallTitleFont];
-        v6 = [MEMORY[0x1E69DB878] mru_smallSubtitleFont];
-        v7 = [MEMORY[0x1E69DB878] mru_smallTitleFont];
+        mru_routeFont = [MEMORY[0x1E69DB878] mru_routeFont];
+        mru_smallTitleFont = [MEMORY[0x1E69DB878] mru_smallTitleFont];
+        mru_smallSubtitleFont = [MEMORY[0x1E69DB878] mru_smallSubtitleFont];
+        mru_smallTitleFont2 = [MEMORY[0x1E69DB878] mru_smallTitleFont];
         goto LABEL_15;
       case 1:
-        v11 = [MEMORY[0x1E69DB878] mru_titleFont];
-        v4 = [MEMORY[0x1E69DB878] mru_subtitleFont];
-        v7 = v11;
-        v5 = v7;
-        v6 = v4;
+        mru_titleFont = [MEMORY[0x1E69DB878] mru_titleFont];
+        mru_routeFont = [MEMORY[0x1E69DB878] mru_subtitleFont];
+        mru_smallTitleFont2 = mru_titleFont;
+        mru_smallTitleFont = mru_smallTitleFont2;
+        mru_smallSubtitleFont = mru_routeFont;
         goto LABEL_15;
       case 2:
-        v4 = [MEMORY[0x1E69DB878] mru_expandedRouteFont];
-        v5 = [MEMORY[0x1E69DB878] mru_expandedTitleFont];
-        v6 = [MEMORY[0x1E69DB878] mru_expandedSubtitleFont];
-        v7 = [MEMORY[0x1E69DB878] mru_expandedTitleFont];
+        mru_routeFont = [MEMORY[0x1E69DB878] mru_expandedRouteFont];
+        mru_smallTitleFont = [MEMORY[0x1E69DB878] mru_expandedTitleFont];
+        mru_smallSubtitleFont = [MEMORY[0x1E69DB878] mru_expandedSubtitleFont];
+        mru_smallTitleFont2 = [MEMORY[0x1E69DB878] mru_expandedTitleFont];
 LABEL_15:
-        v12 = v7;
+        v12 = mru_smallTitleFont2;
         goto LABEL_18;
     }
 
@@ -1057,12 +1057,12 @@ LABEL_15:
   switch(layout)
   {
     case 3:
-      v10 = [MEMORY[0x1E69DB878] mru_ambientTitleFont];
-      v6 = [MEMORY[0x1E69DB878] mru_ambientSubtitleFont];
-      v4 = [MEMORY[0x1E69DB878] mru_titleFont];
+      mru_ambientTitleFont = [MEMORY[0x1E69DB878] mru_ambientTitleFont];
+      mru_smallSubtitleFont = [MEMORY[0x1E69DB878] mru_ambientSubtitleFont];
+      mru_routeFont = [MEMORY[0x1E69DB878] mru_titleFont];
 LABEL_13:
-      v7 = v10;
-      v5 = v7;
+      mru_smallTitleFont2 = mru_ambientTitleFont;
+      mru_smallTitleFont = mru_smallTitleFont2;
       goto LABEL_15;
     case 4:
       v8 = [MEMORY[0x1E69DB878] mru_controlCenterMediumTitleFontWithScale:self->_contentScale];
@@ -1074,32 +1074,32 @@ LABEL_13:
       break;
     default:
 LABEL_12:
-      v4 = [MEMORY[0x1E69DB878] mru_routeFont];
-      v10 = [MEMORY[0x1E69DB878] mru_titleFont];
-      v6 = [MEMORY[0x1E69DB878] mru_subtitleFont];
+      mru_routeFont = [MEMORY[0x1E69DB878] mru_routeFont];
+      mru_ambientTitleFont = [MEMORY[0x1E69DB878] mru_titleFont];
+      mru_smallSubtitleFont = [MEMORY[0x1E69DB878] mru_subtitleFont];
       goto LABEL_13;
   }
 
   v13 = v9;
-  v5 = v8;
-  v4 = v13;
-  v6 = v4;
-  v12 = v5;
+  mru_smallTitleFont = v8;
+  mru_routeFont = v13;
+  mru_smallSubtitleFont = mru_routeFont;
+  v12 = mru_smallTitleFont;
 LABEL_18:
   routeFont = self->_routeFont;
-  self->_routeFont = v4;
-  v20 = v4;
+  self->_routeFont = mru_routeFont;
+  v20 = mru_routeFont;
 
   titleFont = self->_titleFont;
-  self->_titleFont = v5;
-  v16 = v5;
+  self->_titleFont = mru_smallTitleFont;
+  v16 = mru_smallTitleFont;
 
   placeholderFont = self->_placeholderFont;
   self->_placeholderFont = v12;
   v18 = v12;
 
   subtitleFont = self->_subtitleFont;
-  self->_subtitleFont = v6;
+  self->_subtitleFont = mru_smallSubtitleFont;
 
   [(MRUNowPlayingLabelView *)self updateFonts];
 }

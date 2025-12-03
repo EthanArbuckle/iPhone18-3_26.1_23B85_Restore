@@ -1,20 +1,20 @@
 @interface SAPAStyleImageInfo
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
 @end
 
 @implementation SAPAStyleImageInfo
 
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v5 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleImageInfo" userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v3 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleImageInfo" userInfo:0];
   objc_exception_throw(v3);
@@ -26,15 +26,15 @@
   objc_exception_throw(v2);
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
-  if (!a3)
+  if (!buffer)
   {
     v9 = @"NULL buffer for SAPAStyleImageInfo";
     goto LABEL_6;
   }
 
-  if (*a3 != 2271560481)
+  if (*buffer != 2271560481)
   {
     v9 = @"Bad magic for SAPAStyleImageInfo";
 LABEL_6:
@@ -43,16 +43,16 @@ LABEL_6:
   }
 
   v5 = objc_alloc_init(SAPAStyleImageInfo);
-  v6 = [SABinaryLoadInfo binaryLoadInfoWithoutReferencesFromPAStyleSerializedImageInfo:a3];
+  v6 = [SABinaryLoadInfo binaryLoadInfoWithoutReferencesFromPAStyleSerializedImageInfo:buffer];
   binaryLoadInfo = v5->_binaryLoadInfo;
   v5->_binaryLoadInfo = v6;
 
   return v5;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
-  if (!a5 || !a6)
+  if (!dictionary || !bufferDictionary)
   {
     v7 = *__error();
     v8 = _sa_logt();
@@ -65,7 +65,7 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!buffer)
   {
     v7 = *__error();
     v8 = _sa_logt();
@@ -84,7 +84,7 @@ LABEL_15:
     return;
   }
 
-  if (*a3 != 2271560481)
+  if (*buffer != 2271560481)
   {
     v7 = *__error();
     v8 = _sa_logt();
@@ -101,7 +101,7 @@ LABEL_15:
 
   binaryLoadInfo = self->_binaryLoadInfo;
 
-  [(SABinaryLoadInfo *)binaryLoadInfo populateReferencesUsingPAStyleSerializedImageInfo:a3 andDeserializationDictionary:a5 andDataBufferDictionary:a6];
+  [(SABinaryLoadInfo *)binaryLoadInfo populateReferencesUsingPAStyleSerializedImageInfo:buffer andDeserializationDictionary:dictionary andDataBufferDictionary:bufferDictionary];
 }
 
 @end

@@ -1,39 +1,39 @@
 @interface ACUILocalization
-+ (id)localizedNameForApplicationBundleID:(id)a3;
-+ (id)localizedReferenceToLocalSourceOfDataclass:(id)a3;
-+ (id)localizedStringForDataclass:(id)a3 withSuffix:(id)a4 forAccount:(id)a5;
-+ (id)localizedTextForDataclasses:(id)a3 usedAtBeginningOfSentence:(BOOL)a4;
-+ (id)localizedTextForDataclasses:(id)a3 usedAtBeginningOfSentence:(BOOL)a4 forAccount:(id)a5;
-+ (id)localizedTitleForDataclass:(id)a3;
-+ (id)localizedTitleForDataclass:(id)a3 forAccount:(id)a4;
-+ (id)localizedTitleForLocalSourceOfDataclass:(id)a3 usedAtBeginningOfSentence:(BOOL)a4;
++ (id)localizedNameForApplicationBundleID:(id)d;
++ (id)localizedReferenceToLocalSourceOfDataclass:(id)dataclass;
++ (id)localizedStringForDataclass:(id)dataclass withSuffix:(id)suffix forAccount:(id)account;
++ (id)localizedTextForDataclasses:(id)dataclasses usedAtBeginningOfSentence:(BOOL)sentence;
++ (id)localizedTextForDataclasses:(id)dataclasses usedAtBeginningOfSentence:(BOOL)sentence forAccount:(id)account;
++ (id)localizedTitleForDataclass:(id)dataclass;
++ (id)localizedTitleForDataclass:(id)dataclass forAccount:(id)account;
++ (id)localizedTitleForLocalSourceOfDataclass:(id)dataclass usedAtBeginningOfSentence:(BOOL)sentence;
 @end
 
 @implementation ACUILocalization
 
-+ (id)localizedTextForDataclasses:(id)a3 usedAtBeginningOfSentence:(BOOL)a4
++ (id)localizedTextForDataclasses:(id)dataclasses usedAtBeginningOfSentence:(BOOL)sentence
 {
-  v8 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [v8 localizedTextForDataclasses:location[0] usedAtBeginningOfSentence:a4 forAccount:0];
+  objc_storeStrong(location, dataclasses);
+  v6 = [selfCopy localizedTextForDataclasses:location[0] usedAtBeginningOfSentence:sentence forAccount:0];
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-+ (id)localizedTextForDataclasses:(id)a3 usedAtBeginningOfSentence:(BOOL)a4 forAccount:(id)a5
++ (id)localizedTextForDataclasses:(id)dataclasses usedAtBeginningOfSentence:(BOOL)sentence forAccount:(id)account
 {
   v38 = *MEMORY[0x277D85DE8];
-  v36 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, dataclasses);
+  sentenceCopy = sentence;
   v33 = 0;
-  objc_storeStrong(&v33, a5);
-  v32 = [MEMORY[0x277CCAB68] string];
+  objc_storeStrong(&v33, account);
+  string = [MEMORY[0x277CCAB68] string];
   v31 = MEMORY[0x277D82BE0](location[0]);
   memset(__b, 0, sizeof(__b));
   v26 = MEMORY[0x277D82BE0](v31);
@@ -53,14 +53,14 @@
 
       v30 = *(__b[1] + 8 * v22);
       v28 = MEMORY[0x277D82BE0](@"WARNING");
-      if ([v32 length])
+      if ([string length])
       {
         v19 = v30;
-        v18 = [v31 lastObject];
-        MEMORY[0x277D82BD8](v18);
-        if (v19 == v18)
+        lastObject = [v31 lastObject];
+        MEMORY[0x277D82BD8](lastObject);
+        if (v19 == lastObject)
         {
-          v15 = v32;
+          v15 = string;
           v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v16 = [v17 localizedStringForKey:@"LAST_SEPARATOR" value:&stru_2850054A0 table:@"Localizable"];
           [v15 appendString:?];
@@ -70,7 +70,7 @@
 
         else
         {
-          v12 = v32;
+          v12 = string;
           v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v13 = [v14 localizedStringForKey:@"MIDDLE_SEPARATOR" value:&stru_2850054A0 table:@"Localizable"];
           [v12 appendString:?];
@@ -79,13 +79,13 @@
         }
       }
 
-      else if (v34)
+      else if (sentenceCopy)
       {
         objc_storeStrong(&v28, @"LABEL");
       }
 
-      v10 = v32;
-      v11 = [v36 localizedStringForDataclass:v30 withSuffix:v28 forAccount:?];
+      v10 = string;
+      v11 = [selfCopy localizedStringForDataclass:v30 withSuffix:v28 forAccount:?];
       [v10 appendString:?];
       MEMORY[0x277D82BD8](v11);
       objc_storeStrong(&v28, 0);
@@ -103,9 +103,9 @@
   }
 
   MEMORY[0x277D82BD8](v26);
-  if (![v32 length])
+  if (![string length])
   {
-    v7 = v32;
+    v7 = string;
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v9 localizedStringForKey:@"DATA" value:&stru_2850054A0 table:@"Localizable"];
     [v7 appendString:?];
@@ -113,9 +113,9 @@
     MEMORY[0x277D82BD8](v9);
   }
 
-  v6 = MEMORY[0x277D82BE0](v32);
+  v6 = MEMORY[0x277D82BE0](string);
   objc_storeStrong(&v31, 0);
-  objc_storeStrong(&v32, 0);
+  objc_storeStrong(&string, 0);
   objc_storeStrong(&v33, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
@@ -123,45 +123,45 @@
   return v6;
 }
 
-+ (id)localizedTitleForDataclass:(id)a3
++ (id)localizedTitleForDataclass:(id)dataclass
 {
-  v6 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [v6 localizedTitleForDataclass:location[0] forAccount:0];
+  objc_storeStrong(location, dataclass);
+  v4 = [selfCopy localizedTitleForDataclass:location[0] forAccount:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-+ (id)localizedTitleForDataclass:(id)a3 forAccount:(id)a4
++ (id)localizedTitleForDataclass:(id)dataclass forAccount:(id)account
 {
-  v9 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dataclass);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6 = [v9 localizedStringForDataclass:location[0] withSuffix:@"TITLE" forAccount:v7];
+  objc_storeStrong(&v7, account);
+  v6 = [selfCopy localizedStringForDataclass:location[0] withSuffix:@"TITLE" forAccount:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-+ (id)localizedTitleForLocalSourceOfDataclass:(id)a3 usedAtBeginningOfSentence:(BOOL)a4
++ (id)localizedTitleForLocalSourceOfDataclass:(id)dataclass usedAtBeginningOfSentence:(BOOL)sentence
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
+  objc_storeStrong(location, dataclass);
+  sentenceCopy = sentence;
   v14 = objc_alloc_init(MEMORY[0x277CB8F48]);
   v13 = [v14 tetheredSyncSourceTypeForDataclass:location[0]];
   if ([v13 isEqualToString:@"OSX"])
   {
-    if (v15)
+    if (sentenceCopy)
     {
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v17 = [v11 localizedStringForKey:@"FROM_MY_COMPUTER_TYPE_MAC" value:&stru_2850054A0 table:@"Localizable"];
@@ -178,7 +178,7 @@
 
   else if ([v13 isEqualToString:@"Windows"])
   {
-    if (v15)
+    if (sentenceCopy)
     {
       v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v17 = [v9 localizedStringForKey:@"FROM_MY_COMPUTER_TYPE_PC" value:&stru_2850054A0 table:@"Localizable"];
@@ -193,7 +193,7 @@
     }
   }
 
-  else if (v15)
+  else if (sentenceCopy)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v17 = [v7 localizedStringForKey:@"ON_MY_DEVICE_TYPE" value:&stru_2850054A0 table:@"Localizable"];
@@ -215,12 +215,12 @@
   return v4;
 }
 
-+ (id)localizedReferenceToLocalSourceOfDataclass:(id)a3
++ (id)localizedReferenceToLocalSourceOfDataclass:(id)dataclass
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dataclass);
   v9 = objc_alloc_init(MEMORY[0x277CB8F48]);
   v8 = [v9 tetheredSyncSourceTypeForDataclass:location[0]];
   if ([v8 isEqualToString:@"OSX"])
@@ -252,43 +252,43 @@
   return v3;
 }
 
-+ (id)localizedNameForApplicationBundleID:(id)a3
++ (id)localizedNameForApplicationBundleID:(id)d
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   if (location[0])
   {
     v3 = objc_alloc(MEMORY[0x277CC1E70]);
     v6 = [v3 initWithBundleIdentifier:location[0] allowPlaceholder:1 error:?];
-    v9 = [v6 localizedName];
+    localizedName = [v6 localizedName];
     v7 = 1;
     objc_storeStrong(&v6, 0);
   }
 
   else
   {
-    v9 = 0;
+    localizedName = 0;
     v7 = 1;
   }
 
   objc_storeStrong(location, 0);
-  v4 = v9;
+  v4 = localizedName;
 
   return v4;
 }
 
-+ (id)localizedStringForDataclass:(id)a3 withSuffix:(id)a4 forAccount:(id)a5
++ (id)localizedStringForDataclass:(id)dataclass withSuffix:(id)suffix forAccount:(id)account
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dataclass);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, suffix);
   v36 = 0;
-  objc_storeStrong(&v36, a5);
+  objc_storeStrong(&v36, account);
   v27 = +[ACUIAccountViewProvidersManager sharedInstance];
   v35 = [(ACUIAccountViewProvidersManager *)v27 localizedStringForDataclass:location[0] withSuffix:v37 forAccount:v36];
   MEMORY[0x277D82BD8](v27);
@@ -318,15 +318,15 @@
 
     else if ([location[0] isEqualToString:*MEMORY[0x277CB8A00]])
     {
-      v23 = [MEMORY[0x277D75418] currentDevice];
-      v24 = [v23 userInterfaceIdiom];
-      MEMORY[0x277D82BD8](v23);
-      if (v24)
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+      MEMORY[0x277D82BD8](currentDevice);
+      if (userInterfaceIdiom)
       {
-        v20 = [MEMORY[0x277D75418] currentDevice];
-        v21 = [v20 userInterfaceIdiom];
-        MEMORY[0x277D82BD8](v20);
-        if (v21 == 4)
+        currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
+        MEMORY[0x277D82BD8](currentDevice2);
+        if (userInterfaceIdiom2 == 4)
         {
           objc_storeStrong(&v33, @"PHONE_AND_FACETIME");
         }
@@ -369,9 +369,9 @@
       v7 = v33;
       v33 = v6;
       MEMORY[0x277D82BD8](v7);
-      v8 = [v33 uppercaseString];
+      uppercaseString = [v33 uppercaseString];
       v9 = v33;
-      v33 = v8;
+      v33 = uppercaseString;
       MEMORY[0x277D82BD8](v9);
     }
 

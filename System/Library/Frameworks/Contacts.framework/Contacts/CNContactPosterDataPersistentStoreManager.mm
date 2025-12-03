@@ -1,27 +1,27 @@
 @interface CNContactPosterDataPersistentStoreManager
-+ (BOOL)_checkProductionReadyTagForDatabaseAtURL:(id)a3;
-+ (BOOL)createStoreDirectoryIfNeededAt:(id)a3 error:(id *)a4;
-+ (BOOL)createStoreDirectoryIfNeededAtDefaultLocation:(id *)a3;
-+ (BOOL)moveAsideIfUntaggedDevelopmentDB:(id)a3;
-+ (BOOL)performLightweightMigrationIfNeededError:(id *)a3;
-+ (BOOL)performLightweightMigrationIfNeededWithStoreLocation:(id)a3 error:(id *)a4;
++ (BOOL)_checkProductionReadyTagForDatabaseAtURL:(id)l;
++ (BOOL)createStoreDirectoryIfNeededAt:(id)at error:(id *)error;
++ (BOOL)createStoreDirectoryIfNeededAtDefaultLocation:(id *)location;
++ (BOOL)moveAsideIfUntaggedDevelopmentDB:(id)b;
++ (BOOL)performLightweightMigrationIfNeededError:(id *)error;
++ (BOOL)performLightweightMigrationIfNeededWithStoreLocation:(id)location error:(id *)error;
 + (OS_os_log)os_log;
 + (id)_cloudKitOptionsWorkingAroundModuleFailures;
-+ (id)_modelVersionChecksumForDatabaseAtURL:(id)a3;
++ (id)_modelVersionChecksumForDatabaseAtURL:(id)l;
 + (id)createModel;
 + (id)currentManagedObjectModel;
 + (id)defaultDatabaseFileURL;
 + (id)defaultStoreLocation;
 + (id)inMemoryStoreManager;
-+ (id)sharedPersistentContainerForModel:(id)a3 storeLocation:(id)a4;
-+ (id)sharedPersistentContainerForStoreLocation:(id)a3;
-+ (id)storeFileURLForLocation:(id)a3;
-+ (void)tagDatabaseAsSafeForProductionInContainer:(id)a3;
-- (BOOL)createStoreDirectoryIfNeeded:(id *)a3;
-- (BOOL)performWorkWithManagedObjectContext:(id)a3 error:(id *)a4;
++ (id)sharedPersistentContainerForModel:(id)model storeLocation:(id)location;
++ (id)sharedPersistentContainerForStoreLocation:(id)location;
++ (id)storeFileURLForLocation:(id)location;
++ (void)tagDatabaseAsSafeForProductionInContainer:(id)container;
+- (BOOL)createStoreDirectoryIfNeeded:(id *)needed;
+- (BOOL)performWorkWithManagedObjectContext:(id)context error:(id *)error;
 - (CNContactPosterDataPersistentStoreManager)init;
-- (CNContactPosterDataPersistentStoreManager)initWithStoreLocation:(id)a3;
-- (CNContactPosterDataPersistentStoreManager)initWithStoreLocation:(id)a3 container:(id)a4;
+- (CNContactPosterDataPersistentStoreManager)initWithStoreLocation:(id)location;
+- (CNContactPosterDataPersistentStoreManager)initWithStoreLocation:(id)location container:(id)container;
 - (id)createManagedObjectContext;
 - (id)persistentStoreCoordinator;
 - (id)storeDescription;
@@ -32,18 +32,18 @@
 
 - (id)persistentStoreCoordinator
 {
-  v2 = [(CNContactPosterDataPersistentStoreManager *)self container];
-  v3 = [v2 persistentStoreCoordinator];
+  container = [(CNContactPosterDataPersistentStoreManager *)self container];
+  persistentStoreCoordinator = [container persistentStoreCoordinator];
 
-  return v3;
+  return persistentStoreCoordinator;
 }
 
 - (id)createManagedObjectContext
 {
-  v2 = [(CNContactPosterDataPersistentStoreManager *)self container];
-  v3 = [v2 newBackgroundContext];
+  container = [(CNContactPosterDataPersistentStoreManager *)self container];
+  newBackgroundContext = [container newBackgroundContext];
 
-  return v3;
+  return newBackgroundContext;
 }
 
 + (OS_os_log)os_log
@@ -73,7 +73,7 @@ uint64_t __51__CNContactPosterDataPersistentStoreManager_os_log__block_invoke()
   block[1] = 3221225472;
   block[2] = __70__CNContactPosterDataPersistentStoreManager_currentManagedObjectModel__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentManagedObjectModel_cn_once_token_2 != -1)
   {
     dispatch_once(&currentManagedObjectModel_cn_once_token_2, block);
@@ -100,10 +100,10 @@ uint64_t __70__CNContactPosterDataPersistentStoreManager_currentManagedObjectMod
 
   if (!v4)
   {
-    v5 = [a1 os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    os_log = [self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      [(CNContactPosterDataPersistentStoreManager *)v5 createModel:v6];
+      [(CNContactPosterDataPersistentStoreManager *)os_log createModel:v6];
     }
   }
 
@@ -114,22 +114,22 @@ uint64_t __70__CNContactPosterDataPersistentStoreManager_currentManagedObjectMod
 
 + (id)inMemoryStoreManager
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/dev/null"];
   v4 = [v2 initWithStoreLocation:v3];
 
   return v4;
 }
 
-+ (id)sharedPersistentContainerForModel:(id)a3 storeLocation:(id)a4
++ (id)sharedPersistentContainerForModel:(id)model storeLocation:(id)location
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D688];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithName:@"CNContactMetadata" managedObjectModel:v7];
+  locationCopy = location;
+  modelCopy = model;
+  v8 = [[v5 alloc] initWithName:@"CNContactMetadata" managedObjectModel:modelCopy];
 
-  v9 = [objc_opt_class() storeFileURLForLocation:v6];
+  v9 = [objc_opt_class() storeFileURLForLocation:locationCopy];
 
   v10 = [MEMORY[0x1E695D6C8] persistentStoreDescriptionWithURL:v9];
   v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -148,60 +148,60 @@ uint64_t __70__CNContactPosterDataPersistentStoreManager_currentManagedObjectMod
   return v8;
 }
 
-+ (id)storeFileURLForLocation:(id)a3
++ (id)storeFileURLForLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = [@"CNContactMetadata" stringByAppendingString:@".db"];
-  v5 = [v3 URLByAppendingPathComponent:v4];
+  v5 = [locationCopy URLByAppendingPathComponent:v4];
 
   return v5;
 }
 
 + (id)defaultDatabaseFileURL
 {
-  v3 = [a1 defaultStoreLocation];
-  v4 = [a1 storeFileURLForLocation:v3];
+  defaultStoreLocation = [self defaultStoreLocation];
+  v4 = [self storeFileURLForLocation:defaultStoreLocation];
 
   return v4;
 }
 
 + (id)defaultStoreLocation
 {
-  v2 = [MEMORY[0x1E6996700] sharedInstance];
-  v3 = [v2 libraryFolderURL];
+  mEMORY[0x1E6996700] = [MEMORY[0x1E6996700] sharedInstance];
+  libraryFolderURL = [mEMORY[0x1E6996700] libraryFolderURL];
 
-  v4 = [v3 URLByAppendingPathComponent:@"ContactsMetadata" isDirectory:1];
+  v4 = [libraryFolderURL URLByAppendingPathComponent:@"ContactsMetadata" isDirectory:1];
 
   return v4;
 }
 
-+ (id)sharedPersistentContainerForStoreLocation:(id)a3
++ (id)sharedPersistentContainerForStoreLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = objc_opt_class();
-  v5 = [objc_opt_class() currentManagedObjectModel];
-  v6 = [v4 sharedPersistentContainerForModel:v5 storeLocation:v3];
+  currentManagedObjectModel = [objc_opt_class() currentManagedObjectModel];
+  v6 = [v4 sharedPersistentContainerForModel:currentManagedObjectModel storeLocation:locationCopy];
 
   return v6;
 }
 
 - (CNContactPosterDataPersistentStoreManager)init
 {
-  v3 = [objc_opt_class() defaultStoreLocation];
-  v4 = [(CNContactPosterDataPersistentStoreManager *)self initWithStoreLocation:v3];
+  defaultStoreLocation = [objc_opt_class() defaultStoreLocation];
+  v4 = [(CNContactPosterDataPersistentStoreManager *)self initWithStoreLocation:defaultStoreLocation];
 
   return v4;
 }
 
-- (CNContactPosterDataPersistentStoreManager)initWithStoreLocation:(id)a3
+- (CNContactPosterDataPersistentStoreManager)initWithStoreLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/dev/null"];
-  v6 = [v4 isEqual:v5];
+  v6 = [locationCopy isEqual:v5];
 
   if (v6)
   {
-    v7 = [objc_opt_class() sharedPersistentContainerForStoreLocation:v4];
+    v7 = [objc_opt_class() sharedPersistentContainerForStoreLocation:locationCopy];
   }
 
   else
@@ -210,8 +210,8 @@ uint64_t __70__CNContactPosterDataPersistentStoreManager_currentManagedObjectMod
     v11 = 3221225472;
     v12 = __67__CNContactPosterDataPersistentStoreManager_initWithStoreLocation___block_invoke;
     v13 = &unk_1E74121B8;
-    v14 = self;
-    v15 = v4;
+    selfCopy = self;
+    v15 = locationCopy;
     if (initWithStoreLocation__cn_once_token_4 != -1)
     {
       dispatch_once(&initWithStoreLocation__cn_once_token_4, &v10);
@@ -220,7 +220,7 @@ uint64_t __70__CNContactPosterDataPersistentStoreManager_currentManagedObjectMod
     v7 = initWithStoreLocation__cn_once_object_4;
   }
 
-  v8 = [(CNContactPosterDataPersistentStoreManager *)self initWithStoreLocation:v4 container:v7, v10, v11, v12, v13];
+  v8 = [(CNContactPosterDataPersistentStoreManager *)self initWithStoreLocation:locationCopy container:v7, v10, v11, v12, v13];
 
   return v8;
 }
@@ -234,18 +234,18 @@ uint64_t __67__CNContactPosterDataPersistentStoreManager_initWithStoreLocation__
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (CNContactPosterDataPersistentStoreManager)initWithStoreLocation:(id)a3 container:(id)a4
+- (CNContactPosterDataPersistentStoreManager)initWithStoreLocation:(id)location container:(id)container
 {
-  v7 = a3;
-  v8 = a4;
+  locationCopy = location;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = CNContactPosterDataPersistentStoreManager;
   v9 = [(CNContactPosterDataPersistentStoreManager *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storeLocation, a3);
-    objc_storeStrong(&v10->_container, a4);
+    objc_storeStrong(&v9->_storeLocation, location);
+    objc_storeStrong(&v10->_container, container);
     [(CNContactPosterDataPersistentStoreManager *)v10 setupIfNeeded];
     v11 = v10;
   }
@@ -253,33 +253,33 @@ uint64_t __67__CNContactPosterDataPersistentStoreManager_initWithStoreLocation__
   return v10;
 }
 
-- (BOOL)performWorkWithManagedObjectContext:(id)a3 error:(id *)a4
+- (BOOL)performWorkWithManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNContactPosterDataPersistentStoreManager *)self persistentStoreCoordinator];
-  v8 = [v7 persistentStores];
-  v9 = [v8 count];
+  contextCopy = context;
+  persistentStoreCoordinator = [(CNContactPosterDataPersistentStoreManager *)self persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  v9 = [persistentStores count];
 
   if (v9)
   {
-    v10 = [(CNContactPosterDataPersistentStoreManager *)self createManagedObjectContext];
+    createManagedObjectContext = [(CNContactPosterDataPersistentStoreManager *)self createManagedObjectContext];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __87__CNContactPosterDataPersistentStoreManager_performWorkWithManagedObjectContext_error___block_invoke;
     v14[3] = &unk_1E7412558;
-    v15 = v10;
-    v16 = v6;
-    v11 = v10;
+    v15 = createManagedObjectContext;
+    v16 = contextCopy;
+    v11 = createManagedObjectContext;
     [v11 performBlockAndWait:v14];
   }
 
   else
   {
-    v12 = [(CNContactPosterDataPersistentStoreManager *)self loadPersistentStoresError];
-    if (a4)
+    loadPersistentStoresError = [(CNContactPosterDataPersistentStoreManager *)self loadPersistentStoresError];
+    if (error)
     {
-      v12 = v12;
-      *a4 = v12;
+      loadPersistentStoresError = loadPersistentStoresError;
+      *error = loadPersistentStoresError;
     }
   }
 
@@ -288,7 +288,7 @@ uint64_t __67__CNContactPosterDataPersistentStoreManager_initWithStoreLocation__
 
 - (void)setupIfNeeded
 {
-  v1 = [a1 description];
+  v1 = [self description];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_0(&dword_1954A0000, v2, v3, "Failed to setup store: %@", v4, v5, v6, v7, v8);
 }
@@ -324,41 +324,41 @@ void __58__CNContactPosterDataPersistentStoreManager_setupIfNeeded__block_invoke
 
 - (id)storeDescription
 {
-  v2 = [(CNContactPosterDataPersistentStoreManager *)self container];
-  v3 = [v2 persistentStoreDescriptions];
-  v4 = [v3 firstObject];
+  container = [(CNContactPosterDataPersistentStoreManager *)self container];
+  persistentStoreDescriptions = [container persistentStoreDescriptions];
+  firstObject = [persistentStoreDescriptions firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (BOOL)createStoreDirectoryIfNeeded:(id *)a3
+- (BOOL)createStoreDirectoryIfNeeded:(id *)needed
 {
   v5 = objc_opt_class();
-  v6 = [(CNContactPosterDataPersistentStoreManager *)self storeLocation];
-  LOBYTE(a3) = [v5 createStoreDirectoryIfNeededAt:v6 error:a3];
+  storeLocation = [(CNContactPosterDataPersistentStoreManager *)self storeLocation];
+  LOBYTE(needed) = [v5 createStoreDirectoryIfNeededAt:storeLocation error:needed];
 
-  return a3;
+  return needed;
 }
 
-+ (BOOL)createStoreDirectoryIfNeededAtDefaultLocation:(id *)a3
++ (BOOL)createStoreDirectoryIfNeededAtDefaultLocation:(id *)location
 {
-  v5 = [a1 defaultStoreLocation];
-  LOBYTE(a3) = [a1 createStoreDirectoryIfNeededAt:v5 error:a3];
+  defaultStoreLocation = [self defaultStoreLocation];
+  LOBYTE(location) = [self createStoreDirectoryIfNeededAt:defaultStoreLocation error:location];
 
-  return a3;
+  return location;
 }
 
-+ (BOOL)createStoreDirectoryIfNeededAt:(id)a3 error:(id *)a4
++ (BOOL)createStoreDirectoryIfNeededAt:(id)at error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 path];
-  v7 = [v6 isEqual:@"/dev/null"];
+  atCopy = at;
+  path = [atCopy path];
+  v7 = [path isEqual:@"/dev/null"];
 
   if ((v7 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v5 path];
-    v11 = [v9 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [atCopy path];
+    v11 = [defaultManager fileExistsAtPath:path2];
 
     if (v11)
     {
@@ -368,23 +368,23 @@ void __58__CNContactPosterDataPersistentStoreManager_setupIfNeeded__block_invoke
     else
     {
       v19 = 0;
-      v13 = [v9 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v19];
+      v13 = [defaultManager createDirectoryAtURL:atCopy withIntermediateDirectories:1 attributes:0 error:&v19];
       v12 = v19;
       if ((v13 & 1) == 0)
       {
-        v16 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        os_log = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
         {
           +[CNContactPosterDataPersistentStoreManager createStoreDirectoryIfNeededAt:error:];
         }
 
         v17 = v12;
         v14 = v17;
-        if (a4)
+        if (error)
         {
           v18 = v17;
           v8 = 0;
-          *a4 = v14;
+          *error = v14;
         }
 
         else
@@ -409,24 +409,24 @@ LABEL_8:
   return v8;
 }
 
-+ (id)_modelVersionChecksumForDatabaseAtURL:(id)a3
++ (id)_modelVersionChecksumForDatabaseAtURL:(id)l
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E695D4A8];
   v22 = 0;
-  v5 = [MEMORY[0x1E695D6C0] metadataForPersistentStoreOfType:v4 URL:a3 options:0 error:&v22];
+  v5 = [MEMORY[0x1E695D6C0] metadataForPersistentStoreOfType:v4 URL:l options:0 error:&v22];
   v6 = v22;
   if (v6)
   {
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
       v25 = v6;
-      _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_INFO, "Couldn't fetch metadata for the store, error: %{public}@", buf, 0xCu);
+      _os_log_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_INFO, "Couldn't fetch metadata for the store, error: %{public}@", buf, 0xCu);
     }
 
-    v8 = 0;
+    versionChecksum = 0;
   }
 
   else
@@ -435,47 +435,47 @@ LABEL_8:
     v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v23 = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
-    v7 = [v9 mergedModelFromBundles:v11 forStoreMetadata:v5];
+    os_log = [v9 mergedModelFromBundles:v11 forStoreMetadata:v5];
 
-    if (v7)
+    if (os_log)
     {
-      v12 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:v7];
-      v13 = [v12 managedObjectModel];
-      v8 = [v13 versionChecksum];
+      os_log2 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:os_log];
+      managedObjectModel = [os_log2 managedObjectModel];
+      versionChecksum = [managedObjectModel versionChecksum];
     }
 
     else
     {
-      v12 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      os_log2 = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
       {
-        [(CNContactPosterDataPersistentStoreManager *)v12 _modelVersionChecksumForDatabaseAtURL:v14, v15, v16, v17, v18, v19, v20];
+        [(CNContactPosterDataPersistentStoreManager *)os_log2 _modelVersionChecksumForDatabaseAtURL:v14, v15, v16, v17, v18, v19, v20];
       }
 
-      v8 = 0;
+      versionChecksum = 0;
     }
   }
 
-  return v8;
+  return versionChecksum;
 }
 
-+ (BOOL)_checkProductionReadyTagForDatabaseAtURL:(id)a3
++ (BOOL)_checkProductionReadyTagForDatabaseAtURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
     v7 = *MEMORY[0x1E695D4A8];
     v13 = 0;
-    v8 = [MEMORY[0x1E695D6C0] metadataForPersistentStoreOfType:v7 URL:v3 options:0 error:&v13];
+    v8 = [MEMORY[0x1E695D6C0] metadataForPersistentStoreOfType:v7 URL:lCopy options:0 error:&v13];
     v9 = v13;
     if (v9)
     {
-      v10 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
       {
         +[CNContactPosterDataPersistentStoreManager _checkProductionReadyTagForDatabaseAtURL:];
       }
@@ -485,8 +485,8 @@ LABEL_8:
 
     else
     {
-      v10 = [v8 objectForKeyedSubscript:@"ReadyToSyncToProduction"];
-      v11 = v10 != 0;
+      os_log = [v8 objectForKeyedSubscript:@"ReadyToSyncToProduction"];
+      v11 = os_log != 0;
     }
   }
 
@@ -498,30 +498,30 @@ LABEL_8:
   return v11;
 }
 
-+ (void)tagDatabaseAsSafeForProductionInContainer:(id)a3
++ (void)tagDatabaseAsSafeForProductionInContainer:(id)container
 {
-  v3 = a3;
-  v4 = [v3 persistentStoreCoordinator];
-  v5 = [v4 persistentStores];
-  v6 = [v5 firstObject];
+  containerCopy = container;
+  persistentStoreCoordinator = [containerCopy persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
 
-  v7 = [v4 metadataForPersistentStore:v6];
+  v7 = [persistentStoreCoordinator metadataForPersistentStore:firstObject];
   v8 = [v7 objectForKeyedSubscript:@"ReadyToSyncToProduction"];
 
   if (!v8)
   {
     v9 = [v7 mutableCopy];
     [v9 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"ReadyToSyncToProduction"];
-    [v4 setMetadata:v9 forPersistentStore:v6];
-    v10 = [v3 newBackgroundContext];
+    [persistentStoreCoordinator setMetadata:v9 forPersistentStore:firstObject];
+    newBackgroundContext = [containerCopy newBackgroundContext];
     v13 = 0;
-    [v10 save:&v13];
+    [newBackgroundContext save:&v13];
     v11 = v13;
 
     if (v11)
     {
-      v12 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
       {
         +[CNContactPosterDataPersistentStoreManager tagDatabaseAsSafeForProductionInContainer:];
       }
@@ -529,24 +529,24 @@ LABEL_8:
   }
 }
 
-+ (BOOL)moveAsideIfUntaggedDevelopmentDB:(id)a3
++ (BOOL)moveAsideIfUntaggedDevelopmentDB:(id)b
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 storeFileURLForLocation:v4];
-  v6 = [a1 _modelVersionChecksumForDatabaseAtURL:v5];
-  v7 = [a1 _checkProductionReadyTagForDatabaseAtURL:v5];
+  bCopy = b;
+  v5 = [self storeFileURLForLocation:bCopy];
+  v6 = [self _modelVersionChecksumForDatabaseAtURL:v5];
+  v7 = [self _checkProductionReadyTagForDatabaseAtURL:v5];
   v8 = [v6 isEqualToString:@"s0gVhK2s5lpxmERmPBpAlmfbylLFcshT5vOSp2oGqUc="] ^ 1 | v7;
   if ((v8 & 1) == 0)
   {
-    v9 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1954A0000, v9, OS_LOG_TYPE_DEFAULT, "Moving aside development poster DB", buf, 2u);
+      _os_log_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_DEFAULT, "Moving aside development poster DB", buf, 2u);
     }
 
-    v10 = [v4 URLByAppendingPathComponent:@"moved_aside_development_PosterData.db"];
+    v10 = [bCopy URLByAppendingPathComponent:@"moved_aside_development_PosterData.db"];
     v11 = objc_alloc_init(MEMORY[0x1E695D6C0]);
     v12 = *MEMORY[0x1E695D4A8];
     v20 = 0;
@@ -554,8 +554,8 @@ LABEL_8:
     v13 = v20;
     if (v13)
     {
-      v14 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      os_log2 = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
       {
         +[CNContactPosterDataPersistentStoreManager moveAsideIfUntaggedDevelopmentDB:];
       }
@@ -570,8 +570,8 @@ LABEL_8:
 
     if (v16)
     {
-      v17 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      os_log3 = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log3, OS_LOG_TYPE_ERROR))
       {
         +[CNContactPosterDataPersistentStoreManager moveAsideIfUntaggedDevelopmentDB:];
       }
@@ -581,109 +581,109 @@ LABEL_8:
   return (v8 & 1) == 0;
 }
 
-+ (BOOL)performLightweightMigrationIfNeededError:(id *)a3
++ (BOOL)performLightweightMigrationIfNeededError:(id *)error
 {
-  v5 = [objc_opt_class() defaultStoreLocation];
-  LOBYTE(a3) = [a1 performLightweightMigrationIfNeededWithStoreLocation:v5 error:a3];
+  defaultStoreLocation = [objc_opt_class() defaultStoreLocation];
+  LOBYTE(error) = [self performLightweightMigrationIfNeededWithStoreLocation:defaultStoreLocation error:error];
 
-  return a3;
+  return error;
 }
 
-+ (BOOL)performLightweightMigrationIfNeededWithStoreLocation:(id)a3 error:(id *)a4
++ (BOOL)performLightweightMigrationIfNeededWithStoreLocation:(id)location error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 storeFileURLForLocation:v6];
+  locationCopy = location;
+  v7 = [self storeFileURLForLocation:locationCopy];
   v8 = *MEMORY[0x1E695D4A8];
   v31 = 0;
   v9 = [MEMORY[0x1E695D6C0] metadataForPersistentStoreOfType:v8 URL:v7 options:0 error:&v31];
   v10 = v31;
   if (!(*(*MEMORY[0x1E6996548] + 16))())
   {
-    if ([a1 moveAsideIfUntaggedDevelopmentDB:v6])
+    if ([self moveAsideIfUntaggedDevelopmentDB:locationCopy])
     {
-      v14 = [a1 sharedPersistentContainerForStoreLocation:v6];
+      v14 = [self sharedPersistentContainerForStoreLocation:locationCopy];
 
       v30 = 0;
       v15 = [v14 load:&v30];
       v10 = v30;
       if (v15)
       {
-        [a1 tagDatabaseAsSafeForProductionInContainer:v14];
-        v16 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        [self tagDatabaseAsSafeForProductionInContainer:v14];
+        os_log = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
         {
-          [CNContactPosterDataPersistentStoreManager performLightweightMigrationIfNeededWithStoreLocation:v16 error:?];
+          [CNContactPosterDataPersistentStoreManager performLightweightMigrationIfNeededWithStoreLocation:os_log error:?];
         }
       }
 
       else
       {
-        v23 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+        os_log2 = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
         {
           [CNContactPosterDataPersistentStoreManager performLightweightMigrationIfNeededWithStoreLocation:v10 error:?];
         }
 
-        if (a4)
+        if (error)
         {
           v24 = v10;
-          *a4 = v10;
+          *error = v10;
         }
       }
 
       goto LABEL_20;
     }
 
-    v17 = [objc_opt_class() currentManagedObjectModel];
-    v18 = v17;
-    if (v17)
+    currentManagedObjectModel = [objc_opt_class() currentManagedObjectModel];
+    v18 = currentManagedObjectModel;
+    if (currentManagedObjectModel)
     {
-      v19 = [v17 isConfiguration:0 compatibleWithStoreMetadata:v9];
+      v19 = [currentManagedObjectModel isConfiguration:0 compatibleWithStoreMetadata:v9];
       v20 = objc_opt_class();
       if (!v19)
       {
-        v21 = [v20 sharedPersistentContainerForModel:v18 storeLocation:v6];
+        os_log4 = [v20 sharedPersistentContainerForModel:v18 storeLocation:locationCopy];
 
         v28 = 0;
-        v13 = [v21 load:&v28];
+        v13 = [os_log4 load:&v28];
         v10 = v28;
         if (v13)
         {
-          [a1 tagDatabaseAsSafeForProductionInContainer:v21];
+          [self tagDatabaseAsSafeForProductionInContainer:os_log4];
         }
 
         else
         {
-          v26 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+          os_log3 = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log3, OS_LOG_TYPE_ERROR))
           {
             [CNContactPosterDataPersistentStoreManager performLightweightMigrationIfNeededWithStoreLocation:v10 error:?];
           }
 
-          if (a4)
+          if (error)
           {
             v27 = v10;
-            *a4 = v10;
+            *error = v10;
           }
         }
 
         goto LABEL_25;
       }
 
-      v21 = [v20 os_log];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      os_log4 = [v20 os_log];
+      if (os_log_type_enabled(os_log4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v22 = "Did not perform migration, existing model is already compatible with store metadata";
 LABEL_23:
-        _os_log_impl(&dword_1954A0000, v21, OS_LOG_TYPE_DEFAULT, v22, buf, 2u);
+        _os_log_impl(&dword_1954A0000, os_log4, OS_LOG_TYPE_DEFAULT, v22, buf, 2u);
       }
     }
 
     else
     {
-      v21 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      os_log4 = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v22 = "Did not perform migration, no existing managed object model found";
@@ -697,13 +697,13 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v11 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  os_log5 = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log5, OS_LOG_TYPE_ERROR))
   {
     [CNContactPosterDataPersistentStoreManager performLightweightMigrationIfNeededWithStoreLocation:v10 error:?];
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_20:
     v13 = 0;
@@ -712,7 +712,7 @@ LABEL_20:
 
   v12 = v10;
   v13 = 0;
-  *a4 = v10;
+  *error = v10;
 LABEL_26:
 
   return v13;

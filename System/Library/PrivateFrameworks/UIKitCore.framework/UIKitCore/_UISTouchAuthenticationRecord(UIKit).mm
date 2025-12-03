@@ -39,7 +39,7 @@
         v17[3] = &unk_1E7116AC8;
         v18 = v4;
         v19 = v7;
-        v9 = [v8 build:v17];
+        _superlayerSecurityAnalysisSceneComponent = [v8 build:v17];
 
         v10 = v18;
 LABEL_12:
@@ -51,10 +51,10 @@ LABEL_12:
 
   if ([v6 _wantsSuperlayerSecurityAnalysis])
   {
-    v11 = [v6 windowScene];
-    v9 = [v11 _superlayerSecurityAnalysisSceneComponent];
+    windowScene = [v6 windowScene];
+    _superlayerSecurityAnalysisSceneComponent = [windowScene _superlayerSecurityAnalysisSceneComponent];
 
-    if (!v9)
+    if (!_superlayerSecurityAnalysisSceneComponent)
     {
       goto LABEL_14;
     }
@@ -65,17 +65,17 @@ LABEL_12:
     v14[2] = __69___UISTouchAuthenticationRecord_UIKit__authenticationRecordForTouch___block_invoke_2;
     v14[3] = &unk_1E7116AC8;
     v15 = v4;
-    v16 = v9;
-    v10 = v9;
-    v9 = [v12 build:v14];
+    v16 = _superlayerSecurityAnalysisSceneComponent;
+    v10 = _superlayerSecurityAnalysisSceneComponent;
+    _superlayerSecurityAnalysisSceneComponent = [v12 build:v14];
 
     goto LABEL_12;
   }
 
-  v9 = 0;
+  _superlayerSecurityAnalysisSceneComponent = 0;
 LABEL_14:
 
-  return v9;
+  return _superlayerSecurityAnalysisSceneComponent;
 }
 
 @end

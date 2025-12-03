@@ -1,26 +1,26 @@
 @interface NCNotificationSourceCategorizer
-+ (BOOL)bundleIdEligibleForSummarization:(id)a3;
-+ (BOOL)cateogryEligibleForSummarization:(unint64_t)a3;
-+ (unint64_t)categoryOfBundleId:(id)a3;
++ (BOOL)bundleIdEligibleForSummarization:(id)summarization;
++ (BOOL)cateogryEligibleForSummarization:(unint64_t)summarization;
++ (unint64_t)categoryOfBundleId:(id)id;
 - (NCNotificationSourceCategorizer)init;
 @end
 
 @implementation NCNotificationSourceCategorizer
 
-+ (BOOL)cateogryEligibleForSummarization:(unint64_t)a3
++ (BOOL)cateogryEligibleForSummarization:(unint64_t)summarization
 {
   v4 = sub_270A88840();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3 > 2)
+  if (summarization > 2)
   {
     v8 = MEMORY[0x277D77EF8];
   }
 
   else
   {
-    v8 = qword_279E0DD40[a3];
+    v8 = qword_279E0DD40[summarization];
   }
 
   (*(v5 + 104))(v7, *v8, v4);
@@ -29,7 +29,7 @@
   return v9 & 1;
 }
 
-+ (BOOL)bundleIdEligibleForSummarization:(id)a3
++ (BOOL)bundleIdEligibleForSummarization:(id)summarization
 {
   sub_270A88FC0();
   v3 = _sSo31NCNotificationSourceCategorizerC20UserNotificationsKitE24eligibleForSummarization8bundleIdSbSS_tFZ_0();
@@ -37,7 +37,7 @@
   return v3 & 1;
 }
 
-+ (unint64_t)categoryOfBundleId:(id)a3
++ (unint64_t)categoryOfBundleId:(id)id
 {
   v3 = sub_270A88840();
   v4 = *(v3 - 8);

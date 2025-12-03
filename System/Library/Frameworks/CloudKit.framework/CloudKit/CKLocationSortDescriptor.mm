@@ -3,9 +3,9 @@
 - (CKLocationSortDescriptor)initWithKey:(NSString *)key relativeLocation:(CLLocation *)relativeLocation;
 - (CLLocation)relativeLocation;
 - (id)CKPropertiesDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compareObject:(id)a3 toObject:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compareObject:(id)object toObject:(id)toObject;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKLocationSortDescriptor
@@ -62,20 +62,20 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v10.receiver = self;
   v10.super_class = CKLocationSortDescriptor;
-  [(CKLocationSortDescriptor *)&v10 encodeWithCoder:v4];
+  [(CKLocationSortDescriptor *)&v10 encodeWithCoder:coderCopy];
   v8 = objc_msgSend_relativeLocation(self, v6, v7);
-  objc_msgSend_encodeObject_forKey_(v4, v9, v8, @"Location");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v8, @"Location");
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKLocationSortDescriptor alloc];
   v7 = objc_msgSend_key(self, v5, v6);
@@ -87,15 +87,15 @@
   return v12;
 }
 
-- (int64_t)compareObject:(id)a3 toObject:(id)a4
+- (int64_t)compareObject:(id)object toObject:(id)toObject
 {
-  v6 = a4;
-  v7 = a3;
+  toObjectCopy = toObject;
+  objectCopy = object;
   v10 = objc_msgSend_key(self, v8, v9);
-  v12 = objc_msgSend_valueForKey_(v7, v11, v10);
+  v12 = objc_msgSend_valueForKey_(objectCopy, v11, v10);
 
   v15 = objc_msgSend_key(self, v13, v14);
-  v17 = objc_msgSend_valueForKey_(v6, v16, v15);
+  v17 = objc_msgSend_valueForKey_(toObjectCopy, v16, v15);
 
   v20 = objc_msgSend_relativeLocation(self, v18, v19);
   objc_msgSend_distanceFromLocation_(v12, v21, v20);

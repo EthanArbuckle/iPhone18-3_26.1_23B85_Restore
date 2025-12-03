@@ -1,25 +1,25 @@
 @interface _EXCopyingLoadOperator
 - ($115C4C562B26FF47E01F9F4EA65B5887)destinationProcessAuditToken;
-- (_EXCopyingLoadOperator)initWithCoder:(id)a3;
-- (_EXCopyingLoadOperator)initWithItemProvider:(id)a3 destinationProcessAuditToken:(id *)a4;
-- (id)_sandboxedResourceForItemIfNeeded:(id)a3 auditToken:(id *)a4 error:(id *)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadItemForTypeIdentifier:(id)a3 completionHandler:(id)a4 expectedValueClass:(Class)a5 options:(id)a6;
-- (void)setDestinationProcessAuditToken:(id *)a3;
+- (_EXCopyingLoadOperator)initWithCoder:(id)coder;
+- (_EXCopyingLoadOperator)initWithItemProvider:(id)provider destinationProcessAuditToken:(id *)token;
+- (id)_sandboxedResourceForItemIfNeeded:(id)needed auditToken:(id *)token error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadItemForTypeIdentifier:(id)identifier completionHandler:(id)handler expectedValueClass:(Class)class options:(id)options;
+- (void)setDestinationProcessAuditToken:(id *)token;
 @end
 
 @implementation _EXCopyingLoadOperator
 
-- (_EXCopyingLoadOperator)initWithItemProvider:(id)a3 destinationProcessAuditToken:(id *)a4
+- (_EXCopyingLoadOperator)initWithItemProvider:(id)provider destinationProcessAuditToken:(id *)token
 {
-  v6 = a3;
-  v7 = [(_EXLoadOperator *)self _init];
-  v8 = v7;
-  if (v7)
+  providerCopy = provider;
+  _init = [(_EXLoadOperator *)self _init];
+  v8 = _init;
+  if (_init)
   {
-    [(_EXCopyingLoadOperator *)v7 setItemProvider:v6];
-    v9 = *&a4->var0[4];
-    v12[0] = *a4->var0;
+    [(_EXCopyingLoadOperator *)_init setItemProvider:providerCopy];
+    v9 = *&token->var0[4];
+    v12[0] = *token->var0;
     v12[1] = v9;
     [(_EXCopyingLoadOperator *)v8 setDestinationProcessAuditToken:v12];
     v10 = v8;
@@ -28,16 +28,16 @@
   return v8;
 }
 
-- (_EXCopyingLoadOperator)initWithCoder:(id)a3
+- (_EXCopyingLoadOperator)initWithCoder:(id)coder
 {
   v31[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = _EXCopyingLoadOperator;
-  v5 = [(_EXLoadOperator *)&v29 _init];
-  if (v5)
+  _init = [(_EXLoadOperator *)&v29 _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codedData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codedData"];
     if (v6)
     {
       v28 = 0;
@@ -57,7 +57,7 @@
     v31[2] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:3];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"items"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"items"];
 
     if (v12)
     {
@@ -96,22 +96,22 @@
         while (v15);
       }
 
-      [(_EXCopyingLoadOperator *)v5 setItems:v13];
+      [(_EXCopyingLoadOperator *)_init setItems:v13];
       v8 = v22;
       v6 = v23;
     }
 
-    v19 = v5;
+    v19 = _init;
   }
 
   v20 = *MEMORY[0x1E69E9840];
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v50 = *MEMORY[0x1E69E9840];
-  v31 = a3;
+  coderCopy = coder;
   v34 = objc_opt_new();
   [(_EXCopyingLoadOperator *)self itemProvider];
   v42 = 0u;
@@ -160,7 +160,7 @@
   }
 
   v14 = v34;
-  v15 = v31;
+  v15 = coderCopy;
   if ([v34 count])
   {
     v16 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
@@ -183,13 +183,13 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [v17 objectForKeyedSubscript:{*(*(&v35 + 1) + 8 * j), v31}];
-          v23 = [v22 payload];
-          v24 = [v22 payloadIdentifier];
-          v25 = v24;
-          if (v23)
+          v22 = [v17 objectForKeyedSubscript:{*(*(&v35 + 1) + 8 * j), coderCopy}];
+          payload = [v22 payload];
+          payloadIdentifier = [v22 payloadIdentifier];
+          v25 = payloadIdentifier;
+          if (payload)
           {
-            v26 = v24 == 0;
+            v26 = payloadIdentifier == 0;
           }
 
           else
@@ -199,8 +199,8 @@
 
           if (!v26)
           {
-            v27 = [v24 UUIDString];
-            [v16 encodeObject:v23 forKey:v27];
+            uUIDString = [payloadIdentifier UUIDString];
+            [v16 encodeObject:payload forKey:uUIDString];
           }
         }
 
@@ -210,13 +210,13 @@
       while (v19);
     }
 
-    v28 = [v16 encodedData];
-    if (v28)
+    encodedData = [v16 encodedData];
+    if (encodedData)
     {
       v29 = [v17 copy];
       [v15 encodeObject:v29 forKey:@"items"];
 
-      [v15 encodeObject:v28 forKey:@"codedData"];
+      [v15 encodeObject:encodedData forKey:@"codedData"];
     }
 
     v14 = v34;
@@ -225,20 +225,20 @@
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadItemForTypeIdentifier:(id)a3 completionHandler:(id)a4 expectedValueClass:(Class)a5 options:(id)a6
+- (void)loadItemForTypeIdentifier:(id)identifier completionHandler:(id)handler expectedValueClass:(Class)class options:(id)options
 {
-  v20 = a4;
-  v9 = a3;
-  v10 = [(_EXCopyingLoadOperator *)self items];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  items = [(_EXCopyingLoadOperator *)self items];
+  v11 = [items objectForKeyedSubscript:identifierCopy];
 
   v12 = +[_EXDefaults sharedInstance];
-  v13 = [v12 plistTypes];
-  LODWORD(a5) = [v13 containsObject:a5];
+  plistTypes = [v12 plistTypes];
+  LODWORD(class) = [plistTypes containsObject:class];
 
   v14 = +[_EXDefaults sharedInstance];
   v15 = v14;
-  if (a5)
+  if (class)
   {
     [v14 plistAndValueTypes];
   }
@@ -250,32 +250,32 @@
   v16 = ;
   v17 = [v11 payloadOfClasses:v16];
 
-  v18 = [v11 error];
-  if (!v18)
+  error = [v11 error];
+  if (!error)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v17 resourceURL];
+      resourceURL = [v17 resourceURL];
 
-      v17 = v19;
+      v17 = resourceURL;
     }
   }
 
-  v20[2](v20, v17, v18);
+  handlerCopy[2](handlerCopy, v17, error);
 }
 
-- (id)_sandboxedResourceForItemIfNeeded:(id)a3 auditToken:(id *)a4 error:(id *)a5
+- (id)_sandboxedResourceForItemIfNeeded:(id)needed auditToken:(id *)token error:(id *)error
 {
-  v7 = a3;
+  neededCopy = needed;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isFileURL])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [neededCopy isFileURL])
   {
     v8 = [_EXItemProviderSandboxedResource alloc];
-    v9 = *&a4->var0[4];
-    v12[0] = *a4->var0;
+    v9 = *&token->var0[4];
+    v12[0] = *token->var0;
     v12[1] = v9;
-    v10 = [(_EXItemProviderSandboxedResource *)v8 initWithContentsOfURL:v7 auditToken:v12 error:a5];
+    v10 = [(_EXItemProviderSandboxedResource *)v8 initWithContentsOfURL:neededCopy auditToken:v12 error:error];
   }
 
   else
@@ -294,10 +294,10 @@
   return self;
 }
 
-- (void)setDestinationProcessAuditToken:(id *)a3
+- (void)setDestinationProcessAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *self->_destinationProcessAuditToken.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *self->_destinationProcessAuditToken.val = *token->var0;
   *&self->_destinationProcessAuditToken.val[4] = v3;
 }
 

@@ -1,15 +1,15 @@
 @interface SKUILocalizedStringDictionary
-- (SKUILocalizedStringDictionary)initWithLocaleName:(id)a3 bundles:(id)a4;
-- (id)_stringTableForBundle:(id)a3 tableName:(id)a4;
-- (id)localizedStringForKey:(id)a3 inTable:(id)a4;
+- (SKUILocalizedStringDictionary)initWithLocaleName:(id)name bundles:(id)bundles;
+- (id)_stringTableForBundle:(id)bundle tableName:(id)name;
+- (id)localizedStringForKey:(id)key inTable:(id)table;
 @end
 
 @implementation SKUILocalizedStringDictionary
 
-- (SKUILocalizedStringDictionary)initWithLocaleName:(id)a3 bundles:(id)a4
+- (SKUILocalizedStringDictionary)initWithLocaleName:(id)name bundles:(id)bundles
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundlesCopy = bundles;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUILocalizedStringDictionary initWithLocaleName:bundles:];
@@ -20,11 +20,11 @@
   v8 = [(SKUILocalizedStringDictionary *)&v16 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [bundlesCopy copy];
     bundles = v8->_bundles;
     v8->_bundles = v9;
 
-    v11 = [v6 copy];
+    v11 = [nameCopy copy];
     localeName = v8->_localeName;
     v8->_localeName = v11;
 
@@ -36,14 +36,14 @@
   return v8;
 }
 
-- (id)localizedStringForKey:(id)a3 inTable:(id)a4
+- (id)localizedStringForKey:(id)key inTable:(id)table
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  tableCopy = table;
+  if (tableCopy)
   {
-    v8 = v7;
+    v8 = tableCopy;
   }
 
   else
@@ -71,7 +71,7 @@ LABEL_6:
       }
 
       v14 = [(SKUILocalizedStringDictionary *)self _stringTableForBundle:*(*(&v29 + 1) + 8 * v13) tableName:v8];
-      v15 = [v14 localizedStringForKey:v6];
+      v15 = [v14 localizedStringForKey:keyCopy];
 
       if (v15)
       {
@@ -114,9 +114,9 @@ LABEL_14:
           objc_enumerationMutation(v9);
         }
 
-        v20 = [*(*(&v25 + 1) + 8 * v19) localizedStringForKey:v6 value:&stru_2827FFAC8 table:{v8, v25}];
+        v20 = [*(*(&v25 + 1) + 8 * v19) localizedStringForKey:keyCopy value:&stru_2827FFAC8 table:{v8, v25}];
         v15 = v20;
-        if (v20 && v20 != v6)
+        if (v20 && v20 != keyCopy)
         {
           break;
         }
@@ -148,7 +148,7 @@ LABEL_24:
 
   else
   {
-    v22 = v6;
+    v22 = keyCopy;
   }
 
   v23 = v22;
@@ -156,16 +156,16 @@ LABEL_24:
   return v22;
 }
 
-- (id)_stringTableForBundle:(id)a3 tableName:(id)a4
+- (id)_stringTableForBundle:(id)bundle tableName:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  nameCopy = name;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v20 = self;
+  selfCopy = self;
   v8 = self->_stringTables;
   v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
@@ -182,12 +182,12 @@ LABEL_3:
       }
 
       v13 = *(*(&v21 + 1) + 8 * v12);
-      v14 = [v13 bundle];
-      v15 = v14;
-      if (v14 == v6)
+      bundle = [v13 bundle];
+      v15 = bundle;
+      if (bundle == bundleCopy)
       {
-        v16 = [v13 tableName];
-        v17 = [v16 isEqualToString:v7];
+        tableName = [v13 tableName];
+        v17 = [tableName isEqualToString:nameCopy];
 
         if (v17)
         {
@@ -220,8 +220,8 @@ LABEL_3:
   }
 
 LABEL_13:
-  v18 = [[SKUILocalizedStringTable alloc] initWithBundle:v6 localeName:v20->_localeName tableName:v7];
-  [(NSMutableArray *)v20->_stringTables addObject:v18];
+  v18 = [[SKUILocalizedStringTable alloc] initWithBundle:bundleCopy localeName:selfCopy->_localeName tableName:nameCopy];
+  [(NSMutableArray *)selfCopy->_stringTables addObject:v18];
 LABEL_14:
 
   return v18;

@@ -8,23 +8,23 @@
 - (id)mpc_jsonValue
 {
   v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:5];
-  v3 = [a1 namePrefix];
-  [v2 setObject:v3 forKeyedSubscript:@"prefix"];
+  namePrefix = [self namePrefix];
+  [v2 setObject:namePrefix forKeyedSubscript:@"prefix"];
 
-  v4 = [a1 givenName];
-  [v2 setObject:v4 forKeyedSubscript:@"given"];
+  givenName = [self givenName];
+  [v2 setObject:givenName forKeyedSubscript:@"given"];
 
-  v5 = [a1 middleName];
-  [v2 setObject:v5 forKeyedSubscript:@"middle"];
+  middleName = [self middleName];
+  [v2 setObject:middleName forKeyedSubscript:@"middle"];
 
-  v6 = [a1 familyName];
-  [v2 setObject:v6 forKeyedSubscript:@"family"];
+  familyName = [self familyName];
+  [v2 setObject:familyName forKeyedSubscript:@"family"];
 
-  v7 = [a1 nameSuffix];
-  [v2 setObject:v7 forKeyedSubscript:@"suffix"];
+  nameSuffix = [self nameSuffix];
+  [v2 setObject:nameSuffix forKeyedSubscript:@"suffix"];
 
-  v8 = [a1 nickname];
-  [v2 setObject:v8 forKeyedSubscript:@"nick"];
+  nickname = [self nickname];
+  [v2 setObject:nickname forKeyedSubscript:@"nick"];
 
   v9 = [v2 copy];
 

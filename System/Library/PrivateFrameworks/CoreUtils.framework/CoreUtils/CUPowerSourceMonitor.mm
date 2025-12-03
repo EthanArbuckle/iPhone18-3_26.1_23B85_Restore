@@ -1,33 +1,33 @@
 @interface CUPowerSourceMonitor
 - (CUPowerSourceMonitor)init;
-- (void)_aggregatePowerSourceFound:(id)a3;
-- (void)_aggregatePowerSourceLost:(id)a3;
-- (void)_aggregatePowerSourceUpdate:(id)a3 changes:(unsigned int)a4;
+- (void)_aggregatePowerSourceFound:(id)found;
+- (void)_aggregatePowerSourceLost:(id)lost;
+- (void)_aggregatePowerSourceUpdate:(id)update changes:(unsigned int)changes;
 - (void)_cleanup;
-- (void)_handlePowerSourceFound:(id)a3 desc:(id)a4 adapterDesc:(id)a5;
-- (void)_handlePowerSourceLost:(id)a3 sourceID:(id)a4;
-- (void)_handlePowerSourceUpdate:(id)a3 desc:(id)a4 adapterDesc:(id)a5;
+- (void)_handlePowerSourceFound:(id)found desc:(id)desc adapterDesc:(id)adapterDesc;
+- (void)_handlePowerSourceLost:(id)lost sourceID:(id)d;
+- (void)_handlePowerSourceUpdate:(id)update desc:(id)desc adapterDesc:(id)adapterDesc;
 - (void)_update;
 - (void)_updatePowerSources;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setChangeFlags:(unsigned int)a3;
+- (void)setChangeFlags:(unsigned int)flags;
 @end
 
 @implementation CUPowerSourceMonitor
 
-- (void)_handlePowerSourceUpdate:(id)a3 desc:(id)a4 adapterDesc:(id)a5
+- (void)_handlePowerSourceUpdate:(id)update desc:(id)desc adapterDesc:(id)adapterDesc
 {
-  v20 = a3;
-  v8 = a5;
-  v9 = [v20 updateWithPowerSourceDescription:a4];
-  v10 = [v20 type];
-  v11 = [v10 isEqual:@"InternalBattery"];
+  updateCopy = update;
+  adapterDescCopy = adapterDesc;
+  v9 = [updateCopy updateWithPowerSourceDescription:desc];
+  type = [updateCopy type];
+  v11 = [type isEqual:@"InternalBattery"];
 
   if (v11)
   {
-    v9 = [v20 updateWithPowerAdapterDetails:v8] | v9;
+    v9 = [updateCopy updateWithPowerAdapterDetails:adapterDescCopy] | v9;
   }
 
   if ((self->_changeFlags & v9) != 0)
@@ -50,7 +50,7 @@
 
     if (v12 <= 9)
     {
-      v13 = v20;
+      v13 = updateCopy;
       if (v12 != -1)
       {
         goto LABEL_14;
@@ -59,15 +59,15 @@
       _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 9u);
     }
 
-    v13 = v20;
+    v13 = updateCopy;
 LABEL_14:
-    v19 = [v13 ioKitDescription];
-    LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _handlePowerSourceUpdate:desc:adapterDesc:]", 0xAu, "Changed %@ %#{flags} %?@\n", v14, v15, v16, v17, v20);
+    ioKitDescription = [v13 ioKitDescription];
+    LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _handlePowerSourceUpdate:desc:adapterDesc:]", 0xAu, "Changed %@ %#{flags} %?@\n", v14, v15, v16, v17, updateCopy);
 
 LABEL_15:
-    if ([v20 isAggregateComponent])
+    if ([updateCopy isAggregateComponent])
     {
-      [(CUPowerSourceMonitor *)self _aggregatePowerSourceUpdate:v20 changes:v9];
+      [(CUPowerSourceMonitor *)self _aggregatePowerSourceUpdate:updateCopy changes:v9];
     }
 
     else
@@ -75,16 +75,16 @@ LABEL_15:
       powerSourceChangedHandler = self->_powerSourceChangedHandler;
       if (powerSourceChangedHandler)
       {
-        powerSourceChangedHandler[2](powerSourceChangedHandler, v20, v9);
+        powerSourceChangedHandler[2](powerSourceChangedHandler, updateCopy, v9);
       }
     }
   }
 }
 
-- (void)_handlePowerSourceLost:(id)a3 sourceID:(id)a4
+- (void)_handlePowerSourceLost:(id)lost sourceID:(id)d
 {
-  v15 = a3;
-  v6 = a4;
+  lostCopy = lost;
+  dCopy = d;
   v7 = gLogCategory_CUPowerSourceMonitor;
   if (gLogCategory_CUPowerSourceMonitor <= 30)
   {
@@ -100,7 +100,7 @@ LABEL_15:
 
     if (v7 <= 9)
     {
-      v8 = v15;
+      v8 = lostCopy;
       if (v7 != -1)
       {
         goto LABEL_11;
@@ -109,17 +109,17 @@ LABEL_15:
       _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 9u);
     }
 
-    v8 = v15;
+    v8 = lostCopy;
 LABEL_11:
-    v14 = [v8 ioKitDescription];
-    LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _handlePowerSourceLost:sourceID:]", 0x1Eu, "Lost    %@ %?@\n", v9, v10, v11, v12, v15);
+    ioKitDescription = [v8 ioKitDescription];
+    LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _handlePowerSourceLost:sourceID:]", 0x1Eu, "Lost    %@ %?@\n", v9, v10, v11, v12, lostCopy);
   }
 
 LABEL_12:
-  [(NSMutableDictionary *)self->_powerSources removeObjectForKey:v6];
-  if ([v15 isAggregateComponent])
+  [(NSMutableDictionary *)self->_powerSources removeObjectForKey:dCopy];
+  if ([lostCopy isAggregateComponent])
   {
-    [(CUPowerSourceMonitor *)self _aggregatePowerSourceLost:v15];
+    [(CUPowerSourceMonitor *)self _aggregatePowerSourceLost:lostCopy];
   }
 
   else
@@ -127,26 +127,26 @@ LABEL_12:
     powerSourceLostHandler = self->_powerSourceLostHandler;
     if (powerSourceLostHandler)
     {
-      powerSourceLostHandler[2](powerSourceLostHandler, v15);
+      powerSourceLostHandler[2](powerSourceLostHandler, lostCopy);
     }
   }
 }
 
-- (void)_handlePowerSourceFound:(id)a3 desc:(id)a4 adapterDesc:(id)a5
+- (void)_handlePowerSourceFound:(id)found desc:(id)desc adapterDesc:(id)adapterDesc
 {
-  v22 = a3;
-  v8 = a5;
-  v9 = a4;
+  foundCopy = found;
+  adapterDescCopy = adapterDesc;
+  descCopy = desc;
   v10 = objc_alloc_init(CUPowerSource);
-  -[CUPowerSource setSourceID:](v10, "setSourceID:", [v22 integerValue]);
-  [(CUPowerSource *)v10 updateWithPowerSourceDescription:v9];
+  -[CUPowerSource setSourceID:](v10, "setSourceID:", [foundCopy integerValue]);
+  [(CUPowerSource *)v10 updateWithPowerSourceDescription:descCopy];
 
-  v11 = [(CUPowerSource *)v10 type];
-  LODWORD(v9) = [v11 isEqual:@"InternalBattery"];
+  type = [(CUPowerSource *)v10 type];
+  LODWORD(descCopy) = [type isEqual:@"InternalBattery"];
 
-  if (v9)
+  if (descCopy)
   {
-    [(CUPowerSource *)v10 updateWithPowerAdapterDetails:v8];
+    [(CUPowerSource *)v10 updateWithPowerAdapterDetails:adapterDescCopy];
   }
 
   powerSources = self->_powerSources;
@@ -159,7 +159,7 @@ LABEL_12:
     powerSources = self->_powerSources;
   }
 
-  [(NSMutableDictionary *)powerSources setObject:v10 forKeyedSubscript:v22];
+  [(NSMutableDictionary *)powerSources setObject:v10 forKeyedSubscript:foundCopy];
   v15 = gLogCategory_CUPowerSourceMonitor;
   if (gLogCategory_CUPowerSourceMonitor <= 30)
   {
@@ -178,7 +178,7 @@ LABEL_12:
       _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 9u);
     }
 
-    v21 = [(CUPowerSource *)v10 ioKitDescription];
+    ioKitDescription = [(CUPowerSource *)v10 ioKitDescription];
     LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _handlePowerSourceFound:desc:adapterDesc:]", 0x1Eu, "Found   %@ %?@\n", v16, v17, v18, v19, v10);
   }
 
@@ -289,8 +289,8 @@ LABEL_39:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v31 = [(NSMutableDictionary *)self->_powerSources allKeys];
-  v32 = [v31 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  allKeys = [(NSMutableDictionary *)self->_powerSources allKeys];
+  v32 = [allKeys countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v32)
   {
     v33 = v32;
@@ -301,7 +301,7 @@ LABEL_39:
       {
         if (*v41 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(allKeys);
         }
 
         v36 = *(*(&v40 + 1) + 8 * j);
@@ -312,7 +312,7 @@ LABEL_39:
         }
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v33 = [allKeys countByEnumeratingWithState:&v40 objects:v44 count:16];
     }
 
     while (v33);
@@ -414,39 +414,39 @@ uint64_t __31__CUPowerSourceMonitor__update__block_invoke_4(uint64_t a1, uint64_
   return [v9 _updatePowerSources];
 }
 
-- (void)_aggregatePowerSourceUpdate:(id)a3 changes:(unsigned int)a4
+- (void)_aggregatePowerSourceUpdate:(id)update changes:(unsigned int)changes
 {
-  v4 = *&a4;
-  v6 = a3;
-  v25 = v6;
+  v4 = *&changes;
+  updateCopy = update;
+  v25 = updateCopy;
   if (gLogCategory_CUPowerSourceMonitor <= 30)
   {
-    if (gLogCategory_CUPowerSourceMonitor != -1 || (v11 = _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 0x1Eu), v6 = v25, v11))
+    if (gLogCategory_CUPowerSourceMonitor != -1 || (v11 = _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 0x1Eu), updateCopy = v25, v11))
     {
-      LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceUpdate:changes:]", 0x1Eu, "Aggregate power source update: %@", v7, v8, v9, v10, v6);
-      v6 = v25;
+      LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceUpdate:changes:]", 0x1Eu, "Aggregate power source update: %@", v7, v8, v9, v10, updateCopy);
+      updateCopy = v25;
     }
   }
 
-  v16 = [v6 accessoryID];
-  if (v16)
+  accessoryID = [updateCopy accessoryID];
+  if (accessoryID)
   {
-    v17 = [(NSMutableDictionary *)self->_pendingAggregates objectForKeyedSubscript:v16];
+    v17 = [(NSMutableDictionary *)self->_pendingAggregates objectForKeyedSubscript:accessoryID];
     v18 = v17;
-    if (v17 || ([(NSMutableDictionary *)self->_aggregateSources objectForKeyedSubscript:v16], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v17 || ([(NSMutableDictionary *)self->_aggregateSources objectForKeyedSubscript:accessoryID], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v23 = [v25 partID];
-      if ([v23 isEqualToString:@"Left"])
+      partID = [v25 partID];
+      if ([partID isEqualToString:@"Left"])
       {
         [v18 setSubLeft:v25];
       }
 
-      else if ([v23 isEqualToString:@"Right"])
+      else if ([partID isEqualToString:@"Right"])
       {
         [v18 setSubRight:v25];
       }
 
-      else if ([v23 isEqualToString:@"Case"])
+      else if ([partID isEqualToString:@"Case"])
       {
         [v18 setSubCase:v25];
       }
@@ -454,12 +454,12 @@ uint64_t __31__CUPowerSourceMonitor__update__block_invoke_4(uint64_t a1, uint64_
       [v18 handleSubComponentsUpdatedWithBaseSource:0];
       if (v17)
       {
-        [(NSMutableDictionary *)self->_pendingAggregates setObject:v18 forKeyedSubscript:v16];
+        [(NSMutableDictionary *)self->_pendingAggregates setObject:v18 forKeyedSubscript:accessoryID];
       }
 
       else
       {
-        [(NSMutableDictionary *)self->_aggregateSources setObject:v18 forKeyedSubscript:v16];
+        [(NSMutableDictionary *)self->_aggregateSources setObject:v18 forKeyedSubscript:accessoryID];
         powerSourceChangedHandler = self->_powerSourceChangedHandler;
         if (powerSourceChangedHandler)
         {
@@ -480,51 +480,51 @@ uint64_t __31__CUPowerSourceMonitor__update__block_invoke_4(uint64_t a1, uint64_
   }
 }
 
-- (void)_aggregatePowerSourceLost:(id)a3
+- (void)_aggregatePowerSourceLost:(id)lost
 {
-  v24 = a3;
+  lostCopy = lost;
   if (gLogCategory_CUPowerSourceMonitor <= 30 && (gLogCategory_CUPowerSourceMonitor != -1 || _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 0x1Eu)))
   {
-    LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceLost:]", 0x1Eu, "Aggregate power source lost: %@", v4, v5, v6, v7, v24);
+    LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceLost:]", 0x1Eu, "Aggregate power source lost: %@", v4, v5, v6, v7, lostCopy);
   }
 
-  v12 = [v24 accessoryID];
-  if (v12)
+  accessoryID = [lostCopy accessoryID];
+  if (accessoryID)
   {
-    v13 = [(NSMutableDictionary *)self->_pendingAggregates objectForKeyedSubscript:v12];
+    v13 = [(NSMutableDictionary *)self->_pendingAggregates objectForKeyedSubscript:accessoryID];
     v14 = v13;
-    if (v13 || ([(NSMutableDictionary *)self->_aggregateSources objectForKeyedSubscript:v12], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v13 || ([(NSMutableDictionary *)self->_aggregateSources objectForKeyedSubscript:accessoryID], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v19 = [v24 partID];
-      if ([v19 isEqualToString:@"Left"])
+      partID = [lostCopy partID];
+      if ([partID isEqualToString:@"Left"])
       {
         [v14 setSubLeft:0];
       }
 
-      else if ([v19 isEqualToString:@"Right"])
+      else if ([partID isEqualToString:@"Right"])
       {
         [v14 setSubRight:0];
       }
 
-      else if ([v19 isEqualToString:@"Case"])
+      else if ([partID isEqualToString:@"Case"])
       {
         [v14 setSubCase:0];
       }
 
       [v14 handleSubComponentsUpdatedWithBaseSource:0];
-      v20 = [v14 subLeft];
-      if (v20 || ([v14 subRight], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+      subLeft = [v14 subLeft];
+      if (subLeft || ([v14 subRight], (subLeft = objc_claimAutoreleasedReturnValue()) != 0))
       {
       }
 
       else
       {
-        v22 = [v14 subCase];
+        subCase = [v14 subCase];
 
-        if (!v22)
+        if (!subCase)
         {
-          [(NSMutableDictionary *)self->_aggregateSources setObject:0 forKeyedSubscript:v12];
-          [(NSMutableDictionary *)self->_pendingAggregates setObject:0 forKeyedSubscript:v12];
+          [(NSMutableDictionary *)self->_aggregateSources setObject:0 forKeyedSubscript:accessoryID];
+          [(NSMutableDictionary *)self->_pendingAggregates setObject:0 forKeyedSubscript:accessoryID];
           if (!v13)
           {
             powerSourceLostHandler = self->_powerSourceLostHandler;
@@ -540,12 +540,12 @@ uint64_t __31__CUPowerSourceMonitor__update__block_invoke_4(uint64_t a1, uint64_
 
       if (v13)
       {
-        [(NSMutableDictionary *)self->_pendingAggregates setObject:v14 forKeyedSubscript:v12];
+        [(NSMutableDictionary *)self->_pendingAggregates setObject:v14 forKeyedSubscript:accessoryID];
       }
 
       else
       {
-        [(NSMutableDictionary *)self->_aggregateSources setObject:v14 forKeyedSubscript:v12];
+        [(NSMutableDictionary *)self->_aggregateSources setObject:v14 forKeyedSubscript:accessoryID];
         powerSourceChangedHandler = self->_powerSourceChangedHandler;
         if (powerSourceChangedHandler)
         {
@@ -560,62 +560,62 @@ LABEL_25:
 
     if (gLogCategory_CUPowerSourceMonitor <= 60 && (gLogCategory_CUPowerSourceMonitor != -1 || _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 0x3Cu)))
     {
-      LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceLost:]", 0x3Cu, "### No aggregate found for lost power source: %@", v15, v16, v17, v18, v24);
+      LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceLost:]", 0x3Cu, "### No aggregate found for lost power source: %@", v15, v16, v17, v18, lostCopy);
     }
   }
 
   else if (gLogCategory_CUPowerSourceMonitor <= 60 && (gLogCategory_CUPowerSourceMonitor != -1 || _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 0x3Cu)))
   {
-    LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceLost:]", 0x3Cu, "### No accessoryID for aggregate lost: %@", v8, v9, v10, v11, v24);
+    LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceLost:]", 0x3Cu, "### No accessoryID for aggregate lost: %@", v8, v9, v10, v11, lostCopy);
   }
 
 LABEL_26:
 }
 
-- (void)_aggregatePowerSourceFound:(id)a3
+- (void)_aggregatePowerSourceFound:(id)found
 {
-  v4 = a3;
-  v29 = v4;
+  foundCopy = found;
+  v29 = foundCopy;
   if (gLogCategory_CUPowerSourceMonitor <= 30)
   {
-    if (gLogCategory_CUPowerSourceMonitor != -1 || (v9 = _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 0x1Eu), v4 = v29, v9))
+    if (gLogCategory_CUPowerSourceMonitor != -1 || (v9 = _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 0x1Eu), foundCopy = v29, v9))
     {
-      LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceFound:]", 0x1Eu, "Aggregate power source found: %@", v5, v6, v7, v8, v4);
-      v4 = v29;
+      LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceFound:]", 0x1Eu, "Aggregate power source found: %@", v5, v6, v7, v8, foundCopy);
+      foundCopy = v29;
     }
   }
 
-  v14 = [v4 accessoryID];
-  if (v14)
+  accessoryID = [foundCopy accessoryID];
+  if (accessoryID)
   {
-    v15 = [(NSMutableDictionary *)self->_pendingAggregates objectForKeyedSubscript:v14];
+    v15 = [(NSMutableDictionary *)self->_pendingAggregates objectForKeyedSubscript:accessoryID];
     if (!v15)
     {
       v15 = objc_alloc_init(CUPowerSource);
     }
 
-    v16 = [v29 partID];
-    if ([v16 isEqualToString:@"Left"])
+    partID = [v29 partID];
+    if ([partID isEqualToString:@"Left"])
     {
       [(CUPowerSource *)v15 setSubLeft:v29];
     }
 
-    else if ([v16 isEqualToString:@"Right"])
+    else if ([partID isEqualToString:@"Right"])
     {
       [(CUPowerSource *)v15 setSubRight:v29];
     }
 
-    else if ([v16 isEqualToString:@"Case"])
+    else if ([partID isEqualToString:@"Case"])
     {
       [(CUPowerSource *)v15 setSubCase:v29];
     }
 
     [(CUPowerSource *)v15 handleSubComponentsUpdatedWithBaseSource:0];
-    v17 = [(CUPowerSource *)v15 hasAllComponents];
+    hasAllComponents = [(CUPowerSource *)v15 hasAllComponents];
     pendingAggregates = self->_pendingAggregates;
-    if (v17)
+    if (hasAllComponents)
     {
-      [(NSMutableDictionary *)pendingAggregates setObject:0 forKeyedSubscript:v14];
+      [(NSMutableDictionary *)pendingAggregates setObject:0 forKeyedSubscript:accessoryID];
       aggregateSources = self->_aggregateSources;
       if (!aggregateSources)
       {
@@ -626,7 +626,7 @@ LABEL_26:
         aggregateSources = self->_aggregateSources;
       }
 
-      [(NSMutableDictionary *)aggregateSources setObject:v15 forKeyedSubscript:v14];
+      [(NSMutableDictionary *)aggregateSources setObject:v15 forKeyedSubscript:accessoryID];
       if (gLogCategory_CUPowerSourceMonitor <= 30 && (gLogCategory_CUPowerSourceMonitor != -1 || _LogCategory_Initialize(&gLogCategory_CUPowerSourceMonitor, 0x1Eu)))
       {
         LogPrintF(&gLogCategory_CUPowerSourceMonitor, "[CUPowerSourceMonitor _aggregatePowerSourceFound:]", 0x1Eu, "Aggregate complete: %@", v22, v23, v24, v25, v15);
@@ -650,7 +650,7 @@ LABEL_26:
         pendingAggregates = self->_pendingAggregates;
       }
 
-      [(NSMutableDictionary *)pendingAggregates setObject:v15 forKeyedSubscript:v14];
+      [(NSMutableDictionary *)pendingAggregates setObject:v15 forKeyedSubscript:accessoryID];
     }
   }
 
@@ -689,23 +689,23 @@ uint64_t __34__CUPowerSourceMonitor_invalidate__block_invoke(uint64_t a1, uint64
   return [v9 _cleanup];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__CUPowerSourceMonitor_activateWithCompletion___block_invoke;
   v8[3] = &unk_1E73A49A0;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __47__CUPowerSourceMonitor_activateWithCompletion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
@@ -727,28 +727,28 @@ uint64_t __47__CUPowerSourceMonitor_activateWithCompletion___block_invoke(uint64
   return [v10 _updatePowerSources];
 }
 
-- (void)setChangeFlags:(unsigned int)a3
+- (void)setChangeFlags:(unsigned int)flags
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_activateCalled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v4->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __39__CUPowerSourceMonitor_setChangeFlags___block_invoke;
     v6[3] = &unk_1E73A42A0;
-    v7 = a3;
-    v6[4] = v4;
+    flagsCopy = flags;
+    v6[4] = selfCopy;
     dispatch_async(dispatchQueue, v6);
   }
 
   else
   {
-    v4->_changeFlags = a3;
+    selfCopy->_changeFlags = flags;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __39__CUPowerSourceMonitor_setChangeFlags___block_invoke(uint64_t result)

@@ -1,10 +1,10 @@
 @interface KNBuildCrumbleSystem
-+ (id)newParticleSystemWithNumberOfParticles:(unint64_t)a3 objectSize:(CGSize)a4 slideSize:(CGSize)a5 duration:(double)a6 direction:(unint64_t)a7 shader:(id)a8 percentOfCellsToSplit:(double)a9 randomGenerator:(id)a10 metalContext:(id)a11;
-- ($94F468A8D4C62B317260615823C2B210)centerAtIndexPoint:(CGPoint)a3;
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3;
-- ($94F468A8D4C62B317260615823C2B210)vertexPositionAtVertexIndex:(unint64_t)a3 particleIndexPoint:(CGPoint)a4;
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
++ (id)newParticleSystemWithNumberOfParticles:(unint64_t)particles objectSize:(CGSize)size slideSize:(CGSize)slideSize duration:(double)duration direction:(unint64_t)direction shader:(id)shader percentOfCellsToSplit:(double)split randomGenerator:(id)self0 metalContext:(id)self1;
+- ($94F468A8D4C62B317260615823C2B210)centerAtIndexPoint:(CGPoint)point;
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point;
+- ($94F468A8D4C62B317260615823C2B210)vertexPositionAtVertexIndex:(unint64_t)index particleIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
 - (void)dealloc;
 - (void)p_setupParameters;
 @end
@@ -13,7 +13,7 @@
 
 - (void)p_setupParameters
 {
-  v49 = [(KNBuildCrumbleSystem *)self randomGenerator];
+  randomGenerator = [(KNBuildCrumbleSystem *)self randomGenerator];
   self->_cellParameters = malloc_type_calloc(0x28uLL, [(TSDGPUVoronoiTriangleData *)self->_voronoiTriangleData cellCount], 0x60DC1DDEuLL);
   if ([(TSDGPUVoronoiTriangleData *)self->_voronoiTriangleData cellCount])
   {
@@ -21,19 +21,19 @@
     v4 = 0;
     while (1)
     {
-      v5 = [(TSDGPUVoronoiTriangleData *)self->_voronoiTriangleData cells];
-      v6 = [v5 objectAtIndexedSubscript:v4];
+      cells = [(TSDGPUVoronoiTriangleData *)self->_voronoiTriangleData cells];
+      v6 = [cells objectAtIndexedSubscript:v4];
       [v6 centerPoint];
       v8 = v7;
       v10 = v9;
 
-      [v49 metalPoint3DRandomDirection];
+      [randomGenerator metalPoint3DRandomDirection];
       v44 = v11;
       v47 = v12;
       v48 = v13;
-      [v49 randomDouble];
+      [randomGenerator randomDouble];
       v15 = v14;
-      [v49 metalPoint3DRandomDirection];
+      [randomGenerator metalPoint3DRandomDirection];
       v46 = v16;
       v18 = v17;
       v20 = v19;
@@ -51,17 +51,17 @@
       }
 
       v45 = LODWORD(v24);
-      [v49 randomDouble];
+      [randomGenerator randomDouble];
       v26 = v25;
       [(KNBuildCrumbleSystem *)self speedMaxLimiter];
       v43 = pow(v26, v27);
-      v28 = [(KNBuildCrumbleSystem *)self direction];
-      if (v28 == (&stru_20.maxprot + 3))
+      direction = [(KNBuildCrumbleSystem *)self direction];
+      if (direction == (&stru_20.maxprot + 3))
       {
         goto LABEL_12;
       }
 
-      if (v28 != &dword_C && v28 != (&dword_8 + 3))
+      if (direction != &dword_C && direction != (&dword_8 + 3))
       {
         break;
       }
@@ -77,8 +77,8 @@ LABEL_13:
       v36 = vcvt_f32_f64(vmulq_n_f64(vcvtq_f64_f32(v34), v43));
       [(KNBuildCrumbleSystem *)self lifeSpanDelay];
       [(KNBuildCrumbleSystem *)self lifeSpanRandomness];
-      v37 = [(KNBuildCrumbleSystem *)self randomGenerator];
-      [v37 doubleBetween:-1.0 :1.0];
+      randomGenerator2 = [(KNBuildCrumbleSystem *)self randomGenerator];
+      [randomGenerator2 doubleBetween:-1.0 :1.0];
 
       [(KNBuildCrumbleSystem *)self lifeSpanDelay];
       TSUClamp();
@@ -115,16 +115,16 @@ LABEL_12:
 LABEL_14:
 }
 
-+ (id)newParticleSystemWithNumberOfParticles:(unint64_t)a3 objectSize:(CGSize)a4 slideSize:(CGSize)a5 duration:(double)a6 direction:(unint64_t)a7 shader:(id)a8 percentOfCellsToSplit:(double)a9 randomGenerator:(id)a10 metalContext:(id)a11
++ (id)newParticleSystemWithNumberOfParticles:(unint64_t)particles objectSize:(CGSize)size slideSize:(CGSize)slideSize duration:(double)duration direction:(unint64_t)direction shader:(id)shader percentOfCellsToSplit:(double)split randomGenerator:(id)self0 metalContext:(id)self1
 {
-  height = a5.height;
-  width = a5.width;
-  v17 = a4.height;
-  v18 = a4.width;
-  v21 = a8;
-  v22 = a10;
-  v23 = a11;
-  if (!v22)
+  height = slideSize.height;
+  width = slideSize.width;
+  v17 = size.height;
+  v18 = size.width;
+  shaderCopy = shader;
+  generatorCopy = generator;
+  contextCopy = context;
+  if (!generatorCopy)
   {
     v24 = +[TSUAssertionHandler currentHandler];
     v25 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[KNBuildCrumbleSystem newParticleSystemWithNumberOfParticles:objectSize:slideSize:duration:direction:shader:percentOfCellsToSplit:randomGenerator:metalContext:]");
@@ -134,10 +134,10 @@ LABEL_14:
 
   v27 = [TSDGPUVoronoiTriangleData alloc];
   TSDRectWithSize();
-  v28 = [v27 initWithPoints:a3 clippedToRect:v22 percentOfCellsToSplit:? randomGenerator:?];
-  v31.receiver = a1;
+  v28 = [v27 initWithPoints:particles clippedToRect:generatorCopy percentOfCellsToSplit:? randomGenerator:?];
+  v31.receiver = self;
   v31.super_class = &OBJC_METACLASS___KNBuildCrumbleSystem;
-  v29 = objc_msgSendSuper2(&v31, "newParticleSystemWithParticleSize:particleSystemSize:objectSize:slideSize:duration:direction:randomGenerator:shader:metalContext:", a7, v22, v21, v23, CGSizeZero.width, CGSizeZero.height, [v28 triangleCount], 1.0, v18, v17, width, height, *&a6);
+  v29 = objc_msgSendSuper2(&v31, "newParticleSystemWithParticleSize:particleSystemSize:objectSize:slideSize:duration:direction:randomGenerator:shader:metalContext:", direction, generatorCopy, shaderCopy, contextCopy, CGSizeZero.width, CGSizeZero.height, [v28 triangleCount], 1.0, v18, v17, width, height, *&duration);
   if (v29)
   {
     [v29 setTriangleCount:{objc_msgSend(v28, "triangleCount")}];
@@ -155,12 +155,12 @@ LABEL_14:
   [(KNBuildCrumbleSystem *)&v3 dealloc];
 }
 
-- ($94F468A8D4C62B317260615823C2B210)vertexPositionAtVertexIndex:(unint64_t)a3 particleIndexPoint:(CGPoint)a4
+- ($94F468A8D4C62B317260615823C2B210)vertexPositionAtVertexIndex:(unint64_t)index particleIndexPoint:(CGPoint)point
 {
-  v6 = [(KNBuildCrumbleSystem *)self indexFromPoint:a4.x, a4.y];
+  v6 = [(KNBuildCrumbleSystem *)self indexFromPoint:point.x, point.y];
   v7 = [(TSDGPUVoronoiTriangleData *)self->_voronoiTriangleData cellFromTriangleIndex:v6];
   v8 = [(TSDGPUVoronoiTriangleData *)self->_voronoiTriangleData triangleIndexInCellFromGlobalTriangleIndex:v6];
-  v9 = ([v7 vertexData] + 24 * v8 + 8 * a3);
+  v9 = ([v7 vertexData] + 24 * v8 + 8 * index);
   v10 = *v9;
   v11 = v9[1];
 
@@ -171,9 +171,9 @@ LABEL_14:
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)centerAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)centerAtIndexPoint:(CGPoint)point
 {
-  v3 = [(TSDGPUVoronoiTriangleData *)self->_voronoiTriangleData cellFromTriangleIndex:[(KNBuildCrumbleSystem *)self indexFromPoint:a3.x, a3.y]];
+  v3 = [(TSDGPUVoronoiTriangleData *)self->_voronoiTriangleData cellFromTriangleIndex:[(KNBuildCrumbleSystem *)self indexFromPoint:point.x, point.y]];
   [v3 centerPoint];
   v5 = v4;
   v7 = v6;
@@ -185,10 +185,10 @@ LABEL_14:
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (!self->_cellParameters)
   {
     [(KNBuildCrumbleSystem *)self p_setupParameters];
@@ -204,10 +204,10 @@ LABEL_14:
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (!self->_cellParameters)
   {
     [(KNBuildCrumbleSystem *)self p_setupParameters];
@@ -223,10 +223,10 @@ LABEL_14:
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (!self->_cellParameters)
   {
     [(KNBuildCrumbleSystem *)self p_setupParameters];

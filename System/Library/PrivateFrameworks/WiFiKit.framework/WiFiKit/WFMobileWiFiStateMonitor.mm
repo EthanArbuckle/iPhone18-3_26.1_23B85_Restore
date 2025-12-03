@@ -1,16 +1,16 @@
 @interface WFMobileWiFiStateMonitor
-- (WFMobileWiFiStateMonitor)initWithHandler:(id)a3;
+- (WFMobileWiFiStateMonitor)initWithHandler:(id)handler;
 - (void)_updateState;
-- (void)_updateWithDeviceAttachment:(__WiFiDeviceClient *)a3;
+- (void)_updateWithDeviceAttachment:(__WiFiDeviceClient *)attachment;
 - (void)dealloc;
 @end
 
 @implementation WFMobileWiFiStateMonitor
 
-- (WFMobileWiFiStateMonitor)initWithHandler:(id)a3
+- (WFMobileWiFiStateMonitor)initWithHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v25.receiver = self;
   v25.super_class = WFMobileWiFiStateMonitor;
   v5 = [(WFMobileWiFiStateMonitor *)&v25 init];
@@ -19,7 +19,7 @@
     goto LABEL_20;
   }
 
-  v6 = _Block_copy(v4);
+  v6 = _Block_copy(handlerCopy);
   handler = v5->_handler;
   v5->_handler = v6;
 
@@ -37,8 +37,8 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  v10 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v10 getCFRunLoop];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop getCFRunLoop];
   v11 = *MEMORY[0x277CBF058];
   WiFiManagerClientScheduleWithRunLoop();
 
@@ -225,7 +225,7 @@ void __40__WFMobileWiFiStateMonitor__updateState__block_invoke_3(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithDeviceAttachment:(__WiFiDeviceClient *)a3
+- (void)_updateWithDeviceAttachment:(__WiFiDeviceClient *)attachment
 {
   device = self->_device;
   if (device)
@@ -233,15 +233,15 @@ void __40__WFMobileWiFiStateMonitor__updateState__block_invoke_3(uint64_t a1)
     CFRelease(device);
   }
 
-  self->_device = a3;
-  if (a3)
+  self->_device = attachment;
+  if (attachment)
   {
-    CFRetain(a3);
+    CFRetain(attachment);
   }
 
   WiFiDeviceClientRegisterPowerCallback();
 
-  MEMORY[0x282187698](a3, _WiFiDeviceLinkExtendedCallback, self);
+  MEMORY[0x282187698](attachment, _WiFiDeviceLinkExtendedCallback, self);
 }
 
 - (void)initWithHandler:.cold.1()

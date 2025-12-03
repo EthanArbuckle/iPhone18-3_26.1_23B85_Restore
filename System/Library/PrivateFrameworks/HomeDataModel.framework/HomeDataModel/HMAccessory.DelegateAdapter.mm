@@ -1,64 +1,64 @@
 @interface HMAccessory.DelegateAdapter
 - (_TtCE13HomeDataModelCSo11HMAccessory15DelegateAdapter)init;
-- (void)accessory:(id)a3 didAddControlTarget:(id)a4;
-- (void)accessory:(id)a3 didAddProfile:(id)a4;
-- (void)accessory:(id)a3 didAddSymptomsHandler:(id)a4;
-- (void)accessory:(id)a3 didRemoveControlTarget:(id)a4;
-- (void)accessory:(id)a3 didRemoveProfile:(id)a4;
-- (void)accessory:(id)a3 didUpdateApplicationDataForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateAssociatedServiceTypeForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateBulletinBoardNotificationForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateConfigurationStateForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateConfiguredNameForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateDefaultNameForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateDevice:(id)a4;
-- (void)accessory:(id)a3 didUpdateFirmwareUpdateAvailable:(BOOL)a4;
-- (void)accessory:(id)a3 didUpdateFirmwareVersion:(id)a4;
-- (void)accessory:(id)a3 didUpdateHH1EOLEnabled:(BOOL)a4;
-- (void)accessory:(id)a3 didUpdateHasAuthorizationDataForCharacteristic:(id)a4;
-- (void)accessory:(id)a3 didUpdateLastKnownOperatingStateResponseForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateNameForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateServiceSubtypeForService:(id)a4;
-- (void)accessory:(id)a3 didUpdateSettings:(id)a4;
-- (void)accessory:(id)a3 didUpdateSoftwareVersion:(id)a4;
-- (void)accessory:(id)a3 didUpdateSupportsUWBUnlock:(BOOL)a4;
-- (void)accessory:(id)a3 didUpdateSupportsWalletKey:(BOOL)a4;
-- (void)accessory:(id)a3 didUpdateWifiNetworkInfo:(id)a4;
-- (void)accessory:(id)a3 service:(id)a4 didUpdateValueForCharacteristic:(id)a5;
-- (void)accessoryDidRemoveSymptomsHandler:(id)a3;
-- (void)accessoryDidSetHasOnboardedForAdaptiveTemperatureAutomations:(id)a3;
-- (void)accessoryDidSetHasOnboardedForCleanEnergyAutomation:(id)a3;
-- (void)accessoryDidSetHasOnboardedForNaturalLighting:(id)a3;
-- (void)accessoryDidUpdateAdditionalSetupRequired:(id)a3;
-- (void)accessoryDidUpdateApplicationData:(id)a3;
-- (void)accessoryDidUpdateAudioDestination:(id)a3;
-- (void)accessoryDidUpdateAudioDestinationController:(id)a3;
-- (void)accessoryDidUpdateAudioReturnChannelSupport:(id)a3;
-- (void)accessoryDidUpdateCalibrationStatus:(id)a3;
-- (void)accessoryDidUpdateControllable:(id)a3;
-- (void)accessoryDidUpdateDiagnosticsTransferSupport:(id)a3;
-- (void)accessoryDidUpdateHomeLevelLocationServiceSettingSupport:(id)a3;
-- (void)accessoryDidUpdateMultiUserSupport:(id)a3;
-- (void)accessoryDidUpdateName:(id)a3;
-- (void)accessoryDidUpdatePairingIdentity:(id)a3;
-- (void)accessoryDidUpdatePendingConfigurationIdentifier:(id)a3;
-- (void)accessoryDidUpdatePreferredMediaUser:(id)a3;
-- (void)accessoryDidUpdateReachability:(id)a3;
-- (void)accessoryDidUpdateReachableTransports:(id)a3;
-- (void)accessoryDidUpdateServices:(id)a3;
-- (void)accessoryDidUpdateSupportsAnnounce:(id)a3;
-- (void)accessoryDidUpdateSupportsCompanionInitiatedObliterate:(id)a3;
-- (void)accessoryDidUpdateSupportsCompanionInitiatedRestart:(id)a3;
-- (void)accessoryDidUpdateSupportsDoorbellChime:(id)a3;
-- (void)accessoryDidUpdateSupportsJustSiri:(id)a3;
-- (void)accessoryDidUpdateSupportsMediaActions:(id)a3;
-- (void)accessoryDidUpdateSupportsMediaContentProfile:(id)a3;
-- (void)accessoryDidUpdateSupportsMusicAlarm:(id)a3;
-- (void)accessoryDidUpdateSupportsPreferredMediaUser:(id)a3;
-- (void)accessoryDidUpdateSupportsRMVonAppleTV:(id)a3;
-- (void)accessoryDidUpdateSupportsThirdPartyMusic:(id)a3;
-- (void)accessoryDidUpdateSupportsUserMediaSettings:(id)a3;
-- (void)accessoryDidUpdateTargetControlSupport:(id)a3;
+- (void)accessory:(id)accessory didAddControlTarget:(id)target;
+- (void)accessory:(id)accessory didAddProfile:(id)profile;
+- (void)accessory:(id)accessory didAddSymptomsHandler:(id)handler;
+- (void)accessory:(id)accessory didRemoveControlTarget:(id)target;
+- (void)accessory:(id)accessory didRemoveProfile:(id)profile;
+- (void)accessory:(id)accessory didUpdateApplicationDataForService:(id)service;
+- (void)accessory:(id)accessory didUpdateAssociatedServiceTypeForService:(id)service;
+- (void)accessory:(id)accessory didUpdateBulletinBoardNotificationForService:(id)service;
+- (void)accessory:(id)accessory didUpdateConfigurationStateForService:(id)service;
+- (void)accessory:(id)accessory didUpdateConfiguredNameForService:(id)service;
+- (void)accessory:(id)accessory didUpdateDefaultNameForService:(id)service;
+- (void)accessory:(id)accessory didUpdateDevice:(id)device;
+- (void)accessory:(id)accessory didUpdateFirmwareUpdateAvailable:(BOOL)available;
+- (void)accessory:(id)accessory didUpdateFirmwareVersion:(id)version;
+- (void)accessory:(id)accessory didUpdateHH1EOLEnabled:(BOOL)enabled;
+- (void)accessory:(id)accessory didUpdateHasAuthorizationDataForCharacteristic:(id)characteristic;
+- (void)accessory:(id)accessory didUpdateLastKnownOperatingStateResponseForService:(id)service;
+- (void)accessory:(id)accessory didUpdateNameForService:(id)service;
+- (void)accessory:(id)accessory didUpdateServiceSubtypeForService:(id)service;
+- (void)accessory:(id)accessory didUpdateSettings:(id)settings;
+- (void)accessory:(id)accessory didUpdateSoftwareVersion:(id)version;
+- (void)accessory:(id)accessory didUpdateSupportsUWBUnlock:(BOOL)unlock;
+- (void)accessory:(id)accessory didUpdateSupportsWalletKey:(BOOL)key;
+- (void)accessory:(id)accessory didUpdateWifiNetworkInfo:(id)info;
+- (void)accessory:(id)accessory service:(id)service didUpdateValueForCharacteristic:(id)characteristic;
+- (void)accessoryDidRemoveSymptomsHandler:(id)handler;
+- (void)accessoryDidSetHasOnboardedForAdaptiveTemperatureAutomations:(id)automations;
+- (void)accessoryDidSetHasOnboardedForCleanEnergyAutomation:(id)automation;
+- (void)accessoryDidSetHasOnboardedForNaturalLighting:(id)lighting;
+- (void)accessoryDidUpdateAdditionalSetupRequired:(id)required;
+- (void)accessoryDidUpdateApplicationData:(id)data;
+- (void)accessoryDidUpdateAudioDestination:(id)destination;
+- (void)accessoryDidUpdateAudioDestinationController:(id)controller;
+- (void)accessoryDidUpdateAudioReturnChannelSupport:(id)support;
+- (void)accessoryDidUpdateCalibrationStatus:(id)status;
+- (void)accessoryDidUpdateControllable:(id)controllable;
+- (void)accessoryDidUpdateDiagnosticsTransferSupport:(id)support;
+- (void)accessoryDidUpdateHomeLevelLocationServiceSettingSupport:(id)support;
+- (void)accessoryDidUpdateMultiUserSupport:(id)support;
+- (void)accessoryDidUpdateName:(id)name;
+- (void)accessoryDidUpdatePairingIdentity:(id)identity;
+- (void)accessoryDidUpdatePendingConfigurationIdentifier:(id)identifier;
+- (void)accessoryDidUpdatePreferredMediaUser:(id)user;
+- (void)accessoryDidUpdateReachability:(id)reachability;
+- (void)accessoryDidUpdateReachableTransports:(id)transports;
+- (void)accessoryDidUpdateServices:(id)services;
+- (void)accessoryDidUpdateSupportsAnnounce:(id)announce;
+- (void)accessoryDidUpdateSupportsCompanionInitiatedObliterate:(id)obliterate;
+- (void)accessoryDidUpdateSupportsCompanionInitiatedRestart:(id)restart;
+- (void)accessoryDidUpdateSupportsDoorbellChime:(id)chime;
+- (void)accessoryDidUpdateSupportsJustSiri:(id)siri;
+- (void)accessoryDidUpdateSupportsMediaActions:(id)actions;
+- (void)accessoryDidUpdateSupportsMediaContentProfile:(id)profile;
+- (void)accessoryDidUpdateSupportsMusicAlarm:(id)alarm;
+- (void)accessoryDidUpdateSupportsPreferredMediaUser:(id)user;
+- (void)accessoryDidUpdateSupportsRMVonAppleTV:(id)v;
+- (void)accessoryDidUpdateSupportsThirdPartyMusic:(id)music;
+- (void)accessoryDidUpdateSupportsUserMediaSettings:(id)settings;
+- (void)accessoryDidUpdateTargetControlSupport:(id)support;
 @end
 
 @implementation HMAccessory.DelegateAdapter
@@ -70,444 +70,444 @@
   return result;
 }
 
-- (void)accessoryDidUpdateName:(id)a3
+- (void)accessoryDidUpdateName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A54290(v4);
+  nameCopy = name;
+  selfCopy = self;
+  sub_1D1A54290(nameCopy);
 }
 
-- (void)accessoryDidUpdateReachability:(id)a3
+- (void)accessoryDidUpdateReachability:(id)reachability
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A545E8(v4);
+  reachabilityCopy = reachability;
+  selfCopy = self;
+  sub_1D1A545E8(reachabilityCopy);
 }
 
-- (void)accessoryDidUpdateServices:(id)a3
+- (void)accessoryDidUpdateServices:(id)services
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A54978(v4);
+  servicesCopy = services;
+  selfCopy = self;
+  sub_1D1A54978(servicesCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateNameForService:(id)a4
+- (void)accessory:(id)accessory didUpdateNameForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A54CD0(v6, v7);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1D1A54CD0(accessoryCopy, serviceCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateAssociatedServiceTypeForService:(id)a4
+- (void)accessory:(id)accessory didUpdateAssociatedServiceTypeForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A55150(v6, v7);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1D1A55150(accessoryCopy, serviceCopy);
 }
 
-- (void)accessory:(id)a3 service:(id)a4 didUpdateValueForCharacteristic:(id)a5
+- (void)accessory:(id)accessory service:(id)service didUpdateValueForCharacteristic:(id)characteristic
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1D1A555D0(v8, v9, v10);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  sub_1D1A555D0(accessoryCopy, serviceCopy, characteristicCopy);
 }
 
-- (void)accessoryDidUpdateApplicationData:(id)a3
+- (void)accessoryDidUpdateApplicationData:(id)data
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A55B4C(v4);
+  dataCopy = data;
+  selfCopy = self;
+  sub_1D1A55B4C(dataCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateApplicationDataForService:(id)a4
+- (void)accessory:(id)accessory didUpdateApplicationDataForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A55EA4(v6, v7);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1D1A55EA4(accessoryCopy, serviceCopy);
 }
 
-- (void)accessoryDidUpdateAdditionalSetupRequired:(id)a3
+- (void)accessoryDidUpdateAdditionalSetupRequired:(id)required
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A56324(v4);
+  requiredCopy = required;
+  selfCopy = self;
+  sub_1D1A56324(requiredCopy);
 }
 
-- (void)accessoryDidUpdateCalibrationStatus:(id)a3
+- (void)accessoryDidUpdateCalibrationStatus:(id)status
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A566B4(v4);
+  statusCopy = status;
+  selfCopy = self;
+  sub_1D1A566B4(statusCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateBulletinBoardNotificationForService:(id)a4
+- (void)accessory:(id)accessory didUpdateBulletinBoardNotificationForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A56A44(v6, v7);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1D1A56A44(accessoryCopy, serviceCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateHasAuthorizationDataForCharacteristic:(id)a4
+- (void)accessory:(id)accessory didUpdateHasAuthorizationDataForCharacteristic:(id)characteristic
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A56EC4(v6, v7);
+  accessoryCopy = accessory;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  sub_1D1A56EC4(accessoryCopy, characteristicCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateSettings:(id)a4
+- (void)accessory:(id)accessory didUpdateSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A57A7C(v6, a4);
+  accessoryCopy = accessory;
+  settingsCopy = settings;
+  selfCopy = self;
+  sub_1D1A57A7C(accessoryCopy, settings);
 }
 
-- (void)accessory:(id)a3 didUpdateFirmwareUpdateAvailable:(BOOL)a4
+- (void)accessory:(id)accessory didUpdateFirmwareUpdateAvailable:(BOOL)available
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_1D1A57E44(v6, v4);
+  availableCopy = available;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  sub_1D1A57E44(accessoryCopy, availableCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateFirmwareVersion:(id)a4
+- (void)accessory:(id)accessory didUpdateFirmwareVersion:(id)version
 {
   v6 = sub_1D1E6781C();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_1D1A581CC(v9, v6, v8);
+  accessoryCopy = accessory;
+  selfCopy = self;
+  sub_1D1A581CC(accessoryCopy, v6, v8);
 }
 
-- (void)accessory:(id)a3 didUpdateSoftwareVersion:(id)a4
+- (void)accessory:(id)accessory didUpdateSoftwareVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A58578(v6, a4);
+  accessoryCopy = accessory;
+  versionCopy = version;
+  selfCopy = self;
+  sub_1D1A58578(accessoryCopy, version);
 }
 
-- (void)accessoryDidUpdateControllable:(id)a3
+- (void)accessoryDidUpdateControllable:(id)controllable
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A588F4(v4);
+  controllableCopy = controllable;
+  selfCopy = self;
+  sub_1D1A588F4(controllableCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateConfiguredNameForService:(id)a4
+- (void)accessory:(id)accessory didUpdateConfiguredNameForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A58C84(v6, a4);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1D1A58C84(accessoryCopy, service);
 }
 
-- (void)accessory:(id)a3 didUpdateDefaultNameForService:(id)a4
+- (void)accessory:(id)accessory didUpdateDefaultNameForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A5913C(v6, a4);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1D1A5913C(accessoryCopy, service);
 }
 
-- (void)accessory:(id)a3 didUpdateServiceSubtypeForService:(id)a4
+- (void)accessory:(id)accessory didUpdateServiceSubtypeForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A595F4(v6, a4);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1D1A595F4(accessoryCopy, service);
 }
 
-- (void)accessory:(id)a3 didUpdateConfigurationStateForService:(id)a4
+- (void)accessory:(id)accessory didUpdateConfigurationStateForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A59AAC(v6, a4);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1D1A59AAC(accessoryCopy, service);
 }
 
-- (void)accessoryDidUpdateTargetControlSupport:(id)a3
+- (void)accessoryDidUpdateTargetControlSupport:(id)support
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A59F64(v4);
+  supportCopy = support;
+  selfCopy = self;
+  sub_1D1A59F64(supportCopy);
 }
 
-- (void)accessory:(id)a3 didAddControlTarget:(id)a4
+- (void)accessory:(id)accessory didAddControlTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A5A2F4(v6, v7);
+  accessoryCopy = accessory;
+  targetCopy = target;
+  selfCopy = self;
+  sub_1D1A5A2F4(accessoryCopy, targetCopy);
 }
 
-- (void)accessory:(id)a3 didRemoveControlTarget:(id)a4
+- (void)accessory:(id)accessory didRemoveControlTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A5A770(v6, v7);
+  accessoryCopy = accessory;
+  targetCopy = target;
+  selfCopy = self;
+  sub_1D1A5A770(accessoryCopy, targetCopy);
 }
 
-- (void)accessory:(id)a3 didAddSymptomsHandler:(id)a4
+- (void)accessory:(id)accessory didAddSymptomsHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A5ABEC(v6, v7);
+  accessoryCopy = accessory;
+  handlerCopy = handler;
+  selfCopy = self;
+  sub_1D1A5ABEC(accessoryCopy, handlerCopy);
 }
 
-- (void)accessoryDidRemoveSymptomsHandler:(id)a3
+- (void)accessoryDidRemoveSymptomsHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5AF98(v4);
+  handlerCopy = handler;
+  selfCopy = self;
+  sub_1D1A5AF98(handlerCopy);
 }
 
-- (void)accessoryDidUpdateMultiUserSupport:(id)a3
+- (void)accessoryDidUpdateMultiUserSupport:(id)support
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5B2F0(v4);
+  supportCopy = support;
+  selfCopy = self;
+  sub_1D1A5B2F0(supportCopy);
 }
 
-- (void)accessoryDidUpdateHomeLevelLocationServiceSettingSupport:(id)a3
+- (void)accessoryDidUpdateHomeLevelLocationServiceSettingSupport:(id)support
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5B680(v4);
+  supportCopy = support;
+  selfCopy = self;
+  sub_1D1A5B680(supportCopy);
 }
 
-- (void)accessoryDidUpdateAudioReturnChannelSupport:(id)a3
+- (void)accessoryDidUpdateAudioReturnChannelSupport:(id)support
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5BA10(v4);
+  supportCopy = support;
+  selfCopy = self;
+  sub_1D1A5BA10(supportCopy);
 }
 
-- (void)accessoryDidUpdateSupportsCompanionInitiatedRestart:(id)a3
+- (void)accessoryDidUpdateSupportsCompanionInitiatedRestart:(id)restart
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5BDA0(v4);
+  restartCopy = restart;
+  selfCopy = self;
+  sub_1D1A5BDA0(restartCopy);
 }
 
-- (void)accessoryDidUpdateSupportsCompanionInitiatedObliterate:(id)a3
+- (void)accessoryDidUpdateSupportsCompanionInitiatedObliterate:(id)obliterate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5C130(v4);
+  obliterateCopy = obliterate;
+  selfCopy = self;
+  sub_1D1A5C130(obliterateCopy);
 }
 
-- (void)accessoryDidUpdateSupportsMusicAlarm:(id)a3
+- (void)accessoryDidUpdateSupportsMusicAlarm:(id)alarm
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5C4C0(v4);
+  alarmCopy = alarm;
+  selfCopy = self;
+  sub_1D1A5C4C0(alarmCopy);
 }
 
-- (void)accessoryDidUpdateSupportsAnnounce:(id)a3
+- (void)accessoryDidUpdateSupportsAnnounce:(id)announce
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5C850(v4);
+  announceCopy = announce;
+  selfCopy = self;
+  sub_1D1A5C850(announceCopy);
 }
 
-- (void)accessoryDidUpdateSupportsMediaActions:(id)a3
+- (void)accessoryDidUpdateSupportsMediaActions:(id)actions
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5CBE0(v4);
+  actionsCopy = actions;
+  selfCopy = self;
+  sub_1D1A5CBE0(actionsCopy);
 }
 
-- (void)accessoryDidUpdateSupportsThirdPartyMusic:(id)a3
+- (void)accessoryDidUpdateSupportsThirdPartyMusic:(id)music
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5CF70(v4);
+  musicCopy = music;
+  selfCopy = self;
+  sub_1D1A5CF70(musicCopy);
 }
 
-- (void)accessoryDidUpdateSupportsDoorbellChime:(id)a3
+- (void)accessoryDidUpdateSupportsDoorbellChime:(id)chime
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5D300(v4);
+  chimeCopy = chime;
+  selfCopy = self;
+  sub_1D1A5D300(chimeCopy);
 }
 
-- (void)accessoryDidUpdateSupportsUserMediaSettings:(id)a3
+- (void)accessoryDidUpdateSupportsUserMediaSettings:(id)settings
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5D690(v4);
+  settingsCopy = settings;
+  selfCopy = self;
+  sub_1D1A5D690(settingsCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateLastKnownOperatingStateResponseForService:(id)a4
+- (void)accessory:(id)accessory didUpdateLastKnownOperatingStateResponseForService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A5DA20(v6, v7);
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1D1A5DA20(accessoryCopy, serviceCopy);
 }
 
-- (void)accessoryDidUpdateReachableTransports:(id)a3
+- (void)accessoryDidUpdateReachableTransports:(id)transports
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5DEA0(v4);
+  transportsCopy = transports;
+  selfCopy = self;
+  sub_1D1A5DEA0(transportsCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateDevice:(id)a4
+- (void)accessory:(id)accessory didUpdateDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A5E230(v6, a4);
+  accessoryCopy = accessory;
+  deviceCopy = device;
+  selfCopy = self;
+  sub_1D1A5E230(accessoryCopy, device);
 }
 
-- (void)accessoryDidUpdatePairingIdentity:(id)a3
+- (void)accessoryDidUpdatePairingIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5E5B0(v4);
+  identityCopy = identity;
+  selfCopy = self;
+  sub_1D1A5E5B0(identityCopy);
 }
 
-- (void)accessoryDidUpdateAudioDestinationController:(id)a3
+- (void)accessoryDidUpdateAudioDestinationController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5E908(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1D1A5E908(controllerCopy);
 }
 
-- (void)accessoryDidUpdateAudioDestination:(id)a3
+- (void)accessoryDidUpdateAudioDestination:(id)destination
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5EC60(v4);
+  destinationCopy = destination;
+  selfCopy = self;
+  sub_1D1A5EC60(destinationCopy);
 }
 
-- (void)accessoryDidUpdateDiagnosticsTransferSupport:(id)a3
+- (void)accessoryDidUpdateDiagnosticsTransferSupport:(id)support
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5EFB8(v4);
+  supportCopy = support;
+  selfCopy = self;
+  sub_1D1A5EFB8(supportCopy);
 }
 
-- (void)accessoryDidSetHasOnboardedForNaturalLighting:(id)a3
+- (void)accessoryDidSetHasOnboardedForNaturalLighting:(id)lighting
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5F310(v4);
+  lightingCopy = lighting;
+  selfCopy = self;
+  sub_1D1A5F310(lightingCopy);
 }
 
-- (void)accessoryDidUpdateSupportsPreferredMediaUser:(id)a3
+- (void)accessoryDidUpdateSupportsPreferredMediaUser:(id)user
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5F668(v4);
+  userCopy = user;
+  selfCopy = self;
+  sub_1D1A5F668(userCopy);
 }
 
-- (void)accessoryDidUpdatePreferredMediaUser:(id)a3
+- (void)accessoryDidUpdatePreferredMediaUser:(id)user
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A5F9F8(v4);
+  userCopy = user;
+  selfCopy = self;
+  sub_1D1A5F9F8(userCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateSupportsWalletKey:(BOOL)a4
+- (void)accessory:(id)accessory didUpdateSupportsWalletKey:(BOOL)key
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_1D1A5FD50(v6, v4);
+  keyCopy = key;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  sub_1D1A5FD50(accessoryCopy, keyCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateSupportsUWBUnlock:(BOOL)a4
+- (void)accessory:(id)accessory didUpdateSupportsUWBUnlock:(BOOL)unlock
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_1D1A600D8(v6, v4);
+  unlockCopy = unlock;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  sub_1D1A600D8(accessoryCopy, unlockCopy);
 }
 
-- (void)accessoryDidUpdatePendingConfigurationIdentifier:(id)a3
+- (void)accessoryDidUpdatePendingConfigurationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A60460(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_1D1A60460(identifierCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateWifiNetworkInfo:(id)a4
+- (void)accessory:(id)accessory didUpdateWifiNetworkInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A60824(v6, v7);
+  accessoryCopy = accessory;
+  infoCopy = info;
+  selfCopy = self;
+  sub_1D1A60824(accessoryCopy, infoCopy);
 }
 
-- (void)accessory:(id)a3 didUpdateHH1EOLEnabled:(BOOL)a4
+- (void)accessory:(id)accessory didUpdateHH1EOLEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_1D1A60BD0(v6, v4);
+  enabledCopy = enabled;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  sub_1D1A60BD0(accessoryCopy, enabledCopy);
 }
 
-- (void)accessoryDidUpdateSupportsRMVonAppleTV:(id)a3
+- (void)accessoryDidUpdateSupportsRMVonAppleTV:(id)v
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A60F58(v4);
+  vCopy = v;
+  selfCopy = self;
+  sub_1D1A60F58(vCopy);
 }
 
-- (void)accessoryDidUpdateSupportsJustSiri:(id)a3
+- (void)accessoryDidUpdateSupportsJustSiri:(id)siri
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A612E8(v4);
+  siriCopy = siri;
+  selfCopy = self;
+  sub_1D1A612E8(siriCopy);
 }
 
-- (void)accessoryDidUpdateSupportsMediaContentProfile:(id)a3
+- (void)accessoryDidUpdateSupportsMediaContentProfile:(id)profile
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A61678(v4);
+  profileCopy = profile;
+  selfCopy = self;
+  sub_1D1A61678(profileCopy);
 }
 
-- (void)accessoryDidSetHasOnboardedForAdaptiveTemperatureAutomations:(id)a3
+- (void)accessoryDidSetHasOnboardedForAdaptiveTemperatureAutomations:(id)automations
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A61A08(v4);
+  automationsCopy = automations;
+  selfCopy = self;
+  sub_1D1A61A08(automationsCopy);
 }
 
-- (void)accessoryDidSetHasOnboardedForCleanEnergyAutomation:(id)a3
+- (void)accessoryDidSetHasOnboardedForCleanEnergyAutomation:(id)automation
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1A61D60(v4);
+  automationCopy = automation;
+  selfCopy = self;
+  sub_1D1A61D60(automationCopy);
 }
 
-- (void)accessory:(id)a3 didAddProfile:(id)a4
+- (void)accessory:(id)accessory didAddProfile:(id)profile
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A620B8(v6, v7);
+  accessoryCopy = accessory;
+  profileCopy = profile;
+  selfCopy = self;
+  sub_1D1A620B8(accessoryCopy, profileCopy);
 }
 
-- (void)accessory:(id)a3 didRemoveProfile:(id)a4
+- (void)accessory:(id)accessory didRemoveProfile:(id)profile
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1A624D8(v6, v7);
+  accessoryCopy = accessory;
+  profileCopy = profile;
+  selfCopy = self;
+  sub_1D1A624D8(accessoryCopy, profileCopy);
 }
 
 @end

@@ -6,7 +6,7 @@
 
 - (void)updateProperties
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001BA7C4();
 }
 

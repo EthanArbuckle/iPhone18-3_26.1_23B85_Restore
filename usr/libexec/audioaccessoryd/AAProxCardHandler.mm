@@ -1,19 +1,19 @@
 @interface AAProxCardHandler
-- (AAProxCardHandler)initWithInfo:(id)a3;
+- (AAProxCardHandler)initWithInfo:(id)info;
 - (void)_dismissAnySharingProxCard;
-- (void)_dismissProxCardWithError:(id)a3;
+- (void)_dismissProxCardWithError:(id)error;
 - (void)dismiss;
-- (void)launchWithCompletion:(id)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)launchWithCompletion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation AAProxCardHandler
 
-- (AAProxCardHandler)initWithInfo:(id)a3
+- (AAProxCardHandler)initWithInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = AAProxCardHandler;
   v6 = [(AAProxCardHandler *)&v14 init];
@@ -28,19 +28,19 @@
     dispatchQueue = v6->_dispatchQueue;
     v6->_dispatchQueue = v10;
 
-    objc_storeStrong(&v6->_userInfo, a3);
+    objc_storeStrong(&v6->_userInfo, info);
     v12 = v6;
   }
 
   return v6;
 }
 
-- (void)launchWithCompletion:(id)a3
+- (void)launchWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AAProxCardHandler *)self proxCardHandle];
+  completionCopy = completion;
+  proxCardHandle = [(AAProxCardHandler *)self proxCardHandle];
 
-  if (v5)
+  if (proxCardHandle)
   {
     [(AAProxCardHandler *)self _dismissProxCardWithError:0];
   }
@@ -60,57 +60,57 @@
   v10[2] = sub_1000E9C00;
   v10[3] = &unk_1002BB968;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(SFClient *)v8 startProxCardTransactionWithOptions:16 completion:v10];
 }
 
 - (void)dismiss
 {
-  v3 = [(AAProxCardHandler *)self dispatchQueue];
+  dispatchQueue = [(AAProxCardHandler *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E9F9C;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)_dismissProxCardWithError:(id)a3
+- (void)_dismissProxCardWithError:(id)error
 {
-  v13 = a3;
-  v4 = [(AAProxCardHandler *)self proxCardHandle];
+  errorCopy = error;
+  proxCardHandle = [(AAProxCardHandler *)self proxCardHandle];
 
-  if (v4)
+  if (proxCardHandle)
   {
-    v5 = [(AAProxCardHandler *)self proxCardHandle];
-    [v5 unregisterObserver:self];
+    proxCardHandle2 = [(AAProxCardHandler *)self proxCardHandle];
+    [proxCardHandle2 unregisterObserver:self];
 
-    v6 = [(AAProxCardHandler *)self proxCardHandle];
-    [v6 invalidate];
+    proxCardHandle3 = [(AAProxCardHandler *)self proxCardHandle];
+    [proxCardHandle3 invalidate];
 
     [(AAProxCardHandler *)self setProxCardHandle:0];
   }
 
-  v7 = [(AAProxCardHandler *)self sharingClient];
+  sharingClient = [(AAProxCardHandler *)self sharingClient];
 
-  if (v7)
+  if (sharingClient)
   {
-    v8 = [(AAProxCardHandler *)self sharingClient];
-    [v8 invalidate];
+    sharingClient2 = [(AAProxCardHandler *)self sharingClient];
+    [sharingClient2 invalidate];
 
     [(AAProxCardHandler *)self setSharingClient:0];
   }
 
-  v9 = [(AAProxCardHandler *)self onDismissalHandler];
+  onDismissalHandler = [(AAProxCardHandler *)self onDismissalHandler];
 
-  v11 = v13;
-  if (v9)
+  v11 = errorCopy;
+  if (onDismissalHandler)
   {
-    v12 = [(AAProxCardHandler *)self onDismissalHandler];
-    (v12)[2](v12, v13);
+    onDismissalHandler2 = [(AAProxCardHandler *)self onDismissalHandler];
+    (onDismissalHandler2)[2](onDismissalHandler2, errorCopy);
 
-    v11 = v13;
+    v11 = errorCopy;
   }
 
   _objc_release_x1(v10, v11);
@@ -118,8 +118,8 @@
 
 - (void)_dismissAnySharingProxCard
 {
-  v2 = [(AAProxCardHandler *)self proxCardDefinition];
-  v3 = [SBSRemoteAlertHandle lookupHandlesForDefinition:v2];
+  proxCardDefinition = [(AAProxCardHandler *)self proxCardDefinition];
+  v3 = [SBSRemoteAlertHandle lookupHandlesForDefinition:proxCardDefinition];
 
   v13 = 0u;
   v14 = 0u;
@@ -160,47 +160,47 @@
   }
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v3 = a3;
-  v4 = v3;
+  activateCopy = activate;
+  v4 = activateCopy;
   if (dword_1002F78F0 <= 30)
   {
-    v5 = v3;
-    if (dword_1002F78F0 != -1 || (v3 = _LogCategory_Initialize(), v4 = v5, v3))
+    v5 = activateCopy;
+    if (dword_1002F78F0 != -1 || (activateCopy = _LogCategory_Initialize(), v4 = v5, activateCopy))
     {
-      v3 = sub_1001FF1C0();
+      activateCopy = sub_1001FF1C0();
       v4 = v5;
     }
   }
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(activateCopy, v4);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   if (dword_1002F78F0 <= 30 && (dword_1002F78F0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FF1DC();
   }
 
-  v5 = [(AAProxCardHandler *)self dispatchQueue];
+  dispatchQueue = [(AAProxCardHandler *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EA36C;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v5 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   if (dword_1002F78F0 <= 30 && (dword_1002F78F0 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001FF1F8(v5);
+    sub_1001FF1F8(errorCopy);
   }
 }
 

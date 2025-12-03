@@ -1,13 +1,13 @@
 @interface SKUIURLResolverDataConsumer
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SKUIURLResolverDataConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  responseCopy = response;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIURLResolverDataConsumer objectForData:response:error:];
@@ -21,7 +21,7 @@
 
   else
   {
-    v9 = [[SKUIURLResolverResponse alloc] initWithData:v6 URLResponse:v7];
+    v9 = [[SKUIURLResolverResponse alloc] initWithData:dataCopy URLResponse:responseCopy];
   }
 
   return v9;

@@ -1,16 +1,16 @@
 @interface PXZoomableInlineHeadersDataSourceManager
-+ (BOOL)supportsAssetsDataSourceManager:(id)a3;
++ (BOOL)supportsAssetsDataSourceManager:(id)manager;
 - (PXSimpleIndexPath)sectionIndexPath;
-- (PXZoomableInlineHeadersDataSourceManager)initWithAssetsDataSourceManager:(id)a3 indexPath:(PXSimpleIndexPath *)a4;
-- (id)_prepareQueue_createMetaDataStoreForAlbumWithDataSource:(id)a3;
-- (id)dataSourceForLevel:(unint64_t)a3;
-- (void)_didFinishBackgroundPreparationWithResult:(id)a3 forDataSource:(id)a4;
-- (void)_prepareInBackgroundWithDataSource:(id)a3;
-- (void)_prepareQueue_prepareInBackroundWithDataSource:(id)a3;
+- (PXZoomableInlineHeadersDataSourceManager)initWithAssetsDataSourceManager:(id)manager indexPath:(PXSimpleIndexPath *)path;
+- (id)_prepareQueue_createMetaDataStoreForAlbumWithDataSource:(id)source;
+- (id)dataSourceForLevel:(unint64_t)level;
+- (void)_didFinishBackgroundPreparationWithResult:(id)result forDataSource:(id)source;
+- (void)_prepareInBackgroundWithDataSource:(id)source;
+- (void)_prepareQueue_prepareInBackroundWithDataSource:(id)source;
 - (void)_updateDataSource;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation PXZoomableInlineHeadersDataSourceManager
@@ -20,40 +20,40 @@
   v4.receiver = self;
   v4.super_class = PXZoomableInlineHeadersDataSourceManager;
   [(PXZoomableInlineHeadersDataSourceManager *)&v4 didPerformChanges];
-  v3 = [(PXZoomableInlineHeadersDataSourceManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXZoomableInlineHeadersDataSourceManager *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (void)_updateDataSource
 {
-  v4 = [(PXAssetsDataSourceManager *)self->_assetsDataSourceManager dataSource];
-  v5 = v4;
+  dataSource = [(PXAssetsDataSourceManager *)self->_assetsDataSourceManager dataSource];
+  v5 = dataSource;
   if (self->_metaDataStore)
   {
-    v6 = [v4 containsAnyItems];
+    containsAnyItems = [dataSource containsAnyItems];
     metaDataStore = self->_metaDataStore;
-    if (v6)
+    if (containsAnyItems)
     {
       v44 = a2;
-      v8 = [(PXZoomableInlineHeaderSectionInfoMetaDataStore *)metaDataStore dataSource];
-      v9 = [(PXAssetsDataSourceManager *)self->_assetsDataSourceManager changeHistory];
-      v10 = [v8 identifier];
-      v11 = [v5 identifier];
-      v12 = v10;
-      v13 = v8;
-      v14 = [v9 changeDetailsFromDataSourceIdentifier:v12 toDataSourceIdentifier:v11];
+      dataSource2 = [(PXZoomableInlineHeaderSectionInfoMetaDataStore *)metaDataStore dataSource];
+      changeHistory = [(PXAssetsDataSourceManager *)self->_assetsDataSourceManager changeHistory];
+      identifier = [dataSource2 identifier];
+      identifier2 = [v5 identifier];
+      v12 = identifier;
+      v13 = dataSource2;
+      v14 = [changeHistory changeDetailsFromDataSourceIdentifier:v12 toDataSourceIdentifier:identifier2];
 
       v47 = [(PXZoomableInlineHeaderSectionInfoMetaDataStore *)self->_metaDataStore updateWithDataSourceAfterChanges:v5 changeDetails:v14];
       v54 = 0;
       p_sectionIndexPath = &self->_sectionIndexPath;
       section = self->_sectionIndexPath.section;
-      v16 = [v13 identifier];
+      identifier3 = [v13 identifier];
       v17 = MEMORY[0x277D3CF78];
       v48 = v14;
       v46 = v13;
-      if (v16 == self->_sectionIndexPath.dataSourceIdentifier)
+      if (identifier3 == self->_sectionIndexPath.dataSourceIdentifier)
       {
-        v18 = v16;
+        v18 = identifier3;
         v19 = MEMORY[0x277D3CF78];
         v20 = self->_sectionIndexPath.section;
         v21 = *&self->_sectionIndexPath.item;
@@ -67,8 +67,8 @@
 
       else
       {
-        v23 = [(PXAssetsDataSourceManager *)self->_assetsDataSourceManager changeHistory];
-        v24 = [v23 changeDetailsFromDataSourceIdentifier:p_sectionIndexPath->dataSourceIdentifier toDataSourceIdentifier:{objc_msgSend(v13, "identifier")}];
+        changeHistory2 = [(PXAssetsDataSourceManager *)self->_assetsDataSourceManager changeHistory];
+        v24 = [changeHistory2 changeDetailsFromDataSourceIdentifier:p_sectionIndexPath->dataSourceIdentifier toDataSourceIdentifier:{objc_msgSend(v13, "identifier")}];
 
         v25 = *&self->_sectionIndexPath.item;
         v49 = *&p_sectionIndexPath->dataSourceIdentifier;
@@ -80,8 +80,8 @@
         v19 = v17;
         if (p_sectionIndexPath->dataSourceIdentifier == *v17)
         {
-          v43 = [MEMORY[0x277CCA890] currentHandler];
-          [v43 handleFailureInMethod:v44 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:119 description:@"IndexPath after applying changes is null"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:v44 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:119 description:@"IndexPath after applying changes is null"];
         }
 
         if (v54 == 1)
@@ -114,8 +114,8 @@
       v29 = *v19;
       if (dataSourceIdentifier == *v19)
       {
-        v42 = [MEMORY[0x277CCA890] currentHandler];
-        [v42 handleFailureInMethod:v44 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:130 description:@"current IndexPath is null"];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:v44 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:130 description:@"current IndexPath is null"];
       }
 
       if (v18 == v29)
@@ -123,25 +123,25 @@
         v20 = self->_sectionIndexPath.section;
       }
 
-      v30 = [v46 fetchResultInfoProvider];
+      fetchResultInfoProvider = [v46 fetchResultInfoProvider];
       v51.i64[0] = [v46 identifier];
       v51.i64[1] = v20;
       v31.f64[0] = NAN;
       v31.f64[1] = NAN;
       v52 = vnegq_f64(v31);
-      v32 = [v30 sortDescriptorsForFetchResultAtSectionIndexPath:&v51];
+      v32 = [fetchResultInfoProvider sortDescriptorsForFetchResultAtSectionIndexPath:&v51];
 
       if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_s64(*&p_sectionIndexPath->dataSourceIdentifier, *MEMORY[0x277D3CFD8]), vceqq_s64(*&self->_sectionIndexPath.item, *(MEMORY[0x277D3CFD8] + 16))))))
       {
-        v41 = [MEMORY[0x277CCA890] currentHandler];
-        [v41 handleFailureInMethod:v44 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:137 description:@"After-state index path is null. This indicates an update was missed."];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler3 handleFailureInMethod:v44 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:137 description:@"After-state index path is null. This indicates an update was missed."];
       }
 
-      v33 = [v5 fetchResultInfoProvider];
+      fetchResultInfoProvider2 = [v5 fetchResultInfoProvider];
       v34 = *&self->_sectionIndexPath.item;
       v51 = *&p_sectionIndexPath->dataSourceIdentifier;
       v52 = v34;
-      v35 = [v33 sortDescriptorsForFetchResultAtSectionIndexPath:&v51];
+      v35 = [fetchResultInfoProvider2 sortDescriptorsForFetchResultAtSectionIndexPath:&v51];
 
       if (v32 == v35)
       {
@@ -165,7 +165,7 @@
     }
   }
 
-  else if (!self->_isPreparingMetadataInBackground && [v4 containsAnyItems] && objc_msgSend(v5, "areAllSectionsConsideredAccurate"))
+  else if (!self->_isPreparingMetadataInBackground && [dataSource containsAnyItems] && objc_msgSend(v5, "areAllSectionsConsideredAccurate"))
   {
     [(PXZoomableInlineHeadersDataSourceManager *)self _prepareInBackgroundWithDataSource:v5];
   }
@@ -181,10 +181,10 @@
   [(PXSectionedDataSourceManager *)self setDataSource:self->_monthsDataSource changeDetails:0];
 }
 
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  *&self->_sectionIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  *&self->_sectionIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
   *&self->_sectionIndexPath.item = v3;
 }
 
@@ -196,20 +196,20 @@
   return self;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXAssetsDataSourceManagerObserverContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXAssetsDataSourceManagerObserverContext != context)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:280 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:280 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (v6)
+  v10 = observableCopy;
+  if (changeCopy)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -220,14 +220,14 @@
   }
 }
 
-- (id)_prepareQueue_createMetaDataStoreForAlbumWithDataSource:(id)a3
+- (id)_prepareQueue_createMetaDataStoreForAlbumWithDataSource:(id)source
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[PXZoomableInlineHeaderSectionInfoMetaDataStore alloc] initWithDataSource:v4];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v4 fetchResultInfoProvider];
-  if (!v7)
+  sourceCopy = source;
+  v5 = [[PXZoomableInlineHeaderSectionInfoMetaDataStore alloc] initWithDataSource:sourceCopy];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  fetchResultInfoProvider = [sourceCopy fetchResultInfoProvider];
+  if (!fetchResultInfoProvider)
   {
     v8 = PXAssertGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -238,29 +238,29 @@
     }
   }
 
-  v9 = [v4 identifier];
+  identifier = [sourceCopy identifier];
   *&buf[8] = xmmword_21AC7D620;
-  *buf = v9;
+  *buf = identifier;
   v32 = 0x7FFFFFFFFFFFFFFFLL;
-  if (([v7 sortOrderForFetchResultAtSectionIndexPath:buf] - 1) <= 1)
+  if (([fetchResultInfoProvider sortOrderForFetchResultAtSectionIndexPath:buf] - 1) <= 1)
   {
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __100__PXZoomableInlineHeadersDataSourceManager__prepareQueue_createMetaDataStoreForAlbumWithDataSource___block_invoke;
     v29[3] = &unk_278297EC8;
-    v10 = v6;
+    v10 = currentCalendar;
     v30 = v10;
     *&buf[8] = xmmword_21AC7D620;
-    *buf = v9;
+    *buf = identifier;
     v32 = 0x7FFFFFFFFFFFFFFFLL;
-    v11 = [v7 fetchAssetSortDatesForFetchResultAtSectionIndexPath:buf dateRangeEliminationBlock:v29];
+    v11 = [fetchResultInfoProvider fetchAssetSortDatesForFetchResultAtSectionIndexPath:buf dateRangeEliminationBlock:v29];
 
     if (v11)
     {
-      v12 = [v11 sortDescriptor];
-      v13 = [v12 ascending];
+      sortDescriptor = [v11 sortDescriptor];
+      ascending = [sortDescriptor ascending];
 
-      v14 = [v11 dateByIndex];
+      dateByIndex = [v11 dateByIndex];
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x4010000000;
@@ -273,8 +273,8 @@
       v26[3] = &unk_21AC883FE;
       v27 = 0u;
       v28 = 0u;
-      v15 = [v11 fetchedIndexes];
-      if (v13)
+      fetchedIndexes = [v11 fetchedIndexes];
+      if (ascending)
       {
         v16 = &__block_literal_global_2995;
       }
@@ -288,14 +288,14 @@
       v19[1] = 3221225472;
       v19[2] = __100__PXZoomableInlineHeadersDataSourceManager__prepareQueue_createMetaDataStoreForAlbumWithDataSource___block_invoke_4;
       v19[3] = &unk_278297F10;
-      v17 = v14;
+      v17 = dateByIndex;
       v20 = v17;
       v23 = v16;
       v24 = buf;
       v21 = v10;
       v22 = v5;
       v25 = v26;
-      [v15 enumerateIndexesUsingBlock:v19];
+      [fetchedIndexes enumerateIndexesUsingBlock:v19];
 
       _Block_object_dispose(v26, 8);
       _Block_object_dispose(buf, 8);
@@ -372,19 +372,19 @@ void __100__PXZoomableInlineHeadersDataSourceManager__prepareQueue_createMetaDat
   }
 }
 
-- (void)_didFinishBackgroundPreparationWithResult:(id)a3 forDataSource:(id)a4
+- (void)_didFinishBackgroundPreparationWithResult:(id)result forDataSource:(id)source
 {
-  v6 = a3;
+  resultCopy = result;
   if (!self->_isPreparingMetadataInBackground)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"_isPreparingMetadataInBackground"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"_isPreparingMetadataInBackground"}];
   }
 
   self->_isPreparingMetadataInBackground = 0;
   metaDataStore = self->_metaDataStore;
-  self->_metaDataStore = v6;
-  v8 = v6;
+  self->_metaDataStore = resultCopy;
+  v8 = resultCopy;
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -394,11 +394,11 @@ void __100__PXZoomableInlineHeadersDataSourceManager__prepareQueue_createMetaDat
   [(PXZoomableInlineHeadersDataSourceManager *)self performChanges:v10];
 }
 
-- (void)_prepareQueue_prepareInBackroundWithDataSource:(id)a3
+- (void)_prepareQueue_prepareInBackroundWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   dispatch_assert_queue_V2(self->_prepareQueue);
-  v5 = [(PXZoomableInlineHeadersDataSourceManager *)self _prepareQueue_createMetaDataStoreForAlbumWithDataSource:v4];
+  v5 = [(PXZoomableInlineHeadersDataSourceManager *)self _prepareQueue_createMetaDataStoreForAlbumWithDataSource:sourceCopy];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -406,8 +406,8 @@ void __100__PXZoomableInlineHeadersDataSourceManager__prepareQueue_createMetaDat
   v8[3] = &unk_278297EA0;
   objc_copyWeak(&v11, &location);
   v9 = v5;
-  v10 = v4;
-  v6 = v4;
+  v10 = sourceCopy;
+  v6 = sourceCopy;
   v7 = v5;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
@@ -421,27 +421,27 @@ void __91__PXZoomableInlineHeadersDataSourceManager__prepareQueue_prepareInBackr
   [WeakRetained _didFinishBackgroundPreparationWithResult:*(a1 + 32) forDataSource:*(a1 + 40)];
 }
 
-- (void)_prepareInBackgroundWithDataSource:(id)a3
+- (void)_prepareInBackgroundWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   if (self->_isPreparingMetadataInBackground)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"!_isPreparingMetadataInBackground"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"!_isPreparingMetadataInBackground"}];
   }
 
   self->_isPreparingMetadataInBackground = 1;
   objc_initWeak(&location, self);
-  v6 = [MEMORY[0x277D3CD90] sharedScheduler];
+  mEMORY[0x277D3CD90] = [MEMORY[0x277D3CD90] sharedScheduler];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__PXZoomableInlineHeadersDataSourceManager__prepareInBackgroundWithDataSource___block_invoke;
   v9[3] = &unk_278297EA0;
   v9[4] = self;
   objc_copyWeak(&v11, &location);
-  v7 = v5;
+  v7 = sourceCopy;
   v10 = v7;
-  [v6 scheduleTaskAfterCATransactionCommits:v9];
+  [mEMORY[0x277D3CD90] scheduleTaskAfterCATransactionCommits:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -467,16 +467,16 @@ void __79__PXZoomableInlineHeadersDataSourceManager__prepareInBackgroundWithData
   [WeakRetained _prepareQueue_prepareInBackroundWithDataSource:*(a1 + 32)];
 }
 
-- (id)dataSourceForLevel:(unint64_t)a3
+- (id)dataSourceForLevel:(unint64_t)level
 {
-  if (a3)
+  if (level)
   {
-    if (a3 != 1)
+    if (level != 1)
     {
       v15 = v4;
       v16 = v3;
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:84 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeadersDataSourceManager.m" lineNumber:84 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -494,20 +494,20 @@ void __79__PXZoomableInlineHeadersDataSourceManager__prepareInBackgroundWithData
   return v10;
 }
 
-- (PXZoomableInlineHeadersDataSourceManager)initWithAssetsDataSourceManager:(id)a3 indexPath:(PXSimpleIndexPath *)a4
+- (PXZoomableInlineHeadersDataSourceManager)initWithAssetsDataSourceManager:(id)manager indexPath:(PXSimpleIndexPath *)path
 {
-  v7 = a3;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = PXZoomableInlineHeadersDataSourceManager;
   v8 = [(PXSectionedDataSourceManager *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_assetsDataSourceManager, a3);
-    v10 = *&a4->item;
-    *&v9->_sectionIndexPath.dataSourceIdentifier = *&a4->dataSourceIdentifier;
+    objc_storeStrong(&v8->_assetsDataSourceManager, manager);
+    v10 = *&path->item;
+    *&v9->_sectionIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
     *&v9->_sectionIndexPath.item = v10;
-    [v7 registerChangeObserver:v9 context:PXAssetsDataSourceManagerObserverContext];
+    [managerCopy registerChangeObserver:v9 context:PXAssetsDataSourceManagerObserverContext];
     v11 = [objc_alloc(MEMORY[0x277D3CE28]) initWithTarget:v9 needsUpdateSelector:sel_setNeedsUpdate];
     updater = v9->_updater;
     v9->_updater = v11;
@@ -529,11 +529,11 @@ void __79__PXZoomableInlineHeadersDataSourceManager__prepareInBackgroundWithData
   return v9;
 }
 
-+ (BOOL)supportsAssetsDataSourceManager:(id)a3
++ (BOOL)supportsAssetsDataSourceManager:(id)manager
 {
-  v3 = [a3 dataSource];
-  v4 = [v3 fetchResultInfoProvider];
-  v5 = v4 != 0;
+  dataSource = [manager dataSource];
+  fetchResultInfoProvider = [dataSource fetchResultInfoProvider];
+  v5 = fetchResultInfoProvider != 0;
 
   return v5;
 }

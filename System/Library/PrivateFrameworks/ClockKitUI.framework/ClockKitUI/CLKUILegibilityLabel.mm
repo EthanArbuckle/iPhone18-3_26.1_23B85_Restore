@@ -1,19 +1,19 @@
 @interface CLKUILegibilityLabel
-- (CLKUILegibilityLabel)initWithFrame:(CGRect)a3;
+- (CLKUILegibilityLabel)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)_contentInsetsFromFonts;
 - (void)_updateShadow;
-- (void)setLegibilityEnabled:(BOOL)a3;
-- (void)setShadowBlur:(double)a3;
-- (void)setShadowColor:(id)a3;
+- (void)setLegibilityEnabled:(BOOL)enabled;
+- (void)setShadowBlur:(double)blur;
+- (void)setShadowColor:(id)color;
 @end
 
 @implementation CLKUILegibilityLabel
 
-- (CLKUILegibilityLabel)initWithFrame:(CGRect)a3
+- (CLKUILegibilityLabel)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CLKUILegibilityLabel;
-  v3 = [(CLKUILegibilityLabel *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CLKUILegibilityLabel *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (void)setShadowBlur:(double)a3
+- (void)setShadowBlur:(double)blur
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_sBlur = a3;
+    self->_sBlur = blur;
     if (self->_legibilityEnabled)
     {
 
@@ -39,12 +39,12 @@
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((CLKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_sColor, a3);
+    objc_storeStrong(&self->_sColor, color);
     if (self->_legibilityEnabled)
     {
       [(CLKUILegibilityLabel *)self _updateShadow];
@@ -52,11 +52,11 @@
   }
 }
 
-- (void)setLegibilityEnabled:(BOOL)a3
+- (void)setLegibilityEnabled:(BOOL)enabled
 {
-  if (self->_legibilityEnabled != a3)
+  if (self->_legibilityEnabled != enabled)
   {
-    self->_legibilityEnabled = a3;
+    self->_legibilityEnabled = enabled;
     [(CLKUILegibilityLabel *)self _updateShadow];
   }
 }

@@ -1,19 +1,19 @@
 @interface DTKPKDebugCodeSet
-+ (void)releaseFilterMask:(char *)a3;
-- (BOOL)containsClass:(unsigned int)a3;
-- (BOOL)containsClass:(unsigned int)a3 subclassID:(unsigned int)a4;
++ (void)releaseFilterMask:(char *)mask;
+- (BOOL)containsClass:(unsigned int)class;
+- (BOOL)containsClass:(unsigned int)class subclassID:(unsigned int)d;
 - (DTKPKDebugCodeSet)init;
-- (DTKPKDebugCodeSet)initWithCodes:(id)a3;
-- (DTKPKDebugCodeSet)initWithLegacyCodes:(id)a3;
-- (char)createFilterMask:(BOOL)a3;
+- (DTKPKDebugCodeSet)initWithCodes:(id)codes;
+- (DTKPKDebugCodeSet)initWithLegacyCodes:(id)codes;
+- (char)createFilterMask:(BOOL)mask;
 - (id)description;
 - (id)legacyXML;
 - (kperf_kdebug_filter)createKperfFilter;
-- (void)addClass:(unsigned int)a3;
-- (void)addClass:(unsigned int)a3 subclassID:(unsigned int)a4;
-- (void)addClass:(unsigned int)a3 subclassID:(unsigned int)a4 code:(unsigned int)a5;
-- (void)addCodeSet:(id)a3;
-- (void)addCodes:(id)a3;
+- (void)addClass:(unsigned int)class;
+- (void)addClass:(unsigned int)class subclassID:(unsigned int)d;
+- (void)addClass:(unsigned int)class subclassID:(unsigned int)d code:(unsigned int)code;
+- (void)addCodeSet:(id)set;
+- (void)addCodes:(id)codes;
 - (void)convertLegacyCodes;
 @end
 
@@ -34,15 +34,15 @@
   return v2;
 }
 
-- (DTKPKDebugCodeSet)initWithCodes:(id)a3
+- (DTKPKDebugCodeSet)initWithCodes:(id)codes
 {
-  v4 = a3;
+  codesCopy = codes;
   v9.receiver = self;
   v9.super_class = DTKPKDebugCodeSet;
   v5 = [(DTKPKDebugCodeSet *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [codesCopy mutableCopy];
     kdebugCodes = v5->_kdebugCodes;
     v5->_kdebugCodes = v6;
   }
@@ -50,9 +50,9 @@
   return v5;
 }
 
-- (DTKPKDebugCodeSet)initWithLegacyCodes:(id)a3
+- (DTKPKDebugCodeSet)initWithLegacyCodes:(id)codes
 {
-  v3 = [(DTKPKDebugCodeSet *)self initWithCodes:a3];
+  v3 = [(DTKPKDebugCodeSet *)self initWithCodes:codes];
   v4 = v3;
   if (v3)
   {
@@ -96,48 +96,48 @@
   return v5;
 }
 
-- (void)addCodeSet:(id)a3
+- (void)addCodeSet:(id)set
 {
-  v4 = [a3 kdebugCodes];
-  [(DTKPKDebugCodeSet *)self addCodes:v4];
+  kdebugCodes = [set kdebugCodes];
+  [(DTKPKDebugCodeSet *)self addCodes:kdebugCodes];
 }
 
-- (void)addCodes:(id)a3
+- (void)addCodes:(id)codes
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_247FEA684;
   v3[3] = &unk_278EF3E80;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [codes enumerateObjectsUsingBlock:v3];
 }
 
-- (void)addClass:(unsigned int)a3
+- (void)addClass:(unsigned int)class
 {
   kdebugCodes = self->_kdebugCodes;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(a3 << 24) | 0xFFFFFC];
-  [(NSMutableSet *)kdebugCodes addObject:v4];
+  0xFFFFFC = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(class << 24) | 0xFFFFFC];
+  [(NSMutableSet *)kdebugCodes addObject:0xFFFFFC];
 }
 
-- (void)addClass:(unsigned int)a3 subclassID:(unsigned int)a4
+- (void)addClass:(unsigned int)class subclassID:(unsigned int)d
 {
   kdebugCodes = self->_kdebugCodes;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(a3 << 24) | (a4 << 16) | 0xFFFC];
-  [(NSMutableSet *)kdebugCodes addObject:v5];
+  0xFFFC = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(class << 24) | (d << 16) | 0xFFFC];
+  [(NSMutableSet *)kdebugCodes addObject:0xFFFC];
 }
 
-- (void)addClass:(unsigned int)a3 subclassID:(unsigned int)a4 code:(unsigned int)a5
+- (void)addClass:(unsigned int)class subclassID:(unsigned int)d code:(unsigned int)code
 {
   kdebugCodes = self->_kdebugCodes;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(a3 << 24) | (a4 << 16) | (4 * (a5 & 0x3FFF))];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(class << 24) | (d << 16) | (4 * (code & 0x3FFF))];
   [(NSMutableSet *)kdebugCodes addObject:v6];
 }
 
-- (BOOL)containsClass:(unsigned int)a3
+- (BOOL)containsClass:(unsigned int)class
 {
   kdebugCodes = self->_kdebugCodes;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(a3 << 24) | 0xFFFFFC];
-  if (([(NSMutableSet *)kdebugCodes containsObject:v5]& 1) != 0)
+  0xFFFFFC = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(class << 24) | 0xFFFFFC];
+  if (([(NSMutableSet *)kdebugCodes containsObject:0xFFFFFC]& 1) != 0)
   {
     v6 = 1;
   }
@@ -152,11 +152,11 @@
   return v6;
 }
 
-- (BOOL)containsClass:(unsigned int)a3 subclassID:(unsigned int)a4
+- (BOOL)containsClass:(unsigned int)class subclassID:(unsigned int)d
 {
   kdebugCodes = self->_kdebugCodes;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(a4 << 16) & 0xFF0000 | (a3 << 24) | 0xFFFC];
-  if (([(NSMutableSet *)kdebugCodes containsObject:v8]& 1) != 0)
+  0xFFFC = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(d << 16) & 0xFF0000 | (class << 24) | 0xFFFC];
+  if (([(NSMutableSet *)kdebugCodes containsObject:0xFFFC]& 1) != 0)
   {
     v9 = 1;
   }
@@ -164,8 +164,8 @@
   else
   {
     v10 = self->_kdebugCodes;
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(a3 << 24) | 0xFFFFFC];
-    if (([(NSMutableSet *)v10 containsObject:v11]& 1) != 0)
+    0xFFFFFC = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(class << 24) | 0xFFFFFC];
+    if (([(NSMutableSet *)v10 containsObject:0xFFFFFC]& 1) != 0)
     {
       v9 = 1;
     }
@@ -173,8 +173,8 @@
     else
     {
       v12 = self->_kdebugCodes;
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(a4 << 16) | 0xFF00FFFC];
-      if (([(NSMutableSet *)v12 containsObject:v13]& 1) != 0)
+      0xFF00FFFC = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(d << 16) | 0xFF00FFFC];
+      if (([(NSMutableSet *)v12 containsObject:0xFF00FFFC]& 1) != 0)
       {
         v9 = 1;
       }
@@ -207,19 +207,19 @@
   return v5;
 }
 
-- (char)createFilterMask:(BOOL)a3
+- (char)createFilterMask:(BOOL)mask
 {
-  v3 = a3;
+  maskCopy = mask;
   v5 = malloc_type_calloc(0x2000uLL, 1uLL, 0x100004077774924uLL);
-  v6 = [(DTKPKDebugCodeSet *)self kdebugCodes];
+  kdebugCodes = [(DTKPKDebugCodeSet *)self kdebugCodes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_247FEABF8;
   v8[3] = &unk_278EF3EA0;
   v8[4] = v5;
-  [v6 enumerateObjectsUsingBlock:v8];
+  [kdebugCodes enumerateObjectsUsingBlock:v8];
 
-  if (v3)
+  if (maskCopy)
   {
     kperf_typefilter_invert();
   }
@@ -230,22 +230,22 @@
 - (kperf_kdebug_filter)createKperfFilter
 {
   v3 = kperf_kdebug_filter_create();
-  v4 = [(DTKPKDebugCodeSet *)self kdebugCodes];
+  kdebugCodes = [(DTKPKDebugCodeSet *)self kdebugCodes];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_247FEAD34;
   v6[3] = &unk_278EF3EA0;
   v6[4] = v3;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [kdebugCodes enumerateObjectsUsingBlock:v6];
 
   return v3;
 }
 
-+ (void)releaseFilterMask:(char *)a3
++ (void)releaseFilterMask:(char *)mask
 {
-  if (a3)
+  if (mask)
   {
-    free(a3);
+    free(mask);
   }
 }
 

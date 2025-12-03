@@ -1,24 +1,24 @@
 @interface StockGraphViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityChildren;
-- (id)_accessibilityChildrenWithmaxChildrenCount:(int)a3 frame:(CGRect)a4;
+- (id)_accessibilityChildrenWithmaxChildrenCount:(int)count frame:(CGRect)frame;
 - (id)_accessibilityNanoChildren;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
+- (id)accessibilityElementAtIndex:(int64_t)index;
 - (int64_t)accessibilityElementCount;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
+- (int64_t)indexOfAccessibilityElement:(id)element;
 - (void)clearData;
 - (void)dealloc;
 @end
 
 @implementation StockGraphViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"StockGraphView"];
-  [v3 validateClass:@"StockGraphView" hasInstanceVariable:@"_chartData" withType:"StockChartData"];
-  [v3 validateClass:@"StockGraphView" hasInstanceMethod:@"clearData" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"StockGraphView"];
+  [validationsCopy validateClass:@"StockGraphView" hasInstanceVariable:@"_chartData" withType:"StockChartData"];
+  [validationsCopy validateClass:@"StockGraphView" hasInstanceMethod:@"clearData" withFullSignature:{"v", 0}];
 }
 
 - (CGRect)accessibilityFrame
@@ -62,8 +62,8 @@
     return 0;
   }
 
-  v7 = [(StockGraphViewAccessibility *)self _accessibilityChildren];
-  v8 = [v7 count];
+  _accessibilityChildren = [(StockGraphViewAccessibility *)self _accessibilityChildren];
+  v8 = [_accessibilityChildren count];
 
   return v8;
 }
@@ -81,14 +81,14 @@
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [(StockGraphViewAccessibility *)self superview];
-  [v9 size];
+  superview = [(StockGraphViewAccessibility *)self superview];
+  [superview size];
   v11 = v10;
 
   return [(StockGraphViewAccessibility *)self _accessibilityChildrenWithmaxChildrenCount:5 frame:v4, v6, v8, v11];
 }
 
-- (id)_accessibilityChildrenWithmaxChildrenCount:(int)a3 frame:(CGRect)a4
+- (id)_accessibilityChildrenWithmaxChildrenCount:(int)count frame:(CGRect)frame
 {
   v6 = MEMORY[0x29EDC7620];
   v7 = [(StockGraphViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
@@ -100,9 +100,9 @@
       v9 = v8;
       v7 = [objc_allocWithZone(MEMORY[0x29EDB8DE8]) init];
       [(StockGraphViewAccessibility *)self _accessibilitySetRetainedValue:v7 forKey:*v6];
-      v30 = [v9 stockValues];
+      stockValues = [v9 stockValues];
       v10 = [v9 safeValueForKey:@"stockValueCount"];
-      v11 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
 
       v12 = [(StockGraphViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Stockchartview.isa)];
       v27 = v12;
@@ -119,24 +119,24 @@
       v29 = v13;
       v28 = v9;
       v31 = [v9 safeValueForKey:@"marketTimeZone"];
-      if (v11 >= a3)
+      if (unsignedIntegerValue >= count)
       {
-        v14 = a3;
+        countCopy = count;
       }
 
       else
       {
-        v14 = v11;
+        countCopy = unsignedIntegerValue;
       }
 
-      if (v14 >= 1)
+      if (countCopy >= 1)
       {
         v15 = 0;
-        v16 = (v11 - 1) / (v14 - 1);
+        v16 = (unsignedIntegerValue - 1) / (countCopy - 1);
         do
         {
           v17 = [objc_allocWithZone(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
-          v18 = (v30 + 24 * v16 * v15);
+          v18 = (stockValues + 24 * v16 * v15);
           v19 = MEMORY[0x29EDB8DB0];
           v20 = *v18;
           v21 = v31;
@@ -173,7 +173,7 @@
           ++v15;
         }
 
-        while (v14 != v15);
+        while (countCopy != v15);
       }
     }
 
@@ -186,21 +186,21 @@
   return v7;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
-  v4 = a3;
-  v5 = [(StockGraphViewAccessibility *)self _accessibilityChildren];
-  v6 = [v5 indexOfObject:v4];
+  elementCopy = element;
+  _accessibilityChildren = [(StockGraphViewAccessibility *)self _accessibilityChildren];
+  v6 = [_accessibilityChildren indexOfObject:elementCopy];
 
   return v6;
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
-  v4 = [(StockGraphViewAccessibility *)self _accessibilityChildren];
-  if ([v4 count] >= a3)
+  _accessibilityChildren = [(StockGraphViewAccessibility *)self _accessibilityChildren];
+  if ([_accessibilityChildren count] >= index)
   {
-    v5 = [v4 objectAtIndex:a3];
+    v5 = [_accessibilityChildren objectAtIndex:index];
   }
 
   else

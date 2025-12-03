@@ -1,37 +1,37 @@
 @interface QLImageItemViewController
-- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)a3;
-- (BOOL)draggableViewShouldStartDragSession:(id)a3;
-- (BOOL)shouldAcceptTouch:(id)a3 ofGestureRecognizer:(id)a4;
+- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)actions;
+- (BOOL)draggableViewShouldStartDragSession:(id)session;
+- (BOOL)shouldAcceptTouch:(id)touch ofGestureRecognizer:(id)recognizer;
 - (BOOL)shouldDetectMachineReadableCode;
 - (CGSize)imageSize;
 - (NSDictionary)clientPreviewOptions;
-- (id)toolbarButtonsForTraitCollection:(id)a3;
+- (id)toolbarButtonsForTraitCollection:(id)collection;
 - (void)_setupAndStartImageAnalysisIfNeeded;
 - (void)animateToPreferredDynamicRange;
-- (void)animationTimerFired:(double)a3;
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)animationTimerFired:(double)fired;
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)imageAnalysisInteractionDidDismissVisualSearchController;
 - (void)imageAnalysisInteractionWillPresentVisualSearchController;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)performFirstTimeAppearanceActions:(unint64_t)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)updatePreferredDynamicRangeForced:(BOOL)a3;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)performFirstTimeAppearanceActions:(unint64_t)actions;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)updatePreferredDynamicRangeForced:(BOOL)forced;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation QLImageItemViewController
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  contentsCopy = contents;
+  handlerCopy = handler;
   v10 = objc_alloc_init(MEMORY[0x277D755E8]);
   imageView = self->_imageView;
   self->_imageView = v10;
 
   [(UIImageView *)self->_imageView setUserInteractionEnabled:1];
-  v12 = [MEMORY[0x277D75348] clearColor];
-  [(UIImageView *)self->_imageView setBackgroundColor:v12];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIImageView *)self->_imageView setBackgroundColor:clearColor];
 
   [(UIImageView *)self->_imageView setAccessibilityIdentifier:@"QLImageItemViewControllerImageViewAccessibilityIdentifier"];
   [(UIImageView *)self->_imageView setPreferredImageDynamicRange:0];
@@ -50,26 +50,26 @@
   self->_imageIsAnimated = isKindOfClass & 1;
   if (isKindOfClass)
   {
-    objc_storeStrong(&self->_animatedImage, a3);
-    v18 = v9;
+    objc_storeStrong(&self->_animatedImage, contents);
+    v18 = handlerCopy;
     QLRunInMainThread();
   }
 
   else
   {
-    v14 = [v8 image];
-    [(UIImageView *)self->_imageView setImage:v14];
+    image = [contentsCopy image];
+    [(UIImageView *)self->_imageView setImage:image];
 
-    v15 = [(UIImageView *)self->_imageView image];
-    [v15 size];
+    image2 = [(UIImageView *)self->_imageView image];
+    [image2 size];
     self->_imageSize.width = v16;
     self->_imageSize.height = v17;
 
     [(QLScrollableContentItemViewController *)self setContentView:self->_imageView];
     [(QLImageItemViewController *)self setPreferredContentSize:self->_imageSize.width, self->_imageSize.height];
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
@@ -100,12 +100,12 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
   [(QLImageItemViewController *)&v5 viewDidLayoutSubviews];
   if (self->_visualIntelligenceBarContainerView)
   {
-    v3 = [(QLImageItemViewController *)self view];
-    [v3 bounds];
+    view = [(QLImageItemViewController *)self view];
+    [view bounds];
     [(UIView *)self->_visualIntelligenceBarContainerView setFrame:?];
 
-    v4 = [(QLImageItemViewController *)self view];
-    [v4 bringSubviewToFront:self->_visualIntelligenceBarContainerView];
+    view2 = [(QLImageItemViewController *)self view];
+    [view2 bringSubviewToFront:self->_visualIntelligenceBarContainerView];
   }
 }
 
@@ -118,18 +118,18 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
   return result;
 }
 
-- (void)animationTimerFired:(double)a3
+- (void)animationTimerFired:(double)fired
 {
   if (self->_imageIsAnimated)
   {
     initialTimeStamp = self->_initialTimeStamp;
     if (initialTimeStamp == 1.79769313e308)
     {
-      initialTimeStamp = a3 - self->_currentPlaybackTime;
+      initialTimeStamp = fired - self->_currentPlaybackTime;
       self->_initialTimeStamp = initialTimeStamp;
     }
 
-    v6 = a3 - initialTimeStamp;
+    v6 = fired - initialTimeStamp;
     [(QLAnimatedImage *)self->_animatedImage duration];
     self->_currentPlaybackTime = fmod(v6, v7);
     v8 = [(QLAnimatedImage *)self->_animatedImage frameAtTime:?];
@@ -145,61 +145,61 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
   }
 }
 
-- (id)toolbarButtonsForTraitCollection:(id)a3
+- (id)toolbarButtonsForTraitCollection:(id)collection
 {
   v8.receiver = self;
   v8.super_class = QLImageItemViewController;
-  v4 = [(QLItemViewController *)&v8 toolbarButtonsForTraitCollection:a3];
-  v5 = [v4 mutableCopy];
+  v4 = [(QLItemViewController *)&v8 toolbarButtonsForTraitCollection:collection];
+  array = [v4 mutableCopy];
 
-  if (!v5)
+  if (!array)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   if ([(QLImageAnalysisManager *)self->_imageAnalysisManager shouldDisplayInfoButton])
   {
-    v6 = [(QLImageAnalysisManager *)self->_imageAnalysisManager imageAnalysisToolbarButton];
-    [v5 addObject:v6];
+    imageAnalysisToolbarButton = [(QLImageAnalysisManager *)self->_imageAnalysisManager imageAnalysisToolbarButton];
+    [array addObject:imageAnalysisToolbarButton];
   }
 
-  return v5;
+  return array;
 }
 
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"QLVisualSearchButton"])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy isEqualToString:@"QLVisualSearchButton"])
   {
     if ([(QLImageAnalysisManager *)self->_imageAnalysisManager isVisualIntelligenceV2Enabled])
     {
-      v8 = [(QLImageAnalysisManager *)self->_imageAnalysisManager visualIntelligenceBarContainerView];
-      if (v8)
+      visualIntelligenceBarContainerView = [(QLImageAnalysisManager *)self->_imageAnalysisManager visualIntelligenceBarContainerView];
+      if (visualIntelligenceBarContainerView)
       {
         if ([(QLImageAnalysisManager *)self->_imageAnalysisManager isVisualIntelligenceV2Active])
         {
-          [v8 removeFromSuperview];
+          [visualIntelligenceBarContainerView removeFromSuperview];
           visualIntelligenceBarContainerView = self->_visualIntelligenceBarContainerView;
           self->_visualIntelligenceBarContainerView = 0;
         }
 
         else
         {
-          objc_storeStrong(&self->_visualIntelligenceBarContainerView, v8);
+          objc_storeStrong(&self->_visualIntelligenceBarContainerView, visualIntelligenceBarContainerView);
           visualIntelligenceBarContainerView = [(QLImageItemViewController *)self view];
-          [visualIntelligenceBarContainerView addSubview:v8];
+          [visualIntelligenceBarContainerView addSubview:visualIntelligenceBarContainerView];
         }
 
-        v10 = [(QLImageItemViewController *)self view];
-        [v10 setNeedsLayout];
+        view = [(QLImageItemViewController *)self view];
+        [view setNeedsLayout];
       }
     }
 
     [(QLImageAnalysisManager *)self->_imageAnalysisManager infoButtonTapped];
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -207,21 +207,21 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
   {
     v11.receiver = self;
     v11.super_class = QLImageItemViewController;
-    [(QLItemViewController *)&v11 buttonPressedWithIdentifier:v6 completionHandler:v7];
+    [(QLItemViewController *)&v11 buttonPressedWithIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(QLItemViewController *)self delegate];
-  [v4 previewItemViewController:self wantsFullScreen:0];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self wantsFullScreen:0];
 }
 
-- (BOOL)draggableViewShouldStartDragSession:(id)a3
+- (BOOL)draggableViewShouldStartDragSession:(id)session
 {
-  v4 = a3;
-  v5 = [(QLImageItemViewController *)self imageAnalysisView];
-  [v4 locationInView:v5];
+  sessionCopy = session;
+  imageAnalysisView = [(QLImageItemViewController *)self imageAnalysisView];
+  [sessionCopy locationInView:imageAnalysisView];
   v7 = v6;
   v9 = v8;
 
@@ -234,7 +234,7 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
   {
     v12.receiver = self;
     v12.super_class = QLImageItemViewController;
-    v10 = [(QLItemViewController *)&v12 draggableViewShouldStartDragSession:v4];
+    v10 = [(QLItemViewController *)&v12 draggableViewShouldStartDragSession:sessionCopy];
   }
 
   return v10;
@@ -242,10 +242,10 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
 
 - (NSDictionary)clientPreviewOptions
 {
-  v2 = [(QLItemViewController *)self context];
-  v3 = [v2 clientPreviewOptions];
+  context = [(QLItemViewController *)self context];
+  clientPreviewOptions = [context clientPreviewOptions];
 
-  return v3;
+  return clientPreviewOptions;
 }
 
 - (void)imageAnalysisInteractionWillPresentVisualSearchController
@@ -254,8 +254,8 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
   savedFullScreenState = self->_savedFullScreenState;
   self->_savedFullScreenState = v3;
 
-  v5 = [(QLItemViewController *)self delegate];
-  [v5 previewItemViewController:self wantsFullScreen:1];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self wantsFullScreen:1];
 }
 
 - (void)imageAnalysisInteractionDidDismissVisualSearchController
@@ -263,18 +263,18 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
   savedFullScreenState = self->_savedFullScreenState;
   if (savedFullScreenState)
   {
-    v4 = [(NSNumber *)savedFullScreenState BOOLValue];
+    bOOLValue = [(NSNumber *)savedFullScreenState BOOLValue];
     v5 = self->_savedFullScreenState;
     self->_savedFullScreenState = 0;
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  v6 = [(QLItemViewController *)self delegate];
-  [v6 previewItemViewController:self wantsFullScreen:v4];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self wantsFullScreen:bOOLValue];
 }
 
 - (void)_setupAndStartImageAnalysisIfNeeded
@@ -282,9 +282,9 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
   imageAnalysisManager = self->_imageAnalysisManager;
   if (imageAnalysisManager)
   {
-    v4 = [(QLImageAnalysisManager *)imageAnalysisManager hasAnalysis];
+    hasAnalysis = [(QLImageAnalysisManager *)imageAnalysisManager hasAnalysis];
     v5 = self->_imageAnalysisManager;
-    if (v4)
+    if (hasAnalysis)
     {
 
       [(QLImageAnalysisManager *)v5 addInteractionIfNeeded];
@@ -307,66 +307,66 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
   }
 
   v7 = [QLImageAnalysisManager alloc];
-  v10 = [(QLImageItemViewController *)self view];
-  v8 = [(QLImageAnalysisManager *)v7 initWithDelegate:self presentingView:v10];
+  view = [(QLImageItemViewController *)self view];
+  v8 = [(QLImageAnalysisManager *)v7 initWithDelegate:self presentingView:view];
   v9 = self->_imageAnalysisManager;
   self->_imageAnalysisManager = v8;
 }
 
 - (BOOL)shouldDetectMachineReadableCode
 {
-  v2 = [(QLItemViewController *)self context];
-  v3 = [v2 shouldPreventMachineReadableCodeDetection];
+  context = [(QLItemViewController *)self context];
+  shouldPreventMachineReadableCodeDetection = [context shouldPreventMachineReadableCodeDetection];
 
-  return v3 ^ 1;
+  return shouldPreventMachineReadableCodeDetection ^ 1;
 }
 
-- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)a3
+- (BOOL)canPerformFirstTimeAppearanceActions:(unint64_t)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   v7.receiver = self;
   v7.super_class = QLImageItemViewController;
   v4 = [(QLItemViewController *)&v7 canPerformFirstTimeAppearanceActions:?];
-  v5 = (v3 & 0x28) != 0;
+  v5 = (actionsCopy & 0x28) != 0;
   if (v4)
   {
     v5 = 1;
   }
 
-  return (v3 & 0x10) != 0 || v5;
+  return (actionsCopy & 0x10) != 0 || v5;
 }
 
-- (void)performFirstTimeAppearanceActions:(unint64_t)a3
+- (void)performFirstTimeAppearanceActions:(unint64_t)actions
 {
-  if ((a3 & 8) != 0)
+  if ((actions & 8) != 0)
   {
     [(QLImageAnalysisManager *)self->_imageAnalysisManager setShouldHighlightTextAndDDAfterNextAnalysis:1];
   }
 
-  else if ((a3 & 0x10) != 0)
+  else if ((actions & 0x10) != 0)
   {
     [(QLImageAnalysisManager *)self->_imageAnalysisManager setShouldEnterVisualSearchAfterNextAnalysis:1];
   }
 
-  else if ((a3 & 0x20) != 0)
+  else if ((actions & 0x20) != 0)
   {
     [(QLImageAnalysisManager *)self->_imageAnalysisManager setShouldUpliftSubjectAfterNextAnalysis:1];
   }
 }
 
-- (BOOL)shouldAcceptTouch:(id)a3 ofGestureRecognizer:(id)a4
+- (BOOL)shouldAcceptTouch:(id)touch ofGestureRecognizer:(id)recognizer
 {
-  v6 = a4;
+  recognizerCopy = recognizer;
   v16.receiver = self;
   v16.super_class = QLImageItemViewController;
-  v7 = a3;
-  v8 = [(QLItemViewController *)&v16 shouldAcceptTouch:v7 ofGestureRecognizer:v6];
+  touchCopy = touch;
+  v8 = [(QLItemViewController *)&v16 shouldAcceptTouch:touchCopy ofGestureRecognizer:recognizerCopy];
   v9 = [(QLImageItemViewController *)self imageAnalysisView:v16.receiver];
-  [v7 locationInView:v9];
+  [touchCopy locationInView:v9];
   v11 = v10;
   v13 = v12;
 
-  LODWORD(v9) = [v7 _isPointerTouch];
+  LODWORD(v9) = [touchCopy _isPointerTouch];
   if (v9)
   {
     if ([(QLImageAnalysisManager *)self->_imageAnalysisManager isTextSelectionEnabled])
@@ -390,18 +390,18 @@ void __89__QLImageItemViewController_loadPreviewControllerWithContents_context_c
   return v14 & v8;
 }
 
-- (void)updatePreferredDynamicRangeForced:(BOOL)a3
+- (void)updatePreferredDynamicRangeForced:(BOOL)forced
 {
-  v3 = a3;
+  forcedCopy = forced;
   if (_os_feature_enabled_impl())
   {
-    if (!self->_HDRTransitionInProgress || v3)
+    if (!self->_HDRTransitionInProgress || forcedCopy)
     {
-      v6 = [(QLItemViewController *)self appearance];
-      v7 = [v6 presentationMode];
+      appearance = [(QLItemViewController *)self appearance];
+      presentationMode = [appearance presentationMode];
 
       imageView = self->_imageView;
-      if (v7 == 2)
+      if (presentationMode == 2)
       {
         v9 = 2;
       }

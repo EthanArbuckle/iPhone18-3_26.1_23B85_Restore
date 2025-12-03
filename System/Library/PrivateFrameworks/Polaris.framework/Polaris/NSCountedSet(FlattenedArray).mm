@@ -14,8 +14,8 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [a1 objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  objectEnumerator = [self objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -26,7 +26,7 @@
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
@@ -36,7 +36,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v8);
@@ -62,13 +62,13 @@
         }
 
         v17 = *(*(&v21 + 1) + 8 * j);
-        v18 = [a1 countForObject:{v17, v21}];
+        v18 = [self countForObject:{v17, v21}];
         if (v18)
         {
           v19 = v18;
           do
           {
-            [a1 removeObject:v17];
+            [self removeObject:v17];
             --v19;
           }
 
@@ -92,8 +92,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v1 = a1;
-  v2 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  selfCopy = self;
+  v2 = [selfCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v2)
   {
     v3 = v2;
@@ -105,13 +105,13 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(selfCopy);
         }
 
-        v4 += [v1 countForObject:{*(*(&v9 + 1) + 8 * i), v9}];
+        v4 += [selfCopy countForObject:{*(*(&v9 + 1) + 8 * i), v9}];
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [selfCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v3);

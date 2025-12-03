@@ -1,5 +1,5 @@
 @interface PECopyEditsConfiguration
-- (PECopyEditsConfiguration)initWithCompositionController:(id)a3 asset:(id)a4;
+- (PECopyEditsConfiguration)initWithCompositionController:(id)controller asset:(id)asset;
 - (id)result;
 @end
 
@@ -9,14 +9,14 @@
 {
   v35 = *MEMORY[0x277D85DE8];
   v3 = [PECopyEditsConfigurationResult alloc];
-  v4 = [(PECopyEditsConfiguration *)self compositionController];
-  v5 = [(PECopyEditsConfigurationResult *)v3 initWithCompositionController:v4];
+  compositionController = [(PECopyEditsConfiguration *)self compositionController];
+  v5 = [(PECopyEditsConfigurationResult *)v3 initWithCompositionController:compositionController];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = [(PECopyEditsConfiguration *)self settings];
   v6 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v6)
@@ -34,10 +34,10 @@
         }
 
         v10 = *(*(&v29 + 1) + 8 * v9);
-        v11 = [v10 identifier];
-        if (v11 <= 9)
+        identifier = [v10 identifier];
+        if (identifier <= 9)
         {
-          if (v11 == 6)
+          if (identifier == 6)
           {
             -[PECopyEditsConfigurationResult setSmartCopyEnabled:](v5, "setSmartCopyEnabled:", [v10 enabled]);
           }
@@ -48,8 +48,8 @@
             v28 = 0u;
             v25 = 0u;
             v26 = 0u;
-            v12 = [v10 compositionKeys];
-            v13 = [v12 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            compositionKeys = [v10 compositionKeys];
+            v13 = [compositionKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
             if (v13)
             {
               v14 = v13;
@@ -60,15 +60,15 @@
                 {
                   if (*v26 != v15)
                   {
-                    objc_enumerationMutation(v12);
+                    objc_enumerationMutation(compositionKeys);
                   }
 
                   v17 = *(*(&v25 + 1) + 8 * i);
-                  v18 = [(PECopyEditsConfigurationResult *)v5 compositionController];
-                  [v18 removeAdjustmentWithKey:v17];
+                  compositionController2 = [(PECopyEditsConfigurationResult *)v5 compositionController];
+                  [compositionController2 removeAdjustmentWithKey:v17];
                 }
 
-                v14 = [v12 countByEnumeratingWithState:&v25 objects:v33 count:16];
+                v14 = [compositionKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
               }
 
               while (v14);
@@ -87,27 +87,27 @@
     while (v19);
   }
 
-  v20 = [(PECopyEditsConfiguration *)v23 settings];
-  v21 = [PEAnalyticsUtility analyticPayloadForCopyEditsSettings:v20];
+  settings = [(PECopyEditsConfiguration *)selfCopy settings];
+  v21 = [PEAnalyticsUtility analyticPayloadForCopyEditsSettings:settings];
   [(PECopyEditsConfigurationResult *)v5 setAnalyticsPayload:v21];
 
   return v5;
 }
 
-- (PECopyEditsConfiguration)initWithCompositionController:(id)a3 asset:(id)a4
+- (PECopyEditsConfiguration)initWithCompositionController:(id)controller asset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  assetCopy = asset;
   v17.receiver = self;
   v17.super_class = PECopyEditsConfiguration;
   v9 = [(PECopyEditsConfiguration *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_compositionController, a3);
+    objc_storeStrong(&v9->_compositionController, controller);
     v11 = +[PECopyEditsSetting allSettings];
-    v15 = v7;
-    v16 = v8;
+    v15 = controllerCopy;
+    v16 = assetCopy;
     v12 = PFFilter();
     settings = v10->_settings;
     v10->_settings = v12;

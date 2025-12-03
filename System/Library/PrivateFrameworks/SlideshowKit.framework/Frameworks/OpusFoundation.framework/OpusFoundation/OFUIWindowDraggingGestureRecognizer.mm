@@ -2,13 +2,13 @@
 - (CGPoint)initialPoint;
 - (CGPoint)translation;
 - (void)_beginDraggingIfNecessary;
-- (void)_stopDraggingIfNecessary:(BOOL)a3;
+- (void)_stopDraggingIfNecessary:(BOOL)necessary;
 - (void)beginDragging;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation OFUIWindowDraggingGestureRecognizer
@@ -52,17 +52,17 @@
   }
 }
 
-- (void)_stopDraggingIfNecessary:(BOOL)a3
+- (void)_stopDraggingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  v5 = [(OFUIWindowDraggingGestureRecognizer *)self state];
+  necessaryCopy = necessary;
+  state = [(OFUIWindowDraggingGestureRecognizer *)self state];
   v6 = 3;
-  if (v3)
+  if (necessaryCopy)
   {
     v6 = 4;
   }
 
-  if (v5)
+  if (state)
   {
     v7 = v6;
   }
@@ -75,35 +75,35 @@
   [(OFUIWindowDraggingGestureRecognizer *)self setState:v7];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = OFUIWindowDraggingGestureRecognizer;
-  [(OFUIWindowDraggingGestureRecognizer *)&v5 touchesBegan:a3 withEvent:a4];
+  [(OFUIWindowDraggingGestureRecognizer *)&v5 touchesBegan:began withEvent:event];
   [(OFUIWindowDraggingGestureRecognizer *)self _beginDraggingIfNecessary];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = OFUIWindowDraggingGestureRecognizer;
-  [(OFUIWindowDraggingGestureRecognizer *)&v5 touchesMoved:a3 withEvent:a4];
+  [(OFUIWindowDraggingGestureRecognizer *)&v5 touchesMoved:moved withEvent:event];
   [(OFUIWindowDraggingGestureRecognizer *)self _beginDraggingIfNecessary];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = OFUIWindowDraggingGestureRecognizer;
-  [(OFUIWindowDraggingGestureRecognizer *)&v5 touchesEnded:a3 withEvent:a4];
+  [(OFUIWindowDraggingGestureRecognizer *)&v5 touchesEnded:ended withEvent:event];
   [(OFUIWindowDraggingGestureRecognizer *)self _stopDraggingIfNecessary:0];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = OFUIWindowDraggingGestureRecognizer;
-  [(OFUIWindowDraggingGestureRecognizer *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(OFUIWindowDraggingGestureRecognizer *)&v5 touchesCancelled:cancelled withEvent:event];
   [(OFUIWindowDraggingGestureRecognizer *)self _stopDraggingIfNecessary:1];
 }
 

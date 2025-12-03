@@ -1,34 +1,34 @@
 @interface PKLayoutAssetLink
-+ (id)nameToAssetsMapFromDictionaries:(id)a3;
-- (PKLayoutAssetLink)initWithDictionary:(id)a3;
++ (id)nameToAssetsMapFromDictionaries:(id)dictionaries;
+- (PKLayoutAssetLink)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKLayoutAssetLink
 
-+ (id)nameToAssetsMapFromDictionaries:(id)a3
++ (id)nameToAssetsMapFromDictionaries:(id)dictionaries
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionariesCopy = dictionaries;
+  v4 = dictionariesCopy;
+  if (dictionariesCopy)
   {
-    if ([v3 count])
+    if ([dictionariesCopy count])
     {
       v5 = [v4 pk_arrayBySafelyApplyingBlock:&__block_literal_global_146];
-      v6 = [v5 pk_groupDictionaryByApplyingBlock:&__block_literal_global_32];
+      dictionary = [v5 pk_groupDictionaryByApplyingBlock:&__block_literal_global_32];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DF20] dictionary];
+      dictionary = [MEMORY[0x1E695DF20] dictionary];
     }
   }
 
   else
   {
-    v6 = 0;
+    dictionary = 0;
   }
 
-  return v6;
+  return dictionary;
 }
 
 PKLayoutAssetLink *__53__PKLayoutAssetLink_nameToAssetsMapFromDictionaries___block_invoke(uint64_t a1, void *a2)
@@ -39,10 +39,10 @@ PKLayoutAssetLink *__53__PKLayoutAssetLink_nameToAssetsMapFromDictionaries___blo
   return v3;
 }
 
-- (PKLayoutAssetLink)initWithDictionary:(id)a3
+- (PKLayoutAssetLink)initWithDictionary:(id)dictionary
 {
   v31[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = PKLayoutAssetLink;
   v5 = [(PKLayoutAssetLink *)&v30 init];
@@ -51,28 +51,28 @@ PKLayoutAssetLink *__53__PKLayoutAssetLink_nameToAssetsMapFromDictionaries___blo
     goto LABEL_15;
   }
 
-  v6 = [v4 PKStringForKey:@"key"];
+  v6 = [dictionaryCopy PKStringForKey:@"key"];
   name = v5->_name;
   v5->_name = v6;
 
-  v8 = [v4 PKStringForKey:@"displayName"];
+  v8 = [dictionaryCopy PKStringForKey:@"displayName"];
   displayText = v5->_displayText;
   v5->_displayText = v8;
 
-  v10 = [v4 PKURLForKey:@"url"];
+  v10 = [dictionaryCopy PKURLForKey:@"url"];
   url = v5->_url;
   v5->_url = v10;
 
-  v12 = PKOSVersionRequirementRangeFromLayoutAssetDictionary(v4);
+  v12 = PKOSVersionRequirementRangeFromLayoutAssetDictionary(dictionaryCopy);
   osVersionRange = v5->_osVersionRange;
   v5->_osVersionRange = v12;
 
-  v14 = [v4 objectForKey:@"adamID"];
+  v14 = [dictionaryCopy objectForKey:@"adamID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v16 = [v14 stringByTrimmingCharactersInSet:v15];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v16 = [v14 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     v17 = [MEMORY[0x1E696AE88] scannerWithString:v16];
     v29 = 0;
@@ -109,7 +109,7 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  v23 = [v4 mutableCopy];
+  v23 = [dictionaryCopy mutableCopy];
   v31[0] = @"key";
   v31[1] = @"displayName";
   v31[2] = @"url";

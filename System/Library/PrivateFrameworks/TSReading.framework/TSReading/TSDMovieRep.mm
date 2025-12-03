@@ -1,14 +1,14 @@
 @interface TSDMovieRep
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4;
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject;
 - (BOOL)canResetMediaSize;
-- (BOOL)directlyManagesVisibilityOfKnob:(id)a3;
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3;
+- (BOOL)directlyManagesVisibilityOfKnob:(id)knob;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point;
 - (BOOL)isPlaying;
 - (BOOL)p_playButtonFitsInFrame;
-- (CGRect)p_strokeFrameForLayerFrame:(CGRect)a3;
+- (CGRect)p_strokeFrameForLayerFrame:(CGRect)frame;
 - (TSDButtonKnob)p_playButtonKnob;
 - (TSDMovieInfo)movieInfo;
-- (TSDMovieRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSDMovieRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (double)visibleTime;
 - (float)volume;
 - (id)additionalLayersOverLayer;
@@ -19,45 +19,45 @@
 - (id)p_tilingLayerForPlayerStroke;
 - (id)p_tilingLayerForReflectionStroke;
 - (unint64_t)enabledKnobMask;
-- (void)addKnobsToArray:(id)a3;
+- (void)addKnobsToArray:(id)array;
 - (void)becameNotSelected;
 - (void)becameSelected;
 - (void)createReflectionLayer;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
+- (void)didUpdateLayer:(id)layer;
 - (void)disposeReflectionLayer;
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)dynamicVisibleTimeChangeDidBegin;
 - (void)dynamicVisibleTimeChangeDidEnd;
-- (void)dynamicVisibleTimeUpdateToValue:(double)a3 withTolerance:(double)a4 completionHandler:(id)a5;
+- (void)dynamicVisibleTimeUpdateToValue:(double)value withTolerance:(double)tolerance completionHandler:(id)handler;
 - (void)dynamicVolumeChangeDidBegin;
 - (void)i_updateFrameRep;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)p_addPlayButtonToKnobs:(id)a3;
-- (void)p_applyBasicStrokeToLayer:(id)a3 layer:(id)a4 bounds:(CGRect)a5;
-- (void)p_arrangeLayerVisibility:(id)a3;
-- (void)p_checkAndsyncTilingLayerState:(BOOL)a3;
-- (void)p_commonDrawStrokeInContext:(CGContext *)a3;
-- (void)p_createMaskLayerForLayer:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)p_addPlayButtonToKnobs:(id)knobs;
+- (void)p_applyBasicStrokeToLayer:(id)layer layer:(id)a4 bounds:(CGRect)bounds;
+- (void)p_arrangeLayerVisibility:(id)visibility;
+- (void)p_checkAndsyncTilingLayerState:(BOOL)state;
+- (void)p_commonDrawStrokeInContext:(CGContext *)context;
+- (void)p_createMaskLayerForLayer:(id)layer;
 - (void)p_createReflectionPlayerStrokeMaskLayer;
 - (void)p_disposeMaskLayer;
 - (void)p_disposeReflectionStrokeLayers;
 - (void)p_disposeStrokeLayer;
-- (void)p_drawInContext:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(double)a6 withMask:(BOOL)a7 forShadowOrHitTest:(BOOL)a8;
-- (void)p_drawPosterImageInContext:(CGContext *)a3;
-- (void)p_drawReflectionGradientIntoMovieReflectionLayer:(CGContext *)a3 reflectionSize:(CGSize)a4;
+- (void)p_drawInContext:(CGContext *)context withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(double)opacity withMask:(BOOL)mask forShadowOrHitTest:(BOOL)test;
+- (void)p_drawPosterImageInContext:(CGContext *)context;
+- (void)p_drawReflectionGradientIntoMovieReflectionLayer:(CGContext *)layer reflectionSize:(CGSize)size;
 - (void)p_hideReflectionLayer;
-- (void)p_placeReflectionPlayerLayer:(CGRect)a3 transform:(CGAffineTransform *)a4;
+- (void)p_placeReflectionPlayerLayer:(CGRect)layer transform:(CGAffineTransform *)transform;
 - (void)p_playForKnob;
-- (void)p_setPositionAndBoundsIfDifferent:(id)a3 position:(CGPoint)a4 bounds:(CGRect)a5;
+- (void)p_setPositionAndBoundsIfDifferent:(id)different position:(CGPoint)position bounds:(CGRect)bounds;
 - (void)p_setupPlayerControllerIfNecessary;
 - (void)p_setupPlayerLayerIfNecessary;
-- (void)p_setupPlayerStrokeLayers:(BOOL)a3;
+- (void)p_setupPlayerStrokeLayers:(BOOL)layers;
 - (void)p_setupReflectionPlayerLayerIfNecessary;
 - (void)p_setupShapePlayerStrokeLayer;
 - (void)p_setupShapeReflectionPlayerStrokeLayer;
-- (void)p_setupStrokeLayers:(BOOL)a3 needsMaskLayer:(BOOL)a4 isFrame:(BOOL)a5;
+- (void)p_setupStrokeLayers:(BOOL)layers needsMaskLayer:(BOOL)layer isFrame:(BOOL)frame;
 - (void)p_setupTilingPlayerStrokeLayer;
 - (void)p_setupTilingReflectionPlayerStrokeLayer;
 - (void)p_showReflectionLayer;
@@ -71,28 +71,28 @@
 - (void)p_updateReflectionFrameRep;
 - (void)p_updateRepeatMode;
 - (void)p_updateStartTime;
-- (void)p_updateStrokeLayerForStroke:(id)a3 repLayer:(id)a4;
+- (void)p_updateStrokeLayerForStroke:(id)stroke repLayer:(id)layer;
 - (void)p_updateUIStateForMoviePlayability;
 - (void)p_updateVolume;
-- (void)playbackDidStopForPlayerController:(id)a3;
-- (void)playerController:(id)a3 playbackDidFailWithError:(id)a4;
-- (void)processChangedProperty:(int)a3;
+- (void)playbackDidStopForPlayerController:(id)controller;
+- (void)playerController:(id)controller playbackDidFailWithError:(id)error;
+- (void)processChangedProperty:(int)property;
 - (void)screenScaleDidChange;
-- (void)setAlternatePosterImage:(CGImage *)a3;
+- (void)setAlternatePosterImage:(CGImage *)image;
 - (void)updateFromLayout;
-- (void)updateLayerGeometryFromLayout:(id)a3;
+- (void)updateLayerGeometryFromLayout:(id)layout;
 - (void)willBeRemoved;
 - (void)willBeginReadMode;
-- (void)willUpdateLayer:(id)a3;
+- (void)willUpdateLayer:(id)layer;
 @end
 
 @implementation TSDMovieRep
 
-- (TSDMovieRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSDMovieRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v7.receiver = self;
   v7.super_class = TSDMovieRep;
-  v4 = [(TSDRep *)&v7 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v7 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (v4 && ![(TSDMovieRep *)v4 movieInfo])
   {
@@ -134,7 +134,7 @@
   [(TSDMediaRep *)&v3 dealloc];
 }
 
-- (void)p_createMaskLayerForLayer:(id)a3
+- (void)p_createMaskLayerForLayer:(id)layer
 {
   if (!self->super.mTapToReplaceLayer)
   {
@@ -144,7 +144,7 @@
     [(CALayer *)self->super.mTapToReplaceLayer setAnchorPoint:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
     mTapToReplaceLayer = self->super.mTapToReplaceLayer;
 
-    [a3 setMask:mTapToReplaceLayer];
+    [layer setMask:mTapToReplaceLayer];
   }
 }
 
@@ -233,9 +233,9 @@
   {
     if ([(CALayer *)mReflectionLayer isHidden])
     {
-      v4 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieRep p_hideReflectionLayer]"];
-      [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 355, @"Hiding layer that is already hidden!"}];
+      [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 355, @"Hiding layer that is already hidden!"}];
     }
 
     [(CALayer *)self->super.super.mReflectionLayer setHidden:1];
@@ -246,9 +246,9 @@
   {
     if ([(CALayer *)mMovieReflectionMaskLayer isHidden])
     {
-      v7 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieRep p_hideReflectionLayer]"];
-      [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 359, @"Hiding layer that is already hidden!"}];
+      [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 359, @"Hiding layer that is already hidden!"}];
     }
 
     [(CALayer *)self->mMovieReflectionMaskLayer setHidden:1];
@@ -259,9 +259,9 @@
   {
     if ([(CALayer *)mLayerToStroke isHidden])
     {
-      v10 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieRep p_hideReflectionLayer]"];
-      [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 363, @"Hiding layer that is already hidden!"}];
+      [currentHandler3 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 363, @"Hiding layer that is already hidden!"}];
     }
 
     v12 = self->mLayerToStroke;
@@ -296,8 +296,8 @@
 {
   if (LOBYTE(self->mReflectionPlayerStrokeMaskLayer) == 1)
   {
-    v8 = self;
-    v3 = &v8;
+    selfCopy = self;
+    v3 = &selfCopy;
   }
 
   else
@@ -330,12 +330,12 @@
     }
 
     [(TSDMovieRep *)self p_disposeReflectionStrokeLayers];
-    v7 = self;
-    v3 = &v7;
+    selfCopy2 = self;
+    v3 = &selfCopy2;
   }
 
   v3[1] = TSDMovieRep;
-  objc_msgSendSuper2(v3, sel_disposeReflectionLayer, v7);
+  objc_msgSendSuper2(v3, sel_disposeReflectionLayer, selfCopy2);
 }
 
 - (void)createReflectionLayer
@@ -368,9 +368,9 @@
     v3 = objc_alloc_init(MEMORY[0x277CE65D8]);
     self->mMovieReflectionMaskLayer = v3;
     [(CALayer *)v3 setDelegate:self];
-    v4 = [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] isStreaming];
+    isStreaming = [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] isStreaming];
     v5 = MEMORY[0x277CE5DD0];
-    if (!v4)
+    if (!isStreaming)
     {
       v5 = MEMORY[0x277CE5DC8];
     }
@@ -379,9 +379,9 @@
     [(CALayer *)self->mMovieReflectionMaskLayer setHidden:0];
     if (![*&self->super.mLastPictureFrameLayerRect.size.height player])
     {
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieRep p_setupReflectionPlayerLayerIfNecessary]"];
-      [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 456, @"invalid nil value for '%s'", "mPlayerController.player"}];
+      [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 456, @"invalid nil value for '%s'", "mPlayerController.player"}];
     }
 
     -[CALayer setPlayer:](self->mMovieReflectionMaskLayer, "setPlayer:", [*&self->super.mLastPictureFrameLayerRect.size.height player]);
@@ -403,9 +403,9 @@
     v3 = objc_alloc_init(MEMORY[0x277CE65D8]);
     *&self->mCurrentlyObservingPlayerLayer = v3;
     [v3 setDelegate:self];
-    v4 = [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] isStreaming];
+    isStreaming = [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] isStreaming];
     v5 = MEMORY[0x277CE5DD0];
-    if (!v4)
+    if (!isStreaming)
     {
       v5 = MEMORY[0x277CE5DC8];
     }
@@ -417,9 +417,9 @@
     LOBYTE(self->mPlayerController) = 1;
     if (![*&self->super.mLastPictureFrameLayerRect.size.height player])
     {
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieRep p_setupPlayerLayerIfNecessary]"];
-      [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 482, @"invalid nil value for '%s'", "mPlayerController.player"}];
+      [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 482, @"invalid nil value for '%s'", "mPlayerController.player"}];
     }
 
     [*&self->mCurrentlyObservingPlayerLayer setPlayer:{objc_msgSend(*&self->super.mLastPictureFrameLayerRect.size.height, "player")}];
@@ -461,18 +461,18 @@
   }
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  if (self->mPlayerStrokeLayer == a3)
+  if (self->mPlayerStrokeLayer == layer)
   {
 
-    [(TSDMovieRep *)self p_drawReflectionStrokeInContext:a4];
+    [(TSDMovieRep *)self p_drawReflectionStrokeInContext:context];
   }
 
-  else if (*&self->mPreventDisposeOfPlayerLayer == a3)
+  else if (*&self->mPreventDisposeOfPlayerLayer == layer)
   {
 
-    [(TSDMovieRep *)self p_drawStrokeInContext:a4];
+    [(TSDMovieRep *)self p_drawStrokeInContext:context];
   }
 
   else
@@ -563,9 +563,9 @@
   }
 }
 
-- (void)p_setupPlayerStrokeLayers:(BOOL)a3
+- (void)p_setupPlayerStrokeLayers:(BOOL)layers
 {
-  if (a3)
+  if (layers)
   {
     [(TSDMovieRep *)self p_setupTilingPlayerStrokeLayer];
 
@@ -580,10 +580,10 @@
   }
 }
 
-- (void)p_checkAndsyncTilingLayerState:(BOOL)a3
+- (void)p_checkAndsyncTilingLayerState:(BOOL)state
 {
   [(TSDLayout *)[(TSDRep *)self layout] stroke];
-  if (!a3)
+  if (!state)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -595,11 +595,11 @@
   }
 }
 
-- (void)p_setupStrokeLayers:(BOOL)a3 needsMaskLayer:(BOOL)a4 isFrame:(BOOL)a5
+- (void)p_setupStrokeLayers:(BOOL)layers needsMaskLayer:(BOOL)layer isFrame:(BOOL)frame
 {
-  v5 = a5;
-  v6 = a3;
-  if (a4)
+  frameCopy = frame;
+  layersCopy = layers;
+  if (layer)
   {
     [(TSDMovieRep *)self p_createMaskLayerForLayer:self->mPlayerLayer];
     if (self->super.super.mReflectionLayer)
@@ -608,9 +608,9 @@
     }
   }
 
-  [(TSDMovieRep *)self p_checkAndsyncTilingLayerState:v6];
-  [(TSDMovieRep *)self p_setupPlayerStrokeLayers:v6];
-  if (v5)
+  [(TSDMovieRep *)self p_checkAndsyncTilingLayerState:layersCopy];
+  [(TSDMovieRep *)self p_setupPlayerStrokeLayers:layersCopy];
+  if (frameCopy)
   {
     [(TSDMovieRep *)self i_updateFrameRep];
     mStrokeLayer = self->super.mStrokeLayer;
@@ -631,19 +631,19 @@
     [(TSDCanvas *)[(TSDRep *)self canvas] contentsScale];
     v11 = v10;
     mFrameMaskLayer = self->super.mFrameMaskLayer;
-    v13 = [(TSDMovieRep *)self playerStrokeLayer];
+    playerStrokeLayer = [(TSDMovieRep *)self playerStrokeLayer];
     mPlayerLayer = self->mPlayerLayer;
     mTapToReplaceLayer = self->super.mTapToReplaceLayer;
     [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
-    self->super.mStrokeLayer = [(CALayer *)mFrameMaskLayer applyToCALayer:v13 withRepLayer:mPlayerLayer maskLayer:mTapToReplaceLayer viewScale:v11 * v16];
+    self->super.mStrokeLayer = [(CALayer *)mFrameMaskLayer applyToCALayer:playerStrokeLayer withRepLayer:mPlayerLayer maskLayer:mTapToReplaceLayer viewScale:v11 * v16];
     if (self->mMovieReflectionMaskLayer)
     {
       mReflectionPlayerStrokeLayer = self->mReflectionPlayerStrokeLayer;
-      v18 = [(TSDMovieRep *)self reflectionPlayerStrokeLayer];
+      reflectionPlayerStrokeLayer = [(TSDMovieRep *)self reflectionPlayerStrokeLayer];
       mMovieReflectionMaskLayer = self->mMovieReflectionMaskLayer;
       mReflectionPlayerLayer = self->mReflectionPlayerLayer;
       [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
-      self->mReflectionFrameRep = [(CALayer *)mReflectionPlayerStrokeLayer applyToCALayer:v18 withRepLayer:mMovieReflectionMaskLayer maskLayer:mReflectionPlayerLayer viewScale:v11 * v21];
+      self->mReflectionFrameRep = [(CALayer *)mReflectionPlayerStrokeLayer applyToCALayer:reflectionPlayerStrokeLayer withRepLayer:mMovieReflectionMaskLayer maskLayer:mReflectionPlayerLayer viewScale:v11 * v21];
     }
 
     v22 = *(MEMORY[0x277CBF3A0] + 16);
@@ -652,16 +652,16 @@
   }
 }
 
-- (CGRect)p_strokeFrameForLayerFrame:(CGRect)a3
+- (CGRect)p_strokeFrameForLayerFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
   [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
   v10 = v9;
-  [v8 width];
+  [stroke width];
   v12 = v10 * (v11 * -0.5);
   v18.origin.x = x;
   v18.origin.y = y;
@@ -677,15 +677,15 @@
   return result;
 }
 
-- (void)p_arrangeLayerVisibility:(id)a3
+- (void)p_arrangeLayerVisibility:(id)visibility
 {
-  v3 = a3;
+  visibilityCopy = visibility;
   if (BYTE1(self->mPlayerController) == 1 && (self->mIsChangingDynamicVisibleTimeCount & 0x10000000000) == 0)
   {
     [*&self->mCurrentlyObservingPlayerLayer setHidden:0];
     v7 = 1;
-    [(AVPlayerLayer *)v3 setHidden:1];
-    v3 = *&self->mCurrentlyObservingPlayerLayer;
+    [(AVPlayerLayer *)visibilityCopy setHidden:1];
+    visibilityCopy = *&self->mCurrentlyObservingPlayerLayer;
     p_mReflectionLayer = &self->super.super.mReflectionLayer;
     if (!self->super.super.mReflectionLayer)
     {
@@ -697,7 +697,7 @@
 
   else
   {
-    [a3 setHidden:0];
+    [visibility setHidden:0];
     v5 = 1;
     [*&self->mCurrentlyObservingPlayerLayer setHidden:1];
     p_mReflectionLayer = &self->super.super.mReflectionLayer;
@@ -712,35 +712,35 @@
   [(CALayer *)self->mLayerToStroke setHidden:v5];
   [(CALayer *)*p_mReflectionLayer setHidden:v7];
 LABEL_8:
-  if (v3 != self->mPlayerLayer)
+  if (visibilityCopy != self->mPlayerLayer)
   {
     [(TSDMovieRep *)self p_disposeMaskLayer];
     [(TSDMovieRep *)self p_disposeStrokeLayer];
     [(TSDMovieRep *)self p_disposeReflectionStrokeLayers];
-    v8 = v3;
+    v8 = visibilityCopy;
 
-    self->mPlayerLayer = v3;
+    self->mPlayerLayer = visibilityCopy;
   }
 }
 
-- (void)willUpdateLayer:(id)a3
+- (void)willUpdateLayer:(id)layer
 {
   v12.receiver = self;
   v12.super_class = TSDMovieRep;
   [(TSDStyledRep *)&v12 willUpdateLayer:?];
-  v5 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-  [(TSDMovieRep *)self p_arrangeLayerVisibility:a3];
-  v6 = [(TSDMediaRep *)self i_shouldRenderStroke:v5];
+  stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+  [(TSDMovieRep *)self p_arrangeLayerVisibility:layer];
+  v6 = [(TSDMediaRep *)self i_shouldRenderStroke:stroke];
   v7 = v6;
   if (v6)
   {
-    v8 = [(TSDMovieRep *)self p_needsTilingLayerForStroke:v5];
-    v9 = [v5 isFrame];
-    if (v9 && ([v5 hasMask] & 1) != 0)
+    v8 = [(TSDMovieRep *)self p_needsTilingLayerForStroke:stroke];
+    isFrame = [stroke isFrame];
+    if (isFrame && ([stroke hasMask] & 1) != 0)
     {
-      v10 = [(TSDMediaLayout *)[(TSDMediaRep *)self mediaLayout] shouldRenderFrameStroke];
-      [(TSDMovieRep *)self p_setupStrokeLayers:v8 needsMaskLayer:v10 isFrame:1];
-      if (v10)
+      shouldRenderFrameStroke = [(TSDMediaLayout *)[(TSDMediaRep *)self mediaLayout] shouldRenderFrameStroke];
+      [(TSDMovieRep *)self p_setupStrokeLayers:v8 needsMaskLayer:shouldRenderFrameStroke isFrame:1];
+      if (shouldRenderFrameStroke)
       {
         return;
       }
@@ -748,7 +748,7 @@ LABEL_8:
 
     else
     {
-      [(TSDMovieRep *)self p_setupStrokeLayers:v8 needsMaskLayer:0 isFrame:v9];
+      [(TSDMovieRep *)self p_setupStrokeLayers:v8 needsMaskLayer:0 isFrame:isFrame];
     }
   }
 
@@ -767,7 +767,7 @@ LABEL_8:
   }
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -779,7 +779,7 @@ LABEL_8:
   [MEMORY[0x277CD9FF0] setCompletionBlock:v25];
   v24.receiver = self;
   v24.super_class = TSDMovieRep;
-  [(TSDStyledRep *)&v24 didUpdateLayer:a3];
+  [(TSDStyledRep *)&v24 didUpdateLayer:layer];
   if (self->mLayerToStroke && [(TSDStyledRep *)self shouldShowReflection])
   {
     [(CALayer *)self->super.super.mReflectionLayer position];
@@ -811,12 +811,12 @@ LABEL_8:
 
   [(TSDStyledRep *)self opacity];
   v8 = v7;
-  [a3 opacity];
+  [layer opacity];
   v10 = v9;
   if (v8 != v10)
   {
     *&v10 = v8;
-    [a3 setOpacity:v10];
+    [layer setOpacity:v10];
   }
 
   v11 = *&self->mCurrentlyObservingPlayerLayer;
@@ -831,23 +831,23 @@ LABEL_8:
     }
   }
 
-  v14 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-  if ([(TSDMediaRep *)self i_shouldRenderStroke:v14])
+  stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+  if ([(TSDMediaRep *)self i_shouldRenderStroke:stroke])
   {
-    v15 = a3;
+    layerCopy = layer;
     if (BYTE1(self->mPlayerController) == 1)
     {
-      v15 = *&self->mCurrentlyObservingPlayerLayer;
+      layerCopy = *&self->mCurrentlyObservingPlayerLayer;
     }
 
-    [(TSDMovieRep *)self p_updateStrokeLayerForStroke:v14 repLayer:v15];
+    [(TSDMovieRep *)self p_updateStrokeLayerForStroke:stroke repLayer:layerCopy];
     if (self->mMovieReflectionMaskLayer)
     {
-      v16 = [(TSDMovieRep *)self reflectionPlayerStrokeLayer];
+      reflectionPlayerStrokeLayer = [(TSDMovieRep *)self reflectionPlayerStrokeLayer];
       if (self->mPlayerStrokeLayer)
       {
-        v17 = v16;
-        if (![(NSArray *)[(CALayer *)self->mLayerToStroke sublayers] containsObject:v16])
+        v17 = reflectionPlayerStrokeLayer;
+        if (![(NSArray *)[(CALayer *)self->mLayerToStroke sublayers] containsObject:reflectionPlayerStrokeLayer])
         {
           [(CALayer *)self->mLayerToStroke addSublayer:v17];
         }
@@ -855,38 +855,38 @@ LABEL_8:
     }
   }
 
-  v18 = [(TSDMovieRep *)self alternatePosterImage];
-  if (v18)
+  alternatePosterImage = [(TSDMovieRep *)self alternatePosterImage];
+  if (alternatePosterImage)
   {
     goto LABEL_22;
   }
 
-  v19 = [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] posterImageData];
-  if (v19)
+  posterImageData = [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] posterImageData];
+  if (posterImageData)
   {
-    v18 = [TSDBitmapImageProvider CGImageForImageData:v19];
+    alternatePosterImage = [TSDBitmapImageProvider CGImageForImageData:posterImageData];
 LABEL_22:
-    [a3 setContents:v18];
+    [layer setContents:alternatePosterImage];
   }
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)p_setPositionAndBoundsIfDifferent:(id)a3 position:(CGPoint)a4 bounds:(CGRect)a5
+- (void)p_setPositionAndBoundsIfDifferent:(id)different position:(CGPoint)position bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  [a3 position];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = position.y;
+  v10 = position.x;
+  [different position];
   if (v13 != v10 || v12 != v9)
   {
-    [a3 setPosition:{v10, v9}];
+    [different setPosition:{v10, v9}];
   }
 
-  [a3 bounds];
+  [different bounds];
   v21.origin.x = v15;
   v21.origin.y = v16;
   v21.size.width = v17;
@@ -898,11 +898,11 @@ LABEL_22:
   if (!CGRectEqualToRect(v20, v21))
   {
 
-    [a3 setBounds:{x, y, width, height}];
+    [different setBounds:{x, y, width, height}];
   }
 }
 
-- (void)p_placeReflectionPlayerLayer:(CGRect)a3 transform:(CGAffineTransform *)a4
+- (void)p_placeReflectionPlayerLayer:(CGRect)layer transform:(CGAffineTransform *)transform
 {
   mCanvas = self->super.super.super.mCanvas;
   [-[TSDMovieRep movieLayout](self movieLayout];
@@ -925,8 +925,8 @@ LABEL_22:
   *&v30.c = v26;
   *&v30.tx = *&v31.tx;
   CGAffineTransformScale(&v31, &v30, 1.0, -1.0);
-  v27 = *&a4->c;
-  *&t1.a = *&a4->a;
+  v27 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v27;
   t1.tx = 0.0;
   t1.ty = 0.0;
@@ -938,7 +938,7 @@ LABEL_22:
   [(CALayer *)self->mPlayerStrokeLayer setAffineTransform:&v30];
 }
 
-- (void)updateLayerGeometryFromLayout:(id)a3
+- (void)updateLayerGeometryFromLayout:(id)layout
 {
   v12 = 0u;
   v13 = 0u;
@@ -950,7 +950,7 @@ LABEL_22:
   v6 = v9;
   v7 = v10;
   v8 = v11;
-  [a3 setIfDifferentFrame:&v6 orTransform:{v12, v13}];
+  [layout setIfDifferentFrame:&v6 orTransform:{v12, v13}];
   if (*&self->mCurrentlyObservingPlayerLayer)
   {
     [MEMORY[0x277CD9FF0] begin];
@@ -982,20 +982,20 @@ LABEL_22:
 
 - (void)p_updateReflectionFrameRep
 {
-  v3 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-  if (-[TSDMediaRep i_shouldRenderStroke:](self, "i_shouldRenderStroke:", v3) && [v3 isFrame])
+  stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+  if (-[TSDMediaRep i_shouldRenderStroke:](self, "i_shouldRenderStroke:", stroke) && [stroke isFrame])
   {
     mReflectionPlayerStrokeLayer = self->mReflectionPlayerStrokeLayer;
     if (!mReflectionPlayerStrokeLayer)
     {
 LABEL_6:
-      self->mReflectionPlayerStrokeLayer = [[TSDFrameRep alloc] initWithTSDFrame:v3];
+      self->mReflectionPlayerStrokeLayer = [[TSDFrameRep alloc] initWithTSDFrame:stroke];
       return;
     }
 
-    v5 = [(CALayer *)mReflectionPlayerStrokeLayer frame];
+    frame = [(CALayer *)mReflectionPlayerStrokeLayer frame];
     v6 = self->mReflectionPlayerStrokeLayer;
-    if (v5 != v3)
+    if (frame != stroke)
     {
 
       self->mReflectionPlayerStrokeLayer = 0;
@@ -1030,26 +1030,26 @@ LABEL_6:
   }
 }
 
-- (void)p_commonDrawStrokeInContext:(CGContext *)a3
+- (void)p_commonDrawStrokeInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
-  CGContextScaleCTM(a3, v5, v5);
-  [(TSDMovieRep *)self p_drawInContext:a3 withContent:0 withStroke:1 withOpacity:0 withMask:0 forShadowOrHitTest:0.0];
+  CGContextScaleCTM(context, v5, v5);
+  [(TSDMovieRep *)self p_drawInContext:context withContent:0 withStroke:1 withOpacity:0 withMask:0 forShadowOrHitTest:0.0];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)p_applyBasicStrokeToLayer:(id)a3 layer:(id)a4 bounds:(CGRect)a5
+- (void)p_applyBasicStrokeToLayer:(id)layer layer:(id)a4 bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
   v12 = v11;
   [a4 setBounds:{x, y, width, height}];
-  [a3 applyToRepRenderable:+[TSDRenderable renderableFromLayer:](TSDRenderable withScale:{"renderableFromLayer:", a4), v12}];
+  [layer applyToRepRenderable:+[TSDRenderable renderableFromLayer:](TSDRenderable withScale:{"renderableFromLayer:", a4), v12}];
   Mutable = CGPathCreateMutable();
   v15.origin.x = x;
   v15.origin.y = y;
@@ -1062,15 +1062,15 @@ LABEL_6:
   CGPathRelease(Mutable);
 }
 
-- (void)p_updateStrokeLayerForStroke:(id)a3 repLayer:(id)a4
+- (void)p_updateStrokeLayerForStroke:(id)stroke repLayer:(id)layer
 {
-  v7 = [(TSDMovieRep *)self playerStrokeLayer];
-  v8 = [(TSDMovieRep *)self reflectionPlayerStrokeLayer];
+  playerStrokeLayer = [(TSDMovieRep *)self playerStrokeLayer];
+  reflectionPlayerStrokeLayer = [(TSDMovieRep *)self reflectionPlayerStrokeLayer];
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
   v10 = v9;
-  v11 = [(TSDMovieRep *)self p_needsTilingLayerForStroke:a3];
+  v11 = [(TSDMovieRep *)self p_needsTilingLayerForStroke:stroke];
   v76 = 0u;
   memset(&v77, 0, sizeof(v77));
   v75 = 0u;
@@ -1082,10 +1082,10 @@ LABEL_6:
   v19 = v18;
   v20 = TSDCenterOfRect(*&v75, *(&v75 + 1), *&v12, *(&v12 + 1));
   v22 = v21;
-  [v7 position];
+  [playerStrokeLayer position];
   if (v24 != v20 || v23 != v22)
   {
-    [v7 setPosition:{v20, v22}];
+    [playerStrokeLayer setPosition:{v20, v22}];
   }
 
   mMaskLayer = self->super.mMaskLayer;
@@ -1103,17 +1103,17 @@ LABEL_6:
   if (!CGAffineTransformEqualToTransform(&t1, &t2))
   {
     t1 = v77;
-    [v7 setAffineTransform:&t1];
+    [playerStrokeLayer setAffineTransform:&t1];
   }
 
   [(TSDStyledRep *)self opacity];
   v27 = v26;
-  [v7 opacity];
+  [playerStrokeLayer opacity];
   v29 = v28;
   if (v27 != v29)
   {
     *&v29 = v27;
-    [v7 setOpacity:v29];
+    [playerStrokeLayer setOpacity:v29];
   }
 
   if (self->super.super.mReflectionLayer)
@@ -1126,18 +1126,18 @@ LABEL_6:
       if (v27 != v32)
       {
         *&v32 = v27;
-        [v8 setOpacity:v32];
+        [reflectionPlayerStrokeLayer setOpacity:v32];
       }
     }
   }
 
-  if ([a3 isFrame])
+  if ([stroke isFrame])
   {
     v33 = TSDMultiplyRectScalar(*&v75, *(&v75 + 1), *&v76, *(&v76 + 1), 1.0 / v10);
     v35 = v34;
     v37 = v36;
     v72 = v38;
-    [a3 coverageRectWithoutAdornment:?];
+    [stroke coverageRectWithoutAdornment:?];
     x = v78.origin.x;
     y = v78.origin.y;
     width = v78.size.width;
@@ -1148,7 +1148,7 @@ LABEL_6:
       v43 = TSDCenterOfRect(v33, v37, v35, v72);
       v69 = y;
       v45 = TSDSubtractPoints(v43, v44, x);
-      [v7 setAnchorPoint:{v45 / width, v46 / height}];
+      [playerStrokeLayer setAnchorPoint:{v45 / width, v46 / height}];
       v70 = height;
       v71 = width;
       TSDMultiplySizeScalar(width, height, v10);
@@ -1156,14 +1156,14 @@ LABEL_6:
       v49 = v48;
       v51 = v50;
       v53 = v52;
-      [v7 bounds];
+      [playerStrokeLayer bounds];
       v81.origin.x = v47;
       v81.origin.y = v49;
       v81.size.width = v51;
       v81.size.height = v53;
       if (!CGRectEqualToRect(v79, v81))
       {
-        [v7 setBounds:{v47, v49, v51, v53}];
+        [playerStrokeLayer setBounds:{v47, v49, v51, v53}];
       }
 
       [(TSDMovieRep *)self i_updateFrameRep];
@@ -1175,19 +1175,19 @@ LABEL_6:
       *&t1.c = v66;
       v65 = *(MEMORY[0x277CBF2C0] + 32);
       *&t1.tx = v65;
-      [(CALayer *)mFrameMaskLayer updateCALayer:v7 toRect:a4 withRepLayer:mTapToReplaceLayer maskLayer:&t1 viewScale:v33 maskLayerTransform:v37, v68, v72, v10];
+      [(CALayer *)mFrameMaskLayer updateCALayer:playerStrokeLayer toRect:layer withRepLayer:mTapToReplaceLayer maskLayer:&t1 viewScale:v33 maskLayerTransform:v37, v68, v72, v10];
       v56 = v70;
       v57 = v71;
       if (self->super.super.mReflectionLayer && self->mMovieReflectionMaskLayer)
       {
-        [v8 bounds];
+        [reflectionPlayerStrokeLayer bounds];
         v82.origin.x = v47;
         v82.origin.y = v49;
         v82.size.width = v51;
         v82.size.height = v53;
         if (!CGRectEqualToRect(v80, v82))
         {
-          [v8 setBounds:{v47, v49, v51, v53}];
+          [reflectionPlayerStrokeLayer setBounds:{v47, v49, v51, v53}];
         }
 
         mReflectionPlayerStrokeLayer = self->mReflectionPlayerStrokeLayer;
@@ -1196,7 +1196,7 @@ LABEL_6:
         *&t1.a = v67;
         *&t1.c = v66;
         *&t1.tx = v65;
-        [(CALayer *)mReflectionPlayerStrokeLayer updateCALayer:v8 toRect:mMovieReflectionMaskLayer withRepLayer:mReflectionPlayerLayer maskLayer:&t1 viewScale:v33 maskLayerTransform:v37, v68, v72, v10];
+        [(CALayer *)mReflectionPlayerStrokeLayer updateCALayer:reflectionPlayerStrokeLayer toRect:mMovieReflectionMaskLayer withRepLayer:mReflectionPlayerLayer maskLayer:&t1 viewScale:v33 maskLayerTransform:v37, v68, v72, v10];
         v56 = v70;
         v57 = v71;
       }
@@ -1211,15 +1211,15 @@ LABEL_6:
   else
   {
     [(TSDMovieRep *)self p_strokeFrameForLayerFrame:v13, v15, v17, v19];
-    [(TSDMovieRep *)self p_setPositionAndBoundsIfDifferent:v7 position:v20 bounds:v22, v61, v62, v63, v64];
+    [(TSDMovieRep *)self p_setPositionAndBoundsIfDifferent:playerStrokeLayer position:v20 bounds:v22, v61, v62, v63, v64];
     if (!v11)
     {
-      [(TSDMovieRep *)self p_applyBasicStrokeToLayer:a3 layer:[(TSDMovieRep *)self p_shapeLayerForPlayerStroke] bounds:v13, v15, v17, v19];
+      [(TSDMovieRep *)self p_applyBasicStrokeToLayer:stroke layer:[(TSDMovieRep *)self p_shapeLayerForPlayerStroke] bounds:v13, v15, v17, v19];
       if (self->super.super.mReflectionLayer)
       {
         if (self->mMovieReflectionMaskLayer)
         {
-          [(TSDMovieRep *)self p_applyBasicStrokeToLayer:a3 layer:[(TSDMovieRep *)self p_shapeLayerForReflectionStroke] bounds:v13, v15, v17, v19];
+          [(TSDMovieRep *)self p_applyBasicStrokeToLayer:stroke layer:[(TSDMovieRep *)self p_shapeLayerForReflectionStroke] bounds:v13, v15, v17, v19];
         }
       }
     }
@@ -1228,17 +1228,17 @@ LABEL_6:
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)p_drawReflectionGradientIntoMovieReflectionLayer:(CGContext *)a3 reflectionSize:(CGSize)a4
+- (void)p_drawReflectionGradientIntoMovieReflectionLayer:(CGContext *)layer reflectionSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  CGContextSaveGState(a3);
-  CGContextSetFillColorWithColor(a3, [objc_msgSend(MEMORY[0x277D6C2A8] "whiteColor")]);
+  height = size.height;
+  width = size.width;
+  CGContextSaveGState(layer);
+  CGContextSetFillColorWithColor(layer, [objc_msgSend(MEMORY[0x277D6C2A8] "whiteColor")]);
   v9.origin.x = TSDRectWithSize();
-  CGContextFillRect(a3, v9);
-  [(TSDStyledRep *)self drawGradientWithAlphaOverReflection:a3 applyingOpacity:0 reflectionSize:width, height];
+  CGContextFillRect(layer, v9);
+  [(TSDStyledRep *)self drawGradientWithAlphaOverReflection:layer applyingOpacity:0 reflectionSize:width, height];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(layer);
 }
 
 - (void)p_updateMovieReflectionMaskLayer
@@ -1258,18 +1258,18 @@ LABEL_6:
   CGImageRelease(Image);
 }
 
-- (void)p_drawPosterImageInContext:(CGContext *)a3
+- (void)p_drawPosterImageInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   [(TSDMediaLayout *)[(TSDMediaRep *)self mediaLayout] boundsForStandardKnobs];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(TSDMovieRep *)self alternatePosterImage];
-  if (v13)
+  alternatePosterImage = [(TSDMovieRep *)self alternatePosterImage];
+  if (alternatePosterImage)
   {
-    v14 = v13;
+    v14 = alternatePosterImage;
     v22.origin.x = v6;
     v22.origin.y = v8;
     v22.size.width = v10;
@@ -1280,48 +1280,48 @@ LABEL_6:
     v23.size.width = v10;
     v23.size.height = v12;
     MaxY = CGRectGetMaxY(v23);
-    CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-    CGContextScaleCTM(a3, 1.0, -1.0);
+    CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+    CGContextScaleCTM(context, 1.0, -1.0);
     v24.origin.x = v6;
     v24.origin.y = v8;
     v24.size.width = v10;
     v24.size.height = v12;
-    CGContextDrawImage(a3, v24, v14);
+    CGContextDrawImage(context, v24, v14);
   }
 
   else
   {
     v17 = +[TSDImageProviderPool sharedPool];
-    v18 = [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] posterImageData];
-    if (v18)
+    posterImageData = [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] posterImageData];
+    if (posterImageData)
     {
-      v19 = v18;
+      v19 = posterImageData;
       objc_opt_class();
       [v17 providerForData:v19 shouldValidate:1];
       v20 = TSUDynamicCast();
       if (v20)
       {
-        [v20 drawImageInContext:a3 rect:{v6, v8, v10, v12}];
+        [v20 drawImageInContext:context rect:{v6, v8, v10, v12}];
       }
     }
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)p_drawInContext:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(double)a6 withMask:(BOOL)a7 forShadowOrHitTest:(BOOL)a8
+- (void)p_drawInContext:(CGContext *)context withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(double)opacity withMask:(BOOL)mask forShadowOrHitTest:(BOOL)test
 {
-  v8 = a7;
-  v10 = a5;
-  v11 = a4;
+  maskCopy = mask;
+  strokeCopy = stroke;
+  contentCopy = content;
   if (([-[TSDStyledRep styledLayout](self styledLayout] & 1) == 0)
   {
     [(TSDMovieRep *)self i_updateFrameRep];
-    v14 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-    v15 = v14;
-    if (v14)
+    stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+    v15 = stroke;
+    if (stroke)
     {
-      if ([v14 shouldRender])
+      if ([stroke shouldRender])
       {
         if (-[TSDCanvas shouldSuppressBackgrounds](-[TSDRep canvas](self, "canvas"), "shouldSuppressBackgrounds") && ([v15 isFrame] & 1) == 0)
         {
@@ -1336,11 +1336,11 @@ LABEL_6:
       }
     }
 
-    v16 = a6 < 1.0 && v10;
-    v17 = v16 && v11;
-    if (v16 && v11 && (CGContextSaveGState(a3), CGContextSetAlpha(a3, a6), v15))
+    v16 = opacity < 1.0 && strokeCopy;
+    v17 = v16 && contentCopy;
+    if (v16 && contentCopy && (CGContextSaveGState(context), CGContextSetAlpha(context, opacity), v15))
     {
-      CGContextBeginTransparencyLayer(a3, 0);
+      CGContextBeginTransparencyLayer(context, 0);
       v18 = 1;
     }
 
@@ -1349,84 +1349,84 @@ LABEL_6:
       v18 = 0;
     }
 
-    CGContextSaveGState(a3);
-    v19 = [(TSDMediaRep *)self mediaLayout];
-    [(TSDMediaLayout *)v19 boundsForStandardKnobs];
+    CGContextSaveGState(context);
+    mediaLayout = [(TSDMediaRep *)self mediaLayout];
+    [(TSDMediaLayout *)mediaLayout boundsForStandardKnobs];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    if (v11)
+    if (contentCopy)
     {
-      if (v8 && self->super.mFrameMaskLayer && [v15 hasMask])
+      if (maskCopy && self->super.mFrameMaskLayer && [v15 hasMask])
       {
         [v15 coverageRect:{v21, v23, v25, v27}];
-        [(CALayer *)self->super.mFrameMaskLayer applyMaskForRectWithCoverage:a3 toContext:?];
+        [(CALayer *)self->super.mFrameMaskLayer applyMaskForRectWithCoverage:context toContext:?];
       }
 
-      [(TSDMovieRep *)self p_drawPosterImageInContext:a3];
+      [(TSDMovieRep *)self p_drawPosterImageInContext:context];
     }
 
-    CGContextRestoreGState(a3);
-    if (v10 && v15)
+    CGContextRestoreGState(context);
+    if (strokeCopy && v15)
     {
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       if ([v15 isFrame])
       {
-        if ([(TSDMediaLayout *)v19 shouldRenderFrameStroke])
+        if ([(TSDMediaLayout *)mediaLayout shouldRenderFrameStroke])
         {
           mFrameMaskLayer = self->super.mFrameMaskLayer;
-          CGContextGetCTM(&v29, a3);
-          [(CALayer *)mFrameMaskLayer frameRect:a3 inContext:v21 withTotalScale:v23, v25, v27, TSDTransformScale(&v29.a)];
+          CGContextGetCTM(&v29, context);
+          [(CALayer *)mFrameMaskLayer frameRect:context inContext:v21 withTotalScale:v23, v25, v27, TSDTransformScale(&v29.a)];
         }
       }
 
       else
       {
-        [v15 paintRect:a3 inContext:{v21, v23, v25, v27}];
+        [v15 paintRect:context inContext:{v21, v23, v25, v27}];
       }
 
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
 
     if (v18)
     {
-      CGContextEndTransparencyLayer(a3);
+      CGContextEndTransparencyLayer(context);
     }
 
     if (v17)
     {
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
   }
 }
 
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children
 {
-  v8 = a7;
-  v9 = a5;
-  v10 = a4;
+  onlyCopy = only;
+  strokeCopy = stroke;
+  contentCopy = content;
   v13 = 1.0;
-  if (a6)
+  if (opacity)
   {
-    [(TSDStyledRep *)self opacity:a3];
+    [(TSDStyledRep *)self opacity:effects];
   }
 
-  [(TSDMovieRep *)self p_drawInContext:a3 withContent:v10 withStroke:v9 withOpacity:1 withMask:v8 forShadowOrHitTest:a8, v13];
+  [(TSDMovieRep *)self p_drawInContext:effects withContent:contentCopy withStroke:strokeCopy withOpacity:1 withMask:onlyCopy forShadowOrHitTest:children, v13];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v5.receiver = self;
   v5.super_class = TSDMovieRep;
   [(TSDMediaRep *)&v5 processChangedProperty:?];
-  if (a3 <= 532)
+  if (property <= 532)
   {
-    if ((a3 - 518) >= 3)
+    if ((property - 518) >= 3)
     {
-      if (a3 != 517)
+      if (property != 517)
       {
-        if (a3 == 532)
+        if (property == 532)
         {
           [(TSDMovieRep *)self p_setNeedsTeardownPlayerControllerOnUpdateLayer];
           [(TSDCanvas *)[(TSDRep *)self canvas] invalidateLayers];
@@ -1447,9 +1447,9 @@ LABEL_6:
     return;
   }
 
-  if (a3 <= 534)
+  if (property <= 534)
   {
-    if (a3 == 533)
+    if (property == 533)
     {
       [(TSDStyledRep *)self setNeedsDisplay];
       [(TSDCanvas *)[(TSDRep *)self canvas] invalidateLayers];
@@ -1463,7 +1463,7 @@ LABEL_6:
 
   else
   {
-    switch(a3)
+    switch(property)
     {
       case 535:
         [(TSDMovieRep *)self p_updateEndTime];
@@ -1503,9 +1503,9 @@ LABEL_6:
   [(TSDRep *)&v3 becameNotSelected];
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point
 {
-  v4 = [(TSDMovieRep *)self isPlaying:a3.x];
+  v4 = [(TSDMovieRep *)self isPlaying:point.x];
   if (v4 || (v5 = [(TSDRep *)self isSelectedIgnoringLocking]) && (v5 = [(TSDMovieRep *)self shouldSingleTapPlay]) && (v5 = [(TSDMovieRep *)self isPlayable]))
   {
     [-[TSDMovieRep playerController](self "playerController")];
@@ -1520,9 +1520,9 @@ LABEL_6:
   if (![(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] isStreaming])
   {
     v3 = TSKPlayerRepeatModeForMovieLoopOption([(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] loopOption]);
-    v4 = [(TSDMovieRep *)self playerController];
+    playerController = [(TSDMovieRep *)self playerController];
 
-    [v4 setRepeatMode:v3];
+    [playerController setRepeatMode:v3];
   }
 }
 
@@ -1534,45 +1534,45 @@ LABEL_6:
   [(TSDRep *)&v3 screenScaleDidChange];
 }
 
-- (void)p_addPlayButtonToKnobs:(id)a3
+- (void)p_addPlayButtonToKnobs:(id)knobs
 {
-  [a3 addObject:{-[TSDMovieRep p_playButtonKnob](self, "p_playButtonKnob")}];
+  [knobs addObject:{-[TSDMovieRep p_playButtonKnob](self, "p_playButtonKnob")}];
   [(TSDMovieRep *)self p_updateUIStateForMoviePlayability];
 
   [(TSDMovieRep *)self p_updatePlayButtonVisibility];
 }
 
-- (void)addKnobsToArray:(id)a3
+- (void)addKnobsToArray:(id)array
 {
   v5.receiver = self;
   v5.super_class = TSDMovieRep;
   [(TSDMediaRep *)&v5 addKnobsToArray:?];
-  [(TSDMovieRep *)self p_addPlayButtonToKnobs:a3];
+  [(TSDMovieRep *)self p_addPlayButtonToKnobs:array];
 }
 
 - (unint64_t)enabledKnobMask
 {
   v5.receiver = self;
   v5.super_class = TSDMovieRep;
-  v3 = [(TSDRep *)&v5 enabledKnobMask];
+  enabledKnobMask = [(TSDRep *)&v5 enabledKnobMask];
   if ([(TSDMediaRep *)self shouldCreateKnobs]&& [(TSDRep *)self isSelected]&& ![(TSDMovieRep *)self p_playButtonFitsInFrame])
   {
-    return v3 & 0x28A;
+    return enabledKnobMask & 0x28A;
   }
 
-  return v3;
+  return enabledKnobMask;
 }
 
-- (BOOL)directlyManagesVisibilityOfKnob:(id)a3
+- (BOOL)directlyManagesVisibilityOfKnob:(id)knob
 {
-  if ([(TSDMovieRep *)self p_playButtonKnob]== a3)
+  if ([(TSDMovieRep *)self p_playButtonKnob]== knob)
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = TSDMovieRep;
-  return [(TSDRep *)&v6 directlyManagesVisibilityOfKnob:a3];
+  return [(TSDRep *)&v6 directlyManagesVisibilityOfKnob:knob];
 }
 
 - (void)willBeRemoved
@@ -1611,27 +1611,27 @@ LABEL_6:
 {
   if ((self->mAssetForPlayability & 1) == 0 && !self->mReflectionFrameMaskLayer)
   {
-    v3 = [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] movieData];
-    if (v3)
+    movieData = [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] movieData];
+    if (movieData)
     {
-      v4 = [(TSPData *)v3 AVAsset];
-      self->mReflectionFrameMaskLayer = v4;
+      aVAsset = [(TSPData *)movieData AVAsset];
+      self->mReflectionFrameMaskLayer = aVAsset;
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __49__TSDMovieRep_p_updateUIStateForMoviePlayability__block_invoke;
       v6[3] = &unk_279D47708;
-      v6[4] = v4;
+      v6[4] = aVAsset;
       v6[5] = self;
-      [v4 loadValuesAsynchronouslyForKeys:&unk_287DDCB40 completionHandler:v6];
+      [aVAsset loadValuesAsynchronouslyForKeys:&unk_287DDCB40 completionHandler:v6];
     }
 
     else
     {
       LOBYTE(self->mAssetForPlayability) = 1;
       BYTE1(self->mAssetForPlayability) = 1;
-      v5 = [(TSDMovieRep *)self p_playButtonKnob];
+      p_playButtonKnob = [(TSDMovieRep *)self p_playButtonKnob];
 
-      [(TSDButtonKnob *)v5 setEnabled:1];
+      [(TSDButtonKnob *)p_playButtonKnob setEnabled:1];
     }
   }
 }
@@ -1688,12 +1688,12 @@ void __49__TSDMovieRep_p_updateUIStateForMoviePlayability__block_invoke_2(uint64
 
 - (BOOL)p_playButtonFitsInFrame
 {
-  v3 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
   [(CALayer *)[(TSDKnob *)[(TSDMovieRep *)self p_playButtonKnob] layer] frame];
   v5 = v4;
   v7 = v6;
   [(TSDRep *)self naturalBounds];
-  [(TSDInteractiveCanvasController *)v3 convertUnscaledToBoundsRect:?];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsRect:?];
   return v7 <= v9 && v5 <= v8;
 }
 
@@ -1704,26 +1704,26 @@ void __49__TSDMovieRep_p_updateUIStateForMoviePlayability__block_invoke_2(uint64
     return;
   }
 
-  v3 = [(TSDCanvasSelection *)[(TSDCanvasEditor *)[(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] canvasEditor] canvasSelection] infos];
-  v4 = [(TSDMovieRep *)self movieInfo];
-  if ([(NSSet *)v3 count]== 1)
+  infos = [(TSDCanvasSelection *)[(TSDCanvasEditor *)[(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] canvasEditor] canvasSelection] infos];
+  movieInfo = [(TSDMovieRep *)self movieInfo];
+  if ([(NSSet *)infos count]== 1)
   {
-    v5 = [(NSSet *)v3 anyObject];
+    anyObject = [(NSSet *)infos anyObject];
   }
 
   else
   {
-    v5 = 0;
+    anyObject = 0;
   }
 
-  v6 = [(TSDMovieRep *)self p_playButtonFitsInFrame];
-  if (LOBYTE(self->mAssetForPlayability) != 1 || v5 != v4)
+  p_playButtonFitsInFrame = [(TSDMovieRep *)self p_playButtonFitsInFrame];
+  if (LOBYTE(self->mAssetForPlayability) != 1 || anyObject != movieInfo)
   {
     goto LABEL_10;
   }
 
   v8 = 0;
-  if (![(TSDMovieRep *)self isPlaying]&& v6)
+  if (![(TSDMovieRep *)self isPlaying]&& p_playButtonFitsInFrame)
   {
     if (BYTE2(self->mPlayButtonKnob))
     {
@@ -1739,35 +1739,35 @@ LABEL_11:
   if (LOBYTE(self->mPlayButtonKnob) != v8)
   {
     LOBYTE(self->mPlayButtonKnob) = v8;
-    v9 = [(TSDKnob *)[(TSDMovieRep *)self p_playButtonKnob] layer];
-    v10 = v9;
+    layer = [(TSDKnob *)[(TSDMovieRep *)self p_playButtonKnob] layer];
+    v10 = layer;
     v11 = 0.0;
     if (v8)
     {
       *&v11 = 1.0;
     }
 
-    [(CALayer *)v9 setOpacity:v11];
+    [(CALayer *)layer setOpacity:v11];
     if (LOBYTE(self->mPlayButtonKnob) == 1)
     {
-      v12 = [(TSDRep *)self canvas];
+      canvas = [(TSDRep *)self canvas];
 
-      [(TSDCanvas *)v12 invalidateLayers];
+      [(TSDCanvas *)canvas invalidateLayers];
     }
 
     else
     {
-      if (v5 == v4)
+      if (anyObject == movieInfo)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = [(objc_class *)[(TSDMovieInfo *)v5 repClass] isSubclassOfClass:objc_opt_class()];
+        v13 = [(objc_class *)[(TSDMovieInfo *)anyObject repClass] isSubclassOfClass:objc_opt_class()];
       }
 
-      if ((BYTE2(self->mPlayButtonKnob) & 1) == 0 && v6 && (v13 & 1) == 0 && [(CALayer *)v10 superlayer]&& LOBYTE(self->mAssetForPlayability) == 1)
+      if ((BYTE2(self->mPlayButtonKnob) & 1) == 0 && p_playButtonFitsInFrame && (v13 & 1) == 0 && [(CALayer *)v10 superlayer]&& LOBYTE(self->mAssetForPlayability) == 1)
       {
         v14 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
         LODWORD(v15) = 1.0;
@@ -1781,19 +1781,19 @@ LABEL_11:
   }
 }
 
-- (void)playerController:(id)a3 playbackDidFailWithError:(id)a4
+- (void)playerController:(id)controller playbackDidFailWithError:(id)error
 {
-  v5 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v5 presentError:a4 completionHandler:0];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController presentError:error completionHandler:0];
 }
 
-- (void)playbackDidStopForPlayerController:(id)a3
+- (void)playbackDidStopForPlayerController:(id)controller
 {
   [(TSDMovieRep *)self p_setNeedsTeardownPlayerControllerOnUpdateLayer];
-  v4 = [(TSDRep *)self canvas];
+  canvas = [(TSDRep *)self canvas];
 
-  [(TSDCanvas *)v4 invalidateLayers];
+  [(TSDCanvas *)canvas invalidateLayers];
 }
 
 - (BOOL)isPlaying
@@ -1811,9 +1811,9 @@ LABEL_11:
 {
   if ([(TSDMovieRep *)self isPlayable])
   {
-    v3 = [(TSDMovieRep *)self playerController];
+    playerController = [(TSDMovieRep *)self playerController];
 
-    [v3 setPlaying:1];
+    [playerController setPlaying:1];
   }
 }
 
@@ -1821,10 +1821,10 @@ LABEL_11:
 {
   if ([(TSDMovieRep *)self isPlayable])
   {
-    v3 = [(TSDMovieRep *)self playerController];
+    playerController = [(TSDMovieRep *)self playerController];
     v4 = [-[TSDMovieRep playerController](self "playerController")] ^ 1;
 
-    [v3 setPlaying:v4];
+    [playerController setPlaying:v4];
   }
 }
 
@@ -1848,10 +1848,10 @@ LABEL_11:
     [(TSDMovieRep *)self p_updateVolume];
     [*&self->super.mLastPictureFrameLayerRect.size.height addObserver:self forKeyPath:@"playing" options:4 context:TSDMovieRepPlayerControllerPlayingObserverContext];
     [(TSDMovieRep *)self p_setupPlayerLayerIfNecessary];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    v7 = [(TSDRep *)self interactiveCanvasController];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-    [v6 postNotificationName:@"TSDInteractiveCanvasControllerDidUpdateMoviePlayerControllerNotification" object:v7];
+    [defaultCenter postNotificationName:@"TSDInteractiveCanvasControllerDidUpdateMoviePlayerControllerNotification" object:interactiveCanvasController];
   }
 }
 
@@ -1924,10 +1924,10 @@ LABEL_11:
 {
   [(TSDMovieRep *)self volume];
   v4 = v3;
-  v5 = [(TSDMovieRep *)self playerController];
+  playerController = [(TSDMovieRep *)self playerController];
   LODWORD(v6) = v4;
 
-  [v5 setVolume:v6];
+  [playerController setVolume:v6];
 }
 
 - (void)p_updateStartTime
@@ -1936,9 +1936,9 @@ LABEL_11:
   {
     [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] startTime];
     v4 = v3;
-    v5 = [(TSDMovieRep *)self playerController];
+    playerController = [(TSDMovieRep *)self playerController];
 
-    [v5 setStartTime:v4];
+    [playerController setStartTime:v4];
   }
 }
 
@@ -1948,9 +1948,9 @@ LABEL_11:
   {
     [(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] endTime];
     v4 = v3;
-    v5 = [(TSDMovieRep *)self playerController];
+    playerController = [(TSDMovieRep *)self playerController];
 
-    [v5 setEndTime:v4];
+    [playerController setEndTime:v4];
   }
 }
 
@@ -1978,10 +1978,10 @@ LABEL_11:
     [v3 addObject:?];
   }
 
-  v5 = [(TSDMovieRep *)self playerStrokeLayer];
-  if (v5)
+  playerStrokeLayer = [(TSDMovieRep *)self playerStrokeLayer];
+  if (playerStrokeLayer)
   {
-    [v4 addObject:v5];
+    [v4 addObject:playerStrokeLayer];
   }
 
   return v4;
@@ -1991,34 +1991,34 @@ LABEL_11:
 {
   v5.receiver = self;
   v5.super_class = TSDMovieRep;
-  v3 = [(TSDMediaRep *)&v5 canResetMediaSize];
-  if (v3)
+  canResetMediaSize = [(TSDMediaRep *)&v5 canResetMediaSize];
+  if (canResetMediaSize)
   {
     if ([(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] isAudioOnly])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(canResetMediaSize) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] isStreaming];
+      LOBYTE(canResetMediaSize) = ![(TSDMovieInfo *)[(TSDMovieRep *)self movieInfo] isStreaming];
     }
   }
 
-  return v3;
+  return canResetMediaSize;
 }
 
-- (void)setAlternatePosterImage:(CGImage *)a3
+- (void)setAlternatePosterImage:(CGImage *)image
 {
-  if (*&self->mPlayButtonKnobVisible != a3)
+  if (*&self->mPlayButtonKnobVisible != image)
   {
-    CGImageRetain(a3);
+    CGImageRetain(image);
     CGImageRelease(*&self->mPlayButtonKnobVisible);
-    *&self->mPlayButtonKnobVisible = a3;
+    *&self->mPlayButtonKnobVisible = image;
     [(TSDStyledRep *)self setNeedsDisplay];
-    v5 = [(TSDRep *)self canvas];
+    canvas = [(TSDRep *)self canvas];
 
-    [(TSDCanvas *)v5 invalidateLayers];
+    [(TSDCanvas *)canvas invalidateLayers];
   }
 }
 
@@ -2026,16 +2026,16 @@ LABEL_11:
 {
   if (self->mAlternatePosterImage)
   {
-    v2 = [(TSDMovieRep *)self playerController];
+    playerController = [(TSDMovieRep *)self playerController];
 
-    [v2 absoluteCurrentTime];
+    [playerController absoluteCurrentTime];
   }
 
   else
   {
-    v4 = [(TSDMovieRep *)self movieInfo];
+    movieInfo = [(TSDMovieRep *)self movieInfo];
 
-    [(TSDMovieInfo *)v4 posterTime];
+    [(TSDMovieInfo *)movieInfo posterTime];
   }
 
   return result;
@@ -2045,9 +2045,9 @@ LABEL_11:
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieRep dynamicVisibleTimeChangeDidBegin]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 2125, @"Dynamic poster time changes can only be made on the main thread"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 2125, @"Dynamic poster time changes can only be made on the main thread"}];
   }
 
   mAlternatePosterImage = self->mAlternatePosterImage;
@@ -2055,48 +2055,48 @@ LABEL_11:
   if (!mAlternatePosterImage)
   {
     [(TSDMovieRep *)self p_updatePlayButtonVisibility];
-    v6 = [(TSDMovieRep *)self playerController];
+    playerController = [(TSDMovieRep *)self playerController];
 
-    [v6 beginScrubbing];
+    [playerController beginScrubbing];
   }
 }
 
-- (void)dynamicVisibleTimeUpdateToValue:(double)a3 withTolerance:(double)a4 completionHandler:(id)a5
+- (void)dynamicVisibleTimeUpdateToValue:(double)value withTolerance:(double)tolerance completionHandler:(id)handler
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieRep dynamicVisibleTimeUpdateToValue:withTolerance:completionHandler:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 2136, @"Dynamic poster time changes can only be made on the main thread"}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 2136, @"Dynamic poster time changes can only be made on the main thread"}];
   }
 
   if (!self->mAlternatePosterImage)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieRep dynamicVisibleTimeUpdateToValue:withTolerance:completionHandler:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 2137, @"A dynamic poster time change must be in progress"}];
+    [currentHandler2 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 2137, @"A dynamic poster time change must be in progress"}];
   }
 
-  v13 = [(TSDMovieRep *)self playerController];
+  playerController = [(TSDMovieRep *)self playerController];
 
-  [v13 scrubToTime:a5 withTolerance:a3 completionHandler:a4];
+  [playerController scrubToTime:handler withTolerance:value completionHandler:tolerance];
 }
 
 - (void)dynamicVisibleTimeChangeDidEnd
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieRep dynamicVisibleTimeChangeDidEnd]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 2144, @"Dynamic poster time changes can only be made on the main thread"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 2144, @"Dynamic poster time changes can only be made on the main thread"}];
   }
 
   mAlternatePosterImage = self->mAlternatePosterImage;
   if (!mAlternatePosterImage)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieRep dynamicVisibleTimeChangeDidEnd]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 2145, @"Mismatch between starting and ending dynamic visible poster time changes"}];
+    [currentHandler2 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieRep.m"), 2145, @"Mismatch between starting and ending dynamic visible poster time changes"}];
     mAlternatePosterImage = self->mAlternatePosterImage;
   }
 
@@ -2118,9 +2118,9 @@ LABEL_11:
     return *&self->mIsChangingDynamicVisibleTimeCount;
   }
 
-  v5 = [(TSDMovieRep *)self movieInfo];
+  movieInfo = [(TSDMovieRep *)self movieInfo];
 
-  [(TSDMovieInfo *)v5 volume];
+  [(TSDMovieInfo *)movieInfo volume];
   return result;
 }
 
@@ -2131,15 +2131,15 @@ LABEL_11:
   BYTE4(self->mIsChangingDynamicVisibleTimeCount) = 1;
 }
 
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject
 {
-  v6 = [objc_msgSend(a3 "movieInfo")];
+  v6 = [objc_msgSend(object "movieInfo")];
   result = 0.0;
   if (v6 != 1)
   {
-    [objc_msgSend(a3 movieInfo];
+    [objc_msgSend(object movieInfo];
     v9 = v8;
-    [objc_msgSend(a4 "movieInfo")];
+    [objc_msgSend(incomingObject "movieInfo")];
     if (v9 == v10)
     {
       v14 = 1.0;
@@ -2147,9 +2147,9 @@ LABEL_11:
 
     else
     {
-      [objc_msgSend(a3 "movieInfo")];
+      [objc_msgSend(object "movieInfo")];
       v12 = v11;
-      [objc_msgSend(a4 "movieInfo")];
+      [objc_msgSend(incomingObject "movieInfo")];
       if (v12 == v13)
       {
         v14 = 0.9;
@@ -2161,17 +2161,17 @@ LABEL_11:
       }
     }
 
-    [objc_msgSend(a3 "movieInfo")];
+    [objc_msgSend(object "movieInfo")];
     v16 = v15;
-    [objc_msgSend(a4 "movieInfo")];
+    [objc_msgSend(incomingObject "movieInfo")];
     if (v16 != v17)
     {
       v14 = v14 * 0.5;
     }
 
-    [objc_msgSend(a3 "movieInfo")];
+    [objc_msgSend(object "movieInfo")];
     v19 = v18;
-    [objc_msgSend(a4 "movieInfo")];
+    [objc_msgSend(incomingObject "movieInfo")];
     if (v19 == v20)
     {
       return v14;
@@ -2186,25 +2186,25 @@ LABEL_11:
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (TSDMovieRepPlayerControllerPlayingObserverContext == a6)
+  if (TSDMovieRepPlayerControllerPlayingObserverContext == context)
   {
-    [(TSDMovieRep *)self p_updatePlayButtonVisibility:a3];
+    [(TSDMovieRep *)self p_updatePlayButtonVisibility:path];
 
     [(TSDRep *)self invalidateKnobs];
   }
 
-  else if (TSDMovieRepPlayerLayerReadyForDisplayObserverContext == a6)
+  else if (TSDMovieRepPlayerLayerReadyForDisplayObserverContext == context)
   {
-    if ([objc_msgSend(a5 objectForKey:{*MEMORY[0x277CCA2F0], a4), "BOOLValue"}])
+    if ([objc_msgSend(change objectForKey:{*MEMORY[0x277CCA2F0], object), "BOOLValue"}])
     {
       [*&self->mCurrentlyObservingPlayerLayer removeObserver:self forKeyPath:@"readyForDisplay" context:TSDMovieRepPlayerLayerReadyForDisplayObserverContext];
       LOBYTE(self->mPlayerController) = 0;
       BYTE1(self->mPlayerController) = 1;
-      v7 = [(TSDRep *)self interactiveCanvasController];
+      interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-      [(TSDInteractiveCanvasController *)v7 invalidateLayers];
+      [(TSDInteractiveCanvasController *)interactiveCanvasController invalidateLayers];
     }
   }
 
@@ -2212,7 +2212,7 @@ LABEL_11:
   {
     v8.receiver = self;
     v8.super_class = TSDMovieRep;
-    [(TSDMovieRep *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(TSDMovieRep *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

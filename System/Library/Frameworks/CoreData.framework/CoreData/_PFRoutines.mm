@@ -1,69 +1,69 @@
 @interface _PFRoutines
-+ (BOOL)_isInMemoryStore:(uint64_t)a1;
-+ (BOOL)createExternalReferenceLinkFromPath:(uint64_t)a3 toPath:(uint64_t)a4 protectionLevel:(void *)a5 error:;
-+ (BOOL)isSanitizedVersionOf:(void *)a3 equalTo:;
-+ (__CFDictionary)_createDictionaryPartitioningObjectIDs:(id)a3 intoHierarchies:(BOOL)a4;
-+ (__CFDictionary)_createDictionaryPartitioningObjects:(id)a3 intoHierarchies:(BOOL)a4;
-+ (__CFDictionary)createDictionaryPartitioningObjectsByEntity:(uint64_t)a1;
-+ (__CFDictionary)createDictionaryPartitioningObjectsIDByRootEntity:(uint64_t)a1;
++ (BOOL)_isInMemoryStore:(uint64_t)store;
++ (BOOL)createExternalReferenceLinkFromPath:(uint64_t)path toPath:(uint64_t)toPath protectionLevel:(void *)level error:;
++ (BOOL)isSanitizedVersionOf:(void *)of equalTo:;
++ (__CFDictionary)_createDictionaryPartitioningObjectIDs:(id)ds intoHierarchies:(BOOL)hierarchies;
++ (__CFDictionary)_createDictionaryPartitioningObjects:(id)objects intoHierarchies:(BOOL)hierarchies;
++ (__CFDictionary)createDictionaryPartitioningObjectsByEntity:(uint64_t)entity;
++ (__CFDictionary)createDictionaryPartitioningObjectsIDByRootEntity:(uint64_t)entity;
 + (__CFString)_getUUID;
-+ (id)_coalescedPrefetchKeypaths:(uint64_t)a1;
++ (id)_coalescedPrefetchKeypaths:(uint64_t)keypaths;
 + (id)_frameworkHash;
-+ (id)_newCollectionFromCollection:(uint64_t)a3 forParentContext:(objc_class *)a4 andClass:;
-+ (id)_replaceBaseline:(void *)a3 inOrderedSet:(void *)a4 withOrderedSet:;
-+ (id)newCollection:(void *)a3 fromCollection:(void *)a4 byAddingItems:;
-+ (id)newMutableArrayFromCollection:(uint64_t)a3 forParentContext:;
-+ (id)newMutableArrayFromCollection:(void *)a3 byRemovingItems:;
-+ (id)newMutableOrderedSetFromCollection:(uint64_t)a3 forParentContext:;
-+ (id)newMutableSetFromCollection:(uint64_t)a3 forParentContext:;
-+ (id)newMutableSetFromCollection:(void *)a3 byIntersectingWithCollection:;
-+ (id)newMutableSetFromCollection:(void *)a3 byRemovingItems:;
-+ (id)newOrderedSetFromCollection:(void *)a3 byAddingItems:;
-+ (id)newOrderedSetFromCollection:(void *)a3 byRemovingItems:;
-+ (id)newSetFromCollection:(void *)a3 byAddingItems:;
-+ (id)retainedDecodeValue:(void *)a3 forTransformableAttribute:;
-+ (id)retainedEncodeObjectValue:(void *)a3 forTransformableAttribute:;
-+ (id)transformDecodeValue:(id)a3 forTransformerNamed:(id)a4;
-+ (id)valueForProcessArgument:(uint64_t)a1;
-+ (uint64_t)BOOLValueForOverride:(uint64_t)a1;
-+ (uint64_t)_doNameAndTypeCheck:(uint64_t)a1;
-+ (uint64_t)_expressionIsCompoundIndexCompatible:(uint64_t)a1;
-+ (uint64_t)_generateObjectIDMaptableForArray:(uint64_t *)a3 withMapping:(uint64_t *)a4 andEntries:;
++ (id)_newCollectionFromCollection:(uint64_t)collection forParentContext:(objc_class *)context andClass:;
++ (id)_replaceBaseline:(void *)baseline inOrderedSet:(void *)set withOrderedSet:;
++ (id)newCollection:(void *)collection fromCollection:(void *)fromCollection byAddingItems:;
++ (id)newMutableArrayFromCollection:(uint64_t)collection forParentContext:;
++ (id)newMutableArrayFromCollection:(void *)collection byRemovingItems:;
++ (id)newMutableOrderedSetFromCollection:(uint64_t)collection forParentContext:;
++ (id)newMutableSetFromCollection:(uint64_t)collection forParentContext:;
++ (id)newMutableSetFromCollection:(void *)collection byIntersectingWithCollection:;
++ (id)newMutableSetFromCollection:(void *)collection byRemovingItems:;
++ (id)newOrderedSetFromCollection:(void *)collection byAddingItems:;
++ (id)newOrderedSetFromCollection:(void *)collection byRemovingItems:;
++ (id)newSetFromCollection:(void *)collection byAddingItems:;
++ (id)retainedDecodeValue:(void *)value forTransformableAttribute:;
++ (id)retainedEncodeObjectValue:(void *)value forTransformableAttribute:;
++ (id)transformDecodeValue:(id)value forTransformerNamed:(id)named;
++ (id)valueForProcessArgument:(uint64_t)argument;
++ (uint64_t)BOOLValueForOverride:(uint64_t)override;
++ (uint64_t)_doNameAndTypeCheck:(uint64_t)check;
++ (uint64_t)_expressionIsCompoundIndexCompatible:(uint64_t)compatible;
++ (uint64_t)_generateObjectIDMaptableForArray:(uint64_t *)array withMapping:(uint64_t *)mapping andEntries:;
 + (uint64_t)_getPFBundleVersionNumber;
-+ (uint64_t)_groupObjectsByRootEntity:(uint64_t)a1;
-+ (uint64_t)_isInMemoryStoreURL:(uint64_t)a1;
-+ (uint64_t)_newObjectIDsArrayWithMapping:(void *)a3 andEntries:(void *)a4 andCoordinator:;
-+ (uint64_t)_objectsInOrderedCollection:(void *)a3 formSubstringInOrderedCollection:;
-+ (uint64_t)_rootEntityGroupsForObjects:(uint64_t)a3 passingBlock:;
-+ (uint64_t)anyObjectFromCollection:(uint64_t)a1;
++ (uint64_t)_groupObjectsByRootEntity:(uint64_t)entity;
++ (uint64_t)_isInMemoryStoreURL:(uint64_t)l;
++ (uint64_t)_newObjectIDsArrayWithMapping:(void *)mapping andEntries:(void *)entries andCoordinator:;
++ (uint64_t)_objectsInOrderedCollection:(void *)collection formSubstringInOrderedCollection:;
++ (uint64_t)_rootEntityGroupsForObjects:(uint64_t)objects passingBlock:;
++ (uint64_t)anyObjectFromCollection:(uint64_t)collection;
 + (uint64_t)attributeClassesForSecureCoding;
-+ (uint64_t)convertCString:(unint64_t *)a3 toUnsignedInt64:(int)a4 withBase:;
-+ (uint64_t)deleteFileForPFExternalReferenceData:(uint64_t)a1;
-+ (uint64_t)fetchHeterogeneousCollectionByObjectIDs:(uint64_t)a3 intoContext:;
++ (uint64_t)convertCString:(unint64_t *)string toUnsignedInt64:(int)int64 withBase:;
++ (uint64_t)deleteFileForPFExternalReferenceData:(uint64_t)data;
++ (uint64_t)fetchHeterogeneousCollectionByObjectIDs:(uint64_t)ds intoContext:;
 + (uint64_t)historyChangesArrayClassesForSecureCoding;
 + (uint64_t)historyQueryGenDataClassesForSecureCoding;
-+ (uint64_t)insecureBoolValueForOverride:(uint64_t)a1;
-+ (uint64_t)integerValueForOverride:(uint64_t)a1;
-+ (uint64_t)moveInterimFileToPermanentLocation:(uint64_t)a1;
-+ (uint64_t)newArrayOfObjectIDsFromCollection:(uint64_t)a1;
-+ (uint64_t)newMutableOrderedSetFromCollection:(uint64_t)a1;
-+ (uint64_t)newOrderedSetFromCollection:(void *)a3 byInsertingItems:(uint64_t)a4 atIndex:;
-+ (uint64_t)newSetOfObjectIDsFromCollection:(uint64_t)a1;
++ (uint64_t)insecureBoolValueForOverride:(uint64_t)override;
++ (uint64_t)integerValueForOverride:(uint64_t)override;
++ (uint64_t)moveInterimFileToPermanentLocation:(uint64_t)location;
++ (uint64_t)newArrayOfObjectIDsFromCollection:(uint64_t)collection;
++ (uint64_t)newMutableOrderedSetFromCollection:(uint64_t)collection;
++ (uint64_t)newOrderedSetFromCollection:(void *)collection byInsertingItems:(uint64_t)items atIndex:;
++ (uint64_t)newSetOfObjectIDsFromCollection:(uint64_t)collection;
 + (uint64_t)plistClassesForSecureCoding;
-+ (uint64_t)readBytesForExternalReferenceData:(void *)a3 intoBuffer:(off_t)a4 range:(size_t)a5;
-+ (uint64_t)sanitize:(uint64_t)a1;
-+ (uint64_t)sensitiveIntegerValueForOverride:(uint64_t)a1;
-+ (uint64_t)unarchiveCylicGraphObjectOfClasses:(uint64_t)a3 fromData:(uint64_t)a4 error:;
-+ (uint64_t)writePFExternalReferenceDataToInterimFile:(uint64_t)a1;
++ (uint64_t)readBytesForExternalReferenceData:(void *)data intoBuffer:(off_t)buffer range:(size_t)range;
++ (uint64_t)sanitize:(uint64_t)sanitize;
++ (uint64_t)sensitiveIntegerValueForOverride:(uint64_t)override;
++ (uint64_t)unarchiveCylicGraphObjectOfClasses:(uint64_t)classes fromData:(uint64_t)data error:;
++ (uint64_t)writePFExternalReferenceDataToInterimFile:(uint64_t)file;
 + (uint64_t)xpcStoreArchiverObjectIDClassesForSecureCoding;
-+ (void)_logDirectoryAccessDebugInformation:(__darwin_ino64_t)a3 checkSandboxAccess:;
-+ (void)_logFileAccessDebugInformation:(uint64_t)a3 checkSandboxAccess:;
-+ (void)efficientlyEnumerateManagedObjectsInFetchRequest:(void *)a3 usingManagedObjectContext:(uint64_t)a4 andApplyBlock:;
-+ (void)getIndexes:(void *)a3 fromCollection:(void *)a4 forObjectsInCollection:;
++ (void)_logDirectoryAccessDebugInformation:(__darwin_ino64_t)information checkSandboxAccess:;
++ (void)_logFileAccessDebugInformation:(uint64_t)information checkSandboxAccess:;
++ (void)efficientlyEnumerateManagedObjectsInFetchRequest:(void *)request usingManagedObjectContext:(uint64_t)context andApplyBlock:;
++ (void)getIndexes:(void *)indexes fromCollection:(void *)collection forObjectsInCollection:;
 + (void)initialize;
-+ (void)readExternalReferenceDataFromFile:(uint64_t)a1;
-+ (void)stringValueForOverride:(uint64_t)a1;
-+ (void)wrapBlockInGuardedAutoreleasePool:(id)a3;
++ (void)readExternalReferenceDataFromFile:(uint64_t)file;
++ (void)stringValueForOverride:(uint64_t)override;
++ (void)wrapBlockInGuardedAutoreleasePool:(id)pool;
 @end
 
 @implementation _PFRoutines
@@ -220,14 +220,14 @@
   return v1;
 }
 
-+ (uint64_t)_generateObjectIDMaptableForArray:(uint64_t *)a3 withMapping:(uint64_t *)a4 andEntries:
++ (uint64_t)_generateObjectIDMaptableForArray:(uint64_t *)array withMapping:(uint64_t *)mapping andEntries:
 {
   v125 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   if ([a2 count])
   {
-    v86 = a3;
-    v87 = a4;
+    arrayCopy = array;
+    mappingCopy = mapping;
     v95 = objc_opt_class();
     v7 = *MEMORY[0x1E695E480];
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0);
@@ -270,12 +270,12 @@
           }
 
           v97 = v11;
-          v17 = [v16 persistentStore];
-          v18 = [v16 entity];
-          if (v17 != v13 || v18 != v96)
+          persistentStore = [v16 persistentStore];
+          entity = [v16 entity];
+          if (persistentStore != v13 || entity != v96)
           {
-            v20 = v18;
-            Value = CFDictionaryGetValue(Mutable, v17);
+            v20 = entity;
+            Value = CFDictionaryGetValue(Mutable, persistentStore);
             if (Value)
             {
               v22 = Value;
@@ -284,7 +284,7 @@
             else
             {
               v22 = v89 + 1;
-              CFDictionarySetValue(Mutable, v17, ++v89);
+              CFDictionarySetValue(Mutable, persistentStore, ++v89);
             }
 
             v23 = CFDictionaryGetValue(v9, v20);
@@ -305,7 +305,7 @@
             {
               v12 = v26;
               v96 = v20;
-              v13 = v17;
+              v13 = persistentStore;
             }
 
             else
@@ -313,20 +313,20 @@
               v12 = (v90 + 1);
               CFDictionarySetValue(v10, v25, (v90 + 1));
               v96 = v20;
-              v13 = v17;
+              v13 = persistentStore;
               ++v90;
             }
           }
 
           CFArrayAppendValue(v99, v12 - 1);
-          v27 = [v16 _referenceData64];
+          _referenceData64 = [v16 _referenceData64];
           v11 = v97;
-          if (v27 > v97)
+          if (_referenceData64 > v97)
           {
-            v11 = v27;
+            v11 = _referenceData64;
           }
 
-          CFArrayAppendValue(v98, v27);
+          CFArrayAppendValue(v98, _referenceData64);
         }
 
         v94 = [v92 countByEnumeratingWithState:&v116 objects:v124 count:16];
@@ -360,8 +360,8 @@
       v30 = v29;
     }
 
-    v31 = &v86 - ((8 * v30 + 15) & 0xFFFFFFFFFFFFFFF0);
-    v96 = &v86;
+    v31 = &arrayCopy - ((8 * v30 + 15) & 0xFFFFFFFFFFFFFFF0);
+    v96 = &arrayCopy;
     v97 = v11;
     v94 = Count;
     if (Count > 0x200)
@@ -371,17 +371,17 @@
 
     else
     {
-      bzero(&v86 - ((8 * v30 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v29);
+      bzero(&arrayCopy - ((8 * v30 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v29);
     }
 
     v114 = 0u;
     v115 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v33 = [(__CFDictionary *)Mutable countByEnumeratingWithState:&v112 objects:v123 count:16, v86];
-    if (v33)
+    arrayCopy = [(__CFDictionary *)Mutable countByEnumeratingWithState:&v112 objects:v123 count:16, arrayCopy];
+    if (arrayCopy)
     {
-      v34 = v33;
+      v34 = arrayCopy;
       v35 = *v113;
       do
       {
@@ -431,7 +431,7 @@
       v43 = v42;
     }
 
-    v44 = &v86 - ((8 * v43 + 15) & 0xFFFFFFFFFFFFFFF0);
+    v44 = &arrayCopy - ((8 * v43 + 15) & 0xFFFFFFFFFFFFFFF0);
     v95 = v40;
     v93 = v41;
     if (v41 > 0x200)
@@ -441,7 +441,7 @@
 
     else
     {
-      bzero(&v86 - ((8 * v43 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v42);
+      bzero(&arrayCopy - ((8 * v43 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v42);
     }
 
     v110 = 0u;
@@ -502,7 +502,7 @@
       v56 = v55;
     }
 
-    v57 = (&v86 - ((8 * v56 + 15) & 0xFFFFFFFFFFFFFFF0));
+    v57 = (&arrayCopy - ((8 * v56 + 15) & 0xFFFFFFFFFFFFFFF0));
     v94 = v52;
     if (v53 > 0x200)
     {
@@ -511,7 +511,7 @@
 
     else
     {
-      bzero(&v86 - ((8 * v56 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v55);
+      bzero(&arrayCopy - ((8 * v56 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v55);
     }
 
     v106 = 0u;
@@ -552,18 +552,18 @@
     v65 = v97;
     v66 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v97];
     v67 = [v64 arrayWithObjects:{v95, v94, v63, v66, 0}];
-    *v86 = v67;
+    *arrayCopy = v67;
     CFRelease(v63);
     if ([(__CFArray *)v63 count]> 0xFE || v65 > 0xFFFFFF)
     {
       v72 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v99, v98, 0}];
-      *v87 = v72;
+      *mappingCopy = v72;
     }
 
     else
     {
       v68 = CFArrayGetCount(v98);
-      v97 = &v86;
+      v97 = &arrayCopy;
       if (v68 <= 1)
       {
         v69 = 1;
@@ -584,7 +584,7 @@
         v70 = v69;
       }
 
-      v71 = (&v86 - ((8 * v70 + 15) & 0xFFFFFFFFFFFFFFF0));
+      v71 = (&arrayCopy - ((8 * v70 + 15) & 0xFFFFFFFFFFFFFFF0));
       v95 = v68;
       if (v68 > 0x200)
       {
@@ -593,7 +593,7 @@
 
       else
       {
-        bzero(&v86 - ((8 * v70 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v69);
+        bzero(&arrayCopy - ((8 * v70 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v69);
       }
 
       v102 = 0u;
@@ -640,7 +640,7 @@
       }
 
       v83 = [MEMORY[0x1E695DEC8] arrayWithObject:v82];
-      *v87 = v83;
+      *mappingCopy = v83;
       CFRelease(v82);
     }
 
@@ -662,7 +662,7 @@ LABEL_104:
   return v32;
 }
 
-+ (uint64_t)_newObjectIDsArrayWithMapping:(void *)a3 andEntries:(void *)a4 andCoordinator:
++ (uint64_t)_newObjectIDsArrayWithMapping:(void *)mapping andEntries:(void *)entries andCoordinator:
 {
   v100 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -670,11 +670,11 @@ LABEL_104:
   v77 = [a2 objectAtIndex:1];
   v8 = [a2 objectAtIndex:2];
   v69 = [objc_msgSend(a2 objectAtIndex:{3), "unsignedLongLongValue"}];
-  v74 = [a3 objectAtIndex:0];
+  v74 = [mapping objectAtIndex:0];
   v71 = v74;
-  if ([a3 count] >= 2)
+  if ([mapping count] >= 2)
   {
-    v71 = [a3 objectAtIndex:1];
+    v71 = [mapping objectAtIndex:1];
   }
 
   v9 = [v7 count];
@@ -831,7 +831,7 @@ LABEL_104:
           objc_enumerationMutation(v7);
         }
 
-        v29 = [a4 persistentStoreForIdentifier:*(*(&v92 + 1) + 8 * v27)];
+        v29 = [entries persistentStoreForIdentifier:*(*(&v92 + 1) + 8 * v27)];
         if (!v29)
         {
           v64 = 0;
@@ -860,7 +860,7 @@ LABEL_92:
     }
   }
 
-  v30 = [objc_msgSend(a4 "managedObjectModel")];
+  v30 = [objc_msgSend(entries "managedObjectModel")];
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
@@ -1054,7 +1054,7 @@ LABEL_93:
   return v3;
 }
 
-+ (uint64_t)_rootEntityGroupsForObjects:(uint64_t)a3 passingBlock:
++ (uint64_t)_rootEntityGroupsForObjects:(uint64_t)objects passingBlock:
 {
   v25 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -1079,25 +1079,25 @@ LABEL_93:
         }
 
         v10 = *(*(&v20 + 1) + 8 * v9);
-        if ((*(a3 + 16))(a3, v10))
+        if ((*(objects + 16))(objects, v10))
         {
-          v11 = [v10 entity];
-          if (v11)
+          entity = [v10 entity];
+          if (entity)
           {
-            if (atomic_load((v11 + 124)))
+            if (atomic_load((entity + 124)))
             {
-              v13 = *(v11 + 72);
+              v13 = *(entity + 72);
             }
 
             else
             {
               do
               {
-                v13 = v11;
-                v11 = [v11 superentity];
+                v13 = entity;
+                entity = [entity superentity];
               }
 
-              while (v11);
+              while (entity);
             }
           }
 
@@ -1106,12 +1106,12 @@ LABEL_93:
             v13 = 0;
           }
 
-          v14 = [v13 name];
-          v15 = [v5 objectForKey:v14];
+          name = [v13 name];
+          v15 = [v5 objectForKey:name];
           if (!v15)
           {
             v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-            [v5 setObject:v15 forKey:v14];
+            [v5 setObject:v15 forKey:name];
           }
 
           [v15 addObject:v10];
@@ -1128,20 +1128,20 @@ LABEL_93:
     while (v16);
   }
 
-  v17 = [v5 allValues];
+  allValues = [v5 allValues];
 
   v18 = *MEMORY[0x1E69E9840];
-  return v17;
+  return allValues;
 }
 
-+ (uint64_t)_groupObjectsByRootEntity:(uint64_t)a1
++ (uint64_t)_groupObjectsByRootEntity:(uint64_t)entity
 {
   objc_opt_self();
 
   return [_PFRoutines _rootEntityGroupsForObjects:a2 passingBlock:&__block_literal_global_82];
 }
 
-+ (id)_coalescedPrefetchKeypaths:(uint64_t)a1
++ (id)_coalescedPrefetchKeypaths:(uint64_t)keypaths
 {
   objc_opt_self();
   v3 = [a2 count];
@@ -1173,14 +1173,14 @@ LABEL_93:
             v13 = [v8 objectAtIndex:v11];
             if ([v13 length])
             {
-              v14 = [v12 objectForKey:v13];
-              if (!v14)
+              dictionary = [v12 objectForKey:v13];
+              if (!dictionary)
               {
-                v14 = [MEMORY[0x1E695DF90] dictionary];
+                dictionary = [MEMORY[0x1E695DF90] dictionary];
               }
 
-              [v12 setObject:v14 forKey:v13];
-              v12 = v14;
+              [v12 setObject:dictionary forKey:v13];
+              v12 = dictionary;
             }
 
             ++v11;
@@ -1210,7 +1210,7 @@ LABEL_93:
   return v6;
 }
 
-+ (void)_logDirectoryAccessDebugInformation:(__darwin_ino64_t)a3 checkSandboxAccess:
++ (void)_logDirectoryAccessDebugInformation:(__darwin_ino64_t)information checkSandboxAccess:
 {
   v123 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -1247,7 +1247,7 @@ LABEL_93:
   }
 
 LABEL_6:
-  v107 = a3;
+  informationCopy = information;
   _NSCoreDataLog_console(1, "Logging status information for directory path: %@", a2);
   objc_autoreleasePoolPop(v4);
   obj = [a2 pathComponents];
@@ -1307,8 +1307,8 @@ LABEL_164:
       v17 = *(*(&v111 + 1) + 8 * v16);
       LOBYTE(v122.st_dev) = 0;
       v15 = [(__CFString *)v15 stringByAppendingPathComponent:v17];
-      v18 = [(__CFString *)v15 fileSystemRepresentation];
-      if (stat(v18, &v122))
+      fileSystemRepresentation = [(__CFString *)v15 fileSystemRepresentation];
+      if (stat(fileSystemRepresentation, &v122))
       {
         v19 = *__error();
         v20 = objc_autoreleasePoolPush();
@@ -1325,7 +1325,7 @@ LABEL_164:
 LABEL_118:
               v89 = strerror(v19);
               *buf = 136315650;
-              st_size = v18;
+              st_size = fileSystemRepresentation;
               v117 = 1024;
               v118 = v19;
               v119 = 2080;
@@ -1366,12 +1366,12 @@ LABEL_118:
         }
 
         *buf = 136315138;
-        st_size = v18;
+        st_size = fileSystemRepresentation;
         _os_log_error_impl(&dword_18565F000, v26, OS_LOG_TYPE_ERROR, "CoreData: error: Information for %s\n", buf, 0xCu);
       }
 
 LABEL_28:
-      _NSCoreDataLog_console(1, "Information for %s", v18);
+      _NSCoreDataLog_console(1, "Information for %s", fileSystemRepresentation);
       objc_autoreleasePoolPop(v24);
       v28 = objc_autoreleasePoolPush();
       _pflogInitialize(1);
@@ -1708,7 +1708,7 @@ LABEL_88:
 
       _NSCoreDataLog_console(1, "  component %s a symbolic link", v73);
       objc_autoreleasePoolPop(v68);
-      if (access(v18, 4))
+      if (access(fileSystemRepresentation, 4))
       {
         v74 = *__error();
         v75 = objc_autoreleasePoolPush();
@@ -1765,7 +1765,7 @@ LABEL_135:
       _NSCoreDataLog_console(1, "  component is readable");
 LABEL_103:
       objc_autoreleasePoolPop(v75);
-      if (access(v18, 2))
+      if (access(fileSystemRepresentation, 2))
       {
         v82 = *__error();
         v20 = objc_autoreleasePoolPush();
@@ -1832,7 +1832,7 @@ LABEL_116:
 
   while (v90);
 LABEL_138:
-  if (!v107)
+  if (!informationCopy)
   {
     goto LABEL_160;
   }
@@ -1853,7 +1853,7 @@ LABEL_138:
         if (v98)
         {
           *buf = 136315138;
-          st_size = v107;
+          st_size = informationCopy;
 LABEL_168:
           _os_log_error_impl(&dword_18565F000, v97, OS_LOG_TYPE_ERROR, "CoreData: error:   Sandbox access to %s denied\n", buf, 0xCu);
         }
@@ -1862,7 +1862,7 @@ LABEL_168:
       else if (v98)
       {
         *buf = 136315138;
-        st_size = v107;
+        st_size = informationCopy;
         goto LABEL_168;
       }
     }
@@ -1895,7 +1895,7 @@ LABEL_169:
         v105 = __error();
         v106 = strerror(*v105);
         *buf = 136315650;
-        st_size = v107;
+        st_size = informationCopy;
         v117 = 1024;
         v118 = v99;
         v119 = 2080;
@@ -1922,7 +1922,7 @@ LABEL_169:
       if (v95)
       {
         *buf = 136315138;
-        st_size = v107;
+        st_size = informationCopy;
         goto LABEL_166;
       }
     }
@@ -1930,7 +1930,7 @@ LABEL_169:
     else if (v95)
     {
       *buf = 136315138;
-      st_size = v107;
+      st_size = informationCopy;
 LABEL_166:
       _os_log_error_impl(&dword_18565F000, v94, OS_LOG_TYPE_ERROR, "CoreData: error:   Sandbox access to %s allowed\n", buf, 0xCu);
     }
@@ -1943,7 +1943,7 @@ LABEL_160:
   v104 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_logFileAccessDebugInformation:(uint64_t)a3 checkSandboxAccess:
++ (void)_logFileAccessDebugInformation:(uint64_t)information checkSandboxAccess:
 {
   v181 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -3226,7 +3226,7 @@ LABEL_207:
 LABEL_212:
         _NSCoreDataLog_console(1, "  Mount from name: \t\t%s", v180.f_mntfromname);
         objc_autoreleasePoolPop(v154);
-        if (!a3)
+        if (!information)
         {
           goto LABEL_102;
         }
@@ -3249,7 +3249,7 @@ LABEL_212:
                 if (v161)
                 {
                   *buf = 136315138;
-                  *v177 = a3;
+                  *v177 = information;
 LABEL_306:
                   _os_log_error_impl(&dword_18565F000, v160, OS_LOG_TYPE_ERROR, "CoreData: error:   Sandbox access to %s allowed\n", buf, 0xCu);
                 }
@@ -3258,7 +3258,7 @@ LABEL_306:
               else if (v161)
               {
                 *buf = 136315138;
-                *v177 = a3;
+                *v177 = information;
                 goto LABEL_306;
               }
             }
@@ -3289,7 +3289,7 @@ LABEL_309:
               v173 = __error();
               v174 = strerror(*v173);
               *buf = 136315650;
-              *v177 = a3;
+              *v177 = information;
               *&v177[8] = 1024;
               *&v177[10] = v165;
               v178 = 2080;
@@ -3316,7 +3316,7 @@ LABEL_309:
             if (v164)
             {
               *buf = 136315138;
-              *v177 = a3;
+              *v177 = information;
 LABEL_308:
               _os_log_error_impl(&dword_18565F000, v163, OS_LOG_TYPE_ERROR, "CoreData: error:   Sandbox access to %s denied\n", buf, 0xCu);
             }
@@ -3325,7 +3325,7 @@ LABEL_308:
           else if (v164)
           {
             *buf = 136315138;
-            *v177 = a3;
+            *v177 = information;
             goto LABEL_308;
           }
         }
@@ -3411,7 +3411,7 @@ LABEL_102:
   v80 = *MEMORY[0x1E69E9840];
 }
 
-+ (uint64_t)_doNameAndTypeCheck:(uint64_t)a1
++ (uint64_t)_doNameAndTypeCheck:(uint64_t)check
 {
   objc_opt_self();
   if (!a2)
@@ -3452,11 +3452,11 @@ LABEL_102:
   return result;
 }
 
-+ (uint64_t)convertCString:(unint64_t *)a3 toUnsignedInt64:(int)a4 withBase:
++ (uint64_t)convertCString:(unint64_t *)string toUnsignedInt64:(int)int64 withBase:
 {
   objc_opt_self();
   __endptr = 0;
-  v7 = strtouq(a2, &__endptr, a4);
+  v7 = strtouq(a2, &__endptr, int64);
   if (__endptr)
   {
     v8 = __endptr == a2;
@@ -3478,7 +3478,7 @@ LABEL_102:
     v9 = 1;
   }
 
-  *a3 = v7;
+  *string = v7;
   return v9;
 }
 
@@ -3515,7 +3515,7 @@ LABEL_102:
   return qword_1ED4BE938;
 }
 
-+ (id)valueForProcessArgument:(uint64_t)a1
++ (id)valueForProcessArgument:(uint64_t)argument
 {
   v21 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -3593,7 +3593,7 @@ LABEL_13:
   return result;
 }
 
-+ (void)stringValueForOverride:(uint64_t)a1
++ (void)stringValueForOverride:(uint64_t)override
 {
   objc_opt_self();
   v3 = [_PFRoutines valueForProcessArgument:a2];
@@ -3618,7 +3618,7 @@ LABEL_13:
   }
 }
 
-+ (uint64_t)integerValueForOverride:(uint64_t)a1
++ (uint64_t)integerValueForOverride:(uint64_t)override
 {
   objc_opt_self();
   v3 = [_PFRoutines valueForProcessArgument:a2];
@@ -3642,13 +3642,13 @@ LABEL_6:
 
   else
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-    return [v5 integerForKey:a2];
+    return [standardUserDefaults integerForKey:a2];
   }
 }
 
-+ (uint64_t)sensitiveIntegerValueForOverride:(uint64_t)a1
++ (uint64_t)sensitiveIntegerValueForOverride:(uint64_t)override
 {
   objc_opt_self();
   if (byte_1ED4BEEC7 & 1) == 0 && (byte_1ED4BEECC)
@@ -3665,13 +3665,13 @@ LABEL_6:
 
   else
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-    return [v5 integerForKey:a2];
+    return [standardUserDefaults integerForKey:a2];
   }
 }
 
-+ (uint64_t)BOOLValueForOverride:(uint64_t)a1
++ (uint64_t)BOOLValueForOverride:(uint64_t)override
 {
   objc_opt_self();
   v3 = [_PFRoutines valueForProcessArgument:a2];
@@ -3695,13 +3695,13 @@ LABEL_6:
 
   else
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-    return [v5 BOOLForKey:a2];
+    return [standardUserDefaults BOOLForKey:a2];
   }
 }
 
-+ (uint64_t)insecureBoolValueForOverride:(uint64_t)a1
++ (uint64_t)insecureBoolValueForOverride:(uint64_t)override
 {
   objc_opt_self();
   v3 = [_PFRoutines valueForProcessArgument:a2];
@@ -3713,13 +3713,13 @@ LABEL_6:
 
   else
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-    return [v5 BOOLForKey:a2];
+    return [standardUserDefaults BOOLForKey:a2];
   }
 }
 
-+ (uint64_t)writePFExternalReferenceDataToInterimFile:(uint64_t)a1
++ (uint64_t)writePFExternalReferenceDataToInterimFile:(uint64_t)file
 {
   v53 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -3729,24 +3729,24 @@ LABEL_6:
     goto LABEL_43;
   }
 
-  v3 = [a2 _externalReferenceLocation];
-  v4 = strlen(v3);
+  _externalReferenceLocation = [a2 _externalReferenceLocation];
+  v4 = strlen(_externalReferenceLocation);
   v5 = malloc_type_calloc(1uLL, v4 + 9, 0x375C96A5uLL);
-  strcat(&strncat(v5, v3, v4)[v4 - 1], ".interim");
-  v6 = [a2 _originalData];
+  strcat(&strncat(v5, _externalReferenceLocation, v4)[v4 - 1], ".interim");
+  _originalData = [a2 _originalData];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
   v8 = objc_opt_class();
   if (v8 == objc_opt_class())
   {
-    v15 = [v6 _safeguardLocation];
-    if (!v15)
+    _safeguardLocation = [_originalData _safeguardLocation];
+    if (!_safeguardLocation)
     {
       goto LABEL_23;
     }
 
-    v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v15];
+    path = [MEMORY[0x1E696AEC0] stringWithUTF8String:_safeguardLocation];
     v42 = 0;
-    if (!+[_PFRoutines createExternalReferenceLinkFromPath:toPath:protectionLevel:error:](_PFRoutines, v10, v7, [a2 preferredProtectionLevel], &v42))
+    if (!+[_PFRoutines createExternalReferenceLinkFromPath:toPath:protectionLevel:error:](_PFRoutines, path, v7, [a2 preferredProtectionLevel], &v42))
     {
       v11 = objc_autoreleasePoolPush();
       _pflogInitialize(1);
@@ -3780,11 +3780,11 @@ LABEL_13:
   v9 = objc_opt_class();
   if (v9 == objc_opt_class())
   {
-    v10 = [-[_PFEvanescentData url](v6) path];
-    if ([v10 UTF8String])
+    path = [-[_PFEvanescentData url](_originalData) path];
+    if ([path UTF8String])
     {
       v42 = 0;
-      if (!+[_PFRoutines createExternalReferenceLinkFromPath:toPath:protectionLevel:error:](_PFRoutines, v10, v7, [a2 preferredProtectionLevel], &v42))
+      if (!+[_PFRoutines createExternalReferenceLinkFromPath:toPath:protectionLevel:error:](_PFRoutines, path, v7, [a2 preferredProtectionLevel], &v42))
       {
         v11 = objc_autoreleasePoolPush();
         _pflogInitialize(1);
@@ -3805,7 +3805,7 @@ LABEL_13:
           {
 LABEL_21:
             *buf = 138412802;
-            v48 = v10;
+            v48 = path;
             v49 = 2112;
             v50 = v7;
             v51 = 2112;
@@ -3815,7 +3815,7 @@ LABEL_21:
         }
 
 LABEL_22:
-        _NSCoreDataLog_console(1, "Failed to clone external data reference from %@ to %@ error: %@", v10, v7, v42);
+        _NSCoreDataLog_console(1, "Failed to clone external data reference from %@ to %@ error: %@", path, v7, v42);
         objc_autoreleasePoolPop(v11);
         goto LABEL_23;
       }
@@ -3825,7 +3825,7 @@ LABEL_22:
   }
 
 LABEL_23:
-  v41 = v3;
+  v41 = _externalReferenceLocation;
   v19 = open(v5, 2561, 420);
   if (v19 < 0)
   {
@@ -3834,7 +3834,7 @@ LABEL_23:
     v36 = *MEMORY[0x1E695D930];
     v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't open externalDataReference interim file : %d", *__error()];
     v45 = @"Problem Path";
-    v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
+    v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:_externalReferenceLocation];
     v38 = MEMORY[0x1E695DF20];
     v39 = &v46;
     v40 = &v45;
@@ -3843,22 +3843,22 @@ LABEL_46:
   }
 
   v20 = v19;
-  v21 = [a2 _bytesLengthForExternalReference];
+  _bytesLengthForExternalReference = [a2 _bytesLengthForExternalReference];
   v22 = malloc_type_malloc(0x40000uLL, 0x100004077774924uLL);
   v23 = 0;
-  if (v21 >= 0x40000)
+  if (_bytesLengthForExternalReference >= 0x40000)
   {
     v24 = 0x40000;
   }
 
   else
   {
-    v24 = v21;
+    v24 = _bytesLengthForExternalReference;
   }
 
   do
   {
-    [v6 getBytes:v22 range:{v23, v24}];
+    [_originalData getBytes:v22 range:{v23, v24}];
     if (pwrite(v20, v22, v24, v23) != v24)
     {
       v34 = *__error();
@@ -3876,32 +3876,32 @@ LABEL_46:
       goto LABEL_46;
     }
 
-    v21 -= v24;
+    _bytesLengthForExternalReference -= v24;
     v23 += v24;
-    if (v21 >= 0x40000)
+    if (_bytesLengthForExternalReference >= 0x40000)
     {
       v24 = 0x40000;
     }
 
     else
     {
-      v24 = v21;
+      v24 = _bytesLengthForExternalReference;
     }
   }
 
-  while (v21 > 0);
-  v25 = [a2 preferredProtectionLevel];
-  fcntl(v20, 64, v25);
+  while (_bytesLengthForExternalReference > 0);
+  preferredProtectionLevel = [a2 preferredProtectionLevel];
+  fcntl(v20, 64, preferredProtectionLevel);
   close(v20);
-  v26 = [a2 _safeguardLocation];
-  if (!v26)
+  _safeguardLocation2 = [a2 _safeguardLocation];
+  if (!_safeguardLocation2)
   {
     goto LABEL_41;
   }
 
   v42 = 0;
-  v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v26];
-  if ([_PFRoutines createExternalReferenceLinkFromPath:v7 toPath:v27 protectionLevel:v25 error:&v42])
+  v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:_safeguardLocation2];
+  if ([_PFRoutines createExternalReferenceLinkFromPath:v7 toPath:v27 protectionLevel:preferredProtectionLevel error:&v42])
   {
     [a2 doCleanupOnDealloc];
     goto LABEL_41;
@@ -3947,7 +3947,7 @@ LABEL_43:
   return v7;
 }
 
-+ (BOOL)createExternalReferenceLinkFromPath:(uint64_t)a3 toPath:(uint64_t)a4 protectionLevel:(void *)a5 error:
++ (BOOL)createExternalReferenceLinkFromPath:(uint64_t)path toPath:(uint64_t)toPath protectionLevel:(void *)level error:
 {
   v32 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -3959,8 +3959,8 @@ LABEL_43:
 
   if ([v25 code] == 516)
   {
-    v18 = [v25 domain];
-    if ([v18 isEqualToString:*MEMORY[0x1E696A250]])
+    domain = [v25 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
       v25 = 0;
 LABEL_2:
@@ -3969,7 +3969,7 @@ LABEL_2:
       v21 = 0u;
       v22 = 0u;
       v30[0] = a2;
-      v30[1] = a3;
+      v30[1] = path;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
       v10 = [v9 countByEnumeratingWithState:&v21 objects:v31 count:16];
       if (v10)
@@ -3989,7 +3989,7 @@ LABEL_2:
             if (v14 >= 1)
             {
               v15 = v14;
-              fcntl(v14, 64, a4);
+              fcntl(v14, 64, toPath);
               close(v15);
             }
           }
@@ -4007,10 +4007,10 @@ LABEL_2:
 
   if (v25)
   {
-    if (a5)
+    if (level)
     {
       result = 0;
-      *a5 = v25;
+      *level = v25;
       goto LABEL_12;
     }
 
@@ -4046,15 +4046,15 @@ LABEL_12:
   return result;
 }
 
-+ (uint64_t)moveInterimFileToPermanentLocation:(uint64_t)a1
++ (uint64_t)moveInterimFileToPermanentLocation:(uint64_t)location
 {
   v15[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v3 = [a2 _externalReferenceLocation];
-  v4 = strlen(v3);
+  _externalReferenceLocation = [a2 _externalReferenceLocation];
+  v4 = strlen(_externalReferenceLocation);
   v5 = malloc_type_calloc(1uLL, v4 + 9, 0x685324CAuLL);
-  strcat(&strncat(v5, v3, v4)[v4 - 1], ".interim");
-  rename(v5, v3, v6);
+  strcat(&strncat(v5, _externalReferenceLocation, v4)[v4 - 1], ".interim");
+  rename(v5, _externalReferenceLocation, v6);
   if (v7)
   {
     v10 = *__error();
@@ -4072,7 +4072,7 @@ LABEL_12:
   return 1;
 }
 
-+ (void)readExternalReferenceDataFromFile:(uint64_t)a1
++ (void)readExternalReferenceDataFromFile:(uint64_t)file
 {
   objc_opt_self();
   if (![a2 hasExternalReferenceContent])
@@ -4080,22 +4080,22 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [a2 _safeguardLocation];
-  if (v3)
+  _safeguardLocation = [a2 _safeguardLocation];
+  if (_safeguardLocation)
   {
-    v4 = v3;
-    v5 = open(v3, 0);
+    _externalReferenceLocation = _safeguardLocation;
+    v5 = open(_safeguardLocation, 0);
     if (v5 < 0)
     {
-      v4 = [a2 _externalReferenceLocation];
-      v5 = open(v4, 0);
+      _externalReferenceLocation = [a2 _externalReferenceLocation];
+      v5 = open(_externalReferenceLocation, 0);
       if (v5 < 0)
       {
         v6 = __error();
         v7 = MEMORY[0x1E695DF30];
         v8 = *MEMORY[0x1E695D940];
         v9 = MEMORY[0x1E696AEC0];
-        v25 = v4;
+        v25 = _externalReferenceLocation;
         v26 = *v6;
         v10 = @"Unable to open file with path: %s (%d)";
 LABEL_17:
@@ -4112,15 +4112,15 @@ LABEL_20:
 
   else
   {
-    v4 = [a2 _externalReferenceLocation];
-    v5 = open(v4, 0);
+    _externalReferenceLocation = [a2 _externalReferenceLocation];
+    v5 = open(_externalReferenceLocation, 0);
     if (v5 < 0)
     {
       v23 = __error();
       v7 = MEMORY[0x1E695DF30];
       v8 = *MEMORY[0x1E695D940];
       v9 = MEMORY[0x1E696AEC0];
-      v25 = v4;
+      v25 = _externalReferenceLocation;
       v26 = *v23;
       v10 = @"Unable to open file with path %s (%d)";
       goto LABEL_17;
@@ -4129,15 +4129,15 @@ LABEL_20:
 
   v12 = v5;
   fcntl(v5, 48, 1);
-  v13 = [a2 _bytesLengthForExternalReference];
+  _bytesLengthForExternalReference = [a2 _bytesLengthForExternalReference];
   v14 = _PF_Private_Malloc_Zone;
   if (!_PF_Private_Malloc_Zone)
   {
     v14 = malloc_default_zone();
   }
 
-  v11 = malloc_type_zone_calloc(v14, v13, 1uLL, 0x100004077774924uLL);
-  v15 = read(v12, v11, v13);
+  v11 = malloc_type_zone_calloc(v14, _bytesLengthForExternalReference, 1uLL, 0x100004077774924uLL);
+  v15 = read(v12, v11, _bytesLengthForExternalReference);
   if (v15 < 0)
   {
     v16 = *__error();
@@ -4148,7 +4148,7 @@ LABEL_20:
       v8 = *MEMORY[0x1E695D930];
       v24 = MEMORY[0x1E696AEC0];
       v25 = v16;
-      v26 = v4;
+      v26 = _externalReferenceLocation;
       v10 = @"Failed to read external reference file at path (error: %d): %s";
       goto LABEL_19;
     }
@@ -4159,11 +4159,11 @@ LABEL_20:
     close(v12);
   }
 
-  if (v15 != v13)
+  if (v15 != _bytesLengthForExternalReference)
   {
     v18 = MEMORY[0x1E695DF30];
     v19 = *MEMORY[0x1E695D930];
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing bytes from file at path %s, expected %lu, got %lu", v4, v13, v15];
+    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing bytes from file at path %s, expected %lu, got %lu", _externalReferenceLocation, _bytesLengthForExternalReference, v15];
     v21 = v18;
     v22 = v19;
     goto LABEL_20;
@@ -4172,14 +4172,14 @@ LABEL_20:
   return v11;
 }
 
-+ (uint64_t)readBytesForExternalReferenceData:(void *)a3 intoBuffer:(off_t)a4 range:(size_t)a5
++ (uint64_t)readBytesForExternalReferenceData:(void *)data intoBuffer:(off_t)buffer range:(size_t)range
 {
   objc_opt_self();
   result = [a2 hasExternalReferenceContent];
   if (result)
   {
-    v10 = [a2 _safeguardLocation];
-    if ((!v10 || (v11 = v10, v12 = open(v10, 0), v12 < 0)) && (v11 = [a2 _externalReferenceLocation], v12 = open(v11, 0), v12 < 0))
+    _safeguardLocation = [a2 _safeguardLocation];
+    if ((!_safeguardLocation || (v11 = _safeguardLocation, v12 = open(_safeguardLocation, 0), v12 < 0)) && (v11 = [a2 _externalReferenceLocation], v12 = open(v11, 0), v12 < 0))
     {
       v24 = __error();
       v16 = MEMORY[0x1E695DF30];
@@ -4191,12 +4191,12 @@ LABEL_20:
     {
       v13 = v12;
       fcntl(v12, 48, 1);
-      v14 = pread(v13, a3, a5, a4);
+      v14 = pread(v13, data, range, buffer);
       if ((v14 & 0x8000000000000000) == 0)
       {
         v15 = v14;
         result = close(v13);
-        if (v15 == a5)
+        if (v15 == range)
         {
           return result;
         }
@@ -4225,40 +4225,40 @@ LABEL_12:
   return result;
 }
 
-+ (uint64_t)deleteFileForPFExternalReferenceData:(uint64_t)a1
++ (uint64_t)deleteFileForPFExternalReferenceData:(uint64_t)data
 {
   objc_opt_self();
   result = [a2 hasExternalReferenceContent];
   if (result)
   {
-    v4 = [a2 externalReferenceLocationString];
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    result = [v5 fileExistsAtPath:v4];
+    externalReferenceLocationString = [a2 externalReferenceLocationString];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    result = [defaultManager fileExistsAtPath:externalReferenceLocationString];
     if (result)
     {
 
-      return [v5 removeItemAtPath:v4 error:0];
+      return [defaultManager removeItemAtPath:externalReferenceLocationString error:0];
     }
   }
 
   return result;
 }
 
-+ (uint64_t)_isInMemoryStoreURL:(uint64_t)a1
++ (uint64_t)_isInMemoryStoreURL:(uint64_t)l
 {
   objc_opt_self();
   result = [a2 isFileURL];
   if (result)
   {
-    v4 = [a2 path];
+    path = [a2 path];
 
-    return [v4 hasPrefix:@"/dev/null"];
+    return [path hasPrefix:@"/dev/null"];
   }
 
   return result;
 }
 
-+ (BOOL)_isInMemoryStore:(uint64_t)a1
++ (BOOL)_isInMemoryStore:(uint64_t)store
 {
   objc_opt_self();
   if ([a2 type] != @"SQLite")
@@ -4274,34 +4274,34 @@ LABEL_12:
   return 0;
 }
 
-+ (id)transformDecodeValue:(id)a3 forTransformerNamed:(id)a4
++ (id)transformDecodeValue:(id)value forTransformerNamed:(id)named
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (!a4 || (v6 = [MEMORY[0x1E696B0A0] valueTransformerForName:a4]) == 0)
+  if (!named || (v6 = [MEMORY[0x1E696B0A0] valueTransformerForName:named]) == 0)
   {
     v7 = [MEMORY[0x1E696B0A0] valueTransformerForName:*MEMORY[0x1E696A510]];
 LABEL_9:
-    result = [v7 transformedValue:a3];
+    result = [v7 transformedValue:value];
     goto LABEL_10;
   }
 
   v7 = v6;
   objc_opt_self();
-  if (objc_opt_isKindOfClass() & 1) != 0 || ([a4 isEqualToString:@"NSUnarchiveFromData"] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"NSKeyedUnarchiveFromData") & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"NSSecureUnarchiveFromData"))
+  if (objc_opt_isKindOfClass() & 1) != 0 || ([named isEqualToString:@"NSUnarchiveFromData"] & 1) != 0 || (objc_msgSend(named, "isEqualToString:", @"NSKeyedUnarchiveFromData") & 1) != 0 || (objc_msgSend(named, "isEqualToString:", @"NSSecureUnarchiveFromData"))
   {
     goto LABEL_9;
   }
 
-  result = [v7 reverseTransformedValue:a3];
+  result = [v7 reverseTransformedValue:value];
 LABEL_10:
   v9 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (uint64_t)unarchiveCylicGraphObjectOfClasses:(uint64_t)a3 fromData:(uint64_t)a4 error:
++ (uint64_t)unarchiveCylicGraphObjectOfClasses:(uint64_t)classes fromData:(uint64_t)data error:
 {
   objc_opt_self();
-  v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:a3 error:a4];
+  v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:classes error:data];
   if (!v7)
   {
     return 0;
@@ -4311,27 +4311,27 @@ LABEL_10:
   [v7 setRequiresSecureCoding:1];
   [v8 setDecodingFailurePolicy:1];
   [v8 _allowDecodingCyclesInSecureMode];
-  v9 = [v8 decodeTopLevelObjectOfClasses:a2 forKey:*MEMORY[0x1E696A508] error:a4];
+  v9 = [v8 decodeTopLevelObjectOfClasses:a2 forKey:*MEMORY[0x1E696A508] error:data];
 
   return v9;
 }
 
-+ (id)retainedDecodeValue:(void *)a3 forTransformableAttribute:
++ (id)retainedDecodeValue:(void *)value forTransformableAttribute:
 {
   objc_opt_self();
   v5 = objc_autoreleasePoolPush();
-  v6 = +[_PFRoutines transformDecodeValue:forTransformerNamed:](_PFRoutines, "transformDecodeValue:forTransformerNamed:", a2, [a3 valueTransformerName]);
+  v6 = +[_PFRoutines transformDecodeValue:forTransformerNamed:](_PFRoutines, "transformDecodeValue:forTransformerNamed:", a2, [value valueTransformerName]);
   objc_autoreleasePoolPop(v5);
   return v6;
 }
 
-+ (id)retainedEncodeObjectValue:(void *)a3 forTransformableAttribute:
++ (id)retainedEncodeObjectValue:(void *)value forTransformableAttribute:
 {
   objc_opt_self();
   v5 = objc_autoreleasePoolPush();
-  v6 = [a3 valueTransformerName];
+  valueTransformerName = [value valueTransformerName];
   objc_opt_self();
-  if (!v6 || (v7 = [MEMORY[0x1E696B0A0] valueTransformerForName:v6]) == 0)
+  if (!valueTransformerName || (v7 = [MEMORY[0x1E696B0A0] valueTransformerForName:valueTransformerName]) == 0)
   {
     v8 = [MEMORY[0x1E696B0A0] valueTransformerForName:*MEMORY[0x1E696A510]];
 LABEL_9:
@@ -4341,7 +4341,7 @@ LABEL_9:
 
   v8 = v7;
   objc_opt_self();
-  if (objc_opt_isKindOfClass() & 1) != 0 || ([v6 isEqualToString:@"NSUnarchiveFromData"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"NSKeyedUnarchiveFromData") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"NSSecureUnarchiveFromData"))
+  if (objc_opt_isKindOfClass() & 1) != 0 || ([valueTransformerName isEqualToString:@"NSUnarchiveFromData"] & 1) != 0 || (objc_msgSend(valueTransformerName, "isEqualToString:", @"NSKeyedUnarchiveFromData") & 1) != 0 || (objc_msgSend(valueTransformerName, "isEqualToString:", @"NSSecureUnarchiveFromData"))
   {
     goto LABEL_9;
   }
@@ -4353,11 +4353,11 @@ LABEL_10:
   return v10;
 }
 
-+ (void)getIndexes:(void *)a3 fromCollection:(void *)a4 forObjectsInCollection:
++ (void)getIndexes:(void *)indexes fromCollection:(void *)collection forObjectsInCollection:
 {
   v84 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if ([a4 count])
+  if ([collection count])
   {
     v83 = 0u;
     v82 = 0u;
@@ -4391,11 +4391,11 @@ LABEL_10:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v7 = [a3 count];
+    v7 = [indexes count];
     v8 = MEMORY[0x1EEE9AC00](v7);
     v11 = (v34 - v10);
     v12 = 8 * v9;
-    v35 = a4;
+    collectionCopy = collection;
     v36 = v8;
     v34[1] = v13;
     if (v8 > 0x200)
@@ -4416,7 +4416,7 @@ LABEL_10:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v16 = [a3 countByEnumeratingWithState:&v45 objects:v51 count:16];
+    v16 = [indexes countByEnumeratingWithState:&v45 objects:v51 count:16];
     if (v16)
     {
       v17 = v16;
@@ -4430,7 +4430,7 @@ LABEL_10:
         {
           if (*v46 != v19)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(indexes);
           }
 
           v22 = *(*(&v45 + 1) + 8 * v20);
@@ -4442,15 +4442,15 @@ LABEL_10:
         }
 
         while (v17 != v20);
-        v17 = [a3 countByEnumeratingWithState:&v45 objects:v51 count:16];
+        v17 = [indexes countByEnumeratingWithState:&v45 objects:v51 count:16];
       }
 
       while (v17);
     }
 
     memset(v44, 0, sizeof(v44));
-    v23 = v35;
-    if ([v35 countByEnumeratingWithState:v44 objects:&v50 count:16])
+    v23 = collectionCopy;
+    if ([collectionCopy countByEnumeratingWithState:v44 objects:&v50 count:16])
     {
       v24 = *v44[1];
     }
@@ -4522,7 +4522,7 @@ LABEL_10:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-+ (uint64_t)newMutableOrderedSetFromCollection:(uint64_t)a1
++ (uint64_t)newMutableOrderedSetFromCollection:(uint64_t)collection
 {
   v11[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -4570,7 +4570,7 @@ LABEL_10:
   return v8;
 }
 
-+ (uint64_t)anyObjectFromCollection:(uint64_t)a1
++ (uint64_t)anyObjectFromCollection:(uint64_t)collection
 {
   v7 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -4585,7 +4585,7 @@ LABEL_10:
   return result;
 }
 
-+ (uint64_t)newArrayOfObjectIDsFromCollection:(uint64_t)a1
++ (uint64_t)newArrayOfObjectIDsFromCollection:(uint64_t)collection
 {
   v12[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -4647,7 +4647,7 @@ LABEL_13:
   return v9;
 }
 
-+ (uint64_t)newSetOfObjectIDsFromCollection:(uint64_t)a1
++ (uint64_t)newSetOfObjectIDsFromCollection:(uint64_t)collection
 {
   v12[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -4709,16 +4709,16 @@ LABEL_13:
   return v9;
 }
 
-+ (uint64_t)_objectsInOrderedCollection:(void *)a3 formSubstringInOrderedCollection:
++ (uint64_t)_objectsInOrderedCollection:(void *)collection formSubstringInOrderedCollection:
 {
   objc_opt_self();
   v5 = [a2 count];
-  if (v5 - 1 >= [a3 count])
+  if (v5 - 1 >= [collection count])
   {
     return 0;
   }
 
-  v6 = [a3 indexOfObject:{objc_msgSend(a2, "firstObject")}];
+  v6 = [collection indexOfObject:{objc_msgSend(a2, "firstObject")}];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -4726,7 +4726,7 @@ LABEL_13:
 
   v7 = v6;
   v8 = [a2 count] + v6;
-  if (v8 > [a3 count])
+  if (v8 > [collection count])
   {
     return 0;
   }
@@ -4740,7 +4740,7 @@ LABEL_13:
   v11 = v10;
   for (i = 0; i != v11; ++i)
   {
-    result = [objc_msgSend(a2 objectAtIndex:{i), "isEqual:", objc_msgSend(a3, "objectAtIndex:", v7)}];
+    result = [objc_msgSend(a2 objectAtIndex:{i), "isEqual:", objc_msgSend(collection, "objectAtIndex:", v7)}];
     if (!result)
     {
       break;
@@ -4752,14 +4752,14 @@ LABEL_13:
   return result;
 }
 
-+ (uint64_t)newOrderedSetFromCollection:(void *)a3 byInsertingItems:(uint64_t)a4 atIndex:
++ (uint64_t)newOrderedSetFromCollection:(void *)collection byInsertingItems:(uint64_t)items atIndex:
 {
   v38 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if ([a3 count])
+  if ([collection count])
   {
     v7 = [a2 count];
-    v8 = [a3 count];
+    v8 = [collection count];
     v9 = [a2 count];
     v10 = v9;
     if (v9 <= 1)
@@ -4859,11 +4859,11 @@ LABEL_13:
     }
 
     [a2 getObjects:v13];
-    [a3 getObjects:v24];
-    memmove(v21, v13, 8 * a4);
+    [collection getObjects:v24];
+    memmove(v21, v13, 8 * items);
     if (v8)
     {
-      v34 = a4;
+      itemsCopy = items;
       v35 = &v33;
       v25 = 0;
       v26 = v24;
@@ -4872,7 +4872,7 @@ LABEL_13:
       {
         if (([a2 containsObject:*v26] & 1) == 0)
         {
-          *&v21[8 * a4++] = *v26;
+          *&v21[8 * items++] = *v26;
           ++v25;
         }
 
@@ -4882,7 +4882,7 @@ LABEL_13:
 
       while (v27);
       v28 = v25;
-      a4 = v34;
+      items = itemsCopy;
     }
 
     else
@@ -4890,9 +4890,9 @@ LABEL_13:
       v28 = 0;
     }
 
-    if (v37 != a4)
+    if (v37 != items)
     {
-      memmove(&v21[8 * v28 + 8 * a4], &v13[8 * a4], 8 * (v37 - a4));
+      memmove(&v21[8 * v28 + 8 * items], &v13[8 * items], 8 * (v37 - items));
     }
 
     v29 = objc_alloc(MEMORY[0x1E695DFA0]);
@@ -4918,9 +4918,9 @@ LABEL_13:
 
   else
   {
-    v14 = [a2 isNSArray];
+    isNSArray = [a2 isNSArray];
     v15 = objc_alloc(MEMORY[0x1E695DFA0]);
-    if (v14)
+    if (isNSArray)
     {
       v16 = *MEMORY[0x1E69E9840];
 
@@ -4936,23 +4936,23 @@ LABEL_13:
   }
 }
 
-+ (id)newCollection:(void *)a3 fromCollection:(void *)a4 byAddingItems:
++ (id)newCollection:(void *)collection fromCollection:(void *)fromCollection byAddingItems:
 {
   v93 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v7 = [a3 count];
-  v8 = [a4 count];
+  v7 = [collection count];
+  v8 = [fromCollection count];
   v9 = v8 + v7;
   if (v8 + v7)
   {
-    if (a3)
+    if (collection)
     {
-      v10 = a3;
+      collectionCopy = collection;
     }
 
     else
     {
-      v10 = NSSet_EmptySet;
+      collectionCopy = NSSet_EmptySet;
     }
 
     MEMORY[0x1EEE9AC00](v8);
@@ -4967,7 +4967,7 @@ LABEL_13:
       bzero(&v40 - v11, 8 * v9);
     }
 
-    v15 = [a4 count];
+    v15 = [fromCollection count];
     if (v15)
     {
       v42 = v9;
@@ -5017,20 +5017,20 @@ LABEL_13:
       }
 
       memset(v57, 0, sizeof(v57));
-      v20 = [a4 countByEnumeratingWithState:v57 objects:&v60 count:{16, v40}];
+      v20 = [fromCollection countByEnumeratingWithState:v57 objects:&v60 count:{16, v40}];
       v45 = v7;
       if (v20)
       {
         v21 = *v57[1];
       }
 
-      v41 = a4;
+      fromCollectionCopy = fromCollection;
       v44 = a2;
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v22 = [v10 countByEnumeratingWithState:&v53 objects:v59 count:16];
+      v22 = [collectionCopy countByEnumeratingWithState:&v53 objects:v59 count:16];
       v43 = &v40;
       if (v22)
       {
@@ -5045,7 +5045,7 @@ LABEL_13:
           {
             if (*v54 != v24)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(collectionCopy);
             }
 
             v27 = *(*(&v53 + 1) + 8 * v25);
@@ -5057,7 +5057,7 @@ LABEL_13:
           }
 
           while (v23 != v25);
-          v23 = [v10 countByEnumeratingWithState:&v53 objects:v59 count:16];
+          v23 = [collectionCopy countByEnumeratingWithState:&v53 objects:v59 count:16];
         }
 
         while (v23);
@@ -5091,8 +5091,8 @@ LABEL_13:
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v32 = v41;
-      v33 = [v41 countByEnumeratingWithState:&v46 objects:v58 count:16];
+      v32 = fromCollectionCopy;
+      v33 = [fromCollectionCopy countByEnumeratingWithState:&v46 objects:v58 count:16];
       if (v33)
       {
         v34 = v33;
@@ -5143,7 +5143,7 @@ LABEL_13:
 
     else
     {
-      [v10 getObjects:v12];
+      [collectionCopy getObjects:v12];
       v19 = v9;
     }
 
@@ -5165,27 +5165,27 @@ LABEL_13:
   }
 }
 
-+ (id)newOrderedSetFromCollection:(void *)a3 byAddingItems:
++ (id)newOrderedSetFromCollection:(void *)collection byAddingItems:
 {
   objc_opt_self();
   v5 = objc_opt_class();
 
-  return [_PFRoutines newCollection:v5 fromCollection:a2 byAddingItems:a3];
+  return [_PFRoutines newCollection:v5 fromCollection:a2 byAddingItems:collection];
 }
 
-+ (id)newSetFromCollection:(void *)a3 byAddingItems:
++ (id)newSetFromCollection:(void *)collection byAddingItems:
 {
   objc_opt_self();
   v5 = objc_opt_class();
 
-  return [_PFRoutines newCollection:v5 fromCollection:a2 byAddingItems:a3];
+  return [_PFRoutines newCollection:v5 fromCollection:a2 byAddingItems:collection];
 }
 
-+ (id)newOrderedSetFromCollection:(void *)a3 byRemovingItems:
++ (id)newOrderedSetFromCollection:(void *)collection byRemovingItems:
 {
   v87 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v5 = [a3 count];
+  v5 = [collection count];
   v6 = [a2 count];
   if (v6)
   {
@@ -5260,7 +5260,7 @@ LABEL_4:
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v18 = [a3 countByEnumeratingWithState:&v49 objects:v54 count:16];
+        v18 = [collection countByEnumeratingWithState:&v49 objects:v54 count:16];
         if (v18)
         {
           v19 = v18;
@@ -5274,7 +5274,7 @@ LABEL_4:
             {
               if (*v50 != v21)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(collection);
               }
 
               if (!v23)
@@ -5287,7 +5287,7 @@ LABEL_4:
             }
 
             while (v19 != v22);
-            v19 = [a3 countByEnumeratingWithState:&v49 objects:v54 count:16];
+            v19 = [collection countByEnumeratingWithState:&v49 objects:v54 count:16];
           }
 
           while (v19);
@@ -5394,11 +5394,11 @@ LABEL_42:
   return objc_alloc_init(v13);
 }
 
-+ (id)newMutableSetFromCollection:(void *)a3 byRemovingItems:
++ (id)newMutableSetFromCollection:(void *)collection byRemovingItems:
 {
   v87 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v5 = [a3 count];
+  v5 = [collection count];
   v6 = [a2 count];
   if (v6)
   {
@@ -5473,7 +5473,7 @@ LABEL_4:
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v18 = [a3 countByEnumeratingWithState:&v49 objects:v54 count:16];
+        v18 = [collection countByEnumeratingWithState:&v49 objects:v54 count:16];
         if (v18)
         {
           v19 = v18;
@@ -5487,7 +5487,7 @@ LABEL_4:
             {
               if (*v50 != v21)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(collection);
               }
 
               if (!v23)
@@ -5500,7 +5500,7 @@ LABEL_4:
             }
 
             while (v19 != v22);
-            v19 = [a3 countByEnumeratingWithState:&v49 objects:v54 count:16];
+            v19 = [collection countByEnumeratingWithState:&v49 objects:v54 count:16];
           }
 
           while (v19);
@@ -5607,12 +5607,12 @@ LABEL_42:
   return objc_alloc_init(v13);
 }
 
-+ (id)newMutableSetFromCollection:(void *)a3 byIntersectingWithCollection:
++ (id)newMutableSetFromCollection:(void *)collection byIntersectingWithCollection:
 {
   v86 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v5 = [a2 count];
-  v6 = [a3 count];
+  v6 = [collection count];
   if (v5 && (v7 = v6) != 0)
   {
     v37 = &v37;
@@ -5680,7 +5680,7 @@ LABEL_42:
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v16 = [a3 countByEnumeratingWithState:&v48 objects:v53 count:{16, v37}];
+    v16 = [collection countByEnumeratingWithState:&v48 objects:v53 count:{16, v37}];
     if (v16)
     {
       v17 = v16;
@@ -5694,7 +5694,7 @@ LABEL_42:
         {
           if (*v49 != v19)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(collection);
           }
 
           if (!v21)
@@ -5707,7 +5707,7 @@ LABEL_42:
         }
 
         while (v17 != v20);
-        v17 = [a3 countByEnumeratingWithState:&v48 objects:v53 count:16];
+        v17 = [collection countByEnumeratingWithState:&v48 objects:v53 count:16];
       }
 
       while (v17);
@@ -5809,11 +5809,11 @@ LABEL_42:
   }
 }
 
-+ (id)newMutableArrayFromCollection:(void *)a3 byRemovingItems:
++ (id)newMutableArrayFromCollection:(void *)collection byRemovingItems:
 {
   v87 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v5 = [a3 count];
+  v5 = [collection count];
   v6 = [a2 count];
   if (v6)
   {
@@ -5888,7 +5888,7 @@ LABEL_4:
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v18 = [a3 countByEnumeratingWithState:&v49 objects:v54 count:16];
+        v18 = [collection countByEnumeratingWithState:&v49 objects:v54 count:16];
         if (v18)
         {
           v19 = v18;
@@ -5902,7 +5902,7 @@ LABEL_4:
             {
               if (*v50 != v21)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(collection);
               }
 
               if (!v23)
@@ -5915,7 +5915,7 @@ LABEL_4:
             }
 
             while (v19 != v22);
-            v19 = [a3 countByEnumeratingWithState:&v49 objects:v54 count:16];
+            v19 = [collection countByEnumeratingWithState:&v49 objects:v54 count:16];
           }
 
           while (v19);
@@ -6022,7 +6022,7 @@ LABEL_42:
   return objc_alloc_init(v13);
 }
 
-+ (id)_newCollectionFromCollection:(uint64_t)a3 forParentContext:(objc_class *)a4 andClass:
++ (id)_newCollectionFromCollection:(uint64_t)collection forParentContext:(objc_class *)context andClass:
 {
   v29 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -6075,7 +6075,7 @@ LABEL_42:
           }
 
           v16 = v19 + 1;
-          *&v11[8 * v19++] = _PFRetainedObjectForMappedChildObjectIDInParentContext([*(*(&v24 + 1) + 8 * v18++) objectID], a3);
+          *&v11[8 * v19++] = _PFRetainedObjectForMappedChildObjectIDInParentContext([*(*(&v24 + 1) + 8 * v18++) objectID], collection);
         }
 
         while (v15 != v18);
@@ -6090,7 +6090,7 @@ LABEL_42:
       v16 = 0;
     }
 
-    v20 = [[a4 alloc] initWithObjects:v11 count:v16];
+    v20 = [[context alloc] initWithObjects:v11 count:v16];
     for (i = 0; i != v8; ++i)
     {
     }
@@ -6108,55 +6108,55 @@ LABEL_42:
   {
     v12 = *MEMORY[0x1E69E9840];
 
-    return objc_alloc_init(a4);
+    return objc_alloc_init(context);
   }
 }
 
-+ (id)newMutableArrayFromCollection:(uint64_t)a3 forParentContext:
++ (id)newMutableArrayFromCollection:(uint64_t)collection forParentContext:
 {
   objc_opt_self();
   v5 = objc_opt_class();
 
-  return [_PFRoutines _newCollectionFromCollection:a2 forParentContext:a3 andClass:v5];
+  return [_PFRoutines _newCollectionFromCollection:a2 forParentContext:collection andClass:v5];
 }
 
-+ (id)newMutableSetFromCollection:(uint64_t)a3 forParentContext:
++ (id)newMutableSetFromCollection:(uint64_t)collection forParentContext:
 {
   objc_opt_self();
   v5 = objc_opt_class();
 
-  return [_PFRoutines _newCollectionFromCollection:a2 forParentContext:a3 andClass:v5];
+  return [_PFRoutines _newCollectionFromCollection:a2 forParentContext:collection andClass:v5];
 }
 
-+ (id)newMutableOrderedSetFromCollection:(uint64_t)a3 forParentContext:
++ (id)newMutableOrderedSetFromCollection:(uint64_t)collection forParentContext:
 {
   objc_opt_self();
   v5 = objc_opt_class();
 
-  return [_PFRoutines _newCollectionFromCollection:a2 forParentContext:a3 andClass:v5];
+  return [_PFRoutines _newCollectionFromCollection:a2 forParentContext:collection andClass:v5];
 }
 
-+ (id)_replaceBaseline:(void *)a3 inOrderedSet:(void *)a4 withOrderedSet:
++ (id)_replaceBaseline:(void *)baseline inOrderedSet:(void *)set withOrderedSet:
 {
   v49 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v7 = [a3 count];
+  v7 = [baseline count];
   v8 = [a2 count];
   if (v7)
   {
     v9 = v8;
-    if ([a4 count])
+    if ([set count])
     {
       if (v9)
       {
-        v10 = [a3 indexOfObject:{objc_msgSend(a2, "firstObject")}];
+        v10 = [baseline indexOfObject:{objc_msgSend(a2, "firstObject")}];
         if (v10)
         {
           v11 = v10;
           if (v10 + v9 == v7)
           {
             v12 = v7 - v9;
-            v13 = [a4 count];
+            v13 = [set count];
             v14 = v13 + v12;
             MEMORY[0x1EEE9AC00](v13);
             v17 = &v44 - v16;
@@ -6170,13 +6170,13 @@ LABEL_42:
               bzero(&v44 - v16, 8 * v15);
             }
 
-            [a3 getObjects:v17 range:{0, v12}];
+            [baseline getObjects:v17 range:{0, v12}];
             v30 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:v17 count:v12];
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
             v47 = 0u;
-            v31 = [a4 countByEnumeratingWithState:&v44 objects:v48 count:16];
+            v31 = [set countByEnumeratingWithState:&v44 objects:v48 count:16];
             if (v31)
             {
               v32 = v31;
@@ -6187,7 +6187,7 @@ LABEL_42:
                 {
                   if (*v45 != v33)
                   {
-                    objc_enumerationMutation(a4);
+                    objc_enumerationMutation(set);
                   }
 
                   v35 = *(*(&v44 + 1) + 8 * i);
@@ -6197,7 +6197,7 @@ LABEL_42:
                   }
                 }
 
-                v32 = [a4 countByEnumeratingWithState:&v44 objects:v48 count:16];
+                v32 = [set countByEnumeratingWithState:&v44 objects:v48 count:16];
               }
 
               while (v32);
@@ -6224,7 +6224,7 @@ LABEL_42:
               bzero(&v44 - v28, 8 * v7);
             }
 
-            [a3 getObjects:v29];
+            [baseline getObjects:v29];
             v37 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:v29 count:v7];
             if (v7 >= 0x201)
             {
@@ -6232,34 +6232,34 @@ LABEL_42:
             }
 
             v38 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v11, v9}];
-            if (v9 == [a4 count])
+            if (v9 == [set count])
             {
-              if (([a4 isNSArray] & 1) == 0)
+              if (([set isNSArray] & 1) == 0)
               {
-                a4 = [a4 array];
+                set = [set array];
               }
 
-              [v37 replaceObjectsAtIndexes:v38 withObjects:a4];
+              [v37 replaceObjectsAtIndexes:v38 withObjects:set];
             }
 
             else
             {
               [v37 removeObjectsAtIndexes:v38];
-              v39 = [a4 count];
+              v39 = [set count];
               v40 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v11, v39}];
-              if ([a4 isNSArray])
+              if ([set isNSArray])
               {
                 v41 = v37;
-                v42 = a4;
+                setCopy = set;
               }
 
               else
               {
-                v42 = [a4 array];
+                setCopy = [set array];
                 v41 = v37;
               }
 
-              [v41 insertObjects:v42 atIndexes:v40];
+              [v41 insertObjects:setCopy atIndexes:v40];
             }
 
             v36 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:v37];
@@ -6269,41 +6269,41 @@ LABEL_42:
           return v36;
         }
 
-        v25 = [a3 objectsAtIndexes:{objc_msgSend(MEMORY[0x1E696AC90], "indexSetWithIndexesInRange:", v9, v7 - v9)}];
+        baselineCopy = [baseline objectsAtIndexes:{objc_msgSend(MEMORY[0x1E696AC90], "indexSetWithIndexesInRange:", v9, v7 - v9)}];
         v26 = *MEMORY[0x1E69E9840];
-        v24 = a4;
+        setCopy3 = set;
       }
 
       else
       {
         v23 = *MEMORY[0x1E69E9840];
-        v24 = a4;
-        v25 = a3;
+        setCopy3 = set;
+        baselineCopy = baseline;
       }
 
-      return [_PFRoutines newOrderedSetFromCollection:v24 byAddingItems:v25];
+      return [_PFRoutines newOrderedSetFromCollection:setCopy3 byAddingItems:baselineCopy];
     }
 
     else if (v9)
     {
       v20 = *MEMORY[0x1E69E9840];
 
-      return [_PFRoutines newOrderedSetFromCollection:a3 byRemovingItems:a2];
+      return [_PFRoutines newOrderedSetFromCollection:baseline byRemovingItems:a2];
     }
 
     else
     {
       v27 = *MEMORY[0x1E69E9840];
 
-      return [_PFRoutines newMutableOrderedSetFromCollection:a3];
+      return [_PFRoutines newMutableOrderedSetFromCollection:baseline];
     }
   }
 
-  else if ([a4 isNSOrderedSet])
+  else if ([set isNSOrderedSet])
   {
     v18 = *MEMORY[0x1E69E9840];
 
-    return [a4 mutableCopy];
+    return [set mutableCopy];
   }
 
   else
@@ -6311,11 +6311,11 @@ LABEL_42:
     v21 = objc_alloc(MEMORY[0x1E695DFA0]);
     v22 = *MEMORY[0x1E69E9840];
 
-    return [v21 initWithArray:a4];
+    return [v21 initWithArray:set];
   }
 }
 
-+ (uint64_t)_expressionIsCompoundIndexCompatible:(uint64_t)a1
++ (uint64_t)_expressionIsCompoundIndexCompatible:(uint64_t)compatible
 {
   objc_opt_self();
   result = [a2 expressionType];
@@ -6323,8 +6323,8 @@ LABEL_42:
   {
     if (result == 3)
     {
-      v4 = [a2 keyPath];
-      return [@"self" caseInsensitiveCompare:v4] || objc_msgSend(@"self", "caseInsensitiveCompare:", v4) != 0;
+      keyPath = [a2 keyPath];
+      return [@"self" caseInsensitiveCompare:keyPath] || objc_msgSend(@"self", "caseInsensitiveCompare:", keyPath) != 0;
     }
 
     else
@@ -6336,9 +6336,9 @@ LABEL_42:
   return result;
 }
 
-+ (__CFDictionary)_createDictionaryPartitioningObjects:(id)a3 intoHierarchies:(BOOL)a4
++ (__CFDictionary)_createDictionaryPartitioningObjects:(id)objects intoHierarchies:(BOOL)hierarchies
 {
-  v4 = a4;
+  hierarchiesCopy = hierarchies;
   v28 = *MEMORY[0x1E69E9840];
   memset(&callBacks, 0, sizeof(callBacks));
   callBacks.copyDescription = *(MEMORY[0x1E695E9F8] + 24);
@@ -6350,12 +6350,12 @@ LABEL_42:
   valueCallBacks.copyDescription = *(MEMORY[0x1E695E9E8] + 24);
   valueCallBacks.equal = 0;
   v6 = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, &keyCallBacks, &valueCallBacks);
-  v7 = [a3 count];
+  v7 = [objects count];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v20 objects:v27 count:16];
+  v8 = [objects countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -6367,29 +6367,29 @@ LABEL_42:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(objects);
         }
 
         v12 = *(*(&v20 + 1) + 8 * v11);
-        v13 = [v12 entity];
-        if (v4)
+        entity = [v12 entity];
+        if (hierarchiesCopy)
         {
-          if (v13)
+          if (entity)
           {
-            if (atomic_load((v13 + 124)))
+            if (atomic_load((entity + 124)))
             {
-              v15 = *(v13 + 72);
+              v15 = *(entity + 72);
             }
 
             else
             {
               do
               {
-                v15 = v13;
-                v13 = [v13 superentity];
+                v15 = entity;
+                entity = [entity superentity];
               }
 
-              while (v13);
+              while (entity);
             }
           }
 
@@ -6401,7 +6401,7 @@ LABEL_42:
 
         else
         {
-          v15 = v13;
+          v15 = entity;
         }
 
         Value = CFDictionaryGetValue(v6, v15);
@@ -6417,7 +6417,7 @@ LABEL_42:
       }
 
       while (v11 != v9);
-      v17 = [a3 countByEnumeratingWithState:&v20 objects:v27 count:16];
+      v17 = [objects countByEnumeratingWithState:&v20 objects:v27 count:16];
       v9 = v17;
     }
 
@@ -6428,9 +6428,9 @@ LABEL_42:
   return v6;
 }
 
-+ (__CFDictionary)_createDictionaryPartitioningObjectIDs:(id)a3 intoHierarchies:(BOOL)a4
++ (__CFDictionary)_createDictionaryPartitioningObjectIDs:(id)ds intoHierarchies:(BOOL)hierarchies
 {
-  v4 = a4;
+  hierarchiesCopy = hierarchies;
   v28 = *MEMORY[0x1E69E9840];
   memset(&callBacks, 0, sizeof(callBacks));
   callBacks.copyDescription = *(MEMORY[0x1E695E9F8] + 24);
@@ -6442,12 +6442,12 @@ LABEL_42:
   valueCallBacks.copyDescription = *(MEMORY[0x1E695E9E8] + 24);
   valueCallBacks.equal = 0;
   v6 = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, &keyCallBacks, &valueCallBacks);
-  v7 = [a3 count];
+  v7 = [ds count];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v20 objects:v27 count:16];
+  v8 = [ds countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -6459,29 +6459,29 @@ LABEL_42:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ds);
         }
 
         v12 = *(*(&v20 + 1) + 8 * v11);
-        v13 = [v12 entity];
-        if (v4)
+        entity = [v12 entity];
+        if (hierarchiesCopy)
         {
-          if (v13)
+          if (entity)
           {
-            if (atomic_load((v13 + 124)))
+            if (atomic_load((entity + 124)))
             {
-              v15 = *(v13 + 72);
+              v15 = *(entity + 72);
             }
 
             else
             {
               do
               {
-                v15 = v13;
-                v13 = [v13 superentity];
+                v15 = entity;
+                entity = [entity superentity];
               }
 
-              while (v13);
+              while (entity);
             }
           }
 
@@ -6493,7 +6493,7 @@ LABEL_42:
 
         else
         {
-          v15 = v13;
+          v15 = entity;
         }
 
         Value = CFDictionaryGetValue(v6, v15);
@@ -6509,7 +6509,7 @@ LABEL_42:
       }
 
       while (v11 != v9);
-      v17 = [a3 countByEnumeratingWithState:&v20 objects:v27 count:16];
+      v17 = [ds countByEnumeratingWithState:&v20 objects:v27 count:16];
       v9 = v17;
     }
 
@@ -6520,7 +6520,7 @@ LABEL_42:
   return v6;
 }
 
-+ (uint64_t)fetchHeterogeneousCollectionByObjectIDs:(uint64_t)a3 intoContext:
++ (uint64_t)fetchHeterogeneousCollectionByObjectIDs:(uint64_t)ds intoContext:
 {
   objc_opt_self();
   objc_opt_self();
@@ -6530,12 +6530,12 @@ LABEL_42:
   v11 = 0x3052000000;
   v12 = __Block_byref_object_copy__9;
   v13 = __Block_byref_object_dispose__9;
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67___PFRoutines_fetchHeterogeneousCollectionByObjectIDs_intoContext___block_invoke;
   v8[3] = &unk_1E6EC1CD8;
-  v8[4] = a3;
+  v8[4] = ds;
   v8[5] = &v9;
   [(__CFDictionary *)v5 enumerateKeysAndObjectsUsingBlock:v8];
 
@@ -6544,45 +6544,45 @@ LABEL_42:
   return v6;
 }
 
-+ (__CFDictionary)createDictionaryPartitioningObjectsByEntity:(uint64_t)a1
++ (__CFDictionary)createDictionaryPartitioningObjectsByEntity:(uint64_t)entity
 {
   objc_opt_self();
 
   return [_PFRoutines _createDictionaryPartitioningObjects:a2 intoHierarchies:0];
 }
 
-+ (__CFDictionary)createDictionaryPartitioningObjectsIDByRootEntity:(uint64_t)a1
++ (__CFDictionary)createDictionaryPartitioningObjectsIDByRootEntity:(uint64_t)entity
 {
   objc_opt_self();
 
   return [_PFRoutines _createDictionaryPartitioningObjectIDs:a2 intoHierarchies:1];
 }
 
-+ (BOOL)isSanitizedVersionOf:(void *)a3 equalTo:
++ (BOOL)isSanitizedVersionOf:(void *)of equalTo:
 {
   objc_opt_self();
-  v5 = [a2 UTF8String];
-  v6 = [a3 UTF8String];
-  v7 = strlen(v6);
-  return strncmp(v5, v6, v7) == 0;
+  uTF8String = [a2 UTF8String];
+  uTF8String2 = [of UTF8String];
+  v7 = strlen(uTF8String2);
+  return strncmp(uTF8String, uTF8String2, v7) == 0;
 }
 
-+ (uint64_t)sanitize:(uint64_t)a1
++ (uint64_t)sanitize:(uint64_t)sanitize
 {
   objc_opt_self();
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a2 UTF8String];
+  uTF8String = [a2 UTF8String];
 
-  return [v3 stringWithUTF8String:v4];
+  return [v3 stringWithUTF8String:uTF8String];
 }
 
-+ (void)wrapBlockInGuardedAutoreleasePool:(id)a3
++ (void)wrapBlockInGuardedAutoreleasePool:(id)pool
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  (*(a3 + 2))(a3);
+  (*(pool + 2))(pool);
 }
 
-+ (void)efficientlyEnumerateManagedObjectsInFetchRequest:(void *)a3 usingManagedObjectContext:(uint64_t)a4 andApplyBlock:
++ (void)efficientlyEnumerateManagedObjectsInFetchRequest:(void *)request usingManagedObjectContext:(uint64_t)context andApplyBlock:
 {
   v39[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -6596,8 +6596,8 @@ LABEL_42:
     objc_exception_throw([v25 exceptionWithName:*MEMORY[0x1E695D940] reason:@"This method can't be very efficient if you don't bother to set a batch size!" userInfo:v26]);
   }
 
-  v31 = a3;
-  if ([a3 hasChanges])
+  requestCopy = request;
+  if ([request hasChanges])
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
@@ -6617,8 +6617,8 @@ LABEL_42:
   context = objc_autoreleasePoolPush();
   v33 = 0;
   v32 = 0;
-  v8 = [a3 queryGenerationToken];
-  if (v8 == +[NSQueryGenerationToken unpinnedQueryGenerationToken])
+  queryGenerationToken = [request queryGenerationToken];
+  if (queryGenerationToken == +[NSQueryGenerationToken unpinnedQueryGenerationToken])
   {
     v9 = _PFLogGetLogStream(17);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -6638,20 +6638,20 @@ LABEL_42:
   }
 
   buf[0] = 0;
-  v30 = [a3 executeFetchRequest:a2 error:&v33];
+  v30 = [request executeFetchRequest:a2 error:&v33];
   if (v30)
   {
-    v11 = [a2 fetchBatchSize];
+    fetchBatchSize = [a2 fetchBatchSize];
     v12 = [v30 count];
     v13 = v12;
-    if (v12 / v11 * v11 == v12)
+    if (v12 / fetchBatchSize * fetchBatchSize == v12)
     {
-      v14 = v12 / v11;
+      v14 = v12 / fetchBatchSize;
     }
 
     else
     {
-      v14 = v12 / v11 + 1;
+      v14 = v12 / fetchBatchSize + 1;
     }
 
     if (v14)
@@ -6659,7 +6659,7 @@ LABEL_42:
       v15 = 0;
       v16 = 0;
       v17 = 0;
-      v18 = v11;
+      v18 = fetchBatchSize;
       do
       {
         if (v13 >= v18)
@@ -6674,9 +6674,9 @@ LABEL_42:
 
         v20 = objc_autoreleasePoolPush();
         v21 = objc_autoreleasePoolPush();
-        (*(a4 + 16))(a4, [v30 subarrayWithRange:{v16, v19 + v15}], 0, &v32, buf);
+        (*(context + 16))(context, [v30 subarrayWithRange:{v16, v19 + v15}], 0, &v32, buf);
         objc_autoreleasePoolPop(v21);
-        if ((v32 & 1) == 0 && [v31 hasChanges])
+        if ((v32 & 1) == 0 && [requestCopy hasChanges])
         {
           v23 = MEMORY[0x1E695DF30];
           v34 = @"offendingFetch";
@@ -6685,12 +6685,12 @@ LABEL_42:
           objc_exception_throw([v23 exceptionWithName:*MEMORY[0x1E695D940] reason:@"Batch finished processing with pending changes in the moc. This prevents the context from being reset and purging rows / snapshots from memory. Please save at the end of each batch." userInfo:v24]);
         }
 
-        [v31 reset];
+        [requestCopy reset];
         objc_autoreleasePoolPop(v20);
         ++v17;
-        v16 += v11;
-        v18 += v11;
-        v15 -= v11;
+        v16 += fetchBatchSize;
+        v18 += fetchBatchSize;
+        v15 -= fetchBatchSize;
       }
 
       while (v17 < v14);
@@ -6699,11 +6699,11 @@ LABEL_42:
 
   else
   {
-    (*(a4 + 16))(a4, 0, v33, &v32, buf);
+    (*(context + 16))(context, 0, v33, &v32, buf);
     v32 = 1;
   }
 
-  [v31 reset];
+  [requestCopy reset];
   objc_autoreleasePoolPop(context);
   v22 = *MEMORY[0x1E69E9840];
 }

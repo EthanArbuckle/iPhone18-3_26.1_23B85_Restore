@@ -1,52 +1,52 @@
 @interface ASDTPMActionWaiter
 - (ASDTPMAction)waitAction;
-- (ASDTPMActionWaiter)initWithConfig:(id)a3 forSequencer:(id)a4;
+- (ASDTPMActionWaiter)initWithConfig:(id)config forSequencer:(id)sequencer;
 - (int)action;
 - (void)action;
-- (void)interestNotification:(int)a3 forDevice:(id)a4;
+- (void)interestNotification:(int)notification forDevice:(id)device;
 @end
 
 @implementation ASDTPMActionWaiter
 
-- (ASDTPMActionWaiter)initWithConfig:(id)a3 forSequencer:(id)a4
+- (ASDTPMActionWaiter)initWithConfig:(id)config forSequencer:(id)sequencer
 {
-  v6 = a3;
+  configCopy = config;
   v24.receiver = self;
   v24.super_class = ASDTPMActionWaiter;
-  v7 = [(ASDTPMAction *)&v24 initWithConfig:v6 forSequencer:a4];
+  v7 = [(ASDTPMAction *)&v24 initWithConfig:configCopy forSequencer:sequencer];
   if (!v7)
   {
     goto LABEL_6;
   }
 
-  v8 = [v6 asdtDeviceUID];
-  v9 = [v6 asdtPMActionWaiterActionName];
-  [(ASDTPMActionWaiter *)v7 setWaitActionName:v9];
+  asdtDeviceUID = [configCopy asdtDeviceUID];
+  asdtPMActionWaiterActionName = [configCopy asdtPMActionWaiterActionName];
+  [(ASDTPMActionWaiter *)v7 setWaitActionName:asdtPMActionWaiterActionName];
 
-  -[ASDTPMActionWaiter setWaitTimeoutUs:](v7, "setWaitTimeoutUs:", [v6 asdtPMActionWaiterTimeoutUs]);
+  -[ASDTPMActionWaiter setWaitTimeoutUs:](v7, "setWaitTimeoutUs:", [configCopy asdtPMActionWaiterTimeoutUs]);
   v10 = objc_alloc_init(MEMORY[0x277CCA928]);
   [(ASDTPMActionWaiter *)v7 setWaitForActionCondition:v10];
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(ASDTPMDevice *)v7 name];
-  v13 = [v11 stringWithFormat:@"%s.%@.cond", "com.apple.AudioServerDriverTransports", v12];
-  v14 = [(ASDTPMActionWaiter *)v7 waitForActionCondition];
-  [v14 setName:v13];
+  name = [(ASDTPMDevice *)v7 name];
+  v13 = [v11 stringWithFormat:@"%s.%@.cond", "com.apple.AudioServerDriverTransports", name];
+  waitForActionCondition = [(ASDTPMActionWaiter *)v7 waitForActionCondition];
+  [waitForActionCondition setName:v13];
 
-  if (v8)
+  if (asdtDeviceUID)
   {
-    v15 = [(ASDTPMActionWaiter *)v7 waitActionName];
-    if (v15)
+    waitActionName = [(ASDTPMActionWaiter *)v7 waitActionName];
+    if (waitActionName)
     {
-      v16 = v15;
-      v17 = [(ASDTPMActionWaiter *)v7 waitForActionCondition];
+      v16 = waitActionName;
+      waitForActionCondition2 = [(ASDTPMActionWaiter *)v7 waitForActionCondition];
 
-      if (v17)
+      if (waitForActionCondition2)
       {
-        v18 = [(ASDTPMDevice *)v7 parentSequencer];
-        v19 = [v18 parentDevice];
-        v20 = [v19 deviceManager];
-        [v20 registerObject:v7 withInterests:1 forUID:v8];
+        parentSequencer = [(ASDTPMDevice *)v7 parentSequencer];
+        parentDevice = [parentSequencer parentDevice];
+        deviceManager = [parentDevice deviceManager];
+        [deviceManager registerObject:v7 withInterests:1 forUID:asdtDeviceUID];
 
 LABEL_6:
         v21 = v7;
@@ -67,41 +67,41 @@ LABEL_10:
   return v21;
 }
 
-- (void)interestNotification:(int)a3 forDevice:(id)a4
+- (void)interestNotification:(int)notification forDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = ASDTBaseLogType();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [ASDTPMActionWaiter interestNotification:v6 forDevice:?];
   }
 
-  v7 = v5;
+  v7 = deviceCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 pmSequencer];
-    v9 = [(ASDTPMActionWaiter *)self waitActionName];
-    v10 = [v8 pmDeviceWithName:v9];
+    pmSequencer = [v7 pmSequencer];
+    waitActionName = [(ASDTPMActionWaiter *)self waitActionName];
+    v10 = [pmSequencer pmDeviceWithName:waitActionName];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(ASDTPMActionWaiter *)self waitForActionCondition];
-      [v11 lock];
+      waitForActionCondition = [(ASDTPMActionWaiter *)self waitForActionCondition];
+      [waitForActionCondition lock];
 
       [(ASDTPMActionWaiter *)self setWaitAction:v10];
-      v12 = [(ASDTPMActionWaiter *)self waitForActionCondition];
-      [v12 signal];
+      waitForActionCondition2 = [(ASDTPMActionWaiter *)self waitForActionCondition];
+      [waitForActionCondition2 signal];
 
-      v13 = [(ASDTPMActionWaiter *)self waitForActionCondition];
-      [v13 unlock];
+      waitForActionCondition3 = [(ASDTPMActionWaiter *)self waitForActionCondition];
+      [waitForActionCondition3 unlock];
     }
 
     else
     {
-      v13 = ASDTBaseLogType();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      waitForActionCondition3 = ASDTBaseLogType();
+      if (os_log_type_enabled(waitForActionCondition3, OS_LOG_TYPE_ERROR))
       {
         [ASDTPMActionWaiter interestNotification:? forDevice:?];
       }
@@ -131,12 +131,12 @@ LABEL_10:
     v3 = 0;
   }
 
-  v4 = [(ASDTPMActionWaiter *)self waitForActionCondition];
-  [v4 lock];
+  waitForActionCondition = [(ASDTPMActionWaiter *)self waitForActionCondition];
+  [waitForActionCondition lock];
 
-  v5 = [(ASDTPMActionWaiter *)self waitAction];
+  waitAction = [(ASDTPMActionWaiter *)self waitAction];
 
-  if (!v5)
+  if (!waitAction)
   {
     do
     {
@@ -146,16 +146,16 @@ LABEL_10:
         [(ASDTPMActionWaiter *)v17 action:v18];
       }
 
-      v13 = [(ASDTPMActionWaiter *)self waitForActionCondition];
-      v14 = v13;
+      waitForActionCondition2 = [(ASDTPMActionWaiter *)self waitForActionCondition];
+      v14 = waitForActionCondition2;
       if (v3)
       {
-        v15 = [v13 waitUntilDate:v3];
+        v15 = [waitForActionCondition2 waitUntilDate:v3];
 
         if ((v15 & 1) == 0)
         {
-          v8 = [(ASDTPMActionWaiter *)self waitForActionCondition];
-          [v8 unlock];
+          waitForActionCondition3 = [(ASDTPMActionWaiter *)self waitForActionCondition];
+          [waitForActionCondition3 unlock];
           v9 = 1852990585;
           goto LABEL_8;
         }
@@ -163,17 +163,17 @@ LABEL_10:
 
       else
       {
-        [v13 wait];
+        [waitForActionCondition2 wait];
       }
 
-      v16 = [(ASDTPMActionWaiter *)self waitAction];
+      waitAction2 = [(ASDTPMActionWaiter *)self waitAction];
     }
 
-    while (!v16);
+    while (!waitAction2);
   }
 
-  v6 = [(ASDTPMActionWaiter *)self waitForActionCondition];
-  [v6 unlock];
+  waitForActionCondition4 = [(ASDTPMActionWaiter *)self waitForActionCondition];
+  [waitForActionCondition4 unlock];
 
   v7 = ASDTBaseLogType();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -181,8 +181,8 @@ LABEL_10:
     [(ASDTPMActionWaiter *)self action];
   }
 
-  v8 = [(ASDTPMActionWaiter *)self waitAction];
-  v9 = [v8 waitForCompletion:{-[ASDTPMActionWaiter waitTimeoutUs](self, "waitTimeoutUs")}];
+  waitForActionCondition3 = [(ASDTPMActionWaiter *)self waitAction];
+  v9 = [waitForActionCondition3 waitForCompletion:{-[ASDTPMActionWaiter waitTimeoutUs](self, "waitTimeoutUs")}];
 LABEL_8:
 
   v10 = *MEMORY[0x277D85DE8];
@@ -242,9 +242,9 @@ LABEL_8:
 - (void)action
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = [a1 name];
-  v5 = [a1 waitAction];
-  v6 = [v5 name];
+  name = [self name];
+  waitAction = [self waitAction];
+  name2 = [waitAction name];
   OUTLINED_FUNCTION_1_3();
   _os_log_debug_impl(&dword_241659000, a2, OS_LOG_TYPE_DEBUG, "%@: Waiting on action with name: %@", v8, 0x16u);
 

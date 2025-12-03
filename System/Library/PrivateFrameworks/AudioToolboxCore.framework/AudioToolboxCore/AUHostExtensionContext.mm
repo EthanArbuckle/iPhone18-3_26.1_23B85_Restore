@@ -2,24 +2,24 @@
 + (id)_allowedItemPayloadClasses;
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (AUHostExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
-- (BOOL)conformsToProtocol:(id)a3;
+- (AUHostExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
+- (BOOL)conformsToProtocol:(id)protocol;
 - (id)_derivedExtensionAuxiliaryHostProtocol;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (void)dealloc;
 @end
 
 @implementation AUHostExtensionContext
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v3 = a3;
-  v4 = [objc_opt_class() conformsToProtocol:v3];
+  protocolCopy = protocol;
+  v4 = [objc_opt_class() conformsToProtocol:protocolCopy];
 
   return v4;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -39,10 +39,10 @@
 {
   v4.receiver = self;
   v4.super_class = AUHostExtensionContext;
-  v2 = [(AUHostExtensionContext *)&v4 _derivedExtensionAuxiliaryHostProtocol];
-  SetAllowedClassesForAUAudioUnitHostXPCInterface(v2);
+  _derivedExtensionAuxiliaryHostProtocol = [(AUHostExtensionContext *)&v4 _derivedExtensionAuxiliaryHostProtocol];
+  SetAllowedClassesForAUAudioUnitHostXPCInterface(_derivedExtensionAuxiliaryHostProtocol);
 
-  return v2;
+  return _derivedExtensionAuxiliaryHostProtocol;
 }
 
 - (void)dealloc
@@ -52,14 +52,14 @@
   [(AUHostExtensionContext *)&v2 dealloc];
 }
 
-- (AUHostExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (AUHostExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  endpointCopy = endpoint;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = AUHostExtensionContext;
-  v11 = [(AUHostExtensionContext *)&v15 initWithInputItems:v8 listenerEndpoint:v9 contextUUID:v10];
+  v11 = [(AUHostExtensionContext *)&v15 initWithInputItems:itemsCopy listenerEndpoint:endpointCopy contextUUID:dCopy];
   if (v11)
   {
     v12 = objc_opt_new();
